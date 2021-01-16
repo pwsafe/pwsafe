@@ -795,7 +795,7 @@ void PasswordSafeFrame::DoExportText()
           CReport rpt;
 
           rpt.StartReport(ExportType::GetTitle().c_str(), sx_temp.c_str());
-          rpt.WriteLine(tostdstring(wxString(_("Exporting database: ")) << towxstring(sx_temp) << wxT(" to ") << newfile<< wxT("\r\n")));
+          rpt.WriteLine(tostdstring(wxString(_("Exporting database: ")) << towxstring(sx_temp) << _(" to ") << newfile<< wxT("\r\n")));
 
           int rc = ExportType::Write(m_core, newfile, bsExport, subgroup_name, subgroup_object,
                                       subgroup_function, delimiter, numExported, &orderedItemList, &rpt);
