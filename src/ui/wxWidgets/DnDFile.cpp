@@ -60,12 +60,14 @@ bool DnDFile::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)
         // Direct call of handler function
         m_pOwner->OnImportText(evt);
       }
+#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
       else if(filename.GetExt().IsSameAs("xml", false)) { // XML Import
         wxCommandEvent evt(ID_IMPORT_XML, SYMBOL_PASSWORDSAFEFRAME_IDNAME);
         evt.SetString(filenames[0]);
         // Direct call of handler function
         m_pOwner->OnImportXML(evt);
       }
+#endif
       else if(filename.GetExt().IsSameAs("csv", false)) { // KeePass Import
         wxCommandEvent evt(ID_IMPORT_KEEPASS, SYMBOL_PASSWORDSAFEFRAME_IDNAME);
         evt.SetString(filenames[0]);
@@ -76,11 +78,19 @@ bool DnDFile::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)
               filename.GetExt().IsSameAs("psafe3", false) ||
               filename.GetExt().IsSameAs("dat", false) ||
               filename.GetExt().IsSameAs("ibak", false)) {
-        // Merge with actual data base
-        wxCommandEvent evt(ID_MERGE, SYMBOL_PASSWORDSAFEFRAME_IDNAME);
-        evt.SetString(filenames[0]);
-        // Direct call of handler function
-        m_pOwner->OnMergeAnotherSafe(evt);
+        if(::wxGetKeyState(WXK_CONTROL)) { // Synchronize with actual data base on CTRL pressed (is Command in macOS)
+          wxCommandEvent evt(ID_SYNCHRONIZE, SYMBOL_PASSWORDSAFEFRAME_IDNAME);
+          evt.SetString(filenames[0]);
+          // Direct call of handler function
+          m_pOwner->OnSynchronize(evt);
+          
+        }
+        else { // Merge with actual data base
+          wxCommandEvent evt(ID_MERGE, SYMBOL_PASSWORDSAFEFRAME_IDNAME);
+          evt.SetString(filenames[0]);
+          // Direct call of handler function
+          m_pOwner->OnMergeAnotherSafe(evt);
+        }
       }
       else // Unknown file suffix
         return false;

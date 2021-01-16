@@ -134,6 +134,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( wxID_SAVEAS,           PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_EXPORTMENU,         PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_IMPORTMENU,         PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_IMPORT_XML,         PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_MERGE,              PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_COMPARE,            PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SYNCHRONIZE,        PasswordSafeFrame::OnUpdateUI                    )
@@ -1913,6 +1914,14 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_MERGE:
     case ID_IMPORTMENU:
       evt.Enable(!isFileReadOnly && m_core.IsDbOpen());
+      break;
+      
+    case ID_IMPORT_XML:
+#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+      evt.Enable(false);
+#else
+      evt.Enable(!isFileReadOnly && m_core.IsDbOpen());
+#endif
       break;
 
     case ID_PROTECT:

@@ -120,9 +120,6 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
   
   //The parent window must call our TransferDataToWindow and TransferDataFromWindow
   m_parent->SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
-  
-  if(! filename.IsNull() && ! filename.IsEmpty())
-    m_filepicker->SetFileName(filename);
 }
 
 DbSelectionPanel::~DbSelectionPanel()

@@ -1255,13 +1255,13 @@ void PasswordSafeFrame::OnCompare(wxCommandEvent& WXUNUSED(evt))
   dlg.ShowModal();
 }
 
-void PasswordSafeFrame::OnSynchronize(wxCommandEvent& WXUNUSED(evt))
+void PasswordSafeFrame::OnSynchronize(wxCommandEvent& evt)
 {
   // disable in read-only mode or empty
   wxCHECK_RET(!m_core.IsReadOnly() && m_core.IsDbOpen() && m_core.GetNumEntries() != 0,
                 wxT("Synchronize menu enabled for empty or read-only database!"));
 
-  SyncWizard wiz(this, &m_core);
+  SyncWizard wiz(this, &m_core, evt.GetString());
   wiz.RunWizard(wiz.GetFirstPage());
 
   if (wiz.GetNumUpdated() > 0)

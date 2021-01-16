@@ -61,9 +61,11 @@ MergeDlg::MergeDlg(wxWindow* parent, PWScore* core, const wxString filename) :
   wxSizer* buttons = CreateStdDialogButtonSizer(wxOK|wxCANCEL|wxHELP);
   //This might not be a very wise thing to do.  We are only supposed to add certain
   //pre-defined button-ids to StdDlgBtnSizer
-  buttons->Add(new wxButton(this, ID_ADVANCED, _("Advanced...")), wxSizerFlags().DoubleBorder(wxLEFT|wxRIGHT));
-  dlgSizer->Add(buttons, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand());
-
+  auto advancedButton = new wxButton(this, ID_ADVANCED, _("&Advanced..."), wxDefaultPosition, wxDefaultSize, 0);
+  buttons->Add(advancedButton, 0, wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL, SideMargin);
+  
+  dlgSizer->Add(buttons, 0, wxLEFT|wxRIGHT|wxEXPAND, SideMargin);
+  
   dlgSizer->AddSpacer(BottomMargin);
 
   SetSizerAndFit(dlgSizer);
