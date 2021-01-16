@@ -1107,7 +1107,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
 
   wxString KPsFileName;
   
-  if(evt.GetString().IsNull() || evt.GetString().IsEmpty()) {
+  if(evt.GetString().IsEmpty()) {
     wxFileDialog fd(this, _("Please Choose a KeePass Text File to Import"),
                   wxEmptyString, evt.GetString(),
                   _("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"),
@@ -1161,9 +1161,12 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
         LoadAString(s, uiReasonCode);
         msg = towxstring(s);
       }
-      else
+      else {
         msg = wxString::Format(_("%ls\n\nInvalid format"), KPsFileName.GetData());
-      wxMessageBox(msg, _("Import failed"), wxOK | wxICON_ERROR, this);
+      }
+      msg << wxT("\n\n") << _("Do you wish to see a detailed report?");
+      if (wxMessageBox(msg, _("Import failed"), wxYES_NO | wxICON_ERROR, this) == wxYES)
+        ViewReport(rpt);
       delete [] pcmd;
       break;
     }
