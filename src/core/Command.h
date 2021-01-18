@@ -82,6 +82,7 @@ protected:
   // If needed, to be used by a Multicommand that changes the DB or
   // a single command that changes the DB outside a MultiCommand
   std::vector<StringX> m_vSavedModifiedNodes;
+  std::vector<StringX> m_vSavedModifiedEmptyGroups;
 
   // This is the potential change type if it there is anything to do
   // It is set so that MultiCommands can tell whether to save DB information

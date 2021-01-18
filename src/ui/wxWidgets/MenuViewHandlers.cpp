@@ -141,6 +141,17 @@ void PasswordSafeFrame::OnSortByDateClick(wxCommandEvent& WXUNUSED(evt))
   }
 }
 
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_SHOW_EMPTY_GROUP_IN_FILTER
+ */
+
+void PasswordSafeFrame::OnShowGroupInFilterClick(wxCommandEvent& WXUNUSED(evt))
+{
+  m_bShowEmptyGroupsInFilter = !m_bShowEmptyGroupsInFilter; // Toggle value
+  GetMenuBar()->Check(ID_SHOW_EMPTY_GROUP_IN_FILTER, m_bShowEmptyGroupsInFilter);
+  if(IsTreeView())
+    ShowTree();
+}
 void PasswordSafeFrame::OnExpandAll(wxCommandEvent& WXUNUSED(evt))
 {
   wxASSERT(IsTreeView());
@@ -226,8 +237,15 @@ void PasswordSafeFrame::OnShowAllExpiryClick( wxCommandEvent& event )
   m_bFilterActive = showExpiry;
   if (showExpiry) {
     CurrentFilter() = m_FilterManager.GetExpireFilter();
-  } else
+    // Entries with Expiry date iterates on entries only
+    m_bShowEmptyGroupsInFilter = false;
+  } else {
     CurrentFilter().Empty();
+    // Set back to default value at end of filter
+    m_bShowEmptyGroupsInFilter = false;
+  }
+  GetMenuBar()->Check(ID_SHOW_EMPTY_GROUP_IN_FILTER, m_bShowEmptyGroupsInFilter);
+  GetMenuBar()->Refresh();
   ApplyFilters();
 }
 
@@ -242,8 +260,15 @@ void PasswordSafeFrame::OnShowUnsavedEntriesClick( wxCommandEvent& event )
   m_bFilterActive = showUnsaved;
   if (showUnsaved) {
     CurrentFilter() = m_FilterManager.GetUnsavedFilter();
-  } else
+    // Unsaved Entries might include groups, set show groups by default
+    m_bShowEmptyGroupsInFilter = false;
+  } else {
     CurrentFilter().Empty();
+    // Set back to default value at end of filter
+    m_bShowEmptyGroupsInFilter = false;
+  }
+  GetMenuBar()->Check(ID_SHOW_EMPTY_GROUP_IN_FILTER, m_bShowEmptyGroupsInFilter);
+  GetMenuBar()->Refresh();
   ApplyFilters();
 }
 
@@ -256,12 +281,18 @@ void PasswordSafeFrame::OnShowLastFindClick( wxCommandEvent& event )
   m_CurrentPredefinedFilter = showLastFind ? LASTFIND : NONE;
   m_FilterManager.SetFindFilter(showLastFind);
 
-
   m_bFilterActive = showLastFind;
   if (showLastFind) {
     CurrentFilter() = m_FilterManager.GetFoundFilter();
-  } else
+    // Last Find iterates on entries only
+    m_bShowEmptyGroupsInFilter = false;
+  } else {
     CurrentFilter().Empty();
+    // Set back to default value at end of filter
+    m_bShowEmptyGroupsInFilter = false;
+  }
+  GetMenuBar()->Check(ID_SHOW_EMPTY_GROUP_IN_FILTER, m_bShowEmptyGroupsInFilter);
+  GetMenuBar()->Refresh();
   ApplyFilters();
 }
 

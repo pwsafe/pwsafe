@@ -275,7 +275,7 @@ void SafeCombinationEntryDlg::CreateControls()
   // Event handler to shorten the file path name if it doesn't fit into the combobox.
   m_filenameCB->Bind(wxEVT_COMBOBOX, [&](wxCommandEvent& WXUNUSED(event)) {
     m_filename = m_filenameCB->GetValue(); // Update for tooltip which shows the full path
-    m_filenameCB->ChangeValue(EllipsizeFilePathname(m_filenameCB->GetValue()));
+    // EllipsizeFilePathname is build up in wxEVT_KILL_FOCUS
   });
 
   // Event handler to show the full file path name for editing if text entry field of combobox got the focus.
@@ -285,15 +285,19 @@ void SafeCombinationEntryDlg::CreateControls()
 
   // Event handler if text entry field of combobox lost the focus.
   m_filenameCB->Bind(wxEVT_KILL_FOCUS, [&](wxFocusEvent& WXUNUSED(event)) {
-    m_filename = m_filenameCB->GetValue(); // The user may have changed the file name or path manually.
-    m_filenameCB->ChangeValue(EllipsizeFilePathname(m_filename));
+    wxString filename;
+    filename = m_filenameCB->GetValue(); // The user may have changed the file name or path manually.
+    m_filenameCB->ChangeValue(EllipsizeFilePathname(filename));
+    m_filename = filename; // Set m_filename after update, as wxEVT_TEXT event will change
   });
 
   // Event handler to update the file path name string if the size of the combobox changed.
   m_filenameCB->Bind(wxEVT_SIZE, [&](wxSizeEvent& WXUNUSED(event)) {
     // Don't irritate the user with shortening the path if the text entry box has the focus for manual editing.
     if (!m_filenameCB->HasFocus()) {
+      wxString filename = m_filename;
       m_filenameCB->ChangeValue(EllipsizeFilePathname(m_filename));
+      m_filename = filename; // Set m_filename after update, as wxEVT_TEXT event will change
     }
   });
 
@@ -328,8 +332,10 @@ void SafeCombinationEntryDlg::OnActivate( wxActivateEvent& event )
   if (!m_postInitDone) {
     // if filename field not empty, set focus to password:
     if (!m_filename.empty()) {
+      wxString filename = m_filename;
       FindWindow(ID_COMBINATION)->SetFocus();
-      m_filenameCB->ChangeValue(EllipsizeFilePathname(m_filenameCB->GetValue()));
+      m_filenameCB->ChangeValue(EllipsizeFilePathname(m_filename));
+      m_filename = filename; // Set m_filename after update, as wxEVT_TEXT event will change
     }
     m_postInitDone = true;
   }
@@ -495,10 +501,17 @@ void SafeCombinationEntryDlg::OnEllipsisClick(wxCommandEvent& WXUNUSED(evt))
                   (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR));
 
   if (fd.ShowModal() == wxID_OK) {
-    m_filename = fd.GetPath();
+    wxString filename;
+    filename = fd.GetPath();
     auto *cb = dynamic_cast<wxComboBox *>(FindWindow(ID_DBASECOMBOBOX));
-    cb->ChangeValue(EllipsizeFilePathname(m_filename));
+    if (cb->HasFocus()) {
+      cb->ChangeValue(filename); // Will be changed to EllipsizeFilePathname in wxEVT_KILL_FOCUS
+    }
+    else {
+      cb->ChangeValue(EllipsizeFilePathname(filename));
+    }
     UpdateReadOnlyCheckbox();
+    m_filename = filename;
   }
 }
 

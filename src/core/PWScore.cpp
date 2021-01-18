@@ -169,6 +169,7 @@ PWScore::~PWScore()
 
   m_UHFL.clear();
   m_vModifiedNodes.clear();
+  m_vModifiedEmptyGroups.clear();
 
   delete m_pFileSig;
 }
@@ -482,6 +483,7 @@ void PWScore::ClearDBData()
 
   // Clear changed nodes
   m_vModifiedNodes.clear();
+  m_vModifiedEmptyGroups.clear();
 
   // Clear expired password entries
   m_ExpireCandidates.clear();
@@ -860,6 +862,7 @@ void PWScore::SetInitialValues()
 
   // Clear changed nodes
   m_vModifiedNodes.clear();
+  m_vModifiedEmptyGroups.clear();
 }
 
 int PWScore::Execute(Command *pcmd)
@@ -3291,13 +3294,27 @@ bool PWScore::IsNodeModified(StringX &path) const
   }
 }
 
-void PWScore::AddChangedNodes(StringX path)
+void PWScore::AddChangedNodes(const StringX &path)
 {
   StringX nextpath(path);
   while (!nextpath.empty()) {
     if (std::find(m_vModifiedNodes.begin(), m_vModifiedNodes.end(), nextpath) ==
         m_vModifiedNodes.end())
       m_vModifiedNodes.push_back(nextpath);
+    size_t i = nextpath.find_last_of(_T('.'));
+    if (i == nextpath.npos)
+      i = 0;
+    nextpath = nextpath.substr(0, i);
+  }
+}
+
+void PWScore::AddChangedEmptyGroups(const StringX &path)
+{
+  StringX nextpath(path);
+  while (!nextpath.empty()) {
+    if (std::find(m_vModifiedEmptyGroups.begin(), m_vModifiedEmptyGroups.end(), nextpath) ==
+        m_vModifiedEmptyGroups.end())
+        m_vModifiedEmptyGroups.push_back(nextpath);
     size_t i = nextpath.find_last_of(_T('.'));
     if (i == nextpath.npos)
       i = 0;
@@ -3944,6 +3961,7 @@ bool PWScore::RenameEmptyGroupPaths(const StringX &sxOldPath, const StringX &sxN
       if (m_vEmptyGroups[ig].length() > len && m_vEmptyGroups[ig].substr(0, len) == sxOldPath2) {
         m_vEmptyGroups[ig].replace(0, len - 1, sxNewPath);
         bChanged = true;
+        AddChangedEmptyGroups(m_vEmptyGroups[ig]);
       }
     }
 
