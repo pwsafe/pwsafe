@@ -56,13 +56,13 @@ Command::~Command()
 
 void Command::SaveDBInformation()
 {
-  // Currently only modified nodes are dealt with - could add any other DB information
-  // at a later date if required
+  // Currently handles only modified nodes and empty groups - could add any other DB
+  // information at a later date if required
   // right predicate's only relevant for nested MultiCommands
   if (!InMultiCommand() || (dynamic_cast<MultiCommands *>(this) != nullptr)) {
     // Only do this if executed outside a MultiCommand or it is the Multicommand itself
     // We could change an entry and so here is where we save DB information
-    // just in case.  Currently only modified nodes.
+    // just in case.  Currently only modified nodes and empty groups.
     m_vSavedModifiedNodes = m_pcomInt->GetModifiedNodes();
     m_vSavedModifiedEmptyGroups = m_pcomInt->GetModifiedEmptyGroups();
   }

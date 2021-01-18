@@ -3294,7 +3294,7 @@ bool PWScore::IsNodeModified(StringX &path) const
   }
 }
 
-void PWScore::AddChangedNodes(StringX path)
+void PWScore::AddChangedNodes(const StringX &path)
 {
   StringX nextpath(path);
   while (!nextpath.empty()) {
@@ -3308,7 +3308,7 @@ void PWScore::AddChangedNodes(StringX path)
   }
 }
 
-void PWScore::AddChangedEmptyGroups(StringX path)
+void PWScore::AddChangedEmptyGroups(const StringX &path)
 {
   StringX nextpath(path);
   while (!nextpath.empty()) {

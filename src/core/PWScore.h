@@ -594,8 +594,8 @@ private:
   void SetBase2ShortcutsMmap(ItemMMap &b2smm) {m_base2shortcuts_mmap = b2smm;}
   
   // Following are private in PWScore, public in CommandInterface:
-  void AddChangedNodes(StringX path);
-  void AddChangedEmptyGroups(StringX path);
+  void AddChangedNodes(const StringX &path);
+  void AddChangedEmptyGroups(const StringX &path);
 
   // EmptyGroups
   std::vector<StringX> m_vEmptyGroups;
