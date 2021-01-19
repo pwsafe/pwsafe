@@ -1097,6 +1097,7 @@
     <Image Include="graphics\empty_disabled.bmp" />
     <Image Include="graphics\green.bmp" />
     <Image Include="graphics\locked_tray_index.bmp" />
+    <Image Include="graphics\optionpropsheet\optionpagesbitmaps32.bmp" />
     <Image Include="graphics\question_mark.bmp" />
     <Image Include="graphics\red.bmp" />
     <Image Include="graphics\red_exclamation.bmp" />

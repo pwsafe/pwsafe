@@ -10,10 +10,10 @@
 #include "DboxMain.h"
 #include "PWPropertySheet.h"
 
-IMPLEMENT_DYNAMIC(CPWPropertySheet, CPropertySheet)
+IMPLEMENT_DYNAMIC(CPWPropertySheet, CMFCPropertySheet)
 
 CPWPropertySheet::CPWPropertySheet(UINT nID, CWnd *pParent, const bool bLongPPs)
-  : CPropertySheet(nID, pParent), m_bKeepHidden(true)
+  : CMFCPropertySheet(nID, pParent), m_bKeepHidden(true)
 {
   m_bLongPPs = bLongPPs;
 
@@ -21,14 +21,14 @@ CPWPropertySheet::CPWPropertySheet(UINT nID, CWnd *pParent, const bool bLongPPs)
 }
 
 CPWPropertySheet::CPWPropertySheet(LPCTSTR pszCaption, CWnd* pParent, const bool bLongPPs)
-  : CPropertySheet(pszCaption, pParent), m_bKeepHidden(false)
+  : CMFCPropertySheet(pszCaption, pParent), m_bKeepHidden(false)
 {
   m_bLongPPs = bLongPPs;
 
   m_psh.dwFlags |= PSH_HASHELP;
 }
 
-BEGIN_MESSAGE_MAP(CPWPropertySheet, CPropertySheet)
+BEGIN_MESSAGE_MAP(CPWPropertySheet, CMFCPropertySheet)
   ON_WM_WINDOWPOSCHANGING()
   ON_WM_SHOWWINDOW()
   ON_WM_MENUCHAR()
@@ -42,7 +42,7 @@ DboxMain *CPWPropertySheet::GetMainDlg() const
 LRESULT CPWPropertySheet::WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
 {
   GetMainDlg()->ResetIdleLockCounter(message);
-  return CPropertySheet::WindowProc(message, wParam, lParam);
+  return CMFCPropertySheet::WindowProc(message, wParam, lParam);
 }
 
 void CPWPropertySheet::OnWindowPosChanging(WINDOWPOS *lpwndpos)
@@ -52,18 +52,18 @@ void CPWPropertySheet::OnWindowPosChanging(WINDOWPOS *lpwndpos)
   if(m_bKeepHidden)
     lpwndpos->flags &= ~SWP_SHOWWINDOW;
 
-  CPropertySheet::OnWindowPosChanging(lpwndpos);
+  CMFCPropertySheet::OnWindowPosChanging(lpwndpos);
 }
 
 void CPWPropertySheet::OnShowWindow(BOOL bShow, UINT nStatus)
 {
   if(!m_bKeepHidden)
-    CPropertySheet::OnShowWindow(bShow, nStatus);
+    CMFCPropertySheet::OnShowWindow(bShow, nStatus);
 }
 
 BOOL CPWPropertySheet::OnInitDialog()
 {
-  CPropertySheet::OnInitDialog();
+  CMFCPropertySheet::OnInitDialog();
 
   // If started with Tall and won't fit - return to be called again with Wide
   if (m_bLongPPs && !GetMainDlg()->LongPPs(this)) {
@@ -85,7 +85,7 @@ INT_PTR CPWPropertySheet::DoModal()
     app.DisableAccelerator();
 
   CPWDialog::GetDialogTracker()->AddOpenDialog(this);
-  INT_PTR rc = CPropertySheet::DoModal();
+  INT_PTR rc = CMFCPropertySheet::DoModal();
   CPWDialog::GetDialogTracker()->RemoveOpenDialog(this);
 
   if (bAccEn)
@@ -104,5 +104,35 @@ LRESULT CPWPropertySheet::OnMenuChar(UINT nChar, UINT nFlags, CMenu *pMenu)
   if (nID == IDC_ENTKBSHCTHOTKEY || nID == IDC_SHORTCUTHOTKEY)
     return MNC_CLOSE << 16;
 
- return CPropertySheet::OnMenuChar(nChar, nFlags, pMenu);
+ return CMFCPropertySheet::OnMenuChar(nChar, nFlags, pMenu);
+}
+
+void CPWPropertySheet::OnDrawPageHeader(CDC* /* pDC */, int /* nPage */, CRect /* rectHeader */)
+{
+  // For some reason this isn't being called after EnablePageHeader is called.
+#if 0
+  rectHeader.top += 2;
+  rectHeader.right -= 2;
+  rectHeader.bottom -= 2;
+
+  pDC->FillRect(rectHeader, &afxGlobalData.brBtnFace);
+  pDC->Draw3dRect(rectHeader, afxGlobalData.clrBtnShadow, afxGlobalData.clrBtnShadow);
+
+  CDrawingManager dm(*pDC);
+  dm.DrawShadow(rectHeader, 2);
+
+  CString strText;
+  strText.Format(_T("Page %d description..."), nPage + 1);
+
+  CRect rectText = rectHeader;
+  rectText.DeflateRect(10, 0);
+
+  CFont* pOldFont = pDC->SelectObject(&afxGlobalData.fontBold);
+  pDC->SetBkMode(TRANSPARENT);
+  pDC->SetTextColor(afxGlobalData.clrBtnText);
+
+  pDC->DrawText(strText, rectText, DT_SINGLELINE | DT_VCENTER);
+
+  pDC->SelectObject(pOldFont);
+#endif 0
 }

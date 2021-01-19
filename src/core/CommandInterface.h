@@ -73,8 +73,8 @@ class CommandInterface {
   virtual void UndoChangeHeader(const StringX &sxOldValue, const PWSfile::HeaderType ht) = 0;
   virtual StringX GetHeaderItem(PWSfile::HeaderType ht) = 0;
 
-  virtual void AddChangedNodes(StringX path) = 0;
-  virtual void AddChangedEmptyGroups(StringX path) = 0;
+  virtual void AddChangedNodes(const StringX &path) = 0;
+  virtual void AddChangedEmptyGroups(const StringX &path) = 0;
   
   virtual const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const = 0;
   virtual const ItemMMap &GetBase2AliasesMmap() const = 0;

@@ -10,7 +10,7 @@
 
 class DboxMain; // for GetMainDlg()
 
-class CPWPropertySheet : public CPropertySheet
+class CPWPropertySheet : public CMFCPropertySheet
 {
 public:
   CPWPropertySheet(UINT nID, CWnd* pParent, const bool bLongPPs);
@@ -22,9 +22,11 @@ public:
 
 protected:
   // Following override to reset idle timeout on any event
-  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam);
+  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam) override;
   // Following override to stop accelerators interfering
-  virtual BOOL OnInitDialog();
+  virtual BOOL OnInitDialog() override;
+  // Following override to draw page header when parent's EnablePageHeader is called
+  virtual void OnDrawPageHeader(CDC* pDC, int nPage, CRect rectHeader) override;
 
   DECLARE_DYNAMIC(CPWPropertySheet)
 
