@@ -1740,7 +1740,7 @@ msgstr "Répertoire de sauvegarde"
 msgid "Backup Name"
 msgstr "Nom de la copie de sauvegarde"
 
-#. Resource IDs: (137, 505)
+#. Resource IDs: (137, 1599, 505)
 msgid "Backups"
 msgstr "Copies de sauvegarde"
 
@@ -2687,7 +2687,7 @@ msgstr "Disque plein au moment d'accéder à %1."
 msgid "Dispatch exception: %1"
 msgstr "Exception de distribution: %1"
 
-#. Resource IDs: (138, 506)
+#. Resource IDs: (138, 1599, 506)
 msgid "Display"
 msgstr "Affichage"
 
@@ -4116,10 +4116,19 @@ msgstr "Schéma de filtre invalide."
 msgid "Invalid Parameter"
 msgstr "Paramètre invalide"
 
+#. Resource IDs: (3462)
+msgid "Invalid field delimiter: must be within ASCII range."
+msgstr ""
+
 #. Resource IDs: (3017)
 #, c-format
 msgid "Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
 msgstr "Entrée invalide sur la ligne %d.  Le nombre de champs séparés par '%c' n'est pas celui attendu."
+
+#. Resource IDs: (4116)
+#, c-format
+msgid "Invalid lock file \"%ls\"."
+msgstr ""
 
 #. Resource IDs: (5684)
 msgid "Invalid shortcut ignored."
@@ -4458,7 +4467,7 @@ msgstr "Symboles minimum"
 msgid "Minimum uppercase characters"
 msgstr "Caractères majuscules minimum"
 
-#. Resource IDs: (139, 507)
+#. Resource IDs: (139, 1599, 507)
 msgid "Misc."
 msgstr "Divers."
 
@@ -4967,7 +4976,7 @@ msgstr "Délai d'expiration du mot de passe"
 msgid "Password Generated based on displayed policy"
 msgstr "Mot de passe généré basé sur la polique affichée"
 
-#. Resource IDs: (120, 1381, 1382, 140, 5425, 5589)
+#. Resource IDs: (120, 1381, 1382, 140, 1599, 5425, 5589)
 msgid "Password History"
 msgstr "Historique du mot de passe"
 
@@ -5742,7 +5751,7 @@ msgstr "La seconde date doit être plus grande que la première"
 msgid "Second number must be greater than first"
 msgstr "Deuxième chiffre plus grand que cinq"
 
-#. Resource IDs: (142)
+#. Resource IDs: (142, 1599)
 msgid "Security"
 msgstr "Sécurité"
 
@@ -5979,6 +5988,10 @@ msgstr "Action Maj + double clic"
 msgid "Shift+click to view current policy"
 msgstr "Maj+clic pour voir la stratégie courante"
 
+#. Resource IDs: (1599)
+msgid "Shorcuts"
+msgstr ""
+
 #. Resource IDs: (5686)
 #, c-format
 msgid "Shortcut '%s' already assigned to menu item '%s'."
@@ -6009,7 +6022,7 @@ msgstr "AVERTISSEMENT de raccourci..."
 msgid "Shortcut to %s"
 msgstr "Raccourci vers %s"
 
-#. Resource IDs: (452, 509)
+#. Resource IDs: (1599, 452, 509)
 msgid "Shortcuts"
 msgstr "Raccourcis"
 
@@ -6270,7 +6283,7 @@ msgstr "Synchroniser le fichier courant avec:"
 msgid "Synchronizing from database: %s\n"
 msgstr "Synchronisation à partir du fichier: %s\n"
 
-#. Resource IDs: (143, 510)
+#. Resource IDs: (143, 1599, 510)
 msgid "System"
 msgstr "Système"
 

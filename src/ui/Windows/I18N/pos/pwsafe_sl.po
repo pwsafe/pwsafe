@@ -1701,7 +1701,7 @@ msgstr "Imenik varnostne kopije"
 msgid "Backup Name"
 msgstr "Ime varnostne kopije"
 
-#. Resource IDs: (137, 505)
+#. Resource IDs: (137, 1599, 505)
 msgid "Backups"
 msgstr "Varnostne kopije"
 
@@ -2648,7 +2648,7 @@ msgstr "Disk je poln med dostopom do %1."
 msgid "Dispatch exception: %1"
 msgstr "Izjema pri odpremi: %1"
 
-#. Resource IDs: (138, 506)
+#. Resource IDs: (138, 1599, 506)
 msgid "Display"
 msgstr "Prikaz"
 
@@ -4077,10 +4077,19 @@ msgstr "Neveljavna shema filtra."
 msgid "Invalid Parameter"
 msgstr "Neveljaven parameter"
 
+#. Resource IDs: (3462)
+msgid "Invalid field delimiter: must be within ASCII range."
+msgstr ""
+
 #. Resource IDs: (3017)
 #, c-format
 msgid "Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
 msgstr "Neveljaven vnos v vrstic %d.  Ni pričakovano število polj, ločenih z '%c'."
+
+#. Resource IDs: (4116)
+#, c-format
+msgid "Invalid lock file \"%ls\"."
+msgstr ""
 
 #. Resource IDs: (5684)
 msgid "Invalid shortcut ignored."
@@ -4419,7 +4428,7 @@ msgstr "Najmanj simbolov"
 msgid "Minimum uppercase characters"
 msgstr "Najmanj velikih črk"
 
-#. Resource IDs: (139, 507)
+#. Resource IDs: (139, 1599, 507)
 msgid "Misc."
 msgstr "Razn."
 
@@ -4928,7 +4937,7 @@ msgstr "Interval izteka gesla"
 msgid "Password Generated based on displayed policy"
 msgstr "Ustvarjeno geslo, ki temelji na prikazanem Pravilniku"
 
-#. Resource IDs: (120, 1381, 1382, 140, 5425, 5589)
+#. Resource IDs: (120, 1381, 1382, 140, 1599, 5425, 5589)
 msgid "Password History"
 msgstr "Zgodovina gesel"
 
@@ -5703,7 +5712,7 @@ msgstr "Drugi datum mora biti poznejši od prvega"
 msgid "Second number must be greater than first"
 msgstr "Drugo število mora biti večje kot prvo"
 
-#. Resource IDs: (142)
+#. Resource IDs: (142, 1599)
 msgid "Security"
 msgstr "Varnost"
 
@@ -5940,6 +5949,10 @@ msgstr "Akcija Shift-Dvoklika"
 msgid "Shift+click to view current policy"
 msgstr "Shift+klik za ogled trenutnega pravilnika"
 
+#. Resource IDs: (1599)
+msgid "Shorcuts"
+msgstr ""
+
 #. Resource IDs: (5686)
 #, c-format
 msgid "Shortcut '%s' already assigned to menu item '%s'."
@@ -5970,7 +5983,7 @@ msgstr "Bližnjica OPZORILO..."
 msgid "Shortcut to %s"
 msgstr "Bližnjica do %s"
 
-#. Resource IDs: (452, 509)
+#. Resource IDs: (1599, 452, 509)
 msgid "Shortcuts"
 msgstr "Bližnjice"
 
@@ -6231,7 +6244,7 @@ msgstr "Sinhronizacija trenutne zbirke podatkov z:"
 msgid "Synchronizing from database: %s\n"
 msgstr "Sinhronizacija iz zbirke podatkov: %s\n"
 
-#. Resource IDs: (143, 510)
+#. Resource IDs: (143, 1599, 510)
 msgid "System"
 msgstr "Sistemska"
 
