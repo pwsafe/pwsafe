@@ -1,5 +1,5 @@
-Password Safe 3.55 Release ???
-==============================
+Password Safe 3.55 Release January 2021
+=======================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
