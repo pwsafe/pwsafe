@@ -48,9 +48,9 @@ PasswordSafe non-Windows release 1.11
    spinbox controls to be displayed incorrectly - too wide or too narrow.
    In addition to some heuristics based on the distribution type and version, we allow
    the user control of the width of the spinbox via the PWS_FIX_GTK_SPINBOX environment variable as follows:
-   ** 0 - This is the same as not setting the environment variable, i.e., let PasswordSafe try to determine the correct width
-   ** 1 - This lets wx set the width to wxDefaultSize, which may be way too wide for some versions of GTK
-   ** 2..10 - This sets the width to display this many characters in the text entry field of the spinner.
+   * 0 - This is the same as not setting the environment variable, i.e., let PasswordSafe try to determine the correct width
+   * 1 - This lets wx set the width to wxDefaultSize, which may be way too wide for some versions of GTK
+   * 2..10 - This sets the width to display this many characters in the text entry field of the spinner.
 
 Password Safe 3.52 Release April 2020
 =====================================
