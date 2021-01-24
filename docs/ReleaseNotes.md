@@ -1,5 +1,5 @@
-Password Safe 3.55 Release ???
-==============================
+Password Safe 3.55 Release January 2021
+=======================================
 
 This note describes the new features, fixed bugs and known problems
 with the latest versions of Password Safe. For a short description of
@@ -12,6 +12,7 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 
 New features in 3.55
 --------------------
+* Replace the tabs in Manage->Options dialog with a more modern interface.
 * [SF892](https://sourceforge.net/p/passwordsafe/feature-requests/892/) Added tooltip to copy password button in Add/Edit and Password Policy windows.
 * [SF525](https://sourceforge.net/p/passwordsafe/support-requests/525/) Removed limitation on encrytping/decrypting files larger than 2GB.
 
@@ -47,9 +48,9 @@ PasswordSafe non-Windows release 1.11
    spinbox controls to be displayed incorrectly - too wide or too narrow.
    In addition to some heuristics based on the distribution type and version, we allow
    the user control of the width of the spinbox via the PWS_FIX_GTK_SPINBOX environment variable as follows:
-   ** 0 - This is the same as not setting the environment variable, i.e., let PasswordSafe try to determine the correct width
-   ** 1 - This lets wx set the width to wxDefaultSize, which may be way too wide for some versions of GTK
-   ** 2..10 - This sets the width to display this many characters in the text entry field of the spinner.
+   * 0 - This is the same as not setting the environment variable, i.e., let PasswordSafe try to determine the correct width
+   * 1 - This lets wx set the width to wxDefaultSize, which may be way too wide for some versions of GTK
+   * 2..10 - This sets the width to display this many characters in the text entry field of the spinner.
 
 Password Safe 3.52 Release April 2020
 =====================================

@@ -1688,7 +1688,7 @@ msgstr "Mentési könyvtár"
 msgid "Backup Name"
 msgstr "Mentés neve"
 
-#. Resource IDs: (137, 505)
+#. Resource IDs: (137, 1599, 505)
 msgid "Backups"
 msgstr "Mentések"
 
@@ -2635,7 +2635,7 @@ msgstr "%1 elérése közben a lemez megtelt."
 msgid "Dispatch exception: %1"
 msgstr "Dispatch kivétel: %1"
 
-#. Resource IDs: (138, 506)
+#. Resource IDs: (138, 1599, 506)
 msgid "Display"
 msgstr "Megjelenítés"
 
@@ -4064,10 +4064,19 @@ msgstr "Érvénytelen szűrőséma."
 msgid "Invalid Parameter"
 msgstr "Érvénytelen paraméter"
 
+#. Resource IDs: (3462)
+msgid "Invalid field delimiter: must be within ASCII range."
+msgstr ""
+
 #. Resource IDs: (3017)
 #, c-format
 msgid "Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
 msgstr "Érvénytelen bevitel a(z) %d. sorban. '%c' karakterrel elválasztott mezők száma nem az elvárt."
+
+#. Resource IDs: (4116)
+#, c-format
+msgid "Invalid lock file \"%ls\"."
+msgstr ""
 
 #. Resource IDs: (5684)
 msgid "Invalid shortcut ignored."
@@ -4406,7 +4415,7 @@ msgstr "Szimbólumok legkisebb száma"
 msgid "Minimum uppercase characters"
 msgstr "Nagybetűk legkisebb száma"
 
-#. Resource IDs: (139, 507)
+#. Resource IDs: (139, 1599, 507)
 msgid "Misc."
 msgstr "Vegyes"
 
@@ -4915,7 +4924,7 @@ msgstr "Jelszólejárat időköze"
 msgid "Password Generated based on displayed policy"
 msgstr "Jelszó legenerálva a megjelenített szabály alapján"
 
-#. Resource IDs: (120, 1381, 1382, 140, 5425, 5589)
+#. Resource IDs: (120, 1381, 1382, 140, 1599, 5425, 5589)
 msgid "Password History"
 msgstr "Jelszótörténet"
 
@@ -5690,7 +5699,7 @@ msgstr "A második dátumnak nagyobbnak kell lennie az elsőnél."
 msgid "Second number must be greater than first"
 msgstr "A második számnak nagyobbnak kell lennie az elsőnél."
 
-#. Resource IDs: (142)
+#. Resource IDs: (142, 1599)
 msgid "Security"
 msgstr "Biztonság"
 
@@ -5927,6 +5936,10 @@ msgstr ""
 msgid "Shift+click to view current policy"
 msgstr ""
 
+#. Resource IDs: (1599)
+msgid "Shorcuts"
+msgstr ""
+
 #. Resource IDs: (5686)
 #, c-format
 msgid "Shortcut '%s' already assigned to menu item '%s'."
@@ -5957,7 +5970,7 @@ msgstr ""
 msgid "Shortcut to %s"
 msgstr ""
 
-#. Resource IDs: (452, 509)
+#. Resource IDs: (1599, 452, 509)
 msgid "Shortcuts"
 msgstr ""
 
@@ -6218,7 +6231,7 @@ msgstr ""
 msgid "Synchronizing from database: %s\n"
 msgstr ""
 
-#. Resource IDs: (143, 510)
+#. Resource IDs: (143, 1599, 510)
 msgid "System"
 msgstr ""
 

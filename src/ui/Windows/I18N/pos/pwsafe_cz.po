@@ -1688,7 +1688,7 @@ msgstr "Zálohovací adresář"
 msgid "Backup Name"
 msgstr "Jméno zálohy"
 
-#. Resource IDs: (137, 505)
+#. Resource IDs: (137, 1599, 505)
 msgid "Backups"
 msgstr "Zálohy"
 
@@ -2635,7 +2635,7 @@ msgstr "Disk je plný během přístupu k %1."
 msgid "Dispatch exception: %1"
 msgstr "Vznikla vyjímka: %1"
 
-#. Resource IDs: (138, 506)
+#. Resource IDs: (138, 1599, 506)
 msgid "Display"
 msgstr "Zobraz"
 
@@ -4064,10 +4064,19 @@ msgstr "Neplatné schéma filtru"
 msgid "Invalid Parameter"
 msgstr "Neplatný parametr"
 
+#. Resource IDs: (3462)
+msgid "Invalid field delimiter: must be within ASCII range."
+msgstr ""
+
 #. Resource IDs: (3017)
 #, c-format
 msgid "Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
 msgstr "Neplatný vstup na řádce %d. Počet polí oddělených '%c' není takový, jaký byl očekáván."
+
+#. Resource IDs: (4116)
+#, c-format
+msgid "Invalid lock file \"%ls\"."
+msgstr ""
 
 #. Resource IDs: (5684)
 msgid "Invalid shortcut ignored."
@@ -4406,7 +4415,7 @@ msgstr "Minimum symbolů"
 msgid "Minimum uppercase characters"
 msgstr "Minimum velkých písmen"
 
-#. Resource IDs: (139, 507)
+#. Resource IDs: (139, 1599, 507)
 msgid "Misc."
 msgstr "Různ."
 
@@ -4915,7 +4924,7 @@ msgstr "Interval vypršení hesla"
 msgid "Password Generated based on displayed policy"
 msgstr "Heslo vygenerovano podle zobrazené politiky"
 
-#. Resource IDs: (120, 1381, 1382, 140, 5425, 5589)
+#. Resource IDs: (120, 1381, 1382, 140, 1599, 5425, 5589)
 msgid "Password History"
 msgstr "Historie hesel"
 
@@ -5690,7 +5699,7 @@ msgstr "Druhé datim musí být po prvním"
 msgid "Second number must be greater than first"
 msgstr "Druhé číslo musí být větší než první"
 
-#. Resource IDs: (142)
+#. Resource IDs: (142, 1599)
 msgid "Security"
 msgstr "Bezpečnost"
 
@@ -5927,6 +5936,10 @@ msgstr ""
 msgid "Shift+click to view current policy"
 msgstr "Shift + klik pro zobrazení současné politiky"
 
+#. Resource IDs: (1599)
+msgid "Shorcuts"
+msgstr ""
+
 #. Resource IDs: (5686)
 #, c-format
 msgid "Shortcut '%s' already assigned to menu item '%s'."
@@ -5957,7 +5970,7 @@ msgstr ""
 msgid "Shortcut to %s"
 msgstr ""
 
-#. Resource IDs: (452, 509)
+#. Resource IDs: (1599, 452, 509)
 msgid "Shortcuts"
 msgstr "Zkratky"
 
@@ -6218,7 +6231,7 @@ msgstr "Synchronizuji současnou databázi s:"
 msgid "Synchronizing from database: %s\n"
 msgstr "Synchronizuji z databáze: %s\n"
 
-#. Resource IDs: (143, 510)
+#. Resource IDs: (143, 1599, 510)
 msgid "System"
 msgstr "Systém"
 

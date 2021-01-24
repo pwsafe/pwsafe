@@ -1688,7 +1688,7 @@ msgstr ""
 msgid "Backup Name"
 msgstr "백업본 이름"
 
-#. Resource IDs: (137, 505)
+#. Resource IDs: (137, 1599, 505)
 msgid "Backups"
 msgstr "백업본"
 
@@ -2635,7 +2635,7 @@ msgstr "%1에 접근하는 동안 디스크 용량이 꽉 찼습니다."
 msgid "Dispatch exception: %1"
 msgstr "내보내기 예외 오류: %1"
 
-#. Resource IDs: (138, 506)
+#. Resource IDs: (138, 1599, 506)
 msgid "Display"
 msgstr "표시"
 
@@ -4064,10 +4064,19 @@ msgstr "잘못된 필터 스키마"
 msgid "Invalid Parameter"
 msgstr "잘못된 변수"
 
+#. Resource IDs: (3462)
+msgid "Invalid field delimiter: must be within ASCII range."
+msgstr ""
+
 #. Resource IDs: (3017)
 #, c-format
 msgid "Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
 msgstr "%d 행에서 잘못된 입력값이 있습니다..  Number of fields separated by '%c' is not as expected."
+
+#. Resource IDs: (4116)
+#, c-format
+msgid "Invalid lock file \"%ls\"."
+msgstr ""
 
 #. Resource IDs: (5684)
 msgid "Invalid shortcut ignored."
@@ -4406,7 +4415,7 @@ msgstr ""
 msgid "Minimum uppercase characters"
 msgstr "최소 대문자 개수"
 
-#. Resource IDs: (139, 507)
+#. Resource IDs: (139, 1599, 507)
 msgid "Misc."
 msgstr "기타"
 
@@ -4915,7 +4924,7 @@ msgstr "비밀번호 만료 간격"
 msgid "Password Generated based on displayed policy"
 msgstr "표시된 규칙대로 비밀번호가 생성됨"
 
-#. Resource IDs: (120, 1381, 1382, 140, 5425, 5589)
+#. Resource IDs: (120, 1381, 1382, 140, 1599, 5425, 5589)
 msgid "Password History"
 msgstr "비밀번호 내역"
 
@@ -5690,7 +5699,7 @@ msgstr "두 번째 날짜는 첫 번째 날짜보다 뒤에 있어야 합니다"
 msgid "Second number must be greater than first"
 msgstr ""
 
-#. Resource IDs: (142)
+#. Resource IDs: (142, 1599)
 msgid "Security"
 msgstr "보안"
 
@@ -5927,6 +5936,10 @@ msgstr ""
 msgid "Shift+click to view current policy"
 msgstr "현재 정책을 보시려면 Shift 키를 누르시고 클릭하세요"
 
+#. Resource IDs: (1599)
+msgid "Shorcuts"
+msgstr ""
+
 #. Resource IDs: (5686)
 #, c-format
 msgid "Shortcut '%s' already assigned to menu item '%s'."
@@ -5957,7 +5970,7 @@ msgstr ""
 msgid "Shortcut to %s"
 msgstr ""
 
-#. Resource IDs: (452, 509)
+#. Resource IDs: (1599, 452, 509)
 msgid "Shortcuts"
 msgstr "바로가기"
 
@@ -6218,7 +6231,7 @@ msgstr "현재 데이터베이스와 동기화 할 대상:"
 msgid "Synchronizing from database: %s\n"
 msgstr "데이터베이스로부터 동기화 중: %s\n"
 
-#. Resource IDs: (143, 510)
+#. Resource IDs: (143, 1599, 510)
 msgid "System"
 msgstr "시스템"
 
