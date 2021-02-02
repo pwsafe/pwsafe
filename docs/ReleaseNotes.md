@@ -14,7 +14,7 @@ New features in 3.55
 --------------------
 * Replace the tabs in Manage->Options dialog with a more modern interface.
 * [SF892](https://sourceforge.net/p/passwordsafe/feature-requests/892/) Added tooltip to copy password button in Add/Edit and Password Policy windows.
-* [SF525](https://sourceforge.net/p/passwordsafe/support-requests/525/) Removed limitation on encrytping/decrypting files larger than 2GB.
+* [SF525](https://sourceforge.net/p/passwordsafe/support-requests/525/) Removed limitation on encrypting/decrypting files larger than 2GB.
 
 Bugs fixed in 3.54.01
 ---------------------
