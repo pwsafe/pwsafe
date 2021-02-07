@@ -485,24 +485,20 @@ if (NOT CPACK_PACKAGE_NAME)
 endif ()
 
 #
-# Determine the architecture (amd64, i386) with command 'uname -m'
+# Determine the architecture (amd64, i386, etc.) with command 'dpkg --print-architecture
 #
 if (NOT WIN32)
     if (NOT CPACK_DEBIAN_PACKAGE_ARCHITECTURE)
-      find_program(UNAME_EXECUTABLE uname)
-      mark_as_advanced(UNAME_EXECUTABLE)
+      find_program(DPKG_EXECUTABLE dpkg)
+      mark_as_advanced(DPKG_EXECUTABLE)
 
-      if (NOT UNAME_EXECUTABLE)
-        message(STATUS "Cannot find 'uname' in your path. Set architecture to default i386.")
+      if (NOT DPKG_EXECUTABLE)
+        # if we can't find dpkg, we don't really care, as this variable won't be used in this run.
         set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE i386)
       else ()
-        execute_process(COMMAND "${UNAME_EXECUTABLE}" -m
+        execute_process(COMMAND "${DPKG_EXECUTABLE}" --print-architecture
                         OUTPUT_VARIABLE CPACK_DEBIAN_PACKAGE_ARCHITECTURE
                         OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-        if (CPACK_DEBIAN_PACKAGE_ARCHITECTURE MATCHES "x86_64")
-          set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE amd64)
-        endif ()
       endif ()
     endif ()
 endif (NOT WIN32)
