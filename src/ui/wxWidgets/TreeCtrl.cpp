@@ -1912,16 +1912,16 @@ void TreeCtrl::OnDrag(wxMouseEvent& event)
       
     case wxDragMove:
       pws_os::Trace(L"TreeCtrl::OnDrag Move");
-//#if !defined(__WXMAC__)
+#if !defined(__WXMAC__)
       // mac OS darg and drop only allows Move, as control/command is not handled
-      // Perform copy as default action
-      if(! m_core.IsReadOnly()) {
+      // Perform copy as default action for mac OS
+      if(! ::wxGetKeyState(WXK_CONTROL) && ! m_core.IsReadOnly()) {
         class Command *doit;
         doit = static_cast<PasswordSafeFrame *>(GetParent())->Delete(m_last_dnd_item);
         if (doit != nullptr)
           m_core.Execute(doit);
       }
-//#endif
+#endif
       break;
       
     case wxDragCancel:
