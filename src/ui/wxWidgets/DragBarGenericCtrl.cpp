@@ -26,6 +26,8 @@
 
 #include "DragBarGenericCtrl.h"
 #include "wxUtilities.h"
+#include "PasswordSafeFrame.h"
+#include "TreeCtrl.h"
 ////@end includes
 
 #include <algorithm>
@@ -63,6 +65,14 @@ void DragBarGenericCtrl::OnLeftDown(wxMouseEvent& evt)
   }
 
   wxASSERT(idx >= 0 && size_t(idx) < m_items.size());
+  
+  if(idx == (m_items.size() - 1)) { // Last entry is DnD
+    PasswordSafeFrame *p;
+    p = m_provider->GetBaseFrame();
+    wxASSERT(p && p->m_tree);
+    p->m_tree->OnDrag(evt);
+    return;
+  }
 
   wxString text = m_provider->GetText(m_items[idx].id);
   if (!text.IsEmpty()) {

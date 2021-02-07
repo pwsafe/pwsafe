@@ -334,3 +334,6 @@
 #define IDSC_ATLEASTIGNORED             4115
 
 #define IDSC_INVALIDLOCKER              4116
+
+#define IDSC_DRAGNUMBER                 5411
+#define IDSC_DRAGPOLICY                 5907

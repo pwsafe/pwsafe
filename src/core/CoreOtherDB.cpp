@@ -1084,7 +1084,7 @@ Command *PWScore::ProcessPolicyName(PWScore *pothercore, CItemData &updtEntry,
                                     std::map<StringX, StringX> &mapRenamedPolicies,
                                     std::vector<StringX> &vs_PoliciesAdded,
                                     StringX &sxOtherPolicyName, bool &bUpdated,
-                                    const StringX &sxDateTime, const UINT &IDS_MESSAGE)
+                                    const StringX &sxDateTime, const UINT &ids_message)
 {
   Command *pcmd(nullptr);
 
@@ -1117,7 +1117,7 @@ Command *PWScore::ProcessPolicyName(PWScore *pothercore, CItemData &updtEntry,
       if (st_to_pp != st_from_pp) {
         // But with different values - make new one unique and add
         StringX sxNewPolicyName(sxOtherPolicyName);
-        MakePolicyUnique(mapRenamedPolicies, sxNewPolicyName, sxDateTime, IDS_MESSAGE);
+        MakePolicyUnique(mapRenamedPolicies, sxNewPolicyName, sxDateTime, ids_message);
         pcmd = DBPolicyNamesCommand::Create(this, sxNewPolicyName, st_from_pp);
         bUpdated = true;
         updtEntry.SetPolicyName(sxNewPolicyName);

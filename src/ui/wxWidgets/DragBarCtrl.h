@@ -36,6 +36,8 @@ public:
   //DragBarCtrl::IDragSourceTextProvider override
   virtual wxString GetText(int id) const override;
   virtual bool IsEnabled(int id) const override;
+  
+  virtual PasswordSafeFrame *GetBaseFrame() const override;
 
   DECLARE_CLASS(DragBarCtrl)
 };

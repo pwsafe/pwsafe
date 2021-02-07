@@ -43,6 +43,8 @@
 #include "graphics/dragbar/new/URLX.xpm"
 #include "graphics/dragbar/new/User.xpm"
 #include "graphics/dragbar/new/UserX.xpm"
+#include "graphics/dragbar/new/Dnd.xpm"
+#include "graphics/dragbar/new/DndX.xpm"
 //-- classic bitmaps...
 #include "graphics/dragbar/classic/email.xpm"
 #include "graphics/dragbar/classic/emailx.xpm"
@@ -58,6 +60,8 @@
 #include "graphics/dragbar/classic/URLX.xpm"
 #include "graphics/dragbar/classic/User.xpm"
 #include "graphics/dragbar/classic/UserX.xpm"
+#include "graphics/dragbar/classic/Dnd.xpm"
+#include "graphics/dragbar/classic/DndX.xpm"
 
 ////@end XPM images
 
@@ -85,8 +89,12 @@ struct _DragbarElementInfo {
                         PWS_TOOLINFO(Password,  PASSWORD),
                         PWS_TOOLINFO(Notes,     NOTES),
                         PWS_TOOLINFO(URL,       URL),
-                        PWS_TOOLINFO(Email,     EMAIL)
+                        PWS_TOOLINFO(Email,     EMAIL),
+                        PWS_TOOLINFO(Dnd,       UNKNOWNFIELDS) // Must be last entry
                       };
+
+// Drag and drop tree or item is last element in drag bar
+#define DND_IDX (NumberOf(DragbarElements) - 1)    // Last entry is DnD
 
 DragBarCtrl::DragBarCtrl(PasswordSafeFrame* frame) : DragBarGenericCtrl(frame, this), m_frame(frame)
 {
@@ -103,8 +111,10 @@ void DragBarCtrl::RefreshButtons()
   if (GetToolsCount() == 0) {  //being created?
     for (int idx = 0; size_t(idx) < NumberOf(DragbarElements); ++idx) {
       AddTool(idx + DRAGBAR_TOOLID_BASE, BTN,
+              ((idx == DND_IDX) ?
+                wxString(_("Drag this image onto another window to paste the selected elemtent or tree")) :
                 wxString(_("Drag this image onto another window to paste the '"))
-                        << _(DragbarElements[idx].name) << _("' field."), BTN_DISABLED );
+                        << _(DragbarElements[idx].name) << _("' field.")), BTN_DISABLED );
     }
   }
   else {
@@ -126,6 +136,9 @@ wxString DragBarCtrl::GetText(int id) const
   const int idx = id - DRAGBAR_TOOLID_BASE;
   wxASSERT( idx >= 0 && size_t(idx) < NumberOf(DragbarElements));
 
+  if(idx == DND_IDX)
+    return wxString(wxEmptyString);
+  
   const CItemData *pci(nullptr), *pbci(nullptr);
   pci = m_frame->GetSelectedEntry();
   pbci = m_frame->GetBaseEntry(pci);
@@ -138,10 +151,23 @@ bool DragBarCtrl::IsEnabled(int id) const
 {
   const int idx = id - DRAGBAR_TOOLID_BASE;
   wxASSERT( idx >= 0 && size_t(idx) < NumberOf(DragbarElements));
-
+  
+  if(idx == DND_IDX) {
+#if wxUSE_DRAG_AND_DROP
+    return (m_frame->IsEntryMarked() && PWSprefs::GetInstance()->GetPref(PWSprefs::MultipleInstances)) ? true : false;
+#else
+    return false;
+#endif
+  }
+  
   const CItemData *pci(nullptr), *pbci(nullptr);
   pci = m_frame->GetSelectedEntry();
   pbci = m_frame->GetBaseEntry(pci);
 
   return pci && !pci->IsFieldValueEmpty(DragbarElements[idx].ft, pbci);
+}
+
+PasswordSafeFrame *DragBarCtrl::GetBaseFrame() const
+{
+  return m_frame;
 }

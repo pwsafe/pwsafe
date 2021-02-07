@@ -21,7 +21,7 @@
 #include <wx/treebase.h>
 #include <wx/treectrl.h>
 #include <wx/dragimag.h>
-////@end includes
+#include <wx/dnd.h>
 
 #include "core/ItemData.h"
 #include "core/PWScore.h"
@@ -30,6 +30,10 @@
 
 #include <map>
 
+#include "DnDSupport.h"
+////@end includes
+///
+///
 /*!
  * Forward declarations
  */
@@ -164,6 +168,9 @@ public:
 
   /// wxEVT_TREE_END_DRAG event handler for ID_TREECTRL
   void OnEndDrag(wxTreeEvent& evt);
+  
+  /// when draging is started
+  void OnDrag(wxMouseEvent& event);
 
 ////@end TreeCtrl event handler declarations
 
@@ -211,6 +218,10 @@ public:
   
   void CheckScrollList();
   void CheckCollapseEntry();
+  
+  void SetDndEntry(wxTreeItemId item) { m_last_dnd_item = item; }
+  bool IsReadOnly() { return m_core.IsReadOnly(); }
+  wxDragResult OnDrop(wxCoord x, wxCoord y, wxMemoryBuffer *inDDmem);
 
 private:
   void PreferencesChanged();
@@ -237,9 +248,15 @@ private:
 
   template<typename GroupItemConsumer>
   void TraverseTree(wxTreeItemId itemId, GroupItemConsumer&& consumer);
+  
+  void CollectDnDData(wxMemoryBuffer &outDDmem);
+  void GetGroupEntriesData(DnDObList &dnd_oblist, wxTreeItemId item);
+  void GetEntryData(DnDObList &dnd_oblist, CItemData *pci);
+  bool ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem);
+  void AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, StringX &sxDropPath);
+  void UpdateUUIDinDnDEntries(DnDObList &dnd_oblist, pws_os::CUUID &old_uuid, pws_os::CUUID &new_uuid);
 
 ////@begin TreeCtrl member variables
-////@end TreeCtrl member variables
 
   PWScore &m_core;
   UUIDTIMapT m_item_map; // given a uuid, find the tree item pronto!
@@ -250,6 +267,8 @@ private:
   wxTreeItemId m_drag_item;
   wxColour m_drag_text_colour;
   wxColour m_drag_background_colour;
+  wxTreeItemId m_last_dnd_item;
+  bool m_run_dnd;
 
   TreeCtrlTimer m_collapse_timer;
   wxTreeItemId m_last_mice_item_in_drag_and_drop;
@@ -264,6 +283,7 @@ private:
   long m_style;
   
   bool m_bFilterActive;
+  ////@end TreeCtrl member variables
 };
 
 #endif // _TREECTRL_H_

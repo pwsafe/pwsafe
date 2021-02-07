@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx14.dtd">
 <tmx version="1.4">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.3.0_0_2fd7a9ec" segtype="sentence" srclang="en-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.4.1_0_53601bef" segtype="sentence" srclang="en-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -1108,14 +1108,6 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110621T183737Z">
         <seg>12</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>12345\t\u\t\p\t\n</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110620T114726Z">
-        <seg>12345\t\u\t\p\t\n</seg>
       </tuv>
     </tu>
     <tu>
@@ -9481,9 +9473,9 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>If you do specify command line paramters, do <bpt i="4" x="4">&lt;b4&gt;</bpt>not<ept i="4">&lt;/b4&gt;</ept> enclose them in quotes unless your chosen external editor requires them.</seg>
+        <seg>If you do specify command line parameters, do <bpt i="4" x="4">&lt;b4&gt;</bpt>not<ept i="4">&lt;/b4&gt;</ept> enclose them in quotes unless your chosen external editor requires them.</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20170814T222614Z" creationid="pm_kan" creationdate="20170814T222606Z">
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210131T173059Z" creationid="pm_kan" creationdate="20210131T173059Z">
         <seg>При указании параметров <bpt i="4" x="4">&lt;b4&gt;</bpt>не<ept i="4">&lt;/b4&gt;</ept> заключайте значения в кавычки, если это не требуется для выбранного редактора.</seg>
       </tuv>
     </tu>
@@ -17035,9 +17027,9 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>Therefore, if they are ommited during rename, they will retain their previous values.</seg>
+        <seg>Therefore, if they are omitted during rename, they will retain their previous values.</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20170326T184214Z" creationid="pm_kan" creationdate="20170326T184214Z">
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210131T173119Z" creationid="pm_kan" creationdate="20210131T173119Z">
         <seg>Но, если их не указать при переименовании, будут использоваться их предыдущие значения.</seg>
       </tuv>
     </tu>
@@ -17179,9 +17171,9 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>They work in a hierachy i.e. passwords can only be displayed if usernames are displayed.</seg>
+        <seg>They work in a hierarchy i.e. passwords can only be displayed if usernames are displayed.</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20170326T183854Z" creationid="pm_kan" creationdate="20170326T183854Z">
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210131T173111Z" creationid="pm_kan" creationdate="20210131T173111Z">
         <seg>Параметры отображения являются зависимыми: включить отображение паролей можно только когда выводятся имена пользователей.</seg>
       </tuv>
     </tu>
@@ -20577,14 +20569,6 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110620T200104Z">
         <seg>\t</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>\t\s\u\t\p\n</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20161105T155924Z" creationid="pm_kan" creationdate="20161105T155924Z">
-        <seg>\t\s\u\t\p\n</seg>
       </tuv>
     </tu>
     <tu>

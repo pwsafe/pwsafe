@@ -279,7 +279,7 @@ void PWScore::DoAddEntry(const CItemData &item, const CItemAtt *att)
     VERIFY(AddKBShortcut(iKBShortcut, item.GetUUID()));
 }
 
-bool PWScore::ConfirmDelete(const CItemData *pci)
+bool PWScore::ConfirmDelete(const CItemData *pci, StringX sxGroup)
 {
   ASSERT(pci != nullptr);
   if (pci->IsBase() && m_pAsker != nullptr) {
@@ -296,6 +296,25 @@ bool PWScore::ConfirmDelete(const CItemData *pci)
 
     size_t num_dependents = dependentslist.size();
     ASSERT(num_dependents > 0); // otherwise pci shouldn't be a base!
+      // Check if depending entry are located beneath group to be deleted, those must be not taken into account
+    if (!sxGroup.empty()) {
+      UUIDVectorIter iter;
+      size_t length = sxGroup.length(); // plus 1 to include trailling 0 byte
+      for (iter = dependentslist.begin(); iter != dependentslist.end(); ++iter) {
+        ItemListIter objiter = Find(*iter);
+        if (objiter != m_pwlist.end()) {
+          StringX iterGroup = objiter->second.GetGroup();
+          if(iterGroup.length() > length)
+            iterGroup = iterGroup.substr(0, length);
+          if (!CompareCase(iterGroup, sxGroup)) {
+            // Same group as object to be deleted, so we must not take care on that item
+            dependentslist.erase(iter);
+            --iter; // at the end of the loop ++iter will reallocate to the same position
+            --num_dependents;
+          }
+        }
+      }
+    }
     if (num_dependents > 0) {
       StringX sxDependents;
       SortDependents(dependentslist, sxDependents);
@@ -1891,7 +1910,7 @@ private:
 
 void PWScore::MakePolicyUnique(std::map<StringX, StringX> &mapRenamedPolicies,
                                StringX &sxPolicyName, const StringX &sxDateTime,
-                               const UINT IDS_MESSAGE)
+                               const UINT ids_message)
 {
   // 'mapRenamedPolicies' contains those policies already renamed. It will be
   // updated with any new name generated.
@@ -1908,7 +1927,7 @@ void PWScore::MakePolicyUnique(std::map<StringX, StringX> &mapRenamedPolicies,
   }
 
   StringX sxNewPolicyName;
-  Format(sxNewPolicyName, IDS_MESSAGE, sxPolicyName.c_str(), sxDateTime.c_str());
+  Format(sxNewPolicyName, ids_message, sxPolicyName.c_str(), sxDateTime.c_str());
 
   // Verify new policy name not already in this database
   if (m_MapPSWDPLC.find(sxNewPolicyName) != m_MapPSWDPLC.end())
@@ -2508,7 +2527,7 @@ bool PWScore::ValidateKBShortcut(int32 &iKBShortcut)
 }
 
 StringX PWScore::GetUniqueTitle(const StringX &group, const StringX &title,
-                                const StringX &user, const int IDS_MESSAGE)
+                                const StringX &user, const int ids_messsage)
 {
   StringX new_title(title);
   if (Find(group, title, user) != m_pwlist.end()) {
@@ -2518,7 +2537,7 @@ StringX PWScore::GetUniqueTitle(const StringX &group, const StringX &title,
     StringX s_copy;
     do {
       i++;
-      Format(s_copy, IDS_MESSAGE, i);
+      Format(s_copy, ids_messsage, i);
       new_title = title + s_copy;
       listpos = Find(group, new_title, user);
     } while (listpos != m_pwlist.end());
@@ -2592,7 +2611,7 @@ bool PWScore::InitialiseUUID(UUIDSet &setUUID)
 
 bool PWScore::MakeEntryUnique(GTUSet &setGTU,
                               const StringX &sxgroup, StringX &sxtitle,
-                              const StringX &sxuser, const int IDS_MESSAGE)
+                              const StringX &sxuser, const int ids_message)
 {
   StringX sxnewtitle(_T(""));
   GTUSetPair pr_gtu;
@@ -2607,7 +2626,7 @@ bool PWScore::MakeEntryUnique(GTUSet &setGTU,
     StringX s_copy;
     do {
       i++;
-      Format(s_copy, IDS_MESSAGE, i);
+      Format(s_copy, ids_message, i);
       sxnewtitle = sxtitle + s_copy;
       pr_gtu =  setGTU.insert(st_GroupTitleUser(sxgroup, sxnewtitle, sxuser));
     } while (!pr_gtu.second);

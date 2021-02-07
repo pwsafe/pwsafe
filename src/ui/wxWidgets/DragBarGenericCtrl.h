@@ -22,6 +22,8 @@
 #include <wx/control.h> // Base class: wxToolBar
 #include <wx/vector.h>
 
+class PasswordSafeFrame;
+
 struct DragBarItem {
   int id;
   wxBitmap bmp;
@@ -46,6 +48,7 @@ public:
     virtual wxString GetText(int id) const = 0;
     virtual bool IsEnabled(int id) const = 0;
     virtual ~IDragSourceTextProvider() {}
+    virtual PasswordSafeFrame *GetBaseFrame() const = 0;
   };
 
   DragBarGenericCtrl(wxFrame* parent, IDragSourceTextProvider* provider, wxOrientation orient = wxHORIZONTAL);

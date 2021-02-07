@@ -1163,6 +1163,17 @@ void PasswordSafeFrame::ClearAppData()
   ResetFilters();
 }
 
+bool PasswordSafeFrame::IsEntryMarked()
+{
+  if (m_tree->IsShown()) {
+    wxTreeItemId item = m_tree->GetSelection();
+    if(item == m_tree->GetRootItem()) return false;
+    m_tree->SetDndEntry(item); // Mark DnD Item
+    return item.IsOk() ? true : false;
+  }
+  return false;
+}
+
 CItemData *PasswordSafeFrame::GetSelectedEntry() const
 {
   if (m_tree->IsShown()) {
@@ -2570,7 +2581,6 @@ void PasswordSafeFrame::ChangeFontPreference(const PWSprefs::StringPrefs fontPre
     PWSprefs::GetInstance()->SetPref(fontPreference, tostringx(newFont.GetNativeFontInfoDesc()));
   }
 }
-
 
 void PasswordSafeFrame::SetFilterFindEntries(UUIDVector *pvFoundUUIDs)
 {
