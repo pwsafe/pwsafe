@@ -50,7 +50,7 @@ class TreeCtrl;
 // A wxDataObject specialisation for the pwsafe-specific data
 // ----------------------------------------------------------------------------
 #ifndef wxOVERRIDE
-#define wxOVERRIDE
+#define wxOVERRIDE override
 #endif
 
 class DnDPWSafeObject : public wxDataObjectSimple

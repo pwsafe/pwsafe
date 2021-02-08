@@ -153,7 +153,7 @@ bool DragBarCtrl::IsEnabled(int id) const
   wxASSERT( idx >= 0 && size_t(idx) < NumberOf(DragbarElements));
   
   if(idx == DND_IDX) {
-#if wxUSE_DRAG_AND_DROP
+#if wxUSE_DRAG_AND_DROP && (wxVERSION_NUMBER != 3104) // 3.1.4 is crashing in Drop, use 3.1.5 instead
     return (m_frame->IsEntryMarked() && PWSprefs::GetInstance()->GetPref(PWSprefs::MultipleInstances)) ? true : false;
 #else
     return false;

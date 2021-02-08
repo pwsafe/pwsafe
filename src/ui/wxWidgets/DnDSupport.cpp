@@ -69,7 +69,11 @@ void DnDObject::DnDUnSerializeEntry(wxMemoryInputStream &inDDmem)
   vector<char> v(len);
   inDDmem.Read(&(*v.begin()), len);
   wxASSERT(inDDmem.LastRead() == len);
-  wxASSERT(m_item.DeSerializePlainText(v));
+#if wxDEBUG_LEVEL
+  bool result =
+#endif
+    m_item.DeSerializePlainText(v);
+  wxASSERT(result);
   trashMemory(&(*v.begin()), v.size());
 }
 
