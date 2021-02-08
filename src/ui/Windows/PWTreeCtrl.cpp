@@ -2087,7 +2087,7 @@ bool CPWTreeCtrlX::ProcessData(BYTE *in_buffer, const long &inLen,
   inDDmemfile.Attach((BYTE *)in_buffer, inLen);
 
   // Get all the entries
-  in_oblist.DD/ialize(inDDmemfile);
+  in_oblist.DDUnSerialize(inDDmemfile);
 
   // Now check if empty group list is appended to the item data
   // Empty groups have a dummy header of 'egrp' to check it is ours
