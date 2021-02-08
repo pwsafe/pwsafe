@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-16 17:16+0100\n"
+"POT-Creation-Date: 2021-02-07 19:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -231,7 +231,7 @@ msgstr "Datoer og Tider"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:348
 #: ../../../ui/wxWidgets/HelpMap.h:41 ../../../ui/wxWidgets/HelpMap.h:49
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.h:69 ../../../core/core_st.cpp:139
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.h:69 ../../../core/core_st.cpp:141
 msgid "Password Policy"
 msgstr "Adgangskode Politik"
 
@@ -245,7 +245,7 @@ msgid "Set Date/Time"
 msgstr "Sæt Dato/Tid"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:370
-#: ../../../ui/wxWidgets/ToolbarButtons.h:203 ../../../core/core_st.cpp:135
+#: ../../../ui/wxWidgets/ToolbarButtons.h:203 ../../../core/core_st.cpp:137
 msgid "Password"
 msgstr "Adgangskode"
 
@@ -529,14 +529,14 @@ msgstr "Brug STORE bogstaver"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:747
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:281
-#: ../../../core/core_st.cpp:258
+#: ../../../core/core_st.cpp:260
 #, fuzzy
 msgid "Use digits"
 msgstr "Brug Tal"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:771
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:305
-#: ../../../core/core_st.cpp:260
+#: ../../../core/core_st.cpp:262
 #, fuzzy
 msgid "Use symbols"
 msgstr "Standart Brugernavn"
@@ -572,7 +572,7 @@ msgstr "Generer Udtalbare adgangskoder"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:815
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:350
-#: ../../../core/core_st.cpp:251
+#: ../../../core/core_st.cpp:253
 msgid "Or"
 msgstr "Eller"
 
@@ -676,7 +676,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:160
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:173
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:192
-#: ../../../ui/wxWidgets/PropertiesDlg.cpp:202 ../../../core/core_st.cpp:299
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:202 ../../../core/core_st.cpp:301
 msgid "Unknown"
 msgstr "Ukendt"
 
@@ -815,7 +815,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:367
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1541
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1552
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:298
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:302
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:306
@@ -834,7 +834,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:249
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:277
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:316
-#: ../../../core/core_st.cpp:272
+#: ../../../core/core_st.cpp:274
 msgid "Error"
 msgstr "Fejl"
 
@@ -1196,7 +1196,7 @@ msgid "The entry cannot be blank."
 msgstr "Kodefeltet kan ikke være tomt."
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:70
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1192
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1203
 #, fuzzy
 msgid ""
 "Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|"
@@ -1243,7 +1243,7 @@ msgid "File or path not found."
 msgstr "Fil eller sti ikke fundet."
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:151
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1212
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1223
 msgid "That file is already open."
 msgstr "Den fil er allerede åben."
 
@@ -1276,39 +1276,45 @@ msgstr "&Ja"
 msgid "&No"
 msgstr "&Nej"
 
-#: ../../../ui/wxWidgets/DragBarCtrl.cpp:106
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:115
+#, fuzzy
+msgid ""
+"Drag this image onto another window to paste the selected elemtent or tree"
+msgstr "Træk dette billede over i et andet vindue for at indsætte '"
+
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:116
 #, fuzzy
 msgid "Drag this image onto another window to paste the '"
 msgstr "Træk dette billede over i et andet vindue for at indsætte '"
 
-#: ../../../ui/wxWidgets/DragBarCtrl.cpp:107
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:117
 #, fuzzy
 msgid "' field."
 msgstr "Felt."
 
-#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:73
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:83
 msgid "Error dragging"
 msgstr ""
 
-#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:76
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:86
 msgid "Nothing happened dragging"
 msgstr ""
 
-#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:79
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:89
 #, fuzzy
 msgid "Copied successfully"
 msgstr "Fuldført succesfuldt"
 
-#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:82
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:92
 #, fuzzy
 msgid "Moved successfully"
 msgstr "Fuldført succesfuldt"
 
-#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:85
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:95
 msgid "Dragging cancelled"
 msgstr ""
 
-#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:88
+#: ../../../ui/wxWidgets/DragBarGenericCtrl.cpp:98
 #, fuzzy
 msgid "Unexpected result dragging"
 msgstr "Uventet undtagelse under analysering."
@@ -1415,7 +1421,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/GridCtrl.cpp:164
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:292
-#: ../../../core/core_st.cpp:145
+#: ../../../core/core_st.cpp:147
 msgid "Title"
 msgstr "Titel"
 
@@ -1639,7 +1645,7 @@ msgid "Value"
 msgstr "Værdi:"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:291
-#: ../../../core/core_st.cpp:131
+#: ../../../core/core_st.cpp:133
 msgid "Group"
 msgstr "Gruppe"
 
@@ -1659,56 +1665,56 @@ msgstr ""
 msgid "Not used"
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:286
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1608
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:297
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1622
 #, fuzzy
 msgid " Copy # "
 msgstr "Kopier # %d"
 
-#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:527
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:538
 msgid ""
 "There is no view available for attachments that are not of image media "
 "type.\n"
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:528
-#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:544
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:539
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:555
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:609
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1675
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1686
 #: ../../../ui/wxWidgets/ViewAttachmentDlg.cpp:37
 #: ../../../ui/wxWidgets/ViewAttachmentDlg.cpp:71
 #, fuzzy
 msgid "View Attachment"
 msgstr "Antal af Poster:"
 
-#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:543
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:554
 msgid "No preview available due to an error."
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:676
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:687
 msgid "There was an error autotyping.  "
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:676
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:687
 #, fuzzy
 msgid "Autotype error"
 msgstr "Autoindsæt"
 
-#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:696
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:707
 msgid ""
 "Error switching to another application before autotyping. Switch manually "
 "within 5 seconds"
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:867
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:878
 msgid "Unable to send email"
 msgstr "Ude af stand til at sende email"
 
-#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:867
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:878
 msgid "Unable to display URL"
 msgstr "Ude af stand til at  vise URL"
 
-#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:968
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:979
 #, c-format
 msgid ""
 "Error at column %d:\n"
@@ -1719,7 +1725,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:969
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:980
 msgid "Error parsing Run Command"
 msgstr "Fejl ved analyse af Kør Kommando"
 
@@ -2101,7 +2107,7 @@ msgstr "Vil du erstatte den?"
 msgid "Import XML failed"
 msgstr "Importer XML fejlede"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:977 ../../../core/core_st.cpp:236
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:977 ../../../core/core_st.cpp:238
 #, fuzzy, c-format
 msgid ""
 "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application "
@@ -2197,7 +2203,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1182
 #: ../../../ui/wxWidgets/SyncWizard.cpp:587
 #: ../../../ui/wxWidgets/SyncWizard.cpp:730
-#: ../../../ui/wxWidgets/SyncWizard.cpp:747 ../../../core/core_st.cpp:93
+#: ../../../ui/wxWidgets/SyncWizard.cpp:747 ../../../core/core_st.cpp:95
 msgid "entry"
 msgstr "post"
 
@@ -2206,7 +2212,7 @@ msgstr "post"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1182
 #: ../../../ui/wxWidgets/SyncWizard.cpp:587
 #: ../../../ui/wxWidgets/SyncWizard.cpp:730
-#: ../../../ui/wxWidgets/SyncWizard.cpp:747 ../../../core/core_st.cpp:91
+#: ../../../ui/wxWidgets/SyncWizard.cpp:747 ../../../core/core_st.cpp:93
 msgid "entries"
 msgstr "poster"
 
@@ -2372,7 +2378,7 @@ msgid "Please select a valid file"
 msgstr "Vælg venligst den rapport du vil se."
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:123
-#: ../../../ui/wxWidgets/PropertiesDlg.cpp:245 ../../../core/core_st.cpp:247
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:245 ../../../core/core_st.cpp:249
 msgid "None"
 msgstr "Ingen"
 
@@ -2428,7 +2434,7 @@ msgid "Browse to URL + Autotype"
 msgstr "Gennemse efter URL + Autoindsæt"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:140
-#: ../../../core/core_st.cpp:69 ../../../core/core_st.cpp:142
+#: ../../../core/core_st.cpp:69 ../../../core/core_st.cpp:144
 msgid "Run Command"
 msgstr "Kør Kommando"
 
@@ -3067,7 +3073,7 @@ msgid "&Duplicate Entry\tCtrl+D"
 msgstr "&Dupliker Adgang"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:592
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1678
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1689
 #, fuzzy
 msgid "Protect Entry"
 msgstr ""
@@ -3114,7 +3120,7 @@ msgid "Perform Auto&type\tCtrl+T"
 msgstr "Udfør Auto &Indsæt"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:606
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1628
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1639
 msgid "Create &Shortcut"
 msgstr "Opret &Genvej"
 
@@ -3335,212 +3341,212 @@ msgstr "&Om Password Safe..."
 msgid "Select Language"
 msgstr "Vælg alle poster"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1212
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1223
 msgid "Open database"
 msgstr "Åben databasen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1539
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1550
 #, fuzzy, c-format
 msgid "Unknown code: %d"
 msgstr "Ukendte felter"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1580
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1596
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1591
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1607
 msgid "Add &Entry"
 msgstr "Tilføj &Post"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1583
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1594
 msgid "Add &Group"
 msgstr "Tilføj &Gruppe"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1586
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1597
 #, fuzzy
 msgid "&Rename Group"
 msgstr "&Omdøb Gruppe"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1587
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1598
 msgid "&Delete Group"
 msgstr "&Slet Gruppe"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1603
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1614
 #, fuzzy
 msgid "Copy &Username to Clipboard"
 msgstr "Kopier &Brugernavn til klipbord"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1604
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1615
 #, fuzzy
 msgid "&Copy Password to Clipboard"
 msgstr "&Kopier Adgangskode til Klipbord"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1605
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1616
 msgid "Display subset of Password"
 msgstr "Vis delmængde af Adgangskode"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1607
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1618
 msgid "Display Password as &QR code"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1609
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1620
 #, fuzzy
 msgid "Copy &Notes to Clipboard"
 msgstr "Kopier &Notater til Klipbord"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1610
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1621
 msgid "Copy UR&L to Clipboard"
 msgstr "Kopier UR&L til Klipbord"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1611
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1622
 msgid "Copy email to Clipboard"
 msgstr "Kopier email til Klipbord"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1612
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1623
 msgid "Copy Run Command to Clipboard"
 msgstr "Kopier Kør Kommando til Klipbord"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1614
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1625
 #: ../../../ui/wxWidgets/SystemTray.cpp:205
 #, fuzzy
 msgid "&Browse to URL"
 msgstr "&Gennemse efter URL"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1615
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1626
 #: ../../../ui/wxWidgets/SystemTray.cpp:206
 msgid "Browse to URL + &Autotype"
 msgstr "Gennemse efter URL + &Autoindsæt"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1616
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1627
 msgid "Send &email"
 msgstr "Send &email"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1617
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1628
 #: ../../../ui/wxWidgets/SystemTray.cpp:213
 msgid "&Run Command"
 msgstr "&Kør Kommando"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1618
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1629
 msgid "Perform Auto &Type"
 msgstr "Udfør Auto &Indsæt"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1621
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1632
 #, fuzzy
 msgid "&View Entry..."
 msgstr "Se Adgang"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1624
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1635
 #, fuzzy
 msgid "Edit Entry..."
 msgstr "Rediger Post"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1626
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1637
 #, fuzzy
 msgid "&Duplicate Entry"
 msgstr "&Dupliker post"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1627
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1638
 msgid "Delete Entry"
 msgstr "Slet Post"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1669
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1680
 #, fuzzy
 msgid "Goto &Shortcuts..."
 msgstr "Genveje"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1672
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1683
 #, fuzzy
 msgid "&Go to Base entry"
 msgstr "&Gå til Basis adgang"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1673
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1684
 msgid "&Edit Base entry"
 msgstr "&Rediger Basis adgang"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2152
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2163
 #, fuzzy
 msgid "Could not re-load database: "
 msgstr "Poster kun i nuværende database: "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2153
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2164
 msgid "Error re-loading last database"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2400
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2411
 msgid "There was an error loading the database: "
 msgstr ""
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2401
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2412
 #, fuzzy
 msgid "Could not load database"
 msgstr "Åben en Anden Database"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2463
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2474
 msgid "Group copied "
 msgstr "Gruppe kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2466
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2477
 msgid "Title copied "
 msgstr "Titel kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2469
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2480
 msgid "User copied "
 msgstr "Bruger kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2472
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2483
 msgid "Pswd copied "
 msgstr "Adkod kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2475
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2486
 msgid "Notes copied "
 msgstr "Notater kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2478
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2489
 #, fuzzy
 msgid "URL copied "
 msgstr "Bruger kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2481
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2492
 msgid "Autotype copied "
 msgstr "Autoindsæt kopieret"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2484
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2495
 msgid "RunCmd copied "
 msgstr "KørCmd kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2487
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2498
 #, fuzzy
 msgid "Email copied "
 msgstr "email kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2490
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2501
 #, fuzzy
 msgid "Password History copied "
 msgstr "Adgangskode Historik Filter"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2493
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2504
 #, fuzzy
 msgid "Old Pswd copied "
 msgstr "Adkod kopieret "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2532
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2543
 #, fuzzy
 msgid "Select Tree/List display font"
 msgstr "Sæt Træ/Liste skrift"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2549
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2560
 #, fuzzy
 msgid "Select Add/Edit display font"
 msgstr "Sæt Træ/Liste skrift"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2553
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2564
 #, fuzzy
 msgid "Select Password display font"
 msgstr "Sæt Adgangskode skrift"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2557
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2568
 #, fuzzy
 msgid "Select Notes display font"
 msgstr "Sæt Træ/Liste skrift"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2561
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2572
 #, fuzzy
 msgid "Select Virtual Keyboard font"
 msgstr "Sæt Virtuelt Tastatur skrift"
@@ -3671,20 +3677,20 @@ msgstr "vurdering"
 msgid " empty)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PropertiesDlg.cpp:182 ../../../core/core_st.cpp:304
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:182 ../../../core/core_st.cpp:306
 #, fuzzy, c-format
 msgid "%ls on %ls"
 msgstr "%ls på %ls"
 
-#: ../../../ui/wxWidgets/PropertiesDlg.cpp:232 ../../../core/core_st.cpp:339
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:232 ../../../core/core_st.cpp:341
 msgid "Yes"
 msgstr "Ja"
 
-#: ../../../ui/wxWidgets/PropertiesDlg.cpp:232 ../../../core/core_st.cpp:242
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:232 ../../../core/core_st.cpp:244
 msgid "No"
 msgstr "Ingen"
 
-#: ../../../ui/wxWidgets/PropertiesDlg.cpp:234 ../../../core/core_st.cpp:300
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:234 ../../../core/core_st.cpp:302
 #, fuzzy, c-format
 msgid "In Headers(%ls)/In Entries("
 msgstr "I Overskrifter(%ls)/I Adgange("
@@ -3869,7 +3875,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:440
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:269
-#: ../../../core/core_st.cpp:274
+#: ../../../core/core_st.cpp:276
 msgid "Warning"
 msgstr "Advarsel"
 
@@ -3943,7 +3949,7 @@ msgstr "Indsæt venligst nøglen og bekræft den."
 msgid "Please try another"
 msgstr "Prøv venligst en anden"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:37 ../../../core/core_st.cpp:94
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:37 ../../../core/core_st.cpp:96
 msgid "equals"
 msgstr "lige store"
 
@@ -3959,7 +3965,7 @@ msgstr "begynder med"
 msgid "does not begin with"
 msgstr "begynder ikke med"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:41 ../../../core/core_st.cpp:88
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:41 ../../../core/core_st.cpp:90
 msgid "ends with"
 msgstr "ender med"
 
@@ -4175,15 +4181,15 @@ msgstr "Synkroniserer fra database: %ls\n"
 msgid "synchronized"
 msgstr ""
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:731 ../../../core/core_st.cpp:320
+#: ../../../ui/wxWidgets/SyncWizard.cpp:731 ../../../core/core_st.cpp:322
 msgid "was"
 msgstr "var"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:731 ../../../core/core_st.cpp:321
+#: ../../../ui/wxWidgets/SyncWizard.cpp:731 ../../../core/core_st.cpp:323
 msgid "were"
 msgstr "blev"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:732 ../../../core/core_st.cpp:296
+#: ../../../ui/wxWidgets/SyncWizard.cpp:732 ../../../core/core_st.cpp:298
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -4192,7 +4198,7 @@ msgstr ""
 "\n"
 "De følgende %ls %ls er opdateret:"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:748 ../../../core/core_st.cpp:295
+#: ../../../ui/wxWidgets/SyncWizard.cpp:748 ../../../core/core_st.cpp:297
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -4297,61 +4303,117 @@ msgstr "&Send email"
 msgid "&Delete from Recent Entry List"
 msgstr "&Slet fra Seneste Post Liste"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:918
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:920
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:932
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:934
 msgid "New Group"
 msgstr "Ny Gruppe"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:920
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:934
 msgid "\""
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:920
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:934
 msgid "\" "
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:920
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:934
 msgid "name exists"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:920
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:966
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1403
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:934
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:980
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1417
 msgid "Double group name"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:924
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:938
 msgid "Could not add empty group item to tree"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:937
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:951
 msgid "Renaming of non-Group items is not implemented"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:966
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:980
 msgid "Same group name exists"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:980
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:994
 msgid "Dots are not allowed in group names"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:980
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:994
 #, fuzzy
 msgid "Invalid Character"
 msgstr "Ugyldig Parameter"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1350
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1364
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2480
 msgid "Destination cannot be inside source tree"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1350
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1364
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2329
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2336
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2353
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2480
 msgid "Drag and Drop failed"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1403
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1417
 msgid "Duplicate group name (use Shift to overrule)"
 msgstr ""
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2325
+#, c-format
+msgid ""
+"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"\n"
+"The dropped entry now references that entry's base entry."
+msgstr ""
+"Mistet post '%s:%s:%s' adgangskode Peger på en post der også er et alias.\n"
+"\n"
+"Den mistede post henviser nu til den posts basis post."
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2332
+#, fuzzy, c-format
+msgid "This alias's target [%s:%s:%s] is not a normal entry."
+msgstr ""
+"Dette alias' mål [%s:%s:%s] er ikke en normal post eller allerede en alias "
+"basis."
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2349
+#, fuzzy, c-format
+msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
+msgstr ""
+"Denne genvejs mål [%s:%s:%s] er ikke en normal post elller allerede en basis "
+"genvej."
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2431 ../../../core/core_st.cpp:94
+#, c-format
+msgid ""
+"The following entries had a policy name that already existed in this "
+"database but with different settings.\n"
+"A new named policy has been created with the current date/time (%ls) "
+"appended:%ls"
+msgstr ""
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2434
+#, fuzzy
+msgid "Entry Password Policy Changes"
+msgstr "Sæt Post Adgangskode Politik"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2441
+#, c-format
+msgid ""
+"The following alias or shortcut entries did not match to a base entry and "
+"had been converted to normal entries:%ls"
+msgstr ""
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2443
+#, fuzzy
+msgid "Entry Type Changed"
+msgstr "Post type"
 
 #: ../../../ui/wxWidgets/ViewReportDlg.cpp:30
 msgid "View Report"
@@ -4564,7 +4626,7 @@ msgstr "Gem Databasen"
 msgid "Copy Password to Clipboard"
 msgstr "Kopier Adgangskode til Klipbord"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:204 ../../../core/core_st.cpp:147
+#: ../../../ui/wxWidgets/ToolbarButtons.h:204 ../../../core/core_st.cpp:149
 #, fuzzy
 msgid "Username"
 msgstr "Brugernavn:"
@@ -4574,7 +4636,7 @@ msgstr "Brugernavn:"
 msgid "Copy Username to Clipboard"
 msgstr "Kopier Brugernavn til Klipbord"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:205 ../../../core/core_st.cpp:134
+#: ../../../ui/wxWidgets/ToolbarButtons.h:205 ../../../core/core_st.cpp:136
 #, fuzzy
 msgid "Notes"
 msgstr "Notater:"
@@ -4892,20 +4954,30 @@ msgstr "indeholder ikke"
 
 #: ../../../core/core_st.cpp:84
 #, c-format
+msgid " Drag # %d"
+msgstr "Træk # %d"
+
+#: ../../../core/core_st.cpp:85
+#, c-format
+msgid "%s - Drag & Drop %s"
+msgstr ""
+
+#: ../../../core/core_st.cpp:86
+#, c-format
 msgid " Duplicate # %d"
 msgstr "Dupliker # %d"
 
-#: ../../../core/core_st.cpp:85
+#: ../../../core/core_st.cpp:87
 #, fuzzy
 msgid "empty group"
 msgstr "Importer under Gruppe?"
 
-#: ../../../core/core_st.cpp:86
+#: ../../../core/core_st.cpp:88
 #, fuzzy
 msgid "empty groups"
 msgstr "#grupper"
 
-#: ../../../core/core_st.cpp:87
+#: ../../../core/core_st.cpp:89
 #, fuzzy, c-format
 msgid ""
 "Trouble with a non-textual (e.g., time) field in record '%ls' - please check "
@@ -4914,137 +4986,128 @@ msgstr ""
 "Problem med et ikke-tekst-ordret (f.eks., tid) felt i posten '%ls' - tjek "
 "venligst data omhyggeligt."
 
-#: ../../../core/core_st.cpp:89
+#: ../../../core/core_st.cpp:91
 msgid "End Report"
 msgstr "Slut På Rapport"
 
-#: ../../../core/core_st.cpp:90
+#: ../../../core/core_st.cpp:92
 msgid "--------------------------------------------------------------------------------"
 msgstr "--------------------------------------------------------------------------------..."
 
-#: ../../../core/core_st.cpp:92
-#, c-format
-msgid ""
-"The following entries had a policy name that already existed in this "
-"database but with different settings.\n"
-"A new named policy has been created with the current date/time (%ls) "
-"appended:%ls"
-msgstr ""
-
-#: ../../../core/core_st.cpp:95
+#: ../../../core/core_st.cpp:97
 msgid "has expired"
 msgstr "er udløbet"
 
-#: ../../../core/core_st.cpp:96
+#: ../../../core/core_st.cpp:98
 msgid "Entries with a password expiry"
 msgstr ""
 
-#: ../../../core/core_st.cpp:97
+#: ../../../core/core_st.cpp:99
 #, c-format
 msgid "within %d day(s)"
 msgstr "indenfor%d dag(e)"
 
-#: ../../../core/core_st.cpp:98
+#: ../../../core/core_st.cpp:100
 #, fuzzy, c-format
 msgid "DB Export from database: '%s'"
 msgstr "Fletter databasen: "
 
-#: ../../../core/core_st.cpp:99
+#: ../../../core/core_st.cpp:101
 msgid "First character of variable name must be alphabetic"
 msgstr "Første tegn i variable navne skal være alfabetisk"
 
-#: ../../../core/core_st.cpp:100
+#: ../../../core/core_st.cpp:102
 msgid "Index not numeric"
 msgstr "Indeks er ikke tal"
 
-#: ../../../core/core_st.cpp:101
+#: ../../../core/core_st.cpp:103
 msgid "Input string is empty"
 msgstr "Indlæste streng er tom"
 
-#: ../../../core/core_st.cpp:102
+#: ../../../core/core_st.cpp:104
 msgid "Characters present between end of index ']' and '}'"
 msgstr "Nuværende tegn mellen enden af index ']' og '}'"
 
-#: ../../../core/core_st.cpp:103
+#: ../../../core/core_st.cpp:105
 msgid "Index is invalid or missing"
 msgstr "indekset er ugyldig eller mangler"
 
-#: ../../../core/core_st.cpp:104
+#: ../../../core/core_st.cpp:106
 msgid "Missing ending curly bracket for variable name"
 msgstr "Manglende krøllet slut klamme for variable navne"
 
-#: ../../../core/core_st.cpp:105
+#: ../../../core/core_st.cpp:107
 msgid "Missing ending round bracket for Autotype value"
 msgstr "Manglende rund slut klamme ending for Autoindsæt værdi"
 
-#: ../../../core/core_st.cpp:106
+#: ../../../core/core_st.cpp:108
 msgid "Missing ending square bracket for index value"
 msgstr "Manglende slut kasse klamme for index værdi"
 
-#: ../../../core/core_st.cpp:107
+#: ../../../core/core_st.cpp:109
 msgid "There are unmatched quotes in the run command"
 msgstr "Der er uforlignelig anførelsestegn i kør kommandoen"
 
-#: ../../../core/core_st.cpp:108
+#: ../../../core/core_st.cpp:110
 msgid "Variable name is empty"
 msgstr "Variabel navn er tom"
 
-#: ../../../core/core_st.cpp:109
+#: ../../../core/core_st.cpp:111
 msgid "Variable name must be alphanumeric"
 msgstr "Variabel navn skal være alphanumerisk"
 
-#: ../../../core/core_st.cpp:110
+#: ../../../core/core_st.cpp:112
 msgid "an alias entry"
 msgstr "en alias post"
 
-#: ../../../core/core_st.cpp:111
+#: ../../../core/core_st.cpp:113
 msgid "a base entry of an alias"
 msgstr "en basis post af et alias"
 
-#: ../../../core/core_st.cpp:112
+#: ../../../core/core_st.cpp:114
 msgid "  Field is too long."
 msgstr "Feltet er for langt."
 
-#: ../../../core/core_st.cpp:113
+#: ../../../core/core_st.cpp:115
 msgid "  Field is too short."
 msgstr "Feltet er for kort."
 
-#: ../../../core/core_st.cpp:114
+#: ../../../core/core_st.cpp:116
 msgid "Error: A file with this name already exists"
 msgstr "Fejl: En fil med dette navn eksisterer allerede"
 
-#: ../../../core/core_st.cpp:115
+#: ../../../core/core_st.cpp:117
 msgid "The file was not found."
 msgstr "Filen blev ikke fundet."
 
-#: ../../../core/core_st.cpp:116
+#: ../../../core/core_st.cpp:118
 msgid "Error: File is read-only"
 msgstr "Fejl: Filen kan kun læses"
 
-#: ../../../core/core_st.cpp:117
+#: ../../../core/core_st.cpp:119
 msgid "Error while writing file! Try saving in a different location"
 msgstr "Fejl ved skrivning af fil! Prøv at gemme et andet sted"
 
-#: ../../../core/core_st.cpp:118
+#: ../../../core/core_st.cpp:120
 #, fuzzy
 msgid "File is too big."
 msgstr "Feltet er for langt."
 
-#: ../../../core/core_st.cpp:119
+#: ../../../core/core_st.cpp:121
 #, fuzzy
 msgid "File is too short."
 msgstr "Feltet er for kort."
 
-#: ../../../core/core_st.cpp:120
+#: ../../../core/core_st.cpp:122
 msgid "File is truncated or otherwise corrupt. Please use backup database."
 msgstr ""
 
-#: ../../../core/core_st.cpp:121
+#: ../../../core/core_st.cpp:123
 #, fuzzy
 msgid "Cannot read file. Please check file permissions."
 msgstr "Kan ikke oprette låse fil - ingen tilladelse i biblioteket."
 
-#: ../../../core/core_st.cpp:122
+#: ../../../core/core_st.cpp:124
 #, fuzzy, c-format
 msgid ""
 "Filter %ls already exists in the database, do you wish to replace it with "
@@ -5052,144 +5115,144 @@ msgid ""
 msgstr ""
 "Filter %ls eksisterer allerede i databasen, vil du erstatte det med dette?"
 
-#: ../../../core/core_st.cpp:123
+#: ../../../core/core_st.cpp:125
 #, fuzzy
 msgid "Current database filters have been exported to this database."
 msgstr "Sammenligner nuværende database med: %s"
 
-#: ../../../core/core_st.cpp:124
-msgid "Stored filters will be unusable until the file's restored."
-msgstr ""
-
-#: ../../../core/core_st.cpp:125
-#, fuzzy
-msgid "Last Access Time"
-msgstr "'Seneste Tilgang'"
-
 #: ../../../core/core_st.cpp:126
-msgid "Attachment Reference"
+msgid "Stored filters will be unusable until the file's restored."
 msgstr ""
 
 #: ../../../core/core_st.cpp:127
 #, fuzzy
+msgid "Last Access Time"
+msgstr "'Seneste Tilgang'"
+
+#: ../../../core/core_st.cpp:128
+msgid "Attachment Reference"
+msgstr ""
+
+#: ../../../core/core_st.cpp:129
+#, fuzzy
 msgid "AutoType"
 msgstr "Autoindsæt"
 
-#: ../../../core/core_st.cpp:128
+#: ../../../core/core_st.cpp:130
 #, fuzzy
 msgid "Created Time"
 msgstr "Oprettet"
 
-#: ../../../core/core_st.cpp:129
+#: ../../../core/core_st.cpp:131
 msgid "DCA"
 msgstr "DCA"
 
-#: ../../../core/core_st.cpp:130
+#: ../../../core/core_st.cpp:132
 #, fuzzy
 msgid "e-mail"
 msgstr "email"
 
-#: ../../../core/core_st.cpp:132
+#: ../../../core/core_st.cpp:134
 msgid "Group/Title"
 msgstr "Gruppe/Titel"
 
-#: ../../../core/core_st.cpp:133
+#: ../../../core/core_st.cpp:135
 #, fuzzy
 msgid "Keyboard Shortcut"
 msgstr "Opret Genvej"
 
-#: ../../../core/core_st.cpp:136
+#: ../../../core/core_st.cpp:138
 #, fuzzy
 msgid "Password Modified Time"
 msgstr "Adgangskode Ændret"
 
-#: ../../../core/core_st.cpp:137
+#: ../../../core/core_st.cpp:139
 #, fuzzy
 msgid "Protected"
 msgstr ""
 "\n"
 "Vælg Post"
 
-#: ../../../core/core_st.cpp:138
+#: ../../../core/core_st.cpp:140
 #, fuzzy
 msgid "History"
 msgstr "Tøm Historik"
 
-#: ../../../core/core_st.cpp:140
+#: ../../../core/core_st.cpp:142
 #, fuzzy
 msgid "Password Policy Name"
 msgstr "Adgangskode Politik"
 
-#: ../../../core/core_st.cpp:141
+#: ../../../core/core_st.cpp:143
 #, fuzzy
 msgid "Record Modified Time"
 msgstr "'Registrer Ændrings Tidspunkt'"
 
-#: ../../../core/core_st.cpp:143
+#: ../../../core/core_st.cpp:145
 #, fuzzy
 msgid "Shift+DCA"
 msgstr "Skift+"
 
-#: ../../../core/core_st.cpp:144
+#: ../../../core/core_st.cpp:146
 #, fuzzy
 msgid "Symbols"
 msgstr "Standart Brugernavn"
 
-#: ../../../core/core_st.cpp:146
+#: ../../../core/core_st.cpp:148
 msgid "URL"
 msgstr "URL"
 
-#: ../../../core/core_st.cpp:148
+#: ../../../core/core_st.cpp:150
 msgid "UUID"
 msgstr ""
 
-#: ../../../core/core_st.cpp:149
+#: ../../../core/core_st.cpp:151
 msgid "Password Expiry Date"
 msgstr "Adgangskode Udløbs Dato"
 
-#: ../../../core/core_st.cpp:150
+#: ../../../core/core_st.cpp:152
 msgid "Password Expiry Interval"
 msgstr "Adgangskode Udløbs Interval"
 
-#: ../../../core/core_st.cpp:151
+#: ../../../core/core_st.cpp:153
 msgid "a normal entry"
 msgstr "en normal post"
 
-#: ../../../core/core_st.cpp:152
+#: ../../../core/core_st.cpp:154
 #, fuzzy
 msgid "Last found entries"
 msgstr "poster"
 
-#: ../../../core/core_st.cpp:153
+#: ../../../core/core_st.cpp:155
 msgid "added but not yet saved to database"
 msgstr "tilføjet men endnu ikke gemt i databasen"
 
-#: ../../../core/core_st.cpp:154
+#: ../../../core/core_st.cpp:156
 #, fuzzy
 msgid "in the database"
 msgstr "i databasen:"
 
-#: ../../../core/core_st.cpp:155
+#: ../../../core/core_st.cpp:157
 msgid "a shortcut entry"
 msgstr "en genvejs post"
 
-#: ../../../core/core_st.cpp:156
+#: ../../../core/core_st.cpp:158
 msgid "a base entry of a shortcut"
 msgstr "en basis post af en genvej"
 
-#: ../../../core/core_st.cpp:157
+#: ../../../core/core_st.cpp:159
 msgid "changed but not yet saved to database"
 msgstr "ændret men endnu ikke gemt i databasen"
 
-#: ../../../core/core_st.cpp:158
+#: ../../../core/core_st.cpp:160
 msgid "greater than"
 msgstr "større end"
 
-#: ../../../core/core_st.cpp:159
+#: ../../../core/core_st.cpp:161
 msgid "greater than or equal to"
 msgstr "større end eller lig med"
 
-#: ../../../core/core_st.cpp:160
+#: ../../../core/core_st.cpp:162
 #, c-format
 msgid ""
 "Invalid input on line %d.  Number of fields separated by '%c' is not as "
@@ -5198,12 +5261,12 @@ msgstr ""
 "Ugyldige indlæsning på linie %d.  Antal af felter adskildt af '%c' er ikke "
 "som ventet."
 
-#: ../../../core/core_st.cpp:161
+#: ../../../core/core_st.cpp:163
 #, c-format
 msgid "Line %d: "
 msgstr "Linie %d: "
 
-#: ../../../core/core_st.cpp:162
+#: ../../../core/core_st.cpp:164
 #, c-format
 msgid ""
 "File ends on line %d before ending double quote of last entry's note field."
@@ -5211,11 +5274,11 @@ msgstr ""
 "Filen slutter på linie %d før slutningen af dobbelt anførelses tegn i "
 "seneste adgangs note felt."
 
-#: ../../../core/core_st.cpp:163
+#: ../../../core/core_st.cpp:165
 msgid "Import aborted. Please see report."
 msgstr ""
 
-#: ../../../core/core_st.cpp:164
+#: ../../../core/core_st.cpp:166
 msgid ""
 "The TXT or CSV file was not imported as required as entry records span "
 "multiple lines in the CSV file.\n"
@@ -5223,7 +5286,7 @@ msgid ""
 "Import aborted."
 msgstr ""
 
-#: ../../../core/core_st.cpp:165
+#: ../../../core/core_st.cpp:167
 #, fuzzy, c-format
 msgid ""
 "%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the "
@@ -5232,69 +5295,69 @@ msgstr ""
 "%ls, Titel=\"%ls\", Bruger=\"%ls\" eksisterer allerede i din database eller "
 "i den importerede fil. Ekstra importeret adgang med titlen=\"%ls\".\n"
 
-#: ../../../core/core_st.cpp:166
+#: ../../../core/core_st.cpp:168
 #, fuzzy, c-format
 msgid "Entry on line %d with Group=\"%ls\""
 msgstr "Posten i linie %d med Gruppe=\"%ls\""
 
-#: ../../../core/core_st.cpp:167
+#: ../../../core/core_st.cpp:169
 #, c-format
 msgid "Entry on line %d with no group"
 msgstr "Posten i linie %d uden gruppe"
 
-#: ../../../core/core_st.cpp:168
+#: ../../../core/core_st.cpp:170
 #, fuzzy, c-format
 msgid "Entry with Group=\"%ls\""
 msgstr "Post med Gruppe=\"%ls\""
 
-#: ../../../core/core_st.cpp:169
+#: ../../../core/core_st.cpp:171
 msgid "Entry with no group"
 msgstr "Post uden gruppe"
 
-#: ../../../core/core_st.cpp:170
+#: ../../../core/core_st.cpp:172
 #, fuzzy
 msgid "imported"
 msgstr "importer"
 
-#: ../../../core/core_st.cpp:171
+#: ../../../core/core_st.cpp:173
 #, fuzzy, c-format
 msgid "including %d empty group(s)."
 msgstr "#grupper"
 
-#: ../../../core/core_st.cpp:172
+#: ../../../core/core_st.cpp:174
 #, c-format
 msgid "Empty line %d skipped"
 msgstr "Tom linie %d sprunget over"
 
-#: ../../../core/core_st.cpp:173
+#: ../../../core/core_st.cpp:175
 #, fuzzy, c-format
 msgid "Entry %ls%d with Group=\"%ls\", Title=\"%ls\", User=\"%ls\""
 msgstr "Post %ls%d med Gruppe=\"%ls\", Titel=\"%ls\", Bruger=\"%ls\""
 
-#: ../../../core/core_st.cpp:174
+#: ../../../core/core_st.cpp:176
 msgid "Internal error. Import failed. No records imported."
 msgstr "Intern fejl. Import fejlede. Ingen optegnelser importeret."
 
-#: ../../../core/core_st.cpp:175
+#: ../../../core/core_st.cpp:177
 #, c-format
 msgid "Found %d known column headers:"
 msgstr "Fandt %d kendt kolonne overskrift:"
 
-#: ../../../core/core_st.cpp:176
+#: ../../../core/core_st.cpp:178
 msgid "Invalid field delimiter: must be within ASCII range."
 msgstr ""
 
-#: ../../../core/core_st.cpp:177
+#: ../../../core/core_st.cpp:179
 #, fuzzy, c-format
 msgid "Entry of line %d has an invalid \"%ls\" field. It has been ignored."
 msgstr ""
 "Posten i linie %d har et ugyldigt \"%ls\" felt. Det er blevet ignoreret."
 
-#: ../../../core/core_st.cpp:178
+#: ../../../core/core_st.cpp:180
 msgid "The following columns will be processed: "
 msgstr "De følgende kolonner vil blive behandlet: "
 
-#: ../../../core/core_st.cpp:179
+#: ../../../core/core_st.cpp:181
 msgid ""
 "The following columns were recognised but only Group/Title, Username and "
 "Password will be processed:"
@@ -5302,7 +5365,7 @@ msgstr ""
 "De følgende kolonner blev genkendt men kun Gruppe/Titel, Brugernavn og "
 "Adgangskode vil blive behandlet:"
 
-#: ../../../core/core_st.cpp:180
+#: ../../../core/core_st.cpp:182
 #, c-format
 msgid ""
 "Line %d skipped - Only %d fields found, whereas parsing the Header says "
@@ -5311,7 +5374,7 @@ msgstr ""
 "Linie %d sprunget over - Kun %d felter fundet, medens analysering af "
 "Overskriften siger der skulle være %d."
 
-#: ../../../core/core_st.cpp:181
+#: ../../../core/core_st.cpp:183
 msgid ""
 "Either or both of the Group/Title and Password columns are missing. No "
 "records imported."
@@ -5319,43 +5382,43 @@ msgstr ""
 "Den ene eller begge af Grupoe/Titel og Adgangskode kolonner mangler. Intet "
 "arkiv importeret."
 
-#: ../../../core/core_st.cpp:182
+#: ../../../core/core_st.cpp:184
 msgid ""
 "Could not find the next entry's title field in the KeePass V1 TXT (should be "
 "within square brackets)."
 msgstr ""
 
-#: ../../../core/core_st.cpp:183
+#: ../../../core/core_st.cpp:185
 msgid "Column header row not recognised as first record. No records imported."
 msgstr ""
 "Kolonne overskrift rækken ikke genkendt som første registrering. Ingen "
 "poster er importeret."
 
-#: ../../../core/core_st.cpp:184
+#: ../../../core/core_st.cpp:186
 msgid "No records in import file!"
 msgstr "Ingen optegnelser i den importerede fil!"
 
-#: ../../../core/core_st.cpp:185
+#: ../../../core/core_st.cpp:187
 #, fuzzy, c-format
 msgid "Line %d skipped: Empty mandatory Password field."
 msgstr "Linie %d sprunget over. Den har et tomt obligatorisk Adgangskode felt."
 
-#: ../../../core/core_st.cpp:186
+#: ../../../core/core_st.cpp:188
 #, fuzzy, c-format
 msgid "Line %d skipped: Empty mandatory Title field."
 msgstr "Linie %d sprunget over. Den har et tomt obligatorisk Titel felt."
 
-#: ../../../core/core_st.cpp:187
+#: ../../../core/core_st.cpp:189
 #, c-format
 msgid " Import # %d"
 msgstr "Importer # %d"
 
-#: ../../../core/core_st.cpp:188
+#: ../../../core/core_st.cpp:190
 #, fuzzy, c-format
 msgid "%ls - Imported %ls"
 msgstr "%ls Importeret %ls"
 
-#: ../../../core/core_st.cpp:189
+#: ../../../core/core_st.cpp:191
 msgid ""
 "To replace passwords of existing entries, all the following columns must be "
 "present: Group/Title, Username and Password.  One or more are missing and no "
@@ -5365,17 +5428,17 @@ msgstr ""
 "kolonner skal være til stede: Gruppe/Titel, Brugernavn og Adgangskode.  En "
 "eller flere mangler og ingen adgange er blevet opdateret."
 
-#: ../../../core/core_st.cpp:190
+#: ../../../core/core_st.cpp:192
 #, fuzzy, c-format
 msgid "%ls not found. Cannot update entry's password.\n"
 msgstr "%ls ikke fundet. Kan ikke opdatere postens adgangskode.\n"
 
-#: ../../../core/core_st.cpp:191
+#: ../../../core/core_st.cpp:193
 #, fuzzy, c-format
 msgid "%ls has an empty %ls.\n"
 msgstr "%ls har en tom %ls.\n"
 
-#: ../../../core/core_st.cpp:192
+#: ../../../core/core_st.cpp:194
 #, fuzzy, c-format
 msgid ""
 "Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
@@ -5384,11 +5447,11 @@ msgstr ""
 "Posten \"%ls, %ls, %ls\" har en adgangskode i det rigtige format for et "
 "alias, men basis posten er allerede et alias."
 
-#: ../../../core/core_st.cpp:193
+#: ../../../core/core_st.cpp:195
 msgid "\tThis entry has been made an alias of associated base entry."
 msgstr "\tDenne post har lavet et alias af en tilknyttet basis adgang."
 
-#: ../../../core/core_st.cpp:194
+#: ../../../core/core_st.cpp:196
 #, fuzzy, c-format
 msgid ""
 "Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
@@ -5397,14 +5460,14 @@ msgstr ""
 "Posten \"%ls, %ls, %ls\" har en adgangskode i det rigtige  format for et "
 "alias, men basis posten eksisterer ikke."
 
-#: ../../../core/core_st.cpp:195
+#: ../../../core/core_st.cpp:197
 msgid ""
 "\tThis entry remains a normal entry and the password has not been changed."
 msgstr ""
 "\tDenne post efterlader en normal post og adgangskoden er ikke  blevet "
 "ændret."
 
-#: ../../../core/core_st.cpp:196
+#: ../../../core/core_st.cpp:198
 #, fuzzy, c-format
 msgid ""
 "The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls "
@@ -5413,69 +5476,69 @@ msgstr ""
 "Denne %ls post \"%ls, %ls, %ls\" peger ikke på en normal eller eksisterende "
 "%ls basis post. Den kan ikke importeres."
 
-#: ../../../core/core_st.cpp:197
+#: ../../../core/core_st.cpp:199
 msgid "Entry import warnings"
 msgstr "Post import advarsler"
 
-#: ../../../core/core_st.cpp:198
+#: ../../../core/core_st.cpp:200
 msgid "id="
 msgstr "id="
 
-#: ../../../core/core_st.cpp:199
+#: ../../../core/core_st.cpp:201
 msgid "on line "
 msgstr "på linie"
 
-#: ../../../core/core_st.cpp:200
+#: ../../../core/core_st.cpp:202
 msgid "Internal error: Invalid oflag or pmode argument"
 msgstr "Intern fejl: Ugyldig omærke eller ptilstand argument"
 
-#: ../../../core/core_st.cpp:201
+#: ../../../core/core_st.cpp:203
 msgid "invalid!"
 msgstr "ugyldig!"
 
-#: ../../../core/core_st.cpp:202
+#: ../../../core/core_st.cpp:204
 msgid "  Invalid date/time value."
 msgstr "Ugyldig dato/tids værdi."
 
-#: ../../../core/core_st.cpp:203
+#: ../../../core/core_st.cpp:205
 #, fuzzy
 msgid "  Field length is incorrect."
 msgstr "Feltet er for kort."
 
-#: ../../../core/core_st.cpp:204
+#: ../../../core/core_st.cpp:206
 msgid "Internal error: An invalid flag was specified"
 msgstr "Intern fejl: Et ugyldigt mærke blev specificeret"
 
-#: ../../../core/core_st.cpp:205
+#: ../../../core/core_st.cpp:207
 #, c-format
 msgid "  Invalid header: '%ls' (must be 5 hexadecimal characters)."
 msgstr ""
 
-#: ../../../core/core_st.cpp:206
+#: ../../../core/core_st.cpp:208
 #, fuzzy, c-format
 msgid "Invalid lock file \"%ls\"."
 msgstr "Ugyldig Filter skema."
 
-#: ../../../core/core_st.cpp:207
+#: ../../../core/core_st.cpp:209
 #, c-format
 msgid "  Invalid number of saved old passwords %d."
 msgstr "Ugyldigt antal af ældre gemte adgangskoder %d."
 
-#: ../../../core/core_st.cpp:208
+#: ../../../core/core_st.cpp:210
 #, c-format
 msgid "  Invalid status value: %d (must be either 0 or 1)."
 msgstr ""
 
-#: ../../../core/core_st.cpp:209
+#: ../../../core/core_st.cpp:211
 msgid "  Invalid password length found (not a hexadecimal number)."
 msgstr ""
 
-#: ../../../core/core_st.cpp:210
+#: ../../../core/core_st.cpp:212
 msgid ""
 "  Invalid password length found (differs from length of following password)."
 msgstr ""
 
-#: ../../../core/core_st.cpp:211
+#: ../../../core/core_st.cpp:213
 msgid ""
 "  Invalid field separator character found - only a single blank is allowed "
 "between fields."
@@ -5483,20 +5546,20 @@ msgstr ""
 "Ugyldig felt adskilleses karakter fundet - kun et enkelt tomt er tilladt "
 "mellem felter."
 
-#: ../../../core/core_st.cpp:212
+#: ../../../core/core_st.cpp:214
 msgid "Invalid Filter schema."
 msgstr "Ugyldig Filter skema."
 
-#: ../../../core/core_st.cpp:213
+#: ../../../core/core_st.cpp:215
 msgid "Schema does not have a version number."
 msgstr "Skemaet har ikke et versions nummer."
 
-#: ../../../core/core_st.cpp:214
+#: ../../../core/core_st.cpp:216
 #, c-format
 msgid "The filter XML version (%d) is greater than the current schema (%d)."
 msgstr "Filteret XML version (%d) er større end det nuværende skema (%d)."
 
-#: ../../../core/core_st.cpp:215
+#: ../../../core/core_st.cpp:217
 #, c-format
 msgid ""
 "The filter XML version (%d) is greater than that supported by this instance "
@@ -5505,57 +5568,57 @@ msgstr ""
 "Filteret XML version (%d) er større end understøttelsen fra denne udgave af "
 "PasswordSafe (%d)."
 
-#: ../../../core/core_st.cpp:216
+#: ../../../core/core_st.cpp:218
 msgid "is"
 msgstr "er"
 
-#: ../../../core/core_st.cpp:217
+#: ../../../core/core_st.cpp:219
 msgid "is active"
 msgstr "er aktive"
 
-#: ../../../core/core_st.cpp:218
+#: ../../../core/core_st.cpp:220
 msgid "is inactive"
 msgstr "er inaktive"
 
-#: ../../../core/core_st.cpp:219
+#: ../../../core/core_st.cpp:221
 msgid "is not"
 msgstr "er ikke"
 
-#: ../../../core/core_st.cpp:220
+#: ../../../core/core_st.cpp:222
 msgid "is not present"
 msgstr "er ikke tilstedeværende"
 
-#: ../../../core/core_st.cpp:221
+#: ../../../core/core_st.cpp:223
 msgid "is present"
 msgstr "er nærværende"
 
-#: ../../../core/core_st.cpp:222
+#: ../../../core/core_st.cpp:224
 #, c-format
 msgid ""
 "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It "
 "has been removed from the %ls entry."
 msgstr ""
 
-#: ../../../core/core_st.cpp:223
+#: ../../../core/core_st.cpp:225
 #, c-format
 msgid ""
 "Entry keyboard shortcut %ls entry %ls is already allocated to the "
 "PasswordSafe application. It has been removed from the entry."
 msgstr ""
 
-#: ../../../core/core_st.cpp:224
+#: ../../../core/core_st.cpp:226
 msgid "less than"
 msgstr "mindre end"
 
-#: ../../../core/core_st.cpp:225
+#: ../../../core/core_st.cpp:227
 msgid "less than or equal to"
 msgstr "mindre end eller lig med"
 
-#: ../../../core/core_st.cpp:226
+#: ../../../core/core_st.cpp:228
 msgid "File or path not found"
 msgstr "Fil eller sti ikke fundet"
 
-#: ../../../core/core_st.cpp:227
+#: ../../../core/core_st.cpp:229
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -5564,14 +5627,14 @@ msgstr ""
 "\n"
 "De følgende nye %ls %ls er flettet ind i denne database:"
 
-#: ../../../core/core_st.cpp:228
+#: ../../../core/core_st.cpp:230
 #, c-format
 msgid ""
 "\n"
 "Merge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
 msgstr ""
 
-#: ../../../core/core_st.cpp:229
+#: ../../../core/core_st.cpp:231
 #, fuzzy, c-format
 msgid ""
 "Conflicting entries for \"%ls\" \"%ls\" \"%ls\".\n"
@@ -5582,60 +5645,60 @@ msgstr ""
 "  Tilføjet flettet post som «%ls» «%ls» «%ls».\n"
 "    Afvigende felt(er): %ls"
 
-#: ../../../core/core_st.cpp:230
+#: ../../../core/core_st.cpp:232
 #, fuzzy
 msgid "merged"
 msgstr "Flet"
 
-#: ../../../core/core_st.cpp:231
+#: ../../../core/core_st.cpp:233
 #, fuzzy, c-format
 msgid "%ls - Merged %ls"
 msgstr "%ls - Flet %s"
 
-#: ../../../core/core_st.cpp:232
+#: ../../../core/core_st.cpp:234
 msgid "MISSING PASSWORD"
 msgstr ""
 
-#: ../../../core/core_st.cpp:233
+#: ../../../core/core_st.cpp:235
 #, c-format
 msgid "\tPassword policy name '%ls' is not in the database."
 msgstr ""
 
-#: ../../../core/core_st.cpp:234
+#: ../../../core/core_st.cpp:236
 msgid ""
 "\tOne or more Password Policy Names were not found in the database. The "
 "affected entries have been changed to use the database's default policy."
 msgstr ""
 
-#: ../../../core/core_st.cpp:235
+#: ../../../core/core_st.cpp:237
 #, c-format
 msgid "MISSING TITLE # %d"
 msgstr ""
 
-#: ../../../core/core_st.cpp:237
+#: ../../../core/core_st.cpp:239
 msgid "Can't obtain the schema version."
 msgstr "Kan ikke hente skema versionen."
 
-#: ../../../core/core_st.cpp:238
+#: ../../../core/core_st.cpp:240
 msgid "The filter XML version is missing."
 msgstr "Filteret XML version mangler."
 
-#: ../../../core/core_st.cpp:239
+#: ../../../core/core_st.cpp:241
 #, fuzzy, c-format
 msgid "Create SchemaCache60 Error 0x%08X during %ls."
 msgstr "Opret SkemaCache%2d Fejl 0x%08X under %ls."
 
-#: ../../../core/core_st.cpp:240
+#: ../../../core/core_st.cpp:242
 #, fuzzy, c-format
 msgid "SAX Parse60 Error 0x%08X during %ls."
 msgstr "SAX Analyse%2d Fejl 0x%08X under %ls."
 
-#: ../../../core/core_st.cpp:241
+#: ../../../core/core_st.cpp:243
 #, fuzzy, c-format
 msgid "Error (%08X): line %d character %d %ls"
 msgstr "Fejl (%08X): linie %d tegn %d %ls"
 
-#: ../../../core/core_st.cpp:243
+#: ../../../core/core_st.cpp:245
 msgid ""
 "Unable to get configuration file lock.\n"
 "\n"
@@ -5645,15 +5708,15 @@ msgstr ""
 "\n"
 "Vil bruge registret."
 
-#: ../../../core/core_st.cpp:244
+#: ../../../core/core_st.cpp:246
 msgid "Cannot create lock file - no permission in directory?"
 msgstr "Kan ikke oprette låse fil - ingen tilladelse i biblioteket?"
 
-#: ../../../core/core_st.cpp:245
+#: ../../../core/core_st.cpp:247
 msgid "Internal error: Out of file handles"
 msgstr "Intern fejl: Ude af fil behandling"
 
-#: ../../../core/core_st.cpp:246
+#: ../../../core/core_st.cpp:248
 msgid ""
 "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 "
 "seems available."
@@ -5661,16 +5724,16 @@ msgstr ""
 "Ude af stand til at  bruge som en MS XML læser på dit system.  Hverken MS "
 "XML V3, V4 eller V6 syntes tilgængelige."
 
-#: ../../../core/core_st.cpp:248
+#: ../../../core/core_st.cpp:250
 #, fuzzy
 msgid "Unsaved changes"
 msgstr "Vis &Ugemte Ændringer"
 
-#: ../../../core/core_st.cpp:249
+#: ../../../core/core_st.cpp:251
 msgid "is not set"
 msgstr "er ikke sat"
 
-#: ../../../core/core_st.cpp:250
+#: ../../../core/core_st.cpp:252
 #, fuzzy, c-format
 msgid ""
 "Number of entries processed: %d\n"
@@ -5706,99 +5769,99 @@ msgstr ""
 "Antal af adgange med felter der ikke kan vises fuldt ud: %d\n"
 "Recommend that the database is now saved."
 
-#: ../../../core/core_st.cpp:252
+#: ../../../core/core_st.cpp:254
 msgid ""
 "Password should be mixed case, with at least one digit or punctuation "
 "character"
 msgstr ""
 "Adgangskode bør være mixede tegn, med mindst et tal eller tegnsætnings tegn"
 
-#: ../../../core/core_st.cpp:253
+#: ../../../core/core_st.cpp:255
 msgid "Password is too short"
 msgstr "Adgangskode er for kort"
 
-#: ../../../core/core_st.cpp:254
+#: ../../../core/core_st.cpp:256
 msgid "Easyvision characters"
 msgstr "Easyvision tegn"
 
-#: ../../../core/core_st.cpp:255
+#: ../../../core/core_st.cpp:257
 msgid "Hexadecimal characters"
 msgstr "Hexadecimal tegn"
 
-#: ../../../core/core_st.cpp:256
+#: ../../../core/core_st.cpp:258
 #, fuzzy
 msgid "Password length"
 msgstr "Adgangskode længde:"
 
-#: ../../../core/core_st.cpp:257
+#: ../../../core/core_st.cpp:259
 msgid "Pronounceable passwords"
 msgstr "Udtal-bare adgangskoder"
 
-#: ../../../core/core_st.cpp:259
+#: ../../../core/core_st.cpp:261
 #, fuzzy
 msgid "Use lowercase characters"
 msgstr "Minimum store tegn"
 
-#: ../../../core/core_st.cpp:261
+#: ../../../core/core_st.cpp:263
 #, fuzzy
 msgid "Use uppercase characters"
 msgstr "Minimum store tegn"
 
-#: ../../../core/core_st.cpp:262
+#: ../../../core/core_st.cpp:264
 #, fuzzy, c-format
 msgid "Error in a Password History %ls:"
 msgstr "Fejl i Adgangskode Historik for adgangen %ls: "
 
-#: ../../../core/core_st.cpp:263
+#: ../../../core/core_st.cpp:265
 #, c-format
 msgid "sub-field starting at position %d (within the History field): "
 msgstr ""
 
-#: ../../../core/core_st.cpp:264
+#: ../../../core/core_st.cpp:266
 msgid "  All Password History ignored."
 msgstr "Al Adgangskode Historik ignoreret."
 
-#: ../../../core/core_st.cpp:265
+#: ../../../core/core_st.cpp:267
 msgid "Read Error"
 msgstr "Læse Fejl"
 
-#: ../../../core/core_st.cpp:266
+#: ../../../core/core_st.cpp:268
 #, c-format
 msgid ""
 "\tOne or more entry keyboard shortcuts were already assigned to entries in "
 "this database. They have been removed from the %ls entries."
 msgstr ""
 
-#: ../../../core/core_st.cpp:267
+#: ../../../core/core_st.cpp:269
 msgid ""
 "\tOne or more Password Policy Names were already in this database but had "
 "different settings. They have been renamed."
 msgstr ""
 
-#: ../../../core/core_st.cpp:268
+#: ../../../core/core_st.cpp:270
 #, fuzzy, c-format
 msgid "%ls%ls%ls_Report.txt"
 msgstr "%ls%ls%ls_Rapport.txt"
 
-#: ../../../core/core_st.cpp:269
+#: ../../../core/core_st.cpp:271
 #, fuzzy, c-format
 msgid "Report of %ls function started at %ls"
 msgstr "Rapport af %ls funktion startede ved %ls"
 
-#: ../../../core/core_st.cpp:270
+#: ../../../core/core_st.cpp:272
 #, fuzzy, c-format
 msgid "on database %ls"
 msgstr "i databasen %ls"
 
-#: ../../../core/core_st.cpp:271
+#: ../../../core/core_st.cpp:273
 msgid "Validate"
 msgstr "Vurder"
 
-#: ../../../core/core_st.cpp:273
+#: ../../../core/core_st.cpp:275
 msgid "Fatal Error"
 msgstr "Alvorlig Fejl"
 
-#: ../../../core/core_st.cpp:275
+#: ../../../core/core_st.cpp:277
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -5807,117 +5870,117 @@ msgstr ""
 "\n"
 "Fejl i Adgangskode Historik for adgangen: »%ls»%ls»%ls»: "
 
-#: ../../../core/core_st.cpp:276
+#: ../../../core/core_st.cpp:278
 msgid "See Attachment filters"
 msgstr ""
 
-#: ../../../core/core_st.cpp:277
+#: ../../../core/core_st.cpp:279
 msgid "See Password History filters"
 msgstr "Se Adgangskode Historik filtrene"
 
-#: ../../../core/core_st.cpp:278
+#: ../../../core/core_st.cpp:280
 msgid "See Password Policy filters"
 msgstr "Se Adgangskode Politik filtrene"
 
-#: ../../../core/core_st.cpp:279
+#: ../../../core/core_st.cpp:281
 msgid "is set"
 msgstr "er sat"
 
-#: ../../../core/core_st.cpp:280
+#: ../../../core/core_st.cpp:282
 msgid "shortcut"
 msgstr "genvej"
 
-#: ../../../core/core_st.cpp:281
+#: ../../../core/core_st.cpp:283
 msgid "shortcuts"
 msgstr "genveje"
 
-#: ../../../core/core_st.cpp:282
+#: ../../../core/core_st.cpp:284
 msgid "policy specific symbols"
 msgstr ""
 
-#: ../../../core/core_st.cpp:283
+#: ../../../core/core_st.cpp:285
 msgid "Start Report"
 msgstr "Start Rapport"
 
-#: ../../../core/core_st.cpp:284
+#: ../../../core/core_st.cpp:286
 msgid "Double-Click on entry to Autotype"
 msgstr "Dobbelt Klik på post for at Autoindsætte"
 
-#: ../../../core/core_st.cpp:285
+#: ../../../core/core_st.cpp:287
 msgid "Double-Click on entry to Browse to URL"
 msgstr "Dobbelt Klik på post for at Browse til URL"
 
-#: ../../../core/core_st.cpp:286
+#: ../../../core/core_st.cpp:288
 msgid "Double-Click on entry to Browse to URL + Autotype"
 msgstr "Dobbelt Klik på post for at Browse til URL + Autoindsætte"
 
-#: ../../../core/core_st.cpp:287
+#: ../../../core/core_st.cpp:289
 #, fuzzy
 msgid "https://pwsafe.org/"
 msgstr "https://pwsafe.org/"
 
-#: ../../../core/core_st.cpp:288
+#: ../../../core/core_st.cpp:290
 msgid "Double-Click on entry to Copy Notes"
 msgstr "Dobbelt Klik på post for at Kopiere Notater"
 
-#: ../../../core/core_st.cpp:289
+#: ../../../core/core_st.cpp:291
 msgid "Double-Click on entry to Copy Password"
 msgstr "Dobbelt Klik på post for at Kopiere Adgangskode"
 
-#: ../../../core/core_st.cpp:290
+#: ../../../core/core_st.cpp:292
 msgid "Double-Click on entry to Copy Password and Minimize"
 msgstr "Dobbelt Klik på post for at Kopiere Adgangskode og Minimere"
 
-#: ../../../core/core_st.cpp:291
+#: ../../../core/core_st.cpp:293
 msgid "Double-Click on entry to Copy Username"
 msgstr "Dobbelt Klik på post for at Kopiere Brugernavn"
 
-#: ../../../core/core_st.cpp:292
+#: ../../../core/core_st.cpp:294
 msgid "Double-Click on entry to Run Command"
 msgstr "Dobbelt Klik på post for Kør Kommando"
 
-#: ../../../core/core_st.cpp:293
+#: ../../../core/core_st.cpp:295
 #, fuzzy
 msgid "Double-Click on entry to Send Email"
 msgstr "Dobbelt Klik på post for at Sende email"
 
-#: ../../../core/core_st.cpp:294
+#: ../../../core/core_st.cpp:296
 msgid "Double-Click on entry to View/Edit it"
 msgstr "Dobbelt Klik på post for at Se/Redigere den"
 
-#: ../../../core/core_st.cpp:297
+#: ../../../core/core_st.cpp:299
 #, fuzzy, c-format
 msgid "%ls - Sync'd %ls"
 msgstr "%ls - Importeret %ls"
 
-#: ../../../core/core_st.cpp:298
+#: ../../../core/core_st.cpp:300
 msgid "System error: No more file handles available"
 msgstr "System fejl: Ikke flere fil håndteringer tilgængelige"
 
-#: ../../../core/core_st.cpp:301
+#: ../../../core/core_st.cpp:303
 msgid "Unknown function"
 msgstr "Ukendt funktion"
 
-#: ../../../core/core_st.cpp:302
+#: ../../../core/core_st.cpp:304
 msgid "Unknown object"
 msgstr "Ukendt object"
 
-#: ../../../core/core_st.cpp:303
+#: ../../../core/core_st.cpp:305
 msgid "Internal error: Unexpected error number"
 msgstr "Intern fejl: Uventet fejl antal"
 
-#: ../../../core/core_st.cpp:305
+#: ../../../core/core_st.cpp:307
 #, c-format
 msgid "\tName: %s; Filename: %s"
 msgstr ""
 
-#: ../../../core/core_st.cpp:306
+#: ../../../core/core_st.cpp:308
 msgid ""
 "The following entries had an invalid UUID field.  This has been corrected."
 msgstr ""
 "De følgende poster havde et ugyldigt UUID felt. Disse er blevet rettet."
 
-#: ../../../core/core_st.cpp:307
+#: ../../../core/core_st.cpp:309
 #, fuzzy, c-format
 msgid ""
 "The following entries have passwords in the correct form for %ls, but the "
@@ -5926,18 +5989,18 @@ msgstr ""
 "De følgende poster havdehar en adgangskode i det rigtige  format for %ls, "
 "men basis posten eksisterer ikke."
 
-#: ../../../core/core_st.cpp:308
+#: ../../../core/core_st.cpp:310
 msgid "The following entries were duplicates of an existing entry."
 msgstr "De følgende poster var dupletter af en eksisterende post."
 
-#: ../../../core/core_st.cpp:309
+#: ../../../core/core_st.cpp:311
 #, fuzzy
 msgid ""
 "The following entries had a duplicate UUID field.  This has been corrected."
 msgstr ""
 "De følgende poster havde et ugyldigt UUID felt. Disse er blevet rettet."
 
-#: ../../../core/core_st.cpp:310
+#: ../../../core/core_st.cpp:312
 #, fuzzy, c-format
 msgid ""
 "The following entries had an empty Password field, which is not permitted. "
@@ -5945,37 +6008,37 @@ msgid ""
 msgstr ""
 "De følgende poster havde et ugyldigt Title felt. Disse er blevet rettet."
 
-#: ../../../core/core_st.cpp:311
+#: ../../../core/core_st.cpp:313
 #, fuzzy
 msgid "The following entries had an empty Title field, which is not permitted."
 msgstr ""
 "De følgende poster havde et ugyldigt Title felt. Disse er blevet rettet."
 
-#: ../../../core/core_st.cpp:312
+#: ../../../core/core_st.cpp:314
 #, fuzzy, c-format
 msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
 msgstr "\tGruppe='%ls', Titel='%ls', Bruger='%ls' %ls"
 
-#: ../../../core/core_st.cpp:313
+#: ../../../core/core_st.cpp:315
 #, fuzzy, c-format
 msgid "- Its title has been changed to:'%ls'"
 msgstr "- Dets titel er blevet ændret til:'%ls'"
 
-#: ../../../core/core_st.cpp:314
+#: ../../../core/core_st.cpp:316
 msgid "The following ERRORS were detected and were FIXED."
 msgstr ""
 
-#: ../../../core/core_st.cpp:315
+#: ../../../core/core_st.cpp:317
 #, fuzzy
 msgid "The following entries refer to missing attachments."
 msgstr "De følgende poster var dupletter af en eksisterende post."
 
-#: ../../../core/core_st.cpp:316
+#: ../../../core/core_st.cpp:318
 #, fuzzy
 msgid "The following attachments are not referred to by any entry."
 msgstr "De følgende poster var dupletter af en eksisterende post."
 
-#: ../../../core/core_st.cpp:317
+#: ../../../core/core_st.cpp:319
 msgid ""
 "The following entries had an invalid Password History.  This has been "
 "rebuilt with available data.  There may be some loss of history."
@@ -5983,24 +6046,24 @@ msgstr ""
 "De følgende poster havde en ugyldig Adgangskode Historik.  Disse er blevet "
 "genopbygget med tilgængelige data.  Der kan være mistet noget af historiken."
 
-#: ../../../core/core_st.cpp:318
+#: ../../../core/core_st.cpp:320
 #, c-format
 msgid ""
 "The following entries have one or more text fields too long to display or "
 "edit (over %d characters).  The largest entry size found was ~%d %ls."
 msgstr ""
 
-#: ../../../core/core_st.cpp:319
+#: ../../../core/core_st.cpp:321
 msgid ""
 "The following WARNINGS were detected - you should review and fix them "
 "manually."
 msgstr ""
 
-#: ../../../core/core_st.cpp:322
+#: ../../../core/core_st.cpp:324
 msgid "will expire"
 msgstr "vil udløbe"
 
-#: ../../../core/core_st.cpp:323
+#: ../../../core/core_st.cpp:325
 #, fuzzy, c-format
 msgid ""
 "SAX Parse Error during %ls\n"
@@ -6009,21 +6072,21 @@ msgstr ""
 "SAX Analyse Fejl under %ls\n"
 "%ls."
 
-#: ../../../core/core_st.cpp:324
+#: ../../../core/core_st.cpp:326
 #, fuzzy, c-format
 msgid "XML %ls: line %d character %d: %ls"
 msgstr "XML %ls: linie %d tegn %d: %ls"
 
-#: ../../../core/core_st.cpp:325
+#: ../../../core/core_st.cpp:327
 msgid ""
 "*** Invalid XML characters found - see exported XML file for more details ***"
 msgstr ""
 
-#: ../../../core/core_st.cpp:326
+#: ../../../core/core_st.cpp:328
 msgid "Internal error: Couldn't initialize config file XML structure"
 msgstr "Intern fejl: Kunne ikke initialisere konfig filen XML strukturen"
 
-#: ../../../core/core_st.cpp:327
+#: ../../../core/core_st.cpp:329
 msgid ""
 "A filter was active. Export of data was restricted to include only those "
 "displayed."
@@ -6031,34 +6094,34 @@ msgstr ""
 "Et filter var aktiv. Eksport af data blev begrænset til kun at inkludere de "
 "viste."
 
-#: ../../../core/core_st.cpp:328
+#: ../../../core/core_st.cpp:330
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "Eksport af data blev begrænset til bestemte felter af bruger."
 
-#: ../../../core/core_st.cpp:329
+#: ../../../core/core_st.cpp:331
 msgid ""
 "Note: These Password Policies will not replace existing policies with the "
 "same name in the current database."
 msgstr ""
 
-#: ../../../core/core_st.cpp:330
+#: ../../../core/core_st.cpp:332
 msgid ""
 "Note: These preferences are only used when importing into an empty database."
 msgstr ""
 "Bemærk: Disse præferencer bliver kun brugt ved import til en tom database."
 
-#: ../../../core/core_st.cpp:331
+#: ../../../core/core_st.cpp:333
 msgid "Subset of entries restricted by the following rule:"
 msgstr "Delmængde af adgange begrænset af følgende regel:"
 
-#: ../../../core/core_st.cpp:332
+#: ../../../core/core_st.cpp:334
 msgid ""
 "The user specified that the following fields be excluded from the export:"
 msgstr ""
 "Bruger har specificeret at de følgende felter skal udelukkes fra denne "
 "eksport:"
 
-#: ../../../core/core_st.cpp:333
+#: ../../../core/core_st.cpp:335
 #, fuzzy, c-format
 msgid ""
 "Configuration file error:\n"
@@ -6071,15 +6134,15 @@ msgstr ""
 "%ls\n"
 "linie %d kolonne %d"
 
-#: ../../../core/core_st.cpp:334
+#: ../../../core/core_st.cpp:336
 msgid "import"
 msgstr "importer"
 
-#: ../../../core/core_st.cpp:335
+#: ../../../core/core_st.cpp:337
 msgid "Unable to load configuration file"
 msgstr "Ude af stand til at indlæse konfigurations fil"
 
-#: ../../../core/core_st.cpp:336
+#: ../../../core/core_st.cpp:338
 msgid ""
 "Failed to lock configuration file - opened by another instance of "
 "PasswordSafe?"
@@ -6087,30 +6150,30 @@ msgstr ""
 "Fejl ved låsning af konfigurations filen - åbnet af en anden instans af "
 "PasswordSafe?"
 
-#: ../../../core/core_st.cpp:337
+#: ../../../core/core_st.cpp:339
 msgid "Unable to save configuration file"
 msgstr "Ude af stand til at gemme konfigurations fil"
 
-#: ../../../core/core_st.cpp:338
+#: ../../../core/core_st.cpp:340
 #, fuzzy
 msgid "validation"
 msgstr "vurdering"
 
-#: ../../../core/core_st.cpp:340
+#: ../../../core/core_st.cpp:342
 msgid " (EasyVision Symbols)"
 msgstr ""
 
-#: ../../../core/core_st.cpp:341
+#: ../../../core/core_st.cpp:343
 #, fuzzy, c-format
 msgid "Yes (at least %d)"
 msgstr "Skal være mindst %d"
 
-#: ../../../core/core_st.cpp:342
+#: ../../../core/core_st.cpp:344
 #, fuzzy
 msgid " (Pronounceable Symbols)"
 msgstr "Udtal-bare adgangskoder"
 
-#: ../../../core/core_st.cpp:343
+#: ../../../core/core_st.cpp:345
 #, fuzzy, c-format
 msgid "Yes - At least %d from %ls: %ls%ls"
 msgstr "Skal være mindst %d from %ls: %ls"
@@ -6403,9 +6466,6 @@ msgstr "Skal være mindst %d from %ls: %ls"
 
 #~ msgid " 'email'"
 #~ msgstr "'email'"
-
-#~ msgid " Drag # %d"
-#~ msgstr "Træk # %d"
 
 #~ msgid " [Process ID=%s]"
 #~ msgstr "[Proces ID=%s]"
@@ -7266,17 +7326,6 @@ msgstr "Skal være mindst %d from %ls: %ls"
 #~ msgid "Double Click Action"
 #~ msgstr "Dobbelt Klik Handling"
 
-#~ msgid ""
-#~ "Dropped entry '%s:%s:%s' password points to an entry that is also an "
-#~ "alias.\n"
-#~ "\n"
-#~ "The dropped entry now references that entry's base entry."
-#~ msgstr ""
-#~ "Mistet post '%s:%s:%s' adgangskode Peger på en post der også er et "
-#~ "alias.\n"
-#~ "\n"
-#~ "Den mistede post henviser nu til den posts basis post."
-
 #~ msgid "E&xit\tCtrl+Q\\Alt+F4"
 #~ msgstr "Af&slut\tCtrl+Q\\Alt+F4"
 
@@ -7322,9 +7371,6 @@ msgstr "Skal være mindst %d from %ls: %ls"
 
 #~ msgid "Entry status"
 #~ msgstr "Post status"
-
-#~ msgid "Entry type"
-#~ msgstr "Post type"
 
 #~ msgid "Estonian"
 #~ msgstr "Estonian"
@@ -8143,9 +8189,6 @@ msgstr "Skal være mindst %d from %ls: %ls"
 #~ msgid "Set Display Filters: %d Added; %d Active"
 #~ msgstr "Sæt Visnings Filter: %d Ekstra; %d Aktiv"
 
-#~ msgid "Set Entry's Password Policy"
-#~ msgstr "Sæt Post Adgangskode Politik"
-
 #~ msgid "Set Password History Filters: %d Added; %d Active"
 #~ msgstr "Sæt Adgangskode Historik Filtre: %d Ekstra; %d Aktiv"
 
@@ -8458,13 +8501,6 @@ msgstr "Skal være mindst %d from %ls: %ls"
 #~ "specifik."
 
 #~ msgid ""
-#~ "This alias' target [%s:%s:%s] is not a normal entry or already an alias "
-#~ "base."
-#~ msgstr ""
-#~ "Dette alias' mål [%s:%s:%s] er ikke en normal post eller allerede en "
-#~ "alias basis."
-
-#~ msgid ""
 #~ "This allows you to keep backups in a separate location. Make sure that "
 #~ "you have write permission to the directory you specify."
 #~ msgstr ""
@@ -8520,13 +8556,6 @@ msgstr "Skal være mindst %d from %ls: %ls"
 #~ "This program requires the file %s, which was not found on this system."
 #~ msgstr ""
 #~ "Dette program kræver filen %s, som ikke blev fundet på dette system."
-
-#~ msgid ""
-#~ "This shortcut's target [%s:%s:%s] is not a normal entry or already a "
-#~ "shortcut base."
-#~ msgstr ""
-#~ "Denne genvejs mål [%s:%s:%s] er ikke en normal post elller allerede en "
-#~ "basis genvej."
 
 #~ msgid ""
 #~ "This version of PasswordSafe does not support more than %d entries in a "

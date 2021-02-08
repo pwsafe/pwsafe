@@ -2108,7 +2108,7 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
         }
 
         conv.FromUTF8(utf8, utf8Len, sxEmptyGroup);
-        vsxEmptyGroups.push_back(sxDropGroup + sxEmptyGroup);
+        vsxEmptyGroups.push_back(sxEmptyGroup);
       }
     }
     else // Buffer utf8 still not allocated
@@ -2126,12 +2126,12 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
        UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
     
     // Copy the selected tree with all entries
-    AddDnDEntries(pmcmd, dnd_oblist, sxDropGroup);
+    AddDnDEntries(pmcmd, dnd_oblist, sxDropPath);
     
     // But we have to do the empty groups ourselves because EG_ADD is not recursive
     for(const auto & emptyGroup : vsxEmptyGroups)
     {
-        pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, emptyGroup, DBEmptyGroupsCommand::EG_ADD));
+        pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxDropGroup + emptyGroup, DBEmptyGroupsCommand::EG_ADD));
     }
     
     pmcmd->Add(UpdateGUICommand::Create(&m_core,
@@ -2174,7 +2174,7 @@ void TreeCtrl::UpdateUUIDinDnDEntries(DnDObList &dnd_oblist, pws_os::CUUID &old_
   }
 }
 
-void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, StringX &sxDropPath) // DropPath is including trailing dot
+void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, StringX &sxDropPath) // DropPath is not including trailing dot
 {
   // Add Drop entries
   CItemData ci_temp;
@@ -2185,6 +2185,9 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
   StringX sxgroup, sxtitle, sxuser;
   DnDIterator pos;
   StringX sxEntriesWithBaseEntryMissing;
+  StringX sxDropGroup(L"");
+  if(!sxDropPath.empty()) // Add DOT at end of drop destination if not root
+    sxDropGroup = sxDropPath + GROUP_SEP;
 
   const StringX sxDD_DateTime = PWSUtil::GetTimeStamp(true).c_str();
 
@@ -2255,7 +2258,13 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
     }
 
     // Using shift will force to the root, but the path is left as it is
-    sxgroup = sxDropPath + ci_temp.GetGroup();
+    StringX oldSXgroup = ci_temp.GetGroup();
+    if(oldSXgroup.empty()) {
+      sxgroup = sxDropPath;
+    }
+    else {
+      sxgroup = sxDropGroup + oldSXgroup;
+    }
 
     sxuser = ci_temp.GetUser();
     StringX sxnewtitle(ci_temp.GetTitle());
@@ -2329,7 +2338,7 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
           wxMessageBox(cs_msg, _("Drag and Drop failed"), wxOK);
         } else if(pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
           // Only normal or alias base allowed as target
-          wxString cs_msg = wxString::Format(_("This alias' target [%s:%s:%s] is not a normal entry."),
+          wxString cs_msg = wxString::Format(_("This alias's target [%s:%s:%s] is not a normal entry."),
                             sxgroup.c_str(),
                             sxtitle.c_str(),
                             sxuser.c_str());

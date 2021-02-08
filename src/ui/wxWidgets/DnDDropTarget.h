@@ -35,6 +35,9 @@
 ////@begin forward declarations
 class TreeCtrl;
 ////@end forward declarations
+#ifndef wxOVERRIDE
+#define wxOVERRIDE
+#endif
 
 class DndPWSafeDropTarget : public wxDropTarget
 {

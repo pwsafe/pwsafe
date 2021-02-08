@@ -30,6 +30,7 @@
 		A2FE25951C5ACFBD00210C36 /* PWStime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25931C5ACFBD00210C36 /* PWStime.cpp */; };
 		D3206A1E25B8B22300F6E115 /* DnDPWSafeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3206A1D25B8B22200F6E115 /* DnDPWSafeObject.cpp */; };
 		D335B4A925C8866B00E76A7B /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
+		D35472A625D1287100F8CCEB /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448112B26CEE00415AAE /* OpenGL.framework */; };
 		D3768A3125C17BB900319805 /* DnDDropTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3768A3025C17BB900319805 /* DnDDropTarget.cpp */; };
 		D396FD9D25B1BBEC00E6EAFC /* DnDFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D396FD9C25B1BBEC00E6EAFC /* DnDFile.cpp */; };
 		D3A7B657254817F700E780B8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A7B656254817F700E780B8 /* Foundation.framework */; };
@@ -788,6 +789,7 @@
 				D335B4A925C8866B00E76A7B /* IOKit.framework in Frameworks */,
 				E66D293E1D02B94C00C9BCBF /* Carbon.framework in Frameworks */,
 				E66D293C1D02B92F00C9BCBF /* libcore.a in Frameworks */,
+				D35472A625D1287100F8CCEB /* OpenGL.framework in Frameworks */,
 				D3A7B67D254824C000E780B8 /* AppKit.framework in Frameworks */,
 				E66D293D1D02B92F00C9BCBF /* libos.a in Frameworks */,
 				D3A7B6712548229D00E780B8 /* Foundation.framework in Frameworks */,

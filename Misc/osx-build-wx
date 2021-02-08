@@ -216,6 +216,12 @@ else
         export CXXFLAGS="-std=c++1y -stdlib=libc++"
         export OBJCXXFLAGS="-std=c++1y -stdlib=libc++"
         export LDFLAGS=-stdlib=libc++
+	if [ "$WX_VER" \> "3.0.5" ]
+        then
+            ZLIBFLAG="--with-zlib"
+	else
+            ZLIBFLAG=""
+        fi
 
         $DRY_RUN $CONF_SCRIPT --prefix=`pwd` $DEBUG_FLAG        \
                               $SDKFLAG                          \
@@ -226,7 +232,7 @@ else
                               --disable-compat30                \
                               --without-liblzma                 \
                               --enable-cxx11                    \
-                              --with-zlib
+                              $ZLIBFLAG
 	fi
 fi
 
