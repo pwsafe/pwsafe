@@ -63,7 +63,7 @@ fi
 # We have distro and release, let's get to work
 
 case "$DISTRO" in
-    debian|ubuntu|linuxmint)
+    debian|ubuntu|linuxmint|raspbian)
         if test \( "$DISTRO" = "ubuntu" -a "$RELEASE" -ge 20 \) -o \( "$DISTRO" = "debian" -a  "$RELEASE" -eq 0 \) ; then
             LIBWXDEV="libwxgtk3.0-gtk3-dev"
         else

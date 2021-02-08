@@ -485,24 +485,20 @@ if (NOT CPACK_PACKAGE_NAME)
 endif ()
 
 #
-# Determine the architecture (amd64, i386) with command 'uname -m'
+# Determine the architecture (amd64, i386, etc.) with command 'dpkg --print-architecture
 #
 if (NOT WIN32)
     if (NOT CPACK_DEBIAN_PACKAGE_ARCHITECTURE)
-      find_program(UNAME_EXECUTABLE uname)
-      mark_as_advanced(UNAME_EXECUTABLE)
+      find_program(DPKG_EXECUTABLE dpkg)
+      mark_as_advanced(DPKG_EXECUTABLE)
 
-      if (NOT UNAME_EXECUTABLE)
-        message(STATUS "Cannot find 'uname' in your path. Set architecture to default i386.")
+      if (NOT DPKG_EXECUTABLE)
+        # if we can't find dpkg, we don't really care, as this variable won't be used in this run.
         set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE i386)
       else ()
-        execute_process(COMMAND "${UNAME_EXECUTABLE}" -m
+        execute_process(COMMAND "${DPKG_EXECUTABLE}" --print-architecture
                         OUTPUT_VARIABLE CPACK_DEBIAN_PACKAGE_ARCHITECTURE
                         OUTPUT_STRIP_TRAILING_WHITESPACE)
-
-        if (CPACK_DEBIAN_PACKAGE_ARCHITECTURE MATCHES "x86_64")
-          set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE amd64)
-        endif ()
       endif ()
     endif ()
 endif (NOT WIN32)
@@ -612,7 +608,7 @@ if (${RELEASE_ID_SHORT} STREQUAL "Ubuntu")
   set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), ${LIBCURL}, libmagic1 (>= 1:5.25), libuuid1 (>= 2.17.2-0ubuntu1), ${LIBWX}, libxtst6 (>= 2:1.1.0-2), libxerces-c${XercesC_VER} (>= 3.1.0-1), libykpers-1-1 (>= 1.7.0-1), ${LIBQRENCODE}")
 endif (${RELEASE_ID_SHORT} STREQUAL "Ubuntu")
 
-if (${RELEASE_ID_SHORT} STREQUAL "Debian")
+if ((${RELEASE_ID_SHORT} STREQUAL "Debian") OR (${RELEASE_ID_SHORT} STREQUAL "Raspbian"))
   ## Debian-specific:
   if (NOT ${RELEASE_NUM_SHORT} VERSION_LESS "10")
     set (LIBCURL "libcurl4 (>= 7.64.0-4)")
@@ -625,7 +621,7 @@ if (${RELEASE_ID_SHORT} STREQUAL "Debian")
   endif (NOT ${RELEASE_NUM_SHORT} VERSION_LESS "10")
   set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.7-18lenny4), ${LIBCURL}, libmagic1 (>= 1:5.22), libuuid1 (>= 1.41.3-1), libwxgtk3.0-0 (>= 3.0.0-2) | libwxgtk3.0-0v5 (>= 3.0.0-2), libxtst6 (>= 2:1.0.3-1), ${LIBXERCES}, libykpers-1-1 (>= 1.7.0-1), ${LIBQRENCODE}")
   set (CPACK_DEBIAN_PACKAGE_RECOMMENDS "xvkbd (>= 3.3-1+b1)")
-endif (${RELEASE_ID_SHORT} STREQUAL "Debian")
+endif ((${RELEASE_ID_SHORT} STREQUAL "Debian") OR (${RELEASE_ID_SHORT} STREQUAL "Raspbian"))
 
 if (${RELEASE_ID_SHORT} STREQUAL "LinuxMint")
   ## LinuxMint-specific:
