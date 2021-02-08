@@ -54,6 +54,10 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/SetFiltersDlg.h
     src/ui/wxWidgets/ManageFiltersDlg.h
     src/ui/wxWidgets/ViewAttachmentDlg.h
+    src/ui/wxWidgets/DnDFile.h
+    src/ui/wxWidgets/DnDPWSafeObject.h
+    src/ui/wxWidgets/DnDSupport.h
+    src/ui/wxWidgets/DnDDropTarget.h
     )
 
 
@@ -112,6 +116,10 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/SetFiltersDlg.cpp
     src/ui/wxWidgets/ManageFiltersDlg.cpp
     src/ui/wxWidgets/ViewAttachmentDlg.cpp
+    src/ui/wxWidgets/DnDFile.cpp
+    src/ui/wxWidgets/DnDPWSafeObject.cpp
+    src/ui/wxWidgets/DnDSupport.cpp
+    src/ui/wxWidgets/DnDDropTarget.cpp
     )
 
 if(HAVE_YKPERS_H)
