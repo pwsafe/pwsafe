@@ -1152,7 +1152,7 @@ Command *DboxMain::Delete(const CItemData *pci)
   // ConfirmDelete asks for user confirmation
   // when deleting a shortcut or alias base.
   // Otherwise it just returns true
-  if (m_core.ConfirmDelete(pci))
+  if (m_core.ConfirmDelete(pci, m_sxOriginalGroup)) // pass group to be deleted to ignore dependents under it.
     return DeleteEntryCommand::Create(&m_core, *pci);
   else
     return NULL;
