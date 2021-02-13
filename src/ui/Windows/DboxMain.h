@@ -259,7 +259,7 @@ public:
                          const StringX &user, const int IDS_MESSAGE) const
   {return m_core.GetUniqueTitle(group, title, user, IDS_MESSAGE);}
   void FixListIndexes();
-  void Delete(MultiCommands *pmcmd); // "Top level" delete, calls the following 2 and Execute()
+  void Delete(MultiCommands *&pmcmd); // "Top level" delete, calls the following 2 and Execute()
   Command *Delete(const CItemData *pci); // create command for deleting a single item
   // For deleting a group:
   void Delete(HTREEITEM ti,

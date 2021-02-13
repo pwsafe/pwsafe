@@ -984,6 +984,7 @@ void DboxMain::OnDelete()
       Execute(pmcmd);
     } else {
       delete pmcmd;
+      return;
     }
 
     // Only refresh views if an entry or a non-empty group was deleted
@@ -1057,7 +1058,7 @@ Select_Next_Prev:
   UpdateToolBarForSelectedItem(pci_select);
 }
 
-void DboxMain::Delete(MultiCommands *pmcmd)
+void DboxMain::Delete(MultiCommands *&pmcmd)
 {
   // "Top level" element delete:
   // 1. Sets up Command mechanism
@@ -1111,8 +1112,18 @@ void DboxMain::Delete(MultiCommands *pmcmd)
                   [&] (Command *cmd) {pmcmd->Add(cmd);});
 
     // Delete alias & shortcut bases
-    std::for_each(vbases.begin(), vbases.end(),
-                  [&] (Command *cmd) {pmcmd->Add(cmd);});
+    // If we have a null value, this means the user decided not to delete a base element,
+    // so bail out entirely
+    for (auto cmd : vbases)
+    {
+      if (cmd != nullptr)
+        pmcmd->Add(cmd);
+      else { // bail out!
+        delete pmcmd;
+        pmcmd = MultiCommands::Create(&m_core); // alternate is to add an Empty() member function to MultiCommand;
+        return;
+      }
+    }
 
     // This will either delete the empty groups or convert non-empty groups
     // to empty ones once all entries have been deleted
