@@ -266,7 +266,7 @@ public:
   void GetAllGroups(std::vector<stringT> &vAllGroups, const bool bIncludeEmptyGroups = true) const;
   // Construct unique title
   StringX GetUniqueTitle(const StringX &group, const StringX &title,
-                         const StringX &user, const int IDS_MESSAGE);
+                         const StringX &user, const int ids_messsage);
   // Get all password policy names
   void GetPolicyNames(std::vector<stringT> &vNames) const;
   bool GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp) const;
@@ -274,12 +274,12 @@ public:
                              std::map<StringX, StringX> &mapRenamedPolicies,
                              std::vector<StringX> &vs_PoliciesAdded,
                              StringX &sxOtherPolicyName, bool &bUpdated,
-                             const StringX &sxDateTime, const UINT &IDS_MESSAGE);
+                             const StringX &sxDateTime, const UINT &ids_message);
 
   // This routine should only be directly called from XML import
   void MakePolicyUnique(std::map<StringX, StringX> &mapRenamedPolicies,
                         StringX &sxPolicyName, const StringX &sxDateTime,
-                        const UINT IDS_MESSAGE);
+                        const UINT ids_message);
 
   bool GetEntriesUsingNamedPasswordPolicy(const StringX sxPolicyName,
                                           std::vector<st_GroupTitleUser> &ventries);
@@ -292,7 +292,7 @@ public:
   // Adds an st_GroupTitleUser to setGTU, possible modifying title
   // to ensure uniqueness. Returns false if title was modified.
   bool MakeEntryUnique(GTUSet &setGTU, const StringX &group, StringX &title,
-                       const StringX &user, const int IDS_MESSAGE);
+                       const StringX &user, const int ids_message);
   bool GetUniqueGTUValidated() const
   {return m_bUniqueGTUValidated;}
 
@@ -329,7 +329,7 @@ public:
   ItemListConstIter Find(const pws_os::CUUID &entry_uuid) const
   {return m_pwlist.find(entry_uuid);}
 
-  bool ConfirmDelete(const CItemData *pci); // ask user when about to delete a base,
+  bool ConfirmDelete(const CItemData *pci, StringX sxGroup = L""); // ask user when about to delete a base,
   //                                           otherwise just return true
 
   // General routines for aliases and shortcuts

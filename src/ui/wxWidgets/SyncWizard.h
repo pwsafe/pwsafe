@@ -33,7 +33,7 @@ class SyncWizard : public wxWizard
   SyncData* m_syncData;
 
 public:
-  SyncWizard(wxWindow* parent, PWScore* core);
+  SyncWizard(wxWindow* parent, PWScore* core, const wxString filename = "");
   ~SyncWizard();
 
   //users must pass the return value of this function to RunWizard

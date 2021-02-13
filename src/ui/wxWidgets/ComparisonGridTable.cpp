@@ -508,7 +508,11 @@ bool MultiSafeCompareGridTable::DeleteRows(size_t pos, size_t numRows)
 DEFINE_EVENT_TYPE(EVT_SELECT_GRID_ROW)
 
 BEGIN_EVENT_TABLE( ComparisonGrid, wxGrid )
+#if wxCHECK_VERSION(3, 1, 5)
+  EVT_GRID_RANGE_SELECTED(ComparisonGrid::OnGridRangeSelect)
+#else
   EVT_GRID_RANGE_SELECT(ComparisonGrid::OnGridRangeSelect)
+#endif
   EVT_COMMAND(wxID_ANY, EVT_SELECT_GRID_ROW, ComparisonGrid::OnAutoSelectGridRow)
 END_EVENT_TABLE()
 

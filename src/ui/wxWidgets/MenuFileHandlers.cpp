@@ -795,7 +795,7 @@ void PasswordSafeFrame::DoExportText()
           CReport rpt;
 
           rpt.StartReport(ExportType::GetTitle().c_str(), sx_temp.c_str());
-          rpt.WriteLine(tostdstring(wxString(_("Exporting database: ")) << towxstring(sx_temp) << wxT(" to ") << newfile<< wxT("\r\n")));
+          rpt.WriteLine(tostdstring(wxString(_("Exporting database: ")) << towxstring(sx_temp) << _(" to ") << newfile<< wxT("\r\n")));
 
           int rc = ExportType::Write(m_core, newfile, bsExport, subgroup_name, subgroup_object,
                                       subgroup_function, delimiter, numExported, &orderedItemList, &rpt);
@@ -839,7 +839,6 @@ void PasswordSafeFrame::DoExportText()
 
 void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
 {
-  UNREFERENCED_PARAMETER(evt);
   if (m_core.IsReadOnly()) {// disable in read-only mode
     wxMessageBox(_("The current database was opened in read-only mode.  You cannot import into it."),
                   _("Import text"), wxOK | wxICON_EXCLAMATION, this);
@@ -857,7 +856,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
     return;
   }
 
-  ImportTextDlg dlg(this);
+  ImportTextDlg dlg(this, evt.GetString());
   if (dlg.ShowModal() != wxID_OK)
     return;
 
@@ -957,7 +956,6 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
 
 void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
 {
-  UNREFERENCED_PARAMETER(evt);
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
@@ -982,7 +980,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   }
 #endif
 
-  ImportXmlDlg dlg(this);
+  ImportXmlDlg dlg(this, evt.GetString());
   if (dlg.ShowModal() != wxID_OK)
     return;
 
@@ -1104,19 +1102,25 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
 
 void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
 {
-  UNREFERENCED_PARAMETER(evt);
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
 
-  wxFileDialog fd(this, _("Please Choose a KeePass Text File to Import"),
-                  wxEmptyString, wxEmptyString,
+  wxString KPsFileName;
+  
+  if(evt.GetString().IsEmpty()) {
+    wxFileDialog fd(this, _("Please Choose a KeePass Text File to Import"),
+                  wxEmptyString, evt.GetString(),
                   _("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"),
                   (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_PREVIEW));
 
-  if (fd.ShowModal() != wxID_OK )
-    return;
-
-  const wxString KPsFileName(fd.GetPath());
+    if (fd.ShowModal() != wxID_OK )
+      return;
+    
+    KPsFileName = fd.GetPath();
+  }
+  else {
+    KPsFileName = evt.GetString();
+  }
   CReport rpt;
 
   enum { KeePassCSV, KeePassTXT } ImportType = wxFileName(KPsFileName).GetExt() == wxT("csv")? KeePassCSV: KeePassTXT;
@@ -1157,9 +1161,12 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
         LoadAString(s, uiReasonCode);
         msg = towxstring(s);
       }
-      else
+      else {
         msg = wxString::Format(_("%ls\n\nInvalid format"), KPsFileName.GetData());
-      wxMessageBox(msg, _("Import failed"), wxOK | wxICON_ERROR, this);
+      }
+      msg << wxT("\n\n") << _("Do you wish to see a detailed report?");
+      if (wxMessageBox(msg, _("Import failed"), wxYES_NO | wxICON_ERROR, this) == wxYES)
+        ViewReport(rpt);
       delete [] pcmd;
       break;
     }
@@ -1191,8 +1198,7 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
 
 void PasswordSafeFrame::OnMergeAnotherSafe(wxCommandEvent& evt)
 {
-  UNREFERENCED_PARAMETER(evt);
-  MergeDlg dlg(this, &m_core);
+  MergeDlg dlg(this, &m_core, evt.GetString());
   if (dlg.ShowModal() == wxID_OK) {
     PWScore othercore; // NOT PWSAuxCore, as we handle db prefs explicitly
     // Reading a new file changes the preferences as they are instance dependent
@@ -1252,13 +1258,13 @@ void PasswordSafeFrame::OnCompare(wxCommandEvent& WXUNUSED(evt))
   dlg.ShowModal();
 }
 
-void PasswordSafeFrame::OnSynchronize(wxCommandEvent& WXUNUSED(evt))
+void PasswordSafeFrame::OnSynchronize(wxCommandEvent& evt)
 {
   // disable in read-only mode or empty
   wxCHECK_RET(!m_core.IsReadOnly() && m_core.IsDbOpen() && m_core.GetNumEntries() != 0,
                 wxT("Synchronize menu enabled for empty or read-only database!"));
 
-  SyncWizard wiz(this, &m_core);
+  SyncWizard wiz(this, &m_core, evt.GetString());
   wiz.RunWizard(wiz.GetFirstPage());
 
   if (wiz.GetNumUpdated() > 0)

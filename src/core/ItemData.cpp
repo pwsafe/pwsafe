@@ -559,7 +559,7 @@ void CItemData::GetUUID(uuid_array_t &uuid_array, FieldType ft) const
       ASSERT(0);
     }
   if (fiter == m_fields.end()) {
-    pws_os::Trace(_T("CItemData::GetUUID(uuid_array_t) - no UUID found!\n"));
+    // pws_os::Trace(_T("CItemData::GetUUID(uuid_array_t) - no UUID found!\n"));
     memset(uuid_array, 0, length);
   } else {
     CItem::GetField(fiter->second,

@@ -52,12 +52,13 @@ IMPLEMENT_CLASS( ImportTextDlg, wxDialog )
 BEGIN_EVENT_TABLE( ImportTextDlg, wxDialog )
 END_EVENT_TABLE()
 
-ImportTextDlg::ImportTextDlg(wxWindow* parent) :  wxDialog(parent,
+ImportTextDlg::ImportTextDlg(wxWindow* parent, const wxString filename) :  wxDialog(parent,
                                                             wxID_ANY,
                                                             _("Import Text Settings"),
                                                             wxDefaultPosition,
                                                             wxDefaultSize,
                                                             wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),
+                                                    filepath(filename),
                                                     delimiterComma(false),
                                                     delimiterSpace(false),
                                                     delimiterTab(true), //this is the pwsafe's default for export
@@ -186,7 +187,7 @@ void ImportTextDlg::CreateControls()
   dlgSizer->Add(new wxStaticText(this, wxID_ANY, strPrompt), Left);
   dlgSizer->AddSpacer(RowSeparation);
   OpenFilePickerValidator validator(filepath);
-  dlgSizer->Add(new wxFilePickerCtrl(this, wxID_ANY, wxEmptyString,
+  dlgSizer->Add(new wxFilePickerCtrl(this, wxID_ANY, filepath,
                                           strPrompt, wildCards,
                                           wxDefaultPosition, wxDefaultSize,
                                           wxFLP_DEFAULT_STYLE | wxFLP_USE_TEXTCTRL,

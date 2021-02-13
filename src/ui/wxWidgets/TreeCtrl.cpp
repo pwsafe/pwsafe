@@ -26,12 +26,18 @@
 #include <wx/tokenzr.h>
 ////@end includes
 
+#include "core/core.h"
+#include "core/UTF8Conv.h"
+
 #include "core/PWSprefs.h"
 #include "core/Command.h"
 
 #include "PasswordSafeFrame.h"
 #include "PWSafeApp.h"
 #include "TreeCtrl.h"
+#include "DnDPWSafeObject.h"
+#include "DnDSupport.h"
+#include "DnDDropTarget.h"
 
 #include <utility> // for make_pair
 #include <vector>
@@ -67,6 +73,7 @@
 #endif
 
 using pws_os::CUUID;
+class Command;
 
 /*!
  * TreeCtrl type definition
@@ -208,6 +215,9 @@ bool TreeCtrl::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const
   wxTreeCtrl::Create(parent, id, pos, size, style);
   CreateControls();
 ////@end TreeCtrl creation
+#if wxUSE_DRAG_AND_DROP
+  SetDropTarget(new DndPWSafeDropTarget(this));
+#endif
   return true;
 }
 
@@ -237,6 +247,8 @@ void TreeCtrl::Init()
   m_drag_image = nullptr;
   m_had_been_out = false;
   m_bFilterActive = false;
+  m_last_dnd_item = nullptr;
+  m_run_dnd = false;
 ////@end TreeCtrl member initialisation
 }
 
@@ -317,6 +329,8 @@ void TreeCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &e
   switch (ga) {
     case UpdateGUICommand::GUI_UPDATE_STATUSBAR:
       // Handled by PasswordSafeFrame
+      if(HasItems())
+        SortChildrenRecursively(GetRootItem());
       break;
     case UpdateGUICommand::GUI_ADD_ENTRY:
       ASSERT(item != nullptr);
@@ -1858,4 +1872,635 @@ void TreeCtrl::TraverseTree(wxTreeItemId itemId, GroupItemConsumer&& consumer)
 
     TraverseTree(GetNextSibling(itemId), consumer);
   }
+}
+
+void TreeCtrl::OnDrag(wxMouseEvent& event)
+{
+#if wxUSE_DRAG_AND_DROP
+  if(m_last_dnd_item == nullptr) {
+    event.Skip();
+    return;
+  }
+  
+  pws_os::Trace(L"TreeCtrl::OnDrag Start");
+  wxMemoryBuffer buffer;
+  CollectDnDData(buffer);
+  if(! buffer.GetDataLen()) {
+    pws_os::Trace(L"TreeCtrl::OnDrag End without buffer content");
+    event.Skip();
+    return;
+  }
+  DnDPWSafeObject dragData(&buffer);
+  
+  wxDropSource source(dragData, this);
+  m_run_dnd = true; // mark running drag and drop to be aware on local dropping
+  
+  switch(source.DoDragDrop(true))
+  {
+    default:
+    case wxDragError:
+      pws_os::Trace(L"TreeCtrl::OnDrag Error");
+      break;
+      
+    case wxDragNone:
+      pws_os::Trace(L"TreeCtrl::OnDrag None (nothing happend)");
+      break;
+      
+    case wxDragCopy:
+      pws_os::Trace(L"TreeCtrl::OnDrag Copy");
+      break;
+      
+    case wxDragMove:
+      pws_os::Trace(L"TreeCtrl::OnDrag Move");
+#if !defined(__WXMAC__)
+      // mac OS darg and drop only allows Move, as control/command is not handled
+      // Perform copy as default action for mac OS
+      if(! ::wxGetKeyState(WXK_CONTROL) && ! m_core.IsReadOnly()) {
+        class Command *doit;
+        doit = static_cast<PasswordSafeFrame *>(GetParent())->Delete(m_last_dnd_item);
+        if (doit != nullptr)
+          m_core.Execute(doit);
+      }
+#endif
+      break;
+      
+    case wxDragCancel:
+      pws_os::Trace(L"TreeCtrl::OnDrag Cancel");
+      break;
+  }
+  
+  m_run_dnd = false;
+#else
+  event.Skip();
+#endif
+  m_last_dnd_item = nullptr;
+}
+
+void TreeCtrl::CollectDnDData(wxMemoryBuffer &outDDmem)
+{
+  std::vector<StringX> vEmptyGroups;
+  wxTreeItemId parent = GetItemParent(m_last_dnd_item);
+  StringX DragPathParent = tostringx((GetRootItem() != m_last_dnd_item) ? GetItemGroup(parent) : "");
+  DnDObList dnd_oblist(DragPathParent.length());
+  // With shift key pressed on drag left full group, else wise remove path to group
+  dnd_oblist.SetDragNode(::wxGetKeyState(WXK_SHIFT) ? false : true);
+  
+  if((m_last_dnd_item == nullptr) || (GetRootItem() == m_last_dnd_item))
+    return;
+  
+  // Collect all items to drag in dnd_oblist and vEmptyGroups
+  if(!ItemIsGroup(m_last_dnd_item)) {
+    // It's only one item to handle
+    CItemData *pci = TreeCtrl::GetItem(m_last_dnd_item);
+    wxASSERT(pci);
+    GetEntryData(dnd_oblist, pci);
+  }
+  else {
+    StringX DragPath = tostringx(GetItemGroup(m_last_dnd_item));
+    
+    if(GetChildrenCount(m_last_dnd_item) == 0) {
+      // Don't bother looking for children, it is only one empty group
+      if(dnd_oblist.CutGroupPath() && (dnd_oblist.DragPathParentLen() > 0) && (DragPath.length() > dnd_oblist.DragPathParentLen())) {
+        vEmptyGroups.push_back(DragPath.substr(dnd_oblist.DragPathParentLen() + 1));
+      }
+      else {
+        vEmptyGroups.push_back(DragPath);
+      }
+    }
+    else {
+      // Handle all items selected
+      GetGroupEntriesData(dnd_oblist, m_last_dnd_item);
+      // Handle all empty groups in addition
+      typedef std::vector<StringX> EmptyGroupsArray;
+      const EmptyGroupsArray& emptyGroups = m_core.GetEmptyGroups();
+      StringX sxDragPathWithDot = DragPath + _T('.');
+      for(const auto & emptyGroup : emptyGroups)
+      {
+        if(emptyGroup == DragPath || emptyGroup.find(sxDragPathWithDot) == 0) {
+          if(dnd_oblist.CutGroupPath() && (dnd_oblist.DragPathParentLen() > 0) && (emptyGroup.length() > dnd_oblist.DragPathParentLen())) {
+            vEmptyGroups.push_back(emptyGroup.substr(dnd_oblist.DragPathParentLen() + 1));
+          }
+          else {
+            vEmptyGroups.push_back(emptyGroup);
+          }
+        }
+      }
+    }
+  }
+  
+  // Store entries in buffer, at least write header
+  dnd_oblist.DnDSerialize(outDDmem);
+  
+  // Now process empty groups
+  if(!vEmptyGroups.empty()) {
+    // Add special field to ensure we recognise the extra data correctly
+    // when dropping
+    outDDmem.AppendData("egrp", 4);
+
+    size_t nemptygroups = vEmptyGroups.size();
+    outDDmem.AppendData((void *)&nemptygroups, sizeof(size_t));
+    for(size_t i = 0; i < nemptygroups; i++) {
+      CUTF8Conv conv;
+      const unsigned char *utf8;
+      size_t utf8Len;
+
+      if(conv.ToUTF8(vEmptyGroups[i].c_str(), utf8, utf8Len)) {
+        outDDmem.AppendData((void *)&utf8Len, sizeof(size_t));
+        outDDmem.AppendData(utf8, utf8Len);
+      } else {
+        wxASSERT(false);
+      }
+    }
+  }
+}
+
+void TreeCtrl::GetGroupEntriesData(DnDObList &dnd_oblist, wxTreeItemId item)
+{
+  if(! ItemIsGroup(item)) {
+    CItemData *pci = TreeCtrl::GetItem(item);
+    wxASSERT(pci != NULL);
+    GetEntryData(dnd_oblist, pci);
+  } else {
+    wxTreeItemIdValue cookie;
+    wxTreeItemId ti = GetFirstChild(item, cookie);
+
+    while(ti) {
+      GetGroupEntriesData(dnd_oblist, ti);
+      ti = GetNextSibling(ti);
+    }
+  }
+}
+
+void TreeCtrl::GetEntryData(DnDObList &dnd_oblist, CItemData *pci)
+{
+  wxASSERT(pci != NULL);
+  DnDObject *pDnDObject = new DnDObject;
+  wxASSERT(pDnDObject);
+
+  if(dnd_oblist.CutGroupPath() && (dnd_oblist.DragPathParentLen() > 0)) {
+    CItemData ci2(*pci); // we need a copy since to modify the group
+    const StringX cs_Group = pci->GetGroup();
+    ci2.SetGroup(cs_Group.length() > dnd_oblist.DragPathParentLen() ? cs_Group.substr(dnd_oblist.DragPathParentLen() + 1) : L"");
+    pDnDObject->FromItem(ci2);
+  } else {
+    pDnDObject->FromItem(*pci);
+  }
+
+  if(pci->IsDependent()) {
+    // I'm an alias or shortcut; pass on ptr to my base item
+    // to retrieve its group/title/user
+    CItemData *pbci = m_core.GetBaseEntry(pci);
+    wxASSERT(pbci != NULL);
+    pDnDObject->SetBaseItem(pbci);
+  }
+
+  dnd_oblist.AddTail(pDnDObject);
+}
+
+bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
+{
+  wxASSERT(inDDmem);
+  wxMemoryInputStream stream(inDDmem->GetData(), inDDmem->GetDataLen());
+  DnDObList dnd_oblist;
+  
+  // Get all the entries
+  dnd_oblist.DnDUnSerialize(stream);
+  // Now check if empty group list is appended to the item data
+  // Empty groups have a dummy header of 'egrp' to check it is ours
+  // Note: No EOF indication in CFile and hence CMemfile only to check
+  // we have read in is what we wanted!
+  std::vector<StringX> vsxEmptyGroups;
+  StringX sxDropGroup(L"");
+  if(!sxDropPath.empty()) // Add DOT at end of drop destination if not root
+    sxDropGroup = sxDropPath + GROUP_SEP;
+
+  char chdr[5] = { 0 };
+  stream.Read(chdr, 4);
+  if((stream.LastRead() == 4) && (strncmp(chdr, "egrp", 4) == 0)) {
+    // It is ours - now process the empty groups being dropped
+    size_t nemptygroups, utf8Len, buffer_size = 0;
+    unsigned char *utf8 = nullptr;
+    
+    stream.Read((void *)&nemptygroups, sizeof(nemptygroups));
+    if(stream.LastRead() == sizeof(size_t)) {
+      for(size_t i = 0; i < nemptygroups; i++) {
+        StringX sxEmptyGroup;
+        CUTF8Conv conv;
+
+        stream.Read((void *)&utf8Len, sizeof(size_t));
+        if(stream.LastRead() != sizeof(utf8Len)) {
+          delete utf8;
+          return false;
+        }
+        if(utf8Len > buffer_size) {
+          delete[] utf8;
+          buffer_size = utf8Len * 2;
+          utf8 = new unsigned char[buffer_size+1];
+          wxASSERT(utf8);
+        }
+
+        // Clear buffer
+        memset(utf8, 0, buffer_size);
+        stream.Read(utf8, utf8Len);
+        if(stream.LastRead() != utf8Len) {
+          delete utf8;
+          return false;
+        }
+
+        conv.FromUTF8(utf8, utf8Len, sxEmptyGroup);
+        vsxEmptyGroups.push_back(sxEmptyGroup);
+      }
+    }
+    else // Buffer utf8 still not allocated
+      return false;
+    delete utf8;
+  }
+  
+  if(!dnd_oblist.IsEmpty() || !vsxEmptyGroups.empty()) {
+    
+    MultiCommands* pmcmd = MultiCommands::Create(&m_core);
+    if(!pmcmd)
+      return false;
+
+    pmcmd->Add(UpdateGUICommand::Create(&m_core,
+       UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
+    
+    // Copy the selected tree with all entries
+    AddDnDEntries(pmcmd, dnd_oblist, sxDropPath);
+    
+    // But we have to do the empty groups ourselves because EG_ADD is not recursive
+    for(const auto & emptyGroup : vsxEmptyGroups)
+    {
+        pmcmd->Add(DBEmptyGroupsCommand::Create(&m_core, sxDropGroup + emptyGroup, DBEmptyGroupsCommand::EG_ADD));
+    }
+    
+    pmcmd->Add(UpdateGUICommand::Create(&m_core,
+      UpdateGUICommand::WN_EXECUTE_REDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
+    
+    if(pmcmd->GetSize() > 2) {
+      
+      // Since we added some commands apart from the first & last WM_UNDO/WM_REDO,
+      // check if original drop group was empty - if so, it won't be now
+      // We need to insert it after the first command (WN_UNDO, GUI_REFRESH_BOTHVIEWS)
+      if(!sxDropPath.empty() && m_core.IsEmptyGroup(sxDropPath)) {
+        pmcmd->Insert(DBEmptyGroupsCommand::Create(&m_core, sxDropPath, DBEmptyGroupsCommand::EG_DELETE), 1);
+      }
+      
+      // Execute the event
+      m_core.Execute(pmcmd);
+    }
+    
+    // FixListIndexes();
+    static_cast<PasswordSafeFrame *>(GetParent())->RefreshViews();
+    
+    return true;
+  }
+  
+  return false;
+}
+
+void TreeCtrl::UpdateUUIDinDnDEntries(DnDObList &dnd_oblist, pws_os::CUUID &old_uuid, pws_os::CUUID &new_uuid)
+{
+  DnDIterator pos;
+  
+  wxASSERT((old_uuid != CUUID::NullUUID()) && (new_uuid != CUUID::NullUUID()));
+  for(pos = dnd_oblist.ObjectsBegin(); pos != dnd_oblist.ObjectsEnd(); ++pos) {
+    DnDObject *pDnDObject = *pos;
+    wxASSERT(pDnDObject);
+    pws_os::CUUID uuid = pDnDObject->GetUUID();
+    if(pDnDObject->GetBaseUUID() == old_uuid) {
+      pDnDObject->SetBaseUUID(new_uuid);
+    }
+  }
+}
+
+void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, StringX &sxDropPath) // DropPath is not including trailing dot
+{
+  // Add Drop entries
+  CItemData ci_temp;
+  UUIDVector Possible_Aliases, Possible_Shortcuts;
+  std::vector<StringX> vAddedPolicyNames;
+  StringX sxEntriesWithNewNamedPolicies;
+  std::map<StringX, StringX> mapRenamedPolicies;
+  StringX sxgroup, sxtitle, sxuser;
+  DnDIterator pos;
+  StringX sxEntriesWithBaseEntryMissing;
+  StringX sxDropGroup(L"");
+  if(!sxDropPath.empty()) // Add DOT at end of drop destination if not root
+    sxDropGroup = sxDropPath + GROUP_SEP;
+
+  const StringX sxDD_DateTime = PWSUtil::GetTimeStamp(true).c_str();
+
+  // Initialize set
+  GTUSet setGTU;
+  m_core.InitialiseGTU(setGTU);
+  
+  for (pos = dnd_oblist.ObjectsBegin(); pos != dnd_oblist.ObjectsEnd(); ++pos) {
+    DnDObject *pDnDObject = *pos;
+    wxASSERT(pDnDObject);
+    pws_os::CUUID uuid = pDnDObject->GetUUID();
+    if (m_core.Find(uuid) != m_core.GetEntryEndIter()) {
+      // UUID already in use - get a new one!
+      pDnDObject->CreateUUID();
+      if(pDnDObject->GetBaseUUID() == CUUID::NullUUID()) { // When not alias or shortcut
+        // Update base UUID
+        pws_os::CUUID new_uuid = pDnDObject->GetUUID();
+        UpdateUUIDinDnDEntries(dnd_oblist, uuid, new_uuid);
+      }
+    }
+  }
+
+  for (pos = dnd_oblist.ObjectsBegin(); pos != dnd_oblist.ObjectsEnd(); ++pos) {
+    DnDObject *pDnDObject = *pos;
+    wxASSERT(pDnDObject);
+
+    bool bChangedPolicy(false);
+    ci_temp.Clear();
+    // Only set to false if adding a shortcut where the base isn't there (yet)
+    bool bAddToViews = true;
+    pDnDObject->ToItem(ci_temp);
+
+    StringX sxPolicyName = ci_temp.GetPolicyName();
+    if (!sxPolicyName.empty()) {
+      // D&D put the entry's name here and the details in the entry
+      // which we now have to add to this core and remove from the entry
+
+      // Get the source database PWPolicy & symbols for this name
+      PWPolicy st_pp;
+      ci_temp.GetPWPolicy(st_pp);
+      st_pp.symbols = ci_temp.GetSymbols();
+
+      // Get the same info if the policy is in the target database
+      PWPolicy currentDB_st_pp;
+      bool bNPWInCurrentDB = m_core.GetPolicyFromName(sxPolicyName, currentDB_st_pp);
+      if (bNPWInCurrentDB) {
+        // It exists in target database
+        if (st_pp != currentDB_st_pp) {
+          // They are not the same - make this policy unique
+          m_core.MakePolicyUnique(mapRenamedPolicies, sxPolicyName, sxDD_DateTime, IDSC_DRAGPOLICY);
+          ci_temp.SetPolicyName(sxPolicyName);
+          bChangedPolicy = true;
+        }
+      }
+      
+      if (!bNPWInCurrentDB || bChangedPolicy) {
+        // Not in target database or has different settings -
+        // Add it if we haven't already
+        if (std::find(vAddedPolicyNames.begin(), vAddedPolicyNames.end(), sxPolicyName) == vAddedPolicyNames.end()) {
+          // Doesn't already exist and we haven't already added it - add
+          pmCmd->Add(DBPolicyNamesCommand::Create(&m_core, sxPolicyName, st_pp));
+          vAddedPolicyNames.push_back(sxPolicyName);
+        }
+        // No longer need these values
+        ci_temp.SetPWPolicy(L"");
+        ci_temp.SetSymbols(L"");
+      }
+    }
+
+    // Using shift will force to the root, but the path is left as it is
+    StringX oldSXgroup = ci_temp.GetGroup();
+    if(oldSXgroup.empty()) {
+      sxgroup = sxDropPath;
+    }
+    else {
+      sxgroup = sxDropGroup + oldSXgroup;
+    }
+
+    sxuser = ci_temp.GetUser();
+    StringX sxnewtitle(ci_temp.GetTitle());
+    m_core.MakeEntryUnique(setGTU, sxgroup, sxnewtitle, sxuser, IDSC_DRAGNUMBER);
+
+    if (bChangedPolicy) {
+      StringX sxChanged = L"\r\n\xab" + sxgroup + L"\xbb " +
+                          L"\xab" + sxnewtitle + L"\xbb " +
+                          L"\xab" + sxuser + L"\xbb";
+      sxEntriesWithNewNamedPolicies += sxChanged;
+    }
+
+    ci_temp.SetGroup(sxgroup);
+    ci_temp.SetTitle(sxnewtitle);
+
+    StringX cs_tmp = ci_temp.GetPassword();
+
+    BaseEntryParms pl;
+    pl.InputType = CItemData::ET_NORMAL;
+
+    // Potentially remove outer single square brackets as ParseBaseEntryPWD expects only
+    // one set of square brackets (processing import and user edit of entries)
+    if (cs_tmp.substr(0, 2) == L"[[" && cs_tmp.substr(cs_tmp.length() - 2) == L"]]") {
+      cs_tmp = cs_tmp.substr(1, cs_tmp.length() - 2);
+      pl.InputType = CItemData::ET_ALIAS;
+    }
+    
+    // Potentially remove tilde as ParseBaseEntryPWD expects only
+    // one set of square brackets (processing import and user edit of entries)
+    if (cs_tmp.substr(0, 2) == L"[~" && cs_tmp.substr(cs_tmp.length() - 2) == L"~]") {
+      cs_tmp = L"[" + cs_tmp.substr(2, cs_tmp.length() - 4) + L"]";
+      pl.InputType = CItemData::ET_SHORTCUT;
+    }
+
+    // If we have BASEUUID, life is simple
+    if (ci_temp.GetBaseUUID() != CUUID::NullUUID()) {
+      pl.base_uuid = ci_temp.GetBaseUUID();
+      if((m_core.Find(pl.base_uuid) != m_core.GetEntryEndIter()) || dnd_oblist.CanFind(pl.base_uuid)) {
+        // If object already exist or will be added
+        pl.ibasedata = 1;
+        pl.TargetType = CItemData::ET_NORMAL;
+      }
+      else {
+        // Overtake, but change to normal item
+        StringX sxChanged = L"\r\n\xab" + sxgroup + L"\xbb " +
+                            L"\xab" + sxtitle + L"\xbb " +
+                            L"\xab" + sxuser + L"\xbb";
+        sxEntriesWithBaseEntryMissing += sxChanged;
+
+        pl.ibasedata = 0;
+        pl.base_uuid = CUUID::NullUUID();
+      }
+    } else {
+        m_core.ParseBaseEntryPWD(cs_tmp, pl);
+    }
+    
+    if (pl.ibasedata > 0) {
+      // Add to pwlist
+      pmCmd->Add(AddEntryCommand::Create(&m_core,
+                                         ci_temp, ci_temp.GetBaseUUID())); // need to do this as well as AddDep...
+
+      // Password in alias/shortcut format AND base entry exists
+      if(pl.InputType == CItemData::ET_ALIAS) {
+        if(pl.TargetType == CItemData::ET_ALIAS) {
+          // This base is in fact an alias. ParseBaseEntryPWD already found 'proper base'
+          // So dropped entry will point to the 'proper base' and tell the user.
+          wxString cs_msg = wxString::Format(_("Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."),
+                            sxgroup.c_str(),
+                            sxtitle.c_str(),
+                            sxuser.c_str());
+          wxMessageBox(cs_msg, _("Drag and Drop failed"), wxOK);
+        } else if(pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
+          // Only normal or alias base allowed as target
+          wxString cs_msg = wxString::Format(_("This alias's target [%s:%s:%s] is not a normal entry."),
+                            sxgroup.c_str(),
+                            sxtitle.c_str(),
+                            sxuser.c_str());
+          wxMessageBox(cs_msg, _("Drag and Drop failed"), wxOK);
+          continue;
+        }
+        
+        pmCmd->Add(AddDependentEntryCommand::Create(&m_core, pl.base_uuid,
+                                                    ci_temp.GetUUID(),
+                                                    CItemData::ET_ALIAS));
+
+        ci_temp.SetPassword(L"[Alias]");
+        ci_temp.SetAlias();
+      } else if(pl.InputType == CItemData::ET_SHORTCUT) {
+        if(pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_SHORTCUTBASE) {
+          // Only normal or shortcut base allowed as target
+          wxString cs_msg = wxString::Format(_("This shortcut's target [%s:%s:%s] is not a normal entry."),
+                            sxgroup.c_str(),
+                            sxtitle.c_str(),
+                            sxuser.c_str());
+          wxMessageBox(cs_msg, _("Drag and Drop failed"), wxOK);
+          continue;
+        }
+
+        pmCmd->Add(AddDependentEntryCommand::Create(&m_core,
+                                                    pl.base_uuid,
+                                                    ci_temp.GetUUID(),
+                                                    CItemData::ET_SHORTCUT));
+
+        ci_temp.SetPassword(L"[Shortcut]");
+        ci_temp.SetShortcut();
+      }
+    } else if(pl.ibasedata == 0) {
+      // Password NOT in alias/shortcut format
+      ci_temp.SetNormal();
+    } else if(pl.ibasedata < 0) {
+      // Password in alias/shortcut format AND base entry does not exist or multiple possible
+      // base entries exit.
+      // Note: As more entries are added, what was "not exist" may become "OK",
+      // "no unique exists" or "multiple exist".
+      // Let the code that processes the possible aliases after all have been added sort this out.
+      if(pl.InputType == CItemData::ET_ALIAS) {
+         Possible_Aliases.push_back(ci_temp.GetUUID());
+      } else if(pl.InputType == CItemData::ET_SHORTCUT) {
+         Possible_Shortcuts.push_back(ci_temp.GetUUID());
+         bAddToViews = false;
+      }
+    }
+    ci_temp.SetStatus(CItemData::ES_ADDED);
+
+    // Need to check that entry keyboard shortcut not already in use!
+    int32 iKBShortcut;
+    ci_temp.GetKBShortcut(iKBShortcut);
+       
+    if(iKBShortcut != 0 && m_core.GetKBShortcut(iKBShortcut) != CUUID::NullUUID()) {
+      // Remove it but no mechanism to tell user!
+      ci_temp.SetKBShortcut(0);
+    }
+    
+    if(!ci_temp.IsDependent()) { // Dependents handled later
+      // Add to pwlist
+      AddEntryCommand *pcmd = AddEntryCommand::Create(&m_core, ci_temp);
+
+      if(!bAddToViews) {
+        // ONLY Add to pwlist and NOT to Tree or List views
+        // After the call to AddDependentEntries for shortcuts, check if still
+        // in password list and, if so, then add to Tree + List views
+        pcmd->SetNoGUINotify();
+      }
+      pmCmd->Add(pcmd);
+    }
+  } // iteration over in_oblist
+
+  // Now try to add aliases/shortcuts we couldn't add in previous processing
+  if(!Possible_Aliases.empty()) {
+    AddDependentEntriesCommand *pcmdA = AddDependentEntriesCommand::Create(&m_core,
+                                                        Possible_Aliases, NULL,
+                                                        CItemData::ET_ALIAS,
+                                                        CItemData::PASSWORD);
+    pmCmd->Add(pcmdA);
+  }
+
+  if(!Possible_Shortcuts.empty()) {
+    AddDependentEntriesCommand *pcmdS = AddDependentEntriesCommand::Create(&m_core,
+                                                        Possible_Shortcuts, NULL,
+                                                        CItemData::ET_SHORTCUT,
+                                                        CItemData::PASSWORD);
+    pmCmd->Add(pcmdS);
+  }
+  
+  // Clear set
+  setGTU.clear();
+
+  if(!sxEntriesWithNewNamedPolicies.empty()) {
+    // A number of entries had a similar named password policy but with
+    // different settings to those in this database.
+    // Tell user
+    wxString cs_msg;
+    cs_msg = wxString::Format(_("The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%ls) appended:%ls"),
+                  sxDD_DateTime.c_str(),
+                  sxEntriesWithNewNamedPolicies.c_str());
+    wxMessageBox(cs_msg, _("Entry Password Policy Changes"), wxOK);
+  }
+  
+  if(!sxEntriesWithBaseEntryMissing.empty()) {
+    // A number of alias/shortcut had been dropped, but baseitem is missing. Conversion to normal entry, but no real content is present
+    // Tell user
+    wxString cs_msg;
+    cs_msg = wxString::Format(_("The following alias or shortcut entries did not match to a base entry and had been converted to normal entries:%ls"),
+                        sxEntriesWithBaseEntryMissing.c_str());
+    wxMessageBox(cs_msg, _("Entry Type Changed"), wxOK);
+  }
+}
+
+wxDragResult TreeCtrl::OnDrop(wxCoord x, wxCoord y, wxMemoryBuffer *inDDmem)
+{
+  if(! inDDmem) {
+    pws_os::Trace(L"TreeCtrl::OnDrop return 'wxDragNone' on missing memory");
+    return wxDragNone;
+  }
+
+  wxDragResult result = wxDragNone;
+  wxPoint mousePt(x, y);
+  int flags = wxTREE_HITTEST_ONITEM | wxTREE_HITTEST_BELOW | wxTREE_HITTEST_NOWHERE;
+  wxTreeItemId itemDst = DoTreeHitTest(mousePt, flags);
+  bool reportCopy = ::wxGetKeyState(WXK_CONTROL);
+  bool placeRoot = ::wxGetKeyState(WXK_SHIFT);
+  StringX sxDropPath;
+  
+  if(!placeRoot && (flags & wxTREE_HITTEST_ONITEM) && itemDst.IsOk()) {
+    if(! ItemIsGroup(itemDst)) {              // On no group, use parent as destination
+      itemDst = GetItemParent(itemDst);
+    }
+    if(itemDst == GetRootItem()) {
+      sxDropPath = L""; // Place into root
+    }
+    else {
+      sxDropPath = tostringx(GetItemGroup(itemDst));
+    }
+      
+  }
+  else {
+    itemDst = GetRootItem();
+    sxDropPath = L""; // Place into root
+  }
+  
+  if(m_run_dnd && IsDescendant(itemDst, m_last_dnd_item)) {
+    wxMessageBox(_("Destination cannot be inside source tree"), _("Drag and Drop failed"), wxOK|wxICON_ERROR);
+    pws_os::Trace(L"TreeCtrl::OnDrop return 'wxDragNone' on recursive dropping");
+    return wxDragNone;
+  }
+  
+  pws_os::Trace(L"TreeCtrl::OnDrop to path '%ls'", sxDropPath.c_str());
+  
+  if (ProcessDnDData(sxDropPath, inDDmem)) {
+    pws_os::Trace(L"TreeCtrl::OnDrop return '%s'", reportCopy ? "wxDragCopy" : "wxDragMove");
+    result = reportCopy ? wxDragCopy : wxDragMove;
+  }
+  else {
+    pws_os::Trace(L"TreeCtrl::OnDrop return 'wxDragNone'");
+  }
+
+  delete inDDmem;
+  return result;
 }

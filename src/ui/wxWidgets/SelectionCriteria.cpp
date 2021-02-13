@@ -116,7 +116,7 @@ size_t SelectionCriteria::GetNumSubgroupFunctions()
 wxString SelectionCriteria::GetSubgroupFunctionName(size_t idx)
 {
   wxASSERT_MSG(idx < GetNumSubgroupFunctions(), wxT("Invalid index for GetSubgroupFunctionName"));
-  return subgroupFunctions[idx].name;
+  return wxGetTranslation(subgroupFunctions[idx].name);
 }
 //static
 PWSMatch::MatchRule SelectionCriteria::GetSubgroupFunction(size_t idx)

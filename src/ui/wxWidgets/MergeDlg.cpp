@@ -39,7 +39,7 @@ BEGIN_EVENT_TABLE( MergeDlg, wxDialog )
   EVT_BUTTON( ID_ADVANCED,  MergeDlg::OnAdvancedSelection )
 END_EVENT_TABLE()
 
-MergeDlg::MergeDlg(wxWindow* parent, PWScore* core) :
+MergeDlg::MergeDlg(wxWindow* parent, PWScore* core, const wxString filename) :
                       wxDialog(parent, wxID_ANY, wxString(_("Merge Another Database"))),
                       m_core(core), m_selection(new SelectionCriteria), m_dbPanel(nullptr)
 {
@@ -50,7 +50,7 @@ MergeDlg::MergeDlg(wxWindow* parent, PWScore* core) :
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
 
   //4th arg = true means the panel validates automatically
-  m_dbPanel = new DbSelectionPanel(this, filePrompt, filePickerCtrlTitle, true, core, 2);
+  m_dbPanel = new DbSelectionPanel(this, filePrompt, filePickerCtrlTitle, true, core, 2, wxID_OK, filename);
 
   dlgSizer->Add(m_dbPanel, wxSizerFlags().Expand().Proportion(1).Border());
 
@@ -61,9 +61,11 @@ MergeDlg::MergeDlg(wxWindow* parent, PWScore* core) :
   wxSizer* buttons = CreateStdDialogButtonSizer(wxOK|wxCANCEL|wxHELP);
   //This might not be a very wise thing to do.  We are only supposed to add certain
   //pre-defined button-ids to StdDlgBtnSizer
-  buttons->Add(new wxButton(this, ID_ADVANCED, _("Advanced...")), wxSizerFlags().DoubleBorder(wxLEFT|wxRIGHT));
-  dlgSizer->Add(buttons, wxSizerFlags().Border(wxLEFT|wxRIGHT, SideMargin).Expand());
-
+  auto advancedButton = new wxButton(this, ID_ADVANCED, _("&Advanced..."), wxDefaultPosition, wxDefaultSize, 0);
+  buttons->Add(advancedButton, 0, wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL, SideMargin);
+  
+  dlgSizer->Add(buttons, 0, wxLEFT|wxRIGHT|wxEXPAND, SideMargin);
+  
   dlgSizer->AddSpacer(BottomMargin);
 
   SetSizerAndFit(dlgSizer);

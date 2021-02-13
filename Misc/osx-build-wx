@@ -216,6 +216,14 @@ else
         export CXXFLAGS="-std=c++1y -stdlib=libc++"
         export OBJCXXFLAGS="-std=c++1y -stdlib=libc++"
         export LDFLAGS=-stdlib=libc++
+	if [ "$WX_VER" \> "3.0.5" ]
+        then
+            ZLIBFLAG="--with-zlib"
+            COMPATFLAG="--disable-compat30"
+	else
+            ZLIBFLAG=""
+            COMPATFLAG="--disable-compat28"
+        fi
 
         $DRY_RUN $CONF_SCRIPT --prefix=`pwd` $DEBUG_FLAG        \
                               $SDKFLAG                          \
@@ -223,10 +231,10 @@ else
                               --disable-shared                  \
                               --enable-unicode                  \
                               --with-macosx-version-min=10.10   \
-                              --disable-compat30                \
+                              $COMPATFLAG                       \
                               --without-liblzma                 \
                               --enable-cxx11                    \
-                              --with-zlib
+                              $ZLIBFLAG
 	fi
 fi
 

@@ -31,6 +31,7 @@
 #include "os/UUID.h"
 
 #include "wxUtilities.h"
+#include "DnDFile.h"
 
 #include <tuple>
 #include <vector>
@@ -49,6 +50,7 @@ class GuiInfo;
 struct SelectionCriteria;
 class DragBarCtrl;
 class PasswordSafeSearch;
+class DnDFile;
 
 /*!
  * Control identifiers
@@ -531,6 +533,7 @@ public:
   CItemData* GetBaseEntry(const CItemData *item) const;
   CItemData *GetSelectedEntry(const wxCommandEvent& evt, CItemData &rueItem) const;
   wxString GetCurrentSafe() const { return towxstring(m_core.GetCurFile()); }
+  bool IsEntryMarked();
 
   void SetTrayStatus(bool locked);
   void SetTrayClosed();
@@ -567,8 +570,8 @@ private:
   bool ReloadDatabase(const StringX& password);
   bool SaveAndClearDatabaseOnLock();
   void CleanupAfterReloadFailure(bool tellUser);
-  Command *Delete(CItemData *pci);
-  Command *Delete(wxTreeItemId tid); // for group delete
+  Command *DeleteItem(CItemData *pci, wxTreeItemId root = 0);
+  Command *Delete(wxTreeItemId tid, wxTreeItemId root = 0); // for group delete
   void UpdateAccessTime(CItemData &ci);
   void CreateMainToolbar();
   void ReCreateMainToolbar();
@@ -675,6 +678,9 @@ private:
 
   wxString m_LastClipboardAction;
   CItem::FieldType m_LastAction;  // TODO: Check how this is used by Windows version
+  
+  friend class DnDFile;
+  friend class TreeCtrl;
 };
 
 BEGIN_DECLARE_EVENT_TYPES()

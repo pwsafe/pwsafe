@@ -48,7 +48,7 @@ class DbSelectionPanel : public wxPanel, private YubiMixin
 public:
   DbSelectionPanel(wxWindow* parent, const wxString& filePrompt,
                     const wxString& filePickerCtrlTitle, bool autoValidate,
-                    PWScore* core, unsigned rowsep, int buttonConfirmationId = wxID_OK);
+                    PWScore* core, unsigned rowsep, int buttonConfirmationId = wxID_OK, const wxString filename = "");
   ~DbSelectionPanel();
 
   //Set the keyboard focus on combination entry box and select-all

@@ -30,7 +30,7 @@ class ImportTextDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  ImportTextDlg(wxWindow* parent);
+  ImportTextDlg(wxWindow* parent, const wxString filename = "");
   virtual ~ImportTextDlg();
 
   void CreateControls();

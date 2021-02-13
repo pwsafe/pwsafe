@@ -65,6 +65,7 @@
 #include "TreeCtrl.h"
 #include "ViewReportDlg.h"
 #include "wxUtilities.h"
+#include "DnDFile.h"
 
 #include <algorithm>
 
@@ -133,6 +134,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( wxID_SAVEAS,           PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_EXPORTMENU,         PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_IMPORTMENU,         PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_IMPORT_XML,         PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_MERGE,              PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_COMPARE,            PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SYNCHRONIZE,        PasswordSafeFrame::OnUpdateUI                    )
@@ -349,6 +351,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
   else {
     m_core.RegisterObserver(m_grid);
   }
+  SetDropTarget(new DnDFile(this));
 }
 
 /*!
@@ -1160,6 +1163,17 @@ void PasswordSafeFrame::ClearAppData()
   ResetFilters();
 }
 
+bool PasswordSafeFrame::IsEntryMarked()
+{
+  if (m_tree->IsShown()) {
+    wxTreeItemId item = m_tree->GetSelection();
+    if(item == m_tree->GetRootItem()) return false;
+    m_tree->SetDndEntry(item); // Mark DnD Item
+    return item.IsOk() ? true : false;
+  }
+  return false;
+}
+
 CItemData *PasswordSafeFrame::GetSelectedEntry() const
 {
   if (m_tree->IsShown()) {
@@ -1912,6 +1926,14 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_IMPORTMENU:
       evt.Enable(!isFileReadOnly && m_core.IsDbOpen());
       break;
+      
+    case ID_IMPORT_XML:
+#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+      evt.Enable(false);
+#else
+      evt.Enable(!isFileReadOnly && m_core.IsDbOpen());
+#endif
+      break;
 
     case ID_PROTECT:
       evt.Enable(!isFileReadOnly && pci && !pci->IsShortcut());
@@ -2559,7 +2581,6 @@ void PasswordSafeFrame::ChangeFontPreference(const PWSprefs::StringPrefs fontPre
     PWSprefs::GetInstance()->SetPref(fontPreference, tostringx(newFont.GetNativeFontInfoDesc()));
   }
 }
-
 
 void PasswordSafeFrame::SetFilterFindEntries(UUIDVector *pvFoundUUIDs)
 {

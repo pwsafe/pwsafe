@@ -43,7 +43,8 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
                                     bool autoValidate,
                                     PWScore* core,
                                     unsigned rowsep,
-                                    int buttonConfirmationId) : wxPanel(parent), m_pollingTimer(nullptr),
+                                    int buttonConfirmationId,
+                                    const wxString filename) : wxPanel(parent), m_pollingTimer(nullptr),
                                                                 m_filepicker(nullptr),
                                                                 m_sc(nullptr),
                                                                 m_bAutoValidate(autoValidate),
@@ -62,8 +63,9 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
 
   panelSizer->Add(new wxStaticText(this, wxID_ANY, filePrompt), borderFlags);
   panelSizer->AddSpacer(RowSeparation);
+  m_filepath = filename;
   OpenFilePickerValidator validator(m_filepath);
-  m_filepicker = new wxFilePickerCtrl(this, wxID_ANY, wxEmptyString, 
+  m_filepicker = new wxFilePickerCtrl(this, wxID_ANY, wxEmptyString,
                                           filePickerCtrlTitle,
                                           _("Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"), 
                                           wxDefaultPosition, wxDefaultSize, 

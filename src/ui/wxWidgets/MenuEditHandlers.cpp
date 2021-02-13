@@ -141,7 +141,12 @@ void PasswordSafeFrame::OnDeleteClick(wxCommandEvent& WXUNUSED(evt))
   // If tree view, check if group selected
   if (m_tree->IsShown()) {
     wxTreeItemId sel = m_tree->GetSelection();
-    num_children = static_cast<int>(m_tree->GetChildrenCount(sel));
+    if(m_tree->ItemIsGroup(sel)) {
+      num_children = static_cast<int>(m_tree->GetChildrenCount(sel));
+    }
+    else {
+      num_children = 0;
+    }
     if (num_children > 0) // ALWAYS confirm group delete
       dontaskquestion = false;
   }
@@ -161,7 +166,7 @@ void PasswordSafeFrame::OnDeleteClick(wxCommandEvent& WXUNUSED(evt))
     Command *doit = nullptr;
     CItemData *item = GetSelectedEntry();
     if (item != nullptr) {
-      doit = Delete(item);
+      doit = DeleteItem(item);
     } else if (m_tree->GetSelection() != m_tree->GetRootItem()) {
       doit = Delete(m_tree->GetSelection());
     }
@@ -170,31 +175,37 @@ void PasswordSafeFrame::OnDeleteClick(wxCommandEvent& WXUNUSED(evt))
   } // dodelete
 }
 
-Command *PasswordSafeFrame::Delete(CItemData *pci)
+Command *PasswordSafeFrame::DeleteItem(CItemData *pci, wxTreeItemId root)
 {
   ASSERT(pci != nullptr);
+  // Alias in same group, which will be deleted, are not given warning for
+  StringX sxGroup = L"";
+  if(root)
+    sxGroup = tostringx(m_tree->GetItemGroup(root));
   // ConfirmDelete asks for user confirmation
   // when deleting a shortcut or alias base.
   // Otherwise it just returns true
-  if (m_core.ConfirmDelete(pci))
+  if (m_core.ConfirmDelete(pci, sxGroup))
     return DeleteEntryCommand::Create(&m_core, *pci);
   else
     return nullptr;
 }
 
-Command *PasswordSafeFrame::Delete(wxTreeItemId tid)
+Command *PasswordSafeFrame::Delete(wxTreeItemId tid, wxTreeItemId root)
 {
   // Called for deleting a group
   // Recursively build the appropriate multi-command
 
   if (!tid) return nullptr;
+  if (!root)
+    root = tid;
   MultiCommands *retval = MultiCommands::Create(&m_core);
-  if (m_tree->GetChildrenCount(tid) > 0) {
+  if (m_tree->ItemIsGroup(tid) && (m_tree->GetChildrenCount(tid) > 0)) {
     wxTreeItemIdValue cookie;
     wxTreeItemId ti = m_tree->GetFirstChild(tid, cookie);
 
     while (ti.IsOk()) {
-      Command *delCmd = Delete(ti);
+      Command *delCmd = Delete(ti, root);
       if (delCmd != nullptr)
         retval->Add(delCmd);
       ti = m_tree->GetNextChild(tid, cookie);
@@ -211,7 +222,7 @@ Command *PasswordSafeFrame::Delete(wxTreeItemId tid)
   } else { // leaf
     CItemData *leaf = m_tree->GetItem(tid);
     if (leaf != nullptr) {
-      Command *delLeafCmd = Delete(leaf); // gets user conf. if needed
+      Command *delLeafCmd = DeleteItem(leaf, root); // gets user conf. if needed
       if (delLeafCmd != nullptr)
         retval->Add(delLeafCmd);
     }

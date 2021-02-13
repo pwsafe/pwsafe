@@ -11,6 +11,18 @@
 //-----------------------------------------------------------------
 // Import/Export PWScore member functions
 //-----------------------------------------------------------------
+#if !defined(_WIN32)
+#include <wx/wxprec.h>
+
+#ifndef WX_PRECOMP
+#include <wx/wx.h>
+#endif
+
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+#endif
+
 #include "PWScore.h"
 #include "core.h"
 #include "PWSprefs.h"
@@ -865,7 +877,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
   CItemData ci_temp;
   vector<string> vs_Header;
-  stringT cs_hdr = EXPORTHEADER;
+  CItemData::FieldBits all(~0UL);
+  StringX cs_hdr = BuildHeader(all, true); // Use same language as in writing
 
   // Parse the header
   const unsigned char *hdr;
@@ -875,7 +888,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   const char pTab[] = "\t";
   char pSeps[] = " ";
 
-  // Order of fields determined in CItemData::GetPlaintext()
+  // Order of fields determined in CItemData::GetPlaintext() and must be same as in BuildHeader()
   enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
                CTIME, PMTIME, ATIME, XTIME, XTIME_INT, RMTIME,
                POLICY, POLICYNAME, HISTORY, RUNCMD, DCA, SHIFTDCA, EMAIL,
@@ -960,8 +973,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
   to = 0;
   do {
-    // make sure EXPORTHEADER has correct field names, though we have some resiliency below
-    ASSERT( vs_Header[itoken] == CItemData::EngFieldName(fieldMap[itoken].itemField));
     from = s_header.find_first_not_of(pSeps, to);
     if (from == string::npos)
       break;
@@ -983,6 +994,12 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       ASSERT( itoken == fieldMap[itoken].hdrField );
       i_Offset[ fieldMap[itoken].hdrField ] = itoken;
       num_found++;
+    }
+    else {
+      StringX sh2;
+      conv.FromUTF8(reinterpret_cast<const unsigned char *>(token.c_str()), token.length(), sh2);
+      Format(cs_error, L"Not found heading %ls", sh2.c_str());
+      rpt.WriteLine(cs_error, false);
     }
     itoken++;
   } while (to != string::npos);
@@ -1017,7 +1034,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         const string &sHdr = vs_Header.at(i);
         StringX sh2;
         conv.FromUTF8(reinterpret_cast<const unsigned char *>(sHdr.c_str()), sHdr.length(), sh2);
-        Format(cs_error, L" %ls,", sh2.c_str());
+        Format(cs_error, L" %ls%c", sh2.c_str(), ((i+1) == NUMFIELDS) ? ' ' : ',');
         rpt.WriteLine(cs_error, false);
       }
     }

@@ -1,0 +1,26 @@
+/* XPM */
+static const char *classic_DndX_xpm[] = {
+/* columns rows colors chars-per-pixel */
+"16 16 3 1",
+/* colors */
+"  c None",
+". c #808080",
+"X c #c0c0c0",
+/* pixels */
+"                ",
+"                ",
+"  ..........    ",
+"  .XXXXXXXXX.   ",
+"  .XXXXXXXXXX.  ",
+"  .XX......XX.  ",
+"  .XX.    .XX.  ",
+"  .XX.    .XX.  ",
+"  .XX.    .XX.  ",
+"  .XX.    .XX.  ",
+"  .XX.    .XX.  ",
+"  .XXXXXXXXXX.  ",
+"  .XXXXXXXXX.   ",
+"  ..........    ",
+"                ",
+"                ",
+};
