@@ -304,7 +304,7 @@ bool PWScore::ConfirmDelete(const CItemData *pci, StringX sxGroup)
         ItemListIter objiter = Find(*iter);
         if (objiter != m_pwlist.end()) {
           StringX iterGroup = objiter->second.GetGroup();
-          if(iterGroup.length() > length)
+          if((iterGroup.length() > length) && (iterGroup[length] == '.'))
             iterGroup = iterGroup.substr(0, length);
           if (!CompareCase(iterGroup, sxGroup)) {
             // Same group as object to be deleted, so we must not take care on that item
