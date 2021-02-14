@@ -76,7 +76,7 @@ StringX GetPassphrase(const wstring& prompt)
     wstring wpk;
     wcerr << prompt;
     echoOff();
-    wcin >> wpk;
+    getline(wcin, wpk);
     echoOn();
     return StringX(wpk.c_str());
 }
