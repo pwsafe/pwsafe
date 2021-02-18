@@ -50,6 +50,11 @@ void PasswordSafeFrame::OnChangePasswordClick(wxCommandEvent& WXUNUSED(evt))
   int returnValue = window->ShowModal();
   if (returnValue == wxID_OK) {
     m_core.ChangePasskey(window->GetNewpasswd());
+#ifndef NO_YUBI
+  if (!window->IsYubiProtected())
+    m_core.SetYubiSK(nullptr); // erase YubiSK, as it's no longer protected by Yuibkey
+#endif
+
   }
   window->Destroy();
 }

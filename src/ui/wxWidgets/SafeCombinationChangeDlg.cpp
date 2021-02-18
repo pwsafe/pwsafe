@@ -420,6 +420,7 @@ void SafeCombinationChangeDlg::OnYubibtn2Click(wxCommandEvent& WXUNUSED(event))
     bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
     if (m_yubiMixin2.PerformChallengeResponse(this, m_newpasswd, response, oldYubiChallenge)) {
       m_newpasswd = response;
+      m_IsYubiProtected = true; // Don't erase YubiSK, since database is protected by Yubikey
       EndModal(wxID_OK);
     }
   }

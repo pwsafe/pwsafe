@@ -92,6 +92,7 @@ public:
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN2
   void OnYubibtn2Click( wxCommandEvent& event );
+  bool IsYubiProtected() const {return m_IsYubiProtected;}
 #endif
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
@@ -147,6 +148,7 @@ private:
   // try having 2 mixin objects to handle things:
   YubiMixin m_yubiMixin1, m_yubiMixin2;
   wxTimer* m_pollingTimer; // for Yubi
+  bool m_IsYubiProtected = false; // set if 2nd Yubi button clicked. Clear YubiSK on OK if false.
 #endif
 };
 

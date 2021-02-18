@@ -13,6 +13,7 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 Bugs fixed in 1.13
 ------------------
 
+* [GH718](https://github.com/pwsafe/pwsafe/issues/718) Clear YubiSK when Yubi protection is removed.
 * [SF1536](https://sourceforge.net/p/passwordsafe/bugs/1536/) pwsafe-cli now accepts master passphrases with spaces.
 
 Password Safe 3.55 Release January 2021
