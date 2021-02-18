@@ -134,6 +134,10 @@ void CPasskeyChangeDlg::OnOK()
 
   UpdateData(TRUE);
   if (!m_oldpasskey.IsEmpty()) {
+    // We're here iff we went from a Yubi-protected passphrase to a regular passphrase
+    // In this case, we'll clear out the Yubi SK we keep in the header, which is no longer protected by the Yubikey hardware.
+    app.GetCore()->SetYubiSK(nullptr);
+
     m_passkey = m_oldpasskey; // old passkey is from Yubikey
   }
 
