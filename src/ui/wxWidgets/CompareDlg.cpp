@@ -37,8 +37,12 @@
 #include "FieldSelectionDlg.h"
 #include "SelectionCriteria.h"
 #include "SizeRestrictedPanel.h"
+#include "StringX.h"
+#include "ViewReportDlg.h"
 
-enum {ID_BTN_COMPARE = 100 };
+enum {ID_BTN_COMPARE = 100,
+      ID_BTN_REPORT = 102
+};
 
 enum {
   ID_COPY_FIELD_TO_CURRENT_DB = 100,
@@ -56,6 +60,7 @@ DEFINE_EVENT_TYPE(EVT_EXPAND_DATA_PANELS)
 
 BEGIN_EVENT_TABLE( CompareDlg, wxDialog )
   EVT_BUTTON( ID_BTN_COMPARE,  CompareDlg::OnCompare )
+  EVT_BUTTON( ID_BTN_REPORT,  CompareDlg::OnShowReport )
   EVT_GRID_CELL_RIGHT_CLICK(CompareDlg::OnGridCellRightClick)
   EVT_MENU(ID_EDIT_IN_CURRENT_DB, CompareDlg::OnEditInCurrentDB)
   EVT_MENU(ID_VIEW_IN_COMPARISON_DB, CompareDlg::OnViewInComparisonDB)
@@ -66,6 +71,8 @@ BEGIN_EVENT_TABLE( CompareDlg, wxDialog )
   EVT_MENU(ID_COPY_FIELD_TO_CURRENT_DB, CompareDlg::OnCopyFieldsToCurrentDB)
   EVT_MENU(ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB, CompareDlg::OnSyncItemsWithCurrentDB)
   EVT_MENU(ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB, CompareDlg::OnSyncItemsWithCurrentDB)
+
+  EVT_UPDATE_UI( ID_BTN_REPORT, CompareDlg::OnUpdateUI )
 END_EVENT_TABLE()
 
 struct ComparisonData {
@@ -125,6 +132,7 @@ CompareDlg::~CompareDlg()
 void CompareDlg::CreateControls()
 {
   auto *dlgSizer = new wxBoxSizer(wxVERTICAL);
+  wxASSERT(dlgSizer);
   dlgSizer->AddSpacer(TopMargin);  //add a margin at the top
 
   m_dbSelectionPane = CreateDBSelectionPanel(dlgSizer);
@@ -156,10 +164,16 @@ void CompareDlg::CreateControls()
   dlgSizer->Add(new wxStaticLine(this), wxSizerFlags().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Proportion(0));
   dlgSizer->AddSpacer(RowSeparation);
   auto *buttons = new wxStdDialogButtonSizer;
+  wxASSERT(buttons);
   buttons->Add(new wxButton(this, wxID_CANCEL));
-  wxButton* compareButton = new wxButton(this, ID_BTN_COMPARE, _("&Compare"));
-  compareButton->SetDefault();
-  buttons->SetAffirmativeButton(compareButton);
+  wxButton* reportButton = new wxButton(this, ID_BTN_REPORT, _("&View Report")); // ID_BTN_REPORT is not in allowed list, but is working...
+  wxASSERT(reportButton);
+  reportButton->Enable(false);
+  buttons->Add(reportButton);
+  m_compareButton = new wxButton(this, ID_BTN_COMPARE, _("&Compare"));
+  wxASSERT(m_compareButton);
+  m_compareButton->SetDefault();
+  buttons->SetAffirmativeButton(m_compareButton);
   buttons->Realize();
   dlgSizer->Add(buttons, wxSizerFlags().Expand().Border(wxLEFT|wxRIGHT, SideMargin).Proportion(0));
   dlgSizer->AddSpacer(BottomMargin);
@@ -280,6 +294,15 @@ wxCollapsiblePane* CompareDlg::CreateDataPanel(wxSizer* dlgSizer, const wxString
   return cd->pane;
 }
 
+void CompareDlg::OnUpdateUI(wxUpdateUIEvent& event)
+{
+  switch (event.GetId()) {
+    case ID_BTN_REPORT:
+      event.Enable(!m_compReport.StringEmpty());
+      break;
+  }
+}
+
 void CompareDlg::OnCompare(wxCommandEvent& )
 {
   if ( Validate() && TransferDataFromWindow()) {
@@ -308,6 +331,12 @@ void CompareDlg::OnCompare(wxCommandEvent& )
   else {
     m_otherCore->SetCurFile(StringX());
   }
+}
+
+void CompareDlg::OnShowReport(wxCommandEvent& )
+{
+  ViewReportDlg vr(this, &m_compReport);
+  vr.ShowModal();
 }
 
 void CompareDlg::DoCompare(wxCommandEvent& WXUNUSED(evt))
@@ -388,6 +417,8 @@ void CompareDlg::DoCompare(wxCommandEvent& WXUNUSED(evt))
   }
   wxCommandEvent cmdEvent(EVT_EXPAND_DATA_PANELS, GetId());
   GetEventHandler()->AddPendingEvent(cmdEvent);
+  
+  WriteReport();
 }
 
 void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
@@ -554,6 +585,8 @@ void CompareDlg::OnEditInCurrentDB(wxCommandEvent& evt)
       wxFAIL_MSG(wxT("Could not find entry in core after editing it"));
     }
   }
+  
+  WriteReport();
 }
 
 void CompareDlg::OnViewInComparisonDB(wxCommandEvent& evt)
@@ -651,6 +684,8 @@ void CompareDlg::OnCopyItemsToCurrentDB(wxCommandEvent& evt)
     if (relayout)
       Layout();
   }
+  
+  WriteReport();
 }
 
 void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
@@ -709,6 +744,8 @@ void CompareDlg::OnDeleteItemsFromCurrentDB(wxCommandEvent& evt)
     if (relayout)
       Layout();
   }
+  
+  WriteReport();
 }
 
 void CompareDlg::OnCopyFieldsToCurrentDB(wxCommandEvent& evt)
@@ -739,6 +776,8 @@ void CompareDlg::OnCopyFieldsToCurrentDB(wxCommandEvent& evt)
       table.RefreshRow(menuContext->selectedRows[idx]-1);
     }
   }
+  
+  WriteReport();
 }
 
 void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
@@ -837,4 +876,113 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
       }
     }
   }
+  
+  WriteReport();
+}
+
+void CompareDlg::WriteReportData()
+{
+  CompareData::iterator cd_iter;
+  stringT line, delimiter = L"";
+  
+  ReportAdvancedOptions();
+  
+  if (m_current && m_current->data.empty() &&
+      m_comparison && m_comparison->data.empty() &&
+      m_conflicts && m_conflicts->data.empty()) {
+    m_compReport.WriteLine(_("\n\nThe databases are identical when comparing the selected or default fields!"));
+    m_compReport.EndReport();
+    return;
+  }
+  
+  if (m_current && !m_current->data.empty()) {
+
+    Format(line, _("Entries only in current database (%ls):"), m_currentCore->GetCurFile().c_str());
+    m_compReport.WriteLine(line);
+    for (cd_iter = m_current->data.begin(); cd_iter != m_current->data.end(); cd_iter++) {
+      const st_CompareData &st_data = *cd_iter;
+
+      Format(line, IDSC_COMPARESTATS, st_data.group.c_str(), st_data.title.c_str(), st_data.user.c_str());
+      m_compReport.WriteLine(line);
+    }
+    m_compReport.WriteLine();
+  }
+
+  if (m_comparison && !m_comparison->data.empty()) {
+
+   Format(line, _("Entries only in comparison database (%ls):"), m_otherCore->GetCurFile().c_str());
+   m_compReport.WriteLine(line);
+    for (cd_iter = m_comparison->data.begin(); cd_iter != m_comparison->data.end(); cd_iter++) {
+      const st_CompareData &st_data = *cd_iter;
+
+      Format(line, IDSC_COMPARESTATS, st_data.group.c_str(), st_data.title.c_str(), st_data.user.c_str());
+      m_compReport.WriteLine(line);
+    }
+    m_compReport.WriteLine();
+  }
+
+  if (m_conflicts && !m_conflicts->data.empty()) {
+
+   m_compReport.WriteLine(_("Entries in both databases but with differences:"));
+
+    for (cd_iter = m_conflicts->data.begin(); cd_iter != m_conflicts->data.end(); cd_iter++) {
+      const st_CompareData &st_data = *cd_iter;
+
+      Format(line, IDSC_COMPARESTATS, st_data.group.c_str(), st_data.title.c_str(), st_data.user.c_str());
+      m_compReport.WriteLine(line);
+      m_compReport.WriteLine(_("\t\thas differences in the following fields: "), false);
+
+      // Non-time fields
+      if (st_data.bsDiffs.test(CItemData::PASSWORD)) { line += CItemData::FieldName(CItemData::PASSWORD); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::NOTES)) { line += delimiter + CItemData::FieldName(CItemData::NOTES); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::URL)) { line += delimiter + CItemData::FieldName(CItemData::URL); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::AUTOTYPE)) { line += delimiter + CItemData::FieldName(CItemData::AUTOTYPE); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::PWHIST)) { line += delimiter + CItemData::FieldName(CItemData::PWHIST); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::POLICY)) { line += delimiter + CItemData::FieldName(CItemData::POLICY); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::RUNCMD)) { line += delimiter + CItemData::FieldName(CItemData::RUNCMD); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::DCA)) { line += delimiter + CItemData::FieldName(CItemData::DCA); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::SHIFTDCA)) { line += delimiter + CItemData::FieldName(CItemData::SHIFTDCA); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::EMAIL)) { line += delimiter + CItemData::FieldName(CItemData::EMAIL); delimiter = L", "; };
+      if (st_data.bsDiffs.test(CItemData::PROTECTED)) { line += delimiter + CItemData::FieldName(CItemData::PROTECTED); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::SYMBOLS)) { line += delimiter + CItemData::FieldName(CItemData::SYMBOLS); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::POLICYNAME)) { line += delimiter + CItemData::FieldName(CItemData::POLICYNAME); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::KBSHORTCUT)) { line += delimiter + CItemData::FieldName(CItemData::KBSHORTCUT); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::ATTREF)) { line += delimiter + CItemData::FieldName(CItemData::ATTREF); delimiter = L", "; }
+
+      // Time fields
+      if (st_data.bsDiffs.test(CItemData::CTIME)) { line += delimiter + CItemData::FieldName(CItemData::CTIME); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::PMTIME)) { line += delimiter + CItemData::FieldName(CItemData::PMTIME); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::ATIME)) { line += delimiter + CItemData::FieldName(CItemData::ATIME); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::XTIME)) { line += delimiter + CItemData::FieldName(CItemData::XTIME); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::RMTIME)) { line += delimiter + CItemData::FieldName(CItemData::RMTIME); delimiter = L", "; }
+      if (st_data.bsDiffs.test(CItemData::XTIME_INT)) { line += delimiter + CItemData::FieldName(CItemData::XTIME_INT); delimiter = L", "; }
+
+      m_compReport.WriteLine(line);
+    }
+    m_compReport.WriteLine();
+  }
+  m_compReport.EndReport();
+}
+
+void CompareDlg::ReportAdvancedOptions()
+{
+  m_selCriteria->ReportAdvancedOptions(&m_compReport, _("compared"), m_otherCore->GetCurFile().c_str());
+}
+
+void CompareDlg::WriteReport()
+{
+  m_compReport.StartReport(L"Compare", m_currentCore->GetCurFile().c_str());
+  m_compReport.WriteLine(_("Comparing current database with: "), false);
+  m_compReport.WriteLine(m_otherCore->GetCurFile().c_str());
+  m_compReport.WriteLine();
+  
+  stringT line;
+  Format(line, IDSC_COMPARESTATISTICS, m_currentCore->GetCurFile().c_str(), m_otherCore->GetCurFile().c_str());
+  m_compReport.WriteLine(line);
+  
+  WriteReportData();
+  
+  ASSERT(m_compareButton);
+  m_compareButton->Enable(true);
+  Refresh();
 }

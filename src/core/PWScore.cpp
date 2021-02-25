@@ -1309,9 +1309,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   std::sort(m_InitialEmptyGroups.begin(), m_InitialEmptyGroups.end());
 
   if (pRpt != nullptr) {
-    std::wstring cs_title;
-    LoadAString(cs_title, IDSC_RPTVALIDATE);
-    pRpt->StartReport(cs_title.c_str(), m_currfile.c_str());
+    pRpt->StartReport(L"Validate", m_currfile.c_str());
   }
 
   do {

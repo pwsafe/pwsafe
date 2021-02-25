@@ -65,6 +65,13 @@ public:
     if (restart) { InitIndex(); }
     PrintLabel();
   }
+  
+  const pws_os::CUUID& GetUUID(size_t idx) {
+    if(idx < m_indices.size()) {
+      return m_indices[idx];
+    }
+    return pws_os::CUUID::NullUUID();
+  }
 
   SearchPointer& operator++();
   SearchPointer& operator--();
@@ -113,6 +120,7 @@ private:
   void UpdateView();
   void OnSearchTextChanged(wxCommandEvent& event);
   void OnSearchBarTextChar(wxKeyEvent& event);
+  void OnToolBarFindReport(wxCommandEvent& event);
 
   void CreateSearchBar();
   void HideSearchToolbar();

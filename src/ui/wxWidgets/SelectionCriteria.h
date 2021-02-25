@@ -17,6 +17,8 @@
 
 #include "wxUtilities.h"
 
+class CReport;
+
 /*
  * SelectionCriteria data structure backs the AdvancedSelectionPanel widget
  * 
@@ -80,7 +82,8 @@ public:
   wxString GetGroupSelectionDescription() const;
   //returns true if all fields have been selected
   bool GetFieldSelection(wxArrayString& selectedFields, wxArrayString& unselectedFields);
-
+  void ReportAdvancedOptions(CReport* rpt, const wxString& operation, const wxString& fullPath);
+  
 SelectionCriteria& operator=(const SelectionCriteria& data) {
     m_fCaseSensitive    = data.m_fCaseSensitive;
     m_bsFields          = data.m_bsFields;

@@ -335,5 +335,9 @@
 
 #define IDSC_INVALIDLOCKER              4116
 
+#define IDSC_COMPARESTATISTICS          5356
+#define IDSC_COMPARESTATS               5359
 #define IDSC_DRAGNUMBER                 5411
+#define IDSC_SEARCHRESULTS1             5538
+#define IDSC_SEARCHRESULTS2             5539
 #define IDSC_DRAGPOLICY                 5907

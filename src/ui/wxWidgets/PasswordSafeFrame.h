@@ -128,6 +128,12 @@ class DnDFile;
 #define ID_SORT_TREE_BY_NAME 10312
 #define ID_SORT_TREE_BY_DATE 10313
 #define ID_SHOW_EMPTY_GROUP_IN_FILTER 10314
+#define ID_REPORT_SYNCHRONIZE 10315
+#define ID_REPORT_IMPORTKEEPASS_TXT 10316
+#define ID_REPORT_IMPORTKEEPASS_CSV 10317
+#define ID_REPORT_EXPORTTEXT 10318
+#define ID_REPORT_EXPORTXML 10319
+#define ID_REPORT_EXPORT_DB 10320
 #define ID_STATUSBAR 10000
 #define SYMBOL_PASSWORDSAFEFRAME_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX
 #define SYMBOL_PASSWORDSAFEFRAME_TITLE _("PasswordSafe")
@@ -403,6 +409,9 @@ public:
 
   /// wxEVT_UPDATE_UI event handler for all command ids
   void OnUpdateUI(wxUpdateUIEvent& evt);
+  
+  // Supporting Function for OnUpdateUI
+  bool CheckReportPresent(LPCTSTR tcAction);
 
   /// wxEVT_UPDATE_UI event handler for ID_MENU_CLEAR_MRU
   void OnUpdateClearRecentDBHistory(wxUpdateUIEvent& evt);
@@ -430,7 +439,46 @@ public:
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COLLAPSEALL
   void OnCollapseAll(wxCommandEvent& evt);
+  
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for IID_REPORT_COMPARE
+  void OnShowReportCompare(wxCommandEvent& evt);
+  
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for IID_REPORT_SYNCHRONIZE
+  void OnShowReportSynchronize(wxCommandEvent& evt);
 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for IID_REPORT_MERGE
+  void OnShowReportMerge(wxCommandEvent& WXUNUSED(evt));
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for IID_REPORT_IMPORTTEXT
+  void OnShowReportImportText(wxCommandEvent& WXUNUSED(evt));
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for IID_REPORT_IMPORTXML
+  void OnShowReportImportXML(wxCommandEvent& WXUNUSED(evt));
+ 
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for IID_REPORT_IMPORTKEEPASS_TXT
+  void OnShowReportImportKeePassV1_TXT(wxCommandEvent& WXUNUSED(evt));
+  
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for IID_REPORT_IMPORTKEEPASS_CSV
+  void OnShowReportImportKeePassV1_CSV(wxCommandEvent& WXUNUSED(evt));
+  
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for IID_REPORT_EXPORTTEXT
+  void OnShowReportExportText(wxCommandEvent& WXUNUSED(evt));
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for IID_REPORT_EXPORTXML
+  void OnShowReportExportXML(wxCommandEvent& WXUNUSED(evt));
+  
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for IID_REPORT_EXPORT_DB
+  void OnShowReportExportDB(wxCommandEvent& WXUNUSED(evt));
+  
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_REPORT_FIND
+  void OnShowReportFind(wxCommandEvent& WXUNUSED(evt));
+  
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_REPORT_VALIDATE
+  void OnShowReportValidate(wxCommandEvent& WXUNUSED(evt));
+  
+  // Supporting function for OnShowReport... function
+  void RunShowReport(LPCTSTR tcAction);
+  
   void OnChangeTreeFont(wxCommandEvent& evt);
   void OnChangeAddEditFont(wxCommandEvent& evt);
   void OnChangePasswordFont(wxCommandEvent& evt);
@@ -485,7 +533,7 @@ public:
   // For predefined "last search" filter:
   void SetFilterFindEntries(UUIDVector *pvFoundUUIDs);
 
-
+  ItemListConstIter FindEntry(const pws_os::CUUID& uuid) const {return m_core.Find(uuid);}
   ItemListConstIter GetEntryIter() const {return m_core.GetEntryIter();}
   ItemListConstIter GetEntryEndIter() const {return m_core.GetEntryEndIter();}
 
@@ -533,6 +581,7 @@ public:
   CItemData* GetBaseEntry(const CItemData *item) const;
   CItemData *GetSelectedEntry(const wxCommandEvent& evt, CItemData &rueItem) const;
   wxString GetCurrentSafe() const { return towxstring(m_core.GetCurFile()); }
+  StringX GetCurrentFile() const { return m_core.GetCurFile(); }
   bool IsEntryMarked();
 
   void SetTrayStatus(bool locked);

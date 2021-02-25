@@ -30,6 +30,7 @@
 #include "PasswordSafeFrame.h"
 #include "PasswordSafeSearch.h"
 #include "TreeCtrl.h"
+#include "ViewReportDlg.h"
 
 void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
 {
@@ -203,6 +204,79 @@ void PasswordSafeFrame::OnChangeNotesFont(wxCommandEvent& WXUNUSED(evt))
 void PasswordSafeFrame::OnChangeVirtualKeyboardFont(wxCommandEvent& WXUNUSED(evt))
 {
   ChangeFontPreference(PWSprefs::VKeyboardFontName);
+}
+
+void PasswordSafeFrame::RunShowReport(LPCTSTR tcAction)
+{
+  CReport rpt;
+  rpt.StartReport(tcAction, m_core.GetCurFile().c_str(), false);
+  if(rpt.ReadFromDisk()) {
+    ViewReportDlg dlg(this, &rpt, true);
+    dlg.ShowModal();
+  }
+  else {
+    wxMessageBox(_(tcAction) + _(L" file \'") + rpt.GetFileName() + _(L"' not readable"), _("View Report"), wxOK|wxICON_ERROR);
+  }
+}
+
+void PasswordSafeFrame::OnShowReportSynchronize(wxCommandEvent& WXUNUSED(evt))
+{
+  RunShowReport(L"Synchronize");
+}
+
+void PasswordSafeFrame::OnShowReportCompare(wxCommandEvent& WXUNUSED(evt))
+{
+  RunShowReport(L"Compare");
+}
+
+void PasswordSafeFrame::OnShowReportMerge(wxCommandEvent& WXUNUSED(evt))
+{
+  RunShowReport(L"Merge");
+}
+
+void PasswordSafeFrame::OnShowReportImportText(wxCommandEvent& WXUNUSED(evt))
+{
+  RunShowReport(L"Import Text");
+}
+
+void PasswordSafeFrame::OnShowReportImportXML(wxCommandEvent& WXUNUSED(evt))
+{
+  RunShowReport(L"Import XML");
+}
+
+void PasswordSafeFrame::OnShowReportImportKeePassV1_TXT(wxCommandEvent& WXUNUSED(evt))
+{
+  RunShowReport(L"Import KeePassV1 TXT");
+}
+
+void PasswordSafeFrame::OnShowReportImportKeePassV1_CSV(wxCommandEvent& WXUNUSED(evt))
+{
+  RunShowReport(L"Import KeePassV1 CSV");
+}
+
+void PasswordSafeFrame::OnShowReportExportText(wxCommandEvent& WXUNUSED(evt))
+{
+  RunShowReport(L"Export Text");
+}
+
+void PasswordSafeFrame::OnShowReportExportXML(wxCommandEvent& WXUNUSED(evt))
+{
+  RunShowReport(L"Export XML");
+}
+
+void PasswordSafeFrame::OnShowReportExportDB(wxCommandEvent& WXUNUSED(evt))
+{
+  RunShowReport(L"Export DB");
+}
+
+void PasswordSafeFrame::OnShowReportFind(wxCommandEvent& WXUNUSED(evt))
+{
+  RunShowReport(L"Find");
+}
+
+void PasswordSafeFrame::OnShowReportValidate(wxCommandEvent& WXUNUSED(evt))
+{
+  RunShowReport(L"Validate");
 }
 
 void PasswordSafeFrame::OnShowHideToolBar(wxCommandEvent& evt)

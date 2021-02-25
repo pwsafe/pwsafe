@@ -24,6 +24,8 @@
 
 #include "core/PWHistory.h"
 #include "core/Util.h"
+#include "core/PWHistory.h"
+#include "core/core.h"
 #include "wxUtilities.h"
 
 #include "PasswordSafeSearch.h"
@@ -31,6 +33,7 @@
 #include "AdvancedSelectionDlg.h"
 #include "SelectionCriteria.h"
 #include "SearchUtils.h"
+#include "ViewReportDlg.h"
 
 ////@begin XPM images
 #include "graphics/findtoolbar/new/find.xpm"
@@ -401,6 +404,63 @@ void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& event)
   }
 }
 
+/*!
+ * wxEVT_COMMAND_TOOL_CLICKED event handler for ID_FIND_CREATE_REPORT
+ */
+void PasswordSafeSearch::OnToolBarFindReport(wxCommandEvent& event)
+{
+  wxASSERT(m_toolbar);
+
+  wxSearchCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
+  wxCHECK_RET(txtCtrl, wxT("Could not get search control of toolbar"));
+
+  const wxString searchText = txtCtrl->GetLineText(0);
+
+  if (searchText.IsEmpty()) {
+    return;
+  }
+  
+  CReport report;
+  report.StartReport(L"Find", m_parentFrame->GetCurrentFile().c_str());
+  
+  if(m_criteria) {
+    m_criteria->ReportAdvancedOptions(&report, _("Find"), m_parentFrame->GetCurrentFile().c_str());
+  }
+  
+  stringT line, searchT(searchText.c_str()), searchCaseT(m_toolbar->GetToolState(ID_FIND_IGNORE_CASE) ? _("(case-sensitive)"): _("(not case-sensitive)"));
+  
+  if (m_searchPointer.IsEmpty()) {
+    Format(line, IDSC_SEARCHRESULTS1, searchT.c_str(), searchCaseT.c_str());
+    report.WriteLine(line);
+  }
+  else {
+    Format(line, IDSC_SEARCHRESULTS2, searchT.c_str(), searchCaseT.c_str());
+    report.WriteLine(line);
+    
+    size_t numEntries = m_searchPointer.Size();
+    size_t idx;
+    
+    for(idx = 0; idx < numEntries; ++idx) {
+      pws_os::CUUID uuid = m_searchPointer.GetUUID(idx);
+      wxASSERT(uuid != pws_os::CUUID::NullUUID());
+      ItemListConstIter itemIterator = m_parentFrame->FindEntry(uuid);
+      if (itemIterator != m_parentFrame->GetEntryEndIter()) {
+        const CItemData *item = &itemIterator->second;
+        Format(line, IDSC_COMPARESTATS, item->GetGroup().c_str(), item->GetTitle().c_str(), item->GetUser().c_str());
+        report.WriteLine(line);
+      }
+    }
+  }
+  
+  report.WriteLine();
+  report.EndReport();
+  
+  ViewReportDlg vr(m_parentFrame, &report);
+  vr.ShowModal();
+  // set back toggle
+  m_toolbar->ToggleTool(event.GetId(), false);
+}
+
 void PasswordSafeSearch::RefreshButtons()
 {
   if (m_toolbar == nullptr) {
@@ -527,6 +587,7 @@ void PasswordSafeSearch::CreateSearchBar()
   m_toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED,          &PasswordSafeSearch::OnAdvancedSearchOptions, this, ID_FIND_ADVANCED_OPTIONS);
   m_toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED,          &PasswordSafeSearch::OnDoSearch,              this, ID_FIND_NEXT);
   m_toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED,          &PasswordSafeSearch::OnSearchClear,           this, ID_FIND_CLEAR);
+  m_toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED,          &PasswordSafeSearch::OnToolBarFindReport,     this, ID_FIND_CREATE_REPORT);
   m_toolbar->Bind(wxEVT_CHAR_HOOK,                     &PasswordSafeSearch::OnChar,                  this);
   m_parentFrame->Bind(wxEVT_SIZE,                      &PasswordSafeSearch::OnSize,                  this);
 

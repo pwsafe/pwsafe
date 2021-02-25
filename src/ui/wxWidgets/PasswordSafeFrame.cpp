@@ -66,6 +66,7 @@
 #include "ViewReportDlg.h"
 #include "wxUtilities.h"
 #include "DnDFile.h"
+#include "Report.h"
 
 #include <algorithm>
 
@@ -213,13 +214,18 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_CHANGEPSWDFONT,          PasswordSafeFrame::OnChangePasswordFont          )
   EVT_MENU( ID_CHANGENOTESFONT,         PasswordSafeFrame::OnChangeNotesFont             )
   EVT_MENU( ID_CHANGEVKBFONT,           PasswordSafeFrame::OnChangeVirtualKeyboardFont   )
-  // TODO: ID_REPORT_COMPARE
-  // TODO: ID_REPORT_FIND
-  // TODO: ID_REPORT_IMPORTTEXT
-  // TODO: ID_REPORT_IMPORTXML
-  // TODO: ID_REPORT_MERGE
-  // TODO: ID_REPORT_VALIDATE
-
+  EVT_MENU( ID_REPORT_COMPARE,          PasswordSafeFrame::OnShowReportCompare           )
+  EVT_MENU( ID_REPORT_SYNCHRONIZE,      PasswordSafeFrame::OnShowReportSynchronize       )
+  EVT_MENU( ID_REPORT_MERGE,            PasswordSafeFrame::OnShowReportMerge             )
+  EVT_MENU( ID_REPORT_IMPORTTEXT,       PasswordSafeFrame::OnShowReportImportText        )
+  EVT_MENU( ID_REPORT_IMPORTXML,        PasswordSafeFrame::OnShowReportImportXML         )
+  EVT_MENU( ID_REPORT_IMPORTKEEPASS_TXT, PasswordSafeFrame::OnShowReportImportKeePassV1_TXT )
+  EVT_MENU( ID_REPORT_IMPORTKEEPASS_CSV, PasswordSafeFrame::OnShowReportImportKeePassV1_CSV )
+  EVT_MENU( ID_REPORT_EXPORTTEXT,       PasswordSafeFrame::OnShowReportExportText        )
+  EVT_MENU( ID_REPORT_EXPORTXML,        PasswordSafeFrame::OnShowReportExportXML         )
+  EVT_MENU( ID_REPORT_EXPORT_DB,        PasswordSafeFrame::OnShowReportExportDB          )
+  EVT_MENU( ID_REPORT_FIND,             PasswordSafeFrame::OnShowReportFind              )
+  EVT_MENU( ID_REPORT_VALIDATE,         PasswordSafeFrame::OnShowReportValidate          )
   // Update menu items
   EVT_UPDATE_UI( ID_LIST_VIEW,          PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_TREE_VIEW,          PasswordSafeFrame::OnUpdateUI                    )
@@ -240,6 +246,18 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( ID_SHOW_EMPTY_GROUP_IN_FILTER, PasswordSafeFrame::OnUpdateUI            )
   EVT_UPDATE_UI( ID_CUSTOMIZETOOLBAR,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_REPORTSMENU,        PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_REPORT_COMPARE,     PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_REPORT_SYNCHRONIZE, PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_REPORT_MERGE,       PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_REPORT_IMPORTTEXT,  PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_REPORT_IMPORTXML,   PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_REPORT_IMPORTKEEPASS_TXT, PasswordSafeFrame::OnUpdateUI              )
+  EVT_UPDATE_UI( ID_REPORT_IMPORTKEEPASS_CSV, PasswordSafeFrame::OnUpdateUI              )
+  EVT_UPDATE_UI( ID_REPORT_EXPORTTEXT,  PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_REPORT_EXPORTXML,   PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_REPORT_EXPORT_DB,   PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_REPORT_FIND,        PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_REPORT_VALIDATE,    PasswordSafeFrame::OnUpdateUI                    )
 
   ////////////////////////////////////////////////////////////////////////////////////////
   // Menu: "Manage"
@@ -659,12 +677,18 @@ void PasswordSafeFrame::CreateMenubar()
   menuView->Append(ID_CHANGEFONTMENU, _("Change &Font"), menuFonts);
 
   auto menuReports = new wxMenu;
-  menuReports->Append(ID_REPORT_COMPARE, _("&Compare"), wxEmptyString, wxITEM_NORMAL); // TODO
-  menuReports->Append(ID_REPORT_FIND, _("&Find"), wxEmptyString, wxITEM_NORMAL); // TODO
-  menuReports->Append(ID_REPORT_IMPORTTEXT, _("Import &Text"), wxEmptyString, wxITEM_NORMAL); // TODO
-  menuReports->Append(ID_REPORT_IMPORTXML, _("Import &XML"), wxEmptyString, wxITEM_NORMAL); // TODO
-  menuReports->Append(ID_REPORT_MERGE, _("&Merge"), wxEmptyString, wxITEM_NORMAL); // TODO
-  menuReports->Append(ID_REPORT_VALIDATE, _("&Validate"), wxEmptyString, wxITEM_NORMAL); // TODO
+  menuReports->Append(ID_REPORT_COMPARE, _("&Compare"), wxEmptyString, wxITEM_NORMAL);
+  menuReports->Append(ID_REPORT_FIND, _("&Find"), wxEmptyString, wxITEM_NORMAL);
+  menuReports->Append(ID_REPORT_IMPORTTEXT, _("Import &Text"), wxEmptyString, wxITEM_NORMAL);
+  menuReports->Append(ID_REPORT_IMPORTXML, _("Import &XML"), wxEmptyString, wxITEM_NORMAL);
+  menuReports->Append(ID_REPORT_IMPORTKEEPASS_TXT, _("Import &KeePass V1 Text"), wxEmptyString, wxITEM_NORMAL);
+  menuReports->Append(ID_REPORT_IMPORTKEEPASS_CSV, _("Import Kee&Pass V1 CSV"), wxEmptyString, wxITEM_NORMAL);
+  menuReports->Append(ID_REPORT_EXPORTTEXT, _("&Export Text"), wxEmptyString, wxITEM_NORMAL);
+  menuReports->Append(ID_REPORT_EXPORTXML, _("Export XM&L"), wxEmptyString, wxITEM_NORMAL);
+  menuReports->Append(ID_REPORT_EXPORT_DB, _("Export Current &DB"), wxEmptyString, wxITEM_NORMAL); // TODO: Fill export file "Export DB Report.txt"
+  menuReports->Append(ID_REPORT_MERGE, _("&Merge"), wxEmptyString, wxITEM_NORMAL);
+  menuReports->Append(ID_REPORT_SYNCHRONIZE, _("&Synchronize"), wxEmptyString, wxITEM_NORMAL);
+  menuReports->Append(ID_REPORT_VALIDATE, _("&Validate"), wxEmptyString, wxITEM_NORMAL);
   menuView->Append(ID_REPORTSMENU, _("Reports"), menuReports);
   menuBar->Append(menuView, _("&View"));
 
@@ -1756,6 +1780,16 @@ CItemData* PasswordSafeFrame::GetBaseEntry(const CItemData *item) const
   return nullptr;
 }
 
+bool PasswordSafeFrame::CheckReportPresent(LPCTSTR tcAction)
+{
+  if(m_core.IsDbOpen()) {
+    CReport rpt;
+    rpt.StartReport(tcAction, m_core.GetCurFile().c_str(), false);
+    return rpt.ReportExistsOnDisk();
+  }
+  return false;
+}
+
 ////////////////////////////////////////////////////////
 // This function is used for wxCommandUIEvent handling
 // of all commands, to avoid scattering this stuff all
@@ -1798,6 +1832,54 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_YUBIKEY_MNG:
 #endif
       evt.Enable(m_core.IsDbOpen());
+      break;
+      
+    case ID_REPORT_SYNCHRONIZE:
+      evt.Enable(CheckReportPresent(L"Synchronize"));
+      break;
+
+    case ID_REPORT_COMPARE:
+      evt.Enable(CheckReportPresent(L"Compare"));
+      break;
+      
+    case ID_REPORT_MERGE:
+      evt.Enable(CheckReportPresent(L"Merge"));
+      break;
+      
+    case ID_REPORT_IMPORTTEXT:
+      evt.Enable(CheckReportPresent(L"Import Text"));
+      break;
+      
+    case ID_REPORT_IMPORTXML:
+      evt.Enable(CheckReportPresent(L"Import XML"));
+      break;
+      
+    case ID_REPORT_IMPORTKEEPASS_TXT:
+      evt.Enable(CheckReportPresent(L"Import KeePassV1 TXT"));
+      break;
+      
+    case ID_REPORT_IMPORTKEEPASS_CSV:
+      evt.Enable(CheckReportPresent(L"Import KeePassV1 CSV"));
+      break;
+      
+    case ID_REPORT_EXPORTTEXT:
+      evt.Enable(CheckReportPresent(L"Export Text"));
+      break;
+      
+    case ID_REPORT_EXPORTXML:
+      evt.Enable(CheckReportPresent(L"Export XML"));
+      break;
+      
+    case ID_REPORT_EXPORT_DB:
+      evt.Enable(CheckReportPresent(L"Export DB"));
+      break;
+      
+    case ID_REPORT_FIND:
+      evt.Enable(CheckReportPresent(L"Find"));
+      break;
+      
+    case ID_REPORT_VALIDATE:
+      evt.Enable(CheckReportPresent(L"Validate"));
       break;
       
     case ID_SORT_TREE_MENU:

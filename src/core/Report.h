@@ -20,14 +20,19 @@ public:
   CReport() {}
   ~CReport() {}
 
-  void StartReport(LPCTSTR tcAction, const stringT &csDataBase);
+  void StartReport(LPCTSTR tcAction, const stringT &csDataBase, bool writeHeader = true);
   void EndReport();
   void WriteLine(const stringT &cs_line, bool bCRLF = true)
   {WriteLine(cs_line.c_str(), bCRLF);}
   void WriteLine(LPCTSTR tc_line, bool bCRLF = true);
   void WriteLine();
   bool SaveToDisk();
+  bool ReadFromDisk();
+  bool PurgeFromDisk();
+  bool ReportExistsOnDisk();
   StringX GetString() {return m_osxs.rdbuf()->str();}
+  bool StringEmpty() {return !m_osxs.rdbuf() || m_osxs.rdbuf()->str().empty();}
+  const stringT GetFileName() {return m_cs_filename;}
 
 private:
   oStringXStream m_osxs;
