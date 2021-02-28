@@ -613,8 +613,8 @@ int PasswordSafeFrame::SaveIfChanged()
 
 struct ExportFullText
 {
-  static wxString EngGetTitle() {return _("Export Text");}
-  static wxString GetTitle() {return _(EngGetTitle());}
+  static wxString EngGetTitle() {return L"Export Text";}
+  static wxString GetTitle() {return _("Export Text");}
   static void MakeOrderedItemList(PasswordSafeFrame* frame, OrderedItemList& olist) {
     frame->FlattenTree(olist);
   }
@@ -656,8 +656,8 @@ struct ExportFullText
 };
 
 struct ExportFullXml {
-  static wxString EngGetTitle() {return _("Export XML");}
-  static wxString GetTitle() {return _(EngGetTitle());}
+  static wxString EngGetTitle() {return L"Export XML";}
+  static wxString GetTitle() {return _("Export XML");}
   static void MakeOrderedItemList(PasswordSafeFrame* frame, OrderedItemList& olist) {
     frame->FlattenTree(olist);
   }

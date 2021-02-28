@@ -337,7 +337,7 @@ void PasswordSafeFrame::OnChangeMode(wxCommandEvent& evt)
   // Don't allow prior format versions to become R/W
   // Do allow current (and possible future 'experimental') formats
   if (m_core.GetReadFileVersion() >= PWSfile::VCURRENT)
-    ChangeMode(true); // true means "prompt use for password". TODO: See ui/Windows/MainFile.cpp
+    ChangeMode(true); // true means "prompt use for password".
 
   // Update Statusbar
   UpdateStatusBar();
@@ -410,7 +410,7 @@ bool PasswordSafeFrame::ChangeMode(bool promptUser)
             break;
 
           case PWScore::CANT_GET_LOCK:
-          { // TODO: KAI Retry after delete lock, when same user and host
+          {
             stringT plkUser(_T(""));
             stringT plkHost(_T(""));
             int plkPid = -1;
