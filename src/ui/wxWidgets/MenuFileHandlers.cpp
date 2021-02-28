@@ -31,6 +31,7 @@
 #include "core/XML/XMLDefs.h"
 #include "os/sleep.h"
 #include "os/file.h"
+#include "os/env.h"
 
 #include "CompareDlg.h"
 #include "ExportTextWarningDlg.h"
@@ -68,7 +69,8 @@ static void DisplayFileWriteError(int rc, const StringX &fname)
     cs_temp += _("Unknown error");
     break;
   }
-  wxMessageDialog(nullptr, cs_temp, cs_title, wxOK | wxICON_ERROR);
+  wxMessageDialog dlg(nullptr, cs_temp, cs_title, wxOK | wxICON_ERROR);
+  dlg.ShowModal();
 }
 
 /*!
@@ -147,7 +149,8 @@ int PasswordSafeFrame::NewFile(StringX &fname)
   wxString dir = towxstring(PWSdirs::GetSafeDir());
   int rc;
 
-  while (1) {
+  while (1) { // Lock cannot be fetched or Cancel pressed
+    
     wxFileDialog fd(static_cast<wxWindow *>(this), cs_text, dir, v3FileName,
                     _("psafe3 files (*.psafe3)|*.psafe3|All files(*.*; *)|*.*;*"),
                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR);
@@ -160,43 +163,68 @@ int PasswordSafeFrame::NewFile(StringX &fname)
         wxfn.SetExt(DEFAULT_SUFFIX);
         fname = wxfn.GetFullPath().c_str();
       }
-      break;
     } else
       return PWScore::USER_CANCEL;
-  }
 
-  SafeCombinationSetupDlg dbox_pksetup(this);
-  rc = dbox_pksetup.ShowModal();
+    SafeCombinationSetupDlg dbox_pksetup(this);
+    rc = dbox_pksetup.ShowModal();
 
-  if (rc == wxID_CANCEL)
-    return PWScore::USER_CANCEL;  //User cancelled password entry
+    if (rc == wxID_CANCEL)
+      return PWScore::USER_CANCEL;  //User cancelled password entry
 
-  // Reset core and clear ALL associated data
-  m_core.ReInit(true);
+    // First lock the new file
+    std::wstring locker(L""); // null init is important here
+    if(!m_core.LockFile(fname.c_str(), locker)) {
+      stringT plkUser(_T(""));
+      stringT plkHost(_T(""));
+      int plkPid = -1;
+      bool fileLocked = false;
+      if(PWSUtil::GetLockerData(locker, plkUser, plkHost, plkPid) &&
+         (plkUser == pws_os::getusername()) && (plkHost == pws_os::gethostname())) {
+        wxMessageDialog dialog(this, _("Lock is done by yourself"), _("Remove Lock?"), wxYES_NO | wxICON_EXCLAMATION);
+        if(dialog.ShowModal() == wxID_YES) {
+          HANDLE handle = 0;
+          pws_os::UnlockFile(fname.c_str(), handle);
+          if(m_core.LockFile(fname.c_str(), locker))
+            fileLocked = true;
+        }
+      }
+      if(!fileLocked) {
+        wxString errmess;
+        errmess = _("Could not lock file.\n");
+        if (PWSUtil::HasValidLockerData(locker)) {
+          errmess += _("Locked by ");
+        }
+        errmess += locker.c_str();
+        wxMessageBox(wxString()<< fname.c_str() << wxT("\n\n") << errmess,
+                     _("Error"), wxOK | wxICON_ERROR, this);
+        continue;
+      }
+    }
+    // Reset core and clear ALL associated data
+    m_core.ReInit(true);
 
-  // clear the application data before creating new file
-  ClearAppData();
+    // clear the application data before creating new file
+    ClearAppData();
 
-  PWSprefs::GetInstance()->SetDatabasePrefsToDefaults();
-  const StringX &oldfilename = m_core.GetCurFile();
-  // The only way we're the locker is if it's locked & we're !readonly
-  if (!oldfilename.empty() &&
-      !m_core.IsReadOnly() &&
-      m_core.IsLockedFile(oldfilename.c_str()))
-    m_core.UnlockFile(oldfilename.c_str());
+    PWSprefs::GetInstance()->SetDatabasePrefsToDefaults();
+    const StringX &oldfilename = m_core.GetCurFile();
+    // The only way we're the locker is if it's locked & we're !readonly
+    if (!oldfilename.empty() &&
+        !m_core.IsReadOnly() &&
+        m_core.IsLockedFile(oldfilename.c_str())) {
+      m_core.UnlockFile(oldfilename.c_str());
+    }
 
-  m_core.SetCurFile(fname);
+    m_core.SetCurFile(fname);
 
-  // Now lock the new file
-  std::wstring locker(L""); // null init is important here
-  m_core.LockFile(fname.c_str(), locker);
-
-  m_core.SetReadOnly(false); // new file can't be read-only...
-  m_core.NewFile(tostringx(dbox_pksetup.GetPassword()));
+    m_core.SetReadOnly(false); // new file can't be read-only...
+    m_core.NewFile(tostringx(dbox_pksetup.GetPassword()));
 #ifdef notyet
-  startLockCheckTimer();
+    startLockCheckTimer();
 #endif
-  return PWScore::SUCCESS;
+    return PWScore::SUCCESS;
+  }
 }
 
 /*!

@@ -30,6 +30,7 @@
 #include "core/PWSdirs.h"
 #include "core/PWSprefs.h"
 #include "os/file.h"
+#include "os/env.h"
 
 ////@begin includes
 #include "PWSafeApp.h"
@@ -428,18 +429,34 @@ void SafeCombinationEntryDlg::ProcessPhrase()
     const stringT fname(m_filename.c_str());
     stringT locker(L"");
     if (!m_readOnly && !m_core.LockFile(fname, locker)) {
-      errmess = _("Could not lock file, opening read-only.\n");
-
-      if (PWSUtil::HasValidLockerData(locker)) {
-        errmess += _("Locked by ");
-      }
-
-      errmess += locker.c_str();
-
-      wxMessageDialog warn(this, errmess,
-                           _("Warning"), wxOK | wxICON_WARNING);
-      warn.ShowModal();
+      stringT plkUser(_T(""));
+      stringT plkHost(_T(""));
+      int plkPid = -1;
+      
       m_readOnly = true;
+      if(PWSUtil::GetLockerData(locker, plkUser, plkHost, plkPid) &&
+         (plkUser == pws_os::getusername()) && (plkHost == pws_os::gethostname())) {
+        wxMessageDialog dialog(this, _("Lock is done by yourself"), _("Remove Lock?"), wxYES_NO | wxICON_EXCLAMATION);
+        if(dialog.ShowModal() == wxID_YES) {
+          HANDLE handle = 0;
+          pws_os::UnlockFile(fname, handle);
+          if(m_core.LockFile(fname, locker))
+            m_readOnly = false;
+        }
+      }
+      
+      if (m_readOnly) {
+        errmess = _("Could not lock file, opening read-only.\n");
+
+        if (PWSUtil::HasValidLockerData(locker)) {
+          errmess += _("Locked by ");
+        }
+
+        errmess += locker.c_str();
+
+        wxMessageDialog warn(this, errmess, _("Warning"), wxOK | wxICON_WARNING);
+        warn.ShowModal();
+      }
     }
     m_core.SetReadOnly(m_readOnly);
     m_core.SetCurFile(tostringx(m_filename));
@@ -564,7 +581,34 @@ void SafeCombinationEntryDlg::OnNewDbClick(wxCommandEvent& WXUNUSED(evt))
 
   // Now lock the new file
   std::wstring locker(L""); // null init is important here
-  m_core.LockFile(tostdstring(newfile), locker);
+  stringT fname = tostdstring(newfile);
+  if(!m_core.LockFile(fname, locker)) {
+    stringT plkUser(_T(""));
+    stringT plkHost(_T(""));
+    int plkPid = -1;
+    bool fileLocked = false;
+    if(PWSUtil::GetLockerData(locker, plkUser, plkHost, plkPid) &&
+       (plkUser == pws_os::getusername()) && (plkHost == pws_os::gethostname())) {
+      wxMessageDialog dialog(this, _("Lock is done by yourself"), _("Remove Lock?"), wxYES_NO | wxICON_EXCLAMATION);
+      if(dialog.ShowModal() == wxID_YES) {
+        HANDLE handle = 0;
+        pws_os::UnlockFile(fname, handle);
+        if(m_core.LockFile(fname, locker))
+          fileLocked = true;
+      }
+    }
+    if(!fileLocked) {
+      wxString errmess;
+      errmess = _("Could not lock file.\n");
+      if (PWSUtil::HasValidLockerData(locker)) {
+        errmess += _("Locked by ");
+      }
+      errmess += locker.c_str();
+      wxMessageBox(wxString()<< newfile << wxT("\n\n") << errmess,
+                   _("Error"), wxOK | wxICON_ERROR, this);
+      return;
+    }
+  }
 
   m_core.SetReadOnly(false); // new file can't be read-only...
   m_core.NewFile(tostringx(pksetup.GetPassword()));

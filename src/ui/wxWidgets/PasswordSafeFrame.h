@@ -134,6 +134,7 @@ class DnDFile;
 #define ID_REPORT_EXPORTTEXT 10318
 #define ID_REPORT_EXPORTXML 10319
 #define ID_REPORT_EXPORT_DB 10320
+#define ID_CHANGEMODE 10321
 #define ID_STATUSBAR 10000
 #define SYMBOL_PASSWORDSAFEFRAME_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxMINIMIZE_BOX|wxMAXIMIZE_BOX|wxCLOSE_BOX
 #define SYMBOL_PASSWORDSAFEFRAME_TITLE _("PasswordSafe")
@@ -476,6 +477,9 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_REPORT_VALIDATE
   void OnShowReportValidate(wxCommandEvent& WXUNUSED(evt));
   
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGEMODE
+  void OnChangeMode(wxCommandEvent& WXUNUSED(evt));
+  
   // Supporting function for OnShowReport... function
   void RunShowReport(LPCTSTR tcAction);
   
@@ -636,6 +640,7 @@ private:
   void SaveSettings() const;
   void LockDb();
   void TryIconize(int nAttempts = 5);
+  bool ChangeMode(bool promptUser);
 
   void Merge(const StringX &sx_Filename2, PWScore *pothercore, const SelectionCriteria& selection);
   int MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,

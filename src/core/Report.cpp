@@ -250,9 +250,6 @@ bool CReport::SaveToDisk()
         nBytesRead = fread(inbuffer, 1, sizeof(inbuffer), f_in);
 
         if (nBytesRead > 0) {
-            
-            std::wstring_convert<
-                deletable_facet<std::codecvt<char16_t, char, std::mbstate_t>>, char16_t> conv16;
           // get private buffer
           wchar_t* buffer = 0;
           size_t length = 0;
@@ -269,7 +266,8 @@ bool CReport::SaveToDisk()
             // Write UTF-8 content
             fwrite(dst, dstlen, 1, f_out);
             delete[] dst;
-            (*pugi::get_memory_deallocation_function())(buffer);
+            if(static_cast<void *>(buffer) != static_cast<void *>(inbuffer))
+              (*pugi::get_memory_deallocation_function())(buffer);
           }
         } else
           break;
@@ -397,7 +395,8 @@ bool CReport::ReadFromDisk()
       if(pugi::convertBuffer(buffer, length, encoding, inbuffer, nBytesRead, true)) {
         // Write into report buffer
         m_osxs.write(buffer, length);
-        (*pugi::get_memory_deallocation_function())(buffer);
+        if(static_cast<void *>(buffer) != static_cast<void *>(inbuffer))
+          (*pugi::get_memory_deallocation_function())(buffer);
       }
     } else
       break;

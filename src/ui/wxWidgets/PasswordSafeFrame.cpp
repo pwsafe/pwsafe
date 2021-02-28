@@ -123,6 +123,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_MERGE,                   PasswordSafeFrame::OnMergeAnotherSafe            )
   EVT_MENU( ID_COMPARE,                 PasswordSafeFrame::OnCompare                     )
   EVT_MENU( ID_SYNCHRONIZE,             PasswordSafeFrame::OnSynchronize                 )
+  EVT_MENU( ID_CHANGEMODE,              PasswordSafeFrame::OnChangeMode                 )
   EVT_MENU( wxID_PROPERTIES,            PasswordSafeFrame::OnPropertiesClick             )
   EVT_MENU( wxID_EXIT,                  PasswordSafeFrame::OnExitClick                   )
 
@@ -139,6 +140,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( ID_MERGE,              PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_COMPARE,            PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SYNCHRONIZE,        PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_CHANGEMODE,         PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( wxID_PROPERTIES,       PasswordSafeFrame::OnUpdateUI                    )
   
   ////////////////////////////////////////////////////////////////////////////////////////
@@ -585,6 +587,7 @@ void PasswordSafeFrame::CreateMenubar()
   menuFile->Append(ID_MERGE, _("&Merge..."), wxEmptyString, wxITEM_NORMAL);
   menuFile->Append(ID_COMPARE, _("&Compare..."), wxEmptyString, wxITEM_NORMAL);
   menuFile->Append(ID_SYNCHRONIZE, _("S&ynchronize..."), wxEmptyString, wxITEM_NORMAL);
+  menuFile->Append(ID_CHANGEMODE, _("Change R/W Mode"), wxEmptyString, wxITEM_NORMAL);
   menuFile->AppendSeparator();
   menuFile->Append(wxID_PROPERTIES, _("&Properties"), wxEmptyString, wxITEM_NORMAL);
   menuFile->AppendSeparator();
@@ -2070,7 +2073,16 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_SHOWHIDE_DRAGBAR:
       GetDragBar() ? evt.Check(GetDragBar()->IsShown()) : evt.Check(false);
       break;
-
+      
+    case ID_CHANGEMODE:
+    {
+      bool bFileIsReadOnly = true;
+      if(m_core.IsDbOpen()) {
+        pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
+      }
+      evt.Enable(m_core.IsDbOpen() && !bFileIsReadOnly);
+      break;
+    }
     default:
       break;
   }
@@ -2511,7 +2523,11 @@ void PasswordSafeFrame::OnVisitWebsite(wxCommandEvent&)
 
 void PasswordSafeFrame::UpdateStatusBar()
 {
-
+  wxMenuBar* menuBar = GetMenuBar();
+  wxMenuItem *menu = nullptr;
+  if(menuBar != nullptr) {
+    menu = menuBar->FindItem(ID_CHANGEMODE);
+  }
   if (m_core.IsDbOpen()) {
     wxString text;
     // SB_DBLCLICK pane is set per selected entry, not here
@@ -2530,6 +2546,10 @@ void PasswordSafeFrame::UpdateStatusBar()
 
     text = m_bFilterActive ? wxT("[F]") : wxT("   ");
     m_statusBar->SetStatusText(text, StatusBar::Field::FILTER);
+    
+    // Update Menu text
+    if(menu != nullptr)
+      menu->SetItemLabel(m_core.IsReadOnly() ? _("Change to R/W") : _("Change to R-O"));
   }
   else { // no open file
     m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(-1)), StatusBar::Field::DOUBLECLICK);
@@ -2538,12 +2558,17 @@ void PasswordSafeFrame::UpdateStatusBar()
     m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::READONLY);
     m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::NUM_ENT);
     m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::FILTER);
+    // Update Menu text
+    if(menu != nullptr)
+      menu->SetItemLabel(_("Change R/W Mode"));
   }
 }
 
 void PasswordSafeFrame::UpdateMenuBar()
 {
   // Add code here for more complex update logic on menu items, otherwise use OnUpdateUI
+  
+  // Menu Item ID_CHANGEMODE "Change R/W Mode" is updated in UpdateStatusBar(), as always synchonized with open/closed and read-mode
 }
 
 void PasswordSafeFrame::UpdateLastClipboardAction(const CItemData::FieldType field)
