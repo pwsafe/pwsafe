@@ -85,6 +85,7 @@ endif (pwsafe_REVISION)
 # Configurable options:
 option (NO_YUBI "Set ON to disable YubiKey support" OFF)
 option (NO_GTEST "Set ON to disable gtest unit testing" OFF)
+option (GTEST_BUILD "Set OFF to disable gtest download and build on-fly" ON)
 
 if (WIN32)
   option (WX_WINDOWS "Build wxWidget under Windows" OFF)
@@ -255,7 +256,7 @@ if (USE_ASAN)
 endif (USE_ASAN)
 endif (MSVC)
 
-if (NOT NO_GTEST)
+if (NOT NO_GTEST AND GTEST_BUILD)
    # Download and unpack googletest at configure time
    # See https://crascit.com/2015/07/25/cmake-gtest/
    configure_file(Misc/CMakeLists.gtest.txt.in googletest-download/CMakeLists.txt)
@@ -281,7 +282,7 @@ if (NOT NO_GTEST)
    include_directories("${gtest_SOURCE_DIR}/include"
 #                       "${gmock_SOURCE_DIR}/include"
                        )
-endif(NOT NO_GTEST)
+endif(NOT NO_GTEST AND GTEST_BUILD)
 
 if (WIN32 AND NOT WX_WINDOWS)
   set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/Windows/version.in")
