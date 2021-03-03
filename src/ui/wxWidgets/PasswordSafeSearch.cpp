@@ -421,7 +421,7 @@ void PasswordSafeSearch::OnToolBarFindReport(wxCommandEvent& event)
   }
   
   CReport report;
-  report.StartReport(L"Find", m_parentFrame->GetCurrentFile().c_str());
+  report.StartReport(REPORT_FIND_NAME, m_parentFrame->GetCurrentFile().c_str());
   
   if(m_criteria) {
     m_criteria->ReportAdvancedOptions(&report, _("Find"), m_parentFrame->GetCurrentFile().c_str());

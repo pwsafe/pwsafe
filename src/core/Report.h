@@ -14,6 +14,23 @@
 #include "os/typedefs.h"
 #include "StringXStream.h"
 
+/*
+ * The name of the reports are listed (not translated), values used for tcAction in StartReport. To stay compatible with Windows, the interface is left as string
+ */
+
+#define REPORT_SYNCHRONIZE_NAME        (L"Synchronize")
+#define REPORT_COMPARE_NAME            (L"Compare")
+#define REPORT_MERGE_NAME              (L"Merge")
+#define REPORT_IMPORTTEXT_NAME         (L"Import Text")
+#define REPORT_IMPORTXML_NAME          (L"Import XML")
+#define REPORT_IMPORTKEEPASS_TXT_NAME  (L"Import KeePassV1 TXT")
+#define REPORT_IMPORTKEEPASS_CSV_NAME  (L"Import KeePassV1 CSV")
+#define REPORT_EXPORTTEXT_NAME         (L"Export Text")
+#define REPORT_EXPORTXML_NAME          (L"Export XML")
+#define REPORT_EXPORT_DB_NAME          (L"Export DB")
+#define REPORT_FIND_NAME               (L"Find")
+#define REPORT_VALIDATE_NAME           (L"Validate")
+
 class CReport
 {
 public:

@@ -636,7 +636,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
 {
   CReport& rpt = m_syncData->syncReport;
 
-  rpt.StartReport(L"Synchronize", currentCore->GetCurFile().c_str());
+  rpt.StartReport(REPORT_SYNCHRONIZE_NAME, currentCore->GetCurFile().c_str());
   wxString line = wxString::Format(_("Synchronizing from database: %ls\n"), otherCore->GetCurFile().c_str());
   rpt.WriteLine(line.c_str());
 

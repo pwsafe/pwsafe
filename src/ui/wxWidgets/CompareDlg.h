@@ -16,7 +16,7 @@
 #include <wx/dialog.h>
 #include <wx/collpane.h>
 #include "../../core/DBCompareData.h"
-#include "Report.h"
+#include "../../core/Report.h"
 
 class PWScore;
 class PWSAuxCore;

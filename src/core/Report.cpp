@@ -5,6 +5,7 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
+#if !defined(_WIN32) || defined(__WX__)
 #include <wx/wxprec.h>
 
 #ifndef WX_PRECOMP
@@ -14,6 +15,7 @@
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+#endif // !defined(_WIN32) || defined(__WX__)
 
 #include "Report.h"
 #include "Util.h"
@@ -62,10 +64,17 @@ void CReport::StartReport(LPCTSTR tcAction, const stringT &csDataBase, bool writ
   m_csDataBase = csDataBase;
 
   if(writeHeader) {
-    stringT cs_title, sTimeStamp, sAction;
+    stringT cs_title, sTimeStamp;
     PWSUtil::GetTimeStamp(sTimeStamp, true);
+#if !defined(_WIN32) || defined(__WX__)
+      // In wxWidget we are using tcAction as unique name language indepent (usual used in file name),
+      // but translate inside of the text of the report to the actual language
+    stringT sAction;
     sAction = _(tcAction);
     Format(cs_title, IDSC_REPORT_TITLE1, sAction.c_str(), sTimeStamp.c_str());
+#else
+    Format(cs_title, IDSC_REPORT_TITLE1, tcAction, sTimeStamp.c_str());
+#endif
     WriteLine();
     WriteLine(cs_title);
     Format(cs_title, IDSC_REPORT_TITLE2, csDataBase.c_str());

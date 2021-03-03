@@ -971,7 +971,7 @@ void CompareDlg::ReportAdvancedOptions()
 
 void CompareDlg::WriteReport()
 {
-  m_compReport.StartReport(L"Compare", m_currentCore->GetCurFile().c_str());
+  m_compReport.StartReport(REPORT_COMPARE_NAME, m_currentCore->GetCurFile().c_str());
   m_compReport.WriteLine(_("Comparing current database with: "), false);
   m_compReport.WriteLine(m_otherCore->GetCurFile().c_str());
   m_compReport.WriteLine();

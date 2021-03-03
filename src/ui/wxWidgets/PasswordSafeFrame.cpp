@@ -688,7 +688,7 @@ void PasswordSafeFrame::CreateMenubar()
   menuReports->Append(ID_REPORT_IMPORTKEEPASS_CSV, _("Import Kee&Pass V1 CSV"), wxEmptyString, wxITEM_NORMAL);
   menuReports->Append(ID_REPORT_EXPORTTEXT, _("&Export Text"), wxEmptyString, wxITEM_NORMAL);
   menuReports->Append(ID_REPORT_EXPORTXML, _("Export XM&L"), wxEmptyString, wxITEM_NORMAL);
-  menuReports->Append(ID_REPORT_EXPORT_DB, _("Export Current &DB"), wxEmptyString, wxITEM_NORMAL); // TODO: Fill export file "Export DB Report.txt"
+  menuReports->Append(ID_REPORT_EXPORT_DB, _("Export Current &DB"), wxEmptyString, wxITEM_NORMAL); // TODO: Fill export file "Export DB Report.txt" with REPORT_EXPORT_DB_NAME
   menuReports->Append(ID_REPORT_MERGE, _("&Merge"), wxEmptyString, wxITEM_NORMAL);
   menuReports->Append(ID_REPORT_SYNCHRONIZE, _("&Synchronize"), wxEmptyString, wxITEM_NORMAL);
   menuReports->Append(ID_REPORT_VALIDATE, _("&Validate"), wxEmptyString, wxITEM_NORMAL);
@@ -1838,51 +1838,51 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
       
     case ID_REPORT_SYNCHRONIZE:
-      evt.Enable(CheckReportPresent(L"Synchronize"));
+      evt.Enable(CheckReportPresent(REPORT_SYNCHRONIZE_NAME));
       break;
 
     case ID_REPORT_COMPARE:
-      evt.Enable(CheckReportPresent(L"Compare"));
+      evt.Enable(CheckReportPresent(REPORT_COMPARE_NAME));
       break;
       
     case ID_REPORT_MERGE:
-      evt.Enable(CheckReportPresent(L"Merge"));
+      evt.Enable(CheckReportPresent(REPORT_MERGE_NAME));
       break;
       
     case ID_REPORT_IMPORTTEXT:
-      evt.Enable(CheckReportPresent(L"Import Text"));
+      evt.Enable(CheckReportPresent(REPORT_IMPORTTEXT_NAME));
       break;
       
     case ID_REPORT_IMPORTXML:
-      evt.Enable(CheckReportPresent(L"Import XML"));
+      evt.Enable(CheckReportPresent(REPORT_IMPORTXML_NAME));
       break;
       
     case ID_REPORT_IMPORTKEEPASS_TXT:
-      evt.Enable(CheckReportPresent(L"Import KeePassV1 TXT"));
+      evt.Enable(CheckReportPresent(REPORT_IMPORTKEEPASS_TXT_NAME));
       break;
       
     case ID_REPORT_IMPORTKEEPASS_CSV:
-      evt.Enable(CheckReportPresent(L"Import KeePassV1 CSV"));
+      evt.Enable(CheckReportPresent(REPORT_IMPORTKEEPASS_CSV_NAME));
       break;
       
     case ID_REPORT_EXPORTTEXT:
-      evt.Enable(CheckReportPresent(L"Export Text"));
+      evt.Enable(CheckReportPresent(REPORT_EXPORTTEXT_NAME));
       break;
       
     case ID_REPORT_EXPORTXML:
-      evt.Enable(CheckReportPresent(L"Export XML"));
+      evt.Enable(CheckReportPresent(REPORT_EXPORTXML_NAME));
       break;
       
     case ID_REPORT_EXPORT_DB:
-      evt.Enable(CheckReportPresent(L"Export DB"));
+      evt.Enable(CheckReportPresent(REPORT_EXPORT_DB_NAME));
       break;
       
     case ID_REPORT_FIND:
-      evt.Enable(CheckReportPresent(L"Find"));
+      evt.Enable(CheckReportPresent(REPORT_FIND_NAME));
       break;
       
     case ID_REPORT_VALIDATE:
-      evt.Enable(CheckReportPresent(L"Validate"));
+      evt.Enable(CheckReportPresent(REPORT_VALIDATE_NAME));
       break;
       
     case ID_SORT_TREE_MENU:

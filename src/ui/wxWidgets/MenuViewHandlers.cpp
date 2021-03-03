@@ -221,62 +221,62 @@ void PasswordSafeFrame::RunShowReport(LPCTSTR tcAction)
 
 void PasswordSafeFrame::OnShowReportSynchronize(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(L"Synchronize");
+  RunShowReport(REPORT_SYNCHRONIZE_NAME);
 }
 
 void PasswordSafeFrame::OnShowReportCompare(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(L"Compare");
+  RunShowReport(REPORT_COMPARE_NAME);
 }
 
 void PasswordSafeFrame::OnShowReportMerge(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(L"Merge");
+  RunShowReport(REPORT_MERGE_NAME);
 }
 
 void PasswordSafeFrame::OnShowReportImportText(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(L"Import Text");
+  RunShowReport(REPORT_IMPORTTEXT_NAME);
 }
 
 void PasswordSafeFrame::OnShowReportImportXML(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(L"Import XML");
+  RunShowReport(REPORT_IMPORTXML_NAME);
 }
 
 void PasswordSafeFrame::OnShowReportImportKeePassV1_TXT(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(L"Import KeePassV1 TXT");
+  RunShowReport(REPORT_IMPORTKEEPASS_TXT_NAME);
 }
 
 void PasswordSafeFrame::OnShowReportImportKeePassV1_CSV(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(L"Import KeePassV1 CSV");
+  RunShowReport(REPORT_IMPORTKEEPASS_CSV_NAME);
 }
 
 void PasswordSafeFrame::OnShowReportExportText(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(L"Export Text");
+  RunShowReport(REPORT_EXPORTTEXT_NAME);
 }
 
 void PasswordSafeFrame::OnShowReportExportXML(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(L"Export XML");
+  RunShowReport(REPORT_EXPORTXML_NAME);
 }
 
 void PasswordSafeFrame::OnShowReportExportDB(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(L"Export DB");
+  RunShowReport(REPORT_EXPORT_DB_NAME);
 }
 
 void PasswordSafeFrame::OnShowReportFind(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(L"Find");
+  RunShowReport(REPORT_FIND_NAME);
 }
 
 void PasswordSafeFrame::OnShowReportValidate(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(L"Validate");
+  RunShowReport(REPORT_VALIDATE_NAME);
 }
 
 void PasswordSafeFrame::OnShowHideToolBar(wxCommandEvent& evt)
