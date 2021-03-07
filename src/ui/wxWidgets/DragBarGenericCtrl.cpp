@@ -65,8 +65,8 @@ void DragBarGenericCtrl::OnLeftDown(wxMouseEvent& evt)
   }
 
   wxASSERT(idx >= 0 && size_t(idx) < m_items.size());
-  
-  if(idx == (m_items.size() - 1)) { // Last entry is DnD
+
+  if(size_t(idx) == (m_items.size() - 1)) { // Last entry is DnD
     PasswordSafeFrame *p;
     p = m_provider->GetBaseFrame();
     wxASSERT(p && p->m_tree);
