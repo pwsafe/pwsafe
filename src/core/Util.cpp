@@ -804,6 +804,11 @@ unsigned int GetStringBufSize(const TCHAR *fmt, va_list args)
     nBytes = _vstprintf_s(buffer, len, fmt, ar);
     va_end(ar);//after using args we should reset list
     va_copy(ar, args);
+    /*
+     * If 'nBytes' is zero due to an empty format string,
+     * it would result in an endless memory-consuming loop.
+     */
+    ASSERT(nBytes != 0);
     if (nBytes++ > 0) {
       len = nBytes;
       break;
