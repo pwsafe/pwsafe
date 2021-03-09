@@ -65,7 +65,7 @@ void DnDObject::DnDUnSerializeEntry(wxMemoryInputStream &inDDmem)
   // Deserialize an entry
   size_t len = 0;
   inDDmem.Read(&len, sizeof(size_t));
-  wxASSERT((inDDmem.LastRead() == sizeof(len)) && (len != 0) && (len <= inDDmem.GetLength()));
+  wxASSERT((inDDmem.LastRead() == sizeof(len)) && (len != 0) && (static_cast<wxFileOffset>(len) <= inDDmem.GetLength()));
   vector<char> v(len);
   inDDmem.Read(&(*v.begin()), len);
   wxASSERT(inDDmem.LastRead() == len);
