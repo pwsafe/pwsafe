@@ -16,6 +16,7 @@
 #include "SMemFile.h"
 #include "GeneralMsgBox.h"
 
+#include "core/core.h"
 #include "core/ItemData.h"
 #include "core/Util.h"
 #include "core/UTF8Conv.h"
@@ -1193,7 +1194,7 @@ bool CPWTreeCtrlX::MoveItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTRE
     // Get information from current selected entry
     CSecString ci_user = pci->GetUser();
     CSecString ci_title0 = pci->GetTitle();
-    CSecString ci_title = app.GetMainDlg()->GetUniqueTitle(path, ci_title0, ci_user, IDS_DRAGNUMBER);
+    CSecString ci_title = app.GetMainDlg()->GetUniqueTitle(path, ci_title0, ci_user, IDSC_DRAGNUMBER);
 
     // Update list field with new group
     pmulticmds->Add(UpdateEntryCommand::Create(app.GetCore(), *pci,
@@ -1318,7 +1319,7 @@ bool CPWTreeCtrlX::CopyItem(MultiCommands *pmulticmds, HTREEITEM hitemDrag, HTRE
     CSecString ci_user = pci->GetUser();
     CSecString ci_title0 = pci->GetTitle();
     CSecString ci_title = app.GetMainDlg()->GetUniqueTitle(sNewPath, ci_title0,
-                                                 ci_user, IDS_DRAGNUMBER);
+                                                 ci_user, IDSC_DRAGNUMBER);
 
     ci_temp.CreateUUID(); // Copy needs its own UUID
     ci_temp.SetGroup(sNewPath);
@@ -1540,7 +1541,7 @@ BOOL CPWTreeCtrlX::OnDrop(CWnd *, COleDataObject *pDataObject,
 
           // If there is a matching entry in our list, generate unique one
           if (app.GetMainDlg()->Find(cs_group, cs_title, cs_user) != app.GetMainDlg()->End()) {
-            cs_title = app.GetMainDlg()->GetUniqueTitle(cs_group, cs_title, cs_user, IDS_DRAGNUMBER);
+            cs_title = app.GetMainDlg()->GetUniqueTitle(cs_group, cs_title, cs_user, IDSC_DRAGNUMBER);
           }
           StringX sxNewDBPrefsString(L"");
           app.GetMainDlg()->CreateShortcutEntry(pci, cs_group, cs_title, cs_user, sxNewDBPrefsString);

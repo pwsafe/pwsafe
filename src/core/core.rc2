@@ -438,3 +438,8 @@ BEGIN
   IDSC_PHEXADECIMAL        "Hexadecimal characters"
   IDSC_ATLEASTIGNORED      " (at least N restrictions may be ignored)"
 END
+
+STRINGTABLE
+BEGIN
+  IDSC_DRAGNUMBER          " Drag # %d"
+END
