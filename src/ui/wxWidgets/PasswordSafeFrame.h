@@ -735,6 +735,7 @@ private:
   
   friend class DnDFile;
   friend class TreeCtrl;
+  friend class PWSafeApp;
 };
 
 BEGIN_DECLARE_EVENT_TYPES()
