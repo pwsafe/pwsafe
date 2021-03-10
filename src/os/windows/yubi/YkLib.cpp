@@ -256,7 +256,8 @@ unsigned short CYkLib::enumPorts(void)
 				// Get HID attributes
 
 				if (HidD_GetAttributes(m_handle, &devInfo)) {
-					if (devInfo.VendorID == YUBICO_VID) {
+					if (devInfo.VendorID == YUBICO_VID ||
+              devInfo.VendorID == 0x1d50) { // 0x1d50 = OnlyKey's VID
             // Assume every Yubico device is good for us...
                         // Keep full path of device found
 
