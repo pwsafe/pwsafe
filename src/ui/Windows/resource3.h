@@ -235,7 +235,6 @@
 #define IDS_MAXNUMDAYSEXCEEDED          5407
 #define IDS_HELPMENU                    5408
 #define IDS_INVALIDEXPIRYWARNDAYS       5410
-#define IDS_DRAGNUMBER                  5411
 #define IDS_STRICT_LOCKED               5412
 #define IDS_CPF_CDD                     5413
 #define IDS_NOITEMS                     5414

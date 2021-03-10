@@ -2415,7 +2415,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
 
     sxuser = ci_temp.GetUser();
     StringX sxnewtitle(ci_temp.GetTitle());
-    m_core.MakeEntryUnique(setGTU, sxgroup, sxnewtitle, sxuser, IDS_DRAGNUMBER);
+    m_core.MakeEntryUnique(setGTU, sxgroup, sxnewtitle, sxuser, IDSC_DRAGNUMBER);
 
     if (m_core.Find(ci_temp.GetUUID()) != End()) {
       // Already in use - get a new one!
