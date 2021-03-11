@@ -85,6 +85,21 @@ stable version (3.0.5) has several issues. You may see the app crash when you tr
 
 https://trac.wxwidgets.org/ticket/19005
 
+### International users
+When changing the language from English to another language you might encounter problems with onStateImgage (mark indicating the selected menu item) or chevon ">>" extending the tool bar in case space is not sufficient. There is a proposed patch that can help on that issue, but this is not accepted by the wxWidgets team so far. See https://trac.wxwidgets.org/ticket/19023
+
+diff --git a/src/common/intl.cpp b/src/common/intl.cpp
+index 44c4df22a8..97396917f3 100644
+a	b	bool wxLocale::Init(int language, int flags) 
+575	575	#elif defined(__WXMAC__)
+576	576	    const wxString& locale = info->CanonicalName;
+577	577	
+578	 	    const char *retloc = wxSetlocale(LC_ALL, locale);
+ 	578	    const char *retloc = wxSetlocale(LC_ALL, (! m_pszOldLocale || strcmp(m_pszOldLocale, "C/UTF-8/C/C/C/C")) ? locale : "C/"+locale+".UTF-8/C/C/C/C");
+579	579	
+580	580	    if ( !retloc )
+581	581	    {
+
 
 ### Building wxWidgets for pwsafe
 pwsafe uses wxWidgets as the cross-platform toolkit for its UI. To build pwsafe, you 

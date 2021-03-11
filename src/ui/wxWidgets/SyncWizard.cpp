@@ -636,7 +636,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
 {
   CReport& rpt = m_syncData->syncReport;
 
-  rpt.StartReport(_("Synchronize").c_str(), currentCore->GetCurFile().c_str());
+  rpt.StartReport(REPORT_SYNCHRONIZE_NAME, currentCore->GetCurFile().c_str());
   wxString line = wxString::Format(_("Synchronizing from database: %ls\n"), otherCore->GetCurFile().c_str());
   rpt.WriteLine(line.c_str());
 
@@ -754,23 +754,5 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
 
 void SyncStatusPage::ReportAdvancedOptions(CReport* rpt, const wxString& operation)
 {
-  wxString line = m_syncData->selCriteria.GetGroupSelectionDescription();
-  line << _(" were ") << operation << _(" with corresponding entries from \"")
-              << m_syncData->otherDB.GetFullPath() << wxT('"');
-  rpt->WriteLine(line.c_str());
-
-  wxArrayString fieldsSelected, fieldsNotSelected;
-  const bool allSelected = m_syncData->selCriteria.GetFieldSelection(fieldsSelected, fieldsNotSelected);
-  if (allSelected) {
-    line.Printf(_("All fields in matching entries were %ls"), operation);
-    rpt->WriteLine(line.c_str());
-  }
-  else {
-    line.Printf(_("The following fields were %ls"), operation);
-    rpt->WriteLine(line.c_str());
-    for( size_t idx = 0; idx < fieldsSelected.Count(); ++idx) {
-      line.Printf(wxT("\t* %ls"), fieldsSelected[idx]);
-      rpt->WriteLine(line.c_str());
-    }
-  }
+  m_syncData->selCriteria.ReportAdvancedOptions(rpt, operation, m_syncData->otherDB.GetFullPath().c_str());
 }

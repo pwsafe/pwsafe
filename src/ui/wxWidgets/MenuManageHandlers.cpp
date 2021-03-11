@@ -27,6 +27,9 @@
 
 #include "core/PWSdirs.h"
 
+#include "os/file.h"
+#include "os/env.h"
+
 #include "ManagePasswordPoliciesDlg.h"
 #include "OptionsPropertySheetDlg.h"
 #include "PasswordPolicyDlg.h"
@@ -318,4 +321,150 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
   } else {
     GetMenuBar()->Check( m_selectedLanguage, true );
   }
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGEMODE
+ */
+
+void PasswordSafeFrame::OnChangeMode(wxCommandEvent& evt)
+{
+  // Don't bother doing anything if DB is read-only on disk
+  bool bFileIsReadOnly;
+  if (pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly) && bFileIsReadOnly)
+    return;
+
+  // Don't allow prior format versions to become R/W
+  // Do allow current (and possible future 'experimental') formats
+  if (m_core.GetReadFileVersion() >= PWSfile::VCURRENT)
+    ChangeMode(true); // true means "prompt use for password".
+
+  // Update Statusbar
+  UpdateStatusBar();
+  Refresh();
+}
+
+bool PasswordSafeFrame::ChangeMode(bool promptUser)
+{
+  // We need to prompt the user for password from r-o to r/w
+  // when this is called with main window open. Arguably more
+  // secure, s.t. an untrusted user can't change things.
+  // When called as part of unlock, user just provided it.
+  // From StatusBar and menu
+
+  // Return value says change was successful
+  const bool bWasRO = m_core.IsReadOnly();
+
+  if (!bWasRO) { // R/W -> R-O
+    // Try to save if any changes done to database
+    int rc = SaveIfChanged();
+    if (rc != PWScore::SUCCESS && rc != PWScore::USER_DECLINED_SAVE)
+      return false;
+
+    if (rc == PWScore::USER_DECLINED_SAVE) {
+       // But ask just in case
+      wxMessageDialog mbox(this, _("You have chosen not to save your changes, which will be lost. Do you wish to continue?"), _("Change database mode?"), wxYES_NO | wxICON_QUESTION);
+      if(mbox.ShowModal() == wxID_NO)
+        return false;
+
+      // User said No to the save - so we must back-out all changes since last save
+      while (m_core.HasDBChanged()) {
+        m_core.Undo();
+      }
+    } // USER_DECLINED_SAVE
+
+    // Clear the Commands & DB pre-command states
+    m_core.ClearCommands();
+  } else if (promptUser) { // R-O -> R/W
+    // Taken from GetAndCheckPassword.
+    // We don't want all the other processing that GetAndCheckPassword does
+    SafeCombinationPromptDlg scp(nullptr, m_core, towxstring(m_core.GetCurFile()));
+
+    if(scp.ShowModal() != wxID_OK)
+      return false;
+  } // R-O -> R/W
+
+  bool doAgain = true;
+  bool rc(true);
+  
+  while (doAgain) {
+    doAgain = false;
+    rc = true;
+    stringT locker = L"";
+    int iErrorCode(0);
+    bool brc = m_core.ChangeMode(locker, iErrorCode);
+    if (brc) {
+      UpdateStatusBar();
+    } else {
+      rc = false;
+      // Better give them the bad news!
+    
+      wxString cs_msg, cs_title(_("Requested mode change failed"));
+      if (bWasRO) {
+        switch (iErrorCode) {
+          case PWScore::DB_HAS_CHANGED:
+            // We did get the lock but the DB has been changed
+            // Note: PWScore has already freed the lock
+            // The user must close and re-open it in R/W mode
+            cs_msg = _("The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n\nPlease close the database and re-open it in R/W mode.");
+            break;
+
+          case PWScore::CANT_GET_LOCK:
+          {
+            stringT plkUser(_T(""));
+            stringT plkHost(_T(""));
+            int plkPid = -1;
+          
+            if(PWSUtil::GetLockerData(locker, plkUser, plkHost, plkPid) &&
+               (plkUser == pws_os::getusername()) && (plkHost == pws_os::gethostname())) {
+              wxMessageDialog dialog(this, _("Lock is done by yourself"), _("Remove Lock?"), wxYES_NO | wxICON_EXCLAMATION);
+              if(dialog.ShowModal() == wxID_YES) {
+                HANDLE handle = 0;
+                pws_os::UnlockFile(m_core.GetCurFile().c_str(), handle);
+                doAgain = true;
+                continue;
+              }
+            }
+
+            stringT cs_user_and_host, cs_PID, tmp_msg;
+            cs_user_and_host = locker;
+            size_t i_pid = locker.rfind(L':');
+            if (i_pid != stringT::npos) {
+              Format(cs_PID, _(" [Process ID=%ls]"), locker.substr(i_pid + 1).c_str());
+              cs_user_and_host = locker.substr(0, i_pid);
+            } else {
+              cs_PID = L"";
+            }
+
+            Format(tmp_msg, _("Failed to switch from R-O to R/W because database is already open in R/W mode by:\n%ls %ls\n(Only one R/W access at a time is allowed)"),
+                   cs_user_and_host.c_str(), cs_PID.c_str());
+            cs_msg = towxstring(tmp_msg);
+            break;
+          }
+          case PWSfile::CANT_OPEN_FILE:
+            cs_msg = _("Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be a problem with its drive.");
+            break;
+          case PWSfile::END_OF_FILE:
+            cs_msg = _("Failed to switch from R-O to R/W: The file appears to be too short to be a valid database.");
+            break;
+          case PWSfile::READ_FAIL:
+            // Temporary use of this value to indicate DB is R-O at the file level
+            // and so cannot change to R/W
+            cs_msg = _("Given path is a directory or file is read-only");
+            break;
+          default:
+            ASSERT(0);
+        }
+      } else {
+        // Don't need fail code when going from R/W to R-O - only one issue -
+        // could not release the lock!
+        cs_msg = _("Failed to switch from R/W to R-O: Could not release database lock.\nTry exiting and restarting program.");
+      }
+
+      wxMessageDialog gmb(this, cs_msg, cs_title, wxOK | wxICON_ERROR);
+      gmb.ShowModal();
+    }
+    
+  }  // While dogAgain
+  return rc;
 }

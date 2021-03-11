@@ -16,6 +16,7 @@
 #include <wx/dialog.h>
 #include <wx/collpane.h>
 #include "../../core/DBCompareData.h"
+#include "../../core/Report.h"
 
 class PWScore;
 class PWSAuxCore;
@@ -34,6 +35,7 @@ class CompareDlg : public wxDialog
   wxCollapsiblePane* CreateDataPanel(wxSizer* dlgSizer, const wxString& title, ComparisonData* cd,
                                               bool customGrid = false);
   void OnCompare(wxCommandEvent& );
+  void OnShowReport(wxCommandEvent& );
   void OnGridCellRightClick(wxGridEvent& evt);
   void OnEditInCurrentDB(wxCommandEvent& evt);
   void OnViewInComparisonDB(wxCommandEvent& evt);
@@ -42,6 +44,12 @@ class CompareDlg : public wxDialog
   void OnDeleteItemsFromCurrentDB(wxCommandEvent& evt);
   void OnCopyFieldsToCurrentDB(wxCommandEvent& evt);
   void OnSyncItemsWithCurrentDB(wxCommandEvent& evt);
+  
+  void OnUpdateUI(wxUpdateUIEvent& event);
+  
+  void WriteReportData();
+  void ReportAdvancedOptions();
+  void WriteReport();
 
 public:
   CompareDlg(wxWindow* parent, PWScore* core);
@@ -58,6 +66,9 @@ private:
 
   void DoCompare(wxCommandEvent& evt);
   bool ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool readOnly);
+  
+  CReport            m_compReport;
+  wxButton*          m_compareButton;
 
   DECLARE_EVENT_TABLE()
 };

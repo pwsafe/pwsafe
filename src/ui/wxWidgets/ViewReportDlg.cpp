@@ -20,13 +20,15 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
+#include <wx/msgdlg.h>
+
 #include "core/Report.h"
 
 #include "Clipboard.h"
 #include "ViewReportDlg.h"
 #include "wxUtilities.h"
 
-ViewReportDlg::ViewReportDlg(wxWindow* parent, CReport* pRpt) :
+ViewReportDlg::ViewReportDlg(wxWindow* parent, CReport* pRpt, bool fromFile) :
                 wxDialog(parent, wxID_ANY, _("View Report"), wxDefaultPosition, wxDefaultSize,
                       wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),  m_pRpt(pRpt)
 {
@@ -42,7 +44,12 @@ ViewReportDlg::ViewReportDlg(wxWindow* parent, CReport* pRpt) :
 
   wxASSERT_MSG(bs, wxT("Could not create an empty wxStdDlgButtonSizer"));
 
-  bs->Add(new wxButton(this, wxID_SAVE, _("&Save to Disk")));
+  if(fromFile) {
+    bs->Add(new wxButton(this, wxID_APPLY, _("&Remove from Disk")));
+  }
+  else {
+    bs->Add(new wxButton(this, wxID_SAVE, _("&Save to Disk")));
+  }
   bs->AddSpacer(ColSeparation);
   bs->Add(new wxButton(this, wxID_COPY, _("&Copy to Clipboard")));
   bs->AddSpacer(ColSeparation);
@@ -53,6 +60,7 @@ ViewReportDlg::ViewReportDlg(wxWindow* parent, CReport* pRpt) :
   bs->Realize();
 
   Connect(wxID_SAVE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ViewReportDlg::OnSave) );
+  Connect(wxID_APPLY, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ViewReportDlg::OnRemove) );
   Connect(wxID_COPY, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ViewReportDlg::OnCopy) );
   Connect(wxID_CLOSE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ViewReportDlg::OnClose) );
 
@@ -69,6 +77,16 @@ void ViewReportDlg::OnSave(wxCommandEvent& evt)
 {
   UNREFERENCED_PARAMETER(evt);
   m_pRpt->SaveToDisk();
+}
+
+void ViewReportDlg::OnRemove(wxCommandEvent& evt)
+{
+  UNREFERENCED_PARAMETER(evt);
+  wxString fileName(m_pRpt->GetFileName());
+  wxMessageDialog dlg(this, fileName, _("Delete Report?"), wxYES_NO);
+  if(dlg.ShowModal() == wxID_YES) {
+    m_pRpt->PurgeFromDisk();
+  }
 }
 
 void ViewReportDlg::OnClose(wxCommandEvent& evt)

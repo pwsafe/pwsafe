@@ -6940,6 +6940,11 @@ namespace pugi
 	{
 		return impl::xml_memory::deallocate;
 	}
+
+  PUGI__FN bool PUGIXML_FUNCTION convertBuffer(char_t*& out_buffer, size_t& out_length, xml_encoding encoding, const void* contents, size_t size, bool is_mutable)
+  {
+    return impl::convert_buffer(out_buffer, out_length, encoding, contents, size, is_mutable);
+  }
 }
 
 #if !defined(PUGIXML_NO_STL) && (defined(_MSC_VER) || defined(__ICC))

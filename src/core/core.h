@@ -332,8 +332,19 @@
 #define IDSC_PHEXADECIMAL               4113
 #define IDSC_DEFAULT_POLICY             4114
 #define IDSC_ATLEASTIGNORED             4115
-
 #define IDSC_INVALIDLOCKER              4116
+#define IDSC_EXPORTDB                   4117
+#define IDSC_IMPORTKEEPASS1CSV          4118
+#define IDSC_IMPORTKEEPASS1TXT          4119
+#define IDSC_IMPORTXML                  4120
+#define IDSC_IMPORTTEXT                 4121
+#define IDSC_MERGE                      4122
+#define IDSC_COMPARE                    4123
+#define IDSC_SNCHRONIZE                 4124
 
+#define IDSC_COMPARESTATISTICS          5356
+#define IDSC_COMPARESTATS               5359
 #define IDSC_DRAGNUMBER                 5411
+#define IDSC_SEARCHRESULTS1             5538
+#define IDSC_SEARCHRESULTS2             5539
 #define IDSC_DRAGPOLICY                 5907

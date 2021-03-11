@@ -1343,6 +1343,9 @@ namespace pugi
 	// Get current memory management functions
 	allocation_function PUGIXML_FUNCTION get_memory_allocation_function();
 	deallocation_function PUGIXML_FUNCTION get_memory_deallocation_function();
+
+  bool PUGIXML_FUNCTION convertBuffer(char_t*& out_buffer, size_t& out_length, xml_encoding encoding, const void* contents, size_t size, bool is_mutable);
+  
 }
 
 #if !defined(PUGIXML_NO_STL) && (defined(_MSC_VER) || defined(__ICC))

@@ -18,6 +18,7 @@
 #endif
 
 #include "SelectionCriteria.h"
+#include "Report.h"
 
 CItemData::FieldType subgroups[] = {  CItemData::GROUP,
                                       CItemData::GROUPTITLE,
@@ -104,6 +105,31 @@ wxString SelectionCriteria::GetGroupSelectionDescription() const
     return wxString(_("Entries whose ")) << GetSelectableFieldName(subgroups[m_subgroupObject]) << wxS(' ')
             << subgroupFunctions[m_subgroupFunction].name << wxS(" \"") << m_subgroupText
                                          << wxS("\" [") << (m_fCaseSensitive? wxS("") : _("not ")) << _("case-sensitive]");
+}
+
+void SelectionCriteria::ReportAdvancedOptions(CReport* rpt, const wxString& operation, const wxString& fullPath)
+{
+  wxString line = GetGroupSelectionDescription();
+  line << _(" were ") << operation << _(" with corresponding entries from \"")
+              << fullPath << wxT('"');
+  rpt->WriteLine(line.c_str());
+  rpt->WriteLine();
+
+  wxArrayString fieldsSelected, fieldsNotSelected;
+  const bool allSelected = GetFieldSelection(fieldsSelected, fieldsNotSelected);
+  if (allSelected) {
+    line.Printf(_("\tAll fields in matching entries were %ls"), operation);
+    rpt->WriteLine(line.c_str());
+  }
+  else {
+    line.Printf(_("\tThe following fields were %ls"), operation);
+    rpt->WriteLine(line.c_str());
+    for( size_t idx = 0; idx < fieldsSelected.Count(); ++idx) {
+      line.Printf(wxT("\t\t* %ls"), fieldsSelected[idx]);
+      rpt->WriteLine(line.c_str());
+    }
+  }
+  rpt->WriteLine();
 }
 
 //static

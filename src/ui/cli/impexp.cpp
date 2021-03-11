@@ -49,7 +49,7 @@ ImportText(PWScore &core, const stringT &fname)
 
   // Create report as we go
   CReport rpt;
-  rpt.StartReport(L"Import_Text", core.GetCurFile().c_str());
+  rpt.StartReport(REPORT_IMPORTTEXT_NAME, core.GetCurFile().c_str());
   wstring str(L"Text file being imported: ");
   str += core.GetCurFile().c_str();
   rpt.WriteLine(str.c_str());
@@ -135,7 +135,7 @@ ImportXML(PWScore &core, const stringT &fname)
   // Create report as we go
   CReport rpt;
   std::wstring str_text;
-  rpt.StartReport(L"Import_XML", core.GetCurFile().c_str());
+  rpt.StartReport(REPORT_IMPORTXML_NAME, core.GetCurFile().c_str());
   str_text = L"XML file being imported: ";
   str_text += fname.c_str();
   rpt.WriteLine(str_text);

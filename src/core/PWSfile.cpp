@@ -134,7 +134,12 @@ void PWSfile::FOpen()
     m_fd = nullptr;
   }
   m_fd = pws_os::FOpen(m_filename.c_str(), m);
-  m_fileLength = pws_os::fileLength(m_fd);
+  if(m_fd) {
+    m_fileLength = pws_os::fileLength(m_fd);
+  }
+  else {
+    m_fileLength = 0;
+  }
 }
 
 int PWSfile::Close()
