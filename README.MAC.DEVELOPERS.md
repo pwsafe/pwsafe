@@ -178,6 +178,7 @@ Go to the Xcode directory in pwsafe sources, and do these
 
 
 ## Build pwsafe
+For Xcode build you have manually align src/ui/wxWidgets/version.h with version.wx in the root folder - we do not have a script to align yet.
 If you have come this far, you only need to launch Xcode, load the pwsafe project
 file, and hit 'Cmd-B'. But pwsafe has 3 different project files. Which one do
 you use?
