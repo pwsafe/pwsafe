@@ -78,6 +78,7 @@ Use wxWidgets 3.0.2 or newer. pwsafe code is no longer compatible with older
 versions of wxWidgets.
 
 If you use homebrew, you can just install the latest version supported by it (3.0.5 as of now).
+For some reasons (support of dark mode, problem with initial indication of main window, etc.) is it better to use wxWidgets 3.1.4 or newer.
 
 ### M1 Macs
 You'd need to use the latest version, i.e. 3.1.4 as of this writing. The current
