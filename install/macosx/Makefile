@@ -20,10 +20,12 @@ CPBIN=/bin/cp
 RMBIN=/bin/rm
 MDBIN=/bin/mkdir -p
 
-VERSION_MAJOR := $(shell awk '// { if ($$1 == "VER_MAJOR") { print $$3 } }' < ../../version.wx)
-VERSION_MINOR := $(shell awk '// { if ($$1 == "VER_MINOR") { print $$3 } }' < ../../version.wx)
-VERSION_REV := $(shell awk '// { if ($$1 == "VER_REV") { print $$3 } }' < ../../version.wx)
-RELEASENAME := $(VERSION_MAJOR).$(VERSION_MINOR).$(VERSION_REV)
+include ../../version.wx
+ifdef VER_SPECIAL
+RELEASENAME := $(VER_MAJOR).$(VER_MINOR).$(VER_REV).$(VER_SPECIAL)
+else
+RELEASENAME := $(VER_MAJOR).$(VER_MINOR).$(VER_REV)
+endif
 
 SRCDIR=./dmg/
 RESOURCES=$(SRCDIR)/pwsafe.app/Contents/Resources

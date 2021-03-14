@@ -32,3 +32,17 @@ dist:
 # Local variables:
 # mode: makefile
 # End:
+ifndef VER_SPECIAL
+VER_SPECIAL = OSX
+endif
+
+src/ui/wxWidgets/version.h: version.wx Misc/mkversion.pl src/ui/wxWidgets/version.in
+ifdef VER_REF
+	@Misc/mkversion.pl MAJOR=$(VER_MAJOR) MINOR=$(VER_MINOR) REV=$(VER_REV) \
+
+                                        SPECIAL=$(VER_SPECIAL) src/ui/wxWidgets/version.in $@
+else
+	@Misc/mkversion.pl MAJOR=$(VER_MAJOR) MINOR=$(VER_MINOR) \
+                                        SPECIAL=$(VER_SPECIAL) src/ui/wxWidgets/version.in $@
+
+endif
