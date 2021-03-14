@@ -265,7 +265,6 @@
 #define IDSC_VALIDATE_EMPTYTITLE        3437
 #define IDSC_VALIDATE_EMPTYPSWD         3438
 #define IDSC_VALIDATE_DUPUUID           3439
-#define IDSC_RPTVALIDATE                3440
 #define IDSC_VALIDATE_DEPS              3441
 #define IDSC_VALIDATE_ERRORS            3442
 #define IDSC_VALIDATE_WARNINGS          3443
@@ -345,6 +344,18 @@
 #define IDSC_COMPARESTATISTICS          5356
 #define IDSC_COMPARESTATS               5359
 #define IDSC_DRAGNUMBER                 5411
+#define IDSC_RPTCOMPARE                 5532
+#define IDSC_RPTFIND                    5533
+#define IDSC_RPTIMPORTTEXT              5534
+#define IDSC_RPTIMPORTXML               5535
+#define IDSC_RPTMERGE                   5536
+#define IDSC_RPTVALIDATE                5537
 #define IDSC_SEARCHRESULTS1             5538
 #define IDSC_SEARCHRESULTS2             5539
+#define IDSC_RPTSYNCH                   5749
+#define IDSC_RPTEXPORTTEXT              5805
+#define IDSC_RPTEXPORTXML               5806
+#define IDSC_RPTIMPORTKPV1TXT           5868
+#define IDSC_RPTIMPORTKPV1CSV           5869
 #define IDSC_DRAGPOLICY                 5907
+#define IDSC_RPTEXPORTDB                5965

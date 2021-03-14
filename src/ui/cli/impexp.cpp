@@ -13,6 +13,7 @@
 #include "./argutils.h"
 #include "../../os/file.h"
 
+#include "core/core.h"
 #include "core/PWSdirs.h"
 
 #include <string>
@@ -49,7 +50,7 @@ ImportText(PWScore &core, const stringT &fname)
 
   // Create report as we go
   CReport rpt;
-  rpt.StartReport(REPORT_IMPORTTEXT_NAME, core.GetCurFile().c_str());
+  rpt.StartReport(IDSC_RPTIMPORTTEXT, core.GetCurFile().c_str());
   wstring str(L"Text file being imported: ");
   str += core.GetCurFile().c_str();
   rpt.WriteLine(str.c_str());
@@ -135,7 +136,7 @@ ImportXML(PWScore &core, const stringT &fname)
   // Create report as we go
   CReport rpt;
   std::wstring str_text;
-  rpt.StartReport(REPORT_IMPORTXML_NAME, core.GetCurFile().c_str());
+  rpt.StartReport(IDSC_RPTIMPORTXML, core.GetCurFile().c_str());
   str_text = L"XML file being imported: ";
   str_text += fname.c_str();
   rpt.WriteLine(str_text);

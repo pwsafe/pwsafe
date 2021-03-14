@@ -13,6 +13,7 @@
 
 #include "os/typedefs.h"
 #include "StringXStream.h"
+#include <map>
 
 /*
  * The name of the reports are listed (not translated), values used for tcAction in StartReport. To stay compatible with Windows, the interface is left as string
@@ -34,10 +35,10 @@
 class CReport
 {
 public:
-  CReport() {}
+  CReport() : m_iAction(-1) {}
   ~CReport() {}
 
-  void StartReport(LPCTSTR tcAction, const stringT &csDataBase, bool writeHeader = true);
+  void StartReport(int iAction, const stringT &csDataBase, bool writeHeader = true);
   void EndReport();
   void WriteLine(const stringT &cs_line, bool bCRLF = true)
   {WriteLine(cs_line.c_str(), bCRLF);}
@@ -46,15 +47,17 @@ public:
   bool SaveToDisk();
   bool ReadFromDisk();
   bool PurgeFromDisk();
-  bool ReportExistsOnDisk();
+  bool ReportExistsOnDisk() const;
   StringX GetString() {return m_osxs.rdbuf()->str();}
-  bool StringEmpty() {return !m_osxs.rdbuf() || m_osxs.rdbuf()->str().empty();}
-  const stringT GetFileName() {return m_cs_filename;}
+  bool StringEmpty() const {return !m_osxs.rdbuf() || m_osxs.rdbuf()->str().empty();}
+  const stringT GetFileName() const {return m_cs_filename;}
+
+  static const std::map<int, LPCTSTR> ReportNames;
 
 private:
   oStringXStream m_osxs;
   stringT m_cs_filename;
-  stringT m_tcAction;
+  int m_iAction;
   stringT m_csDataBase;
 };
 

@@ -335,12 +335,6 @@
 #define IDS_PSWD                        5529
 #define IDS_SHOWTOOLBAR                 5530
 #define IDS_HIDETOOLBAR                 5531
-#define IDS_RPTCOMPARE                  5532
-#define IDS_RPTFIND                     5533
-#define IDS_RPTIMPORTTEXT               5534
-#define IDS_RPTIMPORTXML                5535
-#define IDS_RPTMERGE                    5536
-#define IDS_RPTVALIDATE                 5537
 #define IDS_SEARCHRESULTS1              5538
 #define IDS_SEARCHRESULTS2              5539
 #define IDS_REPORTCREATED               5540
@@ -525,7 +519,6 @@
 #define IDS_PASSWORDGENERATED2          5745
 #define IDS_SYNCHRONIZEX                5747
 #define IDS_NOFIELDSFORSYNCH            5748
-#define IDS_RPTSYNCH                    5749
 #define IDS_SYNCHINGDATABASE            5750
 #define IDS_PICKSYNCHRONIZEEFILE        5753
 #define IDS_OPEN                        5754
@@ -576,8 +569,6 @@
 #define IDS_UNPROTECT                   5802
 #define IDS_WZSLCT_WARNING_SYNC         5803
 #define IDS_WZSLCT_WARNING_EXP          5804
-#define IDS_RPTEXPORTTEXT               5805
-#define IDS_RPTEXPORTXML                5806
 #define IDS_EXPORT_TEXTX_SINGLE         5807
 #define IDS_EXPORT_XMLX_SINGLE          5808
 #define IDS_WZDATABASE                  5809
@@ -638,8 +629,6 @@
 #define IDS_WZACTIONFAILED              5865
 #define IDS_CANNOTCREATEDIR             5866
 #define IDS_WITHWARNINGS                5867
-#define IDS_RPTIMPORTKPV1TXT            5868
-#define IDS_RPTIMPORTKPV1CSV            5869
 #define IDS_IMPORTFAILED                5870
 #define IDS_PASSWORDLEN                 5871
 #define IDS_SHIFTDCA                    5872
@@ -725,7 +714,6 @@
 #define IDS_WZEXPORTDB                  5962
 #define IDS_EXPORT_TEXTX_GROUP          5963
 #define IDS_EXPORT_XMLX_GROUP           5964
-#define IDS_RPTEXPORTDB                 5965
 #define IDS_WSSLCT_GROUP                5966
 #define IDS_EXDB                        5967
 #define IDS_EXPORTWARNING               5970
