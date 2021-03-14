@@ -1708,6 +1708,8 @@
 			);
 			inputPaths = (
 				../src/ui/wxWidgets/version.in,
+				../Misc/mkversion.pl,
+				../version.wx,
 			);
 			name = "Generate version.h";
 			outputPaths = (
@@ -1715,7 +1717,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "../Misc/mkversion.pl MAJOR=0 MINOR=1 REV=0 SPECIAL=OSX ../src/ui/wxWidgets/version.in ../src/ui/wxWidgets/version.h\ntouch ../src/ui/wxWidgets/version.h";
+			shellScript = "make -C .. -f Makefile.macos src/ui/wxWidgets/version.h";
 		};
 		E6CFEF1811EA41FB001402D8 /* Generate core_st */ = {
 			isa = PBXShellScriptBuildPhase;
