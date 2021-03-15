@@ -26,6 +26,7 @@
 #include <wx/statline.h>
 #include <wx/collpane.h>
 
+#include "core/core.h"
 #include "core/PWScore.h"
 
 #include "AdvancedSelectionDlg.h"
@@ -636,7 +637,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
 {
   CReport& rpt = m_syncData->syncReport;
 
-  rpt.StartReport(REPORT_SYNCHRONIZE_NAME, currentCore->GetCurFile().c_str());
+  rpt.StartReport(IDSC_RPTSYNCH, currentCore->GetCurFile().c_str());
   wxString line = wxString::Format(_("Synchronizing from database: %ls\n"), otherCore->GetCurFile().c_str());
   rpt.WriteLine(line.c_str());
 
