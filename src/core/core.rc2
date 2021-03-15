@@ -229,6 +229,7 @@ BEGIN
   IDSC_END_REPORT1         "End Report"
   IDSC_END_REPORT2         "--------------------------------------------------------------------------------"
   IDSC_COMPARESTATISTICS   "Compare complete of current database:\n\t %s\n and:\n\t %s"
+  IDSC_COMPARESTATS        "\tGroup:'%s'; Title:'%s'; User:'%s'"
 END
 
 STRINGTABLE

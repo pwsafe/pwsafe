@@ -189,7 +189,6 @@
 #define IDS_COMPARESAME                 5355
 #define IDS_IDENTICALDATABASES          5357
 #define IDS_COMPARECOMPLETE             5358
-#define IDS_COMPARESTATS                5359
 #define IDS_COMPAREENTRIES1             5360
 #define IDS_COMPAREENTRIES2             5361
 #define IDS_COMPAREBOTHDIFF             5362

@@ -4279,7 +4279,7 @@ void DboxMain::OnToolBarFindReport()
     for (size_t i = 0; i < vIndices.size(); i++) {
       int index = vIndices[i];
       CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(index);
-      buffer.Format(IDS_COMPARESTATS, static_cast<LPCWSTR>(pci->GetGroup().c_str()),
+      buffer.Format(IDSC_COMPARESTATS, static_cast<LPCWSTR>(pci->GetGroup().c_str()),
                     static_cast<LPCWSTR>(pci->GetTitle().c_str()),
                     static_cast<LPCWSTR>(pci->GetUser().c_str()));
       rpt.WriteLine((LPCWSTR)buffer, false);
