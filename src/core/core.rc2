@@ -188,7 +188,6 @@ STRINGTABLE
 BEGIN
   IDSC_READ_ERROR          "Read Error"
   IDSC_ENCODING_PROBLEM    "Trouble with a non-textual (e.g., time) field in record '%ls' - please check data carefully."
-  IDSC_RPTVALIDATE         "Validate"
   IDSC_VALIDATE_ENTRY      "\tGroup='%ls', Title='%ls', User='%ls' %ls"
   IDSC_VALIDATE_ENTRY2     "- Its title has been changed to:'%ls'"
   IDSC_VALIDATE_BADUUID    "The following entries had an invalid UUID field.  This has been corrected."
@@ -211,12 +210,26 @@ END
 
 STRINGTABLE
 BEGIN
+  IDSC_RPTCOMPARE          "Compare"
+  IDSC_RPTFIND             "Find"
+  IDSC_RPTIMPORTTEXT       "Import_Text"
+  IDSC_RPTIMPORTXML        "Import_XML"
+  IDSC_RPTEXPORTTEXT       "Export_Text"
+  IDSC_RPTEXPORTXML        "Export_XML"
+  IDSC_RPTEXPORTDB         "Export_DB"
+  IDSC_RPTMERGE            "Merge"
+  IDSC_RPTVALIDATE         "Validate"
+  IDSC_RPTSYNCH            "Synchronize"
+  IDSC_RPTIMPORTKPV1TXT    "Import_KeePassV1_TXT"
+  IDSC_RPTIMPORTKPV1CSV    "Import_KeePassV1_CSV"
   IDSC_REPORTFILENAME      "%ls%ls%ls_Report.txt"
   IDSC_REPORT_TITLE1       "Report of %ls function started at %ls"
   IDSC_REPORT_TITLE2       "on database %ls"
   IDSC_START_REPORT        "Start Report"
   IDSC_END_REPORT1         "End Report"
   IDSC_END_REPORT2         "--------------------------------------------------------------------------------"
+  IDSC_COMPARESTATISTICS   "Compare complete of current database:\n\t %s\n and:\n\t %s"
+  IDSC_COMPARESTATS        "\tGroup:'%s'; Title:'%s'; User:'%s'"
 END
 
 STRINGTABLE

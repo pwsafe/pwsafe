@@ -23,6 +23,7 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
+#include "core/core.h"
 #include "core/PWSprefs.h"
 
 #include "DragBarCtrl.h"
@@ -206,77 +207,78 @@ void PasswordSafeFrame::OnChangeVirtualKeyboardFont(wxCommandEvent& WXUNUSED(evt
   ChangeFontPreference(PWSprefs::VKeyboardFontName);
 }
 
-void PasswordSafeFrame::RunShowReport(LPCTSTR tcAction)
+void PasswordSafeFrame::RunShowReport(int iAction)
 {
   CReport rpt;
-  rpt.StartReport(tcAction, m_core.GetCurFile().c_str(), false);
+  rpt.StartReport(iAction, m_core.GetCurFile().c_str(), false);
   if(rpt.ReadFromDisk()) {
     ViewReportDlg dlg(this, &rpt, true);
     dlg.ShowModal();
   }
   else {
+    wxString tcAction = CReport::ReportNames.find(iAction)->second;
     wxMessageBox(_(tcAction) + _(L" file \'") + rpt.GetFileName() + _(L"' not readable"), _("View Report"), wxOK|wxICON_ERROR);
   }
 }
 
 void PasswordSafeFrame::OnShowReportSynchronize(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(REPORT_SYNCHRONIZE_NAME);
+  RunShowReport(IDSC_RPTSYNCH);
 }
 
 void PasswordSafeFrame::OnShowReportCompare(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(REPORT_COMPARE_NAME);
+  RunShowReport(IDSC_RPTCOMPARE);
 }
 
 void PasswordSafeFrame::OnShowReportMerge(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(REPORT_MERGE_NAME);
+  RunShowReport(IDSC_RPTMERGE);
 }
 
 void PasswordSafeFrame::OnShowReportImportText(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(REPORT_IMPORTTEXT_NAME);
+  RunShowReport(IDSC_RPTIMPORTTEXT);
 }
 
 void PasswordSafeFrame::OnShowReportImportXML(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(REPORT_IMPORTXML_NAME);
+  RunShowReport(IDSC_RPTIMPORTXML);
 }
 
 void PasswordSafeFrame::OnShowReportImportKeePassV1_TXT(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(REPORT_IMPORTKEEPASS_TXT_NAME);
+  RunShowReport(IDSC_RPTIMPORTKPV1TXT);
 }
 
 void PasswordSafeFrame::OnShowReportImportKeePassV1_CSV(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(REPORT_IMPORTKEEPASS_CSV_NAME);
+  RunShowReport(IDSC_RPTIMPORTKPV1CSV);
 }
 
 void PasswordSafeFrame::OnShowReportExportText(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(REPORT_EXPORTTEXT_NAME);
+  RunShowReport(IDSC_RPTEXPORTTEXT);
 }
 
 void PasswordSafeFrame::OnShowReportExportXML(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(REPORT_EXPORTXML_NAME);
+  RunShowReport(IDSC_RPTEXPORTXML);
 }
 
 void PasswordSafeFrame::OnShowReportExportDB(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(REPORT_EXPORT_DB_NAME);
+  RunShowReport(IDSC_RPTEXPORTDB);
 }
 
 void PasswordSafeFrame::OnShowReportFind(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(REPORT_FIND_NAME);
+  RunShowReport(IDSC_RPTFIND);
 }
 
 void PasswordSafeFrame::OnShowReportValidate(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(REPORT_VALIDATE_NAME);
+  RunShowReport(IDSC_RPTVALIDATE);
 }
 
 void PasswordSafeFrame::OnShowHideToolBar(wxCommandEvent& evt)

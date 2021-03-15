@@ -412,7 +412,7 @@ public:
   void OnUpdateUI(wxUpdateUIEvent& evt);
   
   // Supporting Function for OnUpdateUI
-  bool CheckReportPresent(LPCTSTR tcAction);
+  bool CheckReportPresent(int iAction);
 
   /// wxEVT_UPDATE_UI event handler for ID_MENU_CLEAR_MRU
   void OnUpdateClearRecentDBHistory(wxUpdateUIEvent& evt);
@@ -481,7 +481,7 @@ public:
   void OnChangeMode(wxCommandEvent& WXUNUSED(evt));
   
   // Supporting function for OnShowReport... function
-  void RunShowReport(LPCTSTR tcAction);
+  void RunShowReport(int iAction);
   
   void OnChangeTreeFont(wxCommandEvent& evt);
   void OnChangeAddEditFont(wxCommandEvent& evt);

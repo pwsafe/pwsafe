@@ -27,6 +27,7 @@
 #include <wx/tokenzr.h>
 #include <wx/utils.h> // for wxLaunchDefaultBrowser
 
+#include "core/core.h"
 #include "core/PWSdirs.h"
 #include "core/XML/XMLDefs.h"
 #include "os/sleep.h"
@@ -613,7 +614,7 @@ int PasswordSafeFrame::SaveIfChanged()
 
 struct ExportFullText
 {
-  static wxString EngGetTitle() {return REPORT_EXPORTTEXT_NAME;}
+  static wxString EngGetTitle() {return CReport::ReportNames.find(IDSC_RPTEXPORTTEXT)->second;}
   static wxString GetTitle() {return _("Export Text");}
   static void MakeOrderedItemList(PasswordSafeFrame* frame, OrderedItemList& olist) {
     frame->FlattenTree(olist);
@@ -656,7 +657,7 @@ struct ExportFullText
 };
 
 struct ExportFullXml {
-  static wxString EngGetTitle() {return REPORT_EXPORTXML_NAME;}
+  static wxString EngGetTitle() {return CReport::ReportNames.find(IDSC_RPTEXPORTXML)->second;}
   static wxString GetTitle() {return _("Export XML");}
   static void MakeOrderedItemList(PasswordSafeFrame* frame, OrderedItemList& olist) {
     frame->FlattenTree(olist);
@@ -824,7 +825,7 @@ void PasswordSafeFrame::DoExportText()
           newfile = fd.GetPath().c_str();
           CReport rpt;
 
-          rpt.StartReport(ExportType::EngGetTitle().c_str(), sx_temp.c_str());
+          rpt.StartReport(IDSC_RPTEXPORTTEXT, sx_temp.c_str());
           rpt.WriteLine(tostdstring(wxString(_("Exporting database: ")) << towxstring(sx_temp) << _(" to ") << newfile<< wxT("\r\n")));
 
           int rc = ExportType::Write(m_core, newfile, bsExport, subgroup_name, subgroup_object,
@@ -901,7 +902,7 @@ void PasswordSafeFrame::OnImportText(wxCommandEvent& evt)
 
   /* Create report as we go */
   CReport rpt;
-  rpt.StartReport(REPORT_IMPORTTEXT_NAME, m_core.GetCurFile().c_str());
+  rpt.StartReport(IDSC_RPTEXPORTTEXT, m_core.GetCurFile().c_str());
   wxString header;
   header.Printf(_("%ls file being imported: %ls"), _("Text"), TxtFileName.c_str());
   rpt.WriteLine(tostdstring(header));
@@ -1026,7 +1027,7 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
 
   /* Create report as we go */
   CReport rpt;
-  rpt.StartReport(REPORT_IMPORTXML_NAME, m_core.GetCurFile().c_str());
+  rpt.StartReport(IDSC_RPTIMPORTXML, m_core.GetCurFile().c_str());
   rpt.WriteLine(tostdstring(wxString::Format(_("%ls file being imported: %ls"), _("XML"), XMLFilename.c_str())));
   rpt.WriteLine();
   std::vector<StringX> vgroups;
@@ -1156,9 +1157,9 @@ void PasswordSafeFrame::OnImportKeePass(wxCommandEvent& evt)
   enum { KeePassCSV, KeePassTXT } ImportType = wxFileName(KPsFileName).GetExt() == wxT("csv")? KeePassCSV: KeePassTXT;
 
   if (ImportType == KeePassCSV)
-    rpt.StartReport(REPORT_IMPORTKEEPASS_CSV_NAME, m_core.GetCurFile().c_str());
+    rpt.StartReport(IDSC_RPTIMPORTKPV1CSV, m_core.GetCurFile().c_str());
   else
-    rpt.StartReport(REPORT_IMPORTKEEPASS_TXT_NAME, m_core.GetCurFile().c_str());
+    rpt.StartReport(IDSC_RPTIMPORTKPV1TXT, m_core.GetCurFile().c_str());
 
   rpt.WriteLine(wxString::Format(_("Text file being imported: %ls"), KPsFileName.c_str()));
   rpt.WriteLine();
@@ -1261,7 +1262,7 @@ void PasswordSafeFrame::Merge(const StringX &sx_Filename2, PWScore *pothercore, 
   /* Create report as we go */
   CReport rpt;
 
-  rpt.StartReport(REPORT_MERGE_NAME, m_core.GetCurFile().c_str());
+  rpt.StartReport(IDSC_RPTMERGE, m_core.GetCurFile().c_str());
   rpt.WriteLine(tostdstring(wxString(_("Merging database: ")) << towxstring(sx_Filename2) << wxT("\r\n")));
 
   stringT result = m_core.Merge(pothercore,

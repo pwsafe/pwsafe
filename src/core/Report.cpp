@@ -44,6 +44,22 @@
 
 #include "pugixml/pugixml.hpp"
 
+const std::map<int, LPCTSTR> CReport::ReportNames = {
+  {IDSC_RPTCOMPARE, L"Compare"},
+  {IDSC_RPTFIND, L"Find"},
+  {IDSC_RPTIMPORTTEXT, L"Import Text"},
+  {IDSC_RPTIMPORTXML, L"Import XML"},
+  {IDSC_RPTMERGE, L"Merge"},
+  {IDSC_RPTVALIDATE, L"Validate"},
+  {IDSC_RPTSYNCH, L"Synchronize"},
+  {IDSC_RPTEXPORTTEXT, L"Export Text"},
+  {IDSC_RPTEXPORTXML, L"Export XML"},
+  {IDSC_RPTIMPORTKPV1TXT, L"Import KeePassV1 TXT"},
+  {IDSC_RPTIMPORTKPV1CSV, L"Import KeePassV1 CSV"},
+  {IDSC_RPTEXPORTDB, L"Export DB"},
+};
+
+
 
 template<class Facet>
 struct deletable_facet : Facet
@@ -56,25 +72,25 @@ struct deletable_facet : Facet
 /*
   It writes a header record and a "Start Report" record.
 */
-void CReport::StartReport(LPCTSTR tcAction, const stringT &csDataBase, bool writeHeader)
+void CReport::StartReport(int iAction, const stringT &csDataBase, bool writeHeader)
 {
   m_osxs.str(_T(""));
 
-  m_tcAction = tcAction;
+  // iAction refers to the report's untranslated name as defined in ReportNames
+  // here we make sure it's in the map - if it's not, that's because a new report was defined and
+  // ReportNames wasn't updated (or a silly programming error).
+  ASSERT(ReportNames.find(iAction) != ReportNames.end());
+
+  m_iAction = iAction;
   m_csDataBase = csDataBase;
 
   if(writeHeader) {
-    stringT cs_title, sTimeStamp;
+    stringT cs_title, sTimeStamp, sAction;
+
     PWSUtil::GetTimeStamp(sTimeStamp, true);
-#if !defined(_WIN32) || defined(__WX__)
-      // In wxWidget we are using tcAction as unique name language indepent (usual used in file name),
-      // but translate inside of the text of the report to the actual language
-    stringT sAction;
-    sAction = _(tcAction);
+    LoadAString(sAction, iAction);
     Format(cs_title, IDSC_REPORT_TITLE1, sAction.c_str(), sTimeStamp.c_str());
-#else
-    Format(cs_title, IDSC_REPORT_TITLE1, tcAction, sTimeStamp.c_str());
-#endif
+
     WriteLine();
     WriteLine(cs_title);
     Format(cs_title, IDSC_REPORT_TITLE2, csDataBase.c_str());
@@ -143,14 +159,15 @@ bool CReport::SaveToDisk()
     pws_os::IssueError(_T("SaveToDisk: Finding path to database"));
     return false;
   }
-    
-  if(m_tcAction.empty()) {
+
+  ASSERT(m_iAction != -1); // really a programming error, fail gracefully in non-debug
+  if(m_iAction == -1) {
     pws_os::IssueError(_T("SaveToDisk: Action not filled"));
     return false;
   }
 
   Format(m_cs_filename, IDSC_REPORTFILENAME,
-         drive.c_str(), dir.c_str(), m_tcAction.c_str());
+    drive.c_str(), dir.c_str(), ReportNames.find(m_iAction)->second);
 
   if ((fd = pws_os::FOpen(m_cs_filename, _T("a+b"))) == nullptr) {
     pws_os::IssueError(_T("SaveToDisk: Opening log file"));
@@ -355,14 +372,15 @@ bool CReport::ReadFromDisk()
     pws_os::IssueError(_T("ReadFromDisk: Finding path to database"));
     return false;
   }
-    
-  if(m_tcAction.empty()) {
+
+  ASSERT(m_iAction != -1); // really a programming error, fail gracefully in non-debug
+  if(m_iAction == -1) {
     pws_os::IssueError(_T("ReadFromDisk: Action not filled"));
     return false;
   }
 
   Format(m_cs_filename, IDSC_REPORTFILENAME,
-         drive.c_str(), dir.c_str(), m_tcAction.c_str());
+         drive.c_str(), dir.c_str(), ReportNames.find(m_iAction)->second);
 
   if ((fd = pws_os::FOpen(m_cs_filename, _T("rb"))) == nullptr) {
     pws_os::IssueError(_T("ReadFromDisk: Opening log file"));
@@ -430,19 +448,20 @@ bool CReport::PurgeFromDisk()
     pws_os::IssueError(_T("PurgeFromDisk: Finding path to database"));
     return false;
   }
-    
-  if(m_tcAction.empty()) {
+
+  ASSERT(m_iAction != -1); // really a programming error, fail gracefully in non-debug
+  if(m_iAction == -1) {
     pws_os::IssueError(_T("PurgeFromDisk: Action not filled"));
     return false;
   }
 
   Format(m_cs_filename, IDSC_REPORTFILENAME,
-         drive.c_str(), dir.c_str(), m_tcAction.c_str());
+         drive.c_str(), dir.c_str(), ReportNames.find(m_iAction)->second);
     
   return pws_os::DeleteAFile(m_cs_filename);
 }
 
-bool CReport::ReportExistsOnDisk()
+bool CReport::ReportExistsOnDisk() const
 {
   stringT path(m_csDataBase);
   stringT drive, dir, file, ext;
@@ -450,14 +469,16 @@ bool CReport::ReportExistsOnDisk()
     pws_os::IssueError(_T("ReportExistsOnDisk: Finding path to database"));
     return false;
   }
-    
-  if(m_tcAction.empty()) {
+
+  ASSERT(m_iAction != -1); // really a programming error, fail gracefully in non-debug
+  if(m_iAction == -1) {
     pws_os::IssueError(_T("ReportExistsOnDisk: Action not filled"));
     return false;
   }
 
-  Format(m_cs_filename, IDSC_REPORTFILENAME,
-         drive.c_str(), dir.c_str(), m_tcAction.c_str());
+  stringT filename;
+  Format(filename, IDSC_REPORTFILENAME,
+         drive.c_str(), dir.c_str(), ReportNames.find(m_iAction)->second);
     
-  return pws_os::FileExists(m_cs_filename);
+  return pws_os::FileExists(filename);
 }
