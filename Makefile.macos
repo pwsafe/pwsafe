@@ -37,7 +37,7 @@ VER_SPECIAL = OSX
 endif
 
 src/ui/wxWidgets/version.h: version.wx Misc/mkversion.pl src/ui/wxWidgets/version.in
-ifdef VER_REF
+ifdef VER_REV
 	@Misc/mkversion.pl MAJOR=$(VER_MAJOR) MINOR=$(VER_MINOR) REV=$(VER_REV) \
 
                                         SPECIAL=$(VER_SPECIAL) src/ui/wxWidgets/version.in $@
