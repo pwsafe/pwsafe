@@ -187,7 +187,6 @@
 #define IDS_NOCOMPAREFILE               5353
 #define IDS_PICKCOMPAREFILE             5354
 #define IDS_COMPARESAME                 5355
-#define IDS_COMPARESTATISTICS           5356
 #define IDS_IDENTICALDATABASES          5357
 #define IDS_COMPARECOMPLETE             5358
 #define IDS_COMPARESTATS                5359

@@ -3352,7 +3352,7 @@ bool DboxMain::DoCompare(PWScore *pothercore,
     return false;
   }
 
-  cs_buffer.Format(IDS_COMPARESTATISTICS,
+  cs_buffer.Format(IDSC_COMPARESTATISTICS,
                    static_cast<LPCWSTR>(m_core.GetCurFile().c_str()),
                    static_cast<LPCWSTR>(pothercore->GetCurFile().c_str()));
 
