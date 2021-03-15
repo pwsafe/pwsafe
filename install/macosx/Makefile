@@ -21,6 +21,11 @@ RMBIN=/bin/rm
 MDBIN=/bin/mkdir -p
 
 include ../../version.wx
+
+ifndef VER_REV
+VER_REV = 0
+endif
+
 ifdef VER_SPECIAL
 RELEASENAME := $(VER_MAJOR).$(VER_MINOR).$(VER_REV).$(VER_SPECIAL)
 else
