@@ -3755,10 +3755,10 @@ void DboxMain::OnViewReports()
   bool bReportExists(false);
 
   int Reports[] = {
-    IDS_RPTCOMPARE, IDS_RPTFIND, IDS_RPTIMPORTTEXT, IDS_RPTIMPORTXML,
-    IDS_RPTIMPORTKPV1CSV, IDS_RPTIMPORTKPV1TXT,
-    IDS_RPTEXPORTTEXT, IDS_RPTEXPORTXML,
-    IDS_RPTMERGE, IDS_RPTSYNCH, IDS_RPTVALIDATE,
+    IDSC_RPTCOMPARE, IDSC_RPTFIND, IDSC_RPTIMPORTTEXT, IDSC_RPTIMPORTXML,
+    IDSC_RPTIMPORTKPV1CSV, IDSC_RPTIMPORTKPV1TXT,
+    IDSC_RPTEXPORTTEXT, IDSC_RPTEXPORTXML,
+    IDSC_RPTMERGE, IDSC_RPTSYNCH, IDSC_RPTVALIDATE,
   };
 
   for (int i = 0; i < sizeof(Reports) / sizeof(Reports[0]); i++) {
@@ -3784,17 +3784,17 @@ void DboxMain::OnViewReports()
   INT_PTR rc = gmb.DoModal();
   UINT uistring(0);
   switch (rc) {
-    case IDS_RPTCOMPARE:
-    case IDS_RPTFIND:
-    case IDS_RPTIMPORTTEXT:
-    case IDS_RPTIMPORTXML:
-    case IDS_RPTIMPORTKPV1CSV:
-    case IDS_RPTIMPORTKPV1TXT:
-    case IDS_RPTEXPORTTEXT:
-    case IDS_RPTEXPORTXML:
-    case IDS_RPTMERGE:
-    case IDS_RPTSYNCH:
-    case IDS_RPTVALIDATE:
+    case IDSC_RPTCOMPARE:
+    case IDSC_RPTFIND:
+    case IDSC_RPTIMPORTTEXT:
+    case IDSC_RPTIMPORTXML:
+    case IDSC_RPTIMPORTKPV1CSV:
+    case IDSC_RPTIMPORTKPV1TXT:
+    case IDSC_RPTEXPORTTEXT:
+    case IDSC_RPTEXPORTXML:
+    case IDSC_RPTMERGE:
+    case IDSC_RPTSYNCH:
+    case IDSC_RPTVALIDATE:
       uistring = (UINT)rc;
       break;
     default:
@@ -3813,29 +3813,29 @@ static UINT SetupViewReports(const int nID)
 {
   switch (nID) {
   case ID_MENUITEM_REPORT_COMPARE:
-    return IDS_RPTCOMPARE;
+    return IDSC_RPTCOMPARE;
   case ID_MENUITEM_REPORT_FIND:
-    return IDS_RPTFIND;
+    return IDSC_RPTFIND;
   case ID_MENUITEM_REPORT_IMPORTTEXT:
-    return IDS_RPTIMPORTTEXT;
+    return IDSC_RPTIMPORTTEXT;
   case ID_MENUITEM_REPORT_IMPORTXML:
-    return IDS_RPTIMPORTXML;
+    return IDSC_RPTIMPORTXML;
   case ID_MENUITEM_REPORT_IMPORTKP1CSV:
-    return IDS_RPTIMPORTKPV1CSV;
+    return IDSC_RPTIMPORTKPV1CSV;
   case ID_MENUITEM_REPORT_IMPORTKP1TXT:
-    return IDS_RPTIMPORTKPV1TXT;
+    return IDSC_RPTIMPORTKPV1TXT;
   case ID_MENUITEM_REPORT_MERGE:
-    return IDS_RPTMERGE;
+    return IDSC_RPTMERGE;
   case ID_MENUITEM_REPORT_SYNCHRONIZE:
-    return IDS_RPTSYNCH;
+    return IDSC_RPTSYNCH;
   case ID_MENUITEM_REPORT_EXPORTTEXT:
-    return IDS_RPTEXPORTTEXT;
+    return IDSC_RPTEXPORTTEXT;
   case ID_MENUITEM_REPORT_EXPORTXML:
-    return IDS_RPTEXPORTXML;
+    return IDSC_RPTEXPORTXML;
   case ID_MENUITEM_REPORT_EXPORTDB:
-    return IDS_RPTEXPORTDB;
+    return IDSC_RPTEXPORTDB;
   case ID_MENUITEM_REPORT_VALIDATE:
-    return IDS_RPTVALIDATE;
+    return IDSC_RPTVALIDATE;
   default:
     pws_os::Trace(L"ID=%d\n", nID);
     ASSERT(0);
@@ -3851,7 +3851,7 @@ void DboxMain::OnViewReportsByID(UINT nID)
   if (!GetDriveAndDirectory(m_core.GetCurFile(), cs_drive, cs_directory))
     return;
 
-  csAction.LoadString(SetupViewReports(nID));
+  csAction = CReport::ReportNames.find(SetupViewReports(nID))->second;
   cs_filename.Format(IDSC_REPORTFILENAME, static_cast<LPCWSTR>(cs_drive),
                      static_cast<LPCWSTR>(cs_directory),
                      static_cast<LPCWSTR>(csAction));
@@ -4159,8 +4159,8 @@ void DboxMain::OnToolBarFindReport()
   std::vector<int> vIndices = m_FindToolBar.GetSearchResults();
   CString buffer, cs_temp;
   CReport rpt;
-  cs_temp.LoadString(IDS_RPTFIND);
-  rpt.StartReport(cs_temp, m_core.GetCurFile().c_str());
+
+  rpt.StartReport(IDSC_RPTFIND, m_core.GetCurFile().c_str());
 
   CItemData::FieldBits bsFFields;
   CItemAtt::AttFieldBits bsAttFFields;
@@ -4233,7 +4233,7 @@ void DboxMain::OnToolBarFindReport()
     rpt.WriteLine((LPCWSTR)buffer);
     rpt.WriteLine();
 
-    cs_temp.LoadString(IDS_RPTFIND);
+    cs_temp.LoadString(IDSC_RPTFIND);
     buffer.Format(IDS_ADVANCEDFIELDS, static_cast<LPCWSTR>(cs_temp));
     rpt.WriteLine((LPCWSTR)buffer);
 
@@ -4279,7 +4279,7 @@ void DboxMain::OnToolBarFindReport()
     for (size_t i = 0; i < vIndices.size(); i++) {
       int index = vIndices[i];
       CItemData *pci = (CItemData *)m_ctlItemList.GetItemData(index);
-      buffer.Format(IDS_COMPARESTATS, static_cast<LPCWSTR>(pci->GetGroup().c_str()),
+      buffer.Format(IDSC_COMPARESTATS, static_cast<LPCWSTR>(pci->GetGroup().c_str()),
                     static_cast<LPCWSTR>(pci->GetTitle().c_str()),
                     static_cast<LPCWSTR>(pci->GetUser().c_str()));
       rpt.WriteLine((LPCWSTR)buffer, false);
@@ -4289,7 +4289,7 @@ void DboxMain::OnToolBarFindReport()
   rpt.EndReport();
 
   CGeneralMsgBox gmb;
-  gmb.SetTitle(IDS_RPTFIND);
+  gmb.SetTitle(IDSC_RPTFIND);
   gmb.SetMsg(IDS_REPORTCREATED);
   gmb.SetStandardIcon(MB_ICONINFORMATION);
   gmb.AddButton(IDS_OK, IDS_OK, TRUE, TRUE);

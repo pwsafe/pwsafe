@@ -13,31 +13,15 @@
 
 #include "os/typedefs.h"
 #include "StringXStream.h"
-
-/*
- * The name of the reports are listed (not translated), values used for tcAction in StartReport. To stay compatible with Windows, the interface is left as string
- */
-
-#define REPORT_SYNCHRONIZE_NAME        (L"Synchronize")
-#define REPORT_COMPARE_NAME            (L"Compare")
-#define REPORT_MERGE_NAME              (L"Merge")
-#define REPORT_IMPORTTEXT_NAME         (L"Import Text")
-#define REPORT_IMPORTXML_NAME          (L"Import XML")
-#define REPORT_IMPORTKEEPASS_TXT_NAME  (L"Import KeePassV1 TXT")
-#define REPORT_IMPORTKEEPASS_CSV_NAME  (L"Import KeePassV1 CSV")
-#define REPORT_EXPORTTEXT_NAME         (L"Export Text")
-#define REPORT_EXPORTXML_NAME          (L"Export XML")
-#define REPORT_EXPORT_DB_NAME          (L"Export DB")
-#define REPORT_FIND_NAME               (L"Find")
-#define REPORT_VALIDATE_NAME           (L"Validate")
+#include <map>
 
 class CReport
 {
 public:
-  CReport() {}
+  CReport() : m_iAction(-1) {}
   ~CReport() {}
 
-  void StartReport(LPCTSTR tcAction, const stringT &csDataBase, bool writeHeader = true);
+  void StartReport(int iAction, const stringT &csDataBase, bool writeHeader = true);
   void EndReport();
   void WriteLine(const stringT &cs_line, bool bCRLF = true)
   {WriteLine(cs_line.c_str(), bCRLF);}
@@ -46,15 +30,17 @@ public:
   bool SaveToDisk();
   bool ReadFromDisk();
   bool PurgeFromDisk();
-  bool ReportExistsOnDisk();
+  bool ReportExistsOnDisk() const;
   StringX GetString() {return m_osxs.rdbuf()->str();}
-  bool StringEmpty() {return !m_osxs.rdbuf() || m_osxs.rdbuf()->str().empty();}
-  const stringT GetFileName() {return m_cs_filename;}
+  bool StringEmpty() const {return !m_osxs.rdbuf() || m_osxs.rdbuf()->str().empty();}
+  const stringT GetFileName() const {return m_cs_filename;}
+
+  static const std::map<int, LPCTSTR> ReportNames;
 
 private:
   oStringXStream m_osxs;
   stringT m_cs_filename;
-  stringT m_tcAction;
+  int m_iAction;
   stringT m_csDataBase;
 };
 

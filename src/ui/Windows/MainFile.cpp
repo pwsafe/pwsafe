@@ -227,7 +227,7 @@ BOOL DboxMain::OpenOnInit()
     rc2 = PWScore::SUCCESS;
 
     CGeneralMsgBox gmb;
-    cs_title.LoadString(IDS_RPTVALIDATE);
+    cs_title.LoadString(IDSC_RPTVALIDATE);
     cs_msg.LoadString(IDS_VALIDATE_ISSUES);
     gmb.SetTitle(cs_title);
     gmb.SetMsg(cs_msg);
@@ -875,7 +875,7 @@ int DboxMain::Open(const StringX &sx_Filename, const bool bReadOnly,  const bool
   if (rc == PWScore::OK_WITH_VALIDATION_ERRORS) {
     rc = PWScore::SUCCESS;
 
-    cs_title.LoadString(IDS_RPTVALIDATE);
+    cs_title.LoadString(IDSC_RPTVALIDATE);
     cs_msg.LoadString(IDS_VALIDATE_ISSUES);
     gmb.SetTitle(cs_title);
     gmb.SetMsg(cs_msg);
@@ -1702,10 +1702,9 @@ int DboxMain::DoExportDB(const StringX &sx_Filename, const UINT nID,
   CString cs_temp;
   std::vector<StringX> vEmptyGroups;
   std::vector<pws_os::CUUID> vuuidAddedBases;
-
   std::wstring str_text;
-  LoadAString(str_text, IDS_RPTEXPORTDB);
-  prpt->StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
+
+  prpt->StartReport(IDSC_RPTEXPORTDB, m_core.GetCurFile().c_str());
   LoadAString(str_text, IDS_EXDB);
   cs_temp.Format(IDS_EXPORTFILE, static_cast<LPCWSTR>(str_text.c_str()),
                  static_cast<LPCWSTR>(sx_Filename.c_str()));
@@ -1872,10 +1871,9 @@ int DboxMain::DoExportText(const StringX &sx_Filename, const UINT nID,
   const std::wstring subgroup_name = bAdvanced ? pst_ADV->subgroup_name : L"";
   const int subgroup_object = bAdvanced ? pst_ADV->subgroup_object : CItemData::GROUP;
   const int subgroup_function = bAdvanced ? pst_ADV->subgroup_function : 0;
-
   std::wstring str_text;
-  LoadAString(str_text, IDS_RPTEXPORTTEXT);
-  prpt->StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
+
+  prpt->StartReport(IDSC_RPTEXPORTTEXT, m_core.GetCurFile().c_str());
   LoadAString(str_text, IDS_TEXT);
   cs_temp.Format(IDS_EXPORTFILE, static_cast<LPCWSTR>(str_text.c_str()),
                  static_cast<LPCWSTR>(sx_Filename.c_str()));
@@ -2013,10 +2011,9 @@ int DboxMain::DoExportXML(const StringX &sx_Filename, const UINT nID,
   const int subgroup_object = bAdvanced ? pst_ADV->subgroup_object : CItemData::GROUP;
   const int subgroup_function = bAdvanced ? pst_ADV->subgroup_function : 0;
   std::wstring exportgroup(L"");
-
   std::wstring str_text;
-  LoadAString(str_text, IDS_RPTEXPORTXML);
-  prpt->StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
+
+  prpt->StartReport(IDSC_RPTEXPORTXML, m_core.GetCurFile().c_str());
   LoadAString(str_text, IDS_XML);
   cs_temp.Format(IDS_EXPORTFILE, static_cast<LPCWSTR>(str_text.c_str()),
                  static_cast<LPCWSTR>(sx_Filename.c_str()));
@@ -2361,8 +2358,8 @@ void DboxMain::OnImportText()
     // Create report as we go
     CReport rpt;
     std::wstring str_text;
-    LoadAString(str_text, IDS_RPTIMPORTTEXT);
-    rpt.StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
+
+    rpt.StartReport(IDSC_RPTIMPORTTEXT, m_core.GetCurFile().c_str());
     LoadAString(str_text, IDS_TEXT);
     cs_temp.Format(IDS_IMPORTFILE, static_cast<LPCWSTR>(str_text.c_str()),
                    static_cast<LPCWSTR>(TxtFileName.c_str()));
@@ -2520,8 +2517,8 @@ void DboxMain::OnImportKeePassV1CSV()
     // Create report as we go
     CReport rpt;
     std::wstring str_text;
-    LoadAString(str_text, IDS_RPTIMPORTKPV1CSV);
-    rpt.StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
+
+    rpt.StartReport(IDSC_RPTIMPORTKPV1CSV, m_core.GetCurFile().c_str());
     LoadAString(str_text, IDS_TEXT);
     cs_msg.Format(IDS_IMPORTFILE, static_cast<LPCWSTR>(str_text.c_str()),
                   static_cast<LPCWSTR>(KPsFileName.c_str()));
@@ -2635,8 +2632,8 @@ void DboxMain::OnImportKeePassV1TXT()
     // Create report as we go
     CReport rpt;
     std::wstring str_text;
-    LoadAString(str_text, IDS_RPTIMPORTKPV1TXT);
-    rpt.StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
+
+    rpt.StartReport(IDSC_RPTIMPORTKPV1TXT, m_core.GetCurFile().c_str());
     LoadAString(str_text, IDS_TEXT);
     cs_msg.Format(IDS_IMPORTFILE, static_cast<LPCWSTR>(str_text.c_str()),
                   static_cast<LPCWSTR>(KPsFileName.c_str()));
@@ -2783,8 +2780,8 @@ void DboxMain::OnImportXML()
     // Create report as we go
     CReport rpt;
     std::wstring str_text;
-    LoadAString(str_text, IDS_RPTIMPORTXML);
-    rpt.StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
+
+    rpt.StartReport(IDSC_RPTIMPORTXML, m_core.GetCurFile().c_str());
     LoadAString(str_text, IDS_XML);
     cs_temp.Format(IDS_IMPORTFILE, static_cast<LPCWSTR>(str_text.c_str()),
                    static_cast<LPCWSTR>(XMLFilename));
@@ -3211,8 +3208,8 @@ std::wstring DboxMain::DoMerge(PWScore *pothercore,
 
   // Create report as we go
   std::wstring str_text;
-  LoadAString(str_text, IDS_RPTMERGE);
-  prpt->StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
+
+  prpt->StartReport(IDSC_RPTMERGE, m_core.GetCurFile().c_str());
   cs_temp.Format(IDS_MERGINGDATABASE, static_cast<LPCWSTR>(pothercore->GetCurFile().c_str()));
   prpt->WriteLine((LPCWSTR)cs_temp);
   prpt->WriteLine();
@@ -3269,9 +3266,8 @@ bool DboxMain::DoCompare(PWScore *pothercore,
   m_list_Identical.clear();
 
   // Create report as we go
-  std::wstring str_text;
-  LoadAString(str_text, IDS_RPTCOMPARE);
-  prpt->StartReport(str_text.c_str(), static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
+
+  prpt->StartReport(IDSC_RPTCOMPARE, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
   cs_temp.Format(IDS_COMPARINGDATABASE, static_cast<LPCWSTR>(pothercore->GetCurFile().c_str()));
   prpt->WriteLine((LPCWSTR)cs_temp);
   prpt->WriteLine();
@@ -3356,7 +3352,7 @@ bool DboxMain::DoCompare(PWScore *pothercore,
     return false;
   }
 
-  cs_buffer.Format(IDS_COMPARESTATISTICS,
+  cs_buffer.Format(IDSC_COMPARESTATISTICS,
                    static_cast<LPCWSTR>(m_core.GetCurFile().c_str()),
                    static_cast<LPCWSTR>(pothercore->GetCurFile().c_str()));
 
@@ -3482,9 +3478,7 @@ void DboxMain::DoSynchronize(PWScore *pothercore,
   }
 
   // Create report as we go
-  std::wstring str_text;
-  LoadAString(str_text, IDS_RPTSYNCH);
-  prpt->StartReport(str_text.c_str(), m_core.GetCurFile().c_str());
+  prpt->StartReport(IDSC_RPTSYNCH, m_core.GetCurFile().c_str());
   str_temp.Format(IDS_SYNCHINGDATABASE, static_cast<LPCWSTR>(pothercore->GetCurFile().c_str()));
   prpt->WriteLine((LPCWSTR)str_temp);
   prpt->WriteLine();
@@ -4330,23 +4324,23 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const bool bAdvanced, const 
   UINT uimsgftn(0);
   switch (type) {
     case WZAdvanced::COMPARE:
-      uimsgftn = IDS_RPTCOMPARE;
+      uimsgftn = IDSC_RPTCOMPARE;
       break;
     case WZAdvanced::MERGE:
-      uimsgftn = IDS_RPTMERGE;
+      uimsgftn = IDSC_RPTMERGE;
       break;
     case WZAdvanced::SYNCH:
-      uimsgftn = IDS_RPTSYNCH;
+      uimsgftn = IDSC_RPTSYNCH;
       break;
     case WZAdvanced::EXPORT_TEXT:
     case WZAdvanced::EXPORT_ENTRYTEXT:
     case WZAdvanced::EXPORT_GROUPTEXT:
-      uimsgftn = IDS_RPTEXPORTTEXT;
+      uimsgftn = IDSC_RPTEXPORTTEXT;
       break;
     case WZAdvanced::EXPORT_XML:
     case WZAdvanced::EXPORT_ENTRYXML:
     case WZAdvanced::EXPORT_GROUPXML:
-      uimsgftn = IDS_RPTEXPORTXML;
+      uimsgftn = IDSC_RPTEXPORTXML;
       break;
     default:
       ASSERT(0);

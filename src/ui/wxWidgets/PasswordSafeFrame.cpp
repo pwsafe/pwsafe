@@ -1783,11 +1783,11 @@ CItemData* PasswordSafeFrame::GetBaseEntry(const CItemData *item) const
   return nullptr;
 }
 
-bool PasswordSafeFrame::CheckReportPresent(LPCTSTR tcAction)
+bool PasswordSafeFrame::CheckReportPresent(int iAction)
 {
   if(m_core.IsDbOpen()) {
     CReport rpt;
-    rpt.StartReport(tcAction, m_core.GetCurFile().c_str(), false);
+    rpt.StartReport(iAction, m_core.GetCurFile().c_str(), false);
     return rpt.ReportExistsOnDisk();
   }
   return false;
@@ -1838,51 +1838,51 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
       
     case ID_REPORT_SYNCHRONIZE:
-      evt.Enable(CheckReportPresent(REPORT_SYNCHRONIZE_NAME));
+      evt.Enable(CheckReportPresent(IDSC_RPTSYNCH));
       break;
 
     case ID_REPORT_COMPARE:
-      evt.Enable(CheckReportPresent(REPORT_COMPARE_NAME));
+      evt.Enable(CheckReportPresent(IDSC_RPTCOMPARE));
       break;
       
     case ID_REPORT_MERGE:
-      evt.Enable(CheckReportPresent(REPORT_MERGE_NAME));
+      evt.Enable(CheckReportPresent(IDSC_RPTMERGE));
       break;
       
     case ID_REPORT_IMPORTTEXT:
-      evt.Enable(CheckReportPresent(REPORT_IMPORTTEXT_NAME));
+      evt.Enable(CheckReportPresent(IDSC_RPTIMPORTTEXT));
       break;
       
     case ID_REPORT_IMPORTXML:
-      evt.Enable(CheckReportPresent(REPORT_IMPORTXML_NAME));
+      evt.Enable(CheckReportPresent(IDSC_RPTIMPORTXML));
       break;
       
     case ID_REPORT_IMPORTKEEPASS_TXT:
-      evt.Enable(CheckReportPresent(REPORT_IMPORTKEEPASS_TXT_NAME));
+      evt.Enable(CheckReportPresent(IDSC_RPTIMPORTKPV1TXT));
       break;
       
     case ID_REPORT_IMPORTKEEPASS_CSV:
-      evt.Enable(CheckReportPresent(REPORT_IMPORTKEEPASS_CSV_NAME));
+      evt.Enable(CheckReportPresent(IDSC_RPTIMPORTKPV1CSV));
       break;
       
     case ID_REPORT_EXPORTTEXT:
-      evt.Enable(CheckReportPresent(REPORT_EXPORTTEXT_NAME));
+      evt.Enable(CheckReportPresent(IDSC_RPTEXPORTTEXT));
       break;
       
     case ID_REPORT_EXPORTXML:
-      evt.Enable(CheckReportPresent(REPORT_EXPORTXML_NAME));
+      evt.Enable(CheckReportPresent(IDSC_RPTEXPORTXML));
       break;
       
     case ID_REPORT_EXPORT_DB:
-      evt.Enable(CheckReportPresent(REPORT_EXPORT_DB_NAME));
+      evt.Enable(CheckReportPresent(IDSC_RPTEXPORTDB));
       break;
       
     case ID_REPORT_FIND:
-      evt.Enable(CheckReportPresent(REPORT_FIND_NAME));
+      evt.Enable(CheckReportPresent(IDSC_RPTFIND));
       break;
       
     case ID_REPORT_VALIDATE:
-      evt.Enable(CheckReportPresent(REPORT_VALIDATE_NAME));
+      evt.Enable(CheckReportPresent(IDSC_RPTVALIDATE));
       break;
       
     case ID_SORT_TREE_MENU:
