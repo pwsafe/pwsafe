@@ -78,7 +78,7 @@ Use wxWidgets 3.0.2 or newer. pwsafe code is no longer compatible with older
 versions of wxWidgets.
 
 If you use homebrew, you can just install the latest version supported by it (3.0.5 as of now).
-For some reasons (support of dark mode, problem with initial indication of main window, etc.) is it better to use wxWidgets 3.1.4 or newer.
+For some reasons (support of dark mode, problem with initial indication of main window, etc.) it is better to use wxWidgets 3.1.4 or newer.
 
 ### M1 Macs
 You'd need to use the latest version, i.e. 3.1.4 as of this writing. The current
@@ -89,6 +89,7 @@ https://trac.wxwidgets.org/ticket/19005
 ### International users
 When changing the language from English to another language you might encounter problems with onStateImgage (mark indicating the selected menu item) or chevon ">>" extending the tool bar in case space is not sufficient. There is a proposed patch that can help on that issue, but this is not accepted by the wxWidgets team so far. See https://trac.wxwidgets.org/ticket/19023
 
+```
 diff --git a/src/common/intl.cpp b/src/common/intl.cpp
 index 44c4df22a8..97396917f3 100644
 a	b	bool wxLocale::Init(int language, int flags) 
@@ -100,7 +101,9 @@ a	b	bool wxLocale::Init(int language, int flags)
 579	579	
 580	580	    if ( !retloc )
 581	581	    {
+```
 
+The issue seems to be fixed in wxWidgets 3.1.5 (eliminating the special code for __WXMAC__).
 
 ### Building wxWidgets for pwsafe
 pwsafe uses wxWidgets as the cross-platform toolkit for its UI. To build pwsafe, you 
