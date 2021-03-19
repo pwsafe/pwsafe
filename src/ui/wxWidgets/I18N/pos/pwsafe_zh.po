@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-28 12:52+0100\n"
+"POT-Creation-Date: 2021-03-19 21:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -234,7 +234,7 @@ msgstr "日期和时间"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:348
 #: ../../../ui/wxWidgets/HelpMap.h:41 ../../../ui/wxWidgets/HelpMap.h:49
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.h:69 ../../../core/core_st.cpp:141
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.h:69 ../../../core/core_st.cpp:143
 msgid "Password Policy"
 msgstr "密码策略"
 
@@ -248,7 +248,7 @@ msgid "Set Date/Time"
 msgstr "设定日期/时间"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:370
-#: ../../../ui/wxWidgets/ToolbarButtons.h:203 ../../../core/core_st.cpp:137
+#: ../../../ui/wxWidgets/ToolbarButtons.h:203 ../../../core/core_st.cpp:139
 msgid "Password"
 msgstr "密码"
 
@@ -531,14 +531,14 @@ msgstr "使用大写字母(&U)"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:747
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:281
-#: ../../../core/core_st.cpp:260
+#: ../../../core/core_st.cpp:262
 #, fuzzy
 msgid "Use digits"
 msgstr "使用数字(&D)"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:771
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:305
-#: ../../../core/core_st.cpp:262
+#: ../../../core/core_st.cpp:264
 #, fuzzy
 msgid "Use symbols"
 msgstr "默认用户名"
@@ -573,7 +573,7 @@ msgstr "生成可发音密码(&P)"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:815
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:350
-#: ../../../core/core_st.cpp:253
+#: ../../../core/core_st.cpp:255
 msgid "Or"
 msgstr "或"
 
@@ -621,7 +621,7 @@ msgstr "属性"
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:219
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:269
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:274
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:906
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:907
 msgid "Text"
 msgstr "文本"
 
@@ -677,7 +677,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:160
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:173
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:192
-#: ../../../ui/wxWidgets/PropertiesDlg.cpp:202 ../../../core/core_st.cpp:301
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:202 ../../../core/core_st.cpp:317
 msgid "Unknown"
 msgstr "未知"
 
@@ -792,7 +792,7 @@ msgstr "[备注已隐藏 - 单击这里显示]"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1653
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2145
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2820
-#: ../../../core/core_st.cpp:74
+#: ../../../core/core_st.cpp:76
 msgid "Default Policy"
 msgstr ""
 
@@ -813,7 +813,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:144
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:151
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:159
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:200
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:201
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:367
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
@@ -837,7 +837,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:249
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:277
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:316
-#: ../../../core/core_st.cpp:274
+#: ../../../core/core_st.cpp:288
 msgid "Error"
 msgstr "错误"
 
@@ -1009,7 +1009,7 @@ msgid "Synchronize this item..."
 msgstr "同步(&Y)..."
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:482
-#: ../../../ui/wxWidgets/CompareDlg.cpp:786 ../../../core/core_st.cpp:357
+#: ../../../ui/wxWidgets/CompareDlg.cpp:786 ../../../core/core_st.cpp:286
 msgid "Synchronize"
 msgstr "同步"
 
@@ -1091,8 +1091,8 @@ msgid "Current safe was opened read-only"
 msgstr "打开为只读"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:793
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:996
-#: ../../../ui/wxWidgets/SyncWizard.cpp:618
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:997
+#: ../../../ui/wxWidgets/SyncWizard.cpp:619
 #, fuzzy, c-format
 msgid ""
 "The database:\n"
@@ -1109,7 +1109,7 @@ msgstr ""
 "有重复项目相同的 组/标题/用户 密码。请调整确认数据库！"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:794
-#: ../../../ui/wxWidgets/SyncWizard.cpp:617
+#: ../../../ui/wxWidgets/SyncWizard.cpp:618
 msgid "Synchronization failed"
 msgstr "同步失败"
 
@@ -1467,7 +1467,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/GridCtrl.cpp:164
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:292
-#: ../../../core/core_st.cpp:147
+#: ../../../core/core_st.cpp:149
 msgid "Title"
 msgstr "标题"
 
@@ -1690,7 +1690,7 @@ msgid "Value"
 msgstr "值:"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:291
-#: ../../../core/core_st.cpp:133
+#: ../../../core/core_st.cpp:135
 msgid "Group"
 msgstr "组"
 
@@ -1775,17 +1775,17 @@ msgstr ""
 msgid "Error parsing Run Command"
 msgstr "错误分析运行命令"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:56
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:354
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:361
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:367
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:375
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:57
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:355
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:362
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:368
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:376
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:166
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:623
 msgid "Write Error"
 msgstr "写入错误！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:61
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:62
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:165
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:622
 #, fuzzy
@@ -1795,7 +1795,7 @@ msgstr ""
 "\n"
 "不能写入打开的文件！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:64
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:65
 msgid ""
 "Write operation failed!\n"
 "File may have been corrupted.\n"
@@ -1805,7 +1805,7 @@ msgstr ""
 "文件可能已经被破坏！\n"
 "请尝试保存在一个不同的位置！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:69
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:70
 #: ../../../ui/wxWidgets/wxUtilities.cpp:71
 #, fuzzy
 msgid "Unknown error"
@@ -1814,36 +1814,36 @@ msgstr ""
 "\n"
 "未知错误！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:90
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:91
 #, fuzzy
 msgid "Do you want to save changes to the password database: "
 msgstr "你是否需要保存更改到密码数据库: %s？"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:145
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:146
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:557
 msgid "Please choose a name for the new database"
 msgstr "请选择作为新建数据库的名称"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:155
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:156
 #, fuzzy
 msgid "psafe3 files (*.psafe3)|*.psafe3|All files(*.*; *)|*.*;*"
 msgstr "Password Safe 数据库 (*.psafe3)|*.psafe3|所有文件 (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:184
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:185
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:420
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:439
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:592
 msgid "Lock is done by yourself"
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:184
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:185
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:420
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:439
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:592
 msgid "Remove Lock?"
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:194
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:195
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:602
 #, fuzzy
 msgid "Could not lock file.\n"
@@ -1852,18 +1852,18 @@ msgstr ""
 "\n"
 "不能读取打开的文件！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:196
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:197
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:452
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:604
 msgid "Locked by "
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:236
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:237
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:515
 msgid "Please Choose a Database to Open:"
 msgstr "请选择打开一个数据库"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:353
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:354
 #, fuzzy
 msgid ""
 "Unable to create intermediate backup.  Save database elsewhere or with "
@@ -1872,19 +1872,19 @@ msgid ""
 "Click 'No' to exit without saving."
 msgstr "%s. 选择尝试保存数据库为其它名称或退出不保存！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:360
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:361
 #, fuzzy
 msgid ""
 "Unable to create intermediate backup.  Do you wish to save changes to your "
 "database without it?"
 msgstr "%s. 选择尝试保存数据库为其它名称或退出不保存！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:367
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:375
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:368
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:376
 msgid "Unable to create intermediate backup."
 msgstr "不能创建中间备份！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:386
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:387
 #, c-format
 msgid ""
 "The original database, \"%ls\", is in pre-3.0 format. It will be unchanged.\n"
@@ -1893,12 +1893,12 @@ msgid ""
 "the \"File->Export To-> Old (1.x or 2) format\" command."
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:388
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:446
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:389
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:447
 msgid "File version warning"
 msgstr "文件版本警告"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:445
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:446
 #, c-format
 msgid ""
 "The original database, '%ls', is in pre-3.0 format. The data will now be "
@@ -1907,15 +1907,15 @@ msgid ""
 "Old (1.x or 2) format' command."
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:458
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:459
 msgid "Please choose a name for the current (Untitled) database:"
 msgstr "请选择作为当前(未命名)数据库的名称"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:459
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:460
 msgid "Please choose a new name for the current database:"
 msgstr "请选择作为当前数据库的新名称"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:467
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:468
 #, fuzzy
 msgid ""
 "Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|"
@@ -1923,7 +1923,7 @@ msgid ""
 msgstr ""
 "Password Safe 数据库 (*.psafe3; *.dat)|*.psafe3; *.dat|所有文件 (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:479
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:480
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -1934,141 +1934,141 @@ msgstr ""
 "\n"
 "文件当前被锁定在 %ls！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:480
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:481
 msgid "File lock error"
 msgstr "文件锁定错误！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:547
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:548
 #, fuzzy
 msgid "Do you wish to save this restored database as new database?"
 msgstr "你是否需要保存更改到密码数据库: %s？"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:548
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:549
 #, fuzzy
 msgid "Unsaved restored database"
 msgstr "在数据库"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:580
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:581
 #, fuzzy
 msgid "Do you want to save changes to the password database"
 msgstr "你是否需要保存更改到密码数据库: %s？"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:617
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:618
 msgid "Export Text"
 msgstr "导出文本"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:621
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:622
 #, fuzzy
 msgid "Export Text failed"
 msgstr "导入文本失败！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:623
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:624
 msgid "Please name the plaintext file"
 msgstr "请命名纯文本文件"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:624
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1143
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:625
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1144
 #, fuzzy
 msgid ""
 "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
 msgstr "文本文件 (*.txt)|*.txt|CSV 文件 (*.csv)|*.csv|所有文件 (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:634
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:635
 msgid "Advanced Text Export Options"
 msgstr "高级文本文件导出选项"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:654
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:697
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:655
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:698
 #, fuzzy
 msgid "export"
 msgstr "导出"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:660
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:661
 msgid "Export XML"
 msgstr "导出 XML"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:664
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:665
 #, fuzzy
 msgid "Export XML failed"
 msgstr "导入 XML 失败！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:666
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:667
 msgid "Please name the XML file"
 msgstr "请命名 XML 文件！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:667
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:668
 #, fuzzy
 msgid "XML files (*.xml)|*.xml|All files (*.*; *)|*.*;*"
 msgstr "XML 文件 (*.xml)|*.xml|所有文件 (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:678
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:679
 msgid "Advanced XML Export Options"
 msgstr "高级 XML 导出选项"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:712
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:716
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:713
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:717
 #, fuzzy
 msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*; *)|*.*;*"
 msgstr ""
 "Password Safe 数据库 (*.psafe3; *.dat)|*.psafe3; *.dat|所有文件 (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:720
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:721
 #, fuzzy
 msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*; *)|*.*;*"
 msgstr ""
 "Password Safe 数据库 (*.psafe3; *.dat)|*.psafe3; *.dat|所有文件 (*.*)|*.*||"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:731
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:732
 msgid "Please name the exported database"
 msgstr "请命名导出的数据库"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:748
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:749
 msgid "Could not figure out why PasswordSafeFrame::OnExportVx was invoked"
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:782
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:783
 msgid "You must save this database before it can be exported."
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:828
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:829
 #, fuzzy
 msgid "Exporting database: "
 msgstr "合并数据库: %s\n"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:828
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:829
 msgid " to "
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:841
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:842
 #, fuzzy
 msgid "Export complete.  Do you wish to see a detailed report?"
 msgstr "你是否需要替换它？"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:852
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:853
 msgid "No entries satisfied your selection criteria and so none were exported!"
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:865
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:866
 msgid "Passkey incorrect"
 msgstr "密匙错误！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:873
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:874
 msgid ""
 "The current database was opened in read-only mode.  You cannot import into "
 "it."
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:874
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:875
 #, fuzzy
 msgid "Import text"
 msgstr "导入文本(&T)"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:882
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:883
 #, fuzzy
 msgid "The database:"
 msgstr "在数据库"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:883
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:884
 #, fuzzy
 msgid "has duplicate entries with the same group/title/user combination."
 msgstr ""
@@ -2078,33 +2078,33 @@ msgstr ""
 "\n"
 "有重复项目相同的 组/标题/用户 密码。请调整确认数据库！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:884
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:885
 msgid "  Please fix by validating database."
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:885
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:931
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:886
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:932
 #, fuzzy
 msgid "Import Text failed"
 msgstr "导入文本失败！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:906
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1030
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:907
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1031
 #, fuzzy, c-format
 msgid "%ls file being imported: %ls"
 msgstr "%ls 文件被导入: %ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:921
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:926
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:922
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:927
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:223
-#: ../../../ui/wxWidgets/SyncWizard.cpp:572
+#: ../../../ui/wxWidgets/SyncWizard.cpp:573
 #: ../../../ui/wxWidgets/wxUtilities.cpp:59
 #: ../../../ui/wxWidgets/wxUtilities.cpp:64
 #: ../../../ui/wxWidgets/wxUtilities.cpp:71
 msgid "File Read Error"
 msgstr "文件读取错误！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:922
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:923
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:222
 #: ../../../ui/wxWidgets/wxUtilities.cpp:58
 #, fuzzy
@@ -2114,7 +2114,7 @@ msgstr ""
 "\n"
 "不能读取打开的文件！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:927
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:928
 #, fuzzy
 msgid "Invalid format"
 msgstr ""
@@ -2122,77 +2122,77 @@ msgstr ""
 "\n"
 "无效格式！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:944
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:945
 #, fuzzy
 msgid "Updated "
 msgstr "已更新 %d %s"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:944
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:945
 #, fuzzy
 msgid "Imported "
 msgstr "导入"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:945
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:950
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:964
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:946
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:951
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:965
 #, fuzzy
 msgid " entry"
 msgstr "项目"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:945
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:950
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:964
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:946
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:951
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:965
 #, fuzzy
 msgid " entries"
 msgstr "个项目"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:950
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:951
 #, fuzzy
 msgid "Skipped "
 msgstr ""
 "\n"
 "跳过 %d %s"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:957
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:958
 #, fuzzy
 msgid "with Password History errors "
 msgstr ""
 "\n"
 "密码历史错误%d"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:964
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:965
 #, fuzzy
 msgid "Renamed "
 msgstr "重命名"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:969
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1063
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1216
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:970
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1064
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1217
 msgid "Completed successfully"
 msgstr "成功完成"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:969
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1063
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1216
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:970
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1064
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1217
 msgid "Completed but ...."
 msgstr "完成，但..."
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:981
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1127
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1197
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1218
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1279
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:982
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1128
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1198
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1219
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1280
 #, fuzzy
 msgid "Do you wish to see a detailed report?"
 msgstr "你是否需要替换它？"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:997
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1045
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:998
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1046
 msgid "Import XML failed"
 msgstr "导入 XML 失败！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1007
-#: ../../../core/core_st.cpp:238
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1008
+#: ../../../core/core_st.cpp:240
 #, fuzzy, c-format
 msgid ""
 "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application "
@@ -2202,20 +2202,20 @@ msgstr ""
 "未能找到 XML 模式定义文件 (%ls) 在你的应用程序目录，\n"
 "请从你的安装文件复制它或重新安装本应用程序！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1008
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1009
 #, fuzzy
 msgid "Missing XSD File - "
 msgstr "缺少 XSD 文件！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1008
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1009
 msgid " Build"
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1030
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1031
 msgid "XML"
 msgstr "XML"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1051
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1052
 #, fuzzy, c-format
 msgid ""
 "File: %ls failed validation against XML Schema:\n"
@@ -2226,7 +2226,7 @@ msgstr ""
 "\n"
 "%ls！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1057
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1058
 #, fuzzy, c-format
 msgid ""
 "File: %ls passed Validation but had the following errors during import:\n"
@@ -2237,61 +2237,61 @@ msgstr ""
 "\n"
 "%ls！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1078
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1079
 msgid "The following records were skipped:"
 msgstr "下列记录被跳过:"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1080
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1081
 #, c-format
 msgid " / skipped %d"
 msgstr " / 跳过 %d"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1085
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1086
 msgid "The following records had errors in their Password History:"
 msgstr "下列历史密码记录存在错误:"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1087
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1088
 #, c-format
 msgid " / with Password History errors %d"
 msgstr " / 使用错误历史密码 %d"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1092
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1093
 msgid ""
 "The following records were renamed as an entry already exists in your "
 "database or in the Import file:"
 msgstr "下列记录被重命名为一个已存在你的数据库或导入文件的项目:"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1094
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1095
 #, c-format
 msgid " / renamed %d"
 msgstr " / 重命名 %d"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1099
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1100
 #, fuzzy, c-format
 msgid ""
 "File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See "
 "report for details."
 msgstr "文件: %ls 被导入 (项目验证 %d / 导入 %d%ls%ls%ls)。请参阅报告的细节。"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1104
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1212
-#: ../../../ui/wxWidgets/SyncWizard.cpp:587
-#: ../../../ui/wxWidgets/SyncWizard.cpp:730
-#: ../../../ui/wxWidgets/SyncWizard.cpp:747 ../../../core/core_st.cpp:95
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1106
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1213
+#: ../../../ui/wxWidgets/SyncWizard.cpp:588
+#: ../../../ui/wxWidgets/SyncWizard.cpp:731
+#: ../../../ui/wxWidgets/SyncWizard.cpp:748 ../../../core/core_st.cpp:97
 msgid "entry"
 msgstr "项目"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1104
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1212
-#: ../../../ui/wxWidgets/SyncWizard.cpp:587
-#: ../../../ui/wxWidgets/SyncWizard.cpp:730
-#: ../../../ui/wxWidgets/SyncWizard.cpp:747 ../../../core/core_st.cpp:93
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1106
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1213
+#: ../../../ui/wxWidgets/SyncWizard.cpp:588
+#: ../../../ui/wxWidgets/SyncWizard.cpp:731
+#: ../../../ui/wxWidgets/SyncWizard.cpp:748 ../../../core/core_st.cpp:95
 msgid "entries"
 msgstr "个项目"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1106
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1107
 #, fuzzy, c-format
 msgid ""
 "Validated %d %ls\n"
@@ -2302,26 +2302,26 @@ msgstr ""
 "\n"
 "导入 %d %ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1114
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1115
 msgid "XML import not supported in this release"
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1117
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1118
 #, c-format
 msgid "XML import: Unexpected return code(%d)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1141
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1142
 msgid "Please Choose a KeePass Text File to Import"
 msgstr "请选择一个要导入存储密码的文本文件"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1163
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1164
 #, fuzzy, c-format
 msgid "Text file being imported: %ls"
 msgstr "Text 文件被导入: %ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1180
-#: ../../../ui/wxWidgets/SyncWizard.cpp:602
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1181
+#: ../../../ui/wxWidgets/SyncWizard.cpp:603
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -2332,11 +2332,11 @@ msgstr ""
 "\n"
 "不能读取打开的文件！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1181
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1182
 msgid "File open error"
 msgstr "打开文件错误！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1195
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1196
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -2347,21 +2347,21 @@ msgstr ""
 "\n"
 "无效格式！"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1198
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1199
 msgid "Import failed"
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1213
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1214
 #, fuzzy, c-format
 msgid "Imported %d %ls"
 msgstr "导入 %d %ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1265
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1266
 #, fuzzy
 msgid "Merging database: "
 msgstr "合并数据库: %s\n"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1280
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1281
 #, fuzzy
 msgid "Merge Complete"
 msgstr "比较完成"
@@ -2456,16 +2456,16 @@ msgid ""
 "Try exiting and restarting program."
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuViewHandlers.cpp:218
+#: ../../../ui/wxWidgets/MenuViewHandlers.cpp:220
 #, fuzzy
 msgid " file '"
 msgstr "管理筛选"
 
-#: ../../../ui/wxWidgets/MenuViewHandlers.cpp:218
+#: ../../../ui/wxWidgets/MenuViewHandlers.cpp:220
 msgid "' not readable"
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuViewHandlers.cpp:218
+#: ../../../ui/wxWidgets/MenuViewHandlers.cpp:220
 #: ../../../ui/wxWidgets/ViewReportDlg.cpp:32
 msgid "View Report"
 msgstr "查看报告"
@@ -2515,7 +2515,7 @@ msgid "Please select a valid file"
 msgstr "请选择报告查看！"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:123
-#: ../../../ui/wxWidgets/PropertiesDlg.cpp:245 ../../../core/core_st.cpp:249
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:245 ../../../core/core_st.cpp:251
 msgid "None"
 msgstr "无"
 
@@ -2529,7 +2529,7 @@ msgid "Incremented Number [001-999]"
 msgstr "递增数字 [001-999]"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:132
-#: ../../../core/core_st.cpp:66
+#: ../../../core/core_st.cpp:68
 #, fuzzy
 msgid "Copy password to clipboard"
 msgstr "复制密码到剪贴板(&C)"
@@ -2541,37 +2541,37 @@ msgstr "查看/编辑选定项目"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:134
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:623
-#: ../../../ui/wxWidgets/ToolbarButtons.h:208 ../../../core/core_st.cpp:62
+#: ../../../ui/wxWidgets/ToolbarButtons.h:208 ../../../core/core_st.cpp:64
 msgid "Autotype"
 msgstr "自动输入"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:135
-#: ../../../ui/wxWidgets/ToolbarButtons.h:209 ../../../core/core_st.cpp:63
+#: ../../../ui/wxWidgets/ToolbarButtons.h:209 ../../../core/core_st.cpp:65
 msgid "Browse to URL"
 msgstr "浏览网址"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:136
-#: ../../../core/core_st.cpp:65
+#: ../../../core/core_st.cpp:67
 msgid "Copy notes to clipboard"
 msgstr "复制备注到剪贴板"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:137
-#: ../../../core/core_st.cpp:68
+#: ../../../core/core_st.cpp:70
 msgid "Copy username to clipboard"
 msgstr "复制用户名到剪贴板"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:138
-#: ../../../core/core_st.cpp:67
+#: ../../../core/core_st.cpp:69
 msgid "Copy password to clipboard, minimize"
 msgstr "复制密码到剪贴板后立即最小化"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:139
-#: ../../../core/core_st.cpp:64
+#: ../../../core/core_st.cpp:66
 msgid "Browse to URL + Autotype"
 msgstr "浏览网址+自动输入"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:140
-#: ../../../core/core_st.cpp:69 ../../../core/core_st.cpp:144
+#: ../../../core/core_st.cpp:71 ../../../core/core_st.cpp:146
 msgid "Run Command"
 msgstr "运行命令"
 
@@ -2995,24 +2995,24 @@ msgstr ""
 msgid "Don't show this warning again"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:849
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:854
 msgid "Missing help definition for page \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:850
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:855
 msgid "\" of \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:855
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:860
 msgid "Missing help definition for window \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:866
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:871
 #, fuzzy
 msgid "Please inform the developers."
 msgstr "请命名该筛选！"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:867
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:872
 msgid "Help Undefined"
 msgstr ""
 
@@ -3746,6 +3746,7 @@ msgid "search"
 msgstr "搜索(&S)"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:427
+#: ../../../core/core_st.cpp:280
 msgid "Find"
 msgstr "查找"
 
@@ -3866,20 +3867,20 @@ msgstr "验证"
 msgid " empty)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PropertiesDlg.cpp:182 ../../../core/core_st.cpp:306
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:182 ../../../core/core_st.cpp:322
 #, fuzzy, c-format
 msgid "%ls on %ls"
 msgstr "%ls 在 %ls 上"
 
-#: ../../../ui/wxWidgets/PropertiesDlg.cpp:232 ../../../core/core_st.cpp:341
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:232 ../../../core/core_st.cpp:357
 msgid "Yes"
 msgstr "是"
 
-#: ../../../ui/wxWidgets/PropertiesDlg.cpp:232 ../../../core/core_st.cpp:244
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:232 ../../../core/core_st.cpp:246
 msgid "No"
 msgstr "否"
 
-#: ../../../ui/wxWidgets/PropertiesDlg.cpp:234 ../../../core/core_st.cpp:302
+#: ../../../ui/wxWidgets/PropertiesDlg.cpp:234 ../../../core/core_st.cpp:318
 #, fuzzy, c-format
 msgid "In Headers(%ls)/In Entries("
 msgstr "在标题(%ls)/在项目("
@@ -4068,7 +4069,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:457
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:269
-#: ../../../core/core_st.cpp:276
+#: ../../../core/core_st.cpp:290
 msgid "Warning"
 msgstr "警告"
 
@@ -4140,11 +4141,11 @@ msgstr ""
 "\n"
 "请尝试其它"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:38 ../../../core/core_st.cpp:96
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:38 ../../../core/core_st.cpp:98
 msgid "equals"
 msgstr "等于"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:39 ../../../core/core_st.cpp:83
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:39 ../../../core/core_st.cpp:85
 msgid "does not equal"
 msgstr "不等于"
 
@@ -4152,23 +4153,23 @@ msgstr "不等于"
 msgid "begins with"
 msgstr "开始"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:41 ../../../core/core_st.cpp:78
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:41 ../../../core/core_st.cpp:80
 msgid "does not begin with"
 msgstr "未开始"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:42 ../../../core/core_st.cpp:90
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:42 ../../../core/core_st.cpp:92
 msgid "ends with"
 msgstr "结束"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:43 ../../../core/core_st.cpp:82
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:43 ../../../core/core_st.cpp:84
 msgid "does not end with"
 msgstr "未结束"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:44 ../../../core/core_st.cpp:56
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:44 ../../../core/core_st.cpp:58
 msgid "contains"
 msgstr "包含"
 
-#: ../../../ui/wxWidgets/SelectionCriteria.cpp:45 ../../../core/core_st.cpp:79
+#: ../../../ui/wxWidgets/SelectionCriteria.cpp:45 ../../../core/core_st.cpp:81
 msgid "does not contain"
 msgstr "不包含"
 
@@ -4227,79 +4228,79 @@ msgstr "确定"
 msgid "Cancel"
 msgstr "取消"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:143
+#: ../../../ui/wxWidgets/SyncWizard.cpp:144
 #, fuzzy
 msgid "synchronize"
 msgstr "同步"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:220
+#: ../../../ui/wxWidgets/SyncWizard.cpp:221
 #, fuzzy
 msgid "Synchronize another database with currently open database"
 msgstr "合并该数据库到当前数据库中:"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:349
+#: ../../../ui/wxWidgets/SyncWizard.cpp:350
 msgid "Introduction"
 msgstr ""
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:353
+#: ../../../ui/wxWidgets/SyncWizard.cpp:354
 msgid ""
 "Synchronizing with another database will update the entries in your\n"
 "database with matching entries from the other database."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:356
+#: ../../../ui/wxWidgets/SyncWizard.cpp:357
 msgid "More Info"
 msgstr ""
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:359
+#: ../../../ui/wxWidgets/SyncWizard.cpp:360
 msgid ""
 "1. Two entries from different databases match if their Group, Title\n"
 "and User fields match."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:360
+#: ../../../ui/wxWidgets/SyncWizard.cpp:361
 msgid ""
 "2. You can select the fields to update, as well as filter the entries\n"
 "for synchronization."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:361
+#: ../../../ui/wxWidgets/SyncWizard.cpp:362
 msgid ""
 "3. Only existing entries in your database are updated.  No new entries are\n"
 "added or existing entries removed during this process."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:362
+#: ../../../ui/wxWidgets/SyncWizard.cpp:363
 msgid ""
 "4. You can undo the operation once it is complete, but won't be\n"
 "able to abort it mid-way."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:379
+#: ../../../ui/wxWidgets/SyncWizard.cpp:380
 #, fuzzy
 msgid "Select another database"
 msgstr "选择数据库"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:381
+#: ../../../ui/wxWidgets/SyncWizard.cpp:382
 msgid "Choose Database to Synchronize with \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:382
+#: ../../../ui/wxWidgets/SyncWizard.cpp:383
 #, fuzzy
 msgid "Please Choose a Database to Synchronize with current database"
 msgstr "请选定一个数据库和当前打开数据库相比较"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:405
+#: ../../../ui/wxWidgets/SyncWizard.cpp:406
 #, fuzzy
 msgid "Synchronization options"
 msgstr "同步失败"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:429
+#: ../../../ui/wxWidgets/SyncWizard.cpp:430
 #, fuzzy
 msgid "Options Summary"
 msgstr "选项"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:454
+#: ../../../ui/wxWidgets/SyncWizard.cpp:455
 #, fuzzy
 msgid ""
 "WARNING!!\n"
@@ -4308,58 +4309,58 @@ msgid ""
 "from your selected input database"
 msgstr "警告: 如果继续，来自你选定输入数据库中现有数据库项目的字段将被更新！"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:471
+#: ../../../ui/wxWidgets/SyncWizard.cpp:472
 msgid " will be updated with corresponding entries from \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:478
+#: ../../../ui/wxWidgets/SyncWizard.cpp:479
 msgid "All fields in matching entries will be updated"
 msgstr ""
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:484
+#: ../../../ui/wxWidgets/SyncWizard.cpp:485
 msgid "Following fields in matching entries will be updated:"
 msgstr ""
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:488
+#: ../../../ui/wxWidgets/SyncWizard.cpp:489
 #, fuzzy
 msgid "Following fields will not be updated:"
 msgstr "下列栏目将被处理:"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:507
+#: ../../../ui/wxWidgets/SyncWizard.cpp:508
 #, fuzzy
 msgid "Synchronization status"
 msgstr "同步失败"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:525
+#: ../../../ui/wxWidgets/SyncWizard.cpp:526
 msgid "See a detailed report"
 msgstr ""
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:561
+#: ../../../ui/wxWidgets/SyncWizard.cpp:562
 msgid "Your database is being synchronized with \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:571
+#: ../../../ui/wxWidgets/SyncWizard.cpp:572
 msgid "There was an error during synchronization"
 msgstr ""
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:585
+#: ../../../ui/wxWidgets/SyncWizard.cpp:586
 #, c-format
 msgid "Your database has been synchronized with \"%ls\""
 msgstr ""
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:586
+#: ../../../ui/wxWidgets/SyncWizard.cpp:587
 #, fuzzy, c-format
 msgid "%ld %ls updated"
 msgstr ""
 "\n"
 "下列 %ls %ls 已更新:"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:588
+#: ../../../ui/wxWidgets/SyncWizard.cpp:589
 #, fuzzy
 msgid "Synchronization completed successfully"
 msgstr "成功完成"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:604
+#: ../../../ui/wxWidgets/SyncWizard.cpp:605
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -4372,7 +4373,7 @@ msgstr ""
 "文件被破坏或被删节其中部份，数据可能已经丢失或被修改！\n"
 "仍然继续吗？"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:606
+#: ../../../ui/wxWidgets/SyncWizard.cpp:607
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -4383,24 +4384,24 @@ msgstr ""
 "\n"
 "未知错误！"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:640
+#: ../../../ui/wxWidgets/SyncWizard.cpp:641
 #, fuzzy, c-format
 msgid "Synchronizing from database: %ls\n"
 msgstr "同步的数据库源: %ls\n"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:643
+#: ../../../ui/wxWidgets/SyncWizard.cpp:644
 msgid "synchronized"
 msgstr "同步"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:731 ../../../core/core_st.cpp:322
+#: ../../../ui/wxWidgets/SyncWizard.cpp:732 ../../../core/core_st.cpp:338
 msgid "was"
 msgstr "是"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:731 ../../../core/core_st.cpp:323
+#: ../../../ui/wxWidgets/SyncWizard.cpp:732 ../../../core/core_st.cpp:339
 msgid "were"
 msgstr "是"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:732 ../../../core/core_st.cpp:298
+#: ../../../ui/wxWidgets/SyncWizard.cpp:733 ../../../core/core_st.cpp:314
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -4409,7 +4410,7 @@ msgstr ""
 "\n"
 "下列 %ls %ls 已更新:"
 
-#: ../../../ui/wxWidgets/SyncWizard.cpp:748 ../../../core/core_st.cpp:297
+#: ../../../ui/wxWidgets/SyncWizard.cpp:749 ../../../core/core_st.cpp:313
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -4577,7 +4578,7 @@ msgstr "该别名目标 [%s:%s:%s] 不是一个正常项目或已有一个基本
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
 msgstr "该快捷方式目标 [%s:%s:%s] 不是一个正常项目或已经有一个快捷方式存在！"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2440 ../../../core/core_st.cpp:94
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2440 ../../../core/core_st.cpp:96
 #, c-format
 msgid ""
 "The following entries had a policy name that already existed in this "
@@ -4681,13 +4682,13 @@ msgstr ""
 "文件被破坏或被删节其中部份，数据可能已经丢失或被修改！\n"
 "仍然继续吗？"
 
-#: ../../../ui/wxWidgets/wxUtilities.cpp:381
+#: ../../../ui/wxWidgets/wxUtilities.cpp:390
 msgid ""
 "An error occurred while trying to get the image data from database item.\n"
 "Therefore, the image cannot be displayed in the preview."
 msgstr ""
 
-#: ../../../ui/wxWidgets/wxUtilities.cpp:394
+#: ../../../ui/wxWidgets/wxUtilities.cpp:403
 msgid ""
 "An error occurred while trying to load the image data into the preview "
 "area.\n"
@@ -4829,7 +4830,7 @@ msgstr ""
 "\n"
 "复制密码到剪贴板"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:204 ../../../core/core_st.cpp:149
+#: ../../../ui/wxWidgets/ToolbarButtons.h:204 ../../../core/core_st.cpp:151
 msgid "Username"
 msgstr "用户名"
 
@@ -4840,7 +4841,7 @@ msgstr ""
 "\n"
 "复制用户名到剪贴板"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:205 ../../../core/core_st.cpp:136
+#: ../../../ui/wxWidgets/ToolbarButtons.h:205 ../../../core/core_st.cpp:138
 #, fuzzy
 msgid "Notes"
 msgstr "备注(&N):"
@@ -4876,7 +4877,7 @@ msgstr ""
 msgid "Browse URL"
 msgstr "浏览网址"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:210 ../../../core/core_st.cpp:70
+#: ../../../ui/wxWidgets/ToolbarButtons.h:210 ../../../core/core_st.cpp:72
 #, fuzzy
 msgid "Send Email"
 msgstr "发送邮件"
@@ -5059,69 +5060,87 @@ msgid "(case sensitive)"
 msgstr "(区分大小写)"
 
 #: ../../../core/core_st.cpp:50
+#, fuzzy, c-format
+msgid ""
+"Compare complete of current database:\n"
+"\t %ls\n"
+" and:\n"
+"\t %ls\n"
+msgstr ""
+"当前数据库比较完成:\n"
+"\t %s\n"
+" 和:\n"
+"\t %s"
+
+#: ../../../core/core_st.cpp:51
+#, fuzzy, c-format
+msgid "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
+msgstr "\t组:'%s'; 标题:'%s'; 用户:'%s'"
+
+#: ../../../core/core_st.cpp:52
 msgid "C:F[R-O]"
 msgstr "C:F[只读]"
 
-#: ../../../core/core_st.cpp:51
+#: ../../../core/core_st.cpp:53
 msgid "C:F[R/W]"
 msgstr "C:F[存取]"
 
-#: ../../../core/core_st.cpp:52
+#: ../../../core/core_st.cpp:54
 msgid "C:None  "
 msgstr "C:无  "
 
-#: ../../../core/core_st.cpp:53
+#: ../../../core/core_st.cpp:55
 msgid "C:Reg   "
 msgstr "C:Reg   "
 
-#: ../../../core/core_st.cpp:54
+#: ../../../core/core_st.cpp:56
 msgid "conflict"
 msgstr "冲突"
 
-#: ../../../core/core_st.cpp:55
+#: ../../../core/core_st.cpp:57
 msgid "conflicts"
 msgstr "个冲突"
 
-#: ../../../core/core_st.cpp:57
+#: ../../../core/core_st.cpp:59
 #, fuzzy
 msgid "contains all of"
 msgstr "包含"
 
-#: ../../../core/core_st.cpp:58
+#: ../../../core/core_st.cpp:60
 #, fuzzy
 msgid "contains any of"
 msgstr "包含"
 
-#: ../../../core/core_st.cpp:59
+#: ../../../core/core_st.cpp:61
 #, fuzzy
 msgid "copied"
 msgstr "复制网址"
 
-#: ../../../core/core_st.cpp:60
+#: ../../../core/core_st.cpp:62
 #, fuzzy, c-format
 msgid "%ls - Copied %ls"
 msgstr "%ls - 复制网址 %ls"
 
-#: ../../../core/core_st.cpp:61
+#: ../../../core/core_st.cpp:63
 #, fuzzy, c-format
 msgid " Current default (%ls)"
 msgstr " 当前默认 (%ls)"
 
-#: ../../../core/core_st.cpp:71
+#: ../../../core/core_st.cpp:73
 msgid "View/Edit selected entry"
 msgstr "查看/编辑选定项目"
 
-#: ../../../core/core_st.cpp:72
+#: ../../../core/core_st.cpp:74
 #, fuzzy
 msgid " (application default)"
 msgstr "使用应用程序:"
 
-#: ../../../core/core_st.cpp:73
+#: ../../../core/core_st.cpp:75
 #, fuzzy
 msgid "default symbol set"
 msgstr "默认用户名"
 
-#: ../../../core/core_st.cpp:75
+#: ../../../core/core_st.cpp:77
 #, c-format
 msgid ""
 "This entry has the following %d %ls:\n"
@@ -5130,12 +5149,12 @@ msgid ""
 "entry's password)?"
 msgstr ""
 
-#: ../../../core/core_st.cpp:76
+#: ../../../core/core_st.cpp:78
 #, fuzzy
 msgid "Delete Base Entry Confirmation"
 msgstr "确认删除一个基本项目？"
 
-#: ../../../core/core_st.cpp:77
+#: ../../../core/core_st.cpp:79
 #, c-format
 msgid ""
 "This entry has the following %d %ls:\n"
@@ -5143,325 +5162,325 @@ msgid ""
 "Please confirm to continue (All shortcuts to this entry will be deleted)?"
 msgstr ""
 
-#: ../../../core/core_st.cpp:80
+#: ../../../core/core_st.cpp:82
 #, fuzzy
 msgid "does not contain all of"
 msgstr "不包含"
 
-#: ../../../core/core_st.cpp:81
+#: ../../../core/core_st.cpp:83
 #, fuzzy
 msgid "does not contain any of"
 msgstr "不包含"
 
-#: ../../../core/core_st.cpp:84
+#: ../../../core/core_st.cpp:86
 #, c-format
 msgid " Drag # %d"
 msgstr " 拖放 # %d"
 
-#: ../../../core/core_st.cpp:85
-#, c-format
-msgid "%s - Drag & Drop %s"
-msgstr ""
+#: ../../../core/core_st.cpp:87
+#, fuzzy, c-format
+msgid "%ls - Drag & Drop %ls"
+msgstr "%ls - 复制网址 %ls"
 
-#: ../../../core/core_st.cpp:86
+#: ../../../core/core_st.cpp:88
 #, c-format
 msgid " Duplicate # %d"
 msgstr " 复制 # %d"
 
-#: ../../../core/core_st.cpp:87
+#: ../../../core/core_st.cpp:89
 #, fuzzy
 msgid "empty group"
 msgstr "导入下列组？"
 
-#: ../../../core/core_st.cpp:88
+#: ../../../core/core_st.cpp:90
 #, fuzzy
 msgid "empty groups"
 msgstr "#组"
 
-#: ../../../core/core_st.cpp:89
+#: ../../../core/core_st.cpp:91
 #, fuzzy, c-format
 msgid ""
 "Trouble with a non-textual (e.g., time) field in record '%ls' - please check "
 "data carefully."
 msgstr "让人深感不安的一个无原文(例如：时间) 字段在档案“%ls”- 请小心校验数据！"
 
-#: ../../../core/core_st.cpp:91
+#: ../../../core/core_st.cpp:93
 msgid "End Report"
 msgstr "结束报告"
 
-#: ../../../core/core_st.cpp:92
+#: ../../../core/core_st.cpp:94
 msgid "--------------------------------------------------------------------------------"
 msgstr "--------------------------------------------------------------------------------"
 
-#: ../../../core/core_st.cpp:97
+#: ../../../core/core_st.cpp:99
 msgid "has expired"
 msgstr "已失效"
 
-#: ../../../core/core_st.cpp:98
+#: ../../../core/core_st.cpp:100
 msgid "Entries with a password expiry"
 msgstr "项目使用的一个密码到期"
 
-#: ../../../core/core_st.cpp:99
+#: ../../../core/core_st.cpp:101
 #, c-format
 msgid "within %d day(s)"
 msgstr "在 %d 天内"
 
-#: ../../../core/core_st.cpp:100
+#: ../../../core/core_st.cpp:102
 #, fuzzy, c-format
 msgid "DB Export from database: '%s'"
 msgstr "合并数据库: %s\n"
 
-#: ../../../core/core_st.cpp:101
+#: ../../../core/core_st.cpp:103
 msgid "First character of variable name must be alphabetic"
 msgstr "首字符变量名称必须按字母排序！"
 
-#: ../../../core/core_st.cpp:102
+#: ../../../core/core_st.cpp:104
 msgid "Index not numeric"
 msgstr "索引没有数值！"
 
-#: ../../../core/core_st.cpp:103
+#: ../../../core/core_st.cpp:105
 msgid "Input string is empty"
 msgstr "导入字串空缺！"
 
-#: ../../../core/core_st.cpp:104
+#: ../../../core/core_st.cpp:106
 msgid "Characters present between end of index ']' and '}'"
 msgstr "符号显示在索引 ']' 和 '}' 之间结束！"
 
-#: ../../../core/core_st.cpp:105
+#: ../../../core/core_st.cpp:107
 msgid "Index is invalid or missing"
 msgstr "索引无效或缺少！"
 
-#: ../../../core/core_st.cpp:106
+#: ../../../core/core_st.cpp:108
 msgid "Missing ending curly bracket for variable name"
 msgstr "缺少波浪号作为结束变量名称！"
 
-#: ../../../core/core_st.cpp:107
+#: ../../../core/core_st.cpp:109
 msgid "Missing ending round bracket for Autotype value"
 msgstr "缺少圆括号作为结束自动输入值！"
 
-#: ../../../core/core_st.cpp:108
+#: ../../../core/core_st.cpp:110
 msgid "Missing ending square bracket for index value"
 msgstr "缺少方括号作为结束索引值！"
 
-#: ../../../core/core_st.cpp:109
+#: ../../../core/core_st.cpp:111
 msgid "There are unmatched quotes in the run command"
 msgstr "运行命令不匹配引号！"
 
-#: ../../../core/core_st.cpp:110
+#: ../../../core/core_st.cpp:112
 msgid "Variable name is empty"
 msgstr "变量名空缺"
 
-#: ../../../core/core_st.cpp:111
+#: ../../../core/core_st.cpp:113
 msgid "Variable name must be alphanumeric"
 msgstr "变量名必须包含字母与数字！"
 
-#: ../../../core/core_st.cpp:112
+#: ../../../core/core_st.cpp:114
 msgid "an alias entry"
 msgstr "一个别名项目"
 
-#: ../../../core/core_st.cpp:113
+#: ../../../core/core_st.cpp:115
 msgid "a base entry of an alias"
 msgstr "一个基本项目的别名"
 
-#: ../../../core/core_st.cpp:114
+#: ../../../core/core_st.cpp:116
 msgid "  Field is too long."
 msgstr "  字段太长！"
 
-#: ../../../core/core_st.cpp:115
+#: ../../../core/core_st.cpp:117
 msgid "  Field is too short."
 msgstr "  字段太短！"
 
-#: ../../../core/core_st.cpp:116
+#: ../../../core/core_st.cpp:118
 msgid "Error: A file with this name already exists"
 msgstr "错误: 该文件名称已经存在！"
 
-#: ../../../core/core_st.cpp:117
+#: ../../../core/core_st.cpp:119
 msgid "The file was not found."
 msgstr "没有找到文件！"
 
-#: ../../../core/core_st.cpp:118
+#: ../../../core/core_st.cpp:120
 msgid "Error: File is read-only"
 msgstr "错误: 文件为只读属性！"
 
-#: ../../../core/core_st.cpp:119
+#: ../../../core/core_st.cpp:121
 msgid "Error while writing file! Try saving in a different location"
 msgstr "写入文件时错误，尝试保存在一个不同的位置！"
 
-#: ../../../core/core_st.cpp:120
+#: ../../../core/core_st.cpp:122
 #, fuzzy
 msgid "File is too big."
 msgstr "  字段太长！"
 
-#: ../../../core/core_st.cpp:121
+#: ../../../core/core_st.cpp:123
 #, fuzzy
 msgid "File is too short."
 msgstr "  字段太短！"
 
-#: ../../../core/core_st.cpp:122
+#: ../../../core/core_st.cpp:124
 msgid "File is truncated or otherwise corrupt. Please use backup database."
 msgstr ""
 
-#: ../../../core/core_st.cpp:123
+#: ../../../core/core_st.cpp:125
 msgid "Cannot read file. Please check file permissions."
 msgstr "无法读取文件，请检查文件权限！"
 
-#: ../../../core/core_st.cpp:124
+#: ../../../core/core_st.cpp:126
 #, fuzzy, c-format
 msgid ""
 "Filter %ls already exists in the database, do you wish to replace it with "
 "this?"
 msgstr "筛选 %ls 已存在数据库中，你是否需要使用它代替？"
 
-#: ../../../core/core_st.cpp:125
+#: ../../../core/core_st.cpp:127
 #, fuzzy
 msgid "Current database filters have been exported to this database."
 msgstr "比较当前数据库与: %s"
 
-#: ../../../core/core_st.cpp:126
+#: ../../../core/core_st.cpp:128
 msgid "Stored filters will be unusable until the file's restored."
 msgstr "存储筛选器将不可用，直到文件被还原。"
 
-#: ../../../core/core_st.cpp:127
+#: ../../../core/core_st.cpp:129
 msgid "Last Access Time"
 msgstr "最后访问时间"
 
-#: ../../../core/core_st.cpp:128
+#: ../../../core/core_st.cpp:130
 msgid "Attachment Reference"
 msgstr ""
 
-#: ../../../core/core_st.cpp:129
+#: ../../../core/core_st.cpp:131
 msgid "AutoType"
 msgstr "自动输入"
 
-#: ../../../core/core_st.cpp:130
+#: ../../../core/core_st.cpp:132
 msgid "Created Time"
 msgstr "创建时间"
 
-#: ../../../core/core_st.cpp:131
+#: ../../../core/core_st.cpp:133
 msgid "DCA"
 msgstr "DCA"
 
-#: ../../../core/core_st.cpp:132
+#: ../../../core/core_st.cpp:134
 msgid "e-mail"
 msgstr "电子邮件"
 
-#: ../../../core/core_st.cpp:134
+#: ../../../core/core_st.cpp:136
 msgid "Group/Title"
 msgstr "组/标题"
 
-#: ../../../core/core_st.cpp:135
+#: ../../../core/core_st.cpp:137
 #, fuzzy
 msgid "Keyboard Shortcut"
 msgstr "创建快捷方式"
 
-#: ../../../core/core_st.cpp:138
+#: ../../../core/core_st.cpp:140
 msgid "Password Modified Time"
 msgstr "密码修改时间"
 
-#: ../../../core/core_st.cpp:139
+#: ../../../core/core_st.cpp:141
 msgid "Protected"
 msgstr "保护"
 
-#: ../../../core/core_st.cpp:140
+#: ../../../core/core_st.cpp:142
 msgid "History"
 msgstr "历史"
 
-#: ../../../core/core_st.cpp:142
+#: ../../../core/core_st.cpp:144
 #, fuzzy
 msgid "Password Policy Name"
 msgstr "密码策略"
 
-#: ../../../core/core_st.cpp:143
+#: ../../../core/core_st.cpp:145
 msgid "Record Modified Time"
 msgstr "档案修改时间"
 
-#: ../../../core/core_st.cpp:145
+#: ../../../core/core_st.cpp:147
 #, fuzzy
 msgid "Shift+DCA"
 msgstr "Shift+"
 
-#: ../../../core/core_st.cpp:146
+#: ../../../core/core_st.cpp:148
 #, fuzzy
 msgid "Symbols"
 msgstr "默认用户名"
 
-#: ../../../core/core_st.cpp:148
+#: ../../../core/core_st.cpp:150
 msgid "URL"
 msgstr "网址"
 
-#: ../../../core/core_st.cpp:150
+#: ../../../core/core_st.cpp:152
 msgid "UUID"
 msgstr "UUID"
 
-#: ../../../core/core_st.cpp:151
+#: ../../../core/core_st.cpp:153
 msgid "Password Expiry Date"
 msgstr "密码失效日期"
 
-#: ../../../core/core_st.cpp:152
+#: ../../../core/core_st.cpp:154
 msgid "Password Expiry Interval"
 msgstr "密码失效间隔"
 
-#: ../../../core/core_st.cpp:153
+#: ../../../core/core_st.cpp:155
 msgid "a normal entry"
 msgstr "一个正常项目"
 
-#: ../../../core/core_st.cpp:154
+#: ../../../core/core_st.cpp:156
 #, fuzzy
 msgid "Last found entries"
 msgstr "个项目"
 
-#: ../../../core/core_st.cpp:155
+#: ../../../core/core_st.cpp:157
 msgid "added but not yet saved to database"
 msgstr "已添加，但尚未被保存到数据库！"
 
-#: ../../../core/core_st.cpp:156
+#: ../../../core/core_st.cpp:158
 #, fuzzy
 msgid "in the database"
 msgstr "在数据库"
 
-#: ../../../core/core_st.cpp:157
+#: ../../../core/core_st.cpp:159
 msgid "a shortcut entry"
 msgstr "一个项目的快捷方式"
 
-#: ../../../core/core_st.cpp:158
+#: ../../../core/core_st.cpp:160
 msgid "a base entry of a shortcut"
 msgstr "一个基本项目的快捷方式"
 
-#: ../../../core/core_st.cpp:159
+#: ../../../core/core_st.cpp:161
 msgid "changed but not yet saved to database"
 msgstr "已更改但未保存到数据库！"
 
-#: ../../../core/core_st.cpp:160
+#: ../../../core/core_st.cpp:162
 msgid "greater than"
 msgstr "大于"
 
-#: ../../../core/core_st.cpp:161
+#: ../../../core/core_st.cpp:163
 msgid "greater than or equal to"
 msgstr "大于或等于"
 
-#: ../../../core/core_st.cpp:162
+#: ../../../core/core_st.cpp:164
 #, c-format
 msgid ""
 "Invalid input on line %d.  Number of fields separated by '%c' is not as "
 "expected."
 msgstr "无效导入在行 %d，各字段的编号 '%c' 是未意料的！"
 
-#: ../../../core/core_st.cpp:163
+#: ../../../core/core_st.cpp:165
 #, c-format
 msgid "Line %d: "
 msgstr "行 %d:"
 
-#: ../../../core/core_st.cpp:164
+#: ../../../core/core_st.cpp:166
 #, c-format
 msgid ""
 "File ends on line %d before ending double quote of last entry's note field."
 msgstr "文件结尾行 %d 在最后项目备注字段的双引号之前结束！"
 
-#: ../../../core/core_st.cpp:165
+#: ../../../core/core_st.cpp:167
 msgid "Import aborted. Please see report."
 msgstr ""
 
-#: ../../../core/core_st.cpp:166
+#: ../../../core/core_st.cpp:168
 msgid ""
 "The TXT or CSV file was not imported as required as entry records span "
 "multiple lines in the CSV file.\n"
@@ -5469,7 +5488,7 @@ msgid ""
 "Import aborted."
 msgstr ""
 
-#: ../../../core/core_st.cpp:167
+#: ../../../core/core_st.cpp:169
 #, fuzzy, c-format
 msgid ""
 "%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the "
@@ -5478,121 +5497,121 @@ msgstr ""
 "%ls, 标题=“%ls”，用户=“%ls”已存在你的数据库或导入文件中。添加导入项目标题"
 "=“%ls”。\n"
 
-#: ../../../core/core_st.cpp:168
+#: ../../../core/core_st.cpp:170
 #, fuzzy, c-format
 msgid "Entry on line %d with Group=\"%ls\""
 msgstr "项目在行 %d 与组=“%ls”。"
 
-#: ../../../core/core_st.cpp:169
+#: ../../../core/core_st.cpp:171
 #, c-format
 msgid "Entry on line %d with no group"
 msgstr "项目在行 %d 上没有组。"
 
-#: ../../../core/core_st.cpp:170
+#: ../../../core/core_st.cpp:172
 #, fuzzy, c-format
 msgid "Entry with Group=\"%ls\""
 msgstr "项目与组=“%ls”。"
 
-#: ../../../core/core_st.cpp:171
+#: ../../../core/core_st.cpp:173
 msgid "Entry with no group"
 msgstr "项目没有组"
 
-#: ../../../core/core_st.cpp:172
+#: ../../../core/core_st.cpp:174
 #, fuzzy
 msgid "imported"
 msgstr "导入"
 
-#: ../../../core/core_st.cpp:173
+#: ../../../core/core_st.cpp:175
 #, fuzzy, c-format
 msgid "including %d empty group(s)."
 msgstr "#组"
 
-#: ../../../core/core_st.cpp:174
+#: ../../../core/core_st.cpp:176
 #, c-format
 msgid "Empty line %d skipped"
 msgstr "跳过空行 %d"
 
-#: ../../../core/core_st.cpp:175
+#: ../../../core/core_st.cpp:177
 #, fuzzy, c-format
 msgid "Entry %ls%d with Group=\"%ls\", Title=\"%ls\", User=\"%ls\""
 msgstr "项目 %ls%d 与组=“%ls”，标题=“%ls”，用户=“%ls”。"
 
-#: ../../../core/core_st.cpp:176
+#: ../../../core/core_st.cpp:178
 msgid "Internal error. Import failed. No records imported."
 msgstr "内部错误，导入失败，无记录导入！"
 
-#: ../../../core/core_st.cpp:177
+#: ../../../core/core_st.cpp:179
 #, c-format
 msgid "Found %d known column headers:"
 msgstr "找到 %d 已知栏目标题:"
 
-#: ../../../core/core_st.cpp:178
+#: ../../../core/core_st.cpp:180
 msgid "Invalid field delimiter: must be within ASCII range."
 msgstr ""
 
-#: ../../../core/core_st.cpp:179
+#: ../../../core/core_st.cpp:181
 #, fuzzy, c-format
 msgid "Entry of line %d has an invalid \"%ls\" field. It has been ignored."
 msgstr "项目行 %d 有一个无效“%ls”字段，它已经被忽略！"
 
-#: ../../../core/core_st.cpp:180
+#: ../../../core/core_st.cpp:182
 msgid "The following columns will be processed: "
 msgstr "下列栏目将被处理:"
 
-#: ../../../core/core_st.cpp:181
+#: ../../../core/core_st.cpp:183
 msgid ""
 "The following columns were recognised but only Group/Title, Username and "
 "Password will be processed:"
 msgstr "下列栏目被认可，但只有 组/标题、用户名称和密码可以被处理:"
 
-#: ../../../core/core_st.cpp:182
+#: ../../../core/core_st.cpp:184
 #, c-format
 msgid ""
 "Line %d skipped - Only %d fields found, whereas parsing the Header says "
 "there should be %d."
 msgstr "第 %d 行跳过，仅找到 %d 字段，但句法分析标题提示应该存在 %d 行(字段)。"
 
-#: ../../../core/core_st.cpp:183
+#: ../../../core/core_st.cpp:185
 msgid ""
 "Either or both of the Group/Title and Password columns are missing. No "
 "records imported."
 msgstr "组/标题或密码栏目缺少，没有导入记录！"
 
-#: ../../../core/core_st.cpp:184
+#: ../../../core/core_st.cpp:186
 msgid ""
 "Could not find the next entry's title field in the KeePass V1 TXT (should be "
 "within square brackets)."
 msgstr ""
 
-#: ../../../core/core_st.cpp:185
+#: ../../../core/core_st.cpp:187
 msgid "Column header row not recognised as first record. No records imported."
 msgstr "栏目标题行不认可为首记录，无记录导入！"
 
-#: ../../../core/core_st.cpp:186
+#: ../../../core/core_st.cpp:188
 msgid "No records in import file!"
 msgstr "导入文件没有记录！"
 
-#: ../../../core/core_st.cpp:187
+#: ../../../core/core_st.cpp:189
 #, fuzzy, c-format
 msgid "Line %d skipped: Empty mandatory Password field."
 msgstr "跳过行 %d，它是一个空白强制的密码字段！"
 
-#: ../../../core/core_st.cpp:188
+#: ../../../core/core_st.cpp:190
 #, fuzzy, c-format
 msgid "Line %d skipped: Empty mandatory Title field."
 msgstr "跳过行 %d，它是一个空白强制的标题字段！"
 
-#: ../../../core/core_st.cpp:189
+#: ../../../core/core_st.cpp:191
 #, c-format
 msgid " Import # %d"
 msgstr " 导入 # %d"
 
-#: ../../../core/core_st.cpp:190
+#: ../../../core/core_st.cpp:192
 #, fuzzy, c-format
 msgid "%ls - Imported %ls"
 msgstr "%ls - 复制网址 %ls"
 
-#: ../../../core/core_st.cpp:191
+#: ../../../core/core_st.cpp:193
 msgid ""
 "To replace passwords of existing entries, all the following columns must be "
 "present: Group/Title, Username and Password.  One or more are missing and no "
@@ -5601,17 +5620,17 @@ msgstr ""
 "需要替换现有项目密码，所有下列栏目必须存在: 组/标题、用户名和密码。一个或更多"
 "缺少并且没有项目被更新！"
 
-#: ../../../core/core_st.cpp:192
+#: ../../../core/core_st.cpp:194
 #, fuzzy, c-format
 msgid "%ls not found. Cannot update entry's password.\n"
 msgstr "%ls 未找到，无法更新项目的密码！\n"
 
-#: ../../../core/core_st.cpp:193
+#: ../../../core/core_st.cpp:195
 #, fuzzy, c-format
 msgid "%ls has an empty %ls.\n"
 msgstr "%ls 有一个空白 %ls。\n"
 
-#: ../../../core/core_st.cpp:194
+#: ../../../core/core_st.cpp:196
 #, fuzzy, c-format
 msgid ""
 "Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
@@ -5619,11 +5638,11 @@ msgid ""
 msgstr ""
 "项目“%ls、%ls、%ls”有一个密码在为一个别名做格式校正，但基本项目已有一个别名！"
 
-#: ../../../core/core_st.cpp:195
+#: ../../../core/core_st.cpp:197
 msgid "\tThis entry has been made an alias of associated base entry."
 msgstr "\t该项目已生成关联基本项目的一个别名！"
 
-#: ../../../core/core_st.cpp:196
+#: ../../../core/core_st.cpp:198
 #, fuzzy, c-format
 msgid ""
 "Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
@@ -5631,12 +5650,12 @@ msgid ""
 msgstr ""
 "项目“%ls、%ls、%ls”有一个密码在为一个别名做格式校正，但基本项目不存在！"
 
-#: ../../../core/core_st.cpp:197
+#: ../../../core/core_st.cpp:199
 msgid ""
 "\tThis entry remains a normal entry and the password has not been changed."
 msgstr "\t该项目剩余一个正常条目并且密码未经改变！"
 
-#: ../../../core/core_st.cpp:198
+#: ../../../core/core_st.cpp:200
 #, fuzzy, c-format
 msgid ""
 "The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls "
@@ -5645,145 +5664,145 @@ msgstr ""
 "“%ls” 项目 “%ls， %ls， %ls”未表明一个正常或现有的 “%ls” 项目位置，所以它不能"
 "被导入！"
 
-#: ../../../core/core_st.cpp:199
+#: ../../../core/core_st.cpp:201
 msgid "Entry import warnings"
 msgstr "项目导入警告"
 
-#: ../../../core/core_st.cpp:200
+#: ../../../core/core_st.cpp:202
 msgid "id="
 msgstr "id="
 
-#: ../../../core/core_st.cpp:201
+#: ../../../core/core_st.cpp:203
 msgid "on line "
 msgstr "在线"
 
-#: ../../../core/core_st.cpp:202
+#: ../../../core/core_st.cpp:204
 msgid "Internal error: Invalid oflag or pmode argument"
 msgstr "内部错误: 无效标记或 pmode 参数！"
 
-#: ../../../core/core_st.cpp:203
+#: ../../../core/core_st.cpp:205
 msgid "invalid!"
 msgstr "无效！"
 
-#: ../../../core/core_st.cpp:204
+#: ../../../core/core_st.cpp:206
 msgid "  Invalid date/time value."
 msgstr "  无效的日期/时间值！"
 
-#: ../../../core/core_st.cpp:205
+#: ../../../core/core_st.cpp:207
 #, fuzzy
 msgid "  Field length is incorrect."
 msgstr "  字段太短！"
 
-#: ../../../core/core_st.cpp:206
+#: ../../../core/core_st.cpp:208
 msgid "Internal error: An invalid flag was specified"
 msgstr "内部错误: 一个无效标记指定！"
 
-#: ../../../core/core_st.cpp:207
+#: ../../../core/core_st.cpp:209
 #, c-format
 msgid "  Invalid header: '%ls' (must be 5 hexadecimal characters)."
 msgstr ""
 
-#: ../../../core/core_st.cpp:208
+#: ../../../core/core_st.cpp:210
 #, fuzzy, c-format
 msgid "Invalid lock file \"%ls\"."
 msgstr "无效筛选模式！"
 
-#: ../../../core/core_st.cpp:209
+#: ../../../core/core_st.cpp:211
 #, c-format
 msgid "  Invalid number of saved old passwords %d."
 msgstr "  保存的旧密码 %d 数量无效！"
 
-#: ../../../core/core_st.cpp:210
+#: ../../../core/core_st.cpp:212
 #, c-format
 msgid "  Invalid status value: %d (must be either 0 or 1)."
 msgstr ""
 
-#: ../../../core/core_st.cpp:211
+#: ../../../core/core_st.cpp:213
 msgid "  Invalid password length found (not a hexadecimal number)."
 msgstr ""
 
-#: ../../../core/core_st.cpp:212
+#: ../../../core/core_st.cpp:214
 msgid ""
 "  Invalid password length found (differs from length of following password)."
 msgstr ""
 
-#: ../../../core/core_st.cpp:213
+#: ../../../core/core_st.cpp:215
 msgid ""
 "  Invalid field separator character found - only a single blank is allowed "
 "between fields."
 msgstr "  无效字段分隔符建立 - 在字段之间只允许一个空格！"
 
-#: ../../../core/core_st.cpp:214
+#: ../../../core/core_st.cpp:216
 msgid "Invalid Filter schema."
 msgstr "无效筛选模式！"
 
-#: ../../../core/core_st.cpp:215
+#: ../../../core/core_st.cpp:217
 msgid "Schema does not have a version number."
 msgstr "该模式没有一个版本号！"
 
-#: ../../../core/core_st.cpp:216
+#: ../../../core/core_st.cpp:218
 #, c-format
 msgid "The filter XML version (%d) is greater than the current schema (%d)."
 msgstr "筛选 XML 版本 (%d) 大于当前模式的 (%d)！"
 
-#: ../../../core/core_st.cpp:217
+#: ../../../core/core_st.cpp:219
 #, c-format
 msgid ""
 "The filter XML version (%d) is greater than that supported by this instance "
 "of PasswordSafe (%d)."
 msgstr "筛选 XML 版本 (%d) 大于可支持该实例的 PasswordSafe (%d)！"
 
-#: ../../../core/core_st.cpp:218
+#: ../../../core/core_st.cpp:220
 msgid "is"
 msgstr "是"
 
-#: ../../../core/core_st.cpp:219
+#: ../../../core/core_st.cpp:221
 msgid "is active"
 msgstr "活动"
 
-#: ../../../core/core_st.cpp:220
+#: ../../../core/core_st.cpp:222
 msgid "is inactive"
 msgstr "非活动"
 
-#: ../../../core/core_st.cpp:221
+#: ../../../core/core_st.cpp:223
 msgid "is not"
 msgstr "不是"
 
-#: ../../../core/core_st.cpp:222
+#: ../../../core/core_st.cpp:224
 msgid "is not present"
 msgstr "未显示"
 
-#: ../../../core/core_st.cpp:223
+#: ../../../core/core_st.cpp:225
 msgid "is present"
 msgstr "已显示"
 
-#: ../../../core/core_st.cpp:224
+#: ../../../core/core_st.cpp:226
 #, c-format
 msgid ""
 "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It "
 "has been removed from the %ls entry."
 msgstr ""
 
-#: ../../../core/core_st.cpp:225
+#: ../../../core/core_st.cpp:227
 #, c-format
 msgid ""
 "Entry keyboard shortcut %ls entry %ls is already allocated to the "
 "PasswordSafe application. It has been removed from the entry."
 msgstr ""
 
-#: ../../../core/core_st.cpp:226
+#: ../../../core/core_st.cpp:228
 msgid "less than"
 msgstr "小于"
 
-#: ../../../core/core_st.cpp:227
+#: ../../../core/core_st.cpp:229
 msgid "less than or equal to"
 msgstr "小于或等于"
 
-#: ../../../core/core_st.cpp:228
+#: ../../../core/core_st.cpp:230
 msgid "File or path not found"
 msgstr "文件或路径未建立"
 
-#: ../../../core/core_st.cpp:229
+#: ../../../core/core_st.cpp:231
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -5792,7 +5811,7 @@ msgstr ""
 "\n"
 "新建 %ls %ls 合并到下面数据库中:"
 
-#: ../../../core/core_st.cpp:230
+#: ../../../core/core_st.cpp:232
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -5801,7 +5820,7 @@ msgstr ""
 "\n"
 "合并完成: 已增加 %d 个 %ls (%d %ls, %d %ls, %d %ls)"
 
-#: ../../../core/core_st.cpp:231
+#: ../../../core/core_st.cpp:233
 #, fuzzy, c-format
 msgid ""
 "Conflicting entries for \"%ls\" \"%ls\" \"%ls\".\n"
@@ -5812,91 +5831,91 @@ msgstr ""
 "  增加的合并项目为 «%ls» «%ls» «%ls».\n"
 "    不一致字段: %ls"
 
-#: ../../../core/core_st.cpp:232
+#: ../../../core/core_st.cpp:234
 #, fuzzy
 msgid "merged"
 msgstr "合并"
 
-#: ../../../core/core_st.cpp:233
+#: ../../../core/core_st.cpp:235
 #, fuzzy, c-format
 msgid "%ls - Merged %ls"
 msgstr "%ls - 合并 %ls"
 
-#: ../../../core/core_st.cpp:234
+#: ../../../core/core_st.cpp:236
 msgid "MISSING PASSWORD"
 msgstr ""
 
-#: ../../../core/core_st.cpp:235
+#: ../../../core/core_st.cpp:237
 #, c-format
 msgid "\tPassword policy name '%ls' is not in the database."
 msgstr ""
 
-#: ../../../core/core_st.cpp:236
+#: ../../../core/core_st.cpp:238
 msgid ""
 "\tOne or more Password Policy Names were not found in the database. The "
 "affected entries have been changed to use the database's default policy."
 msgstr ""
 
-#: ../../../core/core_st.cpp:237
+#: ../../../core/core_st.cpp:239
 #, c-format
 msgid "MISSING TITLE # %d"
 msgstr ""
 
-#: ../../../core/core_st.cpp:239
+#: ../../../core/core_st.cpp:241
 msgid "Can't obtain the schema version."
 msgstr "不能获得计划版本！"
 
-#: ../../../core/core_st.cpp:240
+#: ../../../core/core_st.cpp:242
 msgid "The filter XML version is missing."
 msgstr "缺少筛选 XML 版本！"
 
-#: ../../../core/core_st.cpp:241
+#: ../../../core/core_st.cpp:243
 #, fuzzy, c-format
 msgid "Create SchemaCache60 Error 0x%08X during %ls."
 msgstr "创建计划缓存%2d 发生错误 0x%08X 在 %ls 期间！"
 
-#: ../../../core/core_st.cpp:242
+#: ../../../core/core_st.cpp:244
 #, fuzzy, c-format
 msgid "SAX Parse60 Error 0x%08X during %ls."
 msgstr "SAX 分析%2d 错误 0x%08X 在 %ls 期间！"
 
-#: ../../../core/core_st.cpp:243
+#: ../../../core/core_st.cpp:245
 #, fuzzy, c-format
 msgid "Error (%08X): line %d character %d %ls"
 msgstr "错误 (%08X): 行 %d 字符 %d %ls"
 
-#: ../../../core/core_st.cpp:245
+#: ../../../core/core_st.cpp:247
 msgid ""
 "Unable to get configuration file lock.\n"
 "\n"
 "Will use registry."
 msgstr "未能获得锁配置文件，将使用注册表！"
 
-#: ../../../core/core_st.cpp:246
+#: ../../../core/core_st.cpp:248
 msgid "Cannot create lock file - no permission in directory?"
 msgstr "不能创建文件锁 - 你是否没有该目录权限？"
 
-#: ../../../core/core_st.cpp:247
+#: ../../../core/core_st.cpp:249
 msgid "Internal error: Out of file handles"
 msgstr "内部错误: 文件句柄溢出！"
 
-#: ../../../core/core_st.cpp:248
+#: ../../../core/core_st.cpp:250
 msgid ""
 "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 "
 "seems available."
 msgstr ""
 "不能使用一个 MS XML 阅读器在你的系统，MS XML V3, V4 或 V6 好像也都不可用！"
 
-#: ../../../core/core_st.cpp:250
+#: ../../../core/core_st.cpp:252
 #, fuzzy
 msgid "Unsaved changes"
 msgstr "显示未保存更改(&U)"
 
-#: ../../../core/core_st.cpp:251
+#: ../../../core/core_st.cpp:253
 msgid "is not set"
 msgstr "未设定"
 
-#: ../../../core/core_st.cpp:252
+#: ../../../core/core_st.cpp:254
 #, fuzzy, c-format
 msgid ""
 "Number of entries processed: %d\n"
@@ -5931,100 +5950,143 @@ msgstr ""
 "\n"
 "不能被完全显示的项目字段数量: %d"
 
-#: ../../../core/core_st.cpp:254
+#: ../../../core/core_st.cpp:256
 msgid ""
 "Password should be mixed case, with at least one digit or punctuation "
 "character"
 msgstr "密码应该混合大小写和至少一个数字或标点字符！"
 
-#: ../../../core/core_st.cpp:255
+#: ../../../core/core_st.cpp:257
 msgid "Password is too short"
 msgstr "密码太短！"
 
-#: ../../../core/core_st.cpp:256
+#: ../../../core/core_st.cpp:258
 msgid "Easyvision characters"
 msgstr "易懂字符"
 
-#: ../../../core/core_st.cpp:257
+#: ../../../core/core_st.cpp:259
 msgid "Hexadecimal characters"
 msgstr "十六进制字符"
 
-#: ../../../core/core_st.cpp:258
+#: ../../../core/core_st.cpp:260
 #, fuzzy
 msgid "Password length"
 msgstr "密码长度:"
 
-#: ../../../core/core_st.cpp:259
+#: ../../../core/core_st.cpp:261
 msgid "Pronounceable passwords"
 msgstr "可发音密码"
 
-#: ../../../core/core_st.cpp:261
+#: ../../../core/core_st.cpp:263
 #, fuzzy
 msgid "Use lowercase characters"
 msgstr "最少大写字母字符"
 
-#: ../../../core/core_st.cpp:263
+#: ../../../core/core_st.cpp:265
 #, fuzzy
 msgid "Use uppercase characters"
 msgstr "最少大写字母字符"
 
-#: ../../../core/core_st.cpp:264
+#: ../../../core/core_st.cpp:266
 #, fuzzy, c-format
 msgid "Error in a Password History %ls:"
 msgstr ""
 "\n"
 "历史密码错误作为项目: »%ls»%ls»%ls»: "
 
-#: ../../../core/core_st.cpp:265
+#: ../../../core/core_st.cpp:267
 #, c-format
 msgid "sub-field starting at position %d (within the History field): "
 msgstr ""
 
-#: ../../../core/core_st.cpp:266
+#: ../../../core/core_st.cpp:268
 msgid "  All Password History ignored."
 msgstr "  忽略所有历史密码！"
 
-#: ../../../core/core_st.cpp:267
+#: ../../../core/core_st.cpp:269
 msgid "Read Error"
 msgstr "读取错误！"
 
-#: ../../../core/core_st.cpp:268
+#: ../../../core/core_st.cpp:270
+msgid "Relative"
+msgstr "相对"
+
+#: ../../../core/core_st.cpp:271
 #, c-format
 msgid ""
 "\tOne or more entry keyboard shortcuts were already assigned to entries in "
 "this database. They have been removed from the %ls entries."
 msgstr ""
 
-#: ../../../core/core_st.cpp:269
+#: ../../../core/core_st.cpp:272
 msgid ""
 "\tOne or more Password Policy Names were already in this database but had "
 "different settings. They have been renamed."
 msgstr ""
 
-#: ../../../core/core_st.cpp:270
+#: ../../../core/core_st.cpp:273
 #, fuzzy, c-format
 msgid "%ls%ls%ls_Report.txt"
 msgstr "%ls%ls%ls_Report.txt"
 
-#: ../../../core/core_st.cpp:271
+#: ../../../core/core_st.cpp:274
 #, fuzzy, c-format
 msgid "Report of %ls function started at %ls"
 msgstr "%ls 的报告函数开始于 %ls"
 
-#: ../../../core/core_st.cpp:272
+#: ../../../core/core_st.cpp:275
 #, fuzzy, c-format
 msgid "on database %ls"
 msgstr "在数据库 %ls"
 
-#: ../../../core/core_st.cpp:273
+#: ../../../core/core_st.cpp:276
+msgid "Compare"
+msgstr "比较"
+
+#: ../../../core/core_st.cpp:277
+#, fuzzy
+msgid "Export_DB"
+msgstr "导出(&E)"
+
+#: ../../../core/core_st.cpp:278
+msgid "Export_Text"
+msgstr "Export_Text"
+
+#: ../../../core/core_st.cpp:279
+msgid "Export_XML"
+msgstr "Export_XML"
+
+#: ../../../core/core_st.cpp:281
+#, fuzzy
+msgid "Import_KeePassV1_CSV"
+msgstr "导入文本(&T)"
+
+#: ../../../core/core_st.cpp:282
+#, fuzzy
+msgid "Import_KeePassV1_TXT"
+msgstr "导入文本(&T)"
+
+#: ../../../core/core_st.cpp:283
+msgid "Import_Text"
+msgstr "Import_Text"
+
+#: ../../../core/core_st.cpp:284
+msgid "Import_XML"
+msgstr "Import_XML"
+
+#: ../../../core/core_st.cpp:285
+msgid "Merge"
+msgstr "合并"
+
+#: ../../../core/core_st.cpp:287
 msgid "Validate"
 msgstr "验证"
 
-#: ../../../core/core_st.cpp:275
+#: ../../../core/core_st.cpp:289
 msgid "Fatal Error"
 msgstr "不可恢复错误！"
 
-#: ../../../core/core_st.cpp:277
+#: ../../../core/core_st.cpp:291
 #, fuzzy, c-format
 msgid ""
 "\n"
@@ -6033,116 +6095,128 @@ msgstr ""
 "\n"
 "历史密码错误作为项目: »%ls»%ls»%ls»: "
 
-#: ../../../core/core_st.cpp:278
+#: ../../../core/core_st.cpp:292
+#, c-format
+msgid "\tNo entries were found containing search string '%ls' %ls"
+msgstr ""
+
+#: ../../../core/core_st.cpp:293
+#, fuzzy, c-format
+msgid "\tThe following entries contain search string '%ls' %ls"
+msgstr ""
+"\t限定下列所选:\n"
+"\t\t %s"
+
+#: ../../../core/core_st.cpp:294
 msgid "See Attachment filters"
 msgstr ""
 
-#: ../../../core/core_st.cpp:279
+#: ../../../core/core_st.cpp:295
 msgid "See Password History filters"
 msgstr "查看历史密码筛选"
 
-#: ../../../core/core_st.cpp:280
+#: ../../../core/core_st.cpp:296
 msgid "See Password Policy filters"
 msgstr "查看密码策略筛选"
 
-#: ../../../core/core_st.cpp:281
+#: ../../../core/core_st.cpp:297
 msgid "is set"
 msgstr "已设定"
 
-#: ../../../core/core_st.cpp:282
+#: ../../../core/core_st.cpp:298
 msgid "shortcut"
 msgstr "快捷方式"
 
-#: ../../../core/core_st.cpp:283
+#: ../../../core/core_st.cpp:299
 msgid "shortcuts"
 msgstr "快捷方式"
 
-#: ../../../core/core_st.cpp:284
+#: ../../../core/core_st.cpp:300
 msgid "policy specific symbols"
 msgstr ""
 
-#: ../../../core/core_st.cpp:285
+#: ../../../core/core_st.cpp:301
 msgid "Start Report"
 msgstr "开始报告"
 
-#: ../../../core/core_st.cpp:286
+#: ../../../core/core_st.cpp:302
 msgid "Double-Click on entry to Autotype"
 msgstr "双击项目自动输入"
 
-#: ../../../core/core_st.cpp:287
+#: ../../../core/core_st.cpp:303
 msgid "Double-Click on entry to Browse to URL"
 msgstr "双击项目浏览网址"
 
-#: ../../../core/core_st.cpp:288
+#: ../../../core/core_st.cpp:304
 msgid "Double-Click on entry to Browse to URL + Autotype"
 msgstr "双击项目浏览网址并自动输入"
 
-#: ../../../core/core_st.cpp:289
+#: ../../../core/core_st.cpp:305
 #, fuzzy
 msgid "https://pwsafe.org/"
 msgstr "https://pwsafe.org/"
 
-#: ../../../core/core_st.cpp:290
+#: ../../../core/core_st.cpp:306
 msgid "Double-Click on entry to Copy Notes"
 msgstr "双击项目复制备注"
 
-#: ../../../core/core_st.cpp:291
+#: ../../../core/core_st.cpp:307
 msgid "Double-Click on entry to Copy Password"
 msgstr "双击项目复制密码"
 
-#: ../../../core/core_st.cpp:292
+#: ../../../core/core_st.cpp:308
 msgid "Double-Click on entry to Copy Password and Minimize"
 msgstr "双击项目复制密码并最小化"
 
-#: ../../../core/core_st.cpp:293
+#: ../../../core/core_st.cpp:309
 msgid "Double-Click on entry to Copy Username"
 msgstr "双击项目复制用户名"
 
-#: ../../../core/core_st.cpp:294
+#: ../../../core/core_st.cpp:310
 msgid "Double-Click on entry to Run Command"
 msgstr "双击项目运行命令"
 
-#: ../../../core/core_st.cpp:295
+#: ../../../core/core_st.cpp:311
 #, fuzzy
 msgid "Double-Click on entry to Send Email"
 msgstr "双击项目发送邮件"
 
-#: ../../../core/core_st.cpp:296
+#: ../../../core/core_st.cpp:312
 msgid "Double-Click on entry to View/Edit it"
 msgstr "双击项目查看/编辑"
 
-#: ../../../core/core_st.cpp:299
+#: ../../../core/core_st.cpp:315
 #, fuzzy, c-format
 msgid "%ls - Sync'd %ls"
 msgstr "%ls 在 %ls 上"
 
-#: ../../../core/core_st.cpp:300
+#: ../../../core/core_st.cpp:316
 msgid "System error: No more file handles available"
 msgstr "系统错误: 没有更多文件句柄可用！"
 
-#: ../../../core/core_st.cpp:303
+#: ../../../core/core_st.cpp:319
 msgid "Unknown function"
 msgstr "未知函数"
 
-#: ../../../core/core_st.cpp:304
+#: ../../../core/core_st.cpp:320
 msgid "Unknown object"
 msgstr "未知对象"
 
-#: ../../../core/core_st.cpp:305
+#: ../../../core/core_st.cpp:321
 msgid "Internal error: Unexpected error number"
 msgstr "内部错误: 意外错误数字！"
 
-#: ../../../core/core_st.cpp:307
+#: ../../../core/core_st.cpp:323
 #, c-format
 msgid "\tName: %s; Filename: %s"
 msgstr ""
 
-#: ../../../core/core_st.cpp:308
+#: ../../../core/core_st.cpp:324
 msgid ""
 "The following entries had an invalid UUID field.  This has been corrected."
 msgstr "下列项目有一个无效 UUID 字段，这些已得到纠正！"
 
-#: ../../../core/core_st.cpp:309
+#: ../../../core/core_st.cpp:325
 #, fuzzy, c-format
 msgid ""
 "The following entries have passwords in the correct form for %ls, but the "
@@ -6150,53 +6224,53 @@ msgid ""
 msgstr ""
 "项目“%ls、%ls、%ls”有一个密码在为一个别名做格式校正，但基本项目不存在！"
 
-#: ../../../core/core_st.cpp:310
+#: ../../../core/core_st.cpp:326
 msgid "The following entries were duplicates of an existing entry."
 msgstr "下列项目是一个现有项目的副本！"
 
-#: ../../../core/core_st.cpp:311
+#: ../../../core/core_st.cpp:327
 #, fuzzy
 msgid ""
 "The following entries had a duplicate UUID field.  This has been corrected."
 msgstr "下列项目有一个无效 UUID 字段，这些已得到纠正！"
 
-#: ../../../core/core_st.cpp:312
+#: ../../../core/core_st.cpp:328
 #, fuzzy, c-format
 msgid ""
 "The following entries had an empty Password field, which is not permitted. "
 "The password has been set to '%ls'"
 msgstr "下列项目有一个无效 UUID 字段，这些已得到纠正！"
 
-#: ../../../core/core_st.cpp:313
+#: ../../../core/core_st.cpp:329
 #, fuzzy
 msgid "The following entries had an empty Title field, which is not permitted."
 msgstr "下列项目有一个无效 UUID 字段，这些已得到纠正！"
 
-#: ../../../core/core_st.cpp:314
+#: ../../../core/core_st.cpp:330
 #, fuzzy, c-format
 msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
 msgstr "\t组='%ls', 标题='%ls', 用户='%ls' %ls"
 
-#: ../../../core/core_st.cpp:315
+#: ../../../core/core_st.cpp:331
 #, fuzzy, c-format
 msgid "- Its title has been changed to:'%ls'"
 msgstr "- 其名称已更改为:“%ls”"
 
-#: ../../../core/core_st.cpp:316
+#: ../../../core/core_st.cpp:332
 msgid "The following ERRORS were detected and were FIXED."
 msgstr ""
 
-#: ../../../core/core_st.cpp:317
+#: ../../../core/core_st.cpp:333
 #, fuzzy
 msgid "The following entries refer to missing attachments."
 msgstr "下列项目是一个现有项目的副本！"
 
-#: ../../../core/core_st.cpp:318
+#: ../../../core/core_st.cpp:334
 #, fuzzy
 msgid "The following attachments are not referred to by any entry."
 msgstr "下列项目是一个现有项目的副本！"
 
-#: ../../../core/core_st.cpp:319
+#: ../../../core/core_st.cpp:335
 msgid ""
 "The following entries had an invalid Password History.  This has been "
 "rebuilt with available data.  There may be some loss of history."
@@ -6204,24 +6278,24 @@ msgstr ""
 "下列项目有一个无效历史密码，该密码已重建于现有数据上，可能存在部分历史密码损"
 "失！"
 
-#: ../../../core/core_st.cpp:320
+#: ../../../core/core_st.cpp:336
 #, c-format
 msgid ""
 "The following entries have one or more text fields too long to display or "
 "edit (over %d characters).  The largest entry size found was ~%d %ls."
 msgstr ""
 
-#: ../../../core/core_st.cpp:321
+#: ../../../core/core_st.cpp:337
 msgid ""
 "The following WARNINGS were detected - you should review and fix them "
 "manually."
 msgstr ""
 
-#: ../../../core/core_st.cpp:324
+#: ../../../core/core_st.cpp:340
 msgid "will expire"
 msgstr "即将失效"
 
-#: ../../../core/core_st.cpp:325
+#: ../../../core/core_st.cpp:341
 #, fuzzy, c-format
 msgid ""
 "SAX Parse Error during %ls\n"
@@ -6230,51 +6304,51 @@ msgstr ""
 "在 %ls 期间 SAX 分析错误\n"
 "%ls。"
 
-#: ../../../core/core_st.cpp:326
+#: ../../../core/core_st.cpp:342
 #, fuzzy, c-format
 msgid "XML %ls: line %d character %d: %ls"
 msgstr "XML %ls: 行 %d 字符 %d: %ls"
 
-#: ../../../core/core_st.cpp:327
+#: ../../../core/core_st.cpp:343
 msgid ""
 "*** Invalid XML characters found - see exported XML file for more details ***"
 msgstr ""
 
-#: ../../../core/core_st.cpp:328
+#: ../../../core/core_st.cpp:344
 msgid "Internal error: Couldn't initialize config file XML structure"
 msgstr "内部错误: 不能初始化配置文件 XML 结构！"
 
-#: ../../../core/core_st.cpp:329
+#: ../../../core/core_st.cpp:345
 msgid ""
 "A filter was active. Export of data was restricted to include only those "
 "displayed."
 msgstr "筛选被激活，导出的数据被限制为仅包含所显示的内容！"
 
-#: ../../../core/core_st.cpp:330
+#: ../../../core/core_st.cpp:346
 msgid "Export of data was restricted to certain fields by the user."
 msgstr "导出的数据仅限于用户确定的某些字段！"
 
-#: ../../../core/core_st.cpp:331
+#: ../../../core/core_st.cpp:347
 msgid ""
 "Note: These Password Policies will not replace existing policies with the "
 "same name in the current database."
 msgstr ""
 
-#: ../../../core/core_st.cpp:332
+#: ../../../core/core_st.cpp:348
 msgid ""
 "Note: These preferences are only used when importing into an empty database."
 msgstr "注意: 这些参数选择仅当导入到一个空白数据库中时使用！"
 
-#: ../../../core/core_st.cpp:333
+#: ../../../core/core_st.cpp:349
 msgid "Subset of entries restricted by the following rule:"
 msgstr "以下列规则限定项目子集:"
 
-#: ../../../core/core_st.cpp:334
+#: ../../../core/core_st.cpp:350
 msgid ""
 "The user specified that the following fields be excluded from the export:"
 msgstr "用户指定需要从导出排除的下列字段:"
 
-#: ../../../core/core_st.cpp:335
+#: ../../../core/core_st.cpp:351
 #, fuzzy, c-format
 msgid ""
 "Configuration file error:\n"
@@ -6287,118 +6361,63 @@ msgstr ""
 "%ls\n"
 "行 %d 栏目 %d"
 
-#: ../../../core/core_st.cpp:336
+#: ../../../core/core_st.cpp:352
 msgid "import"
 msgstr "导入"
 
-#: ../../../core/core_st.cpp:337
+#: ../../../core/core_st.cpp:353
 msgid "Unable to load configuration file"
 msgstr "不能加载配置文件！"
 
-#: ../../../core/core_st.cpp:338
+#: ../../../core/core_st.cpp:354
 msgid ""
 "Failed to lock configuration file - opened by another instance of "
 "PasswordSafe?"
 msgstr "未能配置锁文件 - 打开其它 PasswordSafe 实例？"
 
-#: ../../../core/core_st.cpp:339
+#: ../../../core/core_st.cpp:355
 msgid "Unable to save configuration file"
 msgstr "不能保存配置文件！"
 
-#: ../../../core/core_st.cpp:340
+#: ../../../core/core_st.cpp:356
 #, fuzzy
 msgid "validation"
 msgstr "验证"
 
-#: ../../../core/core_st.cpp:342
+#: ../../../core/core_st.cpp:358
 msgid " (EasyVision Symbols)"
 msgstr ""
 
-#: ../../../core/core_st.cpp:343
+#: ../../../core/core_st.cpp:359
 #, fuzzy, c-format
 msgid "Yes (at least %d)"
 msgstr "至少必须 %d！"
 
-#: ../../../core/core_st.cpp:344
+#: ../../../core/core_st.cpp:360
 #, fuzzy
 msgid " (Pronounceable Symbols)"
 msgstr "可发音密码"
 
-#: ../../../core/core_st.cpp:345
+#: ../../../core/core_st.cpp:361
 #, c-format
 msgid "Yes - At least %d from %ls: %ls%ls"
 msgstr ""
 
-#: ../../../core/core_st.cpp:346
 #, fuzzy, c-format
-msgid "\tGroup='%ls', Title='%ls', User='%ls'"
-msgstr "\t组='%ls', 标题='%ls', 用户='%ls' %ls"
+#~ msgid "\tGroup='%ls', Title='%ls', User='%ls'"
+#~ msgstr "\t组='%ls', 标题='%ls', 用户='%ls' %ls"
 
-#: ../../../core/core_st.cpp:347
-#, fuzzy, c-format
-msgid ""
-"Compare complete of current database:\n"
-"\t %ls\n"
-" and:\n"
-"\t %ls\n"
-msgstr ""
-"当前数据库比较完成:\n"
-"\t %s\n"
-" 和:\n"
-"\t %s"
-
-#: ../../../core/core_st.cpp:348
-#, c-format
-msgid "\tNo entries were found containing search string '%ls' %ls"
-msgstr ""
-
-#: ../../../core/core_st.cpp:349
-#, fuzzy, c-format
-msgid "\tThe following entries contain search string '%ls' %ls"
-msgstr ""
-"\t限定下列所选:\n"
-"\t\t %s"
-
-#: ../../../core/core_st.cpp:350
 #, fuzzy
-msgid "Export DB"
-msgstr "导出(&E)"
+#~ msgid "Import XML"
+#~ msgstr ""
+#~ "\n"
+#~ "导入 XML"
 
-#: ../../../core/core_st.cpp:351
-msgid "Import KeePassV1 CSV"
-msgstr ""
-
-#: ../../../core/core_st.cpp:352
-msgid "Import KeePassV1 TXT"
-msgstr ""
-
-#: ../../../core/core_st.cpp:353
 #, fuzzy
-msgid "Import XML"
-msgstr ""
-"\n"
-"导入 XML"
-
-#: ../../../core/core_st.cpp:354
-#, fuzzy
-msgid "Import Text"
-msgstr ""
-"\n"
-"导入文本"
-
-#: ../../../core/core_st.cpp:355
-msgid "Merge"
-msgstr "合并"
-
-#: ../../../core/core_st.cpp:356
-msgid "Compare"
-msgstr "比较"
-
-#~ msgid "Import_Text"
-#~ msgstr "Import_Text"
-
-#~ msgid "Import_XML"
-#~ msgstr "Import_XML"
+#~ msgid "Import Text"
+#~ msgstr ""
+#~ "\n"
+#~ "导入文本"
 
 #, fuzzy
 #~ msgid "Advanced..."
@@ -7726,12 +7745,6 @@ msgstr "比较"
 #~ msgid "Export file:"
 #~ msgstr "导出文件:"
 
-#~ msgid "Export_Text"
-#~ msgstr "Export_Text"
-
-#~ msgid "Export_XML"
-#~ msgstr "Export_XML"
-
 #~ msgid "Exporting to file:"
 #~ msgstr "导出为文件:"
 
@@ -8431,9 +8444,6 @@ msgstr "比较"
 #~ msgstr ""
 #~ "恢复自动保存文档\n"
 #~ "打开自动保存版本取代明确保存版本"
-
-#~ msgid "Relative"
-#~ msgstr "相对"
 
 #~ msgid ""
 #~ "Relative dates are in days relative to today e.g. '-1' is yesterday and "
@@ -9624,9 +9634,6 @@ msgstr "比较"
 #~ msgstr ""
 #~ "\t项目 - 组:\"%s\"; 标题:\"%s\"; 用户:\"%s\"\n"
 #~ "\t\t与下列字段存在差异:"
-
-#~ msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-#~ msgstr "\t组:'%s'; 标题:'%s'; 用户:'%s'"
 
 #~ msgid "an unnamed file"
 #~ msgstr "一个未命名文件"
