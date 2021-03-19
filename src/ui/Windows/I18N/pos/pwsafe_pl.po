@@ -2167,8 +2167,8 @@ msgstr "Wyniki Porównania Bazy Danych"
 
 #. Resource IDs: (5356)
 #, c-format
-msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
-msgstr "Zakończono porównanie bieżącej bazy danych:\n\t %s\n i:\n\t %s"
+msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
+msgstr "Zakończono porównanie bieżącej bazy danych:\n\t %ls\n i:\n\t %ls\n"
 
 #. Resource IDs: (32091 - Menu, 32091 - MenuEx)
 msgid "Compare entries..."
@@ -7807,8 +7807,8 @@ msgstr "\tWpis - grupa:\"%s\"; tytuł:\"%s\"; użytkownik:\"%s\"\n\t\tróżni si
 
 #. Resource IDs: (5359)
 #, c-format
-msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr "\tGrupa:'%s'; Nazwa:'%s'; Użytkownik:'%s'"
+msgid "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
+msgstr "\tGrupa:'%ls'; Nazwa:'%ls'; Użytkownik:'%ls'"
 
 #. Resource IDs: (3391)
 #, c-format

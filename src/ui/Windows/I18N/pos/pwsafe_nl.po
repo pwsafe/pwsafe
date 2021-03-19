@@ -2193,8 +2193,8 @@ msgstr "Vergelijk Database Resultaten"
 
 #. Resource IDs: (5356)
 #, c-format
-msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
-msgstr "Vergelijk volledig van huidige database:\n\t %s\n en:\n\t %s"
+msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
+msgstr "Vergelijk volledig van huidige database:\n\t %ls\n en:\n\t %ls\n"
 
 #. Resource IDs: (32091 - Menu, 32091 - MenuEx)
 msgid "Compare entries..."
@@ -7834,8 +7834,8 @@ msgstr "\tinvoer - Groep:\"%s\"; Titel:\"%s\"; Gebruiker:\"%s\"\n\t\thas differe
 
 #. Resource IDs: (5359)
 #, c-format
-msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr "\tGroep:'%s'; Titel:'%s'; Gebruiker:'%s'"
+msgid "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
+msgstr "\tGroep:'%ls'; Titel:'%ls'; Gebruiker:'%ls'"
 
 #. Resource IDs: (3391)
 #, c-format

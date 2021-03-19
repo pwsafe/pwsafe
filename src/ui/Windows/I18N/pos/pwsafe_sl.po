@@ -2167,8 +2167,8 @@ msgstr "Primerjaj rezultate zbirke podatkov"
 
 #. Resource IDs: (5356)
 #, c-format
-msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
-msgstr "Primerjaj popolno trenutno zbirko podatkov:\n\t %s\n in:\n\t %s"
+msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\m"
+msgstr "Primerjaj popolno trenutno zbirko podatkov:\n\t %ls\n in:\n\t %ls\m"
 
 #. Resource IDs: (32091 - Menu, 32091 - MenuEx)
 msgid "Compare entries..."
@@ -7807,8 +7807,8 @@ msgstr "\tVnos - Skupina:\"%s\"; Naslov:\"%s\"; Uporabnik:\"%s\"\n\t\tima razlik
 
 #. Resource IDs: (5359)
 #, c-format
-msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr "\tSkupina:'%s'; Naslov:'%s'; Uporabnik:'%s'"
+msgid "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
+msgstr "\tSkupina:'%ls'; Naslov:'%ls'; Uporabnik:'%ls'"
 
 #. Resource IDs: (3391)
 #, c-format

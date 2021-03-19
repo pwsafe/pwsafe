@@ -2154,8 +2154,8 @@ msgstr "Veritabanı Sonuçlarını Karşılaştır"
 
 #. Resource IDs: (5356)
 #, c-format
-msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
-msgstr "Geçerli veritabanı:\n\t %s\n ve:\n\t %s\nkarşılaştırması tamamlandı."
+msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
+msgstr "Geçerli veritabanı:\n\t %ls\n ve:\n\t %ls\nkarşılaştırması tamamlandı.\n"
 
 #. Resource IDs: (32091 - Menu, 32091 - MenuEx)
 msgid "Compare entries..."
@@ -7794,8 +7794,8 @@ msgstr "\tGirdi - Gup:\"%s\"; Başlık:\"%s\"; Kullanıcı:\"%s\"\n\t\taşağıd
 
 #. Resource IDs: (5359)
 #, c-format
-msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr "\tGrup:'%s'; Başlık:'%s'; Kullanıcı:'%s'"
+msgid "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
+msgstr "\tGrup:'%ls'; Başlık:'%ls'; Kullanıcı:'%ls'"
 
 #. Resource IDs: (3391)
 #, c-format

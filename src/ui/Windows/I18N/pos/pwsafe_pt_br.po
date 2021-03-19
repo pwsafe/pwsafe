@@ -2167,8 +2167,8 @@ msgstr "Comparar Resultados do Banco de Dados"
 
 #. Resource IDs: (5356)
 #, c-format
-msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
-msgstr "Comparar completa do banco de dados atual:\n\t %s\n e:\n\t %s"
+msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
+msgstr "Comparar completa do banco de dados atual:\n\t %ls\n e:\n\t %ls\n"
 
 #. Resource IDs: (32091 - Menu, 32091 - MenuEx)
 msgid "Compare entries..."
@@ -7807,8 +7807,8 @@ msgstr "\tEntrada - Grupo:\"%s\"; Tiítulo:\"%s\"; Usuário:\"%s\"\n\t\ttem dife
 
 #. Resource IDs: (5359)
 #, c-format
-msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr "\tGrupo:'%s'; Título:'%s'; Usuário:'%s'"
+msgid "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
+msgstr "\tGrupo:'%ls'; Título:'%ls'; Usuário:'%ls'"
 
 #. Resource IDs: (3391)
 #, c-format

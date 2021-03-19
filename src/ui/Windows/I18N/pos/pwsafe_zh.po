@@ -2167,8 +2167,8 @@ msgstr "比较数据库结果"
 
 #. Resource IDs: (5356)
 #, c-format
-msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
-msgstr "当前数据库:\n\t %s\n 和:\n\t %s\n数据库比较完成"
+msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
+msgstr "当前数据库:\n\t %ls\n 和:\n\t %ls\n数据库比较完成\n"
 
 #. Resource IDs: (32091 - Menu, 32091 - MenuEx)
 msgid "Compare entries..."
@@ -7807,8 +7807,8 @@ msgstr "\t条目 - 分组:\"%s\"; 标题:\"%s\"; 用户:\"%s\"\n\t\t在下列字
 
 #. Resource IDs: (5359)
 #, c-format
-msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr "\t分组:'%s'; 标题:'%s'; 用户:'%s'"
+msgid "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
+msgstr "\t分组:'%ls'; 标题:'%ls'; 用户:'%ls'"
 
 #. Resource IDs: (3391)
 #, c-format
