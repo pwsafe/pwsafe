@@ -2154,8 +2154,8 @@ msgstr "Adatbázisösszehasonlítás eredménye"
 
 #. Resource IDs: (5356)
 #, c-format
-msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
-msgstr "Összehasonlítás elkészült az aktuális adatbázisra: \n\t %s\n és:\n\t %s"
+msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
+msgstr "Összehasonlítás elkészült az aktuális adatbázisra: \n\t %ls\n és:\n\t %ls\n"
 
 #. Resource IDs: (32091 - Menu, 32091 - MenuEx)
 msgid "Compare entries..."
@@ -7794,8 +7794,8 @@ msgstr "\tBejegyzés - Csoport:\"%s\"; Megnevezés:\"%s\"; Felhasználó:\"%s\"\
 
 #. Resource IDs: (5359)
 #, c-format
-msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr "\tCsoport:'%s'; Megnevezés:'%s'; Felhasználó:'%s'"
+msgid "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
+msgstr "\tCsoport:'%ls'; Megnevezés:'%ls'; Felhasználó:'%ls'"
 
 #. Resource IDs: (3391)
 #, c-format

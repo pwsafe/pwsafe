@@ -2310,8 +2310,8 @@ msgstr "Результаты сравнения"
 
 #. Resource IDs: (5356)
 #, c-format
-msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
-msgstr "Завершено сравнение текущего контейнера:\n\t %s\n и:\n\t %s"
+msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
+msgstr "Завершено сравнение текущего контейнера:\n\t %ls\n и:\n\t %ls\n"
 
 #. Resource IDs: (32091 - Menu, 32091 - MenuEx)
 msgid "Compare entries..."
@@ -8229,8 +8229,8 @@ msgstr "\tЭлемент — Группа: «%s»; Заголовок: «%s»; �
 
 #. Resource IDs: (5359)
 #, c-format
-msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr "\tГруппа: «%s»; Заголовок: «%s»; Имя пользователя: «%s»"
+msgid "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
+msgstr "\tГруппа: «%ls»; Заголовок: «%ls»; Имя пользователя: «%ls»"
 
 #. Resource IDs: (3391)
 #, c-format

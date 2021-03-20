@@ -2342,14 +2342,14 @@ msgstr "Jämför databasresultat"
 #, c-format
 msgid ""
 "Compare complete of current database:\n"
-"\t %s\n"
+"\t %ls\n"
 " and:\n"
-"\t %s"
+"\t %ls\n"
 msgstr ""
 "Jämförelsen klar med aktuell databas:\n"
-"\t %s\n"
+"\t %ls\n"
 " och:\n"
-"\t %s"
+"\t %ls\n"
 
 #. Resource IDs: (32091 - Menu, 32091 - MenuEx)
 msgid "Compare entries..."
@@ -8887,8 +8887,8 @@ msgstr ""
 
 #. Resource IDs: (5359)
 #, c-format
-msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr "\tGrupp:'%s'; Titel:'%s'; Användare:'%s'"
+msgid "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
+msgstr "\tGrupp:'%ls'; Titel:'%ls'; Användare:'%ls'"
 
 #. Resource IDs: (3391)
 #, c-format

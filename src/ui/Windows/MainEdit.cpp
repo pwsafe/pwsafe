@@ -2384,7 +2384,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
         if (st_pp != currentDB_st_pp) {
           // They are not the same - make this policy unique
           m_core.MakePolicyUnique(mapRenamedPolicies, sxPolicyName, sxDD_DateTime,
-                                  IDS_DRAGPOLICY);
+                                  IDSC_DRAGPOLICY);
           ci_temp.SetPolicyName(sxPolicyName);
           bChangedPolicy = true;
         }

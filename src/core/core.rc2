@@ -228,8 +228,10 @@ BEGIN
   IDSC_START_REPORT        "Start Report"
   IDSC_END_REPORT1         "End Report"
   IDSC_END_REPORT2         "--------------------------------------------------------------------------------"
-  IDSC_COMPARESTATISTICS   "Compare complete of current database:\n\t %s\n and:\n\t %s"
-  IDSC_COMPARESTATS        "\tGroup:'%s'; Title:'%s'; User:'%s'"
+  IDSC_COMPARESTATISTICS   "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
+  IDSC_COMPARESTATS        "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
+  IDSC_SEARCHRESULTS1      "\tNo entries were found containing search string '%ls' %ls"
+  IDSC_SEARCHRESULTS2      "\tThe following entries contain search string '%ls' %ls"
 END
 
 STRINGTABLE
@@ -294,6 +296,7 @@ BEGIN
   IDSC_WILLEXPIRE          "will expire"
   IDSC_AND                 "And"
   IDSC_OR                  "Or"
+  IDSC_RELATIVE            "Relative"
 END
 
 STRINGTABLE
@@ -455,4 +458,5 @@ END
 STRINGTABLE
 BEGIN
   IDSC_DRAGNUMBER          " Drag # %d"
+  IDSC_DRAGPOLICY          "%ls - Drag & Drop %ls"
 END

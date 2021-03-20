@@ -2154,8 +2154,8 @@ msgstr "Porovnej výsledky databáze"
 
 #. Resource IDs: (5356)
 #, c-format
-msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
-msgstr "Porovnej celou databázi:\n\t %s\n and:\n\t %s"
+msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
+msgstr "Porovnej celou databázi:\n\t %ls\n and:\n\t %ls\n"
 
 #. Resource IDs: (32091 - Menu, 32091 - MenuEx)
 msgid "Compare entries..."
@@ -7794,8 +7794,8 @@ msgstr "\tZáznam - Skupina:\"%s\"; Název:\"%s\"; Uživatel:\"%s\"\n\t\tse liš
 
 #. Resource IDs: (5359)
 #, c-format
-msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr "\tSkupina:'%s'; Název:'%s'; Uživatel:'%s'"
+msgid "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
+msgstr "\tSkupina:'%ls'; Název:'%ls'; Uživatel:'%ls'"
 
 #. Resource IDs: (3391)
 #, c-format

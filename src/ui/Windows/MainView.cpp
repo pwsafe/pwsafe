@@ -4270,10 +4270,10 @@ void DboxMain::OnToolBarFindReport()
   }
 
   if (vIndices.empty()) {
-    buffer.Format(IDS_SEARCHRESULTS1, static_cast<LPCWSTR>(csFindString));
+    buffer.Format(IDSC_SEARCHRESULTS1, static_cast<LPCWSTR>(csFindString), L"");
     rpt.WriteLine((LPCWSTR)buffer);
   } else {
-    buffer.Format(IDS_SEARCHRESULTS2, static_cast<LPCWSTR>(csFindString));
+    buffer.Format(IDSC_SEARCHRESULTS2, static_cast<LPCWSTR>(csFindString), L"");
     rpt.WriteLine((LPCWSTR)buffer);
 
     for (size_t i = 0; i < vIndices.size(); i++) {

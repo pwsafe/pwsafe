@@ -2154,8 +2154,8 @@ msgstr "데이터베이스 비교 결과"
 
 #. Resource IDs: (5356)
 #, c-format
-msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
-msgstr "현재 데이터베이스의 비교 완료\n\t %s\n 그리고:\n\t %s"
+msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
+msgstr "현재 데이터베이스의 비교 완료\n\t %ls\n 그리고:\n\t %ls\n"
 
 #. Resource IDs: (32091 - Menu, 32091 - MenuEx)
 msgid "Compare entries..."
@@ -7794,8 +7794,8 @@ msgstr "\t그룹:\"%s\"; 제목:\"%s\"; 사용자 이름:\"%s\"를 포함한 항
 
 #. Resource IDs: (5359)
 #, c-format
-msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr "\t그룹:'%s'; 제목:'%s'; 사용자 이름:'%s'"
+msgid "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
+msgstr "\t그룹:'%ls'; 제목:'%ls'; 사용자 이름:'%ls'"
 
 #. Resource IDs: (3391)
 #, c-format

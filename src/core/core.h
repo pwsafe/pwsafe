@@ -104,7 +104,7 @@
 #define IDSC_IMPORTLINESKIPPED          3259
 #define IDSC_IMPORTKNOWNHDRS            3260
 #define IDSC_IMPORTEMPTYLINESKIPPED     3261
-#define IDSC_PWHERRORLINE               3262
+/* #define IDSC_PWHERRORLINE               3262 */ // Not defined and not used
 #define IDSC_PWHISTORYSKIPPED           3263
 #define IDSC_IMPORTCONFLICTS1           3264
 #define IDSC_IMPORTCONFLICTS2           3265
@@ -332,14 +332,6 @@
 #define IDSC_DEFAULT_POLICY             4114
 #define IDSC_ATLEASTIGNORED             4115
 #define IDSC_INVALIDLOCKER              4116
-#define IDSC_EXPORTDB                   4117
-#define IDSC_IMPORTKEEPASS1CSV          4118
-#define IDSC_IMPORTKEEPASS1TXT          4119
-#define IDSC_IMPORTXML                  4120
-#define IDSC_IMPORTTEXT                 4121
-#define IDSC_MERGE                      4122
-#define IDSC_COMPARE                    4123
-#define IDSC_SNCHRONIZE                 4124
 
 #define IDSC_COMPARESTATISTICS          5356
 #define IDSC_COMPARESTATS               5359
