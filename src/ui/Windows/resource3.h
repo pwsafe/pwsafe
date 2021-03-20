@@ -333,8 +333,6 @@
 #define IDS_PSWD                        5529
 #define IDS_SHOWTOOLBAR                 5530
 #define IDS_HIDETOOLBAR                 5531
-#define IDS_SEARCHRESULTS1              5538
-#define IDS_SEARCHRESULTS2              5539
 #define IDS_REPORTCREATED               5540
 #define IDS_FINDGROUP                   5541
 #define IDS_FINDTITLE                   5542
@@ -654,7 +652,6 @@
 #define IDS_INVALIDPOLICYNAME2          5896
 #define IDS_XMLIMPORTWITHWARNINGS       5905
 #define IDS_CHANGED_POLICIES            5906
-#define IDS_DRAGPOLICY                  5907
 #define IDS_NOT_USED                    5908
 #define IDS_COMPPOLICYNAME              5909
 #define IDS_POLICY_VIEWENTRY            5910
