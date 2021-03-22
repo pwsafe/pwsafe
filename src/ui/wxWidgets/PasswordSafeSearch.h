@@ -137,6 +137,12 @@ private:
   SelectionCriteria*   m_criteria;
   SearchPointer        m_searchPointer;
   size_t               m_ToolsWidth;
+#if defined(__WXGTK20__)
+  bool                 m_modified;
+  
+  void SetModified(bool modified) { m_modified = modified; }
+  bool IsModified() { return m_modified; }
+#endif
 };
 
 #endif // _PASSWORDSAFESEARCH_H_
