@@ -790,7 +790,7 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
   GTUSet setGTU;
   if (!m_currentCore->GetUniqueGTUValidated() && !m_currentCore->InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
-    wxMessageBox(wxString::Format(_("The database:\n\n%ls\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."), m_currentCore->GetCurFile().c_str()),
+    wxMessageBox(wxString::Format(_("The database:\n\n%ls\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database.").c_str(), m_currentCore->GetCurFile().c_str()),
                   _("Synchronization failed"), wxOK|wxICON_EXCLAMATION, this);
     return;
   }
@@ -897,7 +897,7 @@ void CompareDlg::WriteReportData()
   
   if (m_current && !m_current->data.empty()) {
 
-    Format(line, _("Entries only in current database (%ls):"), m_currentCore->GetCurFile().c_str());
+    Format(line, _("Entries only in current database (%ls):").c_str(), m_currentCore->GetCurFile().c_str());
     m_compReport.WriteLine(line);
     for (cd_iter = m_current->data.begin(); cd_iter != m_current->data.end(); cd_iter++) {
       const st_CompareData &st_data = *cd_iter;
@@ -910,7 +910,7 @@ void CompareDlg::WriteReportData()
 
   if (m_comparison && !m_comparison->data.empty()) {
 
-   Format(line, _("Entries only in comparison database (%ls):"), m_otherCore->GetCurFile().c_str());
+   Format(line, _("Entries only in comparison database (%ls):").c_str(), m_otherCore->GetCurFile().c_str());
    m_compReport.WriteLine(line);
     for (cd_iter = m_comparison->data.begin(); cd_iter != m_comparison->data.end(); cd_iter++) {
       const st_CompareData &st_data = *cd_iter;

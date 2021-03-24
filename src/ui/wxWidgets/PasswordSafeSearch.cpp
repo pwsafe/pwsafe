@@ -78,6 +78,7 @@ PasswordSafeSearch::PasswordSafeSearch(PasswordSafeFrame* parent) : m_toolbar(nu
                                                                     m_parentFrame(parent),
                                                                     m_criteria(new SelectionCriteria)
 {
+  m_modified = false;
 }
 
 PasswordSafeSearch::~PasswordSafeSearch()
@@ -89,11 +90,9 @@ PasswordSafeSearch::~PasswordSafeSearch()
   m_criteria = nullptr;
 }
 
-void PasswordSafeSearch::OnSearchTextChanged(wxCommandEvent& event)
+void PasswordSafeSearch::OnSearchTextChanged(wxCommandEvent& WXUNUSED(event))
 {
-  wxSearchCtrl *srchCtrl = wxDynamicCast(event.GetEventObject(), wxSearchCtrl);
-  wxCHECK_RET(srchCtrl, wxT("Could not get search control of toolbar"));
-  srchCtrl->SetModified(true);
+  SetModified(true);
 }
 
 /*!
@@ -122,13 +121,13 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
   wxSearchCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
   wxCHECK_RET(txtCtrl, wxT("Could not get search control of toolbar"));
 
-  const wxString searchText = txtCtrl->GetLineText(0);
+  const wxString searchText = txtCtrl->GetValue();
 
   if (searchText.IsEmpty()) {
     return;
   }
 
-  if (m_criteria->IsDirty() || txtCtrl->IsModified() || m_searchPointer.IsEmpty()) {
+  if (m_criteria->IsDirty() || IsModified() || m_searchPointer.IsEmpty()) {
     m_searchPointer.Clear();
 
     if (!m_toolbar->GetToolState(ID_FIND_ADVANCED_OPTIONS)) {
@@ -151,7 +150,7 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
     }
 
     m_criteria->Clean();
-    txtCtrl->SetModified(false);
+    SetModified(false);
     m_searchPointer.InitIndex();
 
     // Set last find filter
@@ -414,7 +413,7 @@ void PasswordSafeSearch::OnToolBarFindReport(wxCommandEvent& event)
   wxSearchCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
   wxCHECK_RET(txtCtrl, wxT("Could not get search control of toolbar"));
 
-  const wxString searchText = txtCtrl->GetLineText(0);
+  const wxString searchText = txtCtrl->GetValue();
 
   if (searchText.IsEmpty()) {
     return;

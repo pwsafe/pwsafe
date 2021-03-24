@@ -430,13 +430,13 @@ bool PasswordSafeFrame::ChangeMode(bool promptUser)
             cs_user_and_host = locker;
             size_t i_pid = locker.rfind(L':');
             if (i_pid != stringT::npos) {
-              Format(cs_PID, _(" [Process ID=%ls]"), locker.substr(i_pid + 1).c_str());
+              Format(cs_PID, _(" [Process ID=%ls]").c_str(), locker.substr(i_pid + 1).c_str());
               cs_user_and_host = locker.substr(0, i_pid);
             } else {
               cs_PID = L"";
             }
 
-            Format(tmp_msg, _("Failed to switch from R-O to R/W because database is already open in R/W mode by:\n%ls %ls\n(Only one R/W access at a time is allowed)"),
+            Format(tmp_msg, _("Failed to switch from R-O to R/W because database is already open in R/W mode by:\n%ls %ls\n(Only one R/W access at a time is allowed)").c_str(),
                    cs_user_and_host.c_str(), cs_PID.c_str());
             cs_msg = towxstring(tmp_msg);
             break;

@@ -129,6 +129,9 @@ private:
   wxSize CalculateSearchWidth();
   void UpdateStatusAreaWidth();
 
+  void SetModified(bool modified) { m_modified = modified; }
+  bool IsModified() const { return m_modified; }
+  
   template <class Iter, class Accessor>
   void OnDoSearchT( Iter begin, Iter end, Accessor afn);
 
@@ -137,6 +140,8 @@ private:
   SelectionCriteria*   m_criteria;
   SearchPointer        m_searchPointer;
   size_t               m_ToolsWidth;
+  bool                 m_modified;
+ 
 };
 
 #endif // _PASSWORDSAFESEARCH_H_
