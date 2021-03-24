@@ -130,7 +130,7 @@ private:
   void UpdateStatusAreaWidth();
 
   void SetModified(bool modified) { m_modified = modified; }
-  bool IsModified() { return m_modified; }
+  bool IsModified() const { return m_modified; }
   
   template <class Iter, class Accessor>
   void OnDoSearchT( Iter begin, Iter end, Accessor afn);
