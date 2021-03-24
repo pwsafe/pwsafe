@@ -78,9 +78,7 @@ PasswordSafeSearch::PasswordSafeSearch(PasswordSafeFrame* parent) : m_toolbar(nu
                                                                     m_parentFrame(parent),
                                                                     m_criteria(new SelectionCriteria)
 {
-#if defined(__WXGTK20__)
   m_modified = false;
-#endif
 }
 
 PasswordSafeSearch::~PasswordSafeSearch()
@@ -92,16 +90,9 @@ PasswordSafeSearch::~PasswordSafeSearch()
   m_criteria = nullptr;
 }
 
-void PasswordSafeSearch::OnSearchTextChanged(wxCommandEvent& event)
+void PasswordSafeSearch::OnSearchTextChanged(wxCommandEvent& WXUNUSED(event))
 {
-#if !defined(__WXGTK20__)
-  wxSearchCtrl *srchCtrl = wxDynamicCast(event.GetEventObject(), wxSearchCtrl);
-  wxCHECK_RET(srchCtrl, wxT("Could not get search control of toolbar"));
-  srchCtrl->SetModified(true);
-#else
-  WXUNUSED(event);
   SetModified(true);
-#endif
 }
 
 /*!
@@ -130,23 +121,13 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
   wxSearchCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
   wxCHECK_RET(txtCtrl, wxT("Could not get search control of toolbar"));
 
-#if !defined(__WXGTK20__)
-  const wxString searchText = txtCtrl->GetLineText(0);
-#else
   const wxString searchText = txtCtrl->GetValue();
-#endif
 
   if (searchText.IsEmpty()) {
     return;
   }
 
-  if (m_criteria->IsDirty() ||
-#if !defined(__WXGTK20__)
-      txtCtrl->IsModified() ||
-#else
-      IsModified() ||
-#endif
-      m_searchPointer.IsEmpty()) {
+  if (m_criteria->IsDirty() || IsModified() || m_searchPointer.IsEmpty()) {
     m_searchPointer.Clear();
 
     if (!m_toolbar->GetToolState(ID_FIND_ADVANCED_OPTIONS)) {
@@ -169,11 +150,7 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
     }
 
     m_criteria->Clean();
-#if !defined(__WXGTK20__)
-    txtCtrl->SetModified(false);
-#else
     SetModified(false);
-#endif
     m_searchPointer.InitIndex();
 
     // Set last find filter
@@ -436,11 +413,7 @@ void PasswordSafeSearch::OnToolBarFindReport(wxCommandEvent& event)
   wxSearchCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
   wxCHECK_RET(txtCtrl, wxT("Could not get search control of toolbar"));
 
-#if !defined(__WXGTK20__)
-  const wxString searchText = txtCtrl->GetLineText(0);
-#else
   const wxString searchText = txtCtrl->GetValue();
-#endif
 
   if (searchText.IsEmpty()) {
     return;
