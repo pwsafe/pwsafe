@@ -83,6 +83,7 @@ IMPLEMENT_CLASS( TreeCtrl, wxTreeCtrl )
 
 // Image Indices - these match the order images are added
 //                 in TreeCtrl::CreateControls()
+// Warning: Do not change ordering on ..._EXP_II, ..._WARN_II and base entry for ABASE, NORMAL and SBASE
 enum {
   ABASE_EXP_II,    // 0
   ABASE_WARN_II,   // 1
@@ -838,14 +839,50 @@ bool TreeCtrl::Remove(const CUUID &uuid)
 void TreeCtrl::SetItemImage(const wxTreeItemId &node,
                                const CItemData &item)
 {
-  // TODO: modify to display warning and expired states
+  int offset = 0;
+  CItemData::EntryType entrytype = item.GetEntryType();
+  
+  if((entrytype == CItemData::ET_NORMAL) || (entrytype == CItemData::ET_ALIASBASE) || (entrytype == CItemData::ET_SHORTCUTBASE)) {
+    time_t tttXTime(static_cast<time_t>(0));
+    item.GetXTime(tttXTime);
+    if (tttXTime > static_cast<time_t>(0) && tttXTime <= static_cast<time_t>(3650)) {
+      time_t tttCPMTime(static_cast<time_t>(0));
+      item.GetPMTime(tttCPMTime);
+      if (tttCPMTime == static_cast<time_t>(0))
+        item.GetCTime(tttCPMTime);
+      tttXTime = static_cast<time_t>((long)tttCPMTime + (long)tttXTime * 86400L);
+    }
+    
+    if (tttXTime != static_cast<time_t>(0)) {
+      time_t now, warnexptime(static_cast<time_t>(0));
+      time(&now);
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
+        int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
+        struct tm st;
+        errno_t err;
+        err = localtime_s(&st, &now);  // secure version
+        ASSERT(err == 0);
+        st.tm_mday += idays;
+        warnexptime = mktime(&st);
+
+        if (warnexptime == static_cast<time_t>(-1))
+          warnexptime = static_cast<time_t>(0);
+      }
+      if (tttXTime <= now) {
+        offset = -2;  // Expired
+      } else if (tttXTime < warnexptime) {
+        offset = -1;  // Warn nearly expired
+      }
+    }
+  }
+  
   int i = NORMAL_II;
-  switch (item.GetEntryType()) {
-  case CItemData::ET_NORMAL:       i = NORMAL_II;   break;
-  case CItemData::ET_ALIASBASE:    i = ABASE_II;    break;
-  case CItemData::ET_ALIAS:        i = ALIAS_II;    break;
-  case CItemData::ET_SHORTCUTBASE: i = SBASE_II;    break;
-  case CItemData::ET_SHORTCUT:     i = SHORTCUT_II; break;
+  switch (entrytype) {
+  case CItemData::ET_NORMAL:       i = NORMAL_II + offset; break;
+  case CItemData::ET_ALIASBASE:    i = ABASE_II + offset;  break;
+  case CItemData::ET_ALIAS:        i = ALIAS_II;           break;
+  case CItemData::ET_SHORTCUTBASE: i = SBASE_II + offset;  break;
+  case CItemData::ET_SHORTCUT:     i = SHORTCUT_II;        break;
   case CItemData::ET_INVALID:      ASSERT(0); break;
   default: ASSERT(0);
   }
