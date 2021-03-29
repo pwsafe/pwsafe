@@ -56,6 +56,7 @@
 #include "graphics/sbase_warn.xpm"
 #include "graphics/sbase.xpm"
 #include "graphics/shortcut.xpm"
+#include "graphics/empty_node.xpm"
 #if wxVERSION_NUMBER >= 3103
 // Same in dark
 #include "graphics/abase_exp_dark.xpm"
@@ -70,6 +71,7 @@
 #include "graphics/sbase_warn_dark.xpm"
 #include "graphics/sbase_dark.xpm"
 #include "graphics/shortcut_dark.xpm"
+#include "graphics/empty_node_dark.xpm"
 #endif
 
 using pws_os::CUUID;
@@ -97,6 +99,7 @@ enum {
   SBASE_WARN_II,   // 9
   SBASE_II,        // 10
   SHORTCUT_II,     // 11
+  EMPTY_NODE_II,   // 12
 };
 
 // We use/need this ID to re-post to AddPendingEvent the wxTreeEvent from END_LABEL notification.
@@ -274,21 +277,23 @@ void TreeCtrl::CreateControls()
     sbase_warn_xpm,   // 9
     sbase_xpm,        // 10
     shortcut_xpm,     // 11
+    empty_node_xpm,   // 12
   };
 #if wxVERSION_NUMBER >= 3103
   const char **xpmDarkList[] = {
-    abase_exp_dark_xpm,    // 1
-    abase_warn_dark_xpm,   // 2
-    abase_dark_xpm,        // 3
-    alias_dark_xpm,        // 4
-    node_dark_xpm,         // 5
-    normal_exp_dark_xpm,   // 6
-    normal_warn_dark_xpm,  // 7
-    normal_dark_xpm,       // 8
-    sbase_exp_dark_xpm,    // 9
-    sbase_warn_dark_xpm,   // 10
-    sbase_dark_xpm,        // 11
-    shortcut_dark_xpm,     // 12
+    abase_exp_dark_xpm,    // 0
+    abase_warn_dark_xpm,   // 1
+    abase_dark_xpm,        // 2
+    alias_dark_xpm,        // 3
+    node_dark_xpm,         // 4
+    normal_exp_dark_xpm,   // 5
+    normal_warn_dark_xpm,  // 6
+    normal_dark_xpm,       // 7
+    sbase_exp_dark_xpm,    // 8
+    sbase_warn_dark_xpm,   // 9
+    sbase_dark_xpm,        // 10
+    shortcut_dark_xpm,     // 11
+    empty_node_dark_xpm,   // 12
   };
 #endif
   const int Nimages = sizeof(xpmList)/sizeof(xpmList[0]);
@@ -429,7 +434,7 @@ bool TreeCtrl::HasSelection() const
 bool TreeCtrl::ItemIsGroup(const wxTreeItemId& item) const
 {
   int image = GetItemImage(item);
-  return image == NODE_II && GetRootItem() != item;
+  return ((image == NODE_II) || (image == EMPTY_NODE_II)) && (GetRootItem() != item);
 }
 
 /**
@@ -438,7 +443,7 @@ bool TreeCtrl::ItemIsGroup(const wxTreeItemId& item) const
 bool TreeCtrl::ItemIsGroupOrRoot(const wxTreeItemId& item) const
 {
   int image = GetItemImage(item);
-  return image == NODE_II || GetRootItem() == item;
+  return (image == NODE_II) || (image == EMPTY_NODE_II) || (GetRootItem() == item);
 }
 
 // XXX taken from Windows TreeCtrl.cpp
@@ -508,9 +513,19 @@ wxTreeItemId TreeCtrl::AddGroup(const StringX &group)
       if (!ExistsInTree(ti, s, si)) {
         ti = AppendItem(ti, s.c_str());
         wxTreeCtrl::SetItemImage(ti, NODE_II);
+        if(GetRootItem() != ti) {
+          // Correct icon of parent, if needed
+          wxTreeItemId parent = GetItemParent(ti);
+          if(GetRootItem() != parent && GetItemImage(parent) == EMPTY_NODE_II)
+            wxTreeCtrl::SetItemImage(parent, NODE_II);
+        }
       } else
         ti = si;
     } while (!path.empty());
+  }
+  // A new group will be empty, so set Icon to empty one
+  if(GetRootItem() != ti && GetChildrenCount(ti) == 0) {
+    wxTreeCtrl::SetItemImage(ti, EMPTY_NODE_II);
   }
   return ti;
 }
@@ -703,6 +718,8 @@ void TreeCtrl::AddItem(const CItemData &item)
   wxTreeItemId gnode = AddGroup(GroupNameOfItem(item));
   const wxString disp = ItemDisplayString(item);
   wxTreeItemId titem = AppendItem(gnode, disp, -1, -1, data);
+  if(GetRootItem() != gnode && GetItemImage(gnode) == EMPTY_NODE_II)
+    wxTreeCtrl::SetItemImage(gnode, NODE_II); // Could be empty before
   SetItemImage(titem, item);
   SortChildrenRecursively(gnode);
   uuid_array_t uuid;
@@ -820,14 +837,9 @@ bool TreeCtrl::Remove(const CUUID &uuid)
     // group as well. repeat up the tree...
     wxTreeItemId parentId = GetItemParent(id);
     Delete(id);
-    while (parentId != GetRootItem()) {
-      wxTreeItemId grandparentId = GetItemParent(parentId);
-      if (GetChildrenCount(parentId) == 0) {
-        Delete(parentId);
-        parentId = grandparentId;
-      } else
-        break;
-    } // while
+    // Correct Icon of parent if needed
+    if(GetChildrenCount(parentId) == 0 && GetRootItem() != parentId)
+      wxTreeCtrl::SetItemImage(parentId, EMPTY_NODE_II);
     Refresh();
     Update();
     return true;
@@ -844,12 +856,15 @@ void TreeCtrl::SetItemImage(const wxTreeItemId &node,
   
   if((entrytype == CItemData::ET_NORMAL) || (entrytype == CItemData::ET_ALIASBASE) || (entrytype == CItemData::ET_SHORTCUTBASE)) {
     time_t tttXTime(static_cast<time_t>(0));
-    item.GetXTime(tttXTime);
+    item.GetXTime(tttXTime); // Fetch eXpiry time (or period, range from 1 to 3650 day))
     if (tttXTime > static_cast<time_t>(0) && tttXTime <= static_cast<time_t>(3650)) {
+      // When period stored, calculate time by taking last password modification time (PM)
+      // or, if PM is not present, use Creation time (C).
       time_t tttCPMTime(static_cast<time_t>(0));
       item.GetPMTime(tttCPMTime);
       if (tttCPMTime == static_cast<time_t>(0))
         item.GetCTime(tttCPMTime);
+      // Add days of period to last Creation/Password modifiction time (stored in days, 86400 is seconds of day)
       tttXTime = static_cast<time_t>((long)tttCPMTime + (long)tttXTime * 86400L);
     }
     
@@ -868,6 +883,7 @@ void TreeCtrl::SetItemImage(const wxTreeItemId &node,
         if (warnexptime == static_cast<time_t>(-1))
           warnexptime = static_cast<time_t>(0);
       }
+      // When expired or nearly expired use different icon, which is located in list before normal entry
       if (tttXTime <= now) {
         offset = -2;  // Expired
       } else if (tttXTime < warnexptime) {
@@ -1470,6 +1486,8 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
         if (newItem.IsOk())
           wxTreeCtrl::SelectItem(newItem);
       }
+      if(GetRootItem() != itemDst && GetItemImage(itemDst) == EMPTY_NODE_II)
+        wxTreeCtrl::SetItemImage(itemDst, NODE_II); // Could be empty before
     }
     else {
       if(m_drag_item.IsOk())
@@ -1572,8 +1590,13 @@ void TreeCtrl::FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem)
     // evt.GetItem() is not valid anymore.  A new item has been inserted instead.
     // We can select it using the full path we computed earlier
     wxTreeItemId newItem = Find(groupName, GetRootItem());
-    if (newItem.IsOk())
+    if (newItem.IsOk()) {
       wxTreeCtrl::SelectItem(newItem);
+      // correct group icon of parent if needed
+      wxTreeItemId parent = GetItemParent(newItem);
+      if(GetRootItem() != parent && GetItemImage(parent) == EMPTY_NODE_II)
+        wxTreeCtrl::SetItemImage(parent, NODE_II); // Could be empty before
+    }
   }
 }
 
@@ -2533,6 +2556,9 @@ wxDragResult TreeCtrl::OnDrop(wxCoord x, wxCoord y, wxMemoryBuffer *inDDmem)
   if (ProcessDnDData(sxDropPath, inDDmem)) {
     pws_os::Trace(L"TreeCtrl::OnDrop return '%s'", reportCopy ? "wxDragCopy" : "wxDragMove");
     result = reportCopy ? wxDragCopy : wxDragMove;
+
+    if(GetRootItem() != itemDst && GetItemImage(itemDst) == EMPTY_NODE_II)
+      wxTreeCtrl::SetItemImage(itemDst, NODE_II); // Could be empty before
   }
   else {
     pws_os::Trace(L"TreeCtrl::OnDrop return 'wxDragNone'");

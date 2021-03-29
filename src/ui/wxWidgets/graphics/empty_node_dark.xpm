@@ -1,0 +1,36 @@
+/* XPM */
+static const char *empty_node_dark_xpm[] = {
+/* width height num_colors chars_per_pixel */
+"13 13 16 1",
+/* colors */
+"  c #1D1E20", /* Background */
+". c #fbde98",
+"# c #f8c343",
+"a c #fbd783",
+"b c #f7b71e",
+"c c #fad680",
+"d c #fad57d",
+"e c #fbdb8d",
+"f c #fbd885",
+"g c #f8bf36",
+"h c #f8bd31",
+"i c #fbda8b",
+"j c #fad478",
+"k c #fad57b",
+"l c #fbd988",
+"m c #f8bc2e",
+/* pixels */
+"     .#.     ",
+"    abbbc    ",
+"   abb bbd   ",
+"  abb   bbd  ",
+" abb     bbd ",
+"ebb       bbf",
+"gb         bh",
+"ibb       bbf",
+" dbb     bbj ",
+"  dbb   bbj  ",
+"   kbb bbj   ",
+"    kbbbj    ",
+"     lml     "
+};
