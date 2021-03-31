@@ -178,6 +178,8 @@ void MultiCommands::Undo()
       break;
     }
   }
+    
+  m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE, pws_os::CUUID::NullUUID());
 }
 
 void MultiCommands::Add(Command *pcmd)
