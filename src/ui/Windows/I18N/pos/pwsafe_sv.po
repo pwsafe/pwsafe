@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2021-01-25 19:44+0100\n"
+"PO-Revision-Date: 2021-02-04 13:37+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -181,7 +181,7 @@ msgstr " 'Har bilagor'"
 
 #. Resource IDs: (5941)
 msgid " 'Keyboard Shortcut'"
-msgstr " 'Tangentbords kortkommando'"
+msgstr " 'Tangentbordsgenväg'"
 
 #. Resource IDs: (5370)
 msgid " 'Last Access Time'"
@@ -433,7 +433,7 @@ msgstr "%d synkroniserade poster"
 #. Resource IDs: (5240)
 #, c-format
 msgid "%d items"
-msgstr "%d punkter"
+msgstr "%d alternativ"
 
 #. Resource IDs: (5275)
 #, c-format
@@ -443,7 +443,7 @@ msgstr "%d av %d matchningar."
 #. Resource IDs: (5609)
 #, c-format
 msgid "%d/%d items"
-msgstr "%d/%d punkter"
+msgstr "%d/%d alternativ"
 
 #. Resource IDs: (3445)
 #, c-format
@@ -2220,7 +2220,7 @@ msgstr "Klicka för att kopiera till Urklipp"
 
 #. Resource IDs: (5721)
 msgid "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
-msgstr "Klicka föratt kopiera till Urklipp, Ctrl+Klick för att också sätta URL-fältet till detta värde"
+msgstr "Klicka för att kopiera till Urklipp, Ctrl+Klick för att också sätta URL-fältet till detta värde"
 
 #. Resource IDs: (5615)
 msgid "Click to enable/disable this row"
@@ -2342,14 +2342,14 @@ msgstr "Jämför databasresultat"
 #, c-format
 msgid ""
 "Compare complete of current database:\n"
-"\t %ls\n"
+"\t %s\n"
 " and:\n"
-"\t %ls\n"
+"\t %s"
 msgstr ""
 "Jämförelsen klar med aktuell databas:\n"
-"\t %ls\n"
+"\t %s\n"
 " och:\n"
-"\t %ls\n"
+"\t %s"
 
 #. Resource IDs: (32091 - Menu, 32091 - MenuEx)
 msgid "Compare entries..."
@@ -2748,7 +2748,7 @@ msgstr "Databas"
 
 #. Resource IDs: (65535)
 msgid "Database Entry Shortcuts"
-msgstr "Genvägar till databasposter"
+msgstr "Genvägar till dtabasinmatning"
 
 #. Resource IDs: (5758)
 msgid "Database Format"
@@ -3055,7 +3055,7 @@ msgstr "A&vsluta"
 
 #. Resource IDs: (32021 - MenuEx)
 msgid "E&xit\tCtrl+Q\\Alt+F4"
-msgstr "A&vsluta\tCtrl+Q\\Alt+F4"
+msgstr "A&vsluta\tCtrl+Q/Alt+F4"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "E&xport Entry To"
@@ -3303,16 +3303,16 @@ msgstr "Postimportvarningar"
 #. Resource IDs: (3448)
 #, c-format
 msgid "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been removed from the %ls entry."
-msgstr "Inmatningskortkommando %ls post %ls är redan använd för post %ls. Den har tagits bort från %ls post."
+msgstr "Posts tangentbordsgenväg %ls post %ls är redan använd för post %ls. Den har tagits bort från %ls post."
 
 #. Resource IDs: (3449)
 #, c-format
 msgid "Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe application. It has been removed from the entry."
-msgstr "Inmatningskortkommando %ls post %ls är allokerad till PasswordSafe-programmet. Den har tagits bort från posten."
+msgstr "Posts tangentbordsgenväg %ls post %ls är allokerad till PasswordSafe-programmet. Den har tagits bort från posten."
 
 #. Resource IDs: (5952)
 msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys and an alphanumeric character (0-9, A-Z)."
-msgstr "Inmatningskortkommando måste ha antingen en av eller båda Alt- och Ctrl-tangenterna och ett alfanumeriskt tecken (0-9, A-Z)."
+msgstr "Posts tangentbordsgenväg måste ha antingen en av eller båda Alt- och Ctrl-tangenterna och ett alfanumeriskt tecken (0-9, A-Z)."
 
 #. Resource IDs: (5942)
 #, c-format
@@ -3321,7 +3321,7 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Inmatningskortkommando måste ha med antingen en av eller båda Alt- och Ctrl-tangenterna.\n"
+"Posts tangentbordsgenväg måste ha med antingen en av eller båda Alt- och Ctrl-tangenterna.\n"
 "\n"
 "%s"
 
@@ -4474,7 +4474,7 @@ msgstr "Behåll"
 
 #. Resource IDs: (3073, 5940, 65535)
 msgid "Keyboard Shortcut"
-msgstr "Tgnt-bordskortkommando"
+msgstr "Tangentbordsgenväg"
 
 #. Resource IDs: (65535)
 msgid "Keyboard type:"
@@ -4559,10 +4559,9 @@ msgid ""
 "\n"
 "The 'Menu item' text will be red if the shortcut differs from its default value."
 msgstr ""
-"Vänsterklicka på kortkommandots värde för att ändra eller högerklicka för att återställa eller radera det. Efter val av genvägstangentkombination, tryck Enter för att spara den.\n"
+"Vänsterklicka på genvägstangentens värde för att ändra eller högerklicka för att återställa eller radera det. Efter val av genvägens tangentkombination, tryck Spara för att spara den.\n"
 "\n"
-"nyckel\n"
-"'Menu item'-texten blir röd om genvägen skiljer sig från standardvärde."
+"'Menyalternativ'-texten blir röd om genvägen skiljer sig från dess standardvärde."
 
 #. Resource IDs: (5291)
 msgid ""
@@ -4733,7 +4732,7 @@ msgstr "Medietyp:"
 
 #. Resource IDs: (5680)
 msgid "Menu Item"
-msgstr "Menyobjekt"
+msgstr "Menyalternativ"
 
 #. Resource IDs: (5536, 5836)
 msgid "Merge"
@@ -4948,7 +4947,7 @@ msgstr "Ingen funktion har valts för att stödja dina begränsningar."
 
 #. Resource IDs: (5600)
 msgid "No items matched your filter"
-msgstr "Inga objekt matchade ditt filter"
+msgstr "Inga alternativ matchade ditt filter"
 
 #. Resource IDs: (5273)
 msgid "No matches found."
@@ -6349,7 +6348,7 @@ msgstr "Skift+dubbelklicksval"
 
 #. Resource IDs: (65535)
 msgid "Shift Double-Click Action:"
-msgstr "Skift+ubbelklicksval:"
+msgstr "Skift+dubbelklicksval:"
 
 #. Resource IDs: (5689)
 msgid "Shift+"
@@ -6374,7 +6373,7 @@ msgstr "Genvägar"
 #. Resource IDs: (5686)
 #, c-format
 msgid "Shortcut '%s' already assigned to menu item '%s'."
-msgstr "Genväg '%s' är redan kopplad till menyvalet '%s'."
+msgstr "Genväg '%s' är redan kopplad till menyalternativet '%s'."
 
 #. Resource IDs: (5829)
 msgid "Shortcut Base entry"
@@ -6390,11 +6389,11 @@ msgstr "Genväg till inmatning av baspost - varning, lösenordet kommer att upph
 
 #. Resource IDs: (5681)
 msgid "Shortcut Key"
-msgstr "Snabbkommandonyckel"
+msgstr "Genvägstangent"
 
 #. Resource IDs: (5997)
 msgid "Shortcut WARNING...."
-msgstr "Genvägs-VARNING...."
+msgstr "Genväg VARNING...."
 
 #. Resource IDs: (5520)
 #, c-format
@@ -7188,7 +7187,7 @@ msgstr "Detta är en icke fungerande tangent. Tryck på den och sedan en av de k
 
 #. Resource IDs: (5703)
 msgid "This is a shortcut base entry."
-msgstr "Detta är genvägsbaspost."
+msgstr "Detta är en genväg till inmatning av baspost."
 
 #. Resource IDs: (1294)
 msgid "This is a shortcut to base entry:"
@@ -7630,7 +7629,7 @@ msgstr "Använd &gemener"
 
 #. Resource IDs: (1050)
 msgid "Use &Symbols"
-msgstr "Använd &symboler"
+msgstr "Använd s&ymboler"
 
 #. Resource IDs: (1050)
 msgid "Use &Symbols (i.e., &, %, $, etc.)"
@@ -7994,7 +7993,7 @@ msgstr "Du byter en alias-baspost till en %s. Detta kommer att flytta alla nuvar
 #. Resource IDs: (6041)
 #, c-format
 msgid "You are changing an Shortcut Base entry to a %s. This will cause all shortcuts to this base entry to be deleted. Do you wish to continue?"
-msgstr "Du ändrar en genvägs-baspost till en %s. Detta leder till att alla genvägar till denna baspost raderas. Vill du fortsätta?"
+msgstr "Du ändrar en genväg till en baspost till en %s. Detta leder till att alla genvägar till denna baspost raderas. Vill du fortsätta?"
 
 #. Resource IDs: (5115)
 msgid "You can click on a field's name to copy its value to the clipboard."
@@ -8887,8 +8886,8 @@ msgstr ""
 
 #. Resource IDs: (5359)
 #, c-format
-msgid "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
-msgstr "\tGrupp:'%ls'; Titel:'%ls'; Användare:'%ls'"
+msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
+msgstr "\tGrupp:'%s'; Titel:'%s'; Användare:'%s'"
 
 #. Resource IDs: (3391)
 #, c-format
