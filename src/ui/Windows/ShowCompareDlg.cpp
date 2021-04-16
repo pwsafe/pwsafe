@@ -149,7 +149,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
   // Too convoluted to change this process to a switch statement where the compiler can
   // produce an error if any of the CItemData::FieldType enum values is missing!
 
-  // Exclude 5: UUID/GROUP/TITLE/USERNAME, RESERVED & 2FAK (01,02,03,04,0B,1B) but
+  // Exclude 6: UUID/GROUP/TITLE/USERNAME, RESERVED & 2FAK (01,02,03,04,0B,1B) but
   // Include 1: ENTRYTYPE
   // The developer will still need to ensure new fields are processed below
   // Put in compilation check as this may not be regression tested every time
