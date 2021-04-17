@@ -6,6 +6,12 @@ New features in 3.56pre
 
 * [FR894](https://sourceforge.net/p/passwordsafe/feature-requests/894/) Support OnlyKey 2FA
 
+Bugs fixed in 3.56pre
+---------------------
+
+* [GH573](https://github.com/pwsafe/pwsafe/issues/573),[SF1488](https://sourceforge.net/p/passwordsafe/bugs/1488/) "Remind" Windows when PasswordSafe should stay topmost
+* Fixed Notes line parsing in Run command
+
 
 PasswordSafe non-Windows Release 1.13
 =====================================
