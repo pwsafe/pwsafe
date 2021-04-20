@@ -252,7 +252,7 @@ bool CPWFiltersDlg::VerifyFilters()
       return false;
     }
     if (m_FilterLC.IsAttachment_Set() && !m_FilterLC.IsAttachmentGood()) {
-      cs_text.Format(IDS_FILTERINCOMPLETE, iPolicy + 1);
+      cs_text.Format(IDS_FILTERINCOMPLETE, iAttachment + 1);
       gmb.AfxMessageBox(cs_text);
       return false;
     }
