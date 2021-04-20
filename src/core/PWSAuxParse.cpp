@@ -49,9 +49,9 @@ static void ParseNotes(StringX &sxNotes,
                        std::vector<StringX> &vsxnotes_lines)
 {
   if (!sxNotes.empty()) {
-    // Use \n and \r to tokenise this line
+    // Use \n to tokenise this line
     StringX::size_type st_start(0), st_end(0);
-    const StringX sxdelim = _T("\r\n");
+    const StringX sxdelim = _T("\n");
     StringX sxline;
     StringX::size_type st_index;
     while (st_end != StringX::npos) {
