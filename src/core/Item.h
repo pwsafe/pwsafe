@@ -12,7 +12,6 @@
 #define __ITEM_H
 
 #include "ItemField.h"
-#include "Util.h"
 #include "StringX.h"
 
 #include <vector>
@@ -36,7 +35,7 @@
  * raw bytes (stored encrypted) to/from the relevant representation, e.g.,
  * string, time, etc.
  *
- * UnknownFields are used from forward compatability. If there's a field type
+ * UnknownFields are used from forward compatibility. If there's a field type
  * we don't recognize, we just store it as-is, so that we can write it when saving.
  *
 */
@@ -48,7 +47,7 @@ class CItem
 public:
   // field types, per formatV{2,3,4}.txt. Any value > 0xff is internal only!
   enum FieldType {
-    START = 0x00, GROUPTITLE = 0x00 /* reusing depreciated NAME for Group.Title combination */,
+    START = 0x00, GROUPTITLE = 0x00 /* reusing deprecated NAME for Group.Title combination */,
     NAME = 0x00,
     UUID = 0x01,
     GROUP = 0x02,
@@ -76,6 +75,10 @@ public:
     POLICYNAME = 0x18,   // named non-default password policy for item
     KBSHORTCUT = 0x19,   // Keyboard shortcuts
     ATTREF = 0x1a,       // UUID of attachment (v4)
+    CCNUM = 0x1c,        // Credit card number
+    CCEXP = 0x1d,        // Credit card expiration date
+    CCVV = 0x1e,         // CVV / CVV2
+    CCPIN = 0x1f,        // Credit card PIN code
     LAST_USER_FIELD,     // All "user" fields MUST be before this for entry compare
 
     BASEUUID = 0x41,     // Base UUID of Alias or Shortcut (v4)
@@ -102,7 +105,7 @@ public:
     CONTENTHMAC = 0x74,
     LAST_ATT,
 
-    UNKNOWN_TESTING = 0xdf, // for testing forward compatability (unknown field handling)
+    UNKNOWN_TESTING = 0xdf, // for testing forward compatibility (unknown field handling)
     END = 0xff,
 
     // Internal fields only - used in filters

@@ -91,7 +91,7 @@ BOOL CFilterDCADlg::OnInitDialog()
     cs_dca.LoadString(ui_dca);
     cs_text.Format(IDSC_CURRENTDEFAULTDCA, static_cast<LPCWSTR>(cs_dca));
     iItem = m_cbxDCA.AddString(cs_text);
-    m_cbxDCA.SetItemData(iItem, (DWORD)-1);  // Default!
+    m_cbxDCA.SetItemData(iItem, static_cast<DWORD_PTR>(-1));  // Default!
 
     cs_text.LoadString(IDSC_DCACOPYPASSWORD);
     iItem = m_cbxDCA.AddString(cs_text);

@@ -1437,6 +1437,11 @@ void DboxMain::RestoreWindows()
   BringWindowToTop();
 
   CPWDialog::GetDialogTracker()->ShowOpenDialogs();
+
+  // Refresh "always on top", as some users report this is "forgotten"
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop)) {
+    SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+  }
 }
 
 // this tells OnSize that the user is currently
@@ -1600,14 +1605,20 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
           m_savedDBprefs = EMPTYSAVEDDBPREFS;
         }
 
-        CPWDialog::GetDialogTracker()->ShowOpenDialogs();
-
         // Restore current horizontal scroll bar position
         m_ctlItemList.Scroll(CSize(m_iListHBarPos, 0));
         m_ctlItemTree.SetScrollPos(SB_HORZ, m_iTreeHBarPos);
+
+        CPWDialog::GetDialogTracker()->ShowOpenDialogs();
+
+        // Refresh "always on top", as some users report this is "forgotten"
+        if (PWSprefs::GetInstance()->GetPref(PWSprefs::AlwaysOnTop)) {
+          SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+        }
+
         RestoreGUIStatusEx();
 
-        if (prefs->GetPref(PWSprefs::UseSystemTray) && IsIconVisible() == FALSE) {      
+        if (prefs->GetPref(PWSprefs::UseSystemTray) && IsIconVisible() == FALSE) {
           ShowIcon();
         }
       }
