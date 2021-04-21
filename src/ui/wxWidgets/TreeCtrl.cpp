@@ -516,17 +516,14 @@ wxTreeItemId TreeCtrl::AddGroup(const StringX &group)
         if(GetRootItem() != ti) {
           // Correct icon of parent, if needed
           wxTreeItemId parent = GetItemParent(ti);
-          if(GetRootItem() != parent && GetItemImage(parent) == EMPTY_NODE_II)
-            wxTreeCtrl::SetItemImage(parent, NODE_II);
+          setNodeAsNotEmpty(parent);
         }
       } else
         ti = si;
     } while (!path.empty());
   }
   // A new group will be empty, so set Icon to empty one
-  if(GetRootItem() != ti && GetChildrenCount(ti) == 0) {
-    wxTreeCtrl::SetItemImage(ti, EMPTY_NODE_II);
-  }
+  setNodeAsEmptyIfNeeded(ti);
   return ti;
 }
 
@@ -718,8 +715,7 @@ void TreeCtrl::AddItem(const CItemData &item)
   wxTreeItemId gnode = AddGroup(GroupNameOfItem(item));
   const wxString disp = ItemDisplayString(item);
   wxTreeItemId titem = AppendItem(gnode, disp, -1, -1, data);
-  if(GetRootItem() != gnode && GetItemImage(gnode) == EMPTY_NODE_II)
-    wxTreeCtrl::SetItemImage(gnode, NODE_II); // Could be empty before
+  setNodeAsNotEmpty(gnode); // Could be empty before
   SetItemImage(titem, item);
   SortChildrenRecursively(gnode);
   uuid_array_t uuid;
@@ -838,8 +834,7 @@ bool TreeCtrl::Remove(const CUUID &uuid)
     wxTreeItemId parentId = GetItemParent(id);
     Delete(id);
     // Correct Icon of parent if needed
-    if(GetChildrenCount(parentId) == 0 && GetRootItem() != parentId)
-      wxTreeCtrl::SetItemImage(parentId, EMPTY_NODE_II);
+    setNodeAsEmptyIfNeeded(parentId);
     Refresh();
     Update();
     return true;
@@ -1486,8 +1481,7 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
         if (newItem.IsOk())
           wxTreeCtrl::SelectItem(newItem);
       }
-      if(GetRootItem() != itemDst && GetItemImage(itemDst) == EMPTY_NODE_II)
-        wxTreeCtrl::SetItemImage(itemDst, NODE_II); // Could be empty before
+      setNodeAsNotEmpty(itemDst);
     }
     else {
       if(m_drag_item.IsOk())
@@ -1594,8 +1588,7 @@ void TreeCtrl::FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem)
       wxTreeCtrl::SelectItem(newItem);
       // correct group icon of parent if needed
       wxTreeItemId parent = GetItemParent(newItem);
-      if(GetRootItem() != parent && GetItemImage(parent) == EMPTY_NODE_II)
-        wxTreeCtrl::SetItemImage(parent, NODE_II); // Could be empty before
+      setNodeAsNotEmpty(parent);
     }
   }
 }
@@ -2557,8 +2550,7 @@ wxDragResult TreeCtrl::OnDrop(wxCoord x, wxCoord y, wxMemoryBuffer *inDDmem)
     pws_os::Trace(L"TreeCtrl::OnDrop return '%s'", reportCopy ? "wxDragCopy" : "wxDragMove");
     result = reportCopy ? wxDragCopy : wxDragMove;
 
-    if(GetRootItem() != itemDst && GetItemImage(itemDst) == EMPTY_NODE_II)
-      wxTreeCtrl::SetItemImage(itemDst, NODE_II); // Could be empty before
+    setNodeAsNotEmpty(itemDst);
   }
   else {
     pws_os::Trace(L"TreeCtrl::OnDrop return 'wxDragNone'");
@@ -2566,4 +2558,17 @@ wxDragResult TreeCtrl::OnDrop(wxCoord x, wxCoord y, wxMemoryBuffer *inDDmem)
 
   delete inDDmem;
   return result;
+}
+
+void TreeCtrl::setNodeAsNotEmpty(const wxTreeItemId item)
+{
+  if(GetRootItem() != item && GetItemImage(item) == EMPTY_NODE_II)
+    wxTreeCtrl::SetItemImage(item, NODE_II); // Could be empty before
+}
+
+void TreeCtrl::setNodeAsEmptyIfNeeded(const wxTreeItemId item)
+{
+  if(GetRootItem() != item && GetChildrenCount(item) == 0) {
+    wxTreeCtrl::SetItemImage(item, EMPTY_NODE_II); // Empty Group shall show the empty node icon
+  }
 }

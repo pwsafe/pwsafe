@@ -240,6 +240,8 @@ private:
   void CreateCommandCopyGroup(wxTreeItemId itemSrc, StringX sxNewPath, StringX sxOldPath, bool checkName);
   bool IsDescendant(const wxTreeItemId itemDst, const wxTreeItemId itemSrc);
   void markDragItem(const wxTreeItemId itemSrc, bool markIt = true);
+  void setNodeAsNotEmpty(const wxTreeItemId item);
+  void setNodeAsEmptyIfNeeded(const wxTreeItemId item);
   void resetDragItems(bool initSize = false);
   void resetScrolling();
 
