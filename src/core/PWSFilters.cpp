@@ -801,7 +801,7 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
           st_fldata.fdatetype == 1 /* Relative */) {
         stringT cs_temp;
         LoadAString(cs_temp, IDSC_RELATIVE);
-        cs_criteria += cs_temp;
+        cs_criteria += _T(" ") + cs_temp;
       }
       if (st_fldata.mtype == PWSMatch::MT_ENTRYSIZE) {
         switch (st_fldata.funit) {
