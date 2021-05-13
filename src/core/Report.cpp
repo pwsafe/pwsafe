@@ -265,7 +265,7 @@ bool CReport::SaveToDisk()
         // Skip 2 byte header
         fread(inbuffer, 1, 2, f_in);
       }
-      else if((encoding == pugi::encoding_utf16_le) || (encoding == pugi::encoding_utf16_be) || (encoding == pugi::encoding_utf16)) {
+      else if((encoding == pugi::encoding_utf32_le) || (encoding == pugi::encoding_utf32_be) || (encoding == pugi::encoding_utf32)) {
         // Skip 4 byte header
         fread(inbuffer, 1, 4, f_in);
       }
@@ -397,7 +397,7 @@ bool CReport::ReadFromDisk()
       // Skip 2 byte header
       fread(inbuffer, 1, 2, fd);
     }
-    else if((encoding == pugi::encoding_utf16_le) || (encoding == pugi::encoding_utf16_be) || (encoding == pugi::encoding_utf16)) {
+    else if((encoding == pugi::encoding_utf32_le) || (encoding == pugi::encoding_utf32_be) || (encoding == pugi::encoding_utf32)) {
       // Skip 4 byte header
       fread(inbuffer, 1, 4, fd);
     }
