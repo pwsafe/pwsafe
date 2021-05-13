@@ -135,7 +135,7 @@ if (NOT WIN32 OR WX_WINDOWS)
                )
      endif (NOT PWSHINT_wxconfig)
   endif (NOT WIN32)
-  find_package(wxWidgets COMPONENTS adv base core html net REQUIRED)
+  find_package(wxWidgets COMPONENTS adv aui base core html net REQUIRED)
   include(${wxWidgets_USE_FILE})
 
   find_package(OpenSSL REQUIRED)

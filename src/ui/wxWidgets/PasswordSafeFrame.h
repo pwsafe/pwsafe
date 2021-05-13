@@ -19,6 +19,8 @@
  * Includes
  */
 
+#include <wx/aui/auibar.h>
+#include <wx/aui/framemanager.h>
 #include <wx/frame.h>
 #include <wx/statusbr.h>
 #include <wx/treebase.h> // for wxTreeItemId
@@ -32,6 +34,7 @@
 
 #include "wxUtilities.h"
 #include "DnDFile.h"
+#include "DragBarCtrl.h"
 
 #include <tuple>
 #include <vector>
@@ -648,7 +651,8 @@ private:
   void RebuildGUI(const int iView = iBothViews);
   void CreateDragBar();
   void RefreshToolbarButtons();
-  DragBarCtrl* GetDragBar();
+  wxAuiToolBar* GetToolBar() { return m_Toolbar; }
+  DragBarCtrl* GetDragBar() { return m_Dragbar; };
   void CreateStatusBar();
   void SaveSettings() const;
   void LockDb();
@@ -749,10 +753,14 @@ private:
 
   wxString m_LastClipboardAction;
   CItem::FieldType m_LastAction;  // TODO: Check how this is used by Windows version
-  
+
   friend class DnDFile;
   friend class TreeCtrl;
   friend class PWSafeApp;
+
+  wxAuiManager m_AuiManager;
+  wxAuiToolBar* m_Toolbar;
+  DragBarCtrl* m_Dragbar;
 };
 
 BEGIN_DECLARE_EVENT_TYPES()

@@ -45,7 +45,7 @@ void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
     RefreshToolbarButtons();
     DragBarCtrl* dragbar = GetDragBar();
     wxCHECK_RET(dragbar, wxT("Could not find dragbar"));
-    dragbar->RefreshButtons();
+    dragbar->UpdateBitmaps();
     wxCHECK_RET(m_search, wxT("Search object not created as expected"));
     m_search->RefreshButtons();
   }

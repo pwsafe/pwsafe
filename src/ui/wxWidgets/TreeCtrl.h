@@ -18,6 +18,7 @@
  */
 
 ////@begin includes
+#include <wx/aui/auibar.h>
 #include <wx/treebase.h>
 #include <wx/treectrl.h>
 #include <wx/dragimag.h>
@@ -236,7 +237,7 @@ public:
   void OnEndDrag(wxTreeEvent& evt);
   
   /// when draging is started
-  void OnDrag(wxMouseEvent& event);
+  void OnDrag(wxAuiToolBarEvent& event);
 
 ////@end TreeCtrl event handler declarations
 
