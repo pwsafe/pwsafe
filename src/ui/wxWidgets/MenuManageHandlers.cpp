@@ -80,12 +80,13 @@ void PasswordSafeFrame::OnPreferencesClick(wxCommandEvent& WXUNUSED(evt))
     if((autoAdjColWidth != prefs->GetPref(PWSprefs::AutoAdjColWidth)) && IsGridView() && IsShown())
       Show(true);
     if(toolbarShowText != prefs->GetPref(PWSprefs::ToolbarShowText)) {
-      wxToolBar* tb = GetToolBar();
+      auto tb = GetToolBar();
       if(prefs->GetPref(PWSprefs::ToolbarShowText))
-        tb->SetWindowStyle(tb->GetWindowStyle() | wxTB_TEXT);
+        tb->SetWindowStyle(tb->GetWindowStyle() | wxAUI_TB_TEXT);
       else
-        tb->SetWindowStyle(tb->GetWindowStyle() & ~wxTB_TEXT);
+        tb->SetWindowStyle(tb->GetWindowStyle() & ~wxAUI_TB_TEXT);
       tb->Realize();
+      Layout();
     }
     
     StringX sxNewDBPrefsString(prefs->Store(true));

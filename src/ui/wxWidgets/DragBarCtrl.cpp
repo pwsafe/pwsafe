@@ -26,6 +26,7 @@
 
 #include "DragBarCtrl.h"
 #include "PasswordSafeFrame.h"
+#include "PWSafeApp.h"
 ////@end includes
 
 ////@begin XPM images
@@ -65,8 +66,6 @@
 
 ////@end XPM images
 
-IMPLEMENT_CLASS( DragBarCtrl, DragBarGenericCtrl )
-
 enum { DRAGBAR_TOOLID_BASE = 100 };
 
 #define PWS_TOOLINFO(t, f) {  wxSTRINGIZE_T(t),                                       \
@@ -96,78 +95,211 @@ struct _DragbarElementInfo {
 // Drag and drop tree or item is last element in drag bar
 #define DND_IDX (NumberOf(DragbarElements) - 1)    // Last entry is DnD
 
-DragBarCtrl::DragBarCtrl(PasswordSafeFrame* frame) : DragBarGenericCtrl(frame, this), m_frame(frame)
+DragBarCtrl::DragBarCtrl(wxWindow *parent, wxWindowID id, const wxPoint &position, const wxSize &size, long style) : wxAuiToolBar(parent, id, position, size, style)
 {
-  RefreshButtons();
-}
-
-void DragBarCtrl::RefreshButtons()
-{
-  const bool newButtons = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar);
-
-#define BTN newButtons? wxBitmap(DragbarElements[idx].bitmap) : wxBitmap(DragbarElements[idx].classic_bitmap)
-#define BTN_DISABLED newButtons? wxBitmap(DragbarElements[idx].bitmap_disabled): wxBitmap(DragbarElements[idx].classic_bitmap_disabled)
-
-  if (GetToolsCount() == 0) {  //being created?
-    for (int idx = 0; size_t(idx) < NumberOf(DragbarElements); ++idx) {
-      AddTool(idx + DRAGBAR_TOOLID_BASE, BTN,
-              ((idx == DND_IDX) ?
-                wxString(_("Drag this image onto another window to paste the selected elemtent or tree")) :
-                wxString(_("Drag this image onto another window to paste the '"))
-                        << _(DragbarElements[idx].name) << _("' field.")), BTN_DISABLED );
-    }
-  }
-  else {
-    for (int idx = 0; size_t(idx) < NumberOf(DragbarElements); ++idx) {
-      SetToolBitmaps(idx + DRAGBAR_TOOLID_BASE, BTN, BTN_DISABLED);
-    }
-  }
-
-#undef BTN
-#undef BTN_DISABLED
+  CreateToolbar();
+  Bind(wxEVT_AUITOOLBAR_BEGIN_DRAG, &DragBarCtrl::OnDrag, this);
+  Bind(wxEVT_UPDATE_UI, &DragBarCtrl::OnUpdateUI, this, DRAGBAR_TOOLID_BASE, DRAGBAR_TOOLID_BASE + DND_IDX);
 }
 
 DragBarCtrl::~DragBarCtrl()
 {
+  Unbind(wxEVT_UPDATE_UI, &DragBarCtrl::OnUpdateUI, this, DRAGBAR_TOOLID_BASE, DRAGBAR_TOOLID_BASE + DND_IDX);
+  Unbind(wxEVT_AUITOOLBAR_BEGIN_DRAG, &DragBarCtrl::OnDrag, this);
 }
 
-wxString DragBarCtrl::GetText(int id) const
+void DragBarCtrl::CreateToolbar()
 {
-  const int idx = id - DRAGBAR_TOOLID_BASE;
+  const bool newButtons = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar);
+
+#define BUTTON_ENABLED newButtons ? \
+  wxBitmap(DragbarElements[idx].bitmap) : \
+  wxBitmap(DragbarElements[idx].classic_bitmap)
+#define BUTTON_DISABLED newButtons ? \
+  wxBitmap(DragbarElements[idx].bitmap_disabled) : \
+  wxBitmap(DragbarElements[idx].classic_bitmap_disabled)
+#define BUTTON_TOOLTIP ((idx == DND_IDX) ? \
+  wxString(_("Drag this image onto another window to paste the selected element or tree.")) : \
+  wxString(_("Drag this image onto another window to paste the '")) << _(DragbarElements[idx].name) << _("' field."))
+
+  ClearTools();
+
+  for (int idx = 0; size_t(idx) < NumberOf(DragbarElements); ++idx) {
+    AddTool(
+      idx + DRAGBAR_TOOLID_BASE,
+      BUTTON_ENABLED, BUTTON_DISABLED,
+      false, nullptr,
+      BUTTON_TOOLTIP
+    );
+  }
+
+  Realize();
+
+#undef BUTTON_ENABLED
+#undef BUTTON_DISABLED
+#undef BUTTON_TOOLTIP
+}
+
+void DragBarCtrl::UpdateBitmaps()
+{
+  const bool newButtons = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar);
+
+#define BUTTON_ENABLED newButtons ? \
+  wxBitmap(DragbarElements[idx].bitmap) : \
+  wxBitmap(DragbarElements[idx].classic_bitmap)
+#define BUTTON_DISABLED newButtons ? \
+  wxBitmap(DragbarElements[idx].bitmap_disabled) : \
+  wxBitmap(DragbarElements[idx].classic_bitmap_disabled)
+
+  if (GetToolCount() > 0) {
+    for (int idx = 0; size_t(idx) < NumberOf(DragbarElements); ++idx) {
+      auto tool = FindToolByIndex(idx);
+      if (tool) {
+        tool->SetBitmap(BUTTON_ENABLED);
+        tool->SetDisabledBitmap(BUTTON_DISABLED);
+      }
+    }
+
+    Realize();
+  }
+
+#undef BUTTON_ENABLED
+#undef BUTTON_DISABLED
+}
+
+void DragBarCtrl::UpdateTooltips()
+{
+#define BUTTON_TOOLTIP ((idx == DND_IDX) ? \
+  wxString(_("Drag this image onto another window to paste the selected element or tree.")) : \
+  wxString(_("Drag this image onto another window to paste the '")) << _(DragbarElements[idx].name) << _("' field."))
+
+  if (GetToolCount() > 0) {
+    for (int idx = 0; size_t(idx) < NumberOf(DragbarElements); ++idx) {
+      auto tool = FindToolByIndex(idx);
+      if (tool) {
+        tool->SetShortHelp(BUTTON_TOOLTIP);
+      }
+    }
+
+    Realize();
+  }
+
+#undef BUTTON_TOOLTIP
+}
+
+wxString DragBarCtrl::GetText(int idx) const
+{
   wxASSERT( idx >= 0 && size_t(idx) < NumberOf(DragbarElements));
 
-  if(idx == DND_IDX)
+  if(idx == DND_IDX) {
     return wxString(wxEmptyString);
-  
+  }
+
   const CItemData *pci(nullptr), *pbci(nullptr);
-  pci = m_frame->GetSelectedEntry();
-  pbci = m_frame->GetBaseEntry(pci);
+  auto mainFrame = wxGetApp().GetPasswordSafeFrame();
+  wxASSERT(mainFrame);
+  pci = mainFrame->GetSelectedEntry();
+  pbci = mainFrame->GetBaseEntry(pci);
 
   return pci ?
     towxstring(pci->GetEffectiveFieldValue(DragbarElements[idx].ft, pbci)) : wxString(wxEmptyString);
 }
 
-bool DragBarCtrl::IsEnabled(int id) const
+void DragBarCtrl::OnDrag(wxAuiToolBarEvent& event)
 {
-  const int idx = id - DRAGBAR_TOOLID_BASE;
-  wxASSERT( idx >= 0 && size_t(idx) < NumberOf(DragbarElements));
-  
-  if(idx == DND_IDX) {
-#if wxUSE_DRAG_AND_DROP && (wxVERSION_NUMBER != 3104) // 3.1.4 is crashing in Drop, use 3.1.5 instead
-    return (m_frame->IsEntryMarked() && PWSprefs::GetInstance()->GetPref(PWSprefs::MultipleInstances)) ? true : false;
-#else
-    return false;
-#endif
-  }
-  
-  const CItemData *pci(nullptr), *pbci(nullptr);
-  pci = m_frame->GetSelectedEntry();
-  pbci = m_frame->GetBaseEntry(pci);
+  auto toolId = static_cast<size_t>(event.GetToolId()) - DRAGBAR_TOOLID_BASE;
+  wxASSERT(toolId >= 0 && toolId <= NumberOf(DragbarElements));
 
-  return pci && !pci->IsFieldValueEmpty(DragbarElements[idx].ft, pbci);
+  // Separators have the index -1 (ID_SEPARATOR)
+  if (toolId < 0) {
+    return;
+  }
+
+  // The last dragbar item is addressing drag & drop for tree element(s)
+  if(toolId == DND_IDX) {
+#if wxUSE_DRAG_AND_DROP && (wxVERSION_NUMBER != 3104) // 3.1.4 is crashing in Drop, use 3.1.5 instead
+    auto mainFrame = wxGetApp().GetPasswordSafeFrame();
+    wxASSERT(mainFrame && mainFrame->m_tree);
+    if (mainFrame->IsEntryMarked() && PWSprefs::GetInstance()->GetPref(PWSprefs::MultipleInstances)) {
+      mainFrame->m_tree->OnDrag(event);
+    }
+#endif
+    return;
+  }
+
+  wxString text = GetText(toolId);
+  if (!text.IsEmpty())
+  {
+    wxTextDataObjectEx dataObj(text);
+    wxDropSource source(dataObj, this);
+    switch (source.DoDragDrop())
+    {
+    case wxDragError:
+      wxLogDebug(_("Error dragging"));
+      break;
+    case wxDragNone:
+      wxLogDebug(_("Nothing happened dragging"));
+      break;
+    case wxDragCopy:
+      wxLogDebug(_("Copied successfully"));
+      break;
+    case wxDragMove:
+      wxLogDebug(_("Moved successfully"));
+      break;
+    case wxDragCancel:
+      wxLogDebug(_("Dragging cancelled"));
+      break;
+    default:
+      wxLogDebug(_("Unexpected result dragging"));
+      break;
+    }
+  }
 }
 
-PasswordSafeFrame *DragBarCtrl::GetBaseFrame() const
+void DragBarCtrl::OnUpdateUI(wxUpdateUIEvent& event)
 {
-  return m_frame;
+  const auto mainFrame = wxGetApp().GetPasswordSafeFrame();
+  wxASSERT(mainFrame && mainFrame->m_tree);
+
+  const auto selection         = mainFrame->GetSelectedEntry();
+  const auto isTreeView        = mainFrame->IsTreeView();
+  const auto hasGroupSelection = mainFrame->m_tree->IsGroupSelected();
+  const auto hasItemSelection  = selection != nullptr;
+  const auto hasAnySelection   = hasItemSelection || hasGroupSelection;
+  const auto hasGroup          = hasItemSelection && (selection->IsGroupSet());
+  const auto hasTitle          = hasItemSelection && (selection->IsTitleSet());
+  const auto hasUser           = hasItemSelection && (selection->IsUserSet());
+  const auto hasPassword       = hasItemSelection && (selection->IsPasswordSet());
+  const auto hasNotes          = hasItemSelection && (selection->IsNotesSet());
+  const auto hasURL            = hasItemSelection && (selection->IsURLSet());
+  const auto hasEmail          = hasItemSelection && (selection->IsEmailSet());
+
+  switch (event.GetId()) {
+    case DRAGBAR_TOOLID_BASE:     // the 'Group' tool item
+      event.Enable(hasGroup);
+      break;
+    case DRAGBAR_TOOLID_BASE + 1: // the 'Title' tool item
+      event.Enable(hasTitle);
+      break;
+    case DRAGBAR_TOOLID_BASE + 2: // the 'User' tool item
+      event.Enable(hasUser);
+      break;
+    case DRAGBAR_TOOLID_BASE + 3: // the 'Password' tool item
+      event.Enable(hasPassword);
+      break;
+    case DRAGBAR_TOOLID_BASE + 4: // the 'Notes' tool item
+      event.Enable(hasNotes);
+      break;
+    case DRAGBAR_TOOLID_BASE + 5: // the 'URL' tool item
+      event.Enable(hasURL);
+      break;
+    case DRAGBAR_TOOLID_BASE + 6: // the 'Email' tool item
+      event.Enable(hasEmail);
+      break;
+    case DRAGBAR_TOOLID_BASE + 7: // the 'DnD' tool item
+      event.Enable(isTreeView && hasAnySelection);
+      break;
+    default:
+      ;
+  }
 }

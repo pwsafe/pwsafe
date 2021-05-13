@@ -7,39 +7,34 @@
  */
 
 /** \file DragBarCtrl.h
- * 
- * Derives from the generic DragBarGenericCtrl class to provide the interfaces 
- * DragBarGenericCtrl uses to get the drag & drop text.  
- * 
- * That doesn't require it to derive from DragBarGenericCtrl, but derivation
- * lets PasswordSafeFrame deal with just this class alone
+ *
  */
 
 #ifndef _DRAGBARCTRL_H_
 #define _DRAGBARCTRL_H_
 
-#include "DragBarGenericCtrl.h"
+#include <wx/aui/auibar.h>
+
+#include "TreeCtrl.h"
+
+#define DRAGBAR_STYLE wxAUI_TB_DEFAULT_STYLE|wxAUI_TB_GRIPPER|wxAUI_TB_OVERFLOW|wxAUI_TB_PLAIN_BACKGROUND
 
 class PasswordSafeFrame;
+class TreeCtrl;
 
-class DragBarCtrl : public DragBarGenericCtrl, public DragBarGenericCtrl::IDragSourceTextProvider
+class DragBarCtrl : public wxAuiToolBar
 {
-  PasswordSafeFrame* m_frame;
-
 public:
-  DragBarCtrl(PasswordSafeFrame* frame);
+  DragBarCtrl(wxWindow *parent, wxWindowID id=wxID_ANY, const wxPoint &position=wxDefaultPosition, const wxSize &size=wxDefaultSize, long style=DRAGBAR_STYLE);
   ~DragBarCtrl();
 
-  //show the classic or new buttons depending on PWSprefs::UseNewToolbar
-  void RefreshButtons();
-
-  //DragBarCtrl::IDragSourceTextProvider override
-  virtual wxString GetText(int id) const override;
-  virtual bool IsEnabled(int id) const override;
-  
-  virtual PasswordSafeFrame *GetBaseFrame() const override;
-
-  DECLARE_CLASS(DragBarCtrl)
+  void CreateToolbar();
+  void UpdateBitmaps();
+  void UpdateTooltips();
+private:
+  wxString GetText(int id) const;
+  void OnDrag(wxAuiToolBarEvent& event);
+  void OnUpdateUI(wxUpdateUIEvent& evt);
 };
 
 #endif // _DRAGBARCTRL_H_
