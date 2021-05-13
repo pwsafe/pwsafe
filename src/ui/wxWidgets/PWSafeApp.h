@@ -123,6 +123,7 @@ public:
   bool ActivateLanguage(wxLanguage language, bool tryOnly);
   wxLanguage GetSystemLanguage();
   wxLanguage GetSelectedLanguage();
+  PasswordSafeFrame* GetPasswordSafeFrame() { return m_frame; }
 };
 
 /*!
