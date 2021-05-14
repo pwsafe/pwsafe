@@ -86,7 +86,8 @@ void PasswordSafeFrame::OnPreferencesClick(wxCommandEvent& WXUNUSED(evt))
       else
         tb->SetWindowStyle(tb->GetWindowStyle() & ~wxAUI_TB_TEXT);
       tb->Realize();
-      Layout();
+      DoLayout();
+      SendSizeEvent();
     }
     
     StringX sxNewDBPrefsString(prefs->Store(true));
