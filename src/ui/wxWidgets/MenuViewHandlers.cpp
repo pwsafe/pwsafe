@@ -297,6 +297,7 @@ void PasswordSafeFrame::OnShowHideDragBar(wxCommandEvent& evt)
   dragbar->Show(evt.IsChecked());
   PWSprefs::GetInstance()->SetPref(PWSprefs::ShowDragbar, evt.IsChecked());
   DoLayout();
+  SendSizeEvent();
 }
 
 //-----------------------------------------------------------------
