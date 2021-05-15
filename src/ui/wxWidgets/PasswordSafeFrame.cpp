@@ -398,22 +398,6 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
   return true;
 }
 
-void PasswordSafeFrame::CreateDragBar()
-{
-  m_Dragbar = new DragBarCtrl(this);
-
-  const bool bShow = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
-  if (!bShow) {
-    m_Dragbar->Hide();
-  }
-  GetMenuBar()->Check(ID_SHOWHIDE_DRAGBAR, bShow);
-
-  m_AuiManager.AddPane(m_Dragbar, wxAuiPaneInfo().
-    Name("dragbar").Caption(_("Dragbar")).
-    ToolbarPane().Top().Row(1).Dockable().Floatable().Resizable()
-  );
-}
-
 void PasswordSafeFrame::CreateStatusBar()
 {
   m_statusBar = new StatusBar(this, ID_STATUSBAR, wxST_SIZEGRIP|wxNO_BORDER);
@@ -903,116 +887,146 @@ void PasswordSafeFrame::CreateMainToolbar()
 }
 
 /**
- * Recreates the main toolbar.
+ * Recreates the main toolbar's items based on <code>PwsToolbarButtons</code>.
  *
  * This assumes that the main toolbar has already been created.
  * If this is the case all existing elements are removed and
  * added again to the toolbar instance.
+ *
+ * @see ToolbarButtons.h
  */
-void PasswordSafeFrame::ReCreateMainToolbar()
+void PasswordSafeFrame::RefreshToolbarButtons()
 {
+  auto pref = PWSprefs::GetInstance();
+  wxASSERT(pref);
   auto toolbar = GetToolBar();
-  wxCHECK_RET(toolbar, wxT("Couldn't find toolbar"));
-  toolbar->ClearTools();
-  RefreshToolbarButtons();
+  wxASSERT(toolbar);
+
+  if (toolbar->GetToolCount() > 0) {
+    toolbar->ClearTools();
+  }
+
+  for (auto & PwsToolbarButton : PwsToolbarButtons) {
+    if (pref->GetPref(PWSprefs::ShowMenuSeparator) && (PwsToolbarButton.id == ID_SEPARATOR)) {
+      toolbar->AddSeparator()->SetId(PwsToolbarButton.id);
+    }
+    else {
+      toolbar->AddTool(
+        PwsToolbarButton.id,
+        wxGetTranslation(PwsToolbarButton.toollabel),
+        PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
+        wxBitmap(PwsToolbarButton.bitmap_normal) :
+        wxBitmap(PwsToolbarButton.bitmap_classic),
+        PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
+        wxBitmap(PwsToolbarButton.bitmap_disabled) :
+        wxBitmap(PwsToolbarButton.bitmap_classic_disabled),
+        wxITEM_NORMAL,
+        wxGetTranslation(PwsToolbarButton.tooltip),
+        wxEmptyString,
+        nullptr);
+    }
+  }
+
+  toolbar->Realize();
 }
 
 /**
- * Recreates the dragbar.
- *
- * This assumes that the dragbar has already been created.
- * If this is the case all existing elements are removed and
- * re-added.
+ * Updates the bitmaps of the main toolbar after changing the toolbar type.
  */
-void PasswordSafeFrame::ReCreateDragToolbar()
+void PasswordSafeFrame::UpdateMainToolbarBitmaps()
+{
+  auto pref = PWSprefs::GetInstance();
+  wxASSERT(pref);
+  auto toolbar = GetToolBar();
+  wxASSERT(toolbar);
+
+  for (int idx = 0; size_t(idx) < NumberOf(PwsToolbarButtons); ++idx) {
+    if (PwsToolbarButtons[idx].id == ID_SEPARATOR)
+      continue;
+
+    auto tool = toolbar->FindToolByIndex(idx);
+    if (tool) {
+      tool->SetBitmap(
+        pref->GetPref(PWSprefs::UseNewToolbar) ?
+        wxBitmap(PwsToolbarButtons[idx].bitmap_normal) :
+        wxBitmap(PwsToolbarButtons[idx].bitmap_classic)
+      );
+      tool->SetDisabledBitmap(
+        pref->GetPref(PWSprefs::UseNewToolbar) ?
+        wxBitmap(PwsToolbarButtons[idx].bitmap_disabled) :
+        wxBitmap(PwsToolbarButtons[idx].bitmap_classic_disabled)
+      );
+    }
+  }
+
+  toolbar->Realize();
+}
+
+/**
+ * Inserts or deletes the separator elements of the main toolbar.
+ *
+ * @param insert if true separators are added, otherwise deleted.
+ */
+void PasswordSafeFrame::UpdateMainToolbarSeparators(bool insert)
+{
+  Freeze();
+
+  if(insert) {
+    RefreshToolbarButtons();
+  }
+  else {
+    DeleteMainToolbarSeparators();
+  }
+
+  Thaw();
+  DoLayout();
+  SendSizeEvent();
+}
+
+/**
+ * Deletes all separator elements from the main toolbar.
+ */
+void PasswordSafeFrame::DeleteMainToolbarSeparators()
+{
+  auto toolbar = GetToolBar();
+  wxASSERT(toolbar);
+  wxASSERT(toolbar->GetToolCount() > 0);
+
+  for (size_t pos = 0; pos < toolbar->GetToolCount(); ++pos) {
+    if(toolbar->FindToolByIndex(static_cast<int>(pos))->GetId() == ID_SEPARATOR)
+      toolbar->DeleteByIndex(pos);
+  }
+
+  toolbar->Realize();
+}
+
+/**
+ * Creates the dragbar.
+ */
+void PasswordSafeFrame::CreateDragBar()
+{
+  m_Dragbar = new DragBarCtrl(this);
+
+  const bool bShow = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
+  if (!bShow) {
+    m_Dragbar->Hide();
+  }
+  GetMenuBar()->Check(ID_SHOWHIDE_DRAGBAR, bShow);
+
+  m_AuiManager.AddPane(m_Dragbar, wxAuiPaneInfo().
+    Name("dragbar").Caption(_("Dragbar")).
+    ToolbarPane().Top().Row(1).Dockable().Floatable().Resizable()
+  );
+}
+
+/**
+ * Updates the dragbar's tooltips after changing the language.
+ */
+void PasswordSafeFrame::UpdateDragbarTooltips()
 {
   auto dragbar = GetDragBar();
   wxCHECK_RET(dragbar, wxT("Couldn't find dragbar"));
   dragbar->UpdateTooltips();
-}
-
-void PasswordSafeFrame::RefreshToolbarButtons()
-{
-  auto tb = GetToolBar();
-  PWSprefs *pref = PWSprefs::GetInstance();
-  wxASSERT(tb);
-  wxASSERT(pref);
-  if (tb->GetToolCount() == 0) {  //being created?
-    if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar)) {
-      for (auto & PwsToolbarButton : PwsToolbarButtons) {
-        if (PwsToolbarButton.id == ID_SEPARATOR) {
-          if(pref->GetPref(PWSprefs::ShowMenuSeparator))
-            tb->AddSeparator()->SetId(PwsToolbarButton.id);
-        }
-        else
-        {
-          tb->AddTool(PwsToolbarButton.id,
-            wxGetTranslation(PwsToolbarButton.toollabel),
-            wxBitmap(PwsToolbarButton.bitmap_normal),
-            wxBitmap(PwsToolbarButton.bitmap_disabled),
-            wxITEM_NORMAL,
-            wxGetTranslation(PwsToolbarButton.tooltip),
-            wxEmptyString,
-            nullptr);
-        }
-      }
-    }
-    else {
-      for (auto & PwsToolbarButton : PwsToolbarButtons) {
-        if (PwsToolbarButton.id == ID_SEPARATOR) {
-          if(pref->GetPref(PWSprefs::ShowMenuSeparator))
-            tb->AddSeparator()->SetId(PwsToolbarButton.id);
-        }
-        else {
-           tb->AddTool(PwsToolbarButton.id, wxGetTranslation(PwsToolbarButton.toollabel), wxBitmap(PwsToolbarButton.bitmap_classic),
-                      wxGetTranslation(PwsToolbarButton.tooltip) );
-        }
-      }
-    }
-  }
-  else { //toolbar type was changed from the menu
-    if (pref->GetPref(PWSprefs::UseNewToolbar)) {
-      for (int idx = 0; size_t(idx) < NumberOf(PwsToolbarButtons); ++idx) {
-        if (PwsToolbarButtons[idx].id == ID_SEPARATOR)
-          continue;
-        auto tool = tb->FindToolByIndex(idx);
-        if (tool) {
-          tool->SetBitmap(wxBitmap(PwsToolbarButtons[idx].bitmap_normal));
-          tool->SetDisabledBitmap(wxBitmap(PwsToolbarButtons[idx].bitmap_disabled));
-        }
-      }
-    }
-    else {
-      for (int idx = 0; size_t(idx) < NumberOf(PwsToolbarButtons); ++idx) {
-        if (PwsToolbarButtons[idx].id == ID_SEPARATOR)
-          continue;
-        auto tool = tb->FindToolByIndex(idx);
-        if (tool) {
-          tool->SetBitmap(wxBitmap(PwsToolbarButtons[idx].bitmap_classic));
-          tool->SetDisabledBitmap(wxBitmap(PwsToolbarButtons[idx].bitmap_classic_disabled));
-        }
-      }
-    }
-  }
-  tb->Realize();
-}
-
-void PasswordSafeFrame::ReCreateMainToolbarSeparator(bool bInsert)
-{
-  if(bInsert) {
-    ReCreateMainToolbar();
-  }
-  else { // Delete
-    auto tb = GetToolBar();
-    wxASSERT(tb);
-    wxASSERT(tb->GetToolCount() > 0);
-
-    for (size_t pos = 0; pos < tb->GetToolCount(); ++pos) {
-      if(tb->FindToolByIndex(static_cast<int>(pos))->GetId() == ID_SEPARATOR)
-        tb->DeleteByIndex(pos);
-    }
-    tb->Realize();
-  }
 }
 
 /*!

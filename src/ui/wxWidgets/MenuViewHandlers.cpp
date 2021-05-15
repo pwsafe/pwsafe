@@ -42,12 +42,16 @@ void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
   //This assumes the menu item is checked before it comes here
   if (GetMenuBar()->IsChecked(evt.GetId())) {
     PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, evt.GetId() == ID_TOOLBAR_NEW);
-    RefreshToolbarButtons();
-    DragBarCtrl* dragbar = GetDragBar();
+    UpdateMainToolbarBitmaps();
+
+    auto dragbar = GetDragBar();
     wxCHECK_RET(dragbar, wxT("Could not find dragbar"));
     dragbar->UpdateBitmaps();
-    wxCHECK_RET(m_search, wxT("Search object not created as expected"));
-    m_search->RefreshButtons();
+
+    auto searchbar = GetSearchBar();
+    wxCHECK_RET(searchbar, wxT("Search object not created as expected"));
+    searchbar->RefreshButtons();
+
     DoLayout();
     SendSizeEvent();
   }
