@@ -409,7 +409,7 @@ void PasswordSafeFrame::CreateDragBar()
   GetMenuBar()->Check(ID_SHOWHIDE_DRAGBAR, bShow);
 
   m_AuiManager.AddPane(m_Dragbar, wxAuiPaneInfo().
-    Name("dragbar").Caption("Dragbar").
+    Name("dragbar").Caption(_("Dragbar")).
     ToolbarPane().Top().Row(1).Dockable().Floatable().Resizable()
   );
 }
@@ -897,7 +897,7 @@ void PasswordSafeFrame::CreateMainToolbar()
   GetMenuBar()->Check(ID_SHOWHIDE_TOOLBAR, bShow);
 
   m_AuiManager.AddPane(m_Toolbar, wxAuiPaneInfo().
-    Name("maintoolbar").Caption("Main Toolbar").
+    Name("maintoolbar").Caption(_("Main Toolbar")).
     ToolbarPane().Top().Row(0).Dockable().Floatable().Resizable()
   );
 }
