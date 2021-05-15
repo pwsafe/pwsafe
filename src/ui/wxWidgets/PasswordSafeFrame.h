@@ -642,18 +642,23 @@ private:
   Command *DeleteItem(CItemData *pci, wxTreeItemId root = 0);
   Command *Delete(wxTreeItemId tid, wxTreeItemId root = 0); // for group delete
   void UpdateAccessTime(CItemData &ci);
+
   void CreateMainToolbar();
-  void ReCreateMainToolbar();
-  void ReCreateMainToolbarSeparator(bool bInsert);
-  void ReCreateDragToolbar();
+  void RefreshToolbarButtons();
+  void UpdateMainToolbarBitmaps();
+  void UpdateMainToolbarSeparators(bool insert);
+  void DeleteMainToolbarSeparators();
+
+  void CreateDragBar();
+  void UpdateDragbarTooltips();
+  void CreateStatusBar();
+  wxAuiToolBar* GetToolBar() { return m_Toolbar; }
+  DragBarCtrl* GetDragBar() { return m_Dragbar; };
+  PasswordSafeSearch* GetSearchBar() { return m_search; };
+
   long GetEventRUEIndex(const wxCommandEvent& evt) const;
   bool IsRUEEvent(const wxCommandEvent& evt) const;
   void RebuildGUI(const int iView = iBothViews);
-  void CreateDragBar();
-  void RefreshToolbarButtons();
-  wxAuiToolBar* GetToolBar() { return m_Toolbar; }
-  DragBarCtrl* GetDragBar() { return m_Dragbar; };
-  void CreateStatusBar();
   void SaveSettings() const;
   void LockDb();
   void TryIconize(int nAttempts = 5);
