@@ -76,7 +76,7 @@ void PasswordSafeFrame::OnPreferencesClick(wxCommandEvent& WXUNUSED(evt))
   OptionsPropertySheetDlg *window = new OptionsPropertySheetDlg(this, m_core);
   if (window->ShowModal() == wxID_OK) {
     if(showMenuSeprator != prefs->GetPref(PWSprefs::ShowMenuSeparator))
-      ReCreateMainToolbarSeparator(prefs->GetPref(PWSprefs::ShowMenuSeparator));
+      UpdateMainToolbarSeparators(prefs->GetPref(PWSprefs::ShowMenuSeparator));
     if((autoAdjColWidth != prefs->GetPref(PWSprefs::AutoAdjColWidth)) && IsGridView() && IsShown())
       Show(true);
     if(toolbarShowText != prefs->GetPref(PWSprefs::ToolbarShowText)) {
@@ -291,6 +291,8 @@ void PasswordSafeFrame::OnYubikeyMngClick(wxCommandEvent& WXUNUSED(event))
  */
 void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
 {
+  Freeze();
+
   auto id = evt.GetId();
   // First, uncheck all language menu items, hence the previously selected but also the new one
   for (int menu_id = ID_LANGUAGE_BEGIN+1; menu_id<ID_LANGUAGE_END; menu_id++)
@@ -312,10 +314,10 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
     UpdateMenuBar();
 
     // Recreate toolbar
-    ReCreateMainToolbar();
+    RefreshToolbarButtons();
 
     // Recreate dragbar
-    ReCreateDragToolbar();
+    UpdateDragbarTooltips();
 
     // Recreate search bar
     wxCHECK_RET(m_search, wxT("Search object not created so far"));
@@ -323,6 +325,10 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
   } else {
     GetMenuBar()->Check( m_selectedLanguage, true );
   }
+
+  Thaw();
+  DoLayout();
+  SendSizeEvent();
 }
 
 /*!
