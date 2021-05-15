@@ -48,6 +48,8 @@ void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
     dragbar->UpdateBitmaps();
     wxCHECK_RET(m_search, wxT("Search object not created as expected"));
     m_search->RefreshButtons();
+    DoLayout();
+    SendSizeEvent();
   }
 }
 
