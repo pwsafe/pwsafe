@@ -18,7 +18,7 @@
 # See: https://hub.docker.com/_/debian and
 # https://hub.docker.com/_/ubuntu
 
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 # Build with: sudo docker build -t passwordsafe .
 # --or--      sudo docker build -t passwordsafe:1.10 .
@@ -28,8 +28,13 @@ LABEL "maintainer"="The Passwordsafe Project <Passwordsafe-linux@lists.sourcefor
 
 # Install deps for PWSafe (LOTS and LOTS!)
 # See https://docs.docker.com/develop/develop-images/dockerfile_best-practices#apt-get
+
+# Prevent prompting for info during package install, e.g., timezone
+ARG DEBIAN_FRONTEND=noninteractive
+
 RUN apt-get update \
-     && apt-get install -qy libwxgtk3.0-0v5 libxtst6 libxerces-c3.2 libykpers-1-1 libqrencode3 libcurl4 libmagic1 locales \
+     && apt-get install -qy libwxgtk3.0-gtk3-0v5 libxtst6 libxerces-c3.2 libykpers-1-1 \
+     libqrencode4 libcurl4 libmagic1 locales xdg-utils \
      && rm -rf /var/lib/apt/lists/*
 
 # Set the locale, per http://jaredmarkell.com/docker-and-locales/
@@ -43,11 +48,11 @@ RUN mkdir -p /root/.local/share
 
 # This is here to leave everything above UNCHANGED as much as possible
 # to allow layer caching to work at build time!
-ARG deb_file=passwordsafe-ubuntu18-1.10-amd64.deb
+ARG deb_file=passwordsafe-ubuntu20-1.13-amd64.deb
 
 LABEL "pwsafe"="$deb_file"
 
-ADD https://github.com/pwsafe/pwsafe/releases/download/1.010.0/$deb_file \
+ADD https://github.com/pwsafe/pwsafe/releases/download/1.13.0/$deb_file \
      /tmp/$deb_file
 
 RUN dpkg -i /tmp/$deb_file && rm /tmp/$deb_file
@@ -62,69 +67,70 @@ CMD /usr/bin/pwsafe
 # ----
 #
 # ~/working/docker/passwordsafe$ time sudo docker build -t 
-# passwordsafe:1.10 .
+# passwordsafe:1.13 .
 # Sending build context to Docker daemon  3.584kB
-# Step 1/13 : FROM ubuntu:18.04
-#   ---> 1d9c17228a9e
-# Step 2/13 : LABEL "maintainer"="The Passwordsafe Project 
-# <Passwordsafe-linux@lists.sourceforge.net>"
-#   ---> Using cache
-#   ---> 7740484d49d6
-# Step 3/13 : RUN apt-get update     && apt-get install -qy 
-# libwxgtk3.0-0v5 libxtst6 libxerces-c3.2 libykpers-1-1 libqrencode3 
-# libcurl4 locales     && rm -rf /var/lib/apt/lists/*
-#   ---> Using cache
-#   ---> a27408669b39
-# Step 4/13 : RUN locale-gen en_US.UTF-8
-#   ---> Using cache
-#   ---> 5a77b0e1353a
-# Step 5/13 : ENV LANG en_US.UTF-8
-#   ---> Using cache
-#   ---> 2f130971ca1f
-# Step 6/13 : ENV LANGUAGE en_US:en
-#   ---> Using cache
-#   ---> 5e3b97476bcb
-# Step 7/13 : ENV LC_ALL en_US.UTF-8
-#   ---> Using cache
-#   ---> 3fab6d434cb1
-# Step 8/13 : RUN mkdir -p /root/.local/share
-#   ---> Using cache
-#   ---> 853a2a59033b
-# Step 9/13 : ARG deb_file=passwordsafe-ubuntu18-1.08.1-BETA.amd64.deb
-#   ---> Using cache
-#   ---> b8c13697e68e
-# Step 10/13 : LABEL "pwsafe"="$deb_file"
-#   ---> Using cache
-#   ---> a04a7de3ab67
-# Step 11/13 : ADD 
-# https://github.com/pwsafe/pwsafe/releases/download/1.10/$deb_file 
-#   /tmp/$deb_file
-# Downloading  11.26MB/11.26MB
-#   ---> Using cache
-#   ---> d75d25d248ca
-# Step 12/13 : RUN dpkg -i /tmp/$deb_file && rm /tmp/$deb_file
-#   ---> Using cache
-#   ---> 5d88cddbe9b4
-# Step 13/13 : CMD /usr/bin/pwsafe
-#   ---> Using cache
-#   ---> 00b895e642f0
-# Successfully built 00b895e642f0
-# Successfully tagged passwordsafe:1.10
-# 
-# real    0m3.823s
-# user    0m0.120s
-# sys     0m0.040
+# Step 1/14 : FROM ubuntu:20.04
+#  ---> 7e0aa2d69a15
+# Step 2/14 : LABEL "maintainer"="The Passwordsafe Project <Passwordsafe-linux@lists.sourceforge.net>"
+#  ---> Using cache
+#  ---> f73b08debbee
+# Step 3/14 : ARG DEBIAN_FRONTEND=noninteractive
+#  ---> Using cache
+#  ---> 87c43ae97eab
+# Step 4/14 : RUN apt-get update      && apt-get install -qy libwxgtk3.0-gtk3-0v5 libxtst6 libxerces-c3.2 libykpers-1-1      libqrencode4 libcurl4 libmagic1 locales xdg-utils      && rm -rf /var/lib/apt/lists/*
+#  ---> Running in da96e7b04f12
+# Removing intermediate container da96e7b04f12
+#  ---> cc4b6053ddd9
+# Step 5/14 : RUN locale-gen en_US.UTF-8
+#  ---> Running in 02f5d5470f45
+# Removing intermediate container 02f5d5470f45
+#  ---> 8a497900a15d
+# Step 6/14 : ENV LANG en_US.UTF-8
+#  ---> Running in 30bf289633f9
+# Removing intermediate container 30bf289633f9
+#  ---> fbd278ea5c8c
+# Step 7/14 : ENV LANGUAGE en_US:en
+#  ---> Running in faaae12b16f8
+# Removing intermediate container faaae12b16f8
+#  ---> eb8d814f7443
+# Step 8/14 : ENV LC_ALL en_US.UTF-8
+#  ---> Running in c8737036d28c
+# Removing intermediate container c8737036d28c
+#  ---> 7a1d40221f82
+# Step 9/14 : RUN mkdir -p /root/.local/share
+#  ---> Running in b80f707744df
+# Removing intermediate container b80f707744df
+#  ---> 49318139ad9a
+# Step 10/14 : ARG deb_file=passwordsafe-ubuntu20-1.13-amd64.deb
+#  ---> Running in e3a4a58fa6d6
+# Removing intermediate container e3a4a58fa6d6
+#  ---> b1d8383eb7df
+# Step 11/14 : LABEL "pwsafe"="$deb_file"
+#  ---> Running in 301153be3dc4
+# Removing intermediate container 301153be3dc4
+#  ---> c2644a37972d
+# Step 12/14 : ADD https://github.com/pwsafe/pwsafe/releases/download/1.13.0/$deb_file
+#  ---> 807bacbac588
+# Step 13/14 : RUN dpkg -i /tmp/$deb_file && rm /tmp/$deb_file
+#  ---> Running in b42e203f31aa
+# Removing intermediate container b42e203f31aa
+#  ---> a9435c693fb5
+# Step 14/14 : CMD /usr/bin/pwsafe
+#  ---> Running in e1dd74b99040
+# Removing intermediate container e1dd74b99040
+#  ---> 28d5f8ae80b9
+# Successfully built 28d5f8ae80b9
+# Successfully tagged passwordsafe:1.13
+#
+# real	7m49.988s
+# user	0m0.448s
+# sys	0m0.392s
 # ----
 # 
 # The image is not small because of the large amount of stuff that gets 
 # pulled in to meet the deps:
 # ----
 # ~/working/docker/passwordsafe$ sudo docker image list
-# REPOSITORY       TAG        IMAGE ID         CREATED             SIZE
-# passwordsafe     1.10   00b895e642f0     2 minutes ago       359MB
-# passwordsafe     latest     00b895e642f0     2 minutes ago       359MB
-# <none>           <none>     852d5e907158     29 minutes ago      359MB
-# <none>           <none>     9d5272a16c46     About an hour ago   359MB
-# ...
-# ubuntu           18.04      1d9c17228a9e     7 days ago          86.7MB
+# REPOSITORY           TAG       IMAGE ID       CREATED          SIZE
+# passwordsafe         1.13      28d5f8ae80b9   11 minutes ago   1.05GB
 # ----
