@@ -8,4 +8,5 @@ Icon=pwsafe
 Terminal=false
 Type=Application
 StartupNotify=true
+StartupWMClass=pwsafe
 Categories=GTK;Utility;Security;
