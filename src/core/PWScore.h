@@ -63,7 +63,7 @@ struct st_ValidateResults;
 class PWScore : public Observable, public CommandInterface
 {
 public:
-  enum {
+  enum Status {
     SUCCESS = 0,
     FAILURE = 1,
     USER_DECLINED_SAVE = 2,
@@ -92,6 +92,7 @@ public:
     OPEN_NODB,                                //  24
     MAX_SIZE_EXCEEDED                         //  25
   };
+  static stringT StatusText(int s);
 
   PWScore();
   ~PWScore();
