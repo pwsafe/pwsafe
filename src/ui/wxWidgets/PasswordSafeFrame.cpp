@@ -413,6 +413,8 @@ PasswordSafeFrame::~PasswordSafeFrame()
 {
 ////@begin PasswordSafeFrame destruction
 ////@end PasswordSafeFrame destruction
+  m_AuiManager.UnInit();
+
   delete m_search;
   m_search = nullptr;
 
