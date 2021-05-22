@@ -31,6 +31,7 @@ public:
   void CreateToolbar();
   void UpdateBitmaps();
   void UpdateTooltips();
+  bool HasTools() const { return GetToolCount() > 0; }
 private:
   wxString GetText(int id) const;
   void OnDrag(wxAuiToolBarEvent& event);

@@ -68,6 +68,7 @@
 
 enum { DRAGBAR_TOOLID_BASE = 100 };
 
+
 #define PWS_TOOLINFO(t, f) {  wxSTRINGIZE_T(t),                                       \
                               wxCONCAT(t, _xpm),                                      \
                               wxCONCAT(t, X_xpm),                                     \
@@ -76,7 +77,7 @@ enum { DRAGBAR_TOOLID_BASE = 100 };
                               CItemData::f  }
 
 struct _DragbarElementInfo {
-  const TCHAR* name;
+  const wxString name;
   const char** bitmap;
   const char** bitmap_disabled;
   const char** classic_bitmap;
@@ -95,6 +96,44 @@ struct _DragbarElementInfo {
 // Drag and drop tree or item is last element in drag bar
 #define DND_IDX (NumberOf(DragbarElements) - 1)    // Last entry is DnD
 
+/**
+ * Provides the bitmap that represents an enabled toolbar item in the new or classic style, depending on user preferences.
+ * @param idx the toolbar item's position in <code>DragbarElements</code>.
+ * @return toolbar item bitmap
+ */
+inline wxBitmap BitmapForEnabledButton(int idx)
+{
+  const bool newButtons = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar);
+  return newButtons ?
+         wxBitmap(DragbarElements[idx].bitmap) :
+         wxBitmap(DragbarElements[idx].classic_bitmap);
+}
+
+/**
+ * Provides the bitmap that represents an disabled toolbar item in the new or classic style, depending on user preferences.
+ * @param idx the toolbar item's position in <code>DragbarElements</code>.
+ * @return toolbar item bitmap
+ */
+inline wxBitmap BitmapForDisabledButton(int idx)
+{
+  const bool newButtons = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar);
+  return newButtons ?
+         wxBitmap(DragbarElements[idx].bitmap_disabled) :
+         wxBitmap(DragbarElements[idx].classic_bitmap_disabled);
+}
+
+/**
+ * Provides the toolbar item tooltip.
+ * @param idx the toolbar item's position in <code>DragbarElements</code>.
+ * @return the tooltip string
+ */
+inline wxString TooltipForButton(int idx)
+{
+  return (idx == DND_IDX) ?
+         _("Drag this image onto another window to paste the selected element or tree.") :
+         wxString::Format(_("Drag this image onto another window to paste the '%s' field."), _(DragbarElements[idx].name));
+}
+
 DragBarCtrl::DragBarCtrl(wxWindow *parent, wxWindowID id, const wxPoint &position, const wxSize &size, long style) : wxAuiToolBar(parent, id, position, size, style)
 {
   CreateToolbar();
@@ -108,85 +147,66 @@ DragBarCtrl::~DragBarCtrl()
   Unbind(wxEVT_AUITOOLBAR_BEGIN_DRAG, &DragBarCtrl::OnDrag, this);
 }
 
+/**
+ * Creates the toolbar items. Existing tools will be deleted beforehand.
+ */
 void DragBarCtrl::CreateToolbar()
 {
-  const bool newButtons = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar);
-
-#define BUTTON_ENABLED newButtons ? \
-  wxBitmap(DragbarElements[idx].bitmap) : \
-  wxBitmap(DragbarElements[idx].classic_bitmap)
-#define BUTTON_DISABLED newButtons ? \
-  wxBitmap(DragbarElements[idx].bitmap_disabled) : \
-  wxBitmap(DragbarElements[idx].classic_bitmap_disabled)
-#define BUTTON_TOOLTIP ((idx == DND_IDX) ? \
-  wxString(_("Drag this image onto another window to paste the selected element or tree.")) : \
-  wxString(_("Drag this image onto another window to paste the '")) << _(DragbarElements[idx].name) << _("' field."))
-
   ClearTools();
 
   for (int idx = 0; size_t(idx) < NumberOf(DragbarElements); ++idx) {
     AddTool(
       idx + DRAGBAR_TOOLID_BASE,
-      BUTTON_ENABLED, BUTTON_DISABLED,
+      BitmapForEnabledButton(idx),
+      BitmapForDisabledButton(idx),
       false, nullptr,
-      BUTTON_TOOLTIP
+      TooltipForButton(idx)
     );
   }
 
   Realize();
-
-#undef BUTTON_ENABLED
-#undef BUTTON_DISABLED
-#undef BUTTON_TOOLTIP
 }
 
+/**
+ * Updates the bitmaps of the tool elements after the user changed the icon style.
+ */
 void DragBarCtrl::UpdateBitmaps()
 {
-  const bool newButtons = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar);
-
-#define BUTTON_ENABLED newButtons ? \
-  wxBitmap(DragbarElements[idx].bitmap) : \
-  wxBitmap(DragbarElements[idx].classic_bitmap)
-#define BUTTON_DISABLED newButtons ? \
-  wxBitmap(DragbarElements[idx].bitmap_disabled) : \
-  wxBitmap(DragbarElements[idx].classic_bitmap_disabled)
-
-  if (GetToolCount() > 0) {
+  if (HasTools()) {
     for (int idx = 0; size_t(idx) < NumberOf(DragbarElements); ++idx) {
       auto tool = FindToolByIndex(idx);
       if (tool) {
-        tool->SetBitmap(BUTTON_ENABLED);
-        tool->SetDisabledBitmap(BUTTON_DISABLED);
+        tool->SetBitmap(BitmapForEnabledButton(idx));
+        tool->SetDisabledBitmap(BitmapForDisabledButton(idx));
       }
     }
 
     Realize();
   }
-
-#undef BUTTON_ENABLED
-#undef BUTTON_DISABLED
 }
 
+/**
+ * Updates the tooltips of the tool elements after the user changed the language.
+ */
 void DragBarCtrl::UpdateTooltips()
 {
-#define BUTTON_TOOLTIP ((idx == DND_IDX) ? \
-  wxString(_("Drag this image onto another window to paste the selected element or tree.")) : \
-  wxString(_("Drag this image onto another window to paste the '")) << _(DragbarElements[idx].name) << _("' field."))
-
-  if (GetToolCount() > 0) {
+  if (HasTools()) {
     for (int idx = 0; size_t(idx) < NumberOf(DragbarElements); ++idx) {
       auto tool = FindToolByIndex(idx);
       if (tool) {
-        tool->SetShortHelp(BUTTON_TOOLTIP);
+        tool->SetShortHelp(TooltipForButton(idx));
       }
     }
 
     Realize();
   }
-
-#undef BUTTON_TOOLTIP
 }
 
+/**
+ * Provides the string of the items data field for the drag and drop procedure.
+ * @param idx the toolbar item's position in <code>DragbarElements</code>.
+ * @return the items data
+ */
 wxString DragBarCtrl::GetText(int idx) const
 {
   wxASSERT( idx >= 0 && size_t(idx) < NumberOf(DragbarElements));
@@ -205,6 +225,10 @@ wxString DragBarCtrl::GetText(int idx) const
     towxstring(pci->GetEffectiveFieldValue(DragbarElements[idx].ft, pbci)) : wxString(wxEmptyString);
 }
 
+/**
+ * The event handler when dragging of a tool item starts.
+ * @param event the <code>wxAuiToolBarEvent</code> event
+ */
 void DragBarCtrl::OnDrag(wxAuiToolBarEvent& event)
 {
   auto toolId = static_cast<size_t>(event.GetToolId()) - DRAGBAR_TOOLID_BASE;
@@ -256,6 +280,10 @@ void DragBarCtrl::OnDrag(wxAuiToolBarEvent& event)
   }
 }
 
+/**
+ * Updates continuously the toolbar items state (enabled/disabled).
+ * @param event the <code>wxUpdateUIEvent</code> event
+ */
 void DragBarCtrl::OnUpdateUI(wxUpdateUIEvent& event)
 {
   const auto mainFrame = wxGetApp().GetPasswordSafeFrame();
