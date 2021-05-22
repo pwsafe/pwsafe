@@ -316,7 +316,7 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
     // Recreate toolbar
     RefreshToolbarButtons();
 
-    // Recreate dragbar
+    // Update dragbar tooltips
     UpdateDragbarTooltips();
 
     // Recreate search bar
