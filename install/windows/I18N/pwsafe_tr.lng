@@ -19,136 +19,137 @@
 ;=================================================================
 
 ; RESERVE_TITLE "Choose Installation Type"
-LangString RESERVE_TITLE ${LANG_TURKISH} "Yükleme Tipini Seçin"
+LangString RESERVE_TITLE ${LANG_TURKISH} "Yï¿½kleme Tipini Seï¿½in"
 
 ; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString RESERVE_FIELD1 ${LANG_TURKISH} "Normal (kayýt defterini kullanýr, ev kullanýmý ve tek kullanýcýlý bilgisayarlar için uygun)"
+LangString RESERVE_FIELD1 ${LANG_TURKISH} "Normal (kayï¿½t defterini kullanï¿½r, ev kullanï¿½mï¿½ ve tek kullanï¿½cï¿½lï¿½ bilgisayarlar iï¿½in uygun)"
 
 ; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString RESERVE_FIELD2 ${LANG_TURKISH} "Yeþil (Taþýnabilir sürüm için; kayýt defterini kullanmaz)"
+LangString RESERVE_FIELD2 ${LANG_TURKISH} "Yeï¿½il (Taï¿½ï¿½nabilir sï¿½rï¿½m iï¿½in; kayï¿½t defterini kullanmaz)"
 
 ; PROGRAM_FILES "Program Files"
-LangString PROGRAM_FILES ${LANG_TURKISH} "Program Dosyalarý"
+LangString PROGRAM_FILES ${LANG_TURKISH} "Program Dosyalarï¿½"
 
 ; START_AUTO "Start automatically"
-LangString START_AUTO ${LANG_TURKISH} "Otomatik olarak baþlat"
+LangString START_AUTO ${LANG_TURKISH} "Otomatik olarak baï¿½lat"
 
 ; START_SHOW "Show in start menu"
-LangString START_SHOW ${LANG_TURKISH} "Baþlat menüsünde göster"
+LangString START_SHOW ${LANG_TURKISH} "Baï¿½lat menï¿½sï¿½nde gï¿½ster"
 
 ; START_SHORTCUT "Install desktop shortcut"
-LangString START_SHORTCUT ${LANG_TURKISH} "Masaüstüne kýsayol ekle"
+LangString START_SHORTCUT ${LANG_TURKISH} "Masaï¿½stï¿½ne kï¿½sayol ekle"
 
 ; UNINSTALL_SHORTCUT "Uninstall shortcut"
-LangString UNINSTALL_SHORTCUT ${LANG_TURKISH} "Kaldýrma kýsayolu"
+LangString UNINSTALL_SHORTCUT ${LANG_TURKISH} "Kaldï¿½rma kï¿½sayolu"
 
 ;--------------------------------
 ; Descriptions
 
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
-LangString DESC_ProgramFiles ${LANG_TURKISH} "Password Safe'i çalýþtýrmak için gerekli temel dosyalarý yükler."
+LangString DESC_ProgramFiles ${LANG_TURKISH} "Password Safe'i ï¿½alï¿½ï¿½tï¿½rmak iï¿½in gerekli temel dosyalarï¿½ yï¿½kler."
 
 ; DESC_CliTool "Installs pwsafe-cli, a command line utility."
 LangString DESC_CliTool ${LANG_TURKISH} "Installs pwsafe-cli, a command line utility."
 
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
-LangString DESC_LangSupport ${LANG_TURKISH} "Lütfen Password Safe'in kullancaðý dil(ler)i seçin."
+LangString DESC_LangSupport ${LANG_TURKISH} "Lï¿½tfen Password Safe'in kullancaï¿½ï¿½ dil(ler)i seï¿½in."
 
 ; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
-LangString DESC_StartUp ${LANG_TURKISH} "Password Safe'i Windows baþlatýlýrken baþlatýr."
+LangString DESC_StartUp ${LANG_TURKISH} "Password Safe'i Windows baï¿½latï¿½lï¿½rken baï¿½latï¿½r."
 
 ; DESC_StartMenu "Creates an entry in the start menu for Password Safe."
-LangString DESC_StartMenu ${LANG_TURKISH} "Baþlat menüsüne Password Safe için bir girdi ekler."
+LangString DESC_StartMenu ${LANG_TURKISH} "Baï¿½lat menï¿½sï¿½ne Password Safe iï¿½in bir girdi ekler."
 
-; DESC_DesktopShortcut "Masaüstüneze Password Safe için bir kýsayol ekler."
-LangString DESC_DesktopShortcut ${LANG_TURKISH} "Masaüstünüze Password Safe için bir kýsayol ekler."
+; DESC_DesktopShortcut "Masaï¿½stï¿½neze Password Safe iï¿½in bir kï¿½sayol ekler."
+LangString DESC_DesktopShortcut ${LANG_TURKISH} "Masaï¿½stï¿½nï¿½ze Password Safe iï¿½in bir kï¿½sayol ekler."
 
 ; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
-LangString DESC_UninstallMenu ${LANG_TURKISH} "Baþlat menüsüne PasswordSafe'i kaldýrmak için bir kýsayol ekler"
+LangString DESC_UninstallMenu ${LANG_TURKISH} "Baï¿½lat menï¿½sï¿½ne PasswordSafe'i kaldï¿½rmak iï¿½in bir kï¿½sayol ekler"
   
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 ; TEXT_GC_TITLE "Installation Type"
-LangString TEXT_GC_TITLE ${LANG_TURKISH} "Yükleme Tipi"
+LangString TEXT_GC_TITLE ${LANG_TURKISH} "Yï¿½kleme Tipi"
 
 ; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
-LangString TEXT_GC_SUBTITLE ${LANG_TURKISH} "Tek bir bilgisayarda kullanmak için Normal'i, taþýnabilir yükleme için Yeþil'i seçin. Emin deðilseniz 'Normal' uygundur."
+LangString TEXT_GC_SUBTITLE ${LANG_TURKISH} "Tek bir bilgisayarda kullanmak iï¿½in Normal'i, taï¿½ï¿½nabilir yï¿½kleme iï¿½in Yeï¿½il'i seï¿½in. Emin deï¿½ilseniz 'Normal' uygundur."
 
 ; PSWINI_TITLE "Choose Installation Type"
-LangString PSWINI_TITLE ${LANG_TURKISH} "Yükleme Tipini Seçin"
+LangString PSWINI_TITLE ${LANG_TURKISH} "Yï¿½kleme Tipini Seï¿½in"
 
 ; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString PSWINI_TEXT1 ${LANG_TURKISH} "Normal (kayýt defterini kullanýr, ev kullanýmý ve tek kullanýcýlý bilgisayarlar için uygun)"
+LangString PSWINI_TEXT1 ${LANG_TURKISH} "Normal (kayï¿½t defterini kullanï¿½r, ev kullanï¿½mï¿½ ve tek kullanï¿½cï¿½lï¿½ bilgisayarlar iï¿½in uygun)"
 
 ; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString PSWINI_TEXT2 ${LANG_TURKISH} "Yeþil (Taþýnabilir sürüm için; kayýt defterini kullanmaz)"
+LangString PSWINI_TEXT2 ${LANG_TURKISH} "Yeï¿½il (Taï¿½ï¿½nabilir sï¿½rï¿½m iï¿½in; kayï¿½t defterini kullanmaz)"
 
 ;--------------------------------
 ; checks and warnings
 
 ; RUNNING_INSTALL "The installer is already running."
-LangString RUNNING_INSTALL ${LANG_TURKISH} "Yükleyici zaten çalýþýyor."
+LangString RUNNING_INSTALL ${LANG_TURKISH} "Yï¿½kleyici zaten ï¿½alï¿½ï¿½ï¿½yor."
 
 ; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
-LangString RUNNING_APPLICATION ${LANG_TURKISH} "Yeni sürüm yüklemeden önce lütfen açýk olan tüm PasswordSafe kopyalarýný kapatýn"
+LangString RUNNING_APPLICATION ${LANG_TURKISH} "Yeni sï¿½rï¿½m yï¿½klemeden ï¿½nce lï¿½tfen aï¿½ï¿½k olan tï¿½m PasswordSafe kopyalarï¿½nï¿½ kapatï¿½n"
 
 ; LANG_INSTALL "Installation Language"
-LangString LANG_INSTALL ${LANG_TURKISH} "Yükleme Dili"
+LangString LANG_INSTALL ${LANG_TURKISH} "Yï¿½kleme Dili"
 
 ; LANG_SELECT "Please select the language for the installation"
-LangString LANG_SELECT ${LANG_TURKISH} "Lütfen yükleme dilini seçiniz"
+LangString LANG_SELECT ${LANG_TURKISH} "Lï¿½tfen yï¿½kleme dilini seï¿½iniz"
 
 ; CLI_TOOL "Command-line tool"
 LangString CLI_TOOL ${LANG_TURKISH} "Command-line tool"
 
 ; LANGUAGE_SUPPORT "Language Support"
-LangString LANGUAGE_SUPPORT ${LANG_TURKISH} "Dil Desteði"
+LangString LANGUAGE_SUPPORT ${LANG_TURKISH} "Dil Desteï¿½i"
 ; ENGLISH_SUPPORT "English"
-LangString ENGLISH_SUPPORT ${LANG_TURKISH} "Ýngilizce"
+LangString ENGLISH_SUPPORT ${LANG_TURKISH} "ï¿½ngilizce"
 ; CHINESE_CN_SUPPORT "Chinese (Simplified)"
-LangString CHINESE_CN_SUPPORT ${LANG_TURKISH} "Çince (Basitleþtirilmiþ)"
+LangString CHINESE_CN_SUPPORT ${LANG_TURKISH} "ï¿½ince (Basitleï¿½tirilmiï¿½)"
 ; CHINESE_TW_SUPPORT "Chinese (Traditional)"
-LangString CHINESE_TW_SUPPORT ${LANG_TURKISH} "Çince (Geleneksel)"
+LangString CHINESE_TW_SUPPORT ${LANG_TURKISH} "ï¿½ince (Geleneksel)"
 ; GERMAN_SUPPORT "German"
 LangString GERMAN_SUPPORT ${LANG_TURKISH} "Almanca"
 ; SPANISH_SUPPORT "Spanish"
-LangString SPANISH_SUPPORT ${LANG_TURKISH} "Ýspanyolca"
+LangString SPANISH_SUPPORT ${LANG_TURKISH} "ï¿½spanyolca"
 ; SWEDISH_SUPPORT "Swedish"
-LangString SWEDISH_SUPPORT ${LANG_TURKISH} "Ýsveç Dili"
+LangString SWEDISH_SUPPORT ${LANG_TURKISH} "ï¿½sveï¿½ Dili"
 ; DUTCH_SUPPORT "Dutch"
-LangString DUTCH_SUPPORT ${LANG_TURKISH} "Felemenkçe"
+LangString DUTCH_SUPPORT ${LANG_TURKISH} "Felemenkï¿½e"
 ; FRENCH_SUPPORT "French"
-LangString FRENCH_SUPPORT ${LANG_TURKISH} "Fransýzca"
+LangString FRENCH_SUPPORT ${LANG_TURKISH} "Fransï¿½zca"
 ; RUSSIAN_SUPPORT "Russian"
-LangString RUSSIAN_SUPPORT ${LANG_TURKISH} "Rusça"
+LangString RUSSIAN_SUPPORT ${LANG_TURKISH} "Rusï¿½a"
 ; POLISH_SUPPORT "Polish"
-LangString POLISH_SUPPORT ${LANG_TURKISH} "Lehçe"
+LangString POLISH_SUPPORT ${LANG_TURKISH} "Lehï¿½e"
 ; ITALIAN_SUPPORT "Italian"
-LangString ITALIAN_SUPPORT ${LANG_TURKISH} "Ýtalyanca"
+LangString ITALIAN_SUPPORT ${LANG_TURKISH} "ï¿½talyanca"
 ; DANISH_SUPPORT "Danish"
 LangString DANISH_SUPPORT ${LANG_TURKISH} "Danca"
 ; KOREAN_SUPPORT "Korean"
 LangString KOREAN_SUPPORT ${LANG_TURKISH} "Kore Dili"
 ; CZECH_SUPPORT "Czech"
-LangString CZECH_SUPPORT ${LANG_TURKISH} "Çekçe"
+LangString CZECH_SUPPORT ${LANG_TURKISH} "ï¿½ekï¿½e"
 ; TURKISH_SUPPORT "Turkish"
-LangString TURKISH_SUPPORT ${LANG_TURKISH} "Türkçe"
+LangString TURKISH_SUPPORT ${LANG_TURKISH} "Tï¿½rkï¿½e"
 LangString HUNGARIAN_SUPPORT ${LANG_TURKISH} "Macarca"
 LangString SLOVENIAN_SUPPORT ${LANG_TURKISH} "Slovena"
+LangString ARABIC_SUPPORT ${LANG_TURKISH} "ArapÃ§a"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_TURKISH} "Program Dili"
 
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_95 ${LANG_TURKISH} "Üzgünüz, Windows 95 artýk desteklenmiyor. PasswordSafe 2.16'yý deneyin"
+LangString SORRY_NO_95 ${LANG_TURKISH} "ï¿½zgï¿½nï¿½z, Windows 95 artï¿½k desteklenmiyor. PasswordSafe 2.16'yï¿½ deneyin"
 
 ; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_98 ${LANG_TURKISH} "Üzgünüz, Windows 98 artýk desteklenmiyor. PasswordSafe 2.16'yý deneyin"
+LangString SORRY_NO_98 ${LANG_TURKISH} "ï¿½zgï¿½nï¿½z, Windows 98 artï¿½k desteklenmiyor. PasswordSafe 2.16'yï¿½ deneyin"
 
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_ME ${LANG_TURKISH} "Üzgünüz, Windows ME artýk desteklenmiyor. PasswordSafe 2.16'yý deneyin"
+LangString SORRY_NO_ME ${LANG_TURKISH} "ï¿½zgï¿½nï¿½z, Windows ME artï¿½k desteklenmiyor. PasswordSafe 2.16'yï¿½ deneyin"
 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
-LangString SORRY_NO_2K ${LANG_TURKISH} "Üzgünüz, Windows 2000 artýk desteklenmiyor. PasswordSafe 3.18'i deneyin"
+LangString SORRY_NO_2K ${LANG_TURKISH} "ï¿½zgï¿½nï¿½z, Windows 2000 artï¿½k desteklenmiyor. PasswordSafe 3.18'i deneyin"
 
 ; LangString Icon_description_Uninstall "Password Safe Uninstall"
 LangString Icon_description_Uninstall ${LANG_TURKISH} "Password Safe Uninstall"

@@ -19,135 +19,136 @@
 ;=================================================================
 
 ; RESERVE_TITLE "Choose Installation Type"
-LangString RESERVE_TITLE ${LANG_SIMPCHINESE} "Ñ¡Ôñ°²×°ÀàÐÍ"
+LangString RESERVE_TITLE ${LANG_SIMPCHINESE} "Ñ¡ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½"
 
 ; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString RESERVE_FIELD1 ${LANG_SIMPCHINESE} "³£¹æ£¨Ê¹ÓÃ×¢²á±í£¬ÊÊºÏ¼ÒÍ¥»ò¸öÈËÓÃ»§ PC£©"
+LangString RESERVE_FIELD1 ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½æ£¨Ê¹ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÊºÏ¼ï¿½Í¥ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã»ï¿½ PCï¿½ï¿½"
 
 ; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString RESERVE_FIELD2 ${LANG_SIMPCHINESE} "ÂÌÉ«£¨ÊÊºÏ U ÅÌ£¬²»Ê¹ÓÃÖ÷»ú×¢²á±í£©"
+LangString RESERVE_FIELD2 ${LANG_SIMPCHINESE} "ï¿½ï¿½É«ï¿½ï¿½ï¿½Êºï¿½ U ï¿½Ì£ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½"
 
 ; PROGRAM_FILES "Program Files"
-LangString PROGRAM_FILES ${LANG_SIMPCHINESE} "³ÌÐòÎÄ¼þ"
+LangString PROGRAM_FILES ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½"
 
 ; START_AUTO "Start automatically"
-LangString START_AUTO ${LANG_SIMPCHINESE}  "×Ô¶¯Æô¶¯"
+LangString START_AUTO ${LANG_SIMPCHINESE}  "ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½"
 
 ; START_SHOW "Show in start menu"
-LangString START_SHOW ${LANG_SIMPCHINESE} "ÔÚ¿ªÊ¼²Ëµ¥ÏÔÊ¾"
+LangString START_SHOW ${LANG_SIMPCHINESE} "ï¿½Ú¿ï¿½Ê¼ï¿½Ëµï¿½ï¿½ï¿½Ê¾"
 
 ; START_SHORTCUT "Install desktop shortcut"
-LangString START_SHORTCUT ${LANG_SIMPCHINESE} "°²×°×ÀÃæ¿ì½Ý·½Ê½"
+LangString START_SHORTCUT ${LANG_SIMPCHINESE} "ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½Ý·ï¿½Ê½"
 
 ; UNINSTALL_SHORTCUT "Uninstall shortcut"
-LangString UNINSTALL_SHORTCUT ${LANG_SIMPCHINESE} "Ð¶ÔØ¿ì½Ý·½Ê½"
+LangString UNINSTALL_SHORTCUT ${LANG_SIMPCHINESE} "Ð¶ï¿½Ø¿ï¿½Ý·ï¿½Ê½"
 
 ;--------------------------------
 ; Descriptions
 
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
-LangString DESC_ProgramFiles ${LANG_SIMPCHINESE} "°²×°ÔËÐÐ Password Safe ±ØÐèµÄ»ù±¾ÎÄ¼þ¡£"
+LangString DESC_ProgramFiles ${LANG_SIMPCHINESE} "ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ Password Safe ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½ï¿½ï¿½"
 
 ; DESC_CliTool "Installs pwsafe-cli, a command line utility."
 LangString DESC_CliTool ${LANG_SIMPCHINESE} "Installs pwsafe-cli, a command line utility."
 
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
-LangString DESC_LangSupport ${LANG_SIMPCHINESE} "ÇëÑ¡Ôñ PasswordSafe ½«ÒªÊ¹ÓÃµÄÓïÑÔ"
+LangString DESC_LangSupport ${LANG_SIMPCHINESE} "ï¿½ï¿½Ñ¡ï¿½ï¿½ PasswordSafe ï¿½ï¿½ÒªÊ¹ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½"
 
 ; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
-LangString DESC_StartUp ${LANG_SIMPCHINESE} "Æô¶¯ Windows Ê±×Ô¶¯ÔËÐÐ Password Safe¡£"
+LangString DESC_StartUp ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½ Windows Ê±ï¿½Ô¶ï¿½ï¿½ï¿½ï¿½ï¿½ Password Safeï¿½ï¿½"
 
 ; DESC_StartMenu "Creates an entry in the start menu for Password Safe."
-LangString DESC_StartMenu ${LANG_SIMPCHINESE} "ÔÚ¿ªÊ¼²Ëµ¥´´½¨Ò»¸ö Password Safe ÌõÄ¿¡£"
+LangString DESC_StartMenu ${LANG_SIMPCHINESE} "ï¿½Ú¿ï¿½Ê¼ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ Password Safe ï¿½ï¿½Ä¿ï¿½ï¿½"
 
 ; DESC_DesktopShortcut "Places a shortcut to Password Safe on your desktop."
-LangString DESC_DesktopShortcut ${LANG_SIMPCHINESE} "ÔÚ×ÀÃæ·ÅÖÃÒ»¸ö Password Safe ¿ì½Ý·½Ê½¡£"
+LangString DESC_DesktopShortcut ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ Password Safe ï¿½ï¿½Ý·ï¿½Ê½ï¿½ï¿½"
 
 ; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
-LangString DESC_UninstallMenu ${LANG_SIMPCHINESE} "ÔÚ¿ªÊ¼²Ëµ¥·ÅÖÃÒ»¸öÐ¶ÔØ Password Safe µÄ¿ì½Ý·½Ê½¡£"
+LangString DESC_UninstallMenu ${LANG_SIMPCHINESE} "ï¿½Ú¿ï¿½Ê¼ï¿½Ëµï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½Ð¶ï¿½ï¿½ Password Safe ï¿½Ä¿ï¿½Ý·ï¿½Ê½ï¿½ï¿½"
   
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 ; TEXT_GC_TITLE "Installation Type"
-LangString TEXT_GC_TITLE ${LANG_SIMPCHINESE} "°²×°ÀàÐÍ"
+LangString TEXT_GC_TITLE ${LANG_SIMPCHINESE} "ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½"
 
 ; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
-LangString TEXT_GC_SUBTITLE ${LANG_SIMPCHINESE} "Ñ¡Ôñ³£¹æÊÊºÏÓÃÓÚ¸öÈË PC ÉÏ£¬ÂÌÉ«ÊÊºÏ¿ÉÒÆÖ²°²×°¡£Èç¹ûÄã²»È·¶¨£¬ÄÇÃ´ÇëÑ¡Ôñ¡°³£¹æ¡±±ã¿É¡£"
+LangString TEXT_GC_SUBTITLE ${LANG_SIMPCHINESE} "Ñ¡ï¿½ñ³£¹ï¿½ï¿½Êºï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ PC ï¿½Ï£ï¿½ï¿½ï¿½É«ï¿½ÊºÏ¿ï¿½ï¿½ï¿½Ö²ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ã²»È·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã´ï¿½ï¿½Ñ¡ï¿½ñ¡°³ï¿½ï¿½æ¡±ï¿½ï¿½É¡ï¿½"
 
 ; PSWINI_TITLE "Choose Installation Type"
-LangString PSWINI_TITLE ${LANG_SIMPCHINESE} "Ñ¡Ôñ°²×°ÀàÐÍ"
+LangString PSWINI_TITLE ${LANG_SIMPCHINESE} "Ñ¡ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½"
 
 ; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString PSWINI_TEXT1 ${LANG_SIMPCHINESE} "³£¹æ (Ê¹ÓÃ×¢²á±í£¬ÊÊºÏ¼ÒÍ¥»ò¸öÈË PC ÓÃ»§ ) "
+LangString PSWINI_TEXT1 ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½ (Ê¹ï¿½ï¿½×¢ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÊºÏ¼ï¿½Í¥ï¿½ï¿½ï¿½ï¿½ï¿½ PC ï¿½Ã»ï¿½ ) "
 
 ; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString PSWINI_TEXT2 ${LANG_SIMPCHINESE} "ÂÌÉ« (ÊÊºÏ U ÅÌ£¬²»Ê¹ÓÃÖ÷»ú×¢²á±í)"
+LangString PSWINI_TEXT2 ${LANG_SIMPCHINESE} "ï¿½ï¿½É« (ï¿½Êºï¿½ U ï¿½Ì£ï¿½ï¿½ï¿½Ê¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×¢ï¿½ï¿½ï¿½)"
 
 ;--------------------------------
 ; checks and warnings
 
 ; RUNNING_INSTALL "The installer is already running."
-LangString RUNNING_INSTALL ${LANG_SIMPCHINESE} "°²×°³ÌÐòÒÑ¾­ÔÚÔËÐÐ£¡"
+LangString RUNNING_INSTALL ${LANG_SIMPCHINESE} "ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð£ï¿½"
 
 ; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
-LangString RUNNING_APPLICATION ${LANG_SIMPCHINESE} "°²×°ÐÂ°æ±¾Ö®Ç°£¬ÇëÍË³öËùÓÐÔËÐÐÖÐµÄ PasswordSafe£¡"
+LangString RUNNING_APPLICATION ${LANG_SIMPCHINESE} "ï¿½ï¿½×°ï¿½Â°æ±¾Ö®Ç°ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½ PasswordSafeï¿½ï¿½"
 
 ; LANG_INSTALL "Installation Language"
-LangString LANG_INSTALL ${LANG_SIMPCHINESE} "°²×°ÓïÑÔ"
+LangString LANG_INSTALL ${LANG_SIMPCHINESE} "ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½"
 
 ; LANG_SELECT "Please select the language for the installation"
-LangString LANG_SELECT ${LANG_SIMPCHINESE} "ÇëÑ¡Ôñ°²×°ÓïÑÔ"
+LangString LANG_SELECT ${LANG_SIMPCHINESE} "ï¿½ï¿½Ñ¡ï¿½ï¿½×°ï¿½ï¿½ï¿½ï¿½"
 
 ; CLI_TOOL "Command-line tool"
 LangString CLI_TOOL ${LANG_SIMPCHINESE} "Command-line tool"
 
 ; LANGUAGE_SUPPORT "Language Support"
-LangString LANGUAGE_SUPPORT ${LANG_SIMPCHINESE} "ÓïÑÔÖ§³Ö"
+LangString LANGUAGE_SUPPORT ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½Ö§ï¿½ï¿½"
 ; ENGLISH_SUPPORT "English"
-LangString ENGLISH_SUPPORT ${LANG_SIMPCHINESE} "Ó¢Óï"
+LangString ENGLISH_SUPPORT ${LANG_SIMPCHINESE} "Ó¢ï¿½ï¿½"
 ; CHINESE_CN_SUPPORT "Chinese (Simplified)"
-LangString CHINESE_CN_SUPPORT ${LANG_SIMPCHINESE} "¼òÌåÖÐÎÄ"
+LangString CHINESE_CN_SUPPORT ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
 ; CHINESE_TW_SUPPORT "Chinese (Traditional)"
-LangString CHINESE_TW_SUPPORT ${LANG_SIMPCHINESE} "·±ÌåÖÐÎÄ"
+LangString CHINESE_TW_SUPPORT ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
 ; GERMAN_SUPPORT "German"
-LangString GERMAN_SUPPORT ${LANG_SIMPCHINESE} "µÂÓï"
+LangString GERMAN_SUPPORT ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½"
 ; SPANISH_SUPPORT "Spanish"
-LangString SPANISH_SUPPORT ${LANG_SIMPCHINESE} "Î÷°àÑÀÓï"
+LangString SPANISH_SUPPORT ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
 ; SWEDISH_SUPPORT "Swedish"
-LangString SWEDISH_SUPPORT ${LANG_SIMPCHINESE} "ÈðµäÓï"
+LangString SWEDISH_SUPPORT ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½ï¿½"
 ; DUTCH_SUPPORT "Dutch"
-LangString DUTCH_SUPPORT ${LANG_SIMPCHINESE} "ºÉÀ¼Óï"
+LangString DUTCH_SUPPORT ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
 ; FRENCH_SUPPORT "French"
-LangString FRENCH_SUPPORT ${LANG_SIMPCHINESE} "·¨Óï"
+LangString FRENCH_SUPPORT ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½"
 ; RUSSIAN_SUPPORT "Russian"
-LangString RUSSIAN_SUPPORT ${LANG_SIMPCHINESE} "¶íÓï"
+LangString RUSSIAN_SUPPORT ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½"
 ; POLISH_SUPPORT "Polish"
-LangString POLISH_SUPPORT ${LANG_SIMPCHINESE} "²¨À¼Óï"
+LangString POLISH_SUPPORT ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
 ; ITALIAN_SUPPORT "Italian"
-LangString ITALIAN_SUPPORT ${LANG_SIMPCHINESE} "Òâ´óÀûÓï"
+LangString ITALIAN_SUPPORT ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
 ; DANISH_SUPPORT "Danish"
-LangString DANISH_SUPPORT ${LANG_SIMPCHINESE} "µ¤ÂóÓï"
+LangString DANISH_SUPPORT ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
 ; KOREAN_SUPPORT "Korean"
-LangString KOREAN_SUPPORT ${LANG_SIMPCHINESE} "³¯ÏÊÓï"
+LangString KOREAN_SUPPORT ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
 LangString CZECH_SUPPORT ${LANG_SIMPCHINESE} "Czech"
 LangString TURKISH_SUPPORT ${LANG_SIMPCHINESE} "Turkish"
 LangString HUNGARIAN_SUPPORT ${LANG_SIMPCHINESE} "Hungarian"
 LangString SLOVENIAN_SUPPORT ${LANG_SIMPCHINESE} "Slovenian"
+LangString ARABIC_SUPPORT ${LANG_SIMPCHINESE} "Arabic"
 
 ; LANG_PROGRAM "Program Language"
-LangString LANG_PROGRAM ${LANG_SIMPCHINESE} "³ÌÐòÓïÑÔ"
+LangString LANG_PROGRAM ${LANG_SIMPCHINESE} "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
 
 
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_95 ${LANG_SIMPCHINESE} "±§Ç¸£¬Windows 95 ÒÑ²»ÔÙÖ§³Ö£¡³¢ÊÔ PasswordSafe 2.16¡£"
+LangString SORRY_NO_95 ${LANG_SIMPCHINESE} "ï¿½ï¿½Ç¸ï¿½ï¿½Windows 95 ï¿½Ñ²ï¿½ï¿½ï¿½Ö§ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½ PasswordSafe 2.16ï¿½ï¿½"
 
 ; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_98 ${LANG_SIMPCHINESE} "±§Ç¸£¬Windows 98 ²»ÔÙÖ§³Ö£¡³¢ÊÔ PasswordSafe 2.16¡£"
+LangString SORRY_NO_98 ${LANG_SIMPCHINESE} "ï¿½ï¿½Ç¸ï¿½ï¿½Windows 98 ï¿½ï¿½ï¿½ï¿½Ö§ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½ PasswordSafe 2.16ï¿½ï¿½"
 
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_ME ${LANG_SIMPCHINESE} "±§Ç¸£¬Windows ME ²»ÔÙÖ§³Ö£¡³¢ÊÔ PasswordSafe 2.16¡£"
+LangString SORRY_NO_ME ${LANG_SIMPCHINESE} "ï¿½ï¿½Ç¸ï¿½ï¿½Windows ME ï¿½ï¿½ï¿½ï¿½Ö§ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½ PasswordSafe 2.16ï¿½ï¿½"
 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
-LangString SORRY_NO_2K ${LANG_SIMPCHINESE} "±§Ç¸£¬Windows 2000 ²»ÔÙÖ§³Ö£¡³¢ÊÔ PasswordSafe 3.18¡£"
+LangString SORRY_NO_2K ${LANG_SIMPCHINESE} "ï¿½ï¿½Ç¸ï¿½ï¿½Windows 2000 ï¿½ï¿½ï¿½ï¿½Ö§ï¿½Ö£ï¿½ï¿½ï¿½ï¿½ï¿½ PasswordSafe 3.18ï¿½ï¿½"
 
 ; LangString Icon_description_Uninstall "Password Safe Uninstall"
 LangString Icon_description_Uninstall ${LANG_SIMPCHINESE} "Password Safe Uninstall"

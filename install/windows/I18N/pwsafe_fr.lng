@@ -22,71 +22,71 @@
 LangString RESERVE_TITLE ${LANG_FRENCH} "Veuillez choisir le type d'installation"
 
 ; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString RESERVE_FIELD1 ${LANG_FRENCH} "Régulière (utilise le Registre, adapté pour la maison ou utilisation sur un seul PC)"
+LangString RESERVE_FIELD1 ${LANG_FRENCH} "Rï¿½guliï¿½re (utilise le Registre, adaptï¿½ pour la maison ou utilisation sur un seul PC)"
 
 ; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString RESERVE_FIELD2 ${LANG_FRENCH} "Verte (pour Disque-sur-Clé) n'utilise pas le Registre)"
+LangString RESERVE_FIELD2 ${LANG_FRENCH} "Verte (pour Disque-sur-Clï¿½) n'utilise pas le Registre)"
 
 ; PROGRAM_FILES "Program Files"
 LangString PROGRAM_FILES ${LANG_FRENCH} "Program Files"
 
 ; START_AUTO "Start automatically"
-LangString START_AUTO ${LANG_FRENCH} "Démarrer automatiquement"
+LangString START_AUTO ${LANG_FRENCH} "Dï¿½marrer automatiquement"
 
 ; START_SHOW "Show in start menu"
-LangString START_SHOW ${LANG_FRENCH} "Afficher dans le menu Démarrer"
+LangString START_SHOW ${LANG_FRENCH} "Afficher dans le menu Dï¿½marrer"
 
 ; START_SHORTCUT "Install desktop shortcut"
 LangString START_SHORTCUT ${LANG_FRENCH} "Installer un raccourci sur le Bureau"
 
 ; UNINSTALL_SHORTCUT "Uninstall shortcut"
-LangString UNINSTALL_SHORTCUT ${LANG_FRENCH} "Déinstaller le raccourci"
+LangString UNINSTALL_SHORTCUT ${LANG_FRENCH} "Dï¿½installer le raccourci"
 
 ;--------------------------------
 ; Descriptions
 
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
-LangString DESC_ProgramFiles ${LANG_FRENCH} "Installe les fichiers de base nécessaires à PasswordSafe."
+LangString DESC_ProgramFiles ${LANG_FRENCH} "Installe les fichiers de base nï¿½cessaires ï¿½ PasswordSafe."
 
 ; DESC_CliTool "Installs pwsafe-cli, a command line utility."
 LangString DESC_CliTool ${LANG_FRENCH} "Installs pwsafe-cli, a command line utility."
 
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
-LangString DESC_LangSupport ${LANG_FRENCH} "Veuillez sélectionner les langues"
+LangString DESC_LangSupport ${LANG_FRENCH} "Veuillez sï¿½lectionner les langues"
 
 ; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
-LangString DESC_StartUp ${LANG_FRENCH} "Démarre PasswordSafe lors du démarrage et connexion de Windows."
+LangString DESC_StartUp ${LANG_FRENCH} "Dï¿½marre PasswordSafe lors du dï¿½marrage et connexion de Windows."
 
 ; DESC_StartMenu "Creates an entry in the start menu for Password Safe."
-LangString DESC_StartMenu ${LANG_FRENCH} "Crée une entrée dans le menu Démarrer pour PasswordSafe."
+LangString DESC_StartMenu ${LANG_FRENCH} "Crï¿½e une entrï¿½e dans le menu Dï¿½marrer pour PasswordSafe."
 
 ; DESC_DesktopShortcut "Places a shortcut to Password Safe on your desktop."
 LangString DESC_DesktopShortcut ${LANG_FRENCH} "Place un raccourci vers PasswordSafe sur votre Bureau."
 
 ; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
-LangString DESC_UninstallMenu ${LANG_FRENCH} "Place un raccourci dans le menu Démarrer pour désinstaller PasswordSafe"
+LangString DESC_UninstallMenu ${LANG_FRENCH} "Place un raccourci dans le menu Dï¿½marrer pour dï¿½sinstaller PasswordSafe"
   
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 ; TEXT_GC_TITLE "Installation Type"
 LangString TEXT_GC_TITLE ${LANG_FRENCH} "Type d'installation"
 
 ; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
-LangString TEXT_GC_SUBTITLE ${LANG_FRENCH} "Choisissez Régulière pour utilisation sur un seul PC, Verte pour l'installation portable. Si vous êtes incertains, choisissez 'Régulière'."
+LangString TEXT_GC_SUBTITLE ${LANG_FRENCH} "Choisissez Rï¿½guliï¿½re pour utilisation sur un seul PC, Verte pour l'installation portable. Si vous ï¿½tes incertains, choisissez 'Rï¿½guliï¿½re'."
 
 ; PSWINI_TITLE "Choose Installation Type"
 LangString PSWINI_TITLE ${LANG_FRENCH} "Veuillez choisir le type d'installation"
 
 ; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString PSWINI_TEXT1 ${LANG_FRENCH} "Régulière (utilise le Registre, adapté pour la maison ou utilisation sur un seul PC)"
+LangString PSWINI_TEXT1 ${LANG_FRENCH} "Rï¿½guliï¿½re (utilise le Registre, adaptï¿½ pour la maison ou utilisation sur un seul PC)"
 
 ; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString PSWINI_TEXT2 ${LANG_FRENCH} "Verte (pour Disque-sur-Clé) n'utilise pas le Registre)"
+LangString PSWINI_TEXT2 ${LANG_FRENCH} "Verte (pour Disque-sur-Clï¿½) n'utilise pas le Registre)"
 
 ;--------------------------------
 ; checks and warnings
 
 ; RUNNING_INSTALL "The installer is already running."
-LangString RUNNING_INSTALL ${LANG_FRENCH} "Le programme d'installation est déjà en cours d'exécution"
+LangString RUNNING_INSTALL ${LANG_FRENCH} "Le programme d'installation est dï¿½jï¿½ en cours d'exï¿½cution"
 
 ; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
 LangString RUNNING_APPLICATION ${LANG_FRENCH} "Veuillez quitter toutes les instances de PasswordSafe avant d'installer la nouvelle version"
@@ -95,17 +95,17 @@ LangString RUNNING_APPLICATION ${LANG_FRENCH} "Veuillez quitter toutes les insta
 LangString LANG_INSTALL ${LANG_FRENCH} "Langue d'installation"
 
 ; LANG_SELECT "Please select the language for the installation"
-LangString LANG_SELECT ${LANG_FRENCH} "Sélectionnez la langue d'installation"
+LangString LANG_SELECT ${LANG_FRENCH} "Sï¿½lectionnez la langue d'installation"
 
 ; CLI_TOOL "Command-line tool"
 LangString CLI_TOOL ${LANG_FRENCH} "Command-line tool"
 
 ; LANGUAGE_SUPPORT "Language Support"
-LangString LANGUAGE_SUPPORT ${LANG_FRENCH} "Langues supportées"
+LangString LANGUAGE_SUPPORT ${LANG_FRENCH} "Langues supportï¿½es"
 ; ENGLISH_SUPPORT "English"
 LangString ENGLISH_SUPPORT ${LANG_FRENCH} "Anglais"
 ; CHINESE_CN_SUPPORT "Chinese (Simplified)"
-LangString CHINESE_CN_SUPPORT ${LANG_FRENCH} "Chinois (Simplifié)"
+LangString CHINESE_CN_SUPPORT ${LANG_FRENCH} "Chinois (Simplifiï¿½)"
 ; CHINESE_TW_SUPPORT "Chinese (Traditional)"
 LangString CHINESE_TW_SUPPORT ${LANG_FRENCH} "Chinois (Traditionel)"
 ; GERMAN_SUPPORT "German"
@@ -113,11 +113,11 @@ LangString GERMAN_SUPPORT ${LANG_FRENCH} "Allemand"
 ; SPANISH_SUPPORT "Spanish"
 LangString SPANISH_SUPPORT ${LANG_FRENCH} "Esppagnol"
 ; SWEDISH_SUPPORT "Swedish"
-LangString SWEDISH_SUPPORT ${LANG_FRENCH} "Suédois"
+LangString SWEDISH_SUPPORT ${LANG_FRENCH} "Suï¿½dois"
 ; DUTCH_SUPPORT "Dutch"
 LangString DUTCH_SUPPORT ${LANG_FRENCH} "Hollandais"
 ; FRENCH_SUPPORT "French"
-LangString FRENCH_SUPPORT ${LANG_FRENCH} "Français"
+LangString FRENCH_SUPPORT ${LANG_FRENCH} "Franï¿½ais"
 ; RUSSIAN_SUPPORT "Russian"
 LangString RUSSIAN_SUPPORT ${LANG_FRENCH} "Russe"
 ; POLISH_SUPPORT "Polish"
@@ -127,26 +127,28 @@ LangString ITALIAN_SUPPORT ${LANG_FRENCH} "Italien"
 ; DANISH_SUPPORT "Danish"
 LangString DANISH_SUPPORT ${LANG_FRENCH} "Danois"
 ; KOREAN_SUPPORT "Korean"
-LangString KOREAN_SUPPORT ${LANG_FRENCH} "Koréen"
+LangString KOREAN_SUPPORT ${LANG_FRENCH} "Korï¿½en"
 LangString CZECH_SUPPORT ${LANG_FRENCH} "Czech"
 LangString TURKISH_SUPPORT ${LANG_FRENCH} "Turc"
 LangString HUNGARIAN_SUPPORT ${LANG_FRENCH} "Hongrois"
 LangString SLOVENIAN_SUPPORT ${LANG_FRENCH} "Slovenois"
+LangString ARABIC_SUPPORT ${LANG_FRENCH} "Arabe"
+
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_FRENCH} "Langue du programme"
 
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_95 ${LANG_FRENCH} "Désolé, Windows 95 n'est plus supporté. Essayez PasswordSafe 2.16"
+LangString SORRY_NO_95 ${LANG_FRENCH} "Dï¿½solï¿½, Windows 95 n'est plus supportï¿½. Essayez PasswordSafe 2.16"
 
 ; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_98 ${LANG_FRENCH} "Désolé, Windows 98 n'est plus supporté Try PasswordSafe 2.16"
+LangString SORRY_NO_98 ${LANG_FRENCH} "Dï¿½solï¿½, Windows 98 n'est plus supportï¿½ Try PasswordSafe 2.16"
 
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_ME ${LANG_FRENCH} "Désolé, Windows ME n'est plus supporté. Try PasswordSafe 2.16"
+LangString SORRY_NO_ME ${LANG_FRENCH} "Dï¿½solï¿½, Windows ME n'est plus supportï¿½. Try PasswordSafe 2.16"
 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
-LangString SORRY_NO_2K ${LANG_FRENCH} "Désolé, Windows 2000 n'est plus supporté. Try PasswordSafe 3.18"
+LangString SORRY_NO_2K ${LANG_FRENCH} "Dï¿½solï¿½, Windows 2000 n'est plus supportï¿½. Try PasswordSafe 3.18"
 
 ; LangString Icon_description_Uninstall "Password Safe Uninstall"
 LangString Icon_description_Uninstall ${LANG_FRENCH} "Password Safe Uninstall"
