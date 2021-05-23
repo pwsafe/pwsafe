@@ -23,6 +23,7 @@
 #include "AboutDlg.h"
 #include "version.h"
 #include "PasswordSafeFrame.h"
+#include "PWSafeApp.h"
 #include "core/CheckVersion.h"
 
 #ifdef __WXMSW__
@@ -423,7 +424,7 @@ wxString AboutDlg::GetLibWxVersion()
  */
 bool AboutDlg::CheckDatabaseStatus()
 {
-  PasswordSafeFrame *pwsafe = static_cast<PasswordSafeFrame *>(GetParent());
+  auto pwsafe = wxGetApp().GetPasswordSafeFrame();
 
   if (!pwsafe->IsClosed()) {
 
