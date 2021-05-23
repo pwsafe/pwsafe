@@ -2353,7 +2353,7 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
     }
     
     // FixListIndexes();
-    static_cast<PasswordSafeFrame *>(GetParent())->RefreshViews();
+    wxGetApp().GetPasswordSafeFrame()->RefreshViews();
     
     return true;
   }
