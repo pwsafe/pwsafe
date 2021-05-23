@@ -66,84 +66,107 @@
 
 ////@end XPM images
 
-enum { DRAGBAR_TOOLID_BASE = 100 };
+enum
+{
+  ID_DRAGBAR_GROUP = wxID_HIGHEST + 1,
+  ID_DRAGBAR_TITLE,
+  ID_DRAGBAR_USER,
+  ID_DRAGBAR_PASSWORD,
+  ID_DRAGBAR_NOTES,
+  ID_DRAGBAR_URL,
+  ID_DRAGBAR_EMAIL,
+  ID_DRAGBAR_DND
+};
 
+#define PWS_DRAGBAR_BITMAPS(t)            \
+  wxCONCAT(t, _xpm),                      \
+  wxCONCAT(t, X_xpm),                     \
+  wxCONCAT(wxCONCAT(classic_, t), _xpm),  \
+  wxCONCAT(wxCONCAT(classic_, t), X_xpm)
 
-#define PWS_TOOLINFO(t, f) {  wxSTRINGIZE_T(t),                                       \
-                              wxCONCAT(t, _xpm),                                      \
-                              wxCONCAT(t, X_xpm),                                     \
-                              wxCONCAT(wxCONCAT(classic_, t), _xpm),                  \
-                              wxCONCAT(wxCONCAT(classic_, t), X_xpm),                 \
-                              CItemData::f  }
-
-struct _DragbarElementInfo {
+struct DragbarToolInfo {
+  const wxWindowID id;
   const wxString name;
   const char** bitmap;
   const char** bitmap_disabled;
   const char** classic_bitmap;
   const char** classic_bitmap_disabled;
-  CItemData::FieldType ft;
-} DragbarElements[] = { PWS_TOOLINFO(Group,     GROUP),
-                        PWS_TOOLINFO(Title,     TITLE),
-                        PWS_TOOLINFO(User,      USER),
-                        PWS_TOOLINFO(Password,  PASSWORD),
-                        PWS_TOOLINFO(Notes,     NOTES),
-                        PWS_TOOLINFO(URL,       URL),
-                        PWS_TOOLINFO(Email,     EMAIL),
-                        PWS_TOOLINFO(Dnd,       UNKNOWNFIELDS) // Must be last entry
-                      };
+  const CItemData::FieldType field_type;
 
-// Drag and drop tree or item is last element in drag bar
-#define DND_IDX (NumberOf(DragbarElements) - 1)    // Last entry is DnD
+  DragbarToolInfo() :
+    id(0), name(wxEmptyString),
+    bitmap(nullptr), bitmap_disabled(nullptr),
+    classic_bitmap(nullptr), classic_bitmap_disabled(nullptr),
+    field_type(CItem::FieldType::UNKNOWNFIELDS) {}
 
-/**
- * Provides the bitmap that represents an enabled toolbar item in the new or classic style, depending on user preferences.
- * @param idx the toolbar item's position in <code>DragbarElements</code>.
- * @return toolbar item bitmap
- */
-inline wxBitmap BitmapForEnabledButton(int idx)
-{
-  const bool newButtons = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar);
-  return newButtons ?
-         wxBitmap(DragbarElements[idx].bitmap) :
-         wxBitmap(DragbarElements[idx].classic_bitmap);
-}
+  DragbarToolInfo(
+    wxWindowID id, const wxString &name,
+    const char** bitmap, const char** bitmap_disabled,
+    const char** classic_bitmap, const char** classic_bitmap_disabled,
+    CItemData::FieldType field_type
+  ) :
+    id(id), name(name),
+    bitmap(bitmap), bitmap_disabled(bitmap_disabled),
+    classic_bitmap(classic_bitmap), classic_bitmap_disabled(classic_bitmap_disabled),
+    field_type(field_type) {}
 
-/**
- * Provides the bitmap that represents an disabled toolbar item in the new or classic style, depending on user preferences.
- * @param idx the toolbar item's position in <code>DragbarElements</code>.
- * @return toolbar item bitmap
- */
-inline wxBitmap BitmapForDisabledButton(int idx)
-{
-  const bool newButtons = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar);
-  return newButtons ?
-         wxBitmap(DragbarElements[idx].bitmap_disabled) :
-         wxBitmap(DragbarElements[idx].classic_bitmap_disabled);
-}
+  bool UseNewToolbarStyle() const
+  {
+    return PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar);
+  }
 
-/**
- * Provides the toolbar item tooltip.
- * @param idx the toolbar item's position in <code>DragbarElements</code>.
- * @return the tooltip string
- */
-inline wxString TooltipForButton(int idx)
-{
-  return (idx == DND_IDX) ?
-         _("Drag this image onto another window to paste the selected element or tree.") :
-         wxString::Format(_("Drag this image onto another window to paste the '%s' field."), _(DragbarElements[idx].name));
-}
+  /**
+   * Provides the bitmap that represents an enabled toolbar item in the new or classic style, depending on user preferences.
+   * @return toolbar item bitmap
+   */
+  wxBitmap GetBitmapForEnabledButton() const
+  {
+    return UseNewToolbarStyle() ? bitmap : classic_bitmap;
+  };
+
+  /**
+   * Provides the bitmap that represents an disabled toolbar item in the new or classic style, depending on user preferences.
+   * @return toolbar item bitmap
+   */
+  wxBitmap GetBitmapForDisabledButton() const
+  {
+    return UseNewToolbarStyle() ? bitmap_disabled : classic_bitmap_disabled;
+  }
+
+  /**
+   * Provides the toolbar item tooltip.
+   * @return the tooltip string
+   */
+  wxString GetTooltipForButton() const
+  {
+    return (id == ID_DRAGBAR_DND) ?
+      _("Drag this image onto another window to paste the selected element or tree.") :
+      wxString::Format(_("Drag this image onto another window to paste the '%s' field."), _(name));
+  }
+};
+
+std::vector<DragbarToolInfo> DragbarToolInfos =
+  {
+    { ID_DRAGBAR_GROUP,     _("Group"),     PWS_DRAGBAR_BITMAPS(Group),     CItemData::FieldType::GROUP           },
+    { ID_DRAGBAR_TITLE,     _("Title"),     PWS_DRAGBAR_BITMAPS(Title),     CItemData::FieldType::TITLE           },
+    { ID_DRAGBAR_USER,      _("User"),      PWS_DRAGBAR_BITMAPS(User),      CItemData::FieldType::USER            },
+    { ID_DRAGBAR_PASSWORD,  _("Password"),  PWS_DRAGBAR_BITMAPS(Password),  CItemData::FieldType::PASSWORD        },
+    { ID_DRAGBAR_NOTES,     _("Notes"),     PWS_DRAGBAR_BITMAPS(Notes),     CItemData::FieldType::NOTES           },
+    { ID_DRAGBAR_URL,       _("Url"),       PWS_DRAGBAR_BITMAPS(URL),       CItemData::FieldType::URL             },
+    { ID_DRAGBAR_EMAIL,     _("Email"),     PWS_DRAGBAR_BITMAPS(Email),     CItemData::FieldType::EMAIL           },
+    { ID_DRAGBAR_DND,       _("Dnd"),       PWS_DRAGBAR_BITMAPS(Dnd),       CItemData::FieldType::UNKNOWNFIELDS   }
+  };
 
 DragBarCtrl::DragBarCtrl(wxWindow *parent, wxWindowID id, const wxPoint &position, const wxSize &size, long style) : wxAuiToolBar(parent, id, position, size, style)
 {
   CreateToolbar();
   Bind(wxEVT_AUITOOLBAR_BEGIN_DRAG, &DragBarCtrl::OnDrag, this);
-  Bind(wxEVT_UPDATE_UI, &DragBarCtrl::OnUpdateUI, this, DRAGBAR_TOOLID_BASE, DRAGBAR_TOOLID_BASE + DND_IDX);
+  Bind(wxEVT_UPDATE_UI, &DragBarCtrl::OnUpdateUI, this, ID_DRAGBAR_GROUP, ID_DRAGBAR_DND);
 }
 
 DragBarCtrl::~DragBarCtrl()
 {
-  Unbind(wxEVT_UPDATE_UI, &DragBarCtrl::OnUpdateUI, this, DRAGBAR_TOOLID_BASE, DRAGBAR_TOOLID_BASE + DND_IDX);
+  Unbind(wxEVT_UPDATE_UI, &DragBarCtrl::OnUpdateUI, this, ID_DRAGBAR_GROUP, ID_DRAGBAR_DND);
   Unbind(wxEVT_AUITOOLBAR_BEGIN_DRAG, &DragBarCtrl::OnDrag, this);
 }
 
@@ -154,13 +177,14 @@ void DragBarCtrl::CreateToolbar()
 {
   ClearTools();
 
-  for (int idx = 0; size_t(idx) < NumberOf(DragbarElements); ++idx) {
+  for (const auto & toolInfo : DragbarToolInfos)
+  {
     AddTool(
-      idx + DRAGBAR_TOOLID_BASE,
-      BitmapForEnabledButton(idx),
-      BitmapForDisabledButton(idx),
+      toolInfo.id,
+      toolInfo.GetBitmapForEnabledButton(),
+      toolInfo.GetBitmapForDisabledButton(),
       false, nullptr,
-      TooltipForButton(idx)
+      toolInfo.GetTooltipForButton()
     );
   }
 
@@ -173,11 +197,12 @@ void DragBarCtrl::CreateToolbar()
 void DragBarCtrl::UpdateBitmaps()
 {
   if (HasTools()) {
-    for (int idx = 0; size_t(idx) < NumberOf(DragbarElements); ++idx) {
-      auto tool = FindToolByIndex(idx);
+    for (const auto & toolInfo : DragbarToolInfos)
+    {
+      auto tool = FindTool(toolInfo.id);
       if (tool) {
-        tool->SetBitmap(BitmapForEnabledButton(idx));
-        tool->SetDisabledBitmap(BitmapForDisabledButton(idx));
+        tool->SetBitmap(toolInfo.GetBitmapForEnabledButton());
+        tool->SetDisabledBitmap(toolInfo.GetBitmapForDisabledButton());
       }
     }
 
@@ -191,10 +216,11 @@ void DragBarCtrl::UpdateBitmaps()
 void DragBarCtrl::UpdateTooltips()
 {
   if (HasTools()) {
-    for (int idx = 0; size_t(idx) < NumberOf(DragbarElements); ++idx) {
-      auto tool = FindToolByIndex(idx);
+    for (const auto & toolInfo : DragbarToolInfos)
+    {
+      auto tool = FindTool(toolInfo.id);
       if (tool) {
-        tool->SetShortHelp(TooltipForButton(idx));
+        tool->SetShortHelp(toolInfo.GetTooltipForButton());
       }
     }
 
@@ -204,25 +230,28 @@ void DragBarCtrl::UpdateTooltips()
 
 /**
  * Provides the string of the items data field for the drag and drop procedure.
- * @param idx the toolbar item's position in <code>DragbarElements</code>.
- * @return the items data
+ * @param toolId the toolbar item's id.
+ * @return the items data as string
  */
-wxString DragBarCtrl::GetText(int idx) const
+wxString DragBarCtrl::GetText(int toolId) const
 {
-  wxASSERT( idx >= 0 && size_t(idx) < NumberOf(DragbarElements));
-
-  if(idx == DND_IDX) {
-    return wxString(wxEmptyString);
-  }
-
   const CItemData *pci(nullptr), *pbci(nullptr);
   auto mainFrame = wxGetApp().GetPasswordSafeFrame();
   wxASSERT(mainFrame);
   pci = mainFrame->GetSelectedEntry();
   pbci = mainFrame->GetBaseEntry(pci);
 
-  return pci ?
-    towxstring(pci->GetEffectiveFieldValue(DragbarElements[idx].ft, pbci)) : wxString(wxEmptyString);
+  if (!pci) {
+    return wxEmptyString;
+  }
+
+  for (const auto & toolInfo : DragbarToolInfos) {
+    if (toolId == toolInfo.id) {
+      return towxstring(pci->GetEffectiveFieldValue(toolInfo.field_type, pbci));
+    }
+  }
+
+  return wxEmptyString;
 }
 
 /**
@@ -231,16 +260,9 @@ wxString DragBarCtrl::GetText(int idx) const
  */
 void DragBarCtrl::OnDrag(wxAuiToolBarEvent& event)
 {
-  auto toolId = static_cast<size_t>(event.GetToolId()) - DRAGBAR_TOOLID_BASE;
-  wxASSERT(toolId >= 0 && toolId <= NumberOf(DragbarElements));
+  auto toolId = event.GetToolId();
 
-  // Separators have the index -1 (ID_SEPARATOR)
-  if (toolId < 0) {
-    return;
-  }
-
-  // The last dragbar item is addressing drag & drop for tree element(s)
-  if(toolId == DND_IDX) {
+  if (toolId == ID_DRAGBAR_DND) {
 #if wxUSE_DRAG_AND_DROP && (wxVERSION_NUMBER != 3104) // 3.1.4 is crashing in Drop, use 3.1.5 instead
     auto mainFrame = wxGetApp().GetPasswordSafeFrame();
     wxASSERT(mainFrame && mainFrame->m_tree);
@@ -303,28 +325,28 @@ void DragBarCtrl::OnUpdateUI(wxUpdateUIEvent& event)
   const auto hasEmail          = hasItemSelection && (selection->IsEmailSet());
 
   switch (event.GetId()) {
-    case DRAGBAR_TOOLID_BASE:     // the 'Group' tool item
+    case ID_DRAGBAR_GROUP:
       event.Enable(hasGroup);
       break;
-    case DRAGBAR_TOOLID_BASE + 1: // the 'Title' tool item
+    case ID_DRAGBAR_TITLE:
       event.Enable(hasTitle);
       break;
-    case DRAGBAR_TOOLID_BASE + 2: // the 'User' tool item
+    case ID_DRAGBAR_USER:
       event.Enable(hasUser);
       break;
-    case DRAGBAR_TOOLID_BASE + 3: // the 'Password' tool item
+    case ID_DRAGBAR_PASSWORD:
       event.Enable(hasPassword);
       break;
-    case DRAGBAR_TOOLID_BASE + 4: // the 'Notes' tool item
+    case ID_DRAGBAR_NOTES:
       event.Enable(hasNotes);
       break;
-    case DRAGBAR_TOOLID_BASE + 5: // the 'URL' tool item
+    case ID_DRAGBAR_URL:
       event.Enable(hasURL);
       break;
-    case DRAGBAR_TOOLID_BASE + 6: // the 'Email' tool item
+    case ID_DRAGBAR_EMAIL:
       event.Enable(hasEmail);
       break;
-    case DRAGBAR_TOOLID_BASE + 7: // the 'DnD' tool item
+    case ID_DRAGBAR_DND:
       event.Enable(isTreeView && hasAnySelection);
       break;
     default:
