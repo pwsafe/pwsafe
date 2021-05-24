@@ -122,6 +122,8 @@
 ; Set verbosity appropriate for a Makefile
 !verbose 2
 
+Unicode true
+
 ;--------------------------------
 ; Include Modern UI
   !include "MUI2.nsh"
