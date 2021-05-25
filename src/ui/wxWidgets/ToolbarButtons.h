@@ -184,6 +184,35 @@ struct _PwsToolbarInfo {
   const char** bitmap_disabled;
   const char** bitmap_classic;
   const char** bitmap_classic_disabled;
+
+  bool IsSeparator() const
+  {
+    return (id == ID_SEPARATOR);
+  }
+
+  bool UseNewToolbarStyle() const
+  {
+    return PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar);
+  }
+
+  /**
+   * Provides the bitmap that represents an enabled toolbar item in the new or classic style, depending on user preferences.
+   * @return toolbar item bitmap
+   */
+  wxBitmap GetBitmapForEnabledButton() const
+  {
+    return UseNewToolbarStyle() ? bitmap_normal : bitmap_classic;
+  };
+
+  /**
+   * Provides the bitmap that represents an disabled toolbar item in the new or classic style, depending on user preferences.
+   * @return toolbar item bitmap
+   */
+  wxBitmap GetBitmapForDisabledButton() const
+  {
+    return UseNewToolbarStyle() ? bitmap_disabled : bitmap_classic_disabled;
+  }
+
   // Following ctor's required to shut up some compiler warnings
 _PwsToolbarInfo() : id(0), toollabel(wxEmptyString), tooltip(wxEmptyString), bitmap_normal(nullptr), bitmap_disabled(nullptr),
     bitmap_classic(nullptr), bitmap_classic_disabled(nullptr) {}
