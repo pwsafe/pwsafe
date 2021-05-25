@@ -910,20 +910,16 @@ void PasswordSafeFrame::RefreshToolbarButtons()
     toolbar->ClearTools();
   }
 
-  for (auto & PwsToolbarButton : PwsToolbarButtons) {
-    if (pref->GetPref(PWSprefs::ShowMenuSeparator) && (PwsToolbarButton.id == ID_SEPARATOR)) {
+  for (const auto & PwsToolbarButton : PwsToolbarButtons) {
+    if (pref->GetPref(PWSprefs::ShowMenuSeparator) && (PwsToolbarButton.IsSeparator())) {
       toolbar->AddSeparator()->SetId(PwsToolbarButton.id);
     }
     else {
       toolbar->AddTool(
         PwsToolbarButton.id,
         wxGetTranslation(PwsToolbarButton.toollabel),
-        PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
-        wxBitmap(PwsToolbarButton.bitmap_normal) :
-        wxBitmap(PwsToolbarButton.bitmap_classic),
-        PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
-        wxBitmap(PwsToolbarButton.bitmap_disabled) :
-        wxBitmap(PwsToolbarButton.bitmap_classic_disabled),
+        PwsToolbarButton.GetBitmapForEnabledButton(),
+        PwsToolbarButton.GetBitmapForDisabledButton(),
         wxITEM_NORMAL,
         wxGetTranslation(PwsToolbarButton.tooltip),
         wxEmptyString,
@@ -944,22 +940,14 @@ void PasswordSafeFrame::UpdateMainToolbarBitmaps()
   auto toolbar = GetToolBar();
   wxASSERT(toolbar);
 
-  for (int idx = 0; size_t(idx) < NumberOf(PwsToolbarButtons); ++idx) {
-    if (PwsToolbarButtons[idx].id == ID_SEPARATOR)
+  for (const auto & PwsToolbarButton : PwsToolbarButtons) {
+    if (PwsToolbarButton.IsSeparator())
       continue;
 
-    auto tool = toolbar->FindToolByIndex(idx);
+    auto tool = toolbar->FindTool(PwsToolbarButton.id);
     if (tool) {
-      tool->SetBitmap(
-        pref->GetPref(PWSprefs::UseNewToolbar) ?
-        wxBitmap(PwsToolbarButtons[idx].bitmap_normal) :
-        wxBitmap(PwsToolbarButtons[idx].bitmap_classic)
-      );
-      tool->SetDisabledBitmap(
-        pref->GetPref(PWSprefs::UseNewToolbar) ?
-        wxBitmap(PwsToolbarButtons[idx].bitmap_disabled) :
-        wxBitmap(PwsToolbarButtons[idx].bitmap_classic_disabled)
-      );
+      tool->SetBitmap(PwsToolbarButton.GetBitmapForEnabledButton());
+      tool->SetDisabledBitmap(PwsToolbarButton.GetBitmapForDisabledButton());
     }
   }
 
