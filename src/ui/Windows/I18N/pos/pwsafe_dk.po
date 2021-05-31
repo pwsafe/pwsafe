@@ -5440,6 +5440,9 @@ msgstr ""
 msgid "Relative"
 msgstr ""
 
+msgid "relative"
+msgstr ""
+
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
 msgstr ""

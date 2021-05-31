@@ -50,7 +50,7 @@
 #include "TreeCtrl.h"
 #include "wxUtilities.h"
 
-static void DisplayFileWriteError(int rc, const StringX &fname)
+void PasswordSafeFrame::DisplayFileWriteError(int rc, const StringX &fname)
 {
   ASSERT(rc != PWScore::SUCCESS);
 

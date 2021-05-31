@@ -138,6 +138,7 @@ public:
   StringX GetRunCommand() const {return GetField(RUNCMD);}
   int16 GetDCA(int16 &iDCA, bool bShift = false) const;
   StringX GetDCA(bool bShift = false) const;
+  bool IsDCASet(bool bShift = false) const;
   int16 GetShiftDCA(int16 &iDCA) const {return GetDCA(iDCA, true);}
   StringX GetShiftDCA() const {return GetDCA(true);}
   StringX GetEmail() const {return GetField(EMAIL);}

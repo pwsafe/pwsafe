@@ -5440,6 +5440,9 @@ msgstr "Rehacer a la política de contraseñas el último cambio que previamente
 msgid "Relative"
 msgstr "Relativo"
 
+msgid "relative"
+msgstr "relativo"
+
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
 msgstr "Fechas relativas se indican en días desde hoy ej. '-1' es ayer and '1' es mañana"

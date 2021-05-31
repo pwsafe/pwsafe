@@ -5440,6 +5440,9 @@ msgstr "A korábban visszavont jelszószabály-módosítások újbóli beállít
 msgid "Relative"
 msgstr "Relatív"
 
+msgid "relative"
+msgstr "relatív"
+
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
 msgstr ""

@@ -292,13 +292,13 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     cur_filterentry->ftype = FT_RUNCMD;
   }
 
-  else if (XMLString::equals(qname, _A2X("dca"))) {
+  else if (XMLString::equals(qname, _A2X("dca")) || XMLString::equals(qname, _A2X("DCA"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_DCA;
     cur_filterentry->ftype = FT_DCA;
   }
 
-  else if (XMLString::equals(qname, _A2X("shiftdca"))) {
+  else if (XMLString::equals(qname, _A2X("shiftdca")) || XMLString::equals(qname, _A2X("ShiftDCA"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_SHIFTDCA;
     cur_filterentry->ftype = FT_SHIFTDCA;
@@ -329,7 +329,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     cur_filterentry->fstring = PWSUtil::DeDupString(cur_filterentry->fstring);
   }
 
-  else if (XMLString::equals(qname, _A2X("policyname"))) {
+  else if (XMLString::equals(qname, _A2X("policyname")) || XMLString::equals(qname, _A2X("policy_name"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
     cur_filterentry->ftype = FT_POLICYNAME;
@@ -397,6 +397,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
 
   else if (XMLString::equals(qname, _A2X("unknownfields"))) {
     m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_BOOL;
     cur_filterentry->ftype = FT_UNKNOWNFIELDS;
   }
 
@@ -616,7 +617,7 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
       cur_filterentry->fdate1 = time_t(0);
   }
 
-  else if (XMLString::equals(qname, _A2X("DCA"))) {
+  else if (XMLString::equals(qname, _A2X("DCA")) || XMLString::equals(qname, _A2X("dca")) || XMLString::equals(qname, _A2X("shiftdca"))) {
     cur_filterentry->fdca = static_cast<short>(_ttoi(m_sxElemContent.c_str()));
   }
 

@@ -1109,16 +1109,16 @@ int PWSfileV4::ReadHeader()
       m_hdr.m_DB_Description = text;
       break;
 
-#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
-      // Don't support importing XML from non-Windows platforms
-      // using Microsoft XML libraries
-      // Will be treated as an 'unknown header field' by the 'default' clause below
-#else
     case HDR_FILTERS:
       if (utf8 != nullptr) utf8[utf8Len] = '\0';
+      if (utf8Len == 0) break;
       utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
       if (utf8Len > 0) {
         stringT strErrors;
+#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+        // Using PUGI XML we do not need XDS File
+        stringT XSDFilename = _T("");
+#else
         stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
         if (!pws_os::FileExists(XSDFilename)) {
           // No filter schema => user won't be able to access stored filters
@@ -1137,9 +1137,10 @@ int PWSfileV4::ReadHeader()
           m_UHFL.push_back(unkhfe);
           break;
         }
+#endif
         int rc = m_MapDBFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
-                                                  XSDFilename.c_str(),
-                                                  strErrors, m_pAsker);
+                                                    XSDFilename.c_str(),
+                                                    strErrors, m_pAsker);
         if (rc != PWScore::SUCCESS) {
           // Can't parse it - treat as an unknown field,
           // Notify user that filter won't be available
@@ -1153,7 +1154,6 @@ int PWSfileV4::ReadHeader()
         }
       }
       break;
-#endif
 
     case HDR_RUE:
       {

@@ -6,6 +6,17 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
+// For compilers that support precompilation, includes "wx/wx.h".
+#include "wx/wxprec.h"
+
+#ifndef WX_PRECOMP
+#include "wx/wx.h"
+#endif
+
+#ifdef __WXMSW__
+#include <wx/msw/msvcrt.h>
+#endif
+
 #include "PWSFilters.h"
 #include "PWSfileHeader.h"
 #include "PWHistory.h"
@@ -25,6 +36,10 @@
 #include "XML/MSXML/MFilterXMLProcessor.h"
 #elif USE_XML_LIBRARY == XERCES
 #include "XML/Xerces/XFilterXMLProcessor.h"
+#endif
+
+#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+#include "XML/Pugi/PFilterXMLProcessor.h"
 #endif
 
 #define PWS_XML_FILTER_VERSION 1
@@ -678,15 +693,51 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
 }
 
 #if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
-// Don't support importing XML from non-Windows using Microsoft XML libraries
-int PWSFilters::ImportFilterXMLFile(const FilterPool, 
-                                    const StringX &, 
-                                    const stringT &, 
-                                    const stringT &,
-                                    stringT &,
-                                    Asker *)
+int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
+                                    const StringX &strXMLData,
+                                    const stringT &strXMLFileName,
+                                    const stringT & WXUNUSED(strXSDFileName),
+                                    stringT &strErrors,
+                                    Asker *pAsker, Reporter *pReporter)
 {
-  return PWScore::UNIMPLEMENTED;
+  PFilterXMLProcessor fXML(*this, fpool, pAsker, pReporter);
+  bool status, validation;
+    
+  strErrors = _T("");
+    
+  if (strXMLFileName.empty())
+    status = fXML.ReadXML(strXMLData, _T(""));
+  else
+    status = fXML.ReadXML(_T(""), strXMLFileName);
+      
+  strErrors = fXML.getXMLErrors();
+  if (!status) {
+    return PWScore::XML_FAILED_VALIDATION;
+  }
+    
+  validation = true;
+  if (strXMLFileName.empty())
+    status = fXML.Process(validation);
+  else
+    status = fXML.Process(validation);
+    
+  strErrors = fXML.getXMLErrors();
+  if (!status) {
+    return PWScore::XML_FAILED_VALIDATION;
+  }
+
+  validation = false;
+  if (strXMLFileName.empty())
+    status = fXML.Process(validation);
+  else
+    status = fXML.Process(validation);
+
+  strErrors = fXML.getXMLErrors();
+  if (!status) {
+    return PWScore::XML_FAILED_IMPORT;
+  }
+    
+  return PWScore::SUCCESS;
 }
 #else
 int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
@@ -694,7 +745,7 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
                                     const stringT &strXMLFileName,
                                     const stringT &strXSDFileName,
                                     stringT &strErrors,
-                                    Asker *pAsker)
+                                    Asker *pAsker, Reporter *)
 {
 #if USE_XML_LIBRARY == MSXML
   MFilterXMLProcessor fXML(*this, fpool, pAsker);
@@ -771,6 +822,8 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
       // Note: purpose drop through to standard 'string' processing
       //[[fallthrough]];
     case PWSMatch::MT_STRING:
+      //[[fallthrough]];
+    case PWSMatch::MT_MEDIATYPE:
       if (st_fldata.rule == PWSMatch::MR_PRESENT ||
           st_fldata.rule == PWSMatch::MR_NOTPRESENT)
         Format(cs_criteria, L"%ls", cs_rule.c_str());
@@ -791,7 +844,7 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
         Format(cs_criteria, L"%ls", cs_rule.c_str());
       else
       if (st_fldata.rule == PWSMatch::MR_BETWEEN) {  // Date or Integer only
-        LoadAString(cs_and, IDSC_AND);
+        LoadAString(cs_and, IDSC_AND_SMALL);
         Format(cs_criteria, L"%ls %ls %ls %ls", 
                cs_rule.c_str(), cs1.c_str(), cs_and.c_str(), cs2.c_str());
       } else {
@@ -800,7 +853,7 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
       if (st_fldata.mtype == PWSMatch::MT_DATE &&
           st_fldata.fdatetype == 1 /* Relative */) {
         stringT cs_temp;
-        LoadAString(cs_temp, IDSC_RELATIVE);
+        LoadAString(cs_temp, IDSC_RELATIVE_SMALL);
         cs_criteria += _T(" ") + cs_temp;
       }
       if (st_fldata.mtype == PWSMatch::MT_ENTRYSIZE) {
@@ -841,9 +894,6 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
       Format(cs_criteria, L"%ls %ls", cs_rule.c_str(), cs1.c_str());
       break;
     case PWSMatch::MT_ENTRYSTATUS:
-      Format(cs_criteria, L"%ls %ls", cs_rule.c_str(), cs1.c_str());
-      break;
-    case PWSMatch::MT_MEDIATYPE:
       Format(cs_criteria, L"%ls %ls", cs_rule.c_str(), cs1.c_str());
       break;
     default:

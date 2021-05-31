@@ -865,27 +865,27 @@ wxPanel* AddEditPropSheetDlg::CreateAttachmentPanel()
 
   auto *StaticText2 = new wxStaticText(panel, wxID_ANY, _("Media Type:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   FlexGridSizer1->Add(StaticText2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentMediaType = new wxStaticText(panel, ID_STATICTEXT4, _("Label1"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
+  m_AttachmentMediaType = new wxStaticText(panel, ID_STATICTEXT4, _T(""), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
   FlexGridSizer1->Add(m_AttachmentMediaType, 1, wxALL|wxEXPAND, 5);
 
   auto *StaticText4 = new wxStaticText(panel, wxID_ANY, _("Creation Date:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   FlexGridSizer1->Add(StaticText4, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentCreationDate = new wxStaticText(panel, ID_STATICTEXT5, _("Label2"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
+  m_AttachmentCreationDate = new wxStaticText(panel, ID_STATICTEXT5, _T(""), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
   FlexGridSizer1->Add(m_AttachmentCreationDate, 1, wxALL|wxEXPAND, 5);
 
   auto *StaticText5 = new wxStaticText(panel, wxID_ANY, _("File Size:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   FlexGridSizer1->Add(StaticText5, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentFileSize = new wxStaticText(panel, ID_STATICTEXT6, _("Label3"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
+  m_AttachmentFileSize = new wxStaticText(panel, ID_STATICTEXT6, _T(""), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
   FlexGridSizer1->Add(m_AttachmentFileSize, 1, wxALL|wxEXPAND, 5);
 
   auto *StaticText7 = new wxStaticText(panel, wxID_ANY, _("File Creation Date:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   FlexGridSizer1->Add(StaticText7, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentFileCreationDate = new wxStaticText(panel, ID_STATICTEXT8, _("Label4"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
+  m_AttachmentFileCreationDate = new wxStaticText(panel, ID_STATICTEXT8, _T(""), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
   FlexGridSizer1->Add(m_AttachmentFileCreationDate, 1, wxALL|wxEXPAND, 5);
 
   auto *StaticText9 = new wxStaticText(panel, wxID_ANY, _("File Last Modified Date:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   FlexGridSizer1->Add(StaticText9, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentFileLastModifiedDate = new wxStaticText(panel, ID_STATICTEXT10, _("Label5"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
+  m_AttachmentFileLastModifiedDate = new wxStaticText(panel, ID_STATICTEXT10, _T(""), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
   FlexGridSizer1->Add(m_AttachmentFileLastModifiedDate, 1, wxALL|wxEXPAND, 5);
   StaticBoxSizerProperties->Add(FlexGridSizer1, 1, wxALL|wxEXPAND, 5);
   BoxSizerMain->Add(StaticBoxSizerProperties, 0, wxALL|wxEXPAND, 5);

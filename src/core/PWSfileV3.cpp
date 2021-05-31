@@ -773,52 +773,53 @@ int PWSfileV3::ReadHeader()
         m_hdr.m_DB_Description = text;
         break;
 
+      case HDR_FILTERS:
+        if (utf8 != nullptr) utf8[utf8Len] = '\0';
+        if (utf8Len == 0) break;
+        utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
+        if (utf8Len > 0) {
+          stringT strErrors;
 #if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
-        // Don't support importing XML from non-Windows platforms
-        // using Microsoft XML libraries
-        // Will be treated as an 'unknown header field' by the 'default' clause below
+          // Using PUGI XML we do not need XDS File
+          stringT XSDFilename = _T("");
 #else
-    case HDR_FILTERS:
-      if (utf8 != nullptr) utf8[utf8Len] = '\0';
-      utf8status = m_utf8conv.FromUTF8(utf8, utf8Len, text);
-      if (utf8Len > 0) {
-        stringT strErrors;
-        stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
-        if (!pws_os::FileExists(XSDFilename)) {
-          // No filter schema => user won't be able to access stored filters
-          // Inform her of the fact (probably an installation problem).
-          stringT message, message2;
-          Format(message, IDSC_MISSINGXSD, L"pwsafe_filter.xsd");
-          LoadAString(message2, IDSC_FILTERSKEPT);
-          message += stringT(_T("\n\n")) + message2;
-          if (m_pReporter != nullptr)
-            (*m_pReporter)(message);
+          stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
+          if (!pws_os::FileExists(XSDFilename)) {
+            // No filter schema => user won't be able to access stored filters
+            // Inform her of the fact (probably an installation problem).
+            stringT message, message2;
+            Format(message, IDSC_MISSINGXSD, L"pwsafe_filter.xsd");
+            LoadAString(message2, IDSC_FILTERSKEPT);
+            message += stringT(_T("\n\n")) + message2;
+            if (m_pReporter != nullptr)
+              (*m_pReporter)(message);
 
-          // Treat it as an Unknown field!
-          // Maybe user used a later version of PWS
-          // and we don't want to lose anything
-          UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
-          m_UHFL.push_back(unkhfe);
-          break;
-        }
-        int rc = m_MapDBFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
-                                                    XSDFilename.c_str(),
-                                                    strErrors, m_pAsker);
-        if (rc != PWScore::SUCCESS) {
-          // Can't parse it - treat as an unknown field,
-          // Notify user that filter won't be available
-          stringT message;
-          LoadAString(message, IDSC_CANTPROCESSDBFILTERS);
-          if (m_pReporter != nullptr)
-            (*m_pReporter)(message);
-          pws_os::Trace(L"Error while parsing header filters.\n\tData: %ls\n\tErrors: %ls\n",
-                        text.c_str(), strErrors.c_str());
-          UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
-          m_UHFL.push_back(unkhfe);
-        }
-      }
-      break;
+            // Treat it as an Unknown field!
+            // Maybe user used a later version of PWS
+            // and we don't want to lose anything
+            UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
+            m_UHFL.push_back(unkhfe);
+            break;
+          }
 #endif
+          int rc = m_MapDBFilters.ImportFilterXMLFile(FPOOL_DATABASE, text.c_str(), _T(""),
+                                                      XSDFilename.c_str(),
+                                                      strErrors, m_pAsker);
+          if (rc != PWScore::SUCCESS) {
+            // Can't parse it - treat as an unknown field,
+            // Notify user that filter won't be available
+            stringT message;
+            LoadAString(message, IDSC_CANTPROCESSDBFILTERS);
+            if (m_pReporter != nullptr)
+              (*m_pReporter)(message);
+            pws_os::Trace(L"Error while parsing header filters.\n\tData: %ls\n\tErrors: %ls\n",
+                          text.c_str(), strErrors.c_str());
+            UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
+            m_UHFL.push_back(unkhfe);
+          }
+        }
+        break;
+
       case HDR_RUE:
         {
           if (utf8 != nullptr) utf8[utf8Len] = '\0';

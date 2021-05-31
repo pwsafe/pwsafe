@@ -297,6 +297,8 @@ BEGIN
   IDSC_AND                 "And"
   IDSC_OR                  "Or"
   IDSC_RELATIVE            "Relative"
+  IDSC_RELATIVE_SMALL      "relative"
+  IDSC_AND_SMALL           "and"
 END
 
 STRINGTABLE

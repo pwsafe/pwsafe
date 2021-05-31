@@ -5453,6 +5453,9 @@ msgstr "Ref a última alteração nas políticas de senha que foram desfeitas an
 msgid "Relative"
 msgstr "Relativa"
 
+msgid "relative"
+msgstr "relativa"
+
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
 msgstr "Datas relativas são em dias em relação a hoje, por ex., '-1' é ontem e '1' é amanhã"

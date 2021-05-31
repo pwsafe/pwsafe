@@ -5480,6 +5480,9 @@ msgstr "Voer de laatste wijziging aan het wachtwoordregels, welke eerst geannule
 msgid "Relative"
 msgstr "Relatief"
 
+msgid "relative"
+msgstr "relatief"
+
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
 msgstr "Relatieve datums zijn dagen ten opzichte van vandaag. Bijvoorbeeld  '-1' is gisteren en '1' is morgen"

@@ -9,6 +9,9 @@
 /** \file SetFiltersDlg.cpp
 * 
 */
+
+////@begin includes
+
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
@@ -20,62 +23,110 @@
 #include "wx/wx.h"
 #endif
 
-////@begin includes
-////@end includes
+#include "wx/grid.h"
 
+#include "core/core.h"
+#include "core/PWScore.h"
+
+#include "PWFiltersGrid.h"
 #include "SetFiltersDlg.h"
+#include "wxUtilities.h"
+#include "PasswordSafeFrame.h"
+#include "ManageFiltersTable.h"
+
+////@end includes
 
 ////@begin XPM images
 ////@end XPM images
 
-
 /*!
- * SetFilters type definition
+ * SetFiltersDlg type definition
  */
 
-IMPLEMENT_DYNAMIC_CLASS( SetFilters, wxDialog )
+IMPLEMENT_DYNAMIC_CLASS( SetFiltersDlg, wxDialog )
 
 
 /*!
- * SetFilters event table definition
+ * SetFiltersDlg event table definition
  */
 
-BEGIN_EVENT_TABLE( SetFilters, wxDialog )
+BEGIN_EVENT_TABLE( SetFiltersDlg, wxDialog )
 
-////@begin SetFilters event table entries
-  EVT_GRID_CELL_LEFT_CLICK( SetFilters::OnCellLeftClick )
-  EVT_BUTTON( wxID_APPLY, SetFilters::OnApplyClick )
-  EVT_BUTTON( wxID_OK, SetFilters::OnOkClick )
-  EVT_BUTTON( wxID_CANCEL, SetFilters::OnCancelClick )
-  EVT_BUTTON( wxID_HELP, SetFilters::OnHelpClick )
-////@end SetFilters event table entries
+////@begin SetFiltersDlg event table entries
+  EVT_BUTTON( wxID_APPLY, SetFiltersDlg::OnApplyClick )
+  EVT_BUTTON( wxID_OK, SetFiltersDlg::OnOkClick )
+  EVT_BUTTON( wxID_CANCEL, SetFiltersDlg::OnCancelClick )
+  EVT_BUTTON( wxID_HELP, SetFiltersDlg::OnHelpClick )
+////@end SetFiltersDlg event table entries
 
 END_EVENT_TABLE()
 
 
 /*!
- * SetFilters constructors
+ * SetFiltersDlg constructors
  */
 
-SetFilters::SetFilters()
+SetFiltersDlg::SetFiltersDlg() : m_pfilters(nullptr),
+                                 m_currentFilters(nullptr),
+                                 m_bCanHaveAttachments(false),
+                                 m_psMediaTypes(nullptr),
+                                 m_filtertype(DFTYPE_INVALID),
+                                 m_filterpool(FPOOL_LAST),
+                                 m_AppliedCalled(nullptr)
 {
   Init();
 }
 
-SetFilters::SetFilters( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+SetFiltersDlg::SetFiltersDlg(wxWindow* parent,
+                             st_filters *pfilters,
+                             st_filters *currentFilters,
+                             bool *appliedCalled,
+                             const FilterType &filtertype,
+                             const FilterPool filterpool,
+                             const bool bCanHaveAttachments,
+                             const std::set<StringX> *psMediaTypes,
+                             wxWindowID id, const wxString& caption,
+                             const wxPoint& pos,
+                             const wxSize& size,
+                             long style ) : m_pfilters(pfilters),
+                                            m_currentFilters(currentFilters),
+                                            m_bCanHaveAttachments(bCanHaveAttachments),
+                                            m_psMediaTypes(psMediaTypes),
+                                            m_filtertype(filtertype),
+                                            m_filterpool(filterpool),
+                                            m_AppliedCalled(appliedCalled)
 {
+  wxString heading(caption);
+  
   Init();
-  Create(parent, id, caption, pos, size, style);
+  switch(filtertype) {
+    case DFTYPE_PWHISTORY:
+      heading = SYMBOL_SETFILTERS_PWHIST_TITLE;
+      break;
+    case DFTYPE_PWPOLICY:
+      heading = SYMBOL_SETFILTERS_POLICY_TITLE;
+      break;
+    case DFTYPE_ATTACHMENT:
+      heading = SYMBOL_SETFILTERS_ATTACHMENT_TITLE;
+      break;
+    case DFTYPE_MAIN:
+      /* FALLTHROUGH */
+    default:
+      if(heading.empty())
+        heading = SYMBOL_SETFILTERS_TITLE;
+      break;
+  }
+  Create(parent, id, heading, pos, size, style);
 }
 
 
 /*!
- * SetFilters creator
+ * SetFiltersDlg creator
  */
 
-bool SetFilters::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+bool SetFiltersDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-////@begin SetFilters creation
+////@begin SetFiltersDlg creation
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
 
@@ -85,19 +136,28 @@ bool SetFilters::Create( wxWindow* parent, wxWindowID id, const wxString& captio
     GetSizer()->SetSizeHints(this);
   }
   Centre();
-////@end SetFilters creation
+  
+  // On second window of same type (history, policy or attachment) move small pixel number
+  // down and right to leave view on below present original window
+  if(m_filtertype != DFTYPE_MAIN) {
+    // Move down and right to show lower window
+    int x, y;
+    GetPosition(&x, &y);
+    Move(x + SET_FILTER_WINDOW_OFFSET, y + SET_FILTER_WINDOW_OFFSET);
+  }
+////@end SetFiltersDlg creation
   return true;
 }
 
 
 /*!
- * SetFilters destructor
+ * SetFiltersDlg destructor
  */
 
-SetFilters::~SetFilters()
+SetFiltersDlg::~SetFiltersDlg()
 {
-////@begin SetFilters destruction
-////@end SetFilters destruction
+////@begin SetFiltersDlg destruction
+////@end SetFiltersDlg destruction
 }
 
 
@@ -105,42 +165,51 @@ SetFilters::~SetFilters()
  * Member initialisation
  */
 
-void SetFilters::Init()
+void SetFiltersDlg::Init()
 {
-////@begin SetFilters member initialisation
+////@begin SetFiltersDlg member initialisation
   m_filterGrid = NULL;
-////@end SetFilters member initialisation
+  ASSERT(m_pfilters);
+  m_filterName = towxstring(m_pfilters->fname);
+////@end SetFiltersDlg member initialisation
 }
 
 
 /*!
- * Control creation for SetFilters
+ * Control creation for SetFiltersDlg
  */
 
-void SetFilters::CreateControls()
+void SetFiltersDlg::CreateControls()
 {    
-////@begin SetFilters content construction
-  SetFilters* itemDialog1 = this;
+////@begin SetFiltersDlg content construction
+  SetFiltersDlg* itemDialog1 = this;
 
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
   itemDialog1->SetSizer(itemBoxSizer2);
 
   wxBoxSizer* itemBoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer2->Add(itemBoxSizer1, 0, wxALIGN_LEFT|wxALL, 5);
+  itemBoxSizer2->Add(itemBoxSizer1, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
-  wxStaticText* itemStaticText2 = new wxStaticText( itemDialog1, wxID_STATIC, _("Filter name:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer1->Add(itemStaticText2, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  wxStaticText* itemStaticText2 = new wxStaticText( itemDialog1, wxID_STATIC, _("Filter name:")+_T(" "), wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer1->Add(itemStaticText2, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  // Only the main window may edit the filter name, while the history, policy and attachment gets actual value shown
+  if(m_filtertype == DFTYPE_MAIN) {
+    wxTextCtrl* itemTextCtrl3 = new wxTextCtrl( itemDialog1, ID_FILTERNAME, m_filterName, wxDefaultPosition, wxDefaultSize, (m_filtertype != DFTYPE_MAIN) ? wxTE_READONLY : 0 );
+    itemBoxSizer1->Add(itemTextCtrl3, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+    // Set validators
+    itemTextCtrl3->SetValidator( wxTextValidator(wxFILTER_NONE, & m_filterName) );
+    
+    itemBoxSizer1->AddSpacer(itemStaticText2->GetSize().GetWidth() / 2);
+  }
+  else {
+    wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, ID_FILTERNAME, m_filterName+_T(" "), wxDefaultPosition, wxDefaultSize, 0 );
+    itemBoxSizer1->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  }
 
-  wxTextCtrl* itemTextCtrl3 = new wxTextCtrl( itemDialog1, ID_FilterName, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer1->Add(itemTextCtrl3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-  m_filterGrid = new wxGrid( itemDialog1, ID_FILTERGRID, wxDefaultPosition, wxSize(200, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
-  m_filterGrid->SetDefaultColSize(50);
-  m_filterGrid->SetDefaultRowSize(25);
-  m_filterGrid->SetColLabelSize(25);
-  m_filterGrid->SetRowLabelSize(50);
-  m_filterGrid->CreateGrid(5, 5, wxGrid::wxGridSelectCells);
-  itemBoxSizer2->Add(m_filterGrid, 0, wxGROW|wxALL, 5);
+  m_filterGrid = new pwFiltersGrid( itemDialog1, ID_FILTERGRID,
+                                   m_pfilters, m_filtertype, m_filterpool, m_bCanHaveAttachments, m_psMediaTypes, true,
+                                   wxDefaultPosition, wxSize(200, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
+  itemBoxSizer2->Add(m_filterGrid, 1, wxGROW|wxALL|wxEXPAND, 5);
 
   wxBoxSizer* itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer2->Add(itemBoxSizer5, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
@@ -157,22 +226,11 @@ void SetFilters::CreateControls()
   wxButton* itemButton9 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(itemButton9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  // Set validators
-  itemTextCtrl3->SetValidator( wxTextValidator(wxFILTER_NONE, & m_filterName) );
-////@end SetFilters content construction
-}
-
-
-/*!
- * wxEVT_GRID_CELL_LEFT_CLICK event handler for ID_FILTERGRID
- */
-
-void SetFilters::OnCellLeftClick( wxGridEvent& event )
-{
-////@begin wxEVT_GRID_CELL_LEFT_CLICK event handler for ID_FILTERGRID in SetFilters.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_GRID_CELL_LEFT_CLICK event handler for ID_FILTERGRID in SetFilters. 
+////@end SetFiltersDlg content construction
+  
+  if(m_filtertype != DFTYPE_MAIN) {
+    itemButton6->Disable(); // Do not allow Apply in case History, Policy or Attachment filter
+  }
 }
 
 
@@ -180,12 +238,44 @@ void SetFilters::OnCellLeftClick( wxGridEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_APPLY
  */
 
-void SetFilters::OnApplyClick( wxCommandEvent& event )
+void SetFiltersDlg::OnApplyClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_APPLY in SetFilters.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_APPLY in SetFilters. 
+  if ((m_filtertype == DFTYPE_MAIN) && Validate() && TransferDataFromWindow()) {
+    // Second call will clear and remove active filter
+    if(*m_AppliedCalled) {
+      // If filter is already applied, this one is call of Clear and filter is taken back
+      m_currentFilters->Empty();
+      // Update view
+      wxCommandEvent event(wxEVT_COMMAND_MENU_SELECTED, ID_APPLYFILTER);
+      GetParent()->GetEventHandler()->ProcessEvent(event);
+      // Mark as not applied
+      *m_AppliedCalled = false;
+      // Renew button label
+      FindWindow(wxID_APPLY)->SetLabel(_("&Apply"));
+      return;
+    }
+    // At first time check parameter
+    if(m_filterName.IsEmpty()) {
+      wxMessageBox(_("No filter name given."), _("Please name this filter."), wxOK|wxICON_ERROR);
+      return;
+    }
+    if(! VerifyFilters()) {
+      // Message to user is given in VeryFilters()
+      return;
+    }
+    // When correct copy filter and apply menu item to force start of filter in view
+    m_pfilters->fname = m_filterName.c_str();
+    m_currentFilters->Empty();
+    *m_currentFilters = *m_pfilters;
+    // Update the view on filtered entries
+    wxCommandEvent event(wxEVT_COMMAND_MENU_SELECTED, ID_APPLYFILTER);
+    event.SetString(pwManageFiltersTable::getSourcePoolLabel(m_filterpool));
+    GetParent()->GetEventHandler()->ProcessEvent(event);
+    // Mark applied is called
+    *m_AppliedCalled = true;
+    // Set button label as "Clear" to revert filter application on next press
+    FindWindow(wxID_APPLY)->SetLabel(_("Clear"));
+  }
 }
 
 
@@ -193,12 +283,22 @@ void SetFilters::OnApplyClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void SetFilters::OnOkClick( wxCommandEvent& event )
+void SetFiltersDlg::OnOkClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in SetFilters.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in SetFilters. 
+  if (Validate() && TransferDataFromWindow()) {
+    if((m_filtertype == DFTYPE_MAIN) && m_filterName.IsEmpty()) {
+      wxMessageBox(_("No filter name given."), _("Please name this filter."), wxOK|wxICON_ERROR);
+      return;
+    }
+    if(! VerifyFilters()) {
+      // Message to user is given in VeryFilters()
+      return;
+    }    
+    m_filterGrid->ClearIfEmpty();
+    if(m_filtertype == DFTYPE_MAIN)
+      m_pfilters->fname = m_filterName.c_str();
+  }
+  EndModal(wxID_OK);
 }
 
 
@@ -206,12 +306,20 @@ void SetFilters::OnOkClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
 
-void SetFilters::OnCancelClick( wxCommandEvent& event )
+void SetFiltersDlg::OnCancelClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SetFilters.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SetFilters. 
+  if((m_filtertype == DFTYPE_MAIN) && *m_AppliedCalled) {
+    wxMessageDialog dialog(this, _("Applied pressed before Cancel"), _("Do you wish to overtake applied filter?"), wxYES_NO | wxICON_EXCLAMATION);
+    if(dialog.ShowModal() == wxID_NO) {
+      m_currentFilters->Empty();
+
+      wxCommandEvent event(wxEVT_COMMAND_MENU_SELECTED, ID_APPLYFILTER);
+      GetParent()->GetEventHandler()->ProcessEvent(event);
+      
+      *m_AppliedCalled = false;
+    }
+  }
+  EndModal(wxID_CANCEL);
 }
 
 
@@ -219,12 +327,12 @@ void SetFilters::OnCancelClick( wxCommandEvent& event )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP
  */
 
-void SetFilters::OnHelpClick( wxCommandEvent& event )
+void SetFiltersDlg::OnHelpClick( wxCommandEvent& event )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in SetFilters.
+////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in SetFiltersDlg.
   // Before editing this code, remove the block markers.
   event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in SetFilters. 
+////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP in SetFiltersDlg.
 }
 
 
@@ -232,33 +340,122 @@ void SetFilters::OnHelpClick( wxCommandEvent& event )
  * Should we show tooltips?
  */
 
-bool SetFilters::ShowToolTips()
+bool SetFiltersDlg::ShowToolTips()
 {
   return true;
 }
+
 
 /*!
  * Get bitmap resources
  */
 
-wxBitmap SetFilters::GetBitmapResource( const wxString& name )
+wxBitmap SetFiltersDlg::GetBitmapResource( const wxString& name )
 {
   // Bitmap retrieval
-////@begin SetFilters bitmap retrieval
+////@begin SetFiltersDlg bitmap retrieval
   wxUnusedVar(name);
   return wxNullBitmap;
-////@end SetFilters bitmap retrieval
+////@end SetFiltersDlg bitmap retrieval
 }
+
 
 /*!
  * Get icon resources
  */
 
-wxIcon SetFilters::GetIconResource( const wxString& name )
+wxIcon SetFiltersDlg::GetIconResource( const wxString& name )
 {
   // Icon retrieval
-////@begin SetFilters icon retrieval
+////@begin SetFiltersDlg icon retrieval
   wxUnusedVar(name);
   return wxNullIcon;
-////@end SetFilters icon retrieval
+////@end SetFiltersDlg icon retrieval
+}
+
+
+/*!
+ * Verify filter and return true when correct
+ */
+
+bool SetFiltersDlg::VerifyFilters()
+{
+  vFilterRows *currentFilter;
+  int *currentCounter;
+  
+  // Select applicable filter group
+  switch(m_filtertype) {
+    case DFTYPE_MAIN:
+      currentFilter = &m_pfilters->vMfldata;
+      currentCounter = &m_pfilters->num_Mactive;
+      break;
+    case DFTYPE_PWHISTORY:
+      currentFilter = &m_pfilters->vHfldata;
+      currentCounter = &m_pfilters->num_Hactive;
+      break;
+    case DFTYPE_PWPOLICY:
+      currentFilter = &m_pfilters->vPfldata;
+      currentCounter = &m_pfilters->num_Pactive;
+      break;
+    case DFTYPE_ATTACHMENT:
+      currentFilter = &m_pfilters->vAfldata;
+      currentCounter = &m_pfilters->num_Aactive;
+      break;
+    case DFTYPE_INVALID:
+      /* FALLTHROUGH */
+    default:
+      ASSERT(false);
+      return false;
+  }
+  int i = 0;
+  int iError = -1;
+  int iHistory = -1;
+  int iPolicy = -1;
+  int iAttachment = -1;
+  // Check on complete filter. History, Policy and Attachment need related group filled
+  for_each(currentFilter->begin(), currentFilter->end(), [&i, &iError, &iHistory, &iPolicy, &iAttachment] (st_FilterRow st_fldata) {
+    ++i; // User is starting it's count by 1 for users view
+    if((st_fldata.mtype != PWSMatch::MT_PWHIST && st_fldata.mtype != PWSMatch::MT_POLICY && st_fldata.mtype != PWSMatch::MT_ATTACHMENT) &&
+       (st_fldata.mtype == PWSMatch::MT_INVALID || st_fldata.rule  == PWSMatch::MR_INVALID)) {
+      iError = i;
+      return false;
+    }
+    if(st_fldata.mtype == PWSMatch::MT_PWHIST)
+      iHistory = i;
+    if(st_fldata.mtype == PWSMatch::MT_POLICY)
+      iPolicy = i;
+    if(st_fldata.mtype == PWSMatch::MT_ATTACHMENT)
+      iAttachment = i;
+    return true;
+  } );
+  
+  if(iError != -1) {
+    stringT msg;
+    Format(msg, _("Row %d is incomplete."), iError);
+    wxMessageBox(_("Please set both Field and Criteria."), wxString(msg), wxOK|wxICON_ERROR);
+    return false;
+  }
+  
+  if(m_filtertype == DFTYPE_MAIN) {
+    if((iHistory != -1) && (m_pfilters->vHfldata.empty() || ! m_pfilters->num_Hactive)) {
+      stringT msg;
+      Format(msg, _("Row %d is incomplete."), iHistory);
+      wxMessageBox(_("Please set both Field and Criteria or update History filters."), wxString(msg), wxOK|wxICON_ERROR);
+      return false;
+    }
+    if((iPolicy != -1) && (m_pfilters->vPfldata.empty() || ! m_pfilters->num_Pactive)) {
+      stringT msg;
+      Format(msg, _("Row %d is incomplete."), iPolicy);
+      wxMessageBox(_("Please set both Field and Criteria or update Policy filters."), wxString(msg), wxOK|wxICON_ERROR);
+      return false;
+    }
+    if((iAttachment != -1) && (m_pfilters->vAfldata.empty() || ! m_pfilters->num_Aactive)) {
+      stringT msg;
+      Format(msg, _("Row %d is incomplete."), iAttachment);
+      wxMessageBox(_("Please set both Field and Criteria or update Attachment filters."), wxString(msg), wxOK|wxICON_ERROR);
+      return false;
+    }
+  }
+  
+  return true;
 }
