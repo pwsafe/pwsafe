@@ -43,7 +43,7 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
   othercore.ClearDBData();
 
   StringX dbpath(tostringx(file));
-  int rc = othercore.ReadFile(dbpath, combination);
+  auto rc = othercore.ReadFile(dbpath, combination);
 
   if (setupCopy)
     PWSprefs::GetInstance()->SetupCopyPrefs();
@@ -68,7 +68,7 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
 
     default:
       if (showMsgbox)
-        wxMessageBox( wxString(file) << wxT("\n\n") << _("Unknown error"), _("File Read Error"), wxOK | wxICON_ERROR, msgboxParent);
+        wxMessageBox( wxString(file) << wxT("\n\n") << PWScore::StatusText(rc), _("File Read Error"), wxOK | wxICON_ERROR, msgboxParent);
       break;
   }
 

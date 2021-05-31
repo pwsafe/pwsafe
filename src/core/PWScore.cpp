@@ -38,8 +38,45 @@
 #include <algorithm>
 #include <set>
 #include <iterator>
+#include <map>
 
 const TCHAR *PWScore::GROUPTITLEUSERINCHEVRONS = _T("\xab%ls\xbb \xab%ls\xbb \xab%ls\xbb");
+
+stringT PWScore::StatusText(int s)
+{
+  const std::map<int, stringT> StatusTexts = {
+   {SUCCESS, _T("Success")},
+   {FAILURE, _T("Failure")},
+   {USER_DECLINED_SAVE, _T("User declined save")},
+   {CANT_GET_LOCK, _T("Couldn't acquire lock")},
+   {DB_HAS_CHANGED, _T("Database has changed")},
+   {CANT_OPEN_FILE, _T("Can't open file")},
+   {USER_CANCEL, _T("User cancelled")},
+   {WRONG_PASSWORD, _T("Wrong password")},
+   {BAD_DIGEST, _T("Bad digest")},
+   {TRUNCATED_FILE, _T("Truncated file")},
+   {READ_FAIL, _T("File read error")},
+   {WRITE_FAIL, _T("File write error")},
+   {UNKNOWN_VERSION, _T("Unknown version")},
+   {NOT_SUCCESS, _T("Not successful")},
+   {ALREADY_OPEN, _T("Already open")},
+   {INVALID_FORMAT, _T("Invalid format")},
+   {USER_EXIT, _T("User exited")},
+   {XML_FAILED_VALIDATION, _T("XML failed validation")},
+   {XML_FAILED_IMPORT, _T("XML failed import")},
+   {LIMIT_REACHED, _T("Limit reached")},
+   {UNIMPLEMENTED, _T("Unimplemented (yet)")},
+   {NO_ENTRIES_EXPORTED, _T("No entries were exported")},
+   {DB_HAS_DUPLICATES, _T("Database has duplicates")},
+   {OK_WITH_ERRORS, _T("OK with errors")},
+   {OK_WITH_VALIDATION_ERRORS, _T("OK with validation errors")},
+   {OPEN_NODB, _T("Open without database")},
+   {MAX_SIZE_EXCEEDED, _T("Maximum size exceeded")},
+  };
+
+  auto iter = StatusTexts.find(s);
+  return iter != StatusTexts.end() ? iter->second : _T("Unknown Status");
+}
 
 using pws_os::CUUID;
 

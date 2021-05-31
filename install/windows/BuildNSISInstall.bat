@@ -42,7 +42,7 @@ if $%1 == $x64 goto :buildx64
   goto :exit
   
 ::
-:: Build the MSI installer
+:: Build the NSIS installer
 ::
 :buildx86
 

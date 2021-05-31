@@ -12,9 +12,12 @@ TARGET=pwsafe
 #RELDIR=../../Xcode/build-i386/Release/
 ###RELDIR=../../Xcode/build64/Release/
 #RELDIR=../../Xcode/build-llvm/Release/
-RELDIR=$(HOME)/Library/Developer/Xcode/DerivedData/pwsafe-xcode6-*/Build/Products/Release/
+#RELDIR=$(HOME)/Library/Developer/Xcode/DerivedData/pwsafe-xcode6-*/Build/Products/Release/
+RELDIR=./../../Xcode/build/Products/Release/
 # Path to wxWidgets library path has to be adapted for each environment
-WXDIR=../../../wxWidgets/wxWidgets-3.1.4/locale
+WXDIR=../../../wxWidgets-3.1.5/locale
+# Machine architecture
+MACHINEARCH=$(shell uname -m)
 
 CPBIN=/bin/cp
 RMBIN=/bin/rm
@@ -32,9 +35,9 @@ else
 RELEASENAME := $(VER_MAJOR).$(VER_MINOR).$(VER_REV)
 endif
 
-SRCDIR=./dmg/
+SRCDIR=./dmg
 RESOURCES=$(SRCDIR)/pwsafe.app/Contents/Resources
-DMGNAME = ../../$(TARGET)-$(RELEASENAME).dmg
+DMGNAME = "../../$(TARGET)-$(MACHINEARCH)-$(RELEASENAME).dmg"
 PWSAFE-APP=$(TARGET).app
 DOCS := ../../README.md ../../docs/LICENSE.rtf ../../docs/ReleaseNotes.md 
 HELP := ../../help/helpEN.zip ../../help/helpRU.zip ../../help/helpDE.zip ../../help/helpES.zip ../../help/helpFR.zip ../../help/helpZH.zip ../../help/helpPL.zip

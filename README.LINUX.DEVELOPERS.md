@@ -107,7 +107,7 @@ and QR support (option NO_QR) if they are not required.
 With the mentioned cmake options, resp. preprocessor symbols the command 
 line could look as follows to created a debug build.
 
-    cmake -D CMAKE_BUILD_TYPE=Debug -D NO_QR=ON -D -D NO_GTEST=ON -D wxWidgets_CONFIG_EXECUTABLE=~/wxWidgets-3.1.3/wxbuild/wx-config ..
+    cmake -D CMAKE_BUILD_TYPE=Debug -D NO_QR=ON -D NO_GTEST=ON -D wxWidgets_CONFIG_EXECUTABLE=~/wxWidgets-3.1.3/wxbuild/wx-config ..
 
 To speed up the build process on a multi core system, make can be 
 instructed with the option '-j' to distribute the compilation process 
