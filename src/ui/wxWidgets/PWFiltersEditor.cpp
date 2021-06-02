@@ -670,8 +670,13 @@ void pwFiltersFTChoiceEditor::BeginEdit(int row, int col, wxGrid* grid)
   }
   
   wxGridCellEditorEvtHandler* evtHandler = NULL;
-  if(m_control)
+  if(m_control) {
+#if wxVERSION_NUMBER >= 3005
     evtHandler = wxDynamicCast(m_control->GetEventHandler(), wxGridCellEditorEvtHandler);
+#else
+    evtHandler = static_cast<wxGridCellEditorEvtHandler *>(m_control->GetEventHandler());
+#endif
+  }
 
   // Don't immediately end if we get a kill focus event within BeginEdit
   if(evtHandler)
@@ -966,9 +971,14 @@ void pwFiltersLCChoiceEditor::BeginEdit(int row, int col, wxGrid* grid)
                wxT("The pwFiltersLCChoiceEditor must be Created first!"));
 
   wxGridCellEditorEvtHandler* evtHandler = NULL;
-  if(m_control)
+  if(m_control) {
+#if wxVERSION_NUMBER >= 3005
     evtHandler = wxDynamicCast(m_control->GetEventHandler(), wxGridCellEditorEvtHandler);
-
+#else
+    evtHandler = static_cast<wxGridCellEditorEvtHandler *>(m_control->GetEventHandler());
+#endif
+  }
+  
   // Don't immediately end if we get a kill focus event within BeginEdit
   if(evtHandler)
     evtHandler->SetInSetFocus(true);
