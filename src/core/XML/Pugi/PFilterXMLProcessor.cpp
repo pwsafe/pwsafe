@@ -88,7 +88,7 @@ bool PFilterXMLProcessor::ReadXML(const StringX &strXMLData,
     // Note: "result.description()" returns char* even in Unicode builds.
     stringT sErrorDesc;
     sErrorDesc = pugi::as_wide(result.description());
-    Format(m_strXMLErrors, _("XML error:\n%ls\n%ls\noffset approximately at %d"),
+    Format(m_strXMLErrors, _("XML error:\n%ls\n%ls\noffset approximately at %d").c_str(),
            sErrorDesc.c_str(), strXMLFileName.c_str(), result.offset);
     if(m_pReporter)
       (*m_pReporter)(m_strXMLErrors);
@@ -138,7 +138,7 @@ bool PFilterXMLProcessor::Process(const bool &bValidation)
     if (SafeCompare(it->name(), _T("filter"))) {
       const TCHAR *filterName = it->attribute(_T("filtername")).value();
       if (_tcslen(filterName) == 0) {
-        Format(m_strXMLErrors, _("Missing filtername"));
+        Format(m_strXMLErrors, _("Missing filtername").c_str());
         if(m_pReporter)
           (*m_pReporter)(m_strXMLErrors);
         return false;
@@ -156,7 +156,7 @@ bool PFilterXMLProcessor::Process(const bool &bValidation)
 
     }
     else {
-      Format(m_strXMLErrors, _("Unexpected XML tag \"%ls\", expected tag is \"%ls\""),
+      Format(m_strXMLErrors, _("Unexpected XML tag \"%ls\", expected tag is \"%ls\"").c_str(),
              it->name(), _T("filter"));
       if(m_pReporter)
         (*m_pReporter)(m_strXMLErrors);
@@ -193,7 +193,7 @@ bool PFilterXMLProcessor::ReadXMLFilter(pugi::xml_node &froot, const stringT &fn
         frow.bFilterActive = false;
       }
       else {
-        Format(m_strXMLErrors, _("Unexpected attribute value \"%ls\" (expected \"yes\" or \"no\") in filter entry %d of \'%ls\'"), idx, fname.c_str());
+        Format(m_strXMLErrors, _("Unexpected attribute value \"%ls\" (expected \"yes\" or \"no\") in filter entry %d of \'%ls\'").c_str(), idx, fname.c_str());
         return false;
       }
       pugi::xml_node node = *it;
@@ -230,7 +230,7 @@ bool PFilterXMLProcessor::ReadXMLFilter(pugi::xml_node &froot, const stringT &fn
       }
     }
     else {
-      Format(m_strXMLErrors, _("Unexpected XML tag \"%ls\", expected tag is \"%ls\""),
+      Format(m_strXMLErrors, _("Unexpected XML tag \"%ls\", expected tag is \"%ls\"").c_str(),
              it->name(), _T("filter_entry"));
       return false;
     }
@@ -314,7 +314,7 @@ bool PFilterXMLProcessor::ReadXMLFilterEntry(pugi::xml_node &eroot, const string
 {
   const TCHAR *qname = eroot.name();
   if (_tcslen(qname) == 0) {
-    Format(m_strXMLErrors, _("Missing XML tag for field type in filter entry %d of \'%ls\'"),
+    Format(m_strXMLErrors, _("Missing XML tag for field type in filter entry %d of \'%ls\'").c_str(),
            idx, fname.c_str());
     return false;
   }
@@ -590,7 +590,7 @@ bool PFilterXMLProcessor::ReadXMLFilterEntry(pugi::xml_node &eroot, const string
     frow.ftype = AT_FILEATIME;
   }
   else {
-    Format(m_strXMLErrors, _("Unknown XML tag \"%ls\" for field type in filter entry %d of \'%ls\'"),
+    Format(m_strXMLErrors, _("Unknown XML tag \"%ls\" for field type in filter entry %d of \'%ls\'").c_str(),
            qname, idx, fname.c_str());
     return false;
   }
@@ -604,12 +604,12 @@ bool PFilterXMLProcessor::ReadXMLFilterEntry(pugi::xml_node &eroot, const string
       if (node != nullptr) {
         const TCHAR *val = node.child_value();
         if (_tcslen(val) == 0) {
-          Format(m_strXMLErrors, _("Missing rule in filter entry %d of filter \'%ls\'"), idx, fname.c_str());
+          Format(m_strXMLErrors, _("Missing rule in filter entry %d of filter \'%ls\'").c_str(), idx, fname.c_str());
           return false;
         }
         frow.rule = PWSMatch::GetRule(val);
         if(frow.rule == PWSMatch::MR_INVALID) {
-          Format(m_strXMLErrors, _("Unknown rule \"%ls\" in filter entry %d of filter \'%ls\'"), val, idx, fname.c_str());
+          Format(m_strXMLErrors, _("Unknown rule \"%ls\" in filter entry %d of filter \'%ls\'").c_str(), val, idx, fname.c_str());
           return false;
         }
         bRule = true;
@@ -620,7 +620,7 @@ bool PFilterXMLProcessor::ReadXMLFilterEntry(pugi::xml_node &eroot, const string
       if (node != nullptr) {
         const TCHAR *val = node.child_value();
         if (_tcslen(val) == 0) {
-          Format(m_strXMLErrors, _("Missing logic in filter entry %d of filter \'%ls\'"), idx, fname.c_str());
+          Format(m_strXMLErrors, _("Missing logic in filter entry %d of filter \'%ls\'").c_str(), idx, fname.c_str());
           return false;
         }
         if(SafeCompare(val, _T("or"))) {
@@ -630,7 +630,7 @@ bool PFilterXMLProcessor::ReadXMLFilterEntry(pugi::xml_node &eroot, const string
           frow.ltype = LC_AND;
         }
         else {
-          Format(m_strXMLErrors, _("Unknown logic \"%ls\" in filter entry %d of filter \'%ls\'"), val, idx, fname.c_str());
+          Format(m_strXMLErrors, _("Unknown logic \"%ls\" in filter entry %d of filter \'%ls\'").c_str(), val, idx, fname.c_str());
           return false;
         }
         bLogic = true;
@@ -648,7 +648,7 @@ bool PFilterXMLProcessor::ReadXMLFilterEntry(pugi::xml_node &eroot, const string
         }
     }
     else {
-      Format(m_strXMLErrors, _("Unknown XML tag \"%ls\" in field type in filter entry %d of \'%ls\'"),
+      Format(m_strXMLErrors, _("Unknown XML tag \"%ls\" in field type in filter entry %d of \'%ls\'").c_str(),
              it->name(), idx, fname.c_str());
       return false;
     }
@@ -657,7 +657,7 @@ bool PFilterXMLProcessor::ReadXMLFilterEntry(pugi::xml_node &eroot, const string
   // Check on present <logic> and <rule>
   if(!bLogic ||
      (frow.ftype != FT_PWHIST && frow.ftype != FT_POLICY  && frow.ftype != FT_ATTACHMENT && !bRule)) {
-    Format(m_strXMLErrors, _("Missing logic or rule XML tag in filter entry %d of \'%ls\'"),
+    Format(m_strXMLErrors, _("Missing logic or rule XML tag in filter entry %d of \'%ls\'").c_str(),
            idx, fname.c_str());
     return false;
   }
@@ -750,7 +750,7 @@ bool PFilterXMLProcessor::ReadXMLFilterTest(pugi::xml_node &troot, const stringT
       }
     }
     else {
-      Format(m_strXMLErrors, _("Unknown XML tag \"%ls\" in test in filter entry %d of \'%ls\'"),
+      Format(m_strXMLErrors, _("Unknown XML tag \"%ls\" in test in filter entry %d of \'%ls\'").c_str(),
              it->name(), idx, fname.c_str());
       return false;
     }

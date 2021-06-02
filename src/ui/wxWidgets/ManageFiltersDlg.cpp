@@ -165,7 +165,7 @@ void ManageFiltersGrid::OnChar(wxKeyEvent& evt)
             newRow = m_pMapFilterData->GetSelectedFilterIdx() - 1;
         }
         else if (nKey == WXK_RIGHT || nKey == WXK_DOWN) {
-          if(m_pMapFilterData->GetSelectedFilterIdx() < (m_pMapFilterData->size() - 1))
+          if(m_pMapFilterData->GetSelectedFilterIdx() < (static_cast<int>(m_pMapFilterData->size()) - 1))
             newRow = m_pMapFilterData->GetSelectedFilterIdx() + 1;
         }
         if(newRow != -1) {
@@ -251,7 +251,7 @@ ManageFiltersDlg::ManageFiltersDlg(wxWindow* parent,
                                             m_pCurrentFilters(currentFilters),
                                             m_bCanHaveAttachments(bCanHaveAttachments),
                                             m_psMediaTypes(psMediaTypes),
-#if wxVERSION_NUMBER >= 3104
+#if ! defined(__WXMAC__) || (wxVERSION_NUMBER >= 3104)
                                             m_bReadOnly(readOnly),
 #else
                                             m_bReadOnly(false), // Copy to DB crash in 3.0.5 - positive tested with 3.1.4
@@ -704,7 +704,7 @@ void ManageFiltersDlg::OnCellLeftClick( wxGridEvent& event )
 {
   int row = event.GetRow(), col = event.GetCol();
   
-  if(row >= 0 && row < m_MapFilterData.size()) { // Check read write and range of row
+  if(row >= 0 && row < static_cast<int>(m_MapFilterData.size())) { // Check read write and range of row
     if(m_MapFilterData.GetSelectedFilterIdx() != row) { // On change of selected row, mark the row first time, second click will active function
       SelectEntry(row);
       ShowSelectedFilter();
@@ -1082,13 +1082,13 @@ void ManageFiltersDlg::OnImportClick( wxCommandEvent& event )
       stringT cs_error;
       
       if(rc == PWScore::XML_FAILED_VALIDATION) {
-        Format(cs_error, _("File %ls was not imported (failed validation against XML Schema)"), tostdstring(filename).c_str());
+        Format(cs_error, _("File %ls was not imported (failed validation against XML Schema)").c_str(), tostdstring(filename).c_str());
       }
       else if(rc == PWScore::XML_FAILED_IMPORT) {
-        Format(cs_error, _("File %ls was not imported (error during import)"), tostdstring(filename).c_str());
+        Format(cs_error, _("File %ls was not imported (error during import)").c_str(), tostdstring(filename).c_str());
       }
       else {
-        Format(cs_error, _("File %ls was not imported"), tostdstring(filename).c_str());
+        Format(cs_error, _("File %ls was not imported").c_str(), tostdstring(filename).c_str());
       }
       wxMessageBox(towxstring(strErrors), towxstring(cs_error), wxOK | wxICON_ERROR, this);
       pws_os::Trace(L"Error while parsing filters from file: %ls.\n\tErrors: %ls\n", tostdstring(filename).c_str(), strErrors.c_str());
@@ -1096,7 +1096,7 @@ void ManageFiltersDlg::OnImportClick( wxCommandEvent& event )
     else {
       if (!strErrors.empty()) {
         stringT cs_error;
-        Format(cs_error, _("File %ls was imported with error"), tostdstring(filename).c_str());
+        Format(cs_error, _("File %ls was imported with error").c_str(), tostdstring(filename).c_str());
         wxMessageBox(towxstring(strErrors), towxstring(cs_error), wxOK | wxICON_ERROR, this);
       }
       else {
@@ -1409,7 +1409,7 @@ void ManageFiltersDlg::MarkAppliedFilter()
 
 void ManageFiltersDlg::SelectEntry(int idx)
 {
-  if(idx >= 0 && idx < m_MapFilterData.size()) {
+  if(idx >= 0 && idx < static_cast<int>(m_MapFilterData.size())) {
     // On previous selected filter remove selection
     if(idx != m_MapFilterData.GetSelectedFilterIdx() && m_MapFilterData.IsFilterSelected()) {
       m_MapFiltersGrid->ClearSelection();   // No specific clear of row, due to error in wxWidgets 3.1.4

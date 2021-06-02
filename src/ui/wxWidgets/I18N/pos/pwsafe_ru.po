@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-31 15:03+0200\n"
+"POT-Creation-Date: 2021-06-02 11:51+0200\n"
 "PO-Revision-Date: 2021-01-31 19:50+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: none\n"
@@ -218,6 +218,8 @@ msgid "Password Policy"
 msgstr "Политика создания паролей"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:356
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:110
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:120
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:320
 msgid "Attachment"
 msgstr "Вложение"
@@ -1347,7 +1349,7 @@ msgstr "&Отмена"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:260
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:221
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:183
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:226
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:227
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:200
 msgid "&Help"
 msgstr "П&омощь"
@@ -1384,7 +1386,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/GridCtrl.cpp:164
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:292
-#: ../../../core/core_st.cpp:150
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:111 ../../../core/core_st.cpp:150
 msgid "Title"
 msgstr "Заголовок"
 
@@ -1812,7 +1814,6 @@ msgstr ""
 "Попробуйте сохранить файл в другом месте."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:70
-#: ../../../ui/wxWidgets/wxUtilities.cpp:71
 msgid "Unknown error"
 msgstr "Неопознанная ошибка"
 
@@ -2991,7 +2992,7 @@ msgstr "Фильтр отображения — "
 
 #: ../../../ui/wxWidgets/PWFiltersDCADlg.cpp:307 ../../../core/core_st.cpp:134
 msgid "DCA"
-msgstr "Действие по двойному клику"
+msgstr "По дв. клику"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:98
 #, fuzzy
@@ -3084,6 +3085,127 @@ msgstr ""
 msgid "A future date is not valid for this field"
 msgstr "В данное поле нельзя вводить даты из будущего"
 
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:88
+msgid "Entry size"
+msgstr "Размер элемента"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:89
+#, fuzzy
+msgid "Entry type"
+msgstr "Размер элемента"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:90
+msgid "Entry status"
+msgstr "Статус элемента"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:91
+msgid "Unknown fields"
+msgstr "Неопознанные поля"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:92
+msgid "Password Length"
+msgstr "Длина пароля"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:93
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:100
+msgid "Field present"
+msgstr "Поле присутствует"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:94
+msgid "Field active"
+msgstr "Поле активно"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:95
+msgid "Number stored"
+msgstr "Сохранено значений"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:96
+#, fuzzy
+msgid "Maximal Number stored"
+msgstr "Максимальное количество сохранённых"
+
+# условие фильтра
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:97
+msgid "Change Date"
+msgstr "Дата изменения"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:98
+msgid "Previous Passwords"
+msgstr "Предыдущие пароли"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:101 ../../../core/core_st.cpp:261
+msgid "Password length"
+msgstr "Длина пароля"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:102
+msgid "Minimum lowercase characters"
+msgstr "Минимально кол-во строчных букв"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:103
+msgid "Minimum uppercase characters"
+msgstr "Минимальное кол-во прописных букв"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:104
+msgid "Minimum digits"
+msgstr "Минимальное кол-во цифр"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:105
+msgid "Minimum symbols"
+msgstr "Минимальное кол-во символов"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:106 ../../../core/core_st.cpp:259
+msgid "Easyvision characters"
+msgstr "Удобочитаемые символы"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:107 ../../../core/core_st.cpp:262
+msgid "Pronounceable passwords"
+msgstr "Произносимые пароли"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:108 ../../../core/core_st.cpp:260
+msgid "Hexadecimal characters"
+msgstr "Шестнадцатеричные цифры"
+
+# свойства вложения
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:112
+msgid "Date added"
+msgstr "Дата добавления"
+
+# mime-type вложения
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:113
+#: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:287
+msgid "Media Type"
+msgstr "Тип файла"
+
+# Свойства вложения
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:114
+msgid "File Name"
+msgstr "Имя файла"
+
+# Свойства вложения
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:115
+msgid "File Path"
+msgstr "Путь к файлу"
+
+# Свойства вложения
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:116
+msgid "File Creation Date"
+msgstr "Дата создания файла"
+
+# Свойства вложения
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:117
+msgid "File Last Modified Date"
+msgstr "Дата изменения файла"
+
+# Свойства вложения
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:118
+msgid "File Last Accessed date"
+msgstr "Дата последнего доступа к файлу"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:121
+#, fuzzy
+msgid "Click here to pick a field"
+msgstr "Нажмите для выбора поля"
+
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:904
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:281
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:293
@@ -3112,11 +3234,6 @@ msgstr "Мб"
 #, fuzzy
 msgid "Display Filter Media Types Value"
 msgstr "Фильтр отображения — "
-
-# mime-type вложения
-#: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:287
-msgid "Media Type"
-msgstr "Тип файла"
 
 #: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:295
 #: ../../../ui/wxWidgets/PWFiltersPasswordDlg.cpp:234
@@ -3159,7 +3276,7 @@ msgstr "Фильтр отображения — "
 
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:118
 msgid "And/Or"
-msgstr ""
+msgstr "И/Или"
 
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:120
 msgid "Field"
@@ -3198,31 +3315,27 @@ msgstr "Password Safe: Ошибка при инициализации справ
 msgid "Don't show this warning again"
 msgstr "Больше не показывать это предупреждение"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:521
-#, fuzzy
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:520
 msgid "Unable to import \"autoload_filters.xml\""
-msgstr ""
-"Невозможно импортировать фильтры из «autoload_filters.xml».\n"
-"\n"
-"%s"
+msgstr "Невозможно импортировать фильтры из «autoload_filters.xml»"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:881
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:879
 msgid "Missing help definition for page \""
 msgstr "Не найдена справка для вкладки \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:882
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:880
 msgid "\" of \""
 msgstr "\" из \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:887
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:885
 msgid "Missing help definition for window \""
 msgstr "Не найдена справка для окна \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:898
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:896
 msgid "Please inform the developers."
 msgstr "Пожалуйста, сообщите об этом разработчикам."
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:899
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:897
 msgid "Help Undefined"
 msgstr "Справка отсутствует"
 
@@ -4328,73 +4441,73 @@ msgstr "Все поля соответствующих элементов был
 msgid "\tThe following fields were %ls"
 msgstr "Следующие поля были %ls"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:193
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:194
 msgid "Filter name:"
 msgstr "Имя фильтра:"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:217
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:254
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:218
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:255
 msgid "&Apply"
 msgstr "&Применить"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:220
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:221
 msgid "OK"
 msgstr "OK"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:223
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:224
 msgid "Cancel"
 msgstr "Отмена"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:259
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:290
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:260
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:291
 #, fuzzy
 msgid "No filter name given."
 msgstr "Имя фильтра:"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:259
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:290
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:260
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:291
 #, fuzzy
 msgid "Please name this filter."
 msgstr "Укажите имя для текущего фильтра"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:277
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:278
 #, fuzzy
 msgid "Clear"
 msgstr "Очистить поле поиска"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:312
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:313
 msgid "Applied pressed before Cancel"
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:312
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:313
 #, fuzzy
 msgid "Do you wish to overtake applied filter?"
 msgstr "Заменить?"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:433
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:441
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:447
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:453
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:430
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:438
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:444
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:450
 #, c-format
 msgid "Row %d is incomplete."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:434
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:431
 #, fuzzy
 msgid "Please set both Field and Criteria."
 msgstr ""
 "Строка %d задана не полностью. Убедитесь, что указаны значения «Поле» и "
 "«Условие»."
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:442
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:439
 msgid "Please set both Field and Criteria or update History filters."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:448
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:445
 msgid "Please set both Field and Criteria or update Policy filters."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:454
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:451
 msgid "Please set both Field and Criteria or update Attachment filters."
 msgstr ""
 
@@ -4918,6 +5031,10 @@ msgstr "Управление политиками создания пароле�
 #: ../../../ui/wxWidgets/ToolbarButtons.h:220
 msgid "Options"
 msgstr "Настройки"
+
+#: ../../../ui/wxWidgets/PWFiltersTable.h:43
+msgid "No criteria defined"
+msgstr "Условие не указано"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.h:140
 #: ../../../ui/wxWidgets/wxMessages.h:23 ../../../ui/wxWidgets/wxMessages.h:38
@@ -6191,22 +6308,6 @@ msgstr ""
 #: ../../../core/core_st.cpp:258
 msgid "Password is too short"
 msgstr "Пароль слишком короткий"
-
-#: ../../../core/core_st.cpp:259
-msgid "Easyvision characters"
-msgstr "Удобочитаемые символы"
-
-#: ../../../core/core_st.cpp:260
-msgid "Hexadecimal characters"
-msgstr "Шестнадцатеричные цифры"
-
-#: ../../../core/core_st.cpp:261
-msgid "Password length"
-msgstr "Длина пароля"
-
-#: ../../../core/core_st.cpp:262
-msgid "Pronounceable passwords"
-msgstr "Произносимые пароли"
 
 # урезано, в информации о политике
 #: ../../../core/core_st.cpp:264
@@ -7927,10 +8028,6 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgid "Change &Language"
 #~ msgstr "Изменить &язык (Change Language)"
 
-# условие фильтра
-#~ msgid "Change Date"
-#~ msgstr "Дата изменения"
-
 # заголовок диалога изменения типа
 #, c-format
 #~ msgid "Change a %s to a %s"
@@ -7996,9 +8093,6 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 
 #~ msgid "Click here for help on AutoType."
 #~ msgstr "Нажмите здесь для перехода к справке по автонабору"
-
-#~ msgid "Click here to pick field"
-#~ msgstr "Нажмите для выбора поля"
 
 #~ msgid ""
 #~ "Click on a row in the Password History to copy the password on that row "
@@ -8352,10 +8446,6 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgid "Database validated - no problems found."
 #~ msgstr "Контейнер проверен — ошибок не обнаружено."
 
-# свойства вложения
-#~ msgid "Date added"
-#~ msgstr "Дата добавления"
-
 #~ msgid "Date/Time Information"
 #~ msgstr "Информация о дате/времени"
 
@@ -8656,14 +8746,8 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ "\n"
 #~ "%s"
 
-#~ msgid "Entry size"
-#~ msgstr "Размер элемента"
-
 #~ msgid "Entry size:"
 #~ msgstr "Размер элемента:"
-
-#~ msgid "Entry status"
-#~ msgstr "Статус элемента"
 
 #~ msgid "Estonian"
 #~ msgstr "Эстонская"
@@ -8777,34 +8861,8 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgid "Field Separator"
 #~ msgstr "Разделитель полей"
 
-#~ msgid "Field active"
-#~ msgstr "Поле активно"
-
-#~ msgid "Field present"
-#~ msgstr "Поле присутствует"
-
-# Свойства вложения
-#~ msgid "File Creation Date"
-#~ msgstr "Дата создания файла"
-
 #~ msgid "File In Use"
 #~ msgstr "Файл используется"
-
-# Свойства вложения
-#~ msgid "File Last Accessed date"
-#~ msgstr "Дата последнего доступа к файлу"
-
-# Свойства вложения
-#~ msgid "File Last Modified Date"
-#~ msgstr "Дата изменения файла"
-
-# Свойства вложения
-#~ msgid "File Name"
-#~ msgstr "Имя файла"
-
-# Свойства вложения
-#~ msgid "File Path"
-#~ msgstr "Путь к файлу"
 
 #~ msgid "File open error."
 #~ msgstr "Ошибка при открытии файла."
@@ -9365,9 +9423,6 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgid "Maximum number of days that can be specified is %d"
 #~ msgstr "Максимальное количество дней %d"
 
-#~ msgid "Maximum number stored"
-#~ msgstr "Максимальное количество сохранённых"
-
 # кол-во сохраняемых паролей в истории
 #~ msgid "Maximum saved"
 #~ msgstr "Сохранять не более"
@@ -9390,18 +9445,6 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 
 #~ msgid "Migrate PasswordSafe configuration to user directory"
 #~ msgstr "Переместить файл настроек в каталог пользователя"
-
-#~ msgid "Minimum digits"
-#~ msgstr "Минимальное кол-во цифр"
-
-#~ msgid "Minimum lowercase characters"
-#~ msgstr "Минимально кол-во строчных букв"
-
-#~ msgid "Minimum symbols"
-#~ msgstr "Минимальное кол-во символов"
-
-#~ msgid "Minimum uppercase characters"
-#~ msgstr "Минимальное кол-во прописных букв"
 
 # AFX_IDS_CHECKLISTBOX_MIXED
 #~ msgid "Mixed"
@@ -9436,9 +9479,6 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 
 #~ msgid "No Safe open"
 #~ msgstr "Нет открытых контейнеров"
-
-#~ msgid "No criteria defined"
-#~ msgstr "Условие не указано"
 
 #~ msgid "No database is currently open"
 #~ msgstr "Нет открытых контейнеров"
@@ -9570,9 +9610,6 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgid "Number saved"
 #~ msgstr "Количество сохранённых"
 
-#~ msgid "Number stored"
-#~ msgstr "Сохранено значений"
-
 # Num Pad на экранной клавиатуре
 #~ msgid "Numeric Pad"
 #~ msgstr "Ввод кода"
@@ -9678,9 +9715,6 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 
 #~ msgid "Password History copied"
 #~ msgstr "Скопирована история паролей"
-
-#~ msgid "Password Length"
-#~ msgstr "Длина пароля"
 
 #~ msgid "Password Modified"
 #~ msgstr "Пароль изменён"
@@ -9910,9 +9944,6 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 
 #~ msgid "Preview is unavailable"
 #~ msgstr "Предпросмотр недоступен"
-
-#~ msgid "Previous Passwords"
-#~ msgstr "Предыдущие пароли"
 
 #~ msgid "Processing entry:"
 #~ msgstr "Обрабатываемый элемент:"
@@ -11036,9 +11067,6 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 
 #~ msgid "Unknown            "
 #~ msgstr "Неопознанный       "
-
-#~ msgid "Unknown fields"
-#~ msgstr "Неопознанные поля"
 
 #~ msgid "Unlock"
 #~ msgstr "Разблокировать"

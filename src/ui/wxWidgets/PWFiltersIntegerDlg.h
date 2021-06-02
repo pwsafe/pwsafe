@@ -111,7 +111,12 @@ private:
   wxRadioButton* m_UnitMByteCtrl;
   wxStaticText*  m_IntervalTextCtrl;
   //*)
+  
+  wxString infoFmtStr; // Format string for information text
 
+  const FieldType m_ftype;
+  bool m_add_present;
+  
   int m_idx;
   int m_fnum1;
   int m_fnum2;
@@ -119,10 +124,6 @@ private:
   int m_max;
   int m_funit;
   
-  wxString infoFmtStr; // Format string for information text
-
-  const FieldType m_ftype;
-  bool m_add_present;
   // Result parameter
   PWSMatch::MatchRule *m_prule;
   int                 *m_pfnum1;

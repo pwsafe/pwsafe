@@ -40,7 +40,7 @@ class pwFiltersGrid;
 ////@begin control identifiers
 ////@end control identifiers
 
-#define NOCRITERIADEFINED "No criteria defined"
+#define NOCRITERIADEFINED _("No criteria defined")
 
 /*!
  * pwFiltersTable class declaration

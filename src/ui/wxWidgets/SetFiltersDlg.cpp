@@ -90,7 +90,8 @@ SetFiltersDlg::SetFiltersDlg(wxWindow* parent,
                              const wxSize& size,
                              long style ) : m_pfilters(pfilters),
                                             m_currentFilters(currentFilters),
-                                            m_bCanHaveAttachments(bCanHaveAttachments),
+                                            m_bCanHaveAttachments(bCanHaveAttachments || // If filter includes Attachment allow this
+                                                                  ((filtertype == DFTYPE_MAIN) && pfilters && (pfilters->num_Aactive > 0))),
                                             m_psMediaTypes(psMediaTypes),
                                             m_filtertype(filtertype),
                                             m_filterpool(filterpool),
@@ -381,25 +382,20 @@ wxIcon SetFiltersDlg::GetIconResource( const wxString& name )
 bool SetFiltersDlg::VerifyFilters()
 {
   vFilterRows *currentFilter;
-  int *currentCounter;
   
   // Select applicable filter group
   switch(m_filtertype) {
     case DFTYPE_MAIN:
       currentFilter = &m_pfilters->vMfldata;
-      currentCounter = &m_pfilters->num_Mactive;
       break;
     case DFTYPE_PWHISTORY:
       currentFilter = &m_pfilters->vHfldata;
-      currentCounter = &m_pfilters->num_Hactive;
       break;
     case DFTYPE_PWPOLICY:
       currentFilter = &m_pfilters->vPfldata;
-      currentCounter = &m_pfilters->num_Pactive;
       break;
     case DFTYPE_ATTACHMENT:
       currentFilter = &m_pfilters->vAfldata;
-      currentCounter = &m_pfilters->num_Aactive;
       break;
     case DFTYPE_INVALID:
       /* FALLTHROUGH */
@@ -431,7 +427,7 @@ bool SetFiltersDlg::VerifyFilters()
   
   if(iError != -1) {
     stringT msg;
-    Format(msg, _("Row %d is incomplete."), iError);
+    Format(msg, _("Row %d is incomplete.").c_str(), iError);
     wxMessageBox(_("Please set both Field and Criteria."), wxString(msg), wxOK|wxICON_ERROR);
     return false;
   }
@@ -439,19 +435,19 @@ bool SetFiltersDlg::VerifyFilters()
   if(m_filtertype == DFTYPE_MAIN) {
     if((iHistory != -1) && (m_pfilters->vHfldata.empty() || ! m_pfilters->num_Hactive)) {
       stringT msg;
-      Format(msg, _("Row %d is incomplete."), iHistory);
+      Format(msg, _("Row %d is incomplete.").c_str(), iHistory);
       wxMessageBox(_("Please set both Field and Criteria or update History filters."), wxString(msg), wxOK|wxICON_ERROR);
       return false;
     }
     if((iPolicy != -1) && (m_pfilters->vPfldata.empty() || ! m_pfilters->num_Pactive)) {
       stringT msg;
-      Format(msg, _("Row %d is incomplete."), iPolicy);
+      Format(msg, _("Row %d is incomplete.").c_str(), iPolicy);
       wxMessageBox(_("Please set both Field and Criteria or update Policy filters."), wxString(msg), wxOK|wxICON_ERROR);
       return false;
     }
     if((iAttachment != -1) && (m_pfilters->vAfldata.empty() || ! m_pfilters->num_Aactive)) {
       stringT msg;
-      Format(msg, _("Row %d is incomplete."), iAttachment);
+      Format(msg, _("Row %d is incomplete.").c_str(), iAttachment);
       wxMessageBox(_("Please set both Field and Criteria or update Attachment filters."), wxString(msg), wxOK|wxICON_ERROR);
       return false;
     }

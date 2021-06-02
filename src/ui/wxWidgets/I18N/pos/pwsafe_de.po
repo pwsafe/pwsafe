@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-29 20:47+0200\n"
+"POT-Creation-Date: 2021-06-02 11:51+0200\n"
 "PO-Revision-Date: 2018-05-18 12:55+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -225,6 +225,8 @@ msgid "Password Policy"
 msgstr "Passwortrichtlinie"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:356
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:110
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:120
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:320
 msgid "Attachment"
 msgstr "Anhang"
@@ -1336,7 +1338,7 @@ msgstr "&Abbrechen"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:260
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:221
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:183
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:226
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:227
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:200
 msgid "&Help"
 msgstr "&Hilfe"
@@ -1372,7 +1374,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/GridCtrl.cpp:164
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:292
-#: ../../../core/core_st.cpp:150
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:111 ../../../core/core_st.cpp:150
 msgid "Title"
 msgstr "Titel"
 
@@ -1534,8 +1536,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1088
 #, c-format
 msgid "File %ls was not imported (error during import)"
-msgstr ""
-"Datei %ls wurde nicht importiert (Fehler im Import)"
+msgstr "Datei %ls wurde nicht importiert (Fehler im Import)"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1091
 #, c-format
@@ -1697,7 +1698,7 @@ msgid "Not used"
 msgstr "Nicht benutzt"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:297
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1702
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1679
 msgid " Copy # "
 msgstr " Kopie # "
 
@@ -1786,7 +1787,6 @@ msgstr ""
 "Versuchen Sie diese woanders zu speichern."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:70
-#: ../../../ui/wxWidgets/wxUtilities.cpp:71
 msgid "Unknown error"
 msgstr "Unbekannter Fehler"
 
@@ -2934,7 +2934,7 @@ msgid "Display Filter Boolean Value"
 msgstr "Anzeigefilter boolesche Wert setzen"
 
 #: ../../../ui/wxWidgets/PWFiltersBoolDlg.cpp:241
-#: ../../../ui/wxWidgets/PWFiltersDCADlg.cpp:296
+#: ../../../ui/wxWidgets/PWFiltersDCADlg.cpp:301
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:291
 #: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:337
 #: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:281
@@ -2949,7 +2949,7 @@ msgstr "Regel"
 msgid "Display Filter DCA Value"
 msgstr "Anzeigefilter Doppelklick Aktion Wert setzen"
 
-#: ../../../ui/wxWidgets/PWFiltersDCADlg.cpp:302 ../../../core/core_st.cpp:134
+#: ../../../ui/wxWidgets/PWFiltersDCADlg.cpp:307 ../../../core/core_st.cpp:134
 msgid "DCA"
 msgstr "DCA"
 
@@ -3033,6 +3033,116 @@ msgstr "Nummer auf Maximalwert gesetzt. 'Größer als' ist nicht erlaubt."
 msgid "A future date is not valid for this field"
 msgstr "Ein Datum in der Zukunft ist für dieses Feld nicht zulässig."
 
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:88
+msgid "Entry size"
+msgstr "Größe des Eintrags"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:89
+msgid "Entry type"
+msgstr "Typ des Eintrags"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:90
+msgid "Entry status"
+msgstr "Status des Eintrags"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:91
+msgid "Unknown fields"
+msgstr "Unbekannte Felder"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:92
+msgid "Password Length"
+msgstr "Passwortlänge"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:93
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:100
+msgid "Field present"
+msgstr "Feld vorhanden"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:94
+msgid "Field active"
+msgstr "Feld aktiv"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:95
+msgid "Number stored"
+msgstr "Nummer abgespeichert"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:96
+msgid "Maximal Number stored"
+msgstr "Maximale Nummer abgespeichert"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:97
+msgid "Change Date"
+msgstr "Änderungsdatum"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:98
+msgid "Previous Passwords"
+msgstr "Frühere Passwörter"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:101 ../../../core/core_st.cpp:261
+msgid "Password length"
+msgstr "Passwortlänge"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:102
+msgid "Minimum lowercase characters"
+msgstr "Minimum Anzahl Kleinbuchstaben"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:103
+msgid "Minimum uppercase characters"
+msgstr "Minimum Anzahl Grossbuchstaben"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:104
+msgid "Minimum digits"
+msgstr "Minimum Ziffern"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:105
+msgid "Minimum symbols"
+msgstr "Minimum Symbole"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:106 ../../../core/core_st.cpp:259
+msgid "Easyvision characters"
+msgstr "Easyvision Zeichen"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:107 ../../../core/core_st.cpp:262
+msgid "Pronounceable passwords"
+msgstr "Aussprechbare Passwörter"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:108 ../../../core/core_st.cpp:260
+msgid "Hexadecimal characters"
+msgstr "Hexadezimale Zeichen"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:112
+msgid "Date added"
+msgstr "Datum hinzugefügt"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:113
+#: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:287
+msgid "Media Type"
+msgstr "Medientyp"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:114
+msgid "File Name"
+msgstr "Dateiname"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:115
+msgid "File Path"
+msgstr "Dateiverzeichnis"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:116
+msgid "File Creation Date"
+msgstr "Dateierstellungsdatum"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:117
+msgid "File Last Modified Date"
+msgstr "Letztes Änderungsdatum"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:118
+msgid "File Last Accessed date"
+msgstr "Letztes Zugriffsdatum"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:121
+msgid "Click here to pick a field"
+msgstr "Klicken Sie hier um ein Feld auszuwählen"
+
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:904
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:281
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:293
@@ -3059,10 +3169,6 @@ msgstr "Mega-Byte"
 #: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:93
 msgid "Display Filter Media Types Value"
 msgstr "Anzeigefilter Medientyp Wert setzen"
-
-#: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:287
-msgid "Media Type"
-msgstr "Medientyp:"
 
 #: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:295
 #: ../../../ui/wxWidgets/PWFiltersPasswordDlg.cpp:234
@@ -3138,27 +3244,27 @@ msgstr "Password Safe: Fehler beim Initialisieren der Hilfe"
 msgid "Don't show this warning again"
 msgstr "Diese Warnung nicht nochmals anzeigen"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:521
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:520
 msgid "Unable to import \"autoload_filters.xml\""
 msgstr "Kann Filter \"autoload_filters.xml\" nicht importieren"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:881
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:879
 msgid "Missing help definition for page \""
 msgstr "Fehlende Definition der Hilfe für die Seite \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:882
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:880
 msgid "\" of \""
 msgstr "\" von \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:887
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:885
 msgid "Missing help definition for window \""
 msgstr "Fehlende Definition der Hilfe für das Fenster \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:898
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:896
 msgid "Please inform the developers."
 msgstr "Bitte informieren Sie die Entwickler."
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:899
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:897
 msgid "Help Undefined"
 msgstr "Undefinierte Hilfe"
 
@@ -4239,68 +4345,68 @@ msgstr "\tAlle Felder in übereinstimmenden Einträge mit %ls"
 msgid "\tThe following fields were %ls"
 msgstr "\tFolgende Felder wurden betrachtet %ls"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:193
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:194
 msgid "Filter name:"
 msgstr "Filtername:"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:217
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:254
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:218
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:255
 msgid "&Apply"
 msgstr "&Übernehmen"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:220
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:221
 msgid "OK"
 msgstr "Ok"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:223
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:224
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:259
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:290
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:260
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:291
 msgid "No filter name given."
 msgstr "Kein Filternamen angegeben."
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:259
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:290
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:260
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:291
 msgid "Please name this filter."
 msgstr "Filter benennen."
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:277
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:278
 msgid "Clear"
 msgstr "Löschen"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:312
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:313
 msgid "Applied pressed before Cancel"
 msgstr "Übernehmen gewählt vor Abbrechen"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:312
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:313
 msgid "Do you wish to overtake applied filter?"
 msgstr "Möchten Sie den aktiven Filter übernehmen?"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:433
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:441
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:447
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:453
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:430
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:438
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:444
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:450
 #, c-format
 msgid "Row %d is incomplete."
 msgstr "Zeile %d is nicht komplett."
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:434
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:431
 msgid "Please set both Field and Criteria."
 msgstr "Bitte Feld und Kriterium setzen."
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:442
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:439
 msgid "Please set both Field and Criteria or update History filters."
 msgstr "Bitte Feld und Kriterium setzen oder Historien-Filter aktualisieren."
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:448
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:445
 msgid "Please set both Field and Criteria or update Policy filters."
 msgstr ""
 "Bitte Feld und Kriterium setzen oder Passwort Richtlinien-Filter "
 "aktualisieren."
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:454
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:451
 msgid "Please set both Field and Criteria or update Attachment filters."
 msgstr "Bitte Feld und Kriterium setzen oder Anhänge-Filter aktualisieren."
 
@@ -4571,90 +4677,91 @@ msgstr "E-Mail &Senden"
 msgid "&Delete from Recent Entry List"
 msgstr "&Löschen aus der Liste der letzten Einträge"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1007
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1009
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:980
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:982
 msgid "New Group"
 msgstr "Neue Gruppe"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1009
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:982
 msgid "\""
 msgstr "'"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1009
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:982
 msgid "\" "
 msgstr "' "
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1009
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:982
 msgid "name exists"
 msgstr "Der Name existiert"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1009
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1055
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1492
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:982
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1028
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1469
 msgid "Double group name"
 msgstr "Doppelter Gruppenname"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1013
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:986
 msgid "Could not add empty group item to tree"
 msgstr "Konnte kein leeres Gruppenelement der Baumstruktur hinzufügen"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1026
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:999
 msgid "Renaming of non-Group items is not implemented"
 msgstr "Das Umbenennen von Nicht-Gruppenelementen ist nicht implementiert"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1055
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1028
 msgid "Same group name exists"
 msgstr "Der gleiche Gruppenname existiert bereits"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1069
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1042
 msgid "Dots are not allowed in group names"
 msgstr "Das Punktzeichen ist in Gruppennamen nicht erlaubt"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1069
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1042
 msgid "Invalid Character"
 msgstr "Ungültiges Zeichen"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1439
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2569
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1416
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2546
 msgid "Destination cannot be inside source tree"
 msgstr "Ziel kann nicht innerhalb des Quellbaums liegen"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1439
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2418
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2425
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2442
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2569
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1416
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2395
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2402
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2419
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2546
 msgid "Drag and Drop failed"
 msgstr "Drag und Drop fehlgeschlagen"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1492
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1469
 msgid "Duplicate group name (use Shift to overrule)"
 msgstr ""
 "Derselbe Gruppenname existiert bereits (verwenden Sie \"Umschalt\" zum "
 "Überstimmen)"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2414
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2391
 #, c-format
 msgid ""
 "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Der neue Eintrag '%s:%s:%s' weist auf einen Eintrag der ebenso ein alias ist."
-"\n\n"
+"Der neue Eintrag '%s:%s:%s' weist auf einen Eintrag der ebenso ein alias "
+"ist.\n"
+"\n"
 "Der neue Eintrag verweist neu auf den Basiseintrag."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2421
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2398
 #, c-format
 msgid "This alias's target [%s:%s:%s] is not a normal entry."
 msgstr "Das Alias-Ziel [%s:%s:%s] ist kein normaler Eintrag."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2438
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2415
 #, c-format
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
 msgstr "Das Verküpfungsziel [%s:%s:%s] ist kein normaler Eintrag"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2520 ../../../core/core_st.cpp:97
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2497 ../../../core/core_st.cpp:97
 #, c-format
 msgid ""
 "The following entries had a policy name that already existed in this "
@@ -4667,11 +4774,11 @@ msgstr ""
 "Eine neu benannte Richtlinie wurde mit aktuellem Datum/Zeit (%ls) erstellt "
 "und hinzugefügt:%ls"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2523
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2500
 msgid "Entry Password Policy Changes"
 msgstr "Passwortrichtlinienname geändert"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2530
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2507
 #, c-format
 msgid ""
 "The following alias or shortcut entries did not match to a base entry and "
@@ -4680,7 +4787,7 @@ msgstr ""
 "Die folgenden Alias oder Verknüpfungs-Einträge haben keinen passenden "
 "Basiseintrag und wurden zu normalen Einträgen konvertiert:%ls"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2532
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2509
 msgid "Entry Type Changed"
 msgstr "Eintrags Typ geändert"
 
@@ -4819,6 +4926,10 @@ msgstr "Passwortrichtlinien verwalten"
 #: ../../../ui/wxWidgets/ToolbarButtons.h:220
 msgid "Options"
 msgstr "Optionen"
+
+#: ../../../ui/wxWidgets/PWFiltersTable.h:43
+msgid "No criteria defined"
+msgstr "Keine Kriterien definiert"
 
 # no translation needed
 #: ../../../ui/wxWidgets/PasswordSafeFrame.h:140
@@ -6053,22 +6164,6 @@ msgstr ""
 #: ../../../core/core_st.cpp:258
 msgid "Password is too short"
 msgstr "Passwort ist zu kurz"
-
-#: ../../../core/core_st.cpp:259
-msgid "Easyvision characters"
-msgstr "Easyvision Zeichen"
-
-#: ../../../core/core_st.cpp:260
-msgid "Hexadecimal characters"
-msgstr "Hexadezimale Zeichen"
-
-#: ../../../core/core_st.cpp:261
-msgid "Password length"
-msgstr "Passwortlänge"
-
-#: ../../../core/core_st.cpp:262
-msgid "Pronounceable passwords"
-msgstr "Aussprechbare Passwörter"
 
 #: ../../../core/core_st.cpp:264
 msgid "Use lowercase characters"

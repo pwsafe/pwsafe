@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pwsafe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-31 15:03+0200\n"
+"POT-Creation-Date: 2021-06-02 11:51+0200\n"
 "PO-Revision-Date: 2020-03-01 22:00+0100\n"
 "Last-Translator: Attila Rajmund Nohl <attila.r.nohl@gmail.com>\n"
 "Language-Team: NAR <attila.r.nohl@gmail.com>\n"
@@ -217,10 +217,11 @@ msgid "Password Policy"
 msgstr "Jelszószabály"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:356
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:110
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:120
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:320
-#, fuzzy
 msgid "Attachment"
-msgstr "Csatolmányok száma:"
+msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:369
 msgid "Set Date/Time"
@@ -1373,7 +1374,7 @@ msgstr "Mégse"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:260
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:221
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:183
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:226
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:227
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:200
 msgid "&Help"
 msgstr "&Súgó"
@@ -1408,7 +1409,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/GridCtrl.cpp:164
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:292
-#: ../../../core/core_st.cpp:150
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:111 ../../../core/core_st.cpp:150
 msgid "Title"
 msgstr "Cím"
 
@@ -1519,7 +1520,7 @@ msgstr "Elérhető szűrők:"
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:375
 #, fuzzy
 msgid "Filter 1"
-msgstr "Szűrő1"
+msgstr "Szűrő 1"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:412
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:180
@@ -1575,19 +1576,14 @@ msgstr "Lecseréli?"
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1085
 #, fuzzy, c-format
 msgid "File %ls was not imported (failed validation against XML Schema)"
-msgstr ""
-"%s fájl érvényesítése ezzel az XML sémával sikertelen:\n"
-"\n"
-"%s"
+msgstr "%s fájl érvényesítése ezzel az XML sémával sikertelen"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1088
 #, fuzzy, c-format
 msgid "File %ls was not imported (error during import)"
 msgstr ""
 "%s fájl sikeresen érvényesítve, de az alábbi hibák történtek az importálás "
-"során:\n"
-"\n"
-"%s"
+"során"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1091
 #, c-format
@@ -1606,7 +1602,7 @@ msgstr "A szűrők sikeresen importálva"
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1142
 #, fuzzy
 msgid "filter"
-msgstr "Szűrő1"
+msgstr "Szűrő"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1144
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:667
@@ -1843,7 +1839,6 @@ msgstr ""
 "Próbálja meg elmenteni egy másik mappába"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:70
-#: ../../../ui/wxWidgets/wxUtilities.cpp:71
 msgid "Unknown error"
 msgstr "Ismeretlen hiba"
 
@@ -3087,7 +3082,6 @@ msgstr "A második dátumnak nagyobbnak kell lennie az elsőnél."
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:607
 #: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:638
-#, fuzzy
 msgid "Number is set to the minimum value. 'Less than' is not allowed."
 msgstr ""
 "Ez a szám már a legkisebb értékre van állítva. 'Kisebb mint' beállítás nem "
@@ -3105,6 +3099,122 @@ msgstr ""
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:626
 msgid "A future date is not valid for this field"
 msgstr "Jövőbeni dátum nem érvényes ebben a mezőben "
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:88
+msgid "Entry size"
+msgstr "Bejegyzés mérete"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:89
+msgid "Entry type"
+msgstr "Bejegyzés típusa"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:90
+msgid "Entry status"
+msgstr "Bejegyzés állapota"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:91
+msgid "Unknown fields"
+msgstr "Ismeretlen mezők"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:92
+msgid "Password Length"
+msgstr "Jelszó hossza"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:93
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:100
+msgid "Field present"
+msgstr "A mező megvan"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:94
+msgid "Field active"
+msgstr "A mező aktív"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:95
+msgid "Number stored"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:96
+msgid "Maximal Number stored"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:97
+msgid "Change Date"
+msgstr "Dátum megváltoztatása"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:98
+msgid "Previous Passwords"
+msgstr "Előző jelszavak"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:101 ../../../core/core_st.cpp:261
+msgid "Password length"
+msgstr "Jelszó hossza"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:102
+msgid "Minimum lowercase characters"
+msgstr "Kisbetűk legkisebb száma"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:103
+msgid "Minimum uppercase characters"
+msgstr "Nagybetűk legkisebb száma"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:104
+msgid "Minimum digits"
+msgstr "Számjegyek legkisebb száma"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:105
+msgid "Minimum symbols"
+msgstr "Szimbólumok legkisebb száma"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:106 ../../../core/core_st.cpp:259
+msgid "Easyvision characters"
+msgstr "Easyvision karakterek"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:107 ../../../core/core_st.cpp:262
+msgid "Pronounceable passwords"
+msgstr "Könnyen kiejthető jelszavak"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:108 ../../../core/core_st.cpp:260
+msgid "Hexadecimal characters"
+msgstr "Hexadecimális karakterek"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:112
+#, fuzzy
+msgid "Date added"
+msgstr "Dátumok és idők"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:113
+#: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:287
+msgid "Media Type"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:114
+#, fuzzy
+msgid "File Name"
+msgstr "Felhasználónév"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:115
+#, fuzzy
+msgid "File Path"
+msgstr "Fájl"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:116
+msgid "File Creation Date"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:117
+#, fuzzy
+msgid "File Last Modified Date"
+msgstr "Utolsó módosítás"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:118
+#, fuzzy
+msgid "File Last Accessed date"
+msgstr "Utolsó hozzáférés"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:121
+#, fuzzy
+msgid "Click here to pick a field"
+msgstr "Kattintson ide egy mező felvételéért"
 
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:904
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:281
@@ -3134,10 +3244,6 @@ msgstr "MBájt"
 #, fuzzy
 msgid "Display Filter Media Types Value"
 msgstr "Szűrő megjelenítése - "
-
-#: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:287
-msgid "Media Type"
-msgstr ""
 
 #: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:295
 #: ../../../ui/wxWidgets/PWFiltersPasswordDlg.cpp:234
@@ -3221,27 +3327,27 @@ msgstr "Password Safe: Hiba a súgó indítása közben"
 msgid "Don't show this warning again"
 msgstr "Ne mutassa ezt a figyelmeztetést többé"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:521
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:520
 msgid "Unable to import \"autoload_filters.xml\""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:881
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:879
 msgid "Missing help definition for page \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:882
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:880
 msgid "\" of \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:887
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:885
 msgid "Missing help definition for window \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:898
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:896
 msgid "Please inform the developers."
 msgstr "Kérem értesítse a fejlesztőket."
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:899
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:897
 msgid "Help Undefined"
 msgstr ""
 
@@ -4352,71 +4458,71 @@ msgstr ""
 "\n"
 "Az alábbi %ls %ls módosítva:"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:193
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:194
 msgid "Filter name:"
 msgstr "Szűrő neve:"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:217
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:254
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:218
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:255
 msgid "&Apply"
 msgstr "&Alkalmaz"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:220
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:221
 msgid "OK"
 msgstr "OK"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:223
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:224
 msgid "Cancel"
 msgstr "Mégse"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:259
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:290
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:260
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:291
 #, fuzzy
 msgid "No filter name given."
 msgstr "Szűrő neve:"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:259
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:290
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:260
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:291
 #, fuzzy
 msgid "Please name this filter."
 msgstr "Kérem adjon nevet az XML fájlnak"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:277
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:278
 #, fuzzy
 msgid "Clear"
 msgstr "Keresés törlése"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:312
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:313
 msgid "Applied pressed before Cancel"
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:312
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:313
 #, fuzzy
 msgid "Do you wish to overtake applied filter?"
 msgstr "Lecseréli?"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:433
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:441
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:447
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:453
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:430
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:438
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:444
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:450
 #, c-format
 msgid "Row %d is incomplete."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:434
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:431
 #, fuzzy
 msgid "Please set both Field and Criteria."
 msgstr "%d. sor nem teljes. Kérem adja meg a mezőt és a kritériumot."
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:442
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:439
 msgid "Please set both Field and Criteria or update History filters."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:448
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:445
 msgid "Please set both Field and Criteria or update Policy filters."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:454
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:451
 msgid "Please set both Field and Criteria or update Attachment filters."
 msgstr ""
 
@@ -4936,6 +5042,10 @@ msgstr "Jelszószabályok kezelése"
 #: ../../../ui/wxWidgets/ToolbarButtons.h:220
 msgid "Options"
 msgstr "Beállítások"
+
+#: ../../../ui/wxWidgets/PWFiltersTable.h:43
+msgid "No criteria defined"
+msgstr "Nincs feltétel megadva"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.h:140
 #: ../../../ui/wxWidgets/wxMessages.h:23 ../../../ui/wxWidgets/wxMessages.h:38
@@ -6161,22 +6271,6 @@ msgstr ""
 #: ../../../core/core_st.cpp:258
 msgid "Password is too short"
 msgstr "A jelszó túl rövid"
-
-#: ../../../core/core_st.cpp:259
-msgid "Easyvision characters"
-msgstr "Könnyen olvasható karakterek"
-
-#: ../../../core/core_st.cpp:260
-msgid "Hexadecimal characters"
-msgstr "Hexadecimális karakterek"
-
-#: ../../../core/core_st.cpp:261
-msgid "Password length"
-msgstr "Jelszó hossza"
-
-#: ../../../core/core_st.cpp:262
-msgid "Pronounceable passwords"
-msgstr "Könnyen kiejthető jelszavak"
 
 #: ../../../core/core_st.cpp:264
 #, fuzzy
@@ -7462,9 +7556,6 @@ msgstr "Igen - Legalább %d ebből: %ls: %ls"
 #~ msgid "Change &Language"
 #~ msgstr "&Nyelv megváltoztatása"
 
-#~ msgid "Change Date"
-#~ msgstr "Dátum megváltoztatása"
-
 #~ msgid "Change/View Database Default Password Policy"
 #~ msgstr ""
 #~ "Az adatbázis alapértelmezett jelszószabályának megváltoztatása/"
@@ -7499,9 +7590,6 @@ msgstr "Igen - Legalább %d ebből: %ls: %ls"
 
 #~ msgid "Click here for details on the various preferences."
 #~ msgstr "Kattintson ide a különböző beállítások részleteiért."
-
-#~ msgid "Click here to pick field"
-#~ msgstr "Kattintson ide egy mező felvételéért"
 
 #~ msgid "Click to change case."
 #~ msgstr "Kattintson a kis- és nagybetű közötti váltáshoz."
@@ -7909,14 +7997,8 @@ msgstr "Igen - Legalább %d ebből: %ls: %ls"
 #~ "\n"
 #~ "%s"
 
-#~ msgid "Entry size"
-#~ msgstr "Bejegyzés mérete"
-
 #~ msgid "Entry size:"
 #~ msgstr "Bejegyzés mérete:"
-
-#~ msgid "Entry status"
-#~ msgstr "Bejegyzés állapota"
 
 #~ msgid "Estonian"
 #~ msgstr "Észt"
@@ -7969,12 +8051,6 @@ msgstr "Igen - Legalább %d ebből: %ls: %ls"
 
 #~ msgid "Failsafe Backup Files"
 #~ msgstr "Failsafe mentési fájlok"
-
-#~ msgid "Field active"
-#~ msgstr "A mező aktív"
-
-#~ msgid "Field present"
-#~ msgstr "A mező megvan"
 
 #~ msgid "File In Use"
 #~ msgstr "A fájl használatban van"
@@ -8209,9 +8285,6 @@ msgstr "Igen - Legalább %d ebből: %ls: %ls"
 #~ msgid "L Ctrl"
 #~ msgstr "Bal Ctrl"
 
-#~ msgid "Last Accessed"
-#~ msgstr "Utolsó hozzáférés"
-
 #~ msgid "Last clipboard action"
 #~ msgstr "Utolsó vágólapművelet"
 
@@ -8269,9 +8342,6 @@ msgstr "Igen - Legalább %d ebből: %ls: %ls"
 #~ msgid "Maximum number of days that can be specified is %d"
 #~ msgstr "Legfeljebb %d nap adható meg"
 
-#~ msgid "Maximum number stored"
-#~ msgstr "A maximális szám tárolva"
-
 #~ msgid "Maximum saved"
 #~ msgstr "A maximum tárolva"
 
@@ -8283,12 +8353,6 @@ msgstr "Igen - Legalább %d ebből: %ls: %ls"
 
 #~ msgid "Migrate PasswordSafe configuration to user directory"
 #~ msgstr "A PasswordSafe konfiguráció migrálása a felhasználói könyvtárba"
-
-#~ msgid "Minimum digits"
-#~ msgstr "Számjegyek legkisebb száma"
-
-#~ msgid "Minimum symbols"
-#~ msgstr "Szimbólumok legkisebb száma"
 
 #~ msgid "Mixed"
 #~ msgstr "Vegyes"
@@ -8307,9 +8371,6 @@ msgstr "Igen - Legalább %d ebből: %ls: %ls"
 
 #~ msgid "Next >"
 #~ msgstr "Következő >"
-
-#~ msgid "No criteria defined"
-#~ msgstr "Nincs feltétel megadva"
 
 #~ msgid "No database open with which to compare against another database!"
 #~ msgstr ""
@@ -8449,9 +8510,6 @@ msgstr "Igen - Legalább %d ebből: %ls: %ls"
 #~ msgid "Password Generated based on displayed policy"
 #~ msgstr "Jelszó legenerálva a megjelenített szabály alapján"
 
-#~ msgid "Password Length"
-#~ msgstr "Jelszó hossza"
-
 #~ msgid "Password Modified"
 #~ msgstr "Jelszó módosítva"
 
@@ -8544,9 +8602,6 @@ msgstr "Igen - Legalább %d ebből: %ls: %ls"
 
 #~ msgid "Press to delete all added characters."
 #~ msgstr "Nyomja meg az összes hozzáadott karakter törléséhez."
-
-#~ msgid "Previous Passwords"
-#~ msgstr "Előző jelszavak"
 
 #~ msgid "Processing entry:"
 #~ msgstr "Bejegyzés feldolgozása:"

@@ -223,7 +223,7 @@ wxString pwFiltersTable::GetValue(int row, int col)
   if(IsReadOnly()) {
     ro_ft = m_pwsgrid->GetFilterAndRow(row, &ro_filter, ro_row);
     ASSERT(ro_ft != DFTYPE_INVALID);
-    wxASSERT(ro_filter && ((ro_row == -1) || (ro_row < ro_filter->size())));
+    wxASSERT(ro_filter && ((ro_row == -1) || (ro_row < static_cast<int>(ro_filter->size()))));
   }
   
   switch(col) {
@@ -347,7 +347,7 @@ wxString pwFiltersTable::GetValue(int row, int col)
       } else if((m_pwsgrid->RowFieldType(row) == FT_ATTACHMENT) && m_pwsgrid->IsSetAttachment()) {
         result = LoadAString(IDSC_SEEATTACHMENTFILTERS);
       } else if(m_pwsgrid->RowMatchType(row) == PWSMatch::MT_INVALID || m_pwsgrid->RowMatchRule(row) == PWSMatch::MR_INVALID) {
-        result = wxString(_(NOCRITERIADEFINED));
+        result = wxString(NOCRITERIADEFINED);
       }
       else
         result = wxString(PWSFilters::GetFilterDescription(m_pwsgrid->FilterRow(row)));
@@ -366,7 +366,7 @@ wxSize pwFiltersTable::GetCriteriaMinSize(wxClientDC &dc)
 {
   wxSize size;
   
-  size = dc.GetTextExtent(wxString(_(NOCRITERIADEFINED)));
+  size = dc.GetTextExtent(wxString(NOCRITERIADEFINED));
   size.IncTo(dc.GetTextExtent(LoadAString(IDSC_SEEPWHISTORYFILTERS)));
   size.IncTo(dc.GetTextExtent(LoadAString(IDSC_SEEPWPOLICYFILTERS)));
   size.IncTo(dc.GetTextExtent(LoadAString(IDSC_SEEATTACHMENTFILTERS)));
@@ -451,10 +451,10 @@ void pwFiltersTable::SetValue(int row, int col, const wxString& value)
       m_pwsgrid->SetRowLC(row, LC_INVALID);
     }
     else if(! value.ToLong(&num)) {
-      if(wxString(_("And")).CompareTo(value) == 0) {
+      if(wxString(_("And")).CompareTo(value.c_str()) == 0) {
         m_pwsgrid->SetRowLC(row, LC_AND);
       }
-      else if(wxString(_("Or")).CompareTo(value) == 0) {
+      else if(wxString(_("Or")).CompareTo(value.c_str()) == 0) {
         m_pwsgrid->SetRowLC(row, LC_OR);
       }
       else {

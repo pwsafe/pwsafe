@@ -484,16 +484,16 @@ void PasswordSafeFrame::OnApplyFilter(wxCommandEvent& event)
   else {
     m_bFilterActive = CurrentFilter().IsActive();
     m_ApplyClearFilter->SetItemLabel(_("&Clear current"));
-    if(par.CompareTo(pwManageFiltersTable::getSourcePoolLabel(FPOOL_DATABASE)) == 0) {
+    if(par.CompareTo(pwManageFiltersTable::getSourcePoolLabel(FPOOL_DATABASE).c_str()) == 0) {
       m_currentfilterpool = FPOOL_DATABASE;
     }
-    else if(par.CompareTo(pwManageFiltersTable::getSourcePoolLabel(FPOOL_AUTOLOAD)) == 0) {
+    else if(par.CompareTo(pwManageFiltersTable::getSourcePoolLabel(FPOOL_AUTOLOAD).c_str()) == 0) {
       m_currentfilterpool = FPOOL_AUTOLOAD;
     }
-    else if(par.CompareTo(pwManageFiltersTable::getSourcePoolLabel(FPOOL_IMPORTED)) == 0) {
+    else if(par.CompareTo(pwManageFiltersTable::getSourcePoolLabel(FPOOL_IMPORTED).c_str()) == 0) {
       m_currentfilterpool = FPOOL_IMPORTED;
     }
-    else if(par.CompareTo(pwManageFiltersTable::getSourcePoolLabel(FPOOL_SESSION)) == 0) {
+    else if(par.CompareTo(pwManageFiltersTable::getSourcePoolLabel(FPOOL_SESSION).c_str()) == 0) {
       m_currentfilterpool = FPOOL_SESSION;
     }
     m_selectedfiltername = CurrentFilter().fname;

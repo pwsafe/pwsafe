@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-31 15:03+0200\n"
+"POT-Creation-Date: 2021-06-02 11:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -240,10 +240,11 @@ msgid "Password Policy"
 msgstr "密码策略"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:356
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:110
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:120
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:320
-#, fuzzy
 msgid "Attachment"
-msgstr "项目数量合计:"
+msgstr "附件"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:369
 msgid "Set Date/Time"
@@ -1424,7 +1425,7 @@ msgstr "取消"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:260
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:221
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:183
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:226
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:227
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:200
 msgid "&Help"
 msgstr "帮助(&H)"
@@ -1457,7 +1458,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/GridCtrl.cpp:164
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:292
-#: ../../../core/core_st.cpp:150
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:111 ../../../core/core_st.cpp:150
 msgid "Title"
 msgstr "标题"
 
@@ -1786,9 +1787,8 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:287
 #: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:344
-#, fuzzy
 msgid "Value"
-msgstr "值:"
+msgstr "值"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:291
 #: ../../../core/core_st.cpp:136
@@ -1801,16 +1801,15 @@ msgstr "用户名"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:382
 msgid "Details"
-msgstr ""
+msgstr "详情"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:383
-#, fuzzy
 msgid "Entries using selected policy:"
-msgstr "未选择项目"
+msgstr "使用选择策略的条目:"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:433
 msgid "Not used"
-msgstr ""
+msgstr "未被使用"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:297
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1679
@@ -1907,7 +1906,6 @@ msgstr ""
 "请尝试保存在一个不同的位置！"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:70
-#: ../../../ui/wxWidgets/wxUtilities.cpp:71
 #, fuzzy
 msgid "Unknown error"
 msgstr ""
@@ -3149,14 +3147,13 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:505
 #: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:521
-#, fuzzy
 msgid "Second number must be greater than first"
-msgstr "第二编号必须大于第一编号！"
+msgstr "第二个数必须大于第一个"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:510
 #: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:526
 msgid "Maximum value for first number and 'Between' rule"
-msgstr "最大值按第一个数字和“之间”规则！"
+msgstr "用于第一个数值和“之间”规则的最大值"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:517
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:626
@@ -3165,26 +3162,135 @@ msgid "Please correct date values."
 msgstr "请命名该筛选！"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:517
-#, fuzzy
 msgid "Second date must be later than first"
-msgstr "第二日期必须晚于第一日期！"
+msgstr "第二个日期必须晚于第一个"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:607
 #: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:638
-#, fuzzy
 msgid "Number is set to the minimum value. 'Less than' is not allowed."
-msgstr "数量已被设定到最小值，再“小于”将不被允许的！"
+msgstr "数量被设为最小值。 不允许“小于”."
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:612
 #: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:643
-#, fuzzy
 msgid "Number is set to the maximum value. 'Greater than' is not allowed."
-msgstr "数量已被设定到最大值，再“大于”将不被允许的！"
+msgstr "数量被设为最大值。不允许“大于”."
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:618
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:626
 msgid "A future date is not valid for this field"
 msgstr "给该字段使用一个未来日期无效！"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:88
+msgid "Entry size"
+msgstr "项目大小"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:89
+msgid "Entry type"
+msgstr "条目类型"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:90
+msgid "Entry status"
+msgstr "项目状态"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:91
+msgid "Unknown fields"
+msgstr "未知字段"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:92
+msgid "Password Length"
+msgstr "密码长度"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:93
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:100
+msgid "Field present"
+msgstr "当前字段"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:94
+msgid "Field active"
+msgstr "活动字段"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:95
+msgid "Number stored"
+msgstr "保存数量"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:96
+#, fuzzy
+msgid "Maximal Number stored"
+msgstr "最大存储数量"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:97
+msgid "Change Date"
+msgstr "更改日期"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:98
+msgid "Previous Passwords"
+msgstr "早期密码"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:101 ../../../core/core_st.cpp:261
+#, fuzzy
+msgid "Password length"
+msgstr "密码长度"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:102
+msgid "Minimum lowercase characters"
+msgstr "最少小写字符数"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:103
+msgid "Minimum uppercase characters"
+msgstr "最少大写字符数"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:104
+msgid "Minimum digits"
+msgstr "最少数位"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:105
+msgid "Minimum symbols"
+msgstr "最少符号数"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:106 ../../../core/core_st.cpp:259
+msgid "Easyvision characters"
+msgstr "易懂字符"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:107 ../../../core/core_st.cpp:262
+msgid "Pronounceable passwords"
+msgstr "可发音密码"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:108 ../../../core/core_st.cpp:260
+msgid "Hexadecimal characters"
+msgstr "十六进制字符"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:112
+msgid "Date added"
+msgstr "添加日期"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:113
+#: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:287
+msgid "Media Type"
+msgstr "媒体类型"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:114
+msgid "File Name"
+msgstr "文件名"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:115
+msgid "File Path"
+msgstr "文件路径"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:116
+msgid "File Creation Date"
+msgstr "文件创建日期"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:117
+msgid "File Last Modified Date"
+msgstr "文件最后修改日期"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:118
+msgid "File Last Accessed date"
+msgstr "文件最后访问日期"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:121
+msgid "Click here to pick a field"
+msgstr "点击这里选取字段"
 
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:904
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:281
@@ -3215,10 +3321,6 @@ msgstr "MB"
 msgid "Display Filter Media Types Value"
 msgstr "显示筛选 -"
 
-#: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:287
-msgid "Media Type"
-msgstr ""
-
 #: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:295
 #: ../../../ui/wxWidgets/PWFiltersPasswordDlg.cpp:234
 #: ../../../ui/wxWidgets/PWFiltersStringDlg.cpp:273
@@ -3234,12 +3336,12 @@ msgstr "显示筛选 -"
 #: ../../../ui/wxWidgets/PWFiltersPasswordDlg.cpp:238
 #, fuzzy
 msgid "expiry in day(s):"
-msgstr "在 %d 天内"
+msgstr "在天内"
 
 #: ../../../ui/wxWidgets/PWFiltersPasswordDlg.cpp:384
 #, fuzzy
 msgid "Please specify text."
-msgstr "请指定文本！"
+msgstr "请指定文本"
 
 #: ../../../ui/wxWidgets/PWFiltersPasswordDlg.cpp:384
 msgid "Missing text for the selected rule."
@@ -3261,10 +3363,9 @@ msgstr "显示筛选 -"
 
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:118
 msgid "And/Or"
-msgstr ""
+msgstr "和/或"
 
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:120
-#, fuzzy
 msgid "Field"
 msgstr "字段"
 
@@ -3300,7 +3401,7 @@ msgstr ""
 msgid "Don't show this warning again"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:521
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:520
 #, fuzzy
 msgid "Unable to import \"autoload_filters.xml\""
 msgstr ""
@@ -3308,24 +3409,24 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:881
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:879
 msgid "Missing help definition for page \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:882
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:880
 msgid "\" of \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:887
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:885
 msgid "Missing help definition for window \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:898
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:896
 #, fuzzy
 msgid "Please inform the developers."
 msgstr "请命名该筛选！"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:899
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:897
 msgid "Help Undefined"
 msgstr ""
 
@@ -4519,73 +4620,73 @@ msgstr ""
 msgid "\tThe following fields were %ls"
 msgstr "下列记录被跳过:"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:193
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:194
 msgid "Filter name:"
 msgstr "筛选名称:"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:217
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:254
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:218
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:255
 msgid "&Apply"
 msgstr "应用(&A)"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:220
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:221
 #, fuzzy
 msgid "OK"
 msgstr "确定"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:223
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:224
 #, fuzzy
 msgid "Cancel"
 msgstr "取消"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:259
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:290
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:260
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:291
 #, fuzzy
 msgid "No filter name given."
 msgstr "筛选名称:"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:259
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:290
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:260
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:291
 #, fuzzy
 msgid "Please name this filter."
 msgstr "请命名 XML 文件！"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:277
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:278
 #, fuzzy
 msgid "Clear"
 msgstr "清除查找"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:312
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:313
 msgid "Applied pressed before Cancel"
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:312
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:313
 #, fuzzy
 msgid "Do you wish to overtake applied filter?"
 msgstr "你是否需要替换它？"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:433
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:441
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:447
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:453
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:430
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:438
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:444
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:450
 #, c-format
 msgid "Row %d is incomplete."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:434
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:431
 #, fuzzy
 msgid "Please set both Field and Criteria."
 msgstr "请输入密匙并验证它！"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:442
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:439
 msgid "Please set both Field and Criteria or update History filters."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:448
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:445
 msgid "Please set both Field and Criteria or update Policy filters."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:454
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:451
 msgid "Please set both Field and Criteria or update Attachment filters."
 msgstr ""
 
@@ -5109,6 +5210,10 @@ msgid "Options"
 msgstr ""
 "\n"
 "选项"
+
+#: ../../../ui/wxWidgets/PWFiltersTable.h:43
+msgid "No criteria defined"
+msgstr "未定义规则，请单击这里！"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.h:140
 #: ../../../ui/wxWidgets/wxMessages.h:23 ../../../ui/wxWidgets/wxMessages.h:38
@@ -6327,23 +6432,6 @@ msgstr "密码应该混合大小写和至少一个数字或标点字符！"
 #: ../../../core/core_st.cpp:258
 msgid "Password is too short"
 msgstr "密码太短！"
-
-#: ../../../core/core_st.cpp:259
-msgid "Easyvision characters"
-msgstr "易懂字符"
-
-#: ../../../core/core_st.cpp:260
-msgid "Hexadecimal characters"
-msgstr "十六进制字符"
-
-#: ../../../core/core_st.cpp:261
-#, fuzzy
-msgid "Password length"
-msgstr "密码长度:"
-
-#: ../../../core/core_st.cpp:262
-msgid "Pronounceable passwords"
-msgstr "可发音密码"
 
 #: ../../../core/core_st.cpp:264
 #, fuzzy
@@ -7729,9 +7817,6 @@ msgstr ""
 #~ msgid "Clear Buffer"
 #~ msgstr "清除缓冲区"
 
-#~ msgid "Click here to pick field"
-#~ msgstr "单击这里选择字段"
-
 #~ msgid "Click to change case."
 #~ msgstr "单击更改大小写"
 
@@ -8061,14 +8146,8 @@ msgstr ""
 #~ msgid "Entry Unique ID:"
 #~ msgstr "项目唯一 ID:"
 
-#~ msgid "Entry size"
-#~ msgstr "项目大小"
-
 #~ msgid "Entry size:"
 #~ msgstr "项目大小:"
-
-#~ msgid "Entry status"
-#~ msgstr "项目状态"
 
 #~ msgid "Estonian"
 #~ msgstr "爱沙尼亚语"
@@ -8120,12 +8199,6 @@ msgstr ""
 
 #~ msgid "Failsafe Backup Files"
 #~ msgstr "故障安全备份文件"
-
-#~ msgid "Field active"
-#~ msgstr "活动字段"
-
-#~ msgid "Field present"
-#~ msgstr "当前字段"
 
 #~ msgid "File In Use"
 #~ msgstr "文件正在使用！"
@@ -8420,9 +8493,6 @@ msgstr ""
 #~ msgid "L Ctrl"
 #~ msgstr "左 Ctrl"
 
-#~ msgid "Last Accessed"
-#~ msgstr "最后访问时间"
-
 #~ msgid "Latest version? Click <a href=\"%s\">here</a> to check."
 #~ msgstr "获得最新版本，单击 <a href=\"%s\">这里</a> 检查！"
 
@@ -8480,20 +8550,11 @@ msgstr ""
 #~ msgid "Maximum number of days that can be specified is %d"
 #~ msgstr "最大天数仅可以指定在 %d！"
 
-#~ msgid "Maximum number stored"
-#~ msgstr "最大存储数量"
-
 #~ msgid "Merge failed"
 #~ msgstr "合并失败"
 
 #~ msgid "Migrate PasswordSafe configuration to user directory"
 #~ msgstr "迁移 PasswordSafe 配置到用户目录"
-
-#~ msgid "Minimum digit characters"
-#~ msgstr "最少数字字符"
-
-#~ msgid "Minimum symbol characters"
-#~ msgstr "最少符号字符"
 
 #~ msgid "Mixed"
 #~ msgstr "混合"
@@ -8515,9 +8576,6 @@ msgstr ""
 
 #~ msgid "Next >"
 #~ msgstr "下一步 >"
-
-#~ msgid "No criteria defined"
-#~ msgstr "未定义规则，请单击这里！"
 
 #~ msgid "No database open with which to compare against another database!"
 #~ msgstr "没有打开哪个数据库与其它数据库相比较！"
@@ -8589,9 +8647,6 @@ msgstr ""
 
 #~ msgid "Number of unknown fields:"
 #~ msgstr "未知字段数量:"
-
-#~ msgid "Number stored"
-#~ msgstr "保存数量"
 
 #~ msgid "Numeric Pad"
 #~ msgstr "数字键盘"
@@ -8726,9 +8781,6 @@ msgstr ""
 #~ "全的清除。\n"
 #~ "\n"
 #~ "单击“取消”停止复制存在的密码。"
-
-#~ msgid "Previous Passwords"
-#~ msgstr "早期密码"
 
 #~ msgid "Processing entry:"
 #~ msgstr "处理项目:"

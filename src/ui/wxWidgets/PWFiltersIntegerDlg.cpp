@@ -393,12 +393,12 @@ void pwFiltersIntegerDlg::CreateControls()
   
   wxScreenDC dc;
   dc.SetFont(choiceStaticText1->GetFont());
-  str = wxString::Format(infoFmtStr, INT_MIN, INT_MAX);
+  str = wxString::Format(infoFmtStr.c_str(), INT_MIN, INT_MAX);
   wxCoord width, height;
   dc.GetTextExtent(str, &width, &height);
   wxSize size(width+6, height);
   
-  str = wxString::Format(infoFmtStr, m_min, m_max);
+  str = wxString::Format(infoFmtStr.c_str(), m_min, m_max);
   m_IntervalTextCtrl = new wxStaticText(this, wxID_ANY, str + _T(" "), wxDefaultPosition, size, 0);
   itemFlexGridSizer1->Add(m_IntervalTextCtrl, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
   
@@ -607,7 +607,7 @@ void pwFiltersIntegerDlg::UpdateUnitSelection()
   m_fnum1 = m_FNum1Ctrl->GetValue();
   m_fnum2 = m_FNum2Ctrl->GetValue();
   
-  wxString value = wxString::Format(infoFmtStr, m_min, m_max);
+  wxString value = wxString::Format(infoFmtStr.c_str(), m_min, m_max);
   m_IntervalTextCtrl->SetLabel(value);
   
   // Do not check here, only after OK button pressed

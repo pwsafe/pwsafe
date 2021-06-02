@@ -124,34 +124,34 @@ public:
   int GetNumPRows() { ASSERT(m_pfilters); return static_cast<int>(m_pfilters->vPfldata.size()); };
   int GetNumARows() { ASSERT(m_pfilters); return static_cast<int>(m_pfilters->vAfldata.size()); };
   FilterType GetFilterAndRow(int row, vFilterRows **filter, int &frow);
-  bool IsRowActive(int row) { ASSERT(m_currentFilter && row < m_currentFilter->size());
+  bool IsRowActive(int row) { ASSERT(m_currentFilter && row < static_cast<int>(m_currentFilter->size()));
                               return (*m_currentFilter)[row].bFilterActive; };
-  bool IsRowComplete(int row) { ASSERT(m_currentFilter && row < m_currentFilter->size());
+  bool IsRowComplete(int row) { ASSERT(m_currentFilter && row < static_cast<int>(m_currentFilter->size()));
                                 return (*m_currentFilter)[row].bFilterComplete; };
-  LogicConnect RowLC(int row) { ASSERT(m_currentFilter && row < m_currentFilter->size());
+  LogicConnect RowLC(int row) { ASSERT(m_currentFilter && row < static_cast<int>(m_currentFilter->size()));
                                 return (*m_currentFilter)[row].ltype; };
-  FieldType RowFieldType(int row) { ASSERT(m_currentFilter && row < m_currentFilter->size());
+  FieldType RowFieldType(int row) { ASSERT(m_currentFilter && row < static_cast<int>(m_currentFilter->size()));
                                     return (*m_currentFilter)[row].ftype; };
-  PWSMatch::MatchType RowMatchType(int row) { ASSERT(m_currentFilter && row < m_currentFilter->size());
+  PWSMatch::MatchType RowMatchType(int row) { ASSERT(m_currentFilter && row < static_cast<int>(m_currentFilter->size()));
                                               return (*m_currentFilter)[row].mtype; };
-  PWSMatch::MatchRule RowMatchRule(int row) { ASSERT(m_currentFilter && row < m_currentFilter->size());
+  PWSMatch::MatchRule RowMatchRule(int row) { ASSERT(m_currentFilter && row < static_cast<int>(m_currentFilter->size()));
                                               return (*m_currentFilter)[row].rule; };
   
   // Setting functions for the filter fields
-  void SetRowActive(int row, bool value) { ASSERT(m_currentFilter && row < m_currentFilter->size());
+  void SetRowActive(int row, bool value) { ASSERT(m_currentFilter && row < static_cast<int>(m_currentFilter->size()));
                                            (*m_currentFilter)[row].bFilterActive = value; };
-  void SetRowComplete(int row) { ASSERT(m_currentFilter && row < m_currentFilter->size());
+  void SetRowComplete(int row) { ASSERT(m_currentFilter && row < static_cast<int>(m_currentFilter->size()));
                                 (*m_currentFilter)[row].bFilterComplete = true; };
-  void ResetRowComplete(int row) { ASSERT(m_currentFilter && row < m_currentFilter->size());
+  void ResetRowComplete(int row) { ASSERT(m_currentFilter && row < static_cast<int>(m_currentFilter->size()));
                                 (*m_currentFilter)[row].bFilterComplete = false; };
-  void SetRowLC(int row, LogicConnect value) { ASSERT(m_currentFilter && row < m_currentFilter->size());
+  void SetRowLC(int row, LogicConnect value) { ASSERT(m_currentFilter && row < static_cast<int>(m_currentFilter->size()));
                                                (*m_currentFilter)[row].ltype = value; };
-  void SetRowFieldType(int row, FieldType value) { ASSERT(m_currentFilter && row < m_currentFilter->size());
+  void SetRowFieldType(int row, FieldType value) { ASSERT(m_currentFilter && row < static_cast<int>(m_currentFilter->size()));
                                                    (*m_currentFilter)[row].ftype = value;
                                                    UpdateMatchType(row); };
-  void SetRowMatchType(int row, PWSMatch::MatchType value) { ASSERT(m_currentFilter && row < m_currentFilter->size());
+  void SetRowMatchType(int row, PWSMatch::MatchType value) { ASSERT(m_currentFilter && row < static_cast<int>(m_currentFilter->size()));
                                                              (*m_currentFilter)[row].mtype = value; };
-  void SetRowMatchRule(int row, PWSMatch::MatchRule value) { ASSERT(m_currentFilter && row < m_currentFilter->size());
+  void SetRowMatchRule(int row, PWSMatch::MatchRule value) { ASSERT(m_currentFilter && row < static_cast<int>(m_currentFilter->size()));
                                                              (*m_currentFilter)[row].rule = value; };
   
   // Helper function for the grid

@@ -119,6 +119,9 @@ private:
 
   enum { PW_DATE_ABS = 0, PW_DATE_REL = 1 }; // values for int m_fdatetype
   
+  const FieldType m_ftype;
+  bool m_add_present;
+  
   int m_idx;
   wxDateTime m_fdate1;
   wxDateTime m_fdate2;
@@ -127,9 +130,6 @@ private:
   int m_fdatetype;
   int m_min;
   int m_max;
-  
-  const FieldType m_ftype;
-  bool m_add_present;
   // Result parameter
   PWSMatch::MatchRule *m_prule;
   time_t              *m_pfdate1;

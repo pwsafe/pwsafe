@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-31 15:03+0200\n"
+"POT-Creation-Date: 2021-06-02 11:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -237,6 +237,8 @@ msgid "Password Policy"
 msgstr "Adgangskode Politik"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:356
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:110
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:120
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:320
 #, fuzzy
 msgid "Attachment"
@@ -1422,7 +1424,7 @@ msgstr "&Afbryd"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:260
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:221
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:183
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:226
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:227
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:200
 msgid "&Help"
 msgstr "&Hjælp"
@@ -1455,7 +1457,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/GridCtrl.cpp:164
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:292
-#: ../../../core/core_st.cpp:150
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:111 ../../../core/core_st.cpp:150
 msgid "Title"
 msgstr "Titel"
 
@@ -1910,7 +1912,6 @@ msgstr ""
 "Prøv at gemme et andet sted"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:70
-#: ../../../ui/wxWidgets/wxUtilities.cpp:71
 #, fuzzy
 msgid "Unknown error"
 msgstr "Ukendt fejl"
@@ -3189,6 +3190,134 @@ msgstr "Antal er sat til maximum værdi.  'Større end' er ikke tilladt."
 msgid "A future date is not valid for this field"
 msgstr ""
 
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:88
+msgid "Entry size"
+msgstr "Post størrelse"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:89
+#, fuzzy
+msgid "Entry type"
+msgstr "Post størrelse"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:90
+msgid "Entry status"
+msgstr "Post status"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:91
+#, fuzzy
+msgid "Unknown fields"
+msgstr "Ukendte felter:"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:92
+#, fuzzy
+msgid "Password Length"
+msgstr "Adgangskode længde:"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:93
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:100
+msgid "Field present"
+msgstr "Indeværende Felt"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:94
+#, fuzzy
+msgid "Field active"
+msgstr "er aktive"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:95
+msgid "Number stored"
+msgstr "Antal gemt"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:96
+#, fuzzy
+msgid "Maximal Number stored"
+msgstr "Maximum antal gemt"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:97
+#, fuzzy
+msgid "Change Date"
+msgstr "Skift &Skrift"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:98
+msgid "Previous Passwords"
+msgstr "Tidligere Adgangskoder"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:101 ../../../core/core_st.cpp:261
+#, fuzzy
+msgid "Password length"
+msgstr "Adgangskode længde:"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:102
+#, fuzzy
+msgid "Minimum lowercase characters"
+msgstr "Minimum store tegn"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:103
+#, fuzzy
+msgid "Minimum uppercase characters"
+msgstr "Minimum store tegn"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:104
+#, fuzzy
+msgid "Minimum digits"
+msgstr "Minimum tal tegn"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:105
+#, fuzzy
+msgid "Minimum symbols"
+msgstr "Minimum symbol tegn"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:106 ../../../core/core_st.cpp:259
+msgid "Easyvision characters"
+msgstr "Easyvision tegn"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:107 ../../../core/core_st.cpp:262
+msgid "Pronounceable passwords"
+msgstr "Udtal-bare adgangskoder"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:108 ../../../core/core_st.cpp:260
+msgid "Hexadecimal characters"
+msgstr "Hexadecimal tegn"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:112
+#, fuzzy
+msgid "Date added"
+msgstr "Datoer og Tider"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:113
+#: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:287
+msgid "Media Type"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:114
+#, fuzzy
+msgid "File Name"
+msgstr "Bruger Navn"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:115
+#, fuzzy
+msgid "File Path"
+msgstr "&Fil"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:116
+#, fuzzy
+msgid "File Creation Date"
+msgstr "'Oprettelses tid'"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:117
+#, fuzzy
+msgid "File Last Modified Date"
+msgstr "Senest Ændret"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:118
+#, fuzzy
+msgid "File Last Accessed date"
+msgstr "Senest tilgået"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:121
+#, fuzzy
+msgid "Click here to pick a field"
+msgstr "Klik her for at vælge felt"
+
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:904
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:281
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:293
@@ -3217,10 +3346,6 @@ msgstr "MBytes"
 #, fuzzy
 msgid "Display Filter Media Types Value"
 msgstr "Vis Filter - "
-
-#: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:287
-msgid "Media Type"
-msgstr ""
 
 #: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:295
 #: ../../../ui/wxWidgets/PWFiltersPasswordDlg.cpp:234
@@ -3303,7 +3428,7 @@ msgstr ""
 msgid "Don't show this warning again"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:521
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:520
 #, fuzzy
 msgid "Unable to import \"autoload_filters.xml\""
 msgstr ""
@@ -3311,24 +3436,24 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:881
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:879
 msgid "Missing help definition for page \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:882
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:880
 msgid "\" of \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:887
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:885
 msgid "Missing help definition for window \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:898
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:896
 #, fuzzy
 msgid "Please inform the developers."
 msgstr "Navngiv venligst dette filter."
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:899
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:897
 msgid "Help Undefined"
 msgstr ""
 
@@ -4515,73 +4640,73 @@ msgstr ""
 msgid "\tThe following fields were %ls"
 msgstr "De følgende poster blev sprunget over %ls"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:193
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:194
 msgid "Filter name:"
 msgstr "Filter navn:"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:217
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:254
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:218
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:255
 msgid "&Apply"
 msgstr "&Anvend"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:220
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:221
 #, fuzzy
 msgid "OK"
 msgstr "OK"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:223
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:224
 #, fuzzy
 msgid "Cancel"
 msgstr "Afbryd"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:259
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:290
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:260
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:291
 #, fuzzy
 msgid "No filter name given."
 msgstr "Filter navn:"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:259
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:290
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:260
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:291
 #, fuzzy
 msgid "Please name this filter."
 msgstr "Navngiv venligst XML filen"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:277
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:278
 #, fuzzy
 msgid "Clear"
 msgstr "Tøm Find"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:312
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:313
 msgid "Applied pressed before Cancel"
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:312
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:313
 #, fuzzy
 msgid "Do you wish to overtake applied filter?"
 msgstr "Vil du erstatte den?"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:433
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:441
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:447
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:453
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:430
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:438
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:444
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:450
 #, c-format
 msgid "Row %d is incomplete."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:434
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:431
 #, fuzzy
 msgid "Please set both Field and Criteria."
 msgstr "Indsæt venligst nøglen og bekræft den."
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:442
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:439
 msgid "Please set both Field and Criteria or update History filters."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:448
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:445
 msgid "Please set both Field and Criteria or update Policy filters."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:454
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:451
 msgid "Please set both Field and Criteria or update Attachment filters."
 msgstr ""
 
@@ -5107,6 +5232,10 @@ msgstr "Se Adgangskode Politik filtrene"
 #, fuzzy
 msgid "Options"
 msgstr "Valgmuligheder"
+
+#: ../../../ui/wxWidgets/PWFiltersTable.h:43
+msgid "No criteria defined"
+msgstr "Intet kriterier defineret"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.h:140
 #: ../../../ui/wxWidgets/wxMessages.h:23 ../../../ui/wxWidgets/wxMessages.h:38
@@ -6359,23 +6488,6 @@ msgstr ""
 #: ../../../core/core_st.cpp:258
 msgid "Password is too short"
 msgstr "Adgangskode er for kort"
-
-#: ../../../core/core_st.cpp:259
-msgid "Easyvision characters"
-msgstr "Easyvision tegn"
-
-#: ../../../core/core_st.cpp:260
-msgid "Hexadecimal characters"
-msgstr "Hexadecimal tegn"
-
-#: ../../../core/core_st.cpp:261
-#, fuzzy
-msgid "Password length"
-msgstr "Adgangskode længde:"
-
-#: ../../../core/core_st.cpp:262
-msgid "Pronounceable passwords"
-msgstr "Udtal-bare adgangskoder"
 
 #: ../../../core/core_st.cpp:264
 #, fuzzy
@@ -7716,9 +7828,6 @@ msgstr "Skal være mindst %d from %ls: %ls"
 #~ msgid "Clear Buffer"
 #~ msgstr "Tøm Buffer"
 
-#~ msgid "Click here to pick field"
-#~ msgstr "Klik her for at vælge felt"
-
 #~ msgid "Click to change case."
 #~ msgstr "Klik forat ændre tilfælde."
 
@@ -7975,14 +8084,8 @@ msgstr "Skal være mindst %d from %ls: %ls"
 #~ msgid "Entry Unique ID:"
 #~ msgstr "Unik Post ID:"
 
-#~ msgid "Entry size"
-#~ msgstr "Post størrelse"
-
 #~ msgid "Entry size:"
 #~ msgstr "Post størrelse:"
-
-#~ msgid "Entry status"
-#~ msgstr "Post status"
 
 #~ msgid "Estonian"
 #~ msgstr "Estonian"
@@ -8019,9 +8122,6 @@ msgstr "Skal være mindst %d from %ls: %ls"
 
 #~ msgid "Failsafe Backup Files"
 #~ msgstr "Fejlsikret Sikkerheds File"
-
-#~ msgid "Field present"
-#~ msgstr "Indeværende Felt"
 
 #~ msgid "File In Use"
 #~ msgstr "Fil I Brug"
@@ -8316,9 +8416,6 @@ msgstr "Skal være mindst %d from %ls: %ls"
 #~ msgid "L Ctrl"
 #~ msgstr "L Ctrl"
 
-#~ msgid "Last Accessed"
-#~ msgstr "Senest tilgået"
-
 #~ msgid "Latest version? Click <a href=\"%s\">here</a> to check."
 #~ msgstr "Seneste version? Klik <a href=\"%s\">her</a> for at tjekke."
 
@@ -8382,17 +8479,8 @@ msgstr "Skal være mindst %d from %ls: %ls"
 #~ msgid "Maximum number of days that can be specified is %d"
 #~ msgstr "Maximum antal dage der kan være specifiseret er %d"
 
-#~ msgid "Maximum number stored"
-#~ msgstr "Maximum antal gemt"
-
 #~ msgid "Merge failed"
 #~ msgstr "Fletning fejlede"
-
-#~ msgid "Minimum digit characters"
-#~ msgstr "Minimum tal tegn"
-
-#~ msgid "Minimum symbol characters"
-#~ msgstr "Minimum symbol tegn"
 
 #~ msgid "Mixed"
 #~ msgstr "Blandet"
@@ -8412,9 +8500,6 @@ msgstr "Skal være mindst %d from %ls: %ls"
 
 #~ msgid "Name. Name. Name."
 #~ msgstr "Navn. Navn. Navn."
-
-#~ msgid "No criteria defined"
-#~ msgstr "Intet kriterier defineret"
 
 #~ msgid "No database open with which to compare against another database!"
 #~ msgstr "Ingen database åben der kan sammenlignes imod en anden database!"
@@ -8474,9 +8559,6 @@ msgstr "Skal være mindst %d from %ls: %ls"
 
 #~ msgid "Number of unknown fields:"
 #~ msgstr "Antal af unkendte felter:"
-
-#~ msgid "Number stored"
-#~ msgstr "Antal gemt"
 
 #~ msgid "Numeric Pad"
 #~ msgstr "Numerisk Tastatur"
@@ -8604,9 +8686,6 @@ msgstr "Skal være mindst %d from %ls: %ls"
 #~ "Tryk på OK vil kopiere adgangskoden til den valgte post til klipbord. "
 #~ "Klipbordet vil blive tømt sikkert når Password Safe afsluttes.\n"
 #~ "Tryk på Afbryd stoppes adgangskode kopieringen."
-
-#~ msgid "Previous Passwords"
-#~ msgstr "Tidligere Adgangskoder"
 
 #~ msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
 #~ msgstr "Programmer (*.exe)|*.exe|Alle filer (*.*)|*.*||"

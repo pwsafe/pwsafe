@@ -235,7 +235,7 @@ void pwFiltersPasswordDlg::CreateControls()
   m_CheckBoxFCase->SetValue(m_fcase);
   itemFlexGridSizer1->Add(m_CheckBoxFCase, 0, wxALIGN_LEFT|wxBOTTOM|wxALL, 5);
   
-  auto choiceStaticText3 = new wxStaticText(this, wxID_ANY, _("expiry in day(s):") + _T(": "), wxDefaultPosition, wxDefaultSize, 0);
+  auto choiceStaticText3 = new wxStaticText(this, wxID_ANY, _("expiry in day(s):") + _T(" "), wxDefaultPosition, wxDefaultSize, 0);
   itemFlexGridSizer1->Add(choiceStaticText3, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
   
   wxString str;
@@ -248,12 +248,12 @@ void pwFiltersPasswordDlg::CreateControls()
   
   wxScreenDC dc;
   dc.SetFont(choiceStaticText1->GetFont());
-  str = wxString::Format(infoFmtStr, INT_MIN, INT_MAX);
+  str = wxString::Format(infoFmtStr.c_str(), INT_MIN, INT_MAX);
   wxCoord width, height;
   dc.GetTextExtent(str, &width, &height);
   wxSize size(width+6, height);
   
-  str = wxString::Format(infoFmtStr, m_min, m_max);
+  str = wxString::Format(infoFmtStr.c_str(), m_min, m_max);
   auto choiceStaticText4 = new wxStaticText(this, wxID_ANY, str + _T(" "), wxDefaultPosition, size, 0);
   itemFlexGridSizer1->Add(choiceStaticText4, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
   

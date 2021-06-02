@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-31 15:03+0200\n"
+"POT-Creation-Date: 2021-06-02 11:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -242,6 +242,8 @@ msgid "Password Policy"
 msgstr "비밀번호 정책"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:356
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:110
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:120
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:320
 #, fuzzy
 msgid "Attachment"
@@ -1443,7 +1445,7 @@ msgstr "취소"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:260
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:221
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:183
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:226
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:227
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:200
 msgid "&Help"
 msgstr "도움(&H)"
@@ -1476,7 +1478,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/GridCtrl.cpp:164
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:292
-#: ../../../core/core_st.cpp:150
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:111 ../../../core/core_st.cpp:150
 msgid "Title"
 msgstr "주제"
 
@@ -1935,7 +1937,6 @@ msgstr ""
 "다른 곳에 저장해 보십시오"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:70
-#: ../../../ui/wxWidgets/wxUtilities.cpp:71
 #, fuzzy
 msgid "Unknown error"
 msgstr ""
@@ -3229,6 +3230,133 @@ msgstr "숫자열이 최대값으로 설정되었습니다. '더 큰' 설정은 
 msgid "A future date is not valid for this field"
 msgstr "이 필드에 미래의 날짜는 적합하지 않습니다"
 
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:88
+msgid "Entry size"
+msgstr "항목 크기"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:89
+#, fuzzy
+msgid "Entry type"
+msgstr "항목 크기"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:90
+msgid "Entry status"
+msgstr "항목 상태:"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:91
+#, fuzzy
+msgid "Unknown fields"
+msgstr "알 수 없는 필드:"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:92
+#, fuzzy
+msgid "Password Length"
+msgstr "비밀번호 길이:"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:93
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:100
+msgid "Field present"
+msgstr "필드 존재함"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:94
+msgid "Field active"
+msgstr "필드 활성화"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:95
+msgid "Number stored"
+msgstr "숫자가 저장됨"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:96
+#, fuzzy
+msgid "Maximal Number stored"
+msgstr "최대값 저장됨"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:97
+#, fuzzy
+msgid "Change Date"
+msgstr "폰트 바꾸기(&F)"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:98
+msgid "Previous Passwords"
+msgstr "이전 비밀번호"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:101 ../../../core/core_st.cpp:261
+#, fuzzy
+msgid "Password length"
+msgstr "비밀번호 길이:"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:102
+#, fuzzy
+msgid "Minimum lowercase characters"
+msgstr "최소 대문자 개수"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:103
+#, fuzzy
+msgid "Minimum uppercase characters"
+msgstr "최소 대문자 개수"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:104
+#, fuzzy
+msgid "Minimum digits"
+msgstr "최소 숫자 개수"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:105
+#, fuzzy
+msgid "Minimum symbols"
+msgstr "최소 특수문자 개수"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:106 ../../../core/core_st.cpp:259
+msgid "Easyvision characters"
+msgstr "읽기 쉬운 문자들"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:107 ../../../core/core_st.cpp:262
+msgid "Pronounceable passwords"
+msgstr "발음할 수 있는 비밀번호"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:108 ../../../core/core_st.cpp:260
+msgid "Hexadecimal characters"
+msgstr "16진수 문자"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:112
+#, fuzzy
+msgid "Date added"
+msgstr "요일 및 시간"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:113
+#: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:287
+msgid "Media Type"
+msgstr ""
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:114
+#, fuzzy
+msgid "File Name"
+msgstr "사용자 이름"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:115
+#, fuzzy
+msgid "File Path"
+msgstr "파일(&F)"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:116
+#, fuzzy
+msgid "File Creation Date"
+msgstr "'생성 시간'"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:117
+#, fuzzy
+msgid "File Last Modified Date"
+msgstr "최종 수정"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:118
+#, fuzzy
+msgid "File Last Accessed date"
+msgstr "최종 접근"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:121
+#, fuzzy
+msgid "Click here to pick a field"
+msgstr "이곳을 눌러 필드 선택"
+
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:904
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:281
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:293
@@ -3257,10 +3385,6 @@ msgstr "MBytes"
 #, fuzzy
 msgid "Display Filter Media Types Value"
 msgstr "표시 필터"
-
-#: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:287
-msgid "Media Type"
-msgstr ""
 
 #: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:295
 #: ../../../ui/wxWidgets/PWFiltersPasswordDlg.cpp:234
@@ -3343,7 +3467,7 @@ msgstr ""
 msgid "Don't show this warning again"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:521
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:520
 #, fuzzy
 msgid "Unable to import \"autoload_filters.xml\""
 msgstr ""
@@ -3351,24 +3475,24 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:881
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:879
 msgid "Missing help definition for page \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:882
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:880
 msgid "\" of \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:887
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:885
 msgid "Missing help definition for window \""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:898
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:896
 #, fuzzy
 msgid "Please inform the developers."
 msgstr "이 필터의 이름을 지정해 주십시오"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:899
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:897
 msgid "Help Undefined"
 msgstr ""
 
@@ -4566,73 +4690,73 @@ msgstr ""
 msgid "\tThe following fields were %ls"
 msgstr "다음 레코드가 무시되었습니다:"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:193
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:194
 msgid "Filter name:"
 msgstr "조건 이름:"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:217
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:254
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:218
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:255
 msgid "&Apply"
 msgstr "적용(&A)"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:220
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:221
 #, fuzzy
 msgid "OK"
 msgstr "확인"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:223
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:224
 #, fuzzy
 msgid "Cancel"
 msgstr "취소"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:259
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:290
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:260
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:291
 #, fuzzy
 msgid "No filter name given."
 msgstr "조건 이름:"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:259
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:290
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:260
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:291
 #, fuzzy
 msgid "Please name this filter."
 msgstr "XML 파일의 이름을 지정해주세요"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:277
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:278
 #, fuzzy
 msgid "Clear"
 msgstr "검색창 비우기"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:312
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:313
 msgid "Applied pressed before Cancel"
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:312
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:313
 #, fuzzy
 msgid "Do you wish to overtake applied filter?"
 msgstr "정말 이것을 교체하시겠습니까?"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:433
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:441
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:447
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:453
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:430
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:438
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:444
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:450
 #, c-format
 msgid "Row %d is incomplete."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:434
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:431
 #, fuzzy
 msgid "Please set both Field and Criteria."
 msgstr "비밀번호를 입력하시고 검사해보세요."
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:442
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:439
 msgid "Please set both Field and Criteria or update History filters."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:448
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:445
 msgid "Please set both Field and Criteria or update Policy filters."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:454
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:451
 msgid "Please set both Field and Criteria or update Attachment filters."
 msgstr ""
 
@@ -5164,6 +5288,10 @@ msgid "Options"
 msgstr ""
 "\n"
 "옵션"
+
+#: ../../../ui/wxWidgets/PWFiltersTable.h:43
+msgid "No criteria defined"
+msgstr "기준이 정의되지 않음"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.h:140
 #: ../../../ui/wxWidgets/wxMessages.h:23 ../../../ui/wxWidgets/wxMessages.h:38
@@ -6426,23 +6554,6 @@ msgstr ""
 #: ../../../core/core_st.cpp:258
 msgid "Password is too short"
 msgstr "비밀번호가 너무 짧습니다"
-
-#: ../../../core/core_st.cpp:259
-msgid "Easyvision characters"
-msgstr "읽기 쉬운 문자들"
-
-#: ../../../core/core_st.cpp:260
-msgid "Hexadecimal characters"
-msgstr "16진수 문자"
-
-#: ../../../core/core_st.cpp:261
-#, fuzzy
-msgid "Password length"
-msgstr "비밀번호 길이:"
-
-#: ../../../core/core_st.cpp:262
-msgid "Pronounceable passwords"
-msgstr "발음할 수 있는 비밀번호"
 
 #: ../../../core/core_st.cpp:264
 #, fuzzy
@@ -7850,9 +7961,6 @@ msgstr ""
 #~ msgid "Clear Buffer"
 #~ msgstr "버퍼 비우기"
 
-#~ msgid "Click here to pick field"
-#~ msgstr "이곳을 눌러 필드 선택"
-
 #~ msgid "Click to change case."
 #~ msgstr "대/소문자를 바꾸시려면 클릭하세요."
 
@@ -8196,14 +8304,8 @@ msgstr ""
 #~ msgid "Entry Unique ID:"
 #~ msgstr "항목 고유 ID:"
 
-#~ msgid "Entry size"
-#~ msgstr "항목 크기"
-
 #~ msgid "Entry size:"
 #~ msgstr "항목 크기:"
-
-#~ msgid "Entry status"
-#~ msgstr "항목 상태:"
 
 #~ msgid "Estonian"
 #~ msgstr "Estonian"
@@ -8255,12 +8357,6 @@ msgstr ""
 
 #~ msgid "Failsafe Backup Files"
 #~ msgstr "오류방지 백업본 파일"
-
-#~ msgid "Field active"
-#~ msgstr "필드 활성화"
-
-#~ msgid "Field present"
-#~ msgstr "필드 존재함"
 
 #~ msgid "File In Use"
 #~ msgstr "파일 사용중"
@@ -8559,9 +8655,6 @@ msgstr ""
 #~ msgid "L Ctrl"
 #~ msgstr "L Ctrl"
 
-#~ msgid "Last Accessed"
-#~ msgstr "최종 접근"
-
 #~ msgid "Latest version? Click <a href=\"%s\">here</a> to check."
 #~ msgstr "최신 버전은 <a href=\"%s\">이곳</a> 을 클릭하여 체크해주세요."
 
@@ -8621,20 +8714,11 @@ msgstr ""
 #~ msgid "Maximum number of days that can be specified is %d"
 #~ msgstr "최대 가능한 일 수는 %d입니다"
 
-#~ msgid "Maximum number stored"
-#~ msgstr "최대값 저장됨"
-
 #~ msgid "Merge failed"
 #~ msgstr "병합 실패"
 
 #~ msgid "Migrate PasswordSafe configuration to user directory"
 #~ msgstr "사용자 디렉토리로 Password Safe 설정파일 이식"
-
-#~ msgid "Minimum digit characters"
-#~ msgstr "최소 숫자 개수"
-
-#~ msgid "Minimum symbol characters"
-#~ msgstr "최소 특수문자 개수"
 
 #~ msgid "Mixed"
 #~ msgstr "혼합"
@@ -8657,9 +8741,6 @@ msgstr ""
 
 #~ msgid "Next >"
 #~ msgstr "다음 >"
-
-#~ msgid "No criteria defined"
-#~ msgstr "기준이 정의되지 않음"
 
 #~ msgid "No database open with which to compare against another database!"
 #~ msgstr "다른 데이터베이스와 비교할 데이터베이스가 열리지 않았습니다."
@@ -8731,9 +8812,6 @@ msgstr ""
 
 #~ msgid "Number of unknown fields:"
 #~ msgstr "알 수 없는 필드의 개수:"
-
-#~ msgid "Number stored"
-#~ msgstr "숫자가 저장됨"
 
 #~ msgid "Numeric Pad"
 #~ msgstr "숫자 키패드"
@@ -8873,9 +8951,6 @@ msgstr ""
 #~ "Safe의 창이 닫기면 안전하게 비워집니다.\n"
 #~ "\n"
 #~ "비밀번호를 복사하지 않으려면 아니오를 클릭하세요."
-
-#~ msgid "Previous Passwords"
-#~ msgstr "이전 비밀번호"
 
 #~ msgid "Processing entry:"
 #~ msgstr "처리중인 항목:"

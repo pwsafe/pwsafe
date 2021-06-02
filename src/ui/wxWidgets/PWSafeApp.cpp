@@ -517,9 +517,7 @@ bool PWSafeApp::OnInit()
     int rc = m_frame->ImportFilterXMLFile(FPOOL_AUTOLOAD, L"", wsAutoLoad,
                                           L"", strErrors, &anAsker, nullptr); // Only summary will be reported
     if (rc != PWScore::SUCCESS) {
-      stringT cs_error;
-      Format(cs_error, _("Unable to import \"autoload_filters.xml\""));
-      wxMessageBox(towxstring(strErrors), towxstring(cs_error), wxOK | wxICON_ERROR);
+      wxMessageBox(towxstring(strErrors), _("Unable to import \"autoload_filters.xml\""), wxOK | wxICON_ERROR);
     }
   }
 

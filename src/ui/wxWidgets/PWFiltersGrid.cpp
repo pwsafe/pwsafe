@@ -626,7 +626,7 @@ bool pwFiltersGrid::IsSameAsDefault(int row)
 {
   st_FilterRow emptyRow;
   
-  ASSERT(m_currentFilter && row < m_currentFilter->size());
+  ASSERT(m_currentFilter && row < static_cast<int>(m_currentFilter->size()));
   return (*m_currentFilter)[row] == emptyRow;
 }
 
@@ -1057,13 +1057,13 @@ FilterType pwFiltersGrid::GetFilterAndRow(int row, vFilterRows **filter, int &fr
   do {
     wxASSERT(standardFilter[flt]);
     // If row is inside filter group
-    if(row < standardFilter[flt]->size()) {
+    if(row < static_cast<int>(standardFilter[flt]->size())) {
       *filter = standardFilter[flt];
       frow = row;
       return static_cast<FilterType>(flt);
     }
     // Skip filter group
-    row -= standardFilter[flt]->size();
+    row -= static_cast<int>(standardFilter[flt]->size());
     ++flt;
     // Skip empty filter group
     while(flt <= DFTYPE_ATTACHMENT && ! standardFilter[flt]->size()) ++flt;

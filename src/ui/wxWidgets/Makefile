@@ -206,7 +206,12 @@ SOURCES= PasswordSafeFrame.cpp \
 	$(YUBI_SRC) $(QR_SRC) \
 	ManagePasswordPoliciesDlg.cpp PasswordPolicyDlg.cpp SelectionCriteria.cpp \
 	TimedTaskChain.cpp MenuViewHandlers.cpp PasswordSubsetDlg.cpp \
-  CryptKeyEntryDlg.cpp MenuFileHandlers.cpp ViewAttachmentDlg.cpp
+	CryptKeyEntryDlg.cpp MenuFileHandlers.cpp ViewAttachmentDlg.cpp \
+	PWFiltersGrid.cpp PWFiltersTable.cpp PWFiltersEditor.cpp \
+	PWFiltersBoolDlg.cpp PWFiltersStringDlg.cpp PWFiltersDCADlg.cpp \
+	PWFiltersIntegerDlg.cpp PWFiltersStatusDlg.cpp PWFiltersTypeDlg.cpp \
+	PWFiltersDateDlg.cpp PWFiltersMediaDlg.cpp PWFiltersPasswordDlg.cpp \
+	ManageFiltersTable.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)

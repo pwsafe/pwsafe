@@ -330,7 +330,7 @@ void pwFiltersDateDlg::CreateControls()
   basicGridSizer->Add(m_FNum2Ctrl, wxGBPosition(/*row:*/ 4, /*column:*/ 3), wxDefaultSpan,  wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
   
   // Value on next row (Number range)
-  str = wxString::Format(_("Interval [%d to %d]"), m_min, m_max);
+  str = wxString::Format(_("Interval [%d to %d]").c_str(), m_min, m_max);
   auto andStaticText5 = new wxStaticText(this, wxID_ANY, str + _T(" "), wxDefaultPosition, wxDefaultSize, 0);
   basicGridSizer->Add(andStaticText5, wxGBPosition(/*row:*/ 5, /*column:*/ 1), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3),  wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
   

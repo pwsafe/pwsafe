@@ -475,10 +475,10 @@ int pwSortedManageFilters::insert(struct st_FilterItemData &data)
     if(! LessThan(m_SortFilterData.at(i), data)) {
       m_SortFilterData.insert(m_SortFilterData.begin() + i, data);
       // Correct index values
-      if(m_activeFilterIdx != -1 && m_activeFilterIdx >= i) {
+      if(m_activeFilterIdx != -1 && m_activeFilterIdx >= static_cast<int>(i)) {
         ++m_activeFilterIdx;
       }
-      if(m_selectedFilterIdx != -1 && m_selectedFilterIdx >= i) {
+      if(m_selectedFilterIdx != -1 && m_selectedFilterIdx >= static_cast<int>(i)) {
         ++m_selectedFilterIdx;
       }
       return static_cast<int>(i);
@@ -499,7 +499,7 @@ int pwSortedManageFilters::insert(struct st_FilterItemData &data)
 
 void pwSortedManageFilters::remove(int idx)
 {
-  if(idx >= 0 && idx < m_SortFilterData.size()) {
+  if(idx >= 0 && idx < static_cast<int>(m_SortFilterData.size())) {
     m_SortFilterData.erase(m_SortFilterData.begin() + idx);
     if(idx == m_activeFilterIdx)
       m_activeFilterIdx = -1;
@@ -556,10 +556,10 @@ void pwSortedManageFilters::SortByColumn(int column, bool ascending)
     
     // Sort
     size_t size = m_SortFilterData.size();
-    for(int i = 1; i < size; ++i) {
+    for(int i = 1; i < static_cast<int>(size); ++i) {
       bool bChange = false;
       // Search for entry smaller than entry at i
-      for(int x = 0; x < size - 1; ++x) {
+      for(int x = 0; x < static_cast<int>(size) - 1; ++x) {
         if(LessThan(m_SortFilterData.at(i), m_SortFilterData.at(x))) {
           std::swap(m_SortFilterData.at(i), m_SortFilterData.at(x));
           if(i == m_activeFilterIdx)
@@ -585,7 +585,7 @@ void pwSortedManageFilters::SortByColumn(int column, bool ascending)
 
 stringT pwSortedManageFilters::GetSelectedFilterName()
 {
-  if(m_selectedFilterIdx >= 0 && m_selectedFilterIdx < m_SortFilterData.size()) {
+  if(m_selectedFilterIdx >= 0 && m_selectedFilterIdx < static_cast<int>(m_SortFilterData.size())) {
     return m_SortFilterData.at(m_selectedFilterIdx).flt_key.cs_filtername;
   }
   return L"";

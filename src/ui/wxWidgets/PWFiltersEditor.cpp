@@ -85,40 +85,40 @@ const std::map<int, wxString> FieldTypeString = {
   {FT_POLICYNAME, towxstring(CItemData::EngFieldName(CItemData::POLICYNAME))},
   {FT_KBSHORTCUT, towxstring(CItemData::EngFieldName(CItemData::KBSHORTCUT))},
   {FT_END, _T("------")}, // Separator
-  {FT_ENTRYSIZE, _T("Entry size")},
-  {FT_ENTRYTYPE, _T("Entry type")},
-  {FT_ENTRYSTATUS, _T("Entry status")},
-  {FT_UNKNOWNFIELDS, _T("Unknown fields")},
-  {FT_PASSWORDLEN, _T("Password Length")},
-  {HT_PRESENT, _T("Field present")},
-  {HT_ACTIVE, _T("Field active")},
-  {HT_NUM, _T("Number stored")},
-  {HT_MAX, _T("Maximal Number stored")},
-  {HT_CHANGEDATE, _T("Change Date")},
-  {HT_PASSWORDS, _T("Previous Passwords")},
+  {FT_ENTRYSIZE, _("Entry size")},
+  {FT_ENTRYTYPE, _("Entry type")},
+  {FT_ENTRYSTATUS, _("Entry status")},
+  {FT_UNKNOWNFIELDS, _("Unknown fields")},
+  {FT_PASSWORDLEN, _("Password Length")},
+  {HT_PRESENT, _("Field present")},
+  {HT_ACTIVE, _("Field active")},
+  {HT_NUM, _("Number stored")},
+  {HT_MAX, _("Maximal Number stored")},
+  {HT_CHANGEDATE, _("Change Date")},
+  {HT_PASSWORDS, _("Previous Passwords")},
   {HT_END, _T("------")}, // Separator
-  {PT_PRESENT, _T("Field present")},
-  {PT_LENGTH, _T("Password length")},
-  {PT_LOWERCASE, _T("Minimum lowercase characters")},
-  {PT_UPPERCASE, _T("Minimum uppercase characters")},
-  {PT_DIGITS, _T("Minimum digits")},
-  {PT_SYMBOLS, _T("Minimum symbols")},
-  {PT_EASYVISION, _T("Easyvision characters")},
-  {PT_PRONOUNCEABLE, _T("Pronounceable passwords")},
-  {PT_HEXADECIMAL, _T("Hexadecimal characters")},
+  {PT_PRESENT, _("Field present")},
+  {PT_LENGTH, _("Password length")},
+  {PT_LOWERCASE, _("Minimum lowercase characters")},
+  {PT_UPPERCASE, _("Minimum uppercase characters")},
+  {PT_DIGITS, _("Minimum digits")},
+  {PT_SYMBOLS, _("Minimum symbols")},
+  {PT_EASYVISION, _("Easyvision characters")},
+  {PT_PRONOUNCEABLE, _("Pronounceable passwords")},
+  {PT_HEXADECIMAL, _("Hexadecimal characters")},
   {PT_END, _T("------")}, // Separator
-  {AT_PRESENT, _T("Attachment")},
-  {AT_TITLE, _T("Title")},
-  {AT_CTIME, _T("Date added")},
-  {AT_MEDIATYPE, _T("Media Type")},
-  {AT_FILENAME, _T("File Name")},
-  {AT_FILEPATH, _T("File Path")},
-  {AT_FILECTIME, _T("File Creation Date")},
-  {AT_FILEMTIME, _T("File Last Modified Date")},
-  {AT_FILEATIME, _T("File Last Accessed date")},
+  {AT_PRESENT, _("Attachment")},
+  {AT_TITLE, _("Title")},
+  {AT_CTIME, _("Date added")},
+  {AT_MEDIATYPE, _("Media Type")},
+  {AT_FILENAME, _("File Name")},
+  {AT_FILEPATH, _("File Path")},
+  {AT_FILECTIME, _("File Creation Date")},
+  {AT_FILEMTIME, _("File Last Modified Date")},
+  {AT_FILEATIME, _("File Last Accessed date")},
   {AT_END, _T("------")}, // Separator
-  {FT_ATTACHMENT, _T("Attachment")},
-  {FT_INVALID, _T("Click here to pick a field")},
+  {FT_ATTACHMENT, _("Attachment")},
+  {FT_INVALID, _("Click here to pick a field")},
 };
 
 
@@ -453,15 +453,15 @@ void pwFiltersFTChoiceEditor::AppendToChoicesString(wxString &choices, FieldType
   m_choicemap.push_back(ft);
   if(! choices.empty())
     choices += _T(",");
-  if(ft == FT_HISTORY_MENU) {
+  if(ft == static_cast<FieldType>(FT_HISTORY_MENU)) {
     choices += pwFiltersFTChoiceRenderer::getFieldTypeString(static_cast<int>(FT_PWHIST));
     choices += _T(" -->");
   }
-  else if(ft == FT_POLICY_MENU) {
+  else if(ft == static_cast<FieldType>(FT_POLICY_MENU)) {
     choices += pwFiltersFTChoiceRenderer::getFieldTypeString(static_cast<int>(FT_POLICY));
     choices += _T(" -->");
   }
-  else if(ft == FT_ATTACHMENT_MENU) {
+  else if(ft == static_cast<FieldType>(FT_ATTACHMENT_MENU)) {
     choices += pwFiltersFTChoiceRenderer::getFieldTypeString(static_cast<int>(FT_ATTACHMENT));
     choices += _T(" -->");
   }
@@ -501,7 +501,7 @@ void pwFiltersFTChoiceEditor::UpdateControls(int row)
       CheckFilterOnSpecialValues(pwhist, policy, attachment);
     
       // If current entry is already special value, let selection part of choice
-      if(row < m_currentFilter->size()) {
+      if(row < static_cast<int>(m_currentFilter->size())) {
         if(m_currentFilter->at(row).ftype == FT_PWHIST)
           pwhist = false;
         else if(m_currentFilter->at(row).ftype == FT_POLICY)
@@ -635,7 +635,7 @@ void pwFiltersFTChoiceEditor::CreateControls()
  */
 
 pwFiltersFTChoiceEditor::pwFiltersFTChoiceEditor(const vFilterRows *currentFilter, const FilterType &filtertype, const bool bCanHaveAttachments) :
-m_currentFilter(currentFilter), m_filtertype(filtertype), m_bCanHaveAttachments(bCanHaveAttachments), wxGridCellChoiceEditor()
+wxGridCellChoiceEditor(), m_currentFilter(currentFilter), m_filtertype(filtertype), m_bCanHaveAttachments(bCanHaveAttachments)
 {
   m_index = -1;
   m_value = FT_INVALID;
@@ -752,7 +752,7 @@ bool pwFiltersFTChoiceEditor::EndEdit(int row, int col, const wxGrid* grid, cons
   if(idx == m_index)
       return false;
   
-  if(idx >= m_choicemap.size())
+  if(idx >= static_cast<int>(m_choicemap.size()))
     return false;
   
   value = m_choicemap[idx];

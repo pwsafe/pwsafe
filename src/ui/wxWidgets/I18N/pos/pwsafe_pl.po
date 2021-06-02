@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-05-31 15:03+0200\n"
+"POT-Creation-Date: 2021-06-01 10:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -246,10 +246,11 @@ msgid "Password Policy"
 msgstr "Właściwości Haseł"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:356
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:110
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:120
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:320
-#, fuzzy
 msgid "Attachment"
-msgstr "Liczba wpisów:"
+msgstr "Załącznik"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:369
 msgid "Set Date/Time"
@@ -261,15 +262,14 @@ msgid "Password"
 msgstr "Hasło"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:386
-#, fuzzy
 msgid ""
 "To add a new entry, simply fill in the fields below. At least a title and\n"
 "a password are required. If you have set a default username, it will\n"
 "appear in the username field."
 msgstr ""
-"By dodać wpis, wypełnij poniższe pola. Co najmniej tytuł\n"
-"i hasło są wymagane. Jeśli ustawiono domyślną nazwę użytkownika\n"
-"to pojawi się ona w polu z nazwą użytkownika."
+"By dodać wpis, wypełnij poniższe pola. Pola nazwy i hasła są wymagane.\n"
+"Jeśli domyślna nazwa użytkownika jest ustawiona, pojawi się w polu nazwy\n"
+"użytkownika."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:394
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:207
@@ -649,27 +649,23 @@ msgstr "Tekst"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:866
 msgid "Media Type:"
-msgstr ""
+msgstr "Typ Mediów:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:871
-#, fuzzy
 msgid "Creation Date:"
-msgstr " 'Czas Utworzenia'"
+msgstr "Data utworzenia:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:876
-#, fuzzy
 msgid "File Size:"
-msgstr "&Wielkość:"
+msgstr "Rozmiar pliku:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:881
-#, fuzzy
 msgid "File Creation Date:"
-msgstr " 'Czas Utworzenia'"
+msgstr "Data utworzenia pliku:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:886
-#, fuzzy
 msgid "File Last Modified Date:"
-msgstr "Ostatnia Modyfikacja"
+msgstr "Data ostatniej modyfikacji pliku:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:930
 msgid "No Attachment Available"
@@ -766,7 +762,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1189
 #, fuzzy, c-format
 msgid "%s files (*.%s)|*.%s|"
-msgstr "Pliki XML (*.xml)|*.xml"
+msgstr "%s files (*.%s)|*.%s|"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1218
 msgid "Failed to allocate required memory to export attachment data."
@@ -1482,8 +1478,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/GridCtrl.cpp:164
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:292
-#: ../../../core/core_st.cpp:150
-#, fuzzy
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:111 ../../../core/core_st.cpp:150
 msgid "Title"
 msgstr "Tytuł"
 
@@ -1807,7 +1802,6 @@ msgstr "Pole z polityką"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:287
 #: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:344
-#, fuzzy
 msgid "Value"
 msgstr "Wartość"
 
@@ -1926,7 +1920,6 @@ msgstr ""
 "Spróbuj go zachować w innym miejscu"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:70
-#: ../../../ui/wxWidgets/wxUtilities.cpp:71
 msgid "Unknown error"
 msgstr "Nieznany błąd"
 
@@ -3187,7 +3180,6 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:505
 #: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:521
-#, fuzzy
 msgid "Second number must be greater than first"
 msgstr "Druga liczba musi być większa niż pierwsza"
 
@@ -3203,19 +3195,16 @@ msgid "Please correct date values."
 msgstr "Proszę poinformować programistów."
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:517
-#, fuzzy
 msgid "Second date must be later than first"
 msgstr "Druga data musi być późniejsza niż pierwsza"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:607
 #: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:638
-#, fuzzy
 msgid "Number is set to the minimum value. 'Less than' is not allowed."
 msgstr "Liczba ma minimalną wartość.  'Mniejsza niż' jest niedostępna."
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:612
 #: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:643
-#, fuzzy
 msgid "Number is set to the maximum value. 'Greater than' is not allowed."
 msgstr "Liczba ma maksymalną wartość.  'Większa niż' jest niedostępna."
 
@@ -3223,6 +3212,117 @@ msgstr "Liczba ma maksymalną wartość.  'Większa niż' jest niedostępna."
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:626
 msgid "A future date is not valid for this field"
 msgstr "Data z przyszłości nie jest poprawna w tym polu"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:88
+msgid "Entry size"
+msgstr "Rozmiar wpisu"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:89
+msgid "Entry type"
+msgstr "Typ wpisu"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:90
+msgid "Entry status"
+msgstr "Status wpisu"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:91
+msgid "Unknown fields"
+msgstr "Nieznane pola"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:92
+msgid "Password Length"
+msgstr "Długość hasła"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:93
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:100
+msgid "Field present"
+msgstr "Pole istnieje"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:94
+msgid "Field active"
+msgstr "Pole aktywne"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:95
+msgid "Number stored"
+msgstr "Zapisano liczbę"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:96
+#, fuzzy
+msgid "Maximal Number stored"
+msgstr "Maksymalna liczba zapisanych"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:97
+msgid "Change Date"
+msgstr "Zmień datę"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:98
+msgid "Previous Passwords"
+msgstr "Poprzednie hasła"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:101 ../../../core/core_st.cpp:261
+msgid "Password length"
+msgstr "Długość hasła"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:102
+msgid "Minimum lowercase characters"
+msgstr "Minimalna liczba znaków zawierających małe litery"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:103
+msgid "Minimum uppercase characters"
+msgstr "Minimalna liczba znaków zawierających wielkie litery"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:104
+msgid "Minimum digits"
+msgstr "Minimalna liczba cyfr"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:105
+msgid "Minimum symbols"
+msgstr "Minimalna liczba symboli"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:106 ../../../core/core_st.cpp:259
+msgid "Easyvision characters"
+msgstr "Znaki łatwo wyróżnialne"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:107 ../../../core/core_st.cpp:262
+msgid "Pronounceable passwords"
+msgstr "Hasła łatwe do wymówienia"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:108 ../../../core/core_st.cpp:260
+msgid "Hexadecimal characters"
+msgstr "Znaki szesnastkowe"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:112
+msgid "Date added"
+msgstr "Data dodania"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:113
+#: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:287
+msgid "Media Type"
+msgstr "Typ Mediów"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:114
+msgid "File Name"
+msgstr "Nazwa pliku"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:115
+msgid "File Path"
+msgstr "Ścieżka pliku"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:116
+msgid "File Creation Date"
+msgstr "Data utworzenia pliku"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:117
+msgid "File Last Modified Date"
+msgstr "Data ostatniej modyfikacji pliku"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:118
+msgid "File Last Accessed date"
+msgstr "Data ostatniego dostępu do pliku"
+
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:121
+msgid "Click here to pick a field"
+msgstr "Kliknij tutaj, żeby wybrać pole"
 
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:904
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:281
@@ -3253,14 +3353,9 @@ msgstr "MBajtów"
 msgid "Display Filter Media Types Value"
 msgstr "Pokaż filtr - "
 
-#: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:287
-msgid "Media Type"
-msgstr ""
-
 #: ../../../ui/wxWidgets/PWFiltersMediaDlg.cpp:295
 #: ../../../ui/wxWidgets/PWFiltersPasswordDlg.cpp:234
 #: ../../../ui/wxWidgets/PWFiltersStringDlg.cpp:273
-#, fuzzy
 msgid "Case Sensitive"
 msgstr "Uwzględniaj wielkość liter"
 
@@ -3272,7 +3367,7 @@ msgstr "Pokaż filtr - "
 #: ../../../ui/wxWidgets/PWFiltersPasswordDlg.cpp:238
 #, fuzzy
 msgid "expiry in day(s):"
-msgstr "w przeciągu %d dni(a)"
+msgstr "w przeciągu dni(a)"
 
 #: ../../../ui/wxWidgets/PWFiltersPasswordDlg.cpp:384
 #, fuzzy
@@ -3299,12 +3394,11 @@ msgstr "Pokaż filtr - "
 
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:118
 msgid "And/Or"
-msgstr ""
+msgstr "I/Lub"
 
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:120
-#, fuzzy
 msgid "Field"
-msgstr "' pola."
+msgstr "Pole"
 
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:122
 msgid "Criteria"
@@ -3318,7 +3412,7 @@ msgstr "Pokaż filtr - "
 #: ../../../ui/wxWidgets/PWFiltersTypeDlg.cpp:257
 #, fuzzy
 msgid "Type"
-msgstr "Autouzupełnianie"
+msgstr "Typ"
 
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:428
 msgid "Another instance of Password Safe is already running"
@@ -3340,7 +3434,7 @@ msgstr "Błąd w czasie inicjalizowania pomocy"
 msgid "Don't show this warning again"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:521
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:520
 #, fuzzy
 msgid "Unable to import \"autoload_filters.xml\""
 msgstr ""
@@ -3348,23 +3442,23 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:881
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:879
 msgid "Missing help definition for page \""
 msgstr "Brakuje definicji pomocy dla strony \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:882
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:880
 msgid "\" of \""
 msgstr "\" z \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:887
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:885
 msgid "Missing help definition for window \""
 msgstr "Brakuje definicji pomocy dla okna \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:898
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:896
 msgid "Please inform the developers."
 msgstr "Proszę poinformować programistów."
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:899
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:897
 msgid "Help Undefined"
 msgstr "Pomoc nie jest zdefiniowana"
 
@@ -4557,28 +4651,28 @@ msgstr ""
 msgid "Do you wish to overtake applied filter?"
 msgstr "Czy chcesz zobaczyć dokładny raport?"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:433
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:441
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:447
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:453
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:429
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:437
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:443
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:449
 #, c-format
 msgid "Row %d is incomplete."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:434
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:430
 #, fuzzy
 msgid "Please set both Field and Criteria."
 msgstr "Rząd %d nie jest w całości. Proszę ustawić i Pole, i Kryteria."
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:442
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:438
 msgid "Please set both Field and Criteria or update History filters."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:448
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:444
 msgid "Please set both Field and Criteria or update Policy filters."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:454
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:450
 msgid "Please set both Field and Criteria or update Attachment filters."
 msgstr ""
 
@@ -5107,6 +5201,10 @@ msgid "Options"
 msgstr ""
 "\n"
 "Opcje"
+
+#: ../../../ui/wxWidgets/PWFiltersTable.h:43
+msgid "No criteria defined"
+msgstr "Nie zdefiniowano kryteriów"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.h:140
 #: ../../../ui/wxWidgets/wxMessages.h:23 ../../../ui/wxWidgets/wxMessages.h:38
@@ -6396,23 +6494,6 @@ msgstr ""
 #: ../../../core/core_st.cpp:258
 msgid "Password is too short"
 msgstr "Hasło jest zbyt krótkie"
-
-#: ../../../core/core_st.cpp:259
-msgid "Easyvision characters"
-msgstr "Znaki łatwo wyróżnialne"
-
-#: ../../../core/core_st.cpp:260
-msgid "Hexadecimal characters"
-msgstr "Znaki szesnastkowe"
-
-#: ../../../core/core_st.cpp:261
-#, fuzzy
-msgid "Password length"
-msgstr "Długość hasła"
-
-#: ../../../core/core_st.cpp:262
-msgid "Pronounceable passwords"
-msgstr "Hasła łatwe do wymówienia"
 
 #: ../../../core/core_st.cpp:264
 #, fuzzy
@@ -7960,9 +8041,6 @@ msgstr "Tak - co najwyżej %d z %ls: %ls"
 #~ msgid "Change Base"
 #~ msgstr "Zmień bazę"
 
-#~ msgid "Change Date"
-#~ msgstr "Zmień datę"
-
 #~ msgid "Change This"
 #~ msgstr "Zmień to"
 
@@ -7993,9 +8071,6 @@ msgstr "Tak - co najwyżej %d z %ls: %ls"
 
 #~ msgid "Click here or details on the various preferences."
 #~ msgstr "Kliknij aby zobaczyć szczegóły ustawień."
-
-#~ msgid "Click here to pick field"
-#~ msgstr "Kliknij żeby wybrać pole"
 
 #~ msgid "Click to change case."
 #~ msgstr "Kliknij by zmienić wielkość liter."
@@ -8363,14 +8438,8 @@ msgstr "Tak - co najwyżej %d z %ls: %ls"
 #~ msgid "Entry Unique ID:"
 #~ msgstr "Wprowadź unikalny identyfiktor:"
 
-#~ msgid "Entry size"
-#~ msgstr "Rozmiar wpisu"
-
 #~ msgid "Entry size:"
 #~ msgstr "Rozmiar wpisu:"
-
-#~ msgid "Entry status"
-#~ msgstr "Status wpisu"
 
 #~ msgid "Estonian"
 #~ msgstr "Estoński"
@@ -8429,12 +8498,6 @@ msgstr "Tak - co najwyżej %d z %ls: %ls"
 
 #~ msgid "Failsafe Backup Files"
 #~ msgstr "Pliki kopii zapasowej Failsafe"
-
-#~ msgid "Field active"
-#~ msgstr "Pole aktywne"
-
-#~ msgid "Field present"
-#~ msgstr "Pole istnieje"
 
 #~ msgid "File In Use"
 #~ msgstr "Plik jest używany"
@@ -8742,9 +8805,6 @@ msgstr "Tak - co najwyżej %d z %ls: %ls"
 #~ msgid "L Ctrl"
 #~ msgstr "L Ctrl"
 
-#~ msgid "Last Accessed"
-#~ msgstr "Ostatni Dostęp"
-
 #~ msgid "Last clipboard action"
 #~ msgstr "Ostatnia akcja dotycząca schowka"
 
@@ -8809,20 +8869,11 @@ msgstr "Tak - co najwyżej %d z %ls: %ls"
 #~ msgid "Maximum number of days that can be specified is %d"
 #~ msgstr "Maksymalna liczba dni która może być określona wynosi %d"
 
-#~ msgid "Maximum number stored"
-#~ msgstr "Maksymalna liczba zapisanych"
-
 #~ msgid "Merge failed"
 #~ msgstr "Scalanie zakończone błędem"
 
 #~ msgid "Migrate PasswordSafe configuration to user directory"
 #~ msgstr "Przenieś konfigurację PasswordSafe do katalogu użytkownika"
-
-#~ msgid "Minimum digit characters"
-#~ msgstr "Minimalna liczba znaków zawierających cyfry"
-
-#~ msgid "Minimum symbol characters"
-#~ msgstr "Minimalna liczba znaków zawierających symbole"
 
 #~ msgid "Mixed"
 #~ msgstr "Mieszane"
@@ -8845,9 +8896,6 @@ msgstr "Tak - co najwyżej %d z %ls: %ls"
 
 #~ msgid "Next >"
 #~ msgstr "Dalej >"
-
-#~ msgid "No criteria defined"
-#~ msgstr "Nie zdefiniowano kryteriów"
 
 #~ msgid "No database open with which to compare against another database!"
 #~ msgstr "Nie otwarto bazy danych z którą można porównać inną bazę danych!"
@@ -8928,9 +8976,6 @@ msgstr "Tak - co najwyżej %d z %ls: %ls"
 #~ msgid "Number of unknown fields:"
 #~ msgstr "Liczba nieznanych pól:"
 
-#~ msgid "Number stored"
-#~ msgstr "Zapisano liczbę"
-
 #~ msgid "Numeric Pad"
 #~ msgstr "Klawiatura numeryczna"
 
@@ -8987,9 +9032,6 @@ msgstr "Tak - co najwyżej %d z %ls: %ls"
 
 #~ msgid "Password Generated based on displayed policy"
 #~ msgstr "Hasło stworzone na podstawie wyświetlonej polisy"
-
-#~ msgid "Password Length"
-#~ msgstr "Długość hasła"
 
 #~ msgid "Password Modified"
 #~ msgstr "Haslo zmodyfikowano"
@@ -9094,9 +9136,6 @@ msgstr "Tak - co najwyżej %d z %ls: %ls"
 #~ "bezpieczny sposób wyczyszczony kiedy Password Safe będzie zamykany.\n"
 #~ "\n"
 #~ "Wybranie Anuluj zatrzyma kopiowanie hasła."
-
-#~ msgid "Previous Passwords"
-#~ msgstr "Poprzednie hasła"
 
 #~ msgid "Processing entry:"
 #~ msgstr "Przetwarzanie wpisu:"
