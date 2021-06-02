@@ -551,7 +551,7 @@ msgstr "Aussprechbare Passwörter generieren"
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:350
 #: ../../../core/core_st.cpp:256
 msgid "Or"
-msgstr "oder"
+msgstr "Oder"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:820
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:355
