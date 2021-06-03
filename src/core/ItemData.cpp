@@ -651,7 +651,7 @@ StringX CItemData::GetProtected() const
 bool CItemData::IsDCASet(bool bShift) const
 {
     auto fiter = m_fields.find(bShift ? SHIFTDCA : DCA);
-    return (fiter != m_fields.end() ? true : false);
+    return (fiter != m_fields.end());
 }
 
 int16 CItemData::GetDCA(int16 &iDCA, const bool bShift) const

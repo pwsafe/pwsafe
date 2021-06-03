@@ -586,7 +586,7 @@ void PasswordSafeFrame::OnManageFilters(wxCommandEvent& )
     }
   }
    
-  // However, we need to check as user may have edited the filter more thn once
+  // However, we need to check as user may have edited the filter more than once
   // and reverted any changes!
   if(core_filters != original_core_filters) {
     // Now update DB filters in core

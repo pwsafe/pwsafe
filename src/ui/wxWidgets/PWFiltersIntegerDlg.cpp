@@ -46,7 +46,7 @@ enum { PW_UNIT_BYTES = 0, PW_UNIT_KBYTES, PW_UNIT_MBYTES, PW_NUM_UNITS, PW_MAX_U
 
 static std::vector<int> entrySizeMmax = {
 #if INT_MAX == 32768
-  // In cae we are running on a 32 bit machine
+  // In case we are running on a 32 bit machine
   INT_MAX, INT_MAX, 999
 #else
   999999999, 999999, 999

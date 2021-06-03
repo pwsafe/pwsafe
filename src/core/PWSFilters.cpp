@@ -6,17 +6,6 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-// For compilers that support precompilation, includes "wx/wx.h".
-#include "wx/wxprec.h"
-
-#ifndef WX_PRECOMP
-#include "wx/wx.h"
-#endif
-
-#ifdef __WXMSW__
-#include <wx/msw/msvcrt.h>
-#endif
-
 #include "PWSFilters.h"
 #include "PWSfileHeader.h"
 #include "PWHistory.h"
@@ -696,7 +685,7 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
 int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
                                     const StringX &strXMLData,
                                     const stringT &strXMLFileName,
-                                    const stringT & WXUNUSED(strXSDFileName),
+                                    const stringT & /* strXSDFileName */,
                                     stringT &strErrors,
                                     Asker *pAsker, Reporter *pReporter)
 {
