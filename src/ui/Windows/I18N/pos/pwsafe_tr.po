@@ -5440,6 +5440,9 @@ msgstr "Şifre planlarına son yapılan, daha önce geri alınmış değişimi y
 msgid "Relative"
 msgstr "Göreceli"
 
+msgid "relative"
+msgstr "göreceli"
+
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
 msgstr "Göreceli tarihler bugüne göre gün biriminde görecelidir örn '-1' dün ve '1' yarın"

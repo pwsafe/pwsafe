@@ -84,6 +84,10 @@
     <xs:enumeration value="ND" />
     <xs:enumeration value="CO" />
     <xs:enumeration value="NC" />
+    <xs:enumeration value="CY" />
+    <xs:enumeration value="NY" />
+    <xs:enumeration value="CA" />
+    <xs:enumeration value="NA" />
     <xs:enumeration value="EX" />
     <xs:enumeration value="WX" />
   </xs:restriction>
@@ -197,6 +201,8 @@
   <xs:restriction base="xs:string">
     <xs:enumeration value="IS" />
     <xs:enumeration value="NI" />
+    <xs:enumeration value="NP" />
+    <xs:enumeration value="PR" />
     </xs:restriction>
 </xs:simpleType>
 
@@ -235,7 +241,7 @@
 
 <xs:simpleType name="dcaType">
   <xs:restriction base="xs:int">
-    <xs:minInclusive value="0" />
+    <xs:minInclusive value="-2" />
     <xs:maxInclusive value="9" />
   </xs:restriction>
 </xs:simpleType>
@@ -321,7 +327,10 @@
 
 <xs:complexType name="matchDCA">
   <xs:sequence>
-    <xs:element name="dca" type="dcaType" minOccurs="1" maxOccurs="1" />
+    <xs:choice>
+      <xs:element name="dca" type="dcaType" minOccurs="1" maxOccurs="1" />
+      <xs:element name="shiftdca" type="dcaType" minOccurs="1" maxOccurs="1" />
+    </xs:choice>
   </xs:sequence>
 </xs:complexType>
 
@@ -489,7 +498,7 @@
     <xs:element name="policy_hexadecimal" type="booleansetfilterentry" minOccurs="1" maxOccurs="1" />
 
     <xs:element name="password_length" type="integerfilterentry" minOccurs="1" maxOccurs="1" />
-    <xs:element name="policy_name" type="stringfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="policy_name" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="entrysize" type="sizefilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="entrytype" type="entrytypefilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="entrystatus" type="entrystatusfilterentry" minOccurs="1" maxOccurs="1" />
@@ -497,7 +506,7 @@
     
     <xs:element name="attachment" type="attachmententry" minOccurs="1" maxOccurs="1" />
     <xs:element name="attachment_present" type="booleanpresentfilterentry" minOccurs="1" maxOccurs="1" />
-    <xs:element name="attachment_title" type="stringfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="attachment_title" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="attachment_mediatype" type="stringfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="attachment_filename" type="stringfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="attachment_filepath" type="stringfilterentry" minOccurs="1" maxOccurs="1" />

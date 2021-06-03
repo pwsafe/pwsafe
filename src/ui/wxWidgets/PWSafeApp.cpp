@@ -40,11 +40,13 @@
 
 #include "os/cleanup.h"
 #include "os/dir.h"
+#include "os/file.h"
 #include "core/PWSfile.h"
 #include "core/PWSLog.h"
 #include "core/PWSprefs.h"
 #include "core/PWSrand.h"
 #include "core/SysInfo.h"
+#include "core/PWSdirs.h"
 #include "wxUtilities.h"
 
 #if defined(__X__) || defined(__WXGTK__) || defined(__WXOSX__)
@@ -472,7 +474,6 @@ bool PWSafeApp::OnInit()
       _("Password Safe: Error initializing help"), wxOK | wxICON_ERROR);
 #endif
     }
-    
   }
 
   if (!cmd_closed && !cmd_silent && !cmd_minimized) {
@@ -496,6 +497,30 @@ bool PWSafeApp::OnInit()
   }
 
   RestoreFrameCoords();
+
+  // Load the default filter, if any
+  PWSprefs::ConfigOption configoption;
+  std::wstring wsCnfgFile = PWSprefs::GetConfigFile(configoption);
+  std::wstring wsAutoLoad;
+  if (configoption == PWSprefs::CF_NONE ||
+      configoption == PWSprefs::CF_REGISTRY) {
+     // Need to use configuration directory instead
+    wsAutoLoad = PWSdirs::GetConfigDir() + L"/" + L"autoload_filters.xml";
+  } else {
+    std::wstring wsCnfgDrive, wsCnfgDir, wsCnfgFileName, wsCnfgExt;
+    pws_os::splitpath(wsCnfgFile, wsCnfgDrive, wsCnfgDir, wsCnfgFileName, wsCnfgExt);
+    wsAutoLoad = pws_os::makepath(wsCnfgDrive, wsCnfgDir, L"autoload_filters", L".xml");
+  }
+  
+  if (pws_os::FileExists(wsAutoLoad)) {
+    stringT strErrors = L"";
+    int rc = m_frame->ImportFilterXMLFile(FPOOL_AUTOLOAD, L"", wsAutoLoad,
+                                          L"", strErrors, &anAsker, nullptr); // Only summary will be reported
+    if (rc != PWScore::SUCCESS) {
+      wxMessageBox(towxstring(strErrors), _("Unable to import \"autoload_filters.xml\""), wxOK | wxICON_ERROR);
+    }
+  }
+
   if (!cmd_silent)
     m_frame->Show();
   if (cmd_minimized)

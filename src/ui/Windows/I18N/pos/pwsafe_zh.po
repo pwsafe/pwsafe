@@ -5453,6 +5453,9 @@ msgstr "重做先前撤销的对密码策略的最后更改"
 msgid "Relative"
 msgstr "相对"
 
+msgid "relative"
+msgstr "相对"
+
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
 msgstr "相对日期是相当于今天的天数，如“-1”是昨天，而“1”是明天"

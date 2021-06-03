@@ -139,14 +139,32 @@ BOOL CFilterDCADlg::OnInitDialog()
     }
   }
 
+  // TODO: Add PRESENT and NOTPRESENT as possible selection
+  if(m_rule == PWSMatch::MR_PRESENT) {
+    m_rule = PWSMatch::MR_ISNOT;
+    m_DCA = -1;
+  }
+  else if(m_rule == PWSMatch::MR_NOTPRESENT) {
+    m_rule = PWSMatch::MR_IS;
+    m_DCA = -1;
+  }
+
   int isel = m_rule2selection[(int)m_rule];
   if (isel == -1)
     m_rule = PWSMatch::MR_INVALID;
 
   if (m_rule != PWSMatch::MR_INVALID) {
     m_cbxRule.SetCurSel(isel);
-  } else
+    // Set DCA according actual value
+    if(m_DCA >= -1 && m_DCA < (m_cbxDCA.GetCount() - 1))
+      m_cbxDCA.SetCurSel(m_DCA + 1);
+    else
+      m_cbxDCA.SetCurSel(-1);
+  }
+  else {
     m_cbxRule.SetCurSel(-1);
+    m_cbxDCA.SetCurSel(-1);
+  }
 
   UpdateData(FALSE);
 

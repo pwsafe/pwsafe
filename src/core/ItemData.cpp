@@ -648,6 +648,12 @@ StringX CItemData::GetProtected() const
   return IsProtected() ? StringX(_T("1")) : StringX(_T(""));
 }
 
+bool CItemData::IsDCASet(bool bShift) const
+{
+    auto fiter = m_fields.find(bShift ? SHIFTDCA : DCA);
+    return (fiter != m_fields.end());
+}
+
 int16 CItemData::GetDCA(int16 &iDCA, const bool bShift) const
 {
   auto fiter = m_fields.find(bShift ? SHIFTDCA : DCA);
@@ -1760,6 +1766,10 @@ bool CItemData::Matches(int16 dca, int iFunction, const bool bShift) const
       return iDCA == dca;
     case PWSMatch::MR_ISNOT:
       return iDCA != dca;
+    case PWSMatch::MR_PRESENT:
+      return IsDCASet(bShift);
+    case PWSMatch::MR_NOTPRESENT:
+      return ! IsDCASet(bShift);
     default:
       ASSERT(0);
   }

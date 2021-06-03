@@ -1004,7 +1004,7 @@ void TreeCtrl::OnRenameGroup(wxCommandEvent& WXUNUSED(evt))
 
 void TreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
 {
-  const wxString &label =evt.GetLabel();
+  const wxString &label = (evt.IsEditCancelled() ? GetItemText(evt.GetItem()) : evt.GetLabel());
 
   if (label.empty()) {
     // empty entry or group names are a non-no...
@@ -1049,6 +1049,10 @@ void TreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
       if (groupItem.IsOk()) {
         auto *data = dynamic_cast<PWTreeItemData *>(GetItemData(groupItem));
         if (data && data->BeingAdded()) {
+          if(evt.IsEditCancelled()) {
+            evt.SetLabel(GetItemText(evt.GetItem())); // On cancel label is empty
+            evt.SetEditCanceled(false); // Set to false, as changing no name will be handled the same as cancel
+          }
           // A new group being added
           FinishAddingGroup(evt, groupItem);
         }
@@ -1779,9 +1783,9 @@ static void ColourChildren(TreeCtrl *tree, wxTreeItemId parent, const wxColour &
 
   while (child) {
     tree->SetItemTextColour(child, colour);
-    child = tree->GetNextChild(parent, cookie);
-    if (child && tree->ItemHasChildren(child))
+    if (tree->ItemHasChildren(child))
       ColourChildren(tree, child, colour);
+    child = tree->GetNextChild(parent, cookie);
   }
 }
 

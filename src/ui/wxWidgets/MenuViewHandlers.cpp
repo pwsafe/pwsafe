@@ -25,6 +25,7 @@
 
 #include "core/core.h"
 #include "core/PWSprefs.h"
+#include "core/StringX.h"
 
 #include "DragBarCtrl.h"
 #include "GridCtrl.h"
@@ -32,6 +33,9 @@
 #include "PasswordSafeSearch.h"
 #include "TreeCtrl.h"
 #include "ViewReportDlg.h"
+#include "PWSFilters.h"
+#include "SetFiltersDlg.h"
+#include "ManageFiltersDlg.h"
 
 void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
 {
@@ -375,22 +379,220 @@ void PasswordSafeFrame::OnShowLastFindClick( wxCommandEvent& event )
 void PasswordSafeFrame::ApplyFilters()
 {
   m_FilterManager.CreateGroups();
-  m_tree->SetFilterState(m_bFilterActive);
-  m_grid->SetFilterState(m_bFilterActive);
+  // Update and setting of filter state is not needed here, as update is done at the end of RefreshView()
   RefreshViews();
 }
 
 void PasswordSafeFrame::OnEditFilter(wxCommandEvent& )
 {
+  st_filters filters(CurrentFilter());
+  bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
+  const std::set<StringX> sMediaTypes = m_core.GetAllMediaTypes();
+  bool bAppliedCalled;
+  stringT oldName = CurrentFilter().fname;
+  st_Filterkey fk;
+  bool bDoEdit = true;
+  
+  while(bDoEdit) {
+    bDoEdit = false; // In formal case we run only one time in the loop; but when removal of double entry is requested we avoid goto
 
+    SetFiltersDlg dlg(this, &filters, &CurrentFilter(), &bAppliedCalled, DFTYPE_MAIN, FPOOL_SESSION, bCanHaveAttachments, &sMediaTypes);
+    int rc = dlg.ShowModal();
+  
+    if (rc == wxID_OK || (rc == wxID_CANCEL && bAppliedCalled)) {
+      // User can apply the filter in SetFiltersDlg and then press Cancel button
+      // and afterwards process changes, update only on OK button and continue with actualized version
+      if(rc == wxID_OK) {
+        CurrentFilter().Empty();
+        CurrentFilter() = filters;
+      }
+      
+      // Update pre-defined filter, if present
+      wxMenuBar* menuBar = GetMenuBar();
+      if(CurrentFilter() == m_FilterManager.GetExpireFilter()) {
+        m_CurrentPredefinedFilter = EXPIRY;
+        menuBar->Check(ID_SHOW_ALL_EXPIRY, true);
+        menuBar->Check(ID_SHOWHIDE_UNSAVED, false);
+        menuBar->Check(ID_SHOW_LAST_FIND_RESULTS, false);
+      } else if(CurrentFilter() == m_FilterManager.GetUnsavedFilter()) {
+        m_CurrentPredefinedFilter = UNSAVED;
+        menuBar->Check(ID_SHOW_ALL_EXPIRY, false);
+        menuBar->Check(ID_SHOWHIDE_UNSAVED, true);
+        menuBar->Check(ID_SHOW_LAST_FIND_RESULTS, false);
+      } else if(CurrentFilter() == m_FilterManager.GetFoundFilter()) {
+        m_CurrentPredefinedFilter = LASTFIND;
+        menuBar->Check(ID_SHOW_ALL_EXPIRY, false);
+        menuBar->Check(ID_SHOWHIDE_UNSAVED, false);
+        menuBar->Check(ID_SHOW_LAST_FIND_RESULTS, true);
+      } else {
+        m_CurrentPredefinedFilter = NONE;
+        menuBar->Check(ID_SHOW_ALL_EXPIRY, false);
+        menuBar->Check(ID_SHOWHIDE_UNSAVED, false);
+        menuBar->Check(ID_SHOW_LAST_FIND_RESULTS, false);
+      }
+    
+      // Update filter in Filters map
+      fk.fpool = FPOOL_SESSION;
+      fk.cs_filtername = CurrentFilter().fname;
+    
+      PWSFilters::iterator mf_iter = m_MapAllFilters.find(fk);
+      // When entry already in map and had been new or name changed
+      if(mf_iter != m_MapAllFilters.end() && (oldName.empty() || (oldName != CurrentFilter().fname) || (m_currentfilterpool != FPOOL_SESSION))) {
+        wxMessageDialog dialog(this, _("This filter already exists"), _("Do you wish to replace it?"), wxYES_NO | wxICON_EXCLAMATION);
+        if(dialog.ShowModal() == wxID_NO) {
+          bDoEdit = true; // Repeat editing to allow name change
+          continue;
+        }
+      }
+    }
+    // Erase entry and add again with actual content
+    m_MapAllFilters.erase(fk);
+    m_MapAllFilters.insert(PWSFilters::Pair(fk, CurrentFilter()));
+
+    m_currentfilterpool = fk.fpool;
+    m_selectedfiltername = fk.cs_filtername.c_str();
+    
+    // If filters currently active - update and re-apply
+    if (m_bFilterActive) {
+      m_bFilterActive = CurrentFilter().IsActive();
+      ApplyFilters();
+    }
+  }
 }
 
-void PasswordSafeFrame::OnApplyFilter(wxCommandEvent& )
+void PasswordSafeFrame::OnApplyFilter(wxCommandEvent& event)
 {
-
+  wxMenuBar* menuBar = GetMenuBar();
+  wxString par = event.GetString(); // From Edit/New filter dialog a string is set
+  
+  // Toggle filter Apply / Clear, when not called from Edit/New filter -> while perform apply always
+  if(m_bFilterActive && par.IsEmpty()) {
+    m_bFilterActive = false;
+    if(m_CurrentPredefinedFilter == EXPIRY) {
+      menuBar->Check(ID_SHOW_ALL_EXPIRY, false);
+      CurrentFilter().Empty();
+    } else if (m_CurrentPredefinedFilter == UNSAVED) {
+      menuBar->Check(ID_SHOWHIDE_UNSAVED, false);
+      CurrentFilter().Empty();
+    } else if (m_CurrentPredefinedFilter == LASTFIND) {
+      menuBar->Check(ID_SHOW_LAST_FIND_RESULTS, false);
+      CurrentFilter().Empty();
+    }
+    m_CurrentPredefinedFilter = NONE;
+    m_ApplyClearFilter->SetItemLabel(_("&Apply current"));
+  }
+  else {
+    m_bFilterActive = CurrentFilter().IsActive();
+    m_ApplyClearFilter->SetItemLabel(_("&Clear current"));
+    if(par.CompareTo(pwManageFiltersTable::getSourcePoolLabel(FPOOL_DATABASE).c_str()) == 0) {
+      m_currentfilterpool = FPOOL_DATABASE;
+    }
+    else if(par.CompareTo(pwManageFiltersTable::getSourcePoolLabel(FPOOL_AUTOLOAD).c_str()) == 0) {
+      m_currentfilterpool = FPOOL_AUTOLOAD;
+    }
+    else if(par.CompareTo(pwManageFiltersTable::getSourcePoolLabel(FPOOL_IMPORTED).c_str()) == 0) {
+      m_currentfilterpool = FPOOL_IMPORTED;
+    }
+    else if(par.CompareTo(pwManageFiltersTable::getSourcePoolLabel(FPOOL_SESSION).c_str()) == 0) {
+      m_currentfilterpool = FPOOL_SESSION;
+    }
+    m_selectedfiltername = CurrentFilter().fname;
+  }
+  // Update menu
+  menuBar->Refresh();
+  // Update shown items
+  ApplyFilters();
+  // If Apply called from Edit/New Filter or Manage Filter expand tree view
+  if(! par.IsEmpty()) {
+    if(IsTreeView() && !m_tree->IsEmpty()) {
+      m_tree->ExpandAll();
+    }
+  }
 }
+
+// functor for Copy subset of map entries back to the database
+struct CopyDBFilters {
+  CopyDBFilters(PWSFilters &core_mapFilters) :
+  m_CoreMapFilters(core_mapFilters)
+  {}
+
+  // operator
+  void operator()(std::pair<const st_Filterkey, st_filters> p)
+  {
+    m_CoreMapFilters.insert(PWSFilters::Pair(p.first, p.second));
+  }
+
+private:
+  PWSFilters &m_CoreMapFilters;
+};
 
 void PasswordSafeFrame::OnManageFilters(wxCommandEvent& )
 {
+  st_Filterkey fkl, fku;
+  PWSFilters::iterator mf_iter, mf_lower_iter, mf_upper_iter;
+  
+  // Search range for data base filters
+  fkl.fpool = FPOOL_DATABASE;
+  fkl.cs_filtername = L"";
+  fku.fpool = (FilterPool)((int)FPOOL_DATABASE + 1);
+  fku.cs_filtername = L"";
+  // Find & delete DB filters only
+  if(!m_MapAllFilters.empty()) {
+    mf_lower_iter = m_MapAllFilters.lower_bound(fkl);
+    // Check that there are some first!
+    if (mf_lower_iter->first.fpool == FPOOL_DATABASE) {
+      // Now find upper bound of database filters
+      mf_upper_iter = m_MapAllFilters.upper_bound(fku);
+      // Delete existing database filters (if any)
+      m_MapAllFilters.erase(mf_lower_iter, mf_upper_iter);
+    }
+  }
 
+  // Get current core filters
+  PWSFilters core_filters = m_core.GetDBFilters();
+  const PWSFilters original_core_filters = m_core.GetDBFilters();
+
+  // Now add any existing database filters
+  for(mf_iter = core_filters.begin();
+      mf_iter != core_filters.end(); mf_iter++) {
+    m_MapAllFilters.insert(PWSFilters::Pair(mf_iter->first, mf_iter->second));
+  }
+  
+  bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
+  const std::set<StringX> sMediaTypes = m_core.GetAllMediaTypes();
+  
+  ManageFiltersDlg dlg(this, &m_core, m_MapAllFilters, &CurrentFilter(), &m_currentfilterpool, &m_selectedfiltername, &m_bFilterActive, bCanHaveAttachments, &sMediaTypes, m_core.IsReadOnly());
+  int rc = dlg.ShowModal();
+  
+  // No change in DB filter when return ID_CANCEL
+  if(rc == wxID_CANCEL)
+    return;
+  
+  // Clear core filters ready to replace with new ones
+  core_filters.clear();
+
+  // Get DB filters populated via CManageFiltersDlg
+  if(!m_MapAllFilters.empty()) {
+    mf_lower_iter = m_MapAllFilters.lower_bound(fkl);
+
+    // Check that there are some first!
+    if(mf_lower_iter->first.fpool == FPOOL_DATABASE) {
+      // Now find upper bound of database filters
+      mf_upper_iter = m_MapAllFilters.upper_bound(fku);
+
+      // Copy database filters (if any) to the core
+      CopyDBFilters copy_db_filters(core_filters);
+      for_each(mf_lower_iter, mf_upper_iter, copy_db_filters);
+    }
+  }
+   
+  // However, we need to check as user may have edited the filter more than once
+  // and reverted any changes!
+  if(core_filters != original_core_filters) {
+    // Now update DB filters in core
+    Command *pcmd = DBFiltersCommand::Create(&m_core, core_filters);
+
+    // Do it
+    Execute(pcmd);
+  }
 }

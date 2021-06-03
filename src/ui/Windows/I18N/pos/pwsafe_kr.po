@@ -5440,6 +5440,9 @@ msgstr ""
 msgid "Relative"
 msgstr "연관"
 
+msgid "relative"
+msgstr "연관"
+
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
 msgstr "관련된 날짜는 오늘을 기준으로 합니다. 예) '-1'은 어제 이고 '1'은 내일입니다"

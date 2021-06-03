@@ -58,6 +58,19 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/DnDPWSafeObject.h
     src/ui/wxWidgets/DnDSupport.h
     src/ui/wxWidgets/DnDDropTarget.h
+    src/ui/wxWidgets/PWFiltersGrid.h
+    src/ui/wxWidgets/PWFiltersTable.h
+    src/ui/wxWidgets/PWFiltersEditor.h
+    src/ui/wxWidgets/PWFiltersBoolDlg.h
+    src/ui/wxWidgets/PWFiltersStringDlg.h
+    src/ui/wxWidgets/PWFiltersDCADlg.h
+    src/ui/wxWidgets/PWFiltersIntegerDlg.h
+    src/ui/wxWidgets/PWFiltersStatusDlg.h
+    src/ui/wxWidgets/PWFiltersTypeDlg.h
+    src/ui/wxWidgets/PWFiltersDateDlg.h
+    src/ui/wxWidgets/PWFiltersMediaDlg.h
+    src/ui/wxWidgets/PWFiltersPasswordDlg.h
+    src/ui/wxWidgets/ManageFiltersTable.h
     )
 
 
@@ -120,6 +133,19 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/DnDPWSafeObject.cpp
     src/ui/wxWidgets/DnDSupport.cpp
     src/ui/wxWidgets/DnDDropTarget.cpp
+    src/ui/wxWidgets/PWFiltersGrid.cpp
+    src/ui/wxWidgets/PWFiltersTable.cpp
+    src/ui/wxWidgets/PWFiltersEditor.cpp
+    src/ui/wxWidgets/PWFiltersBoolDlg.cpp
+    src/ui/wxWidgets/PWFiltersStringDlg.cpp
+    src/ui/wxWidgets/PWFiltersDCADlg.cpp
+    src/ui/wxWidgets/PWFiltersIntegerDlg.cpp
+    src/ui/wxWidgets/PWFiltersStatusDlg.cpp
+    src/ui/wxWidgets/PWFiltersTypeDlg.cpp
+    src/ui/wxWidgets/PWFiltersDateDlg.cpp
+    src/ui/wxWidgets/PWFiltersMediaDlg.cpp
+    src/ui/wxWidgets/PWFiltersPasswordDlg.cpp
+    src/ui/wxWidgets/ManageFiltersTable.cpp
     )
 
 if(HAVE_YKPERS_H)

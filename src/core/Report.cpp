@@ -130,7 +130,7 @@ static bool isFileUnicode(const stringT &fname, pugi::xml_encoding& encoding)
     retval = false;
   }
   else {
-    fread(buffer, 1, 4, fn);
+    (void) fread(buffer, 1, 4, fn);
       
     encoding = guessBufferEncoding(buffer[0], buffer[1], buffer[2], buffer[3]);
     if(encoding == pugi::encoding_auto) {
@@ -263,11 +263,11 @@ bool CReport::SaveToDisk()
         
       if((encoding == pugi::encoding_utf16_le) || (encoding == pugi::encoding_utf16_be) || (encoding == pugi::encoding_utf16)) {
         // Skip 2 byte header
-        fread(inbuffer, 1, 2, f_in);
+        (void) fread(inbuffer, 1, 2, f_in);
       }
       else if((encoding == pugi::encoding_utf32_le) || (encoding == pugi::encoding_utf32_be) || (encoding == pugi::encoding_utf32)) {
         // Skip 4 byte header
-        fread(inbuffer, 1, 4, f_in);
+        (void) fread(inbuffer, 1, 4, f_in);
       }
 
       // Now copy and convert
@@ -395,15 +395,15 @@ bool CReport::ReadFromDisk()
   if (bFileIsUnicode) {
     if((encoding == pugi::encoding_utf16_le) || (encoding == pugi::encoding_utf16_be) || (encoding == pugi::encoding_utf16)) {
       // Skip 2 byte header
-      fread(inbuffer, 1, 2, fd);
+      (void) fread(inbuffer, 1, 2, fd);
     }
     else if((encoding == pugi::encoding_utf32_le) || (encoding == pugi::encoding_utf32_be) || (encoding == pugi::encoding_utf32)) {
       // Skip 4 byte header
-      fread(inbuffer, 1, 4, fd);
+      (void) fread(inbuffer, 1, 4, fd);
     }
     else if(encoding == pugi::encoding_utf8) {
       // Skip 3 byte header
-      fread(inbuffer, 1, 3, fd);
+      (void) fread(inbuffer, 1, 3, fd);
     }
   }
   

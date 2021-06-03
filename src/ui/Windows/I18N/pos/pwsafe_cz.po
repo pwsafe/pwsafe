@@ -5440,6 +5440,9 @@ msgstr "Zopakovat poslední změnu politiky hesel, která byla předtím vrácen
 msgid "Relative"
 msgstr "Relativní"
 
+msgid "relative"
+msgstr "relativní"
+
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
 msgstr "Relativní data jsou ve dnech relativních k dnešku, např. '-1' je včera a '1' je zítra"

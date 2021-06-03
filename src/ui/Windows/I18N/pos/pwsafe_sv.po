@@ -5860,6 +5860,9 @@ msgstr "Gör om senaste ändring av lösenordspolicyer som tidigare ångrats"
 msgid "Relative"
 msgstr "Relativt"
 
+msgid "relative"
+msgstr "relativt"
+
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
 msgstr "Relativa data uttrycks som dagar relativt idag d.v.s.  '-1' är igår och '1' är imorgon"

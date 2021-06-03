@@ -536,7 +536,18 @@ public:
   void SelectItem(const pws_os::CUUID& uuid);
   // For predefined "last search" filter:
   void SetFilterFindEntries(UUIDVector *pvFoundUUIDs);
-
+  
+  int ImportFilterXMLFile(const FilterPool fpool,
+                          const StringX &strXMLData,
+                          const stringT &strXMLFileName,
+                          const stringT &strXSDFileName, stringT &strErrors,
+                          Asker *pAsker, Reporter *pReporter) {
+    return m_MapAllFilters.ImportFilterXMLFile(fpool, strXMLData,
+                                               strXMLFileName,
+                                               strXSDFileName, strErrors, pAsker, pReporter);
+  }
+  
+  
   ItemListConstIter FindEntry(const pws_os::CUUID& uuid) const {return m_core.Find(uuid);}
   ItemListConstIter GetEntryIter() const {return m_core.GetEntryIter();}
   ItemListConstIter GetEntryEndIter() const {return m_core.GetEntryEndIter();}
@@ -593,6 +604,8 @@ public:
   void ShowTrayIcon();
 
   bool IsClosed() const;
+  
+  static void DisplayFileWriteError(int rc, const StringX &fname);
 
 ////@begin PasswordSafeFrame member variables
   GridCtrl* m_grid;
@@ -722,11 +735,17 @@ private:
   // Current filter
   st_filters &CurrentFilter() {return m_FilterManager.m_currentfilter;}
   void ResetFilters();
-
+  
+  // Global Filters
+  PWSFilters m_MapAllFilters;     // Includes DB and temporary (added, imported, autoloaded etc.)
+  FilterPool m_currentfilterpool; // Filter pool of the current active filter
+  stringT m_selectedfiltername;   // Is the selected active filter
+  
   enum {NONE, EXPIRY, UNSAVED, LASTFIND} m_CurrentPredefinedFilter;
   bool m_bFilterActive;
   bool m_bShowEmptyGroupsInFilter;
   void ApplyFilters();
+  wxMenuItem *m_ApplyClearFilter; // To change between Apply and Clear, without searching of menu item
 
   bool m_InitialTreeDisplayStatusAtOpen;
 

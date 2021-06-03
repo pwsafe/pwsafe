@@ -118,7 +118,46 @@ a	b	bool wxLocale::Init(int language, int flags)
 581	581	    {
 ```
 
-The issue seems to be fixed in wxWidgets 3.1.5 (eliminating the special code for __WXMAC__).
+The issue seems to be fixed in wxWidgets 3.1.5 (eliminating the special code for __WXMAC__). Last version of June 2021 is reproducing the same wrong behaviour with macOS. Following fix, that is not yet approved, will solve the issue.
+
+```
+diff --git a/src/common/wxcrt.cpp b/src/common/wxcrt.cpp
+index f3585a905a..8437ce6ff6 100644
+--- a/src/common/wxcrt.cpp
++++ b/src/common/wxcrt.cpp
+@@ -138,28 +138,11 @@ char* wxSetlocale(int category, const char *locale)
+         wxCFStringRef str(wxCFRetain((CFStringRef)CFLocaleGetValue(userLocaleRf, kCFLocaleLanguageCode)));
+         wxString langFull = str.AsString()+"_";
+         str.reset(wxCFRetain((CFStringRef)CFLocaleGetValue(userLocaleRef, kCFLocaleCountryCode)));
+-        langFull += str.AsString()+".UTF-8";
+-        if(category == LC_ALL)
+-        {
+-          langFull = "C/"+langFull+"/C/C/C/C";
+-        }
++        langFull += str.AsString();
+         rv = setlocale(category, langFull.c_str());
+     }
+-    else {
+-        if(locale) {
+-          wxString lc(locale);
+-          if(strlen(locale) == 5) { // only xx_YY, we have to add .UTF-8
+-            lc += ".UTF-8";
+-          }
+-          if(category == LC_ALL)
+-          {
+-            lc = "C/"+lc+"/C/C/C/C";
+-          }
+-          rv = setlocale(category, lc.c_str());
+-        }
+-        else
+-          rv = setlocale(category, locale);
+-    }
++    else
++        rv = setlocale(category, locale);
+ #else
+     char *rv = setlocale(category, locale);
+ #endif
+```
 
 ### Building wxWidgets for x86\_64 pwsafe
 To build pwsafe, you 

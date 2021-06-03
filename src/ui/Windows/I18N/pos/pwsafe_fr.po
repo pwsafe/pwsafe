@@ -5492,6 +5492,9 @@ msgstr "Refaire le dernier changement aux stratégies de mot de passe précédem
 msgid "Relative"
 msgstr "Relatif"
 
+msgid "relative"
+msgstr "relatif"
+
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
 msgstr "Les dates relatives sont relatives à aujourd'hui. ex. '-1' égal à hier et '1' est demain"

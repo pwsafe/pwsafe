@@ -5453,6 +5453,9 @@ msgstr "Przywróć ostatnią zmianę w polityce haseł, która została wcześni
 msgid "Relative"
 msgstr "Względny"
 
+msgid "relative"
+msgstr "względny"
+
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
 msgstr "Daty względne są datami zależnymi od dzisiejszego dnia, np. '-1' to wczoraj, a '1' to jutro"

@@ -166,8 +166,8 @@ int PWSfileV1V2::Open(const StringX &passkey)
       Close();
       return status;
     }
-    fread(m_salt, 1, SaltLength, m_fd);
-    fread(m_ipthing, 1, 8, m_fd);
+    (void) fread(m_salt, 1, SaltLength, m_fd);
+    (void) fread(m_ipthing, 1, 8, m_fd);
 
     m_fish = makeFish<BlowFish, SHA1>(pstr, static_cast<unsigned int>(passLen),
                                 m_salt, SaltLength);
@@ -200,9 +200,9 @@ int PWSfileV1V2::CheckPasskey(const StringX &filename,
   unsigned char randstuff[StuffSize];
   unsigned char randhash[SHA1::HASHLEN];
 
-  fread(randstuff, 1, 8, fd);
+  (void) fread(randstuff, 1, 8, fd);
   randstuff[8] = randstuff[9] = '\0'; // Gross fugbix
-  fread(randhash, 1, sizeof(randhash), fd);
+  (void) fread(randhash, 1, sizeof(randhash), fd);
 
   if (a_fd == nullptr) // if we opened the file, we close it...
     fclose(fd);

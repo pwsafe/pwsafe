@@ -20,7 +20,10 @@
  */
 ////@begin includes
 #include "wx/valtext.h"
-#include "wx/grid.h"
+
+#include "core/core.h"
+
+#include "PWFiltersGrid.h"
 ////@end includes
 
 /*!
@@ -28,7 +31,7 @@
  */
 
 ////@begin forward declarations
-class wxGrid;
+class pwFiltersGrid;
 ////@end forward declarations
 
 /*!
@@ -37,35 +40,40 @@ class wxGrid;
 
 ////@begin control identifiers
 #define ID_SETFILTERS 10000
-#define ID_FilterName 10001
+#define ID_FILTERNAME 10001
 #define ID_FILTERGRID 10002
 #define SYMBOL_SETFILTERS_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL
 #define SYMBOL_SETFILTERS_TITLE _("Set Display Filters")
+#define SYMBOL_SETFILTERS_PWHIST_TITLE _("Set Password History Filters")
+#define SYMBOL_SETFILTERS_POLICY_TITLE _("Set Password Policy Filters")
+#define SYMBOL_SETFILTERS_ATTACHMENT_TITLE _("Set Attachment Filters")
 #define SYMBOL_SETFILTERS_IDNAME ID_SETFILTERS
-#define SYMBOL_SETFILTERS_SIZE wxSize(400, 300)
+#define SYMBOL_SETFILTERS_SIZE wxSize(600, 400)
 #define SYMBOL_SETFILTERS_POSITION wxDefaultPosition
 ////@end control identifiers
 
+#define SET_FILTER_WINDOW_OFFSET 10
 
 /*!
- * SetFilters class declaration
+ * SetFiltersDlg class declaration
  */
 
-class SetFilters: public wxDialog
+class SetFiltersDlg: public wxDialog
 {    
   DECLARE_DYNAMIC_CLASS( SetFilters )
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  SetFilters();
-  SetFilters( wxWindow* parent, wxWindowID id = SYMBOL_SETFILTERS_IDNAME, const wxString& caption = SYMBOL_SETFILTERS_TITLE, const wxPoint& pos = SYMBOL_SETFILTERS_POSITION, const wxSize& size = SYMBOL_SETFILTERS_SIZE, long style = SYMBOL_SETFILTERS_STYLE );
+  SetFiltersDlg();
+  SetFiltersDlg( wxWindow* parent, st_filters *pfilters, st_filters *currentFilters, bool *appliedCalled,
+                const FilterType &filtertype = DFTYPE_MAIN, FilterPool filterpool = FPOOL_LAST, const bool bCanHaveAttachments = false, const std::set<StringX> *psMediaTypes = NULL, wxWindowID id = SYMBOL_SETFILTERS_IDNAME, const wxString& caption = SYMBOL_SETFILTERS_TITLE, const wxPoint& pos = SYMBOL_SETFILTERS_POSITION, const wxSize& size = SYMBOL_SETFILTERS_SIZE, long style = SYMBOL_SETFILTERS_STYLE );
 
   /// Creation
   bool Create( wxWindow* parent, wxWindowID id = SYMBOL_SETFILTERS_IDNAME, const wxString& caption = SYMBOL_SETFILTERS_TITLE, const wxPoint& pos = SYMBOL_SETFILTERS_POSITION, const wxSize& size = SYMBOL_SETFILTERS_SIZE, long style = SYMBOL_SETFILTERS_STYLE );
 
   /// Destructor
-  ~SetFilters();
+  ~SetFiltersDlg();
 
   /// Initialises member variables
   void Init();
@@ -73,10 +81,7 @@ public:
   /// Creates the controls and sizers
   void CreateControls();
 
-////@begin SetFilters event handler declarations
-
-  /// wxEVT_GRID_CELL_LEFT_CLICK event handler for ID_FILTERGRID
-  void OnCellLeftClick( wxGridEvent& event );
+////@begin SetFiltersDlg event handler declarations
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_APPLY
   void OnApplyClick( wxCommandEvent& event );
@@ -90,10 +95,11 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP
   void OnHelpClick( wxCommandEvent& event );
 
-////@end SetFilters event handler declarations
+////@end SetFiltersDlg event handler declarations
 
-////@begin SetFilters member function declarations
+////@begin SetFiltersDlg member function declarations
 
+  /// A local copy of the filter name is stored as shown in the dialog
   wxString GetFilterName() const { return m_filterName ; }
   void SetFilterName(wxString value) { m_filterName = value ; }
 
@@ -106,12 +112,24 @@ public:
 
   /// Should we show tooltips?
   static bool ShowToolTips();
+////@end SetFiltersDlg member function declarations
 
-////@begin SetFilters member variables
-  wxGrid* m_filterGrid;
+////@begin SetFiltersDlg member variables
+  pwFiltersGrid* m_filterGrid;
+  
 private:
+  bool VerifyFilters();
+   
+  st_filters *m_pfilters;           // The filter to change
+  st_filters *m_currentFilters;     // The filter to be set for Apply
+  const bool m_bCanHaveAttachments; // Version V4 includes attachments
+  const std::set<StringX> *m_psMediaTypes;  // Attachement media types, present in current data base
+  const FilterType m_filtertype;    // Type of filter
+  const FilterPool m_filterpool;    // Filter pool
+  bool  *m_AppliedCalled;           // Mark, when Applied had been called and currentFilters is filled with actual one
+  
   wxString m_filterName;
-////@end SetFilters member variables
+////@end SetFiltersDlg member variables
 };
 
 #endif

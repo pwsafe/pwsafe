@@ -465,6 +465,8 @@ void PasswordSafeFrame::Init()
   m_tree = nullptr;
   m_statusBar = nullptr;
   m_bShowEmptyGroupsInFilter = false;
+  m_ApplyClearFilter = nullptr;
+  m_selectedfiltername = _T("");
 ////@end PasswordSafeFrame member initialisation
 }
 
@@ -662,9 +664,9 @@ void PasswordSafeFrame::CreateMenubar()
   menuView->Append(ID_SUBVIEWSMENU, _("Subviews"), menuSubViews);
   
   auto menuFilters = new wxMenu;
-  menuFilters->Append(ID_EDITFILTER, _("&New/Edit Filter..."), wxEmptyString, wxITEM_NORMAL); // TODO
-  menuFilters->Append(ID_APPLYFILTER, _("&Apply current"), wxEmptyString, wxITEM_NORMAL); // TODO
-  menuFilters->Append(ID_MANAGEFILTERS, _("&Manage..."), wxEmptyString, wxITEM_NORMAL); // TODO
+  menuFilters->Append(ID_EDITFILTER, _("&New/Edit Filter..."), wxEmptyString, wxITEM_NORMAL);
+  m_ApplyClearFilter = menuFilters->Append(ID_APPLYFILTER, _("&Apply current"), wxEmptyString, wxITEM_NORMAL);
+  menuFilters->Append(ID_MANAGEFILTERS, _("&Manage..."), wxEmptyString, wxITEM_NORMAL);
   menuFilters->Append(ID_SHOW_EMPTY_GROUP_IN_FILTER, _("Empty Group visible in Filter"), wxEmptyString, wxITEM_CHECK);
   menuView->Append(ID_FILTERMENU, _("&Filters"), menuFilters);
   menuView->AppendSeparator();
@@ -1098,6 +1100,8 @@ void PasswordSafeFrame::ShowGrid(bool show)
     m_grid->UpdateSorting();
 
     m_guiInfo->RestoreGridViewInfo(m_grid);
+    
+    m_grid->SetFilterState(m_bFilterActive);
   }
   else {
     m_guiInfo->SaveGridViewInfo(m_grid);
@@ -1157,6 +1161,10 @@ void PasswordSafeFrame::ShowTree(bool show)
     else {
       m_guiInfo->RestoreTreeViewInfo(m_tree);
     }
+    
+    // Only update of red colour is needed, when filter is selected, as black colour is standard
+    if(m_bFilterActive)
+      m_tree->SetFilterState(m_bFilterActive);
   }
   else {
     m_guiInfo->SaveTreeViewInfo(m_tree);
@@ -2039,19 +2047,25 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_FILTERMENU:
-      evt.Enable(false);
+      evt.Enable(m_core.IsDbOpen());
       break;
       
     case ID_EDITFILTER:
-      evt.Enable(false); // Mark unimplemented
+      evt.Enable(m_core.IsDbOpen() && m_CurrentPredefinedFilter == NONE); // Mark unimplemented
       break;
       
     case ID_APPLYFILTER:
-      evt.Enable(false); // Mark unimplemented
+      evt.Enable(m_core.IsDbOpen() && (m_bFilterActive || CurrentFilter().IsActive()));
+      if(m_bFilterActive) {
+        m_ApplyClearFilter->SetItemLabel(_("&Clear current"));
+      }
+      else {
+        m_ApplyClearFilter->SetItemLabel(_("&Apply current"));
+      }
       break;
       
     case ID_MANAGEFILTERS:
-      evt.Enable(false); // Mark unimplemented
+      evt.Enable(m_core.IsDbOpen() && m_CurrentPredefinedFilter == NONE); // Mark unimplemented
       break;
       
     case ID_SHOW_EMPTY_GROUP_IN_FILTER:

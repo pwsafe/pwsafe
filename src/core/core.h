@@ -351,3 +351,6 @@
 #define IDSC_RPTIMPORTKPV1CSV           5869
 #define IDSC_DRAGPOLICY                 5907
 #define IDSC_RPTEXPORTDB                5965
+
+#define IDSC_RELATIVE_SMALL             5968
+#define IDSC_AND_SMALL                  5969

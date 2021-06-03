@@ -49,4 +49,17 @@ PROPSHEET_HELP(AddEditPropSheetDlg, _("Dates and Times"),  html/entering_pwd_dat
 PROPSHEET_HELP(AddEditPropSheetDlg, _("Password Policy"),  html/entering_pwd_pp.html)
 PROPSHEET_HELP(AddEditPropSheetDlg, _("Additional"),       html/entering_pwd_add.html)
 
+DLG_HELP(EditShortcutDlg,                  html/edit_menu.html)
+
+DLG_HELP(SetFiltersDlg,                    html/filters.html)
+DLG_HELP(ManageFiltersDlg,                 html/filters.html)
+DLG_HELP(pwFiltersBoolDlg,                 html/filters.html)
+DLG_HELP(pwFiltersStringDlg,               html/filters.html)
+DLG_HELP(pwFiltersDCADlg,                  html/filters.html)
+DLG_HELP(pwFiltersIntegerDlg,              html/filters.html)
+DLG_HELP(pwFiltersTypeDlg,                 html/filters.html)
+DLG_HELP(pwFiltersDateDlg,                 html/filters.html)
+DLG_HELP(pwFiltersMediaDlg,                html/filters.html)
+DLG_HELP(pwFiltersPasswordDlg,             html/filters.html)
+
 #endif // _HELPMAP_H_

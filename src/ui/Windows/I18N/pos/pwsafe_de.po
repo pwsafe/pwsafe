@@ -5479,6 +5479,9 @@ msgstr "Stelle die letzte Änderung zur Passwortrichtlinie, die rückgängig gem
 msgid "Relative"
 msgstr "Relativ"
 
+msgid "relative"
+msgstr "relativ"
+
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
 msgstr "Ein relatives Datum bezeiht sich auf heute, z.B. '-1' ist gestern und '1' ist morgen."

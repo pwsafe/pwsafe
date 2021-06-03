@@ -339,6 +339,8 @@ void PWSMatch::GetMatchType(MatchType mtype,
       // Note: purpose drop through to standard 'string' processing
       //[[fallthrough]];
     case MT_STRING:
+      //[[fallthrough]];
+    case MT_MEDIATYPE:
       cs1 = fstring;
       LoadAString(cs2, fcase ? IDSC_CASE_SENSITIVE : IDSC_CASE_INSENSITIVE);
       break;
@@ -396,6 +398,8 @@ void PWSMatch::GetMatchType(MatchType mtype,
     case MT_DCA:
     case MT_SHIFTDCA:
       switch (fdca) {
+        case -2: // Default value if present or not present
+          return;
         case -1:                                        id = IDSC_CURRENTDEFAULTDCA;  break;
         case PWSprefs::DoubleClickCopyPassword:         id = IDSC_DCACOPYPASSWORD;    break;
         case PWSprefs::DoubleClickViewEdit:             id = IDSC_DCAVIEWEDIT;        break;
@@ -454,9 +458,6 @@ void PWSMatch::GetMatchType(MatchType mtype,
         if (bBetween)
           Format(cs2, L"%d", fnum2 >> (funit * 10));
       }
-      break;
-    case MT_MEDIATYPE:
-      cs1 = fstring;
       break;
     default:
       ASSERT(0);
