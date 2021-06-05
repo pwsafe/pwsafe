@@ -102,62 +102,7 @@ There are a number of issues with version 3.0.5. For example, see
 Therefore, it is better to use wxWidgets 3.1.5 or newer.
 
 ### International users
-When changing the language from English to another language you might encounter problems with onStateImgage (mark indicating the selected menu item) or chevon ">>" extending the tool bar in case space is not sufficient. There is a proposed patch that can help on that issue, but this is not accepted by the wxWidgets team so far. See [https://trac.wxwidgets.org/ticket/19023](https://trac.wxwidgets.org/ticket/19023).
-
-```
-diff --git a/src/common/intl.cpp b/src/common/intl.cpp
-index 44c4df22a8..97396917f3 100644
-a	b	bool wxLocale::Init(int language, int flags) 
-575	575	#elif defined(__WXMAC__)
-576	576	    const wxString& locale = info->CanonicalName;
-577	577	
-578	 	    const char *retloc = wxSetlocale(LC_ALL, locale);
- 	578	    const char *retloc = wxSetlocale(LC_ALL, (! m_pszOldLocale || strcmp(m_pszOldLocale, "C/UTF-8/C/C/C/C")) ? locale : "C/"+locale+".UTF-8/C/C/C/C");
-579	579	
-580	580	    if ( !retloc )
-581	581	    {
-```
-
-The issue seems to be fixed in wxWidgets 3.1.5 (eliminating the special code for __WXMAC__). Last version of June 2021 is reproducing the same wrong behaviour with macOS. Following fix, that is not yet approved, will solve the issue.
-
-```
-diff --git a/src/common/wxcrt.cpp b/src/common/wxcrt.cpp
-index f3585a905a..8437ce6ff6 100644
---- a/src/common/wxcrt.cpp
-+++ b/src/common/wxcrt.cpp
-@@ -138,28 +138,11 @@ char* wxSetlocale(int category, const char *locale)
-         wxCFStringRef str(wxCFRetain((CFStringRef)CFLocaleGetValue(userLocaleRf, kCFLocaleLanguageCode)));
-         wxString langFull = str.AsString()+"_";
-         str.reset(wxCFRetain((CFStringRef)CFLocaleGetValue(userLocaleRef, kCFLocaleCountryCode)));
--        langFull += str.AsString()+".UTF-8";
--        if(category == LC_ALL)
--        {
--          langFull = "C/"+langFull+"/C/C/C/C";
--        }
-+        langFull += str.AsString();
-         rv = setlocale(category, langFull.c_str());
-     }
--    else {
--        if(locale) {
--          wxString lc(locale);
--          if(strlen(locale) == 5) { // only xx_YY, we have to add .UTF-8
--            lc += ".UTF-8";
--          }
--          if(category == LC_ALL)
--          {
--            lc = "C/"+lc+"/C/C/C/C";
--          }
--          rv = setlocale(category, lc.c_str());
--        }
--        else
--          rv = setlocale(category, locale);
--    }
-+    else
-+        rv = setlocale(category, locale);
- #else
-     char *rv = setlocale(category, locale);
- #endif
-```
+When changing the language from English to another language you might encounter problems with onStateImgage (mark indicating the selected menu item) or chevon ">>" extending the tool bar in case space is not sufficient. This is a problem in Apples SVG library, see [https://trac.wxwidgets.org/ticket/19023](https://trac.wxwidgets.org/ticket/19023). setlocale(LC_NUMERIC, ...) must be left as "C" or one of the languages using a dot as decimal point. 
 
 ### Building wxWidgets for x86\_64 pwsafe
 To build pwsafe, you 
