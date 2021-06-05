@@ -289,6 +289,9 @@ bool PWSafeApp::OnInit()
       setlocale(LC_CTYPE, "en_US.UTF-8");
     }
   }
+  // This value must be set for mac OS starting with version 11, but is no problem for earlier versions, see
+  // https://trac.wxwidgets.org/ticket/19023
+  setlocale(LC_NUMERIC, "C");
 #else
   setlocale(LC_CTYPE, "");
 #endif
@@ -657,6 +660,11 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
       wxString envString = langInfo->CanonicalName + ".UTF-8";
       setlocale(LC_CTYPE, envString.c_str());
       setlocale(LC_TIME, envString.c_str());
+#if defined(__WXMAC__)
+      // This value must be set for mac OS starting with version 11, but is no problem for earlier versions, see
+      // https://trac.wxwidgets.org/ticket/19023
+      setlocale(LC_NUMERIC, "C");
+#endif
     }
   }
   return bRes;
