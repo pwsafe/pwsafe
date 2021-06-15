@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx14.dtd">
 <tmx version="1.4">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.4.1_0_53601bef" segtype="sentence" srclang="en-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.5.0_0_a1fd6a4d" segtype="sentence" srclang="en-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -10,22 +10,6 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110215T174553Z">
         <seg>!</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>"   `   ~   !</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110215T175221Z">
-        <seg>"   `   ~   !</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>"A password policy determines how a password is created.</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20101106T193706Z">
-        <seg>"Политика паролей определяет правила создания паролей.</seg>
       </tuv>
     </tu>
     <tu>
@@ -46,14 +30,6 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>"Arial,9,,ITALIC"</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110215T175140Z">
-        <seg>"Arial,9,,ITALIC"</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
         <seg>"Attachment Description"</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20160617T175703Z">
@@ -66,14 +42,6 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110620T180049Z">
         <seg>«Attachment» — <bpt i="0" x="0">&lt;b0&gt;</bpt><bpt i="1" x="1">&lt;u1&gt;</bpt>не экспортируйте<ept i="1">&lt;/u1&gt;</ept><ept i="0">&lt;/b0&gt;</ept> данное поле, т. к. это приводит значительному увеличению размера файла.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>"Author of Applied Cryptography and other books, creator of the Blowfish algorithm, and founder and CTO of Counterpane Internet Security."</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110209T162518Z">
-        <seg>"Автор «Прикладной криптографии» («Applied Cryptography») и других книг, создатель алгоритма Blowfish, а также создатель и технический директор Counterpane Internet Security."</seg>
       </tuv>
     </tu>
     <tu>
@@ -106,14 +74,6 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110620T175508Z">
         <seg>«Creation Time» — время создания элемента.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>"Dummy Placeholder"</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20101106T194604Z">
-        <seg>"Заглушка"</seg>
       </tuv>
     </tu>
     <tu>
@@ -174,14 +134,6 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>"In our terminology, the Combination is the password that you use to gain access to the Password Safe database."</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110209T162840Z">
-        <seg>"В нашей терминологии комбинация — пароль, позволяющий получить доступ к контейнеру Password Safe."</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
         <seg>"Key: Value"</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110620T195231Z">
@@ -238,14 +190,6 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>"Only the following:\n 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f"</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20101106T195142Z">
-        <seg>"Только следующие:\n 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f"</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
         <seg>"Password Groups" becomes the entry's Group</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110620T182634Z">
@@ -274,14 +218,6 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20170326T171929Z" creationid="pm_kan" creationdate="20170326T171929Z">
         <seg>Здесь располагаются фильтры с некоторыми наперёд заданными условиями.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>"Supported file formats: Version 1.x Password Safe database; tab-delimited text (.txt) files.</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20101106T194718Z">
-        <seg>"Поддерживаемые форматы: контейнер Password Safe версии 1.x; текстовые файлы (.txt) с разделителем табуляция.</seg>
       </tuv>
     </tu>
     <tu>
@@ -911,10 +847,10 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>/   \   :   ;   |   "</seg>
+        <seg>/   \   :   ;   |</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110215T175224Z">
-        <seg>/   \   :   ;   |   "</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165437Z" creationid="pm_kan" creationdate="20210615T165437Z">
+        <seg>/   \   :   ;   |</seg>
       </tuv>
     </tu>
     <tu>
@@ -923,6 +859,54 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110215T202738Z">
         <seg>/ ?   <bpt i="0" x="0">&lt;s0&gt;</bpt>(4)<ept i="0">&lt;/s0&gt;</ept></seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>//</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165335Z" creationid="pm_kan" creationdate="20210615T165335Z">
+        <seg>//</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>// ************ Andrew/Oct2004 ************</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165328Z" creationid="pm_kan" creationdate="20210615T165328Z">
+        <seg>// ************ Andrew/Oct2004 ************</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>// All popup text should appear here for easy editing</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165333Z" creationid="pm_kan" creationdate="20210615T165333Z">
+        <seg>// All popup text should appear here for easy editing</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>// Modified: 15/06/2005</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165336Z" creationid="pm_kan" creationdate="20210615T165336Z">
+        <seg>// Modified: 15/06/2005</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>// really just a list of variables</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165331Z" creationid="pm_kan" creationdate="20210615T165331Z">
+        <seg>// really just a list of variables</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>// used by the ActiveX Help control and the popup method</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165332Z" creationid="pm_kan" creationdate="20210615T165332Z">
+        <seg>// used by the ActiveX Help control and the popup method</seg>
       </tuv>
     </tu>
     <tu>
@@ -2897,6 +2881,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg><bpt i="0" x="0">&lt;i0&gt;</bpt>12345\t\u\t\p\t\n<ept i="0">&lt;/i0&gt;</ept></seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165159Z" creationid="pm_kan" creationdate="20210615T165159Z">
+        <seg><bpt i="0" x="0">&lt;i0&gt;</bpt>12345\t\u\t\p\t\n<ept i="0">&lt;/i0&gt;</ept></seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg><bpt i="0" x="0">&lt;i0&gt;</bpt><bpt i="1" x="1">&lt;b1&gt;</bpt>Note:<ept i="1">&lt;/b1&gt;</ept> only the fields selected by the user are compared, so database could be shown as being identical when they are not due to the corresponding fields not being compared.<ept i="0">&lt;/i0&gt;</ept> By default, <bpt i="2" x="2">&lt;u2&gt;</bpt>all<ept i="2">&lt;/u2&gt;</ept> fields are compared.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20120808T175753Z">
@@ -2941,6 +2933,22 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110209T221551Z">
         <seg>Вкладка <bpt i="0" x="0">&lt;i0&gt;</bpt>«Политика создания паролей»<ept i="0">&lt;/i0&gt;</ept></seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg><bpt i="0" x="0">&lt;i0&gt;</bpt>\#\t \#<ept i="0">&lt;/i0&gt;</ept></seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165214Z" creationid="pm_kan" creationdate="20210615T165214Z">
+        <seg><bpt i="0" x="0">&lt;i0&gt;</bpt>\#\t \#<ept i="0">&lt;/i0&gt;</ept></seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg><bpt i="0" x="0">&lt;i0&gt;</bpt>\t\s\u\t\p\n<ept i="0">&lt;/i0&gt;</ept></seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165207Z" creationid="pm_kan" creationdate="20210615T165207Z">
+        <seg><bpt i="0" x="0">&lt;i0&gt;</bpt>\t\s\u\t\p\n<ept i="0">&lt;/i0&gt;</ept></seg>
       </tuv>
     </tu>
     <tu>
@@ -3437,6 +3445,14 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110621T170613Z">
         <seg>Политика паролей описывает правила, используемые при создании паролей: буквы, их регистр, длина паролей и использование спецсимволов.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>A password policy determines how a password is created.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165349Z" creationid="pm_kan" creationdate="20210615T165349Z">
+        <seg>Политика паролей определяет правила создания паролей.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4393,6 +4409,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Arial,9,,ITALIC</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165340Z" creationid="pm_kan" creationdate="20210615T165340Z">
+        <seg>Arial,9,,ITALIC</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Artistic License</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20180114T113500Z" creationid="pm_kan" creationdate="20180114T113500Z">
@@ -4525,6 +4549,14 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110215T145846Z">
         <seg>По окончанию процесса импорта будет выведен диалог с информацией о количестве ошибок и успешно импортированных элементов.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Author of Applied Cryptography and other books, creator of the Blowfish algorithm, and founder and CTO of Counterpane Internet Security.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165812Z" creationid="pm_kan" creationdate="20210615T165430Z">
+        <seg>Автор «Прикладной криптографии» («Applied Cryptography») и других книг, создатель алгоритма Blowfish, а также создатель и технический директор Counterpane Internet Security.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6645,6 +6677,14 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20120809T131747Z">
         <seg>Поэтому, при импорте из текстового файла элементы, ссылающиеся на политики, отсутствующие в текущем контейнере, будут привязаны к политике по умолчанию.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Dummy Placeholder</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165451Z" creationid="pm_kan" creationdate="20210615T165451Z">
+        <seg>Заглушка</seg>
       </tuv>
     </tu>
     <tu>
@@ -10017,6 +10057,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>In our terminology, the Combination is the password that you use to gain access to the Password Safe database.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165443Z" creationid="pm_kan" creationdate="20210615T165443Z">
+        <seg>В нашей терминологии комбинация — пароль, позволяющий получить доступ к контейнеру Password Safe.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>In particular, via the <bpt i="3" x="3">&lt;i3&gt;</bpt><bpt i="4" x="4">&lt;a4&gt;</bpt>Backups<ept i="4">&lt;/a4&gt;</ept><ept i="3">&lt;/i3&gt;</ept> tab in the Options dialog box, you may specify how many backups to keep (<bpt i="5" x="5">&lt;i5&gt;</bpt>we recommend a minimum of 3 to 5<ept i="5">&lt;/i5&gt;</ept>) and whether to use an incremental number or date/time value in the backup file name.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20161105T175131Z">
@@ -10257,10 +10305,10 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>It is STRONGLY recommended that the use of text files with sensitive password information be avoided when possible and that the file be securely deleted or wiped afterwards."</seg>
+        <seg>It is STRONGLY recommended that the use of text files with sensitive password information be avoided when possible and that the file be securely deleted or wiped afterwards.</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110216T110137Z">
-        <seg>НАСТОЯТЕЛЬНО рекомендуется избегать экспорта важной информации текстовый формат, и надёжно удалять эти файлы после использования."</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165503Z" creationid="pm_kan" creationdate="20210615T165503Z">
+        <seg>НАСТОЯТЕЛЬНО рекомендуется избегать экспорта важной информации текстовый формат, и надёжно удалять эти файлы после использования.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12285,6 +12333,14 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110214T112847Z">
         <seg>Только поле «Заметки» может состоять из нескольких строк.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Only the following:\n 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165510Z" creationid="pm_kan" creationdate="20210615T165510Z">
+        <seg>Только следующие:\n 0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f</seg>
       </tuv>
     </tu>
     <tu>
@@ -15091,6 +15147,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Supported file formats: Version 1.x Password Safe database; tab-delimited text (.txt) files.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165458Z" creationid="pm_kan" creationdate="20210615T165458Z">
+        <seg>Поддерживаемые форматы: контейнер Password Safe версии 1.x; текстовые файлы (.txt) с разделителем табуляция.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Supported fonts include: "Arial Unicode MS" (which comes with Microsoft's Office suite), "Arial Unicode" and "Lucida Sans Unicode", although you may select another using the appropriate menu item.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110622T152847Z">
@@ -16411,10 +16475,10 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>The length, letters, numbers, and special characters used to generate a password are easily controlled through the Password Policy dialog in the Option menu."</seg>
+        <seg>The length, letters, numbers, and special characters used to generate a password are easily controlled through the Password Policy dialog in the Option menu.</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20161105T175821Z">
-        <seg>Длина, буквы, цифры и специальные символы, используемые для для создания паролей, настраиваются на вкладке «Сервис→Настройки→Политика создания паролей»"</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165420Z" creationid="pm_kan" creationdate="20210615T165420Z">
+        <seg>Длина, буквы, цифры и специальные символы, используемые для для создания паролей, настраиваются на вкладке «Сервис→Настройки→Политика создания паролей»</seg>
       </tuv>
     </tu>
     <tu>
@@ -20893,6 +20957,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>`   ~   !</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T165432Z" creationid="pm_kan" creationdate="20210615T165432Z">
+        <seg>`   ~   !</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>` ¬   <bpt i="0" x="0">&lt;s0&gt;</bpt>(4)<ept i="0">&lt;/s0&gt;</ept></seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110215T202756Z">
@@ -23631,28 +23703,6 @@
         <seg>Synchronize</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20120808T180616Z">
-        <seg>Синхронизация</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <prop type="file">pwsafe.hhk</prop>
-      <prop type="prev">File Menu</prop>
-      <prop type="next">File Menu</prop>
-      <tuv xml:lang="en-US">
-        <seg>Compare</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T133829Z" creationid="pm_kan" creationdate="20200823T133829Z">
-        <seg>Сравнение</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <prop type="file">pwsafe.hhk</prop>
-      <prop type="prev">Compare Results</prop>
-      <prop type="next">File Menu</prop>
-      <tuv xml:lang="en-US">
-        <seg>Synchronize</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T133847Z" creationid="pm_kan" creationdate="20200823T133847Z">
         <seg>Синхронизация</seg>
       </tuv>
     </tu>
