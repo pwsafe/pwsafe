@@ -11,7 +11,6 @@
 
 #include "XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
-#ifdef USE_XML_LIBRARY
 #include <map>
 // PWS includes
 #include "../StringX.h"
@@ -133,7 +132,7 @@ enum XLE_PASSWORDSAFE {
 };
 
 // Subtract duplicates (global/entry): password policy fields(11)
-#define XLE_ELEMENTS (XLE_LAST_ELEMENT - (XLE_ENTRY_PWSYMBOLMINLENGTH - XLE_ENTRY_PWLENGTH + 1))
+#define XLE_ELEMENTS (XLE_LAST_ELEMENT - (XLE_ENTRY_PWSYMBOLMINLENGTH - XLE_ENTRY_PWLENGTH))
 
 struct st_file_element_data {
   unsigned short int element_code /* XLE_PASSWORDSAFE */;
@@ -150,6 +149,8 @@ public:
   bool GetElementInfo(const wchar_t *name, st_file_element_data &edata);
 #elif USE_XML_LIBRARY == XERCES
   bool GetElementInfo(const XMLCh *name, st_file_element_data &edata);
+#else
+  bool GetElementInfo(const TCHAR *name, st_file_element_data &edata);
 #endif
 
 private:
@@ -161,5 +162,4 @@ private:
   } m_file_elements[XLE_ELEMENTS];
 };
 
-#endif /* USE_XML_LIBRARY */
 #endif /* __XMLFILEVALIDATION_H */

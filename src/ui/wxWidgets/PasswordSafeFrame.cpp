@@ -2021,7 +2021,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
       
     case ID_IMPORT_XML:
-#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+#if (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
       evt.Enable(false);
 #else
       evt.Enable(!isFileReadOnly && m_core.IsDbOpen());
