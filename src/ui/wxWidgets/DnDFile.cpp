@@ -60,7 +60,7 @@ bool DnDFile::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)
         // Direct call of handler function
         m_pOwner->OnImportText(evt);
       }
-#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+#if (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
       else if(filename.GetExt().IsSameAs("xml", false)) { // XML Import
         wxCommandEvent evt(ID_IMPORT_XML, SYMBOL_PASSWORDSAFEFRAME_IDNAME);
         evt.SetString(filenames[0]);

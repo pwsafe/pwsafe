@@ -70,7 +70,7 @@ PFilterXMLProcessor::~PFilterXMLProcessor()
 }
 
 /*!
- * Build internal tree with content from buffer of file. If File name is given this on eis processed.
+ * Build internal tree with content from buffer of file. If File name is given this one is processed.
  */
 
 bool PFilterXMLProcessor::ReadXML(const StringX &strXMLData,

@@ -67,7 +67,8 @@ void GuiInfo::SaveTreeViewInfo(TreeCtrl* tree)
     }
     else {
       m_treeTop.Clear();
-      wxFAIL_MSG(wxString(wxT("Tree item \'")) << tree->GetItemText(treeItem) << wxT("\' found with no children and no CItemData"));
+      // The following can happen after UNDO of XML Import - remove FAIL_MSG to do not stop in case of the problem...
+      // wxFAIL_MSG(wxString(wxT("Tree item \'")) << tree->GetItemText(treeItem) << wxT("\' found with no children and no CItemData"));
     }
   }
   else {

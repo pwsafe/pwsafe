@@ -68,6 +68,8 @@ class XMLFileHandlers
   friend class MFileXMLProcessor;
 #elif USE_XML_LIBRARY == XERCES
   friend class XFileXMLProcessor;
+#else
+  friend class PFileXMLProcessor;
 #endif
 
 public:

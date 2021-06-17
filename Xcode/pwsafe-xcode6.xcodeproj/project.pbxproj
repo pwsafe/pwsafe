@@ -43,6 +43,7 @@
 		D3768A3125C17BB900319805 /* DnDDropTarget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3768A3025C17BB900319805 /* DnDDropTarget.cpp */; };
 		D3950066263C29F70026815E /* ManageFiltersTable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3950065263C29F70026815E /* ManageFiltersTable.cpp */; };
 		D395E03E264FF45000F049B1 /* PFilterXMLProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D395E03C264FEE7200F049B1 /* PFilterXMLProcessor.cpp */; };
+		D3961C8B2674B39500C50C88 /* PFileXMLProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3961C8A2674B39500C50C88 /* PFileXMLProcessor.cpp */; };
 		D396C41E261E07D200B28B87 /* PWFiltersEditor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D396C41D261E07D200B28B87 /* PWFiltersEditor.cpp */; };
 		D396FD9D25B1BBEC00E6EAFC /* DnDFile.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D396FD9C25B1BBEC00E6EAFC /* DnDFile.cpp */; };
 		D3A1DCD6261B15E80014A300 /* PWFiltersGrid.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3A1DCD4261B15E80014A300 /* PWFiltersGrid.cpp */; };
@@ -308,6 +309,8 @@
 		D3950065263C29F70026815E /* ManageFiltersTable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ManageFiltersTable.cpp; sourceTree = "<group>"; };
 		D395E03B264FEE7200F049B1 /* PFilterXMLProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFilterXMLProcessor.h; sourceTree = "<group>"; };
 		D395E03C264FEE7200F049B1 /* PFilterXMLProcessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PFilterXMLProcessor.cpp; sourceTree = "<group>"; };
+		D3961C892674B39500C50C88 /* PFileXMLProcessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PFileXMLProcessor.h; sourceTree = "<group>"; };
+		D3961C8A2674B39500C50C88 /* PFileXMLProcessor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PFileXMLProcessor.cpp; sourceTree = "<group>"; };
 		D396C41C261E07D200B28B87 /* PWFiltersEditor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWFiltersEditor.h; sourceTree = "<group>"; };
 		D396C41D261E07D200B28B87 /* PWFiltersEditor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWFiltersEditor.cpp; sourceTree = "<group>"; };
 		D396FD9B25B1BBEC00E6EAFC /* DnDFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DnDFile.h; sourceTree = "<group>"; };
@@ -871,6 +874,8 @@
 		D395E037264FEDD200F049B1 /* Pugi */ = {
 			isa = PBXGroup;
 			children = (
+				D3961C8A2674B39500C50C88 /* PFileXMLProcessor.cpp */,
+				D3961C892674B39500C50C88 /* PFileXMLProcessor.h */,
 				D395E03C264FEE7200F049B1 /* PFilterXMLProcessor.cpp */,
 				D395E03B264FEE7200F049B1 /* PFilterXMLProcessor.h */,
 			);
@@ -1907,6 +1912,7 @@
 				E6DDC7011389120E00F0C0D1 /* CoreOtherDB.cpp in Sources */,
 				E698275A14C01B7D0043C243 /* PWSLog.cpp in Sources */,
 				E683B21A150481DF0013D588 /* pugixml.cpp in Sources */,
+				D3961C8B2674B39500C50C88 /* PFileXMLProcessor.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

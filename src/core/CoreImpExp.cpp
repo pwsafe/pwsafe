@@ -46,6 +46,8 @@
 #include "XML/MSXML/MFileXMLProcessor.h"
 #elif USE_XML_LIBRARY == XERCES
 #include "XML/Xerces/XFileXMLProcessor.h"
+#else
+#include "XML/Pugi/PFileXMLProcessor.h"
 #endif
 
 #include <fstream> // for WritePlaintextFile
@@ -735,7 +737,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
  return numXMLErrors == 0 ? SUCCESS : OK_WITH_ERRORS;
 }
 
-#if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
+#if (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
 // Don't support importing XML on non-Windows platforms using Microsoft XML libraries
 int PWScore::ImportXMLFile(const stringT & /*ImportedPrefix*/,
                            const stringT & /*strXMLFileName*/,
@@ -753,7 +755,11 @@ int PWScore::ImportXMLFile(const stringT & /*ImportedPrefix*/,
 }
 #else
 int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLFileName,
-                           const stringT &strXSDFileName, const bool &bImportPSWDsOnly,
+                           const stringT &
+#if defined(USE_XML_LIBRARY)
+                                           strXSDFileName
+#endif
+                                                          , const bool &bImportPSWDsOnly,
                            stringT &strXMLErrors, stringT &strSkippedList,
                            stringT &strPWHErrorList, stringT &strRenameList,
                            int &numValidated, int &numImported, int &numSkipped,
@@ -770,15 +776,29 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   MFileXMLProcessor iXML(this, &Possible_Aliases, &Possible_Shortcuts, pmulticmds, &rpt);
 #elif USE_XML_LIBRARY == XERCES
   XFileXMLProcessor iXML(this, &Possible_Aliases, &Possible_Shortcuts, pmulticmds, &rpt);
+#else
+  PFileXMLProcessor iXML(this, &Possible_Aliases, &Possible_Shortcuts, pmulticmds, &rpt);
 #endif
 
   bool status, validation;
 
   strXMLErrors = strPWHErrorList = strRenameList = _T("");
+    
+#if !defined(USE_XML_LIBRARY)
+  status = iXML.ReadXML(_T(""), strXMLFileName);
+  strXMLErrors = iXML.getXMLErrors();
+  if (!status) {
+    return XML_FAILED_VALIDATION;
+  }
+#endif
 
   validation = true;
+#if !defined(USE_XML_LIBRARY)
+  status = iXML.Process(validation, ImportedPrefix, bImportPSWDsOnly);
+#else
   status = iXML.Process(validation, ImportedPrefix, strXMLFileName,
                         strXSDFileName, bImportPSWDsOnly);
+#endif
   strXMLErrors = iXML.getXMLErrors();
   if (!status) {
     return XML_FAILED_VALIDATION;
@@ -787,8 +807,12 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
   numValidated = iXML.getNumEntriesValidated();
 
   validation = false;
+#if !defined(USE_XML_LIBRARY)
+  status = iXML.Process(validation, ImportedPrefix, bImportPSWDsOnly);
+#else
   status = iXML.Process(validation, ImportedPrefix, strXMLFileName,
                         strXSDFileName, bImportPSWDsOnly);
+#endif
 
   numImported = iXML.getNumEntriesImported();
   numSkipped = iXML.getNumEntriesSkipped();

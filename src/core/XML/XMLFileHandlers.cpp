@@ -8,8 +8,6 @@
 
 #include "XMLDefs.h"    // Required if testing "USE_XML_LIBRARY"
 
-#ifdef USE_XML_LIBRARY
-
 #include "XMLFileValidation.h"
 #include "XMLFileHandlers.h"
 
@@ -1035,5 +1033,3 @@ void XMLFileHandlers::AddDBPreferences()
   // Copy over preferences from XML input to this DB (only if DB was empty before import)
   PWSprefs::GetInstance()->UpdateFromCopyPrefs(PWSprefs::ptDatabase);
 }
-
-#endif /* USE_XML_LIBRARY */
