@@ -497,50 +497,14 @@ bool PFileXMLProcessor::CheckElementValue(const TCHAR *value, int icurrent)
     case XLE_PMTIMEX:
     case XLE_RMTIMEX:
     case XLE_CHANGEDX: // "[-]CCYY-MM-DDThh:mm:ss[Z|(+|-)hh:mm]"
-          // Example: "2001-10-26T21:32:52", "2001-10-26T21:32:52+02:00", "2001-10-26T19:32:52Z", "2001-10-26T19:32:52+00:00", "-2001-10-26T21:32:52" or "2001-10-26T21:32:52.12679".
+      // Example: "2001-10-26T21:32:52", "2001-10-26T21:32:52+02:00", "2001-10-26T19:32:52Z", "2001-10-26T19:32:52+00:00" or "-2001-10-26T21:32:52".
       {
-        int i = 0; // Offset for leading minus sign
-          
         if(! value)
           return false;
           
-        if(*value == L'-') // Check on optional leading minus sign
-          ++i;
-        
-        size_t len = wcslen(&value[i]);
-        if(len < 19) // Minimum is CCYY-MM-DDThh:mm:ss
+        time_t t(0);
+        if(! VerifyXMLDateTimeString(value, t) || (t == time_t(-1)))
           return false;
-        // Check mimimum part
-        if(!iswdigit(value[i]) || !iswdigit(value[i+1]) || !iswdigit(value[i+2]) || !iswdigit(value[i+3]) ||  // CCYY
-           value[i+4] != L'-' ||                                                                              // -
-           value[i+5] < L'0' || value[i+5] > L'1' || !iswdigit(value[i+6]) || (value[i+5] == L'1' && value[i+6] > L'2') || (value[i+5] == L'0' && value[i+6] == L'0') || // MM (01 to 12)
-           value[i+7] != L'-' ||                                                                              // -
-           value[i+8] < L'0' || value[i+8] > L'3' || !iswdigit(value[i+9]) || (value[i+8] == L'3' && value[i+9] > L'1') || (value[i+7] == L'0' && value[i+8] == L'0') || // DD (01 to 31)
-           value[i+10] != L'T' ||                                                  // T
-           value[i+11] < L'0' || value[i+11] > L'2' || !iswdigit(value[i+12]) ||   // hh (00 to 23)
-           value[i+13] != L':' ||                                                  // :
-           value[i+14] < L'0' || value[i+14] > L'5' || !iswdigit(value[i+15]) ||   // mm (00 to 59)
-           value[i+16] != L':' ||                                                  // :
-           value[i+17] < L'0' || value[i+17] > L'5' || !iswdigit(value[i+18]))     // ss (00 to 59)
-          return false;
-        if(len == 20) {
-          if(value[i+19] != L'Z')                                                  // Z is not following
-            return false;
-        }
-        else if(len > 20 && value[i+19] == L'.') {                                 // '.' and following part of seconds
-            for(size_t j = 20; j < len; ++j) {
-              if(!iswdigit(value[i+j]))
-                  return false;
-            }
-        }
-        else if(len == 25) {
-          if(value[i+19] != L'+' && value[i+19] != L'-')                           // +|- is not following
-            return false;
-          if(value[i+20] < L'0' || value[i+20] > L'5' || !iswdigit(value[i+21]) || // mm (00 to 59)
-             value[i+22] != L':' ||                                                // :
-             value[i+23] < L'0' || value[i+23] > L'5' || !iswdigit(value[i+24]))   // ss (00 to 59)
-            return false;
-        }
       }
       break;
           
