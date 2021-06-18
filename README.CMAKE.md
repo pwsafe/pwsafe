@@ -64,7 +64,7 @@ it is easy to end up with x86/x64 collisions.
 4. XML support: For the MFC build, you can choose either: (a)
 XML_MSXML, which will use Microsoft's implementation for XML
 validation, (b) XML_XERCESC, which uses the XercesC library, or (c)
-neither, in which case the compiled program will not be able to import
+neither, in which case the PUGI XML library is used to import
 XML data.
 
 The wx build doesn't support XML_MSXML.

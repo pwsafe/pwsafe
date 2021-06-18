@@ -71,6 +71,13 @@ if (XML_XERCESC)
    )
 endif (XML_XERCESC)
 
+if (NOT XML_MSXML AND NOT XML_XERCESC)
+  list (NOT APPEND CORE_SRCS
+    XML/Pugi/PFileXMLProcessor.cpp
+    XML/Pugi/PFilterXMLProcessor.cpp
+  )
+endif (NOT XML_MSXML AND NOT XML_XERCESC)
+
 if (NOT WIN32 OR WX_WINDOWS)
   list (APPEND CORE_SRCS ${CMAKE_CURRENT_BINARY_DIR}/core_st.cpp)
   if (WIN32)
