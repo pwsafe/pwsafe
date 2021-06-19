@@ -5,7 +5,7 @@
 # Supports creating pwsafe.pot file as the basis for a new translation
 #
 
-set (LANGS "cz" "de" "dk" "es" "fr" "hu" "it" "kr" "nl" "pl" "ru" "sv"
+set (LANGS "ar" "cz" "de" "dk" "es" "fr" "hu" "it" "kr" "nl" "pl" "ru" "sv"
      "sl" "tr" "zh")
 
 set (TOOLS_BIN_DIR "${CMAKE_BINARY_DIR}/src/Tools/Windows/I18N")
@@ -40,6 +40,7 @@ set_property( TARGET pot PROPERTY FOLDER I18N )
 #
 add_custom_target("update-pos"
                   DEPENDS
+                   pos_pwsafe_ar.po
                    pos/pwsafe_pt_br.po
                    pos/pwsafe_cz.po
                    pos/pwsafe_de.po
@@ -70,6 +71,7 @@ set_property( TARGET update-pos PROPERTY FOLDER I18N )
 
 add_custom_target("dlls"
                   DEPENDS
+                   ${DLL_DIR}/pwsafeAR.dll
                    ${DLL_DIR}/pwsafeCZ.dll
                    ${DLL_DIR}/pwsafeDE.dll
                    ${DLL_DIR}/pwsafeDK.dll
@@ -102,6 +104,7 @@ macro( make_dll LANG CODE OUT)
                      )
 endmacro( make_dll LANG CODE )
 
+make_dll( "ar" "0x2c01" "AR_JO")
 make_dll( "cz" "0x0405" "CS_CZ")
 make_dll( "de" "0x0407" "DE_DE")
 make_dll( "dk" "0x0406" "DA_DK")

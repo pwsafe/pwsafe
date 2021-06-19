@@ -16,14 +16,15 @@
 
 #Update the following for each language we support
 
-POS := pwsafe.pot pos/pwsafe_cz.po pos/pwsafe_es.po pos/pwsafe_de.po \
+POS := pwsafe.pot pos/pwsafe_ar.po \
+	pos/pwsafe_cz.po pos/pwsafe_es.po pos/pwsafe_de.po \
 	pos/pwsafe_pl.po pos/pwsafe_zh.po pos/pwsafe_ru.po \
 	pos/pwsafe_it.po pos/pwsafe_fr.po pos/pwsafe_dk.po \
 	pos/pwsafe_kr.po pos/pwsafe_sv.po pos/pwsafe_nl.po \
 	pos/pwsafe_tr.po pos/pwsafe_hu.po pos/pwsafe_sl.po \
 	pos/pwsafe_pt_br.po
 
-DLL_LIST = pwsafeCZ.dll pwsafeES.dll pwsafeDE.dll \
+DLL_LIST = pwsafeAR.dll pwsafeCZ.dll pwsafeES.dll pwsafeDE.dll \
 	pwsafePL.dll pwsafeZH.dll pwsafeRU.dll pwsafeIT.dll pwsafeFR.dll \
 	pwsafeDA.dll pwsafeKO.dll pwsafeNL.dll pwsafeSV.dll pwsafeTR.dll \
 	pwsafeHU.dll pwsafeSL.dll pwsafePT.dll
