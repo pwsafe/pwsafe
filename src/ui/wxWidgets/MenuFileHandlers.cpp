@@ -1048,15 +1048,13 @@ void PasswordSafeFrame::OnImportXML(wxCommandEvent& evt)
   std::wstring csErrors(wxEmptyString);
   switch (rc) {
     case PWScore::XML_FAILED_VALIDATION:
-      rpt.WriteLine(strXMLErrors.c_str());
       cs_temp = wxString::Format(_("File: %ls failed validation against XML Schema:\n\n%ls"),
-                                        dlg.filepath.c_str(), wxEmptyString);
+                                        dlg.filepath.c_str(), strXMLErrors.c_str());
       delete pcmd;
       break;
     case PWScore::XML_FAILED_IMPORT:
-      rpt.WriteLine(strXMLErrors.c_str());
       cs_temp = wxString::Format(_("File: %ls passed Validation but had the following errors during import:\n\n%ls"),
-                              dlg.filepath.c_str(), wxEmptyString);
+                              dlg.filepath.c_str(), strXMLErrors.c_str());
       delete pcmd;
       break;
     case PWScore::SUCCESS:
