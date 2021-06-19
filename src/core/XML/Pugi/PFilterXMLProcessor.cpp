@@ -109,7 +109,7 @@ bool PFilterXMLProcessor::Process(const bool &bValidation)
   m_bValidation = bValidation;
 
   if (!Root || !SafeCompare(Root.name(), _T("filters"))) {
-    Format(m_strXMLErrors, _("Error in filter XML structure: excpected \"%s\", found \"%s\""),
+    Format(m_strXMLErrors, _("Error in filter XML structure: excpected \"%ls\", found \"%ls\""),
            _T("filters"), Root.name());
     if(m_pReporter)
       (*m_pReporter)(m_strXMLErrors);

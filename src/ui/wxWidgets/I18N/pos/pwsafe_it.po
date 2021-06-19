@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PasswordSafe ITA v0.94\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-02 11:51+0200\n"
+"POT-Creation-Date: 2021-06-19 15:37+0200\n"
 "PO-Revision-Date: 2014-06-28 14:48+0200\n"
 "Last-Translator: Luca Mariot <rymoah@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:141
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1443
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:428
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:431
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:567
 msgid "Password Safe"
 msgstr "Password Safe"
@@ -552,7 +552,7 @@ msgid "Generate pronounceable passwords"
 msgstr "Genera password pronunciabili"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:815
-#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:906
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:911
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:284
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:296
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:457
@@ -774,7 +774,7 @@ msgstr "Impossibile generare la password - metodo non valido"
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:159
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1081
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:201
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:369
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:372
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1587
@@ -3183,7 +3183,7 @@ msgstr "Data ultimo accesso file"
 msgid "Click here to pick a field"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:904
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:909
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:281
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:293
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:454 ../../../core/core_st.cpp:33
@@ -3271,49 +3271,49 @@ msgstr ""
 msgid "Type"
 msgstr "Digitazione Automatica"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:428
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:431
 msgid "Another instance of Password Safe is already running"
 msgstr "Un'altra istanza di Password Safe è già in esecuzione"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:464
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:473
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:467
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:476
 #, fuzzy
 msgid "Could not initialize help subsystem. Help will not be available."
 msgstr ""
 "Impossibile inizializzare il sottosistema di aiuto. L'aiuto non sarà "
 "disponibile"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:465
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:474
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:468
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:477
 #, fuzzy
 msgid "Password Safe: Error initializing help"
 msgstr "Errore durante l'inizializzazione dell'aiuto"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:466
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:469
 msgid "Don't show this warning again"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:520
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:523
 msgid "Unable to import \"autoload_filters.xml\""
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:879
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:887
 msgid "Missing help definition for page \""
 msgstr "Definizione d'aiuto mancante per la pagina \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:880
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:888
 msgid "\" of \""
 msgstr "\" di \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:885
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:893
 msgid "Missing help definition for window \""
 msgstr "Definizione d'aiuto mancante per la finestra \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:896
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:904
 msgid "Please inform the developers."
 msgstr "Si prega di informare gli sviluppatori."
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:897
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:905
 msgid "Help Undefined"
 msgstr "Aiuto non definito"
 
@@ -6639,6 +6639,124 @@ msgstr "Genera password pronunciabili"
 #: ../../../core/core_st.cpp:363
 #, c-format
 msgid "Yes - At least %d from %ls: %ls%ls"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:109
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:91
+#, c-format
+msgid ""
+"XML error:\n"
+"%ls\n"
+"%ls\n"
+"offset approximately at %d"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:136
+#, c-format
+msgid "Error in XML structure: excpected \"%ls\", found \"%ls\""
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:144
+msgid "Missing delimiter attribute in <passwordsafe>"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:163
+msgid "Processing error on XML tag \"<passwordsafe>\""
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:175
+#, c-format
+msgid "Unexpected XML node type %d of \"%ls\", inside of <passwordsafe>"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:180
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:246
+#, c-format
+msgid "Unknown XML tag <%ls> in <%ls>"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:188
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:252
+#, c-format
+msgid "Not allowed XML tag <%ls> in <%ls>"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:269
+#, c-format
+msgid "Wrong XML value \"%ls\" for <%ls>"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:112
+#, c-format
+msgid "Error in filter XML structure: excpected \"%ls\", found \"%ls\""
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:141
+#, fuzzy
+msgid "Missing filtername"
+msgstr "File XSD Mancante - "
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:159
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:233
+#, c-format
+msgid "Unexpected XML tag \"%ls\", expected tag is \"%ls\""
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:186
+#, c-format
+msgid "Missing active attribute in filter entry %d of filter '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:196
+#, c-format
+msgid ""
+"Unexpected attribute value \"%ls\" (expected \"yes\" or \"no\") in filter "
+"entry %d of '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:317
+#, c-format
+msgid "Missing XML tag for field type in filter entry %d of '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:593
+#, c-format
+msgid "Unknown XML tag \"%ls\" for field type in filter entry %d of '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:607
+#, c-format
+msgid "Missing rule in filter entry %d of filter '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:612
+#, c-format
+msgid "Unknown rule \"%ls\" in filter entry %d of filter '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:623
+#, c-format
+msgid "Missing logic in filter entry %d of filter '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:633
+#, c-format
+msgid "Unknown logic \"%ls\" in filter entry %d of filter '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:651
+#, c-format
+msgid "Unknown XML tag \"%ls\" in field type in filter entry %d of '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:660
+#, c-format
+msgid "Missing logic or rule XML tag in filter entry %d of '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:753
+#, c-format
+msgid "Unknown XML tag \"%ls\" in test in filter entry %d of '%ls'"
 msgstr ""
 
 #, fuzzy
