@@ -5,7 +5,9 @@ The implementation of PWSAFE is using different XML libraries.
 - Filter and XML Import of data bases are supported by
 
   a) Microsoft XML standard library,
+
   b) Xerces XML library or
+
   c) Pugi library
 
 Microsoft XML library is available for Windows only. The Xerces 
@@ -31,6 +33,7 @@ If you are building x64, you need to build Xerces in x64 mode.
 The two XSD files
 - pwsafe.xsd
 - pwsafe_filter.xsd
+
 are used for Microsoft and Xerces XML libararies. The Pugi XML support (syntax check and value check) is hard coded in the files located in 
 ```
 src/core/XML/Pugi/PFileXMLProcessor.cpp
