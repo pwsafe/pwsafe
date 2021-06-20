@@ -103,7 +103,7 @@ wxString SelectionCriteria::GetGroupSelectionDescription() const
     return _("All entries");
   else
     return wxString(_("Entries whose ")) << GetSelectableFieldName(subgroups[m_subgroupObject]) << wxS(' ')
-            << subgroupFunctions[m_subgroupFunction].name << wxS(" \"") << m_subgroupText
+            << GetSubgroupFunctionName(m_subgroupFunction) << wxS(" \"") << m_subgroupText
                                          << wxS("\" [") << (m_fCaseSensitive? wxS("") : _("not ")) << _("case-sensitive]");
 }
 
