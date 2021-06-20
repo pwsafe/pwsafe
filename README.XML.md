@@ -42,7 +42,7 @@ src/core/XML/Pugi/PFilterXMLProcessor.cpp
 HINT: Whenever the structure of the XML filter or XML export of data base is extended or adapted the change of the related XSD file and the change of the Pugi support must be done in parallel.
 
 ## Automatic loaded filters
-A not documented feature is the loading of standard filters from file
+A documented feature is the loading of standard filters from file
 ```
 autoload_filters.xml
 ```
