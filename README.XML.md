@@ -11,7 +11,7 @@ The implementation of PWSAFE is using different XML libraries.
   c) Pugi library
 
 Microsoft XML library is available for Windows only. The Xerces 
-For compilation witrh a) or b) the related environment variable must be set in compilation - XML_MSXML or XML_XECESC. Leaving out both pre-compiler flags lead to ´compilation with variant c).
+For compilation witrh a) or b) the related environment variable must be set in compilation - XML_MSXML or XML_XECESC. Leaving out both pre-compiler flags lead to compilation with variant c).
 
 The wx build doesn't support XML_MSXML.
 
