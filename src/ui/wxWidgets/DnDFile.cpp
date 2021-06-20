@@ -26,6 +26,7 @@
 #include <wx/filename.h>
 ////@end includes
 
+#include "core/XML/XMLDefs.h"
 #include "DnDFile.h"
 
 /*!
