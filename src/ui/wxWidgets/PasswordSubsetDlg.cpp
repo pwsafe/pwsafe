@@ -22,6 +22,7 @@
 
 #include <sstream>
 #include <wx/regex.h>
+#include <wx/tokenzr.h>
 #include "PasswordSubsetDlg.h"
 #include "Clipboard.h"
 
@@ -45,6 +46,7 @@ BEGIN_EVENT_TABLE( PasswordSubsetDlg, wxDialog )
 ////@begin PasswordSubsetDlg event table entries
   EVT_BUTTON( ID_BITMAPBUTTON, PasswordSubsetDlg::OnBitmapbuttonClick )
   EVT_BUTTON( wxID_CLOSE, PasswordSubsetDlg::OnCloseClick )
+  EVT_TEXT( ID_TEXTCTRL_POS, PasswordSubsetDlg::OnPosListChanged )
 ////@end PasswordSubsetDlg event table entries
 
 END_EVENT_TABLE()
@@ -107,6 +109,7 @@ void PasswordSubsetDlg::Init()
   m_pos = nullptr;
   m_vals = nullptr;
   m_error = nullptr;
+  m_copyBtn = nullptr;
 ////@end PasswordSubsetDlg member initialisation
 }
 
@@ -122,7 +125,7 @@ void PasswordSubsetDlg::CreateControls()
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
   itemDialog1->SetSizer(itemBoxSizer2);
 
-  wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("Enter positions of password characters separated by spaces, commas or semi-colons.\nPosition 1 is the first character, 2 is the second, etc. up to N for the last character of a password of length N.\n-1 is the last character, -2 the next to last, etc. up to -N for the first password character."), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("Enter positions of password characters separated by spaces, commas or semi-colons (* for full pasword).\nPosition 1 is the first character, 2 is the second, etc. up to N for the last character of a password of length N.\n-1 is the last character, -2 the next to last, etc. up to -N for the first password character."), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
   wxGridSizer* itemGridSizer4 = new wxGridSizer(2, 3, 0, 0);
@@ -142,18 +145,19 @@ void PasswordSubsetDlg::CreateControls()
   m_vals = new wxTextCtrl( itemDialog1, ID_TEXTCTRL_VAL, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
   itemGridSizer4->Add(m_vals, 0, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxBitmapButton* itemBitmapButton10 = new wxBitmapButton( itemDialog1, ID_BITMAPBUTTON, itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
-  wxBitmap itemBitmapButton10BitmapSel(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")));
-  itemBitmapButton10->SetBitmapSelected(itemBitmapButton10BitmapSel);
-  wxBitmap itemBitmapButton10BitmapFocus(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")));
-  itemBitmapButton10->SetBitmapFocus(itemBitmapButton10BitmapFocus);
-  wxBitmap itemBitmapButton10BitmapDisabled(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword_disabled.xpm")));
-  itemBitmapButton10->SetBitmapDisabled(itemBitmapButton10BitmapDisabled);
-  wxBitmap itemBitmapButton10BitmapHover(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")));
-  itemBitmapButton10->SetBitmapHover(itemBitmapButton10BitmapHover);
+  m_copyBtn = new wxBitmapButton( itemDialog1, ID_BITMAPBUTTON, itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW );
+  wxBitmap copyBtnBitmapSel(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")));
+  m_copyBtn->SetBitmapSelected(copyBtnBitmapSel);
+  wxBitmap copyBtnBitmapFocus(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")));
+  m_copyBtn->SetBitmapFocus(copyBtnBitmapFocus);
+  wxBitmap copyBtnBitmapDisabled(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword_disabled.xpm")));
+  m_copyBtn->SetBitmapDisabled(copyBtnBitmapDisabled);
+  wxBitmap copyBtnBitmapHover(itemDialog1->GetBitmapResource(wxT("graphics/toolbar/new/copypassword.xpm")));
+  m_copyBtn->SetBitmapHover(copyBtnBitmapHover);
+  m_copyBtn->Disable();
   if (PasswordSubsetDlg::ShowToolTips())
-    itemBitmapButton10->SetToolTip(_("Copy values"));
-  itemGridSizer4->Add(itemBitmapButton10, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+    m_copyBtn->SetToolTip(_("Copy values"));
+  itemGridSizer4->Add(m_copyBtn, 0, wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_error = new wxStaticText( itemDialog1, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_error->SetForegroundColour(wxColour(255, 0, 0));
@@ -218,48 +222,63 @@ wxIcon PasswordSubsetDlg::GetIconResource( const wxString& name )
 
 void PasswordSubsetDlg::OnChar( wxKeyEvent& event )
 {
-  static wxRegEx charSet("[[:digit:]]|[[:space:]]|,|-|;");
-  static wxRegEx seps(",|;");
+  static wxRegEx charSet("[[:digit:]]|[[:space:]]|,|-|;|\\*");
 
-  wxASSERT(charSet.IsValid() && seps.IsValid());
+  wxASSERT(charSet.IsValid());
 
   wxChar uc = event.GetUnicodeKey();
   if (uc != WXK_NONE) {
-    const int N = static_cast<int>(m_password.length());
+    // Check against valid pos regexp and update vals accordingly
     if (charSet.Matches(wxString(uc, 1))) {
       event.Skip(true); // accept
-      // Check against valid pos regexp and update vals accordingly
-      wxString pos_str = m_pos->GetLineText(0);
-      pos_str += uc; // since accepted char will only be added to control later
-      // could have used xwStringTokenizer in following, but this way we also convert to int
-      // and catch bad usage of '-'
-      seps.Replace(&pos_str, wxT(" ")); // replace ';' and ',' with ' ' for stream tokenizing
-      m_vals->Clear();
-      m_error->SetLabel(wxEmptyString);
-      
-      std::wistringstream is(static_cast<const wchar_t*>(pos_str.wc_str()));
-      int pos;
-      while (is >> pos) {
-	if (pos > 0 && pos <= N)
-	  *m_vals << m_password[pos - 1] << wxT(" ");
-	else if (pos < 0 && pos >= -N)
-	  *m_vals << m_password[N + pos] << wxT(" ");
-	else {
-	  m_error->SetLabel(_("Invalid position"));
-	}
-      }
-      if (!is.eof()) {
-	m_error->SetLabel(_("Invalid position"));
-      }
+    } else if (uc == WXK_BACK) {
+      event.Skip(true); // handle backspace
     } else {
-      if (uc == WXK_BACK)
-	event.Skip(true); // handle backspace
-      else
-	event.Skip(false); // not a char that we want to accept
+      event.Skip(false); // not a char that we want to accept
     }
   } else { // process non-char key as usual
     event.Skip(true);
   }
+}
+
+bool PasswordSubsetDlg::GetSubsetString(const wxString& subset, bool with_delims, StringX& result) const
+{
+  const int N = static_cast<int>(m_password.length());
+
+  wxStringTokenizer tokenizer(subset, wxT(",; "));
+
+  StringX res;
+  while (tokenizer.HasMoreTokens()) {
+    wxString token = tokenizer.GetNextToken();
+    long pos;
+    if (token == wxT("*")) {
+      res += m_password;
+    }
+    else if (token.ToCLong(&pos)) {
+      if (pos > 0 && pos <= N) {
+        res += m_password[pos - 1];
+      } else if (pos < 0 && pos >= -N) {
+        res += m_password[N + pos];
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
+  if (with_delims) {
+      result.clear();
+      result.reserve(res.size() * 2);
+      for (size_t i = 0; i < res.size(); ++i) {
+        result += res[i];
+        result += L' ';
+      }
+  }
+  else {
+    result = res;
+  }
+  return true;
 }
 
 /*!
@@ -269,15 +288,9 @@ void PasswordSubsetDlg::OnChar( wxKeyEvent& event )
 void PasswordSubsetDlg::OnBitmapbuttonClick( wxCommandEvent& event )
 {
   wxUnusedVar(event);
-  wxString val_str = m_vals->GetLineText(0);
-  wxString reduced_str;
-  // we always put the char at the specified position plus a space.
-  // so here we undo that.
-  if (!val_str.empty()) {
-    wxASSERT(val_str.length() % 2 == 0);
-    for (size_t i = 0; i < val_str.length(); i += 2)
-      reduced_str += val_str[i];
-    Clipboard::GetInstance()->SetData(static_cast<const wchar_t*>(reduced_str.wc_str()));
+  StringX pass;
+  if (GetSubsetString(m_pos->GetLineText(0), false, pass)) {
+    Clipboard::GetInstance()->SetData(stringx2std(pass).c_str());
   }
 }
 
@@ -292,4 +305,24 @@ void PasswordSubsetDlg::OnCloseClick( wxCommandEvent& event )
   // Before editing this code, remove the block markers.
   EndModal(wxID_CLOSE);
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE in PasswordSubsetDlg.
+}
+
+void PasswordSubsetDlg::OnPosListChanged( wxCommandEvent& /*event*/ )
+{
+  StringX pass;
+  if (GetSubsetString(m_pos->GetLineText(0), true, pass)) {
+    m_vals->SetValue(stringx2std(pass));
+    m_error->SetLabel(wxEmptyString);
+    if (pass.empty()) {
+      m_copyBtn->Disable();
+    }
+    else {
+      m_copyBtn->Enable();
+    }
+  }
+  else {
+    m_vals->Clear();
+    m_error->SetLabel(_("Invalid position"));
+    m_copyBtn->Disable();
+  }
 }

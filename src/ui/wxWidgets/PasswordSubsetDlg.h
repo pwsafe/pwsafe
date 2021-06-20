@@ -86,6 +86,8 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
   void OnCloseClick( wxCommandEvent& event );
 
+  void OnPosListChanged( wxCommandEvent& event );
+
 ////@end PasswordSubsetDlg event handler declarations
 
 ////@begin PasswordSubsetDlg member function declarations
@@ -101,11 +103,13 @@ public:
   static bool ShowToolTips();
 
 private:
+  bool GetSubsetString(const wxString& subset, bool with_delims, StringX& result) const;
   const StringX m_password;
 ////@begin PasswordSubsetDlg member variables
   wxTextCtrl* m_pos;
   wxTextCtrl* m_vals;
   wxStaticText* m_error;
+  wxBitmapButton* m_copyBtn;
 ////@end PasswordSubsetDlg member variables
 };
 
