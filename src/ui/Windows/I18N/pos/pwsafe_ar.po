@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-05-22 20:01+0300\n"
-"PO-Revision-Date: 2021-06-17 23:45+0300\n"
+"PO-Revision-Date: 2021-06-20 01:19+0300\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1569,7 +1569,7 @@ msgstr "بعد"
 
 #. Resource IDs: (8223)
 msgid "Albanian"
-msgstr "الألبانية"
+msgstr "Albanian"
 
 #. Resource IDs: (5826)
 msgid "Alias Base entry"
@@ -1847,7 +1847,7 @@ msgstr "Belgian French"
 
 #. Resource IDs: (8249)
 msgid "Bengali"
-msgstr "بنغالي"
+msgstr "Bengali"
 
 #. Resource IDs: (8315)
 msgid "Bengali - INSCRIPT"
@@ -1895,7 +1895,7 @@ msgstr "بنيت على "
 
 #. Resource IDs: (8317)
 msgid "Bulgarian"
-msgstr "البلغارية"
+msgstr "Bulgarian"
 
 #. Resource IDs: (8281)
 msgid "Bulgarian (Latin)"
@@ -1965,15 +1965,15 @@ msgstr "لا يمكن الحصول على إصدار المخطط."
 
 #. Resource IDs: (8277)
 msgid "Canadian French"
-msgstr "الكندية الفرنسية"
+msgstr "Canadian French"
 
 #. Resource IDs: (8275)
 msgid "Canadian French (Legacy)"
-msgstr "الكندية الفرنسية (إرث)"
+msgstr "Canadian French (Legacy)"
 
 #. Resource IDs: (8304)
 msgid "Canadian Multilingual Standard"
-msgstr "المعيار الكندي متعدد اللغات"
+msgstr "Canadian Multilingual Standard"
 
 #. Resource IDs: (2, 32157 - MenuEx, 32273 - Menu, 5547, 8084)
 msgid "Cancel"
@@ -2628,7 +2628,7 @@ msgstr "Criteria"
 
 #. Resource IDs: (8221)
 msgid "Croatian"
-msgstr "الكرواتية"
+msgstr "Croatian"
 
 #. Resource IDs: (8011)
 msgid "Ctrl"
@@ -3046,7 +3046,7 @@ msgstr "مجموعة مكررة"
 
 #. Resource IDs: (8215)
 msgid "Dutch"
-msgstr "الهولندية"
+msgstr "Dutch"
 
 #. Resource IDs: (2, 32021 - Menu, 5549)
 msgid "E&xit"
@@ -3908,7 +3908,7 @@ msgstr "توليد كلمة مرور بناءا على سياسة مختارة"
 
 #. Resource IDs: (8241)
 msgid "Georgian"
-msgstr "الجورجية"
+msgstr "Georgian"
 
 #. Resource IDs: (8314)
 msgid "Georgian (Ergonomic)"
@@ -3916,15 +3916,15 @@ msgstr "Georgian (Ergonomic)"
 
 #. Resource IDs: (8297)
 msgid "Georgian (QWERTY)"
-msgstr "الجورجية (QWERTY)"
+msgstr "Georgian (QWERTY)"
 
 #. Resource IDs: (8205)
 msgid "German"
-msgstr "الألمانية"
+msgstr "German"
 
 #. Resource IDs: (8283)
 msgid "German (IBM)"
-msgstr "الألمانية (IBM)"
+msgstr "German (IBM)"
 
 #. Resource IDs: (32203 - MenuEx)
 msgid "Get &Help\tF1"
@@ -3956,11 +3956,11 @@ msgstr "Go+"
 
 #. Resource IDs: (8206)
 msgid "Greek"
-msgstr "اليونانية"
+msgstr "Greek"
 
 #. Resource IDs: (8284)
 msgid "Greek (220)"
-msgstr "اليونانية (220)"
+msgstr "Greek (220)"
 
 #. Resource IDs: (8318)
 msgid "Greek (220) Latin"
@@ -3968,7 +3968,7 @@ msgstr "Greek (220) Latin"
 
 #. Resource IDs: (8307)
 msgid "Greek (319)"
-msgstr "اليونانية (319)"
+msgstr "Greek (319)"
 
 #. Resource IDs: (8321)
 msgid "Greek (319) Latin"
@@ -3976,7 +3976,7 @@ msgstr "Greek (319) Latin"
 
 #. Resource IDs: (8322)
 msgid "Greek Latin"
-msgstr "لاتينية يونانية"
+msgstr "Greek Latin"
 
 #. Resource IDs: (8323)
 msgid "Greek Polytonic"
@@ -4024,7 +4024,7 @@ msgstr "Hausa"
 
 #. Resource IDs: (8211)
 msgid "Hebrew"
-msgstr "عبري"
+msgstr "Hebrew"
 
 #. Resource IDs: (32203, 5607, 57670)
 msgid "Help"
@@ -4052,7 +4052,7 @@ msgstr "قم بتمييز المدخلات التي تم تغييرها"
 
 #. Resource IDs: (8298)
 msgid "Hindi Traditional"
-msgstr "الهندية التقليدية"
+msgstr "Hindi Traditional"
 
 #. Resource IDs: (3013)
 msgid "History"
@@ -4077,7 +4077,7 @@ msgstr "ومع ذلك ، لا يمكننا إضافة أي منهما لأن ج�
 
 #. Resource IDs: (8212)
 msgid "Hungarian"
-msgstr "الهنغارية"
+msgstr "Hungarian"
 
 #. Resource IDs: (8286)
 msgid "Hungarian 101-key"
@@ -4486,15 +4486,15 @@ msgstr "إيرلندي"
 
 #. Resource IDs: (8214)
 msgid "Italian"
-msgstr "الإيطالية"
+msgstr "Italian"
 
 #. Resource IDs: (8287)
 msgid "Italian (142)"
-msgstr "الإيطالية(142)"
+msgstr "Italian (142)"
 
 #. Resource IDs: (8327)
 msgid "Japanese"
-msgstr "اليابانية"
+msgstr "Japanese"
 
 #. Resource IDs: (1412)
 msgid "KBytes"
@@ -4506,7 +4506,7 @@ msgstr "Kannada"
 
 #. Resource IDs: (8245)
 msgid "Kazakh"
-msgstr "الكازاخية"
+msgstr "Kazakh"
 
 #. Resource IDs: (32024 - MenuEx)
 msgid "KeePass V1 CSV File..."
@@ -4530,7 +4530,7 @@ msgstr "نوع الكبيورد:"
 
 #. Resource IDs: (8326)
 msgid "Korean"
-msgstr "الكورية"
+msgstr "Korean"
 
 #. Resource IDs: (8246)
 msgid "Kyrgyz Cyrillic"
@@ -4587,15 +4587,15 @@ msgstr "احدث اصدار؟إضغط </a> هنا<a href=\"%s\"> للتحقق."
 
 #. Resource IDs: (8267)
 msgid "Latin American"
-msgstr "اميريكية لاتينية"
+msgstr "Latin American"
 
 #. Resource IDs: (8232)
 msgid "Latvian"
-msgstr "اللاتيفية"
+msgstr "Latvian"
 
 #. Resource IDs: (8294)
 msgid "Latvian (QWERTY)"
-msgstr "اللاتيفية (QWERTY)"
+msgstr "Latvian (QWERTY)"
 
 #. Resource IDs: (8157)
 msgid "Left Ctrl key"
@@ -5061,7 +5061,7 @@ msgstr "مدخل طبيعي - تحذير كلمة المرور سوف تنتهي
 
 #. Resource IDs: (8216)
 msgid "Norwegian"
-msgstr "النرويجية"
+msgstr "Norwegian"
 
 #. Resource IDs: (8244)
 msgid "Norwegian with Sami"
@@ -5580,7 +5580,7 @@ msgstr "عمل كتابة تلقائية"
 
 #. Resource IDs: (8235)
 msgid "Persian"
-msgstr "اللغة الإيرانية"
+msgstr "Persian"
 
 #. Resource IDs: (65535)
 msgid "Physical Keyboard:"
@@ -5772,15 +5772,15 @@ msgstr "حقل سياسة"
 
 #. Resource IDs: (8288)
 msgid "Polish (214)"
-msgstr "البولندية (214)"
+msgstr "Polish (214)"
 
 #. Resource IDs: (8217)
 msgid "Polish (Programmers)"
-msgstr "البولندية (المبرمجين)"
+msgstr "Polish (Programmers)"
 
 #. Resource IDs: (8270)
 msgid "Portuguese"
-msgstr "البرتغالية"
+msgstr "Portuguese"
 
 #. Resource IDs: (8218)
 msgid "Portuguese (Brazilian ABNT)"
@@ -5886,7 +5886,7 @@ msgstr "تم نسخ Pswd "
 
 #. Resource IDs: (8250)
 msgid "Punjabi"
-msgstr "بنجابية"
+msgstr "Punjabi"
 
 #. Resource IDs: (1235)
 msgid "Put Groups first in Tree View"
@@ -5929,7 +5929,7 @@ msgstr "قراءة فقط"
 
 #. Resource IDs: (5551)
 msgid "Read-Write"
-msgstr "كتابة فقط"
+msgstr "كتابة - قراءة"
 
 #. Resource IDs: (5216)
 msgid "Recent"
@@ -6605,15 +6605,15 @@ msgstr "إنهاء الإشارة"
 
 #. Resource IDs: (8222)
 msgid "Slovak"
-msgstr "السلوفاكية"
+msgstr "Slovak"
 
 #. Resource IDs: (8291)
 msgid "Slovak (QWERTY)"
-msgstr "السلوفاكية (QWERTY)"
+msgstr "Slovak (QWERTY)"
 
 #. Resource IDs: (8230)
 msgid "Slovenian"
-msgstr "السلوفينية"
+msgstr "Slovenian"
 
 #. Resource IDs: (5710)
 msgid ""
@@ -6707,7 +6707,7 @@ msgstr "Space Bar"
 
 #. Resource IDs: (8208)
 msgid "Spanish"
-msgstr "الإسبانية"
+msgstr "Spanish"
 
 #. Resource IDs: (8285)
 msgid "Spanish Variation"
@@ -6805,7 +6805,7 @@ msgstr "لاحقة:"
 
 #. Resource IDs: (8224)
 msgid "Swedish"
-msgstr "السويدية"
+msgstr "Swedish"
 
 #. Resource IDs: (8273)
 msgid "Swedish with Sami"
@@ -6817,7 +6817,7 @@ msgstr "الفرنسية السويسرية"
 
 #. Resource IDs: (8265)
 msgid "Swiss German"
-msgstr "السويسري الألماني"
+msgstr "Swiss German"
 
 #. Resource IDs: (3068, 5842)
 msgid "Symbols"
@@ -7589,11 +7589,11 @@ msgstr "محاولة الاتصال بالخادم..."
 
 #. Resource IDs: (8293)
 msgid "Turkish F"
-msgstr "التركية F"
+msgstr "Turkish F"
 
 #. Resource IDs: (8226)
 msgid "Turkish Q"
-msgstr "التركية Q"
+msgstr "Turkish Q"
 
 #. Resource IDs: (8247)
 msgid "Turkmen"
@@ -7621,11 +7621,11 @@ msgstr "UUID"
 
 #. Resource IDs: (8228)
 msgid "Ukrainian"
-msgstr "الاوكرانية"
+msgstr "Ukrainian"
 
 #. Resource IDs: (8311)
 msgid "Ukrainian (Enhanced)"
-msgstr "الأوكرانية(محسنة)"
+msgstr "Ukrainian (Enhanced)"
 
 #. Resource IDs: (3029)
 msgid ""
@@ -7760,7 +7760,7 @@ msgstr "تنسيق ملف غير معروف."
 
 #. Resource IDs: (8266)
 msgid "United Kingdom"
-msgstr "المملكة المتحدة "
+msgstr "United Kingdom"
 
 #. Resource IDs: (8258)
 msgid "United Kingdom Extended"
@@ -7988,7 +7988,7 @@ msgstr "استخدام التطبيق:"
 
 #. Resource IDs: (8301)
 msgid "Uyghur"
-msgstr "الإيغور"
+msgstr "Uyghur"
 
 #. Resource IDs: (8274)
 msgid "Uzbek Cyrillic"
@@ -8047,7 +8047,7 @@ msgstr ""
 
 #. Resource IDs: (8236)
 msgid "Vietnamese"
-msgstr "الفيتنامية"
+msgstr "Vietnamese"
 
 #. Resource IDs: (32101, 5624)
 msgid "View"
@@ -9080,7 +9080,7 @@ msgid ""
 "Unprotect All Entries"
 msgstr ""
 "\n"
-"الغاء حماية كل المداخل"
+"الغاء حماية جميع المداخل"
 
 #. Resource IDs: (32088)
 msgid ""
