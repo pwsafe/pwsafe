@@ -23,7 +23,7 @@
 #include <wx/grid.h>
 #include <wx/image.h>
 #include <wx/imaglist.h>
-#include "PWSFilters.h"
+#include "core/PWSFilters.h"
 ////@end includes
 
 /*!

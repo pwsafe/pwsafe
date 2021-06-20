@@ -37,7 +37,7 @@
 #include "FieldSelectionDlg.h"
 #include "SelectionCriteria.h"
 #include "SizeRestrictedPanel.h"
-#include "StringX.h"
+#include "core/StringX.h"
 #include "ViewReportDlg.h"
 
 enum {ID_BTN_COMPARE = 100,

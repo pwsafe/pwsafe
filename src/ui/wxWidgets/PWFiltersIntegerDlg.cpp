@@ -26,7 +26,7 @@
 #include <limits.h>
 #include <vector>
 
-#include "PWSFilters.h"
+#include "core/PWSFilters.h"
 #include "PWFiltersIntegerDlg.h"
 #include "PWFiltersEditor.h"
 #include "PWFiltersTable.h"
