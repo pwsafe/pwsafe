@@ -1,10 +1,13 @@
 ## Introduction
 The implementation of PWSAFE is using different XML libraries.
 - Always on board is the Pugi library (see [pugixml project](http://www.pugixml.org), which is available under the [MIT license](http://www.opensource.org/licenses/mit-license.html)). This library is used for storage of the runtime parameters in pwsafe.cfg
-Filter and XML Import of data bases are supported by
+
+- Filter and XML Import of data bases are supported by
+
   a) Microsoft XML standard library,
   b) Xerces XML library or
   c) Pugi library
+
 Microsoft XML library is available for Windows only. The Xerces 
 For compilation witrh a) or b) the related environment variable must be set in compilation - XML_MSXML or XML_XECESC. Leaving out both pre-compiler flags lead to ´compilation with variant c).
 
