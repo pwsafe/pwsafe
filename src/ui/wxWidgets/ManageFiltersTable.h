@@ -21,7 +21,7 @@
 #include <vector>
 #include <wx/string.h>
 #include <wx/grid.h>
-#include "PWSFilters.h"
+#include "core/PWSFilters.h"
 ////@end includes
 
 /*!

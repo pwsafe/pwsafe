@@ -23,7 +23,7 @@
 #include <wx/scrolwin.h>
 #include <wx/stattext.h>
 //*)
-#include "ItemAtt.h"
+#include "core/ItemAtt.h"
 #include "wxUtilities.h"
 
 

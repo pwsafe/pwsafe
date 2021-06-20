@@ -18,7 +18,7 @@
 #endif
 
 #include "SelectionCriteria.h"
-#include "Report.h"
+#include "core/Report.h"
 
 CItemData::FieldType subgroups[] = {  CItemData::GROUP,
                                       CItemData::GROUPTITLE,

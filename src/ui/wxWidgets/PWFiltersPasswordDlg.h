@@ -23,7 +23,7 @@
 #include <wx/stattext.h>
 #include <wx/spinctrl.h>
 
-#include "PWSFilters.h"
+#include "core/PWSFilters.h"
 
 /*!
  * Forward declarations

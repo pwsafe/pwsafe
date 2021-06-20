@@ -66,7 +66,7 @@
 #include "ViewReportDlg.h"
 #include "wxUtilities.h"
 #include "DnDFile.h"
-#include "Report.h"
+#include "core/Report.h"
 
 #include <algorithm>
 
