@@ -3519,15 +3519,15 @@ msgstr "Не удалось сохранить изображение"
 #. Resource IDs: (5850)
 #, c-format
 msgid "Failed to switch from R-O to R/W because database is already open in R/W mode by:\n%s %s\n(Only one R/W access at a time is allowed)"
-msgstr "Ошибка при переключении в режим чтения/записи: контейнер уже открыт для записи:\n%s %s\n(Файл не может быть одновременно открыт для записи несколькими пользователями)"
+msgstr "Ошибка при переключении в режим «чтение/запись»: контейнер уже открыт для записи:\n%s %s\n(Файл не может быть одновременно открыт для записи несколькими пользователями)"
 
 #. Resource IDs: (5853)
 msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be a problem with its drive."
-msgstr "Ошибка при переключении в режим чтения/записи: контейнер не найден. Возможно, он бы удалён, перемещён, или произошёл сбой на диске."
+msgstr "Ошибка при переключении в режим «чтение/запись»: контейнер не найден. Возможно, он был удалён, перемещён, или произошёл сбой на диске."
 
 #. Resource IDs: (5854)
 msgid "Failed to switch from R-O to R/W: The file appears to be too short to be a valid database."
-msgstr "Ошибка при переключении в режим чтения/записи: файл не является контейнером Password Safe (размер слишком мал)."
+msgstr "Ошибка при переключении в режим «чтение/запись»: файл не является контейнером Password Safe (размер слишком мал)."
 
 #. Resource IDs: (5851)
 msgid "Failed to switch from R/W to R-O: Could not release database lock.\nTry exiting and restarting program."
@@ -8525,7 +8525,7 @@ msgstr "недопустимый!"
 # условие фильтра (is in container, is alias)
 #. Resource IDs: (3294)
 msgid "is"
-msgstr "выполняется:"
+msgstr "соответствует"
 
 #. Resource IDs: (3298)
 msgid "is active"
@@ -8538,7 +8538,7 @@ msgstr "неактивно"
 # условие фильтра (is not in container, is not alias)
 #. Resource IDs: (3295)
 msgid "is not"
-msgstr "не выполняется:"
+msgstr "не соответствует"
 
 #. Resource IDs: (3297)
 msgid "is not present"
