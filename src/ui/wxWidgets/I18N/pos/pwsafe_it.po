@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PasswordSafe ITA v0.94\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-19 15:37+0200\n"
+"POT-Creation-Date: 2021-06-21 12:49+0200\n"
 "PO-Revision-Date: 2014-06-28 14:48+0200\n"
 "Last-Translator: Luca Mariot <rymoah@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1994,7 +1994,7 @@ msgid "Please name the plaintext file"
 msgstr "Scegliere un nome per il file di testo"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:625
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1144
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1142
 msgid ""
 "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
 msgstr ""
@@ -2163,22 +2163,22 @@ msgid "Renamed "
 msgstr "Rinominato "
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:970
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1064
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1217
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1062
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1215
 msgid "Completed successfully"
 msgstr "Completato con successo"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:970
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1064
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1217
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1062
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1215
 msgid "Completed but ...."
 msgstr "Completato, ma ..."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:982
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1128
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1198
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1219
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1280
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1126
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1196
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1217
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1278
 msgid "Do you wish to see a detailed report?"
 msgstr "Si desidera visualizzare un report dettagliato?"
 
@@ -2211,7 +2211,7 @@ msgstr " Compilazione"
 msgid "XML"
 msgstr "XML"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1052
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1051
 #, fuzzy, c-format
 msgid ""
 "File: %ls failed validation against XML Schema:\n"
@@ -2222,7 +2222,7 @@ msgstr ""
 "\n"
 "%ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1058
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1056
 #, fuzzy, c-format
 msgid ""
 "File: %ls passed Validation but had the following errors during import:\n"
@@ -2234,25 +2234,25 @@ msgstr ""
 "\n"
 "%ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1079
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1077
 msgid "The following records were skipped:"
 msgstr "I record seguenti sono stati saltati:"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1081
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1079
 #, c-format
 msgid " / skipped %d"
 msgstr " / saltati %d"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1086
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1084
 msgid "The following records had errors in their Password History:"
 msgstr "I record seguenti contenevano errori nella loro Cronologia Password:"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1088
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1086
 #, c-format
 msgid " / with Password History errors %d"
 msgstr " / con errori nella Cronologia Password %d"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1093
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1091
 msgid ""
 "The following records were renamed as an entry already exists in your "
 "database or in the Import file:"
@@ -2260,12 +2260,12 @@ msgstr ""
 "I record seguenti sono stati rinominati poiché esiste già una voce nel "
 "database o nel file in cui importare:"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1095
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1093
 #, c-format
 msgid " / renamed %d"
 msgstr " / rinominati %d"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1100
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1098
 #, fuzzy, c-format
 msgid ""
 "File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See "
@@ -2274,25 +2274,25 @@ msgstr ""
 "Il file: %ls è stato importato (voci validate %d / importate %d%ls%ls%ls). "
 "Si veda il report per altri dettagli."
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1106
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1213
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1103
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1104
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1211
 #: ../../../ui/wxWidgets/SyncWizard.cpp:588
 #: ../../../ui/wxWidgets/SyncWizard.cpp:731
 #: ../../../ui/wxWidgets/SyncWizard.cpp:748 ../../../core/core_st.cpp:98
 msgid "entry"
 msgstr "voce"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1106
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1213
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1103
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1104
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1211
 #: ../../../ui/wxWidgets/SyncWizard.cpp:588
 #: ../../../ui/wxWidgets/SyncWizard.cpp:731
 #: ../../../ui/wxWidgets/SyncWizard.cpp:748 ../../../core/core_st.cpp:96
 msgid "entries"
 msgstr "voci"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1107
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
 #, fuzzy, c-format
 msgid ""
 "Validated %d %ls\n"
@@ -2303,25 +2303,25 @@ msgstr ""
 "\n"
 "Importate %d %ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1115
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1113
 msgid "XML import not supported in this release"
 msgstr "Importazione XML non supportata in questa release"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1118
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1116
 #, c-format
 msgid "XML import: Unexpected return code(%d)"
 msgstr "Importazione XML: codice di return inatteso (%d)"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1142
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1140
 msgid "Please Choose a KeePass Text File to Import"
 msgstr "Selezionare un file di testo KeePass da importare"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1164
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1162
 #, fuzzy, c-format
 msgid "Text file being imported: %ls"
 msgstr "File di testo da importare: %ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1181
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1179
 #: ../../../ui/wxWidgets/SyncWizard.cpp:603
 #, fuzzy, c-format
 msgid ""
@@ -2333,11 +2333,11 @@ msgstr ""
 "\n"
 "Impossibile aprire il file in lettura!"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1182
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1180
 msgid "File open error"
 msgstr "Errore durante l'apertura del file"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1196
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1194
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -2348,20 +2348,20 @@ msgstr ""
 "\n"
 "Formato non valido"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1199
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1197
 msgid "Import failed"
 msgstr "Importazione fallita"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1214
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1212
 #, fuzzy, c-format
 msgid "Imported %d %ls"
 msgstr "Importato %d %ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1266
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1264
 msgid "Merging database: "
 msgstr "Unione database: "
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1281
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1279
 msgid "Merge Complete"
 msgstr "Unione Completata"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-19 15:37+0200\n"
+"POT-Creation-Date: 2021-06-21 12:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2100,7 +2100,7 @@ msgid "Please name the plaintext file"
 msgstr "텍스트 파일의 이름을 지정해 주십시오"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:625
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1144
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1142
 #, fuzzy
 msgid ""
 "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
@@ -2293,22 +2293,22 @@ msgid "Renamed "
 msgstr "이름 변경"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:970
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1064
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1217
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1062
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1215
 msgid "Completed successfully"
 msgstr "성공적으로 완료했습니다"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:970
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1064
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1217
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1062
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1215
 msgid "Completed but ...."
 msgstr "완료하였습니다만..."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:982
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1128
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1198
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1219
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1280
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1126
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1196
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1217
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1278
 #, fuzzy
 msgid "Do you wish to see a detailed report?"
 msgstr "정말 이것을 교체하시겠습니까?"
@@ -2342,7 +2342,7 @@ msgstr ""
 msgid "XML"
 msgstr "XML"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1052
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1051
 #, fuzzy, c-format
 msgid ""
 "File: %ls failed validation against XML Schema:\n"
@@ -2353,7 +2353,7 @@ msgstr ""
 "\n"
 "%ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1058
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1056
 #, fuzzy, c-format
 msgid ""
 "File: %ls passed Validation but had the following errors during import:\n"
@@ -2365,25 +2365,25 @@ msgstr ""
 "\n"
 "%ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1079
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1077
 msgid "The following records were skipped:"
 msgstr "다음 레코드가 무시되었습니다:"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1081
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1079
 #, c-format
 msgid " / skipped %d"
 msgstr " / %d 생략됨"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1086
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1084
 msgid "The following records had errors in their Password History:"
 msgstr "다음 항목들이 비밀번호 내역에서 오류를 가지고 있습니다:"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1088
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1086
 #, c-format
 msgid " / with Password History errors %d"
 msgstr "/ %d 비밀번호 과거 오류"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1093
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1091
 msgid ""
 "The following records were renamed as an entry already exists in your "
 "database or in the Import file:"
@@ -2391,12 +2391,12 @@ msgstr ""
 "다음 레코드는 이미 당신의 데이터베이스에 존재하거나 불러온 파일으로써 이름이 "
 "변경되었습니다:"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1095
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1093
 #, c-format
 msgid " / renamed %d"
 msgstr " / %d 이름이 변경됨"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1100
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1098
 #, fuzzy, c-format
 msgid ""
 "File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See "
@@ -2405,25 +2405,25 @@ msgstr ""
 "파일: %ls 을 불러왔습니다 (유효한 항목 %d / %d%ls%ls%ls 불러옴). 자세한 내용"
 "은 보고서를 참조하십시오."
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1106
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1213
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1103
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1104
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1211
 #: ../../../ui/wxWidgets/SyncWizard.cpp:588
 #: ../../../ui/wxWidgets/SyncWizard.cpp:731
 #: ../../../ui/wxWidgets/SyncWizard.cpp:748 ../../../core/core_st.cpp:98
 msgid "entry"
 msgstr "항목"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1106
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1213
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1103
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1104
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1211
 #: ../../../ui/wxWidgets/SyncWizard.cpp:588
 #: ../../../ui/wxWidgets/SyncWizard.cpp:731
 #: ../../../ui/wxWidgets/SyncWizard.cpp:748 ../../../core/core_st.cpp:96
 msgid "entries"
 msgstr "항목들"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1107
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
 #, fuzzy, c-format
 msgid ""
 "Validated %d %ls\n"
@@ -2434,25 +2434,25 @@ msgstr ""
 "\n"
 "%d %ls 불러옴"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1115
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1113
 msgid "XML import not supported in this release"
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1118
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1116
 #, c-format
 msgid "XML import: Unexpected return code(%d)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1142
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1140
 msgid "Please Choose a KeePass Text File to Import"
 msgstr "불러올 KeePass 텍스트 파일을 선택해 주십시오"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1164
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1162
 #, fuzzy, c-format
 msgid "Text file being imported: %ls"
 msgstr "파일을 불러왔습니다: %ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1181
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1179
 #: ../../../ui/wxWidgets/SyncWizard.cpp:603
 #, fuzzy, c-format
 msgid ""
@@ -2464,11 +2464,11 @@ msgstr ""
 "\n"
 "파일을 읽을 수 없었습니다!"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1182
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1180
 msgid "File open error"
 msgstr "파일 열기 오류"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1196
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1194
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -2479,21 +2479,21 @@ msgstr ""
 "\n"
 "잘못된 형식"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1199
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1197
 msgid "Import failed"
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1214
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1212
 #, fuzzy, c-format
 msgid "Imported %d %ls"
 msgstr "%d %ls 불러옴"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1266
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1264
 #, fuzzy
 msgid "Merging database: "
 msgstr "데이터베이스 병합: %s\n"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1281
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1279
 #, fuzzy
 msgid "Merge Complete"
 msgstr "비교 완료"

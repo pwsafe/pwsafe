@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-31 13:50+0300\n"
-"PO-Revision-Date: 2021-01-31 13:50+0300\n"
+"POT-Creation-Date: 2021-06-14 18:50+0300\n"
+"PO-Revision-Date: 2021-06-14 18:50+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -439,6 +439,11 @@ msgstr "%d/%d элементов"
 msgid "%ls - Copied %ls"
 msgstr "%ls — скопировано %ls"
 
+#. Resource IDs: (5907)
+#, c-format
+msgid "%ls - Drag & Drop %ls"
+msgstr "%ls — перетянуто %ls"
+
 #. Resource IDs: (3431)
 #, fuzzy, c-format
 msgid "%ls - Imported %ls"
@@ -505,11 +510,6 @@ msgstr "%s (*%s)|*%s||"
 #, fuzzy, c-format
 msgid "%s (database-specific)"
 msgstr "%s (связан с контейнером)"
-
-#. Resource IDs: (5907)
-#, c-format
-msgid "%s - Drag & Drop %s"
-msgstr "%s — перетянуто %s"
 
 # Ex.: Unable to create intermediate backup ...
 #. Resource IDs: (5998)
@@ -3519,15 +3519,15 @@ msgstr "Не удалось сохранить изображение"
 #. Resource IDs: (5850)
 #, c-format
 msgid "Failed to switch from R-O to R/W because database is already open in R/W mode by:\n%s %s\n(Only one R/W access at a time is allowed)"
-msgstr "Ошибка при переключении в режим чтения/записи: контейнер уже открыт для записи:\n%s %s\n(Файл не может быть одновременно открыт для записи несколькими пользователями)"
+msgstr "Ошибка при переключении в режим «чтение/запись»: контейнер уже открыт для записи:\n%s %s\n(Файл не может быть одновременно открыт для записи несколькими пользователями)"
 
 #. Resource IDs: (5853)
 msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be a problem with its drive."
-msgstr "Ошибка при переключении в режим чтения/записи: контейнер не найден. Возможно, он бы удалён, перемещён, или произошёл сбой на диске."
+msgstr "Ошибка при переключении в режим «чтение/запись»: контейнер не найден. Возможно, он был удалён, перемещён, или произошёл сбой на диске."
 
 #. Resource IDs: (5854)
 msgid "Failed to switch from R-O to R/W: The file appears to be too short to be a valid database."
-msgstr "Ошибка при переключении в режим чтения/записи: файл не является контейнером Password Safe (размер слишком мал)."
+msgstr "Ошибка при переключении в режим «чтение/запись»: файл не является контейнером Password Safe (размер слишком мал)."
 
 #. Resource IDs: (5851)
 msgid "Failed to switch from R/W to R-O: Could not release database lock.\nTry exiting and restarting program."
@@ -5775,12 +5775,9 @@ msgid "Redo the last change to password policies that was previously undone"
 msgstr "Восстановить последние отменённые изменения в политике создания паролей"
 
 # При задании даты
-#. Resource IDs: (1228)
+#. Resource IDs: (1228, 3397)
 msgid "Relative"
 msgstr "Относительное"
-
-msgid "relative"
-msgstr "относительное"
 
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
@@ -6302,10 +6299,6 @@ msgstr "По Shift+двойной клик"
 #. Resource IDs: (5555)
 msgid "Shift+click to view current policy"
 msgstr "Shift+щелчок для просмотра текущей политики"
-
-#. Resource IDs: (1599)
-msgid "Shorcuts"
-msgstr "Комбинации клавиш"
 
 #. Resource IDs: (5686)
 #, c-format
@@ -7482,7 +7475,7 @@ msgstr "Уйгурская"
 msgid "Uzbek Cyrillic"
 msgstr "Узбекская (кириллица)"
 
-#. Resource IDs: (3440, 5537)
+#. Resource IDs: (5537)
 msgid "Validate"
 msgstr "Проверить"
 
@@ -8247,8 +8240,8 @@ msgstr "\tИмя: %s; Имя файла: %s"
 
 #. Resource IDs: (5538)
 #, c-format
-msgid "\tNo entries were found containing search string '%s'"
-msgstr "\tНе найдено элементов, содержащих строку «%s»"
+msgid "\tNo entries were found containing search string '%ls' %ls"
+msgstr "\tНе найдено элементов, содержащих строку «%ls» %ls"
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
@@ -8271,8 +8264,8 @@ msgstr "\tПолитика создания паролей «%ls» отсутс�
 
 #. Resource IDs: (5539)
 #, c-format
-msgid "\tThe following entries contain search string '%s'"
-msgstr "\tСледующие элементы содержат искомую строку «%s»"
+msgid "\tThe following entries contain search string '%ls' %ls"
+msgstr "\tСледующие элементы содержат искомую строку «%ls» %ls"
 
 #. Resource IDs: (5522)
 #, c-format
@@ -8331,7 +8324,7 @@ msgstr "псевдоним"
 msgid "an unnamed file"
 msgstr "файл без имени"
 
-#. Resource IDs: (1307, 1419)
+#. Resource IDs: (1307, 1419, 5969)
 msgid "and"
 msgstr "и"
 
@@ -8532,7 +8525,7 @@ msgstr "недопустимый!"
 # условие фильтра (is in container, is alias)
 #. Resource IDs: (3294)
 msgid "is"
-msgstr "выполняется:"
+msgstr "соответствует"
 
 #. Resource IDs: (3298)
 msgid "is active"
@@ -8545,7 +8538,7 @@ msgstr "неактивно"
 # условие фильтра (is not in container, is not alias)
 #. Resource IDs: (3295)
 msgid "is not"
-msgstr "не выполняется:"
+msgstr "не соответствует"
 
 #. Resource IDs: (3297)
 msgid "is not present"
@@ -8650,6 +8643,12 @@ msgstr "предыдущих паролей для элемента"
 #. Resource IDs: (5394)
 msgid "pwsafe"
 msgstr "pwsafe"
+
+# в списке фильтров для дат ("between 1 and 10 relative")
+#. Resource IDs: (5968)
+#, fuzzy
+msgid "relative"
+msgstr "(относительно)"
 
 #. Resource IDs: (3279)
 msgid "shortcut"
