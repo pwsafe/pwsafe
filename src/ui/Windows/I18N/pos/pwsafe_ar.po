@@ -4583,7 +4583,7 @@ msgstr "آخر حفظ على:"
 #. Resource IDs: (5470)
 #, c-format
 msgid "Latest version? Click <a href=\"%s\">here</a> to check."
-msgstr "احدث اصدار؟إضغط </a> هنا<a href=\"%s\"> للتحقق."
+msgstr "احدث اصدار؟إضغط <a href=\"%s\">هنا</a> للتحقق."
 
 #. Resource IDs: (8267)
 msgid "Latin American"
@@ -5682,7 +5682,7 @@ msgid ""
 "Please enter the current combination, followed by a new combination. \r\n"
 "Type the new combination once again to confirm it."
 msgstr ""
-"الرجاء إدخال المفتاح الرئيسي الحالي متبوع باخر جديد.\n"
+"الرجاء إدخال المفتاح الرئيسي الحالي متبوع باخر جديد."
 "\r\n"
 "اكتب المفتاح الاخير الجديد مرة أخرى لتأكيده."
 
