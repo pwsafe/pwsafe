@@ -369,17 +369,17 @@ bool PFileXMLProcessor::CheckElementHierachy(int iroot, int icurrent)
       switch(icurrent) {
         case XLE_PWNAME:
         case XLE_PREF_PWDEFAULTLENGTH:
-        case XLE_ENTRY_PWUSEDIGITS:
-        case XLE_ENTRY_PWUSEEASYVISION:
-        case XLE_ENTRY_PWUSEHEXDIGITS:
-        case XLE_ENTRY_PWUSELOWERCASE:
-        case XLE_ENTRY_PWUSESYMBOLS:
-        case XLE_ENTRY_PWUSEUPPERCASE:
-        case XLE_ENTRY_PWMAKEPRONOUNCEABLE:
-        case XLE_ENTRY_PWLOWERCASEMINLENGTH:
-        case XLE_ENTRY_PWUPPERCASEMINLENGTH:
-        case XLE_ENTRY_PWDIGITMINLENGTH:
-        case XLE_ENTRY_PWSYMBOLMINLENGTH:
+        case XLE_PREF_PWUSEDIGITS:
+        case XLE_PREF_PWUSEEASYVISION:
+        case XLE_PREF_PWUSEHEXDIGITS:
+        case XLE_PREF_PWUSELOWERCASE:
+        case XLE_PREF_PWUSESYMBOLS:
+        case XLE_PREF_PWUSEUPPERCASE:
+        case XLE_PREF_PWMAKEPRONOUNCEABLE:
+        case XLE_PREF_PWLOWERCASEMINLENGTH:
+        case XLE_PREF_PWUPPERCASEMINLENGTH:
+        case XLE_PREF_PWDIGITMINLENGTH:
+        case XLE_PREF_PWSYMBOLMINLENGTH:
         case XLE_SYMBOLS:
           return true;
       }
