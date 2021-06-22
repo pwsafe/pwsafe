@@ -122,6 +122,8 @@
 ; Set verbosity appropriate for a Makefile
 !verbose 2
 
+Unicode true
+
 ;--------------------------------
 ; Include Modern UI
   !include "MUI2.nsh"
@@ -250,6 +252,8 @@
   !include ".\I18N\pwsafe_hu.lng"
   !insertmacro MUI_LANGUAGE "Slovenian"
   !include ".\I18N\pwsafe_sl.lng"
+  !insertmacro MUI_LANGUAGE "Arabic"
+  !include ".\I18N\pwsafe_ar-jo.lng"
 
 ; English texts here
 ; Note that if we add a string, it needs to be added in all the
@@ -314,6 +318,8 @@ LangString CZECH_SUPPORT ${LANG_ENGLISH} "Czech"
 LangString TURKISH_SUPPORT ${LANG_ENGLISH} "Turkish"
 LangString HUNGARIAN_SUPPORT ${LANG_ENGLISH} "Hungarian"
 LangString SLOVENIAN_SUPPORT ${LANG_ENGLISH} "Slovenian"
+LangString ARABIC_SUPPORT ${LANG_ENGLISH} "Arabic"
+
 
 LangString LANG_PROGRAM ${LANG_ENGLISH} "Program Language"
 LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
@@ -491,6 +497,11 @@ Section /o "$(SLOVENIAN_SUPPORT)" SlovenianSection
   SetOutPath "$INSTDIR"  
   File /nonfatal "${LANG_DLL}\pwsafeSL.dll"
   File /nonfatal "..\..\help\pwsafeSL\pwsafeSL.chm"
+SectionEnd
+Section /o "$(ARABIC_SUPPORT)" ArabicSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "${LANG_DLL}\pwsafeAR.dll"
+  File /nonfatal "..\..\help\pwsafeAR\pwsafeAR.chm"
 SectionEnd
 SectionGroupEnd
 
@@ -787,6 +798,8 @@ Function .onInit
   Push "Magyar"
   Push ${LANG_SLOVENIAN}
   Push "Slovenian"
+  Push ${LANG_ARABIC}
+  Push "Arabic"
   Push A ; A means auto count languages
          ; for the auto count to work the first empty push (Push "") must remain
   LangDLL::LangDialog $(LANG_INSTALL) $(LANG_SELECT)
@@ -827,6 +840,8 @@ Function .onInit
   SectionSetFlags ${HungarianSection} ${SF_SELECTED}
   StrCmp $LANGUAGE ${LANG_SLOVENIAN} 0 +2
   SectionSetFlags ${SlovenianSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_ARABIC} 0 +2
+  SectionSetFlags ${ArabicSection} ${SF_SELECTED}
 
   ;
   ; Check if this is an upgrade or not. If so, default "startup" to

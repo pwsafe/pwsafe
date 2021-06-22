@@ -39,6 +39,7 @@ Non-English Support
 ===================
 Thanks to the help of volunteers from all over the world, PasswordSafe
 now has built-in support for the following languages:
+- Arabic
 - Czech
 - Chinese
 - Danish

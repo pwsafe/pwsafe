@@ -87,7 +87,7 @@ LangString PSWINI_TEXT2 ${LANG_ITALIAN} "Porttaile (per chiavetta USB; non usa i
 ; checks and warnings
 
 ; RUNNING_INSTALL "The installer is already running."
-LangString RUNNING_INSTALL ${LANG_ITALIAN} "L'installazione è già in corso."
+LangString RUNNING_INSTALL ${LANG_ITALIAN} "L'installazione ï¿½ giï¿½ in corso."
 
 ; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
 LangString RUNNING_APPLICATION ${LANG_ITALIAN} "Prima di installare una nuova versione chiudi tutte le istanze di Password Safe in esecuzione"
@@ -135,21 +135,23 @@ LangString CZECH_SUPPORT ${LANG_ITALIAN} "Ceco"
 LangString TURKISH_SUPPORT ${LANG_ITALIAN} "Turco"
 LangString HUNGARIAN_SUPPORT ${LANG_ITALIAN} "Ungherese"
 LangString SLOVENIAN_SUPPORT ${LANG_ITALIAN} "Sloveno"
+LangString ARABIC_SUPPORT ${LANG_ITALIAN} "Arabo"
+
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_ITALIAN} "Lingua applicazione"
 
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_95 ${LANG_ITALIAN} "Windows 95 non è più supportato. Prova Password Safe 2.16"
+LangString SORRY_NO_95 ${LANG_ITALIAN} "Windows 95 non ï¿½ piï¿½ supportato. Prova Password Safe 2.16"
 
 ; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_98 ${LANG_ITALIAN} "Windows 98 non è più supportato. Prova Password Safe 2.16"
+LangString SORRY_NO_98 ${LANG_ITALIAN} "Windows 98 non ï¿½ piï¿½ supportato. Prova Password Safe 2.16"
 
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_ME ${LANG_ITALIAN} "Windows ME non è più supportato. Prova Password Safe 2.16"
+LangString SORRY_NO_ME ${LANG_ITALIAN} "Windows ME non ï¿½ piï¿½ supportato. Prova Password Safe 2.16"
 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
-LangString SORRY_NO_2K ${LANG_ITALIAN} "Windows 2000 non è più supportato. Prova Password Safe 3.18"
+LangString SORRY_NO_2K ${LANG_ITALIAN} "Windows 2000 non ï¿½ piï¿½ supportato. Prova Password Safe 3.18"
 
 ; LangString Icon_description_Uninstall "Password Safe Uninstall"
 LangString Icon_description_Uninstall ${LANG_ITALIAN} "Disinstalla Password Safe"
