@@ -15,7 +15,7 @@
 * in parallel folder ../../pugixml
 *
 */
-
+#if !defined(_WIN32) || defined(__WX__)
 // For compilers that support precompilation, includes "wx/wx.h".
 #include "wx/wxprec.h"
 
@@ -26,6 +26,10 @@
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
+#endif // !defined(_WIN32) || defined(__WX__)
+#ifdef _WIN32
+#define _(x) _T(x)
+#endif // _WIN32
 
 #include "../XMLDefs.h"    // Required if testing "USE_XML_LIBRARY"
 
