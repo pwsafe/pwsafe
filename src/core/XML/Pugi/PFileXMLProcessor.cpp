@@ -110,7 +110,7 @@ bool PFileXMLProcessor::ReadXML(const StringX &strXMLData,
     // Note: "result.description()" returns char* even in Unicode builds.
     stringT sErrorDesc;
     sErrorDesc = pugi::as_wide(result.description());
-    Format(m_strXMLErrors, _("XML error:\n%ls\n%ls\noffset approximately at %d").c_str(),
+    Format(m_strXMLErrors, _("XML error:\n%ls\n%ls\noffset approximately at %d"),
            sErrorDesc.c_str(), strXMLFileName.c_str(), result.offset);
     return false;
   } // load failed
@@ -137,7 +137,7 @@ bool PFileXMLProcessor::Process(const bool &bValidation,
   m_bValidation = bValidation;
 
   if (!Root || !SafeCompare(Root.name(), _T("passwordsafe"))) {
-    Format(m_strXMLErrors, _("Error in XML structure: excpected \"%ls\", found \"%ls\"").c_str(),
+    Format(m_strXMLErrors, _("Error in XML structure: excpected \"%ls\", found \"%ls\""),
            _T("passwordsafe"), Root.name());
     return false;
   }
@@ -145,7 +145,7 @@ bool PFileXMLProcessor::Process(const bool &bValidation,
   const TCHAR *delimiter = Root.attribute(_T("delimiter")).value();
 
   if(delimiter == nullptr || ! *delimiter) {
-    Format(m_strXMLErrors, _("Missing delimiter attribute in <passwordsafe>").c_str());
+    Format(m_strXMLErrors, _("Missing delimiter attribute in <passwordsafe>"));
     return false;
   }
     
@@ -164,7 +164,7 @@ bool PFileXMLProcessor::Process(const bool &bValidation,
     
   st_file_element_data edata;
   if(! m_pValidator->GetElementInfo(Root.name(), edata)) {
-    Format(m_strXMLErrors, _("Processing error on XML tag \"<passwordsafe>\"").c_str());
+    Format(m_strXMLErrors, _("Processing error on XML tag \"<passwordsafe>\""));
     return false;
   }
   int iroot_element = edata.element_code;
@@ -176,12 +176,12 @@ bool PFileXMLProcessor::Process(const bool &bValidation,
     if(node.type() == pugi::node_comment || node.type() == pugi::node_declaration)
       continue;
     if(node.type() != pugi::node_element) {
-      Format(m_strXMLErrors, _("Unexpected XML node type %d of \"%ls\", inside of <passwordsafe>").c_str(),
+      Format(m_strXMLErrors, _("Unexpected XML node type %d of \"%ls\", inside of <passwordsafe>"),
              node.type(), it->name());
       return false;
     }
     if(! m_pValidator->GetElementInfo(it->name(), edata)) {
-      Format(m_strXMLErrors, _("Unknown XML tag <%ls> in <%ls>").c_str(),
+      Format(m_strXMLErrors, _("Unknown XML tag <%ls> in <%ls>"),
              it->name(), _T("passwordsafe"));
       return false;
     }
@@ -189,7 +189,7 @@ bool PFileXMLProcessor::Process(const bool &bValidation,
     (void) XMLFileHandlers::ProcessStartElement(icurrent_element); // Return's false on validation
       
     if(m_bValidation && ! CheckElementHierachy(iroot_element, icurrent_element)) {
-      Format(m_strXMLErrors, _("Not allowed XML tag <%ls> in <%ls>").c_str(),
+      Format(m_strXMLErrors, _("Not allowed XML tag <%ls> in <%ls>"),
              it->name(), _T("passwordsafe"));
       return false;
     }
@@ -247,13 +247,13 @@ bool PFileXMLProcessor::ReadXMLElements(pugi::xml_node &froot, const stringT &ta
     if(node.type() == pugi::node_element) {
       st_file_element_data edata;
       if(! m_pValidator->GetElementInfo(node.name(), edata)) {
-        Format(m_strXMLErrors, _("Unknown XML tag <%ls> in <%ls>").c_str(), node.name(), tag.c_str());
+        Format(m_strXMLErrors, _("Unknown XML tag <%ls> in <%ls>"), node.name(), tag.c_str());
         return false;
       }
       int icurrent_element = m_bEntryBeingProcessed ? edata.element_entry_code : edata.element_code;
       (void) XMLFileHandlers::ProcessStartElement(icurrent_element); // Returns false on validation
       if(m_bValidation && ! CheckElementHierachy(iroot, icurrent_element)) {
-        Format(m_strXMLErrors, _("Not allowed XML tag <%ls> in <%ls>").c_str(),
+        Format(m_strXMLErrors, _("Not allowed XML tag <%ls> in <%ls>"),
                node.name(), tag.c_str());
         return false;
       }
@@ -270,7 +270,7 @@ bool PFileXMLProcessor::ReadXMLElements(pugi::xml_node &froot, const stringT &ta
   }
   if(m_bValidation && bValueFilled) {
     if(! CheckElementValue(m_sxElemContent.c_str(), iroot)) {
-      Format(m_strXMLErrors, _("Wrong XML value \"%ls\" for <%ls>").c_str(),
+      Format(m_strXMLErrors, _("Wrong XML value \"%ls\" for <%ls>"),
              m_sxElemContent.c_str(), tag.c_str());
       return false;
     }
