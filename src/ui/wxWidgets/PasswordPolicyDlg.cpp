@@ -659,7 +659,8 @@ void PasswordPolicyDlg::SetPolicyData(const wxString &policyname, const PWPolicy
       m_PoliciesSelectionCtrl->SetSelection(index);
     }
     else {
-      m_PoliciesSelectionCtrl->SetSelection(0);
+      if(m_PoliciesSelectionCtrl->GetCount()) // When entry is in the list
+        m_PoliciesSelectionCtrl->SetSelection(0);
     }
   }
 }

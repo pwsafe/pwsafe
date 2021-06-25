@@ -9,6 +9,9 @@
     loaded into PasswordSafe.
 
     This XML Schema corresponds to V4.0 of Password Safe for filters.
+
+    Please remind to update src/core/XML/Pugi/PFilterXMLProcessor.cpp when changing this file!
+
     Rules:
       EQ - equals
       NE - not equals

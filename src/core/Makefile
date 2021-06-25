@@ -39,6 +39,7 @@ LIBSRC          = CheckVersion.cpp \
                   VerifyFormat.cpp XMLprefs.cpp \
                   ExpiredList.cpp PWStime.cpp\
                   pugixml/pugixml.cpp \
+                  Pugi/PFileXMLProcessor.cpp Pugi/PFilterXMLProcessor.cpp \
                   XML/XMLFileHandlers.cpp XML/XMLFileValidation.cpp \
                   XML/Xerces/XFileSAX2Handlers.cpp XML/Xerces/XFileValidator.cpp \
                   XML/Xerces/XFileXMLProcessor.cpp XML/Xerces/XFilterSAX2Handlers.cpp \

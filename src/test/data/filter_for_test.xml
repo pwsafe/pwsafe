@@ -1,0 +1,1353 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<filters version="1"
+Database="/Users/zingler/.pwsafe/test äh.psafe4"
+ExportTimeStamp="2021-05-29T19:36:26"
+FromDatabaseFormat="4.00"
+WhoSaved="root on Kais-iMac.fritz.box"
+WhatSaved="pwsafe V1.13"
+WhenLastSaved="2021-05-18T13:38:23"
+Database_uuid="65a9d7be-5e3e-437a-affc-28f937039b76"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:noNamespaceSchemaLocation="pwsafe_filter.xsd">
+
+	<filter filtername="Filter 1">
+		<filter_entry active="yes">
+			<grouptitle>
+				<rule>EQ</rule>
+				<logic>or</logic>
+				<test>
+					<string><![CDATA[a]]></string>
+					<case>0</case>
+				</test>
+			</grouptitle>
+		</filter_entry>
+		<filter_entry active="yes">
+			<group>
+				<rule>PR</rule>
+				<logic>or</logic>
+				<test>
+					<string></string>
+					<case>0</case>
+				</test>
+			</group>
+		</filter_entry>
+		<filter_entry active="yes">
+			<title>
+				<rule>NE</rule>
+				<logic>or</logic>
+				<test>
+					<string><![CDATA[a]]></string>
+					<case>0</case>
+				</test>
+			</title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<user>
+				<rule>BE</rule>
+				<logic>or</logic>
+				<test>
+					<string><![CDATA[A]]></string>
+					<case>1</case>
+				</test>
+			</user>
+		</filter_entry>
+		<filter_entry active="yes">
+			<notes>
+				<rule>NP</rule>
+				<logic>and</logic>
+				<test>
+					<string></string>
+					<case>0</case>
+				</test>
+			</notes>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password>
+				<rule>EQ</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[C]]></string>
+					<case>1</case>
+					<warn>1</warn>
+				</test>
+			</password>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password>
+				<rule>NE</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[c]]></string>
+					<case>1</case>
+					<warn>1</warn>
+				</test>
+			</password>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password>
+				<rule>BE</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[A]]></string>
+					<case>0</case>
+					<warn>0</warn>
+				</test>
+			</password>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password>
+				<rule>NB</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[A]]></string>
+					<case>0</case>
+					<warn>0</warn>
+				</test>
+			</password>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password>
+				<rule>EN</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[b]]></string>
+					<case>0</case>
+					<warn>0</warn>
+				</test>
+			</password>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password>
+				<rule>ND</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[c]]></string>
+					<case>0</case>
+					<warn>0</warn>
+				</test>
+			</password>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password>
+				<rule>CO</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[C]]></string>
+					<case>1</case>
+					<warn>1</warn>
+				</test>
+			</password>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password>
+				<rule>NC</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[d]]></string>
+					<case>0</case>
+					<warn>0</warn>
+				</test>
+			</password>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password>
+				<rule>CY</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[abc]]></string>
+					<case>0</case>
+					<warn>0</warn>
+				</test>
+			</password>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password>
+				<rule>NY</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[abc]]></string>
+					<case>0</case>
+					<warn>0</warn>
+				</test>
+			</password>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password>
+				<rule>CA</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[abc]]></string>
+					<case>0</case>
+					<warn>0</warn>
+				</test>
+			</password>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password>
+				<rule>NA</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[abcdef]]></string>
+					<case>0</case>
+					<warn>0</warn>
+				</test>
+			</password>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password>
+				<rule>EX</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[]]></string>
+					<case>0</case>
+					<warn>0</warn>
+				</test>
+			</password>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password>
+				<rule>WX</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[]]></string>
+					<case>0</case>
+					<warn>0</warn>
+				</test>
+			</password>
+		</filter_entry>
+		<filter_entry active="yes">
+			<create_time>
+				<rule>PR</rule>
+				<logic>and</logic>
+				<test>
+					<date1>1970-01-01</date1>
+					<date2>1970-01-01</date2>
+				</test>
+			</create_time>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password_modified_time>
+				<rule>NP</rule>
+				<logic>and</logic>
+				<test>
+					<date1>1970-01-01</date1>
+					<date2>1970-01-01</date2>
+				</test>
+			</password_modified_time>
+		</filter_entry>
+		<filter_entry active="yes">
+			<last_access_time>
+				<rule>EQ</rule>
+				<logic>and</logic>
+				<test>
+					<date1>2021-05-28</date1>
+					<date2>1970-01-01</date2>
+				</test>
+			</last_access_time>
+		</filter_entry>
+		<filter_entry active="yes">
+			<expiry_time>
+				<rule>NE</rule>
+				<logic>and</logic>
+				<test>
+					<date1>2021-05-28</date1>
+					<date2>1970-01-01</date2>
+				</test>
+			</expiry_time>
+		</filter_entry>
+		<filter_entry active="yes">
+			<record_modified_time>
+				<rule>BF</rule>
+				<logic>and</logic>
+				<test>
+					<date1>2021-05-27</date1>
+					<date2>1970-01-01</date2>
+				</test>
+			</record_modified_time>
+		</filter_entry>
+		<filter_entry active="yes">
+			<url>
+				<rule>EQ</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[https://www.apple.com/]]></string>
+					<case>0</case>
+				</test>
+			</url>
+		</filter_entry>
+		<filter_entry active="yes">
+			<autotype>
+				<rule>NE</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[a]]></string>
+					<case>1</case>
+				</test>
+			</autotype>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password_history>
+				<logic>and</logic>
+			</password_history>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password_policy>
+				<logic>and</logic>
+			</password_policy>
+		</filter_entry>
+		<filter_entry active="yes">
+			<DCA>
+				<rule>PR</rule>
+				<logic>and</logic>
+				<test>
+					<dca>-2</dca>
+				</test>
+			</DCA>
+		</filter_entry>
+		<filter_entry active="yes">
+			<ShiftDCA>
+				<rule>IS</rule>
+				<logic>and</logic>
+				<test>
+					<shiftdca>-1</shiftdca>
+				</test>
+			</ShiftDCA>
+		</filter_entry>
+		<filter_entry active="yes">
+			<DCA>
+				<rule>NI</rule>
+				<logic>and</logic>
+				<test>
+					<dca>0</dca>
+				</test>
+			</DCA>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password_expiry_interval>
+				<rule>PR</rule>
+				<logic>and</logic>
+				<test>
+					<num1>1</num1>
+					<num2>1</num2>
+				</test>
+			</password_expiry_interval>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password_expiry_interval>
+				<rule>EQ</rule>
+				<logic>and</logic>
+				<test>
+					<num1>3</num1>
+					<num2>1</num2>
+				</test>
+			</password_expiry_interval>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password_expiry_interval>
+				<rule>BT</rule>
+				<logic>and</logic>
+				<test>
+					<num1>1</num1>
+					<num2>3650</num2>
+				</test>
+			</password_expiry_interval>
+		</filter_entry>
+		<filter_entry active="yes">
+			<password_expiry_interval>
+				<rule>NP</rule>
+				<logic>and</logic>
+				<test>
+					<num1>1</num1>
+					<num2>1</num2>
+				</test>
+			</password_expiry_interval>
+		</filter_entry>
+		<filter_entry active="yes">
+			<runcommand>
+				<rule>NE</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[q]]></string>
+					<case>0</case>
+				</test>
+			</runcommand>
+		</filter_entry>
+		<filter_entry active="yes">
+			<runcommand>
+				<rule>NE</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[aaaaaaaaaaa]]></string>
+					<case>0</case>
+				</test>
+			</runcommand>
+		</filter_entry>
+		<filter_entry active="yes">
+			<email>
+				<rule>CY</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[(AT)@]]></string>
+					<case>0</case>
+				</test>
+			</email>
+		</filter_entry>
+		<filter_entry active="yes">
+			<protected>
+				<rule>IS</rule>
+				<logic>and</logic>
+			</protected>
+		</filter_entry>
+		<filter_entry active="yes">
+			<protected>
+				<rule>NI</rule>
+				<logic>or</logic>
+			</protected>
+		</filter_entry>
+		<filter_entry active="yes">
+			<symbols>
+				<rule>CA</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[az]]></string>
+					<case>0</case>
+				</test>
+			</symbols>
+		</filter_entry>
+		<filter_entry active="yes">
+			<policy_name>
+				<rule>EN</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[policy]]></string>
+					<case>0</case>
+				</test>
+			</policy_name>
+		</filter_entry>
+		<filter_entry active="yes">
+			<kbshortcut>
+				<rule>PR</rule>
+				<logic>and</logic>
+			</kbshortcut>
+		</filter_entry>
+		<filter_entry active="yes">
+			<entrysize>
+				<rule>LT</rule>
+				<logic>and</logic>
+				<test>
+					<num1>102400</num1>
+					<num2>0</num2>
+					<unit>1</unit>
+				</test>
+			</entrysize>
+		</filter_entry>
+		<filter_entry active="yes">
+			<entrysize>
+				<rule>BT</rule>
+				<logic>and</logic>
+				<test>
+					<num1>0</num1>
+					<num2>116391936</num2>
+					<unit>2</unit>
+				</test>
+			</entrysize>
+		</filter_entry>
+		<filter_entry active="yes">
+			<entrytype>
+				<rule>IS</rule>
+				<logic>and</logic>
+				<test>
+					<type>normal</type>
+				</test>
+			</entrytype>
+		</filter_entry>
+		<filter_entry active="yes">
+			<entrytype>
+				<rule>NI</rule>
+				<logic>and</logic>
+				<test>
+					<type>alias</type>
+				</test>
+			</entrytype>
+		</filter_entry>
+		<filter_entry active="yes">
+			<entrytype>
+				<rule>IS</rule>
+				<logic>and</logic>
+				<test>
+					<type>shortcut</type>
+				</test>
+			</entrytype>
+		</filter_entry>
+		<filter_entry active="yes">
+			<entrytype>
+				<rule>NI</rule>
+				<logic>and</logic>
+				<test>
+					<type>aliasbase</type>
+				</test>
+			</entrytype>
+		</filter_entry>
+		<filter_entry active="yes">
+			<entrytype>
+				<rule>IS</rule>
+				<logic>and</logic>
+				<test>
+					<type>shortcutbase</type>
+				</test>
+			</entrytype>
+		</filter_entry>
+		<filter_entry active="yes">
+			<entrystatus>
+				<rule>IS</rule>
+				<logic>and</logic>
+				<test>
+					<status>clean</status>
+				</test>
+			</entrystatus>
+		</filter_entry>
+		<filter_entry active="yes">
+			<entrystatus>
+				<rule>NI</rule>
+				<logic>and</logic>
+				<test>
+					<status>added</status>
+				</test>
+			</entrystatus>
+		</filter_entry>
+		<filter_entry active="yes">
+			<entrystatus>
+				<rule>NI</rule>
+				<logic>and</logic>
+				<test>
+					<status>modified</status>
+				</test>
+			</entrystatus>
+		</filter_entry>
+		<filter_entry active="yes">
+			<unknownfields>
+				<rule>NP</rule>
+				<logic>and</logic>
+			</unknownfields>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment>
+				<logic>and</logic>
+			</attachment>
+		</filter_entry>
+		<filter_entry active="yes">
+			<kbshortcut>
+				<rule>PR</rule>
+				<logic>and</logic>
+			</kbshortcut>
+		</filter_entry>
+		<filter_entry active="yes">
+			<policy_name>
+				<rule>PR</rule>
+				<logic>and</logic>
+				<test>
+					<string></string>
+					<case>0</case>
+				</test>
+			</policy_name>
+		</filter_entry>
+		<filter_entry active="yes">
+			<ShiftDCA>
+				<rule>IS</rule>
+				<logic>and</logic>
+				<test>
+					<dca>-1</dca>
+				</test>
+			</ShiftDCA>
+		</filter_entry>
+		<filter_entry active="yes">
+			<DCA>
+				<rule>IS</rule>
+				<logic>and</logic>
+				<test>
+					<dca>0</dca>
+				</test>
+			</DCA>
+		</filter_entry>
+		<filter_entry active="yes">
+			<DCA>
+				<rule>NI</rule>
+				<logic>and</logic>
+				<test>
+					<dca>1</dca>
+				</test>
+			</DCA>
+		</filter_entry>
+		<filter_entry active="yes">
+			<DCA>
+				<rule>NI</rule>
+				<logic>and</logic>
+				<test>
+					<dca>2</dca>
+				</test>
+			</DCA>
+		</filter_entry>
+		<filter_entry active="yes">
+			<DCA>
+				<rule>IS</rule>
+				<logic>and</logic>
+				<test>
+					<dca>3</dca>
+				</test>
+			</DCA>
+		</filter_entry>
+		<filter_entry active="yes">
+			<DCA>
+				<rule>IS</rule>
+				<logic>and</logic>
+				<test>
+					<dca>4</dca>
+				</test>
+			</DCA>
+		</filter_entry>
+		<filter_entry active="yes">
+			<ShiftDCA>
+				<rule>IS</rule>
+				<logic>and</logic>
+				<test>
+					<dca>5</dca>
+				</test>
+			</ShiftDCA>
+		</filter_entry>
+		<filter_entry active="yes">
+			<DCA>
+				<rule>IS</rule>
+				<logic>and</logic>
+				<test>
+					<dca>6</dca>
+				</test>
+			</DCA>
+		</filter_entry>
+		<filter_entry active="yes">
+			<DCA>
+				<rule>IS</rule>
+				<logic>and</logic>
+				<test>
+					<dca>7</dca>
+				</test>
+			</DCA>
+		</filter_entry>
+		<filter_entry active="yes">
+			<DCA>
+				<rule>IS</rule>
+				<logic>and</logic>
+				<test>
+					<dca>8</dca>
+				</test>
+			</DCA>
+		</filter_entry>
+		<filter_entry active="yes">
+			<DCA>
+				<rule>IS</rule>
+				<logic>and</logic>
+				<test>
+					<dca>9</dca>
+				</test>
+			</DCA>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_present>
+				<rule>PR</rule>
+				<logic>or</logic>
+			</history_present>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_active>
+				<rule>AC</rule>
+				<logic>or</logic>
+			</history_active>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_number>
+				<rule>EQ</rule>
+				<logic>or</logic>
+				<test>
+					<num1>1</num1>
+					<num2>0</num2>
+				</test>
+			</history_number>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_maximum>
+				<rule>NE</rule>
+				<logic>and</logic>
+				<test>
+					<num1>0</num1>
+					<num2>0</num2>
+				</test>
+			</history_maximum>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_changedate>
+				<rule>EQ</rule>
+				<logic>and</logic>
+				<test>
+					<date1>2021-05-27</date1>
+					<date2>1970-01-01</date2>
+				</test>
+			</history_changedate>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_passwords>
+				<rule>EQ</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[a]]></string>
+					<case>0</case>
+					<warn>0</warn>
+				</test>
+			</history_passwords>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_present>
+				<rule>NP</rule>
+				<logic>and</logic>
+			</history_present>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_active>
+				<rule>IA</rule>
+				<logic>and</logic>
+			</history_active>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_number>
+				<rule>NE</rule>
+				<logic>and</logic>
+				<test>
+					<num1>2</num1>
+					<num2>0</num2>
+				</test>
+			</history_number>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_number>
+				<rule>LT</rule>
+				<logic>and</logic>
+				<test>
+					<num1>3</num1>
+					<num2>0</num2>
+				</test>
+			</history_number>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_maximum>
+				<rule>LE</rule>
+				<logic>and</logic>
+				<test>
+					<num1>4</num1>
+					<num2>0</num2>
+				</test>
+			</history_maximum>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_number>
+				<rule>GT</rule>
+				<logic>and</logic>
+				<test>
+					<num1>2</num1>
+					<num2>0</num2>
+				</test>
+			</history_number>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_maximum>
+				<rule>GE</rule>
+				<logic>and</logic>
+				<test>
+					<num1>1</num1>
+					<num2>0</num2>
+				</test>
+			</history_maximum>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_number>
+				<rule>BT</rule>
+				<logic>and</logic>
+				<test>
+					<num1>0</num1>
+					<num2>100</num2>
+				</test>
+			</history_number>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_changedate>
+				<rule>NE</rule>
+				<logic>and</logic>
+				<test>
+					<date1>2021-05-21</date1>
+					<date2>1970-01-01</date2>
+				</test>
+			</history_changedate>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_changedate>
+				<rule>BF</rule>
+				<logic>and</logic>
+				<test>
+					<date1>2021-05-21</date1>
+					<date2>1970-01-01</date2>
+				</test>
+			</history_changedate>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_changedate>
+				<rule>BF</rule>
+				<logic>and</logic>
+				<test>
+					<num1>-10</num1>
+					<num2>0</num2>
+				</test>
+			</history_changedate>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_changedate>
+				<rule>EQ</rule>
+				<logic>and</logic>
+				<test>
+					<num1>-1</num1>
+					<num2>0</num2>
+				</test>
+			</history_changedate>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_changedate>
+				<rule>AF</rule>
+				<logic>and</logic>
+				<test>
+					<num1>-3650</num1>
+					<num2>0</num2>
+				</test>
+			</history_changedate>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_changedate>
+				<rule>BT</rule>
+				<logic>and</logic>
+				<test>
+					<date1>2021-05-27</date1>
+					<date2>2021-05-28</date2>
+				</test>
+			</history_changedate>
+		</filter_entry>
+		<filter_entry active="yes">
+			<history_changedate>
+				<rule>BT</rule>
+				<logic>and</logic>
+				<test>
+					<num1>-1000</num1>
+					<num2>-10</num2>
+				</test>
+			</history_changedate>
+		</filter_entry>
+		<filter_entry active="yes">
+			<policy_present>
+				<rule>PR</rule>
+				<logic>or</logic>
+			</policy_present>
+		</filter_entry>
+		<filter_entry active="yes">
+			<policy_present>
+				<rule>NP</rule>
+				<logic>or</logic>
+			</policy_present>
+		</filter_entry>
+		<filter_entry active="yes">
+			<policy_length>
+				<rule>EQ</rule>
+				<logic>and</logic>
+				<test>
+					<num1>4</num1>
+					<num2>4</num2>
+				</test>
+			</policy_length>
+		</filter_entry>
+		<filter_entry active="yes">
+			<policy_length>
+				<rule>NE</rule>
+				<logic>and</logic>
+				<test>
+					<num1>5</num1>
+					<num2>4</num2>
+				</test>
+			</policy_length>
+		</filter_entry>
+		<filter_entry active="yes">
+			<policy_number_lowercase>
+				<rule>LT</rule>
+				<logic>and</logic>
+				<test>
+					<num1>1024</num1>
+					<num2>0</num2>
+				</test>
+			</policy_number_lowercase>
+		</filter_entry>
+		<filter_entry active="yes">
+			<policy_number_uppercase>
+				<rule>LE</rule>
+				<logic>and</logic>
+				<test>
+					<num1>0</num1>
+					<num2>0</num2>
+				</test>
+			</policy_number_uppercase>
+		</filter_entry>
+		<filter_entry active="yes">
+			<policy_number_digits>
+				<rule>GT</rule>
+				<logic>and</logic>
+				<test>
+					<num1>1023</num1>
+					<num2>0</num2>
+				</test>
+			</policy_number_digits>
+		</filter_entry>
+		<filter_entry active="yes">
+			<policy_number_digits>
+				<rule>GE</rule>
+				<logic>and</logic>
+				<test>
+					<num1>104</num1>
+					<num2>0</num2>
+				</test>
+			</policy_number_digits>
+		</filter_entry>
+		<filter_entry active="yes">
+			<policy_length>
+				<rule>BT</rule>
+				<logic>and</logic>
+				<test>
+					<num1>4</num1>
+					<num2>1024</num2>
+				</test>
+			</policy_length>
+		</filter_entry>
+		<filter_entry active="yes">
+			<policy_easyvision>
+				<rule>SE</rule>
+				<logic>and</logic>
+			</policy_easyvision>
+		</filter_entry>
+		<filter_entry active="yes">
+			<policy_pronounceable>
+				<rule>NS</rule>
+				<logic>and</logic>
+			</policy_pronounceable>
+		</filter_entry>
+		<filter_entry active="yes">
+			<policy_hexadecimal>
+				<rule>SE</rule>
+				<logic>and</logic>
+			</policy_hexadecimal>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_present>
+				<rule>NP</rule>
+				<logic>or</logic>
+			</attachment_present>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_present>
+				<rule>PR</rule>
+				<logic>or</logic>
+			</attachment_present>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_title>
+				<rule>PR</rule>
+				<logic>and</logic>
+				<test>
+					<string></string>
+					<case>0</case>
+				</test>
+			</attachment_title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_title>
+				<rule>EQ</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[Titel]]></string>
+					<case>1</case>
+				</test>
+			</attachment_title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_title>
+				<rule>NE</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[X]]></string>
+					<case>0</case>
+				</test>
+			</attachment_title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_title>
+				<rule>BE</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[abc]]></string>
+					<case>0</case>
+				</test>
+			</attachment_title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_title>
+				<rule>NB</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[zxy]]></string>
+					<case>1</case>
+				</test>
+			</attachment_title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_title>
+				<rule>EN</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[xyz]]></string>
+					<case>1</case>
+				</test>
+			</attachment_title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_title>
+				<rule>ND</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[!]]></string>
+					<case>0</case>
+				</test>
+			</attachment_title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_title>
+				<rule>ND</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[?]]></string>
+					<case>0</case>
+				</test>
+			</attachment_title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_title>
+				<rule>CO</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[Snoopy]]></string>
+					<case>0</case>
+				</test>
+			</attachment_title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_title>
+				<rule>NC</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[Donald]]></string>
+					<case>0</case>
+				</test>
+			</attachment_title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_title>
+				<rule>CY</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[123]]></string>
+					<case>0</case>
+				</test>
+			</attachment_title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_title>
+				<rule>NC</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[!"§]]></string>
+					<case>0</case>
+				</test>
+			</attachment_title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_title>
+				<rule>CY</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[1234567890]]></string>
+					<case>0</case>
+				</test>
+			</attachment_title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_title>
+				<rule>NY</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[qwerty]]></string>
+					<case>0</case>
+				</test>
+			</attachment_title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_title>
+				<rule>CA</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[+-]]></string>
+					<case>0</case>
+				</test>
+			</attachment_title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_title>
+				<rule>NA</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[#]]></string>
+					<case>0</case>
+				</test>
+			</attachment_title>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_ctime>
+				<rule>PR</rule>
+				<logic>and</logic>
+				<test>
+					<date1>1970-01-01</date1>
+					<date2>1970-01-01</date2>
+				</test>
+			</attachment_ctime>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_ctime>
+				<rule>NP</rule>
+				<logic>or</logic>
+				<test>
+					<date1>1970-01-01</date1>
+					<date2>1970-01-01</date2>
+				</test>
+			</attachment_ctime>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_ctime>
+				<rule>EQ</rule>
+				<logic>and</logic>
+				<test>
+					<date1>2021-05-27</date1>
+					<date2>1970-01-01</date2>
+				</test>
+			</attachment_ctime>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_ctime>
+				<rule>NE</rule>
+				<logic>and</logic>
+				<test>
+					<date1>2021-05-28</date1>
+					<date2>1970-01-01</date2>
+				</test>
+			</attachment_ctime>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_ctime>
+				<rule>BF</rule>
+				<logic>and</logic>
+				<test>
+					<date1>2021-05-28</date1>
+					<date2>1970-01-01</date2>
+				</test>
+			</attachment_ctime>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_ctime>
+				<rule>AF</rule>
+				<logic>and</logic>
+				<test>
+					<date1>2021-01-28</date1>
+					<date2>1970-01-01</date2>
+				</test>
+			</attachment_ctime>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_ctime>
+				<rule>BT</rule>
+				<logic>and</logic>
+				<test>
+					<date1>2021-05-28</date1>
+					<date2>1970-01-01</date2>
+				</test>
+			</attachment_ctime>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_ctime>
+				<rule>EQ</rule>
+				<logic>and</logic>
+				<test>
+					<num1>-5</num1>
+					<num2>0</num2>
+				</test>
+			</attachment_ctime>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_ctime>
+				<rule>NE</rule>
+				<logic>and</logic>
+				<test>
+					<num1>0</num1>
+					<num2>0</num2>
+				</test>
+			</attachment_ctime>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_ctime>
+				<rule>BF</rule>
+				<logic>and</logic>
+				<test>
+					<num1>-365</num1>
+					<num2>0</num2>
+				</test>
+			</attachment_ctime>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_ctime>
+				<rule>AF</rule>
+				<logic>and</logic>
+				<test>
+					<num1>-100</num1>
+					<num2>0</num2>
+				</test>
+			</attachment_ctime>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_ctime>
+				<rule>BT</rule>
+				<logic>and</logic>
+				<test>
+					<num1>-4</num1>
+					<num2>-2</num2>
+				</test>
+			</attachment_ctime>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_mediatype>
+				<rule>EQ</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[audio/mpeg]]></string>
+					<case>0</case>
+				</test>
+			</attachment_mediatype>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_mediatype>
+				<rule>NE</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[image/bmp]]></string>
+					<case>1</case>
+				</test>
+			</attachment_mediatype>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_mediatype>
+				<rule>BE</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[/]]></string>
+					<case>0</case>
+				</test>
+			</attachment_mediatype>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_mediatype>
+				<rule>NB</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[audio/]]></string>
+					<case>1</case>
+				</test>
+			</attachment_mediatype>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_mediatype>
+				<rule>CO</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[mpg]]></string>
+					<case>0</case>
+				</test>
+			</attachment_mediatype>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_filename>
+				<rule>NC</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[_]]></string>
+					<case>0</case>
+				</test>
+			</attachment_filename>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_filepath>
+				<rule>CO</rule>
+				<logic>and</logic>
+				<test>
+					<string><![CDATA[..]]></string>
+					<case>0</case>
+				</test>
+			</attachment_filepath>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_filectime>
+				<rule>BF</rule>
+				<logic>and</logic>
+				<test>
+					<date1>1970-01-01</date1>
+					<date2>1970-01-01</date2>
+				</test>
+			</attachment_filectime>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_filectime>
+				<rule>BT</rule>
+				<logic>and</logic>
+				<test>
+					<date1>2000-01-01</date1>
+					<date2>2000-12-31</date2>
+				</test>
+			</attachment_filectime>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_filemtime>
+				<rule>AF</rule>
+				<logic>and</logic>
+				<test>
+					<num1>-4</num1>
+					<num2>0</num2>
+				</test>
+			</attachment_filemtime>
+		</filter_entry>
+		<filter_entry active="yes">
+			<attachment_fileatime>
+				<rule>NE</rule>
+				<logic>and</logic>
+				<test>
+					<num1>-26</num1>
+					<num2>0</num2>
+				</test>
+			</attachment_fileatime>
+		</filter_entry>
+	</filter>
+
+</filters>
