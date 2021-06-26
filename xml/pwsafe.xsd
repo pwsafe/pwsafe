@@ -20,6 +20,9 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
     In V3.27, support for ShiftDCA was added.
     In V3.28, support for Password Policy Names was added and support for depreciated times was removed.
     In V3.29, support for Empty Groups was added.
+
+    Please remind to update src/core/XML/Pugi/PFileXMLProcessor.cpp when changing this file!
+
   </xs:documentation>
 </xs:annotation>
 

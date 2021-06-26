@@ -19,120 +19,121 @@
 ;=================================================================
 
 ; RESERVE_TITLE "Choose Installation Type"
-LangString RESERVE_TITLE ${LANG_KOREAN} "¼³Ä¡ Á¾·ù¸¦ ¼±ÅÃÇØ ÁÖ½Ê½Ã¿À"
+LangString RESERVE_TITLE ${LANG_KOREAN} "ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½Ê½Ã¿ï¿½"
 
 ; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString RESERVE_FIELD1 ${LANG_KOREAN} "ÀÏ¹Ý ¼³Ä¡(·¹Áö½ºÆ®¸®¿¡ °ªÀ» ÀúÀåÇÔ. °¡Á¤ ¹× °³ÀÎ »ç¿ëÀÚ¿¡°Ô ÀûÇÕ"
+LangString RESERVE_FIELD1 ${LANG_KOREAN} "ï¿½Ï¹ï¿½ ï¿½ï¿½Ä¡(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ú¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½"
 
 ; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString RESERVE_FIELD2 ${LANG_KOREAN} "¾ÈÀü ¼³Ä¡ (·¹Áö½ºÆ®¸®¸¦ ÀÌ¿ëÇÏÁö ¾Ê°í Å° µ¥ÀÌÅÍº£ÀÌ½º ÆÄÀÏÀ» »ç¿ë)"
+LangString RESERVE_FIELD2 ${LANG_KOREAN} "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ Å° ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½)"
 
 ; PROGRAM_FILES "Program Files"
 LangString PROGRAM_FILES ${LANG_KOREAN} "Program Files"
 
 ; START_AUTO "Start automatically"
-LangString START_AUTO ${LANG_KOREAN} "ÀÚµ¿À¸·Î ½ÃÀÛ"
+LangString START_AUTO ${LANG_KOREAN} "ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½"
 
 ; START_SHOW "Show in start menu"
-LangString START_SHOW ${LANG_KOREAN} "½ÃÀÛ ¸Þ´º¿¡ º¸ÀÌ±â"
+LangString START_SHOW ${LANG_KOREAN} "ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ì±ï¿½"
 
 ; START_SHORTCUT "Install desktop shortcut"
-LangString START_SHORTCUT ${LANG_KOREAN} "¹Ù·Î °¡±â ¾ÆÀÌÄÜ ¼³Ä¡"
+LangString START_SHORTCUT ${LANG_KOREAN} "ï¿½Ù·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡"
 
 ; UNINSTALL_SHORTCUT "Uninstall shortcut"
-LangString UNINSTALL_SHORTCUT ${LANG_KOREAN} "¹Ù·Î °¡±â ¾ÆÀÌÄÜ »èÁ¦"
+LangString UNINSTALL_SHORTCUT ${LANG_KOREAN} "ï¿½Ù·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½"
 
 ;--------------------------------
 ; Descriptions
 
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
-LangString DESC_ProgramFiles ${LANG_KOREAN} "Password Safe¸¦ ½ÇÇà½ÃÅ°±â À§ÇÑ ÃÖ¼ÒÇÑÀÇ ÆÄÀÏ¸¸ ¼³Ä¡"
+LangString DESC_ProgramFiles ${LANG_KOREAN} "Password Safeï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½Ä¡"
 
 ; DESC_CliTool "Installs pwsafe-cli, a command line utility."
 LangString DESC_CliTool ${LANG_KOREAN} "Installs pwsafe-cli, a command line utility."
 
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
-LangString DESC_LangSupport ${LANG_KOREAN} "Password Safe¿¡¼­ »ç¿ëÇÏ½Ç ¾ð¾î¸¦ ¼±ÅÃÇØ ÁÖ½Ê½Ã¿À"
+LangString DESC_LangSupport ${LANG_KOREAN} "Password Safeï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ï½ï¿½ ï¿½ï¿½î¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½Ê½Ã¿ï¿½"
 
 ; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
-LangString DESC_StartUp ${LANG_KOREAN} "À©µµ¿ì ½ÃÀÛ ½Ã¿¡ Password Safe¸¦ ½ÇÇà"
+LangString DESC_StartUp ${LANG_KOREAN} "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã¿ï¿½ Password Safeï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½"
 
 ; DESC_StartMenu "Creates an entry in the start menu for Password Safe."
-LangString DESC_StartMenu ${LANG_KOREAN} "½ÃÀÛ ¸Þ´º¿¡ Password Safe ¹Ù·Î °¡±â ¾ÆÀÌÄÜ ¼³Ä¡"
+LangString DESC_StartMenu ${LANG_KOREAN} "ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ï¿½ï¿½ Password Safe ï¿½Ù·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡"
 
 ; DESC_DesktopShortcut "Places a shortcut to Password Safe on your desktop."
-LangString DESC_DesktopShortcut ${LANG_KOREAN} "¹ÙÅÁÈ­¸é¿¡ Password Safe ¹Ù·Î °¡±â ¾ÆÀÌÄÜ ¼³Ä¡"
+LangString DESC_DesktopShortcut ${LANG_KOREAN} "ï¿½ï¿½ï¿½ï¿½È­ï¿½é¿¡ Password Safe ï¿½Ù·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡"
 
 ; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
-LangString DESC_UninstallMenu ${LANG_KOREAN} "½ÃÀÛ ¸Þ´º¿¡ Password Safe »èÁ¦ ¾ÆÀÌÄÜ ¼³Ä¡"
+LangString DESC_UninstallMenu ${LANG_KOREAN} "ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ï¿½ï¿½ Password Safe ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡"
   
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 ; TEXT_GC_TITLE "Installation Type"
-LangString TEXT_GC_TITLE ${LANG_KOREAN} "¼³Ä¡ Á¾·ù"
+LangString TEXT_GC_TITLE ${LANG_KOREAN} "ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½"
 
 ; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
-LangString TEXT_GC_SUBTITLE ${LANG_KOREAN} "°³ÀÎ ÄÄÇ»ÅÍ¿¡ ¼³Ä¡ÇÏ½Ã·Á¸é ÀÏ¹Ý ¼³Ä¡¸¦, ÀÌµ¿Çü ½ÇÇàÀ» ¿øÇÏ½Ã¸é °í±Þ ¼³Ä¡¸¦ ¼±ÅÃÇØÁÖ½Ê½Ã¿À. Àß ¸ð¸£°ÚÀ¸¸é, ÀÏ¹Ý ¼³Ä¡¸¦ ¼±ÅÃÇØ ÁÖ½Ê½Ã¿À"
+LangString TEXT_GC_SUBTITLE ${LANG_KOREAN} "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ç»ï¿½Í¿ï¿½ ï¿½ï¿½Ä¡ï¿½Ï½Ã·ï¿½ï¿½ï¿½ ï¿½Ï¹ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½, ï¿½Ìµï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ï½Ã¸ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö½Ê½Ã¿ï¿½. ï¿½ï¿½ ï¿½ð¸£°ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Ï¹ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½Ê½Ã¿ï¿½"
 
 ; PSWINI_TITLE "Choose Installation Type"
-LangString PSWINI_TITLE ${LANG_KOREAN} "¼³Ä¡ Á¾·ù¸¦ ¼±ÅÃÇØ ÁÖ½Ê½Ã¿À"
+LangString PSWINI_TITLE ${LANG_KOREAN} "ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½Ê½Ã¿ï¿½"
 
 ; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString PSWINI_TEXT1 ${LANG_KOREAN} "ÀÏ¹Ý ¼³Ä¡(·¹Áö½ºÆ®¸® »ç¿ë, °³ÀÎ ¹× °¡Á¤¿ëÀ¸·Î ÀûÇÕ)"
+LangString PSWINI_TEXT1 ${LANG_KOREAN} "ï¿½Ï¹ï¿½ ï¿½ï¿½Ä¡(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)"
 
 ; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString PSWINI_TEXT2 ${LANG_KOREAN} "°í±Þ ¼³Ä¡(µð½ºÅ© µå¶óÀÌºê »ç¿ë, ·¹Áö½ºÆ®¸® »ç¿ë ¾ÈÇÔ)"
+LangString PSWINI_TEXT2 ${LANG_KOREAN} "ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡(ï¿½ï¿½Å© ï¿½ï¿½ï¿½ï¿½Ìºï¿½ ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)"
 
 ;--------------------------------
 ; checks and warnings
 
 ; RUNNING_INSTALL "The installer is already running."
-LangString RUNNING_INSTALL ${LANG_KOREAN} "¼³Ä¡ ÇÁ·Î±×·¥ÀÌ ÀÌ¹Ì ½ÇÇàÁßÀÔ´Ï´Ù"
+LangString RUNNING_INSTALL ${LANG_KOREAN} "ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½Î±×·ï¿½ï¿½ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô´Ï´ï¿½"
 
 ; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
-LangString RUNNING_APPLICATION ${LANG_KOREAN} "»õ ¹öÀüÀÇ Password Safe¸¦ ¼³Ä¡ÇÏ±â Àü¿¡, ÀÌÀü ¹öÀüÀÇ ÇÁ·Î±×·¥Àº ¸ðµÎ Á¾·áÇØ ÁÖ½Ê½Ã¿À."
+LangString RUNNING_APPLICATION ${LANG_KOREAN} "ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Password Safeï¿½ï¿½ ï¿½ï¿½Ä¡ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Î±×·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½Ê½Ã¿ï¿½."
 
 ; LANG_INSTALL "Installation Language"
-LangString LANG_INSTALL ${LANG_KOREAN} "¼³Ä¡ ¾ð¾î"
+LangString LANG_INSTALL ${LANG_KOREAN} "ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½"
 
 ; LANG_SELECT "Please select the language for the installation"
-LangString LANG_SELECT ${LANG_KOREAN} "¼³Ä¡ÇÏ½Ç ¾ð¾î¸¦ ¼±ÅÃÇØ ÁÖ½Ê½Ã¿À"
+LangString LANG_SELECT ${LANG_KOREAN} "ï¿½ï¿½Ä¡ï¿½Ï½ï¿½ ï¿½ï¿½î¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½Ê½Ã¿ï¿½"
 
 ; CLI_TOOL "Command-line tool"
 LangString CLI_TOOL ${LANG_KOREAN} "Command-line tool"
 
-LangString LANGUAGE_SUPPORT ${LANG_KOREAN} "¾ð¾î ¼±ÅÃ"
-LangString ENGLISH_SUPPORT ${LANG_KOREAN} "¿µ¾î"
-LangString CHINESE_CN_SUPPORT ${LANG_KOREAN} "Áß±¹¾î (°£Ã¼)"
-LangString CHINESE_TW_SUPPORT ${LANG_KOREAN} "Áß±¹¾î (¹øÃ¼)"
-LangString GERMAN_SUPPORT ${LANG_KOREAN} "µ¶ÀÏ¾î"
-LangString SPANISH_SUPPORT ${LANG_KOREAN} "½ºÆäÀÎ¾î"
-LangString SWEDISH_SUPPORT ${LANG_KOREAN} "½º¿þµ§¾î"
-LangString DUTCH_SUPPORT ${LANG_KOREAN} "³×´ú¶õµå¾î"
-LangString FRENCH_SUPPORT ${LANG_KOREAN} "ÇÁ¶û½º¾î"
-LangString RUSSIAN_SUPPORT ${LANG_KOREAN} "·¯½Ã¾Æ¾î"
-LangString POLISH_SUPPORT ${LANG_KOREAN} "Æú¶õµå¾î"
-LangString ITALIAN_SUPPORT ${LANG_KOREAN} "ÀÌÅ»¸®¾Æ¾î"
-LangString DANISH_SUPPORT ${LANG_KOREAN} "µ§¸¶Å©¾î"
-LangString KOREAN_SUPPORT ${LANG_KOREAN} "ÇÑ±¹¾î"
+LangString LANGUAGE_SUPPORT ${LANG_KOREAN} "ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½"
+LangString ENGLISH_SUPPORT ${LANG_KOREAN} "ï¿½ï¿½ï¿½ï¿½"
+LangString CHINESE_CN_SUPPORT ${LANG_KOREAN} "ï¿½ß±ï¿½ï¿½ï¿½ (ï¿½ï¿½Ã¼)"
+LangString CHINESE_TW_SUPPORT ${LANG_KOREAN} "ï¿½ß±ï¿½ï¿½ï¿½ (ï¿½ï¿½Ã¼)"
+LangString GERMAN_SUPPORT ${LANG_KOREAN} "ï¿½ï¿½ï¿½Ï¾ï¿½"
+LangString SPANISH_SUPPORT ${LANG_KOREAN} "ï¿½ï¿½ï¿½ï¿½ï¿½Î¾ï¿½"
+LangString SWEDISH_SUPPORT ${LANG_KOREAN} "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
+LangString DUTCH_SUPPORT ${LANG_KOREAN} "ï¿½×´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
+LangString FRENCH_SUPPORT ${LANG_KOREAN} "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
+LangString RUSSIAN_SUPPORT ${LANG_KOREAN} "ï¿½ï¿½ï¿½Ã¾Æ¾ï¿½"
+LangString POLISH_SUPPORT ${LANG_KOREAN} "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
+LangString ITALIAN_SUPPORT ${LANG_KOREAN} "ï¿½ï¿½Å»ï¿½ï¿½ï¿½Æ¾ï¿½"
+LangString DANISH_SUPPORT ${LANG_KOREAN} "ï¿½ï¿½ï¿½ï¿½Å©ï¿½ï¿½"
+LangString KOREAN_SUPPORT ${LANG_KOREAN} "ï¿½Ñ±ï¿½ï¿½ï¿½"
 LangString CZECH_SUPPORT ${LANG_KOREAN} "Czech"
 LangString TURKISH_SUPPORT ${LANG_KOREAN} "Turkish"
 LangString HUNGARIAN_SUPPORT ${LANG_KOREAN} "Hungarian"
 LangString SLOVENIAN_SUPPORT ${LANG_KOREAN} "Slovenian"
+LangString ARABIC_SUPPORT ${LANG_KOREAN} "Arabic"
 
 ; LANG_PROGRAM "Program Language"
-LangString LANG_PROGRAM ${LANG_KOREAN} "ÇÁ·Î±×·¥ ¾ð¾î"
+LangString LANG_PROGRAM ${LANG_KOREAN} "ï¿½ï¿½ï¿½Î±×·ï¿½ ï¿½ï¿½ï¿½"
 
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_95 ${LANG_KOREAN} "Windows 95´Â ´õ ÀÌ»ó Áö¿øµÇÁö ¾Ê½À´Ï´Ù. Password Safe 2.16À» »ç¿ëÇØ ÁÖ½Ê½Ã¿À."
+LangString SORRY_NO_95 ${LANG_KOREAN} "Windows 95ï¿½ï¿½ ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½. Password Safe 2.16ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½Ê½Ã¿ï¿½."
 
 ; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_98 ${LANG_KOREAN} " Windows 98´Â ´õ ÀÌ»ó Áö¿øµÇÁö ¾Ê½À´Ï´Ù. Password Safe 2.16À» »ç¿ëÇØ ÁÖ½Ê½Ã¿À."
+LangString SORRY_NO_98 ${LANG_KOREAN} " Windows 98ï¿½ï¿½ ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½. Password Safe 2.16ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½Ê½Ã¿ï¿½."
 
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_ME ${LANG_KOREAN} " Windows ME´Â ´õ ÀÌ»ó Áö¿øµÇÁö ¾Ê½À´Ï´Ù. Password Safe 2.16À» »ç¿ëÇØ ÁÖ½Ê½Ã¿À."
+LangString SORRY_NO_ME ${LANG_KOREAN} " Windows MEï¿½ï¿½ ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½. Password Safe 2.16ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½Ê½Ã¿ï¿½."
 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
-LangString SORRY_NO_2K ${LANG_KOREAN} " Windows 2000Àº ´õ ÀÌ»ó Áö¿øµÇÁö ¾Ê½À´Ï´Ù. Password Safe 3.18À» »ç¿ëÇØ ÁÖ½Ê½Ã¿À."
+LangString SORRY_NO_2K ${LANG_KOREAN} " Windows 2000ï¿½ï¿½ ï¿½ï¿½ ï¿½Ì»ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½. Password Safe 3.18ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö½Ê½Ã¿ï¿½."
 
 ; LangString Icon_description_Uninstall "Password Safe Uninstall"
 LangString Icon_description_Uninstall ${LANG_KOREAN} "Password Safe Uninstall"

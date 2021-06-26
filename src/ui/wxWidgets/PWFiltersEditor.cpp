@@ -671,7 +671,7 @@ void pwFiltersFTChoiceEditor::BeginEdit(int row, int col, wxGrid* grid)
   
   wxGridCellEditorEvtHandler* evtHandler = NULL;
   if(m_control) {
-#if wxVERSION_NUMBER >= 3005
+#if wxVERSION_NUMBER > 3005
     evtHandler = wxDynamicCast(m_control->GetEventHandler(), wxGridCellEditorEvtHandler);
 #else
     evtHandler = static_cast<wxGridCellEditorEvtHandler *>(m_control->GetEventHandler());
@@ -972,7 +972,7 @@ void pwFiltersLCChoiceEditor::BeginEdit(int row, int col, wxGrid* grid)
 
   wxGridCellEditorEvtHandler* evtHandler = NULL;
   if(m_control) {
-#if wxVERSION_NUMBER >= 3005
+#if wxVERSION_NUMBER > 3005
     evtHandler = wxDynamicCast(m_control->GetEventHandler(), wxGridCellEditorEvtHandler);
 #else
     evtHandler = static_cast<wxGridCellEditorEvtHandler *>(m_control->GetEventHandler());

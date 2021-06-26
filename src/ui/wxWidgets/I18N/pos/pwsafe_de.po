@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-02 11:51+0200\n"
+"POT-Creation-Date: 2021-06-21 12:49+0200\n"
 "PO-Revision-Date: 2018-05-18 12:55+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -25,7 +25,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:141
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1443
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:428
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:431
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:567
 msgid "Password Safe"
 msgstr "Password Safe"
@@ -544,7 +544,7 @@ msgid "Generate pronounceable passwords"
 msgstr "Aussprechbare Passwörter generieren"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:815
-#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:906
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:911
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:284
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:296
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:457
@@ -757,7 +757,7 @@ msgstr "Passwort konnte nicht generiert werden - Ungültige Richtlinie"
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:159
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1081
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:201
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:369
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:372
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1587
@@ -1950,7 +1950,7 @@ msgid "Please name the plaintext file"
 msgstr "Bitte wählen Sie einen Namen für die Klartextdatei aus"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:625
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1144
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1142
 msgid ""
 "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
 msgstr ""
@@ -2111,22 +2111,22 @@ msgid "Renamed "
 msgstr "Umbennant "
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:970
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1064
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1217
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1062
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1215
 msgid "Completed successfully"
 msgstr "Erfolgreich beendet"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:970
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1064
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1217
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1062
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1215
 msgid "Completed but ...."
 msgstr "Fertig aber ...."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:982
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1128
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1198
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1219
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1280
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1126
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1196
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1217
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1278
 msgid "Do you wish to see a detailed report?"
 msgstr "Möchten Sie einen ausführlichen Bericht sehen?"
 
@@ -2160,7 +2160,7 @@ msgstr " Build"
 msgid "XML"
 msgstr "XML"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1052
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1051
 #, c-format
 msgid ""
 "File: %ls failed validation against XML Schema:\n"
@@ -2171,7 +2171,7 @@ msgstr ""
 "\n"
 "%ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1058
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1056
 #, c-format
 msgid ""
 "File: %ls passed Validation but had the following errors during import:\n"
@@ -2183,25 +2183,25 @@ msgstr ""
 "\n"
 "%ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1079
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1077
 msgid "The following records were skipped:"
 msgstr "Folgende Datensätze wurden übersprungen:"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1081
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1079
 #, c-format
 msgid " / skipped %d"
 msgstr " / %d übersprungen"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1086
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1084
 msgid "The following records had errors in their Password History:"
 msgstr "Folgende Datensätze hatten Fehler in die Passworthistorie:"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1088
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1086
 #, c-format
 msgid " / with Password History errors %d"
 msgstr "  / mit Passworthistorie Fehler %d"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1093
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1091
 msgid ""
 "The following records were renamed as an entry already exists in your "
 "database or in the Import file:"
@@ -2209,12 +2209,12 @@ msgstr ""
 "Folgende Datensätze wurden umbenannt, weil schon so ein Eintrag in der "
 "Datenbank oder in der Importdatei besteht:"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1095
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1093
 #, c-format
 msgid " / renamed %d"
 msgstr " / umbenannt %d"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1100
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1098
 #, c-format
 msgid ""
 "File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See "
@@ -2223,25 +2223,25 @@ msgstr ""
 "Datei: %ls wurde importiert (Überprüfte Einträge %d / importiert %d%ls%ls"
 "%ls). Siehe Bericht für Details."
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1106
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1213
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1103
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1104
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1211
 #: ../../../ui/wxWidgets/SyncWizard.cpp:588
 #: ../../../ui/wxWidgets/SyncWizard.cpp:731
 #: ../../../ui/wxWidgets/SyncWizard.cpp:748 ../../../core/core_st.cpp:98
 msgid "entry"
 msgstr "Eintrag"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1106
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1213
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1103
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1104
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1211
 #: ../../../ui/wxWidgets/SyncWizard.cpp:588
 #: ../../../ui/wxWidgets/SyncWizard.cpp:731
 #: ../../../ui/wxWidgets/SyncWizard.cpp:748 ../../../core/core_st.cpp:96
 msgid "entries"
 msgstr "Einträge"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1107
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
 #, c-format
 msgid ""
 "Validated %d %ls\n"
@@ -2252,25 +2252,25 @@ msgstr ""
 "\n"
 "Importiert %d %ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1115
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1113
 msgid "XML import not supported in this release"
 msgstr "XML-Import wird von dieser Version nicht unterstützt"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1118
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1116
 #, c-format
 msgid "XML import: Unexpected return code(%d)"
 msgstr "XML-Import: Unerwarteter Rückgabewert (%d)"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1142
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1140
 msgid "Please Choose a KeePass Text File to Import"
 msgstr "Bitte wählen Sie die zu importierende KeePass-Textdatei aus"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1164
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1162
 #, c-format
 msgid "Text file being imported: %ls"
 msgstr "Importierte Textdatei: %ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1181
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1179
 #: ../../../ui/wxWidgets/SyncWizard.cpp:603
 #, c-format
 msgid ""
@@ -2282,11 +2282,11 @@ msgstr ""
 "\n"
 "Konnte Datei nicht zum Lesen öffnen!"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1182
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1180
 msgid "File open error"
 msgstr "Fehler beim Öffnen der Datei"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1196
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1194
 #, c-format
 msgid ""
 "%ls\n"
@@ -2297,20 +2297,20 @@ msgstr ""
 "\n"
 "Ungültiges Format"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1199
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1197
 msgid "Import failed"
 msgstr "Import fehlgeschlagen"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1214
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1212
 #, c-format
 msgid "Imported %d %ls"
 msgstr "Importiert %d %ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1266
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1264
 msgid "Merging database: "
 msgstr "Zusammenführung von Datenbank: "
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1281
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1279
 msgid "Merge Complete"
 msgstr "Zusammenführung beendet"
 
@@ -3143,7 +3143,7 @@ msgstr "Letztes Zugriffsdatum"
 msgid "Click here to pick a field"
 msgstr "Klicken Sie hier um ein Feld auszuwählen"
 
-#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:904
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:909
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:281
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:293
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:454 ../../../core/core_st.cpp:33
@@ -3224,47 +3224,47 @@ msgstr "Anzeigefilter Eintragstyp-Wert setzen"
 msgid "Type"
 msgstr "Typ"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:428
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:431
 msgid "Another instance of Password Safe is already running"
 msgstr "Eine andere Instanz von Password Safe läuft bereits"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:464
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:473
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:467
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:476
 msgid "Could not initialize help subsystem. Help will not be available."
 msgstr ""
 "Konnte die Hilfe nicht initialisieren. Diese wird somit nicht zur Verfügung "
 "stehen."
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:465
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:474
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:468
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:477
 msgid "Password Safe: Error initializing help"
 msgstr "Password Safe: Fehler beim Initialisieren der Hilfe"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:466
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:469
 msgid "Don't show this warning again"
 msgstr "Diese Warnung nicht nochmals anzeigen"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:520
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:523
 msgid "Unable to import \"autoload_filters.xml\""
 msgstr "Kann Filter \"autoload_filters.xml\" nicht importieren"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:879
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:887
 msgid "Missing help definition for page \""
 msgstr "Fehlende Definition der Hilfe für die Seite \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:880
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:888
 msgid "\" of \""
 msgstr "\" von \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:885
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:893
 msgid "Missing help definition for window \""
 msgstr "Fehlende Definition der Hilfe für das Fenster \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:896
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:904
 msgid "Please inform the developers."
 msgstr "Bitte informieren Sie die Entwickler."
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:897
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:905
 msgid "Help Undefined"
 msgstr "Undefinierte Hilfe"
 
@@ -6599,6 +6599,132 @@ msgstr " (Aussprechbare Symbole)"
 #, c-format
 msgid "Yes - At least %d from %ls: %ls%ls"
 msgstr "Ja - Mindestens %d von %ls: %ls%ls"
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:109
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:91
+#, c-format
+msgid ""
+"XML error:\n"
+"%ls\n"
+"%ls\n"
+"offset approximately at %d"
+msgstr ""
+"XML Fehler:\n"
+"%ls\n"
+"%ls\n"
+"Offset ungefähr bei %d"
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:136
+#, c-format
+msgid "Error in XML structure: excpected \"%ls\", found \"%ls\""
+msgstr "Fehler in XML Struktur: erwartet \"%ls\", gefunden \"%ls\""
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:144
+msgid "Missing delimiter attribute in <passwordsafe>"
+msgstr "Fehlendes Attribute 'delimiter' in <passwordsafe>"
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:163
+msgid "Processing error on XML tag \"<passwordsafe>\""
+msgstr "Verarbeitungsfehler bzgl. dem XML Tag <passwordsafe>"
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:175
+#, c-format
+msgid "Unexpected XML node type %d of \"%ls\", inside of <passwordsafe>"
+msgstr ""
+"Nicht bekannter XML Node-Typ %d für <%ls>, innerhalb von <passwordsafe>"
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:180
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:246
+#, c-format
+msgid "Unknown XML tag <%ls> in <%ls>"
+msgstr "Unbkanntes XML Tag <%ls> in <%ls>"
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:188
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:252
+#, c-format
+msgid "Not allowed XML tag <%ls> in <%ls>"
+msgstr "Nicht erlaubtest XML Tag <%ls> in <%ls>"
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:269
+#, c-format
+msgid "Wrong XML value \"%ls\" for <%ls>"
+msgstr "Falscher XML Wert \"%ls\" für <%ls>"
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:112
+#, c-format
+msgid "Error in filter XML structure: excpected \"%ls\", found \"%ls\""
+msgstr "Fehler in XML Filterstruktur: Erwartet <%ls>, gefunden <%ls>"
+
+#
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:141
+msgid "Missing filtername"
+msgstr "Filtername fehlt"
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:159
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:233
+#, c-format
+msgid "Unexpected XML tag \"%ls\", expected tag is \"%ls\""
+msgstr "Unerwartetes XML Tag <%ls>, erwartet wird <%ls>"
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:186
+#, c-format
+msgid "Missing active attribute in filter entry %d of filter '%ls'"
+msgstr "Fehlendes aktives Attribut im Filter Nummer %d des Filters '%ls'"
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:196
+#, c-format
+msgid ""
+"Unexpected attribute value \"%ls\" (expected \"yes\" or \"no\") in filter "
+"entry %d of '%ls'"
+msgstr ""
+"Unerwarteter Attributwert \"%ls\" (erwartet wird \"yes\" oder \"no\") im "
+"Filter Nummer %d von Filter '%ls'"
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:317
+#, c-format
+msgid "Missing XML tag for field type in filter entry %d of '%ls'"
+msgstr "Fehlendes XML Tag für Feldtyp im Filter Nummer %d von '%ls'"
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:593
+#, c-format
+msgid "Unknown XML tag \"%ls\" for field type in filter entry %d of '%ls'"
+msgstr "Unbekanntes XML Tag <%ls> für Feldtyp im Filter Nummer %d von '%ls'"
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:607
+#, c-format
+msgid "Missing rule in filter entry %d of filter '%ls'"
+msgstr "Fehlende Regel im Filter Nummer %d von Filter '%ls'"
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:612
+#, c-format
+msgid "Unknown rule \"%ls\" in filter entry %d of filter '%ls'"
+msgstr "Unbekannte Regel \"%ls\" im Filter Nummer %d von Filter '%ls'"
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:623
+#, c-format
+msgid "Missing logic in filter entry %d of filter '%ls'"
+msgstr "Fehlende Logik in Filter Nummer %d von Filter '%ls'"
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:633
+#, c-format
+msgid "Unknown logic \"%ls\" in filter entry %d of filter '%ls'"
+msgstr "Unbekannte Logik \"%ls\" im Filter Nummer %d von Filter '%ls'"
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:651
+#, c-format
+msgid "Unknown XML tag \"%ls\" in field type in filter entry %d of '%ls'"
+msgstr "Unbekanntes XML Tag <%ls> im Filter Nummer %d von Filter '%ls'"
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:660
+#, c-format
+msgid "Missing logic or rule XML tag in filter entry %d of '%ls'"
+msgstr "Fehlende Logik oder Regel in Filter Nummer %d von Filter '%ls'"
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:753
+#, c-format
+msgid "Unknown XML tag \"%ls\" in test in filter entry %d of '%ls'"
+msgstr ""
+"Unbekanntes XML Tag <%ls> in <test> im Filter Nummer %d von Filter '%ls'"
 
 #~ msgid "Import XML"
 #~ msgstr "&XML importieren"

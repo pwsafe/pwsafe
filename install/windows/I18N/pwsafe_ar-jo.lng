@@ -1,0 +1,162 @@
+;---------------------------------------------------
+; Password Safe Language Script
+; Name : pwsafe_JO.lng
+; include file for "pwsafe.nsi"
+; first edit : Karlo Van der Gucht
+;---------------------------------------------------
+; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
+; Copyright 2005-2021 Rony Shapiro <ronys@pwsafe.org>
+; 2009 extended by Karlo Van der Gucht for multiple language use
+; 2010 extended by Karlo Van der Gucht Danish language
+; This script may be redistributed and/or modified under the Artistic
+; License 2.0 terms as available at 
+; http://www.opensource.org/licenses/artistic-license-2.0.php
+;
+; This script is distributed AS IS.  All warranties are explicitly
+; disclaimed, including, but not limited to, the implied warranties of
+; MERCHANTABILITY and FITNESS FOR A PARTICULAR PURPOSE.
+ 
+;=================================================================
+
+; RESERVE_TITLE "Choose Installation Type"
+LangString RESERVE_TITLE ${LANG_Arabic} "إختر نوع التثبيت"
+
+; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
+LangString RESERVE_FIELD1 ${LANG_Arabic} "عادي (يستخدم السجل, مناسب للحاسوب المنزلي او المستخدم من شخص واحد فقط)"
+
+; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
+LangString RESERVE_FIELD2 ${LANG_Arabic} "(لا يستخدم سجل الجهاز المضيف,disk-on-key أخضر(ل"
+
+; PROGRAM_FILES "Program Files"
+LangString PROGRAM_FILES ${LANG_Arabic} "ملفات البرنامج"
+
+; START_AUTO "Start automatically"
+LangString START_AUTO ${LANG_Arabic} "البدء بشكل تلقائي"
+
+; START_SHOW "Show in start menu"
+LangString START_SHOW ${LANG_Arabic} "الإظهار في قائمة البدأ"
+
+; START_SHORTCUT "Install desktop shortcut"
+LangString START_SHORTCUT ${LANG_Arabic} "عمل ايقونة اختصار سطح المكتب"
+
+; UNINSTALL_SHORTCUT "Uninstall shortcut"
+LangString UNINSTALL_SHORTCUT ${LANG_Arabic} "اختصار الغاء التثبيت"
+
+;--------------------------------
+; Descriptions
+
+; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
+LangString DESC_ProgramFiles ${LANG_Arabic} "تثبيت الملفات الأساسية الضارورية لعمل البرنامج"
+
+; DESC_CliTool "Installs pwsafe-cli, a command line utility."
+LangString DESC_CliTool ${LANG_Arabic} "خدمة واجهة الأوامر pwsafe-cli تثبيت"
+
+; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
+LangString DESC_LangSupport ${LANG_Arabic} "قم بإختيار اللغةاو اللغات التي سيستخدمها البرنامج"
+
+; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
+LangString DESC_StartUp ${LANG_Arabic} "Windows boot/login بدأ البرنامج كجزء من عملية الإقلاع|تسجيل الدخول"
+
+; DESC_StartMenu "Creates an entry in the start menu for Password Safe."
+LangString DESC_StartMenu ${LANG_Arabic} "عمل اضافة في قائمة البدأ للبرنامج"
+
+; DESC_DesktopShortcut "Places a shortcut to Password Safe on your desktop."
+LangString DESC_DesktopShortcut ${LANG_Arabic} "وضع ايقونة اختصار الوصول للبرنامج على سطح المكتب"
+
+; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
+LangString DESC_UninstallMenu ${LANG_Arabic} "وضع الاختصار لاداة الغاء تثبيت البرنامج في قائمة البدأ"
+  
+; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
+; TEXT_GC_TITLE "Installation Type"
+LangString TEXT_GC_TITLE ${LANG_Arabic} "نوع التثبيت"
+
+; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
+LangString TEXT_GC_SUBTITLE ${LANG_Arabic} "اذا لم تكن متأكد اختر عادي للاستخدام على الحاسب الشخصي واخضر للتثبيت المحمول"
+
+; PSWINI_TITLE "Choose Installation Type"
+LangString PSWINI_TITLE ${LANG_Arabic} "اختر نوع التثبيت"
+
+; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
+LangString PSWINI_TEXT1 ${LANG_Arabic} "عادي (يستخدم السجل, مناسب للحاسوب المنزلي او المستخدم من شخص واحد فقط)"
+
+; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
+LangString PSWINI_TEXT2 ${LANG_Arabic} "(لا يستخدم سجل المضيف,disk-on-key أخضر(ل"
+
+;--------------------------------
+; checks and warnings
+
+; RUNNING_INSTALL "The installer is already running."
+LangString RUNNING_INSTALL ${LANG_Arabic} "المثبت يعمل حاليا"
+
+; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
+LangString RUNNING_APPLICATION ${LANG_Arabic} "أغلق جميع اجزاء البرنامج التي تعمل  قبل تثبيت اصدار جديد"
+
+; LANG_INSTALL "Installation Language"
+LangString LANG_INSTALL ${LANG_Arabic} "لغة المثبت"
+
+; LANG_SELECT "Please select the language for the installation"
+LangString LANG_SELECT ${LANG_Arabic} "إختر لغة المثبت"
+
+; CLI_TOOL "Command-line tool"
+LangString CLI_TOOL ${LANG_Arabic} " أداة الأوامر"
+
+; LANGUAGE_SUPPORT "Language Support"
+LangString LANGUAGE_SUPPORT ${LANG_Arabic} "اللغات المدعومة"
+; ENGLISH_SUPPORT "English"
+LangString ENGLISH_SUPPORT ${LANG_Arabic} "الإنجليزية"
+; CHINESE_CN_SUPPORT "Chinese (Simplified)"
+LangString CHINESE_CN_SUPPORT ${LANG_Arabic} "الصينية المبسطة "
+; CHINESE_TW_SUPPORT "Chinese (Traditional)"
+LangString CHINESE_TW_SUPPORT ${LANG_Arabic} "الصينية التقليدية"
+; GERMAN_SUPPORT "German"
+LangString GERMAN_SUPPORT ${LANG_Arabic} "الألمانية"
+; SPANISH_SUPPORT "Spanish"
+LangString SPANISH_SUPPORT ${LANG_Arabic} "الإسبانية"
+; SWEDISH_SUPPORT "Swedish"
+LangString SWEDISH_SUPPORT ${LANG_Arabic} "السويدية"
+; DUTCH_SUPPORT "Dutch"
+LangString DUTCH_SUPPORT ${LANG_Arabic} "الهولندية"
+; FRENCH_SUPPORT "French"
+LangString FRENCH_SUPPORT ${LANG_Arabic} "الفرنسية"
+; RUSSIAN_SUPPORT "Russian"
+LangString RUSSIAN_SUPPORT ${LANG_Arabic} "الروسية"
+; POLISH_SUPPORT "Polish"
+LangString POLISH_SUPPORT ${LANG_Arabic} "البولندية"
+; ITALIAN_SUPPORT "Italian"
+LangString ITALIAN_SUPPORT ${LANG_Arabic} "الإيطالية"
+; DANISH_SUPPORT "Danish"
+LangString DANISH_SUPPORT ${LANG_Arabic} "الدنماركية"
+; KOREAN_SUPPORT "Korean"
+LangString KOREAN_SUPPORT ${LANG_Arabic} "الكورية"
+; CZECH_SUPPORT "Czech"
+LangString CZECH_SUPPORT ${LANG_Arabic} "التشيكية"
+; TURKISH_SUPPORT "Turkish"
+LangString TURKISH_SUPPORT ${LANG_Arabic} "التركية"
+; HUNGARIAN_SUPPORT "Hungarian"
+LangString HINGARIAN_SUPPORT ${LANG_Arabic} "الهنغارية"
+; SLOVENIAN_SUPPORT "Slovenian"
+LangString SLOVENIAN_SUPPORT ${LANG_Arabic} "السلوفينية"
+
+; LANG_PROGRAM "Program Language"
+LangString LANG_PROGRAM ${LANG_Arabic} "لغة البرنامج"
+
+; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_95 ${LANG_Arabic} "عذرا ويندوز 95 غير مدعوم جرب اصدار البرنامج رقم 2.16"
+
+; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_98 ${LANG_Arabic} "عذرا ويندوز 98 غير مدعوم جرب اصدار البرامج رقم 2.16"
+
+; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_ME ${LANG_Arabic} " غير مدعوم جرب اصدار البرنامج رقم 2.16 ME عذرا ويندوز"
+
+; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
+LangString SORRY_NO_2K ${LANG_Arabic} "عذرا ويندوز 2000 غير مدعوم جرب اصدار البرامج رقم 3.18"
+
+; LangString Icon_description_Uninstall "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_Arabic} "الغاء تثبيت البرنامج"
+
+; LangString Icon_description_Help  "Password Safe Help"
+LangString Icon_description_Help ${LANG_Arabic} "المساعدة حول البرنامج"
+
+;=================================================================
+; End of pwsafe_xx.lng

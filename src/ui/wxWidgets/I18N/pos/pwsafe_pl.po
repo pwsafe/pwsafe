@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-01 10:36+0200\n"
+"POT-Creation-Date: 2021-06-21 12:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:141
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1443
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:428
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:431
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:567
 msgid "Password Safe"
 msgstr "Password Safe"
@@ -588,7 +588,7 @@ msgid "Generate pronounceable passwords"
 msgstr "Generuj hasło wymawialne"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:815
-#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:906
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:911
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:284
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:296
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:457
@@ -814,7 +814,7 @@ msgstr "Nie można stworzyc hasła - nieprawidłowa polityka haseł"
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:159
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1081
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:201
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:369
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:372
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1587
@@ -1440,7 +1440,7 @@ msgstr "Anuluj"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:260
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:221
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:183
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:226
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:227
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:200
 msgid "&Help"
 msgstr "Pomoc"
@@ -2085,7 +2085,7 @@ msgid "Please name the plaintext file"
 msgstr "Nazwij plik tekstowy"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:625
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1144
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1142
 msgid ""
 "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
 msgstr ""
@@ -2254,22 +2254,22 @@ msgid "Renamed "
 msgstr "Zmieniono nazwę "
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:970
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1064
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1217
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1062
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1215
 msgid "Completed successfully"
 msgstr "Zakończono z sukcesem"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:970
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1064
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1217
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1062
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1215
 msgid "Completed but ...."
 msgstr "Zakończono, lecz ...."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:982
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1128
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1198
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1219
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1280
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1126
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1196
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1217
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1278
 msgid "Do you wish to see a detailed report?"
 msgstr "Czy chcesz zobaczyć dokładny raport?"
 
@@ -2302,7 +2302,7 @@ msgstr " Zbudowany"
 msgid "XML"
 msgstr "XML"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1052
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1051
 #, fuzzy, c-format
 msgid ""
 "File: %ls failed validation against XML Schema:\n"
@@ -2313,7 +2313,7 @@ msgstr ""
 "\n"
 "%ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1058
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1056
 #, fuzzy, c-format
 msgid ""
 "File: %ls passed Validation but had the following errors during import:\n"
@@ -2325,25 +2325,25 @@ msgstr ""
 "\n"
 "%ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1079
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1077
 msgid "The following records were skipped:"
 msgstr "Następujące rekordy zostały ominięte:"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1081
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1079
 #, c-format
 msgid " / skipped %d"
 msgstr " / ominięto %d"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1086
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1084
 msgid "The following records had errors in their Password History:"
 msgstr "Nastepujące rekordy miały błędy w historii haseł:"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1088
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1086
 #, c-format
 msgid " / with Password History errors %d"
 msgstr " / z błędami historii haseł %d"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1093
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1091
 msgid ""
 "The following records were renamed as an entry already exists in your "
 "database or in the Import file:"
@@ -2351,12 +2351,12 @@ msgstr ""
 "Następującym rekordom zostały zmienione nazwy ponieważ wpisy już istniały w "
 "Twojej bazie lub pliku importowanym:"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1095
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1093
 #, c-format
 msgid " / renamed %d"
 msgstr " / zmieniono nazwę %d"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1100
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1098
 #, fuzzy, c-format
 msgid ""
 "File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See "
@@ -2365,25 +2365,25 @@ msgstr ""
 "Plik: %ls został zaimportowany (wpisy sprawdzone %d / zaimportowano %d%ls%ls"
 "%ls). Zobacz raport szczegółowy."
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1106
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1213
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1103
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1104
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1211
 #: ../../../ui/wxWidgets/SyncWizard.cpp:588
 #: ../../../ui/wxWidgets/SyncWizard.cpp:731
 #: ../../../ui/wxWidgets/SyncWizard.cpp:748 ../../../core/core_st.cpp:98
 msgid "entry"
 msgstr "wpis"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1106
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1213
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1103
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1104
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1211
 #: ../../../ui/wxWidgets/SyncWizard.cpp:588
 #: ../../../ui/wxWidgets/SyncWizard.cpp:731
 #: ../../../ui/wxWidgets/SyncWizard.cpp:748 ../../../core/core_st.cpp:96
 msgid "entries"
 msgstr "wpisy"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1107
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
 #, fuzzy, c-format
 msgid ""
 "Validated %d %ls\n"
@@ -2394,25 +2394,25 @@ msgstr ""
 "\n"
 "Zaimportowane %d %ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1115
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1113
 msgid "XML import not supported in this release"
 msgstr "Import XML nie jest dostępny w tej wersji"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1118
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1116
 #, c-format
 msgid "XML import: Unexpected return code(%d)"
 msgstr "Import XML: niespodziewany kod powrotu(%d)"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1142
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1140
 msgid "Please Choose a KeePass Text File to Import"
 msgstr "Wybierz plik tekstowy KeePass do zaimportowania"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1164
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1162
 #, fuzzy, c-format
 msgid "Text file being imported: %ls"
 msgstr "Plik tekstowy do zaimportowania: %ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1181
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1179
 #: ../../../ui/wxWidgets/SyncWizard.cpp:603
 #, fuzzy, c-format
 msgid ""
@@ -2424,12 +2424,12 @@ msgstr ""
 "\n"
 "Nie można otworzyć pliku do odczytu!"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1182
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1180
 #, fuzzy
 msgid "File open error"
 msgstr "Błąd przy otwieraniu pliku"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1196
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1194
 #, fuzzy, c-format
 msgid ""
 "%ls\n"
@@ -2440,21 +2440,21 @@ msgstr ""
 "\n"
 "Nieprawidłowy format"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1199
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1197
 msgid "Import failed"
 msgstr "Import się nie powiódł"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1214
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1212
 #, fuzzy, c-format
 msgid "Imported %d %ls"
 msgstr "Zaimportowano %d %ls"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1266
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1264
 #, fuzzy
 msgid "Merging database: "
 msgstr "Scalanie bazy danych: "
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1281
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1279
 msgid "Merge Complete"
 msgstr "Scalanie zakończone"
 
@@ -3324,7 +3324,7 @@ msgstr "Data ostatniego dostępu do pliku"
 msgid "Click here to pick a field"
 msgstr "Kliknij tutaj, żeby wybrać pole"
 
-#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:904
+#: ../../../ui/wxWidgets/PWFiltersEditor.cpp:909
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:281
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:293
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:454 ../../../core/core_st.cpp:33
@@ -3414,27 +3414,27 @@ msgstr "Pokaż filtr - "
 msgid "Type"
 msgstr "Typ"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:428
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:431
 msgid "Another instance of Password Safe is already running"
 msgstr "Inna instancja PasswordSafe jest już uruchomiona"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:464
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:473
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:467
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:476
 #, fuzzy
 msgid "Could not initialize help subsystem. Help will not be available."
 msgstr "Nie można zainicjować systemu pomocy. Pomoc nie będzie dostępna"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:465
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:474
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:468
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:477
 #, fuzzy
 msgid "Password Safe: Error initializing help"
 msgstr "Błąd w czasie inicjalizowania pomocy"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:466
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:469
 msgid "Don't show this warning again"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:520
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:523
 #, fuzzy
 msgid "Unable to import \"autoload_filters.xml\""
 msgstr ""
@@ -3442,23 +3442,23 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:879
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:887
 msgid "Missing help definition for page \""
 msgstr "Brakuje definicji pomocy dla strony \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:880
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:888
 msgid "\" of \""
 msgstr "\" z \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:885
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:893
 msgid "Missing help definition for window \""
 msgstr "Brakuje definicji pomocy dla okna \""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:896
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:904
 msgid "Please inform the developers."
 msgstr "Proszę poinformować programistów."
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:897
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:905
 msgid "Help Undefined"
 msgstr "Pomoc nie jest zdefiniowana"
 
@@ -4606,73 +4606,73 @@ msgstr "Wszystkie pola z pasujących wpisów były %ls"
 msgid "\tThe following fields were %ls"
 msgstr "Następujące pola były %ls"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:193
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:194
 msgid "Filter name:"
 msgstr "Nazwa filtra:"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:217
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:254
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:218
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:255
 msgid "&Apply"
 msgstr "Z&astosuj"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:220
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:221
 #, fuzzy
 msgid "OK"
 msgstr "OK"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:223
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:224
 #, fuzzy
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:259
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:290
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:260
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:291
 #, fuzzy
 msgid "No filter name given."
 msgstr "Nazwa filtra:"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:259
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:290
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:260
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:291
 #, fuzzy
 msgid "Please name this filter."
 msgstr "Podaj nazwę pliku XML"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:277
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:278
 #, fuzzy
 msgid "Clear"
 msgstr "Wy&czyść"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:312
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:313
 msgid "Applied pressed before Cancel"
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:312
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:313
 #, fuzzy
 msgid "Do you wish to overtake applied filter?"
 msgstr "Czy chcesz zobaczyć dokładny raport?"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:429
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:437
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:443
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:449
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:430
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:438
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:444
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:450
 #, c-format
 msgid "Row %d is incomplete."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:430
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:431
 #, fuzzy
 msgid "Please set both Field and Criteria."
 msgstr "Rząd %d nie jest w całości. Proszę ustawić i Pole, i Kryteria."
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:438
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:439
 msgid "Please set both Field and Criteria or update History filters."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:444
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:445
 msgid "Please set both Field and Criteria or update Policy filters."
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:450
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:451
 msgid "Please set both Field and Criteria or update Attachment filters."
 msgstr ""
 
@@ -6938,6 +6938,128 @@ msgstr "Tak - wymiawialne symbole: %ls"
 #, fuzzy, c-format
 msgid "Yes - At least %d from %ls: %ls%ls"
 msgstr "Tak - co najwyżej %d z %ls: %ls"
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:109
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:91
+#, fuzzy, c-format
+msgid ""
+"XML error:\n"
+"%ls\n"
+"%ls\n"
+"offset approximately at %d"
+msgstr ""
+"Błąd pliku konfiguracyjnego:\n"
+"%ls\n"
+"%ls\n"
+"przybliżone przesunięcie w %d"
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:136
+#, c-format
+msgid "Error in XML structure: excpected \"%ls\", found \"%ls\""
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:144
+msgid "Missing delimiter attribute in <passwordsafe>"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:163
+msgid "Processing error on XML tag \"<passwordsafe>\""
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:175
+#, c-format
+msgid "Unexpected XML node type %d of \"%ls\", inside of <passwordsafe>"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:180
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:246
+#, c-format
+msgid "Unknown XML tag <%ls> in <%ls>"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:188
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:252
+#, c-format
+msgid "Not allowed XML tag <%ls> in <%ls>"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:269
+#, c-format
+msgid "Wrong XML value \"%ls\" for <%ls>"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:112
+#, c-format
+msgid "Error in filter XML structure: excpected \"%ls\", found \"%ls\""
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:141
+#, fuzzy
+msgid "Missing filtername"
+msgstr "Brak pliku XSD"
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:159
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:233
+#, c-format
+msgid "Unexpected XML tag \"%ls\", expected tag is \"%ls\""
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:186
+#, c-format
+msgid "Missing active attribute in filter entry %d of filter '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:196
+#, c-format
+msgid ""
+"Unexpected attribute value \"%ls\" (expected \"yes\" or \"no\") in filter "
+"entry %d of '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:317
+#, c-format
+msgid "Missing XML tag for field type in filter entry %d of '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:593
+#, c-format
+msgid "Unknown XML tag \"%ls\" for field type in filter entry %d of '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:607
+#, c-format
+msgid "Missing rule in filter entry %d of filter '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:612
+#, c-format
+msgid "Unknown rule \"%ls\" in filter entry %d of filter '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:623
+#, c-format
+msgid "Missing logic in filter entry %d of filter '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:633
+#, c-format
+msgid "Unknown logic \"%ls\" in filter entry %d of filter '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:651
+#, c-format
+msgid "Unknown XML tag \"%ls\" in field type in filter entry %d of '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:660
+#, c-format
+msgid "Missing logic or rule XML tag in filter entry %d of '%ls'"
+msgstr ""
+
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:753
+#, c-format
+msgid "Unknown XML tag \"%ls\" in test in filter entry %d of '%ls'"
+msgstr ""
 
 #, fuzzy
 #~ msgid "No filter name given"

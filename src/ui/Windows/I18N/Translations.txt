@@ -9,6 +9,7 @@
 # in the pos directory.
 # File name   LCID   LL_CC LL
 #
+pwsafe_ar.po  0x2c01 AR_JO AR
 pwsafe_cz.po  0x0405 CS_CZ CZ
 pwsafe_dk.po  0x0406 DA_DK DA
 pwsafe_de.po  0x0407 DE_DE DE
