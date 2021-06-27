@@ -123,7 +123,7 @@ LangString CZECH_SUPPORT ${LANG_RUSSIAN} "Чешский"
 LangString TURKISH_SUPPORT ${LANG_RUSSIAN} "Турецкий"
 LangString HUNGARIAN_SUPPORT ${LANG_RUSSIAN} "Венгерский"
 LangString SLOVENIAN_SUPPORT ${LANG_RUSSIAN} "Словенский"
-LangString ARABIC_SUPPORT ${LANG_RUSSIAN} "арабский"
+LangString ARABIC_SUPPORT ${LANG_RUSSIAN} "Арабский"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_RUSSIAN} "Язык программы"
