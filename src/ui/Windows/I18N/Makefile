@@ -50,7 +50,7 @@ CHMOD = /usr/bin/chmod
 RM = /usr/bin/rm
 MV = /usr/bin/mv
 
-BASE_DLL = ../../../../build/bin/pwsafe/release/pwsafe_base.dll
+BASE_DLL = ../../../../out/build/x64-Release/Release/pwsafe_base.dll
 
 .PHONY: update-pos dlls dlls_32 dlls_64 tools clean help check dest_dir
 
