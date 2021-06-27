@@ -13,6 +13,11 @@ Bugs fixed in 3.56pre
 * [GH573](https://github.com/pwsafe/pwsafe/issues/573),[SF1488](https://sourceforge.net/p/passwordsafe/bugs/1488/) "Remind" Windows when PasswordSafe should stay topmost
 * Fixed Notes line parsing in Run command
 
+Changes in 3.56pre
+------------------
+
+* Entire password can be selected in password subset display by specifying '*'
+* Arabic support added
 
 PasswordSafe non-Windows Release 1.13
 =====================================
