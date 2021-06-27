@@ -364,6 +364,11 @@ msgstr "%d/%d öge"
 msgid "%ls - Copied %ls"
 msgstr "%ls - %ls kopyalandı"
 
+#. Resource IDs: (5907)
+#, c-format
+msgid "%ls - Drag & Drop %ls"
+msgstr ""
+
 #. Resource IDs: (3431)
 #, c-format
 msgid "%ls - Imported %ls"
@@ -428,11 +433,6 @@ msgstr ""
 #, c-format
 msgid "%s (database-specific)"
 msgstr "%s (veri tabanına özgü)"
-
-#. Resource IDs: (5907)
-#, c-format
-msgid "%s - Drag & Drop %s"
-msgstr "%s - Sürükle & Bırak %s"
 
 #. Resource IDs: (5998)
 #, c-format
@@ -2942,7 +2942,7 @@ msgid "Enter no more than %1 characters."
 msgstr "%1 karakterden daha az olmak şartıyla karakter giriniz."
 
 #. Resource IDs: (65535)
-msgid "Enter positions of password characters separated by spaces, commas or semi-colons."
+msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
 msgstr ""
 
 #. Resource IDs: (149)
@@ -5436,12 +5436,9 @@ msgstr "Yinele"
 msgid "Redo the last change to password policies that was previously undone"
 msgstr "Şifre planlarına son yapılan, daha önce geri alınmış değişimi yinele"
 
-#. Resource IDs: (1228)
+#. Resource IDs: (1228, 3397)
 msgid "Relative"
 msgstr "Göreceli"
-
-msgid "relative"
-msgstr "göreceli"
 
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
@@ -5938,10 +5935,6 @@ msgstr ""
 #. Resource IDs: (5555)
 msgid "Shift+click to view current policy"
 msgstr "Geçerli planı göstermek için Shift+Tık"
-
-#. Resource IDs: (1599)
-msgid "Shorcuts"
-msgstr ""
 
 #. Resource IDs: (5686)
 #, c-format
@@ -7068,7 +7061,7 @@ msgstr "Uygurca"
 msgid "Uzbek Cyrillic"
 msgstr "Özbek Slav Alfabesi"
 
-#. Resource IDs: (3440, 5537)
+#. Resource IDs: (5537)
 msgid "Validate"
 msgstr "Doğrula"
 
@@ -7812,8 +7805,8 @@ msgstr ""
 
 #. Resource IDs: (5538)
 #, c-format
-msgid "\tNo entries were found containing search string '%s'"
-msgstr "\t'%s' arama metnini içeren girdi bulunamadı"
+msgid "\tNo entries were found containing search string '%ls' %ls"
+msgstr ""
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
@@ -7835,8 +7828,8 @@ msgstr "\tŞifre veritabaı adı '%ls' veritabanında yok."
 
 #. Resource IDs: (5539)
 #, c-format
-msgid "\tThe following entries contain search string '%s'"
-msgstr "\tAşağıdaki girdiler '%s' arama metnini içeriyor"
+msgid "\tThe following entries contain search string '%ls' %ls"
+msgstr ""
 
 #. Resource IDs: (5522)
 #, c-format
@@ -7891,7 +7884,7 @@ msgstr "bir suret girdi"
 msgid "an unnamed file"
 msgstr "bir isimsiz dosya"
 
-#. Resource IDs: (1307, 1419)
+#. Resource IDs: (1307, 1419, 5969)
 msgid "and"
 msgstr "ve"
 
@@ -8183,6 +8176,10 @@ msgstr "eski şifreyi, girdi başına"
 #. Resource IDs: (5394)
 msgid "pwsafe"
 msgstr "pwsafe"
+
+#. Resource IDs: (5968)
+msgid "relative"
+msgstr "göreceli"
 
 #. Resource IDs: (3279)
 msgid "shortcut"

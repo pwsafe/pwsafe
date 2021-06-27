@@ -364,6 +364,11 @@ msgstr "%d/%d položek"
 msgid "%ls - Copied %ls"
 msgstr "%ls - Zkopírováno %ls"
 
+#. Resource IDs: (5907)
+#, c-format
+msgid "%ls - Drag & Drop %ls"
+msgstr ""
+
 #. Resource IDs: (3431)
 #, c-format
 msgid "%ls - Imported %ls"
@@ -428,11 +433,6 @@ msgstr ""
 #, c-format
 msgid "%s (database-specific)"
 msgstr "%s (specifické pro databázi)"
-
-#. Resource IDs: (5907)
-#, c-format
-msgid "%s - Drag & Drop %s"
-msgstr "%s - Drag & Drop %s"
 
 #. Resource IDs: (5998)
 #, c-format
@@ -2942,8 +2942,8 @@ msgid "Enter no more than %1 characters."
 msgstr "Zadejte ne více než %1 znaků."
 
 #. Resource IDs: (65535)
-msgid "Enter positions of password characters separated by spaces, commas or semi-colons."
-msgstr "Zadjete pozice znaků hesla oddělené mezerami, čárkami nebo středníky."
+msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
+msgstr ""
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -5436,12 +5436,9 @@ msgstr "Znovu"
 msgid "Redo the last change to password policies that was previously undone"
 msgstr "Zopakovat poslední změnu politiky hesel, která byla předtím vrácena"
 
-#. Resource IDs: (1228)
+#. Resource IDs: (1228, 3397)
 msgid "Relative"
 msgstr "Relativní"
-
-msgid "relative"
-msgstr "relativní"
 
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
@@ -5938,10 +5935,6 @@ msgstr ""
 #. Resource IDs: (5555)
 msgid "Shift+click to view current policy"
 msgstr "Shift + klik pro zobrazení současné politiky"
-
-#. Resource IDs: (1599)
-msgid "Shorcuts"
-msgstr ""
 
 #. Resource IDs: (5686)
 #, c-format
@@ -7068,7 +7061,7 @@ msgstr "Ujgurština"
 msgid "Uzbek Cyrillic"
 msgstr "Uzbečtina (azbuka)"
 
-#. Resource IDs: (3440, 5537)
+#. Resource IDs: (5537)
 msgid "Validate"
 msgstr "Ověř"
 
@@ -7812,8 +7805,8 @@ msgstr ""
 
 #. Resource IDs: (5538)
 #, c-format
-msgid "\tNo entries were found containing search string '%s'"
-msgstr "\tNebyl nalezen záznam obsahující řetězec '%s'"
+msgid "\tNo entries were found containing search string '%ls' %ls"
+msgstr ""
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
@@ -7835,8 +7828,8 @@ msgstr "\tJméno politiky hesel '%ls' není v této databázi."
 
 #. Resource IDs: (5539)
 #, c-format
-msgid "\tThe following entries contain search string '%s'"
-msgstr "\tNásledující záznamy obsahují hledaný řetězec '%s'"
+msgid "\tThe following entries contain search string '%ls' %ls"
+msgstr ""
 
 #. Resource IDs: (5522)
 #, c-format
@@ -7891,7 +7884,7 @@ msgstr "přezdívka záznamu"
 msgid "an unnamed file"
 msgstr "nepojmenovaný soubor"
 
-#. Resource IDs: (1307, 1419)
+#. Resource IDs: (1307, 1419, 5969)
 msgid "and"
 msgstr "a"
 
@@ -8183,6 +8176,10 @@ msgstr "předchozí hesla"
 #. Resource IDs: (5394)
 msgid "pwsafe"
 msgstr "pwsafe"
+
+#. Resource IDs: (5968)
+msgid "relative"
+msgstr "relativní"
 
 #. Resource IDs: (3279)
 msgid "shortcut"

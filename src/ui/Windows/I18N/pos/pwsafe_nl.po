@@ -403,6 +403,11 @@ msgstr "%d/%d onderdelen"
 msgid "%ls - Copied %ls"
 msgstr "%ls - Gekopieerd %ls"
 
+#. Resource IDs: (5907)
+#, c-format
+msgid "%ls - Drag & Drop %ls"
+msgstr ""
+
 #. Resource IDs: (3431)
 #, c-format
 msgid "%ls - Imported %ls"
@@ -467,11 +472,6 @@ msgstr "%s (*%s)|*%s||"
 #, c-format
 msgid "%s (database-specific)"
 msgstr "%s (database-specifiek)"
-
-#. Resource IDs: (5907)
-#, c-format
-msgid "%s - Drag & Drop %s"
-msgstr "%s -Slepen & Neerzetten  %s"
 
 #. Resource IDs: (5998)
 #, c-format
@@ -2981,8 +2981,8 @@ msgid "Enter no more than %1 characters."
 msgstr "Geef niet meer dan %1 tekens op."
 
 #. Resource IDs: (65535)
-msgid "Enter positions of password characters separated by spaces, commas or semi-colons."
-msgstr "Voer posities van wachtwoord karakters gescheiden door spaties, kommas of punt-kommas."
+msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
+msgstr ""
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -5476,12 +5476,9 @@ msgstr "Opnieuw uitvoeren"
 msgid "Redo the last change to password policies that was previously undone"
 msgstr "Voer de laatste wijziging aan het wachtwoordregels, welke eerst geannuleerd was, opnieuw uit"
 
-#. Resource IDs: (1228)
+#. Resource IDs: (1228, 3397)
 msgid "Relative"
 msgstr "Relatief"
-
-msgid "relative"
-msgstr "relatief"
 
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
@@ -5978,10 +5975,6 @@ msgstr "Shift+Dubbelklik Actie"
 #. Resource IDs: (5555)
 msgid "Shift+click to view current policy"
 msgstr "Shift+klik om het huidige regels te zien"
-
-#. Resource IDs: (1599)
-msgid "Shorcuts"
-msgstr ""
 
 #. Resource IDs: (5686)
 #, c-format
@@ -7108,7 +7101,7 @@ msgstr "Uyghur"
 msgid "Uzbek Cyrillic"
 msgstr "Oezbeeks"
 
-#. Resource IDs: (3440, 5537)
+#. Resource IDs: (5537)
 msgid "Validate"
 msgstr "Valideren"
 
@@ -7852,8 +7845,8 @@ msgstr "\tNaam: %s; Bestandsnaam: %s"
 
 #. Resource IDs: (5538)
 #, c-format
-msgid "\tNo entries were found containing search string '%s'"
-msgstr "\tGeen invoeren gevonden met de zoektekst '%s'"
+msgid "\tNo entries were found containing search string '%ls' %ls"
+msgstr ""
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
@@ -7875,8 +7868,8 @@ msgstr "\tNaam wachtwoordregels'%ls' is niet in de database."
 
 #. Resource IDs: (5539)
 #, c-format
-msgid "\tThe following entries contain search string '%s'"
-msgstr "\tDe volgende invoeren bevatten de zoektekst '%s'"
+msgid "\tThe following entries contain search string '%ls' %ls"
+msgstr ""
 
 #. Resource IDs: (5522)
 #, c-format
@@ -7931,7 +7924,7 @@ msgstr "een aliasinvoer"
 msgid "an unnamed file"
 msgstr "een bestand zonder naam"
 
-#. Resource IDs: (1307, 1419)
+#. Resource IDs: (1307, 1419, 5969)
 msgid "and"
 msgstr "en"
 
@@ -8223,6 +8216,10 @@ msgstr "vorige wachtwoorden per invoer"
 #. Resource IDs: (5394)
 msgid "pwsafe"
 msgstr "pwsafe"
+
+#. Resource IDs: (5968)
+msgid "relative"
+msgstr "relatief"
 
 #. Resource IDs: (3279)
 msgid "shortcut"
