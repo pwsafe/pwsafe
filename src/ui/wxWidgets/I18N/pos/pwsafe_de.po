@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-21 12:49+0200\n"
+"POT-Creation-Date: 2021-06-30 14:33+0200\n"
 "PO-Revision-Date: 2018-05-18 12:55+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -72,7 +72,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:433
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:406
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:541
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:162
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:166
 #: ../../../ui/wxWidgets/SystemTray.cpp:137
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:197
 msgid "&Close"
@@ -758,8 +758,8 @@ msgstr "Passwort konnte nicht generiert werden - Ungültige Richtlinie"
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1081
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:201
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:372
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:738
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:757
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1587
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:298
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:302
@@ -824,14 +824,14 @@ msgid " (every %d days)"
 msgstr " (alle %d Tage)"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2726
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:755
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
 msgstr ""
 "Entschuldigung, aber \"leicht lesbar\" und \"aussprechbar\" können nicht "
 "gemeinsam ausgewählt werden."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2753
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:736
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
 msgstr ""
 "Entschuldigung, aber \"aussprechbar\" und \"leicht lesbar\" können nicht "
@@ -1711,7 +1711,7 @@ msgstr "Keine Voranschau für Anhänge die keine Bilder darstellen verfügbar.\n
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:539
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:555
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:632
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1721
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1726
 #: ../../../ui/wxWidgets/ViewAttachmentDlg.cpp:37
 #: ../../../ui/wxWidgets/ViewAttachmentDlg.cpp:71
 msgid "View Attachment"
@@ -2435,12 +2435,12 @@ msgstr "Zeige Bericht"
 
 #: ../../../ui/wxWidgets/MenuViewHandlers.cpp:482
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:668
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2063
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2068
 msgid "&Apply current"
 msgstr "&Aktuellen Filter anwenden"
 
 #: ../../../ui/wxWidgets/MenuViewHandlers.cpp:486
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2060
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2065
 msgid "&Clear current"
 msgstr "&Lösche aktuellen Filter"
 
@@ -3397,7 +3397,7 @@ msgid "S&ynchronize..."
 msgstr "S&ynchronisieren..."
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:592
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2577
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2582
 msgid "Change R/W Mode"
 msgstr "Ändere R/W Modus"
 
@@ -3442,7 +3442,7 @@ msgid "&Duplicate Entry\tCtrl+D"
 msgstr "Eintrag &duplizieren\tCtrl+D"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:615
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1724
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1729
 msgid "Protect Entry"
 msgstr "Eintrag schützen"
 
@@ -3807,95 +3807,99 @@ msgstr "Schnelltasten..."
 msgid "&Go to Base entry"
 msgstr "&Gehe zum Basiseintrag"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1719
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1720
+msgid "View &Base entry"
+msgstr "Basis&eintrag anzeigem"
+
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1723
 msgid "&Edit Base entry"
 msgstr "Basis&eintrag bearbeiten"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2271
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2276
 msgid "Could not re-load database: "
 msgstr "Konnte Datenbank nicht erneut laden: "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2272
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2277
 msgid "Error re-loading last database"
 msgstr "Fehler beim erneuten Laden der letzten Datenbak"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2519
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2524
 msgid "There was an error loading the database: "
 msgstr "Beim Laden der Datenbank ist ein Fehler aufgetreten: "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2520
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2525
 msgid "Could not load database"
 msgstr "Konnte Datenbank nicht laden"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2566
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2571
 msgid "Change to R/W"
 msgstr "Zu R/W ändern"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2566
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2571
 msgid "Change to R-O"
 msgstr "Zu R-O ändern"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2595
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2600
 msgid "Group copied "
 msgstr "Gruppe kopiert"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2598
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2603
 msgid "Title copied "
 msgstr "Titel kopiert"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2601
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2606
 msgid "User copied "
 msgstr "Benutzer kopiert "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2604
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2609
 msgid "Pswd copied "
 msgstr "Passwort kopiert "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2607
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2612
 msgid "Notes copied "
 msgstr "Notizen kopiert "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2610
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2615
 msgid "URL copied "
 msgstr "URL kopiert "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2613
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2618
 msgid "Autotype copied "
 msgstr "Autom. Eingabe kopiert"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2616
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2621
 msgid "RunCmd copied "
 msgstr "Auszuführendes Kommando kopiert"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2619
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2624
 msgid "Email copied "
 msgstr "Email kopiert "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2622
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2627
 msgid "Password History copied "
 msgstr "Passworthistorie kopiert "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2625
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2630
 msgid "Old Pswd copied "
 msgstr "Altes Passwort kopiert "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2664
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2669
 msgid "Select Tree/List display font"
 msgstr "Schriftart für Baum-/Listenansicht auswählen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2681
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2686
 msgid "Select Add/Edit display font"
 msgstr "Schriftart für Hinzufügen/Bearbeiten auswählen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2685
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2690
 msgid "Select Password display font"
 msgstr "Schriftart für Passwort auswählen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2689
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2694
 msgid "Select Notes display font"
 msgstr "Schriftart für Notizen auswählen"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2693
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2698
 msgid "Select Virtual Keyboard font"
 msgstr "Schriftart für virtuelle Tastatur auswählen"
 
@@ -3993,36 +3997,35 @@ msgstr "Keine Übereinstimmungen gefunden"
 msgid "1 match"
 msgstr "1 Übereinstimmung gefunden"
 
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:125
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:128
 msgid ""
 "Enter positions of password characters separated by spaces, commas or semi-"
-"colons.\n"
+"colons (or * for full password).\n"
 "Position 1 is the first character, 2 is the second, etc. up to N for the "
 "last character of a password of length N.\n"
 "-1 is the last character, -2 the next to last, etc. up to -N for the first "
 "password character."
 msgstr ""
 "Vergebe die Positionen von Passwortzeichen, getrennt durch Leerzeichen, "
-"Kommata oder Semikolons.\n"
+"Kommata oder Semikolons (oder * für das ganze Passwort).\n"
 "An Position 1 ist das erste Zeichen, an 2 das zweite Zeichen, bis N für das "
 "letzte Zeichen eines Passwortes der Länge N.\n"
 "-1 ist das letzte Zeichen, -2 das vorletzte Zeichen, bis -N für das erste "
 "Passwortzeichen."
 
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:131
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:134
 msgid "Positions:"
 msgstr "Positionen:"
 
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:139
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:142
 msgid "Values:"
 msgstr "Werte:"
 
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:155
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:159
 msgid "Copy values"
 msgstr "Werte kopieren"
 
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:248
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:252
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:325
 msgid "Invalid position"
 msgstr "Ungültige Position"
 
@@ -6600,8 +6603,8 @@ msgstr " (Aussprechbare Symbole)"
 msgid "Yes - At least %d from %ls: %ls%ls"
 msgstr "Ja - Mindestens %d von %ls: %ls%ls"
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:109
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:91
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:113
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:96
 #, c-format
 msgid ""
 "XML error:\n"
@@ -6614,64 +6617,64 @@ msgstr ""
 "%ls\n"
 "Offset ungefähr bei %d"
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:136
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:140
 #, c-format
 msgid "Error in XML structure: excpected \"%ls\", found \"%ls\""
 msgstr "Fehler in XML Struktur: erwartet \"%ls\", gefunden \"%ls\""
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:144
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:148
 msgid "Missing delimiter attribute in <passwordsafe>"
 msgstr "Fehlendes Attribute 'delimiter' in <passwordsafe>"
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:163
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:167
 msgid "Processing error on XML tag \"<passwordsafe>\""
 msgstr "Verarbeitungsfehler bzgl. dem XML Tag <passwordsafe>"
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:175
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:179
 #, c-format
 msgid "Unexpected XML node type %d of \"%ls\", inside of <passwordsafe>"
 msgstr ""
 "Nicht bekannter XML Node-Typ %d für <%ls>, innerhalb von <passwordsafe>"
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:180
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:246
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:184
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:250
 #, c-format
 msgid "Unknown XML tag <%ls> in <%ls>"
 msgstr "Unbkanntes XML Tag <%ls> in <%ls>"
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:188
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:252
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:192
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:256
 #, c-format
 msgid "Not allowed XML tag <%ls> in <%ls>"
 msgstr "Nicht erlaubtest XML Tag <%ls> in <%ls>"
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:269
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:273
 #, c-format
 msgid "Wrong XML value \"%ls\" for <%ls>"
 msgstr "Falscher XML Wert \"%ls\" für <%ls>"
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:112
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:117
 #, c-format
 msgid "Error in filter XML structure: excpected \"%ls\", found \"%ls\""
 msgstr "Fehler in XML Filterstruktur: Erwartet <%ls>, gefunden <%ls>"
 
 #
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:141
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:146
 msgid "Missing filtername"
 msgstr "Filtername fehlt"
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:159
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:233
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:164
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:238
 #, c-format
 msgid "Unexpected XML tag \"%ls\", expected tag is \"%ls\""
 msgstr "Unerwartetes XML Tag <%ls>, erwartet wird <%ls>"
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:186
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:191
 #, c-format
 msgid "Missing active attribute in filter entry %d of filter '%ls'"
 msgstr "Fehlendes aktives Attribut im Filter Nummer %d des Filters '%ls'"
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:196
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:201
 #, c-format
 msgid ""
 "Unexpected attribute value \"%ls\" (expected \"yes\" or \"no\") in filter "
@@ -6680,47 +6683,47 @@ msgstr ""
 "Unerwarteter Attributwert \"%ls\" (erwartet wird \"yes\" oder \"no\") im "
 "Filter Nummer %d von Filter '%ls'"
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:317
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:322
 #, c-format
 msgid "Missing XML tag for field type in filter entry %d of '%ls'"
 msgstr "Fehlendes XML Tag für Feldtyp im Filter Nummer %d von '%ls'"
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:593
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:598
 #, c-format
 msgid "Unknown XML tag \"%ls\" for field type in filter entry %d of '%ls'"
 msgstr "Unbekanntes XML Tag <%ls> für Feldtyp im Filter Nummer %d von '%ls'"
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:607
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:612
 #, c-format
 msgid "Missing rule in filter entry %d of filter '%ls'"
 msgstr "Fehlende Regel im Filter Nummer %d von Filter '%ls'"
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:612
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:617
 #, c-format
 msgid "Unknown rule \"%ls\" in filter entry %d of filter '%ls'"
 msgstr "Unbekannte Regel \"%ls\" im Filter Nummer %d von Filter '%ls'"
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:623
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:628
 #, c-format
 msgid "Missing logic in filter entry %d of filter '%ls'"
 msgstr "Fehlende Logik in Filter Nummer %d von Filter '%ls'"
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:633
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:638
 #, c-format
 msgid "Unknown logic \"%ls\" in filter entry %d of filter '%ls'"
 msgstr "Unbekannte Logik \"%ls\" im Filter Nummer %d von Filter '%ls'"
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:651
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:656
 #, c-format
 msgid "Unknown XML tag \"%ls\" in field type in filter entry %d of '%ls'"
 msgstr "Unbekanntes XML Tag <%ls> im Filter Nummer %d von Filter '%ls'"
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:660
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:665
 #, c-format
 msgid "Missing logic or rule XML tag in filter entry %d of '%ls'"
 msgstr "Fehlende Logik oder Regel in Filter Nummer %d von Filter '%ls'"
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:753
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:758
 #, c-format
 msgid "Unknown XML tag \"%ls\" in test in filter entry %d of '%ls'"
 msgstr ""

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pwsafe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-21 12:49+0200\n"
+"POT-Creation-Date: 2021-06-30 14:33+0200\n"
 "PO-Revision-Date: 2020-03-01 22:00+0100\n"
 "Last-Translator: Attila Rajmund Nohl <attila.r.nohl@gmail.com>\n"
 "Language-Team: NAR <attila.r.nohl@gmail.com>\n"
@@ -65,7 +65,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:433
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:406
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:541
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:162
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:166
 #: ../../../ui/wxWidgets/SystemTray.cpp:137
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:197
 msgid "&Close"
@@ -765,8 +765,8 @@ msgstr "Nem sikerült jelszót generálni - érvénytelen szabály"
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1081
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:201
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:372
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:738
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:757
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1587
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:298
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:302
@@ -829,14 +829,14 @@ msgid " (every %d days)"
 msgstr " (%d naponta)"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2726
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:755
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
 msgstr ""
 "A \"könnyen olvasható\" és a \"könnyen kiejthető\" opciókat sajnos nem lehet "
 "egyszerre kiválasztani"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2753
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:736
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
 msgstr ""
 "A \"könnyen kiejthető\" és a \"könnyen olvasható\" opciókat sajnos nem lehet "
@@ -1763,7 +1763,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:539
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:555
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:632
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1721
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1726
 #: ../../../ui/wxWidgets/ViewAttachmentDlg.cpp:37
 #: ../../../ui/wxWidgets/ViewAttachmentDlg.cpp:71
 #, fuzzy
@@ -2498,12 +2498,12 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/MenuViewHandlers.cpp:482
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:668
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2063
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2068
 msgid "&Apply current"
 msgstr "&Az aktuális alkalmazása"
 
 #: ../../../ui/wxWidgets/MenuViewHandlers.cpp:486
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2060
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2065
 msgid "&Clear current"
 msgstr "&Aktuális törlése"
 
@@ -3481,7 +3481,7 @@ msgid "S&ynchronize..."
 msgstr "&Szinkronizálás..."
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:592
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2577
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2582
 #, fuzzy
 msgid "Change R/W Mode"
 msgstr "Írás/Olvasás-ra vál&toztatás"
@@ -3527,7 +3527,7 @@ msgid "&Duplicate Entry\tCtrl+D"
 msgstr "Bejegyzés &duplikálása\tCtrl+D"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:615
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1724
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1729
 msgid "Protect Entry"
 msgstr "Bejegyzés védelme"
 
@@ -3904,98 +3904,103 @@ msgstr "Billentyűsorozatok"
 msgid "&Go to Base entry"
 msgstr "&Ugrás az alapbejegyzésre"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1719
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1720
+#, fuzzy
+msgid "View &Base entry"
+msgstr "&Alapbejegyzés szerkesztése"
+
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1723
 msgid "&Edit Base entry"
 msgstr "&Alapbejegyzés szerkesztése"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2271
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2276
 msgid "Could not re-load database: "
 msgstr "Nem sikerült újratölteni az adatbázist: "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2272
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2277
 msgid "Error re-loading last database"
 msgstr "Hiba történt az utolsó adatbázis újratöltése közben"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2519
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2524
 msgid "There was an error loading the database: "
 msgstr "Hiba történt az adatbázis betöltése közben: "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2520
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2525
 msgid "Could not load database"
 msgstr "Nem sikerült betölteni az adatbázist"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2566
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2571
 #, fuzzy
 msgid "Change to R/W"
 msgstr "Írás/Olvasás-ra vál&toztatás"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2566
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2571
 #, fuzzy
 msgid "Change to R-O"
 msgstr "Csak olvashatóra vál&toztatás"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2595
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2600
 msgid "Group copied "
 msgstr "Csoport másolva "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2598
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2603
 msgid "Title copied "
 msgstr "Jegyzetek másolva  "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2601
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2606
 msgid "User copied "
 msgstr "Felhasználó másolva "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2604
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2609
 msgid "Pswd copied "
 msgstr "Jelszó másolva "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2607
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2612
 msgid "Notes copied "
 msgstr "Jegyzetek másolva "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2610
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2615
 msgid "URL copied "
 msgstr "URL másolva "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2613
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2618
 msgid "Autotype copied "
 msgstr "Autogépelés másolva  "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2616
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2621
 msgid "RunCmd copied "
 msgstr "Parancsfuttatás másolva "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2619
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2624
 msgid "Email copied "
 msgstr "Email másolva "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2622
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2627
 #, fuzzy
 msgid "Password History copied "
 msgstr "Jelszótörténet"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2625
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2630
 msgid "Old Pswd copied "
 msgstr "Régi jelszó másolva "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2664
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2669
 msgid "Select Tree/List display font"
 msgstr "Fa- és listanézet betűtípusának kiválasztása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2681
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2686
 msgid "Select Add/Edit display font"
 msgstr "Hozzáadás és szerkesztés betűtípusának kiválasztása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2685
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2690
 msgid "Select Password display font"
 msgstr "Jelszó betűtípusának kiválasztása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2689
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2694
 msgid "Select Notes display font"
 msgstr "Megjegyzések betűtípusának kiválasztása"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2693
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2698
 #, fuzzy
 msgid "Select Virtual Keyboard font"
 msgstr "Virtuális billentyűzet betűtípusának megadása"
@@ -4099,11 +4104,11 @@ msgstr "Nincs találat"
 msgid "1 match"
 msgstr "1 találat"
 
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:125
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:128
 #, fuzzy
 msgid ""
 "Enter positions of password characters separated by spaces, commas or semi-"
-"colons.\n"
+"colons (or * for full password).\n"
 "Position 1 is the first character, 2 is the second, etc. up to N for the "
 "last character of a password of length N.\n"
 "-1 is the last character, -2 the next to last, etc. up to -N for the first "
@@ -4113,21 +4118,20 @@ msgstr ""
 "karakter hosszú jelszó utolsó karaktere. (-1)-es pozíció az utolsó karakter, "
 "(-2)-es az utolsó előtti, egészen (-N)-ig, amely a jelszó első karaktere."
 
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:131
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:134
 msgid "Positions:"
 msgstr "Pozíciók:"
 
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:139
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:142
 msgid "Values:"
 msgstr "Értékek:"
 
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:155
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:159
 #, fuzzy
 msgid "Copy values"
 msgstr "Minden másolása"
 
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:248
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:252
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:325
 #, fuzzy
 msgid "Invalid position"
 msgstr "ellenőrzés"
@@ -6735,8 +6739,8 @@ msgstr "Igen - könnyen kiejthető szimbólumok: %ls"
 msgid "Yes - At least %d from %ls: %ls%ls"
 msgstr "Igen - Legalább %d ebből: %ls: %ls"
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:109
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:91
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:113
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:96
 #, fuzzy, c-format
 msgid ""
 "XML error:\n"
@@ -6749,110 +6753,110 @@ msgstr ""
 "%ls\n"
 "pozíció kb. itt: %d"
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:136
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:140
 #, c-format
 msgid "Error in XML structure: excpected \"%ls\", found \"%ls\""
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:144
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:148
 msgid "Missing delimiter attribute in <passwordsafe>"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:163
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:167
 msgid "Processing error on XML tag \"<passwordsafe>\""
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:175
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:179
 #, c-format
 msgid "Unexpected XML node type %d of \"%ls\", inside of <passwordsafe>"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:180
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:246
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:184
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:250
 #, c-format
 msgid "Unknown XML tag <%ls> in <%ls>"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:188
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:252
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:192
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:256
 #, c-format
 msgid "Not allowed XML tag <%ls> in <%ls>"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:269
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:273
 #, c-format
 msgid "Wrong XML value \"%ls\" for <%ls>"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:112
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:117
 #, c-format
 msgid "Error in filter XML structure: excpected \"%ls\", found \"%ls\""
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:141
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:146
 #, fuzzy
 msgid "Missing filtername"
 msgstr "XSD fájl hiányzik"
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:159
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:233
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:164
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:238
 #, c-format
 msgid "Unexpected XML tag \"%ls\", expected tag is \"%ls\""
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:186
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:191
 #, c-format
 msgid "Missing active attribute in filter entry %d of filter '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:196
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:201
 #, c-format
 msgid ""
 "Unexpected attribute value \"%ls\" (expected \"yes\" or \"no\") in filter "
 "entry %d of '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:317
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:322
 #, c-format
 msgid "Missing XML tag for field type in filter entry %d of '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:593
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:598
 #, c-format
 msgid "Unknown XML tag \"%ls\" for field type in filter entry %d of '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:607
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:612
 #, c-format
 msgid "Missing rule in filter entry %d of filter '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:612
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:617
 #, c-format
 msgid "Unknown rule \"%ls\" in filter entry %d of filter '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:623
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:628
 #, c-format
 msgid "Missing logic in filter entry %d of filter '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:633
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:638
 #, c-format
 msgid "Unknown logic \"%ls\" in filter entry %d of filter '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:651
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:656
 #, c-format
 msgid "Unknown XML tag \"%ls\" in field type in filter entry %d of '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:660
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:665
 #, c-format
 msgid "Missing logic or rule XML tag in filter entry %d of '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:753
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:758
 #, c-format
 msgid "Unknown XML tag \"%ls\" in test in filter entry %d of '%ls'"
 msgstr ""
