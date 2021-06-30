@@ -29,13 +29,13 @@ DLL_LIST = pwsafeAR.dll pwsafeCZ.dll pwsafeES.dll pwsafeDE.dll \
 	pwsafeDA.dll pwsafeKO.dll pwsafeNL.dll pwsafeSV.dll pwsafeTR.dll \
 	pwsafeHU.dll pwsafeSL.dll pwsafePT.dll
 
-DEST_DIR := ../../../../build/bin/pwsafe/I18N
-DEST_DIR_64 := ../../../../build/bin/pwsafe/I18N64
+DEST_DIR := ../../../../out/build/x86-Release/I18N
+DEST_DIR_64 := ../../../../out/build/x64-Release/I18N
 DLLS = $(DLL_LIST:%=$(DEST_DIR)/%)
 DLLS_64 = $(DLL_LIST:%=$(DEST_DIR_64)/%)
 
 TOOLS_SRC_DIR := ../../../Tools/Windows/I18N
-TOOLS_BIN_DIR := ../../../../build/bin
+TOOLS_BIN_DIR := ../../../../out/build/x64-Release/src/Tools/Windows/I18N
 
 CHECK_PO := ../../../../Misc/check_po.py
 
@@ -44,13 +44,13 @@ help:
 	@echo "update-pos dlls tools clean check help"
 
 # No need to change anything below this line
-RESTEXT = $(TOOLS_BIN_DIR)/restext/release/ResText.exe
-RESPWSL = $(TOOLS_BIN_DIR)/respwsl/release/ResPWSL.exe
+RESTEXT = $(TOOLS_BIN_DIR)/ResText/Release/ResText.exe
+RESPWSL = $(TOOLS_BIN_DIR)/ResPWSL/Release/ResPWSL.exe
 CHMOD = /usr/bin/chmod
 RM = /usr/bin/rm
 MV = /usr/bin/mv
 
-BASE_DLL = ../../../../build/bin/pwsafe/release/pwsafe_base.dll
+BASE_DLL = ../../../../out/build/x64-Release/Release/pwsafe_base.dll
 
 .PHONY: update-pos dlls dlls_32 dlls_64 tools clean help check dest_dir
 
@@ -80,9 +80,10 @@ dlls_32:
 dlls_64:
 	cscript Create_DLLs.vbs -quiet x64
 
-# TODO 64 bit
+# TODO fix
 tools : 
-	$(MAKE) -C $(TOOLS_SRC_DIR)
+	@echo "tools assumed updated"
+#	$(MAKE) -C $(TOOLS_SRC_DIR)
 
 # TODO
 check :

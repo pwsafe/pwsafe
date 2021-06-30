@@ -377,6 +377,11 @@ msgstr "%d/%d 项"
 msgid "%ls - Copied %ls"
 msgstr "%ls - 已复制 %ls"
 
+#. Resource IDs: (5907)
+#, c-format
+msgid "%ls - Drag & Drop %ls"
+msgstr ""
+
 #. Resource IDs: (3431)
 #, c-format
 msgid "%ls - Imported %ls"
@@ -441,11 +446,6 @@ msgstr "%s (*%s)|*%s||"
 #, c-format
 msgid "%s (database-specific)"
 msgstr "%s (数据库专用)"
-
-#. Resource IDs: (5907)
-#, c-format
-msgid "%s - Drag & Drop %s"
-msgstr "%s - 拖放 %s"
 
 #. Resource IDs: (5998)
 #, c-format
@@ -2955,8 +2955,8 @@ msgid "Enter no more than %1 characters."
 msgstr "请输入不多于 %1 个的字符."
 
 #. Resource IDs: (65535)
-msgid "Enter positions of password characters separated by spaces, commas or semi-colons."
-msgstr "输入用空格、逗号或分号间隔的密码的定位."
+msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
+msgstr ""
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -5449,11 +5449,8 @@ msgstr "重选"
 msgid "Redo the last change to password policies that was previously undone"
 msgstr "重做先前撤销的对密码策略的最后更改"
 
-#. Resource IDs: (1228)
+#. Resource IDs: (1228, 3397)
 msgid "Relative"
-msgstr "相对"
-
-msgid "relative"
 msgstr "相对"
 
 #. Resource IDs: (1420)
@@ -5951,10 +5948,6 @@ msgstr "Shift+双击动作"
 #. Resource IDs: (5555)
 msgid "Shift+click to view current policy"
 msgstr "Shift+点击查看当前策略"
-
-#. Resource IDs: (1599)
-msgid "Shorcuts"
-msgstr ""
 
 #. Resource IDs: (5686)
 #, c-format
@@ -7081,7 +7074,7 @@ msgstr "维吾尔文"
 msgid "Uzbek Cyrillic"
 msgstr "乌兹别克(西里尔文)"
 
-#. Resource IDs: (3440, 5537)
+#. Resource IDs: (5537)
 msgid "Validate"
 msgstr "验证"
 
@@ -7825,8 +7818,8 @@ msgstr "\t名称: %s; 文件名: %s"
 
 #. Resource IDs: (5538)
 #, c-format
-msgid "\tNo entries were found containing search string '%s'"
-msgstr "\t没有找到条目包含搜索字符串 '%s'"
+msgid "\tNo entries were found containing search string '%ls' %ls"
+msgstr ""
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
@@ -7848,8 +7841,8 @@ msgstr "\t密码策略名称 '%ls' 不是在该数据库中."
 
 #. Resource IDs: (5539)
 #, c-format
-msgid "\tThe following entries contain search string '%s'"
-msgstr "\t下列条目包含搜索字符串 '%s'"
+msgid "\tThe following entries contain search string '%ls' %ls"
+msgstr ""
 
 #. Resource IDs: (5522)
 #, c-format
@@ -7904,7 +7897,7 @@ msgstr "一个别名条目"
 msgid "an unnamed file"
 msgstr "未命名的文件"
 
-#. Resource IDs: (1307, 1419)
+#. Resource IDs: (1307, 1419, 5969)
 msgid "and"
 msgstr "和"
 
@@ -8196,6 +8189,10 @@ msgstr "个先前的密码(每条目)"
 #. Resource IDs: (5394)
 msgid "pwsafe"
 msgstr "pwsafe"
+
+#. Resource IDs: (5968)
+msgid "relative"
+msgstr "相对"
 
 #. Resource IDs: (3279)
 msgid "shortcut"

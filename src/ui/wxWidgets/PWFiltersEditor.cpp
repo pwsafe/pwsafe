@@ -29,7 +29,7 @@
 #include "core/core.h"
 #include "core/ItemData.h"
 #include "PWFiltersEditor.h"
-#include "PWSFilters.h"
+#include "core/PWSFilters.h"
 #include "wxUtilities.h"
 
 #include "SetFiltersDlg.h"

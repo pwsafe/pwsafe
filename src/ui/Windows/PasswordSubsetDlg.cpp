@@ -62,6 +62,8 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
   const bool bSeparator = nChar == L' ' || nChar == L';' || nChar == L',';
 
+  const bool bWildcard = nChar == L'*';
+
   if (LineLength(LineIndex(0)) == 0) {
     // Initialise variables
     m_bLastMinus = m_bLastSeparator = false;
@@ -85,8 +87,12 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
   if (m_bLastSeparator && (nChar == L'0' || bSeparator))
     return;
 
+  // Ignore wildcard if string is not empty, or last char is not separator
+  if (bWildcard && !m_bLastSeparator && LineLength(LineIndex(0)) != 0)
+    return;
+  
   // Do not pass on any character that is not a digit, minus sign, separator or backspace
-  if (isdigit(nChar) || nChar == L'-' || bSeparator || nChar == VK_BACK) {
+  if (isdigit(nChar) || nChar == L'-' || bSeparator || bWildcard || nChar == VK_BACK) {
     // Send on to CEdit control
     CEdit::OnChar(nChar, nRepCnt, nFlags);
 
@@ -103,14 +109,14 @@ void CNumEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
     if (bSeparator)
       m_bLastSeparator = true;
 
-    // Reset separator state after a digit or a minus sign or last character was a separator and
+    // Reset separator state after a digit or a wildcard or a minus sign or last character was a separator and
     // a backspace has been pressed
-    if (isdigit(nChar) || nChar == L'-' || (m_bLastSeparator && nChar == VK_BACK))
+    if (isdigit(nChar) || nChar == L'-' || bWildcard || (m_bLastSeparator && nChar == VK_BACK))
       m_bLastSeparator = false;
   }
 
-  // If a separator or backspace is pressed, update displayed password subset
-  if (bSeparator || nChar == VK_RETURN || nChar == VK_BACK || LineLength(LineIndex(0)) == 0)
+  // If a separator or wildcard or backspace is pressed, update displayed password subset
+  if (bSeparator || bWildcard || nChar == VK_RETURN || nChar == VK_BACK || LineLength(LineIndex(0)) == 0)
     GetParent()->SendMessage(PWS_MSG_DISPLAYPASSWORDSUBSET);
 }
 
@@ -273,45 +279,26 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
   m_stcWarningMsg.SetWindowText(L"");
   m_stcWarningMsg.ResetColour();
 
-  int icurpos(0);
-  std::vector<int> vpos;
-  CString resToken(m_csSubsetPositions);
-  const size_t ipwlengh = m_sxPassword.length();
+  SubsetInfo result = GetSubsetInfo(m_csSubsetPositions, true);
 
-  while (!resToken.IsEmpty() && icurpos != -1) {
-    int lastpos = icurpos;
-    resToken = m_csSubsetPositions.Tokenize(L";, ", icurpos);
-    if (resToken.IsEmpty())
-      continue;
+  if (result.err_id != 0) {
+    m_csWarningMsg.Format(result.err_id, m_sxPassword.length());
 
-    int ipos = _wtoi(resToken);
-    // ipos can't be zero but is valid if:
-    //   a. Positive: 1 <= ipos <= password_length
-    //   b. Negative: -password_lengh < ipos <= -1
-    if (abs(ipos) > (int)ipwlengh) {
-      m_csWarningMsg.Format(ipos > 0 ? IDS_SUBSETINDEXTOOBIG : IDS_SUBSETINDEXTOOSMALL, ipwlengh);
+    m_stcWarningMsg.SetWindowText(m_csWarningMsg);
+    m_stcWarningMsg.SetColour(RGB(255, 0, 0));
+    m_stcWarningMsg.Invalidate();
 
-      m_stcWarningMsg.SetWindowText(m_csWarningMsg);
-      m_stcWarningMsg.SetColour(RGB(255, 0, 0));
-      m_stcWarningMsg.Invalidate();
-      vpos.clear();
-      m_neSubsetPositions.SetSel(lastpos, icurpos);
-      m_neSubsetPositions.SetFocus();
+    m_neSubsetPositions.SetSel(result.err_start_pos, result.err_end_pos);
+    m_neSubsetPositions.SetFocus();
 
-      // Disable Copy to Clipboard
-      m_pCopyBtn->SetBitmap(m_DisabledCopyPswdBitmap);
-      m_bCopyPasswordEnabled = false;
+    // Disable Copy to Clipboard
+    m_pCopyBtn->SetBitmap(m_DisabledCopyPswdBitmap);
+    m_bCopyPasswordEnabled = false;
 
-      return 0L;
-    }
+    return 0L;
+  }
 
-    if (ipos < 0)
-      ipos = (int)ipwlengh + ipos + 1;
-
-    vpos.push_back(ipos - 1);
-  };
-
-  if (vpos.empty()) {
+  if (result.passwd_sub.empty()) {
     // Clear results
     m_edResults.SetWindowText(L"");
 
@@ -321,27 +308,13 @@ LRESULT CPasswordSubsetDlg::OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lPara
     return 0L;
   }
 
-  // Check that the last character was a separator
-  bool bLastSeparator = m_csSubsetPositions.Right(1).FindOneOf(L" ,;") != -1;
-  if (!bLastSeparator) {
-    // No - so remove last entry
-    vpos.pop_back();
-  }
-
-  std::vector<int>::const_iterator citer;
-  StringX sSubset;
-  for (citer = vpos.begin(); citer != vpos.end(); citer++) {
-    sSubset += m_sxPassword[*citer];
-    sSubset += L" ";
-  }
-
-  m_edResults.SetWindowText(sSubset.c_str());
+  m_edResults.SetWindowText(result.passwd_sub.c_str());
   m_bShown = true;
 
   // Enable Copy to Clipboard
-  m_pCopyBtn->SetBitmap(bLastSeparator ? m_CopyPswdBitmap : m_DisabledCopyPswdBitmap);
-  m_bCopyPasswordEnabled = bLastSeparator;
-
+  m_bCopyPasswordEnabled = !result.incomplete_string;
+  m_pCopyBtn->SetBitmap(m_bCopyPasswordEnabled ? m_CopyPswdBitmap : m_DisabledCopyPswdBitmap);
+  
   return 1L;
 }
 
@@ -350,16 +323,12 @@ void CPasswordSubsetDlg::OnCopy()
   if (!m_bCopyPasswordEnabled)
     return;
 
-  CSecString cs_data;
+  SubsetInfo result = GetSubsetInfo(m_csSubsetPositions, false);
+  if (result.err_id != 0 || result.incomplete_string) {
+    return;
+  }
 
-  int len = m_edResults.LineLength(m_edResults.LineIndex(0));
-  m_edResults.GetLine(0, cs_data.GetBuffer(len), len);
-  cs_data.ReleaseBuffer(len);
-
-  // Remove blanks from between the characters
-  // XXX - this breaks if a selected char happens to be a space...
-  cs_data.Remove(L' ');
-  GetMainDlg()->SetClipboardData(cs_data);
+  GetMainDlg()->SetClipboardData(result.passwd_sub);
   GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
 
   m_csWarningMsg.LoadString(IDS_PASSWORDCOPIED);
@@ -367,4 +336,69 @@ void CPasswordSubsetDlg::OnCopy()
   m_stcWarningMsg.SetWindowText(m_csWarningMsg);
   m_stcWarningMsg.SetColour(RGB(0, 0, 0));
   m_stcWarningMsg.Invalidate();
+}
+
+CPasswordSubsetDlg::SubsetInfo CPasswordSubsetDlg::GetSubsetInfo(const CString& subset, bool with_delims) const
+{
+  int icurpos(0);
+  CString resToken(subset);
+  const size_t ipwlengh = m_sxPassword.length();
+  
+  SubsetInfo result;
+  result.err_id = 0;
+  result.passwd_sub.clear();
+  result.incomplete_string = false;
+
+  StringX passwd_sub;
+
+  while (!resToken.IsEmpty() && icurpos != -1) {
+    int lastpos = icurpos;
+    resToken = subset.Tokenize(L";, ", icurpos);
+
+    if (resToken.IsEmpty()) {
+      continue;
+    }
+
+    if (resToken == L'*') {
+      passwd_sub += m_sxPassword;
+      continue;
+    }
+
+    int ipos = _wtoi(resToken);
+    // ipos can't be zero but is valid if:
+    //   a. Positive: 1 <= ipos <= password_length
+    //   b. Negative: -password_lengh < ipos <= -1
+    if (abs(ipos) > (int)ipwlengh) {
+      result.err_id = ipos > 0 ? IDS_SUBSETINDEXTOOBIG : IDS_SUBSETINDEXTOOSMALL;
+      result.err_start_pos = lastpos;
+      result.err_end_pos = icurpos;
+      result.incomplete_string = true;
+      return result;
+    }
+
+    if (lastpos + resToken.GetLength() == subset.GetLength()) {
+      // skipping number: current token last in string, and there is no separator after it
+      result.incomplete_string = true;
+      break;
+    }
+
+    if (ipos < 0) {
+      ipos = (int)ipwlengh + ipos + 1;
+    }
+
+    passwd_sub += m_sxPassword[ipos - 1];
+  }
+
+  if (with_delims) {
+    result.passwd_sub.reserve(passwd_sub.size() * 2);
+    for (size_t i = 0; i < passwd_sub.size(); ++i) {
+      result.passwd_sub += passwd_sub[i];
+      result.passwd_sub += L' ';
+    }
+  }
+  else {
+    result.passwd_sub = passwd_sub;
+  }
+
+  return result;
 }

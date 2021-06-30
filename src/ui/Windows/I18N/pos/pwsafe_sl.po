@@ -377,6 +377,11 @@ msgstr "%d/%d vnosov"
 msgid "%ls - Copied %ls"
 msgstr "%ls - Kopirano %ls"
 
+#. Resource IDs: (5907)
+#, c-format
+msgid "%ls - Drag & Drop %ls"
+msgstr ""
+
 #. Resource IDs: (3431)
 #, c-format
 msgid "%ls - Imported %ls"
@@ -441,11 +446,6 @@ msgstr "%s (*%s)|*%s||"
 #, c-format
 msgid "%s (database-specific)"
 msgstr "%s (zbirka podatkov-specifično)"
-
-#. Resource IDs: (5907)
-#, c-format
-msgid "%s - Drag & Drop %s"
-msgstr "%s - Povleci in spusti %s"
 
 #. Resource IDs: (5998)
 #, c-format
@@ -2167,8 +2167,8 @@ msgstr "Primerjaj rezultate zbirke podatkov"
 
 #. Resource IDs: (5356)
 #, c-format
-msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\m"
-msgstr "Primerjaj popolno trenutno zbirko podatkov:\n\t %ls\n in:\n\t %ls\m"
+msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
+msgstr ""
 
 #. Resource IDs: (32091 - Menu, 32091 - MenuEx)
 msgid "Compare entries..."
@@ -2955,8 +2955,8 @@ msgid "Enter no more than %1 characters."
 msgstr "Vnesite največ %1 znakov."
 
 #. Resource IDs: (65535)
-msgid "Enter positions of password characters separated by spaces, commas or semi-colons."
-msgstr "Vnesite položaje znakov gesla, ločenih s presledki, vejicami ali podpičji."
+msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
+msgstr ""
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -5449,12 +5449,9 @@ msgstr "Povrni"
 msgid "Redo the last change to password policies that was previously undone"
 msgstr "Povrni zadnjo spremembo pravilnikov gesel, ki so bile prej razveljavljene"
 
-#. Resource IDs: (1228)
+#. Resource IDs: (1228, 3397)
 msgid "Relative"
 msgstr "Relativno"
-
-msgid "relative"
-msgstr "relativno"
 
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
@@ -5951,10 +5948,6 @@ msgstr "Akcija Shift-Dvoklika"
 #. Resource IDs: (5555)
 msgid "Shift+click to view current policy"
 msgstr "Shift+klik za ogled trenutnega pravilnika"
-
-#. Resource IDs: (1599)
-msgid "Shorcuts"
-msgstr ""
 
 #. Resource IDs: (5686)
 #, c-format
@@ -7081,7 +7074,7 @@ msgstr "Ujgurščina"
 msgid "Uzbek Cyrillic"
 msgstr "Uzbeška cirilica"
 
-#. Resource IDs: (3440, 5537)
+#. Resource IDs: (5537)
 msgid "Validate"
 msgstr "Potrdi"
 
@@ -7825,8 +7818,8 @@ msgstr "\tIme: %s; Ime datoteke: %s"
 
 #. Resource IDs: (5538)
 #, c-format
-msgid "\tNo entries were found containing search string '%s'"
-msgstr "\tNi bil najden noben vnos, ki vsebuje iskalni niz '%s'"
+msgid "\tNo entries were found containing search string '%ls' %ls"
+msgstr ""
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
@@ -7848,8 +7841,8 @@ msgstr "\tIme pravilnika gesel '%ls' ni v zbirki podatkov."
 
 #. Resource IDs: (5539)
 #, c-format
-msgid "\tThe following entries contain search string '%s'"
-msgstr "\tNaslednji vnosi vsebujejo iskalni niz '%s'"
+msgid "\tThe following entries contain search string '%ls' %ls"
+msgstr ""
 
 #. Resource IDs: (5522)
 #, c-format
@@ -7904,7 +7897,7 @@ msgstr "kratko ime vnosa"
 msgid "an unnamed file"
 msgstr "neimenovana datoteka"
 
-#. Resource IDs: (1307, 1419)
+#. Resource IDs: (1307, 1419, 5969)
 msgid "and"
 msgstr "in"
 
@@ -8196,6 +8189,10 @@ msgstr "prejšnja gesla na vnos"
 #. Resource IDs: (5394)
 msgid "pwsafe"
 msgstr "pwsafe"
+
+#. Resource IDs: (5968)
+msgid "relative"
+msgstr "relativno"
 
 #. Resource IDs: (3279)
 msgid "shortcut"

@@ -33,7 +33,7 @@
 #include "PasswordSafeSearch.h"
 #include "TreeCtrl.h"
 #include "ViewReportDlg.h"
-#include "PWSFilters.h"
+#include "core/PWSFilters.h"
 #include "SetFiltersDlg.h"
 #include "ManageFiltersDlg.h"
 

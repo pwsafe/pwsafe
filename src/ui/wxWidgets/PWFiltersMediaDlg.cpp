@@ -23,7 +23,7 @@
 
 #include <wx/valgen.h>
 
-#include "PWSFilters.h"
+#include "core/PWSFilters.h"
 #include "PWFiltersMediaDlg.h"
 #include "PWFiltersEditor.h"
 #include "PWFiltersTable.h"
