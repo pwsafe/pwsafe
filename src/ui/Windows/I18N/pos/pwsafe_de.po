@@ -1896,7 +1896,7 @@ msgstr "Kann nicht mehr als %d sein"
 
 #. Resource IDs: (3019)
 msgid "Cannot create lock file - no permission in directory?"
-msgstr "Kann keine lock-Datei erzeugen - keine Rechte im Verzeichnis?"
+msgstr "Kann keine Lock-Datei erzeugen - keine Rechte im Verzeichnis?"
 
 #. Resource IDs: (5866)
 msgid "Cannot create missing directories in path to the export file."
@@ -4105,7 +4105,7 @@ msgstr "Ungültiger Parameter"
 
 #. Resource IDs: (3462)
 msgid "Invalid field delimiter: must be within ASCII range."
-msgstr ""
+msgstr "Ungültige Feldtrennzeichen: nur ASCII Zeichen werden akzeptiert."
 
 #. Resource IDs: (3017)
 #, c-format
@@ -4115,7 +4115,7 @@ msgstr "Ungültige Eingabe in Zeile %d. Anzahl der Felder getrennt mit '%c' nich
 #. Resource IDs: (4116)
 #, c-format
 msgid "Invalid lock file \"%ls\"."
-msgstr ""
+msgstr "Ungültige Lock-Datei \"%ls\"."
 
 #. Resource IDs: (5684)
 msgid "Invalid shortcut ignored."
@@ -5980,7 +5980,7 @@ msgstr "Umschalt+Klick um die aktuelle Richtlinie anzuzeigen"
 
 #. Resource IDs: (1599)
 msgid "Shorcuts"
-msgstr ""
+msgstr "Verknüpfungen"
 
 #. Resource IDs: (5686)
 #, c-format
