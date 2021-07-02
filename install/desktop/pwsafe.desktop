@@ -3,10 +3,10 @@ Encoding=UTF-8
 Name=PasswordSafe
 
 Comment=Manage passwords
-Exec=pwsafe %f
-Icon=pwsafe
+Exec=env GDK_BACKEND=x11 pwsafe %f
+Icon=/usr/share/icons/hicolor/48x48/apps/pwsafe.png
 Terminal=false
 Type=Application
 StartupNotify=true
 StartupWMClass=pwsafe
-Categories=GTK;Utility;Security;
+Categories=Utility;Security;
