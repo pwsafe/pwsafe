@@ -1716,7 +1716,12 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     }
 
     itemEditMenu.Append(ID_GOTOBASEENTRY,  _("&Go to Base entry"));
-    itemEditMenu.Append(ID_EDITBASEENTRY,  _("&Edit Base entry"));
+    if (m_core.IsReadOnly()) {
+      itemEditMenu.Append(ID_EDITBASEENTRY,  _("View &Base entry"));
+    }
+    else {
+      itemEditMenu.Append(ID_EDITBASEENTRY,  _("&Edit Base entry"));
+    }
     if (item->HasAttRef()) {
       itemEditMenu.Append(ID_VIEWATTACHMENT, _("View Attachment"));
     }
