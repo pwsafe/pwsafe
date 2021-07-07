@@ -309,7 +309,7 @@ BOOL COptionsBackup::VerifyFields()
     // This may work but we should enforce a proper expanded form.
     CString csBackupPath = m_csExpandedPath.GetLength() > 0 ?
       m_csExpandedPath : m_UserBackupOtherLocation;
-
+#if 0 // path might be UNC, in which case no drive letter
     std::wstring cdrive, cdir, dontCare;
     pws_os::splitpath(std::wstring(csBackupPath),
                         cdrive, cdir, dontCare, dontCare);
@@ -319,7 +319,7 @@ BOOL COptionsBackup::VerifyFields()
       ((CEdit *)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
       return FALSE;
     }
-
+#endif 
     if (PathIsDirectory(csBackupPath) == FALSE) {
       gmb.AfxMessageBox(IDS_OPTBACKUPNOLOC);
       ((CEdit *)GetDlgItem(IDC_USERBACKUPOTHRLOCATIONVALUE))->SetFocus();
