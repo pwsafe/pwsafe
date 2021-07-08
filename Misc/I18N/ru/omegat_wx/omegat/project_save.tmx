@@ -5085,6 +5085,14 @@ Action:</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password).</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210708T171255Z" creationid="pm_kan" creationdate="20210708T171255Z">
+        <seg>Введите номера символов пароля через пробел, запятую или точку с запятой (* покажет весь пароль).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Enter positions of password characters separated by spaces, commas or semi-colons.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T141107Z" creationid="pm_kan" creationdate="20161105T141107Z">
@@ -10535,6 +10543,32 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2021-07-08 20:11+0300
+PO-Revision-Date: 2021-08-07 19:50+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210708T171505Z" creationid="pm_kan" creationdate="20210708T171505Z">
+        <seg>Project-Id-Version: Password Safe
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2021-07-08 20:10+0300
+PO-Revision-Date: 2021-07-08 20:10+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: none
+Language: ru_RU
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Pronounceable passwords</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -13476,6 +13510,14 @@ Imported %d %s</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Просмотреть</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>View &amp;Base entry</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210708T171232Z" creationid="pm_kan" creationdate="20210708T171232Z">
+        <seg>Просмотр &amp;исходного элемента</seg>
       </tuv>
     </tu>
     <tu>
