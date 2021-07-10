@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-30 14:33+0200\n"
+"POT-Creation-Date: 2021-07-10 19:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -162,100 +162,100 @@ msgstr ""
 msgid "Could not download version data.\n"
 msgstr "选择数据库"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:304
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1391
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:308
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1398
 #, fuzzy
 msgid "Auto Type"
 msgstr "自动输入"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:305
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1392
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:309
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1399
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:464
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:667
 msgid "Browse"
 msgstr "浏览"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:306
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1393
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:310
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1400
 #, fuzzy
 msgid "Browse + Auto Type"
 msgstr "浏览网址+自动输入"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:307
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1394
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:311
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1401
 #, fuzzy
 msgid "Copy Notes"
 msgstr "显示备注"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:308
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1395
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:312
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1402
 #, fuzzy
 msgid "Copy Password"
 msgstr "密码"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:309
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1396
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:313
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1403
 #, fuzzy
 msgid "Copy Password + Minimize"
 msgstr "复制密码到剪贴板后立即最小化"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:310
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1397
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:314
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1404
 #, fuzzy
 msgid "Copy Username"
 msgstr "用户名"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:311
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1398
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:315
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1405
 #, fuzzy
 msgid "Edit/View Entry"
 msgstr "查看项目"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:312
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1399
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:316
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1406
 #, fuzzy
 msgid "Execute Run command"
 msgstr " '运行命令'"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:328
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:332
 #: ../../../ui/wxWidgets/HelpMap.h:47
 msgid "Basic"
 msgstr "基本"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:335
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:339
 #: ../../../ui/wxWidgets/HelpMap.h:50
 msgid "Additional"
 msgstr "附加"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:341
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:345
 #: ../../../ui/wxWidgets/HelpMap.h:48
 msgid "Dates and Times"
 msgstr "日期和时间"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:348
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:352
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:317
 #: ../../../ui/wxWidgets/HelpMap.h:41 ../../../ui/wxWidgets/HelpMap.h:49
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.h:69 ../../../core/core_st.cpp:144
 msgid "Password Policy"
 msgstr "密码策略"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:356
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:360
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:110
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:120
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:320
 msgid "Attachment"
 msgstr "附件"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:369
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:373
 msgid "Set Date/Time"
 msgstr "设定日期/时间"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:370
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:374
 #: ../../../ui/wxWidgets/ToolbarButtons.h:203 ../../../core/core_st.cpp:140
 msgid "Password"
 msgstr "密码"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:386
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:390
 #, fuzzy
 msgid ""
 "To add a new entry, simply fill in the fields below. At least a title and\n"
@@ -265,7 +265,7 @@ msgstr ""
 "对于添加一个新项目，仅需填写下列字段相关内容，至少需要一个标题和密码；如果你"
 "已经设定了一个默认用户名，它将出现在用户名字段中。"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:394
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:398
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:207
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:229
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:262
@@ -273,8 +273,8 @@ msgstr ""
 msgid "Group:"
 msgstr "组:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:400
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:861
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:404
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:868
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:212
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:234
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:267
@@ -283,7 +283,7 @@ msgstr "组:"
 msgid "Title:"
 msgstr "标题(&T):"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:406
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:410
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:217
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:239
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:272
@@ -292,162 +292,172 @@ msgstr "标题(&T):"
 msgid "Username:"
 msgstr "用户名(&U):"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:412
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:416
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1852
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1879
 #, fuzzy
 msgid "Password:"
 msgstr "密码(&P):"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:418
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1711
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:422
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1813
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1855
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1886
 msgid "&Hide"
 msgstr "隐藏(&H)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:421
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:425
 msgid "&Generate"
 msgstr "生成(&G)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:424
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1880
 #, fuzzy
 msgid "Confirm:"
 msgstr "确认:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:430
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:434
+#, fuzzy
+msgid "&Alias"
+msgstr "别名"
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:437
 msgid "URL:"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:436
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:443
 msgid "Go"
 msgstr "浏览"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:439
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:446
 #, fuzzy
 msgid "EMail:"
 msgstr "邮箱(&E):"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:445
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:452
 msgid "Send"
 msgstr "发送"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:448
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:455
 #, fuzzy
 msgid "Notes:"
 msgstr "备注(&N):"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:474
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:481
 #, fuzzy
 msgid "Autotype:"
 msgstr "自动输入(&A):"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:480
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:487
 msgid "Run Cmd:"
 msgstr "运行命令:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:486
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:493
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:596
 #, fuzzy
 msgid "Double-Click Action:"
 msgstr "双击操作:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:494
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:501
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:617
 #, fuzzy
 msgid "Shift-Double-Click Action:"
 msgstr "双击操作:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:502
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:509
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:301
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:314
 #: ../../../ui/wxWidgets/HelpMap.h:42
 msgid "Password History"
 msgstr "历史密码"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:507
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:514
 msgid "Keep"
 msgstr "保存"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:522
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:529
 msgid "last passwords"
 msgstr "个最后密码"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:535
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:542
 msgid "Clear History"
 msgstr "清除历史密码"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:540
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:547
 msgid "Copy All"
 msgstr "全部复制"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:558
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:565
 msgid "Password Expiry"
 msgstr "密码效期"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:565
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:572
 msgid "On"
 msgstr "开"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:574
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:581
 #, fuzzy
 msgid "In"
 msgstr "图标"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:592
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:599
 msgid "days"
 msgstr "天后"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:595
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:602
 msgid "Recurring"
 msgstr "重复"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:601
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1440
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2446
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:608
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1447
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2625
 msgid "Never"
 msgstr "从不"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:607
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:614
 msgid "Original Value:"
 msgstr "原始值:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:613
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:620
 msgid "Statistics"
 msgstr "统计信息"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:618
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:625
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:277
 msgid "Created on:"
 msgstr "创建时间:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:624
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:631
 msgid "Password last changed on:"
 msgstr "密码最后更改时间:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:627
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:639
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:634
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:646
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:279
 #, fuzzy
 msgid "Static text"
 msgstr "Static"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:630
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:637
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:287
 msgid "Last accessed on:"
 msgstr "最后访问时间:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:633
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:844
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:944
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:952
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:962
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:973
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:984
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:992
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1015
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1016
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1017
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1018
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1019
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1020
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1021
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:640
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:851
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:951
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:959
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:969
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:980
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:991
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:999
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1022
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1023
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1024
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1025
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1026
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1027
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1028
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:152
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:153
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:154
@@ -480,38 +490,38 @@ msgstr "最后访问时间:"
 msgid "N/A"
 msgstr "未知"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:636
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:643
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:292
 msgid "Any field last changed on:"
 msgstr "所有字段最后修改时间:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:659
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:666
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:209
 msgid "Random password generation rules"
 msgstr "随机密码生成规则"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:666
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:673
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:196
 #, fuzzy
 msgid "Use Database Policy"
 msgstr "使用默认数据库(&F)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:681
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:688
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:216
 #, fuzzy
 msgid "Password length:"
 msgstr "密码长度:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:699
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:706
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:233
 #, fuzzy
 msgid "Use lowercase letters"
 msgstr "使用小写字母(&L)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:705
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:729
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:753
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:778
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:712
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:736
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:760
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:785
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:240
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:264
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:288
@@ -520,62 +530,62 @@ msgstr "使用小写字母(&L)"
 msgid "(At least "
 msgstr "(至少"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:719
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:743
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:767
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:792
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:726
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:750
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:774
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:799
 msgid ")"
 msgstr ")"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:723
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:730
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:257
 #, fuzzy
 msgid "Use UPPERCASE letters"
 msgstr "使用大写字母(&U)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:747
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:754
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:281
 #: ../../../core/core_st.cpp:263
 #, fuzzy
 msgid "Use digits"
 msgstr "使用数字(&D)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:771
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:778
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:305
 #: ../../../core/core_st.cpp:265
 #, fuzzy
 msgid "Use symbols"
 msgstr "默认用户名"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:773
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:780
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:307
 #, fuzzy
 msgid "i.e., ., %, $, etc."
 msgstr "使用符号(&S) (如: &, %, $,等)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:799
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:806
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:334
 msgid "Reset"
 msgstr "重置"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:802
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:809
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:337
 #, fuzzy
 msgid "Use only easy-to-read characters"
 msgstr "最少小写字母字符"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:804
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:811
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:339
 msgid "i.e., no 'l', '1', etc."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:809
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:816
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:344
 #, fuzzy
 msgid "Generate pronounceable passwords"
 msgstr "生成可发音密码(&P)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:815
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:822
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:911
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:284
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:296
@@ -585,46 +595,46 @@ msgstr "生成可发音密码(&P)"
 msgid "Or"
 msgstr "或"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:820
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:827
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:355
 #, fuzzy
 msgid "Use hexadecimal digits only"
 msgstr "仅使用十六进制数字(&H) (0-9,a-f)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:822
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:829
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:357
 msgid "0-9, a-f"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:835
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:842
 msgid "Preview"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:843
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:850
 #, fuzzy
 msgid "File"
 msgstr "文件(&F)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:848
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:855
 #, fuzzy
 msgid "Import..."
 msgstr "导入(&I)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:850
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:857
 #, fuzzy
 msgid "Export..."
 msgstr "导出"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:852
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:859
 msgid "Remove"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:857
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:864
 #: ../../../ui/wxWidgets/PropertiesDlg.h:58
 msgid "Properties"
 msgstr "属性"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:863
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:870
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:214
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:219
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:269
@@ -635,35 +645,35 @@ msgstr "属性"
 msgid "Text"
 msgstr "文本"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:866
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:873
 msgid "Media Type:"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:871
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:878
 #, fuzzy
 msgid "Creation Date:"
 msgstr " '创建时间'"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:876
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:883
 #, fuzzy
 msgid "File Size:"
 msgstr "大小(&S):"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:881
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:888
 #, fuzzy
 msgid "File Creation Date:"
 msgstr " '创建时间'"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:886
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:893
 #, fuzzy
 msgid "File Last Modified Date:"
 msgstr "最后修改时间"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:930
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:937
 msgid "No Attachment Available"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:965
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:972
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:160
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:173
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:192
@@ -671,132 +681,132 @@ msgstr ""
 msgid "Unknown"
 msgstr "未知"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1005
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1012
 msgid "No preview available due to an error"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1009
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1016
 msgid "No preview available - unsupported media type"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1031
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1038
 msgid "Image Preview"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1090
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1097
 #, fuzzy
 msgid "Image files "
 msgstr "管理筛选"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1092
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1197
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1099
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1204
 #, fuzzy
 msgid "All files (*.*)|*.*"
 msgstr "所有文件 (*.*)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1095
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1122
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1102
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1129
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1136
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1143
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1150
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1157
 #, fuzzy
 msgid "Import Attachment"
 msgstr "导入文本(&T)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1122
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1129
 msgid "Failed to allocate required memory to import attachment data."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1129
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1225
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1136
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1232
 #, fuzzy
 msgid "Failed to open file."
 msgstr "未能打开文档！"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1136
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1143
 msgid "File exceeds the allowed maximum size of 4.3GB (2^32GB)."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1143
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1150
 #, fuzzy
 msgid "An error occurred while reading the file."
 msgstr "在访问 %1 时发生一个未知错误！"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1150
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1157
 msgid "Unexpected error occurred during attachment import."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1163
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1170
 msgid "No attachment data to export."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1163
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1200
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1218
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1170
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1207
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1225
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1232
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1239
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1246
 #, fuzzy
 msgid "Export Attachment"
 msgstr "导出文本"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1179
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1186
 #, c-format
 msgid "%s files (*.%s;*.jpg)|*.%s;*.jpg|"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1184
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1191
 #, c-format
 msgid "%s files (*.%s;*.gz)|*.%s;*.gz|"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1189
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1196
 #, fuzzy, c-format
 msgid "%s files (*.%s)|*.%s|"
 msgstr "XML 文件 (*.xml)|*.xml||"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1218
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1225
 msgid "Failed to allocate required memory to export attachment data."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1232
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1239
 #, fuzzy
 msgid "An error occurred while writing the file."
 msgstr "在访问 %1 时发生一个未知错误！"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1239
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1246
 msgid "Unexpected error occurred during attachment export."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1420
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1427
 #, fuzzy
 msgid "default"
 msgstr "使用默认"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1558
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1557
 msgid "[Notes hidden - click here to display]"
 msgstr "[备注已隐藏 - 单击这里显示]"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1627
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1653
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2145
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2820
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1626
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1652
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2243
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3014
 #: ../../../core/core_st.cpp:77
 msgid "Default Policy"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1680
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1679
 msgid "Couldn't generate password - invalid policy"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1681
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1796
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1809
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1831
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1851
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2727
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2754
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1680
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1934
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1947
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1969
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1989
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2921
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2948
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:106
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:115
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:131
@@ -832,58 +842,88 @@ msgstr ""
 msgid "Error"
 msgstr "错误"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1739
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1734
+msgid ""
+"On changing this entry of type Shortcut Base to an Alias all Shortcut to "
+"this entry will be removed!"
+msgstr ""
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1734
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1757
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:457
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:269
+#: ../../../core/core_st.cpp:292
+msgid "Warning"
+msgstr "警告"
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1757
+msgid "Shortcut or Alias selected, use Base entry instead"
+msgstr ""
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1825
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1864
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1894
 msgid "&Show"
 msgstr "显示(&S)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1794
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1847
+#, fuzzy
+msgid "Alias"
+msgstr "别名"
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1849
+#, fuzzy
+msgid "Alias:"
+msgstr "别名"
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1932
 #, c-format
 msgid "This entry must have a %ls"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1795
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1933
 #, fuzzy
 msgid "title"
 msgstr "标题"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1795
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1933
 #, fuzzy
 msgid "password"
 msgstr "密码"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1808
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1946
 #, fuzzy
 msgid "Passwords do not match"
 msgstr "两个项目不匹配！"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1830
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1968
 msgid "Database name must not be empty if a database policy shall be used."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1850
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1988
 #, fuzzy
 msgid ""
 "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr "项目空白组/标题“%s”和用户名“%s”已经存在！"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2425
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2604
 #, fuzzy, c-format
 msgid " (every %d days)"
 msgstr "重复 (%d 天)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2726
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2920
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
 #, fuzzy
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
 msgstr "抱歉，“可发音密码”和“易解读字符”选项不被同时支持！"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2753
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2947
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 #, fuzzy
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
 msgstr "抱歉，“可发音密码”和“易解读字符”选项不被同时支持！"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2805
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2999
 #, fuzzy
 msgid "mailto:"
 msgstr "邮箱(&E):"
@@ -1425,6 +1465,7 @@ msgstr "取消"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:260
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:221
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:183
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:339
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:227
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:200
 msgid "&Help"
@@ -1812,7 +1853,7 @@ msgid "Not used"
 msgstr "未被使用"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:297
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1679
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1684
 #, fuzzy
 msgid " Copy # "
 msgstr " 复制 # %d"
@@ -4000,6 +4041,7 @@ msgid "Perform Auto &Type"
 msgstr "执行自动输入(&T)"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1667
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:522
 #, fuzzy
 msgid "&View Entry..."
 msgstr "查看项目"
@@ -4481,12 +4523,6 @@ msgstr ""
 "\n"
 "不能读取打开的文件！"
 
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:457
-#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:269
-#: ../../../core/core_st.cpp:292
-msgid "Warning"
-msgstr "警告"
-
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:476
 msgid "Too many retries - exiting"
 msgstr ""
@@ -4554,6 +4590,47 @@ msgid "Please try another"
 msgstr ""
 "\n"
 "请尝试其它"
+
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:309
+#, fuzzy
+msgid "Alias name:"
+msgstr "筛选名称:"
+
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:330
+msgid "&Remove"
+msgstr ""
+
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:333
+msgid "Select"
+msgstr "选择"
+
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:336
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:224
+#, fuzzy
+msgid "Cancel"
+msgstr "取消"
+
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:429
+#, fuzzy
+msgid "No Alias name given."
+msgstr "筛选名称:"
+
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:429
+#, fuzzy
+msgid "Please name the alias."
+msgstr "请命名 XML 文件！"
+
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:524
+#: ../../../ui/wxWidgets/ToolbarButtons.h:217
+#, fuzzy
+msgid "Expand"
+msgstr "全部展开"
+
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:525
+#: ../../../ui/wxWidgets/ToolbarButtons.h:218
+#, fuzzy
+msgid "Collapse"
+msgstr "全部收缩"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:38 ../../../core/core_st.cpp:99
 msgid "equals"
@@ -4637,11 +4714,6 @@ msgstr "应用(&A)"
 #, fuzzy
 msgid "OK"
 msgstr "确定"
-
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:224
-#, fuzzy
-msgid "Cancel"
-msgstr "取消"
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:260
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:291
@@ -4962,68 +5034,68 @@ msgstr "发送邮件(&S)"
 msgid "&Delete from Recent Entry List"
 msgstr "删除最近项目列表(&D)"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:980
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:982
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:985
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:987
 msgid "New Group"
 msgstr "新建组"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:982
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:987
 msgid "\""
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:982
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:987
 msgid "\" "
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:982
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:987
 msgid "name exists"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:982
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1028
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1469
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:987
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1033
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1474
 msgid "Double group name"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:986
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:991
 msgid "Could not add empty group item to tree"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:999
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1004
 msgid "Renaming of non-Group items is not implemented"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1028
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1033
 msgid "Same group name exists"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1042
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1047
 msgid "Dots are not allowed in group names"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1042
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1047
 #, fuzzy
 msgid "Invalid Character"
 msgstr "无效参数！"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1416
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2546
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1421
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2551
 msgid "Destination cannot be inside source tree"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1416
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2395
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2402
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2419
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2546
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1421
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2400
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2407
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2424
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2551
 msgid "Drag and Drop failed"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1469
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1474
 msgid "Duplicate group name (use Shift to overrule)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2391
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2396
 #, c-format
 msgid ""
 "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
@@ -5034,17 +5106,17 @@ msgstr ""
 "\n"
 "立刻撤销项目引用那个基本项目！"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2398
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2403
 #, fuzzy, c-format
 msgid "This alias's target [%s:%s:%s] is not a normal entry."
 msgstr "该别名目标 [%s:%s:%s] 不是一个正常项目或已有一个基本别名存在！"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2415
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2420
 #, fuzzy, c-format
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
 msgstr "该快捷方式目标 [%s:%s:%s] 不是一个正常项目或已经有一个快捷方式存在！"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2497 ../../../core/core_st.cpp:97
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2502 ../../../core/core_st.cpp:97
 #, c-format
 msgid ""
 "The following entries had a policy name that already existed in this "
@@ -5053,19 +5125,19 @@ msgid ""
 "appended:%ls"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2500
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2505
 #, fuzzy
 msgid "Entry Password Policy Changes"
 msgstr "设定项目密码策略"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2507
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2512
 #, c-format
 msgid ""
 "The following alias or shortcut entries did not match to a base entry and "
 "had been converted to normal entries:%ls"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2509
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2514
 #, fuzzy
 msgid "Entry Type Changed"
 msgstr "项目类型"
@@ -5165,27 +5237,27 @@ msgstr ""
 msgid "About Password Safe"
 msgstr "关于 Password Safe"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:110
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:116
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:111
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:117
 #, fuzzy
 msgid "Edit Entry"
 msgstr "编辑项目..."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:115
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:116
 msgid "Add Entry"
 msgstr "添加项目"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:117
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:118
 #, fuzzy
 msgid "View Entry"
 msgstr "查看项目(&V)..."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:118
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:119
 #, fuzzy
 msgid "Add, Edit or View Entry"
 msgstr "查看项目"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:269
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:273
 #, fuzzy
 msgid "No preview available"
 msgstr "未存在错误信息！"
@@ -5244,6 +5316,11 @@ msgstr "输入保险箱密码"
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.h:53
 msgid "Safe Combination Setup"
 msgstr "设置保险箱密码"
+
+#: ../../../ui/wxWidgets/SelectAliasDlg.h:52
+#, fuzzy
+msgid "Select Alias"
+msgstr "全选(&A)"
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.h:46
 msgid "Set Display Filters"
@@ -5392,16 +5469,6 @@ msgid "Delete an Entry"
 msgstr ""
 "\n"
 "删除一个项目"
-
-#: ../../../ui/wxWidgets/ToolbarButtons.h:217
-#, fuzzy
-msgid "Expand"
-msgstr "全部展开"
-
-#: ../../../ui/wxWidgets/ToolbarButtons.h:218
-#, fuzzy
-msgid "Collapse"
-msgstr "全部收缩"
 
 #: ../../../ui/wxWidgets/ToolbarButtons.h:222
 msgid "Help"
@@ -9033,12 +9100,6 @@ msgstr ""
 
 #~ msgid "Seek failed on %1"
 #~ msgstr "定位失败 %1！"
-
-#~ msgid "Select"
-#~ msgstr "选择"
-
-#~ msgid "Select &All"
-#~ msgstr "全选(&A)"
 
 #~ msgid "Select Keyboard:"
 #~ msgstr "选择键盘:"
