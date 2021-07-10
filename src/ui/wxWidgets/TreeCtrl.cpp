@@ -191,7 +191,7 @@ private:
  * TreeCtrl constructors
  */
 
-TreeCtrl::TreeCtrl(PWScore &core) : m_core(core),
+TreeCtrl::TreeCtrl(PWScore &core) : TreeCtrlBase(core),
                                     m_collapse_timer(this, &TreeCtrl::CheckCollapseEntry, TreeCtrlTimer::DELAY_COLLAPSE),
                                     m_scroll_timer(this, &TreeCtrl::CheckScrollList, TreeCtrlTimer::DELAY_SCROLLING)
 {
@@ -200,7 +200,7 @@ TreeCtrl::TreeCtrl(PWScore &core) : m_core(core),
 
 TreeCtrl::TreeCtrl(wxWindow* parent, PWScore &core,
                          wxWindowID id, const wxPoint& pos,
-                         const wxSize& size, long style) : m_core(core),
+                         const wxSize& size, long style) : TreeCtrlBase(core),
                                                            m_collapse_timer(this, &TreeCtrl::CheckCollapseEntry, TreeCtrlTimer::DELAY_COLLAPSE),
                                                            m_scroll_timer(this, &TreeCtrl::CheckScrollList, TreeCtrlTimer::DELAY_SCROLLING)
 {
@@ -239,12 +239,17 @@ if(m_drag_image) wxDELETE(m_drag_image);
 /*!
  * Member initialisation
  */
-
-void TreeCtrl::Init()
+void TreeCtrlBase::Init()
 {
 ////@begin TreeCtrl member initialisation
   m_sort = TreeSortType::GROUP;
   m_show_group = false;
+}
+
+void TreeCtrl::Init()
+{
+  TreeCtrlBase::Init();
+////@begin TreeCtrl member initialisation
   m_drag_item = nullptr;
   m_style = 0L;
   m_lower_scroll_limit = m_upper_scroll_limit = 0;
@@ -260,7 +265,7 @@ void TreeCtrl::Init()
  * Control creation for TreeCtrl
  */
 
-void TreeCtrl::CreateControls()
+void TreeCtrlBase::CreateControls()
 {
 ////@begin TreeCtrl content construction
 ////@end TreeCtrl content construction
@@ -402,7 +407,7 @@ void TreeCtrl::GUIRefreshEntry(const CItemData &item, bool WXUNUSED(bAllowFail))
  * Provides the information wether a group tree item is selected.
  * It considers the root item as no group via 'ItemIsGroup'.
  */
-bool TreeCtrl::IsGroupSelected() const
+bool TreeCtrlBase::IsGroupSelected() const
 {
   return GetSelection().IsOk() && ItemIsGroup(GetSelection());
 }
@@ -421,7 +426,7 @@ bool TreeCtrl::HasItems() const
  * Provides the indication whether any in the tree visible item
  * is selected. This excludes the tree's root item.
  */
-bool TreeCtrl::HasSelection() const
+bool TreeCtrlBase::HasSelection() const
 {
   return GetSelection().IsOk() && (GetSelection() != GetRootItem());
 }
@@ -431,7 +436,7 @@ bool TreeCtrl::HasSelection() const
  * The tree's root item, as a not editable element, is considered
  * as no group.
  */
-bool TreeCtrl::ItemIsGroup(const wxTreeItemId& item) const
+bool TreeCtrlBase::ItemIsGroup(const wxTreeItemId& item) const
 {
   int image = GetItemImage(item);
   return ((image == NODE_II) || (image == EMPTY_NODE_II)) && (GetRootItem() != item);
@@ -440,7 +445,7 @@ bool TreeCtrl::ItemIsGroup(const wxTreeItemId& item) const
 /**
  * Provides the information whether a tree item is a group or root.
  */
-bool TreeCtrl::ItemIsGroupOrRoot(const wxTreeItemId& item) const
+bool TreeCtrlBase::ItemIsGroupOrRoot(const wxTreeItemId& item) const
 {
   int image = GetItemImage(item);
   return (image == NODE_II) || (image == EMPTY_NODE_II) || (GetRootItem() == item);
@@ -479,7 +484,7 @@ static StringX GetPathElem(StringX &sxPath)
   return sxElement;
 }
 
-bool TreeCtrl::ExistsInTree(wxTreeItemId node,
+bool TreeCtrlBase::ExistsInTree(wxTreeItemId node,
                                const StringX &s, wxTreeItemId &si) const
 {
   // returns true iff s is a direct descendant of node
@@ -497,7 +502,7 @@ bool TreeCtrl::ExistsInTree(wxTreeItemId node,
   return false;
 }
 
-wxTreeItemId TreeCtrl::AddGroup(const StringX &group)
+wxTreeItemId TreeCtrlBase::AddGroup(const StringX &group)
 {
   wxTreeItemId ti = GetRootItem();
   if (!ti.IsOk())
@@ -527,7 +532,7 @@ wxTreeItemId TreeCtrl::AddGroup(const StringX &group)
   return ti;
 }
 
-wxString TreeCtrl::ItemDisplayString(const CItemData &item) const
+wxString TreeCtrlBase::ItemDisplayString(const CItemData &item) const
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
   const wxString title = item.GetTitle().c_str();
@@ -564,7 +569,7 @@ wxString TreeCtrl::ItemDisplayString(const CItemData &item) const
   return disp;
 }
 
-wxString TreeCtrl::GetPath(const wxTreeItemId &node) const
+wxString TreeCtrlBase::GetPath(const wxTreeItemId &node) const
 {
   wxString retval;
   std::vector<wxString> v;
@@ -644,7 +649,7 @@ void TreeCtrl::UpdateItemField(const CItemData &item, CItemData::FieldType ft)
   }
 }
 
-StringX TreeCtrl::GroupNameOfItem(const CItemData &item)
+StringX TreeCtrlBase::GroupNameOfItem(const CItemData &item)
 {
   StringX group, title;
   time_t gt, t;
@@ -709,7 +714,7 @@ StringX TreeCtrl::GroupNameOfItem(const CItemData &item)
   return group;
 }
 
-void TreeCtrl::AddItem(const CItemData &item)
+void TreeCtrlBase::AddItem(const CItemData &item)
 {
   wxTreeItemData *data = new PWTreeItemData(item);
   wxTreeItemId gnode = AddGroup(GroupNameOfItem(item));
@@ -730,7 +735,7 @@ void TreeCtrl::AddItem(const CItemData &item)
  * otherwise it won't show. TreeCtrl::AddGroup checks if a root item is
  * needed or an existing one is available.
  */
-void TreeCtrl::AddRootItem()
+void TreeCtrlBase::AddRootItem()
 {
   if (IsEmpty()) {
     AddRoot("..."); // For drag and drop use a string
@@ -738,14 +743,14 @@ void TreeCtrl::AddRootItem()
   }
 }
 
-void TreeCtrl::Clear()
+void TreeCtrlBase::Clear()
 {
   DeleteAllItems();
   AddRootItem();
   m_item_map.clear();
 }
 
-CItemData *TreeCtrl::GetItem(const wxTreeItemId &id) const
+CItemData *TreeCtrlBase::GetItem(const wxTreeItemId &id) const
 {
   if (!id.IsOk())
     return nullptr;
@@ -779,7 +784,7 @@ int TreeCtrl::OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item
   return text1.CmpNoCase(text2);
 }
 
-void TreeCtrl::SortChildrenRecursively(const wxTreeItemId& item)
+void TreeCtrlBase::SortChildrenRecursively(const wxTreeItemId& item)
 {
   if (!ItemIsGroupOrRoot(item) || GetChildrenCount(item) <= 0)
     return;
@@ -794,7 +799,7 @@ void TreeCtrl::SortChildrenRecursively(const wxTreeItemId& item)
   }
 }
 
-wxTreeItemId TreeCtrl::Find(const CUUID &uuid) const
+wxTreeItemId TreeCtrlBase::Find(const CUUID &uuid) const
 {
   wxTreeItemId fail;
   auto iter = m_item_map.find(uuid);
@@ -808,7 +813,7 @@ wxTreeItemId TreeCtrl::Find(const CItemData &item) const
 {
   uuid_array_t uuid;
   item.GetUUID(uuid);
-  return Find(uuid);
+  return TreeCtrlBase::Find(uuid);
 }
 
 wxTreeItemId TreeCtrl::Find(const wxString &path, wxTreeItemId subtree) const
@@ -826,7 +831,7 @@ wxTreeItemId TreeCtrl::Find(const wxString &path, wxTreeItemId subtree) const
 
 bool TreeCtrl::Remove(const CUUID &uuid)
 {
-  wxTreeItemId id = Find(uuid);
+  wxTreeItemId id = TreeCtrlBase::Find(uuid);
   if (id.IsOk()) {
     m_item_map.erase(uuid);
     // if item's the only leaf of  group, delete parent
@@ -843,7 +848,7 @@ bool TreeCtrl::Remove(const CUUID &uuid)
   }
 }
 
-void TreeCtrl::SetItemImage(const wxTreeItemId &node,
+void TreeCtrlBase::SetItemImage(const wxTreeItemId &node,
                                const CItemData &item)
 {
   int offset = 0;
@@ -926,7 +931,7 @@ void TreeCtrl::OnTreectrlItemActivated( wxTreeEvent& evt )
   }
 }
 
-void TreeCtrl::SelectItem(const CUUID & uuid)
+void TreeCtrlBase::SelectItem(const CUUID & uuid)
 {
   uuid_array_t uuid_array;
   uuid.GetARep(uuid_array);
@@ -2564,13 +2569,13 @@ wxDragResult TreeCtrl::OnDrop(wxCoord x, wxCoord y, wxMemoryBuffer *inDDmem)
   return result;
 }
 
-void TreeCtrl::setNodeAsNotEmpty(const wxTreeItemId item)
+void TreeCtrlBase::setNodeAsNotEmpty(const wxTreeItemId item)
 {
   if(GetRootItem() != item && GetItemImage(item) == EMPTY_NODE_II)
     wxTreeCtrl::SetItemImage(item, NODE_II); // Could be empty before
 }
 
-void TreeCtrl::setNodeAsEmptyIfNeeded(const wxTreeItemId item)
+void TreeCtrlBase::setNodeAsEmptyIfNeeded(const wxTreeItemId item)
 {
   if(GetRootItem() != item && GetChildrenCount(item) == 0) {
     wxTreeCtrl::SetItemImage(item, EMPTY_NODE_II); // Empty Group shall show the empty node icon

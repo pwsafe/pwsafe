@@ -40,6 +40,7 @@
 
 ////@begin forward declarations
 class TreeCtrl;
+class SelectTreeCtrl;
 ////@end forward declarations
 
 /*!
@@ -88,17 +89,86 @@ private:
   wxDECLARE_NO_COPY_CLASS(TreeCtrlTimer);
 };
 
+class TreeCtrlBase : public wxTreeCtrl
+{
+  friend TreeCtrl;
+  friend SelectTreeCtrl;
+private:
+  enum class TreeSortType { GROUP, NAME, DATE };
+public:
+  
+  TreeCtrlBase(PWScore &core) : m_core(core) {
+    Init();
+  };
+  ~TreeCtrlBase() {
+    m_item_map.clear();
+  };
+  
+  /// Initialises member variables
+  void Init();
+  
+  /// Creates the controls and sizers
+  void CreateControls();
+  
+  void AddRootItem();
+  
+  void Clear(); // consistent name w/GridCtrl
+  void AddItem(const CItemData &item);
+  StringX GroupNameOfItem(const CItemData &item);
+  
+  CItemData *GetItem(const wxTreeItemId &id) const;
+  
+  wxTreeItemId Find(const pws_os::CUUID &uuid) const;
+  
+  bool HasSelection() const;
+  bool ItemIsGroup(const wxTreeItemId& item) const;
+  bool ItemIsGroupOrRoot(const wxTreeItemId& item) const;
+  bool IsGroupSelected() const;
+  
+  void SelectItem(const pws_os::CUUID& uuid);
+  
+  void SortChildrenRecursively(const wxTreeItemId& item);
+  
+  void SetShowGroup(bool v) { m_show_group = v; }
+  bool IsShowGroup() const { return m_show_group; }
+  
+  void SetSorting(TreeSortType &v) { m_sort = v; }
+  void SetSortingGroup() { m_sort = TreeSortType::GROUP; }
+  void SetSortingName() { m_sort = TreeSortType::NAME; }
+  void SetSortingDate() { m_sort = TreeSortType::DATE; }
+  
+  bool IsSortingGroup() const { return m_sort == TreeSortType::GROUP; }
+  bool IsSortingName() const { return m_sort == TreeSortType::NAME; }
+  bool IsSortingDate() const { return m_sort == TreeSortType::DATE; }
+  
+private:
+  bool ExistsInTree(wxTreeItemId node, const StringX &s, wxTreeItemId &si) const;
+  
+  wxTreeItemId AddGroup(const StringX &group);
+  wxString ItemDisplayString(const CItemData &item) const;
+  wxString GetPath(const wxTreeItemId &node) const;
+  
+  void SetItemImage(const wxTreeItemId &node, const CItemData &item);
+  void setNodeAsNotEmpty(const wxTreeItemId item);
+  void setNodeAsEmptyIfNeeded(const wxTreeItemId item);
+  
+  TreeSortType m_sort;
+  bool m_show_group;
+  PWScore &m_core;
+  UUIDTIMapT m_item_map; // given a uuid, find the tree item pronto!
+};
+
 /*!
  * TreeCtrl class declaration
  */
 
-class TreeCtrl : public wxTreeCtrl, public Observer
+class TreeCtrl : public TreeCtrlBase, public Observer
 {
   DECLARE_CLASS( TreeCtrl )
   DECLARE_EVENT_TABLE()
 
 private:
-  enum class TreeSortType { GROUP, NAME, DATE };
+  //X enum class TreeSortType { GROUP, NAME, DATE };
 public:
   /// Constructors
   TreeCtrl(); // Declared, never defined, as we don't support this!
@@ -115,7 +185,7 @@ public:
   void Init();
 
   /// Creates the controls and sizers
-  void CreateControls();
+  //X void CreateControls();
 
   /* Observer Interface Implementation */
 
@@ -177,26 +247,26 @@ public:
 ////@begin TreeCtrl member function declarations
 ////@end TreeCtrl member function declarations
 
-  void Clear(); // consistent name w/GridCtrl
-  StringX GroupNameOfItem(const CItemData &item);
-  void AddItem(const CItemData &item);
+  //X void Clear(); // consistent name w/GridCtrl
+  //X StringX GroupNameOfItem(const CItemData &item);
+  //X void AddItem(const CItemData &item);
   void UpdateItem(const CItemData &item);
   void UpdateItemField(const CItemData &item, CItemData::FieldType ft);
-  CItemData *GetItem(const wxTreeItemId &id) const;
-  wxTreeItemId Find(const pws_os::CUUID &uuid) const;
+  //X CItemData *GetItem(const wxTreeItemId &id) const;
+  //X wxTreeItemId Find(const pws_os::CUUID &uuid) const;
   wxTreeItemId Find(const CItemData &item) const;
   wxTreeItemId Find(const wxString &path, wxTreeItemId subtree) const;
   bool Remove(const pws_os::CUUID &uuid); // only remove from tree, not from m_core
-  void SelectItem(const pws_os::CUUID& uuid);
-  void SortChildrenRecursively(const wxTreeItemId& item);
+  //X void SelectItem(const pws_os::CUUID& uuid);
+  //X void SortChildrenRecursively(const wxTreeItemId& item);
   wxString GetItemGroup(const wxTreeItemId& item) const;
-  bool IsGroupSelected() const;
+  //X bool IsGroupSelected() const;
   bool HasItems() const;
-  bool HasSelection() const;
-  bool ItemIsGroup(const wxTreeItemId& item) const;
-  bool ItemIsGroupOrRoot(const wxTreeItemId& item) const;
+  //X bool HasSelection() const;
+  //X bool ItemIsGroup(const wxTreeItemId& item) const;
+  //X bool ItemIsGroupOrRoot(const wxTreeItemId& item) const;
   void AddEmptyGroup(const StringX& group) { AddGroup(group); }
-  void AddRootItem();
+  //X void AddRootItem();
   void SetFilterState(bool state);
 
   void SetGroupDisplayStateAllExpanded();
@@ -204,15 +274,15 @@ public:
   void SaveGroupDisplayState();
   void RestoreGroupDisplayState();
   
-  void SetSorting(TreeSortType &v) { m_sort = v; }
-  void SetSortingGroup() { m_sort = TreeSortType::GROUP; }
-  void SetSortingName() { m_sort = TreeSortType::NAME; }
-  void SetSortingDate() { m_sort = TreeSortType::DATE; }
-  void SetShowGroup(bool v) { m_show_group = v; }
-  bool IsSortingGroup() const { return m_sort == TreeSortType::GROUP; }
-  bool IsSortingName() const { return m_sort == TreeSortType::NAME; }
-  bool IsSortingDate() const { return m_sort == TreeSortType::DATE; }
-  bool IsShowGroup() const { return m_show_group; }
+  //X void SetSorting(TreeSortType &v) { m_sort = v; }
+  //X void SetSortingGroup() { m_sort = TreeSortType::GROUP; }
+  //X void SetSortingName() { m_sort = TreeSortType::NAME; }
+  //X void SetSortingDate() { m_sort = TreeSortType::DATE; }
+  //X void SetShowGroup(bool v) { m_show_group = v; }
+  //X bool IsSortingGroup() const { return m_sort == TreeSortType::GROUP; }
+  //X bool IsSortingName() const { return m_sort == TreeSortType::NAME; }
+  //X bool IsSortingDate() const { return m_sort == TreeSortType::DATE; }
+  //X bool IsShowGroup() const { return m_show_group; }
   
   void SetFilterActive(bool v) { m_bFilterActive = v; }
   
@@ -227,11 +297,11 @@ private:
   void PreferencesChanged();
 
   virtual int OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2) override;
-  bool ExistsInTree(wxTreeItemId node, const StringX &s, wxTreeItemId &si) const;
-  wxTreeItemId AddGroup(const StringX &group);
-  wxString ItemDisplayString(const CItemData &item) const;
-  wxString GetPath(const wxTreeItemId &node) const;
-  void SetItemImage(const wxTreeItemId &node, const CItemData &item);
+  //X bool ExistsInTree(wxTreeItemId node, const StringX &s, wxTreeItemId &si) const;
+  //X wxTreeItemId AddGroup(const StringX &group);
+  //X wxString ItemDisplayString(const CItemData &item) const;
+  //X wxString GetPath(const wxTreeItemId &node) const;
+  //X void SetItemImage(const wxTreeItemId &node, const CItemData &item);
   void FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem);
   void FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, const wxString& oldPath);
   CItemData CreateNewItemAsCopy(const CItemData *dataSrc, StringX sxNewPath, bool checkName, bool newEntry = false);
@@ -240,8 +310,8 @@ private:
   void CreateCommandCopyGroup(wxTreeItemId itemSrc, StringX sxNewPath, StringX sxOldPath, bool checkName);
   bool IsDescendant(const wxTreeItemId itemDst, const wxTreeItemId itemSrc);
   void markDragItem(const wxTreeItemId itemSrc, bool markIt = true);
-  void setNodeAsNotEmpty(const wxTreeItemId item);
-  void setNodeAsEmptyIfNeeded(const wxTreeItemId item);
+  //X void setNodeAsNotEmpty(const wxTreeItemId item);
+  //X void setNodeAsEmptyIfNeeded(const wxTreeItemId item);
   void resetDragItems(bool initSize = false);
   void resetScrolling();
 
@@ -260,11 +330,11 @@ private:
 
 ////@begin TreeCtrl member variables
 
-  PWScore &m_core;
-  UUIDTIMapT m_item_map; // given a uuid, find the tree item pronto!
+  //X PWScore &m_core;
+  //X UUIDTIMapT m_item_map; // given a uuid, find the tree item pronto!
   
-  TreeSortType m_sort;
-  bool m_show_group;
+  //X TreeSortType m_sort;
+  //X bool m_show_group;
   
   wxTreeItemId m_drag_item;
   wxColour m_drag_text_colour;
