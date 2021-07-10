@@ -417,7 +417,7 @@ bool TreeCtrlBase::IsGroupSelected() const
  * the tree view. Editable items are items from the database,
  * hence the tree's root item is excluded.
  */
-bool TreeCtrl::HasItems() const
+bool TreeCtrlBase::HasItems() const
 {
   return (GetCount() > 0);
 }

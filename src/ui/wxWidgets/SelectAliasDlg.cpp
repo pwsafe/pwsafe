@@ -357,7 +357,6 @@ void SelectAliasDlg::InitDialog()
   int fontHeight = 15;
   wxCoord width, height;
   wxSize actSize = m_Tree->GetSize();
-  uuid_array_t item_uuid;
   
   m_Tree->Clear();
   wxFont font(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::TreeFont)));
@@ -378,21 +377,24 @@ void SelectAliasDlg::InitDialog()
   if(height > displayHeight) height = displayHeight;
   SetSize(width, height);
   
-  m_Item->GetUUID(item_uuid);
+  const pws_os::CUUID item_uuid = m_Item->GetUUID();
   
   ItemListConstIter iter;
   for (iter = m_Core->GetEntryIter();
        iter != m_Core->GetEntryEndIter();
        iter++) {
-    uuid_array_t uuid;
-    (iter->second).GetUUID(uuid);
     if((iter->second).IsShortcut() || (iter->second).IsAlias()) {
       const pws_os::CUUID base_uuid = (iter->second).GetBaseUUID();
       if (base_uuid == item_uuid) // Do not include alias or shortcut to the base entry
         continue;
     }
-    if (item_uuid[0] != uuid[0]) // Do not include own item as selectable
+    const pws_os::CUUID uuid = (iter->second).GetUUID();
+    if (item_uuid != uuid) // Do not include own item as selectable
       m_Tree->AddItem(iter->second);
+  }
+  
+  if (m_Tree->HasItems()) {// avoid assertion!
+    m_Tree->SortChildrenRecursively(m_Tree->GetRootItem());
   }
   
   if(*m_BaseItem) {
