@@ -762,7 +762,6 @@
 #define IDS_MEM_LOCK_FAILED             6031
 #define IDS_CLEARMRU                    6032
 #define IDS_CONFIRMCLEARMRU             6033
-#define IDS_OPTBACKUPNODRIVE            6034
 #define IDS_EXPANDPATH                  6035
 #define IDS_CANT_EXPANDPATH             6036
 #define IDS_PWHISTORYCOPIED             6037

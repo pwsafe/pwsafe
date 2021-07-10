@@ -94,6 +94,7 @@ Password Safe 3.52 Release April 2020
 Bugs Fixed in 3.52
 ------------------
 
+* [SF1542](https://sourceforge.net/p/passwordsafe/bugs/1542) UNC paths now accepted as backup directory.
 * [SF1510](https://sourceforge.net/p/passwordsafe/bugs/1510) Fixed truncated text in delete confirmation window.
 * [SF1509](https://sourceforge.net/p/passwordsafe/bugs/1509) Cancelling a delete now leaves the selection unchanged.
 * [GH634](https://github.com/pwsafe/pwsafe/issues/634),[SF1508](https://sourceforge.net/p/passwordsafe/bugs/1508) Clearing an entry's username no longer causes a revert to default.
