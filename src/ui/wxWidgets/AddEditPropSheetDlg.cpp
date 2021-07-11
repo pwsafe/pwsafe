@@ -2690,7 +2690,7 @@ void AddEditPropSheetDlg::OnUpdateUI(wxUpdateUIEvent& event)
       event.Enable(!dbIsReadOnly);
       break;
     case ID_BUTTON_ALIAS:
-      event.Enable(!dbIsReadOnly);
+      event.Enable(!dbIsReadOnly || m_Item.IsAlias());
       break;
     case ID_BUTTON_GENERATE:
       event.Enable(!dbIsReadOnly && !m_Item.IsAlias()); // Do not generate password for alias entry

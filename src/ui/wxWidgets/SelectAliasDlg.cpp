@@ -341,7 +341,7 @@ void SelectAliasDlg::CreateControls()
 
 ////@end SelectAliasDlg content construction
   
-  if(m_BaseItem == nullptr) {
+  if(m_BaseItem == nullptr || m_Core->IsReadOnly()) {
     itemButton6->Disable();
     itemButton7->Disable();
   }
@@ -511,6 +511,11 @@ void SelectAliasDlg::UpdateSelChanged(CItemData *pci)
                 pci->GetUser()  + L"]";
     m_AliasName = pwd.c_str();
     m_AliasBaseTextCtrl->SetValue(m_AliasName);
+  }
+  if(m_Core->IsReadOnly() && *m_BaseItem) {
+    uuid_array_t uuid;
+    (*m_BaseItem)->GetUUID(uuid);
+    m_Tree->SelectItem(uuid);
   }
 }
 
