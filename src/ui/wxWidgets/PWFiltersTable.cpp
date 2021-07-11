@@ -31,7 +31,7 @@
 #include "PWFiltersTable.h"
 #include "PWFiltersGrid.h"
 #include "PWFiltersEditor.h"
-#include "PWSFilters.h"
+#include "core/PWSFilters.h"
 #include "wxUtilities.h"
 
 ////@end includes

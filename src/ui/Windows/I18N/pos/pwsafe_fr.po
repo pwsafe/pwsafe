@@ -416,6 +416,11 @@ msgstr "%d/%d éléments"
 msgid "%ls - Copied %ls"
 msgstr "%ls - Copié %ls"
 
+#. Resource IDs: (5907)
+#, c-format
+msgid "%ls - Drag & Drop %ls"
+msgstr ""
+
 #. Resource IDs: (3431)
 #, c-format
 msgid "%ls - Imported %ls"
@@ -480,11 +485,6 @@ msgstr "%s (*%s)|*%s||"
 #, c-format
 msgid "%s (database-specific)"
 msgstr "%s (spécifique au fichier)"
-
-#. Resource IDs: (5907)
-#, c-format
-msgid "%s - Drag & Drop %s"
-msgstr "%s - %s Déplacés"
 
 #. Resource IDs: (5998)
 #, c-format
@@ -2994,8 +2994,8 @@ msgid "Enter no more than %1 characters."
 msgstr "Entrez jusqu'à %1 caractères."
 
 #. Resource IDs: (65535)
-msgid "Enter positions of password characters separated by spaces, commas or semi-colons."
-msgstr "Entrez l'endroit des caractères de mot de passe, séparés par des espaces, virgules ou point-virgules."
+msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
+msgstr ""
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -5488,12 +5488,9 @@ msgstr "&Rétablir"
 msgid "Redo the last change to password policies that was previously undone"
 msgstr "Refaire le dernier changement aux stratégies de mot de passe précédemment changé"
 
-#. Resource IDs: (1228)
+#. Resource IDs: (1228, 3397)
 msgid "Relative"
 msgstr "Relatif"
-
-msgid "relative"
-msgstr "relatif"
 
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
@@ -5990,10 +5987,6 @@ msgstr "Action Maj + double clic"
 #. Resource IDs: (5555)
 msgid "Shift+click to view current policy"
 msgstr "Maj+clic pour voir la stratégie courante"
-
-#. Resource IDs: (1599)
-msgid "Shorcuts"
-msgstr ""
 
 #. Resource IDs: (5686)
 #, c-format
@@ -7120,7 +7113,7 @@ msgstr "Ouïgour"
 msgid "Uzbek Cyrillic"
 msgstr "Ouzbek Cyrillique"
 
-#. Resource IDs: (3440, 5537)
+#. Resource IDs: (5537)
 msgid "Validate"
 msgstr "Valider"
 
@@ -7864,8 +7857,8 @@ msgstr "\tNom: %s; Nom de fichier: %s"
 
 #. Resource IDs: (5538)
 #, c-format
-msgid "\tNo entries were found containing search string '%s'"
-msgstr "\tAucune entrée contenant '%s' n'a été trouvé"
+msgid "\tNo entries were found containing search string '%ls' %ls"
+msgstr ""
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
@@ -7887,8 +7880,8 @@ msgstr "\tLa stratégie de mot de passe '%ls' n'est pas dans le fichier."
 
 #. Resource IDs: (5539)
 #, c-format
-msgid "\tThe following entries contain search string '%s'"
-msgstr "\tLes entrées suivantes contiennent le texte recherché '%s'"
+msgid "\tThe following entries contain search string '%ls' %ls"
+msgstr ""
 
 #. Resource IDs: (5522)
 #, c-format
@@ -7943,7 +7936,7 @@ msgstr "une entrée alias"
 msgid "an unnamed file"
 msgstr "un fichier sans nom"
 
-#. Resource IDs: (1307, 1419)
+#. Resource IDs: (1307, 1419, 5969)
 msgid "and"
 msgstr "et"
 
@@ -8235,6 +8228,10 @@ msgstr "mots de passe précédents par entrée"
 #. Resource IDs: (5394)
 msgid "pwsafe"
 msgstr "pwsafe"
+
+#. Resource IDs: (5968)
+msgid "relative"
+msgstr "relatif"
 
 #. Resource IDs: (3279)
 msgid "shortcut"

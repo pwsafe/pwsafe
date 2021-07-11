@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-21 12:49+0200\n"
-"PO-Revision-Date: 2021-06-20 14:30+0300\n"
+"POT-Creation-Date: 2021-07-10 19:38+0200\n"
+"PO-Revision-Date: 2021-07-08 20:10+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: none\n"
 "Language: ru_RU\n"
@@ -66,7 +66,7 @@ msgstr "Copyright (c) 2003-2021 Rony Shapiro"
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:433
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:406
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:541
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:162
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:166
 #: ../../../ui/wxWidgets/SystemTray.cpp:137
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:197
 msgid "&Close"
@@ -146,78 +146,78 @@ msgstr "Ошибка загрузки: не задан CurlHandle."
 msgid "Could not download version data.\n"
 msgstr "Невозможно загрузить данные о версии.\n"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:304
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1391
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:308
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1398
 msgid "Auto Type"
 msgstr "Автонабор"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:305
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1392
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:309
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1399
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:464
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:667
 msgid "Browse"
 msgstr "Обзор"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:306
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1393
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:310
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1400
 msgid "Browse + Auto Type"
 msgstr "Перейти по ссылке и выполнить автонабор"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:307
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1394
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:311
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1401
 msgid "Copy Notes"
 msgstr "Копировать заметки"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:308
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1395
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:312
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1402
 msgid "Copy Password"
 msgstr "Копировать пароль"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:309
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1396
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:313
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1403
 msgid "Copy Password + Minimize"
 msgstr "Копировать пароль и свернуть"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:310
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1397
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:314
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1404
 msgid "Copy Username"
 msgstr "Копировать имя пользователя"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:311
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1398
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:315
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1405
 msgid "Edit/View Entry"
 msgstr "Редактирование/просмотр элемента"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:312
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1399
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:316
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1406
 msgid "Execute Run command"
 msgstr "Выполнить команду"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:328
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:332
 #: ../../../ui/wxWidgets/HelpMap.h:47
 msgid "Basic"
 msgstr "Основные"
 
 # закладка в диалоге создания/редактирования элемента
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:335
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:339
 #: ../../../ui/wxWidgets/HelpMap.h:50
 msgid "Additional"
 msgstr "Дополнительно"
 
 # закладка в диалоге создания/редактирования элемента
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:341
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:345
 #: ../../../ui/wxWidgets/HelpMap.h:48
 msgid "Dates and Times"
 msgstr "Дата и время"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:348
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:352
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:317
 #: ../../../ui/wxWidgets/HelpMap.h:41 ../../../ui/wxWidgets/HelpMap.h:49
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.h:69 ../../../core/core_st.cpp:144
 msgid "Password Policy"
 msgstr "Политика создания паролей"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:356
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:360
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:110
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:120
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:320
@@ -225,16 +225,16 @@ msgid "Attachment"
 msgstr "Вложение"
 
 # Столбец в истории
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:369
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:373
 msgid "Set Date/Time"
 msgstr "Дата/время создания"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:370
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:374
 #: ../../../ui/wxWidgets/ToolbarButtons.h:203 ../../../core/core_st.cpp:140
 msgid "Password"
 msgstr "Пароль"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:386
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:390
 msgid ""
 "To add a new entry, simply fill in the fields below. At least a title and\n"
 "a password are required. If you have set a default username, it will\n"
@@ -244,7 +244,7 @@ msgstr ""
 "и пароль должны быть указаны. Если задано имя пользователя по умолчанию,\n"
 "оно будет введено в поле «Имя»."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:394
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:398
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:207
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:229
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:262
@@ -252,8 +252,8 @@ msgstr ""
 msgid "Group:"
 msgstr "Группа:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:400
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:861
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:404
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:868
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:212
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:234
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:267
@@ -261,7 +261,7 @@ msgstr "Группа:"
 msgid "Title:"
 msgstr "Заголовок:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:406
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:410
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:217
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:239
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:272
@@ -269,67 +269,77 @@ msgstr "Заголовок:"
 msgid "Username:"
 msgstr "Имя пользователя:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:412
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:416
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1852
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1879
 msgid "Password:"
 msgstr "Пароль:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:418
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1711
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:422
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1813
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1855
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1886
 msgid "&Hide"
 msgstr "&Скрыть"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:421
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:425
 msgid "&Generate"
 msgstr "&Создать"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:424
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1880
 msgid "Confirm:"
 msgstr "Подтверждение:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:430
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:434
+#, fuzzy
+msgid "&Alias"
+msgstr "псевдоним"
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:437
 msgid "URL:"
 msgstr "Ссылка:"
 
 # переход по ссылке/выполнение команды в диалоге создания/редактирования
 # элемента
 # "перейти" не входит по длине
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:436
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:443
 msgid "Go"
 msgstr "Перейти"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:439
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:446
 msgid "EMail:"
 msgstr "E-mail:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:445
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:452
 msgid "Send"
 msgstr "Отправ."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:448
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:455
 msgid "Notes:"
 msgstr "Заметки:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:474
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:481
 msgid "Autotype:"
 msgstr "Автонабор:"
 
 # урезано
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:480
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:487
 msgid "Run Cmd:"
 msgstr "Выполнить:"
 
 # Вкладка прочее, обычный режим, урезано
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:486
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:493
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:596
 msgid "Double-Click Action:"
-msgstr "Действие по двойному клику:"
+msgstr "Действие по двойному клику:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:494
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:501
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:617
 msgid "Shift-Double-Click Action:"
-msgstr "Действие по Shift + двойной клик:"
+msgstr "Действие по Shift + двойной клик:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:502
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:509
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:301
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:314
 #: ../../../ui/wxWidgets/HelpMap.h:42
@@ -337,96 +347,96 @@ msgid "Password History"
 msgstr "История паролей"
 
 # В истории паролей
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:507
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:514
 msgid "Keep"
 msgstr "Хранить"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:522
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:529
 msgid "last passwords"
 msgstr "предыдущих паролей"
 
 # урезано
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:535
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:542
 msgid "Clear History"
 msgstr "Очистить"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:540
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:547
 msgid "Copy All"
 msgstr "Копировать все"
 
 # Заголовок группы на вкладке срока действия
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:558
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:565
 msgid "Password Expiry"
 msgstr "Пароль истекает"
 
 # Пароль истекает ...
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:565
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:572
 msgid "On"
 msgstr " "
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:574
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:581
 msgid "In"
 msgstr "через"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:592
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:599
 msgid "days"
 msgstr "дней"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:595
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:602
 msgid "Recurring"
 msgstr "Повторять"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:601
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1440
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2446
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:608
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1447
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2625
 msgid "Never"
 msgstr "Никогда"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:607
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:614
 msgid "Original Value:"
 msgstr "Исходное значение:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:613
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:620
 msgid "Statistics"
 msgstr "Статистика"
 
 # "Создан" т.к. относится к элементу
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:618
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:625
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:277
 msgid "Created on:"
 msgstr "Создан:"
 
 # урезано из-за ограничения размеров
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:624
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:631
 msgid "Password last changed on:"
 msgstr "Пароль изменён:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:627
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:639
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:634
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:646
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:279
 msgid "Static text"
 msgstr "Заглушка"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:630
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:637
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:287
 msgid "Last accessed on:"
 msgstr "Последнее обращение:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:633
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:844
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:944
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:952
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:962
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:973
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:984
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:992
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1015
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1016
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1017
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1018
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1019
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1020
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1021
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:640
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:851
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:951
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:959
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:969
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:980
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:991
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:999
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1022
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1023
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1024
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1025
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1026
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1027
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1028
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:152
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:153
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:154
@@ -459,36 +469,36 @@ msgstr "Последнее обращение:"
 msgid "N/A"
 msgstr "Н/Д"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:636
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:643
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:292
 msgid "Any field last changed on:"
 msgstr "Изменено хотя бы одно поле:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:659
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:666
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:209
 msgid "Random password generation rules"
 msgstr "Правила создания случайного пароля"
 
 # урезано (вкладка "Политика..." в диалоге редактирования элемента)
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:666
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:673
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:196
 msgid "Use Database Policy"
 msgstr "Использовать политику"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:681
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:688
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:216
 msgid "Password length:"
 msgstr "Длина пароля:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:699
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:706
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:233
 msgid "Use lowercase letters"
 msgstr "Строчные буквы"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:705
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:729
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:753
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:778
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:712
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:736
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:760
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:785
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:240
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:264
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:288
@@ -496,59 +506,59 @@ msgstr "Строчные буквы"
 msgid "(At least "
 msgstr "(не менее "
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:719
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:743
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:767
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:792
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:726
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:750
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:774
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:799
 msgid ")"
 msgstr ")"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:723
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:730
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:257
 msgid "Use UPPERCASE letters"
 msgstr "ПРОПИСНЫЕ буквы"
 
 # урезано, в информации о политике
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:747
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:754
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:281
 #: ../../../core/core_st.cpp:263
 msgid "Use digits"
 msgstr "Использовать цифры"
 
 # урезано, в информации о политике
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:771
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:778
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:305
 #: ../../../core/core_st.cpp:265
 msgid "Use symbols"
 msgstr "Символы"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:773
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:780
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:307
 msgid "i.e., ., %, $, etc."
 msgstr "напр. &, %, $ и т. п."
 
 # Урезано (кнопка в диалогах мастера и политиках паролей)
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:799
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:806
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:334
 msgid "Reset"
 msgstr "Сброс"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:802
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:809
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:337
 msgid "Use only easy-to-read characters"
 msgstr "Только удобочитаемые символы"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:804
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:811
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:339
 msgid "i.e., no 'l', '1', etc."
-msgstr "не исп. «l», «1» и т. п."
+msgstr "не исп. «l», «1» и т. п."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:809
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:816
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:344
 msgid "Generate pronounceable passwords"
 msgstr "Создавать произносимые пароли"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:815
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:822
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:911
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:284
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:296
@@ -558,47 +568,47 @@ msgstr "Создавать произносимые пароли"
 msgid "Or"
 msgstr "Или"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:820
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:827
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:355
 msgid "Use hexadecimal digits only"
 msgstr "Только шестнадцатеричные цифры"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:822
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:829
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:357
 msgid "0-9, a-f"
 msgstr "0-9, a-f"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:835
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:842
 msgid "Preview"
 msgstr "Предпросмотр"
 
 # Имя пункта меню
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:843
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:850
 msgid "File"
 msgstr "Файл"
 
 # кнопка на вкладке вложения
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:848
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:855
 msgid "Import..."
 msgstr "Импорт..."
 
 # кнопка на вкладке вложения
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:850
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:857
 msgid "Export..."
 msgstr "Экспорт..."
 
 # кнопка на вкладке вложения
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:852
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:859
 msgid "Remove"
 msgstr "Удалить"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:857
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:864
 #: ../../../ui/wxWidgets/PropertiesDlg.h:58
 msgid "Properties"
 msgstr "Свойства"
 
 # Первая подстановка в "%s file being imported/exported: %s"
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:863
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:870
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:214
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:219
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:269
@@ -609,33 +619,33 @@ msgstr "Свойства"
 msgid "Text"
 msgstr "Текстовый"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:866
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:873
 msgid "Media Type:"
 msgstr "Тип файла:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:871
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:878
 msgid "Creation Date:"
 msgstr "Дата создания:"
 
 # Свойства вложения
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:876
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:883
 msgid "File Size:"
 msgstr "Размер файла:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:881
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:888
 msgid "File Creation Date:"
 msgstr "Дата создания файла:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:886
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:893
 msgid "File Last Modified Date:"
 msgstr "Дата изменения файла:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:930
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:937
 msgid "No Attachment Available"
 msgstr "Вложение отсутствует"
 
 # дата в истории паролей
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:965
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:972
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:160
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:173
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:192
@@ -643,124 +653,124 @@ msgstr "Вложение отсутствует"
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1005
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1012
 msgid "No preview available due to an error"
 msgstr "Предпросмотр недоступен из-за ошибки"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1009
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1016
 msgid "No preview available - unsupported media type"
 msgstr "Предпросмотр недоступен — неподдерживаемый тип."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1031
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1038
 msgid "Image Preview"
 msgstr "Предпросмотр изображения"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1090
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1097
 msgid "Image files "
 msgstr "Файлы изображений "
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1092
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1197
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1099
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1204
 msgid "All files (*.*)|*.*"
 msgstr "Все файлы (*.*)|*.*"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1095
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1122
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1102
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1129
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1136
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1143
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1150
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1157
 msgid "Import Attachment"
 msgstr "Импортировать вложение"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1122
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1129
 msgid "Failed to allocate required memory to import attachment data."
 msgstr "Не удалось выделить память для импорта вложения."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1129
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1225
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1136
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1232
 msgid "Failed to open file."
 msgstr "Не удалось открыть файл."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1136
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1143
 msgid "File exceeds the allowed maximum size of 4.3GB (2^32GB)."
 msgstr "Размер файла больше максимально разрешённых 4 ГиБ (2^32 Б)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1143
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1150
 msgid "An error occurred while reading the file."
 msgstr "Ошибка при чтении файла."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1150
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1157
 msgid "Unexpected error occurred during attachment import."
 msgstr "Ошибка при импорте вложения."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1163
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1170
 msgid "No attachment data to export."
 msgstr "Отсутствует вложение для экспорта."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1163
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1200
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1218
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1170
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1207
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1225
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1232
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1239
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1246
 msgid "Export Attachment"
 msgstr "Экспортировать вложение"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1179
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1186
 #, c-format
 msgid "%s files (*.%s;*.jpg)|*.%s;*.jpg|"
 msgstr "%s файлы (*.%s;*.jpg)|*.%s;*.jpg|"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1184
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1191
 #, c-format
 msgid "%s files (*.%s;*.gz)|*.%s;*.gz|"
 msgstr "%s файлы (*.%s;*.gz)|*.%s;*.gz|"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1189
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1196
 #, c-format
 msgid "%s files (*.%s)|*.%s|"
 msgstr "%s файлы (*.%s)|*.%s|"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1218
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1225
 msgid "Failed to allocate required memory to export attachment data."
 msgstr "Не удалось выделить память для экспорта вложения."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1232
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1239
 msgid "An error occurred while writing the file."
 msgstr "Ошибка при записи файла."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1239
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1246
 msgid "Unexpected error occurred during attachment export."
 msgstr "Ошибка при экспорте вложения."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1420
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1427
 msgid "default"
 msgstr "по умолчанию"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1558
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1557
 msgid "[Notes hidden - click here to display]"
 msgstr "[Заметки скрыты. Кликните здесь, чтобы показать.]"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1627
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1653
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2145
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2820
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1626
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1652
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2243
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3014
 #: ../../../core/core_st.cpp:77
 msgid "Default Policy"
 msgstr "Политика по умолчанию"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1680
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1679
 msgid "Couldn't generate password - invalid policy"
 msgstr "Ошибка при создании пароля: некорректная политика создания паролей"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1681
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1796
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1809
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1831
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1851
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2727
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2754
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1680
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1934
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1947
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1969
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1989
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2921
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2948
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:106
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:115
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:131
@@ -770,8 +780,8 @@ msgstr "Ошибка при создании пароля: некорректн�
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1081
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:201
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:372
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:738
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:757
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1587
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:298
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:302
@@ -796,54 +806,84 @@ msgstr "Ошибка при создании пароля: некорректн�
 msgid "Error"
 msgstr "Ошибка"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1739
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1734
+msgid ""
+"On changing this entry of type Shortcut Base to an Alias all Shortcut to "
+"this entry will be removed!"
+msgstr ""
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1734
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1757
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:457
+#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:269
+#: ../../../core/core_st.cpp:292
+msgid "Warning"
+msgstr "Предупреждение"
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1757
+msgid "Shortcut or Alias selected, use Base entry instead"
+msgstr ""
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1825
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1864
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1894
 msgid "&Show"
 msgstr "&Показать"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1794
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1847
+#, fuzzy
+msgid "Alias"
+msgstr "псевдоним"
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1849
+#, fuzzy
+msgid "Alias:"
+msgstr "псевдоним"
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1932
 #, c-format
 msgid "This entry must have a %ls"
 msgstr "Элемент должен содержать %ls"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1795
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1933
 msgid "title"
 msgstr "Заголовок"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1795
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1933
 msgid "password"
 msgstr "Пароль"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1808
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1946
 msgid "Passwords do not match"
-msgstr "Пароли не совпадают"
+msgstr "Пароли не совпадают"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1830
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1968
 msgid "Database name must not be empty if a database policy shall be used."
 msgstr "Имя политики создания паролей не должно быть пустым."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1850
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1988
 msgid ""
 "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr ""
 "Элемент или ярлык с такими же значениями Группы, Заголовка и Имени "
 "пользователя уже существует."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2425
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2604
 #, c-format
 msgid " (every %d days)"
 msgstr " (каждые %d дней)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2726
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:755
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2920
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
 msgstr "Параметры «удобочитаемые» и «произносимые» несовместимы"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2753
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:736
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2947
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
 msgstr "Параметры «произносимые» и «удобочитаемые» несовместимы"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2805
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2999
 msgid "mailto:"
 msgstr "mailto:"
 
@@ -1140,7 +1180,7 @@ msgstr "Повтор:"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:406
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:329
 msgid "The combination cannot be blank."
-msgstr "Пароль не может быть пустым!"
+msgstr "Пароль не может быть пустым!"
 
 # Выводится при неверном повторе пароля (взоможно, где-то ещё), поэтому entry
 # переведено как «значение»
@@ -1148,7 +1188,7 @@ msgstr "Пароль не может быть пустым!"
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:242
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:315
 msgid "The two entries do not match."
-msgstr "Введённые значения не совпадают"
+msgstr "Введённые значения не совпадают"
 
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:130
 msgid "The entry cannot be blank."
@@ -1198,7 +1238,7 @@ msgstr "Вставьте ваш YubiKey"
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:335
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:405
 msgid "File or path not found."
-msgstr "Файл или путь к файлу не найден."
+msgstr "Файл или путь к файлу не найден."
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:151
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1258
@@ -1212,7 +1252,7 @@ msgid ""
 "Incorrect passkey, not a PasswordSafe database, or a corrupt database. "
 "(Backup database has same name as original, ending with '~')"
 msgstr ""
-"Указан неверный пароль или файл повреждён/не является контейнером Password "
+"Указан неверный пароль или файл повреждён/не является контейнером Password "
 "Safe. (Резервная копия контейнера имеет то же имя, но заканчивается символом "
 "«~»)"
 
@@ -1306,7 +1346,7 @@ msgid ""
 msgstr ""
 "Продолжайте только в случае, если понимаете и принимаете все возможные "
 "риски.\n"
-"Это действие позволяет обойти защиту предоставляемую программой."
+"Это действие позволяет обойти защиту предоставляемую программой."
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:114
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:163
@@ -1347,6 +1387,7 @@ msgstr "&Отмена"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:260
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:221
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:183
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:339
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:227
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:200
 msgid "&Help"
@@ -1402,7 +1443,7 @@ msgstr "Комбинация клавиш # "
 
 #: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:757
 msgid "is not a valid shortcut"
-msgstr "не является допустимой комбинацией клавиш"
+msgstr "не является допустимой комбинацией клавиш"
 
 #: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:758
 msgid "Invalid shortcut"
@@ -1542,7 +1583,7 @@ msgstr "Заменить?"
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1085
 #, c-format
 msgid "File %ls was not imported (failed validation against XML Schema)"
-msgstr "Файл %ls не был импортирован (не соответствует XML-схеме)"
+msgstr "Файл %ls не был импортирован (не соответствует XML-схеме)"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1088
 #, c-format
@@ -1715,7 +1756,7 @@ msgid "Not used"
 msgstr "Не используется"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:297
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1679
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1684
 msgid " Copy # "
 msgstr " Копия № "
 
@@ -1728,7 +1769,7 @@ msgstr "Просмотр недоступен для вложений не яв�
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:539
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:555
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:632
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1721
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1726
 #: ../../../ui/wxWidgets/ViewAttachmentDlg.cpp:37
 #: ../../../ui/wxWidgets/ViewAttachmentDlg.cpp:71
 msgid "View Attachment"
@@ -1883,7 +1924,7 @@ msgid ""
 "by old versions of PasswordSafe. To save your changes in the old format, use "
 "the \"File->Export To-> Old (1.x or 2) format\" command."
 msgstr ""
-"Формат исходного контейнера «%ls», имеет версию ниже 3.0. Он не будет "
+"Формат исходного контейнера «%ls», имеет версию ниже 3.0. Он не будет "
 "изменён.\n"
 "Изменения будут записаны в «%ls» с использованием нового формата, который "
 "несовместим с предыдущими версиями Password Safe. Для сохранения изменений в "
@@ -2163,7 +2204,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1009
 msgid "Missing XSD File - "
-msgstr "XSD-файл не указан — "
+msgstr "XSD-файл не указан — "
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1009
 msgid " Build"
@@ -2180,7 +2221,7 @@ msgid ""
 "\n"
 "%ls"
 msgstr ""
-"Файл %ls не соответствует XML-схеме:\n"
+"Файл %ls не соответствует XML-схеме:\n"
 "\n"
 "%ls"
 
@@ -2267,7 +2308,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1113
 msgid "XML import not supported in this release"
-msgstr "Данная версия не поддерживает импорт из XML"
+msgstr "Данная версия не поддерживает импорт из XML"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1116
 #, c-format
@@ -2448,12 +2489,12 @@ msgstr "Просмотр отчёта"
 
 #: ../../../ui/wxWidgets/MenuViewHandlers.cpp:482
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:668
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2063
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2068
 msgid "&Apply current"
 msgstr "&Применить текущий"
 
 #: ../../../ui/wxWidgets/MenuViewHandlers.cpp:486
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2060
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2065
 msgid "&Clear current"
 msgstr "&Очистить текущий"
 
@@ -2487,7 +2528,7 @@ msgstr "Файл не выбран"
 
 #: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:62
 msgid "Selected file doesn't exist."
-msgstr "Указанный файл не существует."
+msgstr "Указанный файл не существует."
 
 #: ../../../ui/wxWidgets/OpenFilePickerValidator.cpp:63
 msgid "Please select a valid file"
@@ -2874,7 +2915,7 @@ msgid ""
 "There appears to be no system tray support in your current environment.\n"
 "Any related functionality may not work as expected."
 msgstr ""
-"Похоже, текущее окружение не поддерживает работу с областью уведомлений.\n"
+"Похоже, текущее окружение не поддерживает работу с областью уведомлений.\n"
 "Связанные с ней функции могут работать некорректно."
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:923
@@ -2917,7 +2958,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:966
 msgid "If AutoType doesn't work, setting this may help."
-msgstr "Если автонабор не работает, попробуйте установить этот флажок."
+msgstr "Если автонабор не работает, попробуйте установить этот флажок."
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1391
 msgid "Select a Browser"
@@ -2973,7 +3014,7 @@ msgstr "Фильтр отображения — действие по двойн
 
 #: ../../../ui/wxWidgets/PWFiltersDCADlg.cpp:307 ../../../core/core_st.cpp:134
 msgid "DCA"
-msgstr "Действие по двойному клику"
+msgstr "Действие по двойному клику"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:98
 msgid "Display Filter Date Value"
@@ -3331,11 +3372,11 @@ msgstr "Длина пароля должна быть от 4 до 1024 симв�
 
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:520
 msgid "Password length is less than sum of 'at least' constraints"
-msgstr "Длина пароля меньше, чем сумма ограничений вида «не менее»"
+msgstr "Длина пароля меньше, чем сумма ограничений вида «не менее»"
 
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:530
 msgid "Policy name cannot be blank"
-msgstr "Название политики не может быть пустым"
+msgstr "Название политики не может быть пустым"
 
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:535
 msgid "Policy name is already in use"
@@ -3431,7 +3472,7 @@ msgid "S&ynchronize..."
 msgstr "Синх&ронизировать..."
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:592
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2577
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2582
 msgid "Change R/W Mode"
 msgstr "Переключить в режим «чтение/запись» (R-W)"
 
@@ -3476,7 +3517,7 @@ msgid "&Duplicate Entry\tCtrl+D"
 msgstr "Ду&блировать элемент\tCtrl+D"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:615
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1724
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1729
 msgid "Protect Entry"
 msgstr "Защитить элемент"
 
@@ -3824,6 +3865,7 @@ msgid "Perform Auto &Type"
 msgstr "&Автонабор"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1667
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:522
 msgid "&View Entry..."
 msgstr "&Просмотр элемента..."
 
@@ -3847,96 +3889,100 @@ msgstr "Перейти к ярлыку..."
 msgid "&Go to Base entry"
 msgstr "Перейти &к исходному элементу"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1719
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1720
+msgid "View &Base entry"
+msgstr "Просмотр &исходного элемента"
+
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1723
 msgid "&Edit Base entry"
 msgstr "&Редактировать исходный элемент"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2271
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2276
 msgid "Could not re-load database: "
 msgstr "Невозможно перезагрузить контейнер: "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2272
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2277
 msgid "Error re-loading last database"
 msgstr "Ошибка при загрузке последнего контейнера"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2519
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2524
 msgid "There was an error loading the database: "
 msgstr "Ошибка при загрузке контейнера: "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2520
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2525
 msgid "Could not load database"
 msgstr "Невозможно загрузить контейнер"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2566
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2571
 msgid "Change to R/W"
 msgstr "Переключить в режим «чтение/запись» (R-W)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2566
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2571
 msgid "Change to R-O"
 msgstr "Переключить в режим «только чтение» (R-O)"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2595
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2600
 msgid "Group copied "
 msgstr "Группа скопирована "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2598
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2603
 msgid "Title copied "
 msgstr "Заголовок скопирован "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2601
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2606
 msgid "User copied "
 msgstr "Имя пользователя скопировано "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2604
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2609
 msgid "Pswd copied "
 msgstr "Пароль скопирован "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2607
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2612
 msgid "Notes copied "
 msgstr "Заметки скопированы "
 
-# не 'ссылка', т. к. коллизия со ссылками на пароли
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2610
+# не 'ссылка', т. к. коллизия со ссылками на пароли
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2615
 msgid "URL copied "
 msgstr "URL скопирован "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2613
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2618
 msgid "Autotype copied "
 msgstr "«Автонабор» скопирован "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2616
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2621
 msgid "RunCmd copied "
 msgstr "Команда скопирована "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2619
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2624
 msgid "Email copied "
 msgstr "E-mail скопирован "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2622
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2627
 msgid "Password History copied "
 msgstr "Скопирована история паролей "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2625
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2630
 msgid "Old Pswd copied "
 msgstr "Старый пароль скопирован "
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2664
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2669
 msgid "Select Tree/List display font"
 msgstr "Выбор шрифта для дерева/списка"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2681
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2686
 msgid "Select Add/Edit display font"
 msgstr "Выбор шрифта для диалога Вставки/Редактирования"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2685
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2690
 msgid "Select Password display font"
 msgstr "Выбор шрифта для отображения паролей"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2689
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2694
 msgid "Select Notes display font"
 msgstr "Выбор шрифта для заметок"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2693
+#: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2698
 msgid "Select Virtual Keyboard font"
 msgstr "Выбор шрифта для экранной клавиатуры"
 
@@ -4034,37 +4080,37 @@ msgstr "Совпадений не обнаружено"
 msgid "1 match"
 msgstr "одно совпадение"
 
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:125
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:128
 msgid ""
 "Enter positions of password characters separated by spaces, commas or semi-"
-"colons.\n"
+"colons (or * for full password).\n"
 "Position 1 is the first character, 2 is the second, etc. up to N for the "
 "last character of a password of length N.\n"
 "-1 is the last character, -2 the next to last, etc. up to -N for the first "
 "password character."
 msgstr ""
-"Введите номера символов пароля через пробел, запятую или точку с запятой.\n"
-"Номер 1 соответствует первому символу, 2 — второму и т. д. до N (где N — "
+"Введите номера символов пароля через пробел, запятую или точку с запятой (* "
+"покажет весь пароль).\n"
+"Номер 1 соответствует первому символу, 2 — второму и т. д. до N (где N — "
 "количество символов в пароле).\n"
-"-1 указывает на последний символ, -2 — на второй с конца, и т. д. (-N "
+"-1 указывает на последний символ, -2 — на второй с конца, и т. д. (-N "
 "соответствует первому символу)."
 
 # отображение части пароля
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:131
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:134
 msgid "Positions:"
 msgstr "Номера:"
 
 # при выборе части пароля
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:139
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:142
 msgid "Values:"
 msgstr "Значения:"
 
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:155
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:159
 msgid "Copy values"
 msgstr "Копировать значения"
 
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:248
-#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:252
+#: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:325
 msgid "Invalid position"
 msgstr "Неверный номер символа"
 
@@ -4207,7 +4253,7 @@ msgstr "Невозможно проверить старый пароль. Пр�
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:305
 msgid "New safe combination and confirmation do not match"
-msgstr "Новый пароль и его подтверждение не совпадают"
+msgstr "Новый пароль и его подтверждение не совпадают"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:315
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:263
@@ -4256,12 +4302,6 @@ msgstr "Новый..."
 msgid "Could not lock file, opening read-only.\n"
 msgstr ""
 "Не удалось заблокировать файл, контейнер будет открыт «только для чтения».\n"
-
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:457
-#: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:269
-#: ../../../core/core_st.cpp:292
-msgid "Warning"
-msgstr "Предупреждение"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:476
 msgid "Too many retries - exiting"
@@ -4327,13 +4367,54 @@ msgstr "Укажите ключ и подтвердите его."
 msgid "Please try another"
 msgstr "Попробуйте другой"
 
+# Подстановка во второе поле "Change a %s to a %s"
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:309
+#, fuzzy
+msgid "Alias name:"
+msgstr "псевдоним"
+
+# кнопка на вкладке вложения
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:330
+#, fuzzy
+msgid "&Remove"
+msgstr "Удалить"
+
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:333
+msgid "Select"
+msgstr "Выбор"
+
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:336
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:224
+msgid "Cancel"
+msgstr "Отмена"
+
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:429
+#, fuzzy
+msgid "No Alias name given."
+msgstr "Не указано имя фильтра."
+
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:429
+#, fuzzy
+msgid "Please name the alias."
+msgstr "Укажите имя для текущего фильтра"
+
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:524
+#: ../../../ui/wxWidgets/ToolbarButtons.h:217
+msgid "Expand"
+msgstr "Развернуть"
+
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:525
+#: ../../../ui/wxWidgets/ToolbarButtons.h:218
+msgid "Collapse"
+msgstr "Свернуть"
+
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:38 ../../../core/core_st.cpp:99
 msgid "equals"
 msgstr "совпадает с"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:39 ../../../core/core_st.cpp:86
 msgid "does not equal"
-msgstr "не совпадает с"
+msgstr "не совпадает с"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:40 ../../../core/core_st.cpp:39
 msgid "begins with"
@@ -4341,7 +4422,7 @@ msgstr "начинается с"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:41 ../../../core/core_st.cpp:81
 msgid "does not begin with"
-msgstr "не начинается с"
+msgstr "не начинается с"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:42 ../../../core/core_st.cpp:93
 msgid "ends with"
@@ -4349,7 +4430,7 @@ msgstr "заканчивается на"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:43 ../../../core/core_st.cpp:85
 msgid "does not end with"
-msgstr "не заканчивается на"
+msgstr "не заканчивается на"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:44 ../../../core/core_st.cpp:59
 msgid "contains"
@@ -4357,7 +4438,7 @@ msgstr "содержит"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:45 ../../../core/core_st.cpp:82
 msgid "does not contain"
-msgstr "не содержит"
+msgstr "не содержит"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:103
 msgid "All entries"
@@ -4405,10 +4486,6 @@ msgstr "&Применить"
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:221
 msgid "OK"
 msgstr "OK"
-
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:224
-msgid "Cancel"
-msgstr "Отмена"
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:260
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:291
@@ -4510,7 +4587,7 @@ msgid ""
 "added or existing entries removed during this process."
 msgstr ""
 "3. Обновлению подвергнутся только элементы присутствующие в текущем\n"
-"контейнере.  Во время синхронизации не происходит удаления или добавления\n"
+"контейнере.  Во время синхронизации не происходит удаления или добавления\n"
 "элементов."
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:363
@@ -4519,7 +4596,7 @@ msgid ""
 "able to abort it mid-way."
 msgstr ""
 "4. Действия могут быть отменены после завершения, но сам\n"
-"процесс не может быть прерван."
+"процесс не может быть прерван."
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:380
 msgid "Select another database"
@@ -4567,7 +4644,7 @@ msgstr "В соответствующих элементах будут обно
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:489
 msgid "Following fields will not be updated:"
-msgstr "Следующие поля не будут обновлены:"
+msgstr "Следующие поля не будут обновлены:"
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:508
 msgid "Synchronization status"
@@ -4730,69 +4807,69 @@ msgstr "&Отправить письмо"
 msgid "&Delete from Recent Entry List"
 msgstr "&Удалить из списка недавних"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:980
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:982
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:985
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:987
 msgid "New Group"
 msgstr "Новая группа"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:982
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:987
 msgid "\""
 msgstr "\""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:982
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:987
 msgid "\" "
 msgstr "\" "
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:982
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:987
 msgid "name exists"
 msgstr "уже существует"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:982
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1028
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1469
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:987
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1033
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1474
 msgid "Double group name"
 msgstr "Дубликат группы"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:986
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:991
 msgid "Could not add empty group item to tree"
 msgstr "Невозможно добавить пустую группу"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:999
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1004
 msgid "Renaming of non-Group items is not implemented"
 msgstr "Переименование реализовано только для групп"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1028
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1033
 msgid "Same group name exists"
 msgstr "Группа с таким именем уже существует"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1042
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1047
 msgid "Dots are not allowed in group names"
 msgstr "Использование точек в имени группы запрещено"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1042
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1047
 msgid "Invalid Character"
 msgstr "Недопустимый символ"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1416
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2546
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1421
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2551
 msgid "Destination cannot be inside source tree"
 msgstr "Новое расположение не может быть внутри исходного поддерева"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1416
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2395
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2402
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2419
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2546
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1421
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2400
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2407
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2424
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2551
 msgid "Drag and Drop failed"
 msgstr "Ошибка при перетягивании"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1469
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1474
 msgid "Duplicate group name (use Shift to overrule)"
 msgstr ""
 "Группа с таким именем уже существует (чтобы игнорировать, нажмите Shift при "
 "перетягивании)"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2391
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2396
 #, c-format
 msgid ""
 "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
@@ -4804,20 +4881,20 @@ msgstr ""
 "\n"
 "Скопированный элемент теперь ссылается на исходный элемент."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2398
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2403
 #, c-format
 msgid "This alias's target [%s:%s:%s] is not a normal entry."
 msgstr ""
 "Исходный элемент [%s:%s:%s] для данного псевдонима не является обычным "
 "элементом."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2415
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2420
 #, c-format
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
 msgstr ""
 "Целевой элемент [%s:%s:%s] для данного ярлыка не является обычным элементом."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2497 ../../../core/core_st.cpp:97
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2502 ../../../core/core_st.cpp:97
 #, c-format
 msgid ""
 "The following entries had a policy name that already existed in this "
@@ -4830,11 +4907,11 @@ msgstr ""
 "Для них были созданы новые политики, к имени которых добавлены текущие дата "
 "и время (%ls): %ls"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2500
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2505
 msgid "Entry Password Policy Changes"
 msgstr "Изменения в политике создания паролей"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2507
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2512
 #, c-format
 msgid ""
 "The following alias or shortcut entries did not match to a base entry and "
@@ -4843,7 +4920,7 @@ msgstr ""
 "Указанные псевдонимы или ярлыки указывают на отсутствующий исходный элемент "
 "и были преобразованы в обычные элементы:%ls"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2509
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2514
 msgid "Entry Type Changed"
 msgstr "Изменение типа элемента"
 
@@ -4940,24 +5017,24 @@ msgstr ""
 msgid "About Password Safe"
 msgstr "О Password Safe"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:110
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:116
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:111
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:117
 msgid "Edit Entry"
 msgstr "Редактировать элемент"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:115
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:116
 msgid "Add Entry"
 msgstr "Добавить элемент"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:117
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:118
 msgid "View Entry"
 msgstr "Просмотр элемента"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:118
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:119
 msgid "Add, Edit or View Entry"
 msgstr "Добавление, редактирование или просмотр элемента"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:269
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.h:273
 msgid "No preview available"
 msgstr "Предпросмотр недоступен"
 
@@ -5010,6 +5087,11 @@ msgstr "Введите пароль для контейнера"
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.h:53
 msgid "Safe Combination Setup"
 msgstr "Установка пароля для контейнера"
+
+#: ../../../ui/wxWidgets/SelectAliasDlg.h:52
+#, fuzzy
+msgid "Select Alias"
+msgstr "В&ыделить все"
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.h:46
 msgid "Set Display Filters"
@@ -5115,14 +5197,6 @@ msgstr "Редактировать элемент"
 msgid "Delete an Entry"
 msgstr "Удалить элемент"
 
-#: ../../../ui/wxWidgets/ToolbarButtons.h:217
-msgid "Expand"
-msgstr "Развернуть"
-
-#: ../../../ui/wxWidgets/ToolbarButtons.h:218
-msgid "Collapse"
-msgstr "Свернуть"
-
 #: ../../../ui/wxWidgets/ToolbarButtons.h:222
 msgid "Help"
 msgstr "Помощь"
@@ -5201,7 +5275,7 @@ msgstr ""
 "Настройки приложения будут сохранены в реестре.\n"
 "\n"
 "Настройки контейнера будут сохранены в открытом контейнере, если он доступен "
-"для записи и не заблокирован другим пользователем."
+"для записи и не заблокирован другим пользователем."
 
 #: ../../../core/core_st.cpp:42
 msgid ""
@@ -5214,10 +5288,10 @@ msgid ""
 msgstr ""
 "Ошибка: невозможно загрузить файл настроек!\n"
 "\n"
-"Настройки приложения не были сохранены.\n"
+"Настройки приложения не были сохранены.\n"
 "\n"
 "Настройки контейнера будут сохранены в открытом контейнере, если он доступен "
-"для записи и не заблокирован другим пользователем."
+"для записи и не заблокирован другим пользователем."
 
 #: ../../../core/core_st.cpp:43
 msgid ""
@@ -5242,11 +5316,11 @@ msgid ""
 msgstr ""
 "Невозможно обновить записи в существующем XML-файле с настройками.\n"
 "\n"
-"Все настройки будут загружены из указанного файла, но изменения не будут "
+"Все настройки будут загружены из указанного файла, но изменения не будут "
 "сохранены.\n"
 "\n"
 "Настройки контейнера будут сохранены в открытом контейнере, если он доступен "
-"для записи и не заблокирован другим пользователем."
+"для записи и не заблокирован другим пользователем."
 
 #: ../../../core/core_st.cpp:46
 #, c-format
@@ -5257,11 +5331,11 @@ msgid ""
 msgstr ""
 "%ls\n"
 "\n"
-"Файл настроек не будет использоваться."
+"Файл настроек не будет использоваться."
 
 #: ../../../core/core_st.cpp:47
 msgid "Missing XSD File"
-msgstr "XSD-файл не указан"
+msgstr "XSD-файл не указан"
 
 #: ../../../core/core_st.cpp:48
 msgid "Unable to validate a XML file using a XML Schema (XSD) on your system."
@@ -5400,11 +5474,11 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:83
 msgid "does not contain all of"
-msgstr "не содержит ни одного из"
+msgstr "не содержит ни одного из"
 
 #: ../../../core/core_st.cpp:84
 msgid "does not contain any of"
-msgstr "не содержит любого из"
+msgstr "не содержит любого из"
 
 # Используется для автоименования элементов при перетаскивании
 #: ../../../core/core_st.cpp:87
@@ -5476,7 +5550,7 @@ msgstr "Первый символ в имени переменной долже�
 # message for core
 #: ../../../core/core_st.cpp:105
 msgid "Index not numeric"
-msgstr "Индекс не является числовым"
+msgstr "Индекс не является числовым"
 
 #: ../../../core/core_st.cpp:106
 msgid "Input string is empty"
@@ -5509,7 +5583,7 @@ msgstr "В команде присутствуют непарные кавычк
 
 #: ../../../core/core_st.cpp:113
 msgid "Variable name is empty"
-msgstr "Имя переменной не указано"
+msgstr "Имя переменной не указано"
 
 #: ../../../core/core_st.cpp:114
 msgid "Variable name must be alphanumeric"
@@ -5537,7 +5611,7 @@ msgstr "Ошибка: файл с указанным именем уже сущ�
 
 #: ../../../core/core_st.cpp:120
 msgid "The file was not found."
-msgstr "Файл не найден."
+msgstr "Файл не найден."
 
 #: ../../../core/core_st.cpp:121
 msgid "Error: File is read-only"
@@ -5578,7 +5652,7 @@ msgstr "В данный контейнер были экспортированы
 
 #: ../../../core/core_st.cpp:129
 msgid "Stored filters will be unusable until the file's restored."
-msgstr "Сохранённые фильтры будут недоступны, пока файл не будет восстановлен."
+msgstr "Сохранённые фильтры будут недоступны, пока файл не будет восстановлен."
 
 #: ../../../core/core_st.cpp:130
 msgid "Last Access Time"
@@ -5631,7 +5705,7 @@ msgstr "Время изменения элемента"
 
 #: ../../../core/core_st.cpp:148
 msgid "Shift+DCA"
-msgstr "Действие по Shift + двойной клик"
+msgstr "Действие по Shift + двойной клик"
 
 #: ../../../core/core_st.cpp:149
 msgid "Symbols"
@@ -5666,7 +5740,7 @@ msgstr "Найденные элементы"
 
 #: ../../../core/core_st.cpp:158
 msgid "added but not yet saved to database"
-msgstr "добавлены, но ещё не сохранены в контейнер"
+msgstr "добавлены, но ещё не сохранены в контейнер"
 
 #: ../../../core/core_st.cpp:159
 msgid "in the database"
@@ -5682,7 +5756,7 @@ msgstr "исходный элемент для ярлыка"
 
 #: ../../../core/core_st.cpp:162
 msgid "changed but not yet saved to database"
-msgstr "изменены, но ещё не сохранены в контейнер"
+msgstr "изменены, но ещё не сохранены в контейнер"
 
 #: ../../../core/core_st.cpp:163
 msgid "greater than"
@@ -5698,8 +5772,8 @@ msgid ""
 "Invalid input on line %d.  Number of fields separated by '%c' is not as "
 "expected."
 msgstr ""
-"Недопустимый ввод в строке %d.  Количество полей разделённых «%c» не "
-"совпадает с ожидаемым."
+"Недопустимый ввод в строке %d.  Количество полей разделённых «%c» "
+"не совпадает с ожидаемым."
 
 #: ../../../core/core_st.cpp:166
 #, c-format
@@ -5725,7 +5799,7 @@ msgid ""
 "\n"
 "Import aborted."
 msgstr ""
-"При импорте TXT- или CSV-файла не были соблюдены все требования, так как "
+"При импорте TXT- или CSV-файла не были соблюдены все требования, так как "
 "данные элемента разбиты на несколько строк.\n"
 "\n"
 "Импорт прерван."
@@ -5784,7 +5858,7 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:179
 msgid "Internal error. Import failed. No records imported."
-msgstr "Внутренняя ошибка. Сбой при импорте. Записи не были импортированы."
+msgstr "Внутренняя ошибка. Сбой при импорте. Записи не были импортированы."
 
 #: ../../../core/core_st.cpp:180
 #, c-format
@@ -5826,7 +5900,7 @@ msgid ""
 "Either or both of the Group/Title and Password columns are missing. No "
 "records imported."
 msgstr ""
-"Столбец с группой/заголовком и/или паролем отсутствует. Записи не были "
+"Столбец с группой/заголовком и/или паролем отсутствует. Записи не были "
 "импортированы."
 
 #: ../../../core/core_st.cpp:187
@@ -5840,7 +5914,7 @@ msgstr ""
 #: ../../../core/core_st.cpp:188
 msgid "Column header row not recognised as first record. No records imported."
 msgstr ""
-"Невозможно определить строку заголовков по первой записи. Записи не были "
+"Невозможно определить строку заголовков по первой записи. Записи не были "
 "импортированы."
 
 #: ../../../core/core_st.cpp:189
@@ -5877,12 +5951,12 @@ msgid ""
 msgstr ""
 "Для замены паролей существующих элементов должны присутствовать следующие "
 "поля: группа/заголовок, имя пользователя, пароль.  Один или несколько из них "
-"отсутствуют, поэтому элементы не будут обновлены."
+"отсутствуют, поэтому элементы не будут обновлены."
 
 #: ../../../core/core_st.cpp:195
 #, c-format
 msgid "%ls not found. Cannot update entry's password.\n"
-msgstr "Файл %ls не найден. Невозможно обновить пароль для элемента.\n"
+msgstr "Файл %ls не найден. Невозможно обновить пароль для элемента.\n"
 
 #: ../../../core/core_st.cpp:196
 #, c-format
@@ -5910,12 +5984,12 @@ msgid ""
 "the base entry does not exist."
 msgstr ""
 "Пароль для элемента «%ls, %ls, %ls» имеет вид псевдонима, но исходный "
-"элемент не найден."
+"элемент не найден."
 
 #: ../../../core/core_st.cpp:200
 msgid ""
 "\tThis entry remains a normal entry and the password has not been changed."
-msgstr "\tЭтот элемент остаётся обычным элементом. Пароль не изменён."
+msgstr "\tЭтот элемент остаётся обычным элементом. Пароль не изменён."
 
 #: ../../../core/core_st.cpp:201
 #, c-format
@@ -5923,7 +5997,7 @@ msgid ""
 "The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls "
 "base entry. It cannot be imported."
 msgstr ""
-"Элемент %ls «%ls, %ls, %ls» не указывает на нормальный или существующий %ls "
+"Элемент %ls «%ls, %ls, %ls» не указывает на нормальный или существующий %ls "
 "исходный элемент. Импорт невозможен."
 
 #: ../../../core/core_st.cpp:202
@@ -5982,7 +6056,7 @@ msgstr "  Недопустимое значение статуса: %d (долж
 
 #: ../../../core/core_st.cpp:214
 msgid "  Invalid password length found (not a hexadecimal number)."
-msgstr "  Недопустимая длина пароля (не является шестнадцатеричным числом)."
+msgstr "  Недопустимая длина пароля (не является шестнадцатеричным числом)."
 
 #: ../../../core/core_st.cpp:215
 msgid ""
@@ -6003,7 +6077,7 @@ msgstr "Неверная схема фильтра."
 
 #: ../../../core/core_st.cpp:218
 msgid "Schema does not have a version number."
-msgstr "В схеме не указан номер версии."
+msgstr "В схеме не указан номер версии."
 
 #: ../../../core/core_st.cpp:219
 #, c-format
@@ -6076,7 +6150,7 @@ msgstr "меньше либо равно"
 
 #: ../../../core/core_st.cpp:231
 msgid "File or path not found"
-msgstr "Файл или путь к файлу не найден"
+msgstr "Файл или путь к файлу не найден"
 
 #: ../../../core/core_st.cpp:232
 #, c-format
@@ -6191,8 +6265,8 @@ msgid ""
 "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 "
 "seems available."
 msgstr ""
-"Невозможно использовать MS XML reader.  Библиотека MS XML V3, V4 или V6 не "
-"обнаружена."
+"Невозможно использовать MS XML reader.  Библиотека MS XML V3, V4 или V6 "
+"не обнаружена."
 
 #: ../../../core/core_st.cpp:253
 msgid "Unsaved changes"
@@ -6238,7 +6312,7 @@ msgstr ""
 "\n"
 "Количество предупреждений о ярлыках %d\n"
 "\n"
-"Количество элементов с полями, которые не могут быть полностью отображены: "
+"Количество элементов с полями, которые не могут быть полностью отображены: "
 "%d.\n"
 "\n"
 "Рекомендуется сохранить изменения в контейнере."
@@ -6248,7 +6322,7 @@ msgid ""
 "Password should be mixed case, with at least one digit or punctuation "
 "character"
 msgstr ""
-"Пароль должен содержать буквы обоих регистров и не менее одной цифры или "
+"Пароль должен содержать буквы обоих регистров и не менее одной цифры или "
 "знака препинания"
 
 #: ../../../core/core_st.cpp:258
@@ -6299,7 +6373,7 @@ msgstr "поле, начинающееся с позиции %d (относит�
 # напр. "V CS+Q" == Ctrl + Shift + 'Q'
 # ТОЛЬКО горячие клавиши с буквенными или числовыми символами могут быть
 # изменены. Функциональные клавиши (F2), специальные клавиши (Delete, Home) и
-# т. п. не должны изменяться.
+# т. п. не должны изменяться.
 # Только поле msgstr может быть изменено. НЕ ИЗМЕНЯЙТЕ другие поля.
 # Если вы не хотите изменять горячую клавишу, просто скопируйте значение поля
 # msgid в поле msgstr
@@ -6572,7 +6646,7 @@ msgid ""
 "base entry does not exist."
 msgstr ""
 "Следующие элементы содержат указатель на пароль из элемента %ls, но исходный "
-"элемент не существует."
+"элемент не существует."
 
 #: ../../../core/core_st.cpp:328
 msgid "The following entries were duplicates of an existing entry."
@@ -6591,12 +6665,12 @@ msgid ""
 "The following entries had an empty Password field, which is not permitted. "
 "The password has been set to '%ls'"
 msgstr ""
-"В указанных элементах не было заполнено поле с паролем. Это недопустимо. Был "
+"В указанных элементах не было заполнено поле с паролем. Это недопустимо. Был "
 "установлен пароль «%ls»"
 
 #: ../../../core/core_st.cpp:331
 msgid "The following entries had an empty Title field, which is not permitted."
-msgstr "В указанных элементах не заполнено поле с заголовком. Это недопустимо."
+msgstr "В указанных элементах не заполнено поле с заголовком. Это недопустимо."
 
 #: ../../../core/core_st.cpp:332
 #, c-format
@@ -6694,7 +6768,7 @@ msgid ""
 "Note: These Password Policies will not replace existing policies with the "
 "same name in the current database."
 msgstr ""
-"Примечание: эти политики создания паролей не заменят существующие "
+"Примечание: эти политики создания паролей не заменят существующие "
 "одноимённые политики в текущем контейнере."
 
 #: ../../../core/core_st.cpp:350
@@ -6738,7 +6812,7 @@ msgid ""
 "Failed to lock configuration file - opened by another instance of "
 "PasswordSafe?"
 msgstr ""
-"Ошибка при блокировке файла настроек. Проверьте, не открыт ли другой "
+"Ошибка при блокировке файла настроек. Проверьте, не открыт ли другой "
 "экземпляр Password Safe?"
 
 #: ../../../core/core_st.cpp:357
@@ -6756,7 +6830,7 @@ msgstr " (удобочитаемые символы)"
 #: ../../../core/core_st.cpp:361
 #, c-format
 msgid "Yes (at least %d)"
-msgstr "Да (не менее %d)"
+msgstr "Да (не менее %d)"
 
 #: ../../../core/core_st.cpp:362
 msgid " (Pronounceable Symbols)"
@@ -6767,8 +6841,8 @@ msgstr " (произносимые символы)"
 msgid "Yes - At least %d from %ls: %ls%ls"
 msgstr "Да: не менее %d из %ls: %ls%ls"
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:109
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:91
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:113
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:96
 #, fuzzy, c-format
 msgid ""
 "XML error:\n"
@@ -6781,110 +6855,110 @@ msgstr ""
 "%ls\n"
 "примерная позиция: %d"
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:136
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:140
 #, c-format
 msgid "Error in XML structure: excpected \"%ls\", found \"%ls\""
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:144
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:148
 msgid "Missing delimiter attribute in <passwordsafe>"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:163
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:167
 msgid "Processing error on XML tag \"<passwordsafe>\""
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:175
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:179
 #, c-format
 msgid "Unexpected XML node type %d of \"%ls\", inside of <passwordsafe>"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:180
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:246
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:184
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:250
 #, c-format
 msgid "Unknown XML tag <%ls> in <%ls>"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:188
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:252
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:192
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:256
 #, c-format
 msgid "Not allowed XML tag <%ls> in <%ls>"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:269
+#: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:273
 #, c-format
 msgid "Wrong XML value \"%ls\" for <%ls>"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:112
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:117
 #, c-format
 msgid "Error in filter XML structure: excpected \"%ls\", found \"%ls\""
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:141
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:146
 #, fuzzy
 msgid "Missing filtername"
-msgstr "XSD-файл не указан"
+msgstr "XSD-файл не указан"
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:159
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:233
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:164
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:238
 #, c-format
 msgid "Unexpected XML tag \"%ls\", expected tag is \"%ls\""
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:186
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:191
 #, c-format
 msgid "Missing active attribute in filter entry %d of filter '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:196
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:201
 #, c-format
 msgid ""
 "Unexpected attribute value \"%ls\" (expected \"yes\" or \"no\") in filter "
 "entry %d of '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:317
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:322
 #, c-format
 msgid "Missing XML tag for field type in filter entry %d of '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:593
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:598
 #, c-format
 msgid "Unknown XML tag \"%ls\" for field type in filter entry %d of '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:607
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:612
 #, c-format
 msgid "Missing rule in filter entry %d of filter '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:612
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:617
 #, c-format
 msgid "Unknown rule \"%ls\" in filter entry %d of filter '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:623
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:628
 #, c-format
 msgid "Missing logic in filter entry %d of filter '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:633
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:638
 #, c-format
 msgid "Unknown logic \"%ls\" in filter entry %d of filter '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:651
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:656
 #, c-format
 msgid "Unknown XML tag \"%ls\" in field type in filter entry %d of '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:660
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:665
 #, c-format
 msgid "Missing logic or rule XML tag in filter entry %d of '%ls'"
 msgstr ""
 
-#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:753
+#: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:758
 #, c-format
 msgid "Unknown XML tag \"%ls\" in test in filter entry %d of '%ls'"
 msgstr ""
@@ -7796,10 +7870,6 @@ msgstr ""
 #~ msgstr ""
 #~ "Исходный элемент для псевдонима — срок действия пароля скоро истечёт"
 
-# Подстановка во второе поле "Change a %s to a %s"
-#~ msgid "Alias entry"
-#~ msgstr "псевдоним"
-
 #~ msgid "All Files (*.*)"
 #~ msgstr "Все файлы (*.*)"
 
@@ -8037,7 +8107,7 @@ msgstr ""
 
 #~ msgid ""
 #~ "Cannot process as this entry has been deleted from the open database."
-#~ msgstr "Невозможно обработать элемент, т. к. он удалён из контейнера."
+#~ msgstr "Невозможно обработать элемент, т. к. он удалён из контейнера."
 
 #~ msgid "Caps Lock"
 #~ msgstr "Caps Lock"
@@ -8071,8 +8141,8 @@ msgstr ""
 #~ "° indicates a database preference has been changed"
 #~ msgstr ""
 #~ "Состояние с момента последнего сохранения: \n"
-#~ "* — есть изменения в контейнере\n"
-#~ "° — есть изменения в настройках контейнера"
+#~ "* — есть изменения в контейнере\n"
+#~ "° — есть изменения в настройках контейнера"
 
 # урезано (заголовок диалога)
 #~ msgid "Change/View Database Default Password Policy"
@@ -8752,11 +8822,13 @@ msgstr ""
 #~ msgid "Enter no more than %1 characters."
 #~ msgstr "Введите не более %1 знаков."
 
+# урезано
 #~ msgid ""
 #~ "Enter positions of password characters separated by spaces, commas or "
-#~ "semi-colons."
+#~ "semi-colons (or * for full password)."
 #~ msgstr ""
-#~ "Введите номера символов пароля через пробел, запятую или точку с запятой."
+#~ "Введите номера символов пароля через пробел, запятую или точку с запятой "
+#~ "(* покажет весь пароль)."
 
 #~ msgid "Enter your Sample Text below"
 #~ msgstr "Введите текст для образца"
@@ -8917,7 +8989,7 @@ msgstr ""
 #~ "%s %s\n"
 #~ "(Only one R/W access at a time is allowed)"
 #~ msgstr ""
-#~ "Ошибка при переключении в режим чтения/записи: контейнер уже открыт для "
+#~ "Ошибка при переключении в режим «чтение/запись»: контейнер уже открыт для "
 #~ "записи:\n"
 #~ "%s %s\n"
 #~ "(Файл не может быть одновременно открыт для записи несколькими "
@@ -9117,7 +9189,7 @@ msgstr ""
 #~ msgstr "HotKey1"
 
 #~ msgid "However, we can't add either as all combinations are in use."
-#~ msgstr "Модификаторы не могут быть добавлены, т. к. все комбинации заняты."
+#~ msgstr "Модификаторы не могут быть добавлены, т. к. все комбинации заняты."
 
 #~ msgid "Hungarian"
 #~ msgstr "Венгерская"
@@ -9569,10 +9641,6 @@ msgstr ""
 #~ msgid "No database open with which to compare against another database!"
 #~ msgstr "Нет открытых контейнеров для сравнения!"
 
-# Сообщение про путь к каталогу резервных копий
-#~ msgid "No drive specified."
-#~ msgstr "Не указан диск."
-
 # Сокращено и убрана подстановки из-за неоднозначности с падежами
 #, c-format
 #~ msgid "No entries satisfied your selection criteria, so none can be %s!"
@@ -10016,9 +10084,9 @@ msgstr ""
 #~ "recognised. There must also be a space, comma or semi-colon at the end of "
 #~ "the list."
 #~ msgstr ""
-#~ "Номер 1 соответствует первому символу, 2 — второму и т. д. до N (где N — "
+#~ "Номер 1 соответствует первому символу, 2 — второму и т. д. до N (где N — "
 #~ "количество символов в пароле). -1 указывает на последний символ, -2 — на "
-#~ "второй с конца, и т. д. (-N соответствует первому символу). В качестве "
+#~ "второй с конца, и т. д. (-N соответствует первому символу). В качестве "
 #~ "разделителей нужно использовать пробел, запятую или точку с запятой. При "
 #~ "этом список должен заканчиваться разделителем."
 
@@ -10269,12 +10337,6 @@ msgstr ""
 #, c-format
 #~ msgid "Seek failed on %1"
 #~ msgstr "Ошибка поиска для %1"
-
-#~ msgid "Select"
-#~ msgstr "Выбор"
-
-#~ msgid "Select &All"
-#~ msgstr "В&ыделить все"
 
 #~ msgid "Select Browser:"
 #~ msgstr "Укажите браузер:"
@@ -10809,7 +10871,7 @@ msgstr ""
 #~ "The following base entries have been exported because one or more of "
 #~ "their dependents have been included."
 #~ msgstr ""
-#~ "Указанные исходные элементы были экспортированы, так как были отобраны "
+#~ "Указанные исходные элементы были экспортированы, так как были отобраны "
 #~ "зависящие от них элементы."
 
 #~ msgid ""
@@ -10942,7 +11004,7 @@ msgstr ""
 #~ "This Hotkey value is not available as it is already assigned to the "
 #~ "PasswordSafe application (Manage->Options->Shortcuts)."
 #~ msgstr ""
-#~ "Выбранная комбинация недоступна, т. к. уже назначена для вызова Password "
+#~ "Выбранная комбинация недоступна, т. к. уже назначена для вызова Password "
 #~ "Safe («Сервис->Настройки...->Комбинации клавиш»)."
 
 #, c-format
@@ -10998,8 +11060,8 @@ msgstr ""
 #~ "opaque and 100% is totally transparent and invisible. Values greater than "
 #~ "50% are not supported. Note: This only applies to the main dialog window."
 #~ msgstr ""
-#~ "Процент прозрачности окна. 0 % — нормальный вид (полностью непрозрачно), "
-#~ "100 % — невидимо (полностью прозрачно). Значения прозрачности более 50 % "
+#~ "Процент прозрачности окна. 0 % — нормальный вид (полностью непрозрачно), "
+#~ "100 % — невидимо (полностью прозрачно). Значения прозрачности более 50 % "
 #~ "не поддерживаются.\n"
 #~ "Примечание. Применяется только к главному окну."
 
@@ -11289,7 +11351,7 @@ msgstr ""
 
 # урезано из-за ограничения длины
 #~ msgid "Use &Symbols (i.e., &, %, $, etc.)"
-#~ msgstr "&Символы (напр. &, %, $ и т. п.)"
+#~ msgstr "&Символы (напр. &, %, $ и т. п.)"
 
 # урезано из-за ограничения длины
 #~ msgid "Use &UPPERCASE letters"
@@ -11301,7 +11363,7 @@ msgstr ""
 
 # урезано из-за ограничения длины
 #~ msgid "Use only &Easy-to-read characters (i.e., no  'l', '1', etc.)"
-#~ msgstr "Только &удобочитаемые символы (не исп. «l», «1» и т. п.)"
+#~ msgstr "Только &удобочитаемые символы (не исп. «l», «1» и т. п.)"
 
 #~ msgid "Use the P&olicy below:"
 #~ msgstr "Переопределить п&олитику:"
@@ -12335,7 +12397,7 @@ msgstr ""
 #~ msgid "subset: '%s' field '%s' '%s' %s"
 #~ msgstr "подмножество: «%s» поле «%s» «%s» %s"
 
-# Строка убрана, т. к. нет падежа соответствующего всем контекстам. В этом
+# Строка убрана, т. к. нет падежа соответствующего всем контекстам. В этом
 # месте (в диалоге расширенных настроек экспорта в простой текст) допустимо
 # отсутствие текста без потери смысла.
 #~ msgid "the following text:"

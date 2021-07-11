@@ -24,7 +24,7 @@
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 
-#include "PWSFilters.h"
+#include "core/PWSFilters.h"
 
 /*!
  * Forward declarations

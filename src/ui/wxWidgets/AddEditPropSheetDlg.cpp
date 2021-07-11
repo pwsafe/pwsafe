@@ -33,7 +33,7 @@
 #include "os/media.h"
 #include "os/run.h"
 
-
+#include "SelectAliasDlg.h"
 ////@begin XPM images
 ////@end XPM images
 
@@ -53,6 +53,7 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
 ////@begin AddEditPropSheetDlg event table entries
   EVT_BUTTON(       ID_BUTTON_SHOWHIDE,      AddEditPropSheetDlg::OnShowHideClick           )
   EVT_BUTTON(       ID_BUTTON_GENERATE,      AddEditPropSheetDlg::OnGenerateButtonClick     )
+  EVT_BUTTON(       ID_BUTTON_ALIAS,         AddEditPropSheetDlg::OnAliasButtonClick        )
   EVT_BUTTON(       ID_GO_BTN,               AddEditPropSheetDlg::OnGoButtonClick           )
   EVT_BUTTON(       ID_SEND_BTN,             AddEditPropSheetDlg::OnSendButtonClick         )
   EVT_CHECKBOX(     ID_CHECKBOX_KEEP,        AddEditPropSheetDlg::OnKeepHistoryClick        )
@@ -81,6 +82,7 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
 
   EVT_UPDATE_UI(    ID_COMBOBOX_GROUP,       AddEditPropSheetDlg::OnUpdateUI                )
   EVT_UPDATE_UI(    ID_BUTTON_GENERATE,      AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_BUTTON_ALIAS,         AddEditPropSheetDlg::OnUpdateUI                )
   EVT_UPDATE_UI(    ID_TEXTCTRL_TITLE,       AddEditPropSheetDlg::OnUpdateUI                )
   EVT_UPDATE_UI(    ID_TEXTCTRL_USERNAME,    AddEditPropSheetDlg::OnUpdateUI                )
   EVT_UPDATE_UI(    ID_TEXTCTRL_PASSWORD,    AddEditPropSheetDlg::OnUpdateUI                )
@@ -213,8 +215,10 @@ void AddEditPropSheetDlg::Init()
   m_BasicGroupNamesCtrl = nullptr;
   m_BasicUsernameTextCtrl = nullptr;
   m_BasicPasswordTextCtrl = nullptr;
+  m_BasicPasswordTextLabel = nullptr;
   m_BasicShowHideCtrl = nullptr;
   m_BasicPasswordConfirmationTextCtrl = nullptr;
+  m_BasicPasswordConfirmationTextLabel = nullptr;
   m_BasicNotesTextCtrl = nullptr;
   m_AdditionalDoubleClickActionCtrl = nullptr;
   m_AdditionalShiftDoubleClickActionCtrl = nullptr;
@@ -409,8 +413,8 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicUsernameTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_USERNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(m_BasicUsernameTextCtrl , wxGBPosition(/*row:*/ 2, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  auto *itemStaticText15 = new wxStaticText( panel, wxID_STATIC, _("Password:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText15, wxGBPosition(/*row:*/ 3, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicPasswordTextLabel = new wxStaticText( panel, wxID_STATIC, _("Password:"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_BasicSizer->Add(m_BasicPasswordTextLabel, wxGBPosition(/*row:*/ 3, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_BasicPasswordTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_PASSWORD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(m_BasicPasswordTextCtrl, wxGBPosition(/*row:*/ 3, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -421,11 +425,14 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   auto *itemButton21 = new wxButton( panel, ID_BUTTON_GENERATE, _("&Generate"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(itemButton21, wxGBPosition(/*row:*/ 3, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  auto *itemStaticText22 = new wxStaticText( panel, wxID_STATIC, _("Confirm:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText22, wxGBPosition(/*row:*/ 4, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicPasswordConfirmationTextLabel = new wxStaticText( panel, wxID_STATIC, _("Confirm:"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_BasicSizer->Add(m_BasicPasswordConfirmationTextLabel, wxGBPosition(/*row:*/ 4, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_BasicPasswordConfirmationTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_PASSWORD2, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
   m_BasicSizer->Add(m_BasicPasswordConfirmationTextCtrl, wxGBPosition(/*row:*/ 4, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  
+  auto *itemButton22 = new wxButton( panel, ID_BUTTON_ALIAS, _("&Alias"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_BasicSizer->Add(itemButton22, wxGBPosition(/*row:*/ 4, /*column:*/ 2), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   auto *itemStaticText25 = new wxStaticText( panel, wxID_STATIC, _("URL:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(itemStaticText25, wxGBPosition(/*row:*/ 5, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -1526,24 +1533,16 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
   if (m_Item.IsAlias()) {
     // Update password to alias form
     // Show text stating that it is an alias
-
-    const CItemData *pbci = m_Core.GetBaseEntry(&m_Item);
-    ASSERT(pbci);
-    if (pbci) {
-      m_Password = L"[" +
-                pbci->GetGroup() + L":" +
-                pbci->GetTitle() + L":" +
-                pbci->GetUser()  + L"]";
-    }
+    ShowAlias();
   } // IsAlias
-
-  if (prefs->GetPref(PWSprefs::ShowPWDefault)) {
-    ShowPassword();
-  } else {
-    HidePassword();
+  else {
+    m_BasicPasswordTextCtrl->ChangeValue(m_Password.c_str());
+    if (prefs->GetPref(PWSprefs::ShowPWDefault)) {
+      ShowPassword();
+    } else {
+      HidePassword();
+    }
   }
-
-  m_BasicPasswordTextCtrl->ChangeValue(m_Password.c_str());
   // Enable Go button iff m_url isn't empty
   wxWindow *goBtn = FindWindow(ID_GO_BTN);
   goBtn->Enable(!m_Url.empty());
@@ -1673,7 +1672,7 @@ void AddEditPropSheetDlg::OnGoButtonClick(wxCommandEvent& WXUNUSED(evt))
 
 void AddEditPropSheetDlg::OnGenerateButtonClick(wxCommandEvent& WXUNUSED(evt))
 {
-  if (Validate() && TransferDataFromWindow()) {
+  if (Validate() && TransferDataFromWindow() && !m_Item.IsAlias()) {
     PWPolicy pwp = GetSelectedPWPolicy();
     StringX password = pwp.MakeRandomPassword();
     if (password.empty()) {
@@ -1692,17 +1691,120 @@ void AddEditPropSheetDlg::OnGenerateButtonClick(wxCommandEvent& WXUNUSED(evt))
 }
 
 /*!
- * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON2
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_SHOWHIDE
  */
 
 void AddEditPropSheetDlg::OnShowHideClick(wxCommandEvent& WXUNUSED(evt))
 {
-  m_Password = m_BasicPasswordTextCtrl->GetValue().c_str(); // save visible password
-  if (m_IsPasswordHidden) {
-    ShowPassword();
-  } else {
-    HidePassword();
+  if(m_Item.IsAlias()) {
+    if (m_IsPasswordHidden) {
+      const CItemData *pbci = m_Core.GetBaseEntry(&m_Item);
+      ASSERT(pbci);
+      if (pbci) {
+        UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pbci->GetPassword().c_str(), m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_READONLY);
+        m_BasicPasswordConfirmationTextCtrl->Enable(true);
+        m_IsPasswordHidden = false;
+      }
+    }
+    else {
+      m_IsPasswordHidden = true;
+      UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, wxEmptyString, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_READONLY);
+      m_BasicPasswordConfirmationTextCtrl->Enable(false);
+    }
   }
+  else {
+    m_Password = m_BasicPasswordTextCtrl->GetValue().c_str(); // save visible password
+    if (m_IsPasswordHidden) {
+      ShowPassword();
+    } else {
+      HidePassword();
+    }
+  }
+}
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_ALIAS
+ */
+
+void AddEditPropSheetDlg::OnAliasButtonClick(wxCommandEvent& WXUNUSED(evt))
+{
+  CItemData *pbci = (m_Item.IsAlias() ? m_Core.GetBaseEntry(&m_Item) : nullptr);
+  
+  if(m_Item.IsShortcutBase()) {
+    wxMessageBox(_("On changing this entry of type Shortcut Base to an Alias all Shortcut to this entry will be removed!"), _("Warning"), wxOK | wxICON_EXCLAMATION);
+  }
+  
+  SelectAliasDlg dlg(this, &m_Core, &m_Item, &pbci);
+  int rc = dlg.ShowModal();
+  if(rc == wxID_OK) {
+    if(! m_Core.IsReadOnly()) {
+      bool bChangeToBaseEntry = false;
+      if(pbci && pbci->IsShortcut()) {
+        CItemData *pbci_shortcut = m_Core.GetBaseEntry(pbci);
+        if(pbci_shortcut) {
+          pbci = pbci_shortcut;
+          bChangeToBaseEntry = true;
+        }
+      }
+      if(pbci && pbci->IsAlias()) {
+        CItemData *pbci_shortcut = m_Core.GetBaseEntry(pbci);
+        if(pbci_shortcut) {
+          pbci = pbci_shortcut;
+          bChangeToBaseEntry = true;
+        }
+      }
+      if(bChangeToBaseEntry) {
+        wxMessageBox(_("Shortcut or Alias selected, use Base entry instead"), _("Warning"), wxOK | wxICON_EXCLAMATION);
+      }
+      if(m_Item.IsAlias() && (pbci == nullptr)) {
+        m_Item.SetEntryType(CItemData::ET_NORMAL);
+        m_Password = m_Item.GetPassword();
+        RemoveAlias();
+      }
+      else if(m_Item.IsAlias() && (m_Core.GetBaseEntry(&m_Item) != pbci)) {
+        const pws_os::CUUID baseUUID = pbci->GetUUID();
+        m_Item.SetBaseUUID(baseUUID);
+        m_Password = L"[" +
+                    pbci->GetGroup() + L":" +
+                    pbci->GetTitle() + L":" +
+                    pbci->GetUser()  + L"]";
+        m_BasicPasswordTextCtrl->SetValue(m_Password.c_str());
+        if(! m_IsPasswordHidden)
+          m_BasicPasswordConfirmationTextCtrl->SetValue(pbci->GetPassword().c_str());
+      }
+      else if(! m_Item.IsAlias() && pbci) {
+        const pws_os::CUUID baseUUID = pbci->GetUUID();
+        m_Item.SetAlias();
+        m_Item.SetBaseUUID(baseUUID);
+        m_Password = L"[" +
+                    pbci->GetGroup() + L":" +
+                    pbci->GetTitle() + L":" +
+                    pbci->GetUser()  + L"]";
+        ShowAlias();
+      }
+    }
+  }
+}
+
+void AddEditPropSheetDlg::UpdatePasswordTextCtrl(wxTextCtrl* &textCtrl, const wxString value, wxTextCtrl* before, const int id, const int style)
+{
+  // Per Dave Silvia's suggestion:
+  // Following kludge since wxTE_PASSWORD style is immutable
+  wxTextCtrl *tmp = textCtrl;
+  textCtrl = new wxTextCtrl(m_BasicPanel, id,
+                            value,
+                            wxDefaultPosition, wxDefaultSize,
+                            style);
+  ASSERT(textCtrl);
+  if (!value.IsEmpty()) {
+    textCtrl->ChangeValue(value);
+    textCtrl->SetModified(true);
+  }
+  ApplyFontPreference(textCtrl, PWSprefs::StringPrefs::PasswordFont);
+  textCtrl->MoveAfterInTabOrder(before);
+  m_BasicSizer->Replace(tmp, textCtrl);
+  delete tmp;
+  m_BasicSizer->Layout();
 }
 
 void AddEditPropSheetDlg::ShowPassword()
@@ -1710,23 +1812,7 @@ void AddEditPropSheetDlg::ShowPassword()
   m_IsPasswordHidden = false;
   m_BasicShowHideCtrl->SetLabel(_("&Hide"));
 
-  // Per Dave Silvia's suggestion:
-  // Following kludge since wxTE_PASSWORD style is immutable
-  wxTextCtrl *tmp = m_BasicPasswordTextCtrl;
-  const wxString pwd = m_Password.c_str();
-  m_BasicPasswordTextCtrl = new wxTextCtrl(m_BasicPanel, ID_TEXTCTRL_PASSWORD,
-                                  pwd,
-                                  wxDefaultPosition, wxDefaultSize,
-                                  0);
-  if (!pwd.IsEmpty()) {
-    m_BasicPasswordTextCtrl->ChangeValue(pwd);
-    m_BasicPasswordTextCtrl->SetModified(true);
-  }
-  ApplyFontPreference(m_BasicPasswordTextCtrl, PWSprefs::StringPrefs::PasswordFont);
-  m_BasicPasswordTextCtrl->MoveAfterInTabOrder(m_BasicUsernameTextCtrl);
-  m_BasicSizer->Replace(tmp, m_BasicPasswordTextCtrl);
-  delete tmp;
-  m_BasicSizer->Layout();
+  UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, m_Password.c_str(), m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, 0);
   // Disable confirmation Ctrl, as the user can see the password entered
   ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
   m_BasicPasswordConfirmationTextCtrl->Clear();
@@ -1737,28 +1823,80 @@ void AddEditPropSheetDlg::HidePassword()
 {
   m_IsPasswordHidden = true;
   m_BasicShowHideCtrl->SetLabel(_("&Show"));
-
-  // Per Dave Silvia's suggestion:
-  // Following kludge since wxTE_PASSWORD style is immutable
-  // Need verification as the user can not see the password entered
-  wxTextCtrl *tmp = m_BasicPasswordTextCtrl;
+  
   const wxString pwd = m_Password.c_str();
-  m_BasicPasswordTextCtrl = new wxTextCtrl(m_BasicPanel, ID_TEXTCTRL_PASSWORD,
-                                  pwd,
-                                  wxDefaultPosition, wxDefaultSize,
-                                  wxTE_PASSWORD);
-  ApplyFontPreference(m_BasicPasswordTextCtrl, PWSprefs::StringPrefs::PasswordFont);
-  m_BasicPasswordTextCtrl->MoveAfterInTabOrder(m_BasicUsernameTextCtrl);
-  m_BasicSizer->Replace(tmp, m_BasicPasswordTextCtrl);
-  delete tmp;
-  m_BasicSizer->Layout();
-  if (!pwd.IsEmpty()) {
-    m_BasicPasswordTextCtrl->ChangeValue(pwd);
-    m_BasicPasswordTextCtrl->SetModified(true);
-  }
+  UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, pwd, m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, wxTE_PASSWORD);
   ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
   m_BasicPasswordConfirmationTextCtrl->ChangeValue(pwd);
   m_BasicPasswordConfirmationTextCtrl->Enable(true);
+}
+
+void AddEditPropSheetDlg::ShowAlias()
+{
+  wxASSERT(m_Item.IsAlias());
+  
+  const CItemData *pbci = m_Core.GetBaseEntry(&m_Item);
+  ASSERT(pbci);
+  if (pbci) {
+    m_Password = L"[" +
+                pbci->GetGroup() + L":" +
+                pbci->GetTitle() + L":" +
+                pbci->GetUser()  + L"]";
+  }
+  else {
+    m_Password = L"[" + _("Alias") + L"]";
+  }
+  m_BasicPasswordTextLabel->SetLabel(_("Alias:"));
+  UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, m_Password.c_str(), m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, wxTE_READONLY);
+  
+  m_BasicPasswordConfirmationTextLabel->SetLabel(_("Password:"));
+  if (pbci && PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
+    m_IsPasswordHidden = false;
+    m_BasicShowHideCtrl->SetLabel(_("&Hide"));
+    const wxString pwd = pbci->GetPassword().c_str();
+    UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pwd, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_READONLY);
+    ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
+    m_BasicPasswordConfirmationTextCtrl->ChangeValue(pwd);
+    m_BasicPasswordConfirmationTextCtrl->Enable(true);
+  }
+  else {
+    m_IsPasswordHidden = true;
+    m_BasicShowHideCtrl->SetLabel(_("&Show"));
+    
+    UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, wxEmptyString, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_READONLY);
+    ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
+    m_BasicPasswordConfirmationTextCtrl->Clear();
+    m_BasicPasswordConfirmationTextCtrl->Enable(false);
+  }
+}
+
+
+
+void AddEditPropSheetDlg::RemoveAlias()
+{
+  wxASSERT(!m_Item.IsAlias());
+  
+  m_BasicPasswordTextLabel->SetLabel(_("Password:"));
+  m_BasicPasswordConfirmationTextLabel->SetLabel(_("Confirm:"));
+  
+  const wxString pwd = m_Password.c_str();
+  
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
+    m_IsPasswordHidden = false;
+    m_BasicShowHideCtrl->SetLabel(_("&Hide"));
+    UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, pwd, m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, 0);
+    UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pwd, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_PASSWORD);
+    m_BasicPasswordConfirmationTextCtrl->Clear();
+    m_BasicPasswordConfirmationTextCtrl->Enable(false);
+  }
+  else {
+    m_IsPasswordHidden = true;
+    m_BasicShowHideCtrl->SetLabel(_("&Show"));
+    UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, pwd, m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, wxTE_PASSWORD);
+    UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pwd, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_PASSWORD);
+    m_BasicPasswordConfirmationTextCtrl->ChangeValue(pwd);
+    m_BasicPasswordConfirmationTextCtrl->Enable(true);
+  }
 }
 
 static short GetSelectedDCA(const wxComboBox *pcbox,
@@ -1799,7 +1937,7 @@ bool AddEditPropSheetDlg::ValidateBasicData()
     return false;
   }
 
-  if (m_IsPasswordHidden) { // hidden passwords - compare both values
+  if (m_IsPasswordHidden && !m_Item.IsAlias()) { // hidden passwords - compare both values
     const StringX secondPassword = tostringx(m_BasicPasswordConfirmationTextCtrl->GetValue());
 
     if (password != secondPassword) {
@@ -1859,23 +1997,7 @@ bool AddEditPropSheetDlg::IsGroupUsernameTitleCombinationUnique()
 
   return true;
 }
-//{
-//  // Check for Group/Username/Title uniqueness
-//  if (m_Core.Find(m_Item.GetGroup(), m_Item.GetTitle(), m_Item.GetUser()) !=
-//    m_Core.GetEntryEndIter()) {
-//    wxMessageDialog msg(
-//      this,
-//      _("An entry or shortcut with the same Group, Title and Username already exists."),
-//      _("Error"),
-//      wxOK|wxICON_ERROR
-//    );
-//    msg.ShowModal();
-//
-//    return false;
-//  }
-//
-//  return true;
-//}
+
 
 Command* AddEditPropSheetDlg::NewAddEntryCommand()
 {
@@ -1940,31 +2062,7 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand()
   if (m_Item.IsAlias()) {
     m_Item.SetPWPolicy(wxEmptyString);
   }
-
-#ifdef NOTYET
-  if (m_AEMD.ibasedata > 0) {
-          // Password in alias format AND base entry exists
-          // No need to check if base is an alias as already done in
-          // call to PWScore::ParseBaseEntryPWD
-          uuid_array_t alias_uuid;
-          m_item.GetUUID(alias_uuid);
-          m_AEMD.pcore->AddDependentEntry(m_AEMD.base_uuid, alias_uuid, CItemData::ET_ALIAS);
-          m_item.SetPassword(_T("[Alias]"));
-          m_item.SetAlias();
-          ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);
-          if (iter != m_AEMD.pDbx->End()) {
-            const CItemData &cibase = iter->second;
-            DisplayInfo *di = (DisplayInfo *)cibase.GetDisplayInfo();
-            int nImage = m_AEMD.pDbx->GetEntryImage(cibase);
-            m_AEMD.pDbx->SetEntryImage(di->list_index, nImage, true);
-            m_AEMD.pDbx->SetEntryImage(di->tree_item, nImage, true);
-          }
-        }
-        else {
-          m_item.SetPassword(m_AEMD.realpassword);
-          m_item.SetNormal();
-        }
-#endif
+  // Alias is added in AddEntryCommand
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Attachment"
@@ -2237,6 +2335,12 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
       m_ItemAttachment.SetCTime(timestamp);
 
       // Step 2)
+      if(m_Item.IsAlias()) {
+        commands->Add(RemoveDependentEntryCommand::Create(&m_Core,
+                                                          m_Item.GetBaseUUID(),
+                                                          m_Item.GetUUID(),
+                                                          CItemData::ET_ALIAS));
+      }
       commands->Add(DeleteEntryCommand::Create(&m_Core, m_Item));
 
       // Step 3)
@@ -2316,9 +2420,84 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
     ASSERT(listpos != m_Core.GetEntryEndIter());
 
     if (listpos != m_Core.GetEntryEndIter()) {
+      bool bTemporaryChangeOfPWH(false);
+      CItemData &origItem = m_Core.GetEntry(listpos);
+      StringX sxPWH = origItem.GetPWHistory();
+
+      if(origItem.IsNormal() && m_Item.IsAlias()) { // Change fron Normal entry to Alias
+        commands->Add(
+          AddDependentEntryCommand::Create(&m_Core, m_Item.GetBaseUUID(), origItem.GetUUID(), CItemData::ET_ALIAS)
+        );
+        m_Item.SetPassword(L"[Alias]");
+      }
+      else if(origItem.IsAlias() && m_Item.IsNormal()) { // No longer an alias
+        commands->Add(
+          RemoveDependentEntryCommand::Create(&m_Core, origItem.GetBaseUUID(), origItem.GetUUID(), CItemData::ET_ALIAS)
+        );
+        // Temporarily disable password history so it doesn't have the special
+        // password of [Alias] saved into it on reverting to normal
+        if (!sxPWH.empty() && sxPWH.substr(0, 1) == L"1") {
+          bTemporaryChangeOfPWH = true;
+          sxPWH[0] = L'0';
+          m_Item.SetPWHistory(sxPWH);
+        }
+      }
+      else if(origItem.IsAlias() && m_Item.IsAlias() && (origItem.GetBaseUUID() != m_Item.GetBaseUUID())) { // Change Alias Base
+        commands->Add(
+          RemoveDependentEntryCommand::Create(&m_Core, origItem.GetBaseUUID(), origItem.GetUUID(), CItemData::ET_ALIAS)
+        );
+        commands->Add(
+          AddDependentEntryCommand::Create(&m_Core, m_Item.GetBaseUUID(), origItem.GetUUID(), CItemData::ET_ALIAS)
+        );
+        
+      }
+      else if(origItem.IsAliasBase() && m_Item.IsAlias()) { // Change from AliasBase to Alias
+        commands->Add(
+          AddDependentEntryCommand::Create(&m_Core, m_Item.GetBaseUUID(), origItem.GetUUID(), CItemData::ET_ALIAS)
+        );
+        m_Item.SetPassword(L"[Alias]");
+        commands->Add(
+          MoveDependentEntriesCommand::Create(&m_Core, origItem.GetBaseUUID(), m_Item.GetUUID(), CItemData::ET_ALIAS)
+        );
+        // Now actually move the aliases
+        UUIDVector tlist;
+        m_Core.GetAllDependentEntries(origItem.GetUUID(), tlist, CItemData::ET_ALIAS);
+        for (size_t idep = 0; idep < tlist.size(); idep++) {
+          ItemListIter alias_iter = m_Core.Find(tlist[idep]);
+          CItemData ci_oldalias(alias_iter->second);
+          CItemData ci_newalias(ci_oldalias);
+          ci_newalias.SetBaseUUID(m_Item.GetBaseUUID());
+          commands->Add(
+            EditEntryCommand::Create(&m_Core, ci_oldalias, ci_newalias)
+          );
+        }
+      }
+      else if(origItem.IsShortcutBase() && m_Item.IsAlias()) { // Change from ShortcutBase to Alias
+        commands->Add(
+          AddDependentEntryCommand::Create(&m_Core, m_Item.GetBaseUUID(), origItem.GetUUID(), CItemData::ET_ALIAS)
+        );
+        m_Item.SetPassword(L"[Alias]");
+        // Delete shortcuts
+        UUIDVector tlist;
+        m_Core.GetAllDependentEntries(origItem.GetUUID(), tlist, CItemData::ET_SHORTCUT);
+        for (size_t idep = 0; idep < tlist.size(); idep++) {
+          ItemListIter shortcut_iter = m_Core.Find(tlist[idep]);
+          commands->Add(
+            DeleteEntryCommand::Create(&m_Core, shortcut_iter->second)
+          );
+        }
+      }
+      
       commands->Add(
         EditEntryCommand::Create(&m_Core, m_Core.GetEntry(listpos), m_Item)
       );
+      
+      if(bTemporaryChangeOfPWH) {
+        sxPWH[0] = L'1';
+        commands->Add(
+          UpdateEntryCommand::Create(&m_Core, m_Item, CItemData::PWHIST, sxPWH)
+        );
+      }
     }
 
     return commands;
@@ -2501,20 +2680,23 @@ void AddEditPropSheetDlg::OnUseHexCBClick(wxCommandEvent& WXUNUSED(evt))
 
 void AddEditPropSheetDlg::OnUpdateUI(wxUpdateUIEvent& event)
 {
-  bool dbIsReadOnly = m_Core.IsReadOnly();
+  bool dbIsReadOnly = m_Core.IsReadOnly() || m_Item.IsProtected();
 
   switch (event.GetId()) {
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Basic"
   /////////////////////////////////////////////////////////////////////////////
     case ID_COMBOBOX_GROUP:
-    case ID_BUTTON_GENERATE:
       event.Enable(!dbIsReadOnly);
+      break;
+    case ID_BUTTON_ALIAS:
+      event.Enable(!dbIsReadOnly || m_Item.IsAlias());
+      break;
+    case ID_BUTTON_GENERATE:
+      event.Enable(!dbIsReadOnly && !m_Item.IsAlias()); // Do not generate password for alias entry
       break;
     case ID_TEXTCTRL_TITLE:
     case ID_TEXTCTRL_USERNAME:
-    case ID_TEXTCTRL_PASSWORD:
-    case ID_TEXTCTRL_PASSWORD2:
     case ID_TEXTCTRL_URL:
     case ID_TEXTCTRL_EMAIL:
     case ID_TEXTCTRL_NOTES:
@@ -2524,6 +2706,18 @@ void AddEditPropSheetDlg::OnUpdateUI(wxUpdateUIEvent& event)
         auto control = wxDynamicCast(window, wxTextCtrl);
         if (control != nullptr) {
           control->SetEditable(!dbIsReadOnly);
+        }
+      }
+      break;
+    }
+    case ID_TEXTCTRL_PASSWORD:
+    case ID_TEXTCTRL_PASSWORD2:
+    {
+      auto window = m_BasicPanel->FindWindow(event.GetId());
+      if (window != nullptr) {
+        auto control = wxDynamicCast(window, wxTextCtrl);
+        if (control != nullptr) {
+          control->SetEditable(!dbIsReadOnly && !m_Item.IsAlias()); // Alias is not editable (at password), edit base entry instead
         }
       }
       break;

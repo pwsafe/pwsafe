@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2021-02-04 13:37+0100\n"
+"PO-Revision-Date: 2021-06-28 23:38+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Last-Translator: Björn Nordwall <bjorn@nordwall.info>\n"
 "Language-Team: \n"
 "Language: sv\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -450,6 +463,11 @@ msgstr "%d/%d alternativ"
 msgid "%ls - Copied %ls"
 msgstr "%ls - Kopierad %ls"
 
+#. Resource IDs: (5907)
+#, c-format
+msgid "%ls - Drag & Drop %ls"
+msgstr ""
+
 #. Resource IDs: (3431)
 #, c-format
 msgid "%ls - Imported %ls"
@@ -520,11 +538,6 @@ msgstr "%s (*%s)|*%s||"
 #, c-format
 msgid "%s (database-specific)"
 msgstr "%s (databasspecifik)"
-
-#. Resource IDs: (5907)
-#, c-format
-msgid "%s - Drag & Drop %s"
-msgstr "%s - Dra & släpp %s"
 
 #. Resource IDs: (5998)
 #, c-format
@@ -2342,14 +2355,14 @@ msgstr "Jämför databasresultat"
 #, c-format
 msgid ""
 "Compare complete of current database:\n"
-"\t %s\n"
+"\t %ls\n"
 " and:\n"
-"\t %s"
+"\t %ls\n"
 msgstr ""
 "Jämförelsen klar med aktuell databas:\n"
-"\t %s\n"
+"\t %ls\n"
 " och:\n"
-"\t %s"
+"\t %ls\n"
 
 #. Resource IDs: (32091 - Menu, 32091 - MenuEx)
 msgid "Compare entries..."
@@ -3228,8 +3241,8 @@ msgid "Enter no more than %1 characters."
 msgstr "Ange högst %1 tecken."
 
 #. Resource IDs: (65535)
-msgid "Enter positions of password characters separated by spaces, commas or semi-colons."
-msgstr "Fyll i lösenords teckenpositioner separerade av mellanslag, kommatecken eller semikolon."
+msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
+msgstr "Ange positioner för lösenordstecken åtskilda av blanksteg, kommatecken eller semikolon (eller * för fullständigt lösenord)."
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -5856,12 +5869,9 @@ msgstr "Gör om"
 msgid "Redo the last change to password policies that was previously undone"
 msgstr "Gör om senaste ändring av lösenordspolicyer som tidigare ångrats"
 
-#. Resource IDs: (1228)
+#. Resource IDs: (1228, 3397)
 msgid "Relative"
 msgstr "Relativt"
-
-msgid "relative"
-msgstr "relativt"
 
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
@@ -6368,10 +6378,6 @@ msgstr "Skift+dubbelklicksval"
 #. Resource IDs: (5555)
 msgid "Shift+click to view current policy"
 msgstr "Skift+klicka för att visa aktuell policy"
-
-#. Resource IDs: (1599)
-msgid "Shorcuts"
-msgstr "Genvägar"
 
 #. Resource IDs: (5686)
 #, c-format
@@ -7710,7 +7716,7 @@ msgstr "Uyghur"
 msgid "Uzbek Cyrillic"
 msgstr "Uzbekistan Cyrillic"
 
-#. Resource IDs: (3440, 5537)
+#. Resource IDs: (5537)
 msgid "Validate"
 msgstr "Validera"
 
@@ -8889,8 +8895,8 @@ msgstr ""
 
 #. Resource IDs: (5359)
 #, c-format
-msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr "\tGrupp:'%s'; Titel:'%s'; Användare:'%s'"
+msgid "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
+msgstr "\tGrupp:'%ls'; Rubrik:'%ls'; Användare:'%ls'"
 
 #. Resource IDs: (3391)
 #, c-format
@@ -8904,8 +8910,8 @@ msgstr "\tNamn: %s; Filnamn: %s"
 
 #. Resource IDs: (5538)
 #, c-format
-msgid "\tNo entries were found containing search string '%s'"
-msgstr "\tInga poster hittades som innehåller söksträngen '%s'"
+msgid "\tNo entries were found containing search string '%ls' %ls"
+msgstr "\tInga poster hittades som innehöll söksträngen '%ls' %ls"
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
@@ -8927,8 +8933,8 @@ msgstr "\tLösenordspolicyns namn '%ls' finns inte i databasen."
 
 #. Resource IDs: (5539)
 #, c-format
-msgid "\tThe following entries contain search string '%s'"
-msgstr "\tFöljande poster innehåller söksträng '%s'"
+msgid "\tThe following entries contain search string '%ls' %ls"
+msgstr "\tFöljande poster innehåller söksträngen '%ls' %ls"
 
 #. Resource IDs: (5522)
 #, c-format
@@ -8987,7 +8993,7 @@ msgstr "en aliaspost"
 msgid "an unnamed file"
 msgstr "en namnlös fil"
 
-#. Resource IDs: (1307, 1419)
+#. Resource IDs: (1307, 1419, 5969)
 msgid "and"
 msgstr "och"
 
@@ -9279,6 +9285,10 @@ msgstr "tidigare lösenord per post"
 #. Resource IDs: (5394)
 msgid "pwsafe"
 msgstr "pwsafe"
+
+#. Resource IDs: (5968)
+msgid "relative"
+msgstr "relativt"
 
 #. Resource IDs: (3279)
 msgid "shortcut"

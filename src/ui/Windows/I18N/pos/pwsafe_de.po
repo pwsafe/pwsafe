@@ -403,6 +403,11 @@ msgstr "%d/%d Angaben"
 msgid "%ls - Copied %ls"
 msgstr "%ls - Kopiert %ls"
 
+#. Resource IDs: (5907)
+#, c-format
+msgid "%ls - Drag & Drop %ls"
+msgstr ""
+
 #. Resource IDs: (3431)
 #, c-format
 msgid "%ls - Imported %ls"
@@ -467,11 +472,6 @@ msgstr "%s (*%s)|*%s||"
 #, c-format
 msgid "%s (database-specific)"
 msgstr "%s (Datenbank spezifisch)"
-
-#. Resource IDs: (5907)
-#, c-format
-msgid "%s - Drag & Drop %s"
-msgstr "%s - Drag & Drop %s"
 
 #. Resource IDs: (5998)
 #, c-format
@@ -1896,7 +1896,7 @@ msgstr "Kann nicht mehr als %d sein"
 
 #. Resource IDs: (3019)
 msgid "Cannot create lock file - no permission in directory?"
-msgstr "Kann keine lock-Datei erzeugen - keine Rechte im Verzeichnis?"
+msgstr "Kann keine Lock-Datei erzeugen - keine Rechte im Verzeichnis?"
 
 #. Resource IDs: (5866)
 msgid "Cannot create missing directories in path to the export file."
@@ -2981,8 +2981,8 @@ msgid "Enter no more than %1 characters."
 msgstr "Geben Sie nicht mehr als %1 Zeichen ein."
 
 #. Resource IDs: (65535)
-msgid "Enter positions of password characters separated by spaces, commas or semi-colons."
-msgstr "Geben Sie die Stellen der Passwortzeichen ein, getrennt durch Leerzeichen, Kommas oder Semikolons."
+msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
+msgstr ""
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -4105,7 +4105,7 @@ msgstr "Ungültiger Parameter"
 
 #. Resource IDs: (3462)
 msgid "Invalid field delimiter: must be within ASCII range."
-msgstr ""
+msgstr "Ungültige Feldtrennzeichen: nur ASCII Zeichen werden akzeptiert."
 
 #. Resource IDs: (3017)
 #, c-format
@@ -4115,7 +4115,7 @@ msgstr "Ungültige Eingabe in Zeile %d. Anzahl der Felder getrennt mit '%c' nich
 #. Resource IDs: (4116)
 #, c-format
 msgid "Invalid lock file \"%ls\"."
-msgstr ""
+msgstr "Ungültige Lock-Datei \"%ls\"."
 
 #. Resource IDs: (5684)
 msgid "Invalid shortcut ignored."
@@ -5475,12 +5475,9 @@ msgstr "Wiederherstellen"
 msgid "Redo the last change to password policies that was previously undone"
 msgstr "Stelle die letzte Änderung zur Passwortrichtlinie, die rückgängig gemacht wurde, wieder her"
 
-#. Resource IDs: (1228)
+#. Resource IDs: (1228, 3397)
 msgid "Relative"
 msgstr "Relativ"
-
-msgid "relative"
-msgstr "relativ"
 
 #. Resource IDs: (1420)
 msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
@@ -5980,7 +5977,7 @@ msgstr "Umschalt+Klick um die aktuelle Richtlinie anzuzeigen"
 
 #. Resource IDs: (1599)
 msgid "Shorcuts"
-msgstr ""
+msgstr "Verknüpfungen"
 
 #. Resource IDs: (5686)
 #, c-format
@@ -7107,7 +7104,7 @@ msgstr "Uyghur"
 msgid "Uzbek Cyrillic"
 msgstr "Usbekisches Kyrillisch"
 
-#. Resource IDs: (3440, 5537)
+#. Resource IDs: (5537)
 msgid "Validate"
 msgstr "Überprüfen"
 
@@ -7851,8 +7848,8 @@ msgstr "\tName: %s; Dateiname: %s"
 
 #. Resource IDs: (5538)
 #, c-format
-msgid "\tNo entries were found containing search string '%s'"
-msgstr "\tKeine Einträge enthalten den Suchtext '%s'"
+msgid "\tNo entries were found containing search string '%ls' %ls"
+msgstr ""
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
@@ -7874,8 +7871,8 @@ msgstr "\tPasswortrichtlinienname '%ls' ist nicht in der Datenbank."
 
 #. Resource IDs: (5539)
 #, c-format
-msgid "\tThe following entries contain search string '%s'"
-msgstr "\tFolgende Einträge enthalten den Suchtext '%s'"
+msgid "\tThe following entries contain search string '%ls' %ls"
+msgstr ""
 
 #. Resource IDs: (5522)
 #, c-format
@@ -7930,7 +7927,7 @@ msgstr "Alias Eintrag"
 msgid "an unnamed file"
 msgstr "eine unbenannte Datei"
 
-#. Resource IDs: (1307, 1419)
+#. Resource IDs: (1307, 1419, 5969)
 msgid "and"
 msgstr "und"
 
@@ -8222,6 +8219,10 @@ msgstr "bisherige Passwörter pro Eintrag"
 #. Resource IDs: (5394)
 msgid "pwsafe"
 msgstr "pwsafe"
+
+#. Resource IDs: (5968)
+msgid "relative"
+msgstr "relativ"
 
 #. Resource IDs: (3279)
 msgid "shortcut"

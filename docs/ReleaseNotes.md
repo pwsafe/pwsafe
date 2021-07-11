@@ -1,4 +1,4 @@
-Password Safe 3.56pre Release February 2021
+Password Safe 3.56pre Release June 2021
 ===========================================
 
 New features in 3.56pre
@@ -13,6 +13,11 @@ Bugs fixed in 3.56pre
 * [GH573](https://github.com/pwsafe/pwsafe/issues/573),[SF1488](https://sourceforge.net/p/passwordsafe/bugs/1488/) "Remind" Windows when PasswordSafe should stay topmost
 * Fixed Notes line parsing in Run command
 
+Changes in 3.56pre
+------------------
+
+* Entire password can be selected in password subset display by specifying '*'
+* Arabic support added
 
 PasswordSafe non-Windows Release 1.13
 =====================================
@@ -89,6 +94,7 @@ Password Safe 3.52 Release April 2020
 Bugs Fixed in 3.52
 ------------------
 
+* [SF1542](https://sourceforge.net/p/passwordsafe/bugs/1542) UNC paths now accepted as backup directory.
 * [SF1510](https://sourceforge.net/p/passwordsafe/bugs/1510) Fixed truncated text in delete confirmation window.
 * [SF1509](https://sourceforge.net/p/passwordsafe/bugs/1509) Cancelling a delete now leaves the selection unchanged.
 * [GH634](https://github.com/pwsafe/pwsafe/issues/634),[SF1508](https://sourceforge.net/p/passwordsafe/bugs/1508) Clearing an entry's username no longer causes a revert to default.

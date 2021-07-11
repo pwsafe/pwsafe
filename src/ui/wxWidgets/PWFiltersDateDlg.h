@@ -26,7 +26,7 @@
 #include <wx/dateevt.h>
 #include <wx/datectrl.h>
 
-#include "PWSFilters.h"
+#include "core/PWSFilters.h"
 
 /*!
  * Forward declarations

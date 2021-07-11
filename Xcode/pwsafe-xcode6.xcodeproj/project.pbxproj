@@ -56,6 +56,7 @@
 		D3AC55172631774600C78510 /* PWFiltersIntegerDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3AC55152631774500C78510 /* PWFiltersIntegerDlg.cpp */; };
 		D3B6F66125B8C32900789453 /* DnDSupport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3B6F66025B8C32900789453 /* DnDSupport.cpp */; };
 		D3EA518B2629C40C0015E3FD /* PWFiltersBoolDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3EA51892629C40C0015E3FD /* PWFiltersBoolDlg.cpp */; };
+		D3F00B6A268CBB2B00F299EE /* SelectAliasDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3F00B69268CBB2B00F299EE /* SelectAliasDlg.cpp */; };
 		E090D35824D742E90083BA2B /* ViewAttachmentDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E090D35624D742E90083BA2B /* ViewAttachmentDlg.cpp */; };
 		E0A70B9821C8FF8900A2FEA8 /* PolicyManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0A70B9621C8FF8900A2FEA8 /* PolicyManager.cpp */; };
 		E0A70B9B21C905A500A2FEA8 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A70B9A21C905A500A2FEA8 /* libcurl.tbd */; };
@@ -329,6 +330,8 @@
 		D3B6F66025B8C32900789453 /* DnDSupport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DnDSupport.cpp; sourceTree = "<group>"; };
 		D3EA51892629C40C0015E3FD /* PWFiltersBoolDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWFiltersBoolDlg.cpp; sourceTree = "<group>"; };
 		D3EA518A2629C40C0015E3FD /* PWFiltersBoolDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWFiltersBoolDlg.h; sourceTree = "<group>"; };
+		D3F00B68268CBB2B00F299EE /* SelectAliasDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectAliasDlg.h; sourceTree = "<group>"; };
+		D3F00B69268CBB2B00F299EE /* SelectAliasDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SelectAliasDlg.cpp; sourceTree = "<group>"; };
 		E090D35624D742E90083BA2B /* ViewAttachmentDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewAttachmentDlg.cpp; sourceTree = "<group>"; };
 		E090D35724D742E90083BA2B /* ViewAttachmentDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewAttachmentDlg.h; sourceTree = "<group>"; };
 		E0A70B9621C8FF8900A2FEA8 /* PolicyManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolicyManager.cpp; sourceTree = "<group>"; };
@@ -1309,6 +1312,8 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				D3F00B69268CBB2B00F299EE /* SelectAliasDlg.cpp */,
+				D3F00B68268CBB2B00F299EE /* SelectAliasDlg.h */,
 				D3610ABB2653D51900EDA799 /* HelpMap.h */,
 				D3950065263C29F70026815E /* ManageFiltersTable.cpp */,
 				D3950064263C29F70026815E /* ManageFiltersTable.h */,
@@ -1960,6 +1965,7 @@
 				E6ADBA431195709A004E2BE5 /* PropertiesDlg.cpp in Sources */,
 				E0C3C44F2379CD7500715124 /* MenuFileHandlers.cpp in Sources */,
 				E6ADBA921195709A004E2BE5 /* PWSafeApp.cpp in Sources */,
+				D3F00B6A268CBB2B00F299EE /* SelectAliasDlg.cpp in Sources */,
 				E6C94E931FA20593008F0072 /* QRCodeDlg.cpp in Sources */,
 				E6C94E961FA2075B008F0072 /* QREncode.mm in Sources */,
 				E6ADBA931195709A004E2BE5 /* Clipboard.cpp in Sources */,

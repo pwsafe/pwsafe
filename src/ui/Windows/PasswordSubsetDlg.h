@@ -61,6 +61,17 @@ protected:
 private:
   LRESULT OnDisplayStatus(WPARAM /* wParam */, LPARAM /* lParam */);
 
+  struct SubsetInfo
+  {
+    bool incomplete_string = false; // set to true, when not all tokens were processed
+    StringX passwd_sub; // password's subset (with optional delimiters) 
+    int err_id = 0; // set to error code when position is wrong
+    int err_start_pos = 0;
+    int err_end_pos = 0;
+  };
+
+  SubsetInfo GetSubsetInfo(const CString& subset, bool with_delims) const;
+
   CNumEdit m_neSubsetPositions;
   CStaticExtn m_stcWarningMsg;
   CBitmap m_CopyPswdBitmap, m_DisabledCopyPswdBitmap;
