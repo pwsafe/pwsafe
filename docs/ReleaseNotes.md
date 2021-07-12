@@ -1,7 +1,7 @@
 Password Safe 3.56 Release July 2021
 ====================================
 
-New features in 3.56pre
+New features in 3.56
 -----------------------
 
 * [FR894](https://sourceforge.net/p/passwordsafe/feature-requests/894/) Support OnlyKey 2FA
