@@ -341,7 +341,7 @@ void SelectAliasDlg::CreateControls()
 
 ////@end SelectAliasDlg content construction
   
-  if(m_BaseItem == nullptr || m_Core->IsReadOnly()) {
+  if(*m_BaseItem == nullptr || m_Core->IsReadOnly()) {
     itemButton6->Disable();
     itemButton7->Disable();
   }
