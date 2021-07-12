@@ -1844,7 +1844,7 @@ void AddEditPropSheetDlg::ShowAlias()
                 pbci->GetUser()  + L"]";
   }
   else {
-    m_Password = L"[" + _("Alias") + L"]";
+    m_Password = L"[" + tostringx(_("Alias")) + L"]";
   }
   m_BasicPasswordTextLabel->SetLabel(_("Alias:"));
   UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, m_Password.c_str(), m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, wxTE_READONLY);
