@@ -1,19 +1,20 @@
-Password Safe 3.56pre Release June 2021
-===========================================
+Password Safe 3.56 Release July 2021
+====================================
 
-New features in 3.56pre
+New features in 3.56
 -----------------------
 
 * [FR894](https://sourceforge.net/p/passwordsafe/feature-requests/894/) Support OnlyKey 2FA
 
-Bugs fixed in 3.56pre
----------------------
-
+Bugs fixed in 3.56
+------------------
+* [SF1542](https://sourceforge.net/p/passwordsafe/bugs/1542) UNC paths now accepted as backup directory
+* [SF1530](https://sourceforge.net/p/passwordsafe/bugs/1530) Maximized window is now restored as such after unlock
 * [GH737](https://github.com/pwsafe/pwsafe/issues/737) Fixed crash in 64 bit version when selecting View -> Filters -> New/edit Filter -> Field DCA (or Shift-DCA) followed by Citeria selection
 * [GH573](https://github.com/pwsafe/pwsafe/issues/573),[SF1488](https://sourceforge.net/p/passwordsafe/bugs/1488/) "Remind" Windows when PasswordSafe should stay topmost
 * Fixed Notes line parsing in Run command
 
-Changes in 3.56pre
+Changes in 3.56
 ------------------
 
 * Entire password can be selected in password subset display by specifying '*'
@@ -94,7 +95,6 @@ Password Safe 3.52 Release April 2020
 Bugs Fixed in 3.52
 ------------------
 
-* [SF1542](https://sourceforge.net/p/passwordsafe/bugs/1542) UNC paths now accepted as backup directory.
 * [SF1510](https://sourceforge.net/p/passwordsafe/bugs/1510) Fixed truncated text in delete confirmation window.
 * [SF1509](https://sourceforge.net/p/passwordsafe/bugs/1509) Cancelling a delete now leaves the selection unchanged.
 * [GH634](https://github.com/pwsafe/pwsafe/issues/634),[SF1508](https://sourceforge.net/p/passwordsafe/bugs/1508) Clearing an entry's username no longer causes a revert to default.
