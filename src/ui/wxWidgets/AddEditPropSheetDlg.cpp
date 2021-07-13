@@ -1745,13 +1745,14 @@ void AddEditPropSheetDlg::OnAliasButtonClick(wxCommandEvent& WXUNUSED(evt))
           pbci = pbci_shortcut;
           bChangeToBaseEntry = true;
         }
-      }
-      if(pbci && pbci->IsAlias()) {
+      } else if(pbci && pbci->IsAlias()) {
         CItemData *pbci_shortcut = m_Core.GetBaseEntry(pbci);
         if(pbci_shortcut) {
           pbci = pbci_shortcut;
           bChangeToBaseEntry = true;
         }
+      } else if(pbci && pbci->IsShortcutBase()) {
+        wxMessageBox(_("On changing this entry of type Shortcut Base to an Alias all Shortcut to this entry will be removed!"), _("Warning"), wxOK | wxICON_EXCLAMATION);
       }
       if(bChangeToBaseEntry) {
         wxMessageBox(_("Shortcut or Alias selected, use Base entry instead"), _("Warning"), wxOK | wxICON_EXCLAMATION);
@@ -2093,6 +2094,28 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand()
   /////////////////////////////////////////////////////////////////////////////
 
   m_Item.SetStatus(CItemData::ES_ADDED);
+    
+  if(m_Item.IsAlias()) { // If alias is pointing to shortcut base the shortcuts must be removed before converting to alias base
+    auto commands = MultiCommands::Create(&m_Core);
+    const CItemData *pbci = m_Core.GetBaseEntry(&m_Item);
+    ASSERT(pbci);
+    if (pbci && pbci->IsShortcutBase()) {
+      // Delete shortcuts of shortcut base
+      UUIDVector tlist;
+      m_Core.GetAllDependentEntries(pbci->GetUUID(), tlist, CItemData::ET_SHORTCUT);
+      for (size_t idep = 0; idep < tlist.size(); idep++) {
+        ItemListIter shortcut_iter = m_Core.Find(tlist[idep]);
+        commands->Add(
+          DeleteEntryCommand::Create(&m_Core, shortcut_iter->second)
+        );
+      }
+    }
+  
+    commands->Add(AddEntryCommand::Create(&m_Core, m_Item, m_Item.GetBaseUUID(),
+                                          (m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) ? &m_ItemAttachment : nullptr)
+                  );
+    return commands;
+  }
   
   return AddEntryCommand::Create(
     &m_Core,
@@ -2423,6 +2446,22 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
       bool bTemporaryChangeOfPWH(false);
       CItemData &origItem = m_Core.GetEntry(listpos);
       StringX sxPWH = origItem.GetPWHistory();
+      
+      if(m_Item.IsAlias()) { // If alias is pointing to shortcut base the shortcuts must be removed before converting to alias base
+        const CItemData *pbci = m_Core.GetBaseEntry(&m_Item);
+        ASSERT(pbci);
+        if (pbci && pbci->IsShortcutBase()) {
+          // Delete shortcuts of shortcut base
+          UUIDVector tlist;
+          m_Core.GetAllDependentEntries(pbci->GetUUID(), tlist, CItemData::ET_SHORTCUT);
+          for (size_t idep = 0; idep < tlist.size(); idep++) {
+            ItemListIter shortcut_iter = m_Core.Find(tlist[idep]);
+            commands->Add(
+              DeleteEntryCommand::Create(&m_Core, shortcut_iter->second)
+            );
+          }
+        }
+      }
 
       if(origItem.IsNormal() && m_Item.IsAlias()) { // Change fron Normal entry to Alias
         commands->Add(
