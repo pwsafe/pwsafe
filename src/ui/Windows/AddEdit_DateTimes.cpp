@@ -324,6 +324,7 @@ LRESULT CAddEdit_DateTimes::OnQuerySiblings(WPARAM wParam, LPARAM )
         return 1L;
       break;
     case PP_UPDATE_VARIABLES:
+    case PP_UPDATE_PWPOLICY:
       // Since OnOK calls OnApply after we need to verify and/or
       // copy data into the entry - we do it ourselves here first
       if (OnApply() == FALSE)
