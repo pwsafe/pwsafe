@@ -431,9 +431,13 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicPasswordConfirmationTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_PASSWORD2, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
   m_BasicSizer->Add(m_BasicPasswordConfirmationTextCtrl, wxGBPosition(/*row:*/ 4, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
   
-  auto *itemButton22 = new wxButton( panel, ID_BUTTON_ALIAS, _("&Alias"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto *itemButton22 = new wxButton( panel, ID_BUTTON_ALIAS, _("&Alias To..."), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(itemButton22, wxGBPosition(/*row:*/ 4, /*column:*/ 2), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
+  if(! PWSprefs::GetInstance()->GetPref(PWSprefs::ShowAliasSelection)) {
+    // Per default do not show this button
+    itemButton22->Hide();
+  }
+  
   auto *itemStaticText25 = new wxStaticText( panel, wxID_STATIC, _("URL:"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(itemStaticText25, wxGBPosition(/*row:*/ 5, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -1869,6 +1873,7 @@ void AddEditPropSheetDlg::ShowAlias()
     m_BasicPasswordConfirmationTextCtrl->Clear();
     m_BasicPasswordConfirmationTextCtrl->Enable(false);
   }
+  FindWindow(ID_BUTTON_ALIAS)->Show();
 }
 
 

@@ -131,6 +131,7 @@ class wxBookCtrlEvent;
 #define ID_CHECKBOX43 10210
 #define ID_CHECKBOX44 10211
 #define ID_CHECKBOX45 10213
+#define ID_CHECKBOX46 10250
 #define SYMBOL_COPTIONS_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL
 #define SYMBOL_COPTIONS_TITLE _("Options")
 #define SYMBOL_COPTIONS_IDNAME ID_OPTIONS
@@ -312,6 +313,7 @@ private:
   bool m_Display_ShowMenuSeparator;
   bool m_Display_AutoAdjColWidth;
   bool m_Display_ToolbarShowText;
+  bool m_Display_AliasSelection;
   
   // Misc. Preferences
   bool m_Misc_ConfirmDelete;

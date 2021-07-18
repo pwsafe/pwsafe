@@ -515,6 +515,9 @@ void SelectAliasDlg::UpdateSelChanged(CItemData *pci)
     FindWindow(wxID_REMOVE)->Enable();
     FindWindow(wxID_OK)->Enable();
   }
+  if(!pci) {
+    FindWindow(wxID_OK)->Disable();
+  }
   if(m_Core->IsReadOnly() && *m_BaseItem) {
     uuid_array_t uuid;
     (*m_BaseItem)->GetUUID(uuid);
