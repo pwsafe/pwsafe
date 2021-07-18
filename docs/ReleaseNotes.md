@@ -1,3 +1,17 @@
+This note describes the new features, fixed bugs and known problems
+with the latest versions of Password Safe. For a short description of
+Password Safe, please see the accompanying README.md file. For more
+information on the product and the project, please visit
+https://pwsafe.org/. Details about changes to older
+releases may be found in the file ChangeLog.txt.
+
+In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
+
+PasswordSafe non-Windows Release 1.14
+=====================================
+* [SF1543](https://sourceforge.net/p/passwordsafe/bugs/1543/) Fixed crash when importing XML with empty password in password history
+
+
 Password Safe 3.56 Release July 2021
 ====================================
 
@@ -22,15 +36,6 @@ Changes in 3.56
 
 PasswordSafe non-Windows Release 1.13
 =====================================
-
-This note describes the new features, fixed bugs and known problems
-with the latest versions of Password Safe. For a short description of
-Password Safe, please see the accompanying README.md file. For more
-information on the product and the project, please visit
-https://pwsafe.org/. Details about changes to older
-releases may be found in the file ChangeLog.txt.
-
-In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
 Bugs fixed in 1.13
 ------------------
