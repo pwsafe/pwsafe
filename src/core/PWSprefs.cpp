@@ -135,6 +135,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("AutoAdjColWidth"), false, ptApplication},            // application
   {_T("ToolbarShowText"), false, ptApplication},            // application
   {_T("DragAndDropShowRoot"), false, ptApplication},        // application
+  {_T("ShowAliasSelection"), false, ptApplication},         // application
 };
 
 // Default value = -1 means set at runtime

@@ -543,6 +543,10 @@ wxPanel* OptionsPropertySheetDlg::CreateDisplayPanel(const wxString& title)
   display_ToolbarShowTextCB->SetValue(false);
   itemBoxSizer30->Add(display_ToolbarShowTextCB, 0, wxALIGN_LEFT|wxALL, 5);
   
+  wxCheckBox* display_ToolbarShowAliasSelectionCB = new wxCheckBox( itemPanel29, ID_CHECKBOX46, _("Show Alias Selection in Add && Edit"), wxDefaultPosition, wxDefaultSize, 0 );
+  display_ToolbarShowAliasSelectionCB->SetValue(false);
+  itemBoxSizer30->Add(display_ToolbarShowAliasSelectionCB, 0, wxALIGN_LEFT|wxALL, 5);
+  
   wxStaticText* itemStaticText42 = new wxStaticText( itemPanel29, wxID_STATIC, _("days before passwords expire"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer39->Add(itemStaticText42, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
@@ -567,6 +571,7 @@ wxPanel* OptionsPropertySheetDlg::CreateDisplayPanel(const wxString& title)
   display_ShowMenuSeparatorCB->SetValidator( wxGenericValidator(& m_Display_ShowMenuSeparator) );
   display_AutoAdjColWidthCB->SetValidator( wxGenericValidator(& m_Display_AutoAdjColWidth) );
   display_ToolbarShowTextCB->SetValidator( wxGenericValidator(& m_Display_ToolbarShowText) );
+  display_ToolbarShowAliasSelectionCB->SetValidator( wxGenericValidator(& m_Display_AliasSelection) );
   
   return itemPanel29;
 }
@@ -1052,6 +1057,7 @@ void OptionsPropertySheetDlg::PrefsToPropSheet()
   m_Display_ShowMenuSeparator = prefs->GetPref(PWSprefs::ShowMenuSeparator);
   m_Display_AutoAdjColWidth = prefs->GetPref(PWSprefs::AutoAdjColWidth);
   m_Display_ToolbarShowText = prefs->GetPref(PWSprefs::ToolbarShowText);
+  m_Display_AliasSelection = prefs->GetPref(PWSprefs::ShowAliasSelection);
   
   // Misc. preferences
   m_Misc_ConfirmDelete = !prefs->GetPref(PWSprefs::DeleteQuestion);
@@ -1233,6 +1239,7 @@ void OptionsPropertySheetDlg::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::ShowMenuSeparator, m_Display_ShowMenuSeparator);
   prefs->SetPref(PWSprefs::AutoAdjColWidth, m_Display_AutoAdjColWidth);
   prefs->SetPref(PWSprefs::ToolbarShowText, m_Display_ToolbarShowText);
+  prefs->SetPref(PWSprefs::ShowAliasSelection, m_Display_AliasSelection);
   prefs->SetPref(PWSprefs::ShowNotesDefault, m_Display_ShowNotesInEdit, true);
   prefs->SetPref(PWSprefs::MaintainDateTimeStamps, m_Misc_MaintainDatetimeStamps, true);
   prefs->SetPref(PWSprefs::UseDefaultUser, m_Misc_UseDefUsername, true);

@@ -164,7 +164,7 @@ void RestoreTreeItem(TreeCtrl* tree, const string_or_uuid& val, TreeFunc func)
   wxTreeItemId id;
   switch(val.Type()) {
     case string_or_uuid::ItemType::NORMAL:
-      id = tree->Find(static_cast<pws_os::CUUID> (val));
+      id = tree->TreeCtrlBase::Find(static_cast<pws_os::CUUID> (val));
       break;
     case string_or_uuid::ItemType::GROUP:
       id = tree->Find(static_cast<wxString>(val), tree->GetRootItem());

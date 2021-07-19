@@ -2066,13 +2066,13 @@ void CItemData::SetEntryType(EntryType et)
    * we need to move the UUID to the correct field.
    * In other cases we leave the UUID untouched.
    */
-  if (m_entrytype == ET_NORMAL) {
+  if (m_entrytype == ET_NORMAL || m_entrytype == ET_ALIASBASE || m_entrytype == ET_SHORTCUTBASE) {
     if (et == ET_ALIAS || et == ET_SHORTCUT) {
       const CUUID uuid = GetUUID(UUID);
       SetUUID(uuid, et == ET_ALIAS ? ALIASUUID : SHORTCUTUUID);
       m_fields.erase(UUID);
     }
-  } else if (et == ET_NORMAL) {
+  } else if (et == ET_NORMAL || m_entrytype == ET_ALIASBASE || m_entrytype == ET_SHORTCUTBASE) {
     if (m_entrytype == ET_ALIAS || m_entrytype == ET_SHORTCUT) {
       const CUUID uuid = GetUUID(m_entrytype == ET_ALIAS ? ALIASUUID : SHORTCUTUUID);
       SetUUID(uuid, UUID);
