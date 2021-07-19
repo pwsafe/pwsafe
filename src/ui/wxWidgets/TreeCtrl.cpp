@@ -921,8 +921,7 @@ void TreeCtrl::OnTreectrlItemActivated( wxTreeEvent& evt )
   else {
     CItemData *ci = GetItem(item);
     if (ci != nullptr)
-      dynamic_cast<PasswordSafeFrame *>(GetParent())->
-        DispatchDblClickAction(*ci);
+      wxGetApp().GetPasswordSafeFrame()->DispatchDblClickAction(*ci);
   }
 }
 
@@ -1519,7 +1518,7 @@ bool TreeCtrl::IsDescendant(const wxTreeItemId itemDst, const wxTreeItemId itemS
 
 void TreeCtrl::OnContextMenu( wxTreeEvent& evt )
 {
-  dynamic_cast<PasswordSafeFrame*>(GetParent())->OnContextMenu(GetItem(evt.GetItem()));
+  wxGetApp().GetPasswordSafeFrame()->OnContextMenu(GetItem(evt.GetItem()));
 }
 
 #if wxCHECK_VERSION(3, 1, 1)
@@ -1538,7 +1537,7 @@ void TreeCtrl::OnMouseRightClick(wxMouseEvent& event)
 #endif // wxCHECK_VERSION(3, 1, 1)
 
   if ((positionInfo & wxTREE_HITTEST_NOWHERE) == wxTREE_HITTEST_NOWHERE) {
-    auto *parentWindow = dynamic_cast<PasswordSafeFrame*>(GetParent());
+    auto *parentWindow = wxGetApp().GetPasswordSafeFrame();
     wxASSERT(parentWindow != nullptr);
     Unselect();
     parentWindow->OnContextMenu(nullptr);
@@ -1773,7 +1772,7 @@ void TreeCtrl::OnTreectrlSelChanged( wxTreeEvent& evt )
 {
   CItemData *pci = GetItem(evt.GetItem());
 
-  dynamic_cast<PasswordSafeFrame *>(GetParent())->UpdateSelChanged(pci);
+  wxGetApp().GetPasswordSafeFrame()->UpdateSelChanged(pci);
 }
 
 static void ColourChildren(TreeCtrl *tree, wxTreeItemId parent, const wxColour &colour)
@@ -1931,7 +1930,7 @@ void TreeCtrl::TraverseTree(wxTreeItemId itemId, GroupItemConsumer&& consumer)
   }
 }
 
-void TreeCtrl::OnDrag(wxMouseEvent& event)
+void TreeCtrl::OnDrag(wxAuiToolBarEvent& event)
 {
 #if wxUSE_DRAG_AND_DROP
   if(m_last_dnd_item == nullptr) {
@@ -1974,7 +1973,7 @@ void TreeCtrl::OnDrag(wxMouseEvent& event)
       // Perform copy as default action for mac OS
       if(! ::wxGetKeyState(WXK_CONTROL) && ! m_core.IsReadOnly()) {
         class Command *doit;
-        doit = static_cast<PasswordSafeFrame *>(GetParent())->Delete(m_last_dnd_item);
+        doit = wxGetApp().GetPasswordSafeFrame()->Delete(m_last_dnd_item);
         if (doit != nullptr)
           m_core.Execute(doit);
       }
@@ -2208,7 +2207,7 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
     }
     
     // FixListIndexes();
-    static_cast<PasswordSafeFrame *>(GetParent())->RefreshViews();
+    wxGetApp().GetPasswordSafeFrame()->RefreshViews();
     
     return true;
   }

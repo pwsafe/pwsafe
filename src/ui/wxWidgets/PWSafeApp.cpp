@@ -214,6 +214,7 @@ void PWSafeApp::Init()
   wxLocale::AddCatalogLookupPathPrefix(L"/usr/local");
 #if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
   wxLocale::AddCatalogLookupPathPrefix(L"../I18N/mos");
+  wxLocale::AddCatalogLookupPathPrefix(L"src/ui/wxWidgets/I18N/mos"); // located in cmake's build directory
 #endif
 
 ////@begin PWSafeApp member initialisation
