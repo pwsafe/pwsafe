@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pwsafe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-10 19:38+0200\n"
+"POT-Creation-Date: 2021-07-18 19:44+0200\n"
 "PO-Revision-Date: 2020-03-01 22:00+0100\n"
 "Last-Translator: Attila Rajmund Nohl <attila.r.nohl@gmail.com>\n"
 "Language-Team: NAR <attila.r.nohl@gmail.com>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "X-Generator: Poedit 2.3\n"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:141
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1443
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1450
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:431
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:567
 msgid "Password Safe"
@@ -148,49 +148,49 @@ msgid "Could not download version data.\n"
 msgstr "Nem sikerült letölteni a verzióadatot.\n"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:308
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1398
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1402
 msgid "Auto Type"
 msgstr "Autogépelés"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:309
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1399
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1403
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:464
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:667
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:672
 msgid "Browse"
 msgstr "Navigálás"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:310
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1400
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1404
 msgid "Browse + Auto Type"
 msgstr "Navigálás + Autogépelés"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:311
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1401
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1405
 msgid "Copy Notes"
 msgstr "Megjegyzés másolása"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:312
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1402
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1406
 msgid "Copy Password"
 msgstr "Jelszó másolása"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:313
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1403
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1407
 msgid "Copy Password + Minimize"
 msgstr "Jelszó másolása, kis méretre váltás"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:314
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1404
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1408
 msgid "Copy Username"
 msgstr "Felhasználónév másolása"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:315
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1405
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1409
 msgid "Edit/View Entry"
 msgstr "Bejegyzés szerkesztése/megtekintése"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:316
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1406
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1410
 msgid "Execute Run command"
 msgstr "Parancs futtatása"
 
@@ -252,7 +252,7 @@ msgid "Group:"
 msgstr "Csoport:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:404
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:868
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:872
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:212
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:234
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:267
@@ -269,15 +269,15 @@ msgid "Username:"
 msgstr "Felhasználónév:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:416
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1852
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1879
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1857
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1885
 msgid "Password:"
 msgstr "Jelszó:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:422
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1813
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1855
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1886
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1818
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1860
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1892
 msgid "&Hide"
 msgstr "&Elrejtés"
 
@@ -286,146 +286,146 @@ msgid "&Generate"
 msgstr "&Generálás"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1880
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1886
 msgid "Confirm:"
 msgstr "Megerősítés:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:434
 #, fuzzy
-msgid "&Alias"
+msgid "&Alias To..."
 msgstr "álnév"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:437
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:441
 msgid "URL:"
 msgstr "Webcím:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:443
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:447
 msgid "Go"
 msgstr "Indít"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:446
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:450
 #, fuzzy
 msgid "EMail:"
 msgstr "e-mail:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:452
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:456
 msgid "Send"
 msgstr "Küldés"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:455
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:459
 msgid "Notes:"
 msgstr "&Megjegyzések:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:481
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:485
 msgid "Autotype:"
 msgstr "&Autogépelés:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:487
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:491
 msgid "Run Cmd:"
 msgstr "Parancs futtatása:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:493
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:596
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:497
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:601
 msgid "Double-Click Action:"
 msgstr "Duplakattintás hatása:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:501
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:617
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:505
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:622
 msgid "Shift-Double-Click Action:"
 msgstr "Shift-duplakattintás hatása:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:509
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:513
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:301
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:314
 #: ../../../ui/wxWidgets/HelpMap.h:42
 msgid "Password History"
 msgstr "Jelszótörténet"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:514
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:518
 msgid "Keep"
 msgstr "Megtart"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:529
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:533
 msgid "last passwords"
 msgstr "utolsó jelszót"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:542
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:546
 msgid "Clear History"
 msgstr "Történet törlése"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:547
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:551
 msgid "Copy All"
 msgstr "Minden másolása"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:565
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:569
 msgid "Password Expiry"
 msgstr "Jelszó lejárat"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:572
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:576
 msgid "On"
 msgstr "Ekkor"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:581
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:585
 msgid "In"
 msgstr "&Ennyi napon belül"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:599
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:603
 msgid "days"
 msgstr "nap"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:602
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:606
 msgid "Recurring"
 msgstr "Ismétlődő"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:608
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1447
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2625
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:612
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1451
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2669
 msgid "Never"
 msgstr "Soha"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:614
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:618
 msgid "Original Value:"
 msgstr "Eredeti érték:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:620
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:624
 msgid "Statistics"
 msgstr "Statisztikák"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:625
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:629
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:277
 msgid "Created on:"
 msgstr "Létrehozva:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:631
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:635
 msgid "Password last changed on:"
 msgstr "Jelszó utolsó változásának ideje:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:634
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:646
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:638
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:650
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:279
 msgid "Static text"
 msgstr "Statikus szöveg"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:637
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:641
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:287
 msgid "Last accessed on:"
 msgstr "Utoljára hozzáférve:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:640
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:851
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:951
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:959
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:969
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:980
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:991
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:999
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1022
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1023
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1024
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1025
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:644
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:855
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:955
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:963
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:973
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:984
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:995
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1003
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1026
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1027
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1028
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1029
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1030
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1031
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1032
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:152
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:153
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:154
@@ -458,35 +458,35 @@ msgstr "Utoljára hozzáférve:"
 msgid "N/A"
 msgstr "N/A"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:643
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:647
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:292
 msgid "Any field last changed on:"
 msgstr "Bármely mező utolsó módosításának ideje:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:666
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:670
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:209
 msgid "Random password generation rules"
 msgstr "Véletlenszerű jelszó generálásának szabályai"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:673
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:677
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:196
 msgid "Use Database Policy"
 msgstr "Széfben megadott szabály használata"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:688
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:692
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:216
 msgid "Password length:"
 msgstr "Jelszó hossza:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:706
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:710
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:233
 msgid "Use lowercase letters"
 msgstr "Használjon kisbetűket"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:712
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:736
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:760
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:785
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:716
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:740
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:764
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:789
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:240
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:264
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:288
@@ -494,58 +494,58 @@ msgstr "Használjon kisbetűket"
 msgid "(At least "
 msgstr "(legalább "
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:726
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:750
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:774
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:799
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:730
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:754
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:778
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:803
 msgid ")"
 msgstr ")"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:730
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:734
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:257
 msgid "Use UPPERCASE letters"
 msgstr "NAGYBETŰK használata"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:754
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:758
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:281
 #: ../../../core/core_st.cpp:263
 msgid "Use digits"
 msgstr "Számjegyek használata"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:778
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:782
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:305
 #: ../../../core/core_st.cpp:265
 msgid "Use symbols"
 msgstr "Szimbólumok használata"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:780
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:784
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:307
 #, fuzzy
 msgid "i.e., ., %, $, etc."
 msgstr "Speciális karakterek használata (., %, $, stb.)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:806
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:810
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:334
 msgid "Reset"
 msgstr "Visszaállítás"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:809
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:813
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:337
 #, fuzzy
 msgid "Use only easy-to-read characters"
 msgstr "Használjon kisbetűket"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:811
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:815
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:339
 msgid "i.e., no 'l', '1', etc."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:816
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:820
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:344
 msgid "Generate pronounceable passwords"
 msgstr "Könnyen kiejthető jelszó generálása"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:822
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:826
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:911
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:284
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:296
@@ -555,45 +555,45 @@ msgstr "Könnyen kiejthető jelszó generálása"
 msgid "Or"
 msgstr "Vagy"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:827
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:831
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:355
 #, fuzzy
 msgid "Use hexadecimal digits only"
 msgstr "Csak hexadecimális számjegyek használata (0-9, a-f)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:829
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:833
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:357
 msgid "0-9, a-f"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:842
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:846
 msgid "Preview"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:850
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:854
 msgid "File"
 msgstr "Fájl"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:855
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:859
 #, fuzzy
 msgid "Import..."
 msgstr "&Import"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:857
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:861
 #, fuzzy
 msgid "Export..."
 msgstr "Export"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:859
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:863
 msgid "Remove"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:864
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:868
 #: ../../../ui/wxWidgets/PropertiesDlg.h:58
 msgid "Properties"
 msgstr "Tulajdonságok"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:870
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:874
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:214
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:219
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:269
@@ -604,35 +604,35 @@ msgstr "Tulajdonságok"
 msgid "Text"
 msgstr "Szöveg"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:873
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:877
 msgid "Media Type:"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:878
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:882
 #, fuzzy
 msgid "Creation Date:"
 msgstr "'Létrehozás ideje'"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:883
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:887
 #, fuzzy
 msgid "File Size:"
 msgstr "&Méret:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:888
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:892
 #, fuzzy
 msgid "File Creation Date:"
 msgstr "'Létrehozás ideje'"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:893
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:897
 #, fuzzy
 msgid "File Last Modified Date:"
 msgstr "Utolsó módosítás"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:937
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:941
 msgid "No Attachment Available"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:972
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:976
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:160
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:173
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:192
@@ -640,132 +640,132 @@ msgstr ""
 msgid "Unknown"
 msgstr "Ismeretlen"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1012
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1016
 msgid "No preview available due to an error"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1016
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1020
 msgid "No preview available - unsupported media type"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1038
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1042
 msgid "Image Preview"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1097
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1101
 #, fuzzy
 msgid "Image files "
 msgstr "Szűrők kezelése"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1099
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1204
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1103
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1208
 #, fuzzy
 msgid "All files (*.*)|*.*"
 msgstr "Minden fájl (*.*)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1102
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1129
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1136
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1143
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1150
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1157
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1106
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1133
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1140
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1147
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1154
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1161
 #, fuzzy
 msgid "Import Attachment"
 msgstr "&Szöveg importálása"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1129
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1133
 msgid "Failed to allocate required memory to import attachment data."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1136
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1232
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1140
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1236
 #, fuzzy
 msgid "Failed to open file."
 msgstr "A dokumentum megnyitása sikertelen."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1143
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1147
 msgid "File exceeds the allowed maximum size of 4.3GB (2^32GB)."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1150
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1154
 #, fuzzy
 msgid "An error occurred while reading the file."
 msgstr "Ismeretlen hiba történt %1 elérése során."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1157
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1161
 msgid "Unexpected error occurred during attachment import."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1170
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1174
 msgid "No attachment data to export."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1170
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1207
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1225
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1232
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1239
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1246
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1174
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1211
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1229
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1236
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1243
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1250
 #, fuzzy
 msgid "Export Attachment"
 msgstr "Exportálás szöveg formátumba"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1186
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1190
 #, c-format
 msgid "%s files (*.%s;*.jpg)|*.%s;*.jpg|"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1191
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1195
 #, c-format
 msgid "%s files (*.%s;*.gz)|*.%s;*.gz|"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1196
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1200
 #, fuzzy, c-format
 msgid "%s files (*.%s)|*.%s|"
 msgstr "XML fájlok (*.xml)|*.xml"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1225
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1229
 msgid "Failed to allocate required memory to export attachment data."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1239
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1243
 #, fuzzy
 msgid "An error occurred while writing the file."
 msgstr "Ismeretlen hiba történt %1 elérése során."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1246
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1250
 msgid "Unexpected error occurred during attachment export."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1427
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1431
 #, fuzzy
 msgid "default"
 msgstr "Alapértelmezett"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1557
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1561
 msgid "[Notes hidden - click here to display]"
 msgstr "[Megjegyzések elrejtve - kattintson ide a megjelenítéshez]"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1626
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1652
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2243
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3014
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1630
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1656
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2271
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3058
 #: ../../../core/core_st.cpp:77
 msgid "Default Policy"
 msgstr "Alapértelmezett szabály"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1679
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1683
 msgid "Couldn't generate password - invalid policy"
 msgstr "Nem sikerült jelszót generálni - érvénytelen szabály"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1680
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1934
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1947
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1969
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1989
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2921
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2948
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1684
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1940
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1953
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1975
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1995
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2965
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2992
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:106
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:115
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:131
@@ -801,88 +801,90 @@ msgstr "Nem sikerült jelszót generálni - érvénytelen szabály"
 msgid "Error"
 msgstr "Hiba"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1734
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1738
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1759
 msgid ""
 "On changing this entry of type Shortcut Base to an Alias all Shortcut to "
 "this entry will be removed!"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1734
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1757
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1738
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1759
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1762
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:457
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:269
 #: ../../../core/core_st.cpp:292
 msgid "Warning"
 msgstr "Figyelmeztetés"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1757
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1762
 msgid "Shortcut or Alias selected, use Base entry instead"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1825
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1864
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1894
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1830
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1869
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1900
 msgid "&Show"
 msgstr "&Mutat"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1847
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1852
 #, fuzzy
 msgid "Alias"
 msgstr "álnév"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1849
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1854
 #, fuzzy
 msgid "Alias:"
 msgstr "álnév"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1932
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1938
 #, c-format
 msgid "This entry must have a %ls"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1933
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1939
 #, fuzzy
 msgid "title"
 msgstr "&Cím:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1933
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1939
 msgid "password"
 msgstr "jelszó"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1946
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1952
 msgid "Passwords do not match"
 msgstr "A jelszavak nem egyeznek"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1968
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1974
 msgid "Database name must not be empty if a database policy shall be used."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1988
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1994
 #, fuzzy
 msgid ""
 "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr "nincs ilyen bejegyzés: csoport=%s, megnevezés=%s és felhasználónév=%s."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2604
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2648
 #, c-format
 msgid " (every %d days)"
 msgstr " (%d naponta)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2920
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2964
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
 msgstr ""
 "A \"könnyen olvasható\" és a \"könnyen kiejthető\" opciókat sajnos nem lehet "
 "egyszerre kiválasztani"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2947
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2991
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
 msgstr ""
 "A \"könnyen kiejthető\" és a \"könnyen olvasható\" opciókat sajnos nem lehet "
 "egyszerre kiválasztani"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2999
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3043
 #, fuzzy
 msgid "mailto:"
 msgstr "e-mail"
@@ -1668,7 +1670,7 @@ msgid "Source"
 msgstr ""
 
 #: ../../../ui/wxWidgets/ManageFiltersTable.cpp:350
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:766
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:771
 msgid "Apply"
 msgstr "Alkalmaz"
 
@@ -2608,7 +2610,7 @@ msgid "Edit/View selected entry"
 msgstr "A kiválasztott bejegyzés megtekintése/szerkesztése"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:134
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:623
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:628
 #: ../../../ui/wxWidgets/ToolbarButtons.h:208 ../../../core/core_st.cpp:65
 msgid "Autotype"
 msgstr "Autogépelés"
@@ -2778,226 +2780,231 @@ msgid "Show Text in Toolbar"
 msgstr "Fő eszközsor testreszabása"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:546
+#, fuzzy
+msgid "Show Alias Selection in Add && Edit"
+msgstr "Jelszó mutatása hozzáadáskor és szerkesztéskor"
+
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:550
 msgid "days before passwords expire"
 msgstr "nappal a jelszó lejárta előtt"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:550
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:554
 msgid "&Fully collapsed"
 msgstr "Teljesen összecsukva"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:551
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:555
 msgid "&Fully expanded"
 msgstr "Teljesen kibontva"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:552
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:556
 msgid "&Same as when last saved"
 msgstr "Az utolsó mentéssel megegyezik"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:553
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:557
 msgid "Initial Tree View"
 msgstr "Kezdeti fanézet"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:582
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:587
 msgid "Confirm deletion of items"
 msgstr "Erősítse meg a tételek törlését"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:586
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:591
 msgid "Record last access times"
 msgstr "Jegyezze fel a legutóbbi hozzáférés idejét"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:590
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:595
 msgid "Escape key closes application"
 msgstr "Az Escape billentyű bezárja a programot"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:626
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:631
 msgid "Minimize after Autotype"
 msgstr "Autogépelés után minimalizálás"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:632
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:637
 msgid "Default Autotype string:"
 msgstr "Alapértelmezett Autogépelés szöveg:"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:639
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:644
 msgid "Default Username"
 msgstr "Alapértelmezett felhasználónév"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:644
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:649
 msgid "Use"
 msgstr "Állítsa be"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:651
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:656
 msgid "as default username"
 msgstr "alapértelmezett felhasználónévként"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:655
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:660
 msgid "Query user to set default username"
 msgstr "Kérdezze a felhasználót, hogy állítson be alapértelmezett nevet"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:659
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:664
 msgid "Alternate Browser"
 msgstr "Másik böngésző"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:673
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:678
 msgid "Browser Command Line parameters"
 msgstr "Böngésző parancssori paraméterek"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:702
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:707
 #: ../../../ui/wxWidgets/ToolbarButtons.h:201
 msgid "Save"
 msgstr "Mentés"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:717
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:722
 msgid "previous passwords per entry"
 msgstr "előző jelszó bejegyzésenként"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:724
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:729
 msgid "Default password expiration (days)"
 msgstr "Alapértelmezett jelszólejárati idő (nap)"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:739
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:744
 msgid "Manage password history of current entries"
 msgstr "Az aktuális tételek jelszótörténetének kezelése"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:742
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:747
 msgid "No change"
 msgstr "Nincs változás"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:746
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:751
 msgid "Stop saving previous passwords"
 msgstr "Előző jelszavak elmentésének befejezése"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:750
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:755
 msgid "Start saving previous passwords"
 msgstr "Előző jelszavak elmentésének elkezdése"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:754
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:759
 msgid "Set maximum number of passwords saved to above value"
 msgstr "Az elmentett jelszavak számának maximalizálása a fenti értékre"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:758
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:763
 msgid "Clear password history for ALL entries"
 msgstr "Az ÖSSZES bejegyzés jelszótörténetének törlése"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:762
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:767
 msgid "Apply these changes to Protected Entries (if required)."
 msgstr "Érvényesítse a változásokat a védett bejegyzéseken (ha szükséges)."
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:785
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:790
 msgid "Clear clipboard upon minimize"
 msgstr "Vágólap törlése kis méretre állításnál"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:789
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:794
 msgid "Clear clipboard upon exit"
 msgstr "Vágólap törlése kilépéskor"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:793
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:798
 msgid "Confirm copy of password to clipboard"
 msgstr "Jelszó vágólapra másolásának megerősítése"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:797
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:802
 msgid "'Browse to URL' copies password to clipboard"
 msgstr "'URL-re Ugrás' funkció a vágólapra másolja a jelszót"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:801
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:806
 msgid "Lock password database on minimize"
 msgstr "Jelszóadatbázis zárolása kicsinyítéskor"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:805
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:810
 msgid "Lock password database on workstation lock"
 msgstr "Jelszóadatbázis zárolása a számítógép zárolásakor"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:811
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:816
 msgid "Lock password database after"
 msgstr "Jelszóadatbázis zárolása"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:826
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:831
 msgid "minutes idle"
 msgstr "perc inaktivitás"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:831
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:836
 msgid "Unlock Difficulty:"
 msgstr "Nyitás nehézségi foka:"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:839
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:844
 msgid "Standard"
 msgstr "Standard"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:844
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:849
 msgid "Maximum"
 msgstr "Maximum"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:888
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:893
 #, fuzzy
 msgid "System Tray"
 msgstr "Ikon elhelyezése az értesítési területen (System Tray)"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:891
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:896
 msgid "Put icon in System Tray"
 msgstr "Ikon elhelyezése az értesítési területen (System Tray)"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:897
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:928
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:902
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:933
 msgid "  Remember last"
 msgstr "Megjegyzi az utolsó"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:911
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:916
 msgid "used entries in System Tray menu"
 msgstr "használt bejegyzést a Tálca menüben"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:914
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:919
 msgid "Start PasswordSafe at Login"
 msgstr "A PasswordSafe elindítása bejelentkezés után"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:918
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:923
 msgid ""
 "There appears to be no system tray support in your current environment.\n"
 "Any related functionality may not work as expected."
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:923
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:928
 msgid "Recent PasswordSafe Databases"
 msgstr "Utoljára megnyitott adatbázisok"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:942
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:947
 msgid "databases"
 msgstr "adatbázist"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:945
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:950
 msgid "Recent Databases on File Menu rather than as a sub-menu"
 msgstr "Utoljára megnyitott adatbázisok a Fájl menüben, nem almenüként"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:949
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:954
 msgid "Open database as read-only by default"
 msgstr "Adatbázis megnyitása alapértelmezés szerint csak olvasásra"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:953
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:958
 msgid "Allow multiple instances"
 msgstr "Több példány engedélyezése"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:958
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:963
 msgid "Use Primary Selection for clipboard"
 msgstr "Az elsődleges kijelölés használata vágólapnál"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:962
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:967
 msgid "Use alternate AutoType method"
 msgstr "Másfajta Autogépelés használata"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:964
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:969
 msgid ""
 "When set, use XTEST for AutoType instead of XSendEvent.\n"
 "XSendEvent can handle more control keys, but may be blocked by some "
 "applications."
 msgstr ""
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:966
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:971
 msgid "If AutoType doesn't work, setting this may help."
 msgstr "Ha nem működik az Autogépelés, ez a beállítás segíthet."
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1391
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1398
 msgid "Select a Browser"
 msgstr "Válasszon böngészőt"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1415
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1422
 #, c-format
 msgid ""
 "Number of entries that had their settings changed to not save password "
@@ -3006,7 +3013,7 @@ msgstr ""
 "%d tétel esetében a beállítások úgy lettek módosítva, hogy a jelszótörténet "
 "ne legyen mentve"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1420
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1427
 #, c-format
 msgid ""
 "Number of entries that had their settings changed to save password history "
@@ -3015,7 +3022,7 @@ msgstr ""
 "%d tétel esetében a beállítások úgy lettek módosítva, hogy a jelszótörténet "
 "mentve legyen"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1425
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1432
 #, c-format
 msgid ""
 "Number of entries that had their 'maximum saved passwords' changed to the "
@@ -3024,7 +3031,7 @@ msgstr ""
 "%d tétel esetében a 'Mentett jelszavak maximális száma' az új "
 "alapértelmezésre lett változtatva"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1430
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1437
 #, c-format
 msgid "Number of entries that had their password history removed was %d"
 msgstr "%d tétel esetében a jelszótörténet el lett távolítva"
@@ -3921,7 +3928,7 @@ msgid "Perform Auto &Type"
 msgstr "&Autogépelés"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1667
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:522
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:535
 msgid "&View Entry..."
 msgstr "&Bejegyzés megtekintése..."
 
@@ -4446,23 +4453,23 @@ msgstr "Kiválasztás"
 msgid "Cancel"
 msgstr "Mégse"
 
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:429
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:431
 #, fuzzy
 msgid "No Alias name given."
 msgstr "Szűrő neve:"
 
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:429
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:431
 #, fuzzy
 msgid "Please name the alias."
 msgstr "Kérem adjon nevet az XML fájlnak"
 
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:524
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:537
 #: ../../../ui/wxWidgets/ToolbarButtons.h:217
 #, fuzzy
 msgid "Expand"
 msgstr "Összes kibontása"
 
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:525
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:538
 #: ../../../ui/wxWidgets/ToolbarButtons.h:218
 #, fuzzy
 msgid "Collapse"
@@ -5114,7 +5121,7 @@ msgstr "Szűrők kezelése"
 msgid "Manage Password Policies"
 msgstr "Jelszószabályok kezelése"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.h:135
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.h:136
 #: ../../../ui/wxWidgets/ToolbarButtons.h:220
 msgid "Options"
 msgstr "Beállítások"

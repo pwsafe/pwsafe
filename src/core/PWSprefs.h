@@ -132,6 +132,7 @@ public:
     AutoAdjColWidth,
     ToolbarShowText,
     DragAndDropShowRoot,
+    ShowAliasSelection,
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,

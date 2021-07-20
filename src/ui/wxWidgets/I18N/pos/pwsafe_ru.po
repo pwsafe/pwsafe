@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-10 19:38+0200\n"
+"POT-Creation-Date: 2021-07-18 19:44+0200\n"
 "PO-Revision-Date: 2021-07-08 20:10+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: none\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:141
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1443
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1450
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:431
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:567
 msgid "Password Safe"
@@ -147,49 +147,49 @@ msgid "Could not download version data.\n"
 msgstr "Невозможно загрузить данные о версии.\n"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:308
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1398
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1402
 msgid "Auto Type"
 msgstr "Автонабор"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:309
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1399
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1403
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:464
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:667
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:672
 msgid "Browse"
 msgstr "Обзор"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:310
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1400
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1404
 msgid "Browse + Auto Type"
 msgstr "Перейти по ссылке и выполнить автонабор"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:311
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1401
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1405
 msgid "Copy Notes"
 msgstr "Копировать заметки"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:312
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1402
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1406
 msgid "Copy Password"
 msgstr "Копировать пароль"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:313
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1403
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1407
 msgid "Copy Password + Minimize"
 msgstr "Копировать пароль и свернуть"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:314
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1404
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1408
 msgid "Copy Username"
 msgstr "Копировать имя пользователя"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:315
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1405
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1409
 msgid "Edit/View Entry"
 msgstr "Редактирование/просмотр элемента"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:316
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1406
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1410
 msgid "Execute Run command"
 msgstr "Выполнить команду"
 
@@ -253,7 +253,7 @@ msgid "Group:"
 msgstr "Группа:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:404
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:868
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:872
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:212
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:234
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:267
@@ -270,15 +270,15 @@ msgid "Username:"
 msgstr "Имя пользователя:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:416
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1852
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1879
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1857
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1885
 msgid "Password:"
 msgstr "Пароль:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:422
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1813
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1855
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1886
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1818
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1860
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1892
 msgid "&Hide"
 msgstr "&Скрыть"
 
@@ -287,59 +287,59 @@ msgid "&Generate"
 msgstr "&Создать"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1880
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1886
 msgid "Confirm:"
 msgstr "Подтверждение:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:434
 #, fuzzy
-msgid "&Alias"
+msgid "&Alias To..."
 msgstr "псевдоним"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:437
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:441
 msgid "URL:"
 msgstr "Ссылка:"
 
 # переход по ссылке/выполнение команды в диалоге создания/редактирования
 # элемента
 # "перейти" не входит по длине
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:443
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:447
 msgid "Go"
 msgstr "Перейти"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:446
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:450
 msgid "EMail:"
 msgstr "E-mail:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:452
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:456
 msgid "Send"
 msgstr "Отправ."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:455
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:459
 msgid "Notes:"
 msgstr "Заметки:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:481
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:485
 msgid "Autotype:"
 msgstr "Автонабор:"
 
 # урезано
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:487
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:491
 msgid "Run Cmd:"
 msgstr "Выполнить:"
 
 # Вкладка прочее, обычный режим, урезано
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:493
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:596
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:497
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:601
 msgid "Double-Click Action:"
 msgstr "Действие по двойному клику:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:501
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:617
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:505
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:622
 msgid "Shift-Double-Click Action:"
 msgstr "Действие по Shift + двойной клик:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:509
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:513
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:301
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:314
 #: ../../../ui/wxWidgets/HelpMap.h:42
@@ -347,96 +347,96 @@ msgid "Password History"
 msgstr "История паролей"
 
 # В истории паролей
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:514
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:518
 msgid "Keep"
 msgstr "Хранить"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:529
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:533
 msgid "last passwords"
 msgstr "предыдущих паролей"
 
 # урезано
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:542
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:546
 msgid "Clear History"
 msgstr "Очистить"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:547
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:551
 msgid "Copy All"
 msgstr "Копировать все"
 
 # Заголовок группы на вкладке срока действия
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:565
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:569
 msgid "Password Expiry"
 msgstr "Пароль истекает"
 
 # Пароль истекает ...
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:572
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:576
 msgid "On"
 msgstr " "
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:581
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:585
 msgid "In"
 msgstr "через"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:599
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:603
 msgid "days"
 msgstr "дней"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:602
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:606
 msgid "Recurring"
 msgstr "Повторять"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:608
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1447
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2625
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:612
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1451
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2669
 msgid "Never"
 msgstr "Никогда"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:614
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:618
 msgid "Original Value:"
 msgstr "Исходное значение:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:620
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:624
 msgid "Statistics"
 msgstr "Статистика"
 
 # "Создан" т.к. относится к элементу
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:625
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:629
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:277
 msgid "Created on:"
 msgstr "Создан:"
 
 # урезано из-за ограничения размеров
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:631
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:635
 msgid "Password last changed on:"
 msgstr "Пароль изменён:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:634
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:646
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:638
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:650
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:279
 msgid "Static text"
 msgstr "Заглушка"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:637
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:641
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:287
 msgid "Last accessed on:"
 msgstr "Последнее обращение:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:640
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:851
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:951
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:959
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:969
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:980
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:991
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:999
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1022
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1023
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1024
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1025
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:644
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:855
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:955
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:963
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:973
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:984
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:995
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1003
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1026
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1027
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1028
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1029
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1030
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1031
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1032
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:152
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:153
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:154
@@ -469,36 +469,36 @@ msgstr "Последнее обращение:"
 msgid "N/A"
 msgstr "Н/Д"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:643
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:647
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:292
 msgid "Any field last changed on:"
 msgstr "Изменено хотя бы одно поле:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:666
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:670
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:209
 msgid "Random password generation rules"
 msgstr "Правила создания случайного пароля"
 
 # урезано (вкладка "Политика..." в диалоге редактирования элемента)
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:673
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:677
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:196
 msgid "Use Database Policy"
 msgstr "Использовать политику"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:688
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:692
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:216
 msgid "Password length:"
 msgstr "Длина пароля:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:706
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:710
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:233
 msgid "Use lowercase letters"
 msgstr "Строчные буквы"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:712
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:736
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:760
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:785
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:716
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:740
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:764
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:789
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:240
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:264
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:288
@@ -506,59 +506,59 @@ msgstr "Строчные буквы"
 msgid "(At least "
 msgstr "(не менее "
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:726
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:750
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:774
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:799
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:730
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:754
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:778
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:803
 msgid ")"
 msgstr ")"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:730
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:734
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:257
 msgid "Use UPPERCASE letters"
 msgstr "ПРОПИСНЫЕ буквы"
 
 # урезано, в информации о политике
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:754
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:758
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:281
 #: ../../../core/core_st.cpp:263
 msgid "Use digits"
 msgstr "Использовать цифры"
 
 # урезано, в информации о политике
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:778
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:782
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:305
 #: ../../../core/core_st.cpp:265
 msgid "Use symbols"
 msgstr "Символы"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:780
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:784
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:307
 msgid "i.e., ., %, $, etc."
 msgstr "напр. &, %, $ и т. п."
 
 # Урезано (кнопка в диалогах мастера и политиках паролей)
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:806
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:810
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:334
 msgid "Reset"
 msgstr "Сброс"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:809
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:813
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:337
 msgid "Use only easy-to-read characters"
 msgstr "Только удобочитаемые символы"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:811
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:815
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:339
 msgid "i.e., no 'l', '1', etc."
 msgstr "не исп. «l», «1» и т. п."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:816
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:820
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:344
 msgid "Generate pronounceable passwords"
 msgstr "Создавать произносимые пароли"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:822
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:826
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:911
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:284
 #: ../../../ui/wxWidgets/PWFiltersTable.cpp:296
@@ -568,47 +568,47 @@ msgstr "Создавать произносимые пароли"
 msgid "Or"
 msgstr "Или"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:827
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:831
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:355
 msgid "Use hexadecimal digits only"
 msgstr "Только шестнадцатеричные цифры"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:829
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:833
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:357
 msgid "0-9, a-f"
 msgstr "0-9, a-f"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:842
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:846
 msgid "Preview"
 msgstr "Предпросмотр"
 
 # Имя пункта меню
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:850
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:854
 msgid "File"
 msgstr "Файл"
 
 # кнопка на вкладке вложения
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:855
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:859
 msgid "Import..."
 msgstr "Импорт..."
 
 # кнопка на вкладке вложения
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:857
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:861
 msgid "Export..."
 msgstr "Экспорт..."
 
 # кнопка на вкладке вложения
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:859
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:863
 msgid "Remove"
 msgstr "Удалить"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:864
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:868
 #: ../../../ui/wxWidgets/PropertiesDlg.h:58
 msgid "Properties"
 msgstr "Свойства"
 
 # Первая подстановка в "%s file being imported/exported: %s"
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:870
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:874
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:214
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:219
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:269
@@ -619,33 +619,33 @@ msgstr "Свойства"
 msgid "Text"
 msgstr "Текстовый"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:873
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:877
 msgid "Media Type:"
 msgstr "Тип файла:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:878
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:882
 msgid "Creation Date:"
 msgstr "Дата создания:"
 
 # Свойства вложения
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:883
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:887
 msgid "File Size:"
 msgstr "Размер файла:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:888
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:892
 msgid "File Creation Date:"
 msgstr "Дата создания файла:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:893
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:897
 msgid "File Last Modified Date:"
 msgstr "Дата изменения файла:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:937
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:941
 msgid "No Attachment Available"
 msgstr "Вложение отсутствует"
 
 # дата в истории паролей
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:972
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:976
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:160
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:173
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:192
@@ -653,124 +653,124 @@ msgstr "Вложение отсутствует"
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1012
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1016
 msgid "No preview available due to an error"
 msgstr "Предпросмотр недоступен из-за ошибки"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1016
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1020
 msgid "No preview available - unsupported media type"
 msgstr "Предпросмотр недоступен — неподдерживаемый тип."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1038
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1042
 msgid "Image Preview"
 msgstr "Предпросмотр изображения"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1097
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1101
 msgid "Image files "
 msgstr "Файлы изображений "
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1099
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1204
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1103
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1208
 msgid "All files (*.*)|*.*"
 msgstr "Все файлы (*.*)|*.*"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1102
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1129
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1136
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1143
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1150
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1157
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1106
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1133
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1140
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1147
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1154
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1161
 msgid "Import Attachment"
 msgstr "Импортировать вложение"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1129
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1133
 msgid "Failed to allocate required memory to import attachment data."
 msgstr "Не удалось выделить память для импорта вложения."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1136
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1232
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1140
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1236
 msgid "Failed to open file."
 msgstr "Не удалось открыть файл."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1143
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1147
 msgid "File exceeds the allowed maximum size of 4.3GB (2^32GB)."
 msgstr "Размер файла больше максимально разрешённых 4 ГиБ (2^32 Б)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1150
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1154
 msgid "An error occurred while reading the file."
 msgstr "Ошибка при чтении файла."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1157
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1161
 msgid "Unexpected error occurred during attachment import."
 msgstr "Ошибка при импорте вложения."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1170
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1174
 msgid "No attachment data to export."
 msgstr "Отсутствует вложение для экспорта."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1170
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1207
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1225
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1232
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1239
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1246
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1174
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1211
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1229
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1236
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1243
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1250
 msgid "Export Attachment"
 msgstr "Экспортировать вложение"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1186
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1190
 #, c-format
 msgid "%s files (*.%s;*.jpg)|*.%s;*.jpg|"
 msgstr "%s файлы (*.%s;*.jpg)|*.%s;*.jpg|"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1191
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1195
 #, c-format
 msgid "%s files (*.%s;*.gz)|*.%s;*.gz|"
 msgstr "%s файлы (*.%s;*.gz)|*.%s;*.gz|"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1196
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1200
 #, c-format
 msgid "%s files (*.%s)|*.%s|"
 msgstr "%s файлы (*.%s)|*.%s|"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1225
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1229
 msgid "Failed to allocate required memory to export attachment data."
 msgstr "Не удалось выделить память для экспорта вложения."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1239
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1243
 msgid "An error occurred while writing the file."
 msgstr "Ошибка при записи файла."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1246
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1250
 msgid "Unexpected error occurred during attachment export."
 msgstr "Ошибка при экспорте вложения."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1427
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1431
 msgid "default"
 msgstr "по умолчанию"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1557
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1561
 msgid "[Notes hidden - click here to display]"
 msgstr "[Заметки скрыты. Кликните здесь, чтобы показать.]"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1626
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1652
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2243
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3014
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1630
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1656
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2271
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3058
 #: ../../../core/core_st.cpp:77
 msgid "Default Policy"
 msgstr "Политика по умолчанию"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1679
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1683
 msgid "Couldn't generate password - invalid policy"
 msgstr "Ошибка при создании пароля: некорректная политика создания паролей"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1680
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1934
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1947
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1969
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1989
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2921
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2948
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1684
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1940
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1953
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1975
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1995
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2965
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2992
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:106
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:115
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:131
@@ -806,84 +806,86 @@ msgstr "Ошибка при создании пароля: некорректн�
 msgid "Error"
 msgstr "Ошибка"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1734
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1738
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1759
 msgid ""
 "On changing this entry of type Shortcut Base to an Alias all Shortcut to "
 "this entry will be removed!"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1734
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1757
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1738
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1759
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1762
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:457
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:269
 #: ../../../core/core_st.cpp:292
 msgid "Warning"
 msgstr "Предупреждение"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1757
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1762
 msgid "Shortcut or Alias selected, use Base entry instead"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1825
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1864
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1894
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1830
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1869
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1900
 msgid "&Show"
 msgstr "&Показать"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1847
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1852
 #, fuzzy
 msgid "Alias"
 msgstr "псевдоним"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1849
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1854
 #, fuzzy
 msgid "Alias:"
 msgstr "псевдоним"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1932
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1938
 #, c-format
 msgid "This entry must have a %ls"
 msgstr "Элемент должен содержать %ls"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1933
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1939
 msgid "title"
 msgstr "Заголовок"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1933
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1939
 msgid "password"
 msgstr "Пароль"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1946
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1952
 msgid "Passwords do not match"
 msgstr "Пароли не совпадают"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1968
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1974
 msgid "Database name must not be empty if a database policy shall be used."
 msgstr "Имя политики создания паролей не должно быть пустым."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1988
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1994
 msgid ""
 "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr ""
 "Элемент или ярлык с такими же значениями Группы, Заголовка и Имени "
 "пользователя уже существует."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2604
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2648
 #, c-format
 msgid " (every %d days)"
 msgstr " (каждые %d дней)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2920
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2964
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
 msgstr "Параметры «удобочитаемые» и «произносимые» несовместимы"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2947
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2991
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
 msgstr "Параметры «произносимые» и «удобочитаемые» несовместимы"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2999
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3043
 msgid "mailto:"
 msgstr "mailto:"
 
@@ -1631,7 +1633,7 @@ msgid "Source"
 msgstr "Источник"
 
 #: ../../../ui/wxWidgets/ManageFiltersTable.cpp:350
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:766
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:771
 msgid "Apply"
 msgstr "Применить"
 
@@ -2558,7 +2560,7 @@ msgid "Edit/View selected entry"
 msgstr "Редактирование/просмотр выбранного элемента"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:134
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:623
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:628
 #: ../../../ui/wxWidgets/ToolbarButtons.h:208 ../../../core/core_st.cpp:65
 msgid "Autotype"
 msgstr "Автонабор"
@@ -2733,184 +2735,189 @@ msgid "Show Text in Toolbar"
 msgstr "Показывать подписи на панели инструментов"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:546
+#, fuzzy
+msgid "Show Alias Selection in Add && Edit"
+msgstr "Показывать пароль при добавлении и редактировании"
+
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:550
 msgid "days before passwords expire"
 msgstr "дней до истечения пароля"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:550
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:554
 msgid "&Fully collapsed"
 msgstr "Полностью &свёрнуто"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:551
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:555
 msgid "&Fully expanded"
 msgstr "Полностью &развёрнуто"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:552
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:556
 msgid "&Same as when last saved"
 msgstr "Такой же, как при &последнем сохранении"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:553
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:557
 msgid "Initial Tree View"
 msgstr "Вид дерева при старте"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:582
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:587
 msgid "Confirm deletion of items"
 msgstr "Подтверждать удаление элементов"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:586
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:591
 msgid "Record last access times"
 msgstr "Время последнего доступа"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:590
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:595
 msgid "Escape key closes application"
 msgstr "Закрывать приложение по Esc"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:626
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:631
 msgid "Minimize after Autotype"
 msgstr "Свернуть после автонабора"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:632
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:637
 msgid "Default Autotype string:"
 msgstr "Строка автонабора по умолчанию:"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:639
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:644
 msgid "Default Username"
 msgstr "Имя пользователя по умолчанию"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:644
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:649
 msgid "Use"
 msgstr "Задать"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:651
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:656
 msgid "as default username"
 msgstr "как «имя по умолчанию»"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:655
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:660
 msgid "Query user to set default username"
 msgstr "Запросить у пользователя имя по умолчанию"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:659
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:664
 msgid "Alternate Browser"
 msgstr "Альтернативный браузер"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:673
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:678
 msgid "Browser Command Line parameters"
 msgstr "Параметры командной строки браузера"
 
 # Хранить n предыдущих паролей
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:702
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:707
 #: ../../../ui/wxWidgets/ToolbarButtons.h:201
 msgid "Save"
 msgstr "Сохранить"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:717
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:722
 msgid "previous passwords per entry"
 msgstr "предыдущих паролей для элемента"
 
 # вкладка "история паролей", урезано
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:724
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:729
 msgid "Default password expiration (days)"
 msgstr "Срок действия пароля по умолчанию (в днях)"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:739
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:744
 msgid "Manage password history of current entries"
 msgstr "Управление историей паролей для существующих элементов"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:742
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:747
 msgid "No change"
 msgstr "Без изменений"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:746
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:751
 msgid "Stop saving previous passwords"
 msgstr "Перестать сохранять предыдущие пароли"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:750
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:755
 msgid "Start saving previous passwords"
 msgstr "Начать сохранение предыдущих паролей"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:754
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:759
 msgid "Set maximum number of passwords saved to above value"
 msgstr ""
 "Установить максимальное количество сохраняемых паролей равным указанному "
 "значению"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:758
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:763
 msgid "Clear password history for ALL entries"
 msgstr "Очистить историю паролей у ВСЕХ элементов"
 
 # урезано (галка в настройке истории)
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:762
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:767
 msgid "Apply these changes to Protected Entries (if required)."
 msgstr "Применить и к защищённым элементам"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:785
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:790
 msgid "Clear clipboard upon minimize"
 msgstr "Очищать буфер обмена при сворачивании"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:789
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:794
 msgid "Clear clipboard upon exit"
 msgstr "Очищать буфер обмена при выходе"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:793
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:798
 msgid "Confirm copy of password to clipboard"
 msgstr "Подтверждать копирование пароля в буфер обмена"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:797
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:802
 msgid "'Browse to URL' copies password to clipboard"
 msgstr "«Перейти по ссылке» копирует пароль в буфер обмена"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:801
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:806
 msgid "Lock password database on minimize"
 msgstr "Блокировать контейнер при сворачивании"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:805
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:810
 msgid "Lock password database on workstation lock"
 msgstr "Блокировать контейнер при блокировке компьютера"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:811
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:816
 msgid "Lock password database after"
 msgstr "Блокировать контейнер после "
 
 # Ex.: "Lock password database after 5 minutes idle"
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:826
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:831
 msgid "minutes idle"
 msgstr "минут бездействия"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:831
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:836
 msgid "Unlock Difficulty:"
 msgstr "Стойкость к перебору"
 
 # Unlock difficulty
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:839
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:844
 msgid "Standard"
 msgstr "обычная"
 
 # Unlock difficulty
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:844
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:849
 msgid "Maximum"
 msgstr "максимальная"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:888
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:893
 msgid "System Tray"
 msgstr "Значок в области уведомлений"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:891
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:896
 msgid "Put icon in System Tray"
 msgstr "Отображать значок в области уведомлений"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:897
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:928
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:902
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:933
 msgid "  Remember last"
 msgstr "  Хранить последние"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:911
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:916
 msgid "used entries in System Tray menu"
 msgstr "использованных элементов в меню значка"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:914
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:919
 msgid "Start PasswordSafe at Login"
 msgstr "Запускать Password Safe при входе в систему"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:918
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:923
 msgid ""
 "There appears to be no system tray support in your current environment.\n"
 "Any related functionality may not work as expected."
@@ -2918,35 +2925,35 @@ msgstr ""
 "Похоже, текущее окружение не поддерживает работу с областью уведомлений.\n"
 "Связанные с ней функции могут работать некорректно."
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:923
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:928
 msgid "Recent PasswordSafe Databases"
 msgstr "Недавние контейнеры"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:942
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:947
 msgid "databases"
 msgstr "контейнеров"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:945
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:950
 msgid "Recent Databases on File Menu rather than as a sub-menu"
 msgstr "Отображать недавние контейнеры в меню Файл, а не в подменю"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:949
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:954
 msgid "Open database as read-only by default"
 msgstr "По умолчанию открывать контейнер только для чтения"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:953
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:958
 msgid "Allow multiple instances"
 msgstr "Разрешить одновременный запуск нескольких копий"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:958
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:963
 msgid "Use Primary Selection for clipboard"
 msgstr "Использовать «буфер текущего выделения» при копировании в буфер обмена"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:962
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:967
 msgid "Use alternate AutoType method"
 msgstr "Использовать альтернативный способ автонабора"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:964
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:969
 msgid ""
 "When set, use XTEST for AutoType instead of XSendEvent.\n"
 "XSendEvent can handle more control keys, but may be blocked by some "
@@ -2956,29 +2963,29 @@ msgstr ""
 "XSendEvent поддерживает большее количество комбинаций, но может быть "
 "заблокирован некоторыми приложениями."
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:966
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:971
 msgid "If AutoType doesn't work, setting this may help."
 msgstr "Если автонабор не работает, попробуйте установить этот флажок."
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1391
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1398
 msgid "Select a Browser"
 msgstr "Укажите браузер"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1415
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1422
 #, c-format
 msgid ""
 "Number of entries that had their settings changed to not save password "
 "history was: %d"
 msgstr "Количество элементов для которых отключено ведение истории паролей: %d"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1420
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1427
 #, c-format
 msgid ""
 "Number of entries that had their settings changed to save password history "
 "was: %d"
 msgstr "Количество элементов для которых включено ведение истории паролей: %d"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1425
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1432
 #, c-format
 msgid ""
 "Number of entries that had their 'maximum saved passwords' changed to the "
@@ -2987,7 +2994,7 @@ msgstr ""
 "Количество элементов у которых значение «количество запоминаемых паролей» "
 "было изменено на новое: %d"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1430
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1437
 #, c-format
 msgid "Number of entries that had their password history removed was %d"
 msgstr "Количество элементов для которых была удалена история паролей: %d"
@@ -3865,7 +3872,7 @@ msgid "Perform Auto &Type"
 msgstr "&Автонабор"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1667
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:522
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:535
 msgid "&View Entry..."
 msgstr "&Просмотр элемента..."
 
@@ -4388,22 +4395,22 @@ msgstr "Выбор"
 msgid "Cancel"
 msgstr "Отмена"
 
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:429
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:431
 #, fuzzy
 msgid "No Alias name given."
 msgstr "Не указано имя фильтра."
 
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:429
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:431
 #, fuzzy
 msgid "Please name the alias."
 msgstr "Укажите имя для текущего фильтра"
 
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:524
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:537
 #: ../../../ui/wxWidgets/ToolbarButtons.h:217
 msgid "Expand"
 msgstr "Развернуть"
 
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:525
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:538
 #: ../../../ui/wxWidgets/ToolbarButtons.h:218
 msgid "Collapse"
 msgstr "Свернуть"
@@ -5054,7 +5061,7 @@ msgstr "Управление фильтрами"
 msgid "Manage Password Policies"
 msgstr "Управление политиками создания паролей"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.h:135
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.h:136
 #: ../../../ui/wxWidgets/ToolbarButtons.h:220
 msgid "Options"
 msgstr "Настройки"

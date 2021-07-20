@@ -157,7 +157,7 @@ endif
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n $(BINRELNAME64).zip -f $(BINRELNAME64).zip; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n $(BINRELNAME64).zip.sig -f $(BINRELNAME64).zip.sig; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe-$(RELEASENAME)-map+pdb.zip \
-			-f pwsafe-$(RELEASENAME)-map+pdb.zip) \
+			-f pwsafe-$(RELEASENAME)-map+pdb.zip; \
 		$(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n pwsafe64-$(RELEASENAME)-map+pdb.zip \
 			-f pwsafe64-$(RELEASENAME)-map+pdb.zip)
 	(cd docs; $(GH_UPLOAD_CMD) upload -t $(RELEASENAME) -n ReleaseNotes.md -f ReleaseNotes.md)

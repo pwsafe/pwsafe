@@ -1415,7 +1415,6 @@ void DboxMain::RestoreWindows()
 {
   PWS_LOGIT;
 
-  ShowWindow(SW_RESTORE);
 
   // Restore saved DB preferences that may not have been saved in the database
   // over the minimize/restore event.
@@ -1427,6 +1426,13 @@ void DboxMain::RestoreWindows()
     }
     m_savedDBprefs = EMPTYSAVEDDBPREFS;
   }
+
+  // Restore maximized state - PR1530
+  CRect rect;
+  PWSprefs::GetInstance()->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
+  bool wasMaximized = (rect.top == 0 && rect.bottom == 0 && rect.left == 0 && rect.right == 0);
+  ShowWindow(wasMaximized ? SW_SHOWMAXIMIZED : SW_RESTORE);
+
 
   RefreshViews();
 

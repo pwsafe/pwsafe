@@ -511,6 +511,12 @@ void SelectAliasDlg::UpdateSelChanged(CItemData *pci)
                 pci->GetUser()  + L"]";
     m_AliasName = pwd.c_str();
     m_AliasBaseTextCtrl->SetValue(m_AliasName);
+    
+    FindWindow(wxID_REMOVE)->Enable();
+    FindWindow(wxID_OK)->Enable();
+  }
+  if(!pci) {
+    FindWindow(wxID_OK)->Disable();
   }
   if(m_Core->IsReadOnly() && *m_BaseItem) {
     uuid_array_t uuid;
