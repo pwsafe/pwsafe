@@ -1848,9 +1848,6 @@ void AddEditPropSheetDlg::ShowAlias()
                 pbci->GetTitle() + L":" +
                 pbci->GetUser()  + L"]";
   }
-  else {
-    m_Password = L"[" + tostringx(_("Alias")) + L"]";
-  }
   m_BasicPasswordTextLabel->SetLabel(_("Alias:"));
   UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, m_Password.c_str(), m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, wxTE_READONLY);
   
@@ -2024,7 +2021,10 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand()
   m_Item.SetNotes(tostringx(m_Notes));
   m_Item.SetURL(tostringx(m_Url));
   m_Item.SetEmail(tostringx(m_Email));
-  m_Item.SetPassword(password);
+  if(! m_Item.IsAlias())
+    m_Item.SetPassword(password);
+  else
+    m_Item.SetPassword(L"");
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Additional"
@@ -2472,7 +2472,6 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
         commands->Add(
           AddDependentEntryCommand::Create(&m_Core, m_Item.GetBaseUUID(), origItem.GetUUID(), CItemData::ET_ALIAS)
         );
-        m_Item.SetPassword(L"[Alias]");
       }
       else if(origItem.IsAlias() && m_Item.IsNormal()) { // No longer an alias
         commands->Add(
@@ -2499,7 +2498,6 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
         commands->Add(
           AddDependentEntryCommand::Create(&m_Core, m_Item.GetBaseUUID(), origItem.GetUUID(), CItemData::ET_ALIAS)
         );
-        m_Item.SetPassword(L"[Alias]");
         commands->Add(
           MoveDependentEntriesCommand::Create(&m_Core, origItem.GetBaseUUID(), m_Item.GetUUID(), CItemData::ET_ALIAS)
         );
@@ -2520,7 +2518,6 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
         commands->Add(
           AddDependentEntryCommand::Create(&m_Core, m_Item.GetBaseUUID(), origItem.GetUUID(), CItemData::ET_ALIAS)
         );
-        m_Item.SetPassword(L"[Alias]");
         // Delete shortcuts
         UUIDVector tlist;
         m_Core.GetAllDependentEntries(origItem.GetUUID(), tlist, CItemData::ET_SHORTCUT);
