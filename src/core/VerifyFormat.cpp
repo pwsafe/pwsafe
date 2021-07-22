@@ -505,7 +505,7 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
   std::vector<StringX> in_tokens, out_entries;
   int s = -1;
   size_t nerror(size_t(-1));
-  unsigned int ipwlen, m = 0, n = 0; // using uint instead of size_t to use 'x' format spec instead of complier-dependent z/I
+  unsigned int ipwlen, m = 0, n = 0; // using uint instead of size_t to use 'x' format spec instead of compiler-dependent z/I
   int rc = PWH_OK;
   time_t t;
 
@@ -580,7 +580,7 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
   // Check we have enough
   if (in_tokens.size() != n * 3) {
     // too few or too many - set number to number of complete entries
-    n = (in_tokens.size() % 3);
+    n = static_cast<unsigned int>(in_tokens.size()) / 3;
   }
 
   // Now only verify them and create out_tokens for processing
@@ -599,7 +599,10 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
     }
     sxDatetime = in_tokens[it];
     sxPWLen = in_tokens[it + 1];
-    sxPassword = in_tokens[it + 2];
+    if (sxPWLen != L"0000")
+      sxPassword = in_tokens[it + 2];
+    else
+      sxPassword = L"";
 
     // Get password length
     if (sxPWLen.find_first_not_of(sHex) != StringX::npos) {
