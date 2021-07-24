@@ -106,6 +106,7 @@ class wxBoxSizer;
 #define ID_CHECKBOX8 10123
 #define ID_CHECKBOX9 10124
 #define ID_STATICTEXT_DAYS 11125
+#define ID_BUTTON_ALIAS 10130
 #define SYMBOL_ADDEDITPROPSHEETDLG_STYLE wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX | wxDIALOG_MODAL
 #define SYMBOL_ADDEDITPROPSHEETDLG_TITLE _("Edit Entry")
 #define SYMBOL_ADDEDITPROPSHEETDLG_IDNAME ID_ADDEDITPROPSHEETDLG
@@ -153,11 +154,14 @@ public:
 
   ////@begin AddEditPropSheetDlg event handler declarations
 
-  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON2
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_SHOWHIDE
   void OnShowHideClick(wxCommandEvent &event);
 
-  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON3
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_GENERATE
   void OnGenerateButtonClick(wxCommandEvent &event);
+  
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_ALIAS
+  void OnAliasButtonClick(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_GO_BTN
   void OnGoButtonClick(wxCommandEvent &event);
@@ -284,8 +288,11 @@ private:
   PWPolicy GetSelectedPWPolicy();
   void ShowPWPSpinners(bool show);
   void EnableNonHexCBs(bool enable);
+  void UpdatePasswordTextCtrl(wxTextCtrl* &textCtrl, const wxString value, wxTextCtrl* before, const int id = ID_TEXTCTRL_PASSWORD, const int style = 0);
   void ShowPassword();
   void HidePassword();
+  void ShowAlias();
+  void RemoveAlias();
   int GetRequiredPWLength() const;
 
   bool ValidateBasicData();
@@ -302,8 +309,10 @@ private:
   wxTextCtrl *m_BasicTitleTextCtrl;
   wxTextCtrl *m_BasicUsernameTextCtrl;
   wxTextCtrl *m_BasicPasswordTextCtrl;
+  wxStaticText *m_BasicPasswordTextLabel;
   wxButton *m_BasicShowHideCtrl;
   wxTextCtrl *m_BasicPasswordConfirmationTextCtrl;
+  wxStaticText *m_BasicPasswordConfirmationTextLabel;
   wxTextCtrl *m_BasicUrlTextCtrl;
   wxTextCtrl *m_BasicEmailTextCtrl;
   wxTextCtrl *m_BasicNotesTextCtrl;
