@@ -7,6 +7,11 @@ releases may be found in the file ChangeLog.txt.
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
+PasswordSafe 3.56.1 Release ???? 2021
+=====================================
+* [SF1544](https://sourceforge.net/p/passwordsafe/bugs/1544/) Fixed regression in German isntaller texts.
+
+
 PasswordSafe non-Windows Release 1.14
 =====================================
 * [SF1543](https://sourceforge.net/p/passwordsafe/bugs/1543/) Fixed crash when importing XML with empty password in password history
