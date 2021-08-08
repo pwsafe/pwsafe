@@ -106,33 +106,3 @@ LRESULT CPWPropertySheet::OnMenuChar(UINT nChar, UINT nFlags, CMenu *pMenu)
 
  return CMFCPropertySheet::OnMenuChar(nChar, nFlags, pMenu);
 }
-
-void CPWPropertySheet::OnDrawPageHeader(CDC* /* pDC */, int /* nPage */, CRect /* rectHeader */)
-{
-  // For some reason this isn't being called after EnablePageHeader is called.
-#if 0
-  rectHeader.top += 2;
-  rectHeader.right -= 2;
-  rectHeader.bottom -= 2;
-
-  pDC->FillRect(rectHeader, &afxGlobalData.brBtnFace);
-  pDC->Draw3dRect(rectHeader, afxGlobalData.clrBtnShadow, afxGlobalData.clrBtnShadow);
-
-  CDrawingManager dm(*pDC);
-  dm.DrawShadow(rectHeader, 2);
-
-  CString strText;
-  strText.Format(_T("Page %d description..."), nPage + 1);
-
-  CRect rectText = rectHeader;
-  rectText.DeflateRect(10, 0);
-
-  CFont* pOldFont = pDC->SelectObject(&afxGlobalData.fontBold);
-  pDC->SetBkMode(TRANSPARENT);
-  pDC->SetTextColor(afxGlobalData.clrBtnText);
-
-  pDC->DrawText(strText, rectText, DT_SINGLELINE | DT_VCENTER);
-
-  pDC->SelectObject(pOldFont);
-#endif 0
-}
