@@ -9,7 +9,7 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 
 PasswordSafe 3.56.1 Release ???? 2021
 =====================================
-* [SF1544](https://sourceforge.net/p/passwordsafe/bugs/1544/) Fixed regression in German isntaller texts.
+* [SF1544](https://sourceforge.net/p/passwordsafe/bugs/1544/) Fixed regression in German installer texts.
 
 
 PasswordSafe non-Windows Release 1.14
