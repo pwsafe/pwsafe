@@ -299,7 +299,7 @@ private:
   bool ValidatePasswordPolicy();
   bool IsGroupUsernameTitleCombinationUnique();
 
-  Command* NewAddEntryCommand();
+  Command* NewAddEntryCommand(bool bNewCTime = true);
   Command* NewEditEntryCommand();
 
   // Tab: "Basic"

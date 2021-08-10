@@ -1208,7 +1208,7 @@ void AddEditPropSheetDlg::OnExport(wxCommandEvent& WXUNUSED(event))
   fileFilter.Append(_("All files (*.*)|*.*"));
 
   wxFileDialog fileDialog(
-    this, _("Export Attachment"), "", "",
+    this, _("Export Attachment"), "", m_ItemAttachment.GetFileName().c_str(),
     fileFilter,
     wxFD_SAVE | wxFD_OVERWRITE_PROMPT
   );
@@ -2002,7 +2002,7 @@ bool AddEditPropSheetDlg::IsGroupUsernameTitleCombinationUnique()
 }
 
 
-Command* AddEditPropSheetDlg::NewAddEntryCommand()
+Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
 {
   time_t t;
   const wxString group = m_BasicGroupNamesCtrl->GetValue();
@@ -2035,8 +2035,11 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand()
   m_Item.SetDCA(m_DoubleClickAction);
   m_Item.SetShiftDCA(m_ShiftDoubleClickAction);
 
-  time(&t);
-  m_Item.SetCTime(t);
+  if(bNewCTime) {
+    time(&t);
+    m_Item.SetCTime(t);
+  }
+  wxASSERT(m_Item.IsCreationTimeSet());
   if (m_KeepPasswordHistory) {
     m_Item.SetPWHistory(MakePWHistoryHeader(true, m_MaxPasswordHistory, 0));
   }
@@ -2372,7 +2375,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
       commands->Add(DeleteEntryCommand::Create(&m_Core, m_Item));
 
       // Step 3)
-      commands->Add(NewAddEntryCommand());
+      commands->Add(NewAddEntryCommand(false)); // Do not create a new creation time (C Time), as the old entry is replaced
 
       // If additional changes were made to the password element,
       // these are also taken into account by NewAddEntryCommand,
@@ -2411,19 +2414,39 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
 
       auto hasTitleChanges = (towxstring(m_ItemAttachment.GetTitle()) != m_AttachmentTitle->GetValue());
       auto hasAttachmentChanges = (m_ItemAttachment != itemAttachment);
-
+      
       if (hasTitleChanges || hasAttachmentChanges) {
-
         // Step 1)
         if (m_AttachmentTitle->GetValue() != _T("N/A"))
         {
           m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
         }
-
         time_t timestamp;
         time(&timestamp);
         m_ItemAttachment.SetCTime(timestamp);
+      }
+      
+      if(m_ItemAttachment.GetUUID() != itemAttachment.GetUUID()) {
+        // The content has changed at all, remove and add again with new content
 
+        // Step 2)
+        if(m_Item.IsAlias()) {
+          commands->Add(RemoveDependentEntryCommand::Create(&m_Core,
+                                                            m_Item.GetBaseUUID(),
+                                                            m_Item.GetUUID(),
+                                                            CItemData::ET_ALIAS));
+        }
+        commands->Add(DeleteEntryCommand::Create(&m_Core, m_Item));
+
+        // Step 3)
+        commands->Add(NewAddEntryCommand(false)); // Do not create a new creation time (C Time), as the old entry is replaced
+
+        // If additional changes were made to the password element,
+        // these are also taken into account by NewAddEntryCommand,
+        // so that we can return with this command.
+        return commands;
+      }
+      else if (hasTitleChanges || hasAttachmentChanges) {
         // Step 2)
         commands->Add(
           EditAttachmentCommand::Create(&m_Core, itemAttachment, m_ItemAttachment)

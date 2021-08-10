@@ -292,7 +292,6 @@ private:
   void GetEntryData(DnDObList &dnd_oblist, CItemData *pci);
   bool ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem);
   void AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, StringX &sxDropPath);
-  void UpdateUUIDinDnDEntries(DnDObList &dnd_oblist, pws_os::CUUID &old_uuid, pws_os::CUUID &new_uuid);
 
 ////@begin TreeCtrl member variables
   wxTreeItemId m_drag_item;

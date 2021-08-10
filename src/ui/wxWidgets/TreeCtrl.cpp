@@ -2074,6 +2074,15 @@ void TreeCtrl::CollectDnDData(wxMemoryBuffer &outDDmem)
       }
     }
   }
+  
+  // Store Attachments according to list build up when storing the entries
+  if(dnd_oblist.HasAttachments()) {
+    // Add special field to ensure we recognise the extra data correctly
+    // when dropping
+    outDDmem.AppendData("atta", 4);
+    // Write attachement data separate from base entries
+    dnd_oblist.DnDSerializeAttachments(m_core, outDDmem);
+  }
 }
 
 void TreeCtrl::GetGroupEntriesData(DnDObList &dnd_oblist, wxTreeItemId item)
@@ -2176,6 +2185,20 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
     else // Buffer utf8 still not allocated
       return false;
     delete utf8;
+    
+    // Read again to double check on attachement
+    stream.Read(chdr, 4);
+  }
+  
+  // Check on attachments following, in case local data base is V4
+  if((stream.LastRead() == 4) && (strncmp(chdr, "atta", 4) == 0)) {
+    if(m_core.GetReadFileVersion() == PWSfile::V40) {
+      // Get all the attachments
+      dnd_oblist.DnDUnSerializeAttachments(stream);
+    }
+    else {
+      wxMessageBox(_("Attachments not overtaken due to data base version"), _("Drag and Drop"), wxOK|wxICON_WARNING);
+    }
   }
   
   if(!dnd_oblist.IsEmpty() || !vsxEmptyGroups.empty()) {
@@ -2221,21 +2244,6 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
   return false;
 }
 
-void TreeCtrl::UpdateUUIDinDnDEntries(DnDObList &dnd_oblist, pws_os::CUUID &old_uuid, pws_os::CUUID &new_uuid)
-{
-  DnDIterator pos;
-  
-  wxASSERT((old_uuid != CUUID::NullUUID()) && (new_uuid != CUUID::NullUUID()));
-  for(pos = dnd_oblist.ObjectsBegin(); pos != dnd_oblist.ObjectsEnd(); ++pos) {
-    DnDObject *pDnDObject = *pos;
-    wxASSERT(pDnDObject);
-    pws_os::CUUID uuid = pDnDObject->GetUUID();
-    if(pDnDObject->GetBaseUUID() == old_uuid) {
-      pDnDObject->SetBaseUUID(new_uuid);
-    }
-  }
-}
-
 void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, StringX &sxDropPath) // DropPath is not including trailing dot
 {
   // Add Drop entries
@@ -2265,10 +2273,22 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
       // UUID already in use - get a new one!
       pDnDObject->CreateUUID();
       if(pDnDObject->GetBaseUUID() == CUUID::NullUUID()) { // When not alias or shortcut
-        // Update base UUID
+        // Update base UUID or attachment
         pws_os::CUUID new_uuid = pDnDObject->GetUUID();
-        UpdateUUIDinDnDEntries(dnd_oblist, uuid, new_uuid);
+        dnd_oblist.UpdateBaseUUIDinDnDEntries(uuid, new_uuid);
       }
+    }
+  }
+  
+  for (CItemAttIterator iter = dnd_oblist.AttachmentsBegin(); iter != dnd_oblist.AttachmentsEnd(); ++iter) {
+    CItemAtt *pAttaObject = *iter;
+    wxASSERT(pAttaObject);
+    pws_os::CUUID uuid = pAttaObject->GetUUID();
+    if (m_core.HasAtt(uuid)) {
+      // UUID already in use - get a new one!
+      pAttaObject->CreateUUID();
+      // Update base UUID
+      pws_os::CUUID new_uuid = pAttaObject->GetUUID();
     }
   }
 
@@ -2386,7 +2406,8 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
     if (pl.ibasedata > 0) {
       // Add to pwlist
       pmCmd->Add(AddEntryCommand::Create(&m_core,
-                                         ci_temp, ci_temp.GetBaseUUID())); // need to do this as well as AddDep...
+                                         ci_temp, ci_temp.GetBaseUUID(),
+                                         dnd_oblist.AttachmentOfItem(&ci_temp))); // need to do this as well as AddDep...
 
       // Password in alias/shortcut format AND base entry exists
       if(pl.InputType == CItemData::ET_ALIAS) {
@@ -2462,7 +2483,8 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
     
     if(!ci_temp.IsDependent()) { // Dependents handled later
       // Add to pwlist
-      AddEntryCommand *pcmd = AddEntryCommand::Create(&m_core, ci_temp);
+      AddEntryCommand *pcmd = AddEntryCommand::Create(&m_core, ci_temp, pws_os::CUUID::NullUUID(),
+                                                      dnd_oblist.AttachmentOfItem(&ci_temp));
 
       if(!bAddToViews) {
         // ONLY Add to pwlist and NOT to Tree or List views

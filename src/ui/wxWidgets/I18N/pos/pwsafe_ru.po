@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-18 19:44+0200\n"
+"POT-Creation-Date: 2021-08-10 13:52+0200\n"
 "PO-Revision-Date: 2021-07-08 20:10+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: none\n"
@@ -270,15 +270,15 @@ msgid "Username:"
 msgstr "Имя пользователя:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:416
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1857
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1885
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1854
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1882
 msgid "Password:"
 msgstr "Пароль:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:422
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1818
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1860
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1892
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1857
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1889
 msgid "&Hide"
 msgstr "&Скрыть"
 
@@ -287,7 +287,7 @@ msgid "&Generate"
 msgstr "&Создать"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1886
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1883
 msgid "Confirm:"
 msgstr "Подтверждение:"
 
@@ -388,7 +388,7 @@ msgstr "Повторять"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:612
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1451
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2669
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2689
 msgid "Never"
 msgstr "Никогда"
 
@@ -754,8 +754,8 @@ msgstr "[Заметки скрыты. Кликните здесь, чтобы п
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1630
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1656
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2271
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3058
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2274
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3078
 #: ../../../core/core_st.cpp:77
 msgid "Default Policy"
 msgstr "Политика по умолчанию"
@@ -765,12 +765,12 @@ msgid "Couldn't generate password - invalid policy"
 msgstr "Ошибка при создании пароля: некорректная политика создания паролей"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1684
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1940
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1953
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1975
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1995
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2965
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2992
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1937
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1950
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1972
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1992
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2985
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3012
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:106
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:115
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:131
@@ -827,65 +827,60 @@ msgid "Shortcut or Alias selected, use Base entry instead"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1830
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1869
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1900
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1866
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1897
 msgid "&Show"
 msgstr "&Показать"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1852
-#, fuzzy
-msgid "Alias"
-msgstr "псевдоним"
-
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1854
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1851
 #, fuzzy
 msgid "Alias:"
 msgstr "псевдоним"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1938
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1935
 #, c-format
 msgid "This entry must have a %ls"
 msgstr "Элемент должен содержать %ls"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1939
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1936
 msgid "title"
 msgstr "Заголовок"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1939
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1936
 msgid "password"
 msgstr "Пароль"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1952
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1949
 msgid "Passwords do not match"
 msgstr "Пароли не совпадают"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1974
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1971
 msgid "Database name must not be empty if a database policy shall be used."
 msgstr "Имя политики создания паролей не должно быть пустым."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1994
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1991
 msgid ""
 "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr ""
 "Элемент или ярлык с такими же значениями Группы, Заголовка и Имени "
 "пользователя уже существует."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2648
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2668
 #, c-format
 msgid " (every %d days)"
 msgstr " (каждые %d дней)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2964
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2984
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
 msgstr "Параметры «удобочитаемые» и «произносимые» несовместимы"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2991
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3011
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
 msgstr "Параметры «произносимые» и «удобочитаемые» несовместимы"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3043
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3063
 msgid "mailto:"
 msgstr "mailto:"
 
@@ -3872,7 +3867,7 @@ msgid "Perform Auto &Type"
 msgstr "&Автонабор"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1667
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:535
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:536
 msgid "&View Entry..."
 msgstr "&Просмотр элемента..."
 
@@ -4405,12 +4400,12 @@ msgstr "Не указано имя фильтра."
 msgid "Please name the alias."
 msgstr "Укажите имя для текущего фильтра"
 
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:537
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:538
 #: ../../../ui/wxWidgets/ToolbarButtons.h:217
 msgid "Expand"
 msgstr "Развернуть"
 
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:538
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:539
 #: ../../../ui/wxWidgets/ToolbarButtons.h:218
 msgid "Collapse"
 msgstr "Свернуть"
@@ -4858,15 +4853,15 @@ msgid "Invalid Character"
 msgstr "Недопустимый символ"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1421
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2551
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2573
 msgid "Destination cannot be inside source tree"
 msgstr "Новое расположение не может быть внутри исходного поддерева"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1421
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2400
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2407
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2424
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2551
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2421
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2428
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2445
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2573
 msgid "Drag and Drop failed"
 msgstr "Ошибка при перетягивании"
 
@@ -4876,7 +4871,16 @@ msgstr ""
 "Группа с таким именем уже существует (чтобы игнорировать, нажмите Shift при "
 "перетягивании)"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2396
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2200
+msgid "Attachments not overtaken due to data base version"
+msgstr ""
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2200
+#, fuzzy
+msgid "Drag and Drop"
+msgstr "Ошибка при перетягивании"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2417
 #, c-format
 msgid ""
 "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
@@ -4888,20 +4892,20 @@ msgstr ""
 "\n"
 "Скопированный элемент теперь ссылается на исходный элемент."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2403
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2424
 #, c-format
 msgid "This alias's target [%s:%s:%s] is not a normal entry."
 msgstr ""
 "Исходный элемент [%s:%s:%s] для данного псевдонима не является обычным "
 "элементом."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2420
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2441
 #, c-format
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
 msgstr ""
 "Целевой элемент [%s:%s:%s] для данного ярлыка не является обычным элементом."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2502 ../../../core/core_st.cpp:97
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2524 ../../../core/core_st.cpp:97
 #, c-format
 msgid ""
 "The following entries had a policy name that already existed in this "
@@ -4914,11 +4918,11 @@ msgstr ""
 "Для них были созданы новые политики, к имени которых добавлены текущие дата "
 "и время (%ls): %ls"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2505
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2527
 msgid "Entry Password Policy Changes"
 msgstr "Изменения в политике создания паролей"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2512
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2534
 #, c-format
 msgid ""
 "The following alias or shortcut entries did not match to a base entry and "
@@ -4927,7 +4931,7 @@ msgstr ""
 "Указанные псевдонимы или ярлыки указывают на отсутствующий исходный элемент "
 "и были преобразованы в обычные элементы:%ls"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2514
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2536
 msgid "Entry Type Changed"
 msgstr "Изменение типа элемента"
 
@@ -6969,6 +6973,10 @@ msgstr ""
 #, c-format
 msgid "Unknown XML tag \"%ls\" in test in filter entry %d of '%ls'"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Alias"
+#~ msgstr "псевдоним"
 
 #~ msgid " 'AutoType'"
 #~ msgstr " 'Автонабор'"

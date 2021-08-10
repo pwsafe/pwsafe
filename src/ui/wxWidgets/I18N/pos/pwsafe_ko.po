@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-18 19:44+0200\n"
+"POT-Creation-Date: 2021-08-10 13:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -297,16 +297,16 @@ msgid "Username:"
 msgstr "사용자 이름(&U):"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:416
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1857
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1885
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1854
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1882
 #, fuzzy
 msgid "Password:"
 msgstr "비밀번호(&P):"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:422
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1818
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1860
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1892
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1857
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1889
 msgid "&Hide"
 msgstr "숨기기(&H)"
 
@@ -315,7 +315,7 @@ msgid "&Generate"
 msgstr "생성(&G)"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1886
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1883
 #, fuzzy
 msgid "Confirm:"
 msgstr "확인:"
@@ -414,7 +414,7 @@ msgstr "되풀이"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:612
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1451
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2669
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2689
 msgid "Never"
 msgstr "전혀"
 
@@ -794,8 +794,8 @@ msgstr "[노트가 숨겨져있음 - 표시하려면 이곳을 클릭하세요]"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1630
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1656
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2271
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3058
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2274
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3078
 #: ../../../core/core_st.cpp:77
 msgid "Default Policy"
 msgstr ""
@@ -805,12 +805,12 @@ msgid "Couldn't generate password - invalid policy"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1684
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1940
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1953
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1975
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1995
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2965
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2992
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1937
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1950
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1972
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1992
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2985
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3012
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:106
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:115
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:131
@@ -867,46 +867,41 @@ msgid "Shortcut or Alias selected, use Base entry instead"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1830
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1869
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1900
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1866
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1897
 msgid "&Show"
 msgstr "보이기(&S)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1852
-#, fuzzy
-msgid "Alias"
-msgstr "보조 항목"
-
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1854
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1851
 #, fuzzy
 msgid "Alias:"
 msgstr "보조 항목"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1938
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1935
 #, c-format
 msgid "This entry must have a %ls"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1939
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1936
 #, fuzzy
 msgid "title"
 msgstr "주제"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1939
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1936
 #, fuzzy
 msgid "password"
 msgstr "비밀번호"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1952
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1949
 #, fuzzy
 msgid "Passwords do not match"
 msgstr "두 항목이 일치하지 않습니다."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1974
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1971
 msgid "Database name must not be empty if a database policy shall be used."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1994
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1991
 #, fuzzy
 msgid ""
 "An entry or shortcut with the same Group, Title and Username already exists."
@@ -914,12 +909,12 @@ msgstr ""
 "빈 그룹, 제목 \"%s\" 그리고 사용자 이름 \"%s\" 으로 된 항목이 이미 존재합니"
 "다."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2648
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2668
 #, fuzzy, c-format
 msgid " (every %d days)"
 msgstr "되풀이 (%d 일)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2964
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2984
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
 #, fuzzy
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
@@ -927,7 +922,7 @@ msgstr ""
 "죄송합니다만, '발음할 수 있는' 속성과 '읽기쉬운' 속성이 동시에 지원되지 않습"
 "니다"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2991
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3011
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 #, fuzzy
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
@@ -935,7 +930,7 @@ msgstr ""
 "죄송합니다만, '발음할 수 있는' 속성과 '읽기쉬운' 속성이 동시에 지원되지 않습"
 "니다"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3043
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3063
 #, fuzzy
 msgid "mailto:"
 msgstr "전자우편(&E)"
@@ -4115,7 +4110,7 @@ msgid "Perform Auto &Type"
 msgstr "자동입력 하기(&T)"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1667
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:535
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:536
 #, fuzzy
 msgid "&View Entry..."
 msgstr "항목 보기"
@@ -4697,13 +4692,13 @@ msgstr "조건 이름:"
 msgid "Please name the alias."
 msgstr "XML 파일의 이름을 지정해주세요"
 
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:537
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:538
 #: ../../../ui/wxWidgets/ToolbarButtons.h:217
 #, fuzzy
 msgid "Expand"
 msgstr "모두 펼치기"
 
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:538
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:539
 #: ../../../ui/wxWidgets/ToolbarButtons.h:218
 #, fuzzy
 msgid "Collapse"
@@ -5159,15 +5154,15 @@ msgid "Invalid Character"
 msgstr "잘못된 변수"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1421
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2551
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2573
 msgid "Destination cannot be inside source tree"
 msgstr ""
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1421
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2400
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2407
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2424
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2551
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2421
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2428
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2445
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2573
 msgid "Drag and Drop failed"
 msgstr ""
 
@@ -5175,7 +5170,15 @@ msgstr ""
 msgid "Duplicate group name (use Shift to overrule)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2396
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2200
+msgid "Attachments not overtaken due to data base version"
+msgstr ""
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2200
+msgid "Drag and Drop"
+msgstr ""
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2417
 #, c-format
 msgid ""
 "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
@@ -5187,20 +5190,20 @@ msgstr ""
 "\n"
 "끊어진 항목은 지금부터 그 항목의 기본 항목을 참조하게 됩니다."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2403
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2424
 #, fuzzy, c-format
 msgid "This alias's target [%s:%s:%s] is not a normal entry."
 msgstr ""
 "이 보조 항목의 대상 [%s:%s:%s] 이 일반 항목이 아니거나 이미 보조 항목입니다."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2420
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2441
 #, fuzzy, c-format
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
 msgstr ""
 "이 바로가기 항목 [%s:%s:%s] 의 상대가 일반 항목이 아니거나 이미 바로가기 항목"
 "입니다."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2502 ../../../core/core_st.cpp:97
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2524 ../../../core/core_st.cpp:97
 #, c-format
 msgid ""
 "The following entries had a policy name that already existed in this "
@@ -5209,19 +5212,19 @@ msgid ""
 "appended:%ls"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2505
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2527
 #, fuzzy
 msgid "Entry Password Policy Changes"
 msgstr "항목의 비밀번호 정책 설정"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2512
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2534
 #, c-format
 msgid ""
 "The following alias or shortcut entries did not match to a base entry and "
 "had been converted to normal entries:%ls"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2514
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2536
 #, fuzzy
 msgid "Entry Type Changed"
 msgstr "항목 종류"
@@ -7190,6 +7193,10 @@ msgstr ""
 #, c-format
 msgid "Unknown XML tag \"%ls\" in test in filter entry %d of '%ls'"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Alias"
+#~ msgstr "보조 항목"
 
 #, fuzzy
 #~ msgid "No filter name given"

@@ -150,7 +150,18 @@ public:
 
   size_t GetSize() const;
   void GetSize(size_t &isize) const {isize = GetSize();}
-
+    
+  void push_length(std::vector<char> &v, uint32 s) const;
+  template< typename T> void push(std::vector<char> &v, char type, T value) const
+  {
+    if (value != 0) {
+      v.push_back(type);
+      push_length(v, sizeof(value));
+      v.insert(v.end(), reinterpret_cast<char *>(&value), reinterpret_cast<char *>(&value) + sizeof(value));
+    }
+  }
+  void push(std::vector<char> &v, char type, const StringX &str) const;
+    
 protected:
   typedef std::map<int, CItemField> FieldMap;
   typedef FieldMap::const_iterator FieldConstIter;

@@ -2081,7 +2081,7 @@ void CItemData::SetEntryType(EntryType et)
   }
   m_entrytype = et;
 }
-
+/*
 static void push_length(vector<char> &v, uint32 s)
 {
   v.insert(v.end(),
@@ -2119,6 +2119,7 @@ static void push(vector<char> &v, char type,
       pws_os::Trace(_T("ItemData.cpp: push(%ls): ToUTF8 failed!\n"), str.c_str());
   }
 }
+ */
 
 void CItemData::SerializePlainText(vector<char> &v,
                                    const CItemData *pcibase)  const
@@ -2158,7 +2159,7 @@ void CItemData::SerializePlainText(vector<char> &v,
     v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array_t)));
   }
 
-  // TODO - Get rid of following [password hack - no longer needed as we have base uuid!
+  // TODO: - Get rid of following [password hack - no longer needed as we have base uuid!
   if (m_entrytype == ET_ALIAS) {
     // I am an alias entry
     tmp = _T("[[") + pcibase->GetGroup() + _T(":") + pcibase->GetTitle() + _T(":") + pcibase->GetUser() + _T("]]");

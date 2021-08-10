@@ -24,6 +24,10 @@
 
 #include "DnDSupport.h"
 
+#include "core/ItemData.h"
+#include "core/ItemAtt.h"
+#include "core/PWScore.h"
+
 #include <vector>
 
 using namespace std;
@@ -35,12 +39,22 @@ DnDObject::~DnDObject()
 
 DnDObList::~DnDObList()
 {
-  DnDIterator pos;
-
-  for(pos = m_objects.begin(); pos != m_objects.end(); pos++) {
+  // Clear DND objects iterator
+  for(DnDIterator pos = m_objects.begin(); pos != m_objects.end(); pos++) {
     delete (*pos);
   }
   m_objects.clear();
+  // Clear map of UUIDs
+  for(auto iter = m_attrefs.begin(); iter != m_attrefs.end(); iter++) {
+    iter->second.clear();
+  }
+  m_attrefs.clear();
+  // Clear list of attachments
+  for(CItemAttIterator iter = m_attachments.begin(); iter != m_attachments.end(); iter++) {
+    delete (*iter);
+  }
+  m_attachments.clear();
+  m_uuid2atta.clear();
 }
 
 void DnDObject::DnDSerializeEntry(wxMemoryBuffer &outDDmem)
@@ -77,6 +91,21 @@ void DnDObject::DnDUnSerializeEntry(wxMemoryInputStream &inDDmem)
   trashMemory(&(*v.begin()), v.size());
 }
 
+void DnDObList::InsertAttUuid(const pws_os::CUUID attUuid, const pws_os::CUUID baseUuid)
+{
+  auto search = m_attrefs.find(attUuid);
+  if(search == m_attrefs.end()) {
+    // new entry
+    CUUIDVector baseentry;
+    baseentry.push_back(baseUuid);
+    m_attrefs.insert(std::make_pair(attUuid, baseentry));
+  }
+  else {
+    // Update of entry, we add only the new base entry to the list of entries related the attachement
+    search->second.push_back(baseUuid);
+  }
+}
+
 void DnDObList::DnDSerialize(wxMemoryBuffer &outDDmem)
 {
   // NOTE:  Do not call the base class!
@@ -91,6 +120,9 @@ void DnDObList::DnDSerialize(wxMemoryBuffer &outDDmem)
 
   for(pos = m_objects.begin(); pos != m_objects.end(); pos++) {
     (*pos)->DnDSerializeEntry(outDDmem);
+    if((*pos)->HasAttRef()) {
+      InsertAttUuid((*pos)->GetUUID(CItemData::ATTREF), (*pos)->GetUUID(CItemData::UUID));
+    }
   }
 }
 
@@ -122,4 +154,92 @@ bool DnDObList::CanFind(pws_os::CUUID &uuid)
       return true;
   }
   return false;
+}
+
+
+void DnDObList::DnDSerializeAttachments(PWScore &core, wxMemoryBuffer &outDDmem)
+{
+  size_t natt = m_attrefs.size();
+  outDDmem.AppendData((void *)&natt, sizeof(size_t));
+  for(AttUuidMapIterator iter = m_attrefs.begin(); iter != m_attrefs.end(); ++iter) {
+    // Write Attachement entry first
+    pws_os::CUUID uuid = iter->first;
+    CItemAtt item = core.GetAtt(uuid);
+    std::vector<char> v;
+    item.SerializePlainText(v);
+    size_t len = v.size();
+    outDDmem.AppendData(&len, sizeof(size_t));
+    outDDmem.AppendData(&(*v.begin()), len);
+    trashMemory(&(*v.begin()), v.size());
+    // Write list with depending UUID Base entries
+    CUUIDVector vect = iter->second;
+    len = vect.size();
+    outDDmem.AppendData(&len, sizeof(size_t));
+    for(size_t i = 0; i < len; ++i) {
+      outDDmem.AppendData(&vect[i], sizeof(pws_os::CUUID));
+    }
+  }
+}
+
+void DnDObList::DnDUnSerializeAttachments(wxMemoryInputStream &inDDmem)
+{
+  // Deserialize all attachment entries
+  size_t n, nCount, length;
+
+  inDDmem.Read((void *)&nCount, sizeof(size_t));
+  wxASSERT(inDDmem.LastRead() == sizeof(size_t));
+
+  for (n = 0; n < nCount; n++) {
+    // Read length
+    inDDmem.Read((void *)&length, sizeof(size_t));
+    wxASSERT(inDDmem.LastRead() == sizeof(size_t));
+    // Fill vector with data
+    vector<char> v(length);
+    inDDmem.Read(&(*v.begin()), length);
+    wxASSERT(inDDmem.LastRead() == length);
+    // Allocate new attachment Item
+    CItemAtt *pDnDObject = new CItemAtt();
+    wxASSERT(pDnDObject);
+    pDnDObject->DeSerializePlainText(v);
+    // Store new attachment in list
+    m_attachments.push_back(pDnDObject);
+    inDDmem.Read((void *)&length, sizeof(size_t));
+    wxASSERT(inDDmem.LastRead() == sizeof(size_t));
+    // Read Attachment UUID
+    const pws_os::CUUID attUuid = pDnDObject->GetUUID();
+    // Add all base entries related to this one into list
+    for(size_t i = 0; i < length; ++i) {
+      pws_os::CUUID uuid;
+      inDDmem.Read((void *)&uuid, sizeof(pws_os::CUUID));
+      wxASSERT(inDDmem.LastRead() == sizeof(pws_os::CUUID));
+      m_uuid2atta.insert(std::make_pair(uuid, pDnDObject));
+    }
+  }
+}
+
+void DnDObList::UpdateBaseUUIDinDnDEntries(pws_os::CUUID &old_uuid, pws_os::CUUID &new_uuid)
+{
+  wxASSERT((old_uuid != pws_os::CUUID::NullUUID()) && (new_uuid != pws_os::CUUID::NullUUID()));
+  for(DnDIterator pos = m_objects.begin(); pos != m_objects.end(); ++pos) {
+    DnDObject *pDnDObject = *pos;
+    wxASSERT(pDnDObject);
+    pws_os::CUUID uuid = pDnDObject->GetUUID();
+    if(pDnDObject->GetBaseUUID() == old_uuid) {
+      pDnDObject->SetBaseUUID(new_uuid);
+    }
+  }
+  auto search = m_uuid2atta.find(old_uuid);
+  if(search != m_uuid2atta.end()) {
+    m_uuid2atta.insert(std::make_pair(new_uuid, search->second));
+    m_uuid2atta.erase(old_uuid);
+  }
+}
+
+const CItemAtt *DnDObList::AttachmentOfBase(pws_os::CUUID &uuid)
+{
+  auto search = m_uuid2atta.find(uuid);
+  if(search != m_uuid2atta.end()) {
+    return search->second;
+  }
+  return nullptr;
 }
