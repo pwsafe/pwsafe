@@ -28,6 +28,7 @@
 #endif
 
 #include <wx/mstream.h>
+#include <wx/file.h>
 ////@end includes
 
 #include "core/ItemData.h"
@@ -44,7 +45,7 @@ public:
   ~DnDObject();
 
   void DnDSerializeEntry(wxMemoryBuffer &outDDmem);
-  void DnDUnSerializeEntry(wxMemoryInputStream &inDDmem);
+  void DnDUnSerializeEntry(wxInputStream &inStream);
   void FromItem(const CItemData &item) { m_item = item; }
   void ToItem(CItemData &item) const { item = m_item; }
 
@@ -108,9 +109,10 @@ public:
   
 public:
   void DnDSerialize(wxMemoryBuffer &outDDmem);
-  void DnDUnSerialize(wxMemoryInputStream &inDDmem);
+  void DnDUnSerialize(wxInputStream &inStream);
   void DnDSerializeAttachments(PWScore &core, wxMemoryBuffer &outDDmem);
-  void DnDUnSerializeAttachments(wxMemoryInputStream &inDDmem);
+  bool DnDSerializeAttachments(PWScore &core, wxFile *outFile);
+  void DnDUnSerializeAttachments(wxInputStream &inStream);
   
   bool CanFind(pws_os::CUUID &uuid);
   

@@ -287,7 +287,7 @@ private:
   template<typename GroupItemConsumer>
   void TraverseTree(wxTreeItemId itemId, GroupItemConsumer&& consumer);
   
-  void CollectDnDData(wxMemoryBuffer &outDDmem);
+  void CollectDnDData(wxMemoryBuffer &outDDmem, wxString &fileName);
   void GetGroupEntriesData(DnDObList &dnd_oblist, wxTreeItemId item);
   void GetEntryData(DnDObList &dnd_oblist, CItemData *pci);
   bool ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem);

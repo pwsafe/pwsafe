@@ -22,6 +22,8 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
+#include <wx/file.h>
+
 #include "DnDSupport.h"
 
 #include "core/ItemData.h"
@@ -74,15 +76,15 @@ void DnDObject::DnDSerializeEntry(wxMemoryBuffer &outDDmem)
   trashMemory(&(*v.begin()), v.size());
 }
 
-void DnDObject::DnDUnSerializeEntry(wxMemoryInputStream &inDDmem)
+void DnDObject::DnDUnSerializeEntry(wxInputStream &inStream)
 {
   // Deserialize an entry
   size_t len = 0;
-  inDDmem.Read(&len, sizeof(size_t));
-  wxASSERT((inDDmem.LastRead() == sizeof(len)) && (len != 0) && (static_cast<wxFileOffset>(len) <= inDDmem.GetLength()));
+  inStream.Read(&len, sizeof(size_t));
+  wxASSERT((inStream.LastRead() == sizeof(len)) && (len != 0) && (static_cast<wxFileOffset>(len) <= inStream.GetLength()));
   vector<char> v(len);
-  inDDmem.Read(&(*v.begin()), len);
-  wxASSERT(inDDmem.LastRead() == len);
+  inStream.Read(&(*v.begin()), len);
+  wxASSERT(inStream.LastRead() == len);
 #if wxDEBUG_LEVEL
   bool result =
 #endif
@@ -126,21 +128,21 @@ void DnDObList::DnDSerialize(wxMemoryBuffer &outDDmem)
   }
 }
 
-void DnDObList::DnDUnSerialize(wxMemoryInputStream &inDDmem)
+void DnDObList::DnDUnSerialize(wxInputStream &inStream)
 {
   // Deserialize all entries
   wxASSERT(GetCount() == 0);
   int n, nCount;
 
-  inDDmem.Read((void *)&nCount, sizeof(int));
-  wxASSERT(inDDmem.LastRead() == sizeof(int));
-  inDDmem.Read((void *)&m_bDragNode, sizeof(bool));
-  wxASSERT(inDDmem.LastRead() == sizeof(bool));
+  inStream.Read((void *)&nCount, sizeof(int));
+  wxASSERT(inStream.LastRead() == sizeof(int));
+  inStream.Read((void *)&m_bDragNode, sizeof(bool));
+  wxASSERT(inStream.LastRead() == sizeof(bool));
 
   for (n = 0; n < nCount; n++) {
     DnDObject *pDnDObject = new DnDObject();
     wxASSERT(pDnDObject);
-    pDnDObject->DnDUnSerializeEntry(inDDmem);
+    pDnDObject->DnDUnSerializeEntry(inStream);
     m_objects.push_back(pDnDObject);
   }
 }
@@ -181,37 +183,67 @@ void DnDObList::DnDSerializeAttachments(PWScore &core, wxMemoryBuffer &outDDmem)
   }
 }
 
-void DnDObList::DnDUnSerializeAttachments(wxMemoryInputStream &inDDmem)
+bool DnDObList::DnDSerializeAttachments(PWScore &core, wxFile *outFile)
+{
+  size_t natt = m_attrefs.size();
+  if(outFile->Write((void *)&natt, sizeof(size_t)) != sizeof(size_t))
+    return false;
+  for(AttUuidMapIterator iter = m_attrefs.begin(); iter != m_attrefs.end(); ++iter) {
+    // Write Attachement entry first
+    pws_os::CUUID uuid = iter->first;
+    CItemAtt item = core.GetAtt(uuid);
+    std::vector<char> v;
+    item.SerializePlainText(v);
+    size_t len = v.size();
+    if(outFile->Write(&len, sizeof(size_t)) != sizeof(size_t))
+      return false;
+    if(outFile->Write(&(*v.begin()), len) != len)
+      return false;
+    trashMemory(&(*v.begin()), v.size());
+    // Write list with depending UUID Base entries
+    CUUIDVector vect = iter->second;
+    len = vect.size();
+    if(outFile->Write(&len, sizeof(size_t)) != sizeof(size_t))
+      return false;
+    for(size_t i = 0; i < len; ++i) {
+      if(outFile->Write(&vect[i], sizeof(pws_os::CUUID)) != sizeof(pws_os::CUUID))
+        return false;
+    }
+  }
+  return true;
+}
+
+void DnDObList::DnDUnSerializeAttachments(wxInputStream &inStream)
 {
   // Deserialize all attachment entries
   size_t n, nCount, length;
 
-  inDDmem.Read((void *)&nCount, sizeof(size_t));
-  wxASSERT(inDDmem.LastRead() == sizeof(size_t));
+  inStream.Read((void *)&nCount, sizeof(size_t));
+  wxASSERT(inStream.LastRead() == sizeof(size_t));
 
   for (n = 0; n < nCount; n++) {
     // Read length
-    inDDmem.Read((void *)&length, sizeof(size_t));
-    wxASSERT(inDDmem.LastRead() == sizeof(size_t));
+    inStream.Read((void *)&length, sizeof(size_t));
+    wxASSERT(inStream.LastRead() == sizeof(size_t));
     // Fill vector with data
     vector<char> v(length);
-    inDDmem.Read(&(*v.begin()), length);
-    wxASSERT(inDDmem.LastRead() == length);
+    inStream.Read(&(*v.begin()), length);
+    wxASSERT(inStream.LastRead() == length);
     // Allocate new attachment Item
     CItemAtt *pDnDObject = new CItemAtt();
     wxASSERT(pDnDObject);
     pDnDObject->DeSerializePlainText(v);
     // Store new attachment in list
     m_attachments.push_back(pDnDObject);
-    inDDmem.Read((void *)&length, sizeof(size_t));
-    wxASSERT(inDDmem.LastRead() == sizeof(size_t));
+    inStream.Read((void *)&length, sizeof(size_t));
+    wxASSERT(inStream.LastRead() == sizeof(size_t));
     // Read Attachment UUID
     const pws_os::CUUID attUuid = pDnDObject->GetUUID();
     // Add all base entries related to this one into list
     for(size_t i = 0; i < length; ++i) {
       pws_os::CUUID uuid;
-      inDDmem.Read((void *)&uuid, sizeof(pws_os::CUUID));
-      wxASSERT(inDDmem.LastRead() == sizeof(pws_os::CUUID));
+      inStream.Read((void *)&uuid, sizeof(pws_os::CUUID));
+      wxASSERT(inStream.LastRead() == sizeof(pws_os::CUUID));
       m_uuid2atta.insert(std::make_pair(uuid, pDnDObject));
     }
   }
