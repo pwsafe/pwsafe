@@ -28,6 +28,7 @@
 #include <fstream>
 #include <algorithm>
 #include <iomanip>
+#include <climits>
 
 #ifdef _WIN32
 #include <LMCons.h> // for UNLEN
