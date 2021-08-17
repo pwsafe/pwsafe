@@ -2097,7 +2097,7 @@ void TreeCtrl::CollectDnDData(wxMemoryBuffer &outDDmem, wxString &fileName)
   // On limit is > 0 we do write to a file is data already achived demanded limit or attachement is given
   // On limit is == 0 we do write to a file if attachment is present (only)
   // On limit is == -1 we never write to a file
-  if(((limit > 0) && (outDDmem.GetDataLen() >= limit)) || ((limit != -1) && dnd_oblist.HasAttachments())) {
+  if(((limit > 0) && (outDDmem.GetDataLen() >= static_cast<size_t>(limit))) || ((limit != -1) && dnd_oblist.HasAttachments())) {
     // Create temporary file and write into it
     name = wxFileName::CreateTempFileName(L"", tmpfile = new wxFile());
     if(!name.IsEmpty() && tmpfile != nullptr) {
