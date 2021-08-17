@@ -1958,6 +1958,9 @@ void TreeCtrl::OnDrag(wxMouseEvent& event)
     event.Skip();
     return;
   }
+  
+  pws_os::Trace(L"TreeCtrl::OnDrag Size %ld", static_cast<long>(buffer.GetDataLen()));
+  
   DnDPWSafeObject dragData(&buffer);
   
   wxDropSource source(dragData, this);
@@ -2205,6 +2208,9 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
   if(inDDmem->GetDataLen() > (sizeof(int)+sizeof(size_t))) {
     int nCnt;
     memStream.Read(&nCnt, sizeof(int));
+    
+    pws_os::Trace(L"TreeCtrl::ProcessDnDData Size %ld Count %d", static_cast<long>(inDDmem->GetDataLen()), nCnt);
+    
     if(memStream.LastRead() == sizeof(int) && (nCnt == 0)) {
       size_t len;
       memStream.Read(&len, sizeof(size_t));
