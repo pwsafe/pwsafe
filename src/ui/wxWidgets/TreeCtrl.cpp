@@ -2238,7 +2238,7 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
             fileName.Clear();
           }
         }
-        delete utf8;
+        delete[] utf8;
       }
     }
     if(fileStream == nullptr) {
@@ -2272,7 +2272,7 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
 
         stream->Read((void *)&utf8Len, sizeof(size_t));
         if(stream->LastRead() != sizeof(utf8Len)) {
-          delete utf8;
+          delete[] utf8;
           return false;
         }
         if(utf8Len > buffer_size) {
@@ -2286,7 +2286,7 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
         memset(utf8, 0, buffer_size);
         stream->Read(utf8, utf8Len);
         if(stream->LastRead() != utf8Len) {
-          delete utf8;
+          delete[] utf8;
           return false;
         }
 
@@ -2296,7 +2296,7 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
     }
     else // Buffer utf8 still not allocated
       return false;
-    delete utf8;
+    delete[] utf8;
     
     // Read again to double check on attachement
     stream->Read(chdr, 4);
