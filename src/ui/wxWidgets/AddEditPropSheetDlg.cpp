@@ -2553,14 +2553,8 @@ void AddEditPropSheetDlg::OnOk(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
 
-    if (!ValidateBasicData()) {
-      EndModal(wxID_CANCEL);
-      return;
-    }
-
-    if (!ValidatePasswordPolicy()) {
-      EndModal(wxID_CANCEL);
-      return;
+    if (!ValidateBasicData() || !ValidatePasswordPolicy()) {
+      return; // don't exit dialog box (BR759)
     }
 
     Command *command = nullptr;
