@@ -5,7 +5,7 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-#include <limits.h>
+#include <limits>
 #include "os/rand.h"
 
 #include "PwsPlatform.h"
@@ -136,7 +136,7 @@ unsigned int PWSrand::RangeRand(size_t len)
 {
   if (len != 0) {
     unsigned int      r;
-    const size_t ceil = UINT_MAX - (UINT_MAX % len) - 1;
+    const size_t ceil = std::numeric_limits<unsigned int>::max()- (std::numeric_limits<unsigned int>::max() % len) - 1;
     while ((r = RandUInt()) > ceil)
       ;
     return(r%len);
