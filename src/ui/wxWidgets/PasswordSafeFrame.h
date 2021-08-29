@@ -606,6 +606,9 @@ public:
   void SetTrayClosed();
   void ShowTrayIcon();
 
+  void ShowSearchBar();
+  void HideSearchBar();
+
   bool IsClosed() const;
   
   static void DisplayFileWriteError(int rc, const StringX &fname);
@@ -648,13 +651,19 @@ private:
   void UpdateMainToolbarBitmaps();
   void UpdateMainToolbarSeparators(bool insert);
   void DeleteMainToolbarSeparators();
+  wxAuiPaneInfo& GetMainToolbarPane();
+  wxAuiToolBar* GetToolBar() { return m_Toolbar; }
 
   void CreateDragBar();
   void UpdateDragbarTooltips();
-  void CreateStatusBar();
-  wxAuiToolBar* GetToolBar() { return m_Toolbar; }
+  wxAuiPaneInfo& GetDragBarPane();
   DragBarCtrl* GetDragBar() { return m_Dragbar; };
+
+  void CreateSearchBar();
+  wxAuiPaneInfo& GetSearchBarPane();
   PasswordSafeSearch* GetSearchBar() { return m_search; };
+
+  void CreateStatusBar();
 
   long GetEventRUEIndex(const wxCommandEvent& evt) const;
   bool IsRUEEvent(const wxCommandEvent& evt) const;

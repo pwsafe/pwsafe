@@ -17,7 +17,7 @@
 
 #include "TreeCtrl.h"
 
-#define DRAGBAR_STYLE wxAUI_TB_DEFAULT_STYLE|wxAUI_TB_GRIPPER|wxAUI_TB_OVERFLOW|wxAUI_TB_PLAIN_BACKGROUND
+#define DRAGBAR_STYLE wxAUI_TB_DEFAULT_STYLE|wxAUI_TB_GRIPPER|wxAUI_TB_PLAIN_BACKGROUND
 
 class PasswordSafeFrame;
 class TreeCtrl;
@@ -36,6 +36,7 @@ private:
   wxString GetText(int id) const;
   void OnDrag(wxAuiToolBarEvent& event);
   void OnUpdateUI(wxUpdateUIEvent& evt);
+  void CalculateToolsWidth();
 };
 
 #endif // _DRAGBARCTRL_H_

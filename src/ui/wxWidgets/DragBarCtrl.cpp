@@ -160,6 +160,7 @@ std::vector<DragbarToolInfo> DragbarToolInfos =
 DragBarCtrl::DragBarCtrl(wxWindow *parent, wxWindowID id, const wxPoint &position, const wxSize &size, long style) : wxAuiToolBar(parent, id, position, size, style)
 {
   CreateToolbar();
+  CalculateToolsWidth();
   Bind(wxEVT_AUITOOLBAR_BEGIN_DRAG, &DragBarCtrl::OnDrag, this);
   Bind(wxEVT_UPDATE_UI, &DragBarCtrl::OnUpdateUI, this, ID_DRAGBAR_GROUP, ID_DRAGBAR_DND);
 }
@@ -189,6 +190,21 @@ void DragBarCtrl::CreateToolbar()
   }
 
   Realize();
+}
+
+void DragBarCtrl::CalculateToolsWidth()
+{
+  size_t width = 0;
+
+  for (const auto & toolInfo : DragbarToolInfos)
+  {
+    auto tool = FindTool(toolInfo.id);
+    if (tool) {
+      width += (tool->GetMinSize()).GetWidth();
+    }
+  }
+
+  SetMinSize(wxSize(width, -1));
 }
 
 /**

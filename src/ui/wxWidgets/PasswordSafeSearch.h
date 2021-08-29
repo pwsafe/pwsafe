@@ -18,11 +18,12 @@
  */
 
 ////@begin includes
-#include <wx/event.h>
-#include <wx/toolbar.h>
+#include <wx/aui/auibar.h>
 
 #include "core/ItemData.h"
 ////@end includes
+
+#define SEARCHBAR_STYLE wxAUI_TB_DEFAULT_STYLE|wxAUI_TB_GRIPPER|wxAUI_TB_PLAIN_BACKGROUND
 
 ////@begin forward declarations
 class PasswordSafeFrame;
@@ -86,16 +87,10 @@ private:
  * PasswordSafeSearch class declaration
  */
 
-class PasswordSafeSearch : public wxEvtHandler
+class PasswordSafeSearch : public wxAuiToolBar
 {
-  DECLARE_CLASS( PasswordSafeSearch )
-
-  DECLARE_NO_COPY_CLASS(PasswordSafeSearch)
-
 public:
-  /// Constructors
-  PasswordSafeSearch(PasswordSafeFrame* parent);
-  /// Destructor
+  PasswordSafeSearch(wxWindow *parent, wxWindowID id=wxID_ANY, const wxPoint &position=wxDefaultPosition, const wxSize &size=wxDefaultSize, long style=SEARCHBAR_STYLE);
   ~PasswordSafeSearch();
 
   void OnSearchClose(wxCommandEvent& event);
@@ -103,7 +98,8 @@ public:
   void FindPrevious();
 
   void Activate();
-  void RefreshButtons();
+  void UpdateBitmaps();
+  bool HasTools() const { return GetToolCount() > 0; }
   void Invalidate() { m_searchPointer.Clear(); }
   void ReCreateSearchBar();
 
@@ -122,7 +118,7 @@ private:
   void OnSearchBarTextChar(wxKeyEvent& event);
   void OnToolBarFindReport(wxCommandEvent& event);
 
-  void CreateSearchBar();
+  bool CreateSearchBar();
   void HideSearchToolbar();
   void ClearToolbarStatusArea();
   void CalculateToolsWidth();
@@ -135,13 +131,11 @@ private:
   template <class Iter, class Accessor>
   void OnDoSearchT( Iter begin, Iter end, Accessor afn);
 
-  wxToolBar*           m_toolbar;
   PasswordSafeFrame*   m_parentFrame;
   SelectionCriteria*   m_criteria;
   SearchPointer        m_searchPointer;
   size_t               m_ToolsWidth;
   bool                 m_modified;
- 
 };
 
 #endif // _PASSWORDSAFESEARCH_H_

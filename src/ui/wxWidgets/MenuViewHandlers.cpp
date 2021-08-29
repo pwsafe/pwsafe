@@ -50,7 +50,7 @@ void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
 
     auto searchbar = GetSearchBar();
     wxCHECK_RET(searchbar, wxT("Search object not created as expected"));
-    searchbar->RefreshButtons();
+    searchbar->UpdateBitmaps();
 
     DoLayout();
     SendSizeEvent();
@@ -293,19 +293,18 @@ void PasswordSafeFrame::OnShowReportValidate(wxCommandEvent& WXUNUSED(evt))
 
 void PasswordSafeFrame::OnShowHideToolBar(wxCommandEvent& evt)
 {
-  GetToolBar()->Show(evt.IsChecked());
+  GetMainToolbarPane().Show(evt.IsChecked());
   PWSprefs::GetInstance()->SetPref(PWSprefs::ShowToolbar, evt.IsChecked());
+  m_AuiManager.Update();
   DoLayout();
   SendSizeEvent();
 }
 
 void PasswordSafeFrame::OnShowHideDragBar(wxCommandEvent& evt)
 {
-  DragBarCtrl* dragbar = GetDragBar();
-  wxCHECK_RET(dragbar, wxT("Could not find dragbar"));
-
-  dragbar->Show(evt.IsChecked());
+  GetDragBarPane().Show(evt.IsChecked());
   PWSprefs::GetInstance()->SetPref(PWSprefs::ShowDragbar, evt.IsChecked());
+  m_AuiManager.Update();
   DoLayout();
   SendSizeEvent();
 }
