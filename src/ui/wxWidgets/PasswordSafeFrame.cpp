@@ -2300,11 +2300,20 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
     int noTopLevelWindow = CountTopLevelWindowRecursively(this);
     
     bModalOpen = (noTopLevelWindow > 1); // More than one Top Level Window, the second one is modal
+#if (__WXOSX__)
+    const int TopLevelWindowLimit = 2; // OSX allow exit with one modal window open only
+#else
+# if (wxVERSION_NUMBER >= 3104)
+    const int TopLevelWindowLimit = 3; // Debian rasbery PI is handling 3 modal dialog without failure in wxWidgets 3.1.4
+# else
+    const int TopLevelWindowLimit = 1; // 3.0.5 do not run well when modal window is open (on Debian rasbery PI)
+# endif
+#endif
     
     do {
       // Allow Exit only in case of one modal dialog present - on second one we crash.
       // In most of the cases only one modal dialog is open.
-      SafeCombinationPromptDlg scp(nullptr, m_core, towxstring(m_core.GetCurFile()), (noTopLevelWindow <= 2));
+      SafeCombinationPromptDlg scp(nullptr, m_core, towxstring(m_core.GetCurFile()), (noTopLevelWindow <= TopLevelWindowLimit));
 
       switch (scp.ShowModal()) {
         case (wxID_OK):
@@ -2316,7 +2325,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
             // With modal dialog open we now have a problem, no data base open, but a modal dialog is open that might show an entry
             CleanupAfterReloadFailure(true);
             if(bModalOpen) {
-              if(noTopLevelWindow <= 2)
+              if(noTopLevelWindow <= TopLevelWindowLimit)
                 CloseChildWindowRecursively(this, this);
               else
                 wxMessageBox(_("Please close modal dialog manually"), _("Modal dialog open"), wxOK|wxICON_ERROR);
