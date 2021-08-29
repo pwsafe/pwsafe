@@ -74,18 +74,27 @@ void PasswordSafeFrame::OnPreferencesClick(wxCommandEvent& WXUNUSED(evt))
   bool toolbarShowText = prefs->GetPref(PWSprefs::ToolbarShowText);
   const StringX sxOldDBPrefsString(prefs->Store());
   OptionsPropertySheetDlg *window = new OptionsPropertySheetDlg(this, m_core);
+
   if (window->ShowModal() == wxID_OK) {
-    if(showMenuSeprator != prefs->GetPref(PWSprefs::ShowMenuSeparator))
+    if(showMenuSeprator != prefs->GetPref(PWSprefs::ShowMenuSeparator)) {
       UpdateMainToolbarSeparators(prefs->GetPref(PWSprefs::ShowMenuSeparator));
-    if((autoAdjColWidth != prefs->GetPref(PWSprefs::AutoAdjColWidth)) && IsGridView() && IsShown())
+    }
+    if((autoAdjColWidth != prefs->GetPref(PWSprefs::AutoAdjColWidth)) && IsGridView() && IsShown()) {
       Show(true);
+    }
     if(toolbarShowText != prefs->GetPref(PWSprefs::ToolbarShowText)) {
       auto tb = GetToolBar();
-      if(prefs->GetPref(PWSprefs::ToolbarShowText))
+      if(prefs->GetPref(PWSprefs::ToolbarShowText)) {
         tb->SetWindowStyle(tb->GetWindowStyle() | wxAUI_TB_TEXT);
-      else
+        GetMainToolbarPane().MinSize(-1, 50); // workaround for issue #19241 (https://trac.wxwidgets.org/ticket/19241)
+      }
+      else {
         tb->SetWindowStyle(tb->GetWindowStyle() & ~wxAUI_TB_TEXT);
+        GetMainToolbarPane().MinSize(-1, 25); // workaround for issue #19241 (https://trac.wxwidgets.org/ticket/19241)
+      }
+
       tb->Realize();
+      m_AuiManager.Update();
       DoLayout();
       SendSizeEvent();
     }

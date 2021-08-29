@@ -250,6 +250,7 @@ Command *PasswordSafeFrame::Delete(wxTreeItemId tid, wxTreeItemId root)
 void PasswordSafeFrame::OnFindClick(wxCommandEvent& WXUNUSED(evt))
 {
   m_search->Activate();
+  ShowSearchBar();
 }
 
 /*!

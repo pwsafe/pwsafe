@@ -388,21 +388,12 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
   SetIcon(GetIconResource(L"graphics/cpane.xpm"));
   Centre();
 ////@end PasswordSafeFrame creation
-  m_search = new PasswordSafeSearch(this);
-  wxASSERT(m_search);
-  
   CreateMainToolbar();
   CreateDragBar();
+  CreateSearchBar();
   CreateStatusBar();
   m_AuiManager.Update();
   return true;
-}
-
-void PasswordSafeFrame::CreateStatusBar()
-{
-  m_statusBar = new StatusBar(this, ID_STATUSBAR, wxST_SIZEGRIP|wxNO_BORDER);
-  m_statusBar->Setup();
-  SetStatusBar(m_statusBar);
 }
 
 /*!
@@ -417,9 +408,6 @@ PasswordSafeFrame::~PasswordSafeFrame()
     SaveIfChanged(); // moved here from PWSafeApp::OnExit(), where it's called too late.
 
   m_AuiManager.UnInit();
-
-  delete m_search;
-  m_search = nullptr;
 
   delete m_sysTray;
   m_sysTray = nullptr;
@@ -761,14 +749,9 @@ void PasswordSafeFrame::CreateControls()
   PWSMenuShortcuts* scmgr = PWSMenuShortcuts::CreateShortcutsManager( GetMenuBar() );
   scmgr->ReadApplyUserShortcuts();
 
-  wxBoxSizer* mainsizer = new wxBoxSizer(wxVERTICAL); //to add the search bar later to the bottom
-  SetSizer(mainsizer);
-
   auto panel = new wxPanel(this);
   wxBoxSizer* itemBoxSizer83 = new wxBoxSizer(wxHORIZONTAL);
   panel->SetSizer(itemBoxSizer83);
-
-  mainsizer->Add(panel, 1, wxEXPAND);
 
   m_grid = new GridCtrl( panel, m_core, ID_LISTBOX, wxDefaultPosition,
                         wxDefaultSize, wxHSCROLL|wxVSCROLL );
@@ -876,17 +859,15 @@ void PasswordSafeFrame::CreateMainToolbar()
 
   RefreshToolbarButtons();
 
-  wxCHECK_RET(m_Toolbar->Realize(), wxT("Could not create main toolbar"));
+  const bool showToolbar = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowToolbar);
 
-  const bool bShow = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowToolbar);
-  if (!bShow) {
-    m_Toolbar->Hide();
-  }
-  GetMenuBar()->Check(ID_SHOWHIDE_TOOLBAR, bShow);
+  GetMenuBar()->Check(ID_SHOWHIDE_TOOLBAR, showToolbar);
 
   m_AuiManager.AddPane(m_Toolbar, wxAuiPaneInfo().
     Name("maintoolbar").Caption(_("Main Toolbar")).
-    ToolbarPane().Top().Row(0).Dockable().Floatable().Resizable()
+    ToolbarPane().Top().Row(0).Layer(0).
+    Dockable(true).Floatable(false).Gripper(true).
+    Show(showToolbar).MinSize(-1, 25)
   );
 }
 
@@ -927,7 +908,7 @@ void PasswordSafeFrame::RefreshToolbarButtons()
     }
   }
 
-  toolbar->Realize();
+  wxCHECK_RET(toolbar->Realize(), wxT("Could not create main toolbar"));
 }
 
 /**
@@ -993,21 +974,32 @@ void PasswordSafeFrame::DeleteMainToolbarSeparators()
 }
 
 /**
+ * Provides the pane on which the main tool bar is located.
+ * @return the <code>wxAuiPaneInfo</code>
+ */
+wxAuiPaneInfo& PasswordSafeFrame::GetMainToolbarPane()
+{
+  return m_AuiManager.GetPane("maintoolbar");
+}
+
+/**
  * Creates the dragbar.
  */
 void PasswordSafeFrame::CreateDragBar()
 {
   m_Dragbar = new DragBarCtrl(this);
 
-  const bool bShow = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
-  if (!bShow) {
-    m_Dragbar->Hide();
-  }
-  GetMenuBar()->Check(ID_SHOWHIDE_DRAGBAR, bShow);
+  wxCHECK_RET(m_Dragbar, wxT("Could not create dragbar"));
+
+  const bool showToolbar = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
+
+  GetMenuBar()->Check(ID_SHOWHIDE_DRAGBAR, showToolbar);
 
   m_AuiManager.AddPane(m_Dragbar, wxAuiPaneInfo().
     Name("dragbar").Caption(_("Dragbar")).
-    ToolbarPane().Top().Row(1).Dockable().Floatable().Resizable()
+    ToolbarPane().Top().Row(1).Layer(0).
+    Dockable(true).Floatable(false).Gripper(true).
+    Show(showToolbar).MinSize(-1, 25)
   );
 }
 
@@ -1019,6 +1011,71 @@ void PasswordSafeFrame::UpdateDragbarTooltips()
   auto dragbar = GetDragBar();
   wxCHECK_RET(dragbar, wxT("Couldn't find dragbar"));
   dragbar->UpdateTooltips();
+}
+
+/**
+ * Provides the pane on which the drag bar is located.
+ * @return the <code>wxAuiPaneInfo</code>
+ */
+wxAuiPaneInfo& PasswordSafeFrame::GetDragBarPane()
+{
+  return m_AuiManager.GetPane("dragbar");
+}
+
+/**
+ * Creates an instance of <code>PasswordSafeSearch</code> without creating the search bar related controls.
+ * This is done when 'Find' is issued by the user for the first time.
+ * @see PasswordSafeFrame::OnFindClick
+ */
+void PasswordSafeFrame::CreateSearchBar()
+{
+  m_search = new PasswordSafeSearch(this);
+  m_search->SetGripperVisible(false); // since it is not dockable and movable there is no need for a gripper
+
+  m_AuiManager.AddPane(m_search, wxAuiPaneInfo().
+    Name("searchbar").Caption(_("Searchbar")).
+    ToolbarPane().Bottom().Layer(1).
+    Dockable(false).Floatable(false).Gripper(false).
+    MinSize(-1, 35).Hide()
+  );
+}
+
+/**
+ * Provides the pane on which the search bar is located.
+ * @return the <code>wxAuiPaneInfo</code>
+ */
+wxAuiPaneInfo& PasswordSafeFrame::GetSearchBarPane()
+{
+  return m_AuiManager.GetPane("searchbar");
+}
+
+/**
+ * Shows the search bar.
+ */
+void PasswordSafeFrame::ShowSearchBar()
+{
+  GetSearchBarPane().Show();
+  m_AuiManager.Update();
+}
+
+/**
+ * Hides the search bar.
+ */
+void PasswordSafeFrame::HideSearchBar()
+{
+  GetSearchBarPane().Hide();
+  m_AuiManager.Update();
+  SetFocus();
+}
+
+/**
+ * Creates the statusbar.
+ */
+void PasswordSafeFrame::CreateStatusBar()
+{
+  m_statusBar = new StatusBar(this, ID_STATUSBAR, wxST_SIZEGRIP|wxNO_BORDER);
+  m_statusBar->Setup();
+  SetStatusBar(m_statusBar);
 }
 
 /*!
@@ -2096,11 +2153,11 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_SHOWHIDE_TOOLBAR:
-      GetToolBar() ? evt.Check(GetToolBar()->IsShown()) : evt.Check(false);
+      evt.Check(GetMainToolbarPane().IsShown());
       break;
 
     case ID_SHOWHIDE_DRAGBAR:
-      GetDragBar() ? evt.Check(GetDragBar()->IsShown()) : evt.Check(false);
+      evt.Check(GetDragBarPane().IsShown());
       break;
       
     case ID_CHANGEMODE:
