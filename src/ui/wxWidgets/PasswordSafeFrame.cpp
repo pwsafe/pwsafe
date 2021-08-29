@@ -428,8 +428,9 @@ void PasswordSafeFrame::CreateStatusBar()
 
 PasswordSafeFrame::~PasswordSafeFrame()
 {
-////@begin PasswordSafeFrame destruction
-////@end PasswordSafeFrame destruction
+  if (m_core.IsDbOpen())
+    SaveIfChanged(); // moved here from PWSafeApp::OnExit(), where it's called too late.
+
   delete m_search;
   m_search = nullptr;
 
