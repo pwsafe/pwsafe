@@ -2304,7 +2304,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
     const int TopLevelWindowLimit = 2; // OSX allow exit with one modal window open only
 #else
 # if (wxVERSION_NUMBER >= 3104)
-    const int TopLevelWindowLimit = 3; // Debian rasbery PI is handling 3 modal dialog without failure in wxWidgets 3.1.4
+    const int TopLevelWindowLimit = 255; // Debian rasbery PI is handling 4 modal dialog without failure in wxWidgets 3.1.4, assume more is suitable
 # else
     const int TopLevelWindowLimit = 1; // 3.0.5 do not run well when modal window is open (on Debian rasbery PI)
 # endif
