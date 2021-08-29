@@ -71,7 +71,7 @@ class SafeCombinationPromptDlg : public wxDialog
 
 public:
   /// Constructors
-  SafeCombinationPromptDlg(wxWindow* parent, PWScore &core, const wxString &fname,
+  SafeCombinationPromptDlg(wxWindow* parent, PWScore &core, const wxString &fname, const bool allowExit = true,
                          wxWindowID id = SYMBOL_SAFECOMBINATIONPROMPTDLG_IDNAME, const wxString& caption = SYMBOL_SAFECOMBINATIONPROMPTDLG_TITLE, const wxPoint& pos = SYMBOL_SAFECOMBINATIONPROMPTDLG_POSITION, const wxSize& size = SYMBOL_SAFECOMBINATIONPROMPTDLG_SIZE, long style = SYMBOL_SAFECOMBINATIONPROMPTDLG_STYLE );
 
   /// Creation
@@ -130,6 +130,7 @@ public:
   StringX  m_password;
   unsigned m_tries;
   bool m_readOnly;
+  bool m_allowExit;
   
 #ifndef NO_YUBI
   wxBitmapButton* m_YubiBtn;

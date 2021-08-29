@@ -70,11 +70,12 @@ END_EVENT_TABLE()
  */
 
 SafeCombinationPromptDlg::SafeCombinationPromptDlg(wxWindow* parent, PWScore &core,
-                                               const wxString &fname, wxWindowID id,
+                                               const wxString &fname, const bool allowExit,
+                                               wxWindowID id,
                                                const wxString& caption,
                                                const wxPoint& pos,
                                                const wxSize& size, long style)
-: m_core(core), m_filename(fname), m_tries(0)
+: m_core(core), m_filename(fname), m_tries(0), m_allowExit(allowExit)
 {
   Init();
   Create(parent, id, caption, pos, size, style);
@@ -240,6 +241,8 @@ void SafeCombinationPromptDlg::CreateControls()
   );
   okButton->SetDefault();
 
+  if(! m_allowExit)
+    FindWindow(wxID_EXIT)->Disable();
   // Set validators
   itemStaticText7->SetValidator( wxGenericValidator(& m_filename) );
 ////@end SafeCombinationPromptDlg content construction
