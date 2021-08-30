@@ -225,7 +225,8 @@ bool TreeCtrl::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const
   CreateControls();
 ////@end TreeCtrl creation
 #if wxUSE_DRAG_AND_DROP
-  SetDropTarget(new DndPWSafeDropTarget(this));
+  if(PWSprefs::GetInstance()->GetPref(PWSprefs::MultipleInstances))
+    SetDropTarget(new DndPWSafeDropTarget(this));
 #endif
   return true;
 }
