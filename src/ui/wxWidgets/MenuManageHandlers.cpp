@@ -74,18 +74,29 @@ void PasswordSafeFrame::OnPreferencesClick(wxCommandEvent& WXUNUSED(evt))
   bool toolbarShowText = prefs->GetPref(PWSprefs::ToolbarShowText);
   const StringX sxOldDBPrefsString(prefs->Store());
   OptionsPropertySheetDlg *window = new OptionsPropertySheetDlg(this, m_core);
+
   if (window->ShowModal() == wxID_OK) {
-    if(showMenuSeprator != prefs->GetPref(PWSprefs::ShowMenuSeparator))
-      ReCreateMainToolbarSeparator(prefs->GetPref(PWSprefs::ShowMenuSeparator));
-    if((autoAdjColWidth != prefs->GetPref(PWSprefs::AutoAdjColWidth)) && IsGridView() && IsShown())
+    if(showMenuSeprator != prefs->GetPref(PWSprefs::ShowMenuSeparator)) {
+      UpdateMainToolbarSeparators(prefs->GetPref(PWSprefs::ShowMenuSeparator));
+    }
+    if((autoAdjColWidth != prefs->GetPref(PWSprefs::AutoAdjColWidth)) && IsGridView() && IsShown()) {
       Show(true);
+    }
     if(toolbarShowText != prefs->GetPref(PWSprefs::ToolbarShowText)) {
-      wxToolBar* tb = GetToolBar();
-      if(prefs->GetPref(PWSprefs::ToolbarShowText))
-        tb->SetWindowStyle(tb->GetWindowStyle() | wxTB_TEXT);
-      else
-        tb->SetWindowStyle(tb->GetWindowStyle() & ~wxTB_TEXT);
+      auto tb = GetToolBar();
+      if(prefs->GetPref(PWSprefs::ToolbarShowText)) {
+        tb->SetWindowStyle(tb->GetWindowStyle() | wxAUI_TB_TEXT);
+        GetMainToolbarPane().MinSize(-1, 50); // workaround for issue #19241 (https://trac.wxwidgets.org/ticket/19241)
+      }
+      else {
+        tb->SetWindowStyle(tb->GetWindowStyle() & ~wxAUI_TB_TEXT);
+        GetMainToolbarPane().MinSize(-1, 25); // workaround for issue #19241 (https://trac.wxwidgets.org/ticket/19241)
+      }
+
       tb->Realize();
+      m_AuiManager.Update();
+      DoLayout();
+      SendSizeEvent();
     }
     
     StringX sxNewDBPrefsString(prefs->Store(true));
@@ -289,6 +300,8 @@ void PasswordSafeFrame::OnYubikeyMngClick(wxCommandEvent& WXUNUSED(event))
  */
 void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
 {
+  Freeze();
+
   auto id = evt.GetId();
   // First, uncheck all language menu items, hence the previously selected but also the new one
   for (int menu_id = ID_LANGUAGE_BEGIN+1; menu_id<ID_LANGUAGE_END; menu_id++)
@@ -310,10 +323,10 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
     UpdateMenuBar();
 
     // Recreate toolbar
-    ReCreateMainToolbar();
+    RefreshToolbarButtons();
 
-    // Recreate dragbar
-    ReCreateDragToolbar();
+    // Update dragbar tooltips
+    UpdateDragbarTooltips();
 
     // Recreate search bar
     wxCHECK_RET(m_search, wxT("Search object not created so far"));
@@ -321,6 +334,10 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
   } else {
     GetMenuBar()->Check( m_selectedLanguage, true );
   }
+
+  Thaw();
+  DoLayout();
+  SendSizeEvent();
 }
 
 /*!

@@ -123,7 +123,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_MERGE,                   PasswordSafeFrame::OnMergeAnotherSafe            )
   EVT_MENU( ID_COMPARE,                 PasswordSafeFrame::OnCompare                     )
   EVT_MENU( ID_SYNCHRONIZE,             PasswordSafeFrame::OnSynchronize                 )
-  EVT_MENU( ID_CHANGEMODE,              PasswordSafeFrame::OnChangeMode                 )
+  EVT_MENU( ID_CHANGEMODE,              PasswordSafeFrame::OnChangeMode                  )
   EVT_MENU( wxID_PROPERTIES,            PasswordSafeFrame::OnPropertiesClick             )
   EVT_MENU( wxID_EXIT,                  PasswordSafeFrame::OnExitClick                   )
 
@@ -382,44 +382,18 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
 {
   ////@begin PasswordSafeFrame creation
   wxFrame::Create( parent, id, caption, pos, size, style );
-
+  m_AuiManager.SetManagedWindow(this);
   CreateMenubar();
   CreateControls();
   SetIcon(GetIconResource(L"graphics/cpane.xpm"));
   Centre();
 ////@end PasswordSafeFrame creation
-  m_search = new PasswordSafeSearch(this);
-  wxASSERT(m_search);
-  
   CreateMainToolbar();
   CreateDragBar();
+  CreateSearchBar();
   CreateStatusBar();
+  m_AuiManager.Update();
   return true;
-}
-
-void PasswordSafeFrame::CreateDragBar()
-{
-  wxSizer* origSizer = GetSizer();
-
-  wxASSERT(origSizer);
-  wxASSERT(origSizer->IsKindOf(wxBoxSizer(wxVERTICAL).GetClassInfo()));
-  wxASSERT(static_cast<wxBoxSizer*>(origSizer)->GetOrientation() == wxVERTICAL);
-
-  DragBarCtrl* dragbar = new DragBarCtrl(this);
-  origSizer->Insert(0, dragbar, 0, wxEXPAND);
-
-  const bool bShow = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
-  if (!bShow) {
-    dragbar->Hide();
-  }
-  GetMenuBar()->Check(ID_SHOWHIDE_DRAGBAR, bShow);
-}
-
-void PasswordSafeFrame::CreateStatusBar()
-{
-  m_statusBar = new StatusBar(this, ID_STATUSBAR, wxST_SIZEGRIP|wxNO_BORDER);
-  m_statusBar->Setup();
-  SetStatusBar(m_statusBar);
 }
 
 /*!
@@ -428,11 +402,12 @@ void PasswordSafeFrame::CreateStatusBar()
 
 PasswordSafeFrame::~PasswordSafeFrame()
 {
+////@begin PasswordSafeFrame destruction
+////@end PasswordSafeFrame destruction
   if (m_core.IsDbOpen())
     SaveIfChanged(); // moved here from PWSafeApp::OnExit(), where it's called too late.
 
-  delete m_search;
-  m_search = nullptr;
+  m_AuiManager.UnInit();
 
   delete m_sysTray;
   m_sysTray = nullptr;
@@ -462,6 +437,8 @@ void PasswordSafeFrame::Init()
   
   m_RUEList.SetMax(PWSprefs::GetInstance()->PWSprefs::MaxREItems);
 ////@begin PasswordSafeFrame member initialisation
+  m_Toolbar = nullptr;
+  m_Dragbar = nullptr;
   m_grid = nullptr;
   m_tree = nullptr;
   m_statusBar = nullptr;
@@ -772,17 +749,16 @@ void PasswordSafeFrame::CreateControls()
   PWSMenuShortcuts* scmgr = PWSMenuShortcuts::CreateShortcutsManager( GetMenuBar() );
   scmgr->ReadApplyUserShortcuts();
 
-  wxBoxSizer* mainsizer = new wxBoxSizer(wxVERTICAL); //to add the search bar later to the bottom
+  auto panel = new wxPanel(this);
   wxBoxSizer* itemBoxSizer83 = new wxBoxSizer(wxHORIZONTAL);
-  mainsizer->Add(itemBoxSizer83, 1, wxEXPAND);
-  SetSizer(mainsizer);
+  panel->SetSizer(itemBoxSizer83);
 
-  m_grid = new GridCtrl( this, m_core, ID_LISTBOX, wxDefaultPosition,
+  m_grid = new GridCtrl( panel, m_core, ID_LISTBOX, wxDefaultPosition,
                         wxDefaultSize, wxHSCROLL|wxVSCROLL );
   wxASSERT(m_grid);
   itemBoxSizer83->Add(m_grid, wxSizerFlags().Expand().Border(0).Proportion(1));
 
-  m_tree = new TreeCtrl( this, m_core, ID_TREECTRL, wxDefaultPosition,
+  m_tree = new TreeCtrl( panel, m_core, ID_TREECTRL, wxDefaultPosition,
                             wxDefaultSize,
                             wxTR_EDIT_LABELS|wxTR_HAS_BUTTONS |wxTR_HIDE_ROOT|wxTR_SINGLE );
   wxASSERT(m_tree);
@@ -811,6 +787,8 @@ void PasswordSafeFrame::CreateControls()
   const RecentDbList& rdb = wxGetApp().recentDatabases();
   Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(PasswordSafeFrame::OnOpenRecentDB));
+
+  m_AuiManager.AddPane(panel, wxAuiPaneInfo().CenterPane().Resizable().Show());
 }
 
 /**
@@ -875,124 +853,229 @@ void PasswordSafeFrame::AddLanguage(int menu_id, wxLanguage lang_id, const wxStr
  */
 void PasswordSafeFrame::CreateMainToolbar()
 {
-  wxToolBar* toolbar = CreateToolBar(wxBORDER_NONE | wxTB_TOP | wxTB_HORIZONTAL | (PWSprefs::GetInstance()->GetPref(PWSprefs::ToolbarShowText) ? wxTB_TEXT : 0), wxID_ANY, wxT("Main Toolbar"));
+  m_Toolbar = new wxAuiToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize,
+    wxAUI_TB_DEFAULT_STYLE|wxAUI_TB_GRIPPER|wxAUI_TB_OVERFLOW|(PWSprefs::GetInstance()->GetPref(PWSprefs::ToolbarShowText) ? wxAUI_TB_TEXT : 0)
+  );
 
   RefreshToolbarButtons();
 
-  wxCHECK_RET(toolbar->Realize(), wxT("Could not create main toolbar"));
+  const bool showToolbar = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowToolbar);
 
-  const bool bShow = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowToolbar);
-  if (!bShow) {
-    toolbar->Hide();
-  }
-  GetMenuBar()->Check(ID_SHOWHIDE_TOOLBAR, bShow);
+  GetMenuBar()->Check(ID_SHOWHIDE_TOOLBAR, showToolbar);
+
+  m_AuiManager.AddPane(m_Toolbar, wxAuiPaneInfo().
+    Name("maintoolbar").Caption(_("Main Toolbar")).
+    ToolbarPane().Top().Row(0).Layer(0).
+    Dockable(true).Floatable(false).Gripper(true).
+    Show(showToolbar).MinSize(-1, 25)
+  );
 }
 
 /**
- * Recreates the main toolbar.
+ * Recreates the main toolbar's items based on <code>PwsToolbarButtons</code>.
  *
  * This assumes that the main toolbar has already been created.
  * If this is the case all existing elements are removed and
  * added again to the toolbar instance.
+ *
+ * @see ToolbarButtons.h
  */
-void PasswordSafeFrame::ReCreateMainToolbar()
+void PasswordSafeFrame::RefreshToolbarButtons()
 {
-    wxToolBar* toolbar = GetToolBar();
-    wxCHECK_RET(toolbar, wxT("Couldn't find toolbar"));
+  auto pref = PWSprefs::GetInstance();
+  wxASSERT(pref);
+  auto toolbar = GetToolBar();
+  wxASSERT(toolbar);
+
+  if (toolbar->GetToolCount() > 0) {
     toolbar->ClearTools();
-    RefreshToolbarButtons();
+  }
+
+  for (const auto & PwsToolbarButton : PwsToolbarButtons) {
+    if (pref->GetPref(PWSprefs::ShowMenuSeparator) && (PwsToolbarButton.IsSeparator())) {
+      toolbar->AddSeparator()->SetId(PwsToolbarButton.id);
+    }
+    else {
+      toolbar->AddTool(
+        PwsToolbarButton.id,
+        wxGetTranslation(PwsToolbarButton.toollabel),
+        PwsToolbarButton.GetBitmapForEnabledButton(),
+        PwsToolbarButton.GetBitmapForDisabledButton(),
+        wxITEM_NORMAL,
+        wxGetTranslation(PwsToolbarButton.tooltip),
+        wxEmptyString,
+        nullptr);
+    }
+  }
+
+  wxCHECK_RET(toolbar->Realize(), wxT("Could not create main toolbar"));
 }
 
 /**
- * Recreates the dragbar.
- *
- * This assumes that the dragbar has already been created.
- * If this is the case all existing elements are removed and
- * re-added.
+ * Updates the bitmaps of the main toolbar after changing the toolbar type.
  */
-void PasswordSafeFrame::ReCreateDragToolbar()
+void PasswordSafeFrame::UpdateMainToolbarBitmaps()
 {
-    DragBarCtrl* dragbar = GetDragBar();
-    wxCHECK_RET(dragbar, wxT("Couldn't find dragbar"));
-    dragbar->ClearTools();
-    dragbar->RefreshButtons();
-}
-
-void PasswordSafeFrame::RefreshToolbarButtons()
-{
-  wxToolBar* tb = GetToolBar();
-  PWSprefs *pref = PWSprefs::GetInstance();
-  wxASSERT(tb);
+  auto pref = PWSprefs::GetInstance();
   wxASSERT(pref);
-  if (tb->GetToolsCount() == 0) {  //being created?
-    if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar)) {
-      for (auto & PwsToolbarButton : PwsToolbarButtons) {
-        if (PwsToolbarButton.id == ID_SEPARATOR) {
-          if(pref->GetPref(PWSprefs::ShowMenuSeparator))
-            tb->AddSeparator();
-        }
-        else {
-          tb->AddTool(PwsToolbarButton.id, wxGetTranslation(PwsToolbarButton.toollabel), wxBitmap(PwsToolbarButton.bitmap_normal),
-                              wxBitmap(PwsToolbarButton.bitmap_disabled), wxITEM_NORMAL,
-                              wxGetTranslation(PwsToolbarButton.tooltip) );
-        }
-      }
-    }
-    else {
-      for (auto & PwsToolbarButton : PwsToolbarButtons) {
-        if (PwsToolbarButton.id == ID_SEPARATOR) {
-          if(pref->GetPref(PWSprefs::ShowMenuSeparator))
-            tb->AddSeparator();
-        }
-        else {
-           tb->AddTool(PwsToolbarButton.id, wxGetTranslation(PwsToolbarButton.toollabel), wxBitmap(PwsToolbarButton.bitmap_classic),
-                      wxGetTranslation(PwsToolbarButton.tooltip) );
-        }
-      }
+  auto toolbar = GetToolBar();
+  wxASSERT(toolbar);
+
+  for (const auto & PwsToolbarButton : PwsToolbarButtons) {
+    if (PwsToolbarButton.IsSeparator())
+      continue;
+
+    auto tool = toolbar->FindTool(PwsToolbarButton.id);
+    if (tool) {
+      tool->SetBitmap(PwsToolbarButton.GetBitmapForEnabledButton());
+      tool->SetDisabledBitmap(PwsToolbarButton.GetBitmapForDisabledButton());
     }
   }
-  else { //toolbar type was changed from the menu
-    if (pref->GetPref(PWSprefs::UseNewToolbar)) {
-      for (auto & PwsToolbarButton : PwsToolbarButtons) {
-        if (PwsToolbarButton.id == ID_SEPARATOR)
-          continue;
-        tb->SetToolNormalBitmap(PwsToolbarButton.id, wxBitmap(PwsToolbarButton.bitmap_normal));
-        tb->SetToolDisabledBitmap(PwsToolbarButton.id, wxBitmap(PwsToolbarButton.bitmap_disabled));
-      }
-    }
-    else {
-      for (auto & PwsToolbarButton : PwsToolbarButtons) {
-        if (PwsToolbarButton.id == ID_SEPARATOR)
-          continue;
-        tb->SetToolNormalBitmap(PwsToolbarButton.id, wxBitmap(PwsToolbarButton.bitmap_classic));
-        tb->SetToolDisabledBitmap(PwsToolbarButton.id, wxNullBitmap);
-      }
-    }
-  }
-  tb->Realize();
+
+  toolbar->Realize();
 }
 
-void PasswordSafeFrame::ReCreateMainToolbarSeparator(bool bInsert)
+/**
+ * Inserts or deletes the separator elements of the main toolbar.
+ *
+ * @param insert if true separators are added, otherwise deleted.
+ */
+void PasswordSafeFrame::UpdateMainToolbarSeparators(bool insert)
 {
-  wxToolBar* tb = GetToolBar();
-  size_t pos = 0;
-  wxASSERT(tb);
-  wxASSERT(tb->GetToolsCount() > 0);
-  if(bInsert) {
-    for (auto & PwsToolbarButton : PwsToolbarButtons) {
-      if (PwsToolbarButton.id == ID_SEPARATOR) {
-        tb->InsertSeparator(pos);
-      }
-      ++pos;
-    }
+  Freeze();
+
+  if(insert) {
+    RefreshToolbarButtons();
   }
-  else { // Delete
-    for (pos = 0; pos < tb->GetToolsCount(); ++pos) {
-      if(tb->GetToolByPos(static_cast<int>(pos))->IsSeparator())
-        tb->DeleteToolByPos(pos);
-    }
+  else {
+    DeleteMainToolbarSeparators();
   }
-  tb->Realize();
+
+  Thaw();
+  DoLayout();
+  SendSizeEvent();
+}
+
+/**
+ * Deletes all separator elements from the main toolbar.
+ */
+void PasswordSafeFrame::DeleteMainToolbarSeparators()
+{
+  auto toolbar = GetToolBar();
+  wxASSERT(toolbar);
+  wxASSERT(toolbar->GetToolCount() > 0);
+
+  for (size_t pos = 0; pos < toolbar->GetToolCount(); ++pos) {
+    if(toolbar->FindToolByIndex(static_cast<int>(pos))->GetId() == ID_SEPARATOR)
+      toolbar->DeleteByIndex(pos);
+  }
+
+  toolbar->Realize();
+}
+
+/**
+ * Provides the pane on which the main tool bar is located.
+ * @return the <code>wxAuiPaneInfo</code>
+ */
+wxAuiPaneInfo& PasswordSafeFrame::GetMainToolbarPane()
+{
+  return m_AuiManager.GetPane("maintoolbar");
+}
+
+/**
+ * Creates the dragbar.
+ */
+void PasswordSafeFrame::CreateDragBar()
+{
+  m_Dragbar = new DragBarCtrl(this);
+
+  wxCHECK_RET(m_Dragbar, wxT("Could not create dragbar"));
+
+  const bool showToolbar = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
+
+  GetMenuBar()->Check(ID_SHOWHIDE_DRAGBAR, showToolbar);
+
+  m_AuiManager.AddPane(m_Dragbar, wxAuiPaneInfo().
+    Name("dragbar").Caption(_("Dragbar")).
+    ToolbarPane().Top().Row(1).Layer(0).
+    Dockable(true).Floatable(false).Gripper(true).
+    Show(showToolbar).MinSize(-1, 25)
+  );
+}
+
+/**
+ * Updates the dragbar's tooltips after changing the language.
+ */
+void PasswordSafeFrame::UpdateDragbarTooltips()
+{
+  auto dragbar = GetDragBar();
+  wxCHECK_RET(dragbar, wxT("Couldn't find dragbar"));
+  dragbar->UpdateTooltips();
+}
+
+/**
+ * Provides the pane on which the drag bar is located.
+ * @return the <code>wxAuiPaneInfo</code>
+ */
+wxAuiPaneInfo& PasswordSafeFrame::GetDragBarPane()
+{
+  return m_AuiManager.GetPane("dragbar");
+}
+
+/**
+ * Creates an instance of <code>PasswordSafeSearch</code> without creating the search bar related controls.
+ * This is done when 'Find' is issued by the user for the first time.
+ * @see PasswordSafeFrame::OnFindClick
+ */
+void PasswordSafeFrame::CreateSearchBar()
+{
+  m_search = new PasswordSafeSearch(this);
+  m_search->SetGripperVisible(false); // since it is not dockable and movable there is no need for a gripper
+
+  m_AuiManager.AddPane(m_search, wxAuiPaneInfo().
+    Name("searchbar").Caption(_("Searchbar")).
+    ToolbarPane().Bottom().Layer(1).
+    Dockable(false).Floatable(false).Gripper(false).
+    MinSize(-1, 35).Hide()
+  );
+}
+
+/**
+ * Provides the pane on which the search bar is located.
+ * @return the <code>wxAuiPaneInfo</code>
+ */
+wxAuiPaneInfo& PasswordSafeFrame::GetSearchBarPane()
+{
+  return m_AuiManager.GetPane("searchbar");
+}
+
+/**
+ * Shows the search bar.
+ */
+void PasswordSafeFrame::ShowSearchBar()
+{
+  GetSearchBarPane().Show();
+  m_AuiManager.Update();
+}
+
+/**
+ * Hides the search bar.
+ */
+void PasswordSafeFrame::HideSearchBar()
+{
+  GetSearchBarPane().Hide();
+  m_AuiManager.Update();
+  SetFocus();
+}
+
+/**
+ * Creates the statusbar.
+ */
+void PasswordSafeFrame::CreateStatusBar()
+{
+  m_statusBar = new StatusBar(this, ID_STATUSBAR, wxST_SIZEGRIP|wxNO_BORDER);
+  m_statusBar->Setup();
+  SetStatusBar(m_statusBar);
 }
 
 /*!
@@ -1173,23 +1256,6 @@ void PasswordSafeFrame::ShowTree(bool show)
 
   m_tree->Show(show);
   GetSizer()->Layout();
-}
-
-DragBarCtrl* PasswordSafeFrame::GetDragBar()
-{
-  wxSizer* origSizer = GetSizer();
-
-  wxASSERT(origSizer);
-  wxASSERT(origSizer->IsKindOf(wxBoxSizer(wxVERTICAL).GetClassInfo()));
-  wxASSERT(static_cast<wxBoxSizer*>(origSizer)->GetOrientation() == wxVERTICAL);
-
-  wxSizerItem* dragbarItem = origSizer->GetItem(size_t(0));
-  wxASSERT_MSG(dragbarItem && dragbarItem->IsWindow() &&
-                      wxIS_KIND_OF(dragbarItem->GetWindow(), DragBarCtrl),
-                    wxT("Found unexpected item while searching for DragBar"));
-
-  DragBarCtrl* dragbar = wxDynamicCast(dragbarItem->GetWindow(), DragBarCtrl);
-  return dragbar;
 }
 
 void PasswordSafeFrame::ClearAppData()
@@ -2087,11 +2153,11 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_SHOWHIDE_TOOLBAR:
-      GetToolBar() ? evt.Check(GetToolBar()->IsShown()) : evt.Check(false);
+      evt.Check(GetMainToolbarPane().IsShown());
       break;
 
     case ID_SHOWHIDE_DRAGBAR:
-      GetDragBar() ? evt.Check(GetDragBar()->IsShown()) : evt.Check(false);
+      evt.Check(GetDragBarPane().IsShown());
       break;
       
     case ID_CHANGEMODE:

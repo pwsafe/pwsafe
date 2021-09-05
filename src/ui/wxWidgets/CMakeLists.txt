@@ -18,7 +18,6 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/Clipboard.h
     src/ui/wxWidgets/CreateShortcutDlg.h
     src/ui/wxWidgets/DeleteConfirmationDlg.h
-    src/ui/wxWidgets/DragBarGenericCtrl.h
     src/ui/wxWidgets/EditShortcutDlg.h
     src/ui/wxWidgets/FieldSelectionDlg.h
     src/ui/wxWidgets/FieldSelectionPanel.h
@@ -98,7 +97,6 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/PropertiesDlg.cpp
     src/ui/wxWidgets/CreateShortcutDlg.cpp
     src/ui/wxWidgets/DeleteConfirmationDlg.cpp
-    src/ui/wxWidgets/DragBarGenericCtrl.cpp
     src/ui/wxWidgets/EditShortcutDlg.cpp
     src/ui/wxWidgets/FieldSelectionDlg.cpp
     src/ui/wxWidgets/FieldSelectionPanel.cpp

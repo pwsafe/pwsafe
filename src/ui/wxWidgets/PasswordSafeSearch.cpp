@@ -31,6 +31,7 @@
 #include "PasswordSafeSearch.h"
 #include "PasswordSafeFrame.h"
 #include "AdvancedSelectionDlg.h"
+#include "PWSafeApp.h"
 #include "SelectionCriteria.h"
 #include "SearchUtils.h"
 #include "ViewReportDlg.h"
@@ -61,7 +62,6 @@ enum { FIND_MENU_POSITION = 4 } ;
 
 ////////////////////////////////////////////////////////////////////////////
 // PasswordSafeSerach implementation
-IMPLEMENT_CLASS( PasswordSafeSearch, wxEvtHandler )
 
 enum {
   ID_FIND_CLOSE = 10061,
@@ -74,17 +74,84 @@ enum {
   ID_FIND_STATUS_AREA
 }; // see also PasswordSafeSearch::CalculateToolsWidth() in case of updates
 
-PasswordSafeSearch::PasswordSafeSearch(PasswordSafeFrame* parent) : m_toolbar(nullptr),
-                                                                    m_parentFrame(parent),
-                                                                    m_criteria(new SelectionCriteria)
+struct SearchBarToolInfo {
+  wxWindowID id;
+  const wxString tooltip;
+  const char** bitmap_normal;
+  const char** bitmap_disabled;
+  const char** bitmap_classic;
+  const char** bitmap_classic_disabled;
+  wxItemKind tool_type;
+
+  SearchBarToolInfo() :
+    id(0), tooltip(wxEmptyString),
+    bitmap_normal(nullptr), bitmap_disabled(nullptr),
+    bitmap_classic(nullptr), bitmap_classic_disabled(nullptr),
+    tool_type(wxITEM_NORMAL) {}
+
+  SearchBarToolInfo(
+    wxWindowID id, const wxString &tooltip,
+    const char** bitmap_normal, const char** bitmap_disabled,
+    const char** bitmap_classic, const char** bitmap_classic_disabled,
+    wxItemKind tool_type
+  ) :
+    id(id), tooltip(tooltip),
+    bitmap_normal(bitmap_normal), bitmap_disabled(bitmap_disabled),
+    bitmap_classic(bitmap_classic), bitmap_classic_disabled(bitmap_classic_disabled),
+    tool_type(tool_type) {}
+
+  bool UseNewToolbarStyle() const
+  {
+    return PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar);
+  }
+
+  /**
+   * Provides the bitmap that represents an enabled toolbar item in the new or classic style, depending on user preferences.
+   * @return toolbar item bitmap
+   */
+  wxBitmap GetBitmapForEnabledButton() const
+  {
+    return UseNewToolbarStyle() ? bitmap_normal ? bitmap_normal : wxNullBitmap : bitmap_classic ? bitmap_classic : wxNullBitmap;
+  };
+
+  /**
+   * Provides the bitmap that represents an disabled toolbar item in the new or classic style, depending on user preferences.
+   * @return toolbar item bitmap
+   */
+  wxBitmap GetBitmapForDisabledButton() const
+  {
+    return UseNewToolbarStyle() ? bitmap_disabled ? bitmap_disabled : wxNullBitmap : bitmap_classic_disabled ? bitmap_classic_disabled : wxNullBitmap;
+  }
+};
+
+std::vector<SearchBarToolInfo> SearchBarToolInfos =
+  {
+    { ID_FIND_CLOSE,            _("Close"),                                 findclose_xpm,    nullptr,           classic_findclose_xpm,    nullptr,                   wxITEM_NORMAL },
+    { ID_FIND_EDITBOX,          _("Search text input field"),               nullptr,          nullptr,           nullptr,                  nullptr,                   wxITEM_MAX    },
+    { ID_FIND_NEXT,             _("Find Next"),                             find_xpm,         find_disabled_xpm, classic_find_xpm,         classic_find_disabled_xpm, wxITEM_NORMAL },
+    { ID_FIND_IGNORE_CASE,      _("Case Insensitive Search"),               findcase_i_xpm,   findcase_s_xpm,    classic_findcase_i_xpm,   classic_findcase_s_xpm,    wxITEM_CHECK  },
+    { ID_FIND_ADVANCED_OPTIONS, _("Advanced Find Options"),                 findadvanced_xpm, nullptr,           classic_findadvanced_xpm, nullptr,                   wxITEM_NORMAL },
+    { ID_FIND_CREATE_REPORT,    _("Create report of previous Find search"), findreport_xpm,   nullptr,           classic_findreport_xpm,   nullptr,                   wxITEM_NORMAL },
+    { ID_FIND_CLEAR,            _("Clear Find"),                            findclear_xpm,    nullptr,           classic_findclear_xpm,    nullptr,                   wxITEM_NORMAL },
+    { ID_FIND_STATUS_AREA,      _("Search status"),                         nullptr,          nullptr,           nullptr,                  nullptr,                   wxITEM_MAX    }
+  };
+
+PasswordSafeSearch::PasswordSafeSearch(wxWindow *parent, wxWindowID id, const wxPoint &position, const wxSize &size, long style)
+: wxAuiToolBar(parent, id, position, size, style)
 {
+  m_parentFrame = wxDynamicCast(parent, PasswordSafeFrame);
+  m_criteria = new SelectionCriteria();
   m_modified = false;
 }
 
 PasswordSafeSearch::~PasswordSafeSearch()
 {
-  delete m_toolbar;
-  m_toolbar = nullptr;
+  Unbind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnAdvancedSearchOptions, this, ID_FIND_ADVANCED_OPTIONS);
+  Unbind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnSearchClose,           this, ID_FIND_CLOSE);
+  Unbind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnDoSearch,              this, ID_FIND_NEXT);
+  Unbind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnSearchClear,           this, ID_FIND_CLEAR);
+  Unbind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnToolBarFindReport,     this, ID_FIND_CREATE_REPORT);
+  Unbind(wxEVT_CHAR_HOOK,                                 &PasswordSafeSearch::OnChar,                  this);
 
   delete m_criteria;
   m_criteria = nullptr;
@@ -116,9 +183,7 @@ void PasswordSafeSearch::OnDoSearch(wxCommandEvent& WXUNUSED(event))
 template <class Iter, class Accessor>
 void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
 {
-  wxASSERT(m_toolbar);
-
-  wxSearchCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
+  wxSearchCtrl* txtCtrl = wxDynamicCast(FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
   wxCHECK_RET(txtCtrl, wxT("Could not get search control of toolbar"));
 
   const wxString searchText = txtCtrl->GetValue();
@@ -130,14 +195,14 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
   if (m_criteria->IsDirty() || IsModified() || m_searchPointer.IsEmpty()) {
     m_searchPointer.Clear();
 
-    if (!m_toolbar->GetToolState(ID_FIND_ADVANCED_OPTIONS)) {
-      FindMatches(tostringx(searchText), m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_searchPointer, begin, end, afn);
+    if (!GetToolToggled(ID_FIND_ADVANCED_OPTIONS)) {
+      FindMatches(tostringx(searchText), GetToolToggled(ID_FIND_IGNORE_CASE), m_searchPointer, begin, end, afn);
     }
     else {
       m_searchPointer.Clear();
       ::FindMatches(
-        tostringx(searchText), 
-          m_toolbar->GetToolState(ID_FIND_IGNORE_CASE), m_criteria->GetSelectedFields(),
+        tostringx(searchText),
+          GetToolToggled(ID_FIND_IGNORE_CASE), m_criteria->GetSelectedFields(),
           m_criteria->HasSubgroupRestriction(), tostdstring(m_criteria->SubgroupSearchText()),
           m_criteria->SubgroupObject(), m_criteria->SubgroupFunction(),
           m_criteria->CaseSensitive(), begin, end, afn, [this, afn](Iter itr, bool *keep_going) {
@@ -179,7 +244,7 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
 
 void PasswordSafeSearch::UpdateView()
 {
-  auto statusArea = m_toolbar->FindControl(ID_FIND_STATUS_AREA);
+  auto statusArea = FindControl(ID_FIND_STATUS_AREA);
   wxASSERT(statusArea);
 
   if (!m_searchPointer.IsEmpty()) {
@@ -215,7 +280,7 @@ void PasswordSafeSearch::OnSearchClose(wxCommandEvent& WXUNUSED(event))
 
 void PasswordSafeSearch::OnSearchClear(wxCommandEvent& WXUNUSED(event))
 {
-  wxSearchCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
+  wxSearchCtrl* txtCtrl = wxDynamicCast(FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
   wxCHECK_RET(txtCtrl, wxT("Could not get search control from toolbar"));
   txtCtrl->Clear();
   m_searchPointer.Clear();
@@ -242,10 +307,10 @@ void PasswordSafeSearch::OnSize(wxSizeEvent& event)
  */
 void PasswordSafeSearch::UpdateStatusAreaWidth()
 {
-  auto control = m_toolbar->FindControl(ID_FIND_STATUS_AREA);
+  auto control = FindControl(ID_FIND_STATUS_AREA);
 
   if (control) {
-    int statusAreaWidth = (m_toolbar->GetParent()->GetClientSize()).GetWidth() - static_cast<int>(m_ToolsWidth);
+    int statusAreaWidth = (GetParent()->GetClientSize()).GetWidth() - static_cast<int>(m_ToolsWidth);
 
     if (statusAreaWidth < 0) {
       return;
@@ -279,13 +344,11 @@ void PasswordSafeSearch::CalculateToolsWidth()
     ID_FIND_CLEAR
   };
 
-  if (m_toolbar) {
-    for (auto& id : ids) {
-      auto control = m_toolbar->FindControl(id);
+  for (const auto& id : ids) {
+    auto control = FindControl(id);
 
-      if (control) {
-        m_ToolsWidth += (control->GetSize()).GetWidth();
-      }
+    if (control) {
+      m_ToolsWidth += (control->GetSize()).GetWidth();
     }
   }
 }
@@ -307,13 +370,7 @@ wxSize PasswordSafeSearch::CalculateSearchWidth()
 
 void PasswordSafeSearch::HideSearchToolbar()
 {
-  if (m_toolbar == nullptr) {
-    return;
-  }
-
-  m_toolbar->Show(false);
-  m_parentFrame->GetSizer()->Layout();
-  m_parentFrame->SetFocus();
+  m_parentFrame->HideSearchBar();
 
   wxMenu* editMenu = nullptr; // will be set by FindItem() below
   wxMenuItem* findNextItem = m_parentFrame->GetMenuBar()->FindItem(ID_EDITMENU_FIND_NEXT, &editMenu);
@@ -330,7 +387,7 @@ void PasswordSafeSearch::HideSearchToolbar()
 
 void PasswordSafeSearch::ClearToolbarStatusArea()
 {
-  auto statusArea = m_toolbar->FindControl(ID_FIND_STATUS_AREA);
+  auto statusArea = FindControl(ID_FIND_STATUS_AREA);
   wxCHECK_RET(statusArea, wxT("Could not retrieve status area from search bar"));
   statusArea->SetLabel(wxEmptyString);
 }
@@ -394,7 +451,7 @@ void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& event)
     }
     else {
       // No change, but need to toggle off "Advanced Options" button manually
-      m_toolbar->ToggleTool(event.GetId(), false);
+      ToggleTool(event.GetId(), false);
     }
   }
   else {
@@ -408,9 +465,7 @@ void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& event)
  */
 void PasswordSafeSearch::OnToolBarFindReport(wxCommandEvent& event)
 {
-  wxASSERT(m_toolbar);
-
-  wxSearchCtrl* txtCtrl = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
+  wxSearchCtrl* txtCtrl = wxDynamicCast(FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
   wxCHECK_RET(txtCtrl, wxT("Could not get search control of toolbar"));
 
   const wxString searchText = txtCtrl->GetValue();
@@ -426,7 +481,7 @@ void PasswordSafeSearch::OnToolBarFindReport(wxCommandEvent& event)
     m_criteria->ReportAdvancedOptions(&report, _("Find"), m_parentFrame->GetCurrentFile().c_str());
   }
   
-  stringT line, searchT(searchText.c_str()), searchCaseT(m_toolbar->GetToolState(ID_FIND_IGNORE_CASE) ? _("(case-sensitive)"): _("(not case-sensitive)"));
+  stringT line, searchT(searchText.c_str()), searchCaseT(GetToolToggled(ID_FIND_IGNORE_CASE) ? _("(case-sensitive)"): _("(not case-sensitive)"));
   
   if (m_searchPointer.IsEmpty()) {
     Format(line, IDSC_SEARCHRESULTS1, searchT.c_str(), searchCaseT.c_str());
@@ -457,47 +512,25 @@ void PasswordSafeSearch::OnToolBarFindReport(wxCommandEvent& event)
   ViewReportDlg vr(m_parentFrame, &report);
   vr.ShowModal();
   // set back toggle
-  m_toolbar->ToggleTool(event.GetId(), false);
+  ToggleTool(event.GetId(), false);
 }
 
-void PasswordSafeSearch::RefreshButtons()
+/**
+ * Updates the bitmaps of the tool elements after the user changed the icon style.
+ */
+void PasswordSafeSearch::UpdateBitmaps()
 {
-  if (m_toolbar == nullptr) {
-    return;
-  }
-
-  static struct _SearchBarInfo {
-    int id;
-    const char** bitmap_normal;
-    const char** bitmap_disabled;
-    const char** bitmap_classic;
-    const char** bitmap_classic_disabled;
-  } SearchBarButtons[] = {
-          { ID_FIND_CLOSE,            findclose_xpm,    nullptr,               classic_findclose_xpm,    nullptr                      },
-          { ID_FIND_NEXT,             find_xpm,         find_disabled_xpm,     classic_find_xpm,         classic_find_disabled_xpm    },
-          { ID_FIND_IGNORE_CASE,      findcase_i_xpm,   findcase_s_xpm,        classic_findcase_i_xpm,   classic_findcase_s_xpm       },
-          { ID_FIND_ADVANCED_OPTIONS, findadvanced_xpm, nullptr,               classic_findadvanced_xpm, nullptr                      },
-          { ID_FIND_CREATE_REPORT,    findreport_xpm,   nullptr,               classic_findreport_xpm,   nullptr                      },
-          { ID_FIND_CLEAR,            findclear_xpm,    nullptr,               classic_findclear_xpm,    nullptr                      },
-  };
-
-  const char** _SearchBarInfo::* bitmap_normal;
-  const char** _SearchBarInfo::* bitmap_disabled;
-
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar)) {
-    bitmap_normal = &_SearchBarInfo::bitmap_normal;
-    bitmap_disabled = &_SearchBarInfo::bitmap_normal;
-  }
-  else {
-    bitmap_normal = &_SearchBarInfo::bitmap_classic;
-    bitmap_disabled = &_SearchBarInfo::bitmap_classic_disabled;
-  }
-
-  for (size_t idx = 0; idx < NumberOf(SearchBarButtons); ++idx) {
-    m_toolbar->SetToolNormalBitmap(SearchBarButtons[idx].id, wxBitmap(SearchBarButtons[idx].*bitmap_normal));
-    if (SearchBarButtons[idx].*bitmap_disabled) {
-      m_toolbar->SetToolDisabledBitmap(SearchBarButtons[idx].id, wxBitmap(SearchBarButtons[idx].*bitmap_disabled));
+  if (HasTools()) {
+    for (const auto & toolInfo : SearchBarToolInfos)
+    {
+      auto tool = FindTool(toolInfo.id);
+      if (tool) {
+        tool->SetBitmap(toolInfo.GetBitmapForEnabledButton());
+        tool->SetDisabledBitmap(toolInfo.GetBitmapForDisabledButton());
+      }
     }
+
+    Realize();
   }
 }
 
@@ -506,12 +539,8 @@ void PasswordSafeSearch::RefreshButtons()
  */
 void PasswordSafeSearch::ReCreateSearchBar()
 {
-  if (m_toolbar != nullptr) {
     // remember last status of search bar
-    bool show = m_toolbar->IsShown();
-
-    // destroy the existing search bar
-    wxDELETE(m_toolbar);
+    bool show = IsShown();
 
     // here a new search bar is going to be created
     // right after creation it appears on the UI
@@ -521,77 +550,56 @@ void PasswordSafeSearch::ReCreateSearchBar()
     // hide also the new one
     if (show == false)
       HideSearchToolbar();
-  }
 }
 
 /**
  * Creates the search bar and keeps it hidden.
  */
-void PasswordSafeSearch::CreateSearchBar()
+bool PasswordSafeSearch::CreateSearchBar()
 {
-  wxASSERT(m_toolbar == nullptr);
+  ClearTools();
 
-  auto panel = new wxPanel(m_parentFrame, wxID_ANY);
-  auto panelSizer = new wxBoxSizer(wxHORIZONTAL);
-  panel->SetSizer(panelSizer);
-  
-  auto bgColor = m_parentFrame->GetMenuBar()->GetBackgroundColour();
-  panel->SetBackgroundColour(bgColor);
+  auto searchCtrl = new wxSearchCtrl(this, ID_FIND_EDITBOX, wxEmptyString, wxDefaultPosition, CalculateSearchWidth(), wxTE_PROCESS_ENTER);
+  searchCtrl->ShowCancelButton(true);
+  searchCtrl->ShowSearchButton(true);
 
-  m_toolbar = new wxToolBar(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTB_BOTTOM | wxTB_DEFAULT_STYLE,  wxT("SearchBar"));
-  panelSizer->Add(m_toolbar, wxSizerFlags().Proportion(1).Expand());
+  auto statusText = new wxStaticText(this, ID_FIND_STATUS_AREA, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT|wxST_ELLIPSIZE_END);
 
-  // Close Button
-  m_toolbar->AddTool(ID_FIND_CLOSE, wxEmptyString, wxBitmap(findclose_xpm), wxNullBitmap, wxITEM_NORMAL, _("Close SearchBar"));
-
-  // Search Textfield
-  auto srchCtrl = new wxSearchCtrl(m_toolbar, ID_FIND_EDITBOX, wxEmptyString, wxDefaultPosition, CalculateSearchWidth(), wxTE_PROCESS_ENTER);
-  srchCtrl->ShowCancelButton(true);
-  srchCtrl->ShowSearchButton(true);
-  m_toolbar->AddControl(srchCtrl);
-
-  // Search Tools
-  m_toolbar->AddTool(ID_FIND_NEXT, wxEmptyString, wxBitmap(find_xpm), wxBitmap(find_disabled_xpm), wxITEM_NORMAL, _("Find Next"));
-  m_toolbar->AddCheckTool(ID_FIND_IGNORE_CASE, wxEmptyString, wxBitmap(findcase_i_xpm), wxBitmap(findcase_s_xpm), _("Case Insensitive Search"));
-  m_toolbar->AddTool(ID_FIND_ADVANCED_OPTIONS, wxEmptyString, wxBitmap(findadvanced_xpm), wxNullBitmap, wxITEM_CHECK, _("Advanced Find Options"));
-  m_toolbar->AddTool(ID_FIND_CREATE_REPORT, wxEmptyString, wxBitmap(findreport_xpm), wxNullBitmap, wxITEM_NORMAL, _("Create report of previous Find search"));
-  m_toolbar->AddTool(ID_FIND_CLEAR, wxEmptyString, wxBitmap(findclear_xpm), wxNullBitmap, wxITEM_NORMAL, _("Clear Find"));
-  m_toolbar->AddSeparator();
-
-  // Status Area
-  m_toolbar->AddControl(new wxStaticText(m_toolbar, ID_FIND_STATUS_AREA, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT|wxST_ELLIPSIZE_END));
-
-  RefreshButtons();
-
-  if (!m_toolbar->Realize()) {
-    wxMessageBox(_("Could not create Search Bar"), _("Password Safe"));
+  for (const auto & toolInfo : SearchBarToolInfos)
+  {
+    if (toolInfo.id == ID_FIND_EDITBOX) {
+      AddControl(searchCtrl);
+    }
+    else if (toolInfo.id == ID_FIND_STATUS_AREA) {
+      AddSeparator();
+      AddControl(statusText);
+    }
+    else {
+      AddTool(
+        toolInfo.id,
+        toolInfo.GetBitmapForEnabledButton(),
+        toolInfo.GetBitmapForDisabledButton(),
+        (toolInfo.id == ID_FIND_IGNORE_CASE) || (toolInfo.id == ID_FIND_ADVANCED_OPTIONS) ? /* toogle element? */ true : false,
+        nullptr,
+        wxGetTranslation(toolInfo.tooltip)
+      );
+    }
   }
 
-  auto origSizer = m_parentFrame->GetSizer();
-  wxASSERT(origSizer);
-  wxASSERT(origSizer->IsKindOf(wxBoxSizer(wxVERTICAL).GetClassInfo()));
-  wxASSERT(((wxBoxSizer*)origSizer)->GetOrientation() == wxVERTICAL);
-  origSizer->Add(panel, 0, wxEXPAND);
-  origSizer->Layout();
-
-  if (!m_toolbar->Show(true) && !m_toolbar->IsShownOnScreen()) {
-    wxMessageBox(_("Could not display searchbar"));
-  }
-
-  // Bind Event Handler
-  srchCtrl->Bind( wxEVT_COMMAND_TEXT_UPDATED,          &PasswordSafeSearch::OnSearchTextChanged,     this);
-  srchCtrl->Bind( wxEVT_COMMAND_SEARCHCTRL_SEARCH_BTN, &PasswordSafeSearch::OnDoSearch,              this);
-  srchCtrl->Bind( wxEVT_COMMAND_TEXT_ENTER,            &PasswordSafeSearch::OnDoSearch,              this);
-  m_toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED,          &PasswordSafeSearch::OnSearchClose,           this, ID_FIND_CLOSE);
-  m_toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED,          &PasswordSafeSearch::OnAdvancedSearchOptions, this, ID_FIND_ADVANCED_OPTIONS);
-  m_toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED,          &PasswordSafeSearch::OnDoSearch,              this, ID_FIND_NEXT);
-  m_toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED,          &PasswordSafeSearch::OnSearchClear,           this, ID_FIND_CLEAR);
-  m_toolbar->Bind(wxEVT_COMMAND_TOOL_CLICKED,          &PasswordSafeSearch::OnToolBarFindReport,     this, ID_FIND_CREATE_REPORT);
-  m_toolbar->Bind(wxEVT_CHAR_HOOK,                     &PasswordSafeSearch::OnChar,                  this);
-  m_parentFrame->Bind(wxEVT_SIZE,                      &PasswordSafeSearch::OnSize,                  this);
+  searchCtrl->Bind(wxEVT_COMMAND_TEXT_UPDATED,          &PasswordSafeSearch::OnSearchTextChanged,     this);
+  searchCtrl->Bind(wxEVT_COMMAND_SEARCHCTRL_SEARCH_BTN, &PasswordSafeSearch::OnDoSearch,              this);
+  searchCtrl->Bind(wxEVT_COMMAND_TEXT_ENTER,            &PasswordSafeSearch::OnDoSearch,              this);
+  Bind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnAdvancedSearchOptions, this, ID_FIND_ADVANCED_OPTIONS);
+  Bind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnSearchClose,           this, ID_FIND_CLOSE);
+  Bind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnDoSearch,              this, ID_FIND_NEXT);
+  Bind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnSearchClear,           this, ID_FIND_CLEAR);
+  Bind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnToolBarFindReport,     this, ID_FIND_CREATE_REPORT);
+  Bind(wxEVT_CHAR_HOOK,                                 &PasswordSafeSearch::OnChar,                  this);
+  m_parentFrame->Bind(wxEVT_SIZE,                       &PasswordSafeSearch::OnSize,                  this);
 
   CalculateToolsWidth();
   UpdateStatusAreaWidth();
+  return Realize();
 }
 
 /**
@@ -599,7 +607,7 @@ void PasswordSafeSearch::CreateSearchBar()
  * 
  * The following keystroke events are handled specially.
  * - Escape Key: Hides the search toolbar.
- * - Ctrl-C Key: Copyies marked text from search text field or password of selected item.
+ * - Ctrl-C Key: Copies marked text from search text field or password of selected item.
  * 
  * @param event holds information about key event.
  * @see <a href="https://docs.wxwidgets.org/3.1/classwx_key_event.html">wxKeyEvent Class Reference</a>
@@ -612,7 +620,7 @@ void PasswordSafeSearch::OnChar(wxKeyEvent& event)
   else if ((event.GetModifiers() == wxMOD_CONTROL) && 
     ((event.GetKeyCode() == wxT('c')) || (event.GetKeyCode() == wxT('C')))) {
 
-    auto control = wxDynamicCast(m_toolbar->FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
+    auto control = wxDynamicCast(FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
 
     if (control) {
       if (control->CanCopy()) {
@@ -638,29 +646,13 @@ void PasswordSafeSearch::OnChar(wxKeyEvent& event)
  */
 void PasswordSafeSearch::Activate()
 {
-  if (!m_toolbar) {
-    CreateSearchBar();
-  }
-  else {
-    if ( m_toolbar->IsShownOnScreen() ) {
-        m_toolbar->FindControl(ID_FIND_EDITBOX)->SetFocus();
-    }
-    else if (m_toolbar->Show(true)) {
-      m_toolbar->FindControl(ID_FIND_EDITBOX)->SetSize(CalculateSearchWidth());
-      m_parentFrame->GetSizer()->Layout();
-    }
-    else {
-      const wxPoint pt = m_toolbar->GetPosition();
-      const wxSize sz = m_toolbar->GetSize();
-      wxMessageBox(wxString() << _("Could not re-display searchbar at ") << pt << _(" of size ") << sz
-                              << _(" because ") << (m_toolbar->IsShownOnScreen()? _("it's already visible"): _(" of an error")));
-    }
+  static bool IsCreated = false;
+
+  if (!IsCreated) {
+    IsCreated = CreateSearchBar();
   }
 
-  wxCHECK_RET(m_toolbar, wxT("Could not create or retrieve search bar"));
-
-  m_toolbar->FindControl(ID_FIND_EDITBOX)->SetFocus();
-  ClearToolbarStatusArea();
+  FindControl(ID_FIND_EDITBOX)->SetFocus();
   CalculateToolsWidth();
   UpdateStatusAreaWidth();
 }

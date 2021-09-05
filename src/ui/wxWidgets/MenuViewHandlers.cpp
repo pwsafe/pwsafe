@@ -42,12 +42,18 @@ void PasswordSafeFrame::OnChangeToolbarType(wxCommandEvent& evt)
   //This assumes the menu item is checked before it comes here
   if (GetMenuBar()->IsChecked(evt.GetId())) {
     PWSprefs::GetInstance()->SetPref(PWSprefs::UseNewToolbar, evt.GetId() == ID_TOOLBAR_NEW);
-    RefreshToolbarButtons();
-    DragBarCtrl* dragbar = GetDragBar();
+    UpdateMainToolbarBitmaps();
+
+    auto dragbar = GetDragBar();
     wxCHECK_RET(dragbar, wxT("Could not find dragbar"));
-    dragbar->RefreshButtons();
-    wxCHECK_RET(m_search, wxT("Search object not created as expected"));
-    m_search->RefreshButtons();
+    dragbar->UpdateBitmaps();
+
+    auto searchbar = GetSearchBar();
+    wxCHECK_RET(searchbar, wxT("Search object not created as expected"));
+    searchbar->UpdateBitmaps();
+
+    DoLayout();
+    SendSizeEvent();
   }
 }
 
@@ -287,20 +293,20 @@ void PasswordSafeFrame::OnShowReportValidate(wxCommandEvent& WXUNUSED(evt))
 
 void PasswordSafeFrame::OnShowHideToolBar(wxCommandEvent& evt)
 {
-  GetToolBar()->Show(evt.IsChecked());
+  GetMainToolbarPane().Show(evt.IsChecked());
   PWSprefs::GetInstance()->SetPref(PWSprefs::ShowToolbar, evt.IsChecked());
+  m_AuiManager.Update();
   DoLayout();
   SendSizeEvent();
 }
 
 void PasswordSafeFrame::OnShowHideDragBar(wxCommandEvent& evt)
 {
-  DragBarCtrl* dragbar = GetDragBar();
-  wxCHECK_RET(dragbar, wxT("Could not find dragbar"));
-
-  dragbar->Show(evt.IsChecked());
+  GetDragBarPane().Show(evt.IsChecked());
   PWSprefs::GetInstance()->SetPref(PWSprefs::ShowDragbar, evt.IsChecked());
+  m_AuiManager.Update();
   DoLayout();
+  SendSizeEvent();
 }
 
 //-----------------------------------------------------------------

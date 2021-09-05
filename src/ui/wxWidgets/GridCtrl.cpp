@@ -23,6 +23,7 @@
 #include "GridCtrl.h"
 #include "GridTable.h"
 #include "PasswordSafeFrame.h" // for DispatchDblClickAction()
+#include "PWSafeApp.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -482,7 +483,7 @@ void GridCtrl::OnCellRightClick( wxGridEvent& evt )
   //
   SetGridCursor(evt.GetRow(), evt.GetCol());
   SelectRow(evt.GetRow());
-  dynamic_cast<PasswordSafeFrame *>(GetParent())->OnContextMenu(GetItem(evt.GetRow()));
+  wxGetApp().GetPasswordSafeFrame()->OnContextMenu(GetItem(evt.GetRow()));
 }
 
 /*!
@@ -495,7 +496,7 @@ void GridCtrl::OnContextMenu( wxContextMenuEvent& evt )
   if ( pos == wxDefaultPosition ) { //sent from keyboard?
     const int row = GetGridCursorRow();
     SelectRow(row);
-    dynamic_cast<PasswordSafeFrame *>(GetParent())->OnContextMenu(GetItem(row));
+    wxGetApp().GetPasswordSafeFrame()->OnContextMenu(GetItem(row));
   }
   else { //sent from mouse.  I don't know how to convert the mouse coords to grid's row,column
     evt.Skip();
@@ -526,8 +527,7 @@ void GridCtrl::OnLeftDClick( wxGridEvent& evt )
 {
   CItemData *item = GetItem(evt.GetRow());
   if (item != nullptr)
-    dynamic_cast<PasswordSafeFrame *>(GetParent())->
-      DispatchDblClickAction(*item);
+    wxGetApp().GetPasswordSafeFrame()->DispatchDblClickAction(*item);
 }
 
  void GridCtrl::SelectItem(const CUUID & uuid)
@@ -578,7 +578,7 @@ void GridCtrl::OnSelectCell( wxGridEvent& evt )
 {
   CItemData *pci = GetItem(evt.GetRow());
 
-  dynamic_cast<PasswordSafeFrame *>(GetParent())->UpdateSelChanged(pci);
+  wxGetApp().GetPasswordSafeFrame()->UpdateSelChanged(pci);
 }
 
 void GridCtrl::SetFilterState(bool state)
@@ -613,7 +613,7 @@ void GridCtrl::OnMouseRightClick(wxMouseEvent& event)
   /* check whether a grid cell was hit */
   if (!HasGridCell(gridCellInfo)) {
     ClearSelection();
-    dynamic_cast<PasswordSafeFrame *>(GetParent())->OnContextMenu(nullptr);
+    wxGetApp().GetPasswordSafeFrame()->OnContextMenu(nullptr);
   }
   else {
     event.Skip();

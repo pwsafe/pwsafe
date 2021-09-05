@@ -19,6 +19,8 @@
  * Includes
  */
 
+#include <wx/aui/auibar.h>
+#include <wx/aui/framemanager.h>
 #include <wx/frame.h>
 #include <wx/statusbr.h>
 #include <wx/treebase.h> // for wxTreeItemId
@@ -32,6 +34,7 @@
 
 #include "wxUtilities.h"
 #include "DnDFile.h"
+#include "DragBarCtrl.h"
 
 #include <tuple>
 #include <vector>
@@ -603,6 +606,9 @@ public:
   void SetTrayClosed();
   void ShowTrayIcon();
 
+  void ShowSearchBar();
+  void HideSearchBar();
+
   bool IsClosed() const;
   
   static void DisplayFileWriteError(int rc, const StringX &fname);
@@ -639,17 +645,29 @@ private:
   Command *DeleteItem(CItemData *pci, wxTreeItemId root = 0);
   Command *Delete(wxTreeItemId tid, wxTreeItemId root = 0); // for group delete
   void UpdateAccessTime(CItemData &ci);
+
   void CreateMainToolbar();
-  void ReCreateMainToolbar();
-  void ReCreateMainToolbarSeparator(bool bInsert);
-  void ReCreateDragToolbar();
+  void RefreshToolbarButtons();
+  void UpdateMainToolbarBitmaps();
+  void UpdateMainToolbarSeparators(bool insert);
+  void DeleteMainToolbarSeparators();
+  wxAuiPaneInfo& GetMainToolbarPane();
+  wxAuiToolBar* GetToolBar() { return m_Toolbar; }
+
+  void CreateDragBar();
+  void UpdateDragbarTooltips();
+  wxAuiPaneInfo& GetDragBarPane();
+  DragBarCtrl* GetDragBar() { return m_Dragbar; };
+
+  void CreateSearchBar();
+  wxAuiPaneInfo& GetSearchBarPane();
+  PasswordSafeSearch* GetSearchBar() { return m_search; };
+
+  void CreateStatusBar();
+
   long GetEventRUEIndex(const wxCommandEvent& evt) const;
   bool IsRUEEvent(const wxCommandEvent& evt) const;
   void RebuildGUI(const int iView = iBothViews);
-  void CreateDragBar();
-  void RefreshToolbarButtons();
-  DragBarCtrl* GetDragBar();
-  void CreateStatusBar();
   void SaveSettings() const;
   void LockDb();
   void TryIconize(int nAttempts = 5);
@@ -751,10 +769,14 @@ private:
 
   wxString m_LastClipboardAction;
   CItem::FieldType m_LastAction;  // TODO: Check how this is used by Windows version
-  
+
   friend class DnDFile;
   friend class TreeCtrl;
   friend class PWSafeApp;
+
+  wxAuiManager m_AuiManager;
+  wxAuiToolBar* m_Toolbar;
+  DragBarCtrl* m_Dragbar;
 };
 
 BEGIN_DECLARE_EVENT_TYPES()
