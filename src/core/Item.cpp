@@ -282,3 +282,30 @@ void CItem::GetTime(int whichtime, time_t &t) const
   } else // fiter == m_fields.end()
     t = 0;
 }
+
+
+void CItem::push_length(std::vector<char> &v, uint32 s) const
+{
+  v.insert(v.end(),
+    reinterpret_cast<char *>(&s), reinterpret_cast<char *>(&s) + sizeof(uint32));
+}
+
+// Overload rather than specialize template function
+// See http://www.gotw.ca/publications/mill17.htm
+void CItem::push(std::vector<char> &v, char type, const StringX &str) const
+{
+  if (!str.empty()) {
+    CUTF8Conv utf8conv;
+    bool status;
+    const unsigned char *utf8;
+    size_t utf8Len;
+    status = utf8conv.ToUTF8(str, utf8, utf8Len);
+    if (status) {
+      v.push_back(type);
+      push_length(v, static_cast<uint32>(utf8Len));
+      v.insert(v.end(), reinterpret_cast<const char *>(utf8),
+               reinterpret_cast<const char *>(utf8) + utf8Len);
+    } else
+      pws_os::Trace(_T("ItemData.cpp: push(%ls): ToUTF8 failed!\n"), str.c_str());
+  }
+}

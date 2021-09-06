@@ -308,6 +308,11 @@ void PWScore::DoAddEntry(const CItemData &item, const CItemAtt *att)
       m_attlist.insert(std::make_pair(att->GetUUID(), *att));
     m_attlist[att->GetUUID()].IncRefcount();
   }
+  else if(item.HasAttRef()) { // In case of duplicate or drag and drop
+    const pws_os::CUUID uuid = item.GetAttUUID();
+    if (m_attlist.find(uuid) != m_attlist.end()) // Just to be sure the entry exists
+      m_attlist[uuid].IncRefcount();
+  }
 
   int32 iKBShortcut;
   item.GetKBShortcut(iKBShortcut);

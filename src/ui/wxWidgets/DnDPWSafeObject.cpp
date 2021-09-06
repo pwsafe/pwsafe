@@ -35,7 +35,7 @@
 
 static wxString DnDPWSafeFormatId()
 {
-  return "wxPWSafeDnD";
+  return "wxPWSafeDnD40";
 }
 
 /*!

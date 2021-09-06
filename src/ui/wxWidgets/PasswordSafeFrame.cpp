@@ -1331,7 +1331,7 @@ int PasswordSafeFrame::Open(const wxString &fname)
     return rc;
 
   // prompt for password, try to Load.
-  SafeCombinationPromptDlg pwdprompt(this, m_core, fname);
+  SafeCombinationPromptDlg pwdprompt(this, m_core, fname, false);
   if (pwdprompt.ShowModal() == wxID_OK) {
     m_core.SetCurFile(tostringx(fname));
     StringX password = pwdprompt.GetPassword();
@@ -2362,35 +2362,64 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
   }
 
   if (m_sysTray->IsLocked()) {
+    bool bModalOpen;
+    int noTopLevelWindow = CountTopLevelWindowRecursively(this);
+    
+    bModalOpen = (noTopLevelWindow > 1); // More than one Top Level Window, the second one is modal
+#if (__WXOSX__)
+    const int TopLevelWindowLimit = 2; // OSX allow exit with one modal window open only
+#else
+# if (wxVERSION_NUMBER >= 3104)
+    const int TopLevelWindowLimit = 255; // Debian rasbery PI is handling 4 modal dialog without failure in wxWidgets 3.1.4, assume more is suitable
+# else
+    const int TopLevelWindowLimit = 1; // 3.0.5 do not run well when modal window is open (on Debian rasbery PI)
+# endif
+#endif
+    
+    do {
+      // Allow Exit only in case of one modal dialog present - on second one we crash.
+      // In most of the cases only one modal dialog is open.
+      SafeCombinationPromptDlg scp(nullptr, m_core, towxstring(m_core.GetCurFile()), (noTopLevelWindow <= TopLevelWindowLimit));
 
-    SafeCombinationPromptDlg scp(nullptr, m_core, towxstring(m_core.GetCurFile()));
-
-    switch (scp.ShowModal()) {
-      case (wxID_OK):
-      {
-        if (ReloadDatabase(scp.GetPassword())) {
-          m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
+      switch (scp.ShowModal()) {
+        case (wxID_OK):
+        {
+          if (ReloadDatabase(scp.GetPassword())) {
+            m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
+          }
+          else {
+            // With modal dialog open we now have a problem, no data base open, but a modal dialog is open that might show an entry
+            CleanupAfterReloadFailure(true);
+            if(bModalOpen) {
+              if(noTopLevelWindow <= TopLevelWindowLimit)
+                CloseChildWindowRecursively(this, this);
+              else
+                wxMessageBox(_("Please close modal dialog manually"), _("Modal dialog open"), wxOK|wxICON_ERROR);
+            }
+            return;
+          }
+          bModalOpen = false; // To end the loop
+          break;
         }
-        else {
-          CleanupAfterReloadFailure(true);
+        case (wxID_EXIT):
+        {
+          if(bModalOpen)
+            CloseChildWindowRecursively(this, this);
+          
+          m_exitFromMenu = true; // not an exit request from menu, but OnCloseWindow requires this
+          wxCommandEvent event(wxEVT_CLOSE_WINDOW);
+          wxPostEvent(this, event);
           return;
         }
-        break;
+        default:
+        {
+          if (!IsIconized() && iconizeOnFailure)
+            Iconize();
+          if(restoreUI && iconizeOnFailure)
+            return;
+        }
       }
-      case (wxID_EXIT):
-      {
-        m_exitFromMenu = true; // not an exit request from menu, but OnCloseWindow requires this
-        wxCommandEvent event(wxEVT_CLOSE_WINDOW);
-        wxPostEvent(this, event);
-        return;
-      }
-      default:
-      {
-        if (!IsIconized() && iconizeOnFailure)
-          Iconize();
-        return;
-      }
-    }
+    } while(bModalOpen && PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray));
 
     if (m_savedDBPrefs != wxEmptyString) {
       PWSprefs::GetInstance()->Load(tostringx(m_savedDBPrefs));
@@ -2400,7 +2429,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
 
   if (restoreUI) {
     if (!IsShown()) {
-      ShowWindowRecursively(hiddenWindows);
+      ShowWindowRecursively(this);
     }
     if (IsIconized()) {
       Iconize(false);
@@ -2510,15 +2539,16 @@ void PasswordSafeFrame::HideUI(bool lock)
     //We should not have to show up the icon manually if m_sysTray
     //can be notified of changes to PWSprefs::UseSystemTray
     m_sysTray->ShowIcon();
-    hiddenWindows.clear();
-    HideWindowRecursively(this, hiddenWindows);
-
+    HideWindowRecursively(this);
   }
 }
 
 void PasswordSafeFrame::IconizeOrHideAndLock()
 {
+  bool bModalOpen = false;
+  
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
+    bModalOpen = (CountTopLevelWindowRecursively(this) > 1);
     HideUI(true);
   }
   else {
@@ -2528,6 +2558,14 @@ void PasswordSafeFrame::IconizeOrHideAndLock()
   // If not already locked by HideUI or OnIconize due to user preference than do it now
   if (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED) {
     LockDb();
+  }
+  // In case of dialog open the menu cannot be called, so open dialog in advance in case we are using System Tray
+  if (bModalOpen) {
+#if wxCHECK_VERSION(2,9,5)
+    CallAfter(&PasswordSafeFrame::UnlockSafe, true, false);  // restore UI
+#else
+    UnlockSafe(true, false);  // restore UI
+#endif
   }
 }
 

@@ -28,6 +28,7 @@
 #include <fstream>
 #include <algorithm>
 #include <iomanip>
+#include <climits>
 
 #ifdef _WIN32
 #include <LMCons.h> // for UNLEN
@@ -183,6 +184,7 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("VKFontPtSz"), 0, ptApplication, 0, -1},                      // application
   {_T("WindowTransparency"), 0, ptApplication, 0, 50},              // application
   {_T("DefaultExpiryDays"), 90, ptApplication, 1, 3650},            // application
+  {_T("DNDMaximumMemorySize"), 14000, ptApplication, -1, INT_MAX},   // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
@@ -1070,10 +1072,10 @@ void PWSprefs::FindConfigFile()
    */
 
   const stringT sExecDir = PWSdirs::GetExeDir();
+  const stringT sCnfgDir = PWSdirs::GetConfigDir();
 
   // Set path & name of config file
   if (!m_userSetCfgFile) { // common case
-    const stringT sCnfgDir = PWSdirs::GetConfigDir();
     m_configfilename = sExecDir + cfgFileName;
     if (pws_os::FileExists(m_configfilename)) {
       // old (exe dir) exists, is host/user there?
@@ -1088,8 +1090,14 @@ void PWSprefs::FindConfigFile()
     // same directory as the executable
     stringT sDrive, sDir, sFile, sExt;
     pws_os::splitpath(m_configfilename, sDrive, sDir, sFile, sExt);
+#if defined(_WIN32)
     if (sDrive.empty() || sDir.empty())
       m_configfilename = sExecDir + sFile + sExt;
+#else
+    // Non windows systems will not have a drive and do not like placing configurations in exec's drive
+    if (sDir.empty())
+      m_configfilename = sCnfgDir + sFile + sExt;
+#endif
   }
 }
 

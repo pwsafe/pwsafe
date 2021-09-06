@@ -132,6 +132,9 @@ public:
   bool HasUUID() const                     { return IsFieldSet(ATTUUID);   }
   bool IsTitleSet() const                  { return IsFieldSet(ATTTITLE);     }
   bool IsCreationTimeSet() const           { return IsFieldSet(ATTCTIME);     }
+    
+  void SerializePlainText(std::vector<char> &v) const;
+  bool DeSerializePlainText(const std::vector<char> &v);
 
 private:
   bool SetField(unsigned char type, const unsigned char *data, size_t len);

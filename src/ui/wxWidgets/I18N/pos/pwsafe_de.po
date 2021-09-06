@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-18 19:44+0200\n"
+"POT-Creation-Date: 2021-08-10 13:52+0200\n"
 "PO-Revision-Date: 2018-05-18 12:55+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -278,15 +278,15 @@ msgid "Username:"
 msgstr "Benutzername:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:416
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1857
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1885
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1854
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1882
 msgid "Password:"
 msgstr "Passwort:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:422
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1818
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1860
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1892
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1857
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1889
 msgid "&Hide"
 msgstr "&Ausblenden"
 
@@ -295,7 +295,7 @@ msgid "&Generate"
 msgstr "&Generieren"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1886
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1883
 msgid "Confirm:"
 msgstr "Bestätigung:"
 
@@ -387,7 +387,7 @@ msgstr "Periodisch"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:612
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1451
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2669
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2689
 msgid "Never"
 msgstr "Niemals"
 
@@ -741,8 +741,8 @@ msgstr "[Notizen sind versteckt - Klicken Sie hier um diese anzuzeigen]"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1630
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1656
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2271
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3058
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2274
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3078
 #: ../../../core/core_st.cpp:77
 msgid "Default Policy"
 msgstr "Standard Richtlinie"
@@ -752,12 +752,12 @@ msgid "Couldn't generate password - invalid policy"
 msgstr "Passwort konnte nicht generiert werden - Ungültige Richtlinie"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1684
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1940
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1953
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1975
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1995
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2965
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2992
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1937
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1950
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1972
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1992
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2985
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3012
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:106
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:115
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:131
@@ -818,62 +818,58 @@ msgstr ""
 "dessen benutzt"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1830
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1869
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1900
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1866
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1897
 msgid "&Show"
 msgstr "&Anzeigen"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1852
-msgid "Alias"
-msgstr "Alias"
-
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1854
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1851
 msgid "Alias:"
 msgstr "Alias:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1938
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1935
 #, c-format
 msgid "This entry must have a %ls"
 msgstr "Dieser Eintrag benötigt ein(en) %ls"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1939
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1936
 msgid "title"
 msgstr "Titel"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1939
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1936
 msgid "password"
 msgstr "Passwort"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1952
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1949
 msgid "Passwords do not match"
 msgstr "Die beiden Einträge sind verschieden."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1974
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1971
 msgid "Database name must not be empty if a database policy shall be used."
 msgstr ""
 "Der Datenbankname darf nicht leer sein, wenn eine Datenbankrichtlinie "
 "verwendet werden soll."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1994
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1991
 msgid ""
 "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr ""
 "Ein Eintrag oder Verknüpfung mit der selben Gruppe, Titel und Benutzernamen "
 "besteht bereits."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2648
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2668
 #, c-format
 msgid " (every %d days)"
 msgstr " (alle %d Tage)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2964
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2984
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
 msgstr ""
 "Entschuldigung, aber \"leicht lesbar\" und \"aussprechbar\" können nicht "
 "gemeinsam ausgewählt werden."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2991
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3011
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
 msgstr ""
@@ -881,7 +877,7 @@ msgstr ""
 "gemeinsam ausgewählt werden."
 
 # no translation needed
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3043
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3063
 msgid "mailto:"
 msgstr ""
 
@@ -3832,7 +3828,7 @@ msgid "Perform Auto &Type"
 msgstr "Autom. Eingabe &ausführen"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1667
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:535
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:536
 msgid "&View Entry..."
 msgstr "Eintrag &anzeigen..."
 
@@ -4350,12 +4346,12 @@ msgstr "Kein Aliasnamen angegeben."
 msgid "Please name the alias."
 msgstr "Alias benennen."
 
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:537
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:538
 #: ../../../ui/wxWidgets/ToolbarButtons.h:217
 msgid "Expand"
 msgstr "Aufklappen"
 
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:538
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:539
 #: ../../../ui/wxWidgets/ToolbarButtons.h:218
 msgid "Collapse"
 msgstr "Zuklappen"
@@ -4798,15 +4794,15 @@ msgid "Invalid Character"
 msgstr "Ungültiges Zeichen"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1421
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2551
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2573
 msgid "Destination cannot be inside source tree"
 msgstr "Ziel kann nicht innerhalb des Quellbaums liegen"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1421
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2400
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2407
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2424
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2551
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2421
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2428
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2445
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2573
 msgid "Drag and Drop failed"
 msgstr "Drag und Drop fehlgeschlagen"
 
@@ -4816,7 +4812,15 @@ msgstr ""
 "Derselbe Gruppenname existiert bereits (verwenden Sie \"Umschalt\" zum "
 "Überstimmen)"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2396
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2200
+msgid "Attachments not overtaken due to data base version"
+msgstr "Anhang wegen Version der Datenbank nicht übernommen"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2200
+msgid "Drag and Drop"
+msgstr "Drag & Drop"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2417
 #, c-format
 msgid ""
 "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
@@ -4828,17 +4832,17 @@ msgstr ""
 "\n"
 "Der neue Eintrag verweist neu auf den Basiseintrag."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2403
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2424
 #, c-format
 msgid "This alias's target [%s:%s:%s] is not a normal entry."
 msgstr "Das Alias-Ziel [%s:%s:%s] ist kein normaler Eintrag."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2420
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2441
 #, c-format
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
 msgstr "Das Verküpfungsziel [%s:%s:%s] ist kein normaler Eintrag"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2502 ../../../core/core_st.cpp:97
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2524 ../../../core/core_st.cpp:97
 #, c-format
 msgid ""
 "The following entries had a policy name that already existed in this "
@@ -4851,11 +4855,11 @@ msgstr ""
 "Eine neu benannte Richtlinie wurde mit aktuellem Datum/Zeit (%ls) erstellt "
 "und hinzugefügt:%ls"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2505
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2527
 msgid "Entry Password Policy Changes"
 msgstr "Passwortrichtlinienname geändert"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2512
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2534
 #, c-format
 msgid ""
 "The following alias or shortcut entries did not match to a base entry and "
@@ -4864,7 +4868,7 @@ msgstr ""
 "Die folgenden Alias oder Verknüpfungs-Einträge haben keinen passenden "
 "Basiseintrag und wurden zu normalen Einträgen konvertiert:%ls"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2514
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2536
 msgid "Entry Type Changed"
 msgstr "Eintrags Typ geändert"
 
@@ -6798,6 +6802,9 @@ msgstr "Fehlende Logik oder Regel in Filter Nummer %d von Filter '%ls'"
 msgid "Unknown XML tag \"%ls\" in test in filter entry %d of '%ls'"
 msgstr ""
 "Unbekanntes XML Tag <%ls> in <test> im Filter Nummer %d von Filter '%ls'"
+
+#~ msgid "Alias"
+#~ msgstr "Alias"
 
 #~ msgid "Import XML"
 #~ msgstr "&XML importieren"

@@ -217,7 +217,7 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& WXUNUSED(evt))
   }
 #endif
 
-  SafeCombinationPromptDlg pwdprompt(this, m_core, wxbf);
+  SafeCombinationPromptDlg pwdprompt(this, m_core, wxbf, false);
   if (pwdprompt.ShowModal() == wxID_OK) {
     const StringX passkey = pwdprompt.GetPassword();
     // unlock the file we're leaving
@@ -395,7 +395,7 @@ bool PasswordSafeFrame::ChangeMode(bool promptUser)
   } else if (promptUser) { // R-O -> R/W
     // Taken from GetAndCheckPassword.
     // We don't want all the other processing that GetAndCheckPassword does
-    SafeCombinationPromptDlg scp(nullptr, m_core, towxstring(m_core.GetCurFile()));
+    SafeCombinationPromptDlg scp(nullptr, m_core, towxstring(m_core.GetCurFile()), false);
 
     if(scp.ShowModal() != wxID_OK)
       return false;

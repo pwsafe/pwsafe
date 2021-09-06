@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-18 19:44+0200\n"
+"POT-Creation-Date: 2021-08-10 13:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -292,16 +292,16 @@ msgid "Username:"
 msgstr "Brugernavn:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:416
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1857
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1885
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1854
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1882
 #, fuzzy
 msgid "Password:"
 msgstr "Adgangskode:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:422
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1818
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1860
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1892
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1857
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1889
 msgid "&Hide"
 msgstr "&Skjul"
 
@@ -310,7 +310,7 @@ msgid "&Generate"
 msgstr "&Generer"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1886
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1883
 #, fuzzy
 msgid "Confirm:"
 msgstr "Bekræftelse:"
@@ -409,7 +409,7 @@ msgstr "Periodisk"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:612
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1451
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2669
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2689
 msgid "Never"
 msgstr "Aldrig"
 
@@ -790,8 +790,8 @@ msgstr "[Notater er skjult - klik her for at vise dem]"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1630
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1656
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2271
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3058
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2274
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3078
 #: ../../../core/core_st.cpp:77
 msgid "Default Policy"
 msgstr ""
@@ -801,12 +801,12 @@ msgid "Couldn't generate password - invalid policy"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1684
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1940
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1953
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1975
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1995
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2965
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2992
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1937
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1950
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1972
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1992
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2985
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3012
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:106
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:115
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:131
@@ -863,46 +863,41 @@ msgid "Shortcut or Alias selected, use Base entry instead"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1830
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1869
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1900
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1866
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1897
 msgid "&Show"
 msgstr "&Vis"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1852
-#, fuzzy
-msgid "Alias"
-msgstr "alias"
-
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1854
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1851
 #, fuzzy
 msgid "Alias:"
 msgstr "alias"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1938
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1935
 #, fuzzy, c-format
 msgid "This entry must have a %ls"
 msgstr "Denne post skal have en %ls"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1939
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1936
 #, fuzzy
 msgid "title"
 msgstr "Titel"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1939
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1936
 #, fuzzy
 msgid "password"
 msgstr "Adgangskode"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1952
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1949
 #, fuzzy
 msgid "Passwords do not match"
 msgstr "De to poster matcher ikke."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1974
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1971
 msgid "Database name must not be empty if a database policy shall be used."
 msgstr ""
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1994
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1991
 #, fuzzy
 msgid ""
 "An entry or shortcut with the same Group, Title and Username already exists."
@@ -910,24 +905,24 @@ msgstr ""
 "En post med en tom Gruppe, Title \"%s\" og Bruger Navn \"%s\" eksisterer "
 "allerede."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2648
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2668
 #, fuzzy, c-format
 msgid " (every %d days)"
 msgstr "Periodisk(%d dage)"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2964
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2984
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
 #, fuzzy
 msgid "Sorry, \"easy-to-read\" and \"pronounceable\" cannot be both selected"
 msgstr "Beklager, 'udtalbare' og 'nemme-at-læse' er ikke understøttet sammen"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2991
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3011
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:737
 #, fuzzy
 msgid "Sorry, \"pronounceable\" and \"easy-to-read\" cannot be both selected"
 msgstr "Beklager, 'udtalbare' og 'nemme-at-læse' er ikke understøttet sammen"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3043
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3063
 #, fuzzy
 msgid "mailto:"
 msgstr "email:"
@@ -4077,7 +4072,7 @@ msgid "Perform Auto &Type"
 msgstr "Udfør Auto &Indsæt"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1667
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:535
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:536
 #, fuzzy
 msgid "&View Entry..."
 msgstr "Se Adgang"
@@ -4647,13 +4642,13 @@ msgstr "Filter navn:"
 msgid "Please name the alias."
 msgstr "Navngiv venligst XML filen"
 
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:537
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:538
 #: ../../../ui/wxWidgets/ToolbarButtons.h:217
 #, fuzzy
 msgid "Expand"
 msgstr "Udvid Alle"
 
-#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:538
+#: ../../../ui/wxWidgets/SelectAliasDlg.cpp:539
 #: ../../../ui/wxWidgets/ToolbarButtons.h:218
 #, fuzzy
 msgid "Collapse"
@@ -5105,15 +5100,15 @@ msgid "Invalid Character"
 msgstr "Ugyldig Parameter"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1421
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2551
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2573
 msgid "Destination cannot be inside source tree"
 msgstr ""
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1421
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2400
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2407
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2424
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2551
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2421
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2428
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2445
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2573
 msgid "Drag and Drop failed"
 msgstr ""
 
@@ -5121,7 +5116,15 @@ msgstr ""
 msgid "Duplicate group name (use Shift to overrule)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2396
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2200
+msgid "Attachments not overtaken due to data base version"
+msgstr ""
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2200
+msgid "Drag and Drop"
+msgstr ""
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2417
 #, c-format
 msgid ""
 "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
@@ -5132,21 +5135,21 @@ msgstr ""
 "\n"
 "Den mistede post henviser nu til den posts basis post."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2403
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2424
 #, fuzzy, c-format
 msgid "This alias's target [%s:%s:%s] is not a normal entry."
 msgstr ""
 "Dette alias' mål [%s:%s:%s] er ikke en normal post eller allerede en alias "
 "basis."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2420
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2441
 #, fuzzy, c-format
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
 msgstr ""
 "Denne genvejs mål [%s:%s:%s] er ikke en normal post elller allerede en basis "
 "genvej."
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2502 ../../../core/core_st.cpp:97
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2524 ../../../core/core_st.cpp:97
 #, c-format
 msgid ""
 "The following entries had a policy name that already existed in this "
@@ -5155,19 +5158,19 @@ msgid ""
 "appended:%ls"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2505
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2527
 #, fuzzy
 msgid "Entry Password Policy Changes"
 msgstr "Sæt Post Adgangskode Politik"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2512
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2534
 #, c-format
 msgid ""
 "The following alias or shortcut entries did not match to a base entry and "
 "had been converted to normal entries:%ls"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2514
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2536
 #, fuzzy
 msgid "Entry Type Changed"
 msgstr "Post type"
@@ -7127,6 +7130,10 @@ msgstr ""
 #, c-format
 msgid "Unknown XML tag \"%ls\" in test in filter entry %d of '%ls'"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Alias"
+#~ msgstr "alias"
 
 #, fuzzy
 #~ msgid "No filter name given"

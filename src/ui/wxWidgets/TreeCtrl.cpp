@@ -24,6 +24,9 @@
 ////@begin includes
 #include <wx/imaglist.h>
 #include <wx/tokenzr.h>
+#include <wx/filename.h>
+#include <wx/file.h>
+#include <wx/wfstream.h>
 ////@end includes
 
 #include "core/core.h"
@@ -31,6 +34,8 @@
 
 #include "core/PWSprefs.h"
 #include "core/Command.h"
+
+#include "core/Util.h"
 
 #include "PasswordSafeFrame.h"
 #include "PWSafeApp.h"
@@ -220,7 +225,8 @@ bool TreeCtrl::Create(wxWindow* parent, wxWindowID id, const wxPoint& pos, const
   CreateControls();
 ////@end TreeCtrl creation
 #if wxUSE_DRAG_AND_DROP
-  SetDropTarget(new DndPWSafeDropTarget(this));
+  if(PWSprefs::GetInstance()->GetPref(PWSprefs::MultipleInstances))
+    SetDropTarget(new DndPWSafeDropTarget(this));
 #endif
   return true;
 }
@@ -1945,12 +1951,16 @@ void TreeCtrl::OnDrag(wxAuiToolBarEvent& event)
   
   pws_os::Trace(L"TreeCtrl::OnDrag Start");
   wxMemoryBuffer buffer;
-  CollectDnDData(buffer);
+  wxString fileName = L"";
+  CollectDnDData(buffer, fileName);
   if(! buffer.GetDataLen()) {
     pws_os::Trace(L"TreeCtrl::OnDrag End without buffer content");
     event.Skip();
     return;
   }
+  
+  pws_os::Trace(L"TreeCtrl::OnDrag Size %ld", static_cast<long>(buffer.GetDataLen()));
+  
   DnDPWSafeObject dragData(&buffer);
   
   wxDropSource source(dragData, this);
@@ -1990,6 +2000,10 @@ void TreeCtrl::OnDrag(wxAuiToolBarEvent& event)
       break;
   }
   
+  if(! fileName.IsEmpty() && wxFileExists(fileName)) {
+    wxRemoveFile(fileName);
+  }
+  
   m_run_dnd = false;
 #else
   event.Skip();
@@ -1997,7 +2011,7 @@ void TreeCtrl::OnDrag(wxAuiToolBarEvent& event)
   m_last_dnd_item = nullptr;
 }
 
-void TreeCtrl::CollectDnDData(wxMemoryBuffer &outDDmem)
+void TreeCtrl::CollectDnDData(wxMemoryBuffer &outDDmem, wxString &fileName)
 {
   std::vector<StringX> vEmptyGroups;
   wxTreeItemId parent = GetItemParent(m_last_dnd_item);
@@ -2073,6 +2087,69 @@ void TreeCtrl::CollectDnDData(wxMemoryBuffer &outDDmem)
       }
     }
   }
+  
+  int limit = PWSprefs::GetInstance()->GetPrefDefVal(PWSprefs::DNDMaxMemSize);
+  bool ferror = false;
+  wxFile *tmpfile = nullptr;
+  wxString name;
+  // On huge data we encounter problems with drag and drop, data buffer has correct size, but content is zero only.
+  // For flexible adaptation in pwsafe.cfg the parameter "DNDMaximumMemorySize" (DNDMaxMemSize) might be set to one of the below values.
+  // On limit is > 0 we do write to a file is data already achived demanded limit or attachement is given
+  // On limit is == 0 we do write to a file if attachment is present (only)
+  // On limit is == -1 we never write to a file
+  if(((limit > 0) && (outDDmem.GetDataLen() >= static_cast<size_t>(limit))) || ((limit != -1) && dnd_oblist.HasAttachments())) {
+    // Create temporary file and write into it
+    name = wxFileName::CreateTempFileName(L"", tmpfile = new wxFile());
+    if(!name.IsEmpty() && tmpfile != nullptr) {
+      if(tmpfile->Write(outDDmem.GetData(), outDDmem.GetDataLen()) == outDDmem.GetDataLen()) {
+        if(dnd_oblist.HasAttachments()) {
+          if(tmpfile->Write("atta", 4) != 4)
+            ferror = true;
+          else if(! dnd_oblist.DnDSerializeAttachments(m_core, tmpfile))
+            ferror = true;
+        }
+      }
+      else {
+        ferror = true;
+      }
+      tmpfile->Close();
+    }
+    else {
+      ferror = true;
+    }
+    if(ferror) {
+      if(! name.IsEmpty() && wxFileExists(name))
+        wxRemoveFile(name);
+      if(tmpfile != nullptr)
+        delete tmpfile;
+      // On error just try to use the buffer, also for attachment
+      tmpfile = nullptr;
+    }
+    else {
+      // Mark as file is 0x00 00 00 00 00 <length as size_t> <UTF-8 coded file name with given length>
+      outDDmem.Clear();
+      int nCount = 0;
+      outDDmem.AppendData((void *)&nCount, sizeof(int));
+      std::string utf8name = toutf8(tostdstring(name));
+      size_t length = utf8name.length();
+      outDDmem.AppendData((void *)&length, sizeof(size_t));
+      outDDmem.AppendData(&(*utf8name.begin()), length);
+      // Store name to remove after drag and drop
+      fileName = name;
+    }
+  }
+  
+  // Store Attachments according to list build up when storing the entries
+  if((tmpfile == nullptr) && dnd_oblist.HasAttachments()) {
+    // Add special field to ensure we recognise the extra data correctly
+    // when dropping
+    outDDmem.AppendData("atta", 4);
+    // Write attachement data separate from base entries
+    dnd_oblist.DnDSerializeAttachments(m_core, outDDmem);
+  }
+  
+  if(tmpfile != nullptr)
+    delete tmpfile;
 }
 
 void TreeCtrl::GetGroupEntriesData(DnDObList &dnd_oblist, wxTreeItemId item)
@@ -2121,11 +2198,56 @@ void TreeCtrl::GetEntryData(DnDObList &dnd_oblist, CItemData *pci)
 bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
 {
   wxASSERT(inDDmem);
-  wxMemoryInputStream stream(inDDmem->GetData(), inDDmem->GetDataLen());
+  wxMemoryInputStream memStream(inDDmem->GetData(), inDDmem->GetDataLen());
   DnDObList dnd_oblist;
+  wxFileInputStream *fileStream = nullptr;
+  wxString fileName;
+  wxInputStream *stream = &memStream;
+  
+  // Check on drop is stored in file
+  if(inDDmem->GetDataLen() > (sizeof(int)+sizeof(size_t))) {
+    int nCnt;
+    memStream.Read(&nCnt, sizeof(int));
+    
+    pws_os::Trace(L"TreeCtrl::ProcessDnDData Size %ld Count %d", static_cast<long>(inDDmem->GetDataLen()), nCnt);
+    
+    if(memStream.LastRead() == sizeof(int) && (nCnt == 0)) {
+      size_t len;
+      memStream.Read(&len, sizeof(size_t));
+      if(len > 0) {
+        unsigned char *utf8 = nullptr;
+        utf8 = new unsigned char[len+1];
+        wxASSERT(utf8);
+        // Read file name from buffer, stored as UTF-8
+        memset(utf8, 0, len+1);
+        stream->Read(utf8, len);
+        if(stream->LastRead() == len) {
+          CUTF8Conv conv;
+          StringX sxdata;
+          // Convert to wxString
+          conv.FromUTF8(utf8, len, sxdata);
+          fileName = towxstring(sxdata);
+          
+          fileStream = new wxFileInputStream(fileName);
+          if(fileStream != nullptr && fileStream->IsOk()) {
+            stream = fileStream;
+          }
+          else if(fileStream != nullptr) {
+            delete fileStream;
+            fileStream = nullptr;
+            fileName.Clear();
+          }
+        }
+        delete[] utf8;
+      }
+    }
+    if(fileStream == nullptr) {
+      memStream.SeekI(0); // Set back to start
+    }
+  }
   
   // Get all the entries
-  dnd_oblist.DnDUnSerialize(stream);
+  dnd_oblist.DnDUnSerialize(*stream);
   // Now check if empty group list is appended to the item data
   // Empty groups have a dummy header of 'egrp' to check it is ours
   // Note: No EOF indication in CFile and hence CMemfile only to check
@@ -2136,21 +2258,21 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
     sxDropGroup = sxDropPath + GROUP_SEP;
 
   char chdr[5] = { 0 };
-  stream.Read(chdr, 4);
-  if((stream.LastRead() == 4) && (strncmp(chdr, "egrp", 4) == 0)) {
+  stream->Read(chdr, 4);
+  if((stream->LastRead() == 4) && (strncmp(chdr, "egrp", 4) == 0)) {
     // It is ours - now process the empty groups being dropped
     size_t nemptygroups, utf8Len, buffer_size = 0;
     unsigned char *utf8 = nullptr;
     
-    stream.Read((void *)&nemptygroups, sizeof(nemptygroups));
-    if(stream.LastRead() == sizeof(size_t)) {
+    stream->Read((void *)&nemptygroups, sizeof(nemptygroups));
+    if(stream->LastRead() == sizeof(size_t)) {
       for(size_t i = 0; i < nemptygroups; i++) {
         StringX sxEmptyGroup;
         CUTF8Conv conv;
 
-        stream.Read((void *)&utf8Len, sizeof(size_t));
-        if(stream.LastRead() != sizeof(utf8Len)) {
-          delete utf8;
+        stream->Read((void *)&utf8Len, sizeof(size_t));
+        if(stream->LastRead() != sizeof(utf8Len)) {
+          delete[] utf8;
           return false;
         }
         if(utf8Len > buffer_size) {
@@ -2162,9 +2284,9 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
 
         // Clear buffer
         memset(utf8, 0, buffer_size);
-        stream.Read(utf8, utf8Len);
-        if(stream.LastRead() != utf8Len) {
-          delete utf8;
+        stream->Read(utf8, utf8Len);
+        if(stream->LastRead() != utf8Len) {
+          delete[] utf8;
           return false;
         }
 
@@ -2174,8 +2296,27 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
     }
     else // Buffer utf8 still not allocated
       return false;
-    delete utf8;
+    delete[] utf8;
+    
+    // Read again to double check on attachement
+    stream->Read(chdr, 4);
   }
+  
+  // Check on attachments following, in case local data base is V4
+  if((stream->LastRead() == 4) && (strncmp(chdr, "atta", 4) == 0)) {
+    if(m_core.GetReadFileVersion() == PWSfile::V40) {
+      // Get all the attachments
+      dnd_oblist.DnDUnSerializeAttachments(*stream);
+    }
+    else {
+      wxMessageBox(_("Attachments not overtaken due to data base version"), _("Drag and Drop"), wxOK|wxICON_WARNING);
+    }
+  }
+  
+  if(fileStream != nullptr)
+    delete fileStream;
+  if(! fileName.IsEmpty() && wxFileExists(fileName))
+    wxRemoveFile(fileName);
   
   if(!dnd_oblist.IsEmpty() || !vsxEmptyGroups.empty()) {
     
@@ -2220,21 +2361,6 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
   return false;
 }
 
-void TreeCtrl::UpdateUUIDinDnDEntries(DnDObList &dnd_oblist, pws_os::CUUID &old_uuid, pws_os::CUUID &new_uuid)
-{
-  DnDIterator pos;
-  
-  wxASSERT((old_uuid != CUUID::NullUUID()) && (new_uuid != CUUID::NullUUID()));
-  for(pos = dnd_oblist.ObjectsBegin(); pos != dnd_oblist.ObjectsEnd(); ++pos) {
-    DnDObject *pDnDObject = *pos;
-    wxASSERT(pDnDObject);
-    pws_os::CUUID uuid = pDnDObject->GetUUID();
-    if(pDnDObject->GetBaseUUID() == old_uuid) {
-      pDnDObject->SetBaseUUID(new_uuid);
-    }
-  }
-}
-
 void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, StringX &sxDropPath) // DropPath is not including trailing dot
 {
   // Add Drop entries
@@ -2264,10 +2390,22 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
       // UUID already in use - get a new one!
       pDnDObject->CreateUUID();
       if(pDnDObject->GetBaseUUID() == CUUID::NullUUID()) { // When not alias or shortcut
-        // Update base UUID
+        // Update base UUID or attachment
         pws_os::CUUID new_uuid = pDnDObject->GetUUID();
-        UpdateUUIDinDnDEntries(dnd_oblist, uuid, new_uuid);
+        dnd_oblist.UpdateBaseUUIDinDnDEntries(uuid, new_uuid);
       }
+    }
+  }
+  
+  for (CItemAttIterator iter = dnd_oblist.AttachmentsBegin(); iter != dnd_oblist.AttachmentsEnd(); ++iter) {
+    CItemAtt *pAttaObject = *iter;
+    wxASSERT(pAttaObject);
+    pws_os::CUUID uuid = pAttaObject->GetUUID();
+    if (m_core.HasAtt(uuid)) {
+      // UUID already in use - get a new one!
+      pAttaObject->CreateUUID();
+      // Update base UUID
+      pws_os::CUUID new_uuid = pAttaObject->GetUUID();
     }
   }
 
@@ -2385,7 +2523,8 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
     if (pl.ibasedata > 0) {
       // Add to pwlist
       pmCmd->Add(AddEntryCommand::Create(&m_core,
-                                         ci_temp, ci_temp.GetBaseUUID())); // need to do this as well as AddDep...
+                                         ci_temp, ci_temp.GetBaseUUID(),
+                                         dnd_oblist.AttachmentOfItem(&ci_temp))); // need to do this as well as AddDep...
 
       // Password in alias/shortcut format AND base entry exists
       if(pl.InputType == CItemData::ET_ALIAS) {
@@ -2461,7 +2600,8 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
     
     if(!ci_temp.IsDependent()) { // Dependents handled later
       // Add to pwlist
-      AddEntryCommand *pcmd = AddEntryCommand::Create(&m_core, ci_temp);
+      AddEntryCommand *pcmd = AddEntryCommand::Create(&m_core, ci_temp, pws_os::CUUID::NullUUID(),
+                                                      dnd_oblist.AttachmentOfItem(&ci_temp));
 
       if(!bAddToViews) {
         // ONLY Add to pwlist and NOT to Tree or List views

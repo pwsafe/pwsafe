@@ -267,40 +267,6 @@ void AddEditPropSheetDlg::Init()
 ////@end AddEditPropSheetDlg member initialisation
 }
 
-#if 0
-/*
-  This class is currently unused, but it should be easy to incorporate into the Policy checks.
-  Validate() works as follows:
-  return true if (specified radio button is enabled AND set) OR at least one of the specified checkboxes are selected OR all checkboxes are disabled
-
-  If we decide this is useless, then MultiCheckboxValidator in wxutil.{cpp.h} should be removed as well.
-*/
-class PolicyValidator : public MultiCheckboxValidator
-{
-public:
-  PolicyValidator(int rbID, int ids[], size_t num,
-      const wxString& msg, const wxString& title)
-    : MultiCheckboxValidator(ids, num, msg, title), m_rbID(rbID) {}
-  PolicyValidator(const PolicyValidator &other)
-    : MultiCheckboxValidator(other), m_rbID(other.m_rbID) {}
-  ~PolicyValidator() {}
-
-  wxObject* Clone() const {return new PolicyValidator(m_rbID, m_ids, m_count, m_msg, m_title);}
-  bool Validate(wxWindow* parent) {
-    wxWindow* win = GetWindow()->FindWindow(m_rbID);
-    if (win && win->IsEnabled()) {
-      wxRadioButton* rb = wxDynamicCast(win, wxRadioButton);
-      if (rb && rb->GetValue()) {
-        return true;
-      }
-    }
-    return MultiCheckboxValidator::Validate(parent);
-  }
-private:
-  int m_rbID;
-};
-#endif /* 0 */
-
 static void setupDCAStrings(wxArrayString &as)
 {
   // semi-duplicated in SetupDCAComboBoxes(),
@@ -1208,7 +1174,7 @@ void AddEditPropSheetDlg::OnExport(wxCommandEvent& WXUNUSED(event))
   fileFilter.Append(_("All files (*.*)|*.*"));
 
   wxFileDialog fileDialog(
-    this, _("Export Attachment"), "", "",
+    this, _("Export Attachment"), "", m_ItemAttachment.GetFileName().c_str(),
     fileFilter,
     wxFD_SAVE | wxFD_OVERWRITE_PROMPT
   );
@@ -1975,6 +1941,9 @@ bool AddEditPropSheetDlg::ValidatePasswordPolicy()
     msg.ShowModal();
     return false;
   }
+  if(! m_PasswordPolicyUseDatabaseCtrl->GetValue() && ! CheckPWPolicyFromUI()) {
+    return false;
+  }
 
   return true;
 }
@@ -2002,7 +1971,7 @@ bool AddEditPropSheetDlg::IsGroupUsernameTitleCombinationUnique()
 }
 
 
-Command* AddEditPropSheetDlg::NewAddEntryCommand()
+Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
 {
   time_t t;
   const wxString group = m_BasicGroupNamesCtrl->GetValue();
@@ -2035,8 +2004,11 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand()
   m_Item.SetDCA(m_DoubleClickAction);
   m_Item.SetShiftDCA(m_ShiftDoubleClickAction);
 
-  time(&t);
-  m_Item.SetCTime(t);
+  if(bNewCTime) {
+    time(&t);
+    m_Item.SetCTime(t);
+  }
+  wxASSERT(m_Item.IsCreationTimeSet());
   if (m_KeepPasswordHistory) {
     m_Item.SetPWHistory(MakePWHistoryHeader(true, m_MaxPasswordHistory, 0));
   }
@@ -2372,7 +2344,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
       commands->Add(DeleteEntryCommand::Create(&m_Core, m_Item));
 
       // Step 3)
-      commands->Add(NewAddEntryCommand());
+      commands->Add(NewAddEntryCommand(false)); // Do not create a new creation time (C Time), as the old entry is replaced
 
       // If additional changes were made to the password element,
       // these are also taken into account by NewAddEntryCommand,
@@ -2411,19 +2383,39 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
 
       auto hasTitleChanges = (towxstring(m_ItemAttachment.GetTitle()) != m_AttachmentTitle->GetValue());
       auto hasAttachmentChanges = (m_ItemAttachment != itemAttachment);
-
+      
       if (hasTitleChanges || hasAttachmentChanges) {
-
         // Step 1)
         if (m_AttachmentTitle->GetValue() != _T("N/A"))
         {
           m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
         }
-
         time_t timestamp;
         time(&timestamp);
         m_ItemAttachment.SetCTime(timestamp);
+      }
+      
+      if(m_ItemAttachment.GetUUID() != itemAttachment.GetUUID()) {
+        // The content has changed at all, remove and add again with new content
 
+        // Step 2)
+        if(m_Item.IsAlias()) {
+          commands->Add(RemoveDependentEntryCommand::Create(&m_Core,
+                                                            m_Item.GetBaseUUID(),
+                                                            m_Item.GetUUID(),
+                                                            CItemData::ET_ALIAS));
+        }
+        commands->Add(DeleteEntryCommand::Create(&m_Core, m_Item));
+
+        // Step 3)
+        commands->Add(NewAddEntryCommand(false)); // Do not create a new creation time (C Time), as the old entry is replaced
+
+        // If additional changes were made to the password element,
+        // these are also taken into account by NewAddEntryCommand,
+        // so that we can return with this command.
+        return commands;
+      }
+      else if (hasTitleChanges || hasAttachmentChanges) {
         // Step 2)
         commands->Add(
           EditAttachmentCommand::Create(&m_Core, itemAttachment, m_ItemAttachment)
@@ -2548,6 +2540,10 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
   delete commands;
   return nullptr;
 }
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
+ */
 
 void AddEditPropSheetDlg::OnOk(wxCommandEvent& WXUNUSED(evt))
 {
@@ -2879,6 +2875,88 @@ PWPolicy AddEditPropSheetDlg::GetPWPolicyFromUI()
   pwp.symbols = m_Symbols.c_str();
 
   return pwp;
+}
+
+bool AddEditPropSheetDlg::CheckPWPolicyFromUI()
+{
+  wxASSERT_MSG(!m_PasswordPolicyUseDatabaseCtrl->GetValue(), wxT("Trying to get Password policy from UI when db defaults are to be used"));
+
+  PWPolicy pwp;
+
+  pwp.length = m_PasswordPolicyPasswordLengthCtrl->GetValue();
+  pwp.flags = 0;
+  pwp.lowerminlength = pwp.upperminlength =
+    pwp.digitminlength = pwp.symbolminlength = 0;
+  if (m_PasswordPolicyUseLowerCaseCtrl->GetValue()) {
+    pwp.flags |= PWPolicy::UseLowercase;
+    pwp.lowerminlength = m_PasswordPolicyLowerCaseMinCtrl->GetValue();
+  }
+  if (m_PasswordPolicyUseUpperCaseCtrl->GetValue()) {
+    pwp.flags |= PWPolicy::UseUppercase;
+    pwp.upperminlength = m_PasswordPolicyUpperCaseMinCtrl->GetValue();
+  }
+  if (m_PasswordPolicyUseDigitsCtrl->GetValue()) {
+    pwp.flags |= PWPolicy::UseDigits;
+    pwp.digitminlength = m_PasswordPolicyDigitsMinCtrl->GetValue();
+  }
+  if (m_PasswordPolicyUseSymbolsCtrl->GetValue()) {
+    pwp.flags |= PWPolicy::UseSymbols;
+    pwp.symbolminlength = m_PasswordPolicySymbolsMinCtrl->GetValue();
+  }
+
+  wxASSERT_MSG(!m_PasswordPolicyUseEasyCtrl->GetValue() || !m_PasswordPolicyUsePronounceableCtrl->GetValue(), wxT("UI Bug: both pronounceable and easy-to-read are set"));
+
+  if (m_PasswordPolicyUseEasyCtrl->GetValue())
+    pwp.flags |= PWPolicy::UseEasyVision;
+  else if (m_PasswordPolicyUsePronounceableCtrl->GetValue())
+    pwp.flags |= PWPolicy::MakePronounceable;
+  if (m_PasswordPolicyUseHexadecimalOnlyCtrl->GetValue())
+    pwp.flags = PWPolicy::UseHexDigits; //yes, its '=' and not '|='
+
+  pwp.symbols = m_Symbols.c_str();
+  
+  int total_sublength = (
+    ((pwp.flags & PWPolicy::UseLowercase) ? pwp.lowerminlength : 0) +
+    ((pwp.flags & PWPolicy::UseUppercase) ? pwp.upperminlength : 0) +
+    ((pwp.flags & PWPolicy::UseDigits) ? pwp.digitminlength : 0) +
+    ((pwp.flags & PWPolicy::UseSymbols) ? pwp.symbolminlength : 0));
+
+  if(pwp.flags && pwp.length < total_sublength) {
+    wxMessageDialog msg(
+      this,
+      _("Total Length of policy too small"),
+      _("Error"),
+      wxOK|wxICON_ERROR
+    );
+    msg.ShowModal();
+    return false;
+  }
+  
+  if (pwp.length != 0) {// if length != 0 we assume the policy isn't empty, and so the following must hold:
+    // At least one set of characters is specified
+    if(! ((pwp.flags & PWPolicy::UseLowercase) || (pwp.flags & PWPolicy::UseUppercase) || (pwp.flags & PWPolicy::UseDigits) || (pwp.flags & PWPolicy::UseSymbols) || (pwp.flags & PWPolicy::UseHexDigits))) {
+      wxMessageDialog msg(
+        this,
+        _("With password length at least one of the flags has to be set"),
+        _("Error"),
+        wxOK|wxICON_ERROR
+      );
+      msg.ShowModal();
+      return false;
+    }
+    // HexDigits implies no easyvision or pronounceable
+    if (pwp.flags & PWPolicy::UseHexDigits && ! ((pwp.flags & (PWPolicy::UseEasyVision | PWPolicy::MakePronounceable)) == 0)) {
+      wxMessageDialog msg(
+        this,
+        _("HexDigits implies no easyvision or pronounceable to be set"),
+        _("Error"),
+        wxOK|wxICON_ERROR
+      );
+      msg.ShowModal();
+      return false;
+    }
+  }
+  return true;
 }
 
 PWPolicy AddEditPropSheetDlg::GetSelectedPWPolicy()

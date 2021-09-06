@@ -2082,44 +2082,6 @@ void CItemData::SetEntryType(EntryType et)
   m_entrytype = et;
 }
 
-static void push_length(vector<char> &v, uint32 s)
-{
-  v.insert(v.end(),
-    reinterpret_cast<char *>(&s), reinterpret_cast<char *>(&s) + sizeof(uint32));
-}
-
-template< typename T>
-static void push(vector<char> &v, char type, T value)
-{
-  if (value != 0) {
-    v.push_back(type);
-    push_length(v, sizeof(value));
-    v.insert(v.end(),
-             reinterpret_cast<char *>(&value), reinterpret_cast<char *>(&value) + sizeof(value));
-  }
-}
-
-// Overload rather than specialize template function
-// See http://www.gotw.ca/publications/mill17.htm
-static void push(vector<char> &v, char type,
-                 const StringX &str)
-{
-  if (!str.empty()) {
-    CUTF8Conv utf8conv;
-    bool status;
-    const unsigned char *utf8;
-    size_t utf8Len;
-    status = utf8conv.ToUTF8(str, utf8, utf8Len);
-    if (status) {
-      v.push_back(type);
-      push_length(v, static_cast<uint32>(utf8Len));
-      v.insert(v.end(), reinterpret_cast<const char *>(utf8),
-               reinterpret_cast<const char *>(utf8) + utf8Len);
-    } else
-      pws_os::Trace(_T("ItemData.cpp: push(%ls): ToUTF8 failed!\n"), str.c_str());
-  }
-}
-
 void CItemData::SerializePlainText(vector<char> &v,
                                    const CItemData *pcibase)  const
 {
@@ -2158,7 +2120,7 @@ void CItemData::SerializePlainText(vector<char> &v,
     v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array_t)));
   }
 
-  // TODO - Get rid of following [password hack - no longer needed as we have base uuid!
+  // TODO: - Get rid of following [password hack - no longer needed as we have base uuid!
   if (m_entrytype == ET_ALIAS) {
     // I am an alias entry
     tmp = _T("[[") + pcibase->GetGroup() + _T(":") + pcibase->GetTitle() + _T(":") + pcibase->GetUser() + _T("]]");

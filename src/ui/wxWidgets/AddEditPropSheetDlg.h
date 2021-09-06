@@ -221,6 +221,8 @@ public:
   void OnUpdateUI(wxUpdateUIEvent &event);
 
   void OnClearPasswordHistory(wxCommandEvent &event);
+  
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOk(wxCommandEvent &event);
 
   /// wxEVT_SPINCTRL event handler for ID_SPINCTRL5, ID_SPINCTRL6, ID_SPINCTRL7, ID_SPINCTRL8
@@ -286,6 +288,7 @@ private:
   void EnablePWPolicyControls(bool enable);
   PWPolicy GetPWPolicyFromUI();
   PWPolicy GetSelectedPWPolicy();
+  bool CheckPWPolicyFromUI();
   void ShowPWPSpinners(bool show);
   void EnableNonHexCBs(bool enable);
   void UpdatePasswordTextCtrl(wxTextCtrl* &textCtrl, const wxString value, wxTextCtrl* before, const int id = ID_TEXTCTRL_PASSWORD, const int style = 0);
@@ -299,7 +302,7 @@ private:
   bool ValidatePasswordPolicy();
   bool IsGroupUsernameTitleCombinationUnique();
 
-  Command* NewAddEntryCommand();
+  Command* NewAddEntryCommand(bool bNewCTime = true);
   Command* NewEditEntryCommand();
 
   // Tab: "Basic"
