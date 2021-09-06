@@ -375,8 +375,6 @@
 		<Unit filename="../../src/ui/wxWidgets/DnDSupport.h" />
 		<Unit filename="../../src/ui/wxWidgets/DragBarCtrl.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/DragBarCtrl.h" />
-		<Unit filename="../../src/ui/wxWidgets/DragBarGenericCtrl.cpp" />
-		<Unit filename="../../src/ui/wxWidgets/DragBarGenericCtrl.h" />
 		<Unit filename="../../src/ui/wxWidgets/EditShortcutDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/EditShortcutDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/ExportTextWarningDlg.cpp" />
