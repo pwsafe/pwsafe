@@ -636,11 +636,13 @@ void CItemAtt::SerializePlainText(vector<char> &v)  const
     size_t length = GetContentSize();
     size_t realLen = GetContentLength();
     if(length) {
-      unsigned char data[length];
+      auto *data = new unsigned char[length];
       if(GetContent(data, length)) {
         v.push_back(CONTENT);
         push_length(v, static_cast<uint32>(realLen));
         v.insert(v.end(), data, (data + realLen));
+        trashMemory(data, length);
+        delete[] data;
       }
     }
   }
