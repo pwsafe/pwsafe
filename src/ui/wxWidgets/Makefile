@@ -198,7 +198,7 @@ SOURCES= PasswordSafeFrame.cpp \
 	GuiInfo.cpp ImportTextDlg.cpp \
 	ImportXmlDlg.cpp OpenFilePickerValidator.cpp \
 	SafeCombinationCtrl.cpp ExportTextWarningDlg.cpp \
-	AdvancedSelectionDlg.cpp ViewReportDlg.cpp DragBarGenericCtrl.cpp \
+	AdvancedSelectionDlg.cpp ViewReportDlg.cpp \
 	DragBarCtrl.cpp MergeDlg.cpp ExternalKeyboardButton.cpp \
 	SyncWizard.cpp DbSelectionPanel.cpp CompareDlg.cpp \
 	wxUtilities.cpp ComparisonGridTable.cpp SizeRestrictedPanel.cpp \

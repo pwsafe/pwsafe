@@ -127,7 +127,6 @@
 		E6B1448212B26CEE00415AAE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448112B26CEE00415AAE /* OpenGL.framework */; };
 		E6B1448812B26D1500415AAE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448712B26D1500415AAE /* Cocoa.framework */; };
 		E6B1449412B26D7E00415AAE /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
-		E6B5C6451232B3D000AC8B45 /* DragBarGenericCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6411232B3D000AC8B45 /* DragBarGenericCtrl.cpp */; };
 		E6B5C6461232B3D000AC8B45 /* DragBarCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6431232B3D000AC8B45 /* DragBarCtrl.cpp */; };
 		E6B908E21D30C8980050CFF1 /* diff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B908DE1D30C8980050CFF1 /* diff.cpp */; };
 		E6B908E31D30C8980050CFF1 /* safeutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B908E01D30C8980050CFF1 /* safeutils.cpp */; };
@@ -680,8 +679,6 @@
 		E6B1448112B26CEE00415AAE /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		E6B1448712B26D1500415AAE /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		E6B1449312B26D7E00415AAE /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
-		E6B5C6411232B3D000AC8B45 /* DragBarGenericCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DragBarGenericCtrl.cpp; sourceTree = "<group>"; };
-		E6B5C6421232B3D000AC8B45 /* DragBarGenericCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DragBarGenericCtrl.h; sourceTree = "<group>"; };
 		E6B5C6431232B3D000AC8B45 /* DragBarCtrl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DragBarCtrl.cpp; sourceTree = "<group>"; };
 		E6B5C6441232B3D000AC8B45 /* DragBarCtrl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DragBarCtrl.h; sourceTree = "<group>"; };
 		E6B908DE1D30C8980050CFF1 /* diff.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = diff.cpp; sourceTree = "<group>"; };
@@ -1396,8 +1393,6 @@
 				E60F25D712C4ACEB001E63C4 /* ExternalKeyboardButton.h */,
 				E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */,
 				E61D6FA212617EFC0049FA2A /* MergeDlg.h */,
-				E6B5C6411232B3D000AC8B45 /* DragBarGenericCtrl.cpp */,
-				E6B5C6421232B3D000AC8B45 /* DragBarGenericCtrl.h */,
 				E6B5C6431232B3D000AC8B45 /* DragBarCtrl.cpp */,
 				E6B5C6441232B3D000AC8B45 /* DragBarCtrl.h */,
 				E6BA477F1216DB9C00193879 /* AdvancedSelectionDlg.cpp */,
@@ -1993,7 +1988,6 @@
 				E6BA478A1216DB9C00193879 /* ViewReportDlg.cpp in Sources */,
 				D3EA518B2629C40C0015E3FD /* PWFiltersBoolDlg.cpp in Sources */,
 				D364EC322632CA6C00ECA59F /* PWFiltersStatusDlg.cpp in Sources */,
-				E6B5C6451232B3D000AC8B45 /* DragBarGenericCtrl.cpp in Sources */,
 				D36375CC2635BCCC001B370A /* PWFiltersDateDlg.cpp in Sources */,
 				E6B5C6461232B3D000AC8B45 /* DragBarCtrl.cpp in Sources */,
 				D3950066263C29F70026815E /* ManageFiltersTable.cpp in Sources */,
