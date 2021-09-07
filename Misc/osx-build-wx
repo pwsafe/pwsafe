@@ -175,6 +175,7 @@ doCarbonBuild() {
                             --disable-shared            \
                             --disable-compat24          \
                             --enable-unicode            \
+                            --enable-aui                \
                             --enable-universal-binary   \
                             --with-osx_carbon           \
                             --with-macosx-sdk=$SDKPATH  \
@@ -230,6 +231,7 @@ else
                               --with-osx_cocoa                  \
                               --disable-shared                  \
                               --enable-unicode                  \
+                              --enable-aui                      \
                               --with-macosx-version-min=10.10   \
                               $COMPATFLAG                       \
                               --without-liblzma                 \

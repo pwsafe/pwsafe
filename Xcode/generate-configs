@@ -30,7 +30,7 @@ die "wx-config \"$wxconfig\" is not executable" unless -x $wxconfig;
 my $dbgflag = $flag eq "-d" ? "yes" : "no";
 my $libflags;
 my $rpath;
-foreach(split /\s+/, `$wxconfig --libs --unicode=yes --debug=$dbgflag`) {
+foreach(split /\s+/, `$wxconfig --libs aui xrc html qa adv core xml net base --unicode=yes --debug=$dbgflag`) {
 	$libflags .= $_." " if /\A-[lL]|\.a\Z/;
 	$rpath .= $1." " if /\A-Wl,-rpath,(.*)\Z/;
 }
