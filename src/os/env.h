@@ -32,6 +32,13 @@ namespace pws_os {
   extern bool    IsWindows81OrGreater();
   extern bool    IsWindows10OrGreater();
 #endif
+
+#ifdef _WIN32
+inline bool IsWindows() {return true;}
+#else
+inline bool IsWindows() {return false;}
+#endif
+
 }
 #endif /* __ENV_H */
 //-----------------------------------------------------------------------------
