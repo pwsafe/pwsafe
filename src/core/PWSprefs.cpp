@@ -21,6 +21,7 @@
 #include "os/debug.h"
 #include "os/pws_tchar.h"
 #include "os/file.h"
+#include "os/env.h"
 #include "os/dir.h"
 #include "os/registry.h"
 #include "os/logit.h"
@@ -1087,17 +1088,11 @@ void PWSprefs::FindConfigFile()
   } else { // User specified config file via SetConfigFile()
     // As per pre-use of Local AppData directory,
     // If file name's relative, it's expected to be in the
-    // same directory as the executable
+    // os-specific config directory
     stringT sDrive, sDir, sFile, sExt;
     pws_os::splitpath(m_configfilename, sDrive, sDir, sFile, sExt);
-#if defined(_WIN32)
-    if (sDrive.empty() || sDir.empty())
-      m_configfilename = sExecDir + sFile + sExt;
-#else
-    // Non windows systems will not have a drive and do not like placing configurations in exec's drive
-    if (sDir.empty())
+    if ((pws_os::IsWindows() && sDrive.empty()) || sDir.empty())
       m_configfilename = sCnfgDir + sFile + sExt;
-#endif
   }
 }
 
