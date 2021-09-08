@@ -18,7 +18,12 @@
 #include "../../core/DBCompareData.h"
 #include "../../core/UIinterface.h"
 
-#define CurrentBackgroundColor    *wxWHITE
+// #define CurrentBackgroundColor    *wxWHITE
+#if wxVERSION_NUMBER >= 3103
+#define CurrentBackgroundColor    (wxSystemSettings::GetAppearance().IsUsingDarkBackground() ? wxColor(29, 30, 32) : *wxWHITE)
+#else
+#define CurrentBackgroundColor    (*wxWHITE)
+#endif
 #define ComparisonBackgroundColor *wxWHITE
 
 struct SelectionCriteria;

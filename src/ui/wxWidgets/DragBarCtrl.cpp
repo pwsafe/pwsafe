@@ -204,7 +204,7 @@ void DragBarCtrl::CalculateToolsWidth()
     }
   }
 
-  SetMinSize(wxSize(width, -1));
+  SetMinSize(wxSize(static_cast<int>(width), -1));
 }
 
 /**

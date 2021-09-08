@@ -890,21 +890,35 @@ void PasswordSafeFrame::RefreshToolbarButtons()
   if (toolbar->GetToolCount() > 0) {
     toolbar->ClearTools();
   }
+  bool toolbarShowText = pref->GetPref(PWSprefs::ToolbarShowText);
+  bool showMenuSeprator = pref->GetPref(PWSprefs::ShowMenuSeparator);
 
   for (const auto & PwsToolbarButton : PwsToolbarButtons) {
-    if (pref->GetPref(PWSprefs::ShowMenuSeparator) && (PwsToolbarButton.IsSeparator())) {
-      toolbar->AddSeparator()->SetId(PwsToolbarButton.id);
+    if (PwsToolbarButton.IsSeparator()) {
+      if (showMenuSeprator)
+        toolbar->AddSeparator()->SetId(PwsToolbarButton.id);
     }
     else {
-      toolbar->AddTool(
-        PwsToolbarButton.id,
-        wxGetTranslation(PwsToolbarButton.toollabel),
-        PwsToolbarButton.GetBitmapForEnabledButton(),
-        PwsToolbarButton.GetBitmapForDisabledButton(),
-        wxITEM_NORMAL,
-        wxGetTranslation(PwsToolbarButton.tooltip),
-        wxEmptyString,
-        nullptr);
+      if(toolbarShowText)
+        toolbar->AddTool(
+          PwsToolbarButton.id,
+          wxGetTranslation(PwsToolbarButton.toollabel),
+          PwsToolbarButton.GetBitmapForEnabledButton(),
+          PwsToolbarButton.GetBitmapForDisabledButton(),
+          wxITEM_NORMAL,
+          wxGetTranslation(PwsToolbarButton.tooltip),
+          wxEmptyString,
+          nullptr);
+      else
+        toolbar->AddTool(
+          PwsToolbarButton.id,
+          wxGetTranslation(PwsToolbarButton.toollabel),
+          PwsToolbarButton.GetBitmapForEnabledButton(),
+          PwsToolbarButton.GetBitmapForDisabledButton(),
+          wxITEM_NORMAL,
+          wxEmptyString,
+          wxEmptyString,
+          nullptr);
     }
   }
 
@@ -967,7 +981,7 @@ void PasswordSafeFrame::DeleteMainToolbarSeparators()
 
   for (size_t pos = 0; pos < toolbar->GetToolCount(); ++pos) {
     if(toolbar->FindToolByIndex(static_cast<int>(pos))->GetId() == ID_SEPARATOR)
-      toolbar->DeleteByIndex(pos);
+      toolbar->DeleteByIndex(static_cast<int>(pos));
   }
 
   toolbar->Realize();
