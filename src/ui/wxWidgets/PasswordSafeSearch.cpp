@@ -579,7 +579,7 @@ bool PasswordSafeSearch::CreateSearchBar()
         toolInfo.id,
         toolInfo.GetBitmapForEnabledButton(),
         toolInfo.GetBitmapForDisabledButton(),
-        (toolInfo.id == ID_FIND_IGNORE_CASE) || (toolInfo.id == ID_FIND_ADVANCED_OPTIONS) ? /* toogle element? */ true : false,
+        (toolInfo.id == ID_FIND_IGNORE_CASE) || (toolInfo.id == ID_FIND_ADVANCED_OPTIONS) /* toogle element? */,
         nullptr,
         wxGetTranslation(toolInfo.tooltip)
       );
