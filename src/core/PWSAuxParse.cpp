@@ -559,14 +559,15 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
           break;
         }
 
-        // Also copy explicit control characters to output string unchanged.
+        case TCHAR('e'): // escape
+          sxtmp += L'\x1B';
+          break;        // Also copy explicit control characters to output string unchanged.
         case TCHAR('a'): // bell (can't hear it during testing!)
         case TCHAR('v'): // vertical tab
         case TCHAR('f'): // form feed
-        case TCHAR('e'): // escape
         case TCHAR('x'): // hex digits (\xNN)
         // and any others we have forgotten!
-        // '\cC', '\uXXXX', '\OOO', '\<any other character not recognised above>'
+        // '\cC', '\uXXXX', '\OOO', '\<any other character not recognized above>'
         default:
           sxtmp += L'\\';
           sxtmp += curChar;

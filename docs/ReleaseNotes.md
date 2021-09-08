@@ -7,8 +7,9 @@ releases may be found in the file ChangeLog.txt.
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.56.1 Release ???? 2021
+PasswordSafe 3.57 Release ???? 2021
 =====================================
+* [SF896](https://sourceforge.net/p/passwordsafe/feature-requests/896/) Added \e to ESC mapping in autotype.
 * [SF1544](https://sourceforge.net/p/passwordsafe/bugs/1544/) Fixed regression in German installer texts.
 
 
