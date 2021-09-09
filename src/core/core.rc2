@@ -17,7 +17,7 @@
 STRINGTABLE
 BEGIN
   IDSC_PASSWORDTOOSHORT   "Password is too short"
-  IDSC_PASSWORDPOOR       "Password should be mixed case, with at least one digit or punctuation character"
+  IDSC_PASSWORDPOOR       "Password should be mixed case, with at least one digit"
 END
 
 STRINGTABLE
