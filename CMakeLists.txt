@@ -247,7 +247,7 @@ set(CMAKE_CXX_FLAGS_DEBUG " /Od  /D _DEBUG /WX- /Gd /Oy- /Ob0 /Od /MTd")
 set(CMAKE_CXX_FLAGS_RELEASE "/MT /O2 /Ob2 /D NDEBUG  /W4 /Zc:wchar_t  /Od /WX-")
 
 # For whiplash customization
-set(CMAKE_CXX_FLAGS "/D PWS_FORCE_STRONG_PASSPHRASE")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D PWS_FORCE_STRONG_PASSPHRASE")
 
 else ()
 set(CMAKE_CXX_FLAGS
@@ -257,7 +257,7 @@ if (USE_ASAN)
   set(CMAKE_CXX_FLAGS_DEBUG
     "${CMAKE_CXX_FLAGS_DEBUG} -gdwarf-4 -O0 -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize=address")
 endif (USE_ASAN)
-set(CMAKE_CXX_FLAGS "-DPWS_FORCE_STRONG_PASSPHRASE")
+set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-DPWS_FORCE_STRONG_PASSPHRASE")
 endif (MSVC)
 
 if (NOT NO_GTEST AND GTEST_BUILD)
