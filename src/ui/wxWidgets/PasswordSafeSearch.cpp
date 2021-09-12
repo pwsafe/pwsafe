@@ -311,7 +311,10 @@ void PasswordSafeSearch::UpdateStatusAreaWidth()
 
   if (control) {
     int statusAreaWidth = (GetParent()->GetClientSize()).GetWidth() - static_cast<int>(m_ToolsWidth);
-    control->SetSizeHints(statusAreaWidth, wxDefaultSize.GetHeight());
+
+    if (statusAreaWidth > 0) {
+      control->SetSizeHints(statusAreaWidth, wxDefaultSize.GetHeight());
+    }
   }
 }
 
