@@ -311,16 +311,7 @@ void PasswordSafeSearch::UpdateStatusAreaWidth()
 
   if (control) {
     int statusAreaWidth = (GetParent()->GetClientSize()).GetWidth() - static_cast<int>(m_ToolsWidth);
-
-    if (statusAreaWidth < 0) {
-      return;
-    }
-    else if (statusAreaWidth < 200) {
-      control->SetSize(statusAreaWidth, -1);
-    }
-    else {
-      control->SetSize(statusAreaWidth - 200, -1);
-    }
+    control->SetSizeHints(statusAreaWidth, wxDefaultSize.GetHeight());
   }
 }
 
@@ -545,6 +536,7 @@ void PasswordSafeSearch::ReCreateSearchBar()
     // here a new search bar is going to be created
     // right after creation it appears on the UI
     CreateSearchBar();
+    UpdateStatusAreaWidth();
 
     // if the previous search bar was hidden then
     // hide also the new one
@@ -598,7 +590,6 @@ bool PasswordSafeSearch::CreateSearchBar()
   m_parentFrame->Bind(wxEVT_SIZE,                       &PasswordSafeSearch::OnSize,                  this);
 
   CalculateToolsWidth();
-  UpdateStatusAreaWidth();
   return Realize();
 }
 
@@ -653,7 +644,6 @@ void PasswordSafeSearch::Activate()
   }
 
   FindControl(ID_FIND_EDITBOX)->SetFocus();
-  CalculateToolsWidth();
   UpdateStatusAreaWidth();
 }
 
