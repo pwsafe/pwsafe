@@ -65,7 +65,8 @@ fi
 case "$DISTRO" in
     debian|ubuntu|linuxmint|raspbian)
         if test \( "$DISTRO" = "ubuntu" -a "$RELEASE" -ge 20 \) -o \
-         \( "$DISTRO" = "debian" -a  \( "$RELEASE" -eq 0 -o "$RELEASE" -ge 11 \) \) ; then
+         \( "$DISTRO" = "debian" -a  \( "$RELEASE" -eq 0 -o "$RELEASE" -ge 11 \) \) -o \
+         \( "$DISTRO" = "linuxmint" -a "$RELEASE" -ge 20 \) ; then
             LIBWXDEV="libwxgtk3.0-gtk3-dev"
         else
             LIBWXDEV="libwxgtk3.0-dev"
