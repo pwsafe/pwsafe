@@ -183,7 +183,8 @@ exit:
 }
 
 int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue,
-                             std::vector<st_prefAttribs> *pvprefAttribs)
+                             std::vector<st_prefAttribs> *pvprefAttribs,
+                             pugi::xml_node_type xmlType)
 {
   // Find the node specified by the path, creating it if it does not already exist
   // and add the requested value.
@@ -235,8 +236,8 @@ int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue,
   // the latter using <![CDATA[[...]]> to encapsulate the data.
 
   // If the node has data in its first pcdata child use it, otherwise add a pcdata child
-  pugi::xml_node prefnode = (node.first_child().type() == pugi::node_pcdata) ?
-     node.first_child() : node.append_child(pugi::node_pcdata);
+  pugi::xml_node prefnode = (node.first_child().type() == xmlType) ?
+     node.first_child() : node.append_child(xmlType);
 
   if (!prefnode.set_value(sValue.c_str())) {
     iRetVal = XML_PUT_TEXT_FAILED;
@@ -362,6 +363,33 @@ int CXMLprefs::GetWithAttributes(const stringT &csBaseKeyName, const stringT &cs
 }
 
 // Get a string value
+stringT CXMLprefs::GetWithAttributes(const stringT &csBaseKeyName, const stringT &csChildKeyName, 
+                                     const stringT &csAttributeName, const stringT &csDefaultValue)
+{
+  ASSERT(m_pXMLDoc != nullptr); // shouldn't be called if not loaded
+  if (m_pXMLDoc == nullptr) // just in case
+    return csDefaultValue;
+
+  stringT csValue = csDefaultValue;
+
+  // Add the value to the base key separated by a '\'
+  stringT csKeyName(csBaseKeyName);
+  if (!csChildKeyName.empty()) {
+    csKeyName += _T("\\");
+    csKeyName += csChildKeyName;
+  }
+
+  pugi::xml_node preference = m_pXMLDoc->first_element_by_path(csKeyName.c_str(), _T('\\'));
+
+  if ((preference != nullptr) && (preference.attribute(csAttributeName.c_str()) != nullptr)) {
+
+    csValue = preference.attribute(csAttributeName.c_str()).as_string();
+  }
+
+  return csValue;
+}
+
+// Get a string value
 stringT CXMLprefs::Get(const stringT &csBaseKeyName, const stringT &csValueName, 
                        const stringT &csDefaultValue)
 {
@@ -416,7 +444,7 @@ int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName,
 
 // Set a string value
 int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName, 
-                   const stringT &csValue)
+                   const stringT &csValue, pugi::xml_node_type xmlType)
 {
   // m_pXMLDoc may be nullptr if Load() not called before Set,
   // or if called & failed
@@ -431,7 +459,7 @@ int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName,
   csKeyName += _T("\\");
   csKeyName += csValueName;
 
-  iRetVal = SetPreference(csKeyName, csValue);
+  iRetVal = SetPreference(csKeyName, csValue, nullptr, xmlType);
 
   return iRetVal;
 }
@@ -545,6 +573,22 @@ int CXMLprefs::SetWithAttributes(const stringT &csBaseKeyName, const stringT &cs
   }
 
   iRetVal = SetPreference(csKeyName, csValue, &vprefAttribs);
+
+  return iRetVal;
+}
+
+int CXMLprefs::SetWithAttributes(const stringT &csBaseKeyName, const stringT &csValueName,
+                      std::vector<st_prefAttribs> *pvprefAttribs)
+{
+  // m_pXMLDoc may be nullptr if Load() not called before Set,
+  // or if called & failed
+
+  if (m_pXMLDoc == nullptr && !CreateXML(false))
+    return false;
+
+  int iRetVal(XML_SUCCESS);
+
+  iRetVal = SetPreference(csBaseKeyName, csValueName, pvprefAttribs);
 
   return iRetVal;
 }

@@ -393,6 +393,12 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
   CreateDragBar();
   CreateSearchBar();
   CreateStatusBar();
+
+  if (!LoadLayoutPreferences()) {
+    pws_os::Trace(L"The AUI manager failed to load the layout preferences.");
+  }
+
+  GetSearchBarPane().Hide();
   m_AuiManager.Update();
   return true;
 }
@@ -435,7 +441,7 @@ void PasswordSafeFrame::Init()
   } else {
     SetTreeSortType(TreeSortType::GROUP);
   }
-  
+
   m_RUEList.SetMax(PWSprefs::GetInstance()->PWSprefs::MaxREItems);
 ////@begin PasswordSafeFrame member initialisation
   m_Toolbar = nullptr;
@@ -789,7 +795,10 @@ void PasswordSafeFrame::CreateControls()
   Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(PasswordSafeFrame::OnOpenRecentDB));
 
-  m_AuiManager.AddPane(panel, wxAuiPaneInfo().CenterPane().Resizable().Show());
+  m_AuiManager.AddPane(panel, wxAuiPaneInfo().
+    Name(wxT("mainview")).Caption(wxT("Main View")).
+    CenterPane().Resizable().Show()
+  );
 }
 
 /**
@@ -865,7 +874,7 @@ void PasswordSafeFrame::CreateMainToolbar()
   GetMenuBar()->Check(ID_SHOWHIDE_TOOLBAR, showToolbar);
 
   m_AuiManager.AddPane(m_Toolbar, wxAuiPaneInfo().
-    Name("maintoolbar").Caption(_("Main Toolbar")).
+    Name(wxT("maintoolbar")).Caption(wxT("Main Toolbar")).
     ToolbarPane().Top().Row(0).Layer(0).
     Dockable(true).Floatable(false).Gripper(true).
     Show(showToolbar).MinSize(-1, 25)
@@ -994,7 +1003,7 @@ void PasswordSafeFrame::DeleteMainToolbarSeparators()
  */
 wxAuiPaneInfo& PasswordSafeFrame::GetMainToolbarPane()
 {
-  return m_AuiManager.GetPane("maintoolbar");
+  return m_AuiManager.GetPane(wxT("maintoolbar"));
 }
 
 /**
@@ -1011,7 +1020,7 @@ void PasswordSafeFrame::CreateDragBar()
   GetMenuBar()->Check(ID_SHOWHIDE_DRAGBAR, showToolbar);
 
   m_AuiManager.AddPane(m_Dragbar, wxAuiPaneInfo().
-    Name("dragbar").Caption(_("Dragbar")).
+    Name(wxT("dragbar")).Caption(wxT("Dragbar")).
     ToolbarPane().Top().Row(1).Layer(0).
     Dockable(true).Floatable(false).Gripper(true).
     Show(showToolbar).MinSize(-1, 25)
@@ -1034,7 +1043,7 @@ void PasswordSafeFrame::UpdateDragbarTooltips()
  */
 wxAuiPaneInfo& PasswordSafeFrame::GetDragBarPane()
 {
-  return m_AuiManager.GetPane("dragbar");
+  return m_AuiManager.GetPane(wxT("dragbar"));
 }
 
 /**
@@ -1048,7 +1057,7 @@ void PasswordSafeFrame::CreateSearchBar()
   m_search->SetGripperVisible(false); // since it is not dockable and movable there is no need for a gripper
 
   m_AuiManager.AddPane(m_search, wxAuiPaneInfo().
-    Name("searchbar").Caption(_("Searchbar")).
+    Name(wxT("searchbar")).Caption(wxT("Searchbar")).
     ToolbarPane().Bottom().Layer(1).
     Dockable(false).Floatable(false).Gripper(false).
     MinSize(-1, 35).Hide()
@@ -1061,7 +1070,7 @@ void PasswordSafeFrame::CreateSearchBar()
  */
 wxAuiPaneInfo& PasswordSafeFrame::GetSearchBarPane()
 {
-  return m_AuiManager.GetPane("searchbar");
+  return m_AuiManager.GetPane(wxT("searchbar"));
 }
 
 /**
@@ -1580,9 +1589,18 @@ void PasswordSafeFrame::SelectItem(const CUUID& uuid)
     }
 }
 
-void PasswordSafeFrame::SaveSettings(void) const
+void PasswordSafeFrame::SaveSettings(void)
 {
   m_grid->SaveSettings();
+
+  /*
+    Hide the search bar to get layout preferences for hidden search bar.
+    This ensures that the layout preferences match with the default search 
+    bar settings. The search bar is hidden per default on application startup.
+  */
+  HideSearchBar();
+
+  SaveLayoutPreferences();
 }
 
 bool PasswordSafeFrame::IsRUEEvent(const wxCommandEvent& evt) const
@@ -2828,6 +2846,50 @@ void PasswordSafeFrame::ChangeFontPreference(const PWSprefs::StringPrefs fontPre
   {
     PWSprefs::GetInstance()->SetPref(fontPreference, tostringx(newFont.GetNativeFontInfoDesc()));
   }
+}
+
+void PasswordSafeFrame::SaveLayoutPreferences()
+{
+  /*
+    The AUI manager provides a string with positional, size and docking
+    information for each pane that is managed by the AUI manager.
+    See the following for managed panes:
+      - PasswordSafeFrame::CreateControls()
+      - PasswordSafeFrame::CreateDragBar()
+      - PasswordSafeFrame::CreateMainToolbar()
+      - PasswordSafeFrame::CreateSearchBar()
+  */
+  auto layoutPreferences = m_AuiManager.SavePerspective();
+
+  /*
+    Example AUI layout preferences string with added line breaks at each occurence of the '|' character:
+    layout2|
+    name=mainview;caption=Main View;state=768;dir=5;layer=0;row=0;pos=0;prop=100000;bestw=20;besth=20;minw=-1;minh=-1;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|
+    name=maintoolbar;caption=Toolleiste;state=2106044;dir=2;layer=10;row=0;pos=0;prop=100000;bestw=114;besth=358;minw=-1;minh=25;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|
+    name=dragbar;caption=Dragleiste;state=2106044;dir=4;layer=10;row=0;pos=0;prop=100000;bestw=26;besth=207;minw=-1;minh=25;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|
+    name=searchbar;caption=Suchleiste;state=2105984;dir=3;layer=1;row=0;pos=0;prop=100000;bestw=10;besth=35;minw=-1;minh=35;maxw=-1;maxh=-1;floatx=-1;floaty=-1;floatw=-1;floath=-1|
+    dock_size(5,0,0)=22|
+    dock_size(4,10,0)=28|
+    dock_size(2,10,0)=116|
+    dock_size(3,1,0)=37|
+  */
+  layoutPreferences.Replace("|", "|\n");
+  PWSprefs::GetInstance()->SetPrefLayout(tostdstring(layoutPreferences));
+}
+
+bool PasswordSafeFrame::LoadLayoutPreferences()
+{
+  auto layoutPreferences = PWSprefs::GetInstance()->GetPrefLayout();
+
+  if (layoutPreferences.empty()) {
+    // If there are no layout preferences in the configuration file 
+    // we continue with the default settings/behavior of wxAUI.
+    return true;
+  }
+
+  wxString auiLayoutPreferences = towxstring(layoutPreferences);
+  auiLayoutPreferences.Replace("|\n", "|");
+  return m_AuiManager.LoadPerspective(auiLayoutPreferences);
 }
 
 void PasswordSafeFrame::SetFilterFindEntries(UUIDVector *pvFoundUUIDs)

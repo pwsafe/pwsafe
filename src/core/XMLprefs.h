@@ -54,12 +54,17 @@ public:
   int Set(const stringT &csBaseKeyName, const stringT &csValueName,
           int iValue);
   int Set(const stringT &csBaseKeyName, const stringT &csValueName,
-          const stringT &csValue);
+          const stringT &csValue,
+          pugi::xml_node_type xmlType = pugi::xml_node_type::node_pcdata);
 
   int GetWithAttributes(const stringT &csBaseKeyName, const stringT &csValueName,
                         int iDefaultValue);
+  stringT GetWithAttributes(const stringT &csBaseKeyName, const stringT &csValueName, 
+                            const stringT &csAttributeName, const stringT &csDefaultValue);
   int SetWithAttributes(const stringT &csBaseKeyName, const stringT &csValueName,
                         const int &iValue);
+  int SetWithAttributes(const stringT &csBaseKeyName, const stringT &csValueName,
+                        std::vector<st_prefAttribs> *pvprefAttribs);
 
   std::vector<st_prefShortcut> GetShortcuts(const stringT &csBaseKeyName);
   int SetShortcuts(const stringT &csBaseKeyName, 
@@ -83,7 +88,8 @@ public:
 
 private:
   int SetPreference(const stringT &sPath, const stringT &sValue,
-                    std::vector<st_prefAttribs> *pvprefAttribs = nullptr);
+                    std::vector<st_prefAttribs> *pvprefAttribs = nullptr,
+                    pugi::xml_node_type xmlType = pugi::xml_node_type::node_pcdata);
 
   pugi::xml_document *m_pXMLDoc;
   stringT m_csConfigFile;
