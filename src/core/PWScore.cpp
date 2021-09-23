@@ -1462,9 +1462,8 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
 
   pws_os::FindFiles(cs_filenamemask, files);
 
-  for (vector<stringT>::iterator iter = files.begin();
-       iter != files.end(); iter++) {
-    stringT ibak_number_str = iter->substr(iter->length() - 8, 3);
+  for (auto iter : files) {
+    stringT ibak_number_str = iter.substr(iter.length() - 8, 3);
     if (ibak_number_str.find_first_not_of(_T("0123456789")) != stringT::npos)
       continue;
     istringstreamT is(ibak_number_str);
@@ -1479,20 +1478,25 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
   }
 
   sort(file_nums.begin(), file_nums.end());
+  size_t num_found = file_nums.size();
 
   // nnn is the number of the file in the returned value: cs_filebasename_nnn
   size_t nnn = file_nums.back();
   nnn++;
   if (nnn > 999) {
+    /**
+     * If we have a _999 file, 
+     */
+
     // as long as there's a _999 file, we set n starting from 001
     nnn = 1;
-    size_t x = file_nums.size() - maxnumincbackups;
-    while (file_nums[x++] == nnn && x < file_nums.size())
+    size_t x = num_found - maxnumincbackups;
+    while (x < num_found && file_nums[x++] == nnn)
       nnn++;
     // Now we need to determine who to delete.
     size_t next = 999 - (maxnumincbackups - nnn);
     unsigned int m = 1;
-    for (x = 0; x < file_nums.size(); x++)
+    for (x = 0; x < num_found; x++)
       if (file_nums[x] < next)
         file_nums[x] = static_cast<unsigned int>(next <= 999 ? next++ : m++);
   }
@@ -1500,7 +1504,6 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
   Format(cs_newname, L"%ls_%03d", cs_filenamebase.c_str(), nnn);
 
   int i = 0;
-  size_t num_found = file_nums.size();
   stringT excess_file;
   while (num_found >= maxnumincbackups) {
     nnn = file_nums[i];
