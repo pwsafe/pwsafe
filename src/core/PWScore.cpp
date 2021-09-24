@@ -1433,6 +1433,22 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   return closeStatus;
 }
 
+static const StringX MakeDateTimeString()
+{
+  time_t now;
+  time(&now);
+   StringX cs_datetime = PWSUtil::ConvertToDateTimeString(now,
+    PWSUtil::TMC_EXPORT_IMPORT);
+  const StringX retval = cs_datetime.substr(0, 4) +  // YYYY
+    cs_datetime.substr(5, 2) +  // MM
+    cs_datetime.substr(8, 2) +  // DD
+    StringX(_T("_")) +
+    cs_datetime.substr(11, 2) +  // HH
+    cs_datetime.substr(14, 2) +  // MM
+    cs_datetime.substr(17, 2);   // SS
+  return retval;
+}
+
 static void ManageIncBackupFiles(const stringT &cs_filenamebase,
                                  size_t maxnumincbackups, stringT &cs_newname)
 {
@@ -1441,10 +1457,8 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
    * and return the base name of the next backup file
    * (sans the suffix, which will be added by caller)
    *
-   * The current solution breaks when maxnumincbackups >= 999.
-   * Best solution is to delete by modification time,
-   * but that requires a bit too much for the cost/benefit.
-   * So for now we're "good enough" - limiting maxnumincbackups to <= 998
+   * When the _999.ibak file exists, we switch to date-time filename format in response to BR1547.
+   * TODO: maintain maxnumincbackups for date-time files as well.
    */
 
   if (maxnumincbackups >= 999) {
@@ -1485,20 +1499,13 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
   nnn++;
   if (nnn > 999) {
     /**
-     * If we have a _999 file, 
+     * If we have a _999 file, there's no elegant solution, especially if the user chose to save 999 backups [BR1547]
+     * So in that case we switch to date/time format, both in returned value and in the preference.
      */
 
-    // as long as there's a _999 file, we set n starting from 001
-    nnn = 1;
-    size_t x = num_found - maxnumincbackups;
-    while (x < num_found && file_nums[x++] == nnn)
-      nnn++;
-    // Now we need to determine who to delete.
-    size_t next = 999 - (maxnumincbackups - nnn);
-    unsigned int m = 1;
-    for (x = 0; x < num_found; x++)
-      if (file_nums[x] < next)
-        file_nums[x] = static_cast<unsigned int>(next <= 999 ? next++ : m++);
+    Format(cs_newname, L"%ls_%ls", cs_filenamebase.c_str(), MakeDateTimeString().c_str());
+    PWSprefs::GetInstance()->SetPref(PWSprefs::BackupSuffix, PWSprefs::BKSFX_DateTime);
+    return;
   }
 
   Format(cs_newname, L"%ls_%03d", cs_filenamebase.c_str(), nnn);
@@ -1562,19 +1569,9 @@ bool PWScore::BackupCurFile(unsigned int maxNumIncBackups, int backupSuffix,
   switch (backupSuffix) { // case values from order in listbox.
     case 1: // YYYYMMDD_HHMMSS suffix
       {
-        time_t now;
-        time(&now);
-        StringX cs_datetime = PWSUtil::ConvertToDateTimeString(now,
-                                                               PWSUtil::TMC_EXPORT_IMPORT);
         cs_temp += _T("_");
-        StringX nf = cs_temp.c_str() +
-                     cs_datetime.substr( 0, 4) +  // YYYY
-                     cs_datetime.substr( 5, 2) +  // MM
-                     cs_datetime.substr( 8, 2) +  // DD
-                     StringX(_T("_")) +
-                     cs_datetime.substr(11, 2) +  // HH
-                     cs_datetime.substr(14, 2) +  // MM
-                     cs_datetime.substr(17, 2);   // SS
+        StringX nf = cs_temp.c_str() + MakeDateTimeString();
+                     
         bu_fname = nf.c_str();
         break;
       }
