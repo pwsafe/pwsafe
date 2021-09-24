@@ -53,6 +53,24 @@
           "type": "FILEPATH"
         }
       ]
+    },
+    {
+      "name": "x86-Debug",
+      "generator": "Visual Studio 16 2019",
+      "configurationType": "Debug",
+      "buildRoot": "${projectDir}\\out\\build\\${name}",
+      "installRoot": "${projectDir}\\out\\install\\${name}",
+      "cmakeCommandArgs": "",
+      "buildCommandArgs": "",
+      "ctestCommandArgs": "",
+      "inheritEnvironments": [ "msvc_x86" ],
+      "variables": [
+        {
+          "name": "HHC",
+          "value": "C:/local/HTMLHelpWorkshop/hhc.exe",
+          "type": "FILEPATH"
+        }
+      ]
     }
   ]
 }
