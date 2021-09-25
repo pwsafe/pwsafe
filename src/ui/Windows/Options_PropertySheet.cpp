@@ -10,6 +10,7 @@
 #include "Options_PropertySheet.h"
 #include "Options_PropertyPage.h"
 #include "Shortcut.h"
+#include "winutils.h"
 
 #include "core/PWSAuxParse.h"
 
@@ -32,9 +33,10 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent,
 {
   ASSERT(pParent != nullptr);
 
-  SetLook(PropSheetLook_OutlookBar); // switch to nicer view. Will we need to make this a config option?
-  ENSURE(SetIconsList(IDB_OPTION_PAGES, 32));
-
+  if (!WinUtil::HasTouchscreen()) { // BR1539 - MFC doesn't work well on touchscreen with this
+    SetLook(PropSheetLook_OutlookBar); // switch to nicer view. Will we need to make this a config option?
+    ENSURE(SetIconsList(IDB_OPTION_PAGES, 32));
+  }
 
   // Set up initial values
   SetupInitialValues();
