@@ -13,6 +13,7 @@ PasswordSafe 3.57W Release September 2021
 * [SF1547](https://sourceforge.net/p/passwordsafe/bugs/1547/) No longer crashes when incremental backup 999 reached.
 * [SF896](https://sourceforge.net/p/passwordsafe/feature-requests/896/) Added \e to ESC mapping in autotype.
 * [SF1544](https://sourceforge.net/p/passwordsafe/bugs/1544/) Fixed regression in German installer texts.
+* [SF1539](https://sourceforge.net/p/passwordsafe/bugs/1539/) Workaround touchscreen issue with Manage->Options tabs.
 
 
 PasswordSafe non-Windows Release 1.14
