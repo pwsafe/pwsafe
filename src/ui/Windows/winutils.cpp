@@ -391,3 +391,9 @@ int  WinUtil::GetSystemMetrics(int nIndex, HWND hwnd)
       return ::GetSystemMetrics(nIndex);
     }
 }
+
+bool WinUtil::HasTouchscreen() // for BR1539 workaround
+{
+  int value = ::GetSystemMetrics(SM_DIGITIZER);
+  return (value != 0);
+}
