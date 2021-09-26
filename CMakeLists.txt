@@ -624,17 +624,21 @@ if ((${RELEASE_ID_SHORT} STREQUAL "Debian") OR (${RELEASE_ID_SHORT} STREQUAL "Ra
   set (CPACK_DEBIAN_PACKAGE_RECOMMENDS "xvkbd (>= 3.3-1+b1)")
 endif ((${RELEASE_ID_SHORT} STREQUAL "Debian") OR (${RELEASE_ID_SHORT} STREQUAL "Raspbian"))
 
-if (${RELEASE_ID_SHORT} STREQUAL "LinuxMint")
+if ((${RELEASE_ID_SHORT} STREQUAL "LinuxMint") OR (${RELEASE_ID_SHORT} STREQUAL "Linuxmint"))
   ## LinuxMint-specific:
   if (NOT ${RELEASE_NUM_SHORT} VERSION_LESS "19.1")
     set (LIBCURL "libcurl4 (>= 7.58.0)")
     set (LIBXERCES "libxerces-c3.2 (>= 3.1.0-1)")
+    set (LIBQRENCODE "libqrencode4 (>= 4.0.2-1)")
+    set (LIBWX  "libwxgtk3.0-gtk3-0v5 (>= 3.0.4)")
   else (NOT ${RELEASE_NUM_SHORT} VERSION_LESS "19.1")
     set (LIBCURL "libcurl3 (>= 7.47.0)")
     set (LIBXERCES "libxerces-c3.1 (>= 3.1.3+debian-1)")
+    set (LIBQRENCODE "libqrencode3 (>= 3.4.4)")
+    set (LIBWX  "libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2)")
   endif (NOT ${RELEASE_NUM_SHORT} VERSION_LESS "19.1")
-  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), ${LIBCURL}, libmagic1 (>= 1:5.25), libuuid1 (>= 2.17.2-0ubuntu1), libwxgtk3.0-0v5 (>= 3.0.0-2) | libwxgtk3.0-0 (>= 3.0.0-2), libxtst6 (>= 2:1.1.0-2), ${LIBXERCES}, libykpers-1-1 (>= 1.7.0), libqrencode3 (>= 3.4.4)")
-endif (${RELEASE_ID_SHORT} STREQUAL "LinuxMint")
+  set (CPACK_DEBIAN_PACKAGE_DEPENDS "libc6 (>= 2.11.1-0ubuntu7.2), ${LIBCURL}, libmagic1 (>= 1:5.25), libuuid1 (>= 2.17.2-0ubuntu1), ${LIBWX}, libxtst6 (>= 2:1.1.0-2), ${LIBXERCES}, libykpers-1-1 (>= 1.7.0), ${LIBQRENCODE}")
+endif ((${RELEASE_ID_SHORT} STREQUAL "LinuxMint") OR (${RELEASE_ID_SHORT} STREQUAL "Linuxmint"))
 
 set (CPACK_DEBIAN_PACKAGE_DESCRIPTION "Password Safe is a password database utility.\n Like many other such products, commercial and otherwise,\n it stores your passwords in an encrypted file.")
 
