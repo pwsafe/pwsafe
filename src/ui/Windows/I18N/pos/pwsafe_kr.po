@@ -4532,10 +4532,6 @@ msgstr ""
 msgid "No database open with which to compare against another database!"
 msgstr "다른 데이터베이스와 비교할 데이터베이스가 열리지 않았습니다."
 
-#. Resource IDs: (6034)
-msgid "No drive specified."
-msgstr ""
-
 #. Resource IDs: (5737)
 #, c-format
 msgid "No entries satisfied your selection criteria, so none can be %s!"

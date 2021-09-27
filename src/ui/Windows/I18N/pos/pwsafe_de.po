@@ -4571,10 +4571,6 @@ msgstr "Aktuell ist keine Datenbank offen"
 msgid "No database open with which to compare against another database!"
 msgstr "Keine Datenbank geöffnet um sie mit einer weiteren Datenbank zu vergleichen!"
 
-#. Resource IDs: (6034)
-msgid "No drive specified."
-msgstr "Kein Laufwerk angegeben."
-
 #. Resource IDs: (5737)
 #, c-format
 msgid "No entries satisfied your selection criteria, so none can be %s!"
@@ -5974,10 +5970,6 @@ msgstr "Umschalt+Doppelklick Aktion"
 #. Resource IDs: (5555)
 msgid "Shift+click to view current policy"
 msgstr "Umschalt+Klick um die aktuelle Richtlinie anzuzeigen"
-
-#. Resource IDs: (1599)
-msgid "Shorcuts"
-msgstr "Verknüpfungen"
 
 #. Resource IDs: (5686)
 #, c-format
