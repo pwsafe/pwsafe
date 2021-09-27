@@ -867,15 +867,15 @@ msgstr " (alle %d Tage)"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2927
 msgid "Total Length of policy too small"
-msgstr ""
+msgstr "Gesamtlänge der Richtlinie ist zu kurz"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2940
 msgid "With password length at least one of the flags has to be set"
-msgstr ""
+msgstr "Bei gesetzter Passwort muss zumindest eine Auswahl gesetzt sein"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2951
 msgid "HexDigits implies no easyvision or pronounceable to be set"
-msgstr ""
+msgstr "Hexadezimalzahlen implizieren kein Setzen von \"aussprechbar\" und \"leicht lesbar\""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3033
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:756
