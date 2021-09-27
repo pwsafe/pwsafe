@@ -4545,10 +4545,6 @@ msgstr "当前无数据库打开"
 msgid "No database open with which to compare against another database!"
 msgstr "没有数据库打开用于和其它数据库比较!"
 
-#. Resource IDs: (6034)
-msgid "No drive specified."
-msgstr "未指定驱动器."
-
 #. Resource IDs: (5737)
 #, c-format
 msgid "No entries satisfied your selection criteria, so none can be %s!"

@@ -4584,10 +4584,6 @@ msgstr "Aucun fichier n'est actuellement ouvert"
 msgid "No database open with which to compare against another database!"
 msgstr "Pas de base ouverte avec laquelle comparer avec une autre base!"
 
-#. Resource IDs: (6034)
-msgid "No drive specified."
-msgstr "Aucun disque spécifié."
-
 #. Resource IDs: (5737)
 #, c-format
 msgid "No entries satisfied your selection criteria, so none can be %s!"

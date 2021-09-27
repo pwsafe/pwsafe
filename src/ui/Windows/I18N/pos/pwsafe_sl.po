@@ -4545,10 +4545,6 @@ msgstr "Trenutno ni odprta nobena zbirka podatkov"
 msgid "No database open with which to compare against another database!"
 msgstr "Nobena zbirka podatkov ni odprta, s katero bi primerjali drugo zbirko podatkov!"
 
-#. Resource IDs: (6034)
-msgid "No drive specified."
-msgstr "Ni določen pogon."
-
 #. Resource IDs: (5737)
 #, c-format
 msgid "No entries satisfied your selection criteria, so none can be %s!"
