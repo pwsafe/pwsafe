@@ -26,7 +26,7 @@ POS := pwsafe.pot pos/pwsafe_ar.po \
 
 DLL_LIST = pwsafeAR.dll pwsafeCZ.dll pwsafeES.dll pwsafeDE.dll \
 	pwsafePL.dll pwsafeZH.dll pwsafeRU.dll pwsafeIT.dll pwsafeFR.dll \
-	pwsafeDA.dll pwsafeKO.dll pwsafeNL.dll pwsafeSV.dll pwsafeTR.dll \
+	pwsafeDA.dll pwsafeKR.dll pwsafeNL.dll pwsafeSV.dll pwsafeTR.dll \
 	pwsafeHU.dll pwsafeSL.dll pwsafePT.dll
 
 DEST_DIR := ../../../../out/build/x86-Release/I18N
