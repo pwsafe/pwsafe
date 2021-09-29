@@ -26,6 +26,7 @@ namespace WinUtil {
   void ResizeBitmap(CBitmap& bmp_src, CBitmap& bmp_dst, int dstW, int dstH);
   void FixBitmapBackground(CBitmap& bm);
   BOOL LoadScaledBitmap(CBitmap& bitmap, UINT nID, bool fixBckgrnd = true, HWND hwnd = nullptr);
+  bool HasTouchscreen(); // for BR1539 workaround
 }
 #endif // __WINUTILS_H__
 
