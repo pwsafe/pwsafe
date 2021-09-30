@@ -4522,7 +4522,7 @@ msgstr "Beze změn"
 
 #. Resource IDs: (5601)
 msgid "No criteria defined"
-msgstr "edefinována žádná kritéria""
+msgstr "edefinována žádná kritéria"
 
 #. Resource IDs: (6022)
 msgid "No database is currently open"
