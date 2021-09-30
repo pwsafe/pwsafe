@@ -871,7 +871,7 @@ msgstr "Gesamtlänge der Richtlinie ist zu kurz"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2940
 msgid "With password length at least one of the flags has to be set"
-msgstr "Bei gesetzter Passwort muss zumindest eine Auswahl gesetzt sein"
+msgstr "Bei gesetzter Passwortlänge muss zumindest eine Auswahl gesetzt sein"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2951
 msgid "HexDigits implies no easyvision or pronounceable to be set"

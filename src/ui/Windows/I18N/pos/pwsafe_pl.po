@@ -4545,10 +4545,6 @@ msgstr "Baza danych nie jest obecnie otwarta"
 msgid "No database open with which to compare against another database!"
 msgstr "Nie otwarto bazy danych z którą można porównać inną bazę danych!"
 
-#. Resource IDs: (6034)
-msgid "No drive specified."
-msgstr "Nie określono napędu."
-
 #. Resource IDs: (5737)
 #, c-format
 msgid "No entries satisfied your selection criteria, so none can be %s!"

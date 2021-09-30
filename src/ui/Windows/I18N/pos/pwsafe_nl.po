@@ -4572,10 +4572,6 @@ msgstr "Geen database is nu open"
 msgid "No database open with which to compare against another database!"
 msgstr "Geen database open om te vergelijken met een andere database!"
 
-#. Resource IDs: (6034)
-msgid "No drive specified."
-msgstr "Geen bestemmingsschijf opgegeven."
-
 #. Resource IDs: (5737)
 #, c-format
 msgid "No entries satisfied your selection criteria, so none can be %s!"

@@ -4532,10 +4532,6 @@ msgstr ""
 msgid "No database open with which to compare against another database!"
 msgstr "Başka bir veritabanı ile karşılaştırılacak açık veritabanı yok!"
 
-#. Resource IDs: (6034)
-msgid "No drive specified."
-msgstr ""
-
 #. Resource IDs: (5737)
 #, c-format
 msgid "No entries satisfied your selection criteria, so none can be %s!"

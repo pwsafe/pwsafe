@@ -476,7 +476,7 @@ SectionEnd
 Section /o "$(KOREAN_SUPPORT)" KoreanSection
   SetOutPath "$INSTDIR"  
   File /nonfatal "${LANG_DLL}\pwsafeKR.dll"
-  File /nonfatal "..\..\help\pwsafeKO\pwsafeKO.chm"
+  File /nonfatal "..\..\help\pwsafeKR\pwsafeKR.chm"
 SectionEnd
 Section /o "$(CZECH_SUPPORT)" CzechSection
   SetOutPath "$INSTDIR"  
@@ -560,7 +560,7 @@ Section "$(START_SHOW)" StartMenu
 ;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(DANISH_SUPPORT)).lnk" "$INSTDIR\pwsafeDA.chm"
 ;  SectionGetFlags ${KoreanSection} $0
 ;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
-;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(KOREAN_SUPPORT)).lnk" "$INSTDIR\pwsafeKO.chm"
+;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(KOREAN_SUPPORT)).lnk" "$INSTDIR\pwsafeKR.chm"
 ;  SectionGetFlags ${CzechSection} $0
 ;  IntCmp $0 ${SF_SELECTED} 0 +2 +2
 ;  CreateShortCut "$SMPROGRAMS\Password Safe\$(Icon_description_Help) ($(CZECH_SUPPORT)).lnk" "$INSTDIR\pwsafeCZ.chm"
@@ -662,9 +662,9 @@ Section "Uninstall"
   Delete "$INSTDIR\pwsafeIT.chm"
   Delete "$INSTDIR\pwsafeIT.chw"
   Delete "$INSTDIR\pwsafeIT.dll"
-  Delete "$INSTDIR\pwsafeKO.chm"
-  Delete "$INSTDIR\pwsafeKO.chw"
-  Delete "$INSTDIR\pwsafeKO.dll"
+  Delete "$INSTDIR\pwsafeKR.chm"
+  Delete "$INSTDIR\pwsafeKR.chw"
+  Delete "$INSTDIR\pwsafeKR.dll"
   Delete "$INSTDIR\pwsafeNL.chm"
   Delete "$INSTDIR\pwsafeNL.chw"
   Delete "$INSTDIR\pwsafeNL.dll"

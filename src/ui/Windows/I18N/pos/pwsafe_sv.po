@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2021-06-28 23:38+0200\n"
+"PO-Revision-Date: 2021-09-26 19:50+0200\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -17,6 +17,19 @@ msgstr ""
 "Language: sv\n"
 "X-Generator: Poedit 3.0\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -466,7 +479,7 @@ msgstr "%ls - Kopierad %ls"
 #. Resource IDs: (5907)
 #, c-format
 msgid "%ls - Drag & Drop %ls"
-msgstr ""
+msgstr "%ls - Drag & Släpp %ls"
 
 #. Resource IDs: (3431)
 #, c-format
@@ -3113,7 +3126,7 @@ msgstr "Redigera/&visa post..."
 
 #. Resource IDs: (65535)
 msgid "Editor Command Line parameters:"
-msgstr "Komandoradsredigerarens parametrar:"
+msgstr "Kommandoradsredigerarens parametrar:"
 
 #. Resource IDs: (3243)
 msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
@@ -4908,10 +4921,6 @@ msgstr "Ingen databas är för närvarande öppen"
 #. Resource IDs: (5353)
 msgid "No database open with which to compare against another database!"
 msgstr "Ingen databas är öppen som kan jämföras med en annan databas!"
-
-#. Resource IDs: (6034)
-msgid "No drive specified."
-msgstr "Ingen enhet angiven."
 
 #. Resource IDs: (5737)
 #, c-format
