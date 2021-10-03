@@ -46,18 +46,19 @@ now has built-in support for the following languages:
 - Dutch
 - French
 - German
+- Hungarian
 - Italian
+- Korean
 - Polish
+- Portuguese (Brazilian)
 - Russian
+- Slovenian
 - Spanish
 - Swedish
 - Turkish
 
-Older versions have translations to other languages as well, see
-https://pwsafe.org/nonenglish.shtml for the complete list.
-
-If you are interested  in making Password Safe available in other
-languages, please let [me](https://pwsafe.org/contact.php) know.
+You can update the translations or add another language via [transifex](https://www.transifex.com/passwordsafe/passwordsafe/),
+or by dropping [me](https://pwsafe.org/contact.php) a note.
 
 Installation
 ============
