@@ -4522,7 +4522,7 @@ msgstr "Beze změn"
 
 #. Resource IDs: (5601)
 msgid "No criteria defined"
-msgstr "edefinována žádná kritéria""
+msgstr "edefinována žádná kritéria"
 
 #. Resource IDs: (6022)
 msgid "No database is currently open"
@@ -5051,7 +5051,7 @@ msgstr "Délka hesla:"
 
 #. Resource IDs: (3001)
 msgid "Password should be mixed case, with at least one digit or punctuation character"
-msgstr ""Heslo by mělo používat malá i velká písmena a alespoň jednu číslici nebo znak interpunkce"
+msgstr "Heslo by mělo používat malá i velká písmena a alespoň jednu číslici nebo znak interpunkce"
 
 #. Resource IDs: (32092 - Menu, 32092 - MenuEx, 32095 - Menu, 32095 - MenuEx)
 msgid "Password&Safe..."
@@ -5285,7 +5285,7 @@ msgstr "Stiskněte pro smazání všech přidaných znaků."
 
 #. Resource IDs: (65535)
 msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password being copied."
-msgstr "Stisknutí OK zkopruje všechny hesla vybrané položky do schránky. Schránka bude bezpečně smazána při zavření PasswordSafe.\n\n"Stisknutí Zrušit zastaví kopírování hesel"
+msgstr "Stisknutí OK zkopruje všechny hesla vybrané položky do schránky. Schránka bude bezpečně smazána při zavření PasswordSafe.\n\n Stisknutí Zrušit zastaví kopírování hesel"
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -6499,7 +6499,7 @@ msgstr "Následující záznamy byly přeskočeny:"
 #. Resource IDs: (5951)
 #, c-format
 msgid "The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\nThe %s will override this menu item shortcut.\nPress OK/Apply to accept or change your selection."
-msgstr "Klávesová zkratka '%s' je již přiřazena k položce menu:"\t'%s'\n%s přepíše zkratku této položky.\nStiskněte OK/Aplikovat pro přijetí nebo změnu výběru"
+msgstr "Klávesová zkratka '%s' je již přiřazena k položce menu:\t'%s'\n%s přepíše zkratku této položky.\nStiskněte OK/Aplikovat pro přijetí nebo změnu výběru"
 
 #. Resource IDs: (5950)
 #, c-format
@@ -8279,4 +8279,3 @@ msgstr ""
 #. Resource IDs: (8004)
 msgid "xxxxxx"
 msgstr "xxxxxx"
-
