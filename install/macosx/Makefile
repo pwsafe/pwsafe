@@ -63,14 +63,18 @@ dist:
 	$(MDBIN) $(RESOURCES)/es.lproj
 	$(CPBIN) $(MOS)/es/LC_MESSAGES/pwsafe.mo $(RESOURCES)/es.lproj
 	$(CPBIN) $(WXDIR)/es.mo $(RESOURCES)/es.lproj/wxstd.mo
+	$(MDBIN) $(RESOURCES)/fr.lproj
+	$(CPBIN) $(MOS)/fr/LC_MESSAGES/pwsafe.mo $(RESOURCES)/fr.lproj
+	$(CPBIN) $(WXDIR)/fr.mo $(RESOURCES)/fr.lproj/wxstd.mo
+	$(MDBIN) $(RESOURCES)/hu.lproj
+	$(CPBIN) $(MOS)/hu/LC_MESSAGES/pwsafe.mo $(RESOURCES)/hu.lproj
+	$(CPBIN) $(WXDIR)/hu.mo $(RESOURCES)/hu.lproj/wxstd.mo
 	$(MDBIN) $(RESOURCES)/it.lproj
 	$(CPBIN) $(MOS)/it/LC_MESSAGES/pwsafe.mo $(RESOURCES)/it.lproj
 	$(CPBIN) $(WXDIR)/it.mo $(RESOURCES)/it.lproj/wxstd.mo
-	$(MDBIN) $(RESOURCES)/sv.lproj
-	$(CPBIN) $(MOS)/sv/LC_MESSAGES/pwsafe.mo $(RESOURCES)/sv.lproj
-	$(CPBIN) $(WXDIR)/sv.mo $(RESOURCES)/sv.lproj/wxstd.mo
 	$(MDBIN) $(RESOURCES)/ko.lproj
 	$(CPBIN) $(MOS)/ko/LC_MESSAGES/pwsafe.mo $(RESOURCES)/ko.lproj
+	$(CPBIN) $(WXDIR)/ko_KR.mo $(RESOURCES)/ko.lproj/wxstd.mo
 	$(MDBIN) $(RESOURCES)/nl.lproj
 	$(CPBIN) $(MOS)/nl/LC_MESSAGES/pwsafe.mo $(RESOURCES)/nl.lproj
 	$(CPBIN) $(WXDIR)/nl.mo $(RESOURCES)/nl.lproj/wxstd.mo
