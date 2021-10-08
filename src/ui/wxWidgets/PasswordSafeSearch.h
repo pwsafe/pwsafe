@@ -102,6 +102,7 @@ public:
   bool HasTools() const { return GetToolCount() > 0; }
   void Invalidate() { m_searchPointer.Clear(); }
   void ReCreateSearchBar();
+  void SetFocusIntoEditField();
 
 private:
   template <class Iter, class Accessor>
