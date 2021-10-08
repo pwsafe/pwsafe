@@ -249,8 +249,10 @@ Command *PasswordSafeFrame::Delete(wxTreeItemId tid, wxTreeItemId root)
 
 void PasswordSafeFrame::OnFindClick(wxCommandEvent& WXUNUSED(evt))
 {
+  wxASSERT(m_search);
   m_search->Activate();
   ShowSearchBar();
+  m_search->SetFocusIntoEditField();
 }
 
 /*!

@@ -643,8 +643,12 @@ void PasswordSafeSearch::Activate()
     IsCreated = CreateSearchBar();
   }
 
-  FindControl(ID_FIND_EDITBOX)->SetFocus();
   UpdateStatusAreaWidth();
+}
+
+void PasswordSafeSearch::SetFocusIntoEditField()
+{
+  FindControl(ID_FIND_EDITBOX)->SetFocus();
 }
 
 template <class Iter, class Accessor>
