@@ -2870,7 +2870,7 @@ msgstr "Predefinita"
 
 #. Resource IDs: (65535)
 msgid "Default Autotype delay (mS):"
-msgstr "Ritardo predefinito completamento automatico (ms)"
+msgstr "Ritardo standard completamento automatico (ms)"
 
 #. Resource IDs: (1447)
 msgid "Default Autotype string:"
@@ -6191,7 +6191,7 @@ msgstr ""
 
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
-msgstr "Ricorda ultime"
+msgstr "Ricorda ultimi"
 
 #. Resource IDs: (8100)
 msgid "Remember this keyboard"
