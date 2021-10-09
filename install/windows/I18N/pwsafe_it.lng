@@ -50,7 +50,7 @@ LangString UNINSTALL_SHORTCUT ${LANG_ITALIAN} "Collegamento per la disinstallazi
 LangString DESC_ProgramFiles ${LANG_ITALIAN} "Installa i file base necessari per eseguire Password Safe."
 
 ; DESC_CliTool "Installs pwsafe-cli, a command line utility."
-LangString DESC_CliTool ${LANG_ITALIAN} "Installs pwsafe-cli, a command line utility."
+LangString DESC_CliTool ${LANG_ITALIAN} "Installa pwsafe-cli, utility a linea di comando."
 
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
 LangString DESC_LangSupport ${LANG_ITALIAN} "Seleziona le lingue da installare per Password Safe."
@@ -72,7 +72,7 @@ LangString DESC_UninstallMenu ${LANG_ITALIAN} "Crea un collegamento nel menu di 
 LangString TEXT_GC_TITLE ${LANG_ITALIAN} "Tipo installazione"
 
 ; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
-LangString TEXT_GC_SUBTITLE ${LANG_ITALIAN} "Seleziona 'Classica' per un uso su PC singolo utente, 'Portatile' per installazioni portatile. In caso di dubbio, scegli 'Classica'."
+LangString TEXT_GC_SUBTITLE ${LANG_ITALIAN} "Seleziona 'Classica' per un uso su PC singolo utente, 'Portatile' per installazioni portatile.$\r$\nIn caso di dubbio, scegli 'Classica'."
 
 ; PSWINI_TITLE "Choose Installation Type"
 LangString PSWINI_TITLE ${LANG_ITALIAN} "Seleziona il tipo di istallazione"
@@ -96,10 +96,10 @@ LangString RUNNING_APPLICATION ${LANG_ITALIAN} "Prima di installare una nuova ve
 LangString LANG_INSTALL ${LANG_ITALIAN} "Lingua installazione"
 
 ; LANG_SELECT "Please select the language for the installation"
-LangString LANG_SELECT ${LANG_ITALIAN} "Seleziona una lingua per l'istallazione"
+LangString LANG_SELECT ${LANG_ITALIAN} "Seleziona una lingua per l'installazione"
 
 ; CLI_TOOL "Command-line tool"
-LangString CLI_TOOL ${LANG_ITALIAN} "Command-line tool"
+LangString CLI_TOOL ${LANG_ITALIAN} "Utility linea di comando"
 
 ; LANGUAGE_SUPPORT "Language Support"
 LangString LANGUAGE_SUPPORT ${LANG_ITALIAN} "Lingue supportate"
