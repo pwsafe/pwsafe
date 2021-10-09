@@ -343,6 +343,23 @@ LangString Icon_description_Help ${LANG_ENGLISH} "Password Safe Help"
   ReserveFile "pws-install.ini"
 
 ;-----------------------------------------------------------------
+; Adds the Product Version on top of the Version Tab in the Properties of the file.
+
+VIProductVersion "${VERSION}.0"
+
+;-----------------------------------------------------------------
+; Parameter displayed in File Properties -> Details
+
+VIAddVersionKey "ProductName" "Passwordsafe ${TARGET_ARCH}"
+VIAddVersionKey "ProductVersion" "${VERSION} ${TARGET_ARCH}"
+VIAddVersionKey "Comments" "PasswordSafe installer by Rony Shapiro"
+VIAddVersionKey "CompanyName" "Rony Shapiro"
+VIAddVersionKey "LegalTrademarks" "Copyright 2005-2021 Rony Shapiro"
+VIAddVersionKey "LegalCopyright" "Copyright 2005-2021 Rony Shapiro"
+VIAddVersionKey "FileDescription" "PasswordSate Installer ${TARGET_ARCH}"
+VIAddVersionKey "FileVersion" "${VERSION} ${TARGET_ARCH}"
+
+;-----------------------------------------------------------------
 ; The program itself
 
 Section "$(PROGRAM_FILES)" ProgramFiles
