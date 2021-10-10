@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.5.0_0_a1fd6a4d" segtype="sentence" srclang="en-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.6.0_0_203361b5" segtype="sentence" srclang="en-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -2565,6 +2565,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T114258Z">
         <seg>&lt;b0&gt;\d&lt;i1&gt;NNN&lt;/i1&gt;&lt;/b0&gt; устанавливает задержку между вводом символов в &lt;i2&gt;NNN&lt;/i2&gt; миллисекунд, вместо 10 мс, установленных по умолчанию.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>&lt;b0&gt;\e&lt;/b0&gt; is replaced by the Esc key.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T105721Z" creationid="pm_kan" creationdate="20211010T105624Z">
+        <seg>&lt;b0&gt;\e&lt;/b0&gt; заменяется клавишей Esc.</seg>
       </tuv>
     </tu>
     <tu>

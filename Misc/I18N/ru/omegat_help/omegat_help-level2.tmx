@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx14.dtd">
 <tmx version="1.4">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.5.0_0_a1fd6a4d" segtype="sentence" srclang="en-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.6.0_0_203361b5" segtype="sentence" srclang="en-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -2565,6 +2565,14 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110620T114258Z">
         <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>\d<bpt i="1" x="1">&lt;i1&gt;</bpt>NNN<ept i="1">&lt;/i1&gt;</ept><ept i="0">&lt;/b0&gt;</ept> устанавливает задержку между вводом символов в <bpt i="2" x="2">&lt;i2&gt;</bpt>NNN<ept i="2">&lt;/i2&gt;</ept> миллисекунд, вместо 10 мс, установленных по умолчанию.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>\e<ept i="0">&lt;/b0&gt;</ept> is replaced by the Esc key.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211010T105721Z" creationid="pm_kan" creationdate="20211010T105624Z">
+        <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>\e<ept i="0">&lt;/b0&gt;</ept> заменяется клавишей Esc.</seg>
       </tuv>
     </tu>
     <tu>
