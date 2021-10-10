@@ -142,16 +142,16 @@ LangString ARABIC_SUPPORT ${LANG_ITALIAN} "Arabo"
 LangString LANG_PROGRAM ${LANG_ITALIAN} "Lingua applicazione"
 
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_95 ${LANG_ITALIAN} "Windows 95 non � pi� supportato. Prova Password Safe 2.16"
+LangString SORRY_NO_95 ${LANG_ITALIAN} "Windows 95 non è più supportato. Prova Password Safe 2.16"
 
 ; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_98 ${LANG_ITALIAN} "Windows 98 non � pi� supportato. Prova Password Safe 2.16"
+LangString SORRY_NO_98 ${LANG_ITALIAN} "Windows 98 non è più supportato. Prova Password Safe 2.16"
 
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_ME ${LANG_ITALIAN} "Windows ME non � pi� supportato. Prova Password Safe 2.16"
+LangString SORRY_NO_ME ${LANG_ITALIAN} "Windows ME non è più supportato. Prova Password Safe 2.16"
 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
-LangString SORRY_NO_2K ${LANG_ITALIAN} "Windows 2000 non � pi� supportato. Prova Password Safe 3.18"
+LangString SORRY_NO_2K ${LANG_ITALIAN} "Windows 2000 non è più supportato. Prova Password Safe 3.18"
 
 ; LangString Icon_description_Uninstall "Password Safe Uninstall"
 LangString Icon_description_Uninstall ${LANG_ITALIAN} "Disinstalla Password Safe"
