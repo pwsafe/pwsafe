@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.5.0_0_a1fd6a4d" segtype="sentence" srclang="en-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.6.0_0_203361b5" segtype="sentence" srclang="en-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -450,6 +450,14 @@ Unknown error</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210131T165216Z" creationid="pm_kan" creationdate="20210131T165216Z">
         <seg>&amp;Расширенные...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>&amp;Alias To...</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T102339Z" creationid="pm_kan" creationdate="20211010T102339Z">
+        <seg>Псевдоним &amp;для...</seg>
       </tuv>
     </tu>
     <tu>
@@ -1018,6 +1026,14 @@ Unknown error</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T112947Z">
         <seg>&amp;Повторить</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>&amp;Remove</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104932Z" creationid="pm_kan" creationdate="20211010T104932Z">
+        <seg>&amp;Удалить</seg>
       </tuv>
     </tu>
     <tu>
@@ -2451,6 +2467,22 @@ This version of PasswordSafe does not support more than %d entries in a database
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Alias name:</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104925Z" creationid="pm_kan" creationdate="20211010T104925Z">
+        <seg>Имя псевдонима:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Alias:</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T103154Z" creationid="pm_kan" creationdate="20211010T103154Z">
+        <seg>Псевдоним:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>All Password History ignored.</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -2715,6 +2747,15 @@ symbols, hexadecimal) must be permitted.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20170930T164304Z" creationid="pm_kan" creationdate="20170930T164304Z">
         <seg>Ссылка на вложение</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>При DnD</note>
+      <tuv lang="en-US">
+        <seg>Attachments not overtaken due to data base version</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T105341Z" creationid="pm_kan" creationdate="20211010T105159Z">
+        <seg>Вложение не было перенесено из-за несоответствия версии контейнера</seg>
       </tuv>
     </tu>
     <tu>
@@ -4603,6 +4644,15 @@ Locked by</seg>
       </tuv>
     </tu>
     <tu>
+      <note>Не используется</note>
+      <tuv lang="en-US">
+        <seg>Dnd</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104152Z" creationid="pm_kan" creationdate="20211010T104152Z">
+        <seg>Dnd</seg>
+      </tuv>
+    </tu>
+    <tu>
       <tuv lang="en-US">
         <seg>Do you want to save changes to the password database</seg>
       </tuv>
@@ -4837,6 +4887,14 @@ Action:</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Drag and Drop</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T105453Z" creationid="pm_kan" creationdate="20211010T105453Z">
+        <seg>Перетягивание</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Drag and Drop failed</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210131T171609Z" creationid="pm_kan" creationdate="20210131T171609Z">
@@ -4853,10 +4911,34 @@ Action:</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Drag this image onto another window to paste the '%s' field.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Перетащите изображение на другое окно, чтобы вставить значение поля «%s».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Drag this image onto another window to paste the selected element or tree.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T103644Z" creationid="pm_kan" creationdate="20211010T103644Z">
+        <seg>Перетащите изображение на другое окно, чтобы вставить выбранный элемент или дерево</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Drag this image onto another window to paste the selected elemtent or tree</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210614T173645Z" creationid="pm_kan" creationdate="20210614T173645Z">
         <seg>Перетащите изображение на другое окно, чтобы вставить выбранный элемент или дерево</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Dragbar</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104431Z" creationid="pm_kan" creationdate="20211010T104431Z">
+        <seg>Панель Dragbar</seg>
       </tuv>
     </tu>
     <tu>
@@ -5001,6 +5083,14 @@ Action:</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T134304Z">
         <seg>Столбец с группой/заголовком и/или паролем отсутствует.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Email</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T103654Z" creationid="pm_kan" creationdate="20211010T103654Z">
+        <seg>E-mail</seg>
       </tuv>
     </tu>
     <tu>
@@ -6381,6 +6471,14 @@ Action:</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>HexDigits implies no easyvision or pronounceable to be set</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T103634Z" creationid="pm_kan" creationdate="20211010T103524Z">
+        <seg>Параметр «шестнадцатеричные цифры» несовместим с «удобочитаемые» и «произносимые»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Hexadecimal characters</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -7337,6 +7435,14 @@ username field.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Main Toolbar</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104418Z" creationid="pm_kan" creationdate="20211010T104418Z">
+        <seg>Основная панель инструментов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Make &amp;Backup	Ctrl+B</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T115620Z">
@@ -7641,6 +7747,14 @@ username field.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Modal dialog open</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104622Z" creationid="pm_kan" creationdate="20211010T104622Z">
+        <seg>Модальное диалоговое окно</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>More Info</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T130601Z">
@@ -7773,6 +7887,14 @@ username field.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Нет</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>No Alias name given.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104943Z" creationid="pm_kan" creationdate="20211010T104943Z">
+        <seg>Не указано имя псевдонима.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8210,6 +8332,14 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210620T102050Z">
         <seg> </seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>On changing this entry of type Shortcut Base to an Alias all Shortcut to this entry will be removed!</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T102830Z" creationid="pm_kan" creationdate="20211010T102830Z">
+        <seg>При изменении типа выбранного с исходного элемента на псевдоним все ярлыки, указывающие на этот элемент, будут удалены!</seg>
       </tuv>
     </tu>
     <tu>
@@ -8814,6 +8944,14 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Please close modal dialog manually</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104612Z" creationid="pm_kan" creationdate="20211010T104612Z">
+        <seg>Пожалуйста, закройте модальное диалоговое окно</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Please close the database and re-open it in R/W mode.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210614T181731Z" creationid="pm_kan" creationdate="20210614T181731Z">
@@ -8986,6 +9124,14 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Укажите имя XML-файла</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Please name the alias.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T105000Z" creationid="pm_kan" creationdate="20211010T105000Z">
+        <seg>Укажите имя псевдонима</seg>
       </tuv>
     </tu>
     <tu>
@@ -10569,6 +10715,32 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2021-10-10 13:09+0300
+PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE
+Last-Translator: FULL NAME &lt;EMAIL@ADDRESS&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T101049Z" creationid="pm_kan" creationdate="20211010T101049Z">
+        <seg>Project-Id-Version: Password Safe
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2020-10-10 13:30+0300
+PO-Revision-Date: 2020-10-10 13:30+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: none
+Language: ru_RU
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Pronounceable passwords</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -11040,6 +11212,30 @@ combination:</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Search status</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104914Z" creationid="pm_kan" creationdate="20211010T104914Z">
+        <seg>Статус поиска</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Search text input field</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104824Z" creationid="pm_kan" creationdate="20211010T104824Z">
+        <seg>Поле ввода для поиска</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Searchbar</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104437Z" creationid="pm_kan" creationdate="20211010T104437Z">
+        <seg>Панель поиска</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Second date must be later than first</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -11122,10 +11318,26 @@ combination:</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Select</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Выбор</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Select Add/Edit display font</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20191005T135710Z" creationid="pm_kan" creationdate="20191005T134950Z">
         <seg>Выбор шрифта для диалога Вставки/Редактирования</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Select Alias</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T101916Z" creationid="pm_kan" creationdate="20211010T101916Z">
+        <seg>Выбор псевдонима</seg>
       </tuv>
     </tu>
     <tu>
@@ -11419,6 +11631,14 @@ Action:</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Shortcut or Alias selected, use Base entry instead</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T103145Z" creationid="pm_kan" creationdate="20211010T103145Z">
+        <seg>Указан ярлык или псевдоним. Выберите исходный элемент.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Shortcut to</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20200823T114902Z" creationid="pm_kan" creationdate="20200823T114902Z">
@@ -11447,6 +11667,14 @@ Action:</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T145145Z">
         <seg>Показать несо&amp;хранённые изменения</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Show Alias Selection in Add &amp;&amp; Edit</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104409Z" creationid="pm_kan" creationdate="20211010T104409Z">
+        <seg>Показывать кнопку выбора псевдонима при добавлении и редактировании</seg>
       </tuv>
     </tu>
     <tu>
@@ -12856,6 +13084,14 @@ Note: Saving this database will result in the removal of unread entries!</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Total Length of policy too small</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T103354Z" creationid="pm_kan" creationdate="20211010T103354Z">
+        <seg>Общая длина меньше суммы количеств разных классов символов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Tree Sort</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210131T170502Z" creationid="pm_kan" creationdate="20210131T170502Z">
@@ -13197,6 +13433,14 @@ and User fields match.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T142945Z">
         <seg>Обновлено</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Url</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T103648Z" creationid="pm_kan" creationdate="20211010T103648Z">
+        <seg>Ссылка</seg>
       </tuv>
     </tu>
     <tu>
@@ -13622,6 +13866,14 @@ Imported %d %s</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T134901Z">
         <seg>Будет использован реестр.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>With password length at least one of the flags has to be set</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T103500Z" creationid="pm_kan" creationdate="20211010T103500Z">
+        <seg>При указанной длине пароля должен быть выбран хотя бы один класс символов</seg>
       </tuv>
     </tu>
     <tu>
