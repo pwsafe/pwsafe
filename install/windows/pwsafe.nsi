@@ -192,7 +192,7 @@ Unicode true
     InstallDir "$PROGRAMFILES\Password Safe"
     ; Name and file
     Name "Password Safe ${VERSION} (32-bit)"
-    BrandingText "PasswordSafe ${VERSION} (32-bit) Installer"
+    BrandingText "Password Safe ${VERSION} (32-bit) Installer"
     !define LANG_DLL "..\..\out\build\x86-Release\I18N"
     !define BIN_DIR "..\..\out\build\x86-Release\Release"
     !define TARGET_ARCH "(32-bit)"
@@ -202,7 +202,7 @@ Unicode true
     InstallDir "$PROGRAMFILES64\Password Safe"
     ; Name and file
     Name "Password Safe ${VERSION} (64-bit)"
-    BrandingText "PasswordSafe ${VERSION} (64-bit) Installer"
+    BrandingText "Password Safe ${VERSION} (64-bit) Installer"
     !define LANG_DLL "..\..\out\build\x64-Release\I18N"
     !define BIN_DIR "..\..\out\build\x64-Release\Release"
     !define TARGET_ARCH "(64-bit)"
@@ -262,7 +262,7 @@ Unicode true
 ;Reserve Files
 LangString RESERVE_TITLE ${LANG_ENGLISH} "Choose Installation Type"
 LangString RESERVE_FIELD1 ${LANG_ENGLISH} "Regular (uses Registry, suitable for home or single user PC)"
-LangString RESERVE_FIELD2 ${LANG_ENGLISH} "Green (for Disk-on-Key; does not use host Registry)"
+LangString RESERVE_FIELD2 ${LANG_ENGLISH} "Green (for Disk-on-Key, does not use host Registry)"
 
 ; The program itself
 LangString PROGRAM_FILES ${LANG_ENGLISH} "Program Files"
@@ -286,16 +286,16 @@ LangString DESC_StartUp ${LANG_ENGLISH} "Starts Password Safe as part of Windows
 LangString DESC_StartMenu ${LANG_ENGLISH} "Creates an entry in the start menu for Password Safe."
 LangString DESC_DesktopShortcut ${LANG_ENGLISH} "Places a shortcut to Password Safe on your desktop."
 LangString DESC_UninstallMenu ${LANG_ENGLISH} "Places a shortcut in the start menu to Uninstall Password Safe."
-LangString DESC_LangSupport ${LANG_ENGLISH} "Please select the language(s) that PasswordSafe will use."
+LangString DESC_LangSupport ${LANG_ENGLISH} "Please select the language(s) that Password Safe will use."
 
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 LangString TEXT_GC_TITLE ${LANG_ENGLISH} "Installation Type"
-LangString TEXT_GC_SUBTITLE ${LANG_ENGLISH} "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
+LangString TEXT_GC_SUBTITLE ${LANG_ENGLISH} "Choose Regular for use on a single PC, Green for portable installation.$\r$\nIf you're not sure, 'Regular' is fine."
 
 ; several messages on install, check, ...
 ; - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 LangString RUNNING_INSTALL ${LANG_ENGLISH} "The installer is already running."
-LangString RUNNING_APPLICATION ${LANG_ENGLISH} "Please exit all running instances of PasswordSafe before installing a new version"
+LangString RUNNING_APPLICATION ${LANG_ENGLISH} "Please exit all running instances of Password Safe before installing a new version"
 LangString LANG_INSTALL ${LANG_ENGLISH} "Installation Language"
 LangString LANG_SELECT ${LANG_ENGLISH} "Please select the language for the installation"
 LangString CLI_TOOL ${LANG_ENGLISH} "Command-line tool"
@@ -322,10 +322,10 @@ LangString ARABIC_SUPPORT ${LANG_ENGLISH} "Arabic"
 
 
 LangString LANG_PROGRAM ${LANG_ENGLISH} "Program Language"
-LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_98 ${LANG_ENGLISH} "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_ME ${LANG_ENGLISH} "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_2K ${LANG_ENGLISH} "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
+LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported.$\r$\nTry PasswordSafe 2.16"
+LangString SORRY_NO_98 ${LANG_ENGLISH} "Sorry, Windows 98 is no longer supported.$\r$\nTry PasswordSafe 2.16"
+LangString SORRY_NO_ME ${LANG_ENGLISH} "Sorry, Windows ME is no longer supported.$\r$\nTry PasswordSafe 2.16"
+LangString SORRY_NO_2K ${LANG_ENGLISH} "Sorry, Windows 2000 is no longer supported.$\r$\nTry PasswordSafe 3.18"
 
 LangString Icon_description_Uninstall ${LANG_ENGLISH} "Password Safe Uninstall"
 LangString Icon_description_Help ${LANG_ENGLISH} "Password Safe Help"
@@ -350,13 +350,13 @@ VIProductVersion "${VERSION}.0"
 ;-----------------------------------------------------------------
 ; Parameter displayed in File Properties -> Details
 
-VIAddVersionKey "ProductName" "Passwordsafe ${TARGET_ARCH}"
+VIAddVersionKey "ProductName" "Password Safe ${TARGET_ARCH}"
 VIAddVersionKey "ProductVersion" "${VERSION} ${TARGET_ARCH}"
-VIAddVersionKey "Comments" "PasswordSafe installer by Rony Shapiro"
+VIAddVersionKey "Comments" "Password Safe installer by Rony Shapiro"
 VIAddVersionKey "CompanyName" "Rony Shapiro"
-VIAddVersionKey "LegalTrademarks" "Copyright 2005-2021 Rony Shapiro"
-VIAddVersionKey "LegalCopyright" "Copyright 2005-2021 Rony Shapiro"
-VIAddVersionKey "FileDescription" "PasswordSate Installer ${TARGET_ARCH}"
+VIAddVersionKey "LegalTrademarks" "(c) 2005-2021 Rony Shapiro"
+VIAddVersionKey "LegalCopyright" "(c) 2005-2021 Rony Shapiro"
+VIAddVersionKey "FileDescription" "Password Sate Installer ${TARGET_ARCH}"
 VIAddVersionKey "FileVersion" "${VERSION} ${TARGET_ARCH}"
 
 ;-----------------------------------------------------------------
