@@ -20,7 +20,7 @@
 ;=================================================================
 
 ; RESERVE_TITLE "Choose Installation Type"
-LangString RESERVE_TITLE ${LANG_ITALIAN} "Scegli tipo installazione"
+LangString RESERVE_TITLE ${LANG_ITALIAN} "Password Safe ${VERSION} ${ARCH}"
 
 ; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
 LangString RESERVE_FIELD1 ${LANG_ITALIAN} "Classica (usa il Registry - adatta per casa o PC con un solo utente)"
@@ -78,16 +78,16 @@ LangString TEXT_GC_SUBTITLE ${LANG_ITALIAN} "Seleziona 'Classica' per un uso su 
 LangString PSWINI_TITLE ${LANG_ITALIAN} "Seleziona il tipo di istallazione"
 
 ; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString PSWINI_TEXT1 ${LANG_ITALIAN} "Classica (usa il Registry, adatta per casa o PC con un solo utente)"
+LangString PSWINI_TEXT1 ${LANG_ITALIAN} "Classica (usa il Registry - adatta per casa o PC con un solo utente)"
 
 ; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString PSWINI_TEXT2 ${LANG_ITALIAN} "Porttaile (per chiavetta USB; non usa il Registry)"
+LangString PSWINI_TEXT2 ${LANG_ITALIAN} "Portatile (per chiavetta USB - non usa il Registry)"
 
 ;--------------------------------
 ; checks and warnings
 
 ; RUNNING_INSTALL "The installer is already running."
-LangString RUNNING_INSTALL ${LANG_ITALIAN} "L'installazione � gi� in corso."
+LangString RUNNING_INSTALL ${LANG_ITALIAN} "L'installazione è già in corso."
 
 ; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
 LangString RUNNING_APPLICATION ${LANG_ITALIAN} "Prima di installare una nuova versione chiudi tutte le istanze di Password Safe in esecuzione"
@@ -142,16 +142,16 @@ LangString ARABIC_SUPPORT ${LANG_ITALIAN} "Arabo"
 LangString LANG_PROGRAM ${LANG_ITALIAN} "Lingua applicazione"
 
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_95 ${LANG_ITALIAN} "Windows 95 non è più supportato. Prova Password Safe 2.16"
+LangString SORRY_NO_95 ${LANG_ITALIAN} "Windows 95 non è più supportato.$\r$\nProva Password Safe 2.16"
 
 ; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_98 ${LANG_ITALIAN} "Windows 98 non è più supportato. Prova Password Safe 2.16"
+LangString SORRY_NO_98 ${LANG_ITALIAN} "Windows 98 non è più supportato.$\r$\nProva Password Safe 2.16"
 
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_ME ${LANG_ITALIAN} "Windows ME non è più supportato. Prova Password Safe 2.16"
+LangString SORRY_NO_ME ${LANG_ITALIAN} "Windows ME non è più supportato.$\r$\nProva Password Safe 2.16"
 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
-LangString SORRY_NO_2K ${LANG_ITALIAN} "Windows 2000 non è più supportato. Prova Password Safe 3.18"
+LangString SORRY_NO_2K ${LANG_ITALIAN} "Windows 2000 non è più supportato.$\r$\nProva Password Safe 3.18"
 
 ; LangString Icon_description_Uninstall "Password Safe Uninstall"
 LangString Icon_description_Uninstall ${LANG_ITALIAN} "Disinstalla Password Safe"
