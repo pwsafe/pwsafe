@@ -322,10 +322,10 @@ LangString ARABIC_SUPPORT ${LANG_ENGLISH} "Arabic"
 
 
 LangString LANG_PROGRAM ${LANG_ENGLISH} "Program Language"
-LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported.$\r$\nTry PasswordSafe 2.16"
-LangString SORRY_NO_98 ${LANG_ENGLISH} "Sorry, Windows 98 is no longer supported.$\r$\nTry PasswordSafe 2.16"
-LangString SORRY_NO_ME ${LANG_ENGLISH} "Sorry, Windows ME is no longer supported.$\r$\nTry PasswordSafe 2.16"
-LangString SORRY_NO_2K ${LANG_ENGLISH} "Sorry, Windows 2000 is no longer supported.$\r$\nTry PasswordSafe 3.18"
+LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported.$\r$\nTry Password Safe 2.16"
+LangString SORRY_NO_98 ${LANG_ENGLISH} "Sorry, Windows 98 is no longer supported.$\r$\nTry Password Safe 2.16"
+LangString SORRY_NO_ME ${LANG_ENGLISH} "Sorry, Windows ME is no longer supported.$\r$\nTry Password Safe 2.16"
+LangString SORRY_NO_2K ${LANG_ENGLISH} "Sorry, Windows 2000 is no longer supported.$\r$\nTry Password Safe 3.18"
 
 LangString Icon_description_Uninstall ${LANG_ENGLISH} "Password Safe Uninstall"
 LangString Icon_description_Help ${LANG_ENGLISH} "Password Safe Help"
@@ -354,9 +354,9 @@ VIAddVersionKey "ProductName" "Password Safe ${TARGET_ARCH}"
 VIAddVersionKey "ProductVersion" "${VERSION} ${TARGET_ARCH}"
 VIAddVersionKey "Comments" "Password Safe installer by Rony Shapiro"
 VIAddVersionKey "CompanyName" "Rony Shapiro"
-VIAddVersionKey "LegalTrademarks" "(c) 2005-2021 Rony Shapiro"
-VIAddVersionKey "LegalCopyright" "(c) 2005-2021 Rony Shapiro"
-VIAddVersionKey "FileDescription" "Password Sate Installer ${TARGET_ARCH}"
+VIAddVersionKey "LegalTrademarks" "Copyright (c) 2005-2021 Rony Shapiro"
+VIAddVersionKey "LegalCopyright" "Copyright (c) 2005-2021 Rony Shapiro"
+VIAddVersionKey "FileDescription" "Password Safe Installer ${TARGET_ARCH}"
 VIAddVersionKey "FileVersion" "${VERSION} ${TARGET_ARCH}"
 
 ;-----------------------------------------------------------------
