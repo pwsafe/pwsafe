@@ -125,6 +125,22 @@ then
     fi
 fi
 
+# Homebrew include path
+if [ -d "/opt/homebrew/include" ]
+then
+	# This is the HomeBrew default include path on arm64
+	homebrew_path="-I/opt/homebrew/include"
+else
+	if [ -d  "/usr/local/include" ]
+	then
+		# The default is where HomeBrew include files are installed on x86_64
+		homebrew_path="-I/usr/local/include"
+	else
+		echo "Could not find path to HomeBrew include files"
+		exit 1
+	fi
+fi
+
 doCarbonBuild() {
 
     if [ -z "$SDKPATH" ]
@@ -152,11 +168,11 @@ doCarbonBuild() {
     # see http://wiki.wxwidgets.org/Development:_wxMac#Building_under_10.6_Snow_Leopard
     MIN_OSX_VER=`/usr/libexec/PlistBuddy -c "Print :DefaultProperties:MACOSX_DEPLOYMENT_TARGET" $SDKPATH/SDKSettings.plist`
 
-    arch_flags="-arch i386 -arch ppc"
+	arch_flags="-arch `uname -m`"
     sdk_flags="-mmacosx-version-min=$MIN_OSX_VER -isysroot $SDKPATH"
 
     CFLAGS="     $arch_flags $sdk_flags"
-    CXXFLAGS="   $arch_flags $sdk_flags"
+    CXXFLAGS="   $arch_flags $sdk_flags $homebrew_path"
     CPPFLAGS="               $sdk_flags"
     OBJCFLAGS="  $arch_flags $sdk_flags"
     OBJCXXFLAGS="$arch_flags $sdk_flags"
@@ -176,7 +192,7 @@ doCarbonBuild() {
                             --disable-compat24          \
                             --enable-unicode            \
                             --enable-aui                \
-                            --enable-universal-binary   \
+                            --enable-universal-binary=`uname -m`   \
                             --with-osx_carbon           \
                             --with-macosx-sdk=$SDKPATH  \
                             --with-macosx-version-min=$MIN_OSX_VER
@@ -214,7 +230,7 @@ else
         export CPP="clang -E"
         export CXX=clang++
         export CXXCPP="clang++ -E"
-        export CXXFLAGS="-std=c++1y -stdlib=libc++"
+        export CXXFLAGS="-std=c++1y -stdlib=libc++ $homebrew_path"
         export OBJCXXFLAGS="-std=c++1y -stdlib=libc++"
         export LDFLAGS=-stdlib=libc++
 	if [ "$WX_VER" \> "3.0.5" ]
@@ -236,6 +252,7 @@ else
                               $COMPATFLAG                       \
                               --without-liblzma                 \
                               --enable-cxx11                    \
+	                          --enable-universal-binary=`uname -m`   \
                               $ZLIBFLAG
 	fi
 fi
