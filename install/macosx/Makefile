@@ -13,11 +13,11 @@ TARGET=pwsafe
 ###RELDIR=../../Xcode/build64/Release/
 #RELDIR=../../Xcode/build-llvm/Release/
 #RELDIR=$(HOME)/Library/Developer/Xcode/DerivedData/pwsafe-xcode6-*/Build/Products/Release/
-#RELDIR=./../../Xcode/build/Products/Release/
-RELDIR=$(shell xcodebuild -project ../../Xcode/pwsafe-xcode6.xcodeproj -showBuildSettings | grep TARGET_BUILD_DIR | awk 'BEGIN { } /TARGET_BUILD_DIR =/{print $$3}' | sed "s/$$/\//")
+RELDIR=./../../Xcode/build/Products/Release/
+# RELDIR=$(shell xcodebuild -project ../../Xcode/pwsafe-xcode6.xcodeproj -showBuildSettings | grep TARGET_BUILD_DIR | awk 'BEGIN { } /TARGET_BUILD_DIR =/{print $$3}' | sed "s/$$/\//")
 # Path to wxWidgets library path has to be adapted for each environment
-# WXDIR=../../../wxWidgets-3.1.5/locale
-WXDIR=$(shell grep OTHER_LDFLAGS ../../Xcode/pwsafe-release.xcconfig | awk 'BEGIN { RS = " " } /-L/{print $$1}' | sed s/-L// | sed s/static-release\\/lib/locale/)
+WXDIR=../../../wxWidgets-3.1.5/locale
+# WXDIR=$(shell grep OTHER_LDFLAGS ../../Xcode/pwsafe-release.xcconfig | awk 'BEGIN { RS = " " } /-L/{print $$1}' | sed s/-L// | sed s/static-release\\/lib/locale/)
 # Machine architecture
 MACHINEARCH=$(shell uname -m)
 
@@ -50,7 +50,7 @@ all: dist
 
 dist:
 	$(MDBIN) $(SRCDIR)
-	$(RMBIN) -f $(SRCDIR).DS_Store
+	$(RMBIN) -rf $(SRCDIR)/*
 	$(CPBIN) $(DOCS) $(SRCDIR)
 	$(CPBIN) -R $(RELDIR)$(PWSAFE-APP) $(SRCDIR)
 	$(CPBIN) $(HELP) $(RESOURCES)
