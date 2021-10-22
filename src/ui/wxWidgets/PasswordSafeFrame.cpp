@@ -372,6 +372,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
     m_core.RegisterObserver(m_grid);
   }
   SetDropTarget(new DnDFile(this));
+  SetFocus();
 }
 
 /*!
@@ -1167,6 +1168,8 @@ bool PasswordSafeFrame::Show(bool show)
 {
   ShowGrid(show && IsGridView());
   ShowTree(show && IsTreeView());
+  
+  SetFocus();
 
   return wxFrame::Show(show);
 }

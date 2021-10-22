@@ -298,6 +298,7 @@ void PasswordSafeFrame::OnShowHideToolBar(wxCommandEvent& evt)
   m_AuiManager.Update();
   DoLayout();
   SendSizeEvent();
+  SetFocus();
 }
 
 void PasswordSafeFrame::OnShowHideDragBar(wxCommandEvent& evt)
@@ -307,6 +308,7 @@ void PasswordSafeFrame::OnShowHideDragBar(wxCommandEvent& evt)
   m_AuiManager.Update();
   DoLayout();
   SendSizeEvent();
+  SetFocus();
 }
 
 //-----------------------------------------------------------------
