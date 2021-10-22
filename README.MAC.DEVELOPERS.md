@@ -191,7 +191,7 @@ For users using Xcode to build the application you must generate a linking to wx
 
 ```
 pwsafe $ cd Xcode
-Xcode $ ./generate-configs -r <path-to-wxWidgets wx3/static-release/wx-config> r > pwsafe-release.xcconfig
+Xcode $ ./generate-configs -r <path-to-wxWidgets wx3/static-release/wx-config> > pwsafe-release.xcconfig
 Xcode $ ./generate-configs -d <path-to-wxWidgets wx3/static-debug/wx-config> > pwsafe-debug.xcconfig
 ```
 
