@@ -185,6 +185,16 @@ Or, just pass the command's output directly
 
     wx3/static/debug $ <path-to-pwsafe's osx-build-wx> -d -k `xcodebuild -version -sdk macosx10.9 Path`
 
+### Point Xcode to your wxWidgets Build
+
+For users using Xcode to build the application you must generate a linking to wxWidgets libraries and include files. You need to build **pwsafe-release.xcconfig** and **pwsafe-debug.xcconfig** files in the **Xcode** directory, derived from **wx-config** file located in **static-release** and **static-debug** folder of the native generated wxWidgets environment (see above).
+
+```
+pwsafe $ cd Xcode
+Xcode $ ./generate-configs -r <path-to-wxWidgets wx3/static-release/wx-config> r > pwsafe-release.xcconfig
+Xcode $ ./generate-configs -d <path-to-wxWidgets wx3/static-debug/wx-config> > pwsafe-debug.xcconfig
+```
+
 
 ## Set the Pwsafe Version
 The current version of macOS pwsafe is defined in the pwsafe/version.wx file. If you
@@ -258,6 +268,7 @@ For example:
 RELDIR=./../../Xcode/build/Products/Release/
 WXDIR=../../../wxWidgets-3.1.5/locale
 ```
+Alternative use the shell scripts found in the Makefile to locate the correct location.
 
 To create the .dmg file
 
