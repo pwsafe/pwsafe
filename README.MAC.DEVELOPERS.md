@@ -1,6 +1,6 @@
 ## Introduction
 This document explains how to build PasswordSafe on macOS.
-It is organized in the following sections.
+It is organized in the following sections:
 
 * [Terminology](#terminology)
 * [Requirements](#requirements)
@@ -26,14 +26,14 @@ It is organized in the following sections.
 * universal binary - a binary executable that contains multiple builds. A universal binary for pwsafe would contain x86\_64 and arm64 builds. It could run natively on Intel or Apple Silicon based Macs.
 
 ## Requirements
-In general you need the following.
+In general you need the following:
 
 * Xcode 6+
 * wxWidgets
 * Perl
 * gettext (can be fetched from brew)
 
-If you are building on Apple Silicon or M1, you need the following in addition to the above.
+If you are building on Apple Silicon or M1, you need the following in addition to the above:
 
 * Apple Silicon or M1 equipped Mac
 * macOS 11.0 (Big Sur) or later
@@ -55,13 +55,13 @@ For the x86\_64 architecture, the minimum target is macOS 10.7. For the new arm6
 
 
 ### wxWidgets
-wxWidgets is the cross-platform UI toolkit pwsafe uses for user-interface. To get the latest version of wxWidgets, you may need to
+wxWidgets is the cross-platform UI toolkit that pwsafe uses for user-interface. To get the latest version of wxWidgets, you may need to
 download the latest sources from wxWidgets.org and build it (instructions below).  This is
 the most time-consuming part of building pwsafe.
 
 
 ### Perl
-pwsafe uses perl for some small build tasks. macOS already ships with Perl, which should suffice.
+pwsafe uses Perl for some small build tasks. macOS already ships with Perl, which should suffice.
 
 
 ## Get PasswordSafe Sources
@@ -102,7 +102,7 @@ I recommend you download the tarball from wxWidgets download site
 
 Click the link named "Source for Linux, OS X, etc".  It should get you a .tar.bz2
 or a .tar.gz file. DO NOT get the .7z version. That has sources with DOS CRLF 
-and won't build on OS X. Also, I have found some (may be irrelevant) inconsistencies
+and won't build on OS X. Also, I have found some (maybe irrelevant) inconsistencies
 between the sources checked out from their repository at a particular branch/tag, and
 the tarball. My recommendation is to use the tarball. That's what I always do on macOS.
 
@@ -138,14 +138,14 @@ it has not been tested.**
 To build pwsafe, you 
 need to build wxWidgets first, in a way that is compatible with pwsafe's project settings.
 The Misc directory in pwsafe sources has a script called "osx-build-wx" which does exactly 
-that.  It basically runs the wxWidgets "configure" script in a way that the wxWidgets build 
-will happen with settings that are compatible with pwsafe's project settings, while retaining 
+that.  It basically runs the wxWidgets "configure" script such that wxWidgets will be built 
+with settings that are compatible with pwsafe's project settings, while retaining 
 the ability to run on older versions of OS X as far back as possible.  It is possible that 
-pwsafe built with such a build of wxWidgets will run on OS X 10.7, but it has not been verified.
+pwsafe built with such a build of wxWidgets will run on OS X 10.7, but this has not been verified.
 
 You can pass it the "-n" option to show what parameters it's passing to configure.
 
-osx-build-wx has to be run from your wxWidgets build directory.  Say, if you have wxWidgets sources 
+osx-build-wx has to be run from your wxWidgets build directory.  For example, if you have wxWidgets sources 
 in "wx3", then do
 
 ```
@@ -187,7 +187,7 @@ Or, just pass the command's output directly
 
 ### Point Xcode to your wxWidgets Build
 
-For users using Xcode to build the application you must generate a linking to wxWidgets libraries and include files. You need to build **pwsafe-release.xcconfig** and **pwsafe-debug.xcconfig** files in the **Xcode** directory, derived from **wx-config** file located in **static-release** and **static-debug** folder of the native generated wxWidgets environment (see above).
+For users using Xcode to build the application you must link to the wxWidgets libraries and include files. You need to build **pwsafe-release.xcconfig** and **pwsafe-debug.xcconfig** files in the **Xcode** directory, derived from **wx-config** file located in **static-release** and **static-debug** folder of the native generated wxWidgets environment (see above).
 
 ```
 pwsafe $ cd Xcode
@@ -212,7 +212,7 @@ on an Intel machine or vice-versa.
 ### Debug and Release Configs
 You need to decide whether to build the Debug or Release configuration of
 pwsafe. Apple has changed the way we (or at least I) used to view Debug and
-Release configurations of a software. Select "pwsafe" or "pwsafe-debug" from Product
+Release configurations. Select "pwsafe" or "pwsafe-debug" from Product
 Menu => Scheme to select the Release or Debug configuration respectively. And, if you are
 building pwsafe for just yourself, see that the architecture in Product Menu => Destination
 matches your Mac's architecture.
@@ -221,7 +221,7 @@ At this point, just hitting Cmd-B or click Product Menu => Build will build the 
 pwsafe configuration.
 
 ### Where is pwsafe.app?
-Look in these locations.
+Look in these locations:
 
 ```
 pwsafe/Xcode/build/Products/Debug/pwsafe.app
