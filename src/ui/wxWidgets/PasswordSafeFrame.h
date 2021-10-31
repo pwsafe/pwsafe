@@ -610,6 +610,7 @@ public:
   void HideSearchBar();
 
   bool IsClosed() const;
+  bool IsLocked() const;
   
   static void DisplayFileWriteError(int rc, const StringX &fname);
 

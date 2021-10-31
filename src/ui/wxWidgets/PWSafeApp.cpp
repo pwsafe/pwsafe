@@ -723,10 +723,10 @@ void PWSafeApp::ConfigureIdleTimer()
 void PWSafeApp::OnIdleTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == IDLE_TIMER_ID && PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
-    if (m_frame != nullptr && !m_frame->GetCurrentSafe().IsEmpty()) {
+    if (m_frame != nullptr && !m_frame->IsClosed() && !m_frame->IsLocked()) {
       m_idleTimer->Stop(); // Stop as with modal dialog a dialog will stay open
       m_frame->IconizeOrHideAndLock();
-      if(!m_frame->GetCurrentSafe().IsEmpty()) // If restored start timer again
+      if(!m_frame->IsLocked()) // If not locked, start timer again
         ConfigureIdleTimer();
     }
   }
