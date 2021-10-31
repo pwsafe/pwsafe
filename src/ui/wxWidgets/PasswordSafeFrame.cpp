@@ -2479,7 +2479,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
 
   if (restoreUI) {
     if (!IsShown()) {
-      ShowWindowRecursively(this);
+      ShowWindowRecursively(hiddenWindows);
     }
     if (IsIconized()) {
       Iconize(false);
@@ -2589,7 +2589,7 @@ void PasswordSafeFrame::HideUI(bool lock)
     //We should not have to show up the icon manually if m_sysTray
     //can be notified of changes to PWSprefs::UseSystemTray
     m_sysTray->ShowIcon();
-    HideWindowRecursively(this);
+    hiddenWindows = HideWindowRecursively();
   }
 }
 

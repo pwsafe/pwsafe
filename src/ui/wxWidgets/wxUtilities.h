@@ -176,8 +176,9 @@ inline const wxChar* ToStr(bool b) {
   return b? wxT("True"): wxT("False");
 }
 
-void HideWindowRecursively(wxTopLevelWindow* win);
-void ShowWindowRecursively(wxTopLevelWindow* win);
+wxWindowList HideWindowRecursively();
+void ShowWindowRecursively(wxWindowList& hiddenWindows);
+
 int CountTopLevelWindowRecursively(wxTopLevelWindow* win);
 void CloseChildWindowRecursively(wxTopLevelWindow* win, wxTopLevelWindow* top);
 
