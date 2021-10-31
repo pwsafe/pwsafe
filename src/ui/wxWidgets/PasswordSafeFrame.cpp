@@ -2416,7 +2416,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
     int noTopLevelWindow = CountTopLevelWindowRecursively(this);
     
     bModalOpen = (noTopLevelWindow > 1); // More than one Top Level Window, the second one is modal
-#if (__WXOSX__)
+#if defined(__WXOSX__)
     const int TopLevelWindowLimit = 2; // OSX allow exit with one modal window open only
 #else
 # if (wxVERSION_NUMBER >= 3104)
