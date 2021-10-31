@@ -2399,10 +2399,10 @@ void PasswordSafeFrame::CleanupAfterReloadFailure(bool tellUser)
 /**
  * Unlock database
  * @param restoreUI restore opened windows after unlock
- * @param iconizeOnFailure will iconize if this parameters set to true and
- *   VerifySafeCombination() failed
+ * @param iconizeOnCancel will iconize if this parameters set to true and
+ *   user canceled dialog
 */
-void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
+void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
 {
   wxMutexTryLocker unlockMutex(m_dblockMutex);
   if (!unlockMutex.IsAcquired()){
@@ -2461,12 +2461,12 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
           wxPostEvent(this, event);
           return;
         }
-        default:
+        case (wxID_CANCEL):
         {
-          if (!IsIconized() && iconizeOnFailure)
+          if (!IsIconized() && iconizeOnCancel) {
             Iconize();
-          if(restoreUI && iconizeOnFailure)
-            return;
+          }
+          return; // allow to cancel dialog and left locked in any case
         }
       }
     } while(bModalOpen && PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray));
