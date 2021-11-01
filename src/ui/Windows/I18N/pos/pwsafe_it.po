@@ -1849,7 +1849,7 @@ msgstr "Azera (Cirillico)"
 
 #. Resource IDs: (8238)
 msgid "Azeri Latin"
-msgstr "Azera (Latino)"
+msgstr "Azero (Latino)"
 
 #. Resource IDs: (65535)
 msgid "Backup Directory"
