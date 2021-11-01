@@ -7,9 +7,16 @@ releases may be found in the file ChangeLog.txt.
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.57W Release September 2021
-=========================================
+PasswordSafe 3.57.1W Release Dec 2021
+=====================================
 * Custom master passphrase policy enforced (not optional) for creating new safes and changing master passphrase.
+
+Changes in 3.57.1
+-----------------
+* [FR894](https://sourceforge.net/p/passwordsafe/feature-requests/894/) Add support for GoTrust Idem Key 2FA
+
+PasswordSafe 3.57 Release October 2021
+======================================
 * [SF1547](https://sourceforge.net/p/passwordsafe/bugs/1547/) No longer crashes when incremental backup 999 reached.
 * [SF896](https://sourceforge.net/p/passwordsafe/feature-requests/896/) Added \e to ESC mapping in autotype.
 * [SF1544](https://sourceforge.net/p/passwordsafe/bugs/1544/) Fixed regression in German installer texts.
