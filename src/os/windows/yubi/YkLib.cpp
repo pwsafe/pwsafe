@@ -255,10 +255,16 @@ unsigned short CYkLib::enumPorts(void)
 
 				// Get HID attributes
 
+        /**
+         * Non-Yubico support added per FR894 https://sourceforge.net/p/passwordsafe/feature-requests/894/
+         * Other VID's for related products may be found in https://github.com/Yubico/libu2f-host/blob/master/70-u2f.rules
+         */
 				if (HidD_GetAttributes(m_handle, &devInfo)) {
 					if (devInfo.VendorID == YUBICO_VID ||
-              devInfo.VendorID == 0x1d50) { // 0x1d50 = OnlyKey's VID
-            // Assume every Yubico device is good for us...
+              devInfo.VendorID == 0x1d50 || // OnlyKey's VID
+              devInfo.VendorID == 0x1fc9) //  GoTrust Idem Key's VID
+              {
+            // Assume every matching device is good for us...
                         // Keep full path of device found
 
                         tmp = new tagPORT_LIST;
