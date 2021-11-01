@@ -2531,7 +2531,7 @@ msgid ""
 msgstr ""
 "Voci in conflitto per «%ls» «%ls» «%ls».\n"
 "  Aggiunta della voce unita come «%ls» «%ls» «%ls».\n"
-"    Campo(i) differente(i): %ls"
+"    Campo/i differente/i: %ls"
 
 #. Resource IDs: (1)
 msgid "Continue"
@@ -7531,7 +7531,7 @@ msgid ""
 "PasswordSafe. To save the data in the old format, use \"File->Export To->Old"
 " (1.x or 2) format\"."
 msgstr ""
-"Il database originale, \"% s\", è in formato pre-3.0.\n"
+"Il database originale, \"1%s\", è in formato pre-3.0.\n"
 "I dati verranno ora scritti nel nuovo formato, che non è usabile dalle vecchie versioni di PasswordSafe.\n"
 "Per salvare i dati nel vecchio formato, usa \"File -> Esporta in -> Formato v.1.x o v. 2.xx\"."
 
