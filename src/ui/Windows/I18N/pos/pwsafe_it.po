@@ -1845,7 +1845,7 @@ msgstr "Regole password disponibili:"
 
 #. Resource IDs: (8272)
 msgid "Azeri Cyrillic"
-msgstr "Azera (Cirillico)"
+msgstr "Azero (Cirillico)"
 
 #. Resource IDs: (8238)
 msgid "Azeri Latin"
