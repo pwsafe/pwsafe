@@ -2531,7 +2531,7 @@ msgid ""
 msgstr ""
 "Voci in conflitto per «%ls» «%ls» «%ls».\n"
 "  Aggiunta della voce unita come «%ls» «%ls» «%ls».\n"
-"    Campo(i) differente(i): %ls"
+"    Campo/i differente/i: %ls"
 
 #. Resource IDs: (1)
 msgid "Continue"
