@@ -39,7 +39,7 @@ bool pws_os::FileExists(const stringT &filename)
   int status;
 
   status = _tstat(filename.c_str(), &statbuf);
-  return (status == 0);
+  return (status == 0 && (statbuf.st_mode & _S_IFREG)); // stat() succeeded and we're a regular file (not a directory)
 }
 
 bool pws_os::FileExists(const stringT &filename, bool &bReadOnly)
@@ -47,7 +47,7 @@ bool pws_os::FileExists(const stringT &filename, bool &bReadOnly)
   bool retval;
   bReadOnly = false;
 
-  retval = (_taccess(filename.c_str(), R_OK) == 0);
+  retval = pws_os::FileExists(filename); // false if not found or if a directory
   if (retval) {
     bReadOnly = (_taccess(filename.c_str(), W_OK) != 0);
   }
