@@ -727,11 +727,11 @@ bool ThisMfcApp::GetConfigFromCommandLine(StringX &sxConfigFile, StringX &sxHost
             arg++;
             bool bRelative(false);
             if (PathIsRelative(*arg)) {
-              // As per Help entry - use executable directory unless overridden
+              // PWS_PREFSDIR overrides default user prefs dir (LOCAL_APPDATA\PasswordSafe)
               // Don't use PWSdirs::GetConfigDir()
               wstring sPWS_PREFSDIR = pws_os::getenv("PWS_PREFSDIR", true);
               if (sPWS_PREFSDIR.empty()) {
-                sConfig = pws_os::getexecdir() + wstring(*arg);
+                sConfig = pws_os::getuserprefsdir() + wstring(*arg);
               } else {
                 sConfig = sPWS_PREFSDIR + wstring(*arg);
               }
@@ -755,7 +755,7 @@ bool ThisMfcApp::GetConfigFromCommandLine(StringX &sxConfigFile, StringX &sxHost
               // of the Usage.
               if (bRelative) {
                 // Also tell user the full path we checked as well.
-                csConfigfile.Format(L"%s\n  (%s)", static_cast<LPCWSTR>(*arg), 
+                csConfigfile.Format(L"%ls\n  (%ls)", static_cast<LPCWSTR>(*arg),
                   static_cast<LPCWSTR>(sConfig.c_str()));
               } else {
                 // Just tell the user the absolute path they specified
@@ -763,7 +763,7 @@ bool ThisMfcApp::GetConfigFromCommandLine(StringX &sxConfigFile, StringX &sxHost
               }
 
               CGeneralMsgBox gmb;
-              cs_ErrorMsg.Format(L"Configuration file not found.\n  %s\n\nDo you wish to create it?",
+              cs_ErrorMsg.Format(L"Configuration file not found.\n  %ls\n\nDo you wish to create it?",
                 static_cast<LPCWSTR>(csConfigfile));
 
               INT_PTR rc = gmb.AfxMessageBox(cs_ErrorMsg, L"Error finding configuration file",
