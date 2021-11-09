@@ -11,6 +11,10 @@ PasswordSafe 3.57.1W Release Dec 2021
 =====================================
 * Custom master passphrase policy enforced (not optional) for creating new safes and changing master passphrase.
 
+Bugs fixed in 3.57.1
+--------------------
+* [GH800](https://github.com/pwsafe/pwsafe/issues/800) PasswordSafe now prevents data that it places on the clipboard from appearing in the Windows Clipboard History.
+
 Changes in 3.57.1
 -----------------
 * [FR894](https://sourceforge.net/p/passwordsafe/feature-requests/894/) Add support for GoTrust Idem Key 2FA
