@@ -12,17 +12,27 @@
 
 #include <afxole.h>
 #include "PWSclipboard.h"
-#include "core/util.h"
+#include "core/Util.h"
 
-static CLIPFORMAT CF_CLIPBOARD_VIEWER_IGNORE;
+static CLIPFORMAT CF_CLIPBOARD_VIEWER_IGNORE; // see below
+// Following hide PasswordSafe clipboard pastes from Cloud Clipboard and Clipboard History
+// Reference https://docs.microsoft.com/en-us/windows/win32/dataxchg/clipboard-formats#cloud-clipboard-and-clipboard-history-formats
+static CLIPFORMAT CF_EXCLUDE_CLIPBOARD_CONTENT_FROM_MONITOR_PROCESSING;
+static CLIPFORMAT CF_CAN_INCLUDE_IN_CLIPBOARD_HISTORY;
+static CLIPFORMAT CF_CAN_UPLOAD_TO_CLOUD_CLIPBOARD;
 
 PWSclipboard::PWSclipboard()
   : m_set(false)
 {
   memset(m_digest, 0, sizeof(m_digest));
 
-  // Spelling counts - must be exact!
+  // Following is more of a gentlemen's agreement than anything else.
+  // See http://www.clipboardextender.com/developing-clipboard-aware-programs-for-windows/ignoring-clipboard-updates-with-the-cf_clipboard_viewer_ignore-clipboard-format
   CF_CLIPBOARD_VIEWER_IGNORE = (CLIPFORMAT)RegisterClipboardFormat(L"Clipboard Viewer Ignore");
+  // Following for clipboard functionality added in Windows 10
+  CF_EXCLUDE_CLIPBOARD_CONTENT_FROM_MONITOR_PROCESSING = (CLIPFORMAT)RegisterClipboardFormat(L"ExcludeClipboardContentFromMonitorProcessing");
+  CF_CAN_INCLUDE_IN_CLIPBOARD_HISTORY = (CLIPFORMAT)RegisterClipboardFormat(L"CanIncludeInClipboardHistory");
+  CF_CAN_UPLOAD_TO_CLOUD_CLIPBOARD = (CLIPFORMAT)RegisterClipboardFormat(L"CanUploadToCloudClipboard");
 }
 
 PWSclipboard::~PWSclipboard()
@@ -50,6 +60,10 @@ bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfF
 
   COleDataSource *pods = new COleDataSource; // deleted automagically by SetClipboard below
   pods->CacheGlobalData(CF_CLIPBOARD_VIEWER_IGNORE, hDummyGlobalMemory);
+  pods->CacheGlobalData(CF_EXCLUDE_CLIPBOARD_CONTENT_FROM_MONITOR_PROCESSING, hDummyGlobalMemory);
+  pods->CacheGlobalData(CF_CAN_INCLUDE_IN_CLIPBOARD_HISTORY, hDummyGlobalMemory);
+  pods->CacheGlobalData(CF_CAN_UPLOAD_TO_CLOUD_CLIPBOARD, hDummyGlobalMemory);
+
   pods->CacheGlobalData(cfFormat, hGlobalMemory);
   pods->SetClipboard();
   pods = NULL; // As deleted by SetClipboard above
