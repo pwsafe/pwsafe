@@ -18,6 +18,10 @@ Changes in 3.57.1
 -----------------
 * [FR894](https://sourceforge.net/p/passwordsafe/feature-requests/894/) Add support for GoTrust Idem Key 2FA
 
+New features in 3.57.1
+----------------------
+* [GH785] (https://github.com/pwsafe/pwsafe/issues/785) Added "Open Another" menu item in the system tray popup menu, allowing easy switching to a new PasswordSafe database.
+
 PasswordSafe 3.57 Release October 2021
 ======================================
 * [SF1547](https://sourceforge.net/p/passwordsafe/bugs/1547/) No longer crashes when incremental backup 999 reached.
