@@ -13,6 +13,7 @@ PasswordSafe 3.57.1W Release Dec 2021
 
 Bugs fixed in 3.57.1
 --------------------
+* [BR1550](https://sourceforge.net/p/passwordsafe/bugs/1550/) Autotype delay now applies to key codes (e.g., &bsol;{Down}) as well as "regular" text.
 * [BR1549](https://sourceforge.net/p/passwordsafe/bugs/1549/) '-g' command line option now handles UNC path correctly
 * [GH800](https://github.com/pwsafe/pwsafe/issues/800) PasswordSafe now prevents data that it places on the clipboard from appearing in the Windows Clipboard History.
 

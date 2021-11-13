@@ -269,6 +269,7 @@ void CKeySend::SendVirtualKey(WORD wVK, bool bAlt, bool bCtrl, bool bShift)
   }
 
   status = ::SendInput(i, input, sizeof(INPUT));
+  ::Sleep(m_delayMS);
 }
 
 void CKeySend::ResetKeyboardState() const
