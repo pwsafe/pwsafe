@@ -132,9 +132,9 @@ stringT pws_os::getuserprefsdir()
   const stringT sPWSDir(_T("\\PasswordSafeD\\"));
 #endif
 
-  stringT sDrive, sDir, sName, sExt, retval;
+  stringT sDrive, sDir, sDummy, retval;
 
-  pws_os::splitpath(getexecdir(), sDrive, sDir, sName, sExt);
+  pws_os::splitpath(getexecdir(), sDrive, sDir, sDummy, sDummy);
   sDrive += _T("\\"); // Trailing slash required.
 
   const UINT uiDT = ::GetDriveType(sDrive.c_str());
@@ -145,7 +145,7 @@ stringT pws_os::getuserprefsdir()
     if (PathFileExists(retval.c_str()) == FALSE)
       if (_tmkdir(retval.c_str()) != 0)
         retval = _T(""); // couldn't create dir!?
-  } else if (uiDT == DRIVE_REMOVABLE) {
+  } else if (uiDT == DRIVE_REMOVABLE) { // If we're running over a removable drive, pref file should be taken from there
     stringT::size_type index = sDir.rfind(_T("Program\\"));
     if (index != stringT::npos)
       retval = getexecdir().substr(0, getexecdir().length() - 8);
