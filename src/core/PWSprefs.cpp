@@ -1086,13 +1086,9 @@ void PWSprefs::FindConfigFile()
     // not in exe dir or host/user not there
     m_configfilename = sCnfgDir + cfgFileName;
   } else { // User specified config file via SetConfigFile()
-    // As per pre-use of Local AppData directory,
-    // If file name's relative, it's expected to be in the
-    // os-specific config directory
-    stringT sDrive, sDir, sFile, sExt;
-    pws_os::splitpath(m_configfilename, sDrive, sDir, sFile, sExt);
-    if ((pws_os::IsWindows() && sDrive.empty()) || sDir.empty())
-      m_configfilename = sCnfgDir + sFile + sExt;
+    // In Windows, file path is made absolute in ThisMfcApp::GetConfigFromCommandLine(), nothing more to do
+    if (!pws_os::IsWindows() && m_configfilename[0] != L'/') // make absolute for non-Windows, if needed
+        m_configfilename = sCnfgDir + m_configfilename;
   }
 }
 
