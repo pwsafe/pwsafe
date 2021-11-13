@@ -47,14 +47,14 @@ pwsafe.cfg. This file is in XML format, with sections per host machine
 and per user, so that the file may be shared between different users,
 and across different machines.</p>
 
-<p>By default, pwsafe.cfg is kept in the same directory as the pwsafe.exe
-executable program. If, however, the <b>PWS_PREFSDIR</b> environment
-variable is set, pwsafe will use the configuration file stored there. This is
-useful for cases where write permissions to the pwsafe.exe install
-directory are restricted (See also the description of the <b>-g</b>
-option in the <a href="cli.html">Command Line Arguments</a> Section) and
-in a "wrapper" script/batch file on a portable device (e.g., disk-on-key) by
-setting the configuration Folder/directory as needed.</p>
+<p>By default, pwsafe.cfg is kept in the "local app data" directory, that is, C:\Users\<code>username</code>\AppData\Local\PasswordSafe.
+This may be overridden by setting the <b>PWS_PREFSDIR</b> environment
+variable is set.
+The <b>-g</b> command line option (as described in <a href="cli.html">Command Line Arguments</a> may also be used to either specify a file name (which will be looked for in the above directories), or an absolute file path. and
+<br/>
+Historically (before version 3.22 of PasswordSafe), the configuration file was stored in the same directory as the pwsafe.exe file.
+Therefore, PasswordSafe will also search that directory for the configuration file, if not found in the "local app data" directory.
+</p>
 
 <p>The following tables describes the configuration items. Most of them are
 configurable via the <a href="manage_menu.html">"Manage&nbsp;&rarr;&nbsp;Options"</a>
