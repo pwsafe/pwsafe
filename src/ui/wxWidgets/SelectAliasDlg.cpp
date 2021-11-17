@@ -571,9 +571,9 @@ void SelectTreeCtrl::OnCollapseAll(wxCommandEvent& evt)
     wxTreeItemId parent = GetItemParent(selItem);
     if(parent.IsOk() && (parent != GetRootItem()) && ! IsExpanded(parent))
       Expand(parent);
-    ::wxYield();
+    ::wxSafeYield();
     EnsureVisible(selItem);
-    ::wxYield();
+    ::wxSafeYield();
     
     wxTreeCtrl::SelectItem(selItem);
   }

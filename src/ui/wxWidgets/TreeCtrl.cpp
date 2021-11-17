@@ -945,9 +945,9 @@ void TreeCtrlBase::SelectItem(const CUUID & uuid)
     wxTreeItemId parent = GetItemParent(id);
     if(parent.IsOk() && (parent != GetRootItem()) && ! IsExpanded(parent))
       Expand(parent);
-    ::wxYield();
+    ::wxSafeYield();
     EnsureVisible(id);
-    ::wxYield();
+    ::wxSafeYield();
     
     wxTreeCtrl::SelectItem(id);
   }
@@ -996,9 +996,9 @@ void TreeCtrl::OnAddGroup(wxCommandEvent& WXUNUSED(evt))
   wxCHECK_RET(newItem.IsOk(), _("Could not add empty group item to tree"));
   // mark it as a new group that is still under construction.  wxWidgets would delete it
   SetItemData(newItem, new PWTreeItemData(true));
-  ::wxYield();
+  ::wxSafeYield();
   EnsureVisible(newItem);
-  ::wxYield();
+  ::wxSafeYield();
   EditTreeLabel(this, newItem);
 }
 
