@@ -64,7 +64,7 @@ END_EVENT_TABLE()
  */
 
 pwFiltersStringDlg::pwFiltersStringDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, wxString &value, bool &fcase)
-: m_ftype(ftype), m_add_present(false)
+: m_ftype(ftype), m_add_present(false), m_controlsReady(false)
 {
   m_prule = &rule;
   m_pvalue = &value;
@@ -286,6 +286,7 @@ void pwFiltersStringDlg::CreateControls()
   BoxSizer1->Fit(this);
   BoxSizer1->SetSizeHints(this);
   //*)
+  m_controlsReady = true;
 }
 
 /*!
@@ -323,6 +324,9 @@ wxIcon pwFiltersStringDlg::GetIconResource(const wxString& WXUNUSED(name))
 
 void pwFiltersStringDlg::OnSelectionChange(wxCommandEvent& WXUNUSED(event))
 {
+  if (!m_controlsReady) {
+    return;
+  }
   int idx = m_ComboBox->GetSelection();
 
   if(m_add_present) {
@@ -358,6 +362,9 @@ void pwFiltersStringDlg::OnSelectionChange(wxCommandEvent& WXUNUSED(event))
 
 void pwFiltersStringDlg::OnTextChange(wxCommandEvent& WXUNUSED(event))
 {
+  if (!m_controlsReady) {
+    return;
+  }
   if(m_TextCtrlValueString && m_TextCtrlValueString->GetLineLength(0)) {
     FindWindow(wxID_OK)->Enable();
   }

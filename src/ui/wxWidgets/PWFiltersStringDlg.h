@@ -101,6 +101,7 @@ private:
 
   const FieldType m_ftype;
   bool m_add_present;
+  bool m_controlsReady;
   // Result parameter
   PWSMatch::MatchRule *m_prule;
   wxString            *m_pvalue;
