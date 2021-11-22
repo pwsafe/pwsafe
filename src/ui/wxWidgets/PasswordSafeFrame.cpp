@@ -2494,6 +2494,8 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
     // Without this, modal dialogs like msgboxes lose focus and we end up in a different message loop than theirs.
     // See https://sourceforge.net/tracker/?func=detail&aid=3537985&group_id=41019&atid=429579
     wxSafeYield();
+    // for some reason, we have to restore main frame's position after Yeild, otherwise it could be restored at wrong position when window was moved before lock
+    wxGetApp().RestoreFrameCoords();
   }
   else if (IsShown()) { /* if it is somehow visible, show it correctly */
     Show(true);
