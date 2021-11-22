@@ -529,7 +529,7 @@ else(LSB_RELEASE_EXECUTABLE) # look for /etc/os-release
     file ( STRINGS ${OS_RELEASE_FILE} OS_RELEASE_LIST )
     foreach ( OS_RELEASE_ITEM IN ITEMS ${OS_RELEASE_LIST} )
       string (REGEX REPLACE "\;" "" OS_RELEASE_ITEM ${OS_RELEASE_ITEM})
-      if (${OS_RELEASE_ITEM} MATCHES "^[ ]*NAME[ ]*=[ ]*(.+)")
+      if (${OS_RELEASE_ITEM} MATCHES "^[ ]*ID[ ]*=[ ]*(.+)")
         string (REGEX REPLACE ".*=[ ]*(.+)" "\\1"
           RELEASE_ID_SHORT ${OS_RELEASE_ITEM})
       elseif (${OS_RELEASE_ITEM} MATCHES "^[ ]*VERSION_ID[ ]*=[ ]*([0-9]+)")
