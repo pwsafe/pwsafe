@@ -495,11 +495,12 @@ if (NOT WIN32)
 
       if (NOT DPKG_EXECUTABLE)
         # if we can't find dpkg, we don't really care, as this variable won't be used in this run.
-        set (CPACK_DEBIAN_PACKAGE_ARCHITECTURE i386)
+        set (PACKAGE_ARCHITECTURE "")
       else ()
         execute_process(COMMAND "${DPKG_EXECUTABLE}" --print-architecture
                         OUTPUT_VARIABLE CPACK_DEBIAN_PACKAGE_ARCHITECTURE
                         OUTPUT_STRIP_TRAILING_WHITESPACE)
+        set (PACKAGE_ARCHITECTURE "-${CPACK_DEBIAN_PACKAGE_ARCHITECTURE")
       endif ()
     endif ()
 endif (NOT WIN32)
@@ -563,7 +564,7 @@ endif ()
 #
 # Build name of package file (e.g. passwordsafe-ubuntu18-1.08.1-BETA-amd64.deb)
 #
-set (CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}-${DISTRO_NAME}${DISTRO_MAJOR_VERSION}-${CPACK_PACKAGE_VERSION}-${CPACK_DEBIAN_PACKAGE_ARCHITECTURE})
+set (CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}-${DISTRO_NAME}${DISTRO_MAJOR_VERSION}-${CPACK_PACKAGE_VERSION}${PACKAGE_ARCHITECTURE})
 
 if (EXISTS "/etc/debian_version")
 ## we are on a debian based distro, but we can't make assumptions about which
