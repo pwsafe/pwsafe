@@ -38,6 +38,12 @@
 #define ENDIAN_64BITWORD
 #endif
 
+/* detect loongarch64 */
+#if defined(__loongarch64)
+#define ENDIAN_LITTLE
+#define ENDIAN_64BITWORD
+#endif
+
 /* #define ENDIAN_LITTLE */
 /* #define ENDIAN_BIG */
 
