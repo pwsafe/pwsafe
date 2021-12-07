@@ -257,7 +257,7 @@ if (USE_ASAN)
   set(CMAKE_CXX_FLAGS_DEBUG
     "${CMAKE_CXX_FLAGS_DEBUG} -gdwarf-4 -O0 -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize=address")
 endif (USE_ASAN)
-set(CMAKE_CXX_FLAGS ${CMAKE_CXX_FLAGS} "-DPWS_FORCE_STRONG_PASSPHRASE")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DPWS_FORCE_STRONG_PASSPHRASE")
 endif (MSVC)
 
 if (NOT NO_GTEST AND GTEST_BUILD)
