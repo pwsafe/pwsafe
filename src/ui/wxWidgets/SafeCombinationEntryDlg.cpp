@@ -50,7 +50,7 @@
 #endif
 
 #include "graphics/cpane.xpm"
-#include "graphics/psafetxt.xpm"
+#include "graphics/whiplashlogo.xpm"
 
 /*!
  * SafeCombinationEntryDlg type definition
@@ -187,7 +187,7 @@ void SafeCombinationEntryDlg::CreateControls()
   auto *itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemBoxSizer5, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-  wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("graphics/psafetxt.xpm")), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("graphics/whiplashlogo.xpm")), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(itemStaticBitmap6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_version = new wxStaticText( itemDialog1, wxID_STATIC, wxT("VX.YY"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -364,9 +364,9 @@ wxBitmap SafeCombinationEntryDlg::GetBitmapResource( const wxString& name )
     wxBitmap bitmap(cpane_xpm);
     return bitmap;
   }
-  else if (name == _T("graphics/psafetxt.xpm"))
+  else if (name == _T("graphics/whiplashlogo.xpm"))
   {
-    wxBitmap bitmap(psafetxt_xpm);
+    wxBitmap bitmap(whiplashlogo_xpm);
     return bitmap;
   }
 #ifndef NO_YUBI
