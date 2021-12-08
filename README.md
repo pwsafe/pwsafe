@@ -35,10 +35,10 @@ The latest & greatest version of Password Safe may be downloaded from
 or
 [GitHub](https://github.com/pwsafe/pwsafe/releases/latest).
 
-Non-English Support
-===================
+Internationalization (Non-English Support)
+==========================================
 Thanks to the help of volunteers from all over the world, PasswordSafe
-now has built-in support for the following languages:
+has built-in support for the following languages:
 - Arabic
 - Czech
 - Chinese
