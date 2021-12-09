@@ -2109,17 +2109,6 @@ msgstr "Modifica %s in %s"
 msgid "Change database mode?"
 msgstr "Modificare la modalità del database?"
 
-msgid ""
-"Change status since last save:\n"
-"* \n"
-"  indicates the database has been changed\n"
-"° indicates a database preference has been changed"
-msgstr ""
-"Modifica dello stato dall'ultimo salvataggio:\n"
-"*\n"
-"indica che il database è stato modificato\n"
-"° indica che è stata modificata una preferenza del database"
-
 #. Resource IDs: (5858)
 msgid ""
 "Change status since last save:\n"
@@ -2129,15 +2118,6 @@ msgstr ""
 "Stato modifiche dall'ultimo salvataggio:\n"
 "* indica che il database è stato modificato\n"
 "° indica che una preferenza del database è stata modificata"
-
-msgid ""
-"Change status since last save:\n"
-"* indicates the database has been changed\n"
-"Â° indicates a database preference has been changed"
-msgstr ""
-"Modifica dello stato dall'ultimo salvataggio:\n"
-"* indica che il database è stato modificato\n"
-"Â° indica che una preferenza del database è stata modificata"
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
