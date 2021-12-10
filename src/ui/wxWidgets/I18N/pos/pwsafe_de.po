@@ -4449,7 +4449,7 @@ msgstr "\tAlle Felder in übereinstimmenden Einträge mit %ls"
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:125
 #, c-format
 msgid "\tThe following fields were %ls"
-msgstr "\tFolgende Felder wurden betrachtet %ls"
+msgstr "\tFolgende Felder wurden %ls"
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:194
 msgid "Filter name:"
