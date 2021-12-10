@@ -775,6 +775,10 @@ msgstr ""
 msgid "&Open"
 msgstr ""
 
+#. Resource IDs: (32002 - Menu)
+msgid "&Open Another"
+msgstr ""
+
 #. Resource IDs: (32002 - MenuEx)
 msgid "&Open..."
 msgstr ""
@@ -3730,7 +3734,7 @@ msgstr ""
 msgid "Hungarian 101-key"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32002; '&Open...'
+#. Accelerator Entry for Menu ID:32002; '&Open Another'
 msgid "ID:32002:V C +O"
 msgstr ""
 
