@@ -110,7 +110,7 @@ wxString SelectionCriteria::GetGroupSelectionDescription() const
 void SelectionCriteria::ReportAdvancedOptions(CReport* rpt, const wxString& operation, const wxString& fullPath)
 {
   wxString line = GetGroupSelectionDescription();
-  line << _(" were ") << operation << _(" with corresponding entries from \"")
+  line << _(" from ") << operation << _(" with corresponding entries from \"")
               << fullPath << wxT('"');
   rpt->WriteLine(line.c_str());
   rpt->WriteLine();
