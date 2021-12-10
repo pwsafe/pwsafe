@@ -355,7 +355,7 @@ msgstr "Behalte"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:499
 msgid "last passwords"
-msgstr "letzte Passwörter"
+msgstr "der letzten Passwörter"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:512
 msgid "Clear History"
