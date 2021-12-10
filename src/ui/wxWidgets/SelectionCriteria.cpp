@@ -118,7 +118,7 @@ void SelectionCriteria::ReportAdvancedOptions(CReport* rpt, const wxString& oper
   wxArrayString fieldsSelected, fieldsNotSelected;
   const bool allSelected = GetFieldSelection(fieldsSelected, fieldsNotSelected);
   if (allSelected) {
-    line.Printf(_("\tAll fields in matching entries were %ls"), operation);
+    line.Printf(_("\tAll fields in matching entries from %ls"), operation);
     rpt->WriteLine(line.c_str());
   }
   else {
