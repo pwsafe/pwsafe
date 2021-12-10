@@ -4069,7 +4069,7 @@ msgstr "Keine Übereinstimmungen gefunden"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:713
 msgid "1 match"
-msgstr "1 Übereinstimmung gefunden"
+msgstr "1 Übereinstimmung"
 
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:128
 msgid ""
@@ -4444,7 +4444,7 @@ msgstr " mit entsprechenden Einträgen aus \""
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:121
 #, c-format
 msgid "\tAll fields in matching entries were %ls"
-msgstr "\tAlle Felder in übereinstimmenden Einträge mit %ls"
+msgstr "\tAlle Felder in übereinstimmenden Einträgen mit %ls"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:125
 #, c-format
