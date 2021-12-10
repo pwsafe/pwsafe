@@ -1127,7 +1127,7 @@ msgstr "\t\that Unterschiede in folgende Feldern:"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:969
 msgid "compared"
-msgstr "verglichen"
+msgstr "Vergleich"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:975
 msgid "Comparing current database with: "
@@ -4435,7 +4435,7 @@ msgstr "Groß/Kleinschreibung beachtend]"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:113
 msgid " were "
-msgstr " von "
+msgstr " vom "
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:113
 msgid " with corresponding entries from \""
