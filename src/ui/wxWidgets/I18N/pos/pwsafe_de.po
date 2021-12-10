@@ -4687,7 +4687,7 @@ msgstr "wurde"
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:732 ../../../core/core_st.cpp:341
 msgid "were"
-msgstr "waren"
+msgstr "wurden"
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:733 ../../../core/core_st.cpp:316
 #, c-format
