@@ -187,7 +187,7 @@ END
 STRINGTABLE
 BEGIN
   IDSC_READ_ERROR          "Read Error"
-  IDSC_ENCODING_PROBLEM    "Trouble with a non-textual (e.g., time) field in record '%ls' - please check data carefully."
+  IDSC_ENCODING_PROBLEM    "Trouble with a non-textual (e.g. time) field in record '%ls' - please check data carefully."
   IDSC_VALIDATE_ENTRY      "\tGroup='%ls', Title='%ls', User='%ls' %ls"
   IDSC_VALIDATE_ENTRY2     "- Its title has been changed to:'%ls'"
   IDSC_VALIDATE_BADUUID    "The following entries had an invalid UUID field.  This has been corrected."
