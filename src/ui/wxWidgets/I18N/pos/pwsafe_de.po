@@ -355,7 +355,7 @@ msgstr "Behalte"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:499
 msgid "last passwords"
-msgstr "der letzten Passwörter"
+msgstr "letzte Passwörter"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:512
 msgid "Clear History"
@@ -1256,16 +1256,16 @@ msgid ""
 "(Backup database has same name as original, ending with '~')"
 msgstr ""
 "Falsches Master-Passwort, keine PasswordSafe Datenbank oder beschädigte "
-"Datenbank.(Sicherungsdatei hat den selben Namen wie das Original, endend mit "
+"Datenbank. (Sicherungsdatei hat den selben Namen wie das Original, endend mit "
 "'~') "
 
 #: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:125
 msgid "Are you sure you want to delete the selected entry?"
-msgstr "Sind Sie sicher dass Sie den ausgewählten Eintrag löschen möchten?"
+msgstr "Sind Sie sicher, dass Sie den ausgewählten Eintrag löschen möchten?"
 
 #: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:126
 msgid "Are you sure you want to delete the selected group?"
-msgstr "Sind Sie sicher dass Sie die ausgewählte Gruppe löschen möchten?"
+msgstr "Sind Sie sicher, dass Sie die ausgewählte Gruppe löschen möchten?"
 
 #: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:130
 msgid "Don't ask me again"
@@ -2088,7 +2088,7 @@ msgstr "Export beendet. Möchten Sie einen ausführlichen Bericht sehen?"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:853
 msgid "No entries satisfied your selection criteria and so none were exported!"
-msgstr "Kein Eintrag entspricht Ihren Auswahlkriterien, darum werden keine %s!"
+msgstr "Kein Eintrag entspricht Ihren Auswahlkriterien, darum wurden keine exportiert!"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:866
 msgid "Passkey incorrect"
@@ -4435,7 +4435,7 @@ msgstr "Groß/Kleinschreibung beachtend]"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:113
 msgid " were "
-msgstr " wobei "
+msgstr " waren "
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:113
 msgid " with corresponding entries from \""
@@ -5372,7 +5372,7 @@ msgstr "enthält sämtliche von"
 
 #: ../../../core/core_st.cpp:61
 msgid "contains any of"
-msgstr "enthält einige von"
+msgstr "enthält irgendeines von"
 
 #: ../../../core/core_st.cpp:62
 msgid "copied"
@@ -5537,15 +5537,15 @@ msgstr "Variablenname ist leer"
 
 #: ../../../core/core_st.cpp:114
 msgid "Variable name must be alphanumeric"
-msgstr "Variablenname muss alphabetisch sein"
+msgstr "Variablenname muss alphanumerisch sein"
 
 #: ../../../core/core_st.cpp:115
 msgid "an alias entry"
-msgstr "Alias Eintrag"
+msgstr "einen Alias Eintrag"
 
 #: ../../../core/core_st.cpp:116
 msgid "a base entry of an alias"
-msgstr "Basiseintrag eines Alias"
+msgstr "ein Basiseintrag eines Alias"
 
 #: ../../../core/core_st.cpp:117
 msgid "  Field is too long."
@@ -6608,7 +6608,7 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:346
 msgid "Internal error: Couldn't initialize config file XML structure"
-msgstr "Interner Fehler: Couldn't initialize config file XML structure"
+msgstr "Interner Fehler: Konnte Konfigurationsdatei XML Struktur nicht initialisieren"
 
 #: ../../../core/core_st.cpp:347
 msgid ""
@@ -6620,7 +6620,7 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:348
 msgid "Export of data was restricted to certain fields by the user."
-msgstr "Der Export wurde von Benutzer auf bestimmte Felder eingeschänkt."
+msgstr "Der Export wurde von Benutzer auf bestimmte Felder eingeschränkt."
 
 #: ../../../core/core_st.cpp:349
 msgid ""
@@ -6739,7 +6739,7 @@ msgstr ""
 #: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:250
 #, c-format
 msgid "Unknown XML tag <%ls> in <%ls>"
-msgstr "Unbkanntes XML Tag <%ls> in <%ls>"
+msgstr "Unbekanntes XML Tag <%ls> in <%ls>"
 
 #: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:192
 #: ../../../core/XML/Pugi/PFileXMLProcessor.cpp:256
