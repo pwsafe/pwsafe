@@ -110,7 +110,7 @@ wxString SelectionCriteria::GetGroupSelectionDescription() const
 void SelectionCriteria::ReportAdvancedOptions(CReport* rpt, const wxString& operation, const wxString& fullPath)
 {
   wxString line = GetGroupSelectionDescription();
-  line << _(" from ") << operation << _(" with corresponding entries from \"")
+  line << _(" were ") << operation << _(" with corresponding entries from \"")
               << fullPath << wxT('"');
   rpt->WriteLine(line.c_str());
   rpt->WriteLine();
@@ -118,7 +118,7 @@ void SelectionCriteria::ReportAdvancedOptions(CReport* rpt, const wxString& oper
   wxArrayString fieldsSelected, fieldsNotSelected;
   const bool allSelected = GetFieldSelection(fieldsSelected, fieldsNotSelected);
   if (allSelected) {
-    line.Printf(_("\tAll fields in matching entries from %ls"), operation);
+    line.Printf(_("\tAll fields in matching entries were %ls"), operation);
     rpt->WriteLine(line.c_str());
   }
   else {
