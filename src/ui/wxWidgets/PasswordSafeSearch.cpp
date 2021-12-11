@@ -472,7 +472,7 @@ void PasswordSafeSearch::OnToolBarFindReport(wxCommandEvent& event)
   report.StartReport(IDSC_RPTFIND, m_parentFrame->GetCurrentFile().c_str());
   
   if(m_criteria) {
-    m_criteria->ReportAdvancedOptions(&report, _("Find"), m_parentFrame->GetCurrentFile().c_str());
+    m_criteria->ReportAdvancedOptions(&report, _("found"), m_parentFrame->GetCurrentFile().c_str());
   }
   
   stringT line, searchT(searchText.c_str()), searchCaseT(GetToolToggled(ID_FIND_IGNORE_CASE) ? _("(case-sensitive)"): _("(not case-sensitive)"));
