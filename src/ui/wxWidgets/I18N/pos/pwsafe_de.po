@@ -1127,7 +1127,7 @@ msgstr "\t\that Unterschiede in folgende Feldern:"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:969
 msgid "compared"
-msgstr "Vergleich"
+msgstr "verglichen"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:975
 msgid "Comparing current database with: "
@@ -4045,7 +4045,7 @@ msgstr "Suche"
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:472
 #: ../../../core/core_st.cpp:282
 msgid "Find"
-msgstr "Suchen"
+msgstr "gesucht"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:475
 msgid "(case-sensitive)"
@@ -4435,7 +4435,7 @@ msgstr "Groß/Kleinschreibung beachtend]"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:113
 msgid " were "
-msgstr " vom "
+msgstr " wurden "
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:113
 msgid " with corresponding entries from \""
