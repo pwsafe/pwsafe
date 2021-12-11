@@ -500,7 +500,7 @@ if (NOT WIN32)
         execute_process(COMMAND "${DPKG_EXECUTABLE}" --print-architecture
                         OUTPUT_VARIABLE CPACK_DEBIAN_PACKAGE_ARCHITECTURE
                         OUTPUT_STRIP_TRAILING_WHITESPACE)
-        set (PACKAGE_ARCHITECTURE "-${CPACK_DEBIAN_PACKAGE_ARCHITECTURE")
+        set (PACKAGE_ARCHITECTURE "-${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
       endif ()
     endif ()
 endif (NOT WIN32)
