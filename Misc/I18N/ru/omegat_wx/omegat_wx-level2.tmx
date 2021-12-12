@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx14.dtd">
 <tmx version="1.4">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.6.0_0_203361b5" segtype="sentence" srclang="en-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.7.0_0_8ae1ecfb" segtype="sentence" srclang="en-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -120,8 +120,8 @@ Unknown error</seg>
       <tuv xml:lang="en-US">
         <seg>%ls - Drag &amp; Drop %ls</seg>
       </tuv>
-      <tuv xml:lang="ru-RU">
-        <seg>%ls — перетянуто %ls</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211212T150206Z">
+        <seg>%ls — перетащено %ls</seg>
       </tuv>
     </tu>
     <tu>
@@ -464,8 +464,8 @@ Unknown error</seg>
       <tuv xml:lang="en-US">
         <seg>&amp;Dragbar visible</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20161105T143413Z">
-        <seg>Пане&amp;ль Dragbar</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211212T150109Z">
+        <seg>Пане&amp;ль значков для перетаскивания</seg>
       </tuv>
     </tu>
     <tu>
@@ -3580,24 +3580,24 @@ offset approximately at %d</seg>
       <tuv xml:lang="en-US">
         <seg>Drag # %d</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T164845Z" creationid="pm_kan" creationdate="20210615T164845Z">
-        <seg>(перетянуто № %d)</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211212T150203Z" creationid="pm_kan" creationdate="20210615T164845Z">
+        <seg>(перетащено № %d)</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
         <seg>Drag and Drop</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211010T105453Z" creationid="pm_kan" creationdate="20211010T105453Z">
-        <seg>Перетягивание</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211212T145759Z" creationid="pm_kan" creationdate="20211010T105453Z">
+        <seg>Перетаскивание</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
         <seg>Drag and Drop failed</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210131T171609Z" creationid="pm_kan" creationdate="20210131T171609Z">
-        <seg>Ошибка при перетягивании</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211212T150139Z" creationid="pm_kan" creationdate="20210131T171609Z">
+        <seg>Ошибка при перетаскивании</seg>
       </tuv>
     </tu>
     <tu>
@@ -3620,16 +3620,16 @@ offset approximately at %d</seg>
       <tuv xml:lang="en-US">
         <seg>Dragbar</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211010T104431Z" creationid="pm_kan" creationdate="20211010T104431Z">
-        <seg>Панель Dragbar</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211212T150127Z" creationid="pm_kan" creationdate="20211010T104431Z">
+        <seg>Панель значков для перетаскивания</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
         <seg>Dragging cancelled</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T111111Z">
-        <seg>Перетягивание отменено</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211212T150038Z">
+        <seg>Перетаскивание отменено</seg>
       </tuv>
     </tu>
     <tu>
@@ -3652,8 +3652,8 @@ offset approximately at %d</seg>
       <tuv xml:lang="en-US">
         <seg>Duplicate group name (use Shift to overrule)</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210131T171722Z" creationid="pm_kan" creationdate="20210131T171722Z">
-        <seg>Группа с таким именем уже существует (чтобы игнорировать, нажмите Shift при перетягивании)</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211212T150257Z" creationid="pm_kan" creationdate="20210131T171722Z">
+        <seg>Группа с таким именем уже существует (чтобы игнорировать, нажмите Shift при перетаскивании)</seg>
       </tuv>
     </tu>
     <tu>
@@ -4064,8 +4064,8 @@ offset approximately at %d</seg>
       <tuv xml:lang="en-US">
         <seg>Error dragging</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T111123Z">
-        <seg>Ошибка при перетягивании</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211212T145941Z">
+        <seg>Ошибка при перетаскивании</seg>
       </tuv>
     </tu>
     <tu>
@@ -6432,8 +6432,8 @@ added or existing entries removed during this process.</seg>
       <tuv xml:lang="en-US">
         <seg>Nothing happened dragging</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T111117Z">
-        <seg>Безрезультатное перетягивание</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211212T145954Z">
+        <seg>Безрезультатное перетаскивание</seg>
       </tuv>
     </tu>
     <tu>
@@ -7566,20 +7566,20 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
       <tuv xml:lang="en-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2021-10-10 13:09+0300
-PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE
-Last-Translator: FULL NAME &lt;EMAIL@ADDRESS&gt;
+POT-Creation-Date: 2021-12-12 17:56+0300
+PO-Revision-Date: 2021-12-12 11:30+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
 Language: 
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211010T101049Z" creationid="pm_kan" creationdate="20211010T101049Z">
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211212T145840Z" creationid="pm_kan" creationdate="20211212T145840Z">
         <seg>Project-Id-Version: Password Safe
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2020-10-10 13:30+0300
-PO-Revision-Date: 2020-10-10 13:30+0300
+POT-Creation-Date: 2021-12-12 18:30+0300
+PO-Revision-Date: 2021-12-12 18:30+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: none
 Language: ru_RU
@@ -9759,8 +9759,8 @@ and User fields match.</seg>
       <tuv xml:lang="en-US">
         <seg>Unexpected result dragging</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T111146Z">
-        <seg>Непредусмотренные результат при перетягивании</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211212T150022Z">
+        <seg>Непредусмотренный результат при перетаскивании</seg>
       </tuv>
     </tu>
     <tu>
@@ -10906,6 +10906,14 @@ able to abort it mid-way.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210614T174040Z" creationid="pm_kan" creationdate="20210614T174040Z">
         <seg>фильтр</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>found</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211212T145903Z" creationid="pm_kan" creationdate="20211212T145903Z">
+        <seg>найдено</seg>
       </tuv>
     </tu>
     <tu>

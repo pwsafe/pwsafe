@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.6.0_0_203361b5" segtype="sentence" srclang="en-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.7.0_0_8ae1ecfb" segtype="sentence" srclang="en-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -4179,8 +4179,8 @@
       <tuv lang="en-US">
         <seg>Although we have a solution for this (we send a Tab followed by a Shift+Tab to return to the selected window only when using this Dragbar AutoType image), the side-effect is that you can only use the Dragbar AutoType image to replace any existing string in that window by the expanded AutoType string.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140716T134825Z" creationid="pm_kan" creationdate="20140716T134825Z">
-        <seg>Поэтому только при автонаборе с панели «Dragbar» сначала посылается символ табуляции, а затем Shift+Tab (чтобы обратно вернуться в поле ввода). Побочный эффект этого трюка приводит к тому, что автонабор с панели «Dragbar» заменяет значение поля, а не добавляет ввод к нему.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T155359Z" creationid="pm_kan" creationdate="20140716T134825Z">
+        <seg>Поэтому только при автонаборе с «панели значков для перетаскивания» сначала посылается символ табуляции, а затем Shift+Tab (чтобы обратно вернуться в поле ввода). Побочный эффект этого трюка приводит к тому, что автонабор с «панели значков для перетаскивания» заменяет значение поля, а не добавляет ввод к нему.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4969,10 +4969,10 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>By default, pwsafe.cfg is kept in the same directory as the pwsafe.exe executable program.</seg>
+        <seg>By default, pwsafe.cfg is kept in the "local app data" directory, that is, C:\Users\username\AppData\Local\PasswordSafe.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20101104T202306Z">
-        <seg>По умолчанию pwsafe.cfg сохраняется в том же каталоге, что и pwsafe.exe.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T150739Z" creationid="pm_kan" creationdate="20211212T150739Z">
+        <seg>По умолчанию pwsafe.cfg сохраняется в каталоге локальных данных приложений пользователей: «C:\Users\имя_пользователя\AppData\Local\PasswordSafe».</seg>
       </tuv>
     </tu>
     <tu>
@@ -6675,8 +6675,8 @@
       <tuv lang="en-US">
         <seg>Dragbar</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T173932Z">
-        <seg>Панель Dragbar</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T155154Z">
+        <seg>Панель значков для перетаскивания</seg>
       </tuv>
     </tu>
     <tu>
@@ -7819,8 +7819,8 @@
       <tuv lang="en-US">
         <seg>For example, to paste the "Notes" text of a given entry to another application using the Dragbar, select the entry, and then drag the "N" icon from the Dragbar to the application.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T205133Z">
-        <seg>Например, для того, чтобы вставить текст заметок элемента в другое приложение с помощью панели «Dragbar», нужно выделить элемент и перетащить значок с листком (в «классическом» интерфейсе с буквой «N») в окно приложения.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T155241Z">
+        <seg>Например, для того, чтобы вставить текст заметок элемента в другое приложение с помощью «панели значков для перетаскивания», нужно выделить элемент и перетащить значок с листком (в «классическом» интерфейсе с буквой «N») в окно приложения.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8249,6 +8249,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Historically (before version 3.22 of PasswordSafe), the configuration file was stored in the same directory as the pwsafe.exe file.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T151520Z" creationid="pm_kan" creationdate="20211212T151429Z">
+        <seg>Ранее (до версии Password Safe 3.22) файл с настройками сохранялся в том же каталоге, что и pwsafe.exe.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Holding the Shift key down when pressing F3, finds the previous entry in the database matching your criteria rather than the next.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T153021Z">
@@ -8643,8 +8651,8 @@
       <tuv lang="en-US">
         <seg>If an entry is "Dragged &amp; Dropped" into the database from another database.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T135718Z" creationid="pm_kan" creationdate="20140113T135718Z">
-        <seg>Элемент был «перетянут» из другого контейнера.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T152111Z" creationid="pm_kan" creationdate="20140113T135718Z">
+        <seg>Элемент был «перетащен» из другого контейнера.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9091,8 +9099,8 @@
       <tuv lang="en-US">
         <seg>If the control key is pressed while clicking on a Dragbar icon, the relevant text is copied to the clipboard in addition to being pasted when the mouse button is released.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20161128T174438Z" creationid="pm_kan" creationdate="20161128T174438Z">
-        <seg>Если при захвате значка на панели «Dragbar» была нажата клавиша Сontrol, соответствующий текст дополнительно будет помещён в буфер обмена после отпускания.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T155418Z" creationid="pm_kan" creationdate="20161128T174438Z">
+        <seg>Если при захвате значка на «панели значков для перетаскивания» была нажата клавиша Сontrol, соответствующий текст дополнительно будет помещён в буфер обмена после отпускания.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9181,6 +9189,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20120809T112652Z">
         <seg>Если контейнер открыт в режиме «только чтение», добавление, удаление и редактирование политик создания паролей невозможно.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>If the database is locked, the database name will be shown in the tooltip between square brackets as shown below.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T151719Z" creationid="pm_kan" creationdate="20211212T151719Z">
+        <seg>Если контейнер заблокирован, то его имя во всплывающей подсказке значка будет заключено в квадратные скобки.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9737,14 +9753,6 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>If, however, the PWS_PREFSDIR environment variable is set, pwsafe will use the configuration file stored there.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170326T165317Z" creationid="pm_kan" creationdate="20170326T165317Z">
-        <seg>Но, если задана переменная окружения PWS_PREFSDIR, Password Safe будет использовать файл настроек, указанный в ней.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>If, however, you find that you have several filters that you wish to use repeatedly, then you can store them and manage them effectively via the "View → Filter → Manage..." dialog box.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20170326T161617Z">
@@ -10093,14 +10101,6 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T161341Z">
         <seg>В простом списке столбец со значками может быть добавлен только как первый столбец.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>In the enhanced tooltip, if the database is locked, the database name will be shown between square brackets as shown below.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170814T213944Z" creationid="pm_kan" creationdate="20170814T213928Z">
-        <seg>Если контейнер заблокирован, то его имя во всплывающей подсказке значка будет заключено в квадратные скобки.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12381,6 +12381,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T195810Z">
         <seg>Откройте Password Safe.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Open Another</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T151726Z" creationid="pm_kan" creationdate="20211212T151726Z">
+        <seg>Открыть другой контейнер</seg>
       </tuv>
     </tu>
     <tu>
@@ -14676,8 +14684,8 @@
       <tuv lang="en-US">
         <seg>Show Dragbar</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T181852Z">
-        <seg>Отображать панель Dragbar</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T155137Z">
+        <seg>Отображать панель значков для перетаскивания</seg>
       </tuv>
     </tu>
     <tu>
@@ -14877,8 +14885,8 @@
       <tuv lang="en-US">
         <seg>Similarly, when one or more entries are dragged from another database and dropped into the current database except "Drag - datetime" will be used to make the Named Password Policy unique.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20120810T124510Z">
-        <seg>Аналогично, при перетаскивании одного или нескольких элементов из одного контейнера в другой, для обеспечения уникальности будет использоваться фраза «Перетянуто дата/время».</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T155102Z">
+        <seg>Аналогично, при перетаскивании одного или нескольких элементов из одного контейнера в другой, для обеспечения уникальности будет использоваться фраза «Перетащено дата/время».</seg>
       </tuv>
     </tu>
     <tu>
@@ -15381,8 +15389,8 @@
       <tuv lang="en-US">
         <seg>The "Dragbar" is a special toolbar that allows you to paste parts of the currently selected entry by "dragging" the icon specifying the part you want to paste to where you want it to be pasted to.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T205053Z">
-        <seg>Панель Dragbar является специальной панелью, позволяющей вставлять некоторые значения, связанные с текущим элементом, перетаскивая соответствующий значок с этой панели в нужное поле окна другого приложения.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T155225Z">
+        <seg>Панель значков для перетаскивания является специальной панелью, позволяющей вставлять некоторые значения, связанные с текущим элементом, перетаскивая соответствующий значок с этой панели в нужное поле окна другого приложения.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15523,6 +15531,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>The -g command line option (as described in Command Line Arguments may also be used to either specify a file name (which will be looked for in the above directories), or an absolute file path.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T160724Z" creationid="pm_kan" creationdate="20211212T150830Z">
+        <seg>Для изменения имени файла или указания абсолютного пути можно использовать параметр командной строки -g (см.␣Параметры командной строки) .</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>The Standard setting should provide sufficient security without delaying the opening of a database significantly on most platforms.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T102203Z" creationid="pm_kan" creationdate="20140113T101924Z">
@@ -15581,8 +15597,8 @@
       <tuv lang="en-US">
         <seg>The Dragbar will disable ("grey out") icons for fields that are empty in the selected entry.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140716T134657Z" creationid="pm_kan" creationdate="20140716T134657Z">
-        <seg>Для незаполненных полей элемента, соответствующие значки на панели «Dragbar» заблокированы (серые).</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T155255Z" creationid="pm_kan" creationdate="20140716T134657Z">
+        <seg>Для незаполненных полей элемента, соответствующие значки на «панели значков для перетаскивания» заблокированы (серые).</seg>
       </tuv>
     </tu>
     <tu>
@@ -17013,24 +17029,24 @@
       <tuv lang="en-US">
         <seg>Then you can simply drag and drop any entries or groups from your open database to this 'export' database.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110307T095200Z">
-        <seg>Затем перетяните необходимые элементы или группы в новый контейнер.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T152121Z">
+        <seg>Затем перетащите необходимые элементы или группы в новый контейнер.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-US">
         <seg>Then you can simply drag and drop any entries or groups to your open database from this 'import' database.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110307T100808Z">
-        <seg>Затем перетяните из него необходимые элементы или группы в первый контейнер.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T152128Z">
+        <seg>Затем перетащите из него необходимые элементы или группы в первый контейнер.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-US">
         <seg>There appears to be an issue using the new AutoType Dragbar image with Internet Explorer (tested with V7, V8 &amp; V9) in that any characters typed before the first tab character are lost.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140716T134752Z" creationid="pm_kan" creationdate="20140716T134752Z">
-        <seg>Похоже, что в Internet Explorer (V7, V8 и V9) автонабор с панели «Dragbar» работает не совсем корректно: теряются символы до первой табуляции.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T155311Z" creationid="pm_kan" creationdate="20140716T134752Z">
+        <seg>Похоже, что в Internet Explorer (V7, V8 и V9) автонабор с «панели значков для перетаскивания» работает не совсем корректно: теряются символы до первой табуляции.</seg>
       </tuv>
     </tu>
     <tu>
@@ -17079,6 +17095,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T180006Z">
         <seg>Пункт меню Вид→Показать элементы с заданными датами истечения пароля применяет внутренний фильтр, отображающий только те элементы, у которых задана дата истечения пароля (независимо от того, наступила она или нет).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Therefore, PasswordSafe will also search that directory for the configuration file, if not found in the "local app data" directory.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T151646Z" creationid="pm_kan" creationdate="20211212T151544Z">
+        <seg>Поэтому, Password Safe будет искать файл и в этом каталоге, если он не найдётся в каталоге локальных данных приложений пользователей.</seg>
       </tuv>
     </tu>
     <tu>
@@ -17311,6 +17335,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20120808T204618Z">
         <seg>Позволяет управлять политикой паролей по умолчанию и именованными политиками паролей.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>This allows you to select another database to be opened instead of the one currently open (or locked) in the current instance of the program.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T151857Z" creationid="pm_kan" creationdate="20211212T151857Z">
+        <seg>Позволяет открыть в данном экземпляре программы другой контейнер вместо уже открытого или заблокированного.</seg>
       </tuv>
     </tu>
     <tu>
@@ -17610,6 +17642,14 @@
       </tuv>
     </tu>
     <tu>
+      <tuv lang="en-US">
+        <seg>This is handy if you want to switch between databases without starting another instance of the program.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T160924Z" creationid="pm_kan" creationdate="20211212T151951Z">
+        <seg>Это может быть использовано для переключения между контейнерами без запуска другого экземпляра программы.</seg>
+      </tuv>
+    </tu>
+    <tu>
       <note>								</note>
       <tuv lang="en-US">
         <seg>This is the key that will be written to your backup YubiKey.</seg>
@@ -17632,14 +17672,6 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T202400Z">
         <seg>Это связано с особенностями обработки комбинаций горячих клавиш в ОС Windows и не является ограничением, внесённым Password Safe.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>This is useful for cases where write permissions to the pwsafe.exe install directory are restricted (See also the description of the -g option in the Command Line Arguments Section) and in a "wrapper" script/batch file on a portable device (e.g., disk-on-key) by setting the configuration Folder/directory as needed.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170326T165602Z" creationid="pm_kan" creationdate="20170326T165602Z">
-        <seg>Может пригодится если доступ к каталогу, в котором установлен pwsafe.exe ограничен (см. также описание параметра -g в разделе Параметры командной строки) или требуется запустить программу через скрипт-обёртку со сменного носителя.</seg>
       </tuv>
     </tu>
     <tu>
@@ -17768,6 +17800,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20101105T183854Z">
         <seg>Может зависеть от клавиатуры.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>This may be overridden by setting the PWS_PREFSDIR environment variable is set.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T160000Z" creationid="pm_kan" creationdate="20211212T150817Z">
+        <seg>Путь сохранения можно переопределить через переменную окружения PWS_PREFSDIR.</seg>
       </tuv>
     </tu>
     <tu>
@@ -18350,8 +18390,8 @@
       <tuv lang="en-US">
         <seg>To display or hide the Dragbar, check or uncheck the Dragbar Visible menu item.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T174058Z">
-        <seg>Для того, чтобы скрыть или показать панель «Dragbar» поставьте или снимите отметку на пункте меню Панель Dragbar.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T161414Z">
+        <seg>Чтобы показать или скрыть «панель значков для перетаскивания», поставьте или снимите отметку на пункте меню Панель значков для перетаскивания.</seg>
       </tuv>
     </tu>
     <tu>
@@ -19391,8 +19431,8 @@
       <tuv lang="en-US">
         <seg>When Checked, the database will be saved if there is any change e.g. add, delete, duplicate, edit or rename of an entry or group as well as if any entries/groups are added/moved via import or Drag &amp; Drop.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T161204Z" creationid="pm_kan" creationdate="20161105T161204Z">
-        <seg>Если включено, сохранение происхоидт при любом изменении, будь то вставка, удаление, дублирование, редактирование или переименование элемента или группы, в том числе, если вставка или перемещение произошли с помощью импорта или перетягивания из другой группы/контейнера.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T152054Z" creationid="pm_kan" creationdate="20161105T161204Z">
+        <seg>Если включено, сохранение происходит при любом изменении, будь то вставка, удаление, дублирование, редактирование или переименование элемента или группы, в том числе, если вставка или перемещение произошли с помощью импорта или перетаскивания из другой группы/контейнера.</seg>
       </tuv>
     </tu>
     <tu>
@@ -21001,6 +21041,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T225943Z">
         <seg>aliases.html</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>and </seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T151506Z" creationid="pm_kan" creationdate="20211212T151346Z">
+        <seg></seg>
       </tuv>
     </tu>
     <tu>
