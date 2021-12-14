@@ -1,4 +1,5 @@
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/pwsafe/pwsafe) 
+[![mac-pwsafe](https://github.com/pwsafe/pwsafe/actions/workflows/main.yml/badge.svg)](https://github.com/pwsafe/pwsafe/actions/workflows/main.yml)
 
 Introduction
 ============
