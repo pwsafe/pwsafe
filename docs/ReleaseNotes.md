@@ -1,28 +1,26 @@
-This note describes the new features, fixed bugs and known problems
-with the latest versions of Password Safe. For a short description of
-Password Safe, please see the accompanying README.md file. For more
-information on the product and the project, please visit
-https://pwsafe.org/. Details about changes to older
-releases may be found in the file ChangeLog.txt.
+This note describes the new features, fixed bugs and known problems with the latest versions of Password Safe. For a short description of
+Password Safe, please see the accompanying README.md file. For more information on the product and the project, please visit
+https://pwsafe.org/. Details about changes to older releases may be found in the file ChangeLog.txt.
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.58.0pre Release Dec 2021
-=======================================
+PasswordSafe 3.58.0 Release Dec 2021
+====================================
 
-Bugs fixed in 3.58.0pre
------------------------
+Bugs fixed in 3.58.0
+--------------------
 * [BR1550](https://sourceforge.net/p/passwordsafe/bugs/1550/) Autotype delay now applies to key codes (e.g., &bsol;{Down}) as well as "regular" text.
 * [BR1549](https://sourceforge.net/p/passwordsafe/bugs/1549/) '-g' command line option now handles UNC path correctly
 * [GH800](https://github.com/pwsafe/pwsafe/issues/800) PasswordSafe now prevents data that it places on the clipboard from appearing in the Windows Clipboard History.
 
-Changes in 3.58.0pre
---------------------
+Changes in 3.58.0
+-----------------
 * [FR894](https://sourceforge.net/p/passwordsafe/feature-requests/894/) Add support for GoTrust Idem Key 2FA
 
-New features in 3.58.0pre
--------------------------
+New features in 3.58.0
+----------------------
 * [GH785] (https://github.com/pwsafe/pwsafe/issues/785) Added "Open Another" menu item in the system tray popup menu, allowing easy switching to a new PasswordSafe database.
+
 
 PasswordSafe 3.57 Release October 2021
 ======================================
