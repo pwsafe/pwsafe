@@ -37,7 +37,7 @@ GPG := /usr/bin/gpg
 GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
 SHA1SUM := /usr/bin/sha1sum
 SF_UPLOAD_CMD := /usr/bin/rsync -avP -e ssh
-SF_UPLOAD_DST :=  $(SF_UPLOAD_ROOT)/passwordsafe/$(RELEASENUM)
+SF_UPLOAD_DST :=  $(SF_UPLOAD_ROOT)/passwordsafe/Windows/$(RELEASENUM)
 # GitHub upload utility from https://github.com/aktau/github-release
 GH_UPLOAD_CMD := /usr/local/bin/github-release
 export GITHUB_USER := pwsafe
