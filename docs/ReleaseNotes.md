@@ -19,7 +19,7 @@ Changes in 3.58.0
 
 New features in 3.58.0
 ----------------------
-* [GH785] (https://github.com/pwsafe/pwsafe/issues/785) Added "Open Another" menu item in the system tray popup menu, allowing easy switching to a new PasswordSafe database.
+* [GH785](https://github.com/pwsafe/pwsafe/issues/785) Added "Open Another" menu item in the system tray popup menu, allowing easy switching to a new PasswordSafe database.
 
 
 PasswordSafe 3.57 Release October 2021
