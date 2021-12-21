@@ -394,7 +394,7 @@ install (TARGETS pwsafe RUNTIME DESTINATION "bin")
 
 
 if (NOT WIN32)
-  install (DIRECTORY xml DESTINATION "share/passwordsafe/")
+  install (DIRECTORY xml DESTINATION "share/passwordsafe")
   ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/pwsafe.1.gz
                      COMMAND ${GZIP} ARGS -9 -n -c ${PROJECT_SOURCE_DIR}/docs/pwsafe.1 > pwsafe.1.gz
                      WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
