@@ -1351,8 +1351,6 @@ void PasswordSafeFrame::OnPropertiesClick(wxCommandEvent& WXUNUSED(evt))
 
 void PasswordSafeFrame::OnExitClick(wxCommandEvent& WXUNUSED(evt))
 {
-  m_exitFromMenu = true;
-
-  Close();
+  CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), CloseFlags::CLOSE_NORMAL);
 }
 

@@ -35,6 +35,7 @@
 #include "wxUtilities.h"
 #include "DnDFile.h"
 #include "DragBarCtrl.h"
+#include "TimedTaskChain.h"
 
 #include <tuple>
 #include <vector>
@@ -718,6 +719,10 @@ private:
   void UpdateLastClipboardAction(const CItemData::FieldType field);
 
   void ChangeFontPreference(const PWSprefs::StringPrefs fontPreference);
+  
+  enum CloseFlags { CLOSE_NORMAL = 0, CLOSE_FORCED = 1, LEAVE_MAIN = 2, HIDE_ON_VETO = 4 };
+  void CloseAllWindows(TimedTaskChain* taskChain, CloseFlags flags);
+  bool IsCloseInProgress() const;
 
   void SaveLayoutPreferences();
   bool LoadLayoutPreferences();
@@ -727,12 +732,12 @@ private:
   TreeSortType m_currentSort;
   PasswordSafeSearch* m_search;
   SystemTray* m_sysTray;
-  bool m_exitFromMenu;
   bool m_bRestoredDBUnsaved;
   CRUEList m_RUEList;
   GuiInfo* m_guiInfo;
   bool m_bTSUpdated;
   wxString m_savedDBPrefs;
+
   enum {iListOnly = 1, iTreeOnly = 2, iBothViews = 3};
 
   /*
@@ -781,7 +786,8 @@ private:
   DragBarCtrl* m_Dragbar;
 
   // top-level windows that we hid while locking the UI
-  wxWindowList hiddenWindows;
+  wxWindowList m_hiddenWindows;
+  wxWindowDisabler* m_closeDisabler = nullptr; // disable all windows while waiting for close
 };
 
 BEGIN_DECLARE_EVENT_TYPES()

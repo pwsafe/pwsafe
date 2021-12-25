@@ -794,7 +794,7 @@ void ManageFiltersDlg::OnNewClick( wxCommandEvent& event )
       bActiveFilter = false;
     }
   
-    if(rc == wxID_OK || (rc == wxID_CANCEL && bAppliedCalled)) {
+    if(rc == wxID_OK || (rc == wxID_CANCEL && bAppliedCalled && !IsCloseInProgress())) {
       if(rc != wxID_OK) {
         // Overtake last applied filter
         filters = *m_pCurrentFilters;
@@ -890,7 +890,7 @@ void ManageFiltersDlg::OnEditClick( wxCommandEvent& event )
       bActiveFilter = false;
     }
   
-    if (rc == wxID_OK || (rc == wxID_CANCEL && bAppliedCalled)) {
+    if (rc == wxID_OK || (rc == wxID_CANCEL && bAppliedCalled && !IsCloseInProgress())) {
       if(rc != wxID_OK) {
         // Overtake last applied filter
         filters = *m_pCurrentFilters;

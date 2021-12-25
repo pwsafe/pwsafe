@@ -121,8 +121,10 @@ void PasswordSafeFrame::OnPreferencesClick(wxCommandEvent& WXUNUSED(evt))
       }
     }
   }
-  window->Destroy();
-  SetFocus();
+  if (!IsCloseInProgress()) {
+    window->Destroy();
+    SetFocus();
+  }
 }
 
 /*

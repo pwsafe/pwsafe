@@ -75,37 +75,7 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
   return rc;
 }
 
-int CountTopLevelWindowRecursively(wxTopLevelWindow* win)
-{
-  if (!win)
-    return 0;
-  int count = 1;
-  wxWindowList& children = win->GetChildren();
-  for(wxWindowList::iterator itr = children.begin(); itr != children.end(); ++itr) {
-    if ((*itr)->IsTopLevel()) {
-      count += CountTopLevelWindowRecursively(wxDynamicCast(*itr, wxTopLevelWindow));
-    }
-  }
-  return count;
-}
-
-void CloseChildWindowRecursively(wxTopLevelWindow* win, wxTopLevelWindow* top)
-{
-  if (!win)
-    return;
-  wxWindowList& children = win->GetChildren();
-  for(wxWindowList::iterator itr = children.begin(); itr != children.end(); ++itr) {
-    if ((*itr)->IsTopLevel()) {
-      CloseChildWindowRecursively(wxDynamicCast(*itr, wxTopLevelWindow), top);
-    }
-  }
-  if(win != top) {
-    wxCommandEvent evt(wxEVT_CLOSE_WINDOW);
-    wxPostEvent(win, evt);
-  }
-}
-
-wxWindowList HideWindowRecursively()
+wxWindowList HideTopLevelWindows()
 {
   wxWindowList hiddenWindows;
   // wxTopLevelWindows is global exported list of top level windows
@@ -129,7 +99,7 @@ wxWindowList HideWindowRecursively()
   return hiddenWindows;
 }
         
-void ShowWindowRecursively(wxWindowList& hiddenWindows)
+void ShowWindows(wxWindowList& hiddenWindows)
 {
   for(wxWindowList::iterator itr = hiddenWindows.begin(); itr != hiddenWindows.end(); ++itr) {
     wxWindow* win = *itr;

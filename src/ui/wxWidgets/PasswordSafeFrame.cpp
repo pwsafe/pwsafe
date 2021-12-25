@@ -326,7 +326,7 @@ END_EVENT_TABLE()
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
 : m_core(core), m_currentView(ViewType::GRID), m_search(nullptr), m_sysTray(new SystemTray(this)),
-  m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
+  m_bRestoredDBUnsaved(false),
   m_RUEList(core), m_guiInfo(new GuiInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
   m_CurrentPredefinedFilter(NONE), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
   m_LastClipboardAction(wxEmptyString), m_LastAction(CItem::FieldType::START)
@@ -339,7 +339,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
   : m_core(core), m_currentView(ViewType::GRID), m_search(nullptr), m_sysTray(new SystemTray(this)),
-    m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
+    m_bRestoredDBUnsaved(false),
     m_RUEList(core), m_guiInfo(new GuiInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
     m_CurrentPredefinedFilter(NONE), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
     m_LastClipboardAction(wxEmptyString), m_LastAction(CItem::FieldType::START)
@@ -1503,16 +1503,15 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
   wxGetApp().SaveFrameCoords();
   const bool systrayEnabled = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray);
   /*
-   * Really quit if the user chooses to quit from File menu, or
+   * Really quit if the user chooses to quit from File or systray menu, or
    * by clicking the 'X' in title bar or the system menu pulldown
    * from the top-left of the titlebar while systray is disabled
    */
-  if (m_exitFromMenu || !systrayEnabled) {
+  if (IsCloseInProgress() || !systrayEnabled) {
     if (evt.CanVeto()) {
       int rc = SaveIfChanged();
       if (rc == PWScore::USER_CANCEL) {
         evt.Veto();
-        m_exitFromMenu = false;
         return;
       }
     }
@@ -2417,64 +2416,38 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
   }
 
   if (m_sysTray->IsLocked()) {
-    bool bModalOpen;
-    int noTopLevelWindow = CountTopLevelWindowRecursively(this);
-    
-    bModalOpen = (noTopLevelWindow > 1); // More than one Top Level Window, the second one is modal
-#if defined(__WXOSX__)
-    const int TopLevelWindowLimit = 2; // OSX allow exit with one modal window open only
-#else
-# if (wxVERSION_NUMBER >= 3104)
-    const int TopLevelWindowLimit = 255; // Debian rasbery PI is handling 4 modal dialog without failure in wxWidgets 3.1.4, assume more is suitable
-# else
-    const int TopLevelWindowLimit = 1; // 3.0.5 do not run well when modal window is open (on Debian rasbery PI)
-# endif
-#endif
-    
-    do {
-      // Allow Exit only in case of one modal dialog present - on second one we crash.
-      // In most of the cases only one modal dialog is open.
-      SafeCombinationPromptDlg scp(nullptr, m_core, towxstring(m_core.GetCurFile()), (noTopLevelWindow <= TopLevelWindowLimit));
+    // Allow Exit in all cases (if dialog vetoed close, we'll stop on it)
+    SafeCombinationPromptDlg scp(nullptr, m_core, towxstring(m_core.GetCurFile()), true);
 
-      switch (scp.ShowModal()) {
-        case (wxID_OK):
-        {
-          if (ReloadDatabase(scp.GetPassword())) {
-            m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
-          }
-          else {
-            // With modal dialog open we now have a problem, no data base open, but a modal dialog is open that might show an entry
-            CleanupAfterReloadFailure(true);
-            if(bModalOpen) {
-              if(noTopLevelWindow <= TopLevelWindowLimit)
-                CloseChildWindowRecursively(this, this);
-              else
-                wxMessageBox(_("Please close modal dialog manually"), _("Modal dialog open"), wxOK|wxICON_ERROR);
-            }
-            return;
-          }
-          bModalOpen = false; // To end the loop
-          break;
+    switch (scp.ShowModal()) {
+      case (wxID_OK):
+      {
+        if (ReloadDatabase(scp.GetPassword())) {
+          m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
         }
-        case (wxID_EXIT):
-        {
-          if(bModalOpen)
-            CloseChildWindowRecursively(this, this);
-          
-          m_exitFromMenu = true; // not an exit request from menu, but OnCloseWindow requires this
-          wxCommandEvent event(wxEVT_CLOSE_WINDOW);
-          wxPostEvent(this, event);
+        else {
+          // With modal dialog open we now have a problem, no data base open, but a modal dialog is open that might show an entry
+          CleanupAfterReloadFailure(true);
+          if(!m_hiddenWindows.empty()) {
+            CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), static_cast<CloseFlags>(CloseFlags::CLOSE_FORCED|CloseFlags::LEAVE_MAIN));
+          }
           return;
         }
-        case (wxID_CANCEL):
-        {
-          if (!IsIconized() && iconizeOnCancel) {
-            Iconize();
-          }
-          return; // allow to cancel dialog and left locked in any case
-        }
+        break;
       }
-    } while(bModalOpen && PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray));
+      case (wxID_EXIT):
+      {
+        CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), CloseFlags::CLOSE_NORMAL);
+        return;
+      }
+      case (wxID_CANCEL):
+      {
+        if (!IsIconized() && iconizeOnCancel) {
+          Iconize();
+        }
+        return; // allow to cancel dialog and left locked in any case
+      }
+    }
 
     if (m_savedDBPrefs != wxEmptyString) {
       PWSprefs::GetInstance()->Load(tostringx(m_savedDBPrefs));
@@ -2484,7 +2457,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
 
   if (restoreUI) {
     if (!IsShown()) {
-      ShowWindowRecursively(hiddenWindows);
+      ShowWindows(m_hiddenWindows);
     }
     if (IsIconized()) {
       Iconize(false);
@@ -2596,17 +2569,14 @@ void PasswordSafeFrame::HideUI(bool lock)
     //We should not have to show up the icon manually if m_sysTray
     //can be notified of changes to PWSprefs::UseSystemTray
     m_sysTray->ShowIcon();
-    hiddenWindows = HideWindowRecursively();
+    m_hiddenWindows = HideTopLevelWindows();
   }
 }
 
 void PasswordSafeFrame::IconizeOrHideAndLock()
 {
-  bool bModalOpen = false;
-  
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
     if (!m_sysTray->IsLocked()) {
-      bModalOpen = (CountTopLevelWindowRecursively(this) > 1);
       HideUI(true);
     }
   }
@@ -2617,14 +2587,6 @@ void PasswordSafeFrame::IconizeOrHideAndLock()
   // If not already locked by HideUI or OnIconize due to user preference than do it now
   if (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED) {
     LockDb();
-  }
-  // In case of dialog open the menu cannot be called, so open dialog in advance in case we are using System Tray
-  if (bModalOpen) {
-#if wxCHECK_VERSION(2,9,5)
-    CallAfter(&PasswordSafeFrame::UnlockSafe, true, false);  // restore UI
-#else
-    UnlockSafe(true, false);  // restore UI
-#endif
   }
 }
 
@@ -2936,6 +2898,74 @@ void PasswordSafeFrame::ResetFilters()
   m_FilterManager.SetFilterFindEntries(nullptr);
 }
 
+/**
+ Close all visible top level windows
+ 
+ @param taskChain chain to use when closing multiple dialogs
+ @param forced if set to true, dialogs can't veto
+ @param dontCloseMain don't close main window
+ 
+ Here we have to use taskChain, because when closing multiple dialogs, 
+ CallAfter is not enough to allow dialog to finish result processing and break event loop
+*/
+void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags flags)
+{
+  // we should show windows before processing
+  if (!m_hiddenWindows.empty()) {
+    ShowWindows(m_hiddenWindows);
+    flags = static_cast<CloseFlags>(flags | HIDE_ON_VETO);
+  }
+
+  if (!m_closeDisabler) {
+    m_closeDisabler = new wxWindowDisabler();
+  }
+  
+  wxWindowList::reverse_iterator itr = wxTopLevelWindows.rbegin();
+  wxWindowList::reverse_iterator endItr = ((flags & CloseFlags::LEAVE_MAIN) == CloseFlags::LEAVE_MAIN) ? --wxTopLevelWindows.rend() : wxTopLevelWindows.rend();
+  wxWindowList::reverse_iterator lastWindowItr = --wxTopLevelWindows.rend();
+  bool vetoed = false;
+  while (itr != endItr) {
+    wxTopLevelWindow* win = wxDynamicCast(*itr, wxTopLevelWindow);
+    if (win) {
+      if (win->IsShown()) {
+        pws_os::Trace(L"Closing %ls, flags=%d\n", ToStr(win->GetTitle()), flags);
+        if (win->Close((flags & CloseFlags::CLOSE_FORCED) == CloseFlags::CLOSE_FORCED)) {
+          if (itr == lastWindowItr) {
+            // main windows closed, no need to schedule new check
+            break;
+          }
+          else {
+            // if main window still alive, captured "this" should be valid
+            taskChain->then([taskChain, flags, this]{
+              CloseAllWindows(taskChain, flags);
+            });
+            return; // exit here without unlocking disabler
+          }
+        }
+        else {
+          pws_os::Trace(L"Close for %ls vetoed, flags=%d\n", ToStr(win->GetTitle()), flags);
+          vetoed = true;
+          break;
+        }
+      }
+      else {
+        pws_os::Trace(L"Skip closing of hidden window %ls\n", ToStr(win->GetTitle()));
+      }
+    }
+    ++itr;
+  }
+  delete m_closeDisabler;
+  m_closeDisabler = nullptr;
+  
+  if (vetoed && (flags & CloseFlags::HIDE_ON_VETO) == CloseFlags::HIDE_ON_VETO) {
+    m_hiddenWindows = HideTopLevelWindows();
+  }
+}
+
+bool PasswordSafeFrame::IsCloseInProgress() const
+{
+  return !!m_closeDisabler;
+}
   //-----------------------------------------------------------------
   // Remove all DialogBlock-generated stubs below this line, as we
   // already have them implemented in main*.cpp

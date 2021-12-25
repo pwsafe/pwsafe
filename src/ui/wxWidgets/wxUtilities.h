@@ -176,11 +176,8 @@ inline const wxChar* ToStr(bool b) {
   return b? wxT("True"): wxT("False");
 }
 
-wxWindowList HideWindowRecursively();
-void ShowWindowRecursively(wxWindowList& hiddenWindows);
-
-int CountTopLevelWindowRecursively(wxTopLevelWindow* win);
-void CloseChildWindowRecursively(wxTopLevelWindow* win, wxTopLevelWindow* top);
+wxWindowList HideTopLevelWindows();
+void ShowWindows(wxWindowList& hiddenWindows);
 
 // Workaround for wxTE_PASSWORD being immutable:
 void ShowHideText(wxTextCtrl *&txtCtrl, const wxString &text,
