@@ -59,13 +59,9 @@ public:
 
   int GetWithAttributes(const stringT &csBaseKeyName, const stringT &csValueName,
                         int iDefaultValue);
-  stringT GetWithAttributes(const stringT &csBaseKeyName, const stringT &csValueName, 
-                            const stringT &csAttributeName, const stringT &csDefaultValue);
   int SetWithAttributes(const stringT &csBaseKeyName, const stringT &csValueName,
                         const int &iValue);
-  int SetWithAttributes(const stringT &csBaseKeyName, const stringT &csValueName,
-                        std::vector<st_prefAttribs> *pvprefAttribs);
-
+  
   std::vector<st_prefShortcut> GetShortcuts(const stringT &csBaseKeyName);
   int SetShortcuts(const stringT &csBaseKeyName, 
                    std::vector<st_prefShortcut> v_shortcuts);
