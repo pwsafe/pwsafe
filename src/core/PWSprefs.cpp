@@ -1482,6 +1482,9 @@ bool PWSprefs::LoadProfileFromFile()
   m_PSSrect.left = m_pXML_Config->Get(m_csHKCU_POS, _T("PSS_left"), -1);
   m_PSSrect.right = m_pXML_Config->Get(m_csHKCU_POS, _T("PSS_right"), -1);
 
+  // The XML tag 'Layout'
+  m_PrefLayout = m_pXML_Config->Get(m_csHKCU_PREF, _T("Layout"), L"");
+
   // Load most recently used file list
   for (i = m_intValues[MaxMRUItems]; i > 0; i--) {
     Format(csSubkey, L"Safe%02d", i);
@@ -1622,6 +1625,11 @@ void PWSprefs::SaveApplicationPreferences()
     }
     m_PSSrect.changed = false;
   } // m_PSSrect.changed
+
+  if (m_ConfigOption == CF_FILE_RW ||
+      m_ConfigOption == CF_FILE_RW_NEW) {
+    VERIFY(m_pXML_Config->Set(m_csHKCU_PREF, L"Layout", m_PrefLayout, pugi::xml_node_type::node_cdata) == 0);
+  }
 
   if (m_ConfigOption == CF_FILE_RW ||
       m_ConfigOption == CF_FILE_RW_NEW) {

@@ -246,7 +246,11 @@ public:
   // for display in status bar (debug)
   int GetConfigIndicator() const;
 
-  // Get & set vector of user shortcuts (only in XML cnfig file)
+  // Get & set layout data (only in XML config file)
+  stringT GetPrefLayout() const { return m_PrefLayout; };
+  void SetPrefLayout(const stringT& preferences) { m_PrefLayout = preferences; };
+
+  // Get & set vector of user shortcuts (only in XML config file)
   std::vector<st_prefShortcut> GetPrefShortcuts() const {return m_vShortcuts;}
   void SetPrefShortcuts(const std::vector<st_prefShortcut> &vShortcuts);
 
@@ -320,6 +324,7 @@ private:
   StringX m_stringCopyValues[NumStringPrefs];
 
   stringT *m_MRUitems;
+  stringT m_PrefLayout;
   std::vector<st_prefShortcut> m_vShortcuts;
 
   // Preferences we don't know in this version of PWS

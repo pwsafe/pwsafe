@@ -668,7 +668,7 @@ private:
   long GetEventRUEIndex(const wxCommandEvent& evt) const;
   bool IsRUEEvent(const wxCommandEvent& evt) const;
   void RebuildGUI(const int iView = iBothViews);
-  void SaveSettings() const;
+  void SaveSettings();
   void LockDb();
   void TryIconize(int nAttempts = 5);
   bool ChangeMode(bool promptUser);
@@ -717,6 +717,9 @@ private:
   void UpdateLastClipboardAction(const CItemData::FieldType field);
 
   void ChangeFontPreference(const PWSprefs::StringPrefs fontPreference);
+
+  void SaveLayoutPreferences();
+  bool LoadLayoutPreferences();
 
   PWScore &m_core;
   ViewType m_currentView;

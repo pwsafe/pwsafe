@@ -183,7 +183,8 @@ exit:
 }
 
 int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue,
-                             std::vector<st_prefAttribs> *pvprefAttribs)
+                             std::vector<st_prefAttribs> *pvprefAttribs,
+                             pugi::xml_node_type xmlType)
 {
   // Find the node specified by the path, creating it if it does not already exist
   // and add the requested value.
@@ -235,8 +236,8 @@ int CXMLprefs::SetPreference(const stringT &sPath, const stringT &sValue,
   // the latter using <![CDATA[[...]]> to encapsulate the data.
 
   // If the node has data in its first pcdata child use it, otherwise add a pcdata child
-  pugi::xml_node prefnode = (node.first_child().type() == pugi::node_pcdata) ?
-     node.first_child() : node.append_child(pugi::node_pcdata);
+  pugi::xml_node prefnode = (node.first_child().type() == xmlType) ?
+     node.first_child() : node.append_child(xmlType);
 
   if (!prefnode.set_value(sValue.c_str())) {
     iRetVal = XML_PUT_TEXT_FAILED;
@@ -416,7 +417,7 @@ int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName,
 
 // Set a string value
 int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName, 
-                   const stringT &csValue)
+                   const stringT &csValue, pugi::xml_node_type xmlType)
 {
   // m_pXMLDoc may be nullptr if Load() not called before Set,
   // or if called & failed
@@ -431,7 +432,7 @@ int CXMLprefs::Set(const stringT &csBaseKeyName, const stringT &csValueName,
   csKeyName += _T("\\");
   csKeyName += csValueName;
 
-  iRetVal = SetPreference(csKeyName, csValue);
+  iRetVal = SetPreference(csKeyName, csValue, nullptr, xmlType);
 
   return iRetVal;
 }
