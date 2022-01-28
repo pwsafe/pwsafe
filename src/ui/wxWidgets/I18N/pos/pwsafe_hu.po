@@ -57,7 +57,7 @@ msgid "See LICENSE for open source details."
 msgstr "Nézze meg a LICENSE-t a nyílt forráskód részleteiért."
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:175
-msgid "Copyright (c) 2003-2021 Rony Shapiro"
+msgid "Copyright (c) 2003-2022 Rony Shapiro"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:182

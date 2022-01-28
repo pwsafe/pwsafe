@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2021 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2022 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -172,7 +172,7 @@ void AboutDlg::CreateControls()
   wxStaticText* licenseStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _("See LICENSE for open source details."), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
   rightSizer->Add(licenseStaticTextEnd, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxStaticText* copyrightStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Copyright (c) 2003-2021 Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+  wxStaticText* copyrightStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Copyright (c) 2003-2022 Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
   rightSizer->Add(copyrightStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
   m_VersionStatus = new wxTextCtrl(aboutDialog, ID_TEXTCTRL, wxT("\n\n"), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxNO_BORDER);

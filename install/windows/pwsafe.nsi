@@ -3,7 +3,7 @@
 ; Password Safe Installation Script
 ;
 ; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
-; Copyright 2005-2021 Rony Shapiro <ronys@pwsafe.org>
+; Copyright 2005-2022 Rony Shapiro <ronys@pwsafe.org>
 ; 2009 extended by Karel Van der Gucht for multiple language use
 ; This script may be redistributed and/or modified under the Artistic
 ; License 2.0 terms as available at 
@@ -354,8 +354,8 @@ VIAddVersionKey "ProductName" "Password Safe ${TARGET_ARCH}"
 VIAddVersionKey "ProductVersion" "${VERSION} ${TARGET_ARCH}"
 VIAddVersionKey "Comments" "Password Safe installer by Rony Shapiro"
 VIAddVersionKey "CompanyName" "Rony Shapiro"
-VIAddVersionKey "LegalTrademarks" "Copyright (c) 2005-2021 Rony Shapiro"
-VIAddVersionKey "LegalCopyright" "Copyright (c) 2005-2021 Rony Shapiro"
+VIAddVersionKey "LegalTrademarks" "Copyright (c) 2005-2022 Rony Shapiro"
+VIAddVersionKey "LegalCopyright" "Copyright (c) 2005-2022 Rony Shapiro"
 VIAddVersionKey "FileDescription" "Password Safe Installer ${TARGET_ARCH}"
 VIAddVersionKey "FileVersion" "${VERSION} ${TARGET_ARCH}"
 
