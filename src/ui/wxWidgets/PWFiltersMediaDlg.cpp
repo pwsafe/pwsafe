@@ -57,6 +57,8 @@ BEGIN_EVENT_TABLE( pwFiltersMediaTypesDlg, wxDialog )
   EVT_COMBOBOX( ID_COMBOBOX69, pwFiltersMediaTypesDlg::OnSelectionChange )
   EVT_COMBOBOX( ID_COMBOBOX70, pwFiltersMediaTypesDlg::OnMediaTypeChange )
   EVT_TEXT( ID_COMBOBOX70, pwFiltersMediaTypesDlg::OnMediaTypeChange )
+  EVT_BUTTON( wxID_CANCEL, pwFiltersMediaTypesDlg::OnCancelClick )
+  EVT_CLOSE( pwFiltersMediaTypesDlg::OnClose )
 
 END_EVENT_TABLE()
 
@@ -415,4 +417,51 @@ void pwFiltersMediaTypesDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     *m_pfcase = m_fcase;
   }
   EndModal(wxID_OK);
+}
+
+bool pwFiltersMediaTypesDlg::IsChanged() const {
+  const auto idx = m_ComboBox->GetSelection();
+
+  if (idx < 0) {
+    return false;
+  }
+
+  if (m_add_present) {
+    if (idx >= 0 && idx < PW_NUM_PRESENT_ENUM) {
+      if (*m_prule != m_mrpres[idx]) {
+        return true;
+      }
+    }
+    else {
+      const auto tmpIdx = idx - PW_NUM_PRESENT_ENUM;
+      if(tmpIdx < PW_NUM_MEDIA_TYPES_CRITERIA_ENUM) {
+        if (*m_prule != m_mrcrit[tmpIdx]) {
+          return true;
+        }
+      }
+      else if (*m_prule != PWSMatch::MR_INVALID) {
+        return true;
+      }
+    }
+  }
+  else {
+    if(idx < PW_NUM_MEDIA_TYPES_CRITERIA_ENUM) {
+      if (*m_prule != m_mrcrit[idx]) {
+        return true;
+      }
+    }
+    else if (*m_prule != PWSMatch::MR_INVALID) {
+      return true;
+    }
+  }
+
+  if (*m_pvalue != m_MediaTypes->GetValue()) {
+    return true;
+  }
+
+  if (*m_pfcase != m_CheckBoxFCase->GetValue()) {
+    return true;
+  }
+
+  return false;
 }

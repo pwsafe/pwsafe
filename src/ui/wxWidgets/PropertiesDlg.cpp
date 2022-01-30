@@ -431,14 +431,16 @@ void PropertiesDlg::OnOkClick( wxCommandEvent& WXUNUSED(evt) )
  */
 void PropertiesDlg::OnEditName( wxCommandEvent& WXUNUSED(evt) )
 {
-  wxTextEntryDialog textInputDialog(
-    this, _("Name:"), _("Please enter the new database name"), m_NewDbName.c_str(), wxOK|wxCANCEL
-  );
+  CallAfter(&PropertiesDlg::DoEditName);
+}
 
-  textInputDialog.SetSize(550, -1);
+void PropertiesDlg::DoEditName() {
+  auto* inputDialog = new wxTextEntryDialog(this, _("Name:"), _("Please enter the new database name"), m_NewDbName.c_str(), wxOK|wxCANCEL);
 
-  if (textInputDialog.ShowModal() == wxID_OK) {
-    auto newDbName = textInputDialog.GetValue();
+  inputDialog->SetSize(550, -1);
+
+  if (inputDialog->ShowModal() == wxID_OK) {
+    auto newDbName = inputDialog->GetValue();
 
     if (newDbName.IsEmpty()) {
       m_DbName  = _("N/A");     // Show 'N/A' on the UI in case of an empty string,
@@ -452,6 +454,8 @@ void PropertiesDlg::OnEditName( wxCommandEvent& WXUNUSED(evt) )
       m_NewDbName = tostringx(newDbName);
     }
   }
+
+  inputDialog->Destroy();
 }
 
 /*!
@@ -459,14 +463,16 @@ void PropertiesDlg::OnEditName( wxCommandEvent& WXUNUSED(evt) )
  */
 void PropertiesDlg::OnEditDescription( wxCommandEvent& WXUNUSED(evt) )
 {
-  wxTextEntryDialog textInputDialog(
-    this, _("Description:"), _("Please enter the new database description"), m_NewDbDescription.c_str(), wxOK|wxCANCEL|wxTE_MULTILINE
-  );
+  CallAfter(&PropertiesDlg::DoEditDescription);
+}
 
-  textInputDialog.SetSize(550, 300);
+void PropertiesDlg::DoEditDescription() {
+  auto* inputDialog = new wxTextEntryDialog(this, _("Description:"), _("Please enter the new database description"), m_NewDbDescription.c_str(), wxOK|wxCANCEL|wxTE_MULTILINE);
 
-  if (textInputDialog.ShowModal() == wxID_OK) {
-    auto newDbDescription = textInputDialog.GetValue();
+  inputDialog->SetSize(550, 300);
+
+  if (inputDialog->ShowModal() == wxID_OK) {
+    auto newDbDescription = inputDialog->GetValue();
 
     if (newDbDescription.IsEmpty()) {
       m_DbDescription = _("N/A");     // Show 'N/A' on the UI in case of an empty string,
@@ -480,4 +486,6 @@ void PropertiesDlg::OnEditDescription( wxCommandEvent& WXUNUSED(evt) )
       m_NewDbDescription = tostringx(newDbDescription);
     }
   }
+
+  inputDialog->Destroy();
 }

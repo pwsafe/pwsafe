@@ -58,6 +58,8 @@ BEGIN_EVENT_TABLE( pwFiltersTypeDlg, wxDialog )
   EVT_BUTTON( wxID_OK, pwFiltersTypeDlg::OnOk )
   EVT_COMBOBOX( ID_COMBOBOX62, pwFiltersTypeDlg::OnSelectionChangeRule )
   EVT_COMBOBOX( ID_COMBOBOX63, pwFiltersTypeDlg::OnSelectionChangeType )
+  EVT_BUTTON( wxID_CANCEL, pwFiltersTypeDlg::OnCancelClick )
+  EVT_CLOSE( pwFiltersTypeDlg::OnClose )
 
 END_EVENT_TABLE()
 
@@ -329,4 +331,28 @@ void pwFiltersTypeDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     }
   }
   EndModal(wxID_OK);
+}
+
+bool pwFiltersTypeDlg::IsChanged() const {
+  const auto idx = m_ComboBoxRule->GetSelection();
+
+  if(idx >= 0 && idx < PW_NUM_TYPE_RULE_ENUM) {
+    if (*m_prule != m_mrx[idx]) {
+      return true;
+    }
+  }
+  else if (*m_prule != PWSMatch::MR_INVALID) {
+    return true;
+  }
+
+  const auto idx_type = m_ComboBoxType->GetSelection();
+  if(idx_type >= 0 && idx_type < PW_NUM_TYPE_ENUM) {
+    if (*m_petype != m_mtype[idx_type].typeValue) {
+      return true;
+    }
+  }
+  else if (*m_prule != PWSMatch::MR_INVALID) {
+    return true;
+  }
+  return false;
 }

@@ -51,6 +51,8 @@ BEGIN_EVENT_TABLE( pwFiltersBoolDlg, wxDialog )
 
   EVT_BUTTON( wxID_OK, pwFiltersBoolDlg::OnOk )
   EVT_COMBOBOX( ID_COMBOBOX53, pwFiltersBoolDlg::OnSelectionChange )
+  EVT_BUTTON( wxID_CANCEL, pwFiltersBoolDlg::OnCancelClick )
+  EVT_CLOSE( pwFiltersBoolDlg::OnClose )
 
 END_EVENT_TABLE()
 
@@ -298,4 +300,15 @@ void pwFiltersBoolDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     }
   }
   EndModal(wxID_OK);
+}
+
+bool pwFiltersBoolDlg::IsChanged() const {
+  switch (m_ComboBoxBool->GetSelection()) {
+    case 0:
+      return *m_prule != m_pmrx[0];
+    case 1:
+      return *m_prule != m_pmrx[1];
+    default:
+      return *m_prule != PWSMatch::MR_INVALID;
+  }
 }

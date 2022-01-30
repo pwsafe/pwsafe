@@ -18,7 +18,6 @@
  */
 
 #include <wx/choice.h>
-#include <wx/dialog.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/spinctrl.h>
@@ -27,6 +26,7 @@
 #include <wx/datectrl.h>
 
 #include "core/PWSFilters.h"
+#include "QueryCancelDlg.h"
 
 /*!
  * Forward declarations
@@ -56,7 +56,7 @@
  * pwFiltersDateDlg class declaration
  */
 
-class pwFiltersDateDlg : public wxDialog
+class pwFiltersDateDlg : public QueryCancelDlg
 {
   DECLARE_CLASS(pwFiltersDateDlg)
   DECLARE_EVENT_TABLE()
@@ -106,9 +106,11 @@ private:
   //*)
   
   void CheckControls();
-  bool CheckBetween(bool showMessage);
-  bool isRuleSelected(PWSMatch::MatchRule rule);
+  bool isRuleSelected(int idx, PWSMatch::MatchRule rule) const;
   void UpdateUnitSelection();
+
+  bool IsChanged() const override;
+  bool IsValid(bool showMessage) const;
 
   //(*Declarations(pwFiltersDateDlg)
   wxComboBox* m_ComboBox = nullptr;

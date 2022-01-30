@@ -59,6 +59,8 @@ BEGIN_EVENT_TABLE( pwFiltersPasswordDlg, wxDialog )
   EVT_COMBOBOX( ID_COMBOBOX72, pwFiltersPasswordDlg::OnSelectionChange )
   EVT_TEXT( ID_TEXTCTRL73, pwFiltersPasswordDlg::OnTextChange )
   EVT_SPINCTRL( ID_SPINCTRL75, pwFiltersPasswordDlg::OnFNum1Change )
+  EVT_BUTTON( wxID_CANCEL, pwFiltersPasswordDlg::OnCancelClick )
+  EVT_CLOSE( pwFiltersPasswordDlg::OnClose )
 
 END_EVENT_TABLE()
 
@@ -359,6 +361,9 @@ void pwFiltersPasswordDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     else
       *m_prule = PWSMatch::MR_INVALID;
 
+
+    m_string = m_TextCtrlValueString->GetValue();
+
     if(*m_prule != PWSMatch::MR_EXPIRED &&
        *m_prule != PWSMatch::MR_WILLEXPIRE &&
        m_string.IsEmpty()) {
@@ -366,7 +371,6 @@ void pwFiltersPasswordDlg::OnOk(wxCommandEvent& WXUNUSED(event))
       return;
     }
     
-    m_string = m_TextCtrlValueString->GetValue();
     m_fcase = m_CheckBoxFCase->GetValue();
     m_fnum1 = m_FNum1Ctrl->GetValue();
 
@@ -384,4 +388,50 @@ void pwFiltersPasswordDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     *m_pfnum1 = m_fnum1;
   }
   EndModal(wxID_OK);
+}
+
+bool pwFiltersPasswordDlg::IsChanged() const {
+  const auto idx = m_ComboBox->GetSelection();
+
+  if (idx < 0) {
+    return false;
+  }
+
+  if (idx < PW_NUM_PASSWORD_CRITERIA_ENUM) {
+    if (*m_prule != m_mrcrit[idx]) {
+      return true;
+    }
+  }
+  else if (*m_prule != PWSMatch::MR_INVALID) {
+    return true;
+  }
+
+  const auto str = m_TextCtrlValueString->GetValue();
+  if(*m_prule != PWSMatch::MR_EXPIRED && *m_prule != PWSMatch::MR_WILLEXPIRE && str.IsEmpty()) {
+    return true;
+  }
+
+  if (*m_pvalue != str) {
+    return true;
+  }
+
+  if(*m_prule != PWSMatch::MR_EXPIRED && *m_prule != PWSMatch::MR_WILLEXPIRE && *m_pfcase != m_CheckBoxFCase->GetValue()) {
+    return true;
+  }
+
+  auto fnum1 = m_FNum1Ctrl->GetValue();
+  if (*m_prule == PWSMatch::MR_WILLEXPIRE) {
+    if (fnum1 < 1) {
+      fnum1 = 1;
+    }
+  }
+  else {
+    fnum1 = 0;
+  }
+
+  if (*m_pfnum1 != fnum1) {
+    return true;
+  }
+
+  return false;
 }

@@ -24,6 +24,7 @@
 #include "core/core.h"
 
 #include "PWFiltersGrid.h"
+#include "QueryCancelDlg.h"
 ////@end includes
 
 /*!
@@ -58,7 +59,7 @@ class pwFiltersGrid;
  * SetFiltersDlg class declaration
  */
 
-class SetFiltersDlg: public wxDialog
+class SetFiltersDlg: public QueryCancelDlg
 {    
   DECLARE_DYNAMIC_CLASS( SetFilters )
   DECLARE_EVENT_TABLE()
@@ -86,12 +87,8 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOkClick( wxCommandEvent& event );
 
-  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
-  void OnCancelClick( wxCommandEvent& event );
-
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP
   void OnHelpClick( wxCommandEvent& event );
-
 ////@end SetFiltersDlg event handler declarations
 
 ////@begin SetFiltersDlg member function declarations
@@ -116,8 +113,11 @@ public:
   
 private:
   bool VerifyFilters();
+  bool SyncAndQueryCancel(bool showDialog) override;
+  bool IsChanged() const override;
    
   st_filters *m_pfilters = nullptr;           // The filter to change
+  st_filters m_origFilters;                   // Copy of filter to detect changes
   st_filters *m_currentFilters = nullptr;     // The filter to be set for Apply
   const bool m_bCanHaveAttachments = false; // Version V4 includes attachments
   const std::set<StringX> *m_psMediaTypes = nullptr;  // Attachement media types, present in current data base

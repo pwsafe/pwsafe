@@ -59,6 +59,8 @@ BEGIN_EVENT_TABLE( pwFiltersDateDlg, wxDialog )
   EVT_SPINCTRL( ID_SPINCTRL68, pwFiltersDateDlg::OnFNum2Change )
   EVT_RADIOBUTTON(  ID_RADIO_BT_ON, pwFiltersDateDlg::OnRadiobuttonOnSelected )
   EVT_RADIOBUTTON(  ID_RADIO_BT_IN, pwFiltersDateDlg::OnRadiobuttonInSelected )
+  EVT_BUTTON( wxID_CANCEL, pwFiltersDateDlg::OnCancelClick )
+  EVT_CLOSE( pwFiltersDateDlg::OnClose )
 
 END_EVENT_TABLE()
 
@@ -458,45 +460,14 @@ void pwFiltersDateDlg::CheckControls()
 }
 
 /*!
- * isRuleSelected Check if given rule is the selected one (this one marked by m_idx)
+ * isRuleSelected Check if given rule is the selected one
  */
 
-bool pwFiltersDateDlg::isRuleSelected(PWSMatch::MatchRule rule)
+bool pwFiltersDateDlg::isRuleSelected(int idx, PWSMatch::MatchRule rule) const
 {
-  return (m_idx >= 0) &&
-         ((m_add_present && (m_idx < (PW_NUM_PRESENT_ENUM + PW_NUM_DATE_CRITERIA_ENUM)) && (m_idx >= PW_NUM_PRESENT_ENUM) && (m_mrcrit[m_idx - PW_NUM_PRESENT_ENUM] == rule)) ||
-          (! m_add_present && (m_idx < PW_NUM_DATE_CRITERIA_ENUM) && (m_mrcrit[m_idx] == rule)));
-}
-
-/*!
- * CheckBetween Check if given rule is the BETWEEN and if both numbers are in right order or lower value is below maximum
- * Optional give hint to the user
- */
-
-bool pwFiltersDateDlg::CheckBetween(bool showMessage)
-{
-  if(isRuleSelected(PWSMatch::MR_BETWEEN)) {
-    if(m_fdatetype == PW_DATE_REL) {
-      if(m_fnum1 >= m_fnum2) {
-        if(showMessage)
-          wxMessageBox(_("Please correct numeric values."), _("Second number must be greater than first"), wxOK|wxICON_ERROR);
-        return false;
-      }
-      else if(m_fnum1 == m_max) {
-        if(showMessage)
-          wxMessageBox(_("Please correct numeric values."), _("Maximum value for first number and 'Between' rule"), wxOK|wxICON_ERROR);
-        return false;
-      }
-    }
-    else {
-      if(m_fdate1 >= m_fdate2) {
-        if(showMessage)
-          wxMessageBox(_("Please correct date values."), _("Second date must be later than first"), wxOK|wxICON_ERROR);
-        return false;
-      }
-    }
-  }
-  return true;
+  return (idx >= 0) &&
+         ((m_add_present && (idx < (PW_NUM_PRESENT_ENUM + PW_NUM_DATE_CRITERIA_ENUM)) && (idx >= PW_NUM_PRESENT_ENUM) && (m_mrcrit[idx - PW_NUM_PRESENT_ENUM] == rule)) ||
+          (! m_add_present && (idx < PW_NUM_DATE_CRITERIA_ENUM) && (m_mrcrit[idx] == rule)));
 }
 
 /*!
@@ -557,6 +528,75 @@ void pwFiltersDateDlg::OnRadiobuttonInSelected(wxCommandEvent& WXUNUSED(event))
   CheckControls();
 }
 
+bool pwFiltersDateDlg::IsValid(bool showMessage) const {
+  const auto idx = m_ComboBox->GetSelection();
+  const auto fnum1 = m_FNum1Ctrl->GetValue();
+  const auto fnum2 = m_FNum2Ctrl->GetValue();
+  const auto fdate1 = m_ExpDate1Ctrl->GetValue();
+  const auto fdate2 = m_ExpDate2Ctrl->GetValue();
+
+  // CheckBetween Check if given rule is the BETWEEN and if both numbers are in right order or lower value is below maximum
+  if (isRuleSelected(idx, PWSMatch::MR_BETWEEN)) {
+    if (m_fdatetype == PW_DATE_REL) {
+      if (fnum1 >= fnum2) {
+        if(showMessage) {
+          wxMessageBox(_("Please correct numeric values."), _("Second number must be greater than first"), wxOK|wxICON_ERROR);
+        }
+        return false;
+      }
+      else if(fnum1 == m_max) {
+        if (showMessage) {
+          wxMessageBox(_("Please correct numeric values."), _("Maximum value for first number and 'Between' rule"), wxOK|wxICON_ERROR);
+        }
+        return false;
+      }
+    }
+    else {
+      if (fdate1 >= fdate2) {
+        if (showMessage) {
+          wxMessageBox(_("Please correct date values."), _("Second date must be later than first"), wxOK|wxICON_ERROR);
+        }
+        return false;
+      }
+    }
+  }
+
+  if (m_fdatetype == PW_DATE_REL) {
+    if (isRuleSelected(idx, PWSMatch::MR_BEFORE) && (fnum1 == m_min)) {
+      if (showMessage) {
+        wxMessageBox(_("Please correct numeric values."), _("Number is set to the minimum value. 'Less than' is not allowed."), wxOK|wxICON_ERROR);
+      }
+      return false;
+    }
+
+    if (isRuleSelected(idx, PWSMatch::MR_AFTER) && (fnum1 == m_max)) {
+      if (showMessage) {
+        wxMessageBox(_("Please correct numeric values."), _("Number is set to the maximum value. 'Greater than' is not allowed."), wxOK|wxICON_ERROR);
+      }
+      return false;
+    }
+    if (m_ftype != FT_XTIME) {
+      // All dates, except History must be located in the history
+      if ((fnum1 > 0) || (isRuleSelected(idx, PWSMatch::MR_BETWEEN) && (fnum2 > 0))) {
+        if (showMessage) {
+          wxMessageBox(_("Please correct numeric values."), _("A future date is not valid for this field"), wxOK|wxICON_ERROR);
+        }
+        return false;
+      }
+    }
+  }
+  else if (m_ftype != FT_XTIME) {
+    // All dates, except History must be located in the history
+    if ((fdate1 > wxDateTime::Now()) || (isRuleSelected(idx, PWSMatch::MR_BETWEEN) && (fdate2 > wxDateTime::Now()))) {
+      if (showMessage) {
+        wxMessageBox(_("Please correct date values."), _("A future date is not valid for this field"), wxOK|wxICON_ERROR);
+      }
+      return false;
+    }
+  }
+  return true;
+}
+
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
@@ -570,41 +610,16 @@ void pwFiltersDateDlg::OnOk(wxCommandEvent& WXUNUSED(event))
       EndModal(wxID_CANCEL);
       return;
     }
+
+    if (!IsValid(true)) {
+      return;
+    }
     
     m_fdate1 = m_ExpDate1Ctrl->GetValue();
     m_fdate2 = m_ExpDate2Ctrl->GetValue();
     m_fnum1 = m_FNum1Ctrl->GetValue();
     m_fnum2 = m_FNum2Ctrl->GetValue();
 
-    if(! CheckBetween(true))
-      return;
-    
-    if(m_fdatetype == PW_DATE_REL) {
-      if(isRuleSelected(PWSMatch::MR_BEFORE) && (m_fnum1 == m_min)) {
-        wxMessageBox(_("Please correct numeric values."), _("Number is set to the minimum value. 'Less than' is not allowed."), wxOK|wxICON_ERROR);
-        return;
-      }
-    
-      if(isRuleSelected(PWSMatch::MR_AFTER) && (m_fnum1 == m_max)) {
-        wxMessageBox(_("Please correct numeric values."), _("Number is set to the maximum value. 'Greater than' is not allowed."), wxOK|wxICON_ERROR);
-        return;
-      }
-      if(m_ftype != FT_XTIME) {
-        // All dates, except History must be located in the history
-        if((m_fnum1 > 0) || (isRuleSelected(PWSMatch::MR_BETWEEN) && (m_fnum2 > 0))) {
-          wxMessageBox(_("Please correct numeric values."), _("A future date is not valid for this field"), wxOK|wxICON_ERROR);
-          return;
-        }
-      }
-    }
-    else if(m_ftype != FT_XTIME) {
-      // All dates, except History must be located in the history
-      if((m_fdate1 > wxDateTime::Now()) || (isRuleSelected(PWSMatch::MR_BETWEEN) && (m_fdate2 > wxDateTime::Now()))) {
-        wxMessageBox(_("Please correct date values."), _("A future date is not valid for this field"), wxOK|wxICON_ERROR);
-        return;
-      }
-    }
-    
     if(m_add_present) {
       if((m_idx >= 0) && (m_idx < PW_NUM_PRESENT_ENUM)) {
         *m_prule = m_mrpres[m_idx];
@@ -636,7 +651,7 @@ void pwFiltersDateDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     else {
       if(m_fdatetype == PW_DATE_REL) {
         *m_pfnum1 = m_fnum1;
-        if(isRuleSelected(PWSMatch::MR_BETWEEN))
+        if(isRuleSelected(m_idx, PWSMatch::MR_BETWEEN))
           *m_pfnum2 = m_fnum2;
         else
           *m_pfnum2 = 0;
@@ -645,7 +660,7 @@ void pwFiltersDateDlg::OnOk(wxCommandEvent& WXUNUSED(event))
       }
       else {
         *m_pfdate1 = m_fdate1.GetTicks();
-        if(isRuleSelected(PWSMatch::MR_BETWEEN))
+        if(isRuleSelected(m_idx, PWSMatch::MR_BETWEEN))
           *m_pfdate2 = m_fdate2.GetTicks();
         else
           *m_pfdate2 = static_cast<time_t>(0);
@@ -655,4 +670,78 @@ void pwFiltersDateDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     }
   }
   EndModal(wxID_OK);
+}
+
+bool pwFiltersDateDlg::IsChanged() const {
+  const auto idx = m_ComboBox->GetSelection();
+  if (idx < 0) {
+    return false;
+  }
+
+  if (!IsValid(false)) {
+    return true;
+  }
+
+  if (m_add_present) {
+    if (idx >= 0 && idx < PW_NUM_PRESENT_ENUM) {
+      if (*m_prule != m_mrpres[idx]) {
+        return true;
+      }
+    }
+    else {
+      const auto tmpIdx = idx - PW_NUM_PRESENT_ENUM;
+      if (tmpIdx < PW_NUM_DATE_CRITERIA_ENUM) {
+        if (*m_prule != m_mrcrit[tmpIdx]) {
+          return true;
+        }
+      }
+      else if (*m_prule != PWSMatch::MR_INVALID) {
+        return true;
+      }
+    }
+  }
+  else {
+    if (idx < PW_NUM_DATE_CRITERIA_ENUM) {
+      if (*m_prule != m_mrcrit[idx]) {
+        return true;
+      }
+    }
+    else if (*m_prule != PWSMatch::MR_INVALID) {
+      return true;
+    }
+  }
+
+  if (*m_pfdatetype != m_fdatetype) {
+    return true;
+  }
+
+  if (*m_prule != PWSMatch::MR_PRESENT && *m_prule != PWSMatch::MR_NOTPRESENT) {
+    const auto fnum1 = m_FNum1Ctrl->GetValue();
+    const auto fnum2 = m_FNum2Ctrl->GetValue();
+
+    if (m_fdatetype == PW_DATE_REL) {
+      if (*m_pfnum1 != fnum1) {
+        return true;
+      }
+      if (isRuleSelected(idx, PWSMatch::MR_BETWEEN)) {
+        if (*m_pfnum2 != fnum2) {
+          return true;
+        }
+      }
+    }
+    else {
+      const auto fdate1 = m_ExpDate1Ctrl->GetValue();
+      const auto fdate2 = m_ExpDate2Ctrl->GetValue();
+
+      if (*m_pfdate1 != fdate1.GetTicks()) {
+        return true;
+      }
+      if (isRuleSelected(idx, PWSMatch::MR_BETWEEN)) {
+        if (*m_pfdate2 != fdate2.GetTicks()) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
 }

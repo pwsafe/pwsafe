@@ -72,6 +72,8 @@ BEGIN_EVENT_TABLE( pwFiltersIntegerDlg, wxDialog )
   EVT_RADIOBUTTON(  ID_RADIO_BT_BY, pwFiltersIntegerDlg::OnByteRadiobuttonSelected )
   EVT_RADIOBUTTON(  ID_RADIO_BT_KB, pwFiltersIntegerDlg::OnKiloByteRadiobuttonSelected )
   EVT_RADIOBUTTON(  ID_RADIO_BT_MB, pwFiltersIntegerDlg::OnMegaByteRadiobuttonSelected )
+  EVT_BUTTON( wxID_CANCEL, pwFiltersIntegerDlg::OnCancelClick )
+  EVT_CLOSE( pwFiltersIntegerDlg::OnClose )
 
 END_EVENT_TABLE()
 
@@ -478,34 +480,48 @@ void pwFiltersIntegerDlg::CheckControls()
 }
 
 /*!
- * isRuleSelected Check if given rule is the selected one (this one marked by m_idx)
+ * isRuleSelected Check if given rule is the selected one
  */
 
-bool pwFiltersIntegerDlg::isRuleSelected(PWSMatch::MatchRule rule)
+bool pwFiltersIntegerDlg::isRuleSelected(int idx, PWSMatch::MatchRule rule) const
 {
-  return (m_idx >= 0) &&
-         ((m_add_present && (m_idx < (PW_NUM_PRESENT_ENUM + PW_NUM_INT_CRITERIA_ENUM)) && (m_idx >= PW_NUM_PRESENT_ENUM) && (m_mrcrit[m_idx - PW_NUM_PRESENT_ENUM] == rule)) ||
-          (! m_add_present && (m_idx < PW_NUM_INT_CRITERIA_ENUM) && (m_mrcrit[m_idx] == rule)));
+  return (idx >= 0) &&
+         ((m_add_present && (idx < (PW_NUM_PRESENT_ENUM + PW_NUM_INT_CRITERIA_ENUM)) && (idx >= PW_NUM_PRESENT_ENUM) && (m_mrcrit[idx - PW_NUM_PRESENT_ENUM] == rule)) ||
+          (! m_add_present && (idx < PW_NUM_INT_CRITERIA_ENUM) && (m_mrcrit[idx] == rule)));
 }
 
-/*!
- * CheckBetween Check if given rule is the BETWEEN and if both numbers are in right order or lower value is below maximum
- * Optional give hint to the user
- */
-
-bool pwFiltersIntegerDlg::CheckBetween(bool showMessage)
+bool pwFiltersIntegerDlg::IsValid(bool showMessage) const
 {
-  if(isRuleSelected(PWSMatch::MR_BETWEEN)) {
-    if(m_fnum1 >= m_fnum2) {
-      if(showMessage)
+  const auto idx = m_ComboBox->GetSelection();
+
+  const auto fnum1 = m_FNum1Ctrl->GetValue();
+  const auto fnum2 = m_FNum2Ctrl->GetValue();
+
+  if (isRuleSelected(idx, PWSMatch::MR_BETWEEN)) {
+    if (fnum1 >= fnum2) {
+      if (showMessage) {
         wxMessageBox(_("Please correct numeric values."), _("Second number must be greater than first"), wxOK|wxICON_ERROR);
+      }
       return false;
     }
-    else if(m_fnum1 == m_max) {
-      if(showMessage)
+    else if (fnum1 == m_max) {
+      if (showMessage) {
         wxMessageBox(_("Please correct numeric values."), _("Maximum value for first number and 'Between' rule"), wxOK|wxICON_ERROR);
+      }
       return false;
     }
+  }
+  else if(isRuleSelected(idx, PWSMatch::MR_LT) && (fnum1 == m_min)) {
+    if (showMessage) {
+      wxMessageBox(_("Please correct numeric values."), _("Number is set to the minimum value. 'Less than' is not allowed."), wxOK|wxICON_ERROR);
+    }
+    return false;
+  }
+  else if(isRuleSelected(idx, PWSMatch::MR_GT) && (fnum1 == m_max)) {
+    if (showMessage) {
+      wxMessageBox(_("Please correct numeric values."), _("Number is set to the maximum value. 'Greater than' is not allowed."), wxOK|wxICON_ERROR);
+    }
+    return false;
   }
   return true;
 }
@@ -607,23 +623,14 @@ void pwFiltersIntegerDlg::OnOk(wxCommandEvent& WXUNUSED(event))
       EndModal(wxID_CANCEL);
       return;
     }
+
+    if (!IsValid(true)) {
+      return;
+    }
     
     m_fnum1 = m_FNum1Ctrl->GetValue();
     m_fnum2 = m_FNum2Ctrl->GetValue();
 
-    if(! CheckBetween(true))
-      return;
-    
-    if(isRuleSelected(PWSMatch::MR_LT) && (m_fnum1 == m_min)) {
-      wxMessageBox(_("Please correct numeric values."), _("Number is set to the minimum value. 'Less than' is not allowed."), wxOK|wxICON_ERROR);
-      return;
-    }
-    
-    if(isRuleSelected(PWSMatch::MR_GT) && (m_fnum1 == m_max)) {
-      wxMessageBox(_("Please correct numeric values."), _("Number is set to the maximum value. 'Greater than' is not allowed."), wxOK|wxICON_ERROR);
-      return;
-    }
-    
     if(m_add_present) {
       if((m_idx >= 0) && (m_idx < PW_NUM_PRESENT_ENUM)) {
         *m_prule = m_mrpres[m_idx];
@@ -654,4 +661,64 @@ void pwFiltersIntegerDlg::OnOk(wxCommandEvent& WXUNUSED(event))
       *m_pfunit = m_funit;
   }
   EndModal(wxID_OK);
+}
+
+bool pwFiltersIntegerDlg::IsChanged() const {
+  const auto idx = m_ComboBox->GetSelection();
+
+  if (idx < 0) {
+    return false;
+  }
+
+  if (!IsValid(false)) {
+    return true;
+  }
+
+  auto fnum1 = m_FNum1Ctrl->GetValue();
+  auto fnum2 = m_FNum2Ctrl->GetValue();
+
+  if (m_add_present) {
+    if(idx >= 0 && idx < PW_NUM_PRESENT_ENUM) {
+      if (*m_prule != m_mrpres[idx]) {
+        return true;
+      }
+    }
+    else {
+      const auto tmpIdx = idx - PW_NUM_PRESENT_ENUM;
+      if (tmpIdx < PW_NUM_INT_CRITERIA_ENUM) {
+        if (*m_prule != m_mrcrit[tmpIdx]) {
+          return true;
+        }
+      }
+      else if (*m_prule != PWSMatch::MR_INVALID) {
+        return true;
+      }
+    }
+  }
+  else {
+    if (idx < PW_NUM_INT_CRITERIA_ENUM) {
+      if (*m_prule != m_mrcrit[idx]) {
+        return true;
+      }
+    }
+    else if (*m_prule != PWSMatch::MR_INVALID) {
+      return true;
+    }
+  }
+
+  if (m_pfunit && *m_pfunit != m_funit) {
+    return true;
+  }
+
+  // Calculate size when entry size
+  if (m_ftype == FT_ENTRYSIZE) {
+    fnum1 <<= (m_funit * 10);
+    fnum2 <<= (m_funit * 10);
+  }
+
+  if (*m_pfnum1 != fnum1 || *m_pfnum2 != fnum2) {
+    return true;
+  }
+
+  return false;
 }

@@ -1306,19 +1306,21 @@ void PasswordSafeFrame::DoSynchronize(wxString filename)
                 wxT("Synchronize menu enabled for empty or read-only database!"));
 
   SyncWizard wiz(this, &m_core, filename);
-  wiz.RunWizard(wiz.GetFirstPage());
-
-  if (wiz.GetNumUpdated() > 0)
-    UpdateStatusBar();
-
+  if (wiz.RunWizard(wiz.GetFirstPage())) {
+    if (wiz.GetNumUpdated() > 0 && wiz.GetSyncCommands()) {
+      m_core.Execute(wiz.GetSyncCommands());
+      UpdateStatusBar();
+    }
 #ifdef NOT_YET
-  ChangeOkUpdate();
+    ChangeOkUpdate();
 #endif
 
-  RefreshViews();
+    RefreshViews();
 
-  if (wiz.ShowReport())
-    ViewReport(*wiz.GetReport());
+    if (wiz.ShowReport()) {
+      ViewReport(*wiz.GetReport());
+    }
+  }
 }
 
 void PasswordSafeFrame::OnPropertiesClick(wxCommandEvent& WXUNUSED(evt))

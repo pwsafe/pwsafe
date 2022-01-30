@@ -18,12 +18,12 @@
  */
 
 #include <wx/choice.h>
-#include <wx/dialog.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/spinctrl.h>
 
 #include "core/PWSFilters.h"
+#include "QueryCancelDlg.h"
 
 /*!
  * Forward declarations
@@ -49,7 +49,7 @@
  * pwFiltersPasswordDlg class declaration
  */
 
-class pwFiltersPasswordDlg : public wxDialog
+class pwFiltersPasswordDlg : public QueryCancelDlg
 {
   DECLARE_CLASS(pwFiltersPasswordDlg)
   DECLARE_EVENT_TABLE()
@@ -94,6 +94,8 @@ private:
   void OnTextChange(wxCommandEvent& event);
   void OnFNum1Change(wxSpinEvent& event);
   //*)
+
+  bool IsChanged() const override;
 
   //(*Declarations(pwFiltersPasswordDlg)
   wxComboBox* m_ComboBox = nullptr;

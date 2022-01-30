@@ -65,6 +65,8 @@ BEGIN_EVENT_TABLE( pwFiltersDCADlg, wxDialog )
   EVT_BUTTON( wxID_OK, pwFiltersDCADlg::OnOk )
   EVT_COMBOBOX( ID_COMBOBOX55, pwFiltersDCADlg::OnSelectionChangeRule )
   EVT_COMBOBOX( ID_COMBOBOX56, pwFiltersDCADlg::OnSelectionChangeDCA )
+  EVT_BUTTON( wxID_CANCEL, pwFiltersDCADlg::OnCancelClick )
+  EVT_CLOSE( pwFiltersDCADlg::OnClose )
 
 END_EVENT_TABLE()
 
@@ -392,4 +394,31 @@ void pwFiltersDCADlg::OnOk(wxCommandEvent& WXUNUSED(event))
     }
   }
   EndModal(wxID_OK);
+}
+
+bool pwFiltersDCADlg::IsChanged() const {
+  const auto idx = m_ComboBoxRule->GetSelection();
+  if(idx >= 0 && idx < PW_NUM_DCA_RULE_ENUM) {
+    if (*m_prule != m_mrx[idx]) {
+      return true;
+    }
+  }
+  else if (*m_prule != PWSMatch::MR_INVALID) {
+    return true;
+  }
+
+  const auto idx_dca = m_ComboBoxDCA->GetSelection();
+
+  if(idx_dca >= 0 && idx_dca < PW_NUM_DCA_ENUM) {
+    if (*m_pfdca != m_mdca[idx_dca].dcaValue) {
+      return true;
+    }
+  }
+  else if(idx > 1) { // is not MR_PRESENT or MR_NOTPRESENT
+    if (*m_prule != PWSMatch::MR_INVALID) {
+      return true;
+    }
+  }
+
+  return false;
 }

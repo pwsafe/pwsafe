@@ -79,6 +79,7 @@ BEGIN_EVENT_TABLE( ManagePasswordPoliciesDlg, wxDialog )
 
   EVT_MAXIMIZE( ManagePasswordPoliciesDlg::OnMaximize )
 
+  EVT_CLOSE( ManagePasswordPoliciesDlg::OnClose )
 END_EVENT_TABLE()
 
 /*!
@@ -730,21 +731,16 @@ void ManagePasswordPoliciesDlg::OnOkClick( wxCommandEvent& )
    * If anything has changed, we treat the change as atomic, creating a multicommand
    * s.t. Undo/Redo will work as expected.
    */
-  const auto& olddefpol = PWSprefs::GetInstance()->GetDefaultPolicy();
-  const auto& newdefpol = m_PolicyManager->GetDefaultPolicy();
-  bool defChanged = (olddefpol != newdefpol);
+  const auto changes = GetChanges();
 
-  auto policies = m_PolicyManager->GetPolicies();
-  bool namedChanged = (policies != m_core.GetPasswordPolicies());
-
-  if (defChanged || namedChanged) {
+  if (changes != Changes::None) {
     MultiCommands *pmulticmds = MultiCommands::Create(&m_core);
 
-    if (defChanged) {
+    if (changes & Changes::DefaultPolicy) {
       // User has changed database default policy - need to update preferences
       // Update the copy only!
       PWSprefs::GetInstance()->SetupCopyPrefs();
-      PWSprefs::GetInstance()->SetDefaultPolicy(newdefpol, true);
+      PWSprefs::GetInstance()->SetDefaultPolicy(m_PolicyManager->GetDefaultPolicy(), true);
 
       // Now get new DB preferences String value
       StringX sxNewDBPrefsString(PWSprefs::GetInstance()->Store(true));
@@ -754,8 +750,8 @@ void ManagePasswordPoliciesDlg::OnOkClick( wxCommandEvent& )
         pmulticmds->Add(DBPrefsCommand::Create(&m_core, sxNewDBPrefsString));
     } // defChanged
 
-    if (namedChanged) {
-      pmulticmds->Add(DBPolicyNamesCommand::Create(&m_core, policies,
+    if (changes & Changes::NamedPolices) {
+      pmulticmds->Add(DBPolicyNamesCommand::Create(&m_core, m_PolicyManager->GetPolicies(),
                                                    DBPolicyNamesCommand::NP_REPLACEALL));
     }
     m_core.Execute(pmulticmds);
@@ -771,11 +767,7 @@ void ManagePasswordPoliciesDlg::OnOkClick( wxCommandEvent& )
 void ManagePasswordPoliciesDlg::OnCancelClick( wxCommandEvent& event )
 {
   m_bShowPolicyEntriesInitially = true;
-
-  ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in ManagePasswordPoliciesDlg.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in ManagePasswordPoliciesDlg.
+  QueryCancelDlg::OnCancelClick(event);
 }
 
 /*!
@@ -895,4 +887,29 @@ void ManagePasswordPoliciesDlg::OnMaximize(wxMaximizeEvent& event)
   CallAfter(&ManagePasswordPoliciesDlg::ResizeGridColumns); // delayed execution of resizing, until dialog is completely layout
 
   event.Skip();
+}
+
+bool ManagePasswordPoliciesDlg::SyncAndQueryCancel(bool showDialog) {
+  // no need to check when used in R/O mode
+  if (m_core.IsReadOnly()) {
+    return true;
+  }
+  return QueryCancelDlg::SyncAndQueryCancel(showDialog);
+}
+
+uint32_t ManagePasswordPoliciesDlg::GetChanges() const {
+  uint32_t changes = Changes::None;
+  if (PWSprefs::GetInstance()->GetDefaultPolicy() != m_PolicyManager->GetDefaultPolicy()) {
+    changes |= Changes::DefaultPolicy;
+  }
+
+  if (m_PolicyManager->GetPolicies() != m_core.GetPasswordPolicies()) {
+    changes |= Changes::NamedPolices;
+  }
+
+  return changes;
+}
+
+bool ManagePasswordPoliciesDlg::IsChanged() const {
+  return GetChanges() != Changes::None;
 }

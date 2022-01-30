@@ -20,11 +20,11 @@
 #include <set>
 
 #include <wx/choice.h>
-#include <wx/dialog.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 
 #include "core/PWSFilters.h"
+#include "QueryCancelDlg.h"
 
 /*!
  * Forward declarations
@@ -50,7 +50,7 @@
  * pwFiltersMediaTypesDlg class declaration
  */
 
-class pwFiltersMediaTypesDlg : public wxDialog
+class pwFiltersMediaTypesDlg : public QueryCancelDlg
 {
   DECLARE_CLASS(pwFiltersMediaTypesDlg)
   DECLARE_EVENT_TABLE()
@@ -92,6 +92,8 @@ private:
   void OnSelectionChange(wxCommandEvent& event);
   void OnMediaTypeChange(wxCommandEvent& event);
   //*)
+
+  bool IsChanged() const override;
 
   //(*Declarations(pwFiltersMediaTypesDlg)
   wxComboBox* m_ComboBox;

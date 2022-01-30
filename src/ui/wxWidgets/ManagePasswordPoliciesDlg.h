@@ -25,7 +25,7 @@
 #include "core/StringX.h"
 #include "core/PWScore.h"
 #include "core/PolicyManager.h"
-
+#include "QueryCancelDlg.h"
 #include <vector>
 
 /*!
@@ -65,7 +65,7 @@ class wxGrid;
  * ManagePasswordPoliciesDlg class declaration
  */
 
-class ManagePasswordPoliciesDlg: public wxDialog
+class ManagePasswordPoliciesDlg: public QueryCancelDlg
 {
   DECLARE_DYNAMIC_CLASS( ManagePasswordPoliciesDlg )
   DECLARE_EVENT_TABLE()
@@ -166,6 +166,16 @@ protected:
   PWPolicy GetSelectedPolicy() const;
   int GetSelectedRow() const;
   void ResizeGridColumns();
+
+  enum Changes : uint32_t {
+    None = 0,
+    DefaultPolicy = 1u,
+    NamedPolices = 1u << 1,
+  };
+
+  uint32_t GetChanges() const;
+  bool SyncAndQueryCancel(bool showDialog) override;
+  bool IsChanged() const override;
 
   PWScore &m_core;
 

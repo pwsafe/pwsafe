@@ -56,6 +56,8 @@ BEGIN_EVENT_TABLE( pwFiltersStatusDlg, wxDialog )
   EVT_BUTTON( wxID_OK, pwFiltersStatusDlg::OnOk )
   EVT_COMBOBOX( ID_COMBOBOX60, pwFiltersStatusDlg::OnSelectionChangeRule )
   EVT_COMBOBOX( ID_COMBOBOX61, pwFiltersStatusDlg::OnSelectionChangeStatus )
+  EVT_BUTTON( wxID_CANCEL, pwFiltersStatusDlg::OnCancelClick )
+  EVT_CLOSE( pwFiltersStatusDlg::OnClose )
 
 END_EVENT_TABLE()
 
@@ -327,4 +329,28 @@ void pwFiltersStatusDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     }
   }
   EndModal(wxID_OK);
+}
+
+bool pwFiltersStatusDlg::IsChanged() const {
+  const auto idx = m_ComboBoxRule->GetSelection();
+  if (idx >= 0 && idx < PW_NUM_STATUS_RULE_ENUM) {
+    if (*m_prule != m_mrx[idx]) {
+      return true;
+    }
+  }
+  else if (*m_prule != PWSMatch::MR_INVALID) {
+    return true;
+  }
+
+  const auto idx_status = m_ComboBoxStatus->GetSelection();
+  if(idx_status >= 0 && idx_status < PW_NUM_STATUS_ENUM) {
+    if (*m_pestatus != m_mstatus[idx_status].statusValue) {
+      return true;
+    }
+  }
+  else if (*m_prule != PWSMatch::MR_INVALID) {
+    return true;
+  }
+
+  return false;
 }

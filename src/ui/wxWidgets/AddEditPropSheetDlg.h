@@ -226,6 +226,12 @@ protected:
   
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOk(wxCommandEvent &event);
+  
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
+  void OnCancel(wxCommandEvent &event);
+  
+  /// wxEVT_CLOSE event handler
+  void OnClose(wxCloseEvent &event);
 
   /// wxEVT_SPINCTRL event handler for ID_SPINCTRL5, ID_SPINCTRL6, ID_SPINCTRL7, ID_SPINCTRL8
   void OnAtLeastPasswordChars(wxSpinEvent &event);
@@ -285,8 +291,8 @@ private:
   void SetXTime(wxObject *src); // sync controls + controls -> entry
   void UpdatePWPolicyControls(const PWPolicy &pwp);
   void EnablePWPolicyControls(bool enable);
-  PWPolicy GetPWPolicyFromUI();
-  PWPolicy GetSelectedPWPolicy();
+  PWPolicy GetPWPolicyFromUI() const;
+  PWPolicy GetSelectedPWPolicy() const;
   bool CheckPWPolicyFromUI();
   void ShowPWPSpinners(bool show);
   void EnableNonHexCBs(bool enable);
@@ -300,11 +306,37 @@ private:
   bool ValidateBasicData();
   bool ValidatePasswordPolicy();
   bool IsGroupUsernameTitleCombinationUnique();
-
+  bool SyncAndQueryCancel(bool showDialog);
+  
+  enum Changes : uint32_t {
+    None = 0,
+    Group = 1u,
+    Title = 1u << 1,
+    User = 1u << 2,
+    Notes = 1u << 3,
+    Url = 1u << 4,
+    Email = 1u << 5,
+    Autotype = 1u << 6,
+    RunCommand = 1u << 7,
+    History = 1u << 8,
+    Symbols = 1u << 9,
+    DCA = 1u << 10,
+    ShiftDCA = 1u << 11,
+    XTime = 1u << 12,
+    XTimeInt = 1u << 13,
+    Password = 1u << 14,
+    Policy = 1u << 15,
+    Attachment = 1u << 16,
+  };
+  
+  uint32_t GetChanges() const;
+  
   Command* NewAddEntryCommand(bool bNewCTime = true);
   Command* NewEditEntryCommand();
   
   void DoAliasButtonClick();
+  
+  StringX PreparePasswordHistory() const;
 
   // Tab: "Basic"
   wxPanel *m_BasicPanel = nullptr;

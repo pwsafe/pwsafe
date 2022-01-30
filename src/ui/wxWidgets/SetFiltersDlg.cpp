@@ -57,6 +57,7 @@ BEGIN_EVENT_TABLE( SetFiltersDlg, wxDialog )
   EVT_BUTTON( wxID_OK, SetFiltersDlg::OnOkClick )
   EVT_BUTTON( wxID_CANCEL, SetFiltersDlg::OnCancelClick )
   EVT_BUTTON( wxID_HELP, SetFiltersDlg::OnHelpClick )
+  EVT_CLOSE( SetFiltersDlg::OnClose )
 ////@end SetFiltersDlg event table entries
 
 END_EVENT_TABLE()
@@ -174,6 +175,7 @@ void SetFiltersDlg::CreateControls()
   m_filterGrid = new pwFiltersGrid( itemDialog1, ID_FILTERGRID,
                                    m_pfilters, m_filtertype, m_filterpool, m_bCanHaveAttachments, m_psMediaTypes, true,
                                    wxDefaultPosition, wxSize(200, 150), wxSUNKEN_BORDER|wxHSCROLL|wxVSCROLL );
+  m_origFilters = *m_pfilters; // set origFilters here, because pwFiltersGrid insert empty item, if list is empty
   itemBoxSizer2->Add(m_filterGrid, 1, wxGROW|wxALL|wxEXPAND, 5);
 
   wxBoxSizer* itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
@@ -203,7 +205,7 @@ void SetFiltersDlg::CreateControls()
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_APPLY
  */
 
-void SetFiltersDlg::OnApplyClick( wxCommandEvent& event )
+void SetFiltersDlg::OnApplyClick( wxCommandEvent& /*event*/ )
 {
   if ((m_filtertype == DFTYPE_MAIN) && Validate() && TransferDataFromWindow()) {
     // Second call will clear and remove active filter
@@ -268,27 +270,6 @@ void SetFiltersDlg::OnOkClick( wxCommandEvent& event )
 
 
 /*!
- * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
- */
-
-void SetFiltersDlg::OnCancelClick( wxCommandEvent& event )
-{
-  if((m_filtertype == DFTYPE_MAIN) && *m_AppliedCalled) {
-    wxMessageDialog dialog(this, _("Applied pressed before Cancel"), _("Do you wish to overtake applied filter?"), wxYES_NO | wxICON_EXCLAMATION);
-    if(dialog.ShowModal() == wxID_NO) {
-      m_currentFilters->Empty();
-
-      wxCommandEvent event(wxEVT_COMMAND_MENU_SELECTED, ID_APPLYFILTER);
-      GetParent()->GetEventHandler()->ProcessEvent(event);
-      
-      *m_AppliedCalled = false;
-    }
-  }
-  EndModal(wxID_CANCEL);
-}
-
-
-/*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP
  */
 
@@ -309,7 +290,6 @@ bool SetFiltersDlg::ShowToolTips()
 {
   return true;
 }
-
 
 /*!
  * Get bitmap resources
@@ -418,4 +398,27 @@ bool SetFiltersDlg::VerifyFilters()
   }
   
   return true;
+}
+
+bool SetFiltersDlg::IsChanged() const {
+  return *m_pfilters != m_origFilters || m_filterName != m_origFilters.fname;
+}
+
+bool SetFiltersDlg::SyncAndQueryCancel(bool showDialog) {
+  if((m_filtertype == DFTYPE_MAIN) && *m_AppliedCalled) {
+    if (showDialog) {
+      wxMessageDialog dialog(this, _("Applied pressed before Cancel"), _("Do you wish to overtake applied filter?"), wxYES_NO | wxICON_EXCLAMATION);
+      if(dialog.ShowModal() == wxID_NO) {
+        m_currentFilters->Empty();
+
+        wxCommandEvent event(wxEVT_COMMAND_MENU_SELECTED, ID_APPLYFILTER);
+        GetParent()->GetEventHandler()->ProcessEvent(event);
+
+        *m_AppliedCalled = false;
+      }
+    }
+    // don't block forced close in this case
+  }
+
+  return QueryCancelDlg::SyncAndQueryCancel(showDialog);
 }

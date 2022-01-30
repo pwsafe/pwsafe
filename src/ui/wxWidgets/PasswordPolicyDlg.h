@@ -24,6 +24,7 @@
 #include "core/coredefs.h"
 #include "core/PWPolicy.h"
 #include "core/PWScore.h"
+#include "QueryCancelDlg.h"
 
 /*!
  * Forward declarations
@@ -76,7 +77,7 @@ class wxSpinCtrl;
  * PasswordPolicyDlg class declaration
  */
 
-class PasswordPolicyDlg : public wxDialog
+class PasswordPolicyDlg : public QueryCancelDlg
 {
   DECLARE_EVENT_TABLE()
 
@@ -131,9 +132,6 @@ protected:
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOkClick( wxCommandEvent& event );
-
-  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
-  void OnCancelClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP
   void OnHelpClick( wxCommandEvent& event );
@@ -217,6 +215,23 @@ public:
 private:
   void EnableSizerChildren(wxSizer* sizer, bool state);
 
+  bool SyncAndQueryCancel(bool showDialog) override;
+
+  enum Changes : uint32_t {
+    None = 0,
+    Flags = 1u,
+    Length = 1u << 1,
+    DigitMinLength = 1u << 2,
+    LowerMinLength = 1u << 3,
+    SymbolMinLength = 1u << 4,
+    UpperMinLength = 1u << 5,
+    Symbols = 1u << 6,
+    Name = 1u << 7
+  };
+
+  uint32_t GetChanges() const;
+  bool IsChanged() const override;
+
 ////@begin PasswordPolicyDlg member variables
   /* Controls for DialogType EDITOR */
   wxSpinCtrl* m_pwpLenCtrl = nullptr;
@@ -264,6 +279,7 @@ private:
   void CBox2Spin(wxCheckBox *cb, wxSpinCtrl *sp);
   bool UpdatePolicy();
   bool Verify();
+  PWPolicy ReadPolicy() const;
 
   PWScore &m_core;
   const PSWDPolicyMap &m_MapPSWDPLC; // used to detect existing name

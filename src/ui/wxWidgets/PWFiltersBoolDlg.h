@@ -18,11 +18,11 @@
  */
 
 #include <wx/choice.h>
-#include <wx/dialog.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 
 #include "core/PWSFilters.h"
+#include "QueryCancelDlg.h"
 
 /*!
  * Forward declarations
@@ -45,7 +45,7 @@
  * pwFiltersBoolDlg class declaration
  */
 
-class pwFiltersBoolDlg : public wxDialog
+class pwFiltersBoolDlg : public QueryCancelDlg
 {
   DECLARE_CLASS(pwFiltersBoolDlg)
   DECLARE_EVENT_TABLE()
@@ -83,6 +83,8 @@ private:
   void OnOk(wxCommandEvent& event);
   void OnSelectionChange(wxCommandEvent& event);
   //*)
+
+  bool IsChanged() const override;
 
   //(*Declarations(pwFiltersBoolDlg)
   wxComboBox* m_ComboBoxBool = nullptr;

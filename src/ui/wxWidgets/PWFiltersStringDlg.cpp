@@ -56,6 +56,8 @@ BEGIN_EVENT_TABLE( pwFiltersStringDlg, wxDialog )
   EVT_BUTTON( wxID_OK, pwFiltersStringDlg::OnOk )
   EVT_COMBOBOX( ID_COMBOBOX51, pwFiltersStringDlg::OnSelectionChange )
   EVT_TEXT( ID_TEXTCTRL52, pwFiltersStringDlg::OnTextChange )
+  EVT_BUTTON( wxID_CANCEL, pwFiltersStringDlg::OnCancelClick )
+  EVT_CLOSE( pwFiltersStringDlg::OnClose )
 
 END_EVENT_TABLE()
 
@@ -399,4 +401,51 @@ void pwFiltersStringDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     *m_pfcase = m_fcase;
   }
   EndModal(wxID_OK);
+}
+
+bool pwFiltersStringDlg::IsChanged() const {
+  const auto idx = m_ComboBox->GetSelection();
+
+  if (idx < 0) {
+    return false;
+  }
+
+  if (m_add_present) {
+    if (idx >= 0 && idx < PW_NUM_PRESENT_ENUM) {
+      if (*m_prule != m_mrpres[idx]) {
+        return true;
+      }
+    }
+    else {
+      const auto tmpIdx = idx - PW_NUM_PRESENT_ENUM;
+      if (tmpIdx < PW_NUM_STR_CRITERIA_ENUM) {
+        if (*m_prule != m_mrcrit[tmpIdx]) {
+          return true;
+        }
+      }
+      else if (*m_prule != PWSMatch::MR_INVALID) {
+        return true;
+      }
+    }
+  }
+  else {
+    if (idx < PW_NUM_STR_CRITERIA_ENUM) {
+      if (*m_prule != m_mrcrit[idx]) {
+        return true;
+      }
+    }
+    else if (*m_prule != PWSMatch::MR_INVALID) {
+      return true;
+    }
+  }
+
+  if (*m_pvalue != m_TextCtrlValueString->GetValue()) {
+    return true;
+  }
+
+  if (*m_pfcase != m_CheckBoxFCase->GetValue()) {
+    return true;
+  }
+
+  return false;
 }

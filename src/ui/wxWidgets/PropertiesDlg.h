@@ -169,6 +169,9 @@ private:
   StringX m_NewDbName;
   StringX m_NewDbDescription;
   const PWScore &m_core;
+  
+  void DoEditName();
+  void DoEditDescription();
 };
 
 #endif // _PROPERTIESDLG_H_

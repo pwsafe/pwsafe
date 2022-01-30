@@ -56,6 +56,7 @@ BEGIN_EVENT_TABLE( PasswordPolicyDlg, wxDialog )
   EVT_BUTTON(   wxID_OK             , PasswordPolicyDlg::OnOkClick              )
   EVT_BUTTON(   wxID_CANCEL         , PasswordPolicyDlg::OnCancelClick          )
   EVT_BUTTON(   wxID_HELP           , PasswordPolicyDlg::OnHelpClick            )
+  EVT_CLOSE( PasswordPolicyDlg::OnClose )
 ////@end PasswordPolicyDlg event table entries
 
 END_EVENT_TABLE()
@@ -552,18 +553,6 @@ void PasswordPolicyDlg::OnOkClick( wxCommandEvent& )
 }
 
 /*!
- * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
- */
-
-void PasswordPolicyDlg::OnCancelClick( wxCommandEvent& event )
-{
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in PasswordPolicyDlg.
-  // Before editing this code, remove the block markers.
-  event.Skip();
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in PasswordPolicyDlg.
-}
-
-/*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP
  */
 
@@ -810,9 +799,9 @@ void PasswordPolicyDlg::OnPolicynameSelection( wxCommandEvent& WXUNUSED(event) )
 
 void PasswordPolicyDlg::OnGeneratePassword( wxCommandEvent& WXUNUSED(event) )
 {
-  UpdatePolicy();
-
-  m_passwordCtrl->SetValue(m_st_pp.MakeRandomPassword().c_str());
+  if (UpdatePolicy()) {
+    m_passwordCtrl->SetValue(m_st_pp.MakeRandomPassword().c_str());
+  }
 }
 
 /*!
@@ -856,4 +845,60 @@ void PasswordPolicyDlg::OnAtLeastPasswordChars( wxSpinEvent& WXUNUSED(event) )
   if ((m_pwpLenCtrl->GetMax() > total) && (total > m_pwpLenCtrl->GetValue())) {
     m_pwpLenCtrl->SetValue(total);
   }
+}
+
+bool PasswordPolicyDlg::SyncAndQueryCancel(bool showDialog) {
+  // no need to check when used in R/O or generator mode
+  if (m_DialogType == DialogType::GENERATOR || m_core.IsReadOnly()) {
+    return true;
+  }
+  return QueryCancelDlg::SyncAndQueryCancel(showDialog);
+}
+
+uint32_t PasswordPolicyDlg::GetChanges() const {
+  uint32_t changes = Changes::None;
+
+  if (m_polname != m_oldpolname) {
+    changes |= Changes::Name;
+  }
+
+  if (m_pwUseLowercase != m_oldpwUseLowercase
+      || m_pwUseUppercase != m_oldpwUseUppercase
+      || m_pwUseDigits != m_oldpwUseDigits
+      || m_pwUseSymbols != m_oldpwUseSymbols
+      || m_pwUseHex != m_oldpwUseHex
+      || m_pwUseEasyVision != m_oldpwUseEasyVision
+      || m_pwMakePronounceable != m_oldpwMakePronounceable) {
+    changes |= Changes::Flags;
+  }
+
+  if (m_pwdefaultlength != m_oldpwdefaultlength) {
+    changes |= Changes::Length;
+  }
+
+  if (m_pwLowerMinLength != m_oldpwLowerMinLength) {
+    changes |= Changes::LowerMinLength;
+  }
+
+  if (m_pwUpperMinLength != m_oldpwUpperMinLength) {
+    changes |= Changes::UpperMinLength;
+  }
+
+  if (m_pwDigitMinLength != m_oldpwDigitMinLength) {
+    changes |= Changes::DigitMinLength;
+  }
+
+  if (m_pwSymbolMinLength != m_oldpwSymbolMinLength) {
+    changes |= Changes::SymbolMinLength;
+  }
+
+  if (m_Symbols != m_oldSymbols) {
+    changes |= Changes::Symbols;
+  }
+
+  return changes;
+}
+
+bool PasswordPolicyDlg::IsChanged() const {
+  return GetChanges() != Changes::None;
 }
