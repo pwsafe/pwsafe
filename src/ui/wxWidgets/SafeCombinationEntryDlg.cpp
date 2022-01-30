@@ -633,6 +633,9 @@ void SafeCombinationEntryDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
 {
   m_combinationEntry->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
 
+  // For the validation process, put the full file path name back into the combo box.
+  m_filenameCB->ChangeValue(m_filename);
+
   if (Validate() && TransferDataFromWindow()) {
     if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),
