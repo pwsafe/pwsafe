@@ -1217,6 +1217,26 @@ void PasswordSafeFrame::ShowGrid(bool show)
     m_guiInfo->SaveGridViewInfo(m_grid);
   }
 
+  // Workaround for reported issue GH#829 as wxGrid does not honor dark themes like wxTree does.
+  // See https://github.com/pwsafe/pwsafe/issues/829
+#if wxVERSION_NUMBER >= 3103
+  if (show && m_tree && m_grid && wxSystemSettings::GetAppearance().IsDark()) {
+#else
+  if (show && m_tree && m_grid) {
+#endif
+    auto gridBackgroundColor = m_grid->GetDefaultCellBackgroundColour();
+    auto treeBackgroundColor = m_tree->GetBackgroundColour();
+
+    auto gridTextColor = m_grid->GetDefaultCellTextColour();
+    auto treeTextColor = m_tree->GetForegroundColour();
+
+    if ((gridBackgroundColor != treeBackgroundColor) || (gridTextColor != treeTextColor)) {
+      m_grid->SetDefaultCellBackgroundColour(treeBackgroundColor);
+      m_grid->SetDefaultCellTextColour(treeTextColor);
+      m_grid->Refresh();
+    }
+  }
+
   m_grid->Show(show);
   GetSizer()->Layout();
 }
@@ -2811,12 +2831,11 @@ void PasswordSafeFrame::ChangeFontPreference(const PWSprefs::StringPrefs fontPre
     if (newFont.IsOk()) {
       if (IsTreeView()) {
         m_tree->SetFont(newFont);
-        m_tree->Show(); // Updates the tree items font
+        m_tree->Refresh(); // Updates the tree items font
       }
       else {
         m_grid->SetDefaultCellFont(newFont);
-        // TODO: Update grid font
-        // Grid items font doesn't get updated by just calling Show() :-|
+        m_grid->Refresh(); // Updates the grid items font
       }
     }
   }
