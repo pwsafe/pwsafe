@@ -228,6 +228,8 @@ public:
 
   ItemList::size_type GetNumEntries() const {return m_core.GetNumEntries();}
 
+  void CloseDB(std::function<void(bool)> callback);
+  
   /* Observer Interface Implementation */
 
   /// Implements Observer::DatabaseModified(bool)
@@ -722,7 +724,7 @@ private:
   void ChangeFontPreference(const PWSprefs::StringPrefs fontPreference);
   
   enum CloseFlags { CLOSE_NORMAL = 0, CLOSE_FORCED = 1, LEAVE_MAIN = 2, HIDE_ON_VETO = 4 };
-  void CloseAllWindows(TimedTaskChain* taskChain, CloseFlags flags);
+  void CloseAllWindows(TimedTaskChain* taskChain, CloseFlags flags, std::function<void(bool success)> onFinish);
   bool IsCloseInProgress() const;
 
   void SaveLayoutPreferences();

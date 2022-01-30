@@ -2435,7 +2435,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
           // With modal dialog open we now have a problem, no data base open, but a modal dialog is open that might show an entry
           CleanupAfterReloadFailure(true);
           if(!m_hiddenWindows.empty()) {
-            CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), static_cast<CloseFlags>(CloseFlags::CLOSE_FORCED|CloseFlags::LEAVE_MAIN));
+            CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), static_cast<CloseFlags>(CloseFlags::CLOSE_FORCED|CloseFlags::LEAVE_MAIN), nullptr);
           }
           return;
         }
@@ -2443,7 +2443,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
       }
       case (wxID_EXIT):
       {
-        CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), CloseFlags::CLOSE_NORMAL);
+        CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), CloseFlags::CLOSE_NORMAL, nullptr);
         return;
       }
       case (wxID_CANCEL):
@@ -2903,13 +2903,13 @@ void PasswordSafeFrame::ResetFilters()
  Close all visible top level windows
  
  @param taskChain chain to use when closing multiple dialogs
- @param forced if set to true, dialogs can't veto
- @param dontCloseMain don't close main window
+ @param flags lose options
+ @param onSuccess if set, will be called after closing all windows
  
  Here we have to use taskChain, because when closing multiple dialogs, 
  CallAfter is not enough to allow dialog to finish result processing and break event loop
 */
-void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags flags)
+void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags flags, std::function<void(bool success)> onFinish)
 {
   // we should show windows before processing
   if (!m_hiddenWindows.empty()) {
@@ -2937,8 +2937,8 @@ void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags fl
           }
           else {
             // if main window still alive, captured "this" should be valid
-            taskChain->then([taskChain, flags, this]{
-              CloseAllWindows(taskChain, flags);
+            taskChain->then([taskChain, flags, onFinish, this]{
+              CloseAllWindows(taskChain, flags, onFinish);
             });
             return; // exit here without unlocking disabler
           }
@@ -2961,12 +2961,64 @@ void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags fl
   if (vetoed && (flags & CloseFlags::HIDE_ON_VETO) == CloseFlags::HIDE_ON_VETO) {
     m_hiddenWindows = HideTopLevelWindows();
   }
+  
+  if (onFinish) {
+    onFinish(!vetoed);
+  }
 }
 
 bool PasswordSafeFrame::IsCloseInProgress() const
 {
   return !!m_closeDisabler;
 }
+
+
+void PasswordSafeFrame::CloseDB(std::function<void(bool)> callback)
+{
+  PWSprefs *prefs = PWSprefs::GetInstance();
+
+  // Save Application related preferences
+  prefs->SaveApplicationPreferences();
+  if( m_core.IsDbOpen() ) {
+    int rc = SaveIfChanged();
+    if (rc != PWScore::SUCCESS) {
+      CallAfter([callback]() {callback(false);});
+      return;
+    }
+
+    m_core.SafeUnlockCurFile();
+    m_core.SetCurFile(wxEmptyString);
+
+    // Reset core and clear ALL associated data
+    m_core.ReInit();
+
+    // clear the application data before ending
+    ClearAppData();
+    
+    // Force close all active dialogs
+    CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}),
+      static_cast<CloseFlags>(CloseFlags::CLOSE_FORCED|CloseFlags::LEAVE_MAIN),
+      [this, callback](bool success) { // we don't close main windows, so this will be valid
+        wxASSERT(success); // forced close should be successful
+        SetTitle(wxEmptyString);
+        m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
+        wxCommandEvent dummyEv;
+        m_search->OnSearchClose(dummyEv); // fix github issue 375
+        m_core.SetReadOnly(false);
+        UpdateStatusBar();
+        UpdateMenuBar();
+        if (callback) {
+          CallAfter([callback, success]() {callback(success);});
+        }
+      });
+  }
+  else {
+    if (callback) {
+      CallAfter([callback]() {callback(true);});
+    }
+  }
+}
+
   //-----------------------------------------------------------------
   // Remove all DialogBlock-generated stubs below this line, as we
   // already have them implemented in main*.cpp

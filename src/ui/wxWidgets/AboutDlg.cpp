@@ -417,21 +417,16 @@ bool AboutDlg::CheckDatabaseStatus()
     // Notify PasswordSafeFrame to close database.
     // If there are any unsaved changes PasswordSafeFrame 
     // will prompt the user to save them.
-    wxCommandEvent closeEvent(wxEVT_COMMAND_MENU_SELECTED, wxID_CLOSE);
-#if wxCHECK_VERSION(2,9,0)
-    pwsafe->GetEventHandler()->ProcessEvent(closeEvent);
-#else
-    pwsafe->ProcessEvent(closeEvent);
-#endif
-
-    // Check database once again, because user could have cancelled to save changes.
-    if (!pwsafe->IsClosed()) {
-      return false;
-    }
+    pwsafe->CloseDB([](bool closed) {
+      if (closed) {
+        // database closed, reopen dialog and check
+        DestroyWrapper<AboutDlg> wrapper(wxGetApp().GetPasswordSafeFrame());
+        wrapper.Get()->ShowAndCheckForUpdate();
+      }
+    });
+    return false; // stop here, callback will restart
   }
 
-  // Update UI accordingly to show user that database is closed.
-  pwsafe->Update();
   ASSERT(pwsafe->GetNumEntries() == 0);
 
   // Now, database is closed.
@@ -676,4 +671,10 @@ void AboutDlg::OnDownloadCompleted(wxThreadEvent& event)
  */
 void AboutDlg::OnVisitSiteClicked(wxHyperlinkEvent& WXUNUSED(event)) {
   wxLaunchDefaultBrowser(s_URL_HOME);
+}
+
+
+int AboutDlg::ShowAndCheckForUpdate() {
+  CallAfter(&AboutDlg::CheckNewVersion);
+  return ShowModal();
 }

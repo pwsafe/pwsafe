@@ -82,6 +82,7 @@ public:
   /// Destructor
   ~AboutDlg() = default;
 
+  int ShowAndCheckForUpdate();
 protected:
   virtual wxThread::ExitCode Entry();
 

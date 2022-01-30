@@ -249,35 +249,7 @@ void PasswordSafeFrame::OnOpenClick(wxCommandEvent& WXUNUSED(evt))
 
 void PasswordSafeFrame::OnCloseClick(wxCommandEvent& WXUNUSED(evt))
 {
-  PWSprefs *prefs = PWSprefs::GetInstance();
-
-  // Save Application related preferences
-  prefs->SaveApplicationPreferences();
-  if( m_core.IsDbOpen() ) {
-    int rc = SaveIfChanged();
-    if (rc != PWScore::SUCCESS)
-      return;
-
-    m_core.SafeUnlockCurFile();
-    m_core.SetCurFile(wxEmptyString);
-
-    // Reset core and clear ALL associated data
-    m_core.ReInit();
-
-    // clear the application data before ending
-    ClearAppData();
-    
-    // Force close all active dialogs
-    CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), static_cast<CloseFlags>(CloseFlags::CLOSE_FORCED|CloseFlags::LEAVE_MAIN));
-    
-    SetTitle(wxEmptyString);
-    m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
-    wxCommandEvent dummyEv;
-    m_search->OnSearchClose(dummyEv); // fix github issue 375
-    m_core.SetReadOnly(false);
-    UpdateStatusBar();
-    UpdateMenuBar();
-  }
+  CloseDB(nullptr);
 }
 
 void PasswordSafeFrame::OnLockSafe(wxCommandEvent&)
@@ -1397,6 +1369,6 @@ void PasswordSafeFrame::DoPropertiesClick()
 
 void PasswordSafeFrame::OnExitClick(wxCommandEvent& WXUNUSED(evt))
 {
-  CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), CloseFlags::CLOSE_NORMAL);
+  CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), CloseFlags::CLOSE_NORMAL, nullptr);
 }
 
