@@ -590,7 +590,7 @@ msgstr "&Ajouter une entrée..."
 
 #. Resource IDs: (32139 - MenuEx)
 msgid "&Add/Edit Font"
-msgstr "&Ajouter/modifier des polices"
+msgstr "Police &Ajouter/modifier"
 
 #. Resource IDs: (1026, 1306)
 msgid "&Apply"
