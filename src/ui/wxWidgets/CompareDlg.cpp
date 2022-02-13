@@ -270,6 +270,10 @@ wxCollapsiblePane* CompareDlg::CreateDataPanel(wxSizer* dlgSizer, const wxString
     cd->grid = new ComparisonGrid(sizedPanel, wxID_ANY);
   else
     cd->grid = new wxGrid(sizedPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0); //don't have wxWANTS_CHARS
+
+  // this grid is presentation only
+  cd->grid->EnableEditing(false);
+
   //create a way to get to the ComparisonData object from the grid, which is the only thing we have in events
   wxASSERT_MSG(cd->grid->GetClientData() == nullptr, wxT("wxGrid::ClientData is not nullptr on creation.  Need to use that for our purposes"));
   cd->grid->SetClientData(cd);
