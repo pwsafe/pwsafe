@@ -560,33 +560,34 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
 void CompareDlg::OnEditInCurrentDB(wxCommandEvent& evt)
 {
   auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
-  CallAfter(&CompareDlg::DoEditInCurrentDB, menuContext);
+  wxCHECK_RET(menuContext, wxT("No menu context available"));
+  CallAfter(&CompareDlg::DoEditInCurrentDB, *menuContext);
 }
 
-void CompareDlg::DoEditInCurrentDB(ContextMenuData* menuContext) {
-  const ComparisonGridTable& table = *wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
-  const pws_os::CUUID& uuid = table[menuContext->selectedRows[0]].uuid0;
+void CompareDlg::DoEditInCurrentDB(ContextMenuData menuContext) {
+  const ComparisonGridTable& table = *wxDynamicCast(menuContext.cdata->grid->GetTable(), ComparisonGridTable);
+  const pws_os::CUUID& uuid = table[menuContext.selectedRows[0]].uuid0;
   
   if (ViewEditEntry(m_currentCore, uuid, m_currentCore->IsReadOnly())) {
-    int idx = menuContext->selectedRows[0];
-    if (menuContext->cdata == m_conflicts)
+    int idx = menuContext.selectedRows[0];
+    if (menuContext.cdata == m_conflicts)
       idx = idx/2;
     auto itr = m_currentCore->Find(uuid);
     if (itr != m_currentCore->GetEntryEndIter()) {
       const CItemData& item = itr->second;
       //we update these in the grid directly from st_CompareData, so keep track
       if (item.IsGroupSet())
-        menuContext->cdata->data[idx].group = item.GetGroup();
+        menuContext.cdata->data[idx].group = item.GetGroup();
       else
-        menuContext->cdata->data[idx].group.clear();
+        menuContext.cdata->data[idx].group.clear();
       if (item.IsTitleSet())
-        menuContext->cdata->data[idx].title = item.GetTitle();
+        menuContext.cdata->data[idx].title = item.GetTitle();
       else
-        menuContext->cdata->data[idx].title.clear();
+        menuContext.cdata->data[idx].title.clear();
       if (item.IsUserSet())
-        menuContext->cdata->data[idx].user = item.GetUser();
+        menuContext.cdata->data[idx].user = item.GetUser();
       else
-        menuContext->cdata->data[idx].user.clear();
+        menuContext.cdata->data[idx].user.clear();
       table.RefreshRow(table.GetItemRow(uuid));
     }
     else {
@@ -600,14 +601,14 @@ void CompareDlg::DoEditInCurrentDB(ContextMenuData* menuContext) {
 void CompareDlg::OnViewInComparisonDB(wxCommandEvent& evt)
 {
   auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
-  CallAfter(&CompareDlg::DoViewInComparisonDB, menuContext);
+  wxCHECK_RET(menuContext, wxT("Empty client data"));
+  CallAfter(&CompareDlg::DoViewInComparisonDB, *menuContext);
 }
 
-void CompareDlg::DoViewInComparisonDB(ContextMenuData* menuContext)
+void CompareDlg::DoViewInComparisonDB(ContextMenuData menuContext)
 {
-  wxCHECK_RET(menuContext, wxT("Empty client data"));
-  const ComparisonGridTable& table = *wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
-  const pws_os::CUUID& uuid = table[menuContext->selectedRows[0]].uuid1;
+  const ComparisonGridTable& table = *wxDynamicCast(menuContext.cdata->grid->GetTable(), ComparisonGridTable);
+  const pws_os::CUUID& uuid = table[menuContext.selectedRows[0]].uuid1;
 
   wxCHECK_RET(!ViewEditEntry(m_otherCore, uuid, true), wxT("Should not need to refresh grid for just viewing entry"));
 }
@@ -795,11 +796,12 @@ void CompareDlg::OnCopyFieldsToCurrentDB(wxCommandEvent& evt)
 
 void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
 {
-   auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
-  CallAfter(&CompareDlg::DoSyncItemsWithCurrentDB, evt.GetId(), menuContext);
+  auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
+  wxCHECK_RET(menuContext, wxT("No menu context available"));
+  CallAfter(&CompareDlg::DoSyncItemsWithCurrentDB, evt.GetId(), *menuContext);
 }
 
-void CompareDlg::DoSyncItemsWithCurrentDB(int menuId, ContextMenuData *menuContext)
+void CompareDlg::DoSyncItemsWithCurrentDB(int menuId, ContextMenuData menuContext)
 {
   if (m_currentCore->IsReadOnly()) {
     wxMessageBox(_("Current safe was opened read-only"), _("Synchronize"), wxOK|wxICON_INFORMATION, this);
@@ -837,13 +839,12 @@ void CompareDlg::DoSyncItemsWithCurrentDB(int menuId, ContextMenuData *menuConte
                         _("Synchronize items"));
   if (rc == wxID_OK) {
     wxCHECK_RET(!userSelection.empty(), wxT("User did not select any fields to sync?"));
-    wxCHECK_RET(menuContext, wxT("No menu context available"));
     //start with the selected items
-    wxArrayInt syncIndexes(menuContext->selectedItems);
+    wxArrayInt syncIndexes(menuContext.selectedItems);
     if (menuId == ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB) {
       //add all items to the sync Index list
       syncIndexes.Empty();
-      const size_t numIndexes = menuContext->cdata->data.size();
+      const size_t numIndexes = menuContext.cdata->data.size();
       syncIndexes.Alloc(numIndexes);
       for(size_t i = 0; i < numIndexes; ++i)
         syncIndexes.Add(static_cast<int>(i));
@@ -855,11 +856,11 @@ void CompareDlg::DoSyncItemsWithCurrentDB(int menuId, ContextMenuData *menuConte
     //use a wxScopedPtr to clean up the heap object if we trip on any of the wxCHECK_RETs below
     MultiCommandsPtr pMultiCmds(MultiCommands::Create(m_currentCore));
     for (size_t idx = 0; idx < syncIndexes.Count(); ++idx) {
-      auto fromPos = m_otherCore->Find(menuContext->cdata->data[syncIndexes[idx]].uuid1);
+      auto fromPos = m_otherCore->Find(menuContext.cdata->data[syncIndexes[idx]].uuid1);
       wxCHECK_RET(fromPos != m_otherCore->GetEntryEndIter(), wxT("Could not find sync item in other db"));
       const CItemData *pfromEntry = &fromPos->second;
 
-      auto toPos = m_currentCore->Find(menuContext->cdata->data[syncIndexes[idx]].uuid0);
+      auto toPos = m_currentCore->Find(menuContext.cdata->data[syncIndexes[idx]].uuid0);
       wxCHECK_RET(toPos != m_currentCore->GetEntryEndIter(), wxT("Could not find sync item in current db"));
       CItemData *ptoEntry = &toPos->second;
       CItemData updtEntry(*ptoEntry);
@@ -884,10 +885,10 @@ void CompareDlg::DoSyncItemsWithCurrentDB(int menuId, ContextMenuData *menuConte
     //inside MultiCommands failed
     if (pMultiCmds->GetSize() > 0) {
       m_currentCore->Execute(pMultiCmds.release());
-      ComparisonGridTable* ptable = wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
+      ComparisonGridTable* ptable = wxDynamicCast(menuContext.cdata->grid->GetTable(), ComparisonGridTable);
       wxCHECK_RET(ptable, wxT("Could not find ComparisonGridTable derived object in comparison grid"));
       const ComparisonGridTable& table = *ptable;
-      wxCHECK_RET(menuContext->cdata == m_conflicts, wxT("Sync happened in unexpected grid"));
+      wxCHECK_RET(menuContext.cdata == m_conflicts, wxT("Sync happened in unexpected grid"));
       for( size_t idx = 0; idx < syncIndexes.Count(); ++idx) {
         //refresh every even-numbered row
         table.RefreshRow(syncIndexes[idx]*2);
