@@ -373,7 +373,7 @@ void PasswordSafeFrame::OnCopyPasswordClick(wxCommandEvent& evt)
 {
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::DontAskQuestion)) {
     wxRichMessageDialog dialog(this, 
-      _("Pressing OK will copy the password of the selected item\nto the clipboard. The clipboard will be securely cleared\nwhen Password Safe is closed.\n\nPressing Cancel stops the password being copied."), 
+      _("Pressing OK will copy the password of the selected item\ninto the clipboard. The clipboard will be securely cleared\nwhen Password Safe is closed.\n\nPressing Cancel stops the password from being copied."), 
       _("Clear Clipboard"), 
       wxOK | wxCANCEL | wxICON_INFORMATION);
 
