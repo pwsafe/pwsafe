@@ -24,6 +24,7 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
+#include <wx/richmsgdlg.h>
 #include <wx/tokenzr.h>
 
 #include "core/PWSAuxParse.h"
@@ -370,6 +371,21 @@ void PasswordSafeFrame::OnClearClipboardClick(wxCommandEvent& WXUNUSED(evt))
 
 void PasswordSafeFrame::OnCopyPasswordClick(wxCommandEvent& evt)
 {
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::DontAskQuestion)) {
+    wxRichMessageDialog dialog(this, 
+      _("Pressing OK will copy the password of the selected item\nto the clipboard. The clipboard will be securely cleared\nwhen Password Safe is closed.\n\nPressing Cancel stops the password being copied."), 
+      _("Clear Clipboard"), 
+      wxOK | wxCANCEL | wxICON_INFORMATION);
+
+    dialog.ShowCheckBox(_("&Don't remind me again"));
+
+    if(dialog.ShowModal() == wxID_CANCEL) {
+      return;
+    }
+
+    PWSprefs::GetInstance()->SetPref(PWSprefs::DontAskQuestion, !dialog.IsCheckBoxChecked());
+  }
+
   CItemData rueItem;
   CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item != nullptr)
