@@ -867,6 +867,8 @@ void PasswordSafeFrame::CreateMainToolbar()
     wxAUI_TB_DEFAULT_STYLE|wxAUI_TB_GRIPPER|wxAUI_TB_OVERFLOW|(PWSprefs::GetInstance()->GetPref(PWSprefs::ToolbarShowText) ? wxAUI_TB_TEXT : 0)
   );
 
+  m_Toolbar->SetToolBorderPadding(5);
+
   RefreshToolbarButtons();
 
   const bool showToolbar = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowToolbar);
@@ -1014,6 +1016,8 @@ void PasswordSafeFrame::CreateDragBar()
   m_Dragbar = new DragBarCtrl(this);
 
   wxCHECK_RET(m_Dragbar, wxT("Could not create dragbar"));
+
+  m_Dragbar->SetToolBorderPadding(5);
 
   const bool showToolbar = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
 
