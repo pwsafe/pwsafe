@@ -794,7 +794,7 @@ private:
   
   std::vector<wxTopLevelWindow*> GetTopLevelWindowsList() const;
   void HideTopLevelWindows();
-  void ShowHiddenWindows();
+  void ShowHiddenWindows(bool raise);
   
   // Global Filters
   PWSFilters m_MapAllFilters;     // Includes DB and temporary (added, imported, autoloaded etc.)
@@ -824,6 +824,7 @@ private:
   std::vector<wxTopLevelWindow*> m_hiddenWindows;
   std::vector<wxDialog*> m_shownDialogs;
   wxWindowDisabler* m_closeDisabler = nullptr; // disable all windows while waiting for close
+  wxTopLevelWindow* m_penginCloseWindow = nullptr; // current window that processing close event
 };
 
 BEGIN_DECLARE_EVENT_TYPES()

@@ -900,7 +900,7 @@ void PWSafeApp::OnHelp(wxCommandEvent& evt)
     StringToStringMap& helpmap = GetHelpMap();
     StringToStringMap::iterator itr = helpmap.find(keyName);
     if (itr != helpmap.end()) {
-      wxHtmlModalHelp help(wxGetApp().GetTopWindow(), helpFileNamePath, itr->second, wxHF_DEFAULT_STYLE);
+      wxHtmlModalHelp help(window, helpFileNamePath, itr->second, wxHF_DEFAULT_STYLE);
     }
     else {
 #ifdef __WXDEBUG__

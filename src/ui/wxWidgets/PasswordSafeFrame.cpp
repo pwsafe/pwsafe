@@ -2462,9 +2462,8 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
   }
 
   if (restoreUI) {
-    if (!IsShown()) {
-      ShowHiddenWindows();
-    }
+    ShowHiddenWindows(true);
+
     if (IsIconized()) {
       Iconize(false);
     }
@@ -2912,13 +2911,23 @@ void PasswordSafeFrame::ResetFilters()
 void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags flags, std::function<void(bool success)> onFinish)
 {
   // we should show windows before processing
+  bool delayClose = false;
   if (!m_hiddenWindows.empty()) {
-    ShowHiddenWindows();
+    ShowHiddenWindows(false);
     flags = static_cast<CloseFlags>(flags | HIDE_ON_VETO);
+    delayClose = true;
   }
 
   if (!m_closeDisabler) {
     m_closeDisabler = new wxWindowDisabler();
+    m_penginCloseWindow = nullptr;
+    if (delayClose) {
+      // some windows (such as wxHtmlHelpDialog need more cycles for activation), delay close processing after show
+      taskChain->then([taskChain, flags, onFinish, this]{
+        CloseAllWindows(taskChain, flags, onFinish);
+      });
+      return; // exit here without unlocking disabler
+    }
   }
   
   auto tlvList = GetTopLevelWindowsList();
@@ -2930,7 +2939,16 @@ void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags fl
     wxTopLevelWindow* win = *itr;
     if (win) {
       if (win->IsShown()) {
+        if (win == m_penginCloseWindow) { // close already sheduled, but still not done
+          pws_os::Trace(L"Waiting for window close <%ls> (%ls), flags=%d\n", ToStr(win->GetTitle()), ToStr(win->GetName()), flags);
+          taskChain->then([taskChain, flags, onFinish, this]{
+            CloseAllWindows(taskChain, flags, onFinish);
+          });
+          return; // exit here without unlocking disabler
+        }
+
         pws_os::Trace(L"Closing <%ls> (%ls), flags=%d\n", ToStr(win->GetTitle()), ToStr(win->GetName()), flags);
+        m_penginCloseWindow = win;
         if (win->Close((flags & CloseFlags::CLOSE_FORCED) == CloseFlags::CLOSE_FORCED)) {
           if (itr == lastWindowItr) {
             // main windows closed, no need to schedule new check
@@ -2958,6 +2976,7 @@ void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags fl
   }
   delete m_closeDisabler;
   m_closeDisabler = nullptr;
+  m_penginCloseWindow = nullptr;
   
   if (vetoed && (flags & CloseFlags::HIDE_ON_VETO) == CloseFlags::HIDE_ON_VETO) {
     HideTopLevelWindows();
@@ -3077,12 +3096,14 @@ void PasswordSafeFrame::HideTopLevelWindows()
   m_hiddenWindows = std::move(windows);
 }
 
-void PasswordSafeFrame::ShowHiddenWindows()
+void PasswordSafeFrame::ShowHiddenWindows(bool raise)
 {
   for(const auto win : m_hiddenWindows) {
     pws_os::Trace(L"Show window <%ls>\n", ToStr(win->GetTitle()));
     win->wxWindow::Show(true);
-    win->Raise();
+    if (raise) {
+      win->Raise();
+    }
     win->Update();
   }
   m_hiddenWindows.clear();
