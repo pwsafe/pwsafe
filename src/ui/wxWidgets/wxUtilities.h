@@ -176,9 +176,6 @@ inline const wxChar* ToStr(bool b) {
   return b? wxT("True"): wxT("False");
 }
 
-wxWindowList HideTopLevelWindows();
-void ShowWindows(wxWindowList& hiddenWindows);
-
 // Workaround for wxTE_PASSWORD being immutable:
 void ShowHideText(wxTextCtrl *&txtCtrl, const wxString &text,
                   wxSizer *sizer, bool show);

@@ -547,6 +547,8 @@ bool PWSafeApp::OnInit()
   }
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
     m_frame->ShowTrayIcon();
+
+  m_frame->Register(); // register modal dialog hook
   return true;
 }
 

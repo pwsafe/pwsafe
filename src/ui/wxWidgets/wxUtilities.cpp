@@ -76,42 +76,6 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
   return rc;
 }
 
-wxWindowList HideTopLevelWindows()
-{
-  wxWindowList hiddenWindows;
-  // wxTopLevelWindows is global exported list of top level windows
-  for (wxWindowList::iterator itr = wxTopLevelWindows.begin(); itr != hiddenWindows.end(); ++itr) {
-    wxTopLevelWindow* win = wxDynamicCast(*itr, wxTopLevelWindow);
-    if (win && win->IsShown()) {
-      // we need to remember hidden windows to show later only them
-      // (also don't close while iterating over global list to prevent any side effects)
-      hiddenWindows.Append(win);
-    }
-  }
-  // hiding windows in reverse order
-  for (wxWindowList::reverse_iterator itr = hiddenWindows.rbegin(); itr != hiddenWindows.rend(); ++itr) {
-      wxWindow* win = *itr;
-      //Don't call Hide() here, which just calls Show(false), which is overridden in
-      //derived classes, and wxDialog actually cancels the modal loop and closes the window
-      pws_os::Trace(L"Hide window %ls\n", ToStr(wxDynamicCast(win, wxTopLevelWindow)->GetTitle()));
-      win->ClearBackground();
-      win->wxWindow::Show(false);
-  }
-  return hiddenWindows;
-}
-        
-void ShowWindows(wxWindowList& hiddenWindows)
-{
-  for(wxWindowList::iterator itr = hiddenWindows.begin(); itr != hiddenWindows.end(); ++itr) {
-    wxWindow* win = *itr;
-    pws_os::Trace(L"Show window %ls\n", ToStr(wxDynamicCast(win, wxTopLevelWindow)->GetTitle()));
-    win->wxWindow::Show(true);
-    win->Raise();
-    win->Update();
-  }
-  hiddenWindows.clear();
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // MultiCheckboxValidator implementation
 ///////////////////////////////////////////////////////////////////////////////////////////////////

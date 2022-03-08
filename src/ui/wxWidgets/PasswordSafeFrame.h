@@ -25,6 +25,7 @@
 #include <wx/statusbr.h>
 #include <wx/treebase.h> // for wxTreeItemId
 #include <wx/settings.h>
+#include <wx/modalhook.h>
 
 #include "core/PWScore.h"
 #include "core/PWSFilters.h"
@@ -200,7 +201,7 @@ enum {
  * PasswordSafeFrame class declaration
  */
 
-class PasswordSafeFrame : public wxFrame, public Observer
+class PasswordSafeFrame : public wxFrame, public Observer, public wxModalDialogHook
 {
     DECLARE_CLASS( PasswordSafeFrame )
     DECLARE_EVENT_TABLE()
@@ -788,6 +789,13 @@ private:
   st_filters &CurrentFilter() {return m_FilterManager.m_currentfilter;}
   void ResetFilters();
   
+  virtual int Enter(wxDialog* dialog) override;
+  virtual void Exit(wxDialog* dialog) override;
+  
+  std::vector<wxTopLevelWindow*> GetTopLevelWindowsList() const;
+  void HideTopLevelWindows();
+  void ShowHiddenWindows();
+  
   // Global Filters
   PWSFilters m_MapAllFilters;     // Includes DB and temporary (added, imported, autoloaded etc.)
   FilterPool m_currentfilterpool; // Filter pool of the current active filter
@@ -812,8 +820,9 @@ private:
   wxAuiToolBar* m_Toolbar;
   DragBarCtrl* m_Dragbar;
 
-  // top-level windows that we hid while locking the UI
-  wxWindowList m_hiddenWindows;
+  // top-level windows that we hide while locking the UI
+  std::vector<wxTopLevelWindow*> m_hiddenWindows;
+  std::vector<wxDialog*> m_shownDialogs;
   wxWindowDisabler* m_closeDisabler = nullptr; // disable all windows while waiting for close
 };
 
