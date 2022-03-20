@@ -2421,8 +2421,8 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
   }
 
   if (m_sysTray->IsLocked()) {
-    // Allow Exit in all cases (if dialog vetoed close, we'll stop on it)
-    DestroyWrapper<SafeCombinationPromptDlg> scpWrapper(this, m_core, towxstring(m_core.GetCurFile()), true);
+    // Allow Exit in all cases when modal dialogs could be closed (if dialog vetoed close, we'll stop on it)
+    DestroyWrapper<SafeCombinationPromptDlg> scpWrapper(this, m_core, towxstring(m_core.GetCurFile()), CanCloseDialogs());
     SafeCombinationPromptDlg* scp = scpWrapper.Get();
 
     switch (scp->ShowModal()) {
@@ -3132,6 +3132,25 @@ void PasswordSafeFrame::Exit(wxDialog* dialog)
   }
 }
 
+/**
+@return true, when opened dialogs can be safely closed
+*/
+bool PasswordSafeFrame::CanCloseDialogs() const
+{
+#if defined(__WXGTK__)
+    for (const auto& dialog : m_shownDialogs) {
+      if (!dialog) {
+        continue;
+      }
+      if (!dialog->IsShown() && wxDynamicCast(dialog, wxMessageDialog)) {
+        // we can't close wxMessageDialog in wx3.0.5 GTK, see details in GetTopLevelWindowsList
+        pws_os::Trace(L"Message dialog <%ls> (%ls) can't be hidden/closed\n", ToStr(dialog->GetTitle()), ToStr(dialog->GetName()));
+        return false;
+      }
+    }
+#endif
+  return true;
+}
   //-----------------------------------------------------------------
   // Remove all DialogBlock-generated stubs below this line, as we
   // already have them implemented in main*.cpp

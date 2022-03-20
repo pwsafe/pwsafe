@@ -135,6 +135,7 @@ wxMenu* SystemTray::CreatePopupMenu()
   if (m_status != TrayStatus::CLOSED) {
     menu->AppendSeparator();
     menu->Append(wxID_CLOSE, _("&Close"))->SetBitmap(wxBitmap(close_xpm));
+    menu->Enable(wxID_CLOSE, m_frame->CanCloseDialogs());
     menu->AppendSubMenu(GetRecentHistory(), _("&Recent Entries History"));
   }
 
@@ -146,7 +147,7 @@ wxMenu* SystemTray::CreatePopupMenu()
   menu->Append(wxID_ABOUT,         _("&About Password Safe..."))->SetBitmap(wxBitmap(about_xpm));
   menu->AppendSeparator();
   menu->Append(wxID_EXIT, _("&Exit"))->SetBitmap(wxBitmap(exit_xpm));
-
+  menu->Enable(wxID_EXIT, m_frame->CanCloseDialogs());
   //let the user iconize even if its already iconized
   if (!m_frame->IsShown())
     menu->Enable(wxID_ICONIZE_FRAME, false);

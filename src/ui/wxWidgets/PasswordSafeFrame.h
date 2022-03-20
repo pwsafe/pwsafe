@@ -229,6 +229,7 @@ public:
 
   ItemList::size_type GetNumEntries() const {return m_core.GetNumEntries();}
 
+  bool CanCloseDialogs() const;
   void CloseDB(std::function<void(bool)> callback);
   
   /* Observer Interface Implementation */
