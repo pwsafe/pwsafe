@@ -400,7 +400,7 @@ void PasswordSafeFrame::DoEditFilter()
   st_filters filters(CurrentFilter());
   bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
   const std::set<StringX> sMediaTypes = m_core.GetAllMediaTypes();
-  bool bAppliedCalled;
+  bool bAppliedCalled = false;
   stringT oldName = CurrentFilter().fname;
   st_Filterkey fk;
   bool bDoEdit = true;
