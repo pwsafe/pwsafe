@@ -597,9 +597,8 @@ void CompareDlg::DoEditInCurrentDB(ContextMenuData menuContext) {
     else {
       wxFAIL_MSG(wxT("Could not find entry in core after editing it"));
     }
+    WriteReport();
   }
-  
-  WriteReport();
 }
 
 void CompareDlg::OnViewInComparisonDB(wxCommandEvent& evt)
@@ -898,9 +897,8 @@ void CompareDlg::DoSyncItemsWithCurrentDB(int menuId, ContextMenuData menuContex
         table.RefreshRow(syncIndexes[idx]*2);
       }
     }
+    WriteReport();
   }
-  
-  WriteReport();
 }
 
 void CompareDlg::WriteReportData()
