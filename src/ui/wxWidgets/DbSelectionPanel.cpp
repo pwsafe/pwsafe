@@ -119,7 +119,7 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
 #endif
   
   //The parent window must call our TransferDataToWindow and TransferDataFromWindow
-  m_parent->SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
+  m_parent->SetExtraStyle(m_parent->GetExtraStyle() | wxWS_EX_VALIDATE_RECURSIVELY);
 }
 
 DbSelectionPanel::~DbSelectionPanel()

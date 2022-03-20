@@ -72,7 +72,7 @@ ImportTextDlg::ImportTextDlg(wxWindow *parent, const wxString& filename) :  wxDi
 
   //since the controls aren't direct children of the dialog but instead are
   //parented by wxCollipsiblePane, we need to validate recursively
-  SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
+  SetExtraStyle(GetExtraStyle() | wxWS_EX_VALIDATE_RECURSIVELY);
   CreateControls();
 }
 

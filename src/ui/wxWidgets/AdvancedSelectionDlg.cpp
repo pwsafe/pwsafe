@@ -49,7 +49,7 @@ AdvancedSelectionPanel::AdvancedSelectionPanel(wxWindow* parentWnd,
                                                   m_autoValidate(autoValidate)
 {
   UNREFERENCED_PARAMETER(parentWnd);
-  parentWnd->SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
+  parentWnd->SetExtraStyle(parentWnd->GetExtraStyle() | wxWS_EX_VALIDATE_RECURSIVELY);
 }
 
 void AdvancedSelectionPanel::CreateControls(wxWindow* parentWnd)
