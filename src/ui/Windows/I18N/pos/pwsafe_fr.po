@@ -919,7 +919,7 @@ msgstr "&Rapports"
 
 #. Resource IDs: (1374)
 msgid "&Reset"
-msgstr "&Reinitialiser"
+msgstr "&Réinitialiser"
 
 #. Resource IDs: (32254 - Menu)
 msgid "&Restore"
@@ -6236,7 +6236,7 @@ msgstr "Raccourci réservé '%s' ignoré."
 
 #. Resource IDs: (1427, 1470)
 msgid "Reset"
-msgstr "Réinitializer"
+msgstr "Réinitialiser"
 
 #. Resource IDs: (1368)
 msgid "Reset All Program Shortcuts"
