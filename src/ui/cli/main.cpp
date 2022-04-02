@@ -171,179 +171,186 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
 
   Utf82StringX(argv[1], ua.safe);
 
-  while (1) {
-    int option_index = 0;
-    static constexpr struct option long_options[] = {
-      // name, has_arg, flag, val
-      {"import",      optional_argument,  0, 'i'},
-      {"export",      optional_argument,  0, 'e'},
-      {"text",        no_argument,        0, 't'},
-      {"xml",         no_argument,        0, 'x'},
-      {"create",      no_argument,        0, 'c'},
-    //  {"new",         no_argument,        0, 'c'},
-      {"search",      required_argument,  0, 's'},
-      {"subset",      required_argument,  0, 'b'},
-      {"fields",      required_argument,  0, 'f'},
-      {"ignore-case", optional_argument,  0, 'o'},
-      {"add",         required_argument,  0, 'a'},
-      {"update",      required_argument,  0, 'u'},
-      {"print",       optional_argument,  0, 'p'},
-    //  {"remove",      no_argument,        0, 'r'},
-      {"delete",      no_argument,        0, 'r'},
-      {"clear",       required_argument,  0, 'l'},
-      {"newpass",     no_argument,        0, 'v'},
-      {"yes",         no_argument,        0, 'y'},
-      {"diff",        required_argument,  0, 'd'},
-      {"unified",     no_argument,        0, 'g'},
-      {"context",     no_argument,        0, 'j'},
-      {"sidebyside",  no_argument,        0, 'k'},
-      {"dry-run",     no_argument,        0, 'n'},
-      {"synchronize", no_argument,        0, 'z'},
-    //  {"synch",       no_argument,        0, 'z'},
-      {"merge",       no_argument,        0, 'm'},
-      {"colwidth",    required_argument,  0, 'w'},
-      {"passphrase",  required_argument,  0, 'P'},
-      {"passphrase2", required_argument,  0, 'Q'},
-      {0, 0, 0, 0}
-    };
+  try {
+
+      while (1) {
+          int option_index = 0;
+          static constexpr struct option long_options[] = {
+              // name, has_arg, flag, val
+              {"import",      optional_argument,  0, 'i'},
+              {"export",      optional_argument,  0, 'e'},
+              {"text",        no_argument,        0, 't'},
+              {"xml",         no_argument,        0, 'x'},
+              {"create",      no_argument,        0, 'c'},
+              //  {"new",         no_argument,        0, 'c'},
+                {"search",      required_argument,  0, 's'},
+                {"subset",      required_argument,  0, 'b'},
+                {"fields",      required_argument,  0, 'f'},
+                {"ignore-case", optional_argument,  0, 'o'},
+                {"add",         required_argument,  0, 'a'},
+                {"update",      required_argument,  0, 'u'},
+                {"print",       optional_argument,  0, 'p'},
+                //  {"remove",      no_argument,        0, 'r'},
+                  {"delete",      no_argument,        0, 'r'},
+                  {"clear",       required_argument,  0, 'l'},
+                  {"newpass",     no_argument,        0, 'v'},
+                  {"yes",         no_argument,        0, 'y'},
+                  {"diff",        required_argument,  0, 'd'},
+                  {"unified",     no_argument,        0, 'g'},
+                  {"context",     no_argument,        0, 'j'},
+                  {"sidebyside",  no_argument,        0, 'k'},
+                  {"dry-run",     no_argument,        0, 'n'},
+                  {"synchronize", no_argument,        0, 'z'},
+                  //  {"synch",       no_argument,        0, 'z'},
+                    {"merge",       no_argument,        0, 'm'},
+                    {"colwidth",    required_argument,  0, 'w'},
+                    {"passphrase",  required_argument,  0, 'P'},
+                    {"passphrase2", required_argument,  0, 'Q'},
+                    {0, 0, 0, 0}
+          };
 
 #if 0 // see comment above no_dup_short_option
-    static_assert(no_dup_short_option(long_options), "Short option used twice");
+          static_assert(no_dup_short_option(long_options), "Short option used twice");
 #endif
 
-    int c = getopt_long(argc-1, argv+1, "i::e::txcs:b:f:oa:u:pryd:gjknz:m:P:Q:",
-                        long_options, &option_index);
-    if (c == -1)
-      break;
+          int c = getopt_long(argc - 1, argv + 1, "i::e::txcs:b:f:oa:u:pryd:gjknz:m:P:Q:",
+              long_options, &option_index);
+          if (c == -1)
+              break;
 
-    switch (c) {
-    case 'i':
-      ua.SetMainOp(UserArgs::Import, optarg);
-      break;
-    case 'e':
-      ua.SetMainOp(UserArgs::Export, optarg);
-      break;
-    case 'x':
-      if (ua.Format == UserArgs::Unknown)
-        ua.Format = UserArgs::XML;
-      else
-        return false;
-      break;
-    case 't':
-      if (ua.Format == UserArgs::Unknown)
-        ua.Format = UserArgs::Text;
-      else
-        return false;
-      break;
-    case 'c':
-      ua.SetMainOp(UserArgs::CreateNew);
-      break;
+          switch (c) {
+          case 'i':
+              ua.SetMainOp(UserArgs::Import, optarg);
+              break;
+          case 'e':
+              ua.SetMainOp(UserArgs::Export, optarg);
+              break;
+          case 'x':
+              if (ua.Format == UserArgs::Unknown)
+                  ua.Format = UserArgs::XML;
+              else
+                  return false;
+              break;
+          case 't':
+              if (ua.Format == UserArgs::Unknown)
+                  ua.Format = UserArgs::Text;
+              else
+                  return false;
+              break;
+          case 'c':
+              ua.SetMainOp(UserArgs::CreateNew);
+              break;
 
-    case 's':
-      assert(optarg);
-      ua.SetMainOp(UserArgs::Search, optarg);
-      break;
+          case 's':
+              assert(optarg);
+              ua.SetMainOp(UserArgs::Search, optarg);
+              break;
 
-    case 'd':
-      assert(optarg);
-      ua.SetMainOp(UserArgs::Diff, optarg);
-      break;
+          case 'd':
+              assert(optarg);
+              ua.SetMainOp(UserArgs::Diff, optarg);
+              break;
 
-    case 'z':
-      assert(optarg);
-      ua.SetMainOp(UserArgs::Sync, optarg);
-      break;
+          case 'z':
+              assert(optarg);
+              ua.SetMainOp(UserArgs::Sync, optarg);
+              break;
 
-    case 'm':
-      assert(optarg);
-      ua.SetMainOp(UserArgs::Merge, optarg);
-      break;
+          case 'm':
+              assert(optarg);
+              ua.SetMainOp(UserArgs::Merge, optarg);
+              break;
 
-    case 'b':
-        assert(optarg);
-        ua.SetSubset(Utf82wstring(optarg));
-        break;
+          case 'b':
+              assert(optarg);
+              ua.SetSubset(Utf82wstring(optarg));
+              break;
 
-    case 'f':
-        assert(optarg);
-        ua.SetFields(Utf82wstring(optarg));
-        break;
+          case 'f':
+              assert(optarg);
+              ua.SetFields(Utf82wstring(optarg));
+              break;
 
-    case 'o':
-        if (optarg && std::regex_match(optarg, std::regex("yes|true", std::regex::icase)))
-          ua.ignoreCase = true;
-        break;
+          case 'o':
+              if (optarg && std::regex_match(optarg, std::regex("yes|true", std::regex::icase)))
+                  ua.ignoreCase = true;
+              break;
 
-    case 'a':
-        assert(optarg);
-        ua.SetMainOp(UserArgs::Add, optarg);
-        break;
+          case 'a':
+              assert(optarg);
+              ua.SetMainOp(UserArgs::Add, optarg);
+              break;
 
-    case 'y':
-        ua.confirmed = true;
-        break;
+          case 'y':
+              ua.confirmed = true;
+              break;
 
-    case 'r':
-        ua.SearchAction = UserArgs::Delete;
-        break;
+          case 'r':
+              ua.SearchAction = UserArgs::Delete;
+              break;
 
-    case 'p':
-        ua.SearchAction = UserArgs::Print;
-        if (optarg) ua.opArg2 = Utf82wstring(optarg);
-        break;
+          case 'p':
+              ua.SearchAction = UserArgs::Print;
+              if (optarg) ua.opArg2 = Utf82wstring(optarg);
+              break;
 
-    case 'u':
-        ua.SearchAction = UserArgs::Update;
-        assert(optarg);
-        ua.SetFieldValues(Utf82wstring(optarg));
-        break;
+          case 'u':
+              ua.SearchAction = UserArgs::Update;
+              assert(optarg);
+              ua.SetFieldValues(Utf82wstring(optarg));
+              break;
 
-    case 'l':
-        ua.SearchAction = UserArgs::ClearFields;
-        assert(optarg);
-        ua.opArg2 = Utf82wstring(optarg);
-        break;
+          case 'l':
+              ua.SearchAction = UserArgs::ClearFields;
+              assert(optarg);
+              ua.opArg2 = Utf82wstring(optarg);
+              break;
 
-    case 'v':
-        ua.SearchAction = UserArgs::ChangePassword;
-        break;
+          case 'v':
+              ua.SearchAction = UserArgs::ChangePassword;
+              break;
 
-      case 'g':
-        ua.dfmt = UserArgs::DiffFmt::Unified;
-        break;
+          case 'g':
+              ua.dfmt = UserArgs::DiffFmt::Unified;
+              break;
 
-      case 'j':
-        ua.dfmt = UserArgs::DiffFmt::Context;
-        break;
+          case 'j':
+              ua.dfmt = UserArgs::DiffFmt::Context;
+              break;
 
-      case 'k':
-        ua.dfmt = UserArgs::DiffFmt::SideBySide;
-        break;
+          case 'k':
+              ua.dfmt = UserArgs::DiffFmt::SideBySide;
+              break;
 
-      case 'n':
-        ua.dry_run = true;
-        break;
+          case 'n':
+              ua.dry_run = true;
+              break;
 
-      case 'w':
-        assert(optarg);
-        ua.colwidth = atoi(optarg);
-        break;
+          case 'w':
+              assert(optarg);
+              ua.colwidth = atoi(optarg);
+              break;
 
-    case 'P':
-        assert(optarg);
-        Utf82StringX(optarg, ua.passphrase[0]);
-        break;
+          case 'P':
+              assert(optarg);
+              Utf82StringX(optarg, ua.passphrase[0]);
+              break;
 
-    case 'Q':
-        assert(optarg);
-        Utf82StringX(optarg, ua.passphrase[1]);
-        break;
+          case 'Q':
+              assert(optarg);
+              Utf82StringX(optarg, ua.passphrase[1]);
+              break;
 
-    default:
-      wcerr << L"Unknown option: " << static_cast<wchar_t>(c) << endl;
+          default:
+              wcerr << L"Unknown option: " << static_cast<wchar_t>(c) << endl;
+              return false;
+          } // switch
+      } // while 
+  } 
+  catch (std::invalid_argument ex) {
+      wcerr << L"Error: " << ex.what() << endl << endl;
       return false;
-    } // switch
-  } // while 
+  }
   return true;
 }
 
