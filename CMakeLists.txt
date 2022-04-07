@@ -489,13 +489,21 @@ endif ()
 # Determine the architecture (amd64, i386, etc.) with command 'dpkg --print-architecture
 #
 if (NOT WIN32)
-    if (NOT CPACK_DEBIAN_PACKAGE_ARCHITECTURE)
+if (NOT CPACK_DEBIAN_PACKAGE_ARCHITECTURE)
       find_program(DPKG_EXECUTABLE dpkg)
       mark_as_advanced(DPKG_EXECUTABLE)
 
       if (NOT DPKG_EXECUTABLE)
-        # if we can't find dpkg, we don't really care, as this variable won't be used in this run.
-        set (PACKAGE_ARCHITECTURE "")
+        find_program(UNAME_EXECUTABLE uname)
+        mark_as_advanced(UNAME_EXECUTABLE)
+        if (NOT UNAME_EXECUTABLE)
+          set (PACKAGE_ARCHITECTURE "")
+        else ()
+          execute_process(COMMAND "${UNAME_EXECUTABLE}" -m
+                         OUTPUT_VARIABLE PACKAGE_ARCHITECTURE)
+          string(PREPEND PACKAGE_ARCHITECTURE "-")
+          set (PACKAGE_ARCHITECTURE "")
+        endif ()
       else ()
         execute_process(COMMAND "${DPKG_EXECUTABLE}" --print-architecture
                         OUTPUT_VARIABLE CPACK_DEBIAN_PACKAGE_ARCHITECTURE
@@ -504,6 +512,7 @@ if (NOT WIN32)
       endif ()
     endif ()
 endif (NOT WIN32)
+
 #
 # Determine name of distribution (Ubuntu, LinuxMint, ...)
 #
@@ -565,6 +574,9 @@ endif ()
 # Build name of package file (e.g. passwordsafe-ubuntu18-1.08.1-BETA-amd64.deb)
 #
 set (CPACK_PACKAGE_FILE_NAME ${CPACK_PACKAGE_NAME}-${DISTRO_NAME}${DISTRO_MAJOR_VERSION}-${CPACK_PACKAGE_VERSION}${PACKAGE_ARCHITECTURE})
+
+# Post-build stuff: e.g., sign the package
+set(CPACK_POST_BUILD_SCRIPTS "${PROJECT_SOURCE_DIR}/CMakeModules/PostBuild.cmake")
 
 if (EXISTS "/etc/debian_version")
 ## we are on a debian based distro, but we can't make assumptions about which
@@ -655,6 +667,7 @@ set (CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
 endif (EXISTS "/etc/debian_version")
 
 ## RPM-specific
+
 set (CPACK_RPM_PACKAGE_REQUIRES "wxBase3, wxGTK3, xerces-c, ykpers, qrencode-libs, file-libs")
 set (CPACK_RPM_PACKAGE_SUGGESTS "xvkbd")
 set (CPACK_RPM_PACKAGE_URL "https://pwsafe.org/")
