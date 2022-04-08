@@ -1,13 +1,15 @@
 #!/bin/bash
 #
 # post-build script
-# Meant to be called by cpack after package creation to finish up the build process
-# Currently signs the created package (deb or rpm, name passed as argument) using gpg key.
+# Meant to be called by cpack after package creation to finish up the build process, but can also work standalone.
 #
-# Detecting runtime distro type (Debian/RedHat) here rather than having 2 scripts selected by
-# cpack, as CMakeLists.txt is convoluted enough as-is.
+# Currently just signs the created package (deb or rpm, type and name passed as argument) using gpg key.
+# Signing key defaults to current project admin, but this can be overrode via PWS_SIGNER and PWS_KEYID
+# environment variables.
+#
 
 SIGNER=${PWS_SIGNER:="ronys@pwsafe.org"}
+KEYID=${PWS_KEYID:="7F2F1BB9"}
 
 Usage () {
     echo "Usage: $0 DEB|RPM package-to-sign"
@@ -22,17 +24,22 @@ Usage () {
 TYPE=$1
 PACKAGE=$2
 RPMSIGN=/usr/bin/rpmsign
+DEBSIGN=/usr/bin/dpkg-sig
 
 case "$TYPE" in
 RPM)
     if [ ! -x $RPMSIGN ]; then
-        echo "rpmsign not found"
+        echo "$RPMSIGN not found"
         exit 2
     fi
     $RPMSIGN --addsign --define "%_gpg_name $SIGNER" $PACKAGE
     ;;
 DEB)
-    echo "TBD: debsign $PACKAGE"
+     if [ ! -x $DEBSIGN ]; then
+        echo "$DEBSIGN not found"
+        exit 2
+    fi
+    $DEBSIGN --sign builder -k $KEYID $PACKAGE
     ;;
 *)
     Usage #Should have been caught earlier...
