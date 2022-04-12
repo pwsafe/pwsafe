@@ -70,7 +70,7 @@ case "$DISTRO" in
         else
             LIBWXDEV="libwxgtk3.0-dev"
         fi
-        apt-get install -qy cmake fakeroot g++ gettext git libgtest-dev \
+        apt-get install -qy cmake dpkg-sig fakeroot g++ gettext git libgtest-dev \
             libcurl4-openssl-dev libqrencode-dev  libssl-dev libuuid1 \
             $LIBWXDEV libxerces-c-dev libxt-dev libxtst-dev \
             libykpers-1-dev libyubikey-dev make pkg-config uuid-dev zip \
