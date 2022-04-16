@@ -211,12 +211,12 @@ signatures:
 installables: nsis msi nsis-64 msi-64
 
 nsis:
-	$(MAKENSIS) /DVERSION=$(RELEASENAME) /DARCH=x86 install/windows/pwsafe.nsi
+	$(MAKENSIS) /DVERSION=$(RELEASENUM) /DARCH=x86 /DVER_SPECIAL=$(VER_SPECIAL) install/windows/pwsafe.nsi
 	(cd install/windows; $(SIGNTOOL) sign $(SIGNTOOL_ARGS) pwsafe-$(RELEASENAME).exe)
 	$(MV) install/windows/pwsafe-$(RELEASENAME).exe $(RELEASEDIR)
 
 nsis-64:
-	$(MAKENSIS) /DVERSION=$(RELEASENAME) /DARCH=x64 install/windows/pwsafe.nsi
+	$(MAKENSIS) /DVERSION=$(RELEASENUM) /DARCH=x64 /DVER_SPECIAL=$(VER_SPECIAL) install/windows/pwsafe.nsi
 	(cd install/windows; $(SIGNTOOL) sign $(SIGNTOOL_ARGS) pwsafe64-$(RELEASENAME).exe)
 	$(MV) install/windows/pwsafe64-$(RELEASENAME).exe $(RELEASEDIR)
 

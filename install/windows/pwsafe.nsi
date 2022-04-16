@@ -92,16 +92,16 @@
 ; 3. At the command line (or in a build script such as the .dsp file,
 ;    makefile, or other scripted build process), execute the following:
 ;
-;        makensis.exe /DVERSION=X.XX /DARCH=x86 pwsafe.nsi
-;        makensis.exe /DVERSION=X.XX /DARCH=x64 pwsafe.nsi
+;        makensis.exe /DVERSION=X.XX /DARCH=x86 [/DVER_SPECIAL=yyy] pwsafe.nsi
+;        makensis.exe /DVERSION=X.XX /DARCH=x64 [/DVER_SPECIAL=yyy] pwsafe.nsi
 ;
 ;    where X.XX is the version number of the current build of Password
 ;    Safe.
 ;
 ; The output from the above process should be:
 ;
-;    pwsafe-X.XX.exe (the 32-bit version) 
-;    pwsafe64-X.XX.exe (the 64-bit version) 
+;    pwsafe-X.XXyyy.exe (the 32-bit version) 
+;    pwsafe64-X.XXyyy.exe (the 64-bit version) 
 ;
 ; These are the installers.  They can be placed on a publicly 
 ; available location.
@@ -160,7 +160,14 @@ Unicode true
 
 !ifndef ARCH
   !error "ARCH undefined. Usage: makensis.exe /DVERSION=X.XX /DARCH=[x86|x64] pwsafe.nsi"
-!endif  
+!endif
+
+!ifdef VER_SPECIAL
+  !define FULL_VERSION ${VERSION}${VER_SPECIAL}
+!else
+  !define FULL_VERSION ${VERSION}
+!endif
+
 
 ;--------------------------------
 ;Variables
@@ -188,21 +195,21 @@ Unicode true
 
   ; Default installation folder based on chosen architecture
   !if ${ARCH} == "x86"
-    OutFile "pwsafe-${VERSION}.exe"
+    OutFile "pwsafe-${FULL_VERSION}.exe"
     InstallDir "$PROGRAMFILES\Password Safe"
     ; Name and file
-    Name "Password Safe ${VERSION} (32-bit)"
-    BrandingText "Password Safe ${VERSION} (32-bit) Installer"
+    Name "Password Safe ${FULL_VERSION} (32-bit)"
+    BrandingText "Password Safe ${FULL_VERSION} (32-bit) Installer"
     !define LANG_DLL "..\..\out\build\x86-Release\I18N"
     !define BIN_DIR "..\..\out\build\x86-Release\Release"
     !define TARGET_ARCH "(32-bit)"
     !echo "Building x86 installer"
   !else if ${ARCH} == "x64" 
-    OutFile "pwsafe64-${VERSION}.exe"
+    OutFile "pwsafe64-${FULL_VERSION}.exe"
     InstallDir "$PROGRAMFILES64\Password Safe"
     ; Name and file
-    Name "Password Safe ${VERSION} (64-bit)"
-    BrandingText "Password Safe ${VERSION} (64-bit) Installer"
+    Name "Password Safe ${FULL_VERSION} (64-bit)"
+    BrandingText "Password Safe ${FULL_VERSION} (64-bit) Installer"
     !define LANG_DLL "..\..\out\build\x64-Release\I18N"
     !define BIN_DIR "..\..\out\build\x64-Release\Release"
     !define TARGET_ARCH "(64-bit)"
@@ -394,7 +401,7 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   WriteRegStr HKCU "Software\Password Safe\Password Safe" "installdir" $INSTDIR
 
   ; Store the version
-  WriteRegStr HKCU "Software\Password Safe\Password Safe" "installversion" "${VERSION}"
+  WriteRegStr HKCU "Software\Password Safe\Password Safe" "installversion" "${FULL_VERSION}"
   
   ; and the language
   WriteRegStr HKCU "Software\Password Safe\Password Safe" "Language" "$LANGUAGE"
@@ -410,7 +417,7 @@ Section "$(PROGRAM_FILES)" ProgramFiles
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
         "DisplayIcon" "$INSTDIR\pwsafe.exe"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
-        "DisplayVersion" "${VERSION}"
+        "DisplayVersion" "${FULL_VERSION}"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
         "Publisher" "Rony Shapiro"
   WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\Password Safe" \
