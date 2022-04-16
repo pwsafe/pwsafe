@@ -5329,8 +5329,11 @@ msgstr ""
 msgid "Press to delete all added characters."
 msgstr ""
 
-#. Resource IDs: (65535)
 msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password being copied."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password from being copied."
 msgstr ""
 
 #. Resource IDs: (1517)
