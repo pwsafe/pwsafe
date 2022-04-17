@@ -4,8 +4,8 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Rony Shapiro, 2021
-# ROBERTO BORIOTTI <roberto.boriotti@canon.it>, 2021
+# ronys, 2021
+# ROBERTO BORIOTTI <roberto.boriotti@canon.it>, 2022
 # 
 #, fuzzy
 msgid ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
 "PO-Revision-Date: 2021-09-29 17:34+0000\n"
-"Last-Translator: ROBERTO BORIOTTI <roberto.boriotti@canon.it>, 2021\n"
+"Last-Translator: ROBERTO BORIOTTI <roberto.boriotti@canon.it>, 2022\n"
 "Language-Team: Italian (https://www.transifex.com/passwordsafe/teams/125590/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -5993,7 +5993,6 @@ msgstr "Posizioni:"
 msgid "Press to delete all added characters."
 msgstr "Premere per eliminare tutti i caratteri aggiunti."
 
-#. Resource IDs: (65535)
 msgid ""
 "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n"
 "\n"
@@ -6002,6 +6001,16 @@ msgstr ""
 "Selezionando 'OK' verrà copiata la password dell'elemento selezionato negli Appunti. Gli Appunti verranno svuotati in modo sicuro quando PasswordSafe verrà chiuso.\n"
 "\n"
 "Seelzionando 'Annulla' impedirai la copiatura della password."
+
+#. Resource IDs: (65535)
+msgid ""
+"Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n"
+"\n"
+"Pressing Cancel stops the password from being copied."
+msgstr ""
+"Selezionando 'OK' verrà copiata la password dell'elemento selezionato negli Appunti.\n"
+"Gli Appunti saranno cancellati in modo sicuro quando Password Safe verrà  chiuso.\n"
+"Selezionando 'Annulla' verrà interrotta la copia della password."
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
