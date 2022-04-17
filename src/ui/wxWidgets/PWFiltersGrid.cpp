@@ -859,6 +859,7 @@ bool pwFiltersGrid::GetCriterion(int row)
         FilterRow(row).fnum1 = fnum1;
         return true;
       }
+      break;
     }
     case PWSMatch::MT_INTEGER:
     {
