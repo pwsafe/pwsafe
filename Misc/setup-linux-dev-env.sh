@@ -76,7 +76,7 @@ case "$DISTRO" in
             libykpers-1-dev libyubikey-dev make pkg-config uuid-dev zip \
             libmagic-dev
         # dpkg-sig is nice-to-have, not available on debian testing?
-        apt-get install dpkg-sig || (echo "dpkg-sig isn't mandatory"; true)
+        apt-get install -qy dpkg-sig || (echo "dpkg-sig isn't mandatory"; true)
     ;;
     fedora)
         dnf -y install cmake file-devel gcc-c++ git gtest-devel libXt-devel libXtst-devel \
