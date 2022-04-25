@@ -1949,8 +1949,9 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
     }
 
 #ifdef PWS_BIG_ENDIAN
-    unsigned char buf[len] = {0};
-
+    unsigned char buf[len];
+    memset(buf, 0, len*sizeof(char));
+	  
     switch(type) {
       case CTIME:
       case PMTIME:
