@@ -93,7 +93,7 @@ bool WinUtil::OfferConfigMigration()
    * Offer the user the option of migrating config files iff ALL
    * of the following are true:
    * 1. Config file is currently in executable directory
-   * 2. This is NOT a U3 installation
+   * 2. (obsolete)
    * 3. The executable directory is on a fixed or network drive
    * 4. The user did NOT override the config file, user name or host name
    *    via command line (-g, -u, -h).
@@ -103,7 +103,7 @@ bool WinUtil::OfferConfigMigration()
   const SysInfo *si = SysInfo::GetInstance();
 
   // start with quickest checks
-  if (si->IsUnderU3() || PWSprefs::UserSetCfgFile() ||
+  if (PWSprefs::UserSetCfgFile() ||
       (si->GetRealHost() != si->GetEffectiveHost()) ||
       (si->GetRealUser() != si->GetEffectiveUser()))
     return false;

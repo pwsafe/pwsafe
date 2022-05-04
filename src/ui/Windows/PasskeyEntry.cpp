@@ -305,13 +305,6 @@ void CPasskeyEntry::OnCreateDb()
 
     rc = fd.DoModal();
 
-    if (((DboxMain*)GetParent())->ExitRequested()) {
-      // If U3ExitNow called while in CPWFileDialog,
-      // PostQuitMessage makes us return here instead
-      // of exiting the app. Try resignalling
-      PostQuitMessage(0);
-      return;
-    }
     if (rc == IDOK) {
       newfile = fd.GetPathName();
       break;
@@ -551,13 +544,6 @@ void CPasskeyEntry::OnOpenFileBrowser()
 
   INT_PTR rc = fd.DoModal();
 
-  if (((DboxMain*)GetParent())->ExitRequested()) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling
-    PostQuitMessage(0);
-    return;
-  }
   if (rc == IDOK) {
     if (!pws_os::IsWindowsVistaOrGreater()) {
       // Read-only checkbox only available up to Windows XP

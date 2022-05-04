@@ -106,13 +106,6 @@ int DboxMain::BackupSafe()
 
     rc = fd.DoModal();
 
-    if (m_inExit) {
-      // If U3ExitNow called while in CPWFileDialog,
-      // PostQuitMessage makes us return here instead
-      // of exiting the app. Try resignalling 
-      PostQuitMessage(0);
-      return PWScore::USER_CANCEL;
-    }
     if (rc == IDOK) {
       tempname = fd.GetPathName();
       break;
@@ -184,13 +177,6 @@ int DboxMain::RestoreSafe()
 
     INT_PTR rc2 = fd.DoModal();
 
-    if (m_inExit) {
-      // If U3ExitNow called while in CPWFileDialog,
-      // PostQuitMessage makes us return here instead
-      // of exiting the app. Try resignalling 
-      PostQuitMessage(0);
-      return PWScore::USER_CANCEL;
-    }
     if (rc2 == IDOK) {
       sx_backup = fd.GetPathName();
       break;

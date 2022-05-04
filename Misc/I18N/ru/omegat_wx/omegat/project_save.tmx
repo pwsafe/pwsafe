@@ -13060,16 +13060,6 @@ bypasses the security provided by this program.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>To get an unlimited version for the U3 platform, please visit http://software.u3.com
-Note: Saving this database will result in the removal of unread entries!</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T133544Z">
-        <seg>Для получения полноценной версии для платформы U3 посетите http://software.u3.com.
-Примечание: Сохранение контейнера приведёт к удалению непрочитанных элементов!</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>To replace passwords of existing entries, all the following columns must be present: Group/Title, Username and Password.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T134507Z">

@@ -134,7 +134,6 @@ DboxMain::DboxMain(PWScore &core, CWnd* pParent)
   m_TUUIDSelectedAtMinimize(pws_os::CUUID::NullUUID()),
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
-  m_inExit(false),
   m_savedDBprefs(EMPTYSAVEDDBPREFS),
   m_bImageInLV(false),
   m_pNotesDisplay(nullptr),
@@ -3318,15 +3317,6 @@ void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
     if (m_FindToolBar.IsVisible() && !bOpen) {
       OnHideFindToolbar();
     }
-  }
-}
-
-void DboxMain::U3ExitNow()
-{
-  // Here upon "soft eject" from U3 device
-  if (OnQueryEndSession(0, ENDSESSION_CLOSEAPP) == TRUE) {
-    m_inExit = true;
-    PostQuitMessage(0);
   }
 }
 

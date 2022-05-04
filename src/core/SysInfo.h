@@ -27,7 +27,6 @@ public:
   static SysInfo *GetInstance(); // singleton
   static void DeleteInstance();
 
-  static bool IsUnderU3();
   static bool IsUnderPw2go();
   static bool IsLinux();
 

@@ -356,13 +356,6 @@ void DboxMain::ExportFilters(PWSFilters &Filters)
 
     rc = fd.DoModal();
 
-    if (m_inExit) {
-      // If U3ExitNow called while in CPWFileDialog,
-      // PostQuitMessage makes us return here instead
-      // of exiting the app. Try resignalling
-      PostQuitMessage(0);
-      return;
-    }
     if (rc == IDOK) {
       cs_newfile = fd.GetPathName();
       break;
@@ -422,13 +415,6 @@ void DboxMain::ImportFilters()
 
   INT_PTR rc = fd.DoModal();
 
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling
-    PostQuitMessage(0);
-    return;
-  }
   if (rc == IDCANCEL)
     return;
 

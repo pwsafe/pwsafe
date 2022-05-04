@@ -13,21 +13,7 @@
 /**
 * Provide directories used by application
 * The functions here return values that cause the application
-* to default to current behaviour, UNLESS the U3 (www.u3.com) env. vars
-* are defined, in which case values corresponding to the U3 layout are used,
-* as follows (corresponding to the layout in the .u3p package):
-*
-* GetSafeDir()   Default database directory:
-*                U3_DEVICE_DOCUMENT_PATH\My Safes\
-* GetConfigDir() Location of configuration file:
-*                U3_APP_DATA_PATH
-*                NOTE: PWS_PREFSDIR can be set to override this!
-* GetXMLDir()    Location of XML .xsd and .xsl files:
-*                U3_APP_DATA_PATH\xml\
-* GetHelpDir()   Location of help file(s):
-*                U3_DEVICE_EXEC_PATH
-* GetExeDir()    Location of executable:
-*                U3_HOST_EXEC_PATH
+* to default to current behaviour.
 */
 
 stringT PWSdirs::execdir;
@@ -42,12 +28,8 @@ stringT PWSdirs::GetOurExecDir()
 
 stringT PWSdirs::GetSafeDir()
 {
-  // returns pws_os::getsafedir unless U3 environment detected
-  stringT retval(pws_os::getenv("U3_DEVICE_DOCUMENT_PATH", true));
-  if (!retval.empty())
-    retval += _S("My Safes\\");
-  else
-    retval = pws_os::getsafedir();
+  // returns pws_os::getsafedir
+  stringT retval = pws_os::getsafedir();
   return retval;
 }
 
@@ -56,44 +38,29 @@ stringT PWSdirs::GetConfigDir()
   // PWS_PREFSDIR overrides all:
   stringT retval(pws_os::getenv("PWS_PREFSDIR", true));
   if (retval.empty()) {
-    retval = pws_os::getenv("U3_APP_DATA_PATH", true);
-    if (retval.empty()) {
-      // NOT U3
-      retval = pws_os::getuserprefsdir(); // "LOCAL_APPDATA\PasswordSafe" for Windows,
+    retval = pws_os::getuserprefsdir(); // "LOCAL_APPDATA\PasswordSafe" for Windows,
                                           // ~/.pwsafe for Linux
-      if (retval.empty())
-        retval = GetOurExecDir();
-    }
+    if (retval.empty())
+      retval = GetOurExecDir(); // ancient fallback - remove?
   }
   return retval;
 }
 
 stringT PWSdirs::GetXMLDir()
 {
-  stringT retval(pws_os::getenv("U3_APP_DATA_PATH", true));
-  if (!retval.empty())
-    retval += _S("\\xml\\");
-  else {
-    retval = pws_os::getxmldir();
-  }
+  stringT retval = pws_os::getxmldir();
   return retval;
 }
 
 stringT PWSdirs::GetHelpDir()
 {
-  stringT retval(pws_os::getenv("U3_DEVICE_EXEC_PATH", true));
-  if (retval.empty()) {
-    retval = pws_os::gethelpdir();
-  }
+  stringT retval = pws_os::gethelpdir();
   return retval;
 }
 
 stringT PWSdirs::GetExeDir()
 {
-  stringT retval(pws_os::getenv("U3_HOST_EXEC_PATH", true));
-  if (retval.empty()) {
-    retval = GetOurExecDir();
-  }
+  stringT retval = GetOurExecDir();
   return retval;
 }
 

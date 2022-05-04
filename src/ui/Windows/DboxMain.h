@@ -246,8 +246,6 @@ public:
                      const bool &bDoAutotype);
   BOOL SendEmail(const CString &cs_email);
   void SetInitialDatabaseDisplay();
-  void U3ExitNow(); // called when U3AppStop sends message to Pwsafe Listener
-  bool ExitRequested() const {return m_inExit;}
   void AutoResizeColumns();
   void ResetIdleLockCounter(UINT event = WM_SIZE); // default arg always resets
   bool ClearClipboardData() {return m_clipboard.ClearCBData();}
@@ -879,7 +877,6 @@ private:
 
   StringX m_sxOriginalGroup;                 // Needed when doing recursive deletions of groups
 
-  bool m_inExit; // help U3ExitNow
   std::vector<bool> m_vGroupDisplayState; // used to save/restore display state over minimize/restore
   StringX m_savedDBprefs;                 // used across minimize/restore events
 

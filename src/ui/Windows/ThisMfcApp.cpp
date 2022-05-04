@@ -217,26 +217,6 @@ int ThisMfcApp::ExitInstance()
   return CWinApp::ExitInstance();
 }
 
-// Listener window whose sole purpose in life is to receive
-// the "AppStop" message from the U3 framework and then
-// cause a semi-graceful exit.
-
-class CLWnd : public CWnd
-{
-public:
-  CLWnd(DboxMain &dbox) : m_dbox(dbox) {}
-  virtual LRESULT WindowProc(UINT message, WPARAM wParam, LPARAM lParam)
-  {
-    if (message != (WM_APP+0x765))
-      return CWnd::WindowProc(message, wParam, lParam);
-    else
-      m_dbox.U3ExitNow();
-    return 0L;
-  }
-private:
-  DboxMain &m_dbox;
-};
-
 static void GetVersionInfoFromFile(const CString &csFileName,
                                    DWORD &MajorMinor, DWORD &BuildRevision)
 {
@@ -1167,18 +1147,6 @@ BOOL ThisMfcApp::InitInstance()
   */
 
   m_pMainWnd = m_pDbx;
-
-  CLWnd ListenerWnd(*m_pDbx);
-  if (SysInfo::IsUnderU3()) {
-    // See comment under CLWnd to understand this.
-    ListenerWnd.m_hWnd = NULL;
-    if (!ListenerWnd.CreateEx(0, AfxRegisterWndClass(0),
-                              L"Pwsafe Listener",
-                              WS_OVERLAPPED, 0, 0, 0, 0, NULL, NULL)) {
-      ASSERT(0);
-      return FALSE;
-    } 
-  }
 
   // Run dialog - note that we don't particularly care what the response was
   m_pDbx->Create(IDD_PASSWORDSAFE_DIALOG);

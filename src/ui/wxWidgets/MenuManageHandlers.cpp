@@ -161,16 +161,6 @@ void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& WXUNUSED(evt))
   //create a copy to avoid multiple conversions to StringX
   const StringX backupfile(tostringx(wxbf));
 
-#ifdef NOT_YET
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling
-    PostQuitMessage(0);
-    return PWScore::USER_CANCEL;
-  }
-#endif
-
   if (!backupfile.empty()) {  //i.e. if user didn't cancel
     if (m_core.WriteFile(backupfile, m_core.GetReadFileVersion(),
                          false) == PWScore::CANT_OPEN_FILE) {
@@ -207,16 +197,6 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& WXUNUSED(evt))
                                  this);
   if (wxbf.empty())
     return;
-
-#ifdef NOT_YET
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling
-    PostQuitMessage(0);
-    return PWScore::USER_CANCEL;
-  }
-#endif
 
   SafeCombinationPromptDlg pwdprompt(this, m_core, wxbf, false);
   if (pwdprompt.ShowModal() == wxID_OK) {

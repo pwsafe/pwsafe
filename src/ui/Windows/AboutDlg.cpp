@@ -168,7 +168,7 @@ void CAboutDlg::CheckNewVer()
       {
       CGeneralMsgBox gmb;
       CString newer;
-      newer.Format(SysInfo::IsUnderU3() ? IDS_NEWER_AVAILABLE_U3 : IDS_NEWER_AVAILABLE,
+      newer.Format(IDS_NEWER_AVAILABLE,
                    static_cast<LPCWSTR>(m_appversion),
                    static_cast<LPCWSTR>(latest.c_str()));
       m_newVerStatus.Format(IDS_NEWER_AVAILABLE_SHORT, html_redfont, html_endfont);

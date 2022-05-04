@@ -102,9 +102,6 @@ public:
   StringX WZPSHGetCurFile()
   {return app.GetMainDlg()->GetCurFile();}
 
-  bool WZPSHExitRequested() const
-  {return app.GetMainDlg()->ExitRequested();}
-
   int WZPSHCheckPasskey(const StringX &filename, const StringX &passkey,
                         PWScore *pcore)
   {return app.GetMainDlg()->CheckPasskey(filename, passkey, pcore);}

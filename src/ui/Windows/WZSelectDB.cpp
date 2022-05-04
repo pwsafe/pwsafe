@@ -807,14 +807,6 @@ void CWZSelectDB::OnOpenFileBrowser()
 
   INT_PTR rc = fd.DoModal();
 
-  if (m_pWZPSH->WZPSHExitRequested()) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling
-    PostQuitMessage(0);
-    return;
-  }
-
   if (rc == IDOK) {
     m_filespec = fd.GetPathName();
     m_pctlDB->SetWindowText(m_filespec);

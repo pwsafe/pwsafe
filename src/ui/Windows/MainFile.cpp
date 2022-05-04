@@ -412,13 +412,6 @@ int DboxMain::NewFile(StringX &newfilename)
 
     rc = fd.DoModal();
 
-    if (m_inExit) {
-      // If U3ExitNow called while in CPWFileDialog,
-      // PostQuitMessage makes us return here instead
-      // of exiting the app. Try resignalling
-      PostQuitMessage(0);
-      return PWScore::USER_CANCEL;
-    }
     if (rc == IDOK) {
       newfilename = LPCWSTR(fd.GetPathName());
       break;
@@ -690,14 +683,6 @@ int DboxMain::Open(const UINT uiTitle)
       fd.m_ofn.lpstrInitialDir = DBpath.c_str();
 
     INT_PTR rc2 = fd.DoModal();
-
-    if (m_inExit) {
-      // If U3ExitNow called while in CPWFileDialog,
-      // PostQuitMessage makes us return here instead
-      // of exiting the app. Try resignalling
-      PostQuitMessage(0);
-      return PWScore::USER_CANCEL;
-    }
 
     const bool last_ro = m_core.IsReadOnly(); // restore if user cancels
     m_core.SetReadOnly(m_bDBInitiallyRO || fd.GetReadOnlyPref() == TRUE);
@@ -1441,13 +1426,6 @@ int DboxMain::SaveAs()
 
     rc = fd.DoModal();
 
-    if (m_inExit) {
-      // If U3ExitNow called while in CPWFileDialog,
-      // PostQuitMessage makes us return here instead
-      // of exiting the app. Try resignalling
-      PostQuitMessage(0);
-      return PWScore::USER_CANCEL;
-    }
     if (rc == IDOK) {
       newfile = fd.GetPathName();
       break;
@@ -1629,13 +1607,6 @@ void DboxMain::OnExportVx(UINT nID)
 
     rc = fd.DoModal();
 
-    if (m_inExit) {
-      // If U3ExitNow called while in CPWFileDialog,
-      // PostQuitMessage makes us return here instead
-      // of exiting the app. Try resignalling
-      PostQuitMessage(0);
-      return;
-    }
     if (rc == IDOK) {
       newfile = fd.GetPathName();
       break;
@@ -2338,14 +2309,6 @@ void DboxMain::OnImportText()
 
   INT_PTR rc = fd.DoModal();
 
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling
-    PostQuitMessage(0);
-    return;
-  }
-
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     std::wstring strError;
@@ -2499,14 +2462,6 @@ void DboxMain::OnImportKeePassV1CSV()
 
   INT_PTR rc = fd.DoModal();
 
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling
-    PostQuitMessage(0);
-    return;
-  }
-
   if (rc == IDOK) {
     CGeneralMsgBox gmb;
     bool bWasEmpty = m_core.GetNumEntries() == 0;
@@ -2613,14 +2568,6 @@ void DboxMain::OnImportKeePassV1TXT()
     fd.m_ofn.lpstrInitialDir = dir.c_str();
 
   INT_PTR rc = fd.DoModal();
-
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling
-    PostQuitMessage(0);
-    return;
-  }
 
   if (rc == IDOK) {
     CGeneralMsgBox gmb;
@@ -2757,14 +2704,6 @@ void DboxMain::OnImportXML()
     fd.m_ofn.lpstrInitialDir = dir.c_str();
 
   INT_PTR rc = fd.DoModal();
-
-  if (m_inExit) {
-    // If U3ExitNow called while in CPWFileDialog,
-    // PostQuitMessage makes us return here instead
-    // of exiting the app. Try resignalling
-    PostQuitMessage(0);
-    return;
-  }
 
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
@@ -4216,8 +4155,6 @@ void DboxMain::CleanUpAndExit()
     delete m_pTrayIcon;
     m_pTrayIcon = nullptr;
   }
-
-  m_inExit = true;
 
   DestroyWindow();
   PostQuitMessage(0);

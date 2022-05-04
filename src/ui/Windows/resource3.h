@@ -294,7 +294,6 @@
 #define IDS_TRYING2CONTACT_SERVER       5475
 #define IDS_NEWER_CAPTION               5476
 #define IDS_NEWER_AVAILABLE             5477
-#define IDS_NEWER_AVAILABLE_U3          5478
 #define IDS_TEXTIMPORTFAILED            5479
 #define IDS_COMPARINGDATABASE           5480
 #define IDS_COPYENTRY                   5481

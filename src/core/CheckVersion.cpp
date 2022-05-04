@@ -15,10 +15,8 @@
  *
  * And is of the form:
  * <VersionInfo>
- *  <Product name="PasswordSafe" variant="PC" major="3" minor="28" build="0" rev="4786" />
- *  <Product name="PasswordSafe" variant="PPc" major="1" minor="9" build="2" rev="100" /> <!-- obsolete -->
- *  <Product name="PasswordSafe" variant="U3" major="3" minor="28" build="0" rev="4786" /> <!-- obsolete -->
- *  <Product name="PasswordSafe" variant="Linux" major="0" minor="7" build="0" rev="4527:4532" />
+ *  <Product name="PasswordSafe" variant="PC" major="3" minor="28" build="0" rev="0" />
+ *  <Product name="PasswordSafe" variant="Linux" major="0" minor="7" build="0" rev="0" />
  * </VersionInfo>
  *
  * Note: The "rev" is the git commit number. Displayed, not used.
@@ -64,10 +62,8 @@ CheckVersion::CheckLatestVersion(const stringT &xml, stringT &latest) const
 
         const stringT variant(pVariant);
         // Determine which variant is relevant for us
-        if ((SysInfo::IsUnderU3()  && variant == _T("U3"))    ||
-            (SysInfo::IsLinux()    && variant == _T("Linux")) ||
-            (!SysInfo::IsUnderU3() && !SysInfo::IsLinux() &&
-             variant == _T("PC"))) {
+        if ((SysInfo::IsLinux()  && variant == _T("Linux")) ||
+            (!SysInfo::IsLinux() && variant == _T("PC"))) {
             const int xmajor = it->attribute(_T("major")).as_int();
             const int xminor = it->attribute(_T("minor")).as_int();
             const int xbuild = it->attribute(_T("build")).as_int();
