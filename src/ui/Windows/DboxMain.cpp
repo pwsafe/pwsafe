@@ -918,43 +918,39 @@ void DboxMain::InitPasswordSafe()
   PWSprefs::ConfigOption configoption;
   std::wstring wsCnfgFile = PWSprefs::GetConfigFile(configoption);
   std::wstring wsAutoLoad;
-  if (configoption == PWSprefs::CF_NONE ||
-      configoption == PWSprefs::CF_REGISTRY) {
-    // Need to use Executable directory instead
-    wsAutoLoad = PWSdirs::GetExeDir() + L"autoload_filters.xml";
-  } else {
-    std::wstring wsCnfgDrive, wsCnfgDir, wsCnfgFileName, wsCnfgExt;
-    pws_os::splitpath(wsCnfgFile, wsCnfgDrive, wsCnfgDir, wsCnfgFileName, wsCnfgExt);
-    wsAutoLoad = pws_os::makepath(wsCnfgDrive, wsCnfgDir, L"autoload_filters", L".xml");
-  }
+  if (!(configoption == PWSprefs::CF_NONE || configoption == PWSprefs::CF_REGISTRY)) {
+      std::wstring wsCnfgDrive, wsCnfgDir, wsCnfgFileName, wsCnfgExt;
+      pws_os::splitpath(wsCnfgFile, wsCnfgDrive, wsCnfgDir, wsCnfgFileName, wsCnfgExt);
+      wsAutoLoad = pws_os::makepath(wsCnfgDrive, wsCnfgDir, L"autoload_filters", L".xml");
 
-  if (pws_os::FileExists(wsAutoLoad)) {
-    std::wstring strErrors;
-    std::wstring XSDFilename = PWSdirs::GetXMLDir() + L"pwsafe_filter.xsd";
+      if (pws_os::FileExists(wsAutoLoad)) {
+          std::wstring strErrors;
+          std::wstring XSDFilename = PWSdirs::GetXMLDir() + L"pwsafe_filter.xsd";
 
-    if (!pws_os::FileExists(XSDFilename)) {
-      CGeneralMsgBox gmb;
-      CString cs_title, cs_msg, cs_temp;
-      cs_temp.Format(IDSC_MISSINGXSD, L"pwsafe_filter.xsd");
-      cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, static_cast<LPCWSTR>(cs_temp));
-      cs_title.LoadString(IDSC_CANTVALIDATEXML);
-      gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONSTOP);
-      return;
-    }
+          if (!pws_os::FileExists(XSDFilename)) {
+              CGeneralMsgBox gmb;
+              CString cs_title, cs_msg, cs_temp;
+              cs_temp.Format(IDSC_MISSINGXSD, L"pwsafe_filter.xsd");
+              cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, static_cast<LPCWSTR>(cs_temp));
+              cs_title.LoadString(IDSC_CANTVALIDATEXML);
+              gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONSTOP);
+              return;
+          }
 
-    MFCAsker q;
-    int rc;
-    CWaitCursor waitCursor;  // This may take a while!
-    rc = m_MapAllFilters.ImportFilterXMLFile(FPOOL_AUTOLOAD, L"",
-                                          wsAutoLoad,
-                                          XSDFilename.c_str(), strErrors, &q);
-    waitCursor.Restore();  // Restore normal cursor
-    if (rc != PWScore::SUCCESS) {
-      CGeneralMsgBox gmb;
-      CString cs_msg;
-      cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, strErrors.c_str());
-      gmb.AfxMessageBox(cs_msg, MB_OK);
-    }
+          MFCAsker q;
+          int rc;
+          CWaitCursor waitCursor;  // This may take a while!
+          rc = m_MapAllFilters.ImportFilterXMLFile(FPOOL_AUTOLOAD, L"",
+              wsAutoLoad,
+              XSDFilename.c_str(), strErrors, &q);
+          waitCursor.Restore();  // Restore normal cursor
+          if (rc != PWScore::SUCCESS) {
+              CGeneralMsgBox gmb;
+              CString cs_msg;
+              cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, strErrors.c_str());
+              gmb.AfxMessageBox(cs_msg, MB_OK);
+          }
+      }
   }
 #endif
 }
