@@ -11,6 +11,7 @@ New features in 3.59.0
 ----------------------
 * [FR903](https://sourceforge.net/p/passwordsafe/feature-requests/903/) When an alternativ browser's defined, allow browsing to an entry's URL with it via a new menu option
 in addition to the '[alt]' notation in the URL.
+* [FR900](https://sourceforge.net/p/passwordsafe/feature-requests/900/) When duplicating an existing entry, the newly created duplicate is selected, making it easier to edit or delete/undo.
 
 
 PasswordSafe 3.58.0 Release Dec 2021
