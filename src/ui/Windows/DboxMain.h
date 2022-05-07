@@ -674,6 +674,7 @@ public:
   afx_msg void OnPasswordSafeWebsite();
   afx_msg void OnBrowse();
   afx_msg void OnBrowsePlus();
+  afx_msg void OnBrowseAlt();
   afx_msg void OnSendEmail();
   afx_msg void OnCopyUsername();
   afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
@@ -916,7 +917,7 @@ private:
   void SetupSpecialShortcuts();
   void UpdateEditViewAccelerator(bool isRO);
   bool ProcessLanguageMenu(CMenu *pPopupMenu);
-  void DoBrowse(const bool bDoAutotype, const bool bSendEmail);
+  void DoBrowse(bool bDoAutotype, bool bSendEmail, bool bForceAlt);
   bool GetSubtreeEntriesProtectedStatus(int &numProtected, int &numUnprotected);
   void ChangeSubtreeEntriesProtectStatus(const UINT nID);
   void CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSpecial = false);

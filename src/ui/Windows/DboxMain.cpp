@@ -391,6 +391,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_VIEWENTRY, OnEdit)
   ON_COMMAND(ID_MENUITEM_GROUPENTER, OnEdit)
   ON_COMMAND(ID_MENUITEM_BROWSEURL, OnBrowse)
+  ON_COMMAND(ID_MENUITEM_BROWSEURLALT, OnBrowseAlt)
   ON_COMMAND(ID_MENUITEM_SENDEMAIL, OnSendEmail)
   ON_COMMAND(ID_MENUITEM_BROWSEURLPLUS, OnBrowsePlus)
   ON_COMMAND(ID_MENUITEM_COPYPASSWORD, OnCopyPassword)
@@ -629,6 +630,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_COPYNOTESFLD, true, true, false, false},
   {ID_MENUITEM_CLEARCLIPBOARD, true, true, true, false},
   {ID_MENUITEM_BROWSEURL, true, true, false, false},
+  {ID_MENUITEM_BROWSEURLALT, true, true, false, false},
   {ID_MENUITEM_BROWSEURLPLUS, true, true, false, false},
   {ID_MENUITEM_SENDEMAIL, true, true, false, false},
   {ID_MENUITEM_AUTOTYPE, true, true, false, false},
@@ -1771,21 +1773,28 @@ void DboxMain::OnItemDoubleClick(NMHDR *, LRESULT *pLResult)
 // Called to send an email.
 void DboxMain::OnSendEmail()
 {
-  DoBrowse(false, true);
+  DoBrowse(false, true, false);
 }
 
+// open web browser + autotype
 void DboxMain::OnBrowsePlus()
 {
-  DoBrowse(true, false);
+  DoBrowse(true, false, false);
 }
 
 // Called to open a web browser to the URL associated with an entry.
 void DboxMain::OnBrowse()
 {
-  DoBrowse(false, false);
+  DoBrowse(false, false, false);
 }
 
-void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
+// open alternate web browser (if defined)
+void DboxMain::OnBrowseAlt()
+{
+    DoBrowse(false, false, true);
+}
+
+void DboxMain::DoBrowse(bool bDoAutotype, bool bSendEmail, bool bForceAlt)
 {
   CItemData *pci = getSelectedItem();
   if (pci != NULL) {
@@ -1799,16 +1808,20 @@ void DboxMain::DoBrowse(const bool bDoAutotype, const bool bSendEmail)
       if (pbci == NULL)
         return;
     }
+
     sx_pswd     = pci->GetEffectiveFieldValue(CItem::PASSWORD, pbci);
     sx_url      = pci->GetEffectiveFieldValue(CItem::URL, pbci);
     sx_email    = pci->GetEffectiveFieldValue(CItem::EMAIL, pbci);
-    
+
     CString cs_command;
     if (bSendEmail && !sx_email.empty()) {
       cs_command = L"mailto:";
       cs_command += sx_email.c_str();
     } else {
-      cs_command = sx_url.c_str();
+      if (bForceAlt && sx_url.find(L"[alt]") == StringX::npos) {
+        cs_command = L"[alt]";
+      }
+      cs_command += sx_url.c_str();
     }
 
     if (!cs_command.IsEmpty()) {
@@ -3481,6 +3494,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       break;
     // Not allowed if Group selected or the item selected has an empty field
     case ID_MENUITEM_BROWSEURL:
+    case ID_MENUITEM_BROWSEURLALT:
     case ID_MENUITEM_BROWSEURLPLUS:
     case ID_MENUITEM_COPYUSERNAME:
     case ID_MENUITEM_COPYNOTESFLD:
@@ -3513,6 +3527,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
               }
               break;
             case ID_MENUITEM_BROWSEURL:
+            case ID_MENUITEM_BROWSEURLALT:
             case ID_MENUITEM_BROWSEURLPLUS:
             case ID_MENUITEM_COPYURL:
               if (pci->IsFieldValueEmpty(CItemData::URL, pbci)) {
@@ -3681,6 +3696,11 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
     default:
       break;
   }
+
+  // Browse with alternate browser's irrelevant if no alt browser's defined.
+  if (nID == ID_MENUITEM_BROWSEURLALT && PWSprefs::GetInstance()->GetPref(PWSprefs::AltBrowser).empty())
+    iEnable = FALSE;
+
   return iEnable;
 }
 

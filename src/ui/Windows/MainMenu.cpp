@@ -922,10 +922,13 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
 
       // Add actions in order
       if (bAddURL && !pci->IsURLEmail(pbci)) {
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_BROWSEURL, tc_dummy);
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_BROWSEURLPLUS, tc_dummy);
+        bool altDefined = pci->GetURL().find(L"[alt]") != StringX::npos;
+        if (!altDefined) {
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_BROWSEURL, tc_dummy);
+          pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_BROWSEURLPLUS, tc_dummy);
+          if (!PWSprefs::GetInstance()->GetPref(PWSprefs::AltBrowser).empty())
+            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_BROWSEURLALT, tc_dummy);
+        }
       }
 
       if (bAddSendEmail) {
@@ -1587,6 +1590,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
 
     if (!bUseURL) {
       pPopup->RemoveMenu(ID_MENUITEM_BROWSEURL, MF_BYCOMMAND);
+      pPopup->RemoveMenu(ID_MENUITEM_BROWSEURLALT, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_BROWSEURLPLUS, MF_BYCOMMAND);
     }
 

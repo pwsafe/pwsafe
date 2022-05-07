@@ -4,6 +4,15 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
+PasswordSafe 3.59.0 Release May 2022
+====================================
+
+New features in 3.59.0
+----------------------
+* [FR903](https://sourceforge.net/p/passwordsafe/feature-requests/903/) When an alternativ browser's defined, allow browsing to an entry's URL with it via a new menu option
+in addition to the '[alt]' notation in the URL.
+
+
 PasswordSafe 3.58.0 Release Dec 2021
 ====================================
 
