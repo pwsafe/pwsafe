@@ -1830,6 +1830,11 @@ void DboxMain::OnDuplicateEntry()
 
     m_RUEList.AddRUEntry(ci2.GetUUID());
 
+    // Select new duplicated entry
+    pdi = GetEntryGUIInfo(ci2);
+    SelectEntry(pdi->list_index);
+
+
     ChangeOkUpdate();
   }
 }
