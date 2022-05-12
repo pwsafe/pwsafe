@@ -298,7 +298,7 @@ void DBPrefsCommand::Undo()
 // ------------------------------------------------
 
 DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
-                                           PSWDPolicyMap &MapPSWDPLC,
+                                           const PSWDPolicyMap &MapPSWDPLC,
                                            Function function)
   : Command(pcomInt), m_NewMapPSWDPLC(MapPSWDPLC), m_function(function),
   m_bSingleAdd(false)
@@ -307,8 +307,8 @@ DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
 }
 
 DBPolicyNamesCommand::DBPolicyNamesCommand(CommandInterface *pcomInt,
-                                           StringX &sxPolicyName,
-                                           PWPolicy &st_pp)
+                                           const StringX &sxPolicyName,
+                                           const PWPolicy &st_pp)
   : Command(pcomInt), m_sxPolicyName(sxPolicyName), m_st_ppp(st_pp),
   m_bSingleAdd(true)
 {

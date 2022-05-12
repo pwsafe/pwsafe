@@ -170,20 +170,20 @@ public:
   enum Function {NP_ADDNEW = 0, NP_REPLACEALL};
 
   static DBPolicyNamesCommand *Create(CommandInterface *pcomInt,
-                                PSWDPolicyMap &MapPSWDPLC,
+                                const PSWDPolicyMap &MapPSWDPLC,
                                 Function function)
   { return new DBPolicyNamesCommand(pcomInt, MapPSWDPLC, function); }
   static DBPolicyNamesCommand *Create(CommandInterface *pcomInt,
-                                StringX &sxPolicyName, PWPolicy &st_pp)
+                                const StringX &sxPolicyName, const PWPolicy &st_pp)
   { return new DBPolicyNamesCommand(pcomInt, sxPolicyName, st_pp); }
   int Execute();
   void Undo();
 
 private:
-  DBPolicyNamesCommand(CommandInterface *pcomInt, PSWDPolicyMap &MapPSWDPLC,
+  DBPolicyNamesCommand(CommandInterface *pcomInt, const PSWDPolicyMap &MapPSWDPLC,
                        Function function);
-  DBPolicyNamesCommand(CommandInterface *pcomInt, StringX &sxPolicyName,
-                       PWPolicy &st_pp);
+  DBPolicyNamesCommand(CommandInterface *pcomInt, const StringX &sxPolicyName,
+                       const PWPolicy &st_pp);
 
   PSWDPolicyMap m_OldMapPSWDPLC;
   PSWDPolicyMap m_NewMapPSWDPLC;
