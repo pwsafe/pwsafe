@@ -112,19 +112,6 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
   EVT_UPDATE_UI(    ID_RADIOBUTTON_NEVER,    AddEditPropSheetDlg::OnUpdateUI                )
 END_EVENT_TABLE()
 
-//(*IdInit(AttachmentTab)
-const wxWindowID AddEditPropSheetDlg::ID_BUTTON_IMPORT = wxWindow::NewControlId();
-const wxWindowID AddEditPropSheetDlg::ID_BUTTON_EXPORT = wxWindow::NewControlId();
-const wxWindowID AddEditPropSheetDlg::ID_BUTTON_REMOVE = wxWindow::NewControlId();
-const wxWindowID AddEditPropSheetDlg::ID_TEXTCTRL2 = wxWindow::NewControlId();
-const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT4 = wxWindow::NewControlId();
-const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT5 = wxWindow::NewControlId();
-const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT6 = wxWindow::NewControlId();
-const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT8 = wxWindow::NewControlId();
-const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT10 = wxWindow::NewControlId();
-//*)
-
-
 /*!
  * AddEditPropSheetDlg constructors
  */
@@ -735,6 +722,10 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
 
 wxPanel* AddEditPropSheetDlg::CreateAttachmentPanel()
 {
+  ID_BUTTON_IMPORT = wxWindow::NewControlId();
+  ID_BUTTON_EXPORT = wxWindow::NewControlId();
+  ID_BUTTON_REMOVE = wxWindow::NewControlId();
+
   auto *panel = new wxPanel(GetBookCtrl(), ID_PANEL_ADDITIONAL, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
   auto *BoxSizerMain = new wxBoxSizer(wxVERTICAL);
 
@@ -764,34 +755,34 @@ wxPanel* AddEditPropSheetDlg::CreateAttachmentPanel()
   auto *FlexGridSizer1 = new wxFlexGridSizer(0, 2, 0, 0);
   FlexGridSizer1->AddGrowableCol(1);
 
-  auto *StaticText3 = new wxStaticText(panel, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  auto *StaticText3 = new wxStaticText(panel, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(StaticText3, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentTitle = new wxTextCtrl(panel, ID_TEXTCTRL2, _("Text"), wxDefaultPosition, wxSize(217,35), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+  m_AttachmentTitle = new wxTextCtrl(panel, wxID_ANY, _("Text"), wxDefaultPosition, wxSize(217,35), 0, wxDefaultValidator);
   FlexGridSizer1->Add(m_AttachmentTitle, 1, wxALL|wxEXPAND, 5);
 
-  auto *StaticText2 = new wxStaticText(panel, wxID_ANY, _("Media Type:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  auto *StaticText2 = new wxStaticText(panel, wxID_ANY, _("Media Type:"), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(StaticText2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentMediaType = new wxStaticText(panel, ID_STATICTEXT4, _T(""), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
+  m_AttachmentMediaType = new wxStaticText(panel, wxID_ANY, _T(""), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(m_AttachmentMediaType, 1, wxALL|wxEXPAND, 5);
 
-  auto *StaticText4 = new wxStaticText(panel, wxID_ANY, _("Creation Date:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  auto *StaticText4 = new wxStaticText(panel, wxID_ANY, _("Creation Date:"), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(StaticText4, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentCreationDate = new wxStaticText(panel, ID_STATICTEXT5, _T(""), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
+  m_AttachmentCreationDate = new wxStaticText(panel, wxID_ANY, _T(""), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(m_AttachmentCreationDate, 1, wxALL|wxEXPAND, 5);
 
-  auto *StaticText5 = new wxStaticText(panel, wxID_ANY, _("File Size:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  auto *StaticText5 = new wxStaticText(panel, wxID_ANY, _("File Size:"), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(StaticText5, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentFileSize = new wxStaticText(panel, ID_STATICTEXT6, _T(""), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
+  m_AttachmentFileSize = new wxStaticText(panel, wxID_ANY, _T(""), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(m_AttachmentFileSize, 1, wxALL|wxEXPAND, 5);
 
-  auto *StaticText7 = new wxStaticText(panel, wxID_ANY, _("File Creation Date:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  auto *StaticText7 = new wxStaticText(panel, wxID_ANY, _("File Creation Date:"), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(StaticText7, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentFileCreationDate = new wxStaticText(panel, ID_STATICTEXT8, _T(""), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
+  m_AttachmentFileCreationDate = new wxStaticText(panel, wxID_ANY, _T(""), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(m_AttachmentFileCreationDate, 1, wxALL|wxEXPAND, 5);
 
-  auto *StaticText9 = new wxStaticText(panel, wxID_ANY, _("File Last Modified Date:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  auto *StaticText9 = new wxStaticText(panel, wxID_ANY, _("File Last Modified Date:"), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(StaticText9, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentFileLastModifiedDate = new wxStaticText(panel, ID_STATICTEXT10, _T(""), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
+  m_AttachmentFileLastModifiedDate = new wxStaticText(panel, wxID_ANY, _T(""), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(m_AttachmentFileLastModifiedDate, 1, wxALL|wxEXPAND, 5);
   StaticBoxSizerProperties->Add(FlexGridSizer1, 1, wxALL|wxEXPAND, 5);
   BoxSizerMain->Add(StaticBoxSizerProperties, 0, wxALL|wxEXPAND, 5);
