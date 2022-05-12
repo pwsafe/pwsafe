@@ -281,6 +281,7 @@ private:
   wxString GetMimeTypeExtension(const stringT &mimeTypeDescription);
   void EnableImport();
   void DisableImport();
+  void DisableAttachmentControls();
 
   // Applies font preferences to corresponding controls
   void ApplyFontPreferences();

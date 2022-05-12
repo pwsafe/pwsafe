@@ -824,8 +824,13 @@ void AddEditPropSheetDlg::InitAttachmentTab()
       // Show attachment data on UI.
       ShowAttachmentData(m_ItemAttachment);
 
-      // Attachment must be removed before a new one can be imported again.
-      DisableImport();
+      if (m_Core.IsReadOnly()) {
+        DisableAttachmentControls();
+      }
+      else {
+        // Attachment must be removed before a new one can be imported again.
+        DisableImport();
+      }
     }
     else {
       ResetAttachmentData();
@@ -834,7 +839,12 @@ void AddEditPropSheetDlg::InitAttachmentTab()
   else {
     ResetAttachmentData();
     HideImagePreview(_("No Attachment Available"));
-    EnableImport();
+    if (m_Core.IsReadOnly()) {
+      DisableAttachmentControls();
+    }
+    else {
+      EnableImport();
+    }
   }
 }
 
@@ -988,6 +998,13 @@ void AddEditPropSheetDlg::DisableImport()
   m_AttachmentButtonImport->Disable();
   m_AttachmentButtonExport->Enable();
   m_AttachmentButtonRemove->Enable();
+}
+
+void AddEditPropSheetDlg::DisableAttachmentControls()
+{
+  m_AttachmentButtonImport->Disable();
+  m_AttachmentButtonExport->Disable();
+  m_AttachmentButtonRemove->Disable();
 }
 
 void AddEditPropSheetDlg::OnImport(wxCommandEvent& WXUNUSED(event))
