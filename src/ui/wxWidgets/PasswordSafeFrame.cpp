@@ -2421,7 +2421,6 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
   }
 
   if (m_sysTray->IsLocked()) {
-    // Allow Exit in all cases when modal dialogs could be closed (if dialog vetoed close, we'll stop on it)
     DestroyWrapper<SafeCombinationPromptDlg> scpWrapper(this, m_core, towxstring(m_core.GetCurFile()), CanCloseDialogs());
     SafeCombinationPromptDlg* scp = scpWrapper.Get();
 
@@ -2443,7 +2442,12 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
       }
       case (wxID_EXIT):
       {
-        CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), CloseFlags::CLOSE_NORMAL, nullptr);
+        CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), CloseFlags::CLOSE_NORMAL, [this](bool success) {
+          if (!success) {
+            // `this` should be valid here, because we haven't closed DB
+            wxMessageBox(_("Can't close database. There are unsaved changes."), wxTheApp->GetAppName(), wxOK | wxICON_WARNING, this);
+          }
+        });
         return;
       }
       case (wxID_CANCEL):
@@ -3018,7 +3022,7 @@ void PasswordSafeFrame::CloseDB(std::function<void(bool)> callback)
     // Force close all active dialogs
     CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}),
       static_cast<CloseFlags>(CloseFlags::CLOSE_FORCED|CloseFlags::LEAVE_MAIN),
-      [this, callback](bool success) { // we don't close main windows, so this will be valid
+      [this, callback](bool success) { // we don't close main window, so `this` will be valid
         wxASSERT(success); // forced close should be successful
         SetTitle(wxEmptyString);
         m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
