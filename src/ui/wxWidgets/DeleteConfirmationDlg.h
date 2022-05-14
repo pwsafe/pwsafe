@@ -56,18 +56,17 @@ class DeleteConfirmationDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  /// Constructors
-  DeleteConfirmationDlg(int num_children);
-  DeleteConfirmationDlg( wxWindow* parent, int num_children, wxWindowID id = SYMBOL_DELETECONFIRMATIONDLG_IDNAME, const wxString& caption = SYMBOL_DELETECONFIRMATIONDLG_TITLE, const wxPoint& pos = SYMBOL_DELETECONFIRMATIONDLG_POSITION, const wxSize& size = SYMBOL_DELETECONFIRMATIONDLG_SIZE, long style = SYMBOL_DELETECONFIRMATIONDLG_STYLE );
-
   /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_DELETECONFIRMATIONDLG_IDNAME, const wxString& caption = SYMBOL_DELETECONFIRMATIONDLG_TITLE, const wxPoint& pos = SYMBOL_DELETECONFIRMATIONDLG_POSITION, const wxSize& size = SYMBOL_DELETECONFIRMATIONDLG_SIZE, long style = SYMBOL_DELETECONFIRMATIONDLG_STYLE );
+  static DeleteConfirmationDlg* Create(wxWindow *parent, int num_children, wxWindowID id = SYMBOL_DELETECONFIRMATIONDLG_IDNAME, const wxString& caption = SYMBOL_DELETECONFIRMATIONDLG_TITLE, const wxPoint& pos = SYMBOL_DELETECONFIRMATIONDLG_POSITION, const wxSize& size = SYMBOL_DELETECONFIRMATIONDLG_SIZE, long style = SYMBOL_DELETECONFIRMATIONDLG_STYLE );
 
   /// Destructor
-  ~DeleteConfirmationDlg();
+  ~DeleteConfirmationDlg() = default;
 
-  /// Initialises member variables
-  void Init();
+  bool GetConfirmdelete() const { return m_confirmdelete ; }
+  void SetConfirmdelete(bool value) { m_confirmdelete = value ; }
+protected:
+  /// Constructors
+  DeleteConfirmationDlg(wxWindow *parent, int num_children, wxWindowID id = SYMBOL_DELETECONFIRMATIONDLG_IDNAME, const wxString& caption = SYMBOL_DELETECONFIRMATIONDLG_TITLE, const wxPoint& pos = SYMBOL_DELETECONFIRMATIONDLG_POSITION, const wxSize& size = SYMBOL_DELETECONFIRMATIONDLG_SIZE, long style = SYMBOL_DELETECONFIRMATIONDLG_STYLE );
 
   /// Creates the controls and sizers
   void CreateControls();
@@ -84,9 +83,6 @@ public:
 
 ////@begin DeleteConfirmationDlg member function declarations
 
-  bool GetConfirmdelete() const { return m_confirmdelete ; }
-  void SetConfirmdelete(bool value) { m_confirmdelete = value ; }
-
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
 
@@ -98,7 +94,7 @@ public:
   static bool ShowToolTips();
 
 ////@begin DeleteConfirmationDlg member variables
-  wxStaticText* m_areyousure;
+  wxStaticText* m_areyousure = nullptr;
 private:
   bool m_confirmdelete;
 ////@end DeleteConfirmationDlg member variables

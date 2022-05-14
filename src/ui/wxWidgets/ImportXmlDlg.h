@@ -22,10 +22,12 @@ class ImportXmlDlg : public wxDialog
 {
   DECLARE_CLASS( ImportXmlDlg )
   
-public:
-  ImportXmlDlg(wxWindow* parent, const wxString filename = "");
+protected:
+  ImportXmlDlg(wxWindow *parent, const wxString& filename);
 
 public:
+  static ImportXmlDlg* Create(wxWindow *parent, const wxString& filename);
+
   bool importUnderGroup;
   wxString groupName;
   

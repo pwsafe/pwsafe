@@ -156,6 +156,7 @@ public:
   
   // Helper function for the grid
   void DoCheckFilterIsComplete(int row);
+  void DoEditCriteria(int row);
   
   bool IsSameAsDefault(int row);
   void ClearIfEmpty();
@@ -186,7 +187,7 @@ private:
   void SetGridColFormat(int col, wxGridCellRenderer *renderer, wxGridCellEditor *editor = nullptr);
   void SetGridColReadOnly(int col);
   void UpdateMatchType(int row);
-  void GetCriterion(int row);
+  bool GetCriterion(int row);
   
   st_filters *m_pfilters; // Pointer to the handled filter
   const bool m_bCanHaveAttachments;

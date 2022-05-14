@@ -56,11 +56,13 @@ class pwFiltersMediaTypesDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
+  static pwFiltersMediaTypesDlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, const std::set<StringX> *psMediaTypes);
+protected:
   /// Constructors
-  pwFiltersMediaTypesDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, wxString &value, bool &fcase, const std::set<StringX> *psMediaTypes);
+  pwFiltersMediaTypesDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, const std::set<StringX> *psMediaTypes);
 
   /// Destructor
-  virtual ~pwFiltersMediaTypesDlg();
+  virtual ~pwFiltersMediaTypesDlg() = default;
 
   /// Creation
   bool Create(wxWindow* parent);
@@ -103,12 +105,12 @@ private:
   bool m_fcase;
 
   const FieldType m_ftype;
-  const std::set<StringX> *m_psMediaTypes;
-  bool m_add_present;
+  const std::set<StringX> *m_psMediaTypes = nullptr;
+  bool m_add_present = false;
   // Result parameter
-  PWSMatch::MatchRule *m_prule;
-  wxString            *m_pvalue;
-  bool                *m_pfcase;
+  PWSMatch::MatchRule *m_prule = nullptr;
+  wxString            *m_pvalue = nullptr;
+  bool                *m_pfcase = nullptr;
   
   static const PWSMatch::MatchRule m_mrpres[PW_NUM_PRESENT_ENUM];
   static const PWSMatch::MatchRule m_mrcrit[PW_NUM_MEDIA_TYPES_CRITERIA_ENUM];

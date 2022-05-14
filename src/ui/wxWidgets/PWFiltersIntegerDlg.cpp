@@ -79,32 +79,13 @@ END_EVENT_TABLE()
  * pwFiltersIntegerDlg constructors
  */
 
-pwFiltersIntegerDlg::pwFiltersIntegerDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, int &fnum1, int &fnum2, int *funit)
-: m_ftype(ftype), m_add_present(false), m_min(-1), m_max(-1), m_funit(-1)
+pwFiltersIntegerDlg::pwFiltersIntegerDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, int *fnum1, int *fnum2, int *funit)
+: m_ftype(ftype), m_prule(rule), m_pfnum1(fnum1), m_pfnum2(fnum2), m_pfunit(funit)
 {
-  m_prule = &rule;
-  m_pfnum1 = &fnum1;
-  m_pfnum2 = &fnum2;
-  m_pfunit = funit;
+  wxASSERT(!parent || parent->IsTopLevel());
 
   Init();
-  Create(parent);
-}
 
-/*!
- * pwFiltersIntegerDlg destructor
- */
-
-pwFiltersIntegerDlg::~pwFiltersIntegerDlg()
-{
-}
-
-/*!
- * pwFiltersIntegerDlg creator
- */
-
-bool pwFiltersIntegerDlg::Create(wxWindow* parent)
-{
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create(parent, wxID_ANY, _("Display Filter Integer Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
@@ -115,7 +96,11 @@ bool pwFiltersIntegerDlg::Create(wxWindow* parent)
   Centre();
 
   SetValidators();
-  return true;
+}
+
+pwFiltersIntegerDlg* pwFiltersIntegerDlg::Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, int *fnum1, int *fnum2, int *funit)
+{
+  return new pwFiltersIntegerDlg(parent, ftype, rule, fnum1, fnum2, funit);
 }
 
 /*!
@@ -214,11 +199,6 @@ void pwFiltersIntegerDlg::SetValidators()
 
 void pwFiltersIntegerDlg::Init()
 {
-  m_ComboBox = nullptr;
-  m_FNum1Ctrl = nullptr;
-  m_FNum2Ctrl = nullptr;
-  m_idx = -1;
-
   switch (m_ftype) {
     case FT_PASSWORDLEN:
       wxASSERT(m_pfunit == nullptr);

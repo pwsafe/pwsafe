@@ -697,7 +697,8 @@ private:
   void DoBrowse(CItemData &item, bool bAutotype);
   void DoRun(CItemData &item);
   void DoEmail(CItemData &item);
-  void DoPasswordSubset(CItemData &item);
+  void DoPasswordSubset(CItemData *item);
+  void DoEditBase();
 
   // These 3 fns are called via wxEvtHandler::CallAfter in sequence for autotyping
   void MinimizeOrHideBeforeAutotyping();
@@ -726,6 +727,30 @@ private:
 
   void SaveLayoutPreferences();
   bool LoadLayoutPreferences();
+
+    void DoCreateShortcut(CItemData* item);
+  void DoDeleteItems(bool askConfirmation, int num_children);
+  void DoImportXML(wxString filename);
+  void DoImportText(wxString filename);
+  void DoImportKeePass(wxString filename);
+  void DoManageFilters();
+  void DoPwdPolsMClick();
+  void DoEditFilter();
+  void DoGeneratePassword();
+  void DoChangePassword();
+  void DoPasswordQRCode(CItemData* item);
+  void DoPropertiesClick();
+  void DoMergeAnotherSafe(wxString filename);
+  void DoRestoreSafe();
+  void DoChangeMode();
+  void DoPreferencesClick();
+  void DoSynchronize(wxString filename);
+  void DoCompare();
+  void DoViewAttachment(CItemData* item);
+
+#ifndef NO_YUBI
+  void DoYubikeyMngClick();
+#endif /* NO_YUBI */  
 
   PWScore &m_core;
   ViewType m_currentView;

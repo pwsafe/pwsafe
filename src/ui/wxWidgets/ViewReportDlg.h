@@ -22,9 +22,10 @@ class ViewReportDlg : public wxDialog {
   CReport* m_pRpt;
   
 public:
-  ViewReportDlg(wxWindow* pParent, CReport* pRpt, bool fromFile = false);
-  ~ViewReportDlg();
-
+  static ViewReportDlg* Create(wxWindow *parent, CReport* pRpt, bool fromFile = false);
+  ~ViewReportDlg() = default;
+protected:
+  ViewReportDlg(wxWindow *parent, CReport* pRpt, bool fromFile);
   void OnSave(wxCommandEvent& event);
   void OnRemove(wxCommandEvent& event);
   void OnClose(wxCommandEvent& event);

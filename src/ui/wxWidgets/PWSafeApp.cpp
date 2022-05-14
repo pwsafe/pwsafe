@@ -483,10 +483,9 @@ bool PWSafeApp::OnInit()
   if (!cmd_closed && !cmd_silent && !cmd_minimized) {
     // Get the file, r/w mode and password from user
     // Note that file may be new
-    SafeCombinationEntryDlg* initWindow = new SafeCombinationEntryDlg(nullptr, m_core);
+    DestroyWrapper<SafeCombinationEntryDlg> initWindowWrapper(nullptr, m_core);
+    SafeCombinationEntryDlg *initWindow = initWindowWrapper.Get();
     int returnValue = initWindow->ShowModal();
-
-    initWindow->Destroy();
 
     if (returnValue != wxID_OK) {
       return false;
@@ -943,4 +942,8 @@ void PWSafeApp::RestartIdleTimer()
     m_idleTimer->Stop();
     m_idleTimer->Start(interval, wxTIMER_CONTINUOUS);
   }
+}
+
+bool PWSafeApp::IsCloseInProgress() const {
+  return m_frame->IsCloseInProgress();
 }

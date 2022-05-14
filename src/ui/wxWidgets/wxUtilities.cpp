@@ -28,6 +28,7 @@
 #include <wx/versioninfo.h>
 
 #include "core/PWScore.h"
+#include "PWSafeApp.h"
 
 #include "wxUtilities.h"
 
@@ -608,4 +609,9 @@ void ImagePanel::DrawBitmapCentered(wxDC &dc, const wxSize &drawAreaSize, const 
   int yCenterPosition = (drawAreaSize.GetHeight() - imageSize.GetHeight()) / 2;
 
   dc.DrawBitmap(m_Bitmap, xCenterPosition, yCenterPosition, false);
+}
+
+bool IsCloseInProgress()
+{
+  return wxGetApp().IsCloseInProgress();
 }

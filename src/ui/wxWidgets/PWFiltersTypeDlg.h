@@ -54,11 +54,13 @@ class pwFiltersTypeDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
+  static pwFiltersTypeDlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryType *etype);
+protected:
   /// Constructors
-  pwFiltersTypeDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, CItemData::EntryType &etype);
+  pwFiltersTypeDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryType *etype);
 
   /// Destructor
-  virtual ~pwFiltersTypeDlg();
+  virtual ~pwFiltersTypeDlg() = default;
 
   /// Creation
   bool Create(wxWindow* parent);
@@ -90,17 +92,17 @@ private:
   //*)
 
   //(*Declarations(pwFiltersTypeDlg)
-  wxComboBox* m_ComboBoxRule;
-  wxComboBox* m_ComboBoxType;
+  wxComboBox* m_ComboBoxRule = nullptr;
+  wxComboBox* m_ComboBoxType = nullptr;
   //*)
 
   const FieldType m_ftype;
-  int m_idx;
-  int m_idx_type;
+  int m_idx = -1;
+  int m_idx_type = -1;
   CItemData::EntryType m_etype;
   // Result parameter
-  PWSMatch::MatchRule *m_prule;
-  CItemData::EntryType *m_petype;
+  PWSMatch::MatchRule *m_prule = nullptr;
+  CItemData::EntryType *m_petype = nullptr;;
 
   typedef struct etypeMapItem {
     int msgText;

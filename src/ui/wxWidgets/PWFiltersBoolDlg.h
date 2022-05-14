@@ -51,19 +51,15 @@ class pwFiltersBoolDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
+  static pwFiltersBoolDlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule);
+protected:
   enum BoolType {BT_PRESENT, BT_ACTIVE, BT_SET, BT_IS};
 
   /// Constructors
-  pwFiltersBoolDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule);
+  pwFiltersBoolDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule);
 
   /// Destructor
-  virtual ~pwFiltersBoolDlg();
-
-  /// Creation
-  bool Create(wxWindow* parent);
-
-  /// Initialises member variables
-  void Init();
+  virtual ~pwFiltersBoolDlg() = default;
 
   /// Creates the controls and sizers
   void CreateControls();
@@ -77,6 +73,7 @@ public:
   /// Should we show tooltips?
   static bool ShowToolTips();
 
+  static BoolType ConvertType(FieldType ftype);
 private:
 
   void InitDialog();
@@ -88,15 +85,15 @@ private:
   //*)
 
   //(*Declarations(pwFiltersBoolDlg)
-  wxComboBox* m_ComboBoxBool;
+  wxComboBox* m_ComboBoxBool = nullptr;
   //*)
 
   const FieldType m_ftype;
   BoolType m_btype;   // Boolean Type is set depending from field type
-  int m_idx;
-  PWSMatch::MatchRule *m_prule; // Pointer to the buffer with result
+  int m_idx = -1;
+  PWSMatch::MatchRule *m_prule = nullptr; // Pointer to the buffer with result
   
-  const PWSMatch::MatchRule *m_pmrx; // Pointer to one of the arrays below, depending from boolean type
+  const PWSMatch::MatchRule *m_pmrx = nullptr; // Pointer to one of the arrays below, depending from boolean type
   
   static const PWSMatch::MatchRule m_mrxp[PW_NUM_BOOL_ENUM];
   static const PWSMatch::MatchRule m_mrxa[PW_NUM_BOOL_ENUM];

@@ -54,27 +54,11 @@ END_EVENT_TABLE()
 /*!
  * PasswordSubsetDlg constructors
  */
-
-PasswordSubsetDlg::PasswordSubsetDlg()
-: m_password(wxEmptyString)
-{
-  Init();
-}
-
-PasswordSubsetDlg::PasswordSubsetDlg( wxWindow* parent, const StringX &password,
+PasswordSubsetDlg::PasswordSubsetDlg(wxWindow *parent, const StringX &password,
                                   wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
   : m_password(password)
 {
-  Init();
-  Create(parent, id, caption, pos, size, style);
-}
-
-/*!
- * PasswordSubsetDlg creator
- */
-
-bool PasswordSubsetDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
+  wxASSERT(!parent || parent->IsTopLevel());
 ////@begin PasswordSubsetDlg creation
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
@@ -86,31 +70,12 @@ bool PasswordSubsetDlg::Create( wxWindow* parent, wxWindowID id, const wxString&
   }
   Centre();
 ////@end PasswordSubsetDlg creation
-  return true;
 }
 
-/*!
- * PasswordSubsetDlg destructor
- */
-
-PasswordSubsetDlg::~PasswordSubsetDlg()
+PasswordSubsetDlg* PasswordSubsetDlg::Create(wxWindow *parent, const StringX &password,
+  wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style)
 {
-////@begin PasswordSubsetDlg destruction
-////@end PasswordSubsetDlg destruction
-}
-
-/*!
- * Member initialisation
- */
-
-void PasswordSubsetDlg::Init()
-{
-////@begin PasswordSubsetDlg member initialisation
-  m_pos = nullptr;
-  m_vals = nullptr;
-  m_error = nullptr;
-  m_copyBtn = nullptr;
-////@end PasswordSubsetDlg member initialisation
+  return new PasswordSubsetDlg(parent, password, id, caption, pos, size, style);
 }
 
 /*!

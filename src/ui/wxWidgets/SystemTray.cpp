@@ -230,51 +230,53 @@ void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
     else {
       wxCommandEvent cmd(evt.GetEventType(), GetFrameCommandId(opn));
       cmd.SetExtraLong(id);
-#if wxCHECK_VERSION(2,9,0)
       m_frame->GetEventHandler()->ProcessEvent(cmd);
-#else
-      m_frame->ProcessEvent(cmd);
-#endif
     }
   }
   else {
     switch(id) {
-
-      case ID_SYSTRAY_RESTORE:
-        m_frame->UnlockSafe(true, false); // true => restore UI
-        break;
-
-      case ID_SYSTRAY_LOCK:
-        m_frame->HideUI(true);
-        break;
-
-      case ID_SYSTRAY_UNLOCK:
-        m_frame->UnlockSafe(false, false); // false => don't restore UI
-        break;
-
-      case ID_SYSTRAY_CLEAR_RUE:
-        m_frame->ClearRUEList();
-        break;
-
       case wxID_EXIT:
       case ID_CLEARCLIPBOARD:
       case wxID_ABOUT:
       case wxID_CLOSE:
         m_frame->GetEventHandler()->ProcessEvent(evt);
         break;
-
-      case wxID_ICONIZE_FRAME:
-        m_frame->Iconize();
-        break;
-
       default:
+        wxTheApp->CallAfter([this, id](){ ProcessSysTrayMenuItem(id); });
         break;
     }
   }
 }
 
+void SystemTray::ProcessSysTrayMenuItem(int itemId)
+{
+  switch(itemId) {
+    case ID_SYSTRAY_RESTORE:
+      m_frame->UnlockSafe(true, false); // true => restore UI
+      break;
+
+    case ID_SYSTRAY_LOCK:
+      m_frame->HideUI(true);
+      break;
+
+    case ID_SYSTRAY_UNLOCK:
+      m_frame->UnlockSafe(false, false); // false => don't restore UI
+      break;
+
+    case ID_SYSTRAY_CLEAR_RUE:
+      m_frame->ClearRUEList();
+      break;
+
+    case wxID_ICONIZE_FRAME:
+      m_frame->Iconize();
+      break;
+
+    default:
+      break;
+  }
+}
+
 void SystemTray::OnTaskBarLeftDoubleClick(wxTaskBarIconEvent& WXUNUSED(evt))
 {
-  EventHandlerDisabler ehd(this);
-  m_frame->UnlockSafe(true, false); //true => restore UI
+  wxTheApp->CallAfter([this](){ ProcessSysTrayMenuItem(ID_SYSTRAY_RESTORE); });
 }

@@ -32,18 +32,17 @@ class ExportTextWarningDlgBase : public wxDialog
 
   DECLARE_CLASS( ExportTextWarningDlgBase )
   DECLARE_EVENT_TABLE()
-
 public:
-  ExportTextWarningDlgBase(wxWindow* parent);
+  SelectionCriteria* selCriteria;
+  StringX           passKey;
+  wxString          delimiter;
+protected:
+  explicit ExportTextWarningDlgBase(wxWindow *parent);
   ~ExportTextWarningDlgBase();
 
   void OnAdvancedSelection( wxCommandEvent& evt );
 
   virtual void DoAdvancedSelection() = 0;
-
-  SelectionCriteria* selCriteria;
-  StringX           passKey;
-  wxString          delimiter;
 private:
 #ifndef NO_YUBI
   void OnYubibtnClick( wxCommandEvent& event );
@@ -58,14 +57,17 @@ template <class DlgType>
 class ExportTextWarningDlg : public ExportTextWarningDlgBase
 {
 public:
-  ExportTextWarningDlg(wxWindow* parent) : ExportTextWarningDlgBase(parent)
+  static ExportTextWarningDlg* Create(wxWindow *parent) {
+    return new ExportTextWarningDlg(parent);
+  }
+protected:
+  explicit ExportTextWarningDlg(wxWindow *parent) : ExportTextWarningDlgBase(parent)
   {
     SetTitle(DlgType::GetTitle());
   }
 
   virtual void DoAdvancedSelection() {
-    AdvancedSelectionDlg<DlgType> dlg(this, selCriteria);
-    dlg.ShowModal();
+    ShowModalAndGetResult<AdvancedSelectionDlg<DlgType>>(this, selCriteria);
   }
 };
 

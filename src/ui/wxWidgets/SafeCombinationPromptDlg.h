@@ -69,24 +69,21 @@ class SafeCombinationPromptDlg : public wxDialog
   DECLARE_CLASS( SafeCombinationPromptDlg )
   DECLARE_EVENT_TABLE()
 
+
 public:
-  /// Constructors
-  SafeCombinationPromptDlg(wxWindow* parent, PWScore &core, const wxString &fname, const bool allowExit = true,
+  static SafeCombinationPromptDlg* Create(wxWindow *parent, PWScore &core, const wxString &fname, const bool allowExit = true,
                          wxWindowID id = SYMBOL_SAFECOMBINATIONPROMPTDLG_IDNAME, const wxString& caption = SYMBOL_SAFECOMBINATIONPROMPTDLG_TITLE, const wxPoint& pos = SYMBOL_SAFECOMBINATIONPROMPTDLG_POSITION, const wxSize& size = SYMBOL_SAFECOMBINATIONPROMPTDLG_SIZE, long style = SYMBOL_SAFECOMBINATIONPROMPTDLG_STYLE );
+   /// Destructor
+~SafeCombinationPromptDlg();
 
-  /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_SAFECOMBINATIONPROMPTDLG_IDNAME, const wxString& caption = SYMBOL_SAFECOMBINATIONPROMPTDLG_TITLE, const wxPoint& pos = SYMBOL_SAFECOMBINATIONPROMPTDLG_POSITION, const wxSize& size = SYMBOL_SAFECOMBINATIONPROMPTDLG_SIZE, long style = SYMBOL_SAFECOMBINATIONPROMPTDLG_STYLE );
-
-  /// Destructor
-  ~SafeCombinationPromptDlg();
-
-  /// Initialises member variables
-  void Init();
+  StringX GetPassword() const {return m_password;}
+protected:
+  /// Constructors
+  SafeCombinationPromptDlg(wxWindow *parent, PWScore &core, const wxString &fname, const bool allowExit,
+    wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Creates the controls and sizers
   void CreateControls();
-
-  StringX GetPassword() const {return m_password;}
 
 ////@begin SafeCombinationPromptDlg event handler declarations
 
@@ -123,7 +120,7 @@ public:
   static bool ShowToolTips();
 
 ////@begin SafeCombinationPromptDlg member variables
-  SafeCombinationCtrl* m_scctrl;
+  SafeCombinationCtrl* m_scctrl = nullptr;
 ////@end SafeCombinationPromptDlg member variables
   PWScore &m_core;
   wxString m_filename;
@@ -133,9 +130,9 @@ public:
   bool m_allowExit;
   
 #ifndef NO_YUBI
-  wxBitmapButton* m_YubiBtn;
-  wxStaticText* m_yubiStatusCtrl;
-  wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(
+  wxBitmapButton* m_YubiBtn = nullptr;
+  wxStaticText* m_yubiStatusCtrl = nullptr;
+  wxTimer* m_pollingTimer = nullptr; // for Yubi, but can't go into mixin :-(
 #endif
 
   void ProcessPhrase();

@@ -435,18 +435,7 @@ IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, wxDialog, FindDlgType )
 void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& event)
 {
   if (event.IsChecked()) {
-    m_criteria->Clean();
-    AdvancedSelectionDlg<FindDlgType> dlg(m_parentFrame, m_criteria);
-    if (dlg.ShowModal() == wxID_OK) {
-      // No check for m_criteria.IsDirty() here because we want to start a new search
-      // whether or not the group/field selection were modified because user just
-      // toggled the "Advanced Options" on.  It was OFF before just now.
-      m_searchPointer.Clear();
-    }
-    else {
-      // No change, but need to toggle off "Advanced Options" button manually
-      ToggleTool(event.GetId(), false);
-    }
+    CallAfter(&PasswordSafeSearch::GetAdvancedSearchOptions, event.GetId());
   }
   else {
     // Advanced Options were toggled off.  Start a new search next time
@@ -454,10 +443,29 @@ void PasswordSafeSearch::OnAdvancedSearchOptions(wxCommandEvent& event)
   }
 }
 
+void PasswordSafeSearch::GetAdvancedSearchOptions(int controlId)
+{
+  m_criteria->Clean();
+  if (ShowModalAndGetResult<AdvancedSelectionDlg<FindDlgType>>(wxGetTopLevelParent(this), m_criteria) == wxID_OK) {
+    // No check for m_criteria.IsDirty() here because we want to start a new search
+    // whether or not the group/field selection were modified because user just
+    // toggled the "Advanced Options" on.  It was OFF before just now.
+    m_searchPointer.Clear();
+  }
+  else if (!IsCloseInProgress()) {
+    // No change, but need to toggle off "Advanced Options" button manually
+    ToggleTool(controlId, false);
+  }
+}
 /*!
  * wxEVT_COMMAND_TOOL_CLICKED event handler for ID_FIND_CREATE_REPORT
  */
 void PasswordSafeSearch::OnToolBarFindReport(wxCommandEvent& event)
+{
+  CallAfter(&PasswordSafeSearch::DoToolBarFindReport, event.GetId());
+}
+
+void PasswordSafeSearch::DoToolBarFindReport(int controlId)
 {
   wxSearchCtrl* txtCtrl = wxDynamicCast(FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
   wxCHECK_RET(txtCtrl, wxT("Could not get search control of toolbar"));
@@ -503,10 +511,11 @@ void PasswordSafeSearch::OnToolBarFindReport(wxCommandEvent& event)
   report.WriteLine();
   report.EndReport();
   
-  ViewReportDlg vr(m_parentFrame, &report);
-  vr.ShowModal();
-  // set back toggle
-  ToggleTool(event.GetId(), false);
+  ShowModalAndGetResult<ViewReportDlg>(wxGetTopLevelParent(this), &report);
+  if (!IsCloseInProgress()) {
+    // set back toggle
+    ToggleTool(controlId, false);
+  }
 }
 
 /**

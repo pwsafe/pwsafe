@@ -31,10 +31,11 @@ BEGIN_EVENT_TABLE(ViewAttachmentDlg, wxDialog)
   //*)
 END_EVENT_TABLE()
 
-ViewAttachmentDlg::ViewAttachmentDlg(wxWindow* parent, wxWindowID id)
+ViewAttachmentDlg::ViewAttachmentDlg(wxWindow *parent, wxWindowID id)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
   //(*Initialize(ViewAttachmentDlg)
-  Create(parent, id, _("View Attachment"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("ID_VIEWATTACHMENT"));
+  wxDialog::Create(parent, id, _("View Attachment"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("ID_VIEWATTACHMENT"));
   SetMinSize(wxSize(300,400));
 
   auto *panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
@@ -57,10 +58,9 @@ ViewAttachmentDlg::ViewAttachmentDlg(wxWindow* parent, wxWindowID id)
   //*)
 }
 
-ViewAttachmentDlg::~ViewAttachmentDlg()
+ViewAttachmentDlg* ViewAttachmentDlg::Create(wxWindow *parent, wxWindowID id)
 {
-  //(*Destroy(ViewAttachmentDlg)
-  //*)
+  return new ViewAttachmentDlg(parent, id);
 }
 
 /**

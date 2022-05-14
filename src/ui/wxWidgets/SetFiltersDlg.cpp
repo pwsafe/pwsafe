@@ -65,23 +65,10 @@ END_EVENT_TABLE()
 /*!
  * SetFiltersDlg constructors
  */
-
-SetFiltersDlg::SetFiltersDlg() : m_pfilters(nullptr),
-                                 m_currentFilters(nullptr),
-                                 m_bCanHaveAttachments(false),
-                                 m_psMediaTypes(nullptr),
-                                 m_filtertype(DFTYPE_INVALID),
-                                 m_filterpool(FPOOL_LAST),
-                                 m_AppliedCalled(nullptr)
-{
-  Init();
-}
-
-SetFiltersDlg::SetFiltersDlg(wxWindow* parent,
-                             st_filters *pfilters,
+SetFiltersDlg::SetFiltersDlg(wxWindow *parent, st_filters *pfilters,
                              st_filters *currentFilters,
                              bool *appliedCalled,
-                             const FilterType &filtertype,
+                             const FilterType filtertype,
                              const FilterPool filterpool,
                              const bool bCanHaveAttachments,
                              const std::set<StringX> *psMediaTypes,
@@ -97,9 +84,13 @@ SetFiltersDlg::SetFiltersDlg(wxWindow* parent,
                                             m_filterpool(filterpool),
                                             m_AppliedCalled(appliedCalled)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   wxString heading(caption);
   
-  Init();
+  ASSERT(m_pfilters);
+  m_filterName = towxstring(m_pfilters->fname);
+  
   switch(filtertype) {
     case DFTYPE_PWHISTORY:
       heading = SYMBOL_SETFILTERS_PWHIST_TITLE;
@@ -117,16 +108,7 @@ SetFiltersDlg::SetFiltersDlg(wxWindow* parent,
         heading = SYMBOL_SETFILTERS_TITLE;
       break;
   }
-  Create(parent, id, heading, pos, size, style);
-}
 
-
-/*!
- * SetFiltersDlg creator
- */
-
-bool SetFiltersDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
 ////@begin SetFiltersDlg creation
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
@@ -147,34 +129,16 @@ bool SetFiltersDlg::Create( wxWindow* parent, wxWindowID id, const wxString& cap
     Move(x + SET_FILTER_WINDOW_OFFSET, y + SET_FILTER_WINDOW_OFFSET);
   }
 ////@end SetFiltersDlg creation
-  return true;
 }
 
-
-/*!
- * SetFiltersDlg destructor
- */
-
-SetFiltersDlg::~SetFiltersDlg()
+SetFiltersDlg* SetFiltersDlg::Create(wxWindow *parent, st_filters *pfilters, st_filters *currentFilters, 
+  bool *appliedCalled, const FilterType filtertype, FilterPool filterpool, 
+  const bool bCanHaveAttachments, const std::set<StringX> *psMediaTypes, wxWindowID id, 
+  const wxString& caption, const wxPoint& pos, const wxSize& size, long style)
 {
-////@begin SetFiltersDlg destruction
-////@end SetFiltersDlg destruction
+  return new SetFiltersDlg(parent, pfilters, currentFilters, appliedCalled, filtertype, filterpool, 
+                           bCanHaveAttachments, psMediaTypes, id, caption, pos, size, style);
 }
-
-
-/*!
- * Member initialisation
- */
-
-void SetFiltersDlg::Init()
-{
-////@begin SetFiltersDlg member initialisation
-  m_filterGrid = NULL;
-  ASSERT(m_pfilters);
-  m_filterName = towxstring(m_pfilters->fname);
-////@end SetFiltersDlg member initialisation
-}
-
 
 /*!
  * Control creation for SetFiltersDlg

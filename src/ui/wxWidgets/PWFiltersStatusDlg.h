@@ -54,11 +54,13 @@ class pwFiltersStatusDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
+  static pwFiltersStatusDlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryStatus *estatus);
+protected:
   /// Constructors
-  pwFiltersStatusDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, CItemData::EntryStatus &estatus);
+  pwFiltersStatusDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryStatus *estatus);
 
   /// Destructor
-  virtual ~pwFiltersStatusDlg();
+  virtual ~pwFiltersStatusDlg() = default;
 
   /// Creation
   bool Create(wxWindow* parent);
@@ -90,17 +92,17 @@ private:
   //*)
 
   //(*Declarations(pwFiltersStatusDlg)
-  wxComboBox* m_ComboBoxRule;
-  wxComboBox* m_ComboBoxStatus;
+  wxComboBox* m_ComboBoxRule = nullptr;
+  wxComboBox* m_ComboBoxStatus = nullptr;
   //*)
 
   const FieldType m_ftype;
-  int m_idx;
-  int m_idx_status;
+  int m_idx = -1;
+  int m_idx_status = -1;
   CItemData::EntryStatus m_estatus;
   // Result parameter
-  PWSMatch::MatchRule *m_prule;
-  CItemData::EntryStatus *m_pestatus;
+  PWSMatch::MatchRule *m_prule = nullptr;
+  CItemData::EntryStatus *m_pestatus = nullptr;
 
   typedef struct estatusMapItem {
     int msgText;

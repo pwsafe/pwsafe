@@ -75,18 +75,18 @@ class SafeCombinationEntryDlg: public wxDialog
 
 public:
   /// Constructors
-  SafeCombinationEntryDlg(PWScore &core);
-  SafeCombinationEntryDlg(wxWindow* parent, PWScore &core,
-                          wxWindowID id = SYMBOL_SAFECOMBINATIONENTRYDLG_IDNAME, const wxString& caption = SYMBOL_SAFECOMBINATIONENTRYDLG_TITLE, const wxPoint& pos = SYMBOL_SAFECOMBINATIONENTRYDLG_POSITION, const wxSize& size = SYMBOL_SAFECOMBINATIONENTRYDLG_SIZE, long style = SYMBOL_SAFECOMBINATIONENTRYDLG_STYLE );
-
-  /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_SAFECOMBINATIONENTRYDLG_IDNAME, const wxString& caption = SYMBOL_SAFECOMBINATIONENTRYDLG_TITLE, const wxPoint& pos = SYMBOL_SAFECOMBINATIONENTRYDLG_POSITION, const wxSize& size = SYMBOL_SAFECOMBINATIONENTRYDLG_SIZE, long style = SYMBOL_SAFECOMBINATIONENTRYDLG_STYLE );
+  static SafeCombinationEntryDlg* Create(wxWindow *parent, PWScore &core,
+    wxWindowID id = SYMBOL_SAFECOMBINATIONENTRYDLG_IDNAME, 
+    const wxString& caption = SYMBOL_SAFECOMBINATIONENTRYDLG_TITLE, 
+    const wxPoint& pos = SYMBOL_SAFECOMBINATIONENTRYDLG_POSITION, 
+    const wxSize& size = SYMBOL_SAFECOMBINATIONENTRYDLG_SIZE, 
+    long style = SYMBOL_SAFECOMBINATIONENTRYDLG_STYLE);
 
   /// Destructor
   ~SafeCombinationEntryDlg();
-
-  /// Initialises member variables
-  void Init();
+protected:
+  SafeCombinationEntryDlg(wxWindow *parent, PWScore &core,
+    wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Creates the controls and sizers
   void CreateControls();
@@ -127,7 +127,7 @@ public:
   void OnDBSelectionChange( wxCommandEvent& event );
 
 ////@begin SafeCombinationEntryDlg member function declarations
-
+public:
   StringX GetPassword() const { return m_password ; }
   void SetPassword(StringX value) { m_password = value ; }
 
@@ -140,27 +140,29 @@ public:
 
   /// Should we show tooltips?
   static bool ShowToolTips();
-
-  wxStaticText* m_version;
-  wxComboBox* m_filenameCB;
-  SafeCombinationCtrl* m_combinationEntry;
+protected:
+  void DoNewDbClick();
+  
+  wxStaticText* m_version = nullptr;
+  wxComboBox* m_filenameCB = nullptr;
+  SafeCombinationCtrl* m_combinationEntry = nullptr;
 
 #ifndef NO_YUBI
-  wxBitmapButton* m_YubiBtn;
-  wxStaticText* m_yubiStatusCtrl;
+  wxBitmapButton* m_YubiBtn = nullptr;
+  wxStaticText* m_yubiStatusCtrl = nullptr;
 #endif
 
 private:
   StringX m_password;
   wxString m_filename;
-  wxString m_ellipsizedFilename;
+  wxString m_ellipsizedFilename = wxEmptyString;
   bool m_readOnly;
   PWScore &m_core;
-  unsigned m_tries;
-  bool m_postInitDone;
+  unsigned m_tries = 0;
+  bool m_postInitDone = false;
 
 #ifndef NO_YUBI
-  wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(
+  wxTimer* m_pollingTimer = nullptr; // for Yubi, but can't go into mixin :-(
   // Not strictly yubi, but refactored to work with it:
 #endif
   void ProcessPhrase();

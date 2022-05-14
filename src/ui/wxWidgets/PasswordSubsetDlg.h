@@ -58,19 +58,15 @@ class PasswordSubsetDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  /// Constructors
-  PasswordSubsetDlg();
-  PasswordSubsetDlg( wxWindow* parent, const StringX &password,
+   static PasswordSubsetDlg* Create(wxWindow *parent, const StringX &password,
                    wxWindowID id = SYMBOL_PASSWORDSUBSETDLG_IDNAME, const wxString& caption = SYMBOL_PASSWORDSUBSETDLG_TITLE, const wxPoint& pos = SYMBOL_PASSWORDSUBSETDLG_POSITION, const wxSize& size = SYMBOL_PASSWORDSUBSETDLG_SIZE, long style = SYMBOL_PASSWORDSUBSETDLG_STYLE );
-
-  /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_PASSWORDSUBSETDLG_IDNAME, const wxString& caption = SYMBOL_PASSWORDSUBSETDLG_TITLE, const wxPoint& pos = SYMBOL_PASSWORDSUBSETDLG_POSITION, const wxSize& size = SYMBOL_PASSWORDSUBSETDLG_SIZE, long style = SYMBOL_PASSWORDSUBSETDLG_STYLE );
-
   /// Destructor
-  ~PasswordSubsetDlg();
+  ~PasswordSubsetDlg() = default;
 
-  /// Initialises member variables
-  void Init();
+protected:
+  /// Constructors
+  PasswordSubsetDlg() = default;
+  PasswordSubsetDlg(wxWindow *parent, const StringX &password, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Creates the controls and sizers
   void CreateControls();
@@ -106,10 +102,10 @@ private:
   bool GetSubsetString(const wxString& subset, bool with_delims, StringX& result) const;
   const StringX m_password;
 ////@begin PasswordSubsetDlg member variables
-  wxTextCtrl* m_pos;
-  wxTextCtrl* m_vals;
-  wxStaticText* m_error;
-  wxBitmapButton* m_copyBtn;
+  wxTextCtrl* m_pos = nullptr;
+  wxTextCtrl* m_vals = nullptr;
+  wxStaticText* m_error = nullptr;
+  wxBitmapButton* m_copyBtn = nullptr;
 ////@end PasswordSubsetDlg member variables
 };
 

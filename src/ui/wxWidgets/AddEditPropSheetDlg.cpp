@@ -127,7 +127,7 @@ const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT10 = wxWindow::NewControlId()
  * AddEditPropSheetDlg constructors
  */
 
-AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow* parent, PWScore &core,
+AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
                                    SheetType type, const CItemData *item,
                                    const wxString& selectedGroup,
                                    wxWindowID id, const wxString& caption,
@@ -135,11 +135,17 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow* parent, PWScore &core,
                                    long style)
 : m_Core(core), m_SelectedGroup(selectedGroup), m_Type(type)
 {
-  if (item != nullptr)
+  wxASSERT(!parent || parent->IsTopLevel());
+
+  if (item != nullptr) {
     m_Item = *item; // copy existing item to display values
-  else
+  }
+  else {
     m_Item.CreateUUID(); // We're adding a new entry
-  Init();
+  }
+  
+  m_IsNotesHidden = !PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault);
+
   wxString dlgTitle;
   if (caption == SYMBOL_AUTOPROPSHEETDLG_TITLE) {
     switch(m_Type) {
@@ -157,19 +163,7 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow* parent, PWScore &core,
         break;
     }
   }
-  Create(parent, id, dlgTitle, pos, size, style);
 
-  if (m_Core.GetReadFileVersion() == PWSfile::V40) {
-    InitAttachmentTab();
-  }
-}
-
-/*!
- * AddEditPropSheetDlg creator
- */
-
-bool AddEditPropSheetDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
 ////@begin AddEditPropSheetDlg creation
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
   wxPropertySheetDialog::Create( parent, id, caption, pos, size, style );
@@ -186,87 +180,20 @@ bool AddEditPropSheetDlg::Create( wxWindow* parent, wxWindowID id, const wxStrin
   // Additional width is needed by static text (itemStaticText4) at "Basic" tab,
   // otherwise text is not correctly shown due to Auto Word Wrap. (At least at KDE)
   SetSizeHints(GetSize().GetWidth() + 20, GetSize().GetHeight());
-  return true;
+
+  if (m_Core.GetReadFileVersion() == PWSfile::V40) {
+    InitAttachmentTab();
+  }
 }
 
-/*!
- * AddEditPropSheetDlg destructor
- */
-
-AddEditPropSheetDlg::~AddEditPropSheetDlg()
+AddEditPropSheetDlg* AddEditPropSheetDlg::Create(wxWindow *parent, PWScore &core,
+  SheetType type, const CItemData *item, const wxString &selectedGroup,
+  wxWindowID id, const wxString &caption, const wxPoint &pos, 
+  const wxSize &size, long style)
 {
-////@begin AddEditPropSheetDlg destruction
-////@end AddEditPropSheetDlg destruction
+  return new AddEditPropSheetDlg(parent, core, type, item, selectedGroup, id, caption, pos, size, style);
 }
-
-/*!
- * Member initialisation
- */
-
-void AddEditPropSheetDlg::Init()
-{
-////@begin AddEditPropSheetDlg member initialisation
-  m_ExpirationTimeInterval = 0;
-  m_IsNotesHidden = !PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault);
-  m_BasicPanel = nullptr;
-  m_AdditionalPanel = nullptr;
-  m_PasswordPolicyPanel = nullptr;
-  m_BasicSizer = nullptr;
-  m_BasicGroupNamesCtrl = nullptr;
-  m_BasicUsernameTextCtrl = nullptr;
-  m_BasicPasswordTextCtrl = nullptr;
-  m_BasicPasswordTextLabel = nullptr;
-  m_BasicShowHideCtrl = nullptr;
-  m_BasicPasswordConfirmationTextCtrl = nullptr;
-  m_BasicPasswordConfirmationTextLabel = nullptr;
-  m_BasicNotesTextCtrl = nullptr;
-  m_AdditionalDoubleClickActionCtrl = nullptr;
-  m_AdditionalShiftDoubleClickActionCtrl = nullptr;
-  m_AdditionalMaxPasswordHistoryCtrl = nullptr;
-  m_AdditionalPasswordHistoryGrid = nullptr;
-  m_DatesTimesExpireOnCtrl = nullptr;
-  m_DatesTimesExpiryDateCtrl = nullptr;
-  m_DatesTimesExpireInCtrl = nullptr;
-  m_DatesTimesExpiryTimeCtrl = nullptr;
-  m_DatesTimesRecurringExpiryCtrl = nullptr;
-  m_DatesTimesNeverExpireCtrl = nullptr;
-  m_PasswordPolicyUseDatabaseCtrl = nullptr;
-  m_PasswordPolicyNamesCtrl = nullptr;
-  m_PasswordPolicyPasswordLengthText = nullptr;
-  m_PasswordPolicyPasswordLengthCtrl = nullptr;
-  m_PasswordPolicySizer = nullptr;
-  m_PasswordPolicyUseLowerCaseCtrl = nullptr;
-  m_PasswordPolicyLowerCaseMinSizer = nullptr;
-  m_PasswordPolicyLowerCaseMinCtrl = nullptr;
-  m_PasswordPolicyUseUpperCaseCtrl = nullptr;
-  m_PasswordPolicyUpperCaseMinSizer = nullptr;
-  m_PasswordPolicyUpperCaseMinCtrl = nullptr;
-  m_PasswordPolicyUseDigitsCtrl = nullptr;
-  m_PasswordPolicyDigitsMinSizer = nullptr;
-  m_PasswordPolicyDigitsMinCtrl = nullptr;
-  m_PasswordPolicyUseSymbolsCtrl = nullptr;
-  m_PasswordPolicySymbolsMinSizer = nullptr;
-  m_PasswordPolicySymbolsMinCtrl = nullptr;
-  m_PasswordPolicyOwnSymbolsTextCtrl = nullptr;
-  m_PasswordPolicyUseEasyCtrl = nullptr;
-  m_PasswordPolicyUsePronounceableCtrl = nullptr;
-  m_PasswordPolicyUseHexadecimalOnlyCtrl = nullptr;
-  m_AttachmentPanel = nullptr;
-  m_AttachmentImagePanel = nullptr;
-  m_AttachmentButtonImport = nullptr;
-  m_AttachmentButtonExport = nullptr;
-  m_AttachmentButtonRemove = nullptr;
-  m_AttachmentFilePath = nullptr;
-  m_AttachmentTitle = nullptr;
-  m_AttachmentMediaType = nullptr;
-  m_AttachmentCreationDate = nullptr;
-  m_AttachmentFileSize = nullptr;
-  m_AttachmentFileCreationDate = nullptr;
-  m_AttachmentFileLastModifiedDate = nullptr;
-  m_AttachmentPreviewStatus = nullptr;
-////@end AddEditPropSheetDlg member initialisation
-}
-
+                      
 static void setupDCAStrings(wxArrayString &as)
 {
   // semi-duplicated in SetupDCAComboBoxes(),
@@ -1698,14 +1625,19 @@ void AddEditPropSheetDlg::OnShowHideClick(wxCommandEvent& WXUNUSED(evt))
 
 void AddEditPropSheetDlg::OnAliasButtonClick(wxCommandEvent& WXUNUSED(evt))
 {
+  CallAfter(&AddEditPropSheetDlg::DoAliasButtonClick);
+}
+
+void AddEditPropSheetDlg::DoAliasButtonClick()
+{
   CItemData *pbci = (m_Item.IsAlias() ? m_Core.GetBaseEntry(&m_Item) : nullptr);
   
   if(m_Item.IsShortcutBase()) {
     wxMessageBox(_("On changing this entry of type Shortcut Base to an Alias all Shortcut to this entry will be removed!"), _("Warning"), wxOK | wxICON_EXCLAMATION);
   }
   
-  SelectAliasDlg dlg(this, &m_Core, &m_Item, &pbci);
-  int rc = dlg.ShowModal();
+  
+  int rc = ShowModalAndGetResult<SelectAliasDlg>(this, &m_Core, &m_Item, &pbci);
   if(rc == wxID_OK) {
     if(! m_Core.IsReadOnly()) {
       bool bChangeToBaseEntry = false;

@@ -62,11 +62,14 @@ class pwFiltersDateDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
+  static pwFiltersDateDlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, time_t *fdate1, time_t *fdate2, int *fnum1, int *fnum2, int *fdatetype);
+
+protected:
   /// Constructors
-  pwFiltersDateDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, time_t &fdate1, time_t &fdate2, int &fnum1, int &fnum2, int &fdatetype);
+  pwFiltersDateDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, time_t *fdate1, time_t *fdate2, int *fnum1, int *fnum2, int *fdatetype);
 
   /// Destructor
-  virtual ~pwFiltersDateDlg();
+  virtual ~pwFiltersDateDlg() = default;
 
   /// Creation
   bool Create(wxWindow* parent);
@@ -108,13 +111,13 @@ private:
   void UpdateUnitSelection();
 
   //(*Declarations(pwFiltersDateDlg)
-  wxComboBox* m_ComboBox;
-  wxDatePickerCtrl* m_ExpDate1Ctrl;
-  wxDatePickerCtrl* m_ExpDate2Ctrl;
-  wxSpinCtrl* m_FNum1Ctrl;
-  wxSpinCtrl* m_FNum2Ctrl;
-  wxRadioButton* m_OnCtrl;
-  wxRadioButton* m_InCtrl;
+  wxComboBox* m_ComboBox = nullptr;
+  wxDatePickerCtrl* m_ExpDate1Ctrl = nullptr;
+  wxDatePickerCtrl* m_ExpDate2Ctrl = nullptr;
+  wxSpinCtrl* m_FNum1Ctrl = nullptr;
+  wxSpinCtrl* m_FNum2Ctrl = nullptr;
+  wxRadioButton* m_OnCtrl = nullptr;
+  wxRadioButton* m_InCtrl = nullptr;
   //*)
 
   enum { PW_DATE_ABS = 0, PW_DATE_REL = 1 }; // values for int m_fdatetype
@@ -122,7 +125,7 @@ private:
   const FieldType m_ftype;
   bool m_add_present;
   
-  int m_idx;
+  int m_idx = -1;
   wxDateTime m_fdate1;
   wxDateTime m_fdate2;
   int m_fnum1;

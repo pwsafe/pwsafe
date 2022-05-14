@@ -30,11 +30,12 @@ class ImportTextDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  ImportTextDlg(wxWindow* parent, const wxString filename = "");
-  virtual ~ImportTextDlg();
-
+  static ImportTextDlg* Create(wxWindow *parent, const wxString& filename = wxEmptyString);
+  virtual ~ImportTextDlg() = default;
+protected:
+  ImportTextDlg(wxWindow *parent, const wxString& filename);
   void CreateControls();
-
+public:
   wxString filepath;
   
   bool delimiterComma;
@@ -51,7 +52,6 @@ public:
   bool importPasswordsOnly;
   
   TCHAR FieldSeparator() const;
-  
 private:
   wxCollapsiblePane* CreateParsingOptionsPane(wxBoxSizer* dlgSizer);
   wxCollapsiblePane* CreateImportOptionsPane(wxBoxSizer* dlgSizer);

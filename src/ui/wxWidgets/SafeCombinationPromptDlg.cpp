@@ -69,7 +69,7 @@ END_EVENT_TABLE()
  * SafeCombinationPromptDlg constructors
  */
 
-SafeCombinationPromptDlg::SafeCombinationPromptDlg(wxWindow* parent, PWScore &core,
+SafeCombinationPromptDlg::SafeCombinationPromptDlg(wxWindow *parent, PWScore &core,
                                                const wxString &fname, const bool allowExit,
                                                wxWindowID id,
                                                const wxString& caption,
@@ -77,16 +77,7 @@ SafeCombinationPromptDlg::SafeCombinationPromptDlg(wxWindow* parent, PWScore &co
                                                const wxSize& size, long style)
 : m_core(core), m_filename(fname), m_tries(0), m_allowExit(allowExit)
 {
-  Init();
-  Create(parent, id, caption, pos, size, style);
-}
-
-/*!
- * SafeCombinationPromptDlg creator
- */
-
-bool SafeCombinationPromptDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
+  wxASSERT(!parent || parent->IsTopLevel());
 ////@begin SafeCombinationPromptDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
@@ -105,7 +96,17 @@ bool SafeCombinationPromptDlg::Create( wxWindow* parent, wxWindowID id, const wx
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
   m_pollingTimer->Start(YubiMixin::POLLING_INTERVAL);
 #endif
-  return true;
+}
+
+
+SafeCombinationPromptDlg* SafeCombinationPromptDlg::Create(wxWindow *parent, PWScore &core,
+                                               const wxString &fname, const bool allowExit,
+                                               wxWindowID id,
+                                               const wxString& caption,
+                                               const wxPoint& pos,
+                                               const wxSize& size, long style)
+{
+  return new SafeCombinationPromptDlg(parent, core, fname, allowExit, id, caption, pos, size, style);
 }
 
 /*!
@@ -119,22 +120,6 @@ SafeCombinationPromptDlg::~SafeCombinationPromptDlg()
 #ifndef NO_YUBI
   delete m_pollingTimer;
 #endif
-}
-
-/*!
- * Member initialisation
- */
-
-void SafeCombinationPromptDlg::Init()
-{
-////@begin SafeCombinationPromptDlg member initialisation
-  m_scctrl = nullptr;
-#ifndef NO_YUBI
-  m_YubiBtn = nullptr;
-  m_yubiStatusCtrl = nullptr;
-#endif
-
-////@end SafeCombinationPromptDlg member initialisation
 }
 
 /*!

@@ -64,22 +64,19 @@ END_EVENT_TABLE()
  * PasswordPolicyDlg constructor
  */
 
-PasswordPolicyDlg::PasswordPolicyDlg( wxWindow* parent, PWScore &core,
+PasswordPolicyDlg::PasswordPolicyDlg(wxWindow *parent, PWScore &core,
                                   const PSWDPolicyMap &polmap, DialogType type,
                                   wxWindowID id, const wxString& caption,
                                   const wxPoint& pos, const wxSize& size, long style )
 : m_core(core), m_MapPSWDPLC(polmap), m_DialogType(type)
 {
-  Init();
-  Create(parent, type, id, caption, pos, size, style);
-}
+  wxASSERT(!parent || parent->IsTopLevel());
 
-/*!
- * PasswordPolicyDlg creator
- */
-
-bool PasswordPolicyDlg::Create( wxWindow* parent, DialogType type, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
+  // Collect all policy names to display in combobox control
+  for (auto& policy : m_MapPSWDPLC) {
+    m_Policynames.Add(stringx2std(policy.first));
+  }
+  
 ////@begin PasswordPolicyDlg creation
   m_DialogType = type;
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
@@ -92,7 +89,14 @@ bool PasswordPolicyDlg::Create( wxWindow* parent, DialogType type, wxWindowID id
   }
   Centre();
 ////@end PasswordPolicyDlg creation
-  return true;
+}
+
+PasswordPolicyDlg* PasswordPolicyDlg::Create(wxWindow *parent, PWScore &core,
+                                  const PSWDPolicyMap &polmap, DialogType type,
+                                  wxWindowID id, const wxString& caption,
+                                  const wxPoint& pos, const wxSize& size, long style)
+{
+  return new PasswordPolicyDlg(parent, core, polmap, type, id, caption, pos, size, style);
 }
 
 void PasswordPolicyDlg::SetDefaultSymbolDisplay(bool restore_defaults)
@@ -109,54 +113,6 @@ void PasswordPolicyDlg::SetDefaultSymbolDisplay(bool restore_defaults)
   }
   m_Symbols = symset.c_str();
   m_OwnSymbols->SetValue(m_Symbols);
-}
-
-/*!
- * PasswordPolicyDlg destructor
- */
-
-PasswordPolicyDlg::~PasswordPolicyDlg()
-{
-////@begin PasswordPolicyDlg destruction
-////@end PasswordPolicyDlg destruction
-}
-
-/*!
- * Member initialisation
- */
-
-void PasswordPolicyDlg::Init()
-{
-////@begin PasswordPolicyDlg member initialisation
-  m_pwpLenCtrl = nullptr;
-  m_pwMinsGSzr = nullptr;
-  m_pwpUseLowerCtrl = nullptr;
-  m_pwNumLCbox = nullptr;
-  m_pwpLCSpin = nullptr;
-  m_pwpUseUpperCtrl = nullptr;
-  m_pwNumUCbox = nullptr;
-  m_pwpUCSpin = nullptr;
-  m_pwpUseDigitsCtrl = nullptr;
-  m_pwNumDigbox = nullptr;
-  m_pwpDigSpin = nullptr;
-  m_pwpSymCtrl = nullptr;
-  m_pwNumSymbox = nullptr;
-  m_pwpSymSpin = nullptr;
-  m_OwnSymbols = nullptr;
-  m_pwpEasyCtrl = nullptr;
-  m_pwpPronounceCtrl = nullptr;
-  m_pwpHexCtrl = nullptr;
-
-  m_UseDatabasePolicyCtrl = nullptr;
-  m_PoliciesSelectionCtrl = nullptr;
-  m_passwordCtrl = nullptr;
-  m_itemStaticBoxSizer6 = nullptr;
-////@end PasswordPolicyDlg member initialisation
-
-  // Collect all policy names to display in combobox control
-  for (auto& policy : m_MapPSWDPLC) {
-    m_Policynames.Add(stringx2std(policy.first));
-  }
 }
 
 /*!

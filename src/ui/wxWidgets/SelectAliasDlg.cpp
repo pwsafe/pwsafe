@@ -213,14 +213,7 @@ void SelectTreeCtrl::OnMouseRightClick(wxMouseEvent& event)
  * SelectAliasDlg constructors
  */
 
-
-SelectAliasDlg::SelectAliasDlg() : m_Core(nullptr), m_Item(nullptr), m_BaseItem(nullptr)
-{
-  Init();
-}
-
-SelectAliasDlg::SelectAliasDlg(wxWindow* parent,
-                             PWScore *core,
+SelectAliasDlg::SelectAliasDlg(wxWindow *parent, PWScore *core,
                              CItemData *item,
                              CItemData **pbci,
                              wxWindowID id, const wxString& caption,
@@ -229,53 +222,8 @@ SelectAliasDlg::SelectAliasDlg(wxWindow* parent,
                                             m_Item(item),
                                             m_BaseItem(pbci)
 {
-  Init();
-  Create(parent, id, caption, pos, size, style);
-}
+  wxASSERT(!parent || parent->IsTopLevel());
 
-
-/*!
- * SelectAliasDlg creator
- */
-
-bool SelectAliasDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
-////@begin SelectAliasDlg creation
-  SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( parent, id, caption, pos, size, style );
-
-  CreateControls();
-  if (GetSizer())
-  {
-    GetSizer()->SetSizeHints(this);
-  }
-  Centre();
-////@end SelectAliasDlg creation
-  return true;
-}
-
-
-/*!
- * SelectAliasDlg destructor
- */
-
-SelectAliasDlg::~SelectAliasDlg()
-{
-////@begin SelectAliasDlg destruction
-////@end SelectAliasDlg destruction
-}
-
-
-/*!
- * Member initialisation
- */
-
-void SelectAliasDlg::Init()
-{
-////@begin SelectAliasDlg member initialisation
-  m_AliasName = _T("");
-  m_Tree = nullptr;
-  m_AliasBaseTextCtrl = nullptr;
   if(m_Core && m_Item && m_BaseItem) {
     CItemData *pbci = m_Core->GetBaseEntry(m_Item);
     if(pbci) {
@@ -287,9 +235,28 @@ void SelectAliasDlg::Init()
       *m_BaseItem = pbci;
     }
   }
-////@end SelectAliasDlg member initialisation
+  ////@begin SelectAliasDlg creation
+  SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
+  wxDialog::Create( parent, id, caption, pos, size, style );
+
+  CreateControls();
+  if (GetSizer())
+  {
+    GetSizer()->SetSizeHints(this);
+  }
+  Centre();
+////@end SelectAliasDlg creation
 }
 
+SelectAliasDlg* SelectAliasDlg::Create(wxWindow *parent, PWScore *core,
+                             CItemData *item,
+                             CItemData **pbci,
+                             wxWindowID id, const wxString& caption,
+                             const wxPoint& pos, const wxSize& size,
+                             long style)
+{
+  return new SelectAliasDlg(parent, core, item, pbci, id, caption, pos, size, style);
+}
 
 /*!
  * Control creation for SelectAliasDlg
@@ -579,16 +546,16 @@ void SelectTreeCtrl::OnCollapseAll(wxCommandEvent& evt)
   }
 }
 
-void SelectTreeCtrl::OnViewClick(wxCommandEvent& evt)
+void SelectTreeCtrl::OnViewClick(wxCommandEvent&)
+{
+  CallAfter(&SelectTreeCtrl::DoViewClick);
+}
+
+void SelectTreeCtrl::DoViewClick()
 {
   if(m_menu_item) {
     CItemData item = *m_menu_item;
     item.SetProtected(true);
-    AddEditPropSheetDlg dialog(
-      this, m_core,
-      AddEditPropSheetDlg::SheetType::VIEW,
-      &item
-    );
-    (void) dialog.ShowModal();
+    ShowModalAndGetResult<AddEditPropSheetDlg>(this, m_core, AddEditPropSheetDlg::SheetType::VIEW, &item);
   }
 }

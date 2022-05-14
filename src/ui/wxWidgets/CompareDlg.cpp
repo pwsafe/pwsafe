@@ -85,38 +85,38 @@ struct ComparisonData {
   ~ComparisonData() { /*nothing to do.  All window objects deleted automatically */ }
 };
 
-struct ContextMenuData {
-  ComparisonData* cdata;
-  wxArrayInt selectedRows;    //indexes into the grid
-  wxArrayInt selectedItems;   //indexes into the table
-  CItemData::FieldType field;
-};
-
 wxDEFINE_SCOPED_PTR_TYPE(MultiCommands)
 
-CompareDlg::CompareDlg(wxWindow* parent, PWScore* currentCore): wxDialog(parent,
-                                                                wxID_ANY,
-                                                                _("Compare current database with another database"),
-                                                                wxDefaultPosition,
-                                                                wxDefaultSize,
-                                                                wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxMAXIMIZE_BOX),
-                                                                m_currentCore(currentCore),
-                                                                m_otherCore(new PWSAuxCore),
-                                                                m_selCriteria(new SelectionCriteria),
-                                                                m_dbPanel(nullptr),
-                                                                m_dbSelectionPane(nullptr),
-                                                                m_optionsPane(nullptr),
-                                                                m_current(new ComparisonData),
-                                                                m_comparison(new ComparisonData),
-                                                                m_conflicts(new ComparisonData),
-                                                                m_identical(new ComparisonData)
+CompareDlg::CompareDlg(wxWindow *parent, PWScore* currentCore): wxDialog(parent,
+                                                        wxID_ANY,
+                                                        _("Compare current database with another database"),
+                                                        wxDefaultPosition,
+                                                        wxDefaultSize,
+                                                        wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER|wxMAXIMIZE_BOX),
+                                                        m_currentCore(currentCore),
+                                                        m_otherCore(new PWSAuxCore),
+                                                        m_selCriteria(new SelectionCriteria),
+                                                        m_dbPanel(nullptr),
+                                                        m_dbSelectionPane(nullptr),
+                                                        m_optionsPane(nullptr),
+                                                        m_current(new ComparisonData),
+                                                        m_comparison(new ComparisonData),
+                                                        m_conflicts(new ComparisonData),
+                                                        m_identical(new ComparisonData)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
+
 
   //compare all fields by default
   m_selCriteria->SelectAllFields();
 
   CreateControls();
+}
+
+CompareDlg* CompareDlg::Create(wxWindow *parent, PWScore* core)
+{
+  return new CompareDlg(parent, core);
 }
 
 CompareDlg::~CompareDlg()
@@ -335,8 +335,11 @@ void CompareDlg::OnCompare(wxCommandEvent& )
 
 void CompareDlg::OnShowReport(wxCommandEvent& )
 {
-  ViewReportDlg vr(this, &m_compReport);
-  vr.ShowModal();
+  CallAfter(&CompareDlg::DoShowReport);
+}
+void CompareDlg::DoShowReport()
+{
+  ShowModalAndGetResult<ViewReportDlg>(this, &m_compReport);
 }
 
 void CompareDlg::DoCompare(wxCommandEvent& WXUNUSED(evt))
@@ -557,8 +560,13 @@ void CompareDlg::OnGridCellRightClick(wxGridEvent& evt)
 void CompareDlg::OnEditInCurrentDB(wxCommandEvent& evt)
 {
   auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
+  CallAfter(&CompareDlg::DoEditInCurrentDB, menuContext);
+}
+
+void CompareDlg::DoEditInCurrentDB(ContextMenuData* menuContext) {
   const ComparisonGridTable& table = *wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
   const pws_os::CUUID& uuid = table[menuContext->selectedRows[0]].uuid0;
+  
   if (ViewEditEntry(m_currentCore, uuid, m_currentCore->IsReadOnly())) {
     int idx = menuContext->selectedRows[0];
     if (menuContext->cdata == m_conflicts)
@@ -592,19 +600,24 @@ void CompareDlg::OnEditInCurrentDB(wxCommandEvent& evt)
 void CompareDlg::OnViewInComparisonDB(wxCommandEvent& evt)
 {
   auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
+  CallAfter(&CompareDlg::DoViewInComparisonDB, menuContext);
+}
+
+void CompareDlg::DoViewInComparisonDB(ContextMenuData* menuContext)
+{
   wxCHECK_RET(menuContext, wxT("Empty client data"));
   const ComparisonGridTable& table = *wxDynamicCast(menuContext->cdata->grid->GetTable(), ComparisonGridTable);
   const pws_os::CUUID& uuid = table[menuContext->selectedRows[0]].uuid1;
+
   wxCHECK_RET(!ViewEditEntry(m_otherCore, uuid, true), wxT("Should not need to refresh grid for just viewing entry"));
 }
 
 bool CompareDlg::ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool readOnly)
 {
-  AddEditPropSheetDlg ae(this,
-                      *core,
+  int rc = ShowModalAndGetResult<AddEditPropSheetDlg>(this, *core,
                       readOnly? AddEditPropSheetDlg::SheetType::VIEW: AddEditPropSheetDlg::SheetType::EDIT,
                       &core->Find(uuid)->second);
-  return ae.ShowModal() == wxID_OK && !readOnly;
+  return rc == wxID_OK && !readOnly;
 }
 
 void CompareDlg::OnExpandDataPanels(wxCommandEvent& WXUNUSED(evt))
@@ -782,6 +795,12 @@ void CompareDlg::OnCopyFieldsToCurrentDB(wxCommandEvent& evt)
 
 void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
 {
+   auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
+  CallAfter(&CompareDlg::DoSyncItemsWithCurrentDB, evt.GetId(), menuContext);
+}
+
+void CompareDlg::DoSyncItemsWithCurrentDB(int menuId, ContextMenuData *menuContext)
+{
   if (m_currentCore->IsReadOnly()) {
     wxMessageBox(_("Current safe was opened read-only"), _("Synchronize"), wxOK|wxICON_INFORMATION, this);
     return;
@@ -807,7 +826,7 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
   FieldSet userSelection(syncFields, syncFields + WXSIZEOF(syncFields));
 
   //let the user choose which fields to synchronize
-  FieldSelectionDlg dlg(this,
+  int rc = ShowModalAndGetResult<FieldSelectionDlg>(this,
                         nullptr, 0, //no fields are left unselected by default
                         nullptr, 0, //But no fields are mandatory
                         userSelection,
@@ -816,13 +835,12 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
                         _("Select fields to synchronize"),
                         _("You must select some fields to synchronize"),
                         _("Synchronize items"));
-  if (dlg.ShowModal() == wxID_OK) {
+  if (rc == wxID_OK) {
     wxCHECK_RET(!userSelection.empty(), wxT("User did not select any fields to sync?"));
-    auto *menuContext = reinterpret_cast<ContextMenuData*>(evt.GetClientData());
     wxCHECK_RET(menuContext, wxT("No menu context available"));
     //start with the selected items
     wxArrayInt syncIndexes(menuContext->selectedItems);
-    if (evt.GetId() == ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB) {
+    if (menuId == ID_SYNC_ALL_ITEMS_WITH_CURRENT_DB) {
       //add all items to the sync Index list
       syncIndexes.Empty();
       const size_t numIndexes = menuContext->cdata->data.size();
@@ -831,7 +849,7 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
         syncIndexes.Add(static_cast<int>(i));
     }
     else {
-      wxCHECK_RET(evt.GetId() == ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB, wxT("Sync menu id is neither for all nor for selected items"));
+      wxCHECK_RET(menuId == ID_SYNC_SELECTED_ITEMS_WITH_CURRENT_DB, wxT("Sync menu id is neither for all nor for selected items"));
     }
 
     //use a wxScopedPtr to clean up the heap object if we trip on any of the wxCHECK_RETs below

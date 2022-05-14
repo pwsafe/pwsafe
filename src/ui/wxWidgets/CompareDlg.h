@@ -51,24 +51,38 @@ class CompareDlg : public wxDialog
   void ReportAdvancedOptions();
   void WriteReport();
 
+protected:
+  explicit CompareDlg(wxWindow *parent, PWScore* core);
 public:
-  CompareDlg(wxWindow* parent, PWScore* core);
+  static CompareDlg* Create(wxWindow *parent, PWScore* core);
   ~CompareDlg();
 
 private:
-  PWScore*            m_currentCore;
-  PWSAuxCore*         m_otherCore;
-  SelectionCriteria*  m_selCriteria;
-  DbSelectionPanel*   m_dbPanel;
-  wxCollapsiblePane*  m_dbSelectionPane;
-  wxCollapsiblePane*  m_optionsPane;
-  ComparisonData      *m_current, *m_comparison, *m_conflicts, *m_identical;
+  struct ContextMenuData {
+    ComparisonData* cdata;
+    wxArrayInt selectedRows;    //indexes into the grid
+    wxArrayInt selectedItems;   //indexes into the table
+    CItemData::FieldType field;
+  };
+
+  PWScore*            m_currentCore = nullptr;
+  PWSAuxCore*         m_otherCore = nullptr;
+  SelectionCriteria*  m_selCriteria = nullptr;
+  DbSelectionPanel*   m_dbPanel = nullptr;
+  wxCollapsiblePane*  m_dbSelectionPane = nullptr;
+  wxCollapsiblePane*  m_optionsPane = nullptr;
+  ComparisonData      *m_current = nullptr, *m_comparison = nullptr, *m_conflicts = nullptr, *m_identical = nullptr;
 
   void DoCompare(wxCommandEvent& evt);
+  void DoShowReport();
+  void DoEditInCurrentDB(ContextMenuData* menuContext);
+  void DoViewInComparisonDB(ContextMenuData* menuContext);
+  void DoSyncItemsWithCurrentDB(int menuId, ContextMenuData *menuContext);
+  
   bool ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool readOnly);
   
   CReport            m_compReport;
-  wxButton*          m_compareButton;
+  wxButton*          m_compareButton = nullptr;
 
   DECLARE_EVENT_TABLE()
 };

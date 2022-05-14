@@ -43,17 +43,15 @@ class CreateShortcutDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  /// Constructors
-  CreateShortcutDlg(wxWindow* parent, PWScore &core, CItemData *base);
+  /// Creation
+  static CreateShortcutDlg* Create(wxWindow *parent, PWScore &core, CItemData *base);
 
   /// Destructor
-  virtual ~CreateShortcutDlg();
+  virtual ~CreateShortcutDlg() = default;
 
-  /// Creation
-  bool Create(wxWindow* parent);
-
-  /// Initialises member variables
-  void Init();
+protected:
+  /// Constructors
+  CreateShortcutDlg(wxWindow *parent, PWScore &core, CItemData *base);
 
   /// Creates the controls and sizers
   void CreateControls();
@@ -87,13 +85,13 @@ private:
   //*)
 
   //(*Declarations(CreateShortcutDlg)
-  wxComboBox* m_ComboBoxShortcutGroup;
-  wxTextCtrl* m_TextCtrlShortcutTitle;
-  wxTextCtrl* m_TextCtrlShortcutUsername;
+  wxComboBox* m_ComboBoxShortcutGroup = nullptr;
+  wxTextCtrl* m_TextCtrlShortcutTitle = nullptr;
+  wxTextCtrl* m_TextCtrlShortcutUsername = nullptr;
 
-  wxStaticText* m_StaticTextBaseEntryGroup;
-  wxStaticText* m_StaticTextBaseEntryTitle;
-  wxStaticText* m_StaticTextBaseEntryUsername;
+  wxStaticText* m_StaticTextBaseEntryGroup = nullptr;
+  wxStaticText* m_StaticTextBaseEntryTitle = nullptr;
+  wxStaticText* m_StaticTextBaseEntryUsername = nullptr;
   //*)
 
   wxString m_ShortcutGroup;
@@ -105,7 +103,7 @@ private:
   wxString m_BaseEntryUsername;
 
   PWScore &m_Core;
-  CItemData *m_Base;
+  CItemData *m_Base = nullptr;
 };
 
 #endif // _CREATESHORTCUTDLG_H_

@@ -63,31 +63,14 @@ END_EVENT_TABLE()
  * pwFiltersStringDlg constructors
  */
 
-pwFiltersStringDlg::pwFiltersStringDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, wxString &value, bool &fcase)
-: m_ftype(ftype), m_add_present(false), m_controlsReady(false)
+pwFiltersStringDlg::pwFiltersStringDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase)
+: m_ftype(ftype), 
+  m_prule(rule), m_pvalue(value), m_pfcase(fcase)
 {
-  m_prule = &rule;
-  m_pvalue = &value;
-  m_pfcase = &fcase;
+  wxASSERT(!parent || parent->IsTopLevel());
 
   Init();
-  Create(parent);
-}
 
-/*!
- * pwFiltersStringDlg destructor
- */
-
-pwFiltersStringDlg::~pwFiltersStringDlg()
-{
-}
-
-/*!
- * pwFiltersStringDlg creator
- */
-
-bool pwFiltersStringDlg::Create(wxWindow* parent)
-{
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create(parent, wxID_ANY, _("Display Filter String Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
@@ -98,9 +81,12 @@ bool pwFiltersStringDlg::Create(wxWindow* parent)
   Centre();
 
   SetValidators();
-  return true;
 }
 
+pwFiltersStringDlg* pwFiltersStringDlg::Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase)
+{
+  return new pwFiltersStringDlg(parent, ftype, rule, value, fcase);
+}
 /*!
  * InitDialog set selection in choice list and optimize window size
  */
@@ -194,10 +180,6 @@ void pwFiltersStringDlg::SetValidators()
 
 void pwFiltersStringDlg::Init()
 {
-  m_ComboBox = nullptr;
-  m_TextCtrlValueString = nullptr;
-  m_idx = -1;
-  
   switch (m_ftype) {
     case FT_GROUPTITLE:
     case FT_TITLE:

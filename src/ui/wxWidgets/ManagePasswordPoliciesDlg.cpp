@@ -85,7 +85,7 @@ END_EVENT_TABLE()
  * ManagePasswordPoliciesDlg constructor
  */
 
-ManagePasswordPoliciesDlg::ManagePasswordPoliciesDlg( wxWindow* parent,  PWScore &core, wxWindowID id,
+ManagePasswordPoliciesDlg::ManagePasswordPoliciesDlg(wxWindow *parent, PWScore &core, wxWindowID id,
               const wxString& caption, const wxPoint& pos,
               const wxSize& size, long style )
 : m_core(core), m_curPolRow(-1),
@@ -93,16 +93,10 @@ ManagePasswordPoliciesDlg::ManagePasswordPoliciesDlg( wxWindow* parent,  PWScore
   m_bSortNamesAscending(true), m_bSortEntriesAscending(true), m_bViewPolicy(true),
   m_bShowPolicyEntriesInitially(true)
 {
-  Init();
-  Create(parent, id, caption, pos, size, style);
-}
+  wxASSERT(!parent || parent->IsTopLevel());
 
-/*!
- * ManagePasswordPoliciesDlg creator
- */
+  m_PolicyManager = std::unique_ptr<PolicyManager>(new PolicyManager(m_core));
 
-bool ManagePasswordPoliciesDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
 ////@begin ManagePasswordPoliciesDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
@@ -114,34 +108,13 @@ bool ManagePasswordPoliciesDlg::Create( wxWindow* parent, wxWindowID id, const w
   }
   Centre();
 ////@end ManagePasswordPoliciesDlg creation
-  return true;
 }
 
-/*!
- * ManagePasswordPoliciesDlg destructor
- */
-
-ManagePasswordPoliciesDlg::~ManagePasswordPoliciesDlg()
+ManagePasswordPoliciesDlg* ManagePasswordPoliciesDlg::Create(wxWindow *parent, PWScore &core, wxWindowID id,
+              const wxString& caption, const wxPoint& pos,
+              const wxSize& size, long style)
 {
-////@begin ManagePasswordPoliciesDlg destruction
-////@end ManagePasswordPoliciesDlg destruction
-}
-
-/*!
- * Member initialisation
- */
-
-void ManagePasswordPoliciesDlg::Init()
-{
-////@begin ManagePasswordPoliciesDlg member initialisation
-  m_PolicyNames = nullptr;
-  m_passwordCtrl = nullptr;
-  m_lowerTableDesc = nullptr;
-  m_PolicyDetails = nullptr;
-  m_PolicyEntries = nullptr;
-////@end ManagePasswordPoliciesDlg member initialisation
-
-  m_PolicyManager = std::unique_ptr<PolicyManager>(new PolicyManager(m_core));
+  return new ManagePasswordPoliciesDlg(parent, core, id, caption, pos, size, style);
 }
 
 /*!
@@ -595,16 +568,21 @@ void ManagePasswordPoliciesDlg::ResizeGridColumns()
 
 void ManagePasswordPoliciesDlg::OnNewClick( wxCommandEvent& )
 {
+  CallAfter(&ManagePasswordPoliciesDlg::DoNewClick);
+}
+
+void ManagePasswordPoliciesDlg::DoNewClick()
+{
   auto policies = m_PolicyManager->GetPolicies();
   auto policy   = m_PolicyManager->GetDefaultPolicy();
 
-  PasswordPolicyDlg ppdlg(this, m_core, policies);
-  ppdlg.SetPolicyData(wxEmptyString, policy);
+  DestroyWrapper<PasswordPolicyDlg> ppdlg(this, m_core, policies);
+  ppdlg.Get()->SetPolicyData(wxEmptyString, policy);
 
-  if (ppdlg.ShowModal() == wxID_OK) {
+  if (ppdlg.Get()->ShowModal() == wxID_OK) {
     wxString policyname;
 
-    ppdlg.GetPolicyData(policyname, policy);
+    ppdlg.Get()->GetPolicyData(policyname, policy);
 
     m_PolicyManager->PolicyAdded(policyname.ToStdWstring(), policy);
 
@@ -619,6 +597,11 @@ void ManagePasswordPoliciesDlg::OnNewClick( wxCommandEvent& )
  */
 
 void ManagePasswordPoliciesDlg::OnEditClick( wxCommandEvent& )
+{
+  CallAfter(&ManagePasswordPoliciesDlg::DoEditClick);
+}
+
+void ManagePasswordPoliciesDlg::DoEditClick()
 {
   int row = GetSelectedRow();
 
@@ -650,13 +633,13 @@ void ManagePasswordPoliciesDlg::OnEditClick( wxCommandEvent& )
     originalPolicy     = m_PolicyManager->GetPolicy(originalPolicyname.ToStdWstring());
   }
 
-  PasswordPolicyDlg ppdlg(this, m_core, policies);
+  DestroyWrapper<PasswordPolicyDlg> ppdlg(this, m_core, policies);
 
-  ppdlg.SetPolicyData(originalPolicyname, originalPolicy);
+  ppdlg.Get()->SetPolicyData(originalPolicyname, originalPolicy);
 
-  if (ppdlg.ShowModal() == wxID_OK) {
+  if (ppdlg.Get()->ShowModal() == wxID_OK) {
 
-    ppdlg.GetPolicyData(modifiedPolicyname, modifiedPolicy);
+    ppdlg.Get()->GetPolicyData(modifiedPolicyname, modifiedPolicy);
 
     if (originalPolicyname != modifiedPolicyname) {
 

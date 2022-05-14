@@ -52,7 +52,7 @@ IMPLEMENT_CLASS( ImportTextDlg, wxDialog )
 BEGIN_EVENT_TABLE( ImportTextDlg, wxDialog )
 END_EVENT_TABLE()
 
-ImportTextDlg::ImportTextDlg(wxWindow* parent, const wxString filename) :  wxDialog(parent,
+ImportTextDlg::ImportTextDlg(wxWindow *parent, const wxString& filename) :  wxDialog(parent,
                                                             wxID_ANY,
                                                             _("Import Text Settings"),
                                                             wxDefaultPosition,
@@ -68,16 +68,19 @@ ImportTextDlg::ImportTextDlg(wxWindow* parent, const wxString filename) :  wxDia
                                                     importUnderGroup(false),
                                                     importPasswordsOnly(false)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   //since the controls aren't direct children of the dialog but instead are
   //parented by wxCollipsiblePane, we need to validate recursively
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY);
   CreateControls();
 }
 
-ImportTextDlg::~ImportTextDlg()
+ImportTextDlg* ImportTextDlg::Create(wxWindow *parent, const wxString& filename)
 {
+  return new ImportTextDlg(parent, filename);
 }
-
+                                                                  
 wxCollapsiblePane* ImportTextDlg::CreateImportOptionsPane(wxBoxSizer* dlgSizer)
 {
   const wxSizerFlags Left = wxSizerFlags().Proportion(0).Border(wxLEFT, SideMargin);

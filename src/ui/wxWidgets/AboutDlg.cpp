@@ -63,27 +63,14 @@ const cstringT AboutDlg::s_URL_VERSION   =  "https://pwsafe.org/latest.xml";
  * AboutDlg constructors
  */
 
-AboutDlg::AboutDlg()
+AboutDlg::AboutDlg(wxWindow *parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-  Init();
-}
-
-AboutDlg::AboutDlg( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
-  Init();
-  Create(parent, id, caption, pos, size, style);
+  wxASSERT(!parent || parent->IsTopLevel());
 
   // Print version information on standard output which might be useful for error reports.
   pws_os::Trace(GetLibWxVersion().wc_str());
   pws_os::Trace(GetLibCurlVersion().wc_str());
-}
 
-/*!
- * AboutDlg creator
- */
-
-bool AboutDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
 
@@ -99,27 +86,11 @@ bool AboutDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption,
     }
   }
   Centre();
-  return true;
 }
 
-/*!
- * AboutDlg destructor
- */
-
-AboutDlg::~AboutDlg()
+AboutDlg* AboutDlg::Create(wxWindow *parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-////@begin AboutDlg destruction
-////@end AboutDlg destruction
-}
-
-/*!
- * Member initialization
- */
-
-void AboutDlg::Init()
-{
-  m_VersionStatus = nullptr;
-  m_CurlHandle = nullptr;
+  return new AboutDlg(parent, id, caption, pos, size, style);
 }
 
 /*!

@@ -56,13 +56,14 @@ class pwFiltersIntegerDlg : public wxDialog
 {
   DECLARE_CLASS(pwFiltersIntegerDlg)
   DECLARE_EVENT_TABLE()
-
 public:
+  static pwFiltersIntegerDlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, int *fnum1, int *fnum2, int *funit = nullptr);
+protected:
   /// Constructors
-  pwFiltersIntegerDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, int &fnum1, int &fnum2, int *funit = NULL);
+  pwFiltersIntegerDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, int *fnum1, int *fnum2, int *funit);
 
   /// Destructor
-  virtual ~pwFiltersIntegerDlg();
+  virtual ~pwFiltersIntegerDlg() = default;
 
   /// Creation
   bool Create(wxWindow* parent);
@@ -103,32 +104,32 @@ private:
   void UpdateUnitSelection();
 
   //(*Declarations(pwFiltersIntegerDlg)
-  wxComboBox* m_ComboBox;
-  wxSpinCtrl* m_FNum1Ctrl;
-  wxSpinCtrl* m_FNum2Ctrl;
-  wxRadioButton* m_UnitByteCtrl;
-  wxRadioButton* m_UnitKByteCtrl;
-  wxRadioButton* m_UnitMByteCtrl;
-  wxStaticText*  m_IntervalTextCtrl;
+  wxComboBox* m_ComboBox = nullptr;
+  wxSpinCtrl* m_FNum1Ctrl = nullptr;
+  wxSpinCtrl* m_FNum2Ctrl = nullptr;
+  wxRadioButton* m_UnitByteCtrl = nullptr;
+  wxRadioButton* m_UnitKByteCtrl = nullptr;
+  wxRadioButton* m_UnitMByteCtrl = nullptr;
+  wxStaticText*  m_IntervalTextCtrl = nullptr;
   //*)
   
   wxString infoFmtStr; // Format string for information text
 
   const FieldType m_ftype;
-  bool m_add_present;
+  bool m_add_present = false;
   
-  int m_idx;
-  int m_fnum1;
-  int m_fnum2;
-  int m_min;
-  int m_max;
-  int m_funit;
+  int m_idx = -1;
+  int m_fnum1 = -1;
+  int m_fnum2 = -1;
+  int m_min = -1;
+  int m_max = -1;
+  int m_funit = -1;
   
   // Result parameter
-  PWSMatch::MatchRule *m_prule;
-  int                 *m_pfnum1;
-  int                 *m_pfnum2;
-  int                 *m_pfunit;
+  PWSMatch::MatchRule *m_prule = nullptr;
+  int                 *m_pfnum1 = nullptr;
+  int                 *m_pfnum2 = nullptr;
+  int                 *m_pfunit = nullptr;
   
   static const PWSMatch::MatchRule m_mrpres[PW_NUM_PRESENT_ENUM];
   static const PWSMatch::MatchRule m_mrcrit[PW_NUM_INT_CRITERIA_ENUM];

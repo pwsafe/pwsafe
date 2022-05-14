@@ -72,30 +72,14 @@ END_EVENT_TABLE()
  * pwFiltersDCADlg constructors
  */
 
-pwFiltersDCADlg::pwFiltersDCADlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, short &fdca)
+pwFiltersDCADlg::pwFiltersDCADlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, short *fdca)
 : m_ftype(ftype)
 {
-  m_prule = &rule;
-  m_pfdca = &fdca;
+  wxASSERT(!parent || parent->IsTopLevel());
 
-  Init();
-  Create(parent);
-}
+  m_prule = rule;
+  m_pfdca = fdca;
 
-/*!
- * pwFiltersDCADlg destructor
- */
-
-pwFiltersDCADlg::~pwFiltersDCADlg()
-{
-}
-
-/*!
- * pwFiltersDCADlg creator
- */
-
-bool pwFiltersDCADlg::Create(wxWindow* parent)
-{
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create(parent, wxID_ANY, _("Display Filter DCA Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
@@ -106,7 +90,11 @@ bool pwFiltersDCADlg::Create(wxWindow* parent)
   Centre();
 
   SetValidators();
-  return true;
+}
+
+pwFiltersDCADlg* pwFiltersDCADlg::Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, short *fdca)
+{
+  return new pwFiltersDCADlg(parent, ftype, rule, fdca);
 }
 
 /*!
@@ -217,7 +205,7 @@ void pwFiltersDCADlg::InitDialog()
   m_idx_dca = -1;
   if(m_idx != -1) {
     for(int i = 0; i < PW_NUM_DCA_ENUM; i++) {
-      if(m_fdca == m_mdca[i].dcaValue) {
+      if(*m_pfdca == m_mdca[i].dcaValue) {
         m_idx_dca = i;
         break;
       }
@@ -257,19 +245,6 @@ void pwFiltersDCADlg::SetValidators()
 {
   m_ComboBoxRule->SetValidator(wxGenericValidator(&m_idx));
   m_ComboBoxDCA->SetValidator(wxGenericValidator(&m_idx_dca));
-}
-
-/*!
- * Member initialisation
- */
-
-void pwFiltersDCADlg::Init()
-{
-  m_ComboBoxRule = nullptr;
-  m_ComboBoxDCA = nullptr;
-  m_idx = -1;
-  m_idx_dca = -1;
-  m_fdca = *m_pfdca;
 }
 
 /*!

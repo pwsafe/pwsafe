@@ -55,28 +55,12 @@ END_EVENT_TABLE()
  * CreateShortcutDlg constructors
  */
 
-CreateShortcutDlg::CreateShortcutDlg(wxWindow* parent, PWScore &core, CItemData *base)
+CreateShortcutDlg::CreateShortcutDlg(wxWindow *parent, PWScore &core, CItemData *base)
 : m_Core(core), m_Base(base)
 {
   ASSERT(m_Base != nullptr);
-  Init();
-  Create(parent);
-}
+  wxASSERT(!parent || parent->IsTopLevel());
 
-/*!
- * CreateShortcutDlg destructor
- */
-
-CreateShortcutDlg::~CreateShortcutDlg()
-{
-}
-
-/*!
- * CreateShortcutDlg creator
- */
-
-bool CreateShortcutDlg::Create(wxWindow* parent)
-{
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create(parent, wxID_ANY, _("Create Shortcut"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
@@ -89,7 +73,11 @@ bool CreateShortcutDlg::Create(wxWindow* parent)
   SetValidators();
   UpdateControls();
   ItemFieldsToDialog();
-  return true;
+}
+
+CreateShortcutDlg* CreateShortcutDlg::Create(wxWindow *parent, PWScore &core, CItemData *base)
+{
+  return new CreateShortcutDlg(parent, core, base);
 }
 
 void CreateShortcutDlg::ItemFieldsToDialog()
@@ -173,20 +161,6 @@ void CreateShortcutDlg::UpdateControls()
     m_TextCtrlShortcutTitle->Disable();
     m_TextCtrlShortcutUsername->Disable();
   }
-}
-
-/*!
- * Member initialisation
- */
-
-void CreateShortcutDlg::Init()
-{
-  m_ComboBoxShortcutGroup = nullptr;
-  m_TextCtrlShortcutTitle = nullptr;
-  m_TextCtrlShortcutUsername = nullptr;
-  m_StaticTextBaseEntryGroup = nullptr;
-  m_StaticTextBaseEntryTitle = nullptr;
-  m_StaticTextBaseEntryUsername = nullptr;
 }
 
 /*!

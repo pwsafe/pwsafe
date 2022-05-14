@@ -64,19 +64,16 @@ class SetFiltersDlg: public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  /// Constructors
-  SetFiltersDlg();
-  SetFiltersDlg( wxWindow* parent, st_filters *pfilters, st_filters *currentFilters, bool *appliedCalled,
-                const FilterType &filtertype = DFTYPE_MAIN, FilterPool filterpool = FPOOL_LAST, const bool bCanHaveAttachments = false, const std::set<StringX> *psMediaTypes = NULL, wxWindowID id = SYMBOL_SETFILTERS_IDNAME, const wxString& caption = SYMBOL_SETFILTERS_TITLE, const wxPoint& pos = SYMBOL_SETFILTERS_POSITION, const wxSize& size = SYMBOL_SETFILTERS_SIZE, long style = SYMBOL_SETFILTERS_STYLE );
-
-  /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_SETFILTERS_IDNAME, const wxString& caption = SYMBOL_SETFILTERS_TITLE, const wxPoint& pos = SYMBOL_SETFILTERS_POSITION, const wxSize& size = SYMBOL_SETFILTERS_SIZE, long style = SYMBOL_SETFILTERS_STYLE );
+  static SetFiltersDlg* Create(wxWindow *parent, st_filters *pfilters, st_filters *currentFilters, bool *appliedCalled,
+    const FilterType filtertype = DFTYPE_MAIN, FilterPool filterpool = FPOOL_LAST, const bool bCanHaveAttachments = false, const std::set<StringX> *psMediaTypes = nullptr, wxWindowID id = SYMBOL_SETFILTERS_IDNAME, const wxString& caption = SYMBOL_SETFILTERS_TITLE, const wxPoint& pos = SYMBOL_SETFILTERS_POSITION, const wxSize& size = SYMBOL_SETFILTERS_SIZE, long style = SYMBOL_SETFILTERS_STYLE );
 
   /// Destructor
-  ~SetFiltersDlg();
-
-  /// Initialises member variables
-  void Init();
+  ~SetFiltersDlg() = default;
+public:
+  /// Constructors
+  SetFiltersDlg() = default;
+  SetFiltersDlg(wxWindow *parent, st_filters *pfilters, st_filters *currentFilters, bool *appliedCalled,
+                const FilterType filtertype, FilterPool filterpool, const bool bCanHaveAttachments, const std::set<StringX> *psMediaTypes, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Creates the controls and sizers
   void CreateControls();
@@ -115,18 +112,18 @@ public:
 ////@end SetFiltersDlg member function declarations
 
 ////@begin SetFiltersDlg member variables
-  pwFiltersGrid* m_filterGrid;
+  pwFiltersGrid* m_filterGrid = nullptr;
   
 private:
   bool VerifyFilters();
    
-  st_filters *m_pfilters;           // The filter to change
-  st_filters *m_currentFilters;     // The filter to be set for Apply
-  const bool m_bCanHaveAttachments; // Version V4 includes attachments
-  const std::set<StringX> *m_psMediaTypes;  // Attachement media types, present in current data base
-  const FilterType m_filtertype;    // Type of filter
-  const FilterPool m_filterpool;    // Filter pool
-  bool  *m_AppliedCalled;           // Mark, when Applied had been called and currentFilters is filled with actual one
+  st_filters *m_pfilters = nullptr;           // The filter to change
+  st_filters *m_currentFilters = nullptr;     // The filter to be set for Apply
+  const bool m_bCanHaveAttachments = false; // Version V4 includes attachments
+  const std::set<StringX> *m_psMediaTypes = nullptr;  // Attachement media types, present in current data base
+  const FilterType m_filtertype = DFTYPE_INVALID;    // Type of filter
+  const FilterPool m_filterpool = FPOOL_LAST;    // Filter pool
+  bool  *m_AppliedCalled = nullptr;           // Mark, when Applied had been called and currentFilters is filled with actual one
   
   wxString m_filterName;
 ////@end SetFiltersDlg member variables

@@ -63,30 +63,13 @@ END_EVENT_TABLE()
  * pwFiltersStatusDlg constructors
  */
 
-pwFiltersStatusDlg::pwFiltersStatusDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, CItemData::EntryStatus &estatus)
-: m_ftype(ftype)
+pwFiltersStatusDlg::pwFiltersStatusDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryStatus *estatus)
+: m_ftype(ftype), m_prule(rule), m_pestatus(estatus)
 {
-  m_prule = &rule;
-  m_pestatus = &estatus;
+  wxASSERT(!parent || parent->IsTopLevel());
 
-  Init();
-  Create(parent);
-}
+  m_estatus = *m_pestatus;
 
-/*!
- * pwFiltersStatusDlg destructor
- */
-
-pwFiltersStatusDlg::~pwFiltersStatusDlg()
-{
-}
-
-/*!
- * pwFiltersStatusDlg creator
- */
-
-bool pwFiltersStatusDlg::Create(wxWindow* parent)
-{
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create(parent, wxID_ANY, _("Display Filter Entry Status Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
@@ -97,7 +80,11 @@ bool pwFiltersStatusDlg::Create(wxWindow* parent)
   Centre();
 
   SetValidators();
-  return true;
+}
+
+pwFiltersStatusDlg* pwFiltersStatusDlg::Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryStatus *estatus)
+{
+  return new pwFiltersStatusDlg(parent, ftype, rule, estatus);
 }
 
 /*!
@@ -205,19 +192,6 @@ void pwFiltersStatusDlg::SetValidators()
 {
   m_ComboBoxRule->SetValidator(wxGenericValidator(&m_idx));
   m_ComboBoxStatus->SetValidator(wxGenericValidator(&m_idx_status));
-}
-
-/*!
- * Member initialisation
- */
-
-void pwFiltersStatusDlg::Init()
-{
-  m_ComboBoxRule = nullptr;
-  m_ComboBoxStatus = nullptr;
-  m_idx = -1;
-  m_idx_status = -1;
-  m_estatus = *m_pestatus;
 }
 
 /*!

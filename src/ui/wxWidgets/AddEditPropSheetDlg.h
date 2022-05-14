@@ -135,9 +135,8 @@ public:
     VIEW
   }; // to tweak UI, mainly
 
-  /// Constructor
   // item is nullptr for ADD, otherwise its values are retrieved and displayed
-  AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
+  static AddEditPropSheetDlg* Create(wxWindow *parent, PWScore &core,
                       SheetType type, const CItemData *item = nullptr,
                       const wxString &selectedGroup = wxEmptyString,
                       wxWindowID id = SYMBOL_ADDEDITPROPSHEETDLG_IDNAME,
@@ -146,11 +145,14 @@ public:
                       const wxSize &size = SYMBOL_ADDEDITPROPSHEETDLG_SIZE,
                       long style = SYMBOL_ADDEDITPROPSHEETDLG_STYLE);
 
-  /// Creation
-  bool Create(wxWindow *parent, wxWindowID id = SYMBOL_ADDEDITPROPSHEETDLG_IDNAME, const wxString &caption = SYMBOL_AUTOPROPSHEETDLG_TITLE, const wxPoint &pos = SYMBOL_ADDEDITPROPSHEETDLG_POSITION, const wxSize &size = SYMBOL_ADDEDITPROPSHEETDLG_SIZE, long style = SYMBOL_ADDEDITPROPSHEETDLG_STYLE);
-
   /// Destructor
-  ~AddEditPropSheetDlg();
+  ~AddEditPropSheetDlg() = default;
+protected:
+  /// Constructor
+  AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
+                      SheetType type, const CItemData *item, const wxString &selectedGroup,
+                      wxWindowID id,const wxString &caption, 
+                      const wxPoint &pos, const wxSize &size, long style);
 
   ////@begin AddEditPropSheetDlg event handler declarations
 
@@ -246,9 +248,6 @@ public:
   ////@begin AddEditPropSheetDlg member variables
 
 private:
-  // Initialises member variables
-  void Init();
-
   // Creates the controls and sizers
   void CreateControls();
 
@@ -304,21 +303,23 @@ private:
 
   Command* NewAddEntryCommand(bool bNewCTime = true);
   Command* NewEditEntryCommand();
+  
+  void DoAliasButtonClick();
 
   // Tab: "Basic"
-  wxPanel *m_BasicPanel;
-  wxGridBagSizer *m_BasicSizer;
-  wxComboBox *m_BasicGroupNamesCtrl;
-  wxTextCtrl *m_BasicTitleTextCtrl;
-  wxTextCtrl *m_BasicUsernameTextCtrl;
-  wxTextCtrl *m_BasicPasswordTextCtrl;
-  wxStaticText *m_BasicPasswordTextLabel;
-  wxButton *m_BasicShowHideCtrl;
-  wxTextCtrl *m_BasicPasswordConfirmationTextCtrl;
-  wxStaticText *m_BasicPasswordConfirmationTextLabel;
-  wxTextCtrl *m_BasicUrlTextCtrl;
-  wxTextCtrl *m_BasicEmailTextCtrl;
-  wxTextCtrl *m_BasicNotesTextCtrl;
+  wxPanel *m_BasicPanel = nullptr;
+  wxGridBagSizer *m_BasicSizer = nullptr;
+  wxComboBox *m_BasicGroupNamesCtrl = nullptr;
+  wxTextCtrl *m_BasicTitleTextCtrl = nullptr;
+  wxTextCtrl *m_BasicUsernameTextCtrl = nullptr;
+  wxTextCtrl *m_BasicPasswordTextCtrl = nullptr;
+  wxStaticText *m_BasicPasswordTextLabel = nullptr;
+  wxButton *m_BasicShowHideCtrl = nullptr;
+  wxTextCtrl *m_BasicPasswordConfirmationTextCtrl = nullptr;
+  wxStaticText *m_BasicPasswordConfirmationTextLabel = nullptr;
+  wxTextCtrl *m_BasicUrlTextCtrl = nullptr;
+  wxTextCtrl *m_BasicEmailTextCtrl = nullptr;
+  wxTextCtrl *m_BasicNotesTextCtrl = nullptr;
 
   wxString m_Title;
   wxString m_User;
@@ -330,11 +331,11 @@ private:
   bool m_IsPasswordHidden;
 
   // Tab: "Additional"
-  wxPanel *m_AdditionalPanel;
-  wxComboBox *m_AdditionalDoubleClickActionCtrl;
-  wxComboBox *m_AdditionalShiftDoubleClickActionCtrl;
-  wxSpinCtrl *m_AdditionalMaxPasswordHistoryCtrl;
-  wxGrid *m_AdditionalPasswordHistoryGrid;
+  wxPanel *m_AdditionalPanel = nullptr;
+  wxComboBox *m_AdditionalDoubleClickActionCtrl = nullptr;
+  wxComboBox *m_AdditionalShiftDoubleClickActionCtrl = nullptr;
+  wxSpinCtrl *m_AdditionalMaxPasswordHistoryCtrl = nullptr;
+  wxGrid *m_AdditionalPasswordHistoryGrid = nullptr;
 
   wxString m_Autotype;
   wxString m_RunCommand;
@@ -345,12 +346,12 @@ private:
   short m_ShiftDoubleClickAction;
 
   // Tab: "Dates and Times"
-  wxRadioButton *m_DatesTimesExpireOnCtrl;
-  wxDatePickerCtrl *m_DatesTimesExpiryDateCtrl;
-  wxRadioButton *m_DatesTimesExpireInCtrl;
-  wxSpinCtrl *m_DatesTimesExpiryTimeCtrl;
-  wxCheckBox *m_DatesTimesRecurringExpiryCtrl;
-  wxRadioButton *m_DatesTimesNeverExpireCtrl;
+  wxRadioButton *m_DatesTimesExpireOnCtrl = nullptr;
+  wxDatePickerCtrl *m_DatesTimesExpiryDateCtrl = nullptr;
+  wxRadioButton *m_DatesTimesExpireInCtrl = nullptr;
+  wxSpinCtrl *m_DatesTimesExpiryTimeCtrl = nullptr;
+  wxCheckBox *m_DatesTimesRecurringExpiryCtrl = nullptr;
+  wxRadioButton *m_DatesTimesNeverExpireCtrl = nullptr;
 
   wxString m_RMTime; // Any field modification time
   wxString m_AccessTime;
@@ -359,32 +360,32 @@ private:
   wxString m_ModificationTime;
   bool m_Recurring;
   wxString m_ExpirationTime;
-  int m_ExpirationTimeInterval; // Password expiration interval in days
+  int m_ExpirationTimeInterval = 0; // Password expiration interval in days
   time_t m_tttExpirationTime;   // Password expiration date in time_t
 
   // Tab: "Password Policy"
-  wxPanel *m_PasswordPolicyPanel;
-  wxCheckBox *m_PasswordPolicyUseDatabaseCtrl;
-  wxComboBox *m_PasswordPolicyNamesCtrl;
-  wxStaticText *m_PasswordPolicyPasswordLengthText;
-  wxSpinCtrl *m_PasswordPolicyPasswordLengthCtrl;
-  wxGridSizer *m_PasswordPolicySizer;
-  wxCheckBox *m_PasswordPolicyUseLowerCaseCtrl;
-  wxBoxSizer *m_PasswordPolicyLowerCaseMinSizer;
-  wxSpinCtrl *m_PasswordPolicyLowerCaseMinCtrl;
-  wxCheckBox *m_PasswordPolicyUseUpperCaseCtrl;
-  wxBoxSizer *m_PasswordPolicyUpperCaseMinSizer;
-  wxSpinCtrl *m_PasswordPolicyUpperCaseMinCtrl;
-  wxCheckBox *m_PasswordPolicyUseDigitsCtrl;
-  wxBoxSizer *m_PasswordPolicyDigitsMinSizer;
-  wxSpinCtrl *m_PasswordPolicyDigitsMinCtrl;
-  wxCheckBox *m_PasswordPolicyUseSymbolsCtrl;
-  wxBoxSizer *m_PasswordPolicySymbolsMinSizer;
-  wxSpinCtrl *m_PasswordPolicySymbolsMinCtrl;
-  wxTextCtrl *m_PasswordPolicyOwnSymbolsTextCtrl;
-  wxCheckBox *m_PasswordPolicyUseEasyCtrl;
-  wxCheckBox *m_PasswordPolicyUsePronounceableCtrl;
-  wxCheckBox *m_PasswordPolicyUseHexadecimalOnlyCtrl;
+  wxPanel *m_PasswordPolicyPanel = nullptr;
+  wxCheckBox *m_PasswordPolicyUseDatabaseCtrl = nullptr;
+  wxComboBox *m_PasswordPolicyNamesCtrl = nullptr;
+  wxStaticText *m_PasswordPolicyPasswordLengthText = nullptr;
+  wxSpinCtrl *m_PasswordPolicyPasswordLengthCtrl = nullptr;
+  wxGridSizer *m_PasswordPolicySizer = nullptr;
+  wxCheckBox *m_PasswordPolicyUseLowerCaseCtrl = nullptr;
+  wxBoxSizer *m_PasswordPolicyLowerCaseMinSizer = nullptr;
+  wxSpinCtrl *m_PasswordPolicyLowerCaseMinCtrl = nullptr;
+  wxCheckBox *m_PasswordPolicyUseUpperCaseCtrl = nullptr;
+  wxBoxSizer *m_PasswordPolicyUpperCaseMinSizer = nullptr;
+  wxSpinCtrl *m_PasswordPolicyUpperCaseMinCtrl = nullptr;
+  wxCheckBox *m_PasswordPolicyUseDigitsCtrl = nullptr;
+  wxBoxSizer *m_PasswordPolicyDigitsMinSizer = nullptr;
+  wxSpinCtrl *m_PasswordPolicyDigitsMinCtrl = nullptr;
+  wxCheckBox *m_PasswordPolicyUseSymbolsCtrl = nullptr;
+  wxBoxSizer *m_PasswordPolicySymbolsMinSizer = nullptr;
+  wxSpinCtrl *m_PasswordPolicySymbolsMinCtrl = nullptr;
+  wxTextCtrl *m_PasswordPolicyOwnSymbolsTextCtrl = nullptr;
+  wxCheckBox *m_PasswordPolicyUseEasyCtrl = nullptr;
+  wxCheckBox *m_PasswordPolicyUsePronounceableCtrl = nullptr;
+  wxCheckBox *m_PasswordPolicyUseHexadecimalOnlyCtrl = nullptr;
 
   wxString m_Symbols;
 
@@ -409,20 +410,20 @@ private:
   //*)
 
   //(*Declarations(AttachmentTab)
-  wxStaticBoxSizer *StaticBoxSizerPreview;
-  wxPanel *m_AttachmentPanel;
-  ImagePanel *m_AttachmentImagePanel;
-  wxButton *m_AttachmentButtonImport;
-  wxButton *m_AttachmentButtonExport;
-  wxButton *m_AttachmentButtonRemove;
-  wxStaticText *m_AttachmentFilePath;
-  wxTextCtrl *m_AttachmentTitle;
-  wxStaticText *m_AttachmentMediaType;
-  wxStaticText *m_AttachmentCreationDate;
-  wxStaticText *m_AttachmentFileSize;
-  wxStaticText *m_AttachmentFileCreationDate;
-  wxStaticText *m_AttachmentFileLastModifiedDate;
-  wxStaticText *m_AttachmentPreviewStatus;
+  wxStaticBoxSizer *StaticBoxSizerPreview = nullptr;
+  wxPanel *m_AttachmentPanel = nullptr;
+  ImagePanel *m_AttachmentImagePanel = nullptr;
+  wxButton *m_AttachmentButtonImport = nullptr;
+  wxButton *m_AttachmentButtonExport = nullptr;
+  wxButton *m_AttachmentButtonRemove = nullptr;
+  wxStaticText *m_AttachmentFilePath = nullptr;
+  wxTextCtrl *m_AttachmentTitle = nullptr;
+  wxStaticText *m_AttachmentMediaType = nullptr;
+  wxStaticText *m_AttachmentCreationDate = nullptr;
+  wxStaticText *m_AttachmentFileSize = nullptr;
+  wxStaticText *m_AttachmentFileCreationDate = nullptr;
+  wxStaticText *m_AttachmentFileLastModifiedDate = nullptr;
+  wxStaticText *m_AttachmentPreviewStatus = nullptr;
   //*)
   ////@end AddEditPropSheetDlg member variables
 

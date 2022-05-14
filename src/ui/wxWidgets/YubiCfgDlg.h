@@ -64,13 +64,13 @@ class YubiCfgDlg : public wxDialog
 
 public:
   /// Constructors
-  YubiCfgDlg( wxWindow* parent, PWScore &core, wxWindowID id = SYMBOL_YUBICFGDLG_IDNAME, const wxString& caption = SYMBOL_YUBICFGDLG_TITLE, const wxPoint& pos = SYMBOL_YUBICFGDLG_POSITION, const wxSize& size = SYMBOL_YUBICFGDLG_SIZE, long style = SYMBOL_YUBICFGDLG_STYLE );
-
-  /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_YUBICFGDLG_IDNAME, const wxString& caption = SYMBOL_YUBICFGDLG_TITLE, const wxPoint& pos = SYMBOL_YUBICFGDLG_POSITION, const wxSize& size = SYMBOL_YUBICFGDLG_SIZE, long style = SYMBOL_YUBICFGDLG_STYLE );
+  static YubiCfgDlg* Create(wxWindow *parent, PWScore &core, wxWindowID id = SYMBOL_YUBICFGDLG_IDNAME, const wxString& caption = SYMBOL_YUBICFGDLG_TITLE, const wxPoint& pos = SYMBOL_YUBICFGDLG_POSITION, const wxSize& size = SYMBOL_YUBICFGDLG_SIZE, long style = SYMBOL_YUBICFGDLG_STYLE );
 
   /// Destructor
   ~YubiCfgDlg();
+protected:
+  /// Constructors
+  YubiCfgDlg(wxWindow *parent, PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Initialises member variables
   void Init();
@@ -111,9 +111,9 @@ public:
   static bool ShowToolTips();
 
 ////@begin YubiCfgDlg member variables
-  wxStaticBoxSizer* m_SKSizer;
-  wxTextCtrl* m_SKCtrl;
-  wxStaticText* m_ykstatus;
+  wxStaticBoxSizer* m_SKSizer = nullptr;
+  wxTextCtrl* m_SKCtrl = nullptr;
+  wxStaticText* m_ykstatus = nullptr;
 private:
   wxString m_yksernum; // Device's serial number
   wxString m_yksk; // Device's secret key
@@ -127,7 +127,7 @@ private:
   void HideSK();
 
   enum { POLLING_TIMER_ID = 66 } ; 
-  wxTimer* m_pollingTimer;
+  wxTimer* m_pollingTimer = nullptr;
   bool m_present; // key present?
   bool m_isSKHidden;
   mutable wxMutex m_mutex; // protect against race conditions when calling Yubi API

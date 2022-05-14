@@ -54,17 +54,13 @@ class pwFiltersDCADlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
+  static pwFiltersDCADlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, short *fdca);
+protected:
   /// Constructors
-  pwFiltersDCADlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, short &fdca);
+  pwFiltersDCADlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, short *fdca);
 
   /// Destructor
-  virtual ~pwFiltersDCADlg();
-
-  /// Creation
-  bool Create(wxWindow* parent);
-
-  /// Initialises member variables
-  void Init();
+  virtual ~pwFiltersDCADlg() = default;
 
   /// Creates the controls and sizers
   void CreateControls();
@@ -92,17 +88,17 @@ private:
   //*)
 
   //(*Declarations(pwFiltersDCADlg)
-  wxComboBox* m_ComboBoxRule;
-  wxComboBox* m_ComboBoxDCA;
+  wxComboBox* m_ComboBoxRule = nullptr;
+  wxComboBox* m_ComboBoxDCA = nullptr;
   //*)
 
   const FieldType m_ftype;
-  int m_idx;
-  int m_idx_dca;
-  short m_fdca;
+  int m_idx = -1;
+  int m_idx_dca = -1;
+
   // Result parameter
-  PWSMatch::MatchRule *m_prule;
-  short *m_pfdca;
+  PWSMatch::MatchRule *m_prule = nullptr;
+  short *m_pfdca = nullptr;
 
   typedef struct dcaMapItem {
     int msgText;

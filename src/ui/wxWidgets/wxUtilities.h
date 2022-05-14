@@ -401,4 +401,32 @@ private:
   wxBitmap m_Bitmap;          // The possibly scaled bitmap representation of the image.
 };
 
+bool IsCloseInProgress();
+
+template <class Dlg, typename... Args> int ShowModalAndGetResult(Args&&... args) {
+  Dlg* ptr = Dlg::Create(std::forward<Args>(args)...);
+  int result = ptr->ShowModal();
+  ptr->Destroy();
+  return result;
+}
+
+template<class T> class DestroyWrapper {
+public:
+  template<typename... Args>
+  DestroyWrapper(Args&&... args) : m_ptr(T::Create(std::forward<Args>(args)...)) {
+  }
+
+  ~DestroyWrapper() {
+    if (m_ptr) {
+      m_ptr->Destroy();
+    }
+  }
+
+  T* Get() {
+    return m_ptr;
+  }
+private:
+  T *m_ptr;
+};
+
 #endif // _WXUTILITIES_H_
