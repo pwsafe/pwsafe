@@ -616,7 +616,8 @@ public:
 
   bool IsClosed() const;
   bool IsLocked() const;
-  
+  /// Get top dialog (shown or hidden)
+  wxTopLevelWindow* GetTopWindow() const;
   static void DisplayFileWriteError(int rc, const StringX &fname);
 
 ////@begin PasswordSafeFrame member variables

@@ -152,6 +152,14 @@ wxMenu* SystemTray::CreatePopupMenu()
   if (!m_frame->IsShown())
     menu->Enable(wxID_ICONIZE_FRAME, false);
 
+  // whe there are active modal dialogs, we need to reparent menu, so it could process context menu events
+  // "fix" for https://github.com/wxWidgets/wxWidgets/blob/v3.0.5/src/gtk/menu.cpp#L49
+  wxTopLevelWindow *parent = m_frame->GetTopWindow();
+  if (parent) {
+    menu->SetEventHandler(this);
+    parent->PopupMenu(menu, wxPoint(-1, -1));
+    return nullptr;
+  }
   return menu;
 }
 

@@ -2445,7 +2445,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
         CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), CloseFlags::CLOSE_NORMAL, [this](bool success) {
           if (!success) {
             // `this` should be valid here, because we haven't closed DB
-            wxMessageBox(_("Can't close database. There are unsaved changes."), wxTheApp->GetAppName(), wxOK | wxICON_WARNING, this);
+            wxMessageBox(_("Can't close database. There are unsaved changes in opened dialogs."), wxTheApp->GetAppName(), wxOK | wxICON_WARNING, this);
           }
         });
         return;
@@ -3010,27 +3010,28 @@ void PasswordSafeFrame::CloseDB(std::function<void(bool)> callback)
       return;
     }
 
-    m_core.SafeUnlockCurFile();
-    m_core.SetCurFile(wxEmptyString);
-
-    // Reset core and clear ALL associated data
-    m_core.ReInit();
-
-    // clear the application data before ending
-    ClearAppData();
-    
     // Force close all active dialogs
     CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}),
-      static_cast<CloseFlags>(CloseFlags::CLOSE_FORCED|CloseFlags::LEAVE_MAIN),
+      CloseFlags::LEAVE_MAIN,
       [this, callback](bool success) { // we don't close main window, so `this` will be valid
-        wxASSERT(success); // forced close should be successful
-        SetTitle(wxEmptyString);
-        m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
-        wxCommandEvent dummyEv;
-        m_search->OnSearchClose(dummyEv); // fix github issue 375
-        m_core.SetReadOnly(false);
-        UpdateStatusBar();
-        UpdateMenuBar();
+        if (success) {
+          m_core.SafeUnlockCurFile();
+          m_core.SetCurFile(wxEmptyString);
+          // Reset core and clear ALL associated data
+          m_core.ReInit();
+          // clear the application data before ending
+          ClearAppData();
+          SetTitle(wxEmptyString);
+          m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
+          wxCommandEvent dummyEv;
+          m_search->OnSearchClose(dummyEv); // fix github issue 375
+          m_core.SetReadOnly(false);
+          UpdateStatusBar();
+          UpdateMenuBar();
+        }
+        else {
+          wxMessageBox(_("Can't close database. There are unsaved changes in opened dialogs."), wxTheApp->GetAppName(), wxOK | wxICON_WARNING, this);
+        }
         if (callback) {
           CallAfter([callback, success]() {callback(success);});
         }
@@ -3111,6 +3112,19 @@ void PasswordSafeFrame::ShowHiddenWindows(bool raise)
     win->Update();
   }
   m_hiddenWindows.clear();
+}
+
+wxTopLevelWindow* PasswordSafeFrame::GetTopWindow() const {
+  if (!m_hiddenWindows.empty()) {
+    return m_hiddenWindows.back();
+  }
+  else {
+    auto windows = GetTopLevelWindowsList();
+    if (!windows.empty()) {
+      return windows.back();
+    }
+  }
+  return nullptr;
 }
 
 int PasswordSafeFrame::Enter(wxDialog* dialog)

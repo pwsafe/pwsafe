@@ -1371,6 +1371,10 @@ void PasswordSafeFrame::DoPropertiesClick()
 
 void PasswordSafeFrame::OnExitClick(wxCommandEvent& WXUNUSED(evt))
 {
-  CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), CloseFlags::CLOSE_NORMAL, nullptr);
+  CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), CloseFlags::CLOSE_NORMAL, [this](bool success) {
+    if (!success) {
+      // `this` should be valid here, because we haven't closed DB
+      wxMessageBox(_("Can't close database. There are unsaved changes in opened dialogs."), wxTheApp->GetAppName(), wxOK | wxICON_WARNING, this);
+    }
+  });
 }
-
