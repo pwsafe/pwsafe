@@ -146,6 +146,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/PWFiltersMediaDlg.cpp
     src/ui/wxWidgets/PWFiltersPasswordDlg.cpp
     src/ui/wxWidgets/ManageFiltersTable.cpp
+    src/ui/wxWidgets/QueryCancelDlg.cpp
     )
 
 if(HAVE_YKPERS_H)
