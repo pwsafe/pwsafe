@@ -160,6 +160,18 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   GetDlgItem(IDC_READONLY)->EnableWindow((m_bForceReadOnly || m_bFileReadOnly || m_bHideReadOnly) ?
                                          FALSE : TRUE);
   GetDlgItem(IDC_READONLY)->ShowWindow(m_bHideReadOnly ? SW_HIDE : SW_SHOW);
+  
+  // If read-only box is hidden, move Show Combination box in its place to close the gap.
+  if (m_bHideReadOnly) {
+    CRect rectReadOnly;
+    GetDlgItem(IDC_READONLY)->GetWindowRect(&rectReadOnly);
+    ScreenToClient(&rectReadOnly);
+    CRect rectCombination;
+    GetDlgItem(IDC_SHOWCOMBINATION)->GetWindowRect(&rectCombination);
+    ScreenToClient(&rectCombination);
+    rectCombination.MoveToY(rectReadOnly.top);
+    GetDlgItem(IDC_SHOWCOMBINATION)->MoveWindow(&rectCombination);
+  }
 
   CWnd *create_bn = GetDlgItem(IDC_CREATE_DB);
   if (create_bn) // not always there
