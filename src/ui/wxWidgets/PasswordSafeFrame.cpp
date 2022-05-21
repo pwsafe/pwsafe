@@ -2457,6 +2457,9 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
         }
         return; // allow to cancel dialog and left locked in any case
       }
+      default:
+        wxASSERT_MSG(false, wxT("Unexpected SafeCombinationPromptDlg result"));
+        break;
     }
 
     if (m_savedDBPrefs != wxEmptyString) {
