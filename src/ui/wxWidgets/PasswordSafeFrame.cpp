@@ -2907,7 +2907,7 @@ void PasswordSafeFrame::ResetFilters()
  
  @param taskChain chain to use when closing multiple dialogs
  @param flags close options
- @param onSuccess if set, will be called after closing all windows
+ @param onFinish if set, will be called after closing all windows
  
  Here we have to use taskChain, because when closing multiple dialogs, 
  CallAfter is not enough to allow dialog to finish result processing and break event loop
@@ -2936,8 +2936,8 @@ void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags fl
   
   auto tlvList = GetTopLevelWindowsList();
   auto itr = tlvList.rbegin();
-  auto endItr = ((flags & CloseFlags::LEAVE_MAIN) == CloseFlags::LEAVE_MAIN) ? --tlvList.rend() : tlvList.rend();
-  auto lastWindowItr = --tlvList.rend();
+  const auto endItr = ((flags & CloseFlags::LEAVE_MAIN) == CloseFlags::LEAVE_MAIN) ? --tlvList.rend() : tlvList.rend();
+  const auto lastWindowItr = --tlvList.rend();
   bool vetoed = false;
   while (itr != endItr) {
     wxTopLevelWindow* win = *itr;
