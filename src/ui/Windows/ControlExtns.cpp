@@ -1169,6 +1169,10 @@ void CSymbolEdit::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
   if (!std::isalnum(wChar, locl)) {
     CString cs_text;
     GetWindowText(cs_text);
+    // BR1557: Selected text will be replaced, no need to search it for duplicates
+    int startSel, endSel;
+    GetSel(startSel, endSel);
+    cs_text = cs_text.Left(startSel) + cs_text.Right(cs_text.GetLength() - endSel);
     // Must not have duplicates
     if (cs_text.Find(wChar) == -1)
       CEdit::OnChar(nChar, 0, nFlags);
