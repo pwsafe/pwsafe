@@ -9,6 +9,7 @@ PasswordSafe 3.59.0 Release May 2022
 
 Bugs fixed in 3.59.0
 --------------------
+* [SF1557](https://sourceforge.net/p/passwordsafe/bugs/1557/) Editing special characters in Password Policy works correctly with selected text.
 * [SF1553](https://sourceforge.net/p/passwordsafe/bugs/1553/) Text selection in Notes field works correctly (again).
 
 New features in 3.59.0
