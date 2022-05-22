@@ -826,7 +826,7 @@ private:
   std::vector<wxTopLevelWindow*> m_hiddenWindows;
   std::vector<wxDialog*> m_shownDialogs;
   wxWindowDisabler* m_closeDisabler = nullptr; // disable all windows while waiting for close
-  wxTopLevelWindow* m_penginCloseWindow = nullptr; // current window that processing close event
+  wxTopLevelWindow* m_pengingCloseWindow = nullptr; // current window that processing close event
 };
 
 BEGIN_DECLARE_EVENT_TYPES()

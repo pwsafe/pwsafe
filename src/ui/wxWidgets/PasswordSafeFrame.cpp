@@ -2927,7 +2927,7 @@ void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags fl
 
   if (!m_closeDisabler) {
     m_closeDisabler = new wxWindowDisabler();
-    m_penginCloseWindow = nullptr;
+    m_pengingCloseWindow = nullptr;
     if (delayClose) {
       // some windows (such as wxHtmlHelpDialog need more cycles for activation), delay close processing after show
       taskChain->then([taskChain, flags, onFinish, this]{
@@ -2946,7 +2946,7 @@ void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags fl
     wxTopLevelWindow* win = *itr;
     if (win) {
       if (win->IsShown()) {
-        if (win == m_penginCloseWindow) { // close already sheduled, but still not done
+        if (win == m_pengingCloseWindow) { // close already sheduled, but still not done
           pws_os::Trace(L"Waiting for window close <%ls> (%ls), flags=%d\n", ToStr(win->GetTitle()), ToStr(win->GetName()), flags);
           taskChain->then([taskChain, flags, onFinish, this]{
             CloseAllWindows(taskChain, flags, onFinish);
@@ -2955,7 +2955,7 @@ void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags fl
         }
 
         pws_os::Trace(L"Closing <%ls> (%ls), flags=%d\n", ToStr(win->GetTitle()), ToStr(win->GetName()), flags);
-        m_penginCloseWindow = win;
+        m_pengingCloseWindow = win;
         if (win->Close((flags & CloseFlags::CLOSE_FORCED) == CloseFlags::CLOSE_FORCED)) {
           if (itr == lastWindowItr) {
             // main windows closed, no need to schedule new check
@@ -2983,7 +2983,7 @@ void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags fl
   }
   delete m_closeDisabler;
   m_closeDisabler = nullptr;
-  m_penginCloseWindow = nullptr;
+  m_pengingCloseWindow = nullptr;
   
   if (vetoed && (flags & CloseFlags::HIDE_ON_VETO) == CloseFlags::HIDE_ON_VETO) {
     HideTopLevelWindows();
@@ -3070,6 +3070,7 @@ std::vector<wxTopLevelWindow*> PasswordSafeFrame::GetTopLevelWindowsList() const
       // wxMessageDialog don't set needed m_shown and m_modalShowing flags in ShowModal, so just log it
       // (we even can't close them, because m_modalShowing isn't set and Close event isn't processed)
       pws_os::Trace(L"Message dialog <%ls> (%ls) can't be hidden/closed\n", ToStr(dialog->GetTitle()), ToStr(dialog->GetName()));
+      continue;
     }
 #endif
     if (shown) {
