@@ -3271,7 +3271,7 @@ bool AddEditPropSheetDlg::SyncAndQueryCancel(bool showDialog) {
     if (showDialog) {
       auto res = wxMessageDialog(
         nullptr,
-        _("One or more preferences have been changed. Are you sure you wish to cancel?"), wxEmptyString,
+        _("One or more values have been changed. Are you sure you wish to cancel?"), wxEmptyString,
         wxYES_NO | wxNO_DEFAULT | wxICON_EXCLAMATION  
       ).ShowModal();
       if (res == wxID_YES) {
