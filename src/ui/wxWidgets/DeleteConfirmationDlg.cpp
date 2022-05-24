@@ -55,25 +55,10 @@ END_EVENT_TABLE()
  * DeleteConfirmationDlg constructors
  */
 
-DeleteConfirmationDlg::DeleteConfirmationDlg(int num_children)
-: m_numchildren(num_children)
-{
-  Init();
-}
-
-DeleteConfirmationDlg::DeleteConfirmationDlg( wxWindow* parent, int num_children, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+DeleteConfirmationDlg::DeleteConfirmationDlg(wxWindow *parent, int num_children, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
   : m_numchildren(num_children)
 {
-  Init();
-  Create(parent, id, caption, pos, size, style);
-}
-
-/*!
- * DeleteConfirmationDlg creator
- */
-
-bool DeleteConfirmationDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
+  wxASSERT(!parent || parent->IsTopLevel());
 ////@begin DeleteConfirmationDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
@@ -85,28 +70,11 @@ bool DeleteConfirmationDlg::Create( wxWindow* parent, wxWindowID id, const wxStr
   }
   Centre();
 ////@end DeleteConfirmationDlg creation
-  return true;
 }
 
-/*!
- * DeleteConfirmationDlg destructor
- */
-
-DeleteConfirmationDlg::~DeleteConfirmationDlg()
+DeleteConfirmationDlg* DeleteConfirmationDlg::Create(wxWindow *parent, int num_children, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-////@begin DeleteConfirmationDlg destruction
-////@end DeleteConfirmationDlg destruction
-}
-
-/*!
- * Member initialisation
- */
-
-void DeleteConfirmationDlg::Init()
-{
-////@begin DeleteConfirmationDlg member initialisation
-  m_areyousure = nullptr;
-////@end DeleteConfirmationDlg member initialisation
+  return new DeleteConfirmationDlg(parent, num_children, id, caption, pos, size, style);
 }
 
 /*!

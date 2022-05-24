@@ -18,13 +18,13 @@
  */
 
 #include <wx/combobox.h>
-#include <wx/dialog.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/textctrl.h>
 
 #include "core/ItemData.h"
 #include "core/PWScore.h"
+#include "QueryCancelDlg.h"
 
 /*!
  * Forward declarations
@@ -37,23 +37,21 @@
  * EditShortcutDlg class declaration
  */
 
-class EditShortcutDlg : public wxDialog
+class EditShortcutDlg : public QueryCancelDlg
 {
   DECLARE_CLASS(EditShortcutDlg)
   DECLARE_EVENT_TABLE()
 
 public:
-  /// Constructors
-  EditShortcutDlg(wxWindow* parent, PWScore &core, CItemData *shortcut);
+
+  static EditShortcutDlg* Create(wxWindow *parent, PWScore &core, CItemData *shortcut);
 
   /// Destructor
-  virtual ~EditShortcutDlg();
+  virtual ~EditShortcutDlg() = default;
 
-  /// Creation
-  bool Create(wxWindow* parent);
-
-  /// Initialises member variables
-  void Init();
+protected:
+  /// Constructors
+  EditShortcutDlg(wxWindow *parent, PWScore &core, CItemData *shortcut);
 
   /// Creates the controls and sizers
   void CreateControls();
@@ -74,8 +72,19 @@ private:
   void ItemFieldsToDialog();
   void SetValidators();
   void UpdateControls();
+  bool SyncAndQueryCancel(bool showDialog) override;
 
-  //(*Handlers(CreateShortcutDlg)
+  enum Changes : uint32_t {
+    None = 0,
+    Group = 1u,
+    Title = 1u << 1,
+    User = 1u << 2,
+  };
+  
+  uint32_t GetChanges() const;  
+  bool IsChanged() const override;
+
+  //(*Handlers(EditShortcutDlgDialog)
   void OnOk(wxCommandEvent& event);
   //*)
 
@@ -92,18 +101,18 @@ private:
   //*)
 
   //(*Declarations(EditShortcutDlgDialog)
-  wxComboBox* m_ComboBoxShortcutGroup;
-  wxTextCtrl* m_TextCtrlShortcutTitle;
-  wxTextCtrl* m_TextCtrlShortcutUsername;
+  wxComboBox* m_ComboBoxShortcutGroup = nullptr;
+  wxTextCtrl* m_TextCtrlShortcutTitle = nullptr;
+  wxTextCtrl* m_TextCtrlShortcutUsername = nullptr;
 
-  wxStaticText* m_StaticTextShortcutCreated;
-  wxStaticText* m_StaticTextShortcutChanged;
-  wxStaticText* m_StaticTextShortcutAccessed;
-  wxStaticText* m_StaticTextShortcutAnyChange;
+  wxStaticText* m_StaticTextShortcutCreated = nullptr;
+  wxStaticText* m_StaticTextShortcutChanged = nullptr;
+  wxStaticText* m_StaticTextShortcutAccessed = nullptr;
+  wxStaticText* m_StaticTextShortcutAnyChange = nullptr;
 
-  wxStaticText* m_StaticTextBaseEntryGroup;
-  wxStaticText* m_StaticTextBaseEntryTitle;
-  wxStaticText* m_StaticTextBaseEntryUsername;
+  wxStaticText* m_StaticTextBaseEntryGroup = nullptr;
+  wxStaticText* m_StaticTextBaseEntryTitle = nullptr;
+  wxStaticText* m_StaticTextBaseEntryUsername = nullptr;
   //*)
 
   wxString m_ShortcutGroup;
@@ -120,7 +129,7 @@ private:
   wxString m_BaseEntryUsername;
 
   PWScore &m_Core;
-  CItemData *m_Shortcut;
+  CItemData *m_Shortcut = nullptr;
 };
 
 #endif // _EDITSHORTCUTDLG_H_

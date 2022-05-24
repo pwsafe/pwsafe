@@ -58,6 +58,8 @@ BEGIN_EVENT_TABLE( pwFiltersTypeDlg, wxDialog )
   EVT_BUTTON( wxID_OK, pwFiltersTypeDlg::OnOk )
   EVT_COMBOBOX( ID_COMBOBOX62, pwFiltersTypeDlg::OnSelectionChangeRule )
   EVT_COMBOBOX( ID_COMBOBOX63, pwFiltersTypeDlg::OnSelectionChangeType )
+  EVT_BUTTON( wxID_CANCEL, pwFiltersTypeDlg::OnCancelClick )
+  EVT_CLOSE( pwFiltersTypeDlg::OnClose )
 
 END_EVENT_TABLE()
 
@@ -65,30 +67,13 @@ END_EVENT_TABLE()
  * pwFiltersTypeDlg constructors
  */
 
-pwFiltersTypeDlg::pwFiltersTypeDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, CItemData::EntryType &etype)
-: m_ftype(ftype)
+pwFiltersTypeDlg::pwFiltersTypeDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryType *etype)
+: m_ftype(ftype), m_prule(rule), m_petype(etype)
 {
-  m_prule = &rule;
-  m_petype = &etype;
+  wxASSERT(!parent || parent->IsTopLevel());
 
-  Init();
-  Create(parent);
-}
+  m_etype = *m_petype;
 
-/*!
- * pwFiltersTypeDlg destructor
- */
-
-pwFiltersTypeDlg::~pwFiltersTypeDlg()
-{
-}
-
-/*!
- * pwFiltersTypeDlg creator
- */
-
-bool pwFiltersTypeDlg::Create(wxWindow* parent)
-{
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create(parent, wxID_ANY, _("Display Filter Entry Type Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
@@ -99,7 +84,11 @@ bool pwFiltersTypeDlg::Create(wxWindow* parent)
   Centre();
 
   SetValidators();
-  return true;
+}
+
+pwFiltersTypeDlg* pwFiltersTypeDlg::Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, CItemData::EntryType *etype)
+{
+  return new pwFiltersTypeDlg(parent, ftype, rule, etype);
 }
 
 /*!
@@ -207,19 +196,6 @@ void pwFiltersTypeDlg::SetValidators()
 {
   m_ComboBoxRule->SetValidator(wxGenericValidator(&m_idx));
   m_ComboBoxType->SetValidator(wxGenericValidator(&m_idx_type));
-}
-
-/*!
- * Member initialisation
- */
-
-void pwFiltersTypeDlg::Init()
-{
-  m_ComboBoxRule = nullptr;
-  m_ComboBoxType = nullptr;
-  m_idx = -1;
-  m_idx_type = -1;
-  m_etype = *m_petype;
 }
 
 /*!
@@ -355,4 +331,28 @@ void pwFiltersTypeDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     }
   }
   EndModal(wxID_OK);
+}
+
+bool pwFiltersTypeDlg::IsChanged() const {
+  const auto idx = m_ComboBoxRule->GetSelection();
+
+  if(idx >= 0 && idx < PW_NUM_TYPE_RULE_ENUM) {
+    if (*m_prule != m_mrx[idx]) {
+      return true;
+    }
+  }
+  else if (*m_prule != PWSMatch::MR_INVALID) {
+    return true;
+  }
+
+  const auto idx_type = m_ComboBoxType->GetSelection();
+  if(idx_type >= 0 && idx_type < PW_NUM_TYPE_ENUM) {
+    if (*m_petype != m_mtype[idx_type].typeValue) {
+      return true;
+    }
+  }
+  else if (*m_prule != PWSMatch::MR_INVALID) {
+    return true;
+  }
+  return false;
 }

@@ -176,11 +176,6 @@ inline const wxChar* ToStr(bool b) {
   return b? wxT("True"): wxT("False");
 }
 
-void HideWindowRecursively(wxTopLevelWindow* win);
-void ShowWindowRecursively(wxTopLevelWindow* win);
-int CountTopLevelWindowRecursively(wxTopLevelWindow* win);
-void CloseChildWindowRecursively(wxTopLevelWindow* win, wxTopLevelWindow* top);
-
 // Workaround for wxTE_PASSWORD being immutable:
 void ShowHideText(wxTextCtrl *&txtCtrl, const wxString &text,
                   wxSizer *sizer, bool show);
@@ -401,6 +396,34 @@ private:
   double m_ImageAspectRatio;  // The image's aspect ratio.
   wxImage m_Image;            // The non-scaled image.
   wxBitmap m_Bitmap;          // The possibly scaled bitmap representation of the image.
+};
+
+bool IsCloseInProgress();
+
+template <class Dlg, typename... Args> int ShowModalAndGetResult(Args&&... args) {
+  Dlg* ptr = Dlg::Create(std::forward<Args>(args)...);
+  int result = ptr->ShowModal();
+  ptr->Destroy();
+  return result;
+}
+
+template<class T> class DestroyWrapper {
+public:
+  template<typename... Args>
+  DestroyWrapper(Args&&... args) : m_ptr(T::Create(std::forward<Args>(args)...)) {
+  }
+
+  ~DestroyWrapper() {
+    if (m_ptr) {
+      m_ptr->Destroy();
+    }
+  }
+
+  T* Get() {
+    return m_ptr;
+  }
+private:
+  T *m_ptr;
 };
 
 #endif // _WXUTILITIES_H_

@@ -41,6 +41,7 @@ class SystemTray : protected wxTaskBarIcon
   protected:
     //overridden from wxTaskBarIcon, called by framework on r-click
     virtual wxMenu* CreatePopupMenu();
+    void ProcessSysTrayMenuItem(int itemId);
 
   private:
     wxMenu* GetRecentHistory();

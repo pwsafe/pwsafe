@@ -18,12 +18,12 @@
  */
 
 #include <wx/choice.h>
-#include <wx/dialog.h>
 #include <wx/sizer.h>
 #include <wx/stattext.h>
 #include <wx/spinctrl.h>
 
 #include "core/PWSFilters.h"
+#include "QueryCancelDlg.h"
 
 /*!
  * Forward declarations
@@ -49,17 +49,21 @@
  * pwFiltersPasswordDlg class declaration
  */
 
-class pwFiltersPasswordDlg : public wxDialog
+class pwFiltersPasswordDlg : public QueryCancelDlg
 {
   DECLARE_CLASS(pwFiltersPasswordDlg)
   DECLARE_EVENT_TABLE()
 
 public:
   /// Constructors
-  pwFiltersPasswordDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, wxString &value, bool &fcase, int &fnum1);
+  static pwFiltersPasswordDlg* Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, int *fnum1);
+
+protected:
+  /// Constructors
+  pwFiltersPasswordDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, int *fnum1);
 
   /// Destructor
-  virtual ~pwFiltersPasswordDlg();
+  virtual ~pwFiltersPasswordDlg() = default;
 
   /// Creation
   bool Create(wxWindow* parent);
@@ -91,14 +95,16 @@ private:
   void OnFNum1Change(wxSpinEvent& event);
   //*)
 
+  bool IsChanged() const override;
+
   //(*Declarations(pwFiltersPasswordDlg)
-  wxComboBox* m_ComboBox;
-  wxTextCtrl* m_TextCtrlValueString;
-  wxCheckBox* m_CheckBoxFCase;
-  wxSpinCtrl* m_FNum1Ctrl;
+  wxComboBox* m_ComboBox = nullptr;
+  wxTextCtrl* m_TextCtrlValueString = nullptr;
+  wxCheckBox* m_CheckBoxFCase = nullptr;
+  wxSpinCtrl* m_FNum1Ctrl = nullptr;
   //*)
 
-  int m_idx;
+  int m_idx = -1;
   wxString m_string;
   bool m_fcase;
   int m_fnum1;
@@ -109,10 +115,10 @@ private:
 
   const FieldType m_ftype;
   // Result parameter
-  PWSMatch::MatchRule *m_prule;
-  wxString            *m_pvalue;
-  bool                *m_pfcase;
-  int                 *m_pfnum1;
+  PWSMatch::MatchRule *m_prule = nullptr;
+  wxString            *m_pvalue = nullptr;
+  bool                *m_pfcase = nullptr;
+  int                 *m_pfnum1 = nullptr;
   
   static const PWSMatch::MatchRule m_mrcrit[PW_NUM_PASSWORD_CRITERIA_ENUM];
 };

@@ -28,6 +28,7 @@
 		A2FE25911C5ACF7500210C36 /* PWSfileHeader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25891C5ACF7500210C36 /* PWSfileHeader.cpp */; };
 		A2FE25921C5ACF7500210C36 /* PWSfileV4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE258B1C5ACF7500210C36 /* PWSfileV4.cpp */; };
 		A2FE25951C5ACFBD00210C36 /* PWStime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25931C5ACFBD00210C36 /* PWStime.cpp */; };
+		A6F2B3362832B0380096A7E4 /* QueryCancelDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6F2B3342832B0380096A7E4 /* QueryCancelDlg.cpp */; };
 		D3012934262C731500FDF023 /* PWFiltersStringDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3012932262C731500FDF023 /* PWFiltersStringDlg.cpp */; };
 		D31B027926384D29000EAA61 /* PWFiltersMediaDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D31B027726384D29000EAA61 /* PWFiltersMediaDlg.cpp */; };
 		D3206A1E25B8B22300F6E115 /* DnDPWSafeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3206A1D25B8B22200F6E115 /* DnDPWSafeObject.cpp */; };
@@ -282,6 +283,8 @@
 		A2FE258C1C5ACF7500210C36 /* PWSfileV4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSfileV4.h; sourceTree = "<group>"; };
 		A2FE25931C5ACFBD00210C36 /* PWStime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWStime.cpp; sourceTree = "<group>"; };
 		A2FE25941C5ACFBD00210C36 /* PWStime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWStime.h; sourceTree = "<group>"; };
+		A6F2B3342832B0380096A7E4 /* QueryCancelDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QueryCancelDlg.cpp; sourceTree = "<group>"; };
+		A6F2B3352832B0380096A7E4 /* QueryCancelDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueryCancelDlg.h; sourceTree = "<group>"; };
 		D3012932262C731500FDF023 /* PWFiltersStringDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWFiltersStringDlg.cpp; sourceTree = "<group>"; };
 		D3012933262C731500FDF023 /* PWFiltersStringDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWFiltersStringDlg.h; sourceTree = "<group>"; };
 		D31B027726384D29000EAA61 /* PWFiltersMediaDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWFiltersMediaDlg.cpp; sourceTree = "<group>"; };
@@ -1309,6 +1312,8 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				A6F2B3342832B0380096A7E4 /* QueryCancelDlg.cpp */,
+				A6F2B3352832B0380096A7E4 /* QueryCancelDlg.h */,
 				D3F00B69268CBB2B00F299EE /* SelectAliasDlg.cpp */,
 				D3F00B68268CBB2B00F299EE /* SelectAliasDlg.h */,
 				D3610ABB2653D51900EDA799 /* HelpMap.h */,
@@ -1970,6 +1975,7 @@
 				D3A1DCD6261B15E80014A300 /* PWFiltersGrid.cpp in Sources */,
 				E6ADBA961195709A004E2BE5 /* TreeCtrl.cpp in Sources */,
 				E6ADBA981195709A004E2BE5 /* SafeCombinationChangeDlg.cpp in Sources */,
+				A6F2B3362832B0380096A7E4 /* QueryCancelDlg.cpp in Sources */,
 				E6ADBA991195709A004E2BE5 /* SafeCombinationEntryDlg.cpp in Sources */,
 				E6ADBA9A1195709A004E2BE5 /* SafeCombinationPromptDlg.cpp in Sources */,
 				E6ADBA9B1195709A004E2BE5 /* SafeCombinationSetupDlg.cpp in Sources */,

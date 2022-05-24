@@ -51,6 +51,8 @@ BEGIN_EVENT_TABLE( pwFiltersBoolDlg, wxDialog )
 
   EVT_BUTTON( wxID_OK, pwFiltersBoolDlg::OnOk )
   EVT_COMBOBOX( ID_COMBOBOX53, pwFiltersBoolDlg::OnSelectionChange )
+  EVT_BUTTON( wxID_CANCEL, pwFiltersBoolDlg::OnCancelClick )
+  EVT_CLOSE( pwFiltersBoolDlg::OnClose )
 
 END_EVENT_TABLE()
 
@@ -58,29 +60,13 @@ END_EVENT_TABLE()
  * pwFiltersBoolDlg constructors
  */
 
-pwFiltersBoolDlg::pwFiltersBoolDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule)
-: m_ftype(ftype)
+pwFiltersBoolDlg::pwFiltersBoolDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule)
+: m_ftype(ftype), m_prule(rule)
 {
-  m_prule = &rule;
+  wxASSERT(!parent || parent->IsTopLevel());
 
-  Init();
-  Create(parent);
-}
-
-/*!
- * pwFiltersBoolDlg destructor
- */
-
-pwFiltersBoolDlg::~pwFiltersBoolDlg()
-{
-}
-
-/*!
- * pwFiltersBoolDlg creator
- */
-
-bool pwFiltersBoolDlg::Create(wxWindow* parent)
-{
+  m_btype = ConvertType(m_ftype);
+  
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create(parent, wxID_ANY, _("Display Filter Boolean Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
@@ -91,7 +77,11 @@ bool pwFiltersBoolDlg::Create(wxWindow* parent)
   Centre();
 
   SetValidators();
-  return true;
+}
+
+pwFiltersBoolDlg* pwFiltersBoolDlg::Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule)
+{
+  return new pwFiltersBoolDlg(parent, ftype, rule);
 }
 
 /*!
@@ -177,42 +167,30 @@ void pwFiltersBoolDlg::SetValidators()
  * Member initialisation
  */
 
-void pwFiltersBoolDlg::Init()
+pwFiltersBoolDlg::BoolType pwFiltersBoolDlg::ConvertType(FieldType ftype)
 {
-  m_ComboBoxBool = nullptr;
-  m_idx = -1;
-  m_pmrx = nullptr;
-  
-  switch (m_ftype) {
+  switch (ftype) {
     case FT_PROTECTED:
-      m_btype = BT_IS;
-      break;
+      return BT_IS;
     case FT_KBSHORTCUT:
-      m_btype = BT_PRESENT;
-      break;
+      return BT_PRESENT;
     case FT_UNKNOWNFIELDS:
-      m_btype = BT_PRESENT;
-      break;
+      return BT_PRESENT;
     case HT_PRESENT:
-      m_btype = BT_PRESENT;
-      break;
+      return BT_PRESENT;
     case HT_ACTIVE:
-      m_btype = BT_ACTIVE;
-      break;
+      return BT_ACTIVE;
     case PT_PRESENT:
-      m_btype = BT_PRESENT;
-      break;
+      return BT_PRESENT;
     case PT_EASYVISION:
     case PT_PRONOUNCEABLE:
     case PT_HEXADECIMAL:
-      m_btype = BT_SET;
-      break;
+      return BT_SET;
     case AT_PRESENT:
-      m_btype = BT_PRESENT;
-      break;
+      return BT_PRESENT;
     default:
       wxASSERT(false);
-      m_btype = BT_IS;
+      return BT_IS;
   }
 }
 
@@ -322,4 +300,15 @@ void pwFiltersBoolDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     }
   }
   EndModal(wxID_OK);
+}
+
+bool pwFiltersBoolDlg::IsChanged() const {
+  switch (m_ComboBoxBool->GetSelection()) {
+    case 0:
+      return *m_prule != m_pmrx[0];
+    case 1:
+      return *m_prule != m_pmrx[1];
+    default:
+      return *m_prule != PWSMatch::MR_INVALID;
+  }
 }

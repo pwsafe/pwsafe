@@ -48,10 +48,11 @@ struct SyncData {
   SelectionCriteria selCriteria;
   wxFileName        otherDB;
   StringX           combination;
-  PWScore*          core;
+  PWScore*          core = nullptr;
   size_t            numUpdated;
-  CReport           syncReport;
+  std::unique_ptr<CReport> syncReport = std::unique_ptr<CReport>(new CReport());
   bool              showReport;
+  MultiCommands*    syncCmds = nullptr;
 };
 
 /*!
@@ -202,7 +203,6 @@ class SyncStatusPage: public SyncWizardPage
   void Synchronize(PWScore* currentCore, const PWScore* otherCore);
   void ReportAdvancedOptions(CReport* rpt, const wxString& operation);
   void OnSyncStartEvent(wxCommandEvent& evt);
-
 public:
   SyncStatusPage(wxWizard* parent, SyncData* data);
 
@@ -215,6 +215,8 @@ public:
 //
 BEGIN_EVENT_TABLE(SyncWizard, wxWizard)
   EVT_WIZARD_PAGE_CHANGING(wxID_ANY, SyncWizard::OnWizardPageChanging)
+  EVT_CLOSE( SyncWizard::OnClose )
+  EVT_WIZARD_CANCEL(wxID_ANY, SyncWizard::OnWizardCancel)
 END_EVENT_TABLE()
 
 SyncWizard::SyncWizard(wxWindow* parent, PWScore* core, const wxString filename):
@@ -286,7 +288,59 @@ bool SyncWizard::ShowReport() const {
 }
 
 CReport* SyncWizard::GetReport() const {
-  return &m_syncData->syncReport;
+  return m_syncData->syncReport.get();
+}
+
+MultiCommands* SyncWizard::GetSyncCommands() const {
+  return m_syncData->syncCmds;
+}
+
+bool SyncWizard::QueryCancel(bool showDialog) {
+  if (m_syncData->numUpdated > 0) {
+    if (showDialog) {
+      auto res = wxMessageDialog(
+        nullptr,
+        _("One or more items have been changed. Are you sure you wish to cancel?"), wxEmptyString,
+        wxYES_NO | wxNO_DEFAULT | wxICON_EXCLAMATION
+      ).ShowModal();
+      if (res == wxID_YES) {
+        return true;
+      }
+    }
+    return false;
+  }
+  return true;
+}
+
+void SyncWizard::ResetSyncData() {
+  // reset info about changes
+  m_syncData->numUpdated = 0;
+  m_syncData->showReport = false;
+  m_syncData->syncReport = std::unique_ptr<CReport>(new CReport());
+  if (m_syncData->syncCmds) {
+    delete m_syncData->syncCmds;
+  }
+  m_syncData->syncCmds = nullptr;
+}
+
+void SyncWizard::OnClose(wxCloseEvent &event) {
+  if (event.CanVeto()) {
+    // when trying to closing app/db, don't ask questions when data changed
+    if (!QueryCancel(!IsCloseInProgress())) {
+      event.Veto();
+      return;
+    }
+  }
+  EndDialog(wxID_CANCEL); // cancel directly (if we skip event, OnCancel will be called and ask one more time)
+}
+
+void SyncWizard::OnWizardCancel(wxWizardEvent& event) {
+  if (QueryCancel(true)) {
+    event.Skip();
+  }
+  else {
+    event.Veto();
+  }
 }
 
 ////////////////////////////////////////////
@@ -635,7 +689,7 @@ Foreach entry in otherCore
 */
 void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
 {
-  CReport& rpt = m_syncData->syncReport;
+  CReport& rpt = *m_syncData->syncReport;
 
   rpt.StartReport(IDSC_RPTSYNCH, currentCore->GetCurFile().c_str());
   wxString line = wxString::Format(_("Synchronizing from database: %ls\n"), otherCore->GetCurFile().c_str());
@@ -742,7 +796,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
   Command *pcmd2 = UpdateGUICommand::Create(currentCore, UpdateGUICommand::WN_REDO,
                                             UpdateGUICommand::GUI_REDO_MERGESYNC);
   pmulticmds->Add(pcmd2);
-  currentCore->Execute(pmulticmds);
+  m_syncData->syncCmds = pmulticmds; // will execute later
 
   /* tell the user we're done & provide short merge report */
   const wxString cs_entries = (numUpdated == 1 ? _("entry") : _("entries"));

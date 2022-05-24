@@ -56,6 +56,8 @@ BEGIN_EVENT_TABLE( pwFiltersStringDlg, wxDialog )
   EVT_BUTTON( wxID_OK, pwFiltersStringDlg::OnOk )
   EVT_COMBOBOX( ID_COMBOBOX51, pwFiltersStringDlg::OnSelectionChange )
   EVT_TEXT( ID_TEXTCTRL52, pwFiltersStringDlg::OnTextChange )
+  EVT_BUTTON( wxID_CANCEL, pwFiltersStringDlg::OnCancelClick )
+  EVT_CLOSE( pwFiltersStringDlg::OnClose )
 
 END_EVENT_TABLE()
 
@@ -63,31 +65,14 @@ END_EVENT_TABLE()
  * pwFiltersStringDlg constructors
  */
 
-pwFiltersStringDlg::pwFiltersStringDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, wxString &value, bool &fcase)
-: m_ftype(ftype), m_add_present(false)
+pwFiltersStringDlg::pwFiltersStringDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase)
+: m_ftype(ftype), 
+  m_prule(rule), m_pvalue(value), m_pfcase(fcase)
 {
-  m_prule = &rule;
-  m_pvalue = &value;
-  m_pfcase = &fcase;
+  wxASSERT(!parent || parent->IsTopLevel());
 
   Init();
-  Create(parent);
-}
 
-/*!
- * pwFiltersStringDlg destructor
- */
-
-pwFiltersStringDlg::~pwFiltersStringDlg()
-{
-}
-
-/*!
- * pwFiltersStringDlg creator
- */
-
-bool pwFiltersStringDlg::Create(wxWindow* parent)
-{
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create(parent, wxID_ANY, _("Display Filter String Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
@@ -98,9 +83,12 @@ bool pwFiltersStringDlg::Create(wxWindow* parent)
   Centre();
 
   SetValidators();
-  return true;
 }
 
+pwFiltersStringDlg* pwFiltersStringDlg::Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase)
+{
+  return new pwFiltersStringDlg(parent, ftype, rule, value, fcase);
+}
 /*!
  * InitDialog set selection in choice list and optimize window size
  */
@@ -194,10 +182,6 @@ void pwFiltersStringDlg::SetValidators()
 
 void pwFiltersStringDlg::Init()
 {
-  m_ComboBox = nullptr;
-  m_TextCtrlValueString = nullptr;
-  m_idx = -1;
-  
   switch (m_ftype) {
     case FT_GROUPTITLE:
     case FT_TITLE:
@@ -286,6 +270,7 @@ void pwFiltersStringDlg::CreateControls()
   BoxSizer1->Fit(this);
   BoxSizer1->SetSizeHints(this);
   //*)
+  m_controlsReady = true;
 }
 
 /*!
@@ -323,6 +308,9 @@ wxIcon pwFiltersStringDlg::GetIconResource(const wxString& WXUNUSED(name))
 
 void pwFiltersStringDlg::OnSelectionChange(wxCommandEvent& WXUNUSED(event))
 {
+  if (!m_controlsReady) {
+    return;
+  }
   int idx = m_ComboBox->GetSelection();
 
   if(m_add_present) {
@@ -358,6 +346,9 @@ void pwFiltersStringDlg::OnSelectionChange(wxCommandEvent& WXUNUSED(event))
 
 void pwFiltersStringDlg::OnTextChange(wxCommandEvent& WXUNUSED(event))
 {
+  if (!m_controlsReady) {
+    return;
+  }
   if(m_TextCtrlValueString && m_TextCtrlValueString->GetLineLength(0)) {
     FindWindow(wxID_OK)->Enable();
   }
@@ -410,4 +401,51 @@ void pwFiltersStringDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     *m_pfcase = m_fcase;
   }
   EndModal(wxID_OK);
+}
+
+bool pwFiltersStringDlg::IsChanged() const {
+  const auto idx = m_ComboBox->GetSelection();
+
+  if (idx < 0) {
+    return false;
+  }
+
+  if (m_add_present) {
+    if (idx >= 0 && idx < PW_NUM_PRESENT_ENUM) {
+      if (*m_prule != m_mrpres[idx]) {
+        return true;
+      }
+    }
+    else {
+      const auto tmpIdx = idx - PW_NUM_PRESENT_ENUM;
+      if (tmpIdx < PW_NUM_STR_CRITERIA_ENUM) {
+        if (*m_prule != m_mrcrit[tmpIdx]) {
+          return true;
+        }
+      }
+      else if (*m_prule != PWSMatch::MR_INVALID) {
+        return true;
+      }
+    }
+  }
+  else {
+    if (idx < PW_NUM_STR_CRITERIA_ENUM) {
+      if (*m_prule != m_mrcrit[idx]) {
+        return true;
+      }
+    }
+    else if (*m_prule != PWSMatch::MR_INVALID) {
+      return true;
+    }
+  }
+
+  if (*m_pvalue != m_TextCtrlValueString->GetValue()) {
+    return true;
+  }
+
+  if (*m_pfcase != m_CheckBoxFCase->GetValue()) {
+    return true;
+  }
+
+  return false;
 }

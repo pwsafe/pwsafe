@@ -49,7 +49,13 @@
 
 void PasswordSafeFrame::OnChangePasswordClick(wxCommandEvent& WXUNUSED(evt))
 {
-  auto window = new SafeCombinationChangeDlg(this, m_core);
+  CallAfter(&PasswordSafeFrame::DoChangePassword);
+}
+
+void PasswordSafeFrame::DoChangePassword()
+{
+  DestroyWrapper<SafeCombinationChangeDlg> windowWrapper(this, m_core);
+  SafeCombinationChangeDlg* window = windowWrapper.Get();
   int returnValue = window->ShowModal();
   if (returnValue == wxID_OK) {
     m_core.ChangePasskey(window->GetNewpasswd());
@@ -57,9 +63,7 @@ void PasswordSafeFrame::OnChangePasswordClick(wxCommandEvent& WXUNUSED(evt))
   if (!window->IsYubiProtected())
     m_core.SetYubiSK(nullptr); // erase YubiSK, as it's no longer protected by Yuibkey
 #endif
-
   }
-  window->Destroy();
 }
 
 /*!
@@ -68,12 +72,18 @@ void PasswordSafeFrame::OnChangePasswordClick(wxCommandEvent& WXUNUSED(evt))
 
 void PasswordSafeFrame::OnPreferencesClick(wxCommandEvent& WXUNUSED(evt))
 {
+  CallAfter(&PasswordSafeFrame::DoPreferencesClick);
+}
+
+void PasswordSafeFrame::DoPreferencesClick()
+{
   PWSprefs* prefs = PWSprefs::GetInstance();
   bool showMenuSeprator = prefs->GetPref(PWSprefs::ShowMenuSeparator);
   bool autoAdjColWidth = prefs->GetPref(PWSprefs::AutoAdjColWidth);
   bool toolbarShowText = prefs->GetPref(PWSprefs::ToolbarShowText);
   const StringX sxOldDBPrefsString(prefs->Store());
-  OptionsPropertySheetDlg *window = new OptionsPropertySheetDlg(this, m_core);
+  DestroyWrapper<OptionsPropertySheetDlg> windowWrapper(this, m_core);
+  OptionsPropertySheetDlg* window = windowWrapper.Get();
 
   if (window->ShowModal() == wxID_OK) {
     if(showMenuSeprator != prefs->GetPref(PWSprefs::ShowMenuSeparator)) {
@@ -121,8 +131,9 @@ void PasswordSafeFrame::OnPreferencesClick(wxCommandEvent& WXUNUSED(evt))
       }
     }
   }
-  window->Destroy();
-  SetFocus();
+  if (!IsCloseInProgress()) {
+    SetFocus();
+  }
 }
 
 /*
@@ -174,6 +185,11 @@ void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& WXUNUSED(evt))
 
 void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& WXUNUSED(evt))
 {
+  CallAfter(&PasswordSafeFrame::DoRestoreSafe);
+}
+
+void PasswordSafeFrame::DoRestoreSafe()
+{
   if (SaveIfChanged() != PWScore::SUCCESS)
     return;
 
@@ -198,9 +214,9 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& WXUNUSED(evt))
   if (wxbf.empty())
     return;
 
-  SafeCombinationPromptDlg pwdprompt(this, m_core, wxbf, false);
-  if (pwdprompt.ShowModal() == wxID_OK) {
-    const StringX passkey = pwdprompt.GetPassword();
+  DestroyWrapper<SafeCombinationPromptDlg> pwdprompt(this, m_core, wxbf, false);
+  if (pwdprompt.Get()->ShowModal() == wxID_OK) {
+    const StringX passkey = pwdprompt.Get()->GetPassword();
     // unlock the file we're leaving
     m_core.SafeUnlockCurFile();
 
@@ -239,8 +255,12 @@ void PasswordSafeFrame::OnRestoreSafe(wxCommandEvent& WXUNUSED(evt))
 
 void PasswordSafeFrame::OnPwdPolsMClick( wxCommandEvent&  )
 {
-  ManagePasswordPoliciesDlg ppols(this, m_core);
-  ppols.ShowModal();
+  CallAfter(&PasswordSafeFrame::DoPwdPolsMClick);
+}
+
+void PasswordSafeFrame::DoPwdPolsMClick()
+{
+  ShowModalAndGetResult<ManagePasswordPoliciesDlg>(this, m_core);
 }
 
 /*!
@@ -249,6 +269,11 @@ void PasswordSafeFrame::OnPwdPolsMClick( wxCommandEvent&  )
 
 void PasswordSafeFrame::OnGeneratePassword(wxCommandEvent& WXUNUSED(event))
 {
+  CallAfter(&PasswordSafeFrame::DoGeneratePassword);
+}
+
+void PasswordSafeFrame::DoGeneratePassword()
+{
   PolicyManager policyManager(m_core);
   auto customPolicies = policyManager.GetPolicies();
   auto defaultPolicy  = policyManager.GetDefaultPolicy();
@@ -256,10 +281,10 @@ void PasswordSafeFrame::OnGeneratePassword(wxCommandEvent& WXUNUSED(event))
 
   customPolicies[std2stringx(defaultName)] = defaultPolicy;
 
-  PasswordPolicyDlg ppdlg(this, m_core, customPolicies, PasswordPolicyDlg::DialogType::GENERATOR);
-  ppdlg.SetPolicyData(defaultName, defaultPolicy);
+  DestroyWrapper<PasswordPolicyDlg> ppdlg(this, m_core, customPolicies, PasswordPolicyDlg::DialogType::GENERATOR);
+  ppdlg.Get()->SetPolicyData(defaultName, defaultPolicy);
 
-  ppdlg.ShowModal();
+  ppdlg.Get()->ShowModal();
 }
 
 #ifndef NO_YUBI
@@ -269,8 +294,12 @@ void PasswordSafeFrame::OnGeneratePassword(wxCommandEvent& WXUNUSED(event))
 
 void PasswordSafeFrame::OnYubikeyMngClick(wxCommandEvent& WXUNUSED(event))
 {
-  YubiCfgDlg ykCfg(this, m_core);
-  ykCfg.ShowModal();
+  CallAfter(&PasswordSafeFrame::DoYubikeyMngClick);
+}
+
+void PasswordSafeFrame::DoYubikeyMngClick()
+{
+  ShowModalAndGetResult<YubiCfgDlg>(this, m_core);
 }
 #endif
 
@@ -325,7 +354,12 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_CHANGEMODE
  */
 
-void PasswordSafeFrame::OnChangeMode(wxCommandEvent& evt)
+void PasswordSafeFrame::OnChangeMode(wxCommandEvent&)
+{
+  CallAfter(&PasswordSafeFrame::DoChangeMode);
+}
+
+void PasswordSafeFrame::DoChangeMode()
 {
   // Don't bother doing anything if DB is read-only on disk
   bool bFileIsReadOnly;
@@ -376,9 +410,9 @@ bool PasswordSafeFrame::ChangeMode(bool promptUser)
   } else if (promptUser) { // R-O -> R/W
     // Taken from GetAndCheckPassword.
     // We don't want all the other processing that GetAndCheckPassword does
-    SafeCombinationPromptDlg scp(nullptr, m_core, towxstring(m_core.GetCurFile()), false);
+    int rc = ShowModalAndGetResult<SafeCombinationPromptDlg>(this, m_core, towxstring(m_core.GetCurFile()), false);
 
-    if(scp.ShowModal() != wxID_OK)
+    if(rc != wxID_OK)
       return false;
   } // R-O -> R/W
 

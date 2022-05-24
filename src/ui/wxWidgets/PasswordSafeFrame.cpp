@@ -326,7 +326,7 @@ END_EVENT_TABLE()
 
 PasswordSafeFrame::PasswordSafeFrame(PWScore &core)
 : m_core(core), m_currentView(ViewType::GRID), m_search(nullptr), m_sysTray(new SystemTray(this)),
-  m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
+  m_bRestoredDBUnsaved(false),
   m_RUEList(core), m_guiInfo(new GuiInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
   m_CurrentPredefinedFilter(NONE), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
   m_LastClipboardAction(wxEmptyString), m_LastAction(CItem::FieldType::START)
@@ -339,7 +339,7 @@ PasswordSafeFrame::PasswordSafeFrame(wxWindow* parent, PWScore &core,
                                      const wxPoint& pos, const wxSize& size,
                                      long style)
   : m_core(core), m_currentView(ViewType::GRID), m_search(nullptr), m_sysTray(new SystemTray(this)),
-    m_exitFromMenu(false), m_bRestoredDBUnsaved(false),
+    m_bRestoredDBUnsaved(false),
     m_RUEList(core), m_guiInfo(new GuiInfo), m_bTSUpdated(false), m_savedDBPrefs(wxEmptyString),
     m_CurrentPredefinedFilter(NONE), m_bFilterActive(false), m_InitialTreeDisplayStatusAtOpen(true),
     m_LastClipboardAction(wxEmptyString), m_LastAction(CItem::FieldType::START)
@@ -1372,10 +1372,12 @@ int PasswordSafeFrame::Open(const wxString &fname)
     return rc;
 
   // prompt for password, try to Load.
-  SafeCombinationPromptDlg pwdprompt(this, m_core, fname, false);
-  if (pwdprompt.ShowModal() == wxID_OK) {
+  DestroyWrapper<SafeCombinationPromptDlg> pwdpromptWrapper(this, m_core, fname, false);
+  SafeCombinationPromptDlg* pwdprompt = pwdpromptWrapper.Get();
+
+  if (pwdprompt->ShowModal() == wxID_OK) {
     m_core.SetCurFile(tostringx(fname));
-    StringX password = pwdprompt.GetPassword();
+    StringX password = pwdprompt->GetPassword();
     int retval = Load(password);
     if (retval == PWScore::SUCCESS) {
       m_InitialTreeDisplayStatusAtOpen = true;
@@ -1503,16 +1505,15 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
   wxGetApp().SaveFrameCoords();
   const bool systrayEnabled = PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray);
   /*
-   * Really quit if the user chooses to quit from File menu, or
+   * Really quit if the user chooses to quit from File or systray menu, or
    * by clicking the 'X' in title bar or the system menu pulldown
    * from the top-left of the titlebar while systray is disabled
    */
-  if (m_exitFromMenu || !systrayEnabled) {
+  if (IsCloseInProgress() || !systrayEnabled) {
     if (evt.CanVeto()) {
       int rc = SaveIfChanged();
       if (rc == PWScore::USER_CANCEL) {
         evt.Veto();
-        m_exitFromMenu = false;
         return;
       }
     }
@@ -1554,9 +1555,7 @@ void PasswordSafeFrame::OnCloseWindow( wxCloseEvent& evt )
 
 void PasswordSafeFrame::OnAboutClick(wxCommandEvent& WXUNUSED(evt))
 {
-  AboutDlg* window = new AboutDlg(this);
-  window->ShowModal();
-  window->Destroy();
+  ShowModalAndGetResult<AboutDlg>(this);
 }
 
 /*!
@@ -1584,6 +1583,11 @@ void PasswordSafeFrame::OnRunCommand(wxCommandEvent& evt)
 }
 
 void PasswordSafeFrame::OnEditBase(wxCommandEvent& WXUNUSED(evt))
+{
+  CallAfter(&PasswordSafeFrame::DoEditBase);
+}
+
+void PasswordSafeFrame::DoEditBase()
 {
   CItemData* item = GetSelectedEntry();
   if (item && item->IsDependent()) {
@@ -2230,6 +2234,11 @@ bool PasswordSafeFrame::IsClosed() const
           !m_core.HasDBChanged() && !m_core.AnyToUndo() && !m_core.AnyToRedo());
 }
 
+bool PasswordSafeFrame::IsLocked() const
+{
+  return m_sysTray->IsLocked();
+}
+
 void PasswordSafeFrame::RebuildGUI(const int iView /*= iBothViews*/)
 {
   // assumption: the view get updated on switching between each other,
@@ -2399,10 +2408,10 @@ void PasswordSafeFrame::CleanupAfterReloadFailure(bool tellUser)
 /**
  * Unlock database
  * @param restoreUI restore opened windows after unlock
- * @param iconizeOnFailure will iconize if this parameters set to true and
- *   VerifySafeCombination() failed
+ * @param iconizeOnCancel will iconize if this parameters set to true and
+ *   user canceled dialog
 */
-void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
+void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
 {
   wxMutexTryLocker unlockMutex(m_dblockMutex);
   if (!unlockMutex.IsAcquired()){
@@ -2412,64 +2421,46 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
   }
 
   if (m_sysTray->IsLocked()) {
-    bool bModalOpen;
-    int noTopLevelWindow = CountTopLevelWindowRecursively(this);
-    
-    bModalOpen = (noTopLevelWindow > 1); // More than one Top Level Window, the second one is modal
-#if (__WXOSX__)
-    const int TopLevelWindowLimit = 2; // OSX allow exit with one modal window open only
-#else
-# if (wxVERSION_NUMBER >= 3104)
-    const int TopLevelWindowLimit = 255; // Debian rasbery PI is handling 4 modal dialog without failure in wxWidgets 3.1.4, assume more is suitable
-# else
-    const int TopLevelWindowLimit = 1; // 3.0.5 do not run well when modal window is open (on Debian rasbery PI)
-# endif
-#endif
-    
-    do {
-      // Allow Exit only in case of one modal dialog present - on second one we crash.
-      // In most of the cases only one modal dialog is open.
-      SafeCombinationPromptDlg scp(nullptr, m_core, towxstring(m_core.GetCurFile()), (noTopLevelWindow <= TopLevelWindowLimit));
+    DestroyWrapper<SafeCombinationPromptDlg> scpWrapper(this, m_core, towxstring(m_core.GetCurFile()), CanCloseDialogs());
+    SafeCombinationPromptDlg* scp = scpWrapper.Get();
 
-      switch (scp.ShowModal()) {
-        case (wxID_OK):
-        {
-          if (ReloadDatabase(scp.GetPassword())) {
-            m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
-          }
-          else {
-            // With modal dialog open we now have a problem, no data base open, but a modal dialog is open that might show an entry
-            CleanupAfterReloadFailure(true);
-            if(bModalOpen) {
-              if(noTopLevelWindow <= TopLevelWindowLimit)
-                CloseChildWindowRecursively(this, this);
-              else
-                wxMessageBox(_("Please close modal dialog manually"), _("Modal dialog open"), wxOK|wxICON_ERROR);
-            }
-            return;
-          }
-          bModalOpen = false; // To end the loop
-          break;
+    switch (scp->ShowModal()) {
+      case (wxID_OK):
+      {
+        if (ReloadDatabase(scp->GetPassword())) {
+          m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
         }
-        case (wxID_EXIT):
-        {
-          if(bModalOpen)
-            CloseChildWindowRecursively(this, this);
-          
-          m_exitFromMenu = true; // not an exit request from menu, but OnCloseWindow requires this
-          wxCommandEvent event(wxEVT_CLOSE_WINDOW);
-          wxPostEvent(this, event);
+        else {
+          // With modal dialog open we now have a problem, no data base open, but a modal dialog is open that might show an entry
+          CleanupAfterReloadFailure(true);
+          if(!m_hiddenWindows.empty()) {
+            CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), static_cast<CloseFlags>(CloseFlags::CLOSE_FORCED|CloseFlags::LEAVE_MAIN), nullptr);
+          }
           return;
         }
-        default:
-        {
-          if (!IsIconized() && iconizeOnFailure)
-            Iconize();
-          if(restoreUI && iconizeOnFailure)
-            return;
-        }
+        break;
       }
-    } while(bModalOpen && PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray));
+      case (wxID_EXIT):
+      {
+        CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), CloseFlags::CLOSE_NORMAL, [this](bool success) {
+          if (!success) {
+            // `this` should be valid here, because we haven't closed DB
+            wxMessageBox(_("Can't close database. There are unsaved changes in opened dialogs."), wxTheApp->GetAppName(), wxOK | wxICON_WARNING, this);
+          }
+        });
+        return;
+      }
+      case (wxID_CANCEL):
+      {
+        if (!IsIconized() && iconizeOnCancel) {
+          Iconize();
+        }
+        return; // allow to cancel dialog and left locked in any case
+      }
+      default:
+        wxASSERT_MSG(false, wxT("Unexpected SafeCombinationPromptDlg result"));
+        break;
+    }
 
     if (m_savedDBPrefs != wxEmptyString) {
       PWSprefs::GetInstance()->Load(tostringx(m_savedDBPrefs));
@@ -2478,9 +2469,8 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
   }
 
   if (restoreUI) {
-    if (!IsShown()) {
-      ShowWindowRecursively(this);
-    }
+    ShowHiddenWindows(true);
+
     if (IsIconized()) {
       Iconize(false);
     }
@@ -2489,6 +2479,8 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnFailure)
     // Without this, modal dialogs like msgboxes lose focus and we end up in a different message loop than theirs.
     // See https://sourceforge.net/tracker/?func=detail&aid=3537985&group_id=41019&atid=429579
     wxSafeYield();
+    // for some reason, we have to restore main frame's position after Yeild, otherwise it could be restored at wrong position when window was moved before lock
+    wxGetApp().RestoreFrameCoords();
   }
   else if (IsShown()) { /* if it is somehow visible, show it correctly */
     Show(true);
@@ -2541,11 +2533,7 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
     }
   }
   else{
-#if wxCHECK_VERSION(2,9,5)
       CallAfter(&PasswordSafeFrame::UnlockSafe, true, true);
-#else
-      UnlockSafe(true, true);
-#endif
   }
 }
 
@@ -2589,17 +2577,16 @@ void PasswordSafeFrame::HideUI(bool lock)
     //We should not have to show up the icon manually if m_sysTray
     //can be notified of changes to PWSprefs::UseSystemTray
     m_sysTray->ShowIcon();
-    HideWindowRecursively(this);
+    HideTopLevelWindows();
   }
 }
 
 void PasswordSafeFrame::IconizeOrHideAndLock()
 {
-  bool bModalOpen = false;
-  
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
-    bModalOpen = (CountTopLevelWindowRecursively(this) > 1);
-    HideUI(true);
+    if (!m_sysTray->IsLocked()) {
+      HideUI(true);
+    }
   }
   else {
     TryIconize();
@@ -2608,14 +2595,6 @@ void PasswordSafeFrame::IconizeOrHideAndLock()
   // If not already locked by HideUI or OnIconize due to user preference than do it now
   if (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED) {
     LockDb();
-  }
-  // In case of dialog open the menu cannot be called, so open dialog in advance in case we are using System Tray
-  if (bModalOpen) {
-#if wxCHECK_VERSION(2,9,5)
-    CallAfter(&PasswordSafeFrame::UnlockSafe, true, false);  // restore UI
-#else
-    UnlockSafe(true, false);  // restore UI
-#endif
   }
 }
 
@@ -2686,8 +2665,7 @@ void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
 
 void PasswordSafeFrame::ViewReport(CReport& rpt)
 {
-  ViewReportDlg vr(this, &rpt);
-  vr.ShowModal();
+  ShowModalAndGetResult<ViewReportDlg>(this, &rpt);
 }
 
 void PasswordSafeFrame::OnVisitWebsite(wxCommandEvent&)
@@ -2927,6 +2905,274 @@ void PasswordSafeFrame::ResetFilters()
   m_FilterManager.SetFilterFindEntries(nullptr);
 }
 
+/**
+ Close all visible top level windows
+ 
+ @param taskChain chain to use when closing multiple dialogs
+ @param flags close options
+ @param onFinish if set, will be called after closing all windows
+ 
+ Here we have to use taskChain, because when closing multiple dialogs, 
+ CallAfter is not enough to allow dialog to finish result processing and break event loop
+*/
+void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags flags, std::function<void(bool success)> onFinish)
+{
+  // we should show windows before processing
+  bool delayClose = false;
+  if (!m_hiddenWindows.empty()) {
+    ShowHiddenWindows(false);
+    flags = static_cast<CloseFlags>(flags | HIDE_ON_VETO);
+    delayClose = true;
+  }
+
+  if (!m_closeDisabler) {
+    m_closeDisabler = new wxWindowDisabler();
+    m_pengingCloseWindow = nullptr;
+    if (delayClose) {
+      // some windows (such as wxHtmlHelpDialog need more cycles for activation), delay close processing after show
+      taskChain->then([taskChain, flags, onFinish, this]{
+        CloseAllWindows(taskChain, flags, onFinish);
+      });
+      return; // exit here without unlocking disabler
+    }
+  }
+  
+  auto tlvList = GetTopLevelWindowsList();
+  auto itr = tlvList.rbegin();
+  const auto endItr = ((flags & CloseFlags::LEAVE_MAIN) == CloseFlags::LEAVE_MAIN) ? --tlvList.rend() : tlvList.rend();
+  const auto lastWindowItr = --tlvList.rend();
+  bool vetoed = false;
+  while (itr != endItr) {
+    wxTopLevelWindow* win = *itr;
+    if (win) {
+      if (win->IsShown()) {
+        if (win == m_pengingCloseWindow) { // close already sheduled, but still not done
+          pws_os::Trace(L"Waiting for window close <%ls> (%ls), flags=%d\n", ToStr(win->GetTitle()), ToStr(win->GetName()), flags);
+          taskChain->then([taskChain, flags, onFinish, this]{
+            CloseAllWindows(taskChain, flags, onFinish);
+          });
+          return; // exit here without unlocking disabler
+        }
+
+        pws_os::Trace(L"Closing <%ls> (%ls), flags=%d\n", ToStr(win->GetTitle()), ToStr(win->GetName()), flags);
+        m_pengingCloseWindow = win;
+        if (win->Close((flags & CloseFlags::CLOSE_FORCED) == CloseFlags::CLOSE_FORCED)) {
+          if (itr == lastWindowItr) {
+            // main windows closed, no need to schedule new check
+            break;
+          }
+          else {
+            // if main window still alive, captured "this" should be valid
+            taskChain->then([taskChain, flags, onFinish, this]{
+              CloseAllWindows(taskChain, flags, onFinish);
+            });
+            return; // exit here without unlocking disabler
+          }
+        }
+        else {
+          pws_os::Trace(L"Close for <%ls> (%ls) vetoed, flags=%d\n", ToStr(win->GetTitle()), ToStr(win->GetName()), flags);
+          vetoed = true;
+          break;
+        }
+      }
+      else {
+        pws_os::Trace(L"Skip closing of hidden window <%ls> (%ls)\n", ToStr(win->GetTitle()), ToStr(win->GetName()));
+      }
+    }
+    ++itr;
+  }
+  delete m_closeDisabler;
+  m_closeDisabler = nullptr;
+  m_pengingCloseWindow = nullptr;
+  
+  if (vetoed && (flags & CloseFlags::HIDE_ON_VETO) == CloseFlags::HIDE_ON_VETO) {
+    HideTopLevelWindows();
+  }
+  
+  if (onFinish) {
+    onFinish(!vetoed);
+  }
+}
+
+bool PasswordSafeFrame::IsCloseInProgress() const
+{
+  return !!m_closeDisabler;
+}
+
+
+void PasswordSafeFrame::CloseDB(std::function<void(bool)> callback)
+{
+  PWSprefs *prefs = PWSprefs::GetInstance();
+
+  // Save Application related preferences
+  prefs->SaveApplicationPreferences();
+  if( m_core.IsDbOpen() ) {
+    int rc = SaveIfChanged();
+    if (rc != PWScore::SUCCESS) {
+      CallAfter([callback]() {callback(false);});
+      return;
+    }
+
+    // Force close all active dialogs
+    CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}),
+      CloseFlags::LEAVE_MAIN,
+      [this, callback](bool success) { // we don't close main window, so `this` will be valid
+        if (success) {
+          m_core.SafeUnlockCurFile();
+          m_core.SetCurFile(wxEmptyString);
+          // Reset core and clear ALL associated data
+          m_core.ReInit();
+          // clear the application data before ending
+          ClearAppData();
+          SetTitle(wxEmptyString);
+          m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
+          wxCommandEvent dummyEv;
+          m_search->OnSearchClose(dummyEv); // fix github issue 375
+          m_core.SetReadOnly(false);
+          UpdateStatusBar();
+          UpdateMenuBar();
+        }
+        else {
+          wxMessageBox(_("Can't close database. There are unsaved changes in opened dialogs."), wxTheApp->GetAppName(), wxOK | wxICON_WARNING, this);
+        }
+        if (callback) {
+          CallAfter([callback, success]() {callback(success);});
+        }
+      });
+  }
+  else {
+    if (callback) {
+      CallAfter([callback]() {callback(true);});
+    }
+  }
+}
+
+std::vector<wxTopLevelWindow*> PasswordSafeFrame::GetTopLevelWindowsList() const
+{
+  std::vector<wxTopLevelWindow*> hiddenWindows;
+  hiddenWindows.reserve(wxTopLevelWindows.size());
+  // wxTopLevelWindows is global exported list of top level windows
+  for (const auto tlv : wxTopLevelWindows) {
+    auto* win = wxDynamicCast(tlv, wxTopLevelWindow);
+    if (win && win->IsShown()) {
+      hiddenWindows.push_back(win);
+    }
+  }
+  // but some dialogs aren't registered in wxTopLevelWindows, so get them from dialog tracker
+  // it's O(n^2), but usually we have less than 10
+  for (const auto& dialog : m_shownDialogs) {
+    if (!dialog) {
+      continue;
+    }
+    bool shown = dialog->IsShown();
+#if defined(__WXGTK__)
+    if (!shown && wxDynamicCast(dialog, wxMessageDialog)) {
+      // wxMessageDialog don't set needed m_shown and m_modalShowing flags in ShowModal, so just log it
+      // (we even can't close them, because m_modalShowing isn't set and Close event isn't processed)
+      pws_os::Trace(L"Message dialog <%ls> (%ls) can't be hidden/closed\n", ToStr(dialog->GetTitle()), ToStr(dialog->GetName()));
+      continue;
+    }
+#endif
+    if (shown) {
+      bool registered = std::find(hiddenWindows.begin(), hiddenWindows.end(), dialog) != hiddenWindows.end();
+      if (!registered) {
+        pws_os::Trace(L"Dialog not registered in wxTopLevelWindows <%ls> (%ls)\n", ToStr(dialog->GetTitle()), ToStr(dialog->GetName()));
+        // attempt to register window after it's parent
+        const auto parent = dialog->GetParent();
+        auto parentIter = std::find(hiddenWindows.begin(), hiddenWindows.end(), parent);
+        if (parentIter != hiddenWindows.end()) {
+          ++parentIter;
+        }
+        hiddenWindows.insert(parentIter, dialog);
+      }
+    }
+  }
+  return hiddenWindows;
+}
+
+void PasswordSafeFrame::HideTopLevelWindows()
+{
+  auto windows = GetTopLevelWindowsList();
+  // hiding windows in reverse order
+  for (auto itr = windows.rbegin(); itr != windows.rend(); ++itr) {
+    wxTopLevelWindow* win = *itr;
+    //Don't call Hide() here, which just calls Show(false), which is overridden in
+    //derived classes, and wxDialog actually cancels the modal loop and closes the window
+    pws_os::Trace(L"Hide window <%ls> (%ls)\n", ToStr(win->GetTitle()), ToStr(win->GetName()));
+    win->ClearBackground();
+    win->wxWindow::Show(false);
+  }
+  m_hiddenWindows = std::move(windows);
+}
+
+void PasswordSafeFrame::ShowHiddenWindows(bool raise)
+{
+  for(const auto win : m_hiddenWindows) {
+    pws_os::Trace(L"Show window <%ls>\n", ToStr(win->GetTitle()));
+    win->wxWindow::Show(true);
+    if (raise) {
+      win->Raise();
+    }
+    win->Update();
+  }
+  m_hiddenWindows.clear();
+}
+
+wxTopLevelWindow* PasswordSafeFrame::GetTopWindow() const {
+  if (!m_hiddenWindows.empty()) {
+    return m_hiddenWindows.back();
+  }
+  else {
+    auto windows = GetTopLevelWindowsList();
+    if (!windows.empty()) {
+      return windows.back();
+    }
+  }
+  return nullptr;
+}
+
+int PasswordSafeFrame::Enter(wxDialog* dialog)
+{
+  if (dialog) {
+    m_shownDialogs.push_back(dialog);
+  }
+  return wxID_NONE;
+}
+
+void PasswordSafeFrame::Exit(wxDialog* dialog)
+{
+  // modal dilaogs should be closed in reverse show order
+  if (!m_shownDialogs.empty() && m_shownDialogs.back() == dialog) {
+    m_shownDialogs.pop_back();
+  }
+  else {
+    wxASSERT_MSG(false, wxT("Closed dialog isn't on top of the list "));
+    auto iter = std::find(m_shownDialogs.begin(), m_shownDialogs.end(), dialog);
+    if (iter != m_shownDialogs.end()) {
+      m_shownDialogs.erase(iter);
+    }
+  }
+}
+
+/**
+@return true, when opened dialogs can be safely closed
+*/
+bool PasswordSafeFrame::CanCloseDialogs() const
+{
+#if defined(__WXGTK__)
+    for (const auto& dialog : m_shownDialogs) {
+      if (!dialog) {
+        continue;
+      }
+      if (!dialog->IsShown() && wxDynamicCast(dialog, wxMessageDialog)) {
+        // we can't close wxMessageDialog in wx3.0.5 GTK, see details in GetTopLevelWindowsList
+        pws_os::Trace(L"Message dialog <%ls> (%ls) can't be hidden/closed\n", ToStr(dialog->GetTitle()), ToStr(dialog->GetName()));
+        return false;
+      }
+    }
+#endif
+  return true;
+}
   //-----------------------------------------------------------------
   // Remove all DialogBlock-generated stubs below this line, as we
   // already have them implemented in main*.cpp

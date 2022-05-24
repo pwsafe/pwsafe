@@ -75,22 +75,19 @@ class AboutDlg : public wxDialog, public wxThreadHelper
   static wxCriticalSection& CriticalSection();
   static size_t WriteCallback(char *receivedData, size_t size, size_t bytes, void *userData);
 
+public:
+  /// Creation
+  static AboutDlg* Create(wxWindow *parent, wxWindowID id = SYMBOL_ABOUTDLG_IDNAME, const wxString& caption = SYMBOL_ABOUTDLG_TITLE, const wxPoint& pos = SYMBOL_ABOUTDLG_POSITION, const wxSize& size = SYMBOL_ABOUTDLG_SIZE, long style = SYMBOL_ABOUTDLG_STYLE );
+
+  /// Destructor
+  ~AboutDlg() = default;
+
+  int ShowAndCheckForUpdate();
 protected:
   virtual wxThread::ExitCode Entry();
 
-public:
   /// Constructors
-  AboutDlg();
-  AboutDlg( wxWindow* parent, wxWindowID id = SYMBOL_ABOUTDLG_IDNAME, const wxString& caption = SYMBOL_ABOUTDLG_TITLE, const wxPoint& pos = SYMBOL_ABOUTDLG_POSITION, const wxSize& size = SYMBOL_ABOUTDLG_SIZE, long style = SYMBOL_ABOUTDLG_STYLE );
-
-  /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_ABOUTDLG_IDNAME, const wxString& caption = SYMBOL_ABOUTDLG_TITLE, const wxPoint& pos = SYMBOL_ABOUTDLG_POSITION, const wxSize& size = SYMBOL_ABOUTDLG_SIZE, long style = SYMBOL_ABOUTDLG_STYLE );
-
-  /// Destructor
-  ~AboutDlg();
-
-  /// Initialises member variables
-  void Init();
+  AboutDlg(wxWindow *parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style );
 
   /// Creates the controls and sizers
   void CreateControls();
@@ -129,14 +126,14 @@ public:
 
 private:
 ////@begin AboutDlg member variables
-  wxTextCtrl* m_VersionStatus;
+  wxTextCtrl* m_VersionStatus = nullptr;
 ////@end AboutDlg member variables
 
   /// The CURL handle with connection specific options for request of version data
 #ifdef HAS_CURL
-  CURL *m_CurlHandle;
+  CURL *m_CurlHandle = nullptr;
 #else
-  void *m_CurlHandle;
+  void *m_CurlHandle = nullptr;
 #endif // HAS_CURL
 
   /// Set to downloaded data by worker thread, resp. WriteCallback, and read by main thread for final version check

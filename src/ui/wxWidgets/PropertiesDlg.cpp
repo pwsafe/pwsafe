@@ -59,21 +59,15 @@ END_EVENT_TABLE()
  * PropertiesDlg constructors
  */
 
-PropertiesDlg::PropertiesDlg(wxWindow* parent, const PWScore &core,
+PropertiesDlg::PropertiesDlg(wxWindow *parent, const PWScore &core,
                          wxWindowID id, const wxString& caption,
                          const wxPoint& pos, const wxSize& size, long style)
   : m_core(core)
 {
+  wxASSERT(!parent || parent->IsTopLevel());
+
   Init();
-  Create(parent, id, caption, pos, size, style);
-}
 
-/*!
- * PropertiesDlg creator
- */
-
-bool PropertiesDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
 ////@begin PropertiesDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
@@ -85,17 +79,13 @@ bool PropertiesDlg::Create( wxWindow* parent, wxWindowID id, const wxString& cap
   }
   Centre();
 ////@end PropertiesDlg creation
-  return true;
 }
 
-/*!
- * PropertiesDlg destructor
- */
-
-PropertiesDlg::~PropertiesDlg()
+PropertiesDlg* PropertiesDlg::Create(wxWindow *parent, const PWScore &core,
+                         wxWindowID id, const wxString& caption,
+                         const wxPoint& pos, const wxSize& size, long style)
 {
-////@begin PropertiesDlg destruction
-////@end PropertiesDlg destruction
+  return new PropertiesDlg(parent, core, id, caption, pos, size, style);
 }
 
 /*!
@@ -441,14 +431,16 @@ void PropertiesDlg::OnOkClick( wxCommandEvent& WXUNUSED(evt) )
  */
 void PropertiesDlg::OnEditName( wxCommandEvent& WXUNUSED(evt) )
 {
-  wxTextEntryDialog textInputDialog(
-    this, _("Name:"), _("Please enter the new database name"), m_NewDbName.c_str(), wxOK|wxCANCEL
-  );
+  CallAfter(&PropertiesDlg::DoEditName);
+}
 
-  textInputDialog.SetSize(550, -1);
+void PropertiesDlg::DoEditName() {
+  auto* inputDialog = new wxTextEntryDialog(this, _("Name:"), _("Please enter the new database name"), m_NewDbName.c_str(), wxOK|wxCANCEL);
 
-  if (textInputDialog.ShowModal() == wxID_OK) {
-    auto newDbName = textInputDialog.GetValue();
+  inputDialog->SetSize(550, -1);
+
+  if (inputDialog->ShowModal() == wxID_OK) {
+    auto newDbName = inputDialog->GetValue();
 
     if (newDbName.IsEmpty()) {
       m_DbName  = _("N/A");     // Show 'N/A' on the UI in case of an empty string,
@@ -462,6 +454,8 @@ void PropertiesDlg::OnEditName( wxCommandEvent& WXUNUSED(evt) )
       m_NewDbName = tostringx(newDbName);
     }
   }
+
+  inputDialog->Destroy();
 }
 
 /*!
@@ -469,14 +463,16 @@ void PropertiesDlg::OnEditName( wxCommandEvent& WXUNUSED(evt) )
  */
 void PropertiesDlg::OnEditDescription( wxCommandEvent& WXUNUSED(evt) )
 {
-  wxTextEntryDialog textInputDialog(
-    this, _("Description:"), _("Please enter the new database description"), m_NewDbDescription.c_str(), wxOK|wxCANCEL|wxTE_MULTILINE
-  );
+  CallAfter(&PropertiesDlg::DoEditDescription);
+}
 
-  textInputDialog.SetSize(550, 300);
+void PropertiesDlg::DoEditDescription() {
+  auto* inputDialog = new wxTextEntryDialog(this, _("Description:"), _("Please enter the new database description"), m_NewDbDescription.c_str(), wxOK|wxCANCEL|wxTE_MULTILINE);
 
-  if (textInputDialog.ShowModal() == wxID_OK) {
-    auto newDbDescription = textInputDialog.GetValue();
+  inputDialog->SetSize(550, 300);
+
+  if (inputDialog->ShowModal() == wxID_OK) {
+    auto newDbDescription = inputDialog->GetValue();
 
     if (newDbDescription.IsEmpty()) {
       m_DbDescription = _("N/A");     // Show 'N/A' on the UI in case of an empty string,
@@ -490,4 +486,6 @@ void PropertiesDlg::OnEditDescription( wxCommandEvent& WXUNUSED(evt) )
       m_NewDbDescription = tostringx(newDbDescription);
     }
   }
+
+  inputDialog->Destroy();
 }

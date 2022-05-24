@@ -483,10 +483,9 @@ bool PWSafeApp::OnInit()
   if (!cmd_closed && !cmd_silent && !cmd_minimized) {
     // Get the file, r/w mode and password from user
     // Note that file may be new
-    SafeCombinationEntryDlg* initWindow = new SafeCombinationEntryDlg(nullptr, m_core);
+    DestroyWrapper<SafeCombinationEntryDlg> initWindowWrapper(nullptr, m_core);
+    SafeCombinationEntryDlg *initWindow = initWindowWrapper.Get();
     int returnValue = initWindow->ShowModal();
-
-    initWindow->Destroy();
 
     if (returnValue != wxID_OK) {
       return false;
@@ -548,6 +547,8 @@ bool PWSafeApp::OnInit()
   }
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
     m_frame->ShowTrayIcon();
+
+  m_frame->Register(); // register modal dialog hook
   return true;
 }
 
@@ -723,10 +724,10 @@ void PWSafeApp::ConfigureIdleTimer()
 void PWSafeApp::OnIdleTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == IDLE_TIMER_ID && PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
-    if (m_frame != nullptr && !m_frame->GetCurrentSafe().IsEmpty()) {
+    if (m_frame != nullptr && !m_frame->IsClosed() && !m_frame->IsLocked()) {
       m_idleTimer->Stop(); // Stop as with modal dialog a dialog will stay open
       m_frame->IconizeOrHideAndLock();
-      if(!m_frame->GetCurrentSafe().IsEmpty()) // If restored start timer again
+      if(!m_frame->IsLocked()) // If not locked, start timer again
         ConfigureIdleTimer();
     }
   }
@@ -899,7 +900,7 @@ void PWSafeApp::OnHelp(wxCommandEvent& evt)
     StringToStringMap& helpmap = GetHelpMap();
     StringToStringMap::iterator itr = helpmap.find(keyName);
     if (itr != helpmap.end()) {
-      wxHtmlModalHelp help(wxGetApp().GetTopWindow(), helpFileNamePath, itr->second, wxHF_DEFAULT_STYLE);
+      wxHtmlModalHelp help(window, helpFileNamePath, itr->second, wxHF_DEFAULT_STYLE);
     }
     else {
 #ifdef __WXDEBUG__
@@ -943,4 +944,8 @@ void PWSafeApp::RestartIdleTimer()
     m_idleTimer->Stop();
     m_idleTimer->Start(interval, wxTIMER_CONTINUOUS);
   }
+}
+
+bool PWSafeApp::IsCloseInProgress() const {
+  return m_frame->IsCloseInProgress();
 }

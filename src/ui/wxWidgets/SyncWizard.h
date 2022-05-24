@@ -31,7 +31,10 @@ class SyncWizard : public wxWizard
 {
   wxWizardPageSimple* m_page1;
   SyncData* m_syncData;
-
+  bool QueryCancel(bool showDialog);
+  void OnWizardCancel(wxWizardEvent& event);
+  void OnClose(wxCloseEvent &event);
+  void ResetSyncData();
 public:
   SyncWizard(wxWindow* parent, PWScore* core, const wxString filename = "");
   ~SyncWizard();
@@ -42,7 +45,8 @@ public:
 
   size_t GetNumUpdated() const;
   bool   ShowReport() const;
-  CReport*   GetReport() const;
+  CReport* GetReport() const;
+  MultiCommands* GetSyncCommands() const;
   void OnWizardPageChanging(wxWizardEvent& evt);
 
   DECLARE_EVENT_TABLE()

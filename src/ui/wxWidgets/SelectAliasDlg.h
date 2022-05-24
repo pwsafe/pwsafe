@@ -99,6 +99,7 @@ public:
   
   void SetCurrentMenuItem(const CItemData *pci) { m_menu_item = pci; };
 
+  void DoViewClick();
 private:
   const CItemData* m_menu_item;
 };
@@ -113,19 +114,19 @@ class SelectAliasDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  /// Constructors
-  SelectAliasDlg();
-  SelectAliasDlg( wxWindow* parent, PWScore *core, CItemData *item, CItemData **pbci,
-                  wxWindowID id = SYMBOL_SELECTALIAS_IDNAME, const wxString& caption = SYMBOL_SELECTALIAS_TITLE, const wxPoint& pos = SYMBOL_SELECTALIAS_POSITION, const wxSize& size = SYMBOL_SELECTALIAS_SIZE, long style = SYMBOL_SELECTALIAS_STYLE );
-
-  /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_SELECTALIAS_IDNAME, const wxString& caption = SYMBOL_SELECTALIAS_TITLE, const wxPoint& pos = SYMBOL_SELECTALIAS_POSITION, const wxSize& size = SYMBOL_SELECTALIAS_SIZE, long style = SYMBOL_SELECTALIAS_STYLE );
+  static SelectAliasDlg* Create(wxWindow *parent, PWScore *core, CItemData *item, CItemData **pbci,
+    wxWindowID id = SYMBOL_SELECTALIAS_IDNAME, const wxString& caption = SYMBOL_SELECTALIAS_TITLE, const wxPoint& pos = SYMBOL_SELECTALIAS_POSITION, const wxSize& size = SYMBOL_SELECTALIAS_SIZE, long style = SYMBOL_SELECTALIAS_STYLE );
 
   /// Destructor
-  ~SelectAliasDlg();
-
-  /// Initialises member variables
-  void Init();
+  ~SelectAliasDlg() = default;
+  void UpdateSelChanged(CItemData *pci);
+    /// Centralized handling of right click in the grid or the tree view
+  void OnContextMenu(const CItemData* item);
+protected:
+  /// Constructors
+  SelectAliasDlg() = default;
+  SelectAliasDlg(wxWindow *parent, PWScore *core, CItemData *item, CItemData **pbci,
+    wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Creates the controls and sizers
   void CreateControls();
@@ -156,25 +157,20 @@ public:
 
   /// Should we show tooltips?
   static bool ShowToolTips();
-  
-  void UpdateSelChanged(CItemData *pci);
-  /// Centralized handling of right click in the grid or the tree view
-  void OnContextMenu(const CItemData* item);
-  
 ////@end SelectAliasDlg member function declarations
 
 ////@begin SelectAliasDlg member variables
 private:
   void InitDialog();
   
-  PWScore *m_Core;
-  CItemData *m_Item;
-  CItemData **m_BaseItem;
+  PWScore *m_Core = nullptr;
+  CItemData *m_Item = nullptr;
+  CItemData **m_BaseItem = nullptr;
 
   wxString m_AliasName;
-  wxTextCtrl *m_AliasBaseTextCtrl;
+  wxTextCtrl *m_AliasBaseTextCtrl = nullptr;
 
-  SelectTreeCtrl *m_Tree;
+  SelectTreeCtrl *m_Tree = nullptr;
 ////@end SelectAliasDlg member variables
 };
 

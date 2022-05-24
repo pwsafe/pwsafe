@@ -71,19 +71,20 @@ class PropertiesDlg : public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  /// Constructors
-  PropertiesDlg(wxWindow* parent, const PWScore &core,
+  
+  static PropertiesDlg* Create(wxWindow *parent, const PWScore &core,
               wxWindowID id = SYMBOL_PROPERTIESDLG_IDNAME,
               const wxString& caption = SYMBOL_PROPERTIESDLG_TITLE,
               const wxPoint& pos = SYMBOL_PROPERTIESDLG_POSITION,
               const wxSize& size = SYMBOL_PROPERTIESDLG_SIZE,
               long style = SYMBOL_PROPERTIESDLG_STYLE );
-
-  /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_PROPERTIESDLG_IDNAME, const wxString& caption = SYMBOL_PROPERTIESDLG_TITLE, const wxPoint& pos = SYMBOL_PROPERTIESDLG_POSITION, const wxSize& size = SYMBOL_PROPERTIESDLG_SIZE, long style = SYMBOL_PROPERTIESDLG_STYLE );
-
   /// Destructor
-  ~PropertiesDlg();
+  ~PropertiesDlg() = default;
+protected:
+  /// Constructors
+  PropertiesDlg(wxWindow *parent, const PWScore &core,
+              wxWindowID id, const wxString& caption,
+              const wxPoint& pos, const wxSize& size, long style);
 
   /// Initialises member variables
   void Init();
@@ -103,7 +104,7 @@ public:
   void OnEditDescription(wxCommandEvent& evt);
 
 ////@end PropertiesDlg event handler declarations
-
+public:
 ////@begin PropertiesDlg member function declarations
 
   wxString GetDatabase() const { return m_database ; }
@@ -168,6 +169,9 @@ private:
   StringX m_NewDbName;
   StringX m_NewDbDescription;
   const PWScore &m_core;
+  
+  void DoEditName();
+  void DoEditDescription();
 };
 
 #endif // _PROPERTIESDLG_H_

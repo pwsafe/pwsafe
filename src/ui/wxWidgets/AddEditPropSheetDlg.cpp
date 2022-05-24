@@ -49,7 +49,9 @@ IMPLEMENT_CLASS( AddEditPropSheetDlg, wxPropertySheetDialog )
 
 BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
 
+  EVT_CLOSE(                                 AddEditPropSheetDlg::OnClose                   )
   EVT_BUTTON(       wxID_OK,                 AddEditPropSheetDlg::OnOk                      )
+  EVT_BUTTON(       wxID_CANCEL,             AddEditPropSheetDlg::OnCancel                  )
 ////@begin AddEditPropSheetDlg event table entries
   EVT_BUTTON(       ID_BUTTON_SHOWHIDE,      AddEditPropSheetDlg::OnShowHideClick           )
   EVT_BUTTON(       ID_BUTTON_GENERATE,      AddEditPropSheetDlg::OnGenerateButtonClick     )
@@ -110,24 +112,11 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
   EVT_UPDATE_UI(    ID_RADIOBUTTON_NEVER,    AddEditPropSheetDlg::OnUpdateUI                )
 END_EVENT_TABLE()
 
-//(*IdInit(AttachmentTab)
-const wxWindowID AddEditPropSheetDlg::ID_BUTTON_IMPORT = wxWindow::NewControlId();
-const wxWindowID AddEditPropSheetDlg::ID_BUTTON_EXPORT = wxWindow::NewControlId();
-const wxWindowID AddEditPropSheetDlg::ID_BUTTON_REMOVE = wxWindow::NewControlId();
-const wxWindowID AddEditPropSheetDlg::ID_TEXTCTRL2 = wxWindow::NewControlId();
-const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT4 = wxWindow::NewControlId();
-const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT5 = wxWindow::NewControlId();
-const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT6 = wxWindow::NewControlId();
-const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT8 = wxWindow::NewControlId();
-const wxWindowID AddEditPropSheetDlg::ID_STATICTEXT10 = wxWindow::NewControlId();
-//*)
-
-
 /*!
  * AddEditPropSheetDlg constructors
  */
 
-AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow* parent, PWScore &core,
+AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
                                    SheetType type, const CItemData *item,
                                    const wxString& selectedGroup,
                                    wxWindowID id, const wxString& caption,
@@ -135,11 +124,17 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow* parent, PWScore &core,
                                    long style)
 : m_Core(core), m_SelectedGroup(selectedGroup), m_Type(type)
 {
-  if (item != nullptr)
+  wxASSERT(!parent || parent->IsTopLevel());
+
+  if (item != nullptr) {
     m_Item = *item; // copy existing item to display values
-  else
+  }
+  else {
     m_Item.CreateUUID(); // We're adding a new entry
-  Init();
+  }
+  
+  m_IsNotesHidden = !PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault);
+
   wxString dlgTitle;
   if (caption == SYMBOL_AUTOPROPSHEETDLG_TITLE) {
     switch(m_Type) {
@@ -157,19 +152,7 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow* parent, PWScore &core,
         break;
     }
   }
-  Create(parent, id, dlgTitle, pos, size, style);
 
-  if (m_Core.GetReadFileVersion() == PWSfile::V40) {
-    InitAttachmentTab();
-  }
-}
-
-/*!
- * AddEditPropSheetDlg creator
- */
-
-bool AddEditPropSheetDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
 ////@begin AddEditPropSheetDlg creation
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
   wxPropertySheetDialog::Create( parent, id, caption, pos, size, style );
@@ -186,87 +169,20 @@ bool AddEditPropSheetDlg::Create( wxWindow* parent, wxWindowID id, const wxStrin
   // Additional width is needed by static text (itemStaticText4) at "Basic" tab,
   // otherwise text is not correctly shown due to Auto Word Wrap. (At least at KDE)
   SetSizeHints(GetSize().GetWidth() + 20, GetSize().GetHeight());
-  return true;
+
+  if (m_Core.GetReadFileVersion() == PWSfile::V40) {
+    InitAttachmentTab();
+  }
 }
 
-/*!
- * AddEditPropSheetDlg destructor
- */
-
-AddEditPropSheetDlg::~AddEditPropSheetDlg()
+AddEditPropSheetDlg* AddEditPropSheetDlg::Create(wxWindow *parent, PWScore &core,
+  SheetType type, const CItemData *item, const wxString &selectedGroup,
+  wxWindowID id, const wxString &caption, const wxPoint &pos, 
+  const wxSize &size, long style)
 {
-////@begin AddEditPropSheetDlg destruction
-////@end AddEditPropSheetDlg destruction
+  return new AddEditPropSheetDlg(parent, core, type, item, selectedGroup, id, caption, pos, size, style);
 }
-
-/*!
- * Member initialisation
- */
-
-void AddEditPropSheetDlg::Init()
-{
-////@begin AddEditPropSheetDlg member initialisation
-  m_ExpirationTimeInterval = 0;
-  m_IsNotesHidden = !PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault);
-  m_BasicPanel = nullptr;
-  m_AdditionalPanel = nullptr;
-  m_PasswordPolicyPanel = nullptr;
-  m_BasicSizer = nullptr;
-  m_BasicGroupNamesCtrl = nullptr;
-  m_BasicUsernameTextCtrl = nullptr;
-  m_BasicPasswordTextCtrl = nullptr;
-  m_BasicPasswordTextLabel = nullptr;
-  m_BasicShowHideCtrl = nullptr;
-  m_BasicPasswordConfirmationTextCtrl = nullptr;
-  m_BasicPasswordConfirmationTextLabel = nullptr;
-  m_BasicNotesTextCtrl = nullptr;
-  m_AdditionalDoubleClickActionCtrl = nullptr;
-  m_AdditionalShiftDoubleClickActionCtrl = nullptr;
-  m_AdditionalMaxPasswordHistoryCtrl = nullptr;
-  m_AdditionalPasswordHistoryGrid = nullptr;
-  m_DatesTimesExpireOnCtrl = nullptr;
-  m_DatesTimesExpiryDateCtrl = nullptr;
-  m_DatesTimesExpireInCtrl = nullptr;
-  m_DatesTimesExpiryTimeCtrl = nullptr;
-  m_DatesTimesRecurringExpiryCtrl = nullptr;
-  m_DatesTimesNeverExpireCtrl = nullptr;
-  m_PasswordPolicyUseDatabaseCtrl = nullptr;
-  m_PasswordPolicyNamesCtrl = nullptr;
-  m_PasswordPolicyPasswordLengthText = nullptr;
-  m_PasswordPolicyPasswordLengthCtrl = nullptr;
-  m_PasswordPolicySizer = nullptr;
-  m_PasswordPolicyUseLowerCaseCtrl = nullptr;
-  m_PasswordPolicyLowerCaseMinSizer = nullptr;
-  m_PasswordPolicyLowerCaseMinCtrl = nullptr;
-  m_PasswordPolicyUseUpperCaseCtrl = nullptr;
-  m_PasswordPolicyUpperCaseMinSizer = nullptr;
-  m_PasswordPolicyUpperCaseMinCtrl = nullptr;
-  m_PasswordPolicyUseDigitsCtrl = nullptr;
-  m_PasswordPolicyDigitsMinSizer = nullptr;
-  m_PasswordPolicyDigitsMinCtrl = nullptr;
-  m_PasswordPolicyUseSymbolsCtrl = nullptr;
-  m_PasswordPolicySymbolsMinSizer = nullptr;
-  m_PasswordPolicySymbolsMinCtrl = nullptr;
-  m_PasswordPolicyOwnSymbolsTextCtrl = nullptr;
-  m_PasswordPolicyUseEasyCtrl = nullptr;
-  m_PasswordPolicyUsePronounceableCtrl = nullptr;
-  m_PasswordPolicyUseHexadecimalOnlyCtrl = nullptr;
-  m_AttachmentPanel = nullptr;
-  m_AttachmentImagePanel = nullptr;
-  m_AttachmentButtonImport = nullptr;
-  m_AttachmentButtonExport = nullptr;
-  m_AttachmentButtonRemove = nullptr;
-  m_AttachmentFilePath = nullptr;
-  m_AttachmentTitle = nullptr;
-  m_AttachmentMediaType = nullptr;
-  m_AttachmentCreationDate = nullptr;
-  m_AttachmentFileSize = nullptr;
-  m_AttachmentFileCreationDate = nullptr;
-  m_AttachmentFileLastModifiedDate = nullptr;
-  m_AttachmentPreviewStatus = nullptr;
-////@end AddEditPropSheetDlg member initialisation
-}
-
+                      
 static void setupDCAStrings(wxArrayString &as)
 {
   // semi-duplicated in SetupDCAComboBoxes(),
@@ -806,6 +722,10 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
 
 wxPanel* AddEditPropSheetDlg::CreateAttachmentPanel()
 {
+  ID_BUTTON_IMPORT = wxWindow::NewControlId();
+  ID_BUTTON_EXPORT = wxWindow::NewControlId();
+  ID_BUTTON_REMOVE = wxWindow::NewControlId();
+
   auto *panel = new wxPanel(GetBookCtrl(), ID_PANEL_ADDITIONAL, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
   auto *BoxSizerMain = new wxBoxSizer(wxVERTICAL);
 
@@ -835,34 +755,34 @@ wxPanel* AddEditPropSheetDlg::CreateAttachmentPanel()
   auto *FlexGridSizer1 = new wxFlexGridSizer(0, 2, 0, 0);
   FlexGridSizer1->AddGrowableCol(1);
 
-  auto *StaticText3 = new wxStaticText(panel, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  auto *StaticText3 = new wxStaticText(panel, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(StaticText3, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentTitle = new wxTextCtrl(panel, ID_TEXTCTRL2, _("Text"), wxDefaultPosition, wxSize(217,35), 0, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+  m_AttachmentTitle = new wxTextCtrl(panel, wxID_ANY, _("Text"), wxDefaultPosition, wxSize(217,35), 0, wxDefaultValidator);
   FlexGridSizer1->Add(m_AttachmentTitle, 1, wxALL|wxEXPAND, 5);
 
-  auto *StaticText2 = new wxStaticText(panel, wxID_ANY, _("Media Type:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  auto *StaticText2 = new wxStaticText(panel, wxID_ANY, _("Media Type:"), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(StaticText2, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentMediaType = new wxStaticText(panel, ID_STATICTEXT4, _T(""), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
+  m_AttachmentMediaType = new wxStaticText(panel, wxID_ANY, _T(""), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(m_AttachmentMediaType, 1, wxALL|wxEXPAND, 5);
 
-  auto *StaticText4 = new wxStaticText(panel, wxID_ANY, _("Creation Date:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  auto *StaticText4 = new wxStaticText(panel, wxID_ANY, _("Creation Date:"), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(StaticText4, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentCreationDate = new wxStaticText(panel, ID_STATICTEXT5, _T(""), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
+  m_AttachmentCreationDate = new wxStaticText(panel, wxID_ANY, _T(""), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(m_AttachmentCreationDate, 1, wxALL|wxEXPAND, 5);
 
-  auto *StaticText5 = new wxStaticText(panel, wxID_ANY, _("File Size:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  auto *StaticText5 = new wxStaticText(panel, wxID_ANY, _("File Size:"), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(StaticText5, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentFileSize = new wxStaticText(panel, ID_STATICTEXT6, _T(""), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
+  m_AttachmentFileSize = new wxStaticText(panel, wxID_ANY, _T(""), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(m_AttachmentFileSize, 1, wxALL|wxEXPAND, 5);
 
-  auto *StaticText7 = new wxStaticText(panel, wxID_ANY, _("File Creation Date:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  auto *StaticText7 = new wxStaticText(panel, wxID_ANY, _("File Creation Date:"), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(StaticText7, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentFileCreationDate = new wxStaticText(panel, ID_STATICTEXT8, _T(""), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
+  m_AttachmentFileCreationDate = new wxStaticText(panel, wxID_ANY, _T(""), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(m_AttachmentFileCreationDate, 1, wxALL|wxEXPAND, 5);
 
-  auto *StaticText9 = new wxStaticText(panel, wxID_ANY, _("File Last Modified Date:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  auto *StaticText9 = new wxStaticText(panel, wxID_ANY, _("File Last Modified Date:"), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(StaticText9, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentFileLastModifiedDate = new wxStaticText(panel, ID_STATICTEXT10, _T(""), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
+  m_AttachmentFileLastModifiedDate = new wxStaticText(panel, wxID_ANY, _T(""), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(m_AttachmentFileLastModifiedDate, 1, wxALL|wxEXPAND, 5);
   StaticBoxSizerProperties->Add(FlexGridSizer1, 1, wxALL|wxEXPAND, 5);
   BoxSizerMain->Add(StaticBoxSizerProperties, 0, wxALL|wxEXPAND, 5);
@@ -895,8 +815,13 @@ void AddEditPropSheetDlg::InitAttachmentTab()
       // Show attachment data on UI.
       ShowAttachmentData(m_ItemAttachment);
 
-      // Attachment must be removed before a new one can be imported again.
-      DisableImport();
+      if (m_Core.IsReadOnly()) {
+        DisableAttachmentControls();
+      }
+      else {
+        // Attachment must be removed before a new one can be imported again.
+        DisableImport();
+      }
     }
     else {
       ResetAttachmentData();
@@ -905,7 +830,12 @@ void AddEditPropSheetDlg::InitAttachmentTab()
   else {
     ResetAttachmentData();
     HideImagePreview(_("No Attachment Available"));
-    EnableImport();
+    if (m_Core.IsReadOnly()) {
+      DisableAttachmentControls();
+    }
+    else {
+      EnableImport();
+    }
   }
 }
 
@@ -1059,6 +989,13 @@ void AddEditPropSheetDlg::DisableImport()
   m_AttachmentButtonImport->Disable();
   m_AttachmentButtonExport->Enable();
   m_AttachmentButtonRemove->Enable();
+}
+
+void AddEditPropSheetDlg::DisableAttachmentControls()
+{
+  m_AttachmentButtonImport->Disable();
+  m_AttachmentButtonExport->Disable();
+  m_AttachmentButtonRemove->Disable();
 }
 
 void AddEditPropSheetDlg::OnImport(wxCommandEvent& WXUNUSED(event))
@@ -1698,14 +1635,19 @@ void AddEditPropSheetDlg::OnShowHideClick(wxCommandEvent& WXUNUSED(evt))
 
 void AddEditPropSheetDlg::OnAliasButtonClick(wxCommandEvent& WXUNUSED(evt))
 {
+  CallAfter(&AddEditPropSheetDlg::DoAliasButtonClick);
+}
+
+void AddEditPropSheetDlg::DoAliasButtonClick()
+{
   CItemData *pbci = (m_Item.IsAlias() ? m_Core.GetBaseEntry(&m_Item) : nullptr);
   
   if(m_Item.IsShortcutBase()) {
     wxMessageBox(_("On changing this entry of type Shortcut Base to an Alias all Shortcut to this entry will be removed!"), _("Warning"), wxOK | wxICON_EXCLAMATION);
   }
   
-  SelectAliasDlg dlg(this, &m_Core, &m_Item, &pbci);
-  int rc = dlg.ShowModal();
+  
+  int rc = ShowModalAndGetResult<SelectAliasDlg>(this, &m_Core, &m_Item, &pbci);
   if(rc == wxID_OK) {
     if(! m_Core.IsReadOnly()) {
       bool bChangeToBaseEntry = false;
@@ -1868,11 +1810,8 @@ void AddEditPropSheetDlg::RemoveAlias()
   }
 }
 
-static short GetSelectedDCA(const wxComboBox *pcbox,
-                           short lastval, short defval)
+static short GetSelectedDCA(const wxComboBox *pcbox, short defval)
 {
-  UNREFERENCED_PARAMETER(lastval);
-
   int sel = pcbox->GetSelection();
   if (sel == wxNOT_FOUND) { // no selection
     return -1;
@@ -2101,50 +2040,174 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
   );
 }
 
-Command* AddEditPropSheetDlg::NewEditEntryCommand()
+uint32_t AddEditPropSheetDlg::GetChanges() const
 {
-  time_t t;
-  const wxString group = m_BasicGroupNamesCtrl->GetValue();
-  const StringX password = tostringx(m_BasicPasswordTextCtrl->GetValue());
-
-  bool bIsModified, bIsPSWDModified;
-  short lastDCA, lastShiftDCA;
   const PWSprefs *prefs = PWSprefs::GetInstance();
-  m_Item.GetDCA(lastDCA);
-  m_DoubleClickAction = GetSelectedDCA(m_AdditionalDoubleClickActionCtrl, lastDCA,
-    short(prefs->GetPref(PWSprefs::DoubleClickAction)));
 
-  m_Item.GetShiftDCA(lastShiftDCA);
-  m_ShiftDoubleClickAction = GetSelectedDCA(m_AdditionalShiftDoubleClickActionCtrl, lastShiftDCA,
-    short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
-  // Check if modified
-  int lastXTimeInt;
-  m_Item.GetXTimeInt(lastXTimeInt);
-  time_t lastXtime;
-  m_Item.GetXTime(lastXtime);
+  uint32_t changes = Changes::None;
+  if (tostringx(m_BasicGroupNamesCtrl->GetValue()) != m_Item.GetGroup()) {
+    changes |= Changes::Group;
+  }
+  if (tostringx(m_Title) != m_Item.GetTitle()) {
+    changes |= Changes::Title;
+  }
+  if (tostringx(m_User) != m_Item.GetUser()) {
+    changes |= Changes::User;
+  }
   // Following ensures that untouched & hidden note
   // isn't marked as modified. Relies on fact that
   // Note field can't be modified w/o first getting focus
   // and that we turn off m_isNotesHidden when that happens.
-  if (m_Type != SheetType::ADD && m_IsNotesHidden)
-    m_Notes = m_Item.GetNotes(TCHAR('\n')).c_str();
+  if ((m_Type == SheetType::ADD || !m_IsNotesHidden) && tostringx(m_Notes) != m_Item.GetNotes(TCHAR('\n'))) {
+    changes |= Changes::Notes;
+  }
+  if (tostringx(m_Url) != m_Item.GetURL()) {
+    changes |= Changes::Url;
+  }
+  if (tostringx(m_Email) != m_Item.GetEmail()) {
+    changes |= Changes::Email;
+  }
+  if (tostringx(m_Autotype) != m_Item.GetAutoType()) {
+    changes |= Changes::Autotype;
+  }
+  if (tostringx(m_RunCommand) != m_Item.GetRunCommand()) {
+    changes |= Changes::RunCommand;
+  }
+  if (PreparePasswordHistory() != m_Item.GetPWHistory() && 
+      !(m_Item.GetPWHistory().empty() && m_PasswordHistory.empty() && static_cast<unsigned int>(m_MaxPasswordHistory) == prefs->GetPref(PWSprefs::NumPWHistoryDefault) && m_KeepPasswordHistory == prefs->GetPref(PWSprefs::SavePasswordHistory))
+  ) {
+    changes |= Changes::History;
+  }
+  // symbols
+  {
+    const auto oldSymbols = m_Item.GetSymbols();
+    if (tostringx(m_Symbols) != oldSymbols && (!oldSymbols.empty() || m_Symbols != CPasswordCharPool::GetDefaultSymbols())) {
+      changes |= Changes::Symbols;
+    }
+  }
+  {
+    short lastDCA;
+    m_Item.GetDCA(lastDCA);
+    const auto def = short(prefs->GetPref(PWSprefs::DoubleClickAction));
+    const auto selected = GetSelectedDCA(m_AdditionalDoubleClickActionCtrl, def);
+    if (lastDCA != selected && lastDCA != def) {
+      changes |= Changes::DCA;
+    }
+  }
+  {
+    short lastShiftDCA;
+    m_Item.GetShiftDCA(lastShiftDCA);
+    const auto def = short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction));
+    const auto selected = GetSelectedDCA(m_AdditionalShiftDoubleClickActionCtrl, def);
+    if (lastShiftDCA != selected && lastShiftDCA != def) {
+      changes |= Changes::ShiftDCA;
+    }
+  }
+  {
+    time_t lastXtime;
+    m_Item.GetXTime(lastXtime);
+    if (m_tttExpirationTime != lastXtime) {
+      changes |= Changes::XTime;
+    }
+  }
+  {
+    int lastXTimeInt;
+    m_Item.GetXTimeInt(lastXTimeInt);
+    if (m_ExpirationTimeInterval != lastXTimeInt && !(!m_Recurring && lastXTimeInt == 0)) {
+      changes |= Changes::XTimeInt;
+    }
+  }
+  // password
+  {
+    const StringX password = tostringx(m_BasicPasswordTextCtrl->GetValue());
+    if (!m_Item.IsAlias()) {
+      if (password != m_Item.GetPassword()) {
+        changes |= Changes::Password;
+      }
+    }
+    else {
+      // Update password to alias form
+      // Show text stating that it is an alias
+      const CItemData *pbci = m_Core.GetBaseEntry(&m_Item);
+      ASSERT(pbci);
+      if (pbci) {
+        const StringX alias = L"[" + pbci->GetGroup() + L":" + pbci->GetTitle() + L":" + pbci->GetUser()  + L"]";
+        if (password != alias) {
+          changes |= Changes::Password;
+        }
+      }
+      else {
+        changes |= Changes::Password;
+      }
+    }
+  }
+  // policy
+  {
+    PWPolicy oldPWP;
+    // get item's effective policy:
+    const StringX oldPolName = m_Item.GetPolicyName();
+    if (oldPolName.empty()) { // either item-specific or default:
+      if (m_Item.GetPWPolicy().empty()) {
+        oldPWP = PWSprefs::GetInstance()->GetDefaultPolicy();
+      }
+      else {
+        m_Item.GetPWPolicy(oldPWP);
+      }
+    }
+    else {
+      m_Core.GetPolicyFromName(oldPolName, oldPWP);
+    }
+    // now check with dbox's effective policy:
+    if (oldPWP != GetSelectedPWPolicy()) {
+      changes |= Changes::Policy;
+    }
+  }
+  // attachment
+  {
+    if (m_Core.GetReadFileVersion() == PWSfile::V40) {
+      if (!m_Item.HasAttRef() && !m_ItemAttachment.HasUUID() && !m_ItemAttachment.HasContent()) {
+        // no old & new attachment
+      }
+      else if ((!m_Item.HasAttRef() && m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) // added
+          || (m_Item.HasAttRef() && !m_ItemAttachment.HasUUID() && !m_ItemAttachment.HasContent()) // deleted
+      ) {
+        changes |= Changes::Attachment;
+      }
+      else if (m_Item.HasAttRef()) { // changed ?
+        if (m_ItemAttachment.GetTitle() != tostringx(m_AttachmentTitle->GetValue())) {
+          changes |= Changes::Attachment;
+        }
+        else {
+          auto uuid = m_Item.GetAttUUID();
+          auto itemAttachment = m_Core.GetAtt(uuid);
+          if (m_ItemAttachment != itemAttachment || m_ItemAttachment.GetUUID() != itemAttachment.GetUUID()) {
+            changes |= Changes::Attachment;
+          }
+        }
+      }
+    }
+  }
+  return changes;
+}
 
-  // Create a new PWHistory string based on settings in this dialog, and compare it
-  // with the PWHistory string from the item being edited, to see if the user modified it.
+StringX AddEditPropSheetDlg::PreparePasswordHistory() const
+{
+  // Create a new PWHistory string based on settings in this dialog.
   // Note that we are not erasing the history here, even if the user has chosen to not
   // track PWHistory.  So there could be some password entries in the history
   // but the first byte could be zero, meaning we are not tracking it _FROM_NOW_.
   // Clearing the history is something the user must do himself with the "Clear History" button
 
+  StringX result;
   // First, Get a list of all password history entries
   size_t pwh_max, num_err;
   PWHistList pwhl;
-  (void)CreatePWHistoryList(tostringx(m_PasswordHistory), pwh_max, num_err,
-    pwhl, PWSUtil::TMC_LOCALE);
+  (void)CreatePWHistoryList(tostringx(m_PasswordHistory), pwh_max, num_err, pwhl, PWSUtil::TMC_LOCALE);
 
   // Create a new PWHistory header, as per settings in this dialog
   size_t numEntries = std::min(pwhl.size(), static_cast<size_t>(m_MaxPasswordHistory));
-  m_PasswordHistory = towxstring(MakePWHistoryHeader(m_KeepPasswordHistory, m_MaxPasswordHistory, numEntries));
+
+  result = MakePWHistoryHeader(m_KeepPasswordHistory, m_MaxPasswordHistory, numEntries);
   //reverse-sort the history entries to retain only the newest
   std::sort(pwhl.begin(), pwhl.end(), newer());
   // Now add all the existing history entries, up to a max of what the user wants to track
@@ -2155,86 +2218,57 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
     Format(buffer, _T("%08x%04x%ls"),
       static_cast<long>(iter->changetttdate), iter->password.length(),
       iter->password.c_str());
-    m_PasswordHistory += towxstring(buffer);
+    result += buffer;
   }
-
   wxASSERT_MSG(numEntries ==0, wxT("Could not save existing password history entries"));
+  return result;
+}
 
-  PWPolicy oldPWP, pwp;
-  // get item's effective policy:
-  const StringX oldPolName = m_Item.GetPolicyName();
-  if (oldPolName.empty()) { // either item-specific or default:
-    if (m_Item.GetPWPolicy().empty()) {
-      oldPWP = PWSprefs::GetInstance()->GetDefaultPolicy();
-    }
-    else {
-      m_Item.GetPWPolicy(oldPWP);
-    }
-  }
-  else {
-    m_Core.GetPolicyFromName(oldPolName, oldPWP);
-  }
-  // now get dbox's effective policy:
-  pwp = GetSelectedPWPolicy();
-
-  bIsModified = (
-    group                     != m_Item.GetGroup().c_str()            ||
-    m_Title                   != m_Item.GetTitle().c_str()            ||
-    m_User                    != m_Item.GetUser().c_str()             ||
-    m_Notes                   != m_Item.GetNotes(TCHAR('\n')).c_str() ||
-    m_Url                     != m_Item.GetURL().c_str()              ||
-    m_Email                   != m_Item.GetEmail().c_str()            ||
-    m_Autotype                != m_Item.GetAutoType().c_str()         ||
-    m_RunCommand              != m_Item.GetRunCommand().c_str()       ||
-    m_DoubleClickAction       != lastDCA                              ||
-    m_ShiftDoubleClickAction  != lastShiftDCA                         ||
-    m_PasswordHistory         != m_Item.GetPWHistory().c_str()        ||
-    m_tttExpirationTime       != lastXtime                            ||
-    m_ExpirationTimeInterval  != lastXTimeInt                         ||
-    m_Symbols                 != m_Item.GetSymbols().c_str()          ||
-    oldPWP                    != pwp
-  );
-
+Command* AddEditPropSheetDlg::NewEditEntryCommand()
+{
   /*
     TODO:
     Even if there have been no changes and the user has pressed the Ok button,
     the password history check and symbols check result to 'true'.
   */
 
-  if (!m_Item.IsAlias()) {
-    bIsPSWDModified = (password != m_Item.GetPassword());
-  }
-  else {
-    // Update password to alias form
-    // Show text stating that it is an alias
-    const CItemData *pbci = m_Core.GetBaseEntry(&m_Item);
-    ASSERT(pbci);
-    if (pbci) {
-      StringX alias = L"[" +
-        pbci->GetGroup() + L":" +
-        pbci->GetTitle() + L":" +
-        pbci->GetUser()  + L"]";
-      bIsPSWDModified = (password != alias);
-    }
-    else {
-      bIsPSWDModified = true;
-    }
-  }
+  const auto changes = GetChanges();
+  const PWSprefs *prefs = PWSprefs::GetInstance();
 
-  if (bIsModified) {
-    // Just modify all - even though only 1 may have actually been modified
-    m_Item.SetGroup(tostringx(group));
+  if (changes & Changes::Group) {
+    m_Item.SetGroup(tostringx(m_BasicGroupNamesCtrl->GetValue()));
+  }
+  if (changes & Changes::Title) {
     m_Item.SetTitle(tostringx(m_Title));
+  }
+  if (changes & Changes::User) {
     m_Item.SetUser(m_User.empty() ?
                    PWSprefs::GetInstance()->
                      GetPref(PWSprefs::DefaultUsername).c_str() : m_User.c_str());
+  }
+  if (changes & Changes::Notes) {
     m_Item.SetNotes(tostringx(m_Notes));
+  }
+  if (changes & Changes::Url) {
     m_Item.SetURL(tostringx(m_Url));
+  }
+  if (changes & Changes::Email) {
     m_Item.SetEmail(tostringx(m_Email));
+  }
+  if (changes & Changes::Autotype) {
     m_Item.SetAutoType(tostringx(m_Autotype));
+  }
+  if (changes & Changes::RunCommand) {
     m_Item.SetRunCommand(tostringx(m_RunCommand));
+  }
+  if (changes & Changes::History) {
+    m_PasswordHistory = towxstring(PreparePasswordHistory());
     m_Item.SetPWHistory(tostringx(m_PasswordHistory));
-
+  }
+  if (changes & Changes::Symbols) {
+    m_Item.SetSymbols(tostringx(m_Symbols));
+  }
+  if (changes & Changes::Policy) {
     if (m_PasswordPolicyUseDatabaseCtrl->GetValue()) {
       // User has selected to use a named policy
       wxString polName = m_PasswordPolicyNamesCtrl->GetValue();
@@ -2259,33 +2293,42 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
     // User has selected to use an item specific policy
     else {
       // Use the data of the item specific policy collected from the UI
-      m_Item.SetPWPolicy(pwp);
+      m_Item.SetPWPolicy(GetSelectedPWPolicy());
 
       // Remove database policy information from item
       m_Item.SetPolicyName(tostringx(wxEmptyString));
     }
+  }
+  if (changes & Changes::DCA) {
+    m_DoubleClickAction = GetSelectedDCA(m_AdditionalDoubleClickActionCtrl, short(prefs->GetPref(PWSprefs::DoubleClickAction)));
     m_Item.SetDCA(m_DoubleClickAction);
+  }
+  if (changes & Changes::ShiftDCA) {
+    m_ShiftDoubleClickAction = GetSelectedDCA(m_AdditionalShiftDoubleClickActionCtrl, short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
     m_Item.SetShiftDCA(m_ShiftDoubleClickAction);
+  }
+  
+  if (changes != Changes::None && !IsGroupUsernameTitleCombinationUnique()) {
+    return nullptr;
+  }
 
-    if (!IsGroupUsernameTitleCombinationUnique()) {
-      return nullptr;
-    }
-  } // bIsModified
-
+  time_t t;
   time(&t);
-  if (bIsPSWDModified) {
-    m_Item.UpdatePassword(password);
+  if (changes & Changes::Password) {
+    m_Item.UpdatePassword(tostringx(m_BasicPasswordTextCtrl->GetValue()));
     m_Item.SetPMTime(t);
   }
-  if (bIsModified || bIsPSWDModified) {
+  if ((changes & ~Changes::Attachment) != Changes::None) { // anything besides attachment
     m_Item.SetRMTime(t);
     m_Item.SetStatus(CItemData::ES_MODIFIED);
   }
-  if (m_tttExpirationTime != lastXtime) {
+  
+  if (changes & Changes::XTime) {
     m_Item.SetXTime(m_tttExpirationTime);
   }
+
   if (m_Recurring) {
-    if (m_ExpirationTimeInterval != lastXTimeInt) {
+    if (changes & Changes::XTimeInt) {
       m_Item.SetXTimeInt(m_ExpirationTimeInterval);
     }
   } else {
@@ -2298,8 +2341,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
   // Tab: "Attachment"
   /////////////////////////////////////////////////////////////////////////////
 
-  if (m_Core.GetReadFileVersion() == PWSfile::V40) {
-
+  if (changes & Changes::Attachment) {
     /*
       Case: Item doesn't have an attachment and doesn't get one.
       Steps:
@@ -2357,7 +2399,6 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
       Steps:
         1) Create DeleteAttachmentCommand command.
         2) Remove reference to attachment item.
-        3) Create EditEntryCommand to update the password item.
     */
     else if (m_Item.HasAttRef() && !m_ItemAttachment.HasUUID() && !m_ItemAttachment.HasContent()) {
 
@@ -2366,9 +2407,6 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
 
       // Step 2)
       m_Item.ClearAttUUID();
-
-      // Step 3)
-      bIsModified = true;
     }
 
     /*
@@ -2431,7 +2469,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
     }
   }
 
-  if (bIsModified || bIsPSWDModified) {
+  if (changes != Changes::None) {
     // All fields in m_item now reflect user's edits
     // Let's update the core's data
     uuid_array_t uuid;
@@ -2540,6 +2578,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
   delete commands;
   return nullptr;
 }
+
 
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
@@ -2836,7 +2875,7 @@ void AddEditPropSheetDlg::OnNoteSetFocus(wxFocusEvent& WXUNUSED(evt))
   }
 }
 
-PWPolicy AddEditPropSheetDlg::GetPWPolicyFromUI()
+PWPolicy AddEditPropSheetDlg::GetPWPolicyFromUI() const
 {
   wxASSERT_MSG(!m_PasswordPolicyUseDatabaseCtrl->GetValue(), wxT("Trying to get Password policy from UI when db defaults are to be used"));
 
@@ -2959,7 +2998,7 @@ bool AddEditPropSheetDlg::CheckPWPolicyFromUI()
   return true;
 }
 
-PWPolicy AddEditPropSheetDlg::GetSelectedPWPolicy()
+PWPolicy AddEditPropSheetDlg::GetSelectedPWPolicy() const
 {
   PWPolicy pwp;
   if (m_PasswordPolicyUseDatabaseCtrl->GetValue()) {
@@ -3221,4 +3260,45 @@ void AddEditPropSheetDlg::OnUppercaseCB( wxCommandEvent& event )
 void AddEditPropSheetDlg::OnLowercaseCB( wxCommandEvent& event )
 {
   m_PasswordPolicyLowerCaseMinCtrl->Enable(event.IsChecked());
+}
+
+bool AddEditPropSheetDlg::SyncAndQueryCancel(bool showDialog) {
+  // when edit forbidden, allow cancel without additional checks
+  if (m_Type == SheetType::VIEW || m_Core.IsReadOnly() || m_Item.IsProtected()) {
+    return true;
+  }
+  else if (!(Validate() && TransferDataFromWindow()) || GetChanges() != Changes::None) {
+    if (showDialog) {
+      auto res = wxMessageDialog(
+        nullptr,
+        _("One or more values have been changed. Are you sure you wish to cancel?"), wxEmptyString,
+        wxYES_NO | wxNO_DEFAULT | wxICON_EXCLAMATION  
+      ).ShowModal();
+      if (res == wxID_YES) {
+        return true;
+      }
+    }
+    return false;
+  }
+  return true;
+}
+
+void AddEditPropSheetDlg::OnCancel(wxCommandEvent& WXUNUSED(evt))
+{
+  if (SyncAndQueryCancel(true)) {
+    EndModal(wxID_CANCEL);
+  }
+}
+
+/// wxEVT_CLOSE event handler
+void AddEditPropSheetDlg::OnClose(wxCloseEvent &event)
+{
+  if (event.CanVeto()) {
+    // when trying to closing app/db, don't ask questions when data changed
+    if (!SyncAndQueryCancel(!IsCloseInProgress())) {
+      event.Veto();
+      return;
+    }
+  }
+  EndDialog(wxID_CANCEL); // cancel directly (if we skip event, OnCancel will be called and ask one more time)
 }

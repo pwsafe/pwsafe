@@ -222,8 +222,7 @@ void PasswordSafeFrame::RunShowReport(int iAction)
   CReport rpt;
   rpt.StartReport(iAction, m_core.GetCurFile().c_str(), false);
   if(rpt.ReadFromDisk()) {
-    ViewReportDlg dlg(this, &rpt, true);
-    dlg.ShowModal();
+    ShowModalAndGetResult<ViewReportDlg>(this, &rpt, true);
   }
   else {
     wxString tcAction = CReport::ReportNames.find(iAction)->second;
@@ -233,62 +232,62 @@ void PasswordSafeFrame::RunShowReport(int iAction)
 
 void PasswordSafeFrame::OnShowReportSynchronize(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(IDSC_RPTSYNCH);
+  CallAfter(&PasswordSafeFrame::RunShowReport, IDSC_RPTSYNCH);
 }
 
 void PasswordSafeFrame::OnShowReportCompare(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(IDSC_RPTCOMPARE);
+  CallAfter(&PasswordSafeFrame::RunShowReport, IDSC_RPTCOMPARE);
 }
 
 void PasswordSafeFrame::OnShowReportMerge(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(IDSC_RPTMERGE);
+  CallAfter(&PasswordSafeFrame::RunShowReport, IDSC_RPTMERGE);
 }
 
 void PasswordSafeFrame::OnShowReportImportText(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(IDSC_RPTIMPORTTEXT);
+  CallAfter(&PasswordSafeFrame::RunShowReport, IDSC_RPTIMPORTTEXT);
 }
 
 void PasswordSafeFrame::OnShowReportImportXML(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(IDSC_RPTIMPORTXML);
+  CallAfter(&PasswordSafeFrame::RunShowReport, IDSC_RPTIMPORTXML);
 }
 
 void PasswordSafeFrame::OnShowReportImportKeePassV1_TXT(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(IDSC_RPTIMPORTKPV1TXT);
+  CallAfter(&PasswordSafeFrame::RunShowReport, IDSC_RPTIMPORTKPV1TXT);
 }
 
 void PasswordSafeFrame::OnShowReportImportKeePassV1_CSV(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(IDSC_RPTIMPORTKPV1CSV);
+  CallAfter(&PasswordSafeFrame::RunShowReport, IDSC_RPTIMPORTKPV1CSV);
 }
 
 void PasswordSafeFrame::OnShowReportExportText(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(IDSC_RPTEXPORTTEXT);
+  CallAfter(&PasswordSafeFrame::RunShowReport, IDSC_RPTEXPORTTEXT);
 }
 
 void PasswordSafeFrame::OnShowReportExportXML(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(IDSC_RPTEXPORTXML);
+  CallAfter(&PasswordSafeFrame::RunShowReport, IDSC_RPTEXPORTXML);
 }
 
 void PasswordSafeFrame::OnShowReportExportDB(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(IDSC_RPTEXPORTDB);
+  CallAfter(&PasswordSafeFrame::RunShowReport, IDSC_RPTEXPORTDB);
 }
 
 void PasswordSafeFrame::OnShowReportFind(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(IDSC_RPTFIND);
+  CallAfter(&PasswordSafeFrame::RunShowReport, IDSC_RPTFIND);
 }
 
 void PasswordSafeFrame::OnShowReportValidate(wxCommandEvent& WXUNUSED(evt))
 {
-  RunShowReport(IDSC_RPTVALIDATE);
+  CallAfter(&PasswordSafeFrame::RunShowReport, IDSC_RPTVALIDATE);
 }
 
 void PasswordSafeFrame::OnShowHideToolBar(wxCommandEvent& evt)
@@ -393,10 +392,15 @@ void PasswordSafeFrame::ApplyFilters()
 
 void PasswordSafeFrame::OnEditFilter(wxCommandEvent& )
 {
+  CallAfter(&PasswordSafeFrame::DoEditFilter);
+}
+
+void PasswordSafeFrame::DoEditFilter()
+{
   st_filters filters(CurrentFilter());
   bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
   const std::set<StringX> sMediaTypes = m_core.GetAllMediaTypes();
-  bool bAppliedCalled;
+  bool bAppliedCalled = false;
   stringT oldName = CurrentFilter().fname;
   st_Filterkey fk;
   bool bDoEdit = true;
@@ -404,10 +408,9 @@ void PasswordSafeFrame::OnEditFilter(wxCommandEvent& )
   while(bDoEdit) {
     bDoEdit = false; // In formal case we run only one time in the loop; but when removal of double entry is requested we avoid goto
 
-    SetFiltersDlg dlg(this, &filters, &CurrentFilter(), &bAppliedCalled, DFTYPE_MAIN, FPOOL_SESSION, bCanHaveAttachments, &sMediaTypes);
-    int rc = dlg.ShowModal();
+    int rc = ShowModalAndGetResult<SetFiltersDlg>(this, &filters, &CurrentFilter(), &bAppliedCalled, DFTYPE_MAIN, FPOOL_SESSION, bCanHaveAttachments, &sMediaTypes);;
   
-    if (rc == wxID_OK || (rc == wxID_CANCEL && bAppliedCalled)) {
+    if (rc == wxID_OK || (rc == wxID_CANCEL && bAppliedCalled && !IsCloseInProgress())) {
       // User can apply the filter in SetFiltersDlg and then press Cancel button
       // and afterwards process changes, update only on OK button and continue with actualized version
       if(rc == wxID_OK) {
@@ -536,6 +539,11 @@ private:
 
 void PasswordSafeFrame::OnManageFilters(wxCommandEvent& )
 {
+  CallAfter(&PasswordSafeFrame::DoManageFilters);
+}
+
+void PasswordSafeFrame::DoManageFilters()
+{
   st_Filterkey fkl, fku;
   PWSFilters::iterator mf_iter, mf_lower_iter, mf_upper_iter;
   
@@ -565,12 +573,11 @@ void PasswordSafeFrame::OnManageFilters(wxCommandEvent& )
       mf_iter != core_filters.end(); mf_iter++) {
     m_MapAllFilters.insert(PWSFilters::Pair(mf_iter->first, mf_iter->second));
   }
-  
+
   bool bCanHaveAttachments = m_core.GetNumAtts() > 0;
   const std::set<StringX> sMediaTypes = m_core.GetAllMediaTypes();
-  
-  ManageFiltersDlg dlg(this, &m_core, m_MapAllFilters, &CurrentFilter(), &m_currentfilterpool, &m_selectedfiltername, &m_bFilterActive, bCanHaveAttachments, &sMediaTypes, m_core.IsReadOnly());
-  int rc = dlg.ShowModal();
+
+  int rc = ShowModalAndGetResult<ManageFiltersDlg>(this, &m_core, m_MapAllFilters, &CurrentFilter(), &m_currentfilterpool, &m_selectedfiltername, &m_bFilterActive, bCanHaveAttachments, &sMediaTypes, m_core.IsReadOnly());;
   
   // No change in DB filter when return ID_CANCEL
   if(rc == wxID_CANCEL)

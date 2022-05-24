@@ -25,7 +25,7 @@
 #include "core/StringX.h"
 #include "core/PWScore.h"
 #include "core/PolicyManager.h"
-
+#include "QueryCancelDlg.h"
 #include <vector>
 
 /*!
@@ -65,28 +65,23 @@ class wxGrid;
  * ManagePasswordPoliciesDlg class declaration
  */
 
-class ManagePasswordPoliciesDlg: public wxDialog
+class ManagePasswordPoliciesDlg: public QueryCancelDlg
 {
   DECLARE_DYNAMIC_CLASS( ManagePasswordPoliciesDlg )
   DECLARE_EVENT_TABLE()
 
 public:
-  /// Constructors
-  ManagePasswordPoliciesDlg( wxWindow* parent,  PWScore &core,
-         wxWindowID id = SYMBOL_MANAGEPASSWORDPOLICIESDLG_IDNAME,
-         const wxString& caption = SYMBOL_MANAGEPASSWORDPOLICIESDLG_TITLE,
-         const wxPoint& pos = SYMBOL_MANAGEPASSWORDPOLICIESDLG_POSITION,
-         const wxSize& size = SYMBOL_MANAGEPASSWORDPOLICIESDLG_SIZE,
-         long style = SYMBOL_MANAGEPASSWORDPOLICIESDLG_STYLE );
-
   /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_MANAGEPASSWORDPOLICIESDLG_IDNAME, const wxString& caption = SYMBOL_MANAGEPASSWORDPOLICIESDLG_TITLE, const wxPoint& pos = SYMBOL_MANAGEPASSWORDPOLICIESDLG_POSITION, const wxSize& size = SYMBOL_MANAGEPASSWORDPOLICIESDLG_SIZE, long style = SYMBOL_MANAGEPASSWORDPOLICIESDLG_STYLE );
+  static ManagePasswordPoliciesDlg* Create(wxWindow *parent, PWScore &core, wxWindowID id = SYMBOL_MANAGEPASSWORDPOLICIESDLG_IDNAME, const wxString& caption = SYMBOL_MANAGEPASSWORDPOLICIESDLG_TITLE, const wxPoint& pos = SYMBOL_MANAGEPASSWORDPOLICIESDLG_POSITION, const wxSize& size = SYMBOL_MANAGEPASSWORDPOLICIESDLG_SIZE, long style = SYMBOL_MANAGEPASSWORDPOLICIESDLG_STYLE );
 
   /// Destructor
-  ~ManagePasswordPoliciesDlg();
+  ~ManagePasswordPoliciesDlg() = default;
 
-  /// Initialises member variables
-  void Init();
+protected:
+  /// Constructors
+  ManagePasswordPoliciesDlg(wxWindow *parent, PWScore &core,
+         wxWindowID id, const wxString& caption, const wxPoint& pos,
+         const wxSize& size,long style);
 
   /// Creates the controls and sizers
   void CreateControls();
@@ -149,13 +144,16 @@ public:
 
   // Overridden virtuals
   virtual bool Show(bool show = true);
+  
+  void DoNewClick();
+  void DoEditClick();
 
 ////@begin ManagePasswordPoliciesDlg member variables
-  wxGrid* m_PolicyNames;
-  wxTextCtrl* m_passwordCtrl;
-  wxStaticText* m_lowerTableDesc;
-  wxGrid* m_PolicyDetails;
-  wxGrid* m_PolicyEntries;
+  wxGrid* m_PolicyNames = nullptr;
+  wxTextCtrl* m_passwordCtrl = nullptr;
+  wxStaticText* m_lowerTableDesc = nullptr;
+  wxGrid* m_PolicyDetails = nullptr;
+  wxGrid* m_PolicyEntries = nullptr;
 ////@end ManagePasswordPoliciesDlg member variables
  private:
   void UpdateNames();
@@ -168,6 +166,16 @@ public:
   PWPolicy GetSelectedPolicy() const;
   int GetSelectedRow() const;
   void ResizeGridColumns();
+
+  enum Changes : uint32_t {
+    None = 0,
+    DefaultPolicy = 1u,
+    NamedPolices = 1u << 1,
+  };
+
+  uint32_t GetChanges() const;
+  bool SyncAndQueryCancel(bool showDialog) override;
+  bool IsChanged() const override;
 
   PWScore &m_core;
 

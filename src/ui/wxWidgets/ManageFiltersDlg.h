@@ -115,18 +115,14 @@ class ManageFiltersDlg: public wxDialog
   DECLARE_EVENT_TABLE()
 
 public:
-  /// Constructors
-  ManageFiltersDlg();
-  ManageFiltersDlg( wxWindow* parent, PWScore *core, PWSFilters &MapFilters, st_filters *currentFilters, FilterPool *activefilterpool, stringT *activefiltername, bool *bFilterActive, const bool bCanHaveAttachments = false, const std::set<StringX> *psMediaTypes = NULL, bool readOnly = true, wxWindowID id = SYMBOL_MANAGEFILTERS_IDNAME, const wxString& caption = SYMBOL_MANAGEFILTERS_TITLE, const wxPoint& pos = SYMBOL_MANAGEFILTERS_POSITION, const wxSize& size = SYMBOL_MANAGEFILTERS_SIZE, long style = SYMBOL_MANAGEFILTERS_STYLE );
-
-  /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_MANAGEFILTERS_IDNAME, const wxString& caption = SYMBOL_MANAGEFILTERS_TITLE, const wxPoint& pos = SYMBOL_MANAGEFILTERS_POSITION, const wxSize& size = SYMBOL_MANAGEFILTERS_SIZE, long style = SYMBOL_MANAGEFILTERS_STYLE );
+  static ManageFiltersDlg* Create(wxWindow *parent, PWScore *core, PWSFilters &MapFilters, st_filters *currentFilters, FilterPool *activefilterpool, stringT *activefiltername, bool *bFilterActive, const bool bCanHaveAttachments = false, const std::set<StringX> *psMediaTypes = nullptr, bool readOnly = true, wxWindowID id = SYMBOL_MANAGEFILTERS_IDNAME, const wxString& caption = SYMBOL_MANAGEFILTERS_TITLE, const wxPoint& pos = SYMBOL_MANAGEFILTERS_POSITION, const wxSize& size = SYMBOL_MANAGEFILTERS_SIZE, long style = SYMBOL_MANAGEFILTERS_STYLE );
 
   /// Destructor
-  ~ManageFiltersDlg();
-
-  /// Initialises member variables
-  void Init();
+  ~ManageFiltersDlg() = default;
+protected:
+  /// Constructors
+  ManageFiltersDlg() = default;
+  ManageFiltersDlg(wxWindow *parent, PWScore *core, PWSFilters &MapFilters, st_filters *currentFilters, FilterPool *activefilterpool, stringT *activefiltername, bool *bFilterActive, const bool bCanHaveAttachments, const std::set<StringX> *psMediaTypes, bool readOnly, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Creates the controls and sizers
   void CreateControls();
@@ -201,37 +197,41 @@ private:
   void SetGridColLeftAligned(int col);
   wxSize ExtendColSize(int col, int extend = 30);
   
+  void DoNewClick();
+  void DoEditClick();
+  
+  
   ////@begin ManageFiltersDlg member variables
-  PWSFilters *m_pMapAllFilters;  // The map of all present filters
-  st_filters *m_pCurrentFilters; // Pointer to the currect active (or de-activated) filter
-  const bool m_bCanHaveAttachments;
-  const std::set<StringX> *m_psMediaTypes;
-  const bool m_bReadOnly;
-  PWScore   *m_core;
+  PWSFilters *m_pMapAllFilters = nullptr;  // The map of all present filters
+  st_filters *m_pCurrentFilters = nullptr; // Pointer to the currect active (or de-activated) filter
+  const bool m_bCanHaveAttachments = false;
+  const std::set<StringX> *m_psMediaTypes = nullptr;
+  const bool m_bReadOnly = false;
+  PWScore   *m_core = nullptr;
   
   // Active filter is shown on the pwSafe main windows
-  FilterPool *m_pActiveFilterPool;
-  stringT *m_pActiveFilterName;
-  bool    *m_pbFilterActive;
+  FilterPool *m_pActiveFilterPool = nullptr;
+  stringT *m_pActiveFilterName = nullptr;
+  bool    *m_pbFilterActive = nullptr;
   
-  ManageFiltersGrid *m_MapFiltersGrid;     // Grid to show all filters
-  wxStaticText      *m_SelectedFilterText; // Dialog item to be updated with the shown filters name
-  pwFiltersGrid     *m_filterGrid;         // Grid to show the filters content
+  ManageFiltersGrid *m_MapFiltersGrid = nullptr;     // Grid to show all filters
+  wxStaticText      *m_SelectedFilterText = nullptr; // Dialog item to be updated with the shown filters name
+  pwFiltersGrid     *m_filterGrid = nullptr;         // Grid to show the filters content
   
   // The slected filter is marked in the list of filters and the content is shown in the lower grid
-  FilterPool m_SelectedFilterPool;
+  FilterPool m_SelectedFilterPool = FPOOL_LAST;
   stringT    m_SelectedFilterName;
   st_filters m_SelectedFilter;
   
-  int m_num_to_copy;    // Number of selected entries in copy to DB column
-  int m_num_to_export;  // Number of selected entries for export operation
+  int m_num_to_copy = 0;    // Number of selected entries in copy to DB column
+  int m_num_to_export = 0;  // Number of selected entries for export operation
   
   pwSortedManageFilters m_MapFilterData;   // Map to handle sorting for filter in the filters grid
   
-  bool m_bDBFiltersChanged;
+  bool m_bDBFiltersChanged = false;
 
   // Height of used font
-  int m_FontHeight;
+  int m_FontHeight = 15;
   
   // Old window size to determine change when resize is called
   wxSize windowSize;

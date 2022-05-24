@@ -532,20 +532,27 @@ void pwFiltersGrid::OnCellLeftClick(wxGridEvent& event)
         }
       }
       else if(col == FLC_CRITERIA_TEXT) {
-        GetCriterion(row); // Call editor on criteria field
-        RefreshCell(row, FLC_CRITERIA_TEXT);
-        DoCheckFilterIsComplete(row);
-        
-        // Increase size if needed
-        wxClientDC dc(GetGridWindow());
-        dc.SetFont(GetDefaultCellFont());
-        wxSize size = dc.GetTextExtent(GetTable()->GetValue(row, FLC_CRITERIA_TEXT));
-        if(size.GetWidth() > GetColSize(FLC_CRITERIA_TEXT))
-          SetColSize(FLC_CRITERIA_TEXT, size.GetWidth() + 6);
+        CallAfter(&pwFiltersGrid::DoEditCriteria, row);
       }
     }
   }
   event.Skip();
+}
+void pwFiltersGrid::DoEditCriteria(int row)
+{
+  // Call editor on criteria field
+  if (GetCriterion(row)) { 
+    RefreshCell(row, FLC_CRITERIA_TEXT);
+    DoCheckFilterIsComplete(row);
+
+    // Increase size if needed
+    wxClientDC dc(GetGridWindow());
+    dc.SetFont(GetDefaultCellFont());
+    wxSize size = dc.GetTextExtent(GetTable()->GetValue(row, FLC_CRITERIA_TEXT));
+    if(size.GetWidth() > GetColSize(FLC_CRITERIA_TEXT)) {
+      SetColSize(FLC_CRITERIA_TEXT, size.GetWidth() + 6);
+    }
+  }
 }
 
 /*!
@@ -809,30 +816,30 @@ void pwFiltersGrid::UpdateMatchType(int row)
 
 /*!
  * GetCriterion calls the related editor dialog to fetch the parameter depending on the matching type
+ * @return true, if dialog wasn't canceled
  */
 
-void pwFiltersGrid::GetCriterion(int row)
+bool pwFiltersGrid::GetCriterion(int row)
 {
   FieldType ft = RowFieldType(row);
   PWSMatch::MatchType mt(RowMatchType(row));
   
   if(ft == FT_INVALID) {
     // Do nothing as long field type is not set (also no message dialog)
-    return;
+    return false;
   }
-  
+  int rc = wxID_CANCEL;
   switch(mt) {
     case PWSMatch::MT_STRING:
     {
       PWSMatch::MatchRule value = RowMatchRule(row);
-      wxString string = towxstring(FilterRow(row).fstring);
+      wxString fstring = towxstring(FilterRow(row).fstring);
       bool fcase = FilterRow(row).fcase;
       // Call Dialog
-      pwFiltersStringDlg dlg(this, RowFieldType(row), value, string, fcase);
-      int rc = dlg.ShowModal();
+      rc = ShowModalAndGetResult<pwFiltersStringDlg>(wxGetTopLevelParent(this), RowFieldType(row), &value, &fstring, &fcase);
       if(rc == wxID_OK) {
         SetRowMatchRule(row, value);
-        FilterRow(row).fstring = tostringx(string);
+        FilterRow(row).fstring = tostringx(fstring);
         FilterRow(row).fcase = fcase;
       }
       break;
@@ -840,17 +847,17 @@ void pwFiltersGrid::GetCriterion(int row)
     case PWSMatch::MT_PASSWORD:
     {
       PWSMatch::MatchRule value = RowMatchRule(row);
-      wxString string = towxstring(FilterRow(row).fstring);
+      wxString fstring = towxstring(FilterRow(row).fstring);
       bool fcase = FilterRow(row).fcase;
       int fnum1 = FilterRow(row).fnum1;
       // Call Dialog
-      pwFiltersPasswordDlg dlg(this, RowFieldType(row), value, string, fcase, fnum1);
-      int rc = dlg.ShowModal();
+      rc = ShowModalAndGetResult<pwFiltersPasswordDlg>(wxGetTopLevelParent(this), RowFieldType(row), &value, &fstring, &fcase, &fnum1);
       if(rc == wxID_OK) {
         SetRowMatchRule(row, value);
-        FilterRow(row).fstring = tostringx(string);
+        FilterRow(row).fstring = tostringx(fstring);
         FilterRow(row).fcase = fcase;
         FilterRow(row).fnum1 = fnum1;
+        return true;
       }
       break;
     }
@@ -860,8 +867,7 @@ void pwFiltersGrid::GetCriterion(int row)
       int fnum1 = FilterRow(row).fnum1;
       int fnum2 = FilterRow(row).fnum2;
       // Call Dialog
-      pwFiltersIntegerDlg dlg(this, RowFieldType(row), value, fnum1, fnum2);
-      int rc = dlg.ShowModal();
+      rc = ShowModalAndGetResult<pwFiltersIntegerDlg>(wxGetTopLevelParent(this), RowFieldType(row), &value, &fnum1, &fnum2);
       if(rc == wxID_OK) {
         SetRowMatchRule(row, value);
         FilterRow(row).fnum1 = fnum1;
@@ -878,8 +884,7 @@ void pwFiltersGrid::GetCriterion(int row)
       time_t fdate2 = FilterRow(row).fdate2;
       int fdatetype = FilterRow(row).fdatetype;
       // Call Dialog
-      pwFiltersDateDlg dlg(this, RowFieldType(row), value, fdate1, fdate2, fnum1, fnum2, fdatetype);
-      int rc = dlg.ShowModal();
+      rc = ShowModalAndGetResult<pwFiltersDateDlg>(wxGetTopLevelParent(this), RowFieldType(row), &value, &fdate1, &fdate2, &fnum1, &fnum2, &fdatetype);
       if(rc == wxID_OK) {
         SetRowMatchRule(row, value);
         FilterRow(row).fnum1 = fnum1;
@@ -894,8 +899,7 @@ void pwFiltersGrid::GetCriterion(int row)
     {
       PWSMatch::MatchRule value = RowMatchRule(row);
       // Call Dialog
-      pwFiltersBoolDlg dlg(this, RowFieldType(row), value);
-      int rc = dlg.ShowModal();
+      rc = ShowModalAndGetResult<pwFiltersBoolDlg>(wxGetTopLevelParent(this), RowFieldType(row), &value);
       if(rc == wxID_OK) {
         SetRowMatchRule(row, value);
       }
@@ -910,8 +914,7 @@ void pwFiltersGrid::GetCriterion(int row)
       // Set filter Name to current value
       filters.fname = static_cast<wxTextCtrl *>(GetParent()->FindWindow(ID_FILTERNAME))->GetValue().c_str();
       // Call Dialog
-      SetFiltersDlg dlg(this, &filters, nullptr, &bAppliedCalled, DFTYPE_PWHISTORY, m_filterpool, false, m_psMediaTypes);
-      int rc = dlg.ShowModal();
+      rc = ShowModalAndGetResult<SetFiltersDlg>(wxGetTopLevelParent(this), &filters, nullptr, &bAppliedCalled, DFTYPE_PWHISTORY, m_filterpool, false, m_psMediaTypes);
       if(rc == wxID_OK) {
         m_pfilters->vHfldata = filters.vHfldata;
         m_pfilters->num_Hactive = filters.num_Hactive;
@@ -928,8 +931,7 @@ void pwFiltersGrid::GetCriterion(int row)
       // Set filter Name to current value
       filters.fname = static_cast<wxTextCtrl *>(GetParent()->FindWindow(ID_FILTERNAME))->GetValue().c_str();
       // Call Dialog
-      SetFiltersDlg dlg(this, &filters, nullptr, &bAppliedCalled, DFTYPE_PWPOLICY, m_filterpool, false, m_psMediaTypes);
-      int rc = dlg.ShowModal();
+      rc = ShowModalAndGetResult<SetFiltersDlg>(wxGetTopLevelParent(this), &filters, nullptr, &bAppliedCalled, DFTYPE_PWPOLICY, m_filterpool, false, m_psMediaTypes);
       if(rc == wxID_OK) {
         m_pfilters->vPfldata = filters.vPfldata;
         m_pfilters->num_Pactive = filters.num_Pactive;
@@ -942,8 +944,7 @@ void pwFiltersGrid::GetCriterion(int row)
       PWSMatch::MatchRule value = RowMatchRule(row);
       CItemData::EntryType etype = FilterRow(row).etype;
       // Call Dialog
-      pwFiltersTypeDlg dlg(this, RowFieldType(row), value, etype);
-      int rc = dlg.ShowModal();
+      rc = ShowModalAndGetResult<pwFiltersTypeDlg>(wxGetTopLevelParent(this), RowFieldType(row), &value, &etype);
       if(rc == wxID_OK) {
         SetRowMatchRule(row, value);
         FilterRow(row).etype = etype;
@@ -956,8 +957,7 @@ void pwFiltersGrid::GetCriterion(int row)
       PWSMatch::MatchRule value = RowMatchRule(row);
       short fdca = FilterRow(row).fdca;
       // Call Dialog
-      pwFiltersDCADlg dlg(this, RowFieldType(row), value, fdca);
-      int rc = dlg.ShowModal();
+      rc = ShowModalAndGetResult<pwFiltersDCADlg>(wxGetTopLevelParent(this), RowFieldType(row), &value, &fdca);
       if(rc == wxID_OK) {
         SetRowMatchRule(row, value);
         FilterRow(row).fdca = fdca;
@@ -969,8 +969,7 @@ void pwFiltersGrid::GetCriterion(int row)
       PWSMatch::MatchRule value = RowMatchRule(row);
       CItemData::EntryStatus estatus = FilterRow(row).estatus;
       // Call Dialog
-      pwFiltersStatusDlg dlg(this, RowFieldType(row), value, estatus);
-      int rc = dlg.ShowModal();
+      rc = ShowModalAndGetResult<pwFiltersStatusDlg>(wxGetTopLevelParent(this), RowFieldType(row), &value, &estatus);
       if(rc == wxID_OK) {
         SetRowMatchRule(row, value);
         FilterRow(row).estatus = estatus;
@@ -984,8 +983,7 @@ void pwFiltersGrid::GetCriterion(int row)
       int fnum2 = FilterRow(row).fnum2;
       int funit = FilterRow(row).funit;
       // Call Dialog
-      pwFiltersIntegerDlg dlg(this, RowFieldType(row), value, fnum1, fnum2, &funit);
-      int rc = dlg.ShowModal();
+      rc = ShowModalAndGetResult<pwFiltersIntegerDlg>(wxGetTopLevelParent(this), RowFieldType(row), &value, &fnum1, &fnum2, &funit);
       if(rc == wxID_OK) {
         SetRowMatchRule(row, value);
         FilterRow(row).fnum1 = fnum1;
@@ -1003,8 +1001,7 @@ void pwFiltersGrid::GetCriterion(int row)
       // Set filter Name to current value
       filters.fname = static_cast<wxTextCtrl *>(GetParent()->FindWindow(ID_FILTERNAME))->GetValue().c_str();
       // Call Dialog
-      SetFiltersDlg dlg(this, &filters, nullptr, &bAppliedCalled, DFTYPE_ATTACHMENT, m_filterpool, false, m_psMediaTypes);
-      int rc = dlg.ShowModal();
+      rc = ShowModalAndGetResult<SetFiltersDlg>(wxGetTopLevelParent(this), &filters, nullptr, &bAppliedCalled, DFTYPE_ATTACHMENT, m_filterpool, false, m_psMediaTypes);
       if(rc == wxID_OK) {
         m_pfilters->vAfldata = filters.vAfldata;
         m_pfilters->num_Aactive = filters.num_Aactive;
@@ -1015,14 +1012,13 @@ void pwFiltersGrid::GetCriterion(int row)
     case PWSMatch::MT_MEDIATYPE:
     {
       PWSMatch::MatchRule value = RowMatchRule(row);
-      wxString string = towxstring(FilterRow(row).fstring);
+      wxString fstring = towxstring(FilterRow(row).fstring);
       bool fcase = FilterRow(row).fcase;
       // Call Dialog
-      pwFiltersMediaTypesDlg dlg(this, RowFieldType(row), value, string, fcase, m_psMediaTypes);
-      int rc = dlg.ShowModal();
+      rc = ShowModalAndGetResult<pwFiltersMediaTypesDlg>(wxGetTopLevelParent(this), RowFieldType(row), &value, &fstring, &fcase, m_psMediaTypes);
       if(rc == wxID_OK) {
         SetRowMatchRule(row, value);
-        FilterRow(row).fstring = tostringx(string);
+        FilterRow(row).fstring = tostringx(fstring);
         FilterRow(row).fcase = fcase;
       }
       break;
@@ -1030,6 +1026,7 @@ void pwFiltersGrid::GetCriterion(int row)
     default:
       break;
   }
+  return rc == wxID_OK;
 }
 
 /*!

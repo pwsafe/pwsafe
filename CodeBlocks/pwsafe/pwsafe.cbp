@@ -12,7 +12,6 @@
 				<Option object_output="obj/Debug64/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
-				<Option parameters="-s" />
 				<Option projectLinkerOptionsRelation="2" />
 				<Compiler>
 					<Add option="-m64" />
@@ -32,7 +31,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m64" />
-					<Add option="`wx-config --version=3.0 --libs --unicode=yes --debug=yes --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs adv,aui,base,core,html,net --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add library="core64d" />
 					<Add library="os64d" />
@@ -66,7 +65,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m32" />
-					<Add option="`wx-config --version=3.0 --libs --unicode=yes --debug=yes --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs adv,aui,base,core,html,net --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add library="core32d" />
 					<Add library="os32d" />
@@ -97,7 +96,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m64" />
-					<Add option="`wx-config --version=3.0 --libs --unicode=yes --debug=no --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs adv,aui,base,core,html,net --unicode=yes --debug=no --inplace`" />
 					<Add library="core64" />
 					<Add library="os64" />
 					<Add directory="../core" />
@@ -128,7 +127,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m32" />
-					<Add option="`wx-config --version=3.0 --libs --unicode=yes --debug=no --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs adv,aui,base,core,html,net --unicode=yes --debug=no --inplace`" />
 					<Add library="core32" />
 					<Add library="os32" />
 					<Add directory="../core" />
@@ -159,7 +158,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m64" />
-					<Add option="`wx-config --version=3.0 --libs --unicode=yes --debug=yes --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs adv,aui,base,core,html,net --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="`pkg-config --libs ykpers-1`" />
 					<Add option="`pkg-config --libs libqrencode`" />
@@ -194,7 +193,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m32" />
-					<Add option="`wx-config --version=3.0 --libs --unicode=yes --debug=yes --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs adv,aui,base,core,html,net --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="`pkg-config --libs ykpers-1`" />
 					<Add option="`pkg-config --libs libqrencode`" />
@@ -226,7 +225,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m64" />
-					<Add option="`wx-config --version=3.0 --libs --unicode=yes --debug=no --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs adv,aui,base,core,html,net --unicode=yes --debug=no --inplace`" />
 					<Add option="`pkg-config --libs ykpers-1`" />
 					<Add option="`pkg-config --libs libqrencode`" />
 					<Add library="core64y" />
@@ -258,7 +257,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-m32" />
-					<Add option="`wx-config --version=3.0 --libs --unicode=yes --debug=no --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs adv,aui,base,core,html,net --unicode=yes --debug=no --inplace`" />
 					<Add option="`pkg-config --libs ykpers-1`" />
 					<Add option="`pkg-config --libs libqrencode`" />
 					<Add library="core32y" />
@@ -297,7 +296,7 @@
 				<Linker>
 					<Add option="-fsanitize=address" />
 					<Add option="-m64" />
-					<Add option="`wx-config --version=3.0 --libs --unicode=yes --debug=no --inplace`" />
+					<Add option="`wx-config --version=3.0 --libs adv,aui,base,core,html,net --unicode=yes --debug=no --inplace`" />
 					<Add option="`pkg-config --libs ykpers-1`" />
 					<Add option="`pkg-config --libs libqrencode`" />
 					<Add library="core64y" />
@@ -315,13 +314,12 @@
 			<Add option="-Wundef" />
 			<Add option="-Wfloat-equal" />
 			<Add option="-Wunreachable-code" />
-			<Add option="-Wmissing-include-dirs" />
 			<Add option="-Wswitch-default" />
-			<Add option="-Wzero-as-null-pointer-constant" />
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
 			<Add option="-std=c11" />
 			<Add option="-fPIC" />
+			<Add option="-Wmissing-include-dirs" />
 			<Add option="-std=c++11" />
 			<Add option="-Wformat=2" />
 			<Add option="-Wno-unused-local-typedefs" />
@@ -331,7 +329,6 @@
 			<Add option="-Wduplicated-cond" />
 			<Add option="-Winvalid-pch" />
 			<Add option="-Wlogical-op" />
-			<Add option="-Wno-shadow-field-in-constructor" />
 			<Add option="-DUNICODE" />
 		</Compiler>
 		<Linker>
@@ -478,6 +475,8 @@
 			<Option target="Release_L32Y" />
 			<Option target="Release_L64YClang" />
 		</Unit>
+		<Unit filename="../../src/ui/wxWidgets/QueryCancelDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/QueryCancelDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/RecentDbList.h" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationChangeDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationChangeDlg.h" />
@@ -489,6 +488,8 @@
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationPromptDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationSetupDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/SafeCombinationSetupDlg.h" />
+		<Unit filename="../../src/ui/wxWidgets/SelectAliasDlg.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/SelectAliasDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/SelectionCriteria.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/SelectionCriteria.h" />
 		<Unit filename="../../src/ui/wxWidgets/SetFiltersDlg.cpp" />

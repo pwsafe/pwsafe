@@ -29,13 +29,13 @@
 
 class ViewAttachmentDlg: public wxDialog
 {
-  public:
-
-    ViewAttachmentDlg(wxWindow* parent, wxWindowID id = -1);
-    virtual ~ViewAttachmentDlg();
+public:
+    static ViewAttachmentDlg* Create(wxWindow *parent, wxWindowID id = -1);
+    virtual ~ViewAttachmentDlg() = default;
 
     bool LoadImage(const CItemAtt &itemAttachment);
-
+protected:
+    ViewAttachmentDlg(wxWindow *parent, wxWindowID id);
 private:
 
     //(*Handlers(ViewAttachmentDlg)

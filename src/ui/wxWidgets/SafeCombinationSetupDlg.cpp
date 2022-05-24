@@ -67,24 +67,9 @@ END_EVENT_TABLE()
 /*!
  * SafeCombinationSetupDlg constructors
  */
-
-SafeCombinationSetupDlg::SafeCombinationSetupDlg()
+SafeCombinationSetupDlg::SafeCombinationSetupDlg(wxWindow *parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
 {
-  Init();
-}
-
-SafeCombinationSetupDlg::SafeCombinationSetupDlg( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
-  Init();
-  Create(parent, id, caption, pos, size, style);
-}
-
-/*!
- * SafeCombinationSetupDlg creator
- */
-
-bool SafeCombinationSetupDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
+  wxASSERT(!parent || parent->IsTopLevel());
 ////@begin SafeCombinationSetupDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
@@ -101,7 +86,11 @@ bool SafeCombinationSetupDlg::Create( wxWindow* parent, wxWindowID id, const wxS
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
   m_pollingTimer->Start(YubiMixin::POLLING_INTERVAL);
 #endif
-  return true;
+}
+
+SafeCombinationSetupDlg* SafeCombinationSetupDlg::Create(wxWindow *parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+{
+  return new SafeCombinationSetupDlg(parent, id, caption, pos, size, style);
 }
 
 /*!
@@ -115,20 +104,6 @@ SafeCombinationSetupDlg::~SafeCombinationSetupDlg()
 #ifndef NO_YUBI
   delete m_pollingTimer;
 #endif
-}
-
-/*!
- * Member initialisation
- */
-
-void SafeCombinationSetupDlg::Init()
-{
-////@begin SafeCombinationSetupDlg member initialisation
-#ifndef NO_YUBI
-  m_YubiBtn = nullptr;
-  m_yubiStatusCtrl = nullptr;
-#endif
-////@end SafeCombinationSetupDlg member initialisation
 }
 
 /*!

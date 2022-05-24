@@ -83,30 +83,18 @@ END_EVENT_TABLE()
 /*!
  * SafeCombinationEntryDlg constructors
  */
-
-SafeCombinationEntryDlg::SafeCombinationEntryDlg(PWScore &core)
-: m_core(core), m_tries(0)
-{
-  Init();
-}
-
-SafeCombinationEntryDlg::SafeCombinationEntryDlg(wxWindow* parent, PWScore &core,
+SafeCombinationEntryDlg::SafeCombinationEntryDlg(wxWindow *parent, PWScore &core,
                                              wxWindowID id,
                                              const wxString& caption,
                                              const wxPoint& pos,
                                              const wxSize& size, long style)
-  : m_core(core), m_tries(0)
+  : m_core(core)
 {
-  Init();
-  Create(parent, id, caption, pos, size, style);
-}
+  wxASSERT(!parent || parent->IsTopLevel());
 
-/*!
- * SafeCombinationEntryDlg creator
- */
+  m_readOnly = m_core.IsReadOnly() || PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
+  m_filename = m_core.GetCurFile().c_str();
 
-bool SafeCombinationEntryDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
 ////@begin SafeCombinationEntryDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
@@ -129,7 +117,12 @@ bool SafeCombinationEntryDlg::Create( wxWindow* parent, wxWindowID id, const wxS
   m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
   m_pollingTimer->Start(YubiMixin::POLLING_INTERVAL);
 #endif
-  return true;
+}
+
+SafeCombinationEntryDlg* SafeCombinationEntryDlg::Create(wxWindow *parent, PWScore &core,
+  wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style)
+{
+  return new SafeCombinationEntryDlg(parent, core, id, caption, pos, size, style);
 }
 
 /*!
@@ -143,27 +136,6 @@ SafeCombinationEntryDlg::~SafeCombinationEntryDlg()
 #ifndef NO_YUBI
   delete m_pollingTimer;
 #endif
-}
-
-/*!
- * Member initialisation
- */
-
-void SafeCombinationEntryDlg::Init()
-{
-  m_readOnly = m_core.IsReadOnly() || PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
-  m_filename = m_core.GetCurFile().c_str();
-  m_ellipsizedFilename = wxEmptyString;
-////@begin SafeCombinationEntryDlg member initialisation
-  m_version = nullptr;
-  m_filenameCB = nullptr;
-  m_combinationEntry = nullptr;
-#ifndef NO_YUBI
-  m_YubiBtn = nullptr;
-  m_yubiStatusCtrl = nullptr;
-#endif
-  m_postInitDone = false;
-////@end SafeCombinationEntryDlg member initialisation
 }
 
 /*!
@@ -538,6 +510,11 @@ void SafeCombinationEntryDlg::OnEllipsisClick(wxCommandEvent& WXUNUSED(evt))
 
 void SafeCombinationEntryDlg::OnNewDbClick(wxCommandEvent& WXUNUSED(evt))
 {
+  CallAfter(&SafeCombinationEntryDlg::DoNewDbClick);
+}
+
+void SafeCombinationEntryDlg::DoNewDbClick()
+{
   // 1. Get a filename from a file dialog box
   // 2. Get a password
   // 3. Set m_filespec && m_passkey to returned value!
@@ -570,10 +547,11 @@ void SafeCombinationEntryDlg::OnNewDbClick(wxCommandEvent& WXUNUSED(evt))
       return;
   }
   // 2. Get a password
-  SafeCombinationSetupDlg pksetup(this);
-  int rc = pksetup.ShowModal();
 
-  if (rc != wxID_OK)
+  DestroyWrapper<SafeCombinationSetupDlg> pksetupWrapper(this);
+  SafeCombinationSetupDlg* pksetup = pksetupWrapper.Get();
+
+  if (pksetup->ShowModal() != wxID_OK)
     return;  //User cancelled password entry
 
   // 3. Set m_filespec && m_passkey to returned value!
@@ -611,8 +589,8 @@ void SafeCombinationEntryDlg::OnNewDbClick(wxCommandEvent& WXUNUSED(evt))
   }
 
   m_core.SetReadOnly(false); // new file can't be read-only...
-  m_core.NewFile(tostringx(pksetup.GetPassword()));
-  m_password = tostringx(pksetup.GetPassword());
+  m_core.NewFile(tostringx(pksetup->GetPassword()));
+  m_password = tostringx(pksetup->GetPassword());
 
   if (m_core.WriteCurFile() == PWSfile::SUCCESS) {
     wxGetApp().recentDatabases().AddFileToHistory(newfile);

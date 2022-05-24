@@ -144,25 +144,20 @@ const wxString DCAStrings[] = {
 /*!
  * OptionsPropertySheetDlg constructors
  */
-
-OptionsPropertySheetDlg::OptionsPropertySheetDlg(PWScore &core) : m_core(core)
-{
-  Init();
-}
-
-OptionsPropertySheetDlg::OptionsPropertySheetDlg( wxWindow* parent, PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
+OptionsPropertySheetDlg::OptionsPropertySheetDlg(wxWindow *parent, PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
   : m_core(core)
 {
-  Init();
-  Create(parent, id, caption, pos, size, style);
-}
+  const wxSize imageSize(64, 64);
 
-/*!
- * OptionsPropertySheetDlg creator
- */
+  m_ImageList = new wxImageList(imageSize.GetWidth(), imageSize.GetHeight());
+  m_ImageList->Add(wxIcon(backups_xpm));        // https://www.pngrepo.com/svg/224774/database
+  m_ImageList->Add(wxIcon(display_xpm));        // https://www.pngrepo.com/svg/131986/computer
+  m_ImageList->Add(wxIcon(miscellaneous_xpm));  // https://www.pngrepo.com/svg/230756/test
+  m_ImageList->Add(wxIcon(history_xpm));        // https://www.pngrepo.com/svg/95031/file
+  m_ImageList->Add(wxIcon(security_xpm));       // https://www.pngrepo.com/svg/219291/security-shield
+  m_ImageList->Add(wxIcon(shortcuts_xpm));      // https://www.pngrepo.com/svg/153991/keyboard
+  m_ImageList->Add(wxIcon(system_xpm));         // https://www.pngrepo.com/svg/230728/settings-gear
 
-bool OptionsPropertySheetDlg::Create( wxWindow* parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style )
-{
 ////@begin OptionsPropertySheetDlg creation
   SetSheetStyle(wxPROPSHEET_LISTBOOK);
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
@@ -176,7 +171,11 @@ bool OptionsPropertySheetDlg::Create( wxWindow* parent, wxWindowID id, const wxS
 ////@end OptionsPropertySheetDlg creation
   wxCommandEvent dummyEv;
   OnSuffixCBSet(dummyEv);
-  return true;
+}
+
+OptionsPropertySheetDlg* OptionsPropertySheetDlg::Create(wxWindow *parent, PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style)
+{
+  return new OptionsPropertySheetDlg(parent, core, id, caption, pos, size, style);
 }
 
 /*!
@@ -188,72 +187,6 @@ OptionsPropertySheetDlg::~OptionsPropertySheetDlg()
 ////@begin OptionsPropertySheetDlg destruction
 ////@end OptionsPropertySheetDlg destruction
   delete m_ImageList;
-}
-
-/*!
- * Member initialisation
- */
-
-void OptionsPropertySheetDlg::Init()
-{
-////@begin OptionsPropertySheetDlg member initialisation
-  m_Backups_Panel = nullptr;
-  m_Backups_DefaultPrefixRB = nullptr;
-  m_Backups_UserPrefixRB = nullptr;
-  m_Backups_UserPrefixTXT = nullptr;
-  m_Backups_SuffixCB = nullptr;
-  m_Backups_MaxIncrSB = nullptr;
-  m_Backups_SuffixExampleST = nullptr;
-  m_Backups_DefaultDirRB = nullptr;
-  m_Backups_UserDirRB = nullptr;
-  m_Backups_UserDirTXT = nullptr;
-  m_Backups_DirBN = nullptr;
-
-  m_Display_Panel = nullptr;
-  m_Display_ShowPasswordInTreeCB = nullptr;
-  m_Display_PreExpiryWarnCB = nullptr;
-  m_Display_PreExpiryWarnDaysSB = nullptr;
-
-  m_Misc_Panel = nullptr;
-  m_Misc_DoubleClickActionCB = nullptr;
-  m_Misc_ShiftDoubleClickActionCB = nullptr;
-  m_Misc_DefaultUsernameTXT = nullptr;
-  m_Misc_DefaultUsernameLBL = nullptr;
-
-  m_PasswordHistory_Panel = nullptr;
-  m_PasswordHistory_SaveCB = nullptr;
-  m_PasswordHistory_NumDefaultSB = nullptr;
-  m_PasswordHistory_DefaultExpiryDaysSB = nullptr;
-  m_PasswordHistory_ApplyBN = nullptr;
-  m_PasswordHistory_NoChangeRB = nullptr;
-  m_PasswordHistory_StopRB = nullptr;
-  m_PasswordHistory_StartRB = nullptr;
-  m_PasswordHistory_SetMaxRB = nullptr;
-  m_PasswordHistory_ClearRB = nullptr;
-  m_PasswordHistory_Apply2ProtectedCB = nullptr;
-
-  m_Security_Panel = nullptr;
-  m_Security_LockOnIdleTimeoutCB = nullptr;
-  m_Security_IdleTimeoutSB = nullptr;
-
-  m_Shortcuts_Panel = nullptr;
-
-  m_System_Panel = nullptr;
-  m_System_UseSystemTrayCB = nullptr;
-  m_System_MaxREItemsSB = nullptr;
-  m_System_SystemTrayWarningST = nullptr;
-////@end OptionsPropertySheetDlg member initialisation
-
-  const wxSize imageSize(64, 64);
-
-  m_ImageList = new wxImageList(imageSize.GetWidth(), imageSize.GetHeight());
-  m_ImageList->Add(wxIcon(backups_xpm));        // https://www.pngrepo.com/svg/224774/database
-  m_ImageList->Add(wxIcon(display_xpm));        // https://www.pngrepo.com/svg/131986/computer
-  m_ImageList->Add(wxIcon(miscellaneous_xpm));  // https://www.pngrepo.com/svg/230756/test
-  m_ImageList->Add(wxIcon(history_xpm));        // https://www.pngrepo.com/svg/95031/file
-  m_ImageList->Add(wxIcon(security_xpm));       // https://www.pngrepo.com/svg/219291/security-shield
-  m_ImageList->Add(wxIcon(shortcuts_xpm));      // https://www.pngrepo.com/svg/153991/keyboard
-  m_ImageList->Add(wxIcon(system_xpm));         // https://www.pngrepo.com/svg/230728/settings-gear
 }
 
 /*!

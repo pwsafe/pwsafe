@@ -25,10 +25,8 @@
 class FieldSelectionDlg : public wxDialog
 {
   DECLARE_EVENT_TABLE()
-
 public:
-  FieldSelectionDlg(wxWindow* parent,
-                    const CItemData::FieldType* available, size_t navail,
+  static FieldSelectionDlg* Create(wxWindow *parent, const CItemData::FieldType* available, size_t navail,
                     const CItemData::FieldType* mandatory, size_t nmandatory,
                     FieldSet& userSelection,
                     const wxString& operation,  //something like "search", or "merge" or "compare"
@@ -37,6 +35,17 @@ public:
                     const wxString& validationTitle = wxEmptyString,
                     const wxString& title = wxEmptyString,
                     const wxString& staticText = wxEmptyString);
+
+protected:
+  FieldSelectionDlg(wxWindow *parent, const CItemData::FieldType* available, size_t navail,
+                    const CItemData::FieldType* mandatory, size_t nmandatory,
+                    FieldSet& userSelection,
+                    const wxString& operation,  //something like "search", or "merge" or "compare"
+                    // These would be constructed from 'operation' if not provided explicitly
+                    const wxString& validationMessage, 
+                    const wxString& validationTitle,
+                    const wxString& title,
+                    const wxString& staticText);
   
   void OnInitDialog(wxInitDialogEvent& evt);
   void OnRelayoutDlg(wxCommandEvent& evt);  

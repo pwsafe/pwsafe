@@ -28,6 +28,7 @@
 #include <wx/versioninfo.h>
 
 #include "core/PWScore.h"
+#include "PWSafeApp.h"
 
 #include "wxUtilities.h"
 
@@ -73,70 +74,6 @@ int ReadCore(PWScore& othercore, const wxString& file, const StringX& combinatio
   }
 
   return rc;
-}
-
-int CountTopLevelWindowRecursively(wxTopLevelWindow* win)
-{
-  if (!win)
-    return 0;
-  int count = 1;
-  wxWindowList& children = win->GetChildren();
-  for(wxWindowList::iterator itr = children.begin(); itr != children.end(); ++itr) {
-    if ((*itr)->IsTopLevel()) {
-      count += CountTopLevelWindowRecursively(wxDynamicCast(*itr, wxTopLevelWindow));
-    }
-  }
-  return count;
-}
-
-void CloseChildWindowRecursively(wxTopLevelWindow* win, wxTopLevelWindow* top)
-{
-  if (!win)
-    return;
-  wxWindowList& children = win->GetChildren();
-  for(wxWindowList::iterator itr = children.begin(); itr != children.end(); ++itr) {
-    if ((*itr)->IsTopLevel()) {
-      CloseChildWindowRecursively(wxDynamicCast(*itr, wxTopLevelWindow), top);
-    }
-  }
-  if(win != top) {
-    wxCommandEvent evt(wxEVT_CLOSE_WINDOW);
-    wxPostEvent(win, evt);
-  }
-}
-
-void HideWindowRecursively(wxTopLevelWindow* win)
-{
-  if (!win)
-    return;
-  wxWindowList& children = win->GetChildren();
-  for(wxWindowList::iterator itr = children.begin(); itr != children.end(); ++itr) {
-    if ((*itr)->IsTopLevel() && (*itr)->IsShown()) {
-      HideWindowRecursively(wxDynamicCast(*itr, wxTopLevelWindow));
-    }
-  }
-
-  //Don't call Hide() here, which just calls Show(false), which is overridden in
-  //derived classes, and wxDialog actually cancels the modal loop and closes the window
-  win->wxWindow::Show(false);
-}
-
-void ShowWindowRecursively(wxTopLevelWindow* win)
-{
-  if (!win)
-    return;
-  // Handle at first to ensure Show() in the reverse order of Hide()'ing
-  wxASSERT(win->IsTopLevel());
-  win->wxWindow::Show(true);
-  win->Raise();
-  win->Update();
-  
-  wxWindowList& children = win->GetChildren();
-  for(wxWindowList::iterator itr = children.begin(); itr != children.end(); ++itr) {
-    if ((*itr)->IsTopLevel()) {
-      ShowWindowRecursively(wxDynamicCast(*itr, wxTopLevelWindow));
-    }
-  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -636,4 +573,9 @@ void ImagePanel::DrawBitmapCentered(wxDC &dc, const wxSize &drawAreaSize, const 
   int yCenterPosition = (drawAreaSize.GetHeight() - imageSize.GetHeight()) / 2;
 
   dc.DrawBitmap(m_Bitmap, xCenterPosition, yCenterPosition, false);
+}
+
+bool IsCloseInProgress()
+{
+  return wxGetApp().IsCloseInProgress();
 }

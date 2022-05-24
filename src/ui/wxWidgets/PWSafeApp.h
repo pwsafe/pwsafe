@@ -98,6 +98,7 @@ public:
 
   wxIconBundle GetAppIcons() const { return m_appIcons; }
 
+  bool IsCloseInProgress() const;
 private:
   PWScore m_core;
   wxTimer *m_idleTimer;

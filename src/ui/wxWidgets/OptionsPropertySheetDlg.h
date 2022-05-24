@@ -150,17 +150,13 @@ class OptionsPropertySheetDlg : public wxPropertySheetDialog
 
 public:
   /// Constructors
-  OptionsPropertySheetDlg(PWScore &core);
-  OptionsPropertySheetDlg( wxWindow* parent, PWScore &core, wxWindowID id = SYMBOL_COPTIONS_IDNAME, const wxString& caption = SYMBOL_COPTIONS_TITLE, const wxPoint& pos = SYMBOL_COPTIONS_POSITION, const wxSize& size = SYMBOL_COPTIONS_SIZE, long style = SYMBOL_COPTIONS_STYLE );
-
-  /// Creation
-  bool Create( wxWindow* parent, wxWindowID id = SYMBOL_COPTIONS_IDNAME, const wxString& caption = SYMBOL_COPTIONS_TITLE, const wxPoint& pos = SYMBOL_COPTIONS_POSITION, const wxSize& size = SYMBOL_COPTIONS_SIZE, long style = SYMBOL_COPTIONS_STYLE );
+  static OptionsPropertySheetDlg* Create(wxWindow *parent, PWScore &core, wxWindowID id = SYMBOL_COPTIONS_IDNAME, const wxString& caption = SYMBOL_COPTIONS_TITLE, const wxPoint& pos = SYMBOL_COPTIONS_POSITION, const wxSize& size = SYMBOL_COPTIONS_SIZE, long style = SYMBOL_COPTIONS_STYLE );
 
   /// Destructor
   ~OptionsPropertySheetDlg();
-
-  /// Initialises member variables
-  void Init();
+protected:
+  /// Constructors
+  OptionsPropertySheetDlg(wxWindow *parent, PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Creates the controls and sizers
   void CreateControls();
@@ -200,11 +196,12 @@ public:
   /// wxEVT_UPDATE_UI event handler for all command ids
   void OnUpdateUI(wxUpdateUIEvent& evt);
 
+  void OnOk(wxCommandEvent& evt);
 ////@end OptionsPropertySheetDlg event handler declarations
 
   /// wxEVT_COMMAND_BOOKCTRL_PAGE_CHANGING event handler for all pages (wxID_ANY)
   void OnPageChanging(wxBookCtrlEvent& evt);
-
+public:
 ////@begin OptionsPropertySheetDlg member function declarations
   uint32 GetHashItersValue() const { return m_hashIterValue; }
 
@@ -214,11 +211,8 @@ public:
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
 ////@end OptionsPropertySheetDlg member function declarations
-  void OnOk(wxCommandEvent& evt);
   /// Should we show tooltips?
   static bool ShowToolTips();
-
-
 private:
   void PrefsToPropSheet();
   void PropSheetToPrefs();
@@ -236,61 +230,61 @@ private:
 ////@begin OptionsPropertySheetDlg member variables
 private:
   // Tab Icons
-  wxImageList*    m_ImageList;
+  wxImageList*    m_ImageList = nullptr;
 
   // Tab: "Backups"
-  wxPanel*        m_Backups_Panel;
-  wxRadioButton*  m_Backups_DefaultPrefixRB;
-  wxRadioButton*  m_Backups_UserPrefixRB;
-  wxTextCtrl*     m_Backups_UserPrefixTXT;
-  wxComboBox*     m_Backups_SuffixCB;
-  wxSpinCtrl*     m_Backups_MaxIncrSB;
-  wxStaticText*   m_Backups_SuffixExampleST;
-  wxRadioButton*  m_Backups_DefaultDirRB;
-  wxRadioButton*  m_Backups_UserDirRB;
-  wxTextCtrl*     m_Backups_UserDirTXT;
-  wxButton*       m_Backups_DirBN;
+  wxPanel*        m_Backups_Panel = nullptr;
+  wxRadioButton*  m_Backups_DefaultPrefixRB = nullptr;
+  wxRadioButton*  m_Backups_UserPrefixRB = nullptr;
+  wxTextCtrl*     m_Backups_UserPrefixTXT = nullptr;
+  wxComboBox*     m_Backups_SuffixCB = nullptr;
+  wxSpinCtrl*     m_Backups_MaxIncrSB = nullptr;
+  wxStaticText*   m_Backups_SuffixExampleST = nullptr;
+  wxRadioButton*  m_Backups_DefaultDirRB = nullptr;
+  wxRadioButton*  m_Backups_UserDirRB = nullptr;
+  wxTextCtrl*     m_Backups_UserDirTXT = nullptr;
+  wxButton*       m_Backups_DirBN = nullptr;
 
   // Tab: "Display"
-  wxPanel*        m_Display_Panel;
-  wxCheckBox*     m_Display_ShowPasswordInTreeCB;
-  wxCheckBox*     m_Display_PreExpiryWarnCB;
-  wxSpinCtrl*     m_Display_PreExpiryWarnDaysSB;
+  wxPanel*        m_Display_Panel = nullptr;
+  wxCheckBox*     m_Display_ShowPasswordInTreeCB = nullptr;
+  wxCheckBox*     m_Display_PreExpiryWarnCB = nullptr;
+  wxSpinCtrl*     m_Display_PreExpiryWarnDaysSB = nullptr;
 
   // Tab: "Miscellaneous"
-  wxPanel*        m_Misc_Panel;
-  wxComboBox*     m_Misc_DoubleClickActionCB;
-  wxComboBox*     m_Misc_ShiftDoubleClickActionCB;
-  wxTextCtrl*     m_Misc_DefaultUsernameTXT;
-  wxStaticText*   m_Misc_DefaultUsernameLBL;
+  wxPanel*        m_Misc_Panel = nullptr;
+  wxComboBox*     m_Misc_DoubleClickActionCB = nullptr;
+  wxComboBox*     m_Misc_ShiftDoubleClickActionCB = nullptr;
+  wxTextCtrl*     m_Misc_DefaultUsernameTXT = nullptr;
+  wxStaticText*   m_Misc_DefaultUsernameLBL = nullptr;
   wxString        m_Misc_OtherBrowserLocationparams;
 
   // Tab: "Password History"
-  wxPanel*        m_PasswordHistory_Panel;
-  wxCheckBox*     m_PasswordHistory_SaveCB;
-  wxSpinCtrl*     m_PasswordHistory_NumDefaultSB;
-  wxSpinCtrl*     m_PasswordHistory_DefaultExpiryDaysSB;
-  wxRadioButton*  m_PasswordHistory_NoChangeRB;
-  wxRadioButton*  m_PasswordHistory_StopRB;
-  wxRadioButton*  m_PasswordHistory_StartRB;
-  wxRadioButton*  m_PasswordHistory_SetMaxRB;
-  wxRadioButton*  m_PasswordHistory_ClearRB;
-  wxButton*       m_PasswordHistory_ApplyBN;
-  wxCheckBox*     m_PasswordHistory_Apply2ProtectedCB;
+  wxPanel*        m_PasswordHistory_Panel = nullptr;
+  wxCheckBox*     m_PasswordHistory_SaveCB = nullptr;
+  wxSpinCtrl*     m_PasswordHistory_NumDefaultSB = nullptr;
+  wxSpinCtrl*     m_PasswordHistory_DefaultExpiryDaysSB = nullptr;
+  wxRadioButton*  m_PasswordHistory_NoChangeRB = nullptr;
+  wxRadioButton*  m_PasswordHistory_StopRB = nullptr;
+  wxRadioButton*  m_PasswordHistory_StartRB = nullptr;
+  wxRadioButton*  m_PasswordHistory_SetMaxRB = nullptr;
+  wxRadioButton*  m_PasswordHistory_ClearRB = nullptr;
+  wxButton*       m_PasswordHistory_ApplyBN = nullptr;
+  wxCheckBox*     m_PasswordHistory_Apply2ProtectedCB = nullptr;
 
   // Tab: "Security"
-  wxPanel*        m_Security_Panel;
-  wxCheckBox*     m_Security_LockOnIdleTimeoutCB;
-  wxSpinCtrl*     m_Security_IdleTimeoutSB;
+  wxPanel*        m_Security_Panel = nullptr;
+  wxCheckBox*     m_Security_LockOnIdleTimeoutCB = nullptr;
+  wxSpinCtrl*     m_Security_IdleTimeoutSB = nullptr;
 
   // Tab: "Shortcuts"
-  wxPanel*        m_Shortcuts_Panel;
+  wxPanel*        m_Shortcuts_Panel = nullptr;
 
   // Tab: "System"
-  wxPanel*        m_System_Panel;
-  wxCheckBox*     m_System_UseSystemTrayCB;
-  wxSpinCtrl*     m_System_MaxREItemsSB;
-  wxStaticText*   m_System_SystemTrayWarningST;
+  wxPanel*        m_System_Panel = nullptr;
+  wxCheckBox*     m_System_UseSystemTrayCB = nullptr;
+  wxSpinCtrl*     m_System_MaxREItemsSB = nullptr;
+  wxStaticText*   m_System_SystemTrayWarningST = nullptr;
 
   uint32 m_hashIterValue;
   int m_DoubleClickAction;

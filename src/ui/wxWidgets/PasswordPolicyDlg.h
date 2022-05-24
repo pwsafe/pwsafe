@@ -24,6 +24,7 @@
 #include "core/coredefs.h"
 #include "core/PWPolicy.h"
 #include "core/PWScore.h"
+#include "QueryCancelDlg.h"
 
 /*!
  * Forward declarations
@@ -76,28 +77,29 @@ class wxSpinCtrl;
  * PasswordPolicyDlg class declaration
  */
 
-class PasswordPolicyDlg : public wxDialog
+class PasswordPolicyDlg : public QueryCancelDlg
 {
   DECLARE_EVENT_TABLE()
 
 public:
   enum class DialogType { EDITOR, GENERATOR };
-
-  /// Constructors
-  PasswordPolicyDlg( wxWindow* parent, PWScore &core,
+  static PasswordPolicyDlg* Create(wxWindow *parent, PWScore &core,
                    const PSWDPolicyMap &polmap,
                    DialogType type = DialogType::EDITOR,
                    wxWindowID id = SYMBOL_PASSWORDPOLICYDLG_IDNAME,
                    const wxString& caption = SYMBOL_PASSWORDPOLICYDLG_TITLE,
                    const wxPoint& pos = SYMBOL_PASSWORDPOLICYDLG_POSITION,
                    const wxSize& size = SYMBOL_PASSWORDPOLICYDLG_SIZE,
-                   long style = SYMBOL_PASSWORDPOLICYDLG_STYLE );
-
-  /// Creation
-  bool Create( wxWindow* parent, DialogType type = DialogType::EDITOR, wxWindowID id = SYMBOL_PASSWORDPOLICYDLG_IDNAME, const wxString& caption = SYMBOL_PASSWORDPOLICYDLG_TITLE, const wxPoint& pos = SYMBOL_PASSWORDPOLICYDLG_POSITION, const wxSize& size = SYMBOL_PASSWORDPOLICYDLG_SIZE, long style = SYMBOL_PASSWORDPOLICYDLG_STYLE );
-
+                   long style = SYMBOL_PASSWORDPOLICYDLG_STYLE);
+                   
   /// Destructor
-  ~PasswordPolicyDlg();
+  ~PasswordPolicyDlg() = default;
+protected:
+  /// Constructors
+  PasswordPolicyDlg(wxWindow *parent, PWScore &core,
+                   const PSWDPolicyMap &polmap,
+                   DialogType type, wxWindowID id,
+                   const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Initialises member variables
   void Init();
@@ -131,9 +133,6 @@ public:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOkClick( wxCommandEvent& event );
 
-  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
-  void OnCancelClick( wxCommandEvent& event );
-
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP
   void OnHelpClick( wxCommandEvent& event );
 
@@ -154,6 +153,7 @@ public:
 
 ////@end PasswordPolicyDlg event handler declarations
 
+public:
 ////@begin PasswordPolicyDlg member function declarations
 
   wxString GetSymbols() const { return m_Symbols ; }
@@ -203,6 +203,7 @@ public:
 
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
+
 ////@end PasswordPolicyDlg member function declarations
   void SetPolicyData(const wxString &polname, const PWPolicy &pol);
   void GetPolicyData(wxString &polname, PWPolicy &pol)
@@ -214,33 +215,50 @@ public:
 private:
   void EnableSizerChildren(wxSizer* sizer, bool state);
 
+  bool SyncAndQueryCancel(bool showDialog) override;
+
+  enum Changes : uint32_t {
+    None = 0,
+    Flags = 1u,
+    Length = 1u << 1,
+    DigitMinLength = 1u << 2,
+    LowerMinLength = 1u << 3,
+    SymbolMinLength = 1u << 4,
+    UpperMinLength = 1u << 5,
+    Symbols = 1u << 6,
+    Name = 1u << 7
+  };
+
+  uint32_t GetChanges() const;
+  bool IsChanged() const override;
+
 ////@begin PasswordPolicyDlg member variables
   /* Controls for DialogType EDITOR */
-  wxSpinCtrl* m_pwpLenCtrl;
-  wxGridSizer* m_pwMinsGSzr;
-  wxCheckBox* m_pwpUseLowerCtrl;
-  wxBoxSizer* m_pwNumLCbox;
-  wxSpinCtrl* m_pwpLCSpin;
-  wxCheckBox* m_pwpUseUpperCtrl;
-  wxBoxSizer* m_pwNumUCbox;
-  wxSpinCtrl* m_pwpUCSpin;
-  wxCheckBox* m_pwpUseDigitsCtrl;
-  wxBoxSizer* m_pwNumDigbox;
-  wxSpinCtrl* m_pwpDigSpin;
-  wxCheckBox* m_pwpSymCtrl;
-  wxBoxSizer* m_pwNumSymbox;
-  wxSpinCtrl* m_pwpSymSpin;
-  wxTextCtrl* m_OwnSymbols;
-  wxCheckBox* m_pwpEasyCtrl;
-  wxCheckBox* m_pwpPronounceCtrl;
-  wxCheckBox* m_pwpHexCtrl;
+  wxSpinCtrl* m_pwpLenCtrl = nullptr;
+  wxGridSizer* m_pwMinsGSzr = nullptr;
+  wxCheckBox* m_pwpUseLowerCtrl = nullptr;
+  wxBoxSizer* m_pwNumLCbox = nullptr;
+  wxSpinCtrl* m_pwpLCSpin = nullptr;
+  wxCheckBox* m_pwpUseUpperCtrl = nullptr;
+  wxBoxSizer* m_pwNumUCbox = nullptr;
+  wxSpinCtrl* m_pwpUCSpin = nullptr;
+  wxCheckBox* m_pwpUseDigitsCtrl = nullptr;
+  wxBoxSizer* m_pwNumDigbox = nullptr;
+  wxSpinCtrl* m_pwpDigSpin = nullptr;
+  wxCheckBox* m_pwpSymCtrl = nullptr;
+  wxBoxSizer* m_pwNumSymbox = nullptr;
+  wxSpinCtrl* m_pwpSymSpin = nullptr;
+  wxTextCtrl* m_OwnSymbols = nullptr;
+  wxCheckBox* m_pwpEasyCtrl = nullptr;
+  wxCheckBox* m_pwpPronounceCtrl = nullptr;
+  wxCheckBox* m_pwpHexCtrl = nullptr;
 
   /* Additional controls for DialogType GENERATOR */
-  wxCheckBox* m_UseDatabasePolicyCtrl;
-  wxComboBox* m_PoliciesSelectionCtrl;
-  wxTextCtrl* m_passwordCtrl;
+  wxCheckBox* m_UseDatabasePolicyCtrl = nullptr;
+  wxComboBox* m_PoliciesSelectionCtrl = nullptr;
+  wxTextCtrl* m_passwordCtrl = nullptr;
   wxArrayString m_Policynames;
-  wxStaticBoxSizer* m_itemStaticBoxSizer6;
+  wxStaticBoxSizer* m_itemStaticBoxSizer6  = nullptr;;
 
   wxString m_Symbols;
   wxString m_polname;
@@ -261,6 +279,7 @@ private:
   void CBox2Spin(wxCheckBox *cb, wxSpinCtrl *sp);
   bool UpdatePolicy();
   bool Verify();
+  PWPolicy ReadPolicy() const;
 
   PWScore &m_core;
   const PSWDPolicyMap &m_MapPSWDPLC; // used to detect existing name

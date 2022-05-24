@@ -51,6 +51,8 @@ IMPLEMENT_CLASS( EditShortcutDlg, wxDialog )
 BEGIN_EVENT_TABLE( EditShortcutDlg, wxDialog )
 
   EVT_BUTTON( wxID_OK, EditShortcutDlg::OnOk )
+  EVT_CLOSE( EditShortcutDlg::OnClose )
+  EVT_BUTTON( wxID_CANCEL, EditShortcutDlg::OnCancelClick )
 
 END_EVENT_TABLE()
 
@@ -58,28 +60,12 @@ END_EVENT_TABLE()
  * EditShortcutDlg constructors
  */
 
-EditShortcutDlg::EditShortcutDlg(wxWindow* parent, PWScore &core, CItemData *shortcut)
+EditShortcutDlg::EditShortcutDlg(wxWindow *parent, PWScore &core, CItemData *shortcut)
 : m_Core(core), m_Shortcut(shortcut)
 {
   ASSERT(m_Shortcut != nullptr);
-  Init();
-  Create(parent);
-}
+  wxASSERT(!parent || parent->IsTopLevel());
 
-/*!
- * EditShortcutDlg destructor
- */
-
-EditShortcutDlg::~EditShortcutDlg()
-{
-}
-
-/*!
- * EditShortcutDlg creator
- */
-
-bool EditShortcutDlg::Create(wxWindow* parent)
-{
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create(parent, wxID_ANY, _("Edit Shortcut"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
@@ -92,7 +78,12 @@ bool EditShortcutDlg::Create(wxWindow* parent)
   SetValidators();
   UpdateControls();
   ItemFieldsToDialog();
-  return true;
+
+}
+
+EditShortcutDlg* EditShortcutDlg::Create(wxWindow *parent, PWScore &core, CItemData *shortcut)
+{
+  return new EditShortcutDlg(parent, core, shortcut);
 }
 
 void EditShortcutDlg::ItemFieldsToDialog()
@@ -227,24 +218,6 @@ void EditShortcutDlg::UpdateControls()
 }
 
 /*!
- * Member initialisation
- */
-
-void EditShortcutDlg::Init()
-{
-  m_ComboBoxShortcutGroup = nullptr;
-  m_TextCtrlShortcutTitle = nullptr;
-  m_TextCtrlShortcutUsername = nullptr;
-  m_StaticTextShortcutCreated = nullptr;
-  m_StaticTextShortcutChanged = nullptr;
-  m_StaticTextShortcutAccessed = nullptr;
-  m_StaticTextShortcutAnyChange = nullptr;
-  m_StaticTextBaseEntryGroup = nullptr;
-  m_StaticTextBaseEntryTitle = nullptr;
-  m_StaticTextBaseEntryUsername = nullptr;
-}
-
-/*!
  * Control creation for EditShortcutDlg
  */
 
@@ -366,34 +339,32 @@ wxIcon EditShortcutDlg::GetIconResource(const wxString& WXUNUSED(name))
 void EditShortcutDlg::OnOk(wxCommandEvent& WXUNUSED(event))
 {
   if (Validate() && TransferDataFromWindow()) {
-    bool modified = false;
+    const auto changes = GetChanges();
+    if (changes != Changes::None) {
+      CItemData modifiedShortcut(*m_Shortcut);
 
-    CItemData modifiedShortcut(*m_Shortcut);
+      // Has group changed?
+      if (changes & Changes::Group) {
+        modifiedShortcut.SetGroup(tostringx(m_ShortcutGroup));
+      }
 
-    // Has group changed?
-    if (m_ShortcutGroup != towxstring(m_Shortcut->GetGroup())) {
-      modified = true;
-      modifiedShortcut.SetGroup(tostringx(m_ShortcutGroup));
-    }
+      // Has title changed?
+      if (changes & Changes::Title) {
+        modifiedShortcut.SetTitle(tostringx(m_ShortcutTitle));
+      }
 
-    // Has title changed?
-    if (m_ShortcutTitle != towxstring(m_Shortcut->GetTitle())) {
-      modified = true;
-      modifiedShortcut.SetTitle(tostringx(m_ShortcutTitle));
-    }
+      // Has username changed?
+      if (changes & Changes::User) {
+        modifiedShortcut.SetUser(tostringx(m_ShortcutUsername));
+      }
 
-    // Has username changed?
-    if (m_ShortcutUsername != towxstring(m_Shortcut->GetUser())) {
-      modified = true;
-      modifiedShortcut.SetUser(tostringx(m_ShortcutUsername));
-    }
+      {
+        time_t t;
+        time(&t);
 
-    if (modified) {
-      time_t t;
-      time(&t);
-
-      modifiedShortcut.SetRMTime(t);
-      modifiedShortcut.SetStatus(CItemData::ES_MODIFIED);
+        modifiedShortcut.SetRMTime(t);
+        modifiedShortcut.SetStatus(CItemData::ES_MODIFIED);
+      }
 
       m_Core.Execute(
         EditEntryCommand::Create(&m_Core, *m_Shortcut, modifiedShortcut)
@@ -401,4 +372,31 @@ void EditShortcutDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     }
   }
   EndModal(wxID_OK);
+}
+
+bool EditShortcutDlg::SyncAndQueryCancel(bool showDialog) {
+  // when edit forbidden, allow cancel without additional checks
+  if (m_Core.IsReadOnly()) {
+    return true;
+  }
+  return QueryCancelDlg::SyncAndQueryCancel(showDialog);
+}
+
+uint32_t EditShortcutDlg::GetChanges() const {
+  uint32_t changes = Changes::None;
+  if (tostringx(m_ShortcutTitle) != m_Shortcut->GetTitle()) {
+      changes |= Changes::Title;
+  }
+  if (tostringx(m_ShortcutUsername) != m_Shortcut->GetUser()) {
+    changes |= Changes::User;
+  }
+    
+  if (tostringx(m_ShortcutGroup) != m_Shortcut->GetGroup()) {
+    changes |= Changes::Group;
+  }
+  return changes;
+}
+
+bool EditShortcutDlg::IsChanged() const {
+  return GetChanges() != Changes::None;
 }

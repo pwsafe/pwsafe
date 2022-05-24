@@ -28,11 +28,12 @@
 #include "ViewReportDlg.h"
 #include "wxUtilities.h"
 
-ViewReportDlg::ViewReportDlg(wxWindow* parent, CReport* pRpt, bool fromFile) :
+ViewReportDlg::ViewReportDlg(wxWindow *parent, CReport* pRpt, bool fromFile) :
                 wxDialog(parent, wxID_ANY, _("View Report"), wxDefaultPosition, wxDefaultSize,
                       wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),  m_pRpt(pRpt)
 {
   wxASSERT(pRpt);
+  wxASSERT(!parent || parent->IsTopLevel());
 
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
 
@@ -69,8 +70,9 @@ ViewReportDlg::ViewReportDlg(wxWindow* parent, CReport* pRpt, bool fromFile) :
   SetSizerAndFit(dlgSizer);
 }
 
-ViewReportDlg::~ViewReportDlg()
+ViewReportDlg* ViewReportDlg::Create(wxWindow *parent, CReport* pRpt, bool fromFile)
 {
+  return new ViewReportDlg(parent, pRpt, fromFile);
 }
 
 void ViewReportDlg::OnSave(wxCommandEvent& evt)

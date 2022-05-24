@@ -69,17 +69,13 @@ class SafeCombinationChangeDlg : public wxDialog
 
 public:
   /// Constructors
-  SafeCombinationChangeDlg(wxWindow* parent, PWScore &core,
+  static SafeCombinationChangeDlg* Create(wxWindow *parent, PWScore &core,
                          wxWindowID id = SYMBOL_SAFECOMBINATIONCHANGEDLG_IDNAME, const wxString& caption = SYMBOL_SAFECOMBINATIONCHANGEDLG_TITLE, const wxPoint& pos = SYMBOL_SAFECOMBINATIONCHANGEDLG_POSITION, const wxSize& size = SYMBOL_SAFECOMBINATIONCHANGEDLG_SIZE, long style = SYMBOL_SAFECOMBINATIONCHANGEDLG_STYLE );
-
-  /// Creation
-  bool Create(wxWindow* parent, wxWindowID id = SYMBOL_SAFECOMBINATIONCHANGEDLG_IDNAME, const wxString& caption = SYMBOL_SAFECOMBINATIONCHANGEDLG_TITLE, const wxPoint& pos = SYMBOL_SAFECOMBINATIONCHANGEDLG_POSITION, const wxSize& size = SYMBOL_SAFECOMBINATIONCHANGEDLG_SIZE, long style = SYMBOL_SAFECOMBINATIONCHANGEDLG_STYLE );
-
   /// Destructor
   ~SafeCombinationChangeDlg();
-
-  /// Initialises member variables
-  void Init();
+protected:
+  /// Constructors
+  SafeCombinationChangeDlg(wxWindow *parent, PWScore &core, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
 
   /// Creates the controls and sizers
   void CreateControls();
@@ -92,8 +88,7 @@ public:
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_YUBIBTN2
   void OnYubibtn2Click( wxCommandEvent& event );
-  bool IsYubiProtected() const {return m_IsYubiProtected;}
-#endif
+#endif // NO_YUBI
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOkClick( wxCommandEvent& event );
@@ -105,7 +100,7 @@ public:
   void OnPollingTimer(wxTimerEvent& timerEvent);
 
 ////@begin SafeCombinationChangeDlg member function declarations
-
+public:
   StringX GetConfirm() const { return m_confirm ; }
   void SetConfirm(StringX value) { m_confirm = value ; }
 
@@ -124,16 +119,21 @@ public:
 
   /// Should we show tooltips?
   static bool ShowToolTips();
-
-////@begin SafeCombinationChangeDlg member variables
-  SafeCombinationCtrl* m_oldPasswdEntry;
-  SafeCombinationCtrl* m_newPasswdEntry;
+  
 #ifndef NO_YUBI
-  wxBitmapButton* m_YubiBtn;
-  wxBitmapButton* m_YubiBtn2;
-  wxStaticText* m_yubiStatusCtrl;
+  bool IsYubiProtected() const {return m_IsYubiProtected;}
 #endif
-  SafeCombinationCtrl* m_confirmEntry;
+
+private:
+////@begin SafeCombinationChangeDlg member variables
+  SafeCombinationCtrl* m_oldPasswdEntry = nullptr;
+  SafeCombinationCtrl* m_newPasswdEntry = nullptr;
+#ifndef NO_YUBI
+  wxBitmapButton* m_YubiBtn = nullptr;
+  wxBitmapButton* m_YubiBtn2 = nullptr;
+  wxStaticText* m_yubiStatusCtrl = nullptr;
+#endif
+  SafeCombinationCtrl* m_confirmEntry = nullptr;
 private:
   StringX m_confirm;
   StringX m_newpasswd;
@@ -147,7 +147,7 @@ private:
 #ifndef NO_YUBI
   // try having 2 mixin objects to handle things:
   YubiMixin m_yubiMixin1, m_yubiMixin2;
-  wxTimer* m_pollingTimer; // for Yubi
+  wxTimer* m_pollingTimer = nullptr; // for Yubi
   bool m_IsYubiProtected = false; // set if 2nd Yubi button clicked. Clear YubiSK on OK if false.
 #endif
 };

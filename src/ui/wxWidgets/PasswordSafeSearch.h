@@ -125,6 +125,9 @@ private:
   void CalculateToolsWidth();
   wxSize CalculateSearchWidth();
   void UpdateStatusAreaWidth();
+  void DoToolBarFindReport(int controlId);
+  
+  void GetAdvancedSearchOptions(int cointrolId);
 
   void SetModified(bool modified) { m_modified = modified; }
   bool IsModified() const { return m_modified; }

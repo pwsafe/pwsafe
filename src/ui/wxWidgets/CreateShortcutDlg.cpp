@@ -48,35 +48,20 @@ IMPLEMENT_CLASS( CreateShortcutDlg, wxDialog )
 BEGIN_EVENT_TABLE( CreateShortcutDlg, wxDialog )
 
   EVT_BUTTON( wxID_OK, CreateShortcutDlg::OnOk )
-
+  EVT_CLOSE( CreateShortcutDlg::OnClose )
+  EVT_BUTTON( wxID_CANCEL, CreateShortcutDlg::OnCancelClick )
 END_EVENT_TABLE()
 
 /*!
  * CreateShortcutDlg constructors
  */
 
-CreateShortcutDlg::CreateShortcutDlg(wxWindow* parent, PWScore &core, CItemData *base)
+CreateShortcutDlg::CreateShortcutDlg(wxWindow *parent, PWScore &core, CItemData *base)
 : m_Core(core), m_Base(base)
 {
   ASSERT(m_Base != nullptr);
-  Init();
-  Create(parent);
-}
+  wxASSERT(!parent || parent->IsTopLevel());
 
-/*!
- * CreateShortcutDlg destructor
- */
-
-CreateShortcutDlg::~CreateShortcutDlg()
-{
-}
-
-/*!
- * CreateShortcutDlg creator
- */
-
-bool CreateShortcutDlg::Create(wxWindow* parent)
-{
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create(parent, wxID_ANY, _("Create Shortcut"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
@@ -89,7 +74,11 @@ bool CreateShortcutDlg::Create(wxWindow* parent)
   SetValidators();
   UpdateControls();
   ItemFieldsToDialog();
-  return true;
+}
+
+CreateShortcutDlg* CreateShortcutDlg::Create(wxWindow *parent, PWScore &core, CItemData *base)
+{
+  return new CreateShortcutDlg(parent, core, base);
 }
 
 void CreateShortcutDlg::ItemFieldsToDialog()
@@ -124,7 +113,7 @@ void CreateShortcutDlg::ItemFieldsToDialog()
     m_BaseEntryTitle = stringx2std(m_Base->GetTitle());
     m_BaseEntryUsername = stringx2std(m_Base->GetUser());
 
-    m_ShortcutTitle = _("Shortcut to ") + m_BaseEntryTitle;
+    m_ShortcutTitle = GetDefaultShortcutTitle();
     m_ShortcutUsername = m_BaseEntryUsername;
 
     if (m_Base->IsGroupSet() && !(m_Base->GetGroup().empty())) {
@@ -149,9 +138,10 @@ void CreateShortcutDlg::ItemFieldsToDialog()
     m_ShortcutTitle = wxEmptyString;
     m_ShortcutUsername = wxEmptyString;
 
-    m_BaseEntryGroup = _("N/A");
-    m_BaseEntryTitle = _("N/A");
-    m_BaseEntryUsername = _("N/A");
+    // set base values to empty too/ to siplify change detection
+    m_BaseEntryGroup = wxEmptyString;
+    m_BaseEntryTitle = wxEmptyString;
+    m_BaseEntryUsername = wxEmptyString;
   }
 }
 
@@ -173,20 +163,6 @@ void CreateShortcutDlg::UpdateControls()
     m_TextCtrlShortcutTitle->Disable();
     m_TextCtrlShortcutUsername->Disable();
   }
-}
-
-/*!
- * Member initialisation
- */
-
-void CreateShortcutDlg::Init()
-{
-  m_ComboBoxShortcutGroup = nullptr;
-  m_TextCtrlShortcutTitle = nullptr;
-  m_TextCtrlShortcutUsername = nullptr;
-  m_StaticTextBaseEntryGroup = nullptr;
-  m_StaticTextBaseEntryTitle = nullptr;
-  m_StaticTextBaseEntryUsername = nullptr;
 }
 
 /*!
@@ -324,4 +300,37 @@ void CreateShortcutDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     );
   }
   EndModal(wxID_OK);
+}
+
+bool CreateShortcutDlg::SyncAndQueryCancel(bool showDialog) {
+  // when edit forbidden, allow cancel without additional checks
+  if (m_Core.IsReadOnly()) {
+    return true;
+  }
+  return QueryCancelDlg::SyncAndQueryCancel(showDialog);
+}
+
+uint32_t CreateShortcutDlg::GetChanges() const
+{
+  uint32_t changes = Changes::None;
+  if (m_ShortcutTitle != GetDefaultShortcutTitle()) {
+      changes |= Changes::Title;
+  }
+  if (m_ShortcutUsername != m_BaseEntryUsername) {
+    changes |= Changes::User;
+  }
+    
+  if (m_ShortcutGroup != m_BaseEntryGroup) {
+    changes |= Changes::Group;
+  }
+  return changes;
+}
+
+bool CreateShortcutDlg::IsChanged() const {
+  return GetChanges() != Changes::None;
+}
+
+wxString CreateShortcutDlg::GetDefaultShortcutTitle() const
+{
+  return _("Shortcut to ") + m_BaseEntryTitle;
 }

@@ -57,6 +57,8 @@ BEGIN_EVENT_TABLE( pwFiltersMediaTypesDlg, wxDialog )
   EVT_COMBOBOX( ID_COMBOBOX69, pwFiltersMediaTypesDlg::OnSelectionChange )
   EVT_COMBOBOX( ID_COMBOBOX70, pwFiltersMediaTypesDlg::OnMediaTypeChange )
   EVT_TEXT( ID_COMBOBOX70, pwFiltersMediaTypesDlg::OnMediaTypeChange )
+  EVT_BUTTON( wxID_CANCEL, pwFiltersMediaTypesDlg::OnCancelClick )
+  EVT_CLOSE( pwFiltersMediaTypesDlg::OnClose )
 
 END_EVENT_TABLE()
 
@@ -64,31 +66,14 @@ END_EVENT_TABLE()
  * pwFiltersMediaTypesDlg constructors
  */
 
-pwFiltersMediaTypesDlg::pwFiltersMediaTypesDlg(wxWindow* parent, FieldType ftype, PWSMatch::MatchRule &rule, wxString &value, bool &fcase, const std::set<StringX> *psMediaTypes)
-: m_ftype(ftype), m_psMediaTypes(psMediaTypes), m_add_present(false)
+pwFiltersMediaTypesDlg::pwFiltersMediaTypesDlg(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, const std::set<StringX> *psMediaTypes)
+: m_ftype(ftype), m_psMediaTypes(psMediaTypes),
+  m_prule(rule), m_pvalue(value), m_pfcase(fcase)
 {
-  m_prule = &rule;
-  m_pvalue = &value;
-  m_pfcase = &fcase;
+  wxASSERT(!parent || parent->IsTopLevel());
 
   Init();
-  Create(parent);
-}
-
-/*!
- * pwFiltersMediaTypesDlg destructor
- */
-
-pwFiltersMediaTypesDlg::~pwFiltersMediaTypesDlg()
-{
-}
-
-/*!
- * pwFiltersMediaTypesDlg creator
- */
-
-bool pwFiltersMediaTypesDlg::Create(wxWindow* parent)
-{
+  
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create(parent, wxID_ANY, _("Display Filter Media Types Value"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER);
 
@@ -99,7 +84,11 @@ bool pwFiltersMediaTypesDlg::Create(wxWindow* parent)
   Centre();
 
   SetValidators();
-  return true;
+}
+
+pwFiltersMediaTypesDlg* pwFiltersMediaTypesDlg::Create(wxWindow *parent, FieldType ftype, PWSMatch::MatchRule *rule, wxString *value, bool *fcase, const std::set<StringX> *psMediaTypes)
+{
+  return new pwFiltersMediaTypesDlg(parent, ftype, rule, value, fcase, psMediaTypes);
 }
 
 /*!
@@ -235,10 +224,6 @@ void pwFiltersMediaTypesDlg::SetValidators()
 
 void pwFiltersMediaTypesDlg::Init()
 {
-  m_ComboBox = nullptr;
-  m_MediaTypes = nullptr;
-  m_idx = -1;
-  
   switch (m_ftype) {
     case AT_MEDIATYPE:
       m_add_present = false;
@@ -432,4 +417,51 @@ void pwFiltersMediaTypesDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     *m_pfcase = m_fcase;
   }
   EndModal(wxID_OK);
+}
+
+bool pwFiltersMediaTypesDlg::IsChanged() const {
+  const auto idx = m_ComboBox->GetSelection();
+
+  if (idx < 0) {
+    return false;
+  }
+
+  if (m_add_present) {
+    if (idx >= 0 && idx < PW_NUM_PRESENT_ENUM) {
+      if (*m_prule != m_mrpres[idx]) {
+        return true;
+      }
+    }
+    else {
+      const auto tmpIdx = idx - PW_NUM_PRESENT_ENUM;
+      if(tmpIdx < PW_NUM_MEDIA_TYPES_CRITERIA_ENUM) {
+        if (*m_prule != m_mrcrit[tmpIdx]) {
+          return true;
+        }
+      }
+      else if (*m_prule != PWSMatch::MR_INVALID) {
+        return true;
+      }
+    }
+  }
+  else {
+    if(idx < PW_NUM_MEDIA_TYPES_CRITERIA_ENUM) {
+      if (*m_prule != m_mrcrit[idx]) {
+        return true;
+      }
+    }
+    else if (*m_prule != PWSMatch::MR_INVALID) {
+      return true;
+    }
+  }
+
+  if (*m_pvalue != m_MediaTypes->GetValue()) {
+    return true;
+  }
+
+  if (*m_pfcase != m_CheckBoxFCase->GetValue()) {
+    return true;
+  }
+
+  return false;
 }
