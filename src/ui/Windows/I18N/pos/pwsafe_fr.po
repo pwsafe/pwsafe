@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. Resource IDs: (3263)
 # msgid/msgstr fields for Accelerator keys
@@ -5986,11 +5986,20 @@ msgstr "Positions:"
 msgid "Press to delete all added characters."
 msgstr "Appuyez pour supprimer tous les caractères ajoutés."
 
-#. Resource IDs: (65535)
 msgid ""
 "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n"
 "\n"
 "Pressing Cancel stops the password being copied."
+msgstr ""
+"Appuyer sur OK copiera le mot de passe de l'item sélectionné au presse-papier. Le presse-papier sera vidé sécuritairement lorsque PasswordSafe sera fermé.\n"
+"\n"
+"Appuyer sur Annuler arrêtera la copie du mot de passe."
+
+#. Resource IDs: (65535)
+msgid ""
+"Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n"
+"\n"
+"Pressing Cancel stops the password from being copied."
 msgstr ""
 "Appuyer sur OK copiera le mot de passe de l'item sélectionné au presse-papier. Le presse-papier sera vidé sécuritairement lorsque PasswordSafe sera fermé.\n"
 "\n"
@@ -8209,7 +8218,7 @@ msgstr "Utiliser des &Symboles (ex.: &, %, $, etc.)"
 
 #. Resource IDs: (1048)
 msgid "Use &UPPERCASE letters"
-msgstr "Utiliser des M&AJUSCULES"
+msgstr "Utiliser des lettres &MAJUSCULES"
 
 #. Resource IDs: (1476)
 msgid "Use Database Policy"
