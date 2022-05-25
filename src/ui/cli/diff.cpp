@@ -71,16 +71,16 @@ inline StringX safe_file_hdr(const wchar_t *tag, const PWScore &core)
 
 uint32_t dca2str(uint16 dca) {
   const std::map<int16_t, uint32_t> dca_id_str = {
-    {PWSprefs::DoubleClickAutoType,             IDSC_DCAAUTOTYPE},
-    {PWSprefs::DoubleClickBrowse,               IDSC_DCABROWSE},
-    {PWSprefs::DoubleClickBrowsePlus,           IDSC_DCABROWSEPLUS},
-    {PWSprefs::DoubleClickCopyNotes,            IDSC_DCACOPYNOTES},
-    {PWSprefs::DoubleClickCopyUsername,         IDSC_DCACOPYUSERNAME},
-    {PWSprefs::DoubleClickCopyPassword,         IDSC_DCACOPYPASSWORD},
-    {PWSprefs::DoubleClickCopyPasswordMinimize, IDSC_DCACOPYPASSWORDMIN},
-    {PWSprefs::DoubleClickRun,                  IDSC_DCARUN},
-    {PWSprefs::DoubleClickSendEmail,            IDSC_DCASENDEMAIL},
-    {PWSprefs::DoubleClickViewEdit,             IDSC_DCAVIEWEDIT}
+    {static_cast<int16_t>(PWSprefs::DoubleClickAutoType),             IDSC_DCAAUTOTYPE},
+    {static_cast<int16_t>(PWSprefs::DoubleClickBrowse),               IDSC_DCABROWSE},
+    {static_cast<int16_t>(PWSprefs::DoubleClickBrowsePlus),           IDSC_DCABROWSEPLUS},
+    {static_cast<int16_t>(PWSprefs::DoubleClickCopyNotes),            IDSC_DCACOPYNOTES},
+    {static_cast<int16_t>(PWSprefs::DoubleClickCopyUsername),         IDSC_DCACOPYUSERNAME},
+    {static_cast<int16_t>(PWSprefs::DoubleClickCopyPassword),         IDSC_DCACOPYPASSWORD},
+    {static_cast<int16_t>(PWSprefs::DoubleClickCopyPasswordMinimize), IDSC_DCACOPYPASSWORDMIN},
+    {static_cast<int16_t>(PWSprefs::DoubleClickRun),                  IDSC_DCARUN},
+    {static_cast<int16_t>(PWSprefs::DoubleClickSendEmail),            IDSC_DCASENDEMAIL},
+    {static_cast<int16_t>(PWSprefs::DoubleClickViewEdit),             IDSC_DCAVIEWEDIT}
   };
 
   const auto loc = dca_id_str.find(dca);
@@ -490,7 +490,7 @@ int Diff(PWScore &core, const UserArgs &ua)
 
   CItemData::FieldBits safeFields{ua.fields};
   for( auto ft: diff_fields ) {
-    if (ua.fields.test(ft) && CItemData::IsTextField(ft)) {
+    if (ua.fields.test(ft) && CItemData::IsTextField(static_cast<unsigned char>(ft))) {
       safeFields.set(ft);
     }
   }

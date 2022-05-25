@@ -45,7 +45,7 @@ constexpr CItemData::FieldType known_fields[] = {
   CItemData::KBSHORTCUT
 };
 
-int PrintSearchResults(const ItemPtrVec &items, PWScore &core, const CItemData::FieldBits &ftp,
+int PrintSearchResults(const ItemPtrVec &items, PWScore &, const CItemData::FieldBits &ftp,
                             std::wostream &os) {
   for_each( items.begin(), items.end(), [&ftp, &os](const CItemData *p) {
     const CItemData &data = *p;

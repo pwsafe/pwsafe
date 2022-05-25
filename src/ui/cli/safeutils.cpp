@@ -142,8 +142,8 @@ int AddEntryWithFields(PWScore &core, const UserArgs::FieldUpdates &fieldValues,
 
   bool got_passwd{false}, got_title{false};
   // Check if the user specified a password also
-  find_if(fieldValues.begin(), fieldValues.end(),
-              [&got_title, &got_passwd](const FieldValue &fv) {
+  (void)find_if(fieldValues.begin(), fieldValues.end(),
+                [&got_title, &got_passwd](const FieldValue &fv) {
     const CItemData::FieldType field{get<0>(fv)};
     got_passwd = got_passwd || (field == CItemData::PASSWORD);
     got_title  = got_title  || (field == CItemData::TITLE);
