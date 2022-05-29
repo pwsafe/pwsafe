@@ -20,7 +20,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: it\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. Resource IDs: (3263)
 # msgid/msgstr fields for Accelerator keys
@@ -716,7 +716,7 @@ msgstr "Barra trasc&inamento visibile"
 msgid "&Duplicate Entry"
 msgstr "&Duplica elemento"
 
-#. Resource IDs: (32086 - Menu)
+#. Resource IDs: (32087 - Menu)
 msgid "&Duplicate Group"
 msgstr "&Duplica gruppo"
 
@@ -728,7 +728,7 @@ msgstr "&Email:"
 msgid "&Edit"
 msgstr "&Modifica"
 
-#. Resource IDs: (32081 - Menu, 32081 - MenuEx)
+#. Resource IDs: (32082 - Menu, 32082 - MenuEx)
 msgid "&Edit Base entry"
 msgstr "&Modifica elemento base"
 
@@ -752,7 +752,7 @@ msgstr "&Filtri"
 msgid "&Find"
 msgstr "&Trova"
 
-#. Resource IDs: (32079 - MenuEx)
+#. Resource IDs: (32080 - MenuEx)
 msgid "&Find..."
 msgstr "&Trova..."
 
@@ -768,7 +768,7 @@ msgstr "&Font:"
 msgid "&Generate"
 msgstr "&Genera"
 
-#. Resource IDs: (32078 - Menu, 32078 - MenuEx)
+#. Resource IDs: (32079 - Menu, 32079 - MenuEx)
 msgid "&Go to Base entry"
 msgstr "&Via all'elemento base"
 
@@ -884,8 +884,8 @@ msgstr "&Password:"
 msgid "&Paste"
 msgstr "&Incolla"
 
-#. Resource IDs: (32010 - MenuEx, 32084 - Menu, 32084 - MenuEx, 32093 - Menu,
-#. 32093 - MenuEx)
+#. Resource IDs: (32010 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu,
+#. 32094 - MenuEx)
 msgid "&Plain Text (tab separated)..."
 msgstr "&Testo semplice (separato da tabulazioni)..."
 
@@ -897,7 +897,7 @@ msgstr "&Testo semplice..."
 msgid "&Properties"
 msgstr "Pr&oprietà"
 
-#. Resource IDs: (32089 - Menu)
+#. Resource IDs: (32090 - Menu)
 msgid "&Protect All Entries"
 msgstr "&Proteggi tutti gli elementi"
 
@@ -929,7 +929,7 @@ msgstr "&Ripristina finestra"
 msgid "&Retry"
 msgstr "&Riprova"
 
-#. Resource IDs: (32076 - Menu, 32076 - MenuEx, 5656)
+#. Resource IDs: (32077 - Menu, 32077 - MenuEx, 5656)
 msgid "&Run Command"
 msgstr "&Esegui comando"
 
@@ -989,7 +989,7 @@ msgstr "&Riprova"
 msgid "&Undo"
 msgstr "&Annulla"
 
-#. Resource IDs: (32090 - Menu)
+#. Resource IDs: (32091 - Menu)
 msgid "&Unprotect All Entries"
 msgstr "Sproteggi t&utti gli elementi"
 
@@ -1009,7 +1009,7 @@ msgstr "Con&valida"
 msgid "&View"
 msgstr "&Visualizza"
 
-#. Resource IDs: (32097 - Menu)
+#. Resource IDs: (32098 - Menu)
 msgid "&View Attachment"
 msgstr "&Visualizza allegato"
 
@@ -1025,8 +1025,8 @@ msgstr "&Visualizza rapporto"
 msgid "&Virtual Keyboard Font"
 msgstr "Font tastiera &virtuale"
 
-#. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32085 - Menu, 32085 -
-#. MenuEx, 32094 - Menu, 32094 - MenuEx)
+#. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32086 - Menu, 32086 -
+#. MenuEx, 32095 - Menu, 32095 - MenuEx)
 msgid "&XML format..."
 msgstr "&Formato XML..."
 
@@ -1931,6 +1931,10 @@ msgstr "Apri URL + completamento automatico"
 msgid "Browse to URL + Autotype"
 msgstr "Apri URL + completamento automatico"
 
+#. Resource IDs: (32074 - Menu, 32074 - MenuEx)
+msgid "Browse to URL w/Alt Browser"
+msgstr "Vai all'URL con browser alternativo"
+
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
 msgstr "Parametri linea di comando browser:"
@@ -2391,7 +2395,7 @@ msgstr ""
 " e di:\n"
 "\t %s"
 
-#. Resource IDs: (32091 - Menu, 32091 - MenuEx)
+#. Resource IDs: (32092 - Menu, 32092 - MenuEx)
 msgid "Compare entries..."
 msgstr "Confrontare le voci..."
 
@@ -2556,7 +2560,7 @@ msgstr "Copia email negli Appunti"
 msgid "Copy Here"
 msgstr "Copia qui"
 
-#. Resource IDs: (32080 - Menu, 32080 - MenuEx)
+#. Resource IDs: (32081 - Menu, 32081 - MenuEx)
 msgid "Copy Run Command to Clipboard"
 msgstr "Copia linea esecuzione comando negli Appunti"
 
@@ -2644,7 +2648,7 @@ msgstr "Impossibile trovare l'elemento di base - database inconsistente"
 msgid "Couldn't save database - Please save manually"
 msgstr "Impossibile salvare il database - Salvalo manualmente"
 
-#. Resource IDs: (32077 - Menu, 32077 - MenuEx)
+#. Resource IDs: (32078 - Menu, 32078 - MenuEx)
 msgid "Create &Shortcut"
 msgstr "Crea una &scorciatoia"
 
@@ -2734,8 +2738,6 @@ msgstr ""
 "\n"
 "Visita il sito di PasswordSafe per scaricare la versione aggiornata."
 
-#. Resource IDs: (5478)
-#, c-format
 msgid ""
 "Current version:\t%s\n"
 "Latest version:\t%s\n"
@@ -3120,7 +3122,7 @@ msgstr ""
 "\n"
 "La voce scartata ora fa riferimento alla voce base di quella voce."
 
-#. Resource IDs: (32086 - Menu, 32086 - MenuEx)
+#. Resource IDs: (32087 - Menu, 32087 - MenuEx)
 msgid "Duplicate Group"
 msgstr "Duplica gruppo"
 
@@ -3585,7 +3587,7 @@ msgstr "Es&porta in"
 msgid "Export &XML"
 msgstr "Es&porta XML"
 
-#. Resource IDs: (32096 - Menu, 32096 - MenuEx)
+#. Resource IDs: (32097 - Menu, 32097 - MenuEx)
 msgid "Export Attachment..."
 msgstr "Esporta allegato..."
 
@@ -4251,33 +4253,58 @@ msgstr "ID:32072:V C +L"
 msgid "ID:32073:VA  +L"
 msgstr "ID:32073:VA  +L"
 
-#. Accelerator Entry for Menu ID:32074; 'Send &Email'
 msgid "ID:32074:V C +E"
 msgstr "ID:32074:V C +E"
 
-#. Accelerator Entry for Menu ID:32075; 'Perform Auto&Type'
+#. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
+msgid "ID:32074:VA S+L"
+msgstr "ID:32074:VA S+L"
+
+#. Accelerator Entry for Menu ID:32075; 'Send &Email'
+msgid "ID:32075:V C +E"
+msgstr "ID:32075:V C +E"
+
 msgid "ID:32075:V C +T"
 msgstr "ID:32075:V C +T"
 
-#. Accelerator Entry for Menu ID:32076; '&Run Command'
 msgid "ID:32076:V C +R"
 msgstr "ID:32076:V C +R"
 
-#. Accelerator Entry for Menu ID:32079; '&Find...'
+#. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
+msgid "ID:32076:V C +T"
+msgstr "ID:32076:V C +T"
+
+#. Accelerator Entry for Menu ID:32077; '&Run Command'
+msgid "ID:32077:V C +R"
+msgstr "ID:32077:V C +R"
+
 msgid "ID:32079:V C +F"
 msgstr "ID:32079:V C +F"
 
-#. Accelerator Entry for Menu ID:32080; 'Copy Run Command to Clipboard'
+#. Accelerator Entry for Menu ID:32080; '&Find...'
+msgid "ID:32080:V C +F"
+msgstr "ID:32080:V C +F"
+
 msgid "ID:32080:VAC +R"
 msgstr "ID:32080:VAC +R"
 
-#. Accelerator Entry for Menu ID:32082; 'Undo'
+#. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
+msgid "ID:32081:VAC +R"
+msgstr "ID:32081:VAC +R"
+
 msgid "ID:32082:V C +Z"
 msgstr "ID:32082:V C +Z"
 
-#. Accelerator Entry for Menu ID:32083; 'Redo'
 msgid "ID:32083:V C +Y"
 msgstr "ID:32083:V C +Y"
+
+#. Accelerator Entry for Menu ID:32083; 'Undo'
+msgid "ID:32083:V C +Z"
+msgstr "ID:32083:V C +Z"
+
+#. Accelerator Entry for Menu ID:32084; 'Redo'
+msgid "ID:32084:V C +Y"
+msgstr "ID:32084:V C +Y"
 
 #. Accelerator Entry for Menu ID:32140; 'Last Find results'
 msgid "ID:32140:V C +K"
@@ -5740,7 +5767,7 @@ msgstr ""
 "La password dovrebbe contenere maiuscole e minuscole, con almeno un "
 "carattere numerico o di punteggiatura"
 
-#. Resource IDs: (32092 - Menu, 32092 - MenuEx, 32095 - Menu, 32095 - MenuEx)
+#. Resource IDs: (32093 - Menu, 32093 - MenuEx, 32096 - Menu, 32096 - MenuEx)
 msgid "Password&Safe..."
 msgstr "Password&Safe..."
 
@@ -5759,7 +5786,7 @@ msgstr ""
 "PasswordSafe: sono presenti elementi la cui password è scaduta o scadrà a "
 "breve"
 
-#. Resource IDs: (32075 - Menu, 32075 - MenuEx, 5296)
+#. Resource IDs: (32076 - Menu, 32076 - MenuEx, 5296)
 msgid "Perform Auto&Type"
 msgstr "Esegui compilazione automatica"
 
@@ -6060,11 +6087,11 @@ msgstr "Proprietà"
 msgid "Properties of the currently selected database."
 msgstr "Proprietà database attualmente selezionato."
 
-#. Resource IDs: (32089 - MenuEx)
+#. Resource IDs: (32090 - MenuEx)
 msgid "Protect All Entries"
 msgstr "Proteggere tutte le voci"
 
-#. Resource IDs: (32087 - Menu, 32087 - MenuEx)
+#. Resource IDs: (32088 - Menu, 32088 - MenuEx)
 msgid "Protect Entry"
 msgstr "Proteggere la voce"
 
@@ -6160,7 +6187,7 @@ msgstr ""
 msgid "Recurring"
 msgstr "Ricorrente"
 
-#. Resource IDs: (1487, 32083 - MenuEx)
+#. Resource IDs: (1487, 32084 - MenuEx)
 msgid "Redo"
 msgstr "Rifare"
 
@@ -6557,7 +6584,7 @@ msgstr "Dettagli regola selezionata:"
 msgid "Send"
 msgstr "Invia"
 
-#. Resource IDs: (32074 - Menu, 32074 - MenuEx)
+#. Resource IDs: (32075 - Menu, 32075 - MenuEx)
 msgid "Send &Email"
 msgstr "Invia &email"
 
@@ -8033,7 +8060,7 @@ msgstr ""
 msgid "Uncheck"
 msgstr "Deseleziona"
 
-#. Resource IDs: (1486, 32082 - MenuEx)
+#. Resource IDs: (1486, 32083 - MenuEx)
 msgid "Undo"
 msgstr "Annulla"
 
@@ -8093,11 +8120,11 @@ msgstr "Difficoltà sblocco"
 msgid "Unlock Safe"
 msgstr "Sblocca database"
 
-#. Resource IDs: (32090 - MenuEx)
+#. Resource IDs: (32091 - MenuEx)
 msgid "Unprotect All Entries"
 msgstr "Sproteggi tutti gli elementi"
 
-#. Resource IDs: (32088 - Menu, 32088 - MenuEx)
+#. Resource IDs: (32089 - Menu, 32089 - MenuEx)
 msgid "Unprotect Entry"
 msgstr "Sproteggi elemento"
 
@@ -8340,7 +8367,7 @@ msgstr "Vietnamita"
 msgid "View"
 msgstr "Visualizza"
 
-#. Resource IDs: (32097 - MenuEx, 548, 6025)
+#. Resource IDs: (32098 - MenuEx, 548, 6025)
 msgid "View Attachment"
 msgstr "Visualizza allegato"
 
@@ -8744,6 +8771,14 @@ msgstr ""
 "\n"
 "Apri la URL + completamento automatico"
 
+#. Resource IDs: (32074)
+msgid ""
+"\n"
+"Browse to URL with Alternate Browser"
+msgstr ""
+"\n"
+"Vai all'URL con browser alternativo"
+
 #. Resource IDs: (32305)
 msgid ""
 "\n"
@@ -8808,7 +8843,7 @@ msgstr ""
 "\n"
 "Riduci tutto"
 
-#. Resource IDs: (32091)
+#. Resource IDs: (32092)
 msgid ""
 "\n"
 "Compare entries..."
@@ -8840,7 +8875,7 @@ msgstr ""
 "\n"
 "Copia password negli Appunti"
 
-#. Resource IDs: (32080)
+#. Resource IDs: (32081)
 msgid ""
 "\n"
 "Copy Run Command to Clipboard"
@@ -8888,7 +8923,7 @@ msgstr ""
 "\n"
 "Duplica elemento"
 
-#. Resource IDs: (32086)
+#. Resource IDs: (32087)
 msgid ""
 "\n"
 "Duplicate Group"
@@ -8896,7 +8931,7 @@ msgstr ""
 "\n"
 "Duplica gruppo"
 
-#. Resource IDs: (32081)
+#. Resource IDs: (32082)
 msgid ""
 "\n"
 "Edit Base entry"
@@ -8945,7 +8980,7 @@ msgstr ""
 "\n"
 "Espandi tutto"
 
-#. Resource IDs: (32096)
+#. Resource IDs: (32097)
 msgid ""
 "\n"
 "Export Attachment..."
@@ -8953,7 +8988,7 @@ msgstr ""
 "\n"
 "Esporta allegato..."
 
-#. Resource IDs: (32085)
+#. Resource IDs: (32086)
 msgid ""
 "\n"
 "Export Entry in XML format..."
@@ -8961,7 +8996,7 @@ msgstr ""
 "\n"
 "Esporta elemento in formato XML..."
 
-#. Resource IDs: (32084)
+#. Resource IDs: (32085)
 msgid ""
 "\n"
 "Export Entry to Plain Text..."
@@ -8969,7 +9004,7 @@ msgstr ""
 "\n"
 "Esporta elemento come testo semplice..."
 
-#. Resource IDs: (32092)
+#. Resource IDs: (32093)
 msgid ""
 "\n"
 "Export Entry to another Safe..."
@@ -8977,7 +9012,7 @@ msgstr ""
 "\n"
 "Export elemento in un altro Safe..."
 
-#. Resource IDs: (32094)
+#. Resource IDs: (32095)
 msgid ""
 "\n"
 "Export Group in XML format..."
@@ -8985,7 +9020,7 @@ msgstr ""
 "\n"
 "Esporta gruppo in formato XML..."
 
-#. Resource IDs: (32093)
+#. Resource IDs: (32094)
 msgid ""
 "\n"
 "Export Group to Plain Text..."
@@ -8993,7 +9028,7 @@ msgstr ""
 "\n"
 "Esporta gruppo come testo semplice..."
 
-#. Resource IDs: (32095)
+#. Resource IDs: (32096)
 msgid ""
 "\n"
 "Export Group to another Safe..."
@@ -9073,7 +9108,7 @@ msgstr ""
 "\n"
 "Trova precedente"
 
-#. Resource IDs: (32079)
+#. Resource IDs: (32080)
 msgid ""
 "\n"
 "Find..."
@@ -9089,7 +9124,7 @@ msgstr ""
 "\n"
 "Genera una password"
 
-#. Resource IDs: (32078)
+#. Resource IDs: (32079)
 msgid ""
 "\n"
 "Go to Base entry"
@@ -9194,7 +9229,7 @@ msgstr ""
 "\n"
 "Regola password"
 
-#. Resource IDs: (32075)
+#. Resource IDs: (32076)
 msgid ""
 "\n"
 "Perform AutoType"
@@ -9218,7 +9253,7 @@ msgstr ""
 "\n"
 "Il programma terminerà."
 
-#. Resource IDs: (32089)
+#. Resource IDs: (32090)
 msgid ""
 "\n"
 "Protect All Entries"
@@ -9226,7 +9261,7 @@ msgstr ""
 "\n"
 "Proteggere tutte le voci"
 
-#. Resource IDs: (32087)
+#. Resource IDs: (32088)
 msgid ""
 "\n"
 "Protect Entry"
@@ -9234,7 +9269,7 @@ msgstr ""
 "\n"
 "Proteggere la voce"
 
-#. Resource IDs: (32083)
+#. Resource IDs: (32084)
 msgid ""
 "\n"
 "Redo"
@@ -9251,7 +9286,7 @@ msgstr ""
 "\n"
 "Rinominato %d %s"
 
-#. Resource IDs: (32076)
+#. Resource IDs: (32077)
 msgid ""
 "\n"
 "Run Command"
@@ -9283,7 +9318,7 @@ msgstr ""
 "\n"
 "Seleziona elemento"
 
-#. Resource IDs: (32074)
+#. Resource IDs: (32075)
 msgid ""
 "\n"
 "Send Email"
@@ -9367,7 +9402,7 @@ msgstr ""
 "\n"
 "Le %ls %ls nuove seguenti sono state unite a questo database:"
 
-#. Resource IDs: (32082)
+#. Resource IDs: (32083)
 msgid ""
 "\n"
 "Undo"
@@ -9383,7 +9418,7 @@ msgstr ""
 "\n"
 "Eccezione inattesa durante l'elaborazione."
 
-#. Resource IDs: (32090)
+#. Resource IDs: (32091)
 msgid ""
 "\n"
 "Unprotect All Entries"
@@ -9391,7 +9426,7 @@ msgstr ""
 "\n"
 "Rimuovi protezione a tutte le voci"
 
-#. Resource IDs: (32088)
+#. Resource IDs: (32089)
 msgid ""
 "\n"
 "Unprotect Entry"
@@ -9407,7 +9442,7 @@ msgstr ""
 "\n"
 "Vuoi usarla comunque?"
 
-#. Resource IDs: (32097)
+#. Resource IDs: (32098)
 msgid ""
 "\n"
 "View Attachment"
