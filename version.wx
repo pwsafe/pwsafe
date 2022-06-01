@@ -4,6 +4,6 @@
 # be integers
 
 VER_MAJOR = 1
-VER_MINOR = 14
+VER_MINOR = 15
 VER_REV = 0
 # VER_SPECIAL = 
