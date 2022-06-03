@@ -668,7 +668,15 @@ endif (EXISTS "/etc/debian_version")
 
 ## RPM-specific
 
-set (CPACK_RPM_PACKAGE_REQUIRES "wxBase3, wxGTK3, xerces-c, ykpers, qrencode-libs, file-libs")
+if (${RELEASE_ID_SHORT} STREQUAL "openSUSE")
+  ## openSUSE-specific
+  set (RPM_PACKAGES "wxBase3, wxGTK3, xerces-c, ykpers, qrencode-libs, libmagic1")
+elseif (${RELEASE_ID_SHORT} STREQUAL "fedora")
+  ## Fedora-specific
+  set (RPM_PACKAGES "wxBase3, wxGTK3, xerces-c, ykpers, qrencode-libs, file-libs")
+endif (${RELEASE_ID_SHORT} STREQUAL "openSUSE")
+
+set (CPACK_RPM_PACKAGE_REQUIRES "${RPM_PACKAGES}")
 set (CPACK_RPM_PACKAGE_SUGGESTS "xvkbd")
 set (CPACK_RPM_PACKAGE_URL "https://pwsafe.org/")
 set (CPACK_RPM_PACKAGE_LICENSE "Artistic2.0")
