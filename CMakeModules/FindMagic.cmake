@@ -58,7 +58,7 @@ mark_as_advanced(MAGIC_INCLUDE_DIR)
 #
 find_library(MAGIC_LIBRARY
   NAMES magic
-  PATHS /usr/lib /usr/local/lib
+  PATHS /usr/lib /usr/lib64 /usr/local/lib
 )
 mark_as_advanced(MAGIC_LIBRARY)
 
