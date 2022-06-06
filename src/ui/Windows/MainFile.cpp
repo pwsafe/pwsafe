@@ -257,13 +257,14 @@ BOOL DboxMain::OpenOnInit()
   PWSprefs::GetInstance()->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
 
   HRGN hrgnWork = WinUtil::GetWorkAreaRegion();
-  // also check that window will be visible
-  if ((rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) ||
-    !RectInRegion(hrgnWork, rect)) {
+  
+  // Check if windows was maximized first, otherwise !RectInRegion() below always wins.
+  if (rect.top == 0 && rect.bottom == 0 && rect.left == 0 && rect.right == 0) {
+      ShowWindow(SW_SHOWMAXIMIZED);
+  } else if ((rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) ||
+      !RectInRegion(hrgnWork, rect)) { // also check that window will be visible
     GetWindowRect(&rect);
     SendMessage(WM_SIZE, SIZE_RESTORED, MAKEWPARAM(rect.Width(), rect.Height()));
-  } else if (rect.top == 0 && rect.bottom == 0 && rect.left == 0 && rect.right == 0) { // marks maximized window
-    ShowWindow(SW_SHOWMAXIMIZED);
   } else {
     PlaceWindow(this, &rect, SW_HIDE);
   }
