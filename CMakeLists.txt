@@ -670,7 +670,7 @@ endif (EXISTS "/etc/debian_version")
 
 if (${RELEASE_ID_SHORT} STREQUAL "openSUSE")
   ## openSUSE-specific
-  set (RPM_PACKAGES "wxBase3, wxGTK3, xerces-c, ykpers, qrencode-libs, libmagic1")
+  set (RPM_PACKAGES "xerces-c, ykpers, qrencode, libjpeg8, libjpeg62, libmagic1")
 elseif (${RELEASE_ID_SHORT} STREQUAL "fedora")
   ## Fedora-specific
   set (RPM_PACKAGES "wxBase3, wxGTK3, xerces-c, ykpers, qrencode-libs, file-libs")
