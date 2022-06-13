@@ -85,9 +85,10 @@ case "$DISTRO" in
         ykpers-devel qrencode-devel
     ;;
     opensuse)
-        zypper --non-interactive install cmake fakeroot gcc-c++ gettext-tools git gtest \
-        libcurl-devel libMagick++-devel libmagic1 libopenssl-devel libuuid-devel libxerces-c-devel \
-        libXt-devel libXtst-devel libykpers-devel libyubikey-devel make qrencode-devel rpmdevtools wxGTK3-3_2-devel
+        zypper --non-interactive install cmake file-devel fakeroot gcc-c++ \
+        gettext-tools git gtest libcurl-devel libmagic1 libopenssl-devel \
+        libuuid-devel libxerces-c-devel libXt-devel libXtst-devel libykpers-devel \
+        libyubikey-devel make qrencode-devel rpmdevtools wxGTK3-3_2-devel
     ;;
     *) die 10 "Don't know how to setup $DISTRO release $RELEASE (yet)."
 esac
