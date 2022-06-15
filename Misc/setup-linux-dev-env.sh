@@ -81,14 +81,14 @@ case "$DISTRO" in
     fedora)
         dnf -y install cmake file-devel gcc-c++ git gtest-devel libXt-devel libXtst-devel \
         libcurl-devel libuuid-devel libyubikey-devel \
-        make openssl-devel rpmdevtools rpm-sign wxGTK3-devel xerces-c-devel \
+        make openssl-devel rpmdevtools rpm-sign wxBase3-devel wxGTK3-devel xerces-c-devel \
         ykpers-devel qrencode-devel
     ;;
     opensuse)
         zypper --non-interactive install cmake file-devel fakeroot gcc-c++ \
         gettext-tools git gtest libcurl-devel libmagic1 libopenssl-devel \
         libuuid-devel libxerces-c-devel libXt-devel libXtst-devel libykpers-devel \
-        libyubikey-devel make qrencode-devel rpmdevtools wxGTK3-3_2-devel
+        libyubikey-devel make qrencode-devel rpmdevtools wxWidgets-3_0-devel
     ;;
     *) die 10 "Don't know how to setup $DISTRO release $RELEASE (yet)."
 esac
