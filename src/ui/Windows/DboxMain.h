@@ -904,8 +904,8 @@ private:
   std::vector<bool> GetGroupDisplayState(); // get current display state from window
   void SetGroupDisplayState(const std::vector<bool> &displaystatus); // changes display
   void SetDefaultColumns();  // default order
-  void SetColumns(const CString cs_ListColumns);
-  void SetColumnWidths(const CString cs_ListColumnsWidths);
+  void SetColumns(const CString& cs_ListColumns);
+  void SetColumnWidths(const CString& cs_ListColumnsWidths);
   void SetupColumnChooser(const bool bShowHide);
   void AddColumn(const int iType, const int iIndex);
   void DeleteColumn(const int iType);

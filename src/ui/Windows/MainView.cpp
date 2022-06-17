@@ -3242,7 +3242,7 @@ void DboxMain::SetDefaultColumns()
   SetHeaderInfo();
 }
 
-void DboxMain::SetColumns(const CString cs_ListColumns)
+void DboxMain::SetColumns(const CString& cs_ListColumns)
 {
   //  User has saved the columns he/she wants and now we are putting them back
   CString cs_header;
@@ -3250,7 +3250,6 @@ void DboxMain::SetColumns(const CString cs_ListColumns)
   hdi.mask = HDI_LPARAM;
 
   vector<int> vi_columns;
-  vector<int>::const_iterator vi_IterColumns;
   const wchar_t pSep[] = L",";
   wchar_t *pTemp;
 
@@ -3277,10 +3276,8 @@ void DboxMain::SetColumns(const CString cs_ListColumns)
   int icol(0);
   int iWidth, iSortColumn /* Not used here but needed for GetHeaderColumnProperties call */;
 
-  for (vi_IterColumns = vi_columns.begin();
-       vi_IterColumns != vi_columns.end();
-       vi_IterColumns++) {
-    iType = *vi_IterColumns;
+  for (auto iter : vi_columns) {
+    iType = iter;
     GetHeaderColumnProperties(iType, cs_header, iWidth, iSortColumn);
     // Images (if present) must be the first column!
     if (iType == CItemData::UUID && icol != 0)
@@ -3297,11 +3294,10 @@ void DboxMain::SetColumns(const CString cs_ListColumns)
   SetHeaderInfo();
 }
 
-void DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
+void DboxMain::SetColumnWidths(const CString& cs_ListColumnsWidths)
 {
   //  User has saved the columns he/she wants and now we are putting them back
   std::vector<int> vi_widths;
-  std::vector<int>::const_iterator vi_IterWidths;
   const wchar_t pSep[] = L",";
   wchar_t *pWidths;
 
@@ -3319,10 +3315,8 @@ void DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
 
   int icol = 0, index;
 
-  for (vi_IterWidths = vi_widths.begin();
-       vi_IterWidths != vi_widths.end();
-       vi_IterWidths++) {
-    int iWidth = *vi_IterWidths;
+  for (auto iter : vi_widths) {
+    int iWidth = iter;
     m_ctlItemList.SetColumnWidth(icol, iWidth);
     index = m_LVHdrCtrl.OrderToIndex(icol);
     m_nColumnWidthByIndex[index] = iWidth;
@@ -3336,7 +3330,7 @@ void DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
 
   // BR540 - no need to treat last column as special.
   // Last column special:
-  // "LVSCW_AUTOSIZE_USEHEADER: Automatically sizes the column to fit the header text. If you use this value with the last column, its width is set to fill the remaining width of the list-view control.
+  // "LVSCW_AUTOSIZE_USEHEADER: Automatically sizes the column to fit the header text. If you use this value with the last column, its width is set to fill the remaining width of the list-view control."
   // index = m_LVHdrCtrl.OrderToIndex(m_nColumns - 1);
   // m_ctlItemList.SetColumnWidth(index, LVSCW_AUTOSIZE_USEHEADER);
 }

@@ -3989,8 +3989,10 @@ void DboxMain::SavePreferencesOnExit()
     _itow_s(m_nColumnWidthByIndex[iIndex], widths, 8, 10);
     cs_columns += wc_buffer;
     cs_columnswidths += widths;
-    cs_columns += L",";
-    cs_columnswidths += L",";
+    if (iOrder != (m_nColumns - 1)) { // don't put comma after last values
+      cs_columns += L",";
+      cs_columnswidths += L",";
+    }
   }
 
   prefs->SetPref(PWSprefs::SortedColumn, m_iTypeSortColumn);
