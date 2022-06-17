@@ -347,7 +347,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
           } // switch
       } // while 
   } 
-  catch (std::invalid_argument ex) {
+  catch (const std::invalid_argument &ex) {
       wcerr << L"Error: " << ex.what() << endl << endl;
       return false;
   }
@@ -472,7 +472,7 @@ int Merge(PWScore &core, const UserArgs &ua)
                ua.subset.field,    // field to filter by
                ua.subset.rule,     // type of match rule for filtering
                &rpt,               // Must be non-null
-               NULL                // Cancel mechanism. We don't need one
+               nullptr             // Cancel mechanism. We don't need one
     );
     otherCore.UnlockFile(otherSafe.c_str());
   }
