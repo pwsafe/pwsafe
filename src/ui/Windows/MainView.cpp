@@ -3322,8 +3322,6 @@ void DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
   for (vi_IterWidths = vi_widths.begin();
        vi_IterWidths != vi_widths.end();
        vi_IterWidths++) {
-    if (icol == (m_nColumns - 1))
-      break;
     int iWidth = *vi_IterWidths;
     m_ctlItemList.SetColumnWidth(icol, iWidth);
     index = m_LVHdrCtrl.OrderToIndex(icol);
@@ -3335,9 +3333,12 @@ void DboxMain::SetColumnWidths(const CString cs_ListColumnsWidths)
   if (m_bImageInLV) {
     m_ctlItemList.SetColumnWidth(0, LVSCW_AUTOSIZE);
   }
-  // Last column special
-  index = m_LVHdrCtrl.OrderToIndex(m_nColumns - 1);
-  m_ctlItemList.SetColumnWidth(index, LVSCW_AUTOSIZE_USEHEADER);
+
+  // BR540 - no need to treat last column as special.
+  // Last column special:
+  // "LVSCW_AUTOSIZE_USEHEADER: Automatically sizes the column to fit the header text. If you use this value with the last column, its width is set to fill the remaining width of the list-view control.
+  // index = m_LVHdrCtrl.OrderToIndex(m_nColumns - 1);
+  // m_ctlItemList.SetColumnWidth(index, LVSCW_AUTOSIZE_USEHEADER);
 }
 
 void DboxMain::AddColumn(const int iType, const int iIndex)

@@ -4,6 +4,14 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
+PasswordSafe 3.60.0 Release ??? 2022
+====================================
+
+Bugs fixed in 3.60.0
+====================
+* [SF1560](https://sourceforge.net/p/passwordsafe/bugs/1560/) Flattened list: Width of last column is not retained across invocations.
+
+
 PasswordSafe 3.59.0 Release May 2022
 ====================================
 
