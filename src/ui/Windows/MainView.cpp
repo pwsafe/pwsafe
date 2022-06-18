@@ -3242,28 +3242,31 @@ void DboxMain::SetDefaultColumns()
   SetHeaderInfo();
 }
 
+static void tokenize_list(const CString &str, vector<int> &vec)
+{
+  // turn a comma-separated list of string into a vector<int>
+
+  const wchar_t pSep[] = L",";
+  // Duplicate input as strtok modifies the string
+  wchar_t* pTemp = _wcsdup((LPCWSTR)str);
+  wchar_t* next_token;
+  wchar_t* token = wcstok_s(pTemp, pSep, &next_token);
+  while (token) {
+    vec.push_back(_wtoi(token));
+    token = wcstok_s(nullptr, pSep, &next_token);
+  }
+  free(pTemp);
+}
+
 void DboxMain::SetColumns(const CString& cs_ListColumns)
 {
   //  User has saved the columns he/she wants and now we are putting them back
   CString cs_header;
   HDITEM hdi;
   hdi.mask = HDI_LPARAM;
-
   vector<int> vi_columns;
-  const wchar_t pSep[] = L",";
-  wchar_t *pTemp;
 
-  // Duplicate as strtok modifies the string
-  pTemp = _wcsdup((LPCWSTR)cs_ListColumns);
-
-  // Capture columns shown:
-  wchar_t *next_token;
-  wchar_t *token = wcstok_s(pTemp, pSep, &next_token);
-  while(token) {
-    vi_columns.push_back(_wtoi(token));
-    token = wcstok_s(NULL, pSep, &next_token);
-  }
-  free(pTemp);
+  tokenize_list(cs_ListColumns, vi_columns);
 
   // If present, the images are always first
   int iType= *vi_columns.begin();
@@ -3298,20 +3301,8 @@ void DboxMain::SetColumnWidths(const CString& cs_ListColumnsWidths)
 {
   //  User has saved the columns he/she wants and now we are putting them back
   std::vector<int> vi_widths;
-  const wchar_t pSep[] = L",";
-  wchar_t *pWidths;
 
-  // Duplicate as strtok modifies the string
-  pWidths = _wcsdup((LPCWSTR)cs_ListColumnsWidths);
-
-  // Capture column widths shown:
-  wchar_t *next_token;
-  wchar_t *token = wcstok_s(pWidths, pSep, &next_token);
-  while(token) {
-    vi_widths.push_back(_wtoi(token));
-    token = wcstok_s(NULL, pSep, &next_token);
-  }
-  free(pWidths);
+  tokenize_list(cs_ListColumnsWidths, vi_widths);
 
   int icol = 0, index;
 
