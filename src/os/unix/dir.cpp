@@ -126,42 +126,73 @@ stringT pws_os::fullpath(const stringT &relpath)
   return retval;
 }
 
+static bool direxists(const stringT &path, bool createIfNeeded)
+{
+      struct stat statbuf;
+      bool retval = false;
+      int status = ::lstat(pws_os::tomb(path).c_str(), &statbuf);
+
+      if (status == 0 && (S_ISDIR(statbuf.st_mode) || S_ISLNK(statbuf.st_mode)))
+        retval = true;
+      
+      // no existing dir, create one if so instructed
+      if (!retval && createIfNeeded) {
+        const mode_t oldmode = umask(0);
+        retval = (mkdir(pws_os::tomb(path).c_str(), S_IRUSR|S_IWUSR|S_IXUSR) == 0);
+        umask(oldmode);
+      }
+      return retval;
+}
+
+
 static stringT createuserprefsdir(void)
 {
+  /**
+   * (1) We start by checking if ~/.pwsafe exists, as this was the default until FR902. If it exists, we use it.
+   * (2) If not, then we try to respect Freedesktop.org's XDG Base Directory Specification:
+   *       If $XDG_CONFIG_HOME is set, then we'll use $XDG_CONFIG_HOME/pwsafe, creating it if needed
+   * (3) If ~/.pwsafe doesn't exist and $XDG_CONFIG_HOME isn't set, then:
+   *       We test for ~/.config, creating if needed, then we test for ~/.config/pwsafe, creating if needed
+  */
+
   stringT cfgdir = pws_os::getenv("HOME", true);
-  if (!cfgdir.empty()) {
+
+  if (!cfgdir.empty()) { // if $HOME's not defined, we have bigger problems...
+ 
+    // (1)
     cfgdir += _S(".pwsafe");
-    struct stat statbuf;
-    switch (::lstat(pws_os::tomb(cfgdir).c_str(), &statbuf)) {
-    case 0:
-      if (!S_ISDIR(statbuf.st_mode) && !S_ISLNK(statbuf.st_mode))
-        cfgdir.clear();  // not a dir or symbolic link - can't use it.
-      break;
-    case -1:  // dir doesn't exist.  Or should we check errno too?
-      {
-        const mode_t oldmode = umask(0);
-        if (mkdir(pws_os::tomb(cfgdir).c_str(), S_IRUSR|S_IWUSR|S_IXUSR) == -1)
-          cfgdir.clear();
-        umask(oldmode);
-        break;
-      }
-    default:
-      assert(false);
-      cfgdir.clear();
-      break;
+
+    if (direxists(cfgdir, false))
+      return cfgdir + _S("/");
+
+    // (2)
+    cfgdir = pws_os::getenv("XDG_CONFIG_HOME", true);
+    if (!cfgdir.empty()) {
+      cfgdir += _S("/pwsafe");
+      if (direxists(cfgdir, true))
+        return cfgdir + _S("/");
     }
-    if (!cfgdir.empty())
-      cfgdir += _S('/');
-  } // $HOME defined
-  return cfgdir;
+
+    // (3)
+    cfgdir = pws_os::getenv("HOME", true) + _S("/.config");
+    if (direxists(cfgdir, true)) {
+      cfgdir += _S("/pwsafe");
+      if (direxists(cfgdir, true))
+        return cfgdir + _S("/");
+    }
+  }
+
+  return _S("");
 }
 
 stringT pws_os::getuserprefsdir(void)
 {
   /**
-   * Returns $(HOME)/.pwsafe, creating it if needed.
+   * Returns preference directory, creating it if needed.
+   * See createuserprefsdir() for description of logic.
    * If creation failed, return empty string, caller
-   * will fallback to something else or fail gracefully
+   * will fallback to something else or fail gracefully.
+   * Note that we use a static string so that createuserprefsdir() is called exactly once.
    */
   static const stringT cfgdir = createuserprefsdir();
   return cfgdir;
