@@ -383,6 +383,16 @@ msgstr "%d invoeren geëxporteerd"
 msgid "%d entries synchronized"
 msgstr "%d invoeren gesynchroniseerd"
 
+#. Resource IDs: (6061)
+#, c-format
+msgid "%d entries under group"
+msgstr ""
+
+#. Resource IDs: (6060)
+#, c-format
+msgid "%d entry under group"
+msgstr ""
+
 #. Resource IDs: (5240)
 #, c-format
 msgid "%d items"
@@ -667,7 +677,7 @@ msgstr "&Sleepbalk zichtbaar"
 msgid "&Duplicate Entry"
 msgstr "&Kopieer invoer"
 
-#. Resource IDs: (32086 - Menu)
+#. Resource IDs: (32087 - Menu)
 msgid "&Duplicate Group"
 msgstr "&Kopieer Groep"
 
@@ -679,7 +689,7 @@ msgstr "&E-mail:"
 msgid "&Edit"
 msgstr "&Bewerk"
 
-#. Resource IDs: (32081 - Menu, 32081 - MenuEx)
+#. Resource IDs: (32082 - Menu, 32082 - MenuEx)
 msgid "&Edit Base entry"
 msgstr "&Bewerk Basis invoer"
 
@@ -703,7 +713,7 @@ msgstr "&Filters"
 msgid "&Find"
 msgstr "&Zoek"
 
-#. Resource IDs: (32079 - MenuEx)
+#. Resource IDs: (32080 - MenuEx)
 msgid "&Find..."
 msgstr "&Zoek..."
 
@@ -719,7 +729,7 @@ msgstr "&Lettertype:"
 msgid "&Generate"
 msgstr "&Genereer"
 
-#. Resource IDs: (32078 - Menu, 32078 - MenuEx)
+#. Resource IDs: (32079 - Menu, 32079 - MenuEx)
 msgid "&Go to Base entry"
 msgstr "&Ga naar Basis invoer"
 
@@ -811,6 +821,10 @@ msgstr "&Op"
 msgid "&Open"
 msgstr "&Open"
 
+#. Resource IDs: (32002 - Menu)
+msgid "&Open Another"
+msgstr ""
+
 #. Resource IDs: (32002 - MenuEx)
 msgid "&Open..."
 msgstr "&Open..."
@@ -831,7 +845,7 @@ msgstr "&Wachtwoord:"
 msgid "&Paste"
 msgstr "&Plakken"
 
-#. Resource IDs: (32010 - MenuEx, 32084 - Menu, 32084 - MenuEx, 32093 - Menu, 32093 - MenuEx)
+#. Resource IDs: (32010 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu, 32094 - MenuEx)
 msgid "&Plain Text (tab separated)..."
 msgstr "&Gewone Tekst (tab gescheiden)"
 
@@ -843,7 +857,7 @@ msgstr "&Gewone Tekst..."
 msgid "&Properties"
 msgstr "&Eigenschappen"
 
-#. Resource IDs: (32089 - Menu)
+#. Resource IDs: (32090 - Menu)
 msgid "&Protect All Entries"
 msgstr "&Bescherm alle invoeren"
 
@@ -875,7 +889,7 @@ msgstr "&Terugzetten"
 msgid "&Retry"
 msgstr "&Opnieuw proberen"
 
-#. Resource IDs: (32076 - Menu, 32076 - MenuEx, 5656)
+#. Resource IDs: (32077 - Menu, 32077 - MenuEx, 5656)
 msgid "&Run Command"
 msgstr "&Commando Uitvoeren"
 
@@ -935,7 +949,7 @@ msgstr "&Probeer nogmaals"
 msgid "&Undo"
 msgstr "&Ongedaan maken"
 
-#. Resource IDs: (32090 - Menu)
+#. Resource IDs: (32091 - Menu)
 msgid "&Unprotect All Entries"
 msgstr "&Bescherming Opheffen Alle invoeren"
 
@@ -955,7 +969,7 @@ msgstr "&Valideren"
 msgid "&View"
 msgstr "&Bekijk"
 
-#. Resource IDs: (32097 - Menu)
+#. Resource IDs: (32098 - Menu)
 msgid "&View Attachment"
 msgstr "&Bekijk Bijlage"
 
@@ -971,7 +985,7 @@ msgstr "&Bekijk Rapport"
 msgid "&Virtual Keyboard Font"
 msgstr "Lettertype &Virtueel Toetsenbord"
 
-#. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu, 32094 - MenuEx)
+#. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32086 - Menu, 32086 - MenuEx, 32095 - Menu, 32095 - MenuEx)
 msgid "&XML format..."
 msgstr "&XML Opmaak...."
 
@@ -1795,6 +1809,10 @@ msgstr "Ga naar URL + Automatisch invul"
 msgid "Browse to URL + Autotype"
 msgstr "Ga naar URL + Automatisch invul"
 
+#. Resource IDs: (32074 - Menu, 32074 - MenuEx)
+msgid "Browse to URL w/Alt Browser"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
 msgstr "Blader Command Line parameters:"
@@ -1968,8 +1986,8 @@ msgid "Change database mode?"
 msgstr "Verander database modus?"
 
 #. Resource IDs: (5858)
-msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
-msgstr "Status wijzigen sinds laatste opslaan:\n* geeft aan dat de database is gewijzigd\n° geeft aan dat een database-voorkeur is gewijzigd"
+msgid "Change status since last save:\n* indicates the database has been changed\nï¿½ indicates a database preference has been changed"
+msgstr ""
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -2196,7 +2214,7 @@ msgstr "Vergelijk Database Resultaten"
 msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
 msgstr "Vergelijk volledig van huidige database:\n\t %ls\n en:\n\t %ls\n"
 
-#. Resource IDs: (32091 - Menu, 32091 - MenuEx)
+#. Resource IDs: (32092 - Menu, 32092 - MenuEx)
 msgid "Compare entries..."
 msgstr "Vergelijken invoer.."
 
@@ -2319,7 +2337,7 @@ msgstr "Kopieer E-mail naar Klembord"
 msgid "Copy Here"
 msgstr "Kopieer Hier"
 
-#. Resource IDs: (32080 - Menu, 32080 - MenuEx)
+#. Resource IDs: (32081 - Menu, 32081 - MenuEx)
 msgid "Copy Run Command to Clipboard"
 msgstr "Kopier Commando Uitvoer naar Klembord"
 
@@ -2403,7 +2421,7 @@ msgstr "Kan basis-invoer niet vinden - database inconsitent"
 msgid "Couldn't save database - Please save manually"
 msgstr "Kon database niet opslaan - SVP handmatig opslaan"
 
-#. Resource IDs: (32077 - Menu, 32077 - MenuEx)
+#. Resource IDs: (32078 - Menu, 32078 - MenuEx)
 msgid "Create &Shortcut"
 msgstr "Maak &Snelkoppeling"
 
@@ -2484,11 +2502,6 @@ msgstr "Huidige database is alleen-lezen"
 #, c-format
 msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the PasswordSafe website to download the latest version."
 msgstr "Huidige versie:\t%s\nLaatste versie:\t%s\n\nGa aub naar de PasswordSafe website om de laatste versie te downloaden."
-
-#. Resource IDs: (5478)
-#, c-format
-msgid "Current version:\t%s\nLatest version:\t%s\n\nYour purchase includes free upgrades for one year.\nPlease contact the PasswordSafe Administrator for your upgrade."
-msgstr "Huidige versie:\t%s\nLaatste versie:\t%s\n\nUw aankoop voorziet in gratis upgrades voor één jaar.\nNeem aug contact op met de  PasswordSafe beheerder voor uw upgrade."
 
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
@@ -2794,7 +2807,7 @@ msgstr "Versleep deze afbeelding naar een ander scherm om Auto invul van daaraf 
 msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."
 msgstr "Invoer vervallen '%s:%s:%s' wachtwoord verwijst naar een invoer die tevens een alias is.\n\nDe vervallen invoer verwijst nu naar de basis-invoer van die invoer."
 
-#. Resource IDs: (32086 - Menu, 32086 - MenuEx)
+#. Resource IDs: (32087 - Menu, 32087 - MenuEx)
 msgid "Duplicate Group"
 msgstr "Kopieer Groep"
 
@@ -3199,7 +3212,7 @@ msgstr "&Exporteren Naar"
 msgid "Export &XML"
 msgstr "Exporteer &XML"
 
-#. Resource IDs: (32096 - Menu, 32096 - MenuEx)
+#. Resource IDs: (32097 - Menu, 32097 - MenuEx)
 msgid "Export Attachment..."
 msgstr "Exporteer Bijlage..."
 
@@ -3745,7 +3758,7 @@ msgstr "Hongaars"
 msgid "Hungarian 101-key"
 msgstr "Hongaars met 101-toets"
 
-#. Accelerator Entry for Menu ID:32002; '&Open...'
+#. Accelerator Entry for Menu ID:32002; '&Open Another'
 msgid "ID:32002:V C +O"
 msgstr "ID:32002:V C +O"
 
@@ -3801,33 +3814,37 @@ msgstr "ID:32072:V C +L"
 msgid "ID:32073:VA  +L"
 msgstr "ID:32073:VA  +L"
 
-#. Accelerator Entry for Menu ID:32074; 'Send &Email'
-msgid "ID:32074:V C +E"
-msgstr "ID:32074:V C +E"
+#. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
+msgid "ID:32074:VA S+L"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32075; 'Perform Auto&Type'
-msgid "ID:32075:V C +T"
-msgstr "ID:32075:V C +T"
+#. Accelerator Entry for Menu ID:32075; 'Send &Email'
+msgid "ID:32075:V C +E"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32076; '&Run Command'
-msgid "ID:32076:V C +R"
-msgstr "ID:32076:V C +R"
+#. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
+msgid "ID:32076:V C +T"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32079; '&Find...'
-msgid "ID:32079:V C +F"
-msgstr "ID:32079:V C +F"
+#. Accelerator Entry for Menu ID:32077; '&Run Command'
+msgid "ID:32077:V C +R"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32080; 'Copy Run Command to Clipboard'
-msgid "ID:32080:VAC +R"
-msgstr "ID:32080:VAC +R"
+#. Accelerator Entry for Menu ID:32080; '&Find...'
+msgid "ID:32080:V C +F"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32082; 'Undo'
-msgid "ID:32082:V C +Z"
-msgstr "ID:32082:V C +Z"
+#. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
+msgid "ID:32081:VAC +R"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32083; 'Redo'
-msgid "ID:32083:V C +Y"
-msgstr "ID:32083:V C +Y"
+#. Accelerator Entry for Menu ID:32083; 'Undo'
+msgid "ID:32083:V C +Z"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32084; 'Redo'
+msgid "ID:32084:V C +Y"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32140; 'Last Find results'
 msgid "ID:32140:V C +K"
@@ -5093,7 +5110,7 @@ msgstr "Wachtwoord lengte:"
 msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr "Wachtwoord moet hoofdletters en kleine letters bevatten, met tenminste een cijfer of leesteken"
 
-#. Resource IDs: (32092 - Menu, 32092 - MenuEx, 32095 - Menu, 32095 - MenuEx)
+#. Resource IDs: (32093 - Menu, 32093 - MenuEx, 32096 - Menu, 32096 - MenuEx)
 msgid "Password&Safe..."
 msgstr "Password&Safe..."
 
@@ -5110,7 +5127,7 @@ msgstr "PasswordSafe..."
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
 msgstr "PasswordSafe: invoeren bestaan met verlopen of binnenkort te verlopen wachtwoorden"
 
-#. Resource IDs: (32075 - Menu, 32075 - MenuEx, 5296)
+#. Resource IDs: (32076 - Menu, 32076 - MenuEx, 5296)
 msgid "Perform Auto&Type"
 msgstr "Uitvoeren automatische &invul"
 
@@ -5324,8 +5341,8 @@ msgid "Press to delete all added characters."
 msgstr "Klik om alle toegevoegde letters te verwijderen."
 
 #. Resource IDs: (65535)
-msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password being copied."
-msgstr "Door op OK te drukken kopieert u het wachtwoord van de geselecteerde invoer naar het klembord. Het klembord zal veilig gewist worden zodra Password Safe gesloten wordt.\n\nDoor op Annuleren te drukken wordt het wachtwoord niet gekopieerd."
+msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password from being copied."
+msgstr ""
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -5371,11 +5388,11 @@ msgstr "Eigenschappen"
 msgid "Properties of the currently selected database."
 msgstr "Eigenschappen van de huidige geselecteerde database."
 
-#. Resource IDs: (32089 - MenuEx)
+#. Resource IDs: (32090 - MenuEx)
 msgid "Protect All Entries"
 msgstr "Bescherm alle invoeren"
 
-#. Resource IDs: (32087 - Menu, 32087 - MenuEx)
+#. Resource IDs: (32088 - Menu, 32088 - MenuEx)
 msgid "Protect Entry"
 msgstr "Bescherm invoer"
 
@@ -5464,7 +5481,7 @@ msgstr "Herstel de automatisch bewaarde documenten\nOpen de automatisch bewaarde
 msgid "Recurring"
 msgstr "Herhalend"
 
-#. Resource IDs: (1487, 32083 - MenuEx)
+#. Resource IDs: (1487, 32084 - MenuEx)
 msgid "Redo"
 msgstr "Opnieuw uitvoeren"
 
@@ -5832,7 +5849,7 @@ msgstr "Geselecteerde regels details:"
 msgid "Send"
 msgstr "Verzenden"
 
-#. Resource IDs: (32074 - Menu, 32074 - MenuEx)
+#. Resource IDs: (32075 - Menu, 32075 - MenuEx)
 msgid "Send &Email"
 msgstr "Verstuur &E-mail"
 
@@ -6895,7 +6912,7 @@ msgstr "Niet mogelijk om te schrijven naar %1, het is alleen-lezen of geopend do
 msgid "Uncheck"
 msgstr "Vink verwijderen"
 
-#. Resource IDs: (1486, 32082 - MenuEx)
+#. Resource IDs: (1486, 32083 - MenuEx)
 msgid "Undo"
 msgstr "Herstel"
 
@@ -6955,11 +6972,11 @@ msgstr "Moeilijkheid Ontsluiten"
 msgid "Unlock Safe"
 msgstr "Ontsluit Kluis"
 
-#. Resource IDs: (32090 - MenuEx)
+#. Resource IDs: (32091 - MenuEx)
 msgid "Unprotect All Entries"
 msgstr "Bescherming Opheffen van alle invoeren"
 
-#. Resource IDs: (32088 - Menu, 32088 - MenuEx)
+#. Resource IDs: (32089 - Menu, 32089 - MenuEx)
 msgid "Unprotect Entry"
 msgstr "Bescherming Opheffen van deze invoer"
 
@@ -7146,7 +7163,7 @@ msgstr "Vietnamees"
 msgid "View"
 msgstr "Bekijk"
 
-#. Resource IDs: (32097 - MenuEx, 548, 6025)
+#. Resource IDs: (32098 - MenuEx, 548, 6025)
 msgid "View Attachment"
 msgstr "Bekijk Bijlage"
 
@@ -7434,6 +7451,10 @@ msgstr "\nURL bezoeken"
 msgid "\nBrowse to URL + AutoType"
 msgstr "\nBlader naar de URL + Automatische invoer"
 
+#. Resource IDs: (32074)
+msgid "\nBrowse to URL with Alternate Browser"
+msgstr ""
+
 #. Resource IDs: (32305)
 msgid "\nCase insensitive search"
 msgstr "\nHoofdletter ongevoelige zoekopdracht"
@@ -7466,7 +7487,7 @@ msgstr "\nZoekbalk sluiten"
 msgid "\nCollapse All"
 msgstr "\nAlles Invouwen"
 
-#. Resource IDs: (32091)
+#. Resource IDs: (32092)
 msgid "\nCompare entries..."
 msgstr "\nVergelijk invoeren..."
 
@@ -7482,7 +7503,7 @@ msgstr "\nKopieer Notities naar klembord"
 msgid "\nCopy Password to Clipboard"
 msgstr "\nKopieer Wachtwoord naar klembord"
 
-#. Resource IDs: (32080)
+#. Resource IDs: (32081)
 msgid "\nCopy Run Command to Clipboard"
 msgstr "\nKopieer Commando Uitvoeren naar klembord"
 
@@ -7506,11 +7527,11 @@ msgstr "\nToon een deel van Wachtwoord"
 msgid "\nDuplicate Entry"
 msgstr "\nDupliceer een invoer"
 
-#. Resource IDs: (32086)
+#. Resource IDs: (32087)
 msgid "\nDuplicate Group"
 msgstr "\nDupliceer Groep"
 
-#. Resource IDs: (32081)
+#. Resource IDs: (32082)
 msgid "\nEdit Base entry"
 msgstr "\nBewerk Basisinvoer"
 
@@ -7535,31 +7556,31 @@ msgstr "\nFout in Wachtwoordgeschiedenis voor invoer: »%ls»%ls»%ls»: "
 msgid "\nExpand All"
 msgstr "\nAlles Uitvouwen"
 
-#. Resource IDs: (32096)
+#. Resource IDs: (32097)
 msgid "\nExport Attachment..."
 msgstr "\nExporteer Bijlage..."
 
-#. Resource IDs: (32085)
+#. Resource IDs: (32086)
 msgid "\nExport Entry in XML format..."
 msgstr "\nExporteer invoer in XML opmaak....."
 
-#. Resource IDs: (32084)
+#. Resource IDs: (32085)
 msgid "\nExport Entry to Plain Text..."
 msgstr "\nExport invoer naar Gewone Tekst..."
 
-#. Resource IDs: (32092)
+#. Resource IDs: (32093)
 msgid "\nExport Entry to another Safe..."
 msgstr "\nExporteer invoer naar andere Kluis..."
 
-#. Resource IDs: (32094)
+#. Resource IDs: (32095)
 msgid "\nExport Group in XML format..."
 msgstr "\nExporteer Groep naar XML opmaak..."
 
-#. Resource IDs: (32093)
+#. Resource IDs: (32094)
 msgid "\nExport Group to Plain Text..."
 msgstr "\nExporteer Groep naar Gewone Tekst..."
 
-#. Resource IDs: (32095)
+#. Resource IDs: (32096)
 msgid "\nExport Group to another Safe..."
 msgstr "\nExporteer Groep naar andere Kluis..."
 
@@ -7599,7 +7620,7 @@ msgstr "\nZoek Volgende"
 msgid "\nFind Previous"
 msgstr "\nZoek Vorige"
 
-#. Resource IDs: (32079)
+#. Resource IDs: (32080)
 msgid "\nFind..."
 msgstr "\nZoek..."
 
@@ -7607,7 +7628,7 @@ msgstr "\nZoek..."
 msgid "\nGenerate Password"
 msgstr "\nGenereer Wachtwoord"
 
-#. Resource IDs: (32078)
+#. Resource IDs: (32079)
 msgid "\nGo to Base entry"
 msgstr "\nGa naar Basis invoer"
 
@@ -7660,7 +7681,7 @@ msgstr "\nOpties"
 msgid "\nPassword Policies"
 msgstr "\nWachtwoord Regels`regels"
 
-#. Resource IDs: (32075)
+#. Resource IDs: (32076)
 msgid "\nPerform AutoType"
 msgstr "\nUitvoeren Automatische invul"
 
@@ -7672,15 +7693,15 @@ msgstr "\nSVP een andere proberen"
 msgid "\nProgram will terminate."
 msgstr "\nProgramma wordt beëindigd."
 
-#. Resource IDs: (32089)
+#. Resource IDs: (32090)
 msgid "\nProtect All Entries"
 msgstr "\nBescherm alle invoeren"
 
-#. Resource IDs: (32087)
+#. Resource IDs: (32088)
 msgid "\nProtect Entry"
 msgstr "\nBescherm invoer"
 
-#. Resource IDs: (32083)
+#. Resource IDs: (32084)
 msgid "\nRedo"
 msgstr "\nOpnieuw"
 
@@ -7689,7 +7710,7 @@ msgstr "\nOpnieuw"
 msgid "\nRenamed %d %s"
 msgstr "\nHernoemd %d %s"
 
-#. Resource IDs: (32076)
+#. Resource IDs: (32077)
 msgid "\nRun Command"
 msgstr "\nUitvoer Commando"
 
@@ -7705,7 +7726,7 @@ msgstr "\nDatabase Opslaan Als..."
 msgid "\nSelect Entry"
 msgstr "\nKies invoer"
 
-#. Resource IDs: (32074)
+#. Resource IDs: (32075)
 msgid "\nSend Email"
 msgstr "\nVerstuur E-mail"
 
@@ -7749,7 +7770,7 @@ msgstr "\nDe volgende %ls %ls bijgewerkt:"
 msgid "\nThe following new %ls %ls merged into this database:"
 msgstr "\nDe volgende nieuwe %ls %ls samengevoegd in deze database:"
 
-#. Resource IDs: (32082)
+#. Resource IDs: (32083)
 msgid "\nUndo"
 msgstr "\nOngedaan Maken"
 
@@ -7757,11 +7778,11 @@ msgstr "\nOngedaan Maken"
 msgid "\nUnexpected exception during parsing."
 msgstr "\nOnverwachte Uitzondering tijdens opdelen."
 
-#. Resource IDs: (32090)
+#. Resource IDs: (32091)
 msgid "\nUnprotect All Entries"
 msgstr "\nBescherming Opheffen van alle invoeren"
 
-#. Resource IDs: (32088)
+#. Resource IDs: (32089)
 msgid "\nUnprotect Entry"
 msgstr "\nBescherming Opheffen van invoer"
 
@@ -7769,7 +7790,7 @@ msgstr "\nBescherming Opheffen van invoer"
 msgid "\nUse it anyway?"
 msgstr "\nToch gebruiken?"
 
-#. Resource IDs: (32097)
+#. Resource IDs: (32098)
 msgid "\nView Attachment"
 msgstr "\nBekijk Bijlage"
 

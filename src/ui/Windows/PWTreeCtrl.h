@@ -164,8 +164,8 @@ private:
   CFont *GetFontBasedOnStatus(HTREEITEM &hItem, CItemData *pci, COLORREF &cf);
 
   // Notes Display
-  UINT_PTR m_nHoverNDTimerID, m_nShowNDTimerID;
-  CPoint m_HoverNDPoint;
+  UINT_PTR m_nHoverInfoDisplayTimerID, m_nShowInfoDisplayTimerID;
+  CPoint m_HoverInfoDisplayPoint;
   bool m_bShowNotes, m_bMouseInWindow;
 
   // Filter

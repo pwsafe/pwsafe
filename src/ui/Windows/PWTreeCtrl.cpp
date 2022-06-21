@@ -20,7 +20,7 @@
 #include "core/ItemData.h"
 #include "core/Util.h"
 #include "core/UTF8Conv.h"
-#include "core/Pwsprefs.h"
+#include "core/PWSprefs.h"
 
 #include "os/debug.h"
 
@@ -171,7 +171,7 @@ private:
 CPWTreeCtrlX::CPWTreeCtrlX()
   : m_isRestoring(false), m_bWithinThisInstance(true),
   m_hgDataALL(nullptr), m_hgDataUTXT(nullptr), m_hgDataTXT(nullptr),
-  m_nHoverNDTimerID(0), m_nShowNDTimerID(0),
+  m_nHoverInfoDisplayTimerID(0), m_nShowInfoDisplayTimerID(0),
   m_bMouseInWindow(false), 
   m_bTreeFilterActive(false), m_bUseHighLighting(false)
 {
@@ -1803,21 +1803,22 @@ void CPWTreeCtrlX::OnTimer(UINT_PTR nIDEvent)
 {
   switch (nIDEvent) {
     case TIMER_ND_HOVER:
-      KillTimer(m_nHoverNDTimerID);
-      m_nHoverNDTimerID = 0;
-      if (app.GetMainDlg()->SetNotesWindow(m_HoverNDPoint)) {
-        if (m_nShowNDTimerID) {
-          KillTimer(m_nShowNDTimerID);
-          m_nShowNDTimerID = 0;
+      KillTimer(m_nHoverInfoDisplayTimerID);
+      m_nHoverInfoDisplayTimerID = 0;
+      if (app.GetMainDlg()->SetInfoDisplay(m_HoverInfoDisplayPoint)) {
+        // setup timer to hide InfoDisplay
+        if (m_nShowInfoDisplayTimerID) {
+          KillTimer(m_nShowInfoDisplayTimerID);
+          m_nShowInfoDisplayTimerID = 0;
         }
-        m_nShowNDTimerID = SetTimer(TIMER_ND_SHOWING, TIMEINT_ND_SHOWING, NULL);
+        m_nShowInfoDisplayTimerID = SetTimer(TIMER_ND_SHOWING, TIMEINT_ND_SHOWING, NULL);
       }
       break;
     case TIMER_ND_SHOWING:
-      KillTimer(m_nShowNDTimerID);
-      m_nShowNDTimerID = 0;
-      m_HoverNDPoint = CPoint(0, 0);
-      app.GetMainDlg()->SetNotesWindow(m_HoverNDPoint, false);
+      KillTimer(m_nShowInfoDisplayTimerID);
+      m_nShowInfoDisplayTimerID = 0;
+      m_HoverInfoDisplayPoint = CPoint(0, 0);
+      app.GetMainDlg()->SetInfoDisplay(m_HoverInfoDisplayPoint, false);
       break;
     default:
       CTreeCtrl::OnTimer(nIDEvent);
@@ -1828,22 +1829,20 @@ void CPWTreeCtrlX::OnTimer(UINT_PTR nIDEvent)
 void CPWTreeCtrlX::OnMouseMove(UINT nFlags, CPoint point)
 {
   app.GetMainDlg()->ResetIdleLockCounter();
-  if (!m_bShowNotes)
-    return;
 
-  if (m_nHoverNDTimerID) {
-    if (HitTest(m_HoverNDPoint) == HitTest(point))
+  if (m_nHoverInfoDisplayTimerID) {
+    if (HitTest(m_HoverInfoDisplayPoint) == HitTest(point))
       return;
-    KillTimer(m_nHoverNDTimerID);
-    m_nHoverNDTimerID = 0;
+    KillTimer(m_nHoverInfoDisplayTimerID);
+    m_nHoverInfoDisplayTimerID = 0;
   }
 
-  if (m_nShowNDTimerID) {
-    if (HitTest(m_HoverNDPoint) == HitTest(point))
+  if (m_nShowInfoDisplayTimerID) {
+    if (HitTest(m_HoverInfoDisplayPoint) == HitTest(point))
       return;
-    KillTimer(m_nShowNDTimerID);
-    m_nShowNDTimerID = 0;
-    app.GetMainDlg()->SetNotesWindow(CPoint(0, 0), false);
+    KillTimer(m_nShowInfoDisplayTimerID);
+    m_nShowInfoDisplayTimerID = 0;
+    app.GetMainDlg()->SetInfoDisplay(CPoint(0, 0), false);
   }
 
   if (!m_bMouseInWindow) {
@@ -1852,19 +1851,19 @@ void CPWTreeCtrlX::OnMouseMove(UINT nFlags, CPoint point)
     VERIFY(TrackMouseEvent(&tme));
   }
 
-  m_nHoverNDTimerID = SetTimer(TIMER_ND_HOVER, HOVER_TIME_ND, NULL);
-  m_HoverNDPoint = point;
+  m_nHoverInfoDisplayTimerID = SetTimer(TIMER_ND_HOVER, HOVER_TIME_ND, NULL);
+  m_HoverInfoDisplayPoint = point;
 
   CTreeCtrl::OnMouseMove(nFlags, point);
 }
 
 LRESULT CPWTreeCtrlX::OnMouseLeave(WPARAM, LPARAM)
 {
-  KillTimer(m_nHoverNDTimerID);
-  KillTimer(m_nShowNDTimerID);
-  m_nHoverNDTimerID = m_nShowNDTimerID = 0;
-  m_HoverNDPoint = CPoint(0, 0);
-  app.GetMainDlg()->SetNotesWindow(m_HoverNDPoint, false);
+  KillTimer(m_nHoverInfoDisplayTimerID);
+  KillTimer(m_nShowInfoDisplayTimerID);
+  m_nHoverInfoDisplayTimerID = m_nShowInfoDisplayTimerID = 0;
+  m_HoverInfoDisplayPoint = CPoint(0, 0);
+  app.GetMainDlg()->SetInfoDisplay(m_HoverInfoDisplayPoint, false);
   m_bMouseInWindow = false;
   return 0L;
 }

@@ -344,6 +344,16 @@ msgstr "%d záznamů exportováno"
 msgid "%d entries synchronized"
 msgstr "%d vstupů synchronizováno"
 
+#. Resource IDs: (6061)
+#, c-format
+msgid "%d entries under group"
+msgstr ""
+
+#. Resource IDs: (6060)
+#, c-format
+msgid "%d entry under group"
+msgstr ""
+
 #. Resource IDs: (5240)
 #, c-format
 msgid "%d items"
@@ -628,7 +638,7 @@ msgstr "&Přetahovací lišta viditelná"
 msgid "&Duplicate Entry"
 msgstr "&Duplikuj záznam"
 
-#. Resource IDs: (32086 - Menu)
+#. Resource IDs: (32087 - Menu)
 msgid "&Duplicate Group"
 msgstr "&Duplikuj skupinu"
 
@@ -640,7 +650,7 @@ msgstr ""
 msgid "&Edit"
 msgstr "&Upravit"
 
-#. Resource IDs: (32081 - Menu, 32081 - MenuEx)
+#. Resource IDs: (32082 - Menu, 32082 - MenuEx)
 msgid "&Edit Base entry"
 msgstr "&Uprav základní záznam"
 
@@ -664,7 +674,7 @@ msgstr "&Filtry"
 msgid "&Find"
 msgstr "&Hledat"
 
-#. Resource IDs: (32079 - MenuEx)
+#. Resource IDs: (32080 - MenuEx)
 msgid "&Find..."
 msgstr "&Hledat..."
 
@@ -680,7 +690,7 @@ msgstr "&Font:"
 msgid "&Generate"
 msgstr "&Generuj"
 
-#. Resource IDs: (32078 - Menu, 32078 - MenuEx)
+#. Resource IDs: (32079 - Menu, 32079 - MenuEx)
 msgid "&Go to Base entry"
 msgstr "&Běž na základní záznam"
 
@@ -772,6 +782,10 @@ msgstr "&Na"
 msgid "&Open"
 msgstr "&Otevřít"
 
+#. Resource IDs: (32002 - Menu)
+msgid "&Open Another"
+msgstr ""
+
 #. Resource IDs: (32002 - MenuEx)
 msgid "&Open..."
 msgstr "&Otevřít ..."
@@ -792,7 +806,7 @@ msgstr "&Heslo:"
 msgid "&Paste"
 msgstr "&Vložit"
 
-#. Resource IDs: (32010 - MenuEx, 32084 - Menu, 32084 - MenuEx, 32093 - Menu, 32093 - MenuEx)
+#. Resource IDs: (32010 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu, 32094 - MenuEx)
 msgid "&Plain Text (tab separated)..."
 msgstr "&Prostý text (oddělovač = tabulátor)"
 
@@ -804,7 +818,7 @@ msgstr "&Prostý text"
 msgid "&Properties"
 msgstr "&Vlastnosti"
 
-#. Resource IDs: (32089 - Menu)
+#. Resource IDs: (32090 - Menu)
 msgid "&Protect All Entries"
 msgstr ""
 
@@ -836,7 +850,7 @@ msgstr "&Obnov"
 msgid "&Retry"
 msgstr "&Opakuj"
 
-#. Resource IDs: (32076 - Menu, 32076 - MenuEx, 5656)
+#. Resource IDs: (32077 - Menu, 32077 - MenuEx, 5656)
 msgid "&Run Command"
 msgstr "&Vykonej příkaz"
 
@@ -896,7 +910,7 @@ msgstr "&Zkus znova"
 msgid "&Undo"
 msgstr "&Zpět"
 
-#. Resource IDs: (32090 - Menu)
+#. Resource IDs: (32091 - Menu)
 msgid "&Unprotect All Entries"
 msgstr ""
 
@@ -916,7 +930,7 @@ msgstr "&Zkontrolovat"
 msgid "&View"
 msgstr "&Zobrazit"
 
-#. Resource IDs: (32097 - Menu)
+#. Resource IDs: (32098 - Menu)
 msgid "&View Attachment"
 msgstr ""
 
@@ -932,7 +946,7 @@ msgstr "&Zobraz výstup"
 msgid "&Virtual Keyboard Font"
 msgstr "&Font virtuální klávesnice"
 
-#. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu, 32094 - MenuEx)
+#. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32086 - Menu, 32086 - MenuEx, 32095 - Menu, 32095 - MenuEx)
 msgid "&XML format..."
 msgstr "&XML formát..."
 
@@ -1756,6 +1770,10 @@ msgstr "Jdi na adresu + Automaticky zadej"
 msgid "Browse to URL + Autotype"
 msgstr "Jdi na adresu + Automaticky zadej"
 
+#. Resource IDs: (32074 - Menu, 32074 - MenuEx)
+msgid "Browse to URL w/Alt Browser"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
 msgstr "Procházet parametry příkazové řádky"
@@ -1929,7 +1947,7 @@ msgid "Change database mode?"
 msgstr "Změnit režim databáze?"
 
 #. Resource IDs: (5858)
-msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
+msgid "Change status since last save:\n* indicates the database has been changed\nï¿½ indicates a database preference has been changed"
 msgstr ""
 
 #. Resource IDs: (5913)
@@ -2157,7 +2175,7 @@ msgstr "Porovnej výsledky databáze"
 msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
 msgstr "Porovnej celou databázi:\n\t %ls\n and:\n\t %ls\n"
 
-#. Resource IDs: (32091 - Menu, 32091 - MenuEx)
+#. Resource IDs: (32092 - Menu, 32092 - MenuEx)
 msgid "Compare entries..."
 msgstr "Porovnej záznamy..."
 
@@ -2280,7 +2298,7 @@ msgstr ""
 msgid "Copy Here"
 msgstr "Kopíruj sem"
 
-#. Resource IDs: (32080 - Menu, 32080 - MenuEx)
+#. Resource IDs: (32081 - Menu, 32081 - MenuEx)
 msgid "Copy Run Command to Clipboard"
 msgstr "Kopíruj spouštěcí příkaz do schránky"
 
@@ -2364,7 +2382,7 @@ msgstr "Nemohu najít základní záznam - nekonzistentní databáze"
 msgid "Couldn't save database - Please save manually"
 msgstr "Nemohu uložit databázi, proveď manuálně."
 
-#. Resource IDs: (32077 - Menu, 32077 - MenuEx)
+#. Resource IDs: (32078 - Menu, 32078 - MenuEx)
 msgid "Create &Shortcut"
 msgstr "Vytvoř &odkaz"
 
@@ -2445,11 +2463,6 @@ msgstr ""
 #, c-format
 msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the PasswordSafe website to download the latest version."
 msgstr "Používaná verze:\t%s\nPoslední verze:\t%s\n\nPoslední verzi stáhni z webu PasswordSafe."
-
-#. Resource IDs: (5478)
-#, c-format
-msgid "Current version:\t%s\nLatest version:\t%s\n\nYour purchase includes free upgrades for one year.\nPlease contact the PasswordSafe Administrator for your upgrade."
-msgstr "Používaná verze:\t%s\nPoslední verze:\t%s\n\nAktualizace jeden rok zdarma.\nKontaktuj administrátora PasswordSafe pro upgrade."
 
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
@@ -2755,7 +2768,7 @@ msgstr "Přetáhni tento obrázek do jiného okna pro započetí automatického 
 msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."
 msgstr "Puštěný záznam '%s:%s:%s' ukazuje na záznam, který je aliasem jiného záznamu.\n\nPuštěný záznam nyní odkazuje na základní záznam tohoto záznamu."
 
-#. Resource IDs: (32086 - Menu, 32086 - MenuEx)
+#. Resource IDs: (32087 - Menu, 32087 - MenuEx)
 msgid "Duplicate Group"
 msgstr "Duplikovat skupinu"
 
@@ -3160,7 +3173,7 @@ msgstr "&Export do"
 msgid "Export &XML"
 msgstr "Export &XML"
 
-#. Resource IDs: (32096 - Menu, 32096 - MenuEx)
+#. Resource IDs: (32097 - Menu, 32097 - MenuEx)
 msgid "Export Attachment..."
 msgstr ""
 
@@ -3706,7 +3719,7 @@ msgstr "Maďarština"
 msgid "Hungarian 101-key"
 msgstr "Maďarština 101-kláves"
 
-#. Accelerator Entry for Menu ID:32002; '&Open...'
+#. Accelerator Entry for Menu ID:32002; '&Open Another'
 msgid "ID:32002:V C +O"
 msgstr "ID:32002:V C +O"
 
@@ -3762,33 +3775,37 @@ msgstr "ID:32072:V C +L"
 msgid "ID:32073:VA  +L"
 msgstr "ID:32073:VA  +L"
 
-#. Accelerator Entry for Menu ID:32074; 'Send &Email'
-msgid "ID:32074:V C +E"
-msgstr "ID:32074:V C +E"
+#. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
+msgid "ID:32074:VA S+L"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32075; 'Perform Auto&Type'
-msgid "ID:32075:V C +T"
-msgstr "ID:32075:V C +T"
+#. Accelerator Entry for Menu ID:32075; 'Send &Email'
+msgid "ID:32075:V C +E"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32076; '&Run Command'
-msgid "ID:32076:V C +R"
-msgstr "ID:32076:V C +R"
+#. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
+msgid "ID:32076:V C +T"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32079; '&Find...'
-msgid "ID:32079:V C +F"
-msgstr "ID:32079:V C +F"
+#. Accelerator Entry for Menu ID:32077; '&Run Command'
+msgid "ID:32077:V C +R"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32080; 'Copy Run Command to Clipboard'
-msgid "ID:32080:VAC +R"
-msgstr "ID:32080:VAC +R"
+#. Accelerator Entry for Menu ID:32080; '&Find...'
+msgid "ID:32080:V C +F"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32082; 'Undo'
-msgid "ID:32082:V C +Z"
-msgstr "ID:32082:V C +Z"
+#. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
+msgid "ID:32081:VAC +R"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32083; 'Redo'
-msgid "ID:32083:V C +Y"
-msgstr "ID:32083:V C +Y"
+#. Accelerator Entry for Menu ID:32083; 'Undo'
+msgid "ID:32083:V C +Z"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32084; 'Redo'
+msgid "ID:32084:V C +Y"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32140; 'Last Find results'
 msgid "ID:32140:V C +K"
@@ -5053,7 +5070,7 @@ msgstr "Délka hesla:"
 msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr "Heslo by mělo používat malá i velká písmena a alespoň jednu číslici nebo znak interpunkce"
 
-#. Resource IDs: (32092 - Menu, 32092 - MenuEx, 32095 - Menu, 32095 - MenuEx)
+#. Resource IDs: (32093 - Menu, 32093 - MenuEx, 32096 - Menu, 32096 - MenuEx)
 msgid "Password&Safe..."
 msgstr ""
 
@@ -5070,7 +5087,7 @@ msgstr ""
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
 msgstr "PasswordSafe: Existují záznamy s vypršenými hesly nebo hesly, jejichž platnost brzy vyprší"
 
-#. Resource IDs: (32075 - Menu, 32075 - MenuEx, 5296)
+#. Resource IDs: (32076 - Menu, 32076 - MenuEx, 5296)
 msgid "Perform Auto&Type"
 msgstr "Provést au&tomatické zadávání"
 
@@ -5284,8 +5301,8 @@ msgid "Press to delete all added characters."
 msgstr "Stiskněte pro smazání všech přidaných znaků."
 
 #. Resource IDs: (65535)
-msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password being copied."
-msgstr "Stisknutí OK zkopruje všechny hesla vybrané položky do schránky. Schránka bude bezpečně smazána při zavření PasswordSafe.\n\n Stisknutí Zrušit zastaví kopírování hesel"
+msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password from being copied."
+msgstr ""
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -5331,11 +5348,11 @@ msgstr "Vlastnosti"
 msgid "Properties of the currently selected database."
 msgstr "Vlastnosti současně vybrané databáze"
 
-#. Resource IDs: (32089 - MenuEx)
+#. Resource IDs: (32090 - MenuEx)
 msgid "Protect All Entries"
 msgstr "Zamknout všechny záznamy"
 
-#. Resource IDs: (32087 - Menu, 32087 - MenuEx)
+#. Resource IDs: (32088 - Menu, 32088 - MenuEx)
 msgid "Protect Entry"
 msgstr "Zamkni záznam"
 
@@ -5424,7 +5441,7 @@ msgstr "Obnovit automaticky uložené dokumenty\nOtevřít automaticky uložené
 msgid "Recurring"
 msgstr "Opakující se"
 
-#. Resource IDs: (1487, 32083 - MenuEx)
+#. Resource IDs: (1487, 32084 - MenuEx)
 msgid "Redo"
 msgstr "Znovu"
 
@@ -5792,7 +5809,7 @@ msgstr "Detaily vybrané politiky"
 msgid "Send"
 msgstr "Poslat"
 
-#. Resource IDs: (32074 - Menu, 32074 - MenuEx)
+#. Resource IDs: (32075 - Menu, 32075 - MenuEx)
 msgid "Send &Email"
 msgstr ""
 
@@ -6855,7 +6872,7 @@ msgstr "Nelze zapisovat do %1, je pouze pro čtení nebo otevřené někým jin�
 msgid "Uncheck"
 msgstr "Odškrtnout"
 
-#. Resource IDs: (1486, 32082 - MenuEx)
+#. Resource IDs: (1486, 32083 - MenuEx)
 msgid "Undo"
 msgstr "Zpět"
 
@@ -6915,11 +6932,11 @@ msgstr "Odemknout obtížnost"
 msgid "Unlock Safe"
 msgstr "Odemknout sejf"
 
-#. Resource IDs: (32090 - MenuEx)
+#. Resource IDs: (32091 - MenuEx)
 msgid "Unprotect All Entries"
 msgstr "Odemknout všechny záznamy"
 
-#. Resource IDs: (32088 - Menu, 32088 - MenuEx)
+#. Resource IDs: (32089 - Menu, 32089 - MenuEx)
 msgid "Unprotect Entry"
 msgstr "Odemknout záznam"
 
@@ -7106,7 +7123,7 @@ msgstr "Vietnamština"
 msgid "View"
 msgstr "Zobraz"
 
-#. Resource IDs: (32097 - MenuEx, 548, 6025)
+#. Resource IDs: (32098 - MenuEx, 548, 6025)
 msgid "View Attachment"
 msgstr ""
 
@@ -7394,6 +7411,10 @@ msgstr "\nJít na adresu URL"
 msgid "\nBrowse to URL + AutoType"
 msgstr "\nJít na adresu URL + automatické zadávání"
 
+#. Resource IDs: (32074)
+msgid "\nBrowse to URL with Alternate Browser"
+msgstr ""
+
 #. Resource IDs: (32305)
 msgid "\nCase insensitive search"
 msgstr "\nHledání nezávislé na velikosti písmen"
@@ -7426,7 +7447,7 @@ msgstr "\nZavřít vyhledávací lištu"
 msgid "\nCollapse All"
 msgstr "\nSbalit vše"
 
-#. Resource IDs: (32091)
+#. Resource IDs: (32092)
 msgid "\nCompare entries..."
 msgstr "\Porovnat záznamy..."
 
@@ -7442,7 +7463,7 @@ msgstr "\nKopírovat poznámky do schránky"
 msgid "\nCopy Password to Clipboard"
 msgstr "\nKopírovat heslo do schránky"
 
-#. Resource IDs: (32080)
+#. Resource IDs: (32081)
 msgid "\nCopy Run Command to Clipboard"
 msgstr "\nKopírovat příkaz do schránky"
 
@@ -7466,11 +7487,11 @@ msgstr "\nZobrazit podmnožinu hesel"
 msgid "\nDuplicate Entry"
 msgstr "\nDuplikovat záznam"
 
-#. Resource IDs: (32086)
+#. Resource IDs: (32087)
 msgid "\nDuplicate Group"
 msgstr "\nDuplikovat skupinu"
 
-#. Resource IDs: (32081)
+#. Resource IDs: (32082)
 msgid "\nEdit Base entry"
 msgstr "\nEditovat základná záznam"
 
@@ -7495,31 +7516,31 @@ msgstr "\nChyba v historii hesel záznamu: »%ls»%ls»%ls»: "
 msgid "\nExpand All"
 msgstr "\nRozbalit vše"
 
-#. Resource IDs: (32096)
+#. Resource IDs: (32097)
 msgid "\nExport Attachment..."
 msgstr ""
 
-#. Resource IDs: (32085)
+#. Resource IDs: (32086)
 msgid "\nExport Entry in XML format..."
 msgstr "\nExportovat záznam ve formátu XML..."
 
-#. Resource IDs: (32084)
+#. Resource IDs: (32085)
 msgid "\nExport Entry to Plain Text..."
 msgstr "\nExportovat záznam jako text..."
 
-#. Resource IDs: (32092)
+#. Resource IDs: (32093)
 msgid "\nExport Entry to another Safe..."
 msgstr ""
 
-#. Resource IDs: (32094)
+#. Resource IDs: (32095)
 msgid "\nExport Group in XML format..."
 msgstr ""
 
-#. Resource IDs: (32093)
+#. Resource IDs: (32094)
 msgid "\nExport Group to Plain Text..."
 msgstr ""
 
-#. Resource IDs: (32095)
+#. Resource IDs: (32096)
 msgid "\nExport Group to another Safe..."
 msgstr ""
 
@@ -7559,7 +7580,7 @@ msgstr "\nNajít další"
 msgid "\nFind Previous"
 msgstr "\nNajít předchozí"
 
-#. Resource IDs: (32079)
+#. Resource IDs: (32080)
 msgid "\nFind..."
 msgstr ""
 
@@ -7567,7 +7588,7 @@ msgstr ""
 msgid "\nGenerate Password"
 msgstr "\nVytvoř heslo"
 
-#. Resource IDs: (32078)
+#. Resource IDs: (32079)
 msgid "\nGo to Base entry"
 msgstr "\nJít na základní záznam"
 
@@ -7620,7 +7641,7 @@ msgstr "\nMožnosti"
 msgid "\nPassword Policies"
 msgstr "\nPolitika hesel"
 
-#. Resource IDs: (32075)
+#. Resource IDs: (32076)
 msgid "\nPerform AutoType"
 msgstr "\nProvést automatické zadávání"
 
@@ -7632,15 +7653,15 @@ msgstr "\nProsím zkuste jíné"
 msgid "\nProgram will terminate."
 msgstr "\nProgram bude ukončen."
 
-#. Resource IDs: (32089)
+#. Resource IDs: (32090)
 msgid "\nProtect All Entries"
 msgstr "\nZamknout všechny záznamy"
 
-#. Resource IDs: (32087)
+#. Resource IDs: (32088)
 msgid "\nProtect Entry"
 msgstr "\nZamknout záznam"
 
-#. Resource IDs: (32083)
+#. Resource IDs: (32084)
 msgid "\nRedo"
 msgstr "\nZnovu"
 
@@ -7649,7 +7670,7 @@ msgstr "\nZnovu"
 msgid "\nRenamed %d %s"
 msgstr "\nPřejmenováno %d %s"
 
-#. Resource IDs: (32076)
+#. Resource IDs: (32077)
 msgid "\nRun Command"
 msgstr "\nSpustit příkaz"
 
@@ -7665,7 +7686,7 @@ msgstr "\nUložit databázi jako..."
 msgid "\nSelect Entry"
 msgstr "\nUložit záznam"
 
-#. Resource IDs: (32074)
+#. Resource IDs: (32075)
 msgid "\nSend Email"
 msgstr ""
 
@@ -7709,7 +7730,7 @@ msgstr "\nNásledující %ls %ls aktualizováno:"
 msgid "\nThe following new %ls %ls merged into this database:"
 msgstr "\nNásledující nové %ls %ls sloučeno do databáze:"
 
-#. Resource IDs: (32082)
+#. Resource IDs: (32083)
 msgid "\nUndo"
 msgstr "\nZpět"
 
@@ -7717,11 +7738,11 @@ msgstr "\nZpět"
 msgid "\nUnexpected exception during parsing."
 msgstr "\nNeočekávaná výjimka během parsování."
 
-#. Resource IDs: (32090)
+#. Resource IDs: (32091)
 msgid "\nUnprotect All Entries"
 msgstr "\nOdemknout všechny záznamy"
 
-#. Resource IDs: (32088)
+#. Resource IDs: (32089)
 msgid "\nUnprotect Entry"
 msgstr "\nOdemknout záznam"
 
@@ -7729,7 +7750,7 @@ msgstr "\nOdemknout záznam"
 msgid "\nUse it anyway?"
 msgstr "\nPřesto použít?"
 
-#. Resource IDs: (32097)
+#. Resource IDs: (32098)
 msgid "\nView Attachment"
 msgstr ""
 
@@ -8279,3 +8300,4 @@ msgstr ""
 #. Resource IDs: (8004)
 msgid "xxxxxx"
 msgstr "xxxxxx"
+

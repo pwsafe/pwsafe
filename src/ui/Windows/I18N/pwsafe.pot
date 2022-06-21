@@ -344,6 +344,16 @@ msgstr ""
 msgid "%d entries synchronized"
 msgstr ""
 
+#. Resource IDs: (6061)
+#, c-format
+msgid "%d entries under group"
+msgstr ""
+
+#. Resource IDs: (6060)
+#, c-format
+msgid "%d entry under group"
+msgstr ""
+
 #. Resource IDs: (5240)
 #, c-format
 msgid "%d items"
@@ -1942,8 +1952,11 @@ msgstr ""
 msgid "Change database mode?"
 msgstr ""
 
-#. Resource IDs: (5858)
 msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
+msgstr ""
+
+#. Resource IDs: (5858)
+msgid "Change status since last save:\n* indicates the database has been changed\nï¿½ indicates a database preference has been changed"
 msgstr ""
 
 #. Resource IDs: (5913)

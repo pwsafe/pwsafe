@@ -782,4 +782,5 @@
 #define IDS_VIEWBASEENTRY               6053
 #define IDS_DBIDINUSE                   6054
 #define IDS_INCLUDEDBASES               6055
-
+#define IDS_GC_ONE_CHILD                6060
+#define IDS_GC_N_CHILDREN               6061

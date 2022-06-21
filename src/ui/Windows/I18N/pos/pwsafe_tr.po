@@ -344,6 +344,16 @@ msgstr "%d girdi dışa aktarıldı"
 msgid "%d entries synchronized"
 msgstr "%d girdi eşlendi"
 
+#. Resource IDs: (6061)
+#, c-format
+msgid "%d entries under group"
+msgstr ""
+
+#. Resource IDs: (6060)
+#, c-format
+msgid "%d entry under group"
+msgstr ""
+
 #. Resource IDs: (5240)
 #, c-format
 msgid "%d items"
@@ -628,7 +638,7 @@ msgstr "&Sürükleme çubuğu görünür"
 msgid "&Duplicate Entry"
 msgstr "&Girdinin Kopyasını Üret"
 
-#. Resource IDs: (32086 - Menu)
+#. Resource IDs: (32087 - Menu)
 msgid "&Duplicate Group"
 msgstr "&Grubun Kopyasını Üret"
 
@@ -640,7 +650,7 @@ msgstr ""
 msgid "&Edit"
 msgstr "&Düzenle"
 
-#. Resource IDs: (32081 - Menu, 32081 - MenuEx)
+#. Resource IDs: (32082 - Menu, 32082 - MenuEx)
 msgid "&Edit Base entry"
 msgstr "&Temel Girdiyi düzenle"
 
@@ -664,7 +674,7 @@ msgstr "&Filtreler"
 msgid "&Find"
 msgstr "&Bul"
 
-#. Resource IDs: (32079 - MenuEx)
+#. Resource IDs: (32080 - MenuEx)
 msgid "&Find..."
 msgstr "&Bul..."
 
@@ -680,7 +690,7 @@ msgstr "&Font:"
 msgid "&Generate"
 msgstr "&Üret"
 
-#. Resource IDs: (32078 - Menu, 32078 - MenuEx)
+#. Resource IDs: (32079 - Menu, 32079 - MenuEx)
 msgid "&Go to Base entry"
 msgstr "&Temel girdiye git"
 
@@ -772,6 +782,10 @@ msgstr "&Açık"
 msgid "&Open"
 msgstr "&Aç"
 
+#. Resource IDs: (32002 - Menu)
+msgid "&Open Another"
+msgstr ""
+
 #. Resource IDs: (32002 - MenuEx)
 msgid "&Open..."
 msgstr "&Aç..."
@@ -792,7 +806,7 @@ msgstr "&Şifre:"
 msgid "&Paste"
 msgstr "&Yapıştır"
 
-#. Resource IDs: (32010 - MenuEx, 32084 - Menu, 32084 - MenuEx, 32093 - Menu, 32093 - MenuEx)
+#. Resource IDs: (32010 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu, 32094 - MenuEx)
 msgid "&Plain Text (tab separated)..."
 msgstr "&Düz Metin (sekmelerle ayrılmış)..."
 
@@ -804,7 +818,7 @@ msgstr "&Düz Metin..."
 msgid "&Properties"
 msgstr "&Özellikler"
 
-#. Resource IDs: (32089 - Menu)
+#. Resource IDs: (32090 - Menu)
 msgid "&Protect All Entries"
 msgstr ""
 
@@ -836,7 +850,7 @@ msgstr "&Geri Getir"
 msgid "&Retry"
 msgstr "&Tekrar Dene"
 
-#. Resource IDs: (32076 - Menu, 32076 - MenuEx, 5656)
+#. Resource IDs: (32077 - Menu, 32077 - MenuEx, 5656)
 msgid "&Run Command"
 msgstr "&Komut Çalıştır"
 
@@ -896,7 +910,7 @@ msgstr "&Tekrar dene"
 msgid "&Undo"
 msgstr "&Geri Al"
 
-#. Resource IDs: (32090 - Menu)
+#. Resource IDs: (32091 - Menu)
 msgid "&Unprotect All Entries"
 msgstr ""
 
@@ -916,7 +930,7 @@ msgstr "&Doğrula"
 msgid "&View"
 msgstr "&Göster"
 
-#. Resource IDs: (32097 - Menu)
+#. Resource IDs: (32098 - Menu)
 msgid "&View Attachment"
 msgstr ""
 
@@ -932,7 +946,7 @@ msgstr "&Raporu Göster"
 msgid "&Virtual Keyboard Font"
 msgstr "&Sanal Klavye Fontu"
 
-#. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu, 32094 - MenuEx)
+#. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32086 - Menu, 32086 - MenuEx, 32095 - Menu, 32095 - MenuEx)
 msgid "&XML format..."
 msgstr "&XMLFormatı..."
 
@@ -1756,6 +1770,10 @@ msgstr ""
 msgid "Browse to URL + Autotype"
 msgstr "URL'ye git + Otomatik Doldur"
 
+#. Resource IDs: (32074 - Menu, 32074 - MenuEx)
+msgid "Browse to URL w/Alt Browser"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
 msgstr "Tarayıcı Komut Satırı parametreleri:"
@@ -1929,7 +1947,7 @@ msgid "Change database mode?"
 msgstr "Veritabanı modunu değiştir?"
 
 #. Resource IDs: (5858)
-msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
+msgid "Change status since last save:\n* indicates the database has been changed\nï¿½ indicates a database preference has been changed"
 msgstr ""
 
 #. Resource IDs: (5913)
@@ -2157,7 +2175,7 @@ msgstr "Veritabanı Sonuçlarını Karşılaştır"
 msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
 msgstr "Geçerli veritabanı:\n\t %ls\n ve:\n\t %ls\nkarşılaştırması tamamlandı.\n"
 
-#. Resource IDs: (32091 - Menu, 32091 - MenuEx)
+#. Resource IDs: (32092 - Menu, 32092 - MenuEx)
 msgid "Compare entries..."
 msgstr "Girdileri karşılaştır..."
 
@@ -2280,7 +2298,7 @@ msgstr ""
 msgid "Copy Here"
 msgstr "Buraya Kopyala"
 
-#. Resource IDs: (32080 - Menu, 32080 - MenuEx)
+#. Resource IDs: (32081 - Menu, 32081 - MenuEx)
 msgid "Copy Run Command to Clipboard"
 msgstr "Çalıştırma Komutunu Panoya Kopyala"
 
@@ -2364,7 +2382,7 @@ msgstr "Temel girdi bulunamadı - tutarsız veritabanı"
 msgid "Couldn't save database - Please save manually"
 msgstr "Veritabanı kaydedilemedi - Lütfen elle kaydedin"
 
-#. Resource IDs: (32077 - Menu, 32077 - MenuEx)
+#. Resource IDs: (32078 - Menu, 32078 - MenuEx)
 msgid "Create &Shortcut"
 msgstr "Kı&sayol Oluştur"
 
@@ -2445,11 +2463,6 @@ msgstr ""
 #, c-format
 msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the PasswordSafe website to download the latest version."
 msgstr "Geçerli sürüm:\t%s\nEn son sürüm:\t%s\n\nLütfen son sürümü indirmek için PasswordSafe web sitesini ziyaret edin."
-
-#. Resource IDs: (5478)
-#, c-format
-msgid "Current version:\t%s\nLatest version:\t%s\n\nYour purchase includes free upgrades for one year.\nPlease contact the PasswordSafe Administrator for your upgrade."
-msgstr "Geçerli sürüm:\t%s\nEn son sürüm:\t%s\n\nSatın almanız bir yıllık bedava yükseltme içerir.\nLütfen yükseltmeniz için PasswordSafe Yöneticisi'yle bağlantı kurun."
 
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
@@ -2755,7 +2768,7 @@ msgstr "Otomatik Doldurmanın orada başlaması için bu görüntüyü başka bi
 msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."
 msgstr "Bırakılan girdinin '%s:%s:%s' şifresi suret olan bir girdiye işaret ediyor.\n\nBırakılan girdi artık bu girdinin temel girdisine referans gösteriyor."
 
-#. Resource IDs: (32086 - Menu, 32086 - MenuEx)
+#. Resource IDs: (32087 - Menu, 32087 - MenuEx)
 msgid "Duplicate Group"
 msgstr "Grubun Kopyasını Üret"
 
@@ -3160,7 +3173,7 @@ msgstr "&Dışa Aktar"
 msgid "Export &XML"
 msgstr "&XML Dışa Aktar"
 
-#. Resource IDs: (32096 - Menu, 32096 - MenuEx)
+#. Resource IDs: (32097 - Menu, 32097 - MenuEx)
 msgid "Export Attachment..."
 msgstr ""
 
@@ -3706,7 +3719,7 @@ msgstr "Macarca"
 msgid "Hungarian 101-key"
 msgstr "Macarca 101-tuş"
 
-#. Accelerator Entry for Menu ID:32002; '&Open...'
+#. Accelerator Entry for Menu ID:32002; '&Open Another'
 msgid "ID:32002:V C +O"
 msgstr "ID:32002:V C +O"
 
@@ -3762,33 +3775,37 @@ msgstr "ID:32072:V C +L"
 msgid "ID:32073:VA  +L"
 msgstr "ID:32073:VA  +L"
 
-#. Accelerator Entry for Menu ID:32074; 'Send &Email'
-msgid "ID:32074:V C +E"
-msgstr "ID:32074:V C +E"
+#. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
+msgid "ID:32074:VA S+L"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32075; 'Perform Auto&Type'
-msgid "ID:32075:V C +T"
-msgstr "ID:32075:V C +T"
+#. Accelerator Entry for Menu ID:32075; 'Send &Email'
+msgid "ID:32075:V C +E"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32076; '&Run Command'
-msgid "ID:32076:V C +R"
-msgstr "ID:32076:V C +R"
+#. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
+msgid "ID:32076:V C +T"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32079; '&Find...'
-msgid "ID:32079:V C +F"
-msgstr "ID:32079:V C +F"
+#. Accelerator Entry for Menu ID:32077; '&Run Command'
+msgid "ID:32077:V C +R"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32080; 'Copy Run Command to Clipboard'
-msgid "ID:32080:VAC +R"
-msgstr "ID:32080:VAC +R"
+#. Accelerator Entry for Menu ID:32080; '&Find...'
+msgid "ID:32080:V C +F"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32082; 'Undo'
-msgid "ID:32082:V C +Z"
-msgstr "ID:32082:V C +Z"
+#. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
+msgid "ID:32081:VAC +R"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32083; 'Redo'
-msgid "ID:32083:V C +Y"
-msgstr "ID:32083:V C +Y"
+#. Accelerator Entry for Menu ID:32083; 'Undo'
+msgid "ID:32083:V C +Z"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32084; 'Redo'
+msgid "ID:32084:V C +Y"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32140; 'Last Find results'
 msgid "ID:32140:V C +K"
@@ -5053,7 +5070,7 @@ msgstr "Şifre uzunluğu:"
 msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr "Şifre büyük ve küçük harf karışık olmalı, en az bir rakam ya da noktalama işareti içermeli"
 
-#. Resource IDs: (32092 - Menu, 32092 - MenuEx, 32095 - Menu, 32095 - MenuEx)
+#. Resource IDs: (32093 - Menu, 32093 - MenuEx, 32096 - Menu, 32096 - MenuEx)
 msgid "Password&Safe..."
 msgstr ""
 
@@ -5070,7 +5087,7 @@ msgstr ""
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
 msgstr "PasswordSafe: Şifre süresi dolmuş ya da yakında dolacak girdiler var"
 
-#. Resource IDs: (32075 - Menu, 32075 - MenuEx, 5296)
+#. Resource IDs: (32076 - Menu, 32076 - MenuEx, 5296)
 msgid "Perform Auto&Type"
 msgstr "Otomatik &Doldurma Yap"
 
@@ -5284,8 +5301,8 @@ msgid "Press to delete all added characters."
 msgstr "Tüm eklenen karakterleri silmek için basın."
 
 #. Resource IDs: (65535)
-msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password being copied."
-msgstr "Tamam'a basmak seçili ögenin şifresini panoya kopyalayacak. Pano Password Safekapatıldığında güvenli bir şekilde temizlenecek.\n\nİptal'e basmak şifrenin kopyalanmasını durdurur."
+msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password from being copied."
+msgstr ""
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -5331,11 +5348,11 @@ msgstr "Özellikler"
 msgid "Properties of the currently selected database."
 msgstr "Şu anda seçili olan veritabanının özellikleri."
 
-#. Resource IDs: (32089 - MenuEx)
+#. Resource IDs: (32090 - MenuEx)
 msgid "Protect All Entries"
 msgstr "Tüm Girdileri Koru"
 
-#. Resource IDs: (32087 - Menu, 32087 - MenuEx)
+#. Resource IDs: (32088 - Menu, 32088 - MenuEx)
 msgid "Protect Entry"
 msgstr "Girdiyi Koru"
 
@@ -5424,7 +5441,7 @@ msgstr "Otomatik kaydedilmiş belgeleri geri getir\nDoğrudan kaydedilmiş sür�
 msgid "Recurring"
 msgstr "Tekrarlı"
 
-#. Resource IDs: (1487, 32083 - MenuEx)
+#. Resource IDs: (1487, 32084 - MenuEx)
 msgid "Redo"
 msgstr "Yinele"
 
@@ -5792,7 +5809,7 @@ msgstr "Seçili planın detayları:"
 msgid "Send"
 msgstr "Gönder"
 
-#. Resource IDs: (32074 - Menu, 32074 - MenuEx)
+#. Resource IDs: (32075 - Menu, 32075 - MenuEx)
 msgid "Send &Email"
 msgstr ""
 
@@ -6855,7 +6872,7 @@ msgstr "%1 e(a) yazılamıyor, salt okunur ya da başka biri tarafından açılm
 msgid "Uncheck"
 msgstr "İşareti kaldır"
 
-#. Resource IDs: (1486, 32082 - MenuEx)
+#. Resource IDs: (1486, 32083 - MenuEx)
 msgid "Undo"
 msgstr "Geri Al"
 
@@ -6915,11 +6932,11 @@ msgstr ""
 msgid "Unlock Safe"
 msgstr "Kasa Kilidini Aç"
 
-#. Resource IDs: (32090 - MenuEx)
+#. Resource IDs: (32091 - MenuEx)
 msgid "Unprotect All Entries"
 msgstr "Tüm Girdilerin Korumasını Kaldır"
 
-#. Resource IDs: (32088 - Menu, 32088 - MenuEx)
+#. Resource IDs: (32089 - Menu, 32089 - MenuEx)
 msgid "Unprotect Entry"
 msgstr "Girdinin Korumasını Kaldır"
 
@@ -7106,7 +7123,7 @@ msgstr "Viyetnamca"
 msgid "View"
 msgstr "Göster"
 
-#. Resource IDs: (32097 - MenuEx, 548, 6025)
+#. Resource IDs: (32098 - MenuEx, 548, 6025)
 msgid "View Attachment"
 msgstr ""
 
@@ -7394,6 +7411,10 @@ msgstr "\nURL'ye Git"
 msgid "\nBrowse to URL + AutoType"
 msgstr ""
 
+#. Resource IDs: (32074)
+msgid "\nBrowse to URL with Alternate Browser"
+msgstr ""
+
 #. Resource IDs: (32305)
 msgid "\nCase insensitive search"
 msgstr "\nBüyük küçük harfe duyarsız arama"
@@ -7426,7 +7447,7 @@ msgstr "\nBulma Çubuğunu Kapat"
 msgid "\nCollapse All"
 msgstr "\nTümünü Daralt"
 
-#. Resource IDs: (32091)
+#. Resource IDs: (32092)
 msgid "\nCompare entries..."
 msgstr "\nGirdileri karşılaştır..."
 
@@ -7442,7 +7463,7 @@ msgstr "\nNotları Panoya Kopyala"
 msgid "\nCopy Password to Clipboard"
 msgstr "\nŞifreyi Panoya Kopyala"
 
-#. Resource IDs: (32080)
+#. Resource IDs: (32081)
 msgid "\nCopy Run Command to Clipboard"
 msgstr "\nÇalıştırma Komutunu Panoya Kopyala"
 
@@ -7466,11 +7487,11 @@ msgstr "\nŞifre Alt Karakterlerini Göster"
 msgid "\nDuplicate Entry"
 msgstr "\nGirdinin Kopyasını Üret"
 
-#. Resource IDs: (32086)
+#. Resource IDs: (32087)
 msgid "\nDuplicate Group"
 msgstr "\nGrubun Kopyasını Üret"
 
-#. Resource IDs: (32081)
+#. Resource IDs: (32082)
 msgid "\nEdit Base entry"
 msgstr "\nTemel girdiyi düzenle"
 
@@ -7495,31 +7516,31 @@ msgstr "\nŞu girdi işin şifre geçmişinde hata: »%ls»%ls»%ls»: "
 msgid "\nExpand All"
 msgstr "\nTümünü Genişlet"
 
-#. Resource IDs: (32096)
+#. Resource IDs: (32097)
 msgid "\nExport Attachment..."
 msgstr ""
 
-#. Resource IDs: (32085)
+#. Resource IDs: (32086)
 msgid "\nExport Entry in XML format..."
 msgstr "\nGirdiyi XML formatında dışa aktar..."
 
-#. Resource IDs: (32084)
+#. Resource IDs: (32085)
 msgid "\nExport Entry to Plain Text..."
 msgstr "\nGirdiyi Düz Metne Aktar"
 
-#. Resource IDs: (32092)
+#. Resource IDs: (32093)
 msgid "\nExport Entry to another Safe..."
 msgstr ""
 
-#. Resource IDs: (32094)
+#. Resource IDs: (32095)
 msgid "\nExport Group in XML format..."
 msgstr ""
 
-#. Resource IDs: (32093)
+#. Resource IDs: (32094)
 msgid "\nExport Group to Plain Text..."
 msgstr ""
 
-#. Resource IDs: (32095)
+#. Resource IDs: (32096)
 msgid "\nExport Group to another Safe..."
 msgstr ""
 
@@ -7559,7 +7580,7 @@ msgstr "\nSonrakini Bul"
 msgid "\nFind Previous"
 msgstr "\nÖncekini Bul"
 
-#. Resource IDs: (32079)
+#. Resource IDs: (32080)
 msgid "\nFind..."
 msgstr ""
 
@@ -7567,7 +7588,7 @@ msgstr ""
 msgid "\nGenerate Password"
 msgstr "\nŞifre Üret"
 
-#. Resource IDs: (32078)
+#. Resource IDs: (32079)
 msgid "\nGo to Base entry"
 msgstr "\nTemel Girdiye Git"
 
@@ -7620,7 +7641,7 @@ msgstr "\nSeçenekler"
 msgid "\nPassword Policies"
 msgstr "\nŞifre Planları"
 
-#. Resource IDs: (32075)
+#. Resource IDs: (32076)
 msgid "\nPerform AutoType"
 msgstr ""
 
@@ -7632,15 +7653,15 @@ msgstr "\nLütfen başka birini deneyin"
 msgid "\nProgram will terminate."
 msgstr "\nProgram sonlanacak."
 
-#. Resource IDs: (32089)
+#. Resource IDs: (32090)
 msgid "\nProtect All Entries"
 msgstr "\nTüm Girdileri Koru"
 
-#. Resource IDs: (32087)
+#. Resource IDs: (32088)
 msgid "\nProtect Entry"
 msgstr "\nGirdiyi Koru"
 
-#. Resource IDs: (32083)
+#. Resource IDs: (32084)
 msgid "\nRedo"
 msgstr "\nYinele"
 
@@ -7649,7 +7670,7 @@ msgstr "\nYinele"
 msgid "\nRenamed %d %s"
 msgstr "\n%d %s yeniden adlandırıldı"
 
-#. Resource IDs: (32076)
+#. Resource IDs: (32077)
 msgid "\nRun Command"
 msgstr "\nKomut Çalıştır"
 
@@ -7665,7 +7686,7 @@ msgstr "\nVeritabanını Farklı Kaydet"
 msgid "\nSelect Entry"
 msgstr "\nGirdi Seç"
 
-#. Resource IDs: (32074)
+#. Resource IDs: (32075)
 msgid "\nSend Email"
 msgstr ""
 
@@ -7709,7 +7730,7 @@ msgstr "\nAşağıdaki %ls %ls güncellendi:"
 msgid "\nThe following new %ls %ls merged into this database:"
 msgstr "\nAşağıdaki yeni %ls %ls geçerli veritabanıyla birleştirildi:"
 
-#. Resource IDs: (32082)
+#. Resource IDs: (32083)
 msgid "\nUndo"
 msgstr "\nGeri Al"
 
@@ -7717,11 +7738,11 @@ msgstr "\nGeri Al"
 msgid "\nUnexpected exception during parsing."
 msgstr "\nMetin analizi sırasında beklenmeyen istisna."
 
-#. Resource IDs: (32090)
+#. Resource IDs: (32091)
 msgid "\nUnprotect All Entries"
 msgstr "\nTüm Girdilerin Korumasını Kaldır"
 
-#. Resource IDs: (32088)
+#. Resource IDs: (32089)
 msgid "\nUnprotect Entry"
 msgstr "\nGirdinin Korumasını Kaldır"
 
@@ -7729,7 +7750,7 @@ msgstr "\nGirdinin Korumasını Kaldır"
 msgid "\nUse it anyway?"
 msgstr "\nYine de kullan?"
 
-#. Resource IDs: (32097)
+#. Resource IDs: (32098)
 msgid "\nView Attachment"
 msgstr ""
 

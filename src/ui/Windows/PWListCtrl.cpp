@@ -158,7 +158,7 @@ void CPWListCtrlX::OnTimer(UINT_PTR nIDEvent)
     case TIMER_ND_HOVER:
       KillTimer(m_nHoverNDTimerID);
       m_nHoverNDTimerID = 0;
-      if (app.GetMainDlg()->SetNotesWindow(m_HoverNDPoint)) {
+      if (app.GetMainDlg()->SetInfoDisplay(m_HoverNDPoint)) {
         if (m_nShowNDTimerID) {
           KillTimer(m_nShowNDTimerID);
           m_nShowNDTimerID = 0;
@@ -170,7 +170,7 @@ void CPWListCtrlX::OnTimer(UINT_PTR nIDEvent)
       KillTimer(m_nShowNDTimerID);
       m_nShowNDTimerID = 0;
       m_HoverNDPoint = CPoint(0, 0);
-      app.GetMainDlg()->SetNotesWindow(m_HoverNDPoint, false);
+      app.GetMainDlg()->SetInfoDisplay(m_HoverNDPoint, false);
       break;
     default:
       CListCtrl::OnTimer(nIDEvent);
@@ -196,7 +196,7 @@ void CPWListCtrlX::OnMouseMove(UINT nFlags, CPoint point)
       return;
     KillTimer(m_nShowNDTimerID);
     m_nShowNDTimerID = 0;
-    app.GetMainDlg()->SetNotesWindow(CPoint(0, 0), false);
+    app.GetMainDlg()->SetInfoDisplay(CPoint(0, 0), false);
   }
 
   if (!m_bMouseInWindow) {
@@ -217,7 +217,7 @@ LRESULT CPWListCtrlX::OnMouseLeave(WPARAM, LPARAM)
   KillTimer(m_nShowNDTimerID);
   m_nHoverNDTimerID = m_nShowNDTimerID = 0;
   m_HoverNDPoint = CPoint(0, 0);
-  app.GetMainDlg()->SetNotesWindow(m_HoverNDPoint, false);
+  app.GetMainDlg()->SetInfoDisplay(m_HoverNDPoint, false);
   m_bMouseInWindow = false;
   return 0L;
 }

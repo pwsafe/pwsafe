@@ -4530,7 +4530,7 @@ HICON DboxMain::GetEntryIcon(const int nImage) const
   return hIcon;
 }
 
-bool DboxMain::SetNotesWindow(const CPoint ptClient, const bool bVisible)
+bool DboxMain::SetInfoDisplay(const CPoint ptClient, const bool bVisible)
 {
 /*
  *  Use of CInfoDisplay to replace MS's broken ToolTips support.
@@ -4542,28 +4542,37 @@ bool DboxMain::SetNotesWindow(const CPoint ptClient, const bool bVisible)
 
   const CItemData *pci(NULL);
   CPoint ptScreen(ptClient);
-  StringX sx_notes(L"");
+  StringX sx_text(L"");
   UINT nFlags;
   HTREEITEM hItem(NULL);
   int nItem(-1);
+  int nChildren(0);
 
-  if (m_pNotesDisplay == NULL)
+  if (m_pInfoDisplay == NULL)
     return false;
 
   if (!bVisible) {
-    m_pNotesDisplay->SetWindowText(sx_notes.c_str());
-    m_pNotesDisplay->ShowWindow(SW_HIDE);
+    m_pInfoDisplay->SetWindowText(sx_text.c_str());
+    m_pInfoDisplay->ShowWindow(SW_HIDE);
     return false;
   }
 
-  if (m_ctlItemTree.IsWindowVisible()) {
+  if (m_ctlItemTree.IsWindowVisible()) { // tree view
     m_ctlItemTree.ClientToScreen(&ptScreen);
     hItem = m_ctlItemTree.HitTest(ptClient, &nFlags);
     if (hItem != NULL &&
-        (nFlags & (TVHT_ONITEM | TVHT_ONITEMBUTTON | TVHT_ONITEMINDENT))) {
+        (nFlags & (TVHT_ONITEM | TVHT_ONITEMBUTTON | TVHT_ONITEMINDENT)) &&
+        PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesAsTooltipsInViews) // need to check prefs here because we're called to count children too
+      ) {
       pci = (CItemData *)m_ctlItemTree.GetItemData(hItem);
     }
-  } else {
+    // Check if we're on a group, if so, count children:
+    if (hItem != nullptr && !m_ctlItemTree.IsLeaf(hItem))
+    {
+      nChildren = m_ctlItemTree.CountLeafChildren(hItem);
+      TRACE(L"num of children: %d\n", nChildren);
+    }
+  } else { // list view
     m_ctlItemList.ClientToScreen(&ptScreen);
     nItem = m_ctlItemList.HitTest(ptClient, &nFlags);
     if (nItem >= 0) {
@@ -4575,34 +4584,38 @@ bool DboxMain::SetNotesWindow(const CPoint ptClient, const bool bVisible)
   if (pci != NULL) {
     if (pci->IsShortcut())
       pci = GetBaseEntry(pci);
-    sx_notes = pci->GetNotes();
+    sx_text = pci->GetNotes();
+  } else if (nChildren > 0) // we're on a group, show number of children
+  {
+    const CString fmt_str(MAKEINTRESOURCE(nChildren > 1 ? IDS_GC_N_CHILDREN : IDS_GC_ONE_CHILD));
+    Format(sx_text, fmt_str, nChildren);
   }
 
-  if (!sx_notes.empty()) {
-    Replace(sx_notes, StringX(L"\r\n"), StringX(L"\n"));
-    Remove(sx_notes, L'\r');
+  if (!sx_text.empty()) {
+    Replace(sx_text, StringX(L"\r\n"), StringX(L"\n"));
+    Remove(sx_text, L'\r');
 
-    if (sx_notes.length() > 256)
-      sx_notes = sx_notes.substr(0, 250) + L"[...]";
+    if (sx_text.length() > 256)
+      sx_text = sx_text.substr(0, 250) + L"[...]";
   }
 
   // move window
-  CSecString cs_oldnotes;
-  m_pNotesDisplay->GetWindowText(cs_oldnotes);
-  if (LPCWSTR(cs_oldnotes) != sx_notes)
-    m_pNotesDisplay->SetWindowText(sx_notes.c_str());
+  CSecString cs_oldtext;
+  m_pInfoDisplay->GetWindowText(cs_oldtext);
+  if (LPCWSTR(cs_oldtext) != sx_text)
+    m_pInfoDisplay->SetWindowText(sx_text.c_str());
 
-  m_pNotesDisplay->SetWindowPos(NULL, ptScreen.x, ptScreen.y, 0, 0,
+  m_pInfoDisplay->SetWindowPos(NULL, ptScreen.x, ptScreen.y, 0, 0,
                                 SWP_NOSIZE | SWP_NOZORDER | SWP_NOACTIVATE);
-  m_pNotesDisplay->ShowWindow(!sx_notes.empty() ? SW_SHOWNA : SW_HIDE);
+  m_pInfoDisplay->ShowWindow(!sx_text.empty() ? SW_SHOWNA : SW_HIDE);
 
-  return !sx_notes.empty();
+  return !sx_text.empty();
 }
 
 void DboxMain::UpdateNotesTooltipFont()
 {
   CFont *pNotes = Fonts::GetInstance()->GetNotesFont();
-  m_pNotesDisplay->SendMessage(WM_SETFONT, (WPARAM)pNotes, 1);
+  m_pInfoDisplay->SendMessage(WM_SETFONT, (WPARAM)pNotes, 1);
 }
 
 CItemData *DboxMain::GetLastSelected() const

@@ -136,7 +136,7 @@ DboxMain::DboxMain(PWScore &core, CWnd* pParent)
   m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_savedDBprefs(EMPTYSAVEDDBPREFS),
   m_bImageInLV(false),
-  m_pNotesDisplay(nullptr),
+  m_pInfoDisplay(nullptr),
   m_bFilterActive(false), m_bUnsavedDisplayed(false), m_bExpireDisplayed(false), m_bFindFilterDisplayed(false),
   m_currentfilterpool(FPOOL_LAST),
   m_bNumPassedFiltering(0),
@@ -899,15 +899,15 @@ void DboxMain::InitPasswordSafe()
     SetColumnWidths(cs_ListColumnsWidths);
 
   // create notes info display window
-  m_pNotesDisplay = new CInfoDisplay;
-  if (!m_pNotesDisplay->Create(0, 0, L"", this)) {
+  m_pInfoDisplay = new CInfoDisplay;
+  if (!m_pInfoDisplay->Create(0, 0, L"", this)) {
     // failed
-    delete m_pNotesDisplay;
-    m_pNotesDisplay = NULL;
+    delete m_pInfoDisplay;
+    m_pInfoDisplay = NULL;
   } else {
     // Set up user font
     CFont *pNotes = Fonts::GetInstance()->GetNotesFont();
-    m_pNotesDisplay->SetWindowTextFont(pNotes);
+    m_pInfoDisplay->SetWindowTextFont(pNotes);
   }
   
 #if !defined(USE_XML_LIBRARY)

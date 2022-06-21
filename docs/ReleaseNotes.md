@@ -11,6 +11,9 @@ Bugs fixed in 3.60.0
 ====================
 * [SF1560](https://sourceforge.net/p/passwordsafe/bugs/1560/) Flattened list: Width of last column is not retained across invocations.
 
+New features in 3.60.0
+======================
+* [FR898](https://sourceforge.net/p/passwordsafe/feature-requests/898/) Hovering on a non-empty group icon now shows how many entries under that group.
 
 PasswordSafe 3.59.0 Release May 2022
 ====================================

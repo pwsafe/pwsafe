@@ -344,6 +344,16 @@ msgstr ""
 msgid "%d entries synchronized"
 msgstr ""
 
+#. Resource IDs: (6061)
+#, c-format
+msgid "%d entries under group"
+msgstr ""
+
+#. Resource IDs: (6060)
+#, c-format
+msgid "%d entry under group"
+msgstr ""
+
 #. Resource IDs: (5240)
 #, c-format
 msgid "%d items"
@@ -628,7 +638,7 @@ msgstr "&Linien Træk synlig"
 msgid "&Duplicate Entry"
 msgstr "&Dupliker Adgang"
 
-#. Resource IDs: (32086 - Menu)
+#. Resource IDs: (32087 - Menu)
 msgid "&Duplicate Group"
 msgstr ""
 
@@ -640,7 +650,7 @@ msgstr ""
 msgid "&Edit"
 msgstr "&Rediger"
 
-#. Resource IDs: (32081 - Menu, 32081 - MenuEx)
+#. Resource IDs: (32082 - Menu, 32082 - MenuEx)
 msgid "&Edit Base entry"
 msgstr "&Rediger Basis adgang"
 
@@ -664,7 +674,7 @@ msgstr "&Filtre"
 msgid "&Find"
 msgstr "&Find"
 
-#. Resource IDs: (32079 - MenuEx)
+#. Resource IDs: (32080 - MenuEx)
 msgid "&Find..."
 msgstr "&Find..."
 
@@ -680,7 +690,7 @@ msgstr "&Skrift:"
 msgid "&Generate"
 msgstr "&Generer"
 
-#. Resource IDs: (32078 - Menu, 32078 - MenuEx)
+#. Resource IDs: (32079 - Menu, 32079 - MenuEx)
 msgid "&Go to Base entry"
 msgstr "&Gå til Basis adgang"
 
@@ -772,6 +782,10 @@ msgstr ""
 msgid "&Open"
 msgstr "&Åben"
 
+#. Resource IDs: (32002 - Menu)
+msgid "&Open Another"
+msgstr ""
+
 #. Resource IDs: (32002 - MenuEx)
 msgid "&Open..."
 msgstr "&Åben..."
@@ -792,7 +806,7 @@ msgstr "&Adgangskode:"
 msgid "&Paste"
 msgstr "&Indsæt"
 
-#. Resource IDs: (32010 - MenuEx, 32084 - Menu, 32084 - MenuEx, 32093 - Menu, 32093 - MenuEx)
+#. Resource IDs: (32010 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu, 32094 - MenuEx)
 msgid "&Plain Text (tab separated)..."
 msgstr "&Alm. tekst (tab separated)..."
 
@@ -804,7 +818,7 @@ msgstr "&Alm. tekst..."
 msgid "&Properties"
 msgstr "&Egenskaber"
 
-#. Resource IDs: (32089 - Menu)
+#. Resource IDs: (32090 - Menu)
 msgid "&Protect All Entries"
 msgstr ""
 
@@ -836,7 +850,7 @@ msgstr "&Gendan"
 msgid "&Retry"
 msgstr "&Nyt forsøg"
 
-#. Resource IDs: (32076 - Menu, 32076 - MenuEx, 5656)
+#. Resource IDs: (32077 - Menu, 32077 - MenuEx, 5656)
 msgid "&Run Command"
 msgstr "&Kør Kommando"
 
@@ -896,7 +910,7 @@ msgstr "&Prøv Igen"
 msgid "&Undo"
 msgstr "&Omgør"
 
-#. Resource IDs: (32090 - Menu)
+#. Resource IDs: (32091 - Menu)
 msgid "&Unprotect All Entries"
 msgstr ""
 
@@ -916,7 +930,7 @@ msgstr "&Vurder"
 msgid "&View"
 msgstr "&Se"
 
-#. Resource IDs: (32097 - Menu)
+#. Resource IDs: (32098 - Menu)
 msgid "&View Attachment"
 msgstr ""
 
@@ -932,7 +946,7 @@ msgstr "&Se Rapport"
 msgid "&Virtual Keyboard Font"
 msgstr "&Virtuel Tastatur Skrift"
 
-#. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu, 32094 - MenuEx)
+#. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32086 - Menu, 32086 - MenuEx, 32095 - Menu, 32095 - MenuEx)
 msgid "&XML format..."
 msgstr "&XML format..."
 
@@ -1756,6 +1770,10 @@ msgstr ""
 msgid "Browse to URL + Autotype"
 msgstr "Gennemse efter URL + Autoindsæt"
 
+#. Resource IDs: (32074 - Menu, 32074 - MenuEx)
+msgid "Browse to URL w/Alt Browser"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
 msgstr ""
@@ -1929,7 +1947,7 @@ msgid "Change database mode?"
 msgstr ""
 
 #. Resource IDs: (5858)
-msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
+msgid "Change status since last save:\n* indicates the database has been changed\nï¿½ indicates a database preference has been changed"
 msgstr ""
 
 #. Resource IDs: (5913)
@@ -2157,7 +2175,7 @@ msgstr "Sammenlign Database Resultater"
 msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
 msgstr "fuldstændigt den nuværende database:\n\t %ls\nog:\n\t %ls\n"
 
-#. Resource IDs: (32091 - Menu, 32091 - MenuEx)
+#. Resource IDs: (32092 - Menu, 32092 - MenuEx)
 msgid "Compare entries..."
 msgstr ""
 
@@ -2280,7 +2298,7 @@ msgstr ""
 msgid "Copy Here"
 msgstr "Kopier Hertil"
 
-#. Resource IDs: (32080 - Menu, 32080 - MenuEx)
+#. Resource IDs: (32081 - Menu, 32081 - MenuEx)
 msgid "Copy Run Command to Clipboard"
 msgstr "Kopier Kør Kommando til Klipbord"
 
@@ -2364,7 +2382,7 @@ msgstr ""
 msgid "Couldn't save database - Please save manually"
 msgstr "Kunne ikke gemme databasen - Gem venligst manuelt"
 
-#. Resource IDs: (32077 - Menu, 32077 - MenuEx)
+#. Resource IDs: (32078 - Menu, 32078 - MenuEx)
 msgid "Create &Shortcut"
 msgstr "Opret &Genvej"
 
@@ -2445,11 +2463,6 @@ msgstr ""
 #, c-format
 msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the PasswordSafe website to download the latest version."
 msgstr "Nuværende version:\t%s\n:\t%s\n\nBesøg venligst PasswordSafe hjemmesiden for at hente den seneste version."
-
-#. Resource IDs: (5478)
-#, c-format
-msgid "Current version:\t%s\nLatest version:\t%s\n\nYour purchase includes free upgrades for one year.\nPlease contact the PasswordSafe Administrator for your upgrade."
-msgstr "Nuværende version:\t%s\nSeneste version:\t%s\n\nDit køb inkluderer gratis opgraderinger i et år.\nKontakt venligst PasswordSafe Administratoren for opgradering."
 
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
@@ -2755,7 +2768,7 @@ msgstr ""
 msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."
 msgstr "Mistet post '%s:%s:%s' adgangskode Peger på en post der også er et alias.\n\nDen mistede post henviser nu til den posts basis post."
 
-#. Resource IDs: (32086 - Menu, 32086 - MenuEx)
+#. Resource IDs: (32087 - Menu, 32087 - MenuEx)
 msgid "Duplicate Group"
 msgstr ""
 
@@ -3160,7 +3173,7 @@ msgstr "Eksporter &Til"
 msgid "Export &XML"
 msgstr ""
 
-#. Resource IDs: (32096 - Menu, 32096 - MenuEx)
+#. Resource IDs: (32097 - Menu, 32097 - MenuEx)
 msgid "Export Attachment..."
 msgstr ""
 
@@ -3706,7 +3719,7 @@ msgstr "Hungarian"
 msgid "Hungarian 101-key"
 msgstr "Hungarian 101-key"
 
-#. Accelerator Entry for Menu ID:32002; '&Open...'
+#. Accelerator Entry for Menu ID:32002; '&Open Another'
 msgid "ID:32002:V C +O"
 msgstr "ID:32002:V C +O"
 
@@ -3762,33 +3775,37 @@ msgstr "ID:32072:V C +L"
 msgid "ID:32073:VA  +L"
 msgstr "ID:32073:VA  +L"
 
-#. Accelerator Entry for Menu ID:32074; 'Send &Email'
-msgid "ID:32074:V C +E"
-msgstr "ID:32074:V C +E"
+#. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
+msgid "ID:32074:VA S+L"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32075; 'Perform Auto&Type'
-msgid "ID:32075:V C +T"
-msgstr "ID:32075:V C +T"
+#. Accelerator Entry for Menu ID:32075; 'Send &Email'
+msgid "ID:32075:V C +E"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32076; '&Run Command'
-msgid "ID:32076:V C +R"
-msgstr "ID:32076:V C +R"
+#. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
+msgid "ID:32076:V C +T"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32079; '&Find...'
-msgid "ID:32079:V C +F"
-msgstr "ID:32079:V C +F"
+#. Accelerator Entry for Menu ID:32077; '&Run Command'
+msgid "ID:32077:V C +R"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32080; 'Copy Run Command to Clipboard'
-msgid "ID:32080:VAC +R"
-msgstr "ID:32080:VAC +R"
+#. Accelerator Entry for Menu ID:32080; '&Find...'
+msgid "ID:32080:V C +F"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32082; 'Undo'
-msgid "ID:32082:V C +Z"
-msgstr "ID:32082:V C +Z"
+#. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
+msgid "ID:32081:VAC +R"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32083; 'Redo'
-msgid "ID:32083:V C +Y"
-msgstr "ID:32083:V C +Y"
+#. Accelerator Entry for Menu ID:32083; 'Undo'
+msgid "ID:32083:V C +Z"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32084; 'Redo'
+msgid "ID:32084:V C +Y"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32140; 'Last Find results'
 msgid "ID:32140:V C +K"
@@ -5053,7 +5070,7 @@ msgstr "Adgangskode længde:"
 msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr "Adgangskode bør være mixede tegn, med mindst et tal eller tegnsætnings tegn"
 
-#. Resource IDs: (32092 - Menu, 32092 - MenuEx, 32095 - Menu, 32095 - MenuEx)
+#. Resource IDs: (32093 - Menu, 32093 - MenuEx, 32096 - Menu, 32096 - MenuEx)
 msgid "Password&Safe..."
 msgstr ""
 
@@ -5070,7 +5087,7 @@ msgstr ""
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
 msgstr ""
 
-#. Resource IDs: (32075 - Menu, 32075 - MenuEx, 5296)
+#. Resource IDs: (32076 - Menu, 32076 - MenuEx, 5296)
 msgid "Perform Auto&Type"
 msgstr "Udfør Auto &Indsæt"
 
@@ -5284,8 +5301,8 @@ msgid "Press to delete all added characters."
 msgstr "Tryk for at slette alle tilføjede tegn."
 
 #. Resource IDs: (65535)
-msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password being copied."
-msgstr "Tryk på OK vil kopiere adgangskoden til den valgte post til klipbord. Klipbordet vil blive tømt sikkert når Password Safe afsluttes.\nTryk på Afbryd stoppes adgangskode kopieringen."
+msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password from being copied."
+msgstr ""
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -5331,11 +5348,11 @@ msgstr "Egenskaber"
 msgid "Properties of the currently selected database."
 msgstr "Den nuværende valgte databases egenskaber."
 
-#. Resource IDs: (32089 - MenuEx)
+#. Resource IDs: (32090 - MenuEx)
 msgid "Protect All Entries"
 msgstr ""
 
-#. Resource IDs: (32087 - Menu, 32087 - MenuEx)
+#. Resource IDs: (32088 - Menu, 32088 - MenuEx)
 msgid "Protect Entry"
 msgstr ""
 
@@ -5424,7 +5441,7 @@ msgstr ""
 msgid "Recurring"
 msgstr "Periodisk"
 
-#. Resource IDs: (1487, 32083 - MenuEx)
+#. Resource IDs: (1487, 32084 - MenuEx)
 msgid "Redo"
 msgstr "Sæt tilbage"
 
@@ -5792,7 +5809,7 @@ msgstr ""
 msgid "Send"
 msgstr "Send"
 
-#. Resource IDs: (32074 - Menu, 32074 - MenuEx)
+#. Resource IDs: (32075 - Menu, 32075 - MenuEx)
 msgid "Send &Email"
 msgstr ""
 
@@ -6855,7 +6872,7 @@ msgstr "Ude af stand til at skrive til %1,den er læs-kun eller åbnet af en and
 msgid "Uncheck"
 msgstr "Fjern tjektegn"
 
-#. Resource IDs: (1486, 32082 - MenuEx)
+#. Resource IDs: (1486, 32083 - MenuEx)
 msgid "Undo"
 msgstr "Omgør"
 
@@ -6915,11 +6932,11 @@ msgstr ""
 msgid "Unlock Safe"
 msgstr "Lås Safe op"
 
-#. Resource IDs: (32090 - MenuEx)
+#. Resource IDs: (32091 - MenuEx)
 msgid "Unprotect All Entries"
 msgstr ""
 
-#. Resource IDs: (32088 - Menu, 32088 - MenuEx)
+#. Resource IDs: (32089 - Menu, 32089 - MenuEx)
 msgid "Unprotect Entry"
 msgstr ""
 
@@ -7106,7 +7123,7 @@ msgstr "Vietnamese"
 msgid "View"
 msgstr "Se"
 
-#. Resource IDs: (32097 - MenuEx, 548, 6025)
+#. Resource IDs: (32098 - MenuEx, 548, 6025)
 msgid "View Attachment"
 msgstr ""
 
@@ -7394,6 +7411,10 @@ msgstr "\nGennemse efter URL"
 msgid "\nBrowse to URL + AutoType"
 msgstr ""
 
+#. Resource IDs: (32074)
+msgid "\nBrowse to URL with Alternate Browser"
+msgstr ""
+
 #. Resource IDs: (32305)
 msgid "\nCase insensitive search"
 msgstr "\nBogstavs ufølsom søgning"
@@ -7426,7 +7447,7 @@ msgstr "\nLuk Find Linien"
 msgid "\nCollapse All"
 msgstr "\nLuk Udvidelse"
 
-#. Resource IDs: (32091)
+#. Resource IDs: (32092)
 msgid "\nCompare entries..."
 msgstr ""
 
@@ -7442,7 +7463,7 @@ msgstr "\nKopier Notater til Klipbord"
 msgid "\nCopy Password to Clipboard"
 msgstr "\nKopier Adgangskode til Klipbord"
 
-#. Resource IDs: (32080)
+#. Resource IDs: (32081)
 msgid "\nCopy Run Command to Clipboard"
 msgstr "\nKopier Kør Kommando til Klipbord"
 
@@ -7466,11 +7487,11 @@ msgstr "\nVis delmængde af Adgangskode"
 msgid "\nDuplicate Entry"
 msgstr "\nDupliker post"
 
-#. Resource IDs: (32086)
+#. Resource IDs: (32087)
 msgid "\nDuplicate Group"
 msgstr ""
 
-#. Resource IDs: (32081)
+#. Resource IDs: (32082)
 msgid "\nEdit Base entry"
 msgstr "\nRediger Basis post"
 
@@ -7495,31 +7516,31 @@ msgstr "\nFejl i Adgangskode Historik for adgangen: »%ls»%ls»%ls»: "
 msgid "\nExpand All"
 msgstr "\nUdvid Alt"
 
-#. Resource IDs: (32096)
+#. Resource IDs: (32097)
 msgid "\nExport Attachment..."
 msgstr ""
 
-#. Resource IDs: (32085)
+#. Resource IDs: (32086)
 msgid "\nExport Entry in XML format..."
 msgstr "\nEksporter i XML format..."
 
-#. Resource IDs: (32084)
+#. Resource IDs: (32085)
 msgid "\nExport Entry to Plain Text..."
 msgstr "\nEksporter Post til Alm. Tekst..."
 
-#. Resource IDs: (32092)
+#. Resource IDs: (32093)
 msgid "\nExport Entry to another Safe..."
 msgstr ""
 
-#. Resource IDs: (32094)
+#. Resource IDs: (32095)
 msgid "\nExport Group in XML format..."
 msgstr ""
 
-#. Resource IDs: (32093)
+#. Resource IDs: (32094)
 msgid "\nExport Group to Plain Text..."
 msgstr ""
 
-#. Resource IDs: (32095)
+#. Resource IDs: (32096)
 msgid "\nExport Group to another Safe..."
 msgstr ""
 
@@ -7559,7 +7580,7 @@ msgstr "\nFind Næste"
 msgid "\nFind Previous"
 msgstr "\nFind Tidligere"
 
-#. Resource IDs: (32079)
+#. Resource IDs: (32080)
 msgid "\nFind..."
 msgstr ""
 
@@ -7567,7 +7588,7 @@ msgstr ""
 msgid "\nGenerate Password"
 msgstr "\nGenerer Adgangskode"
 
-#. Resource IDs: (32078)
+#. Resource IDs: (32079)
 msgid "\nGo to Base entry"
 msgstr "\nGå til Basis post"
 
@@ -7620,7 +7641,7 @@ msgstr "\nValgmuligheder"
 msgid "\nPassword Policies"
 msgstr ""
 
-#. Resource IDs: (32075)
+#. Resource IDs: (32076)
 msgid "\nPerform AutoType"
 msgstr ""
 
@@ -7632,15 +7653,15 @@ msgstr "\nPrøv venligst en anden"
 msgid "\nProgram will terminate."
 msgstr "\nProgrammet vil afslutte."
 
-#. Resource IDs: (32089)
+#. Resource IDs: (32090)
 msgid "\nProtect All Entries"
 msgstr ""
 
-#. Resource IDs: (32087)
+#. Resource IDs: (32088)
 msgid "\nProtect Entry"
 msgstr ""
 
-#. Resource IDs: (32083)
+#. Resource IDs: (32084)
 msgid "\nRedo"
 msgstr "\nOmgør"
 
@@ -7649,7 +7670,7 @@ msgstr "\nOmgør"
 msgid "\nRenamed %d %s"
 msgstr "\nOmdøbt %d %s"
 
-#. Resource IDs: (32076)
+#. Resource IDs: (32077)
 msgid "\nRun Command"
 msgstr "\nKør Kommando"
 
@@ -7665,7 +7686,7 @@ msgstr "\nGem Databasen Som..."
 msgid "\nSelect Entry"
 msgstr "\nVælg Post"
 
-#. Resource IDs: (32074)
+#. Resource IDs: (32075)
 msgid "\nSend Email"
 msgstr ""
 
@@ -7709,7 +7730,7 @@ msgstr "\nDe følgende %ls %ls er opdateret:"
 msgid "\nThe following new %ls %ls merged into this database:"
 msgstr "\nDe følgende nye %ls %ls er flettet ind i denne database:"
 
-#. Resource IDs: (32082)
+#. Resource IDs: (32083)
 msgid "\nUndo"
 msgstr "\nOphæv"
 
@@ -7717,11 +7738,11 @@ msgstr "\nOphæv"
 msgid "\nUnexpected exception during parsing."
 msgstr "\nUventet undtagelse under analysering."
 
-#. Resource IDs: (32090)
+#. Resource IDs: (32091)
 msgid "\nUnprotect All Entries"
 msgstr ""
 
-#. Resource IDs: (32088)
+#. Resource IDs: (32089)
 msgid "\nUnprotect Entry"
 msgstr ""
 
@@ -7729,7 +7750,7 @@ msgstr ""
 msgid "\nUse it anyway?"
 msgstr "\nBruge den alligevel?"
 
-#. Resource IDs: (32097)
+#. Resource IDs: (32098)
 msgid "\nView Attachment"
 msgstr ""
 

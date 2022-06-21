@@ -54,7 +54,7 @@ CShowCompareDlg::~CShowCompareDlg()
 {
   // Don't do the following, as CInfoDisplay::PostNcDestroy()
   // does 'delete this' (ugh).
-  // delete m_pNotesDisplay;
+  // delete m_pInfoDisplay;
 }
 
 void CShowCompareDlg::DoDataExchange(CDataExchange *pDX)

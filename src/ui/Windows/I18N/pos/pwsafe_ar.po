@@ -370,6 +370,16 @@ msgstr "%d مدخل تم تصديره"
 msgid "%d entries synchronized"
 msgstr "%d مدخل متزامن"
 
+#. Resource IDs: (6061)
+#, c-format
+msgid "%d entries under group"
+msgstr ""
+
+#. Resource IDs: (6060)
+#, c-format
+msgid "%d entry under group"
+msgstr ""
+
 #. Resource IDs: (5240)
 #, c-format
 msgid "%d items"
@@ -654,7 +664,7 @@ msgstr "&شريط السحب مرئي"
 msgid "&Duplicate Entry"
 msgstr "&مدخل مكرر"
 
-#. Resource IDs: (32086 - Menu)
+#. Resource IDs: (32087 - Menu)
 msgid "&Duplicate Group"
 msgstr "&مجموعة مكررة"
 
@@ -666,7 +676,7 @@ msgstr "&البريد الإلكتروني:"
 msgid "&Edit"
 msgstr "&تعديل"
 
-#. Resource IDs: (32081 - Menu, 32081 - MenuEx)
+#. Resource IDs: (32082 - Menu, 32082 - MenuEx)
 msgid "&Edit Base entry"
 msgstr "&تعديل المدخل الأساسي"
 
@@ -690,7 +700,7 @@ msgstr "&الفلاتر"
 msgid "&Find"
 msgstr "&بحث"
 
-#. Resource IDs: (32079 - MenuEx)
+#. Resource IDs: (32080 - MenuEx)
 msgid "&Find..."
 msgstr "&بحث..."
 
@@ -706,7 +716,7 @@ msgstr "&الخط:"
 msgid "&Generate"
 msgstr "&توليد"
 
-#. Resource IDs: (32078 - Menu, 32078 - MenuEx)
+#. Resource IDs: (32079 - Menu, 32079 - MenuEx)
 msgid "&Go to Base entry"
 msgstr "&الذهاب للمدخل الأساسي"
 
@@ -798,6 +808,10 @@ msgstr "&على"
 msgid "&Open"
 msgstr "&فتح"
 
+#. Resource IDs: (32002 - Menu)
+msgid "&Open Another"
+msgstr ""
+
 #. Resource IDs: (32002 - MenuEx)
 msgid "&Open..."
 msgstr "&فتح..."
@@ -818,7 +832,7 @@ msgstr "&كلمة السر:"
 msgid "&Paste"
 msgstr "&لصق"
 
-#. Resource IDs: (32010 - MenuEx, 32084 - Menu, 32084 - MenuEx, 32093 - Menu, 32093 - MenuEx)
+#. Resource IDs: (32010 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu, 32094 - MenuEx)
 msgid "&Plain Text (tab separated)..."
 msgstr "& نص عادي (مفصولة بعلامة جدولة) ..."
 
@@ -830,7 +844,7 @@ msgstr "&نص غير مشفر..."
 msgid "&Properties"
 msgstr "&خصائص"
 
-#. Resource IDs: (32089 - Menu)
+#. Resource IDs: (32090 - Menu)
 msgid "&Protect All Entries"
 msgstr "&حماية جميع المدخلات"
 
@@ -862,7 +876,7 @@ msgstr "&إستعادة"
 msgid "&Retry"
 msgstr "&إعادة المحاولة"
 
-#. Resource IDs: (32076 - Menu, 32076 - MenuEx, 5656)
+#. Resource IDs: (32077 - Menu, 32077 - MenuEx, 5656)
 msgid "&Run Command"
 msgstr "&تشغيل أمر"
 
@@ -922,7 +936,7 @@ msgstr "&حاول مرة أخرى"
 msgid "&Undo"
 msgstr "&التراجع"
 
-#. Resource IDs: (32090 - Menu)
+#. Resource IDs: (32091 - Menu)
 msgid "&Unprotect All Entries"
 msgstr "&الغاء حماية كل المدخلات"
 
@@ -942,7 +956,7 @@ msgstr "&تحقق"
 msgid "&View"
 msgstr "&عرض"
 
-#. Resource IDs: (32097 - Menu)
+#. Resource IDs: (32098 - Menu)
 msgid "&View Attachment"
 msgstr "&عرض مرفق"
 
@@ -958,7 +972,7 @@ msgstr "&عرض تقرير"
 msgid "&Virtual Keyboard Font"
 msgstr "& خط الكيبورد الإفتراضي"
 
-#. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu, 32094 - MenuEx)
+#. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32086 - Menu, 32086 - MenuEx, 32095 - Menu, 32095 - MenuEx)
 msgid "&XML format..."
 msgstr "&تنسيق XML..."
 
@@ -1782,6 +1796,10 @@ msgstr "الذهاب الى URL + الكتابة التلقائية"
 msgid "Browse to URL + Autotype"
 msgstr "الذهاب الى URL + الكتابة التلقائية"
 
+#. Resource IDs: (32074 - Menu, 32074 - MenuEx)
+msgid "Browse to URL w/Alt Browser"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
 msgstr "معاملات سطر أوامر المتصفح:"
@@ -1955,8 +1973,8 @@ msgid "Change database mode?"
 msgstr "تغيير وضع قاعدة البيانات؟"
 
 #. Resource IDs: (5858)
-msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
-msgstr "تغيير الحالة منذ آخر حفظ:\n* يشير إلى أنه تم تغيير قاعدة البيانات\n° تشير إلى تغيير تفضيل من تفضيلات قاعدة البيانات"
+msgid "Change status since last save:\n* indicates the database has been changed\nï¿½ indicates a database preference has been changed"
+msgstr ""
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -2183,7 +2201,7 @@ msgstr "نتائج مقارنة قواعد البيانات"
 msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
 msgstr "مقارنة اكتمال قاعدة البيانات الحالية:\n\t %ls\n و:\n\t %ls\n"
 
-#. Resource IDs: (32091 - Menu, 32091 - MenuEx)
+#. Resource IDs: (32092 - Menu, 32092 - MenuEx)
 msgid "Compare entries..."
 msgstr "مقارنة الإدخالات..."
 
@@ -2306,7 +2324,7 @@ msgstr "نسخ البريد الإلكتروني للحافظة"
 msgid "Copy Here"
 msgstr "النسخ لهنا"
 
-#. Resource IDs: (32080 - Menu, 32080 - MenuEx)
+#. Resource IDs: (32081 - Menu, 32081 - MenuEx)
 msgid "Copy Run Command to Clipboard"
 msgstr "نسخ امر التنفيذ الى الحافظة"
 
@@ -2390,7 +2408,7 @@ msgstr "تعذر العثور على المدخل الأساسي - قاعدة ب
 msgid "Couldn't save database - Please save manually"
 msgstr "تعذر حفظ قاعدة البيانات - يرجى الحفظ يدويًا"
 
-#. Resource IDs: (32077 - Menu, 32077 - MenuEx)
+#. Resource IDs: (32078 - Menu, 32078 - MenuEx)
 msgid "Create &Shortcut"
 msgstr "انشاء &اختصار"
 
@@ -2471,11 +2489,6 @@ msgstr "قاعدة البيانات الحالية بوضع القراءة فق�
 #, c-format
 msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the PasswordSafe website to download the latest version."
 msgstr "الاصدار الحالي:\t%s\nالاصدار الاخير:\t%s\n\nيرجى زيارة موقع PasswordSafe لتنزيل أحدث إصدار."
-
-#. Resource IDs: (5478)
-#, c-format
-msgid "Current version:\t%s\nLatest version:\t%s\n\nYour purchase includes free upgrades for one year.\nPlease contact the PasswordSafe Administrator for your upgrade."
-msgstr "الإصدار الحالي: %s\nأحدث إصدار: %s\n\nيشمل الشراء ترقيات مجانية لمدة عام واحد.\nالرجاء الاتصال بمسؤول PasswordSafe للترقية."
 
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
@@ -2781,7 +2794,7 @@ msgstr "اسحب هذه الصورة الى نافذة اخرى لبدء الك�
 msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."
 msgstr "يشير إسقاط مدخل '%s:%s:%s' كلمة المرور تشير الى مدخل الذي هو أيضا اسم مستعار.\n\nيشير المدخل الذي تم إسقاطه الآن إلى المدخل الأساسي الخاص بالمدخل."
 
-#. Resource IDs: (32086 - Menu, 32086 - MenuEx)
+#. Resource IDs: (32087 - Menu, 32087 - MenuEx)
 msgid "Duplicate Group"
 msgstr "مجموعة مكررة"
 
@@ -3186,7 +3199,7 @@ msgstr "تصدير &ل"
 msgid "Export &XML"
 msgstr "تصدير &XML"
 
-#. Resource IDs: (32096 - Menu, 32096 - MenuEx)
+#. Resource IDs: (32097 - Menu, 32097 - MenuEx)
 msgid "Export Attachment..."
 msgstr "تصدير مرفق..."
 
@@ -3732,7 +3745,7 @@ msgstr "Hungarian"
 msgid "Hungarian 101-key"
 msgstr "Hungarian 101-key"
 
-#. Accelerator Entry for Menu ID:32002; '&Open...'
+#. Accelerator Entry for Menu ID:32002; '&Open Another'
 msgid "ID:32002:V C +O"
 msgstr "ID:32002:V C +O"
 
@@ -3788,33 +3801,37 @@ msgstr "ID:32072:V C +L"
 msgid "ID:32073:VA  +L"
 msgstr "ID:32073:VA  +L"
 
-#. Accelerator Entry for Menu ID:32074; 'Send &Email'
-msgid "ID:32074:V C +E"
-msgstr "ID:32074:V C +E"
+#. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
+msgid "ID:32074:VA S+L"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32075; 'Perform Auto&Type'
-msgid "ID:32075:V C +T"
-msgstr "ID:32075:V C +T"
+#. Accelerator Entry for Menu ID:32075; 'Send &Email'
+msgid "ID:32075:V C +E"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32076; '&Run Command'
-msgid "ID:32076:V C +R"
-msgstr "ID:32076:V C +R"
+#. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
+msgid "ID:32076:V C +T"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32079; '&Find...'
-msgid "ID:32079:V C +F"
-msgstr "ID:32079:V C +F"
+#. Accelerator Entry for Menu ID:32077; '&Run Command'
+msgid "ID:32077:V C +R"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32080; 'Copy Run Command to Clipboard'
-msgid "ID:32080:VAC +R"
-msgstr "ID:32080:VAC +R"
+#. Accelerator Entry for Menu ID:32080; '&Find...'
+msgid "ID:32080:V C +F"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32082; 'Undo'
-msgid "ID:32082:V C +Z"
-msgstr "ID:32082:V C +Z"
+#. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
+msgid "ID:32081:VAC +R"
+msgstr ""
 
-#. Accelerator Entry for Menu ID:32083; 'Redo'
-msgid "ID:32083:V C +Y"
-msgstr "ID:32083:V C +Y"
+#. Accelerator Entry for Menu ID:32083; 'Undo'
+msgid "ID:32083:V C +Z"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32084; 'Redo'
+msgid "ID:32084:V C +Y"
+msgstr ""
 
 #. Accelerator Entry for Menu ID:32140; 'Last Find results'
 msgid "ID:32140:V C +K"
@@ -5079,7 +5096,7 @@ msgstr "طول كلمة السر:"
 msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr "يجب أن تكون كلمة المرور عبارة عن حالة أحرف مختلطة ، مع رقم واحد على الأقل أو علامة ترقيم"
 
-#. Resource IDs: (32092 - Menu, 32092 - MenuEx, 32095 - Menu, 32095 - MenuEx)
+#. Resource IDs: (32093 - Menu, 32093 - MenuEx, 32096 - Menu, 32096 - MenuEx)
 msgid "Password&Safe..."
 msgstr "Password&Safe..."
 
@@ -5096,7 +5113,7 @@ msgstr "PasswordSafe..."
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
 msgstr "PasswordSafe: موجود مدخلات بكلمات مرور منتهية او قريبة من الانتهاء"
 
-#. Resource IDs: (32075 - Menu, 32075 - MenuEx, 5296)
+#. Resource IDs: (32076 - Menu, 32076 - MenuEx, 5296)
 msgid "Perform Auto&Type"
 msgstr "عمل كتابة تلقائية"
 
@@ -5310,8 +5327,8 @@ msgid "Press to delete all added characters."
 msgstr "إضغط لحذف جميع الحروف المضافة."
 
 #. Resource IDs: (65535)
-msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password being copied."
-msgstr "سيؤدي الضغط على \"موافق\" إلى نسخ كلمة المرور الخاصة بالعنصر المحدد إلى الحافظة. سيتم مسح الحافظة بأمان عند إغلاق Password Safe.\n\nيؤدي الضغط على \"إلغاء\" إلى إيقاف نسخ كلمة المرور."
+msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password from being copied."
+msgstr ""
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -5357,11 +5374,11 @@ msgstr "خصائص"
 msgid "Properties of the currently selected database."
 msgstr "خصائص قاعدة البيانات المختارة حاليا."
 
-#. Resource IDs: (32089 - MenuEx)
+#. Resource IDs: (32090 - MenuEx)
 msgid "Protect All Entries"
 msgstr "حماية جميع المدخلات"
 
-#. Resource IDs: (32087 - Menu, 32087 - MenuEx)
+#. Resource IDs: (32088 - Menu, 32088 - MenuEx)
 msgid "Protect Entry"
 msgstr "حماية مدخل"
 
@@ -5450,7 +5467,7 @@ msgstr "استرجع المستندات المحفوظة تلقائيًا\nاف�
 msgid "Recurring"
 msgstr "متكرر"
 
-#. Resource IDs: (1487, 32083 - MenuEx)
+#. Resource IDs: (1487, 32084 - MenuEx)
 msgid "Redo"
 msgstr "إعادة عمل"
 
@@ -5818,7 +5835,7 @@ msgstr "تفاصيل السياسة المختارة:"
 msgid "Send"
 msgstr "إرسال"
 
-#. Resource IDs: (32074 - Menu, 32074 - MenuEx)
+#. Resource IDs: (32075 - Menu, 32075 - MenuEx)
 msgid "Send &Email"
 msgstr "إرسال &بريد الكتروني"
 
@@ -6881,7 +6898,7 @@ msgstr "غير قادر على الكتابة إلى %1 ، إنه للقراءة
 msgid "Uncheck"
 msgstr "الغاء تحديد"
 
-#. Resource IDs: (1486, 32082 - MenuEx)
+#. Resource IDs: (1486, 32083 - MenuEx)
 msgid "Undo"
 msgstr "الغاء عمل"
 
@@ -6941,11 +6958,11 @@ msgstr "الغاء قفل الصعوبة"
 msgid "Unlock Safe"
 msgstr "الغاء قفل الخزنة"
 
-#. Resource IDs: (32090 - MenuEx)
+#. Resource IDs: (32091 - MenuEx)
 msgid "Unprotect All Entries"
 msgstr "الغاء حماية كل المدخلات"
 
-#. Resource IDs: (32088 - Menu, 32088 - MenuEx)
+#. Resource IDs: (32089 - Menu, 32089 - MenuEx)
 msgid "Unprotect Entry"
 msgstr "الغاء حماية مدخل"
 
@@ -7132,7 +7149,7 @@ msgstr "Vietnamese"
 msgid "View"
 msgstr "عرض"
 
-#. Resource IDs: (32097 - MenuEx, 548, 6025)
+#. Resource IDs: (32098 - MenuEx, 548, 6025)
 msgid "View Attachment"
 msgstr "عرض المرفقات"
 
@@ -7420,6 +7437,10 @@ msgstr "\nالذهاب الى URL"
 msgid "\nBrowse to URL + AutoType"
 msgstr "\nالذهاب الى URL + الكتابة التلقائية"
 
+#. Resource IDs: (32074)
+msgid "\nBrowse to URL with Alternate Browser"
+msgstr ""
+
 #. Resource IDs: (32305)
 msgid "\nCase insensitive search"
 msgstr "\nبحث غير حساس لحالة الحرف"
@@ -7452,7 +7473,7 @@ msgstr "\nأغلق شريط البحث"
 msgid "\nCollapse All"
 msgstr "\nطي الكل"
 
-#. Resource IDs: (32091)
+#. Resource IDs: (32092)
 msgid "\nCompare entries..."
 msgstr "\nمقارنة المدخلات..."
 
@@ -7468,7 +7489,7 @@ msgstr "\nنسخ الملاحظات للحافظة"
 msgid "\nCopy Password to Clipboard"
 msgstr "\nنسخ كلمة المرور للحافظة"
 
-#. Resource IDs: (32080)
+#. Resource IDs: (32081)
 msgid "\nCopy Run Command to Clipboard"
 msgstr "\nنسخ امر التنفيذ الى الحافظة"
 
@@ -7492,11 +7513,11 @@ msgstr "\nعرض اجزاء من كلمة السر"
 msgid "\nDuplicate Entry"
 msgstr "\nمدخلات متكررة"
 
-#. Resource IDs: (32086)
+#. Resource IDs: (32087)
 msgid "\nDuplicate Group"
 msgstr "\nمجموعات متكررة"
 
-#. Resource IDs: (32081)
+#. Resource IDs: (32082)
 msgid "\nEdit Base entry"
 msgstr "\nتعديل المدخل الأساسي"
 
@@ -7521,31 +7542,31 @@ msgstr "\nخطأ في محفوظات كلمة المرور للمدخل: » %ls�
 msgid "\nExpand All"
 msgstr "\nتوسيع الكل"
 
-#. Resource IDs: (32096)
+#. Resource IDs: (32097)
 msgid "\nExport Attachment..."
 msgstr "\nتصدير مرفق..."
 
-#. Resource IDs: (32085)
+#. Resource IDs: (32086)
 msgid "\nExport Entry in XML format..."
 msgstr "\nتصدير مدخل بتنسيقXML..."
 
-#. Resource IDs: (32084)
+#. Resource IDs: (32085)
 msgid "\nExport Entry to Plain Text..."
 msgstr "\nتصدير المدخل بدون تشفير..."
 
-#. Resource IDs: (32092)
+#. Resource IDs: (32093)
 msgid "\nExport Entry to another Safe..."
 msgstr "\nتصدير مدخل لخزنة أخرى..."
 
-#. Resource IDs: (32094)
+#. Resource IDs: (32095)
 msgid "\nExport Group in XML format..."
 msgstr "\nتصدير المجموعة بتنسيق XML ..."
 
-#. Resource IDs: (32093)
+#. Resource IDs: (32094)
 msgid "\nExport Group to Plain Text..."
 msgstr "\nتصدير المجموعة إلى نص دون تشفير ..."
 
-#. Resource IDs: (32095)
+#. Resource IDs: (32096)
 msgid "\nExport Group to another Safe..."
 msgstr "\nتصدير المجموعة إلى خزنة أخرى ..."
 
@@ -7585,7 +7606,7 @@ msgstr "\nجد التالي"
 msgid "\nFind Previous"
 msgstr "\nجد السابق"
 
-#. Resource IDs: (32079)
+#. Resource IDs: (32080)
 msgid "\nFind..."
 msgstr "\nإيجاد..."
 
@@ -7593,7 +7614,7 @@ msgstr "\nإيجاد..."
 msgid "\nGenerate Password"
 msgstr "\nتوليد كلمة سر"
 
-#. Resource IDs: (32078)
+#. Resource IDs: (32079)
 msgid "\nGo to Base entry"
 msgstr "\nإذهب للمدخل الأساسي"
 
@@ -7646,7 +7667,7 @@ msgstr "\nالخيارات"
 msgid "\nPassword Policies"
 msgstr "\nسياسات كلمات المرور"
 
-#. Resource IDs: (32075)
+#. Resource IDs: (32076)
 msgid "\nPerform AutoType"
 msgstr "\nعمل كتابة تلقائية"
 
@@ -7658,15 +7679,15 @@ msgstr "\n&حاول مرة أخرى"
 msgid "\nProgram will terminate."
 msgstr "\nالبرنامج سوف ينتهي."
 
-#. Resource IDs: (32089)
+#. Resource IDs: (32090)
 msgid "\nProtect All Entries"
 msgstr "\nحماية جميع المدخلات"
 
-#. Resource IDs: (32087)
+#. Resource IDs: (32088)
 msgid "\nProtect Entry"
 msgstr "\nحماية مدخل"
 
-#. Resource IDs: (32083)
+#. Resource IDs: (32084)
 msgid "\nRedo"
 msgstr "\nإعادة عمل"
 
@@ -7675,7 +7696,7 @@ msgstr "\nإعادة عمل"
 msgid "\nRenamed %d %s"
 msgstr "\nتمت إعادة تسمية %d% s"
 
-#. Resource IDs: (32076)
+#. Resource IDs: (32077)
 msgid "\nRun Command"
 msgstr "\nتنفيذ امر"
 
@@ -7691,7 +7712,7 @@ msgstr "\nحفظ قاعدة البيانات ك..."
 msgid "\nSelect Entry"
 msgstr "\nإختر مدخل"
 
-#. Resource IDs: (32074)
+#. Resource IDs: (32075)
 msgid "\nSend Email"
 msgstr "\nارسال إيميل"
 
@@ -7735,7 +7756,7 @@ msgstr "\n%ls %ls التالي تم تحديثه:"
 msgid "\nThe following new %ls %ls merged into this database:"
 msgstr "\nتم دمج% ls% ls الجديد التالي في قاعدة البيانات هذه:"
 
-#. Resource IDs: (32082)
+#. Resource IDs: (32083)
 msgid "\nUndo"
 msgstr "\nالتراجع عن عمل"
 
@@ -7743,11 +7764,11 @@ msgstr "\nالتراجع عن عمل"
 msgid "\nUnexpected exception during parsing."
 msgstr "\nاستثناء غير متوقع أثناء التحليل."
 
-#. Resource IDs: (32090)
+#. Resource IDs: (32091)
 msgid "\nUnprotect All Entries"
 msgstr "\nالغاء حماية جميع المداخل"
 
-#. Resource IDs: (32088)
+#. Resource IDs: (32089)
 msgid "\nUnprotect Entry"
 msgstr "\nالغاء حماية مدخل"
 
@@ -7755,7 +7776,7 @@ msgstr "\nالغاء حماية مدخل"
 msgid "\nUse it anyway?"
 msgstr "\nإستخدمه على أي حال؟"
 
-#. Resource IDs: (32097)
+#. Resource IDs: (32098)
 msgid "\nView Attachment"
 msgstr "\nعرض المرفقات"
 

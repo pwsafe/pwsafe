@@ -285,7 +285,7 @@ public:
   void CreateShortcutEntry(CItemData *pci, const StringX &cs_group,
                            const StringX &cs_title, const StringX &cs_user,
                            StringX &sxNewDBPrefsString);
-  bool SetNotesWindow(const CPoint ptClient, const bool bVisible = true);
+  bool SetInfoDisplay(const CPoint ptClient, const bool bVisible = true);
   bool IsFilterActive() const {return m_bFilterActive;}
   int GetNumPassedFiltering() const {return m_bNumPassedFiltering;}
   CItemData *GetLastSelected() const;
@@ -949,7 +949,7 @@ private:
 
   // Images in List View
   bool m_bImageInLV;
-  CInfoDisplay *m_pNotesDisplay;
+  CInfoDisplay *m_pInfoDisplay;
 
   // Filters
   bool m_bFilterActive, m_bUnsavedDisplayed, m_bExpireDisplayed, m_bFindFilterDisplayed;
