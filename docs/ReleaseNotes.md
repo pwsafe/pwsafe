@@ -9,11 +9,15 @@ PasswordSafe 3.60.0 Release ??? 2022
 
 Bugs fixed in 3.60.0
 ====================
-* [SF1560](https://sourceforge.net/p/passwordsafe/bugs/1560/) Flattened list: Width of last column is not retained across invocations.
+* [SF1560](https://sourceforge.net/p/passwordsafe/bugs/1560/) Flattened list: Width of last column is now retained across invocations.
 
 New features in 3.60.0
 ======================
 * [FR898](https://sourceforge.net/p/passwordsafe/feature-requests/898/) Hovering on a non-empty group icon now shows how many entries under that group.
+
+Changes in 3.60.0
+=================
+* [FR889](https://sourceforge.net/p/passwordsafe/feature-requests/889/) Documented how to work with the Flattened List vew, based on Huw's notes.
 
 PasswordSafe 3.59.0 Release May 2022
 ====================================

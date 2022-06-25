@@ -1,197 +1,239 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
+
 <head>
-<title>View Menu</title>
-<!-- pwsafe version: 3.15.2--><!-- Modified: 3/1/2008 --><!--Popup control -->
-<script language="javascript" src="html/popups.js">
-</script>
-<link rel="stylesheet" type="text/css" href="style.css">
+    <title>View Menu</title>
+    <!-- pwsafe version: 3.15.2-->
+    <!-- Modified: 3/1/2008 -->
+    <!--Popup control -->
+    <script language="javascript" src="html/popups.js">
+    </script>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
+
 <body>
-<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
-<!-- Popup Source File -->
+    <object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+    <!-- Popup Source File -->
 
-<h2>View Menu</h2>
+    <h2>View Menu</h2>
 
-<img alt="View Menu" src="images/view_menu.jpg">
+    <img alt="View Menu" src="images/view_menu.jpg">
 
-<p>The <b>View Menu</b> controls the available display options. You can
-switch between how your entries are
-shown: either as a single list (<b>Flattened List</b>) or organized by category
-(<b>Nested Tree</b>).
-You can choose whether or not to display a toolbar, and if so, whether to
-use the 'Classic' or 'New' toolbar icons. The toolbar itself is also
-customizable. You can also expand or collapse all the groups displayed
-in the Nested Tree view, display subsets of the entries, filter the entries displayed to match any
-criteria, select the font in which the entries are displayed and
-display reports of merge, compare, import and other advanced operations.</p>
+    <p>The <b>View Menu</b> controls the available display options. You can
+        switch between how your entries are
+        shown: either as a single list (<b>Flattened List</b>) or organized by category
+        (<b>Nested Tree</b>).
+        You can choose whether or not to display a toolbar, and if so, whether to
+        use the 'Classic' or 'New' toolbar icons. The toolbar itself is also
+        customizable. You can also expand or collapse all the groups displayed
+        in the Nested Tree view, display subsets of the entries, filter the entries displayed to match any
+        criteria, select the font in which the entries are displayed and
+        display reports of merge, compare, import and other advanced operations.</p>
 
-<h3>Switching Between Nested Tree and Flattened List Views</h3>
+    <h3>Switching Between Nested Tree and Flattened List Views</h3>
 
-<ol>
-<li>Go to the <b>View</b> menu</li>
-<li>Select <b>Nested Tree</b> or <b>Flattened List</b></li>
-</ol>
+    <ol>
+        <li>Go to the <b>View</b> menu</li>
+        <li>Select <b>Nested Tree</b> or <b>Flattened List</b></li>
+    </ol>
 
-<h3>Controlling the Toolbars</h3>
+    <h3>Customizing the Flattened List View</h3>
+    You can control what information is displayed in this view and in what manner as follows:
+    <ul>
+        <li><b>Column width adjustment</b>
+            <ul>
+                <li><b>Fit:</b> Hover over right boundary so pointer changes to resize cursor. Double-click.</li>
+                <li><b>Resize:</b> Hover cursor over right boundary, left-click drag. Not all columns can be resized
+                    this way.</li>
+            </ul>
+        </li>
 
-<p>To display or hide the toolbar, check or uncheck the <b>Toolbar Visible </b>menu item.<br>
+        <li><b>Sort</b><br />
+            Left-click on a heading sorts by that columns values in ascending order.<br />
+            Subsequent clicks on same heading toggles between descending and ascending
+        </li>
+        <li><b>Column Picker</b><br />
+            Right-click on the header row in order to access Column Picker or Reset Columns options:
+            <ul>
+            <li>To add a column, drag its name from the Column Picker, and drop it on a column heading to add to its left
+            (except Icon, which always appears at the far left)</li>
+            <li>To remove a column, drag its heading onto the Column Picker and release. (Title and User Name cannot be removed)</li>
+            <li>To reorder, drag, and drop when a boundary is highlighted blue. If no highlighting appears, repositioning is
+            not possible.</li>
 
-To use "new" or "classic" toolbar icons, select the "<b>New toolbar</b>" or
-"<b>Classic toolbar</b>" menu item, respectively.<br>
+            <li>Reset Columns:<br/>
+            First use removes added columns, replaces removed columns, resets order.
+            A second reset properly resets widths.</li>
+        </ul>
+        </li>
+    </ul>
+    <h3>Controlling the Toolbars</h3>
 
-<h3>Dragbar</h3>
+    <p>To display or hide the toolbar, check or uncheck the <b>Toolbar Visible </b>menu item.<br>
 
-<p>The "<b>Dragbar</b>" is a special toolbar that allows you to paste 
-parts of the currently selected entry by "dragging" the icon specifying 
-the part you want to paste to where you want it to be pasted 
-to. For example, to paste the "Notes" text of a given entry to another 
-application using the Dragbar, select the entry, and then drag the "N" 
-icon from the Dragbar to the application. When you release the left 
-mouse button, the contents of the Notes field will be pasted to the 
-application. The Dragbar will disable ("grey out") icons for fields that 
-are empty in the selected entry. <br>
-The 'AutoType' Dragbar button behaves in a slightly different
-manner: Dragging it to an input area on another Window
-(e.g. Browser) will cause <b>Password Safe</b> to begin AutoType from there.</p>
+        To use "new" or "classic" toolbar icons, select the "<b>New toolbar</b>" or
+        "<b>Classic toolbar</b>" menu item, respectively.<br>
 
-<p><b>Notes:</b>
-<ul>
-<li>There appears to be an issue using the new AutoType Dragbar image with
-Internet Explorer (tested with V7, V8 &amp; V9) in that any characters typed
-before the first tab character are lost. This does <u>NOT</u> occur with Firefox
-and Chrome browsers. Although we have a solution for this (we send a Tab followed
-by a Shift+Tab to return to the selected window <u>only</u> when using this Dragbar
-AutoType image), the side-effect is
-that you can only use the Dragbar AutoType image to replace any existing string in
-that window by the expanded AutoType string. If dropped in a window of another
-application the result will depend on how that application processes the Tab and Shift+Tab
-characters.
-<li>If the <i>control</i> key is pressed while clicking on a Dragbar icon, the relevant text is copied to the clipboard <em>in addition</em>
-to being pasted when the mouse button is released. This can be useful in cases where the drop "missed" by a pixel or two, allowing you to
-perform a paste operation, rather than trying to drag again.</li>
-</ul></p>
+    <h3>Dragbar</h3>
 
-To display or hide the Dragbar, check or uncheck the <b>Dragbar Visible</b> menu item.
+    <p>The "<b>Dragbar</b>" is a special toolbar that allows you to paste
+        parts of the currently selected entry by "dragging" the icon specifying
+        the part you want to paste to where you want it to be pasted
+        to. For example, to paste the "Notes" text of a given entry to another
+        application using the Dragbar, select the entry, and then drag the "N"
+        icon from the Dragbar to the application. When you release the left
+        mouse button, the contents of the Notes field will be pasted to the
+        application. The Dragbar will disable ("grey out") icons for fields that
+        are empty in the selected entry. <br>
+        The 'AutoType' Dragbar button behaves in a slightly different
+        manner: Dragging it to an input area on another Window
+        (e.g. Browser) will cause <b>Password Safe</b> to begin AutoType from there.</p>
 
-<h3>Expand All</h3>
+    <p><b>Notes:</b>
+    <ul>
+        <li>There appears to be an issue using the new AutoType Dragbar image with
+            Internet Explorer (tested with V7, V8 &amp; V9) in that any characters typed
+            before the first tab character are lost. This does <u>NOT</u> occur with Firefox
+            and Chrome browsers. Although we have a solution for this (we send a Tab followed
+            by a Shift+Tab to return to the selected window <u>only</u> when using this Dragbar
+            AutoType image), the side-effect is
+            that you can only use the Dragbar AutoType image to replace any existing string in
+            that window by the expanded AutoType string. If dropped in a window of another
+            application the result will depend on how that application processes the Tab and Shift+Tab
+            characters.
+        <li>If the <i>control</i> key is pressed while clicking on a Dragbar icon, the relevant text is copied to the
+            clipboard <em>in addition</em>
+            to being pasted when the mouse button is released. This can be useful in cases where the drop "missed" by a
+            pixel or two, allowing you to
+            perform a paste operation, rather than trying to drag again.</li>
+    </ul>
+    </p>
 
-<p>Expands all groups, making all entries visible <i>(Nested Tree view only)</i>.</p>
+    To display or hide the Dragbar, check or uncheck the <b>Dragbar Visible</b> menu item.
 
-<h3>Collapse All</h3>
+    <h3>Expand All</h3>
 
-<p>Collapses all groups <i>(Nested Tree view only)</i>.</p>
+    <p>Expands all groups, making all entries visible <i>(Nested Tree view only)</i>.</p>
 
-<h3>Subviews</h3>
+    <h3>Collapse All</h3>
 
-<img alt="Subviews" src="images/subviews_menu.jpg">
+    <p>Collapses all groups <i>(Nested Tree view only)</i>.</p>
 
-<p>"Subviews" are predefined filters that when selected, show only the entries that match their criteria.</p>
+    <h3>Subviews</h3>
 
-<p>As all filters, they can be cleared by double-clicking the red and white striped
-"filter active" indicator at the bottom right of the Status Bar, as can be seen in the
-following images where the filter is active.</p>
+    <img alt="Subviews" src="images/subviews_menu.jpg">
 
-<h4>1. Unsaved changes</h4>
+    <p>"Subviews" are predefined filters that when selected, show only the entries that match their criteria.</p>
 
-<p>If item <b>Save database immediately after Edit or Add</b> in menu
-<a href="backups_tab.html">Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;Backups</a>
-is unchecked, changed item will not be saved immediately, but they will be shown in a different
-colour. See the next picture:</p>
+    <p>As all filters, they can be cleared by double-clicking the red and white striped
+        "filter active" indicator at the bottom right of the Status Bar, as can be seen in the
+        following images where the filter is active.</p>
 
-<p>Overview of all entries:<br>
-<img alt="Data with changes" src="images/tree_view_change.jpg"></p>
+    <h4>1. Unsaved changes</h4>
 
-<p>By checking this item, only changed and unsaved items will be shown.  If this filter
-is active and you save your database changes, it will be cancelled and the
-full database will be displayed.</p>
+    <p>If item <b>Save database immediately after Edit or Add</b> in menu
+        <a href="backups_tab.html">Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;Backups</a>
+        is unchecked, changed item will not be saved immediately, but they will be shown in a different
+        colour. See the next picture:
+    </p>
 
-<p>Overview of all changed entries:<br>
-<img alt="Data, only changes" src="images/tree_view_change_only.jpg"></p>
+    <p>Overview of all entries:<br>
+        <img alt="Data with changes" src="images/tree_view_change.jpg">
+    </p>
 
-<p><small><b>Note:</b> As long as there are some unsaved items, there will be
-a "*" in the status area at the bottom of the application's window.</small></p>
+    <p>By checking this item, only changed and unsaved items will be shown. If this filter
+        is active and you save your database changes, it will be cancelled and the
+        full database will be displayed.</p>
 
-<h4>2. Expiry dates</h4>
+    <p>Overview of all changed entries:<br>
+        <img alt="Data, only changes" src="images/tree_view_change_only.jpg">
+    </p>
 
-<p>If you select this menu item, only entries with a defined expiry date will
-be shown in the list. It does not matter that the expiry date is in
-the past or future.</p>
+    <p><small><b>Note:</b> As long as there are some unsaved items, there will be
+            a "*" in the status area at the bottom of the application's window.</small></p>
 
-<p>If there aren't any entries with expiry date, this menu item will
-be grayed out.</p>
+    <h4>2. Expiry dates</h4>
 
-<img alt="Expired Password Filter" src="images/expired_password_filter.jpg">
+    <p>If you select this menu item, only entries with a defined expiry date will
+        be shown in the list. It does not matter that the expiry date is in
+        the past or future.</p>
 
-<h4>3. Last Find results</h4>
+    <p>If there aren't any entries with expiry date, this menu item will
+        be grayed out.</p>
 
-<p>If you select this menu item, only entries that were found during the last
-Find operation will be shown. If a Find hadn't been performed or it had been cleared,
-then this menu item will be grayed out. If the Find Toolbar was visible when this
-filter was activated, it will be closed, since  <u>no new Finds can be performed whilst
-this filter is active</u>. Find Next (F3) and Find Previous (Shift-F3) will still be
-available.</p>
+    <img alt="Expired Password Filter" src="images/expired_password_filter.jpg">
 
-<p><b>Note</b>: If this filter is active, as it is based on displaying entries in the database
-found during the last Find operation and only these, i.e. the <u>Find operation
-is not redone</u> should the database be changed.  For example:<br>
-<ul>
-<li>If an entry is edited so that it no longer satisfies the previous Find,
-it will still be displayed.</li>
-<li>If an entry is duplicated, the new copy will not be included in the display.</li>
-<li>If an entry is deleted, it will be removed from the display.</li>
-<li>If the above deleted entry is reinstated, i.e. via Undo (Ctrl-Z), the entry will
-again be displayed.</li>
-<li>If new entries are added either directly or, say, via Merge, these will also not be
-displayed as they were not in the database when the last Find operation was performed.</li>
-</ul></p>
+    <h4>3. Last Find results</h4>
 
-<img alt="Last Find Filter" src="images/last_find_filter.jpg">
+    <p>If you select this menu item, only entries that were found during the last
+        Find operation will be shown. If a Find hadn't been performed or it had been cleared,
+        then this menu item will be grayed out. If the Find Toolbar was visible when this
+        filter was activated, it will be closed, since <u>no new Finds can be performed whilst
+            this filter is active</u>. Find Next (F3) and Find Previous (Shift-F3) will still be
+        available.</p>
 
-<h3><a name="user_defined_filters"></a>User defined Filters</h3>
+    <p><b>Note</b>: If this filter is active, as it is based on displaying entries in the database
+        found during the last Find operation and only these, i.e. the <u>Find operation
+            is not redone</u> should the database be changed. For example:<br>
+    <ul>
+        <li>If an entry is edited so that it no longer satisfies the previous Find,
+            it will still be displayed.</li>
+        <li>If an entry is duplicated, the new copy will not be included in the display.</li>
+        <li>If an entry is deleted, it will be removed from the display.</li>
+        <li>If the above deleted entry is reinstated, i.e. via Undo (Ctrl-Z), the entry will
+            again be displayed.</li>
+        <li>If new entries are added either directly or, say, via Merge, these will also not be
+            displayed as they were not in the database when the last Find operation was performed.</li>
+    </ul>
+    </p>
 
-<p>A "filter" is a criteria (or set of criteria) that an entry either matches
-or doesn't match. <b>Password Safe</b> allows you to define filters and display
-only those entries that match a given filter. For more information on defining
-and using filters, see <a href="filters.html">here</a>.</p>
+    <img alt="Last Find Filter" src="images/last_find_filter.jpg">
 
-<h3>Change Font</h3>
+    <h3><a name="user_defined_filters"></a>User defined Filters</h3>
 
-<img alt="Change Fonts" src="images/change_font_menu.jpg">
+    <p>A "filter" is a criteria (or set of criteria) that an entry either matches
+        or doesn't match. <b>Password Safe</b> allows you to define filters and display
+        only those entries that match a given filter. For more information on defining
+        and using filters, see <a href="filters.html">here</a>.</p>
 
-<p>Select a different font for displaying entries in the List or Tree
-views, and for displaying passwords in the Add and Edit Entry dialog
-boxes.  You can also specify the font to use in the Virtual Keyboard.
-Note that this font must be able to display Unicode characters. Supported
-fonts include: "Arial Unicode MS" (which comes with Microsoft's Office suite),
-"Arial Unicode" and "Lucida Sans Unicode", although you may select another using
- the appropriate menu item.</p>
+    <h3>Change Font</h3>
 
-<h3>Reports</h3>
+    <img alt="Change Fonts" src="images/change_font_menu.jpg">
 
-<img alt="View Reports" src="images/view_reports_menu.jpg">
+    <p>Select a different font for displaying entries in the List or Tree
+        views, and for displaying passwords in the Add and Edit Entry dialog
+        boxes. You can also specify the font to use in the Virtual Keyboard.
+        Note that this font must be able to display Unicode characters. Supported
+        fonts include: "Arial Unicode MS" (which comes with Microsoft's Office suite),
+        "Arial Unicode" and "Lucida Sans Unicode", although you may select another using
+        the appropriate menu item.</p>
 
-<p>If you save the results of Compare, Export, Find, Import, Merge, Synchronize
-and Validate operations to disk, they are stored in the same directory as the
-database.  If you repeat one of these operations and again save the report
-to disk, it will overwrite any previous report for this operation without
-requesting permission.  You may view these reports at a later date when you
-open a database in this same directory.</p>
+    <h3>Reports</h3>
 
-<h3>Refresh F5</h3>
-<p>Refreshes the display either by pressing the F5 key or clicking on this menu item.</p>
-<!-- Added some white space at the bottom for natural scrolling -->
-<br>
-<br>
-<br>
+    <img alt="View Reports" src="images/view_reports_menu.jpg">
 
-<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
-<param name="Keyword" value="View Menu">
-<param name="Keyword" value="Nested Tree">
-<param name="Keyword" value="Flattened List">
-<param name="Keyword" value="Dragbar">
-<param name="Keyword" value="Change Font">
-</object>
+    <p>If you save the results of Compare, Export, Find, Import, Merge, Synchronize
+        and Validate operations to disk, they are stored in the same directory as the
+        database. If you repeat one of these operations and again save the report
+        to disk, it will overwrite any previous report for this operation without
+        requesting permission. You may view these reports at a later date when you
+        open a database in this same directory.</p>
+
+    <h3>Refresh F5</h3>
+    <p>Refreshes the display either by pressing the F5 key or clicking on this menu item.</p>
+    <!-- Added some white space at the bottom for natural scrolling -->
+    <br>
+    <br>
+    <br>
+
+    <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+        <param name="Keyword" value="View Menu">
+        <param name="Keyword" value="Nested Tree">
+        <param name="Keyword" value="Flattened List">
+        <param name="Keyword" value="Dragbar">
+        <param name="Keyword" value="Change Font">
+    </object>
 
 </body>
+
 </html>
