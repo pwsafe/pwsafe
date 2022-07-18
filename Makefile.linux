@@ -55,19 +55,18 @@ tar:
 	@$(GIT) archive --format=tar.gz \
 	--prefix=$(PKG_BASE)-$(RELEASENAME)/ \
 	-o $(RELEASEDIR)/$(SRC_TGZ) \
-	HEAD
-	@echo "Done."
+	$(RELEASENAME)
 
 # Following needed because GitHub creates its own tar.gz and .zip files for a release
 # and we need to verify those before signing them
-cmpsrc-github:
+cmpsrc-github: tar
 	(cd $(RELEASEDIR); $(TAR) xzf $(SRC_TGZ) && \
 	../Misc/sighlp_cmp.py -f ChangeLog -f pwsafe.pot -f version.h -v 1 -s $(RELEASENAME).zip \
 												https://github.com/pwsafe/pwsafe/archive/$(RELEASENAME).zip \
 	                      $(PKG_BASE)-$(RELEASENAME)/ && $(GPG_SIGN) $(RELEASENAME).zip; \
 	../Misc/sighlp_cmp.py -f ChangeLog -f pwsafe.pot -f version.h -v 1 -s $(RELEASENAME).tar.gz \
 												https://github.com/pwsafe/pwsafe/archive/$(RELEASENAME).tar.gz \
-												$(PKG_BASE)-$(RELEASENAME)-src/ && $(GPG_SIGN) $(RELEASENAME).tar.gz)
+												$(PKG_BASE)-$(RELEASENAME)/ && $(GPG_SIGN) $(RELEASENAME).tar.gz)
 
 	(cd $(RELEASEDIR); $(RM) $(RELEASENAME).zip (RELEASENAME).tar.gz &&	$(RM) -rf $(PKG_BASE)-$(RELEASENAME))
 	@echo "GitHub source signature files ready to upload from $(RELEASEDIR)"
