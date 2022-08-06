@@ -475,7 +475,7 @@ StringX CPasswordCharPool::MakeHex() const
   return password;
 }
 
-bool CPasswordCharPool::CheckPassword(const StringX &pwd, StringX &error)
+bool CPasswordCharPool::CheckMasterPassword(const StringX &pwd, StringX &error)
 {
   /**
    * A password is "Good enough" if:

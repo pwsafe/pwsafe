@@ -23,7 +23,7 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
-#include "core/PWCharPool.h" // for CheckPassword()
+#include "core/PWCharPool.h" // for CheckMasterPassword()
 
 ////@begin includes
 #include "ExternalKeyboardButton.h"
@@ -290,7 +290,7 @@ void SafeCombinationChangeDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
     // passphrases, then just define the preprocessor macro
     // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
     // (also used in CPasskeySetup)
-    } else if (!CPasswordCharPool::CheckPassword(m_newpasswd, errmess)) {
+    } else if (!CPasswordCharPool::CheckMasterPassword(m_newpasswd, errmess)) {
       wxString msg = _("Weak passphrase:");
       msg += wxT("\n\n");
       msg += errmess.c_str();

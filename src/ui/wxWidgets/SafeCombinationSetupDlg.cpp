@@ -26,7 +26,7 @@
 ////@begin includes
 ////@end includes
 
-#include "core/PWCharPool.h" // for CheckPassword()
+#include "core/PWCharPool.h" // for CheckMasterPassword()
 
 #include "ExternalKeyboardButton.h"
 #include "SafeCombinationSetupDlg.h"
@@ -233,7 +233,7 @@ void SafeCombinationSetupDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
     // (also used in CPasskeyChangeDlg)
 #ifndef _DEBUG // for debug, we want no checks at all, to save time
     StringX errmess;
-    if (!CPasswordCharPool::CheckPassword(tostringx(m_password), errmess)) {
+    if (!CPasswordCharPool::CheckMasterPassword(tostringx(m_password), errmess)) {
       wxString cs_msg;
       cs_msg = _("Weak passphrase:");
       cs_msg += wxT("\n\n");

@@ -28,7 +28,7 @@
  * CPasswordCharPool pwgen(policy);
  * StringX pwd = pwgen.MakePassword();
  *
- * CheckPassword() is used to verify the strength of existing passwords,
+ * CheckMasterPassword() is used to verify the strength of existing passwords,
  * i.e., the password used to protect the database.
  */
 
@@ -40,7 +40,7 @@ public:
 
   ~CPasswordCharPool();
 
-  static bool CheckPassword(const StringX &pwd, StringX &error);
+  static bool CheckMasterPassword(const StringX &pwd, StringX &error);
   static stringT GetDefaultSymbols();
   static stringT GetEasyVisionSymbols() {return easyvision_symbol_chars;}
   static stringT GetPronounceableSymbols() {return pronounceable_symbol_chars;}

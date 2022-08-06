@@ -18,7 +18,7 @@
 #include "Fonts.h"
 #include "YubiCfgDlg.h"
 
-#include "core/PWCharPool.h" // for CheckPassword()
+#include "core/PWCharPool.h" // for CheckMasterPassword()
 #include "core/pwsprefs.h"
 #include "core/PWScore.h"
 #include "core/util.h"
@@ -127,7 +127,7 @@ void CPasskeySetup::OnOK()
   // (also used in CPasskeyChangeDlg)
 #ifndef _DEBUG // for debug, we want no checks at all, to save time
   StringX errmess;
-  if (!CPasswordCharPool::CheckPassword(m_passkey, errmess)) {
+  if (!CPasswordCharPool::CheckMasterPassword(m_passkey, errmess)) {
     CString cs_msg, cs_text;
     cs_msg.Format(IDS_WEAKPASSPHRASE, static_cast<LPCWSTR>(errmess.c_str()));
 #ifndef PWS_FORCE_STRONG_PASSPHRASE

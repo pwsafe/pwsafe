@@ -17,7 +17,7 @@
 #include "Fonts.h"
 
 #include "core/PWScore.h"    // for error statuses from CheckPasskey()
-#include "core/PWCharPool.h" // for CheckPassword()
+#include "core/PWCharPool.h" // for CheckMasterPassword()
 #include "core/pwsprefs.h"
 
 #include "VirtualKeyboard/VKeyBoardDlg.h"
@@ -158,7 +158,7 @@ void CPasskeyChangeDlg::OnOK()
   // passphrases, then just define the preprocessor macro
   // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
   // (also used in CPasskeySetup)
-  else if (!CPasswordCharPool::CheckPassword(m_newpasskey, errmess)) {
+  else if (!CPasswordCharPool::CheckMasterPassword(m_newpasskey, errmess)) {
     cs_msg.Format(IDS_WEAKPASSPHRASE, static_cast<LPCWSTR>(errmess.c_str()));
 
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
