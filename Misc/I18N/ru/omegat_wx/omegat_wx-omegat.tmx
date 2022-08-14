@@ -462,6 +462,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>&amp;Don't remind me again</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>&amp;Не напоминать снова</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>&amp;Dragbar visible</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T150109Z">
@@ -1703,6 +1711,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Are you sure you wish to cancel?</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T120423Z" creationid="pm_kan" creationdate="20220814T120423Z">
+        <seg>Вы уверены, что нужно отклонить изменения?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>At least a title and
 a password are required.</seg>
       </tuv>
@@ -1993,6 +2009,14 @@ a password are required.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Can't close database.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T120013Z" creationid="pm_kan" creationdate="20220814T120013Z">
+        <seg>Невозможно закрыть контейнер.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20141226T151317Z" creationid="pm_kan" creationdate="20141226T151317Z">
@@ -2149,6 +2173,14 @@ a password are required.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210614T183612Z" creationid="pm_kan" creationdate="20210614T183612Z">
         <seg>Очистить</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Clear Clipboard</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Очистить буфер обмена</seg>
       </tuv>
     </tu>
     <tu>
@@ -3614,14 +3646,6 @@ offset approximately at %d</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T103644Z" creationid="pm_kan" creationdate="20211010T103644Z">
         <seg>Перетащите изображение на другое окно, чтобы вставить выбранный элемент или дерево</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Dragbar</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T150127Z" creationid="pm_kan" creationdate="20211010T104431Z">
-        <seg>Панель значков для перетаскивания</seg>
       </tuv>
     </tu>
     <tu>
@@ -5789,14 +5813,6 @@ appear in the username field.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Main Toolbar</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104418Z" creationid="pm_kan" creationdate="20211010T104418Z">
-        <seg>Основная панель инструментов</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Make &amp;Backup...</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20180108T151359Z" creationid="pm_kan" creationdate="20180108T145719Z">
@@ -6049,14 +6065,6 @@ appear in the username field.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210614T183450Z" creationid="pm_kan" creationdate="20210614T183450Z">
         <seg>Отсутствует текст для выбранного правила</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Modal dialog open</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104622Z" creationid="pm_kan" creationdate="20211010T104622Z">
-        <seg>Модальное диалоговое окно</seg>
       </tuv>
     </tu>
     <tu>
@@ -6642,6 +6650,22 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>One or more items have been changed.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T120550Z" creationid="pm_kan" creationdate="20220814T120550Z">
+        <seg>Один или несколько элементов были изменены.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>One or more values have been changed.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T120703Z" creationid="pm_kan" creationdate="20220814T120703Z">
+        <seg>Одно или несколько значений были изменены.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Only existing entries in your database are updated.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T131049Z">
@@ -7178,14 +7202,6 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Please close modal dialog manually</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104612Z" creationid="pm_kan" creationdate="20211010T104612Z">
-        <seg>Пожалуйста, закройте модальное диалоговое окно</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Please close the database and re-open it in R/W mode.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210614T181731Z" creationid="pm_kan" creationdate="20210614T181731Z">
@@ -7548,6 +7564,23 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Pressing Cancel stops the password from being copied.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T115903Z" creationid="pm_kan" creationdate="20220814T115903Z">
+        <seg>При нажатии «Отмена», пароль не копируется в буфер.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Pressing OK will copy the password of the selected item
+to the clipboard.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T115828Z" creationid="pm_kan" creationdate="20220814T115828Z">
+        <seg>После нажатия OK пароль для выделенного элемента будет скопирован в буфер обмена.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Preview</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20200823T122858Z" creationid="pm_kan" creationdate="20200823T122858Z">
@@ -7566,8 +7599,8 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
       <tuv lang="en-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2021-12-12 17:56+0300
-PO-Revision-Date: 2021-12-12 11:30+0300
+POT-Creation-Date: 2022-08-14 14:56+0300
+PO-Revision-Date: 2022-08-14 13:30+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
 Language: 
@@ -7575,11 +7608,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T145840Z" creationid="pm_kan" creationdate="20211212T145840Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T120646Z" creationid="pm_kan" creationdate="20220814T120646Z">
         <seg>Project-Id-Version: Password Safe
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2021-12-12 18:30+0300
-PO-Revision-Date: 2021-12-12 18:30+0300
+POT-Creation-Date: 2022-08-14 15:00+0300
+PO-Revision-Date: 2022-08-14 15:00+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: none
 Language: ru_RU
@@ -8012,14 +8045,6 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104824Z" creationid="pm_kan" creationdate="20211010T104824Z">
         <seg>Поле ввода для поиска</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Searchbar</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104437Z" creationid="pm_kan" creationdate="20211010T104437Z">
-        <seg>Панель поиска</seg>
       </tuv>
     </tu>
     <tu>
@@ -8874,6 +8899,15 @@ database with matching entries from the other database.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>The clipboard will be securely cleared
+when Password Safe is closed.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T115900Z" creationid="pm_kan" creationdate="20220814T115900Z">
+        <seg>Буфер обмена будет надёжно очищен при закрытии Password Safe.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>The combination cannot be blank.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20150418T091515Z">
@@ -9254,6 +9288,14 @@ has duplicate entries with the same group/title/user combination.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>В команде присутствуют непарные кавычки</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>There are unsaved changes in opened dialogs.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T120124Z" creationid="pm_kan" creationdate="20220814T120124Z">
+        <seg>В открытых диалогах есть несохранённые изменения.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9833,6 +9875,14 @@ and User fields match.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Несохранённые изменения</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Unsaved changes have been made.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T120401Z" creationid="pm_kan" creationdate="20220814T120251Z">
+        <seg>Есть несохранённые изменения.</seg>
       </tuv>
     </tu>
     <tu>
