@@ -903,6 +903,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>(Title and User Name cannot be removed)</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T132618Z" creationid="pm_kan" creationdate="20220814T132545Z">
+        <seg>(Столбцы с заголовком и именем пользователя не могут быть скрыты.)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>*</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T200330Z">
@@ -2384,6 +2392,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>&lt;b0&gt;Column Picker&lt;/b0&gt;&lt;br1/&gt;</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T125742Z" creationid="pm_kan" creationdate="20220814T125742Z">
+        <seg>&lt;b0&gt;Выбор столбцов&lt;/b0&gt;&lt;br1/&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>&lt;b0&gt;Ctrl -T&lt;/b0&gt; or right-click and select &lt;b1&gt;Perform Auto Type&lt;/b1&gt; or click on the Toolbar button to initiate.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110207T204703Z">
@@ -2516,6 +2532,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T114648Z">
         <seg>&lt;b0&gt;Пример.&lt;/b0&gt; Если перед вводом имени и пароля нужно ввести номер счёта (12345), можно использовать следующую последовательность:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>&lt;b0&gt;Fit:&lt;/b0&gt; Hover over right boundary so pointer changes to resize cursor.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T125102Z" creationid="pm_kan" creationdate="20220814T124855Z">
+        <seg>&lt;b0&gt;Автоподбор.&lt;/b0&gt; Наведите указатель на правый край столбца, чтобы курсор изменился на символ изменения размера.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3353,6 +3377,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>&lt;b0&gt;Resize:&lt;/b0&gt; Hover cursor over right boundary, left-click drag.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T125057Z" creationid="pm_kan" creationdate="20220814T125057Z">
+        <seg>&lt;b0&gt;Изменение размера.&lt;/b0&gt; Наведите курсор на правый край столбца, щёлкните левой кнопкой и перетащите до нужного размера.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>&lt;b0&gt;Run Cmd:&lt;/b0&gt; This field can be used to specify a command or program to be run via the 'Run Command' action (via the Edit menu, right-click popup menu or Ctrl-R).</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T174819Z">
@@ -3365,6 +3397,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T170407Z">
         <seg>&lt;b0&gt;Установить максимальное количество сохраняемых паролей равным указанному значению&lt;/b0&gt; — все элементы будут хранить указанное количество паролей.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>&lt;b0&gt;Sort&lt;/b0&gt;&lt;br1/&gt;</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T125218Z" creationid="pm_kan" creationdate="20220814T125218Z">
+        <seg>&lt;b0&gt;Сортировка&lt;/b0&gt;&lt;br1/&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -5173,6 +5213,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110216T111820Z">
         <seg>Файл, идущий в комплекте с Password Safe, является примером оформления и может быть изменён под ваши нужды.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>A second reset properly resets widths.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T134303Z" creationid="pm_kan" creationdate="20220814T134303Z">
+        <seg>Второе применение сбрасывает ширину столбцов.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7745,6 +7793,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Column width adjustment</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T124501Z" creationid="pm_kan" creationdate="20220814T124501Z">
+        <seg>Настройка ширины столбцов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>ColumnWidths</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T182819Z">
@@ -8377,6 +8433,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Customizing the Flattened List View</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T122532Z" creationid="pm_kan" creationdate="20220814T122532Z">
+        <seg>Настройки отображения в режиме «Простого списка»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>DCA</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20101031T194329Z">
@@ -9005,6 +9069,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T184556Z">
         <seg>Щёлкните дважды по выбранному элементу&lt;br0&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Double-click.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T124913Z" creationid="pm_kan" creationdate="20220814T124913Z">
+        <seg>Щёлкните дважды.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10181,6 +10253,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20180114T114755Z" creationid="pm_kan" creationdate="20180114T114755Z">
         <seg>Поиск элементов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>First use removes added columns, replaces removed columns, resets order.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T134242Z" creationid="pm_kan" creationdate="20220814T134242Z">
+        <seg>Первое применение удаляет добавленные столбцы, вставляет удалённые и сбрасывает порядок.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11949,6 +12029,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T211211Z">
         <seg>Пункт меню недоступен, если элемент не выбран, или для него не задана ссылка.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>If no highlighting appears, repositioning is not possible.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T133651Z" creationid="pm_kan" creationdate="20220814T133651Z">
+        <seg>Если подсветка не появляется, перемещение невозможно.</seg>
       </tuv>
     </tu>
     <tu>
@@ -14457,6 +14545,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Left-click on a heading sorts by that columns values in ascending order.&lt;br2/&gt;</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T125438Z" creationid="pm_kan" creationdate="20220814T125438Z">
+        <seg>Щелчок левой кнопкой по заголовку столбца включает сортировку по возрастанию.&lt;br2/&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>License Restrictions</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20180114T113527Z" creationid="pm_kan" creationdate="20180114T113527Z">
@@ -15437,6 +15533,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T123925Z">
         <seg>Обычный элемент с ярлыками — срок действия пароля истечёт в течение указанного в предупреждении времени.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Not all columns can be resized this way.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T125207Z" creationid="pm_kan" creationdate="20220814T125207Z">
+        <seg>Размер некоторых столбцов не может быть изменён таким образом.</seg>
       </tuv>
     </tu>
     <tu>
@@ -17946,6 +18050,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Reset Columns:&lt;br0/&gt;</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T133739Z" creationid="pm_kan" creationdate="20220814T133725Z">
+        <seg>Сброс столбцов&lt;br0/&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Resetting the search values will not reset the values for the other functions mentioned above.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110208T204806Z">
@@ -18142,6 +18254,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T231758Z">
         <seg>Щёлкните правой кнопкой мыши на имени группы и в контекстном меню выберите пункт &lt;b0&gt;Переименовать группу&lt;/b0&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Right-click on the header row in order to access Column Picker or Reset Columns options:</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T130041Z" creationid="pm_kan" creationdate="20220814T130041Z">
+        <seg>Чтобы получить доступ к выборку столбцов или сбросу их настроек, щёлкните правой кнопкой по строке заголовков столбцов.</seg>
       </tuv>
     </tu>
     <tu>
@@ -19712,6 +19832,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T113622Z">
         <seg>Внешние фильтры удобны тем, что их можно использовать в нескольких контейнерах, а фильтры сохранённые внутри контейнера не разглашают потенциально важную информацию, заданную в условиях (части имён, паролей и пр.).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Subsequent clicks on same heading toggles between descending and ascending</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T125651Z" creationid="pm_kan" creationdate="20220814T125651Z">
+        <seg>Последующие клики по тому же заголовку переключают между сортировкой по возрастанию и убыванию.</seg>
       </tuv>
     </tu>
     <tu>
@@ -23965,6 +24093,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>To add a column, drag its name from the Column Picker, and drop it on a column heading to add to its left (except Icon, which always appears at the far left)</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T132506Z" creationid="pm_kan" creationdate="20220814T130632Z">
+        <seg>Для добавления столбца перетащите его из списка доступных на заголовок столбца, слева от которого его нужно вставить (за исключением столбца со значками, который всегда остаётся крайним левым).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>To add a new filter, click on New.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T111133Z">
@@ -24305,6 +24441,22 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T181440Z">
         <seg>Чтобы ввести такие символы, требуется соответствующая раскладка клавиатуры.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>To remove a column, drag its heading onto the Column Picker and release.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T132536Z" creationid="pm_kan" creationdate="20220814T132536Z">
+        <seg>Чтобы убрать столбец, перетащите его в список доступных.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>To reorder, drag, and drop when a boundary is highlighted blue.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T133618Z" creationid="pm_kan" creationdate="20220814T133210Z">
+        <seg>Для изменения порядка начните перетаскивание и отпустите когда разделитель столбцов, между которым нужно поместить данный, будет подсвечен синим.</seg>
       </tuv>
     </tu>
     <tu>
@@ -24721,6 +24873,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20101105T201442Z">
         <seg>Переход на новые версии Password Safe</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Upon Startup, &lt;b2&gt;Password Safe&lt;/b2&gt; searches for a file named autoload_filters.xml in the same directory as the pwsafe.cfg file (by default C:\Users\&lt;i3&gt;YourUsername&lt;/i3&gt;\AppData\Local\PasswordSafe).</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T122230Z" creationid="pm_kan" creationdate="20220814T122230Z">
+        <seg>При старте &lt;b2&gt;Password Safe&lt;/b2&gt; проверяет наличие файла autoload_filters.xml в каталоге с файлом настроек pwsafe.cfg (по умолчанию это C:\Users\&lt;i3&gt;имя_пользователя&lt;/i3&gt;\AppData\Local\PasswordSafe).</seg>
       </tuv>
     </tu>
     <tu>
@@ -26394,6 +26554,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20161128T173535Z" creationid="pm_kan" creationdate="20161128T173535Z">
         <seg>На историю паролей влияют следующие параметры:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>You can control what information is displayed in this view and in what manner as follows:</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T124451Z" creationid="pm_kan" creationdate="20220814T123337Z">
+        <seg>В данном режиме доступны следующие установки:</seg>
       </tuv>
     </tu>
     <tu>
