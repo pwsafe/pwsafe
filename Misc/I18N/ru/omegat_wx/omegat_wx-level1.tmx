@@ -7566,8 +7566,8 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
       <tuv lang="en-US">
         <seg>Pressing Cancel stops the password from being copied.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T115903Z" creationid="pm_kan" creationdate="20220814T115903Z">
-        <seg>При нажатии «Отмена», пароль не копируется в буфер.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220815T165744Z" creationid="pm_kan" creationdate="20220814T115903Z">
+        <seg>При нажатии «Отмена» пароль не копируется в буфер.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7599,7 +7599,7 @@ to the clipboard.</seg>
       <tuv lang="en-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2022-08-14 14:56+0300
+POT-Creation-Date: 2022-08-15 19:56+0300
 PO-Revision-Date: 2022-08-14 13:30+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: LANGUAGE &lt;LL@li.org&gt;
@@ -7608,11 +7608,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T120646Z" creationid="pm_kan" creationdate="20220814T120646Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220815T165724Z" creationid="pm_kan" creationdate="20220815T165724Z">
         <seg>Project-Id-Version: Password Safe
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2022-08-14 15:00+0300
-PO-Revision-Date: 2022-08-14 15:00+0300
+POT-Creation-Date: 2022-08-15 20:00+0300
+PO-Revision-Date: 2022-08-15 20:00+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: none
 Language: ru_RU
