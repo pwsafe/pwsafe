@@ -84,6 +84,10 @@ case "$DISTRO" in
         make openssl-devel rpmdevtools rpm-sign wxBase3-devel wxGTK3-devel xerces-c-devel \
         ykpers-devel qrencode-devel
     ;;
+    manjarolinux)
+        pacman -S --noconfirm base-devel cmake file git libxt qrencode wxwidgets-gtk3 \
+        xerces-c yubikey-personalization zip
+    ;;
     opensuse)
         zypper --non-interactive install cmake file-devel fakeroot gcc-c++ \
         gettext-tools git gtest libcurl-devel libmagic1 libopenssl-devel \
