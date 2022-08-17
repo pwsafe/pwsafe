@@ -9,6 +9,7 @@ sources:
 tasks:
     - setup: |
         sudo apt-get update
+        echo '* libraries/restart-without-asking boolean true' | sudo debconf-set-selections
         sudo pwsafe/Misc/setup-linux-dev-env.sh
         cd pwsafe
         mkdir build build-dbg
