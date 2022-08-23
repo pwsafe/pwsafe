@@ -383,7 +383,10 @@ int PasswordSafeFrame::Save(SaveType savetype /* = SaveType::INVALID*/)
   m_RUEList.GetRUEList(RUElist);
   m_core.SetRUEList(RUElist);
 
-  const int rc = m_core.WriteCurFile();
+  // Note: Writing out in in V4 DB format if the DB is already V4,
+  // otherwise as V3 (this include saving pre-3.0 DBs as a V3 DB!
+  auto rc = m_core.WriteFile(m_core.GetCurFile(),
+                             m_core.GetReadFileVersion() == PWSfile::V40 ? PWSfile::V40 : PWSfile::V30);
 
   if (rc != PWScore::SUCCESS) { // Save failed!
     // Restore backup, if we have one
@@ -466,7 +469,9 @@ int PasswordSafeFrame::SaveAs()
   m_RUEList.GetRUEList(RUElist);
   m_core.SetRUEList(RUElist);
 
-  int rc = m_core.WriteFile(newfile, curver);
+ // Note: Writing out in in V4 DB format if the DB is already V4,
+  // otherwise as V3 (this include saving pre-3.0 DBs as a V3 DB!
+  int rc = m_core.WriteFile(newfile, m_core.GetReadFileVersion() == PWSfile::V40 ? PWSfile::V40 : PWSfile::V30);
 
   if (rc != PWScore::SUCCESS) {
     m_core.SetFileUUID(file_uuid);
