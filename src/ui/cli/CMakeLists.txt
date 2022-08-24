@@ -43,7 +43,7 @@ if (XercesC_LIBRARY)
 endif (XercesC_LIBRARY)
 
 if (NOT WIN32)
-	target_link_libraries(pwsafe-cli pthread magic)
+	target_link_libraries(pwsafe-cli pthread magic X11)
 else ()
 	target_link_libraries(pwsafe-cli Rpcrt4)
 	set_target_properties(pwsafe-cli PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CACHEFILE_DIR})
