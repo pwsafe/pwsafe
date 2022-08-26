@@ -24,7 +24,7 @@
 
 #include "core/PWHistory.h"
 #include "core/Util.h"
-#include "core/PWHistory.h"
+#include "core/SearchUtils.h"
 #include "core/core.h"
 #include "wxUtilities.h"
 
@@ -33,7 +33,6 @@
 #include "AdvancedSelectionDlg.h"
 #include "PWSafeApp.h"
 #include "SelectionCriteria.h"
-#include "SearchUtils.h"
 #include "ViewReportDlg.h"
 
 ////@begin XPM images

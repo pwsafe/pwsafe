@@ -20,11 +20,10 @@
 
 #include "../../core/Util.h"
 #include "../../core/PWScore.h"
+#include "../../core/SearchUtils.h"
 
 #include <assert.h>
 #include <type_traits>
-
-#include "../wxWidgets/SearchUtils.h"
 
 using namespace std;
 
