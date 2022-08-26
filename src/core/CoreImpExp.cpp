@@ -11,17 +11,6 @@
 //-----------------------------------------------------------------
 // Import/Export PWScore member functions
 //-----------------------------------------------------------------
-#if !defined(_WIN32)
-#include <wx/wxprec.h>
-
-#ifndef WX_PRECOMP
-#include <wx/wx.h>
-#endif
-
-#ifdef __WXMSW__
-#include <wx/msw/msvcrt.h>
-#endif
-#endif
 
 #include "PWScore.h"
 #include "core.h"

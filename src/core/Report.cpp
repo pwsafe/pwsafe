@@ -5,17 +5,6 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-#if !defined(_WIN32) || defined(__WX__)
-#include <wx/wxprec.h>
-
-#ifndef WX_PRECOMP
-#include <wx/wx.h>
-#endif
-
-#ifdef __WXMSW__
-#include <wx/msw/msvcrt.h>
-#endif
-#endif // !defined(_WIN32) || defined(__WX__)
 
 #include "Report.h"
 #include "Util.h"
