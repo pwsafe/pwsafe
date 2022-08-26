@@ -367,7 +367,6 @@
 		E61C265D1D3FD0C000CA0370 /* impexp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = impexp.h; sourceTree = "<group>"; };
 		E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MergeDlg.cpp; sourceTree = "<group>"; };
 		E61D6FA212617EFC0049FA2A /* MergeDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MergeDlg.h; sourceTree = "<group>"; };
-		E6299FB91D07161E00D03FD1 /* SearchUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchUtils.h; sourceTree = "<group>"; };
 		E6651E9A14E914320057D8EC /* GridShortcutsValidator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GridShortcutsValidator.cpp; sourceTree = "<group>"; };
 		E6651E9B14E914320057D8EC /* GridShortcutsValidator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridShortcutsValidator.h; sourceTree = "<group>"; };
 		E66C16A216731E2100C996B1 /* SelectionCriteria.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectionCriteria.h; sourceTree = "<group>"; };
@@ -799,6 +798,7 @@
 		E6EE83C811E87E9700B01518 /* PWSrand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSrand.h; sourceTree = "<group>"; };
 		E6EE83C911E87E9700B01518 /* Report.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Report.cpp; sourceTree = "<group>"; };
 		E6EE83CA11E87E9700B01518 /* Report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Report.h; sourceTree = "<group>"; };
+		E6299FB91D07161E00D03FD1 /* SearchUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchUtils.h; sourceTree = "<group>"; };
 		E6EE83CF11E87E9700B01518 /* StringX.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringX.cpp; sourceTree = "<group>"; };
 		E6EE83D011E87E9700B01518 /* StringX.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringX.h; sourceTree = "<group>"; };
 		E6EE83D111E87E9700B01518 /* StringXStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringXStream.h; sourceTree = "<group>"; };
@@ -1434,7 +1434,6 @@
 				E6ADB9B511957099004E2BE5 /* PasswordSafeFrame.h */,
 				E6ADB9B611957099004E2BE5 /* PasswordSafeSearch.cpp */,
 				E6ADB9B711957099004E2BE5 /* PasswordSafeSearch.h */,
-				E6299FB91D07161E00D03FD1 /* SearchUtils.h */,
 				E6ADB9B911957099004E2BE5 /* PropertiesDlg.cpp */,
 				E6ADB9BA11957099004E2BE5 /* PropertiesDlg.h */,
 				E6ADBA1B1195709A004E2BE5 /* PWSafeApp.cpp */,
@@ -1598,6 +1597,7 @@
 				A2FE25941C5ACFBD00210C36 /* PWStime.h */,
 				E6EE83C911E87E9700B01518 /* Report.cpp */,
 				E6EE83CA11E87E9700B01518 /* Report.h */,
+				E6299FB91D07161E00D03FD1 /* SearchUtils.h */,
 				E6EE83CF11E87E9700B01518 /* StringX.cpp */,
 				E6EE83D011E87E9700B01518 /* StringX.h */,
 				E6EE83D111E87E9700B01518 /* StringXStream.h */,
