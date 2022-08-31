@@ -59,6 +59,9 @@ public:
     return !m_bAutoValidate || DoValidation();
   }
 
+  // Need to override this for Yubikey
+  virtual bool TransferDataFromWindow();
+
   bool DoValidation();
 
   void OnFilePicked(wxFileDirPickerEvent &evt);
@@ -78,6 +81,7 @@ private:
   bool m_bAutoValidate;
   PWScore* m_core;
   int m_confirmationButtonId;
+  StringX m_yubiCombination; // needed to adjust TransferDataFromWindow()
 };
 
 #endif // _DBSELECTIONPANEL_H_

@@ -152,7 +152,7 @@ bool DbSelectionPanel::DoValidation()
       return false;
     }
 
-    m_combination = m_sc->GetCombination();
+    m_combination = m_yubiCombination.empty() ? m_sc->GetCombination() : m_yubiCombination;
     //Does the combination match?
     if (m_core->CheckPasskey(tostringx(wxfn.GetFullPath()), m_combination) != PWScore::SUCCESS) {
       wxString errmess(_("Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')"));
@@ -168,6 +168,18 @@ bool DbSelectionPanel::DoValidation()
     return false;
   }
 }
+
+bool DbSelectionPanel::TransferDataFromWindow()
+{
+  // We need to override this way because putting the Yubikey-derived passphrase in the m_sc control
+  // would potentially expose it to users.
+  bool retval = wxPanel::TransferDataFromWindow();
+  if (!m_yubiCombination.empty()) {
+    m_combination = m_yubiCombination;
+  }
+  return retval;
+}
+
 
 void DbSelectionPanel::OnFilePicked(wxFileDirPickerEvent& WXUNUSED(event))
 {
@@ -185,11 +197,11 @@ void DbSelectionPanel::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
 {
   m_sc->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
 
-  if (Validate() && TransferDataFromWindow()) {
+  if (TransferDataFromWindow()) { // don't Validate(), as password won't be right. (BR877)
     StringX response;
     bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
     if (PerformChallengeResponse(this, m_combination, response, oldYubiChallenge)) {
-      m_combination = response;
+      m_yubiCombination = m_combination = response;
       GetParent()->GetEventHandler()->AddPendingEvent(wxCommandEvent(wxEVT_BUTTON, m_confirmationButtonId));
       return;
     }
