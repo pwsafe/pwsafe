@@ -3100,7 +3100,7 @@ void PasswordSafeFrame::HideTopLevelWindows()
     //derived classes, and wxDialog actually cancels the modal loop and closes the window
     pws_os::Trace(L"Hide window <%ls> (%ls)\n", ToStr(win->GetTitle()), ToStr(win->GetName()));
     win->ClearBackground();
-    win->wxWindow::Show(false);
+    win->Show(false);
   }
   m_hiddenWindows = std::move(windows);
 }
@@ -3109,7 +3109,7 @@ void PasswordSafeFrame::ShowHiddenWindows(bool raise)
 {
   for(const auto win : m_hiddenWindows) {
     pws_os::Trace(L"Show window <%ls>\n", ToStr(win->GetTitle()));
-    win->wxWindow::Show(true);
+    win->Show(true);
     if (raise) {
       win->Raise();
     }
