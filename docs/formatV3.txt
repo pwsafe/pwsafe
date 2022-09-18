@@ -564,6 +564,6 @@ interoperability.
 [TWOFISH] http://www.schneier.com/paper-twofish-paper.html
 [SHA256]
 http://csrc.nist.gov/publications/fips/fips180-2/fips180-2withchangenotice.pdf
-[KEYSTRETCH] http://www.schneier.com/paper-low-entropy.pdf
+[KEYSTRETCH] https://www.schneier.com/wp-content/uploads/2016/02/paper-low-entropy.pdf
 
 End of Format description.
