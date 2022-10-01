@@ -2315,6 +2315,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
   }
 
   // Check for orphan attachments (6.2)
+  std::vector<pws_os::CUUID> orphans;
   for (auto att_iter = m_attlist.begin(); att_iter != m_attlist.end(); att_iter++) {
     if (sAtts.find(att_iter->first) == sAtts.end()) {
       st_AttTitle_Filename stATFN;
@@ -2322,9 +2323,16 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
       stATFN.filename = att_iter->second.GetFileName();
       vOrphanAtt.push_back(stATFN);
       st_vr.num_orphan_att++;
-      // NOT removing attachment for now. Add support for exporting orphans later.
+      // we will remove the orphan since the user may not see the report, so the alternative
+      // is to leave sensitive data floating around on the user's disk.
+      orphans.push_back(att_iter->first);
     }
   }
+
+  // actually remove orphans, since we can't do it while traversing m_attlist
+  for (auto &orphan : orphans)
+    m_attlist.erase(orphan);
+
 
 #if 0 // XXX We've separated alias/shortcut processing from Validate - reconsider this!
   // See if we have any entries with passwords that imply they are an alias

@@ -9,6 +9,7 @@ PasswordSafe 3.60.0 Release ??? 2022
 
 Bugs fixed in 3.60.0
 ====================
+* [GH883](https://github.com/pwsafe/pwsafe/issues/883) V4: Validation removes orphaned attachments, fixing the database.
 * [SF1563](https://sourceforge.net/p/passwordsafe/bugs/1563/) Fixed overlapping controls in Manage->Options->Security tab.
 * [SF1560](https://sourceforge.net/p/passwordsafe/bugs/1560/) Flattened list: Width of last column is now retained across invocations.
 
