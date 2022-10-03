@@ -125,6 +125,7 @@ BEGIN_EVENT_TABLE( TreeCtrl, wxTreeCtrl )
   EVT_TREE_ITEM_GETTOOLTIP( ID_TREECTRL, TreeCtrl::OnGetToolTip )
   EVT_MENU( ID_ADDGROUP, TreeCtrl::OnAddGroup )
   EVT_MENU( ID_RENAME, TreeCtrl::OnRenameGroup )
+  EVT_TREE_BEGIN_LABEL_EDIT( ID_TREECTRL, TreeCtrl::OnStartLabelEdit )
   EVT_TREE_END_LABEL_EDIT( ID_TREECTRL, TreeCtrl::OnEndLabelEdit )
   EVT_TREE_END_LABEL_EDIT( ID_TREECTRL_1, TreeCtrl::OnEndLabelEdit )
   EVT_TREE_KEY_DOWN( ID_TREECTRL, TreeCtrl::OnKeyDown )
@@ -1009,6 +1010,16 @@ void TreeCtrl::OnRenameGroup(wxCommandEvent& WXUNUSED(evt))
     wxCHECK_RET(ItemIsGroup(sel), _("Renaming of non-Group items is not implemented"));
     SetItemData(sel, new PWTreeItemData(GetItemGroup(sel)));
     EditTreeLabel(this, sel);
+  }
+}
+
+void TreeCtrl::OnStartLabelEdit( wxTreeEvent& evt )
+{
+  wxTreeItemId item = evt.GetItem();
+  if(IsReadOnly() || !item.IsOk() ||! ItemIsGroup(item)) {
+    // In case of read only, item not ok or item is no group editing in the tree looks not promissing
+    evt.Veto();
+    return;
   }
 }
 
