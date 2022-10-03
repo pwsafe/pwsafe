@@ -1016,7 +1016,7 @@ void TreeCtrl::OnRenameGroup(wxCommandEvent& WXUNUSED(evt))
 void TreeCtrl::OnStartLabelEdit( wxTreeEvent& evt )
 {
   wxTreeItemId item = evt.GetItem();
-  if(IsReadOnly() || !item.IsOk() ||! ItemIsGroup(item)) {
+  if(IsReadOnly() || !item.IsOk() || !ItemIsGroup(item)) {
     // In case of read only, item not ok or item is no group editing in the tree looks not promissing
     evt.Veto();
     return;
@@ -1027,9 +1027,8 @@ void TreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
 {
   const wxString &label = (evt.IsEditCancelled() ? GetItemText(evt.GetItem()) : evt.GetLabel());
 
-  if (label.empty() || IsReadOnly()) { // end editing without message to avoid error "Dots are not allowed in group names" with Read Only data base and a dot in a shown name
-    // 1st empty entry or group names are a non-no...
-    // 2nd In Read-Only data base we do not change anything
+  if (label.empty()) {
+    // empty entry or group names are a non-no...
     evt.Veto();
     return;
   }
