@@ -1016,8 +1016,9 @@ void TreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
 {
   const wxString &label = (evt.IsEditCancelled() ? GetItemText(evt.GetItem()) : evt.GetLabel());
 
-  if (label.empty()) {
-    // empty entry or group names are a non-no...
+  if (label.empty() || IsReadOnly()) { // end editing without message to avoid error "Dots are not allowed in group names" with Read Only data base and a dot in a shown name
+    // 1st empty entry or group names are a non-no...
+    // 2nd In Read-Only data base we do not change anything
     evt.Veto();
     return;
   }
