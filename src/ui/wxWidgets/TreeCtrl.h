@@ -223,6 +223,9 @@ public:
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_RENAME
   void OnRenameGroup(wxCommandEvent& evt);
+  
+  /// EVT_TREE_START_LABEL_EDIT event handler for ID_TREECTRL
+  void OnStartLabelEdit( wxTreeEvent& evt );
 
   /// EVT_TREE_END_LABEL_EDIT event handler for ID_TREECTRL and ID_TREECTRL_1
   void OnEndLabelEdit( wxTreeEvent& evt );
