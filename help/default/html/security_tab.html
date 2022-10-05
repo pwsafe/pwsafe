@@ -35,6 +35,12 @@ data (such as a password) when the interface is minimized or closed.
 This prevents anyone else or any other program from reading the
 contents of the clipboard.</p>
 
+<h3>Exclude from clipboard history</h3>
+
+<p>When checked (default), items that <b>Password Safe</b> place on the clipboard (such as passwords) are <b>not</b> include in the clipboard history,
+in systems where this feature is supported (Windows 10 and later).
+By unchecking this, you're potentially exposing your passwords to anyone who can access your clipboard history.</p>
+
 <h3>Confirm item copy to clipboard</h3>
 
 <p>When checked, a prompt is displayed requesting user confirmation
@@ -84,7 +90,7 @@ a <b>Password Safe</b> database. The <em>Standard</em> setting should provide su
 delaying the opening of a database significantly on most platforms. When increasing this value, consider
 the slowest CPU that you will use to access the database.</p>
 
-<p>PasswordSafe uses the <!-- [V4Format:] <a href="https://en.wikipedia.org/wiki/PBKDF2">PBKDF2</a> -->
+<p><b>Password Safe</b> uses the <!-- [V4Format:] <a href="https://en.wikipedia.org/wiki/PBKDF2">PBKDF2</a> -->
 original <a href="http://www.schneier.com/paper-low-entropy.pdf">Key
 Stretching</a> algorithm published by Bruce Schneier, which expands the 
 password to contain more entropy to make it significantly harder to

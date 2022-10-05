@@ -133,6 +133,7 @@ public:
     ToolbarShowText,
     DragAndDropShowRoot,
     ShowAliasSelection,
+    ExcludeFromClipboardHistory, // Windows only
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,

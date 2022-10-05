@@ -88,6 +88,7 @@ struct st_Opt_master_data {
   // Security Data
   BOOL ClearClipboardOnMinimize;
   BOOL ClearClipboardOnExit;
+  BOOL ExcludeFromClipboardHistory;
   BOOL LockOnMinimize;
   BOOL ConfirmCopy;
   BOOL LockOnWindowLock;
@@ -206,6 +207,7 @@ public:
   // Security Data
   inline BOOL &M_ClearClipboardOnMinimize() {return m_OPTMD.ClearClipboardOnMinimize;}
   inline BOOL &M_ClearClipboardOnExit() {return m_OPTMD.ClearClipboardOnExit;}
+  inline BOOL& M_ExcludefromClipboardHistory() {return m_OPTMD.ExcludeFromClipboardHistory;}
   inline BOOL &M_LockOnMinimize() {return m_OPTMD.LockOnMinimize;}
   inline BOOL &M_ConfirmCopy() {return m_OPTMD.ConfirmCopy;}
   inline BOOL &M_LockOnWindowLock() {return m_OPTMD.LockOnWindowLock;}

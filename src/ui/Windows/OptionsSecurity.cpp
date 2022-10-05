@@ -39,6 +39,7 @@ COptionsSecurity::COptionsSecurity(CWnd *pParent, st_Opt_master_data *pOPTMD)
 {
   m_ClearClipboardOnMinimize = M_ClearClipboardOnMinimize();
   m_ClearClipboardOnExit = M_ClearClipboardOnExit();
+  m_ExcludeFromClipboardHistory = M_ExcludefromClipboardHistory();
   m_LockOnMinimize = M_LockOnMinimize();
   m_ConfirmCopy = M_ConfirmCopy();
   m_LockOnWindowLock = M_LockOnWindowLock();
@@ -59,6 +60,7 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
   //{{AFX_DATA_MAP(COptionsSecurity)
   DDX_Check(pDX, IDC_CLEARBOARDONMINIMIZE, m_ClearClipboardOnMinimize);
   DDX_Check(pDX, IDC_CLEARBOARDONEXIT, m_ClearClipboardOnExit);
+  DDX_Check(pDX, IDC_EXCLUDE_FROM_CB_HIST, m_ExcludeFromClipboardHistory);
   DDX_Check(pDX, IDC_CONFIRMCOPY, m_ConfirmCopy);
   DDX_Check(pDX, IDC_LOCKONMINIMIZE, m_LockOnMinimize);
   DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
@@ -102,6 +104,7 @@ BOOL COptionsSecurity::OnInitDialog()
   // Database preferences - can't change in R/O mode of if no DB is open
   if (!GetMainDlg()->IsDBOpen() || GetMainDlg()->IsDBReadOnly()) {
     GetDlgItem(IDC_COPYPSWDURL)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXCLUDE_FROM_CB_HIST)->EnableWindow(FALSE);
     GetDlgItem(IDC_LOCK_TIMER)->EnableWindow(FALSE);
     GetDlgItem(IDC_IDLESPIN)->EnableWindow(FALSE);
     GetDlgItem(IDC_IDLE_TIMEOUT)->EnableWindow(FALSE);
@@ -183,16 +186,17 @@ LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
     }
     case PP_DATA_CHANGED:
       UpdateHashIter();
-      if (M_ClearClipboardOnMinimize() != m_ClearClipboardOnMinimize ||
-          M_ClearClipboardOnExit()     != m_ClearClipboardOnExit     ||
-          M_LockOnMinimize()           != m_LockOnMinimize           ||
-          M_ConfirmCopy()              != m_ConfirmCopy              ||
-          M_LockOnWindowLock()         != m_LockOnWindowLock         ||
-          M_LockOnIdleTimeout()        != m_LockOnIdleTimeout        ||
-          M_CopyPswdBrowseURL()        != m_CopyPswdBrowseURL        ||
-          M_HashIters()                != m_HashIter                 ||
-          (m_LockOnIdleTimeout         == TRUE &&
-           M_IdleTimeOut()             != m_IdleTimeOut))
+      if (M_ClearClipboardOnMinimize()    != m_ClearClipboardOnMinimize    ||
+          M_ClearClipboardOnExit()        != m_ClearClipboardOnExit        ||
+          M_ExcludefromClipboardHistory() != m_ExcludeFromClipboardHistory ||
+          M_LockOnMinimize()              != m_LockOnMinimize              ||
+          M_ConfirmCopy()                 != m_ConfirmCopy                 ||
+          M_LockOnWindowLock()            != m_LockOnWindowLock            ||
+          M_LockOnIdleTimeout()           != m_LockOnIdleTimeout           ||
+          M_CopyPswdBrowseURL()           != m_CopyPswdBrowseURL           ||
+          M_HashIters()                   != m_HashIter                    ||
+          (m_LockOnIdleTimeout            == TRUE &&
+           M_IdleTimeOut()                != m_IdleTimeOut))
         return 1L;
       break;
     case PP_UPDATE_VARIABLES:
@@ -247,6 +251,7 @@ BOOL COptionsSecurity::OnApply()
 
   M_ClearClipboardOnMinimize() = m_ClearClipboardOnMinimize;
   M_ClearClipboardOnExit() = m_ClearClipboardOnExit;
+  M_ExcludefromClipboardHistory() = m_ExcludeFromClipboardHistory;
   M_LockOnMinimize() = m_LockOnMinimize;
   M_ConfirmCopy() = m_ConfirmCopy;
   M_LockOnWindowLock() = m_LockOnWindowLock;
@@ -315,6 +320,7 @@ HBRUSH COptionsSecurity::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
   // Database preferences - associated static text
   switch (pWnd->GetDlgCtrlID()) {
     case IDC_COPYPSWDURL:
+    case IDC_EXCLUDE_FROM_CB_HIST:
     case IDC_LOCK_TIMER:
     case IDC_STATIC_IDLEMINS:
     case IDC_STATIC_UNLOCKDIFFICULTY:
