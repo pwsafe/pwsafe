@@ -1952,10 +1952,10 @@ msgstr ""
 msgid "Change database mode?"
 msgstr ""
 
+#. Resource IDs: (5858)
 msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
 msgstr ""
 
-#. Resource IDs: (5858)
 msgid "Change status since last save:\n* indicates the database has been changed\nï¿½ indicates a database preference has been changed"
 msgstr ""
 
