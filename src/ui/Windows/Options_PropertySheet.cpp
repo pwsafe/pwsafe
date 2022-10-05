@@ -243,6 +243,8 @@ void COptions_PropertySheet::SetupInitialValues()
       prefs->GetPref(PWSprefs::ClearClipboardOnMinimize) ? TRUE : FALSE;
   m_OPTMD.ClearClipboardOnExit =
       prefs->GetPref(PWSprefs::ClearClipboardOnExit) ? TRUE : FALSE;
+  m_OPTMD.ExcludeFromClipboardHistory =
+      prefs->GetPref(PWSprefs::ExcludeFromClipboardHistory) ? TRUE : FALSE;
   m_OPTMD.LockOnMinimize =
       prefs->GetPref(PWSprefs::DatabaseClear) ? TRUE : FALSE;
   m_OPTMD.ConfirmCopy =
@@ -378,10 +380,12 @@ void COptions_PropertySheet::UpdateCopyPreferences()
   prefs->SetPref(PWSprefs::MinimizeOnAutotype,
                  m_OPTMD.MinAuto == TRUE, true);
 
+  // Security
   prefs->SetPref(PWSprefs::ClearClipboardOnMinimize,
                  m_OPTMD.ClearClipboardOnMinimize == TRUE, true);
   prefs->SetPref(PWSprefs::ClearClipboardOnExit,
                  m_OPTMD.ClearClipboardOnExit == TRUE, true);
+  prefs->SetPref(PWSprefs::ExcludeFromClipboardHistory, m_OPTMD.ExcludeFromClipboardHistory == TRUE, true);
   prefs->SetPref(PWSprefs::DatabaseClear,
                  m_OPTMD.LockOnMinimize == TRUE, true);
   prefs->SetPref(PWSprefs::DontAskQuestion,

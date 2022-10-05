@@ -36,6 +36,7 @@ protected:
 
   BOOL m_ClearClipboardOnMinimize;
   BOOL m_ClearClipboardOnExit;
+  BOOL m_ExcludeFromClipboardHistory;
   BOOL m_LockOnMinimize;
   BOOL m_ConfirmCopy;
   BOOL m_LockOnWindowLock;

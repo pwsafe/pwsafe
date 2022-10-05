@@ -12,6 +12,8 @@
 
 #include <afxole.h>
 #include "PWSclipboard.h"
+
+#include "core/PWSprefs.h"
 #include "core/Util.h"
 
 static CLIPFORMAT CF_CLIPBOARD_VIEWER_IGNORE; // see below
@@ -60,8 +62,10 @@ bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfF
 
   COleDataSource *pods = new COleDataSource; // deleted automagically by SetClipboard below
   pods->CacheGlobalData(CF_CLIPBOARD_VIEWER_IGNORE, hDummyGlobalMemory);
-  pods->CacheGlobalData(CF_EXCLUDE_CLIPBOARD_CONTENT_FROM_MONITOR_PROCESSING, hDummyGlobalMemory);
-  pods->CacheGlobalData(CF_CAN_INCLUDE_IN_CLIPBOARD_HISTORY, hDummyGlobalMemory);
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromClipboardHistory)) { // default is true
+    pods->CacheGlobalData(CF_EXCLUDE_CLIPBOARD_CONTENT_FROM_MONITOR_PROCESSING, hDummyGlobalMemory);
+    pods->CacheGlobalData(CF_CAN_INCLUDE_IN_CLIPBOARD_HISTORY, hDummyGlobalMemory);
+  }
   pods->CacheGlobalData(CF_CAN_UPLOAD_TO_CLOUD_CLIPBOARD, hDummyGlobalMemory);
 
   pods->CacheGlobalData(cfFormat, hGlobalMemory);
