@@ -3167,6 +3167,10 @@ msgstr ""
 msgid "Example:"
 msgstr ""
 
+#. Resource IDs: (1601)
+msgid "Exclude from clipboard history"
+msgstr ""
+
 #. Resource IDs: (1004, 32021)
 msgid "Exit"
 msgstr ""

@@ -1947,7 +1947,7 @@ msgid "Change database mode?"
 msgstr "¿Cambiar modo de base de datos?"
 
 #. Resource IDs: (5858)
-msgid "Change status since last save:\n* indicates the database has been changed\nï¿½ indicates a database preference has been changed"
+msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
 msgstr ""
 
 #. Resource IDs: (5913)
@@ -3136,6 +3136,10 @@ msgstr "Estonio"
 #. Resource IDs: (65535)
 msgid "Example:"
 msgstr "Ejemplo:"
+
+#. Resource IDs: (1601)
+msgid "Exclude from clipboard history"
+msgstr ""
 
 #. Resource IDs: (1004, 32021)
 msgid "Exit"
