@@ -52,6 +52,23 @@ TEST_F(CommandsTest, AddItem)
   core.ClearCommands();
 }
 
+TEST_F(CommandsTest, DeleteEntry)
+{
+  PWScore core;
+  CItemData ci;
+  ci.CreateUUID();
+  ci.SetTitle(L"blue rabbit");
+  ci.SetPassword(L"notagain");
+  auto addcmd = AddEntryCommand::Create(&core, ci);
+  core.Execute(addcmd);
+
+  auto delcmd = DeleteEntryCommand::Create(&core, ci);
+  core.Execute(delcmd);
+  EXPECT_EQ(0U, core.GetNumEntries());
+  core.Undo();
+  EXPECT_EQ(1U, core.GetNumEntries());
+}
+
 TEST_F(CommandsTest, CreateShortcutEntry)
 {
   PWScore core;
