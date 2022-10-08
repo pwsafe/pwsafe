@@ -661,8 +661,8 @@ int DeleteEntryCommand::Execute()
     m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DELETE_ENTRY,
                                       m_ci.GetUUID());
   }
-  // XXX if entry has an attachment, find and store it in m_att for undo.
-  // XXX as well as removing it / decrementing its refcount
+  // If entry has an attachment, find and store it in m_att for undo
+  // as well as removing it / decrementing its refcount
   if (m_ci.HasAttRef() && m_pcomInt->HasAtt(m_ci.GetAttUUID())) {
     auto att = m_pcomInt->GetAtt(m_ci.GetAttUUID());
 
