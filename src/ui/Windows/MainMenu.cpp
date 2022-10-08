@@ -878,14 +878,14 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_CLEARCLIPBOARD, tc_dummy);
       pPopupMenu->InsertMenu((UINT)-1, MF_SEPARATOR);
+      if (!pci->IsFieldValueEmpty(CItemData::USER, pbci))
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
+          ID_MENUITEM_COPYUSERNAME, tc_dummy);
+
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_COPYPASSWORD, tc_dummy);
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_PASSWORDSUBSET, tc_dummy);
-
-      if (!pci->IsFieldValueEmpty(CItemData::USER, pbci))
-        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
-                               ID_MENUITEM_COPYUSERNAME, tc_dummy);
 
       if (!pci->IsFieldValueEmpty(CItemData::NOTES, pbci))
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,

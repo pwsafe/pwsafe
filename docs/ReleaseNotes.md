@@ -15,6 +15,7 @@ Bugs fixed in 3.60.0
 
 New features in 3.60.0
 ======================
+* [FR904](https://sourceforge.net/p/passwordsafe/feature-requests/904/) Made Edit menu order consistent with context menu (Copy User before copy password).
 * [GH887](https://github.com/pwsafe/pwsafe/issues/887) Clipboard history retention is now user-configurable (default off).
 * [FR898](https://sourceforge.net/p/passwordsafe/feature-requests/898/) Hovering on a non-empty group icon now shows how many entries under that group.
 
