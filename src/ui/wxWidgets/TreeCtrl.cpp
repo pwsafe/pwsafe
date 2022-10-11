@@ -1021,6 +1021,11 @@ void TreeCtrl::OnStartLabelEdit( wxTreeEvent& evt )
     evt.Veto();
     return;
   }
+  // If old path not yet set, fill out now before editing
+  auto *data = dynamic_cast<PWTreeItemData *>(GetItemData(item));
+  if (!data) {
+    SetItemData(item, new PWTreeItemData(GetItemGroup(item)));
+  }
 }
 
 void TreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
@@ -1080,6 +1085,10 @@ void TreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
         else if (data && data->BeingEdited()) {
           // An existing group being renamed
           FinishRenamingGroup(evt, groupItem, data->GetOldPath());
+        }
+        else {
+          // Ups, rename not possible, as starting group nme not known
+          wxFAIL_MSG(wxString::Format(wxT("ID_TREECTRL_1 no old path known")));
         }
       }
       break;
