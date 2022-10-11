@@ -1087,7 +1087,7 @@ void TreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
           FinishRenamingGroup(evt, groupItem, data->GetOldPath());
         }
         else {
-          // Ups, rename not possible, as starting group nme not known
+          // Oops, rename not possible, as starting group name unknown
           wxFAIL_MSG(wxString::Format(wxT("ID_TREECTRL_1 no old path known")));
         }
       }
