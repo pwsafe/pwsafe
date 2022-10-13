@@ -25,9 +25,13 @@ sub usage {
     exit 1;
 }
 
-my %git_loc  = (
-	darwin => '/usr/local/git/bin/git',
-	linux  => '/usr/bin/git',
+
+# List of places to look for a git executable
+# We will use the first one found...
+my @git_loc = (
+    '/usr/local/git/bin/git',
+    '/usr/local/bin/git',
+    '/usr/bin/git',
 );
 
 &usage unless ($#ARGV >= 3 && $#ARGV <= 5);
@@ -48,10 +52,14 @@ foreach (@myargs) {
 }
 my ($TEMPLATE, $OUTFILE) = ($ARGV[0], $ARGV[1]);
 
-my $GIT = defined $git_loc{$^O}? $git_loc{$^O}: "/usr/local/bin/git";
-my $VERSTRING;
+# Find my git...
+my $GIT = undef;
+foreach (@git_loc) {
+    if (-x $_) { $GIT = $_; last; }
+}
 
-if (-x $GIT && (-d ".git" || -d "../../../.git")) {
+my $VERSTRING;
+if (defined $GIT && -x $GIT && (-d ".git" || -d "../../../.git")) {
     $VERSTRING = `$GIT describe --all --always --dirty=+  --long`;
     chomp $VERSTRING;
     # If string is of the form heads/master-0-g5f69087, drop everything
