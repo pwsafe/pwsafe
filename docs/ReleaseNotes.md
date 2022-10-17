@@ -8,19 +8,19 @@ PasswordSafe 3.60.0 Release Oct 2022
 ====================================
 
 Bugs fixed in 3.60.0
-====================
+--------------------
 * [GH883](https://github.com/pwsafe/pwsafe/issues/883) V4: Validation removes orphaned attachments, fixing the database.
 * [SF1563](https://sourceforge.net/p/passwordsafe/bugs/1563/) Fixed overlapping controls in Manage->Options->Security tab.
 * [SF1560](https://sourceforge.net/p/passwordsafe/bugs/1560/) Flattened list: Width of last column is now retained across invocations.
 
 New features in 3.60.0
-======================
+----------------------
 * [FR904](https://sourceforge.net/p/passwordsafe/feature-requests/904/) Made Edit menu order consistent with context menu (Copy User before copy password).
 * [GH887](https://github.com/pwsafe/pwsafe/issues/887) Clipboard history retention is now user-configurable (default off).
 * [FR898](https://sourceforge.net/p/passwordsafe/feature-requests/898/) Hovering on a non-empty group icon now shows how many entries under that group.
 
 Changes in 3.60.0
-=================
+-----------------
 * [FR889](https://sourceforge.net/p/passwordsafe/feature-requests/889/) Documented how to work with the Flattened List vew, based on Huw's notes.
 
 PasswordSafe 3.59.0 Release May 2022
