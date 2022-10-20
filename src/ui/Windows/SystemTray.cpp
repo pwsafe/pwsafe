@@ -599,6 +599,8 @@ LRESULT CSystemTray::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     if (!allowCloseExit) {
       // Delete Close
       pContextMenu->RemoveMenu(ID_MENUITEM_CLOSE, MF_BYCOMMAND);
+      // Delete Open Another
+      pContextMenu->RemoveMenu(ID_MENUITEM_OPEN, MF_BYCOMMAND);
       // Delete Exit
       pContextMenu->RemoveMenu(ID_MENUITEM_EXIT, MF_BYCOMMAND);
       // Now that Exit is gone, delete last separator

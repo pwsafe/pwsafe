@@ -4,6 +4,13 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
+PasswordSafe 3.60.1 Release ??? 2022
+====================================
+
+Bugs fixed in 3.60.1
+--------------------
+*[GH893](https://github.com/pwsafe/pwsafe/issues/893) Removed "Open Another" from system tray menu when a child window (e.g., Add/Edit Entry) is open.
+
 PasswordSafe 3.60.0 Release Oct 2022
 ====================================
 
