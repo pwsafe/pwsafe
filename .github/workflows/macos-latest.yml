@@ -32,7 +32,7 @@ jobs:
         echo "MACOS_VER_MIN=10.9" >> $GITHUB_ENV
         echo "WX_SRC_DIR=$HOME/wxWidgets" >> $GITHUB_ENV
         echo "WX_BUILD_DIR=$HOME/wxbuild" >> $GITHUB_ENV
-        echo "XCODE_VER=11.7" >> $GITHUB_ENV
+        echo "XCODE_VER=14.0.1" >> $GITHUB_ENV
         echo "FORCE_REBUILD_WX=2" >> $GITHUB_ENV
 
     - name: Force compatible Xcode version
