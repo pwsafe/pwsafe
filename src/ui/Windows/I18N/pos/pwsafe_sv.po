@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-10-06 20:43+0300\n"
+"PO-Revision-Date: 2022-10-23 18:38+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2\n"
 
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
@@ -472,12 +472,12 @@ msgstr "%d synkroniserade poster"
 #. Resource IDs: (6061)
 #, c-format
 msgid "%d entries under group"
-msgstr ""
+msgstr "%d poster under grupp"
 
 #. Resource IDs: (6060)
 #, c-format
 msgid "%d entry under group"
-msgstr ""
+msgstr "%d post under grupp"
 
 #. Resource IDs: (5240)
 #, c-format
@@ -961,7 +961,7 @@ msgstr "&Öppna"
 
 #. Resource IDs: (32002 - Menu)
 msgid "&Open Another"
-msgstr ""
+msgstr "&Öppna en annan"
 
 #. Resource IDs: (32002 - MenuEx)
 msgid "&Open..."
@@ -1985,7 +1985,7 @@ msgstr "Gå till URL + Autoskriv"
 
 #. Resource IDs: (32074 - Menu, 32074 - MenuEx)
 msgid "Browse to URL w/Alt Browser"
-msgstr ""
+msgstr "Bläddra till URL w / Alt Browser"
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
@@ -2169,6 +2169,9 @@ msgid ""
 "* indicates the database has been changed\n"
 "° indicates a database preference has been changed"
 msgstr ""
+"Statusändring sedan senaste spara:\n"
+"* indikerar att databasen har ändrats\n"
+"° indikerar att en databaspreferens har ändrats"
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -4151,35 +4154,35 @@ msgstr "ID:32072:VA  +L"
 
 #. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
 msgid "ID:32074:VA S+L"
-msgstr ""
+msgstr "ID:32074:VA S+L"
 
 #. Accelerator Entry for Menu ID:32075; 'Send &Email'
 msgid "ID:32075:V C +E"
-msgstr ""
+msgstr "ID:32075:V C +E"
 
 #. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
 msgid "ID:32076:V C +T"
-msgstr ""
+msgstr "ID:32076:V C +T"
 
 #. Accelerator Entry for Menu ID:32077; '&Run Command'
 msgid "ID:32077:V C +R"
-msgstr ""
+msgstr "ID:32077:V C +R"
 
 #. Accelerator Entry for Menu ID:32080; '&Find...'
 msgid "ID:32080:V C +F"
-msgstr ""
+msgstr "ID:32080:V C +F"
 
 #. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
 msgid "ID:32081:VAC +R"
-msgstr ""
+msgstr "ID:32081:VAC +R"
 
 #. Accelerator Entry for Menu ID:32083; 'Undo'
 msgid "ID:32083:V C +Z"
-msgstr ""
+msgstr "ID:32083:V C +Z"
 
 #. Accelerator Entry for Menu ID:32084; 'Redo'
 msgid "ID:32084:V C +Y"
-msgstr ""
+msgstr "ID:32084:V C +Y"
 
 #. Accelerator Entry for Menu ID:32140; 'Last Find results'
 msgid "ID:32140:V C +K"
@@ -5746,6 +5749,9 @@ msgid ""
 "\n"
 "Pressing Cancel stops the password from being copied."
 msgstr ""
+"Om du trycker på OK kopieras lösenordet för det valda objektet till Urklipp. Urklippet rensas säkert när Password Safe stängs.\n"
+"\n"
+"Om du trycker på Avbryt stoppas lösenordet från att kopieras."
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -7240,7 +7246,7 @@ msgstr "Detta är en alias för:"
 #. Resource IDs: (5121)
 #, c-format
 msgid "This is the percentage of Window transparency. 0% means normal fully opaque and 100% is totally transparent and invisible. Values greater than 50% are not supported. Note: This only applies to the main dialog window."
-msgstr "Detta är Windowsfönstrets transparens. 0% betyder helt opakt och 100% är helt transparent och osynligt. Värden större än 50% stöds inte. Notera: detta gäller bara huvudfönstret."
+msgstr "Detta är Windowfönstrets transparens. 0% betyder helt opakt och 100% i transparens och därför osynligt. Värden större än 50% antas inte. Notera: detta gäller bara huvudfönstret."
 
 #. Resource IDs: (61710)
 #, c-format
@@ -8141,6 +8147,8 @@ msgid ""
 "\n"
 "Browse to URL with Alternate Browser"
 msgstr ""
+"\n"
+"Bläddra till URL med alternativ webbläsare"
 
 #. Resource IDs: (32305)
 msgid ""
@@ -8803,7 +8811,7 @@ msgid ""
 "Use it anyway?"
 msgstr ""
 "\n"
-"Använd ändå?"
+"Använd den ändå?"
 
 #. Resource IDs: (32098)
 msgid ""
