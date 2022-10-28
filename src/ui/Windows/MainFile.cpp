@@ -1097,7 +1097,7 @@ int DboxMain::Save(const SaveType savetype)
   PWS_LOGIT_ARGS("savetype=%d", savetype);
 
   int rc;
-  CString cs_msg, cs_temp;
+  CString cs_msg, cs_msg0;
   CGeneralMsgBox gmb;
   std::wstring NewName;
   std::wstring bu_fname; // used to undo backup if save failed
@@ -1140,6 +1140,7 @@ int DboxMain::Save(const SaveType savetype)
           return PWScore::USER_CANCEL;
         } else {
           userBackupDir = wsExpandedPath;
+          cs_msg0.Format(IDS_NOIBACKUP, userBackupDir.c_str()); // prepare error message, just in case...
         }
 
         if (!m_core.BackupCurFile(maxNumIncBackups, backupSuffix,
@@ -1147,8 +1148,7 @@ int DboxMain::Save(const SaveType savetype)
           switch (savetype) {
             case ST_NORMALEXIT:
             {
-              cs_temp.LoadString(IDS_NOIBACKUP);
-              cs_msg.Format(IDS_NOIBACKUP2, static_cast<LPCWSTR>(cs_temp));
+              cs_msg.Format(IDS_NOIBACKUP2, static_cast<LPCWSTR>(cs_msg0));
               gmb.SetTitle(IDS_FILEWRITEERROR);
               gmb.SetMsg(cs_msg);
               gmb.SetStandardIcon(MB_ICONEXCLAMATION);
@@ -1163,8 +1163,7 @@ int DboxMain::Save(const SaveType savetype)
 
             case ST_SAVEIMMEDIATELY:
             {
-              cs_temp.LoadString(IDS_NOIBACKUP);
-              cs_msg.Format(IDS_NOIBACKUP3, static_cast<LPCWSTR>(cs_temp));
+              cs_msg.Format(IDS_NOIBACKUP3, static_cast<LPCWSTR>(cs_msg0));
               gmb.SetTitle(IDS_FILEWRITEERROR);
               gmb.SetMsg(cs_msg);
               gmb.SetStandardIcon(MB_ICONEXCLAMATION);
@@ -1178,7 +1177,7 @@ int DboxMain::Save(const SaveType savetype)
             case ST_INVALID:
               // No particular end of PWS exit i.e. user clicked Save or
               // saving a changed database before opening another
-              gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
+              gmb.AfxMessageBox(cs_msg0, MB_OK);
               return PWScore::USER_CANCEL;
 
             case ST_ENDSESSIONEXIT:
