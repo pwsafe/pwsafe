@@ -1181,10 +1181,12 @@ int DboxMain::Save(const SaveType savetype)
               gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
               return PWScore::USER_CANCEL;
 
-            default:
-              break;
+            case ST_ENDSESSIONEXIT:
+            case ST_FAILSAFESAVE:
+            case ST_WTSLOGOFFEXIT:
+            // User isn't prompted in any of these, so we just fail silently. Not much else we can do...
+              return PWScore::USER_CANCEL;
           }
-          gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
           return SaveAs();
         } // BackupCurFile failed
       } // BackupBeforeEverySave
