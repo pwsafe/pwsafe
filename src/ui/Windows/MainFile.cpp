@@ -1133,7 +1133,7 @@ int DboxMain::Save(const SaveType savetype)
         if (dwResult == 0 || dwResult > (MAX_PATH + 1)) {
           CGeneralMsgBox gmbx;
           CString cs_msgx, cs_titlex(MAKEINTRESOURCE(IDS_EXPANDPATH));
-          cs_msg.Format(IDS_CANT_EXPANDPATH, static_cast<LPCWSTR>(userBackupDir.c_str()));
+          cs_msgx.Format(IDS_CANT_EXPANDPATH, static_cast<LPCWSTR>(userBackupDir.c_str()));
           gmbx.MessageBox(cs_msgx, cs_titlex, MB_OK | MB_ICONEXCLAMATION);
 
           gmb.AfxMessageBox(IDS_NOIBACKUP, MB_OK);
