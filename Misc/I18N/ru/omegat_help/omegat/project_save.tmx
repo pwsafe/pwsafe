@@ -3329,6 +3329,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; uses the</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20221029T164858Z" creationid="pm_kan" creationdate="20221029T164858Z">
+        <seg>В &lt;b0&gt;Password Safe&lt;/b0&gt; используется</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>&lt;b0&gt;Password Safe&lt;/b0&gt; version 3.12 and later uses an algorithm created by Tom Van Vleck, Morrie Gasser, and Dan Edwards to generate pronounceable passwords.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20200823T125902Z" creationid="pm_kan" creationdate="20200823T125902Z">
@@ -7161,6 +7169,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>By unchecking this, you're potentially exposing your passwords to anyone who can access your clipboard history.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20221029T164243Z" creationid="pm_kan" creationdate="20221029T164243Z">
+        <seg>При снятом флажке скопированные пароли могут быть доступны любому, кто получит доступ к журналу буфера обмена.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>C+K</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T202412Z">
@@ -9725,6 +9741,22 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20180114T115205Z" creationid="pm_kan" creationdate="20180114T115205Z">
         <seg>Обработка записей в Excel</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Exclude from clipboard history</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20221029T163200Z" creationid="pm_kan" creationdate="20221029T163200Z">
+        <seg>Не сохранять в журнале буфера обмена</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>ExcludeFromClipboardHistory</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20221029T162033Z" creationid="pm_kan" creationdate="20221029T162033Z">
+        <seg>ExcludeFromClipboardHistory</seg>
       </tuv>
     </tu>
     <tu>
@@ -14381,6 +14413,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20101106T183635Z">
         <seg>Хранить пароли записанными на клочках бумаги или в записных книжках на столе небезопасно, да и любопытные глаза (машины или человека) могут подсмотреть их.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Keeps data sent to clipboard from going to the clipobard history (Windows 10 and later).</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20221029T165422Z" creationid="pm_kan" creationdate="20221029T163150Z">
+        <seg>Не сохранять помещаемые в буфер обмена данные в его журнале (поддерживается в Windows 10 и более поздних версиях).</seg>
       </tuv>
     </tu>
     <tu>
@@ -25738,6 +25778,15 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T142745Z" creationid="pm_kan" creationdate="20140113T142745Z">
         <seg>При переключение в режим «чтение/запись» будет запрошен мастер-пароль.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>When checked (default), items that &lt;b0&gt;Password Safe&lt;/b0&gt; place on the clipboard (such as passwords) are &lt;b1&gt;not&lt;/b1&gt; include in the clipboard history, in systems where this feature is supported (Windows 10 and later).</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20221029T165855Z" creationid="pm_kan" creationdate="20221029T163710Z">
+        <seg>Если помечено (по умолчанию), данные, помещённые &lt;b0&gt;Password Safe&lt;/b0&gt; в буфер обмена (например, пароль), &lt;b1&gt;не&lt;/b1&gt; будут сохраняться в журнале буфера обмена, если это поддерживается операционной системой (Windows 10 и более поздние версии).
+</seg>
       </tuv>
     </tu>
     <tu>
