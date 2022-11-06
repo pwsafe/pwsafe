@@ -6886,6 +6886,10 @@ msgid "Unable to create a new XML configuration file or add your settings to an 
 msgstr ""
 
 #. Resource IDs: (5385)
+#, c-format
+msgid "Unable to create intermediate backup in %s.\n"
+msgstr ""
+
 msgid "Unable to create intermediate backup."
 msgstr ""
 

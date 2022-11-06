@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-10-06 20:39+0300\n"
+"PO-Revision-Date: 2022-11-06 21:49+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -368,12 +381,12 @@ msgstr "%d Einträge synchronisiert"
 #. Resource IDs: (6061)
 #, c-format
 msgid "%d entries under group"
-msgstr ""
+msgstr "%d Einträge unter Gruppe"
 
 #. Resource IDs: (6060)
 #, c-format
 msgid "%d entry under group"
-msgstr ""
+msgstr "%d Eintrag unter Gruppe"
 
 #. Resource IDs: (5240)
 #, c-format
@@ -1881,7 +1894,7 @@ msgstr "Gehe zu URL + Autom.Eingabe "
 
 #. Resource IDs: (32074 - Menu, 32074 - MenuEx)
 msgid "Browse to URL w/Alt Browser"
-msgstr ""
+msgstr "Navigieren Sie zu URL mit Alt Browser"
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
@@ -5638,6 +5651,9 @@ msgid ""
 "\n"
 "Pressing Cancel stops the password from being copied."
 msgstr ""
+"Wenn Sie auf OK klicken, wird das Kennwort des ausgewählten Elements in die Zwischenablage kopiert. Die Zwischenablage wird sicher gelöscht, wenn Password Safe geschlossen wird.\n"
+"\n"
+"Durch Drücken von Abbrechen wird verhindert, dass das Kennwort kopiert wird."
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -7292,8 +7308,9 @@ msgstr ""
 "Einstellungen, die die Datenbank betreffen, werden beim Schließen in der Datenbank gespeichert, vorausgesetzt, dass diese nicht nur-lesbar oder durch andere Benutzer gesperrt ist."
 
 #. Resource IDs: (5385)
-msgid "Unable to create intermediate backup."
-msgstr "Kann die Zwischen-Sicherung nicht anlegen."
+#, c-format
+msgid "Unable to create intermediate backup in %s.\n"
+msgstr "Zwischensicherung kann in %s nicht erstellt werden.\n"
 
 #. Resource IDs: (5310)
 msgid "Unable to display URL"
@@ -8032,6 +8049,8 @@ msgid ""
 "\n"
 "Browse to URL with Alternate Browser"
 msgstr ""
+"\n"
+"Navigieren Sie mit dem alternativen Browser zur URL"
 
 #. Resource IDs: (32305)
 msgid ""
@@ -8835,7 +8854,7 @@ msgstr "\tName: %s; Dateiname: %s"
 #. Resource IDs: (5538)
 #, c-format
 msgid "\tNo entries were found containing search string '%ls' %ls"
-msgstr "\tKeine Einträge wurden gefunden, die den Suchtext '%ls' enthalten"
+msgstr "\tKeine Einträge wurden gefunden, die den Suchtext '%ls' %ls enthalten"
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."

@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-10-06 20:41+0300\n"
+"PO-Revision-Date: 2022-11-06 21:46+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -5787,7 +5800,7 @@ msgstr "Pamatuj tuto klávesnici"
 
 #. Resource IDs: (1468)
 msgid "Remove"
-msgstr ""
+msgstr "Odstranit"
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
@@ -7266,8 +7279,9 @@ msgstr ""
 "Nastavení týkající se databází budou uchována v otevřené databázi, až bude zavřena, za předpokladu, že není otevřena pouze pro čtení nebo uzmačnea jiným uživatelem."
 
 #. Resource IDs: (5385)
-msgid "Unable to create intermediate backup."
-msgstr "Nelze vytvořit přechodnou zálohu."
+#, c-format
+msgid "Unable to create intermediate backup in %s.\n"
+msgstr "Nelze vytvořit mezilehlou zálohu v %s.\n"
 
 #. Resource IDs: (5310)
 msgid "Unable to display URL"
@@ -8056,7 +8070,9 @@ msgstr ""
 msgid ""
 "\n"
 "Compare entries..."
-msgstr "\\Porovnat záznamy..."
+msgstr ""
+"\n"
+"Porovnat záznamy..."
 
 #. Resource IDs: (32019)
 msgid ""
@@ -8361,7 +8377,9 @@ msgstr ""
 msgid ""
 "\n"
 "Manage Filters"
-msgstr "Spravovat filtry"
+msgstr ""
+"\n"
+"Spravovat filtry"
 
 #. Resource IDs: (3415)
 #, c-format
@@ -8926,11 +8944,11 @@ msgstr "e-mail"
 
 #. Resource IDs: (3457)
 msgid "empty group"
-msgstr ""
+msgstr "prázdná skupina"
 
 #. Resource IDs: (3458)
 msgid "empty groups"
-msgstr ""
+msgstr "Prázdné skupiny"
 
 #. Resource IDs: (3290)
 msgid "ends with"
@@ -8995,7 +9013,7 @@ msgstr "v databázi"
 #. Resource IDs: (3459)
 #, c-format
 msgid "including %d empty group(s)."
-msgstr ""
+msgstr "včetně %d prázdných skupin."
 
 #. Resource IDs: (3302)
 msgid "invalid!"
@@ -9149,11 +9167,11 @@ msgstr "následující text:"
 
 #. Resource IDs: (5966)
 msgid "the passwords and data of all entries in this group"
-msgstr ""
+msgstr "hesla a údaje všech položek v této skupině"
 
 #. Resource IDs: (6051)
 msgid "the passwords and data of these filtered entries"
-msgstr ""
+msgstr "hesla a data těchto filtrovaných položek"
 
 #. Resource IDs: (5815)
 msgid "this entry's password and data"

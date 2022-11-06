@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-10-06 20:45+0300\n"
+"PO-Revision-Date: 2022-11-06 22:10+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -366,12 +379,12 @@ msgstr "%d sinhroniziranih vnosov"
 #. Resource IDs: (6061)
 #, c-format
 msgid "%d entries under group"
-msgstr ""
+msgstr "%d vnosi pod skupino"
 
 #. Resource IDs: (6060)
 #, c-format
 msgid "%d entry under group"
-msgstr ""
+msgstr "%d pod skupino"
 
 #. Resource IDs: (5240)
 #, c-format
@@ -855,7 +868,7 @@ msgstr "&Odpri"
 
 #. Resource IDs: (32002 - Menu)
 msgid "&Open Another"
-msgstr ""
+msgstr "&Odpri drugo"
 
 #. Resource IDs: (32002 - MenuEx)
 msgid "&Open..."
@@ -1877,7 +1890,7 @@ msgstr "Prebrskaj v URL + Samodejna vrsta"
 
 #. Resource IDs: (32074 - Menu, 32074 - MenuEx)
 msgid "Browse to URL w/Alt Browser"
-msgstr ""
+msgstr "Prebrskaj do URL-ja w/Alt brskalnika"
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
@@ -7282,8 +7295,9 @@ msgstr ""
 "Nastavitve, povezane z zbirko podatkov, bodo shranjene v odprti zbirki podatkov, ko bo ta zaprta, ob predpostavki, da ni samo-za-branje ali pa zaklenjena s strani drugega uporabnika."
 
 #. Resource IDs: (5385)
-msgid "Unable to create intermediate backup."
-msgstr "Vmesne varnostne kopije ni mogoče ustvariti."
+#, c-format
+msgid "Unable to create intermediate backup in %s.\n"
+msgstr "Vmesne varnostne kopije v %s ni mogoče.\n"
 
 #. Resource IDs: (5310)
 msgid "Unable to display URL"
@@ -8024,6 +8038,8 @@ msgid ""
 "\n"
 "Browse to URL with Alternate Browser"
 msgstr ""
+"\n"
+"Prebrskajte do URL-ja z nadomestnim brskalnikom"
 
 #. Resource IDs: (32305)
 msgid ""

@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-10-06 20:43+0300\n"
+"PO-Revision-Date: 2022-11-06 22:07+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -368,12 +381,12 @@ msgstr "%d wpisów zsynchronizowano"
 #. Resource IDs: (6061)
 #, c-format
 msgid "%d entries under group"
-msgstr ""
+msgstr "%d wpisy w grupie"
 
 #. Resource IDs: (6060)
 #, c-format
 msgid "%d entry under group"
-msgstr ""
+msgstr "%d wpis w grupie"
 
 #. Resource IDs: (5240)
 #, c-format
@@ -857,7 +870,7 @@ msgstr "&Otwórz"
 
 #. Resource IDs: (32002 - Menu)
 msgid "&Open Another"
-msgstr ""
+msgstr "i otwórz inny"
 
 #. Resource IDs: (32002 - MenuEx)
 msgid "&Open..."
@@ -1881,7 +1894,7 @@ msgstr "Przeglądaj URL + AutoTyp"
 
 #. Resource IDs: (32074 - Menu, 32074 - MenuEx)
 msgid "Browse to URL w/Alt Browser"
-msgstr ""
+msgstr "Przejdź do adresu URL z przeglądarką Alt"
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
@@ -3162,7 +3175,7 @@ msgstr "Wprowadź nie więcej niż %1 znaków."
 
 #. Resource IDs: (65535)
 msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
-msgstr ""
+msgstr "Wprowadź pozycje znaków hasła oddzielone spacjami, przecinkami lub średnikami (lub * w przypadku pełnego hasła)."
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -5640,6 +5653,9 @@ msgid ""
 "\n"
 "Pressing Cancel stops the password from being copied."
 msgstr ""
+"Naciśnięcie przycisku OK spowoduje skopiowanie hasła wybranego elementu do schowka. Schowek zostanie bezpiecznie wyczyszczony po zamknięciu funkcji Password Safe.\n"
+"\n"
+"Naciśnięcie przycisku Anuluj powoduje zatrzymanie kopiowania hasła."
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -7293,8 +7309,9 @@ msgstr ""
 "Ustawienia bazy danych zostaną zapisane w otwartej bazie danych przy jej zamknięciu, pod warunkiem, że nie jest bazą danych tylko do odczytu lub nie jest zablokowana przez innego użytkownika."
 
 #. Resource IDs: (5385)
-msgid "Unable to create intermediate backup."
-msgstr "Nie udało się utworzyć tymczasowej kopii zapasowej."
+#, c-format
+msgid "Unable to create intermediate backup in %s.\n"
+msgstr "Nie można utworzyć tymczasowej kopii zapasowej w %s.\n"
 
 #. Resource IDs: (5310)
 msgid "Unable to display URL"
@@ -8035,6 +8052,8 @@ msgid ""
 "\n"
 "Browse to URL with Alternate Browser"
 msgstr ""
+"\n"
+"Przejdź do adresu URL za pomocą alternatywnej przeglądarki"
 
 #. Resource IDs: (32305)
 msgid ""
@@ -8838,7 +8857,7 @@ msgstr "\tNazwa: %s; Nazwa pliku: %s"
 #. Resource IDs: (5538)
 #, c-format
 msgid "\tNo entries were found containing search string '%ls' %ls"
-msgstr ""
+msgstr "\tNie znaleziono wpisów zawierających ciąg wyszukiwania \"%ls\" %ls"
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
@@ -8861,7 +8880,7 @@ msgstr "\tNazwy polityki haseł '%ls' nie ma w bazie danych."
 #. Resource IDs: (5539)
 #, c-format
 msgid "\tThe following entries contain search string '%ls' %ls"
-msgstr ""
+msgstr "\tNastępujące wpisy zawierają ciąg wyszukiwania \"%ls\" %ls"
 
 #. Resource IDs: (5522)
 #, c-format

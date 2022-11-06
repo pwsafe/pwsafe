@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-10-23 18:38+0200\n"
+"PO-Revision-Date: 2022-11-06 21:27+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -17,6 +17,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.2\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -7405,8 +7418,9 @@ msgstr ""
 "Databsrelaterade inställningar sparas i den öppna databasen när den stängs, förutsatt att den inte bara är läsbar eller låst av annan användare."
 
 #. Resource IDs: (5385)
-msgid "Unable to create intermediate backup."
-msgstr "Kunde inte skapa en mellanlagrande säkerhetskopia."
+#, c-format
+msgid "Unable to create intermediate backup in %s.\n"
+msgstr "Det går inte att skapa mellanliggande säkerhetskopiering i %s.\n"
 
 #. Resource IDs: (5310)
 msgid "Unable to display URL"

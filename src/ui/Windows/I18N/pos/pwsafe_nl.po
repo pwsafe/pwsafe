@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-10-06 20:42+0300\n"
+"PO-Revision-Date: 2022-11-06 22:06+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -1906,7 +1919,7 @@ msgstr "Ga naar URL + Automatisch invul"
 
 #. Resource IDs: (32074 - Menu, 32074 - MenuEx)
 msgid "Browse to URL w/Alt Browser"
-msgstr ""
+msgstr "Blader naar URL met Alt Browser"
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
@@ -7319,8 +7332,9 @@ msgstr ""
 "Database gerelateerde Instellingen zullen opgeslagen worden in de open database zodra deze afgesloten wordt. Aangenomen dat deze database niet alleen-lezen is of vergrendeld is door een andere gebruiker."
 
 #. Resource IDs: (5385)
-msgid "Unable to create intermediate backup."
-msgstr "Niet mogelijk om tussentijdse back-up te creëeren."
+#, c-format
+msgid "Unable to create intermediate backup in %s.\n"
+msgstr "Kan geen tussentijdse back-up maken in %s.\n"
 
 #. Resource IDs: (5310)
 msgid "Unable to display URL"
@@ -8061,6 +8075,8 @@ msgid ""
 "\n"
 "Browse to URL with Alternate Browser"
 msgstr ""
+"\n"
+"Blader naar URL met Alternatieve browser"
 
 #. Resource IDs: (32305)
 msgid ""
@@ -8864,7 +8880,7 @@ msgstr "\tNaam: %s; Bestandsnaam: %s"
 #. Resource IDs: (5538)
 #, c-format
 msgid "\tNo entries were found containing search string '%ls' %ls"
-msgstr ""
+msgstr "\tEr zijn geen items gevonden die zoekreeks '%ls' bevatten %ls"
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
@@ -8887,7 +8903,7 @@ msgstr "\tNaam wachtwoordregels'%ls' is niet in de database."
 #. Resource IDs: (5539)
 #, c-format
 msgid "\tThe following entries contain search string '%ls' %ls"
-msgstr ""
+msgstr "\tDe volgende vermeldingen bevatten zoekreeks '%ls' %ls"
 
 #. Resource IDs: (5522)
 #, c-format
