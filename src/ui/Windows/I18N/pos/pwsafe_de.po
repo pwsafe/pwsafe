@@ -1894,7 +1894,7 @@ msgstr "Gehe zu URL + Autom.Eingabe "
 
 #. Resource IDs: (32074 - Menu, 32074 - MenuEx)
 msgid "Browse to URL w/Alt Browser"
-msgstr "Navigieren Sie zu URL mit Alt Browser"
+msgstr "Navigieren Sie zur URL mit alt. Browser"
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
