@@ -159,7 +159,7 @@ bool pws_os::DisableDumpAttach()
 }
 
 #else  /* _DEBUG or DEBUG */
-#ifdef __FreeBSD__
+#if defined(__FreeBSD__)
 /*bool pws_os::DisableDumpAttach()
 {
   // prevent ptrace and creation of core dumps
@@ -179,7 +179,19 @@ bool pws_os::DisableDumpAttach()
   setrlimit(RLIMIT_CORE, &rlim);
   return true;
 }
+
+#elif defined(__OpenBSD__)
+
+#include <sys/resource.h>
+
+bool pws_os::DisableDumpAttach()
+{
+	struct rlimit corelimit = {0, 0};
+	return setrlimit(RLIMIT_CORE, &corelimit) == 0;
+}
+
 #else
+
 #include <sys/prctl.h>
 
 bool pws_os::DisableDumpAttach()
