@@ -22,7 +22,7 @@
 
 #include <dirent.h>
 #include <fnmatch.h>
-#ifndef __FreeBSD__
+#if !defined(__FreeBSD__) && !defined(__OpenBSD__)
 #include <malloc.h> // for free
 #endif
 

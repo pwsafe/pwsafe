@@ -74,7 +74,7 @@ typedef uint64_t ulong64;
 typedef unsigned ulong32;
 #endif
 
-#if defined(__linux__) || defined(__CYGWIN__) || defined (macintosh) || defined(Macintosh) || defined(__APPLE__) || defined(__MACH__) || defined(__FreeBSD) || defined(__FreeBSD__)
+#if defined(__linux__) || defined(__CYGWIN__) || defined (macintosh) || defined(Macintosh) || defined(__APPLE__) || defined(__MACH__) || defined(__FreeBSD) || defined(__FreeBSD__) || defined (__OpenBSD) || defined (__OpenBSD__)
 /* Following seems needed on Linux/cygwin
    and on macs to avoid "Impossible constraint in 'asm'" errors in ROLc()
    and RORc() functions below */
