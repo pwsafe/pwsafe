@@ -446,7 +446,7 @@ void COptionsShortcuts::InitialSetup(const MapMenuShortcuts MapMenuShortcuts,
 }
 
 // Tortuous route to get here!
-// Menu m_HotKey looses focus and calls parent (CListCtrl) that calls here
+// Menu m_HotKey loses focus and calls parent (CListCtrl) that calls here
 void COptionsShortcuts::OnMenuShortcutKillFocus(const int item, const UINT id,
                                                 const WORD wVirtualKeyCode, 
                                                 const WORD wPWSModifiers)

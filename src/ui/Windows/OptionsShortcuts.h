@@ -16,8 +16,6 @@
 #include "Options_PropertyPage.h"
 #include "MenuShortcuts.h"
 #include "SHCTListCtrl.h"
-#include "PWHdrCtrlNoChng.h"
-#include "ControlExtns.h"
 #include "TBMStatic.h"
 
 #include "core/coredefs.h"

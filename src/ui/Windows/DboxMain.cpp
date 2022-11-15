@@ -2014,7 +2014,8 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
     // Update to current state
     // This is not necessarily what was wanted if we couldn't get lock for R/W
     UpdateToolBarROStatus(m_core.IsReadOnly());
-    UpdateEditViewAccelerator(m_core.IsReadOnly());
+    if (m_core.IsReadOnly()) // don't call if !readonly, otherwise we lose the custom Edit shortcut
+      UpdateEditViewAccelerator(true);
     
     // locker won't be null IFF tried to lock and failed, in which case
     // it shows the current file locker

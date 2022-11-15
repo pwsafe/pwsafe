@@ -399,13 +399,12 @@ void DboxMain::OnOptions()
 
       for (iter = m_MapMenuShortcuts.begin(); iter != m_MapMenuShortcuts.end();
            iter++) {
-        // User should not have these sub-entries in their config file
-        if (iter->first == ID_MENUITEM_GROUPENTER  ||
-            iter->first == ID_MENUITEM_VIEWENTRY   || 
-            iter->first == ID_MENUITEM_DELETEENTRY ||
-            iter->first == ID_MENUITEM_DELETEGROUP ||
-            iter->first == ID_MENUITEM_RENAMEENTRY ||
-            iter->first == ID_MENUITEM_RENAMEGROUP) {
+
+        // User should not have these in their config file
+        // See SetUpInitialMenuStrings() for rationale
+
+        if (std::find(m_ExcludedMenuItems.begin(), m_ExcludedMenuItems.end(), iter->first) != m_ExcludedMenuItems.end())
+        { // yes, I know this is O(m * n).
           continue;
         }
 

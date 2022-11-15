@@ -354,17 +354,15 @@ void DboxMain::SetUpInitialMenuStrings()
   std::vector<st_prefShortcut> vShortcuts(PWSprefs::GetInstance()->GetPrefShortcuts());
 
   for (auto &stxst : vShortcuts) {
-    // User should not have these sub-entries in their config file
-    if (stxst.id == ID_MENUITEM_GROUPENTER  ||
-        stxst.id == ID_MENUITEM_VIEWENTRY   ||
-        stxst.id == ID_MENUITEM_DELETEENTRY ||
-        stxst.id == ID_MENUITEM_DELETEGROUP ||
-        stxst.id == ID_MENUITEM_RENAME      ||
-        stxst.id == ID_MENUITEM_RENAMEENTRY ||
-        stxst.id == ID_MENUITEM_RENAMEGROUP) {
+  // User should not have these in their config file
+  // See SetUpInitialMenuStrings() for rationale
+
+    if (std::find(m_ExcludedMenuItems.begin(), m_ExcludedMenuItems.end(), iter->first) != m_ExcludedMenuItems.end())
+    { // yes, I know this is O(m * n).
+      ASSERT(0); // to debug why this happens
       continue;
     }
-
+ 
     iter = m_MapMenuShortcuts.find(stxst.id);
     if (iter == m_MapMenuShortcuts.end()) {
       // Unknown Control ID - ignore - maybe used by a later version of PWS
@@ -1684,7 +1682,7 @@ void DboxMain::SetupSpecialShortcuts()
 
 void DboxMain::UpdateEditViewAccelerator(bool isRO)
 {
-  // If isRO, remove Ctrl-Enter from ID_MENUITEM_EDITENTRY, set to ID_MENUITEM_VIEWENTRY
+  // If isRO, remove shortcut from ID_MENUITEM_EDITENTRY, set to ID_MENUITEM_VIEWENTRY
   // else, vice-versa
   auto edit_iter = m_MapMenuShortcuts.find(ID_MENUITEM_EDITENTRY);
   ASSERT(edit_iter != m_MapMenuShortcuts.end());

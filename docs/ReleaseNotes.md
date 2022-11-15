@@ -9,7 +9,8 @@ PasswordSafe 3.60.1 Release ??? 2022
 
 Bugs fixed in 3.60.1
 --------------------
-*[GH893](https://github.com/pwsafe/pwsafe/issues/893) Removed "Open Another" from system tray menu when a child window (e.g., Add/Edit Entry) is open.
+* [GH893](https://github.com/pwsafe/pwsafe/issues/893) Removed "Open Another" from system tray menu when a child window (e.g., Add/Edit Entry) is open.
+* [SF1566](https://sourceforge.net/p/passwordsafe/bugs/1566/)  Persist Edit Entry and Rename custom shortcuts.
 
 PasswordSafe 3.60.0 Release Oct 2022
 ====================================
