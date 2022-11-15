@@ -30,7 +30,6 @@ typedef std::string  cstringT;
 
 typedef std::wstring stringT;
 typedef wchar_t charT;
-#define _S(x) L ## x
 
 #include "../core/PwsPlatform.h" // for afxwin.h, and endian macros
 

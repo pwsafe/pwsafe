@@ -94,11 +94,11 @@ bool PWYubi::GetSerial(unsigned int &serial) const
     ykey = yk_open_first_key();
     if (ykey != nullptr) {
       if (!check_firmware_version(ykey)) {
-        m_ykerrstr = _S("YubiKey firmware version unsupported");
+        m_ykerrstr = _T("YubiKey firmware version unsupported");
         goto done;
       }
       if (!yk_get_serial(ykey, 0, 0, &serial)) {
-        m_ykerrstr = _S("Failed to read serial number");
+        m_ykerrstr = _T("Failed to read serial number");
         goto done;
       }
       retval = true;
@@ -132,18 +132,18 @@ bool PWYubi::WriteSK(const unsigned char *yubi_sk_bin, size_t sklen)
         !ykp_set_cfgflag_CHAL_BTN_TRIG(cfg, true) ||
         !ykp_set_extflag_SERIAL_API_VISIBLE(cfg, true)
         ) {
-      m_ykerrstr = _S("Internal error: couldn't set configuration");
+      m_ykerrstr = _T("Internal error: couldn't set configuration");
       goto done;
     }
     if (!ykp_configure_command(cfg, SLOT_CONFIG2)) { // _UPDATE2?
-      m_ykerrstr = _S("Internal error: couldn't configure command");
+      m_ykerrstr = _T("Internal error: couldn't configure command");
       goto done;
     }
     // ykp_HMAC_key_from_raw() was added in version 1.15.0 of ykpers
 #if (YKPERS_VERSION_MAJOR > 1) || ((YKPERS_VERSION_MAJOR == 1) && (YKPERS_VERSION_MINOR >= 15))
     UNREFERENCED_PARAMETER(sklen);
     if (ykp_HMAC_key_from_raw(cfg, reinterpret_cast<const char *>(yubi_sk_bin))) {
-      m_ykerrstr = _S("Internal error: couldn't configure key");
+      m_ykerrstr = _T("Internal error: couldn't configure key");
       goto done;
     }
 #else
@@ -151,7 +151,7 @@ bool PWYubi::WriteSK(const unsigned char *yubi_sk_bin, size_t sklen)
     for (size_t i = 0; i < sklen; i++)
       os << setfill('0') << setw(2) << hex << int(yubi_sk_bin[i]);
     if (ykp_HMAC_key_from_hex(cfg, os.str().c_str())) {
-      m_ykerrstr = _S("Internal error: couldn't configure key");
+      m_ykerrstr = _T("Internal error: couldn't configure key");
       goto done;
     }
 #endif
@@ -159,7 +159,7 @@ bool PWYubi::WriteSK(const unsigned char *yubi_sk_bin, size_t sklen)
     if (!yk_write_command(ykey,
                           ykp_core_config(cfg), ykp_command(cfg),
                           nullptr)) {
-          m_ykerrstr = _S("Internal error: couldn't configure key");
+          m_ykerrstr = _T("Internal error: couldn't configure key");
           goto done;
     }
     retval = true;
@@ -234,15 +234,15 @@ void PWYubi::report_error() const
 {
   std::string yk_errstr;
   if (ykp_errno) {
-    pws_os::Trace(_S("Yubikey personalization error(%d)\n"), ykp_errno);
+    pws_os::Trace(_T("Yubikey personalization error(%d)\n"), ykp_errno);
     yk_errstr = ykp_strerror(ykp_errno);
   }
   if (yk_errno) {
     if (yk_errno == YK_EUSBERR) {
-      pws_os::Trace(_S("USB error(%d)\n"), yk_errno);
+      pws_os::Trace(_T("USB error(%d)\n"), yk_errno);
       yk_errstr += yk_usb_strerror();
     } else {
-      pws_os::Trace(_S("Yubikey core error(%d)\n"), yk_errno);
+      pws_os::Trace(_T("Yubikey core error(%d)\n"), yk_errno);
       yk_errstr += yk_strerror(yk_errno);
     }
   }

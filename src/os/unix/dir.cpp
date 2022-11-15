@@ -160,29 +160,29 @@ static stringT createuserprefsdir(void)
   if (!cfgdir.empty()) { // if $HOME's not defined, we have bigger problems...
  
     // (1)
-    cfgdir += _S(".pwsafe");
+    cfgdir += _T(".pwsafe");
 
     if (direxists(cfgdir, false))
-      return cfgdir + _S("/");
+      return cfgdir + _T("/");
 
     // (2)
     cfgdir = pws_os::getenv("XDG_CONFIG_HOME", true);
     if (!cfgdir.empty()) {
-      cfgdir += _S("/pwsafe");
+      cfgdir += _T("/pwsafe");
       if (direxists(cfgdir, true))
-        return cfgdir + _S("/");
+        return cfgdir + _T("/");
     }
 
     // (3)
-    cfgdir = pws_os::getenv("HOME", true) + _S("/.config");
+    cfgdir = pws_os::getenv("HOME", true) + _T("/.config");
     if (direxists(cfgdir, true)) {
-      cfgdir += _S("/pwsafe");
+      cfgdir += _T("/pwsafe");
       if (direxists(cfgdir, true))
-        return cfgdir + _S("/");
+        return cfgdir + _T("/");
     }
   }
 
-  return _S("");
+  return _T("");
 }
 
 stringT pws_os::getuserprefsdir(void)
@@ -206,9 +206,9 @@ stringT pws_os::getsafedir(void)
 stringT pws_os::getxmldir(void)
 {
 #ifdef __FreeBSD__
-  return _S("/usr/local/share/pwsafe/xml/");
+  return _T("/usr/local/share/pwsafe/xml/");
 #else
-  return _S("/usr/share/passwordsafe/xml/");
+  return _T("/usr/share/passwordsafe/xml/");
 #endif
 }
 
@@ -216,10 +216,10 @@ stringT pws_os::gethelpdir(void)
 {
   stringT helpdir = pws_os::getenv("PWS_HELPDIR", true);
   if (helpdir.empty()) {
-#ifdef __FreeBSD__
-    helpdir = _S("/usr/local/share/doc/passwordsafe/help/");
+#ifdef __FreeBSD__ || defined(__OpenBSD)
+    helpdir = _T("/usr/local/share/doc/passwordsafe/help/");
 #else
-    helpdir = _S("/usr/share/passwordsafe/help/");
+    helpdir = _T("/usr/share/passwordsafe/help/");
 #endif
   }
   return helpdir;

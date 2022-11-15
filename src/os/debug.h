@@ -34,7 +34,7 @@ namespace pws_os {
       maxnum    - maximum hex characters dumped per line
   */
   void HexDump(unsigned char *pmemory, const int &length,
-               const stringT &cs_prefix = _S(""), const int &maxnum = 16);
+               const stringT &cs_prefix = {}, const int &maxnum = 16);
 
   /**
      This disables the ability to create a coredump and to attach a debugger to the process
