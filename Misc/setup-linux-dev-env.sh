@@ -47,10 +47,16 @@ if [ "$KERNEL" = "Linux" ]; then
     fi
 
     # ... and the release number
-   if command -v $LSB_RELEASE 1>/dev/null; then
+    if command -v $LSB_RELEASE 1>/dev/null; then
         RELEASE="$($LSB_RELEASE -rs | sed 's/\([0-9]\)\..*/\1/')" # integer part, e.g., 20.04 --> 20
+        if [ "$DISTRO" = "ubuntu" ] ; then
+            RELEASE_MONTH="$($LSB_RELEASE -rs | sed 's/.*\.\([0-9]\)/\1/')" # integer part, e.g., 20.04 --> 04
+        fi
     elif [ -f /etc/os-release ]; then
-        RELEASE=$(awk -F= '/VERSION_ID/ {print $2}' /etc/os-release |sed s/\"//g)
+        RELEASE=$(awk -F= '/VERSION_ID/ {print $2}' /etc/os-release | sed s/\"//g | sed 's/\([0-9]\)\..*/\1/') # integer part, e.g., 20.04 --> 20
+        if [ "$DISTRO" = "ubuntu" ] ; then
+            RELEASE_MONTH=$(awk -F= '/VERSION_ID/ {print $2}' /etc/os-release | sed s/\"//g | sed 's/.*\.\([0-9]\)/\1/') # integer part, e.g., 20.04 --> 04
+        fi
     else
         die 6 "Unable to determine release"
     fi
@@ -59,12 +65,16 @@ else
 fi
 
 [ -z "$RELEASE" ] && RELEASE=0 # debian testing doesn't have a release number
+[ -z "$RELEASE_MONTH" ] && RELEASE_MONTH=0 # debian testing doesn't have a release number
 
 # We have distro and release, let's get to work
 
 case "$DISTRO" in
     debian|ubuntu|linuxmint|pop|raspbian)
-        if test \( \( "$DISTRO" = "ubuntu" -o "$DISTRO" = "pop" -o "$DISTRO" = "linuxmint" \) -a "$RELEASE" -ge 20 \) -o \
+        if test "$DISTRO" = "ubuntu" -a \
+         \( \( "$RELEASE" -eq 22 -a "$RELEASE_MONTH" -eq 10 \) -o "$RELEASE" -gt 22 \) ; then
+            LIBWXDEV="libwxgtk3.2-dev"
+        elif test \( \( "$DISTRO" = "ubuntu" -o "$DISTRO" = "pop" -o "$DISTRO" = "linuxmint" \) -a "$RELEASE" -ge 20 \) -o \
          \( "$DISTRO" = "debian" -a \( "$RELEASE" -eq 0 -o "$RELEASE" -ge 11 \) \) ; then
             LIBWXDEV="libwxgtk3.0-gtk3-dev"
         else
