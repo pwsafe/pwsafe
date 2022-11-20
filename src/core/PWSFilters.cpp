@@ -9,7 +9,6 @@
 #include "PWSFilters.h"
 #include "PWSfileHeader.h"
 #include "PWHistory.h"
-#include "PWSprefs.h"
 #include "core.h"
 #include "PWScore.h"
 #include "StringX.h"
@@ -17,7 +16,6 @@
 #include "UTF8Conv.h"
 
 #include "os/file.h"
-#include "os/dir.h"
 
 #include "XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
@@ -34,13 +32,11 @@
 #define PWS_XML_FILTER_VERSION 1
 
 #include <fstream>
-#include <iostream>
 #include <iomanip>
 #include <string>
 #include <vector>
 #include <functional>
 #include <algorithm>
-#include <map>
 
 using namespace std;
 using pws_os::CUUID;
@@ -769,17 +765,16 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
 
   // By definition - all imported filters are complete!
   // Now set this.
-  PWSFilters::iterator mf_iter;
-  for (mf_iter = this->begin(); mf_iter != this->end(); mf_iter++) {
+  for (auto mf_iter = this->begin(); mf_iter != this->end(); mf_iter++) {
     st_filters &filters = mf_iter->second;
     for_each(filters.vMfldata.begin(), filters.vMfldata.end(),
-             mem_fun_ref(&st_FilterRow::SetFilterComplete));
+             mem_fn(&st_FilterRow::SetFilterComplete));
     for_each(filters.vHfldata.begin(), filters.vHfldata.end(),
-             mem_fun_ref(&st_FilterRow::SetFilterComplete));
+             mem_fn(&st_FilterRow::SetFilterComplete));
     for_each(filters.vPfldata.begin(), filters.vPfldata.end(),
-             mem_fun_ref(&st_FilterRow::SetFilterComplete));
+             mem_fn(&st_FilterRow::SetFilterComplete));
     for_each(filters.vAfldata.begin(), filters.vAfldata.end(),
-      mem_fun_ref(&st_FilterRow::SetFilterComplete));
+      mem_fn(&st_FilterRow::SetFilterComplete));
   }
   return PWScore::SUCCESS;
 }
