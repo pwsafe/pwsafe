@@ -2,7 +2,7 @@
   "configurations": [
     {
       "name": "x64-Debug",
-      "generator": "Visual Studio 16 2019 Win64",
+      "generator": "Visual Studio 17 2022 Win64",
       "configurationType": "Debug",
       "inheritEnvironments": [ "msvc_x64_x64" ],
       "buildRoot": "${projectDir}\\out\\build\\${name}",
@@ -20,7 +20,7 @@
     },
     {
       "name": "x64-Release",
-      "generator": "Visual Studio 16 2019 Win64",
+      "generator": "Visual Studio 17 2022 Win64",
       "configurationType": "Release",
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
@@ -38,7 +38,7 @@
     },
     {
       "name": "x86-Release",
-      "generator": "Visual Studio 16 2019",
+      "generator": "Visual Studio 17 2022",
       "configurationType": "Release",
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
@@ -56,7 +56,7 @@
     },
     {
       "name": "x86-Debug",
-      "generator": "Visual Studio 16 2019",
+      "generator": "Visual Studio 17 2022",
       "configurationType": "Debug",
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
