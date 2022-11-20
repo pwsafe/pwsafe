@@ -253,7 +253,6 @@ void DboxMain::OnOptions()
 
   // Save current Window transparency in case we have to change it
   const BYTE byteOldPercentTransparency = (BYTE)prefs->GetPref(PWSprefs::WindowTransparency);
-  const bool bOldTransparancyEnabled = prefs->GetPref(PWSprefs::EnableWindowTransparency);
 
   // Save Hotkey info
   BOOL bAppHotKeyEnabled;
