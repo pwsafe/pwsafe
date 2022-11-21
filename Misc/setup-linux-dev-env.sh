@@ -102,7 +102,7 @@ case "$DISTRO" in
         zypper --non-interactive install cmake file-devel fakeroot gcc-c++ \
         gettext-tools git gtest libcurl-devel libmagic1 libopenssl-devel \
         libuuid-devel libxerces-c-devel libXt-devel libXtst-devel libykpers-devel \
-        libyubikey-devel make qrencode-devel rpmdevtools wxWidgets-3_0-devel
+        libyubikey-devel make qrencode-devel rpmdevtools wxWidgets-3_2-devel zip
     ;;
     *) die 10 "Don't know how to setup $DISTRO release $RELEASE (yet)."
 esac
