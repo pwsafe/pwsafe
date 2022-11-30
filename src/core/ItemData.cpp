@@ -2210,6 +2210,11 @@ stringT CItemData::FieldName(FieldType ft)
   case POLICYNAME:   LoadAString(retval, IDSC_FLDNMPWPOLICYNAME); break;
   case KBSHORTCUT:   LoadAString(retval, IDSC_FLDNMKBSHORTCUT); break;
   case ATTREF:       LoadAString(retval, IDSC_FLDNMATTREF); break;
+  case CCNUM:        LoadAString(retval, IDSC_FLDNMCCNUM); break;
+  case CCEXP:        LoadAString(retval, IDSC_FLDNMCCEXP); break;
+  case CCVV:         LoadAString(retval, IDSC_FLDNMCCVV); break;
+  case CCPIN:        LoadAString(retval, IDSC_FLDNMCCPIN); break;
+
   default:
     ASSERT(0);
   };

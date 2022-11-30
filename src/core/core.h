@@ -72,6 +72,10 @@
 #define IDSC_FLDNMPWPOLICYNAME          3072
 #define IDSC_FLDNMKBSHORTCUT            3073
 #define IDSC_FLDNMATTREF                3074
+#define IDSC_FLDNMCCNUM                 3075
+#define IDSC_FLDNMCCEXP                 3076
+#define IDSC_FLDNMCCVV                  3077
+#define IDSC_FLDNMCCPIN                 3078
 
 #define IDSC_CONFIG_NONE                3230
 #define IDSC_CONFIG_REGISTRY            3231
