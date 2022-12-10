@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-11-06 22:04+0200\n"
+"PO-Revision-Date: 2022-12-10 12:01+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: kr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.2\n"
+"X-Generator: Poedit 3.2.2\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -2551,6 +2564,22 @@ msgstr "생성된 일자:"
 
 #. Resource IDs: (65535)
 msgid "Creation date:"
+msgstr "'생성 시간'"
+
+#. Resource IDs: (3077)
+msgid "Credit card CVV"
+msgstr ""
+
+#. Resource IDs: (3076)
+msgid "Credit card expiration"
+msgstr ""
+
+#. Resource IDs: (3075)
+msgid "Credit card number"
+msgstr "총 항목 개수:"
+
+#. Resource IDs: (3078)
+msgid "Credit card PIN"
 msgstr ""
 
 #. Resource IDs: (5612)
@@ -2579,7 +2608,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Current Safe Combination:"
-msgstr ""
+msgstr "보안 비밀번호 바꾸기(&C)"
 
 #. Resource IDs: (3460)
 msgid "Current database filters have been exported to this database."

@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-11-06 22:08+0200\n"
+"PO-Revision-Date: 2022-12-10 12:04+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.2\n"
+"X-Generator: Poedit 3.2.2\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -409,7 +422,7 @@ msgstr "%ls - Copiado(s) %ls"
 #. Resource IDs: (5907)
 #, c-format
 msgid "%ls - Drag & Drop %ls"
-msgstr ""
+msgstr "%ls - %ls Drag & Drop"
 
 #. Resource IDs: (3431)
 #, c-format
@@ -2076,6 +2089,9 @@ msgid ""
 "* indicates the database has been changed\n"
 "° indicates a database preference has been changed"
 msgstr ""
+"Alterar o status desde a última gravação:\n"
+"* indica que o banco de dados foi alterado\n"
+"° indica que uma preferência de banco de dados foi alterada"
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -2599,6 +2615,22 @@ msgstr "Criado em:"
 #. Resource IDs: (65535)
 msgid "Creation date:"
 msgstr "Data de criação:"
+
+#. Resource IDs: (3077)
+msgid "Credit card CVV"
+msgstr "Cartão de crédito CVV"
+
+#. Resource IDs: (3076)
+msgid "Credit card expiration"
+msgstr "Expiração do cartão de crédito"
+
+#. Resource IDs: (3075)
+msgid "Credit card number"
+msgstr "Número do cartão de crédito"
+
+#. Resource IDs: (3078)
+msgid "Credit card PIN"
+msgstr "PIN do cartão de crédito"
 
 #. Resource IDs: (5612)
 msgid "Criteria"
@@ -3171,7 +3203,7 @@ msgstr "Insira no máximo %1 caracteres."
 
 #. Resource IDs: (65535)
 msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
-msgstr ""
+msgstr "Insira posições de caracteres de senha separados por espaços, vírgulas ou ponto-e-vírgula (ou * para senha completa)."
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -5648,6 +5680,9 @@ msgid ""
 "\n"
 "Pressing Cancel stops the password from being copied."
 msgstr ""
+"Pressionar OK copiará a senha do item selecionado para a área de transferência. A área de transferência será limpa com segurança quando o Password Safe for fechado.\n"
+"\n"
+"Pressionar Cancelar impede que a senha seja copiada."
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -8850,7 +8885,7 @@ msgstr "\tNome: %s; Nome do arquivo: %s"
 #. Resource IDs: (5538)
 #, c-format
 msgid "\tNo entries were found containing search string '%ls' %ls"
-msgstr ""
+msgstr "\tNão foram encontradas entradas contendo %ls de %ls de %ls"
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
@@ -8873,7 +8908,7 @@ msgstr "\tO nome da política de senha '%ls' não está no banco de dados."
 #. Resource IDs: (5539)
 #, c-format
 msgid "\tThe following entries contain search string '%ls' %ls"
-msgstr ""
+msgstr "\tAs entradas a seguir contêm a cadeia de caracteres de pesquisa '%ls' %ls"
 
 #. Resource IDs: (5522)
 #, c-format

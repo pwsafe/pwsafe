@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-11-06 22:06+0200\n"
+"PO-Revision-Date: 2022-12-10 12:02+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.2\n"
+"X-Generator: Poedit 3.2.2\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -407,12 +420,12 @@ msgstr "%d invoeren gesynchroniseerd"
 #. Resource IDs: (6061)
 #, c-format
 msgid "%d entries under group"
-msgstr ""
+msgstr "%d vermeldingen onder groep"
 
 #. Resource IDs: (6060)
 #, c-format
 msgid "%d entry under group"
-msgstr ""
+msgstr "%d vermelding onder groep"
 
 #. Resource IDs: (5240)
 #, c-format
@@ -437,7 +450,7 @@ msgstr "%ls - Gekopieerd %ls"
 #. Resource IDs: (5907)
 #, c-format
 msgid "%ls - Drag & Drop %ls"
-msgstr ""
+msgstr "%ls - slepen en neerzetten %ls"
 
 #. Resource IDs: (3431)
 #, c-format
@@ -896,7 +909,7 @@ msgstr "&Open"
 
 #. Resource IDs: (32002 - Menu)
 msgid "&Open Another"
-msgstr ""
+msgstr "&Open een ander"
 
 #. Resource IDs: (32002 - MenuEx)
 msgid "&Open..."
@@ -2103,6 +2116,9 @@ msgid ""
 "* indicates the database has been changed\n"
 "° indicates a database preference has been changed"
 msgstr ""
+"Status wijzigen sinds de laatste opslag:\n"
+"* geeft aan dat de database is gewijzigd\n"
+"° geeft aan dat een databasevoorkeur is gewijzigd"
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -2626,6 +2642,22 @@ msgstr "Gemaakt op:"
 #. Resource IDs: (65535)
 msgid "Creation date:"
 msgstr "Aanmaakdatum:"
+
+#. Resource IDs: (3077)
+msgid "Credit card CVV"
+msgstr "Creditcard CVV"
+
+#. Resource IDs: (3076)
+msgid "Credit card expiration"
+msgstr "Creditcard vervaldatum"
+
+#. Resource IDs: (3075)
+msgid "Credit card number"
+msgstr "Kredietkaartnummer"
+
+#. Resource IDs: (3078)
+msgid "Credit card PIN"
+msgstr "Pincode creditcard"
 
 #. Resource IDs: (5612)
 msgid "Criteria"
@@ -3200,7 +3232,7 @@ msgstr "Geef niet meer dan %1 tekens op."
 
 #. Resource IDs: (65535)
 msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
-msgstr ""
+msgstr "Voer posities van wachtwoordtekens in, gescheiden door spaties, komma's of puntkomma's (of * voor volledig wachtwoord)."
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -4395,7 +4427,7 @@ msgstr "Ongeldige parameter"
 
 #. Resource IDs: (3462)
 msgid "Invalid field delimiter: must be within ASCII range."
-msgstr ""
+msgstr "Ongeldig veldscheidingsteken: moet zich binnen het ASCII-bereik bevinden."
 
 #. Resource IDs: (3017)
 #, c-format
@@ -4405,7 +4437,7 @@ msgstr "Ongeldig invoer op regel %d. Het aantal velden, gescheiden door '%c', is
 #. Resource IDs: (4116)
 #, c-format
 msgid "Invalid lock file \"%ls\"."
-msgstr ""
+msgstr "Ongeldig slotbestand \"%ls\"."
 
 #. Resource IDs: (5684)
 msgid "Invalid shortcut ignored."
@@ -5679,6 +5711,9 @@ msgid ""
 "\n"
 "Pressing Cancel stops the password from being copied."
 msgstr ""
+"Als u op OK drukt, wordt het wachtwoord van het geselecteerde item naar het klembord gekopieerd. Het klembord wordt veilig gewist wanneer Wachtwoordveilig is gesloten.\n"
+"\n"
+"Als u op Annuleren drukt, wordt het wachtwoord niet meer gekopieerd."
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"

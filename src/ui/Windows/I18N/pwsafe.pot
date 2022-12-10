@@ -2435,6 +2435,22 @@ msgstr ""
 msgid "Creation date:"
 msgstr ""
 
+#. Resource IDs: (3077)
+msgid "Credit card CVV"
+msgstr ""
+
+#. Resource IDs: (3076)
+msgid "Credit card expiration"
+msgstr ""
+
+#. Resource IDs: (3075)
+msgid "Credit card number"
+msgstr ""
+
+#. Resource IDs: (3078)
+msgid "Credit card PIN"
+msgstr ""
+
 #. Resource IDs: (5612)
 msgid "Criteria"
 msgstr ""

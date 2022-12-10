@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-11-06 22:07+0200\n"
+"PO-Revision-Date: 2022-12-10 12:03+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.2\n"
+"X-Generator: Poedit 3.2.2\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -2078,6 +2091,9 @@ msgid ""
 "* indicates the database has been changed\n"
 "° indicates a database preference has been changed"
 msgstr ""
+"Zmień status od ostatniego zapisu:\n"
+"* oznacza, że baza danych została zmieniona\n"
+"° wskazuje, że preferencje bazy danych zostały zmienione"
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -2601,6 +2617,22 @@ msgstr "Utworzono:"
 #. Resource IDs: (65535)
 msgid "Creation date:"
 msgstr "Data utworzenia:"
+
+#. Resource IDs: (3077)
+msgid "Credit card CVV"
+msgstr "CVV karty kredytowej"
+
+#. Resource IDs: (3076)
+msgid "Credit card expiration"
+msgstr "Wygaśnięcie karty kredytowej"
+
+#. Resource IDs: (3075)
+msgid "Credit card number"
+msgstr "Numer karty kredytowej"
+
+#. Resource IDs: (3078)
+msgid "Credit card PIN"
+msgstr "Kod PIN karty kredytowej"
 
 #. Resource IDs: (5612)
 msgid "Criteria"
@@ -4370,7 +4402,7 @@ msgstr "Nieprawidłowy parametr"
 
 #. Resource IDs: (3462)
 msgid "Invalid field delimiter: must be within ASCII range."
-msgstr ""
+msgstr "Ogranicznik nieprawidłowych pól: musi znajdować się w zakresie ASCII."
 
 #. Resource IDs: (3017)
 #, c-format
@@ -4380,7 +4412,7 @@ msgstr "Nieprawidłowe dane wejściowe na linii %d.  Liczba pól rozdzielonych '
 #. Resource IDs: (4116)
 #, c-format
 msgid "Invalid lock file \"%ls\"."
-msgstr ""
+msgstr "Nieprawidłowy plik blokady \"%ls\"."
 
 #. Resource IDs: (5684)
 msgid "Invalid shortcut ignored."
@@ -7150,7 +7182,7 @@ msgstr "Jest to alias:"
 #. Resource IDs: (5121)
 #, c-format
 msgid "This is the percentage of Window transparency. 0% means normal fully opaque and 100% is totally transparent and invisible. Values greater than 50% are not supported. Note: This only applies to the main dialog window."
-msgstr ""
+msgstr "Jest to procent przezroczystości okna. 0% oznacza normalny, całkowicie nieprzezroczysty i 100% is całkowicie przezroczysty i niewidoczny. Wartości większe niż 50% a nie są obsługiwane. Uwaga: Dotyczy to tylko głównego okna dialogowego."
 
 #. Resource IDs: (61710)
 #, c-format

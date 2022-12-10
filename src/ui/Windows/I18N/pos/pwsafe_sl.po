@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-11-06 22:10+0200\n"
+"PO-Revision-Date: 2022-12-10 12:05+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: sl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.2\n"
+"X-Generator: Poedit 3.2.2\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -2074,6 +2087,9 @@ msgid ""
 "* indicates the database has been changed\n"
 "° indicates a database preference has been changed"
 msgstr ""
+"Stanje spremembe od zadnjega shranjevanja:\n"
+"* označuje, da je bila zbirka podatkov spremenjena\n"
+"° označuje, da je bila nastavitev zbirke podatkov spremenjena"
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -2303,6 +2319,10 @@ msgid ""
 " and:\n"
 "\t %ls\n"
 msgstr ""
+"Primerjajte celotno trenutno zbirko podatkov:\n"
+"\t %ls\n"
+" in:\n"
+"\t %ls\n"
 
 #. Resource IDs: (32092 - Menu, 32092 - MenuEx)
 msgid "Compare entries..."
@@ -2594,6 +2614,22 @@ msgstr "Ustvarjeno dne:"
 msgid "Creation date:"
 msgstr "Datum ustvarjanja:"
 
+#. Resource IDs: (3077)
+msgid "Credit card CVV"
+msgstr "Kreditna kartica CVV"
+
+#. Resource IDs: (3076)
+msgid "Credit card expiration"
+msgstr "Potek kreditne kartice"
+
+#. Resource IDs: (3075)
+msgid "Credit card number"
+msgstr "Številka kreditne kartice"
+
+#. Resource IDs: (3078)
+msgid "Credit card PIN"
+msgstr "PIN kreditne kartice"
+
 #. Resource IDs: (5612)
 msgid "Criteria"
 msgstr "Pogok"
@@ -2766,7 +2802,7 @@ msgstr "Privzeto število shranjenih vnosov zgodovine gesla mora biti med %d in 
 
 #. Resource IDs: (1447)
 msgid "Default password expiration (days)"
-msgstr ""
+msgstr "Privzeto potek gesla (dnevi)"
 
 #. Resource IDs: (5622)
 msgid "Delete"
@@ -3166,7 +3202,7 @@ msgstr "Vnesite največ %1 znakov."
 
 #. Resource IDs: (65535)
 msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
-msgstr ""
+msgstr "Vnesite položaje znakov gesla, ločenih s presledki, vejami ali poldehi (ali * za polno geslo)."
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -4361,7 +4397,7 @@ msgstr "Neveljaven parameter"
 
 #. Resource IDs: (3462)
 msgid "Invalid field delimiter: must be within ASCII range."
-msgstr ""
+msgstr "Neveljavno ločilo polja: mora biti v območju ASCII."
 
 #. Resource IDs: (3017)
 #, c-format
@@ -4371,7 +4407,7 @@ msgstr "Neveljaven vnos v vrstic %d.  Ni pričakovano število polj, ločenih z 
 #. Resource IDs: (4116)
 #, c-format
 msgid "Invalid lock file \"%ls\"."
-msgstr ""
+msgstr "Neveljavna zaklenjena datoteka \"%ls\"."
 
 #. Resource IDs: (5684)
 msgid "Invalid shortcut ignored."
@@ -5644,6 +5680,9 @@ msgid ""
 "\n"
 "Pressing Cancel stops the password from being copied."
 msgstr ""
+"S pritiskom na okno kopirate geslo izbranega elementa v odložišče. Odložišče bo varno počistilo, ko bo varna za geslo zaprta.\n"
+"\n"
+"Če pritisnete »Prekliči«, se geslo ne kopira."
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -7908,7 +7947,7 @@ msgstr "Da (vsaj %d)"
 #. Resource IDs: (4107)
 #, c-format
 msgid "Yes - At least %d from %ls: %ls%ls"
-msgstr ""
+msgstr "Da - vsaj %d iz %ls: %ls%ls"
 
 #. Resource IDs: (1084)
 msgid "Yes:"
@@ -8843,7 +8882,7 @@ msgstr "\tIme: %s; Ime datoteke: %s"
 #. Resource IDs: (5538)
 #, c-format
 msgid "\tNo entries were found containing search string '%ls' %ls"
-msgstr ""
+msgstr "\tNi bilo najdenih vnosov, ki bi vsebovali iskalni niz \"%ls\" %ls"
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
@@ -8866,7 +8905,7 @@ msgstr "\tIme pravilnika gesel '%ls' ni v zbirki podatkov."
 #. Resource IDs: (5539)
 #, c-format
 msgid "\tThe following entries contain search string '%ls' %ls"
-msgstr ""
+msgstr "\tNaslednji vnosi vsebujejo iskalni niz \"%ls\" %ls"
 
 #. Resource IDs: (5522)
 #, c-format

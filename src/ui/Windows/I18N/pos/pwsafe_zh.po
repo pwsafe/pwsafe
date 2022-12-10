@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-11-06 22:14+0200\n"
+"PO-Revision-Date: 2022-12-10 12:08+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: zh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.2\n"
+"X-Generator: Poedit 3.2.2\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -2076,6 +2089,9 @@ msgid ""
 "* indicates the database has been changed\n"
 "° indicates a database preference has been changed"
 msgstr ""
+"更改自上次保存以来的状态：\n"
+"* 表示数据库已更改\n"
+"° 表示数据库首选项已更改"
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -2600,6 +2616,22 @@ msgstr "创建时间:"
 #. Resource IDs: (65535)
 msgid "Creation date:"
 msgstr "创建日期:"
+
+#. Resource IDs: (3077)
+msgid "Credit card CVV"
+msgstr "信用卡CVV"
+
+#. Resource IDs: (3076)
+msgid "Credit card expiration"
+msgstr "信用卡到期"
+
+#. Resource IDs: (3075)
+msgid "Credit card number"
+msgstr "信用卡号"
+
+#. Resource IDs: (3078)
+msgid "Credit card PIN"
+msgstr "信用卡密码"
 
 #. Resource IDs: (5612)
 msgid "Criteria"
@@ -3174,7 +3206,7 @@ msgstr "请输入不多于 %1 个的字符."
 
 #. Resource IDs: (65535)
 msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
-msgstr ""
+msgstr "输入以空格、逗号或分号分隔的密码字符的位置（或 * 表示完整密码）。"
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
