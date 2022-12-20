@@ -1,5 +1,5 @@
 /*
-*  pwsqrencode.mm
+*  QREncode.mm
 *  pwsafe-xcode6
 *
 * Created by Saurav Ghosh on 26/10/17.
