@@ -924,9 +924,9 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
         if (!altDefined) {
           pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_BROWSEURL, tc_dummy);
           pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_BROWSEURLPLUS, tc_dummy);
-          if (!PWSprefs::GetInstance()->GetPref(PWSprefs::AltBrowser).empty())
-            pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_BROWSEURLALT, tc_dummy);
         }
+        pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING, ID_MENUITEM_BROWSEURLALT, tc_dummy);
+
       }
 
       if (bAddSendEmail) {
