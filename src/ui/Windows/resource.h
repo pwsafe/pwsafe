@@ -397,6 +397,10 @@
 #define IDB_UNLOCKED_TRAY_INDEX         559
 #define IDB_COPYPASSWORD_CLASSIC_D      560
 #define IDB_OPTION_PAGES                561
+#define IDB_BROWSEALT_CLASSIC           562
+#define IDB_BROWSEALT_NEW               563
+#define IDB_BROWSEALT_NEW_D             564
+
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -907,7 +911,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        562
+#define _APS_NEXT_RESOURCE_VALUE        565
 #define _APS_NEXT_COMMAND_VALUE         30001
 #define _APS_NEXT_CONTROL_VALUE         1602
 #define _APS_NEXT_SYMED_VALUE           557

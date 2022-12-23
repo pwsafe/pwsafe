@@ -29,7 +29,7 @@
   1. Design new bitmaps (1 x 'Classic', 1 x 'New' designs & 1 x 'New Disabled' 
      design).  All have a background colour of RGB(192, 192, 192).  Note: Create
      the 'New Disabled' from the 'New' by using a program to convert the bitmap
-     to 8-bit greyscale.
+     to 8-bit greyscale. 'Classic' handles disabled by itself.
   2. Add them to PasswordSafe.rc as BITMAPs
   3. Assign new resource Bitmap IDs to these i.e. "IDB_<new name>_CLASSIC",
      "IDB_<new name>_NEW" and "IDB_<new name>_NEW_D"
@@ -39,7 +39,7 @@
      the command is on the menu only (not on the toolbar). The record contains
      a text name for the command, the command ID and bitmap resource IDs as defined above.
   6. Add the new resource ID ("ID_TOOLBUTTON_<new name>" or "ID_MENUITEM_<name>")
-     in PasswordSafe.rc2 "Toolbar Tooltips" section as these are used during ToolBar
+     in res/PasswordSafe2.rc2 "Toolbar Tooltips" section as these are used during ToolBar
      customization to describe the button in the standard Customization dialog.
     
   NOTE: In message handlers, the toolbar control ALWAYS asks for information based 
@@ -99,6 +99,7 @@ const CPWToolBarX::GuiRecord CPWToolBarX::MainGuiInfo[] =
     {L"redo", ID_MENUITEM_REDO, IDB_REDO_CLASSIC, IDB_REDO_NEW, IDB_REDO_NEW_D},
     {L"passwordsubset", ID_MENUITEM_PASSWORDSUBSET, IDB_PASSWORDCHARS_CLASSIC, IDB_PASSWORDCHARS_NEW, IDB_PASSWORDCHARS_NEW_D},
     {L"browse+autotype", ID_MENUITEM_BROWSEURLPLUS, IDB_BROWSEURLPLUS_CLASSIC, IDB_BROWSEURLPLUS_NEW, IDB_BROWSEURLPLUS_NEW_D},
+    {L"browsealt", ID_MENUITEM_BROWSEURLALT, IDB_BROWSEALT_CLASSIC, IDB_BROWSEALT_NEW, IDB_BROWSEALT_NEW_D},
     {L"runcommand", ID_MENUITEM_RUNCOMMAND, IDB_RUNCMD_CLASSIC, IDB_RUNCMD_NEW, IDB_RUNCMD_NEW_D},
     {L"sendemail", ID_MENUITEM_SENDEMAIL, IDB_SENDEMAIL_CLASSIC, IDB_SENDEMAIL_NEW, IDB_SENDEMAIL_NEW_D},
     {L"listtree", ID_TOOLBUTTON_LISTTREE, IDB_LISTTREE_CLASSIC, IDB_LISTTREE_NEW, IDB_LISTTREE_NEW_D},
@@ -165,7 +166,7 @@ const CPWToolBarX::GuiRecord CPWToolBarX::OtherGuiInfo[] =
 IMPLEMENT_DYNAMIC(CPWToolBarX, CToolBar)
 
 CPWToolBarX::CPWToolBarX()
-:  m_bitmode(1), m_iBrowseURL_BM_offset(-1), m_iSendEmail_BM_offset(-1)
+:  m_bitmode(1)
 {
   m_pOriginalTBinfo = new TBBUTTON[_countof(MainGuiInfo)];
   m_iNum_Bitmaps = _countof(MainGuiInfo) + _countof(OtherGuiInfo);
@@ -298,15 +299,6 @@ void CPWToolBarX::Init(const int NumBits, bool bRefresh)
 
   int iNum_Main = _countof(MainGuiInfo);
   int iNum_Other = _countof(OtherGuiInfo);
-
-  for (i = 0; i < iNum_Main; i++) {
-    if (MainGuiInfo[i].classicBM == IDB_BROWSEURL_CLASSIC) {
-      m_iBrowseURL_BM_offset = i;
-      break;
-    }
-  }
-
-  m_iSendEmail_BM_offset = iNum_Main;  // First of the "Others"
 
   SetupImageList(MainGuiInfo, &GuiRecord::GetClassicBM, NULL, iNum_Main, 0);
   SetupImageList(OtherGuiInfo, &GuiRecord::GetClassicBM, NULL, iNum_Other, 0);

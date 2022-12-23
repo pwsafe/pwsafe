@@ -32,8 +32,6 @@ public:
   void Reset();
 
   CString GetButtonString() const;
-  int GetBrowseURLImageIndex() const {return m_iBrowseURL_BM_offset;}
-  int GetSendEmailImageIndex() {return m_iSendEmail_BM_offset;}
   void MapControlIDtoImage(ID2ImageMap &IDtoImages);
   void RefreshImages();
 
@@ -90,7 +88,6 @@ private:
   int m_iNum_Bitmaps, m_iNumDefaultButtons, m_NumBits;
   int m_toolbarMode, m_bitmode;
   bool m_bIsDefault;
-  int m_iBrowseURL_BM_offset, m_iSendEmail_BM_offset;
 };
 
 /**
