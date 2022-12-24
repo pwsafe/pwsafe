@@ -535,14 +535,13 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
       mainTBCtrl.EnableButton(ID_MENUITEM_SENDEMAIL, TRUE);
     }
 
-    if (pci_entry == NULL || pci_entry->IsFieldValueEmpty(CItemData::URL, pbci) ||
-        pci_entry->IsURLEmail(pbci)) {
-      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, FALSE);
-      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURLPLUS, FALSE);
-    } else {
-      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, TRUE);
-      mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURLPLUS, TRUE);
-    }
+    bool isBrowsable = pci_entry != nullptr && !pci_entry->IsFieldValueEmpty(CItemData::URL, pbci) && !pci_entry->IsURLEmail(pbci);
+    mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURL, isBrowsable);
+    mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURLPLUS, isBrowsable);
+
+    bool isAltBrowsable = isBrowsable && !PWSprefs::GetInstance()->GetPref(PWSprefs::AltBrowser).empty();
+    mainTBCtrl.EnableButton(ID_MENUITEM_BROWSEURLALT, isAltBrowsable);
+
 
     bool bDragBarState = PWSprefs::GetInstance()->GetPref(PWSprefs::ShowDragbar);
     if (bDragBarState) {
