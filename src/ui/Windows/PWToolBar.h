@@ -32,7 +32,7 @@ public:
   void Reset();
 
   CString GetButtonString() const;
-  void MapControlIDtoImage(ID2ImageMap &IDtoImages);
+  static void MapControlIDtoImage(ID2ImageMap &IDtoImages);
   void RefreshImages();
 
 protected:
