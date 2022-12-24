@@ -480,6 +480,7 @@ static BOOL SetupRecentEntryMenu(DboxMain *pDbx, CMenu *&pMenu, const int i, con
     brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
                             ID_MENUITEM_TRAYBROWSE1 + i,
                             cs_text);
+    if (brc == 0) goto exit;
     ipos++;
     cs_text.LoadString(IDS_TRAYBROWSEPLUS);
     brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
@@ -487,6 +488,15 @@ static BOOL SetupRecentEntryMenu(DboxMain *pDbx, CMenu *&pMenu, const int i, con
                       cs_text);
     if (brc == 0) goto exit;
     ipos++;
+
+    if (!PWSprefs::GetInstance()->GetPref(PWSprefs::AltBrowser).empty()) {
+      cs_text.LoadString(IDS_TRAYBROWSEALT);
+      brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
+                     ID_MENUITEM_TRAYBROWSEALT1 + i,
+                              cs_text);
+      if (brc == 0) goto exit;
+      ipos++;
+    }
   }
 
   if (!pci->IsFieldValueEmpty(CItemData::EMAIL, pbci) || 

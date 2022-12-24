@@ -457,6 +457,7 @@
 #define IDS_URLCOPIED                   5676
 #define IDS_AUTOTYPECOPIED              5677
 #define IDS_RUNCMDCOPIED                5678
+#define IDS_TRAYBROWSEALT               5679
 #define IDS_COL_MENUITEM                5680
 #define IDS_COL_SHORTCUT                5681
 #define IDS_SHCT_TOOLTIP                5682

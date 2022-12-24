@@ -161,12 +161,19 @@ void DboxMain::OnUpdateTrayCopyNotes(CCmdUI *)
 void DboxMain::OnTrayBrowse(UINT nID)
 {
   ASSERT(((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX)) ||
-         ((nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX)));
+         ((nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX)) ||
+         ((nID >= ID_MENUITEM_TRAYBROWSEALT1) && (nID <= ID_MENUITEM_TRAYBROWSEALTMAX)));
 
   CItemData ci;
   const bool bDoAutotype = (nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && 
                            (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX);
-  if (!bDoAutotype) {
+  const bool bUseAltBrowser = (nID >= ID_MENUITEM_TRAYBROWSEALT1) && (nID <= ID_MENUITEM_TRAYBROWSEALTMAX) &&
+                              !PWSprefs::GetInstance()->GetPref(PWSprefs::AltBrowser).empty();
+
+  if (bUseAltBrowser) {
+    if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYBROWSEALT1, ci))
+      return;
+  } else if (!bDoAutotype) {
     if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYBROWSE1, ci))
       return;
   } else {
@@ -190,6 +197,9 @@ void DboxMain::OnTrayBrowse(UINT nID)
                                   sx_notes, sx_url, sx_email,
                                   vactionverboffsets);
 
+    if (bUseAltBrowser)
+      sx_url = L"[alt] " + sx_url; // LaunchBrowser can handle > 1 "[alt]", so no need to check if already there.
+
     LaunchBrowser(sx_url.c_str(), sxAutotype, vactionverboffsets, bDoAutotype);
 
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
@@ -207,12 +217,20 @@ void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
   int nID = pCmdUI->m_nID;
 
   ASSERT(((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX)) ||
-         ((nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX)));
+         ((nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX)) ||
+         ((nID >= ID_MENUITEM_TRAYBROWSEALT1) && (nID <= ID_MENUITEM_TRAYBROWSEALTMAX)));
 
   CItemData ci, *pbci(nullptr);
+
   const bool bDoAutotype = (nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && 
                            (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX);
-  if (!bDoAutotype) {
+  const bool bUseAltBrowser = (nID >= ID_MENUITEM_TRAYBROWSEALT1) && (nID <= ID_MENUITEM_TRAYBROWSEALTMAX) &&
+    !PWSprefs::GetInstance()->GetPref(PWSprefs::AltBrowser).empty();
+
+  if (bUseAltBrowser) {
+    if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYBROWSEALT1, ci))
+      return;
+  } else if (!bDoAutotype) {
     if (!GetRUEntry(m_RUEList, nID - ID_MENUITEM_TRAYBROWSE1, ci))
       return;
   } else {
@@ -226,15 +244,19 @@ void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
   // Has it an embedded URL
   if (ci.IsFieldValueEmpty(CItemData::URL, pbci)) {
     pCmdUI->Enable(FALSE);
-  } else {
+  } else { // we have a URL
     const bool bIsEmail = ci.IsURLEmail(pbci);
-    MapMenuShortcutsIter iter;
-    if (!bIsEmail && (nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX))
-      iter = m_MapMenuShortcuts.find(ID_MENUITEM_BROWSEURL);
-    else if (!bIsEmail && (nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX))
-      iter = m_MapMenuShortcuts.find(ID_MENUITEM_BROWSEURLPLUS);
-    else if (bIsEmail && (nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX))
-      iter = m_MapMenuShortcuts.find(ID_MENUITEM_SENDEMAIL);
+    MapMenuShortcutsIter iter = m_MapMenuShortcuts.end();
+    if (!bIsEmail) {
+      if ((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX))
+        iter = m_MapMenuShortcuts.find(ID_MENUITEM_BROWSEURL);
+      else if ((nID >= ID_MENUITEM_TRAYBROWSEPLUS1) && (nID <= ID_MENUITEM_TRAYBROWSEPLUSMAX))
+        iter = m_MapMenuShortcuts.find(ID_MENUITEM_BROWSEURLPLUS);
+      else if ((nID >= ID_MENUITEM_TRAYBROWSEALT1) && (nID <= ID_MENUITEM_TRAYBROWSEALTMAX))
+        iter = m_MapMenuShortcuts.find(ID_MENUITEM_BROWSEURLALT);
+    } else // bIsEmail
+      if ((nID >= ID_MENUITEM_TRAYBROWSE1) && (nID <= ID_MENUITEM_TRAYBROWSEMAX))
+        iter = m_MapMenuShortcuts.find(ID_MENUITEM_SENDEMAIL);
 
     ASSERT(iter != m_MapMenuShortcuts.end());
     CString cs_text = iter->second.name.c_str();
@@ -243,7 +265,7 @@ void DboxMain::OnUpdateTrayBrowse(CCmdUI *pCmdUI)
       cs_text = cs_text.Left(nPos);
 
     pCmdUI->SetText(cs_text);
-  }
+  } // have URL
 }
 
 void DboxMain::OnTrayCopyEmail(UINT nID)
