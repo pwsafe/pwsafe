@@ -15,6 +15,8 @@ CONFIG?=unicodedebug
 ifeq ($(PLATFORM),FreeBSD)
 WX2=/usr/local/bin/wxgtk2y-2.8-config
 WX3=/usr/local/bin/wxgtk2u-3.0-config
+else ifeq ($(PLATFORM),OpenBSD)
+WX3=/usr/local/bin/wx-config
 else
 WX2=/usr/bin/wx-config
 WX3=/usr/bin/wx-config-3.0
@@ -57,7 +59,7 @@ OUTPUTPATH=GCCDebug
 OBJECTPATH=GCCDebug
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=yes --unicode=no --libs` -lcore -los -lcore -luuid -lXtst -lX11  -lcurl -lssl -lmagic -l$(YBPERS_LIBS) ${LIBCXX_LD_EXTRA_FLAGS}
+LIBS=`$(WX_CONFIG) --debug=yes --unicode=no --libs std,aui` -lcore -los -lcore -luuid -lXtst -lX11  -lcurl -lssl -lmagic -l$(YBPERS_LIBS) ${LIBCXX_LD_EXTRA_FLAGS}
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O0
@@ -84,7 +86,7 @@ OUTPUTPATH=GCCRelease
 OBJECTPATH=GCCRelease
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=no --unicode=no --inplace --libs` -lcore -los -lcore -luuid -lXtst -lX11 -lcurl -lssl -lmagic -l$(YBPERS_LIBS)
+LIBS=`$(WX_CONFIG) --debug=no --unicode=no --inplace --libs std,aui` -lcore -los -lcore -luuid -lXtst -lX11 -lcurl -lssl -lmagic -l$(YBPERS_LIBS)
 LINKERFLAGS=
 WARNINGFLAGS=-Wall
 OPTFLAGS=-O
@@ -111,7 +113,7 @@ OUTPUTPATH=GCCUnicodeDebug
 OBJECTPATH=GCCUnicodeDebug
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --libs` -lcore -los -lcore -l$(YBPERS_LIBS)
+LIBS=`$(WX_CONFIG) --debug=yes --unicode=yes --inplace --libs std,aui` -lcore -los -lcore -l$(YBPERS_LIBS)
 ifneq ($(findstring Darwin, $(shell uname -s)), Darwin)
 		LIBS += -luuid -lXtst -lX11 -lcurl -lssl -lmagic
 		XERCESLIBFLAGS=-lxerces-c
@@ -142,7 +144,7 @@ OUTPUTPATH=GCCUnicodeRelease
 OBJECTPATH=GCCUnicodeRelease
 BUILDPATHS=$(OBJECTPATH)
 PROGRAM=pwsafe
-LIBS=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --libs` -lcore -los -lcore -l$(YBPERS_LIBS)
+LIBS=`$(WX_CONFIG) --debug=no --unicode=yes --inplace --libs std,aui` -lcore -los -lcore -l$(YBPERS_LIBS)
 ifneq ($(findstring Darwin, $(shell uname -s)), Darwin)
 		LIBS += -luuid -lXtst -lX11 -lcurl -lssl -lmagic
 		XERCESLIBFLAGS=-lxerces-c
@@ -211,7 +213,9 @@ SOURCES= PasswordSafeFrame.cpp \
 	PWFiltersBoolDlg.cpp PWFiltersStringDlg.cpp PWFiltersDCADlg.cpp \
 	PWFiltersIntegerDlg.cpp PWFiltersStatusDlg.cpp PWFiltersTypeDlg.cpp \
 	PWFiltersDateDlg.cpp PWFiltersMediaDlg.cpp PWFiltersPasswordDlg.cpp \
-	ManageFiltersTable.cpp SetDatabaseIdDlg.cpp
+	ManageFiltersTable.cpp SetDatabaseIdDlg.cpp DnDFile.cpp QueryCancelDlg.cpp \
+	DnDPWSafeObject.cpp DnDSupport.cpp DnDDropTarget.cpp SetFiltersDlg.cpp \
+	ManageFiltersDlg.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)

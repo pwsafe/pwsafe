@@ -11,6 +11,8 @@ else ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
 include Makefile.macos
 else ifeq ($(findstring FreeBSD, $(shell uname -s)), FreeBSD)
 include Makefile.freebsd
+else ifeq ($(findstring OpenBSD, $(shell uname -s)), OpenBSD)
+include Makefile.openbsd
 else
 $(error "Unsupported OS or unable to determine OS")
 endif

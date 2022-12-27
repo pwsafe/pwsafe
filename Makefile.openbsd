@@ -1,0 +1,148 @@
+
+# Toplevel Makefile for OpenBSD build of PasswordSafe
+
+# Since we use wxWidgets 3.x, while some distros still provide 2.8
+# The following need to be set to point to the local build of wxWidgets.
+# Alternately, you can just set WX_CONFIG in your shell environment
+# export WX_CONFIG=$(HOME)/src/wxWidgets-3.0.2/wx-config
+
+# version numbers are defined in version.wx
+include version.wx
+export VER_MAJOR
+export VER_MINOR
+export VER_REV
+export VER_SPECIAL
+
+
+export RELEASENUM := $(VER_MAJOR).$(VER_MINOR)
+export RELEASE_SPECIAL := $(VER_SPECIAL)
+export RELEASENAME := $(RELEASENUM)$(RELEASE_SPECIAL)
+
+.PHONY:    all clean debug-clean release-clean debug release \
+	unicodedebug unicoderelease deb rpm rpmbuild tar signatures \
+	dist sha1sums upload upload-sf upload-src-sf upload-github git-tag I18N \
+	help test debug-test release-test
+
+RELEASEDIR := ./Releases/
+
+PKG_BASE := pwsafe
+SRC_TGZ = $(PKG_BASE)-$(RELEASENAME)-src.tgz
+
+MKDIR := mkdir -p
+RM := /bin/rm -rf
+GIT := git
+GZIP := gzip
+ECHO := /bin/echo
+
+export NO_YUBI := yes
+
+GPG := /usr/local/bin/gpg
+GPG_SIGN := $(GPG) --detach-sign --default-key $(GPG_KEY)
+SIGN_CMD := $(foreach file, $(wildcard $(RELEASEDIR)/*$(RELEASENAME)*), $(GPG_SIGN) $(file); )
+
+SHA1SUM := /usr/bin/sha1
+SF_UPLOAD_CMD := /usr/local/bin/rsync -avP -e ssh
+SF_UPLOAD_DST := $(SF_UPLOAD_ROOT)/Linux-BETA/$(RELEASENUM)
+RELTAG = wx$(subst .,_,$(RELEASENAME))
+
+#TODO: integrate with qr-code-generator: https://www.nayuki.io/page/qr-code-generator-library
+export NO_QR = 1
+
+export CPPFLAGS += -std=c++14
+export CXXFLAGS += --stdlib=libc++ -I/usr/local/include -std=c++14
+export CFLAGS += -I/usr/local/include
+export CC = clang
+export CXX = clang++
+export CPP = clang++
+export PLATFORM = OpenBSD
+
+all: I18N unicodedebug unicoderelease
+
+unicodedebug unicoderelease:
+	$(MAKE) -C src/os/unix $@
+	$(MAKE) -C src/core $@
+	$(MAKE) -C src/ui/wxWidgets CONFIG=$@
+
+
+debug:
+	$(MAKE) unicodedebug
+
+release:
+	$(MAKE) unicoderelease
+
+clean: debug-clean release-clean
+
+debug-clean:
+	$(MAKE) CONFIG=unicodedebug -C src/os/unix clean
+	$(MAKE) CONFIG=unicodedebug -C src/core clean
+	$(MAKE) CONFIG=unicodedebug -C src/ui/wxWidgets clean
+	$(MAKE) CONFIG=unicodedebug -C src/test clean
+
+release-clean:
+	$(MAKE) CONFIG=unicoderelease -C src/os/unix clean
+	$(MAKE) CONFIG=unicoderelease -C src/core clean
+	$(MAKE) CONFIG=unicoderelease -C src/ui/wxWidgets clean
+	$(MAKE) CONFIG=unicoderelease -C src/test clean
+
+# dist prepares stuff for upload - deprecated for Linux, until
+# we find an elegant way to tell deb and rpm distros apart.
+dist: 
+	@$(ECHO) "Run 'make deb' or 'make rpm' to build the respective package"
+
+# rpmbuild is called as part of the rpmbuild invocation from install/rpm/Makefile,
+# which we call via 'make rpm' from here.
+rpmbuild: release I18N help
+
+tar:
+	@$(MKDIR)  $(RELEASEDIR)
+	@$(GIT) archive --format=tar.gz \
+	--prefix=$(PKG_BASE)-$(RELEASENAME)/ \
+	-o $(RELEASEDIR)/$(SRC_TGZ) \
+	HEAD
+	@echo "Done."
+
+sha1sums:
+	(cd $(RELEASEDIR); $(SHA1SUM) *$(RELEASENAME)*)
+
+signatures:
+	$(SIGN_CMD)
+
+upload: upload-sf upload-src-sf upload-github
+
+upload-sf:
+	$(SF_UPLOAD_CMD) \
+	$(wildcard $(RELEASEDIR)/passwordsafe-*$(RELEASENAME)*) \
+	$(wildcard $(RELEASEDIR)/pwsafe-*$(RELEASENAME)*) \
+	$(SF_UPLOAD_DST)
+
+upload-github:
+	@echo $@ TBD
+
+# Uploading source is a separate target as we only want to do this once,
+# as opposed to uploading the compiled package, which we need to do per distro.
+upload-src-sf:
+	$(SF_UPLOAD_CMD) \
+	$(wildcard $(RELEASEDIR)/pwsafe-*$(RELEASENAME)-src*) \
+	$(SF_UPLOAD_DST)
+
+git-tag:
+	$(GIT) tag -u $(GPG_KEY) -m "tag wx $(RELEASENAME) release" $(RELEASENAME)
+
+I18N:
+	$(MAKE) -C src/ui/wxWidgets/I18N mos
+
+help:
+	$(MAKE) -C help
+
+test: debug-test
+
+debug-test:
+	$(MAKE) CONFIG=unicodedebug -C src/test
+
+release-test:
+	$(MAKE) CONFIG=unicoderelease -C src/test
+
+
+# Local variables:
+# mode: makefile
+# End:
