@@ -370,8 +370,8 @@ msgstr ""
 "о распространении исходного кода."
 
 #: src/ui/wxWidgets/AboutDlg.cpp:146
-msgid "Copyright (c) 2003-2022 Rony Shapiro"
-msgstr "Copyright (c) 2003-2022 Rony Shapiro"
+msgid "Copyright (c) 2003-2023 Rony Shapiro"
+msgstr "Copyright (c) 2003-2023 Rony Shapiro"
 
 #: src/ui/wxWidgets/AboutDlg.cpp:153 src/ui/wxWidgets/ManageFiltersDlg.cpp:399
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:363

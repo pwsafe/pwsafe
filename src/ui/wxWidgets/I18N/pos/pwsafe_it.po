@@ -60,8 +60,8 @@ msgid "See LICENSE for open source details."
 msgstr "Per dettagli sul codice sorgente, si veda la LICENZA."
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:175
-msgid "Copyright (c) 2003-2022 Rony Shapiro"
-msgstr "Copyright (c) 2003-2022 di Rony Shapiro"
+msgid "Copyright (c) 2003-2023 Rony Shapiro"
+msgstr "Copyright (c) 2003-2023 di Rony Shapiro"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:182
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:433
