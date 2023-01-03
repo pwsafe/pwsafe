@@ -2,8 +2,7 @@ set (TEST_SRCS
   AESTest.cpp AliasShortcutTest.cpp FileV3Test.cpp ItemAttTest.cpp OSTest.cpp BlowFishTest.cpp
   FileV4Test.cpp ItemDataTest.cpp SHA256Test.cpp CommandsTest.cpp ItemFieldTest.cpp StringXTest.cpp
   coretest.cpp HMAC_SHA256Test.cpp KeyWrapTest.cpp TwoFishTest.cpp AuxParseTest.cpp UtilTest.cpp
-  FileEncDecTest.cpp
-  )
+  FileEncDecTest.cpp ImportTextTest.cpp)
 
 if (WIN32)
   list (APPEND TEST_SRCS ../core/core.rc2)
@@ -15,6 +14,7 @@ endif(WIN32)
 file (MAKE_DIRECTORY "data")
 file (COPY "data/image1.jpg" DESTINATION "data")
 file (COPY "data/text1.txt" DESTINATION "data")
+file (COPY "data/import-text-unit-test1.txt" DESTINATION "data")
 
 add_executable(coretest ${TEST_SRCS})
 if (MSVC)
