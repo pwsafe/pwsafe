@@ -995,7 +995,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                     string::npos : to - from));
     vector<string>::iterator it(std::find(vs_Header.begin(), vs_Header.end(), token));
     if (it != vs_Header.end()) {
-      i_Offset[it - vs_Header.begin()] = itoken;
+      i_Offset[std::distance(vs_Header.begin(), it)] = itoken;
       num_found++;
     }
     else if ( token == CItemData::EngFieldName(fieldMap[itoken].itemField) ) {
