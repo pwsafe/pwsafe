@@ -4,8 +4,7 @@ triggers:
     - action: email
       condition: failure
       to: build@pwsafe.org
-sources: 
-- https://github.com/pwsafe/pwsafe.git
+
 artifacts:
 - pwsafe/build/pwsafe-debian9-xx-amd64.deb
 tasks:
