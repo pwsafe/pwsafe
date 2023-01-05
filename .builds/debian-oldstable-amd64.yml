@@ -6,7 +6,9 @@ triggers:
       to: build@pwsafe.org
 
 artifacts:
-- pwsafe/build/pwsafe-debian9-xx-amd64.deb
+- pwsafe/build/pwsafe-debianoldstable-xx-amd64.deb
+sources:
+    - https://git.sr.ht/~ronys/pwsafe
 tasks:
     - setup: |
         sudo apt-get update
@@ -28,4 +30,4 @@ tasks:
         cd pwsafe/build
         make
         cpack -G DEB ..
-        mv *.deb pwsafe-debian9-xx-amd64.deb
+        mv *.deb pwsafe-debianoldstable-xx-amd64.deb

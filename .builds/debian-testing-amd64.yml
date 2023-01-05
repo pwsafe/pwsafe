@@ -5,7 +5,7 @@ triggers:
       condition: failure
       to: build@pwsafe.org
 sources: 
-- https://github.com/pwsafe/pwsafe.git
+    - https://git.sr.ht/~ronys/pwsafe
 tasks:
     - setup: |
         sudo apt-get update
