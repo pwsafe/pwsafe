@@ -584,9 +584,10 @@ int PWScore::WriteXMLFile(const StringX &filename,
     // contained within it
     std::vector<StringX> vsubemptygroups;
     if (!exportgroup.empty()) {
-      for (size_t n = 0; n < m_vEmptyGroups.size(); n++) {
-        if (m_vEmptyGroups[n].substr(0, exportgroup.length()) == StringX(exportgroup.c_str()))
-          vsubemptygroups.push_back(m_vEmptyGroups[n]);
+      for (auto& m_vEmptyGroup : m_vEmptyGroups)
+      {
+        if (m_vEmptyGroup.substr(0, exportgroup.length()) == StringX(exportgroup.c_str()))
+          vsubemptygroups.push_back(m_vEmptyGroup);
       }
     } else {
       vsubemptygroups = m_vEmptyGroups;
@@ -597,8 +598,9 @@ int PWScore::WriteXMLFile(const StringX &filename,
     // Don't write out XML empty groups if there aren't any!
     if (!vsubemptygroups.empty()) {
       os << "\t<EmptyGroups>" << endl;
-      for (size_t n = 0; n < vsubemptygroups.size(); n++) {
-        stringT sTemp = PWSUtil::GetSafeXMLString(vsubemptygroups[n]);
+      for (auto& vsubemptygroup : vsubemptygroups)
+      {
+        stringT sTemp = PWSUtil::GetSafeXMLString(vsubemptygroup);
         os << "\t\t<EGName>" << sTemp << "</EGName>" << endl;
       }
       os << "\t</EmptyGroups>" << endl << endl;
@@ -850,6 +852,18 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   stringT cs_error;
   CUTF8Conv conv;
   pcommand = nullptr;
+  const char pTab[] = "\t";
+  char pSeps[] = " ";
+
+  if (fieldSeparator > 0 && fieldSeparator <= 127) {
+    // we parse header as ASCII, so separator must be plain ASCII too
+    pSeps[0] = static_cast<char>(fieldSeparator);
+  }
+  else {
+    LoadAString(strError, IDSC_IMPORTINVALIDDELIMITER);
+    rpt.WriteLine(strError);
+    return FAILURE;
+  }
 
   // We need to use FOpen as the file name/file path may contain non-Latin
   // characters even though we need the file to contain ASCII and UTF-8 characters
@@ -898,8 +912,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   size_t hdrlen;
   conv.ToUTF8(cs_hdr.c_str(), hdr, hdrlen);
   const string s_hdr(reinterpret_cast<const char *>(hdr));
-  const char pTab[] = "\t";
-  char pSeps[] = " ";
 
   // Order of fields determined in CItemData::GetPlaintext() and must be same as in BuildHeader()
   enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
@@ -909,19 +921,9 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                NUMFIELDS};
 
   int i_Offset[NUMFIELDS];
-  for (int i = 0; i < NUMFIELDS; i++) {
-    i_Offset[i] = -1;
-  }
-
-
-  if (fieldSeparator > 0 && fieldSeparator <= 127) {
-    // we parse header as ASCII, so separator must be plain ASCII too
-    pSeps[0] = static_cast<char>(fieldSeparator);
-  }
-  else {
-    LoadAString(strError, IDSC_IMPORTINVALIDDELIMITER);
-    rpt.WriteLine(strError);
-    return FAILURE;
+  for (int& i : i_Offset)
+  {
+    i = -1;
   }
 
   // Capture individual column titles:
@@ -952,7 +954,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   // Capture individual column titles from s_header:
   // Set i_Offset[field] to column in which field is found in text file,
   // or leave at -1 if absent from text.
-  unsigned num_found = 0;
+  unsigned num_cols_found = 0;
   int itoken = 0;
 
   // This makes things compatible with older versions where column tiles in EXPORTHEADER
@@ -996,7 +998,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     vector<string>::iterator it(std::find(vs_Header.begin(), vs_Header.end(), token));
     if (it != vs_Header.end()) {
       i_Offset[std::distance(vs_Header.begin(), it)] = itoken;
-      num_found++;
+      num_cols_found++;
     }
     else if ( token == CItemData::EngFieldName(fieldMap[itoken].itemField) ) {
       // Column header might not match if it was exported from a version where EXPORTHEADER didn't
@@ -1006,7 +1008,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       // alternative to searching, as in above if block.
       ASSERT( itoken == fieldMap[itoken].hdrField );
       i_Offset[ fieldMap[itoken].hdrField ] = itoken;
-      num_found++;
+      num_cols_found++;
     }
     else {
       StringX sh2;
@@ -1017,7 +1019,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     itoken++;
   } while (to != string::npos);
 
-  if (num_found == 0) {
+  if (num_cols_found == 0) {
     LoadAString(strError, IDSC_IMPORTNOCOLS);
     rpt.WriteLine(strError);
     return FAILURE;
@@ -1037,8 +1039,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     return FAILURE;
   }
 
-  if (num_found < vs_Header.size()) {
-    Format(cs_error, IDSC_IMPORTHDR, num_found);
+  if (num_cols_found < vs_Header.size()) {
+    Format(cs_error, IDSC_IMPORTHDR, num_cols_found);
     rpt.WriteLine(cs_error);
     LoadAString(cs_error, bImportPSWDsOnly ? IDSC_IMPORTKNOWNHDRS2 : IDSC_IMPORTKNOWNHDRS);
     rpt.WriteLine(cs_error, bImportPSWDsOnly);
@@ -1112,14 +1114,14 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       size_t nextchar = slinebuf.find_first_of(fieldSeparator, startpos);
       if (nextchar == StringX::npos)
         nextchar = slinebuf.size();
-      if (nextchar > 0) {
+      if (nextchar >= 0) {
         if (itoken != i_Offset[NOTES]) {
           const StringX tsx(slinebuf.substr(startpos, nextchar - startpos));
           tokens.push_back(tsx.c_str());
         } else {
           // Notes field which may be double-quoted, and
           // if they are, they may span more than one line.
-          stringT note(slinebuf.substr(startpos).c_str());
+          stringT note(slinebuf.substr(startpos).c_str(), nextchar - startpos);
           size_t first_quote = note.find_first_of('\"');
           size_t last_quote = note.find_last_of('\"');
           if (first_quote == last_quote && first_quote != stringT::npos) {
@@ -1150,7 +1152,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
             } while (!noteClosed);
           } // multiline note processed
           tokens.push_back(note);
-          break;
         } // Notes handling
       } // nextchar > 0
       startpos = nextchar + 1; // too complex for the 'for statement'
@@ -1158,8 +1159,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     } // tokenization for loop
 
     // Sanity check
-    if (tokens.size() < num_found) {
-      Format(cs_error, IDSC_IMPORTLINESKIPPED, numlines, tokens.size(), num_found);
+    if (tokens.size() < num_cols_found) {
+      Format(cs_error, IDSC_IMPORTLINESKIPPED, numlines, tokens.size(), num_cols_found);
       rpt.WriteLine(cs_error);
       numSkipped++;
       continue;
@@ -1693,8 +1694,9 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
         }
         // Construct the parent groups
         sx_Parent_Groups = _T("");
-        for (size_t i = 0; i < pgs.size(); i++) {
-          sx_Parent_Groups = sx_Parent_Groups + pgs[i] + dot;
+        for (auto& pg : pgs)
+        {
+          sx_Parent_Groups = sx_Parent_Groups + pg + dot;
         }
       }
 
@@ -1993,8 +1995,9 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
                CTIME, ATIME, PMTIME, XTIME, ATTACHMENTDESCR, ATTACHMENT, NUMFIELDS};
 
   int i_Offset[NUMFIELDS];
-  for (int i = 0; i < NUMFIELDS; i++) {
-    i_Offset[i] = -1;
+  for (int& i : i_Offset)
+  {
+    i = -1;
   }
 
   // Capture individual column titles:

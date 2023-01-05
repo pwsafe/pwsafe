@@ -24,12 +24,15 @@ protected:
   ImportTextTest(); // to init members
   PWScore core;
     const stringT testFile1 = L"import-text-unit-test1.txt";
+    const stringT testFile2 = L"import-text-unit-test2.csv";
 
   
   void SetUp();
   void TearDown();
 
   int numImported, numSkipped, numPWHErrors, numRenamed, numWarnings, numNoPolicy;
+
+  void importText(const stringT& fname, const TCHAR fieldSeparator, int expectedImports);
 };
 
 ImportTextTest::ImportTextTest()
@@ -42,6 +45,7 @@ void ImportTextTest::SetUp()
 {
   ASSERT_TRUE(pws_os::chdir(L"data"));
   ASSERT_TRUE(pws_os::FileExists(testFile1));
+  ASSERT_TRUE(pws_os::FileExists(testFile2));
 }
 
 void ImportTextTest::TearDown()
@@ -49,13 +53,16 @@ void ImportTextTest::TearDown()
   ASSERT_TRUE(pws_os::chdir(L".."));
 }
 
-TEST_F(ImportTextTest, test1)
+void ImportTextTest::importText(const stringT& fname, const TCHAR fieldSeparator, int expectedImports)
 {
   stringT errorStr;
   CReport rpt;
   Command* cmd(nullptr);
 
-  int status = core.ImportPlaintextFile(L"", testFile1.c_str(), L'\t',
+  numImported = numSkipped = numPWHErrors = numRenamed = numWarnings = numNoPolicy = 0;
+  core.ReInit();
+
+  int status = core.ImportPlaintextFile(L"", fname.c_str(), fieldSeparator,
     L'\xbb', false,
     errorStr,
     numImported, numSkipped,
@@ -64,7 +71,7 @@ TEST_F(ImportTextTest, test1)
     rpt, cmd);
 
   ASSERT_EQ(status, PWScore::SUCCESS);
-  EXPECT_EQ(numImported, 2);
+  EXPECT_EQ(numImported, expectedImports);
   EXPECT_EQ(numSkipped, 0);
   EXPECT_EQ(numPWHErrors, 0);
   EXPECT_EQ(numRenamed, 0);
@@ -74,6 +81,41 @@ TEST_F(ImportTextTest, test1)
 
   status = core.Execute(cmd);
   EXPECT_EQ(status, 0);
+}
+
+
+TEST_F(ImportTextTest, test1)
+{
+  // this test is of a file that was created directly via the text export function.
+
+  importText(testFile1, L'\t', 2);
+
+  // now test that we've read the data correctly
+  auto p1 = core.Find(L"a.b.c", L"d-level-title", L"d-user");
+  EXPECT_NE(p1, core.GetEntryEndIter());
+  auto item1 = core.GetEntry(p1);
+  EXPECT_EQ(item1.GetPassword(), L"d-password");
+  EXPECT_EQ(item1.GetNotes(), L"line 1 of 3\r\nline 2 of 3\r\nline 3 of 3");
+
+
+  auto p2 = core.Find(L"", L"toplevel-title1", L"toplevel user");
+  EXPECT_NE(p2, core.GetEntryEndIter());
+  auto item2 = core.GetEntry(p2);
+  EXPECT_EQ(item2.GetPassword(), L"toplevel-password");
+  EXPECT_EQ(item2.GetURL(), L"toplevelurl.com");
+  EXPECT_EQ(item2.GetEmail(), L"tom@email.com");
+  EXPECT_EQ(item2.GetNotes(), L"simple one-line note");
+}
+
+TEST_F(ImportTextTest, test2)
+{
+  // same file as test1, except:
+  // - column order was mixed up
+  // - some columns were removed
+  // - comma instead of tab separated
+
+  importText(testFile2, L',', 2);
+
   // now test that we've read the data correctly
   auto p1 = core.Find(L"a.b.c", L"d-level-title", L"d-user");
   EXPECT_NE(p1, core.GetEntryEndIter());
