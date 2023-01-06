@@ -68,7 +68,7 @@ cmpsrc-github: tar
 												https://github.com/pwsafe/pwsafe/archive/$(RELEASENAME).tar.gz \
 												$(PKG_BASE)-$(RELEASENAME)/ && $(GPG_SIGN) $(RELEASENAME).tar.gz)
 
-	(cd $(RELEASEDIR); $(RM) $(RELEASENAME).zip (RELEASENAME).tar.gz &&	$(RM) -rf $(PKG_BASE)-$(RELEASENAME))
+	(cd $(RELEASEDIR); $(RM) $(RELEASENAME).zip $(RELEASENAME).tar.gz &&	$(RM) -rf $(PKG_BASE)-$(RELEASENAME))
 	@echo "GitHub source signature files ready to upload from $(RELEASEDIR)"
 
 sha1sums:
