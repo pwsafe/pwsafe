@@ -15,6 +15,9 @@ file (MAKE_DIRECTORY "data")
 file (COPY "data/image1.jpg" DESTINATION "data")
 file (COPY "data/text1.txt" DESTINATION "data")
 file (COPY "data/import-text-unit-test1.txt" DESTINATION "data")
+file (COPY "data/import-text-unit-test2.csv" DESTINATION "data")
+file (COPY "data/import-text-unit-test3.csv" DESTINATION "data")
+
 
 add_executable(coretest ${TEST_SRCS})
 if (MSVC)

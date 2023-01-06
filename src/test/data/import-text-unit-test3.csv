@@ -1,0 +1,3 @@
+group,title,username,password,url,autotype,created time,password modified time,last access time,password expiry date,password expiry interval,record modified time,password policy,password policy name,history,run command,dca,shift+dca,email,protected,symbols,keyboard shortcut,notes
+a.b.c,d-level-title,d-user,d-password,,,2023/01/03 19:13:30,,,,,,,,00000,,-1,-1,,N,,,"line 1 of 3»line 2 of 3»line 3 of 3"
+,toplevel-title1,toplevel user,toplevel-password,toplevelurl.com,,2023/01/03 19:11:50,,,,,,,,00000,,-1,-1,tom@email.com,N,,,"simple one-line note"
