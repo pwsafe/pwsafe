@@ -63,6 +63,28 @@ const size_t CPasswordCharPool::easyvision_hexdigit_len = LENGTH(easyvision_hexd
 // See the values of "charT sym" in the static const structure "leets" below
 const charT CPasswordCharPool::pronounceable_symbol_chars[] = _T("@&(#!|$+");
 
+namespace
+{
+
+class UrbgAdapter {
+public:
+    UrbgAdapter(PWSrand* ri) : ri_{ ri }
+    { }
+
+    typedef unsigned int result_type;
+
+    static result_type min() { return std::numeric_limits<result_type>::min(); }
+    static result_type max() { return std::numeric_limits<result_type>::max(); }
+
+    result_type operator()() const {
+        return ri_->RandUInt();
+    }
+private:
+    PWSrand* const ri_;
+};
+
+}
+
 //-----------------------------------------------------------------------------
 CPasswordCharPool::typeFreq_s::typeFreq_s(const CPasswordCharPool *parent, CharType ct, uint nc)
   : numchars(nc)
@@ -223,9 +245,6 @@ charT CPasswordCharPool::GetRandomChar(CPasswordCharPool::CharType t) const
 
 StringX CPasswordCharPool::MakePassword() const
 {
-  std::random_device rd;
-  std::mt19937 g(rd());
-    
   // We don't care if the policy is inconsistent e.g.
   // number of lower case chars > 1 + make pronounceable
   // The individual routines (normal, hex, pronounceable) will
@@ -265,7 +284,9 @@ StringX CPasswordCharPool::MakePassword() const
          return a.numchars > b.numchars;
        });
 
-  StringX retval, cat;
+  StringX retval;
+  retval.reserve(m_pwlen);
+
   // First meet the 'at least' constraints
   for (auto iter = typeFreqs.begin(); iter != typeFreqs.end(); iter++)
     for (uint j = 0; j < iter->numchars; j++) {
@@ -277,26 +298,28 @@ StringX CPasswordCharPool::MakePassword() const
       }
     }
 
-  // Now fill in the rest
-  for (int i = 0; i < NUMTYPES; i++)
-    if (m_lengths[i] > 0)
-      cat += m_char_arrays[i];
+  if (retval.size() < m_pwlen) {
+      StringX cat;
 
-  // If the requested password length is > set of chars we collected
-  // in cat, just grow cat until it's big enough (BR1450)
-  if ((m_pwlen - retval.length()) > cat.length()) {
-    const auto cat0 = cat;
-    while ((m_pwlen - retval.length()) > cat.length())
-      cat += cat0;
+      // Now fill in the rest
+      for (int i = 0; i < NUMTYPES; i++)
+          if (m_lengths[i] > 0)
+              cat += m_char_arrays[i];
+
+      if (!cat.empty()) {
+          while(retval.size() < m_pwlen) {
+              const uint r = PWSrand::GetInstance()->RangeRand(cat.size());
+              ASSERT(r < cat.size());
+
+              retval.push_back(cat[r]);
+          }
+      }
   }
-    
-  std::shuffle(cat.begin(), cat.end(), g);
-
-  retval += cat.substr(0, m_pwlen - retval.length());
 
  do_shuffle:
   // If 'at least' values were non-zero, we have some unwanted order,
   // so we mix things up a bit:
+  UrbgAdapter g{ PWSrand::GetInstance() };
   std::shuffle(retval.begin(), retval.end(), g);
 
   ASSERT(retval.length() == size_t(m_pwlen));
