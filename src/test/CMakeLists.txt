@@ -17,6 +17,7 @@ file (COPY "data/text1.txt" DESTINATION "data")
 file (COPY "data/import-text-unit-test1.txt" DESTINATION "data")
 file (COPY "data/import-text-unit-test2.csv" DESTINATION "data")
 file (COPY "data/import-text-unit-test3.csv" DESTINATION "data")
+file (COPY "data/import-text-unit-test4.csv" DESTINATION "data")
 
 
 add_executable(coretest ${TEST_SRCS})

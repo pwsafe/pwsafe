@@ -26,6 +26,8 @@ protected:
     const stringT testFile1 = L"import-text-unit-test1.txt";
     const stringT testFile2 = L"import-text-unit-test2.csv";
     const stringT testFile3 = L"import-text-unit-test3.csv";
+    const stringT testFile4 = L"import-text-unit-test4.csv";
+
 
   
   void SetUp();
@@ -49,7 +51,7 @@ void ImportTextTest::SetUp()
   ASSERT_TRUE(pws_os::FileExists(testFile1));
   ASSERT_TRUE(pws_os::FileExists(testFile2));
   ASSERT_TRUE(pws_os::FileExists(testFile3));
-
+  ASSERT_TRUE(pws_os::FileExists(testFile4));
 }
 
 void ImportTextTest::TearDown()
@@ -85,6 +87,8 @@ void ImportTextTest::importText(const stringT& fname, const TCHAR fieldSeparator
 
   status = core.Execute(cmd);
   EXPECT_EQ(status, 0);
+
+  //std::cout << rpt.GetString().c_str();
 }
 
 void ImportTextTest::testImport()
@@ -133,4 +137,20 @@ TEST_F(ImportTextTest, test3)
 
   importText(testFile3, L',', 2);
   testImport();
+}
+
+TEST_F(ImportTextTest, test4)
+{
+  // csv file created by LastPass export
+
+  importText(testFile4, L',', 1);
+
+  // now test that we've read the data correctly
+  auto p1 = core.Find(L"folder", L"jojo-name", L"jojo-username");
+  EXPECT_NE(p1, core.GetEntryEndIter());
+  auto item1 = core.GetEntry(p1);
+  EXPECT_EQ(item1.GetPassword(), L"site-password");
+  EXPECT_EQ(item1.GetNotes(), L"notes-field");
+  EXPECT_EQ(item1.GetURL(), L"http://biteme.com");
+
 }

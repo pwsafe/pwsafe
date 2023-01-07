@@ -63,6 +63,7 @@ BEGIN
   IDSC_IMPORTHDR          "Found %d known column headers:"
   IDSC_IMPORTKNOWNHDRS    "The following columns will be processed: "
   IDSC_IMPORTKNOWNHDRS2   "The following columns were recognised but only Group/Title, Username and Password will be processed:"
+  IDSC_UNKNOWNHDRS        "The following columns are unrecognized by PasswordSafe and will be ignored: "
   IDSC_IMPORTMISSINGCOLS  "Either or both of the Group/Title and Password columns are missing. No records imported."
   IDSC_IMPORTNOCOLS       "Column header row not recognised as first record. No records imported."
   IDSC_IMPORTNOHEADER     "No records in import file!"

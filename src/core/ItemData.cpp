@@ -2253,6 +2253,7 @@ stringT CItemData::EngFieldName(FieldType ft)
   case BASEUUID:      return _T("Base UUID");
   case ALIASUUID:     return _T("Alias UUID");
   case SHORTCUTUUID:  return _T("Shortcut UUID");
+  case UNKNOWNFIELDS: return _T("Unknown");
   default:
     ASSERT(0);
     return _T("");

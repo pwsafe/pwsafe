@@ -899,7 +899,6 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   StringX sxTemp;
 
   CItemData ci_temp;
-  vector<string> vs_Header;
 
   // The following allows us to be flexible in what we accept, e.g., "folder" for "group", etc.
   auto lowerize = [](const stringT& s) {stringT retval(s); ToLower(retval); return retval; };
@@ -954,8 +953,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
   // Capture individual column titles from headerRow:
   // columns[ft] will be the column number where a name of ft was found (e.g., 'Password, 'password'. 'passwd' as defined in column2ft)
-  unsigned num_cols_found = 0;
   int itoken = 0;
+  vector<stringT> unknownColumns;
 
   string::size_type to = 0, from;
   do {
@@ -969,14 +968,14 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     std::transform(token.begin(), token.end(), token.begin(), [](unsigned char c) { return static_cast<unsigned char>(std::tolower(c)); });
     StringX column;
-    conv.FromUTF8(reinterpret_cast<const unsigned char *>(token.c_str()), token.length(), column);
 
+    conv.FromUTF8(reinterpret_cast<const unsigned char *>(token.c_str()), token.length(), column);
     auto iter = column2ft.find(column.c_str());
-    if (iter != column2ft.end()) {
-      auto ft = iter->second;
-      columns[ft] = itoken;
-      itoken++;
-    }
+    auto ftype = (iter != column2ft.end()) ? iter->second : CItem::UNKNOWNFIELDS;
+    columns[ftype] = itoken;
+    itoken++;
+    if (ftype == CItem::UNKNOWNFIELDS)
+      unknownColumns.emplace_back(column.c_str());
   } while (to != string::npos);
 
   if (columns.empty()) {
@@ -1002,16 +1001,37 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     return FAILURE;
   }
 
-  if (columns.size() < vs_Header.size()) {
-    Format(cs_error, IDSC_IMPORTHDR, num_cols_found);
+  {
+    vector<stringT> foundFields;
+    std::transform(columns.begin(), columns.end(),
+      std::back_inserter(foundFields),
+      [](const auto& pair) {return CItemData::EngFieldName(pair.first); });
+    std::sort(foundFields.begin(), foundFields.end());
+
+    auto numCols = columns.size();
+    if (columns.find(CItem::UNKNOWNFIELDS) != columns.end())
+      numCols--; // unrecognized columns reported separately
+
+    Format(cs_error, IDSC_IMPORTHDR, numCols);
     rpt.WriteLine(cs_error);
     LoadAString(cs_error, bImportPSWDsOnly ? IDSC_IMPORTKNOWNHDRS2 : IDSC_IMPORTKNOWNHDRS);
     rpt.WriteLine(cs_error, bImportPSWDsOnly);
-    for (auto colPair : columns)
+    for (auto fieldName = foundFields.begin(); fieldName != foundFields.end(); ++fieldName)
     {
-      auto fieldName = CItemData::EngFieldName(colPair.first);
-      Format(cs_error, L"\t%ls", fieldName.c_str());
-      rpt.WriteLine(cs_error, true);
+      if (*fieldName == CItemData::EngFieldName(CItem::UNKNOWNFIELDS))
+        continue;
+      Format(cs_error, L"\t%ls ", fieldName->c_str());
+      rpt.WriteLine(cs_error, std::distance(fieldName, foundFields.end()) != 1);
+    }
+
+    if (!unknownColumns.empty())
+    {
+      LoadAString(cs_error, IDSC_UNKNOWNHDRS);
+      rpt.WriteLine(cs_error, false);
+    }
+    for (const auto &unknownColumn : unknownColumns)
+    {
+      rpt.WriteLine(unknownColumn, false);
     }
     rpt.WriteLine();
     rpt.WriteLine();
@@ -1123,7 +1143,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     // Sanity check
     if (tokens.size() < columns.size()) {
-      Format(cs_error, IDSC_IMPORTLINESKIPPED, numlines, tokens.size(), num_cols_found);
+      Format(cs_error, IDSC_IMPORTLINESKIPPED, numlines, tokens.size(), columns.size());
       rpt.WriteLine(cs_error);
       numSkipped++;
       continue;

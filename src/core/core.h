@@ -108,7 +108,7 @@
 #define IDSC_IMPORTLINESKIPPED          3259
 #define IDSC_IMPORTKNOWNHDRS            3260
 #define IDSC_IMPORTEMPTYLINESKIPPED     3261
-/* #define IDSC_PWHERRORLINE               3262 */ // Not defined and not used
+#define IDSC_UNKNOWNHDRS                3262
 #define IDSC_PWHISTORYSKIPPED           3263
 #define IDSC_IMPORTCONFLICTS1           3264
 #define IDSC_IMPORTCONFLICTS2           3265
