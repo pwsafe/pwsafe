@@ -73,8 +73,8 @@ public:
 
     typedef unsigned int result_type;
 
-    static result_type min() { return std::numeric_limits<result_type>::min(); }
-    static result_type max() { return std::numeric_limits<result_type>::max(); }
+    static constexpr result_type min() { return std::numeric_limits<result_type>::min(); }
+    static constexpr result_type max() { return std::numeric_limits<result_type>::max(); }
 
     result_type operator()() const {
         return ri_->RandUInt();
