@@ -316,13 +316,13 @@ void pwFiltersGrid::SetGridColReadOnly(int col)
 void pwFiltersGrid::ResetFilter()
 {
   if(m_pfilters) {
-    m_pfilters->vMfldata.empty();
+    m_pfilters->vMfldata.clear();
     m_pfilters->num_Mactive = 0;
-    m_pfilters->vHfldata.empty();
+    m_pfilters->vHfldata.clear();
     m_pfilters->num_Hactive = 0;
-    m_pfilters->vPfldata.empty();
+    m_pfilters->vPfldata.clear();
     m_pfilters->num_Pactive = 0;
-    m_pfilters->vAfldata.empty();
+    m_pfilters->vAfldata.clear();
     m_pfilters->num_Aactive = 0;
     if(m_bAllowSet && m_currentFilter) {
       m_currentFilter->emplace_back();
