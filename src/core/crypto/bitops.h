@@ -385,9 +385,9 @@ static inline unsigned long ROR64c(unsigned long word, const int i)
 
 /* extract a byte portably */
 #ifdef _MSC_VER
-#define byte(x, n) (static_cast<unsigned char>((x) >> (8 * (n))))
+#define byteN(x, n) (static_cast<unsigned char>((x) >> (8 * (n))))
 #else
-#define byte(x, n) (((x) >> (8 * (n))) & 255)
+#define byteN(x, n) (((x) >> (8 * (n))) & 255)
 #endif
 #endif // !_BITOPS_H
 

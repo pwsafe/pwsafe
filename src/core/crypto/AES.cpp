@@ -40,20 +40,20 @@ Implementation of AES (Rijndael) by Tom St Denis
 
 static ulong32 setup_mix(ulong32 temp)
 {
-   return (Te4_3[byte(temp, 2)]) ^
-          (Te4_2[byte(temp, 1)]) ^
-          (Te4_1[byte(temp, 0)]) ^
-          (Te4_0[byte(temp, 3)]);
+   return (Te4_3[byteN(temp, 2)]) ^
+          (Te4_2[byteN(temp, 1)]) ^
+          (Te4_1[byteN(temp, 0)]) ^
+          (Te4_0[byteN(temp, 3)]);
 }
 
 #ifndef ENCRYPT_ONLY
 #ifdef LTC_SMALL_CODE
 static ulong32 setup_mix2(ulong32 temp)
 {
-   return Td0(255 & Te4[byte(temp, 3)]) ^
-          Td1(255 & Te4[byte(temp, 2)]) ^
-          Td2(255 & Te4[byte(temp, 1)]) ^
-          Td3(255 & Te4[byte(temp, 0)]);
+   return Td0(255 & Te4[byteN(temp, 3)]) ^
+          Td1(255 & Te4[byteN(temp, 2)]) ^
+          Td2(255 & Te4[byteN(temp, 1)]) ^
+          Td3(255 & Te4[byteN(temp, 0)]);
 }
 #endif
 #endif
@@ -187,28 +187,28 @@ static CryptStatus rijndael_setup(const unsigned char *key, int keylen,
      #else
         temp = rrk[0];
         rk[0] =
-            Tks0[byte(temp, 3)] ^
-            Tks1[byte(temp, 2)] ^
-            Tks2[byte(temp, 1)] ^
-            Tks3[byte(temp, 0)];
+            Tks0[byteN(temp, 3)] ^
+            Tks1[byteN(temp, 2)] ^
+            Tks2[byteN(temp, 1)] ^
+            Tks3[byteN(temp, 0)];
         temp = rrk[1];
         rk[1] =
-            Tks0[byte(temp, 3)] ^
-            Tks1[byte(temp, 2)] ^
-            Tks2[byte(temp, 1)] ^
-            Tks3[byte(temp, 0)];
+            Tks0[byteN(temp, 3)] ^
+            Tks1[byteN(temp, 2)] ^
+            Tks2[byteN(temp, 1)] ^
+            Tks3[byteN(temp, 0)];
         temp = rrk[2];
         rk[2] =
-            Tks0[byte(temp, 3)] ^
-            Tks1[byte(temp, 2)] ^
-            Tks2[byte(temp, 1)] ^
-            Tks3[byte(temp, 0)];
+            Tks0[byteN(temp, 3)] ^
+            Tks1[byteN(temp, 2)] ^
+            Tks2[byteN(temp, 1)] ^
+            Tks3[byteN(temp, 0)];
         temp = rrk[3];
         rk[3] =
-            Tks0[byte(temp, 3)] ^
-            Tks1[byte(temp, 2)] ^
-            Tks2[byte(temp, 1)] ^
-            Tks3[byte(temp, 0)];
+            Tks0[byteN(temp, 3)] ^
+            Tks1[byteN(temp, 2)] ^
+            Tks2[byteN(temp, 1)] ^
+            Tks3[byteN(temp, 0)];
       #endif            
      
     }
@@ -252,7 +252,7 @@ static CryptStatus rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *
     rk = skey->eK;
     
     /*
-     * map byte array block to cipher state
+     * map byteN array block to cipher state
      * and add initial round key:
      */
     LOAD32H(s0, pt      ); s0 ^= rk[0];
@@ -265,28 +265,28 @@ static CryptStatus rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *
     for (r = 0; ; r++) {
         rk += 4;
         t0 =
-            Te0(byte(s0, 3)) ^
-            Te1(byte(s1, 2)) ^
-            Te2(byte(s2, 1)) ^
-            Te3(byte(s3, 0)) ^
+            Te0(byteN(s0, 3)) ^
+            Te1(byteN(s1, 2)) ^
+            Te2(byteN(s2, 1)) ^
+            Te3(byteN(s3, 0)) ^
             rk[0];
         t1 =
-            Te0(byte(s1, 3)) ^
-            Te1(byte(s2, 2)) ^
-            Te2(byte(s3, 1)) ^
-            Te3(byte(s0, 0)) ^
+            Te0(byteN(s1, 3)) ^
+            Te1(byteN(s2, 2)) ^
+            Te2(byteN(s3, 1)) ^
+            Te3(byteN(s0, 0)) ^
             rk[1];
         t2 =
-            Te0(byte(s2, 3)) ^
-            Te1(byte(s3, 2)) ^
-            Te2(byte(s0, 1)) ^
-            Te3(byte(s1, 0)) ^
+            Te0(byteN(s2, 3)) ^
+            Te1(byteN(s3, 2)) ^
+            Te2(byteN(s0, 1)) ^
+            Te3(byteN(s1, 0)) ^
             rk[2];
         t3 =
-            Te0(byte(s3, 3)) ^
-            Te1(byte(s0, 2)) ^
-            Te2(byte(s1, 1)) ^
-            Te3(byte(s2, 0)) ^
+            Te0(byteN(s3, 3)) ^
+            Te1(byteN(s0, 2)) ^
+            Te2(byteN(s1, 1)) ^
+            Te3(byteN(s2, 0)) ^
             rk[3];
         if (r == Nr-2) { 
            break;
@@ -303,28 +303,28 @@ static CryptStatus rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *
     r = Nr >> 1;
     for (;;) {
         t0 =
-            Te0(byte(s0, 3)) ^
-            Te1(byte(s1, 2)) ^
-            Te2(byte(s2, 1)) ^
-            Te3(byte(s3, 0)) ^
+            Te0(byteN(s0, 3)) ^
+            Te1(byteN(s1, 2)) ^
+            Te2(byteN(s2, 1)) ^
+            Te3(byteN(s3, 0)) ^
             rk[4];
         t1 =
-            Te0(byte(s1, 3)) ^
-            Te1(byte(s2, 2)) ^
-            Te2(byte(s3, 1)) ^
-            Te3(byte(s0, 0)) ^
+            Te0(byteN(s1, 3)) ^
+            Te1(byteN(s2, 2)) ^
+            Te2(byteN(s3, 1)) ^
+            Te3(byteN(s0, 0)) ^
             rk[5];
         t2 =
-            Te0(byte(s2, 3)) ^
-            Te1(byte(s3, 2)) ^
-            Te2(byte(s0, 1)) ^
-            Te3(byte(s1, 0)) ^
+            Te0(byteN(s2, 3)) ^
+            Te1(byteN(s3, 2)) ^
+            Te2(byteN(s0, 1)) ^
+            Te3(byteN(s1, 0)) ^
             rk[6];
         t3 =
-            Te0(byte(s3, 3)) ^
-            Te1(byte(s0, 2)) ^
-            Te2(byte(s1, 1)) ^
-            Te3(byte(s2, 0)) ^
+            Te0(byteN(s3, 3)) ^
+            Te1(byteN(s0, 2)) ^
+            Te2(byteN(s1, 1)) ^
+            Te3(byteN(s2, 0)) ^
             rk[7];
 
         rk += 8;
@@ -333,28 +333,28 @@ static CryptStatus rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *
         }
 
         s0 =
-            Te0(byte(t0, 3)) ^
-            Te1(byte(t1, 2)) ^
-            Te2(byte(t2, 1)) ^
-            Te3(byte(t3, 0)) ^
+            Te0(byteN(t0, 3)) ^
+            Te1(byteN(t1, 2)) ^
+            Te2(byteN(t2, 1)) ^
+            Te3(byteN(t3, 0)) ^
             rk[0];
         s1 =
-            Te0(byte(t1, 3)) ^
-            Te1(byte(t2, 2)) ^
-            Te2(byte(t3, 1)) ^
-            Te3(byte(t0, 0)) ^
+            Te0(byteN(t1, 3)) ^
+            Te1(byteN(t2, 2)) ^
+            Te2(byteN(t3, 1)) ^
+            Te3(byteN(t0, 0)) ^
             rk[1];
         s2 =
-            Te0(byte(t2, 3)) ^
-            Te1(byte(t3, 2)) ^
-            Te2(byte(t0, 1)) ^
-            Te3(byte(t1, 0)) ^
+            Te0(byteN(t2, 3)) ^
+            Te1(byteN(t3, 2)) ^
+            Te2(byteN(t0, 1)) ^
+            Te3(byteN(t1, 0)) ^
             rk[2];
         s3 =
-            Te0(byte(t3, 3)) ^
-            Te1(byte(t0, 2)) ^
-            Te2(byte(t1, 1)) ^
-            Te3(byte(t2, 0)) ^
+            Te0(byteN(t3, 3)) ^
+            Te1(byteN(t0, 2)) ^
+            Te2(byteN(t1, 1)) ^
+            Te3(byteN(t2, 0)) ^
             rk[3];
     }
 
@@ -365,31 +365,31 @@ static CryptStatus rijndael_ecb_encrypt(const unsigned char *pt, unsigned char *
      * map cipher state to byte array block:
      */
     s0 =
-        (Te4_3[byte(t0, 3)]) ^
-        (Te4_2[byte(t1, 2)]) ^
-        (Te4_1[byte(t2, 1)]) ^
-        (Te4_0[byte(t3, 0)]) ^
+        (Te4_3[byteN(t0, 3)]) ^
+        (Te4_2[byteN(t1, 2)]) ^
+        (Te4_1[byteN(t2, 1)]) ^
+        (Te4_0[byteN(t3, 0)]) ^
         rk[0];
     STORE32H(s0, ct);
     s1 =
-        (Te4_3[byte(t1, 3)]) ^
-        (Te4_2[byte(t2, 2)]) ^
-        (Te4_1[byte(t3, 1)]) ^
-        (Te4_0[byte(t0, 0)]) ^
+        (Te4_3[byteN(t1, 3)]) ^
+        (Te4_2[byteN(t2, 2)]) ^
+        (Te4_1[byteN(t3, 1)]) ^
+        (Te4_0[byteN(t0, 0)]) ^
         rk[1];
     STORE32H(s1, ct+4);
     s2 =
-        (Te4_3[byte(t2, 3)]) ^
-        (Te4_2[byte(t3, 2)]) ^
-        (Te4_1[byte(t0, 1)]) ^
-        (Te4_0[byte(t1, 0)]) ^
+        (Te4_3[byteN(t2, 3)]) ^
+        (Te4_2[byteN(t3, 2)]) ^
+        (Te4_1[byteN(t0, 1)]) ^
+        (Te4_0[byteN(t1, 0)]) ^
         rk[2];
     STORE32H(s2, ct+8);
     s3 =
-        (Te4_3[byte(t3, 3)]) ^
-        (Te4_2[byte(t0, 2)]) ^
-        (Te4_1[byte(t1, 1)]) ^
-        (Te4_0[byte(t2, 0)]) ^ 
+        (Te4_3[byteN(t3, 3)]) ^
+        (Te4_2[byteN(t0, 2)]) ^
+        (Te4_1[byteN(t1, 1)]) ^
+        (Te4_0[byteN(t2, 0)]) ^ 
         rk[3];
     STORE32H(s3, ct+12);
 
@@ -447,28 +447,28 @@ static CryptStatus rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *
     for (r = 0; ; r++) {
         rk += 4;
         t0 =
-            Td0(byte(s0, 3)) ^
-            Td1(byte(s3, 2)) ^
-            Td2(byte(s2, 1)) ^
-            Td3(byte(s1, 0)) ^
+            Td0(byteN(s0, 3)) ^
+            Td1(byteN(s3, 2)) ^
+            Td2(byteN(s2, 1)) ^
+            Td3(byteN(s1, 0)) ^
             rk[0];
         t1 =
-            Td0(byte(s1, 3)) ^
-            Td1(byte(s0, 2)) ^
-            Td2(byte(s3, 1)) ^
-            Td3(byte(s2, 0)) ^
+            Td0(byteN(s1, 3)) ^
+            Td1(byteN(s0, 2)) ^
+            Td2(byteN(s3, 1)) ^
+            Td3(byteN(s2, 0)) ^
             rk[1];
         t2 =
-            Td0(byte(s2, 3)) ^
-            Td1(byte(s1, 2)) ^
-            Td2(byte(s0, 1)) ^
-            Td3(byte(s3, 0)) ^
+            Td0(byteN(s2, 3)) ^
+            Td1(byteN(s1, 2)) ^
+            Td2(byteN(s0, 1)) ^
+            Td3(byteN(s3, 0)) ^
             rk[2];
         t3 =
-            Td0(byte(s3, 3)) ^
-            Td1(byte(s2, 2)) ^
-            Td2(byte(s1, 1)) ^
-            Td3(byte(s0, 0)) ^
+            Td0(byteN(s3, 3)) ^
+            Td1(byteN(s2, 2)) ^
+            Td2(byteN(s1, 1)) ^
+            Td3(byteN(s0, 0)) ^
             rk[3];
         if (r == Nr-2) {
            break; 
@@ -486,28 +486,28 @@ static CryptStatus rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *
     for (;;) {
 
         t0 =
-            Td0(byte(s0, 3)) ^
-            Td1(byte(s3, 2)) ^
-            Td2(byte(s2, 1)) ^
-            Td3(byte(s1, 0)) ^
+            Td0(byteN(s0, 3)) ^
+            Td1(byteN(s3, 2)) ^
+            Td2(byteN(s2, 1)) ^
+            Td3(byteN(s1, 0)) ^
             rk[4];
         t1 =
-            Td0(byte(s1, 3)) ^
-            Td1(byte(s0, 2)) ^
-            Td2(byte(s3, 1)) ^
-            Td3(byte(s2, 0)) ^
+            Td0(byteN(s1, 3)) ^
+            Td1(byteN(s0, 2)) ^
+            Td2(byteN(s3, 1)) ^
+            Td3(byteN(s2, 0)) ^
             rk[5];
         t2 =
-            Td0(byte(s2, 3)) ^
-            Td1(byte(s1, 2)) ^
-            Td2(byte(s0, 1)) ^
-            Td3(byte(s3, 0)) ^
+            Td0(byteN(s2, 3)) ^
+            Td1(byteN(s1, 2)) ^
+            Td2(byteN(s0, 1)) ^
+            Td3(byteN(s3, 0)) ^
             rk[6];
         t3 =
-            Td0(byte(s3, 3)) ^
-            Td1(byte(s2, 2)) ^
-            Td2(byte(s1, 1)) ^
-            Td3(byte(s0, 0)) ^
+            Td0(byteN(s3, 3)) ^
+            Td1(byteN(s2, 2)) ^
+            Td2(byteN(s1, 1)) ^
+            Td3(byteN(s0, 0)) ^
             rk[7];
 
         rk += 8;
@@ -516,28 +516,28 @@ static CryptStatus rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *
         }
 
         s0 =
-            Td0(byte(t0, 3)) ^
-            Td1(byte(t3, 2)) ^
-            Td2(byte(t2, 1)) ^
-            Td3(byte(t1, 0)) ^
+            Td0(byteN(t0, 3)) ^
+            Td1(byteN(t3, 2)) ^
+            Td2(byteN(t2, 1)) ^
+            Td3(byteN(t1, 0)) ^
             rk[0];
         s1 =
-            Td0(byte(t1, 3)) ^
-            Td1(byte(t0, 2)) ^
-            Td2(byte(t3, 1)) ^
-            Td3(byte(t2, 0)) ^
+            Td0(byteN(t1, 3)) ^
+            Td1(byteN(t0, 2)) ^
+            Td2(byteN(t3, 1)) ^
+            Td3(byteN(t2, 0)) ^
             rk[1];
         s2 =
-            Td0(byte(t2, 3)) ^
-            Td1(byte(t1, 2)) ^
-            Td2(byte(t0, 1)) ^
-            Td3(byte(t3, 0)) ^
+            Td0(byteN(t2, 3)) ^
+            Td1(byteN(t1, 2)) ^
+            Td2(byteN(t0, 1)) ^
+            Td3(byteN(t3, 0)) ^
             rk[2];
         s3 =
-            Td0(byte(t3, 3)) ^
-            Td1(byte(t2, 2)) ^
-            Td2(byte(t1, 1)) ^
-            Td3(byte(t0, 0)) ^
+            Td0(byteN(t3, 3)) ^
+            Td1(byteN(t2, 2)) ^
+            Td2(byteN(t1, 1)) ^
+            Td3(byteN(t0, 0)) ^
             rk[3];
     }
 #endif
@@ -547,31 +547,31 @@ static CryptStatus rijndael_ecb_decrypt(const unsigned char *ct, unsigned char *
      * map cipher state to byte array block:
      */
     s0 =
-        (Td4[byte(t0, 3)] & 0xff000000) ^
-        (Td4[byte(t3, 2)] & 0x00ff0000) ^
-        (Td4[byte(t2, 1)] & 0x0000ff00) ^
-        (Td4[byte(t1, 0)] & 0x000000ff) ^
+        (Td4[byteN(t0, 3)] & 0xff000000) ^
+        (Td4[byteN(t3, 2)] & 0x00ff0000) ^
+        (Td4[byteN(t2, 1)] & 0x0000ff00) ^
+        (Td4[byteN(t1, 0)] & 0x000000ff) ^
         rk[0];
     STORE32H(s0, pt);
     s1 =
-        (Td4[byte(t1, 3)] & 0xff000000) ^
-        (Td4[byte(t0, 2)] & 0x00ff0000) ^
-        (Td4[byte(t3, 1)] & 0x0000ff00) ^
-        (Td4[byte(t2, 0)] & 0x000000ff) ^
+        (Td4[byteN(t1, 3)] & 0xff000000) ^
+        (Td4[byteN(t0, 2)] & 0x00ff0000) ^
+        (Td4[byteN(t3, 1)] & 0x0000ff00) ^
+        (Td4[byteN(t2, 0)] & 0x000000ff) ^
         rk[1];
     STORE32H(s1, pt+4);
     s2 =
-        (Td4[byte(t2, 3)] & 0xff000000) ^
-        (Td4[byte(t1, 2)] & 0x00ff0000) ^
-        (Td4[byte(t0, 1)] & 0x0000ff00) ^
-        (Td4[byte(t3, 0)] & 0x000000ff) ^
+        (Td4[byteN(t2, 3)] & 0xff000000) ^
+        (Td4[byteN(t1, 2)] & 0x00ff0000) ^
+        (Td4[byteN(t0, 1)] & 0x0000ff00) ^
+        (Td4[byteN(t3, 0)] & 0x000000ff) ^
         rk[2];
     STORE32H(s2, pt+8);
     s3 =
-        (Td4[byte(t3, 3)] & 0xff000000) ^
-        (Td4[byte(t2, 2)] & 0x00ff0000) ^
-        (Td4[byte(t1, 1)] & 0x0000ff00) ^
-        (Td4[byte(t0, 0)] & 0x000000ff) ^
+        (Td4[byteN(t3, 3)] & 0xff000000) ^
+        (Td4[byteN(t2, 2)] & 0x00ff0000) ^
+        (Td4[byteN(t1, 1)] & 0x0000ff00) ^
+        (Td4[byteN(t0, 0)] & 0x000000ff) ^
         rk[3];
     STORE32H(s3, pt+12);
 
