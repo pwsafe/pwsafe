@@ -154,7 +154,8 @@ void CPWDialogTracker::Apply(void (*f)(CWnd *))
   m_mutex.Lock();
   dialogs = m_dialogs;
   m_mutex.Unlock();
-  std::for_each(dialogs.begin(), dialogs.end(), std::ptr_fun(f));
+  std::function<void(decltype(dialogs)::value_type)> func = f;
+  std::for_each(dialogs.begin(), dialogs.end(), func);
 }
 
 bool CPWDialogTracker::VerifyCanCloseDialogs()

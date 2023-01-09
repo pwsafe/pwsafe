@@ -1,8 +1,7 @@
 if (WIN32)
   cmake_minimum_required (VERSION 3.5.1)
 else (WIN32)
-  # oldest cmake version is currently on CentOS 7:
-  cmake_minimum_required (VERSION 2.8)
+  cmake_minimum_required (VERSION 3.16)
 endif (WIN32)
 if (POLICY CMP0069)
   cmake_policy(SET CMP0069 NEW)
@@ -13,6 +12,10 @@ if (POLICY CMP0048)
 endif (POLICY CMP0048)
 
 project (passwordsafe CXX C)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # prerequisites
 include(CheckLibraryExists)
