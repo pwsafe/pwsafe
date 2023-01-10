@@ -4,6 +4,17 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
+PasswordSafe 3.62.0 Release ??? 2023
+====================================
+
+Bugs fixed in 3.62.0
+--------------------
+* [SF1570] (https://sourceforge.net/p/passwordsafe/bugs/1570/) PasswordSafe no longer crashes when adding a new entry in a filtered view.
+
+Changes in 3.62.0
+-----------------
+* Text (CSV) import is more lenient in what it accepts, to ease importing data from other password managers.
+
 PasswordSafe 3.61.0 Release Dec 2022
 ====================================
 

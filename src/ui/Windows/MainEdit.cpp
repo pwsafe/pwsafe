@@ -178,9 +178,10 @@ void DboxMain::OnAdd()
     UpdateToolBarForSelectedItem(&iter->second);
 
     // Now select item
-    DisplayInfo *pdi = GetEntryGUIInfo(iter->second);
-    ASSERT(pdi->list_index != -1);
-    SelectEntry(pdi->list_index);
+    const DisplayInfo *pdi = GetEntryGUIInfo(iter->second);
+    // may be -1 if we're in a filtered view (BR1570)
+    if (pdi->list_index != -1)
+      SelectEntry(pdi->list_index);
 
     m_RUEList.AddRUEntry(newentry_uuid);
 
