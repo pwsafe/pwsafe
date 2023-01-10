@@ -1,0 +1,3 @@
+e-mail,Username,Password,Group/Title,AutoType,Created Time,URL,Notes,Password Policy,Password Policy Name,History,Run Command,DCA,Shift+DCA,Protected
+,d-user,d-password,a.b.c.d-level-title,,2023/01/03 19:13:30,,"line 1 of 3»line 2 of 3»line 3 of 3",,,,,-1,-1,N
+tom@email.com,toplevel user,toplevel-password,toplevel-title1,,2023/01/03 19:11:50,toplevelurl.com,"simple one-line note",,,,,-1,-1,N

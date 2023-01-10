@@ -584,9 +584,10 @@ int PWScore::WriteXMLFile(const StringX &filename,
     // contained within it
     std::vector<StringX> vsubemptygroups;
     if (!exportgroup.empty()) {
-      for (size_t n = 0; n < m_vEmptyGroups.size(); n++) {
-        if (m_vEmptyGroups[n].substr(0, exportgroup.length()) == StringX(exportgroup.c_str()))
-          vsubemptygroups.push_back(m_vEmptyGroups[n]);
+      for (auto& m_vEmptyGroup : m_vEmptyGroups)
+      {
+        if (m_vEmptyGroup.substr(0, exportgroup.length()) == StringX(exportgroup.c_str()))
+          vsubemptygroups.push_back(m_vEmptyGroup);
       }
     } else {
       vsubemptygroups = m_vEmptyGroups;
@@ -597,8 +598,9 @@ int PWScore::WriteXMLFile(const StringX &filename,
     // Don't write out XML empty groups if there aren't any!
     if (!vsubemptygroups.empty()) {
       os << "\t<EmptyGroups>" << endl;
-      for (size_t n = 0; n < vsubemptygroups.size(); n++) {
-        stringT sTemp = PWSUtil::GetSafeXMLString(vsubemptygroups[n]);
+      for (auto& vsubemptygroup : vsubemptygroups)
+      {
+        stringT sTemp = PWSUtil::GetSafeXMLString(vsubemptygroup);
         os << "\t\t<EGName>" << sTemp << "</EGName>" << endl;
       }
       os << "\t</EmptyGroups>" << endl << endl;
@@ -827,13 +829,10 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
 }
 #endif
 
-static void ReportInvalidField(CReport &rpt, const string &value, int numlines)
+static void ReportInvalidField(CReport &rpt, const stringT &value, int lineNum)
 {
-  CUTF8Conv conv;
-  StringX vx;
-  conv.FromUTF8(reinterpret_cast<const unsigned char *>(value.c_str()), value.length(), vx);
   stringT cs_error;
-  Format(cs_error, IDSC_IMPORTINVALIDFIELD, numlines, vx.c_str());
+  Format(cs_error, IDSC_IMPORTINVALIDFIELD, lineNum, value.c_str());
   rpt.WriteLine(cs_error);
 }
 
@@ -850,6 +849,17 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   stringT cs_error;
   CUTF8Conv conv;
   pcommand = nullptr;
+  char pSeps[] = " ";
+
+  if (isascii(fieldSeparator)) {
+    // we parse header as ASCII, so separator must be plain ASCII too
+    pSeps[0] = static_cast<char>(fieldSeparator);
+  }
+  else {
+    LoadAString(strError, IDSC_IMPORTINVALIDDELIMITER);
+    rpt.WriteLine(strError);
+    return FAILURE;
+  }
 
   // We need to use FOpen as the file name/file path may contain non-Latin
   // characters even though we need the file to contain ASCII and UTF-8 characters
@@ -889,167 +899,141 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   StringX sxTemp;
 
   CItemData ci_temp;
-  vector<string> vs_Header;
-  CItemData::FieldBits all(~0UL);
-  StringX cs_hdr = BuildHeader(all, true); // Use same language as in writing
 
-  // Parse the header
-  const unsigned char *hdr;
-  size_t hdrlen;
-  conv.ToUTF8(cs_hdr.c_str(), hdr, hdrlen);
-  const string s_hdr(reinterpret_cast<const char *>(hdr));
-  const char pTab[] = "\t";
-  char pSeps[] = " ";
+  // The following allows us to be flexible in what we accept, e.g., "folder" for "group", etc.
+  auto lowerize = [](const stringT& s) {stringT retval(s); ToLower(retval); return retval; };
 
-  // Order of fields determined in CItemData::GetPlaintext() and must be same as in BuildHeader()
-  enum Fields {GROUPTITLE, USER, PASSWORD, URL, AUTOTYPE,
-               CTIME, PMTIME, ATIME, XTIME, XTIME_INT, RMTIME,
-               POLICY, POLICYNAME, HISTORY, RUNCMD, DCA, SHIFTDCA, EMAIL,
-               PROTECTED, SYMBOLS, KBSHORTCUT, NOTES, 
-               NUMFIELDS};
+#define defaultPairs(v) {lowerize(CItemData::FieldName(CItemData::v)), CItem::FieldType::v},\
+                       {lowerize(CItemData::EngFieldName(CItemData::v)), CItem::FieldType::v}
+#define altPair(t,v) {t, CItem::v}
 
-  int i_Offset[NUMFIELDS];
-  for (int i = 0; i < NUMFIELDS; i++) {
-    i_Offset[i] = -1;
-  }
+  const map<stringT, CItem::FieldType> column2ft = {
+    defaultPairs(GROUPTITLE), // deprecated, but still accepted.
+    defaultPairs(GROUP),
+    altPair(L"folder",GROUP),
+    altPair(L"grouping",GROUP),
+    defaultPairs(TITLE),
+    { L"name", CItem::TITLE }, // macro fails, dunno why
+    defaultPairs(USER),
+    altPair(L"user",USER),
+    defaultPairs(PASSWORD),
+    altPair(L"passwd", PASSWORD),
+    defaultPairs(URL),
+    defaultPairs(AUTOTYPE),
+    defaultPairs(CTIME),
+    defaultPairs(PMTIME),
+    defaultPairs(ATIME),
+    defaultPairs(XTIME),
+    defaultPairs(XTIME_INT),
+    defaultPairs(RMTIME),
+    defaultPairs(POLICY),
+    defaultPairs(POLICYNAME),
+    defaultPairs(PWHIST),
+    defaultPairs(RUNCMD),
+    defaultPairs(DCA),
+    defaultPairs(SHIFTDCA),
+    defaultPairs(EMAIL),
+    altPair(L"email", EMAIL),
+    defaultPairs(PROTECTED),
+    defaultPairs(SYMBOLS),
+    defaultPairs(KBSHORTCUT),
+    defaultPairs(NOTES),
+    altPair(L"comments",NOTES),
+    altPair(L"extra",NOTES),
+  };
 
+  map<CItem::FieldType, int> columns; // from parsing the fist line of the file, field X is in columns[X]
 
-  if (fieldSeparator > 0 && fieldSeparator <= 127) {
-    // we parse header as ASCII, so separator must be plain ASCII too
-    pSeps[0] = static_cast<char>(fieldSeparator);
-  }
-  else {
-    LoadAString(strError, IDSC_IMPORTINVALIDDELIMITER);
-    rpt.WriteLine(strError);
-    return FAILURE;
-  }
-
-  // Capture individual column titles:
-  string::size_type to = 0, from;
-  do {
-    from = s_hdr.find_first_not_of(pTab, to);
-    if (from == string::npos)
-      break;
-    to = s_hdr.find_first_of(pTab, from);
-    vs_Header.push_back(s_hdr.substr(from,
-                                     ((to == string::npos) ?
-                                      string::npos : to - from)));
-  } while (to != string::npos);
-
-  // Following fails if a field was added in enum but not in
-  // EXPORTHEADER, or vice versa.
-  ASSERT(vs_Header.size() == NUMFIELDS);
-
-  string s_header, linebuf;
+  string headerRow, linebuf;
 
   // Get header record
-  if (!getline(iss, s_header, '\n')) {
+  if (!getline(iss, headerRow, '\n')) {
     LoadAString(strError, IDSC_IMPORTNOHEADER);
     rpt.WriteLine(strError);
     return FAILURE;  // not even a title record!
   }
 
-  // Capture individual column titles from s_header:
-  // Set i_Offset[field] to column in which field is found in text file,
-  // or leave at -1 if absent from text.
-  unsigned num_found = 0;
+  // Capture individual column titles from headerRow:
+  // columns[ft] will be the column number where a name of ft was found (e.g., 'Password, 'password'. 'passwd' as defined in column2ft)
   int itoken = 0;
+  vector<stringT> unknownColumns;
 
-  // This makes things compatible with older versions where column tiles in EXPORTHEADER
-  // didn't match with CItemData::FieldName
-  struct HeaderFieldMap {
-        Fields                hdrField;
-        CItemData::FieldType  itemField;
-  } fieldMap[] = {
-#define HDR_MAP_ENTRY(e) {e, CItemData::e},
-#define HDR_MAP_ENTRY2(e, ie) {e, CItemData::ie},
-    
-        // These must be defined in the same order as Fields enum above, or it will assert below
-        HDR_MAP_ENTRY(GROUPTITLE) HDR_MAP_ENTRY(USER)
-        HDR_MAP_ENTRY(PASSWORD)   HDR_MAP_ENTRY(URL)
-        HDR_MAP_ENTRY(AUTOTYPE)   HDR_MAP_ENTRY(CTIME)
-        HDR_MAP_ENTRY(PMTIME)     HDR_MAP_ENTRY(ATIME)
-        HDR_MAP_ENTRY(XTIME)      HDR_MAP_ENTRY(XTIME_INT)
-        HDR_MAP_ENTRY(RMTIME)     HDR_MAP_ENTRY(POLICY)
-        HDR_MAP_ENTRY(POLICYNAME) HDR_MAP_ENTRY2(HISTORY, PWHIST)
-        HDR_MAP_ENTRY(RUNCMD)     HDR_MAP_ENTRY(DCA)
-        HDR_MAP_ENTRY(SHIFTDCA)   HDR_MAP_ENTRY(EMAIL)
-        HDR_MAP_ENTRY(PROTECTED)  HDR_MAP_ENTRY(SYMBOLS)
-        HDR_MAP_ENTRY(KBSHORTCUT) HDR_MAP_ENTRY(NOTES)
-
-#undef HDR_MAP_ENTRY
-#undef HDR_MAP_ENTRY2
-    };
-    
-  // make sure all elements are there
-  static_assert((NumberOf(fieldMap) == NUMFIELDS), "Mismatch between fieldMap size and NUMFIELDS");
-
-  to = 0;
+  string::size_type to = 0, from;
   do {
-    from = s_header.find_first_not_of(pSeps, to);
+    from = headerRow.find_first_not_of(pSeps, to);
     if (from == string::npos)
       break;
-    to = s_header.find_first_of(pSeps, from);
-    string token = s_header.substr(from,
-                                   ((to == string::npos) ?
-                                    string::npos : to - from));
-    vector<string>::iterator it(std::find(vs_Header.begin(), vs_Header.end(), token));
-    if (it != vs_Header.end()) {
-      i_Offset[it - vs_Header.begin()] = itoken;
-      num_found++;
-    }
-    else if ( token == CItemData::EngFieldName(fieldMap[itoken].itemField) ) {
-      // Column header might not match if it was exported from a version where EXPORTHEADER didn't
-      // name the column titles correctly.  So compare directly with the corresponding field name.
-      // Note that we are not searching here, unlike the above if block. The incorrect title has to
-      // be in the correct column for this to work.  This is only a compatibility fix, not an 
-      // alternative to searching, as in above if block.
-      ASSERT( itoken == fieldMap[itoken].hdrField );
-      i_Offset[ fieldMap[itoken].hdrField ] = itoken;
-      num_found++;
-    }
-    else {
-      StringX sh2;
-      conv.FromUTF8(reinterpret_cast<const unsigned char *>(token.c_str()), token.length(), sh2);
-      Format(cs_error, L"Not found heading %ls", sh2.c_str());
-      rpt.WriteLine(cs_error, false);
-    }
+    to = headerRow.find_first_of(pSeps, from);
+    string token = headerRow.substr(from,
+      ((to == string::npos) ?
+        string::npos : to - from));
+
+    std::transform(token.begin(), token.end(), token.begin(), [](unsigned char c) { return static_cast<unsigned char>(std::tolower(c)); });
+    StringX column;
+
+    conv.FromUTF8(reinterpret_cast<const unsigned char *>(token.c_str()), token.length(), column);
+    auto iter = column2ft.find(column.c_str());
+    auto ftype = (iter != column2ft.end()) ? iter->second : CItem::UNKNOWNFIELDS;
+    columns[ftype] = itoken;
     itoken++;
+    if (ftype == CItem::UNKNOWNFIELDS)
+      unknownColumns.emplace_back(column.c_str());
   } while (to != string::npos);
 
-  if (num_found == 0) {
+  if (columns.empty()) {
     LoadAString(strError, IDSC_IMPORTNOCOLS);
     rpt.WriteLine(strError);
     return FAILURE;
   }
 
-  // These are "must haves"!
-  if (bImportPSWDsOnly &&
-      (i_Offset[PASSWORD] == -1 || i_Offset[GROUPTITLE] == -1 ||
-       i_Offset[USER] == -1)) {
+  // Check for mandatory columns
+  const auto noCol = columns.end();
+
+  if (bImportPSWDsOnly && 
+    (columns.find(CItem::USER) == noCol || columns.find(CItem::PASSWORD) == noCol ||
+     (columns.find(CItem::GROUPTITLE) == noCol && columns.find(CItem::TITLE) == noCol))) {
+
     LoadAString(strError, IDSC_IMPORTPSWDNOCOLS);
     rpt.WriteLine(strError);
     return FAILURE;
-  } else
-  if (i_Offset[PASSWORD] == -1 || i_Offset[GROUPTITLE] == -1) {
+  } else if (columns.find(CItem::PASSWORD) == noCol || 
+    (columns.find(CItem::GROUPTITLE) == noCol && columns.find(CItem::TITLE) == noCol)) {
     LoadAString(strError, IDSC_IMPORTMISSINGCOLS);
     rpt.WriteLine(strError);
     return FAILURE;
   }
 
-  if (num_found < vs_Header.size()) {
-    Format(cs_error, IDSC_IMPORTHDR, num_found);
+  {
+    vector<stringT> foundFields;
+    std::transform(columns.begin(), columns.end(),
+      std::back_inserter(foundFields),
+      [](const auto& pair) {return CItemData::EngFieldName(pair.first); });
+    std::sort(foundFields.begin(), foundFields.end());
+
+    auto numCols = columns.size();
+    if (columns.find(CItem::UNKNOWNFIELDS) != columns.end())
+      numCols--; // unrecognized columns reported separately
+
+    Format(cs_error, IDSC_IMPORTHDR, numCols);
     rpt.WriteLine(cs_error);
     LoadAString(cs_error, bImportPSWDsOnly ? IDSC_IMPORTKNOWNHDRS2 : IDSC_IMPORTKNOWNHDRS);
     rpt.WriteLine(cs_error, bImportPSWDsOnly);
-    for (int i = 0; i < NUMFIELDS; i++) {
-      if (i_Offset[i] >= 0) {
-        const string &sHdr = vs_Header.at(i);
-        StringX sh2;
-        conv.FromUTF8(reinterpret_cast<const unsigned char *>(sHdr.c_str()), sHdr.length(), sh2);
-        Format(cs_error, L" %ls%c", sh2.c_str(), ((i+1) == NUMFIELDS) ? ' ' : ',');
-        rpt.WriteLine(cs_error, false);
-      }
+    for (auto fieldName = foundFields.begin(); fieldName != foundFields.end(); ++fieldName)
+    {
+      if (*fieldName == CItemData::EngFieldName(CItem::UNKNOWNFIELDS))
+        continue;
+      Format(cs_error, L"\t%ls ", fieldName->c_str());
+      rpt.WriteLine(cs_error, std::distance(fieldName, foundFields.end()) != 1);
+    }
+
+    if (!unknownColumns.empty())
+    {
+      LoadAString(cs_error, IDSC_UNKNOWNHDRS);
+      rpt.WriteLine(cs_error, false);
+    }
+    for (const auto &unknownColumn : unknownColumns)
+    {
+      rpt.WriteLine(unknownColumn, false);
     }
     rpt.WriteLine();
     rpt.WriteLine();
@@ -1068,6 +1052,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
   pmulticmds->Add(pcmd1);
 
   // Finished parsing header, go get the data!
+  // -------------------------------------------------------------
+
   // Initialize set
   GTUSet setGTU;
   InitialiseGTU(setGTU);
@@ -1096,8 +1082,8 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     // convert linebuf from UTF-8 to StringX
     StringX slinebuf;
-    if (!conv.FromUTF8(reinterpret_cast<const unsigned char *>(linebuf.c_str()),
-                       linebuf.length(), slinebuf)) {
+    if (!conv.FromUTF8(reinterpret_cast<const unsigned char*>(linebuf.c_str()),
+      linebuf.length(), slinebuf)) {
       // XXX add an appropriate error message
       numSkipped++;
       continue;
@@ -1107,19 +1093,20 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     itoken = 0;
     vector<stringT> tokens;
     for (size_t startpos = 0;
-         startpos < slinebuf.size();
-         /* startpos advanced in body */) {
+      startpos < slinebuf.size();
+      /* startpos advanced in body */) {
       size_t nextchar = slinebuf.find_first_of(fieldSeparator, startpos);
       if (nextchar == StringX::npos)
         nextchar = slinebuf.size();
-      if (nextchar > 0) {
-        if (itoken != i_Offset[NOTES]) {
+      if (nextchar >= 0) {
+        if (itoken != columns[CItem::NOTES]) {
           const StringX tsx(slinebuf.substr(startpos, nextchar - startpos));
           tokens.push_back(tsx.c_str());
-        } else {
+        }
+        else {
           // Notes field which may be double-quoted, and
           // if they are, they may span more than one line.
-          stringT note(slinebuf.substr(startpos).c_str());
+          stringT note(slinebuf.substr(startpos).c_str(), nextchar - startpos);
           size_t first_quote = note.find_first_of('\"');
           size_t last_quote = note.find_last_of('\"');
           if (first_quote == last_quote && first_quote != stringT::npos) {
@@ -1137,20 +1124,25 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                 linebuf.resize(linebuf.size() - 1);
               }
               note += _T("\r\n");
-              if (!conv.FromUTF8(reinterpret_cast<const unsigned char *>(linebuf.c_str()),
-                                 linebuf.length(), slinebuf)) {
+              if (!conv.FromUTF8(reinterpret_cast<const unsigned char*>(linebuf.c_str()),
+                linebuf.length(), slinebuf)) {
                 // XXX add an appropriate error message
                 numSkipped++;
                 continue;
               }
-              note += slinebuf.c_str();
               size_t fq = linebuf.find_first_of('\"');
               size_t lq = linebuf.find_last_of('\"');
               noteClosed = (fq == lq && fq != string::npos);
+              if (noteClosed) {
+                note += slinebuf.substr(0, lq+1).c_str();
+                // Adjust nextchar to continue parsing:
+                nextchar = lq + 1;
+              } else {
+                note += slinebuf.c_str();
+              }
             } while (!noteClosed);
           } // multiline note processed
           tokens.push_back(note);
-          break;
         } // Notes handling
       } // nextchar > 0
       startpos = nextchar + 1; // too complex for the 'for statement'
@@ -1158,14 +1150,14 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     } // tokenization for loop
 
     // Sanity check
-    if (tokens.size() < num_found) {
-      Format(cs_error, IDSC_IMPORTLINESKIPPED, numlines, tokens.size(), num_found);
+    if (tokens.size() < columns.size()) {
+      Format(cs_error, IDSC_IMPORTLINESKIPPED, numlines, tokens.size(), columns.size());
       rpt.WriteLine(cs_error);
       numSkipped++;
       continue;
     }
 
-    const TCHAR *tc_whitespace = _T(" \t\r\n\f\v");
+    const TCHAR* tc_whitespace = _T(" \t\r\n\f\v");
     // Make fields that are *only* whitespace = empty
     viter tokenIter;
     for (tokenIter = tokens.begin(); tokenIter != tokens.end(); tokenIter++) {
@@ -1190,8 +1182,11 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       }
     } // loop over tokens
 
-    if (static_cast<size_t>(i_Offset[PASSWORD]) >= tokens.size() ||
-        tokens[i_Offset[PASSWORD]].empty()) {
+    // safest to check each row for each token so we don't access out of token's bounds.
+    auto row_has_column = [&columns, &tokens](CItem::FieldType ft) {return columns.find(ft) != columns.end() && static_cast<size_t>(columns[ft]) < tokens.size(); };
+
+    if (!row_has_column(CItem::PASSWORD) ||
+      tokens[columns[CItem::PASSWORD]].empty()) {
       Format(cs_error, IDSC_IMPORTNOPASSWORD, numlines);
       rpt.WriteLine(cs_error);
       numSkipped++;
@@ -1200,13 +1195,23 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     if (bImportPSWDsOnly) {
       StringX sxgroup(_T("")), sxtitle, sxuser;
-      const stringT &grouptitle = tokens[i_Offset[GROUPTITLE]];
-      size_t lastdot = grouptitle.find_last_of(TCHAR('.'));
-      if (lastdot != stringT::npos) {
-        sxgroup = grouptitle.substr(0, lastdot).c_str();
-        sxtitle = grouptitle.substr(lastdot + 1).c_str();
-      } else {
-        sxtitle = grouptitle.c_str();
+      // if old GROUPTITLE, then split them.
+      if (row_has_column(CItem::GROUPTITLE)) {
+        const stringT& grouptitle = tokens[columns[CItem::GROUPTITLE]];
+        size_t lastdot = grouptitle.find_last_of(TCHAR('.'));
+        if (lastdot != stringT::npos) {
+          sxgroup = grouptitle.substr(0, lastdot).c_str();
+          sxtitle = grouptitle.substr(lastdot + 1).c_str();
+        }
+        else {
+          sxtitle = grouptitle.c_str();
+        }
+      }
+      else { //look for separate group and title
+        if (row_has_column(CItem::GROUP))
+          sxgroup = tokens[columns[CItem::GROUP]].c_str();
+        if (row_has_column(CItem::TITLE))
+          sxgroup = tokens[columns[CItem::TITLE]].c_str();
       }
 
       if (sxtitle.empty()) {
@@ -1216,27 +1221,22 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         continue;
       }
 
-      if (tokens[i_Offset[PASSWORD]].empty()) {
-        Format(cs_error, IDSC_IMPORTNOPASSWORD, numlines);
-        rpt.WriteLine(cs_error);
-        numSkipped++;
-        continue;
-      }
+      sxuser = row_has_column(CItem::USER) ? tokens[columns[CItem::USER]].c_str() : L"";
 
-      sxuser = tokens[i_Offset[USER]].c_str();
       ItemListIter iter = Find(sxgroup, sxtitle, sxuser);
       if (iter == m_pwlist.end()) {
         stringT cs_online, cs_temp;
         LoadAString(cs_online, IDSC_IMPORT_ON_LINE);
         Format(cs_temp, IDSC_IMPORTENTRY, cs_online.c_str(), numlines,
-               sxgroup.c_str(), sxtitle.c_str(), sxuser.c_str());
+          sxgroup.c_str(), sxtitle.c_str(), sxuser.c_str());
         Format(cs_error, IDSC_IMPORTRECNOTFOUND, cs_temp.c_str());
         rpt.WriteLine(cs_error);
         numSkipped++;
-      } else {
-        CItemData *pci = &iter->second;
-        Command *pcmd = UpdatePasswordCommand::Create(this, *pci,
-                                                      tokens[i_Offset[PASSWORD]].c_str());
+      }
+      else {
+        CItemData* pci = &iter->second;
+        Command* pcmd = UpdatePasswordCommand::Create(this, *pci,
+          tokens[columns[CItem::PASSWORD]].c_str());
         pcmd->SetNoGUINotify();
         pmulticmds->Add(pcmd);
         if (bMaintainDateTimeStamps) {
@@ -1245,43 +1245,65 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         numImported++;
       }
       continue;
-    }
+    } // bImportPWSDsOnly
 
     // Start initializing the new record.
     ci_temp.Clear();
     ci_temp.CreateUUID();
-    if (i_Offset[USER] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[USER]))
-      ci_temp.SetUser(tokens[i_Offset[USER]].c_str());
-    StringX csPassword = tokens[i_Offset[PASSWORD]].c_str();
-    ci_temp.SetPassword(csPassword);
 
-    // The group and title field are concatenated.
-    // If the title field has periods, then they have been changed to the delimiter
-    const stringT &grouptitle = tokens[i_Offset[GROUPTITLE]];
-    stringT entrytitle;
-    size_t lastdot = grouptitle.find_last_of(TCHAR('.'));
-    if (lastdot != stringT::npos) {
-      StringX newgroup(ImportedPrefix.empty() ?
-                         _T("") : ImportedPrefix + _T("."));
-      newgroup += grouptitle.substr(0, lastdot).c_str();
-      ci_temp.SetGroup(newgroup);
-      entrytitle = grouptitle.substr(lastdot + 1);
-    } else {
-      ci_temp.SetGroup(ImportedPrefix);
-      entrytitle = grouptitle;
+    auto set_field_if_in_row = [&ci_temp, &row_has_column, &tokens, &columns](CItem::FieldType ft)
+    {
+      if (row_has_column(ft))
+        ci_temp.SetFieldValue(ft, tokens[columns[ft]].c_str());
+    };
+
+    set_field_if_in_row(CItem::USER);
+    set_field_if_in_row(CItem::PASSWORD);
+
+
+    // Handle legacy group/title concatenation
+    if (row_has_column(CItem::GROUPTITLE)) {
+      // The group and title field are concatenated.
+      // If the title field has periods, then they have been changed to the delimiter
+      const stringT& grouptitle = tokens[columns[CItem::GROUPTITLE]];
+      stringT entrytitle;
+      size_t lastdot = grouptitle.find_last_of(TCHAR('.'));
+      if (lastdot != stringT::npos) {
+        StringX newgroup(ImportedPrefix.empty() ?
+          _T("") : ImportedPrefix + _T("."));
+        newgroup += grouptitle.substr(0, lastdot).c_str();
+        ci_temp.SetGroup(newgroup);
+        entrytitle = grouptitle.substr(lastdot + 1);
+      } else {
+        ci_temp.SetGroup(ImportedPrefix);
+        entrytitle = grouptitle;
+      }
+
+      std::replace(entrytitle.begin(), entrytitle.end(), delimiter, TCHAR('.'));
+      if (entrytitle.empty()) {
+        Format(cs_error, IDSC_IMPORTNOTITLE, numlines);
+        rpt.WriteLine(cs_error);
+        numSkipped++;
+        continue;
+      }
+      ci_temp.SetTitle(entrytitle.c_str());
+    } // GROUPTITLE handling
+
+    // if there are both GROUPTITLE and separate GROUP and/or TITLE, then the latter silently overwrites the former/
+    // TODO - generate a warning in the report.
+
+    if (row_has_column(CItem::GROUP) && !tokens[columns[CItem::GROUP]].empty())
+    {
+      // Lastpass apparently marks subgroups by '\', so we'll replace these with '.'
+      auto group = tokens[columns[CItem::GROUP]];
+      for (auto& c : group)
+        if (c == '\\') c = '.';
+      ci_temp.SetGroup(group.c_str());
     }
 
-    std::replace(entrytitle.begin(), entrytitle.end(), delimiter, TCHAR('.'));
-    if (entrytitle.empty()) {
-      Format(cs_error, IDSC_IMPORTNOTITLE, numlines);
-      rpt.WriteLine(cs_error);
-      numSkipped++;
-      continue;
-    }
+    set_field_if_in_row(CItem::TITLE);
 
-    ci_temp.SetTitle(entrytitle.c_str());
-
-    // Now make sure it is unique
+    // Now make sure GTU is unique
     const StringX sx_group = ci_temp.GetGroup();
     StringX sx_title = ci_temp.GetTitle();
     const StringX sx_user = ci_temp.GetUser();
@@ -1305,34 +1327,40 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     // Use new group if the entries have been imported under a new level.
     Format(sxImportedEntry, PWScore::GROUPTITLEUSERINCHEVRONS,
                         sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
-                           
-    if (i_Offset[URL] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[URL]))
-      ci_temp.SetURL(tokens[i_Offset[URL]].c_str());
-    if (i_Offset[AUTOTYPE] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[AUTOTYPE]))
-      ci_temp.SetAutoType(tokens[i_Offset[AUTOTYPE]].c_str());
-    if (i_Offset[CTIME] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[CTIME]))
-      if (!ci_temp.SetCTime(tokens[i_Offset[CTIME]].c_str()))
-        ReportInvalidField(rpt, vs_Header.at(CTIME), numlines);
-    if (i_Offset[PMTIME] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[PMTIME]))
-      if (!ci_temp.SetPMTime(tokens[i_Offset[PMTIME]].c_str()))
-        ReportInvalidField(rpt, vs_Header.at(PMTIME), numlines);
-    if (i_Offset[ATIME] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[ATIME]))
-      if (!ci_temp.SetATime(tokens[i_Offset[ATIME]].c_str()))
-        ReportInvalidField(rpt, vs_Header.at(ATIME), numlines);
-    if (i_Offset[XTIME] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[XTIME]))
-      if (!ci_temp.SetXTime(tokens[i_Offset[XTIME]].c_str()))
-        ReportInvalidField(rpt, vs_Header.at(XTIME), numlines);
-    if (i_Offset[XTIME_INT] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[XTIME_INT]))
-      if (!ci_temp.SetXTimeInt(tokens[i_Offset[XTIME_INT]].c_str()))
-        ReportInvalidField(rpt, vs_Header.at(XTIME_INT), numlines);
-    if (i_Offset[RMTIME] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[RMTIME]))
-      if (!ci_temp.SetRMTime(tokens[i_Offset[RMTIME]].c_str()))
-        ReportInvalidField(rpt, vs_Header.at(RMTIME), numlines);
-    if (i_Offset[POLICY] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[POLICY]))
-      if (!ci_temp.SetPWPolicy(tokens[i_Offset[POLICY]].c_str()))
-        ReportInvalidField(rpt, vs_Header.at(POLICY), numlines);
-    if (i_Offset[POLICYNAME] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[POLICYNAME])) {
-      sxPolicyName = tokens[i_Offset[POLICYNAME]].c_str();
+
+    // now for the "normal" fields
+    set_field_if_in_row(CItem::URL);
+    set_field_if_in_row(CItem::AUTOTYPE);
+    set_field_if_in_row(CItem::RUNCMD);
+    set_field_if_in_row(CItem::DCA);
+    set_field_if_in_row(CItem::SHIFTDCA);
+    set_field_if_in_row(CItem::EMAIL);
+    set_field_if_in_row(CItem::SYMBOLS);
+
+    // fields that have specific formats, setting their values may fail if non-compliant:
+    if (row_has_column(CItem::CTIME))
+      if (!ci_temp.SetCTime(tokens[columns[CItem::CTIME]].c_str()))
+        ReportInvalidField(rpt, CItemData::FieldName(CItem::CTIME), numlines);
+    if (row_has_column(CItem::PMTIME))
+      if (!ci_temp.SetPMTime(tokens[columns[CItem::PMTIME]].c_str()))
+        ReportInvalidField(rpt, CItemData::FieldName(CItem::PMTIME), numlines);
+    if (row_has_column(CItem::ATIME))
+      if (!ci_temp.SetATime(tokens[columns[CItem::ATIME]].c_str()))
+        ReportInvalidField(rpt, CItemData::FieldName(CItem::ATIME), numlines);
+    if (row_has_column(CItem::XTIME))
+      if (!ci_temp.SetXTime(tokens[columns[CItem::XTIME]].c_str()))
+        ReportInvalidField(rpt, CItemData::FieldName(CItem::XTIME), numlines);
+    if (row_has_column(CItem::XTIME_INT))
+      if (!ci_temp.SetXTimeInt(tokens[columns[CItem::XTIME_INT]].c_str()))
+        ReportInvalidField(rpt, CItemData::FieldName(CItem::XTIME_INT), numlines);
+    if (row_has_column(CItem::RMTIME))
+      if (!ci_temp.SetRMTime(tokens[columns[CItem::RMTIME]].c_str()))
+        ReportInvalidField(rpt, CItemData::FieldName(CItem::RMTIME), numlines);
+    if (row_has_column(CItem::POLICY))
+      if (!ci_temp.SetPWPolicy(tokens[columns[CItem::POLICY]].c_str()))
+        ReportInvalidField(rpt, CItemData::FieldName(CItem::POLICY), numlines);
+    if (row_has_column(CItem::POLICYNAME)) {
+      sxPolicyName = tokens[columns[CItem::POLICYNAME]].c_str();
       if (!sxPolicyName.empty()) {
         if (m_MapPSWDPLC.find(sxPolicyName) != m_MapPSWDPLC.end()) {
           ci_temp.SetPolicyName(sxPolicyName);
@@ -1342,11 +1370,11 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
         }
       }
     }
-    if (i_Offset[HISTORY] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[HISTORY])) {
+    if (row_has_column(CItem::PWHIST)) {
       StringX newPWHistory;
       stringT strPWHErrorList;
       Format(cs_error, IDSC_IMPINVALIDPWH, numlines);
-      switch (VerifyTextImportPWHistoryString(tokens[i_Offset[HISTORY]].c_str(),
+      switch (VerifyTextImportPWHistoryString(tokens[columns[CItem::PWHIST]].c_str(),
                                           newPWHistory, strPWHErrorList)) {
         case PWH_OK:
           ci_temp.SetPWHistory(newPWHistory.c_str());
@@ -1369,26 +1397,19 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
           break;
       }
     }
-    if (i_Offset[RUNCMD] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[RUNCMD]))
-      ci_temp.SetRunCommand(tokens[i_Offset[RUNCMD]].c_str());
-    if (i_Offset[DCA] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[DCA]))
-      ci_temp.SetDCA(tokens[i_Offset[DCA]].c_str());
-    if (i_Offset[SHIFTDCA] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[SHIFTDCA]))
-      ci_temp.SetShiftDCA(tokens[i_Offset[SHIFTDCA]].c_str());
-    if (i_Offset[EMAIL] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[EMAIL]))
-      ci_temp.SetEmail(tokens[i_Offset[EMAIL]].c_str());
-    if (i_Offset[PROTECTED] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[PROTECTED]))
-      if (tokens[i_Offset[PROTECTED]].compare(_T("Y")) == 0 || tokens[i_Offset[PROTECTED]].compare(_T("1")) == 0)
-        ci_temp.SetProtected(true);
-    if (i_Offset[SYMBOLS] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[SYMBOLS]))
-      ci_temp.SetSymbols(tokens[i_Offset[SYMBOLS]].c_str());
-    if (i_Offset[KBSHORTCUT] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[KBSHORTCUT]))
-      ci_temp.SetKBShortcut(tokens[i_Offset[KBSHORTCUT]].c_str());
+
+    if (row_has_column(CItem::PROTECTED)) {
+      auto value = tokens[columns[CItem::PROTECTED]].empty() ? L'0' : tokens[columns[CItem::PROTECTED]][0];
+      ci_temp.SetProtected(value == L'1' || value == L'Y' || value == L'y');
+    }
+
+    if (row_has_column(CItem::KBSHORTCUT))
+      ci_temp.SetKBShortcut(tokens[columns[CItem::KBSHORTCUT]].c_str());
 
     // The notes field begins and ends with a double-quote, with
     // replacement of delimiter by CR-LF.
-    if (i_Offset[NOTES] >= 0 && tokens.size() > static_cast<size_t>(i_Offset[NOTES])) {
-      stringT quotedNotes = tokens[i_Offset[NOTES]];
+    if (row_has_column(CItem::NOTES)) {
+      stringT quotedNotes = tokens[columns[CItem::NOTES]];
       if (!quotedNotes.empty()) {
         if (*quotedNotes.begin() == TCHAR('\"') &&
             *(quotedNotes.end() - 1) == TCHAR('\"')) {
@@ -1406,6 +1427,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       }
     }
 
+    auto csPassword = ci_temp.GetPassword();
     if (Replace(csPassword, _T(':'), _T(';')) <= 2) {
       if (csPassword.substr(0, 2) == _T("[[") &&
           csPassword.substr(csPassword.length() - 2) == _T("]]")) {
@@ -1693,8 +1715,9 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
         }
         // Construct the parent groups
         sx_Parent_Groups = _T("");
-        for (size_t i = 0; i < pgs.size(); i++) {
-          sx_Parent_Groups = sx_Parent_Groups + pgs[i] + dot;
+        for (auto& pg : pgs)
+        {
+          sx_Parent_Groups = sx_Parent_Groups + pg + dot;
         }
       }
 
@@ -1993,8 +2016,9 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
                CTIME, ATIME, PMTIME, XTIME, ATTACHMENTDESCR, ATTACHMENT, NUMFIELDS};
 
   int i_Offset[NUMFIELDS];
-  for (int i = 0; i < NUMFIELDS; i++) {
-    i_Offset[i] = -1;
+  for (int& i : i_Offset)
+  {
+    i = -1;
   }
 
   // Capture individual column titles:

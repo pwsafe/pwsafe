@@ -1,0 +1,3 @@
+Group/Title	Username	Password	URL	AutoType	Created Time	Password Modified Time	Last Access Time	Password Expiry Date	Password Expiry Interval	Record Modified Time	Password Policy	Password Policy Name	History	Run Command	DCA	Shift+DCA	e-mail	Protected	Symbols	Keyboard Shortcut	Notes
+a.b.c.d-level-title	d-user	d-password			2023/01/03 19:13:30								00000		-1	-1		N			"line 1 of 3»line 2 of 3»line 3 of 3"
+toplevel-title1	toplevel user	toplevel-password	toplevelurl.com		2023/01/03 19:11:50								00000		-1	-1	tom@email.com	N			"simple one-line note"
