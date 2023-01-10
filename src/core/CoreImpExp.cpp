@@ -911,6 +911,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     defaultPairs(GROUPTITLE), // deprecated, but still accepted.
     defaultPairs(GROUP),
     altPair(L"folder",GROUP),
+    altPair(L"grouping",GROUP),
     defaultPairs(TITLE),
     { L"name", CItem::TITLE }, // macro fails, dunno why
     defaultPairs(USER),
@@ -938,6 +939,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     defaultPairs(KBSHORTCUT),
     defaultPairs(NOTES),
     altPair(L"comments",NOTES),
+    altPair(L"extra",NOTES),
   };
 
   map<CItem::FieldType, int> columns; // from parsing the fist line of the file, field X is in columns[X]
@@ -1128,10 +1130,16 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                 numSkipped++;
                 continue;
               }
-              note += slinebuf.c_str();
               size_t fq = linebuf.find_first_of('\"');
               size_t lq = linebuf.find_last_of('\"');
               noteClosed = (fq == lq && fq != string::npos);
+              if (noteClosed) {
+                note += slinebuf.substr(0, lq+1).c_str();
+                // Adjust nextchar to continue parsing:
+                nextchar = lq + 1;
+              } else {
+                note += slinebuf.c_str();
+              }
             } while (!noteClosed);
           } // multiline note processed
           tokens.push_back(note);
@@ -1284,7 +1292,15 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     // if there are both GROUPTITLE and separate GROUP and/or TITLE, then the latter silently overwrites the former/
     // TODO - generate a warning in the report.
 
-    set_field_if_in_row(CItem::GROUP);
+    if (row_has_column(CItem::GROUP) && !tokens[columns[CItem::GROUP]].empty())
+    {
+      // Lastpass apparently marks subgroups by '\', so we'll replace these with '.'
+      auto group = tokens[columns[CItem::GROUP]];
+      for (auto& c : group)
+        if (c == '\\') c = '.';
+      ci_temp.SetGroup(group.c_str());
+    }
+
     set_field_if_in_row(CItem::TITLE);
 
     // Now make sure GTU is unique
@@ -1392,7 +1408,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     // The notes field begins and ends with a double-quote, with
     // replacement of delimiter by CR-LF.
-    if (columns[CItem::NOTES] >= 0 && tokens.size() > static_cast<size_t>(columns[CItem::NOTES])) {
+    if (row_has_column(CItem::NOTES)) {
       stringT quotedNotes = tokens[columns[CItem::NOTES]];
       if (!quotedNotes.empty()) {
         if (*quotedNotes.begin() == TCHAR('\"') &&

@@ -1,0 +1,4 @@
+url,username,password,totp,extra,name,grouping,fav
+http://acme.org,acme-username,acme-password,,"how are multiline notes exported?
+only time will tell.
+marked as favorite!",acme-name,acme-folder\subfolder1,1

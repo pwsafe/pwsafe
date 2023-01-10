@@ -27,6 +27,7 @@ protected:
     const stringT testFile2 = L"import-text-unit-test2.csv";
     const stringT testFile3 = L"import-text-unit-test3.csv";
     const stringT testFile4 = L"import-text-unit-test4.csv";
+    const stringT testFile5 = L"import-text-unit-test5.csv";
 
 
   
@@ -52,6 +53,7 @@ void ImportTextTest::SetUp()
   ASSERT_TRUE(pws_os::FileExists(testFile2));
   ASSERT_TRUE(pws_os::FileExists(testFile3));
   ASSERT_TRUE(pws_os::FileExists(testFile4));
+  ASSERT_TRUE(pws_os::FileExists(testFile5));
 }
 
 void ImportTextTest::TearDown()
@@ -152,5 +154,25 @@ TEST_F(ImportTextTest, test4)
   EXPECT_EQ(item1.GetPassword(), L"site-password");
   EXPECT_EQ(item1.GetNotes(), L"notes-field");
   EXPECT_EQ(item1.GetURL(), L"http://biteme.com");
+}
 
+TEST_F(ImportTextTest, test5)
+{
+  // csv file created by LastPass export, with multiline note, backslash subgroup separator.
+
+  importText(testFile5, L',', 1);
+
+  // now test that we've read the data correctly
+  auto p1 = core.Find(L"acme-folder.subfolder1", L"acme-name", L"acme-username");
+  EXPECT_NE(p1, core.GetEntryEndIter());
+  auto item1 = core.GetEntry(p1);
+  EXPECT_EQ(item1.GetGroup(), L"acme-folder.subfolder1");
+  EXPECT_EQ(item1.GetTitle(), L"acme-name");
+  EXPECT_EQ(item1.GetUser(), L"acme-username");
+  EXPECT_EQ(item1.GetPassword(), L"acme-password");
+  EXPECT_EQ(item1.GetNotes(),
+    L"how are multiline notes exported?\r\n"
+    L"only time will tell.\r\n"
+    L"marked as favorite!");
+  EXPECT_EQ(item1.GetURL(), L"http://acme.org");
 }
