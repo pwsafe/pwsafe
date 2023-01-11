@@ -39,7 +39,7 @@ if [ "$KERNEL" = "Linux" ]; then
     if command -v $LSB_RELEASE 1>/dev/null; then
         DISTRO="$($LSB_RELEASE -si | tr '[:upper:]' '[:lower:]')"
     elif [ -f /etc/os-release ]; then
-        DISTRO="$(grep -o "^ID=.*" /etc/os-release | sed 's#^ID=##gm')"
+        DISTRO="$(grep -o "^ID=.*" /etc/os-release | sed -e 's#^ID=##gm' -e 's/"//g')"
     elif ! command -v $LSB_RELEASE 1>/dev/null && [ ! -f /etc/os-release ]; then
         die 4 "Unable to identify distribution since command '$LSB_RELEASE' and file /etc/os-release are not present"
     else
@@ -98,7 +98,7 @@ case "$DISTRO" in
         pacman -S --noconfirm base-devel cmake file git libxt qrencode wxwidgets-gtk3 \
         xerces-c yubikey-personalization zip
     ;;
-    opensuse)
+    opensuse*)
         zypper --non-interactive install cmake file-devel fakeroot gcc-c++ \
         gettext-tools git gtest libcurl-devel libmagic1 libopenssl-devel \
         libuuid-devel libxerces-c-devel libXt-devel libXtst-devel libykpers-devel \
