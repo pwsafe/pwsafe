@@ -36,7 +36,7 @@ static char THIS_FILE[] = __FILE__;
 //-----------------------------------------------------------------------------
 CPasskeyChangeDlg::CPasskeyChangeDlg(CWnd* pParent)
   : CPKBaseDlg(CPasskeyChangeDlg::IDD, pParent),
-  m_btnShowCombination(FALSE),
+  m_btnShowMasterPassword(FALSE),
   m_LastFocus(IDC_PASSKEY), m_Yubi1pressed(false), m_Yubi2pressed(false),
   m_oldpasskeyConfirmed(false)
 {
@@ -65,7 +65,7 @@ void CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_NEWPASSKEY, *m_pctlNewPasskey);
   DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
 
-  DDX_Check(pDX, IDC_SHOWCOMBINATION, m_btnShowCombination);
+  DDX_Check(pDX, IDC_SHOWMASTERPASSWORD, m_btnShowMasterPassword);
 }
 
 BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPKBaseDlg)
@@ -76,7 +76,7 @@ BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPKBaseDlg)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_YUBIKEY2_BTN, OnYubikey2Btn)
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
-  ON_BN_CLICKED(IDC_SHOWCOMBINATION, OnShowCombination)
+  ON_BN_CLICKED(IDC_SHOWMASTERPASSWORD, OnShowMasterPassword)
 
   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_NEWPASSKEY, OnNewPasskeySetfocus)
@@ -147,7 +147,7 @@ void CPasskeyChangeDlg::OnOK()
     gmb.AfxMessageBox(IDS_WRONGOLDPHRASE);
   else if (rc == PWScore::CANT_OPEN_FILE)
     gmb.AfxMessageBox(IDS_CANTVERIFY);
-  else if (m_btnShowCombination == FALSE && m_confirmnew != m_newpasskey)
+  else if (m_btnShowMasterPassword == FALSE && m_confirmnew != m_newpasskey)
     gmb.AfxMessageBox(IDS_NEWOLDDONOTMATCH);
   else if (m_newpasskey.IsEmpty())
     gmb.AfxMessageBox(IDS_CANNOTBEBLANK);
@@ -202,14 +202,14 @@ void CPasskeyChangeDlg::OnConfirmNewSetfocus()
   m_LastFocus = IDC_CONFIRMNEW;
 }
 
-void CPasskeyChangeDlg::OnShowCombination()
+void CPasskeyChangeDlg::OnShowMasterPassword()
 {
   UpdateData(TRUE);
 
-  m_pctlPasskey->SetSecure(m_btnShowCombination == TRUE ? FALSE : TRUE);
-  m_pctlNewPasskey->SetSecure(m_btnShowCombination == TRUE ? FALSE : TRUE);
+  m_pctlPasskey->SetSecure(m_btnShowMasterPassword == TRUE ? FALSE : TRUE);
+  m_pctlNewPasskey->SetSecure(m_btnShowMasterPassword == TRUE ? FALSE : TRUE);
 
-  if (m_btnShowCombination == TRUE) {
+  if (m_btnShowMasterPassword == TRUE) {
     m_pctlPasskey->SetPasswordChar(0);
     m_pctlPasskey->SetWindowText(m_passkey);
 
@@ -326,7 +326,7 @@ void CPasskeyChangeDlg::OnYubikey2Btn()
 {
   UpdateData(TRUE);
 
-  if (m_btnShowCombination == FALSE && m_confirmnew != m_newpasskey) {
+  if (m_btnShowMasterPassword == FALSE && m_confirmnew != m_newpasskey) {
     CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_NEWOLDDONOTMATCH);
   } else {

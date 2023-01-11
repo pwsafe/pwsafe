@@ -348,10 +348,10 @@ void COptions_PropertySheet::UpdateCopyPreferences()
   prefs->SetPref(PWSprefs::WindowTransparency,
                   m_OPTMD.PercentTransparency, true);
   
-  // Changes are highlighted only if "hightlight changes" is true and 
+  // Changes are highlighted only if "highlight changes" is true and 
   // "save immediately" is false.
-  // So only need to refresh view if the new combination is different
-  // to the original combination
+  // So only need to refresh view if the new master password is different
+  // from the original one.
   m_bRefreshViews = (m_save_bHighlightChanges && !m_save_bSaveImmediately) != 
                     (m_OPTMD.HighlightChanges && !m_OPTMD.SaveImmediately);
 

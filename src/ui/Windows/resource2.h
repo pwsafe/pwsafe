@@ -155,7 +155,7 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 
 // Manage menu
 #define ID_MANAGEMENU                   32150
-#define ID_MENUITEM_CHANGECOMBO         32151
+#define ID_MENUITEM_CHANGEMSTPWD         32151
 #define ID_MENUITEM_BACKUPSAFE          32152
 #define ID_MENUITEM_RESTORESAFE         32153
 #define ID_MENUITEM_OPTIONS             32154

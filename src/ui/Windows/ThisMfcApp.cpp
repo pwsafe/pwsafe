@@ -858,7 +858,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone, bool &postMinim
           /**
            * '--setup' is meant to be used when invoking PasswordSafe at the end of the installation process.
            * It will cause the application to create a new database with the default name at the default location,
-           * prompting the user for the safe combination.
+           * prompting the user for the master password.
            */
           dbox.SetSetup();
         } else if ((*arg) == L"--novalidate") {

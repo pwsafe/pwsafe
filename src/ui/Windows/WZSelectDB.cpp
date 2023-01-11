@@ -51,7 +51,7 @@ CWZSelectDB::CWZSelectDB(CWnd *pParent, int idd, UINT nIDCaption,
   m_passkey(L""), m_passkey2(L""), m_verify2(L""), m_filespec(L""),
   m_tries(0), m_state(0),
   m_bAdvanced(BST_UNCHECKED), m_bExportDBFilters(BST_UNCHECKED),
-  m_bFileExistsUserAsked(false), m_btnShowCombination(FALSE),
+  m_bFileExistsUserAsked(false), m_btnShowMasterPassword(FALSE),
   m_pVKeyBoardDlg(nullptr),
   m_LastFocus(IDC_PASSKEY)
 {
@@ -96,7 +96,7 @@ void CWZSelectDB::DoDataExchange(CDataExchange* pDX)
 
   DDX_Control(pDX, IDC_DATABASE, *m_pctlDB);
   DDX_Check(pDX, IDC_ADVANCED, m_bAdvanced);
-  DDX_Check(pDX, IDC_SHOWCOMBINATION, m_btnShowCombination);
+  DDX_Check(pDX, IDC_SHOWMASTERPASSWORD, m_btnShowMasterPassword);
 
   if (nID != ID_MENUITEM_COMPARE && 
       nID != ID_MENUITEM_MERGE   && 
@@ -177,7 +177,7 @@ BEGIN_MESSAGE_MAP(CWZSelectDB, CWZPropertyPage)
   ON_BN_CLICKED(IDC_EXPORTFILTERS, OnExportFilters)
 
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
-  ON_BN_CLICKED(IDC_SHOWCOMBINATION, OnShowCombination)
+  ON_BN_CLICKED(IDC_SHOWMASTERPASSWORD, OnShowMasterPassword)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -245,10 +245,10 @@ BOOL CWZSelectDB::OnInitDialog()
   }
 
   if (bEXPORTDBCTRLS) {
-    // Show & Enable Export Combination controls
-    GetDlgItem(IDC_STATIC_NEWCOMBI)->ShowWindow(SW_SHOW);
+    // Show & Enable Export master password controls
+    GetDlgItem(IDC_STATIC_NEWMSTPWD)->ShowWindow(SW_SHOW);
     GetDlgItem(IDC_STATIC_VERIFY)->ShowWindow(SW_SHOW);
-    GetDlgItem(IDC_STATIC_COMBI)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_STATIC_MSPWD)->ShowWindow(SW_SHOW);
     GetDlgItem(IDC_PASSKEY2)->ShowWindow(SW_SHOW);
     GetDlgItem(IDC_PASSKEY2)->EnableWindow(TRUE);
     GetDlgItem(IDC_VERIFY2)->ShowWindow(SW_SHOW);
@@ -1016,13 +1016,13 @@ void CWZSelectDB::OnTimer(UINT_PTR)
   }
 }
 
-void CWZSelectDB::OnShowCombination()
+void CWZSelectDB::OnShowMasterPassword()
 {
   UpdateData(TRUE);
 
-  m_pctlPasskey->SetSecure(m_btnShowCombination == TRUE ? FALSE : TRUE);
+  m_pctlPasskey->SetSecure(m_btnShowMasterPassword == TRUE ? FALSE : TRUE);
 
-  if (m_btnShowCombination == TRUE) {
+  if (m_btnShowMasterPassword == TRUE) {
     m_pctlPasskey->SetPasswordChar(0);
     m_pctlPasskey->SetWindowText(m_passkey);
   }

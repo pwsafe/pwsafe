@@ -65,7 +65,7 @@ protected:
   CSysColStatic m_ctlLogoText;
   CButton m_ctlOK;
 
-  BOOL m_btnReadOnly, m_btnShowCombination;
+  BOOL m_btnReadOnly, m_btnShowMasterPassword;
   bool m_bFileReadOnly;
   bool m_bForceReadOnly;
   bool m_bHideReadOnly;
@@ -98,7 +98,7 @@ protected:
   afx_msg void OnComboEditChange();
   afx_msg void OnComboSelChange();
   afx_msg void OnBnClickedReadonly();
-  afx_msg void OnShowCombination();
+  afx_msg void OnShowMasterPassword();
   afx_msg void OnOpenFileBrowser();
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnYubikeyBtn();

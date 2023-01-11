@@ -457,7 +457,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_COMMAND(ID_MENUITEM_SHOW_FOUNDENTRIES, OnShowFoundEntries)
 
   // Manage Menu
-  ON_COMMAND(ID_MENUITEM_CHANGECOMBO, OnPassphraseChange)
+  ON_COMMAND(ID_MENUITEM_CHANGEMSTPWD, OnPassphraseChange)
   ON_COMMAND(ID_MENUITEM_BACKUPSAFE, OnBackupSafe)
   ON_COMMAND(ID_MENUITEM_RESTORESAFE, OnRestoreSafe)
   ON_COMMAND(ID_MENUITEM_OPTIONS, OnOptions)
@@ -691,7 +691,7 @@ const DboxMain::UICommandTableEntry DboxMain::m_UICommandTable[] = {
   {ID_MENUITEM_SHOW_ALL_EXPIRY, true, true, false, false},
   {ID_MENUITEM_SHOW_FOUNDENTRIES, true, true, false, false},
   // Manage menu
-  {ID_MENUITEM_CHANGECOMBO, true, false, true, false},
+  {ID_MENUITEM_CHANGEMSTPWD, true, false, true, false},
   {ID_MENUITEM_BACKUPSAFE, true, true, true, false},
   {ID_MENUITEM_RESTORESAFE, true, false, true, false},
   {ID_MENUITEM_OPTIONS, true, true, true, true},
@@ -1190,7 +1190,7 @@ BOOL DboxMain::OnInitDialog()
       bOOI = OpenOnInit();
   } else { // --setup flag passed (post install/upgrade)
     // If default dbase exists, DO NOT overwrite it, else
-    // prompt for new combination, create it.
+    // prompt for new master password, create it.
     CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME));
     std::wstring fname = PWSUtil::GetNewFileName(LPCWSTR(cf),
                                                  DEFAULT_SUFFIX);
