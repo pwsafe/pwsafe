@@ -4,7 +4,6 @@ Name=PasswordSafe
 Comment=Manage passwords
 Exec=pwsafe %f
 Icon=pwsafe
-Terminal=false
 Type=Application
 StartupNotify=true
 StartupWMClass=pwsafe
