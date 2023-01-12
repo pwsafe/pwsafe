@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-12-10 11:55+0200\n"
+"PO-Revision-Date: 2023-01-12 13:56+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: cs\n"
@@ -17,6 +17,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.2.2\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -653,8 +666,8 @@ msgid "&Browse to URL"
 msgstr "&Jdi na odkaz"
 
 #. Resource IDs: (32151 - MenuEx)
-msgid "&Change Safe Combination..."
-msgstr "&Změň šifrovací klíč..."
+msgid "&Change Master Password..."
+msgstr "&Změnit hlavní heslo..."
 
 #. Resource IDs: (32105 - MenuEx)
 msgid "&Classic Toolbar"
@@ -1462,8 +1475,8 @@ msgid "A hidden password needs to be entered in the Confirm Password field too. 
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "A new password database will be created. The safe combination you enter will be used to encrypt the password database file. The Safe Combination can use any keyboard character and is case-sensitive."
-msgstr "Bude vytvořena nová databáze hesel. Kombinace sejfu, kterou zadáte, bude použita k zašifrování souboru s databází hesel. Kombinace může obsahovat jakýkoliv znak na klávesnici and je citlivá na velikost písmen."
+msgid "A new password database will be created. The Master Password you enter will be used to encrypt the password database file. The Master Password can use any keyboard character and is case-sensitive."
+msgstr "Bude vytvořena nová databáze hesel. Hlavní heslo, které zadáte, bude použito k šifrování souboru databáze hesel. Hlavní heslo může používat libovolný znak klávesnice a rozlišuje velká a malá písmena."
 
 #. Resource IDs: (5861)
 msgid ""
@@ -1890,7 +1903,7 @@ msgstr "Jdi na adresu + Automaticky zadej"
 msgid "Browse to URL + Autotype"
 msgstr "Jdi na adresu + Automaticky zadej"
 
-#. Resource IDs: (32074 - Menu, 32074 - MenuEx)
+#. Resource IDs: (32074 - Menu, 32074 - MenuEx, 5679)
 msgid "Browse to URL w/Alt Browser"
 msgstr ""
 
@@ -2014,8 +2027,8 @@ msgid "Cannot read file. Please check file permissions."
 msgstr "Nemohu číst soubor, prověř práva k souboru."
 
 #. Resource IDs: (5285)
-msgid "Cannot verify old safe combination - file gone?"
-msgstr "Nemohu ověřit původní kombinaci - soubor chybí?"
+msgid "Cannot verify old master password - file gone?"
+msgstr "Nelze ověřit staré hlavní heslo - soubor je pryč?"
 
 #. Resource IDs: (8015)
 msgid "Caps Lock"
@@ -2058,8 +2071,8 @@ msgid "Change Date"
 msgstr "Změň datum"
 
 #. Resource IDs: (127)
-msgid "Change Safe Combination"
-msgstr "Změn kombinaci sejfu"
+msgid "Change Master Password"
+msgstr "Změna hlavního hesla"
 
 #. Resource IDs: (6039)
 #, c-format
@@ -2604,6 +2617,10 @@ msgstr ""
 msgid "Credit card CVV"
 msgstr "Kreditní karta CVV"
 
+#. Resource IDs: (3078)
+msgid "Credit card PIN"
+msgstr "PIN platební karty"
+
 #. Resource IDs: (3076)
 msgid "Credit card expiration"
 msgstr "Vypršení platnosti platební karty"
@@ -2611,10 +2628,6 @@ msgstr "Vypršení platnosti platební karty"
 #. Resource IDs: (3075)
 msgid "Credit card number"
 msgstr "Číslo kreditní karty"
-
-#. Resource IDs: (3078)
-msgid "Credit card PIN"
-msgstr "PIN platební karty"
 
 #. Resource IDs: (5612)
 msgid "Criteria"
@@ -2641,8 +2654,8 @@ msgid "Current Entry"
 msgstr "Současný záznam"
 
 #. Resource IDs: (65535)
-msgid "Current Safe Combination:"
-msgstr ""
+msgid "Current Master Password:"
+msgstr "Aktuální Hlavní heslo:"
 
 #. Resource IDs: (3460)
 msgid "Current database filters have been exported to this database."
@@ -3127,8 +3140,8 @@ msgid "Enter Key:"
 msgstr "Zadejte klávesu:"
 
 #. Resource IDs: (130, 132)
-msgid "Enter Safe Combination"
-msgstr "Zadejte kombinaci sejfu"
+msgid "Enter Master Password"
+msgstr "Zadejte Hlavní heslo"
 
 #. Resource IDs: (61722)
 msgid "Enter a GUID."
@@ -4293,8 +4306,8 @@ msgid "Incorrect filename."
 msgstr "Nesprávný název souboru"
 
 #. Resource IDs: (5280)
-msgid "Incorrect passkey, not a PasswordSafe database, or a corrupt database."
-msgstr "Nesprávné heslo, nejedná se o databázi PasswordSafe, nebo poškozená databáze."
+msgid "Incorrect master password, not a PasswordSafe database, or a corrupt database."
+msgstr "Nesprávné hlavní heslo, nikoli databáze PasswordSafe nebo poškozená databáze."
 
 #. Resource IDs: (3251)
 msgid "Incorrect password"
@@ -4646,9 +4659,21 @@ msgstr "Maorština"
 msgid "Marathi"
 msgstr "Maráthština"
 
+#. Resource IDs: (131)
+msgid "Master Password Entry"
+msgstr "Zadání hlavního hesla"
+
+#. Resource IDs: (133)
+msgid "Master Password Setup"
+msgstr "Nastavení hlavního hesla"
+
 #. Resource IDs: (65535)
 msgid "Master Password last set on:"
-msgstr ""
+msgstr "Poslední nastavení hlavního hesla:"
+
+#. Resource IDs: (1506, 65535)
+msgid "Master Password:"
+msgstr "Hlavní heslo:"
 
 #. Resource IDs: (1212)
 msgid "Max."
@@ -4815,16 +4840,16 @@ msgid "New Group"
 msgstr "Nová skupina"
 
 #. Resource IDs: (65535)
-msgid "New Safe Combination:"
-msgstr "Nové kombinace sejfu:"
+msgid "New Master Password:"
+msgstr "Nové hlavní heslo:"
 
 #. Resource IDs: (5476)
 msgid "New Version Found!"
 msgstr "Nalezena nová verze!"
 
 #. Resource IDs: (5286)
-msgid "New safe combination and confirmation do not match"
-msgstr "Nová kombinace sejfu a její ověření se neshodují"
+msgid "New master password and confirmation do not match"
+msgstr "Nové hlavní heslo a potvrzení se neshodují"
 
 #. Resource IDs: (1003)
 msgid "New..."
@@ -4977,12 +5002,12 @@ msgid "Note that you can use an environment variable too, e.g., %TEMP%"
 msgstr ""
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as « »"
-msgstr "Poznámka: Prázdná pole jsou zobrazena jako « »"
+msgid "Note: Empty fields are shown as ï¿½ ï¿½"
+msgstr ""
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is «Group» «Title» «Username»"
-msgstr "Poznámka: Formát záznamu je «Skupina» «Název» «Uživatelské jméno»"
+msgid "Note: Entry format is ï¿½Groupï¿½ ï¿½Titleï¿½ ï¿½Usernameï¿½"
+msgstr ""
 
 #. Resource IDs: (3428)
 msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."
@@ -5127,13 +5152,13 @@ msgstr "Ok"
 msgid "Off"
 msgstr "Vypnuto"
 
+#. Resource IDs: (65535)
+msgid "Old Master Password:"
+msgstr "Heslo starého mistra:"
+
 #. Resource IDs: (6038)
 msgid "Old Pswd copied"
 msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Old Safe Combination:"
-msgstr "Stará kombinace sejfu:"
 
 #. Resource IDs: (5265)
 msgid "On"
@@ -5531,21 +5556,25 @@ msgstr "Prosím vložte řetězec k vyhledání"
 msgid "Please enter an encryption or decryption key"
 msgstr "Prosím vložte (de)šifrovací klíš"
 
-#. Resource IDs: (1504)
-msgid "Please enter the combination for the NEW database to contain exported entry/entries."
-msgstr ""
+#. Resource IDs: (65535)
+msgid "Please enter the Master Password for this password database."
+msgstr "Zadejte prosím Hlavní heslo pro tuto databázi hesel."
 
 #. Resource IDs: (65535)
 msgid ""
-"Please enter the current combination, followed by a new combination. \r\n"
-"Type the new combination once again to confirm it."
+"Please enter the current master password, followed by a new one. \r\n"
+"Type the new one again to confirm it."
 msgstr ""
-"Prosím vložte současnou kombinaci následovanou novou kombinací. \r\n"
-"Napište novou kombinaci znovu pro potvrzení."
+"Zadejte prosím aktuální hlavní heslo a nové. \r\n"
+"Zadejte nový znovu pro potvrzení."
 
 #. Resource IDs: (5255)
 msgid "Please enter the key and verify it."
 msgstr "Prosím vložte klíč a ověřte ho."
+
+#. Resource IDs: (1504)
+msgid "Please enter the master password for the NEW database to contain exported entry/entries."
+msgstr "Zadejte prosím hlavní heslo pro NOVOU databázi, která bude obsahovat exportované položky."
 
 #. Resource IDs: (5876)
 msgid "Please enter the new database description"
@@ -5554,10 +5583,6 @@ msgstr "Prosím vložte popis nové databáze"
 #. Resource IDs: (5875)
 msgid "Please enter the new database name"
 msgstr "Prosím vložte název nové databáze"
-
-#. Resource IDs: (65535)
-msgid "Please enter the safe combination for this password database."
-msgstr "Prosím vložte kombinaci sejfu pro tuto databázi."
 
 #. Resource IDs: (5388)
 msgid "Please enter your backup database prefix."
@@ -5998,18 +6023,6 @@ msgstr ""
 msgid "SAX Parse60 Error 0x%08X during %ls."
 msgstr "SAX Parse60 chyba 0x%08X během %ls."
 
-#. Resource IDs: (131)
-msgid "Safe Combination Entry"
-msgstr "Záznam kombinace sejfu"
-
-#. Resource IDs: (133)
-msgid "Safe Combination Setup"
-msgstr "Nastavení kombinace sejfu"
-
-#. Resource IDs: (1506, 65535)
-msgid "Safe Combination:"
-msgstr "Kombinace Sejfu:"
-
 #. Resource IDs: (1205)
 msgid "Same as database's"
 msgstr "Stejné jako u databáze"
@@ -6360,8 +6373,8 @@ msgid "Show"
 msgstr "Ukázat"
 
 #. Resource IDs: (1590)
-msgid "Show Combination"
-msgstr ""
+msgid "Show Master Password"
+msgstr "Zobrazit hlavní heslo"
 
 #. Resource IDs: (5653)
 msgid "Show Notes"
@@ -6769,10 +6782,6 @@ msgstr ""
 msgid "The YubiKey appears uninitialized. Initialize it?"
 msgstr "Zdá se, že Yubikee není inicializován. Incializovat?"
 
-#. Resource IDs: (5279)
-msgid "The combination cannot be blank."
-msgstr "Kombinace nemůže být prázdná."
-
 #. Resource IDs: (5311)
 #, c-format
 msgid ""
@@ -6897,6 +6906,10 @@ msgstr ""
 msgid "The following base entries have been exported because one or more of their dependents have been included."
 msgstr ""
 
+#. Resource IDs: (3262)
+msgid "The following columns are unrecognized by PasswordSafe and will be ignored: "
+msgstr ""
+
 #. Resource IDs: (3375)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
 msgstr "Následující sloupce byly rozpoznány, ale pouze skupina/název, uživatelské jméno a heslo budou zpracovány:"
@@ -7001,14 +7014,33 @@ msgstr ""
 "\t«%s» «%s» «%s»\n"
 "Prosím vyberte jinou zkratku."
 
+#. Resource IDs: (5279)
+msgid "The master password cannot be blank."
+msgstr "Hlavní heslo nesmí být prázdné."
+
+#. Resource IDs: (5958)
+#, c-format
+msgid ""
+"The master password has been entered %d times without success:\n"
+"- Is Caps Lock off?\n"
+"- Is the language correct (if multilingual)?\n"
+"- Is this the correct database?\n"
+"- Perhaps the database was damaged. Try opening a backup copy."
+msgstr ""
+"Hlavní heslo bylo zadáno %d případech bez úspěchu:\n"
+"- Je Caps Lock vypnutý?\n"
+"- Je jazyk správný (pokud je vícejazyčný)?\n"
+"- Je to správná databáze?\n"
+"- Možná byla databáze poškozena. Zkuste otevřít záložní kopii."
+
 #. Resource IDs: (5792)
 #, c-format
 msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either export this entry to XML before changing it or open the database in read-only mode and copy it to an editor via the clipboard."
 msgstr ""
 
 #. Resource IDs: (5284)
-msgid "The old safe combination is not correct"
-msgstr "Nesprávná stará kombinace sejfu"
+msgid "The old master password is not correct"
+msgstr "Staré hlavní heslo není správné"
 
 #. Resource IDs: (5323)
 #, c-format
@@ -7019,21 +7051,6 @@ msgstr ""
 #, c-format
 msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
 msgstr ""
-
-#. Resource IDs: (5958)
-#, c-format
-msgid ""
-"The safe combination has been entered %d times without success:\n"
-"- Is Caps Lock off?\n"
-"- Is the language correct (if multilingual)?\n"
-"- Is this the correct database?\n"
-"- Perhaps the database was damaged. Try opening a backup copy."
-msgstr ""
-"Kombinace sejfu byla nesprávně zadána %d krát:\n"
-"- Je vypnutý CapsLock?\n"
-"- Je vybrán správný jazyk?\n"
-"- Jedná se o správnou databázi?\n"
-"- Možná byla databáze poškozena. Zkuste otevřít záložní kopii."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -7764,13 +7781,13 @@ msgstr ""
 #. Resource IDs: (5281)
 #, c-format
 msgid ""
-"Weak passphrase:\n"
+"Weak master password:\n"
 "\n"
 " %s"
 msgstr ""
-"Slabé heslo:\n"
+"Slabé hlavní heslo:\n"
 "\n"
-" %s"
+"%s"
 
 #. Resource IDs: (5763)
 msgid "What saved"

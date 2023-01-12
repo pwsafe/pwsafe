@@ -444,9 +444,6 @@ msgstr ""
 msgid "%s (database-specific)"
 msgstr ""
 
-msgid "%s - Drag & Drop %s"
-msgstr ""
-
 #. Resource IDs: (5998)
 #, c-format
 msgid "%s Do you wish to save changes to your database without it?"
@@ -570,7 +567,7 @@ msgid "&Browse to URL"
 msgstr ""
 
 #. Resource IDs: (32151 - MenuEx)
-msgid "&Change Safe Combination..."
+msgid "&Change Master Password..."
 msgstr ""
 
 #. Resource IDs: (32105 - MenuEx)
@@ -1334,9 +1331,6 @@ msgstr ""
 msgid "A dot cannot be used as the first character of the Group field."
 msgstr ""
 
-msgid "A fatal error occured: "
-msgstr ""
-
 #. Resource IDs: (5212)
 msgid "A fatal error occurred: "
 msgstr ""
@@ -1354,7 +1348,7 @@ msgid "A hidden password needs to be entered in the Confirm Password field too. 
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "A new password database will be created. The safe combination you enter will be used to encrypt the password database file. The Safe Combination can use any keyboard character and is case-sensitive."
+msgid "A new password database will be created. The Master Password you enter will be used to encrypt the password database file. The Master Password can use any keyboard character and is case-sensitive."
 msgstr ""
 
 #. Resource IDs: (5861)
@@ -1896,7 +1890,7 @@ msgid "Cannot read file. Please check file permissions."
 msgstr ""
 
 #. Resource IDs: (5285)
-msgid "Cannot verify old safe combination - file gone?"
+msgid "Cannot verify old master password - file gone?"
 msgstr ""
 
 #. Resource IDs: (8015)
@@ -1940,7 +1934,7 @@ msgid "Change Date"
 msgstr ""
 
 #. Resource IDs: (127)
-msgid "Change Safe Combination"
+msgid "Change Master Password"
 msgstr ""
 
 #. Resource IDs: (6039)
@@ -1954,9 +1948,6 @@ msgstr ""
 
 #. Resource IDs: (5858)
 msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
-msgstr ""
-
-msgid "Change status since last save:\n* indicates the database has been changed\nï¿½ indicates a database preference has been changed"
 msgstr ""
 
 #. Resource IDs: (5913)
@@ -2182,9 +2173,6 @@ msgstr ""
 #. Resource IDs: (5356)
 #, c-format
 msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
-msgstr ""
-
-msgid "Compare complete of current database:\n\t %s\n and:\n\t %s"
 msgstr ""
 
 #. Resource IDs: (32092 - Menu, 32092 - MenuEx)
@@ -2476,7 +2464,7 @@ msgid "Current Entry"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Current Safe Combination:"
+msgid "Current Master Password:"
 msgstr ""
 
 #. Resource IDs: (3460)
@@ -2490,9 +2478,6 @@ msgstr ""
 #. Resource IDs: (5477)
 #, c-format
 msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the PasswordSafe website to download the latest version."
-msgstr ""
-
-msgid "Current version:\t%s\nLatest version:\t%s\n\nYour purchase includes free upgrades for one year.\nPlease contact the PasswordSafe Administrator for your upgrade."
 msgstr ""
 
 #. Resource IDs: (32155 - MenuEx)
@@ -2582,9 +2567,6 @@ msgstr ""
 
 #. Resource IDs: (467, 502)
 msgid "Dates and Times"
-msgstr ""
-
-msgid "Defalut password expiration (days)"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -2780,21 +2762,12 @@ msgstr ""
 msgid "Double-Click on entry to View/Edit it"
 msgstr ""
 
-msgid "Double-click action"
-msgstr ""
-
 #. Resource IDs: (5910)
 msgid "Double-click an entry to Edit/View it"
 msgstr ""
 
 #. Resource IDs: (5855)
 msgid "Doubleclick action for current entry"
-msgstr ""
-
-msgid "Drag this image onto a another window to paste the '%s' field."
-msgstr ""
-
-msgid "Drag this image onto a another window to start AutoType from there."
 msgstr ""
 
 #. Resource IDs: (5697)
@@ -2939,7 +2912,7 @@ msgid "Enter Key:"
 msgstr ""
 
 #. Resource IDs: (130, 132)
-msgid "Enter Safe Combination"
+msgid "Enter Master Password"
 msgstr ""
 
 #. Resource IDs: (61722)
@@ -2999,9 +2972,6 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
-msgstr ""
-
-msgid "Enter positions of password characters separated by spaces, commas or semi-colons."
 msgstr ""
 
 #. Resource IDs: (149)
@@ -3825,21 +3795,12 @@ msgstr ""
 msgid "ID:32073:VA  +L"
 msgstr ""
 
-msgid "ID:32074:V C +E"
-msgstr ""
-
 #. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
 msgid "ID:32074:VA S+L"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32075; 'Send &Email'
 msgid "ID:32075:V C +E"
-msgstr ""
-
-msgid "ID:32075:V C +T"
-msgstr ""
-
-msgid "ID:32076:V C +R"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
@@ -3850,24 +3811,12 @@ msgstr ""
 msgid "ID:32077:V C +R"
 msgstr ""
 
-msgid "ID:32079:V C +F"
-msgstr ""
-
 #. Accelerator Entry for Menu ID:32080; '&Find...'
 msgid "ID:32080:V C +F"
 msgstr ""
 
-msgid "ID:32080:VAC +R"
-msgstr ""
-
 #. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
 msgid "ID:32081:VAC +R"
-msgstr ""
-
-msgid "ID:32082:V C +Z"
-msgstr ""
-
-msgid "ID:32083:V C +Y"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32083; 'Undo'
@@ -4066,7 +4015,7 @@ msgid "Incorrect filename."
 msgstr ""
 
 #. Resource IDs: (5280)
-msgid "Incorrect passkey, not a PasswordSafe database, or a corrupt database."
+msgid "Incorrect master password, not a PasswordSafe database, or a corrupt database."
 msgstr ""
 
 #. Resource IDs: (3251)
@@ -4363,15 +4312,6 @@ msgstr ""
 msgid "Lock password database "
 msgstr ""
 
-msgid "Lock password database after "
-msgstr ""
-
-msgid "Lock password database on minimize"
-msgstr ""
-
-msgid "Lock password database on workstation lock"
-msgstr ""
-
 #. Resource IDs: (5113)
 msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
 msgstr ""
@@ -4421,8 +4361,20 @@ msgstr ""
 msgid "Marathi"
 msgstr ""
 
+#. Resource IDs: (131)
+msgid "Master Password Entry"
+msgstr ""
+
+#. Resource IDs: (133)
+msgid "Master Password Setup"
+msgstr ""
+
 #. Resource IDs: (65535)
 msgid "Master Password last set on:"
+msgstr ""
+
+#. Resource IDs: (1506, 65535)
+msgid "Master Password:"
 msgstr ""
 
 #. Resource IDs: (1212)
@@ -4586,7 +4538,7 @@ msgid "New Group"
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "New Safe Combination:"
+msgid "New Master Password:"
 msgstr ""
 
 #. Resource IDs: (5476)
@@ -4594,7 +4546,7 @@ msgid "New Version Found!"
 msgstr ""
 
 #. Resource IDs: (5286)
-msgid "New safe combination and confirmation do not match"
+msgid "New master password and confirmation do not match"
 msgstr ""
 
 #. Resource IDs: (1003)
@@ -4627,9 +4579,6 @@ msgstr ""
 
 #. Resource IDs: (5353)
 msgid "No database open with which to compare against another database!"
-msgstr ""
-
-msgid "No drive specified."
 msgstr ""
 
 #. Resource IDs: (5737)
@@ -4751,11 +4700,11 @@ msgid "Note that you can use an environment variable too, e.g., %TEMP%"
 msgstr ""
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as « »"
+msgid "Note: Empty fields are shown as ï¿½ ï¿½"
 msgstr ""
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is «Group» «Title» «Username»"
+msgid "Note: Entry format is ï¿½Groupï¿½ ï¿½Titleï¿½ ï¿½Usernameï¿½"
 msgstr ""
 
 #. Resource IDs: (3428)
@@ -4867,12 +4816,12 @@ msgstr ""
 msgid "Off"
 msgstr ""
 
-#. Resource IDs: (6038)
-msgid "Old Pswd copied"
+#. Resource IDs: (65535)
+msgid "Old Master Password:"
 msgstr ""
 
-#. Resource IDs: (65535)
-msgid "Old Safe Combination:"
+#. Resource IDs: (6038)
+msgid "Old Pswd copied"
 msgstr ""
 
 #. Resource IDs: (5265)
@@ -4885,9 +4834,6 @@ msgstr ""
 
 #. Resource IDs: (1073)
 msgid "On workstation lock"
-msgstr ""
-
-msgid "One of more preferences have been changed. Are you sure you wish to cancel?"
 msgstr ""
 
 #. Resource IDs: (5894)
@@ -5152,9 +5098,6 @@ msgstr ""
 msgid "Password length:"
 msgstr ""
 
-msgid "Password should be mixed case, with at least one digit"
-msgstr ""
-
 #. Resource IDs: (3001)
 msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr ""
@@ -5269,16 +5212,20 @@ msgstr ""
 msgid "Please enter an encryption or decryption key"
 msgstr ""
 
-#. Resource IDs: (1504)
-msgid "Please enter the combination for the NEW database to contain exported entry/entries."
+#. Resource IDs: (65535)
+msgid "Please enter the Master Password for this password database."
 msgstr ""
 
 #. Resource IDs: (65535)
-msgid "Please enter the current combination, followed by a new combination. \r\nType the new combination once again to confirm it."
+msgid "Please enter the current master password, followed by a new one. \r\nType the new one again to confirm it."
 msgstr ""
 
 #. Resource IDs: (5255)
 msgid "Please enter the key and verify it."
+msgstr ""
+
+#. Resource IDs: (1504)
+msgid "Please enter the master password for the NEW database to contain exported entry/entries."
 msgstr ""
 
 #. Resource IDs: (5876)
@@ -5287,10 +5234,6 @@ msgstr ""
 
 #. Resource IDs: (5875)
 msgid "Please enter the new database name"
-msgstr ""
-
-#. Resource IDs: (65535)
-msgid "Please enter the safe combination for this password database."
 msgstr ""
 
 #. Resource IDs: (5388)
@@ -5389,9 +5332,6 @@ msgstr ""
 msgid "Press to delete all added characters."
 msgstr ""
 
-msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password being copied."
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password from being copied."
 msgstr ""
@@ -5471,9 +5411,6 @@ msgstr ""
 
 #. Resource IDs: (1072)
 msgid "Put icon in System Tray"
-msgstr ""
-
-msgid "Query user to set default username"
 msgstr ""
 
 #. Resource IDs: (8010)
@@ -5719,18 +5656,6 @@ msgstr ""
 #. Resource IDs: (3043)
 #, c-format
 msgid "SAX Parse60 Error 0x%08X during %ls."
-msgstr ""
-
-#. Resource IDs: (131)
-msgid "Safe Combination Entry"
-msgstr ""
-
-#. Resource IDs: (133)
-msgid "Safe Combination Setup"
-msgstr ""
-
-#. Resource IDs: (1506, 65535)
-msgid "Safe Combination:"
 msgstr ""
 
 #. Resource IDs: (1205)
@@ -6020,18 +5945,12 @@ msgstr ""
 msgid "Shift"
 msgstr ""
 
-msgid "Shift + Double-Click Action:"
-msgstr ""
-
 #. Resource IDs: (65535)
 msgid "Shift Double-Click Action"
 msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Shift Double-Click Action:"
-msgstr ""
-
-msgid "Shift Double-click action"
 msgstr ""
 
 #. Resource IDs: (5689)
@@ -6048,9 +5967,6 @@ msgstr ""
 
 #. Resource IDs: (5555)
 msgid "Shift+click to view current policy"
-msgstr ""
-
-msgid "Shorcuts"
 msgstr ""
 
 #. Resource IDs: (5686)
@@ -6092,7 +6008,7 @@ msgid "Show"
 msgstr ""
 
 #. Resource IDs: (1590)
-msgid "Show Combination"
+msgid "Show Master Password"
 msgstr ""
 
 #. Resource IDs: (5653)
@@ -6469,10 +6385,6 @@ msgstr ""
 msgid "The YubiKey appears uninitialized. Initialize it?"
 msgstr ""
 
-#. Resource IDs: (5279)
-msgid "The combination cannot be blank."
-msgstr ""
-
 #. Resource IDs: (5311)
 #, c-format
 msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
@@ -6537,6 +6449,10 @@ msgstr ""
 
 #. Resource IDs: (6055)
 msgid "The following base entries have been exported because one or more of their dependents have been included."
+msgstr ""
+
+#. Resource IDs: (3262)
+msgid "The following columns are unrecognized by PasswordSafe and will be ignored: "
 msgstr ""
 
 #. Resource IDs: (3375)
@@ -6627,13 +6543,22 @@ msgstr ""
 msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nPlease select another shortcut (it has been reset)."
 msgstr ""
 
+#. Resource IDs: (5279)
+msgid "The master password cannot be blank."
+msgstr ""
+
+#. Resource IDs: (5958)
+#, c-format
+msgid "The master password has been entered %d times without success:\n- Is Caps Lock off?\n- Is the language correct (if multilingual)?\n- Is this the correct database?\n- Perhaps the database was damaged. Try opening a backup copy."
+msgstr ""
+
 #. Resource IDs: (5792)
 #, c-format
 msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either export this entry to XML before changing it or open the database in read-only mode and copy it to an editor via the clipboard."
 msgstr ""
 
 #. Resource IDs: (5284)
-msgid "The old safe combination is not correct"
+msgid "The old master password is not correct"
 msgstr ""
 
 #. Resource IDs: (5323)
@@ -6644,11 +6569,6 @@ msgstr ""
 #. Resource IDs: (5465)
 #, c-format
 msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr ""
-
-#. Resource IDs: (5958)
-#, c-format
-msgid "The safe combination has been entered %d times without success:\n- Is Caps Lock off?\n- Is the language correct (if multilingual)?\n- Is this the correct database?\n- Perhaps the database was damaged. Try opening a backup copy."
 msgstr ""
 
 #. Resource IDs: (5770)
@@ -6904,9 +6824,6 @@ msgstr ""
 #. Resource IDs: (5385)
 #, c-format
 msgid "Unable to create intermediate backup in %s.\n"
-msgstr ""
-
-msgid "Unable to create intermediate backup."
 msgstr ""
 
 #. Resource IDs: (5310)
@@ -7295,7 +7212,7 @@ msgstr ""
 
 #. Resource IDs: (5281)
 #, c-format
-msgid "Weak passphrase:\n\n %s"
+msgid "Weak master password:\n\n %s"
 msgstr ""
 
 #. Resource IDs: (5763)
@@ -7411,18 +7328,9 @@ msgstr ""
 msgid "Yes (at least %d)"
 msgstr ""
 
-msgid "Yes - At least %d from %ls: %ls"
-msgstr ""
-
 #. Resource IDs: (4107)
 #, c-format
 msgid "Yes - At least %d from %ls: %ls%ls"
-msgstr ""
-
-msgid "Yes - EasyVision Symbols: %ls"
-msgstr ""
-
-msgid "Yes - Pronounceable Symbols: %ls"
 msgstr ""
 
 #. Resource IDs: (1084)
@@ -7927,9 +7835,6 @@ msgstr ""
 msgid "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
 msgstr ""
 
-msgid "\tGroup:'%s'; Title:'%s'; User:'%s'"
-msgstr ""
-
 #. Resource IDs: (3391)
 #, c-format
 msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
@@ -7943,9 +7848,6 @@ msgstr ""
 #. Resource IDs: (5538)
 #, c-format
 msgid "\tNo entries were found containing search string '%ls' %ls"
-msgstr ""
-
-msgid "\tNo entries were found containing search string '%s'"
 msgstr ""
 
 #. Resource IDs: (3434)
@@ -7969,9 +7871,6 @@ msgstr ""
 #. Resource IDs: (5539)
 #, c-format
 msgid "\tThe following entries contain search string '%ls' %ls"
-msgstr ""
-
-msgid "\tThe following entries contain search string '%s'"
 msgstr ""
 
 #. Resource IDs: (5522)

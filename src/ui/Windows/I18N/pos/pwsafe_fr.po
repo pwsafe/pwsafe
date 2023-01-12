@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-12-10 11:57+0200\n"
+"PO-Revision-Date: 2023-01-12 14:27+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -653,8 +653,8 @@ msgid "&Browse to URL"
 msgstr "&Aller à l'URL"
 
 #. Resource IDs: (32151 - MenuEx)
-msgid "&Change Safe Combination..."
-msgstr "&Changer le mot de passe du fichier..."
+msgid "&Change Master Password..."
+msgstr "&Changer le mot de passe principal..."
 
 #. Resource IDs: (32105 - MenuEx)
 msgid "&Classic Toolbar"
@@ -1462,8 +1462,8 @@ msgid "A hidden password needs to be entered in the Confirm Password field too. 
 msgstr "Un mot de passe caché doit être entrée dans le champ de confirmation de mot de passe. S'il n'est pas caché, le champ de Confirmez affiche des chiffres qui peuvent être utilisé pour compter le nombre de caractères."
 
 #. Resource IDs: (65535)
-msgid "A new password database will be created. The safe combination you enter will be used to encrypt the password database file. The Safe Combination can use any keyboard character and is case-sensitive."
-msgstr "Un nouveau mot de passe sera créé. Le mot de passe que vous avez entré sera utilisé pour encrypter le fichier de mots de passe. Le mot de passe peut contenir n'importe quelle touche du clavier et est sensible à la casse."
+msgid "A new password database will be created. The Master Password you enter will be used to encrypt the password database file. The Master Password can use any keyboard character and is case-sensitive."
+msgstr "Une nouvelle base de données de mots de passe sera créée. Le mot de passe principal que vous entrez sera utilisé pour chiffrer le fichier de base de données de mots de passe. Le mot de passe principal peut utiliser n’importe quel caractère de clavier et est sensible à la casse."
 
 #. Resource IDs: (5861)
 msgid ""
@@ -2016,8 +2016,8 @@ msgid "Cannot read file. Please check file permissions."
 msgstr "Impossible de lire le fichier. Veuillez vérifier les permissions du fichier."
 
 #. Resource IDs: (5285)
-msgid "Cannot verify old safe combination - file gone?"
-msgstr "Impossible de vérifier l'ancien mot de passe du fichier - fichier disparu?"
+msgid "Cannot verify old master password - file gone?"
+msgstr "Impossible de vérifier l’ancien mot de passe principal - fichier disparu?"
 
 #. Resource IDs: (8015)
 msgid "Caps Lock"
@@ -2060,7 +2060,7 @@ msgid "Change Date"
 msgstr "Changer la date"
 
 #. Resource IDs: (127)
-msgid "Change Safe Combination"
+msgid "Change Master Password"
 msgstr "Changer le mot de passe du fichier"
 
 #. Resource IDs: (6039)
@@ -2646,8 +2646,8 @@ msgid "Current Entry"
 msgstr "Entrée Courante"
 
 #. Resource IDs: (65535)
-msgid "Current Safe Combination:"
-msgstr "Combinaison du coffre actuel:"
+msgid "Current Master Password:"
+msgstr "Mot de passe principal actuel:"
 
 #. Resource IDs: (3460)
 msgid "Current database filters have been exported to this database."
@@ -3134,7 +3134,7 @@ msgid "Enter Key:"
 msgstr "Taper:"
 
 #. Resource IDs: (130, 132)
-msgid "Enter Safe Combination"
+msgid "Enter Master Password"
 msgstr "Entrer le mot de passe du fichier"
 
 #. Resource IDs: (61722)
@@ -4301,7 +4301,7 @@ msgid "Incorrect filename."
 msgstr "Nom de fichier invalide."
 
 #. Resource IDs: (5280)
-msgid "Incorrect passkey, not a PasswordSafe database, or a corrupt database."
+msgid "Incorrect master password, not a PasswordSafe database, or a corrupt database."
 msgstr "Mot de passe invalide ou fichier PasswordSafe corrompu."
 
 #. Resource IDs: (3251)
@@ -4826,7 +4826,7 @@ msgid "New Group"
 msgstr "Nouveau groupe"
 
 #. Resource IDs: (65535)
-msgid "New Safe Combination:"
+msgid "New Master Password:"
 msgstr "Nouveau mot de passe :"
 
 #. Resource IDs: (5476)
@@ -4834,7 +4834,7 @@ msgid "New Version Found!"
 msgstr "Nouvelle version trouvée!"
 
 #. Resource IDs: (5286)
-msgid "New safe combination and confirmation do not match"
+msgid "New master password and confirmation do not match"
 msgstr "Le nouveau mot de passe et sa confirmation ne concordent pas"
 
 #. Resource IDs: (1003)
@@ -5143,7 +5143,7 @@ msgid "Old Pswd copied"
 msgstr "Ancien MdP copié"
 
 #. Resource IDs: (65535)
-msgid "Old Safe Combination:"
+msgid "Old Master Password:"
 msgstr "Mot de passe actuel :"
 
 #. Resource IDs: (5265)
@@ -5543,13 +5543,13 @@ msgid "Please enter an encryption or decryption key"
 msgstr "Veuillez entrer la clé d'encryptage et de décryptage"
 
 #. Resource IDs: (1504)
-msgid "Please enter the combination for the NEW database to contain exported entry/entries."
+msgid "Please enter the master password for the NEW database to contain exported entry/entries."
 msgstr "Entrez le mot de passe pour le nouveau fichier qui contiendra les entrées exportées."
 
 #. Resource IDs: (65535)
 msgid ""
-"Please enter the current combination, followed by a new combination. \r\n"
-"Type the new combination once again to confirm it."
+"Please enter the current master password, followed by a new one. \r\n"
+"Type the new one again to confirm it."
 msgstr ""
 "Entrez le mot de passe courant suivi du nouveau.\r\n"
 "Entrez le nouveau mot de passe pour le confirmer."
@@ -5567,7 +5567,7 @@ msgid "Please enter the new database name"
 msgstr "Entrez le nouveau nom de fichier"
 
 #. Resource IDs: (65535)
-msgid "Please enter the safe combination for this password database."
+msgid "Please enter the Master Password for this password database."
 msgstr "Veuillez entrer le mot de passe de ce fichier."
 
 #. Resource IDs: (5388)
@@ -6013,16 +6013,16 @@ msgid "SAX Parse60 Error 0x%08X during %ls."
 msgstr "Erreur SAX Parse60 0x%08X lors de %ls."
 
 #. Resource IDs: (131)
-msgid "Safe Combination Entry"
+msgid "Master Password Entry"
 msgstr "Entrée de le mot de passe du fichier"
 
 #. Resource IDs: (133)
-msgid "Safe Combination Setup"
+msgid "Master Password Setup"
 msgstr "Mise en place du mot de passe du fichier"
 
 #. Resource IDs: (1506, 65535)
-msgid "Safe Combination:"
-msgstr "Mot de passe :"
+msgid "Master Password:"
+msgstr "Mot de passe:"
 
 #. Resource IDs: (1205)
 msgid "Same as database's"
@@ -6374,7 +6374,7 @@ msgid "Show"
 msgstr "Afficher"
 
 #. Resource IDs: (1590)
-msgid "Show Combination"
+msgid "Show Master Password"
 msgstr "Afficher le mot de passe"
 
 #. Resource IDs: (5653)
@@ -6790,8 +6790,8 @@ msgid "The YubiKey appears uninitialized. Initialize it?"
 msgstr "La YubiKey semble non-initialisée. L'initialiser maintenant?"
 
 #. Resource IDs: (5279)
-msgid "The combination cannot be blank."
-msgstr "La combinaison ne peut être vide."
+msgid "The master password cannot be blank."
+msgstr "Le mot de passe principal ne peut pas être vide."
 
 #. Resource IDs: (5311)
 #, c-format
@@ -7027,7 +7027,7 @@ msgid "The notes field of this entry has more text than can be displayed. Changi
 msgstr "Les Notes de cette entrée contient plus de texte que ce qui peut être affiché. La modification et sauvegarde de ce texte résultera au texte tronqué à %d caractères.  Pour voir le contenu total, exportez cette entrée en format XML avant de le modifier, ou ouvrez le fichier en lecture-seule et copiez le texte pour ensuite le voir dans un éditeur."
 
 #. Resource IDs: (5284)
-msgid "The old safe combination is not correct"
+msgid "The old master password is not correct"
 msgstr "L'ancien mot de passe est invalide"
 
 #. Resource IDs: (5323)
@@ -7043,7 +7043,7 @@ msgstr "L'entrée '%s:%s:%s' est elle-même un alias ou un raccourci. Ceci n'est
 #. Resource IDs: (5958)
 #, c-format
 msgid ""
-"The safe combination has been entered %d times without success:\n"
+"The master password has been entered %d times without success:\n"
 "- Is Caps Lock off?\n"
 "- Is the language correct (if multilingual)?\n"
 "- Is this the correct database?\n"
@@ -7805,7 +7805,7 @@ msgstr "Attention - Le champ est trop long"
 #. Resource IDs: (5281)
 #, c-format
 msgid ""
-"Weak passphrase:\n"
+"Weak master password:\n"
 "\n"
 " %s"
 msgstr ""
