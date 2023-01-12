@@ -1148,7 +1148,9 @@ BOOL DboxMain::SelItemOk()
 BOOL DboxMain::SelectEntry(const int i, BOOL MakeVisible)
 {
   BOOL retval_tree, retval_list;
-  ASSERT(i >= 0);
+
+  if (i < 0) // BR1570 - may be -1 if we're in a filtered view
+    return false;
 
   if (m_ctlItemList.GetItemCount() == 0)
     return false;
