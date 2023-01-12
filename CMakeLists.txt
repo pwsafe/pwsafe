@@ -13,9 +13,16 @@ endif (POLICY CMP0048)
 
 project (passwordsafe CXX C)
 
-set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
+# wxWidgets 3.2.1 doesn't compile under C++17 on some distros.
+# 3.0.5 is fine, though...
+# Need to revisit this and remove when no longer an issue
+if (WX_WINDOWS)
+    set(CMAKE_CXX_STANDARD 14)
+else (WX_WINDOWS)
+    set(CMAKE_CXX_STANDARD 17)
+endif (WX_WINDOWS)
 
 # prerequisites
 include(CheckLibraryExists)
