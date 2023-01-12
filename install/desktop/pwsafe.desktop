@@ -2,7 +2,7 @@
 Name=PasswordSafe
 
 Comment=Manage passwords
-Exec=env GDK_BACKEND=x11 pwsafe %f
+Exec=pwsafe %f
 Icon=/usr/share/icons/hicolor/48x48/apps/pwsafe.png
 Terminal=false
 Type=Application
