@@ -3,7 +3,7 @@ Name=PasswordSafe
 
 Comment=Manage passwords
 Exec=pwsafe %f
-Icon=/usr/share/icons/hicolor/48x48/apps/pwsafe.png
+Icon=pwsafe
 Terminal=false
 Type=Application
 StartupNotify=true
