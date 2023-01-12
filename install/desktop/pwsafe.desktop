@@ -1,6 +1,5 @@
 [Desktop Entry]
 Name=PasswordSafe
-
 Comment=Manage passwords
 Exec=pwsafe %f
 Icon=pwsafe
