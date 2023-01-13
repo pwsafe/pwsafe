@@ -1,0 +1,47 @@
+name: CMake Build
+
+on: [ push, pull_request ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions: { }
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ 'windows-latest', 'ubuntu-latest' ] #, 'macos-latest' ]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+
+    - name: Find MSVC (Windows)
+      if: ${{ runner.os == 'Windows' }}
+      uses: ilammy/msvc-dev-cmd@7315a94840631165970262a99c72cfb48a65d25d
+      with:
+        spectre: true
+
+    - name: Install packages (Linux)
+      if: ${{ runner.os == 'Linux' }}
+      run: |
+        sudo apt-get update
+        sudo ./Misc/setup-linux-dev-env.sh
+
+    - name: Configure
+      run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+
+    - name: Build
+      run: cmake --build build
+
+    - name: Test
+      run: cmake --build build --target test
+
