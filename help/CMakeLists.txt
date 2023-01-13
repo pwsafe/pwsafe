@@ -1,54 +1,78 @@
 set (LANGS "RU" "DE" "ES" "FR" "ZH" "PL")
 
-if (WIN32)
-  set (LANGS "DE" "FR" "RU" "ES")
+macro(set_lang_help_files FILES_VAR DIR)
+  file(GLOB_RECURSE ${FILES_VAR}
+    LIST_DIRECTORIES FALSE
+    RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
+    ${DIR}/html/*
+    ${DIR}/pwsafe*.hh?
+  )
+endmacro(set_lang_help_files)
+
+if (WIN32 AND NOT WX_WINDOWS)
+  set (LANGS DE ES FR RU ZH)
   # pwsafePL -- nothing there :-(
-  # pwsafeZH -- currently breaks my hhc :-(
 
-  set (HHC "HTMLHelpWorkshopCompiler_undefined" CACHE FILEPATH
-       "Microsoft's help compiler (hhc.exe)")
+  find_program(HHC_EXECUTABLE hhc.exe DOC "Microsoft's help compiler (hhc.exe)")
+  if (NOT HHC_EXECUTABLE)
+    message(WARNING "The Microsoft help compiler was not found.")
+    return()
+  endif()
 
-  string (REGEX REPLACE "(..)" "pwsafe\\1/pwsafe\\1.chm;" HELPFILES ${LANGS})
-  add_custom_target("helpfiles" ALL
-    DEPENDS "default/pwsafe.chm" ${HELPFILES}
-    )
+  function(make_help OUTPUT_FILE_VAR DIR LANG)
+    set_lang_help_files(INPUT_FILES "${DIR}")
 
-  # English help is a special case: default -> pwsafe.chm
-  add_custom_command(OUTPUT "pwsafe.chm"
-                     COMMAND ${HHC} "pwsafe.hhp"
-                     WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/default"
-                     )
+    set(OUTPUT_FILE_NAME "pwsafe${LANG}.chm")
+    set(OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/${DIR}/${OUTPUT_FILE_NAME}")
 
-  macro(make_help LANG)
-    add_custom_command(OUTPUT "pwsafe${LANG}.chm"
-                       COMMAND ${HHC} "pwsafe.hhp"
-                       WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/pwsafe${LANG}"
+    add_custom_command(OUTPUT "${OUTPUT_FILE}"
+                       DEPENDS ${INPUT_FILES} cmake/html_help_hhc.cmake
+                       COMMAND "${CMAKE_COMMAND}"
+                            -D "HHC_EXECUTABLE=${HHC_EXECUTABLE}"
+                            -D "INPUT_DIR=${CMAKE_CURRENT_SOURCE_DIR}/${DIR}"
+                            -D "OUTPUT_DIR=${CMAKE_CURRENT_BINARY_DIR}/${DIR}"
+                            -D "OUTPUT_FILE=${OUTPUT_FILE}"
+                            -D "OUTPUT_FILE_NAME=${OUTPUT_FILE_NAME}"
+                            -P cmake/html_help_hhc.cmake
+                       COMMENT "Compiling pwsafe ${LANG} help"
+                       WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+                       VERBATIM
                        )
-  endmacro(make_help)
 
-else (WIN32)
+    set(${OUTPUT_FILE_VAR} "${OUTPUT_FILE}" PARENT_SCOPE)
+  endfunction(make_help)
 
-  string (REGEX REPLACE "(..)" "help\\1.zip;" HELPFILES ${LANGS})
-  add_custom_target("helpfiles" ALL
-    DEPENDS "helpEN.zip" ${HELPFILES}
-    )
-  # English help is a special case: default -> helpEN.zip
-  add_custom_command(OUTPUT "helpEN.zip"
-    COMMAND "sed" "-i" "pwsafe*.hh?" "-e" "'s&html\\\\&html/&g'"
-    COMMAND "zip" "-Xqr" "${CMAKE_CURRENT_BINARY_DIR}/helpEN" "./*"
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/default"
-    )
-  # Other languages are amenable to a macro:
-  macro(make_help LANG)
-    add_custom_command(OUTPUT "help${LANG}.zip"
-      COMMAND "sed" "-i" "pwsafe*.hh?" "-e" "'s&html\\\\&html/&g'"
-      COMMAND "zip" "-Xqr" "${CMAKE_CURRENT_BINARY_DIR}/help${LANG}" "./*"
-      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/pwsafe${LANG}"
+else (WIN32 AND NOT WX_WINDOWS)
+  function(make_help OUTPUT_FILE_VAR DIR LANG)
+    set_lang_help_files(INPUT_FILES "${DIR}")
+
+    set(OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/help${LANG}.zip")
+
+    add_custom_command(OUTPUT "${OUTPUT_FILE}"
+      COMMAND "${CMAKE_COMMAND}" -E tar cf "${OUTPUT_FILE}" . --format=zip
+      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${DIR}"
+      VERBATIM
       )
-  endmacro(make_help)
 
-endif (WIN32)
+    set(${OUTPUT_FILE_VAR} "${OUTPUT_FILE}" PARENT_SCOPE)
+  endfunction(make_help)
+endif (WIN32 AND NOT WX_WINDOWS)
+
+unset(OUTPUT_FILES)
+
+# English help is a special case: default -> pwsafe.chm
+
+if (WIN32 AND NOT WX_WINDOWS)
+  make_help(DEFAULT_OUTPUT_FILE default "")
+else()
+  make_help(DEFAULT_OUTPUT_FILE default EN)
+endif()
+
+set(OUTPUT_FILES "${DEFAULT_OUTPUT_FILE}")
 
 foreach (LANG ${LANGS})
-  make_help(${LANG})
+  make_help(OUTPUT_FILE "pwsafe${LANG}" ${LANG})
+  list(APPEND OUTPUT_FILES "${OUTPUT_FILE}")
 endforeach(LANG)
+
+add_custom_target(helpfiles ALL DEPENDS ${OUTPUT_FILES})
