@@ -37,7 +37,7 @@ jobs:
         sudo ./Misc/setup-linux-dev-env.sh
 
     - name: Configure
-      run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+      run: cmake -B build --preset release
 
     - name: Build
       run: cmake --build build

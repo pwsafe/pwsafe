@@ -1,0 +1,357 @@
+{
+  "version": 2,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 20,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "base",
+      "hidden": true,
+      "displayName": "Base Config",
+      "description": "Base build using Ninja generator",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "generator": "Ninja",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "release",
+      "inherits": "base",
+      "displayName": "Release"
+    },
+    {
+      "name": "debug",
+      "inherits": "base",
+      "displayName": "Debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "windows-base",
+      "hidden": true,
+      "inherits": "base",
+      "displayName": "Windows default",
+      "description": "Default Windows build",
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": [
+            "Windows"
+          ]
+        }
+      }
+    },
+    {
+      "name": "windows-x64",
+      "hidden": true,
+      "inherits": "windows-base",
+      "displayName": "Windows x64 Default",
+      "description": "Default Windows x64 build",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      }
+    },
+    {
+      "name": "windows-x64-debug",
+      "inherits": "windows-x64",
+      "displayName": "Windows x64 Debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "windows-x64-debug-no-pch",
+      "inherits": "windows-x64-debug",
+      "displayName": "Windows x64 Debug no PCH",
+      "cacheVariables": {
+        "USE_PRECOMPILED_HEADERS": false
+      }
+    },
+    {
+      "name": "windows-x64-release",
+      "inherits": "windows-x64",
+      "displayName": "Windows x64 Release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "windows-wx-x64-base",
+      "hidden": true,
+      "inherits": "windows-base",
+      "displayName": "Windows wxWidgets x64 Base",
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "cacheVariables": {
+        "PWS_UI_FRAMEWORK": "WX"
+      }
+    },
+    {
+      "name": "windows-wx-x64-debug",
+      "inherits": "windows-wx-x64-base",
+      "displayName": "Windows wxWidgets x64 Debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "windows-wx-x64-release",
+      "inherits": "windows-wx-x64-base",
+      "displayName": "Windows wxWidgets x64 Release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "windows-x64-asan-debug",
+      "inherits": "windows-x64-debug",
+      "displayName": "Windows x64 ASAN Debug",
+      "cacheVariables": {
+        "USE_ASAN": true
+      },
+      "environment": {
+        "ASAN_OPTIONS": "windows_hook_rtl_allocators=true"
+      }
+    },
+    {
+      "name": "windows-x64-asan-release",
+      "inherits": "windows-x64-release",
+      "displayName": "Windows x64 ASAN Release",
+      "cacheVariables": {
+        "USE_ASAN": true,
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      },
+      "environment": {
+        "ASAN_OPTIONS": "windows_hook_rtl_allocators=true"
+      }
+    },
+    {
+      "name": "windows-arm64",
+      "hidden": true,
+      "inherits": "windows-base",
+      "displayName": "Windows arm64 Default",
+      "description": "Default Windows arm64 build",
+      "architecture": {
+        "value": "arm64",
+        "strategy": "external"
+      }
+    },
+    {
+      "name": "windows-arm64-debug",
+      "inherits": "windows-arm64",
+      "displayName": "Windows arm64 Debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "windows-arm64-release",
+      "inherits": "windows-arm64",
+      "displayName": "Windows arm64 Release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "windows-x86",
+      "hidden": true,
+      "inherits": "windows-base",
+      "displayName": "Windows x86 Default",
+      "description": "Default Windows x86 build",
+      "architecture": {
+        "value": "x86",
+        "strategy": "external"
+      }
+    },
+    {
+      "name": "windows-x86-debug",
+      "displayName": "Windows x86 Debug",
+      "inherits": "windows-x86",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "windows-x86-release",
+      "displayName": "Windows x86 Release",
+      "inherits": "windows-x86",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "windows-clang-x64",
+      "hidden": true,
+      "inherits": "windows-base",
+      "displayName": "Windows Clang x64 Default",
+      "description": "Target Windows with clang",
+      "cacheVariables": {
+        "CMAKE_C_COMPILER": "clang",
+        "CMAKE_CXX_COMPILER": "clang++"
+      },
+      "architecture": {
+        "value": "x64",
+        "strategy": "external"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "intelliSenseMode": "windows-clang-x64"
+        }
+      }
+    },
+    {
+      "name": "windows-clang-x64-debug",
+      "inherits": "windows-clang-x64",
+      "displayName": "Windows Clang x64 Debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "windows-clang-x64-release",
+      "inherits": "windows-clang-x64",
+      "displayName": "Windows Clang x64 Release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreadedDLL"
+      }
+    },
+    {
+      "name": "windows-clang-x64-asan-debug",
+      "displayName": "Windows Clang x64 ASAN Debug",
+      "cacheVariables": {
+        "USE_ASAN": true,
+        "USE_ASAN_FLAGS": "_ITERATOR_DEBUG_LEVEL=0",
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded"
+      },
+      "inherits": "windows-clang-x64-debug"
+    },
+    {
+      "name": "windows-clang-x64-asan-release",
+      "displayName": "Windows Clang x64 ASAN Release",
+      "cacheVariables": {
+        "USE_ASAN": true,
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded"
+      },
+      "inherits": "windows-clang-x64-release"
+    },
+    {
+      "name": "windows-clang-x64-ubsan-debug",
+      "displayName": "Windows Clang x64 UBSAN Debug",
+      "cacheVariables": {
+        "USE_UBSAN": true,
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreadedDebug"
+      },
+      "inherits": "windows-clang-x64-debug"
+    },
+    {
+      "name": "windows-clang-x64-ubsan-release",
+      "displayName": "Windows Clang x64 UBSAN Release",
+      "cacheVariables": {
+        "USE_UBSAN": true,
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+        "CMAKE_MSVC_RUNTIME_LIBRARY": "MultiThreaded"
+      },
+      "inherits": "windows-clang-x64-release"
+    },
+    {
+      "name": "linux-base",
+      "hidden": true,
+      "inherits": "base",
+      "displayName": "Linux default",
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": [
+            "Linux"
+          ]
+        }
+      }
+    },
+    {
+      "name": "linux-debug",
+      "inherits": "linux-base",
+      "displayName": "Linux Debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug"
+      }
+    },
+    {
+      "name": "linux-release",
+      "inherits": "linux-base",
+      "displayName": "Linux Release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "linux-asan-debug",
+      "inherits": "linux-debug",
+      "displayName": "Linux ASAN Debug",
+      "cacheVariables": {
+        "USE_ASAN": true
+      }
+    },
+    {
+      "name": "linux-asan-release",
+      "inherits": "linux-release",
+      "displayName": "Linux ASAN Release",
+      "cacheVariables": {
+        "USE_ASAN": true,
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "linux-ubsan-debug",
+      "displayName": "Linux UBSAN Debug",
+      "inherits": "linux-debug",
+      "cacheVariables": {
+        "USE_UBSAN": true
+      }
+    },
+    {
+      "name": "linux-ubsan-release",
+      "displayName": "Linux UBSAN Release",
+      "inherits": "linux-release",
+      "cacheVariables": {
+        "USE_UBSAN": true,
+        "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+      }
+    },
+    {
+      "name": "macos-base",
+      "hidden": true,
+      "inherits": "base",
+      "displayName": "macOS default",
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": [
+            "macOS"
+          ]
+        }
+      }
+    },
+    {
+      "name": "macos-release",
+      "inherits": "macos-base",
+      "displayName": "macOS Release",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    },
+    {
+      "name": "macos-debug",
+      "inherits": "macos-base",
+      "displayName": "macOS Debug",
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release"
+      }
+    }
+  ]
+}
