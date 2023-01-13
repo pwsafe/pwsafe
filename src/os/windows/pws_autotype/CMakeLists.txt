@@ -36,13 +36,15 @@ endif (NOT DEFINED pwsafe_at_VERSION_MINOR)
 
 if (pwsafe_at_REVISION)
    set (pwsafe_at_VERSION "${pwsafe_at_VERSION_MAJOR}.${pwsafe_at_VERSION_MINOR}.${pwsafe_at_REVISION}")
+   set (pwsafe_at_PRODUCTVER "${pwsafe_at_VERSION_MAJOR}, ${pwsafe_at_VERSION_MINOR}, ${pwsafe_at_REVISION}")
 else ()
    set (pwsafe_at_VERSION "${pwsafe_at_VERSION_MAJOR}.${pwsafe_at_VERSION_MINOR}.0")
+   set (pwsafe_at_PRODUCTVER "${pwsafe_at_VERSION_MAJOR}, ${pwsafe_at_VERSION_MINOR}, 0")
 endif (pwsafe_at_REVISION)
 
-set (pwsafe_at_VERSION "${pwsafe_at_VERSION_MAJOR}.${pwsafe_at_VERSION_MINOR}.${pwsafe_at_REVISION}")
+find_package(Git)
 
-execute_process(COMMAND "git" "describe" "--all" "--always" "--dirty=+" "--long"
+execute_process(COMMAND "${GIT_EXECUTABLE}" describe --all --always --dirty=+ --long
   WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
   RESULT_VARIABLE res
   OUTPUT_VARIABLE pwsafe_at_VERSTRING
@@ -58,18 +60,19 @@ set (AT_SRCS
 )
 set (AT_RES pws_at.rc)
 
-set (VERSION_AT_IN "version.in")
+set (VERSION_AT_IN "pws_at_version.in")
 
 configure_file (
     ${VERSION_AT_IN}
-    "version.h"
+    "pws_at_version.h"
     )
 
-set(CMAKE_CXX_FLAGS
-  "${CMAKE_CXX_FLAGS} /D PWS_AT_EXPORTS")
-add_library(pws_at SHARED ${AT_SRCS} ${AT_RES})
-set_target_properties(pws_at PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
-        LINK_FLAGS "/MAP /DEBUG")
+add_library(pws_at SHARED)
+target_sources(pws_at PRIVATE ${AT_SRCS} ${AT_RES})
 target_link_libraries(pws_at PRIVATE harden_interface)
+target_compile_definitions(pws_at PRIVATE PWS_AT_EXPORTS)
+target_include_directories(pws_at BEFORE PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+target_link_options(pws_at PRIVATE /MAP)
+set_target_properties(pws_at PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
 install (TARGETS pws_at RUNTIME DESTINATION bin)
