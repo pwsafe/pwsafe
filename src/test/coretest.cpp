@@ -29,10 +29,6 @@ int main(int argc, char **argv)
 
   int rc = RUN_ALL_TESTS();
 
-#ifdef WIN32
-  system("pause");
-#endif
-
   // Delete singletons
   PWSLog::GetLog()->DeleteLog();
   PWSprefs::GetInstance()->DeleteInstance();
