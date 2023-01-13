@@ -466,7 +466,7 @@ BOOL CDDStatic::OnRenderGlobalData(LPFORMATETC lpFormatEtc, HGLOBAL* phGlobal)
     if (ilen == 0) {
       dwBufLen = 1;
       lpszA = new char[dwBufLen];
-      lpszA = '\0';
+      *lpszA = '\0';
     } else {
       lpszW = const_cast<LPWSTR>(cs_dragdata.c_str());
       dwBufLen = WideCharToMultiByte(CP_ACP, 0, lpszW, -1, NULL, 0, NULL, NULL);
