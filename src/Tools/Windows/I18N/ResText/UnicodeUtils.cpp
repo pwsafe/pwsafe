@@ -19,7 +19,6 @@
 #include "stdafx.h"
 #include "UnicodeUtils.h"
 #include <memory>
-#include <emmintrin.h>
 
 CUnicodeUtils::CUnicodeUtils(void)
 {
