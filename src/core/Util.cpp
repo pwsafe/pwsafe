@@ -36,7 +36,7 @@
 #include <sstream>
 #include <iomanip>
 
-#include <errno.h>
+#include <cerrno>
 
 using namespace std;
 
@@ -53,28 +53,54 @@ static void xormem(unsigned char *mem1, const unsigned char *mem2, int length)
 // (2) The wrong way to scrub DRAM memory
 // see http://www.cs.auckland.ac.nz/~pgut001/pubs/secure_del.html
 // and http://www.cypherpunks.to/~peter/usenix01.pdf
-
-#ifdef _WIN32
-#pragma optimize("",off)
-#endif
-void trashMemory(void *buffer, size_t length)
+namespace
 {
-  // {kjp} no point in looping around doing nothing is there?
-  if (buffer != nullptr && length > 0) {
-    std::memset(buffer, 0x55, length);
-    std::memset(buffer, 0xAA, length);
-    std::memset(buffer,    0, length);
+// Try OpenSSL's approach of forcing the call to memset through
+// a volatile function pointer.
+// https://github.com/openssl/openssl/blob/master/crypto/mem_clr.c
+
+typedef void* (*memset_t)(void*, int, size_t);
+
+volatile memset_t memset_vol = memset;
+
+void secure_memset(void* buffer, int value, size_t length)
+{
+    memset_vol(buffer, value, length);
 #ifdef __GNUC__
     // break compiler optimization of this function for gcc
     // see trick used in google's boring ssl:
     // https://boringssl.googlesource.com/boringssl/+/ad1907fe73334d6c696c8539646c21b11178f20f%5E!/#F0
     __asm__ __volatile__("" : : "r"(buffer) : "memory");
 #endif
-  }
 }
+
+void secure_zero(void* buffer, size_t length)
+{
 #ifdef _WIN32
-#pragma optimize("",on)
+    SecureZeroMemory(buffer, length);
+#else
+    memset_vol(buffer, 0, length);
+#ifdef __GNUC__
+    // break compiler optimization of this function for gcc
+    // see trick used in google's boring ssl:
+    // https://boringssl.googlesource.com/boringssl/+/ad1907fe73334d6c696c8539646c21b11178f20f%5E!/#F0
+    __asm__ __volatile__("" : : "r"(buffer) : "memory");
 #endif
+#endif
+}
+}
+
+void trashMemory(void *buffer, size_t length)
+{
+  // {kjp} no point in looping around doing nothing is there?
+  if (buffer == nullptr || length <= 0)
+      return;
+
+  secure_memset(buffer, 0x55, length);
+  secure_memset(buffer, 0xAA, length);
+  secure_zero(buffer, length);
+}
+
 void trashMemory(LPTSTR buffer, size_t length)
 {
   trashMemory(reinterpret_cast<unsigned char *>(buffer), length * sizeof(buffer[0]));
