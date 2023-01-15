@@ -486,7 +486,7 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
   itemBoxSizer68->Add(itemStaticText70, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   m_DatesTimesRecurringExpiryCtrl = new wxCheckBox(panel, ID_CHECKBOX_RECURRING, _("Recurring"), wxDefaultPosition, wxDefaultSize, 0);
-  m_DatesTimesRecurringExpiryCtrl->SetValue(false);
+  m_DatesTimesRecurringExpiryCtrl->SetValue(true);
   itemFlexGridSizer63->Add(m_DatesTimesRecurringExpiryCtrl, 0, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   auto *itemBoxSizer72 = new wxBoxSizer(wxHORIZONTAL);
@@ -2699,7 +2699,7 @@ void AddEditPropSheetDlg::OnExpRadiobuttonSelected( wxCommandEvent& evt )
     wxDateTime xdt(wxDateTime::Now());
     xdt += wxDateSpan(0, 0, 0, m_ExpirationTimeInterval);
     m_DatesTimesExpiryDateCtrl->SetValue(xdt);
-    m_Recurring = false;
+    m_Recurring = true;
     TransferDataToWindow();
   }
 

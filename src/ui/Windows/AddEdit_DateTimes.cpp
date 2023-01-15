@@ -37,7 +37,7 @@ CAddEdit_DateTimes::CAddEdit_DateTimes(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent, 
                           CAddEdit_DateTimes::IDD, CAddEdit_DateTimes::IDD_SHORT,
                           pAEMD),
-  m_bRecurringPswdExpiry(FALSE), m_how(NONE_EXP), m_numDays(PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays)), 
+  m_bRecurringPswdExpiry(TRUE), m_how(NONE_EXP), m_numDays(PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays)), 
   m_inSetX(false),
   m_bInitdone(false)
 {
