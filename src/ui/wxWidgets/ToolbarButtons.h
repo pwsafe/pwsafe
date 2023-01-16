@@ -180,10 +180,10 @@ struct _PwsToolbarInfo {
   int id;
   const wxString toollabel;
   const wxString tooltip;
-  const char** bitmap_normal;
-  const char** bitmap_disabled;
-  const char** bitmap_classic;
-  const char** bitmap_classic_disabled;
+  const char* const* const bitmap_normal;
+  const char* const* const bitmap_disabled;
+  const char* const* const bitmap_classic;
+  const char* const* const bitmap_classic_disabled;
 
   bool IsSeparator() const
   {
@@ -202,7 +202,7 @@ struct _PwsToolbarInfo {
   wxBitmap GetBitmapForEnabledButton() const
   {
     return UseNewToolbarStyle() ? bitmap_normal : bitmap_classic;
-  };
+  }
 
   /**
    * Provides the bitmap that represents an disabled toolbar item in the new or classic style, depending on user preferences.
@@ -216,8 +216,8 @@ struct _PwsToolbarInfo {
   // Following ctor's required to shut up some compiler warnings
 _PwsToolbarInfo() : id(0), toollabel(wxEmptyString), tooltip(wxEmptyString), bitmap_normal(nullptr), bitmap_disabled(nullptr),
     bitmap_classic(nullptr), bitmap_classic_disabled(nullptr) {}
-_PwsToolbarInfo(int aid, const wxString &atoollabel, const wxString &atooltip, const char** abitmap_normal,
-                const char** abitmap_disabled, const char** abitmap_classic, const char** abitmap_classic_disabled) :
+_PwsToolbarInfo(int aid, const wxString &atoollabel, const wxString &atooltip, const char* const* abitmap_normal,
+                const char* const* abitmap_disabled, const char* const* abitmap_classic, const char* const* abitmap_classic_disabled) :
   id(aid), toollabel(atoollabel), tooltip(atooltip), bitmap_normal(abitmap_normal), bitmap_disabled(abitmap_disabled),
     bitmap_classic(abitmap_classic), bitmap_classic_disabled(abitmap_classic_disabled) {}
 } PwsToolbarButtons[] =
