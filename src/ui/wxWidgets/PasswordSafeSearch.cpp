@@ -76,10 +76,10 @@ enum {
 struct SearchBarToolInfo {
   wxWindowID id;
   const wxString tooltip;
-  const char** bitmap_normal;
-  const char** bitmap_disabled;
-  const char** bitmap_classic;
-  const char** bitmap_classic_disabled;
+  const char* const* const bitmap_normal;
+  const char* const* const bitmap_disabled;
+  const char* const* const bitmap_classic;
+  const char* const* const bitmap_classic_disabled;
   wxItemKind tool_type;
 
   SearchBarToolInfo() :
@@ -90,8 +90,8 @@ struct SearchBarToolInfo {
 
   SearchBarToolInfo(
     wxWindowID id, const wxString &tooltip,
-    const char** bitmap_normal, const char** bitmap_disabled,
-    const char** bitmap_classic, const char** bitmap_classic_disabled,
+    const char* const* const bitmap_normal, const char* const* bitmap_disabled,
+    const char* const* const bitmap_classic, const char* const* bitmap_classic_disabled,
     wxItemKind tool_type
   ) :
     id(id), tooltip(tooltip),

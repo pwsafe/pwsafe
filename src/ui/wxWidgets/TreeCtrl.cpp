@@ -276,7 +276,7 @@ void TreeCtrlBase::CreateControls()
 {
 ////@begin TreeCtrl content construction
 ////@end TreeCtrl content construction
-  const char **xpmList[] = {
+  static const char* const* const xpmList[] = {
     abase_exp_xpm,    // 0
     abase_warn_xpm,   // 1
     abase_xpm,        // 2
@@ -292,7 +292,7 @@ void TreeCtrlBase::CreateControls()
     empty_node_xpm,   // 12
   };
 #if wxVERSION_NUMBER >= 3103
-  const char **xpmDarkList[] = {
+  static const char* const* const xpmDarkList[] = {
     abase_exp_dark_xpm,    // 0
     abase_warn_dark_xpm,   // 1
     abase_dark_xpm,        // 2

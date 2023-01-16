@@ -164,7 +164,7 @@ void pwFiltersActiveRenderer::CreateControls()
 {
   // As the list is static it has to be build up only at first time
   if(m_initialied == false) {
-    const char **xpmPWFList[] = {
+    static const char* const* const xpmPWFList[] = {
       empty_xpm,              // 0
       checked_xpm,            // 1
       unchecked_xpm,          // 2
@@ -173,7 +173,7 @@ void pwFiltersActiveRenderer::CreateControls()
       unchecked_disabled_xpm, // 5
     };
 #if wxVERSION_NUMBER >= 3103
-    const char **xpmPWFDarkList[] = {
+    static const char* const* const xpmPWFDarkList[] = {
       empty_dark_xpm,              // 0
       checked_dark_xpm,            // 1
       unchecked_dark_xpm,          // 2
@@ -182,8 +182,8 @@ void pwFiltersActiveRenderer::CreateControls()
       unchecked_disabled_dark_xpm, // 5
     };
 #endif
-  
-    const int Nimages = sizeof(xpmPWFList)/sizeof(xpmPWFList[0]);
+
+    constexpr int Nimages = sizeof(xpmPWFList)/sizeof(xpmPWFList[0]);
 #if wxVERSION_NUMBER >= 3103
     const bool bIsDark = wxSystemSettings::GetAppearance().IsUsingDarkBackground();
     wxASSERT(Nimages == (sizeof(xpmPWFDarkList)/sizeof(xpmPWFDarkList[0])));

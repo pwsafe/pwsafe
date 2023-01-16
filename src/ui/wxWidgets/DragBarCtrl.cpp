@@ -87,10 +87,10 @@ enum
 struct DragbarToolInfo {
   const wxWindowID id;
   const wxString name;
-  const char** bitmap;
-  const char** bitmap_disabled;
-  const char** classic_bitmap;
-  const char** classic_bitmap_disabled;
+  const char* const* const bitmap;
+  const char* const* const bitmap_disabled;
+  const char* const* const classic_bitmap;
+  const char* const* const classic_bitmap_disabled;
   const CItemData::FieldType field_type;
 
   DragbarToolInfo() :
@@ -101,8 +101,8 @@ struct DragbarToolInfo {
 
   DragbarToolInfo(
     wxWindowID id, const wxString &name,
-    const char** bitmap, const char** bitmap_disabled,
-    const char** classic_bitmap, const char** classic_bitmap_disabled,
+    const char* const* bitmap, const char* const* bitmap_disabled,
+    const char* const* classic_bitmap, const char* const* classic_bitmap_disabled,
     CItemData::FieldType field_type
   ) :
     id(id), name(name),
