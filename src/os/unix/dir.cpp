@@ -216,7 +216,7 @@ stringT pws_os::gethelpdir(void)
 {
   stringT helpdir = pws_os::getenv("PWS_HELPDIR", true);
   if (helpdir.empty()) {
-#ifdef __FreeBSD__ || defined(__OpenBSD)
+#if defined( __FreeBSD__) || defined(__OpenBSD)
     helpdir = _T("/usr/local/share/doc/passwordsafe/help/");
 #else
     helpdir = _T("/usr/share/passwordsafe/help/");
