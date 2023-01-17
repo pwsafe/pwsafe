@@ -821,9 +821,9 @@
 #define IDC_DB_DEF_AUTOTYPE_TEXT        1501
 #define IDC_DADSPIN                     1502
 #define IDC_CAPSLOCK                    1503
-#define IDC_STATIC_NEWCOMBI             1504
+#define IDC_STATIC_NEWMSTPWD             1504
 #define IDC_STATIC_VERIFY               1505
-#define IDC_STATIC_COMBI                1506
+#define IDC_STATIC_MSPWD                1506
 #define IDC_PASSKEY2                    1507
 #define IDC_VERIFY2                     1508
 #define IDC_VKB2                        1509
@@ -896,7 +896,7 @@
 #define IDC_COPYPASSWORDHELP2           1587
 #define IDC_STATIC_MESSAGE              1588
 #define IDC_ALTEDITOR_CMDLINE           1589
-#define IDC_SHOWCOMBINATION             1590
+#define IDC_SHOWMASTERPASSWORD             1590
 #define IDC_ENABLETRANSPARENCY          1591
 #define IDC_TRANSPARENCY                1592
 #define IDC_TRANSPARENCYHELP            1593

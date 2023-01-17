@@ -8,8 +8,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2022-12-10 12:06+0200\n"
-"Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
+"PO-Revision-Date: 2023-01-16 19:48+0100\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
@@ -17,6 +17,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.2.2\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -770,8 +783,8 @@ msgid "&Browse to URL"
 msgstr "&Gå till URL"
 
 #. Resource IDs: (32151 - MenuEx)
-msgid "&Change Safe Combination..."
-msgstr "&Ändra Safe-kombination..."
+msgid "&Change Master Password..."
+msgstr "&Ändra huvudlösenord..."
 
 #. Resource IDs: (32105 - MenuEx)
 msgid "&Classic Toolbar"
@@ -1579,8 +1592,8 @@ msgid "A hidden password needs to be entered in the Confirm Password field too. 
 msgstr "Ett dolt lösenord måste också anges i fältet Bekräfta lösenord. Om det inte är dolt, visar Bekräfta siffror som kan ha använts för att underlätta att bedöma lösenordets tecken."
 
 #. Resource IDs: (65535)
-msgid "A new password database will be created. The safe combination you enter will be used to encrypt the password database file. The Safe Combination can use any keyboard character and is case-sensitive."
-msgstr "En ny lösenordsdatabas kommer att skapas. Safe-kombination som du anger kommer att användas för att kryptera databasens lösenordsfil. Safe-kombinationen kan innehålla vilka tangentbordstecken som helst och är skiftlägeskänslig."
+msgid "A new password database will be created. The Master Password you enter will be used to encrypt the password database file. The Master Password can use any keyboard character and is case-sensitive."
+msgstr "En ny lösenordsdatabas skapas. Huvudlösenordet du anger kommer att användas för att kryptera lösenordsdatabasfilen. Huvudlösenordet kan använda vilket tangentbordstecken som helst och är skiftlägeskänsligt."
 
 #. Resource IDs: (5861)
 msgid ""
@@ -2009,7 +2022,7 @@ msgstr "Gå till URL + Autoskriv"
 msgid "Browse to URL + Autotype"
 msgstr "Gå till URL + Autoskriv"
 
-#. Resource IDs: (32074 - Menu, 32074 - MenuEx)
+#. Resource IDs: (32074 - Menu, 32074 - MenuEx, 5679)
 msgid "Browse to URL w/Alt Browser"
 msgstr "Bläddra till URL w / Alt Browser"
 
@@ -2085,7 +2098,7 @@ msgid ""
 "Please copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
 "Kan inte hitta XML schemats defentitionsfil (%ls) i din PasswordSafe's programmapp.\n"
-"Vänligen, kopiera den från din installationsmapp eller ominstallera PasswordSafe."
+"Vänligen, kopiera den från din installationsmapp, eller installera om PasswordSafe."
 
 #. Resource IDs: (3320)
 msgid "Can't obtain the schema version."
@@ -2114,7 +2127,7 @@ msgstr "Kan inte vara mindre än noll."
 #. Resource IDs: (5559)
 #, c-format
 msgid "Cannot be more than %d"
-msgstr "Kan inte störr än %d"
+msgstr "Kan inte vara större än %d"
 
 #. Resource IDs: (3019)
 msgid "Cannot create lock file - no permission in directory?"
@@ -2133,8 +2146,8 @@ msgid "Cannot read file. Please check file permissions."
 msgstr "Kan inte läsa filen. Vänligen, kontrollera filrättigheterna."
 
 #. Resource IDs: (5285)
-msgid "Cannot verify old safe combination - file gone?"
-msgstr "Kan inte verifiera den gamla säkra kombination - saknas filen?"
+msgid "Cannot verify old master password - file gone?"
+msgstr "Kan inte verifiera det gamla huvudlösenordet - är filen borta?"
 
 #. Resource IDs: (8015)
 msgid "Caps Lock"
@@ -2177,8 +2190,8 @@ msgid "Change Date"
 msgstr "Byt datum"
 
 #. Resource IDs: (127)
-msgid "Change Safe Combination"
-msgstr "Ändra Safe-kombination"
+msgid "Change Master Password"
+msgstr "Ändra huvudlösenord"
 
 #. Resource IDs: (6039)
 #, c-format
@@ -2307,7 +2320,7 @@ msgstr "Klicka för att kopiera till Urklipp, Ctrl+Klick för att också sätta 
 
 #. Resource IDs: (5615)
 msgid "Click to enable/disable this row"
-msgstr "Klicka för att aktivera/deaktivera denna rad"
+msgstr "Klicka för att aktivera/inaktivera denna rad"
 
 #. Resource IDs: (8155)
 msgid "Click to enter a character code via virtual numeric keypad. The character is added when this button is clicked again."
@@ -2327,7 +2340,7 @@ msgstr "Klicka för att infoga en ny rad nedan"
 
 #. Resource IDs: (8151)
 msgid "Click to randomise the characters in the virtual keypad."
-msgstr "Klicka för att slumpfördela tecknen på det virtuella tangentbordet."
+msgstr "Klicka för att slumpmässigt fördela tecknen på det virtuella tangentbordet."
 
 #. Resource IDs: (5617)
 msgid "Click to remove this row"
@@ -2407,7 +2420,7 @@ msgstr "Komma"
 
 #. Resource IDs: (61705)
 msgid "Command failed."
-msgstr "Kommandot  misslyckades."
+msgstr "Kommandot misslyckades."
 
 #. Resource IDs: (5532, 5835)
 msgid "Compare"
@@ -2617,7 +2630,7 @@ msgstr "Kopiera alla poster till ursprunglig"
 
 #. Resource IDs: (4003)
 msgid "Copy notes to clipboard"
-msgstr "Kopiera Noteringar till Urklipp"
+msgstr "Kopiera noteringar till Urklipp"
 
 #. Resource IDs: (4004)
 msgid "Copy password to clipboard"
@@ -2728,6 +2741,10 @@ msgstr "Skapadatum:"
 msgid "Credit card CVV"
 msgstr "CVV för kreditkort"
 
+#. Resource IDs: (3078)
+msgid "Credit card PIN"
+msgstr "Pin-kod för kreditkort"
+
 #. Resource IDs: (3076)
 msgid "Credit card expiration"
 msgstr "Kreditkortets utgång"
@@ -2735,10 +2752,6 @@ msgstr "Kreditkortets utgång"
 #. Resource IDs: (3075)
 msgid "Credit card number"
 msgstr "Kreditkortsnummer"
-
-#. Resource IDs: (3078)
-msgid "Credit card PIN"
-msgstr "Pin-kod för kreditkort"
 
 #. Resource IDs: (5612)
 msgid "Criteria"
@@ -2765,8 +2778,8 @@ msgid "Current Entry"
 msgstr "Aktuell post"
 
 #. Resource IDs: (65535)
-msgid "Current Safe Combination:"
-msgstr "Aktuell Safe-kombination:"
+msgid "Current Master Password:"
+msgstr "Nuvarande huvudlösenord:"
 
 #. Resource IDs: (3460)
 msgid "Current database filters have been exported to this database."
@@ -3253,8 +3266,8 @@ msgid "Enter Key:"
 msgstr "Ange nyckel:"
 
 #. Resource IDs: (130, 132)
-msgid "Enter Safe Combination"
-msgstr "Ange Safe-kombination"
+msgid "Enter Master Password"
+msgstr "Ange huvudlösenord"
 
 #. Resource IDs: (61722)
 msgid "Enter a GUID."
@@ -3777,7 +3790,7 @@ msgstr "Filstorlek:"
 #. Resource IDs: (3015)
 #, c-format
 msgid "File ends on line %d before ending double quote of last entry's note field."
-msgstr "Filen slutar på rad %d före avslutande citattecken i senaste posts notatfält."
+msgstr "Filen slutar på rad %d före avslutande citattecken i senaste posts noteringsfält."
 
 #. Resource IDs: (3401)
 msgid "File is too big."
@@ -4420,8 +4433,8 @@ msgid "Incorrect filename."
 msgstr "Felaktigt filnamn."
 
 #. Resource IDs: (5280)
-msgid "Incorrect passkey, not a PasswordSafe database, or a corrupt database."
-msgstr "Felaktigt lösennyckel, inte en PasswordSafe-databas eller en skadad databas."
+msgid "Incorrect master password, not a PasswordSafe database, or a corrupt database."
+msgstr "Felaktigt huvudlösenord, inte en PasswordSafe-databas eller en korrupt databas."
 
 #. Resource IDs: (3251)
 msgid "Incorrect password"
@@ -4472,7 +4485,7 @@ msgstr "Mellanlagrade säkerhetskopior"
 
 #. Resource IDs: (61704)
 msgid "Internal application error."
-msgstr "Internt programfel."
+msgstr "Internt applikationsfel."
 
 #. Resource IDs: (3241)
 msgid "Internal error. Import failed. No records imported."
@@ -4484,7 +4497,7 @@ msgstr "Internt fel: En ogiltig flagga angavs"
 
 #. Resource IDs: (3327)
 msgid "Internal error: Couldn't initialize config file XML structure"
-msgstr "Internt fel: Kunde inte initiera konfigurationsfilens XML-struktur"
+msgstr "Internt fel: Det gick inte att initiera konfigurationsfilens XML-struktur"
 
 #. Resource IDs: (3022)
 msgid "Internal error: Invalid oflag or pmode argument"
@@ -4496,7 +4509,7 @@ msgstr "Internt fel: Slut på filhanterare"
 
 #. Resource IDs: (3025)
 msgid "Internal error: Unexpected error number"
-msgstr "Internt fel: oväntat felnummer"
+msgstr "Internt fel: Oväntat felnummer"
 
 #. Resource IDs: (3318)
 msgid "Invalid Filter schema."
@@ -4776,9 +4789,21 @@ msgstr "Maori"
 msgid "Marathi"
 msgstr "Marathi"
 
+#. Resource IDs: (131)
+msgid "Master Password Entry"
+msgstr "Huvudlösenordsinmatning"
+
+#. Resource IDs: (133)
+msgid "Master Password Setup"
+msgstr "Inställning av huvudlösenordet"
+
 #. Resource IDs: (65535)
 msgid "Master Password last set on:"
 msgstr "Huvudlösenordet senast inställt på:"
+
+#. Resource IDs: (1506, 65535)
+msgid "Master Password:"
+msgstr "Huvudlösenord:"
 
 #. Resource IDs: (1212)
 msgid "Max."
@@ -4945,16 +4970,16 @@ msgid "New Group"
 msgstr "Ny grupp"
 
 #. Resource IDs: (65535)
-msgid "New Safe Combination:"
-msgstr "Ny Safe-kombination:"
+msgid "New Master Password:"
+msgstr "Nytt huvudlösenord:"
 
 #. Resource IDs: (5476)
 msgid "New Version Found!"
 msgstr "Ny version finns!"
 
 #. Resource IDs: (5286)
-msgid "New safe combination and confirmation do not match"
-msgstr "Ny säker kombination och bekräftelse matchar inte"
+msgid "New master password and confirmation do not match"
+msgstr "Nytt huvudlösenord och bekräftelse matchar inte"
 
 #. Resource IDs: (1003)
 msgid "New..."
@@ -5099,7 +5124,7 @@ msgstr "Inte använd"
 
 #. Resource IDs: (62183)
 msgid "Note that if you choose to recover the auto-saved documents, you must explicitly save them to overwrite the original documents.  If you choose to not recover the auto-saved versions, they will be deleted."
-msgstr "Notera att om du väljer att återskapa de auto-sparade dokumenten, så måste du aktivt spara dessa för att skriva över originaldokumenten.  Om du väljer att att inte återskapa de auto-sparade versionerna, så kommer de att raderas."
+msgstr "Observera att om du väljer att återskapa de auto-sparade dokumenten, så måste du aktivt spara dessa för att skriva över originaldokumenten. Om du väljer att inte återskapa de auto-sparade versionerna, så kommer de att raderas."
 
 #. Resource IDs: (5114)
 #, c-format
@@ -5107,20 +5132,20 @@ msgid "Note that you can use an environment variable too, e.g., %TEMP%"
 msgstr "Observera att Du kan använda en miljövariabel också, t ex, %TEMP%"
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as « »"
-msgstr "Notera: Tomma fält visas som « »"
+msgid "Note: Empty fields are shown as ï¿½ ï¿½"
+msgstr "Observera: Tomma fält visas som ï¿1/2 ï¿1/2"
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is «Group» «Title» «Username»"
-msgstr "Notera: Postformatet är «Grupp» «Titel» «Användarnamn»"
+msgid "Note: Entry format is ï¿½Groupï¿½ ï¿½Titleï¿½ ï¿½Usernameï¿½"
+msgstr "Observera.: Inmatningsformatet är ï¿1/2Gruppï¿1/2 ï¿1/2Titelï¿1/2 ï¿1/2Användarnamnï¿1/2"
 
 #. Resource IDs: (3428)
 msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."
-msgstr "Notera: Dessa lösenordspolicyer kommer inte att ersätta befintliga policyer med samma namn i den aktuella databasen."
+msgstr "Observera: Dessa lösenordspolicyer kommer inte att ersätta befintliga policyer med samma namn i den aktuella databasen."
 
 #. Resource IDs: (3362)
 msgid "Note: These preferences are only used when importing into an empty database."
-msgstr "Notera: Dessa preferenser används bara vid import till en tom databas."
+msgstr "Observera: Dessa preferenser används bara vid import till en tom databas."
 
 #. Resource IDs: (3014, 5225)
 msgid "Notes"
@@ -5257,13 +5282,13 @@ msgstr "OK"
 msgid "Off"
 msgstr "Av"
 
+#. Resource IDs: (65535)
+msgid "Old Master Password:"
+msgstr "Gammalt huvudlösenord:"
+
 #. Resource IDs: (6038)
 msgid "Old Pswd copied"
 msgstr "Gamla Pswd kopierade"
-
-#. Resource IDs: (65535)
-msgid "Old Safe Combination:"
-msgstr "Gammal Safe-kombination:"
 
 #. Resource IDs: (5265)
 msgid "On"
@@ -5404,7 +5429,7 @@ msgstr "Lösenordets utgångsdatum"
 
 #. Resource IDs: (3058, 5556)
 msgid "Password Expiry Interval"
-msgstr "Lösenordets utgångsperiod"
+msgstr "Lösenordets utgångsintervall"
 
 #. Resource IDs: (5744)
 msgid "Password Generated based on displayed policy"
@@ -5515,7 +5540,7 @@ msgid ""
 "Password implies this is an alias entry, but specifies a base entry with no title.\n"
 "Every entry must have a title."
 msgstr ""
-"Lösenordet indikerar att detta är en alias post, men motvarar en baspost utan titel.\n"
+"Lösenordet indikerar att detta är en alias post, men anger en baspost utan titel.\n"
 "Varje post måste ha en titel."
 
 #. Resource IDs: (3000)
@@ -5661,21 +5686,25 @@ msgstr "Vänligen, ange en söksträng"
 msgid "Please enter an encryption or decryption key"
 msgstr "Vänligen, ange en krypterings- eller dekrypteringsnyckel"
 
-#. Resource IDs: (1504)
-msgid "Please enter the combination for the NEW database to contain exported entry/entries."
-msgstr "Vänligen, ange kombinationen till den Nya databasen som ska innehålla exporterad post/poster."
+#. Resource IDs: (65535)
+msgid "Please enter the Master Password for this password database."
+msgstr "Ange huvudlösenordet för den här lösenordsdatabasen."
 
 #. Resource IDs: (65535)
 msgid ""
-"Please enter the current combination, followed by a new combination. \r\n"
-"Type the new combination once again to confirm it."
+"Please enter the current master password, followed by a new one. \r\n"
+"Type the new one again to confirm it."
 msgstr ""
-"Vänligen, ange aktuell kombination, följd av en ny kombination.\r\n"
-"Ange den nya kombinationen en gång till för att bekräfta den."
+"Ange det aktuella huvudlösenordet, följt av ett nytt. \r\n"
+"Skriv det nya igen för att bekräfta det."
 
 #. Resource IDs: (5255)
 msgid "Please enter the key and verify it."
 msgstr "Vänligen, ange nyckeln och verifiera den."
+
+#. Resource IDs: (1504)
+msgid "Please enter the master password for the NEW database to contain exported entry/entries."
+msgstr "Ange huvudlösenordet till den NYA databasen som ska innehålla exporterade post/er."
 
 #. Resource IDs: (5876)
 msgid "Please enter the new database description"
@@ -5684,10 +5713,6 @@ msgstr "Vänligen, ange en beskrivning av den nya databasen"
 #. Resource IDs: (5875)
 msgid "Please enter the new database name"
 msgstr "Vänligen, ange den nya databasens namn"
-
-#. Resource IDs: (65535)
-msgid "Please enter the safe combination for this password database."
-msgstr "Vänligen, ange Safe-kombinationen till denna lösenordsdatabas."
 
 #. Resource IDs: (5388)
 msgid "Please enter your backup database prefix."
@@ -6131,18 +6156,6 @@ msgstr ""
 msgid "SAX Parse60 Error 0x%08X during %ls."
 msgstr "SAX parse60-fel 0x%08X i %ls."
 
-#. Resource IDs: (131)
-msgid "Safe Combination Entry"
-msgstr "Inmatning av Safe-kombination"
-
-#. Resource IDs: (133)
-msgid "Safe Combination Setup"
-msgstr "Inställningar av Safe-kombination"
-
-#. Resource IDs: (1506, 65535)
-msgid "Safe Combination:"
-msgstr "Safe-kombination:"
-
 #. Resource IDs: (1205)
 msgid "Same as database's"
 msgstr "Samma som databasens"
@@ -6493,8 +6506,8 @@ msgid "Show"
 msgstr "Visa"
 
 #. Resource IDs: (1590)
-msgid "Show Combination"
-msgstr "Visa kombination"
+msgid "Show Master Password"
+msgstr "Visa huvudlösenordet"
 
 #. Resource IDs: (5653)
 msgid "Show Notes"
@@ -6534,7 +6547,7 @@ msgstr "Visa en delmängd av lösenordet"
 
 #. Resource IDs: (1262)
 msgid "Show entries with identical compared fields (Note: Unknown fields were not compared.)"
-msgstr "Visa poster med identiska jämförda fält (Notera: Okända fält jämfördes inte.)"
+msgstr "Visa poster med identiska jämförda fält (Observera: Okända fält jämfördes inte.)"
 
 #. Resource IDs: (1246)
 msgid "Show grid lines in List View"
@@ -6542,7 +6555,7 @@ msgstr "Visa rutnätslinjer i Listvyn"
 
 #. Resource IDs: (1490)
 msgid "Show identical compared fields (Note: Unknown fields were not compared.)"
-msgstr "Visa identiska jämförda fält (Notera: Okända fält jämfördes inte.)"
+msgstr "Visa identiska jämförda fält (Observera: Okända fält jämfördes inte.)"
 
 #. Resource IDs: (5755)
 msgid "Shutdown, Restart or Logoff in progress"
@@ -6660,7 +6673,7 @@ msgstr "Spansk variant"
 
 #. Resource IDs: (5109)
 msgid "Specify a program for editing an entry's Notes field via the right-click context menu during Add/Edit. You can specify command line options to the external editor via the external  editor command line parameters field. Do not enclose this value in single or double quotes unless your chosen external editor requires them."
-msgstr "Ange ett program för att redigera en posts Notes-fält via högerklicksmenyn under Lägg till/redigera. Du kan ange kommandoradsalternativ till den externa redigeraren via den externa  redigerarens kommandorads parameterfält. Omslut inte detta värde med enkla eller dubbla citationstecken om inte din valda externa redigerare kräver dessa."
+msgstr "Ange ett program för att redigera en posts noterings-fält via högerklicksmenyn under Lägg till/redigera. Du kan ange kommandoradsalternativ till den externa redigeraren via den externa  redigerarens kommandorads parameterfält. Omslut inte detta värde med enkla eller dubbla citationstecken om inte din valda externa redigerare kräver dessa."
 
 #. Resource IDs: (5108)
 msgid "Specify the browser to use when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'. You can specify command line options to the browser via the Browser command line parameters field. Do not enclose this value in single or double quotes unless your chosen browser requires them."
@@ -6908,10 +6921,6 @@ msgstr ""
 msgid "The YubiKey appears uninitialized. Initialize it?"
 msgstr "YubiKey är inte initierad. Initiera den?"
 
-#. Resource IDs: (5279)
-msgid "The combination cannot be blank."
-msgstr "Fältet kan inte vara tomt."
-
 #. Resource IDs: (5311)
 #, c-format
 msgid ""
@@ -6952,7 +6961,7 @@ msgstr ""
 "\n"
 "Öppna databasen i läs-bara-läge eller avsluta?\n"
 "\n"
-"Obs: Endast en användare i taget kan öppna databasen för skrivning."
+"Observera: Endast en användare i taget kan öppna databasen för skrivning."
 
 #. Resource IDs: (5235)
 #, c-format
@@ -6976,7 +6985,7 @@ msgstr ""
 "\n"
 "Öppna databasen i läs-bara- eller läs-skriv-läge eller avsluta?\n"
 "\n"
-"Notera: Välj \"Läs-Skriv\" endast då du är säker på att filen inte används av någon annan,\n"
+"Observera: Välj \"Läs-Skriv\" endast då du är säker på att filen inte används av någon annan,\n"
 "liksom en annan kopia av Password Safe som körs på din maskin."
 
 #. Resource IDs: (5775)
@@ -7035,6 +7044,10 @@ msgstr "Följande bilagor refereras inte till genom någon post."
 #. Resource IDs: (6055)
 msgid "The following base entries have been exported because one or more of their dependents have been included."
 msgstr "Följande basposter har exporterats eftersom en eller flera av deras anhöriga har inkluderats."
+
+#. Resource IDs: (3262)
+msgid "The following columns are unrecognized by PasswordSafe and will be ignored: "
+msgstr "Följande kolumner känns inte igen av PasswordSafe och ignoreras: "
 
 #. Resource IDs: (3375)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
@@ -7140,14 +7153,33 @@ msgstr ""
 "\t«%s» «%s» «%s»\n"
 "Vänligen välj en annan genväg (den har återställts)."
 
+#. Resource IDs: (5279)
+msgid "The master password cannot be blank."
+msgstr "Huvudlösenordet får inte vara tomt."
+
+#. Resource IDs: (5958)
+#, c-format
+msgid ""
+"The master password has been entered %d times without success:\n"
+"- Is Caps Lock off?\n"
+"- Is the language correct (if multilingual)?\n"
+"- Is this the correct database?\n"
+"- Perhaps the database was damaged. Try opening a backup copy."
+msgstr ""
+"Huvudlösenordet har angetts %d gånger utan framgång:\n"
+"- Är Caps Lock av?\n"
+"- Är språket korrekt (om det är flerspråkigt)?\n"
+"- Är detta rätt databas?\n"
+"- Kanske var databasen skadad. Försök öppna en säkerhetskopia."
+
 #. Resource IDs: (5792)
 #, c-format
 msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either export this entry to XML before changing it or open the database in read-only mode and copy it to an editor via the clipboard."
 msgstr "Postens noteringsfält har mer text än vad som kan visas. Ändringar i fältet och att posten sparas kommer att resultera i att fältet trunkeras efter %d tecken.  För att visa hela innehållet, exportera antingen denna post till XML före ändringar eller öppna databasen i läs-bara-läge och kopiera det till en redigerare via Urklipp."
 
 #. Resource IDs: (5284)
-msgid "The old safe combination is not correct"
-msgstr "Den gamla Safe-kombinationen är inte rätt"
+msgid "The old master password is not correct"
+msgstr "Det gamla huvudlösenordet är inte korrekt"
 
 #. Resource IDs: (5323)
 #, c-format
@@ -7158,21 +7190,6 @@ msgstr "Den ursprungliga databasen, \"%s\", har pre-3.0 format. Data kommer nu a
 #, c-format
 msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
 msgstr "Den refererade posten '%s:%s:%s' är själv ett alias eller genväg. Detta stöds inte."
-
-#. Resource IDs: (5958)
-#, c-format
-msgid ""
-"The safe combination has been entered %d times without success:\n"
-"- Is Caps Lock off?\n"
-"- Is the language correct (if multilingual)?\n"
-"- Is this the correct database?\n"
-"- Perhaps the database was damaged. Try opening a backup copy."
-msgstr ""
-"Den Safe-kombinationen har lästs in %d gånger utan framgång;\n"
-"- Är Caps Lock av?\n"
-"- Är språkvalet rätt (om flerspråksval)?\n"
-"- Är det rätt databas?\n"
-"- Möjligen är databasen skadad. Försök öppna en säkerhetskopia."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -7188,7 +7205,7 @@ msgstr "De två posterna matchar inte."
 
 #. Resource IDs: (3366)
 msgid "The user specified that the following fields be excluded from the export:"
-msgstr "Användaren specificerade att följande fält ska uteslutas vid export:"
+msgstr "Användaren angav att följande fält ska undantas från exporten:"
 
 #. Resource IDs: (5505)
 msgid "There are more than one entry that fits your selection. Please be more specific."
@@ -7288,7 +7305,7 @@ msgstr "Detta är en alias för:"
 #. Resource IDs: (5121)
 #, c-format
 msgid "This is the percentage of Window transparency. 0% means normal fully opaque and 100% is totally transparent and invisible. Values greater than 50% are not supported. Note: This only applies to the main dialog window."
-msgstr "Detta är Windowfönstrets transparens. 0% betyder helt opakt och 100% i transparens och därför osynligt. Värden större än 50% antas inte. Notera: detta gäller bara huvudfönstret."
+msgstr "Detta är Windowfönstrets transparens. 0% betyder helt opakt och 100% i transparens och därför osynligt. Värden större än 50% antas inte. Observera: detta gäller bara huvudfönstret."
 
 #. Resource IDs: (61710)
 #, c-format
@@ -7315,7 +7332,7 @@ msgstr "Detta blir en genväg till baspost:"
 
 #. Resource IDs: (6047)
 msgid "This will cancel the edit of the Notes field but leaving it in your external editor and on disk. Do you wish to cancel?"
-msgstr "Detta tar bort redigeringen i anteckningsfältet, men lämnar kvar den i din externa redigerare och på disken. Vill du avbryta?"
+msgstr "Detta tar bort redigeringen i noteringsfältet, men lämnar kvar den i din externa redigerare och på disken. Vill du avbryta?"
 
 #. Resource IDs: (5103)
 msgid "This will clear all traces of Password Safe from the machine's registry. It may also cause old versions of Password Safe to revert to default values for some settings."
@@ -7440,11 +7457,11 @@ msgid ""
 "\n"
 "Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
 msgstr ""
-"Kan inte skapa en ny XML konfigureringsfil eller lägga till dina inställningar till en befintlig XML konfigureringsfil.\n"
+"Kan inte skapa en ny XML konfigurationsfil eller lägga till dina inställningar till en befintlig XML konfigurationsfil.\n"
 "\n"
 "Programmets samtliga konfiguartionsinställningar kommer att sparas i din registerpost på denna dator.\n"
 "\n"
-"Databsrelaterade inställningar sparas i den öppna databasen när den stängs, förutsatt att den inte bara är läsbar eller låst av annan användare."
+"Databasrelaterade inställningar sparas i den öppna databasen när den stängs, förutsatt att den inte bara är läsbar eller låst av annan användare."
 
 #. Resource IDs: (5385)
 #, c-format
@@ -7482,7 +7499,7 @@ msgstr "Kan inte läsa in konfigurationsfilen"
 
 #. Resource IDs: (61840)
 msgid "Unable to load mail system support."
-msgstr "Kan inte läsa in systemstöd för e-post."
+msgstr "Kan inte ladda systemstöd för e-post."
 
 #. Resource IDs: (61731)
 #, c-format
@@ -7495,7 +7512,7 @@ msgstr "Kan inte läsa vem som låser ?"
 
 #. Resource IDs: (61836)
 msgid "Unable to read write-only property."
-msgstr "Kan inte läsa från skriv-bara-enegenskap."
+msgstr "Kan inte läsa från skriv-bara-egenskap."
 
 #. Resource IDs: (5657)
 msgid "Unable to run command"
@@ -7915,7 +7932,7 @@ msgstr "Varning"
 
 #. Resource IDs: (6046)
 msgid "Warning - Notes being externally edited"
-msgstr "Varning - Anteckningar redigeras externt"
+msgstr "Varning - Noteringar redigeras externt"
 
 #. Resource IDs: (5793)
 msgid "Warning - field too long"
@@ -7924,13 +7941,13 @@ msgstr "Varning - fältet är för långt"
 #. Resource IDs: (5281)
 #, c-format
 msgid ""
-"Weak passphrase:\n"
+"Weak master password:\n"
 "\n"
 " %s"
 msgstr ""
-"Svag lösenfras:\n"
+"Svagt huvudlösenord:\n"
 "\n"
-" %s"
+"%s"
 
 #. Resource IDs: (5763)
 msgid "What saved"
@@ -7988,7 +8005,7 @@ msgstr "Radbryt"
 
 #. Resource IDs: (1363)
 msgid "Word Wrap Notes in Add && Edit"
-msgstr "Radbryt anteckningar i Lägg till && Redigera"
+msgstr "Radbryt Noteringar i Lägg till && Redigera"
 
 #. Resource IDs: (5305)
 #, c-format
@@ -8966,7 +8983,7 @@ msgstr ""
 #. Resource IDs: (5526)
 #, c-format
 msgid "\t%s was restricted to the following fields:"
-msgstr "\t%s begränsades till följande poster:"
+msgstr "\t%s begränsades till följande områden:"
 
 #. Resource IDs: (5363)
 #, c-format

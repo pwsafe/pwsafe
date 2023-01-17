@@ -13,7 +13,7 @@ strBruce="Author of Applied Cryptography and other books, creator of the Blowfis
 
 strSpecialChars="   `   ~   !   @   #   $   %   ^   &   *   (   )   _   +   -   =   |   }   {   [   ]   <   >   ?   /   \   :   ;   |   "
 
-strCombination="In our terminology, the Combination is the password that you use to gain access to the Password Safe database."
+strMasterPassword="In our terminology, the Master Password is the password that you use to gain access to the Password Safe database."
 
 strPopText1="Dummy Placeholder"
 

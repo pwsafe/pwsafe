@@ -60,7 +60,7 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   bool bReadOnly, bool bFileReadOnly, bool bForceReadOnly, bool bHideReadOnly)
   : CPKBaseDlg(dialog_lookup[index], pParent),
   m_btnReadOnly((bReadOnly || bFileReadOnly) ? TRUE : FALSE),
-  m_btnShowCombination(FALSE),
+  m_btnShowMasterPassword(FALSE),
   m_bFileReadOnly(bFileReadOnly),
   m_bForceReadOnly(bForceReadOnly),
   m_bHideReadOnly(bHideReadOnly),
@@ -111,7 +111,7 @@ void CPasskeyEntry::DoDataExchange(CDataExchange* pDX)
   DDX_Text(pDX, IDC_SELECTED_DATABASE, m_SelectedDatabase);
 
   DDX_Check(pDX, IDC_READONLY, m_btnReadOnly);
-  DDX_Check(pDX, IDC_SHOWCOMBINATION, m_btnShowCombination);
+  DDX_Check(pDX, IDC_SHOWMASTERPASSWORD, m_btnShowMasterPassword);
   DDX_Control(pDX, IDOK, m_ctlOK);
   //}}AFX_DATA_MAP
 }
@@ -126,7 +126,7 @@ BEGIN_MESSAGE_MAP(CPasskeyEntry, CPKBaseDlg)
   ON_BN_CLICKED(IDC_EXIT, OnExit)
   ON_BN_CLICKED(IDC_YUBIKEY_BTN, OnYubikeyBtn)
   ON_BN_CLICKED(IDC_READONLY, OnBnClickedReadonly)
-  ON_BN_CLICKED(IDC_SHOWCOMBINATION, OnShowCombination)
+  ON_BN_CLICKED(IDC_SHOWMASTERPASSWORD, OnShowMasterPassword)
   ON_BN_CLICKED(IDC_BTN_BROWSE, OnOpenFileBrowser)
   ON_STN_CLICKED(IDC_VKB, OnVirtualKeyboard)
 
@@ -161,16 +161,16 @@ BOOL CPasskeyEntry::OnInitDialog(void)
                                          FALSE : TRUE);
   GetDlgItem(IDC_READONLY)->ShowWindow(m_bHideReadOnly ? SW_HIDE : SW_SHOW);
   
-  // If read-only box is hidden, move Show Combination box in its place to close the gap.
+  // If read-only box is hidden, move Show Master Password box in its place to close the gap.
   if (m_bHideReadOnly) {
     CRect rectReadOnly;
     GetDlgItem(IDC_READONLY)->GetWindowRect(&rectReadOnly);
     ScreenToClient(&rectReadOnly);
-    CRect rectCombination;
-    GetDlgItem(IDC_SHOWCOMBINATION)->GetWindowRect(&rectCombination);
-    ScreenToClient(&rectCombination);
-    rectCombination.MoveToY(rectReadOnly.top);
-    GetDlgItem(IDC_SHOWCOMBINATION)->MoveWindow(&rectCombination);
+    CRect rectMasterPassword;
+    GetDlgItem(IDC_SHOWMASTERPASSWORD)->GetWindowRect(&rectMasterPassword);
+    ScreenToClient(&rectMasterPassword);
+    rectMasterPassword.MoveToY(rectReadOnly.top);
+    GetDlgItem(IDC_SHOWMASTERPASSWORD)->MoveWindow(&rectMasterPassword);
   }
 
   CWnd *create_bn = GetDlgItem(IDC_CREATE_DB);
@@ -481,13 +481,13 @@ void CPasskeyEntry::OnBnClickedReadonly()
     create_bn->EnableWindow(!m_btnReadOnly);
 }
 
-void CPasskeyEntry::OnShowCombination()
+void CPasskeyEntry::OnShowMasterPassword()
 {
   UpdateData(TRUE);
 
-  m_pctlPasskey->SetSecure(m_btnShowCombination == TRUE ? FALSE : TRUE);
+  m_pctlPasskey->SetSecure(m_btnShowMasterPassword == TRUE ? FALSE : TRUE);
 
-  if (m_btnShowCombination == TRUE) {
+  if (m_btnShowMasterPassword == TRUE) {
     m_pctlPasskey->SetPasswordChar(0);
     m_pctlPasskey->SetWindowText(m_passkey);
   } else {

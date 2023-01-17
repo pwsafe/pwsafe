@@ -53,14 +53,14 @@ parties.</p>
 <h3>Create a New Database</h3>
 
 <p>There are two ways that a new database can be created. By clicking
-<b>New...</b> from the <b>Safe Combination Entry</b> dialog when the program
+<b>New...</b> from the <b>Master Password Entry</b> dialog when the program
 is started, or from the <b>"File&nbsp;?&nbsp;New..."</b> menu once
 <b>Password Safe</b> has been opened. Using either method causes the
-<b>Safe Combination Set Up</b> dialog to appear.</p>
+<b>Master Password Set Up</b> dialog to appear.</p>
 
 <hr>
 <small><b>Note:</b> By default, <b>Password Safe</b> will show the database
-last used, and displays a combination prompt for it. If you use several databases,
+last used, and displays a master password prompt for it. If you use several databases,
 drop-down list. Alternately, you can type in the path to the database
 to open, or select it from a File dialog box by pressing on the
 ellipsis ("...") button. Once a database is open, you can change to
@@ -71,48 +71,47 @@ another via the <b>Open...</b> command from the <b>File Menu</b>.</small>
 <br>
 <img alt="Initial window" src="images/default_safe_open.jpg"><br>
 <br>
-<img alt="new safe combination prompt" src="images/new_safe.jpg">
+<img alt="new master password prompt" src="images/new_safe.jpg">
 </center>
 
-<p>On checking the "Show Combination" box, the contents of old and new combination
-will be visible in clear and the confirmation combination edit box is disabled as
+<p>On checking the "Show Master Password" box, the contents of old and new master passwords
+will be visible in clear and the confirmation edit box is disabled as
 no longer necessary.</p>
 
 <h3>Using YubiKey with PasswordSafe</h3>
 
 <p><b>Password Safe</b> can work with a <a href="about_pws_yubi.html">YubiKey</a>
 device to provide "two factor authentication", that is, protecting your database
-by both something you know (your "Safe Combination" or master passphrase),
+by both something you know (your master passphrase),
 and something you have (the YubiKey device). If you do not have a YubiKey device,
 then the YubiKey-specific buttons and texts will not be displayed by <b>Password Safe</b>,
 and the YubiKey-specific instructions below do not apply.</p>
 
 <p>If your YubiKey is connected to your PC, then a "Yubikey" button and text
-area will appear in the Safe Combination Entry and Setup windows, as show
+area will appear in the Master Password Entry and Setup windows, as show
 above. This allows you to use your YubiKey to access your Password
-Safe database, either in addition to, or instead of a "Safe Combination".
+Safe database, either in addition to, or instead of a master password.
 For maximum security, we recommend that your database be protected <b>both</b>
-by your YubiKey and a Safe Combination (this is known as two-factor authentication).</p>
+by your YubiKey and a master password (this is known as two-factor authentication).</p>
 
-<h4>Setting up a Safe Combination with YubiKey</h4>
+<h4>Setting up a Master Password with YubiKey</h4>
 
 <p>To use your <a href="about_pws_yubi.html">configured</a> YubiKey to
 protect your database:</p>
 <ol>
 <li>If you haven't already done so, insert your YubiKey into a USB slot on your PC.
-The Yubikey button on the Safe Combination window will now become active, and the text
+The Yubikey button on the Master Password window will now become active, and the text
 to the right of will change to "Click, then activate your YubiKey"</li>
-<li>Set up the Safe Combination as follows:</li>
+<li>Set up the Master Password as follows:</li>
 <ol type="a">
 <li>If you wish to protect your database using <b>both</b> your YubiKey and a
-Safe Combination ("two factor authentication"), then <b>first</b> enter the
-Safe Combination in the "Safe Combination" and "Verify" fields, <b>then</b> click
+master password ("two factor authentication"), then <b>first</b> enter the
+master password in the "Master Password" and "Verify" fields, <b>then</b> click
 on the Yubikey button.</li>
 <li>If you wish to protect your database using your YubiKey <b>only</b>, then
-leave the "Safe Combination" and "Verify" fields <b>empty</b>, and click on
+leave the "Master Password" and "Verify" fields <b>empty</b>, and click on
 the Yubikey button.</li>
-<li>Of course, you can also choose to protect the database by a Safe
-Combination alone, just enter the Safe Combination in the "Safe Combination"
+<li>Of course, you can also choose to protect the database by a master password alone, just enter the master password in the "Master Password"
 and "Verify" fields and then click on OK.</li>
 </ol>
 <li>Click on the Yubikey button. The "Click, then activate your YubiKey" will
@@ -131,7 +130,7 @@ will be created.</li>
 <li>Make sure the desired database is selected in the "Open Password Safe"
 field. If it's not there, click on the ellipsis (...) and choose it.</li>
 <li>If you've chosen to protect your database using <b>both</b> your YubiKey
-and a Safe Combination, <b>first</b> enter the Safe Combination in the
+and a master password, <b>first</b> enter the master password in the
 "Open Password Safe" field, <b>then</b> click on the Yubikey button. If
 you've chosen to protect your database using your YubiKey <b>only</b>,
 then leave the "Open Password Safe" field <b>empty</b>, and click on the
@@ -171,7 +170,6 @@ Even pieces of the master password can be built this way.</p>
 <object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
 <param name="Keyword" value="Creating a New Safe">
 <param name="Keyword" value="Master Password">
-<param name="Keyword" value="Combination">
 <param name="Keyword" value="Virtual Keyboard">
 <param name="Keyword" value="Opening a Safe">
 <param name="Keyword" value="YubiKey">

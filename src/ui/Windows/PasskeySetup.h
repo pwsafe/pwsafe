@@ -30,7 +30,7 @@ protected:
   //}}AFX_DATA
 
   CSecString m_verify;
-  BOOL m_btnShowCombination;
+  BOOL m_btnShowMasterPassword;
 
   virtual BOOL OnInitDialog();
   //{{AFX_VIRTUAL(CPasskeySetup)
@@ -51,7 +51,7 @@ protected:
   afx_msg void OnVerifykeySetfocus();
   afx_msg void OnVirtualKeyboard();
   afx_msg void OnYubikeyBtn();
-  afx_msg void OnShowCombination();
+  afx_msg void OnShowMasterPassword();
   afx_msg LRESULT OnInsertBuffer(WPARAM, LPARAM);
   //}}AFX_MSG
 

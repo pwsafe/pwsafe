@@ -14,9 +14,9 @@
 
 <h2>Changing Master Passwords</h2>
 
-<p>To change a master password ("Safe Combination"), first open up
+<p>To change a master password (referred to as "Safe Combination" in older versions), first open up
 the database whose password you wish to change. Once opened, go to the <b>Manage</b>
-menu and select <b>Change Safe Combination</b>. The following window will be displayed:</p>
+menu and select <b>Change Master Password</b>. The following window will be displayed:</p>
 
 <img alt="Key Change dialog box" src="images/combo_change.jpg">
 
@@ -24,10 +24,8 @@ menu and select <b>Change Safe Combination</b>. The following window will be dis
 then the YubiKey buttons will not be displayed,
 and you can ignore the description of their use below.</p>
 
-<p>To change a master password ("Safe Combination"), first open up the database whose
-password you wish to change. Once opened, go to the <b>Manage</b> menu and
-select <b>Change Safe Combination</b>. You should enter the current master
-password, and then the new master password (twice, for confirmation). The master
+<p>You should now enter the current master
+password, followed by the new master password (twice, for confirmation). The master
 password can be entered using the physical or virtual keyboard.</p>
 
 <p><b>Password Safe</b> has a built in check for what it considers to be weak
@@ -39,8 +37,8 @@ is entered that the program considers weak, it will prompt for confirmation.
 You may the option to accept the originally entered (weak) password, or to enter
 a new one.</p>
 
-<p>On checking the "Show Combination" box, the contents of old and new combination
-will be visible in clear and the confirmation combination edit box is disabled as
+<p>On checking the "Show Mast Password" box, the contents of old and new master passwords
+will be visible in clear and the confirmation edit box is disabled as
 no longer necessary.</p>
 
 <p>For <strong>YubiKey</strong> users: In addition to changing the master
@@ -52,12 +50,11 @@ instructions for each of these actions:</p>
 <h3>Adding YubiKey Authentication</h3>
 
 <p>To convert a Password Safe database that is accessed using a Master
-Password (Safe Combination) to YubiKey access:<br>
+Password to YubiKey access:<br>
 <ol>
-<li>Enter the current Master Password in the Old Safe Combination field</li>
+<li>Enter the current Master Password in the Old Master Password field</li>
 <li>Insert you YubiKey</li>
-<li>If you wish, enter (and confirm) a password in the New Safe
-Combination and Confirmation fields.</li>
+<li>If you wish, enter (and confirm) a password in the New Master Password and Confirmation fields.</li>
 <li>Click on the <strong>lower </strong>Yubikey button, and then
 activate your YubiKey.<li>
 </ol>
@@ -69,10 +66,10 @@ a master password:</p>
 <ol>
 <li>Insert your YubiKey</li>
 <li>If you currently have a password associated with this
-database, enter it in the Old Safe Combination field</li>
+database, enter it in the Old Master Password field</li>
 <li>Click on the <strong>upper </strong>Yubikey button, and then
 activate your YubiKey</li>
-<li>Set the New Safe Combination (and the Confirmation) to the
+<li>Set the New Master Password (and the Confirmation) to the
 desired value.</li>
 <li>Click on <strong>OK</strong>.</li>
 </ol>
@@ -84,10 +81,10 @@ with a conventional password. To change from one to another:</p>
 <ol>
 <li>Insert your YubiKey</li>
 <li>If you currently have a password associated with this
-database, enter it in the Old Safe Combination field</li>
+database, enter it in the Old Master Password field</li>
 <li>Click on the <strong>upper </strong>Yubikey button, and then
 activate your YubiKey</li>
-<li>Set the New Safe Combination (and the Confirmation) to the
+<li>Set the New Master Password (and the Confirmation) to the
 desired value: Blank to remove the password, or a new password
 to add or replace the password.</li>
 <li>Click on the <strong>lower </strong>Yubikey button, and then
@@ -100,12 +97,11 @@ activate your YubiKey.</li>
 <ol>
 <li>Insert the old YubiKey</li>
 <li>If you have a password associated with this database as well,
-enter it in the Old Safe Combination field</li>
+enter it in the Old Master Password field</li>
 <li>Click on the <strong>upper </strong>Yubikey button, and then
 activate your YubiKey</li>
 <li>Remove the old YubiKey, insert the new one</li>
-<li>If you wish, enter (and confirm) a password in the New Safe
-Combination and Confirmation fields.</li>
+<li>If you wish, enter (and confirm) a password in the New Master Password and Confirmation fields.</li>
 <li>Click on the <strong>lower </strong>Yubikey button, and then
 activate your YubiKey.<br>
 </li>
@@ -115,10 +111,10 @@ activate your YubiKey.<br>
 <p><small><b>Notes:</b></small></p>
 <ul>
 <li><small><b><span style="color: rgb(255, 0, 0);">There is no mechanism within
-Password Safe to retrieve lost or forgotten safe passwords</span></b>.
+Password Safe to retrieve lost or forgotten master passwords</span></b>.
 This is a deliberate design decision, since any mechanism for retrieving
 lost passwords poses a security hole that can be exploited.</small></li>
-<li><small>Please choose a difficult-to-guess password. A trivial
+<li><small>Please choose a difficult-to-guess master password. A trivial
 password, such as "password" or your name is easy to guess,
 and negates
 the security that <b>Password Safe</b> provides.<br>
