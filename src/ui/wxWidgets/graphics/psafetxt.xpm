@@ -1,5 +1,5 @@
 /* XPM */
-static const char * psafetxt_xpm[] = {
+static const char * const psafetxt_xpm[] = {
 "222 34 466 2",
 "  	c None",
 ". 	c #909090",

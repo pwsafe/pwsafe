@@ -1,5 +1,5 @@
 /* XPM */
-static const char *save_disabled_xpm[] = {
+static const char * const save_disabled_xpm[] = {
 "16 16 79 1",
 /* colors */
 " 	g None",

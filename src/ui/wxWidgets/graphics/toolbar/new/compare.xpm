@@ -1,5 +1,5 @@
 /* XPM */
-static const char *compare_xpm[] = {
+static const char * const compare_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 111 2",
 /* colors */

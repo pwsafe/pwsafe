@@ -1,5 +1,5 @@
 /* XPM */
-static const char * security_xpm[] = {
+static const char * const security_xpm[] = {
 "64 64 138 2",
 "  	c None",
 ". 	c #D7ECFF",

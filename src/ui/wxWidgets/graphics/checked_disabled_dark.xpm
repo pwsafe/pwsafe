@@ -1,5 +1,5 @@
 /* XPM */
-static const char *checked_disabled_dark_xpm[] = {
+static const char * const checked_disabled_dark_xpm[] = {
 /* width height num_colors chars_per_pixel */
 "13 13 3 1",
 /* colors */

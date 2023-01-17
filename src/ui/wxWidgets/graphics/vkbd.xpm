@@ -1,5 +1,5 @@
 /* XPM */
-static const char *vkbd_xpm[] = {
+static const char * const vkbd_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "31 16 4 1",
 /* colors */

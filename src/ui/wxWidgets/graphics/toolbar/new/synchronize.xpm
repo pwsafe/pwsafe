@@ -1,5 +1,5 @@
 /* XPM */
-static const char *synchronize_xpm[] = {
+static const char * const synchronize_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 45 1",
 /* colors */

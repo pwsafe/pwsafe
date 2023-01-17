@@ -1,5 +1,5 @@
 /* XPM */
-static const char *cpane_xpm[] = {
+static const char * const cpane_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "98 98 3 1",
 /* colors */

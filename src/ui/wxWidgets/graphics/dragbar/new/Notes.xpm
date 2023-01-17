@@ -1,5 +1,5 @@
 /* XPM */
-static const char *Notes_xpm[] = {
+static const char * const Notes_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 124 2",
 /* colors */

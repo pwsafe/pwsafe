@@ -1,5 +1,5 @@
 /* XPM */
-static const char *normal_exp_xpm[] = {
+static const char * const normal_exp_xpm[] = {
 /* width height ncolors chars_per_pixel */
 "13 13 24 1",
 /* colors */

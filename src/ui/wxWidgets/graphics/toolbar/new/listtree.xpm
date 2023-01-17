@@ -1,5 +1,5 @@
 /* XPM */
-static const char *listtree_xpm[] = {
+static const char * const listtree_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 76 1",
 /* colors */

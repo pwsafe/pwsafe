@@ -1,5 +1,5 @@
 /* XPM */
-static const char *merge_disabled_xpm[] = {
+static const char * const merge_disabled_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 60 1",
 /* colors */

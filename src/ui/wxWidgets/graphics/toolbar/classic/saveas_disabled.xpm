@@ -1,5 +1,5 @@
 /* XPM */
-static const char *classic_saveas_disabled_xpm[] = {
+static const char * const classic_saveas_disabled_xpm[] = {
 /* width height ncolors chars_per_pixel */
 "16 16 6 1",
 /* colors */

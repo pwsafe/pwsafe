@@ -1,5 +1,5 @@
 /* XPM */
-static const char *copynotes_xpm[] = {
+static const char * const copynotes_xpm[] = {
 "16 16 151 2",
 /* colors */
 "  	c None",

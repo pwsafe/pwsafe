@@ -1,5 +1,5 @@
 /* XPM */
-static const char *node_xpm[] = {
+static const char * const node_xpm[] = {
 /* width height ncolors chars_per_pixel */
 "13 13 17 1",
 /* colors */

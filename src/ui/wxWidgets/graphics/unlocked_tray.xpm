@@ -1,5 +1,5 @@
 /* XPM */
-static const char * unlocked_tray_xpm[] = {
+static const char * const unlocked_tray_xpm[] = {
 "32 32 4 1",
 " 	c None",
 ".	c #FF0000",

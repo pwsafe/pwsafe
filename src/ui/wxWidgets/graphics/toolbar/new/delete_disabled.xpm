@@ -1,5 +1,5 @@
 /* XPM */
-static const char *delete_disabled_xpm[] = {
+static const char * const delete_disabled_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 91 1",
 /* colors */

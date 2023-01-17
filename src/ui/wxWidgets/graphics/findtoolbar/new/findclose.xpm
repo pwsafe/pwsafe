@@ -1,5 +1,5 @@
 /* XPM */
-static const char *findclose_xpm[] = {
+static const char * const findclose_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 256 2 ",
 "   c #C4C6C4",

@@ -1,5 +1,5 @@
 /* XPM */
-static const char *DndX_xpm[] = {
+static const char * const DndX_xpm[] = {
 /* width height num_colors chars_per_pixel */
 "16 16 48 2 ",
 /* colors */
