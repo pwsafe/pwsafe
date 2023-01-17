@@ -1,5 +1,5 @@
 /* XPM */
-static const char *findreport_xpm[] = {
+static const char * const findreport_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 140 2",
 /* colors */

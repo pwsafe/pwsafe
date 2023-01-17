@@ -1,5 +1,5 @@
 /* XPM */
-static const char *classic_merge_disabled_xpm[] = {
+static const char * const classic_merge_disabled_xpm[] = {
 /* width height ncolors chars_per_pixel */
 "16 16 4 1",
 /* colors */

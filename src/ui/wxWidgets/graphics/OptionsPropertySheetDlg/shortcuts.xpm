@@ -1,5 +1,5 @@
 /* XPM */
-static const char * shortcuts_xpm[] = {
+static const char * const shortcuts_xpm[] = {
 "64 64 260 2",
 "  	c None",
 ". 	c #E4EAF6",

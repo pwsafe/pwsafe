@@ -1,5 +1,5 @@
 /* XPM */
-static const char *GroupX_xpm[] = {
+static const char * const GroupX_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 94 2",
 /* colors */

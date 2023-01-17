@@ -1,5 +1,5 @@
 /* XPM */
-static const char * history_xpm[] = {
+static const char * const history_xpm[] = {
 "64 64 290 2",
 "  	c None",
 ". 	c #B2BCBB",

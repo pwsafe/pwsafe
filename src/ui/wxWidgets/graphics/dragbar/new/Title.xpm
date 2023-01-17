@@ -1,5 +1,5 @@
 /* XPM */
-static const char *Title_xpm[] = {
+static const char * const Title_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 87 1",
 /* colors */

@@ -1,5 +1,5 @@
 /* XPM */
-static const char *importtext_xpm[] = {
+static const char * const importtext_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 144 2",
 /* color */

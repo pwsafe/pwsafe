@@ -1,5 +1,5 @@
 /* XPM */
-static const char *copyuser_disabled_xpm[] = {
+static const char * const copyuser_disabled_xpm[] = {
 "16 16 104 2",
 /* colors */
 "  	g None",

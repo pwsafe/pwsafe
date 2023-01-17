@@ -1,5 +1,5 @@
 /* XPM */
-static const char *alias_xpm[] = {
+static const char * const alias_xpm[] = {
 /* width height ncolors chars_per_pixel */
 "13 13 21 1",
 /* colors */

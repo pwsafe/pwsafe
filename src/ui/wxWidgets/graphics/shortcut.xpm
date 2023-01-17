@@ -1,5 +1,5 @@
 /* XPM */
-static const char *shortcut_xpm[] = {
+static const char * const shortcut_xpm[] = {
 /* width height ncolors chars_per_pixel */
 "13 13 21 1",
 /* colors */

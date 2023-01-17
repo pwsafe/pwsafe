@@ -1,5 +1,5 @@
 /* XPM */
-static const char *empty_xpm[] = {
+static const char * const empty_xpm[] = {
 /* width height num_colors chars_per_pixel */
 "13 13 2 1",
 /* colors */

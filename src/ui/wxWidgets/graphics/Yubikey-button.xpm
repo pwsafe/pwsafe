@@ -1,5 +1,5 @@
 /* XPM */
-static const char * Yubikey_button_xpm[] = {
+static const char * const Yubikey_button_xpm[] = {
 "80 27 36 1",
 " 	c None",
 ".	c #85DA00",

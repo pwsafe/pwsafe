@@ -1,5 +1,5 @@
 /* XPM */
-static const char *pwsafe16[] = {
+static const char * const pwsafe16[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 23 1",
 "  c #330000",

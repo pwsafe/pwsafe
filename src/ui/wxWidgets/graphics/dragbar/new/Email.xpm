@@ -1,5 +1,5 @@
 /* XPM */
-static const char *Email_xpm[] = {
+static const char * const Email_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "16 16 147 2",
 /* colors */

@@ -1,5 +1,5 @@
 /* XPM */
-static const char *sbase_exp_xpm[] = {
+static const char * const sbase_exp_xpm[] = {
 /* width height ncolors chars_per_pixel */
 "13 13 19 1",
 /* colors */

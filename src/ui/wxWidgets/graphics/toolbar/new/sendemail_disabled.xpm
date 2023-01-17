@@ -1,5 +1,5 @@
 /* XPM */
-static const char *sendemail_disabled_xpm[] = {
+static const char * const sendemail_disabled_xpm[] = {
 "16 16 106 2",
 /* colors */
 "  	g None",
