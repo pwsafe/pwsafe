@@ -1,4 +1,4 @@
-﻿/*
+/*
 * Copyright (c) 2003-2023 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
@@ -27,7 +27,7 @@
 
 #include "os/debug.h"
 
-#include <shlwapi.h>
+#include <Shlwapi.h>
 #include <fstream>
 #include <limits>
 
@@ -935,6 +935,8 @@ void CAddEdit_Basic::ShowPassword()
 {
   m_isPWHidden = false;
   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_HIDE);
+  GetDlgItem(IDC_STATIC_PASSWORD2)->ShowWindow(SW_HIDE);
+
 
   m_password = M_realpassword();
  
@@ -956,6 +958,7 @@ void CAddEdit_Basic::HidePassword()
 {
   m_isPWHidden = true;
   GetDlgItem(IDC_SHOWPASSWORD)->SetWindowText(CS_SHOW);
+  GetDlgItem(IDC_STATIC_PASSWORD2)->ShowWindow(SW_NORMAL);
 
   m_ex_password.SetSecure(true);
   m_ex_password2.SetSecure(true);

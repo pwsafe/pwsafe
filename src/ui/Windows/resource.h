@@ -821,7 +821,7 @@
 #define IDC_DB_DEF_AUTOTYPE_TEXT        1501
 #define IDC_DADSPIN                     1502
 #define IDC_CAPSLOCK                    1503
-#define IDC_STATIC_NEWMSTPWD             1504
+#define IDC_STATIC_NEWMSTPWD            1504
 #define IDC_STATIC_VERIFY               1505
 #define IDC_STATIC_MSPWD                1506
 #define IDC_PASSKEY2                    1507
@@ -896,7 +896,7 @@
 #define IDC_COPYPASSWORDHELP2           1587
 #define IDC_STATIC_MESSAGE              1588
 #define IDC_ALTEDITOR_CMDLINE           1589
-#define IDC_SHOWMASTERPASSWORD             1590
+#define IDC_SHOWMASTERPASSWORD          1590
 #define IDC_ENABLETRANSPARENCY          1591
 #define IDC_TRANSPARENCY                1592
 #define IDC_TRANSPARENCYHELP            1593
@@ -906,6 +906,7 @@
 #define IDC_PS_TITLE                    1599
 #define IDC_CHECK1                      1600
 #define IDC_EXCLUDE_FROM_CB_HIST        1601
+#define IDC_STATIC_PASSWORD2            1602
 
 // Next default values for new objects
 // 
@@ -913,7 +914,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        565
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1602
+#define _APS_NEXT_CONTROL_VALUE         1603
 #define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif

@@ -14,6 +14,8 @@ Bugs fixed in 3.62.0
 Changes in 3.62.0
 -----------------
 * Text (CSV) import is more lenient in what it accepts, to ease importing data from other password managers.
+* When the password is shown, the "Confirm Password:" text is hidden, as the confirmation text
+box is used to display the length of the password. Hopefully this makes things less confusing.
 * [SF890](https://sourceforge.net/p/passwordsafe/feature-requests/890/) "Recurring" checkbox is now set by default, as this seems to be the more common use-case when setting password expiration in days.
 
 PasswordSafe 3.61.0 Release Dec 2022
