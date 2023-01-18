@@ -318,9 +318,9 @@ void PWScore::Compare(PWScore *pothercore,
   }
 }
 
-// Return whether first '«g» «t» «u»' is greater than the second '«g» «t» «u»'
+// Return whether first 'Â«gÂ» Â«tÂ» Â«uÂ»' is greater than the second 'Â«gÂ» Â«tÂ» Â«uÂ»'
 // used in std::sort below.
-// Need this as '»' is not in the correct lexical order for blank fields in entry
+// Need this as 'Â»' is not in the correct lexical order for blank fields in entry
 bool MergeSyncGTUCompare(const StringX &elem1, const StringX &elem2)
 {
   StringX g1, t1, u1, g2, t2, u2, tmp1, tmp2;

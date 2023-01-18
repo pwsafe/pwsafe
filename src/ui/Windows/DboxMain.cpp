@@ -3088,7 +3088,7 @@ void DboxMain::UpdateStatusBar()
     m_StatusBar.SetPaneText(CPWStatusBar::SB_CLIPBOARDACTION, m_lastclipboardaction);
 
     s = m_core.HasDBChanged() ? L"*" : L" ";
-    s += m_core.HaveDBPrefsChanged() ? L"°" : L" ";
+    s += m_core.HaveDBPrefsChanged() ? L"\u00b0" : L" ";
     dc.DrawText(s, &rectPane, DT_CALCRECT);
     m_StatusBar.GetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, iWidth);
     m_StatusBar.SetPaneInfo(CPWStatusBar::SB_MODIFIED, uiID, uiStyle, rectPane.Width());

@@ -388,17 +388,17 @@ int CShortcut::ShortToLongPathName(const CString &sShortPath, CString &sLongPath
 
   // Parse the first bit of the path.
   if (path.GetLength() >= 2 && isalpha(path[0]) && colon == path[1]) {// Drive letter?
-    if (2 == path.GetLength()) { // ’bare’ drive letter
+    if (2 == path.GetLength()) { // â€™bareâ€™ drive letter
       right = -1; // skip main block
     } else if (sep == path[2]) { // drive letter + backslash
-      // FindFirstFile doesn’t like "X:\"
+      // FindFirstFile doesnâ€™t like "X:\"
       if (3 == path.GetLength()) {
         right = -1; // skip main block
       }
     }
     else return 0; // parsing failure
   } else if (path.GetLength() >= 1 && sep == path[0]) {
-    if (1 == path.GetLength()) { // ’bare’ backslash
+    if (1 == path.GetLength()) { // â€™bareâ€™ backslash
       right = -1; // skip main block
     } else {
       if (sep == path[1]) { // is it UNC?
