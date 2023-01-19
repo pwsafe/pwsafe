@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><title>故障保护备份</title><!-- pwsafe version: 3.21--><!-- Modified: 1/28/2010 --><!--Popup control -->
+
+<script language="javascript" src="/html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h2>故障保护备份</h2>
+
+<p>当 PasswordSafe 正常退出时，系统会提示你是否未保存更改到数据库。但是，假如你注销 Windows 会话，关机或重启电脑，
+则 PasswordSafe 可能没有机会提示你。</p>
+
+<p>在这种情况下，PasswordSafe 将尝试做一个“故障保护备份”（文件扩展名'fbak'）。该备份文件将创建在和当前打开的数据库相同的目录中。
+当前数据库和它的“规则”备份将不被影响。</p>
+
+<p>当再次打开原始数据库时，PasswordSafe 将检查存在的任何故障保护备份文件，如果发现，将显示一个类似于下列的对话：</p>
+
+<img alt="Failsafe Backup Display during Open" src="images/failsafebackup.jpg">
+
+<p>第一行是关于指定数据库遵循的一般信息（与显示在 文件-&gt;属性 对话相同）。其次是故障保护备份文件。
+如果它们可以使用相同的密码打开当前的数据库，则它们的属性也将被显示；如果有不同的密码或不是一个有效的数据库，
+则在密码栏显示一个“否”并且没有属性被显示。
+
+</p><p>可供你选择按钮如下:
+</p><ul>
+<li>继续<br>
+单击该按钮将促使 PasswordSafe 忽略故障保护备份文件并且继续使用当前选定的数据库。</li>
+<br>
+<li>选择和继续<br>
+选定的故障保护备份文件将被打开取代已选的数据库。</li>
+<br>
+<li>删除<br>
+该按钮将删除选定的故障保护备份文件。如果 Windows 在该媒体支持回收站（通常仅在本地磁盘），
+它将被移动到回收站；否则，将被永久删除。</li>
+<br>
+<li>退出<br>
+如果这是 PasswordSafe 启动时第一个被打开的数据库，PasswordSafe 将退出；如果不是，新打开的数据库将被取消；
+如果存在现有打开的数据库，将继续保持打开。</li>
+<br>
+<li>帮助<br>
+显示该帮助主题</li>
+</ul>
+
+
+<p><i>建议:</i></p>
+<ul>
+<li>如果你无法选择，可以继续使用当前数据库并使用数据库比较功能，从文件菜单显示当前数据库和故障保护备份文件之间的准确差异。</li>
+<li>如果你打开一个故障保护备份文件并决定它为你想要保留的版本，你应该保存它为一个正常的数据库。此时，考虑重命名至原文件名称，
+或使用一个完整的新名称保存该故障保护备份文件。</li>
+<li>一旦你感到满意的恢复了正确的数据库，无论是原始数据库或故障保护备份文件，你都应该删除所有旧的故障保护备份文件，
+因为这样你将不会被提示是否决定稍后恢复的提示。注：如果你使用该对话框来删除文件，且你的 Windows 版本支持媒体包含回收站，
+被删除文件将被发送到那里，而非永久删除。</li>
+</ul>
+<p></p>
+
+<p><b>注意: <u>任何</u>应用程序将信息保存在PC刚刚关掉，断电或处理器，硬盘或任何其他组件失败时，都将是灾难性的！</b><b><b><b>
+正如所有的数据对你来说都很重要，所以你应该<u>定期</u>备份你的数据到其它媒体。
+这些也可以是U盘驱动器，外置硬盘，网络驱动器，CD或DVD等。<b>总之这些备份都应当存储在安全的地方。</b></b></b></b></p>
+
+
+<hr><!-- Added some white space at the bottom for natural scrolling --><b><b><b><b><b><a name="N1"><b><br>
+<br>
+<br>
+
+</b></a>
+</b></b></b></b></b></body></html>
