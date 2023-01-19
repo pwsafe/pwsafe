@@ -8,10 +8,6 @@
 set (LANGS "ar" "cz" "de" "dk" "es" "fr" "hu" "it" "kr" "nl" "pl" "ru" "sv"
      "sl" "tr" "zh")
 
-set (TOOLS_BIN_DIR "${CMAKE_BINARY_DIR}/src/Tools/Windows/I18N")
-set (RESTEXT "${TOOLS_BIN_DIR}/ResText/${CMAKE_CONFIGURATION_TYPES}/ResText.exe")
-set (RESPWSL "${TOOLS_BIN_DIR}/ResPWSL/${CMAKE_CONFIGURATION_TYPES}/ResPWSL.exe")
-
 string (REGEX REPLACE "(..)" "pos/pwsafe_\\1.po; " POS ${LANGS})
 
 if ( ${CMAKE_CONFIGURATION_TYPES} STREQUAL "Debug" )
@@ -27,9 +23,9 @@ set (DLL_DIR "${CMAKE_BINARY_DIR}/I18N")
 
 add_custom_target("pot" DEPENDS "pwsafe.pot")
 add_custom_command(OUTPUT "pwsafe.pot"
-                   COMMAND ${RESTEXT}
+                   COMMAND ResText
                    ARGS "extract" "-noupdate" ${BASE_DLL} "pwsafe.pot"
-                   DEPENDS ${BASE_DLL} ${RESTEXT}
+                   DEPENDS pwsafe_base
                    WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/pos"
                    COMMENT "Updating pwsafe.pot using ${RESTEXT}"
                    )
@@ -61,8 +57,8 @@ add_custom_target("update-pos"
 
 foreach (LANG ${LANGS})
  add_custom_command(OUTPUT "pos/pwsafe_${LANG}.po"
-	  COMMAND ${RESTEXT} "extract" "${BASE_DLL}" "${CMAKE_CURRENT_SOURCE_DIR}/pos/pwsafe_${LANG}.po"
-    DEPENDS "${BASE_DLL}"
+	  COMMAND ResText "extract" "${BASE_DLL}" "${CMAKE_CURRENT_SOURCE_DIR}/pos/pwsafe_${LANG}.po"
+    DEPENDS pwsafe_base
     COMMENT "Updating pwsafe_${LANG}.po using ${RESTEXT}"
     )
 endforeach(LANG)
@@ -94,9 +90,10 @@ add_custom_target("dlls"
 macro( make_dll LANG CODE OUT)
   string (TOUPPER ${LANG} UCLANG)
   add_custom_command(OUTPUT "${DLL_DIR}/pwsafe${UCLANG}.dll"
-                     COMMAND "${RESTEXT}" "apply" "${BASE_DLL}"
+                     DEPENDS pwsafe_base
+                     COMMAND ResText "apply" "${BASE_DLL}"
                              "foo.dll" "${CMAKE_CURRENT_SOURCE_DIR}/pos/pwsafe_${LANG}.po"
-                     COMMAND "${RESPWSL}" "apply" "foo.dll" "${CODE}"
+                     COMMAND ResPWSL "apply" "foo.dll" "${CODE}"
                      COMMAND "DEL" "foo.dll" "pwsafe${UCLANG}.dll"
                      COMMAND "REN" "pwsafe${OUT}.dll" "pwsafe${UCLANG}.dll"
                      WORKING_DIRECTORY ${DLL_DIR}
