@@ -45,6 +45,8 @@ endif (NOT WIN32)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")
 
+include(create-harden-interface)
+
 # Version configuration:
 # version.mfc for Windows MFC build, version.wx for all the rest
 # version file has the following format:
@@ -262,7 +264,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "/MT /O2 /Ob2 /D NDEBUG  /W4 /Zc:wchar_t  /Od /WX-")
 
 else ()
 set(CMAKE_CXX_FLAGS
-  "${CMAKE_CXX_FLAGS} -fPIC -Wall -std=gnu++11 -DUNICODE -DWCHAR_INCOMPATIBLE_XMLCH ${CMAKE_WXWINDOWS_CXX_FLAGS}")
+  "${CMAKE_CXX_FLAGS} -Wall -DUNICODE -DWCHAR_INCOMPATIBLE_XMLCH ${CMAKE_WXWINDOWS_CXX_FLAGS}")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DDEBUG")
 if (USE_ASAN)
   set(CMAKE_CXX_FLAGS_DEBUG
@@ -357,10 +359,6 @@ endif()
 
 if (NOT WIN32)
   add_executable(pwsafe ${PWSAFE_SRCS})
-  if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-  # squash lintian hardening-no-relro warning, probably good for all Linuxen
-  set_target_properties(pwsafe PROPERTIES LINK_FLAGS "-z relro")
-endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 else (NOT WIN32)
    add_executable(pwsafe WIN32 ${PWSAFE_SRCS})
    add_dependencies( pwsafe dlls) # i18n dlls
@@ -406,6 +404,7 @@ endif (IPO_SUPPORTED)
 # Installation stuff (for 'make install', but mainly for 'make package')
 install (TARGETS pwsafe RUNTIME DESTINATION "bin")
 
+target_link_libraries(pwsafe harden_interface)
 
 if (NOT WIN32)
   install (DIRECTORY xml DESTINATION "share/passwordsafe")

@@ -4,3 +4,4 @@ set (YUBI_SRCS
 )
 
 add_library(YkLib22 STATIC ${YUBI_SRCS})
+target_link_libraries(pws_at PRIVATE harden_interface)

@@ -107,3 +107,4 @@ else (NOT WIN32 OR WX_WINDOWS)
 endif(NOT WIN32 OR WX_WINDOWS)
 
 add_library(core STATIC ${CORE_SRCS})
+target_link_libraries(core PRIVATE harden_interface)
