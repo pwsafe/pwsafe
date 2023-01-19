@@ -11,6 +11,7 @@ set (RESTEXT_SRCS
 set (RESTEXT_RES ResText.rc)
 
 add_executable( ResText ${RESTEXT_SRCS} ${RESTEXT_RES})
+target_link_libraries( ResText harden_interface )
 
 set_property( TARGET ResText
               PROPERTY FOLDER Tools )

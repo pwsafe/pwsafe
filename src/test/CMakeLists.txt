@@ -23,7 +23,7 @@ file (COPY "data/import-text-unit-test5.csv" DESTINATION "data")
 add_executable(coretest ${TEST_SRCS})
 if (MSVC)
 set_target_properties(coretest PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1)
-target_link_libraries(coretest gtest core os Rpcrt4)
+target_link_libraries(coretest gtest core os Rpcrt4 harden_interface)
 elseif (APPLE)
 target_link_libraries(coretest gtest core os pthread "-framework CoreFoundation")
 else ()
@@ -32,6 +32,8 @@ endif()
 if (XercesC_LIBRARY)
   target_link_libraries(coretest ${XercesC_LIBRARY})
 endif (XercesC_LIBRARY)
+
+target_link_libraries(coretest harden_interface)
 
 add_test(NAME Coretests
   COMMAND coretest

@@ -89,3 +89,4 @@ if(HAVE_YKPERS_H)
 endif()
 
 add_library(os STATIC ${OS_SRCS})
+target_link_libraries(os PRIVATE harden_interface)

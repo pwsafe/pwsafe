@@ -70,5 +70,6 @@ set(CMAKE_CXX_FLAGS
 add_library(pws_osk SHARED ${OSK_SRCS} ${OSK_RES})
 set_target_properties(pws_osk PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
     LINK_FLAGS "/MAP /DEBUG")
+target_link_libraries(pws_osk PRIVATE harden_interface)
 
 install (TARGETS pws_osk RUNTIME DESTINATION bin)
