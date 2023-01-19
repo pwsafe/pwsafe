@@ -1,0 +1,348 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+<title>运行命令</title>
+<!-- pwsafe version: 3.17--><!-- Modified: 11/03/2009 --><!--Popup control -->
+  <script language="javascript" src="/html/popups.js">
+  </script>
+  
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+<h1>运行命令</h1>
+
+
+
+<p>一个项目的“运行命令”字段可以包含一个在选择运行命令操作时运行的命令。
+该命令也是可以在你的电脑开始-&gt;运行框输入的任何可执行的命令。</p>
+
+
+
+<p>另外，<span style="font-weight: bold;">Password Safe</span> 能传递参数给命令，如：项目用户名称、密码等，参阅下面描述。
+这些命令允许你对“程序”执行相当复杂的操作，如调用一个远程访问程序（<a target="_blank" href="http://www.chiark.greenend.org.uk/%7Esgtatham/putty/">PuTTY</a>, 示例）并使它的项目相关的用户名和密码通行。</p>
+
+
+
+<p>总而言之，“变量” 是代替在传递给计算机执行之前与它们相关的值。美元（'$'）标志是用来表示一个变量的。</p>
+
+<ul>
+
+  <li>变量规定为“$名称”并 <i>区分大小写</i>。变量名总是以一个字母字符开始并且其余字符为字母数字。
+变量名结束在遇上一个非字母数字字符（如一个空格）或者运行命令末尾中的任何一个。</li>
+
+  <ul>
+    <li>要使用一个变量直接跟随一个字母数字字符在运行命令里，必须把变量名包围在大括号里，例如：“${变量名}字串”。</li>
+
+    <li>要使用一个“$”在字串中作为正常文字（不指示以下文字是一个变量名），避开它使用一个反斜杠符号（“\”），
+例如：“\$文字”变成“$文字”而不是当做一个变量名“文字”。</li>
+
+    <li>要使用一根反斜杠在“$”之前作为一根反斜杠符，避开它同时使用另一根反斜杠线。例如：“\\$名称”
+变成“\$名称”产生的文字和“$名称”被视为一个变量。
+反斜杠符不必避开，除非先于“$”被指示为下列变量。</li>
+
+    <li>一个变量可以跟随一个数值在方括号里，称为“索引值”。该索引值“n”可加上“+”或“-”。例如：[-2] 或 [2] 或 [+2]。
+ <span style="font-weight: bold;">Password Safe</span> 将把一个索引看作等于无意义的整个字段。
+    </li>
+  </ul>
+  <br>
+  <li>下列变量是目前承认的:</li>
+  <br>
+  <ul>
+    <li>应用程序相关:</li>
+    <table border="0" cellpadding="10" cellspacing="0" width="90%">
+ <colgroup><col width="15%"><col width="85%"></colgroup>
+ <tbody>
+
+        <tr>
+
+          <td style="font-weight: bold;">appdir</td>
+
+          <td>路径包含 <span style="font-weight: bold;">Password Safe</span> 应用程序。查看下面的备注 <a href="#n1">1</a> &amp; <a href="#n2">2</a>
+  。</td>
+
+        </tr>
+
+      </tbody>
+    
+    </table>
+
+    <br>
+
+    <li>当前数据库相关:</li>
+
+    <table border="0" cellpadding="10" cellspacing="0" width="90%">
+
+ <colgroup><col width="15%"><col width="85%"></colgroup>
+ <tbody>
+
+        <tr>
+
+          <td style="font-weight: bold;">dbdir</td>
+
+          <td>当前打开的数据库目录。查看下面的备注 <a href="#n1">1</a> &amp; <a href="#n2">2</a> 。</td>
+
+        </tr>
+
+ <tr>
+
+          <td style="font-weight: bold;">fulldb</td>
+
+          <td>完整路径，文件名和当前打开的数据库扩展名。查看下面的备注 <a href="#n2">2</a> 。</td>
+
+        </tr>
+
+ <tr>
+
+          <td style="font-weight: bold;">dbname</td>
+
+          <td>当前打开的数据库文件名。</td>
+
+        </tr>
+
+ <tr>
+
+          <td style="font-weight: bold;">dbextn</td>
+
+          <td>当前打开的数据库扩展名。</td>
+
+        </tr>
+
+      </tbody>
+    
+    </table>
+
+    <br>
+
+    <li>当前项目相关:</li>
+
+    <table border="0" cellpadding="10" cellspacing="0" width="90%">
+
+ <colgroup><col width="15%"><col width="85%"></colgroup>
+ <tbody>
+
+        <tr>
+
+          <td style="font-weight: bold;">g <span style="font-weight: normal;">或</span> group</td>
+
+          <td>组 （完全树目录结构返回到根目录组分隔圆点）。</td>
+
+        </tr>
+
+ <tr>
+
+          <td style="font-weight: bold;">G <span style="font-weight: normal;">或</span> GROUP</td>
+
+          <td>仅包含该项目的组。</td>
+
+        </tr>
+
+ <tr>
+
+          <td style="font-weight: bold;">t <span style="font-weight: normal;">或</span> title</td>
+
+          <td>标题</td>
+
+        </tr>
+
+ <tr>
+
+          <td style="font-weight: bold;">u <span style="font-weight: normal;">或</span> user</td>
+
+          <td>用户名</td>
+
+        </tr>
+
+ <tr>
+
+          <td style="font-weight: bold;">p <span style="font-weight: normal;">或</span> password</td>
+
+          <td>密码</td>
+
+        </tr>
+
+ <tr>
+
+          <td style="font-weight: bold;">a <span style="font-weight: normal;">或 </span>autotype</td>
+
+          <td>自动输入。查看下面的备注 <a href="#n5">5</a> 。</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td style="font-weight: bold;">url</td>
+
+          <td>网址</td>
+
+        </tr>
+
+ <tr>
+
+          <td><span style="font-weight: bold;">n</span> 或 <span style="font-weight: bold;">n[0]</span></td>
+
+          <td>完整的备注字段 (也可以: notes或notes[0])。查看下面的 <a href="#n3">3</a>
+  。</td>
+
+        </tr>
+
+ <tr>
+
+          <td><span style="font-weight: bold;">n[i]</span> 或 <span style="font-weight: bold;">notes[i]</span></td>
+
+          <td>i<sup>th</sup> 从备注字段起始行计数。例如：i=1
+  表示第一行；i=2 意思为第二行 等。查看下面备注 <a href="#n4">4</a> 。</td>
+
+        </tr>
+
+ <tr>
+
+          <td><span style="font-weight: bold;">n[-i]</span> 或 <span style="font-weight: bold;">notes[-i]</span></td>
+
+          <td>i<sup>th</sup> 从备注字段结束行计数。例如：i=1 表示最后一行；i=2 意思为倒数第二行 等。查看下面备注 <a href="#n4">4</a> 。</td>
+
+        </tr>
+
+      </tbody>
+    
+    </table>
+
+    <br>
+
+    <table border="0" cellpadding="10" cellspacing="0" width="90%">
+
+
+ <colgroup><col width="5%"><col width="95%"></colgroup>
+ <tbody>
+
+        <tr>
+
+          <th align="center">备注</th>
+
+          <th>&nbsp;</th>
+
+        </tr>
+
+
+ <tr>
+
+          <td align="center">1<a name="n1"></a></td>
+
+          <td>目录值（appdir 或 dbdir）没有一个结束符“\”，请记住如果你需要添加它在运行命令里。</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td align="center">2<a name="n2"></a></td>
+
+          <td>变量的内容（包括完整的目录和路径值）可能包含空白。您可能需要把你的运行命令包括在引号中才能正确执行。</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td align="center">3<a name="n3"></a></td>
+
+          <td>如果你的备注字段包含大于一行的文字，它将包含回车符(CR)或换行符(LF)。这些可能导致在运行 CR 和/或 LF 时将被当作“enter”的问题。</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td align="center">4<a name="n4"></a></td>
+
+          <td>任何后缀 CR 和/或 LF 将从备注字段被选中的单独行中删除。</td>
+
+        </tr>
+
+
+ <tr>
+
+          <td align="center">5<a name="n5"></a></td>
+
+          <td>如果自动输入变量存在运行命令，一旦目标窗口被激活自动输入将被执行。变量与它的值如果存在，
+将从被执行的字串里删除。该变量可出现在任何地方运行命令，作为它唯一指定
+  <span style="font-weight: bold;">Password Safe </span>将出现在已执行的命令字串之后。
+不像其它的变量，这是一个将会覆盖项目当前值的输入值。格式如下（在项目的示例“$autotype”可取代“$a”）:<br>
+
+
+          <table border="0" cellpadding="10" cellspacing="0">
+
+
+   <colgroup><col width="20%"><col width="80%"></colgroup>
+   <tbody>
+
+              <tr>
+
+                <td>$a</td>
+
+                <td>使用当前项目的值。</td>
+
+              </tr>
+
+
+   <tr>
+
+                <td>${a}</td>
+
+                <td>使用当前项目的值（用于假如文字直接跟随 '$a' 变量）。</td>
+
+              </tr>
+
+
+   <tr>
+
+                <td>$a（值）</td>
+
+                <td>使用自动输入字串规定在圆括号之间。</td>
+
+              </tr>
+
+
+   <tr>
+
+                <td>${a}（值）</td>
+
+                <td>使用自动输入字串规定在圆括号之间。</td>
+
+              </tr>
+
+            </tbody>
+          
+          </table>
+
+  </td>
+
+        </tr>
+
+      </tbody>
+    
+    </table>
+
+    <p><b>备注:</b> 如有必要一定给你的字串添加引号标识。例如：如果你的数据库目录包含空格，要访问你打开的数据库名中的一个文本文件，
+    	你应该操作如下（使用引号）:<br>“$dbdir\\$dbname.txt”<br>
+注意反斜杠被避开以便 '$dbname' 被承认为一个变量。</p>
+
+    <p>在 Windows 中，环境变量的正常取代（指定为 %变量_名称%）被执行。
+例如:“%windir%\notepad.exe”可能变成（随你的安装而定）“C:\Windows\notepad.exe”。
+当前值的设置在你的环境里可视运行的“cmd.exe”和“设置”命令有没有任何参数结果而定。
+任何未知的环境变量在运行命令中保持不变，例如：%xyz%\notepad.exe 依旧是 %xyz%\notepad.exe 如果变量“xyz”未设定。 
+<br>备注: Windows 环境变量<span style="font-weight: bold;">不</span>区分大小写。</p>
+
+    <hr>
+    <br>
+    <br>
+    <br>
+    <br>
+  </ul>
+</ul>
+</body>
+</html>
