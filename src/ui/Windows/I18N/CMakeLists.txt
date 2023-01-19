@@ -10,14 +10,7 @@ set (LANGS "ar" "cz" "de" "dk" "es" "fr" "hu" "it" "kr" "nl" "pl" "ru" "sv"
 
 string (REGEX REPLACE "(..)" "pos/pwsafe_\\1.po; " POS ${LANGS})
 
-if ( ${CMAKE_CONFIGURATION_TYPES} STREQUAL "Debug" )
-    set (BASE_DLL
-     "${CMAKE_BINARY_DIR}/${CMAKE_CONFIGURATION_TYPES}/pwsafe_base_D.dll")
-else ( ${CMAKE_CONFIGURATION_TYPES} STREQUAL "Debug" )
-    set (BASE_DLL
-     "${CMAKE_BINARY_DIR}/${CMAKE_CONFIGURATION_TYPES}/pwsafe_base.dll")
-endif ( ${CMAKE_CONFIGURATION_TYPES} STREQUAL "Debug" )
-
+set(BASE_DLL "$<TARGET_FILE:pwsafe_base>")
 
 set (DLL_DIR "${CMAKE_BINARY_DIR}/I18N")
 
