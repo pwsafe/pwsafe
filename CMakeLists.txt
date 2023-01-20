@@ -242,6 +242,8 @@ if (WX_WINDOWS)
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D __WX__")
 endif (WX_WINDOWS)
 
+set(CMAKE_MFC_FLAG 1)  # Static MFC
+
 include(set-options-msvc)
 else ()
 set(CMAKE_CXX_FLAGS
@@ -344,7 +346,6 @@ else (NOT WIN32)
    add_executable(pwsafe WIN32 ${PWSAFE_SRCS})
    add_dependencies( pwsafe dlls) # i18n dlls
    if (NOT WX_WINDOWS)
-      set (CMAKE_MFC_FLAG 1)
       set (PWS_DLL_LIBS "pws_at" "pws_osk")
       set_target_properties(pwsafe PROPERTIES COMPILE_DEFINITIONS
                             "_BIND_TO_CURRENT_CRT_VERSION;_BIND_TO_CURRENT_MFC_VERSION"
