@@ -1,15 +1,4 @@
-if (WIN32)
-  cmake_minimum_required (VERSION 3.5.1)
-else (WIN32)
-  cmake_minimum_required (VERSION 3.13) # used by Debian 10
-endif (WIN32)
-if (POLICY CMP0069)
-  cmake_policy(SET CMP0069 NEW)
-endif (POLICY CMP0069)
-
-if (POLICY CMP0048)
-  cmake_policy(SET CMP0048 NEW)
-endif (POLICY CMP0048)
+cmake_minimum_required (VERSION 3.13...3.25) # 3.13 is used by Debian 10
 
 project (passwordsafe CXX C)
 
