@@ -45,3 +45,13 @@ endif()
 
 # Linker options
 add_link_options("$<$<NOT:$<CONFIG:DEBUG>>:/OPT:REF;/OPT:ICF=3>")
+
+if (CMAKE_GENERATOR MATCHES "Visual Studio")
+  add_compile_options(/MP)
+
+  # Disable incremental LTCG.
+  # https://gitlab.kitware.com/cmake/cmake/-/issues/20484
+  if (USE_INTERPROCEDURAL_OPTIMIZATION)
+    add_link_options("$<$<NOT:$<CONFIG:DEBUG>>:/LTCG>")
+  endif ()
+endif ()
