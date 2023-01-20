@@ -15,12 +15,12 @@ set(BASE_DLL "$<TARGET_FILE:pwsafe_base>")
 set (DLL_DIR "${CMAKE_BINARY_DIR}/I18N")
 
 add_custom_target("pot" DEPENDS "pwsafe.pot")
-add_custom_command(OUTPUT "pwsafe.pot"
-                   COMMAND ResText
-                   ARGS "extract" "-noupdate" ${BASE_DLL} "pwsafe.pot"
+add_custom_command(OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/pwsafe.pot"
                    DEPENDS pwsafe_base
-                   WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/pos"
-                   COMMENT "Updating pwsafe.pot using ${RESTEXT}"
+                   COMMAND ResText extract -noupdate "${BASE_DLL}" pwsafe.pot
+                   WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+                   COMMENT "Updating pwsafe.pot from ${BASE_DLL} using ${RESTEXT}"
+                   VERBATIM
                    )
 set_property( TARGET pot PROPERTY FOLDER I18N )
 
@@ -49,49 +49,51 @@ add_custom_target("update-pos"
                    )
 
 foreach (LANG ${LANGS})
- add_custom_command(OUTPUT "pos/pwsafe_${LANG}.po"
-	  COMMAND ResText "extract" "${BASE_DLL}" "${CMAKE_CURRENT_SOURCE_DIR}/pos/pwsafe_${LANG}.po"
-    DEPENDS pwsafe_base
+  add_custom_command(OUTPUT "${CMAKE_CURRENT_SOURCE_DIR}/pos/pwsafe_${LANG}.po"
+    DEPENDS pwsafe_base pwsafe.pot
+    COMMAND ResText "extract" "${BASE_DLL}" "pos/pwsafe_${LANG}.po"
     COMMENT "Updating pwsafe_${LANG}.po using ${RESTEXT}"
-    )
+    WORKING_DIRECTORY  "${CMAKE_CURRENT_SOURCE_DIR}"
+    VERBATIM
+  )
 endforeach(LANG)
 
 set_property( TARGET update-pos PROPERTY FOLDER I18N )
 
-add_custom_target("dlls"
-                  DEPENDS
-                   ${DLL_DIR}/pwsafeAR.dll
-                   ${DLL_DIR}/pwsafeCZ.dll
-                   ${DLL_DIR}/pwsafeDE.dll
-                   ${DLL_DIR}/pwsafeDK.dll
-                   ${DLL_DIR}/pwsafeES.dll
-                   ${DLL_DIR}/pwsafeFR.dll
-                   ${DLL_DIR}/pwsafeHU.dll
-                   ${DLL_DIR}/pwsafeIT.dll
-                   ${DLL_DIR}/pwsafeKR.dll
-                   ${DLL_DIR}/pwsafeNL.dll
-                   ${DLL_DIR}/pwsafePL.dll
-                   ${DLL_DIR}/pwsafePT.dll
-                   ${DLL_DIR}/pwsafeRU.dll
-                   ${DLL_DIR}/pwsafeSL.dll
-                   ${DLL_DIR}/pwsafeSV.dll
-                   ${DLL_DIR}/pwsafeTR.dll
-                   ${DLL_DIR}/pwsafeZH.dll
-                   )
 
+set(TEMP_DIR "${CMAKE_CURRENT_BINARY_DIR}/tmp")
+
+unset(LANG_DLLS)
 
 macro( make_dll LANG CODE OUT)
   string (TOUPPER ${LANG} UCLANG)
-  add_custom_command(OUTPUT "${DLL_DIR}/pwsafe${UCLANG}.dll"
-                     DEPENDS pwsafe_base
-                     COMMAND ResText "apply" "${BASE_DLL}"
-                             "foo.dll" "${CMAKE_CURRENT_SOURCE_DIR}/pos/pwsafe_${LANG}.po"
-                     COMMAND ResPWSL "apply" "foo.dll" "${CODE}"
-                     COMMAND "DEL" "foo.dll" "pwsafe${UCLANG}.dll"
-                     COMMAND "REN" "pwsafe${OUT}.dll" "pwsafe${UCLANG}.dll"
-                     WORKING_DIRECTORY ${DLL_DIR}
-                     COMMENT "Making pwsafe${UCLANG}.dll using ${RESTEXT} and ${RESPWSL}"
+  set(TEMP_DLL "${TEMP_DIR}/pwsafe_${LANG}-tmp.dll")
+  set(CODE_DLL "${TEMP_DIR}/pwsafe${OUT}.dll")
+  set(OUT_DLL "${DLL_DIR}/pwsafe${UCLANG}.dll")
+  set(PO_FILE "${CMAKE_CURRENT_SOURCE_DIR}/pos/pwsafe_${LANG}.po")
+  add_custom_command(OUTPUT "${TEMP_DLL}"
+                     DEPENDS pwsafe_base "${PO_FILE}"
+                     COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_CURRENT_BINARY_DIR}/tmp"
+                     COMMAND ResText apply "${BASE_DLL}" "${TEMP_DLL}" "${PO_FILE}"
+                     WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+                     COMMENT "Making ${TEMP_DLL} from ${BASE_DLL} and pos/pwsafe_${LANG}.po"
                      )
+
+  add_custom_command(OUTPUT "${CODE_DLL}"
+                     DEPENDS "${TEMP_DLL}"
+                     COMMAND ResPWSL apply "${TEMP_DLL}" "${CODE}"
+                     WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+                     COMMENT "Making ${CODE_DLL} from ${TEMP_DLL} for ${CODE}"
+                     )
+
+  add_custom_command(OUTPUT "${OUT_DLL}"
+                     DEPENDS "${CODE_DLL}"
+                     COMMAND "${CMAKE_COMMAND}" -E copy_if_different "${CODE_DLL}" "${OUT_DLL}"
+                     WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+                     COMMENT "Copying ${CODE_DLL} to ${OUT_DLL}"
+                     )
+
+  list(APPEND LANG_DLLS "${OUT_DLL}")
 endmacro( make_dll LANG CODE )
 
 make_dll( "ar" "0x2c01" "AR_JO")
@@ -111,5 +113,7 @@ make_dll( "sv" "0x041d" "SV_SE")
 make_dll( "sl" "0x0424" "SL_SI")
 make_dll( "tr" "0x041f" "TR_TR")
 make_dll( "zh" "0x0804" "ZH_CN")
+
+add_custom_target(dlls DEPENDS ${LANG_DLLS})
 
 set_property( TARGET dlls PROPERTY FOLDER I18N )
