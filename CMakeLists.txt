@@ -35,6 +35,10 @@ else (${CHECK_IPO_FOUND} STREQUAL "NOTFOUND")
   check_ipo_supported(RESULT IPO_SUPPORTED)
 endif (${CHECK_IPO_FOUND} STREQUAL "NOTFOUND")
 
+if (UNIX)
+  set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+endif ()
+
 if (NOT WIN32)
 include(FindUnixCommands)
 endif (NOT WIN32)
