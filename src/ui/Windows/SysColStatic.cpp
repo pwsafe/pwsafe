@@ -10,7 +10,7 @@
 /*
 This entire file was copied from
 http://www.codeguru.com/staticctrl/syscol_static.shtml
-and was written by Pål K. Tønder 
+and was written by PÃ¥l K. TÃ¸nder
 */
 
 #include "stdafx.h"
