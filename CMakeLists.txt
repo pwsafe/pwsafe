@@ -24,6 +24,19 @@ else (${CHECK_IPO_FOUND} STREQUAL "NOTFOUND")
   check_ipo_supported(RESULT IPO_SUPPORTED)
 endif (${CHECK_IPO_FOUND} STREQUAL "NOTFOUND")
 
+if (IPO_SUPPORTED)
+  option(USE_INTERPROCEDURAL_OPTIMIZATION "Enable interprocedural optimization (LTO/LTCG)" ON)
+
+  if (USE_INTERPROCEDURAL_OPTIMIZATION)
+    message(STATUS "Interprocedural optimization (LTO/LTCG) is enabled.")
+    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION ON)
+    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_DEBUG OFF)
+
+    # Propagate IPO settings to subdirectories
+    set(CMAKE_POLICY_DEFAULT_CMP0069 NEW)
+  endif ()
+endif (IPO_SUPPORTED)
+
 if (UNIX)
   set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
 endif ()
@@ -378,10 +391,6 @@ else ()
   target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11 curl ${OPENSSL_SSL_LIBRARY} ${MAGIC_LIBRARIES}
   ${CMAKE_REQUIRED_LIBRARIES})
 endif()
-
-if (IPO_SUPPORTED)
-  set_property(TARGET pwsafe PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE True)
-endif (IPO_SUPPORTED)
 
 # Installation stuff (for 'make install', but mainly for 'make package')
 install (TARGETS pwsafe RUNTIME DESTINATION "bin")
