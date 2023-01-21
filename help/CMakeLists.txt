@@ -75,4 +75,10 @@ foreach (LANG ${LANGS})
   list(APPEND OUTPUT_FILES "${OUTPUT_FILE}")
 endforeach(LANG)
 
-add_custom_target(helpfiles ALL DEPENDS ${OUTPUT_FILES})
+option(PWS_BUILD_HELP "Build the help files by default." OFF)
+
+if (PWS_BUILD_HELP)
+  add_custom_target(helpfiles ALL DEPENDS ${OUTPUT_FILES})
+else()
+  add_custom_target(helpfiles DEPENDS ${OUTPUT_FILES})
+endif ()
