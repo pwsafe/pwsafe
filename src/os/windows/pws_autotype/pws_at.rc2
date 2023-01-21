@@ -13,18 +13,27 @@
 //
 
 #include "version.h"
-VS_VERSION_INFO VERSIONINFO
- FILEVERSION FILEVER
- PRODUCTVERSION PRODUCTVER
- FILEFLAGSMASK 0x3fL
-#ifdef _DEBUG
- FILEFLAGS 0x1L
+
+#if defined(SPECIAL_BUILD)
+#define PWS_FLAGS_PRIVATEBUILD (VS_FF_PRIVATEBUILD|VS_FF_PRERELEASE)
 #else
- FILEFLAGS 0x0L
+#define PWS_FLAGS_PRIVATEBUILD 0L
 #endif
- FILEOS 0x4L
- FILETYPE 0x1L
- FILESUBTYPE 0x0L
+
+#ifdef _DEBUG
+#define PWS_FILEFLAGS (VS_FF_DEBUG | VS_FF_PRERELEASE | PWS_FLAGS_PRIVATEBUILD)
+#else
+#define PWS_FILEFLAGS PWS_FLAGS_PRIVATEBUILD
+#endif
+
+VS_VERSION_INFO VERSIONINFO
+    FILEVERSION FILEVER
+    PRODUCTVERSION PRODUCTVER
+    FILEFLAGSMASK 0x3fL
+    FILEFLAGS PWS_FILEFLAGS
+    FILEOS VOS_NT_WINDOWS32
+    FILETYPE VFT_DLL
+    FILESUBTYPE 0x0L
 BEGIN
     BLOCK "StringFileInfo"
     BEGIN
@@ -35,11 +44,14 @@ BEGIN
             VALUE "FileDescription", "Password Safe Autotype DLL"
             VALUE "FileVersion", STRATFILEVER
             VALUE "InternalName", "Password Safe"
-            VALUE "LegalCopyright", "Copyright © 2003-2023 Rony Shapiro"
-            VALUE "LegalTrademarks", "Copyright © 1997-8 by Counterpane Systems, 2003-2023 Rony Shapiro"
+            VALUE "LegalCopyright", "Copyright Â© 2003-2023 Rony Shapiro"
+            VALUE "LegalTrademarks", "Copyright Â© 1997-8 by Counterpane Systems, 2003-2023 Rony Shapiro"
             VALUE "OriginalFilename", "pws_at.dll"
             VALUE "ProductName", "Password Safe Autotype DLL"
             VALUE "ProductVersion", STRATPRODUCTVER
+#if defined(SPECIAL_BUILD)
+            VALUE "PrivateBuild", SPECIAL_BUILD
+#endif
         END
     END
     BLOCK "VarFileInfo"
