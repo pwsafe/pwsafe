@@ -228,15 +228,37 @@ include_directories ("${PROJECT_SOURCE_DIR}/src"
   "${PROJECT_SOURCE_DIR}/src/core"
   "${PROJECT_SOURCE_DIR}/src/ui/wxWidgets")
 
-execute_process(COMMAND "git" "describe" "--all" "--always" "--dirty=+" "--long"
-  WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-  RESULT_VARIABLE res
-  OUTPUT_VARIABLE pwsafe_VERSTRING
-  ERROR_QUIET
-  OUTPUT_STRIP_TRAILING_WHITESPACE)
-if (res)
+find_package(Git)
+
+if (Git_FOUND)
+  execute_process(COMMAND "${GIT_EXECUTABLE}" describe --all --always --dirty=+ --long
+    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+    RESULT_VARIABLE res
+    OUTPUT_VARIABLE pwsafe_VERSTRING
+    ERROR_QUIET
+    OUTPUT_STRIP_TRAILING_WHITESPACE)
+  if (res)
+    set(pwsafe_VERSTRING "local")
+  endif ()
+
+  execute_process(
+    COMMAND "${GIT_EXECUTABLE}" show -s --format=%ci HEAD
+    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+    OUTPUT_VARIABLE pwsafe_TIMESTAMP
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+   )
+
+  execute_process(
+    COMMAND "${GIT_EXECUTABLE}" config --get remote.origin.url
+    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+    OUTPUT_VARIABLE pwsafe_REPO_URL
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    ERROR_QUIET
+  )
+else ()
   set(pwsafe_VERSTRING "local")
-endif()
+endif ()
 
 add_compile_definitions(
   __STDC_WANT_LIB_EXT1__=1
@@ -309,6 +331,10 @@ else (WIN32 AND NOT WX_WINDOWS)
   set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/wxWidgets/version.in")
 endif (WIN32 AND NOT WX_WINDOWS)
 
+set (PWS_VERSION_MAJOR "${pwsafe_VERSION_MAJOR}")
+set (PWS_VERSION_MINOR "${pwsafe_VERSION_MINOR}")
+set (PWS_VERSION_PATCH "${pwsafe_REVISION}")
+
 set (PWS_PRODUCTVER "${pwsafe_VERSION_MAJOR}, ${pwsafe_VERSION_MINOR}, ${pwsafe_REVISION}" )
 set (PWS_PRODUCTVER_STR "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_REVISION}${pwsafe_SPECIALBUILD} ${pwsafe_VERSTRING}")
 
@@ -323,6 +349,14 @@ endif ()
 
 if (pwsafe_SPECIALBUILD)
   set (PWS_SPECIALBUILD_STR "${pwsafe_SPECIALBUILD}")
+endif ()
+
+if (pwsafe_TIMESTAMP)
+  set (PWS_TIMESTAMP_STR "${pwsafe_TIMESTAMP}")
+endif ()
+
+if (pwsafe_REPO_URL)
+  set (PWS_REPO_URL_STR "${pwsafe_REPO_URL}")
 endif ()
 
 configure_file (
