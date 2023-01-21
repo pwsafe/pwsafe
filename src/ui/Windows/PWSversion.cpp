@@ -41,8 +41,10 @@ void PWSversion::DeleteInstance()
 PWSversion::PWSversion()
   : m_nMajor(0), m_nMinor(0), m_nBuild(0), m_bModified(false)
 {
-  CString csFileVersion = WIDEN(STRFILEVER);
-  m_SpecialBuild = SPECIAL_BUILD;
+  CString csFileVersion = WIDEN(PWS_FILEVER_STR);
+#ifdef PWS_SPECIALBUILD_STR
+  m_SpecialBuild = PWS_SPECIALBUILD_STR;
+#endif
 
   m_builtOn = CString(__DATE__) + CString(L" ") + CString(__TIME__);
 

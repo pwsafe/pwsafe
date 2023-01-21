@@ -25,11 +25,20 @@
 //   Revision != 0 for all Intermediate versions
 // Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
 
-#define PRODUCTVER     @pwsafe_VERSION_MAJOR@, @pwsafe_VERSION_MINOR@, @pwsafe_REVISION@
-#define STRPRODUCTVER  "@pwsafe_VERSION_MAJOR@, @pwsafe_VERSION_MINOR@, @pwsafe_REVISION@, @pwsafe_VERSTRING@\0"
-#define SPECIAL_BUILD L"@pwsafe_SPECIALBUILD@"
+#define PWS_PRODUCTVER      @PWS_PRODUCTVER@
 
-#define FILEVER        PRODUCTVER
-#define STRFILEVER     STRPRODUCTVER
+#ifdef _DEBUG
+#define PWS_PRODUCTVER_STR  "@PWS_PRODUCTVER_STR@"
+#else
+#define PWS_PRODUCTVER_STR  "@PWS_PRODUCTVER_STR@"
+#endif
+
+#define PWS_FILEVER         @PWS_FILEVER@
+#define PWS_FILEVER_STR     "@PWS_FILEVER_STR@"
+
+#cmakedefine PWS_PRIVATEBUILD_STR   "@PWS_PRIVATEBUILD_STR@"
+#cmakedefine PWS_SPECIALBUILD_STR   "@PWS_SPECIALBUILD_STR@"
+
+#define PWS_DESCRIBE_STR    "@PWS_DESCRIBE_STR@"
 
 #endif // _VERSION_H_
