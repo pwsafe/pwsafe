@@ -4181,6 +4181,38 @@ Locked by</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Credit card CVV</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>CVV код карты</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Credit card PIN</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>PIN-код карты</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Credit card expiration</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Срок действия карты</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Credit card number</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Номер карты</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Criteria</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -10884,6 +10916,32 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Project-Id-Version: PACKAGE VERSION
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2023-01-22 14:54+0300
+PO-Revision-Date: 2023-01-21 18:30+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: LANGUAGE &lt;LL@li.org&gt;
+Language: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T115614Z" creationid="pm_kan" creationdate="20230122T115614Z">
+        <seg>Project-Id-Version: Password Safe
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2023-01-22 15:00+0300
+PO-Revision-Date: 2023-01-22 15:00+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: none
+Language: ru_RU
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Pronounceable passwords</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -12594,6 +12652,14 @@ has duplicate entries with the same group/title/user combination.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Указанные вложения не привязаны к элементам.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>The following columns are unrecognized by PasswordSafe and will be ignored:</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Указанные столбцы не были распознаны и будут пропущены:</seg>
       </tuv>
     </tu>
     <tu>
