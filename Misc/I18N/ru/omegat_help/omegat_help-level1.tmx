@@ -1744,9 +1744,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>There is no mechanism within Password Safe to retrieve lost or forgotten safe passwords.</seg>
+        <seg>There is no mechanism within Password Safe to retrieve lost or forgotten master passwords.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170814T214623Z" creationid="pm_kan" creationdate="20170814T214623Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120925Z" creationid="pm_kan" creationdate="20230122T120925Z">
         <seg>В Password Safe не существует механизма для восстановления потерянных (забытых) мастер-паролей.</seg>
       </tuv>
     </tu>
@@ -1936,9 +1936,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Note: By default, Password Safe will show the database last used, and displays a combination prompt for it.</seg>
+        <seg>Note: By default, Password Safe will show the database last used, and displays a master password prompt for it.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T123456Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121022Z" creationid="pm_kan" creationdate="20230122T121022Z">
         <seg>Примечание. По умолчанию Password Safe отображает последний использованный контейнер и запрашивает для него пароль.</seg>
       </tuv>
     </tu>
@@ -2313,9 +2313,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Password Safe can work with a YubiKey device to provide "two factor authentication", that is, protecting your database by both something you know (your "Safe Combination" or master passphrase), and something you have (the YubiKey device).</seg>
+        <seg>Password Safe can work with a YubiKey device to provide "two factor authentication", that is, protecting your database by both something you know (your master passphrase), and something you have (the YubiKey device).</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170814T214951Z" creationid="pm_kan" creationdate="20170814T214951Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121109Z" creationid="pm_kan" creationdate="20230122T121109Z">
         <seg>Password Safe может использовать устройство YubiKey для обеспечения «двухфакторной аутентификации», в этом случае ваш контейнер защищается с помощью того, что вы знаете (мастер-пароль) и того, чем вы владеете (устройство YubiKey).</seg>
       </tuv>
     </tu>
@@ -4977,9 +4977,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>By clicking New... from the Safe Combination Entry dialog when the program is started, or from the "File ? New..." menu once Password Safe has been opened.</seg>
+        <seg>By clicking New... from the Master Password Entry dialog when the program is started, or from the "File ? New..." menu once Password Safe has been opened.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140728T060050Z" creationid="pm_kan" creationdate="20140728T060050Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121000Z" creationid="pm_kan" creationdate="20230122T121000Z">
         <seg>Щёлкнув по кнопке Новый... в диалоге Пароль для контейнера, выводимом при запуске программы, или через меню Файл → Создать..., если Password Safe уже открыт.</seg>
       </tuv>
     </tu>
@@ -5209,10 +5209,10 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Change Safe Combination...</seg>
+        <seg>Change Master Password...</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T150213Z">
-        <seg>Изменить пароль для контейнера</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121347Z" creationid="pm_kan" creationdate="20230122T121347Z">
+        <seg>Изменить пароль для контейнера...</seg>
       </tuv>
     </tu>
     <tu>
@@ -5637,14 +5637,6 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T182819Z">
         <seg>ColumnWidths</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Combination</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20180114T114252Z" creationid="pm_kan" creationdate="20180114T114252Z">
-        <seg>Парольная комбинация</seg>
       </tuv>
     </tu>
     <tu>
@@ -7105,9 +7097,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Enter the current Master Password in the Old Safe Combination field</seg>
+        <seg>Enter the current Master Password in the Old Master Password field</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T112951Z" creationid="pm_kan" creationdate="20140113T112951Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120806Z" creationid="pm_kan" creationdate="20230122T120806Z">
         <seg>Введите текущий мастер-пароль в поле «Старый пароль».</seg>
       </tuv>
     </tu>
@@ -7969,9 +7961,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>For maximum security, we recommend that your database be protected both by your YubiKey and a Safe Combination (this is known as two-factor authentication).</seg>
+        <seg>For maximum security, we recommend that your database be protected both by your YubiKey and a master password (this is known as two-factor authentication).</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170814T215030Z" creationid="pm_kan" creationdate="20170814T215030Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121136Z" creationid="pm_kan" creationdate="20230122T121136Z">
         <seg>Для большей безопасности мы рекомендуем, чтобы одновременно использовались оба способа: YubiKey и мастер пароль (так называемая «двухфакторная аутентификация»).</seg>
       </tuv>
     </tu>
@@ -8985,9 +8977,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>If it is locked, you will be prompted for the master combination when you try to restore it.</seg>
+        <seg>If it is locked, you will be prompted for the master password when you try to restore it.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20161128T174327Z" creationid="pm_kan" creationdate="20161128T174327Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120556Z" creationid="pm_kan" creationdate="20230122T120556Z">
         <seg>Если контейнер заблокирован, вас попросят ввести мастер-пароль при разворачивании окна приложения.</seg>
       </tuv>
     </tu>
@@ -9617,9 +9609,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>If you currently have a password associated with this database, enter it in the Old Safe Combination field</seg>
+        <seg>If you currently have a password associated with this database, enter it in the Old Master Password field</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T113447Z" creationid="pm_kan" creationdate="20140113T113447Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120830Z" creationid="pm_kan" creationdate="20230122T120830Z">
         <seg>Если для доступа к контейнеру также используется пароль, введите его в поле «Старый пароль».</seg>
       </tuv>
     </tu>
@@ -9673,9 +9665,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>If you have a password associated with this database as well, enter it in the Old Safe Combination field</seg>
+        <seg>If you have a password associated with this database as well, enter it in the Old Master Password field</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T114234Z" creationid="pm_kan" creationdate="20140113T114234Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120916Z" creationid="pm_kan" creationdate="20230122T120916Z">
         <seg>Если для доступа к контейнеру также используется пароль, введите его в поле «Старый пароль».</seg>
       </tuv>
     </tu>
@@ -9769,17 +9761,17 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>If you wish to protect your database using both your YubiKey and a Safe Combination ("two factor authentication"), then first enter the Safe Combination in the "Safe Combination" and "Verify" fields, then click on the Yubikey button.</seg>
+        <seg>If you wish to protect your database using both your YubiKey and a master password ("two factor authentication"), then first enter the master password in the "Master Password" and "Verify" fields, then click on the Yubikey button.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170814T215103Z" creationid="pm_kan" creationdate="20170814T215103Z">
-        <seg>Если для защиты контейнера вы желаете одновременно использовать YubiKey и мастер-пароль, («двуxфакторная аутентификация»), тогда сначала введите пароль в поля «Пароль» и «Подтверждение», а затем щёлкните на кнопке с надписью YubiKey.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T122708Z" creationid="pm_kan" creationdate="20230122T121205Z">
+        <seg>Если для защиты контейнера вы желаете одновременно использовать YubiKey и мастер-пароль («двуxфакторная аутентификация»), тогда сначала введите пароль в поля «Пароль» и «Подтверждение», а затем щёлкните на кнопке с надписью YubiKey.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>If you wish to protect your database using your YubiKey only, then leave the "Safe Combination" and "Verify" fields empty, and click on the Yubikey button.</seg>
+        <seg>If you wish to protect your database using your YubiKey only, then leave the "Master Password" and "Verify" fields empty, and click on the Yubikey button.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170814T215132Z" creationid="pm_kan" creationdate="20170814T215132Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121214Z" creationid="pm_kan" creationdate="20230122T121214Z">
         <seg>Если для защиты вы желаете использовать только YubiKey, тогда оставьте поля «Пароль» и «Подтверждение» пустыми, и щёлкните на кнопке с надписью YubiKey.</seg>
       </tuv>
     </tu>
@@ -9809,9 +9801,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>If you wish, enter (and confirm) a password in the New Safe Combination and Confirmation fields.</seg>
+        <seg>If you wish, enter (and confirm) a password in the New Master Password and Confirmation fields.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T113952Z" creationid="pm_kan" creationdate="20140113T113056Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120821Z" creationid="pm_kan" creationdate="20230122T120821Z">
         <seg>Если требуется, введите (и подтвердите) новый пароль в поля «Новый пароль» и «Подтверждение».</seg>
       </tuv>
     </tu>
@@ -9849,9 +9841,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>If you've chosen to protect your database using both your YubiKey and a Safe Combination, first enter the Safe Combination in the "Open Password Safe" field, then click on the Yubikey button.</seg>
+        <seg>If you've chosen to protect your database using both your YubiKey and a master password, first enter the master password in the "Open Password Safe" field, then click on the Yubikey button.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170814T215218Z" creationid="pm_kan" creationdate="20170814T215218Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121233Z" creationid="pm_kan" creationdate="20230122T121233Z">
         <seg>Если для защиты контейнера используются YubiKey и мастер-пароль, тогда сначала введите пароль в поле «Пароль», а затем щёлкните на кнопке с надписью YubiKey.</seg>
       </tuv>
     </tu>
@@ -9865,9 +9857,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>If your YubiKey is connected to your PC, then a "Yubikey" button and text area will appear in the Safe Combination Entry and Setup windows, as show above.</seg>
+        <seg>If your YubiKey is connected to your PC, then a "Yubikey" button and text area will appear in the Master Password Entry and Setup windows, as show above.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T123728Z" creationid="pm_kan" creationdate="20140113T115052Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121118Z" creationid="pm_kan" creationdate="20230122T121118Z">
         <seg>Если YubiKey подключён к ПК, будут видны кнопка «YubiKey» и текстовое поле с описанием (см. картинку выше).</seg>
       </tuv>
     </tu>
@@ -10193,10 +10185,10 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>In our terminology, the Combination is the password that you use to gain access to the Password Safe database.</seg>
+        <seg>In our terminology, the Master Password is the password that you use to gain access to the Password Safe database.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210615T165443Z" creationid="pm_kan" creationdate="20210615T165443Z">
-        <seg>В нашей терминологии комбинация — пароль, позволяющий получить доступ к контейнеру Password Safe.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121927Z" creationid="pm_kan" creationdate="20230122T121927Z">
+        <seg>В нашей терминологии мастер-пароль — пароль, позволяющий получить доступ к контейнеру Password Safe.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10409,9 +10401,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Invoking Password Safe with no arguments will cause the application to prompt you for the combination of the last database that was opened, or for the combination of a new database if none was previously opened on your machine (e.g., the first time you use Password Safe).</seg>
+        <seg>Invoking Password Safe with no arguments will cause the application to prompt you for the master password of the last database that was opened, or for the master password of a new database if none was previously opened on your machine (e.g., the first time you use Password Safe).</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T121141Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120943Z" creationid="pm_kan" creationdate="20230122T120943Z">
         <seg>При запуске Password Safe без параметров выдаётся запрос пароля для последнего открытого контейнера. Если контейнеры на этом компьютере ещё не открывались (например, при первом запуске Password Safe), будет предложено создать новый контейнер.</seg>
       </tuv>
     </tu>
@@ -11985,9 +11977,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Note that you will be prompted for the Safe combination the first time you double-click on the System Tray icon, not before.</seg>
+        <seg>Note that you will be prompted for the master password the first time you double-click on the System Tray icon, not before.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T153157Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120642Z" creationid="pm_kan" creationdate="20230122T120642Z">
         <seg>Примечание. Мастер-пароль будет запрошен только тогда, когда вы дважды щёлкнете по значку левой кнопкой.</seg>
       </tuv>
     </tu>
@@ -12265,9 +12257,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Of course, you can also choose to protect the database by a Safe Combination alone, just enter the Safe Combination in the "Safe Combination" and "Verify" fields and then click on OK.</seg>
+        <seg>Of course, you can also choose to protect the database by a master password alone, just enter the master password in the "Master Password" and "Verify" fields and then click on OK.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T120730Z" creationid="pm_kan" creationdate="20140113T120730Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121224Z" creationid="pm_kan" creationdate="20230122T121224Z">
         <seg>Конечно, вы также можете использовать только мастер-пароль. В этом случае просто введите пароль в поля «Пароль» и «Подтверждение» и нажмите кнопку OK.</seg>
       </tuv>
     </tu>
@@ -12313,9 +12305,17 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>On checking the "Show Combination" box, the contents of old and new combination will be visible in clear and the confirmation combination edit box is disabled as no longer necessary.</seg>
+        <seg>On checking the "Show Mast Password" box, the contents of old and new master passwords will be visible in clear and the confirmation edit box is disabled as no longer necessary.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170815T104740Z" creationid="pm_kan" creationdate="20170814T214538Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120743Z" creationid="pm_kan" creationdate="20230122T120743Z">
+        <seg>При включенном флажке «Показать пароль» старый и новый пароли будут отображены, а поле подтверждения пароля будет заблокировано за ненадобностью.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>On checking the "Show Master Password" box, the contents of old and new master passwords will be visible in clear and the confirmation edit box is disabled as no longer necessary.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121053Z" creationid="pm_kan" creationdate="20230122T121053Z">
         <seg>При включенном флажке «Показать пароль» старый и новый пароли будут отображены, а поле подтверждения пароля будет заблокировано за ненадобностью.</seg>
       </tuv>
     </tu>
@@ -12353,9 +12353,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Once opened, go to the Manage menu and select Change Safe Combination.</seg>
+        <seg>Once opened, go to the Manage menu and select Change Master Password.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T175135Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120706Z" creationid="pm_kan" creationdate="20230122T120706Z">
         <seg>После этого в меню Сервис выберите пункт Изменить пароль для контейнера.</seg>
       </tuv>
     </tu>
@@ -13234,9 +13234,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Please choose a difficult-to-guess password.</seg>
+        <seg>Please choose a difficult-to-guess master password.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20100920T184007Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120928Z" creationid="pm_kan" creationdate="20230122T120928Z">
         <seg>Всегда выбирайте пароли, которые сложно угадать.</seg>
       </tuv>
     </tu>
@@ -13756,8 +13756,8 @@
       <tuv lang="en-US">
         <seg>Restore a backed up password database file.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20100920T194445Z">
-        <seg>Восстановление контейнера из резервного копии:</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121859Z">
+        <seg>Восстановление контейнера из резервного копии.</seg>
       </tuv>
     </tu>
     <tu>
@@ -14618,10 +14618,10 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Selecting this option brings up the Change Safe Password dialog.</seg>
+        <seg>Selecting this option brings up the Change Master Password dialog.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T201458Z">
-        <seg>Изменение мастер-пароля для контейнера.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121718Z" creationid="pm_kan" creationdate="20230122T121718Z">
+        <seg>При выборе данного пункта будет отображён диалог смены мастер-пароля.</seg>
       </tuv>
     </tu>
     <tu>
@@ -14666,26 +14666,26 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Set the New Safe Combination (and the Confirmation) to the desired value.</seg>
+        <seg>Set the New Master Password (and the Confirmation) to the desired value.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T113606Z" creationid="pm_kan" creationdate="20140113T113606Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120853Z" creationid="pm_kan" creationdate="20230122T120853Z">
         <seg>Введите новый пароль и его подтверждение в соответствующие поля.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Set the New Safe Combination (and the Confirmation) to the desired value: Blank to remove the password, or a new password to add or replace the password.</seg>
+        <seg>Set the New Master Password (and the Confirmation) to the desired value: Blank to remove the password, or a new password to add or replace the password.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T114129Z" creationid="pm_kan" creationdate="20140113T113935Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120904Z" creationid="pm_kan" creationdate="20230122T120904Z">
         <seg>В полях «Новый пароль» и «Подтверждение» установите пустое значение, чтобы отключить проверку пароля, или новый пароля чтобы изменить или добавить проверку пароля.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Set up the Safe Combination as follows:</seg>
+        <seg>Set up the Master Password as follows:</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T115853Z" creationid="pm_kan" creationdate="20140113T115853Z">
-        <seg>Установите мастер-пароль.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121156Z" creationid="pm_kan" creationdate="20230122T121156Z">
+        <seg>Установка мастера-пароля и YubiKey</seg>
       </tuv>
     </tu>
     <tu>
@@ -14722,9 +14722,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Setting up a Safe Combination with YubiKey</seg>
+        <seg>Setting up a Master Password with YubiKey</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T115427Z" creationid="pm_kan" creationdate="20140113T115427Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121142Z" creationid="pm_kan" creationdate="20230122T121142Z">
         <seg>Установка мастера-пароля и YubiKey</seg>
       </tuv>
     </tu>
@@ -15939,9 +15939,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>The Yubikey button on the Safe Combination window will now become active, and the text to the right of will change to "Click, then activate your YubiKey"</seg>
+        <seg>The Yubikey button on the Master Password window will now become active, and the text to the right of will change to "Click, then activate your YubiKey"</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T120157Z" creationid="pm_kan" creationdate="20140113T115830Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121151Z" creationid="pm_kan" creationdate="20230122T121151Z">
         <seg>В окне «Установка пароля для контейнера» станет активной кнопка YubiKey и в поле справа появится текст «Нажмите на кнопку и коснитесь YubiKey».</seg>
       </tuv>
     </tu>
@@ -17523,9 +17523,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>This allows you to use your YubiKey to access your Password Safe database, either in addition to, or instead of a "Safe Combination".</seg>
+        <seg>This allows you to use your YubiKey to access your Password Safe database, either in addition to, or instead of a master password.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T115155Z" creationid="pm_kan" creationdate="20140113T115155Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121127Z" creationid="pm_kan" creationdate="20230122T121127Z">
         <seg>В этом случае YubiKey может быть использован для доступа к контейнеру Password Safe вместо мастер-пароля или же в дополнение к нему.</seg>
       </tuv>
     </tu>
@@ -18452,9 +18452,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>To change a master password ("Safe Combination"), first open up the database whose password you wish to change.</seg>
+        <seg>To change a master password (referred to as "Safe Combination" in older versions), first open up the database whose password you wish to change.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T110546Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120655Z" creationid="pm_kan" creationdate="20230122T120655Z">
         <seg>Для изменения мастер-пароля откройте контейнер, пароль которого требуется изменить.</seg>
       </tuv>
     </tu>
@@ -18516,9 +18516,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>To convert a Password Safe database that is accessed using a Master Password (Safe Combination) to YubiKey access:</seg>
+        <seg>To convert a Password Safe database that is accessed using a Master Password to YubiKey access:</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170815T103700Z" creationid="pm_kan" creationdate="20140113T112830Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120755Z" creationid="pm_kan" creationdate="20230122T120755Z">
         <seg>Чтобы изменить способ аутентификации при доступе к контейнеру Password Safe с мастер-пароля на YubiKey:</seg>
       </tuv>
     </tu>
@@ -19308,9 +19308,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Using either method causes the Safe Combination Set Up dialog to appear.</seg>
+        <seg>Using either method causes the Master Password Set Up dialog to appear.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20100926T182211Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121009Z" creationid="pm_kan" creationdate="20230122T121009Z">
         <seg>В любом из этих случаев будет выведен диалог Установка пароля для контейнера.</seg>
       </tuv>
     </tu>
@@ -20614,9 +20614,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>You should enter the current master password, and then the new master password (twice, for confirmation).</seg>
+        <seg>You should now enter the current master password, followed by the new master password (twice, for confirmation).</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T110738Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120720Z" creationid="pm_kan" creationdate="20230122T120720Z">
         <seg>Здесь необходимо ввести текущий мастер-пароль, а затем, новый пароль (вводится дважды, для подтверждения).</seg>
       </tuv>
     </tu>
@@ -20662,9 +20662,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>You will be asked to enter the master password (safe combination) to confirm that you may export the database into a clear text unencrypted file before you can export its contents.</seg>
+        <seg>You will be asked to enter the master password to confirm that you may export the database into a clear text unencrypted file before you can export its contents.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T141636Z" creationid="pm_kan" creationdate="20140113T141636Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121259Z" creationid="pm_kan" creationdate="20230122T121259Z">
         <seg>Для подтверждения экспорта данных в незащищённый текстовый файл, будет запрошен мастер-пароль.</seg>
       </tuv>
     </tu>
@@ -23422,9 +23422,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>new safe combination prompt</seg>
+        <seg>new master password prompt</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20100926T182724Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121038Z" creationid="pm_kan" creationdate="20230122T121038Z">
         <seg>Запрос нового пароля для контейнера</seg>
       </tuv>
     </tu>
@@ -23941,6 +23941,17 @@
       </tuv>
     </tu>
 <!-- Alternative translations -->
+    <tu>
+      <prop type="file">html/backup_and_restore.html</prop>
+      <prop type="prev">Restore from Backup</prop>
+      <prop type="next">Click &lt;b0&gt;Restore from Backup&lt;/b0&gt;</prop>
+      <tuv lang="en-US">
+        <seg>Restore a backed up password database file.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T122941Z" creationid="pm_kan" creationdate="20230122T122941Z">
+        <seg>Восстановление контейнера из резервного копии:</seg>
+      </tuv>
+    </tu>
     <tu>
       <prop type="file">html/compare_results.html</prop>
       <prop type="prev">The same is true for all the Wizard functions, although the values are independent:</prop>
