@@ -75,8 +75,10 @@ case "$DISTRO" in
          \( \( "$RELEASE" -eq 22 -a "$RELEASE_MONTH" -eq 10 \) -o "$RELEASE" -gt 22 \) ; then
             LIBWXDEV="libwxgtk3.2-dev"
         elif test \( \( "$DISTRO" = "ubuntu" -o "$DISTRO" = "pop" -o "$DISTRO" = "linuxmint" \) -a "$RELEASE" -ge 20 \) -o \
-         \( "$DISTRO" = "debian" -a \( "$RELEASE" -eq 0 -o "$RELEASE" -ge 11 \) \) ; then
+         \( "$DISTRO" = "debian" -a "$RELEASE" -eq 11 \) ; then
             LIBWXDEV="libwxgtk3.0-gtk3-dev"
+        elif test \( "$DISTRO" = "debian"  -a "$RELEASE" -eq 0 \) ; then
+            LIBWXDEV="libwxgtk3.2-dev"
         else
             LIBWXDEV="libwxgtk3.0-dev"
         fi
