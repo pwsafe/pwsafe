@@ -21,7 +21,6 @@
 #include <string>
 #include <vector>
 
-#include <random>
 #include <algorithm>
 
 using namespace std;
@@ -395,8 +394,6 @@ StringX CPasswordCharPool::MakePronounceable() const
   uint nchar;        /* number of chars in password so far */
   PWSrand *pwsrnd = PWSrand::GetInstance();
   stringT password(m_pwlen, 0);
-  std::random_device rd;
-  std::mt19937 g(rd());
 
   /* Pick a random starting point. */
   /* (This cheats a little; the statistics for three-letter
@@ -463,6 +460,7 @@ StringX CPasswordCharPool::MakePronounceable() const
       // choose how many to replace (not too many, but at least one)
       unsigned int rn = pwsrnd->RangeRand(sc.size() - 1)/2 + 1;
       // replace some of them
+      UrbgAdapter g{ pwsrnd };
       std::shuffle(sc.begin(), sc.end(), g);
 
       for (unsigned int i = 0; i < rn; i++)
