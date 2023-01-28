@@ -49,56 +49,6 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")
 
 include(create-harden-interface)
 
-# Version configuration:
-# version.mfc for Windows MFC build, version.wx for all the rest
-# version file has the following format:
-# VER_MAJOR = n
-# VER_MINOR = n
-# VER_REV = n (default 0)
-# VER_SPECIAL = text [or not set]
-# where VER_MAJOR and VER_MINOR are mandatory, and all except
-# VER_SPECIAL must be integers
-
-if (WIN32 AND NOT WX_WINDOWS)
-   set (VERSION_FILE "${PROJECT_SOURCE_DIR}/version.mfc")
-else (WIN32 AND NOT WX_WINDOWS)
-   set (VERSION_FILE "${PROJECT_SOURCE_DIR}/version.wx")
-endif (WIN32 AND NOT WX_WINDOWS)
-
-if (NOT EXISTS ${VERSION_FILE})
-  message (FATAL_ERROR "Missing ${VERSION_FILE} - unable to proceed")
-endif (NOT EXISTS ${VERSION_FILE})
-
-file ( STRINGS ${VERSION_FILE} VERSION_LIST )
-
-foreach ( VERSION_ITEM IN ITEMS ${VERSION_LIST} )
-  if (${VERSION_ITEM} MATCHES "^[ ]*VER_MAJOR[ ]*=[ ]*([0-9]+)")
-    string (REGEX REPLACE ".*=[ ]*([0-9]+)" "\\1"
-            pwsafe_VERSION_MAJOR ${VERSION_ITEM})
-  elseif (${VERSION_ITEM} MATCHES "^[ ]*VER_MINOR[ ]*=[ ]*([0-9]+)")
-    string (REGEX REPLACE ".*=[ ]*([0-9]+)" "\\1"
-            pwsafe_VERSION_MINOR ${VERSION_ITEM})
-  elseif (${VERSION_ITEM} MATCHES "^[ ]*VER_REV[ ]*=[ ]*([0-9]+)")
-    string (REGEX REPLACE ".*=[ ]*([0-9]+)" "\\1"
-            pwsafe_REVISION ${VERSION_ITEM})
-  elseif (${VERSION_ITEM} MATCHES "^[ ]*VER_SPECIAL[ ]*=[ ]*(.+)")
-    string (REGEX REPLACE ".*=[ ]*(.+)" "\\1"
-            pwsafe_SPECIALBUILD ${VERSION_ITEM})
-  endif ()
-endforeach ( VERSION_ITEM )
-
-if (NOT DEFINED pwsafe_VERSION_MAJOR)
-  message (FATAL_ERROR "VER_MAJOR undefined in ${VERSION_FILE} - unable to proceed")
-endif (NOT DEFINED pwsafe_VERSION_MAJOR)
-if (NOT DEFINED pwsafe_VERSION_MINOR)
-  message (FATAL_ERROR "VER_MINOR undefined in ${VERSION_FILE} - unable to proceed")
-endif (NOT DEFINED pwsafe_VERSION_MINOR)
-
-if (NOT pwsafe_REVISION)
-  set (pwsafe_REVISION 0)
-endif ()
-
-set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_REVISION}")
 
 # Configurable options:
 option (NO_YUBI "Set ON to disable YubiKey support" OFF)
@@ -228,38 +178,6 @@ include_directories ("${PROJECT_SOURCE_DIR}/src"
   "${PROJECT_SOURCE_DIR}/src/core"
   "${PROJECT_SOURCE_DIR}/src/ui/wxWidgets")
 
-find_package(Git)
-
-if (Git_FOUND)
-  execute_process(COMMAND "${GIT_EXECUTABLE}" describe --all --always --dirty=+ --long
-    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-    RESULT_VARIABLE res
-    OUTPUT_VARIABLE pwsafe_VERSTRING
-    ERROR_QUIET
-    OUTPUT_STRIP_TRAILING_WHITESPACE)
-  if (res)
-    set(pwsafe_VERSTRING "local")
-  endif ()
-
-  execute_process(
-    COMMAND "${GIT_EXECUTABLE}" show -s --format=%ci HEAD
-    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-    OUTPUT_VARIABLE pwsafe_TIMESTAMP
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    ERROR_QUIET
-   )
-
-  execute_process(
-    COMMAND "${GIT_EXECUTABLE}" config --get remote.origin.url
-    WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
-    OUTPUT_VARIABLE pwsafe_REPO_URL
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    ERROR_QUIET
-  )
-else ()
-  set(pwsafe_VERSTRING "local")
-endif ()
-
 add_compile_definitions(
   __STDC_WANT_LIB_EXT1__=1
   UNICODE
@@ -325,45 +243,6 @@ if (NOT NO_GTEST AND GTEST_BUILD)
                        )
 endif(NOT NO_GTEST AND GTEST_BUILD)
 
-if (WIN32 AND NOT WX_WINDOWS)
-  set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/Windows/version.in")
-else (WIN32 AND NOT WX_WINDOWS)
-  set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/wxWidgets/version.in")
-endif (WIN32 AND NOT WX_WINDOWS)
-
-set (PWS_VERSION_MAJOR "${pwsafe_VERSION_MAJOR}")
-set (PWS_VERSION_MINOR "${pwsafe_VERSION_MINOR}")
-set (PWS_VERSION_PATCH "${pwsafe_REVISION}")
-
-set (PWS_PRODUCTVER "${pwsafe_VERSION_MAJOR}, ${pwsafe_VERSION_MINOR}, ${pwsafe_REVISION}" )
-set (PWS_PRODUCTVER_STR "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_REVISION}${pwsafe_SPECIALBUILD} ${pwsafe_VERSTRING}")
-
-set (PWS_FILEVER "${PWS_PRODUCTVER}")
-set (PWS_FILEVER_STR "${PWS_PRODUCTVER_STR}")
-
-set (PWS_DESCRIBE_STR "${pwsafe_VERSTRING}")
-
-if (pwsafe_PRIVATEBUILD)
-  set (PWS_PRIVATEBUILD_STR "${pwsafe_PRIVATEBUILD}")
-endif ()
-
-if (pwsafe_SPECIALBUILD)
-  set (PWS_SPECIALBUILD_STR "${pwsafe_SPECIALBUILD}")
-endif ()
-
-if (pwsafe_TIMESTAMP)
-  set (PWS_TIMESTAMP_STR "${pwsafe_TIMESTAMP}")
-endif ()
-
-if (pwsafe_REPO_URL)
-  set (PWS_REPO_URL_STR "${pwsafe_REPO_URL}")
-endif ()
-
-configure_file (
-  ${VERSION_IN}
-  ${PROJECT_BINARY_DIR}/version.h
-  )
-
 if( NOT CMAKE_BUILD_TYPE )
   set( CMAKE_BUILD_TYPE Release )
 endif( NOT CMAKE_BUILD_TYPE )
@@ -378,6 +257,8 @@ if (NOT MSVC)
    # (b) -O3 is the default for cmake
    set (CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 endif (NOT MSVC)
+
+include(pws-version)
 
 if (WIN32)
    set (CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
@@ -430,6 +311,8 @@ target_link_libraries(pwsafe core os)
 if (XML_XERCESC)
   target_link_libraries(pwsafe ${XercesC_LIBRARY})
 endif (XML_XERCESC)
+
+target_link_libraries(pwsafe pws_version)
 
 if (APPLE)
   FIND_LIBRARY(QUARTZCORE_LIBS QuartzCore)
