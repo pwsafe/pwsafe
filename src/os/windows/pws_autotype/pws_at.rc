@@ -1,5 +1,7 @@
 // Microsoft Visual C++ generated resource script.
 //
+#pragma code_page(65001)
+
 #include "resource.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
@@ -13,13 +15,10 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// English (U.S.) resources
+// English (United States) resources
 
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENG)
-#ifdef _WIN32
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
-#pragma code_page(1252)
-#endif //_WIN32
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -48,16 +47,17 @@ BEGIN
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
     "#ifdef _WIN32\r\n"
     "LANGUAGE 9, 1\r\n"
-    "#pragma code_page(1252)\r\n"
-    "#include ""pws_at.rc2"  // Version information
+    "#include ""pws_at.rc2""\r\n"
     "#endif\r\n"
     "#endif\r\0"
 END
 
 #endif    // APSTUDIO_INVOKED
 
-#endif    // English (U.S.) resources
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
+
+
 
 #ifndef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -72,8 +72,7 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
 #ifdef _WIN32
 LANGUAGE 9, 1
-#pragma code_page(1252)
-#include "pws_at.rc2"  // non-MS VC++ edited Version resources
+#include "pws_at.rc2"
 #endif
 #endif
 

@@ -94,11 +94,11 @@ if (NOT DEFINED pwsafe_VERSION_MINOR)
   message (FATAL_ERROR "VER_MINOR undefined in ${VERSION_FILE} - unable to proceed")
 endif (NOT DEFINED pwsafe_VERSION_MINOR)
 
-if (pwsafe_REVISION)
-   set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_REVISION}")
-else ()
-   set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.0")
-endif (pwsafe_REVISION)
+if (NOT pwsafe_REVISION)
+  set (pwsafe_REVISION 0)
+endif ()
+
+set (pwsafe_VERSION "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_REVISION}")
 
 # Configurable options:
 option (NO_YUBI "Set ON to disable YubiKey support" OFF)
@@ -301,6 +301,22 @@ if (WIN32 AND NOT WX_WINDOWS)
 else (WIN32 AND NOT WX_WINDOWS)
   set(VERSION_IN "${PROJECT_SOURCE_DIR}/src/ui/wxWidgets/version.in")
 endif (WIN32 AND NOT WX_WINDOWS)
+
+set (PWS_PRODUCTVER "${pwsafe_VERSION_MAJOR}, ${pwsafe_VERSION_MINOR}, ${pwsafe_REVISION}" )
+set (PWS_PRODUCTVER_STR "${pwsafe_VERSION_MAJOR}.${pwsafe_VERSION_MINOR}.${pwsafe_REVISION}${pwsafe_SPECIALBUILD} ${pwsafe_VERSTRING}")
+
+set (PWS_FILEVER "${PWS_PRODUCTVER}")
+set (PWS_FILEVER_STR "${PWS_PRODUCTVER_STR}")
+
+set (PWS_DESCRIBE_STR "${pwsafe_VERSTRING}")
+
+if (pwsafe_PRIVATEBUILD)
+  set (PWS_PRIVATEBUILD_STR "${pwsafe_PRIVATEBUILD}")
+endif ()
+
+if (pwsafe_SPECIALBUILD)
+  set (PWS_SPECIALBUILD_STR "${pwsafe_SPECIALBUILD}")
+endif ()
 
 configure_file (
   ${VERSION_IN}
