@@ -10,7 +10,7 @@
 #define _VERSION_H_
 
 // version.h is created in the source tree from version.in via
-// pre_build.vbs
+// pre_build.vbs (deprecated - build via cmake is the main build path)
 //
 // version.h is also created in the specified build directory
 // by cmake using version.in as the template
@@ -18,13 +18,25 @@
 // In both cases, the version information is retrieved from the toplevel version.mfc file.
 //
 // When building via cmake in the build directory, make sure version.h
-// is removed from the source tree.
+// is *not* in the source tree.
 
 // Format: Major, Minor, Revision
 //   Revision  = 0 for all Formally Released versions
 //   Revision != 0 for all Intermediate versions
 // Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
 
+// Following for PWSversion
+#define PWS_VERSION_MAJOR @pwsafe_VERSION_MAJOR@
+#define PWS_VERSION_MINOR @pwsafe_VERSION_MINOR@
+#define PWS_REVISION @pwsafe_REVISION@
+#ifdef _DEBUG
+#define PWS_SPECIALBUILD L"@pwsafe_SPECIALBUILD@"
+#else
+#define PWS_SPECIALBUILD L"@pwsafe_SPECIALBUILD@ [D]"
+#endif
+#define PWS_VERSTRING L"@pwsafe_VERSTRING@"
+
+// Following for resource file / properties
 #define PWS_PRODUCTVER      @PWS_PRODUCTVER@
 
 #ifdef _DEBUG

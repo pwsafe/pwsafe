@@ -39,48 +39,13 @@ void PWSversion::DeleteInstance()
 }
 
 PWSversion::PWSversion()
-  : m_nMajor(0), m_nMinor(0), m_nBuild(0), m_bModified(false)
+  : m_nMajor(PWS_VERSION_MAJOR), m_nMinor(PWS_VERSION_MINOR), m_nBuild(PWS_REVISION),
+    m_Revision(PWS_VERSTRING), m_bModified(false)
 {
-  CString csFileVersion = WIDEN(PWS_FILEVER_STR);
 #ifdef PWS_SPECIALBUILD_STR
   m_SpecialBuild = PWS_SPECIALBUILD_STR;
 #endif
 
   m_builtOn = CString(__DATE__) + CString(L" ") + CString(__TIME__);
-
-  CString resToken;
-  int curPos = 0, index = 0;
-  
-  // Tokenize the file version to get the values in order
-  // Revision is either a number or a number with '+',
-  // so we need to get it from the file version string
-  // which is of the form "MM, NN, BB, rev"
-  resToken = csFileVersion.Tokenize(L",", curPos);
-  while (resToken != L"" && curPos != -1) {
-    resToken.Trim();
-    if (resToken.IsEmpty())
-      resToken = L"0";
-    
-    // Note: if token not numeric, returned value of _wtoi is zero
-    switch (index) {
-      case 0:
-        m_nMajor = _wtoi(resToken);
-        break;
-      case 1:
-        m_nMinor = _wtoi(resToken);
-        break;
-      case 2:
-        m_nBuild = _wtoi(resToken);
-        break;
-      case 3:
-        if (resToken.Right(1) == L"+")
-          m_bModified = true;
-        m_Revision = resToken;
-        break;
-      default:
-        ASSERT(0);
-    }
-    index++;
-    resToken = csFileVersion.Tokenize(L",", curPos);
-  };
+  m_bModified = m_Revision.Right(1) == L"+";
 }
