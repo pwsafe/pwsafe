@@ -35,7 +35,7 @@ void CUtils::StringExtend(LPTSTR str)
         cPos = wcschr(cPos, '\\');
         if (cPos)
         {
-            memmove(cPos+1, cPos, wcslen(cPos)*sizeof(TCHAR));
+            memmove(cPos+1, cPos, (wcslen(cPos)+1)*sizeof(TCHAR));
             *cPos = '\\';
             *(cPos+1) = '\\';
             cPos++;
@@ -48,7 +48,7 @@ void CUtils::StringExtend(LPTSTR str)
         cPos = wcschr(cPos, '\n');
         if (cPos)
         {
-            memmove(cPos+1, cPos, wcslen(cPos)*sizeof(TCHAR));
+            memmove(cPos+1, cPos, (wcslen(cPos)+1)*sizeof(TCHAR));
             *cPos = '\\';
             *(cPos+1) = 'n';
         }
@@ -59,7 +59,7 @@ void CUtils::StringExtend(LPTSTR str)
         cPos = wcschr(cPos, '\r');
         if (cPos)
         {
-            memmove(cPos+1, cPos, wcslen(cPos)*sizeof(TCHAR));
+            memmove(cPos+1, cPos, (wcslen(cPos)+1)*sizeof(TCHAR));
             *cPos = '\\';
             *(cPos+1) = 'r';
         }
@@ -70,7 +70,7 @@ void CUtils::StringExtend(LPTSTR str)
         cPos = wcschr(cPos, '\t');
         if (cPos)
         {
-            memmove(cPos+1, cPos, wcslen(cPos)*sizeof(TCHAR));
+            memmove(cPos+1, cPos, (wcslen(cPos)+1)*sizeof(TCHAR));
             *cPos = '\\';
             *(cPos+1) = 't';
         }
@@ -81,7 +81,7 @@ void CUtils::StringExtend(LPTSTR str)
         cPos = wcschr(cPos, '"');
         if (cPos)
         {
-            memmove(cPos+1, cPos, wcslen(cPos)*sizeof(TCHAR));
+            memmove(cPos+1, cPos, (wcslen(cPos)+1)*sizeof(TCHAR));
             *cPos = '\\';
             *(cPos+1) = '"';
             cPos++;

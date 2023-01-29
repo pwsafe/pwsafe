@@ -2212,7 +2212,7 @@ msgstr ""
 msgid "Completed successfully"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1602)
 msgid "Con&firm Password:"
 msgstr ""
 
@@ -4700,11 +4700,11 @@ msgid "Note that you can use an environment variable too, e.g., %TEMP%"
 msgstr ""
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as ï¿½ ï¿½"
+msgid "Note: Empty fields are shown as « »"
 msgstr ""
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is ï¿½Groupï¿½ ï¿½Titleï¿½ ï¿½Usernameï¿½"
+msgid "Note: Entry format is «Group» «Title» «Username»"
 msgstr ""
 
 #. Resource IDs: (3428)
