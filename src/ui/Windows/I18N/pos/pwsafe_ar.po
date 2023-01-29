@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2023-01-25 21:15+0200\n"
+"PO-Revision-Date: 2023-01-29 21:29+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: ar\n"
@@ -17,6 +17,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.2.2\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -2387,7 +2400,7 @@ msgstr "إكتمل ولكن ..."
 msgid "Completed successfully"
 msgstr "إكتمل بنجاح"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1602)
 msgid "Con&firm Password:"
 msgstr "تأكيد كلمة السر:"
 
@@ -5031,12 +5044,12 @@ msgid "Note that you can use an environment variable too, e.g., %TEMP%"
 msgstr "لاحظ أنه يمكنك استخدام متغير بيئة أيضًا ، على سبيل المثال ، %TEMP%"
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as ï¿½ ï¿½"
-msgstr ""
+msgid "Note: Empty fields are shown as « »"
+msgstr "ملاحظة: تظهر الحقول الفارغة كـ «»"
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is ï¿½Groupï¿½ ï¿½Titleï¿½ ï¿½Usernameï¿½"
-msgstr ""
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "ملاحظة: تنسيق المدخل هو «المجموعة» «العنوان» «اسم المستخدم»"
 
 #. Resource IDs: (3428)
 msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."
@@ -6945,7 +6958,7 @@ msgstr "تم تصدير المدخلات الأساسية التالية لأن�
 
 #. Resource IDs: (3262)
 msgid "The following columns are unrecognized by PasswordSafe and will be ignored: "
-msgstr ""
+msgstr "لم يتم التعرف على الأعمدة التالية بواسطة PasswordSafe وسيتم تجاهلها: "
 
 #. Resource IDs: (3375)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"

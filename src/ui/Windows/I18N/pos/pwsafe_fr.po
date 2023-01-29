@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2023-01-12 14:27+0200\n"
+"PO-Revision-Date: 2023-01-29 21:29+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -17,6 +17,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.2.2\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -1892,7 +1905,7 @@ msgstr "Aller à l'URL + Autofrappe"
 msgid "Browse to URL + Autotype"
 msgstr "Aller à l'URL + Autofrappe"
 
-#. Resource IDs: (32074 - Menu, 32074 - MenuEx)
+#. Resource IDs: (32074 - Menu, 32074 - MenuEx, 5679)
 msgid "Browse to URL w/Alt Browser"
 msgstr "Parcourir l’URL avec un autre navigateur"
 
@@ -2352,7 +2365,7 @@ msgstr "Complété mais..."
 msgid "Completed successfully"
 msgstr "Complété avec succes"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1602)
 msgid "Con&firm Password:"
 msgstr "Con&firmez:"
 
@@ -2609,6 +2622,10 @@ msgstr "Date de création:"
 msgid "Credit card CVV"
 msgstr "Code CVV de la carte de crédit"
 
+#. Resource IDs: (3078)
+msgid "Credit card PIN"
+msgstr "NIP de carte de crédit"
+
 #. Resource IDs: (3076)
 msgid "Credit card expiration"
 msgstr "Expiration de la carte de crédit"
@@ -2616,10 +2633,6 @@ msgstr "Expiration de la carte de crédit"
 #. Resource IDs: (3075)
 msgid "Credit card number"
 msgstr "Numéro de carte de crédit"
-
-#. Resource IDs: (3078)
-msgid "Credit card PIN"
-msgstr "NIP de carte de crédit"
 
 #. Resource IDs: (5612)
 msgid "Criteria"
@@ -4657,9 +4670,21 @@ msgstr "Maori"
 msgid "Marathi"
 msgstr "Marathi"
 
+#. Resource IDs: (131)
+msgid "Master Password Entry"
+msgstr "Entrée de le mot de passe du fichier"
+
+#. Resource IDs: (133)
+msgid "Master Password Setup"
+msgstr "Mise en place du mot de passe du fichier"
+
 #. Resource IDs: (65535)
 msgid "Master Password last set on:"
 msgstr "Mot de passe maître dernièrement modifié le:"
+
+#. Resource IDs: (1506, 65535)
+msgid "Master Password:"
+msgstr "Mot de passe:"
 
 #. Resource IDs: (1212)
 msgid "Max."
@@ -5138,13 +5163,13 @@ msgstr "&OK"
 msgid "Off"
 msgstr "Eteint"
 
-#. Resource IDs: (6038)
-msgid "Old Pswd copied"
-msgstr "Ancien MdP copié"
-
 #. Resource IDs: (65535)
 msgid "Old Master Password:"
 msgstr "Mot de passe actuel :"
+
+#. Resource IDs: (6038)
+msgid "Old Pswd copied"
+msgstr "Ancien MdP copié"
 
 #. Resource IDs: (5265)
 msgid "On"
@@ -5542,9 +5567,9 @@ msgstr "SVP, entrez une expression de recherche"
 msgid "Please enter an encryption or decryption key"
 msgstr "Veuillez entrer la clé d'encryptage et de décryptage"
 
-#. Resource IDs: (1504)
-msgid "Please enter the master password for the NEW database to contain exported entry/entries."
-msgstr "Entrez le mot de passe pour le nouveau fichier qui contiendra les entrées exportées."
+#. Resource IDs: (65535)
+msgid "Please enter the Master Password for this password database."
+msgstr "Veuillez entrer le mot de passe de ce fichier."
 
 #. Resource IDs: (65535)
 msgid ""
@@ -5558,6 +5583,10 @@ msgstr ""
 msgid "Please enter the key and verify it."
 msgstr "SVP, entrez la clef et vérifiez-la."
 
+#. Resource IDs: (1504)
+msgid "Please enter the master password for the NEW database to contain exported entry/entries."
+msgstr "Entrez le mot de passe pour le nouveau fichier qui contiendra les entrées exportées."
+
 #. Resource IDs: (5876)
 msgid "Please enter the new database description"
 msgstr "Entrez la nouvelle description de fichier"
@@ -5565,10 +5594,6 @@ msgstr "Entrez la nouvelle description de fichier"
 #. Resource IDs: (5875)
 msgid "Please enter the new database name"
 msgstr "Entrez le nouveau nom de fichier"
-
-#. Resource IDs: (65535)
-msgid "Please enter the Master Password for this password database."
-msgstr "Veuillez entrer le mot de passe de ce fichier."
 
 #. Resource IDs: (5388)
 msgid "Please enter your backup database prefix."
@@ -6011,18 +6036,6 @@ msgstr ""
 #, c-format
 msgid "SAX Parse60 Error 0x%08X during %ls."
 msgstr "Erreur SAX Parse60 0x%08X lors de %ls."
-
-#. Resource IDs: (131)
-msgid "Master Password Entry"
-msgstr "Entrée de le mot de passe du fichier"
-
-#. Resource IDs: (133)
-msgid "Master Password Setup"
-msgstr "Mise en place du mot de passe du fichier"
-
-#. Resource IDs: (1506, 65535)
-msgid "Master Password:"
-msgstr "Mot de passe:"
 
 #. Resource IDs: (1205)
 msgid "Same as database's"
@@ -6789,10 +6802,6 @@ msgstr ""
 msgid "The YubiKey appears uninitialized. Initialize it?"
 msgstr "La YubiKey semble non-initialisée. L'initialiser maintenant?"
 
-#. Resource IDs: (5279)
-msgid "The master password cannot be blank."
-msgstr "Le mot de passe principal ne peut pas être vide."
-
 #. Resource IDs: (5311)
 #, c-format
 msgid ""
@@ -6917,6 +6926,10 @@ msgstr "Les pièces jointes suivantes ne sont référencées par aucune entrée.
 msgid "The following base entries have been exported because one or more of their dependents have been included."
 msgstr "Les entrées de base suivantes ont été exportés car un ou plusieurs de ses dépendants ont été inclus."
 
+#. Resource IDs: (3262)
+msgid "The following columns are unrecognized by PasswordSafe and will be ignored: "
+msgstr "Les colonnes suivantes ne sont pas reconnues par PasswordSafe et seront ignorées : "
+
 #. Resource IDs: (3375)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
 msgstr "Les colonnes suivantes ont été reconnues mais seulement Groupe/Titre, Nom d'utilisateur et Mot de passe seront traités :"
@@ -7021,6 +7034,25 @@ msgstr ""
 "\t«%s» «%s» «%s»\n"
 "Choisissez un autre raccourci."
 
+#. Resource IDs: (5279)
+msgid "The master password cannot be blank."
+msgstr "Le mot de passe principal ne peut pas être vide."
+
+#. Resource IDs: (5958)
+#, c-format
+msgid ""
+"The master password has been entered %d times without success:\n"
+"- Is Caps Lock off?\n"
+"- Is the language correct (if multilingual)?\n"
+"- Is this the correct database?\n"
+"- Perhaps the database was damaged. Try opening a backup copy."
+msgstr ""
+"Le mot de passe a été entré %d fois sans succès:\n"
+"- Touche Maj désactivée?\n"
+"- Langage du clavier correct (si multilingue)?\n"
+"- Est-ce le bon mot de passe?\n"
+"- Le fichier est peut-être endommagé. Essayer d'ouvrir une copie de sauvegarde."
+
 #. Resource IDs: (5792)
 #, c-format
 msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either export this entry to XML before changing it or open the database in read-only mode and copy it to an editor via the clipboard."
@@ -7039,21 +7071,6 @@ msgstr "Le fichier original, \"%s\", est en format pre-3.0. Les données seront 
 #, c-format
 msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
 msgstr "L'entrée '%s:%s:%s' est elle-même un alias ou un raccourci. Ceci n'est pas supporté."
-
-#. Resource IDs: (5958)
-#, c-format
-msgid ""
-"The master password has been entered %d times without success:\n"
-"- Is Caps Lock off?\n"
-"- Is the language correct (if multilingual)?\n"
-"- Is this the correct database?\n"
-"- Perhaps the database was damaged. Try opening a backup copy."
-msgstr ""
-"Le mot de passe a été entré %d fois sans succès:\n"
-"- Touche Maj désactivée?\n"
-"- Langage du clavier correct (si multilingue)?\n"
-"- Est-ce le bon mot de passe?\n"
-"- Le fichier est peut-être endommagé. Essayer d'ouvrir une copie de sauvegarde."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."

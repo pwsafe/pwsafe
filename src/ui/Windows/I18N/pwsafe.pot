@@ -2212,7 +2212,7 @@ msgstr ""
 msgid "Completed successfully"
 msgstr ""
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1602)
 msgid "Con&firm Password:"
 msgstr ""
 
