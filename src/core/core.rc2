@@ -144,7 +144,7 @@ BEGIN
   IDSC_XMLSAVEFAILURE     "Unable to save configuration file"
   IDSC_XMLLOCK_CFG_FAILED "Failed to lock configuration file - opened by another instance of PasswordSafe?"
   IDSC_XMLCREATE_CFG_FAILED "Internal error: Couldn't initialize config file XML structure"
-  IDSC_SAXERRORPWH        "\nError in Password History for entry: \xbb%ls\xbb%ls\xbb%ls\xbb: "
+  IDSC_SAXERRORPWH        "\nError in Password History for entry: »%ls»%ls»%ls»: "
   IDSC_XMLCHARACTERERRORS "*** Invalid XML characters found - see exported XML file for more details ***"
 END
 
@@ -432,7 +432,7 @@ BEGIN
   IDSC_WERE                "were"
   IDSC_SYNCHUPDATED        "\nThe following %ls %ls updated:"
   IDSC_SYNCHCOMPLETED      "\nSynchronize completed: %d %ls updated"
-  IDSC_MERGECONFLICTS      "Conflicting entries for \xab%ls\xbb \xab%ls\xbb \xab%ls\xbb.\n  Adding merged entry as \xab%ls\xbb \xab%ls\xbb \xab%ls\xbb.\n    Differing field(s): %ls"
+  IDSC_MERGECONFLICTS      "Conflicting entries for «%ls» «%ls» «%ls».\n  Adding merged entry as «%ls» «%ls» «%ls».\n    Differing field(s): %ls"
   IDSC_MERGECOMPLETED      "\nMerge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
   IDSC_CONFLICT            "conflict"
   IDSC_CONFLICTS           "conflicts"
