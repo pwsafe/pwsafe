@@ -30,9 +30,9 @@
 #define PWS_VERSION_MINOR @pwsafe_VERSION_MINOR@
 #define PWS_REVISION @pwsafe_REVISION@
 #ifdef _DEBUG
-#define PWS_SPECIALBUILD L"@pwsafe_SPECIALBUILD@ [D]"
+#cmakedefine PWS_SPECIALBUILD L"@pwsafe_SPECIALBUILD@ [D]"
 #else
-#define PWS_SPECIALBUILD L"@pwsafe_SPECIALBUILD@"
+#cmakedefine PWS_SPECIALBUILD L"@pwsafe_SPECIALBUILD@"
 #endif
 #define PWS_VERSTRING L"@pwsafe_VERSTRING@"
 
