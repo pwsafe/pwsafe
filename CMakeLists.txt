@@ -238,6 +238,13 @@ if (res)
   set(pwsafe_VERSTRING "local")
 endif()
 
+add_compile_definitions(
+  __STDC_WANT_LIB_EXT1__=1
+  UNICODE
+  $<$<CONFIG:DEBUG>:_DEBUG>
+  $<$<NOT:$<CONFIG:DEBUG>>:NDEBUG>
+)
+
 # Assume that we're either MSVC or a Unix-like
 if (MSVC)
 # Debug build looks for dlls with _D postfix, this provides it:
