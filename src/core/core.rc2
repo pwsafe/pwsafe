@@ -2,6 +2,7 @@
 // Open as a TEXT file to:
 //   add a new entry before using a in a resource file
 //   delete an unused entry
+#pragma code_page(65001)
 
 #ifdef APSTUDIO_INVOKED
     #error this file is not editable by Microsoft Visual C++
