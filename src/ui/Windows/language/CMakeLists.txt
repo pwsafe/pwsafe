@@ -1,14 +1,16 @@
-set (LANG_SRCS
-    languageDLL.cpp
-    stdafx.cpp
-)
-
 set (LANG_RES ../PasswordSafe.rc ../res/PasswordSafe2.rc2 ../res/PasswordSafe3.rc2)
 
-set(CMAKE_CXX_FLAGS
-  "${CMAKE_CXX_FLAGS} /D languageDLL_EXPORTS")
+add_library(pwsafe_base MODULE)
+target_sources(pwsafe_base PRIVATE ${LANG_RES})
+target_link_options(pwsafe_base PRIVATE /NOENTRY)
+target_link_libraries(pwsafe_base PRIVATE harden_interface pws_version)
 
-add_library(pwsafe_base SHARED ${LANG_SRCS} ${LANG_RES})
-target_link_libraries(pws_at PRIVATE harden_interface)
-set_property( TARGET pwsafe_base PROPERTY FOLDER I18N )
-set_target_properties(pwsafe_base PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
+set_target_properties(pwsafe_base PROPERTIES
+  FOLDER I18N
+  LINKER_LANGUAGE CXX
+)
+
+if (USE_INTERPROCEDURAL_OPTIMIZATION)
+  # There is no code, so disable LTO/LTCG for this target.
+  set_target_properties(pwsafe_base PROPERTIES INTERPROCEDURAL_OPTIMIZATION FALSE)
+endif ()
