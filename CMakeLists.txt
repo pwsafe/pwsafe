@@ -295,7 +295,7 @@ if (NOT WIN32)
   add_executable(pwsafe ${PWSAFE_SRCS})
 else (NOT WIN32)
    add_executable(pwsafe WIN32 ${PWSAFE_SRCS})
-   add_dependencies( pwsafe dlls) # i18n dlls
+   add_dependencies( pwsafe language-dlls) # i18n dlls
    if (NOT WX_WINDOWS)
       set (PWS_DLL_LIBS "pws_at" "pws_osk")
       set_target_properties(pwsafe PROPERTIES COMPILE_DEFINITIONS
