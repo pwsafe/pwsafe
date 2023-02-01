@@ -17,7 +17,7 @@ namespace pws_os {
    * loadLibraryTypes::SYS -- load from system dir
    * loadLibraryTypes::APP -- load from application dir
    * loadLibraryTypes::CUSTOM -- use specified path (ask system to find it)
-   * loadLibraryTypes::RESOURCE -- language tranalation resource file
+   * loadLibraryTypes::RESOURCE -- language translation resource file
    *
    * Linux: 'type' maps to 'flags' for dlopen()
    */
