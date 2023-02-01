@@ -70,10 +70,10 @@ I18N_HELPS := $(foreach i,\
 								DE ES FR RU ZH,\
 								help/pwsafe$(i)/pwsafe$(i).chm)
 I18N_DLLS := $(foreach i,\
-								AR CZ DE ES PL RU SV ZH FR DK KR NL,\
+								AR CZ DE DK ES FR HU IT KR NL PL PT_BR RU SL SV TR ZH,\
 								$(I18N_DLL_DIR)/pwsafe$(i).dll)
 I18N_DLLS_64 := $(foreach i,\
-								AR CZ DE ES PL RU SV ZH FR DK KR NL,\
+								AR CZ DE DK ES FR HU IT KR NL PL PT_BR RU SL SV TR ZH,\
 								$(I18N_DLL_DIR_64)/pwsafe$(i).dll)
 
 BIN_MANIFEST = README.md docs/ReleaseNotes.md LICENSE \
