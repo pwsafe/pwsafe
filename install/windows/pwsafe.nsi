@@ -502,6 +502,11 @@ Section /o "$(KOREAN_SUPPORT)" KoreanSection
   File /nonfatal "${LANG_DLL}\pwsafeKR.dll"
   File /nonfatal "..\..\help\pwsafeKR\pwsafeKR.chm"
 SectionEnd
+Section /o "$(PORTUGUESEBR_SUPPORT)" PortugueseBRSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "${LANG_DLL}\pwsafePT_BR.dll"
+  File /nonfatal "..\..\help\pwsafeKR\pwsafePT_BR.chm"
+SectionEnd
 Section /o "$(CZECH_SUPPORT)" CzechSection
   SetOutPath "$INSTDIR"  
   File /nonfatal "${LANG_DLL}\pwsafeCZ.dll"
