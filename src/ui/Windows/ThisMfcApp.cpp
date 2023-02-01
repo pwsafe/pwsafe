@@ -44,6 +44,7 @@
 
 #include "Shlwapi.h"
 
+#include <memory>
 #include <vector>
 #include <fstream>
 
@@ -1420,22 +1421,18 @@ void ThisMfcApp::GetLanguageFiles()
   // Add default embedded language - English
   const LCID AppLCID = MAKELCID(m_AppLangID, SORT_DEFAULT); // 0x0409 - English US
 
-  wchar_t *szLanguage_Native(NULL), *szLanguage_English(NULL);
-  wchar_t *szCountry_Native(NULL), *szCountry_English(NULL);
-
-  int inum = ::GetLocaleInfo(AppLCID, LOCALE_SNATIVELANGNAME, szLanguage_Native, 0);
+  int inum = ::GetLocaleInfo(AppLCID, LOCALE_SNATIVELANGNAME, nullptr, 0);
   if (inum > 0) {
-    szLanguage_Native = new wchar_t[inum + 1];
-    ::GetLocaleInfo(AppLCID, LOCALE_SNATIVELANGNAME, szLanguage_Native, inum);
+    const auto szLanguage_Native = std::make_unique<wchar_t[]>(inum + 1);
+    ::GetLocaleInfo(AppLCID, LOCALE_SNATIVELANGNAME, szLanguage_Native.get(), inum);
 
     st_lng.lcid = AppLCID;
     st_lng.xFlags = (wcscmp(sxLL.c_str(), L"EN") == 0) ? 0xC0 : 0x40;
     st_lng.wsLL = L"EN";
     st_lng.wsCC = L"";
-    st_lng.wsLanguage = szLanguage_Native;
+    st_lng.wsLanguage = szLanguage_Native.get();
 
     m_vlanguagefiles.push_back(st_lng);
-    delete[] szLanguage_Native;
   }
 
   CFileFind finder;
@@ -1474,39 +1471,41 @@ void ThisMfcApp::GetLanguageFiles()
     // Create LCID
     LCID lcid = MAKELCID(FoundResLangID, SORT_DEFAULT);
 
-    inum = ::GetLocaleInfo(lcid, LOCALE_SNATIVELANGNAME, NULL, 0);
+    inum = ::GetLocaleInfo(lcid, LOCALE_SNATIVELANGNAME, nullptr, 0);
     if (inum > 0) {
+      std::unique_ptr<wchar_t[]> szCountry_Native;
+      std::unique_ptr<wchar_t[]> szCountry_English;
+
       // Get language name in that language
-      szLanguage_Native = new wchar_t[inum + 1];
-      ::GetLocaleInfo(lcid, LOCALE_SNATIVELANGNAME, szLanguage_Native, inum);
+      const auto szLanguage_Native = std::make_unique<wchar_t[]>(inum + 1);
+      ::GetLocaleInfo(lcid, LOCALE_SNATIVELANGNAME, szLanguage_Native.get(), inum);
 
       int jnum = 0;
       if (!cs_CC.IsEmpty()) {
         // Get Country name in that language
-        jnum = ::GetLocaleInfo(lcid, LOCALE_SNATIVECTRYNAME, NULL, 0);
+        jnum = ::GetLocaleInfo(lcid, LOCALE_SNATIVECTRYNAME, nullptr, 0);
         if (jnum > 0) {
-          szCountry_Native = new wchar_t[jnum + 1];
-          ::GetLocaleInfo(lcid, LOCALE_SNATIVECTRYNAME, szCountry_Native, jnum);
+          szCountry_Native = std::make_unique<wchar_t[]>(jnum + 1);
+          ::GetLocaleInfo(lcid, LOCALE_SNATIVECTRYNAME, szCountry_Native.get(), jnum);
         }
         // Get Country name in English
         int knum = ::GetLocaleInfo(lcid, LOCALE_SENGCOUNTRY, NULL, 0);
         if (knum > 0) {
-          szCountry_English = new wchar_t[knum + 1];
-          ::GetLocaleInfo(lcid, LOCALE_SENGCOUNTRY, szCountry_English, knum);
+          szCountry_English = std::make_unique<wchar_t[]>(knum + 1);
+          ::GetLocaleInfo(lcid, LOCALE_SENGCOUNTRY, szCountry_English.get(), knum);
         }
       }
 
       // Now try to make first character of language name in that language upper case
       // Should use LCMapStringEx but that is for Vista + and we support XP & later
-      wchar_t *szLanguage_NativeUpper(NULL);
       int iu = LCMapString(lcid, LCMAP_LINGUISTIC_CASING | LCMAP_UPPERCASE,
-                           szLanguage_Native, inum,
-                           szLanguage_NativeUpper, 0);
+                           szLanguage_Native.get(), inum,
+                           nullptr, 0);
       if (iu > 0) {
-        szLanguage_NativeUpper = new wchar_t[iu + 1];
+        const auto szLanguage_NativeUpper = std::make_unique<wchar_t[]>(iu + 1);
         iu = LCMapString(lcid, LCMAP_LINGUISTIC_CASING | LCMAP_UPPERCASE,
-                         szLanguage_Native, inum,
-                         szLanguage_NativeUpper, iu);
+                         szLanguage_Native.get(), inum,
+                         szLanguage_NativeUpper.get(), iu);
         if (szLanguage_NativeUpper[0] != L'?') {
           // Assume all OK and language supports Upper case and is read Left->Right
           // Seems to translate non-Latin characters from Hindi, Punjabi, Hebrew, Korean & Chinese
@@ -1515,26 +1514,25 @@ void ThisMfcApp::GetLanguageFiles()
           // Works for Russian Cyrillic alphabet though. Can't promise for future languages!
           szLanguage_Native[0] = szLanguage_NativeUpper[0];
         }
-        delete[] szLanguage_NativeUpper;
       }
       // Get language name in English
-      int lnum = ::GetLocaleInfo(lcid, LOCALE_SENGLANGUAGE, NULL, 0);
+      int lnum = ::GetLocaleInfo(lcid, LOCALE_SENGLANGUAGE, nullptr, 0);
       if (lnum > 0) {
-        szLanguage_English = new wchar_t[lnum + 1];
-        ::GetLocaleInfo(lcid, LOCALE_SENGLANGUAGE, szLanguage_English, lnum);
-        if (wcscmp(szLanguage_Native, szLanguage_English) != 0) {
+        const auto szLanguage_English = std::make_unique<wchar_t[]>(lnum + 1);
+        ::GetLocaleInfo(lcid, LOCALE_SENGLANGUAGE, szLanguage_English.get(), lnum);
+        if (wcscmp(szLanguage_Native.get(), szLanguage_English.get()) != 0) {
           if (jnum > 0)
-            cs_language.Format(L"%s - %s (%s - %s)", szLanguage_Native, szCountry_Native, szLanguage_English, szCountry_English);
+            cs_language.Format(L"%s - %s (%s - %s)", szLanguage_Native.get(), szCountry_Native.get(), szLanguage_English.get(), szCountry_English.get());
           else
-            cs_language.Format(L"%s (%s)", szLanguage_Native, szLanguage_English);
+            cs_language.Format(L"%s (%s)", szLanguage_Native.get(), szLanguage_English.get());
         } else {
           if (jnum > 0)
-            cs_language.Format(L"%s - %s", szLanguage_Native, szCountry_Native);
+            cs_language.Format(L"%s - %s", szLanguage_Native.get(), szCountry_Native.get());
           else
-            cs_language.Format(L"%s", szLanguage_Native);
+            cs_language.Format(L"%s", szLanguage_Native.get());
         }
       } else
-        cs_language.Format(L"%s", szLanguage_Native);
+        cs_language.Format(L"%s", szLanguage_Native.get());
 
       st_lng.lcid = lcid;
       st_lng.xFlags = (m_ResLangID == FoundResLangID) ? 0x80 : 0x00;
@@ -1544,10 +1542,6 @@ void ThisMfcApp::GetLanguageFiles()
       st_lng.wsLanguage = (LPCWSTR)cs_language;
 
       m_vlanguagefiles.push_back(st_lng);
-      delete[] szLanguage_Native;
-      delete[] szLanguage_English;
-      delete[] szCountry_Native;
-      delete[] szCountry_English;
     }
   }
   finder.Close();
