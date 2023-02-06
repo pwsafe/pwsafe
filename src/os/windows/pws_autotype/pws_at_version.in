@@ -6,8 +6,8 @@
  * http://www.opensource.org/licenses/artistic-license-2.0.php
  */
 
-#ifndef _VERSION_H_
-#define _VERSION_H_
+#ifndef _PWS_AT_VERSION_H_
+#define _PWS_ATVERSION_H_
 
 // version.h is automatically generated from version.in by a custom
 // pre-build step that uses git's 'describe' function and
@@ -17,10 +17,10 @@
 //   Revision  = 0 for all Formally Released versions
 //   Revision != 0 for all Intermediate versions
 
-#define PRODUCTVER     @pwsafe_at_VERSION_MAJOR@, @pwsafe_at_VERSION_MINOR@, @pwsafe_at_REVISION@
-#define STRATPRODUCTVER  "@pwsafe_at_VERSION_MAJOR@, @pwsafe_at_VERSION_MINOR@, @pwsafe_at_REVISION@, @pwsafe_at_VERSTRING@\0"
+#define PRODUCTVER         @pwsafe_at_PRODUCTVER@
+#define STRATPRODUCTVER    "@pwsafe_at_PRODUCTVER@, @pwsafe_at_VERSTRING@\0"
 
-#define FILEVER        PRODUCTVER
-#define STRATFILEVER   STRATPRODUCTVER
+#define FILEVER        @pwsafe_at_PRODUCTVER@
+#define STRATFILEVER   "@pwsafe_at_PRODUCTVER@, @pwsafe_at_VERSTRING@\0"
 
-#endif // _VERSION_H_
+#endif // _PWS_AT_VERSION_H_

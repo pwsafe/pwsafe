@@ -12,7 +12,7 @@
 // Version
 //
 
-#include "version.h"
+#include "pws_osk_version.h"
 
 #if defined(SPECIAL_BUILD)
 #define PWS_FLAGS_PRIVATEBUILD (VS_FF_PRIVATEBUILD|VS_FF_PRERELEASE)

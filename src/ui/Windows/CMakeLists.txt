@@ -62,7 +62,6 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/ImportXMLDlg.h
             src/ui/Windows/InfoDisplay.h
             src/ui/Windows/InputBox.h
-            src/ui/Windows/language/stdafx.h
             src/ui/Windows/LVHdrCtrl.h
             src/ui/Windows/ManagePSWDPols.h
             src/ui/Windows/MenuShortcuts.h
@@ -205,8 +204,6 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/ImportXMLDlg.cpp
             src/ui/Windows/InfoDisplay.cpp
             src/ui/Windows/InputBox.cpp
-            src/ui/Windows/language/languageDLL.cpp
-            src/ui/Windows/language/stdafx.cpp
             src/ui/Windows/LVHdrCtrl.cpp
             src/ui/Windows/main.cpp
             src/ui/Windows/MainEdit.cpp

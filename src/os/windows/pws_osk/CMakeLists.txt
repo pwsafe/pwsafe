@@ -36,13 +36,15 @@ endif (NOT DEFINED pwsafe_osk_VERSION_MINOR)
 
 if (pwsafe_osk_REVISION)
    set (pwsafe_osk_VERSION "${pwsafe_osk_VERSION_MAJOR}.${pwsafe_osk_VERSION_MINOR}.${pwsafe_osk_REVISION}")
+   set (pwsafe_osk_PRODUCTVER "${pwsafe_osk_VERSION_MAJOR}, ${pwsafe_osk_VERSION_MINOR}, ${pwsafe_osk_REVISION}")
 else ()
    set (pwsafe_osk_VERSION "${pwsafe_osk_VERSION_MAJOR}.${pwsafe_osk_VERSION_MINOR}.0")
+   set (pwsafe_osk_PRODUCTVER "${pwsafe_osk_VERSION_MAJOR}, ${pwsafe_osk_VERSION_MINOR}, 0")
 endif (pwsafe_osk_REVISION)
 
-set (pwsafe_osk_VERSION "${pwsafe_osk_VERSION_MAJOR}.${pwsafe_osk_VERSION_MINOR}.${pwsafe_osk_REVISION}")
+find_package(Git REQUIRED)
 
-execute_process(COMMAND "git" "describe" "--all" "--always" "--dirty=+" "--long"
+execute_process(COMMAND "${GIT_EXECUTABLE}" describe --all --always --dirty=+ --long
   WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
   RESULT_VARIABLE res
   OUTPUT_VARIABLE pwsafe_osk_VERSTRING
@@ -58,18 +60,20 @@ set (OSK_SRCS
 )
 set (OSK_RES pws_osk.rc)
 
-set (VERSION_OSK_IN "version.in")
+set (VERSION_OSK_IN "pws_osk_version.in")
 
 configure_file (
-    ${VERSION_OSK_IN}
-    "version.h"
+    "${VERSION_OSK_IN}"
+    "pws_osk_version.h"
     )
 
-set(CMAKE_CXX_FLAGS
-  "${CMAKE_CXX_FLAGS} /D PWS_OSK_EXPORTS")
-add_library(pws_osk SHARED ${OSK_SRCS} ${OSK_RES})
-set_target_properties(pws_osk PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}"
-    LINK_FLAGS "/MAP /DEBUG")
+add_library(pws_osk SHARED)
+target_sources(pws_osk PRIVATE ${OSK_SRCS} ${OSK_RES})
 target_link_libraries(pws_osk PRIVATE harden_interface)
+target_include_directories(pws_osk BEFORE PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
+target_compile_definitions(pws_osk PRIVATE PWS_OSK_EXPORTS)
+target_link_options(pws_osk PRIVATE /MAP)
+set_target_properties(pws_osk PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
 
 install (TARGETS pws_osk RUNTIME DESTINATION bin)
+

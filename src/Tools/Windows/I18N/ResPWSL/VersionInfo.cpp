@@ -215,11 +215,11 @@ BOOL CVersionInfo::FromFile(const CString &strModulePath, LPCTSTR lpszResourceId
   ASSERT(viSaveBuf.GetPosition() == viLoadBuf.GetPosition());
   ASSERT(!memcmp(viSaveBuf.GetData(), viLoadBuf.GetData(), viSaveBuf.GetPosition()));
 
-  CFile fOriginal(_T("f1.res"), CFile::modeCreate | CFile::modeWrite);
+  CFile fOriginal(strModulePath + _T("-f1.res"), CFile::modeCreate | CFile::modeWrite);
   fOriginal.Write(viLoadBuf.GetData(), viLoadBuf.GetPosition());
   fOriginal.Close();
 
-  CFile fSaved(_T("f2.res"), CFile::modeCreate | CFile::modeWrite);
+  CFile fSaved(strModulePath + _T("-f2.res"), CFile::modeCreate | CFile::modeWrite);
   fSaved.Write(viSaveBuf.GetData(), viSaveBuf.GetPosition());
   fSaved.Close();
 
