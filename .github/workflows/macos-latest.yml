@@ -29,7 +29,7 @@ jobs:
       # If you need to rebuild wxWidgets for some reason, say you changed the build params, just increment FORCE_REBUILD_WX
       run: |
         echo "WX_VERS=3.0.5" >> $GITHUB_ENV
-        echo "MACOS_VER_MIN=10.9" >> $GITHUB_ENV
+        echo "MACOS_VER_MIN=10.14" >> $GITHUB_ENV
         echo "WX_SRC_DIR=$HOME/wxWidgets" >> $GITHUB_ENV
         echo "WX_BUILD_DIR=$HOME/wxbuild" >> $GITHUB_ENV
         echo "XCODE_VER=14.0.1" >> $GITHUB_ENV
