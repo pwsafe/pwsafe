@@ -2583,6 +2583,13 @@ void PasswordSafeFrame::HideUI(bool lock)
 
 void PasswordSafeFrame::IconizeOrHideAndLock()
 {
+  // Close child Dialogs, hide if close failed:
+  auto children = GetChildren();
+  for (auto child : children)
+    if (dynamic_cast<wxDialog *>(child) != nullptr)
+      if (!child->Close(true))
+        child->Hide();
+  
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
     if (!m_sysTray->IsLocked()) {
       HideUI(true);
