@@ -59,7 +59,7 @@ wchar_t* pws_os::wcsdup (const wchar_t *src)
   return (wchar_t *)memcpy(dest, src, len*sizeof(wchar_t));
 }
 
-**
+/**
  * Get TCHAR buffer size by format string with parameters
  * @param[in] fmt - format string
  * @param[in] args - arguments for format string
