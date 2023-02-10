@@ -10,8 +10,19 @@
 #define _PWSLOG_H
 
 #include "os/typedefs.h"
+#include "os/logit.h"
 
 #include <deque>
+
+#define PWS_LOGIT_CONCAT(str) PWS_LOGIT_HEADER L ## str
+
+// Now the actual logging macros
+#define PWS_LOGIT PWSLog::GetLog()->Add(pws_os::Logit(PWS_LOGIT_HEADER, __FILE__, __FUNCTION__))
+#define PWS_LOGIT_ARGS0(str) PWSLog::GetLog()->Add(pws_os::Logit(PWS_LOGIT_CONCAT(str), \
+                                                   __FILE__, __FUNCTION__))
+#define PWS_LOGIT_ARGS(format_str, ...) PWSLog::GetLog()->Add(pws_os::Logit(PWS_LOGIT_CONCAT(format_str), \
+                                                              __FILE__, __FUNCTION__, __VA_ARGS__))
+
 
 class PWSLog
 {

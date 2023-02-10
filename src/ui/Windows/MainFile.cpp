@@ -33,23 +33,20 @@
 
 #include "core/PWSprefs.h"
 #include "core/PWSdirs.h"
+#include "core/PWSLog.h"
 #include "core/Report.h"
 #include "core/ItemData.h"
 #include "core/core.h"
 #include "core/VerifyFormat.h"
-#include "core/SysInfo.h"
 #include "core/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
-#include "core/ExpiredList.h"
 
 #include "os/file.h"
 #include "os/dir.h"
-#include "os/logit.h"
 
 #include "resource.h"
 #include "resource2.h"  // Menu, Toolbar & Accelerator resources
 #include "resource3.h"  // String resources
 
-#include <sys/types.h>
 #include <bitset>
 #include <vector>
 

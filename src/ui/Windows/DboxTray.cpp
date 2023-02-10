@@ -24,8 +24,7 @@
 #include "core/pwscore.h"
 #include "core/PWSAuxParse.h"
 #include "core/RUEList.h"
-
-#include "os/logit.h"
+#include "core/PWSLog.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

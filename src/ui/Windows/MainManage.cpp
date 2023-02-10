@@ -21,12 +21,6 @@
 #include "PasskeyChangeDlg.h"
 #include "PasskeyEntry.h"
 #include "Options_PropertySheet.h"
-#include "OptionsSystem.h"
-#include "OptionsSecurity.h"
-#include "OptionsDisplay.h"
-#include "OptionsPasswordHistory.h"
-#include "OptionsMisc.h"
-#include "OptionsBackup.h"
 #include "OptionsShortcuts.h"
 #include "AddEdit_DateTimes.h"
 #include "PasswordPolicyDlg.h"
@@ -37,10 +31,9 @@
 #include "core/core.h"
 #include "core/pwsprefs.h"
 #include "core/PWSdirs.h"
-#include "core/PWSAuxParse.h"
+#include "core/PWSLog.h"
 
 #include "os/dir.h"
-#include "os/logit.h"
 
 using namespace std;
 
