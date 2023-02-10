@@ -219,7 +219,6 @@ size_t _writecbc1st(FILE* fp, const unsigned char** buffer, size_t *length, unsi
 
   unsigned char* curblock = nullptr;
   ASSERT(BS <= sizeof(block1)); // if needed we can be more sophisticated here...
-
   curblock = block1;
   // Fill unused bytes of length with random data, to make
   // a dictionary attack harder
@@ -802,54 +801,6 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
   oss.write(reinterpret_cast<const char *>(utf8), utf8Len);
   oss << "</" << name << ">" << endl;
   return oss.str();
-}
-
-/**
- * Get TCHAR buffer size by format string with parameters
- * @param[in] fmt - format string
- * @param[in] args - arguments for format string
- * @return buffer size including nullptr-terminating character
-*/
-unsigned int GetStringBufSize(const TCHAR *fmt, va_list args)
-{
-  TCHAR *buffer=nullptr;
-
-  unsigned int len = 0;
-
-#ifdef _WIN32
-  len = _vsctprintf(fmt, args) + 1;
-#else
-  va_list ar;
-  va_copy(ar, args);
-  // Linux doesn't do this correctly :-(
-  unsigned int guess = 16;
-  int nBytes = -1;
-  while (true) {
-    len = guess;
-    buffer = new TCHAR[len];
-    nBytes = _vstprintf_s(buffer, len, fmt, ar);
-    va_end(ar);//after using args we should reset list
-    va_copy(ar, args);
-    /*
-     * If 'nBytes' is zero due to an empty format string,
-     * it would result in an endless memory-consuming loop.
-     */
-    ASSERT(nBytes != 0);
-    if (nBytes++ > 0) {
-      len = nBytes;
-      break;
-    } else { // too small, resize & try again
-      delete[] buffer;
-      buffer = nullptr;
-      guess *= 2;
-    }
-  }
-  va_end(ar);
-#endif
-  if (buffer)
-    delete[] buffer;
-
-  return len;
 }
 
 StringX PWSUtil::DeDupString(StringX &in_string)

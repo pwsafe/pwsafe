@@ -16,6 +16,7 @@
 #include "StringXStream.h"
 #include "UTF8Conv.h"
 #include "PWPolicy.h"
+#include "PWSLog.h"
 
 #include "os/typedefs.h"
 #include "os/debug.h"
@@ -24,7 +25,6 @@
 #include "os/env.h"
 #include "os/dir.h"
 #include "os/registry.h"
-#include "os/logit.h"
 
 #include <fstream>
 #include <algorithm>

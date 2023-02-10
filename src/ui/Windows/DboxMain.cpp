@@ -45,13 +45,13 @@
 #include "core/PWSdirs.h"
 #include "core/PWSFilters.h"
 #include "core/PWSAuxParse.h"
+#include "core/PWSLog.h"
 
 #include "core/XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"
 
 #include "os/file.h"
 #include "os/env.h"
 #include "os/dir.h"
-#include "os/logit.h"
 #include "os/lib.h"
 
 #include "resource.h"

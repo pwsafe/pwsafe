@@ -7,20 +7,19 @@
 */
 
 #include "../logit.h"
-#include "../../core/PWSLog.h"
-#include "../../core/Util.h"
+#include "../pws_str.h"
 
 #include <stdio.h>
 #include <stdarg.h>
 
-void pws_os::Logit(LPCTSTR lpszFormat, ...)
+const stringT pws_os::Logit(LPCTSTR lpszFormat, ...)
 {
   va_list args;
   va_start(args, lpszFormat);
 
   int num_written;
 
-  unsigned int num_required = GetStringBufSize(lpszFormat, args);
+  unsigned int num_required = pws_os::GetStringBufSize(lpszFormat, args);
   va_end(args);  // after using args we should reset list
   va_start(args, lpszFormat);
 
@@ -29,9 +28,8 @@ void pws_os::Logit(LPCTSTR lpszFormat, ...)
   assert(static_cast<int>(num_required) == num_written + 1);
   szBuffer[num_required - 1] = L'\0';
   UNREFERENCED_PARAMETER(num_written); // used only in assert
-  const stringT s(szBuffer);
-  PWSLog::GetLog()->Add(s);
+  const stringT retval(szBuffer);
   delete[] szBuffer;
-
   va_end(args);
+  return retval;
 }

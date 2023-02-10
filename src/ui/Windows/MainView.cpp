@@ -21,7 +21,6 @@
 #include "Fonts.h"
 #include "InfoDisplay.h"
 #include "ViewReport.h"
-#include "ExpPWListDlg.h"
 #include "MenuShortcuts.h"
 #include "HKModifiers.h"
 
@@ -30,13 +29,13 @@
 #include "core/pwsprefs.h"
 #include "core/core.h"
 #include "core/PWHistory.h"
+#include "core/PWSLog.h"
 #include "core/StringXStream.h"
 
 #include "os/Debug.h"
 #include "os/dir.h"
 #include "os/env.h"
 #include "os/run.h"
-#include "os/logit.h"
 #include "os/lib.h"
 
 #include "resource.h"

@@ -13,7 +13,7 @@
 #include "PWScore.h"
 #include "PWSFilters.h"
 #include "PWSdirs.h"
-#include "PWSprefs.h"
+#include "PWSLog.h"
 #include "core.h"
 #include "crypto/pbkdf2.h"
 #include "crypto/KeyWrap.h"
@@ -24,7 +24,6 @@
 
 #include "os/debug.h"
 #include "os/file.h"
-#include "os/logit.h"
 #include "os/utf8conv.h"
 
 #include "XML/XMLDefs.h"  // Required if testing "USE_XML_LIBRARY"

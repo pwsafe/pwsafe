@@ -314,8 +314,6 @@ class dereference {
     const value_type& operator()(const_iterator itr) const { return *itr; }
 };
 
-extern unsigned int GetStringBufSize(const TCHAR *fmt, va_list args);
-
 bool FindNoCase( const StringX& src, const StringX& dest);
 
 

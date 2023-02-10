@@ -13,6 +13,7 @@
 #include "crypto/TwoFish.h"
 #include "PWSprefs.h"
 #include "PWHistory.h"
+#include "PWSLog.h"
 #include "PWSrand.h"
 #include "Util.h"
 #include "SysInfo.h"

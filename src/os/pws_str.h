@@ -17,6 +17,16 @@ namespace pws_os {
     extern int wctoi(const wchar_t *s);
     extern double wctof(const wchar_t *s);
     extern int sswscanf(const wchar_t *str, const wchar_t *format, ...);
+    TCHAR* pws_itot(int val, TCHAR* out, unsigned base);
+
+    
+/**
+ * Get TCHAR buffer size by format string with parameters
+ * @param[in] fmt - format string
+ * @param[in] args - arguments for format string
+ * @return buffer size including null-terminating character
+*/
+    extern unsigned int GetStringBufSize(const TCHAR *fmt, va_list args);
 };
 
 #endif /* __PWS_STR_H */

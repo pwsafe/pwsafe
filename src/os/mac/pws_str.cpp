@@ -58,3 +58,44 @@ wchar_t* pws_os::wcsdup (const wchar_t *src)
   }
   return (wchar_t *)memcpy(dest, src, len*sizeof(wchar_t));
 }
+
+**
+ * Get TCHAR buffer size by format string with parameters
+ * @param[in] fmt - format string
+ * @param[in] args - arguments for format string
+ * @return buffer size including nullptr-terminating character
+*/
+unsigned int pws_os::GetStringBufSize(const TCHAR *fmt, va_list args)
+{
+  TCHAR *buffer=nullptr;
+  unsigned int len = 0;
+  va_list ar;
+  va_copy(ar, args);
+  // Linux doesn't do this correctly :-(
+  unsigned int guess = 16;
+  int nBytes = -1;
+  while (true) {
+    len = guess;
+    buffer = new TCHAR[len];
+    nBytes = _vstprintf_s(buffer, len, fmt, ar);
+    va_end(ar);//after using args we should reset list
+    va_copy(ar, args);
+    /*
+     * If 'nBytes' is zero due to an empty format string,
+     * it would result in an endless memory-consuming loop.
+     */
+    ASSERT(nBytes != 0);
+    if (nBytes++ > 0) {
+      len = nBytes;
+      break;
+    } else { // too small, resize & try again
+      delete[] buffer;
+      buffer = nullptr;
+      guess *= 2;
+    }
+  }
+
+  va_end(ar);
+  delete[] buffer;
+  return len;
+}
