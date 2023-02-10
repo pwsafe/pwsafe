@@ -13,11 +13,12 @@
 // TRACE replacement
 #include "../debug.h"
 #include "../../core/util.h"
+#include "../pws_str.h"
 #include <wtypes.h>
 
 #if defined(_DEBUG) || defined(DEBUG)
 
-#include <stdio.h>
+#include <cstdio>
 
 // Debug output - Same usage as MFC TRACE
 // Adds timestamp to start of every piece of debug output
