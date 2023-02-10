@@ -12,6 +12,7 @@ if (WIN32)
     windows/logit.cpp
     windows/media.cpp
     windows/mem.cpp
+    windows//pws_str.cpp
     windows/rand.cpp
     windows/registry.cpp
     windows/run.cpp

@@ -7,7 +7,7 @@
 */
 
 #include "../logit.h"
-#include "../../core/Util.h" // TODO - remove this dependency
+#include "../pws_str.h"
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -19,7 +19,7 @@ const stringT pws_os::Logit(LPCTSTR lpszFormat, ...)
 
   int num_written;
 
-  unsigned int num_required = GetStringBufSize(lpszFormat, args);
+  unsigned int num_required = pws_os::GetStringBufSize(lpszFormat, args);
   va_end(args);  // after using args we should reset list
   va_start(args, lpszFormat);
 

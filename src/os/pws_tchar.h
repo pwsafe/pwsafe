@@ -55,7 +55,7 @@
 #define _tcsdup pws_os::wcsdup
 #else
 #define _tcsicmp(s1, s2) wcscasecmp(s1, s2)
-# include "unix/pws_str.h"
+#include "./pws_str.h"
 #endif
 #define _ttoi(s) pws_os::wctoi(s)
 #define _tstoi(s) pws_os::wctoi(s)

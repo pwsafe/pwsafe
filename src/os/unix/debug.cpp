@@ -7,7 +7,7 @@
 */
 
 #include "../debug.h"
-#include "../core/Util.h"
+#include "../pws_str.h"
 
 #if defined(_DEBUG) || defined(DEBUG)
 
@@ -23,7 +23,7 @@ void pws_os::Trace(LPCTSTR lpszFormat, ...)
   va_list args;
   va_start(args, lpszFormat);
 
-  unsigned int num_required = GetStringBufSize(lpszFormat, args);
+  unsigned int num_required = pws_os::GetStringBufSize(lpszFormat, args);
   va_end(args);//after using args we should reset list
   va_start(args, lpszFormat);
 
