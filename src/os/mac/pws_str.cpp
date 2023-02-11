@@ -78,7 +78,7 @@ unsigned int pws_os::GetStringBufSize(const TCHAR *fmt, va_list args)
   while (true) {
     len = guess;
     buffer = new TCHAR[len];
-    nBytes = _vstprintf_s(buffer, len, fmt, ar);
+    nBytes = vswprintf_s(buffer, len, fmt, ar);
     va_end(ar);//after using args we should reset list
     va_copy(ar, args);
     /*
