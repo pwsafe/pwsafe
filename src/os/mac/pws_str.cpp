@@ -78,7 +78,7 @@ unsigned int pws_os::GetStringBufSize(const TCHAR *fmt, va_list args)
   while (true) {
     len = guess;
     buffer = new TCHAR[len];
-    nBytes = vswprintf_s(buffer, len, fmt, ar);
+    nBytes = vswprintf(buffer, len, fmt, ar); // looks like this is vswprintf_s for Xcode
     va_end(ar);//after using args we should reset list
     va_copy(ar, args);
     /*
