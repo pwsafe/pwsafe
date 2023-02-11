@@ -13,7 +13,8 @@
 #include <wchar.h>
 #include "pws_str.h"
 #include "../utf8conv.h"
-#include <errno.h>
+#include <cerrno>
+#include <cstdio>
 
 int pws_os::wctoi(const wchar_t *s)
 {
