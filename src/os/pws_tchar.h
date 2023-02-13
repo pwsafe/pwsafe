@@ -51,7 +51,7 @@
 #define _stscanf_s swscanf_s
 #ifdef __PWS_MACINTOSH__
 # include "./mac/pws_str.h"
-#define _tcsicmp pws_os::wcscasecmp
+#define _tcsicmp wcscasecmp
 #define _tcsdup pws_os::wcsdup
 #else
 #define _tcsicmp(s1, s2) wcscasecmp(s1, s2)
