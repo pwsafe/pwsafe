@@ -38,7 +38,7 @@ const stringT pws_os::Logit(LPCTSTR lpszFormat, ...)
   }
   while(!(nwritten > 0 && nwritten < len) && len <= MAX_LOG_STATEMENT);
 
-  StringT retval(szbuffer);
+  stringT retval(szbuffer);
   delete[] szbuffer;
   va_end(args);
   return retval;
