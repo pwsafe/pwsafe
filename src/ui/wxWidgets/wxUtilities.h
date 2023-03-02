@@ -349,9 +349,21 @@ public:
 typedef wxTextDataObject wxTextDataObjectEx;
 #endif // __WXGTK20__
 
+bool IsCurrentDesktopKde();
+
 // Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable();
+
+/**
+ * @brief Creates a taskbar icon with text overlay.
+ *
+ * @param icon the icon that is acting as basis for the overlay
+ * @param color the overlay color
+ * @param text the overlay text
+ * @return wxIcon the icon with text overlay
+ */
+wxIcon CreateIconWithOverlay(const wxIcon& icon, const wxColour& color, const wxString& text);
 
 /**
  * Fixes a spinners initial, resp. minimum required size that is needed to fully show the control.

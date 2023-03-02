@@ -51,6 +51,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/TimedTaskChain.h
     src/ui/wxWidgets/PasswordSubsetDlg.h
     src/ui/wxWidgets/CryptKeyEntryDlg.h
+    src/ui/wxWidgets/SetDatabaseIdDlg.h
     src/ui/wxWidgets/SetFiltersDlg.h
     src/ui/wxWidgets/ManageFiltersDlg.h
     src/ui/wxWidgets/ViewAttachmentDlg.h
@@ -126,6 +127,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/TimedTaskChain.cpp
     src/ui/wxWidgets/PasswordSubsetDlg.cpp
     src/ui/wxWidgets/CryptKeyEntryDlg.cpp
+    src/ui/wxWidgets/SetDatabaseIdDlg.cpp
     src/ui/wxWidgets/SetFiltersDlg.cpp
     src/ui/wxWidgets/ManageFiltersDlg.cpp
     src/ui/wxWidgets/ViewAttachmentDlg.cpp
