@@ -7490,8 +7490,8 @@ msgid "YubiKey Serial Number:"
 msgstr "YubiKey Serienummer:"
 
 #. Resource IDs: (1469)
-msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe"
-msgstr "YubiKey voor PasswordSafe kan gekocht worden op http://www.yubico.com/PasswordSafe"
+msgid "YubiKey for PasswordSafe can be purchased at https://www.yubico.com/works-with-yubikey/catalog/password-safe/"
+msgstr "YubiKey voor PasswordSafe kan gekocht worden op https://www.yubico.com/works-with-yubikey/catalog/password-safe/"
 
 #. Resource IDs: (6005)
 msgid "YubiKey initialized successfully, close this message box and activate it."

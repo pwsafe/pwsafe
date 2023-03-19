@@ -7754,8 +7754,8 @@ msgid "YubiKey Serial Number:"
 msgstr "Серийный номер YubiKey"
 
 #. Resource IDs: (1469)
-msgid "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe"
-msgstr "YubiKey для Password Safe может быть приобретён на сайте http://www.yubico.com/PasswordSafe"
+msgid "YubiKey for PasswordSafe can be purchased at https://www.yubico.com/works-with-yubikey/catalog/password-safe/"
+msgstr "YubiKey для Password Safe может быть приобретён на сайте https://www.yubico.com/works-with-yubikey/catalog/password-safe/"
 
 # После инициализации. activate==коснуться кнопки на токене
 #. Resource IDs: (6005)

@@ -11450,10 +11450,10 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 
 #~ msgid ""
 #~ "YubiKey for PasswordSafe can be purchased at "
-#~ "http://www.yubico.com/PasswordSafe"
+#~ "https://www.yubico.com/works-with-yubikey/catalog/password-safe/"
 #~ msgstr ""
 #~ "YubiKey для Password Safe может быть приобретён на сайте "
-#~ "http://www.yubico.com/PasswordSafe"
+#~ "https://www.yubico.com/works-with-yubikey/catalog/password-safe/"
 
 # После инициализации. activate==коснуться кнопки на токене
 #~ msgid ""
