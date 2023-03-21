@@ -2699,7 +2699,7 @@ void AddEditPropSheetDlg::OnExpRadiobuttonSelected( wxCommandEvent& evt )
     wxDateTime xdt(wxDateTime::Now());
     xdt += wxDateSpan(0, 0, 0, m_ExpirationTimeInterval);
     m_DatesTimesExpiryDateCtrl->SetValue(xdt);
-    m_Recurring = true;
+    m_Recurring = false;
     TransferDataToWindow();
   }
 
