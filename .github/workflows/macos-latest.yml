@@ -64,7 +64,9 @@ jobs:
         cd $WX_SRC_DIR
         # use built-in versions of jpeg, tiff & png libs to avoid linking with those in /usr/local/opt
         ./configure --enable-universal_binary=x86_64,arm64 --prefix=$WX_BUILD_DIR --disable-shared --enable-unicode --with-macosx-version-min=$MACOS_VER_MIN --with-libpng=builtin --with-libjpeg=builtin --with-libtiff=builtin --with-regex=builtin --without-liblzma
-        make
+        HOST_NCPU=`sysctl -n hw.ncpu`
+        echo "Running make with -j $HOST_NCPU"
+        make -j $HOST_NCPU
         make install
         du -sh $WX_BUILD_DIR
 
