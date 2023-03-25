@@ -33,7 +33,7 @@ jobs:
         echo "WX_SRC_DIR=$HOME/wxWidgets" >> $GITHUB_ENV
         echo "WX_BUILD_DIR=$HOME/wxbuild" >> $GITHUB_ENV
         echo "XCODE_VER=14.0.1" >> $GITHUB_ENV
-        echo "FORCE_REBUILD_WX=4" >> $GITHUB_ENV
+        echo "FORCE_REBUILD_WX=5" >> $GITHUB_ENV
 
     - name: Force compatible Xcode version
       run: sudo xcode-select -s /Applications/Xcode_${XCODE_VER}.app/Contents/Developer
@@ -63,7 +63,7 @@ jobs:
         mkdir -p $WX_BUILD_DIR
         cd $WX_SRC_DIR
         # use built-in versions of jpeg, tiff & png libs to avoid linking with those in /usr/local/opt
-        ./configure --prefix=$WX_BUILD_DIR --disable-shared --enable-unicode --with-macosx-version-min=$MACOS_VER_MIN --with-libpng=builtin --with-libjpeg=builtin --with-libtiff=builtin --with-regex=builtin --without-liblzma
+        ./configure --enable-universal_binary=x86_64,arm64 --prefix=$WX_BUILD_DIR --disable-shared --enable-unicode --with-macosx-version-min=$MACOS_VER_MIN --with-libpng=builtin --with-libjpeg=builtin --with-libtiff=builtin --with-regex=builtin --without-liblzma
         make
         make install
         du -sh $WX_BUILD_DIR
