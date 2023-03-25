@@ -70,9 +70,11 @@ jobs:
         make install
         du -sh $WX_BUILD_DIR
 
-    - name: Generate xcconfigs
+    - name: Generate and print xcconfigs
       working-directory: ${{ github.workspace }}
-      run: Xcode/generate-configs -r $WX_BUILD_DIR/bin/wx-config > Xcode/pwsafe-release.xcconfig
+      run: |
+        Xcode/generate-configs -r $WX_BUILD_DIR/bin/wx-config > Xcode/pwsafe-release.xcconfig
+        cat Xcode/pwsafe-release.xcconfig
     
     - name: Build pwsafe
       working-directory: ${{ github.workspace }}
