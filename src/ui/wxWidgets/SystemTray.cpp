@@ -288,15 +288,15 @@ void SystemTray::ShowSetDatabaseIdDialog()
 
   if (m_DatabaseID < 1) {
     m_TrayIconWithOverlay = false;
-    SetTrayStatus(m_status);
   }
   else {
     m_TrayIconWithOverlay = true;
     auto trayIconOverlayText = wxString::Format(wxT("%i"), m_DatabaseID);
     m_IconUnlockedWithID = CreateIconWithOverlay(m_IconUnlocked, m_UnlockedDatabaseIdColor, trayIconOverlayText);
     m_IconLockedWithID = CreateIconWithOverlay(m_IconLocked, m_LockedDatabaseIdColor, trayIconOverlayText);
-    SetTrayStatus(m_status);
   }
+
+  SetTrayStatus(m_status);
 }
 
 void SystemTray::ProcessSysTrayMenuItem(int itemId)

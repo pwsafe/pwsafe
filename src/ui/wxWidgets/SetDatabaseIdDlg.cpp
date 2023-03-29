@@ -69,7 +69,6 @@ void SetDatabaseIdDlg::CreateControls()
   wxStaticText* StaticText4;
   wxStdDialogButtonSizer* StdDialogButtonSizer1;
 
-  //Create(parent, id, _("wxWidgets app"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE, _T("id"));
   BoxSizer1 = new wxBoxSizer(wxVERTICAL);
   StaticText1 = new wxStaticText(this, wxID_ANY, _("Enter a value between 0 and 99 to overlay on system tray icon.\nA value of zero disables the overlay."), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   BoxSizer1->Add(StaticText1, 0, wxALL, 10);
