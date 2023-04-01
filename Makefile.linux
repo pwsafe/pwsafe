@@ -46,7 +46,7 @@ RELTAG = wx$(subst .,_,$(RELEASENAME))
 export CPPFLAGS += -std=c++11
 
 all:
-	@echo "Toplevel make is no longer supported for building Linux versions of PasswordSafe. Please use cmake as described in README.LINUX.Developers.md"
+	@echo "Toplevel make is no longer supported for building Linux versions of PasswordSafe. Please use cmake as described in README.LINUX.DEVELOPERS.md"
 
 
 
