@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		6FF5D4A11DA14EE80032F5B6 /* PasswordSubsetDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */; };
+		8ED7E1C429D9F24C0012034B /* SetDatabaseIdDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */; };
 		A2D181461C8FF86C0018AE03 /* media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D181451C8FF86C0018AE03 /* media.cpp */; };
 		A2FE258D1C5ACF7500210C36 /* Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25811C5ACF7500210C36 /* Item.cpp */; };
 		A2FE258E1C5ACF7500210C36 /* ItemAtt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25831C5ACF7500210C36 /* ItemAtt.cpp */; };
@@ -272,6 +273,8 @@
 /* Begin PBXFileReference section */
 		6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordSubsetDlg.cpp; sourceTree = "<group>"; };
 		6FF5D49E1DA14AB20032F5B6 /* PasswordSubsetDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordSubsetDlg.h; sourceTree = "<group>"; };
+		8ED7E1C229D9F24C0012034B /* SetDatabaseIdDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetDatabaseIdDlg.h; path = ../src/ui/wxWidgets/SetDatabaseIdDlg.h; sourceTree = "<group>"; };
+		8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SetDatabaseIdDlg.cpp; path = ../src/ui/wxWidgets/SetDatabaseIdDlg.cpp; sourceTree = "<group>"; };
 		A2D181451C8FF86C0018AE03 /* media.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = media.cpp; sourceTree = "<group>"; };
 		A2FE25811C5ACF7500210C36 /* Item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Item.cpp; sourceTree = "<group>"; };
 		A2FE25821C5ACF7500210C36 /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
@@ -1277,6 +1280,8 @@
 		E6ADB7EE119569CC004E2BE5 = {
 			isa = PBXGroup;
 			children = (
+				8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */,
+				8ED7E1C229D9F24C0012034B /* SetDatabaseIdDlg.h */,
 				E6C94E991FA33BA6008F0072 /* QuartzCore.framework */,
 				E6C94E971FA3399F008F0072 /* CoreGraphics.framework */,
 				E6069D0319FE1CCA0055040F /* Configs */,
@@ -1848,6 +1853,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6889E001EE44AA60023E376 /* impexp.cpp in Sources */,
+				8ED7E1C529D9F24C0012034B /* SetDatabaseIdDlg.cpp in Sources */,
 				E6EBC81A1D17184F00AF61CD /* strutils.cpp in Sources */,
 				E6299FB71D0323A300D03FD1 /* main.cpp in Sources */,
 				E6B908E21D30C8980050CFF1 /* diff.cpp in Sources */,
@@ -1986,6 +1992,7 @@
 				E69B7FA811F600BA0084F6C4 /* ImportXmlDlg.cpp in Sources */,
 				D3A24E8F262EEDFD0059FDF7 /* PWFiltersDCADlg.cpp in Sources */,
 				E69B7FA911F600BA0084F6C4 /* OpenFilePickerValidator.cpp in Sources */,
+				8ED7E1C429D9F24C0012034B /* SetDatabaseIdDlg.cpp in Sources */,
 				E6BA47871216DB9C00193879 /* AdvancedSelectionDlg.cpp in Sources */,
 				E6BA47881216DB9C00193879 /* ExportTextWarningDlg.cpp in Sources */,
 				D3768A3125C17BB900319805 /* DnDDropTarget.cpp in Sources */,
