@@ -49,6 +49,7 @@
 #include "PWSafeApp.h"
 #include "QRCodeDlg.h"
 #include "SafeCombinationPromptDlg.h"
+#include "SetDatabaseIdDlg.h"
 #include "StatusBar.h"
 #include "SystemTray.h"
 #include "SystemTrayMenuId.h"
@@ -273,6 +274,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( ID_BACKUP,             PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_RESTORE,            PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_PWDPOLSM,           PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_SETDATABASEID,      PasswordSafeFrame::OnUpdateUI                    )
 #ifndef NO_YUBI
   EVT_UPDATE_UI( ID_YUBIKEY_MNG,        PasswordSafeFrame::OnUpdateUI                    )
 #endif
@@ -2165,6 +2167,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
     case ID_PWDPOLSM:
     case ID_LOCK_SAFE:
+    case ID_SETDATABASEID:
       evt.Enable(m_core.IsDbOpen() && !m_sysTray->IsLocked());
       break;
 

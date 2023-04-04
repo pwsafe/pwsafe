@@ -211,7 +211,7 @@ SOURCES= PasswordSafeFrame.cpp \
 	PWFiltersBoolDlg.cpp PWFiltersStringDlg.cpp PWFiltersDCADlg.cpp \
 	PWFiltersIntegerDlg.cpp PWFiltersStatusDlg.cpp PWFiltersTypeDlg.cpp \
 	PWFiltersDateDlg.cpp PWFiltersMediaDlg.cpp PWFiltersPasswordDlg.cpp \
-	ManageFiltersTable.cpp
+	ManageFiltersTable.cpp SetDatabaseIdDlg.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)

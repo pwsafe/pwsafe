@@ -171,6 +171,21 @@ void ShowHideText(wxTextCtrl *&txtCtrl, const wxString &text,
 
 int pless(int* first, int* second) { return *first - *second; }
 
+bool IsCurrentDesktopKde()
+{
+#ifdef __WINDOWS__
+  return false;
+#else
+  wxString currentDesktop = wxEmptyString;
+
+  if (!wxGetEnv(wxT("XDG_CURRENT_DESKTOP"), &currentDesktop)) {
+    return false; // Environment variable does not exist
+  }
+
+  return (!currentDesktop.IsEmpty() && (currentDesktop.MakeLower().Trim() == wxT("kde")));
+#endif
+}
+
 // Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable()
@@ -189,6 +204,32 @@ bool IsTaskBarIconAvailable()
   return wxTaskBarIcon::IsAvailable();
 }
 
+wxIcon CreateIconWithOverlay(const wxIcon& icon, const wxColour& color, const wxString& text)
+{
+  auto bitmap = wxBitmap(icon);
+  wxImage image = bitmap.ConvertToImage();
+
+  if (!image.HasAlpha())
+    image.InitAlpha();
+
+  bitmap = wxBitmap(image);
+  wxMemoryDC memoryDC;
+  memoryDC.SelectObject(bitmap);
+  auto font = memoryDC.GetFont();
+  font.MakeLarger();
+  font.MakeLarger();
+  font.MakeLarger();
+  font.MakeBold();
+  memoryDC.SetFont(font);
+  memoryDC.SetTextForeground(color);
+  memoryDC.SetBackgroundMode(wxTRANSPARENT);
+  memoryDC.DrawLabel(text, wxRect(bitmap.GetSize()));
+  memoryDC.SelectObject(wxNullBitmap);
+
+  wxIcon overLayIcon = wxNullIcon;
+  overLayIcon.CopyFromBitmap(bitmap);
+  return overLayIcon;
+}
 
 /**
  * The following works around a bug in several versions of GTK3 which causes
