@@ -25,8 +25,8 @@ using pws_os::CUUID;
 bool CAddEdit_DateTimes::m_bNumDaysFailed = false;
 bool CAddEdit_DateTimes::m_bShowUUID = false;
 
-static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
-                                    int &numDays, const int &maxDays);
+static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int how,
+                                    int &numDays, const int maxDays);
 
 /////////////////////////////////////////////////////////////////////////////
 // CAddEdit_DateTimes property page
@@ -65,7 +65,7 @@ void CAddEdit_DateTimes::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_REUSE_ON_CHANGE, m_bRecurringPswdExpiry);
   DDX_Control(pDX, IDC_EXPIRYDATE, m_pDateCtl);
 
-  // Validation
+  // Custom validation
   DDV_CheckMaxDays(pDX, m_how, m_numDays, m_maxDays);
   //}}AFX_DATA_MAP
 }
@@ -87,8 +87,8 @@ BEGIN_MESSAGE_MAP(CAddEdit_DateTimes, CAddEdit_PropertyPage)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int &how,
-                                    int &numDays, const int &maxDays)
+static void AFXAPI DDV_CheckMaxDays(CDataExchange* pDX, const int how,
+                                    int &numDays, const int maxDays)
 {
   if (pDX->m_bSaveAndValidate) {
     CAddEdit_DateTimes::m_bNumDaysFailed = false;
@@ -219,7 +219,7 @@ void CAddEdit_DateTimes::UpdateTimes()
 {
   // From Item to page's controls:
 
-  time(&M_tttCPMTime());
+  (void)time(&M_tttCPMTime());
 
   // Determine m_how from M_* field
   if (M_XTimeInt() > 0) {
@@ -432,14 +432,14 @@ void CAddEdit_DateTimes::SetXTime()
   if (m_how == ABSOLUTE_EXP) {
     VERIFY(m_pDateCtl.GetTime(LDate) == GDT_VALID);
 
-    LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(), 0, 1, 0);
+    LDateTime = CTime(LDate.GetYear(), LDate.GetMonth(), LDate.GetDay(), 23, 59, 59);
     m_numDays = static_cast<int>((LDate.GetTime() - now.GetTime()) / (24*60*60)) + 1;
     CString nds;
     nds.Format(L"%d", m_numDays);
     GetDlgItem(IDC_EXPDAYS)->SetWindowText(nds);
     M_XTimeInt() = 0;
   } else { // m_how == RELATIVE_EXP
-    const CTime today(now.GetYear(), now.GetMonth(), now.GetDay(), 0, 1, 0);
+    const CTime today(now.GetYear(), now.GetMonth(), now.GetDay(), 23, 59, 59);
     LDateTime = today + CTimeSpan(m_numDays, 0, 0, 0);
     VERIFY(m_pDateCtl.SetTime(&LDateTime));
     M_XTimeInt() = m_bRecurringPswdExpiry == FALSE ? 0 : m_numDays;
