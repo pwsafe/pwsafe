@@ -126,6 +126,9 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
                          ! => negation
                         a trailing /i => case insensitive, /I => case sensitive
 
+       Note that --passphrase <passphrase> and --passphrase2 <2nd passphrase> may be used to skip the prompt
+       for the master passphrase(s). However, this should be avoided if possible for security reasons.
+
        Valid field names are:
 )usagestring";
 
