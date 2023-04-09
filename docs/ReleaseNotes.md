@@ -6,7 +6,8 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 
 PasswordSafe 3.63.0 Release ??? 2023
 ====================================
-* [GH946] Expiration dates are now the last second of the specified date, instead of the first minute. This resolves a minor inconsistency.
+* [GH946] (https://github.com/pwsafe/pwsafe/issues/946) Expiration dates are now the last second of the specified date, instead of the first minute. This resolves a minor inconsistency.
+* [GH945] (https://github.com/pwsafe/pwsafe/issues/945) Document passphrase parmaters in pwsafe-cli.
 
 PasswordSafe 3.62.0 Release Feb 2023
 ====================================
