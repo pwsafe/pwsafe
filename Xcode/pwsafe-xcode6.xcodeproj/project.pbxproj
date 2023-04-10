@@ -271,6 +271,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		57218E8329C983FA000B1907 /* version.wx */ = {isa = PBXFileReference; lastKnownFileType = text; name = version.wx; path = ../version.wx; sourceTree = "<group>"; };
+		57218E8429C98475000B1907 /* pwsafe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = pwsafe.entitlements; sourceTree = "<group>"; };
+		57218E8529C98481000B1907 /* pwsafe-cli.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "pwsafe-cli.entitlements"; sourceTree = SOURCE_ROOT; };
 		6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordSubsetDlg.cpp; sourceTree = "<group>"; };
 		6FF5D49E1DA14AB20032F5B6 /* PasswordSubsetDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordSubsetDlg.h; sourceTree = "<group>"; };
 		8ED7E1C229D9F24C0012034B /* SetDatabaseIdDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetDatabaseIdDlg.h; path = ../src/ui/wxWidgets/SetDatabaseIdDlg.h; sourceTree = "<group>"; };
@@ -926,6 +929,7 @@
 		E6069D0319FE1CCA0055040F /* Configs */ = {
 			isa = PBXGroup;
 			children = (
+				57218E8329C983FA000B1907 /* version.wx */,
 				E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */,
 				E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */,
 			);
@@ -935,6 +939,7 @@
 		E66D29301D02B49B00C9BCBF /* pwsafe-cli */ = {
 			isa = PBXGroup;
 			children = (
+				57218E8529C98481000B1907 /* pwsafe-cli.entitlements */,
 				E61C265C1D3FD0C000CA0370 /* impexp.cpp */,
 				E61C265D1D3FD0C000CA0370 /* impexp.h */,
 				E6B908DE1D30C8980050CFF1 /* diff.cpp */,
@@ -1280,6 +1285,7 @@
 		E6ADB7EE119569CC004E2BE5 = {
 			isa = PBXGroup;
 			children = (
+				57218E8429C98475000B1907 /* pwsafe.entitlements */,
 				8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */,
 				8ED7E1C229D9F24C0012034B /* SetDatabaseIdDlg.h */,
 				E6C94E991FA33BA6008F0072 /* QuartzCore.framework */,
@@ -1744,7 +1750,7 @@
 		E6ADB7F0119569CC004E2BE5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1210;
+				LastUpgradeCheck = 1420;
 				ORGANIZATIONNAME = "Open Source Software";
 				TargetAttributes = {
 					E66D292E1D02B49B00C9BCBF = {
@@ -2086,8 +2092,10 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -2109,7 +2117,7 @@
 					../src/core,
 					../src,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -2132,9 +2140,11 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
@@ -2150,7 +2160,7 @@
 					../src/core,
 					../src,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -2164,7 +2174,7 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				PRODUCT_NAME = "Help Files";
 			};
 			name = Debug;
@@ -2176,7 +2186,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				PRODUCT_NAME = "Help Files";
 				ZERO_LINK = NO;
 			};
@@ -2207,6 +2217,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEAD_CODE_STRIPPING = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -2252,6 +2263,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				DEAD_CODE_STRIPPING = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2266,7 +2278,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 			};
 			name = Release;
 		};
@@ -2288,7 +2300,7 @@
 					__WXMAC__,
 					__WXOSX_COCOA__,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -2313,7 +2325,7 @@
 					__WXMAC__,
 					__WXOSX_COCOA__,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -2338,7 +2350,7 @@
 					DEBUG,
 					_DEBUG,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -2360,7 +2372,7 @@
 					_LARGE_FILES,
 					NDEBUG,
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
 					"-Wextra",
@@ -2377,8 +2389,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = pwsafe.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2394,7 +2408,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
@@ -2408,8 +2422,10 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = pwsafe.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					_LARGE_FILES,
@@ -2423,7 +2439,7 @@
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
