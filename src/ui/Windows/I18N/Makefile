@@ -50,14 +50,16 @@ CHMOD = /usr/bin/chmod
 RM = /usr/bin/rm
 MV = /usr/bin/mv
 
-BASE_DLL = ../../../../out/build/x64-Release/Release/pwsafe_base.dll
+BASE_DLL = ../../../../out/build/x86-Release/src/ui/Windows/language/Release/pwsafe_base.dll
+BASE_DLL_64 = ../../../../out/build/x64-Release/src/ui/Windows/language/Release/pwsafe_base.dll
 
 .PHONY: update-pos dlls dlls_32 dlls_64 tools clean help check dest_dir
 
 update-pos: tools $(POS)
 
 # All of the .po files depend on the pwsafe_base.dll from the languageDLL project
-$(POS): $(BASE_DLL)
+# Making it dependent on both x86 and x64 versions, just in case only one's updated when this is run.
+$(POS): $(BASE_DLL) $(BASE_DLL_64)
 
 # How to make a .po file from pwsafe_base.dll
 %.po: $(BASE_DLL)

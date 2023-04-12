@@ -290,7 +290,7 @@ build:
 ChangeLog:
 	$(GIT) --no-pager log --format="%ai %aN %n%n%x09* %s%d%n" > $@
 
-$(POT_FILE): $(BIN_DIR)/../release/pwsafe_base.dll
+$(POT_FILE): $(BIN_DIR)../src/ui/Windows/language/Release/pwsafe_base.dll
 	$(MAKE) -C $(I18N_DIR) pwsafe.pot
 
 update-pos:
