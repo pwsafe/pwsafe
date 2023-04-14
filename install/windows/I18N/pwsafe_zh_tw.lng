@@ -19,115 +19,115 @@
 ;=================================================================
 
 ; RESERVE_TITLE "Choose Installation Type"
-LangString RESERVE_TITLE ${LANG_TRADCHINESE} "��ܦw������"
+LangString RESERVE_TITLE ${LANG_TRADCHINESE} "嚙踝蕭雃w嚙踝蕭嚙踝蕭嚙踝蕭"
 
 ; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString RESERVE_FIELD1 ${LANG_TRADCHINESE} "�@�뫬�A�A�X�a�ΩέӤH�ϥΪ��q��"
+LangString RESERVE_FIELD1 ${LANG_TRADCHINESE} "嚙瑾嚙趟型嚙璀嚙璀嚙碼嚙窮嚙諄或個人嚙誕用迎蕭嚙緬嚙踝蕭"
 
 ; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString RESERVE_FIELD2 ${LANG_TRADCHINESE} "���w��(�Φb����x�s�˸m�F�L���n���D�������U�X"
+LangString RESERVE_FIELD2 ${LANG_TRADCHINESE} "嚙踝蕭嚙緩嚙踝蕭(嚙諄在嚙踝蕭嚙踝蕭x嚙編嚙誼置嚙瘤嚙盤嚙踝蕭嚙緯嚙踝蕭嚙瘩嚙踝蕭嚙踝蕭嚙踝蕭嚙磊嚙碼"
 
 ; PROGRAM_FILES "Program Files"
-LangString PROGRAM_FILES ${LANG_TRADCHINESE} "Program Files���|"
+LangString PROGRAM_FILES ${LANG_TRADCHINESE} "Program Files嚙踝蕭嚙罵"
 
 ; START_AUTO "Start automatically"
-LangString START_AUTO ${LANG_TRADCHINESE}  "�۰ʱҰ�"
+LangString START_AUTO ${LANG_TRADCHINESE}  "嚙諛動啟堆蕭"
 
 ; START_SHOW "Show in start menu"
-LangString START_SHOW ${LANG_TRADCHINESE} "�b�Ұʿ�����"
+LangString START_SHOW ${LANG_TRADCHINESE} "嚙箭嚙課動選蕭嚙踝蕭嚙踝蕭"
 
 ; START_SHORTCUT "Install desktop shortcut"
-LangString START_SHORTCUT ${LANG_TRADCHINESE} "�w�ˮୱ���|"
+LangString START_SHORTCUT ${LANG_TRADCHINESE} "嚙緩嚙誼桌面嚙踝蕭嚙罵"
 
 ; UNINSTALL_SHORTCUT "Uninstall shortcut"
-LangString UNINSTALL_SHORTCUT ${LANG_TRADCHINESE} "�����{�����|"
+LangString UNINSTALL_SHORTCUT ${LANG_TRADCHINESE} "嚙踝蕭嚙踝蕭嚙緹嚙踝蕭嚙踝蕭嚙罵"
 
 ;--------------------------------
 ; Descriptions
 
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
-LangString DESC_ProgramFiles ${LANG_TRADCHINESE} "�w�˰���Password Safe�Ҷ������ɮ�"
+LangString DESC_ProgramFiles ${LANG_TRADCHINESE} "嚙緩嚙誼堆蕭嚙踝蕭Password Safe嚙課塚蕭嚙踝蕭嚙踝蕭嚙褕殷蕭"
 
 ; DESC_CliTool "Installs pwsafe-cli, a command line utility."
 LangString DESC_CliTool ${LANG_TRADCHINESE} "Installs pwsafe-cli, a command line utility."
 
 ; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
-LangString DESC_LangSupport ${LANG_TRADCHINESE} "�п�ܰ���Password Safe�ҨϥΪ��y��"
+LangString DESC_LangSupport ${LANG_TRADCHINESE} "嚙請選蕭黹嚙踝蕭嚙瞑assword Safe嚙課使用迎蕭嚙緙嚙踝蕭"
 
 ; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
-LangString DESC_StartUp ${LANG_TRADCHINESE} "��Password Safe�H��Windows�Ұ�/�n�J�ɦ۰ʰ���"
+LangString DESC_StartUp ${LANG_TRADCHINESE} "嚙踝蕭Password Safe嚙瘡嚙踝蕭Windows嚙課堆蕭/嚙緯嚙皚嚙褕自動堆蕭嚙踝蕭"
 
 ; DESC_StartMenu "Creates an entry in the start menu for Password Safe."
-LangString DESC_StartMenu ${LANG_TRADCHINESE} "�b�}�l��沣��Password Safe����"
+LangString DESC_StartMenu ${LANG_TRADCHINESE} "嚙箭嚙罷嚙締嚙踝蕭瘝?蕭嚙瞑assword Safe嚙踝蕭嚙踝蕭"
 
 ; DESC_DesktopShortcut "Places a shortcut to Password Safe on your desktop."
-LangString DESC_DesktopShortcut ${LANG_TRADCHINESE} "�b�z���ୱ�[�JPassword Safe�����|"
+LangString DESC_DesktopShortcut ${LANG_TRADCHINESE} "嚙箭嚙緲嚙踝蕭嚙賞面嚙稼嚙皚Password Safe嚙踝蕭嚙踝蕭嚙罵"
 
 ; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
-LangString DESC_UninstallMenu ${LANG_TRADCHINESE} "�b�}�l��沣�Ͳ���Password Safe������"
+LangString DESC_UninstallMenu ${LANG_TRADCHINESE} "嚙箭嚙罷嚙締嚙踝蕭瘝?蕭芠嚙踝蕭嚙瞑assword Safe嚙踝蕭嚙踝蕭嚙踝蕭"
   
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 ; TEXT_GC_TITLE "Installation Type"
-LangString TEXT_GC_TITLE ${LANG_TRADCHINESE} "�w������"
+LangString TEXT_GC_TITLE ${LANG_TRADCHINESE} "嚙緩嚙踝蕭嚙踝蕭嚙踝蕭"
 
 ; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
-LangString TEXT_GC_SUBTITLE ${LANG_TRADCHINESE} "�b��@�q���ϥΡA�п�ܤ@�뫬�A����i�⦡�w�ˡA�п�ܺ��w�ˡC�p�G���T�w���ܴN������@�뫬�w�˧Y�i"
+LangString TEXT_GC_SUBTITLE ${LANG_TRADCHINESE} "嚙箭嚙踝蕭@嚙緬嚙踝蕭嚙誕用，嚙請選蕭雂@嚙趟型嚙璀嚙踝蕭嚙踝蕭i嚙賤式嚙緩嚙誼，嚙請選蕭傴嚙踝蕭w嚙誼。嚙緘嚙瘦嚙踝蕭嚙確嚙緩嚙踝蕭嚙豌就嚙踝蕭嚙踝蕭嚙踝蕭@嚙趟型嚙緩嚙誼即嚙箠"
 
 ; PSWINI_TITLE "Choose Installation Type"
-LangString PSWINI_TITLE ${LANG_TRADCHINESE} "��ܦw������"
+LangString PSWINI_TITLE ${LANG_TRADCHINESE} "嚙踝蕭雃w嚙踝蕭嚙踝蕭嚙踝蕭"
 
 ; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString PSWINI_TEXT1 ${LANG_TRADCHINESE} "�@�뫬(���n�����U�X�A�A�X�a�ΩέӤH�Τ�ϥ�)"
+LangString PSWINI_TEXT1 ${LANG_TRADCHINESE} "嚙瑾嚙趟型(嚙踝蕭嚙緯嚙踝蕭嚙踝蕭嚙磊嚙碼嚙璀嚙璀嚙碼嚙窮嚙諄或個人嚙諄歹蕭洏嚙?"
 
 ; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString PSWINI_TEXT2 ${LANG_TRADCHINESE} "���w��(�Φb����x�s�˸m�F�L���n���D�������U�X"
+LangString PSWINI_TEXT2 ${LANG_TRADCHINESE} "嚙踝蕭嚙緩嚙踝蕭(嚙諄在嚙踝蕭嚙踝蕭x嚙編嚙誼置嚙瘤嚙盤嚙踝蕭嚙緯嚙踝蕭嚙瘩嚙踝蕭嚙踝蕭嚙踝蕭嚙磊嚙碼"
 
 ;--------------------------------
 ; checks and warnings
 
 ; RUNNING_INSTALL "The installer is already running."
-LangString RUNNING_INSTALL ${LANG_TRADCHINESE} "�w�˵{�����b�i��"
+LangString RUNNING_INSTALL ${LANG_TRADCHINESE} "嚙緩嚙誼程嚙踝蕭嚙踝蕭嚙箭嚙箠嚙踝蕭"
 
 ; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
-LangString RUNNING_APPLICATION ${LANG_TRADCHINESE} "�b�w�˷s�����ɡA�аh�X�Ҧ����b���檺PasswordSafe�{��"
+LangString RUNNING_APPLICATION ${LANG_TRADCHINESE} "嚙箭嚙緩嚙誼新嚙踝蕭嚙踝蕭嚙褕，嚙請退嚙碼嚙課佗蕭嚙踝蕭嚙箭嚙踝蕭嚙賣的PasswordSafe嚙緹嚙踝蕭"
 
 ; LANG_INSTALL "Installation Language"
-LangString LANG_INSTALL ${LANG_TRADCHINESE} "�w�˻y��"
+LangString LANG_INSTALL ${LANG_TRADCHINESE} "嚙緩嚙誼語嚙踝蕭"
 
 ; LANG_SELECT "Please select the language for the installation"
-LangString LANG_SELECT ${LANG_TRADCHINESE} "�п�ܦw�˪��y��"
+LangString LANG_SELECT ${LANG_TRADCHINESE} "嚙請選蕭雃w嚙誼迎蕭嚙緙嚙踝蕭"
 
 ; CLI_TOOL "Command-line tool"
 LangString CLI_TOOL ${LANG_TRADCHINESE} "Command-line tool"
 
 ;LANGUAGE_SUPPORT "Language Support"
-LangString LANGUAGE_SUPPORT ${LANG_TRADCHINESE} "�䴩�y��"
+LangString LANGUAGE_SUPPORT ${LANG_TRADCHINESE} "嚙賭援嚙緙嚙踝蕭"
 ;ENGLISH_SUPPORT "English"
-LangString ENGLISH_SUPPORT ${LANG_TRADCHINESE} "�^��"
+LangString ENGLISH_SUPPORT ${LANG_TRADCHINESE} "嚙稷嚙踝蕭"
 ;CHINESE_CN_SUPPORT "Chinese (Simplified)"
-LangString CHINESE_CN_SUPPORT ${LANG_TRADCHINESE} "²�餤��"
+LangString CHINESE_CN_SUPPORT ${LANG_TRADCHINESE} "簡嚙賡中嚙踝蕭"
 ;CHINESE_TW_SUPPORT "Chinese (Traditional)"
-LangString CHINESE_TW_SUPPORT ${LANG_TRADCHINESE} "�c�餤��"
+LangString CHINESE_TW_SUPPORT ${LANG_TRADCHINESE} "嚙箱嚙賡中嚙踝蕭"
 ;GERMAN_SUPPORT "German"
-LangString GERMAN_SUPPORT ${LANG_TRADCHINESE} "�w��"
+LangString GERMAN_SUPPORT ${LANG_TRADCHINESE} "嚙緩嚙踝蕭"
 ;SPANISH_SUPPORT "Spanish"
-LangString SPANISH_SUPPORT ${LANG_TRADCHINESE} "��Z����"
+LangString SPANISH_SUPPORT ${LANG_TRADCHINESE} "嚙踝蕭Z嚙踝蕭嚙踝蕭"
 ;SWEDISH_SUPPORT "Swedish"
-LangString SWEDISH_SUPPORT ${LANG_TRADCHINESE} "����"
+LangString SWEDISH_SUPPORT ${LANG_TRADCHINESE} "嚙踝蕭嚙踝蕭"
 ;DUTCH_SUPPORT "Dutch"
-LangString DUTCH_SUPPORT ${LANG_TRADCHINESE} "������"
+LangString DUTCH_SUPPORT ${LANG_TRADCHINESE} "嚙踝蕭嚙踝蕭嚙踝蕭"
 ;FRENCH_SUPPORT "French"
-LangString FRENCH_SUPPORT ${LANG_TRADCHINESE} "�k��"
+LangString FRENCH_SUPPORT ${LANG_TRADCHINESE} "嚙糊嚙踝蕭"
 ;RUSSIAN_SUPPORT "Russian"
-LangString RUSSIAN_SUPPORT ${LANG_TRADCHINESE} "�X��"
+LangString RUSSIAN_SUPPORT ${LANG_TRADCHINESE} "嚙碼嚙踝蕭"
 ;POLISH_SUPPORT "Polish"
-LangString POLISH_SUPPORT ${LANG_TRADCHINESE} "�i����"
+LangString POLISH_SUPPORT ${LANG_TRADCHINESE} "嚙箠嚙踝蕭嚙踝蕭"
 ;ITALIAN_SUPPORT "Italian"
-LangString ITALIAN_SUPPORT ${LANG_TRADCHINESE} "�q�j�Q��"
+LangString ITALIAN_SUPPORT ${LANG_TRADCHINESE} "嚙緬嚙篌嚙瞋嚙踝蕭"
 ;DANISH_SUPPORT "Danish"
-LangString DANISH_SUPPORT ${LANG_TRADCHINESE} "������"
+LangString DANISH_SUPPORT ${LANG_TRADCHINESE} "嚙踝蕭嚙踝蕭嚙踝蕭"
 ;KOREAN_SUPPORT "Korean"
-LangString KOREAN_SUPPORT ${LANG_TRADCHINESE} "����"
+LangString KOREAN_SUPPORT ${LANG_TRADCHINESE} "嚙踝蕭嚙踝蕭"
 LangString CZECH_SUPPORT ${LANG_TRADCHINESE} "Czech"
 LangString TURKISH_SUPPORT ${LANG_TRADCHINESE} "Turkish"
 LangString HUNGARIAN_SUPPORT ${LANG_TRADCHINESE} "Hungarian"
@@ -137,19 +137,19 @@ LangString ARABIC_SUPPORT ${LANG_TRADCHINESE} "Arabic"
 LangString PORTUGUESEBR_SUPPORT ${LANG_TRADCHINESE} "葡萄牙語（巴西）"
 
 ; LANG_PROGRAM "Program Language"
-LangString LANG_PROGRAM ${LANG_TRADCHINESE} "�{���y��"
+LangString LANG_PROGRAM ${LANG_TRADCHINESE} "嚙緹嚙踝蕭嚙緙嚙踝蕭"
 
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_95 ${LANG_TRADCHINESE} "��p�A�ڭ̤w�g���䴩Windows 95�A�Ч��PasswordSafe 2.16��"
+LangString SORRY_NO_95 ${LANG_TRADCHINESE} "嚙踝蕭p嚙璀嚙誹們已嚙篇嚙踝蕭嚙賭援Windows 95嚙璀嚙請改蕭嚙瞑asswordSafe 2.16嚙踝蕭"
 
 ; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_98 ${LANG_TRADCHINESE} "��p�A�ڭ̤w�g���䴩Windows 98�A�Ч��PasswordSafe 2.16��"
+LangString SORRY_NO_98 ${LANG_TRADCHINESE} "嚙踝蕭p嚙璀嚙誹們已嚙篇嚙踝蕭嚙賭援Windows 98嚙璀嚙請改蕭嚙瞑asswordSafe 2.16嚙踝蕭"
 
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_ME ${LANG_TRADCHINESE} "��p�A�ڭ̤w�g���䴩Windows ME�A�Ч��PasswordSafe 2.16��"
+LangString SORRY_NO_ME ${LANG_TRADCHINESE} "嚙踝蕭p嚙璀嚙誹們已嚙篇嚙踝蕭嚙賭援Windows ME嚙璀嚙請改蕭嚙瞑asswordSafe 2.16嚙踝蕭"
 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
-LangString SORRY_NO_2K ${LANG_TRADCHINESE} "��p�A�ڭ̤w�g���䴩Windows 2000�A�Ч��PasswordSafe 3.18��"
+LangString SORRY_NO_2K ${LANG_TRADCHINESE} "嚙踝蕭p嚙璀嚙誹們已嚙篇嚙踝蕭嚙賭援Windows 2000嚙璀嚙請改蕭嚙瞑asswordSafe 3.18嚙踝蕭"
 
 ; LangString Icon_description_Uninstall "Password Safe Uninstall"
 LangString Icon_description_Uninstall ${LANG_TRADCHINESE} "Password Safe Uninstall"
