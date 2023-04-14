@@ -252,8 +252,7 @@ sign-bins:
 
 save-map:
 	$(ZIP) -9 $(RELEASEDIR)/pwsafe-$(RELEASENAME)-map+pdb.zip \
-	 $(BIN_DIR)/pwsafe.map $(BIN_DIR)/pwsafe.pdb \
-   $(BIN_DIR)/pws_*.pdb		
+	 $(BIN_DIR)/pwsafe.map $(BIN_DIR)/pwsafe.pdb
 
 bin-release-64: sign-bins-64 save-map-64
 	@-mkdir $(RELEASEDIR)/$(BINRELNAME64)
@@ -269,8 +268,7 @@ sign-bins-64:
 
 save-map-64:
 	$(ZIP) -9 $(RELEASEDIR)/pwsafe64-$(RELEASENAME)-map+pdb.zip \
-	 $(BIN_DIR_64)/pwsafe.map $(BIN_DIR_64)/pwsafe.pdb \
-   $(BIN_DIR_64)/pws_*.pdb		
+	 $(BIN_DIR_64)/pwsafe.map $(BIN_DIR_64)/pwsafe.pdb
 
 src-release: ChangeLog $(POT_FILE)
 	@$(MKDIR) $(RELEASEDIR)/$(SRCRELNAME)
