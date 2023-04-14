@@ -133,6 +133,8 @@ LangString TURKISH_SUPPORT ${LANG_SPANISH} "Turco"
 LangString HUNGARIAN_SUPPORT ${LANG_SPANISH} "H�ngaro"
 LangString SLOVENIAN_SUPPORT ${LANG_SPANISH} "Sloveno"
 LangString ARABIC_SUPPORT ${LANG_SPANISH} "Arábica"
+; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
+LangString PORTUGUESEBR_SUPPORT ${LANG_SPANISH} "Portugués (Brasil)"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_SPANISH} "Idioma del programa"

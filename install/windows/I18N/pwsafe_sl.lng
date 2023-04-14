@@ -137,6 +137,8 @@ LangString HUNGARIAN_SUPPORT ${LANG_SLOVENIAN} "Madžarščina"
 ; SLOVENIAN_SUPPORT "Slovenian"
 LangString SLOVENIAN_SUPPORT ${LANG_SLOVENIAN} "Slovenščina"
 LangString ARABIC_SUPPORT ${LANG_SLOVENIAN} "Arabsko"
+; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
+LangString PORTUGUESEBR_SUPPORT ${LANG_SLOVENIAN} "Portugalščina (Brazilija)"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_SLOVENIAN} "Jezik programa"

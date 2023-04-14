@@ -122,6 +122,8 @@ LangString TURKISH_SUPPORT ${LANG_DUTCH} "Turks"
 LangString HUNGARIAN_SUPPORT ${LANG_DUTCH} "Hongaars"
 LangString SLOVENIAN_SUPPORT ${LANG_DUTCH} "Slovenian"
 LangString ARABIC_SUPPORT ${LANG_DUTCH} "Arabisch"
+; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
+LangString PORTUGUESEBR_SUPPORT ${LANG_DUTCH} "Portugees (Brazilië)"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_DUTCH} "Programma-taal"

@@ -139,6 +139,8 @@ LangString HUNGARIAN_SUPPORT ${LANG_CZECH} "Ma�ar�tina"
 LangString SLOVENIAN_SUPPORT ${LANG_CZECH} "Slov�tina"
 ; ARABIC_SUPPORT "Arabic"
 LangString ARABIC_SUPPORT ${LANG_CZECH} "Arabština"
+; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
+LangString PORTUGUESEBR_SUPPORT ${LANG_CZECH} "Portugalština (Brazilská)"
 
 ; LANG_PROGRAM "Czech Language"
 LangString LANG_PROGRAM ${LANG_CZECH} "�e�tina"

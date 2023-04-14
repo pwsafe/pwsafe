@@ -119,6 +119,8 @@ LangString TURKISH_SUPPORT ${LANG_KOREAN} "Turkish"
 LangString HUNGARIAN_SUPPORT ${LANG_KOREAN} "Hungarian"
 LangString SLOVENIAN_SUPPORT ${LANG_KOREAN} "Slovenian"
 LangString ARABIC_SUPPORT ${LANG_KOREAN} "Arabic"
+; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
+LangString PORTUGUESEBR_SUPPORT ${LANG_KOREAN} "포르투갈어(브라질)"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_KOREAN} "���α׷� ���"

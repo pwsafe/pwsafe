@@ -135,6 +135,8 @@ LangString TURKISH_SUPPORT ${LANG_TURKISH} "T�rk�e"
 LangString HUNGARIAN_SUPPORT ${LANG_TURKISH} "Macarca"
 LangString SLOVENIAN_SUPPORT ${LANG_TURKISH} "Slovena"
 LangString ARABIC_SUPPORT ${LANG_TURKISH} "Arapça"
+; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
+LangString PORTUGUESEBR_SUPPORT ${LANG_TURKISH} "Portekizce (Brezilya)"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_TURKISH} "Program Dili"
