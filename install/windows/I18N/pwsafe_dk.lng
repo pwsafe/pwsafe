@@ -19,13 +19,13 @@
 ;=================================================================
 
 ; RESERVE_TITLE "Choose Installation Type"
-LangString RESERVE_TITLE ${LANG_DANISH} "V�lg Installations Type"
+LangString RESERVE_TITLE ${LANG_DANISH} "Vælg Installations Type"
 
 ; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
 LangString RESERVE_FIELD1 ${LANG_DANISH} "Standart (bruger Registret, passer til hjemme eller enkelt bruger PC)"
 
 ; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString RESERVE_FIELD2 ${LANG_DANISH} "Gr�n (for Disk-on-Key; bruger ikke data Registret)"
+LangString RESERVE_FIELD2 ${LANG_DANISH} "Grøn (for Disk-on-Key; bruger ikke data Registret)"
 
 ; PROGRAM_FILES "Program Files"
 LangString PROGRAM_FILES ${LANG_DANISH} "Programfiler"
@@ -46,7 +46,7 @@ LangString UNINSTALL_SHORTCUT ${LANG_DANISH} "Fjern genvej"
 ; Descriptions
 
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
-LangString DESC_ProgramFiles ${LANG_DANISH} "Installerer de n�dvendige filer for at k�re Password Safe."
+LangString DESC_ProgramFiles ${LANG_DANISH} "Installerer de nødvendige filer for at køre Password Safe."
 
 ; DESC_CliTool "Installs pwsafe-cli, a command line utility."
 LangString DESC_CliTool ${LANG_DANISH} "Installs pwsafe-cli, a command line utility."
@@ -71,25 +71,25 @@ LangString DESC_UninstallMenu ${LANG_DANISH} "Opretter en genvej i start menuen 
 LangString TEXT_GC_TITLE ${LANG_DANISH} "Installations Type"
 
 ; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
-LangString TEXT_GC_SUBTITLE ${LANG_DANISH} "V�lg Standart for brug p?en enkelt PC, Gr�n for b�rbar installation. Er du ikke sikker, er 'Standart' fint."
+LangString TEXT_GC_SUBTITLE ${LANG_DANISH} "Vælg Standart for brug p?en enkelt PC, Grøn for bærbar installation. Er du ikke sikker, er 'Standart' fint."
 
 ; PSWINI_TITLE "Choose Installation Type"
-LangString PSWINI_TITLE ${LANG_DANISH} "V�lg Installations Type"
+LangString PSWINI_TITLE ${LANG_DANISH} "Vælg Installations Type"
 
 ; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
 LangString PSWINI_TEXT1 ${LANG_DANISH} "Standart (bruger Registret, passer til hjemme eller enkelt bruger PC)"
 
 ; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString PSWINI_TEXT2 ${LANG_DANISH} "Gr�n (for Disk-on-Key; bruger ikke lokal Registret)"
+LangString PSWINI_TEXT2 ${LANG_DANISH} "Grøn (for Disk-on-Key; bruger ikke lokal Registret)"
 
 ;--------------------------------
 ; checks and warnings
 
 ; RUNNING_INSTALL "The installer is already running."
-LangString RUNNING_INSTALL ${LANG_DANISH} "Installation k�rer allerede."
+LangString RUNNING_INSTALL ${LANG_DANISH} "Installation kører allerede."
 
 ; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
-LangString RUNNING_APPLICATION ${LANG_DANISH} "Afslut venligst alle k�rende instanser af PasswordSafe f�r installing af en ny version"
+LangString RUNNING_APPLICATION ${LANG_DANISH} "Afslut venligst alle kørende instanser af PasswordSafe før installing af en ny version"
 
 ; LANG_INSTALL "Installation Language"
 LangString LANG_INSTALL ${LANG_DANISH} "Installations Sprog"
@@ -102,33 +102,33 @@ LangString LANGUAGE_SUPPORT ${LANG_DANISH} "Understøttelse af sprog"
 ; ENGLISH_SUPPORT "English"
 LangString ENGLISH_SUPPORT ${LANG_DANISH} "Engelsk"
 ; CHINESE_CN_SUPPORT "Chinese (Simplified)"
-LangString CHINESE_CN_SUPPORT ${LANG_DANISH} "en:Chinese (Simplified)"
+LangString CHINESE_CN_SUPPORT ${LANG_DANISH} "en:Kinesisk (forenklet)"
 ; CHINESE_TW_SUPPORT "Chinese (Traditional)"
-LangString CHINESE_TW_SUPPORT ${LANG_DANISH} "en:Chinese (Traditional)"
+LangString CHINESE_TW_SUPPORT ${LANG_DANISH} "Kinesisk (traditionelt)"
 ; GERMAN_SUPPORT "German"
-LangString GERMAN_SUPPORT ${LANG_DANISH} "en:German"
+LangString GERMAN_SUPPORT ${LANG_DANISH} "Tysk"
 ; SPANISH_SUPPORT "Spanish"
-LangString SPANISH_SUPPORT ${LANG_DANISH} "en:Spanish"
+LangString SPANISH_SUPPORT ${LANG_DANISH} "Spansk"
 ; SWEDISH_SUPPORT "Swedish"
-LangString SWEDISH_SUPPORT ${LANG_DANISH} "en:Swedish"
+LangString SWEDISH_SUPPORT ${LANG_DANISH} "Svensk"
 ; DUTCH_SUPPORT "Dutch"
-LangString DUTCH_SUPPORT ${LANG_DANISH} "en:Dutch"
+LangString DUTCH_SUPPORT ${LANG_DANISH} "Nederlandsk"
 ; FRENCH_SUPPORT "French"
-LangString FRENCH_SUPPORT ${LANG_DANISH} "en:French"
+LangString FRENCH_SUPPORT ${LANG_DANISH} "Fransk"
 ; RUSSIAN_SUPPORT "Russian"
-LangString RUSSIAN_SUPPORT ${LANG_DANISH} "en:Russian"
+LangString RUSSIAN_SUPPORT ${LANG_DANISH} "Russisk"
 ; POLISH_SUPPORT "Polish"
-LangString POLISH_SUPPORT ${LANG_DANISH} "en:Polish"
+LangString POLISH_SUPPORT ${LANG_DANISH} "Polsk"
 ; ITALIAN_SUPPORT "Italian"
-LangString ITALIAN_SUPPORT ${LANG_DANISH} "en:Italian"
+LangString ITALIAN_SUPPORT ${LANG_DANISH} "Italiensk"
 ; DANISH_SUPPORT "Danish"
-LangString DANISH_SUPPORT ${LANG_DANISH} "en:Danish"
+LangString DANISH_SUPPORT ${LANG_DANISH} "Dansk"
 ; KOREAN_SUPPORT "Korean"
-LangString KOREAN_SUPPORT ${LANG_DANISH} "en:Korean"
-LangString CZECH_SUPPORT ${LANG_DANISH} "en:Czech"
-LangString TURKISH_SUPPORT ${LANG_DANISH} "en:Turkish"
-LangString HUNGARIAN_SUPPORT ${LANG_DANISH} "en:Hungarian"
-LangString SLOVENIAN_SUPPORT ${LANG_DANISH} "en:Slovenian"
+LangString KOREAN_SUPPORT ${LANG_DANISH} "Koreansk"
+LangString CZECH_SUPPORT ${LANG_DANISH} "Tjekkisk"
+LangString TURKISH_SUPPORT ${LANG_DANISH} "Tyrkisk"
+LangString HUNGARIAN_SUPPORT ${LANG_DANISH} "Ungarsk"
+LangString SLOVENIAN_SUPPORT ${LANG_DANISH} "Slovensk"
 LangString ARABIC_SUPPORT ${LANG_DANISH} "Arabisk"
 ; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
 LangString PORTUGUESEBR_SUPPORT ${LANG_DANISH} "Portugisisk (Brasilien)"
@@ -140,16 +140,16 @@ LangString LANG_SELECT ${LANG_DANISH} "Vælg venligst installations sprog"
 LangString LANG_PROGRAM ${LANG_DANISH} "Program Language"
 
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_95 ${LANG_DANISH} "Beklager men, Windows 95 er ikke l�ngere underst�ttet. Pr�v PasswordSafe 2.16"
+LangString SORRY_NO_95 ${LANG_DANISH} "Beklager men, Windows 95 er ikke længere understøttet. Prøv PasswordSafe 2.16"
 
 ; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_98 ${LANG_DANISH} "Beklager men, Windows 98 er ikke l�ngere underst�ttet. Pr�v PasswordSafe 2.16"
+LangString SORRY_NO_98 ${LANG_DANISH} "Beklager men, Windows 98 er ikke længere understøttet. Prøv PasswordSafe 2.16"
 
 ; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
-LangString SORRY_NO_ME ${LANG_DANISH} "Beklager men, Windows ME er ikke l�ngere underst�ttet. Pr�v PasswordSafe 2.16"
+LangString SORRY_NO_ME ${LANG_DANISH} "Beklager men, Windows ME er ikke længere understøttet. Prøv PasswordSafe 2.16"
 
 ; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
-LangString SORRY_NO_2K ${LANG_DANISH} "Beklager men, Windows 2000 er ikke l�ngere underst�ttet. Pr�v PasswordSafe 3.18"
+LangString SORRY_NO_2K ${LANG_DANISH} "Beklager men, Windows 2000 er ikke længere understøttet. Prøv PasswordSafe 3.18"
 
 ; LangString Icon_description_Uninstall "Password Safe Uninstall"
 LangString Icon_description_Uninstall ${LANG_DANISH} "Password Safe Uninstall"
