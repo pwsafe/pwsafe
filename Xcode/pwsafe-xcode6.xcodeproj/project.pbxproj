@@ -276,8 +276,8 @@
 		57218E8529C98481000B1907 /* pwsafe-cli.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "pwsafe-cli.entitlements"; sourceTree = SOURCE_ROOT; };
 		6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordSubsetDlg.cpp; sourceTree = "<group>"; };
 		6FF5D49E1DA14AB20032F5B6 /* PasswordSubsetDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordSubsetDlg.h; sourceTree = "<group>"; };
-		8ED7E1C229D9F24C0012034B /* SetDatabaseIdDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SetDatabaseIdDlg.h; path = ../src/ui/wxWidgets/SetDatabaseIdDlg.h; sourceTree = "<group>"; };
-		8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SetDatabaseIdDlg.cpp; path = ../src/ui/wxWidgets/SetDatabaseIdDlg.cpp; sourceTree = "<group>"; };
+		8ED7E1C229D9F24C0012034B /* SetDatabaseIdDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetDatabaseIdDlg.h; sourceTree = "<group>"; };
+		8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SetDatabaseIdDlg.cpp; sourceTree = "<group>"; };
 		A2D181451C8FF86C0018AE03 /* media.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = media.cpp; sourceTree = "<group>"; };
 		A2FE25811C5ACF7500210C36 /* Item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Item.cpp; sourceTree = "<group>"; };
 		A2FE25821C5ACF7500210C36 /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
@@ -1286,10 +1286,6 @@
 			isa = PBXGroup;
 			children = (
 				57218E8429C98475000B1907 /* pwsafe.entitlements */,
-				8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */,
-				8ED7E1C229D9F24C0012034B /* SetDatabaseIdDlg.h */,
-				E6C94E991FA33BA6008F0072 /* QuartzCore.framework */,
-				E6C94E971FA3399F008F0072 /* CoreGraphics.framework */,
 				E6069D0319FE1CCA0055040F /* Configs */,
 				E690B1031297D76E007EA508 /* Resources */,
 				E6A11A2A1293D20E0060FB35 /* graphics */,
@@ -1302,6 +1298,8 @@
 				E6B1448112B26CEE00415AAE /* OpenGL.framework */,
 				E6B1448712B26D1500415AAE /* Cocoa.framework */,
 				E6B1449312B26D7E00415AAE /* IOKit.framework */,
+				E6C94E991FA33BA6008F0072 /* QuartzCore.framework */,
+				E6C94E971FA3399F008F0072 /* CoreGraphics.framework */,
 				E0A70B9921C905A500A2FEA8 /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -1323,6 +1321,8 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */,
+				8ED7E1C229D9F24C0012034B /* SetDatabaseIdDlg.h */,
 				A6F2B3342832B0380096A7E4 /* QueryCancelDlg.cpp */,
 				A6F2B3352832B0380096A7E4 /* QueryCancelDlg.h */,
 				D3F00B69268CBB2B00F299EE /* SelectAliasDlg.cpp */,
@@ -1859,7 +1859,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E6889E001EE44AA60023E376 /* impexp.cpp in Sources */,
-				8ED7E1C529D9F24C0012034B /* SetDatabaseIdDlg.cpp in Sources */,
 				E6EBC81A1D17184F00AF61CD /* strutils.cpp in Sources */,
 				E6299FB71D0323A300D03FD1 /* main.cpp in Sources */,
 				E6B908E21D30C8980050CFF1 /* diff.cpp in Sources */,
