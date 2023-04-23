@@ -25,7 +25,7 @@ LangString RESERVE_TITLE ${LANG_SIMPCHINESE} "选锟斤拷装锟斤拷锟斤拷"
 LangString RESERVE_FIELD1 ${LANG_SIMPCHINESE} "锟斤拷锟芥（使锟斤拷注锟斤拷锟斤拷锟斤拷屎霞锟酵ワ拷锟斤拷锟斤拷锟矫伙拷 PC锟斤拷"
 
 ; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString RESERVE_FIELD2 ${LANG_SIMPCHINESE} "锟斤拷色锟斤拷锟绞猴拷 U 锟教ｏ拷锟斤拷使锟斤拷锟斤拷锟斤拷注锟斤拷锟斤拷锟?
+LangString RESERVE_FIELD2 ${LANG_SIMPCHINESE} "锟斤拷色锟斤拷锟绞猴拷 U 锟教ｏ拷锟斤拷使锟斤拷锟斤拷锟斤拷注锟斤拷锟斤拷锟"
 
 ; PROGRAM_FILES "Program Files"
 LangString PROGRAM_FILES ${LANG_SIMPCHINESE} "锟斤拷锟斤拷锟侥硷拷"
@@ -40,13 +40,13 @@ LangString START_SHOW ${LANG_SIMPCHINESE} "锟节匡拷始锟剿碉拷锟斤拷�
 LangString START_SHORTCUT ${LANG_SIMPCHINESE} "锟斤拷装锟斤拷锟斤拷锟捷凤拷式"
 
 ; UNINSTALL_SHORTCUT "Uninstall shortcut"
-LangString UNINSTALL_SHORTCUT ${LANG_SIMPCHINESE} "卸锟截匡拷莘锟绞?
+LangString UNINSTALL_SHORTCUT ${LANG_SIMPCHINESE} "卸锟截匡拷莘锟绞"
 
 ;--------------------------------
 ; Descriptions
 
 ; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
-LangString DESC_ProgramFiles ${LANG_SIMPCHINESE} "锟斤拷装锟斤拷锟斤拷 Password Safe 锟斤拷锟斤拷幕锟斤拷锟斤拷募锟斤拷锟?
+LangString DESC_ProgramFiles ${LANG_SIMPCHINESE} "锟斤拷装锟斤拷锟斤拷 Password Safe 锟斤拷锟斤拷幕锟斤拷锟斤拷募锟斤拷锟"
 
 ; DESC_CliTool "Installs pwsafe-cli, a command line utility."
 LangString DESC_CliTool ${LANG_SIMPCHINESE} "Installs pwsafe-cli, a command line utility."
@@ -61,10 +61,10 @@ LangString DESC_StartUp ${LANG_SIMPCHINESE} "锟斤拷锟斤拷 Windows 时锟�
 LangString DESC_StartMenu ${LANG_SIMPCHINESE} "锟节匡拷始锟剿碉拷锟斤拷锟斤拷一锟斤拷 Password Safe 锟斤拷目锟斤拷"
 
 ; DESC_DesktopShortcut "Places a shortcut to Password Safe on your desktop."
-LangString DESC_DesktopShortcut ${LANG_SIMPCHINESE} "锟斤拷锟斤拷锟斤拷锟斤拷锟揭伙拷锟?Password Safe 锟斤拷莘锟绞斤拷锟?
+LangString DESC_DesktopShortcut ${LANG_SIMPCHINESE} "锟斤拷锟斤拷锟斤拷锟斤拷锟揭伙拷锟?Password Safe 锟斤拷莘锟绞斤拷锟"
 
 ; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
-LangString DESC_UninstallMenu ${LANG_SIMPCHINESE} "锟节匡拷始锟剿碉拷锟斤拷锟斤拷一锟斤拷卸锟斤拷 Password Safe 锟侥匡拷莘锟绞斤拷锟?
+LangString DESC_UninstallMenu ${LANG_SIMPCHINESE} "锟节匡拷始锟剿碉拷锟斤拷锟斤拷一锟斤拷卸锟斤拷 Password Safe 锟侥匡拷莘锟绞斤拷锟"
   
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 ; TEXT_GC_TITLE "Installation Type"
@@ -80,7 +80,7 @@ LangString PSWINI_TITLE ${LANG_SIMPCHINESE} "选锟斤拷装锟斤拷锟斤拷"
 LangString PSWINI_TEXT1 ${LANG_SIMPCHINESE} "锟斤拷锟斤拷 (使锟斤拷注锟斤拷锟斤拷锟斤拷屎霞锟酵ワ拷锟斤拷锟斤拷 PC 锟矫伙拷 ) "
 
 ; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString PSWINI_TEXT2 ${LANG_SIMPCHINESE} "锟斤拷色 (锟绞猴拷 U 锟教ｏ拷锟斤拷使锟斤拷锟斤拷锟斤拷注锟斤拷锟?"
+LangString PSWINI_TEXT2 ${LANG_SIMPCHINESE} "锟斤拷色 (锟绞猴拷 U 锟教ｏ拷锟斤拷使锟斤拷锟斤拷锟斤拷注锟斤拷锟)"
 
 ;--------------------------------
 ; checks and warnings
@@ -113,7 +113,7 @@ LangString GERMAN_SUPPORT ${LANG_SIMPCHINESE} "锟斤拷锟斤拷"
 ; SPANISH_SUPPORT "Spanish"
 LangString SPANISH_SUPPORT ${LANG_SIMPCHINESE} "锟斤拷锟斤拷锟斤拷锟斤拷"
 ; SWEDISH_SUPPORT "Swedish"
-LangString SWEDISH_SUPPORT ${LANG_SIMPCHINESE} "锟斤拷锟斤拷锟?
+LangString SWEDISH_SUPPORT ${LANG_SIMPCHINESE} "锟斤拷锟斤拷锟"
 ; DUTCH_SUPPORT "Dutch"
 LangString DUTCH_SUPPORT ${LANG_SIMPCHINESE} "锟斤拷锟斤拷锟斤拷"
 ; FRENCH_SUPPORT "French"
@@ -123,7 +123,7 @@ LangString RUSSIAN_SUPPORT ${LANG_SIMPCHINESE} "锟斤拷锟斤拷"
 ; POLISH_SUPPORT "Polish"
 LangString POLISH_SUPPORT ${LANG_SIMPCHINESE} "锟斤拷锟斤拷锟斤拷"
 ; ITALIAN_SUPPORT "Italian"
-LangString ITALIAN_SUPPORT ${LANG_SIMPCHINESE} "锟斤拷锟斤拷锟斤拷锟?
+LangString ITALIAN_SUPPORT ${LANG_SIMPCHINESE} "锟斤拷锟斤拷锟斤拷锟"
 ; DANISH_SUPPORT "Danish"
 LangString DANISH_SUPPORT ${LANG_SIMPCHINESE} "锟斤拷锟斤拷锟斤拷"
 ; KOREAN_SUPPORT "Korean"
