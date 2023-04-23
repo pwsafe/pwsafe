@@ -261,6 +261,8 @@ Unicode true
   !include ".\I18N\pwsafe_sl.lng"
   !insertmacro MUI_LANGUAGE "Arabic"
   !include ".\I18N\pwsafe_ar-jo.lng"
+  !insertmacro MUI_LANGUAGE "Latvian"
+  !include ".\I18N\pwsafe_lv.lng"
 
 ; English texts here
 ; Note that if we add a string, it needs to be added in all the
@@ -837,6 +839,8 @@ Function .onInit
   Push "Slovenian"
   Push ${LANG_ARABIC}
   Push "Arabic"
+  Push ${LANG_LATVIAN}
+  Push "Latvian"
   Push A ; A means auto count languages
          ; for the auto count to work the first empty push (Push "") must remain
   LangDLL::LangDialog $(LANG_INSTALL) $(LANG_SELECT)
@@ -879,6 +883,8 @@ Function .onInit
   SectionSetFlags ${SlovenianSection} ${SF_SELECTED}
   StrCmp $LANGUAGE ${LANG_ARABIC} 0 +2
   SectionSetFlags ${ArabicSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_LATVIAN} 0 +2
+  SectionSetFlags ${LatvianSection} ${SF_SELECTED}
 
   ;
   ; Check if this is an upgrade or not. If so, default "startup" to

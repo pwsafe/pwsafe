@@ -135,6 +135,7 @@ LangString SLOVENIAN_SUPPORT ${LANG_FRENCH} "Slovenois"
 LangString ARABIC_SUPPORT ${LANG_FRENCH} "Arabe"
 ; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
 LangString PORTUGUESEBR_SUPPORT ${LANG_FRENCH} "Portugais (Brésil)"
+LangString LATVIAN_SUPPORT ${LANG_FRENCH} "Letton"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_FRENCH} "Langue du programme"

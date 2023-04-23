@@ -121,6 +121,7 @@ LangString SLOVENIAN_SUPPORT ${LANG_KOREAN} "슬로베니아어"
 ; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
 LangString PORTUGUESEBR_SUPPORT ${LANG_KOREAN} "포르투갈어(브라질)"
 LangString ARABIC_SUPPORT ${LANG_KOREAN} "아랍어"
+LangString LATVIAN_SUPPORT ${LANG_KOREAN} "라트비아어"
 
 
 ; LANG_PROGRAM "Program Language"

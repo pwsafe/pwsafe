@@ -141,6 +141,7 @@ LangString SLOVENIAN_SUPPORT ${LANG_CZECH} "Slovština"
 LangString ARABIC_SUPPORT ${LANG_CZECH} "Arabština"
 ; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
 LangString PORTUGUESEBR_SUPPORT ${LANG_CZECH} "Portugalština (Brazilská)"
+LangString LATVIAN_SUPPORT ${LANG_CZECH} "Lotyština"
 
 
 ; LANG_PROGRAM "Czech Language"

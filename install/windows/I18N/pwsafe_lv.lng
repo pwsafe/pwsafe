@@ -1,0 +1,168 @@
+;---------------------------------------------------
+; Password Safe Language Script
+; Name : pwsafe_lv.lng
+; include file for "pwsafe.nsi"
+; first edit : Karlo Van der Gucht
+;---------------------------------------------------
+; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
+; Copyright 2005-2023 Rony Shapiro <ronys@pwsafe.org>
+; 2009 extended by Karlo Van der Gucht for multiple language use
+; 2010 extended by Karlo Van der Gucht Danish language
+; This script may be redistributed and/or modified under the Artistic
+; License 2.0 terms as available at 
+; http://www.opensource.org/licenses/artistic-license-2.0.php
+;
+; This script is distributed AS IS.  All warranties are explicitly
+; disclaimed, including, but not limited to, the implied warranties of
+; MERCHANTABILITY and FITNESS FOR A PARTICULAR PURPOSE.
+ 
+;=================================================================
+
+; RESERVE_TITLE "Choose Installation Type"
+LangString RESERVE_TITLE ${LANG_LATVIAN} "Izvēlieties instalācijas veidu"
+
+; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
+LangString RESERVE_FIELD1 ${LANG_LATVIAN} "Regulāri (izmanto reģistru, kas piemērots mājas vai viena lietotāja datoram)"
+
+; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
+LangString RESERVE_FIELD2 ${LANG_LATVIAN} "Zaļš (diskam uz atslēgas; neizmanto resursdatoru reģistru)"
+
+; PROGRAM_FILES "Program Files"
+LangString PROGRAM_FILES ${LANG_LATVIAN} "Programmas faili"
+
+; START_AUTO "Start automatically"
+LangString START_AUTO ${LANG_LATVIAN} "Automātiska sākšana"
+
+; START_SHOW "Show in start menu"
+LangString START_SHOW ${LANG_LATVIAN} "Rādīt sākuma izvēlnē"
+
+; START_SHORTCUT "Install desktop shortcut"
+LangString START_SHORTCUT ${LANG_LATVIAN} "Darbvirsmas saīsnes instalēšana"
+
+; UNINSTALL_SHORTCUT "Uninstall shortcut"
+LangString UNINSTALL_SHORTCUT ${LANG_LATVIAN} "Atinstalēt saīsni"
+
+;--------------------------------
+; Descriptions
+
+; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
+LangString DESC_ProgramFiles ${LANG_LATVIAN} "Instalē pamata failus, kas nepieciešami, lai palaistu PasswordSafe."
+
+; DESC_CliTool "Installs pwsafe-cli, a command line utility."
+LangString DESC_CliTool ${LANG_LATVIAN} "Instalē pwsafe-cli, komandrindas utilītu."
+
+; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
+LangString DESC_LangSupport ${LANG_LATVIAN} "Lūdzu, izvēlieties valodu(-as), kuru(-as) izmantos PasswordSafe."
+
+; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
+LangString DESC_StartUp ${LANG_LATVIAN} "Startē Password Safe kā daļu no Windows sāknēšanas/pieteikšanās."
+
+; DESC_StartMenu "Creates an entry in the start menu for Password Safe."
+LangString DESC_StartMenu ${LANG_LATVIAN} "Izveido ierakstu PasswordSafe sākuma izvēlnē."
+
+; DESC_DesktopShortcut "Places a shortcut to Password Safe on your desktop."
+LangString DESC_DesktopShortcut ${LANG_LATVIAN} "Darbvirsmā novieto saīsni uz PasswordSafe."
+
+; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
+LangString DESC_UninstallMenu ${LANG_LATVIAN} "Sākuma izvēlnē novieto saīsni, lai atinstalētu PasswordSafe."
+  
+; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
+; TEXT_GC_TITLE "Installation Type"
+LangString TEXT_GC_TITLE ${LANG_LATVIAN} "Instalācijas tips"
+
+; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
+LangString TEXT_GC_SUBTITLE ${LANG_LATVIAN} "Izvēlieties Parasts lietošanai vienā datorā, zaļš portatīvai instalēšanai. Ja neesat pārliecināts, ar 'Parasto' viss ir kārtībā."
+
+; PSWINI_TITLE "Choose Installation Type"
+LangString PSWINI_TITLE ${LANG_LATVIAN} "Izvēlieties instalācijas veidu"
+
+; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
+LangString PSWINI_TEXT1 ${LANG_LATVIAN} "Regulāri (izmanto reģistru, piemērots mājas vai viena lietotāja datoram)"
+
+; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
+LangString PSWINI_TEXT2 ${LANG_LATVIAN} "Zaļš (disk-on-key; neizmanto resursdatora reģistru)"
+
+;--------------------------------
+; checks and warnings
+
+; RUNNING_INSTALL "The installer is already running."
+LangString RUNNING_INSTALL ${LANG_LATVIAN} "Instalētājs jau darbojas."
+
+; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
+LangString RUNNING_APPLICATION ${LANG_LATVIAN} "Lūdzu, aizveriet visas darbojošās PasswordSafe instances pirms jaunas versijas instalēšanas"
+
+; LANG_INSTALL "Installation Language"
+LangString LANG_INSTALL ${LANG_LATVIAN} "Instalācijas valoda"
+
+; LANG_SELECT "Please select the language for the installation"
+LangString LANG_SELECT ${LANG_LATVIAN} "Lūdzu, izvēlieties instalācijas valodu"
+
+; CLI_TOOL "Command-line tool"
+LangString CLI_TOOL ${LANG_LATVIAN} "Komandrindas rīks"
+
+; LANGUAGE_SUPPORT "Language Support"
+LangString LANGUAGE_SUPPORT ${LANG_LATVIAN} "Valodu atbalsts"
+; ENGLISH_SUPPORT "English"
+LangString ENGLISH_SUPPORT ${LANG_LATVIAN} "Angļu"
+; CHINESE_CN_SUPPORT "Chinese (Simplified)"
+LangString CHINESE_CN_SUPPORT ${LANG_LATVIAN} "Ķīniešu (vienkāršotā)"
+; CHINESE_TW_SUPPORT "Chinese (Traditional)"
+LangString CHINESE_TW_SUPPORT ${LANG_LATVIAN} "Ķīniešu (tradicionālā)"
+; GERMAN_SUPPORT "German"
+LangString GERMAN_SUPPORT ${LANG_LATVIAN} "Vācu"
+; SPANISH_SUPPORT "Spanish"
+LangString SPANISH_SUPPORT ${LANG_LATVIAN} "Spāņu"
+; SWEDISH_SUPPORT "Swedish"
+LangString SWEDISH_SUPPORT ${LANG_LATVIAN} "Zviedru"
+; DUTCH_SUPPORT "Dutch"
+LangString DUTCH_SUPPORT ${LANG_LATVIAN} "Holandiešu"
+; FRENCH_SUPPORT "French"
+LangString FRENCH_SUPPORT ${LANG_LATVIAN} "Franču"
+; RUSSIAN_SUPPORT "Russian"
+LangString RUSSIAN_SUPPORT ${LANG_LATVIAN} "Krievu"
+; POLISH_SUPPORT "Polish"
+LangString POLISH_SUPPORT ${LANG_LATVIAN} "Poļu"
+; ITALIAN_SUPPORT "Italian"
+LangString ITALIAN_SUPPORT ${LANG_LATVIAN} "Itāliešu"
+; DANISH_SUPPORT "Danish"
+LangString DANISH_SUPPORT ${LANG_LATVIAN} "Dāņu"
+; KOREAN_SUPPORT "Korean"
+LangString KOREAN_SUPPORT ${LANG_LATVIAN} "Korejiešu"
+; CZECH_SUPPORT "Czech"
+LangString CZECH_SUPPORT ${LANG_LATVIAN} "Čehu"
+; TURKISH_SUPPORT "Turkish"
+LangString TURKISH_SUPPORT ${LANG_LATVIAN} "Turku"
+; HUNGARIAN_SUPPORT "Hungarian"
+LangString HUNGARIAN_SUPPORT ${LANG_LATVIAN} "Ungāru"
+; SLOVENIAN_SUPPORT "Slovenian"
+LangString SLOVENIAN_SUPPORT ${LANG_LATVIAN} "Slovēņu"
+; ARABIC_SUPPORT "Arabic"
+LangString ARABIC_SUPPORT ${LANG_LATVIAN} "Arābu"
+; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
+LangString PORTUGUESEBR_SUPPORT ${LANG_LATVIAN} "Portugāļu (Brazīlija)"
+LangString LATVIAN_SUPPORT ${LANG_LATVIAN} "Latviešu"
+
+
+; LANG_PROGRAM "Program Language"
+LangString LANG_PROGRAM ${LANG_LATVIAN} "Programmas valoda"
+
+; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_95 ${LANG_LATVIAN} "Diemžēl operētājsistēma Windows 95 vairs netiek atbalstīta. Izmēģiniet PasswordSafe 2.16"
+
+; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_98 ${LANG_LATVIAN} "Diemžēl operētājsistēma Windows 98 vairs netiek atbalstīta. Izmēģiniet PasswordSafe 2.16"
+
+; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_ME ${LANG_LATVIAN} "Diemžēl operētājsistēma Windows ME vairs netiek atbalstīta. Izmēģiniet PasswordSafe 2.16"
+
+; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
+LangString SORRY_NO_2K ${LANG_LATVIAN} "Diemžēl operētājsistēma Windows 2000 vairs netiek atbalstīta. Izmēģiniet PasswordSafe 3.18"
+
+; LangString Icon_description_Uninstall "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_LATVIAN} "PasswordSafe atinstalēšana"
+
+; LangString Icon_description_Help  "Password Safe Help"
+LangString Icon_description_Help ${LANG_LATVIAN} "PasswordSafe palīdzība"
+
+;=================================================================
+; End of pwsafe_xx.lng

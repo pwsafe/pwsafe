@@ -132,6 +132,7 @@ LangString SLOVENIAN_SUPPORT ${LANG_DANISH} "Slovensk"
 LangString ARABIC_SUPPORT ${LANG_DANISH} "Arabisk"
 ; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
 LangString PORTUGUESEBR_SUPPORT ${LANG_DANISH} "Portugisisk (Brasilien)"
+LangString LATVIAN_SUPPORT ${LANG_DANISH} "Lettisk"
 
 ; LANG_SELECT "Please select the language for the installation"
 LangString LANG_SELECT ${LANG_DANISH} "Vælg venligst installations sprog"

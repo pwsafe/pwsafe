@@ -128,13 +128,15 @@ LangString ITALIAN_SUPPORT ${LANG_TRADCHINESE} "嚙緬嚙篌嚙瞋嚙踝蕭"
 LangString DANISH_SUPPORT ${LANG_TRADCHINESE} "嚙踝蕭嚙踝蕭嚙踝蕭"
 ;KOREAN_SUPPORT "Korean"
 LangString KOREAN_SUPPORT ${LANG_TRADCHINESE} "嚙踝蕭嚙踝蕭"
-LangString CZECH_SUPPORT ${LANG_TRADCHINESE} "Czech"
-LangString TURKISH_SUPPORT ${LANG_TRADCHINESE} "Turkish"
-LangString HUNGARIAN_SUPPORT ${LANG_TRADCHINESE} "Hungarian"
-LangString SLOVENIAN_SUPPORT ${LANG_TRADCHINESE} "Slovenian"
-LangString ARABIC_SUPPORT ${LANG_TRADCHINESE} "Arabic"
+LangString CZECH_SUPPORT ${LANG_TRADCHINESE} "捷克語"
+LangString TURKISH_SUPPORT ${LANG_TRADCHINESE} "土耳其文"
+LangString HUNGARIAN_SUPPORT ${LANG_TRADCHINESE} "匈牙利語"
+LangString SLOVENIAN_SUPPORT ${LANG_TRADCHINESE} "斯洛維尼亞文"
+LangString ARABIC_SUPPORT ${LANG_TRADCHINESE} "阿拉伯文"
 ; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
 LangString PORTUGUESEBR_SUPPORT ${LANG_TRADCHINESE} "葡萄牙語（巴西）"
+LangString LATVIAN_SUPPORT ${LANG_TRADCHINESE} "拉脫維亞語"
+
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_TRADCHINESE} "嚙緹嚙踝蕭嚙緙嚙踝蕭"
@@ -152,10 +154,10 @@ LangString SORRY_NO_ME ${LANG_TRADCHINESE} "嚙踝蕭p嚙璀嚙誹們已嚙篇�
 LangString SORRY_NO_2K ${LANG_TRADCHINESE} "嚙踝蕭p嚙璀嚙誹們已嚙篇嚙踝蕭嚙賭援Windows 2000嚙璀嚙請改蕭嚙瞑asswordSafe 3.18嚙踝蕭"
 
 ; LangString Icon_description_Uninstall "Password Safe Uninstall"
-LangString Icon_description_Uninstall ${LANG_TRADCHINESE} "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_TRADCHINESE} "密碼安全卸載"
 
 ; LangString Icon_description_Help  "Password Safe Help"
-LangString Icon_description_Help ${LANG_TRADCHINESE} "Password Safe Help"
+LangString Icon_description_Help ${LANG_TRADCHINESE} "密碼安全説明"
 
 ;=================================================================
 ; End of pwsafe_tw.lng

@@ -124,6 +124,7 @@ LangString TURKISH_SUPPORT ${LANG_RUSSIAN} "Турецкий"
 LangString HUNGARIAN_SUPPORT ${LANG_RUSSIAN} "Венгерский"
 LangString SLOVENIAN_SUPPORT ${LANG_RUSSIAN} "Словенский"
 LangString ARABIC_SUPPORT ${LANG_RUSSIAN} "Арабский"
+LangString LATVIAN_SUPPORT ${LANG_RUSSIAN} "Латышский"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_RUSSIAN} "Язык программы"
