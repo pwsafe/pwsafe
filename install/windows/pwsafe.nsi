@@ -326,7 +326,7 @@ LangString TURKISH_SUPPORT ${LANG_ENGLISH} "Turkish"
 LangString HUNGARIAN_SUPPORT ${LANG_ENGLISH} "Hungarian"
 LangString SLOVENIAN_SUPPORT ${LANG_ENGLISH} "Slovenian"
 LangString ARABIC_SUPPORT ${LANG_ENGLISH} "Arabic"
-
+LangString LATVIAN_SUPPORT ${LANG_ENGLISH} "Latvian"
 
 LangString LANG_PROGRAM ${LANG_ENGLISH} "Program Language"
 LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported.$\r$\nTry Password Safe 2.16"
@@ -532,6 +532,11 @@ Section /o "$(ARABIC_SUPPORT)" ArabicSection
   File /nonfatal "${LANG_DLL}\pwsafeAR.dll"
   File /nonfatal "..\..\help\pwsafeAR\pwsafeAR.chm"
 SectionEnd
+Section /o "$(LATVIAN_SUPPORT)" LatvianSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "${LANG_DLL}\pwsafeLV.dll"
+  File /nonfatal "..\..\help\pwsafeLV\pwsafeLV.chm"
+SectionEnd
 SectionGroupEnd
 
 ;--------------------------------
@@ -694,6 +699,9 @@ Section "Uninstall"
   Delete "$INSTDIR\pwsafeKR.chm"
   Delete "$INSTDIR\pwsafeKR.chw"
   Delete "$INSTDIR\pwsafeKR.dll"
+  Delete "$INSTDIR\pwsafeLV.chm"
+  Delete "$INSTDIR\pwsafeLV.chw"
+  Delete "$INSTDIR\pwsafeLV.dll"
   Delete "$INSTDIR\pwsafeNL.chm"
   Delete "$INSTDIR\pwsafeNL.chw"
   Delete "$INSTDIR\pwsafeNL.dll"
