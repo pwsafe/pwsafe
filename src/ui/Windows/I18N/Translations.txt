@@ -18,6 +18,7 @@ pwsafe_fr.po  0x040c FR_FR FR
 pwsafe_hu.po  0x040e HU_HU HU 
 pwsafe_it.po  0x0410 IT_IT IT
 pwsafe_kr.po  0x0412 KO_KR KR
+pwsafe_lv.po  0x0426 LV_LV LV
 pwsafe_nl.po  0x0413 NL_NL NL
 pwsafe_pl.po  0x0415 PL_PL PL
 pwsafe_pt_br.po  0x0416 PT_BR PT
