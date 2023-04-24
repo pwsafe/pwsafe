@@ -18,8 +18,9 @@ RELDIR=$(shell xcodebuild -project ../../Xcode/pwsafe-xcode6.xcodeproj -showBuil
 # Path to wxWidgets library path has to be adapted for each environment
 # WXDIR=../../../wxWidgets-3.1.5/locale
 WXDIR=$(shell grep OTHER_LDFLAGS ../../Xcode/pwsafe-release.xcconfig | awk 'BEGIN { RS = " " } /-L/{print $$1}' | grep static-release | sed s/-L// | sed s/static-release\\/lib/locale/)
-# Machine architecture
-MACHINEARCH=$(shell uname -m)
+# Machine architecture - these days we are building Universal Binaries
+#MACHINEARCH=$(shell uname -m)
+MACHINEARCH=universal
 
 CPBIN=/bin/cp
 RMBIN=/bin/rm
