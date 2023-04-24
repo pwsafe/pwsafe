@@ -33,7 +33,7 @@ jobs:
         echo "WX_SRC_DIR=$HOME/wxWidgets" >> $GITHUB_ENV
         echo "WX_BUILD_DIR=$HOME/wxbuild" >> $GITHUB_ENV
         echo "WX_ARCH=arm64,x86_64" >> $GITHUB_ENV
-		echo "DEBUG_FLAG=--disable-debug" >> $GITHUB_ENV
+        echo "DEBUG_FLAG=--disable-debug" >> $GITHUB_ENV
         echo "XCODE_VER=14.0.1" >> $GITHUB_ENV
         echo "FORCE_REBUILD_WX=6" >> $GITHUB_ENV
 
