@@ -1814,7 +1814,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd ../help/\nmake -f Makefile.linux";
+			shellScript = "cd ../help/\nmake -f Makefile.linux\n";
 		};
 		E6CFEEF711EA3E2F001402D8 /* Generate version.h */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1832,7 +1832,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "make -C .. -f Makefile.macos src/ui/wxWidgets/version.h";
+			shellScript = "make -C .. -f Makefile.macos src/ui/wxWidgets/version.h\n";
 		};
 		E6CFEF1811EA41FB001402D8 /* Generate core_st */ = {
 			isa = PBXShellScriptBuildPhase;
