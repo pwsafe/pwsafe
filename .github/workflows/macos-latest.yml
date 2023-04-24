@@ -28,12 +28,12 @@ jobs:
     - name: Set build parameters
       # If you need to rebuild wxWidgets for some reason, say you changed the build params, just increment FORCE_REBUILD_WX
       run: |
-        echo "WX_VERS=3.2.1" >> $GITHUB_ENV
+        echo "WX_VERS=3.2.2.1" >> $GITHUB_ENV
         echo "MACOS_VER_MIN=10.14" >> $GITHUB_ENV
         echo "WX_SRC_DIR=$HOME/wxWidgets" >> $GITHUB_ENV
         echo "WX_BUILD_DIR=$HOME/wxbuild" >> $GITHUB_ENV
         echo "XCODE_VER=14.0.1" >> $GITHUB_ENV
-        echo "FORCE_REBUILD_WX=5" >> $GITHUB_ENV
+        echo "FORCE_REBUILD_WX=6" >> $GITHUB_ENV
 
     - name: Force compatible Xcode version
       run: sudo xcode-select -s /Applications/Xcode_${XCODE_VER}.app/Contents/Developer
