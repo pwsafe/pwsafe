@@ -248,7 +248,7 @@ struct TextRecordWriter {
         m_pcore->UpdateWizard(sx_exported.c_str());
 
         CUTF8Conv conv; // can't make a member, as no copy c'tor!
-        const unsigned char *utf8;
+        const unsigned char *utf8 = nullptr;
         size_t utf8Len;
         if (conv.ToUTF8(line, utf8, utf8Len)) {
           m_ofs.write(reinterpret_cast<const char *>(utf8), utf8Len);
