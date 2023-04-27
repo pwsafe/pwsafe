@@ -238,8 +238,7 @@ pwsafe/src/ui/wxWidgets/version.h file before building.
 ## Build pwsafe
 If you have come this far, you only need to launch Xcode, load the pwsafe project
 file (pwsafe/Xcode/pwsafe-xcode6.xcodeproj), and hit 'Cmd-B' (or from the menu Product => Build).
-This will build the currently selected scheme. Note that the build will be for the architecture
-of the machine you are running on (either Intel or Apple Silicon).
+This will build the currently selected scheme.
 
 ### Debug and Release Configs
 You need to decide whether to build the Debug or Release configuration of
@@ -249,6 +248,8 @@ Menu => Scheme to select the Release or Debug configuration respectively. And, i
 building pwsafe for just yourself, see that the architecture in Product Menu => Destination
 matches your Mac's architecture. By default, the Project file is set-up so that "pwsafe-debug" will build for 
 your Mac's architecture and "pwsafe" will build a universal binary. (Provided wxWidgets was built that way. See above.)
+To build a single architecture release, go to the project level build settings and change "**Build active architecture only**"
+to "yes".
 
 At this point, just hitting Cmd-B or selecting Product => Build from the menu will build the chosen pwsafe configuration.
 
