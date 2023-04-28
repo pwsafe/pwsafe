@@ -44,10 +44,16 @@ TOOLCHAIN_DIR=
 WX_PREFIX=`pwd`
 
 # Architectures to build, default comes from the workflow file but can be overriden
-# with the -a option.
+# here or with the -a option.
 WX_ARCH=
 
+# Build options for the ./configure command.  The defaults are taken from the workflow file
+# but can be overriden here.  Setting this overrides all other options, specify all of the configure
+# options here.
+CONF_OPTS=
+
 # Workflow file for the GitHub release build.  We will fetch some parameters from it.
+# Can be overriden with the -w option.
 WORKFLOW=`dirname $0`/../.github/workflows/macos-latest.yml
 
 
@@ -78,6 +84,10 @@ Usage (all flags are optional):
 	    You can get the path to any installed SDK that Xcode is aware of like this
 	    xcodebuild -version -sdk macosx10.9 Path
 
+     -w <Path to macos-latest.yml>
+        Path to the GitHub workflow file from which to retrieve build parameters.  The default
+        is relative to the location of this script.
+
 	-T <toolchain dir>
 	    Directory where gcc-4.0, g++4.0, etc. should be.  Only required for building wx2.8 on OS X 10.9
 __END_USAGE__
@@ -90,7 +100,7 @@ error() {
 
 
 
-while getopts "a:dc:t:nk:T:" opt; do
+while getopts "a:dc:t:nk:T:w:" opt; do
 	case $opt in
 		a)
 			case "$OPTARG" in
@@ -137,6 +147,9 @@ while getopts "a:dc:t:nk:T:" opt; do
 		n)
 			DRY_RUN="echo "
 			;;
+        w)
+            WORKFLOW=$OPTARG
+            ;;
 		?)
 			usage $0
 			exit 1
@@ -152,43 +165,53 @@ WX_VER=`$CONF_SCRIPT -V | grep 'wxWidgets configure' | cut -d' ' -f3`
 # This code tries to build wxWidgets the same way the Github workflow builds the distribution. 
 #
 doCocoaBuild() {
-    if [ ! -f $WORKFLOW ]
+
+    # If the user edited the CONF_OPTS variable, they are responsible for all of it.
+    # Othewise, we build it from the GitHub workflow file and any command line options.
+    if [ -z $CONF_OPTS ]
     then
-        error "Cannot locate the workflow file: $WORKFLOW"
+        if [ ! -f $WORKFLOW ]
+        then
+            error "Cannot locate the workflow file: $WORKFLOW"
+        fi
+        # This is actually where 'make install' will put things.
+        WX_BUILD_DIR=$WX_PREFIX
+
+        # Fetch some parameters from the macos-latest.yaml workflow
+        if [ -z $WX_ARCH ]
+        then
+            eval `grep WX_ARCH= $WORKFLOW | sed -E -e 's/^.*"(.*)".*$/\1/'`
+        fi
+        eval `grep MACOS_VER_MIN= $WORKFLOW | sed -E -e 's/^.*"(.*)".*$/\1/'`
+
+        # The configure command in the workflow file uses the above variables.
+        # This trick will expand them into the CONF_OPTS variable
+        CONF_OPTS=`grep ./configure $WORKFLOW | cut -w -f 3-`
+        CONF_OPTS=`eval echo $CONF_OPTS`
+
+        # This is about the only cocoa build customization we support because everything
+        # else is taken care of via "deployment target" in pwsafe-xcode6.xcodeproj
+        SDKFLAG=
+        if [ -n "$SDKPATH" ]
+        then
+            SDKFLAG="--with-macosx-sdk=$SDKPATH"
+        fi
+
+        echo "=============================="
+        echo "osx-build-wx options:"
+        echo "WX_VER" = $WX_VER
+        echo "WX_ARCH" = $WX_ARCH
+        echo "MACOS_VER_MIN" = $MACOS_VER_MIN
+        echo "WX_BUILD_DIR" = $WX_BUILD_DIR
+        echo "SDKFLAG" = $SDKFLAG
+        echo "DEBUG_FLAG" = $DEBUG_FLAG
+        echo "CONF_OPTS" = $CONF_OPTS
+        echo "=============================="
+    else
+        echo "=============================="
+        echo "CONF_OPTS" = $CONF_OPTS
+        echo "=============================="
     fi
-	# This is actually where 'make install' will put things.
-	WX_BUILD_DIR=$WX_PREFIX
-
-	# Fetch some parameters from the macos-latest.yaml workflow
-	if [ -z $WX_ARCH ]
-	then
-	    eval `grep WX_ARCH= $WORKFLOW | sed -E -e 's/^.*"(.*)".*$/\1/'`
-	fi
-	eval `grep MACOS_VER_MIN= $WORKFLOW | sed -E -e 's/^.*"(.*)".*$/\1/'`
-
-	# The configure command in the workflow file uses the above variables.
-	# This trick will expand them into the CONF_OPTS variable
-	CONF_OPTS=`grep ./configure $WORKFLOW | cut -w -f 3-`
-	CONF_OPTS=`eval echo $CONF_OPTS`
-
-	# This is about the only cocoa build customization we support because everything
-	# else is taken care of via "deployment target" in pwsafe-xcode6.xcodeproj
-	SDKFLAG=
-	if [ -n "$SDKPATH" ]
-	then
-		SDKFLAG="--with-macosx-sdk=$SDKPATH"
-	fi
-
-    echo "=============================="
-    echo "osx-build-wx options:"
-    echo "WX_VER" = $WX_VER
-    echo "WX_ARCH" = $WX_ARCH
-    echo "MACOS_VER_MIN" = $MACOS_VER_MIN
-    echo "WX_BUILD_DIR" = $WX_BUILD_DIR
-    echo "SDKFLAG" = $SDKFLAG
-    echo "DEBUG_FLAG" = $DEBUG_FLAG
-    echo "CONF_OPTS" = $CONF_OPTS
-    echo "=============================="
 
 	$DRY_RUN $CONF_SCRIPT $CONF_OPTS $SDKFLAG
 
