@@ -1,4 +1,6 @@
 # This is a basic workflow to help you get started with Actions
+# This file is also read by the osx-build-wx script to fetch the
+# parameters for a manual build.
 
 name: mac-pwsafe
 
