@@ -15,7 +15,7 @@ It is organized in the following sections:
   * Debug and Release Configs
   * Where is pwsafe.app?
 * [Build installation package](#build-installation-package)
-* [Universal Binaries](universal-binaries)
+* [Known Issues](#known-issues-with-macos-install)
 
 
 ## Terminology
@@ -158,9 +158,8 @@ pwsafe built with such a build of wxWidgets will run on OS X 10.7, but this has 
 
 You can pass it the "-n" option to show what parameters it will pass to the configure script.
 
-osx-build-wx has to be run from your wxWidgets build directory.  For example, if you have wxWidgets sources 
-in "wx3", then do the following:  **NOTE: Do not copy osx-build-wx to a different directory, just use the path
-to the pwsafe/Misc copy.**
+osx-build-wx has to be run from your wxWidgets build directory.  
+**NOTE: Do not copy osx-build-wx to a different directory, just use the full path to the pwsafe/Misc/osx-build-wx location.**  The osx-build-wx script retrieves some build parameters from the GitHub workflow script (in pwsafe/.github/workflows/macos-latest.yml) to ensure this build will be done the same way as the release build.  For example, if you have wxWidgets sources in "wx3", then do the following:
 
 ```
 wx3 $ mkdir static-debug
