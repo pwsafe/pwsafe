@@ -44,6 +44,9 @@
 	     Compressed='yes'
 	     />
 
+  	<Icon Id="CpaneIcon" SourceFile="src\ui\Windows\graphics\cpane.ico" />
+	<Property Id="ARPPRODUCTICON" Value="CpaneIcon" />
+
     <UIRef Id='WixUI_InstallDir' />
     <UIRef Id="WixUI_ErrorProgressText" />
     <WixVariable Id='WixUILicenseRtf' Value='docs\LICENSE.rtf' />
