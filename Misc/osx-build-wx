@@ -36,7 +36,7 @@ DRY_RUN=
 # The 10.4 SDK path, if not in the default location (i.e. /Developer/SDKs/MacOSX10.4u.sdk/
 SDKPATH=
 
-# This is where gcc, g++ and ld required to build with 10.4 SDK should be
+# This is where gcc, g++ and ld, required to build with the 10.4 SDK, should be located.
 TOOLCHAIN_DIR=
 
 # "make install" base directory.  For safety, we set it to pwd and don't recommend installing
@@ -105,7 +105,7 @@ while getopts "a:dc:t:nk:T:w:" opt; do
 		a)
 			case "$OPTARG" in
 				arm64|x86_64) WX_ARCH=$OPTARG;;
-				*) error Unexpected architecture: $OPTARG. Its either \"arm64\" or \"x86_64\" \(default is both\) 1>&2
+				*) error "Unexpected architecture: \"$OPTARG\". Its either \"arm64\" or \"x86_64\" (default is both)"
 				;;
 			esac
 			;;
@@ -117,14 +117,14 @@ while getopts "a:dc:t:nk:T:w:" opt; do
 			then
 				CONF_SCRIPT=$OPTARG
 			else
-				error Missing or non-executable configure script: $OPTARG
+				error "Missing or non-executable configure script: $OPTARG"
 			fi
 			;;
 		t)
 			case "$OPTARG" in
 				carbon) TOOLKIT=CARBON;;
 				cocoa)  TOOLKIT=COCOA;;
-				*)      error Unexpected toolkit: $OPTARG. Its either \"carbon\" or \"cocoa\" \(default\) 1>&2
+				*)      error "Unexpected toolkit: \"$OPTARG\". Its either \"carbon\" or \"cocoa\" (default)"
 				;;
 			esac
 			;;	
