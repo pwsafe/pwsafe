@@ -6,6 +6,7 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 
 PasswordSafe 3.63.0 Release ??? 2023
 ====================================
+* Installer executable now has the "PasswordSafe" icon instead of the default NSIS Icon.
 * [GH946] (https://github.com/pwsafe/pwsafe/issues/946) Expiration dates are now the last second of the specified date, instead of the first minute. This resolves a minor inconsistency.
 * [GH945] (https://github.com/pwsafe/pwsafe/issues/945) Document passphrase parmaters in pwsafe-cli.
 
