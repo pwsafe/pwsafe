@@ -39,7 +39,7 @@ SDKPATH=
 # This is where gcc, g++ and ld, required to build with the 10.4 SDK, should be located.
 TOOLCHAIN_DIR=
 
-# "make install" base directory.  For safety, we set it to pwd and don't recommend installing
+# "make install" base directory.  For safety, we set it to pwd and don't recommend using "make install".
 # You might want to use /usr/local if you intend to install the resulting wxWidgwts build.
 WX_PREFIX=`pwd`
 
