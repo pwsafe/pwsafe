@@ -168,6 +168,12 @@ Unicode true
   !define FULL_VERSION ${VERSION}
 !endif
 
+;--------------------------------
+; Set installer and uninstaller icons
+!define MUI_ICON "..\..\src\ui\Windows\graphics\cpane.ico"
+!define MUI_HEADERIMAGE
+!define MUI_HEADERIMAGE_BITMAP "..\..\src\ui\Windows\graphics\cpane.bmp"
+!define MUI_UNICON "..\..\src\ui\Windows\graphics\cpane.ico"
 
 ;--------------------------------
 ;Variables
