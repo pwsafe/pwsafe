@@ -274,6 +274,8 @@
 		57218E8329C983FA000B1907 /* version.wx */ = {isa = PBXFileReference; lastKnownFileType = text; name = version.wx; path = ../version.wx; sourceTree = "<group>"; };
 		57218E8429C98475000B1907 /* pwsafe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = pwsafe.entitlements; sourceTree = "<group>"; };
 		57218E8529C98481000B1907 /* pwsafe-cli.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "pwsafe-cli.entitlements"; sourceTree = SOURCE_ROOT; };
+		57C329E72A070EFD00454292 /* ReleaseNotesWX.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotesWX.md; path = ../docs/ReleaseNotesWX.md; sourceTree = "<group>"; };
+		57C329E82A0715F500454292 /* ReleaseNotes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotes.md; path = ../docs/ReleaseNotes.md; sourceTree = "<group>"; };
 		6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordSubsetDlg.cpp; sourceTree = "<group>"; };
 		6FF5D49E1DA14AB20032F5B6 /* PasswordSubsetDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordSubsetDlg.h; sourceTree = "<group>"; };
 		8ED7E1C229D9F24C0012034B /* SetDatabaseIdDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetDatabaseIdDlg.h; sourceTree = "<group>"; };
@@ -1285,6 +1287,8 @@
 		E6ADB7EE119569CC004E2BE5 = {
 			isa = PBXGroup;
 			children = (
+				57C329E82A0715F500454292 /* ReleaseNotes.md */,
+				57C329E72A070EFD00454292 /* ReleaseNotesWX.md */,
 				57218E8429C98475000B1907 /* pwsafe.entitlements */,
 				E6069D0319FE1CCA0055040F /* Configs */,
 				E690B1031297D76E007EA508 /* Resources */,
