@@ -75,7 +75,11 @@ foreach (LANG ${LANGS})
   list(APPEND OUTPUT_FILES "${OUTPUT_FILE}")
 endforeach(LANG)
 
+if (WIN32 AND NOT WX_WINDOW)
 option(PWS_BUILD_HELP "Build the help files by default." OFF)
+else()
+option(PWS_BUILD_HELP "Build the help files by default." ON)
+endif()
 
 if (PWS_BUILD_HELP)
   add_custom_target(helpfiles ALL DEPENDS ${OUTPUT_FILES})
