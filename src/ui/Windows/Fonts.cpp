@@ -17,11 +17,11 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "Fonts.h"
+#include "winutils.h"
 
 #include "os/env.h"
 
 #include <usp10.h>    // for support of Unicode character (Uniscribe)
-
 #include <vector>
 
 Fonts *Fonts::self = NULL;
@@ -52,9 +52,27 @@ static LOGFONT DragFixLogfont = {
   -16, 0, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, DEFAULT_PITCH | FF_SWISS,
   L'M', L'S', L' ', L'S', L'a', L'n', L's', L' ', L'S', L'e', L'r', L'i', L'f', L'\0'};
 
+static void tweakFontSizes()
+{
+  const UINT defDPI = 96;
+  const UINT curDPI = WinUtil::GetDPI();
+
+  auto adjust = [&defDPI, &curDPI](LONG& height)
+  {
+    height = (height * static_cast<LONG>(curDPI)) / static_cast<LONG>(defDPI);
+  };
+
+  adjust(dfltPasswordLogfont.lfHeight);
+  adjust(dfltTreeListFont.lfHeight);
+  adjust(dfltAddEditLogfont.lfHeight);
+  adjust(dfltNotesLogfont.lfHeight);
+  adjust(DragFixLogfont.lfHeight);
+}
+
 Fonts *Fonts::GetInstance()
 {
   if (self == NULL) {
+    tweakFontSizes();
     self = new Fonts();
   }
   return self;
