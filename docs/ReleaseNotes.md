@@ -7,6 +7,7 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 PasswordSafe 3.63.0 Release ??? 2023
 ====================================
 * Installer executable now has the "PasswordSafe" icon instead of the default NSIS Icon.
+* [GH966] (https://github.com/pwsafe/pwsafe/issues/966) Default font sizes for hi-res displays corrected (Windows).
 * [SF1572] (https://sourceforge.net/p/passwordsafe/bugs/1572/) [GH959] (https://github.com/pwsafe/pwsafe/issues/959) Opening via system tray icon now focuses correctly on Windows 11. The fix was to change the trigger from double-click to a single click, which is consistent with other system tray icons, but is a change for PAsswordSafe.
 * [GH946] (https://github.com/pwsafe/pwsafe/issues/946) Expiration dates are now the last second of the specified date, instead of the first minute. This resolves a minor inconsistency.
 * [GH945] (https://github.com/pwsafe/pwsafe/issues/945) Document passphrase parmaters in pwsafe-cli.

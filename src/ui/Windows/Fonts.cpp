@@ -17,14 +17,14 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 #include "Fonts.h"
+#include "winutils.h"
 
 #include "os/env.h"
 
 #include <usp10.h>    // for support of Unicode character (Uniscribe)
-
 #include <vector>
 
-Fonts *Fonts::self = NULL;
+Fonts *Fonts::self = nullptr;
 
 // 12pt Consolas Regular
 static LOGFONT dfltPasswordLogfont = {
@@ -52,9 +52,27 @@ static LOGFONT DragFixLogfont = {
   -16, 0, 0, 0, FW_NORMAL, 0, 0, 0, 0, 0, 0, 0, DEFAULT_PITCH | FF_SWISS,
   L'M', L'S', L' ', L'S', L'a', L'n', L's', L' ', L'S', L'e', L'r', L'i', L'f', L'\0'};
 
+static void tweakFontSizes()
+{
+  const UINT defDPI = 96;
+  const UINT curDPI = WinUtil::GetDPI();
+
+  auto adjust = [&defDPI, &curDPI](LONG& height)
+  {
+    height = (height * static_cast<LONG>(curDPI)) / static_cast<LONG>(defDPI);
+  };
+
+  adjust(dfltPasswordLogfont.lfHeight);
+  adjust(dfltTreeListFont.lfHeight);
+  adjust(dfltAddEditLogfont.lfHeight);
+  adjust(dfltNotesLogfont.lfHeight);
+  adjust(DragFixLogfont.lfHeight);
+}
+
 Fonts *Fonts::GetInstance()
 {
-  if (self == NULL) {
+  if (self == nullptr) {
+    tweakFontSizes();
     self = new Fonts();
   }
   return self;
@@ -62,43 +80,43 @@ Fonts *Fonts::GetInstance()
 
 void Fonts::DeleteInstance()
 {
-  if (m_pTreeListFont != NULL) {
+  if (m_pTreeListFont != nullptr) {
     m_pTreeListFont->DeleteObject();
     delete m_pTreeListFont;
-    m_pTreeListFont = NULL;
+    m_pTreeListFont = nullptr;
   }
-  if (m_pAddEditFont != NULL) {
+  if (m_pAddEditFont != nullptr) {
     m_pAddEditFont->DeleteObject();
     delete m_pAddEditFont;
-    m_pAddEditFont = NULL;
+    m_pAddEditFont = nullptr;
   }
-  if (m_pItalicTreeListFont != NULL) {
+  if (m_pItalicTreeListFont != nullptr) {
     m_pItalicTreeListFont->DeleteObject();
     delete m_pItalicTreeListFont;
-    m_pItalicTreeListFont = NULL;
+    m_pItalicTreeListFont = nullptr;
   }
-  if (m_pItalicAddEditFont != NULL) {
+  if (m_pItalicAddEditFont != nullptr) {
     m_pItalicAddEditFont->DeleteObject();
     delete m_pItalicAddEditFont;
-    m_pItalicAddEditFont = NULL;
+    m_pItalicAddEditFont = nullptr;
   }
-  if (m_pDragFixFont != NULL) {
+  if (m_pDragFixFont != nullptr) {
     m_pDragFixFont->DeleteObject();
     delete m_pDragFixFont;
-    m_pDragFixFont = NULL;
+    m_pDragFixFont = nullptr;
   }
-  if (m_pPasswordFont != NULL) {
+  if (m_pPasswordFont != nullptr) {
     m_pPasswordFont->DeleteObject();
     delete m_pPasswordFont;
-    m_pPasswordFont = NULL;
+    m_pPasswordFont = nullptr;
   }
-  if (m_pNotesFont != NULL) {
+  if (m_pNotesFont != nullptr) {
     m_pNotesFont->DeleteObject();
     delete m_pNotesFont;
-    m_pNotesFont = NULL;
+    m_pNotesFont = nullptr;
   }
   delete self;
-  self = NULL;
+  self = nullptr;
 }
 
 std::wstring Utf32ToUtf16(uint32_t codepoint)
@@ -112,8 +130,8 @@ std::wstring Utf32ToUtf16(uint32_t codepoint)
     if (codepoint <= 0x10FFFF) {
       codepoint -= 0x10000;
       // Length 2
-      wc[0] = (unsigned short)(codepoint >> 10) + (unsigned short)0xD800;
-      wc[1] = (unsigned short)(codepoint & 0x3FF) + (unsigned short)0xDC00;
+      wc[0] = static_cast<unsigned short>(codepoint >> 10) + static_cast<unsigned short>(0xD800);
+      wc[1] = static_cast<unsigned short>(codepoint & 0x3FF) + static_cast<unsigned short>(0xDC00);
       wc[2] = 0;
     } else {
       // Length 1
@@ -153,8 +171,8 @@ Fonts::Fonts() : MODIFIED_COLOR(RGB(0, 0, 128)),
 
 void Fonts::GetTreeListFont(LOGFONT *pLF)
 {
-  ASSERT(pLF != NULL && m_pTreeListFont != NULL);
-  if (pLF == NULL || m_pTreeListFont == NULL)
+  ASSERT(pLF != nullptr && m_pTreeListFont != nullptr);
+  if (pLF == nullptr || m_pTreeListFont == nullptr)
     return;
 
   m_pTreeListFont->GetLogFont(pLF);
@@ -162,11 +180,11 @@ void Fonts::GetTreeListFont(LOGFONT *pLF)
 
 void Fonts::SetTreeListFont(LOGFONT *pLF, const int iPtSz)
 {
-  ASSERT(pLF != NULL);
-  if (pLF == NULL)
+  ASSERT(pLF != nullptr);
+  if (pLF == nullptr)
     return;
 
-  if (m_pTreeListFont == NULL) {
+  if (m_pTreeListFont == nullptr) {
     m_pTreeListFont = new CFont;
   } else {
     m_pTreeListFont->DeleteObject();
@@ -183,8 +201,8 @@ void Fonts::SetTreeListFont(LOGFONT *pLF, const int iPtSz)
 
 void Fonts::GetAddEditFont(LOGFONT *pLF)
 {
-  ASSERT(pLF != NULL && m_pAddEditFont != NULL);
-  if (pLF == NULL || m_pAddEditFont == NULL)
+  ASSERT(pLF != nullptr && m_pAddEditFont != nullptr);
+  if (pLF == nullptr || m_pAddEditFont == nullptr)
     return;
 
   m_pAddEditFont->GetLogFont(pLF);
@@ -192,11 +210,11 @@ void Fonts::GetAddEditFont(LOGFONT *pLF)
 
 void Fonts::SetAddEditFont(LOGFONT *pLF, const int iPtSz)
 {
-  ASSERT(pLF != NULL);
-  if (pLF == NULL)
+  ASSERT(pLF != nullptr);
+  if (pLF == nullptr)
     return;
 
-  if (m_pAddEditFont == NULL) {
+  if (m_pAddEditFont == nullptr) {
     m_pAddEditFont = new CFont;
   } else {
     m_pAddEditFont->DeleteObject();
@@ -211,7 +229,7 @@ void Fonts::SetAddEditFont(LOGFONT *pLF, const int iPtSz)
   }
 
   // Set up Add/Edit italic font
-  if (m_pItalicAddEditFont == NULL) {
+  if (m_pItalicAddEditFont == nullptr) {
     m_pItalicAddEditFont = new CFont;
   } else {
     m_pItalicAddEditFont->DeleteObject();
@@ -228,8 +246,8 @@ void Fonts::SetAddEditFont(LOGFONT *pLF, const int iPtSz)
 
 void Fonts::GetPasswordFont(LOGFONT *pLF)
 {
-  ASSERT(pLF != NULL && m_pPasswordFont != NULL);
-  if (pLF == NULL || m_pPasswordFont == NULL)
+  ASSERT(pLF != nullptr && m_pPasswordFont != nullptr);
+  if (pLF == nullptr || m_pPasswordFont == nullptr)
     return;
 
   m_pPasswordFont->GetLogFont(pLF);
@@ -257,14 +275,14 @@ void Fonts::GetDefaultNotesFont(LOGFONT &lf)
 
 void Fonts::SetPasswordFont(LOGFONT *pLF, const int iPtSz)
 {
-  if (m_pPasswordFont == NULL) {
+  if (m_pPasswordFont == nullptr) {
     m_pPasswordFont = new CFont;
   } else {
     m_pPasswordFont->DeleteObject();
   }
 
-  if (iPtSz == 0 || pLF == NULL) {
-    m_pPasswordFont->CreateFontIndirect(pLF == NULL ? &dfltPasswordLogfont : pLF);
+  if (iPtSz == 0 || pLF == nullptr) {
+    m_pPasswordFont->CreateFontIndirect(pLF == nullptr ? &dfltPasswordLogfont : pLF);
   } else {
     LOGFONT lf(*pLF);
     lf.lfHeight = iPtSz;
@@ -274,11 +292,11 @@ void Fonts::SetPasswordFont(LOGFONT *pLF, const int iPtSz)
 
 void Fonts::ApplyPasswordFont(CWnd *pDlgItem)
 {
-  ASSERT(pDlgItem != NULL);
-  if (pDlgItem == NULL)
+  ASSERT(pDlgItem != nullptr);
+  if (pDlgItem == nullptr)
     return;
 
-  if (m_pPasswordFont == NULL) {
+  if (m_pPasswordFont == nullptr) {
     m_pPasswordFont = new CFont;
     // Initialize a CFont object with the characteristics given
     // in a LOGFONT structure.
@@ -290,8 +308,8 @@ void Fonts::ApplyPasswordFont(CWnd *pDlgItem)
 
 void Fonts::GetNotesFont(LOGFONT *pLF)
 {
-  ASSERT(pLF != NULL && m_pNotesFont != NULL);
-  if (pLF == NULL || m_pNotesFont == NULL)
+  ASSERT(pLF != nullptr && m_pNotesFont != nullptr);
+  if (pLF == nullptr || m_pNotesFont == nullptr)
     return;
 
   m_pNotesFont->GetLogFont(pLF);
@@ -299,11 +317,11 @@ void Fonts::GetNotesFont(LOGFONT *pLF)
 
 void Fonts::SetNotesFont(LOGFONT *pLF, const int iPtSz)
 {
-  ASSERT(pLF != NULL);
-  if (pLF == NULL)
+  ASSERT(pLF != nullptr);
+  if (pLF == nullptr)
     return;
 
-  if (m_pNotesFont == NULL) {
+  if (m_pNotesFont == nullptr) {
     m_pNotesFont = new CFont;
   } else {
     m_pNotesFont->DeleteObject();
@@ -323,9 +341,9 @@ void FixFontPreference(std::wstring &sFont)
 {
   // Need to cope with differences between wxWidgets wxFont GetNativeFontInfoDesc
   // and our MFC implementation if they share the same config file, which will
-  // only be during testing until wxWdigets replaces MFC version on WIndows!
+  // only be during testing until wxWdigets replaces MFC version on Windows!
 
-  // GetNativeFontInfoDesc adds an extra version paramater at the start of this string
+  // GetNativeFontInfoDesc adds an extra version parameter at the start of this string
   // and uses semi-colons to delimit values
 
   // MFC font preference is missing the first 'version' value at the start of this string
@@ -334,9 +352,9 @@ void FixFontPreference(std::wstring &sFont)
 #ifdef __WX__
   // wxWidgets fails safely if given a MFC created font preference - just doesn't set font
   // This will NEVER be used as in the  MFC source but consider putting this routine in
-  // the wx build whereever it uses a font preference string.
+  // the wx build wherever it uses a font preference string.
   if (sFont.find(L',') != -1) {
-    // First replace commans with semi-colons
+    // First replace commas with semi-colons
     std::replace(sFont.begin(), sFont.end(), L',', L';');
 
     // Count the number of delimiters
@@ -392,14 +410,14 @@ bool Fonts::ExtractFont(const std::wstring &str, LOGFONT &lf)
   lf.lfEscapement     = _wtol(vtokens[2].c_str());
   lf.lfOrientation    = _wtol(vtokens[3].c_str());
   lf.lfWeight         = _wtol(vtokens[4].c_str());
-  lf.lfItalic         = (BYTE)_wtoi(vtokens[5].c_str());
-  lf.lfUnderline      = (BYTE)_wtoi(vtokens[6].c_str());
-  lf.lfStrikeOut      = (BYTE)_wtoi(vtokens[7].c_str());
-  lf.lfCharSet        = (BYTE)_wtoi(vtokens[8].c_str());
-  lf.lfOutPrecision   = (BYTE)_wtoi(vtokens[9].c_str());
-  lf.lfClipPrecision  = (BYTE)_wtoi(vtokens[10].c_str());
-  lf.lfQuality        = (BYTE)_wtoi(vtokens[11].c_str());
-  lf.lfPitchAndFamily = (BYTE)_wtoi(vtokens[12].c_str());
+  lf.lfItalic         = static_cast<BYTE>(_wtoi(vtokens[5].c_str()));
+  lf.lfUnderline      = static_cast<BYTE>(_wtoi(vtokens[6].c_str()));
+  lf.lfStrikeOut      = static_cast<BYTE>(_wtoi(vtokens[7].c_str()));
+  lf.lfCharSet        = static_cast<BYTE>(_wtoi(vtokens[8].c_str()));
+  lf.lfOutPrecision   = static_cast<BYTE>(_wtoi(vtokens[9].c_str()));
+  lf.lfClipPrecision  = static_cast<BYTE>(_wtoi(vtokens[10].c_str()));
+  lf.lfQuality        = static_cast<BYTE>(_wtoi(vtokens[11].c_str()));
+  lf.lfPitchAndFamily = static_cast<BYTE>(_wtoi(vtokens[12].c_str()));
 
   wcscpy_s(lf.lfFaceName, LF_FACESIZE, vtokens[13].c_str());
   return true;
@@ -434,9 +452,9 @@ LONG Fonts::CalcHeight(const bool bIncludeNotesFont) const
 {
   //Get max height from current/modified/password font
   TEXTMETRIC tm;
-  HDC hDC = ::GetDC(NULL);
+  HDC hDC = ::GetDC(nullptr);
 
-  HFONT hFontOld = (HFONT)SelectObject(hDC, m_pTreeListFont->GetSafeHandle());
+  HFONT hFontOld = static_cast<HFONT>(SelectObject(hDC, m_pTreeListFont->GetSafeHandle()));
 
   // Current
   GetTextMetrics(hDC, &tm);
@@ -464,7 +482,7 @@ LONG Fonts::CalcHeight(const bool bIncludeNotesFont) const
 
   // Tidy up
   SelectObject(hDC, hFontOld);
-  ::ReleaseDC(NULL, hDC);
+  ::ReleaseDC(nullptr, hDC);
 
   return height;
 }
@@ -521,7 +539,6 @@ void Fonts::VerifySymbolsSupported()
 
 bool Fonts::IsCharacterSupported(std::wstring &sSymbol, const bool bTreeListFont)
 {
-  HRESULT hr;
   int cItems, cMaxItems = 2;
   bool bSupported(false);
   SCRIPT_ITEM items[3];  // Number should be (cMaxItems + 1)
@@ -529,18 +546,18 @@ bool Fonts::IsCharacterSupported(std::wstring &sSymbol, const bool bTreeListFont
   ASSERT(sSymbol.length() < 3);
 
   // Itemize - Uniscribe function
-  hr = ScriptItemize(sSymbol.c_str(), (int)sSymbol.length(), cMaxItems, NULL, NULL, items, &cItems);
+  HRESULT hr = ScriptItemize(sSymbol.c_str(), static_cast<int>(sSymbol.length()), cMaxItems, nullptr, nullptr, items,
+                             &cItems);
 
   if (SUCCEEDED(hr) == FALSE)
     return bSupported;
 
   ASSERT(cItems == 1);
 
-  SCRIPT_CACHE sc = NULL;
+  SCRIPT_CACHE sc = nullptr;
 
   CDC ScreenDC;
-  ScreenDC.CreateCompatibleDC(NULL);
-  HFONT hOldFont;
+  ScreenDC.CreateCompatibleDC(nullptr);
   CFont *pFont;
 
   if (bTreeListFont) {
@@ -549,7 +566,7 @@ bool Fonts::IsCharacterSupported(std::wstring &sSymbol, const bool bTreeListFont
     pFont = m_pAddEditFont;
   }
 
-  hOldFont = (HFONT)ScreenDC.SelectObject(pFont->GetSafeHandle());
+  HFONT hOldFont = static_cast<HFONT>(ScreenDC.SelectObject(pFont->GetSafeHandle()));
 
   for (int i = 0; i < cItems; i++) {
     int idx = items[i].iCharPos;
@@ -557,9 +574,9 @@ bool Fonts::IsCharacterSupported(std::wstring &sSymbol, const bool bTreeListFont
     int cMaxGlyphs = len * 2 + 16;  // As recommended by Uniscribe documentation
     int cGlyphs = 0;
 
-    WORD *pwLogClust = (WORD *)malloc(sizeof(WORD) * cMaxGlyphs);
-    WORD *pwOutGlyphs = (WORD *)malloc(sizeof(WORD) * cMaxGlyphs);
-    SCRIPT_VISATTR *psva = (SCRIPT_VISATTR *)malloc(sizeof(SCRIPT_VISATTR) * cMaxGlyphs);
+    WORD *pwLogClust = static_cast<WORD*>(malloc(sizeof(WORD) * cMaxGlyphs));
+    WORD *pwOutGlyphs = static_cast<WORD*>(malloc(sizeof(WORD) * cMaxGlyphs));
+    SCRIPT_VISATTR *psva = static_cast<SCRIPT_VISATTR*>(malloc(sizeof(SCRIPT_VISATTR) * cMaxGlyphs));
 
     // Shape - Uniscribe function
     hr = ScriptShape(ScreenDC.GetSafeHdc(), &sc, sSymbol.substr(idx).c_str(), len, cMaxGlyphs,
