@@ -17,6 +17,7 @@ Bugs fixed in 3.63.0
 Changes in 3.63.0
 -----------------
 * Installer executable now has the "PasswordSafe" icon instead of the default NSIS Icon.
+* Latvian is now supported, thanks to Jurcuks.
 
 PasswordSafe 3.62.0 Release Feb 2023
 ====================================
