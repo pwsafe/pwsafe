@@ -5805,6 +5805,8 @@ msgid ""
 "Please enter the current master password, followed by a new one. \r\n"
 "Type the new one again to confirm it."
 msgstr ""
+"Vnesite trenutno glavno geslo, nato pa novo.\n"
+"Ponovno vnesite novo, da ga potrdite."
 
 #. Resource IDs: (5255)
 msgid "Please enter the key and verify it."
