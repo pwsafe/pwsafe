@@ -2,87 +2,39 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
+# Translators:
+# ronys, 2023
+# 
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2023-01-25 21:35+0200\n"
-"Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
-"Language-Team: \n"
-"Language: pt_BR\n"
+"PO-Revision-Date: 2021-09-29 17:34+0000\n"
+"Last-Translator: ronys, 2023\n"
+"Language-Team: Portuguese (https://app.transifex.com/passwordsafe/teams/125590/pt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.2.2\n"
+"Language: pt\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
-# msgid/msgstr fields for Accelerator keys
-# Format is: "ID:xxxxxx:VACS+X" where:
-#    ID:xxxxx = the menu ID corresponding to the accelerator
-#    V = Virtual key (or blank if not used) - nearly always set!
-#    A = Alt key     (or blank if not used)
-#    C = Ctrl key    (or blank if not used)
-#    S = Shift key   (or blank if not used)
-#    X = upper case character
-# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
-# ONLY Accelerator Keys with corresponding alphanumeric characters can be
-# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
-# ONLY change the msgstr field. Do NOT change any other.
-# If you do not want to change an Accelerator Key, copy msgid to msgstr
-# msgid/msgstr fields for Accelerator keys
-# Format is: "ID:xxxxxx:VACS+X" where:
-#    ID:xxxxx = the menu ID corresponding to the accelerator
-#    V = Virtual key (or blank if not used) - nearly always set!
-#    A = Alt key     (or blank if not used)
-#    C = Ctrl key    (or blank if not used)
-#    S = Shift key   (or blank if not used)
-#    X = upper case character
-# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
-# ONLY Accelerator Keys with corresponding alphanumeric characters can be
-# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
-# ONLY change the msgstr field. Do NOT change any other.
-# If you do not want to change an Accelerator Key, copy msgid to msgstr
-# msgid/msgstr fields for Accelerator keys
-# Format is: "ID:xxxxxx:VACS+X" where:
-#    ID:xxxxx = the menu ID corresponding to the accelerator
-#    V = Virtual key (or blank if not used) - nearly always set!
-#    A = Alt key     (or blank if not used)
-#    C = Ctrl key    (or blank if not used)
-#    S = Shift key   (or blank if not used)
-#    X = upper case character
-# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
-# ONLY Accelerator Keys with corresponding alphanumeric characters can be
-# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
-# ONLY change the msgstr field. Do NOT change any other.
-# If you do not want to change an Accelerator Key, copy msgid to msgstr
-# msgid/msgstr fields for Accelerator keys
-# Format is: "ID:xxxxxx:VACS+X" where:
-#    ID:xxxxx = the menu ID corresponding to the accelerator
-#    V = Virtual key (or blank if not used) - nearly always set!
-#    A = Alt key     (or blank if not used)
-#    C = Ctrl key    (or blank if not used)
-#    S = Shift key   (or blank if not used)
-#    X = upper case character
-# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
-# ONLY Accelerator Keys with corresponding alphanumeric characters can be
-# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
-# ONLY change the msgstr field. Do NOT change any other.
-# If you do not want to change an Accelerator Key, copy msgid to msgstr
-# msgid/msgstr fields for Accelerator keys
-# Format is: "ID:xxxxxx:VACS+X" where:
-#    ID:xxxxx = the menu ID corresponding to the accelerator
-#    V = Virtual key (or blank if not used) - nearly always set!
-#    A = Alt key     (or blank if not used)
-#    C = Ctrl key    (or blank if not used)
-#    S = Shift key   (or blank if not used)
-#    X = upper case character
-# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
-# ONLY Accelerator Keys with corresponding alphanumeric characters can be
-# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
-# ONLY change the msgstr field. Do NOT change any other.
-# If you do not want to change an Accelerator Key, copy msgid to msgstr
 #. Resource IDs: (3263)
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 msgid "  All Password History ignored."
 msgstr "  Todo o histórico de senhas ignorado."
 
@@ -103,8 +55,12 @@ msgid "  Invalid date/time value."
 msgstr " Valor de data/hora inválido."
 
 #. Resource IDs: (3041)
-msgid "  Invalid field separator character found - only a single blank is allowed between fields."
-msgstr " Caractere de separador de campo inválido encontrado - somente um único espaço em branco é permitido entre os campos."
+msgid ""
+"  Invalid field separator character found - only a single blank is allowed "
+"between fields."
+msgstr ""
+" Caractere de separador de campo inválido encontrado - somente um único "
+"espaço em branco é permitido entre os campos."
 
 #. Resource IDs: (3034)
 #, c-format
@@ -117,12 +73,16 @@ msgid "  Invalid number of saved old passwords %d."
 msgstr " Número inválido de senhas antigas salvas %d."
 
 #. Resource IDs: (3070)
-msgid "  Invalid password length found (differs from length of following password)."
-msgstr " Comprimento da senha inválido encontrado (difere do tamanho da senha a seguir)."
+msgid ""
+"  Invalid password length found (differs from length of following password)."
+msgstr ""
+" Comprimento da senha inválido encontrado (difere do tamanho da senha a "
+"seguir)."
 
 #. Resource IDs: (3038)
 msgid "  Invalid password length found (not a hexadecimal number)."
-msgstr " Comprimento da senha inválido encontrado (não um número hexadecimal)."
+msgstr ""
+" Comprimento da senha inválido encontrado (não um número hexadecimal)."
 
 #. Resource IDs: (3035)
 #, c-format
@@ -405,12 +365,12 @@ msgstr "%d entradas sincronizadas"
 #. Resource IDs: (6061)
 #, c-format
 msgid "%d entries under group"
-msgstr "%d inscrições em grupo"
+msgstr ""
 
 #. Resource IDs: (6060)
 #, c-format
 msgid "%d entry under group"
-msgstr "%d entrada em grupo"
+msgstr ""
 
 #. Resource IDs: (5240)
 #, c-format
@@ -435,7 +395,7 @@ msgstr "%ls - Copiado(s) %ls"
 #. Resource IDs: (5907)
 #, c-format
 msgid "%ls - Drag & Drop %ls"
-msgstr "%ls - %ls Drag & Drop"
+msgstr ""
 
 #. Resource IDs: (3431)
 #, c-format
@@ -474,8 +434,12 @@ msgstr "%ls%ls%ls_Relatório.txt"
 
 #. Resource IDs: (3384)
 #, c-format
-msgid "%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the Import file. Added imported entry with title=\"%ls\".\n"
-msgstr "%ls, Título=\"%ls\", Usuário=\"%ls\" já existe no seu banco de dados ou no arquivo Importar. A entrada importada foi adicionada com o título=\"%ls\".\n"
+msgid ""
+"%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the "
+"Import file. Added imported entry with title=\"%ls\".\n"
+msgstr ""
+"%ls, Título=\"%ls\", Usuário=\"%ls\" já existe no seu banco de dados ou no "
+"arquivo Importar. A entrada importada foi adicionada com o título=\"%ls\".\n"
 
 #. Resource IDs: (3032)
 #, c-format
@@ -515,7 +479,8 @@ msgstr "%s Você quer salvar as alterações no seu banco de dados sem ele(a)?"
 
 #. Resource IDs: (5796)
 #, c-format
-msgid "%s Either try to save database with another name or exit without saving."
+msgid ""
+"%s Either try to save database with another name or exit without saving."
 msgstr "%s Tente salvar o banco de dados com outro nome ou saia sem salvar."
 
 #. Resource IDs: (5318)
@@ -551,8 +516,12 @@ msgstr "%s é um diretório"
 
 #. Resource IDs: (6020)
 #, c-format
-msgid "%s. Preferences that are saved in the database can't be changed and are disabled."
-msgstr "%s. As preferências salvas no banco de dados não podem ser alteradas e estão desabilitadas."
+msgid ""
+"%s. Preferences that are saved in the database can't be changed and are "
+"disabled."
+msgstr ""
+"%s. As preferências salvas no banco de dados não podem ser alteradas e estão"
+" desabilitadas."
 
 #. Resource IDs: (5473)
 #, c-format
@@ -678,7 +647,7 @@ msgstr "&Navegar até a URL"
 
 #. Resource IDs: (32151 - MenuEx)
 msgid "&Change Master Password..."
-msgstr "&Alterar senha mestra..."
+msgstr ""
 
 #. Resource IDs: (32105 - MenuEx)
 msgid "&Classic Toolbar"
@@ -894,7 +863,7 @@ msgstr "&Abrir"
 
 #. Resource IDs: (32002 - Menu)
 msgid "&Open Another"
-msgstr "&Open Another"
+msgstr ""
 
 #. Resource IDs: (32002 - MenuEx)
 msgid "&Open..."
@@ -916,7 +885,8 @@ msgstr "&Senha:"
 msgid "&Paste"
 msgstr "&Colar"
 
-#. Resource IDs: (32010 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu, 32094 - MenuEx)
+#. Resource IDs: (32010 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu,
+#. 32094 - MenuEx)
 msgid "&Plain Text (tab separated)..."
 msgstr "&Texto simples (aba separada)..."
 
@@ -1056,7 +1026,8 @@ msgstr "&Exibir Relatório"
 msgid "&Virtual Keyboard Font"
 msgstr "&Fonte do Teclado Virtual"
 
-#. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32086 - Menu, 32086 - MenuEx, 32095 - Menu, 32095 - MenuEx)
+#. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32086 - Menu, 32086 -
+#. MenuEx, 32095 - Menu, 32095 - MenuEx)
 msgid "&XML format..."
 msgstr "&Formato XML..."
 
@@ -1077,8 +1048,12 @@ msgid "'Browse to URL' copies password to clipboard"
 msgstr "'Navegar para a URL' copia a senha para a área de transferência"
 
 #. Resource IDs: (5645)
-msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Please change one or both."
-msgstr "'Limpe a área de transferência em Minimizar' e clique duas vezes no conflito da ação 'Copiar a Senha e Minimizar'. Por favor, altere um ou ambos."
+msgid ""
+"'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and "
+"Minimize' conflict. Please change one or both."
+msgstr ""
+"'Limpe a área de transferência em Minimizar' e clique duas vezes no conflito"
+" da ação 'Copiar a Senha e Minimizar'. Por favor, altere um ou ambos."
 
 #. Resource IDs: (5714)
 msgid ""
@@ -1107,8 +1082,12 @@ msgid "(Also used to replace periods in Title field)"
 msgstr "(Também usado para substituir períodos no campo Título)"
 
 #. Resource IDs: (65535)
-msgid "(Double-click an entry to edit it. Entries in italics are protected and need to be unprotected first.)"
-msgstr "(Clique duas vezes em uma entrada para editá-la. As entradas em itálico são protegidas e precisam ser desprotegidas primeiro.)"
+msgid ""
+"(Double-click an entry to edit it. Entries in italics are protected and need"
+" to be unprotected first.)"
+msgstr ""
+"(Clique duas vezes em uma entrada para editá-la. As entradas em itálico são "
+"protegidas e precisam ser desprotegidas primeiro.)"
 
 #. Resource IDs: (5957)
 msgid "(Empty)"
@@ -1139,8 +1118,12 @@ msgid ")"
 msgstr ")"
 
 #. Resource IDs: (3451)
-msgid "*** Invalid XML characters found - see exported XML file for more details ***"
-msgstr "*** Caracteres XML inválidos encontrados - consulte o arquivo XML exportado para obter mais detalhes ***"
+msgid ""
+"*** Invalid XML characters found - see exported XML file for more details "
+"***"
+msgstr ""
+"*** Caracteres XML inválidos encontrados - consulte o arquivo XML exportado "
+"para obter mais detalhes ***"
 
 #. Resource IDs: (5933)
 msgid "*** Operation aborted by User ***"
@@ -1156,8 +1139,10 @@ msgid "- Physical -"
 msgstr "- Fisica -"
 
 #. Resource IDs: (3257)
-msgid "--------------------------------------------------------------------------------"
-msgstr "--------------------------------------------------------------------------------"
+msgid ""
+"--------------------------------------------------------------------------------"
+msgstr ""
+"--------------------------------------------------------------------------------"
 
 #. Resource IDs: (1009, 1010, 1067, 1223, 1432, 1435, 1461, 1462)
 msgid "..."
@@ -1474,20 +1459,33 @@ msgid "A fatal error occurred: "
 msgstr "Ocorreu um erro fatal: "
 
 #. Resource IDs: (3363)
-msgid "A filter was active. Export of data was restricted to include only those displayed."
-msgstr "Um filtro estava ativo. A exportação de dados foi restrita para incluir apenas os exibidos."
+msgid ""
+"A filter was active. Export of data was restricted to include only those "
+"displayed."
+msgstr ""
+"Um filtro estava ativo. A exportação de dados foi restrita para incluir "
+"apenas os exibidos."
 
 #. Resource IDs: (5798)
 msgid "A future date is not valid for this field"
 msgstr "Uma data futura não é válida para este campo"
 
 #. Resource IDs: (5116)
-msgid "A hidden password needs to be entered in the Confirm Password field too. If it's not hidden, Confirm shows numbers that may be used to help count the password's characters."
-msgstr "Uma senha oculta também precisa ser inserida no campo Confirmar senha. Se não estiver oculto, Confirmar mostra os números que podem ser usados ​​para ajudar a contar os caracteres da senha."
+msgid ""
+"A hidden password needs to be entered in the Confirm Password field too. If "
+"it's not hidden, Confirm shows numbers that may be used to help count the "
+"password's characters."
+msgstr ""
+"Uma senha oculta também precisa ser inserida no campo Confirmar senha. Se "
+"não estiver oculto, Confirmar mostra os números que podem ser usados ​​para "
+"ajudar a contar os caracteres da senha."
 
 #. Resource IDs: (65535)
-msgid "A new password database will be created. The Master Password you enter will be used to encrypt the password database file. The Master Password can use any keyboard character and is case-sensitive."
-msgstr "Um novo banco de dados de senhas será criado. A Senha Mestra que você inserir será usada para criptografar o arquivo de banco de dados de senhas. A Senha Mestra pode usar qualquer caractere de teclado e diferencia maiúsculas de minúsculas."
+msgid ""
+"A new password database will be created. The Master Password you enter will "
+"be used to encrypt the password database file. The Master Password can use "
+"any keyboard character and is case-sensitive."
+msgstr ""
 
 #. Resource IDs: (5861)
 msgid ""
@@ -1644,7 +1642,9 @@ msgstr "Todos os Arquivos (*.*)|*.*||"
 
 #. Resource IDs: (1333)
 msgid "Allow multiple instances (requires all instances to be restarted)"
-msgstr "Permitir várias instâncias (requer que todas as instâncias sejam reiniciadas)"
+msgstr ""
+"Permitir várias instâncias (requer que todas as instâncias sejam "
+"reiniciadas)"
 
 #. Resource IDs: (1434)
 msgid "Also used to replace periods in the Title field."
@@ -1687,8 +1687,10 @@ msgid "An alias cannot refer to itself!"
 msgstr "Um alias não pode se referir a si mesmo!"
 
 #. Resource IDs: (5251)
-msgid "An entry or shortcut with the same Group, Title and Username already exists."
-msgstr "Já existe uma entrada ou atalho com o mesmo grupo, título e nome de usuário."
+msgid ""
+"An entry or shortcut with the same Group, Title and Username already exists."
+msgstr ""
+"Já existe uma entrada ou atalho com o mesmo grupo, título e nome de usuário."
 
 #. Resource IDs: (61862)
 #, c-format
@@ -1754,8 +1756,14 @@ msgid "Armenian Western"
 msgstr "Armênio Ocidental"
 
 #. Resource IDs: (5268)
-msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Please enter another character."
-msgstr "Como o caractere de aspas duplas é usado para delimitar todo o campo de notas, ele não pode ser usado dentro dele para delimitar várias linhas. Por favor, insira outro caractere."
+msgid ""
+"As the double quote character is used to delimit the whole notes field, it "
+"cannot be used within it to delimit multiple lines. Please enter another "
+"character."
+msgstr ""
+"Como o caractere de aspas duplas é usado para delimitar todo o campo de "
+"notas, ele não pode ser usado dentro dele para delimitar várias linhas. Por "
+"favor, insira outro caractere."
 
 #. Resource IDs: (5292)
 msgid ""
@@ -1918,7 +1926,7 @@ msgstr "Pesquisar para URL + Preenchimento automático"
 
 #. Resource IDs: (32074 - Menu, 32074 - MenuEx, 5679)
 msgid "Browse to URL w/Alt Browser"
-msgstr "Navegue para URL w/Alt Browser"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
@@ -1983,7 +1991,8 @@ msgstr "Arquivos CSV (*.csv)|*.csv|Todos os Arquivos (*.*)|*.*||"
 #. Resource IDs: (5410)
 #, c-format
 msgid "Can only warn between %d and %d days before passwords expire"
-msgstr "Apenas é possível avisar entre %d e %d dias antes que as senhas expirem"
+msgstr ""
+"Apenas é possível avisar entre %d e %d dias antes que as senhas expirem"
 
 #. Resource IDs: (3345)
 #, c-format
@@ -2025,23 +2034,29 @@ msgstr "Não pode ser superior a %d"
 
 #. Resource IDs: (3019)
 msgid "Cannot create lock file - no permission in directory?"
-msgstr "Não é possível criar o arquivo de bloqueio - sem permissão no diretório?"
+msgstr ""
+"Não é possível criar o arquivo de bloqueio - sem permissão no diretório?"
 
 #. Resource IDs: (5866)
 msgid "Cannot create missing directories in path to the export file."
-msgstr "Não é possível criar diretórios ausentes no caminho para o arquivo de exportação."
+msgstr ""
+"Não é possível criar diretórios ausentes no caminho para o arquivo de "
+"exportação."
 
 #. Resource IDs: (5303)
 msgid "Cannot process as this entry has been deleted from the open database."
-msgstr "Não é possível processar, pois esta entrada foi excluída do banco de dados aberto."
+msgstr ""
+"Não é possível processar, pois esta entrada foi excluída do banco de dados "
+"aberto."
 
 #. Resource IDs: (3398)
 msgid "Cannot read file. Please check file permissions."
-msgstr "Não é possível ler o arquivo. Por favor, verifique as permissões do arquivo."
+msgstr ""
+"Não é possível ler o arquivo. Por favor, verifique as permissões do arquivo."
 
 #. Resource IDs: (5285)
 msgid "Cannot verify old master password - file gone?"
-msgstr "Não é possível verificar a senha mestra antiga - o arquivo desapareceu?"
+msgstr ""
 
 #. Resource IDs: (8015)
 msgid "Caps Lock"
@@ -2085,7 +2100,7 @@ msgstr "Alterar Data"
 
 #. Resource IDs: (127)
 msgid "Change Master Password"
-msgstr "Alterar senha mestra"
+msgstr ""
 
 #. Resource IDs: (6039)
 #, c-format
@@ -2102,9 +2117,9 @@ msgid ""
 "* indicates the database has been changed\n"
 "° indicates a database preference has been changed"
 msgstr ""
-"Alterar o status desde a última gravação:\n"
+"Alterar status desde a última gravação::\n"
 "* indica que o banco de dados foi alterado\n"
-"° indica que uma preferência de banco de dados foi alterada"
+"° indica que uma preferência do banco de dados foi alterada"
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -2115,16 +2130,21 @@ msgid "Change/View a Database Named Password Policy"
 msgstr "Alterar/Exibir uma Política de Senha Chamada de Banco de Dados"
 
 #. Resource IDs: (5881)
-msgid "Change/View selected Named Password Policy or the database default policy"
-msgstr "Alterar/Exibir a Política de Senha Chamada selecionada ou a política padrão do banco de dados"
+msgid ""
+"Change/View selected Named Password Policy or the database default policy"
+msgstr ""
+"Alterar/Exibir a Política de Senha Chamada selecionada ou a política padrão "
+"do banco de dados"
 
 #. Resource IDs: (1187)
 msgid "Changes to existing entries will be applied on pressing OK."
 msgstr "Alterações nas entradas existentes serão aplicadas ao pressionar OK."
 
 #. Resource IDs: (5120)
-msgid "Changing the password of an alias will break the link to its base entry."
-msgstr "Alterar a senha de um alias interromperá o link para sua entrada base."
+msgid ""
+"Changing the password of an alias will break the link to its base entry."
+msgstr ""
+"Alterar a senha de um alias interromperá o link para sua entrada base."
 
 #. Resource IDs: (3359)
 msgid "Characters present between end of index ']' and '}'"
@@ -2191,8 +2211,12 @@ msgid "Click here to pick field"
 msgstr "Clique aqui para escolher o campo"
 
 #. Resource IDs: (5119)
-msgid "Click on a row in the Password History to copy the password on that row to the clipboard."
-msgstr "Clique em uma linha no Histórico de Senhas para copiar a senha nessa linha para a área de transferência."
+msgid ""
+"Click on a row in the Password History to copy the password on that row to "
+"the clipboard."
+msgstr ""
+"Clique em uma linha no Histórico de Senhas para copiar a senha nessa linha "
+"para a área de transferência."
 
 #. Resource IDs: (8153)
 msgid "Click to change case."
@@ -2207,24 +2231,34 @@ msgid "Click to copy to clipboard"
 msgstr "Clique para copiar para a área de transferência"
 
 #. Resource IDs: (5721)
-msgid "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
-msgstr "Clique para copiar para a área de transferência, Ctrl+Clique para também definir o campo URL para este valor"
+msgid ""
+"Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
+msgstr ""
+"Clique para copiar para a área de transferência, Ctrl+Clique para também "
+"definir o campo URL para este valor"
 
 #. Resource IDs: (5615)
 msgid "Click to enable/disable this row"
 msgstr "Clique para habilitar/desabilitar esta linha"
 
 #. Resource IDs: (8155)
-msgid "Click to enter a character code via virtual numeric keypad. The character is added when this button is clicked again."
-msgstr "Clique para inserir um código de caractere através do teclado numérico virtual. O caractere é adicionado quando este botão é clicado novamente."
+msgid ""
+"Click to enter a character code via virtual numeric keypad. The character is"
+" added when this button is clicked again."
+msgstr ""
+"Clique para inserir um código de caractere através do teclado numérico "
+"virtual. O caractere é adicionado quando este botão é clicado novamente."
 
 #. Resource IDs: (5658)
 msgid "Click to expand and copy to clipboard, Ctrl+Click to copy unexpanded"
-msgstr "Clique para expandir e copiar para a área de transferência, Ctrl+Clique para copiar não expandido"
+msgstr ""
+"Clique para expandir e copiar para a área de transferência, Ctrl+Clique para"
+" copiar não expandido"
 
 #. Resource IDs: (5669)
 msgid "Click to go to link, Ctrl+Click to go and Autotype"
-msgstr "Clique para ir para o link, Ctrl+Clique para ir ao Preenchimento Automático"
+msgstr ""
+"Clique para ir para o link, Ctrl+Clique para ir ao Preenchimento Automático"
 
 #. Resource IDs: (5616)
 msgid "Click to insert a new row below"
@@ -2232,7 +2266,8 @@ msgstr "Clique para inserir uma nova linha abaixo"
 
 #. Resource IDs: (8151)
 msgid "Click to randomise the characters in the virtual keypad."
-msgstr "Clique para selecionar aleatoriamente os caracteres no teclado virtual."
+msgstr ""
+"Clique para selecionar aleatoriamente os caracteres no teclado virtual."
 
 #. Resource IDs: (5617)
 msgid "Click to remove this row"
@@ -2304,7 +2339,9 @@ msgstr "Seletor de Colunas"
 
 #. Resource IDs: (3244)
 msgid "Column header row not recognised as first record. No records imported."
-msgstr "Linha do cabeçalho da coluna não reconhecida como primeiro registro. Nenhum registro importado."
+msgstr ""
+"Linha do cabeçalho da coluna não reconhecida como primeiro registro. Nenhum "
+"registro importado."
 
 #. Resource IDs: (1080)
 msgid "Comma"
@@ -2376,7 +2413,7 @@ msgstr "Finalizada, mas..."
 msgid "Completed successfully"
 msgstr "Finalizada com sucesso"
 
-#. Resource IDs: (65535)
+#. Resource IDs: (1602)
 msgid "Con&firm Password:"
 msgstr "Com&firmar Senha:"
 
@@ -2563,8 +2600,12 @@ msgid "Could not create %1 because the directory is full."
 msgstr "Não é possível criar %1 porque o diretório está cheio."
 
 #. Resource IDs: (3426)
-msgid "Could not find the next entry's title field in the KeePass V1 TXT (should be within square brackets)."
-msgstr "Não é possível encontrar o campo de título da próxima entrada no KeePass V1 TXT (deve estar entre colchetes)."
+msgid ""
+"Could not find the next entry's title field in the KeePass V1 TXT (should be"
+" within square brackets)."
+msgstr ""
+"Não é possível encontrar o campo de título da próxima entrada no KeePass V1 "
+"TXT (deve estar entre colchetes)."
 
 #. Resource IDs: (61860)
 #, c-format
@@ -2582,7 +2623,8 @@ msgstr "Não é possível iniciar a impressão."
 
 #. Resource IDs: (5497)
 msgid "Couldn't find base entry - inconsistent database"
-msgstr "Não é possível encontrar a entrada base - banco de dados inconsistente"
+msgstr ""
+"Não é possível encontrar a entrada base - banco de dados inconsistente"
 
 #. Resource IDs: (5308)
 msgid "Couldn't save database - Please save manually"
@@ -2631,19 +2673,19 @@ msgstr "Data de criação:"
 
 #. Resource IDs: (3077)
 msgid "Credit card CVV"
-msgstr "Cartão de crédito CVV"
+msgstr ""
 
 #. Resource IDs: (3078)
 msgid "Credit card PIN"
-msgstr "PIN do cartão de crédito"
+msgstr ""
 
 #. Resource IDs: (3076)
 msgid "Credit card expiration"
-msgstr "Expiração do cartão de crédito"
+msgstr ""
 
 #. Resource IDs: (3075)
 msgid "Credit card number"
-msgstr "Número do cartão de crédito"
+msgstr ""
 
 #. Resource IDs: (5612)
 msgid "Criteria"
@@ -2671,11 +2713,13 @@ msgstr "Entrada Atual"
 
 #. Resource IDs: (65535)
 msgid "Current Master Password:"
-msgstr "Senha mestra atual:"
+msgstr ""
 
 #. Resource IDs: (3460)
 msgid "Current database filters have been exported to this database."
-msgstr "Os filtros atuais do banco de dados foram exportados para esse banco de dados."
+msgstr ""
+"Os filtros atuais do banco de dados foram exportados para esse banco de "
+"dados."
 
 #. Resource IDs: (6021)
 msgid "Current database is read-only"
@@ -2756,8 +2800,11 @@ msgid "Database format:"
 msgstr "Formato do banco de dados:"
 
 #. Resource IDs: (5380)
-msgid "Database is read-only. Sorry, cannot save changed database preferences."
-msgstr "O banco de dados é somente leitura. Desculpe, não é possível salvar as preferências alteradas do banco de dados."
+msgid ""
+"Database is read-only. Sorry, cannot save changed database preferences."
+msgstr ""
+"O banco de dados é somente leitura. Desculpe, não é possível salvar as "
+"preferências alteradas do banco de dados."
 
 #. Resource IDs: (5859)
 msgid ""
@@ -2808,13 +2855,20 @@ msgid "Default Username"
 msgstr "Nome de Usuário Padrão"
 
 #. Resource IDs: (5106)
-msgid "Default is the same directory as the database. If changed, make sure that you have write permission to the directory."
-msgstr "O padrão é o mesmo diretório do banco de dados. Se alterado, verifique se você possui permissão de gravação no diretório."
+msgid ""
+"Default is the same directory as the database. If changed, make sure that "
+"you have write permission to the directory."
+msgstr ""
+"O padrão é o mesmo diretório do banco de dados. Se alterado, verifique se "
+"você possui permissão de gravação no diretório."
 
 #. Resource IDs: (5294)
 #, c-format
-msgid "Default number of saved password history entries must be between %d and %d."
-msgstr "O número padrão de entradas do histórico de senhas salvas deve estar entre %d e %d."
+msgid ""
+"Default number of saved password history entries must be between %d and %d."
+msgstr ""
+"O número padrão de entradas do histórico de senhas salvas deve estar entre "
+"%d e %d."
 
 #. Resource IDs: (1447)
 msgid "Default password expiration (days)"
@@ -2938,8 +2992,12 @@ msgstr ""
 "ou cancelar o desligamento\\reiniciar\\fazer logoff?"
 
 #. Resource IDs: (6023)
-msgid "Do you wish to save the changes made to this restored database as new database?"
-msgstr "Você quer salvar as alterações feitas neste banco de dados restaurado como novo banco de dados?"
+msgid ""
+"Do you wish to save the changes made to this restored database as new "
+"database?"
+msgstr ""
+"Você quer salvar as alterações feitas neste banco de dados restaurado como "
+"novo banco de dados?"
 
 #. Resource IDs: (62185)
 msgid ""
@@ -2971,7 +3029,9 @@ msgstr "Clicar duas vezes na entrada para pesquisar na URL"
 
 #. Resource IDs: (4030)
 msgid "Double-Click on entry to Browse to URL + Autotype"
-msgstr "Clicar duas vezes na entrada para pesquisar na URL + preenchimento automático"
+msgstr ""
+"Clicar duas vezes na entrada para pesquisar na URL + preenchimento "
+"automático"
 
 #. Resource IDs: (4023)
 msgid "Double-Click on entry to Copy Notes"
@@ -3016,7 +3076,9 @@ msgstr "Arrastar esta imagem para outra janela para colar o campo '%s'."
 
 #. Resource IDs: (5862)
 msgid "Drag this image onto another window to start AutoType from there."
-msgstr "Arrastar esta imagem para outra janela para iniciar o preenchimento automático a partir daí."
+msgstr ""
+"Arrastar esta imagem para outra janela para iniciar o preenchimento "
+"automático a partir daí."
 
 #. Resource IDs: (5464)
 #, c-format
@@ -3090,8 +3152,12 @@ msgid "Editor Command Line parameters:"
 msgstr "Parâmetros da linha de comando do editor:"
 
 #. Resource IDs: (3243)
-msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
-msgstr "Uma ou ambas as colunas do grupo/título e senha estão ausentes. Nenhum registro importado."
+msgid ""
+"Either or both of the Group/Title and Password columns are missing. No "
+"records imported."
+msgstr ""
+"Uma ou ambas as colunas do grupo/título e senha estão ausentes. Nenhum "
+"registro importado."
 
 #. Resource IDs: (5718)
 msgid "Email copied "
@@ -3157,7 +3223,7 @@ msgstr "Tecla Enter:"
 
 #. Resource IDs: (130, 132)
 msgid "Enter Master Password"
-msgstr "Digite a Senha Mestra"
+msgstr ""
 
 #. Resource IDs: (61722)
 msgid "Enter a GUID."
@@ -3194,7 +3260,9 @@ msgstr "Insira um horário."
 
 #. Resource IDs: (65535)
 msgid "Enter a value between 0 and 99 (a value of 0 disables icon overlay):"
-msgstr "Insira um valor entre 0 e 99 (um valor 0 desabilita a sobreposição de ícone):"
+msgstr ""
+"Insira um valor entre 0 e 99 (um valor 0 desabilita a sobreposição de "
+"ícone):"
 
 #. Resource IDs: (61714)
 #, c-format
@@ -3215,8 +3283,10 @@ msgid "Enter no more than %1 characters."
 msgstr "Insira no máximo %1 caracteres."
 
 #. Resource IDs: (65535)
-msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
-msgstr "Insira posições de caracteres de senha separados por espaços, vírgulas ou ponto-e-vírgula (ou * para senha completa)."
+msgid ""
+"Enter positions of password characters separated by spaces, commas or semi-"
+"colons (or * for full password)."
+msgstr ""
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -3275,13 +3345,21 @@ msgstr "ID Exclusivo da Entrada:"
 
 #. Resource IDs: (3275)
 #, c-format
-msgid "Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but the base entry does not exist."
-msgstr "A entrada \"%ls, %ls, %ls\" possui uma senha no formato correto para um alias, mas a entrada base não existe."
+msgid ""
+"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but"
+" the base entry does not exist."
+msgstr ""
+"A entrada \"%ls, %ls, %ls\" possui uma senha no formato correto para um "
+"alias, mas a entrada base não existe."
 
 #. Resource IDs: (3273)
 #, c-format
-msgid "Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but the base entry is already an alias."
-msgstr "A entrada \"% ls,% ls,% ls\" possui uma senha no formato correto para um alias, mas a entrada base já é um alias."
+msgid ""
+"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but"
+" the base entry is already an alias."
+msgstr ""
+"A entrada \"% ls,% ls,% ls\" possui uma senha no formato correto para um "
+"alias, mas a entrada base já é um alias."
 
 #. Resource IDs: (3272)
 msgid "Entry import warnings"
@@ -3289,17 +3367,29 @@ msgstr "Avisos de importação de entrada"
 
 #. Resource IDs: (3448)
 #, c-format
-msgid "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been removed from the %ls entry."
-msgstr "O atalho do teclado de entrada %ls entrada%ls já está alocado para a entrada %ls. Ele foi removido da entrada %ls."
+msgid ""
+"Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It "
+"has been removed from the %ls entry."
+msgstr ""
+"O atalho do teclado de entrada %ls entrada%ls já está alocado para a entrada"
+" %ls. Ele foi removido da entrada %ls."
 
 #. Resource IDs: (3449)
 #, c-format
-msgid "Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe application. It has been removed from the entry."
-msgstr "O atalho do teclado de entrada %ls entrada %ls já está alocado para o aplicativo PasswordSafe. Ele foi removido da entrada."
+msgid ""
+"Entry keyboard shortcut %ls entry %ls is already allocated to the "
+"PasswordSafe application. It has been removed from the entry."
+msgstr ""
+"O atalho do teclado de entrada %ls entrada %ls já está alocado para o "
+"aplicativo PasswordSafe. Ele foi removido da entrada."
 
 #. Resource IDs: (5952)
-msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys and an alphanumeric character (0-9, A-Z)."
-msgstr "Os atalhos do teclado de entrada devem ter uma ou ambas as teclas Alt e Ctrl e um caractere alfanumérico (0-9, A-Z)."
+msgid ""
+"Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys "
+"and an alphanumeric character (0-9, A-Z)."
+msgstr ""
+"Os atalhos do teclado de entrada devem ter uma ou ambas as teclas Alt e Ctrl"
+" e um caractere alfanumérico (0-9, A-Z)."
 
 #. Resource IDs: (5942)
 #, c-format
@@ -3420,7 +3510,7 @@ msgstr "Exemplo:"
 
 #. Resource IDs: (1601)
 msgid "Exclude from clipboard history"
-msgstr "Excluir do histórico da prancheta"
+msgstr ""
 
 #. Resource IDs: (1004, 32021)
 msgid "Exit"
@@ -3501,7 +3591,8 @@ msgstr ""
 
 #. Resource IDs: (3364)
 msgid "Export of data was restricted to certain fields by the user."
-msgstr "A exportação de dados foi restrita a determinados campos pelo usuário."
+msgstr ""
+"A exportação de dados foi restrita a determinados campos pelo usuário."
 
 #. Resource IDs: (1515)
 msgid "Export..."
@@ -3562,8 +3653,12 @@ msgid "Failed to load image"
 msgstr "Falha ao carregar imagem"
 
 #. Resource IDs: (3326)
-msgid "Failed to lock configuration file - opened by another instance of PasswordSafe?"
-msgstr "Falha ao bloquear o arquivo de configuração - Ele foi aberto por outra instância do PasswordSafe?"
+msgid ""
+"Failed to lock configuration file - opened by another instance of "
+"PasswordSafe?"
+msgstr ""
+"Falha ao bloquear o arquivo de configuração - Ele foi aberto por outra "
+"instância do PasswordSafe?"
 
 #. Resource IDs: (6031)
 msgid "Failed to lock memory"
@@ -3597,12 +3692,21 @@ msgstr ""
 "(Somente um acesso R/W de cada vez é permitido)"
 
 #. Resource IDs: (5853)
-msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be a problem with its drive."
-msgstr "Falha ao alternar de R-O para R/W: não foi possível abrir o banco de dados. Pode ter sido excluído ou renomeado ou pode haver um problema com sua unidade."
+msgid ""
+"Failed to switch from R-O to R/W: Could not open the database. It may have "
+"been deleted or renamed or there may be a problem with its drive."
+msgstr ""
+"Falha ao alternar de R-O para R/W: não foi possível abrir o banco de dados. "
+"Pode ter sido excluído ou renomeado ou pode haver um problema com sua "
+"unidade."
 
 #. Resource IDs: (5854)
-msgid "Failed to switch from R-O to R/W: The file appears to be too short to be a valid database."
-msgstr "Falha ao alternar de R-O para R/W: O arquivo parece ser muito curto para ser um banco de dados válido."
+msgid ""
+"Failed to switch from R-O to R/W: The file appears to be too short to be a "
+"valid database."
+msgstr ""
+"Falha ao alternar de R-O para R/W: O arquivo parece ser muito curto para ser"
+" um banco de dados válido."
 
 #. Resource IDs: (5851)
 msgid ""
@@ -3678,8 +3782,11 @@ msgstr "Tamanho do Arquivo:"
 
 #. Resource IDs: (3015)
 #, c-format
-msgid "File ends on line %d before ending double quote of last entry's note field."
-msgstr "O arquivo termina na linha %d antes de terminar as aspas duplas do campo de nota da última entrada."
+msgid ""
+"File ends on line %d before ending double quote of last entry's note field."
+msgstr ""
+"O arquivo termina na linha %d antes de terminar as aspas duplas do campo de "
+"nota da última entrada."
 
 #. Resource IDs: (3401)
 msgid "File is too big."
@@ -3691,7 +3798,9 @@ msgstr "O arquivo é muito curto."
 
 #. Resource IDs: (3399)
 msgid "File is truncated or otherwise corrupt. Please use backup database."
-msgstr "O arquivo está truncado ou está corrompido. Por favor, use o banco de dados de backup."
+msgstr ""
+"O arquivo está truncado ou está corrompido. Por favor, use o banco de dados "
+"de backup."
 
 #. Resource IDs: (5330)
 msgid "File lock error"
@@ -3745,18 +3854,29 @@ msgstr ""
 
 #. Resource IDs: (5905)
 #, c-format
-msgid "File: %s was imported (%d warning(s) issued about missing Password Policy Names). See report for details."
-msgstr "O arquivo: %s foi importado (%d aviso(s) emitido sobre a falta de Nomes de Políticas de Senha). Veja o relatório para detalhes."
+msgid ""
+"File: %s was imported (%d warning(s) issued about missing Password Policy "
+"Names). See report for details."
+msgstr ""
+"O arquivo: %s foi importado (%d aviso(s) emitido sobre a falta de Nomes de "
+"Políticas de Senha). Veja o relatório para detalhes."
 
 #. Resource IDs: (5346)
 #, c-format
-msgid "File: %s was imported (entries validated %d / imported %d%s%s%s). See report for details."
-msgstr "O arquivo: %s foi importado (entradas validadas %d / importadas %d%s%s%s). Veja o relatório para detalhes."
+msgid ""
+"File: %s was imported (entries validated %d / imported %d%s%s%s). See report"
+" for details."
+msgstr ""
+"O arquivo: %s foi importado (entradas validadas %d / importadas %d%s%s%s). "
+"Veja o relatório para detalhes."
 
 #. Resource IDs: (3331)
 #, c-format
-msgid "Filter %ls already exists in the database, do you wish to replace it with this?"
-msgstr "O filtro %ls já existe no banco de dados. Você quer substituí-lo por este?"
+msgid ""
+"Filter %ls already exists in the database, do you wish to replace it with "
+"this?"
+msgstr ""
+"O filtro %ls já existe no banco de dados. Você quer substituí-lo por este?"
 
 #. Resource IDs: (65535)
 msgid "Filter name:"
@@ -4001,7 +4121,8 @@ msgstr "Hexadecimal é mutuamente exclusivo para todas as outras opções."
 
 #. Resource IDs: (1426)
 msgid "Hide System Tray icon (Hot Key MUST be active)"
-msgstr "Ocultar ícone da bandeja do sistema (a tecla de atalho DEVE estar ativa)"
+msgstr ""
+"Ocultar ícone da bandeja do sistema (a tecla de atalho DEVE estar ativa)"
 
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
@@ -4030,7 +4151,9 @@ msgstr "Atalho1"
 
 #. Resource IDs: (5949)
 msgid "However, we can't add either as all combinations are in use."
-msgstr "No entanto, também não podemos adicionar, pois todas as combinações estão em uso."
+msgstr ""
+"No entanto, também não podemos adicionar, pois todas as combinações estão em"
+" uso."
 
 #. Resource IDs: (8212)
 msgid "Hungarian"
@@ -4181,20 +4304,35 @@ msgid "Icon"
 msgstr "Ícone"
 
 #. Resource IDs: (5104)
-msgid "If enabled, a 'snapshot' will be taken before every save, named as specified below."
-msgstr "Se ativado, um 'instantâneo' será obtido antes de cada salvamento, nomeado conforme especificado abaixo."
+msgid ""
+"If enabled, a 'snapshot' will be taken before every save, named as specified"
+" below."
+msgstr ""
+"Se ativado, um 'instantâneo' será obtido antes de cada salvamento, nomeado "
+"conforme especificado abaixo."
 
 #. Resource IDs: (5267)
 msgid "If requested, then a delimiter character must be entered."
 msgstr "Se solicitado, um caracter delimitador deve ser inserido."
 
 #. Resource IDs: (5774)
-msgid "If the passphrase is the same as the currently opened database, properties of this backup are shown."
-msgstr "Se a senha for a mesma do banco de dados aberto no momento, as propriedades desse backup serão mostradas."
+msgid ""
+"If the passphrase is the same as the currently opened database, properties "
+"of this backup are shown."
+msgstr ""
+"Se a senha for a mesma do banco de dados aberto no momento, as propriedades "
+"desse backup serão mostradas."
 
 #. Resource IDs: (5771)
-msgid "If this is the first database opened on the startup of PasswordSafe, PasswordSafe will exit.  If not, the new open will be cancelled and the existing opened database, if any, will remain open."
-msgstr "Se este for o primeiro banco de dados aberto na inicialização do PasswordSafe, o PasswordSafe será encerrado. Caso contrário, a nova abertura será cancelada e o banco de dados aberto existente, se houver, permanecerá aberto."
+msgid ""
+"If this is the first database opened on the startup of PasswordSafe, "
+"PasswordSafe will exit.  If not, the new open will be cancelled and the "
+"existing opened database, if any, will remain open."
+msgstr ""
+"Se este for o primeiro banco de dados aberto na inicialização do "
+"PasswordSafe, o PasswordSafe será encerrado. Caso contrário, a nova abertura"
+" será cancelada e o banco de dados aberto existente, se houver, permanecerá "
+"aberto."
 
 #. Resource IDs: (8156)
 #, c-format
@@ -4208,20 +4346,32 @@ msgstr ""
 "Pode ser necessário também selecionar a tecla Shift para vê-los."
 
 #. Resource IDs: (5112)
-msgid "If unchecked, you will be prompted to save changes upon exiting Password Safe."
-msgstr "Se desmarcado, você será solicitado a salvar as alterações ao sair do Password Safe."
+msgid ""
+"If unchecked, you will be prompted to save changes upon exiting Password "
+"Safe."
+msgstr ""
+"Se desmarcado, você será solicitado a salvar as alterações ao sair do "
+"Password Safe."
 
 #. Resource IDs: (5919)
-msgid "If you specify using your own symbol list, you cannot leave it empty. Unselecting use of symbols."
-msgstr "Se você especificar usando sua própria lista de símbolos, não poderá deixá-la em branco. Desmarque o uso de símbolos."
+msgid ""
+"If you specify using your own symbol list, you cannot leave it empty. "
+"Unselecting use of symbols."
+msgstr ""
+"Se você especificar usando sua própria lista de símbolos, não poderá deixá-"
+"la em branco. Desmarque o uso de símbolos."
 
 #. Resource IDs: (8262)
 msgid "Igbo"
 msgstr "Igbo"
 
 #. Resource IDs: (5768)
-msgid "Ignore all Failsafe Backup files and continue with the currently selected database."
-msgstr "Ignore todos os arquivos do Backup à Prova de Falhas e continue com o banco de dados selecionado no momento."
+msgid ""
+"Ignore all Failsafe Backup files and continue with the currently selected "
+"database."
+msgstr ""
+"Ignore todos os arquivos do Backup à Prova de Falhas e continue com o banco "
+"de dados selecionado no momento."
 
 #. Resource IDs: (32014 - PopupMenuEx)
 msgid "Import &From"
@@ -4315,15 +4465,18 @@ msgstr "Inativo"
 
 #. Resource IDs: (1552)
 msgid "Include filters stored in this database in the new database"
-msgstr "Incluir filtros armazenados neste banco de dados no novo banco de dados"
+msgstr ""
+"Incluir filtros armazenados neste banco de dados no novo banco de dados"
 
 #. Resource IDs: (61696)
 msgid "Incorrect filename."
 msgstr "Nome do arquivo incorreto."
 
 #. Resource IDs: (5280)
-msgid "Incorrect master password, not a PasswordSafe database, or a corrupt database."
-msgstr "Senha mestra incorreta, não um banco de dados PasswordSafe ou um banco de dados corrompido."
+msgid ""
+"Incorrect master password, not a PasswordSafe database, or a corrupt "
+"database."
+msgstr ""
 
 #. Resource IDs: (3251)
 msgid "Incorrect password"
@@ -4386,7 +4539,9 @@ msgstr "Erro interno: um sinalizador inválido foi especificado"
 
 #. Resource IDs: (3327)
 msgid "Internal error: Couldn't initialize config file XML structure"
-msgstr "Erro interno: não foi possível inicializar a estrutura XML do arquivo de configuração"
+msgstr ""
+"Erro interno: não foi possível inicializar a estrutura XML do arquivo de "
+"configuração"
 
 #. Resource IDs: (3022)
 msgid "Internal error: Invalid oflag or pmode argument"
@@ -4414,13 +4569,17 @@ msgstr "Delimitador de campo inválido: deve estar dentro do intervalo ASCII."
 
 #. Resource IDs: (3017)
 #, c-format
-msgid "Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
-msgstr "Entrada inválida na linha %d. O número de campos separados por '%c' não é o esperado."
+msgid ""
+"Invalid input on line %d.  Number of fields separated by '%c' is not as "
+"expected."
+msgstr ""
+"Entrada inválida na linha %d. O número de campos separados por '%c' não é o "
+"esperado."
 
 #. Resource IDs: (4116)
 #, c-format
 msgid "Invalid lock file \"%ls\"."
-msgstr "Arquivo de bloqueio inválido \"%ls\"."
+msgstr ""
 
 #. Resource IDs: (5684)
 msgid "Invalid shortcut ignored."
@@ -4567,8 +4726,12 @@ msgstr ""
 
 #. Resource IDs: (3259)
 #, c-format
-msgid "Line %d skipped - Only %d fields found, whereas parsing the Header says there should be %d."
-msgstr "Linha %d ignorada - Apenas %d campos encontrados, enquanto a análise do cabeçalho indica que deve haver %d."
+msgid ""
+"Line %d skipped - Only %d fields found, whereas parsing the Header says "
+"there should be %d."
+msgstr ""
+"Linha %d ignorada - Apenas %d campos encontrados, enquanto a análise do "
+"cabeçalho indica que deve haver %d."
 
 #. Resource IDs: (3268)
 #, c-format
@@ -4630,8 +4793,12 @@ msgid "Lock password database "
 msgstr "Bloquear banco de dados de senhas "
 
 #. Resource IDs: (5113)
-msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
-msgstr "O bloqueio limpa a memória, mas exclui as informações de desfazer e refazer que ainda podem ser usadas no desbloqueio do banco de dados."
+msgid ""
+"Locking clears the memory but excludes undo and redo information that can "
+"still be used on unlocking of the database."
+msgstr ""
+"O bloqueio limpa a memória, mas exclui as informações de desfazer e refazer "
+"que ainda podem ser usadas no desbloqueio do banco de dados."
 
 #. Resource IDs: (1413)
 msgid "MBytes"
@@ -4680,11 +4847,11 @@ msgstr "Marathi"
 
 #. Resource IDs: (131)
 msgid "Master Password Entry"
-msgstr "Entrada de senha mestra"
+msgstr ""
 
 #. Resource IDs: (133)
 msgid "Master Password Setup"
-msgstr "Configuração de senha mestra"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Master Password last set on:"
@@ -4692,7 +4859,7 @@ msgstr "Última Senha Mestre definida em:"
 
 #. Resource IDs: (1506, 65535)
 msgid "Master Password:"
-msgstr "Senha Mestra:"
+msgstr ""
 
 #. Resource IDs: (1212)
 msgid "Max."
@@ -4799,7 +4966,8 @@ msgstr "Colchete final ausente para o nome da variável"
 
 #. Resource IDs: (3360)
 msgid "Missing ending round bracket for Autotype value"
-msgstr "Parâmetro redondo final ausente para o valor do preenchimento automático"
+msgstr ""
+"Parâmetro redondo final ausente para o valor do preenchimento automático"
 
 #. Resource IDs: (3355)
 msgid "Missing ending square bracket for index value"
@@ -4860,7 +5028,7 @@ msgstr "Novo Grupo"
 
 #. Resource IDs: (65535)
 msgid "New Master Password:"
-msgstr "Nova Senha Mestra:"
+msgstr ""
 
 #. Resource IDs: (5476)
 msgid "New Version Found!"
@@ -4868,7 +5036,7 @@ msgstr "Nova Versão Encontrada!"
 
 #. Resource IDs: (5286)
 msgid "New master password and confirmation do not match"
-msgstr "A nova senha mestra e a confirmação não coincidem"
+msgstr ""
 
 #. Resource IDs: (1003)
 msgid "New..."
@@ -4900,12 +5068,15 @@ msgstr "Nenhum banco de dados está aberto no momento"
 
 #. Resource IDs: (5353)
 msgid "No database open with which to compare against another database!"
-msgstr "Nenhum banco de dados aberto com o qual comparar com outro banco de dados!"
+msgstr ""
+"Nenhum banco de dados aberto com o qual comparar com outro banco de dados!"
 
 #. Resource IDs: (5737)
 #, c-format
 msgid "No entries satisfied your selection criteria, so none can be %s!"
-msgstr "Nenhuma entrada atendeu aos seus critérios de seleção; portanto, nenhuma pode ser %s!"
+msgstr ""
+"Nenhuma entrada atendeu aos seus critérios de seleção; portanto, nenhuma "
+"pode ser %s!"
 
 #. Resource IDs: (5736)
 msgid "No entries selected"
@@ -4913,7 +5084,9 @@ msgstr "Nenhuma entrada selecionada"
 
 #. Resource IDs: (5506)
 msgid "No entry exists within this database matching your specifications."
-msgstr "Não existe nenhuma entrada neste banco de dados que corresponda às suas especificações."
+msgstr ""
+"Não existe nenhuma entrada neste banco de dados que corresponda às suas "
+"especificações."
 
 #. Resource IDs: (61472)
 msgid "No error message is available."
@@ -5005,36 +5178,54 @@ msgstr "Norueguês com Sami"
 
 #. Resource IDs: (61708)
 msgid "Not all of the system registry entries (or INI file) were removed."
-msgstr "Nem todas as entradas do registro do sistema (ou arquivo INI) foram removidas."
+msgstr ""
+"Nem todas as entradas do registro do sistema (ou arquivo INI) foram "
+"removidas."
 
 #. Resource IDs: (5908)
 msgid "Not used"
 msgstr "Não usado"
 
 #. Resource IDs: (62183)
-msgid "Note that if you choose to recover the auto-saved documents, you must explicitly save them to overwrite the original documents.  If you choose to not recover the auto-saved versions, they will be deleted."
-msgstr "Observe que, se você optar por recuperar os documentos salvos automaticamente, salve-os explicitamente para substituir os documentos originais. Se você optar por não recuperar as versões salvas automaticamente, elas serão excluídas."
+msgid ""
+"Note that if you choose to recover the auto-saved documents, you must "
+"explicitly save them to overwrite the original documents.  If you choose to "
+"not recover the auto-saved versions, they will be deleted."
+msgstr ""
+"Observe que, se você optar por recuperar os documentos salvos "
+"automaticamente, salve-os explicitamente para substituir os documentos "
+"originais. Se você optar por não recuperar as versões salvas "
+"automaticamente, elas serão excluídas."
 
 #. Resource IDs: (5114)
 #, c-format
 msgid "Note that you can use an environment variable too, e.g., %TEMP%"
-msgstr "Observe que você também pode usar uma variável de ambiente, por exemplo, %TEMP%"
+msgstr ""
+"Observe que você também pode usar uma variável de ambiente, por exemplo, "
+"%TEMP%"
 
 #. Resource IDs: (33150 - Menu)
-msgid "Note: Empty fields are shown as ï¿½ ï¿½"
-msgstr ""
+msgid "Note: Empty fields are shown as « »"
+msgstr "Nota: Os campos vazios são mostrados como « »"
 
 #. Resource IDs: (33126 - Menu)
-msgid "Note: Entry format is ï¿½Groupï¿½ ï¿½Titleï¿½ ï¿½Usernameï¿½"
-msgstr ""
+msgid "Note: Entry format is «Group» «Title» «Username»"
+msgstr "Nota: O formato da entrada é «Grupo» «Título» «Nome de Usuário»"
 
 #. Resource IDs: (3428)
-msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."
-msgstr "Nota: Essas políticas de senha não substituirão as políticas existentes com o mesmo nome no banco de dados atual."
+msgid ""
+"Note: These Password Policies will not replace existing policies with the "
+"same name in the current database."
+msgstr ""
+"Nota: Essas políticas de senha não substituirão as políticas existentes com "
+"o mesmo nome no banco de dados atual."
 
 #. Resource IDs: (3362)
-msgid "Note: These preferences are only used when importing into an empty database."
-msgstr "Nota: Essas preferências são usadas apenas ao importar para um banco de dados vazio."
+msgid ""
+"Note: These preferences are only used when importing into an empty database."
+msgstr ""
+"Nota: Essas preferências são usadas apenas ao importar para um banco de "
+"dados vazio."
 
 #. Resource IDs: (3014, 5225)
 msgid "Notes"
@@ -5129,23 +5320,36 @@ msgstr ""
 
 #. Resource IDs: (5383)
 #, c-format
-msgid "Number of entries that had their 'maximum saved passwords' changed to the new default was %d"
-msgstr "O número de entradas que tiveram suas 'senhas salvas máximas' alteradas para o novo padrão foi %d"
+msgid ""
+"Number of entries that had their 'maximum saved passwords' changed to the "
+"new default was %d"
+msgstr ""
+"O número de entradas que tiveram suas 'senhas salvas máximas' alteradas para"
+" o novo padrão foi %d"
 
 #. Resource IDs: (5920)
 #, c-format
 msgid "Number of entries that had their password history removed was %d"
-msgstr "O número de entradas que tiveram seu histórico de senhas removido foi %d"
+msgstr ""
+"O número de entradas que tiveram seu histórico de senhas removido foi %d"
 
 #. Resource IDs: (5381)
 #, c-format
-msgid "Number of entries that had their settings changed to not save password history was: %d"
-msgstr "O número de entradas que tiveram suas configurações alteradas para não salvar o histórico de senhas foi: %d"
+msgid ""
+"Number of entries that had their settings changed to not save password "
+"history was: %d"
+msgstr ""
+"O número de entradas que tiveram suas configurações alteradas para não "
+"salvar o histórico de senhas foi: %d"
 
 #. Resource IDs: (5382)
 #, c-format
-msgid "Number of entries that had their settings changed to save password history was: %d"
-msgstr "O número de entradas que tiveram suas configurações alteradas para salvar o histórico de senhas foi: %d"
+msgid ""
+"Number of entries that had their settings changed to save password history "
+"was: %d"
+msgstr ""
+"O número de entradas que tiveram suas configurações alteradas para salvar o "
+"histórico de senhas foi: %d"
 
 #. Resource IDs: (1266)
 msgid "Number of unknown fields:"
@@ -5173,7 +5377,7 @@ msgstr "Desligar"
 
 #. Resource IDs: (65535)
 msgid "Old Master Password:"
-msgstr "Senha mestra antiga:"
+msgstr ""
 
 #. Resource IDs: (6038)
 msgid "Old Pswd copied"
@@ -5192,21 +5396,29 @@ msgid "On workstation lock"
 msgstr "Ao bloquear a estação de trabalho"
 
 #. Resource IDs: (5894)
-msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"
-msgstr "Uma ou mais Política de Senha foram alteradas. Você quer mesmo cancelar?"
+msgid ""
+"One or more Password Policies have been changed. Are you sure you wish to "
+"cancel?"
+msgstr ""
+"Uma ou mais Política de Senha foram alteradas. Você quer mesmo cancelar?"
 
 #. Resource IDs: (62180)
 msgid "One or more auto-saved documents were found."
 msgstr "Um ou mais documentos salvos automaticamente foram encontrados."
 
 #. Resource IDs: (5732)
-msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
+msgid ""
+"One or more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "Uma ou mais preferências foram alteradas. Você quer mesmo cancelar?"
 
 #. Resource IDs: (5428)
 #, c-format
-msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
-msgstr "Somente no original: %d; Somente na comparação: %d; Em ambos (diferentes): %d; Nos dois (idêntico): %d"
+msgid ""
+"Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In "
+"both (identical): %d"
+msgstr ""
+"Somente no original: %d; Somente na comparação: %d; Em ambos (diferentes): "
+"%d; Nos dois (idêntico): %d"
 
 #. Resource IDs: (1595)
 msgid "Opaque"
@@ -5290,7 +5502,8 @@ msgstr "Passkey incorreto"
 
 #. Resource IDs: (5800)
 msgid "Passkey needed to save. Please unlock database and try again"
-msgstr "Senha necessária para salvar. Desbloqueie o banco de dados e tente novamente"
+msgstr ""
+"Senha necessária para salvar. Desbloqueie o banco de dados e tente novamente"
 
 #. Resource IDs: (5757)
 msgid "Passphrase"
@@ -5381,8 +5594,12 @@ msgid "Password Safe Application HotKey"
 msgstr "Atalho do Aplicativo Password Safe"
 
 #. Resource IDs: (5057)
-msgid "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"
-msgstr "Backups do Password Safe (*.bak)|*.bak|Backups Intermediários do Password Safe (*.ibak)|*.ibak||"
+msgid ""
+"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups "
+"(*.ibak)|*.ibak||"
+msgstr ""
+"Backups do Password Safe (*.bak)|*.bak|Backups Intermediários do Password "
+"Safe (*.ibak)|*.ibak||"
 
 #. Resource IDs: (5056)
 msgid "Password Safe Backups (*.bak)|*.bak||"
@@ -5390,23 +5607,39 @@ msgstr "Backups do Password Safe (*.bak)|*.bak||"
 
 #. Resource IDs: (5061)
 msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
-msgstr "Bancos de Dados do Password Safe (*.dat)|*.dat|Todos os Arquivos (*.*)|*.*||"
+msgstr ""
+"Bancos de Dados do Password Safe (*.dat)|*.dat|Todos os Arquivos (*.*)|*.*||"
 
 #. Resource IDs: (5050)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
-msgstr "Bancos de dados do Password Safe (*.psafe3)|*.psafe3|Todos os Arquivos (*.*)|*.*||"
+msgstr ""
+"Bancos de dados do Password Safe (*.psafe3)|*.psafe3|Todos os Arquivos "
+"(*.*)|*.*||"
 
 #. Resource IDs: (5051)
-msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|All files (*.*)|*.*||"
-msgstr "Bancos de Dados do Password Safe (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Todos os Arquivos (*.*)|*.*||"
+msgid ""
+"Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; "
+"*.dat|All files (*.*)|*.*||"
+msgstr ""
+"Bancos de Dados do Password Safe (*.psafe3; *.psafe4; *.dat)|*.psafe3; "
+"*.psafe4; *.dat|Todos os Arquivos (*.*)|*.*||"
 
 #. Resource IDs: (5052)
-msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
-msgstr "Bancos de Dados do Password Safe (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Backups do Password Safe (*.bak)|*.bak|Backups Intermediários do Password Safe (*.ibak)|*.ibak|Todos os Arquivos (*.*)|*.*||"
+msgid ""
+"Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; "
+"*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups"
+" (*.ibak)|*.ibak|All files (*.*)|*.*||"
+msgstr ""
+"Bancos de Dados do Password Safe (*.psafe3; *.psafe4; *.dat)|*.psafe3; "
+"*.psafe4; *.dat|Backups do Password Safe (*.bak)|*.bak|Backups "
+"Intermediários do Password Safe (*.ibak)|*.ibak|Todos os Arquivos "
+"(*.*)|*.*||"
 
 #. Resource IDs: (5062)
 msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
-msgstr "Bancos de Dados do Password Safe (*.psafe4)|*.psafe4|Todos os Arquivos (*.*)|*.*||"
+msgstr ""
+"Bancos de Dados do Password Safe (*.psafe4)|*.psafe4|Todos os Arquivos "
+"(*.*)|*.*||"
 
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
@@ -5458,8 +5691,12 @@ msgid "Password length:"
 msgstr "Comprimento da senha:"
 
 #. Resource IDs: (3001)
-msgid "Password should be mixed case, with at least one digit or punctuation character"
-msgstr "A senha deve possuir letras maiúsculas e minúsculas, com ao menos um dígito ou caractere de pontuação"
+msgid ""
+"Password should be mixed case, with at least one digit or punctuation "
+"character"
+msgstr ""
+"A senha deve possuir letras maiúsculas e minúsculas, com ao menos um dígito "
+"ou caractere de pontuação"
 
 #. Resource IDs: (32093 - Menu, 32093 - MenuEx, 32096 - Menu, 32096 - MenuEx)
 msgid "Password&Safe..."
@@ -5476,7 +5713,9 @@ msgstr "PasswordSafe..."
 
 #. Resource IDs: (5822)
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
-msgstr "PasswordSafe: existem entradas com senhas expiradas ou que expirarão em breve"
+msgstr ""
+"PasswordSafe: existem entradas com senhas expiradas ou que expirarão em "
+"breve"
 
 #. Resource IDs: (32076 - Menu, 32076 - MenuEx, 5296)
 msgid "Perform Auto&Type"
@@ -5528,15 +5767,20 @@ msgstr "Escolha um arquivo XML para importar"
 
 #. Resource IDs: (5354)
 msgid "Please choose a database to compare with current database"
-msgstr "Por favor, escolha um banco de dados para comparar com o banco de dados atual"
+msgstr ""
+"Por favor, escolha um banco de dados para comparar com o banco de dados "
+"atual"
 
 #. Resource IDs: (5348)
 msgid "Please choose a database to merge into current database"
-msgstr "Por favor, escolha um banco de dados para mesclar ao banco de dados atual"
+msgstr ""
+"Por favor, escolha um banco de dados para mesclar ao banco de dados atual"
 
 #. Resource IDs: (5753)
 msgid "Please choose a database to synchronize with current database"
-msgstr "Por favor, escolha um banco de dados para sincronizar com o banco de dados atual"
+msgstr ""
+"Por favor, escolha um banco de dados para sincronizar com o banco de dados "
+"atual"
 
 #. Resource IDs: (5327)
 msgid "Please choose a name for the current (Untitled) database:"
@@ -5577,23 +5821,23 @@ msgstr "Por favor, insira uma chave de criptografia ou descriptografia"
 
 #. Resource IDs: (65535)
 msgid "Please enter the Master Password for this password database."
-msgstr "Introduza a Palavra-passe Mestra para esta base de dados de palavras-passe."
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid ""
 "Please enter the current master password, followed by a new one. \r\n"
 "Type the new one again to confirm it."
 msgstr ""
-"Introduza a palavra-passe mestra atual, seguida de uma nova. \r\n"
-"Digite o novo novamente para confirmá-lo."
 
 #. Resource IDs: (5255)
 msgid "Please enter the key and verify it."
 msgstr "Por favor, insira a chave e verifique-a."
 
 #. Resource IDs: (1504)
-msgid "Please enter the master password for the NEW database to contain exported entry/entries."
-msgstr "Digite a senha mestra para o banco de dados NOVO para conter entradas/entradas exportadas."
+msgid ""
+"Please enter the master password for the NEW database to contain exported "
+"entry/entries."
+msgstr ""
 
 #. Resource IDs: (5876)
 msgid "Please enter the new database description"
@@ -5645,7 +5889,8 @@ msgstr "Por favor, especifique o texto"
 
 #. Resource IDs: (5390)
 msgid "Please specify the destination location to contain all backups."
-msgstr "Por favor, especifique o local de destino para conter todos os backups."
+msgstr ""
+"Por favor, especifique o local de destino para conter todos os backups."
 
 #. Resource IDs: (5389)
 msgid "Please specify the sub-directory to contain all backups."
@@ -5653,7 +5898,9 @@ msgstr "Por favor, especifique o subdiretório para conter todos os backups."
 
 #. Resource IDs: (5489)
 msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
-msgstr "Por favor, visite o site do <a href=\"https://pwsafe.org/\">PasswordSafe.</a>"
+msgstr ""
+"Por favor, visite o site do <a "
+"href=\"https://pwsafe.org/\">PasswordSafe.</a>"
 
 #. Resource IDs: (5879)
 msgid "Policy Name"
@@ -5688,8 +5935,19 @@ msgid "Portuguese (Brazilian ABNT)"
 msgstr "Português (Brasileiro ABNT)"
 
 #. Resource IDs: (6049)
-msgid "Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character. Positions must be separated by either spaces, commas or semi-colons to be recognised. There must also be a space, comma or semi-colon at the end of the list."
-msgstr "A posição 1 é o primeiro caractere, 2 é o segundo etc., até N para o último caractere de uma senha de comprimento N. -1 é o último caractere, -2 é o penúltimo etc. até -N para o primeiro caractere da senha. As posições devem ser separadas por espaços, vírgulas ou ponto e vírgula para serem reconhecidas. Também deve haver um espaço, vírgula ou ponto-e-vírgula no final da lista."
+msgid ""
+"Position 1 is the first character, 2 is the second etc. up to N for the last"
+" character of a password of length N. -1 is the last character, -2 the next "
+"to last etc. up to -N for the first password character. Positions must be "
+"separated by either spaces, commas or semi-colons to be recognised. There "
+"must also be a space, comma or semi-colon at the end of the list."
+msgstr ""
+"A posição 1 é o primeiro caractere, 2 é o segundo etc., até N para o último "
+"caractere de uma senha de comprimento N. -1 é o último caractere, -2 é o "
+"penúltimo etc. até -N para o primeiro caractere da senha. As posições devem "
+"ser separadas por espaços, vírgulas ou ponto e vírgula para serem "
+"reconhecidas. Também deve haver um espaço, vírgula ou ponto-e-vírgula no "
+"final da lista."
 
 #. Resource IDs: (65535)
 msgid "Positions:"
@@ -5705,9 +5963,6 @@ msgid ""
 "\n"
 "Pressing Cancel stops the password from being copied."
 msgstr ""
-"Pressionar OK copiará a senha do item selecionado para a área de transferência. A área de transferência será limpa com segurança quando o Password Safe for fechado.\n"
-"\n"
-"Pressionar Cancelar impede que a senha seja copiada."
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -5742,8 +5997,12 @@ msgid "Pronounceable passwords"
 msgstr "Senhas pronunciáveis"
 
 #. Resource IDs: (5918)
-msgid "Pronounceable passwords must contain either lowercase or uppercase characters or both"
-msgstr "As senhas pronunciáveis ​​devem conter caracteres minúsculos ou maiúsculos ou ambos"
+msgid ""
+"Pronounceable passwords must contain either lowercase or uppercase "
+"characters or both"
+msgstr ""
+"As senhas pronunciáveis ​​devem conter caracteres minúsculos ou maiúsculos "
+"ou ambos"
 
 #. Resource IDs: (136)
 msgid "Properties"
@@ -5856,15 +6115,21 @@ msgstr "Refazer"
 
 #. Resource IDs: (5885)
 msgid "Redo the last change to password policies that was previously undone"
-msgstr "Ref a última alteração nas políticas de senha que foram desfeitas anteriormente"
+msgstr ""
+"Ref a última alteração nas políticas de senha que foram desfeitas "
+"anteriormente"
 
 #. Resource IDs: (1228, 3397)
 msgid "Relative"
 msgstr "Relativa"
 
 #. Resource IDs: (1420)
-msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
-msgstr "Datas relativas são em dias em relação a hoje, por ex., '-1' é ontem e '1' é amanhã"
+msgid ""
+"Relative dates are in days relative to today e.g. '-1' is yesterday and '1' "
+"is tomorrow"
+msgstr ""
+"Datas relativas são em dias em relação a hoje, por ex., '-1' é ontem e '1' é"
+" amanhã"
 
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
@@ -5883,8 +6148,12 @@ msgid "Remove PasswordSafe configuration from Registry"
 msgstr "Remover configuração PasswordSafe do Registro"
 
 #. Resource IDs: (5111)
-msgid "Remove all saved passwords for entries and stop saving password change history in all entries."
-msgstr "Remover todas as senhas salvas das entradas e parar de salvar o histórico de alterações de senhas em todas as entradas."
+msgid ""
+"Remove all saved passwords for entries and stop saving password change "
+"history in all entries."
+msgstr ""
+"Remover todas as senhas salvas das entradas e parar de salvar o histórico de"
+" alterações de senhas em todas as entradas."
 
 #. Resource IDs: (32291 - Menu)
 msgid "Remove this shortcut"
@@ -5968,15 +6237,23 @@ msgstr "Tecla Ctrl direita"
 
 #. Resource IDs: (5994)
 msgid "Right click a Named Password Policy to list the entries using it"
-msgstr "Clique com o botão direito do mouse em uma Política de Senha Nomeada para listar as entradas que a utilizam"
+msgstr ""
+"Clique com o botão direito do mouse em uma Política de Senha Nomeada para "
+"listar as entradas que a utilizam"
 
 #. Resource IDs: (65535)
-msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
-msgstr "Clique com o botão direito do mouse no 'Y' em uma das 2 primeiras colunas para obter funções adicionais"
+msgid ""
+"Right-click on the 'Y' in either of the first 2 columns for additional "
+"functions"
+msgstr ""
+"Clique com o botão direito do mouse no 'Y' em uma das 2 primeiras colunas "
+"para obter funções adicionais"
 
 #. Resource IDs: (5117)
 msgid "Right-click on the Notes field to access additional functionality."
-msgstr "Clique com o botão direito do mouse no campo Notas para acessar funcionalidades adicionais."
+msgstr ""
+"Clique com o botão direito do mouse no campo Notas para acessar "
+"funcionalidades adicionais."
 
 #. Resource IDs: (8219)
 msgid "Romanian (Legacy)"
@@ -6259,7 +6536,9 @@ msgstr "Definir ID do banco de dados"
 
 #. Resource IDs: (552)
 msgid "Set Database Index to overlay on System Tray icon"
-msgstr "Definir Índice do banco de dados como sobreposição no ícone Bandeja do sistema"
+msgstr ""
+"Definir Índice do banco de dados como sobreposição no ícone Bandeja do "
+"sistema"
 
 #. Resource IDs: (5295)
 msgid "Set Date/Time"
@@ -6396,7 +6675,7 @@ msgstr "Mostrar"
 
 #. Resource IDs: (1590)
 msgid "Show Master Password"
-msgstr "Mostrar senha mestra"
+msgstr ""
 
 #. Resource IDs: (5653)
 msgid "Show Notes"
@@ -6404,7 +6683,8 @@ msgstr "Mostrar notas"
 
 #. Resource IDs: (1296)
 msgid "Show Notes as ToolTips in Tree && List views"
-msgstr "Mostrar notas como dicas de ferramentas nas visualizações em árvore e lista"
+msgstr ""
+"Mostrar notas como dicas de ferramentas nas visualizações em árvore e lista"
 
 #. Resource IDs: (1190)
 msgid "Show Notes in Edit"
@@ -6435,16 +6715,23 @@ msgid "Show a subset of the Password"
 msgstr "Mostrar um subconjunto da senha"
 
 #. Resource IDs: (1262)
-msgid "Show entries with identical compared fields (Note: Unknown fields were not compared.)"
-msgstr "Mostrar entradas com campos comparados idênticos (Nota: Campos desconhecidos não foram comparados.)"
+msgid ""
+"Show entries with identical compared fields (Note: Unknown fields were not "
+"compared.)"
+msgstr ""
+"Mostrar entradas com campos comparados idênticos (Nota: Campos desconhecidos"
+" não foram comparados.)"
 
 #. Resource IDs: (1246)
 msgid "Show grid lines in List View"
 msgstr "Mostrar linhas de grade na Exibição em Lista"
 
 #. Resource IDs: (1490)
-msgid "Show identical compared fields (Note: Unknown fields were not compared.)"
-msgstr "Mostrar campos comparados idênticos (Nota: Campos desconhecidos não foram comparados.)"
+msgid ""
+"Show identical compared fields (Note: Unknown fields were not compared.)"
+msgstr ""
+"Mostrar campos comparados idênticos (Nota: Campos desconhecidos não foram "
+"comparados.)"
 
 #. Resource IDs: (5755)
 msgid "Shutdown, Restart or Logoff in progress"
@@ -6475,8 +6762,12 @@ msgid "Slovenian"
 msgstr "Esloveno"
 
 #. Resource IDs: (5710)
-msgid "Some characters may be missing or not be displayed correctly, as we were unable to find the Arial Unicode MS font."
-msgstr "Alguns caracteres podem estar ausentes ou não ser exibidos corretamente, pois não conseguimos encontrar a fonte Arial Unicode MS."
+msgid ""
+"Some characters may be missing or not be displayed correctly, as we were "
+"unable to find the Arial Unicode MS font."
+msgstr ""
+"Alguns caracteres podem estar ausentes ou não ser exibidos corretamente, "
+"pois não conseguimos encontrar a fonte Arial Unicode MS."
 
 #. Resource IDs: (5923)
 msgid ""
@@ -6489,8 +6780,12 @@ msgstr ""
 "Você deve salvar esse banco de dados antes de continuar. Por favor, veja o relatório para detalhes."
 
 #. Resource IDs: (5821)
-msgid "Some of the entries in this database have passwords that have expired or are about to.  Do you wish to list them and possibly update them?"
-msgstr "Algumas das entradas neste banco de dados têm senhas que expiraram ou estão prestes a expirar. Você quer listá-las e possivelmente atualizá-las?"
+msgid ""
+"Some of the entries in this database have passwords that have expired or are"
+" about to.  Do you wish to list them and possibly update them?"
+msgstr ""
+"Algumas das entradas neste banco de dados têm senhas que expiraram ou estão "
+"prestes a expirar. Você quer listá-las e possivelmente atualizá-las?"
 
 #. Resource IDs: (8313)
 msgid "Sorbian Standard"
@@ -6533,8 +6828,12 @@ msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
 msgstr "Desculpe, 'pronunciável' e 'fácil de ler' não são suportados juntos"
 
 #. Resource IDs: (5512)
-msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' option. Specified values ignored."
-msgstr "Desculpe, não é possível especificar um número mínimo de caracteres com a opção 'pronunciável'. Valores especificados ignorados."
+msgid ""
+"Sorry, can't specify a minimum number of characters with 'pronounceable' "
+"option. Specified values ignored."
+msgstr ""
+"Desculpe, não é possível especificar um número mínimo de caracteres com a "
+"opção 'pronunciável'. Valores especificados ignorados."
 
 #. Resource IDs: (5938)
 msgid "Sorry, couldn't find help file - help unavailable."
@@ -6561,12 +6860,32 @@ msgid "Spanish Variation"
 msgstr "Variação do Espanhol"
 
 #. Resource IDs: (5109)
-msgid "Specify a program for editing an entry's Notes field via the right-click context menu during Add/Edit. You can specify command line options to the external editor via the external  editor command line parameters field. Do not enclose this value in single or double quotes unless your chosen external editor requires them."
-msgstr "Especifique um programa para editar o campo Notas de uma entrada através do menu de contexto do botão direito do mouse durante Adicionar/Editar. Você pode especificar opções de linha de comando para o editor externo através do campo de parâmetros da linha de comando do editor externo. Não coloque esse valor entre aspas simples ou duplas, a menos que o editor externo escolhido exija."
+msgid ""
+"Specify a program for editing an entry's Notes field via the right-click "
+"context menu during Add/Edit. You can specify command line options to the "
+"external editor via the external  editor command line parameters field. Do "
+"not enclose this value in single or double quotes unless your chosen "
+"external editor requires them."
+msgstr ""
+"Especifique um programa para editar o campo Notas de uma entrada através do "
+"menu de contexto do botão direito do mouse durante Adicionar/Editar. Você "
+"pode especificar opções de linha de comando para o editor externo através do"
+" campo de parâmetros da linha de comando do editor externo. Não coloque esse"
+" valor entre aspas simples ou duplas, a menos que o editor externo escolhido"
+" exija."
 
 #. Resource IDs: (5108)
-msgid "Specify the browser to use when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'. You can specify command line options to the browser via the Browser command line parameters field. Do not enclose this value in single or double quotes unless your chosen browser requires them."
-msgstr "Especifique o navegador a ser usado quando o campo URL de uma entrada começar com [alt], por exemplo, '[alt] http://foo.com'. Você pode especificar opções de linha de comando para o navegador através do campo Parâmetros da linha de comando do navegador. Não coloque esse valor entre aspas simples ou duplas, a menos que o navegador escolhido exija."
+msgid ""
+"Specify the browser to use when an entry's URL field starts with [alt], "
+"e.g., '[alt]http://foo.com'. You can specify command line options to the "
+"browser via the Browser command line parameters field. Do not enclose this "
+"value in single or double quotes unless your chosen browser requires them."
+msgstr ""
+"Especifique o navegador a ser usado quando o campo URL de uma entrada "
+"começar com [alt], por exemplo, '[alt] http://foo.com'. Você pode "
+"especificar opções de linha de comando para o navegador através do campo "
+"Parâmetros da linha de comando do navegador. Não coloque esse valor entre "
+"aspas simples ou duplas, a menos que o navegador escolhido exija."
 
 #. Resource IDs: (1497)
 msgid "Standard"
@@ -6581,14 +6900,19 @@ msgid "Start Report"
 msgstr "Iniciar relatório"
 
 #. Resource IDs: (5101)
-msgid "Start saving password history for all entries, to the above number of entries."
-msgstr "Começar a salvar o histórico de senhas de todas as entradas no número de entradas acima."
+msgid ""
+"Start saving password history for all entries, to the above number of "
+"entries."
+msgstr ""
+"Começar a salvar o histórico de senhas de todas as entradas no número de "
+"entradas acima."
 
 #. Resource IDs: (1185)
 msgid "Start saving previous passwords"
 msgstr "Começar a salvar senhas anteriores"
 
-#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561, 1562, 1588, 8103)
+#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561,
+#. 1562, 1588, 8103)
 msgid "Static"
 msgstr "Estático"
 
@@ -6620,7 +6944,9 @@ msgstr "Parar de salvar senhas anteriores"
 
 #. Resource IDs: (3347)
 msgid "Stored filters will be unusable until the file's restored."
-msgstr "Os filtros armazenados serão inutilizáveis ​​até que o arquivo seja restaurado."
+msgstr ""
+"Os filtros armazenados serão inutilizáveis ​​até que o arquivo seja "
+"restaurado."
 
 #. Resource IDs: (1322)
 msgid "String value:"
@@ -6688,8 +7014,12 @@ msgid "System error: No more file handles available"
 msgstr "Erro do sistema: não há mais identificadores de arquivo disponíveis"
 
 #. Resource IDs: (61707)
-msgid "System registry entries have been removed and the INI file (if any) was deleted."
-msgstr "As entradas do registro do sistema foram removidas e o arquivo INI (se houver) foi excluído."
+msgid ""
+"System registry entries have been removed and the INI file (if any) was "
+"deleted."
+msgstr ""
+"As entradas do registro do sistema foram removidas e o arquivo INI (se "
+"houver) foi excluído."
 
 #. Resource IDs: (65535)
 msgid "SystemTray"
@@ -6737,7 +7067,9 @@ msgstr "Arquivos de Texto (*.txt)|*.txt|Todos os Arquivos (*.*)|*.*||"
 
 #. Resource IDs: (5053)
 msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
-msgstr "Arquivos de Texto (*.txt)|*.txt|Arquivos CSV (*.csv)|*.csv|Todos os Arquivos (*.*)|*.*||"
+msgstr ""
+"Arquivos de Texto (*.txt)|*.txt|Arquivos CSV (*.csv)|*.csv|Todos os Arquivos"
+" (*.*)|*.*||"
 
 #. Resource IDs: (1322)
 msgid "Text:"
@@ -6765,12 +7097,20 @@ msgstr "Esse arquivo já está aberto."
 
 #. Resource IDs: (3277)
 #, c-format
-msgid "The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls base entry. It cannot be imported."
-msgstr "A entrada %ls \"%ls, %ls,%ls\" não aponta para uma entrada base %ls normal ou existente. Não pode ser importado."
+msgid ""
+"The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls "
+"base entry. It cannot be imported."
+msgstr ""
+"A entrada %ls \"%ls, %ls,%ls\" não aponta para uma entrada base %ls normal "
+"ou existente. Não pode ser importado."
 
 #. Resource IDs: (8154)
-msgid "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key to enter a character via its decimal value."
-msgstr "A tecla ALT não é usada em nenhum teclado para selecionar caracteres. Use a tecla 'Alt Num' para inserir um caractere através do seu valor decimal."
+msgid ""
+"The ALT key is not used on any keyboard to select characters. Use the 'Alt "
+"Num' key to enter a character via its decimal value."
+msgstr ""
+"A tecla ALT não é usada em nenhum teclado para selecionar caracteres. Use a "
+"tecla 'Alt Num' para inserir um caractere através do seu valor decimal."
 
 #. Resource IDs: (5947)
 msgid "The Alt and Ctrl keys have been added."
@@ -6906,13 +7246,19 @@ msgstr "O arquivo não foi encontrado."
 
 #. Resource IDs: (3323)
 #, c-format
-msgid "The filter XML version (%d) is greater than that supported by this instance of PasswordSafe (%d)."
-msgstr "A versão XML do filtro (%d) é maior que a suportada por esta instância do PasswordSafe (%d)."
+msgid ""
+"The filter XML version (%d) is greater than that supported by this instance "
+"of PasswordSafe (%d)."
+msgstr ""
+"A versão XML do filtro (%d) é maior que a suportada por esta instância do "
+"PasswordSafe (%d)."
 
 #. Resource IDs: (3322)
 #, c-format
 msgid "The filter XML version (%d) is greater than the current schema (%d)."
-msgstr "A versão XML do filtro (%d) é maior que a suportada por esta instância do PasswordSafe (%d)."
+msgstr ""
+"A versão XML do filtro (%d) é maior que a suportada por esta instância do "
+"PasswordSafe (%d)."
 
 #. Resource IDs: (3321)
 msgid "The filter XML version is missing."
@@ -6923,32 +7269,47 @@ msgid "The following ERRORS were detected and were FIXED."
 msgstr "Os seguintes ERROS foram detectados e corrigidos."
 
 #. Resource IDs: (3443)
-msgid "The following WARNINGS were detected - you should review and fix them manually."
-msgstr "Os seguintes AVISOS foram detectados - você deve revisá-los e corrigi-los manualmente."
+msgid ""
+"The following WARNINGS were detected - you should review and fix them "
+"manually."
+msgstr ""
+"Os seguintes AVISOS foram detectados - você deve revisá-los e corrigi-los "
+"manualmente."
 
 #. Resource IDs: (3454)
 msgid "The following attachments are not referred to by any entry."
 msgstr "Os anexos a seguir não são mencionados por nenhuma entrada."
 
 #. Resource IDs: (6055)
-msgid "The following base entries have been exported because one or more of their dependents have been included."
-msgstr "As seguintes entradas base foram exportadas porque um ou mais de seus dependentes foram incluídos."
+msgid ""
+"The following base entries have been exported because one or more of their "
+"dependents have been included."
+msgstr ""
+"As seguintes entradas base foram exportadas porque um ou mais de seus "
+"dependentes foram incluídos."
 
 #. Resource IDs: (3262)
-msgid "The following columns are unrecognized by PasswordSafe and will be ignored: "
-msgstr "As colunas a seguir não são reconhecidas pelo PasswordSafe e serão ignoradas: "
+msgid ""
+"The following columns are unrecognized by PasswordSafe and will be ignored: "
+msgstr ""
 
 #. Resource IDs: (3375)
-msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
-msgstr "As seguintes colunas foram reconhecidas, mas apenas Grupo/Título, Nome de usuário e Senha serão processados:"
+msgid ""
+"The following columns were recognised but only Group/Title, Username and "
+"Password will be processed:"
+msgstr ""
+"As seguintes colunas foram reconhecidas, mas apenas Grupo/Título, Nome de "
+"usuário e Senha serão processados:"
 
 #. Resource IDs: (3260)
 msgid "The following columns will be processed: "
 msgstr "As seguintes colunas serão processadas: "
 
 #. Resource IDs: (3439)
-msgid "The following entries had a duplicate UUID field.  This has been corrected."
-msgstr "As entradas a seguir tinham um campo UUID duplicado. Isso foi corrigido."
+msgid ""
+"The following entries had a duplicate UUID field.  This has been corrected."
+msgstr ""
+"As entradas a seguir tinham um campo UUID duplicado. Isso foi corrigido."
 
 #. Resource IDs: (3433)
 #, c-format
@@ -6961,30 +7322,51 @@ msgstr ""
 
 #. Resource IDs: (3438)
 #, c-format
-msgid "The following entries had an empty Password field, which is not permitted. The password has been set to '%ls'"
-msgstr "As entradas a seguir tinham um campo de senha vazio, o que não é permitido. A senha foi definida como '%ls'"
+msgid ""
+"The following entries had an empty Password field, which is not permitted. "
+"The password has been set to '%ls'"
+msgstr ""
+"As entradas a seguir tinham um campo de senha vazio, o que não é permitido. "
+"A senha foi definida como '%ls'"
 
 #. Resource IDs: (3437)
-msgid "The following entries had an empty Title field, which is not permitted."
-msgstr "As entradas a seguir tinham um campo Título vazio, o que não é permitido."
+msgid ""
+"The following entries had an empty Title field, which is not permitted."
+msgstr ""
+"As entradas a seguir tinham um campo Título vazio, o que não é permitido."
 
 #. Resource IDs: (3271)
-msgid "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
-msgstr "As entradas a seguir tinham um histórico de senhas inválido. Isso foi reconstruído com os dados disponíveis. Pode haver alguma perda de histórico."
+msgid ""
+"The following entries had an invalid Password History.  This has been "
+"rebuilt with available data.  There may be some loss of history."
+msgstr ""
+"As entradas a seguir tinham um histórico de senhas inválido. Isso foi "
+"reconstruído com os dados disponíveis. Pode haver alguma perda de histórico."
 
 #. Resource IDs: (3270)
-msgid "The following entries had an invalid UUID field.  This has been corrected."
-msgstr "As entradas a seguir tinham um campo UUID inválido. Isso foi corrigido."
+msgid ""
+"The following entries had an invalid UUID field.  This has been corrected."
+msgstr ""
+"As entradas a seguir tinham um campo UUID inválido. Isso foi corrigido."
 
 #. Resource IDs: (3390)
 #, c-format
-msgid "The following entries have one or more text fields too long to display or edit (over %d characters).  The largest entry size found was ~%d %ls."
-msgstr "As entradas a seguir possuem um ou mais campos de texto muito longos para serem exibidos ou editados (mais de %d caracteres). O maior tamanho de entrada encontrado foi ~% d%ls."
+msgid ""
+"The following entries have one or more text fields too long to display or "
+"edit (over %d characters).  The largest entry size found was ~%d %ls."
+msgstr ""
+"As entradas a seguir possuem um ou mais campos de texto muito longos para "
+"serem exibidos ou editados (mais de %d caracteres). O maior tamanho de "
+"entrada encontrado foi ~% d%ls."
 
 #. Resource IDs: (3441)
 #, c-format
-msgid "The following entries have passwords in the correct form for %ls, but the base entry does not exist."
-msgstr "As entradas a seguir possuem senhas no formato correto para %ls, mas a entrada base não existe."
+msgid ""
+"The following entries have passwords in the correct form for %ls, but the "
+"base entry does not exist."
+msgstr ""
+"As entradas a seguir possuem senhas no formato correto para %ls, mas a "
+"entrada base não existe."
 
 #. Resource IDs: (3453)
 msgid "The following entries refer to missing attachments."
@@ -6995,8 +7377,11 @@ msgid "The following entries were duplicates of an existing entry."
 msgstr "As seguintes entradas eram duplicatas de uma entrada existente."
 
 #. Resource IDs: (65535)
-msgid "The following entries' passwords are about to expire or have already expired:"
-msgstr "As senhas das seguintes entradas estão prestes a expirar ou já expiraram:"
+msgid ""
+"The following entries' passwords are about to expire or have already "
+"expired:"
+msgstr ""
+"As senhas das seguintes entradas estão prestes a expirar ou já expiraram:"
 
 #. Resource IDs: (5481)
 #, c-format
@@ -7006,15 +7391,20 @@ msgstr "A seguinte entrada foi copiada para o banco de dados %s: '%s:%s:%s'"
 #. Resource IDs: (5932)
 #, c-format
 msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "A entrada a seguir foi sincronizada com o banco de dados %s: '%s:%s:%s'"
+msgstr ""
+"A entrada a seguir foi sincronizada com o banco de dados %s: '%s:%s:%s'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
 msgstr "Os seguintes registros apresentaram erros no histórico de senhas:"
 
 #. Resource IDs: (5786)
-msgid "The following records were renamed as an entry already exists in your database or in the Import file:"
-msgstr "Os seguintes registros foram renomeados como uma entrada já existe no seu banco de dados ou no arquivo Importar:"
+msgid ""
+"The following records were renamed as an entry already exists in your "
+"database or in the Import file:"
+msgstr ""
+"Os seguintes registros foram renomeados como uma entrada já existe no seu "
+"banco de dados ou no arquivo Importar:"
 
 #. Resource IDs: (5785)
 msgid "The following records were skipped:"
@@ -7045,7 +7435,7 @@ msgstr ""
 
 #. Resource IDs: (5279)
 msgid "The master password cannot be blank."
-msgstr "A senha mestra não pode ficar em branco."
+msgstr ""
 
 #. Resource IDs: (5958)
 #, c-format
@@ -7056,66 +7446,111 @@ msgid ""
 "- Is this the correct database?\n"
 "- Perhaps the database was damaged. Try opening a backup copy."
 msgstr ""
-"A senha mestra foi digitada %d vezes sem sucesso:\n"
-"- Caps Lock está desligado?\n"
-"- A língua está correta (se multilíngue)?\n"
-"- Esta é a base de dados correta?\n"
-"- Talvez o banco de dados tenha sido danificado. Tente abrir uma cópia de backup."
 
 #. Resource IDs: (5792)
 #, c-format
-msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either export this entry to XML before changing it or open the database in read-only mode and copy it to an editor via the clipboard."
-msgstr "O campo de anotações desta entrada possui mais texto do que pode ser exibido. Alterar esse campo e salvar a entrada fará com que esse campo seja truncado após %d caracteres. Para ver o conteúdo completo, exporte esta entrada para XML antes de alterá-la ou abra o banco de dados no modo somente leitura e copie-o para um editor através da área de transferência."
+msgid ""
+"The notes field of this entry has more text than can be displayed. Changing "
+"this field and saving the entry will result in this field being truncated "
+"after %d characters.  To view the full contents, either export this entry to"
+" XML before changing it or open the database in read-only mode and copy it "
+"to an editor via the clipboard."
+msgstr ""
+"O campo de anotações desta entrada possui mais texto do que pode ser "
+"exibido. Alterar esse campo e salvar a entrada fará com que esse campo seja "
+"truncado após %d caracteres. Para ver o conteúdo completo, exporte esta "
+"entrada para XML antes de alterá-la ou abra o banco de dados no modo somente"
+" leitura e copie-o para um editor através da área de transferência."
 
 #. Resource IDs: (5284)
 msgid "The old master password is not correct"
-msgstr "A senha mestra antiga não está correta"
+msgstr ""
 
 #. Resource IDs: (5323)
 #, c-format
-msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use \"File->Export To->Old (1.x or 2) format\"."
-msgstr "O banco de dados original, \"%s\", está no formato anterior à 3.0. Os dados agora serão gravados no novo formato, que não pode ser usado pelas versões antigas do PasswordSafe. Para salvar os dados no formato antigo, use \"Arquivo-> Exportar Para->Formato antigo (1.x ou 2)\"."
+msgid ""
+"The original database, \"%s\", is in pre-3.0 format. The data will now be "
+"written in the new format, which is unusable by old versions of "
+"PasswordSafe. To save the data in the old format, use \"File->Export To->Old"
+" (1.x or 2) format\"."
+msgstr ""
+"O banco de dados original, \"%s\", está no formato anterior à 3.0. Os dados "
+"agora serão gravados no novo formato, que não pode ser usado pelas versões "
+"antigas do PasswordSafe. Para salvar os dados no formato antigo, use "
+"\"Arquivo-> Exportar Para->Formato antigo (1.x ou 2)\"."
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "A entrada referenciada '%s:%s:%s' é em si um alias ou atalho. Isto não é suportado."
+msgid ""
+"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not "
+"supported."
+msgstr ""
+"A entrada referenciada '%s:%s:%s' é em si um alias ou atalho. Isto não é "
+"suportado."
 
 #. Resource IDs: (5770)
-msgid "The selected Failsafe Backup file will be opened instead of selected database."
-msgstr "O arquivo selecionado do Backup à prova de falhas será aberto em vez do banco de dados selecionado."
+msgid ""
+"The selected Failsafe Backup file will be opened instead of selected "
+"database."
+msgstr ""
+"O arquivo selecionado do Backup à prova de falhas será aberto em vez do "
+"banco de dados selecionado."
 
 #. Resource IDs: (5970)
-msgid "The selected output format does not support all features of the current database. If these features are used, information may be lost. Continue?"
-msgstr "O formato de saída selecionado não suporta todos os recursos do banco de dados atual. Se esses recursos forem usados, as informações podem ser perdidas. Você quer continuar?"
+msgid ""
+"The selected output format does not support all features of the current "
+"database. If these features are used, information may be lost. Continue?"
+msgstr ""
+"O formato de saída selecionado não suporta todos os recursos do banco de "
+"dados atual. Se esses recursos forem usados, as informações podem ser "
+"perdidas. Você quer continuar?"
 
 #. Resource IDs: (5254)
 msgid "The two entries do not match."
 msgstr "As duas entradas não coincidem."
 
 #. Resource IDs: (3366)
-msgid "The user specified that the following fields be excluded from the export:"
-msgstr "O usuário especificou que os seguintes campos sejam excluídos da exportação:"
+msgid ""
+"The user specified that the following fields be excluded from the export:"
+msgstr ""
+"O usuário especificou que os seguintes campos sejam excluídos da exportação:"
 
 #. Resource IDs: (5505)
-msgid "There are more than one entry that fits your selection. Please be more specific."
-msgstr "Há mais de uma entrada adequada à sua seleção. Por favor seja mais específico."
+msgid ""
+"There are more than one entry that fits your selection. Please be more "
+"specific."
+msgstr ""
+"Há mais de uma entrada adequada à sua seleção. Por favor seja mais "
+"específico."
 
 #. Resource IDs: (3358)
 msgid "There are unmatched quotes in the run command"
 msgstr "Existem aspas sem correspondência no comando executar"
 
 #. Resource IDs: (5767)
-msgid "There does not appear to be a Recycle Bin on the media containing this Failsafe Backup file. You will not be able to undo deletes. Do you wish to continue?"
-msgstr "Não parece haver uma Lixeira na mídia que contém este arquivo de backup à prova de falhas. Você não poderá desfazer exclusões. Você quer continuar?"
+msgid ""
+"There does not appear to be a Recycle Bin on the media containing this "
+"Failsafe Backup file. You will not be able to undo deletes. Do you wish to "
+"continue?"
+msgstr ""
+"Não parece haver uma Lixeira na mídia que contém este arquivo de backup à "
+"prova de falhas. Você não poderá desfazer exclusões. Você quer continuar?"
 
 #. Resource IDs: (62181)
-msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
-msgstr "Eles foram salvos mais recentemente que os documentos abertos no momento e contêm alterações feitas antes do fechamento do aplicativo."
+msgid ""
+"These are more recently saved than the currently open documents and contain "
+"changes that were made before the application closed."
+msgstr ""
+"Eles foram salvos mais recentemente que os documentos abertos no momento e "
+"contêm alterações feitas antes do fechamento do aplicativo."
 
 #. Resource IDs: (5954)
-msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
-msgstr "Esse valor de tecla de atalho não está disponível, pois já está atribuído ao aplicativo PasswordSafe (Gerenciar-> Opções-> Atalhos)."
+msgid ""
+"This Hotkey value is not available as it is already assigned to the "
+"PasswordSafe application (Manage->Options->Shortcuts)."
+msgstr ""
+"Esse valor de tecla de atalho não está disponível, pois já está atribuído ao"
+" aplicativo PasswordSafe (Gerenciar-> Opções-> Atalhos)."
 
 #. Resource IDs: (5499)
 #, c-format
@@ -7173,8 +7608,12 @@ msgid "This index is currently in use. Please select another."
 msgstr "Este índice está atualmente em uso. Por favor, selecione outro."
 
 #. Resource IDs: (8170)
-msgid "This is a DeadKey. Press it and then one of the combined keys then shown to add that new character to the Passphrase."
-msgstr "Este é um Dead Key. Pressione e, em seguida, uma das teclas combinadas mostradas para adicionar esse novo caractere à frase secreta."
+msgid ""
+"This is a DeadKey. Press it and then one of the combined keys then shown to "
+"add that new character to the Passphrase."
+msgstr ""
+"Este é um Dead Key. Pressione e, em seguida, uma das teclas combinadas "
+"mostradas para adicionar esse novo caractere à frase secreta."
 
 #. Resource IDs: (5703)
 msgid "This is a shortcut base entry."
@@ -7194,18 +7633,31 @@ msgstr "Este é um alias de:"
 
 #. Resource IDs: (5121)
 #, c-format
-msgid "This is the percentage of Window transparency. 0% means normal fully opaque and 100% is totally transparent and invisible. Values greater than 50% are not supported. Note: This only applies to the main dialog window."
-msgstr "Essa é a porcentagem de transparência da janela. 0% significa totalmente normal e opaco, e 100% é totalmente transparente e invisível. Os valores maiores que 50% não são suportados. Nota: Isso se aplica apenas à janela de diálogo principal."
+msgid ""
+"This is the percentage of Window transparency. 0% means normal fully opaque "
+"and 100% is totally transparent and invisible. Values greater than 50% are "
+"not supported. Note: This only applies to the main dialog window."
+msgstr ""
+"Essa é a porcentagem de transparência da janela. 0% significa totalmente "
+"normal e opaco, e 100% é totalmente transparente e invisível. Os valores "
+"maiores que 50% não são suportados. Nota: Isso se aplica apenas à janela de "
+"diálogo principal."
 
 #. Resource IDs: (61710)
 #, c-format
-msgid "This program is linked to the missing export %Ts in the file %Ts. This machine may have an incompatible version of %Ts."
-msgstr "Este programa está vinculado à exportação %Ts ausente no arquivo %Ts. Esta máquina pode ter uma versão incompatível de %Ts."
+msgid ""
+"This program is linked to the missing export %Ts in the file %Ts. This "
+"machine may have an incompatible version of %Ts."
+msgstr ""
+"Este programa está vinculado à exportação %Ts ausente no arquivo %Ts. Esta "
+"máquina pode ter uma versão incompatível de %Ts."
 
 #. Resource IDs: (61709)
 #, c-format
-msgid "This program requires the file %Ts, which was not found on this system."
-msgstr "Este programa requer o arquivo %Ts, que não foi encontrado neste sistema."
+msgid ""
+"This program requires the file %Ts, which was not found on this system."
+msgstr ""
+"Este programa requer o arquivo %Ts, que não foi encontrado neste sistema."
 
 #. Resource IDs: (5500)
 #, c-format
@@ -7213,33 +7665,59 @@ msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
 msgstr "O destino deste atalho [%s:%s:%s] não é uma entrada normal."
 
 #. Resource IDs: (5110)
-msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."
-msgstr "Isso permitirá que você migre suas configurações do arquivo de configuração no diretório de instalação com Senha Segura para um arquivo em seu próprio diretório local de Dados de Aplicativos na próxima chamada do PasswordSafe."
+msgid ""
+"This will allow you to migrate your settings from the configuration file in "
+"the Password Safe installation directory into a file in your own local "
+"Application Data directory at the next invocation of PasswordSafe."
+msgstr ""
+"Isso permitirá que você migre suas configurações do arquivo de configuração "
+"no diretório de instalação com Senha Segura para um arquivo em seu próprio "
+"diretório local de Dados de Aplicativos na próxima chamada do PasswordSafe."
 
 #. Resource IDs: (1071)
 msgid "This will be a shortcut to base entry:"
 msgstr "Este será um atalho para basear a entrada:"
 
 #. Resource IDs: (6047)
-msgid "This will cancel the edit of the Notes field but leaving it in your external editor and on disk. Do you wish to cancel?"
-msgstr "Isso cancelará a edição do campo Notas, mas a deixará em seu editor externo e em disco. Você quer cancelar?"
+msgid ""
+"This will cancel the edit of the Notes field but leaving it in your external"
+" editor and on disk. Do you wish to cancel?"
+msgstr ""
+"Isso cancelará a edição do campo Notas, mas a deixará em seu editor externo "
+"e em disco. Você quer cancelar?"
 
 #. Resource IDs: (5103)
-msgid "This will clear all traces of Password Safe from the machine's registry. It may also cause old versions of Password Safe to revert to default values for some settings."
-msgstr "Isso limpará todos os vestígios do Password Safe do registro da máquina. Também pode fazer com que as versões antigas do Password Safe retornem aos valores padrão para algumas configurações."
+msgid ""
+"This will clear all traces of Password Safe from the machine's registry. It "
+"may also cause old versions of Password Safe to revert to default values for"
+" some settings."
+msgstr ""
+"Isso limpará todos os vestígios do Password Safe do registro da máquina. "
+"Também pode fazer com que as versões antigas do Password Safe retornem aos "
+"valores padrão para algumas configurações."
 
 #. Resource IDs: (5445)
 #, c-format
-msgid "This will delete %d entries which are within this group and its subgroups."
-msgstr "Isso excluirá %d entradas que estão dentro deste grupo e seus subgrupos."
+msgid ""
+"This will delete %d entries which are within this group and its subgroups."
+msgstr ""
+"Isso excluirá %d entradas que estão dentro deste grupo e seus subgrupos."
 
 #. Resource IDs: (5444)
-msgid "This will delete an entry which is within this group and/or its subgroups."
-msgstr "Isso excluirá uma entrada que esteja dentro deste grupo e/ou seus subgrupos."
+msgid ""
+"This will delete an entry which is within this group and/or its subgroups."
+msgstr ""
+"Isso excluirá uma entrada que esteja dentro deste grupo e/ou seus subgrupos."
 
 #. Resource IDs: (5769)
-msgid "This will delete the selected Failsafe Backup file.  If the current drive has a Recycle Bin, it will be moved there. If not, it will be permanently deleted."
-msgstr "Isso excluirá o arquivo selecionado do Failsafe Backup. Se a unidade atual tiver uma Lixeira, ela será movida para lá. Caso contrário, ele será excluído permanentemente."
+msgid ""
+"This will delete the selected Failsafe Backup file.  If the current drive "
+"has a Recycle Bin, it will be moved there. If not, it will be permanently "
+"deleted."
+msgstr ""
+"Isso excluirá o arquivo selecionado do Failsafe Backup. Se a unidade atual "
+"tiver uma Lixeira, ela será movida para lá. Caso contrário, ele será "
+"excluído permanentemente."
 
 #. Resource IDs: (5289)
 #, c-format
@@ -7263,16 +7741,32 @@ msgid "Title:"
 msgstr "Título:"
 
 #. Resource IDs: (1525)
-msgid "To add a new entry, simply fill in the fields below. At least a title and a password are required. If you have set a default username, it will appear in the username field."
-msgstr "Para adicionar uma nova entrada, basta preencher os campos abaixo. São necessários pelo menos um título e uma senha. Se você definiu um nome de usuário padrão, ele aparecerá no campo de nome de usuário."
+msgid ""
+"To add a new entry, simply fill in the fields below. At least a title and a "
+"password are required. If you have set a default username, it will appear in"
+" the username field."
+msgstr ""
+"Para adicionar uma nova entrada, basta preencher os campos abaixo. São "
+"necessários pelo menos um título e uma senha. Se você definiu um nome de "
+"usuário padrão, ele aparecerá no campo de nome de usuário."
 
 #. Resource IDs: (3373)
-msgid "To replace passwords of existing entries, all the following columns must be present: Group/Title, Username and Password.  One or more are missing and no entries have been updated."
-msgstr "Para substituir senhas de entradas existentes, todas as seguintes colunas devem estar presentes: Grupo/Título, Nome de usuário e Senha. Um ou mais estão ausentes e nenhuma entrada foi atualizada."
+msgid ""
+"To replace passwords of existing entries, all the following columns must be "
+"present: Group/Title, Username and Password.  One or more are missing and no"
+" entries have been updated."
+msgstr ""
+"Para substituir senhas de entradas existentes, todas as seguintes colunas "
+"devem estar presentes: Grupo/Título, Nome de usuário e Senha. Um ou mais "
+"estão ausentes e nenhuma entrada foi atualizada."
 
 #. Resource IDs: (5802)
-msgid "To unprotect this entry, click on Close, use the Edit menu or right-click on the entry and select Unprotect."
-msgstr "Para desproteger essa entrada, clique em Fechar, use o menu Editar ou clique com o botão direito do mouse na entrada e selecione Desproteger."
+msgid ""
+"To unprotect this entry, click on Close, use the Edit menu or right-click on"
+" the entry and select Unprotect."
+msgstr ""
+"Para desproteger essa entrada, clique em Fechar, use o menu Editar ou clique"
+" com o botão direito do mouse na entrada e selecione Desproteger."
 
 #. Resource IDs: (32106 - MenuEx)
 msgid "Toolbar &visible"
@@ -7287,13 +7781,21 @@ msgid "Tree1"
 msgstr "Árvore1"
 
 #. Resource IDs: (3317)
-msgid "Trouble reading stored filters (version mismatch?). Filters will be unusable."
-msgstr "Problemas ao ler filtros armazenados (incompatibilidade de versão?). Os filtros serão inutilizáveis."
+msgid ""
+"Trouble reading stored filters (version mismatch?). Filters will be "
+"unusable."
+msgstr ""
+"Problemas ao ler filtros armazenados (incompatibilidade de versão?). Os "
+"filtros serão inutilizáveis."
 
 #. Resource IDs: (3246)
 #, c-format
-msgid "Trouble with a non-textual (e.g., time) field in record '%ls' - please check data carefully."
-msgstr "Problemas com um campo não textual (por exemplo, hora) no registro '%ls' - por favor, verifique os dados com cuidado."
+msgid ""
+"Trouble with a non-textual (e.g., time) field in record '%ls' - please check"
+" data carefully."
+msgstr ""
+"Problemas com um campo não textual (por exemplo, hora) no registro '%ls' - "
+"por favor, verifique os dados com cuidado."
 
 #. Resource IDs: (5475)
 msgid "Trying to contact server..."
@@ -7356,7 +7858,7 @@ msgstr ""
 #. Resource IDs: (5385)
 #, c-format
 msgid "Unable to create intermediate backup in %s.\n"
-msgstr "Não é possível criar backup intermediário em %s.\n"
+msgstr ""
 
 #. Resource IDs: (5310)
 msgid "Unable to display URL"
@@ -7431,12 +7933,18 @@ msgstr ""
 "As configurações relacionadas ao banco de dados serão armazenadas no banco de dados aberto quando fechado, supondo que não seja somente leitura ou bloqueado por outro usuário."
 
 #. Resource IDs: (3047)
-msgid "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
-msgstr "Não foi possível usar um leitor XML da MS no seu sistema. Nem o MS XML V3, V4 ou V6 parece disponível."
+msgid ""
+"Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 "
+"seems available."
+msgstr ""
+"Não foi possível usar um leitor XML da MS no seu sistema. Nem o MS XML V3, "
+"V4 ou V6 parece disponível."
 
 #. Resource IDs: (3042)
 msgid "Unable to validate a XML file using a XML Schema (XSD) on your system."
-msgstr "Não é possível validar um arquivo XML usando um esquema XML (XSD) em seu sistema."
+msgstr ""
+"Não é possível validar um arquivo XML usando um esquema XML (XSD) em seu "
+"sistema."
 
 #. Resource IDs: (61837)
 msgid "Unable to write read-only property."
@@ -7445,7 +7953,9 @@ msgstr "Não é possível gravar a propriedade somente leitura."
 #. Resource IDs: (61732)
 #, c-format
 msgid "Unable to write to %1, it is read-only or opened by someone else."
-msgstr "Não é possível gravar em %1, ele é somente leitura ou foi aberto por outra pessoa."
+msgstr ""
+"Não é possível gravar em %1, ele é somente leitura ou foi aberto por outra "
+"pessoa."
 
 #. Resource IDs: (62177)
 msgid "Uncheck"
@@ -7743,8 +8253,12 @@ msgid "Verify:"
 msgstr "Verificar:"
 
 #. Resource IDs: (5690)
-msgid "Version mismatch with On Screen Keyboard DLL. Please install version that came with this version of Password Safe."
-msgstr "Incompatibilidade de versão com a DLL do teclado na tela. Instale a versão que acompanha esta versão do Password Safe."
+msgid ""
+"Version mismatch with On Screen Keyboard DLL. Please install version that "
+"came with this version of Password Safe."
+msgstr ""
+"Incompatibilidade de versão com a DLL do teclado na tela. Instale a versão "
+"que acompanha esta versão do Password Safe."
 
 #. Resource IDs: (8236)
 msgid "Vietnamese"
@@ -7788,8 +8302,12 @@ msgid "Visit Password Safe &website..."
 msgstr "Visitar o &website do Password Safe..."
 
 #. Resource IDs: (5803)
-msgid "WARNING: If you continue, fields will be updated in entries in your existing database from your selected input database."
-msgstr "AVISO: Se você continuar, os campos serão atualizados nas entradas do banco de dados existente do banco de dados de entrada selecionado."
+msgid ""
+"WARNING: If you continue, fields will be updated in entries in your existing"
+" database from your selected input database."
+msgstr ""
+"AVISO: Se você continuar, os campos serão atualizados nas entradas do banco "
+"de dados existente do banco de dados de entrada selecionado."
 
 #. Resource IDs: (5804)
 #, c-format
@@ -7835,9 +8353,6 @@ msgid ""
 "\n"
 " %s"
 msgstr ""
-"Senha mestra fraca:\n"
-"\n"
-"%s"
 
 #. Resource IDs: (5763)
 msgid "What saved"
@@ -7848,8 +8363,13 @@ msgid "Whatever"
 msgstr "Tanto faz"
 
 #. Resource IDs: (6050)
-msgid "When a subset is visible and there is no warning message, the button will be enabled and can be clicked to copy the subset to the clipboard."
-msgstr "Quando um subconjunto estiver visível e não houver mensagem de aviso, o botão será habilitado e poderá ser clicado para copiar o subconjunto para a área de transferência."
+msgid ""
+"When a subset is visible and there is no warning message, the button will be"
+" enabled and can be clicked to copy the subset to the clipboard."
+msgstr ""
+"Quando um subconjunto estiver visível e não houver mensagem de aviso, o "
+"botão será habilitado e poderá ser clicado para copiar o subconjunto para a "
+"área de transferência."
 
 #. Resource IDs: (5761)
 msgid "When saved"
@@ -7877,13 +8397,22 @@ msgstr "Registro do Windows"
 
 #. Resource IDs: (6036)
 #, c-format
-msgid "Windows can't expand '%s'. Please make sure that you have set this correctly."
-msgstr "O Windows não pode expandir '%s'. Por favor, assegure-se de que você definiu isso corretamente."
+msgid ""
+"Windows can't expand '%s'. Please make sure that you have set this "
+"correctly."
+msgstr ""
+"O Windows não pode expandir '%s'. Por favor, assegure-se de que você definiu"
+" isso corretamente."
 
 #. Resource IDs: (5972)
 #, c-format
-msgid "Windows can't find '%s'. Please make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
-msgstr "O Windows não consegue localizar '%s'. Por favor, assegure-se de ter configurado o editor externo corretamente e se está instalado. Edição externa cancelada."
+msgid ""
+"Windows can't find '%s'. Please make sure that you have set the external "
+"editor correctly and that it is installed. External Edit cancelled."
+msgstr ""
+"O Windows não consegue localizar '%s'. Por favor, assegure-se de ter "
+"configurado o editor externo corretamente e se está instalado. Edição "
+"externa cancelada."
 
 #. Resource IDs: (8264)
 msgid "Wolof"
@@ -7923,8 +8452,11 @@ msgstr ""
 "Tente salvar em um local diferente"
 
 #. Resource IDs: (5107)
-msgid "Writes the database when an entry was accessed, unless in read-only mode."
-msgstr "Grava o banco de dados quando uma entrada foi acessada, a menos que esteja no modo somente leitura."
+msgid ""
+"Writes the database when an entry was accessed, unless in read-only mode."
+msgstr ""
+"Grava o banco de dados quando uma entrada foi acessada, a menos que esteja "
+"no modo somente leitura."
 
 #. Resource IDs: (1384, 8003)
 msgid "X"
@@ -7979,34 +8511,66 @@ msgstr "Yoruba"
 
 #. Resource IDs: (6040)
 #, c-format
-msgid "You are changing an Alias Base entry to a %s. This will move all current aliases of this base entry to be aliases of its new base. Do you wish to continue?"
-msgstr "Você está alterando uma entrada Alias ​​Base para %s. Isso moverá todos os aliases atuais dessa entrada base para aliases de sua nova base. Você quer continuar?"
+msgid ""
+"You are changing an Alias Base entry to a %s. This will move all current "
+"aliases of this base entry to be aliases of its new base. Do you wish to "
+"continue?"
+msgstr ""
+"Você está alterando uma entrada Alias ​​Base para %s. Isso moverá todos os "
+"aliases atuais dessa entrada base para aliases de sua nova base. Você quer "
+"continuar?"
 
 #. Resource IDs: (6041)
 #, c-format
-msgid "You are changing an Shortcut Base entry to a %s. This will cause all shortcuts to this base entry to be deleted. Do you wish to continue?"
-msgstr "Você está alterando uma entrada da Base de atalhos para %s. Isso fará com que todos os atalhos para esta entrada base sejam excluídos. Você quer continuar?"
+msgid ""
+"You are changing an Shortcut Base entry to a %s. This will cause all "
+"shortcuts to this base entry to be deleted. Do you wish to continue?"
+msgstr ""
+"Você está alterando uma entrada da Base de atalhos para %s. Isso fará com "
+"que todos os atalhos para esta entrada base sejam excluídos. Você quer "
+"continuar?"
 
 #. Resource IDs: (5115)
 msgid "You can click on a field's name to copy its value to the clipboard."
-msgstr "Você pode clicar no nome de um campo para copiar seu valor para a área de transferência."
+msgstr ""
+"Você pode clicar no nome de um campo para copiar seu valor para a área de "
+"transferência."
 
 #. Resource IDs: (5847)
-msgid "You have chosen not to save your changes, which will be lost. Do you wish to continue?"
-msgstr "Você optou por não salvar suas alterações, que serão perdidas. Você quer continuar?"
+msgid ""
+"You have chosen not to save your changes, which will be lost. Do you wish to"
+" continue?"
+msgstr ""
+"Você optou por não salvar suas alterações, que serão perdidas. Você quer "
+"continuar?"
 
 #. Resource IDs: (5788)
 msgid "You must save this database before it can be exported."
 msgstr "Você deve salvar este banco de dados antes de poder ser exportado."
 
 #. Resource IDs: (5772)
-msgid "Your currently opened database will be in the first row.  Failsafe Backup files will be displayed below this.  If the passphrase is the same as the current database, the properties of these backups will also be shown.  If you aren't sure, continue with the current database and use the database Compare function to view the differences between the versions."
-msgstr "O banco de dados aberto no momento estará na primeira linha. Os arquivos de backup à prova de falhas serão exibidos abaixo disso. Se a senha é a mesma do banco de dados atual, as propriedades desses backups também serão mostradas. Se você não tiver certeza, continue com o banco de dados atual e use a função Comparar do banco de dados para ver as diferenças entre as versões."
+msgid ""
+"Your currently opened database will be in the first row.  Failsafe Backup "
+"files will be displayed below this.  If the passphrase is the same as the "
+"current database, the properties of these backups will also be shown.  If "
+"you aren't sure, continue with the current database and use the database "
+"Compare function to view the differences between the versions."
+msgstr ""
+"O banco de dados aberto no momento estará na primeira linha. Os arquivos de "
+"backup à prova de falhas serão exibidos abaixo disso. Se a senha é a mesma "
+"do banco de dados atual, as propriedades desses backups também serão "
+"mostradas. Se você não tiver certeza, continue com o banco de dados atual e "
+"use a função Comparar do banco de dados para ver as diferenças entre as "
+"versões."
 
 #. Resource IDs: (5711)
 #, c-format
-msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
-msgstr "Não foi possível encontrar a fonte solicitada, '%s' (não instalada?), usando '%s' em vez daquela."
+msgid ""
+"Your requested font, '%s', could not be found (not installed?), using '%s' "
+"instead."
+msgstr ""
+"Não foi possível encontrar a fonte solicitada, '%s' (não instalada?), usando"
+" '%s' em vez daquela."
 
 #. Resource IDs: (527)
 msgid "YubiKey Configuration"
@@ -8021,12 +8585,17 @@ msgid "YubiKey Serial Number:"
 msgstr "Número de série do YubiKey:"
 
 #. Resource IDs: (1469)
-msgid "YubiKey for PasswordSafe can be purchased at https://www.yubico.com/works-with-yubikey/catalog/password-safe/"
-msgstr "O YubiKey for PasswordSafe pode ser adquirido em https://www.yubico.com/works-with-yubikey/catalog/password-safe/"
+msgid ""
+"YubiKey for PasswordSafe can be purchased at https://www.yubico.com/works-"
+"with-yubikey/catalog/password-safe/"
+msgstr ""
 
 #. Resource IDs: (6005)
-msgid "YubiKey initialized successfully, close this message box and activate it."
-msgstr "O YubiKey foi inicializado com sucesso, feche esta caixa de mensagem e ative-a."
+msgid ""
+"YubiKey initialized successfully, close this message box and activate it."
+msgstr ""
+"O YubiKey foi inicializado com sucesso, feche esta caixa de mensagem e "
+"ative-a."
 
 #. Resource IDs: (1452, 1455)
 msgid "Yubikey"
@@ -8097,8 +8666,6 @@ msgid ""
 "\n"
 "Browse to URL with Alternate Browser"
 msgstr ""
-"\n"
-"Navegue até URL com navegador alternativo"
 
 #. Resource IDs: (32305)
 msgid ""
@@ -8902,20 +9469,33 @@ msgstr "\tNome: %s; Nome do arquivo: %s"
 #. Resource IDs: (5538)
 #, c-format
 msgid "\tNo entries were found containing search string '%ls' %ls"
-msgstr "\tNão foram encontradas entradas contendo %ls de %ls de %ls"
+msgstr ""
 
 #. Resource IDs: (3434)
-msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
-msgstr "\tUm ou mais Nomes de Política de Senha já estavam nesse banco de dados, mas tinham configurações diferentes. Eles foram renomeados."
+msgid ""
+"\tOne or more Password Policy Names were already in this database but had "
+"different settings. They have been renamed."
+msgstr ""
+"\tUm ou mais Nomes de Política de Senha já estavam nesse banco de dados, mas"
+" tinham configurações diferentes. Eles foram renomeados."
 
 #. Resource IDs: (3430)
-msgid "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
-msgstr "\tUm ou mais Nomes de Política de Senha não foram encontrados no banco de dados. As entradas afetadas foram alteradas para usar a política padrão do banco de dados."
+msgid ""
+"\tOne or more Password Policy Names were not found in the database. The "
+"affected entries have been changed to use the database's default policy."
+msgstr ""
+"\tUm ou mais Nomes de Política de Senha não foram encontrados no banco de "
+"dados. As entradas afetadas foram alteradas para usar a política padrão do "
+"banco de dados."
 
 #. Resource IDs: (3450)
 #, c-format
-msgid "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %ls entries."
-msgstr "\tUm ou mais atalhos do teclado de entrada já foram atribuídos às entradas desse banco de dados. Eles foram removidos das entradas %ls."
+msgid ""
+"\tOne or more entry keyboard shortcuts were already assigned to entries in "
+"this database. They have been removed from the %ls entries."
+msgstr ""
+"\tUm ou mais atalhos do teclado de entrada já foram atribuídos às entradas "
+"desse banco de dados. Eles foram removidos das entradas %ls."
 
 #. Resource IDs: (3429)
 #, c-format
@@ -8925,7 +9505,7 @@ msgstr "\tO nome da política de senha '%ls' não está no banco de dados."
 #. Resource IDs: (5539)
 #, c-format
 msgid "\tThe following entries contain search string '%ls' %ls"
-msgstr "\tAs entradas a seguir contêm a cadeia de caracteres de pesquisa '%ls' %ls"
+msgstr ""
 
 #. Resource IDs: (5522)
 #, c-format
@@ -8941,7 +9521,8 @@ msgid "\tThis entry has been made an alias of associated base entry."
 msgstr "\tEsta entrada foi transformada em um alias da entrada base associada."
 
 #. Resource IDs: (3276)
-msgid "\tThis entry remains a normal entry and the password has not been changed."
+msgid ""
+"\tThis entry remains a normal entry and the password has not been changed."
 msgstr "\tEsta entrada permanece normal e a senha não foi alterada."
 
 #. Resource IDs: (3285)
@@ -9219,8 +9800,12 @@ msgstr "minutos ocioso"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "existem várias entradas com título=%s e nome de usuário=%s ou com grupo =%s e título =%s."
+msgid ""
+"multiple entries exist with title=%s and username=%s or with group=%s and "
+"title=%s."
+msgstr ""
+"existem várias entradas com título=%s e nome de usuário=%s ou com grupo =%s "
+"e título =%s."
 
 #. Resource IDs: (5456)
 #, c-format
@@ -9235,17 +9820,22 @@ msgstr "nenhuma entrada existe na raiz com título=%s e nome de usuário=%s."
 #. Resource IDs: (5461)
 #, c-format
 msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "nenhuma entrada existe com o grupo =%s, título=%s e nome de usuário vazio."
+msgstr ""
+"nenhuma entrada existe com o grupo =%s, título=%s e nome de usuário vazio."
 
 #. Resource IDs: (5460)
 #, c-format
 msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "nenhuma entrada existe com o grupo=%s, título=%s e nome de usuário=%s."
+msgstr ""
+"nenhuma entrada existe com o grupo=%s, título=%s e nome de usuário=%s."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "nenhuma entrada existe com título=%s e nome de usuário=%s ou com grupo=%s, título=%s."
+msgid ""
+"no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgstr ""
+"nenhuma entrada existe com título=%s e nome de usuário=%s ou com grupo=%s, "
+"título=%s."
 
 #. Resource IDs: (5457)
 #, c-format
