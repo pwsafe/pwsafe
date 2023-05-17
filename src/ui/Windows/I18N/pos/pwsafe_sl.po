@@ -8611,6 +8611,8 @@ msgid ""
 "\n"
 "Browse to URL with Alternate Browser"
 msgstr ""
+"\n"
+"Poiščite URL z nadomestnim brskalnikom"
 
 #. Resource IDs: (32305)
 msgid ""
@@ -9414,7 +9416,7 @@ msgstr "\tIme: %s; Ime datoteke: %s"
 #. Resource IDs: (5538)
 #, c-format
 msgid "\tNo entries were found containing search string '%ls' %ls"
-msgstr ""
+msgstr " Najden ni bil noben vnos, ki bi vseboval iskalni niz '%ls' %ls"
 
 #. Resource IDs: (3434)
 msgid ""
