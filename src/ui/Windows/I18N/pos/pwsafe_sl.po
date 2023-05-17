@@ -4464,6 +4464,8 @@ msgid ""
 "Incorrect master password, not a PasswordSafe database, or a corrupt "
 "database."
 msgstr ""
+"Nepravilno glavno geslo, ni zbirka podatkov PasswordSafe ali pa je zbirka "
+"podatkov poškodovana."
 
 #. Resource IDs: (3251)
 msgid "Incorrect password"
@@ -4552,7 +4554,7 @@ msgstr "Neveljaven parameter"
 
 #. Resource IDs: (3462)
 msgid "Invalid field delimiter: must be within ASCII range."
-msgstr ""
+msgstr "Neveljavno ločilo polja: mora biti znotraj razpona ASCII."
 
 #. Resource IDs: (3017)
 #, c-format
