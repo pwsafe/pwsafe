@@ -4567,7 +4567,7 @@ msgstr ""
 #. Resource IDs: (4116)
 #, c-format
 msgid "Invalid lock file \"%ls\"."
-msgstr ""
+msgstr "Neveljavna datoteka zaklepanja \"%ls\"."
 
 #. Resource IDs: (5684)
 msgid "Invalid shortcut ignored."
@@ -5362,7 +5362,7 @@ msgstr "Izkl"
 
 #. Resource IDs: (65535)
 msgid "Old Master Password:"
-msgstr ""
+msgstr "Staro glavno geslo:"
 
 #. Resource IDs: (6038)
 msgid "Old Pswd copied"
@@ -5798,7 +5798,7 @@ msgstr "Vnesite šifrirni ali dešifrirni ključ"
 
 #. Resource IDs: (65535)
 msgid "Please enter the Master Password for this password database."
-msgstr ""
+msgstr "Vnesite glavno geslo za to podatkovno zbirko gesel."
 
 #. Resource IDs: (65535)
 msgid ""
