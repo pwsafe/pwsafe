@@ -2096,7 +2096,7 @@ msgstr "Spremeni datum"
 
 #. Resource IDs: (127)
 msgid "Change Master Password"
-msgstr ""
+msgstr "Spremeni glavno geslo"
 
 #. Resource IDs: (6039)
 #, c-format
