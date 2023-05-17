@@ -5014,7 +5014,7 @@ msgstr "Nova skupina"
 
 #. Resource IDs: (65535)
 msgid "New Master Password:"
-msgstr ""
+msgstr "Novo glavno geslo:"
 
 #. Resource IDs: (5476)
 msgid "New Version Found!"
