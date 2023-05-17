@@ -200,7 +200,7 @@ msgstr " (privzeto za aplikacijo)"
 
 #. Resource IDs: (4115)
 msgid " (at least N restrictions may be ignored)"
-msgstr ""
+msgstr "(najmanj N omejitev se lahko prezre)"
 
 #. Resource IDs: (5781)
 #, c-format
