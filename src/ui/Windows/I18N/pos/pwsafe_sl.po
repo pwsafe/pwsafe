@@ -5817,6 +5817,8 @@ msgid ""
 "Please enter the master password for the NEW database to contain exported "
 "entry/entries."
 msgstr ""
+"Vnesite glavno geslo za NOVO zbirko podatkov, ki bo vsebovala izvoženi "
+"vnos/vnose."
 
 #. Resource IDs: (5876)
 msgid "Please enter the new database description"
