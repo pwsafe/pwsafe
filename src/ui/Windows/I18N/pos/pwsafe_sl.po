@@ -1928,7 +1928,7 @@ msgstr "Prebrskaj v URL + Samodejna vrsta"
 
 #. Resource IDs: (32074 - Menu, 32074 - MenuEx, 5679)
 msgid "Browse to URL w/Alt Browser"
-msgstr ""
+msgstr "Poiščite URL z nadomestnim brskalnikom"
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
