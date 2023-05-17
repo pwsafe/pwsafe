@@ -8532,6 +8532,8 @@ msgid ""
 "YubiKey for PasswordSafe can be purchased at https://www.yubico.com/works-"
 "with-yubikey/catalog/password-safe/"
 msgstr ""
+"YubiKey za PasswordSafe lahko kupite na https://www.yubico.com/works-with-"
+"yubikey/catalog/password-safe/"
 
 #. Resource IDs: (6005)
 msgid ""
