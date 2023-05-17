@@ -9452,7 +9452,7 @@ msgstr "\tIme pravilnika gesel '%ls' ni v zbirki podatkov."
 #. Resource IDs: (5539)
 #, c-format
 msgid "\tThe following entries contain search string '%ls' %ls"
-msgstr ""
+msgstr " Naslednji vnosi vsebujejo iskalni niz '%ls' %ls"
 
 #. Resource IDs: (5522)
 #, c-format
