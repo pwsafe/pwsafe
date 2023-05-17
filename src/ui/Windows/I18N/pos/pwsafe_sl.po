@@ -7807,7 +7807,7 @@ msgstr ""
 #. Resource IDs: (5385)
 #, c-format
 msgid "Unable to create intermediate backup in %s.\n"
-msgstr ""
+msgstr "Ni mogoče ustvariti vmesne varnostne kopije v %s.\n"
 
 #. Resource IDs: (5310)
 msgid "Unable to display URL"
