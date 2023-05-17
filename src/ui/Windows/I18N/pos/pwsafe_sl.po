@@ -4846,7 +4846,7 @@ msgstr "Zadnja nastavitev glavnega gesla ob:"
 
 #. Resource IDs: (1506, 65535)
 msgid "Master Password:"
-msgstr ""
+msgstr "Glavno geslo:"
 
 #. Resource IDs: (1212)
 msgid "Max."
