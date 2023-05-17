@@ -4209,11 +4209,11 @@ msgstr "ID:32073:VA  +L"
 
 #. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
 msgid "ID:32074:VA S+L"
-msgstr ""
+msgstr "ID:32074:VA S+L"
 
 #. Accelerator Entry for Menu ID:32075; 'Send &Email'
 msgid "ID:32075:V C +E"
-msgstr ""
+msgstr "ID:32075:V C +E"
 
 #. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
 msgid "ID:32076:V C +T"
@@ -4834,11 +4834,11 @@ msgstr "Maratščina"
 
 #. Resource IDs: (131)
 msgid "Master Password Entry"
-msgstr ""
+msgstr "Vnos glavnega gesla"
 
 #. Resource IDs: (133)
 msgid "Master Password Setup"
-msgstr ""
+msgstr "Nastavitev glavnega gesla"
 
 #. Resource IDs: (65535)
 msgid "Master Password last set on:"
