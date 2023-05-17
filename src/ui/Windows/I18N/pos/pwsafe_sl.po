@@ -2675,7 +2675,7 @@ msgstr "Kreditna kartica poteče"
 
 #. Resource IDs: (3075)
 msgid "Credit card number"
-msgstr ""
+msgstr "Številka kreditne kartice"
 
 #. Resource IDs: (5612)
 msgid "Criteria"
@@ -2861,7 +2861,7 @@ msgstr ""
 
 #. Resource IDs: (1447)
 msgid "Default password expiration (days)"
-msgstr ""
+msgstr "Veljavnost privzetega gesla (dni)"
 
 #. Resource IDs: (5622)
 msgid "Delete"
@@ -3209,7 +3209,7 @@ msgstr "Tipka ENTER:"
 
 #. Resource IDs: (130, 132)
 msgid "Enter Master Password"
-msgstr ""
+msgstr "Vnesite glavno geslo"
 
 #. Resource IDs: (61722)
 msgid "Enter a GUID."
@@ -3272,6 +3272,8 @@ msgid ""
 "Enter positions of password characters separated by spaces, commas or semi-"
 "colons (or * for full password)."
 msgstr ""
+"Vnesite položaje znakov gesla, ločene s presledki, vejicami ali podpičji "
+"(ali * za celotno geslo)."
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
