@@ -7393,6 +7393,11 @@ msgid ""
 "- Is this the correct database?\n"
 "- Perhaps the database was damaged. Try opening a backup copy."
 msgstr ""
+"Glavno geslo je bilo %d-krat neuspešno vneseno: \n"
+"- Ali je 'Caps Lock' izklopljen? \n"
+"- Ali je jezik pravilen (če je večjezičen)? \n"
+"- Ali je to prava zbirka podatkov? \n"
+"- Morda je bila zbirka podatkov poškodovana. Poskusite odpreti varnostno kopijo."
 
 #. Resource IDs: (5792)
 #, c-format
@@ -8295,6 +8300,9 @@ msgid ""
 "\n"
 " %s"
 msgstr ""
+"Šibko glavno geslo:\n"
+"\n"
+"%s"
 
 #. Resource IDs: (5763)
 msgid "What saved"
