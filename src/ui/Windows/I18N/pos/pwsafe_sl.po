@@ -2663,7 +2663,7 @@ msgstr "Datum ustvarjanja:"
 
 #. Resource IDs: (3077)
 msgid "Credit card CVV"
-msgstr ""
+msgstr "CVV kreditne kartice"
 
 #. Resource IDs: (3078)
 msgid "Credit card PIN"
