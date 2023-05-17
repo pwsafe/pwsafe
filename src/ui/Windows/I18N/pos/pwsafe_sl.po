@@ -2366,6 +2366,10 @@ msgid ""
 " and:\n"
 "\t %ls\n"
 msgstr ""
+"Primerjaj celotno trenutno zbirko podatkov:\n"
+" %ls\n"
+"in:\n"
+" %ls\n"
 
 #. Resource IDs: (32092 - Menu, 32092 - MenuEx)
 msgid "Compare entries..."
