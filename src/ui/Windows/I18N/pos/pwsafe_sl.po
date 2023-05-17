@@ -5022,7 +5022,7 @@ msgstr "Nova različica je bila najdena!"
 
 #. Resource IDs: (5286)
 msgid "New master password and confirmation do not match"
-msgstr ""
+msgstr "Novo glavno geslo in potrditev se ne ujemata"
 
 #. Resource IDs: (1003)
 msgid "New..."
