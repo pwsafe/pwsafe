@@ -2703,7 +2703,7 @@ msgstr "Trenutni vnos"
 
 #. Resource IDs: (65535)
 msgid "Current Master Password:"
-msgstr ""
+msgstr "Trenutno glavno geslo:"
 
 #. Resource IDs: (3460)
 msgid "Current database filters have been exported to this database."
