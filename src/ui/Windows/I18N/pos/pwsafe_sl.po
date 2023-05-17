@@ -5940,6 +5940,9 @@ msgid ""
 "\n"
 "Pressing Cancel stops the password from being copied."
 msgstr ""
+"Pritisk na 'Vredu', bo kopiral geslo izbranega vnosa v odložišče. Odložišče bo varno počiščeno, ko zaprete Password Safe.\n"
+"\n"
+"Pritisk na 'Prekliči' zaustavi kopiranje gesla."
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
