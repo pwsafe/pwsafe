@@ -6649,7 +6649,7 @@ msgstr "Prikaži"
 
 #. Resource IDs: (1590)
 msgid "Show Master Password"
-msgstr ""
+msgstr "Prikaži glavno geslo"
 
 #. Resource IDs: (5653)
 msgid "Show Notes"
