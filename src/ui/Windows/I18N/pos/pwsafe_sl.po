@@ -1928,7 +1928,7 @@ msgstr "Prebrskaj v URL + Samodejna vrsta"
 
 #. Resource IDs: (32074 - Menu, 32074 - MenuEx, 5679)
 msgid "Browse to URL w/Alt Browser"
-msgstr "Poiščite URL z nadomestnim brskalnikom"
+msgstr "Poišči URL z nadomestnim brskalnikom"
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
@@ -2052,7 +2052,7 @@ msgstr "Datoteke ni mogoče prebrati. Prreverite pravice datoteke."
 
 #. Resource IDs: (5285)
 msgid "Cannot verify old master password - file gone?"
-msgstr ""
+msgstr "Ne morete preveriti starega glavnega gesla - datoteke ni več?"
 
 #. Resource IDs: (8015)
 msgid "Caps Lock"
@@ -3498,7 +3498,7 @@ msgstr "Primer:"
 
 #. Resource IDs: (1601)
 msgid "Exclude from clipboard history"
-msgstr ""
+msgstr "Izključi iz zgodovine odložišča"
 
 #. Resource IDs: (1004, 32021)
 msgid "Exit"
