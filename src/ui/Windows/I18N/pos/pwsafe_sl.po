@@ -2671,7 +2671,7 @@ msgstr "PIN koda kreditne kartice"
 
 #. Resource IDs: (3076)
 msgid "Credit card expiration"
-msgstr ""
+msgstr "Kreditna kartica poteče"
 
 #. Resource IDs: (3075)
 msgid "Credit card number"
