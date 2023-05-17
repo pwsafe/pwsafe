@@ -366,7 +366,7 @@ msgstr "%d sinhroniziranih vnosov"
 #. Resource IDs: (6061)
 #, c-format
 msgid "%d entries under group"
-msgstr ""
+msgstr "%d vnosov pod skupino"
 
 #. Resource IDs: (6060)
 #, c-format
