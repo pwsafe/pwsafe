@@ -371,7 +371,7 @@ msgstr "%d vnosov pod skupino"
 #. Resource IDs: (6060)
 #, c-format
 msgid "%d entry under group"
-msgstr ""
+msgstr "%d vnos pod skupino"
 
 #. Resource IDs: (5240)
 #, c-format
@@ -396,7 +396,7 @@ msgstr "%ls - Kopirano %ls"
 #. Resource IDs: (5907)
 #, c-format
 msgid "%ls - Drag & Drop %ls"
-msgstr ""
+msgstr "%ls - Povleci in spusti %ls"
 
 #. Resource IDs: (3431)
 #, c-format
