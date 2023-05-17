@@ -2667,7 +2667,7 @@ msgstr "CVV kreditne kartice"
 
 #. Resource IDs: (3078)
 msgid "Credit card PIN"
-msgstr ""
+msgstr "PIN koda kreditne kartice"
 
 #. Resource IDs: (3076)
 msgid "Credit card expiration"
