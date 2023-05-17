@@ -650,7 +650,7 @@ msgstr "Pre&brskaj v URL"
 
 #. Resource IDs: (32151 - MenuEx)
 msgid "&Change Master Password..."
-msgstr ""
+msgstr "Spremeni &glavno geslo..."
 
 #. Resource IDs: (32105 - MenuEx)
 msgid "&Classic Toolbar"
@@ -866,7 +866,7 @@ msgstr "&Odpri"
 
 #. Resource IDs: (32002 - Menu)
 msgid "&Open Another"
-msgstr ""
+msgstr "&Odpri drugo"
 
 #. Resource IDs: (32002 - MenuEx)
 msgid "&Open..."
@@ -1488,6 +1488,9 @@ msgid ""
 "be used to encrypt the password database file. The Master Password can use "
 "any keyboard character and is case-sensitive."
 msgstr ""
+"Ustvarjen bo nova zbirka gesel. Glavno geslo, ki ga vnesete, bo uporabljeno "
+"za šifriranje datoteke zbirke podatkov gesel. Glavno geslo lahko uporablja "
+"kateri koli znak na tipkovnici in razlikuje med velikimi in malimi črkami."
 
 #. Resource IDs: (5861)
 msgid ""
@@ -7240,7 +7243,7 @@ msgstr ""
 #. Resource IDs: (3262)
 msgid ""
 "The following columns are unrecognized by PasswordSafe and will be ignored: "
-msgstr ""
+msgstr "PasswordSafe ne prepozna naslednjih stolpcev in jih bo prezrl:"
 
 #. Resource IDs: (3375)
 msgid ""
@@ -7379,7 +7382,7 @@ msgstr ""
 
 #. Resource IDs: (5279)
 msgid "The master password cannot be blank."
-msgstr ""
+msgstr "Glavno geslo ne sme biti prazno."
 
 #. Resource IDs: (5958)
 #, c-format
@@ -7408,7 +7411,7 @@ msgstr ""
 
 #. Resource IDs: (5284)
 msgid "The old master password is not correct"
-msgstr ""
+msgstr "Staro glavno geslo ni pravilno"
 
 #. Resource IDs: (5323)
 #, c-format
