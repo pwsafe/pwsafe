@@ -8438,7 +8438,7 @@ msgstr "Da (vsaj %d)"
 #. Resource IDs: (4107)
 #, c-format
 msgid "Yes - At least %d from %ls: %ls%ls"
-msgstr ""
+msgstr "Da – vsaj %d od %ls: %ls%ls"
 
 #. Resource IDs: (1084)
 msgid "Yes:"
