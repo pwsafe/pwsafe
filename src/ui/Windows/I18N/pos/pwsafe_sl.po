@@ -4217,27 +4217,27 @@ msgstr "ID:32075:V C +E"
 
 #. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
 msgid "ID:32076:V C +T"
-msgstr ""
+msgstr "ID:32076:V C +T"
 
 #. Accelerator Entry for Menu ID:32077; '&Run Command'
 msgid "ID:32077:V C +R"
-msgstr ""
+msgstr "ID:32077:V C +R"
 
 #. Accelerator Entry for Menu ID:32080; '&Find...'
 msgid "ID:32080:V C +F"
-msgstr ""
+msgstr "ID:32080:V C +F"
 
 #. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
 msgid "ID:32081:VAC +R"
-msgstr ""
+msgstr "ID:32081:VAC +R"
 
 #. Accelerator Entry for Menu ID:32083; 'Undo'
 msgid "ID:32083:V C +Z"
-msgstr ""
+msgstr "ID:32083:V C +Z"
 
 #. Accelerator Entry for Menu ID:32084; 'Redo'
 msgid "ID:32084:V C +Y"
-msgstr ""
+msgstr "ID:32084:V C +Y"
 
 #. Accelerator Entry for Menu ID:32140; 'Last Find results'
 msgid "ID:32140:V C +K"
