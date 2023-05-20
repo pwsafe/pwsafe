@@ -1350,6 +1350,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>A value of zero disables the overlay.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230520T144010Z" creationid="pm_kan" creationdate="20230520T144010Z">
+        <seg>0 отключает отображение номера.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>About Password Safe</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -1430,9 +1438,9 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Adding merged entry as "%ls" "%ls" "%ls".</seg>
+        <seg>Adding merged entry as «%ls» «%ls» «%ls».</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20141226T152616Z" creationid="pm_kan" creationdate="20141226T152616Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230520T145037Z" creationid="pm_kan" creationdate="20230520T145037Z">
         <seg>При слиянии элемент был добавлен как «%ls» «%ls» «%ls».</seg>
       </tuv>
     </tu>
@@ -2449,9 +2457,9 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Conflicting entries for "%ls" "%ls" "%ls".</seg>
+        <seg>Conflicting entries for «%ls» «%ls» «%ls».</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20141226T152605Z" creationid="pm_kan" creationdate="20141226T152605Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230520T145026Z" creationid="pm_kan" creationdate="20230520T145026Z">
         <seg>Конфликт элементов для «%ls» «%ls» «%ls».</seg>
       </tuv>
     </tu>
@@ -3149,6 +3157,14 @@ offset approximately at %d</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Контейнер</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Database Id:</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230520T144536Z" creationid="pm_kan" creationdate="20230520T144536Z">
+        <seg>Номер контейнера:</seg>
       </tuv>
     </tu>
     <tu>
@@ -3874,6 +3890,14 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Enter a value between 0 and 99 to overlay on system tray icon.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230520T144001Z" creationid="pm_kan" creationdate="20230520T144001Z">
+        <seg>Введите число от 0 до 99 для отображения на значке в области уведомлений.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Enter new safe combination (if any) and click on bottom Yubikey button</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20130915T181958Z">
@@ -4126,9 +4150,9 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Error in Password History for entry: "%ls"%ls"%ls":</seg>
+        <seg>Error in Password History for entry: »%ls»%ls»%ls»:</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20141226T152732Z" creationid="pm_kan" creationdate="20141226T152732Z">
+      <tuv lang="ru-RU">
         <seg>Ошибка в истории паролей для элемента: »%ls»%ls»%ls»:</seg>
       </tuv>
     </tu>
@@ -7629,22 +7653,22 @@ to the clipboard.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Project-Id-Version: PACKAGE VERSION
+        <seg>Project-Id-Version: 
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2023-01-22 14:54+0300
-PO-Revision-Date: 2023-01-21 18:30+0300
+POT-Creation-Date: 2023-05-20 17:37+0300
+PO-Revision-Date: 2023-05-20 15:30+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
-Language-Team: LANGUAGE &lt;LL@li.org&gt;
-Language: 
+Language-Team:
+Language: ru
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T115614Z" creationid="pm_kan" creationdate="20230122T115614Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230520T143816Z" creationid="pm_kan" creationdate="20230520T143816Z">
         <seg>Project-Id-Version: Password Safe
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2023-01-22 15:00+0300
-PO-Revision-Date: 2023-01-22 15:00+0300
+POT-Creation-Date: 2023-05-20 18:00+0300
+PO-Revision-Date: 2023-05-20 18:00+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: none
 Language: ru_RU
@@ -8346,6 +8370,22 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Set Database &amp;ID</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230520T145010Z" creationid="pm_kan" creationdate="20230520T145010Z">
+        <seg>Задать номер &amp;контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Set Database ID</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Задать номер контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Set Date/Time</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -8871,6 +8911,22 @@ database with matching entries from the other database.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20200104T133845Z">
         <seg>Текстовый</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Text color in locked state:</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230520T144728Z" creationid="pm_kan" creationdate="20230520T144728Z">
+        <seg>Цвет текста для заблокированного контейнера:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Text color in unlocked state:</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230520T144737Z" creationid="pm_kan" creationdate="20230520T144737Z">
+        <seg>Цвет текста для разблокированного контейнера:</seg>
       </tuv>
     </tu>
     <tu>
