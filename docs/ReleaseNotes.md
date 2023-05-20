@@ -11,6 +11,7 @@ Bugs fixed in 3.63.0
 --------------------
 * [GH966] (https://github.com/pwsafe/pwsafe/issues/966) Default font sizes for hi-res displays corrected (Windows).
 * [SF1572] (https://sourceforge.net/p/passwordsafe/bugs/1572/) [GH959] (https://github.com/pwsafe/pwsafe/issues/959) Opening via system tray icon now focuses correctly on Windows 11. The fix was to change the trigger from double-click to a single click, which is consistent with other system tray icons, but is a change for PasswordSafe.
+* [SF1565] (https://sourceforge.net/p/passwordsafe/bugs/1565/) Dialog box texts in Czech are now rendered correctly (this should also apply to other non-Latin languages).
 * [GH946] (https://github.com/pwsafe/pwsafe/issues/946) Expiration dates are now the last second of the specified date, instead of the first minute. This resolves a minor inconsistency.
 * [GH945] (https://github.com/pwsafe/pwsafe/issues/945) Document passphrase parameters in pwsafe-cli.
 
