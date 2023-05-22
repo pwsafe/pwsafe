@@ -139,7 +139,7 @@ LangString ARABIC_SUPPORT ${LANG_RUSSIAN} "Арабский"
 ; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
 LangString PORTUGUESEBR_SUPPORT ${LANG_RUSSIAN} "Португальский (Бразилия)"
 ; LATVIAN_SUPPORT "Latvian"
-LangString LATVIAN_SUPPORT ${LANG_NEW} "Латышский"
+LangString LATVIAN_SUPPORT ${LANG_RUSSIAN} "Латышский"
 
 ; LANG_PROGRAM "Program Language"
 LangString LANG_PROGRAM ${LANG_RUSSIAN} "Язык программы"
