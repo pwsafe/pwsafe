@@ -21,6 +21,8 @@
 #ifndef _WIN32
 #include <unistd.h>
 #include <termios.h>
+#else
+#include <Windows.h>
 #endif /* _WIN32 */
 
 using namespace std;
@@ -32,6 +34,9 @@ static void echoOn();
 
 #ifndef _WIN32
 static struct termios oldTermioFlags; // to restore tty echo
+#else
+static HANDLE hInput = GetStdHandle(STD_INPUT_HANDLE);
+static DWORD cmode;
 #endif /* _WIN32 */
 
 static void InitPWPolicy(PWPolicy &pwp, PWScore &core, const UserArgs::FieldUpdates &updates);
@@ -85,7 +90,7 @@ StringX GetPassphrase(const wstring& prompt)
 StringX GetNewPassphrase()
 {
     StringX passphrase[2];
-    wstring prompt[2] = {L"Enter passphrase: ", L"Enter the same passphrase again: "};
+    wstring prompt[2] = {L"Enter passphrase: ", L"\nEnter the same passphrase again: "};
 
     do {
         passphrase[0] = GetPassphrase(prompt[0]);
@@ -119,6 +124,12 @@ static void echoOff()
   if (tcsetattr(fileno(stdin), TCSANOW, &nflags) != 0) {
     wcerr << "Couldn't turn off echo\n";
   }
+#else
+  // Get the current console mode
+  GetConsoleMode(hInput, &cmode);
+
+  // Turn off character echo (ENABLE_ECHO_INPUT flag)
+  SetConsoleMode(hInput, cmode & ~ENABLE_ECHO_INPUT);
 #endif /* _WIN32 */
 }
 
@@ -128,6 +139,10 @@ static void echoOn()
   if (tcsetattr(fileno(stdin), TCSANOW, &oldTermioFlags) != 0) {
     wcerr << "Couldn't restore echo\n";
   }
+#else
+  // Restore the original console mode
+  if (cmode != 0)
+    SetConsoleMode(hInput, cmode);
 #endif /* _WIN32 */
 }
 
