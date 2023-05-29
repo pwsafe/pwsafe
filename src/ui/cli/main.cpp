@@ -64,13 +64,13 @@ static char *basename(const char *path)
 int SaveCore(PWScore &core, const UserArgs &);
 
 // These are the new operations. Each returns the code to exit with
-static int CreateNewSafe(PWScore &core, const StringX &filename, const StringX &passphrase);
+static int CreateNewSafe(PWScore &core, const StringX &filename, const StringX &passphrase, bool);
 static int Sync(PWScore &core, const UserArgs &ua);
 static int Merge(PWScore &core, const UserArgs &ua);
 
 //-----------------------------------------------------------------
 
-using pre_op_fn = function<int(PWScore &, const StringX &, const StringX &)>;
+using pre_op_fn = function<int(PWScore &, const StringX &, const StringX &, bool)>;
 using main_op_fn = function<int(PWScore &, const UserArgs &)>;
 using post_op_fn = function<int(PWScore &, const UserArgs &)>;
 
@@ -395,10 +395,12 @@ int main(int argc, char *argv[])
 
   int status = 1;
   auto itr = pws_ops.find(ua.Operation);
+
   if (itr != pws_ops.end()) {
+    const bool openReadOnly = ua.Operation == UserArgs::Export || ua.Operation == UserArgs::Diff || (ua.Operation == UserArgs::Search && ua.SearchAction == UserArgs::Print);
     PWScore core;
     try {
-      status = itr->second.pre_op(core, ua.safe, ua.passphrase[0]);
+      status = itr->second.pre_op(core, ua.safe, ua.passphrase[0], openReadOnly);
       if ( status == PWScore::SUCCESS) {
         status = itr->second.main_op(core, ua);
         if (status == PWScore::SUCCESS)
@@ -410,14 +412,15 @@ int main(int argc, char *argv[])
       status = PWScore::FAILURE;
     }
 
-    core.UnlockFile(ua.safe.c_str());
+    if (!openReadOnly) // unlock if locked by pre_op
+      core.UnlockFile(ua.safe.c_str());
     return status;
   }
   wcerr << L"No main operation specified" << endl;
   return status;
 }
 
-static int CreateNewSafe(PWScore &core, const StringX &filename, const StringX &passphrase)
+static int CreateNewSafe(PWScore &core, const StringX &filename, const StringX &passphrase, bool)
 {
     if ( pws_os::FileExists(filename.c_str()) ) {
         wcerr << filename << L" - already exists" << endl;

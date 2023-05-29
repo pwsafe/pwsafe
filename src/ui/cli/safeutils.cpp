@@ -41,7 +41,7 @@ static DWORD cmode;
 
 static void InitPWPolicy(PWPolicy &pwp, PWScore &core, const UserArgs::FieldUpdates &updates);
 
-int OpenCore(PWScore &core, const StringX &safe, const StringX &passphrase)
+int OpenCore(PWScore &core, const StringX &safe, const StringX &passphrase, bool openReadOnly)
 {
   if (!pws_os::FileExists(safe.c_str())) {
     wcerr << safe << " - file not found" << endl;
@@ -56,7 +56,7 @@ int OpenCore(PWScore &core, const StringX &safe, const StringX &passphrase)
     cout << "CheckPasskey returned: " << status_text(status) << endl;
     return status;
   }
-  {
+  if (!openReadOnly) {
     stringT lk = pws_os::getusername();
     if (!core.LockFile(safe.c_str(), lk)) {
       wcout << L"Couldn't lock file " << safe
