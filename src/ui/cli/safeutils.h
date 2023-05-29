@@ -15,7 +15,7 @@
 class PWScore;
 struct PWPolicy;
 
-int OpenCore(PWScore &core, const StringX &safe, const StringX &passphrase);
+int OpenCore(PWScore &core, const StringX &safe, const StringX &passphrase, bool openReadOnly = false);
 StringX GetNewPassphrase();
 
 int AddEntry(PWScore &core, const UserArgs &ua);
