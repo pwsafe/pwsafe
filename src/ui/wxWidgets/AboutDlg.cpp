@@ -417,9 +417,10 @@ bool AboutDlg::CheckDatabaseStatus()
     // Notify PasswordSafeFrame to close database.
     // If there are any unsaved changes PasswordSafeFrame 
     // will prompt the user to save them.
-    pwsafe->CloseDB([](bool closed) {
+    pwsafe->CloseDB([this](bool closed) {
       if (closed) {
-        // database closed, reopen dialog and check
+        // database closed. Close the existing About dialog then reopen and check
+        Close();
         DestroyWrapper<AboutDlg> wrapper(wxGetApp().GetPasswordSafeFrame());
         wrapper.Get()->ShowAndCheckForUpdate();
       }
