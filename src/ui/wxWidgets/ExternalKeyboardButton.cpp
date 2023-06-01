@@ -90,4 +90,16 @@ void ExternalKeyboardButton::HandleCommandEvent(wxCommandEvent& evt)
   }
 #endif
 
+#ifdef __WXOSX__
+  // If we can't open the virtual keyboard, at least open the settings app so the user can do it for us!
+  wxString command = wxString("open x-apple.systempreferences:com.apple.preference.universalaccess?Keyboard");
+
+  if ( wxExecute(command, wxEXEC_ASYNC, nullptr) > 0) {
+    wxMessageBox(_("Please, enable the Accissibility Keyboard in System Settings"), "", wxOK | wxICON_INFORMATION);
+  } else {
+    wxMessageBox(_("Could not launch the MacOS Settings App"),
+                  _("Could not launch external onscreen keyboard"), wxOK | wxICON_ERROR);
+  }
+#endif
+
 }
