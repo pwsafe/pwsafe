@@ -2954,7 +2954,8 @@ void PasswordSafeFrame::CloseAllWindows(TimedTaskChain* taskChain, CloseFlags fl
   bool vetoed = false;
   while (itr != endItr) {
     wxTopLevelWindow* win = *itr;
-    if (win) {
+    // In case we got here via the About Dialog window, don't close it here. It will get special handling later.
+    if (win && (dynamic_cast<AboutDlg *>(win) == nullptr)) {
       if (win->IsShown()) {
         if (win == m_pengingCloseWindow) { // close already sheduled, but still not done
           pws_os::Trace(L"Waiting for window close <%ls> (%ls), flags=%d\n", ToStr(win->GetTitle()), ToStr(win->GetName()), flags);
