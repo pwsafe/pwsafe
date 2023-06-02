@@ -13,6 +13,8 @@
 #include "SecString.h"
 #include <afxwin.h>
 
+#include "resource.h"
+
 /**
  * This dialog box is used for the "undocumented" file encryption/decryption mode.
  * This means that it's invoked instead of DboxMain, and specifically before our

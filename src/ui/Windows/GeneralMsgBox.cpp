@@ -23,6 +23,8 @@
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 #include "RichEditCtrlExtn.h"
+#include "PWDialog.h"
+
 #include "winutils.h"
 #include <RichEdit.h>
 
@@ -62,7 +64,7 @@ DLGTEMPLATEEX dtex;
   typeface                  "
 */
 
-static const BYTE _dlgData[] =
+static const BYTE dlg_data[] =
 {
   0x01, 0x00,                                      // wDlgVer (must be on DWORD boundary)
   0xff, 0xff,                                      // wSignature
@@ -92,7 +94,7 @@ static const BYTE _dlgData[] =
 // Constructor
 CGeneralMsgBox::CGeneralMsgBox(CWnd *pParentWnd)
   : m_uiDefCmdId((UINT)IDC_STATIC), m_uiEscCmdId((UINT)IDC_STATIC),
-  m_hIcon(NULL), m_strTitle(AfxGetApp()->m_pszAppName)
+  m_hIcon(nullptr), m_strTitle(AfxGetApp()->m_pszAppName)
 {
   m_pParentWnd = pParentWnd;
 
@@ -136,8 +138,8 @@ INT_PTR CGeneralMsgBox::MessageBoxTimeOut(LPCWSTR lpText, LPCWSTR lpCaption,
   m_nResult = 0;
 
   DWORD dwThreadId;
-  HANDLE hThread = CreateThread(NULL, 0, ThreadFunction, (LPVOID)this, 0, &dwThreadId);
-  if (hThread == NULL)
+  HANDLE hThread = CreateThread(nullptr, 0, ThreadFunction, (LPVOID)this, 0, &dwThreadId);
+  if (hThread == nullptr)
     return -1;
 
   m_nResult = MessageBox(lpText, lpCaption, uiFlags);
@@ -183,10 +185,10 @@ INT_PTR CGeneralMsgBox::MessageBox(LPCWSTR lpText, LPCWSTR lpCaption,
   UINT uiIcon = uiFlags & MB_ICONMASK;
   int iDefB = ((int)uiFlags & MB_DEFMASK) / 256;
 
-  if (lpText != NULL)
+  if (lpText != nullptr)
     SetMsg(lpText);
 
-  if (lpCaption != NULL)
+  if (lpCaption != nullptr)
     SetTitle(lpCaption);
   else
     SetTitle(IDS_ERROR);
@@ -277,23 +279,23 @@ INT_PTR CGeneralMsgBox::MessageBox(LPCWSTR lpText, LPCWSTR lpCaption,
 INT_PTR CGeneralMsgBox::AfxMessageBox(LPCWSTR lpszText, LPCWSTR lpCaption, UINT uiFlags)
 {
   SetMsg(lpszText);
-  if (lpCaption == NULL)
+  if (lpCaption == nullptr)
     lpCaption = AfxGetApp()->m_pszAppName;
-  INT_PTR rc = MessageBox(NULL, lpCaption, uiFlags);
+  INT_PTR rc = MessageBox(nullptr, lpCaption, uiFlags);
   return rc;
 }
 
 INT_PTR CGeneralMsgBox::AfxMessageBox(UINT uiIDPrompt, UINT uiFlags)
 {
   SetMsg(uiIDPrompt);
-  INT_PTR rc = MessageBox(NULL, AfxGetApp()->m_pszAppName, uiFlags);
+  INT_PTR rc = MessageBox(nullptr, AfxGetApp()->m_pszAppName, uiFlags);
   return rc;
 }
 
 // Replaces CDialog::DoModal
 INT_PTR CGeneralMsgBox::DoModal()
 {
-  InitModalIndirect((LPCDLGTEMPLATE)_dlgData, m_pParentWnd);
+  InitModalIndirect((LPCDLGTEMPLATE)dlg_data, m_pParentWnd);
   bool bAccEn = app.IsAcceleratorEnabled();
   if (bAccEn)
     app.DisableAccelerator();
@@ -369,7 +371,7 @@ void CGeneralMsgBox::SetIcon(HICON hIcon)
 {
   m_hIcon = hIcon;
 
-  if (m_hIcon != NULL) {
+  if (m_hIcon != nullptr) {
     // loading the icon and extracting it's dimensions
     ICONINFO ii;
     GetIconInfo(m_hIcon, &ii);
@@ -488,14 +490,14 @@ BOOL CGeneralMsgBox::OnCmdMsg(UINT uiID, int nCode, void* pExtra,
                               AFX_CMDHANDLERINFO* pHandlerInfo)
 {
   if (nCode == CN_COMMAND) {
-    if (pHandlerInfo == NULL && uiID != (WORD)IDC_STATIC) {
+    if (pHandlerInfo == nullptr && uiID != (WORD)IDC_STATIC) {
       EndDialog(uiID);
       return TRUE;
     }
   }
 
   if (nCode == CN_COMMAND) {
-    if (pHandlerInfo == NULL && uiID == IDTIMEOUT) {
+    if (pHandlerInfo == nullptr && uiID == IDTIMEOUT) {
       EndDialog(IDTIMEOUT);
       return TRUE;
     }
@@ -510,7 +512,7 @@ BOOL CGeneralMsgBox::PreTranslateMessage(MSG *pMsg)
     if (pMsg->wParam == VK_RETURN) {
       CWnd *pWnd = GetFocus();
 
-      if (pWnd != NULL) {
+      if (pWnd != nullptr) {
         UINT uiIDC = (UINT)pWnd->GetDlgCtrlID();
 
         for (int i = 0; i < m_aBtns.GetSize(); ++i)
@@ -640,11 +642,11 @@ void CGeneralMsgBox::CreateBtns()
 
 void CGeneralMsgBox::CreateIcon()
 {
-  if (m_hIcon != NULL) {
+  if (m_hIcon != nullptr) {
     CRect rcDummy; // dimension doesn't matter here
 
     // Creating the icon control
-    m_stIconCtrl.Create(NULL, WS_CHILD | WS_VISIBLE | WS_DISABLED | SS_ICON, 
+    m_stIconCtrl.Create(nullptr, WS_CHILD | WS_VISIBLE | WS_DISABLED | SS_ICON, 
                         rcDummy, this);
     m_stIconCtrl.SetIcon(m_hIcon);
   }
@@ -675,7 +677,7 @@ void CGeneralMsgBox::UpdateLayout()
   CSize dimClient = m_dimMsg;
   int xMsg = 0;
 
-  if (m_hIcon != NULL) {
+  if (m_hIcon != nullptr) {
     // Adding the icon
     xMsg = m_dimIcon.cx + FromDlgX(m_aMetrics[CX_ICON_MSG_SPACE]);
 
@@ -708,7 +710,7 @@ void CGeneralMsgBox::UpdateLayout()
   CenterWindow();
 
   // Icon layout
-  if (m_hIcon != NULL)
+  if (m_hIcon != nullptr)
     m_stIconCtrl.MoveWindow(cxLeft, cyTop, m_dimIcon.cx, m_dimIcon.cy);
 
   // Message layout

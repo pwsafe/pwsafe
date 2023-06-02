@@ -21,6 +21,8 @@
 #include "os/dir.h"
 
 #include "GeneralMsgBox.h"
+#include "PWDialog.h"
+
 #include "core/PWSprefs.h"
 #include "core/XMLprefs.h"
 #include "os/env.h"

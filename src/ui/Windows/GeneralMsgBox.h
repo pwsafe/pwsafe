@@ -38,7 +38,6 @@
 #pragma once
 
 #include "RichEditCtrlExtn.h"
-#include "PWDialog.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CGeneralMsgBox
@@ -47,16 +46,16 @@ class CGeneralMsgBox : private CDialog
 {
 public:
   // Constructor
-  CGeneralMsgBox(CWnd* pParentWnd = NULL);
+  CGeneralMsgBox(CWnd* pParentWnd = nullptr);
 
   // Destructor
   virtual ~CGeneralMsgBox();
 
   // For Timed MessageBox & Implement MFC equivalents
-  INT_PTR MessageBoxTimeOut(LPCWSTR lpText, LPCWSTR lpCaption = NULL, 
+  INT_PTR MessageBoxTimeOut(LPCWSTR lpText, LPCWSTR lpCaption = nullptr, 
                      UINT uiFlags = MB_OK, DWORD dwMilliseconds = 0);
   INT_PTR MessageBox(LPCWSTR lpText, LPCWSTR lpCaption, UINT uiFlags = MB_OK);
-  INT_PTR AfxMessageBox(LPCWSTR lpszText, LPCWSTR lpCaption = NULL, UINT uiFlags = MB_OK);
+  INT_PTR AfxMessageBox(LPCWSTR lpszText, LPCWSTR lpCaption = nullptr, UINT uiFlags = MB_OK);
   INT_PTR AfxMessageBox(UINT uiIDPrompt, UINT uiFlags = MB_OK);
 
   // Execute
@@ -162,9 +161,9 @@ inline void CGeneralMsgBox::SetTitle(LPCWSTR pszTitle)
 inline void CGeneralMsgBox::SetTitle(UINT uiIdTitle)
 { VERIFY(m_strTitle.LoadString(uiIdTitle)); }
 
-inline void CGeneralMsgBox::SetMetric(int iMetric, int nValue)
+inline void CGeneralMsgBox::SetMetric(int iMetric, int xy)
 { ASSERT(0 <= iMetric && iMetric < NUM_OF_METRICS);
-  m_aMetrics[iMetric] = nValue; }
+  m_aMetrics[iMetric] = xy; }
 
 inline int CGeneralMsgBox::GetMetric(int iMetric)
 { ASSERT(0 <= iMetric && iMetric < NUM_OF_METRICS);

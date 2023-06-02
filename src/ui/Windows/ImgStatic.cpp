@@ -13,6 +13,8 @@
 #include "ImgStatic.h"
 
 #include "GeneralMsgBox.h"
+#include "PWDialog.h"
+
 #include "winutils.h"
 #include "os/debug.h"
 #include "resource3.h"
