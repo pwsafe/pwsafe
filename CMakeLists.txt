@@ -202,8 +202,6 @@ if (WX_WINDOWS)
    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D __WX__")
 endif (WX_WINDOWS)
 
-set(CMAKE_MFC_FLAG 1)  # Static MFC
-
 include(set-options-msvc)
 else ()
 set(CMAKE_CXX_FLAGS

@@ -26,6 +26,16 @@ add_compile_options("$<$<CONFIG:DEBUG>:/Od;/Oy-;/RTC1>")
 # Not Debug build
 add_compile_options("$<$<NOT:$<CONFIG:DEBUG>>:/Gw;/O2;/Oi>")
 
+set(CMAKE_MFC_FLAG 1)  # Static MFC
+
+include_directories(
+    ${VC_IncludePath}
+    ${WindowsSDK_IncludePath}
+    ${FrameworkSDKDir}/include
+)
+
+
+
 add_compile_definitions(WIN32
   _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES=1
   _CRT_SECURE_CPP_OVERLOAD_STANDARD_NAMES_COUNT=1
@@ -33,6 +43,8 @@ add_compile_definitions(WIN32
   WINVER=0x0a00
   _WINDOWS
   _UNICODE
+  _AFX
+  _MFC
 )
 
 if(USE_ASAN)
