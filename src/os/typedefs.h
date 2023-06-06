@@ -18,10 +18,7 @@
 */
 
 #include <string>
-/*
- * _S is defined same as m'soft's _T, just to avoid collisions or
- * lousy include order dependencies.
- */
+
 
 // Sometimes we need specific ones irrespective of in Unicode mode or not.
 // In particular, the underlying format of most XML is Unicode.
@@ -74,6 +71,7 @@ typedef unsigned long    ulong32;
 typedef unsigned int uint;
 
 typedef void *HANDLE;
+
 
 // Following not defined by Windows - needed by _access mode
 #define F_OK 00
