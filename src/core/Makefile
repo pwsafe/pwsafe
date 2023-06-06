@@ -14,6 +14,8 @@ DEPDIR= ./deps
 ifeq ($(PLATFORM),FreeBSD)
 WX2=/usr/local/bin/wxgtk2y-2.8-config
 WX3=/usr/local/bin/wxgtk2u-3.0-config
+else ifeq ($(PLATFORM),OpenBSD)
+WX3=/usr/local/bin/wx-config
 else
 WX2=/usr/bin/wx-config
 WX3=/usr/bin/wx-config-3.0
@@ -39,7 +41,7 @@ LIBSRC          = CheckVersion.cpp \
                   VerifyFormat.cpp XMLprefs.cpp \
                   ExpiredList.cpp PWStime.cpp\
                   pugixml/pugixml.cpp \
-                  Pugi/PFileXMLProcessor.cpp Pugi/PFilterXMLProcessor.cpp \
+                  XML/Pugi/PFileXMLProcessor.cpp XML/Pugi/PFilterXMLProcessor.cpp \
                   XML/XMLFileHandlers.cpp XML/XMLFileValidation.cpp \
                   XML/Xerces/XFileSAX2Handlers.cpp XML/Xerces/XFileValidator.cpp \
                   XML/Xerces/XFileXMLProcessor.cpp XML/Xerces/XFilterSAX2Handlers.cpp \
@@ -108,11 +110,11 @@ clean:
 	@rm core_st.cpp core_st.h
 
 setup:
-	@mkdir -p $(OBJPATH) $(OBJPATH)/pugixml $(OBJPATH)/crypto $(OBJPATH)/XML/Xerces $(LIBPATH) $(DEPDIR)
+	@mkdir -p $(OBJPATH) $(OBJPATH)/pugixml $(OBJPATH)/crypto $(OBJPATH)/XML/Xerces $(OBJPATH)/XML/Pugi $(LIBPATH) $(DEPDIR)
 
 $(DEPDIR)/%.d: %.cpp
 	@set -e; mkdir -p $(DEPDIR) $(DEPDIR)/pugixml $(DEPDIR)/crypto; \
-	mkdir -p $(DEPDIR)/XML/Xerces; \
+	mkdir -p $(DEPDIR)/XML/Xerces $(DEPDIR)/XML/Pugi; \
 	$(RM) $@; \
 	$(CXX) -MM $(CPPFLAGS) $< > $@.$$$$; \
 	sed 's,\($*\)\.o[ :]*,$(OBJECTPATH)/\1.o $@ : ,g' < $@.$$$$ > $@; \

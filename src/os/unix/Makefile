@@ -11,6 +11,8 @@ CONFIG?=unicodedebug
 ifeq ($(PLATFORM),FreeBSD)
 WX2=/usr/local/bin/wxgtk2u-2.8-config
 WX3=/usr/local/bin/wxgtk2u-3.0-config
+else ifeq ($(PLATFORM),OpenBSD)
+WX3=/usr/local/bin/wx-config
 else
 WX2=/usr/bin/wx-config
 WX3=/usr/bin/wx-config-3.0

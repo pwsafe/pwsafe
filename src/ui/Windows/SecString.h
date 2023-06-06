@@ -32,7 +32,7 @@
 class CSecString
 {
 public:
-  CSecString() : m_mystring(_S("")) {}
+  CSecString() : m_mystring(_T("")) {}
   CSecString(LPCWSTR lpsz) : m_mystring(lpsz) {}
   CSecString(LPCWSTR lpsz, int nLength) : m_mystring(lpsz, nLength) {}
   CSecString(const CSecString& stringSrc) : m_mystring(stringSrc.m_mystring) {}

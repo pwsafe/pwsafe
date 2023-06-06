@@ -184,11 +184,11 @@ bool CReport::SaveToDisk()
       fclose(fd);
 
       // Open again to read
-      FILE *f_in = pws_os::FOpen(m_cs_filename, _S("rb"));
+      FILE *f_in = pws_os::FOpen(m_cs_filename, _T("rb"));
 
       // Open new file
-      stringT cs_out = m_cs_filename + _S(".tmp");
-      FILE *f_out = pws_os::FOpen(cs_out, _S("wb"));
+      stringT cs_out = m_cs_filename + _T(".tmp");
+      FILE *f_out = pws_os::FOpen(cs_out, _T("wb"));
         
       if(f_out == nullptr) {
         fclose(f_in);
@@ -221,7 +221,7 @@ bool CReport::SaveToDisk()
       pws_os::RenameFile(cs_out, m_cs_filename);
 
       // Re-open file
-      if ((fd = pws_os::FOpen(m_cs_filename, _S("ab"))) == nullptr) {
+      if ((fd = pws_os::FOpen(m_cs_filename, _T("ab"))) == nullptr) {
         pws_os::IssueError(_T("SaveToDisk: Opening log file"));
         return false;
       }
@@ -232,11 +232,11 @@ bool CReport::SaveToDisk()
       fclose(fd);
 
       // Open again to read
-      FILE *f_in = pws_os::FOpen(m_cs_filename, _S("rb"));
+      FILE *f_in = pws_os::FOpen(m_cs_filename, _T("rb"));
 
       // Open new file
-      stringT cs_out = m_cs_filename + _S(".tmp");
-      FILE *f_out = pws_os::FOpen(cs_out, _S("wb"));
+      stringT cs_out = m_cs_filename + _T(".tmp");
+      FILE *f_out = pws_os::FOpen(cs_out, _T("wb"));
         
       if(f_out == nullptr) {
         fclose(f_in);
@@ -297,7 +297,7 @@ bool CReport::SaveToDisk()
       pws_os::RenameFile(cs_out, m_cs_filename);
 
       // Re-open file
-      if ((fd = pws_os::FOpen(m_cs_filename, _S("ab"))) == nullptr) {
+      if ((fd = pws_os::FOpen(m_cs_filename, _T("ab"))) == nullptr) {
         pws_os::IssueError(_T("SaveToDisk: Opening log file"));
         return false;
       }

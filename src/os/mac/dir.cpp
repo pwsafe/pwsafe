@@ -170,9 +170,9 @@ static stringT createuserprefsdir(void)
   stringT cfgdir = pws_os::getenv("HOME", true);
   if (!cfgdir.empty()) {
     if(cfgdir[cfgdir.length()-1] != '/') {
-      cfgdir += _S("/.pwsafe");
+      cfgdir += _T("/.pwsafe");
     } else {
-      cfgdir += _S(".pwsafe");
+      cfgdir += _T(".pwsafe");
     }
     struct stat statbuf;
     switch (::lstat(pws_os::tomb(cfgdir).c_str(), &statbuf)) {
@@ -194,7 +194,7 @@ static stringT createuserprefsdir(void)
       break;
     }
     if (!cfgdir.empty())
-      cfgdir += _S('/');
+      cfgdir += _T('/');
   } // $HOME defined
   return cfgdir;
 }

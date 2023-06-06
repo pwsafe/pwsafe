@@ -275,8 +275,8 @@ bool VerifyXMLDateString(const stringT &time_str, time_t &t)
     return false;
 
   // Validate time_str
-  if (time_str.substr(4,1) != _S("-") ||
-      time_str.substr(7,1) != _S("-"))
+  if (time_str.substr(4,1) != _T("-") ||
+      time_str.substr(7,1) != _T("-"))
     return false;
 
   for (int i = 0; i < ndigits; i++) {

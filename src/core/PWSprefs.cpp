@@ -1821,7 +1821,7 @@ stringT PWSprefs::GetXMLPreferences()
   stringT retval(_T(""));
   ostringstreamT os;
 
-  os << _S("\t<Preferences>") << endl;
+  os << _T("\t<Preferences>") << endl;
   int i;
   for (i = 0; i < NumBoolPrefs; i++) {
     if (m_boolValues[i] != m_bool_prefs[i].defVal &&

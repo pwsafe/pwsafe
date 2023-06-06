@@ -49,7 +49,7 @@ stringT pws_os::getenv(const char *env, bool is_path)
     if (is_path) {
       // make sure path has trailing '\'
       if (retval[retval.length()-1] != charT('/'))
-        retval += _S("/");
+        retval += _T("/");
     } // is_path
   } // value != NULL
   return retval;

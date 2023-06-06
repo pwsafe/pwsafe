@@ -120,6 +120,14 @@
 #define PWS_LITTLE_ENDIAN
 #endif
 // **********************************************
+// * OpenBSD                                    *
+// **********************************************
+#elif defined(__OpenBSD__)
+#if defined(__i386__) || defined(__amd64__)
+#define PWS_LITTLE_ENDIAN
+#endif
+//
+// **********************************************
 // * Add other platforms here...                *
 // **********************************************
 #endif

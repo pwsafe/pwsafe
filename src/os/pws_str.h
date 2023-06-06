@@ -9,6 +9,7 @@
 #define __PWS_STR_H
 
 #include "typedefs.h"
+#include <stdarg.h>
 
 namespace pws_os {
   /**

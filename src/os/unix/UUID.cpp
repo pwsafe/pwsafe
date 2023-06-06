@@ -20,7 +20,7 @@
 #include <assert.h>
 
 /* currently here only for Cygwin test harness */
-#ifndef __FreeBSD__
+#if !defined(__FreeBSD__) && !defined(__OpenBSD__)
 #include <asm/byteorder.h> /* for htonl, htons */
 #endif
 

@@ -604,7 +604,7 @@ stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
 {
   stringT cs_Out;
   static const TCHAR base64ABC[] =
-    _S("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
+    _T("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
 
   for (size_t i = 0; i < len; i += 3) {
     long l = ( static_cast<long>(strIn[i]) << 16 ) |
