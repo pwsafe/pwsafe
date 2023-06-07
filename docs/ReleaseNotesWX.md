@@ -7,11 +7,11 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 1.17 Release ??? 2023
-====================================
+PasswordSafe 1.17 Release June 2023
+===================================
 
-
-PasswordSafe 1.16.1 Beta
-====================================
-* [Mac][GH942] Now built as a Universal Binary targeting Intel and Apple Silicon Macs with macOS 10.14 and up.
-* [Mac][GH952] Update to wxWidgets 3.2.2.1 due to font issues with earlier versions.
+* [GH957](https://github.com/pwsafe/pwsafe/issues/)[GH988](https://github.com/pwsafe/pwsafe/issues/988) Fixed crash when checking for new version.
+* [GH952](https://github.com/pwsafe/pwsafe/issues/952) Mac - Update to wxWidgets 3.2.2.1 due to font issues with earlier versions.
+* [GH949](https://github.com/pwsafe/pwsafe/issues/949) Added Wx-specific release notes for non-Windows releases.
+* [GH945](https://github.com/pwsafe/pwsafe/issues/945) Document missing flags in pwsafe-cli usage text.
+* [GH942](https://github.com/pwsafe/pwsafe/issues/942) Mac - Now built as a Universal Binary targeting Intel and Apple Silicon Macs with macOS 10.14 and up.
