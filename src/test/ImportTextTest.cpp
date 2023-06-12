@@ -89,6 +89,7 @@ void ImportTextTest::importText(const stringT& fname, const TCHAR fieldSeparator
 
   status = core.Execute(cmd);
   EXPECT_EQ(status, 0);
+  delete cmd;
 
   //std::cout << rpt.GetString().c_str();
 }

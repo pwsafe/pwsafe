@@ -67,6 +67,8 @@ TEST_F(CommandsTest, DeleteEntry)
   EXPECT_EQ(0U, core.GetNumEntries());
   core.Undo();
   EXPECT_EQ(1U, core.GetNumEntries());
+    // Get core to delete any existing commands
+  core.ClearCommands();
 }
 
 TEST_F(CommandsTest,DeleteEntryWithAttachment)
@@ -115,6 +117,8 @@ TEST_F(CommandsTest,DeleteEntryWithAttachment)
   core.Undo();
   EXPECT_EQ(1U, core.GetNumEntries());
   EXPECT_EQ(1U, core.GetNumAtts());
+    // Get core to delete any existing commands
+  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, CreateShortcutEntry)
