@@ -226,6 +226,7 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
   }
 
   UpdateView();
+  txtCtrl->SelectNone();
 
   // Replace the "Find" menu item under Edit menu by "Find Next" and "Find Previous"
   wxMenu* editMenu = nullptr;
@@ -250,6 +251,8 @@ void PasswordSafeSearch::UpdateView()
     m_parentFrame->SelectItem(*m_searchPointer);
   }
   statusArea->SetLabel(m_searchPointer.GetLabel());
+
+  SetFocusIntoEditField();
 }
 
 void PasswordSafeSearch::FindNext()
@@ -620,7 +623,9 @@ void PasswordSafeSearch::OnChar(wxKeyEvent& event)
     HideSearchToolbar();
   }
   else if ((event.GetModifiers() == wxMOD_CONTROL) && 
-    ((event.GetKeyCode() == wxT('c')) || (event.GetKeyCode() == wxT('C')))) {
+    ((event.GetKeyCode() == wxT('c')) || (event.GetKeyCode() == wxT('C')) || 
+     (event.GetKeyCode() == wxT('u')) || (event.GetKeyCode() == wxT('U')) ||
+     (event.GetKeyCode() == wxT('x')) || (event.GetKeyCode() == wxT('X')))) {
 
     auto control = wxDynamicCast(FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
 
@@ -630,11 +635,26 @@ void PasswordSafeSearch::OnChar(wxKeyEvent& event)
         // then normal copy event shall be handled.
         event.Skip();
       }
-      else {
+      else if ((event.GetKeyCode() == wxT('c')) || (event.GetKeyCode() == wxT('C'))) {
         // If nothing is marked in search text field,
         // the item's password shall be copied.
         wxCommandEvent copy_password_event(wxEVT_MENU, ID_COPYPASSWORD);
         m_parentFrame->GetEventHandler()->AddPendingEvent(copy_password_event);
+      }
+      else if ((event.GetKeyCode() == wxT('u')) || (event.GetKeyCode() == wxT('U'))) {
+        // If nothing is marked in search text field,
+        // the item's username shall be copied.
+        wxCommandEvent copy_username_event(wxEVT_MENU, ID_COPYUSERNAME);
+        m_parentFrame->GetEventHandler()->AddPendingEvent(copy_username_event);
+      }
+      else if ((event.GetKeyCode() == wxT('x')) || (event.GetKeyCode() == wxT('X'))) {
+        // If nothing is marked in search text field,
+        // the search text field shall be cleared.
+        wxCommandEvent search_clear_event(wxEVT_MENU, ID_FIND_CLEAR);
+        GetEventHandler()->AddPendingEvent(search_clear_event);
+      }
+      else {
+        ;
       }
     }
   }
