@@ -23,20 +23,24 @@ Usage () {
 
 TYPE=$1
 PACKAGE=$2
-RPMSIGN=/usr/bin/rpmsign
-DEBSIGN=/usr/bin/dpkg-sig
 
 case "$TYPE" in
 RPM)
-    if [ ! -x $RPMSIGN ]; then
-        echo "$RPMSIGN not found"
+    if command -v rpmsign >/dev/null 2>&1; then
+        RPMSIGN=$(command -v rpmsign)
+    else
+        echo "Couldn't find rpmsign"
         exit 2
     fi
     $RPMSIGN --addsign --define "%_gpg_name $SIGNER" $PACKAGE
     ;;
 DEB)
-     if [ ! -x $DEBSIGN ]; then
-        echo "$DEBSIGN not found"
+    if command -v dpkg-sig >/dev/null 2>&1; then
+        DEBSIGN=$(command -v dpkg-sig)
+    elif command -v debsigs >/dev/null 2>&1; then
+        DEBSIGN=$(command -v debsigs)
+    else
+        echo "Couldn't find dpkg-sig or debsign"
         exit 2
     fi
     $DEBSIGN --sign builder -k $KEYID $PACKAGE
