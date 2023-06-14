@@ -613,48 +613,47 @@ bool PasswordSafeSearch::CreateSearchBar()
  * The following keystroke events are handled specially.
  * - Escape Key: Hides the search toolbar.
  * - Ctrl-C Key: Copies marked text from search text field or password of selected item.
+ * - Ctrl-U Key: Copies the username of selected item.
+ * - Ctrl-X Key: Cuts marked text from search text field or clears the search text field.
  * 
  * @param event holds information about key event.
  * @see <a href="https://docs.wxwidgets.org/3.1/classwx_key_event.html">wxKeyEvent Class Reference</a>
  */
 void PasswordSafeSearch::OnChar(wxKeyEvent& event)
 {
-  if (event.GetKeyCode() == WXK_ESCAPE) {
+  auto keyName = event.GetUnicodeKey();
+
+  if (keyName == WXK_ESCAPE) {
     HideSearchToolbar();
   }
   else if ((event.GetModifiers() == wxMOD_CONTROL) && 
-    ((event.GetKeyCode() == wxT('c')) || (event.GetKeyCode() == wxT('C')) || 
-     (event.GetKeyCode() == wxT('u')) || (event.GetKeyCode() == wxT('U')) ||
-     (event.GetKeyCode() == wxT('x')) || (event.GetKeyCode() == wxT('X')))) {
+            wxString("cCuUxX").Contains(keyName)) {
 
     auto control = wxDynamicCast(FindControl(ID_FIND_EDITBOX), wxSearchCtrl);
 
     if (control) {
-      if (control->CanCopy()) {
+      if (control->CanCopy() || control->CanCut()) {
         // If the user has marked some text in the search text field,
-        // then normal copy event shall be handled.
+        // then normal copy and cut event shall be handled.
         event.Skip();
       }
-      else if ((event.GetKeyCode() == wxT('c')) || (event.GetKeyCode() == wxT('C'))) {
+      else if (wxString("cC").Contains(keyName)) {
         // If nothing is marked in search text field,
         // the item's password shall be copied.
         wxCommandEvent copy_password_event(wxEVT_MENU, ID_COPYPASSWORD);
         m_parentFrame->GetEventHandler()->AddPendingEvent(copy_password_event);
       }
-      else if ((event.GetKeyCode() == wxT('u')) || (event.GetKeyCode() == wxT('U'))) {
+      else if (wxString("uU").Contains(keyName)) {
         // If nothing is marked in search text field,
         // the item's username shall be copied.
         wxCommandEvent copy_username_event(wxEVT_MENU, ID_COPYUSERNAME);
         m_parentFrame->GetEventHandler()->AddPendingEvent(copy_username_event);
       }
-      else if ((event.GetKeyCode() == wxT('x')) || (event.GetKeyCode() == wxT('X'))) {
+      else if (wxString("xX").Contains(keyName)) {
         // If nothing is marked in search text field,
         // the search text field shall be cleared.
         wxCommandEvent search_clear_event(wxEVT_MENU, ID_FIND_CLEAR);
         GetEventHandler()->AddPendingEvent(search_clear_event);
-      }
-      else {
-        ;
       }
     }
   }
