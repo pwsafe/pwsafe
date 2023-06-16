@@ -274,6 +274,7 @@
 		57218E8329C983FA000B1907 /* version.wx */ = {isa = PBXFileReference; lastKnownFileType = text; name = version.wx; path = ../version.wx; sourceTree = "<group>"; };
 		57218E8429C98475000B1907 /* pwsafe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = pwsafe.entitlements; sourceTree = "<group>"; };
 		57218E8529C98481000B1907 /* pwsafe-cli.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "pwsafe-cli.entitlements"; sourceTree = SOURCE_ROOT; };
+		574370962A3CE21800B46A7D /* pwsafe-template.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "pwsafe-template.plist"; sourceTree = "<group>"; };
 		57C329E72A070EFD00454292 /* ReleaseNotesWX.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotesWX.md; path = ../docs/ReleaseNotesWX.md; sourceTree = "<group>"; };
 		57C329E82A0715F500454292 /* ReleaseNotes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotes.md; path = ../docs/ReleaseNotes.md; sourceTree = "<group>"; };
 		6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordSubsetDlg.cpp; sourceTree = "<group>"; };
@@ -934,6 +935,7 @@
 				57218E8329C983FA000B1907 /* version.wx */,
 				E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */,
 				E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */,
+				574370962A3CE21800B46A7D /* pwsafe-template.plist */,
 			);
 			name = Configs;
 			sourceTree = "<group>";
@@ -1730,7 +1732,7 @@
 			buildConfigurationList = E6ADB9A31195706B004E2BE5 /* Build configuration list for PBXNativeTarget "pwsafe" */;
 			buildPhases = (
 				E690B5041297D80A007EA508 /* Resources */,
-				E6CFEEF711EA3E2F001402D8 /* Generate version.h */,
+				E6CFEEF711EA3E2F001402D8 /* Generate version.h and pwsafe.plist */,
 				E6ADB99B1195706A004E2BE5 /* Sources */,
 				E6ADBAF3119577A7004E2BE5 /* Frameworks */,
 				E66E85C11D0F2F5000385D60 /* CopyFiles */,
@@ -1820,7 +1822,7 @@
 			shellPath = /bin/sh;
 			shellScript = "cd ../help/\nmake -f Makefile.linux\n";
 		};
-		E6CFEEF711EA3E2F001402D8 /* Generate version.h */ = {
+		E6CFEEF711EA3E2F001402D8 /* Generate version.h and pwsafe.plist */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1829,14 +1831,16 @@
 				../src/ui/wxWidgets/version.in,
 				../Misc/mkversion.pl,
 				../version.wx,
+				"pwsafe-template.plist",
 			);
-			name = "Generate version.h";
+			name = "Generate version.h and pwsafe.plist";
 			outputPaths = (
 				../src/ui/wxWidgets/version.h,
+				pwsafe.plist,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "make -C .. -f Makefile.macos src/ui/wxWidgets/version.h\n";
+			shellScript = "make -C .. -f Makefile.macos src/ui/wxWidgets/version.h Xcode/pwsafe.plist\n";
 		};
 		E6CFEF1811EA41FB001402D8 /* Generate core_st */ = {
 			isa = PBXShellScriptBuildPhase;
