@@ -4,4 +4,4 @@ build*
 *.xcodeproj/xcuserdata/
 *.xcodeproj/*.pbxuser
 *.xcodeproj/*.perspectivev3
-
+pwsafe.plist
