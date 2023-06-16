@@ -282,10 +282,10 @@ void SafeCombinationEntryDlg::CreateControls()
   });
 
 #if (REVISION == 0)
-  m_version->SetLabel(wxString::Format(wxT("V%d.%.2d %ls"),
+  m_version->SetLabel(wxString::Format(wxT("V%d.%d %ls"),
                                        MAJORVERSION, MINORVERSION, SPECIALBUILD));
 #else
-  m_version->SetLabel(wxString::Format(wxT("V%d.%d.%.2d %ls"),
+  m_version->SetLabel(wxString::Format(wxT("V%d.%d.%d %ls"),
                                        MAJORVERSION, MINORVERSION,
                                        REVISION, SPECIALBUILD));
 #endif
