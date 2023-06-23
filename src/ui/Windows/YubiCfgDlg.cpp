@@ -199,8 +199,9 @@ void CYubiCfgDlg::OnBnClickedOk()
 {
   // Was OK button, now "Set Yubikey" so we don't close
   // after processing.
-  UpdateData(TRUE);  
+  UpdateData(TRUE);
   StringX skStr = LPCWSTR(m_YubiSK);
+  CString status;
   
   GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_HIDE); // in case of retry
   if (!skStr.empty()) {
@@ -215,15 +216,19 @@ void CYubiCfgDlg::OnBnClickedOk()
 
       // 3. Write DB ASAP!
       int rc = m_core.WriteCurFile();
-      if (rc == PWScore::SUCCESS)
+      if (rc == PWScore::SUCCESS) {
         GetMainDlg()->BlockLogoffShutdown(false);
-
-      trashMemory(yubi_sk_bin, YUBI_SK_LEN);
+        trashMemory(yubi_sk_bin, YUBI_SK_LEN);
+        status = L"YubiKey updated successfully";
+      } else {
+        status = L"Failed to save key in database"; // what can the user do?
+      } // rc == PWScore::SUCCESS
     } else {
-      const CString err = L"Failed to update YubiKey";
-      GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_SHOW);
-      GetDlgItem(IDC_YUBI_API)->SetWindowText(err);
-    }
+      status = L"Failed to update YubiKey";
+
+    } // WriteYubiSK
+    GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_SHOW);
+    GetDlgItem(IDC_YUBI_API)->SetWindowText(status);
   }
 }
 
