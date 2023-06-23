@@ -32,7 +32,7 @@ using namespace std;
 
 // CYubiCfgDlg dialog
 
-static const wchar_t PSSWDCHAR = L'*';
+static constexpr wchar_t PSSWDCHAR = L'*';
 
 CYubiCfgDlg::CYubiCfgDlg(CWnd* pParent, PWScore &core)
   : CPWDialog(CYubiCfgDlg::IDD, pParent),
@@ -70,7 +70,7 @@ static StringX BinSK2HexStr(const unsigned char *sk, int len)
   os << setw(2);
   os << setfill(L'0');
   for (int i = 0; i < len; i++) {
-    os << hex << setw(2) << int(sk[i]);
+    os << hex << setw(2) << static_cast<int>(sk[i]);
     if (i != len - 1)
       os << " ";
   }
@@ -84,7 +84,7 @@ static void HexStr2BinSK(const StringX &str, unsigned char *sk, int len)
   int i = 0;
   int b;
   while ((is >> b ) && i < len) {
-    sk[i++] = (unsigned char)b;
+    sk[i++] = static_cast<unsigned char>(b);
   }
 }
 
@@ -200,7 +200,7 @@ void CYubiCfgDlg::OnBnClickedOk()
   // Was OK button, now "Set Yubikey" so we don't close
   // after processing.
   UpdateData(TRUE);
-  StringX skStr = LPCWSTR(m_YubiSK);
+  StringX skStr = static_cast<LPCWSTR>(m_YubiSK);
   int status;
   
   GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_HIDE); // in case of retry
@@ -262,9 +262,8 @@ void CYubiCfgDlg::OnTimer(UINT_PTR)
 
 void CYubiCfgDlg::OnHelp() 
 {
-  CString cs_HelpTopic;
-  cs_HelpTopic = app.GetHelpFileName() + L"::/html/manage_menu.html#yubikey";
-  HtmlHelp(DWORD_PTR((LPCWSTR)cs_HelpTopic), HH_DISPLAY_TOPIC);
+  CString cs_HelpTopic = app.GetHelpFileName() + L"::/html/manage_menu.html#yubikey";
+  HtmlHelp(DWORD_PTR(static_cast<LPCWSTR>(cs_HelpTopic)), HH_DISPLAY_TOPIC);
 }
 
 void CYubiCfgDlg::ShowSK()
