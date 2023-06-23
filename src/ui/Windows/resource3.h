@@ -747,6 +747,10 @@
 #define IDS_YUBI_UNINITIALIZED          6003
 #define IDS_YUBI_INIT_FAILED            6004
 #define IDS_YUBI_INIT_SUCCESS           6005
+#define IDS_YUBI_SET_FAILED             6006
+#define IDS_YUBI_SET_SUCCESS            6007
+#define IDS_YUBI_SET_DB_SAVE_FAILED     6008
+#define IDS_YUBI_READ_FAIL              6009
 
 #define IDS_STATIC_DB_PREFS_RO_WARNING  6020
 #define IDS_DB_READ_ONLY                6021

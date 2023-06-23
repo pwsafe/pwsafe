@@ -3181,6 +3181,10 @@ msgstr "Hiba egy jelszóelőzményben: %ls:"
 msgid "Error parsing Run Command"
 msgstr "Hiba a futtatási parancs felolvasásakor"
 
+#. Resource IDs: (6009)
+msgid "Error reading YubiKey"
+msgstr ""
+
 #. Resource IDs: (3378)
 msgid "Error while writing file! Try saving in a different location"
 msgstr "Hiba a fájl írásakor! Próbálja meg egy másik helyre menteni"
@@ -3362,6 +3366,10 @@ msgstr "A dokumentum mentése sikertelen."
 msgid "Failed to save image"
 msgstr ""
 
+#. Resource IDs: (6008)
+msgid "Failed to save key in database"
+msgstr ""
+
 #. Resource IDs: (5850)
 #, c-format
 msgid "Failed to switch from R-O to R/W because database is already open in R/W mode by:\n%s %s\n(Only one R/W access at a time is allowed)"
@@ -3378,6 +3386,10 @@ msgstr "Az átállás Csak Olvasható módról Írható módra sikertelen: a fá
 #. Resource IDs: (5851)
 msgid "Failed to switch from R/W to R-O: Could not release database lock.\nTry exiting and restarting program."
 msgstr "Az átállás Írható módról Csak Olvasható  módra sikertelen: az adatbázis-zárolás elengedése sikertelen.\nPróbáljon meg kilépni és újraindítani a programot."
+
+#. Resource IDs: (6006)
+msgid "Failed to update YubiKey"
+msgstr ""
 
 #. Resource IDs: (5766)
 msgid "Failsafe Backup Deletion"
@@ -3792,133 +3804,166 @@ msgid "Hungarian 101-key"
 msgstr "Magyar 101 billentyűs"
 
 #. Accelerator Entry for Menu ID:32002; '&Open Another'
+#. Accelerator Entry for Menu ID:32002; '&Open Another'
 msgid "ID:32002:V C +O"
 msgstr "Azonosító:32002:V C +O"
 
+#. Accelerator Entry for Menu ID:32003; '&New...'
 #. Accelerator Entry for Menu ID:32003; '&New...'
 msgid "ID:32003:V C +N"
 msgstr "Azonosító:32003:V C +N"
 
 #. Accelerator Entry for Menu ID:32005; '&Save'
+#. Accelerator Entry for Menu ID:32005; '&Save'
 msgid "ID:32005:V C +S"
 msgstr "Azonosító:32005:V C +S"
 
+#. Accelerator Entry for Menu ID:32021; 'E&xit'
 #. Accelerator Entry for Menu ID:32021; 'E&xit'
 msgid "ID:32021:V C +Q"
 msgstr "Azonosító:32021:V C +Q"
 
 #. Accelerator Entry for Menu ID:32027; '&Lock'
+#. Accelerator Entry for Menu ID:32027; '&Lock'
 msgid "ID:32027:V CS+L"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32051; '&Add Entry...'
 #. Accelerator Entry for Menu ID:32051; '&Add Entry...'
 msgid "ID:32051:V C +A"
 msgstr "Azonosító:32051:V C +A"
 
 #. Accelerator Entry for Menu ID:32063; '&Duplicate Entry'
+#. Accelerator Entry for Menu ID:32063; '&Duplicate Entry'
 msgid "ID:32063:V C +D"
 msgstr "Azonosító:32063:V C +D"
 
+#. Accelerator Entry for Menu ID:32066; '&Copy Password to Clipboard'
 #. Accelerator Entry for Menu ID:32066; '&Copy Password to Clipboard'
 msgid "ID:32066:V C +C"
 msgstr "Azonosító:32066:V C +C"
 
 #. Accelerator Entry for Menu ID:32067; 'Display subset of Password'
+#. Accelerator Entry for Menu ID:32067; 'Display subset of Password'
 msgid "ID:32067:V C +B"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32068; 'Copy &Username to Clipboard'
 #. Accelerator Entry for Menu ID:32068; 'Copy &Username to Clipboard'
 msgid "ID:32068:V C +U"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32069; 'Copy &Notes to Clipboard'
+#. Accelerator Entry for Menu ID:32069; 'Copy &Notes to Clipboard'
 msgid "ID:32069:V C +G"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32070; 'Copy UR&L to Clipboard'
 #. Accelerator Entry for Menu ID:32070; 'Copy UR&L to Clipboard'
 msgid "ID:32070:VAC +L"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32072; '&Browse to URL'
+#. Accelerator Entry for Menu ID:32072; '&Browse to URL'
 msgid "ID:32072:V C +L"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32073; 'Browse to URL + &AutoType'
 #. Accelerator Entry for Menu ID:32073; 'Browse to URL + &AutoType'
 msgid "ID:32073:VA  +L"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
+#. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
 msgid "ID:32074:VA S+L"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32075; 'Send &Email'
 #. Accelerator Entry for Menu ID:32075; 'Send &Email'
 msgid "ID:32075:V C +E"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
+#. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
 msgid "ID:32076:V C +T"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32077; '&Run Command'
 #. Accelerator Entry for Menu ID:32077; '&Run Command'
 msgid "ID:32077:V C +R"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32080; '&Find...'
+#. Accelerator Entry for Menu ID:32080; '&Find...'
 msgid "ID:32080:V C +F"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
 #. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
 msgid "ID:32081:VAC +R"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32083; 'Undo'
+#. Accelerator Entry for Menu ID:32083; 'Undo'
 msgid "ID:32083:V C +Z"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32084; 'Redo'
 #. Accelerator Entry for Menu ID:32084; 'Redo'
 msgid "ID:32084:V C +Y"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32140; 'Last Find results'
+#. Accelerator Entry for Menu ID:32140; 'Last Find results'
 msgid "ID:32140:V C +K"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32154; '&Options...'
 #. Accelerator Entry for Menu ID:32154; '&Options...'
 msgid "ID:32154:V C +M"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32157; 'Cancel'
+#. Accelerator Entry for Menu ID:32157; 'Cancel'
 msgid "ID:32157:V C +P"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32302; 'Clear Find'
 #. Accelerator Entry for Menu ID:32302; 'Clear Find'
 msgid "ID:32302:VAC +C"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32304; ''
+#. Accelerator Entry for Menu ID:32304; ''
 msgid "ID:32304:VAC +S"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32307; 'Advanced Find Options'
 #. Accelerator Entry for Menu ID:32307; 'Advanced Find Options'
 msgid "ID:32307:VAC +A"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32500; ''
+#. Accelerator Entry for Menu ID:32500; ''
 msgid "ID:32500:V C +C"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32501; ''
 #. Accelerator Entry for Menu ID:32501; ''
 msgid "ID:32501:V C +E"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32502; ''
+#. Accelerator Entry for Menu ID:32502; ''
 msgid "ID:32502:V C +F"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32503; ''
+#. Accelerator Entry for Menu ID:32503; ''
 msgid "ID:32503:V C +L"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32504; ''
 #. Accelerator Entry for Menu ID:32504; ''
 msgid "ID:32504:V C +S"
 msgstr ""
@@ -7442,6 +7487,10 @@ msgstr "A PasswordSafe-hez a YubiKey megvásárolható ezen a címen: https://ww
 
 #. Resource IDs: (6005)
 msgid "YubiKey initialized successfully, close this message box and activate it."
+msgstr ""
+
+#. Resource IDs: (6007)
+msgid "YubiKey updated successfully, you may close this window."
 msgstr ""
 
 #. Resource IDs: (1452, 1455)

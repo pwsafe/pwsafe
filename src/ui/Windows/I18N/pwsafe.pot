@@ -3129,6 +3129,10 @@ msgstr ""
 msgid "Error parsing Run Command"
 msgstr ""
 
+#. Resource IDs: (6009)
+msgid "Error reading YubiKey"
+msgstr ""
+
 #. Resource IDs: (3378)
 msgid "Error while writing file! Try saving in a different location"
 msgstr ""
@@ -3310,6 +3314,10 @@ msgstr ""
 msgid "Failed to save image"
 msgstr ""
 
+#. Resource IDs: (6008)
+msgid "Failed to save key in database"
+msgstr ""
+
 #. Resource IDs: (5850)
 #, c-format
 msgid "Failed to switch from R-O to R/W because database is already open in R/W mode by:\n%s %s\n(Only one R/W access at a time is allowed)"
@@ -3325,6 +3333,10 @@ msgstr ""
 
 #. Resource IDs: (5851)
 msgid "Failed to switch from R/W to R-O: Could not release database lock.\nTry exiting and restarting program."
+msgstr ""
+
+#. Resource IDs: (6006)
+msgid "Failed to update YubiKey"
 msgstr ""
 
 #. Resource IDs: (5766)
@@ -7390,6 +7402,10 @@ msgstr ""
 
 #. Resource IDs: (6005)
 msgid "YubiKey initialized successfully, close this message box and activate it."
+msgstr ""
+
+#. Resource IDs: (6007)
+msgid "YubiKey updated successfully, you may close this window."
 msgstr ""
 
 #. Resource IDs: (1452, 1455)

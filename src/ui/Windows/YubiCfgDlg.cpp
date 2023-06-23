@@ -10,7 +10,6 @@
 //
 
 #include <afxdisp.h>
-#include <afxctl.h>
 #include <afxwin.h>
 #include <iomanip>
 #include <sstream>
@@ -21,6 +20,7 @@
 #include "DboxMain.h"
 #include "YubiCfgDlg.h"
 #include "PKBaseDlg.h" // for *YubiExists
+#include "resource3.h"
 
 #include "os/windows/yubi/YkLib.h"
 #include "core/StringX.h"
@@ -119,7 +119,7 @@ void CYubiCfgDlg::ReadYubiSN()
   rc = yk.closeKey();
   return; // good return
  fail:
-  m_YubiSN = L"Error reading YubiKey";
+  m_YubiSN = CString(MAKEINTRESOURCE(IDS_YUBI_READ_FAIL));
 }
 
 int CYubiCfgDlg::WriteYubiSK(const unsigned char *yubi_sk_bin)
@@ -201,7 +201,7 @@ void CYubiCfgDlg::OnBnClickedOk()
   // after processing.
   UpdateData(TRUE);
   StringX skStr = LPCWSTR(m_YubiSK);
-  CString status;
+  int status;
   
   GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_HIDE); // in case of retry
   if (!skStr.empty()) {
@@ -219,16 +219,17 @@ void CYubiCfgDlg::OnBnClickedOk()
       if (rc == PWScore::SUCCESS) {
         GetMainDlg()->BlockLogoffShutdown(false);
         trashMemory(yubi_sk_bin, YUBI_SK_LEN);
-        status = L"YubiKey updated successfully";
+        status = IDS_YUBI_SET_SUCCESS;
       } else {
-        status = L"Failed to save key in database"; // what can the user do?
+        status = IDS_YUBI_SET_DB_SAVE_FAILED; // what can the user do?
       } // rc == PWScore::SUCCESS
     } else {
-      status = L"Failed to update YubiKey";
+      status = IDS_YUBI_SET_FAILED;
 
     } // WriteYubiSK
+    const CString statusStr(MAKEINTRESOURCE(status));
     GetDlgItem(IDC_YUBI_API)->ShowWindow(SW_SHOW);
-    GetDlgItem(IDC_YUBI_API)->SetWindowText(status);
+    GetDlgItem(IDC_YUBI_API)->SetWindowText(statusStr);
   }
 }
 
