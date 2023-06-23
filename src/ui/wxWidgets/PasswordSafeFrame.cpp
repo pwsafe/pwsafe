@@ -2527,12 +2527,12 @@ void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
 #else
       LockDb();
 #endif
-      if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize)) {
-        Clipboard::GetInstance()->ClearCBData();
-      }
     }
     else {
       m_guiInfo->Save(this);
+    }
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::ClearClipboardOnMinimize)) {
+      Clipboard::GetInstance()->ClearCBData();
     }
   }
   else{
