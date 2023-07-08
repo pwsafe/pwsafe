@@ -2141,9 +2141,9 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
       }
     }
   }
-  // policy
+  // policy options string (symbol list is checked above)
   {
-    PWPolicy oldPWP;
+    StringX oldPWP;
     // get item's effective policy:
     const StringX oldPolName = m_Item.GetPolicyName();
     if (oldPolName.empty()) { // either item-specific or default:
@@ -2151,14 +2151,22 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
         oldPWP = PWSprefs::GetInstance()->GetDefaultPolicy();
       }
       else {
-        m_Item.GetPWPolicy(oldPWP);
+        oldPWP = m_Item.GetPWPolicy();
       }
     }
     else {
-      m_Core.GetPolicyFromName(oldPolName, oldPWP);
+      PWPolicy pol;
+      m_Core.GetPolicyFromName(oldPolName, pol);
+      oldPWP = pol;  // convert to StringX
     }
-    // now check with dbox's effective policy:
-    if (oldPWP != GetSelectedPWPolicy()) {
+
+    // Now check with dbox's effective policy:
+    // If using a defined policy but the name is empty, it will cause
+    // an assertion in GetSelectedPWPolicy() - GetPolicyFromName().
+    // This should only happen if an incomplete policy edit is canceled.
+    if (   (m_PasswordPolicyUseDatabaseCtrl->GetValue() && m_PasswordPolicyNamesCtrl->GetValue().empty())
+        || (oldPWP != StringX(GetSelectedPWPolicy()))
+    ) {
       changes |= Changes::Policy;
     }
   }
