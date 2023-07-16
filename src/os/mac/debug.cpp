@@ -95,11 +95,17 @@ bool pws_os::DisableDumpAttach()
 #else   /* _DEBUG || DEBUG */
 #include <sys/types.h>
 #include <sys/ptrace.h>
+#include <sys/resource.h>
 
 bool pws_os::DisableDumpAttach()
 {
+  int pret, lret;
+  struct rlimit rl = {0, 0};
+
   // prevent ptrace and creation of core dumps
-  return ptrace(PT_DENY_ATTACH, 0, 0, 0) == 0;
+  lret = setrlimit(RLIMIT_CORE, &rl);
+  pret = ptrace(PT_DENY_ATTACH, 0, 0, 0);
+  return (pret == 0 && lret == 0);
 }
 
 void pws_os::Trace(LPCTSTR , ...)
