@@ -387,6 +387,12 @@ int main(int argc, char *argv[])
     return 1;
 #endif // _WIN32
 
+  // prevent ptrace and creation of core dumps in release build
+  if (!pws_os::DisableDumpAttach()) {
+    wcerr << L"Failed to block ptrace and core dumps" << endl;
+    exit(1);
+  }
+
   UserArgs ua;
   if (!parseArgs(argc, argv, ua)) {
     usage(basename(argv[0]));
