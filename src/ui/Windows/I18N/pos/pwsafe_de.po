@@ -5942,7 +5942,7 @@ msgstr "Ausgewählte Felder:"
 
 #. Resource IDs: (65535)
 msgid "Selected filter details:"
-msgstr "Details ausgewähltes Filter:"
+msgstr "Details zum ausgewählten Filter:"
 
 #. Resource IDs: (1479)
 msgid "Selected policy details:"
