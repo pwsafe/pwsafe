@@ -672,6 +672,13 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
   return bRes;
 }
 
+#ifdef __WXMAC__
+void PWSafeApp::MacNewFile()
+{
+  GetPasswordSafeFrame()->UnlockSafe(true, false);
+}
+#endif // __WXMAC__
+
 /*!
  * Cleanup for PWSafeApp
  */

@@ -311,7 +311,11 @@ void SystemTray::ProcessSysTrayMenuItem(int itemId)
       break;
 
     case ID_SYSTRAY_UNLOCK:
+#ifdef __WXMAC__
+      m_frame->UnlockSafe(true, false); // true => restore UI
+#else
       m_frame->UnlockSafe(false, false); // false => don't restore UI
+#endif
       break;
 
     case ID_SYSTRAY_CLEAR_RUE:

@@ -2432,6 +2432,9 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
       {
         if (ReloadDatabase(scp->GetPassword())) {
           m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
+#ifdef __WXMAC__
+          m_InitialTreeDisplayStatusAtOpen = true;
+#endif
         }
         else {
           // With modal dialog open we now have a problem, no data base open, but a modal dialog is open that might show an entry
