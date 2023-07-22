@@ -1312,10 +1312,19 @@ void CItemData::UpdatePasswordHistory()
   // Increment count
   num++;
 
+  // Reverse-sort the history entries.  This is here to maintain consistency with
+  // AddEditPropSheetDlg::PreparePasswordHistory() for comparison.
+  struct newer {
+    bool operator()(const PWHistEntry& first, const PWHistEntry& second) const {
+      return first.changetttdate > second.changetttdate;
+    }
+  };
+  std::sort(pwhistlist.begin(), pwhistlist.end(), newer());
+
   // Too many? remove the excess
   if (num > pwh_max) {
-    PWHistList hl(pwhistlist.begin() + (num - pwh_max),
-                  pwhistlist.end());
+    PWHistList hl(pwhistlist.begin(),
+                  pwhistlist.end() - (num - pwh_max));
     ASSERT(hl.size() == pwh_max);
     pwhistlist = hl;
     num = pwh_max;
