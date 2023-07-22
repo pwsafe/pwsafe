@@ -31,6 +31,7 @@
 #include <time.h>
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
 
 using namespace std;
 using pws_os::CUUID;
