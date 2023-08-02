@@ -302,20 +302,13 @@ void SystemTray::ShowSetDatabaseIdDialog()
 void SystemTray::ProcessSysTrayMenuItem(int itemId)
 {
   switch(itemId) {
+    case ID_SYSTRAY_UNLOCK:
     case ID_SYSTRAY_RESTORE:
       m_frame->UnlockSafe(true, false); // true => restore UI
       break;
 
     case ID_SYSTRAY_LOCK:
       m_frame->HideUI(true);
-      break;
-
-    case ID_SYSTRAY_UNLOCK:
-#ifdef __WXMAC__
-      m_frame->UnlockSafe(true, false); // true => restore UI
-#else
-      m_frame->UnlockSafe(false, false); // false => don't restore UI
-#endif
       break;
 
     case ID_SYSTRAY_CLEAR_RUE:
