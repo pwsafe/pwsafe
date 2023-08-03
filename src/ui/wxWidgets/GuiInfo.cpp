@@ -55,6 +55,10 @@ void CollectExpandedNodes(TreeCtrl* tree, wxTreeItemId root, wxArrayString& expa
 
 void GuiInfo::SaveTreeViewInfo(TreeCtrl* tree)
 {
+  //has the tree been cleared?
+  if (tree->HasItems() == 0)
+    return;
+
   //save the first visible item
   wxTreeItemId treeItem = tree->GetFirstVisibleItem();
   if (treeItem.IsOk() && treeItem != tree->GetRootItem()) {
