@@ -64,17 +64,19 @@ public:
   void Init();
 
   /// Initialises the application
-  virtual bool OnInit();
+  virtual bool OnInit() wxOVERRIDE;
 
   /// Handle asserts without showing the assert dialog until locale is initialized.
 #ifdef __WXDEBUG__
-  virtual void OnAssertFailure(const wxChar *file, int line, const wxChar *func, const wxChar *cond, const wxChar *msg);
+  virtual void OnAssertFailure(const wxChar *file, int line, const wxChar *func, const wxChar *cond, const wxChar *msg) wxOVERRIDE;
 #endif
   /// Called on exit
-  virtual int OnExit();
+  virtual int OnExit() wxOVERRIDE;
 
 ////@begin PWSafeApp event handler declarations
-
+#ifdef __WXMAC__
+  virtual void MacNewFile() wxOVERRIDE;
+#endif // __WXMAC__
 ////@end PWSafeApp event handler declarations
 
 ////@begin PWSafeApp member function declarations
@@ -94,7 +96,7 @@ public:
   void RestoreFrameCoords(void);
 
   //virtual override from some ancestor, to handle Help commands from all windows
-  virtual int FilterEvent(wxEvent& evt);
+  virtual int FilterEvent(wxEvent& evt) wxOVERRIDE;
 
   wxIconBundle GetAppIcons() const { return m_appIcons; }
 
