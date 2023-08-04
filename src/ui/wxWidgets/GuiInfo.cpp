@@ -53,6 +53,12 @@ void CollectExpandedNodes(TreeCtrl* tree, wxTreeItemId root, wxArrayString& expa
   }
 }
 
+//
+// NOTE: The Save/Restore Tree/Grid view routines are called multiple times for
+// a single lock/restore operation.  When locking, the final call to Save*ViewInfo
+// happens after the info has been cleared.  For now, we test for that condition.
+// In the future, this is an opportunity for improvement.
+//
 void GuiInfo::SaveTreeViewInfo(TreeCtrl* tree)
 {
   //has the tree been cleared?
