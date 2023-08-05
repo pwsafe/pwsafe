@@ -673,6 +673,8 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
 }
 
 #ifdef __WXMAC__
+// On macOS, this enables file unlock and UI restore upon left-click of the dock icon.
+// Not to be confused with the system tray (menu bar) icon.
 void PWSafeApp::MacNewFile()
 {
   GetPasswordSafeFrame()->UnlockSafe(true, false);
