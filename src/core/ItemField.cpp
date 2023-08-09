@@ -8,18 +8,16 @@
 /// \file ItemField.cpp
 //-----------------------------------------------------------------------------
 
-#include <math.h>
 
 #include "ItemField.h"
 #include "Util.h"
 #include "crypto/Fish.h"
 #include "PWSrand.h"
-#include "os/funcwrap.h"
 
 //Returns the number of bytes of 8 byte blocks needed to store 'size' bytes
 size_t CItemField::GetBlockSize(size_t size) const
 {
-  return static_cast<size_t>(ceil(static_cast<double>(size) / 8.0)) * 8;
+  return  ((size / 8) + ((size % 8 != 0) ? 1 : 0)) * 8;
 }
 
 CItemField::CItemField(const CItemField &that)
