@@ -418,6 +418,18 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
   const StringX sxZeroes = _T("000");
   unsigned int gNumIts;
 
+  // Following to make sure that a backslash in a password is autotyped as a single backslash.
+  auto duplicateCharInString = [](const StringX& input, TCHAR targetChar) -> StringX {
+    StringX retval;
+    for (TCHAR c : input) {
+      retval += c;
+      if (c == targetChar) {
+        retval += c;
+      }
+    }
+    return retval;
+    };
+
   for (size_t n = 0; n < N; n++){
     curChar = sx_autotype[n];
     if (curChar == TCHAR('\\')) {
@@ -449,10 +461,10 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
           sxtmp += sx_user;
           break;
         case TCHAR('p'):
-          sxtmp += sx_pwd;
+          sxtmp += duplicateCharInString(sx_pwd, L'\\');
           break;
         case TCHAR('q'):
-          sxtmp += sx_lastpwd;
+          sxtmp += duplicateCharInString(sx_lastpwd, L'\\');
           break;
         case TCHAR('l'):
           sxtmp += sx_url;
@@ -655,9 +667,9 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   ks.ResetKeyboardState();
 
   // Stop Keyboard/Mouse Input
-  pws_os::Trace(_T("PWSAuxParse::SendAutoTypeString - BlockInput set\n"));
-  ks.BlockInput(true);
-
+#ifndef DEBUG
+  ks.BlockInput(true); // Impossible to debug with this set...
+#endif
   // Karl Student's suggestion, to ensure focus set correctly on minimize.
   pws_os::sleep_ms(1000);
 
@@ -814,11 +826,10 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
           break;
         }
         default:
-          sxtmp += L'\\';
           sxtmp += curChar;
           break;
       }
-    } else
+    } else // curChar isn't backslash+special code
       sxtmp += curChar;
   }
 
@@ -831,8 +842,9 @@ void PWSAuxParse::SendAutoTypeString(const StringX &sx_autotype,
   pws_os::sleep_ms(100);
 
   // Reset Keyboard/Mouse Input
-  pws_os::Trace(_T("PWSAuxParse::SendAutoTypeString - BlockInput reset\n"));
+#ifndef DEBUG
   ks.BlockInput(false);
+#endif
 }
 
 //-----------------------------------------------------------------
