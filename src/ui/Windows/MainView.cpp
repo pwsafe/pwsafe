@@ -2888,6 +2888,7 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
       // Other fonts are just reset within the Fontdialog without exiting
       prefs->ResetPref(pref_Font);
       prefs->ResetPref(pref_FontSampleText);
+      prefs->SaveApplicationPreferences();
       return;
     }
 
@@ -2950,6 +2951,7 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
 
           prefs->SetPref(pref_FontSampleText, LPCWSTR(fontdlg.m_sampletext));
         }
+        prefs->SaveApplicationPreferences();
         return;
       // NO "default" statement to generate compiler error if enum missing
     }
@@ -2974,7 +2976,8 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
 
     // Save user's sample text
     prefs->SetPref(pref_FontSampleText, LPCWSTR(fontdlg.m_sampletext));
-  }
+    prefs->SaveApplicationPreferences();
+  } // rc== IDOK
 }
 
 void DboxMain::UpdateSystemTray(const DBSTATE s)
