@@ -15,6 +15,7 @@ Bugs fixed in 1.18
 --------------------
 * [GH996](https://github.com/pwsafe/pwsafe/pull/996) Mac and Linux - The "Clear clipboard upon minimize" option only worked if "Lock password database on Minimize" was also set.
 * [GH998](https://github.com/pwsafe/pwsafe/pull/998) Mac and Linux - Eliminate a spurious warning when the password policy has a custom character list.
+* [GH1005](https://github.com/pwsafe/pwsafe/issues/1005) Backslash in passwords are now passed as-is in autotype.
 * [GH1008](https://github.com/pwsafe/pwsafe/pull/1008) Mac and Linux - Tree view was not properly restored when a safe is locked and then unlocked.
   
 Changes in 1.18
