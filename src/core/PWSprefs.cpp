@@ -138,7 +138,9 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ToolbarShowText"), true, ptApplication},             // application
   {_T("DragAndDropShowRoot"), false, ptApplication},        // application
   {_T("ShowAliasSelection"), false, ptApplication},         // application
-  { _T("ExcludeFromClipboardHistory"), true, ptDatabase},   // database
+  {_T("ExcludeFromClipboardHistory"), true, ptDatabase},    // database
+  {_T("FindToolBarActive"), false, ptApplication},          // application
+
 };
 
 // Default value = -1 means set at runtime

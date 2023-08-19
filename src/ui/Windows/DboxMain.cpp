@@ -3327,7 +3327,9 @@ void DboxMain::UpdateMenuAndToolBar(const bool bOpen)
     }
 
     if (m_FindToolBar.IsVisible() && !bOpen) {
+      const bool savePref = PWSprefs::GetInstance()->GetPref(PWSprefs::FindToolBarActive);
       OnHideFindToolbar();
+      PWSprefs::GetInstance()->SetPref(PWSprefs::FindToolBarActive, savePref);
     }
   }
 }

@@ -4044,6 +4044,7 @@ void DboxMain::SetFindToolBar(bool bShow)
 
   m_FindToolBar.ShowFindToolBar(bShow);
   SetToolBarPositions();
+  PWSprefs::GetInstance()->SetPref(PWSprefs::FindToolBarActive, bShow); // to persist across instances.
 }
 
 void DboxMain::SetToolBarPositions()

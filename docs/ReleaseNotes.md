@@ -14,6 +14,9 @@ Bugs fixed in 3.64.0
 * [SF1577](https://sourceforge.net/p/passwordsafe/bugs/1577/) Changes to font preferences are now saved immediately.
 * [GH1005](https://github.com/pwsafe/pwsafe/issues/1005) Backslash in passwords are now passed as-is in autotype.
 
+New features in 3.64.0
+----------------------
+* [SF909](https://sourceforge.net/p/passwordsafe/feature-requests/909/) Search (Find) bar visibility is now persistent.
 
 PasswordSafe 3.63.0 Release May 2023
 ====================================

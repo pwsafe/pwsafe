@@ -360,6 +360,7 @@ int DboxMain::New()
 
   UpdateMenuAndToolBar(true);
   UpdateStatusBar();
+  SetFindToolBar(PWSprefs::GetInstance()->GetPref(PWSprefs::FindToolBarActive));
 
   // Set timer for user-defined idle lockout, if selected (DB preference)
   KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
@@ -924,6 +925,7 @@ void DboxMain::PostOpenProcessing()
   UpdateToolBarROStatus(m_core.IsReadOnly());
   UpdateToolBarDoUndo(); // BR1466
   UpdateStatusBar();
+  SetFindToolBar(PWSprefs::GetInstance()->GetPref(PWSprefs::FindToolBarActive));
 
   CheckExpireList(true);
   TellUserAboutExpiredPasswords();
