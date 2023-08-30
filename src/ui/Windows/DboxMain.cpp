@@ -2376,11 +2376,6 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
     const bool bUseSysTray = PWSprefs::GetInstance()->
                              GetPref(PWSprefs::UseSystemTray);
 
-    // Hide the Window while asking for the passphrase
-    if (IsWindowVisible()) {
-      ShowWindow(SW_HIDE);
-    }
-
     if (m_bOpen) {
       int flags = 0;
       if (m_core.IsReadOnly())
