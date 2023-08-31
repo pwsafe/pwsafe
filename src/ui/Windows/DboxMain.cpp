@@ -1933,6 +1933,7 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
   bool bReadOnly = (flags & GCP_READONLY) == GCP_READONLY;
   bool bForceReadOnly = (flags & GCP_FORCEREADONLY) == GCP_FORCEREADONLY;
   bool bHideReadOnly = (flags & GCP_HIDEREADONLY) == GCP_HIDEREADONLY;
+  bool bIsAppWindow = (flags & GCP_APP_WINDOW) == GCP_APP_WINDOW;
 
   if (m_pPasskeyEntryDlg != NULL) { // can happen via systray unlock
     m_pPasskeyEntryDlg->BringWindowToTop();
@@ -1964,7 +1965,8 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
                                    index, bReadOnly,
                                    bFileIsReadOnly,
                                    bForceReadOnly,
-                                   bHideReadOnly);
+                                   bHideReadOnly,
+                                   bIsAppWindow);
 
   // Ensure blank DboxMain dialog is not shown if user double-clicks
   // on SystemTray icon when being prompted for passphrase
@@ -2230,7 +2232,7 @@ void DboxMain::OnSysCommand(UINT nID, LPARAM lParam)
     case SC_MAXIMIZE:
     case SC_RESTORE:
       if (m_TrayLockedState == LOCKED &&
-          !RestoreWindowsData(nSysID == SC_RESTORE))
+          !RestoreWindowsData(nSysID == SC_RESTORE, true, lParam == PWSAFE_SC_LPARAM_INIT_APP_WINDOW_MINIMIZED))
         return; // password bad or cancel pressed
       break;
     /*
@@ -2294,7 +2296,7 @@ LRESULT DboxMain::OnTrayNotification(WPARAM wParam, LPARAM lParam)
     return 0L;
 }
 
-bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
+bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow, bool bIsAppWindow)
 {
   PWS_LOGIT_ARGS("bUpdateWindows=%s, bShow=%s",
     bUpdateWindows ? L"true" : L"false", 
@@ -2335,7 +2337,7 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
   } // !m_bOpen
 
   ASSERT(m_bOpen); // all closed dbase handling should have been done above
-  
+
   // Case 1 - data available but is currently locked
   if (!m_bDBNeedsReading &&
       (m_TrayLockedState == LOCKED) &&
@@ -2388,7 +2390,8 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow)
       if (CPWDialog::GetDialogTracker()->AnyOpenDialogs() ||
                 m_core.HasDBChanged())
         flags |= GCP_HIDEREADONLY;
-
+      if (bIsAppWindow)
+        flags |= GCP_APP_WINDOW;
       rc_passphrase = GetAndCheckPassword(m_core.GetCurFile(), passkey,
                                bUseSysTray ? GCP_RESTORE : GCP_WITHEXIT,
                                flags);

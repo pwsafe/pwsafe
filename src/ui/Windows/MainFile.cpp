@@ -2937,7 +2937,7 @@ bool DboxMain::ChangeMode(bool promptUser)
     // Taken from GetAndCheckPassword.
     // We don't want all the other processing that GetAndCheckPassword does
     CPasskeyEntry PasskeyEntryDlg(this, m_core.GetCurFile().c_str(),
-      GCP_CHANGEMODE, true, false, false, true);
+      GCP_CHANGEMODE, true, false, false, true, false);
 
     INT_PTR rc = PasskeyEntryDlg.DoModal();
     if (rc != IDOK)
