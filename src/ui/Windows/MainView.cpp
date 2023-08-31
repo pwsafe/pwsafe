@@ -2558,7 +2558,11 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     if (prefs->GetPref(PWSprefs::UseSystemTray)) {
       ShowWindow(SW_HIDE);
     } else {
-      ShowWindow(SW_MINIMIZE);
+      // With pwsafe in "taskbar" mode, and DB lock complete, immediately
+      // present the unlock password entry dialog as the pwsafe taskbar
+      // app window in minimized state.
+      PostMessage(WM_SYSCOMMAND, SC_RESTORE, PWSAFE_SC_LPARAM_INIT_APP_WINDOW_MINIMIZED);
+      ShowWindow(SW_HIDE);
     }
 
     if (nIDEvent == TIMER_LOCKONWTSLOCK)

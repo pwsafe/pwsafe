@@ -57,13 +57,14 @@ int CPasskeyEntry::dialog_lookup[5] = {
 
 //-----------------------------------------------------------------------------
 CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index,
-  bool bReadOnly, bool bFileReadOnly, bool bForceReadOnly, bool bHideReadOnly)
+  bool bReadOnly, bool bFileReadOnly, bool bForceReadOnly, bool bHideReadOnly, bool bIsAppWindow)
   : CPKBaseDlg(dialog_lookup[index], pParent),
   m_btnReadOnly((bReadOnly || bFileReadOnly) ? TRUE : FALSE),
   m_btnShowMasterPassword(FALSE),
   m_bFileReadOnly(bFileReadOnly),
   m_bForceReadOnly(bForceReadOnly),
   m_bHideReadOnly(bHideReadOnly),
+  m_bIsAppWindow(bIsAppWindow),
   m_filespec(a_filespec), m_orig_filespec(a_filespec),
   m_tries(0), m_status(TAR_INVALID),
   m_yubi_sk(nullptr)
@@ -245,9 +246,23 @@ BOOL CPasskeyEntry::OnInitDialog(void)
   SetIcon(m_hIcon, TRUE);  // Set big icon
   SetIcon(m_hIcon, FALSE); // Set small icon
 
+  const CWnd* pInsertAfter = &CWnd::wndTopMost;
+
+  if (m_bIsAppWindow) {
+    // When the password entry dialog acts as a taskbar app window,
+    // it is initialized upon DB lock, where it should start minimized.
+    // The user will restore the minimized password entry dialog when
+    // they are ready, usually through ALT-TAB task switching, or
+    // clicking the pwsafe icon on the desktop taskbar.
+    ShowWindow(SW_MINIMIZE);
+
+    // When acting as an app window, the password entry dialog is not
+    // not wndTopMost but simply wndTop.
+    pInsertAfter = &CWnd::wndTop;
+  }
+
   // Following brings to top when hotkey pressed.
-  // This is "stronger" than BringWindowToTop().
-  SetWindowPos(&CWnd::wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+  SetWindowPos(pInsertAfter, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
   SetActiveWindow();
   SetForegroundWindow();
 
@@ -257,13 +272,6 @@ BOOL CPasskeyEntry::OnInitDialog(void)
     // Ensures focus is on password entry field, where it belongs.
     GotoDlgCtrl(m_pctlPasskey);
     return FALSE;
-  }
-
-  // Following works fine for other (non-hotkey) cases:
-  if (m_index == GCP_RESTORE || m_index == GCP_WITHEXIT) {
-    SetWindowPos(&CWnd::wndTopMost, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
-    SetActiveWindow();
-    SetForegroundWindow();
   }
 
   // If the dbase field's !empty, the user most likely will want to enter
@@ -344,6 +352,15 @@ void CPasskeyEntry::OnCreateDb()
 
 void CPasskeyEntry::OnCancel()
 {
+  if (m_bIsAppWindow) {
+    // When the password entry dialog acts as the pwsafe taskbar app window,
+    // it is not canceled (destroyed) in the traditional manner, but simply
+    // re-minimized instead. The dialog box lives until either successful
+    // password entry or clicking Exit.
+    ShowWindow(SW_MINIMIZE);
+    return;
+  }
+
   m_status = TAR_CANCEL;
   CPWDialog::OnCancel();
 }
