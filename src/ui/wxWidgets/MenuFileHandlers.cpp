@@ -137,6 +137,8 @@ int PasswordSafeFrame::New()
   m_RUEList.ClearEntries();
   wxGetApp().recentDatabases().AddFileToHistory(towxstring(cs_newfile));
   ResetFilters();
+  GetSearchBarPane().Hide(); // There is nothing to search for in an empty database
+  m_AuiManager.Update();
   // XXX TODO: Reset IdleLockTimer, as preference has reverted to default
   return PWScore::SUCCESS;
 }
@@ -240,6 +242,8 @@ void PasswordSafeFrame::OnOpenClick(wxCommandEvent& WXUNUSED(evt))
   if (rc == PWScore::SUCCESS) {
     m_core.ResumeOnDBNotification();
     CreateMenubar(); // Recreate the menu with updated list of most recently used DBs
+    UpdateSearchBarVisibility();
+    m_AuiManager.Update();
   }
 }
 

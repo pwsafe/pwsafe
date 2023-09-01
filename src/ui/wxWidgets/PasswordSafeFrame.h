@@ -670,6 +670,7 @@ private:
   void CreateSearchBar();
   wxAuiPaneInfo& GetSearchBarPane();
   PasswordSafeSearch* GetSearchBar() { return m_search; };
+  void UpdateSearchBarVisibility();
 
   void CreateStatusBar();
 
