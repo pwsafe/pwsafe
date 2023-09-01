@@ -57,6 +57,13 @@ DECLARE_HANDLE(DPI_AWARENESS_CONTEXT);
 #define DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2  ((DPI_AWARENESS_CONTEXT)-4)
 #endif
 
+// When pwsafe itself posts WM_SYSCOMMAND wParam=SC_RESTORE to restore on lock,
+// specify this LPARAM to force the restore to be minimized. This is used when
+// pwsafe is in non-systray "taskbar" mode, where lock causes an immediate
+// presentation of the password entry dialog in a minimized state so it
+// immediately appears as a minimized pwsafe taskbar app window.
+#define PWSAFE_SC_LPARAM_INIT_APP_WINDOW_MINIMIZED ((LPARAM)0xFFFEFFFE)
+
 // For ShutdownBlockReasonCreate & ShutdownBlockReasonDestroy
 typedef BOOL (WINAPI *PSBR_CREATE) (HWND, LPCWSTR);
 typedef BOOL (WINAPI *PSBR_DESTROY) (HWND);
@@ -110,7 +117,8 @@ enum {
 // GCP read only flags - tested via AND, set via OR, must be power of 2.
 enum {GCP_READONLY = 1,
       GCP_FORCEREADONLY = 2,
-      GCP_HIDEREADONLY = 4};
+      GCP_HIDEREADONLY = 4,
+      GCP_APP_WINDOW = 8};
 
 class CDDObList;
 class ExpiredList;
@@ -898,7 +906,7 @@ private:
   int SaveImmediately();
   void CheckExpireList(const bool bAtOpen = false); // Upon open, timer + menu, check list, show exp.
   void TellUserAboutExpiredPasswords();
-  bool RestoreWindowsData(bool bUpdateWindows, bool bShow = true);
+  bool RestoreWindowsData(bool bUpdateWindows, bool bShow = true, bool bIsAppWindow = false);
   void UpdateAccessTime(const pws_os::CUUID &uuid);
   void RestoreGroupDisplayState();
   std::vector<bool> GetGroupDisplayState(); // get current display state from window

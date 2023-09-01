@@ -47,7 +47,7 @@ class CPasskeyEntry : public CPKBaseDlg
 public:
   CPasskeyEntry(CWnd* pParent,
                 const CString& a_filespec, int index, /* GCP_NORMAL */
-                bool bReadOnly, bool bFileReadOnly, bool bForceReadOnly, bool bHideReadOnly);
+                bool bReadOnly, bool bFileReadOnly, bool bForceReadOnly, bool bHideReadOnly, bool bIsAppWindow);
 
   ~CPasskeyEntry();
 
@@ -69,6 +69,7 @@ protected:
   bool m_bFileReadOnly;
   bool m_bForceReadOnly;
   bool m_bHideReadOnly;
+  bool m_bIsAppWindow;
 
   //}}AFX_DATA
   CString m_SelectedDatabase;
