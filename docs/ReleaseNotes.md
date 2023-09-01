@@ -12,6 +12,7 @@ Bugs fixed in 3.64.0
 --------------------
 
 * [SF1577](https://sourceforge.net/p/passwordsafe/bugs/1577/) Changes to font preferences are now saved immediately.
+* [GH1014](https://github.com/pwsafe/pwsafe/issues/1014) Focus is now set correctly after unlock when not using system tray.
 * [GH1005](https://github.com/pwsafe/pwsafe/issues/1005) Backslash in passwords are now passed as-is in autotype.
 
 New features in 3.64.0
