@@ -895,7 +895,7 @@ void PasswordSafeFrame::DoImportText(wxString filename)
 
   /* Create report as we go */
   CReport rpt;
-  rpt.StartReport(IDSC_RPTEXPORTTEXT, m_core.GetCurFile().c_str());
+  rpt.StartReport(IDSC_RPTIMPORTTEXT, m_core.GetCurFile().c_str());
   wxString header;
   header.Printf(_("%ls file being imported: %ls"), _("Text"), TxtFileName.c_str());
   rpt.WriteLine(tostdstring(header));
