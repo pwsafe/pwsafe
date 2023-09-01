@@ -24,6 +24,10 @@ Changes in 1.18
 * [GH995](https://github.com/pwsafe/pwsafe/pull/995) [SF433](https://sourceforge.net/p/passwordsafe/support-requests/433/) Mac - The Password Safe program version number now appears in the Finder "Get Info" display.
 * [GH1007](https://github.com/pwsafe/pwsafe/pull/1007) Mac - A hidden or minimized window can now be restored with a left-click on the dock icon.
 
+New Features in 1.18
+--------------------
+* [SF909](https://sourceforge.net/p/passwordsafe/feature-requests/909/) Search (Find) bar visibility is now persistent.
+
 
 PasswordSafe 1.17 Release June 2023
 ===================================
