@@ -2555,15 +2555,13 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     // Now hide/minimize main dialog
     // NOTE: Do not call OnMinimize if minimizing as this will overwrite
     // the scroll bar positions
-    if (prefs->GetPref(PWSprefs::UseSystemTray)) {
-      ShowWindow(SW_HIDE);
-    } else {
+    if (!prefs->GetPref(PWSprefs::UseSystemTray)) {
       // With pwsafe in "taskbar" mode, and DB lock complete, immediately
       // present the unlock password entry dialog as the pwsafe taskbar
       // app window in minimized state.
       PostMessage(WM_SYSCOMMAND, SC_RESTORE, PWSAFE_SC_LPARAM_INIT_APP_WINDOW_MINIMIZED);
-      ShowWindow(SW_HIDE);
     }
+    ShowWindow(SW_HIDE);
 
     if (nIDEvent == TIMER_LOCKONWTSLOCK)
       KillTimer(TIMER_LOCKONWTSLOCK);
