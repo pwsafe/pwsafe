@@ -391,7 +391,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
     pws_os::Trace(L"The AUI manager failed to load the layout preferences.");
   }
 
-  GetSearchBarPane().Hide();
+  UpdateSearchBarVisibility();
   m_AuiManager.Update();
   return true;
 }
@@ -1077,6 +1077,7 @@ void PasswordSafeFrame::ShowSearchBar()
 {
   GetSearchBarPane().Show();
   m_AuiManager.Update();
+  PWSprefs::GetInstance()->SetPref(PWSprefs::FindToolBarActive, true);
 }
 
 /**
@@ -1087,6 +1088,22 @@ void PasswordSafeFrame::HideSearchBar()
   GetSearchBarPane().Hide();
   m_AuiManager.Update();
   SetFocus();
+  PWSprefs::GetInstance()->SetPref(PWSprefs::FindToolBarActive, false);
+}
+
+/**
+ * Update the search bar visibility based on preference.
+ */
+void PasswordSafeFrame::UpdateSearchBarVisibility()
+{
+  const auto showSearchBar = PWSprefs::GetInstance()->GetPref(PWSprefs::FindToolBarActive);
+  if (showSearchBar) {
+    m_search->Activate();
+    GetSearchBarPane().Show();
+  }
+  else {
+    GetSearchBarPane().Hide();
+  }
 }
 
 /**
@@ -1613,14 +1630,6 @@ void PasswordSafeFrame::SelectItem(const CUUID& uuid)
 void PasswordSafeFrame::SaveSettings(void)
 {
   m_grid->SaveSettings();
-
-  /*
-    Hide the search bar to get layout preferences for hidden search bar.
-    This ensures that the layout preferences match with the default search 
-    bar settings. The search bar is hidden per default on application startup.
-  */
-  HideSearchBar();
-
   SaveLayoutPreferences();
 }
 
@@ -2490,6 +2499,8 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
   }
 
   CreateMenubar(); // Recreate menubar to replace menu item 'Unlock Safe' by 'Lock Safe'
+  UpdateSearchBarVisibility();
+  m_AuiManager.Update();
 }
 
 void PasswordSafeFrame::SetFocus()
@@ -2623,6 +2634,10 @@ void PasswordSafeFrame::LockDb()
 
     CreateMenubar(); // Recreate menubar to replace menu item 'Lock Safe' by 'Unlock Safe'
   }
+
+  // Hide search bar to not populate any search results (see GitHub issue 375)
+  GetSearchBarPane().Hide();
+  m_AuiManager.Update();
 }
 
 void PasswordSafeFrame::SetTrayStatus(bool locked)
@@ -3037,11 +3052,14 @@ void PasswordSafeFrame::CloseDB(std::function<void(bool)> callback)
           ClearAppData();
           SetTitle(wxEmptyString);
           m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
+          // Preserve user preference, which gets overwritten by closing the search bar.
+          const auto showSearchBar = PWSprefs::GetInstance()->GetPref(PWSprefs::FindToolBarActive);
           wxCommandEvent dummyEv;
           m_search->OnSearchClose(dummyEv); // fix github issue 375
           m_core.SetReadOnly(false);
           UpdateStatusBar();
           UpdateMenuBar();
+          PWSprefs::GetInstance()->SetPref(PWSprefs::FindToolBarActive, showSearchBar);
         }
         else {
           wxMessageBox(_("Can't close database. There are unsaved changes in opened dialogs."), wxTheApp->GetAppName(), wxOK | wxICON_WARNING, this);
