@@ -150,6 +150,7 @@ void SafeCombinationSetupDlg::CreateControls()
 
   itemBoxSizer2->Add(itemStdDialogButtonSizer11, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 10);
   wxButton* itemButton12 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemButton12->SetDefault();
   itemStdDialogButtonSizer11->AddButton(itemButton12);
 
   wxButton* itemButton13 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
