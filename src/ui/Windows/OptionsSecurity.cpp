@@ -45,6 +45,7 @@ COptionsSecurity::COptionsSecurity(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_LockOnWindowLock = M_LockOnWindowLock();
   m_LockOnIdleTimeout = M_LockOnIdleTimeout();
   m_CopyPswdBrowseURL = M_CopyPswdBrowseURL();
+  m_ExcludeFromScreenCapture = M_ExcludeFromScreenCapture();
   m_IdleTimeOut = M_IdleTimeOut();
   SetHashIter(M_HashIters());
 }
@@ -66,8 +67,9 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_LOCKONSCREEN, m_LockOnWindowLock);
   DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
   DDX_Check(pDX, IDC_COPYPSWDURL, m_CopyPswdBrowseURL);
+  DDX_Check(pDX, IDC_EXCLUDE_FROM_SCR_CAP, m_ExcludeFromScreenCapture);
   DDX_Text(pDX, IDC_IDLE_TIMEOUT, m_IdleTimeOut);
-
+  
   DDX_Control(pDX, IDC_COPYPSWDURL, m_chkbox[0]);
   DDX_Control(pDX, IDC_LOCK_TIMER, m_chkbox[1]);
 
@@ -194,6 +196,7 @@ LRESULT COptionsSecurity::OnQuerySiblings(WPARAM wParam, LPARAM lParam)
           M_LockOnWindowLock()            != m_LockOnWindowLock            ||
           M_LockOnIdleTimeout()           != m_LockOnIdleTimeout           ||
           M_CopyPswdBrowseURL()           != m_CopyPswdBrowseURL           ||
+          M_ExcludeFromScreenCapture()    != m_ExcludeFromScreenCapture    ||
           M_HashIters()                   != m_HashIter                    ||
           (m_LockOnIdleTimeout            == TRUE &&
            M_IdleTimeOut()                != m_IdleTimeOut))
@@ -257,6 +260,7 @@ BOOL COptionsSecurity::OnApply()
   M_LockOnWindowLock() = m_LockOnWindowLock;
   M_LockOnIdleTimeout() = m_LockOnIdleTimeout;
   M_CopyPswdBrowseURL() = m_CopyPswdBrowseURL;
+  M_ExcludeFromScreenCapture() = m_ExcludeFromScreenCapture;
   M_IdleTimeOut() = m_IdleTimeOut;
   UpdateHashIter();
   M_HashIters() = m_HashIter;

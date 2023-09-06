@@ -74,7 +74,9 @@ BOOL CPWPropertySheet::OnInitDialog()
   // It's OK - show it
   m_bKeepHidden = false;
   ShowWindow(SW_SHOW);
-  
+
+  SetWindowExcludeFromScreenCapture(m_hWnd);
+
   return TRUE;  // return TRUE unless you set the focus to a control
 }
 

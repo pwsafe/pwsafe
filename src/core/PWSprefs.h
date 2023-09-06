@@ -135,6 +135,7 @@ public:
     ShowAliasSelection,
     ExcludeFromClipboardHistory, // Windows only
     FindToolBarActive, // To persist Find toolbar's visibility
+    ExcludeFromScreenCapture,
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,

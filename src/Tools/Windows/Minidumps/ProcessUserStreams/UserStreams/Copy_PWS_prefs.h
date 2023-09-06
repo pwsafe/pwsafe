@@ -55,6 +55,7 @@ public:
     UsePrimarySelectionForClipboard,  //Only under X-Windows
     CopyPasswordWhenBrowseToURL,
     UseAltAutoType,  //Only under X-Windows
+    ExcludeFromScreenCapture,
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,

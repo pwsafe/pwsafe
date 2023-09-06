@@ -123,6 +123,7 @@ public:
 
   // Needs to be public for access by DboxMain (MainFile.cpp)
   virtual INT_PTR DoModal();
+  virtual BOOL OnInitDialog();
 
 protected:
   virtual BOOL PreTranslateMessage(MSG *pMsg);

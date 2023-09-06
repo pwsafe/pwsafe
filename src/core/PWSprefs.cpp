@@ -140,6 +140,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ShowAliasSelection"), false, ptApplication},         // application
   {_T("ExcludeFromClipboardHistory"), true, ptDatabase},    // database
   {_T("FindToolBarActive"), false, ptApplication},          // application
+  {_T("ExcludeFromScreenCapture"), true, ptDatabase},       // database
 
 };
 

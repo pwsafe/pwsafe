@@ -24,6 +24,13 @@ DboxMain *CPWDialog::GetMainDlg() const
   return app.GetMainDlg();
 }
 
+BOOL CPWDialog::OnInitDialog()
+{
+  BOOL bResult = CDialog::OnInitDialog();
+  SetWindowExcludeFromScreenCapture(m_hWnd);
+  return bResult;
+}
+
 bool CPWDialog::InitToolTip(int Flags, int delayTimeFactor)
 {
   m_pToolTipCtrl = new CToolTipCtrl;
