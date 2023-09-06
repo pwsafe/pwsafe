@@ -620,9 +620,11 @@ void DboxMain::OnOptions()
   // Just in case we reset this being enabled
   prefs->SetPref(PWSprefs::HotKeyEnabled, bAppHotKeyEnabled == TRUE);
 
+  SetWindowExcludeFromScreenCapture(m_hWnd);
+
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly(), usPrefs);
-  
+
   // Delete Options Property page
   delete pOptionsPS;
 }

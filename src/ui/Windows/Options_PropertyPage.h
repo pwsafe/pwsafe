@@ -94,6 +94,7 @@ struct st_Opt_master_data {
   BOOL LockOnWindowLock;
   BOOL LockOnIdleTimeout;
   BOOL CopyPswdBrowseURL;
+  BOOL ExcludeFromScreenCapture;
   int IdleTimeOut;
   uint32 HashIters;
   // Preferences min/max values
@@ -213,6 +214,7 @@ public:
   inline BOOL &M_LockOnWindowLock() {return m_OPTMD.LockOnWindowLock;}
   inline BOOL &M_LockOnIdleTimeout() {return m_OPTMD.LockOnIdleTimeout;}
   inline BOOL &M_CopyPswdBrowseURL() {return m_OPTMD.CopyPswdBrowseURL;}
+  inline BOOL &M_ExcludeFromScreenCapture() {return m_OPTMD.ExcludeFromScreenCapture;}
   inline int &M_IdleTimeOut() {return m_OPTMD.IdleTimeOut;}
   inline uint32 &M_HashIters() {return m_OPTMD.HashIters;}
   // Preferences min/max values

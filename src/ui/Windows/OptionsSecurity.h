@@ -42,6 +42,7 @@ protected:
   BOOL m_LockOnWindowLock;
   BOOL m_LockOnIdleTimeout;
   BOOL m_CopyPswdBrowseURL;
+  BOOL m_ExcludeFromScreenCapture;
   int m_IdleTimeOut;
   //}}AFX_DATA
 

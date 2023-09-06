@@ -113,6 +113,13 @@ INT_PTR CWZPropertySheet::DoModal()
   return rc;
 }
 
+BOOL CWZPropertySheet::OnInitDialog()
+{
+  BOOL bResult = CPropertySheet::OnInitDialog();
+  SetWindowExcludeFromScreenCapture(m_hWnd);
+  return bResult;
+}
+
 BOOL CWZPropertySheet::PreTranslateMessage(MSG *pMsg)
 {
   if (pMsg->message == WM_KEYDOWN) {

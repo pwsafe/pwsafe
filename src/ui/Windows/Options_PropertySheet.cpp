@@ -258,6 +258,8 @@ void COptions_PropertySheet::SetupInitialValues()
   m_OPTMD.HashIters = GetMainDlg()->GetHashIters();
   m_OPTMD.CopyPswdBrowseURL =
       prefs->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL) ? TRUE : FALSE;
+  m_OPTMD.ExcludeFromScreenCapture =
+      prefs->GetPref(PWSprefs::ExcludeFromScreenCapture) ? TRUE : FALSE;
   // Preferences min/max values
   m_OPTMD.prefminIdleTimeout = (short)prefs->GetPrefMinVal(PWSprefs::IdleTimeout);
   m_OPTMD.prefmaxIdleTimeout = (short)prefs->GetPrefMaxVal(PWSprefs::IdleTimeout);
@@ -394,6 +396,8 @@ void COptions_PropertySheet::UpdateCopyPreferences()
                  m_OPTMD.LockOnWindowLock == TRUE, true);
   prefs->SetPref(PWSprefs::CopyPasswordWhenBrowseToURL,
                  m_OPTMD.CopyPswdBrowseURL == TRUE, true);
+  prefs->SetPref(PWSprefs::ExcludeFromScreenCapture,
+                 m_OPTMD.ExcludeFromScreenCapture == TRUE, true);
 
   prefs->SetPref(PWSprefs::UseSystemTray,
                  m_OPTMD.UseSystemTray == TRUE, true);
