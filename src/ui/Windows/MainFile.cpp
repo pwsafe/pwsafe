@@ -565,6 +565,14 @@ int DboxMain::Close(const bool bTrySave)
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly());
 
+  // No database is open or locked, revert pwsafe DB preferences to defaults.
+  prefs->SetDatabasePrefsToDefaults(false);
+  prefs->SetDatabasePrefsToDefaults(true);
+
+  // Since this main pwsafe window is already active, revert to default for
+  // ExcludeFromScreenCapture. New dialogs/windows will use the DB default.
+  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
+
   return PWScore::SUCCESS;
 }
 
