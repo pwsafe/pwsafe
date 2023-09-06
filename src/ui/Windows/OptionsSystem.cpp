@@ -208,7 +208,8 @@ BOOL COptionsSystem::OnInitDialog()
 
 LRESULT COptionsSystem::OnQuerySiblings(WPARAM wParam, LPARAM )
 {
-  UpdateData(TRUE);
+  if (!UpdateData(TRUE))
+    return 1L; // stop propagation
 
   // Have any of my fields been changed?
   switch (wParam) {
