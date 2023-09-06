@@ -24,17 +24,6 @@
 #include <afxmt.h>
 //-----------------------------------------------------------------------------
 
-inline void SetWindowExcludeFromScreenCapture(HWND hwnd) {
-  ASSERT(::IsWindow(hwnd));
-  if (!::IsWindow(hwnd))
-    return;
-  bool bExcludeFromScreenCapture = PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture);
-  DWORD dwNewDisplayAffinity = bExcludeFromScreenCapture ? WDA_EXCLUDEFROMCAPTURE : WDA_NONE;
-  DWORD dwCurrentDisplayAffinity;
-  if (::GetWindowDisplayAffinity(hwnd, &dwCurrentDisplayAffinity) && dwNewDisplayAffinity != dwCurrentDisplayAffinity)
-    ::SetWindowDisplayAffinity(hwnd, dwNewDisplayAffinity);
-}
-
 // Structure for saving information on what language/help files are installed.
 struct LANGHELPFILE {
   LCID lcid;                 // LCID for the language

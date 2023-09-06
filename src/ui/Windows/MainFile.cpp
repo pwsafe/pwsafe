@@ -957,7 +957,7 @@ void DboxMain::PostOpenProcessing()
   m_ctlItemList.Scroll(CSize(SB_HORZ, 0));
   m_ctlItemTree.SetScrollPos(SB_HORZ, 0);
 
-  SetWindowExcludeFromScreenCapture(m_hWnd);
+  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
 }
 
 int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)

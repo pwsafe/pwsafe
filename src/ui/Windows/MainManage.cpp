@@ -27,6 +27,7 @@
 #include "ManagePSWDPols.h"
 #include "HKModifiers.h"
 #include "YubiCfgDlg.h"
+#include "winutils.h"
 
 #include "core/core.h"
 #include "core/pwsprefs.h"
@@ -620,7 +621,7 @@ void DboxMain::OnOptions()
   // Just in case we reset this being enabled
   prefs->SetPref(PWSprefs::HotKeyEnabled, bAppHotKeyEnabled == TRUE);
 
-  SetWindowExcludeFromScreenCapture(m_hWnd);
+  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
 
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly(), usPrefs);

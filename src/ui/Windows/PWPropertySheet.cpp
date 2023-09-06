@@ -9,6 +9,7 @@
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
 #include "PWPropertySheet.h"
+#include "winutils.h"
 
 IMPLEMENT_DYNAMIC(CPWPropertySheet, CMFCPropertySheet)
 
@@ -75,7 +76,7 @@ BOOL CPWPropertySheet::OnInitDialog()
   m_bKeepHidden = false;
   ShowWindow(SW_SHOW);
 
-  SetWindowExcludeFromScreenCapture(m_hWnd);
+  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
 
   return TRUE;  // return TRUE unless you set the focus to a control
 }
