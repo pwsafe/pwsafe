@@ -1160,7 +1160,7 @@ BOOL DboxMain::OnInitDialog()
       !PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
     HideIcon();
 
-  SetWindowExcludeFromScreenCapture(m_hWnd);
+  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
 
   // Set up UPDATE_UI data map.
   const int num_CommandTable_entries = _countof(m_UICommandTable);

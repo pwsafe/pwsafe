@@ -10,6 +10,7 @@
 #include "DboxMain.h"
 #include "PWDialog.h"
 #include "GeneralMsgBox.h"
+#include "winutils.h"
 
 #include <algorithm>
 #include <functional>
@@ -27,7 +28,7 @@ DboxMain *CPWDialog::GetMainDlg() const
 BOOL CPWDialog::OnInitDialog()
 {
   BOOL bResult = CDialog::OnInitDialog();
-  SetWindowExcludeFromScreenCapture(m_hWnd);
+  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
   return bResult;
 }
 

@@ -12,6 +12,7 @@
 #include "PasswordSafe.h"
 #include "ThisMfcApp.h"
 #include "DboxMain.h"
+#include "winutils.h"
 
 #include "WZPropertySheet.h"
 #include "WZPropertyPage.h"
@@ -116,7 +117,7 @@ INT_PTR CWZPropertySheet::DoModal()
 BOOL CWZPropertySheet::OnInitDialog()
 {
   BOOL bResult = CPropertySheet::OnInitDialog();
-  SetWindowExcludeFromScreenCapture(m_hWnd);
+  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
   return bResult;
 }
 

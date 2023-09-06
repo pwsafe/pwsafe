@@ -399,3 +399,15 @@ bool WinUtil::HasTouchscreen() // for BR1539 workaround
   int value = ::GetSystemMetrics(SM_DIGITIZER);
   return (value != 0);
 }
+
+void WinUtil::SetWindowExcludeFromScreenCapture(HWND hwnd)
+{
+  ASSERT(::IsWindow(hwnd));
+  if (!::IsWindow(hwnd))
+    return;
+  bool bExcludeFromScreenCapture = PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture);
+  DWORD dwNewDisplayAffinity = bExcludeFromScreenCapture ? WDA_EXCLUDEFROMCAPTURE : WDA_NONE;
+  DWORD dwCurrentDisplayAffinity;
+  if (::GetWindowDisplayAffinity(hwnd, &dwCurrentDisplayAffinity) && dwNewDisplayAffinity != dwCurrentDisplayAffinity)
+    ::SetWindowDisplayAffinity(hwnd, dwNewDisplayAffinity);
+}
