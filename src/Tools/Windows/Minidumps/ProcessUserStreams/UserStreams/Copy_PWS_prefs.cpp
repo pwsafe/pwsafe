@@ -11,8 +11,7 @@
 
   THIS IS NEEDED "ONLY" TO GET THE PREFERENCE "NAME"
 
-    COPY TAKEN V3.34.2 - LAST CHANGED 2014-08-20
-      SHA-1: 855071b427bc31e7bfb4ddda4043cd9d9ea26c1f
+    COPY TAKEN V3.34.2 - LAST CHANGED 2023-09-05
 
   Note when copying from the core version of PWSprefs.cpp, remove the prefix 'm_' in the following:
   PWSprefs::m_bool_prefs[NumIntPrefs] to PWSprefs::bool_prefs[NumIntPrefs]
