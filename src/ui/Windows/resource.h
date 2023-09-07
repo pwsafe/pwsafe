@@ -904,7 +904,6 @@
 #define IDC_STATIC_MINTRANSPARENCY      1595
 #define IDC_TESTTRANSPARENCY            1596
 #define IDC_PS_TITLE                    1599
-#define IDC_CHECK1                      1600
 #define IDC_EXCLUDE_FROM_SCR_CAP        1600
 #define IDC_EXCLUDE_FROM_CB_HIST        1601
 #define IDC_STATIC_PASSWORD2            1602
