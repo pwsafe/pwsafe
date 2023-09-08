@@ -70,6 +70,7 @@ protected:
   afx_msg void OnHelp();
   afx_msg void OnLockOnIdleTimeout();
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
+  afx_msg void OnBnClickedExcludeFromScreenCapture();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
