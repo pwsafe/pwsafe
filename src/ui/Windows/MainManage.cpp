@@ -233,6 +233,8 @@ int DboxMain::RestoreSafe()
   ChangeOkUpdate();
   RefreshViews();
 
+  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
+
   return PWScore::SUCCESS;
 }
 
