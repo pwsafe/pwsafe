@@ -96,7 +96,7 @@ const PWSprefs::boolPref PWSprefs::bool_prefs[NumBoolPrefs] = {
   {_T("UsePrimarySelectionForClipboard"), false, ptApplication}, //application
   {_T("CopyPasswordWhenBrowseToURL"), false, ptDatabase},   // database
   {_T("UseAltAutoType"), false, ptApplication},             //application
-  {_T("ExcludeFromScreenCapture"), true, ptDatabase},       // database
+  {_T("ExcludeFromScreenCapture"), false, ptDatabase},       // database
 };
 
 // Default value = -1 means set at runtime
