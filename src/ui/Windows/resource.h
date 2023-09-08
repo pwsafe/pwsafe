@@ -904,9 +904,10 @@
 #define IDC_STATIC_MINTRANSPARENCY      1595
 #define IDC_TESTTRANSPARENCY            1596
 #define IDC_PS_TITLE                    1599
-#define IDC_EXCLUDE_FROM_SCR_CAP        1600
 #define IDC_EXCLUDE_FROM_CB_HIST        1601
 #define IDC_STATIC_PASSWORD2            1602
+#define IDC_EXCLUDE_FROM_SCR_CAP        1603
+#define IDC_EXCLUDE_FROM_SCR_CAP_HELP   1604
 
 // Next default values for new objects
 // 
@@ -914,7 +915,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        565
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1603
+#define _APS_NEXT_CONTROL_VALUE         1605
 #define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif
