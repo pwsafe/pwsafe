@@ -68,6 +68,7 @@ void COptionsSecurity::DoDataExchange(CDataExchange* pDX)
   DDX_Check(pDX, IDC_LOCK_TIMER, m_LockOnIdleTimeout);
   DDX_Check(pDX, IDC_COPYPSWDURL, m_CopyPswdBrowseURL);
   DDX_Check(pDX, IDC_EXCLUDE_FROM_SCR_CAP, m_ExcludeFromScreenCapture);
+  DDX_Control(pDX, IDC_EXCLUDE_FROM_SCR_CAP_HELP, m_Help4);
   DDX_Text(pDX, IDC_IDLE_TIMEOUT, m_IdleTimeOut);
   
   DDX_Control(pDX, IDC_COPYPSWDURL, m_chkbox[0]);
@@ -135,10 +136,12 @@ BOOL COptionsSecurity::OnInitDialog()
     m_Help1.Init(IDB_QUESTIONMARK);
     m_Help2.Init(IDB_QUESTIONMARK);
     m_Help3.Init(IDB_QUESTIONMARK);
+    m_Help4.Init(IDB_QUESTIONMARK);
 
     AddTool(IDC_LOCKONMINIMIZEHELP, IDS_DBLOCK);
     AddTool(IDC_LOCKONWORKSTATIONLOCKHELP, IDS_DBLOCK);
     AddTool(IDC_LOCKONIDLEHELP, IDS_DBLOCK);
+    AddTool(IDC_EXCLUDE_FROM_SCR_CAP_HELP, IDS_EXCLUDE_FROM_SCR_CAP_HELP);
     ActivateToolTip();
   } else {
     m_Help1.EnableWindow(FALSE);
@@ -147,6 +150,8 @@ BOOL COptionsSecurity::OnInitDialog()
     m_Help2.ShowWindow(SW_HIDE);
     m_Help3.EnableWindow(FALSE);
     m_Help3.ShowWindow(SW_HIDE);
+    m_Help4.EnableWindow(FALSE);
+    m_Help4.ShowWindow(SW_HIDE);
   }
 
   return TRUE;  // return TRUE unless you set the focus to a control

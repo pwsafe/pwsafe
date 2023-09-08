@@ -51,6 +51,7 @@
 #define IDS_PWHHELP                     5119
 #define IDS_PASSWORDHELP2               5120
 #define IDS_TRANSPARENCYHELP            5121
+#define IDS_EXCLUDE_FROM_SCR_CAP_HELP   5122
 
 // Program strings
 #define IDS_FILEERROR1                  5210
