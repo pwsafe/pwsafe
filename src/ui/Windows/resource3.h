@@ -790,3 +790,4 @@
 #define IDS_INCLUDEDBASES               6055
 #define IDS_GC_ONE_CHILD                6060
 #define IDS_GC_N_CHILDREN               6061
+#define IDS_EXCLUDE_FROM_SCR_CAP_WARNING 6062
