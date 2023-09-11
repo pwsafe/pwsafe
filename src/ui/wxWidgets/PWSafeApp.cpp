@@ -59,6 +59,9 @@
 #include "version.h"
 #include "wxMessages.h"
 #include "Clipboard.h"
+#ifndef NO_YUBI
+#include "YubiMixin.h"
+#endif
 
 #include <iostream> // currently for debugging
 #include <clocale>  // to get the locales specified by the environment 
@@ -128,6 +131,11 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
   {wxCMD_LINE_OPTION, STR("g"), STR("config_file"),
    STR("use specified configuration file instead of default"),
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
+#ifndef NO_YUBI
+  {wxCMD_LINE_OPTION, nullptr, STR("yubi-polling-interval"),
+   STR("use specified polling interval for YubiKey instead of default"),
+   wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL},
+#endif
   {wxCMD_LINE_PARAM, nullptr, nullptr, STR("database"),
    wxCMD_LINE_VAL_STRING,
    (wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE)},
@@ -343,6 +351,10 @@ bool PWSafeApp::OnInit()
   bool cmd_user = cmdParser.Found(wxT("u"), &user);
   bool cmd_host = cmdParser.Found(wxT("h"), &host);
   bool cmd_cfg = cmdParser.Found(wxT("g"), &cfg_file);
+#ifndef NO_YUBI
+  long int yubi_polling_interval;
+  bool cmd_yubi_polling_interval = cmdParser.Found(wxT("y"), &yubi_polling_interval);
+#endif
   bool file_in_cmd = false;
   size_t count = cmdParser.GetParamCount();
   if (count == 1) {
@@ -401,6 +413,11 @@ bool PWSafeApp::OnInit()
   if (cmd_cfg) {
     PWSprefs::SetConfigFile(tostdstring(cfg_file));
   }
+#ifndef NO_YUBI
+  if (cmd_yubi_polling_interval) {
+    YubiMixin::SetPollingInterval(static_cast<int>(yubi_polling_interval));
+  }
+#endif
 
   m_core.SetReadOnly(cmd_ro);
   // OK to load prefs now
