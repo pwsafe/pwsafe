@@ -104,10 +104,7 @@ SafeCombinationSetupDlg::~SafeCombinationSetupDlg()
 ////@begin SafeCombinationSetupDlg destruction
 ////@end SafeCombinationSetupDlg destruction
 #ifndef NO_YUBI
-  if (m_pollingTimer != nullptr) {
-    delete m_pollingTimer;
-    m_pollingTimer = nullptr;
-  }
+  delete m_pollingTimer;
 #endif
 }
 

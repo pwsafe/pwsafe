@@ -168,10 +168,7 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow *parent) : wxDialog(
 ExportTextWarningDlgBase::~ExportTextWarningDlgBase()
 {
   delete selCriteria;
-  if (m_pollingTimer != nullptr) {
-    delete m_pollingTimer;
-    m_pollingTimer = nullptr;
-  }
+  delete m_pollingTimer;
 }
 
 void ExportTextWarningDlgBase::OnAdvancedSelection( wxCommandEvent& evt )

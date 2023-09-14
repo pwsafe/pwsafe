@@ -120,10 +120,7 @@ SafeCombinationPromptDlg::~SafeCombinationPromptDlg()
 ////@begin SafeCombinationPromptDlg destruction
 ////@end SafeCombinationPromptDlg destruction
 #ifndef NO_YUBI
-  if (m_pollingTimer != nullptr) {
-    delete m_pollingTimer;
-    m_pollingTimer = nullptr;
-  }
+  delete m_pollingTimer;
 #endif
 }
 

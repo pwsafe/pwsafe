@@ -126,10 +126,7 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
 
 DbSelectionPanel::~DbSelectionPanel()
 {
-  if (m_pollingTimer != nullptr) {
-    delete m_pollingTimer;
-    m_pollingTimer = nullptr;
-  }
+  delete m_pollingTimer;
 }
 
 void DbSelectionPanel::SelectCombinationText()
