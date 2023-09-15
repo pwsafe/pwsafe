@@ -25,7 +25,6 @@
 #include <iomanip>
 #include <sstream>
 
-bool YubiMixin::s_pollingEnabled = true;
 int YubiMixin::s_pollingInterval = YubiMixin::POLLING_INTERVAL_DEFAULT;
 
 void YubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
@@ -85,10 +84,8 @@ void YubiMixin::HandlePollingTimer()
 }
 
 void YubiMixin::SetPollingInterval(int value) {
-  s_pollingEnabled = true;
-
-  if (value <= 0) {
-    s_pollingEnabled = false;
+  if (value <= YubiMixin::POLLING_INTERVAL_OFF) {
+    s_pollingInterval = YubiMixin::POLLING_INTERVAL_OFF; // indicates to disable the polling
   }
   else if (value < YubiMixin::POLLING_INTERVAL_MIN /* ms */) {
     s_pollingInterval = YubiMixin::POLLING_INTERVAL_MIN; // limit the polling interval to a minimum
@@ -97,7 +94,7 @@ void YubiMixin::SetPollingInterval(int value) {
     s_pollingInterval = YubiMixin::POLLING_INTERVAL_MAX; // limit the polling interval to a maximum
   }
   else {
-    s_pollingInterval = value;
+    s_pollingInterval = value;  // the user defined polling interval
   }
 }
 
