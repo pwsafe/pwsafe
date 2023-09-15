@@ -10,6 +10,7 @@
 //
 
 #include "stdafx.h"
+#include "ThisMfcApp.h"
 #include "PWStatusBar.h"
 #include "winutils.h"
 
@@ -55,11 +56,29 @@ CPWStatusBar::CPWStatusBar()
 
   WinUtil::ResizeBitmap(origBmp, m_FilterBitmap, m_bmWidth, m_bmHeight);
   origBmp.DeleteObject();
+
+  for (UINT nId = IDB_SCRCAP_FIRST; nId <= IDB_SCRCAP_LAST; nId++) {
+    origBmp.LoadBitmap(nId);
+    origBmp.GetBitmap(&bm);
+    int bmWidth = MulDiv(bm.bmWidth, dpi, 96);
+    int bmHeight = MulDiv(bm.bmHeight, dpi, 96);
+    ASSERT(bmWidth == m_bmWidth);
+    ASSERT(bmHeight == m_bmHeight);
+    UINT bmpIndex = nId - IDB_SCRCAP_FIRST;
+    m_ExcludeCaptureBitmaps.push_back(new CBitmap);
+    ASSERT(bmpIndex == m_ExcludeCaptureBitmaps.size() - 1);
+    WinUtil::ResizeBitmap(origBmp, *m_ExcludeCaptureBitmaps[bmpIndex], m_bmWidth, m_bmHeight);
+    origBmp.DeleteObject();
+  }
 }
 
 CPWStatusBar::~CPWStatusBar()
 {
   m_FilterBitmap.DeleteObject();
+  std::for_each(m_ExcludeCaptureBitmaps.begin(), m_ExcludeCaptureBitmaps.end(), [](CBitmap* pbmp) {
+    pbmp->DeleteObject();
+  });
+  m_ExcludeCaptureBitmaps.clear();
 }
 
 BEGIN_MESSAGE_MAP(CPWStatusBar, CStatusBar)
@@ -95,6 +114,7 @@ void CPWStatusBar::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
   switch (lpDrawItemStruct->itemID) {
     case SB_FILTER:
+    {
       // Attach to a CDC object
       CDC dc;
       dc.Attach(lpDrawItemStruct->hDC);
@@ -113,7 +133,8 @@ void CPWStatusBar::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
         dc.BitBlt(ileft, itop, m_bmWidth, m_bmHeight,
                   &srcDC, 0, 0, SRCCOPY); // BitBlt to pane rect
         srcDC.SelectObject(pOldBitmap);
-      } else {
+      }
+      else {
         dc.FillSolidRect(&rect, ::GetSysColor(COLOR_BTNFACE));
       }
       // Detach from the CDC object, otherwise the hDC will be
@@ -121,6 +142,35 @@ void CPWStatusBar::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
       dc.Detach();
 
       return;
+    }
+    case SB_SCR_CAP:
+    {
+      UINT nId;
+      UINT nStyle;
+      int cxWidth;
+      GetPaneInfo(SB_SCR_CAP, nId, nStyle, cxWidth);
+      int nBitmapIndex = nId - IDB_SCRCAP_FIRST;
+      ASSERT(nBitmapIndex >= 0 && nBitmapIndex < m_ExcludeCaptureBitmaps.size());
+      if (nBitmapIndex < 0 || nBitmapIndex >= m_ExcludeCaptureBitmaps.size())
+        nBitmapIndex = IDB_SCRCAP_STATE_ERROR - IDB_SCRCAP_FIRST;
+      CBitmap& bmpCaptureState = *m_ExcludeCaptureBitmaps[nBitmapIndex];
+
+      CDC dc;
+      dc.Attach(lpDrawItemStruct->hDC);
+      CRect rect(&lpDrawItemStruct->rcItem);
+      // Center bitmap.
+      int ileft = rect.left + rect.Width() / 2 - m_bmWidth / 2;
+      int itop = rect.top + rect.Height() / 2 - m_bmHeight / 2;
+      CDC srcDC;
+      srcDC.CreateCompatibleDC(NULL);
+      CBitmap* pOldBitmap = srcDC.SelectObject(&bmpCaptureState);
+      dc.BitBlt(ileft, itop, m_bmWidth, m_bmHeight, &srcDC, 0, 0, SRCCOPY);
+      srcDC.SelectObject(pOldBitmap);
+      // Detach from the CDC object, otherwise the hDC will be
+      // destroyed when the CDC object goes out of scope
+      dc.Detach();
+      return;
+    }
   }
 
   CStatusBar::DrawItem(lpDrawItemStruct);
@@ -161,6 +211,7 @@ bool CPWStatusBar::ShowToolTip(int nPane, const bool bVisible)
     IDS_SB_TT_MODIFIED   /* SB_MODIFIED        */,
     IDS_SB_TT_MODE       /* SB_READONLY        */,
     IDS_SB_TT_NUMENTRIES /* SB_NUM_ENT         */,
+    IDS_SB_TT_SCR_CAP    /* SB_SCR_CAP         */,
     IDS_SB_TT_FILTER     /* SB_FILTER          */};
 
   if (!m_bUseToolTips || !m_bFileOpen)

@@ -88,6 +88,9 @@ Timer related values (note - all documented her but some defined only where need
 // Timer event number used to to poll the YubiKey when used
 #define TIMER_YUBIKEYPOLL         0x0F
 
+// Timer causing force allow screen capture bitmap blink.
+#define TIMER_FORCE_ALLOW_CAPTURE_BITMAP_BLINK 0x20    
+
 /*
 HOVER_TIME_ND       The length of time the pointer must remain stationary
 within a tool's bounding rectangle before the tool tip

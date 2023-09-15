@@ -2568,6 +2568,19 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
   } else if (nIDEvent == TIMER_EXPENT) {
     // once a day, we want to check the expired entries list
     CheckExpireList();
+  } else if (nIDEvent == TIMER_FORCE_ALLOW_CAPTURE_BITMAP_BLINK) {
+    UINT nId;
+    UINT uiStyle;
+    int iWidth;
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture) && app.ForceAllowScreenCapture()) {
+      m_StatusBar.GetPaneInfo(CPWStatusBar::SB_SCR_CAP, nId, uiStyle, iWidth);
+      UINT nIdNextBitmap = nId == IDB_SCRCAP_ALLOWED_FORCED2 ? 
+        IDB_SCRCAP_ALLOWED_FORCED1 : IDB_SCRCAP_ALLOWED_FORCED2;
+      m_StatusBar.SetPaneInfo(CPWStatusBar::SB_SCR_CAP, nIdNextBitmap, uiStyle |= SBT_OWNERDRAW, m_StatusBar.GetBitmapWidth());
+      m_StatusBar.Invalidate();
+      m_StatusBar.UpdateWindow();
+    } else
+      KillTimer(TIMER_FORCE_ALLOW_CAPTURE_BITMAP_BLINK);
   }
 }
 

@@ -648,6 +648,7 @@
 #define IDS_PSWDPOLICY                  5889
 #define IDS_POLICYFIELD                 5890
 #define IDS_VALUE                       5891
+#define IDS_SB_TT_SCR_CAP               5892
 #define IDS_AREYOUSURE_PN               5894
 #define IDS_INVALIDPOLICYNAME1          5895
 #define IDS_INVALIDPOLICYNAME2          5896

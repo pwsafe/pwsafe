@@ -571,7 +571,7 @@ int DboxMain::Close(const bool bTrySave)
 
   // Since this main pwsafe window is already active, revert to default for
   // ExcludeFromScreenCapture. New dialogs/windows will use the DB default.
-  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
+  UpdateForceAllowCaptureHandling();
 
   return PWScore::SUCCESS;
 }
@@ -965,7 +965,7 @@ void DboxMain::PostOpenProcessing()
   m_ctlItemList.Scroll(CSize(SB_HORZ, 0));
   m_ctlItemTree.SetScrollPos(SB_HORZ, 0);
 
-  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
+  UpdateForceAllowCaptureHandling();
 }
 
 int DboxMain::CheckEmergencyBackupFiles(StringX sx_Filename, StringX &passkey)
