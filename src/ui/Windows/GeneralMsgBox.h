@@ -52,8 +52,12 @@ public:
   virtual ~CGeneralMsgBox();
 
   // For Timed MessageBox & Implement MFC equivalents
-  INT_PTR MessageBoxTimeOut(LPCWSTR lpText, LPCWSTR lpCaption = nullptr, 
-                     UINT uiFlags = MB_OK, DWORD dwMilliseconds = 0);
+  INT_PTR MessageBoxTimeOut(LPCWSTR lpText, LPCWSTR lpCaption = nullptr,
+    UINT uiFlags = MB_OK, DWORD dwMilliseconds = 0);
+  INT_PTR MessageBoxDelayAcceptAnswer(
+    LPCWSTR lpTextBeforeAllowed, LPCWSTR lpTextAfterAllowed,
+    LPCWSTR lpCaption = nullptr,
+    UINT uiFlags = MB_OK, DWORD dwSeconds = 0);
   INT_PTR MessageBox(LPCWSTR lpText, LPCWSTR lpCaption, UINT uiFlags = MB_OK);
   INT_PTR AfxMessageBox(LPCWSTR lpszText, LPCWSTR lpCaption = nullptr, UINT uiFlags = MB_OK);
   INT_PTR AfxMessageBox(UINT uiIDPrompt, UINT uiFlags = MB_OK);
@@ -96,6 +100,10 @@ public:
   // Get a metric (in dialog units)
   int GetMetric(int iMetric);
 
+protected:
+
+  void EnableButtons(bool bEnable);
+
 private:
   // Graphical attributes
   int m_aMetrics[NUM_OF_METRICS];  // basic metrics (dialog units)
@@ -119,6 +127,7 @@ private:
   struct BTNDATA {
     UINT uiIDC;                   // button ID
     CString strBtn;               // button Text
+    bool bWasEnabled;             // track button enabled state
   };
 
   CArray<BTNDATA,const BTNDATA&> m_aBtns;   // buttons' attributes
@@ -139,6 +148,7 @@ private:
   void CreateBtns();
   void CreateIcon();
 
+  void SetGotoDefaultControl();
   void UpdateLayout();
 
   int FromDlgX(int x);
@@ -147,9 +157,15 @@ private:
   // For timed out message
   static DWORD WINAPI ThreadFunction(LPVOID lpParameter);
 
+  void UpdateBeforeAllowedMessage();
+
   DWORD m_dwTimeOut;
   bool m_bTimedOut;
   INT_PTR m_nResult;
+  bool m_bDelayAcceptAnswer;
+  bool m_bTextBeforeAllowedSet;
+  CString m_sTextBeforeAllowed;
+  CString m_sTextAfterAllowed;
 };
 
 /////////////////////////////////////////////////////////////////////////////

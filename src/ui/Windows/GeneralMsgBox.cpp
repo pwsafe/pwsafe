@@ -39,6 +39,8 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // Local constants
 
+const UINT TIMER_GENMSGBOX_ENABLE_CONTROLS = 1;
+
 /*
 The following _dlgData corresponds to:
 
@@ -94,7 +96,8 @@ static const BYTE dlg_data[] =
 // Constructor
 CGeneralMsgBox::CGeneralMsgBox(CWnd *pParentWnd)
   : m_uiDefCmdId((UINT)IDC_STATIC), m_uiEscCmdId((UINT)IDC_STATIC),
-  m_hIcon(nullptr), m_strTitle(AfxGetApp()->m_pszAppName)
+  m_hIcon(nullptr), m_strTitle(AfxGetApp()->m_pszAppName),
+  m_bDelayAcceptAnswer(false), m_bTextBeforeAllowedSet(false)
 {
   m_pParentWnd = pParentWnd;
 
@@ -175,6 +178,20 @@ DWORD WINAPI CGeneralMsgBox::ThreadFunction(LPVOID lpParameter)
     }
   }
   return WAIT_OBJECT_0;
+}
+
+void CGeneralMsgBox::EnableButtons(bool bEnable)
+{
+  for (int i = 0; i < m_aBtns.GetSize(); ++i) {
+    CButton& btn = *(CButton*)GetDlgItem(m_aBtns[i].uiIDC);
+    if (!::IsWindow(btn.m_hWnd))
+      continue;
+    if (!bEnable) {
+      m_aBtns[i].bWasEnabled = !(btn.GetStyle() & WS_DISABLED);
+      btn.ModifyStyle(0, WS_DISABLED);
+    } else if (m_aBtns[i].bWasEnabled)
+      btn.ModifyStyle(WS_DISABLED, 0);
+  }
 }
 
 INT_PTR CGeneralMsgBox::MessageBox(LPCWSTR lpText, LPCWSTR lpCaption, 
@@ -446,15 +463,17 @@ BOOL CGeneralMsgBox::OnInitDialog()
   // Updating the layout - preparing to show
   UpdateLayout();
 
+  if (m_bDelayAcceptAnswer) {
+    EnableButtons(false);
+    SetTimer(TIMER_GENMSGBOX_ENABLE_CONTROLS, (UINT)1000, NULL);
+  }
+
   // Disabling the ESC key
   if (m_uiEscCmdId == (UINT)IDC_STATIC)
     ModifyStyle(WS_SYSMENU, NULL);
 
-  // Focusing and setting the default button
   if (m_uiDefCmdId != (UINT)IDC_STATIC) {
-    GotoDlgCtrl(GetDlgItem(m_uiDefCmdId));
-    SetDefID(m_uiDefCmdId);
-
+    SetGotoDefaultControl();
     return FALSE;
   }
 
@@ -481,6 +500,16 @@ BOOL CGeneralMsgBox::OnWndMsg(UINT message, WPARAM wParam, LPARAM lParam,
       EndDialog(m_uiEscCmdId);
 
     return TRUE;
+  } else if (message == WM_TIMER && wParam == TIMER_GENMSGBOX_ENABLE_CONTROLS) {
+    m_dwTimeOut -= 1000;
+    if (m_dwTimeOut == 0) {
+      KillTimer(TIMER_GENMSGBOX_ENABLE_CONTROLS);
+      m_edCtrl.SetWindowText(m_sTextAfterAllowed);
+      EnableButtons(true);
+      SetGotoDefaultControl();
+    } else {
+      UpdateBeforeAllowedMessage();
+    }
   }
 
   return CDialog::OnWndMsg(message, wParam, lParam, pLResult);
@@ -545,14 +574,22 @@ void CGeneralMsgBox::CreateRtfCtrl()
   // Creating the Rich Edit control
   CRect rcDummy; // dimension doesn't matter here
 
-  m_edCtrl.Create(WS_CHILD | WS_VISIBLE | ES_LEFT | ES_MULTILINE | ES_READONLY,
-                  rcDummy, this, (UINT)IDC_STATIC);
+  DWORD dwStyles = WS_CHILD | WS_VISIBLE | ES_LEFT | ES_MULTILINE | ES_READONLY;
+  // Delaying for answer causes default buttons (i.e., a sole OK button) to
+  // be initially disabled, causing rich text edit to gain focus with full
+  // selection. Prevent that with ES_SAVESEL.
+  if (m_bDelayAcceptAnswer)
+    dwStyles |= ES_SAVESEL;
+  m_edCtrl.Create(dwStyles, rcDummy, this, (UINT)IDC_STATIC);
   m_edCtrl.SetBackgroundColor(FALSE, ::GetSysColor(COLOR_3DFACE));
   m_edCtrl.SetFont(GetFont());
 
   m_strMsg.Trim();
 
-  m_edCtrl.SetWindowText(m_strMsg);
+  if (m_bDelayAcceptAnswer)
+    UpdateBeforeAllowedMessage();
+  else
+    m_edCtrl.SetWindowText(m_strMsg);
 
   /////////////////////////////////////////////////////////
   // Calculating the best Rich Edit control dimension
@@ -660,6 +697,16 @@ int CGeneralMsgBox::FromDlgX(int x)
 int CGeneralMsgBox::FromDlgY(int y)
 { return y * m_dimDlgUnit.cy / CY_DLGUNIT_BASE; }
 
+void CGeneralMsgBox::SetGotoDefaultControl()
+{
+  // If a default command ID is valid, establish it
+  // as the default, and go to the control.
+  if (m_uiDefCmdId != (UINT)IDC_STATIC) {
+    GotoDlgCtrl(GetDlgItem(m_uiDefCmdId));
+    SetDefID(m_uiDefCmdId);
+  }
+}
+
 // Updates the layout
 void CGeneralMsgBox::UpdateLayout()
 {
@@ -727,4 +774,40 @@ void CGeneralMsgBox::UpdateLayout()
     pWndCtrl->MoveWindow(x, y, m_dimBtn.cx, m_dimBtn.cy);
     x += m_dimBtn.cx + cxBtnsSpace;
   }
+}
+
+void CGeneralMsgBox::UpdateBeforeAllowedMessage()
+{
+  if (m_sTextBeforeAllowed.Find(L"%d") == -1) {
+    // No integer format detected, just update message once.
+    if (!m_bTextBeforeAllowedSet) {
+      m_edCtrl.SetWindowText(m_sTextBeforeAllowed);
+      m_bTextBeforeAllowedSet = true;
+    }
+  } else {
+    // Update the message to reflect the remaining seconds.
+    CString cs_temp;
+    cs_temp.Format(m_sTextBeforeAllowed, m_dwTimeOut / 1000);
+    m_edCtrl.SetWindowText(cs_temp);
+  }
+}
+
+INT_PTR CGeneralMsgBox::MessageBoxDelayAcceptAnswer(
+  LPCWSTR lpTextBeforeAllowed,
+  LPCWSTR lpTextAfterAllowed,
+  LPCWSTR lpCaption,
+  UINT uiFlags,
+  DWORD dwSeconds
+)
+{
+  ASSERT(dwSeconds != 0);
+  if (dwSeconds == 0)
+    dwSeconds = 1;
+  m_bDelayAcceptAnswer = true;
+  m_dwTimeOut = dwSeconds * 1000;
+  m_sTextBeforeAllowed = lpTextBeforeAllowed;
+  m_bTextBeforeAllowedSet = false;
+  m_sTextAfterAllowed = lpTextAfterAllowed;
+  m_nResult = MessageBox(lpTextBeforeAllowed, lpCaption, uiFlags);
+  return m_nResult;
 }

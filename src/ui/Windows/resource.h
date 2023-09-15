@@ -915,6 +915,7 @@
 #define IDC_STATIC_PASSWORD2            1602
 #define IDC_EXCLUDE_FROM_SCR_CAP        1603
 #define IDC_EXCLUDE_FROM_SCR_CAP_HELP   1604
+#define IDC_TIMEOUT_ENABLE_CONTROLS     1610
 
 // Next default values for new objects
 // 
@@ -922,7 +923,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        571
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1605
+#define _APS_NEXT_CONTROL_VALUE         1611
 #define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif
