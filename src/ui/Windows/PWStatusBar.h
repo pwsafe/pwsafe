@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "InfoDisplay.h"      // for Tooltips
+#include "StateBitmapManager.h"
 
 // CPWStatusBar
 
@@ -57,7 +58,7 @@ private:
   bool m_bSTBFilterStatus;
   int m_bmHeight, m_bmWidth;
   CBitmap m_FilterBitmap;
-  std::vector<CBitmap*> m_ExcludeCaptureBitmaps;
+  CStateBitmapManager m_ExcludeCaptureBitmaps;
 
   UINT_PTR m_nHoverSBTimerID, m_nShowSBTimerID;
   CPoint m_HoverSBPoint;
