@@ -41,7 +41,8 @@ IMPLEMENT_DYNAMIC(CPWStatusBar, CStatusBar)
 
 CPWStatusBar::CPWStatusBar()
   : m_pSBToolTips(nullptr), m_bSTBFilterStatus(false), m_bUseToolTips(false),
-  m_bMouseInWindow(false), m_bFileReadOnly(false), m_bFileOpen(false)
+  m_bMouseInWindow(false), m_bFileReadOnly(false), m_bFileOpen(false),
+  m_ExcludeCaptureBitmaps(IDB_SCRCAP_FIRST, IDB_SCRCAP_LAST, IDB_SCRCAP_STATE_ERROR)
 {
 
   // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
@@ -56,29 +57,11 @@ CPWStatusBar::CPWStatusBar()
 
   WinUtil::ResizeBitmap(origBmp, m_FilterBitmap, m_bmWidth, m_bmHeight);
   origBmp.DeleteObject();
-
-  for (UINT nId = IDB_SCRCAP_FIRST; nId <= IDB_SCRCAP_LAST; nId++) {
-    origBmp.LoadBitmap(nId);
-    origBmp.GetBitmap(&bm);
-    int bmWidth = MulDiv(bm.bmWidth, dpi, 96);
-    int bmHeight = MulDiv(bm.bmHeight, dpi, 96);
-    ASSERT(bmWidth == m_bmWidth);
-    ASSERT(bmHeight == m_bmHeight);
-    UINT bmpIndex = nId - IDB_SCRCAP_FIRST;
-    m_ExcludeCaptureBitmaps.push_back(new CBitmap);
-    ASSERT(bmpIndex == m_ExcludeCaptureBitmaps.size() - 1);
-    WinUtil::ResizeBitmap(origBmp, *m_ExcludeCaptureBitmaps[bmpIndex], m_bmWidth, m_bmHeight);
-    origBmp.DeleteObject();
-  }
 }
 
 CPWStatusBar::~CPWStatusBar()
 {
   m_FilterBitmap.DeleteObject();
-  std::for_each(m_ExcludeCaptureBitmaps.begin(), m_ExcludeCaptureBitmaps.end(), [](CBitmap* pbmp) {
-    pbmp->DeleteObject();
-  });
-  m_ExcludeCaptureBitmaps.clear();
 }
 
 BEGIN_MESSAGE_MAP(CPWStatusBar, CStatusBar)
@@ -145,30 +128,20 @@ void CPWStatusBar::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     }
     case SB_SCR_CAP:
     {
-      UINT nId;
+      UINT nIdStateBitmap;
       UINT nStyle;
       int cxWidth;
-      GetPaneInfo(SB_SCR_CAP, nId, nStyle, cxWidth);
-      int nBitmapIndex = nId - IDB_SCRCAP_FIRST;
-      ASSERT(nBitmapIndex >= 0 && nBitmapIndex < m_ExcludeCaptureBitmaps.size());
-      if (nBitmapIndex < 0 || nBitmapIndex >= m_ExcludeCaptureBitmaps.size())
-        nBitmapIndex = IDB_SCRCAP_STATE_ERROR - IDB_SCRCAP_FIRST;
-      CBitmap& bmpCaptureState = *m_ExcludeCaptureBitmaps[nBitmapIndex];
+      GetPaneInfo(SB_SCR_CAP, nIdStateBitmap, nStyle, cxWidth);
 
-      CDC dc;
-      dc.Attach(lpDrawItemStruct->hDC);
+      LONG bmWidthDpi; // use m_bmWidth, remove after testing.
+      LONG bmHeightDpi;
+      m_ExcludeCaptureBitmaps.GetBitmapInfo(nIdStateBitmap, nullptr, &bmWidthDpi, &bmHeightDpi);
+
       CRect rect(&lpDrawItemStruct->rcItem);
       // Center bitmap.
       int ileft = rect.left + rect.Width() / 2 - m_bmWidth / 2;
       int itop = rect.top + rect.Height() / 2 - m_bmHeight / 2;
-      CDC srcDC;
-      srcDC.CreateCompatibleDC(NULL);
-      CBitmap* pOldBitmap = srcDC.SelectObject(&bmpCaptureState);
-      dc.BitBlt(ileft, itop, m_bmWidth, m_bmHeight, &srcDC, 0, 0, SRCCOPY);
-      srcDC.SelectObject(pOldBitmap);
-      // Detach from the CDC object, otherwise the hDC will be
-      // destroyed when the CDC object goes out of scope
-      dc.Detach();
+      m_ExcludeCaptureBitmaps.BitBltStateBitmap(nIdStateBitmap, ileft, itop, lpDrawItemStruct->hDC);
       return;
     }
   }
