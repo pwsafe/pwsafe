@@ -20,6 +20,7 @@
 #include "core/SysInfo.h"
 #include "os/dir.h"
 
+#include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 #include "PWDialog.h"
 
@@ -405,7 +406,7 @@ void WinUtil::SetWindowExcludeFromScreenCapture(HWND hwnd)
   ASSERT(::IsWindow(hwnd));
   if (!::IsWindow(hwnd))
     return;
-  bool bExcludeFromScreenCapture = PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture);
+  bool bExcludeFromScreenCapture = PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture) && !app.ForceAllowScreenCapture();
   DWORD dwNewDisplayAffinity = bExcludeFromScreenCapture ? WDA_EXCLUDEFROMCAPTURE : WDA_NONE;
   DWORD dwCurrentDisplayAffinity;
   if (::GetWindowDisplayAffinity(hwnd, &dwCurrentDisplayAffinity) && dwNewDisplayAffinity != dwCurrentDisplayAffinity)

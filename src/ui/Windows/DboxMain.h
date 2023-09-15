@@ -891,6 +891,8 @@ private:
 
   PWSclipboard m_clipboard;
 
+  bool m_bScreenCaptureStatusBarTimerEnabled;
+
   // Split up OnOK to support various ways to exit
   int SaveDatabaseOnExit(const SaveType saveType);
   void SavePreferencesOnExit();
@@ -931,6 +933,8 @@ private:
   void CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSpecial = false);
   void RestoreWindows(); // extended ShowWindow(SW_RESTORE), sort of
   void CancelPendingPasswordDialog();
+  void StartForceAllowCaptureBitmapBlinkTimer(bool bEnable);
+  void UpdateForceAllowCaptureHandling();
 
   void RemoveFromGUI(CItemData &ci);
   void AddToGUI(CItemData &ci);

@@ -74,7 +74,8 @@ ThisMfcApp::ThisMfcApp() :
   m_HotKeyPressed(false), m_bACCEL_Table_Created(false),
   m_ResLangID(0),
   m_noSysEnvWarnings(false),
-  m_bPermitTestdump(false)
+  m_bPermitTestdump(false),
+  m_bForceAllowScreenCapture(false)
 {
   // Get my Thread ID
   m_nBaseThreadID = AfxGetThread()->m_nThreadID;
@@ -880,6 +881,8 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone, bool &postMinim
           dialogOrientation = PWSprefs::WIDE;
         } else if ((*arg) == L"--do-auto") {
           dialogOrientation = PWSprefs::AUTO;
+        } else if ((*arg) == L"--allow-screen-capture") {
+          m_bForceAllowScreenCapture = true;
         } else {
           // unrecognized extended flag. Silently ignore.
         }

@@ -84,6 +84,7 @@ public:
   void GetLanguageFiles();
   void SetLanguage();
   void SetMinidumpUserStreams(const bool bOpen, const bool bRW, UserStream iStream = usAll);
+  bool ForceAllowScreenCapture() const { return m_bForceAllowScreenCapture; }
 
   DWORD GetOSMajorMinor() { return m_dwMajorMinor; }
 
@@ -128,6 +129,10 @@ private:
 
   // Used to check if called from a thread
   DWORD m_nBaseThreadID;
+
+  // Used as needed to detect user command-line override of
+  // any ExcludeFromScreenCapture preference in effect.
+  bool m_bForceAllowScreenCapture;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

@@ -158,7 +158,8 @@ DboxMain::DboxMain(PWScore &core, CWnd* pParent)
   m_ilastaction(0),
   m_iDBIndex(0), 
   m_DBLockedIndexColour(RGB(255, 255, 0)), m_DBUnlockedIndexColour(RGB(255, 255, 0)),
-  m_hMutexDBIndex(nullptr)
+  m_hMutexDBIndex(nullptr),
+  m_bScreenCaptureStatusBarTimerEnabled(false)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   m_hUser32 = HMODULE(pws_os::LoadLibrary(L"User32.dll", pws_os::loadLibraryTypes::SYS));
@@ -1160,8 +1161,6 @@ BOOL DboxMain::OnInitDialog()
       !PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
     HideIcon();
 
-  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
-
   // Set up UPDATE_UI data map.
   const int num_CommandTable_entries = _countof(m_UICommandTable);
   for (int i = 0; i < num_CommandTable_entries; i++)
@@ -1185,6 +1184,8 @@ BOOL DboxMain::OnInitDialog()
   SetDragbarToolTips();
   
   InitPasswordSafe();
+
+  UpdateForceAllowCaptureHandling();
 
   BOOL bOOI(TRUE);
   if (!m_bSetup) { // --setup flag not passed (common case)
@@ -1228,7 +1229,7 @@ BOOL DboxMain::OnInitDialog()
       bOOI = OpenOnInit();
     }
   } // --setup flag handling
-  
+
   // Check if user cancelled
   if (bOOI == FALSE) {
     PostQuitMessage(0);
@@ -3068,6 +3069,27 @@ LRESULT DboxMain::OnEndSession(WPARAM wParam, LPARAM )
   return 0L;
 }
 
+void DboxMain::StartForceAllowCaptureBitmapBlinkTimer(bool bEnable)
+{
+  const UINT BLINK_RATE_MSECS = 530;
+  m_bScreenCaptureStatusBarTimerEnabled = bEnable;
+  if (bEnable)
+    SetTimer(TIMER_FORCE_ALLOW_CAPTURE_BITMAP_BLINK, BLINK_RATE_MSECS, NULL);
+  else
+    KillTimer(TIMER_FORCE_ALLOW_CAPTURE_BITMAP_BLINK);
+}
+
+void DboxMain::UpdateForceAllowCaptureHandling()
+{
+  // Enable OS feature based on current prefs.
+  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
+  UpdateStatusBar();
+  // Setup DboxMain UI handling relating to ExcludeFromScreenCapture.
+  bool bExcludeFromScreenCapture = PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture);
+  bool bBitmapShouldBlink = bExcludeFromScreenCapture && app.ForceAllowScreenCapture();
+  StartForceAllowCaptureBitmapBlinkTimer(bBitmapShouldBlink);
+}
+
 void DboxMain::UpdateStatusBar()
 {
   if (m_toolbarsSetup != TRUE)
@@ -3159,6 +3181,16 @@ void DboxMain::UpdateStatusBar()
     m_StatusBar.GetPaneInfo(CPWStatusBar::SB_FILTER, uiID, uiStyle, iWidth);
     m_StatusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, IDS_BLANK, uiStyle | SBT_OWNERDRAW, iBMWidth);
   }
+
+  bool bExcludeFromScreenCapture = PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture);
+  int nIdCaptureBitmap;
+  if (bExcludeFromScreenCapture)
+    nIdCaptureBitmap = app.ForceAllowScreenCapture() ? IDB_SCRCAP_ALLOWED_FORCED1 : IDB_SCRCAP_EXCLUDED;
+  else
+    nIdCaptureBitmap = IDB_SCRCAP_ALLOWED;
+  m_StatusBar.GetPaneInfo(CPWStatusBar::SB_SCR_CAP, uiID, uiStyle, iWidth);
+  if (nIdCaptureBitmap != IDB_SCRCAP_ALLOWED_FORCED1 || !m_bScreenCaptureStatusBarTimerEnabled)
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_SCR_CAP, nIdCaptureBitmap, uiStyle |= SBT_OWNERDRAW, iBMWidth);
 
   m_StatusBar.Invalidate();
   m_StatusBar.UpdateWindow();

@@ -233,7 +233,7 @@ int DboxMain::RestoreSafe()
   ChangeOkUpdate();
   RefreshViews();
 
-  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
+  UpdateForceAllowCaptureHandling();
 
   return PWScore::SUCCESS;
 }
@@ -623,7 +623,7 @@ void DboxMain::OnOptions()
   // Just in case we reset this being enabled
   prefs->SetPref(PWSprefs::HotKeyEnabled, bAppHotKeyEnabled == TRUE);
 
-  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
+  UpdateForceAllowCaptureHandling();
 
   // Update Minidump user streams
   app.SetMinidumpUserStreams(m_bOpen, !IsDBReadOnly(), usPrefs);
