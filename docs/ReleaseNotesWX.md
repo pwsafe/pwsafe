@@ -26,6 +26,7 @@ Changes in 1.18
 
 New Features in 1.18
 --------------------
+* [GH882](https://github.com/pwsafe/pwsafe/issues/882) Yubikey polling can now be adjusted/diables via new --yubi-polling-interval command line argument (0 disables, othe value is polling interval in mS, default is 500).
 * [SF909](https://sourceforge.net/p/passwordsafe/feature-requests/909/) Search (Find) bar visibility is now persistent.
 
 
