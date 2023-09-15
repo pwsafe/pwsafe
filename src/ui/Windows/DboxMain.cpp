@@ -1185,6 +1185,25 @@ BOOL DboxMain::OnInitDialog()
   
   InitPasswordSafe();
 
+  if (app.ForceAllowScreenCapture()) {
+    const int DELAY_BEFORE_ALLOWING_ANSWER_SECONDS = 3;
+    CString cs_msgBeforeAllowedToClickOk;
+    CString cs_msgAfterAllowedToClickOk;
+    CString cs_title;
+    cs_msgBeforeAllowedToClickOk.LoadStringW(IDS_EXCLUDE_FROM_SCR_CAP_OVERRIDE_WARNING_BEFORE);
+    cs_msgAfterAllowedToClickOk.Format(
+      IDS_EXCLUDE_FROM_SCR_CAP_OVERRIDE_WARNING_AFTER
+    );
+    cs_title.LoadString(AFX_IDS_APP_TITLE);
+    CGeneralMsgBox().MessageBoxDelayAcceptAnswer(
+      cs_msgBeforeAllowedToClickOk,
+      cs_msgAfterAllowedToClickOk,
+      cs_title,
+      MB_OK | MB_ICONWARNING,
+      DELAY_BEFORE_ALLOWING_ANSWER_SECONDS
+    );
+  }
+
   UpdateForceAllowCaptureHandling();
 
   BOOL bOOI(TRUE);
