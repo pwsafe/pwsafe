@@ -91,8 +91,10 @@ SafeCombinationChangeDlg::SafeCombinationChangeDlg(wxWindow *parent, PWScore &co
   m_yubiMixin1.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
   m_yubiMixin2.SetupMixin(FindWindow(ID_YUBIBTN2), FindWindow(ID_YUBISTATUS));
   m_yubiMixin2.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
-  m_pollingTimer = new wxTimer(this, YubiMixin::POLLING_TIMER_ID);
-  m_pollingTimer->Start(2*YubiMixin::POLLING_INTERVAL); // 2 controls
+  if (YubiMixin::IsPollingEnabled()) {
+    m_pollingTimer = new wxTimer(this, YubiMixin::POLLING_TIMER_ID);
+    m_pollingTimer->Start(2*YubiMixin::GetPollingInterval()); // 2 controls
+  }
 #endif
 }
 

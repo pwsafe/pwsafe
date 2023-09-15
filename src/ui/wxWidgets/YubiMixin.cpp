@@ -25,6 +25,9 @@
 #include <iomanip>
 #include <sstream>
 
+bool YubiMixin::s_pollingEnabled = true;
+int YubiMixin::s_pollingInterval = YubiMixin::POLLING_INTERVAL_DEFAULT;
+
 void YubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
 {
   m_prompt1 = _("Click the button labeled 'Yubikey' in green"); // change via SetPrompt1
@@ -78,6 +81,23 @@ void YubiMixin::HandlePollingTimer()
   if (inserted != m_present) {
     m_present = inserted;
     UpdateStatus();
+  }
+}
+
+void YubiMixin::SetPollingInterval(int value) {
+  s_pollingEnabled = true;
+
+  if (value <= 0) {
+    s_pollingEnabled = false;
+  }
+  else if (value < YubiMixin::POLLING_INTERVAL_MIN /* ms */) {
+    s_pollingInterval = YubiMixin::POLLING_INTERVAL_MIN; // limit the polling interval to a minimum
+  }
+  else if (value > YubiMixin::POLLING_INTERVAL_MAX /* ms */) {
+    s_pollingInterval = YubiMixin::POLLING_INTERVAL_MAX; // limit the polling interval to a maximum
+  }
+  else {
+    s_pollingInterval = value;
   }
 }
 

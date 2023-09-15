@@ -83,8 +83,10 @@ SafeCombinationSetupDlg::SafeCombinationSetupDlg(wxWindow *parent, wxWindowID id
 ////@end SafeCombinationSetupDlg creation
 #ifndef NO_YUBI
   SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
-  m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
-  m_pollingTimer->Start(YubiMixin::POLLING_INTERVAL);
+  if (YubiMixin::IsPollingEnabled()) {
+    m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
+    m_pollingTimer->Start(YubiMixin::GetPollingInterval());
+  }
 #endif
 }
 
