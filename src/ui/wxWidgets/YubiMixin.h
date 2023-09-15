@@ -25,7 +25,7 @@ class wxWindow;
 class YubiMixin
 {
  public:
-  enum {POLLING_INTERVAL_MIN = 100, POLLING_INTERVAL_DEFAULT = 500, POLLING_INTERVAL_MAX = 60000}; // mSec
+  enum {POLLING_INTERVAL_OFF = 0, POLLING_INTERVAL_MIN = 100, POLLING_INTERVAL_DEFAULT = 500, POLLING_INTERVAL_MAX = 60000}; // mSec
   YubiMixin() : m_present(false), m_btn(nullptr), m_status(nullptr) {}
   ~YubiMixin() {}
 
@@ -55,7 +55,7 @@ class YubiMixin
 
   static void SetPollingInterval(int value);
   static int GetPollingInterval() { return s_pollingInterval; }
-  static bool IsPollingEnabled() { return s_pollingEnabled; }
+  static bool IsPollingEnabled() { return s_pollingInterval > YubiMixin::POLLING_INTERVAL_OFF; }
 
   enum { POLLING_TIMER_ID = 83 } ; 
   bool m_present; // key present?
@@ -65,7 +65,6 @@ class YubiMixin
   wxWindow *m_status;
   wxString m_prompt1;
   wxString m_prompt2;
-  static bool s_pollingEnabled;
   static int s_pollingInterval;
 };
 
