@@ -118,6 +118,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/ShowCompareDlg.h
             src/ui/Windows/SingleInstance.h
             src/ui/Windows/SMemFile.h
+            src/ui/Windows/StateBitmapManager.h
             src/ui/Windows/StdAfx.h
             src/ui/Windows/Subclass.h
             src/ui/Windows/SysColStatic.h
@@ -261,6 +262,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/ShowCompareDlg.cpp
             src/ui/Windows/SingleInstance.cpp
             src/ui/Windows/SMemFile.cpp
+            src/ui/Windows/StateBitmapManager.cpp
             src/ui/Windows/StdAfx.cpp
             src/ui/Windows/Subclass.cpp
             src/ui/Windows/SysColStatic.cpp
