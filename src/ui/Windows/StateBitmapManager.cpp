@@ -6,8 +6,6 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 
-#pragma once
-
 #include "stdafx.h"
 #include "winutils.h"
 #include "StateBitmapManager.h"
