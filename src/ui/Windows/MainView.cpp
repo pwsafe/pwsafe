@@ -2569,18 +2569,35 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     // once a day, we want to check the expired entries list
     CheckExpireList();
   } else if (nIDEvent == TIMER_FORCE_ALLOW_CAPTURE_BITMAP_BLINK) {
+
     UINT nId;
     UINT uiStyle;
     int iWidth;
-    if (PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture) && app.ForceAllowScreenCapture()) {
-      m_StatusBar.GetPaneInfo(CPWStatusBar::SB_SCR_CAP, nId, uiStyle, iWidth);
-      UINT nIdNextBitmap = nId == IDB_SCRCAP_ALLOWED_FORCED2 ? 
+    m_StatusBar.GetPaneInfo(CPWStatusBar::SB_SCR_CAP, nId, uiStyle, iWidth);
+
+    m_lScrCapStatusBarBlinkRemainingMsecs -= CStateBitmapControl::BLINK_RATE_MSECS;
+    m_lScrCapStatusBarBlinkRemainingMsecs = max(m_lScrCapStatusBarBlinkRemainingMsecs, (LONG)0);
+
+    UINT nIdNextBitmap;
+    if (
+      m_lScrCapStatusBarBlinkRemainingMsecs > 0 &&
+      PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture) &&
+      app.ForceAllowScreenCapture()
+    ) {
+      // Continue blinking that force override is in effect.
+      nIdNextBitmap = nId == IDB_SCRCAP_ALLOWED_FORCED2 ? 
         IDB_SCRCAP_ALLOWED_FORCED1 : IDB_SCRCAP_ALLOWED_FORCED2;
-      m_StatusBar.SetPaneInfo(CPWStatusBar::SB_SCR_CAP, nIdNextBitmap, uiStyle |= SBT_OWNERDRAW, m_StatusBar.GetBitmapWidth());
-      m_StatusBar.Invalidate();
-      m_StatusBar.UpdateWindow();
-    } else
+    } else {
+      // Stop blinking, leaving a non-blinking status for the user.
+      nIdNextBitmap = IDB_SCRCAP_ALLOWED_FORCED1;
       KillTimer(TIMER_FORCE_ALLOW_CAPTURE_BITMAP_BLINK);
+      m_bScreenCaptureStatusBarTimerEnabled = false;
+      m_lScrCapStatusBarBlinkRemainingMsecs = 0;
+    }
+
+    m_StatusBar.SetPaneInfo(CPWStatusBar::SB_SCR_CAP, nIdNextBitmap, uiStyle |= SBT_OWNERDRAW, m_StatusBar.GetBitmapWidth());
+    m_StatusBar.Invalidate();
+    m_StatusBar.UpdateWindow();
   }
 }
 

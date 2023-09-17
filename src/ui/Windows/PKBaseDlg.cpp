@@ -80,6 +80,9 @@ void CPKBaseDlg::DoDataExchange(CDataExchange *pDX)
 
   DDX_Control(pDX, IDC_YUBI_PROGRESS, m_yubi_timeout);
   DDX_Control(pDX, IDC_YUBI_STATUS, m_yubi_status);
+
+  if (GetDlgItem(IDC_SCRCAP_STATE_CTL) != NULL)
+    DDX_Control(pDX, IDC_SCRCAP_STATE_CTL, m_scrCapStateCtl);
 }
 
 BEGIN_MESSAGE_MAP(CPKBaseDlg, CPWDialog)

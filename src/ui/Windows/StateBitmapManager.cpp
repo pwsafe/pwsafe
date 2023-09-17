@@ -9,14 +9,17 @@
 #pragma once
 
 #include "stdafx.h"
-
-#include "resource.h"
 #include "winutils.h"
-
 #include "StateBitmapManager.h"
 
-CStateBitmapManager::CStateBitmapManager(UINT nIdBitmapFirst, UINT nIdBitmapLast, UINT nIdBitmapError)
+CStateBitmapManager::CStateBitmapManager(
+  UINT nIdBitmapFirst,
+  UINT nIdBitmapLast,
+  UINT nIdBitmapError,
+  UINT rgbTransparentColor
+)
   :
+  m_rgbTransparentColor(rgbTransparentColor),
   m_idFirst(nIdBitmapFirst),
   m_idLast(nIdBitmapLast),
   m_idError(nIdBitmapError)
@@ -31,14 +34,19 @@ CStateBitmapManager::CStateBitmapManager(UINT nIdBitmapFirst, UINT nIdBitmapLast
   for (UINT nId = m_idFirst; nId <= m_idLast; nId++) {
     CBitmap origBmp;
     origBmp.LoadBitmap(nId);
+
     BITMAP bm;
     origBmp.GetBitmap(&bm);
-    int bmWidth = MulDiv(bm.bmWidth, dpi, 96);
-    int bmHeight = MulDiv(bm.bmHeight, dpi, 96);
+
+    int bmWidthDpi = MulDiv(bm.bmWidth, dpi, 96);
+    int bmHeightDpi = MulDiv(bm.bmHeight, dpi, 96);
+
     UINT bmpIndex = nId - m_idFirst;
     m_stateBitmaps.push_back(new CBitmap);
     ASSERT(bmpIndex == m_stateBitmaps.size() - 1);
-    WinUtil::ResizeBitmap(origBmp, *m_stateBitmaps[bmpIndex], bmWidth, bmHeight);
+
+    WinUtil::ResizeBitmap(origBmp, *m_stateBitmaps[bmpIndex], bmWidthDpi, bmHeightDpi);
+
     origBmp.DeleteObject();
   }
 }
@@ -55,10 +63,10 @@ CStateBitmapManager::~CStateBitmapManager()
 
 CBitmap& CStateBitmapManager::GetStateBitmap(UINT nIdBitmap)
 {
-  int nBitmapIndex = nIdBitmap - IDB_SCRCAP_FIRST;
+  int nBitmapIndex = nIdBitmap - m_idFirst;
   ASSERT(nBitmapIndex >= 0 && nBitmapIndex < m_stateBitmaps.size());
   if (nBitmapIndex < 0 || nBitmapIndex >= m_stateBitmaps.size())
-    nBitmapIndex = m_idError - IDB_SCRCAP_FIRST;
+    nBitmapIndex = m_idError - m_idFirst;
   return *m_stateBitmaps[nBitmapIndex];
 }
 
@@ -104,10 +112,17 @@ void CStateBitmapManager::BitBltStateBitmap(UINT nIdBitmap, int xDest, int yDest
 
   CDC srcDC;
   srcDC.CreateCompatibleDC(NULL);
+
   CBitmap* pOldBitmap = srcDC.SelectObject(&stateBitmap);
+
   CDC dc;
   dc.Attach(hDC);
-  dc.BitBlt(xDest, yDest, bmWidthDpi, bmHeightDpi, &srcDC, 0, 0, SRCCOPY);
+
+  if (m_rgbTransparentColor == RGB_COLOR_NOT_TRANSPARENT)
+    dc.BitBlt(xDest, yDest, bmWidthDpi, bmHeightDpi, &srcDC, 0, 0, SRCCOPY);
+  else
+    dc.TransparentBlt(xDest, yDest, bmWidthDpi, bmHeightDpi, &srcDC, 0, 0, bmWidthDpi, bmHeightDpi, m_rgbTransparentColor);
+
   dc.Detach();
   srcDC.SelectObject(pOldBitmap);
 }

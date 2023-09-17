@@ -31,6 +31,7 @@
 #include "AdvancedDlg.h"
 #include "FontsDialog.h"
 #include "SystemTray.h"
+#include "ScreenCaptureStateControl.h"
 
 #include "core/UIinterface.h"
 #include "core/PWScore.h"
@@ -892,6 +893,7 @@ private:
   PWSclipboard m_clipboard;
 
   bool m_bScreenCaptureStatusBarTimerEnabled;
+  LONG m_lScrCapStatusBarBlinkRemainingMsecs;
 
   // Split up OnOK to support various ways to exit
   int SaveDatabaseOnExit(const SaveType saveType);

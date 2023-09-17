@@ -13,6 +13,7 @@
 #include "ThisMfcApp.h"
 #include "PWStatusBar.h"
 #include "winutils.h"
+#include "ScreenCaptureStateControl.h"
 
 #include "os/debug.h"
 
@@ -41,8 +42,7 @@ IMPLEMENT_DYNAMIC(CPWStatusBar, CStatusBar)
 
 CPWStatusBar::CPWStatusBar()
   : m_pSBToolTips(nullptr), m_bSTBFilterStatus(false), m_bUseToolTips(false),
-  m_bMouseInWindow(false), m_bFileReadOnly(false), m_bFileOpen(false),
-  m_ExcludeCaptureBitmaps(IDB_SCRCAP_FIRST, IDB_SCRCAP_LAST, IDB_SCRCAP_STATE_ERROR)
+  m_bMouseInWindow(false), m_bFileReadOnly(false), m_bFileOpen(false)
 {
 
   // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
@@ -184,7 +184,7 @@ bool CPWStatusBar::ShowToolTip(int nPane, const bool bVisible)
     IDS_SB_TT_MODIFIED   /* SB_MODIFIED        */,
     IDS_SB_TT_MODE       /* SB_READONLY        */,
     IDS_SB_TT_NUMENTRIES /* SB_NUM_ENT         */,
-    IDS_SB_TT_SCR_CAP    /* SB_SCR_CAP         */,
+    IDS_SCRCAP_TT_OVERRIDE_CMDLINE    /* SB_SCR_CAP         */,
     IDS_SB_TT_FILTER     /* SB_FILTER          */};
 
   if (!m_bUseToolTips || !m_bFileOpen)
@@ -195,13 +195,18 @@ bool CPWStatusBar::ShowToolTip(int nPane, const bool bVisible)
     return false;
   }
 
+  UINT nIdToolTipString = uiMsg[nPane];
+
   // Don't show Mode change tooltip if file is R/O on disk
-  if (uiMsg[nPane] == IDS_SB_TT_MODE && m_bFileReadOnly) {
+  if (nIdToolTipString == IDS_SB_TT_MODE && m_bFileReadOnly) {
     return false;
   }
 
+  if (nPane == SB_SCR_CAP)
+    nIdToolTipString = CScreenCaptureStateControl::GetCurrentCaptureStateToolTipStringId();
+
   CString cs_ToolTip;
-  cs_ToolTip.LoadString(uiMsg[nPane]);
+  cs_ToolTip.LoadString(nIdToolTipString);
   m_pSBToolTips->SetWindowText(cs_ToolTip);
 
   CPoint pt;

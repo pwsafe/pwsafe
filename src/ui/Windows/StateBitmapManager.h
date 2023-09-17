@@ -13,13 +13,23 @@
 class CStateBitmapManager
 {
 public:
-  CStateBitmapManager(UINT nIdBitmapFirst, UINT nIdBitmapLast, UINT nIdBitmapError);
+  static const UINT RGB_COLOR_NOT_TRANSPARENT = ((UINT)-1);
+public:
+  CStateBitmapManager(
+    UINT nIdBitmapFirst,
+    UINT nIdBitmapLast,
+    UINT nIdBitmapError,
+    UINT rgbTransparentColor = CStateBitmapManager::RGB_COLOR_NOT_TRANSPARENT
+  );
   virtual ~CStateBitmapManager();
   CBitmap& GetStateBitmap(UINT nIdBitmap);
   void GetBitmapInfo(UINT nIdBitmap, BITMAP* pBmpInfo = nullptr, LONG* pBmWidthDpi = nullptr, LONG* pBmHeightDpi = nullptr);
   CBitmap& GetBitmapAndInfo(UINT nIdBitmap, BITMAP* pBmpInfo = nullptr, LONG* pBmWidthDpi = nullptr, LONG* pBmHeightDpi = nullptr);
   void BitBltStateBitmap(UINT nIdBitmap, int xDest, int yDest, HDC hDC);
+  UINT GetFirstId() const { return m_idFirst; }
+  UINT GetLastId() const { return m_idLast; }
 private:
+  UINT m_rgbTransparentColor;
   UINT m_idFirst;
   UINT m_idLast;
   UINT m_idError;
