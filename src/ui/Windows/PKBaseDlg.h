@@ -16,6 +16,7 @@
 #include "PWDialog.h"
 #include "ControlExtns.h"
 #include "YubiMixin.h"
+#include "ScreenCaptureStateControl.h"
 
 #include <limits>
 
@@ -46,6 +47,7 @@ protected:
   static const wchar_t PSSWDCHAR;
   int m_index;
   bool m_bVKAvailable;
+  CScreenCaptureStateControl m_scrCapStateCtl;
 
   virtual BOOL OnInitDialog();
   virtual BOOL PreTranslateMessage(MSG *pMsg);

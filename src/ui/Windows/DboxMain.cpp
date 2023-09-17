@@ -159,7 +159,8 @@ DboxMain::DboxMain(PWScore &core, CWnd* pParent)
   m_iDBIndex(0), 
   m_DBLockedIndexColour(RGB(255, 255, 0)), m_DBUnlockedIndexColour(RGB(255, 255, 0)),
   m_hMutexDBIndex(nullptr),
-  m_bScreenCaptureStatusBarTimerEnabled(false)
+  m_bScreenCaptureStatusBarTimerEnabled(false),
+  m_lScrCapStatusBarBlinkRemainingMsecs(0)
 {
   // Need to do the following as using the direct calls will fail for Windows versions before Vista
   m_hUser32 = HMODULE(pws_os::LoadLibrary(L"User32.dll", pws_os::loadLibraryTypes::SYS));
@@ -3090,12 +3091,14 @@ LRESULT DboxMain::OnEndSession(WPARAM wParam, LPARAM )
 
 void DboxMain::StartForceAllowCaptureBitmapBlinkTimer(bool bEnable)
 {
-  const UINT BLINK_RATE_MSECS = 530;
   m_bScreenCaptureStatusBarTimerEnabled = bEnable;
-  if (bEnable)
-    SetTimer(TIMER_FORCE_ALLOW_CAPTURE_BITMAP_BLINK, BLINK_RATE_MSECS, NULL);
-  else
+  if (bEnable) {
+    SetTimer(TIMER_FORCE_ALLOW_CAPTURE_BITMAP_BLINK, CStateBitmapControl::BLINK_RATE_MSECS, NULL);
+    m_lScrCapStatusBarBlinkRemainingMsecs = CScreenCaptureStateControl::BLINK_DURATION_SECONDS * 1000;
+  } else {
     KillTimer(TIMER_FORCE_ALLOW_CAPTURE_BITMAP_BLINK);
+    m_lScrCapStatusBarBlinkRemainingMsecs = 0;
+  }
 }
 
 void DboxMain::UpdateForceAllowCaptureHandling()

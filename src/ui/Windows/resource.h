@@ -400,14 +400,14 @@
 #define IDB_BROWSEALT_CLASSIC           562
 #define IDB_BROWSEALT_NEW               563
 #define IDB_BROWSEALT_NEW_D             564
-#define IDB_SCRCAP_FIRST               565
-#define IDB_SCRCAP_BASE_EMPTY          565
-#define IDB_SCRCAP_ALLOWED             566
-#define IDB_SCRCAP_ALLOWED_FORCED1     567
-#define IDB_SCRCAP_ALLOWED_FORCED2     568
-#define IDB_SCRCAP_EXCLUDED            569
-#define IDB_SCRCAP_STATE_ERROR         570
-#define IDB_SCRCAP_LAST                570
+#define IDB_SCRCAP_FIRST                565
+#define IDB_SCRCAP_BASE_EMPTY           565
+#define IDB_SCRCAP_ALLOWED              566
+#define IDB_SCRCAP_ALLOWED_FORCED1      567
+#define IDB_SCRCAP_ALLOWED_FORCED2      568
+#define IDB_SCRCAP_EXCLUDED             569
+#define IDB_SCRCAP_STATE_ERROR          570
+#define IDB_SCRCAP_LAST                 570
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -916,6 +916,7 @@
 #define IDC_EXCLUDE_FROM_SCR_CAP        1603
 #define IDC_EXCLUDE_FROM_SCR_CAP_HELP   1604
 #define IDC_TIMEOUT_ENABLE_CONTROLS     1610
+#define IDC_SCRCAP_STATE_CTL            1611
 
 // Next default values for new objects
 // 
@@ -923,7 +924,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        571
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1611
+#define _APS_NEXT_CONTROL_VALUE         1612
 #define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif
