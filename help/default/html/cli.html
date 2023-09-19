@@ -105,6 +105,14 @@ This will prevent <b>Password Safe</b> validating databases automatically when t
 opened.  Some validation is always required e.g. uniqueness of the entry's ID and the
 group/title/username combination.</li>
 
+<li><b>--allow-screen-capture</b><br>
+    As described in the <a href="security_tab.html">Security Tab</a> page, <b>Password Safe</b> by default hides itself from Windows' screen capture function.
+    However, some programs, such as remote desktop viewers and screen readers for the visually impaired, rely on the screen capture capability to function. If you're using such programs on a regular basis, you can disable this by starting <b>Password Safe</b>
+    with this command line flag.
+    To protect against an adversary surreptitiously adding this flag, <b>Password Safe</b> displays a short notice when starting, informing you that the option has been set.
+    In addition, the "Capture Protection" indicator in the opening and main windows will be in red.
+</li>
+
 <li><b>--testdump</b><br>
 This allows testers to verify the mini-dump production when <b>Password Safe</b> has
 a problem to help developers resolve the issue.</li>
