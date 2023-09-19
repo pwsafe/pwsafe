@@ -89,7 +89,6 @@ BEGIN_MESSAGE_MAP(COptionsSecurity, COptions_PropertyPage)
   ON_BN_CLICKED(IDC_LOCK_TIMER, OnLockOnIdleTimeout)
 
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
-  ON_BN_CLICKED(IDC_EXCLUDE_FROM_SCR_CAP, OnBnClickedExcludeFromScreenCapture)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -343,12 +342,4 @@ HBRUSH COptionsSecurity::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
   }
 
   return hbr;
-}
-
-void COptionsSecurity::OnBnClickedExcludeFromScreenCapture()
-{
-  CButton& excludeFromScreenCaptureCheckBox = *((CButton*)GetDlgItem(IDC_EXCLUDE_FROM_SCR_CAP));
-  bool bIsChecked = excludeFromScreenCaptureCheckBox.GetCheck() == BST_CHECKED;
-  if (bIsChecked && CGeneralMsgBox().AfxMessageBox(IDS_EXCLUDE_FROM_SCR_CAP_WARNING, MB_YESNO | MB_DEFBUTTON2 | MB_ICONWARNING) != IDYES)
-    excludeFromScreenCaptureCheckBox.SetCheck(BST_UNCHECKED);
 }
