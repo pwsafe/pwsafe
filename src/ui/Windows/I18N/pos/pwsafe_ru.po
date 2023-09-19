@@ -3325,6 +3325,10 @@ msgstr "Пример:"
 msgid "Exclude from clipboard history"
 msgstr "Не сохранять в журнале буфера обмена"
 
+#. Resource IDs: (1603)
+msgid "Exclude from screen capture"
+msgstr ""
+
 #. Resource IDs: (1004, 32021)
 msgid "Exit"
 msgstr "Выход"
@@ -3903,6 +3907,10 @@ msgstr "Шестнадцатеричные цифры"
 #. Resource IDs: (5290)
 msgid "Hexadecimal is mutually exclusive to all other options."
 msgstr "Опция «шестнадцатеричные цифры» несовместима с другими опциями."
+
+#. Resource IDs: (5122)
+msgid "Hide Password Safe from screen capture and related apps."
+msgstr ""
 
 #. Resource IDs: (1426)
 msgid "Hide System Tray icon (Hot Key MUST be active)"
@@ -5325,6 +5333,10 @@ msgstr "Password Safe"
 msgid "Password Safe - <Untitled Restored Backup>"
 msgstr "Password Safe — <Восстановлено из резервной копии>"
 
+#. Resource IDs: (132)
+msgid "Password Safe - Enter Master Password"
+msgstr ""
+
 # подстановка "The %s will override this menu item shortcut"
 #. Resource IDs: (5955)
 msgid "Password Safe Application HotKey"
@@ -6048,6 +6060,27 @@ msgstr "&Набор:"
 #. Resource IDs: (3319)
 msgid "Schema does not have a version number."
 msgstr "В схеме не указан номер версии."
+
+#. Resource IDs: (6064)
+msgid "Screen capture protection disabled by command line.\n\nContact support if this is unexpected.\n\nClick OK to continue."
+msgstr ""
+
+#. Resource IDs: (6063)
+#, c-format
+msgid "Screen capture protection disabled by command line.\n\nContact support if this is unexpected.\n\nYou can click OK to continue in %d seconds."
+msgstr ""
+
+#. Resource IDs: (6072)
+msgid "Screen capture protection has been overridden by command line."
+msgstr ""
+
+#. Resource IDs: (6071)
+msgid "Screen capture protection is off."
+msgstr ""
+
+#. Resource IDs: (6070)
+msgid "Screen capture protection is on."
+msgstr ""
 
 #. Resource IDs: (5276)
 #, c-format
