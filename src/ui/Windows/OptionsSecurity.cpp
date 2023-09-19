@@ -108,6 +108,7 @@ BOOL COptionsSecurity::OnInitDialog()
   if (!GetMainDlg()->IsDBOpen() || GetMainDlg()->IsDBReadOnly()) {
     GetDlgItem(IDC_COPYPSWDURL)->EnableWindow(FALSE);
     GetDlgItem(IDC_EXCLUDE_FROM_CB_HIST)->EnableWindow(FALSE);
+    GetDlgItem(IDC_EXCLUDE_FROM_SCR_CAP)->EnableWindow(FALSE);
     GetDlgItem(IDC_LOCK_TIMER)->EnableWindow(FALSE);
     GetDlgItem(IDC_IDLESPIN)->EnableWindow(FALSE);
     GetDlgItem(IDC_IDLE_TIMEOUT)->EnableWindow(FALSE);
@@ -336,6 +337,7 @@ HBRUSH COptionsSecurity::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
     case IDC_STATIC_HASHITER:
     case IDC_STATIC_HASHITER_MIN:
     case IDC_STATIC_HASHITER_MAX:
+    case IDC_EXCLUDE_FROM_SCR_CAP:
       pDC->SetTextColor(CR_DATABASE_OPTIONS);
       pDC->SetBkMode(TRANSPARENT);
       break;
