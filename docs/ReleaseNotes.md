@@ -5,12 +5,13 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
 
-PasswordSafe 3.64.0 Release XXX 2023
-====================================
+PasswordSafe 3.64.0pre Release Sept 2023
+========================================
 
 Bugs fixed in 3.64.0
 --------------------
 
+* [GH1025](https://github.com/pwsafe/pwsafe/issues/1025) PasswordSafe database-specific options now reset to default when a database is closed.
 * [SF1577](https://sourceforge.net/p/passwordsafe/bugs/1577/) Changes to font preferences are now saved immediately.
 * [GH1021](https://github.com/pwsafe/pwsafe/issues/1021) Invalid values in System Option no longer trigger double error messages and crash.
 * [GH1014](https://github.com/pwsafe/pwsafe/issues/1014) Focus is now set correctly after unlock when not using system tray.
@@ -18,6 +19,7 @@ Bugs fixed in 3.64.0
 
 New features in 3.64.0
 ----------------------
+* [GH1022](https://github.com/pwsafe/pwsafe/issues/1022) By default, PasswordSafe windows no longer appear in Windows screen captures. This is user-configurable, see online help for details.
 * [SF909](https://sourceforge.net/p/passwordsafe/feature-requests/909/) Search (Find) bar visibility is now persistent.
 
 PasswordSafe 3.63.0 Release May 2023
