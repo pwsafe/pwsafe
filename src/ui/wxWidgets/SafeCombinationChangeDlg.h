@@ -147,7 +147,6 @@ private:
 #ifndef NO_YUBI
   // try having 2 mixin objects to handle things:
   YubiMixin m_yubiMixin1, m_yubiMixin2;
-  wxTimer* m_pollingTimer = nullptr; // for Yubi
   bool m_IsYubiProtected = false; // set if 2nd Yubi button clicked. Clear YubiSK on OK if false.
 #endif
 };

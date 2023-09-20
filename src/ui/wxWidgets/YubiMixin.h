@@ -26,10 +26,10 @@ class YubiMixin
 {
  public:
   enum {POLLING_INTERVAL_OFF = 0, POLLING_INTERVAL_MIN = 100, POLLING_INTERVAL_DEFAULT = 500, POLLING_INTERVAL_MAX = 60000}; // mSec
-  YubiMixin() : m_present(false), m_btn(nullptr), m_status(nullptr) {}
-  ~YubiMixin() {}
+  YubiMixin() : m_present(false), m_pollingTimer(nullptr), m_btn(nullptr), m_status(nullptr) {}
+  ~YubiMixin() { delete m_pollingTimer; }
 
-  void SetupMixin(wxWindow *btn, wxWindow *status);
+  void SetupMixin(wxEvtHandler *eventHandler, wxWindow *btn, wxWindow *status, int timerId = POLLING_TIMER_ID);
   bool yubiExists() const;
   void yubiInserted(void);
   void yubiRemoved(void);
@@ -57,10 +57,11 @@ class YubiMixin
   static int GetPollingInterval() { return s_pollingInterval; }
   static bool IsPollingEnabled() { return s_pollingInterval > YubiMixin::POLLING_INTERVAL_OFF; }
 
-  enum { POLLING_TIMER_ID = 83 } ; 
-  bool m_present; // key present?
+  enum { POLLING_TIMER_ID = 83, POLLING_TIMER2_ID = 84 };  
 
  private:
+  bool m_present; // key present?
+  wxTimer* m_pollingTimer;
   wxWindow *m_btn;
   wxWindow *m_status;
   wxString m_prompt1;

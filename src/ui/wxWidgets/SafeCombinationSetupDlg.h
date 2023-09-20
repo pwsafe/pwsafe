@@ -116,10 +116,6 @@ protected:
 #endif
 ////@end SafeCombinationSetupDlg member variables
  private:
-
-#ifndef NO_YUBI
-  wxTimer* m_pollingTimer = nullptr; // for Yubi, but can't go into mixin :-(
-#endif
   wxString m_password;
   wxString m_verify;
 };

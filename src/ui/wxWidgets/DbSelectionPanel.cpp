@@ -44,7 +44,7 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
                                     PWScore* core,
                                     unsigned rowsep,
                                     int buttonConfirmationId,
-                                    const wxString filename) : wxPanel(parent), m_pollingTimer(nullptr),
+                                    const wxString filename) : wxPanel(parent),
                                                                 m_filepicker(nullptr),
                                                                 m_sc(nullptr),
                                                                 m_bAutoValidate(autoValidate),
@@ -112,21 +112,12 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
   SetSizerAndFit(panelSizer);
 
 #ifndef NO_YUBI
-  SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
+  SetupMixin(this, FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
   Bind(wxEVT_TIMER, &DbSelectionPanel::OnPollingTimer, this);
-  if (YubiMixin::IsPollingEnabled()) {
-    m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
-    m_pollingTimer->Start(YubiMixin::GetPollingInterval());
-  }
 #endif
   
   //The parent window must call our TransferDataToWindow and TransferDataFromWindow
   m_parent->SetExtraStyle(m_parent->GetExtraStyle() | wxWS_EX_VALIDATE_RECURSIVELY);
-}
-
-DbSelectionPanel::~DbSelectionPanel()
-{
-  delete m_pollingTimer;
 }
 
 void DbSelectionPanel::SelectCombinationText()

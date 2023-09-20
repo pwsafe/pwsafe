@@ -92,11 +92,7 @@ SafeCombinationPromptDlg::SafeCombinationPromptDlg(wxWindow *parent, PWScore &co
   Centre();
 ////@end SafeCombinationPromptDlg creation
 #ifndef NO_YUBI
-  SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
-  if (YubiMixin::IsPollingEnabled()) {
-    m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
-    m_pollingTimer->Start(YubiMixin::GetPollingInterval());
-  }
+  SetupMixin(this, FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
 #endif
 }
 
@@ -119,9 +115,6 @@ SafeCombinationPromptDlg::~SafeCombinationPromptDlg()
 {
 ////@begin SafeCombinationPromptDlg destruction
 ////@end SafeCombinationPromptDlg destruction
-#ifndef NO_YUBI
-  delete m_pollingTimer;
-#endif
 }
 
 /*!

@@ -27,7 +27,7 @@
 
 int YubiMixin::s_pollingInterval = YubiMixin::POLLING_INTERVAL_DEFAULT;
 
-void YubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
+void YubiMixin::SetupMixin(wxEvtHandler *eventHandler, wxWindow *btn, wxWindow *status, int timerId)
 {
   m_prompt1 = _("Click the button labeled 'Yubikey' in green"); // change via SetPrompt1
   m_prompt2 = _("Now touch your YubiKey's button"); // change via SetPrompt2
@@ -37,6 +37,10 @@ void YubiMixin::SetupMixin(wxWindow *btn, wxWindow *status)
   // Hide Yubi controls if user doesn't have one:
   if (m_btn != nullptr) m_btn->Show(yubiExists());
   if (m_status != nullptr) m_status->Show(yubiExists());
+  if (IsPollingEnabled()) {
+    m_pollingTimer = new wxTimer(eventHandler, timerId);
+    m_pollingTimer->Start(GetPollingInterval());
+  }
 }
 
 bool YubiMixin::yubiExists() const

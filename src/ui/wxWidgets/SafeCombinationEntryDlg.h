@@ -162,7 +162,6 @@ private:
   bool m_postInitDone = false;
 
 #ifndef NO_YUBI
-  wxTimer* m_pollingTimer = nullptr; // for Yubi, but can't go into mixin :-(
   // Not strictly yubi, but refactored to work with it:
 #endif
   void ProcessPhrase();
