@@ -132,7 +132,7 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
    STR("use specified configuration file instead of default"),
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
 #ifndef NO_YUBI
-  {wxCMD_LINE_OPTION, STR("y"), STR("yubi-polling-interval"),
+  {wxCMD_LINE_OPTION, nullptr, STR("yubi-polling-interval"),
    STR("use specified polling interval (in ms) for YubiKey instead of default (500ms), or 0 to disable polling."),
    wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL},
 #endif
@@ -353,7 +353,7 @@ bool PWSafeApp::OnInit()
   bool cmd_cfg = cmdParser.Found(wxT("g"), &cfg_file);
 #ifndef NO_YUBI
   long int yubi_polling_interval;
-  bool cmd_yubi_polling_interval = cmdParser.Found(wxT("y"), &yubi_polling_interval);
+  bool cmd_yubi_polling_interval = cmdParser.Found(wxT("yubi-polling-interval"), &yubi_polling_interval);
 #endif
   bool file_in_cmd = false;
   size_t count = cmdParser.GetParamCount();
