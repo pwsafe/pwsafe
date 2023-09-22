@@ -49,7 +49,7 @@ public:
   DbSelectionPanel(wxWindow* parent, const wxString& filePrompt,
                     const wxString& filePickerCtrlTitle, bool autoValidate,
                     PWScore* core, unsigned rowsep, int buttonConfirmationId = wxID_OK, const wxString filename = "");
-  ~DbSelectionPanel();
+  ~DbSelectionPanel() {};
 
   //Set the keyboard focus on combination entry box and select-all
   void SelectCombinationText();
@@ -75,7 +75,6 @@ private:
   void OnPollingTimer(wxTimerEvent& event);
 #endif
 
-  wxTimer* m_pollingTimer;
   wxFilePickerCtrl* m_filepicker;
   SafeCombinationCtrl* m_sc;
   bool m_bAutoValidate;

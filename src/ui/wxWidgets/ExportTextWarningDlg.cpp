@@ -49,7 +49,7 @@ END_EVENT_TABLE()
 ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow *parent) : wxDialog(parent, wxID_ANY, wxEmptyString,
                       wxDefaultPosition, wxDefaultSize,
                       wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),
-  selCriteria(new SelectionCriteria), m_combinationEntry(nullptr), m_pollingTimer(nullptr)
+  selCriteria(new SelectionCriteria), m_combinationEntry(nullptr)
 {
   wxASSERT(!parent || parent->IsTopLevel());
 
@@ -157,18 +157,13 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow *parent) : wxDialog(
 
   SetSizerAndFit(mainSizer);
 #ifndef NO_YUBI
-  SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
-  if (YubiMixin::IsPollingEnabled()) {
-    m_pollingTimer = new wxTimer(this, POLLING_TIMER_ID);
-    m_pollingTimer->Start(YubiMixin::GetPollingInterval());
-  }
+  SetupMixin(this, FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
 #endif
 }
 
 ExportTextWarningDlgBase::~ExportTextWarningDlgBase()
 {
   delete selCriteria;
-  delete m_pollingTimer;
 }
 
 void ExportTextWarningDlgBase::OnAdvancedSelection( wxCommandEvent& evt )

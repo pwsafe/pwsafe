@@ -50,7 +50,6 @@ private:
 #endif
   const wxString defDelim;
   SafeCombinationCtrl* m_combinationEntry;
-  wxTimer* m_pollingTimer; // for Yubi, but can't go into mixin :-(
 };
 
 template <class DlgType>

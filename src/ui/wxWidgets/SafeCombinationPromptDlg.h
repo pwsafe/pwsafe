@@ -132,7 +132,6 @@ protected:
 #ifndef NO_YUBI
   wxBitmapButton* m_YubiBtn = nullptr;
   wxStaticText* m_yubiStatusCtrl = nullptr;
-  wxTimer* m_pollingTimer = nullptr; // for Yubi, but can't go into mixin :-(
 #endif
 
   void ProcessPhrase();

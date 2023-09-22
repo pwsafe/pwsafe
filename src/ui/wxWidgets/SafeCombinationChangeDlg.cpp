@@ -87,14 +87,10 @@ SafeCombinationChangeDlg::SafeCombinationChangeDlg(wxWindow *parent, PWScore &co
   Centre();
 ////@end SafeCombinationChangeDlg creation
 #ifndef NO_YUBI
-  m_yubiMixin1.SetupMixin(FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS));
+  m_yubiMixin1.SetupMixin(this, FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS), YubiMixin::POLLING_TIMER_ID);
   m_yubiMixin1.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
-  m_yubiMixin2.SetupMixin(FindWindow(ID_YUBIBTN2), FindWindow(ID_YUBISTATUS));
+  m_yubiMixin2.SetupMixin(this, FindWindow(ID_YUBIBTN2), FindWindow(ID_YUBISTATUS), YubiMixin::POLLING_TIMER2_ID);
   m_yubiMixin2.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
-  if (YubiMixin::IsPollingEnabled()) {
-    m_pollingTimer = new wxTimer(this, YubiMixin::POLLING_TIMER_ID);
-    m_pollingTimer->Start(2*YubiMixin::GetPollingInterval()); // 2 controls
-  }
 #endif
 }
 
@@ -113,9 +109,6 @@ SafeCombinationChangeDlg::~SafeCombinationChangeDlg()
 {
 ////@begin SafeCombinationChangeDlg destruction
 ////@end SafeCombinationChangeDlg destruction
-#ifndef NO_YUBI
-  delete m_pollingTimer;
-#endif
 }
 
 /*!
@@ -411,6 +404,8 @@ void SafeCombinationChangeDlg::OnPollingTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == YubiMixin::POLLING_TIMER_ID) {
     m_yubiMixin1.HandlePollingTimer();
+  }
+  else if (evt.GetId() == YubiMixin::POLLING_TIMER2_ID) {
     m_yubiMixin2.HandlePollingTimer();
   }
 }
