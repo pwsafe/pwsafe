@@ -3,18 +3,19 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2023-09-26 21:07+0300\n"
+"Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
+"Language-Team: \n"
+"Language: zh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.3.2\n"
 
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
@@ -25,13 +26,10 @@ msgstr ""
 #    S = Shift key   (or blank if not used)
 #    X = upper case character
 # e.g. "V CS+Q" == Ctrl + Shift + 'Q'
-
 # ONLY Accelerator Keys with corresponding alphanumeric characters can be
 # updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
-
 # ONLY change the msgstr field. Do NOT change any other.
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
-
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -394,13 +392,23 @@ msgstr "没有找到 %1."
 
 #. Resource IDs: (61744)
 #, c-format
-msgid "%1: %2\nContinue running script?"
-msgstr "%1: %2\n继续运行脚本吗?"
+msgid ""
+"%1: %2\n"
+"Continue running script?"
+msgstr ""
+"%1: %2\n"
+"继续运行脚本吗?"
 
 #. Resource IDs: (61729)
 #, c-format
-msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
-msgstr "%1\n无法找到该文件。\n请检查给出正确的路径和文件名."
+msgid ""
+"%1\n"
+"Cannot find this file.\n"
+"Verify that the correct path and file name are given."
+msgstr ""
+"%1\n"
+"无法找到该文件。\n"
+"请检查给出正确的路径和文件名."
 
 #. Resource IDs: (62186)
 #, c-format
@@ -499,8 +507,14 @@ msgstr "%ls, 标题=“%ls”，用户=“%ls”已存在于你的数据库或�
 
 #. Resource IDs: (3032)
 #, c-format
-msgid "%ls\n\nThe configuration file will not be used."
-msgstr "%ls\n\n配置文件将不被使用."
+msgid ""
+"%ls\n"
+"\n"
+"The configuration file will not be used."
+msgstr ""
+"%ls\n"
+"\n"
+"配置文件将不被使用."
 
 #. Resource IDs: (5878)
 #, c-format
@@ -534,8 +548,14 @@ msgstr "%s 尝试使用另一个名称保存数据库或者不保存退出."
 
 #. Resource IDs: (5318)
 #, c-format
-msgid "%s \n\nCan't open file. Please choose another."
-msgstr "%s \n\n无法打开文件。请选择另一个."
+msgid ""
+"%s \n"
+"\n"
+"Can't open file. Please choose another."
+msgstr ""
+"%s \n"
+"\n"
+"无法打开文件。请选择另一个."
 
 #. Resource IDs: (5865)
 #, c-format
@@ -584,33 +604,73 @@ msgstr "%s这是最新发行版!%s"
 
 #. Resource IDs: (5320)
 #, c-format
-msgid "%s\n\nCould not open file for reading!"
-msgstr "%s\n\n不能打开文件进行读取!"
+msgid ""
+"%s\n"
+"\n"
+"Could not open file for reading!"
+msgstr ""
+"%s\n"
+"\n"
+"不能打开文件进行读取!"
 
 #. Resource IDs: (5325)
 #, c-format
-msgid "%s\n\nCould not open file for writing!"
-msgstr "%s\n\n不能打开文件进行写入!"
+msgid ""
+"%s\n"
+"\n"
+"Could not open file for writing!"
+msgstr ""
+"%s\n"
+"\n"
+"不能打开文件进行写入!"
 
 #. Resource IDs: (5312)
 #, c-format
-msgid "%s\n\nFile corrupt or truncated!\nData may have been lost or modified.\nContinue anyway?"
-msgstr "%s\n\n文件损坏或被截断!\n数据可能已经丢失或被修改。\n仍继续吗?"
+msgid ""
+"%s\n"
+"\n"
+"File corrupt or truncated!\n"
+"Data may have been lost or modified.\n"
+"Continue anyway?"
+msgstr ""
+"%s\n"
+"\n"
+"文件损坏或被截断!\n"
+"数据可能已经丢失或被修改。\n"
+"仍继续吗?"
 
 #. Resource IDs: (5329)
 #, c-format
-msgid "%s\n\nFile is currently locked by %s"
-msgstr "%s\n\n文件当前被 %s 锁定"
+msgid ""
+"%s\n"
+"\n"
+"File is currently locked by %s"
+msgstr ""
+"%s\n"
+"\n"
+"文件当前被 %s 锁定"
 
 #. Resource IDs: (5336)
 #, c-format
-msgid "%s\n\nInvalid format"
-msgstr "%s\n\n无效格式"
+msgid ""
+"%s\n"
+"\n"
+"Invalid format"
+msgstr ""
+"%s\n"
+"\n"
+"无效格式"
 
 #. Resource IDs: (5321)
 #, c-format
-msgid "%s\n\nUnknown error"
-msgstr "%s\n\n未知错误"
+msgid ""
+"%s\n"
+"\n"
+"Unknown error"
+msgstr ""
+"%s\n"
+"\n"
+"未知错误"
 
 #. Resource IDs: (5728)
 msgid "&Abort"
@@ -1034,7 +1094,7 @@ msgstr "是(&Y)"
 
 #. Resource IDs: (32160 - MenuEx)
 msgid "&Yubikey..."
-msgstr ""
+msgstr "和尤比基..."
 
 #. Resource IDs: (8159)
 msgid "'Alt Gr' (right Alt) key"
@@ -1049,8 +1109,26 @@ msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and 
 msgstr "'最小化时清除剪贴板'和双击动作'复制密码并最小化'冲突。 请更改一个或两者."
 
 #. Resource IDs: (5714)
-msgid "'\n\nIf you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n\nThe diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n\nHowever, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n\nThank you for your help to improve PasswordSafe."
-msgstr "'\n\n若你希望报告这个错误，请在下面回复“Yes”并上传这个文件到你的错误报告。若你回复“No”，该文件将被删除。\n\n在这个文件中的诊断信息不包含你的任何个人数据，也不会包含来自在错误时打开的数据库的信息。\n\n无论如何，若你愿意(并且问题可以通过测试数据库重现)，那么你可以给我们发送迷你内存转储文件以及测试数据库。\n\n感谢你给予帮助改善 PasswordSafe."
+msgid ""
+"'\n"
+"\n"
+"If you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n"
+"\n"
+"The diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n"
+"\n"
+"However, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n"
+"\n"
+"Thank you for your help to improve PasswordSafe."
+msgstr ""
+"'\n"
+"\n"
+"若你希望报告这个错误，请在下面回复“Yes”并上传这个文件到你的错误报告。若你回复“No”，该文件将被删除。\n"
+"\n"
+"在这个文件中的诊断信息不包含你的任何个人数据，也不会包含来自在错误时打开的数据库的信息。\n"
+"\n"
+"无论如何，若你愿意(并且问题可以通过测试数据库重现)，那么你可以给我们发送迷你内存转储文件以及测试数据库。\n"
+"\n"
+"感谢你给予帮助改善 PasswordSafe."
 
 #. Resource IDs: (65535)
 msgid "(Also used to replace periods in Title field)"
@@ -1126,8 +1204,18 @@ msgid "......."
 msgstr "......."
 
 #. Resource IDs: (5713)
-msgid ".dmp'\n\nin your temporary directory: \n\n\t'"
-msgstr ".dmp'\n\n位于你的临时目录中: \n\n\t'"
+msgid ""
+".dmp'\n"
+"\n"
+"in your temporary directory: \n"
+"\n"
+"\t'"
+msgstr ""
+".dmp'\n"
+"\n"
+"位于你的临时目录中: \n"
+"\n"
+"\t'"
 
 #. Resource IDs: (8020)
 msgid "0"
@@ -1430,8 +1518,12 @@ msgid "A new password database will be created. The Master Password you enter wi
 msgstr "将创建一个新的密码数据库。您输入的主密码将用于加密密码数据库文件。主密码可以使用任何键盘字符，并且区分大小写。"
 
 #. Resource IDs: (5861)
-msgid "A red and white indicator means that a filter is active\n(if showing, double click to clear filter)"
-msgstr "红色和白色指示器表示筛选器是活动的\n(若显示则双击清除筛选)"
+msgid ""
+"A red and white indicator means that a filter is active\n"
+"(if showing, double click to clear filter)"
+msgstr ""
+"红色和白色指示器表示筛选器是活动的\n"
+"(若显示则双击清除筛选)"
 
 #. Resource IDs: (61474)
 msgid "A required resource was unavailable."
@@ -1694,7 +1786,9 @@ msgid "As the double quote character is used to delimit the whole notes field, i
 msgstr "因为双引号字符是用于界定整个备注字段，所以不能在其中使用它来界定多行。. 请输入另一个字符."
 
 #. Resource IDs: (5292)
-msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
+msgid ""
+"At least one type of character (lowercase, uppercase, digits,\n"
+"symbols, hexadecimal) must be permitted."
 msgstr "至少允许一个类型的字符(小写字母，大写字母，数字，符号，十六进制)."
 
 #. Resource IDs: (538, 539, 5986)
@@ -1919,8 +2013,12 @@ msgstr "在密码失效前，仅在 %d 到 %d 天前警告"
 
 #. Resource IDs: (3345)
 #, c-format
-msgid "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."
-msgstr "未能找到 XML 方案定义文件 (%ls) 在你的 PasswordSafe 应用程序目录中。\n请从你的安装文件中复制它，或重新安装 PasswordSafe."
+msgid ""
+"Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\n"
+"Please copy it from your installation file, or re-install PasswordSafe."
+msgstr ""
+"未能找到 XML 方案定义文件 (%ls) 在你的 PasswordSafe 应用程序目录中。\n"
+"请从你的安装文件中复制它，或重新安装 PasswordSafe."
 
 #. Resource IDs: (3320)
 msgid "Can't obtain the schema version."
@@ -2025,8 +2123,14 @@ msgid "Change database mode?"
 msgstr "更改数据库模式?"
 
 #. Resource IDs: (5858)
-msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
-msgstr "更改自上次保存以来的状态：\n* 表示数据库已更改\n° 表示数据库首选项已更改"
+msgid ""
+"Change status since last save:\n"
+"* indicates the database has been changed\n"
+"° indicates a database preference has been changed"
+msgstr ""
+"更改自上次保存以来的状态：\n"
+"* 表示数据库已更改\n"
+"° 表示数据库首选项已更改"
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -2250,8 +2354,17 @@ msgstr "比较数据库结果"
 
 #. Resource IDs: (5356)
 #, c-format
-msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
-msgstr "当前数据库:\n\t %ls\n 和:\n\t %ls\n数据库比较完成\n"
+msgid ""
+"Compare complete of current database:\n"
+"\t %ls\n"
+" and:\n"
+"\t %ls\n"
+msgstr ""
+"当前数据库:\n"
+"\t %ls\n"
+" 和:\n"
+"\t %ls\n"
+"数据库比较完成\n"
 
 #. Resource IDs: (32092 - Menu, 32092 - MenuEx)
 msgid "Compare entries..."
@@ -2304,8 +2417,16 @@ msgstr "配置信息"
 
 #. Resource IDs: (3049)
 #, c-format
-msgid "Configuration file error:\n%ls\n%ls\noffset approximately at %d"
-msgstr "配置文件错误:\n%ls\n%ls\n偏移近似于 %d"
+msgid ""
+"Configuration file error:\n"
+"%ls\n"
+"%ls\n"
+"offset approximately at %d"
+msgstr ""
+"配置文件错误:\n"
+"%ls\n"
+"%ls\n"
+"偏移近似于 %d"
 
 #. Resource IDs: (5857)
 msgid "Configuration file status"
@@ -2325,18 +2446,36 @@ msgstr "确认项目的删除"
 
 #. Resource IDs: (5930)
 #, c-format
-msgid "Confirm that you wish to copy these entries from %s to %s\n\nIf already present in the target database, they will be replaced!"
-msgstr "确认你希望从 %s 复制这些条目到 %s\n\n若已存在于目标数据库，那么它们将被替换!"
+msgid ""
+"Confirm that you wish to copy these entries from %s to %s\n"
+"\n"
+"If already present in the target database, they will be replaced!"
+msgstr ""
+"确认你希望从 %s 复制这些条目到 %s\n"
+"\n"
+"若已存在于目标数据库，那么它们将被替换!"
 
 #. Resource IDs: (5429)
 #, c-format
-msgid "Confirm that you wish to copy this entry from %s to %s.\n\nIf already present in the target database, it will be replaced!"
-msgstr "确认你希望从 %s 复制这个条目到 %s。\n\n若已存在于目标数据库中，它将被替换!"
+msgid ""
+"Confirm that you wish to copy this entry from %s to %s.\n"
+"\n"
+"If already present in the target database, it will be replaced!"
+msgstr ""
+"确认你希望从 %s 复制这个条目到 %s。\n"
+"\n"
+"若已存在于目标数据库中，它将被替换!"
 
 #. Resource IDs: (5931)
 #, c-format
-msgid "Confirm that you wish to synchronize these entries from %s to %s?\n\nSelected fields will be replaced in all entries!"
-msgstr "确认你希望从 %s 同步这些条目到 %s\n\n选择的字段将在所有条目中被替换!"
+msgid ""
+"Confirm that you wish to synchronize these entries from %s to %s?\n"
+"\n"
+"Selected fields will be replaced in all entries!"
+msgstr ""
+"确认你希望从 %s 同步这些条目到 %s\n"
+"\n"
+"选择的字段将在所有条目中被替换!"
 
 #. Resource IDs: (65535)
 msgid "Confirmation:"
@@ -2344,8 +2483,14 @@ msgstr "确认:"
 
 #. Resource IDs: (3414)
 #, c-format
-msgid "Conflicting entries for «%ls» «%ls» «%ls».\n  Adding merged entry as «%ls» «%ls» «%ls».\n    Differing field(s): %ls"
-msgstr "«%ls» «%ls» «%ls» 的冲突条目。\n  正在添加合并的条目为 «%ls» «%ls» «%ls»。\n    区分的字段: %ls"
+msgid ""
+"Conflicting entries for «%ls» «%ls» «%ls».\n"
+"  Adding merged entry as «%ls» «%ls» «%ls».\n"
+"    Differing field(s): %ls"
+msgstr ""
+"«%ls» «%ls» «%ls» 的冲突条目。\n"
+"  正在添加合并的条目为 «%ls» «%ls» «%ls»。\n"
+"    区分的字段: %ls"
 
 #. Resource IDs: (1)
 msgid "Continue"
@@ -2353,8 +2498,18 @@ msgstr "继续"
 
 #. Resource IDs: (5745)
 #, c-format
-msgid "Copied password\n\n\"%s\"\n\nto the clipboard."
-msgstr "已复制密码\n\n\"%s\"\n\n到剪贴板."
+msgid ""
+"Copied password\n"
+"\n"
+"\"%s\"\n"
+"\n"
+"to the clipboard."
+msgstr ""
+"已复制密码\n"
+"\n"
+"\"%s\"\n"
+"\n"
+"到剪贴板."
 
 #. Resource IDs: (32069 - Menu, 32069 - MenuEx, 5298)
 msgid "Copy &Notes to Clipboard"
@@ -2555,8 +2710,16 @@ msgstr "当前数据库是只读的"
 
 #. Resource IDs: (5477)
 #, c-format
-msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the PasswordSafe website to download the latest version."
-msgstr "当前版本:\t%s\n最新版本:\t%s\n\n请访问 PasswordSafe 网站下载最新版本."
+msgid ""
+"Current version:\t%s\n"
+"Latest version:\t%s\n"
+"\n"
+"Please visit the PasswordSafe website to download the latest version."
+msgstr ""
+"当前版本:\t%s\n"
+"最新版本:\t%s\n"
+"\n"
+"请访问 PasswordSafe 网站下载最新版本."
 
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
@@ -2624,8 +2787,12 @@ msgid "Database is read-only. Sorry, cannot save changed database preferences."
 msgstr "数据库是只读的。抱歉，不能保存更改的数据库首选项."
 
 #. Resource IDs: (5859)
-msgid "Database mode: read-only (R-O) or read/write (R/W)\n(Doubleclick to toggle mode)"
-msgstr "数据库模式: 只读(R-O) 或读写 (R/W)\n(双击切换模式)"
+msgid ""
+"Database mode: read-only (R-O) or read/write (R/W)\n"
+"(Doubleclick to toggle mode)"
+msgstr ""
+"数据库模式: 只读(R-O) 或读写 (R/W)\n"
+"(双击切换模式)"
 
 #. Resource IDs: (1200)
 msgid "Database name"
@@ -2697,8 +2864,12 @@ msgid "Delete Entry"
 msgstr "删除条目"
 
 #. Resource IDs: (5882)
-msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
-msgstr "删除选择的密码策略\n(只有未使用的命名密码策略可以被删除)"
+msgid ""
+"Delete selected Password Policy\n"
+"(only an unused Named Password Policy may be deleted)"
+msgstr ""
+"删除选择的密码策略\n"
+"(只有未使用的命名密码策略可以被删除)"
 
 #. Resource IDs: (65535)
 msgid "Description:"
@@ -2751,8 +2922,12 @@ msgid "Display Filter - "
 msgstr "显示筛选器 - "
 
 #. Resource IDs: (5883)
-msgid "Display policy settings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
-msgstr "显示策略设置或使用这个命名的策略列出条目\n(后者根据这个数据库中的条目数可能要费一点时间)"
+msgid ""
+"Display policy settings or List entries using this named policy\n"
+"(The latter may take a while depending on the number of entries in this database)"
+msgstr ""
+"显示策略设置或使用这个命名的策略列出条目\n"
+"(后者根据这个数据库中的条目数可能要费一点时间)"
 
 #. Resource IDs: (32067 - Menu, 32067 - MenuEx)
 msgid "Display subset of Password"
@@ -2777,16 +2952,30 @@ msgstr "你希望替换它吗?"
 
 #. Resource IDs: (5239)
 #, c-format
-msgid "Do you wish to save the changes made to database:\n\n%s\n\nor Cancel the shutdown\\restart\\logoff?"
-msgstr "你是否希望保存已做的更改到数据库:\n\n%s\n\n或取消关机\\重启\\注销?"
+msgid ""
+"Do you wish to save the changes made to database:\n"
+"\n"
+"%s\n"
+"\n"
+"or Cancel the shutdown\\restart\\logoff?"
+msgstr ""
+"你是否希望保存已做的更改到数据库:\n"
+"\n"
+"%s\n"
+"\n"
+"或取消关机\\重启\\注销?"
 
 #. Resource IDs: (6023)
 msgid "Do you wish to save the changes made to this restored database as new database?"
 msgstr "你是否希望保存对这个恢复数据库的更改为新的数据库?"
 
 #. Resource IDs: (62185)
-msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
-msgstr "不能恢复自动保存的文档\n使用最后明确保存版本的文档"
+msgid ""
+"Don't recover the auto-saved documents\n"
+"Use the last explicitly saved versions of the documents"
+msgstr ""
+"不能恢复自动保存的文档\n"
+"使用最后明确保存版本的文档"
 
 #. Resource IDs: (5953)
 msgid "Double click an entry to Edit/View it."
@@ -2859,8 +3048,14 @@ msgstr "拖动这个图像到另一个窗口表示从那里开始自动键入."
 
 #. Resource IDs: (5464)
 #, c-format
-msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."
-msgstr "丢弃条目 “%s:%s:%s” 密码指向一个也是一个别名的条目。\n\n丢弃的条目现在引用该条目的基本条目."
+msgid ""
+"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"\n"
+"The dropped entry now references that entry's base entry."
+msgstr ""
+"丢弃条目 “%s:%s:%s” 密码指向一个也是一个别名的条目。\n"
+"\n"
+"丢弃的条目现在引用该条目的基本条目."
 
 #. Resource IDs: (32087 - Menu, 32087 - MenuEx)
 msgid "Duplicate Group"
@@ -3137,8 +3332,14 @@ msgstr "条目键盘快捷方式必须是 Alt 和 Ctrl 键之一或两者，加�
 
 #. Resource IDs: (5942)
 #, c-format
-msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.\n\n%s"
-msgstr "条目键盘快捷方式必须有 Alt 和 Ctrl 键之一或两者。\n\n%s"
+msgid ""
+"Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.\n"
+"\n"
+"%s"
+msgstr ""
+"条目键盘快捷方式必须有 Alt 和 Ctrl 键之一或两者。\n"
+"\n"
+"%s"
 
 #. Resource IDs: (3266)
 #, c-format
@@ -3190,13 +3391,29 @@ msgid "Error (%08X): line %d character %d %ls"
 msgstr "错误 (%08X): 行 %d 字符 %d %ls"
 
 #. Resource IDs: (3031)
-msgid "Error - unable to determine settings configuration!\n\nNo application settings will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr "错误 - 不能确定设置配置!\n\n没有应用程序配置将被保存。\n\n数据库相关设置将会在关闭时存储在打开的数据库中，假设它不是只读或者未被其它用户锁定的."
+msgid ""
+"Error - unable to determine settings configuration!\n"
+"\n"
+"No application settings will be saved.\n"
+"\n"
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr ""
+"错误 - 不能确定设置配置!\n"
+"\n"
+"没有应用程序配置将被保存。\n"
+"\n"
+"数据库相关设置将会在关闭时存储在打开的数据库中，假设它不是只读或者未被其它用户锁定的."
 
 #. Resource IDs: (5661)
 #, c-format
-msgid "Error at column %d:\n\n%s"
-msgstr "错误在栏目 %d:\n\n%s"
+msgid ""
+"Error at column %d:\n"
+"\n"
+"%s"
+msgstr ""
+"错误在栏目 %d:\n"
+"\n"
+"%s"
 
 #. Resource IDs: (3033)
 #, c-format
@@ -3209,7 +3426,7 @@ msgstr "分析运行命令错误"
 
 #. Resource IDs: (6009)
 msgid "Error reading YubiKey"
-msgstr ""
+msgstr "读取尤比键时出错"
 
 #. Resource IDs: (3378)
 msgid "Error while writing file! Try saving in a different location"
@@ -3313,8 +3530,12 @@ msgstr "导出文件:"
 
 #. Resource IDs: (5863)
 #, c-format
-msgid "Export file: '%s' already exists.\nDo you want to replace it?"
-msgstr "导出文件: '%s' 已存在。\n你是否想替换它?"
+msgid ""
+"Export file: '%s' already exists.\n"
+"Do you want to replace it?"
+msgstr ""
+"导出文件: '%s' 已存在。\n"
+"你是否想替换它?"
 
 #. Resource IDs: (3364)
 msgid "Export of data was restricted to certain fields by the user."
@@ -3365,8 +3586,14 @@ msgid "Failed to launch help."
 msgstr "未能运行帮助."
 
 #. Resource IDs: (5660)
-msgid "Failed to load AutoType support DLL (wrong version?).\n\nAutoType for Launch of a Browser or Running a command is disabled."
-msgstr "加载自动键入支持 DLL 失败(错误版本?).\n\n用于浏览器东或运行命令的自动键入被禁用."
+msgid ""
+"Failed to load AutoType support DLL (wrong version?).\n"
+"\n"
+"AutoType for Launch of a Browser or Running a command is disabled."
+msgstr ""
+"加载自动键入支持 DLL 失败(错误版本?).\n"
+"\n"
+"用于浏览器东或运行命令的自动键入被禁用."
 
 #. Resource IDs: (6027)
 msgid "Failed to load image"
@@ -3398,12 +3625,18 @@ msgstr "保存图像失败"
 
 #. Resource IDs: (6008)
 msgid "Failed to save key in database"
-msgstr ""
+msgstr "无法在数据库中保存密钥"
 
 #. Resource IDs: (5850)
 #, c-format
-msgid "Failed to switch from R-O to R/W because database is already open in R/W mode by:\n%s %s\n(Only one R/W access at a time is allowed)"
-msgstr "从只读切换到读写失败，因为数据库已按读写模式打开由:\n%s %s\n(一次只允许一个读写访问)"
+msgid ""
+"Failed to switch from R-O to R/W because database is already open in R/W mode by:\n"
+"%s %s\n"
+"(Only one R/W access at a time is allowed)"
+msgstr ""
+"从只读切换到读写失败，因为数据库已按读写模式打开由:\n"
+"%s %s\n"
+"(一次只允许一个读写访问)"
 
 #. Resource IDs: (5853)
 msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be a problem with its drive."
@@ -3414,12 +3647,16 @@ msgid "Failed to switch from R-O to R/W: The file appears to be too short to be 
 msgstr "从只读切换到读写失败: 文件似乎太短无法成为一个有效数据库."
 
 #. Resource IDs: (5851)
-msgid "Failed to switch from R/W to R-O: Could not release database lock.\nTry exiting and restarting program."
-msgstr "从读写切换到只读失败: 不能释放数据库锁定。\n尝试退出并重启程序."
+msgid ""
+"Failed to switch from R/W to R-O: Could not release database lock.\n"
+"Try exiting and restarting program."
+msgstr ""
+"从读写切换到只读失败: 不能释放数据库锁定。\n"
+"尝试退出并重启程序."
 
 #. Resource IDs: (6006)
 msgid "Failed to update YubiKey"
-msgstr ""
+msgstr "无法更新YubiKey"
 
 #. Resource IDs: (5766)
 msgid "Failsafe Backup Deletion"
@@ -3532,13 +3769,25 @@ msgstr "文件:"
 
 #. Resource IDs: (5344)
 #, c-format
-msgid "File: %s failed validation against XML Schema:\n\n%s"
-msgstr "文件: %s 针对 XML 方案验证失败:\n\n%s"
+msgid ""
+"File: %s failed validation against XML Schema:\n"
+"\n"
+"%s"
+msgstr ""
+"文件: %s 针对 XML 方案验证失败:\n"
+"\n"
+"%s"
 
 #. Resource IDs: (5345)
 #, c-format
-msgid "File: %s passed Validation but had the following errors during import:\n\n%s"
-msgstr "文件: %s 已通过验证，但在导入期间存在下列错误:\n\n%s"
+msgid ""
+"File: %s passed Validation but had the following errors during import:\n"
+"\n"
+"%s"
+msgstr ""
+"文件: %s 已通过验证，但在导入期间存在下列错误:\n"
+"\n"
+"%s"
 
 #. Resource IDs: (5905)
 #, c-format
@@ -3608,8 +3857,12 @@ msgid "Font st&yle:"
 msgstr "字形(&Y):"
 
 #. Resource IDs: (5468)
-msgid "For security, the database must be closed before connecting to the Internet.\nPress OK to close database and continue (Changes will be saved)"
-msgstr "为了安全起见，在连接到互联网前必须关闭数据库。\n按“确定”则关闭数据库并继续(更改将被保存)"
+msgid ""
+"For security, the database must be closed before connecting to the Internet.\n"
+"Press OK to close database and continue (Changes will be saved)"
+msgstr ""
+"为了安全起见，在连接到互联网前必须关闭数据库。\n"
+"按“确定”则关闭数据库并继续(更改将被保存)"
 
 #. Resource IDs: (3242)
 #, c-format
@@ -4028,8 +4281,14 @@ msgstr "若这是在 PasswordSafe 启动时打开的第一个数据库，Passwor
 
 #. Resource IDs: (8156)
 #, c-format
-msgid "If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n\nYou may need to also select the Shift key to see them."
-msgstr "若这个键盘通过 %s 支持字符，那么这个键将被启用并且可以被用于选择它们。\n\n你可能需要同时选择 Shift 键查看它们."
+msgid ""
+"If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n"
+"\n"
+"You may need to also select the Shift key to see them."
+msgstr ""
+"若这个键盘通过 %s 支持字符，那么这个键将被启用并且可以被用于选择它们。\n"
+"\n"
+"你可能需要同时选择 Shift 键查看它们."
 
 #. Resource IDs: (5112)
 msgid "If unchecked, you will be prompted to save changes upon exiting Password Safe."
@@ -4372,12 +4631,22 @@ msgid "Left Ctrl key"
 msgstr "左 Ctrl 键"
 
 #. Resource IDs: (5682)
-msgid "Left click 'Shortcut Key' value to change or right click it to reset or remove it. After selecting the shortcut key combination, press Enter to set it.\n\nThe 'Menu item' text will be red if the shortcut differs from its default value."
-msgstr "左击'快捷键'值进行更改，或者右击它来重置或移除它。在选择快捷键组合后，按回车来设定它。\n\n若快捷键和它的默认值不同则'菜单项'文本将变红."
+msgid ""
+"Left click 'Shortcut Key' value to change or right click it to reset or remove it. After selecting the shortcut key combination, press Enter to set it.\n"
+"\n"
+"The 'Menu item' text will be red if the shortcut differs from its default value."
+msgstr ""
+"左击'快捷键'值进行更改，或者右击它来重置或移除它。在选择快捷键组合后，按回车来设定它。\n"
+"\n"
+"若快捷键和它的默认值不同则'菜单项'文本将变红."
 
 #. Resource IDs: (5291)
-msgid "Length of passwords generated in hexadecimal format must be even\nas each byte is two hexadecimal digits."
-msgstr "生成的十六进制格式密码长度必须为偶数\n因为每字节是二个十六进制数字."
+msgid ""
+"Length of passwords generated in hexadecimal format must be even\n"
+"as each byte is two hexadecimal digits."
+msgstr ""
+"生成的十六进制格式密码长度必须为偶数\n"
+"因为每字节是二个十六进制数字."
 
 #. Resource IDs: (3259)
 #, c-format
@@ -4518,8 +4787,12 @@ msgstr "最大"
 
 #. Resource IDs: (5392)
 #, c-format
-msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
-msgstr "使用递增数字后缀保留的最大备份数\n必须在 %d 和 %d 之间."
+msgid ""
+"Maximum number of backups kept using incremented number suffix\n"
+"must be between %d and %d."
+msgstr ""
+"使用递增数字后缀保留的最大备份数\n"
+"必须在 %d 和 %d 之间."
 
 #. Resource IDs: (5407)
 #, c-format
@@ -4900,8 +5173,42 @@ msgstr "在数据库中条目数"
 
 #. Resource IDs: (3026)
 #, c-format
-msgid "Number of entries processed: %d\n\nNumber of invalid UUIDs fixed: %d\n\nNumber of duplicate UUIDs fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d\n\nNumber of entries with fields that cannot be fully displayed: %d.\n\nRecommend that the database is now saved."
-msgstr "已处理条目数: %d\n\n无效 UUIDs 修复数: %d\n\n重复 UUIDs 修复数: %d\n\n非唯一分组/标题/用户修复数: %d\n\n密码历史修复数: %d\n\n别名警告发出数: %d\n\n快捷方式警告发出数: %d\n\n带有不能完整显示的字段的条目数: %d.\n\n推荐现在就保存数据库."
+msgid ""
+"Number of entries processed: %d\n"
+"\n"
+"Number of invalid UUIDs fixed: %d\n"
+"\n"
+"Number of duplicate UUIDs fixed: %d\n"
+"\n"
+"Number of non-unique Group/Title/User fixed: %d\n"
+"\n"
+"Number of Password Histories fixed: %d\n"
+"\n"
+"Number of Alias warnings issued: %d\n"
+"\n"
+"Number of Shortcut warnings issued: %d\n"
+"\n"
+"Number of entries with fields that cannot be fully displayed: %d.\n"
+"\n"
+"Recommend that the database is now saved."
+msgstr ""
+"已处理条目数: %d\n"
+"\n"
+"无效 UUIDs 修复数: %d\n"
+"\n"
+"重复 UUIDs 修复数: %d\n"
+"\n"
+"非唯一分组/标题/用户修复数: %d\n"
+"\n"
+"密码历史修复数: %d\n"
+"\n"
+"别名警告发出数: %d\n"
+"\n"
+"快捷方式警告发出数: %d\n"
+"\n"
+"带有不能完整显示的字段的条目数: %d.\n"
+"\n"
+"推荐现在就保存数据库."
 
 #. Resource IDs: (5383)
 #, c-format
@@ -5154,7 +5461,7 @@ msgstr "Password Safe - <未命名恢复的备份>"
 
 #. Resource IDs: (132)
 msgid "Password Safe - Enter Master Password"
-msgstr ""
+msgstr "密码保险箱 - 输入主密码"
 
 #. Resource IDs: (5955)
 msgid "Password Safe Application HotKey"
@@ -5205,8 +5512,12 @@ msgid "Password implies this is an alias entry, but "
 msgstr "密码暗示这是一个别名条目，但 "
 
 #. Resource IDs: (5467)
-msgid "Password implies this is an alias entry, but specifies a base entry with no title.\nEvery entry must have a title."
-msgstr "密码暗示这是一个别名条目，但是指定一个不标题的条目。\n每个条目必须有一个标题."
+msgid ""
+"Password implies this is an alias entry, but specifies a base entry with no title.\n"
+"Every entry must have a title."
+msgstr ""
+"密码暗示这是一个别名条目，但是指定一个不标题的条目。\n"
+"每个条目必须有一个标题."
 
 #. Resource IDs: (3000)
 msgid "Password is too short"
@@ -5336,8 +5647,12 @@ msgid "Please confirm that you wish to clear the recent Safe list."
 msgstr "请确认你希望清除近期保险箱列表."
 
 #. Resource IDs: (5287)
-msgid "Please confirm that you wish to delete current user's PasswordSafe configuration from the Windows registry.\n\n"
-msgstr "请确认你是希望从 Windows 注册表中删除当前用户的 PasswordSafe 配置.\n\n"
+msgid ""
+"Please confirm that you wish to delete current user's PasswordSafe configuration from the Windows registry.\n"
+"\n"
+msgstr ""
+"请确认你是希望从 Windows 注册表中删除当前用户的 PasswordSafe 配置.\n"
+"\n"
 
 #. Resource IDs: (5272)
 msgid "Please enter a search string"
@@ -5352,8 +5667,12 @@ msgid "Please enter the Master Password for this password database."
 msgstr "请输入此密码数据库的主密码。"
 
 #. Resource IDs: (65535)
-msgid "Please enter the current master password, followed by a new one. \r\nType the new one again to confirm it."
-msgstr "请输入当前主密码，然后输入新密码。\r\n再次键入新的进行确认。"
+msgid ""
+"Please enter the current master password, followed by a new one. \r\n"
+"Type the new one again to confirm it."
+msgstr ""
+"请输入当前主密码，然后输入新密码。\r\n"
+"再次键入新的进行确认。"
 
 #. Resource IDs: (5255)
 msgid "Please enter the key and verify it."
@@ -5468,8 +5787,14 @@ msgid "Press to delete all added characters."
 msgstr "按下表示删除所有已添加的字符."
 
 #. Resource IDs: (65535)
-msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password from being copied."
+msgid ""
+"Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n"
+"\n"
+"Pressing Cancel stops the password from being copied."
 msgstr ""
+"按“确定”会将所选项目的密码复制到剪贴板。关闭密码保险箱时，剪贴板将被安全地清除。\n"
+"\n"
+"按“取消”可停止复制密码。"
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -5601,8 +5926,12 @@ msgid "Record last access times"
 msgstr "记录最后访问时间"
 
 #. Resource IDs: (62184)
-msgid "Recover the auto-saved documents\nOpen the auto-saved versions instead of the explicitly saved versions"
-msgstr "恢复自动保存文档\n打开自动保存版本取代明确保存版本"
+msgid ""
+"Recover the auto-saved documents\n"
+"Open the auto-saved versions instead of the explicitly saved versions"
+msgstr ""
+"恢复自动保存文档\n"
+"打开自动保存版本取代明确保存版本"
 
 #. Resource IDs: (1297)
 msgid "Recurring"
@@ -5674,8 +6003,14 @@ msgid "Requested mode change failed"
 msgstr "请求的模式更改失败"
 
 #. Resource IDs: (5694)
-msgid "Required Unicode font is not installed on this system.\n\nUnable to provide Virtual Keyboard."
-msgstr "所需的 Unicode 字体未安装在这个系统上。\n\n不能提供虚拟键盘."
+msgid ""
+"Required Unicode font is not installed on this system.\n"
+"\n"
+"Unable to provide Virtual Keyboard."
+msgstr ""
+"所需的 Unicode 字体未安装在这个系统上。\n"
+"\n"
+"不能提供虚拟键盘."
 
 #. Resource IDs: (5685)
 #, c-format
@@ -5785,8 +6120,12 @@ msgstr "同步(&Y)..."
 
 #. Resource IDs: (3059)
 #, c-format
-msgid "SAX Parse Error during %ls\n%ls."
-msgstr "在 %ls 期间 SAX 分析错误\n%ls."
+msgid ""
+"SAX Parse Error during %ls\n"
+"%ls."
+msgstr ""
+"在 %ls 期间 SAX 分析错误\n"
+"%ls."
 
 #. Resource IDs: (3043)
 #, c-format
@@ -5855,25 +6194,45 @@ msgid "Schema does not have a version number."
 msgstr "该模式没有一个版本号."
 
 #. Resource IDs: (6064)
-msgid "Screen capture protection disabled by command line.\n\nContact support if this is unexpected.\n\nClick OK to continue."
+msgid ""
+"Screen capture protection disabled by command line.\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"Click OK to continue."
 msgstr ""
+"通过命令行禁用屏幕捕获保护。\n"
+"\n"
+"如果出现意外情况，请联系支持人员。\n"
+"\n"
+"单击“确定”继续。"
 
 #. Resource IDs: (6063)
 #, c-format
-msgid "Screen capture protection disabled by command line.\n\nContact support if this is unexpected.\n\nYou can click OK to continue in %d seconds."
+msgid ""
+"Screen capture protection disabled by command line.\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"You can click OK to continue in %d seconds."
 msgstr ""
+"通过命令行禁用屏幕捕获保护。\n"
+"\n"
+"如果出现意外情况，请联系支持人员。\n"
+"\n"
+"您可以单击“确定”以在 %d 秒后继续。"
 
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
-msgstr ""
+msgstr "屏幕捕获保护已被命令行覆盖。"
 
 #. Resource IDs: (6071)
 msgid "Screen capture protection is off."
-msgstr ""
+msgstr "屏幕捕获保护已关闭。"
 
 #. Resource IDs: (6070)
 msgid "Screen capture protection is on."
-msgstr ""
+msgstr "屏幕捕获保护已打开。"
 
 #. Resource IDs: (5276)
 #, c-format
@@ -6248,8 +6607,14 @@ msgid "Some characters may be missing or not be displayed correctly, as we were 
 msgstr "某些字符可能会丢失或显示不正确，因为我们无法找到的 Arial Unicode MS 字体."
 
 #. Resource IDs: (5923)
-msgid "Some consistency issues were found while opening the database.\n\nYou should save this database before proceeding. Please view report for details."
-msgstr "在打开数据库时发现一些统一性问题。\n\n你应该在继续前保存这个数据库。请查看报告了解详情."
+msgid ""
+"Some consistency issues were found while opening the database.\n"
+"\n"
+"You should save this database before proceeding. Please view report for details."
+msgstr ""
+"在打开数据库时发现一些统一性问题。\n"
+"\n"
+"你应该在继续前保存这个数据库。请查看报告了解详情."
 
 #. Resource IDs: (5821)
 msgid "Some of the entries in this database have passwords that have expired or are about to.  Do you wish to list them and possibly update them?"
@@ -6264,12 +6629,32 @@ msgid "Sorbian Standard (Legacy)"
 msgstr "标准索布人语(传统)"
 
 #. Resource IDs: (5288)
-msgid "Sorry - your requested HotKey is already being used.\n\nThis feature has been temporarily disabled.\n\nTo re-enable in this session, please select a different key combination."
-msgstr "抱歉 - 你请求的热键已被使用。\n\n该功能已被暂时禁止。\n\n要在本次会话中重新启用，请选定一个不同的按键组合."
+msgid ""
+"Sorry - your requested HotKey is already being used.\n"
+"\n"
+"This feature has been temporarily disabled.\n"
+"\n"
+"To re-enable in this session, please select a different key combination."
+msgstr ""
+"抱歉 - 你请求的热键已被使用。\n"
+"\n"
+"该功能已被暂时禁止。\n"
+"\n"
+"要在本次会话中重新启用，请选定一个不同的按键组合."
 
 #. Resource IDs: (5712)
-msgid "Sorry but PasswordSafe has had a problem.\n\nMinimal diagnostic information has been written to file: \n\n\t'"
-msgstr "抱歉，但 PasswordSafe 已有问题。\n\n最小的诊断信息已被写入文件: \n\n\t'"
+msgid ""
+"Sorry but PasswordSafe has had a problem.\n"
+"\n"
+"Minimal diagnostic information has been written to file: \n"
+"\n"
+"\t'"
+msgstr ""
+"抱歉，但 PasswordSafe 已有问题。\n"
+"\n"
+"最小的诊断信息已被写入文件: \n"
+"\n"
+"\t'"
 
 #. Resource IDs: (5507)
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
@@ -6277,7 +6662,9 @@ msgstr "抱歉，“可发音密码”和“易识别字符”选项不能一起
 
 #. Resource IDs: (5512)
 msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' option. Specified values ignored."
-msgstr "抱歉，不能指定带有‘可发音’选项字符的最小数量。\n忽略指定的值."
+msgstr ""
+"抱歉，不能指定带有‘可发音’选项字符的最小数量。\n"
+"忽略指定的值."
 
 #. Resource IDs: (5938)
 msgid "Sorry, couldn't find help file - help unavailable."
@@ -6348,8 +6735,14 @@ msgid "Status"
 msgstr "状态"
 
 #. Resource IDs: (5100)
-msgid "Stop saving password history for all entries.\n\nSaved histories will not be removed, but changed passwords will no longer be added."
-msgstr "停止保存所有条目的密码历史。\n\n保存的历史记录将不会移除，但是更改的密码将不再被添加."
+msgid ""
+"Stop saving password history for all entries.\n"
+"\n"
+"Saved histories will not be removed, but changed passwords will no longer be added."
+msgstr ""
+"停止保存所有条目的密码历史。\n"
+"\n"
+"保存的历史记录将不会移除，但是更改的密码将不再被添加."
 
 #. Resource IDs: (1184)
 msgid "Stop saving previous passwords"
@@ -6534,8 +6927,14 @@ msgid "The Ctrl key has been added."
 msgstr "Ctrl 键已被添加."
 
 #. Resource IDs: (3424)
-msgid "The TXT or CSV file was not imported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
-msgstr "TXT 或 CSV 文件未按需要导入，因为在 CSV 文件中，条目记录跨多行。\n\n导入已放弃."
+msgid ""
+"The TXT or CSV file was not imported as required as entry records span multiple lines in the CSV file.\n"
+"\n"
+"Import aborted."
+msgstr ""
+"TXT 或 CSV 文件未按需要导入，因为在 CSV 文件中，条目记录跨多行。\n"
+"\n"
+"导入已放弃."
 
 #. Resource IDs: (6003)
 msgid "The YubiKey appears uninitialized. Initialize it?"
@@ -6543,27 +6942,86 @@ msgstr "YubiKey 似乎被取消初始化。 初始化它吗?"
 
 #. Resource IDs: (5311)
 #, c-format
-msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
-msgstr "数据库“%s”不能打开。\n你是否希望在别处查找它(搜索)，创建一个新数据库(新建)或退出?"
+msgid ""
+"The database %s couldn't be opened.\n"
+"Do you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
+msgstr ""
+"数据库“%s”不能打开。\n"
+"你是否希望在别处查找它(搜索)，创建一个新数据库(新建)或退出?"
 
 #. Resource IDs: (5852)
-msgid "The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n\nPlease close the database and re-open it in R/W mode."
-msgstr "自从你以只读模式打开数据库以来，该数据库已被更改，所以不能切换到读写模式。\n\n请关闭数据库并以读写模式重新打开它."
+msgid ""
+"The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n"
+"\n"
+"Please close the database and re-open it in R/W mode."
+msgstr ""
+"自从你以只读模式打开数据库以来，该数据库已被更改，所以不能切换到读写模式。\n"
+"\n"
+"请关闭数据库并以读写模式重新打开它."
 
 #. Resource IDs: (5412)
 #, c-format
-msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only or Exit?\n\nNote: Only one user at a time can open the database for writing."
-msgstr "数据库:\n%s\n\n显然已被:\n%s%s\n\n使用。\n\n打开数据库为只读属性或退出?\n\n注意: 每次只有一个用户可以打开数据库进行写入."
+msgid ""
+"The database:\n"
+"%s\n"
+"\n"
+"is apparently being used by:\n"
+"%s%s.\n"
+"\n"
+"Open the database for Read-Only or Exit?\n"
+"\n"
+"Note: Only one user at a time can open the database for writing."
+msgstr ""
+"数据库:\n"
+"%s\n"
+"\n"
+"显然已被:\n"
+"%s%s\n"
+"\n"
+"使用。\n"
+"\n"
+"打开数据库为只读属性或退出?\n"
+"\n"
+"注意: 每次只有一个用户可以打开数据库进行写入."
 
 #. Resource IDs: (5235)
 #, c-format
-msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\n\nNote: Choose \"Read-Write\" only if you are certain that the file isn't being used by anyone else,\nincluding another copy of Password Safe running on your machine."
-msgstr "数据库:\n%s\n\n显然被使用:\n%s%s\n\n打开数据库用于只读、读写方式或退出?\n\n注意: 仅当你确定文件被另一个人使用时，包括运行在你的机器上的另一个 Password Safe 才选择\"读-写\"."
+msgid ""
+"The database:\n"
+"%s\n"
+"\n"
+"is apparently being used by:\n"
+"%s%s.\n"
+"\n"
+"Open the database for Read-Only, Read-Write, or Exit?\n"
+"\n"
+"Note: Choose \"Read-Write\" only if you are certain that the file isn't being used by anyone else,\n"
+"including another copy of Password Safe running on your machine."
+msgstr ""
+"数据库:\n"
+"%s\n"
+"\n"
+"显然被使用:\n"
+"%s%s\n"
+"\n"
+"打开数据库用于只读、读写方式或退出?\n"
+"\n"
+"注意: 仅当你确定文件被另一个人使用时，包括运行在你的机器上的另一个 Password Safe 才选择\"读-写\"."
 
 #. Resource IDs: (5775)
 #, c-format
-msgid "The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."
-msgstr "数据库:\n\n%s\n\n有具有相同分组/标题/用户组合的重复条目。请通过验证数据库来修复."
+msgid ""
+"The database:\n"
+"\n"
+"%s\n"
+"\n"
+"has duplicate entries with the same group/title/user combination. Please fix by validating database."
+msgstr ""
+"数据库:\n"
+"\n"
+"%s\n"
+"\n"
+"有具有相同分组/标题/用户组合的重复条目。请通过验证数据库来修复."
 
 #. Resource IDs: (5250)
 msgid "The entered passwords do not match.  Please re-enter them."
@@ -6625,8 +7083,12 @@ msgstr "下列条目拥有重复的 UUID 字段。 这已被纠正."
 
 #. Resource IDs: (3433)
 #, c-format
-msgid "The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%ls) appended:%ls"
-msgstr "下列条目拥有已存在于这个数据库中的同名但不同设置的策略。\n一个新的命名策略将会使用当前日期/时间(%ls)附上来创建:%ls"
+msgid ""
+"The following entries had a policy name that already existed in this database but with different settings.\n"
+"A new named policy has been created with the current date/time (%ls) appended:%ls"
+msgstr ""
+"下列条目拥有已存在于这个数据库中的同名但不同设置的策略。\n"
+"一个新的命名策略将会使用当前日期/时间(%ls)附上来创建:%ls"
 
 #. Resource IDs: (3438)
 #, c-format
@@ -6691,13 +7153,25 @@ msgstr "下列记录被跳过:"
 
 #. Resource IDs: (5951)
 #, c-format
-msgid "The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\nThe %s will override this menu item shortcut.\nPress OK/Apply to accept or change your selection."
-msgstr "键盘快捷方式 '%s' 已经被指派给菜单项:\t'%s'\n该 %s 将改变这个菜单项快捷方式。\n按确定/引用来接受或更改你的选择."
+msgid ""
+"The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\n"
+"The %s will override this menu item shortcut.\n"
+"Press OK/Apply to accept or change your selection."
+msgstr ""
+"键盘快捷方式 '%s' 已经被指派给菜单项:\t'%s'\n"
+"该 %s 将改变这个菜单项快捷方式。\n"
+"按确定/引用来接受或更改你的选择."
 
 #. Resource IDs: (5950)
 #, c-format
-msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nPlease select another shortcut (it has been reset)."
-msgstr "键盘快捷方式 '%s' 已被下列内容使用中:\n\t«%s» «%s» «%s»\n请选择另一个快捷方式(它已被重置)."
+msgid ""
+"The keyboard shortcut '%s' is already in use by:\n"
+"\t«%s» «%s» «%s»\n"
+"Please select another shortcut (it has been reset)."
+msgstr ""
+"键盘快捷方式 '%s' 已被下列内容使用中:\n"
+"\t«%s» «%s» «%s»\n"
+"请选择另一个快捷方式(它已被重置)."
 
 #. Resource IDs: (5279)
 msgid "The master password cannot be blank."
@@ -6705,8 +7179,18 @@ msgstr "主密码不能为空。"
 
 #. Resource IDs: (5958)
 #, c-format
-msgid "The master password has been entered %d times without success:\n- Is Caps Lock off?\n- Is the language correct (if multilingual)?\n- Is this the correct database?\n- Perhaps the database was damaged. Try opening a backup copy."
-msgstr "主密码已输入%d次均未成功：\n- 大写锁定了吗？\n- 语言是否正确（如果是多语言）？\n- 这是正确的数据库吗？\n- 也许数据库已损坏。尝试打开备份副本。"
+msgid ""
+"The master password has been entered %d times without success:\n"
+"- Is Caps Lock off?\n"
+"- Is the language correct (if multilingual)?\n"
+"- Is this the correct database?\n"
+"- Perhaps the database was damaged. Try opening a backup copy."
+msgstr ""
+"主密码已输入%d次均未成功：\n"
+"- 大写锁定了吗？\n"
+"- 语言是否正确（如果是多语言）？\n"
+"- 这是正确的数据库吗？\n"
+"- 也许数据库已损坏。尝试打开备份副本。"
 
 #. Resource IDs: (5792)
 #, c-format
@@ -6778,13 +7262,25 @@ msgstr "这个条目已被更改。你确认你希望取消?"
 
 #. Resource IDs: (3404)
 #, c-format
-msgid "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
-msgstr "这个条目拥有下列 %d %ls:\n%ls\n请确认继续(所有指向这个条目的快捷方式将被删除)?"
+msgid ""
+"This entry has the following %d %ls:\n"
+"%ls\n"
+"Please confirm to continue (All shortcuts to this entry will be deleted)?"
+msgstr ""
+"这个条目拥有下列 %d %ls:\n"
+"%ls\n"
+"请确认继续(所有指向这个条目的快捷方式将被删除)?"
 
 #. Resource IDs: (3403)
 #, c-format
-msgid "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
-msgstr "这个条目拥有下列 %d %ls:\n%ls\n请确认要继续(别名条目的密码将由这个条目的密码所替代)?"
+msgid ""
+"This entry has the following %d %ls:\n"
+"%ls\n"
+"Please confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
+msgstr ""
+"这个条目拥有下列 %d %ls:\n"
+"%ls\n"
+"请确认要继续(别名条目的密码将由这个条目的密码所替代)?"
 
 #. Resource IDs: (5248)
 msgid "This entry must have a password."
@@ -6974,8 +7470,18 @@ msgid "Ukrainian (Enhanced)"
 msgstr "乌克兰语(增强)"
 
 #. Resource IDs: (3029)
-msgid "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr "不能创建一个新的 XML 配置文件或添加你的设置到一个现有的 XML 配置文件。\n\n所有应用程序配置设置将被保存在本机的你的注册表条目中。\n\n数据库相关设置将会在关闭时存储在打开的数据库中，假设它不是只读或者未被其它用户锁定的."
+msgid ""
+"Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n"
+"\n"
+"All application configuration settings will be saved in your registry entry on this computer.\n"
+"\n"
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr ""
+"不能创建一个新的 XML 配置文件或添加你的设置到一个现有的 XML 配置文件。\n"
+"\n"
+"所有应用程序配置设置将被保存在本机的你的注册表条目中。\n"
+"\n"
+"数据库相关设置将会在关闭时存储在打开的数据库中，假设它不是只读或者未被其它用户锁定的."
 
 #. Resource IDs: (5385)
 #, c-format
@@ -6987,13 +7493,22 @@ msgid "Unable to display URL"
 msgstr "不能显示网址"
 
 #. Resource IDs: (3028)
-msgid "Unable to get configuration file lock.\n\nWill use registry."
+msgid ""
+"Unable to get configuration file lock.\n"
+"\n"
+"Will use registry."
 msgstr "未能获得锁配置文件，将使用注册表."
 
 #. Resource IDs: (5630)
 #, c-format
-msgid "Unable to import \"autoload_filters.xml\" filters.\n\n%s"
-msgstr "不能导入“autoload_filters.xml”筛选器。\n\n%s"
+msgid ""
+"Unable to import \"autoload_filters.xml\" filters.\n"
+"\n"
+"%s"
+msgstr ""
+"不能导入“autoload_filters.xml”筛选器。\n"
+"\n"
+"%s"
 
 #. Resource IDs: (3050)
 msgid "Unable to load configuration file"
@@ -7029,8 +7544,18 @@ msgid "Unable to send Email"
 msgstr "不能发送电邮"
 
 #. Resource IDs: (3030)
-msgid "Unable to update your entries in the existing XML configuration file.\n\nAll application configuration settings will be loaded from this file but no changes will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr "不能在现有的 XML 配置文件中更新你的条目。\n\n所有应用程序配置设置将从这个文件加载，但是没有更改将会被保存。\n\n数据库相关设置将会在关闭时存储在打开的数据库中，假设它不是只读或者未被其它用户锁定的."
+msgid ""
+"Unable to update your entries in the existing XML configuration file.\n"
+"\n"
+"All application configuration settings will be loaded from this file but no changes will be saved.\n"
+"\n"
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr ""
+"不能在现有的 XML 配置文件中更新你的条目。\n"
+"\n"
+"所有应用程序配置设置将从这个文件加载，但是没有更改将会被保存。\n"
+"\n"
+"数据库相关设置将会在关闭时存储在打开的数据库中，假设它不是只读或者未被其它用户锁定的."
 
 #. Resource IDs: (3047)
 msgid "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
@@ -7131,8 +7656,12 @@ msgstr "未保存的更改"
 
 #. Resource IDs: (5724)
 #, c-format
-msgid "Unsaved changes have been made to database:\n %s."
-msgstr "对数据库做出的未保存的更改:\n %s."
+msgid ""
+"Unsaved changes have been made to database:\n"
+" %s."
+msgstr ""
+"对数据库做出的未保存的更改:\n"
+" %s."
 
 #. Resource IDs: (6024)
 msgid "Unsaved restored database"
@@ -7156,8 +7685,50 @@ msgid "Urdu"
 msgstr "乌尔都语"
 
 #. Resource IDs: (5000)
-msgid "Usage:\npwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nSee online help for more options."
-msgstr "用法:\npwsafe [-r|-v] [密码数据库]\n或 pwsafe [-e|-d] 文件名\n或 pwsafe [-c]\n或 pwsafe [-s] [密码数据库]\n或 pwsafe -m\n\n 其中:\n  -r = 只读打开\n  -v = 验证并修复\n  -e/d = 加密/解密文件\n  -c = 关闭式启动，也即无打开的数据库\n  -s = 静默打开(最小化)\n  -m = 最小化启动并关闭\n\n此外，可使用下列标志:\n -u 用户 (使用用户的首选项代替登录名)\n -h 主机 (使用主机查询首选项代替机器名称)\n -g 配置文件 (使用配置文件代替 pwsafe.cfg)\n -q (不抱怨缺少字体，DLL 等)\n查看在线帮助了解更多选项."
+msgid ""
+"Usage:\n"
+"pwsafe [-r|-v] [password database]\n"
+"or pwsafe [-e|-d] filename\n"
+"or pwsafe [-c]\n"
+"or pwsafe [-s] [password database]\n"
+"or pwsafe -m\n"
+"\n"
+" where:\n"
+"  -r = open read-only\n"
+"  -v = validate & repair\n"
+"  -e/d = encrypt/decrypt file\n"
+"  -c = start closed i.e., no open database\n"
+"  -s = start silently (minimized)\n"
+"  -m = start minimized & closed\n"
+"\n"
+"In addition, the following flags may be used:\n"
+" -u user (use user's preferences instead of login name)\n"
+" -h host (use host to look up preferences instead of the machine's name)\n"
+" -g config_file (use config_file instead of pwsafe.cfg)\n"
+" -q (don't complain about missing fonts, dlls, etc.)\n"
+"See online help for more options."
+msgstr ""
+"用法:\n"
+"pwsafe [-r|-v] [密码数据库]\n"
+"或 pwsafe [-e|-d] 文件名\n"
+"或 pwsafe [-c]\n"
+"或 pwsafe [-s] [密码数据库]\n"
+"或 pwsafe -m\n"
+"\n"
+" 其中:\n"
+"  -r = 只读打开\n"
+"  -v = 验证并修复\n"
+"  -e/d = 加密/解密文件\n"
+"  -c = 关闭式启动，也即无打开的数据库\n"
+"  -s = 静默打开(最小化)\n"
+"  -m = 最小化启动并关闭\n"
+"\n"
+"此外，可使用下列标志:\n"
+" -u 用户 (使用用户的首选项代替登录名)\n"
+" -h 主机 (使用主机查询首选项代替机器名称)\n"
+" -g 配置文件 (使用配置文件代替 pwsafe.cfg)\n"
+" -q (不抱怨缺少字体，DLL 等)\n"
+"查看在线帮助了解更多选项."
 
 #. Resource IDs: (1029)
 msgid "Use"
@@ -7261,8 +7832,14 @@ msgstr "验证"
 
 #. Resource IDs: (5347)
 #, c-format
-msgid "Validated %d %s\n\nImported %d %s"
-msgstr "已验证 %d %s\n\n已导入 %d %s"
+msgid ""
+"Validated %d %s\n"
+"\n"
+"Imported %d %s"
+msgstr ""
+"已验证 %d %s\n"
+"\n"
+"已导入 %d %s"
 
 #. Resource IDs: (5891)
 msgid "Value"
@@ -7343,12 +7920,24 @@ msgstr "警告: 若你继续的话，字段将从你选择的输入数据库中�
 
 #. Resource IDs: (5804)
 #, c-format
-msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n\nPlease do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
-msgstr "警告: 这个操作将在数据库中创建一个 %s 的未保护副本。 在使用后删除这个副本是不足够的。 .\n\n请不要使用这个选项，除非你明白并接受风险。 这个选项会绕过了由这个程序提供的安全性."
+msgid ""
+"WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n"
+"\n"
+"Please do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
+msgstr ""
+"警告: 这个操作将在数据库中创建一个 %s 的未保护副本。 在使用后删除这个副本是不足够的。 .\n"
+"\n"
+"请不要使用这个选项，除非你明白并接受风险。 这个选项会绕过了由这个程序提供的安全性."
 
 #. Resource IDs: (5447)
-msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
-msgstr "警告: 一个外部编辑器的使用可能在你的硬盘上留下敏感数据。\n\n你是否希望继续?"
+msgid ""
+"WARNING: Use of an external editor may leave sensitive data on your hard disk.\n"
+"\n"
+"Do you wish to continue?"
+msgstr ""
+"警告: 一个外部编辑器的使用可能在你的硬盘上留下敏感数据。\n"
+"\n"
+"你是否希望继续?"
 
 #. Resource IDs: (1232)
 msgid "Warn"
@@ -7368,8 +7957,14 @@ msgstr "警告 - 字段太长"
 
 #. Resource IDs: (5281)
 #, c-format
-msgid "Weak master password:\n\n %s"
-msgstr "弱主密码：\n\n%s"
+msgid ""
+"Weak master password:\n"
+"\n"
+" %s"
+msgstr ""
+"弱主密码：\n"
+"\n"
+"%s"
 
 #. Resource IDs: (5763)
 msgid "What saved"
@@ -7431,16 +8026,28 @@ msgstr "添加和编辑中备注自动换行"
 
 #. Resource IDs: (5305)
 #, c-format
-msgid "Would you like to set \"%s\" as your default username?\n\nIt would then be used by default for new items."
-msgstr "你是否希望设定 \"%s\" 为你的默认用户名?\n\n它之后将会按默认用于新建项."
+msgid ""
+"Would you like to set \"%s\" as your default username?\n"
+"\n"
+"It would then be used by default for new items."
+msgstr ""
+"你是否希望设定 \"%s\" 为你的默认用户名?\n"
+"\n"
+"它之后将会按默认用于新建项."
 
 #. Resource IDs: (5326)
 msgid "Write Error"
 msgstr "写入错误"
 
 #. Resource IDs: (5742)
-msgid "Write operation failed!\nFile may have been corrupted.\nTry saving in a different location"
-msgstr "写入操作失败!\n文件可能已破坏!\n请尝试保存在一个不同的位置"
+msgid ""
+"Write operation failed!\n"
+"File may have been corrupted.\n"
+"Try saving in a different location"
+msgstr ""
+"写入操作失败!\n"
+"文件可能已破坏!\n"
+"请尝试保存在一个不同的位置"
 
 #. Resource IDs: (5107)
 msgid "Writes the database when an entry was accessed, unless in read-only mode."
@@ -7550,7 +8157,7 @@ msgstr "YubiKey 初始化成功，关闭这个消息框并激活它."
 
 #. Resource IDs: (6007)
 msgid "YubiKey updated successfully, you may close this window."
-msgstr ""
+msgstr "YubiKey更新成功，您可以关闭此窗口。"
 
 #. Resource IDs: (1452, 1455)
 msgid "Yubikey"
@@ -7577,408 +8184,820 @@ msgid "[Notes hidden - click here to display]"
 msgstr "[备注已隐藏 - 单击这里显示]"
 
 #. Resource IDs: (32064)
-msgid "\nAdd Group"
-msgstr "\n添加分组"
+msgid ""
+"\n"
+"Add Group"
+msgstr ""
+"\n"
+"添加分组"
 
 #. Resource IDs: (32051)
-msgid "\nAdd New Entry"
-msgstr "\n添加新条目"
+msgid ""
+"\n"
+"Add New Entry"
+msgstr ""
+"\n"
+"添加新条目"
 
 #. Resource IDs: (32307)
-msgid "\nAdvanced Find Options"
-msgstr "\n高级查找选项"
+msgid ""
+"\n"
+"Advanced Find Options"
+msgstr ""
+"\n"
+"高级查找选项"
 
 #. Resource IDs: (32072)
-msgid "\nBrowse to URL"
-msgstr "\n浏览 URL"
+msgid ""
+"\n"
+"Browse to URL"
+msgstr ""
+"\n"
+"浏览 URL"
 
 #. Resource IDs: (32073)
-msgid "\nBrowse to URL + AutoType"
-msgstr "\n浏览 URL + 自动键入"
+msgid ""
+"\n"
+"Browse to URL + AutoType"
+msgstr ""
+"\n"
+"浏览 URL + 自动键入"
 
 #. Resource IDs: (32074)
-msgid "\nBrowse to URL with Alternate Browser"
+msgid ""
+"\n"
+"Browse to URL with Alternate Browser"
 msgstr ""
+"\n"
+"使用备用浏览器浏览到 URL"
 
 #. Resource IDs: (32305)
-msgid "\nCase insensitive search"
-msgstr "\n不区分大小写搜索"
+msgid ""
+"\n"
+"Case insensitive search"
+msgstr ""
+"\n"
+"不区分大小写搜索"
 
 #. Resource IDs: (32306)
-msgid "\nCase sensitive search"
-msgstr "\n区分大小写搜索"
+msgid ""
+"\n"
+"Case sensitive search"
+msgstr ""
+"\n"
+"区分大小写搜索"
 
 #. Resource IDs: (32134)
-msgid "\nClear Filters"
-msgstr "\n清除筛选器"
+msgid ""
+"\n"
+"Clear Filters"
+msgstr ""
+"\n"
+"清除筛选器"
 
 #. Resource IDs: (32302)
-msgid "\nClear Find"
-msgstr "\n清除查找"
+msgid ""
+"\n"
+"Clear Find"
+msgstr ""
+"\n"
+"清除查找"
 
 #. Resource IDs: (32065)
-msgid "\nClear the clipboard contents"
-msgstr "\n清空剪贴板内容"
+msgid ""
+"\n"
+"Clear the clipboard contents"
+msgstr ""
+"\n"
+"清空剪贴板内容"
 
 #. Resource IDs: (32004)
-msgid "\nClose Database"
-msgstr "\n关闭数据库"
+msgid ""
+"\n"
+"Close Database"
+msgstr ""
+"\n"
+"关闭数据库"
 
 #. Resource IDs: (32301)
-msgid "\nClose Find Bar"
-msgstr "\n关闭查找栏"
+msgid ""
+"\n"
+"Close Find Bar"
+msgstr ""
+"\n"
+"关闭查找栏"
 
 #. Resource IDs: (32110)
-msgid "\nCollapse All"
-msgstr "\n收缩全部"
+msgid ""
+"\n"
+"Collapse All"
+msgstr ""
+"\n"
+"收缩全部"
 
 #. Resource IDs: (32092)
-msgid "\nCompare entries..."
-msgstr "\n比较条目..."
+msgid ""
+"\n"
+"Compare entries..."
+msgstr ""
+"\n"
+"比较条目..."
 
 #. Resource IDs: (32019)
-msgid "\nCompare two Databases"
-msgstr "\n比较两个数据库"
+msgid ""
+"\n"
+"Compare two Databases"
+msgstr ""
+"\n"
+"比较两个数据库"
 
 #. Resource IDs: (32069)
-msgid "\nCopy Notes to Clipboard"
-msgstr "\n复制备注到剪贴板"
+msgid ""
+"\n"
+"Copy Notes to Clipboard"
+msgstr ""
+"\n"
+"复制备注到剪贴板"
 
 #. Resource IDs: (32066)
-msgid "\nCopy Password to Clipboard"
-msgstr "\n复制密码到剪贴板"
+msgid ""
+"\n"
+"Copy Password to Clipboard"
+msgstr ""
+"\n"
+"复制密码到剪贴板"
 
 #. Resource IDs: (32081)
-msgid "\nCopy Run Command to Clipboard"
-msgstr "\n复制运行命令到剪贴板"
+msgid ""
+"\n"
+"Copy Run Command to Clipboard"
+msgstr ""
+"\n"
+"复制运行命令到剪贴板"
 
 #. Resource IDs: (32068)
-msgid "\nCopy Username to Clipboard"
-msgstr "\n复制用户名到剪贴板"
+msgid ""
+"\n"
+"Copy Username to Clipboard"
+msgstr ""
+"\n"
+"复制用户名到剪贴板"
 
 #. Resource IDs: (32308)
-msgid "\nCreate report of previous Find search"
-msgstr "\n创建先前“查找”搜索的报告"
+msgid ""
+"\n"
+"Create report of previous Find search"
+msgstr ""
+"\n"
+"创建先前“查找”搜索的报告"
 
 #. Resource IDs: (32056)
-msgid "\nDelete an Entry"
-msgstr "\n删除一个条目"
+msgid ""
+"\n"
+"Delete an Entry"
+msgstr ""
+"\n"
+"删除一个条目"
 
 #. Resource IDs: (32067)
-msgid "\nDisplay subset of Password"
-msgstr "\n显示密码的子集"
+msgid ""
+"\n"
+"Display subset of Password"
+msgstr ""
+"\n"
+"显示密码的子集"
 
 #. Resource IDs: (32063)
-msgid "\nDuplicate Entry"
-msgstr "\n复制条目"
+msgid ""
+"\n"
+"Duplicate Entry"
+msgstr ""
+"\n"
+"复制条目"
 
 #. Resource IDs: (32087)
-msgid "\nDuplicate Group"
-msgstr "\n重复分组"
+msgid ""
+"\n"
+"Duplicate Group"
+msgstr ""
+"\n"
+"重复分组"
 
 #. Resource IDs: (32082)
-msgid "\nEdit Base entry"
-msgstr "\n编辑基本条目"
+msgid ""
+"\n"
+"Edit Base entry"
+msgstr ""
+"\n"
+"编辑基本条目"
 
 #. Resource IDs: (32052)
-msgid "\nEdit Entry"
-msgstr "\n编辑条目"
+msgid ""
+"\n"
+"Edit Entry"
+msgstr ""
+"\n"
+"编辑条目"
 
 #. Resource IDs: (32113)
-msgid "\nEdit Filters"
-msgstr "\n编辑筛选器"
+msgid ""
+"\n"
+"Edit Filters"
+msgstr ""
+"\n"
+"编辑筛选器"
 
 #. Resource IDs: (5517)
-msgid "\nEmail: "
+msgid ""
+"\n"
+"Email: "
 msgstr ""
 
 #. Resource IDs: (3052)
 #, c-format
-msgid "\nError in Password History for entry: »%ls»%ls»%ls»: "
-msgstr "\n条目的密码历史中错误: »%ls»%ls»%ls»: "
+msgid ""
+"\n"
+"Error in Password History for entry: »%ls»%ls»%ls»: "
+msgstr ""
+"\n"
+"条目的密码历史中错误: »%ls»%ls»%ls»: "
 
 #. Resource IDs: (32109)
-msgid "\nExpand All"
-msgstr "\n展开全部"
+msgid ""
+"\n"
+"Expand All"
+msgstr ""
+"\n"
+"展开全部"
 
 #. Resource IDs: (32097)
-msgid "\nExport Attachment..."
-msgstr "\n导出附件..."
+msgid ""
+"\n"
+"Export Attachment..."
+msgstr ""
+"\n"
+"导出附件..."
 
 #. Resource IDs: (32086)
-msgid "\nExport Entry in XML format..."
-msgstr "\n导出条目到 XML 格式..."
+msgid ""
+"\n"
+"Export Entry in XML format..."
+msgstr ""
+"\n"
+"导出条目到 XML 格式..."
 
 #. Resource IDs: (32085)
-msgid "\nExport Entry to Plain Text..."
-msgstr "\n导出条目到纯文本..."
+msgid ""
+"\n"
+"Export Entry to Plain Text..."
+msgstr ""
+"\n"
+"导出条目到纯文本..."
 
 #. Resource IDs: (32093)
-msgid "\nExport Entry to another Safe..."
-msgstr "\n导出条目到另一个保险箱..."
+msgid ""
+"\n"
+"Export Entry to another Safe..."
+msgstr ""
+"\n"
+"导出条目到另一个保险箱..."
 
 #. Resource IDs: (32095)
-msgid "\nExport Group in XML format..."
-msgstr "\n以 XML 格式导出分组..."
+msgid ""
+"\n"
+"Export Group in XML format..."
+msgstr ""
+"\n"
+"以 XML 格式导出分组..."
 
 #. Resource IDs: (32094)
-msgid "\nExport Group to Plain Text..."
-msgstr "\n导出分组到纯文本..."
+msgid ""
+"\n"
+"Export Group to Plain Text..."
+msgstr ""
+"\n"
+"导出分组到纯文本..."
 
 #. Resource IDs: (32096)
-msgid "\nExport Group to another Safe..."
-msgstr "\n导出分组到另一个保险箱..."
+msgid ""
+"\n"
+"Export Group to another Safe..."
+msgstr ""
+"\n"
+"导出分组到另一个保险箱..."
 
 #. Resource IDs: (32010)
-msgid "\nExport to Text"
-msgstr "\n导出到文本"
+msgid ""
+"\n"
+"Export to Text"
+msgstr ""
+"\n"
+"导出到文本"
 
 #. Resource IDs: (32011)
-msgid "\nExport to V1 database"
-msgstr "\n导出到 V1 数据库"
+msgid ""
+"\n"
+"Export to V1 database"
+msgstr ""
+"\n"
+"导出到 V1 数据库"
 
 #. Resource IDs: (32012)
-msgid "\nExport to V2 database"
-msgstr "\n导出到 V2 数据库"
+msgid ""
+"\n"
+"Export to V2 database"
+msgstr ""
+"\n"
+"导出到 V2 数据库"
 
 #. Resource IDs: (32025)
-msgid "\nExport to V3 database"
-msgstr "\n导出到 V3 数据库"
+msgid ""
+"\n"
+"Export to V3 database"
+msgstr ""
+"\n"
+"导出到 V3 数据库"
 
 #. Resource IDs: (32013)
-msgid "\nExport to XML"
-msgstr "\n导出到 XML"
+msgid ""
+"\n"
+"Export to XML"
+msgstr ""
+"\n"
+"导出到 XML"
 
 #. Resource IDs: (32026)
-msgid "\nExport to v4 database (EXPERIMENTAL)"
-msgstr "\n导出到 V4 数据库(试验)"
+msgid ""
+"\n"
+"Export to v4 database (EXPERIMENTAL)"
+msgstr ""
+"\n"
+"导出到 V4 数据库(试验)"
 
 #. Resource IDs: (32028)
-msgid "\nFiltered entries to PasswordSafe..."
-msgstr "\n筛选条目到 PasswordSafe..."
+msgid ""
+"\n"
+"Filtered entries to PasswordSafe..."
+msgstr ""
+"\n"
+"筛选条目到 PasswordSafe..."
 
 #. Resource IDs: (32061)
-msgid "\nFind Next"
-msgstr "\n查找下一个"
+msgid ""
+"\n"
+"Find Next"
+msgstr ""
+"\n"
+"查找下一个"
 
 #. Resource IDs: (32062)
-msgid "\nFind Previous"
-msgstr "\n查找上一个"
+msgid ""
+"\n"
+"Find Previous"
+msgstr ""
+"\n"
+"查找上一个"
 
 #. Resource IDs: (32080)
-msgid "\nFind..."
-msgstr "\n查找..."
+msgid ""
+"\n"
+"Find..."
+msgstr ""
+"\n"
+"查找..."
 
 #. Resource IDs: (32157)
-msgid "\nGenerate Password"
-msgstr "\n生成密码"
+msgid ""
+"\n"
+"Generate Password"
+msgstr ""
+"\n"
+"生成密码"
 
 #. Resource IDs: (32079)
-msgid "\nGo to Base entry"
-msgstr "\n转到基本条目"
+msgid ""
+"\n"
+"Go to Base entry"
+msgstr ""
+"\n"
+"转到基本条目"
 
 #. Resource IDs: (57670)
-msgid "\nHelp"
-msgstr "\n帮助"
+msgid ""
+"\n"
+"Help"
+msgstr ""
+"\n"
+"帮助"
 
 #. Resource IDs: (32016)
-msgid "\nImport Text"
-msgstr "\n导入文本"
+msgid ""
+"\n"
+"Import Text"
+msgstr ""
+"\n"
+"导入文本"
 
 #. Resource IDs: (32015)
-msgid "\nImport XML"
-msgstr "\n导入 XML"
+msgid ""
+"\n"
+"Import XML"
+msgstr ""
+"\n"
+"导入 XML"
 
 #. Resource IDs: (32260)
-msgid "\nList or Tree View"
-msgstr "\n列表或树状视图"
+msgid ""
+"\n"
+"List or Tree View"
+msgstr ""
+"\n"
+"列表或树状视图"
 
 #. Resource IDs: (32027)
-msgid "\nLock Database"
-msgstr "\n锁定数据库"
+msgid ""
+"\n"
+"Lock Database"
+msgstr ""
+"\n"
+"锁定数据库"
 
 #. Resource IDs: (32003)
-msgid "\nMake New Database"
-msgstr "\n制作新数据库"
+msgid ""
+"\n"
+"Make New Database"
+msgstr ""
+"\n"
+"制作新数据库"
 
 #. Resource IDs: (32115)
-msgid "\nManage Filters"
-msgstr "\n管理筛选器"
+msgid ""
+"\n"
+"Manage Filters"
+msgstr ""
+"\n"
+"管理筛选器"
 
 #. Resource IDs: (3415)
 #, c-format
-msgid "\nMerge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
-msgstr "\n合并完成: %d %ls 已添加 (%d %ls, %d %ls, %d %ls, %d %ls)"
+msgid ""
+"\n"
+"Merge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
+msgstr ""
+"\n"
+"合并完成: %d %ls 已添加 (%d %ls, %d %ls, %d %ls, %d %ls)"
 
 #. Resource IDs: (32018)
-msgid "\nMerge into Database"
-msgstr "\n合并到数据库中"
+msgid ""
+"\n"
+"Merge into Database"
+msgstr ""
+"\n"
+"合并到数据库中"
 
 #. Resource IDs: (32002)
-msgid "\nOpen Another Database"
-msgstr "\n打开另一个数据库"
+msgid ""
+"\n"
+"Open Another Database"
+msgstr ""
+"\n"
+"打开另一个数据库"
 
 #. Resource IDs: (32154)
-msgid "\nOptions"
-msgstr "\n选项"
+msgid ""
+"\n"
+"Options"
+msgstr ""
+"\n"
+"选项"
 
 #. Resource IDs: (32159)
-msgid "\nPassword Policies"
-msgstr "\n密码策略"
+msgid ""
+"\n"
+"Password Policies"
+msgstr ""
+"\n"
+"密码策略"
 
 #. Resource IDs: (32076)
-msgid "\nPerform AutoType"
-msgstr "\n执行自动键入"
+msgid ""
+"\n"
+"Perform AutoType"
+msgstr ""
+"\n"
+"执行自动键入"
 
 #. Resource IDs: (5283)
-msgid "\nPlease try another"
-msgstr "\n请尝试另一个"
+msgid ""
+"\n"
+"Please try another"
+msgstr ""
+"\n"
+"请尝试另一个"
 
 #. Resource IDs: (5215)
-msgid "\nProgram will terminate."
-msgstr "\n程序将终止."
+msgid ""
+"\n"
+"Program will terminate."
+msgstr ""
+"\n"
+"程序将终止."
 
 #. Resource IDs: (32090)
-msgid "\nProtect All Entries"
-msgstr "\n保护所有条目"
+msgid ""
+"\n"
+"Protect All Entries"
+msgstr ""
+"\n"
+"保护所有条目"
 
 #. Resource IDs: (32088)
-msgid "\nProtect Entry"
-msgstr "\n保护条目"
+msgid ""
+"\n"
+"Protect Entry"
+msgstr ""
+"\n"
+"保护条目"
 
 #. Resource IDs: (32084)
-msgid "\nRedo"
-msgstr "\n重做"
+msgid ""
+"\n"
+"Redo"
+msgstr ""
+"\n"
+"重做"
 
 #. Resource IDs: (5780)
 #, c-format
-msgid "\nRenamed %d %s"
-msgstr "\n已重命名 %d %s"
+msgid ""
+"\n"
+"Renamed %d %s"
+msgstr ""
+"\n"
+"已重命名 %d %s"
 
 #. Resource IDs: (32077)
-msgid "\nRun Command"
-msgstr "\n运行命令"
+msgid ""
+"\n"
+"Run Command"
+msgstr ""
+"\n"
+"运行命令"
 
 #. Resource IDs: (32005)
-msgid "\nSave Database"
-msgstr "\n保存数据库"
+msgid ""
+"\n"
+"Save Database"
+msgstr ""
+"\n"
+"保存数据库"
 
 #. Resource IDs: (32006)
-msgid "\nSave Database As..."
-msgstr "\n另存数据库为..."
+msgid ""
+"\n"
+"Save Database As..."
+msgstr ""
+"\n"
+"另存数据库为..."
 
 #. Resource IDs: (32255)
-msgid "\nSelect Entry"
-msgstr "\n选择条目"
+msgid ""
+"\n"
+"Select Entry"
+msgstr ""
+"\n"
+"选择条目"
 
 #. Resource IDs: (32075)
-msgid "\nSend Email"
-msgstr "\n发送电邮"
+msgid ""
+"\n"
+"Send Email"
+msgstr ""
+"\n"
+"发送电邮"
 
 #. Resource IDs: (32114)
-msgid "\nSet/Clear Filters"
-msgstr "\n设定/清除筛选器"
+msgid ""
+"\n"
+"Set/Clear Filters"
+msgstr ""
+"\n"
+"设定/清除筛选器"
 
 #. Resource IDs: (32127)
-msgid "\nShow Unsaved Changes"
-msgstr "\n显示未保存的更改"
+msgid ""
+"\n"
+"Show Unsaved Changes"
+msgstr ""
+"\n"
+"显示未保存的更改"
 
 #. Resource IDs: (32131)
-msgid "\nShow entries with Password Expiry dates"
-msgstr "\n显示具有密码失效日期的条目"
+msgid ""
+"\n"
+"Show entries with Password Expiry dates"
+msgstr ""
+"\n"
+"显示具有密码失效日期的条目"
 
 #. Resource IDs: (32140)
-msgid "\nShow only found entries"
-msgstr "\n仅显示找到的条目"
+msgid ""
+"\n"
+"Show only found entries"
+msgstr ""
+"\n"
+"仅显示找到的条目"
 
 #. Resource IDs: (5339)
 #, c-format
-msgid "\nSkipped %d %s"
-msgstr "\n已跳过 %d %s"
+msgid ""
+"\n"
+"Skipped %d %s"
+msgstr ""
+"\n"
+"已跳过 %d %s"
 
 #. Resource IDs: (32022)
-msgid "\nSynchronize Databases"
-msgstr "\n同步数据库"
+msgid ""
+"\n"
+"Synchronize Databases"
+msgstr ""
+"\n"
+"同步数据库"
 
 #. Resource IDs: (3413)
 #, c-format
-msgid "\nSynchronize completed: %d %ls updated"
-msgstr "\n同步完成: %d %ls 被更新"
+msgid ""
+"\n"
+"Synchronize completed: %d %ls updated"
+msgstr ""
+"\n"
+"同步完成: %d %ls 被更新"
 
 #. Resource IDs: (3412)
 #, c-format
-msgid "\nThe following %ls %ls updated:"
-msgstr "\n下列 %ls %ls 已更新:"
+msgid ""
+"\n"
+"The following %ls %ls updated:"
+msgstr ""
+"\n"
+"下列 %ls %ls 已更新:"
 
 #. Resource IDs: (3419)
 #, c-format
-msgid "\nThe following new %ls %ls merged into this database:"
-msgstr "\n下列新的 %ls %ls 被合并到这个数据库中:"
+msgid ""
+"\n"
+"The following new %ls %ls merged into this database:"
+msgstr ""
+"\n"
+"下列新的 %ls %ls 被合并到这个数据库中:"
 
 #. Resource IDs: (32083)
-msgid "\nUndo"
-msgstr "\n撤销"
+msgid ""
+"\n"
+"Undo"
+msgstr ""
+"\n"
+"撤销"
 
 #. Resource IDs: (3060)
-msgid "\nUnexpected exception during parsing."
-msgstr "\n分析期间意外事故."
+msgid ""
+"\n"
+"Unexpected exception during parsing."
+msgstr ""
+"\n"
+"分析期间意外事故."
 
 #. Resource IDs: (32091)
-msgid "\nUnprotect All Entries"
-msgstr "\n取消保护所有条目"
+msgid ""
+"\n"
+"Unprotect All Entries"
+msgstr ""
+"\n"
+"取消保护所有条目"
 
 #. Resource IDs: (32089)
-msgid "\nUnprotect Entry"
-msgstr "\n取消保护条目"
+msgid ""
+"\n"
+"Unprotect Entry"
+msgstr ""
+"\n"
+"取消保护条目"
 
 #. Resource IDs: (5282)
-msgid "\nUse it anyway?"
-msgstr "\n无论如何都使用它?"
+msgid ""
+"\n"
+"Use it anyway?"
+msgstr ""
+"\n"
+"无论如何都使用它?"
 
 #. Resource IDs: (32098)
-msgid "\nView Attachment"
-msgstr "\n查看附件"
+msgid ""
+"\n"
+"View Attachment"
+msgstr ""
+"\n"
+"查看附件"
 
 #. Resource IDs: (32053)
-msgid "\nView Entry"
-msgstr "\n查看条目"
+msgid ""
+"\n"
+"View Entry"
+msgstr ""
+"\n"
+"查看条目"
 
 #. Resource IDs: (32261)
-msgid "\nView Reports"
-msgstr "\n查看报告"
+msgid ""
+"\n"
+"View Reports"
+msgstr ""
+"\n"
+"查看报告"
 
 #. Resource IDs: (5238)
-msgid "\n\nCannot open database. It probably does not exist.\nPlease select to Open another database, create a New database or Cancel."
-msgstr "\n\n不能打开数据库，它可能不存在!\n请选择打开另一个数据库，创建一个新数据库或取消."
+msgid ""
+"\n"
+"\n"
+"Cannot open database. It probably does not exist.\n"
+"Please select to Open another database, create a New database or Cancel."
+msgstr ""
+"\n"
+"\n"
+"不能打开数据库，它可能不存在!\n"
+"请选择打开另一个数据库，创建一个新数据库或取消."
 
 #. Resource IDs: (5662)
-msgid "\n\nIgnore this and save anyway - Yes/no?"
-msgstr "\n\n忽略这项并总是保存 - 是/否?"
+msgid ""
+"\n"
+"\n"
+"Ignore this and save anyway - Yes/no?"
+msgstr ""
+"\n"
+"\n"
+"忽略这项并总是保存 - 是/否?"
 
 #. Resource IDs: (5463)
-msgid "\n\nSelect Yes to continue with this password or No to cancel"
-msgstr "\n\n选择[是]则继续使用这个密码，或者选择[否]取消"
+msgid ""
+"\n"
+"\n"
+"Select Yes to continue with this password or No to cancel"
+msgstr ""
+"\n"
+"\n"
+"选择[是]则继续使用这个密码，或者选择[否]取消"
 
 #. Resource IDs: (5357)
-msgid "\n\nThe databases are identical when comparing the selected or default fields!"
-msgstr "\n\n在比较选择的或默认的字段时数据库相同!"
+msgid ""
+"\n"
+"\n"
+"The databases are identical when comparing the selected or default fields!"
+msgstr ""
+"\n"
+"\n"
+"在比较选择的或默认的字段时数据库相同!"
 
 #. Resource IDs: (5441)
-msgid "\n\nUnknown fields will also be copied with the entry."
-msgstr "\n\n未知字段也将伴随该条目被复制."
+msgid ""
+"\n"
+"\n"
+"Unknown fields will also be copied with the entry."
+msgstr ""
+"\n"
+"\n"
+"未知字段也将伴随该条目被复制."
 
 #. Resource IDs: (5784)
 #, c-format
-msgid "\nwith Password History errors %d"
-msgstr "\n带有密码历史错误 %d"
+msgid ""
+"\n"
+"with Password History errors %d"
+msgstr ""
+"\n"
+"带有密码历史错误 %d"
 
 #. Resource IDs: (5867)
-msgid "\nwith warnings"
-msgstr "\n带警告"
+msgid ""
+"\n"
+"with warnings"
+msgstr ""
+"\n"
+"带警告"
 
 #. Resource IDs: (5448)
-msgid "\r\nThis field is being edited in your default text editor.\r\nPlease complete this action before continuing.\r\n\r\n(You may cancel this edit using the Close [X] button above)"
-msgstr "\r\n这个字段是在你的默认文本编辑器中编辑。\r\n请在继续前完整这个动作。\r\n\r\n(你可以使用上面的关闭[X]按钮取消这个编辑)"
+msgid ""
+"\r\n"
+"This field is being edited in your default text editor.\r\n"
+"Please complete this action before continuing.\r\n"
+"\r\n"
+"(You may cancel this edit using the Close [X] button above)"
+msgstr ""
+"\r\n"
+"这个字段是在你的默认文本编辑器中编辑。\r\n"
+"请在继续前完整这个动作。\r\n"
+"\r\n"
+"(你可以使用上面的关闭[X]按钮取消这个编辑)"
 
 #. Resource IDs: (5526)
 #, c-format
@@ -7987,8 +9006,12 @@ msgstr "\t%s 被限于下列字段:"
 
 #. Resource IDs: (5363)
 #, c-format
-msgid "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\n\t\thas differences in the following fields:"
-msgstr "\t条目 - 分组:\"%s\"; 标题:\"%s\"; 用户:\"%s\"\n\t\t在下列字段中存在差异:"
+msgid ""
+"\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\n"
+"\t\thas differences in the following fields:"
+msgstr ""
+"\t条目 - 分组:\"%s\"; 标题:\"%s\"; 用户:\"%s\"\n"
+"\t\t在下列字段中存在差异:"
 
 #. Resource IDs: (5359)
 #, c-format
@@ -8035,8 +9058,12 @@ msgstr ""
 
 #. Resource IDs: (5522)
 #, c-format
-msgid "\tThe following restrictions were selected:\n\t\t %s"
-msgstr "\t选择了下列限定条件:\n\t\t %s"
+msgid ""
+"\tThe following restrictions were selected:\n"
+"\t\t %s"
+msgstr ""
+"\t选择了下列限定条件:\n"
+"\t\t %s"
 
 #. Resource IDs: (3274)
 msgid "\tThis entry has been made an alias of associated base entry."
@@ -8485,4 +9512,3 @@ msgstr "xx%"
 #. Resource IDs: (8004)
 msgid "xxxxxx"
 msgstr "xxxxxx"
-
