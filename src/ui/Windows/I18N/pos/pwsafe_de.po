@@ -4046,7 +4046,7 @@ msgstr "Hexadezimal schließt alle anderen Optionen aus."
 
 #. Resource IDs: (5122)
 msgid "Hide Password Safe from screen capture and related apps."
-msgstr "Blenden Sie Password Safe vor Bildschirmaufnahmen und verwandten Apps aus."
+msgstr "Password Safe vor Bildschirmaufnahmen und verwandten Anwendungen schützen."
 
 #. Resource IDs: (1426)
 msgid "Hide System Tray icon (Hot Key MUST be active)"
@@ -6200,7 +6200,7 @@ msgid ""
 "\n"
 "Click OK to continue."
 msgstr ""
-"Der Schutz vor Bildschirmaufnahmen wurde über die Befehlszeile deaktiviert.\n"
+"Bildschirmaufnahmeschutz durch Kommandozeile deaktiviert.\n"
 "\n"
 "Wenden Sie sich an den Support, wenn dies unerwartet ist.\n"
 "\n"
@@ -6215,23 +6215,23 @@ msgid ""
 "\n"
 "You can click OK to continue in %d seconds."
 msgstr ""
-"Der Schutz vor Bildschirmaufnahmen wurde über die Befehlszeile deaktiviert.\n"
+"Bildschirmaufnahmeschutz durch Kommandozeile deaktiviert.\n"
 "\n"
 "Wenden Sie sich an den Support, wenn dies unerwartet ist.\n"
 "\n"
-"Sie können auf OK klicken, um in %d Sekunden fortzufahren."
+"Sie können auf OK klicken, um in %d Sekunden fortfahren."
 
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
-msgstr "Der Schutz vor Bildschirmaufnahmen wurde über die Befehlszeile außer Kraft gesetzt."
+msgstr "Der Schutz vor Bildschirmaufnahmen wurde durch die Kommandozeile aufgehoben."
 
 #. Resource IDs: (6071)
 msgid "Screen capture protection is off."
-msgstr "Der Schutz vor Bildschirmaufnahmen ist deaktiviert."
+msgstr "Bildschirmaufnahmeschutz ist deaktiviert."
 
 #. Resource IDs: (6070)
 msgid "Screen capture protection is on."
-msgstr "Der Schutz vor Bildschirmaufnahmen ist aktiviert."
+msgstr "Bildschirmaufnahmeschutz ist aktiviert."
 
 #. Resource IDs: (5276)
 #, c-format
