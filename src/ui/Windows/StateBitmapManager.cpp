@@ -40,23 +40,13 @@ CStateBitmapManager::CStateBitmapManager(
     int bmHeightDpi = MulDiv(bm.bmHeight, dpi, 96);
 
     UINT bmpIndex = nId - m_idFirst;
-    m_stateBitmaps.push_back(new CBitmap);
+    m_stateBitmaps.push_back(std::make_shared<CBitmap>());
     ASSERT(bmpIndex == m_stateBitmaps.size() - 1);
 
     WinUtil::ResizeBitmap(origBmp, *m_stateBitmaps[bmpIndex], bmWidthDpi, bmHeightDpi);
 
     origBmp.DeleteObject();
   }
-}
-
-CStateBitmapManager::~CStateBitmapManager()
-{
-  std::for_each(
-    m_stateBitmaps.begin(),
-    m_stateBitmaps.end(),
-    [](CBitmap* pbmp) { pbmp->DeleteObject(); }
-  );
-  m_stateBitmaps.clear();
 }
 
 CBitmap& CStateBitmapManager::GetStateBitmap(UINT nIdBitmap)
