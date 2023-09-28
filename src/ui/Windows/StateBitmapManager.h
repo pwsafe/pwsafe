@@ -9,6 +9,7 @@
 #pragma once
 
 #include <vector>
+#include <memory>
 
 class CStateBitmapManager
 {
@@ -21,7 +22,6 @@ public:
     UINT nIdBitmapError,
     UINT rgbTransparentColor = CStateBitmapManager::RGB_COLOR_NOT_TRANSPARENT
   );
-  virtual ~CStateBitmapManager();
   CBitmap& GetStateBitmap(UINT nIdBitmap);
   void GetBitmapInfo(UINT nIdBitmap, BITMAP* pBmpInfo = nullptr, LONG* pBmWidthDpi = nullptr, LONG* pBmHeightDpi = nullptr);
   CBitmap& GetBitmapAndInfo(UINT nIdBitmap, BITMAP* pBmpInfo = nullptr, LONG* pBmWidthDpi = nullptr, LONG* pBmHeightDpi = nullptr);
@@ -33,5 +33,5 @@ private:
   UINT m_idFirst;
   UINT m_idLast;
   UINT m_idError;
-  std::vector<CBitmap*> m_stateBitmaps;
+  std::vector<std::shared_ptr<CBitmap>> m_stateBitmaps;
 };
