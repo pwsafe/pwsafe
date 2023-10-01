@@ -15,6 +15,8 @@
 // HMAC algorithm as per RFC2104
 
 #include "../Util.h" // for ASSERT
+#include "sha1.h"
+#include "sha256.h"
 
 class HMAC_BASE
 {
@@ -39,11 +41,13 @@ template<class H, unsigned int HASHLEN, unsigned int BLOCKSIZE>
 class HMAC : public HMAC_BASE
 {
 public:
+  static const size_t HASH_LENGTH = HASHLEN;
+public:
   HMAC(const unsigned char *key, unsigned long keylen)
     : HMAC_BASE(), Hash(nullptr)
   {
     ASSERT(key != nullptr);
-    
+
     memset(K, 0, sizeof(K));
     Init(key, keylen);
   }
@@ -130,6 +134,9 @@ private:
   H *Hash;
   unsigned char K[BLOCKSIZE];
 };
+
+using HMAC_SHA1 = HMAC<SHA1, SHA1::HASHLEN, SHA1::BLOCKSIZE>;
+using HMAC_SHA256 = HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE>;
 
 #endif /* __HMAC_H */
 //-----------------------------------------------------------------------------

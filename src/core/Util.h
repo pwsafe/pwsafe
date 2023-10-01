@@ -259,6 +259,12 @@ inline void byteswap(unsigned char * begin, unsigned char * end) {
     }
 }
 
+template<class T>
+inline void byteswap(T& v) {
+  unsigned char* a = reinterpret_cast<unsigned char*>(&v);
+  byteswap(a, a + sizeof(v) - 1);
+}
+
 namespace PWSUtil {
   // namespace of common utility functions
 

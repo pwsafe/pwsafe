@@ -45,6 +45,7 @@ set (CORE_SRCS
   crypto/sha1.cpp
   crypto/sha256.cpp
   crypto/TwoFish.cpp
+  crypto/external/Chromium/base32.cpp
   XML/XMLFileHandlers.cpp
   XML/XMLFileValidation.cpp
   pugixml/pugixml.cpp
