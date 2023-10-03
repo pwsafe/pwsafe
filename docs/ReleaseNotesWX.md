@@ -29,6 +29,10 @@ New Features in 1.18
 * [GH882](https://github.com/pwsafe/pwsafe/issues/882) Yubikey polling can now be adjusted/disabled via new --yubi-polling-interval command line argument (0 disables, other value is polling interval in milliseconds, default is 500ms).
 * [SF909](https://sourceforge.net/p/passwordsafe/feature-requests/909/) Search (Find) bar visibility is now persistent.
 
+Known Issues in 1.18
+--------------------
+* [GH1009](https://github.com/pwsafe/pwsafe/issues/1009) macOS only: Unlock Safe from systray menu opens an empty window
+* [README.MAC.DEVELOPERS.md](https://github.com/pwsafe/pwsafe/blob/master/README.MAC.DEVELOPERS.md#known-issues-with-macos-install) macOS only: On an initial install, the language may default to German.
 
 PasswordSafe 1.17 Release June 2023
 ===================================
