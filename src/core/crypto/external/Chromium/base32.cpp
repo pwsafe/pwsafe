@@ -31,7 +31,7 @@ uint8_t crc5_sym(uint8_t sym, uint8_t previous_crc)
 /* A-Z0-9 with I,O,0,1 removed */
 // From original Chromium source code:
 //const char base32_map[33] = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-// RFC3548 table:
+// RFC4648 table:
 const char base32_map[33] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
 /**

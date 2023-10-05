@@ -6,7 +6,7 @@ https://chromium.googlesource.com/chromiumos/platform/ec/+/master/common/base32.
 
 The following changes were made to the files:
   * Convert to C++.
-  * Convert to use RFC3548 base-32 character map.
+  * Convert to use RFC4648 base-32 character map.
   * Convert base32_encode/base32_decode to return...
         'true' for success
         'false' for failure

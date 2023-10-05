@@ -38,7 +38,7 @@ TEST(TOTPTest, totp_basic_test)
     auto totp_time_now = std::get<5>(tc);
     auto totp_code_expected = std::get<6>(tc);
 
-    RFC3548_Base32Decoder base32_key(totp_key_base32.c_str());
+    RFC4648_Base32Decoder base32_key(totp_key_base32.c_str());
     EXPECT_TRUE(base32_key.is_decoding_successful())
       << "totp_test: Test vector " << i << ": The base32 key must be decoded.";
     TOTP_SHA1 totp(base32_key, totp_digits, totp_interval, totp_start_time);
@@ -53,7 +53,7 @@ TEST(TOTPTest, totp_basic_test)
 TEST(TOTPTest, key_decoder_failure)
 {
   std::string totp_key_base32_invalid("y7p2mq33tdqbddp$3cbvgquclcihdq27");
-  RFC3548_Base32Decoder base32_key(totp_key_base32_invalid.c_str());
+  RFC4648_Base32Decoder base32_key(totp_key_base32_invalid.c_str());
   EXPECT_TRUE(!base32_key.is_decoding_successful())
     << "totp_test_negative: An invalid base32 key should not decode.";
   EXPECT_TRUE(base32_key.get_size() == 0)
@@ -65,11 +65,11 @@ TEST(TOTPTest, key_decoder_copy_move_cleanup)
   const std::string valid_key1("YRUTW6JLVKRXEC7ZA7QMPXCGBSOO6HHT");
   const std::string valid_key2("y7p2mq33tdqbddp33cbvgquclcihdq27");
 
-  RFC3548_Base32Decoder dec(valid_key1.c_str());
+  RFC4648_Base32Decoder dec(valid_key1.c_str());
   EXPECT_TRUE(dec.is_decoding_successful());
   EXPECT_TRUE(dec.get_size() != 0);
 
-  RFC3548_Base32Decoder dec2(dec);
+  RFC4648_Base32Decoder dec2(dec);
   EXPECT_TRUE(dec.is_decoding_successful());
   EXPECT_TRUE(dec2.is_decoding_successful());
   EXPECT_TRUE(dec.get_bytes() == dec2.get_bytes());
@@ -77,7 +77,7 @@ TEST(TOTPTest, key_decoder_copy_move_cleanup)
   EXPECT_TRUE(dec2.get_size() != 0);
 
   const unsigned char* dec_ptr = dec.get_ptr();
-  RFC3548_Base32Decoder dec3(std::move(dec));
+  RFC4648_Base32Decoder dec3(std::move(dec));
   EXPECT_TRUE(dec.get_size() == 0);
   EXPECT_TRUE(dec.get_ptr() == nullptr);
   EXPECT_TRUE(dec_ptr != dec.get_ptr());
@@ -94,7 +94,7 @@ TEST(TOTPTest, key_decoder_copy_move_cleanup)
   dec3 = std::move(dec3);
   EXPECT_TRUE(dec3_ptr == dec3.get_ptr());
 
-  RFC3548_Base32Decoder dec4(valid_key2.c_str());
+  RFC4648_Base32Decoder dec4(valid_key2.c_str());
   EXPECT_TRUE(dec4.is_decoding_successful());
   EXPECT_TRUE(dec4.get_size() != 0);
   EXPECT_TRUE(dec3.get_bytes() != dec4.get_bytes());

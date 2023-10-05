@@ -10,7 +10,7 @@
 #ifndef __TOTP_H
 #define __TOTP_H
 
-#include "RFC3548_Base32Decoder.h"
+#include "RFC4648_Base32Decoder.h"
 #include "hotp.h"
 
 template<class HMACGenerator>
@@ -25,7 +25,7 @@ public:
     numDigits(numDigits),
     intervalX(interval),
     startTimeT0(stepCountStartTime) {}
-  TOTP(const RFC3548_Base32Decoder& base32_key, int numDigits = 6, time_t interval = 30, time_t stepCountStartTime = 0)
+  TOTP(const RFC4648_Base32Decoder& base32_key, int numDigits = 6, time_t interval = 30, time_t stepCountStartTime = 0)
     :
     TOTP(base32_key.get_ptr(), static_cast<int>(base32_key.get_size()), numDigits, interval, stepCountStartTime) {}
   virtual ~TOTP() {}
