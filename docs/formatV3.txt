@@ -551,7 +551,7 @@ These TOTP parameters fields have the following format:
                       If this TOTP Config field is not present, the default
                       HMAC hash algorithm is SHA1 (HMAC-SHA1).
 
-    TOTP Length     = 1 byte indiating the number of TOTP code digits.
+    TOTP Length     = 1 byte indicating the number of TOTP code digits.
                       This is the RFC4226 "Digit" value. If not specified,
                       the default length for a TOTP code is 6 digits (0x06).
 
