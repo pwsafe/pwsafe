@@ -1,4 +1,4 @@
-The files in this directory were originally obtained from the following
+The files in this directory were obtained on October 1, 2023 from the following
 Chromium repo locations:
 https://chromium.googlesource.com/chromiumos/platform/ec/+/master/LICENSE
 https://chromium.googlesource.com/chromiumos/platform/ec/+/master/include/base32.h
