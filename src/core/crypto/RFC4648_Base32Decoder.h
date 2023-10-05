@@ -5,24 +5,24 @@
 * distributed with this code, or available from
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
-// RFC3548_Base32Decoder.h
+// RFC4648_Base32Decoder.h
 //-----------------------------------------------------------------------------
-#ifndef __RFC3548_BASE32DECODER_H
-#define __RFC3548_BASE32DECODER_H
+#ifndef __RFC4648_BASE32DECODER_H
+#define __RFC4648_BASE32DECODER_H
 
 #include <vector>
 
 #include "../Util.h"
 #include "./external/Chromium/base32.h"
 
-class RFC3548_Base32Decoder
+class RFC4648_Base32Decoder
 {
 public:
   static const size_t BITS_PER_BASE32_CHAR = 5;
   static const size_t BITS_PER_BYTE = 8;
 public:
 
-  RFC3548_Base32Decoder(const char* base32_encoded_key)
+  RFC4648_Base32Decoder(const char* base32_encoded_key)
   {
     decoded_bytes.resize((strlen(base32_encoded_key) * BITS_PER_BASE32_CHAR) / BITS_PER_BYTE);
     is_successful = base32_decode(&decoded_bytes[0], static_cast<int>(decoded_bytes.size()) * BITS_PER_BYTE, base32_encoded_key, 0);
@@ -30,15 +30,15 @@ public:
       clear();
   }
 
-  RFC3548_Base32Decoder(const RFC3548_Base32Decoder& other) {
+  RFC4648_Base32Decoder(const RFC4648_Base32Decoder& other) {
     *this = other;
   }
 
-  RFC3548_Base32Decoder(RFC3548_Base32Decoder&& other) noexcept {
+  RFC4648_Base32Decoder(RFC4648_Base32Decoder&& other) noexcept {
     *this = std::move(other);
   }
 
-  RFC3548_Base32Decoder& operator=(const RFC3548_Base32Decoder& other) {
+  RFC4648_Base32Decoder& operator=(const RFC4648_Base32Decoder& other) {
     if (&other == this)
       return *this;
     clear();
@@ -47,7 +47,7 @@ public:
     return *this;
   }
 
-  RFC3548_Base32Decoder& operator=(RFC3548_Base32Decoder&& other) noexcept {
+  RFC4648_Base32Decoder& operator=(RFC4648_Base32Decoder&& other) noexcept {
     if (&other == this)
       return *this;
     clear();
@@ -57,7 +57,7 @@ public:
     return *this;
   }
 
-  virtual ~RFC3548_Base32Decoder() {
+  virtual ~RFC4648_Base32Decoder() {
     clear();
   }
 
@@ -87,7 +87,7 @@ private:
 };
 
 
-#endif /* __RFC3548_BASE32DECODER_H */
+#endif /* __RFC4648_BASE32DECODER_H */
 //-----------------------------------------------------------------------------
 // Local variables:
 // mode: c++

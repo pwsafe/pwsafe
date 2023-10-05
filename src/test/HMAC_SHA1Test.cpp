@@ -22,17 +22,13 @@
 #include <vector>
 #include <tuple>
 
+#include "TestCommon.h"
+
 #include "core/crypto/hmac.h"
 #include "core/crypto/sha1.h"
 #include "gtest/gtest.h"
 
 using namespace std;
-
-using byte_vector = vector<uint8_t>;
-
-inline byte_vector byte_vector_from_string(const char* s) {
-  return byte_vector(s, s + strlen(s));
-}
 
 // RFC2202 HMAC-SHA1 Test Vectors:
 vector<
