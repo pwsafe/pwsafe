@@ -39,6 +39,8 @@ public:
   }
 
   RFC3548_Base32Decoder& operator=(const RFC3548_Base32Decoder& other) {
+    if (&other == this)
+      return *this;
     clear();
     is_successful = other.is_successful;
     decoded_bytes = other.decoded_bytes;
@@ -46,6 +48,8 @@ public:
   }
 
   RFC3548_Base32Decoder& operator=(RFC3548_Base32Decoder&& other) noexcept {
+    if (&other == this)
+      return *this;
     clear();
     is_successful = other.is_successful;
     decoded_bytes = std::move(other.decoded_bytes);

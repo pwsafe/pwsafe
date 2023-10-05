@@ -88,6 +88,12 @@ TEST(TOTPTest, key_decoder_copy_move_cleanup)
   EXPECT_TRUE(dec3.get_size() != 0);
   EXPECT_TRUE(dec2.get_size() == dec2.get_size());
 
+  const unsigned char* dec3_ptr = dec3.get_ptr();
+  dec3 = dec3;
+  EXPECT_TRUE(dec3_ptr == dec3.get_ptr());
+  dec3 = std::move(dec3);
+  EXPECT_TRUE(dec3_ptr == dec3.get_ptr());
+
   RFC3548_Base32Decoder dec4(valid_key2.c_str());
   EXPECT_TRUE(dec4.is_decoding_successful());
   EXPECT_TRUE(dec4.get_size() != 0);
