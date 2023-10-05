@@ -538,7 +538,7 @@ without breaking backwards compatability.
 
 [29] The TOTP parameters fields are TOTP Config (0x21), TOTP Digits (0x22),
 TOTP Time Step (0x23), and TOTP Start Time (0x24). If any of these fields is not
-present, a default applies as outlined below. These fields, or their implicit
+present, a default applies as specified below. These fields, or their implicit
 default values, are only used by Password Safe if the "Two Factor Key" field (0x1b)
 is present.
 These TOTP parameters fields have the following format:
@@ -551,11 +551,11 @@ These TOTP parameters fields have the following format:
                       If this TOTP Config field is not present, the default
                       HMAC hash algorithm is SHA1 (HMAC-SHA1).
 
-    TOTP Digits     = 1 byte indiating the number of TOTP code digits.
+    TOTP Length     = 1 byte indiating the number of TOTP code digits.
                       This is the RFC4226 "Digit" value. If not specified,
-                      the default is 6 digits (0x06).
+                      the default length for a TOTP code is 6 digits (0x06).
 
-    TOTP Time Step  = 1 byte indicating the RFC6238 time step "X" value.
+    TOTP Time Step  = 1 byte indicating the RFC6238 time step "X" value in seconds.
                       If not specified, the default is 30 seconds (0x1E).
 
     TOTP Start Time = This is the RFC6238 "T0" value, the time at which to
