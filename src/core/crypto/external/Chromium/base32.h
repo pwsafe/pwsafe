@@ -1,11 +1,11 @@
-/* Copyright 2017 The Chromium OS Authors. All rights reserved.
+/* Copyright 2017 The ChromiumOS Authors
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE file.
  */
 
 /*
  * This basis for this source file was originally obtained from the following URL:
- * https://chromium.googlesource.com/chromiumos/platform/ec/+/master/include/base32.h
+ * https://chromium.googlesource.com/chromiumos/platform/ec/+/refs/heads/main/include/base32.h
  */
 
 /* Base-32 encoding/decoding, designed for manual operator entry. */
