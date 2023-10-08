@@ -4,6 +4,14 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
+PasswordSafe 3.64.1 Release ???? 2023
+=====================================
+
+Bugs fixed in 3.64.1
+--------------------
+
+* [GH1041](https://github.com/pwsafe/pwsafe/issues/1041) PasswordSafe now verifies the signature when loading an app-specific dll.
+
 
 PasswordSafe 3.64.0 Release Sept 2023
 =====================================
