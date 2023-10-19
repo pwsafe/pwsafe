@@ -18,15 +18,3 @@ int localtime64_r(const __time64_t *timep, struct tm *result)
   return localtime_r((const time_t *)timep, result) == 0;
 }
 
-int pws_os::asctime(TCHAR *s, size_t, tm const *t)
-{
-#ifdef UNICODE
-  char cbuf[26]; // length specified in man (3) asctime
-  asctime_r(t, cbuf);
-  std::wstring wstr = pws_os::towc(cbuf);
-  std::copy(wstr.begin(), wstr.end(), s);
-#else
-  asctime_r(t, s);
-#endif
-  return 0;
-}

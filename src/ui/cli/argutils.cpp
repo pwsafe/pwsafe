@@ -30,6 +30,7 @@ const std::map<int, CItemData::FieldType> id2enum = {
 	{IDSC_FLDNMUSERNAME,       CItem::USER},
 	{IDSC_FLDNMNOTES,          CItem::NOTES},
 	{IDSC_FLDNMPASSWORD,       CItem::PASSWORD},
+	{IDSC_FLDNMTWOFACTORKEY,   CItem::TWOFACTORKEY},
 #undef CTIME
 	{IDSC_FLDNMCTIME,          CItem::CTIME},
 	{IDSC_FLDNMPMTIME,         CItem::PMTIME},
@@ -49,6 +50,10 @@ const std::map<int, CItemData::FieldType> id2enum = {
 	{IDSC_FLDNMSYMBOLS,        CItem::SYMBOLS},
 	{IDSC_FLDNMPWPOLICYNAME,   CItem::POLICYNAME},
 	{IDSC_FLDNMKBSHORTCUT,     CItem::KBSHORTCUT},
+	{IDSC_FLDNMTOTPCONFIG,     CItem::TOTPCONFIG},
+	{IDSC_FLDNMTOTPLENGTH,     CItem::TOTPLENGTH},
+	{IDSC_FLDNMTOTPTIMESTEP,   CItem::TOTPTIMESTEP},
+	{IDSC_FLDNMTOTPSTARTTIME,  CItem::TOTPSTARTTIME},
 };
 
 std::vector<stringT> GetValidFieldNames() {

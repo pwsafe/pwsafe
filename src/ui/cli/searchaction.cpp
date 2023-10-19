@@ -8,7 +8,6 @@
  */
 
 #include "stdafx.h"
-#include <string>
 
 #include "./searchaction.h"
 #include "./strutils.h"
@@ -26,6 +25,7 @@ constexpr CItemData::FieldType known_fields[] = {
   CItemData::USER,
   CItemData::NOTES,
   CItemData::PASSWORD,
+  CItemData::TWOFACTORKEY,
   CItemData::CTIME,
   CItemData::PMTIME,
   CItemData::ATIME,
@@ -42,7 +42,11 @@ constexpr CItemData::FieldType known_fields[] = {
   CItemData::SYMBOLS,
   CItemData::SHIFTDCA,
   CItemData::POLICYNAME,
-  CItemData::KBSHORTCUT
+  CItemData::KBSHORTCUT,
+  CItemData::TOTPCONFIG,
+  CItemData::TOTPLENGTH,
+  CItemData::TOTPTIMESTEP,
+  CItemData::TOTPSTARTTIME
 };
 
 int PrintSearchResults(const ItemPtrVec &items, PWScore &, const CItemData::FieldBits &ftp,
@@ -138,6 +142,43 @@ int ChangePasswordOfSearchResults(const ItemPtrVec &items, PWScore &core)
     it->second.SetPassword( pol.Get(p).MakeRandomPassword() );
   }
   return PWScore::SUCCESS;
+}
+
+int GenerateTotpCodeForSearchResults(const ItemPtrVec& items, PWScore&, std::wostream& os, int verbosity_level) 
+{
+  PWScore::Status result = PWScore::SUCCESS;
+  for_each(items.begin(), items.end(), [&os, &result, verbosity_level](const CItemData* p) {
+    const CItemData& data = *p;
+    if (data.GetTwoFactorKeyLength() == 0) {
+      os << "TOTP key not found. Entry not configured for TOTP." << endl;
+      result = PWScore::FAILURE;
+      return;
+    }
+    uint8_t totp_time_step_seconds = data.GetTotpTimeStepSecondsAsByte();
+    time_t totp_start_time = data.GetTotpStartTimeAsTimeT();
+    time_t totp_time_now;
+    uint32_t totp_auth_code = GetNextTotpAuthCode(data, &totp_time_now);
+    if (verbosity_level > 0) {
+      os << "TOTP Config: " << (int)data.GetTotpConfigAsByte() << endl;
+      os << "TOTP Auth Code Length: " << (int)data.GetTotpLengthAsByte() << endl;
+      os << "TOTP Time Step Seconds: " << (int)data.GetTotpTimeStepSecondsAsByte() << endl;
+      os << "TOTP Start Time: " << data.GetTotpStartTimeAsTimeT() << endl;
+    }
+    if (totp_auth_code == TOTP_INVALID_AUTH_CODE) {
+      os << "TOTP authentication code generation error." << endl
+         << "Please ensure the TOTP key is valid." << endl;
+      result = PWScore::FAILURE;
+      return;
+    }
+    uint64_t seconds_remaining = totp_time_step_seconds - ((totp_time_now - totp_start_time) % totp_time_step_seconds);
+    std::string totp_auth_code_str = TotpCodeToString(data, totp_auth_code);
+    os << "Authentication Code: " << Utf82wstring(totp_auth_code_str.c_str())
+       << " valid for approximately " << seconds_remaining
+       << (seconds_remaining > 1 ? " seconds." : " second.")
+       << endl;
+   });
+
+  return result;
 }
 
 constexpr const wchar_t *SearchActionTraits<UserArgs::Delete>::prompt;

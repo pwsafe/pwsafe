@@ -266,6 +266,7 @@ inline void byteswap(T& v) {
 }
 
 namespace PWSUtil {
+
   // namespace of common utility functions
 
   // For Windows implementation, hide Unicode abstraction,
@@ -275,7 +276,7 @@ namespace PWSUtil {
   // Time conversion result formats:
   enum TMC {TMC_ASC_UNKNOWN, TMC_ASC_NULL, TMC_EXPORT_IMPORT, TMC_XML,
             TMC_LOCALE, TMC_LOCALE_DATE_ONLY};
-  StringX ConvertToDateTimeString(const time_t &t, TMC result_format);
+  StringX ConvertToDateTimeString(const time_t &t, TMC result_format, bool convert_epoch = false, bool utc_time = false);
   stringT GetNewFileName(const stringT &oldfilename, const stringT &newExtn);
   extern const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
   void GetTimeStamp(stringT &sTimeStamp, const bool bShort = false);
@@ -324,6 +325,23 @@ bool FindNoCase( const StringX& src, const StringX& dest);
 
 
 std::string toutf8(const std::wstring &w);
+
+template<class T>
+StringX ToStringX(T v) {
+  oStringXStream os;
+  os << v;
+  return os.str();
+}
+
+template<class T>
+StringX IntegralToStringX(T v) {
+  // For consistency for all integers, and specifically forcing single byte
+  // integrals (char, uint8_t, etc.) to be converted as integers to string
+  // rather than as single characters. Good for values between LLONG_MIN to
+  // LLONG_MAX, inclusive. Beyond that range, use ToStringX directly with
+  // appropriate type.
+  return ToStringX(static_cast<long long>(v));
+}
 
 #endif /* __UTIL_H */
 //-----------------------------------------------------------------------------

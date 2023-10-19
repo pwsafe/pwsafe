@@ -165,24 +165,72 @@ void PWScore::Compare(PWScore *pothercore,
         */
         bsConflicts.reset();
         StringX sxCurrentPassword, sxComparisonPassword;
+        StringX sxCurrentTwoFactorKey, sxComparisonTwoFactorKey;
+        StringX sxCurrentTotpConfig, sxComparisonTotpConfig;
+        StringX sxCurrentTotpStartTime, sxComparisonTotpStartTime;
+        StringX sxCurrentTotpTimeStep, sxComparisonTotpTimeStep;
+        StringX sxCurrentTotpLength, sxComparisonTotpLength;
+
 
         const CItemData &compItem = pothercore->GetEntry(foundPos);
 
         if (currentItem.IsDependent()) {
           CItemData *pci_base = GetBaseEntry(&currentItem);
           sxCurrentPassword = pci_base->GetPassword();
-        } else
+          sxCurrentTwoFactorKey = pci_base->GetTwoFactorKey();
+          sxCurrentTotpConfig = pci_base->GetTotpConfig();
+          sxCurrentTotpStartTime = pci_base->GetTotpStartTime();
+          sxCurrentTotpTimeStep = pci_base->GetTotpTimeStepSeconds();
+          sxCurrentTotpLength = pci_base->GetTotpLength();
+        } else {
           sxCurrentPassword = currentItem.GetPassword();
+          sxCurrentTwoFactorKey = currentItem.GetTwoFactorKey();
+          sxCurrentTotpConfig = currentItem.GetTotpConfig();
+          sxCurrentTotpStartTime = currentItem.GetTotpStartTime();
+          sxCurrentTotpTimeStep = currentItem.GetTotpTimeStepSeconds();
+          sxCurrentTotpLength = currentItem.GetTotpLength();
+        }
 
         if (compItem.IsDependent()) {
           CItemData *pci_base = pothercore->GetBaseEntry(&compItem);
           sxComparisonPassword = pci_base->GetPassword();
-        } else
+          sxComparisonTwoFactorKey = pci_base->GetTwoFactorKey();
+          sxComparisonTotpConfig = pci_base->GetTotpConfig();
+          sxComparisonTotpStartTime = pci_base->GetTotpStartTime();
+          sxComparisonTotpTimeStep = pci_base->GetTotpTimeStepSeconds();
+          sxComparisonTotpLength = pci_base->GetTotpLength();
+        } else {
           sxComparisonPassword = compItem.GetPassword();
+          sxComparisonTwoFactorKey = compItem.GetTwoFactorKey();
+          sxComparisonTotpConfig = compItem.GetTotpConfig();
+          sxComparisonTotpStartTime = compItem.GetTotpStartTime();
+          sxComparisonTotpTimeStep = compItem.GetTotpTimeStepSeconds();
+          sxComparisonTotpLength = compItem.GetTotpLength();
+        }
 
         if (bsFields.test(CItemData::PASSWORD) &&
-            sxCurrentPassword != sxComparisonPassword)
+          sxCurrentPassword != sxComparisonPassword)
           bsConflicts.flip(CItemData::PASSWORD);
+
+        if (bsFields.test(CItemData::TWOFACTORKEY) &&
+          sxCurrentTwoFactorKey != sxComparisonTwoFactorKey)
+          bsConflicts.flip(CItemData::TWOFACTORKEY);
+
+        if (bsFields.test(CItemData::TOTPCONFIG) &&
+          sxCurrentTotpConfig != sxComparisonTotpConfig)
+          bsConflicts.flip(CItemData::TOTPCONFIG);
+
+        if (bsFields.test(CItemData::TOTPSTARTTIME) &&
+          sxCurrentTotpStartTime != sxComparisonTotpStartTime)
+          bsConflicts.flip(CItemData::TOTPSTARTTIME);
+
+        if (bsFields.test(CItemData::TOTPTIMESTEP) &&
+          sxCurrentTotpTimeStep != sxComparisonTotpTimeStep)
+          bsConflicts.flip(CItemData::TOTPTIMESTEP);
+
+        if (bsFields.test(CItemData::TOTPLENGTH) &&
+          sxCurrentTotpLength != sxComparisonTotpLength)
+          bsConflicts.flip(CItemData::TOTPLENGTH);
 
         CompareField(CItemData::NOTES, bsFields, currentItem, compItem,
                      bsConflicts, bTreatWhiteSpaceasEmpty);
@@ -376,7 +424,8 @@ bool PWScore::MatchGroupName(const StringX &stValue, const StringX &subgroup_nam
 #define MRG_SYMBOLS    0x0010
 #define MRG_SHIFTDCA   0x0008
 #define MRG_POLICYNAME 0x0004
-#define MRG_UNUSED     0x0003
+#define MRG_TOTP       0x0002 // anything TOTP related (i.e., Two Factor Key, TOTP Parameters, etc.).
+#define MRG_UNUSED     0x0001
 
 stringT PWScore::Merge(PWScore *pothercore,
                        const bool &subgroup_bset,
@@ -486,6 +535,36 @@ stringT PWScore::Merge(PWScore *pothercore,
       if (otherItem.GetPassword() != curItem.GetPassword()) {
         diff_flags |= MRG_PASSWORD;
         LoadAString(str_temp, IDSC_FLDNMPASSWORD);
+        str_diffs += str_temp + _T(", ");
+      }
+
+      if (otherItem.GetTwoFactorKey() != curItem.GetTwoFactorKey()) {
+        diff_flags |= MRG_TOTP;
+        LoadAString(str_temp, IDSC_FLDNMTWOFACTORKEY);
+        str_diffs += str_temp + _T(", ");
+      }
+
+      if (otherItem.GetTotpConfigAsByte() != curItem.GetTotpConfigAsByte()) {
+        diff_flags |= MRG_TOTP;
+        LoadAString(str_temp, IDSC_FLDNMTOTPCONFIG);
+        str_diffs += str_temp + _T(", ");
+      }
+
+      if (otherItem.GetTotpStartTimeAsTimeT() != curItem.GetTotpStartTimeAsTimeT()) {
+        diff_flags |= MRG_TOTP;
+        LoadAString(str_temp, IDSC_FLDNMTOTPSTARTTIME);
+        str_diffs += str_temp + _T(", ");
+      }
+
+      if (otherItem.GetTotpTimeStepSecondsAsByte() != curItem.GetTotpTimeStepSecondsAsByte()) {
+        diff_flags |= MRG_TOTP;
+        LoadAString(str_temp, IDSC_FLDNMTOTPTIMESTEP);
+        str_diffs += str_temp + _T(", ");
+      }
+
+      if (otherItem.GetTotpLengthAsByte() != curItem.GetTotpLengthAsByte()) {
+        diff_flags |= MRG_TOTP;
+        LoadAString(str_temp, IDSC_FLDNMTOTPLENGTH);
         str_diffs += str_temp + _T(", ");
       }
 

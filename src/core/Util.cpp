@@ -492,43 +492,68 @@ size_t PWSUtil::strLength(const LPCTSTR str)
   return _tcslen(str);
 }
 
+#ifndef _WIN32
+bool StringX_asctime_r(const struct tm* st, StringX& sx)
+{
+  CUTF8Conv conv;
+  char buf[30];
+  bool is_error = asctime_r(st, buf) == NULL;
+  if (!is_error)
+    is_error = !conv.FromUTF8(reinterpret_cast<const unsigned char*>(buf), strlen(buf), sx);
+  if (is_error)
+    sx.clear();
+  return is_error;
+}
+#endif
+
 const TCHAR *PWSUtil::UNKNOWN_XML_TIME_STR = _T("1970-01-01T00:00:00");
 const TCHAR *PWSUtil::UNKNOWN_ASC_TIME_STR = _T("Unknown");
 
-StringX PWSUtil::ConvertToDateTimeString(const time_t &t, TMC result_format)
+StringX PWSUtil::ConvertToDateTimeString(const time_t &t, TMC result_format, bool convert_epoch, bool utc_time)
 {
   StringX ret;
-  if (t != 0) {
-    TCHAR datetime_str[80];
+  if (t != 0 || convert_epoch) {
     struct tm *st;
     struct tm st_s;
-    errno_t err;
-    err = localtime_s(&st_s, &t);  // secure version
-    if (err != 0) // invalid time
+    bool is_error;
+    if (utc_time) {
+#ifdef _WIN32
+      is_error = gmtime_s(&st_s, &t) != 0;
+#else
+      st = gmtime_r(&t, &st_s);
+      is_error = st == NULL;
+#endif
+    }
+    else
+      is_error = localtime_s(&st_s, &t) != 0;
+    if (is_error) // invalid time
       return ConvertToDateTimeString(0, result_format);
     st = &st_s; // hide difference between versions
+    TCHAR datetime_str[80];
     switch (result_format) {
     case TMC_EXPORT_IMPORT:
-      _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
-                _T("%Y/%m/%d %H:%M:%S"), st);
+      is_error = !_tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]), _T("%Y/%m/%d %H:%M:%S"), st);
       break;
     case TMC_XML:
-      _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
-                _T("%Y-%m-%dT%H:%M:%S"), st);
+      is_error = !_tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]), _T("%Y-%m-%dT%H:%M:%S"), st);
       break;
     case TMC_LOCALE:
-      _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
-                _T("%c"), st);
+      is_error = !_tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]), _T("%c"), st);
       break;
     case TMC_LOCALE_DATE_ONLY:
-      _tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]),
-                _T("%x"), st);
+      is_error = !_tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]), _T("%x"), st);
       break;
     default:
-      if (_tasctime_s(datetime_str, 32, st) != 0)
-        return ConvertToDateTimeString(0, result_format);
+#ifdef _WIN32
+      is_error = _tasctime_s(datetime_str, 32, st) != 0;
+#else
+      is_error = StringX_asctime_r(st, ret);
+#endif
     }
-    ret = datetime_str;
+    if (is_error)
+      return ConvertToDateTimeString(0, result_format);
+    if (ret.empty())
+      ret = datetime_str;
   } else { // t == 0
     switch (result_format) {
     case TMC_ASC_UNKNOWN:

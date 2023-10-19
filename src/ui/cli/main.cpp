@@ -147,8 +147,11 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
 	auto nnames = 0;
 	const auto fieldnames = GetValidFieldNames();
 	for (const stringT &name: fieldnames) {
-		if ( nnames++ % names_per_line == 0 ) cerr << "\n\t\t";
-		wcerr << name << ", ";
+    if (nnames)
+			wcerr << ", ";
+		if ( nnames++ % names_per_line == 0 )
+			cerr << "\n\t\t";
+		wcerr << name;
 	}
 	cerr << '\n';
 }
@@ -205,10 +208,12 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
                   {"dry-run",     no_argument,        0, 'n'},
                   {"synchronize", no_argument,        0, 'z'},
                   //  {"synch",       no_argument,        0, 'z'},
-                    {"merge",       no_argument,        0, 'm'},
+                    {"merge",       required_argument,  0, 'm'},
                     {"colwidth",    required_argument,  0, 'w'},
                     {"passphrase",  required_argument,  0, 'P'},
                     {"passphrase2", required_argument,  0, 'Q'},
+                    {"generate-totp", no_argument,      0, 'G'},
+                    {"verbose",     no_argument,        0, 'V'},
                     {0, 0, 0, 0}
           };
 
@@ -216,7 +221,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
           static_assert(no_dup_short_option(long_options), "Short option used twice");
 #endif
 
-          int c = getopt_long(argc - 1, argv + 1, "i::e::txcs:b:f:oa:u:pryd:gjknz:m:P:Q:",
+          int c = getopt_long(argc - 1, argv + 1, "i::e::txcs:b:f:oa:u:pryd:gjknz:m:P:Q:GV",
               long_options, &option_index);
           if (c == -1)
               break;
@@ -342,6 +347,14 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
           case 'Q':
               assert(optarg);
               Utf82StringX(optarg, ua.passphrase[1]);
+              break;
+
+          case 'G':
+              ua.SearchAction = UserArgs::GenerateTotpCode;
+              break;
+
+          case 'V':
+              ua.verbosity_level++;
               break;
 
           default:

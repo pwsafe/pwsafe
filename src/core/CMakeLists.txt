@@ -33,6 +33,7 @@ set (CORE_SRCS
   RUEList.cpp
   StringX.cpp
   SysInfo.cpp
+  TotpCore.cpp
   UnknownField.cpp
   UTF8Conv.cpp
   Util.cpp

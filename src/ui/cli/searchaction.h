@@ -23,6 +23,7 @@ int DeleteSearchResults(const ItemPtrVec &items, PWScore &core);
 int UpdateSearchResults(const ItemPtrVec &items, PWScore &core, const FieldUpdates &updates);
 int ClearFieldsOfSearchResults(const ItemPtrVec &items, PWScore &core, const CItemData::FieldBits &ftp);
 int ChangePasswordOfSearchResults(const ItemPtrVec &items, PWScore &core);
+int GenerateTotpCodeForSearchResults(const ItemPtrVec& items, PWScore& core, std::wostream& os, int verbosity_level);
 
 template <int action>
 struct SearchActionTraits
@@ -55,6 +56,11 @@ template <>
 struct SearchActionTraits<UserArgs::ChangePassword>
 {
   static constexpr const wchar_t *prompt = L"Change password of item";
+};
+
+template <>
+struct SearchActionTraits<UserArgs::GenerateTotpCode>
+{
 };
 
 #endif /* defined(__pwsafe_xcode6__searchaction__) */

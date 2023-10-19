@@ -76,6 +76,11 @@
 #define IDSC_FLDNMCCEXP                 3076
 #define IDSC_FLDNMCCVV                  3077
 #define IDSC_FLDNMCCPIN                 3078
+#define IDSC_FLDNMTWOFACTORKEY          3079
+#define IDSC_FLDNMTOTPCONFIG            3080
+#define IDSC_FLDNMTOTPLENGTH            3081
+#define IDSC_FLDNMTOTPTIMESTEP          3082
+#define IDSC_FLDNMTOTPSTARTTIME         3083
 
 #define IDSC_CONFIG_NONE                3230
 #define IDSC_CONFIG_REGISTRY            3231

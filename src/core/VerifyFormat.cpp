@@ -119,6 +119,7 @@ bool VerifyASCDateTimeString(const stringT &time_str, time_t &t)
   const stringT str_months = _T("JanFebMarAprMayJunJulAugSepOctNovDec");
   const stringT str_days = _T("SunMonTueWedThuFriSat");
   const int ndigits = 12;
+  const int idigit_or_space = 8;
   const int idigits[ndigits] = {8, 9, 11, 12, 14, 15, 17, 18, 20, 21, 22, 23};
   stringT::size_type iMON, iDOW;
   int yyyy, mon, dd, hh, min, ss;
@@ -133,9 +134,19 @@ bool VerifyASCDateTimeString(const stringT &time_str, time_t &t)
       time_str[16] != TCHAR(':'))
     return false;
 
-  for (int i = 0; i < ndigits; i++)
-    if (!isdigit(time_str[idigits[i]]))
-      return false;
+  for (int i = 0; i < ndigits; i++) {
+    int index = idigits[i];
+
+    // The standard calls for a format that will have
+    // a space at index 8 for single digit day values.
+    // Web searches indicate MSVC RTL once zero-padded,
+    // possibly why this check was absent.
+    if (index == idigit_or_space && time_str[index] == TCHAR(' '))
+      continue;
+
+    if (!isdigit(time_str[index]))
+        return false;
+  }
 
   istringstreamT is(time_str);
   stringT dow, mon_str;

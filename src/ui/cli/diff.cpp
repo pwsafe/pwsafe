@@ -32,6 +32,7 @@ const CItem::FieldType diff_fields[] = {
     CItem::TITLE,
     CItem::USER,
     CItem::PASSWORD,
+    CItem::TWOFACTORKEY,
     CItem::EMAIL,
     CItem::NOTES,
     CItem::URL,
@@ -49,7 +50,11 @@ const CItem::FieldType diff_fields[] = {
     CItem::DCA,
     CItem::SHIFTDCA,
     CItem::KBSHORTCUT,
-    CItem::PROTECTED
+    CItem::PROTECTED,
+    CItem::TOTPCONFIG,
+    CItem::TOTPLENGTH,
+    CItem::TOTPTIMESTEP,
+    CItem::TOTPSTARTTIME
 };
 
 //////////////////////////////////////////////////////////
@@ -386,7 +391,7 @@ void sbs_print(const PWScore &core,
     if ( print_fields ) {
       for( auto ft: diff_fields ) {
         // print the fields if they were actually found to be different
-        if (df.test(ft) && !have_empty_policies(item, otherItem)) {
+        if (df.test(ft) && (ft != CItem::POLICY || !have_empty_policies(item, otherItem))) {
           StringXStream wssl, wssr;
           wssl << left_line(ft) << flush;
           wssr << right_line(ft) << flush;

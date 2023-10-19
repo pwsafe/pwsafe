@@ -57,6 +57,8 @@ int SaveAfterSearch(PWScore &core, const UserArgs &ua)
       break;
     case UserArgs::Print:
       break;
+    case UserArgs::GenerateTotpCode:
+      break;
   }
   return PWScore::SUCCESS;
 }
@@ -233,6 +235,11 @@ int SearchInternal(PWScore &core, const UserArgs &ua, wostream &os)
       return DoSearch<UserArgs::ChangePassword>(core, ua, [&core, &ua](const ItemPtrVec &matches) {
         return ChangePasswordOfSearchResults(matches, core);
       });
+
+    case UserArgs::GenerateTotpCode:
+      return DoSearch<UserArgs::GenerateTotpCode>(core, ua, [&core, &os, &ua](const ItemPtrVec& matches) {
+        return GenerateTotpCodeForSearchResults(matches, core, os, ua.verbosity_level);
+        });
 
     default:
       assert(false);

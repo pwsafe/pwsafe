@@ -55,37 +55,42 @@ public:
     USER = 0x04,
     NOTES = 0x05,
     PASSWORD = 0x06,
-    CTIME = 0x07,        // Entry 'C'reation time
-    PMTIME = 0x08,       // last 'P'assword 'M'odification time
-    ATIME = 0x09,        // last 'A'ccess time
-    XTIME = 0x0a,        // password e'X'piry time
-    RESERVED = 0x0b      /* MUST NOT USE */,
-    RMTIME = 0x0c,       // last 'R'ecord 'M'odification time
+    CTIME = 0x07,                 // Entry 'C'reation time
+    PMTIME = 0x08,                // last 'P'assword 'M'odification time
+    ATIME = 0x09,                 // last 'A'ccess time
+    XTIME = 0x0a,                 // password e'X'piry time
+    RESERVED = 0x0b               /* MUST NOT USE */,
+    RMTIME = 0x0c,                // last 'R'ecord 'M'odification time
     URL = 0x0d,
     AUTOTYPE = 0x0e,
     PWHIST = 0x0f,
-    POLICY = 0x10,       // string encoding of item-specific password policy
+    POLICY = 0x10,                // string encoding of item-specific password policy
     XTIME_INT = 0x11,
     RUNCMD = 0x12,
-    DCA = 0x13,          // doubleclick action (enum)
+    DCA = 0x13,                   // doubleclick action (enum)
     EMAIL = 0x14,
     PROTECTED = 0x15,
-    SYMBOLS = 0x16,      // string of item-specific password symbols
-    SHIFTDCA = 0x17,     // shift-doubleclick action (enum)
-    POLICYNAME = 0x18,   // named non-default password policy for item
-    KBSHORTCUT = 0x19,   // Keyboard shortcuts
-    ATTREF = 0x1a,       // UUID of attachment (v4)
-    CCNUM = 0x1c,        // Credit card number
-    CCEXP = 0x1d,        // Credit card expiration date
-    CCVV = 0x1e,         // CVV / CVV2
-    CCPIN = 0x1f,        // Credit card PIN code
-    LAST_USER_FIELD,     // All "user" fields MUST be before this for entry compare
+    SYMBOLS = 0x16,               // string of item-specific password symbols
+    SHIFTDCA = 0x17,              // shift-doubleclick action (enum)
+    POLICYNAME = 0x18,            // named non-default password policy for item
+    KBSHORTCUT = 0x19,            // Keyboard shortcuts
+    ATTREF = 0x1a,                // UUID of attachment (v4)
+    TWOFACTORKEY = 0x1b,          // Two-Factor Key
+    CCNUM = 0x1c,                 // Credit card number
+    CCEXP = 0x1d,                 // Credit card expiration date
+    CCVV = 0x1e,                  // CVV / CVV2
+    CCPIN = 0x1f,                 // Credit card PIN code
+    TOTPCONFIG = 0x21,            // TOTP Config
+    TOTPLENGTH = 0x22,            // TOTP Length
+    TOTPTIMESTEP = 0x23,          // TOTP Time Step
+    TOTPSTARTTIME = 0x24,         // TOTP Start Time
+    LAST_USER_FIELD,              // All "user" fields MUST be before this for entry compare
 
-    BASEUUID = 0x41,     // Base UUID of Alias or Shortcut (v4)
-    ALIASUUID = 0x42,    // UUID indicates this is an Alias (v4)
-    SHORTCUTUUID = 0x43, // UUID indicates this is a Shortcut (v4)
-    LAST_DATA,           // Start of unknown fields!
-    LAST_ITEM_DATA_FIELD = 0x5f, // beyond this is for other CItem subclasses
+    BASEUUID = 0x41,              // Base UUID of Alias or Shortcut (v4)
+    ALIASUUID = 0x42,             // UUID indicates this is an Alias (v4)
+    SHORTCUTUUID = 0x43,          // UUID indicates this is a Shortcut (v4)
+    LAST_DATA,                    // Start of unknown fields!
+    LAST_ITEM_DATA_FIELD = 0x5f,  // beyond this is for other CItem subclasses
 
     START_ATT = 0x60,
     ATTUUID = 0x60,
@@ -97,7 +102,7 @@ public:
     FILECTIME = 0x66,
     FILEMTIME = 0x67,
     FILEATIME = 0x68,
-    LAST_SEARCHABLE = 0x6f, // also last-filterable
+    LAST_SEARCHABLE = 0x6f,       // also last-filterable
     ATTEK = 0x70,
     ATTAK = 0x71,
     ATTIV = 0x72,
@@ -105,7 +110,7 @@ public:
     CONTENTHMAC = 0x74,
     LAST_ATT,
 
-    UNKNOWN_TESTING = 0xdf, // for testing forward compatibility (unknown field handling)
+    UNKNOWN_TESTING = 0xdf,       // for testing forward compatibility (unknown field handling)
     END = 0xff,
 
     // Internal fields only - used in filters
@@ -177,8 +182,11 @@ protected:
   bool SetTextField(int ft, const unsigned char *value, size_t length);
   bool SetTimeField(int ft, const unsigned char *value, size_t length);
 
-  void GetField(const CItemField &field, unsigned char *value,
-                size_t &length) const;
+  void GetField(const CItemField &field, unsigned char *value, size_t &length) const;
+  void GetField(const CItemField &field, std::vector<unsigned char> &v) const;
+  void GetField(const int ft, std::vector<unsigned char> &v) const;
+  uint8_t GetFieldAsByte(const CItemField& field, uint8_t default_value = 0) const;
+  uint8_t GetFieldAsByte(const int ft, uint8_t default_value = 0) const;
   StringX GetField(int ft) const;
   StringX GetField(const CItemField &field) const;
 
