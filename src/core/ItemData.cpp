@@ -31,9 +31,37 @@
 #include <time.h>
 #include <sstream>
 #include <iomanip>
+#include <algorithm>
+#include <functional>
 
 using namespace std;
 using pws_os::CUUID;
+
+//-----------------------------------------------------------------------------
+// Helper functions.
+
+// ResolvePlaceholderEligibleField: For eligible fields, if an entry is an
+// alias or shortcut, resolve to a placeholder value, otherwise resolve to
+// the actual value from the actual entry.
+StringX ResolvePlaceholderEligibleField(const CItemData* pcientry, const CItemData* pcibase, std::function<StringX()> getter_func)
+{
+  ASSERT(pcientry);
+  const CItemData::EntryType et = pcientry->GetEntryType();
+  if (et == CItemData::EntryType::ET_ALIAS || et == CItemData::EntryType::ET_SHORTCUT) {
+    // Alias or Shortcut so return appropriate placeholder value.
+    ASSERT(pcibase);
+    const StringX csPlaceholderBase =
+      pcibase->GetGroup() + _T(":") +
+      pcibase->GetTitle() + _T(":") +
+      pcibase->GetUser();
+    const StringX csPlaceholderAlias = _T("[[") + csPlaceholderBase + _T("]]");
+    const StringX csPlaceholderShortcut = _T("[~") + csPlaceholderBase + _T("~]");
+    const StringX csPlaceholderToUse = et == CItemData::EntryType::ET_ALIAS ? csPlaceholderAlias : csPlaceholderShortcut;
+    return csPlaceholderToUse;
+  }
+  // Neither alias/shortcut, placeholder not needed, return actual field value.
+  return getter_func();
+}
 
 //-----------------------------------------------------------------------------
 // Constructors
@@ -246,13 +274,14 @@ int CItemData::WriteCommon(PWSfile *out) const
 {
   int i;
 
-  const FieldType TextFields[] = {GROUP, TITLE, USER, PASSWORD,
+  const FieldType TextFields[] = {GROUP, TITLE, USER, PASSWORD, TWOFACTORKEY,
                                   NOTES, URL, AUTOTYPE, POLICY,
                                   PWHIST, RUNCMD, EMAIL,
                                   SYMBOLS, POLICYNAME,
                                   END};
-  const FieldType TimeFields[] = {ATIME, CTIME, XTIME, PMTIME, RMTIME,
+  const FieldType TimeFields[] = {ATIME, CTIME, XTIME, PMTIME, RMTIME, TOTPSTARTTIME,
                                   END};
+  const FieldType BinaryFields[] = { TOTPCONFIG, TOTPTIMESTEP, TOTPLENGTH, END };
 
   for (i = 0; TextFields[i] != END; i++)
     WriteIfSet(TextFields[i], out, true);
@@ -301,6 +330,17 @@ int CItemData::WriteCommon(PWSfile *out) const
     out->WriteField(SHIFTDCA, buf16, sizeof(int16));
   }
   WriteIfSet(PROTECTED, out, false);
+
+  for (i = 0; BinaryFields[i] != END; i++) {
+    auto fiter = m_fields.find(BinaryFields[i]);
+    if (fiter == m_fields.end())
+      continue;
+    const CItemField& field = fiter->second;
+    ASSERT(!field.IsEmpty());
+    std::vector<unsigned char> v;
+    CItem::GetField(field, v);
+    out->WriteField(static_cast<unsigned char>(BinaryFields[i]), &v[0], field.GetLength());
+  }
 
   WriteUnknowns(out);
   // Assume that if previous write failed, last one will too.
@@ -471,6 +511,18 @@ StringX CItemData::GetFieldValue(FieldType ft) const
       str = CUUID(uuid_array, true);
       break;
     }
+    case TOTPCONFIG:
+      str = GetTotpConfig();
+      break;
+    case TOTPTIMESTEP:
+      str = GetTotpTimeStepSeconds();
+      break;
+    case TOTPLENGTH:
+      str = GetTotpLength();
+      break;
+    case TOTPSTARTTIME:
+      str = GetTotpStartTime();
+      break;
     default:
       ASSERT(0);
     }
@@ -488,9 +540,18 @@ StringX CItemData::GetEffectiveFieldValue(FieldType ft, const CItemData *pbci) c
   ASSERT(pbci != nullptr);
 
   if (IsAlias()) {
-    // Only current and password history are taken from base entry
-    // Everything else is from the actual entry
-    if (ft == PASSWORD || ft == PWHIST)
+    std::vector<FieldType> base_fields = {
+      PASSWORD,
+      PWHIST,
+      TWOFACTORKEY,
+      TOTPCONFIG,
+      TOTPSTARTTIME,
+      TOTPTIMESTEP,
+      TOTPLENGTH
+    };
+    // Only base_fields fields (i.e., current password and history, TOTP parameters)
+    // are taken from base entry. Everything else is from the actual entry.
+    if (std::find(base_fields.begin(), base_fields.end(), ft) != base_fields.end())
       return pbci->GetField(ft);
     else
       return GetField(ft);
@@ -528,12 +589,12 @@ StringX CItemData::GetNotes(TCHAR delimiter) const
   return ret;
 }
 
-StringX CItemData::GetTime(int whichtime, PWSUtil::TMC result_format) const
+StringX CItemData::GetTime(int whichtime, PWSUtil::TMC result_format, bool convert_epoch, bool utc_time) const
 {
   time_t t;
 
   CItem::GetTime(whichtime, t);
-  return PWSUtil::ConvertToDateTimeString(t, result_format);
+  return PWSUtil::ConvertToDateTimeString(t, result_format, convert_epoch, utc_time);
 }
 
 void CItemData::GetUUID(uuid_array_t &uuid_array, FieldType ft) const
@@ -802,21 +863,24 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
     }
   }
 
-  StringX csPassword;
-  if (m_entrytype == ET_ALIAS) {
-    ASSERT(pcibase != nullptr);
-    csPassword = _T("[[") +
-                 pcibase->GetGroup() + _T(":") +
-                 pcibase->GetTitle() + _T(":") +
-                 pcibase->GetUser() + _T("]]") ;
-  } else if (m_entrytype == ET_SHORTCUT) {
-    ASSERT(pcibase != nullptr);
-    csPassword = _T("[~") +
-                 pcibase->GetGroup() + _T(":") +
-                 pcibase->GetTitle() + _T(":") +
-                 pcibase->GetUser() + _T("~]") ;
-  } else
-    csPassword = GetPassword();
+  StringX csPassword = ResolvePlaceholderEligibleField(this, pcibase, [this] { return GetPassword(); });
+
+  StringX csTwoFactorKey;
+  StringX csTotpConfig;
+  StringX csTotpStartTime;
+  StringX csTotpTimeStep;
+  StringX csTotpLength;
+  if (IsTotpActive()) {
+    csTwoFactorKey = GetTwoFactorKey();
+    if (!IsTotpConfigDefault())
+      csTotpConfig = GetTotpConfig();
+    if (!IsTotpStartTimeDefault())
+      csTotpStartTime = GetTotpStartTime();
+    if (!IsTotpTimeStepSecondsDefault())
+      csTotpTimeStep = GetTotpTimeStepSeconds();
+    if (!IsTotpLengthDefault())
+      csTotpLength = GetTotpLength();
+  }
 
   // Notes field must be last, for ease of parsing import
   if (bsFields.count() == bsFields.size()) {
@@ -828,6 +892,11 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
     ret = (grouptitle + separator +
            user + separator +
            csPassword + separator +
+           csTwoFactorKey + separator +
+           csTotpConfig + separator +
+           csTotpStartTime + separator +
+           csTotpTimeStep + separator +
+           csTotpLength + separator +
            url + separator +
            GetAutoType() + separator +
            GetCTimeExp() + separator +
@@ -860,6 +929,16 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
       ret += user + separator;
     if (bsFields.test(CItemData::PASSWORD))
       ret += csPassword + separator;
+    if (bsFields.test(CItemData::TWOFACTORKEY))
+      ret += csTwoFactorKey + separator;
+    if (bsFields.test(CItemData::TOTPCONFIG))
+      ret += csTotpConfig + separator;
+    if (bsFields.test(CItemData::TOTPSTARTTIME))
+      ret += csTotpStartTime + separator;
+    if (bsFields.test(CItemData::TOTPTIMESTEP))
+      ret += csTotpTimeStep + separator;
+    if (bsFields.test(CItemData::TOTPLENGTH))
+      ret += csTotpLength + separator;
     if (bsFields.test(CItemData::URL))
       ret += url + separator;
     if (bsFields.test(CItemData::AUTOTYPE))
@@ -965,24 +1044,28 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   ConditionalWriteXML(CItemData::USER, bsExport, "username", GetUser(),
                       oss, utf8conv, bXMLErrorsFound);
 
-  // Password mandatory (see pwsafe.xsd)
-  if (m_entrytype == ET_ALIAS) {
-    ASSERT(pcibase != nullptr);
-    tmp = _T("[[") +
-          pcibase->GetGroup() + _T(":") +
-          pcibase->GetTitle() + _T(":") +
-          pcibase->GetUser() + _T("]]") ;
-  } else
-  if (m_entrytype == ET_SHORTCUT) {
-    ASSERT(pcibase != nullptr);
-    tmp = _T("[~") +
-          pcibase->GetGroup() + _T(":") +
-          pcibase->GetTitle() + _T(":") +
-          pcibase->GetUser() + _T("~]") ;
-  } else
-    tmp = GetPassword();
-
+  tmp = ResolvePlaceholderEligibleField(this, pcibase, [this] { return GetPassword(); });
   brc = PWSUtil::WriteXMLField(oss, "password", tmp, utf8conv);
+  if (!brc) bXMLErrorsFound = true;
+
+  tmp = ResolvePlaceholderEligibleField(this, pcibase, [this] { return GetTwoFactorKey(); });
+  brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TWOFACTORKEY).c_str(), tmp, utf8conv);
+  if (!brc) bXMLErrorsFound = true;
+
+  tmp = ResolvePlaceholderEligibleField(this, pcibase, [this] { return GetTotpConfig(); });
+  brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TOTPCONFIG).c_str(), tmp, utf8conv);
+  if (!brc) bXMLErrorsFound = true;
+
+  tmp = ResolvePlaceholderEligibleField(this, pcibase, [this] { return GetTotpStartTime(); });
+  brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TOTPSTARTTIME).c_str(), tmp, utf8conv);
+  if (!brc) bXMLErrorsFound = true;
+
+  tmp = ResolvePlaceholderEligibleField(this, pcibase, [this] { return GetTotpTimeStepSeconds(); });
+  brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TOTPTIMESTEP).c_str(), tmp, utf8conv);
+  if (!brc) bXMLErrorsFound = true;
+
+  tmp = ResolvePlaceholderEligibleField(this, pcibase, [this] { return GetTotpLength(); });
+  brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TOTPLENGTH).c_str(), tmp, utf8conv);
   if (!brc) bXMLErrorsFound = true;
 
   ConditionalWriteXML(CItemData::URL, bsExport, "url", GetURL(),
@@ -1426,6 +1509,29 @@ bool CItemData::SetXTimeInt(const stringT &xint_str)
   return false;
 }
 
+bool CItemData::SetFieldAsByte(CItem::FieldType type, const stringT& byte_str, bool strict)
+{
+  if (byte_str.empty()) {
+    uint8_t zero = 0;
+    SetField(type, &zero, 1);
+    return true;
+  }
+
+  if (byte_str.find_first_not_of(_T("0123456789")) != stringT::npos)
+    return false;
+
+  istringstreamT is(byte_str);
+  int v;
+  is >> v;
+  if (is.fail())
+    return false;
+  if (strict && (v < 0 || v > 255))
+    return false;
+  uint8_t byte_value = static_cast<uint8_t>(v);
+  SetField(type, &byte_value, 1);
+  return true;
+}
+
 void CItemData::SetPWHistory(const StringX &PWHistory)
 {
   StringX pwh = PWHistory;
@@ -1555,6 +1661,7 @@ void CItemData::SetFieldValue(FieldType ft, const StringX &value)
     case USER:       /* 04 */
     case NOTES:      /* 05 */
     case PASSWORD:   /* 06 */
+    case TWOFACTORKEY: /* 21 */
     case URL:        /* 0d */
     case AUTOTYPE:   /* 0e */
     case PWHIST:     /* 0f */
@@ -1563,6 +1670,14 @@ void CItemData::SetFieldValue(FieldType ft, const StringX &value)
     case SYMBOLS:    /* 16 */
     case POLICYNAME: /* 18 */
       CItem::SetField(ft, value);
+      break;
+    case TOTPCONFIG:
+    case TOTPLENGTH:
+    case TOTPTIMESTEP:
+      SetFieldAsByte(ft, value.c_str());
+      break;
+    case TOTPSTARTTIME:
+      SetTime(ft, value.c_str());
       break;
     case CTIME:      /* 07 */
     case PMTIME:     /* 08 */
@@ -1652,6 +1767,7 @@ bool CItemData::Matches(const stringT &stValue, int iObject,
     case URL:
     case NOTES:
     case PASSWORD:
+    case TWOFACTORKEY:
     case RUNCMD:
     case EMAIL:
     case SYMBOLS:
@@ -1939,13 +2055,18 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
   return false; // END tag not found!
 }
 
-bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t len)
+bool CItemData::SetField(unsigned char ft_byte, const unsigned char* data, size_t len)
+{
+  auto ft = static_cast<FieldType>(ft_byte);
+  return SetField(ft, data, len);
+}
+
+bool CItemData::SetField(CItem::FieldType ft, const unsigned char* data, size_t len)
 {
   int32 i32;
   int16 i16;
   unsigned char uc;
 
-  auto ft = static_cast<FieldType>(type);
   switch (ft) {
     case NAME:
       ASSERT(0); // not serialized, or in v3 format
@@ -1968,6 +2089,7 @@ bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t l
     case USER:
     case NOTES:
     case PASSWORD:
+    case TWOFACTORKEY:
     case POLICY:
     case URL:
     case AUTOTYPE:
@@ -1978,11 +2100,17 @@ bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t l
     case POLICYNAME:
       if (!SetTextField(ft, data, len)) return false;
       break;
+    case TOTPCONFIG:
+    case TOTPTIMESTEP:
+    case TOTPLENGTH:
+      CItem::SetField(ft, data, len);
+      break;
     case CTIME:
     case PMTIME:
     case ATIME:
     case XTIME:
     case RMTIME:
+    case TOTPSTARTTIME:
       if (!SetTimeField(ft, data, len)) return false;
       break;
     case XTIME_INT:
@@ -2009,7 +2137,7 @@ bool CItemData::SetField(unsigned char type, const unsigned char *data, size_t l
       break;
     default:
       // unknowns!
-      SetUnknownField(type, len, data);
+      SetUnknownField(static_cast<unsigned char>(ft), len, data);
       break;
   }
   return true;
@@ -2076,17 +2204,22 @@ void CItemData::SerializePlainText(vector<char> &v,
     v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array_t)));
   }
 
-  // TODO: - Get rid of following [password hack - no longer needed as we have base uuid!
-  if (m_entrytype == ET_ALIAS) {
-    // I am an alias entry
-    tmp = _T("[[") + pcibase->GetGroup() + _T(":") + pcibase->GetTitle() + _T(":") + pcibase->GetUser() + _T("]]");
-  } else if (m_entrytype == ET_SHORTCUT) {
-    // I am a shortcut entry
-    tmp = _T("[~") + pcibase->GetGroup() + _T(":") + pcibase->GetTitle() + _T(":") + pcibase->GetUser() + _T("~]");
-  } else
-    tmp = GetPassword();
-
+  tmp = ResolvePlaceholderEligibleField(this, pcibase, [this] { return GetPassword(); });
   push(v, PASSWORD, tmp);
+
+  if (IsTotpActive()) {
+    ASSERT(!GetTwoFactorKey().empty());
+    push(v, TWOFACTORKEY, GetTwoFactorKey());
+    if (!IsTotpConfigDefault())
+      push(v, TOTPCONFIG, GetTotpConfig());
+    if (!IsTotpStartTimeDefault())
+      push(v, TOTPSTARTTIME, GetTotpStartTimeAsTimeT());
+    if (!IsTotpTimeStepSecondsDefault())
+      push(v, TOTPTIMESTEP, GetTotpTimeStepSeconds());
+    if (!IsTotpLengthDefault())
+      push(v, TOTPLENGTH, GetTotpLength());
+  }
+
   push(v, NOTES, GetNotes());
   push(v, URL, GetURL());
   push(v, AUTOTYPE, GetAutoType());
@@ -2146,6 +2279,11 @@ stringT CItemData::FieldName(FieldType ft)
   case USER:         LoadAString(retval, IDSC_FLDNMUSERNAME); break;
   case NOTES:        LoadAString(retval, IDSC_FLDNMNOTES); break;
   case PASSWORD:     LoadAString(retval, IDSC_FLDNMPASSWORD); break;
+  case TWOFACTORKEY: LoadAString(retval, IDSC_FLDNMTWOFACTORKEY); break;
+  case TOTPCONFIG:   LoadAString(retval, IDSC_FLDNMTOTPCONFIG); break;
+  case TOTPSTARTTIME: LoadAString(retval, IDSC_FLDNMTOTPSTARTTIME); break;
+  case TOTPTIMESTEP: LoadAString(retval, IDSC_FLDNMTOTPTIMESTEP); break;
+  case TOTPLENGTH:   LoadAString(retval, IDSC_FLDNMTOTPLENGTH); break;
   case CTIME:        LoadAString(retval, IDSC_FLDNMCTIME); break;
   case PMTIME:       LoadAString(retval, IDSC_FLDNMPMTIME); break;
   case ATIME:        LoadAString(retval, IDSC_FLDNMATIME); break;
@@ -2186,6 +2324,11 @@ stringT CItemData::EngFieldName(FieldType ft)
   case USER:          return _T("Username");
   case NOTES:         return _T("Notes");
   case PASSWORD:      return _T("Password");
+  case TWOFACTORKEY:  return _T("Two Factor Key");
+  case TOTPCONFIG:    return _T("TOTP Config");
+  case TOTPSTARTTIME: return _T("TOTP Start Time");
+  case TOTPTIMESTEP:  return _T("TOTP Time Step");
+  case TOTPLENGTH:    return _T("TOTP Length");
   case CTIME:         return _T("Created Time");
   case PMTIME:        return _T("Password Modified Time");
   case ATIME:         return _T("Last Access Time");
@@ -2213,4 +2356,13 @@ stringT CItemData::EngFieldName(FieldType ft)
     ASSERT(0);
     return _T("");
   };
+}
+
+std::string CItemData::GetXmlFieldName(FieldType ft)
+{
+  std::string s = toutf8(EngFieldName(ft));
+    ASSERT(!s.empty());
+  if (!s.empty())
+    s.erase(std::remove_if(s.begin(), s.end(), ::isspace), s.end());
+  return s;
 }

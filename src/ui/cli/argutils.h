@@ -38,10 +38,15 @@ struct UserArgs {
   StringX passphrase[2];
   enum OpType {Unset, Import, Export, CreateNew, Search, Add,
                Diff, Sync, Merge} Operation{Unset};
-  enum {Print, Delete, Update, ClearFields, ChangePassword} SearchAction{Print};
+  enum {Print, Delete, Update, ClearFields, ChangePassword, GenerateTotpCode} SearchAction{Print};
   enum {Unknown, XML, Text} Format{Unknown};
 
   bool dry_run{false};
+
+  // verbosity_level is used as desired by any pwsafe-cli code.
+  // generally, 0 is a non-diag normal verbosity level, where 1
+  // or higher activates debug or verbose output.
+  int verbosity_level{ 0 };
 
   // The arg taken by the main operation
   std::wstring opArg;

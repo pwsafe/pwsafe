@@ -49,7 +49,7 @@
 #include <type_traits> // for static_assert
 
 // These column names must match the field names defined in core_st.cpp
-static const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tPassword Policy Name\tHistory\tRun Command\tDCA\tShift+DCA\te-mail\tProtected\tSymbols\tKeyboard Shortcut\tNotes");
+static const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tTwo Factor Key\tTOTP Config\tTOTP Start Time\tTOTP Time Step\tTOTP Length\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tPassword Policy Name\tHistory\tRun Command\tDCA\tShift+DCA\te-mail\tProtected\tSymbols\tKeyboard Shortcut\tNotes");
 static const TCHAR *KPEXPORTHEADER  = _T("Password Groups\tGroup Tree\tAccount\tLogin Name\tPassword\tWeb Site\tComments\tUUID\tIcon\tCreation Time\tLast Access\tLast Modification\tExpires\tAttachment Description\tAttachment");
 static const TCHAR *KPIMPORTEDPREFIX = _T("ImportedKeePass");
 
@@ -145,6 +145,21 @@ StringX PWScore::BuildHeader(const CItemData::FieldBits &bsFields, const bool bI
   }
   if (bittest(bsFields, CItemData::PASSWORD, bIncluded)) {
     hdr += CItemData::FieldName(CItemData::PASSWORD) + TAB;
+  }
+  if (bittest(bsFields, CItemData::TWOFACTORKEY, bIncluded)) {
+    hdr += CItemData::FieldName(CItemData::TWOFACTORKEY) + TAB;
+  }
+  if (bittest(bsFields, CItemData::TOTPCONFIG, bIncluded)) {
+    hdr += CItemData::FieldName(CItemData::TOTPCONFIG) + TAB;
+  }
+  if (bittest(bsFields, CItemData::TOTPSTARTTIME, bIncluded)) {
+    hdr += CItemData::FieldName(CItemData::TOTPSTARTTIME) + TAB;
+  }
+  if (bittest(bsFields, CItemData::TOTPTIMESTEP, bIncluded)) {
+    hdr += CItemData::FieldName(CItemData::TOTPTIMESTEP) + TAB;
+  }
+  if (bittest(bsFields, CItemData::TOTPLENGTH, bIncluded)) {
+    hdr += CItemData::FieldName(CItemData::TOTPLENGTH) + TAB;
   }
   if (bittest(bsFields, CItemData::URL, bIncluded)) {
     hdr += CItemData::FieldName(CItemData::URL) + TAB;
@@ -918,6 +933,11 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     altPair(L"user",USER),
     defaultPairs(PASSWORD),
     altPair(L"passwd", PASSWORD),
+    defaultPairs(TWOFACTORKEY),
+    defaultPairs(TOTPCONFIG),
+    defaultPairs(TOTPSTARTTIME),
+    defaultPairs(TOTPTIMESTEP),
+    defaultPairs(TOTPLENGTH),
     defaultPairs(URL),
     defaultPairs(AUTOTYPE),
     defaultPairs(CTIME),
@@ -1251,15 +1271,26 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     ci_temp.Clear();
     ci_temp.CreateUUID();
 
-    auto set_field_if_in_row = [&ci_temp, &row_has_column, &tokens, &columns](CItem::FieldType ft)
+    auto set_field_if_in_row = [&ci_temp, &row_has_column, &tokens, &columns](CItem::FieldType ft, bool allow_empty = true)
     {
-      if (row_has_column(ft))
-        ci_temp.SetFieldValue(ft, tokens[columns[ft]].c_str());
+      if (row_has_column(ft) && (allow_empty || !tokens[columns[ft]].empty()))
+          ci_temp.SetFieldValue(ft, tokens[columns[ft]].c_str());
     };
 
     set_field_if_in_row(CItem::USER);
     set_field_if_in_row(CItem::PASSWORD);
 
+    // If import text file has non-empty TOTP key, TOTP is active.
+    // Otherwise it is not active and all TOTP import is skipped.
+    bool is_two_factor_key_present = row_has_column(CItem::TWOFACTORKEY) && !tokens[columns[CItem::TWOFACTORKEY]].empty();
+    if (is_two_factor_key_present) {
+      set_field_if_in_row(CItem::TWOFACTORKEY);
+      ASSERT(ci_temp.IsTotpActive());
+      set_field_if_in_row(CItem::TOTPCONFIG, false);
+      set_field_if_in_row(CItem::TOTPSTARTTIME, false);
+      set_field_if_in_row(CItem::TOTPTIMESTEP, false);
+      set_field_if_in_row(CItem::TOTPLENGTH, false);
+    }
 
     // Handle legacy group/title concatenation
     if (row_has_column(CItem::GROUPTITLE)) {

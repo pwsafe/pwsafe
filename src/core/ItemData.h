@@ -18,6 +18,7 @@
 #include "PWPolicy.h"
 #include "os/UUID.h"
 #include "StringX.h"
+#include "TotpCore.h"
 
 #include <time.h> // for time_t
 #include <bitset>
@@ -84,12 +85,42 @@ public:
   // Convenience: Get the untranslated (English) name of a FieldType
   static stringT EngFieldName(FieldType ft);
 
+  // Return XML-complient element name.
+  // Note: Not all XML elements use this immediately. Generally for use with
+  // newly added fields or those where appropriate refactoring has taken place.
+  static std::string GetXmlFieldName(FieldType ft);
+
   //Data retrieval
   StringX GetName() const {return GetField(NAME);} // V17 - deprecated: replaced by GetTitle & GetUser
   StringX GetTitle() const {return GetField(TITLE);} // V20
   StringX GetUser() const  {return GetField(USER);}  // V20
-  StringX GetPassword() const {return GetField(PASSWORD);}
-  size_t GetPasswordLength() const {return GetField(PASSWORD).length();}
+  StringX GetPassword() const { return GetField(PASSWORD); }
+  size_t GetPasswordLength() const { return GetField(PASSWORD).length(); }
+
+  //
+  // TOTP-related fields:
+  //
+  bool IsTotpActive() const { return GetTwoFactorKeyLength() != 0; }
+  StringX GetTwoFactorKey() const { return GetField(TWOFACTORKEY); }
+  size_t GetTwoFactorKeyLength() const { return GetField(TWOFACTORKEY).length(); }
+
+  uint8_t GetTotpConfigAsByte() const { return GetFieldAsByte(TOTPCONFIG, TOTP_CONFIG_ALGORITHM_DEFAULT); }
+  StringX GetTotpConfig() const { return IntegralToStringX(GetTotpConfigAsByte()); }
+  bool IsTotpConfigDefault() const { return GetTotpConfigAsByte() == TOTP_CONFIG_ALGORITHM_DEFAULT; }
+  uint8_t GetTotpAlgorithmAsByte() const { return GetTotpConfigAsByte() & TOTP_CONFIG_ALGORITHM_MASK; }
+
+  uint8_t GetTotpLengthAsByte() const { return GetFieldAsByte(TOTPLENGTH, TOTP_DEFAULT_AUTH_CODE_LENGTH); }
+  StringX GetTotpLength() const { return IntegralToStringX(GetTotpLengthAsByte()); }
+  bool IsTotpLengthDefault() const { return GetTotpLengthAsByte() == TOTP_DEFAULT_AUTH_CODE_LENGTH; }
+
+  uint8_t GetTotpTimeStepSecondsAsByte() const { return GetFieldAsByte(TOTPTIMESTEP, TOTP_DEFAULT_TIME_STEP_SECONDS); }
+  StringX GetTotpTimeStepSeconds() const { return IntegralToStringX(GetFieldAsByte(TOTPTIMESTEP, TOTP_DEFAULT_TIME_STEP_SECONDS)); }
+  bool IsTotpTimeStepSecondsDefault() const { return GetTotpTimeStepSecondsAsByte() == TOTP_DEFAULT_TIME_STEP_SECONDS; }
+
+  time_t GetTotpStartTimeAsTimeT() const { time_t t;  CItem::GetTime(TOTPSTARTTIME, t); return t; }
+  StringX GetTotpStartTime() const { return GetTime(TOTPSTARTTIME, PWSUtil::TMC_ASC_UNKNOWN, true, true); }
+  bool IsTotpStartTimeDefault() const { return GetTotpStartTimeAsTimeT() == 0; }
+
   StringX GetNotes(TCHAR delimiter = 0) const;
   void GetUUID(uuid_array_t &, FieldType ft = END) const; // V20
   const pws_os::CUUID GetUUID(FieldType ft = END) const; // V20 - see comment in .cpp re return type
@@ -315,12 +346,14 @@ private:
   // move from pre-2.0 name to post-2.0 title+user
   void SplitName(const StringX &name,
                  StringX &title, StringX &username);
-  StringX GetTime(int whichtime, PWSUtil::TMC result_format) const; // V30
+  StringX GetTime(int whichtime, PWSUtil::TMC result_format, bool convert_epoch = false, bool utc_time = false) const; // V30
   void SetTime(const int whichtime); // V30
   bool SetTime(const int whichtime, const stringT &time_str); // V30
 
   // Laziness is a Virtue:
-  bool SetField(unsigned char type, const unsigned char *data, size_t len);
+  bool SetField(unsigned char ft_byte, const unsigned char *data, size_t len);
+  bool SetField(CItem::FieldType ft, const unsigned char* data, size_t len);
+  bool SetFieldAsByte(CItem::FieldType type, const stringT& byte_str, bool strict = true);
 
   // for V3 Alias or Shortcut, the base UUID is encoded in password
   void ParseSpecialPasswords();
@@ -341,6 +374,7 @@ inline bool CItemData::IsTextField(unsigned char t)
     t == RESERVED   || t == DCA    || t == SHIFTDCA || t == PROTECTED ||
     t == KBSHORTCUT || t == ATTREF || t == BASEUUID || t == ALIASUUID ||
     t == SHORTCUTUUID ||
+    t == TOTPCONFIG || t == TOTPLENGTH || t == TOTPSTARTTIME || t == TOTPTIMESTEP ||
     t >= LAST_DATA);
 }
 #endif /* __ITEMDATA_H */

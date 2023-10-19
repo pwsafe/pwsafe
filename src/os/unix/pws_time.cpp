@@ -30,11 +30,3 @@ int localtime64_r(const __time64_t *timep, struct tm *result)
   return localtime_r(tp, result) != nullptr;
 }
 
-int pws_os::asctime(TCHAR *s, size_t, tm const *t)
-{
-  char cbuf[26]; // length specified in man (3) asctime
-  asctime_r(t, cbuf);
-  std::wstring wstr = pws_os::towc(cbuf);
-  std::copy(wstr.begin(), wstr.end(), s);
-  return 0;
-}

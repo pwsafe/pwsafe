@@ -45,7 +45,6 @@
 #define _tcsncmp(s1, s2, n) wcsncmp(s1, s2, n)
 #define _tcschr(s, c) wcschr(s, c)
 #define _tcsftime wcsftime
-#define _tasctime_s(s, N, st) pws_os::asctime(s, N, st)
 #define _vsctprintf(fmt, args) vswprintf(NULL, 0, fmt, args)
 #define _vstprintf_s vswprintf_s
 #define _ftprintf fwprintf

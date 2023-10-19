@@ -249,6 +249,42 @@ void CItem::GetField(const CItemField &field,
   field.Get(value, length, MakeBlowFish());
 }
 
+void CItem::GetField(const CItemField &field, std::vector<unsigned char> &v) const
+{
+  size_t length = field.GetLength();
+  if (length < TwoFish::BLOCKSIZE)
+    length = TwoFish::BLOCKSIZE;
+  v.resize(length);
+  length = v.size();
+  field.Get(& v[0], length, MakeBlowFish());
+  v.resize(length);
+}
+
+void CItem::GetField(const int ft, std::vector<unsigned char> &v) const
+{
+  auto fiter = m_fields.find(ft);
+  if (fiter == m_fields.end()) {
+    v.clear();
+    return;
+  }
+  GetField(fiter->second, v);
+}
+
+uint8_t CItem::GetFieldAsByte(const CItemField& field, uint8_t default_value) const
+{
+  std::vector<uint8_t> v;
+  GetField(field, v);
+  return v.empty() ? default_value : v[0];
+}
+
+uint8_t CItem::GetFieldAsByte(const int ft, uint8_t default_value) const
+{
+  auto fiter = m_fields.find(ft);
+  if (fiter == m_fields.end())
+    return default_value;
+  return GetFieldAsByte(fiter->second, default_value);
+}
+
 StringX CItem::GetField(const int ft) const
 {
   auto fiter = m_fields.find(ft);

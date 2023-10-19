@@ -27,6 +27,7 @@ BEGIN
   IDSC_FLDNMUUID         "UUID"
   IDSC_FLDNMUSERNAME     "Username"
   IDSC_FLDNMPASSWORD     "Password"
+  IDSC_FLDNMTWOFACTORKEY "Two Factor Key"
   IDSC_FLDNMURL          "URL"
   IDSC_FLDNMAUTOTYPE     "AutoType"
   IDSC_FLDNMCTIME        "Created Time"
@@ -53,6 +54,10 @@ BEGIN
   IDSC_FLDNMCCEXP        "Credit card expiration"
   IDSC_FLDNMCCVV         "Credit card CVV"
   IDSC_FLDNMCCPIN        "Credit card PIN"
+  IDSC_FLDNMTOTPCONFIG   "TOTP Config"
+  IDSC_FLDNMTOTPLENGTH   "TOTP Length"
+  IDSC_FLDNMTOTPTIMESTEP "TOTP Time Step"
+  IDSC_FLDNMTOTPSTARTTIME "TOTP Start Time"
 END
 
 STRINGTABLE
