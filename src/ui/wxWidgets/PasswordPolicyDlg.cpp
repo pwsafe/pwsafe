@@ -790,6 +790,10 @@ void PasswordPolicyDlg::OnPolicynameSelection( wxCommandEvent& WXUNUSED(event) )
   m_pwMakePronounceable = (policy.flags & PWPolicy::MakePronounceable) == PWPolicy::MakePronounceable;
   m_Symbols             = policy.symbols.c_str();
   m_pwdefaultlength     = policy.length;
+  m_pwDigitMinLength    = policy.digitminlength;
+  m_pwLowerMinLength    = policy.lowerminlength;
+  m_pwSymbolMinLength   = policy.symbolminlength;
+  m_pwUpperMinLength    = policy.upperminlength;
 
   TransferDataToWindow();
 }
