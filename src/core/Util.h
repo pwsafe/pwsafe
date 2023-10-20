@@ -288,7 +288,8 @@ namespace PWSUtil {
                      const StringX &value, CUTF8Conv &utf8conv,
                      const char *tabs = "\t\t");
   std::string GetXMLTime(int indent, const char *name,
-                         time_t t, CUTF8Conv &utf8conv);
+                         time_t t, CUTF8Conv &utf8conv,
+                         bool convert_epoch = false, bool utc_time = false);
 
   StringX DeDupString(StringX &in_string);
   stringT GetSafeXMLString(const StringX &sxInString);

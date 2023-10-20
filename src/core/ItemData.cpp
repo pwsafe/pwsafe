@@ -1048,25 +1048,29 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   brc = PWSUtil::WriteXMLField(oss, "password", tmp, utf8conv);
   if (!brc) bXMLErrorsFound = true;
 
-  tmp = ResolvePlaceholderEligibleField(this, pcibase, [this] { return GetTwoFactorKey(); });
-  brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TWOFACTORKEY).c_str(), tmp, utf8conv);
-  if (!brc) bXMLErrorsFound = true;
+  if (IsTotpActive()) {
+    brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TWOFACTORKEY).c_str(), GetTwoFactorKey(), utf8conv);
+    if (!brc) bXMLErrorsFound = true;
 
-  tmp = ResolvePlaceholderEligibleField(this, pcibase, [this] { return GetTotpConfig(); });
-  brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TOTPCONFIG).c_str(), tmp, utf8conv);
-  if (!brc) bXMLErrorsFound = true;
+    if (!IsTotpConfigDefault()) {
+      brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TOTPCONFIG).c_str(), GetTotpConfig(), utf8conv);
+      if (!brc) bXMLErrorsFound = true;
+    }
 
-  tmp = ResolvePlaceholderEligibleField(this, pcibase, [this] { return GetTotpStartTime(); });
-  brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TOTPSTARTTIME).c_str(), tmp, utf8conv);
-  if (!brc) bXMLErrorsFound = true;
+    if (!IsTotpStartTimeDefault()) {
+      oss << PWSUtil::GetXMLTime(2, GetXmlFieldName(TOTPSTARTTIME).c_str(), GetTotpStartTimeAsTimeT(), utf8conv, true, true);
+    }
 
-  tmp = ResolvePlaceholderEligibleField(this, pcibase, [this] { return GetTotpTimeStepSeconds(); });
-  brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TOTPTIMESTEP).c_str(), tmp, utf8conv);
-  if (!brc) bXMLErrorsFound = true;
+    if (!IsTotpTimeStepSecondsDefault()) {
+      brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TOTPTIMESTEP).c_str(), GetTotpTimeStepSeconds(), utf8conv);
+      if (!brc) bXMLErrorsFound = true;
+    }
 
-  tmp = ResolvePlaceholderEligibleField(this, pcibase, [this] { return GetTotpLength(); });
-  brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TOTPLENGTH).c_str(), tmp, utf8conv);
-  if (!brc) bXMLErrorsFound = true;
+    if (!IsTotpLengthDefault()) {
+      brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TOTPLENGTH).c_str(), GetTotpLength(), utf8conv);
+      if (!brc) bXMLErrorsFound = true;
+    }
+  }
 
   ConditionalWriteXML(CItemData::URL, bsExport, "url", GetURL(),
                       oss, utf8conv, bXMLErrorsFound);
@@ -1429,7 +1433,22 @@ void CItemData::SetTime(int whichtime)
   CItem::SetTime(whichtime, t);
 }
 
-bool CItemData::SetTime(int whichtime, const stringT &time_str)
+// CItemData::SetTime sets a field's time given a time string which can be
+// interpreted as follows...
+//  * If time_str == "" then set the field's time to 0 time_t.
+//  * If time_str == "now" then set the field's time to current UTC time_t.
+//  * If neither of the above cases match, try to parse a time stamp in
+//    order of the following functions:
+//      - VerifyImportDateTimeString
+//      - VerifyXMLDateTimeString
+//      - VerifyASCDateTimeString
+//    Each of the 3 functions, if successful in parsing the time stamp in time_str,
+//    interprets the time_str as a local time stamp value, returning a time_t in UTC
+//    time representing that local time. For example, if time_str is "1970/01/02 00:00:00"
+//    and the timezone is PDT (GMT-8), the field's value will be set to the time_t value
+//    plus 8 hours. For cases where the incoming time_str should be interpreted as GMT
+//    time, the utc_time argument can be set to true.
+bool CItemData::SetTime(int whichtime, const stringT &time_str, bool utc_time)
 {
   time_t t(0);
 
@@ -1442,9 +1461,9 @@ bool CItemData::SetTime(int whichtime, const stringT &time_str)
       CItem::SetTime(whichtime, t);
       return true;
     } else
-      if ((VerifyImportDateTimeString(time_str, t) ||
-           VerifyXMLDateTimeString(time_str, t) ||
-           VerifyASCDateTimeString(time_str, t)) &&
+      if ((VerifyImportDateTimeString(time_str, t, utc_time) ||
+           VerifyXMLDateTimeString(time_str, t, utc_time) ||
+           VerifyASCDateTimeString(time_str, t, utc_time)) &&
           (t != time_t(-1))  // checkerror despite all our verification!
           ) {
         CItem::SetTime(whichtime, t);
@@ -1677,7 +1696,7 @@ void CItemData::SetFieldValue(FieldType ft, const StringX &value)
       SetFieldAsByte(ft, value.c_str());
       break;
     case TOTPSTARTTIME:
-      SetTime(ft, value.c_str());
+      SetTime(ft, value.c_str(), true);
       break;
     case CTIME:      /* 07 */
     case PMTIME:     /* 08 */
@@ -2361,8 +2380,11 @@ stringT CItemData::EngFieldName(FieldType ft)
 std::string CItemData::GetXmlFieldName(FieldType ft)
 {
   std::string s = toutf8(EngFieldName(ft));
-    ASSERT(!s.empty());
-  if (!s.empty())
+  ASSERT(!s.empty());
+  if (!s.empty()) {
     s.erase(std::remove_if(s.begin(), s.end(), ::isspace), s.end());
+    for (auto& c : s)
+      c = static_cast<char>(tolower(c));
+  }
   return s;
 }

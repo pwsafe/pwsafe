@@ -28,6 +28,11 @@ struct pw_entry {
   StringX title;
   StringX username;
   StringX password;
+  StringX twofactorkey;
+  StringX totpconfig;
+  StringX totpstarttime;
+  StringX totptimestep;
+  StringX totplength;
   StringX url;
   StringX autotype;
   StringX ctime;

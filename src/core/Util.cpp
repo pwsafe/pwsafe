@@ -809,10 +809,11 @@ bool PWSUtil::WriteXMLField(ostream &os, const char *fname,
 }
 
 string PWSUtil::GetXMLTime(int indent, const char *name,
-                           time_t t, CUTF8Conv &utf8conv)
+                           time_t t, CUTF8Conv &utf8conv,
+                           bool convert_epoch, bool utc_time)
 {
   int i;
-  const StringX tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML);
+  const StringX tmp = PWSUtil::ConvertToDateTimeString(t, TMC_XML, convert_epoch, utc_time);
   ostringstream oss;
   const unsigned char *utf8 = nullptr;
   size_t utf8Len = 0;

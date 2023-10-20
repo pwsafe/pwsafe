@@ -103,6 +103,11 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       m_cur_entry->title = _T("");
       m_cur_entry->username = _T("");
       m_cur_entry->password = _T("");
+      m_cur_entry->twofactorkey = _T("");
+      m_cur_entry->totpconfig = _T("");
+      m_cur_entry->totpstarttime = _T("");
+      m_cur_entry->totptimestep = _T("");
+      m_cur_entry->totplength = _T("");
       m_cur_entry->url = _T("");
       m_cur_entry->autotype = _T("");
       m_cur_entry->ctime = _T("");
@@ -416,6 +421,21 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
               m_sxElemContent.substr(m_sxElemContent.length() - 2);
         }
       }
+      break;
+    case XLE_TWOFACTORKEY:
+      m_cur_entry->twofactorkey = m_sxElemContent;
+      break;
+    case XLE_TOTPCONFIG:
+      m_cur_entry->totpconfig = m_sxElemContent;
+      break;
+    case XLE_TOTPSTARTTIME:
+      m_cur_entry->totpstarttime = m_sxElemContent;
+      break;
+    case XLE_TOTPTIMESTEP:
+      m_cur_entry->totptimestep = m_sxElemContent;
+      break;
+    case XLE_TOTPLENGTH:
+      m_cur_entry->totplength = m_sxElemContent;
       break;
     case XLE_CTIMEX:
       m_cur_entry->ctime = m_sxElemContent;
@@ -760,6 +780,23 @@ void XMLFileHandlers::AddXMLEntries()
 
     if (!cur_entry->password.empty())
       ci_temp.SetPassword(cur_entry->password);
+
+    if (!cur_entry->twofactorkey.empty()) {
+
+      ci_temp.SetTwoFactorKey(cur_entry->twofactorkey);
+
+      if (!cur_entry->totpconfig.empty())
+        ci_temp.SetTotpConfig(cur_entry->totpconfig);
+
+      if (!cur_entry->totpstarttime.empty())
+        ci_temp.SetTotpStartTime(cur_entry->totpstarttime);
+
+      if (!cur_entry->totptimestep.empty())
+        ci_temp.SetTotpTimeStep(cur_entry->totptimestep);
+
+      if (!cur_entry->totplength.empty())
+        ci_temp.SetTotpLength(cur_entry->totplength);
+    }
 
     EmptyIfOnlyWhiteSpace(cur_entry->url);
     if (!cur_entry->url.empty())
