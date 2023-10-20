@@ -789,6 +789,7 @@ void PasswordPolicyDlg::OnPolicynameSelection( wxCommandEvent& WXUNUSED(event) )
   m_pwUseEasyVision     = (policy.flags & PWPolicy::UseEasyVision)     == PWPolicy::UseEasyVision;
   m_pwMakePronounceable = (policy.flags & PWPolicy::MakePronounceable) == PWPolicy::MakePronounceable;
   m_Symbols             = policy.symbols.c_str();
+  m_pwdefaultlength     = policy.length;
 
   TransferDataToWindow();
 }
