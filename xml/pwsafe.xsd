@@ -227,6 +227,11 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
               <xs:element name="title" type="stringType" minOccurs="1" maxOccurs="1" />
               <xs:element name="username" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="password" type="stringType" minOccurs="1" maxOccurs="1" />
+              <xs:element name="twofactorkey" type="stringType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="totpconfig" type="xs:int" minOccurs="0" maxOccurs="1" />
+              <xs:element name="totpstarttime" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+              <xs:element name="totptimestep" type="xs:int" minOccurs="0" maxOccurs="1" />
+              <xs:element name="totplength" type="xs:int" minOccurs="0" maxOccurs="1" />
               <xs:element name="url" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="autotype" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="notes" type="stringType" minOccurs="0" maxOccurs="1" />

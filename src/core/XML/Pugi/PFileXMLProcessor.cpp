@@ -335,6 +335,11 @@ bool PFileXMLProcessor::CheckElementHierachy(int iroot, int icurrent)
         case XLE_TITLE:
         case XLE_USERNAME:
         case XLE_PASSWORD:
+        case XLE_TWOFACTORKEY:
+        case XLE_TOTPCONFIG:
+        case XLE_TOTPSTARTTIME:
+        case XLE_TOTPTIMESTEP:
+        case XLE_TOTPLENGTH:
         case XLE_URL:
         case XLE_AUTOTYPE:
         case XLE_NOTES:

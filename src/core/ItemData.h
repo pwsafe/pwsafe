@@ -201,6 +201,11 @@ public:
   void SetUser(const StringX &user) {CItem::SetField(USER, user);} // V20
   void SetPassword(const StringX &password) {CItem::SetField(PASSWORD, password);}
   void UpdatePassword(const StringX &password); // use when password changed!
+  void SetTwoFactorKey(const StringX& value) { CItem::SetField(TWOFACTORKEY, value); }
+  bool SetTotpConfig(const StringX& value) { return SetFieldAsByte(TOTPCONFIG, value.c_str()); }
+  bool SetTotpStartTime(const StringX& value) { return SetTime(TOTPSTARTTIME, value.c_str(), true); }
+  bool SetTotpTimeStep(const StringX& value) { return SetFieldAsByte(TOTPTIMESTEP, value.c_str()); }
+  bool SetTotpLength(const StringX& value) { return SetFieldAsByte(TOTPLENGTH, value.c_str()); }
   void SetNotes(const StringX &notes, TCHAR delimiter = 0);
   void SetUUID(const pws_os::CUUID &uuid, FieldType ft = CItemData::UUID);
   void SetBaseUUID(const pws_os::CUUID &uuid) {SetUUID(uuid, CItemData::BASEUUID);}
@@ -348,7 +353,7 @@ private:
                  StringX &title, StringX &username);
   StringX GetTime(int whichtime, PWSUtil::TMC result_format, bool convert_epoch = false, bool utc_time = false) const; // V30
   void SetTime(const int whichtime); // V30
-  bool SetTime(const int whichtime, const stringT &time_str); // V30
+  bool SetTime(const int whichtime, const stringT &time_str, bool utc_time = false); // V30
 
   // Laziness is a Virtue:
   bool SetField(unsigned char ft_byte, const unsigned char *data, size_t len);
