@@ -85,7 +85,7 @@ public:
   // Convenience: Get the untranslated (English) name of a FieldType
   static stringT EngFieldName(FieldType ft);
 
-  // Return XML-complient element name.
+  // Return XML-compliant element name.
   // Note: Not all XML elements use this immediately. Generally for use with
   // newly added fields or those where appropriate refactoring has taken place.
   static std::string GetXmlFieldName(FieldType ft);
@@ -104,18 +104,18 @@ public:
   StringX GetTwoFactorKey() const { return GetField(TWOFACTORKEY); }
   size_t GetTwoFactorKeyLength() const { return GetField(TWOFACTORKEY).length(); }
 
-  uint8_t GetTotpConfigAsByte() const { return GetFieldAsByte(TOTPCONFIG, TOTP_CONFIG_ALGORITHM_DEFAULT); }
+  uint8_t GetTotpConfigAsByte() const { return GetFieldAsByte(TOTPCONFIG, PWSTotp::TOTP_CONFIG_ALGORITHM_DEFAULT); }
   StringX GetTotpConfig() const { return IntegralToStringX(GetTotpConfigAsByte()); }
-  bool IsTotpConfigDefault() const { return GetTotpConfigAsByte() == TOTP_CONFIG_ALGORITHM_DEFAULT; }
-  uint8_t GetTotpAlgorithmAsByte() const { return GetTotpConfigAsByte() & TOTP_CONFIG_ALGORITHM_MASK; }
+  bool IsTotpConfigDefault() const { return GetTotpConfigAsByte() == PWSTotp::TOTP_CONFIG_ALGORITHM_DEFAULT; }
+  uint8_t GetTotpAlgorithmAsByte() const { return GetTotpConfigAsByte() & PWSTotp::TOTP_CONFIG_ALGORITHM_MASK; }
 
-  uint8_t GetTotpLengthAsByte() const { return GetFieldAsByte(TOTPLENGTH, TOTP_DEFAULT_AUTH_CODE_LENGTH); }
+  uint8_t GetTotpLengthAsByte() const { return GetFieldAsByte(TOTPLENGTH, PWSTotp::TOTP_DEFAULT_AUTH_CODE_LENGTH); }
   StringX GetTotpLength() const { return IntegralToStringX(GetTotpLengthAsByte()); }
-  bool IsTotpLengthDefault() const { return GetTotpLengthAsByte() == TOTP_DEFAULT_AUTH_CODE_LENGTH; }
+  bool IsTotpLengthDefault() const { return GetTotpLengthAsByte() == PWSTotp::TOTP_DEFAULT_AUTH_CODE_LENGTH; }
 
-  uint8_t GetTotpTimeStepSecondsAsByte() const { return GetFieldAsByte(TOTPTIMESTEP, TOTP_DEFAULT_TIME_STEP_SECONDS); }
-  StringX GetTotpTimeStepSeconds() const { return IntegralToStringX(GetFieldAsByte(TOTPTIMESTEP, TOTP_DEFAULT_TIME_STEP_SECONDS)); }
-  bool IsTotpTimeStepSecondsDefault() const { return GetTotpTimeStepSecondsAsByte() == TOTP_DEFAULT_TIME_STEP_SECONDS; }
+  uint8_t GetTotpTimeStepSecondsAsByte() const { return GetFieldAsByte(TOTPTIMESTEP, PWSTotp::TOTP_DEFAULT_TIME_STEP_SECONDS); }
+  StringX GetTotpTimeStepSeconds() const { return IntegralToStringX(GetFieldAsByte(TOTPTIMESTEP, PWSTotp::TOTP_DEFAULT_TIME_STEP_SECONDS)); }
+  bool IsTotpTimeStepSecondsDefault() const { return GetTotpTimeStepSecondsAsByte() == PWSTotp::TOTP_DEFAULT_TIME_STEP_SECONDS; }
 
   time_t GetTotpStartTimeAsTimeT() const { time_t t;  CItem::GetTime(TOTPSTARTTIME, t); return t; }
   StringX GetTotpStartTime() const { return GetTime(TOTPSTARTTIME, PWSUtil::TMC_ASC_UNKNOWN, true, true); }

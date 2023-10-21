@@ -157,21 +157,22 @@ int GenerateTotpCodeForSearchResults(const ItemPtrVec& items, PWScore&, std::wos
     uint8_t totp_time_step_seconds = data.GetTotpTimeStepSecondsAsByte();
     time_t totp_start_time = data.GetTotpStartTimeAsTimeT();
     time_t totp_time_now;
-    uint32_t totp_auth_code = GetNextTotpAuthCode(data, &totp_time_now);
+    uint32_t totp_auth_code;
+    PWSTotp::TOTP_Result totpResult = PWSTotp::GetNextTotpAuthCode(data, totp_auth_code, &totp_time_now);
     if (verbosity_level > 0) {
       os << "TOTP Config: " << (int)data.GetTotpConfigAsByte() << endl;
       os << "TOTP Auth Code Length: " << (int)data.GetTotpLengthAsByte() << endl;
       os << "TOTP Time Step Seconds: " << (int)data.GetTotpTimeStepSecondsAsByte() << endl;
       os << "TOTP Start Time: " << data.GetTotpStartTimeAsTimeT() << endl;
     }
-    if (totp_auth_code == TOTP_INVALID_AUTH_CODE) {
+    if (totpResult != PWSTotp::Success) {
       os << "TOTP authentication code generation error." << endl
-         << "Please ensure the TOTP key is valid." << endl;
+        << PWSTotp::GetTotpErrorString(totpResult) << " (TOTP Error=" << totpResult << ")" << endl;
       result = PWScore::FAILURE;
       return;
     }
     uint64_t seconds_remaining = totp_time_step_seconds - ((totp_time_now - totp_start_time) % totp_time_step_seconds);
-    std::string totp_auth_code_str = TotpCodeToString(data, totp_auth_code);
+    std::string totp_auth_code_str = PWSTotp::TotpCodeToString(data, totp_auth_code);
     os << "Authentication Code: " << Utf82wstring(totp_auth_code_str.c_str())
        << " valid for approximately " << seconds_remaining
        << (seconds_remaining > 1 ? " seconds." : " second.")
