@@ -161,6 +161,22 @@ void PWScore::Compare(PWScore *pothercore,
          Fourth byte
          1... ....  POLICYNAME [0x18] - not checked by default
          .1.. ....  KBSHORTCUT [0x19] - not checked by default
+         ..1. ....  ATTREF     [0x1a] - not checked by default
+         ...1 ....  TWOFACTORKEY [0x1b] - not checked by default
+         .... 1...  CCNUM      [0x1c] - not checked by default
+         .... .1..  CCEXP      [0x1d] - not checked by default
+         .... ..1.  CCVV       [0x1e] - not checked by default
+         .... ...1  CCPIN      [0x1f] - not checked by default
+
+         Fifth byte
+         1... ....  N/A        [0x20]
+         .1.. ....  TOTPCONFIG [0x21]
+         ..1. ....  TOTPLENGTH [0x22]
+         ...1 ....  TOTPTIMESTEP [0x23]
+         .... 1...  TOTPSTARTTIME [0x24]
+         .... .1..  N/A        [0x25]
+         .... ..1.  N/A        [0x26]
+         .... ...1  N/A        [0x27]
 
         */
         bsConflicts.reset();
