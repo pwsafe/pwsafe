@@ -1616,6 +1616,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>--allow-screen-capture<ept i="0">&lt;/b0&gt;</ept><it pos="begin" x="1">&lt;br1&gt;</it></seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T134050Z" creationid="pm_kan" creationdate="20231022T134050Z">
+        <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>--allow-screen-capture<ept i="0">&lt;/b0&gt;</ept><it pos="begin" x="1">&lt;br1&gt;</it></seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>--cetreeview<ept i="0">&lt;/b0&gt;</ept><it pos="begin" x="1">&lt;br1&gt;</it></seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20120808T171112Z">
@@ -4497,6 +4505,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>As described in the <bpt i="2" x="2">&lt;a2&gt;</bpt>Security Tab<ept i="2">&lt;/a2&gt;</ept> page, <bpt i="3" x="3">&lt;b3&gt;</bpt>Password Safe<ept i="3">&lt;/b3&gt;</ept> by default hides itself from Windows' screen capture function.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T134611Z" creationid="pm_kan" creationdate="20231022T134247Z">
+        <seg>В  ОС Windows <bpt i="3" x="3">&lt;b3&gt;</bpt>Password Safe<ept i="3">&lt;/b3&gt;</ept> по умолчанию скрывается из захватов экрана (можно изменить в настройках на вкладке <bpt i="2" x="2">&lt;a2&gt;</bpt>Безопасность<ept i="2">&lt;/a2&gt;</ept>).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>As entry keyboard shortcuts cannot change the database when used, unlike say a menu item shortcut that could delete an entry, as a safety measure, entry keyboard shortcuts take precedence over menu item shortcuts.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20140113T134719Z" creationid="pm_kan" creationdate="20140113T134719Z">
@@ -7209,6 +7225,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Even if you don't have a password displayed, the other information in an entry or the main window can be of use to an attacker.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T143638Z" creationid="pm_kan" creationdate="20231022T143638Z">
+        <seg>Даже если содержимое поля с паролем скрыто, данные из других полей могут содержать полезную для злоумышленника информацию.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Even pieces of the master password can be built this way.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20140113T132654Z" creationid="pm_kan" creationdate="20140113T132654Z">
@@ -7249,10 +7273,26 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Exclude from screen capture</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T143429Z" creationid="pm_kan" creationdate="20231022T143429Z">
+        <seg>Исключить из захватов экрана</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>ExcludeFromClipboardHistory</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20221029T162033Z" creationid="pm_kan" creationdate="20221029T162033Z">
         <seg>ExcludeFromClipboardHistory</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>ExcludeFromScreenCapture</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T142618Z" creationid="pm_kan" creationdate="20231022T142618Z">
+        <seg>ExcludeFromScreenCapture</seg>
       </tuv>
     </tu>
     <tu>
@@ -7977,6 +8017,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>For more information about this, see the <bpt i="0" x="0">&lt;a0&gt;</bpt>security tab<ept i="0">&lt;/a0&gt;</ept> page.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T142551Z" creationid="pm_kan" creationdate="20231022T142551Z">
+        <seg>Для получения дополнительной информации см. <bpt i="0" x="0">&lt;a0&gt;</bpt>Безопасность<ept i="0">&lt;/a0&gt;</ept>.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>For more information on defining and using filters, see <bpt i="1" x="1">&lt;a1&gt;</bpt>here<ept i="1">&lt;/a1&gt;</ept>.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110215T214625Z">
@@ -8305,6 +8353,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Hide <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> from Windows' screen capture function</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T142728Z" creationid="pm_kan" creationdate="20231022T142728Z">
+        <seg>Скрывать окна <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> при захвате экрана (скриншоты, запись видео, RDP, ...) в ОС Windows.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Hide System Tray icon (Hot Key MUST be active)</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20101105T191608Z">
@@ -8577,6 +8633,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>However, some programs, such as remote desktop viewers and screen readers for the visually impaired, rely on the screen capture capability to function.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T150045Z" creationid="pm_kan" creationdate="20231022T135205Z">
+        <seg>Но, корректность работы некоторых программ, например, средств удалённого доступа и средств чтения с экрана, может зависеть от возможности получения снимков окон приложения.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>However, the undo/redo log is retained so that changes can be undone (or redone) after unlocking.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20170326T170739Z" creationid="pm_kan" creationdate="20170326T170739Z">
@@ -8589,6 +8653,14 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20120809T131536Z">
         <seg>Но в настоящее время нет возможности сохранить в текст параметры <bpt i="0" x="0">&lt;b0&gt;</bpt>именованных политик<ept i="0">&lt;/b0&gt;</ept>.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>However, this can be considered a security risk, since you didn't explicitly copy the password.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T143305Z" creationid="pm_kan" creationdate="20231022T143203Z">
+        <seg>Но, это также может рассматриваться как угроза безопасности, т. к. копирование пароля не было запрошено явно.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9561,6 +9633,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>If you check this, the relevant password will be copied to your clipboard when browsing to the URL specified in the entry.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T150612Z" creationid="pm_kan" creationdate="20231022T143419Z">
+        <seg>Если указанный флажок включён, при переходе по ссылке связанный пароль будет копироваться в буфер обмена.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>If you checked "Save database immediately after Edit or Add" in the Backup tab, entries will never be highlighted, because they get saved immediately.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110209T201033Z">
@@ -9761,6 +9841,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>If you wish to disable this feature, e.g., for taking a screenshot to report a problem, you can do so by clearing this checkbox.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T150746Z" creationid="pm_kan" creationdate="20231022T144239Z">
+        <seg>Чтобы отключить скрытие (например, для того, чтобы сделать снимок экрана для обращения в поддержку), снимите этот флажок.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>If you wish to protect your database using <bpt i="0" x="0">&lt;b0&gt;</bpt>both<ept i="0">&lt;/b0&gt;</ept> your YubiKey and a master password ("two factor authentication"), then <bpt i="1" x="1">&lt;b1&gt;</bpt>first<ept i="1">&lt;/b1&gt;</ept> enter the master password in the "Master Password" and "Verify" fields, <bpt i="2" x="2">&lt;b2&gt;</bpt>then<ept i="2">&lt;/b2&gt;</ept> click on the Yubikey button.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20230122T122708Z" creationid="pm_kan" creationdate="20230122T121205Z">
@@ -9837,6 +9925,22 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110620T112712Z">
         <seg>Если вы используете системы «единого входа», которые позволяют использовать один и тот же пароль для различных машин/серверов/приложений, то можно настроить несколько элементов <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> таким образом, чтобы изменение пароля в одном из них автоматически отражалось в остальных.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>If you're using such programs on a regular basis, you can disable this by starting <bpt i="4" x="4">&lt;b4&gt;</bpt>Password Safe<ept i="4">&lt;/b4&gt;</ept> with this command line flag.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T140954Z" creationid="pm_kan" creationdate="20231022T140954Z">
+        <seg>При регулярном использовании таких приложений вы можете отключить данную блокировку запуская <bpt i="4" x="4">&lt;b4&gt;</bpt>Password Safe<ept i="4">&lt;/b4&gt;</ept> с указанным параметром.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>If you're using such programs on a regular basis, you might want to disable this.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T144553Z" creationid="pm_kan" creationdate="20231022T144553Z">
+        <seg>При регулярном использовании таких приложений может потребоваться отключение данной блокировки.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10053,6 +10157,14 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20170814T222127Z" creationid="pm_kan" creationdate="20170814T222127Z">
         <seg>Кроме того, некоторые редакторы могут использовать ранее запущенный экземпляр программы для редактирования этого файла, в этом случае <bpt i="2" x="2">&lt;b2&gt;</bpt>Password Safe<ept i="2">&lt;/b2&gt;</ept> получит управление не дожидаясь изменения в файле, а временный файл останется доступным для редактора.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>In addition, the "Capture Protection" indicator in the opening and main windows will be in red.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T142222Z" creationid="pm_kan" creationdate="20231022T142150Z">
+        <seg>Также в данном случае значок «защиты от захвата» в основном окне и окнах ввода пароля будет отображаться красным.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10545,6 +10657,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>It's useful to have the password ready for pasting when browsing to a website's login page.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T150517Z" creationid="pm_kan" creationdate="20231022T143013Z">
+        <seg>Такое копирование может быть полезно, когда сразу после открытия ссылки в браузере нужно указать пароль.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>JavaScript:popup.TextPopup(strBruce,popFont,9,9,-1,-1)</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110207T182701Z">
@@ -10739,8 +10859,8 @@
       <tuv xml:lang="en-US">
         <seg>Keeps data sent to clipboard from going to the clipobard history (Windows 10 and later).</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20221029T165422Z" creationid="pm_kan" creationdate="20221029T163150Z">
-        <seg>Не сохранять помещаемые в буфер обмена данные в его журнале (поддерживается в Windows 10 и более поздних версиях).</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T142736Z" creationid="pm_kan" creationdate="20221029T163150Z">
+        <seg>Не сохранять помещаемые в буфер обмена данные в его журнале (поддерживается в ОС Windows 10 и более поздних версиях).</seg>
       </tuv>
     </tu>
     <tu>
@@ -12441,6 +12561,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>One possible security risk is someone surreptitiously capturing your screen when <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept> is open.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T143539Z" creationid="pm_kan" creationdate="20231022T143539Z">
+        <seg>Одной из угроз безопасности является возможность скрытного копирования содержимого окон <bpt i="0" x="0">&lt;b0&gt;</bpt>Password Safe<ept i="0">&lt;/b0&gt;</ept>.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>One reason to keep unused Named Password Policies is to allow them to be used only to generate random passwords.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20161128T173025Z" creationid="pm_kan" creationdate="20161128T173025Z">
@@ -14114,6 +14242,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Screen Capture Protection</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T142254Z" creationid="pm_kan" creationdate="20231022T142254Z">
+        <seg>Защита от захвата экрана</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Scroll Lock</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20101105T183620Z">
@@ -14310,6 +14446,14 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20170326T182146Z" creationid="pm_kan" creationdate="20170326T182146Z">
         <seg>Для получения дополнительной информации см. <bpt i="0" x="0">&lt;a0&gt;</bpt>Экспорт элементов<ept i="0">&lt;/a0&gt;</ept>.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>See also the <bpt i="0" x="0">&lt;a0&gt;</bpt>Command Line Arguments<ept i="0">&lt;/a0&gt;</ept> page.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T144626Z" creationid="pm_kan" creationdate="20231022T144626Z">
+        <seg>Для получения дополнительной информации см. <bpt i="0" x="0">&lt;a0&gt;</bpt>Параметры командной строки<ept i="0">&lt;/a0&gt;</ept>.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15155,6 +15299,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Some programs, such as remote desktop viewers and screen readers for the visually impaired, rely on the screen capture capability to function.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T150838Z" creationid="pm_kan" creationdate="20231022T144515Z">
+        <seg>Корректность работы некоторых программ, например, средств удалённого доступа и средств чтения с экрана, может зависеть от возможности получения снимков окон приложения.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Some sites remember the username even when the user does not want it to or user forgets to clear the don't remember username and, because of browser cookies, it is remembered anyway, or if login fails for whatever reason on the first attempt the username would still remain.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20151004T164502Z" creationid="pm_kan" creationdate="20151004T161600Z">
@@ -15231,6 +15383,14 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20101105T191711Z">
         <seg>Запускать Password Safe при входе в систему</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Starting with version 3.64, <bpt i="1" x="1">&lt;b1&gt;</bpt>Password Safe<ept i="1">&lt;/b1&gt;</ept> protects against this by hiding the application from Windows' screen capture feature.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T143838Z" creationid="pm_kan" creationdate="20231022T143838Z">
+        <seg>Начиная с версии 3,64, <bpt i="1" x="1">&lt;b1&gt;</bpt>Password Safe<ept i="1">&lt;/b1&gt;</ept> в ОС Windows может противодействовать этому, используя системный функционал для скрытия своих окон из захватов экрана.</seg>
       </tuv>
     </tu>
     <tu>
@@ -16995,6 +17155,14 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>The small green icon in the lower right corner of the opening window indicates that this window will not appear in screen captures.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T150923Z" creationid="pm_kan" creationdate="20231022T142452Z">
+        <seg>Небольшой значок в правом нижнем углу окна запуска указывает на то, что оно будет исключено из захватов экрана.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>The special control code between the curley brackets is not case sensitive and is unaffected by the presence of the "\z" AutoType field.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20161105T155317Z" creationid="pm_kan" creationdate="20161105T155317Z">
@@ -17727,6 +17895,14 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20100905T141358Z">
         <seg>Это осознанное решение разработчиков, так как любой механизм восстановления потерянных паролей является брешью в системе защиты и может быть использован злоумышленниками.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>This is a security measure, added in version 3.64.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T142509Z" creationid="pm_kan" creationdate="20231022T142509Z">
+        <seg>Данный функционал был добавлен в версии 3.64.</seg>
       </tuv>
     </tu>
     <tu>
@@ -18664,6 +18840,14 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110215T194246Z">
         <seg>Если требуется указать дополнительные параметры поиска (ограничить подмножество элементов или выбрать отдельные поля элементов), щёлкните по значку  «...».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>To protect against an adversary surreptitiously adding this flag, <bpt i="5" x="5">&lt;b5&gt;</bpt>Password Safe<ept i="5">&lt;/b5&gt;</ept> displays a short notice when starting, informing you that the option has been set.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T141936Z" creationid="pm_kan" creationdate="20231022T141936Z">
+        <seg>При запуске с данным параметром <bpt i="5" x="5">&lt;b5&gt;</bpt>Password Safe<ept i="5">&lt;/b5&gt;</ept> отображает предупреждение. Это сделано, чтобы предотвратить злоумышленное выключение функций блокировки захвата экрана.</seg>
       </tuv>
     </tu>
     <tu>
@@ -19822,6 +20006,22 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>When disabled, the icon will be displayed in yellow.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T151223Z" creationid="pm_kan" creationdate="20231022T144847Z">
+        <seg>При отключении через настройки цвет значка жёлтый.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>When enabled, a small green icon is displayed in the main window's status bar, and in the master password entry dialog.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T150930Z" creationid="pm_kan" creationdate="20231022T144820Z">
+        <seg>Небольшой значок в правом нижнем углу основного окна приложения и окна ввода мастер-пароля указывает на то, что функционал исключения из захвата экрана активен.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>When exporting a single entry:</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20170814T203031Z" creationid="pm_kan" creationdate="20170814T203031Z">
@@ -19890,6 +20090,14 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20161105T153006Z" creationid="pm_kan" creationdate="20161105T153006Z">
         <seg>Для доступа к контейнеру после открытия окна нужно будет ввести мастер-пароль.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>When overridden by the command line argument, the icon will be displayed in red.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20231022T151212Z" creationid="pm_kan" creationdate="20231022T144937Z">
+        <seg>При отключении через параметры командной строки цвет значка красный.</seg>
       </tuv>
     </tu>
     <tu>
