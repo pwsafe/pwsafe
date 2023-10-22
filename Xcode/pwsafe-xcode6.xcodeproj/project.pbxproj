@@ -67,6 +67,7 @@
 		E0A70B9821C8FF8900A2FEA8 /* PolicyManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0A70B9621C8FF8900A2FEA8 /* PolicyManager.cpp */; };
 		E0A70B9B21C905A500A2FEA8 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A70B9A21C905A500A2FEA8 /* libcurl.tbd */; };
 		E0C3C4422379B2C200715124 /* AES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C42F2379B2C200715124 /* AES.cpp */; };
+		B84A41C2A9CBBC9791F9B2DF /* base32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5BE1417792CF637AD3D45F4D /* base32.cpp */; };
 		E0C3C4432379B2C200715124 /* BlowFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C4322379B2C200715124 /* BlowFish.cpp */; };
 		E0C3C4442379B2C200715124 /* KeyWrap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C4362379B2C200715124 /* KeyWrap.cpp */; };
 		E0C3C4452379B2C200715124 /* pbkdf2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C4382379B2C200715124 /* pbkdf2.cpp */; };
@@ -189,6 +190,7 @@
 		E6EE843111E87E9800B01518 /* Report.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83C911E87E9700B01518 /* Report.cpp */; };
 		E6EE843411E87E9800B01518 /* StringX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CF11E87E9700B01518 /* StringX.cpp */; };
 		E6EE843511E87E9800B01518 /* SysInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D211E87E9700B01518 /* SysInfo.cpp */; };
+		89A146668BFBBDB52F97EB58 /* TotpCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DA345B998C630600DF46F90 /* TotpCore.cpp */; };
 		E6EE843C11E87E9800B01518 /* UnknownField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E011E87E9700B01518 /* UnknownField.cpp */; };
 		E6EE843D11E87E9800B01518 /* UTF8Conv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E211E87E9700B01518 /* UTF8Conv.cpp */; };
 		E6EE843E11E87E9800B01518 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E411E87E9800B01518 /* Util.cpp */; };
@@ -362,19 +364,24 @@
 		E0A70B9A21C905A500A2FEA8 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
 		E0C3C42F2379B2C200715124 /* AES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AES.cpp; path = crypto/AES.cpp; sourceTree = "<group>"; };
 		E0C3C4302379B2C200715124 /* AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AES.h; path = crypto/AES.h; sourceTree = "<group>"; };
+		5BE1417792CF637AD3D45F4D /* base32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = base32.cpp; path = crypto/external/Chromium/base32.cpp; sourceTree = "<group>"; };
+		CFCF44E69E4F10C70F501F84 /* base32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = base32.h; path = crypto/external/Chromium/base32.h; sourceTree = "<group>"; };
 		E0C3C4312379B2C200715124 /* bitops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bitops.h; path = crypto/bitops.h; sourceTree = "<group>"; };
 		E0C3C4322379B2C200715124 /* BlowFish.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BlowFish.cpp; path = crypto/BlowFish.cpp; sourceTree = "<group>"; };
 		E0C3C4332379B2C200715124 /* BlowFish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BlowFish.h; path = crypto/BlowFish.h; sourceTree = "<group>"; };
 		E0C3C4342379B2C200715124 /* Fish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Fish.h; path = crypto/Fish.h; sourceTree = "<group>"; };
 		E0C3C4352379B2C200715124 /* hmac.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hmac.h; path = crypto/hmac.h; sourceTree = "<group>"; };
+		4BF94C13BA6810941DAAB0B1 /* hotp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = hotp.h; path = crypto/hotp.h; sourceTree = "<group>"; };
 		E0C3C4362379B2C200715124 /* KeyWrap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = KeyWrap.cpp; path = crypto/KeyWrap.cpp; sourceTree = "<group>"; };
 		E0C3C4372379B2C200715124 /* KeyWrap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KeyWrap.h; path = crypto/KeyWrap.h; sourceTree = "<group>"; };
 		E0C3C4382379B2C200715124 /* pbkdf2.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = pbkdf2.cpp; path = crypto/pbkdf2.cpp; sourceTree = "<group>"; };
 		E0C3C4392379B2C200715124 /* pbkdf2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pbkdf2.h; path = crypto/pbkdf2.h; sourceTree = "<group>"; };
+		92D844B89F2CE45C245DF902 /* RFC4648_Base32Decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RFC4648_Base32Decoder.h; path = crypto/RFC4648_Base32Decoder.h; sourceTree = "<group>"; };
 		E0C3C43A2379B2C200715124 /* sha1.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sha1.cpp; path = crypto/sha1.cpp; sourceTree = "<group>"; };
 		E0C3C43B2379B2C200715124 /* sha1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sha1.h; path = crypto/sha1.h; sourceTree = "<group>"; };
 		E0C3C43C2379B2C200715124 /* sha256.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sha256.cpp; path = crypto/sha256.cpp; sourceTree = "<group>"; };
 		E0C3C43D2379B2C200715124 /* sha256.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sha256.h; path = crypto/sha256.h; sourceTree = "<group>"; };
+		44504E469086C4397B20E12D /* totp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = totp.h; path = crypto/totp.h; sourceTree = "<group>"; };
 		E0C3C43F2379B2C200715124 /* TwoFish.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TwoFish.cpp; path = crypto/TwoFish.cpp; sourceTree = "<group>"; };
 		E0C3C4402379B2C200715124 /* TwoFish.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwoFish.h; path = crypto/TwoFish.h; sourceTree = "<group>"; };
 		E0C3C44A2379CA2A00715124 /* CryptKeyEntryDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CryptKeyEntryDlg.cpp; sourceTree = "<group>"; };
@@ -825,6 +832,8 @@
 		E6EE83D111E87E9700B01518 /* StringXStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringXStream.h; sourceTree = "<group>"; };
 		E6EE83D211E87E9700B01518 /* SysInfo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SysInfo.cpp; sourceTree = "<group>"; };
 		E6EE83D311E87E9700B01518 /* SysInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SysInfo.h; sourceTree = "<group>"; };
+		8DA345B998C630600DF46F90 /* TotpCore.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TotpCore.cpp; sourceTree = "<group>"; };
+		A23A44F1A205CE6DD9992D6A /* TotpCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TotpCore.h; sourceTree = "<group>"; };
 		E6EE83DB11E87E9700B01518 /* trigram.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = trigram.h; sourceTree = "<group>"; };
 		E6EE83DF11E87E9700B01518 /* UIinterface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIinterface.h; sourceTree = "<group>"; };
 		E6EE83E011E87E9700B01518 /* UnknownField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnknownField.cpp; sourceTree = "<group>"; };
@@ -932,17 +941,22 @@
 			children = (
 				E0C3C42F2379B2C200715124 /* AES.cpp */,
 				E0C3C4302379B2C200715124 /* AES.h */,
+				5BE1417792CF637AD3D45F4D /* base32.cpp */,
+				CFCF44E69E4F10C70F501F84 /* base32.h */,
 				E0C3C4312379B2C200715124 /* bitops.h */,
 				E0C3C4322379B2C200715124 /* BlowFish.cpp */,
 				E0C3C4332379B2C200715124 /* BlowFish.h */,
 				E0C3C4342379B2C200715124 /* Fish.h */,
 				E0C3C4352379B2C200715124 /* hmac.h */,
+				4BF94C13BA6810941DAAB0B1 /* hotp.h */,
 				E0C3C4362379B2C200715124 /* KeyWrap.cpp */,
 				E0C3C4372379B2C200715124 /* KeyWrap.h */,
 				E0C3C4382379B2C200715124 /* pbkdf2.cpp */,
 				E0C3C4392379B2C200715124 /* pbkdf2.h */,
+				92D844B89F2CE45C245DF902 /* RFC4648_Base32Decoder.h */,
 				E0C3C43A2379B2C200715124 /* sha1.cpp */,
 				E0C3C43B2379B2C200715124 /* sha1.h */,
+				44504E469086C4397B20E12D /* totp.h */,
 				E0C3C43C2379B2C200715124 /* sha256.cpp */,
 				E0C3C43D2379B2C200715124 /* sha256.h */,
 				E0C3C43F2379B2C200715124 /* TwoFish.cpp */,
@@ -1649,6 +1663,8 @@
 				E6EE83D111E87E9700B01518 /* StringXStream.h */,
 				E6EE83D211E87E9700B01518 /* SysInfo.cpp */,
 				E6EE83D311E87E9700B01518 /* SysInfo.h */,
+				8DA345B998C630600DF46F90 /* TotpCore.cpp */,
+				A23A44F1A205CE6DD9992D6A /* TotpCore.h */,
 				E6EE83DB11E87E9700B01518 /* trigram.h */,
 				E6EE83DF11E87E9700B01518 /* UIinterface.h */,
 				E6EE83E011E87E9700B01518 /* UnknownField.cpp */,
@@ -1934,6 +1950,7 @@
 				E6EE842E11E87E9800B01518 /* PWSFilters.cpp in Sources */,
 				E6EE842F11E87E9800B01518 /* PWSprefs.cpp in Sources */,
 				E0C3C4422379B2C200715124 /* AES.cpp in Sources */,
+				B84A41C2A9CBBC9791F9B2DF /* base32.cpp in Sources */,
 				A2D181461C8FF86C0018AE03 /* media.cpp in Sources */,
 				E6EE843011E87E9800B01518 /* PWSrand.cpp in Sources */,
 				E0C3C4442379B2C200715124 /* KeyWrap.cpp in Sources */,
@@ -1942,6 +1959,7 @@
 				E6EE843111E87E9800B01518 /* Report.cpp in Sources */,
 				E6EE843411E87E9800B01518 /* StringX.cpp in Sources */,
 				E6EE843511E87E9800B01518 /* SysInfo.cpp in Sources */,
+				89A146668BFBBDB52F97EB58 /* TotpCore.cpp in Sources */,
 				D395E03E264FF45000F049B1 /* PFilterXMLProcessor.cpp in Sources */,
 				E6EE843C11E87E9800B01518 /* UnknownField.cpp in Sources */,
 				E6EE843D11E87E9800B01518 /* UTF8Conv.cpp in Sources */,
