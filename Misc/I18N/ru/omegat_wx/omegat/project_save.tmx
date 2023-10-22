@@ -3987,6 +3987,14 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Could not launch the MacOS Settings App</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20231022T133229Z" creationid="pm_kan" creationdate="20231022T133229Z">
+        <seg>Не удалось запустить приложение «Системные настройки»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Could not launch xvkbd.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T112141Z">
@@ -9392,6 +9400,15 @@ to the base entry</seg>
       </tuv>
     </tu>
     <tu>
+      <note>Accessibility Keyboard  = Ассистивная клавиатура в русской локали на Mac</note>
+      <tuv lang="en-US">
+        <seg>Please, enable the Accessibility Keyboard in System Settings; the on-screen keyboard should then appear.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20231022T133124Z" creationid="pm_kan" creationdate="20231022T133045Z">
+        <seg>Для включения внешней экранной клавиатуры включите параметр «Ассистивная клавиатура» в настройках операционной системы.</seg>
+      </tuv>
+    </tu>
+    <tu>
       <tuv lang="en-US">
         <seg>Policy Error</seg>
       </tuv>
@@ -9524,6 +9541,32 @@ Content-Transfer-Encoding: 8bit</seg>
 Report-Msgid-Bugs-To: 
 POT-Creation-Date: 2023-05-20 18:00+0300
 PO-Revision-Date: 2023-05-20 18:00+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: none
+Language: ru_RU
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Project-Id-Version: 
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2023-10-22 16:23+0300
+PO-Revision-Date: 2023-10-01 17:30+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team:
+Language: ru
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20231022T132405Z" creationid="pm_kan" creationdate="20231022T132405Z">
+        <seg>Project-Id-Version: Password Safe
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2023-10-22 17:00+0300
+PO-Revision-Date: 2023-10-22 17:00+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: none
 Language: ru_RU
