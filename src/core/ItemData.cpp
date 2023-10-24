@@ -1286,8 +1286,6 @@ void CItemData::UpdatePasswordHistory()
   if (!saving)
     return;
 
-  size_t num = pwhistlist.size();
-
   time_t t;
   GetPMTime(t); // get mod time of last password
 
@@ -1309,31 +1307,8 @@ void CItemData::UpdatePasswordHistory()
   // Now add the latest
   pwhistlist.push_back(pwh_ent);
 
-  // Increment count
-  num++;
-
-  // Too many? remove the excess
-  if (num > pwh_max) {
-    PWHistList hl(pwhistlist.begin() + (num - pwh_max),
-                  pwhistlist.end());
-    ASSERT(hl.size() == pwh_max);
-    pwhistlist = hl;
-    num = pwh_max;
-  }
-
-  // Now create string version!
-  StringX new_PWHistory, buffer;
-
-  Format(new_PWHistory, L"1%02x%02x", pwh_max, num);
-
-  PWHistList::iterator iter;
-  for (iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
-    Format(buffer, L"%08x%04x%ls",
-           static_cast<long>(iter->changetttdate), iter->password.length(),
-           iter->password.c_str());
-    new_PWHistory += buffer;
-    buffer = _T("");
-  }
+  // Remove the excess and format as a StringX
+  StringX new_PWHistory = PWHistoryToStringX(pwhistlist, true, pwh_max);
   SetPWHistory(new_PWHistory);
 }
 

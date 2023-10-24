@@ -2212,34 +2212,13 @@ StringX AddEditPropSheetDlg::PreparePasswordHistory() const
   PWHistList pwhl;
   (void)CreatePWHistoryList(tostringx(m_PasswordHistory), pwh_max, num_err, pwhl, PWSUtil::TMC_LOCALE);
 
-  // Create a new PWHistory header, as per settings in this dialog
-  size_t numEntries = std::min(pwhl.size(), static_cast<size_t>(m_MaxPasswordHistory));
-
-  result = MakePWHistoryHeader(m_KeepPasswordHistory, m_MaxPasswordHistory, numEntries);
-  //reverse-sort the history entries to retain only the newest
-  std::sort(pwhl.begin(), pwhl.end(), newer());
-  // Now add all the existing history entries, up to a max of what the user wants to track
-  // This code is from CItemData::UpdatePasswordHistory()
-  PWHistList::iterator iter;
-  for (iter = pwhl.begin(); iter != pwhl.end() && numEntries > 0; iter++, numEntries--) {
-    StringX buffer;
-    Format(buffer, _T("%08x%04x%ls"),
-      static_cast<long>(iter->changetttdate), iter->password.length(),
-      iter->password.c_str());
-    result += buffer;
-  }
-  wxASSERT_MSG(numEntries ==0, wxT("Could not save existing password history entries"));
+  // Encode the list into the proper StringX format, trim if necessarry
+  result = PWHistoryToStringX(pwhl, m_KeepPasswordHistory, m_MaxPasswordHistory);
   return result;
 }
 
 Command* AddEditPropSheetDlg::NewEditEntryCommand()
 {
-  /*
-    TODO:
-    Even if there have been no changes and the user has pressed the Ok button,
-    the password history check and symbols check result to 'true'.
-  */
-
   const auto changes = GetChanges();
   const PWSprefs *prefs = PWSprefs::GetInstance();
 

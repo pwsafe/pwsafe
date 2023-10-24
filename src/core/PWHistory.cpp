@@ -174,3 +174,40 @@ StringX MakePWHistoryHeader(bool status, size_t pwh_max, size_t pwh_num)
      << setw(2) << pwh_max << setw(2) << pwh_num;
   return os.str().c_str();
 }
+
+// This code was factored from CItemData::UpdatePasswordHistory and AddEditPropSheetDlg::PreparePasswordHistory
+// and is called from both places.
+// Sort the list, trim it to the maximum length (if necessarry), and format as a StringX.
+StringX PWHistoryToStringX(PWHistList &pwhistlist, bool keep_history, size_t pwh_max) {
+
+    // Make sure entries are sorted oldest first.  This is consistent with
+    // CItemData::UpdatePasswordHistory, which pushes new entries onto the end.
+    std::sort( pwhistlist.begin(), pwhistlist.end(),
+              [](const PWHistEntry& first, const PWHistEntry& second) {
+                    return first.changetttdate < second.changetttdate;
+                }
+    );
+
+    // If the number of entries is greater than the max allowed, trim the list from the front
+    size_t num = pwhistlist.size();
+    if (num > pwh_max) {
+        PWHistList hl(pwhistlist.begin() + (num - pwh_max), pwhistlist.end());
+        ASSERT(hl.size() == pwh_max);
+        pwhistlist = hl;
+        num = pwh_max;
+    }
+
+    // Now create the string version, starting with a header...
+    StringX new_PWHistory, buffer;
+    new_PWHistory = MakePWHistoryHeader(keep_history, pwh_max, num);
+
+    // Encode each of the history entries into the string format
+    PWHistList::iterator iter;
+    for (iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
+        Format(buffer, L"%08x%04x%ls",
+               static_cast<long>(iter->changetttdate), iter->password.length(),
+               iter->password.c_str());
+        new_PWHistory += buffer;
+    }
+    return new_PWHistory;
+}

@@ -101,6 +101,8 @@ StringX GetPreviousPassword(const StringX &pwh_str);
 
 StringX MakePWHistoryHeader(bool status, size_t pwh_max, size_t pwh_num);
 
+StringX PWHistoryToStringX(PWHistList &pwhistlist, bool keep_history, size_t pwh_max);
+
 #endif
 //-----------------------------------------------------------------------------
 // Local variables:
