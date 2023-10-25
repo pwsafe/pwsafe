@@ -442,6 +442,8 @@ where:
     T  = Time password was set (time_t written out in %08x)
     L  = 4 hexadecimal digit password length (in TCHAR)
     P  = Password
+The list is sorted by T, with the oldest entry first.  Newer entries are appended
+to the end of the list.
 No history being kept for a record can be represented either by the lack of
 the PWH field (preferred), or by a header of _T("00000"):
     flag = 0, max = 00, num = 00
