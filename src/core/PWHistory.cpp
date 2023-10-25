@@ -177,7 +177,7 @@ StringX MakePWHistoryHeader(bool status, size_t pwh_max, size_t pwh_num)
 
 // This code was factored from CItemData::UpdatePasswordHistory and AddEditPropSheetDlg::PreparePasswordHistory
 // and is called from both places.
-// Sort the list, trim it to the maximum length (if necessarry), and format as a StringX.
+// Sort the list, trim it to the maximum length (if necessary), and format as a StringX.
 StringX PWHistoryToStringX(PWHistList &pwhistlist, bool keep_history, size_t pwh_max) {
 
     // Make sure entries are sorted oldest first.  This is consistent with
