@@ -416,7 +416,7 @@ wxPanel* AddEditPropSheetDlg::CreateAdditionalPanel()
   itemBoxSizer50->Add(itemStaticText53, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   m_AdditionalPasswordHistoryGrid = new wxGrid(panel, ID_GRID_PW_HIST, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER | wxHSCROLL | wxVSCROLL);
-  m_AdditionalPasswordHistoryGrid->SetDefaultColSize(175);
+  m_AdditionalPasswordHistoryGrid->SetDefaultColSize(225);
   m_AdditionalPasswordHistoryGrid->SetDefaultRowSize(25);
   m_AdditionalPasswordHistoryGrid->SetColLabelSize(25);
   m_AdditionalPasswordHistoryGrid->SetRowLabelSize(0);
