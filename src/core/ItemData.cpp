@@ -1640,18 +1640,7 @@ bool CItemData::ValidatePWHistory()
     pwh_max = listnum;
 
   // Rebuild PWHistory from the data we have
-  StringX sxBuffer;
-  StringX sxNewHistory = MakePWHistoryHeader(pwh_status, pwh_max, listnum);
-
-  PWHistList::const_iterator citer;
-  for (citer = pwhistlist.begin(); citer != pwhistlist.end(); citer++) {
-    Format(sxBuffer, L"%08x%04x%ls",
-             static_cast<long>(citer->changetttdate), citer->password.length(),
-             citer->password.c_str());
-      sxNewHistory += sxBuffer;
-      sxBuffer = _T("");
-  }
-
+  StringX sxNewHistory = PWHistoryToStringX(pwhistlist, pwh_status, pwh_max);
   if (pwh != sxNewHistory)
     SetPWHistory(sxNewHistory);
 
