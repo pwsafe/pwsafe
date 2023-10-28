@@ -19,10 +19,15 @@ public:
 public:
   CScreenCaptureStateControl();
   static UINT GetCurrentCaptureStateToolTipStringId();
+  static UINT GetCurrentCaptureStateBitmapId();
+  static void SetLastDisplayAffinityError(DWORD dwError);
+  static DWORD GetLastDisplayAffinityError();
 protected:
   //{{AFX_MSG(CScreenCaptureStateControl)
   //}}AFX_MSG
   DECLARE_MESSAGE_MAP()
 protected:
   virtual void OnSetInitialState();
+protected:
+  static DWORD m_dwLastSetAffinityError;
 };

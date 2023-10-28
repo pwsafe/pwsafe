@@ -47,6 +47,15 @@
   	<Icon Id="CpaneIcon" SourceFile="src\ui\Windows\graphics\cpane.ico" />
 	<Property Id="ARPPRODUCTICON" Value="CpaneIcon" />
 
+	<SetProperty Action="SetSCRCAP0" Id="RESOLVEDSCREENCAPTUREPROTECTIONVALUE"
+	             Before="InstallInitialize" Sequence="execute" Value="1">
+	  <![CDATA[SCREENCAPTUREPROTECTION<>"False"]]>
+	</SetProperty>
+	<SetProperty Action="SetSCRCAP1" Id="RESOLVEDSCREENCAPTUREPROTECTIONVALUE"
+	             Before="InstallInitialize" Sequence="execute" Value="0">
+	  <![CDATA[SCREENCAPTUREPROTECTION="False"]]>
+	</SetProperty>
+
     <UIRef Id='WixUI_InstallDir' />
     <UIRef Id="WixUI_ErrorProgressText" />
     <WixVariable Id='WixUILicenseRtf' Value='docs\LICENSE.rtf' />
@@ -155,6 +164,9 @@
 		<File Id='file28' Name='pwsafeLV.dll' DiskId='1'
 	      Source='$(var.LangDir)\pwsafeLV.dll' Vital='yes'> 
 	    </File>
+		<RegistryKey Root="HKLM" Key="Software\Password Safe\Admin" ForceDeleteOnUninstall="yes">
+		  <RegistryValue Type="integer" Name="ScreenCaptureProtection" Value="[RESOLVEDSCREENCAPTUREPROTECTIONVALUE]"/>
+		</RegistryKey>
 	  </Component>
 	  <Component Id='SupportingFiles'
 	    Guid='2cb36029-a029-4f15-9838-4acacb823ce7'> 

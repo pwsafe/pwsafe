@@ -403,11 +403,12 @@
 #define IDB_SCRCAP_FIRST                565
 #define IDB_SCRCAP_BASE_EMPTY           565
 #define IDB_SCRCAP_ALLOWED              566
-#define IDB_SCRCAP_ALLOWED_FORCED1      567
-#define IDB_SCRCAP_ALLOWED_FORCED2      568
-#define IDB_SCRCAP_EXCLUDED             569
-#define IDB_SCRCAP_STATE_ERROR          570
-#define IDB_SCRCAP_LAST                 570
+#define IDB_SCRCAP_ALLOWED_IMPLICIT     567
+#define IDB_SCRCAP_ALLOWED_FORCED1      568
+#define IDB_SCRCAP_ALLOWED_FORCED2      569
+#define IDB_SCRCAP_EXCLUDED             570
+#define IDB_SCRCAP_STATE_ERROR          571
+#define IDB_SCRCAP_LAST                 571
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -928,3 +929,4 @@
 #define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif
+
