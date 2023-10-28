@@ -14,6 +14,9 @@
 #include "stdafx.h"
 #include "winutils.h"
 
+#include "WtsApi32.h"
+#pragma comment (lib, "Wtsapi32")
+
 #include <sstream>
 
 #include "core/StringX.h"
@@ -401,14 +404,41 @@ bool WinUtil::HasTouchscreen() // for BR1539 workaround
   return (value != 0);
 }
 
-void WinUtil::SetWindowExcludeFromScreenCapture(HWND hwnd)
+DWORD WinUtil::SetWindowExcludeFromScreenCapture(HWND hwnd)
 {
   ASSERT(::IsWindow(hwnd));
   if (!::IsWindow(hwnd))
-    return;
-  bool bExcludeFromScreenCapture = PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture) && !app.ForceAllowScreenCapture();
+    return ERROR_INVALID_WINDOW_HANDLE;
+  bool bExcludeFromScreenCapture = PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture) && !app.IsAllowScreenCapture();
   DWORD dwNewDisplayAffinity = bExcludeFromScreenCapture ? WDA_EXCLUDEFROMCAPTURE : WDA_NONE;
   DWORD dwCurrentDisplayAffinity;
-  if (::GetWindowDisplayAffinity(hwnd, &dwCurrentDisplayAffinity) && dwNewDisplayAffinity != dwCurrentDisplayAffinity)
-    ::SetWindowDisplayAffinity(hwnd, dwNewDisplayAffinity);
+  DWORD dwResult = ERROR_SUCCESS;
+  if (::GetWindowDisplayAffinity(hwnd, &dwCurrentDisplayAffinity) &&
+      dwNewDisplayAffinity != dwCurrentDisplayAffinity &&
+      !::SetWindowDisplayAffinity(hwnd, dwNewDisplayAffinity)) {
+    dwResult = ::GetLastError();
+  }
+  return dwResult;
+}
+
+WinUtil::SessionProtocol WinUtil::GetSessionProtocol()
+{
+  DWORD dwBytesReturned = 0;
+  USHORT* pClientProtocolType;
+  if (!WTSQuerySessionInformation(
+    WTS_CURRENT_SERVER_HANDLE,
+    WTS_CURRENT_SESSION,
+    WTSClientProtocolType,
+    reinterpret_cast<LPWSTR*>(&pClientProtocolType),
+    &dwBytesReturned))
+    return Console;
+  if (dwBytesReturned < sizeof(USHORT))
+    return Console;
+  USHORT clientProtocolType = *pClientProtocolType;
+  WTSFreeMemory(pClientProtocolType);
+  if (clientProtocolType == WTS_PROTOCOL_TYPE_ICA)
+    return ProtocolIca;
+  else if (clientProtocolType == WTS_PROTOCOL_TYPE_RDP)
+    return ProtocolRdp;
+  return Console;
 }

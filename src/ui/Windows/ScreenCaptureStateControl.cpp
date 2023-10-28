@@ -15,6 +15,20 @@
 
 #include "ScreenCaptureStateControl.h"
 
+DWORD CScreenCaptureStateControl::m_dwLastSetAffinityError = ERROR_SUCCESS;
+
+void CScreenCaptureStateControl::SetLastDisplayAffinityError(DWORD dwError)
+{
+  m_dwLastSetAffinityError = dwError;
+  // In pwsafe's usage of the OS SetWindowAffinity API, failure is not expected.
+  ASSERT(m_dwLastSetAffinityError == ERROR_SUCCESS);
+}
+
+DWORD CScreenCaptureStateControl::GetLastDisplayAffinityError()
+{
+  return m_dwLastSetAffinityError;
+}
+
 CScreenCaptureStateControl::CScreenCaptureStateControl()
   :
   CStateBitmapControl(new CExcludeCaptureStateBitmapManager())
@@ -23,34 +37,49 @@ CScreenCaptureStateControl::CScreenCaptureStateControl()
 
 UINT CScreenCaptureStateControl::GetCurrentCaptureStateToolTipStringId()
 {
-  bool bExcludeFromScreenCapture = PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture);
-  if (!bExcludeFromScreenCapture)
+  if (GetLastDisplayAffinityError() != ERROR_SUCCESS)
+    return IDS_SCRCAP_TT_STATE_ERROR;
+
+  if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture))
     return IDS_SCRCAP_TT_ALLOWED_DBPREF;
-  else if (app.ForceAllowScreenCapture())
-    return IDS_SCRCAP_TT_OVERRIDE_CMDLINE;
-  else 
-    return IDS_SCRCAP_TT_DISALLOWED_DEFAULT;
+
+  if (app.IsAllowScreenCapture())
+    return app.ResolveAllowScreenCaptureStateResourceId(IDS_SCRCAP_TT_OVERRIDE_FIRST);
+
+  return IDS_SCRCAP_TT_DISALLOWED_DEFAULT;
+}
+
+UINT CScreenCaptureStateControl::GetCurrentCaptureStateBitmapId()
+{
+  if (GetLastDisplayAffinityError() != ERROR_SUCCESS)
+    return IDB_SCRCAP_STATE_ERROR;
+
+  if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture))
+    return IDB_SCRCAP_ALLOWED;
+
+  if (app.IsForcedAllowScreenCapture())
+    return IDB_SCRCAP_ALLOWED_FORCED1;
+
+  if (app.IsImplicitAllowScreenCapture())
+    return IDB_SCRCAP_ALLOWED_IMPLICIT;
+
+  return IDB_SCRCAP_EXCLUDED;
 }
 
 void CScreenCaptureStateControl::OnSetInitialState()
 {
-  bool bExcludeFromScreenCapture = PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture);
+  SetToolTipText(GetCurrentCaptureStateToolTipStringId());
 
-  UINT nIdToolTipString = GetCurrentCaptureStateToolTipStringId();
-
-  if (!bExcludeFromScreenCapture) {
+  if (GetLastDisplayAffinityError() != ERROR_SUCCESS)
+    SetState(IDB_SCRCAP_STATE_ERROR);
+  else if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture))
     SetState(IDB_SCRCAP_ALLOWED);
-    SetToolTipText(nIdToolTipString);
-    return;
-  }
-
-  if (app.ForceAllowScreenCapture()) {
+  else if (app.IsForcedAllowScreenCapture())
     SetState(IDB_SCRCAP_ALLOWED_FORCED1, IDB_SCRCAP_ALLOWED_FORCED1, IDB_SCRCAP_ALLOWED_FORCED2, BLINK_DURATION_SECONDS);
-    SetToolTipText(nIdToolTipString);
-  } else {
+  else if (app.IsImplicitAllowScreenCapture())
+    SetState(IDB_SCRCAP_ALLOWED_IMPLICIT);
+  else
     SetState(IDB_SCRCAP_EXCLUDED);
-    SetToolTipText(nIdToolTipString);
-  }
 }
 
 BEGIN_MESSAGE_MAP(CScreenCaptureStateControl, CStateBitmapControl)

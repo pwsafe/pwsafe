@@ -18,6 +18,7 @@
 #include "PasswordSafe.h"
 
 #include "ThisMfcApp.h"
+#include "winutils.h"
 #include "DboxMain.h"
 #include "SingleInstance.h"
 #include "CryptKeyEntry.h"
@@ -75,7 +76,7 @@ ThisMfcApp::ThisMfcApp() :
   m_ResLangID(0),
   m_noSysEnvWarnings(false),
   m_bPermitTestdump(false),
-  m_bForceAllowScreenCapture(false)
+  m_allowScreenCaptureState(Disallowed)
 {
   // Get my Thread ID
   m_nBaseThreadID = AfxGetThread()->m_nThreadID;
@@ -882,7 +883,7 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone, bool &postMinim
         } else if ((*arg) == L"--do-auto") {
           dialogOrientation = PWSprefs::AUTO;
         } else if ((*arg) == L"--allow-screen-capture") {
-          m_bForceAllowScreenCapture = true;
+          m_allowScreenCaptureState = ForceAllowedCommandLine;
         } else {
           // unrecognized extended flag. Silently ignore.
         }
@@ -1002,6 +1003,27 @@ bool ThisMfcApp::ParseCommandLine(DboxMain &dbox, bool &allDone, bool &postMinim
   return true;
 }
 
+UINT ThisMfcApp::ResolveAllowScreenCaptureStateResourceId(UINT nIdFirst) const
+{
+  // nIdFirst is the first known valid state.
+  // nIdFirst - 1 should be a resource indicating a program/state error.
+  // From nIdFirst through to the last state (nIdFirst + MaxState - 1),
+  // the resource should reflect within itself the indicated state.
+  UINT nId = nIdFirst - 1;
+  if (m_allowScreenCaptureState >= Disallowed || m_allowScreenCaptureState < MaxState)
+    nId = nIdFirst + m_allowScreenCaptureState;
+  return nId;
+}
+
+CString ThisMfcApp::GetAllowScreenCaptureStateMessage(UINT nIdFirst) const
+{
+  UINT nId = ResolveAllowScreenCaptureStateResourceId(nIdFirst);
+  CString csExcludeOverridePhrase;
+  if (!csExcludeOverridePhrase.LoadStringW(nId))
+    csExcludeOverridePhrase = L"<error-invalid-state-message>";
+  return csExcludeOverridePhrase;
+}
+
 BOOL ThisMfcApp::InitInstance()
 {
   /*
@@ -1073,6 +1095,11 @@ BOOL ThisMfcApp::InitInstance()
   // will probably be in English unless the config data was OK previously and
   // the config file specifies a different language.
   bool parseVal = ParseCommandLine(*m_pDbx, allDone, postMinimize);
+
+  // After command line processing, if a force screen capture is not allowed,
+  // attempt to detect implicit reasons for allowing screen capture.
+  if (!IsAllowScreenCapture() && WinUtil::GetSessionProtocol() == WinUtil::ProtocolIca)
+    m_allowScreenCaptureState = ImplicitlyAllowedProtocolIca;
 
   // allDone will be true iff -e or -d options given, in which case
   // we're just a batch encryptor/decryptor

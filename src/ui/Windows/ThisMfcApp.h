@@ -43,6 +43,15 @@ class DboxMain;
 class ThisMfcApp : public CWinApp
 {
 public:
+  enum AllowScreenCaptureState
+  {
+    Disallowed,
+    ForceAllowedCommandLine,
+    ImplicitlyAllowedProtocolIca,
+    ImplicitlyAllowedProtocolRdp,
+    MaxState
+  };
+public:
   ThisMfcApp();
   ~ThisMfcApp();
 
@@ -84,7 +93,12 @@ public:
   void GetLanguageFiles();
   void SetLanguage();
   void SetMinidumpUserStreams(const bool bOpen, const bool bRW, UserStream iStream = usAll);
-  bool ForceAllowScreenCapture() const { return m_bForceAllowScreenCapture; }
+  AllowScreenCaptureState GetAllowScreenCaptureState() const { return m_allowScreenCaptureState; }
+  bool IsAllowScreenCapture() const { return m_allowScreenCaptureState != Disallowed; }
+  bool IsForcedAllowScreenCapture() const { return m_allowScreenCaptureState == ForceAllowedCommandLine; }
+  bool IsImplicitAllowScreenCapture() const { return IsAllowScreenCapture() && !IsForcedAllowScreenCapture(); }
+  UINT ResolveAllowScreenCaptureStateResourceId(UINT nIdFirst) const;
+  CString GetAllowScreenCaptureStateMessage(UINT nIdFirst) const;
 
   DWORD GetOSMajorMinor() { return m_dwMajorMinor; }
 
@@ -132,7 +146,7 @@ private:
 
   // Used as needed to detect user command-line override of
   // any ExcludeFromScreenCapture preference in effect.
-  bool m_bForceAllowScreenCapture;
+  AllowScreenCaptureState m_allowScreenCaptureState;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

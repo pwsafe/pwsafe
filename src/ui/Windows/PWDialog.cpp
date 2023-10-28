@@ -28,7 +28,7 @@ DboxMain *CPWDialog::GetMainDlg() const
 BOOL CPWDialog::OnInitDialog()
 {
   BOOL bResult = CDialog::OnInitDialog();
-  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
+  CScreenCaptureStateControl::SetLastDisplayAffinityError(WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd));
   return bResult;
 }
 

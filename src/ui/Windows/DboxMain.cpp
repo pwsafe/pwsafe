@@ -1186,16 +1186,22 @@ BOOL DboxMain::OnInitDialog()
   
   InitPasswordSafe();
 
-  if (app.ForceAllowScreenCapture()) {
+  if (app.IsForcedAllowScreenCapture()) {
     const int DELAY_BEFORE_ALLOWING_ANSWER_SECONDS = 3;
-    CString cs_msgBeforeAllowedToClickOk;
-    CString cs_msgAfterAllowedToClickOk;
+
     CString cs_title;
-    cs_msgBeforeAllowedToClickOk.LoadStringW(IDS_EXCLUDE_FROM_SCR_CAP_OVERRIDE_WARNING_BEFORE);
-    cs_msgAfterAllowedToClickOk.Format(
-      IDS_EXCLUDE_FROM_SCR_CAP_OVERRIDE_WARNING_AFTER
-    );
     cs_title.LoadString(AFX_IDS_APP_TITLE);
+
+    // If this string contains a "%d" it will be replaced with seconds remaining
+    // for the timed message box via MessageBoxDelayAcceptAnswer below.
+    CString cs_msgBeforeAllowedToClickOk(
+      app.GetAllowScreenCaptureStateMessage(IDS_SCRCAP_EXCLUDE_OVERRIDE_WARNING_BEFORE_FIRST)
+    );
+
+    CString cs_msgAfterAllowedToClickOk(
+      app.GetAllowScreenCaptureStateMessage(IDS_SCRCAP_EXCLUDE_OVERRIDE_WARNING_AFTER_FIRST)
+    );
+
     CGeneralMsgBox().MessageBoxDelayAcceptAnswer(
       cs_msgBeforeAllowedToClickOk,
       cs_msgAfterAllowedToClickOk,
@@ -3104,11 +3110,11 @@ void DboxMain::StartForceAllowCaptureBitmapBlinkTimer(bool bEnable)
 void DboxMain::UpdateForceAllowCaptureHandling()
 {
   // Enable OS feature based on current prefs.
-  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
+  CScreenCaptureStateControl::SetLastDisplayAffinityError(WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd));
   UpdateStatusBar();
   // Setup DboxMain UI handling relating to ExcludeFromScreenCapture.
   bool bExcludeFromScreenCapture = PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture);
-  bool bBitmapShouldBlink = bExcludeFromScreenCapture && app.ForceAllowScreenCapture();
+  bool bBitmapShouldBlink = bExcludeFromScreenCapture && app.IsForcedAllowScreenCapture();
   StartForceAllowCaptureBitmapBlinkTimer(bBitmapShouldBlink);
 }
 
@@ -3204,12 +3210,7 @@ void DboxMain::UpdateStatusBar()
     m_StatusBar.SetPaneInfo(CPWStatusBar::SB_FILTER, IDS_BLANK, uiStyle | SBT_OWNERDRAW, iBMWidth);
   }
 
-  bool bExcludeFromScreenCapture = PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture);
-  int nIdCaptureBitmap;
-  if (bExcludeFromScreenCapture)
-    nIdCaptureBitmap = app.ForceAllowScreenCapture() ? IDB_SCRCAP_ALLOWED_FORCED1 : IDB_SCRCAP_EXCLUDED;
-  else
-    nIdCaptureBitmap = IDB_SCRCAP_ALLOWED;
+  int nIdCaptureBitmap = CScreenCaptureStateControl::GetCurrentCaptureStateBitmapId();
   m_StatusBar.GetPaneInfo(CPWStatusBar::SB_SCR_CAP, uiID, uiStyle, iWidth);
   if (nIdCaptureBitmap != IDB_SCRCAP_ALLOWED_FORCED1 || !m_bScreenCaptureStatusBarTimerEnabled)
     m_StatusBar.SetPaneInfo(CPWStatusBar::SB_SCR_CAP, nIdCaptureBitmap, uiStyle |= SBT_OWNERDRAW, iBMWidth);
