@@ -6219,11 +6219,11 @@ msgstr ""
 "\n"
 "Wenden Sie sich an den Support, wenn dies unerwartet ist.\n"
 "\n"
-"Sie können auf OK klicken, um in %d Sekunden fortfahren."
+"Sie können auf OK klicken, um in %d Sekunden fortzufahren."
 
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
-msgstr "Der Schutz vor Bildschirmaufnahmen wurde durch die Kommandozeile aufgehoben."
+msgstr "Der Bildschirmaufnahmeschutz wurde durch die Kommandozeile aufgehoben."
 
 #. Resource IDs: (6071)
 msgid "Screen capture protection is off."
