@@ -277,6 +277,8 @@
 		574370962A3CE21800B46A7D /* pwsafe-template.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "pwsafe-template.plist"; sourceTree = "<group>"; };
 		57C329E72A070EFD00454292 /* ReleaseNotesWX.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotesWX.md; path = ../docs/ReleaseNotesWX.md; sourceTree = "<group>"; };
 		57C329E82A0715F500454292 /* ReleaseNotes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotes.md; path = ../docs/ReleaseNotes.md; sourceTree = "<group>"; };
+		57E48CE32AF2135400A3F7F7 /* CommandsTest.cpp */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = CommandsTest.cpp; path = ../../src/test/CommandsTest.cpp; sourceTree = "<group>"; tabWidth = 2; };
+		57E48CE42AF2135400A3F7F7 /* ItemDataTest.cpp */ = {isa = PBXFileReference; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; name = ItemDataTest.cpp; path = ../../src/test/ItemDataTest.cpp; sourceTree = "<group>"; tabWidth = 2; };
 		6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordSubsetDlg.cpp; sourceTree = "<group>"; };
 		6FF5D49E1DA14AB20032F5B6 /* PasswordSubsetDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordSubsetDlg.h; sourceTree = "<group>"; };
 		8ED7E1C229D9F24C0012034B /* SetDatabaseIdDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetDatabaseIdDlg.h; sourceTree = "<group>"; };
@@ -883,6 +885,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		57E48CE22AF2130500A3F7F7 /* test */ = {
+			isa = PBXGroup;
+			children = (
+				57E48CE32AF2135400A3F7F7 /* CommandsTest.cpp */,
+				57E48CE42AF2135400A3F7F7 /* ItemDataTest.cpp */,
+			);
+			path = test;
+			sourceTree = "<group>";
+		};
 		D395E037264FEDD200F049B1 /* Pugi */ = {
 			isa = PBXGroup;
 			children = (
@@ -1297,6 +1308,7 @@
 				E6A11A2A1293D20E0060FB35 /* graphics */,
 				E6EE839111E87E9700B01518 /* core */,
 				E6EE837D11E87CD200B01518 /* os */,
+				57E48CE22AF2130500A3F7F7 /* test */,
 				E6ADB9A411957099004E2BE5 /* wxWidgets */,
 				E66D29301D02B49B00C9BCBF /* pwsafe-cli */,
 				E6ADB80411956A93004E2BE5 /* Products */,
