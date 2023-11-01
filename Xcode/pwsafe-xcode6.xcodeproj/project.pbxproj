@@ -783,7 +783,7 @@
 		E6EE83AF11E87E9700B01518 /* Proxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Proxy.h; sourceTree = "<group>"; };
 		E6EE83B011E87E9700B01518 /* PWCharPool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWCharPool.cpp; sourceTree = "<group>"; };
 		E6EE83B111E87E9700B01518 /* PWCharPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWCharPool.h; sourceTree = "<group>"; };
-		E6EE83B211E87E9700B01518 /* PWHistory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWHistory.cpp; sourceTree = "<group>"; };
+		E6EE83B211E87E9700B01518 /* PWHistory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = PWHistory.cpp; sourceTree = "<group>"; };
 		E6EE83B311E87E9700B01518 /* PWHistory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWHistory.h; sourceTree = "<group>"; };
 		E6EE83B411E87E9700B01518 /* PWPolicy.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWPolicy.cpp; sourceTree = "<group>"; };
 		E6EE83B511E87E9700B01518 /* PWPolicy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWPolicy.h; sourceTree = "<group>"; };
