@@ -1490,19 +1490,17 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
       m_User = towxstring(prefs->GetPref(PWSprefs::DefaultUsername));
     }
   } else { // EDIT or VIEW
-    PWHistList pwhl;
-    size_t pwh_max, num_err;
-
     const StringX pwh_str = m_Item.GetPWHistory();
     if (!pwh_str.empty()) {
       m_PasswordHistory = towxstring(pwh_str);
-      m_KeepPasswordHistory = CreatePWHistoryList(pwh_str,
-                                         pwh_max, num_err,
-                                         pwhl, PWSUtil::TMC_LOCALE);
+
+      PWHistList pwhl(pwh_str, PWSUtil::TMC_LOCALE);
+      m_KeepPasswordHistory = pwhl.isSaving();
+
       if (size_t(m_AdditionalPasswordHistoryGrid->GetNumberRows()) < pwhl.size()) {
         m_AdditionalPasswordHistoryGrid->AppendRows(static_cast<int>(pwhl.size() - m_AdditionalPasswordHistoryGrid->GetNumberRows()));
       }
-      m_MaxPasswordHistory = int(pwh_max);
+      m_MaxPasswordHistory = int(pwhl.getMax());
       //reverse-sort the history entries so that we list the newest first
       std::sort(pwhl.begin(), pwhl.end(), newer());
       int row = 0;
@@ -1949,7 +1947,7 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
   }
   wxASSERT(m_Item.IsCreationTimeSet());
   if (m_KeepPasswordHistory) {
-    m_Item.SetPWHistory(MakePWHistoryHeader(true, m_MaxPasswordHistory, 0));
+    m_Item.SetPWHistory(PWHistList::MakePWHistoryHeader(true, m_MaxPasswordHistory, 0));
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -2206,15 +2204,13 @@ StringX AddEditPropSheetDlg::PreparePasswordHistory() const
   // but the first byte could be zero, meaning we are not tracking it _FROM_NOW_.
   // Clearing the history is something the user must do himself with the "Clear History" button
 
-  StringX result;
   // First, Get a list of all password history entries
-  size_t pwh_max, num_err;
-  PWHistList pwhl;
-  (void)CreatePWHistoryList(tostringx(m_PasswordHistory), pwh_max, num_err, pwhl, PWSUtil::TMC_LOCALE);
+  PWHistList pwhl(tostringx(m_PasswordHistory), PWSUtil::TMC_LOCALE);
 
   // Encode the list into the proper StringX format, trim if necessarry
-  result = PWHistoryToStringX(pwhl, m_KeepPasswordHistory, m_MaxPasswordHistory);
-  return result;
+  pwhl.setMax(m_MaxPasswordHistory);
+  pwhl.setSaving(m_KeepPasswordHistory);
+  return pwhl;
 }
 
 Command* AddEditPropSheetDlg::NewEditEntryCommand()
@@ -3039,7 +3035,7 @@ void AddEditPropSheetDlg::OnClearPasswordHistory(wxCommandEvent& WXUNUSED(evt))
 {
   m_AdditionalPasswordHistoryGrid->ClearGrid();
   if (m_AdditionalMaxPasswordHistoryCtrl->TransferDataFromWindow() && m_KeepPasswordHistory && m_MaxPasswordHistory > 0) {
-    m_PasswordHistory = towxstring(MakePWHistoryHeader(m_KeepPasswordHistory, m_MaxPasswordHistory, 0));
+    m_PasswordHistory = towxstring(PWHistList::MakePWHistoryHeader(m_KeepPasswordHistory, m_MaxPasswordHistory, 0));
   }
   else
     m_PasswordHistory.Empty();

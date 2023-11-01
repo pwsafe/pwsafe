@@ -120,10 +120,8 @@ inline wostream& print_field_value(wostream &os, wchar_t tag,
       const StringX pwh_str = item.GetPWHistory();
       if (!pwh_str.empty()) {
         StringXStream value_stream;
-        size_t ignored;
-        PWHistList pwhl;
-        const bool save_pwhistory = CreatePWHistoryList(pwh_str, ignored, ignored, pwhl, PWSUtil::TMC_LOCALE);
-        value_stream << L"Save: " << (save_pwhistory? L"Yes" : L"No");
+        PWHistList pwhl(pwh_str, PWSUtil::TMC_LOCALE);
+        value_stream << L"Save: " << (pwhl.isSaving() ? L"Yes" : L"No");
         if ( !pwhl.empty() ) value_stream << endl;
         for( const auto &pwh: pwhl) value_stream << pwh.changedate << L": " << pwh.password << endl;
         fieldValue = value_stream.str();

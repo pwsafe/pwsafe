@@ -85,23 +85,40 @@ namespace PWHist {
   };
 }
 
-typedef std::vector<PWHistEntry> PWHistList;
+typedef std::vector<PWHistEntry> PWHistVect;
 
-// Parses a password history string as defined
-// in format spec to a vector of PWHistEntry
-// returns true iff password storing flag in string is set.
-// pwh_max is the max number passwords the string may have.
-// num_err will have the number of ill-formed entries.
+class PWHistList: public PWHistVect
+{
+private:
+    // These values are initialized from the input string parsed by the constructor
+    bool m_saveHistory;     // Saving history flag
+    size_t m_maxEntries;    // Maximum number of entries to allow
+    size_t m_numErr;        // Number of ill-formed entries
 
-bool CreatePWHistoryList(const StringX &pwh_str,
-                         size_t &pwh_max, size_t &num_err,
-                         PWHistList &pwhl, PWSUtil::TMC time_format);
+    PWHistList() = delete;
+    PWHistList(PWHistList &) = delete;
 
-StringX GetPreviousPassword(const StringX &pwh_str);
+public:
+    // Parse a password history string as defined
+    // in the format spec to a vector of PWHistEntry
+    PWHistList(const StringX &pwh_str, PWSUtil::TMC time_format);
+    ~PWHistList() = default;
 
-StringX MakePWHistoryHeader(bool status, size_t pwh_max, size_t pwh_num);
+    // Convert this object to a string in the canonical DB format
+    operator StringX();
 
-StringX PWHistoryToStringX(PWHistList &pwhistlist, bool keep_history, size_t pwh_max);
+    bool isSaving() { return m_saveHistory; };
+    size_t getMax() { return m_maxEntries; };
+    size_t getErr() { return m_numErr; };
+
+    void setMax(size_t x) { m_maxEntries = x; };     // The list will be trimed, if necessary, when a StringX is generated
+    void setSaving(bool b) { m_saveHistory = b; };
+
+    static StringX GetPreviousPassword(const StringX &pwh_str);
+    static StringX MakePWHistoryHeader(bool status, size_t pwh_max, size_t pwh_num);
+
+    StringX MakePWHistoryHeader() { return MakePWHistoryHeader(m_saveHistory, m_maxEntries, size()); };
+};
 
 #endif
 //-----------------------------------------------------------------------------

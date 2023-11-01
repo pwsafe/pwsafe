@@ -1390,14 +1390,9 @@ bool PWSFilterManager::PassesPWHFiltering(const CItemData *pci) const
   bool bValue(false);
   int iValue(0);
 
-  size_t pwh_max, err_num;
-  PWHistList pwhistlist;
+  PWHistList pwhistlist(pci->GetPWHistory(), PWSUtil::TMC_EXPORT_IMPORT);
 
-  bool status = CreatePWHistoryList(pci->GetPWHistory(),
-                                    pwh_max, err_num,
-                                    pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
-
-  bPresent = pwh_max > 0 || !pwhistlist.empty();
+  bPresent = pwhistlist.getMax() > 0 || !pwhistlist.empty();
 
   for (auto group_iter = m_vHflgroups.begin();
        group_iter != m_vHflgroups.end(); group_iter++) {
@@ -1423,7 +1418,7 @@ bool PWSFilterManager::PassesPWHFiltering(const CItemData *pci) const
           mt = PWSMatch::MT_BOOL;
           break;
         case HT_ACTIVE:
-          bValue = status;
+          bValue = pwhistlist.isSaving();
           mt = PWSMatch::MT_BOOL;
           break;
         case HT_NUM:
@@ -1431,7 +1426,7 @@ bool PWSFilterManager::PassesPWHFiltering(const CItemData *pci) const
           mt = PWSMatch::MT_INTEGER;
           break;
         case HT_MAX:
-          iValue = static_cast<int>(pwh_max);
+          iValue = static_cast<int>(pwhistlist.getMax());
           mt = PWSMatch::MT_INTEGER;
           break;
         case HT_CHANGEDATE:

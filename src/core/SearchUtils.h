@@ -66,13 +66,10 @@ void FindMatches(const StringX& searchText, bool fCaseSensitive,
     }
 
     if (!found && bsFields.test(CItemData::PWHIST)) {
-      size_t pwh_max, err_num;
-      PWHistList pwhistlist;
-      CreatePWHistoryList(afn(itr).GetPWHistory(), pwh_max, err_num,
-                          pwhistlist, PWSUtil::TMC_XML);
+      PWHistList pwhistlist(afn(itr).GetPWHistory(), PWSUtil::TMC_XML);
       for (PWHistList::iterator iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
         PWHistEntry pwshe = *iter;
-        found = fCaseSensitive? pwshe.password.find(searchText) != StringX::npos: FindNoCase(searchText, pwshe.password );
+        found = fCaseSensitive ? pwshe.password.find(searchText) != StringX::npos : FindNoCase(searchText, pwshe.password );
         if (found)
           break;  // break out of for loop
       }

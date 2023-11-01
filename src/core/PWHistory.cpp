@@ -16,32 +16,31 @@
 
 using namespace std;
 
-bool CreatePWHistoryList(const StringX &pwh_str,
-                         size_t &pwh_max, size_t &num_err,
-                         PWHistList &pwhl, PWSUtil::TMC time_format)
+// Parse a string in the canonical history format and build an object
+PWHistList::PWHistList(const StringX &pwh_str, PWSUtil::TMC time_format)
 {
   // Return boolean value stating if PWHistory status is active
-  pwh_max = num_err = 0;
-  pwhl.clear();
+  m_saveHistory = false;
+  m_maxEntries = m_numErr = 0;
   StringX pwh_s = pwh_str;
   const size_t len = pwh_s.length();
 
   if (len < 5) {
-    num_err = len != 0 ? 1 : 0;
-    return false;
+    m_numErr = len != 0 ? 1 : 0;
+    return;
   }
   bool bStatus = pwh_s[0] != charT('0');
 
   int n;
   iStringXStream ism(StringX(pwh_s, 1, 2)); // max history 1 byte hex
-  ism >> hex >> pwh_max;
+  ism >> hex >> m_maxEntries;
   if (!ism)
-    return false;
+    return;
 
   iStringXStream isn(StringX(pwh_s, 3, 2)); // cur # entries 1 byte hex
   isn >> hex >> n;
   if (!isn)
-    return false;
+    return;
 
   // Sanity check: Each entry has at least 12 bytes representing
   // time + pw length
@@ -69,16 +68,17 @@ bool CreatePWHistoryList(const StringX &pwh_str,
       offset += 4 + ipwlen;
     }
     if ( err || (offset != len) ) {
-      num_err = n;
-      return false;
+      m_numErr = n;
+      return;
     }
     //number of errors will be counted later
   }
 
   // Case when password history field is too long and no passwords present
   if (n == 0 && pwh_s.length() != 5) {
-    num_err = static_cast<size_t>(-1);
-    return bStatus;
+    m_numErr = static_cast<size_t>(-1);
+    m_saveHistory = bStatus;
+    return;
   }
 
   size_t offset = 1 + 2 + 2; // where to extract the next token from pwh_s
@@ -86,7 +86,7 @@ bool CreatePWHistoryList(const StringX &pwh_str,
   for (int i = 0; i < n; i++) {
     if (offset >= len) {
       // Trying to read past end of buffer!
-      num_err++;
+      m_numErr++;
       break;
     }
 
@@ -98,7 +98,7 @@ bool CreatePWHistoryList(const StringX &pwh_str,
     // oldest saved password
     if (!ist) {
       // Invalid time of password change
-      num_err++;
+      m_numErr++;
       continue;
     }
 
@@ -122,7 +122,7 @@ bool CreatePWHistoryList(const StringX &pwh_str,
 
     if (!ispwlen || ipwlen == 0) {
       // Invalid password length of zero
-      num_err++; 
+      m_numErr++;
       continue;
     }
 
@@ -130,22 +130,20 @@ bool CreatePWHistoryList(const StringX &pwh_str,
     const StringX pw(pwh_s, offset, ipwlen);
     pwh_ent.password = pw.c_str();
     offset += ipwlen;
-    pwhl.push_back(pwh_ent);
+    push_back(pwh_ent);
   }
 
-  num_err += n - pwhl.size();
-  return bStatus;
+  m_numErr += n - size();
+  m_saveHistory = bStatus;
 }
 
-StringX GetPreviousPassword(const StringX &pwh_str)
+StringX PWHistList::GetPreviousPassword(const StringX &pwh_str)
 {
   if (pwh_str == _T("0") || pwh_str == _T("00000")) {
     return _T("");
   } else {
     // Get all history entries
-    size_t num_err, MaxPWHistory;
-    PWHistList pwhistlist;
-    CreatePWHistoryList(pwh_str, MaxPWHistory, num_err, pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
+    PWHistList pwhistlist(pwh_str, PWSUtil::TMC_EXPORT_IMPORT);
 
     // If none yet saved, then don't return anything
     if (pwhistlist.empty())
@@ -161,7 +159,7 @@ StringX GetPreviousPassword(const StringX &pwh_str)
   }
 }
 
-StringX MakePWHistoryHeader(bool status, size_t pwh_max, size_t pwh_num)
+StringX PWHistList::MakePWHistoryHeader(bool status, size_t pwh_max, size_t pwh_num)
 {
   const size_t MAX_PWHISTORY = 255;
   if (pwh_max > MAX_PWHISTORY)
@@ -175,35 +173,35 @@ StringX MakePWHistoryHeader(bool status, size_t pwh_max, size_t pwh_num)
   return os.str().c_str();
 }
 
+// Sort the list, trim it to the maximum length if necessary, and format as a StringX.
 // This code was factored from CItemData::UpdatePasswordHistory and AddEditPropSheetDlg::PreparePasswordHistory
-// and is called from both places.
-// Sort the list, trim it to the maximum length (if necessary), and format as a StringX.
-StringX PWHistoryToStringX(PWHistList &pwhistlist, bool keep_history, size_t pwh_max) {
+// and is called from several places.
+PWHistList::operator StringX() {
 
     // Make sure entries are sorted oldest first.  This is consistent with
     // CItemData::UpdatePasswordHistory, which pushes new entries onto the end.
-    std::sort( pwhistlist.begin(), pwhistlist.end(),
-              [](const PWHistEntry& first, const PWHistEntry& second) {
-                    return first.changetttdate < second.changetttdate;
+    std::sort( begin(), end(),
+              [](const PWHistEntry& first, const PWHistEntry& second) -> bool {
+                  return first.changetttdate < second.changetttdate;
                 }
     );
 
-    // If the number of entries is greater than the max allowed, trim the list from the front
-    size_t num = pwhistlist.size();
-    if (num > pwh_max) {
-        PWHistList hl(pwhistlist.begin() + (num - pwh_max), pwhistlist.end());
-        ASSERT(hl.size() == pwh_max);
-        pwhistlist = hl;
-        num = pwh_max;
+    // If the number of entries is greater than the max allowed, 
+    // trim the list from the front, discarding the oldest.
+    size_t num = size();
+    if (num > m_maxEntries) {
+        PWHistVect hv(begin() + (num - m_maxEntries), end());
+        ASSERT(hv.size() == m_maxEntries);
+        assign(hv.begin(), hv.end());
     }
 
     // Now create the string version, starting with a header...
     StringX new_PWHistory, buffer;
-    new_PWHistory = MakePWHistoryHeader(keep_history, pwh_max, num);
+    new_PWHistory = MakePWHistoryHeader();
 
     // Encode each of the history entries into the string format
     PWHistList::iterator iter;
-    for (iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
+    for (iter = begin(); iter != end(); iter++) {
         Format(buffer, L"%08x%04x%ls",
                static_cast<long>(iter->changetttdate), iter->password.length(),
                iter->password.c_str());
