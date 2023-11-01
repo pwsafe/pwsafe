@@ -170,47 +170,52 @@ TEST_F(ItemDataTest, PasswordHistory)
   di.UpdatePassword(pw2);
   EXPECT_FALSE(di.GetPWHistory().empty());
 
-  PWHistList pwhl(di.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
-  EXPECT_TRUE(pwhl.isSaving());
-  EXPECT_EQ(0U, pwhl.getErr());
-  EXPECT_EQ(3U, pwhl.getMax());
-  EXPECT_EQ(1U, pwhl.size());
-  EXPECT_EQ(pw1, pwhl[0].password);
-  delete pwhl;
+  {
+      PWHistList pwhl(di.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
+      EXPECT_TRUE(pwhl.isSaving());
+      EXPECT_EQ(0U, pwhl.getErr());
+      EXPECT_EQ(3U, pwhl.getMax());
+      EXPECT_EQ(1U, pwhl.size());
+      EXPECT_EQ(pw1, pwhl[0].password);
+  }
 
   di.UpdatePassword(pw3);
 
-  PWHistList pwhl(di.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
-  EXPECT_TRUE(pwhl.isSaving());
-  EXPECT_EQ(0U, pwhl.getErr());
-  EXPECT_EQ(3U, pwhl.getMax());
-  EXPECT_EQ(2U, pwhl.size());
-  EXPECT_EQ(pw1, pwhl[0].password);
-  EXPECT_EQ(pw2, pwhl[1].password);
-  delete pwhl;
+  {
+      PWHistList pwhl(di.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
+      EXPECT_TRUE(pwhl.isSaving());
+      EXPECT_EQ(0U, pwhl.getErr());
+      EXPECT_EQ(3U, pwhl.getMax());
+      EXPECT_EQ(2U, pwhl.size());
+      EXPECT_EQ(pw1, pwhl[0].password);
+      EXPECT_EQ(pw2, pwhl[1].password);
+  }
 
   di.UpdatePassword(pw4);
 
-  PWHistList pwhl(di.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
-  EXPECT_TRUE(pwhl.isSaving());
-  EXPECT_EQ(0U, pwhl.getErr());
-  EXPECT_EQ(3U, pwhl.getMax());
-  EXPECT_EQ(3U, pwhl.size());
-  EXPECT_EQ(pw1, pwhl[0].password);
-  EXPECT_EQ(pw2, pwhl[1].password);
-  EXPECT_EQ(pw3, pwhl[2].password);
-  delete pwhl;
+  {
+      PWHistList pwhl(di.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
+      EXPECT_TRUE(pwhl.isSaving());
+      EXPECT_EQ(0U, pwhl.getErr());
+      EXPECT_EQ(3U, pwhl.getMax());
+      EXPECT_EQ(3U, pwhl.size());
+      EXPECT_EQ(pw1, pwhl[0].password);
+      EXPECT_EQ(pw2, pwhl[1].password);
+      EXPECT_EQ(pw3, pwhl[2].password);
+  }
 
   di.UpdatePassword(L"Last1");
 
-  PWHistList pwhl(di.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
-  EXPECT_TRUE(pwhl.isSaving());
-  EXPECT_EQ(0U, pwhl.getErr());
-  EXPECT_EQ(3U, pwhl.getMax());
-  EXPECT_EQ(3U, pwhl.size());
-  EXPECT_EQ(pw2, pwhl[0].password);
-  EXPECT_EQ(pw3, pwhl[1].password);
-  EXPECT_EQ(pw4, pwhl[2].password);
+  {
+      PWHistList pwhl(di.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
+      EXPECT_TRUE(pwhl.isSaving());
+      EXPECT_EQ(0U, pwhl.getErr());
+      EXPECT_EQ(3U, pwhl.getMax());
+      EXPECT_EQ(3U, pwhl.size());
+      EXPECT_EQ(pw2, pwhl[0].password);
+      EXPECT_EQ(pw3, pwhl[1].password);
+      EXPECT_EQ(pw4, pwhl[2].password);
+  }
 }
 
 TEST_F(ItemDataTest, UnknownFields)
