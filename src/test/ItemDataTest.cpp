@@ -180,6 +180,7 @@ TEST_F(ItemDataTest, PasswordHistory)
     EXPECT_EQ(3U, pwhl.getMax());
     EXPECT_EQ(1U, pwhl.size());
     EXPECT_EQ(pw1, pwhl[0].password);
+    EXPECT_EQ(di.GetPWHistory(), (StringX)pwhl);
   }
 
   di.UpdatePassword(pw3);
@@ -192,6 +193,7 @@ TEST_F(ItemDataTest, PasswordHistory)
     EXPECT_EQ(2U, pwhl.size());
     EXPECT_EQ(pw1, pwhl[0].password);
     EXPECT_EQ(pw2, pwhl[1].password);
+    EXPECT_EQ(di.GetPWHistory(), (StringX)pwhl);
   }
 
   di.UpdatePassword(pw4);
@@ -205,6 +207,7 @@ TEST_F(ItemDataTest, PasswordHistory)
     EXPECT_EQ(pw1, pwhl[0].password);
     EXPECT_EQ(pw2, pwhl[1].password);
     EXPECT_EQ(pw3, pwhl[2].password);
+    EXPECT_EQ(di.GetPWHistory(), (StringX)pwhl);
   }
 
   di.UpdatePassword(L"Last1");
@@ -218,8 +221,8 @@ TEST_F(ItemDataTest, PasswordHistory)
     EXPECT_EQ(pw2, pwhl[0].password);
     EXPECT_EQ(pw3, pwhl[1].password);
     EXPECT_EQ(pw4, pwhl[2].password);
-
     EXPECT_EQ(di.GetPWHistory(), (StringX)pwhl);
+
     EXPECT_EQ(finalHeader, pwhl.MakePWHistoryHeader());
     EXPECT_EQ(pw2, PWHistList::GetPreviousPassword(di.GetPWHistory()));
 
