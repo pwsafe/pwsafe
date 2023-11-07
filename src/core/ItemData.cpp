@@ -1296,7 +1296,7 @@ void CItemData::UpdatePasswordHistory()
   }
 
   // Now add the latest
-  pwhistlist.push_back(pwh_ent);
+  pwhistlist.addEntry(pwh_ent);
 
   // Remove the excess and format as a StringX
   StringX new_PWHistory = pwhistlist;

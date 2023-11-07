@@ -142,8 +142,9 @@ PWHistList::PWHistList(const StringX &pwh_str, PWSUtil::TMC time_format)
     const StringX pw(pwh_s, offset, ipwlen);
     pwh_ent.password = pw.c_str();
     offset += ipwlen;
-    push_back(pwh_ent);
+    addEntry(pwh_ent);
   }
+  sortList();   // Old DB entries might not be in the "proper" order
 
   m_numErr += n - size();
   m_saveHistory = bStatus;
@@ -162,12 +163,8 @@ StringX PWHistList::GetPreviousPassword(const StringX &pwh_str)
       return _T("");
 
     // Sort in date order and return last saved
-    std::sort(pwhistlist.begin(), pwhistlist.end(),
-              [](const PWHistEntry &pwhe1, const PWHistEntry &pwhe2) -> bool
-              {
-                return pwhe1.changetttdate > pwhe2.changetttdate;
-              });
-    return pwhistlist[0].password;
+    pwhistlist.sortList();
+    return pwhistlist.back().password;
   }
 }
 
