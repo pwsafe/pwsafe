@@ -178,34 +178,29 @@ StringX PWHistList::MakePWHistoryHeader(bool status, size_t pwh_max, size_t pwh_
 // and is called from several places.
 PWHistList::operator StringX() {
 
-    // Make sure entries are sorted oldest first.  This is consistent with
-    // CItemData::UpdatePasswordHistory, which pushes new entries onto the end.
-    std::sort( begin(), end(),
-              [](const PWHistEntry& first, const PWHistEntry& second) -> bool {
-                  return first.changetttdate < second.changetttdate;
-                }
-    );
+  // Make sure the list is sorted in the proper order
+  sortList();
 
-    // If the number of entries is greater than the max allowed, 
-    // trim the list from the front, discarding the oldest.
-    size_t num = size();
-    if (num > m_maxEntries) {
-        PWHistVect hv(begin() + (num - m_maxEntries), end());
-        ASSERT(hv.size() == m_maxEntries);
-        assign(hv.begin(), hv.end());
-    }
+  // If the number of entries is greater than the max allowed,
+  // trim the list from the front, discarding the oldest.
+  size_t num = size();
+  if (num > m_maxEntries) {
+      PWHistVect hv(begin() + (num - m_maxEntries), end());
+      ASSERT(hv.size() == m_maxEntries);
+      assign(hv.begin(), hv.end());
+  }
 
-    // Now create the string version, starting with a header...
-    StringX new_PWHistory, buffer;
-    new_PWHistory = MakePWHistoryHeader();
+  // Now create the string version, starting with a header...
+  StringX new_PWHistory, buffer;
+  new_PWHistory = MakePWHistoryHeader();
 
-    // Encode each of the history entries into the string format
-    PWHistList::iterator iter;
-    for (iter = begin(); iter != end(); iter++) {
-        Format(buffer, L"%08x%04x%ls",
-               static_cast<long>(iter->changetttdate), iter->password.length(),
-               iter->password.c_str());
-        new_PWHistory += buffer;
-    }
-    return new_PWHistory;
+  // Encode each of the history entries into the string format
+  PWHistList::iterator iter;
+  for (iter = begin(); iter != end(); iter++) {
+      Format(buffer, L"%08x%04x%ls",
+             static_cast<long>(iter->changetttdate), iter->password.length(),
+             iter->password.c_str());
+      new_PWHistory += buffer;
+  }
+  return new_PWHistory;
 }
