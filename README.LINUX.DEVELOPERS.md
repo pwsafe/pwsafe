@@ -26,7 +26,13 @@ The following should work for Debian and Fedora-based distros:
 
     `$ make`
 This will create a 'pwsafe' executable in your build directory.
-5. Make the package:
+5. Run the core test suite:
+  
+    `$ make test`
+This will run coretest in the src/test sub-directory.  
+If it encounters errors, check your locale settings. It is known to work with:
+    `LC_ALL=en_US.UTF-8`
+6. Make the package:
 
 - To build a deb package:
 ```
@@ -34,10 +40,10 @@ This will create a 'pwsafe' executable in your build directory.
 ```
 - To build an RPM package:
 ```
-    $cpack -G RPM ..
+    $ cpack -G RPM ..
 ```
 
-6. Install
+7. Install
 
 - To install the deb package you've just built:
 
