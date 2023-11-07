@@ -2071,7 +2071,8 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
   if (tostringx(m_RunCommand) != m_Item.GetRunCommand()) {
     changes |= Changes::RunCommand;
   }
-  if (PreparePasswordHistory() != m_Item.GetPWHistory() && 
+  // Prepare a string from the dialog and make sure the current item is sorted the same way
+  if (PreparePasswordHistory() != (StringX)(PWHistList(m_Item.GetPWHistory(), PWSUtil::TMC_LOCALE)) &&
       !(m_Item.GetPWHistory().empty() && m_PasswordHistory.empty() && static_cast<unsigned int>(m_MaxPasswordHistory) == prefs->GetPref(PWSprefs::NumPWHistoryDefault) && m_KeepPasswordHistory == prefs->GetPref(PWSprefs::SavePasswordHistory))
   ) {
     changes |= Changes::History;
