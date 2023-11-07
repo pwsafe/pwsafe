@@ -114,6 +114,9 @@ public:
     void setMax(size_t x) { m_maxEntries = x; };     // The list will be trimed, if necessary, when a StringX is generated
     void setSaving(bool b) { m_saveHistory = b; };
 
+    void addEntry(const PWHistEntry &pwh_ent) { PWHistVect::push_back(pwh_ent); };
+    void sortList();
+
     static StringX GetPreviousPassword(const StringX &pwh_str);
     static StringX MakePWHistoryHeader(bool status, size_t pwh_max, size_t pwh_num);
 

@@ -16,6 +16,18 @@
 
 using namespace std;
 
+// This is the canonical sort order for storing and comparing the history list
+void PWHistList::sortList()
+{
+  // Make sure entries are sorted oldest first.  This is consistent with
+  // other routines that expect the newest entries to be at the end.
+  std::sort( begin(), end(),
+            [](const PWHistEntry& first, const PWHistEntry& second) -> bool {
+                return first.changetttdate < second.changetttdate;
+              }
+  );
+}
+
 // Parse a string in the canonical history format and build an object
 PWHistList::PWHistList(const StringX &pwh_str, PWSUtil::TMC time_format)
 {
