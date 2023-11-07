@@ -194,9 +194,9 @@ PWHistList::operator StringX() {
   // trim the list from the front, discarding the oldest.
   size_t num = size();
   if (num > m_maxEntries) {
-      PWHistVect hv(begin() + (num - m_maxEntries), end());
-      ASSERT(hv.size() == m_maxEntries);
-      assign(hv.begin(), hv.end());
+    PWHistVect hv(begin() + (num - m_maxEntries), end());
+    ASSERT(hv.size() == m_maxEntries);
+    assign(hv.begin(), hv.end());
   }
 
   // Now create the string version, starting with a header...
@@ -206,10 +206,10 @@ PWHistList::operator StringX() {
   // Encode each of the history entries into the string format
   PWHistList::iterator iter;
   for (iter = begin(); iter != end(); iter++) {
-      Format(buffer, L"%08x%04x%ls",
-             static_cast<long>(iter->changetttdate), iter->password.length(),
-             iter->password.c_str());
-      new_PWHistory += buffer;
+    Format(buffer, L"%08x%04x%ls",
+           static_cast<long>(iter->changetttdate), iter->password.length(),
+           iter->password.c_str());
+    new_PWHistory += buffer;
   }
   return new_PWHistory;
 }
