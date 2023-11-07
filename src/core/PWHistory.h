@@ -97,6 +97,7 @@ private:
 
     PWHistList() = delete;
     PWHistList(PWHistList &) = delete;
+    void push_back(const PWHistEntry &pwh_ent) = delete;    // Just to make sure this isn't being used, use addEntry instead
 
 public:
     // Parse a password history string as defined
