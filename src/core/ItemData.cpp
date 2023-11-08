@@ -1295,7 +1295,7 @@ void CItemData::UpdatePasswordHistory()
     pwh_ent.changedate = unk;
   }
 
-  // Now add the latest
+  // Now add the latest PW to the history list
   pwhistlist.addEntry(pwh_ent);
 
   // Remove the excess and format as a StringX

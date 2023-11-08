@@ -119,7 +119,7 @@ public:
     void sortList();
 
     static StringX GetPreviousPassword(const StringX &pwh_str);
-    static StringX MakePWHistoryHeader(bool status, size_t pwh_max, size_t pwh_num);
+    static StringX MakePWHistoryHeader(bool status, size_t pwh_max, size_t pwh_num = 0);
 
     StringX MakePWHistoryHeader() { return MakePWHistoryHeader(m_saveHistory, m_maxEntries, size()); };
 };
