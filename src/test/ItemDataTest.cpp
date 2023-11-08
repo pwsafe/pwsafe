@@ -160,8 +160,8 @@ TEST_F(ItemDataTest, PasswordHistory)
   const StringX pw3(L"banana-2rchid");
   const StringX pw4(L"banana-5rchid");
   const StringX emptyHeader(L"00000");
-  const StringX finalHeader(L"10303");
-  const StringX alteredHeader(L"00c03");
+  const StringX last1Header(L"10303");
+  const StringX alteredHeader(L"00c02");
 
   PWSprefs *prefs = PWSprefs::GetInstance();
   prefs->SetPref(PWSprefs::SavePasswordHistory, true);
@@ -223,17 +223,31 @@ TEST_F(ItemDataTest, PasswordHistory)
     EXPECT_EQ(pw4, pwhl[2].password);
     EXPECT_EQ(di.GetPWHistory(), (StringX)pwhl);
 
-    EXPECT_EQ(finalHeader, pwhl.MakePWHistoryHeader());
-    EXPECT_EQ(pw2, PWHistList::GetPreviousPassword(di.GetPWHistory()));
+    EXPECT_EQ(last1Header, pwhl.MakePWHistoryHeader());
+    EXPECT_EQ(pw4, PWHistList::GetPreviousPassword(di.GetPWHistory()));
+
+    // Reduce the max and make sure the oldest is removed
+    pwhl.setMax(2);
+    PWHistList pwh2(pwhl, PWSUtil::TMC_ASC_UNKNOWN);
+    EXPECT_TRUE(pwh2.isSaving());
+    EXPECT_EQ(0U, pwh2.getErr());
+    EXPECT_EQ(2U, pwh2.getMax());
+    EXPECT_EQ(2U, pwh2.size());
+    EXPECT_EQ(pw3, pwh2[0].password);
+    EXPECT_EQ(pw4, pwh2[1].password);
 
     pwhl.setMax(12);
     pwhl.setSaving(false);
     EXPECT_FALSE(pwhl.isSaving());
+    EXPECT_EQ(0U, pwhl.getErr());
     EXPECT_EQ(12U, pwhl.getMax());
+    EXPECT_EQ(2U, pwhl.size());
     EXPECT_EQ(alteredHeader, pwhl.MakePWHistoryHeader());
-
-    EXPECT_EQ(emptyHeader, PWHistList::MakePWHistoryHeader(false, 0, 0));
+    EXPECT_EQ(pw4, PWHistList::GetPreviousPassword(pwhl));
   }
+
+  EXPECT_EQ(emptyHeader, PWHistList::MakePWHistoryHeader(false, 0));
+  EXPECT_EQ(emptyHeader, PWHistList::MakePWHistoryHeader(false, 0, 0));
 }
 
 TEST_F(ItemDataTest, UnknownFields)
