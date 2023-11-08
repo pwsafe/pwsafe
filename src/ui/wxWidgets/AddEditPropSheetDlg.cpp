@@ -1947,7 +1947,7 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
   }
   wxASSERT(m_Item.IsCreationTimeSet());
   if (m_KeepPasswordHistory) {
-    m_Item.SetPWHistory(PWHistList::MakePWHistoryHeader(true, m_MaxPasswordHistory, 0));
+    m_Item.SetPWHistory(PWHistList::MakePWHistoryHeader(true, m_MaxPasswordHistory));
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -3036,7 +3036,7 @@ void AddEditPropSheetDlg::OnClearPasswordHistory(wxCommandEvent& WXUNUSED(evt))
 {
   m_AdditionalPasswordHistoryGrid->ClearGrid();
   if (m_AdditionalMaxPasswordHistoryCtrl->TransferDataFromWindow() && m_KeepPasswordHistory && m_MaxPasswordHistory > 0) {
-    m_PasswordHistory = towxstring(PWHistList::MakePWHistoryHeader(m_KeepPasswordHistory, m_MaxPasswordHistory, 0));
+    m_PasswordHistory = towxstring(PWHistList::MakePWHistoryHeader(m_KeepPasswordHistory, m_MaxPasswordHistory));
   }
   else
     m_PasswordHistory.Empty();
