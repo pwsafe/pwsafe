@@ -93,9 +93,16 @@ case "$DISTRO" in
         apt-get install -qy dpkg-sig || (echo "dpkg-sig isn't mandatory"; true)
     ;;
     fedora)
+        if test "$RELEASE" -lt 39 ; then
+            LIBWXBASE="wxBase3-devel"
+            LIBWXGTK="wxGTK3-devel"
+        else
+            LIBWXBASE="wxBase-devel"
+            LIBWXGTK="wxGTK-devel"
+        fi
         dnf -y install cmake file-devel gcc-c++ git gtest-devel libXt-devel libXtst-devel \
         libcurl-devel libuuid-devel libyubikey-devel \
-        make openssl-devel rpmdevtools rpm-sign wxBase3-devel wxGTK3-devel xerces-c-devel \
+        make openssl-devel rpmdevtools rpm-sign $LIBWXBASE $LIBWXGTK xerces-c-devel \
         ykpers-devel qrencode-devel
     ;;
     manjarolinux)
