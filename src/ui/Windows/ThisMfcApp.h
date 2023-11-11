@@ -40,6 +40,9 @@ struct LANGHELPFILE {
 
 class DboxMain;
 
+#define PWS_ADMIN_OPTIONS_SUBKEY_NAME L"Software\\Password Safe\\Admin"
+#define SCRCAP_PROTECTION_ENABLED_REG_VALUE_NAME L"ScreenCaptureProtection"
+
 class ThisMfcApp : public CWinApp
 {
 public:
@@ -49,6 +52,7 @@ public:
     ForceAllowedCommandLine,
     ImplicitlyAllowedProtocolIca,
     ImplicitlyAllowedProtocolRdp,
+    AllowedRegistrySetting,
     MaxState
   };
 public:
@@ -93,10 +97,11 @@ public:
   void GetLanguageFiles();
   void SetLanguage();
   void SetMinidumpUserStreams(const bool bOpen, const bool bRW, UserStream iStream = usAll);
-  AllowScreenCaptureState GetAllowScreenCaptureState() const { return m_allowScreenCaptureState; }
-  bool IsAllowScreenCapture() const { return m_allowScreenCaptureState != Disallowed; }
-  bool IsForcedAllowScreenCapture() const { return m_allowScreenCaptureState == ForceAllowedCommandLine; }
-  bool IsImplicitAllowScreenCapture() const { return IsAllowScreenCapture() && !IsForcedAllowScreenCapture(); }
+
+  // Screen capture protection:
+  static int GetScreenCaptureProtectionEnabledRegValue();
+  bool IsCommandLineForcedAllowScreenCapture() const { return m_allowScreenCaptureState == ForceAllowedCommandLine; }
+  bool IsExcludeFromScreenCapture() const;
   UINT ResolveAllowScreenCaptureStateResourceId(UINT nIdFirst) const;
   CString GetAllowScreenCaptureStateMessage(UINT nIdFirst) const;
 

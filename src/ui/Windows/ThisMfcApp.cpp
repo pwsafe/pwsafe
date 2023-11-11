@@ -42,6 +42,7 @@
 #include "os/env.h"
 #include "os/lib.h"
 #include "os/debug.h"
+#include "os/registry.h"
 
 #include "Shlwapi.h"
 
@@ -1024,6 +1025,41 @@ CString ThisMfcApp::GetAllowScreenCaptureStateMessage(UINT nIdFirst) const
   return csExcludeOverridePhrase;
 }
 
+int ThisMfcApp::GetScreenCaptureProtectionEnabledRegValue()
+{
+
+  const int ENABLED = 1;
+  HKEY hKey;
+  LSTATUS result;
+  result = ::RegOpenKeyEx(HKEY_LOCAL_MACHINE,
+                          PWS_ADMIN_OPTIONS_SUBKEY_NAME,
+                          0,
+                          KEY_QUERY_VALUE,
+                          &hKey);
+  if (result != ERROR_SUCCESS)
+    return ENABLED;
+  DWORD dwValue;
+  DWORD dwType;
+  DWORD dwSize = sizeof(dwValue);
+  result = ::RegQueryValueEx(hKey,
+                             SCRCAP_PROTECTION_ENABLED_REG_VALUE_NAME,
+                             NULL,
+                             &dwType,
+                             reinterpret_cast<LPBYTE>(&dwValue),
+                             &dwSize);
+  ::RegCloseKey(hKey);
+  if (result != ERROR_SUCCESS || dwType != REG_DWORD || dwSize != sizeof(dwValue))
+    return ENABLED;
+  return static_cast<int>(dwValue);
+}
+
+bool ThisMfcApp::IsExcludeFromScreenCapture() const
+{
+  if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture))
+    return false;
+  return m_allowScreenCaptureState == Disallowed;
+}
+
 BOOL ThisMfcApp::InitInstance()
 {
   /*
@@ -1098,8 +1134,12 @@ BOOL ThisMfcApp::InitInstance()
 
   // After command line processing, if a force screen capture is not allowed,
   // attempt to detect implicit reasons for allowing screen capture.
-  if (!IsAllowScreenCapture() && WinUtil::GetSessionProtocol() == WinUtil::ProtocolIca)
-    m_allowScreenCaptureState = ImplicitlyAllowedProtocolIca;
+  if (IsExcludeFromScreenCapture()) {
+    if (WinUtil::GetSessionProtocol() == WinUtil::ProtocolIca)
+      m_allowScreenCaptureState = ImplicitlyAllowedProtocolIca;
+    else if (GetScreenCaptureProtectionEnabledRegValue() == 0)
+      m_allowScreenCaptureState = AllowedRegistrySetting;
+  }
 
   // allDone will be true iff -e or -d options given, in which case
   // we're just a batch encryptor/decryptor

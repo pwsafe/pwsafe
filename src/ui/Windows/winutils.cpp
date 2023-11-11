@@ -404,13 +404,12 @@ bool WinUtil::HasTouchscreen() // for BR1539 workaround
   return (value != 0);
 }
 
-DWORD WinUtil::SetWindowExcludeFromScreenCapture(HWND hwnd)
+DWORD WinUtil::SetWindowExcludeFromScreenCapture(HWND hwnd, bool excludeFromScreenCapture)
 {
   ASSERT(::IsWindow(hwnd));
   if (!::IsWindow(hwnd))
     return ERROR_INVALID_WINDOW_HANDLE;
-  bool bExcludeFromScreenCapture = PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture) && !app.IsAllowScreenCapture();
-  DWORD dwNewDisplayAffinity = bExcludeFromScreenCapture ? WDA_EXCLUDEFROMCAPTURE : WDA_NONE;
+  DWORD dwNewDisplayAffinity = excludeFromScreenCapture ? WDA_EXCLUDEFROMCAPTURE : WDA_NONE;
   DWORD dwCurrentDisplayAffinity;
   DWORD dwResult = ERROR_SUCCESS;
   if (::GetWindowDisplayAffinity(hwnd, &dwCurrentDisplayAffinity) &&

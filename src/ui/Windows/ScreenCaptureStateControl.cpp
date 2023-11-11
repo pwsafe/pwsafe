@@ -43,7 +43,7 @@ UINT CScreenCaptureStateControl::GetCurrentCaptureStateToolTipStringId()
   if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture))
     return IDS_SCRCAP_TT_ALLOWED_DBPREF;
 
-  if (app.IsAllowScreenCapture())
+  if (!app.IsExcludeFromScreenCapture())
     return app.ResolveAllowScreenCaptureStateResourceId(IDS_SCRCAP_TT_OVERRIDE_FIRST);
 
   return IDS_SCRCAP_TT_DISALLOWED_DEFAULT;
@@ -57,10 +57,10 @@ UINT CScreenCaptureStateControl::GetCurrentCaptureStateBitmapId()
   if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture))
     return IDB_SCRCAP_ALLOWED;
 
-  if (app.IsForcedAllowScreenCapture())
+  if (app.IsCommandLineForcedAllowScreenCapture())
     return IDB_SCRCAP_ALLOWED_FORCED1;
 
-  if (app.IsImplicitAllowScreenCapture())
+  if (!app.IsExcludeFromScreenCapture())
     return IDB_SCRCAP_ALLOWED_IMPLICIT;
 
   return IDB_SCRCAP_EXCLUDED;
@@ -74,9 +74,9 @@ void CScreenCaptureStateControl::OnSetInitialState()
     SetState(IDB_SCRCAP_STATE_ERROR);
   else if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture))
     SetState(IDB_SCRCAP_ALLOWED);
-  else if (app.IsForcedAllowScreenCapture())
+  else if (app.IsCommandLineForcedAllowScreenCapture())
     SetState(IDB_SCRCAP_ALLOWED_FORCED1, IDB_SCRCAP_ALLOWED_FORCED1, IDB_SCRCAP_ALLOWED_FORCED2, BLINK_DURATION_SECONDS);
-  else if (app.IsImplicitAllowScreenCapture())
+  else if (!app.IsExcludeFromScreenCapture())
     SetState(IDB_SCRCAP_ALLOWED_IMPLICIT);
   else
     SetState(IDB_SCRCAP_EXCLUDED);

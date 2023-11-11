@@ -1186,7 +1186,7 @@ BOOL DboxMain::OnInitDialog()
   
   InitPasswordSafe();
 
-  if (app.IsForcedAllowScreenCapture()) {
+  if (app.IsCommandLineForcedAllowScreenCapture()) {
     const int DELAY_BEFORE_ALLOWING_ANSWER_SECONDS = 3;
 
     CString cs_title;
@@ -3110,11 +3110,13 @@ void DboxMain::StartForceAllowCaptureBitmapBlinkTimer(bool bEnable)
 void DboxMain::UpdateForceAllowCaptureHandling()
 {
   // Enable OS feature based on current prefs.
-  CScreenCaptureStateControl::SetLastDisplayAffinityError(WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd));
+  CScreenCaptureStateControl::SetLastDisplayAffinityError(
+    WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd, app.IsExcludeFromScreenCapture())
+  );
   UpdateStatusBar();
   // Setup DboxMain UI handling relating to ExcludeFromScreenCapture.
   bool bExcludeFromScreenCapture = PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture);
-  bool bBitmapShouldBlink = bExcludeFromScreenCapture && app.IsForcedAllowScreenCapture();
+  bool bBitmapShouldBlink = bExcludeFromScreenCapture && app.IsCommandLineForcedAllowScreenCapture();
   StartForceAllowCaptureBitmapBlinkTimer(bBitmapShouldBlink);
 }
 

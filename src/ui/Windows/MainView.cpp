@@ -2582,7 +2582,7 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     if (
       m_lScrCapStatusBarBlinkRemainingMsecs > 0 &&
       PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture) &&
-      app.IsForcedAllowScreenCapture()
+      app.IsCommandLineForcedAllowScreenCapture()
     ) {
       // Continue blinking that force override is in effect.
       nIdNextBitmap = nId == IDB_SCRCAP_ALLOWED_FORCED2 ? 
