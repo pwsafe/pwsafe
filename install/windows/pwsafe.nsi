@@ -716,7 +716,7 @@ Section /o -DisableScrCapProtection SidDisableScrCapProtection
   IntCmp $INSTALL_TYPE 1 GreenInstall_2
 
   ; Establish the error message to use for failures while disabling screen capture protection.
-  StrCpy $ScrCapErrMsg "$(SORRY_CANNOT_ENABLE_SCRCAP)"
+  StrCpy $ScrCapErrMsg "$(SORRY_CANNOT_DISABLE_SCRCAP)"
 
   ; NSIS installer is always 32-bits.
   ; Set registry affected based on bitness of pwsafe.
