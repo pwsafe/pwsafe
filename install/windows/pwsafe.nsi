@@ -43,13 +43,17 @@
 ;    or in the Start Menu, for easy access.  
 ;
 ; 2. The installer optionally places four registry values in 
-;    HKCU\Software\Password Safe\Password Safe.  These registry
+;    HKLM\Software\Password Safe\Password Safe.  These registry
 ;    values are for the use of the installer itself.  Password Safe
 ;    does not rely on these registry values.  If the installer is not
 ;    used, or if a "Green" installation is selected (see below), these
 ;    registry values are not created. 
 ;
-; 3. The installer will create an uninstaller and place an entry to
+; 3. In addition, HKLM "Software\Password Safe\Admin is used to disable
+;    the screen capture protection, if the relevant checkbox is cleared.
+;    This is also skipped when a "Green" installation is selected.
+;
+; 4. The installer will create an uninstaller and place an entry to
 ;    uninstall Password Safe in the Add or Remove Programs Wizard.
 ;
 ; As of PasswordSafe 3.05, this script allows users to choose
@@ -308,7 +312,7 @@ LangString DESC_StartMenu ${LANG_ENGLISH} "Creates an entry in the start menu fo
 LangString DESC_DesktopShortcut ${LANG_ENGLISH} "Places a shortcut to Password Safe on your desktop."
 LangString DESC_UninstallMenu ${LANG_ENGLISH} "Places a shortcut in the start menu to Uninstall Password Safe."
 LangString DESC_LangSupport ${LANG_ENGLISH} "Please select the language(s) that Password Safe will use."
-LangString DESC_ScrCapProtection ${LANG_ENGLISH} "Enables screen capture protection by default."
+LangString DESC_ScrCapProtection ${LANG_ENGLISH} "Enables screen capture protection."
 
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 LangString TEXT_GC_TITLE ${LANG_ENGLISH} "Installation Type"
@@ -350,7 +354,7 @@ LangString SORRY_NO_ME ${LANG_ENGLISH} "Sorry, Windows ME is no longer supported
 LangString SORRY_NO_2K ${LANG_ENGLISH} "Sorry, Windows 2000 is no longer supported.$\r$\nTry Password Safe 3.18"
 
 LangString SORRY_CANNOT_DISABLE_SCRCAP ${LANG_ENGLISH} "An error occurred disabling screen capture protection. Screen capture protection is not disabled."
-LangString SORRY_CANNOT_ENABLE_SCRCAP ${LANG_ENGLISH} "An error occurred ensuring screen capture protection defaults."
+LangString SORRY_CANNOT_ENABLE_SCRCAP ${LANG_ENGLISH} "An error occurred setting screen capture protection to default (enabled)."
 
 LangString Icon_description_Uninstall ${LANG_ENGLISH} "Password Safe Uninstall"
 LangString Icon_description_Help ${LANG_ENGLISH} "Password Safe Help"
@@ -676,6 +680,8 @@ Function ScrCapCreateAdminKey
 FunctionEnd
 
 Section "$(SCRCAP_PROTECTION)" ScrCapProtection
+  IntCmp $INSTALL_TYPE 1 GreenInstall_1
+
   ; Establish the error message to use for failures while ensuring default screen capture protection.
   StrCpy $ScrCapErrMsg "$(SORRY_CANNOT_ENABLE_SCRCAP)"
 
@@ -703,10 +709,13 @@ Section "$(SCRCAP_PROTECTION)" ScrCapProtection
   Call ScrCapErrorHandler
 
   SetRegView Default
+GreenInstall_1:
 SectionEnd
 
 Section /o -DisableScrCapProtection SidDisableScrCapProtection
-  ; Establish the error message to use for failures while disabling the screen capture protection default enablement.
+  IntCmp $INSTALL_TYPE 1 GreenInstall_2
+
+  ; Establish the error message to use for failures while disabling screen capture protection.
   StrCpy $ScrCapErrMsg "$(SORRY_CANNOT_ENABLE_SCRCAP)"
 
   ; NSIS installer is always 32-bits.
@@ -739,6 +748,7 @@ Section /o -DisableScrCapProtection SidDisableScrCapProtection
   ${EndIf}
 
   SetRegView Default
+GreenInstall_2:
 SectionEnd
 
 Function .onSelChange
