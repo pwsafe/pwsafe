@@ -1053,10 +1053,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
         break;
       }
       if (bsFields.test(CItemData::PWHIST)) {
-        size_t pwh_max, err_num;
-        PWHistList pwhistlist;
-        CreatePWHistoryList(curitem.GetPWHistory(), pwh_max, err_num,
-                            pwhistlist, PWSUtil::TMC_XML);
+        PWHistList pwhistlist(curitem.GetPWHistory(), PWSUtil::TMC_XML);
         PWHistList::iterator iter;
         for (iter = pwhistlist.begin(); iter != pwhistlist.end();
              iter++) {

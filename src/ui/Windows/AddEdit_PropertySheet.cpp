@@ -459,7 +459,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
         m_AEMD.pci->SetXTimeInt(m_AEMD.XTimeInt);
 
       if (m_AEMD.SavePWHistory == TRUE)
-        m_AEMD.pci->SetPWHistory(MakePWHistoryHeader(TRUE, m_AEMD.MaxPWHistory, 0));
+        m_AEMD.pci->SetPWHistory(PWHistList::MakePWHistoryHeader(TRUE, m_AEMD.MaxPWHistory, 0));
 
       if (m_AEMD.ibasedata > 0) {
         // Password in alias format AND base entry exists
@@ -674,19 +674,16 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   // If user changes the password of its base entry from the
   // alias, we do record them in the base entry if the user wants them.
   // For an alias, we will show its base entry's password history
-  size_t num_err;
   if (m_AEMD.pci->IsAlias())
     m_AEMD.PWHistory = pciA->GetPWHistory();
   else
     m_AEMD.PWHistory = m_AEMD.pci->GetPWHistory();
 
-  BOOL HasHistory = CreatePWHistoryList(m_AEMD.PWHistory,
-                                        m_AEMD.MaxPWHistory,
-                                        num_err,
-                                        m_AEMD.pwhistlist,
-                                        PWSUtil::TMC_EXPORT_IMPORT) ? TRUE : FALSE;
+  m_AEMD.pwhistlist = PWHistList(m_AEMD.PWHistory, PWSUtil::TMC_EXPORT_IMPORT);
+
   m_AEMD.oldNumPWHistory = m_AEMD.NumPWHistory = m_AEMD.pwhistlist.size();
-  m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory = HasHistory;
+  m_AEMD.oldSavePWHistory = m_AEMD.SavePWHistory = m_AEMD.pwhistlist.isSaving();
+  m_AEMD.MaxPWHistory = m_AEMD.pwhistlist.getMax();
   if (m_AEMD.MaxPWHistory == 0)
     m_AEMD.MaxPWHistory = PWSprefs::GetInstance()->GetPref(PWSprefs::NumPWHistoryDefault);
   
