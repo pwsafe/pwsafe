@@ -1195,20 +1195,21 @@ BOOL DboxMain::OnInitDialog()
     // If this string contains a "%d" it will be replaced with seconds remaining
     // for the timed message box via MessageBoxDelayAcceptAnswer below.
     CString cs_msgBeforeAllowedToClickOk(
-      app.GetAllowScreenCaptureStateMessage(IDS_SCRCAP_EXCLUDE_OVERRIDE_WARNING_BEFORE_FIRST)
+      app.GetAllowScreenCaptureStateMessage(IDS_SCRCAP_EXCLUDE_OVERRIDE_WARNING_BEFORE_NONE)
     );
 
     CString cs_msgAfterAllowedToClickOk(
-      app.GetAllowScreenCaptureStateMessage(IDS_SCRCAP_EXCLUDE_OVERRIDE_WARNING_AFTER_FIRST)
+      app.GetAllowScreenCaptureStateMessage(IDS_SCRCAP_EXCLUDE_OVERRIDE_WARNING_AFTER_NONE)
     );
 
-    CGeneralMsgBox().MessageBoxDelayAcceptAnswer(
-      cs_msgBeforeAllowedToClickOk,
-      cs_msgAfterAllowedToClickOk,
-      cs_title,
-      MB_OK | MB_ICONWARNING,
-      DELAY_BEFORE_ALLOWING_ANSWER_SECONDS
-    );
+    if (!cs_msgBeforeAllowedToClickOk.IsEmpty() || !cs_msgAfterAllowedToClickOk.IsEmpty())
+      CGeneralMsgBox().MessageBoxDelayAcceptAnswer(
+        cs_msgBeforeAllowedToClickOk,
+        cs_msgAfterAllowedToClickOk,
+        cs_title,
+        MB_OK | MB_ICONWARNING,
+        DELAY_BEFORE_ALLOWING_ANSWER_SECONDS
+      );
   }
 
   UpdateForceAllowCaptureHandling();

@@ -50,8 +50,6 @@ public:
   {
     Disallowed,
     ForceAllowedCommandLine,
-    ImplicitlyAllowedProtocolIca,
-    ImplicitlyAllowedProtocolRdp,
     AllowedRegistrySetting,
     MaxState
   };

@@ -1134,11 +1134,13 @@ BOOL ThisMfcApp::InitInstance()
 
   // After command line processing, if a force screen capture is not allowed,
   // attempt to detect implicit reasons for allowing screen capture.
+  // Originally tested (WinUtil::GetSessionProtocol(), but the utility of this is unclear.
+  // If we reinstate it, a new AllowCaptureState enum should be defined, and associated
+  // IDS_SCRCAP_EXCLUDE_OVERRIDE_WARNING_{BEFORE, AFTER}_ texts
   if (IsExcludeFromScreenCapture()) {
-    if (WinUtil::GetSessionProtocol() == WinUtil::ProtocolIca)
-      m_allowScreenCaptureState = ImplicitlyAllowedProtocolIca;
-    else if (GetScreenCaptureProtectionEnabledRegValue() == 0)
-      m_allowScreenCaptureState = AllowedRegistrySetting;
+
+    if (GetScreenCaptureProtectionEnabledRegValue() == 0)
+        m_allowScreenCaptureState = AllowedRegistrySetting;
   }
 
   // allDone will be true iff -e or -d options given, in which case

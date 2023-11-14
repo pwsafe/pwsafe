@@ -44,7 +44,7 @@ UINT CScreenCaptureStateControl::GetCurrentCaptureStateToolTipStringId()
     return IDS_SCRCAP_TT_ALLOWED_DBPREF;
 
   if (!app.IsExcludeFromScreenCapture())
-    return app.ResolveAllowScreenCaptureStateResourceId(IDS_SCRCAP_TT_OVERRIDE_FIRST);
+    return app.ResolveAllowScreenCaptureStateResourceId(IDS_SCRCAP_TT_OVERRIDE_NONE);
 
   return IDS_SCRCAP_TT_DISALLOWED_DEFAULT;
 }
