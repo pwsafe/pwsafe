@@ -159,10 +159,22 @@ LangString SORRY_NO_ME ${LANG_HUNGARIAN} "Sajnálom, a Windows ME már nem támo
 LangString SORRY_NO_2K ${LANG_HUNGARIAN} "Sajnálom, a Windows 2000 már nem támogatott. A használathoz telepítse fel a PasswordSafe 2.16 verzióját"
 
 ; LangString Icon_description_Uninstall "Password Safe Uninstall"
-LangString Icon_description_Uninstall ${LANG_HUNGARIAN} "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_HUNGARIAN} "Jelszóbiztos eltávolítás"
 
 ; LangString Icon_description_Help  "Password Safe Help"
-LangString Icon_description_Help ${LANG_HUNGARIAN} "Password Safe Help"
+LangString Icon_description_Help ${LANG_HUNGARIAN} "Jelszóbiztos súgó"
 
+; Screen Capture Protection texts:
+; LangString SCRCAP_PROTECTION "Screen capture protection"
+LangString SCRCAP_PROTECTION ${LANG_HUNGARIAN} "Képernyő rögzítés elleni védelem"
+
+; LangString SORRY_CANNOT_DISABLE_SCRCAP  "An error occurred disabling screen capture protection. Screen capture protection is not disabled."
+LangString SORRY_CANNOT_DISABLE_SCRCAP ${LANG_HUNGARIAN} "n hiba történt a képernyőrögzítés elleni védelem letiltásakor. A képernyőrögzítés elleni védelem nincs letiltva."
+
+; LangString SORRY_CANNOT_ENABLE_SCRCAP "An error occurred setting screen capture protection to default (enabled)."
+LangString SORRY_CANNOT_ENABLE_SCRCAP ${LANG_HUNGARIAN} "Hiba történt a képernyőrögzítés-védelem alapértelmezés szerinti beállításakor (engedélyezve)."
+
+; LangString DESC_ScrCapProtection "Enables screen capture protection."
+LangString DESC_ScrCapProtection ${LANG_HUNGARIAN} "Lehetővé teszi a képernyőrögzítés elleni védelmet."
 ;=================================================================
 ; End of pwsafe_hu.lng

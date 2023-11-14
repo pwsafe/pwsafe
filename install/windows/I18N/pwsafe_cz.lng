@@ -165,5 +165,18 @@ LangString Icon_description_Uninstall ${LANG_CZECH} "Password Safe Uninstall"
 ; LangString Icon_description_Help  "Password Safe Help"
 LangString Icon_description_Help ${LANG_CZECH} "Password Safe Help"
 
+; Screen Capture Protection texts:
+; LangString SCRCAP_PROTECTION "Screen capture protection"
+LangString SCRCAP_PROTECTION ${LANG_CZECH} "Ochrana snímání obrazovky"
+
+; LangString SORRY_CANNOT_DISABLE_SCRCAP  "An error occurred disabling screen capture protection. Screen capture protection is not disabled."
+LangString SORRY_CANNOT_DISABLE_SCRCAP ${LANG_CZECH} "Při deaktivaci ochrany snímání obrazovky došlo k chybě. Ochrana snímání obrazovky není deaktivována."
+
+; LangString SORRY_CANNOT_ENABLE_SCRCAP "An error occurred setting screen capture protection to default (enabled)."
+LangString SORRY_CANNOT_ENABLE_SCRCAP ${LANG_CZECH} "Při nastavení ochrany snímání obrazovky na výchozí (povoleno) došlo k chybě."
+
+; LangString DESC_ScrCapProtection "Enables screen capture protection."
+LangString DESC_ScrCapProtection ${LANG_CZECH} "Aktivuje ochranu snímku obrazovky."
+
 ;=================================================================
 ; End of pwsafe_cz.lng

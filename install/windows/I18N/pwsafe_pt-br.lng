@@ -3,7 +3,7 @@
 ; to a new language. To use:
 ; 1. Copy file to pwsafe_xx.lng, where xx is the ISO 3166-1 2-letter
 ; country code for the language.
-; 2. Replace LANG_NEW with LANG_NAME, where name is the name of thr
+; 2. Replace LANG_PORTUGUESEBR with LANG_NAME, where name is the name of thr
 ; language as used in the parent .nsi file
 ; 3. Replace "TRANSLATION" with the translation of the text in the
 ; preceding line.
@@ -169,6 +169,19 @@ LangString Icon_description_Uninstall ${LANG_PORTUGUESEBR} "Password Safe Uninst
 
 ; LangString Icon_description_Help  "Password Safe Help"
 LangString Icon_description_Help ${LANG_PORTUGUESEBR} "Password Safe Help"
+
+; Screen Capture Protection texts:
+; LangString SCRCAP_PROTECTION "Screen capture protection"
+LangString SCRCAP_PROTECTION ${LANG_PORTUGUESEBR} "Proteção de captura de tela."
+
+; LangString SORRY_CANNOT_DISABLE_SCRCAP  "An error occurred disabling screen capture protection. Screen capture protection is not disabled."
+LangString SORRY_CANNOT_DISABLE_SCRCAP ${LANG_PORTUGUESEBR} "Ocorreu um erro ao desativar a proteção de captura de tela. A proteção de captura de tela não está desativada."
+
+; LangString SORRY_CANNOT_ENABLE_SCRCAP "An error occurred setting screen capture protection to default (enabled)."
+LangString SORRY_CANNOT_ENABLE_SCRCAP ${LANG_PORTUGUESEBR} "Ocorreu um erro ao definir a proteção de captura de tela como padrão (ativada)."
+
+; LangString DESC_ScrCapProtection "Enables screen capture protection."
+LangString DESC_ScrCapProtection ${LANG_PORTUGUESEBR} "Ativa a proteção contra captura de tela."
 
 ;=================================================================
 ; End of pwsafe_xx.lng

@@ -163,5 +163,18 @@ LangString Icon_description_Uninstall ${LANG_ITALIAN} "Disinstalla Password Safe
 ; LangString Icon_description_Help  "Password Safe Help"
 LangString Icon_description_Help ${LANG_ITALIAN} "Guida in linea Password Safe"
 
+; Screen Capture Protection texts:
+; LangString SCRCAP_PROTECTION "Screen capture protection"
+LangString SCRCAP_PROTECTION ${LANG_ITALIAN} "Protezione per la cattura dello schermo."
+
+; LangString SORRY_CANNOT_DISABLE_SCRCAP  "An error occurred disabling screen capture protection. Screen capture protection is not disabled."
+LangString SORRY_CANNOT_DISABLE_SCRCAP ${LANG_ITALIAN} "Si è verificato un errore durante la disattivazione della protezione dell'acquisizione dello schermo. La protezione della cattura dello schermo non è disabilitata."
+
+; LangString SORRY_CANNOT_ENABLE_SCRCAP "An error occurred setting screen capture protection to default (enabled)."
+LangString SORRY_CANNOT_ENABLE_SCRCAP ${LANG_ITALIAN} "Si è verificato un errore durante l'impostazione della protezione di cattura dello schermo su impostazione predefinita (abilitata)."
+
+; LangString DESC_ScrCapProtection "Enables screen capture protection."
+LangString DESC_ScrCapProtection ${LANG_ITALIAN} "Abilita la protezione dalla cattura dello schermo."
+
 ;=================================================================
 ; End of pwsafe_it.lng
