@@ -95,14 +95,16 @@ private:
     size_t m_maxEntries;    // Maximum number of entries to allow
     size_t m_numErr;        // Number of ill-formed entries
 
-    PWHistList() = delete;
-    PWHistList(PWHistList &) = delete;
+    void sortList();
     void push_back(const PWHistEntry &pwh_ent) = delete;    // Just to make sure this isn't being used, use addEntry instead
 
 public:
     // Parse a password history string as defined
     // in the format spec to a vector of PWHistEntry
     PWHistList(const StringX &pwh_str, PWSUtil::TMC time_format);
+
+    PWHistList() : m_saveHistory(false), m_maxEntries(0), m_numErr(0) {};
+    PWHistList(PWHistList &) = default;
     ~PWHistList() = default;
 
     // Convert this object to a string in the canonical DB format
@@ -116,7 +118,6 @@ public:
     void setSaving(bool b) { m_saveHistory = b; };
 
     void addEntry(const PWHistEntry &pwh_ent) { PWHistVect::push_back(pwh_ent); };
-    void sortList();
 
     static StringX GetPreviousPassword(const StringX &pwh_str);
     static StringX MakePWHistoryHeader(bool status, size_t pwh_max, size_t pwh_num = 0);
