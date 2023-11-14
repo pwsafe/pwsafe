@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2023-09-26 20:50+0300\n"
+"PO-Revision-Date: 2023-11-14 18:49+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -3085,7 +3098,7 @@ msgstr "Bejegyzés szerkesztése/&Megtekintése"
 
 #. Resource IDs: (65535)
 msgid "Editor Command Line parameters:"
-msgstr ""
+msgstr "Szerkesztő parancssori paraméterei:"
 
 #. Resource IDs: (3243)
 msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
@@ -3153,7 +3166,7 @@ msgstr "Jelentés vége"
 msgid "Enter Key:"
 msgstr "Adja meg a kulcsot:"
 
-#. Resource IDs: (130, 132)
+#. Resource IDs: (130)
 msgid "Enter Master Password"
 msgstr "Adja meg a fő jelszót"
 
@@ -3658,7 +3671,7 @@ msgstr "Fájl"
 
 #. Resource IDs: (5988)
 msgid "File Creation Date"
-msgstr ""
+msgstr "Fájl létrehozásának dátuma"
 
 #. Resource IDs: (5236)
 msgid "File In Use"
@@ -3666,19 +3679,19 @@ msgstr "A fájl használatban van"
 
 #. Resource IDs: (5990)
 msgid "File Last Accessed date"
-msgstr ""
+msgstr "Fájl utolsó megnyitásának dátuma"
 
 #. Resource IDs: (5989)
 msgid "File Last Modified Date"
-msgstr ""
+msgstr "Fájl utolsó módosításának dátuma"
 
 #. Resource IDs: (5982)
 msgid "File Name"
-msgstr ""
+msgstr "Fájlnév"
 
 #. Resource IDs: (5983)
 msgid "File Path"
-msgstr ""
+msgstr "Fájl elérési útja"
 
 #. Resource IDs: (5313)
 msgid "File Read Error"
@@ -6147,7 +6160,11 @@ msgstr "Sc&ript:"
 msgid "Schema does not have a version number."
 msgstr "A sémának nincs verziószáma."
 
-#. Resource IDs: (6064)
+#. Resource IDs: (6073)
+msgid "Screen capture protection disabled by a setup option."
+msgstr "A képernyőfelvétel védelmét egy beállítási lehetőség letiltja."
+
+#. Resource IDs: (6092)
 msgid ""
 "Screen capture protection disabled by command line.\n"
 "\n"
@@ -6161,7 +6178,7 @@ msgstr ""
 "\n"
 "A folytatáshoz kattintson az OK gombra."
 
-#. Resource IDs: (6063)
+#. Resource IDs: (6082)
 #, c-format
 msgid ""
 "Screen capture protection disabled by command line.\n"
@@ -6176,17 +6193,70 @@ msgstr ""
 "\n"
 "Az OK gombra kattintva %d másodpercen belül folytathatja."
 
+#. Resource IDs: (6090)
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"Click OK to continue."
+msgstr ""
+"A képernyőfelvétel védelme ismeretlen okból letiltva (állapothiba).\n"
+"\n"
+"Forduljon az ügyfélszolgálathoz, ha ez váratlan.\n"
+"\n"
+"A folytatáshoz kattintson az OK gombra."
+
+#. Resource IDs: (6080)
+#, c-format
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"You can click OK to continue in %d seconds."
+msgstr ""
+"A képernyőfelvétel védelme ismeretlen okból letiltva (állapothiba).\n"
+"\n"
+"Forduljon az ügyfélszolgálathoz, ha ez váratlan.\n"
+"\n"
+"Az OK gombra kattintva %d másodpercen belül folytathatja."
+
+#. Resource IDs: (6073, 6074)
+msgid "Screen capture protection disabled for remote access."
+msgstr "A képernyőfelvétel védelme le van tiltva a távoli hozzáféréshez."
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection experienced an unexpected operating system error."
+msgstr "A képernyőfelvétel védelme váratlan operációsrendszer-hibát észlelt."
+
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
 msgstr "A képernyőfelvétel védelmét a parancssor felülírta."
 
-#. Resource IDs: (6071)
+#. Resource IDs: (6070)
+msgid "Screen capture protection invalid (failure)."
+msgstr "A képernyőfelvétel védelme érvénytelen (hiba)."
+
+#. Resource IDs: (6081, 6091)
+msgid "Screen capture protection is enabled."
+msgstr "A képernyőfelvétel védelme engedélyezve van."
+
+#. Resource IDs: (6069)
 msgid "Screen capture protection is off."
 msgstr "A képernyőfelvétel védelme ki van kapcsolva."
 
-#. Resource IDs: (6070)
+#. Resource IDs: (6068, 6071)
 msgid "Screen capture protection is on."
 msgstr "A képernyőfelvétel védelme be van kapcsolva."
+
+#. Resource IDs: (6071)
+msgid "Screen capture protection on."
+msgstr "Képernyőfelvétel védelem bekapcsolva."
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection: unexpected system error"
+msgstr "Képernyőfelvétel védelme: váratlan rendszerhiba"
 
 #. Resource IDs: (5276)
 #, c-format
@@ -6207,7 +6277,7 @@ msgstr "Biztonság"
 
 #. Resource IDs: (3407)
 msgid "See Attachment filters"
-msgstr ""
+msgstr "Lásd: Mellékletszűrők"
 
 #. Resource IDs: (65535)
 msgid "See LICENSE for open source details."
@@ -6215,11 +6285,11 @@ msgstr "Nézze meg a LICENSE-t a nyílt forráskód részleteiért."
 
 #. Resource IDs: (3315)
 msgid "See Password History filters"
-msgstr ""
+msgstr "Lásd: Jelszóelőzmények szűrői"
 
 #. Resource IDs: (3316)
 msgid "See Password Policy filters"
-msgstr ""
+msgstr "Lásd: Jelszóházirend-szűrők"
 
 #. Resource IDs: (61865)
 #, c-format
@@ -6252,7 +6322,7 @@ msgstr "Válasszon helyet a köztes mentéseknek"
 
 #. Resource IDs: (65535)
 msgid "Select Locked Text Color:"
-msgstr ""
+msgstr "Válassza a Zárolt szöveg színe lehetőséget:"
 
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"

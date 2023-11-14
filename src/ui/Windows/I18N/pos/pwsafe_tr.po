@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2023-09-26 21:06+0300\n"
+"PO-Revision-Date: 2023-11-14 19:01+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -3155,7 +3168,7 @@ msgstr "Rapor Sonu"
 msgid "Enter Key:"
 msgstr "Anahtar Giriniz:"
 
-#. Resource IDs: (130, 132)
+#. Resource IDs: (130)
 msgid "Enter Master Password"
 msgstr "Ana Şifreyi Girin"
 
@@ -5230,11 +5243,11 @@ msgstr "Açık"
 
 #. Resource IDs: (1026)
 msgid "On minimize"
-msgstr ""
+msgstr "Simge durumuna küçültme"
 
 #. Resource IDs: (1073)
 msgid "On workstation lock"
-msgstr ""
+msgstr "İş istasyonu kilidinde"
 
 #. Resource IDs: (5894)
 msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"
@@ -5251,11 +5264,11 @@ msgstr "Tercihlerden biri değiştirildi. İptal etmek istediğinize emin misini
 #. Resource IDs: (5428)
 #, c-format
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
-msgstr ""
+msgstr "Yalnızca Orijinalinde: %d; Sadece karşılaştırmada: %d; Her ikisinde de (farklı): %d; Her ikisinde de (özdeş): %d"
 
 #. Resource IDs: (1595)
 msgid "Opaque"
-msgstr ""
+msgstr "Donuk"
 
 #. Resource IDs: (61440)
 msgid "Open"
@@ -5379,7 +5392,7 @@ msgstr "Şifre Geçmişi Filtresi"
 
 #. Resource IDs: (6037)
 msgid "Password History copied"
-msgstr ""
+msgstr "Parola Geçmişi kopyalandı"
 
 #. Resource IDs: (5871)
 msgid "Password Length"
@@ -5467,7 +5480,7 @@ msgstr "Şifre [zorunlu alan]"
 
 #. Resource IDs: (6048)
 msgid "Password copied to clipboard"
-msgstr ""
+msgstr "Şifre panoya kopyalandı"
 
 #. Resource IDs: (5455)
 msgid "Password implies this is an alias entry, but "
@@ -5577,7 +5590,7 @@ msgstr "Lütfen içe aktarmak için bir XML dosyası seçin"
 
 #. Resource IDs: (5354)
 msgid "Please choose a database to compare with current database"
-msgstr ""
+msgstr "Lütfen mevcut veritabanı ile karşılaştırmak için bir veritabanı seçin"
 
 #. Resource IDs: (5348)
 msgid "Please choose a database to merge into current database"
@@ -5606,7 +5619,7 @@ msgstr "Lütfen %s filtresi %s nin(nun) silinmesini onaylayın?"
 
 #. Resource IDs: (6033)
 msgid "Please confirm that you wish to clear the recent Safe list."
-msgstr ""
+msgstr "Lütfen en son Güvenli listeyi temizlemek istediğinizi onaylayın."
 
 #. Resource IDs: (5287)
 msgid ""
@@ -5738,11 +5751,11 @@ msgstr "Portekizce (Brazilian ABNT)"
 
 #. Resource IDs: (6049)
 msgid "Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character. Positions must be separated by either spaces, commas or semi-colons to be recognised. There must also be a space, comma or semi-colon at the end of the list."
-msgstr ""
+msgstr "Konum 1 ilk karakterdir, 2 ikinci karakterdir, vb. N uzunluğundaki bir parolanın son karakteri için N'ye kadar. -1 son karakterdir, -2 sondan sonraki vb. ilk parola karakteri için -N'ye kadar. Konumların tanınması için boşluk, virgül veya noktalı virgül ile ayrılması gerekir. Ayrıca listenin sonunda boşluk, virgül veya noktalı virgül bulunmalıdır."
 
 #. Resource IDs: (65535)
 msgid "Positions:"
-msgstr ""
+msgstr "Pozisyon:"
 
 #. Resource IDs: (8150)
 msgid "Press to delete all added characters."
@@ -5781,7 +5794,7 @@ msgstr "Programlar (*.exe)|*.exe|Tüm dosyalar (*.*)|*.*||"
 
 #. Resource IDs: (1030)
 msgid "Prompt user for default username"
-msgstr ""
+msgstr "Kullanıcıdan varsayılan kullanıcı adını sor"
 
 #. Resource IDs: (4112)
 msgid "Pronounceable passwords"
@@ -5930,7 +5943,7 @@ msgstr "Kayıt defterinden PasswordSafe yapılandırmasını kaldır"
 
 #. Resource IDs: (5111)
 msgid "Remove all saved passwords for entries and stop saving password change history in all entries."
-msgstr ""
+msgstr "Girişler için kayıtlı tüm parolaları kaldırın ve tüm girişlerde parola değiştirme geçmişini kaydetmeyi durdurun."
 
 #. Resource IDs: (32291 - Menu)
 msgid "Remove this shortcut"
@@ -5982,7 +5995,7 @@ msgstr "Sıfırla"
 
 #. Resource IDs: (1368)
 msgid "Reset All Program Shortcuts"
-msgstr ""
+msgstr "Tüm Program Kısayollarını Sıfırla"
 
 #. Resource IDs: (32215 - Menu)
 msgid "Reset Column Width"
@@ -6014,7 +6027,7 @@ msgstr "Sağ Ctrl tuşu"
 
 #. Resource IDs: (5994)
 msgid "Right click a Named Password Policy to list the entries using it"
-msgstr ""
+msgstr "Adlandırılmış Parola İlkesi'ni kullanarak girişleri listelemek için onu sağ tıklatın"
 
 #. Resource IDs: (65535)
 msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
@@ -6022,7 +6035,7 @@ msgstr "Daha fazla fonksiyon için ilk iki sütundan birindeki 'Y' ye sağ tıkl
 
 #. Resource IDs: (5117)
 msgid "Right-click on the Notes field to access additional functionality."
-msgstr ""
+msgstr "Ek işlevlere erişmek için Notlar alanına sağ tıklayın."
 
 #. Resource IDs: (8219)
 msgid "Romanian (Legacy)"
@@ -6142,7 +6155,7 @@ msgstr "%1 e(a) yapılan değişiklikler kaydedilsin mi?"
 
 #. Resource IDs: (1045)
 msgid "Save database immediately after any change"
-msgstr ""
+msgstr "Herhangi bir değişiklikten hemen sonra veritabanını kaydedin"
 
 #. Resource IDs: (1094)
 msgid "Sc&ript:"
@@ -6152,7 +6165,11 @@ msgstr "Sc&ript:"
 msgid "Schema does not have a version number."
 msgstr "Taslağın sürüm numarası yok."
 
-#. Resource IDs: (6064)
+#. Resource IDs: (6073)
+msgid "Screen capture protection disabled by a setup option."
+msgstr "Ekran yakalama koruması bir kurulum seçeneği tarafından devre dışı bırakıldı."
+
+#. Resource IDs: (6092)
 msgid ""
 "Screen capture protection disabled by command line.\n"
 "\n"
@@ -6166,7 +6183,7 @@ msgstr ""
 "\n"
 "Devam etmek için Tamam'ı tıklatın."
 
-#. Resource IDs: (6063)
+#. Resource IDs: (6082)
 #, c-format
 msgid ""
 "Screen capture protection disabled by command line.\n"
@@ -6181,17 +6198,70 @@ msgstr ""
 "\n"
 "%d saniye içinde devam etmek için Tamam'ı tıklatabilirsiniz."
 
+#. Resource IDs: (6090)
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"Click OK to continue."
+msgstr ""
+"Ekran yakalama koruması bilinmeyen bir nedenle devre dışı bırakıldı (durum hatası).\n"
+"\n"
+"Bu beklenmedik bir durumsa desteğe başvurun.\n"
+"\n"
+"Devam etmek için Tamam'a tıklayın."
+
+#. Resource IDs: (6080)
+#, c-format
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"You can click OK to continue in %d seconds."
+msgstr ""
+"Ekran yakalama koruması bilinmeyen bir nedenle devre dışı bırakıldı (durum hatası).\n"
+"\n"
+"Bu beklenmedik bir durumsa desteğe başvurun.\n"
+"\n"
+"%d saniye içinde devam etmek için Tamam'a tıklayabilirsiniz."
+
+#. Resource IDs: (6073, 6074)
+msgid "Screen capture protection disabled for remote access."
+msgstr "Uzaktan erişim için ekran yakalama koruması devre dışı bırakıldı."
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection experienced an unexpected operating system error."
+msgstr "Ekran yakalama koruması, beklenmeyen bir işletim sistemi hatasıyla karşılaştı."
+
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
 msgstr "Ekran yakalama koruması komut satırı tarafından geçersiz kılındı."
 
-#. Resource IDs: (6071)
+#. Resource IDs: (6070)
+msgid "Screen capture protection invalid (failure)."
+msgstr "Ekran yakalama koruması geçersiz (hata)."
+
+#. Resource IDs: (6081, 6091)
+msgid "Screen capture protection is enabled."
+msgstr "Ekran yakalama koruması etkinleştirildi."
+
+#. Resource IDs: (6069)
 msgid "Screen capture protection is off."
 msgstr "Ekran yakalama koruması kapalı."
 
-#. Resource IDs: (6070)
+#. Resource IDs: (6068, 6071)
 msgid "Screen capture protection is on."
 msgstr "Ekran yakalama koruması açık."
+
+#. Resource IDs: (6071)
+msgid "Screen capture protection on."
+msgstr "Ekran yakalama koruması açık."
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection: unexpected system error"
+msgstr "Ekran yakalama koruması: beklenmeyen sistem hatası"
 
 #. Resource IDs: (5276)
 #, c-format
@@ -6212,7 +6282,7 @@ msgstr "Güvenlik"
 
 #. Resource IDs: (3407)
 msgid "See Attachment filters"
-msgstr ""
+msgstr "Bkz. Ek filtreleri"
 
 #. Resource IDs: (65535)
 msgid "See LICENSE for open source details."
@@ -8809,7 +8879,9 @@ msgstr ""
 msgid ""
 "\n"
 "View Entry"
-msgstr "Girdiyi Göster"
+msgstr ""
+"\n"
+"Girdiyi Göster"
 
 #. Resource IDs: (32261)
 msgid ""
