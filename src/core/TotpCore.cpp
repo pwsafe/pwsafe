@@ -90,4 +90,12 @@ namespace PWSTotp {
     return result;
   }
 
+  TOTP_Result ValidateTotpConfiguration(const CItemData& data)
+  {
+    uint32_t totp_auth_code;
+    TOTP_Result result = GetNextTotpAuthCode(data, totp_auth_code, nullptr);
+    totp_auth_code = 0xAAAAAAAA;
+    return result;
+  }
+
 }

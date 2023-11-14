@@ -61,6 +61,7 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
     m_AEMD.username = L"";
     m_AEMD.realpassword = L"";
     m_AEMD.lastpassword = L"";
+    m_AEMD.twofactorkey = L"";
     m_AEMD.notes = m_AEMD.originalnotesTRC = L"";
     m_AEMD.URL = L"";
     m_AEMD.email = L"";
@@ -319,6 +320,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
       m_bIsModified = (m_AEMD.group       != m_AEMD.pci->GetGroup()      ||
                        m_AEMD.title       != m_AEMD.pci->GetTitle()      ||
                        m_AEMD.username    != m_AEMD.pci->GetUser()       ||
+                       m_AEMD.twofactorkey!= m_AEMD.pci->GetTwoFactorKey() ||
                        m_AEMD.notes       != m_AEMD.originalnotesTRC     ||
                        m_AEMD.URL         != m_AEMD.pci->GetURL()        ||
                        m_AEMD.autotype    != m_AEMD.pci->GetAutoType()   ||
@@ -345,6 +347,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
         m_AEMD.pci->SetGroup(m_AEMD.group);
         m_AEMD.pci->SetTitle(m_AEMD.title);
         m_AEMD.pci->SetUser(m_AEMD.username);
+        m_AEMD.pci->SetTwoFactorKey(m_AEMD.twofactorkey);
         if (m_bNotesChanged)
           m_AEMD.pci->SetNotes(m_AEMD.notes);
 
@@ -441,6 +444,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
       m_AEMD.pci->SetUser(m_AEMD.username.IsEmpty() ?
                                 m_AEMD.defusername : m_AEMD.username);
       m_AEMD.pci->SetPassword(m_AEMD.realpassword);
+      m_AEMD.pci->SetTwoFactorKey(m_AEMD.twofactorkey);
       m_AEMD.pci->SetNotes(m_AEMD.notes);
       m_AEMD.pci->SetURL(m_AEMD.URL);
       m_AEMD.pci->SetAutoType(m_AEMD.autotype);
@@ -590,6 +594,7 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   m_AEMD.username = m_AEMD.pci->GetUser();
   m_AEMD.realpassword = m_AEMD.oldRealPassword = m_AEMD.pci->GetPassword();
   m_AEMD.lastpassword = m_AEMD.pci->GetPreviousPassword();
+  m_AEMD.twofactorkey = m_AEMD.pci->GetTwoFactorKey();
   m_AEMD.notes = m_AEMD.originalnotesTRC = m_AEMD.pci->GetNotes();
   m_AEMD.URL = m_AEMD.pci->GetURL();
   m_AEMD.email = m_AEMD.pci->GetEmail();

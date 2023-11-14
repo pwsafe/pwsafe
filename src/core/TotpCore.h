@@ -9,7 +9,9 @@
 // TotpCore.h
 //-----------------------------------------------------------------------------
 
-#pragma once
+#ifndef _TOTPCORE_H
+#define _TOTPCORE_H
+
 #include <string>
 #include <stdint.h>
 
@@ -44,5 +46,7 @@ namespace PWSTotp {
   TOTP_Result GetNextTotpAuthCode(const CItemData& data, uint32_t& totpCode, time_t* pBasisTimeNow);
   std::string TotpCodeToString(const CItemData& data, uint32_t totp_auth_code);
   TOTP_Result GetNextTotpAuthCodeString(const CItemData& data, std::string& totpAuthCodeStr, time_t* pBasisTimeNow);
-
+  TOTP_Result ValidateTotpConfiguration(const CItemData& data);
 }
+
+#endif

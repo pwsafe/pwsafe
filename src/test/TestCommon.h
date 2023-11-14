@@ -9,7 +9,8 @@
 // TestCommon.h
 //-----------------------------------------------------------------------------
 
-#pragma once
+#ifndef _TESTCOMMON_H
+#define _TESTCOMMON_H
 
 #include <cassert>
 #include <cstring>
@@ -39,3 +40,5 @@ inline byte_vector byte_vector_from_string(const char* s) {
 inline byte_vector byte_vector_from_string(const std::string& str) {
   return byte_vector(str.begin(), str.end());
 }
+
+#endif

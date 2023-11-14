@@ -555,7 +555,8 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
           M_email() != M_pci()->GetEmail() ||
           (M_ipolicy() != NAMED_POLICY &&
             M_symbols() != M_pci()->GetSymbols()) ||
-          M_realpassword() != M_oldRealPassword())
+          M_realpassword() != M_oldRealPassword() ||
+          M_twofactorkey() != M_oldRealPassword())
           return 1L;
       }
           break;
@@ -571,6 +572,7 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
             !M_title().IsEmpty()        ||
             !nameClean                  ||
             !M_realpassword().IsEmpty() ||
+            !M_twofactorkey().IsEmpty() ||
             !M_notes().IsEmpty()        ||
             !M_URL().IsEmpty()          ||
             !M_email().IsEmpty()        ||
