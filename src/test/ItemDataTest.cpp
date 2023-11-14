@@ -246,6 +246,26 @@ TEST_F(ItemDataTest, PasswordHistory)
     EXPECT_EQ(pw4, PWHistList::GetPreviousPassword(pwhl));
   }
 
+  {
+    // Test the copy constructor
+    PWHistList pwh_first(di.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
+    PWHistList pwhl = pwh_first;
+    EXPECT_TRUE(pwhl.isSaving());
+    EXPECT_EQ(0U, pwhl.getErr());
+    EXPECT_EQ(3U, pwhl.getMax());
+    EXPECT_EQ(3U, pwhl.size());
+    EXPECT_EQ(pw2, pwhl[0].password);
+    EXPECT_EQ(pw3, pwhl[1].password);
+    EXPECT_EQ(pw4, pwhl[2].password);
+    EXPECT_EQ(di.GetPWHistory(), (StringX)pwhl);
+  }
+
+  {
+    // Test the default constructor
+    PWHistList pwh;
+    EXPECT_EQ(emptyHeader, pwh.MakePWHistoryHeader());
+  }
+
   EXPECT_EQ(emptyHeader, PWHistList::MakePWHistoryHeader(false, 0));
   EXPECT_EQ(emptyHeader, PWHistList::MakePWHistoryHeader(false, 0, 0));
 }
