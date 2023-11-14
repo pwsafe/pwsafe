@@ -50,6 +50,17 @@ using pws_os::CUUID;
 static char THIS_FILE[] = __FILE__;
 #endif
 
+
+
+#ifdef _DEBUG
+// Uncomment this to force using the "short" variations of the property sheets (for development/testing).
+//#define FORCE_SHORT_PROPERTY_SHEET
+#else
+#ifdef FORCE_SHORT_PROPERTY_SHEET
+#error Do not force for release builds
+#endif
+#endif
+
 //Add an item
 void DboxMain::OnAdd()
 {
@@ -90,7 +101,12 @@ void DboxMain::OnAdd()
   // Remove Apply button
   pAddEntryPSH->m_psh.dwFlags |= PSH_NOAPPLYNOW;
 
-  INT_PTR rc = pAddEntryPSH->DoModal();
+  INT_PTR rc;
+#ifdef FORCE_SHORT_PROPERTY_SHEET
+  rc = -1;
+#else
+  rc = pAddEntryPSH->DoModal();
+#endif
 
   if (rc < 0) {
     // Try again with Wide version
@@ -1350,7 +1366,13 @@ bool DboxMain::EditItem(CItemData *pci, PWScore *pcore)
   if (uicaller == IDS_VIEWENTRY)
     pEditEntryPSH->m_psh.dwFlags |= PSH_NOAPPLYNOW;
 
-  INT_PTR rc = pEditEntryPSH->DoModal();
+  INT_PTR rc;
+
+#ifdef FORCE_SHORT_PROPERTY_SHEET
+  rc = -1;
+#else
+  rc = pEditEntryPSH->DoModal();
+#endif
 
   if (rc < 0) {
     // Try again with Wide version
