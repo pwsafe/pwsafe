@@ -5743,25 +5743,54 @@ msgstr ""
 msgid "Schema does not have a version number."
 msgstr ""
 
-#. Resource IDs: (6064)
+#. Resource IDs: (6092)
 msgid "Screen capture protection disabled by command line.\n\nContact support if this is unexpected.\n\nClick OK to continue."
 msgstr ""
 
-#. Resource IDs: (6063)
+#. Resource IDs: (6082)
 #, c-format
 msgid "Screen capture protection disabled by command line.\n\nContact support if this is unexpected.\n\nYou can click OK to continue in %d seconds."
+msgstr ""
+
+#. Resource IDs: (6090)
+msgid "Screen capture protection disabled by unknown cause (state error).\n\nContact support if this is unexpected.\n\nClick OK to continue."
+msgstr ""
+
+#. Resource IDs: (6080)
+#, c-format
+msgid "Screen capture protection disabled by unknown cause (state error).\n\nContact support if this is unexpected.\n\nYou can click OK to continue in %d seconds."
+msgstr ""
+
+#. Resource IDs: (6073, 6074)
+msgid "Screen capture protection disabled for remote access."
+msgstr ""
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection experienced an unexpected operating system error."
 msgstr ""
 
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
 msgstr ""
 
-#. Resource IDs: (6071)
+#. Resource IDs: (6070)
+msgid "Screen capture protection invalid (failure)."
+msgstr ""
+
+#. Resource IDs: (6081, 6091)
+msgid "Screen capture protection is enabled."
+msgstr ""
+
+#. Resource IDs: (6069)
 msgid "Screen capture protection is off."
 msgstr ""
 
-#. Resource IDs: (6070)
+#. Resource IDs: (6068)
 msgid "Screen capture protection is on."
+msgstr ""
+
+#. Resource IDs: (6071)
+msgid "Screen capture protection on."
 msgstr ""
 
 #. Resource IDs: (5276)

@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2023-09-26 20:56+0300\n"
+"PO-Revision-Date: 2023-11-14 18:57+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: lv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -3119,7 +3132,7 @@ msgstr "Beigu ziņojums"
 msgid "Enter Key:"
 msgstr "Ievadiet atslēgu:"
 
-#. Resource IDs: (130, 132)
+#. Resource IDs: (130)
 msgid "Enter Master Password"
 msgstr "Ievadīt pamatparoli"
 
@@ -6128,7 +6141,11 @@ msgstr "Sk&ripts:"
 msgid "Schema does not have a version number."
 msgstr "Shēmai nav versijas numura."
 
-#. Resource IDs: (6064)
+#. Resource IDs: (6073)
+msgid "Screen capture protection disabled by a setup option."
+msgstr "Ekrāna tveršanas aizsardzība ir atspējota, izmantojot iestatīšanas opciju."
+
+#. Resource IDs: (6092)
 msgid ""
 "Screen capture protection disabled by command line.\n"
 "\n"
@@ -6142,7 +6159,7 @@ msgstr ""
 "\n"
 "Noklikšķiniet uz Labi, lai turpinātu."
 
-#. Resource IDs: (6063)
+#. Resource IDs: (6082)
 #, c-format
 msgid ""
 "Screen capture protection disabled by command line.\n"
@@ -6157,17 +6174,70 @@ msgstr ""
 "\n"
 "Varat noklikšķināt uz Labi, lai turpinātu pēc %d sekundēm."
 
+#. Resource IDs: (6090)
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"Click OK to continue."
+msgstr ""
+"Ekrāna uztveršanas aizsardzība ir atspējota nezināma iemesla dēļ (stāvokļa kļūda).\n"
+"\n"
+"Ja tas ir negaidīti, sazinieties ar atbalsta dienestu.\n"
+"\n"
+"Noklikšķiniet uz Labi, lai turpinātu."
+
+#. Resource IDs: (6080)
+#, c-format
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"You can click OK to continue in %d seconds."
+msgstr ""
+"Ekrāna uztveršanas aizsardzība ir atspējota nezināma iemesla dēļ (stāvokļa kļūda).\n"
+"\n"
+"Ja tas ir negaidīti, sazinieties ar atbalsta dienestu.\n"
+"\n"
+"Varat noklikšķināt uz Labi, lai turpinātu pēc %d sekundēm."
+
+#. Resource IDs: (6073, 6074)
+msgid "Screen capture protection disabled for remote access."
+msgstr "Attālinātai piekļuvei ir atspējota ekrāna uztveršanas aizsardzība."
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection experienced an unexpected operating system error."
+msgstr "Ekrāna uztveršanas aizsardzībai radās negaidīta operētājsistēmas kļūda."
+
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
 msgstr "Ekrāna tveršanas aizsardzība ir ignorēta ar komandrindu."
 
-#. Resource IDs: (6071)
+#. Resource IDs: (6070)
+msgid "Screen capture protection invalid (failure)."
+msgstr "Ekrāna uztveršanas aizsardzība nav derīga (kļūme)."
+
+#. Resource IDs: (6081, 6091)
+msgid "Screen capture protection is enabled."
+msgstr "Ekrāna uztveršanas aizsardzība ir iespējota."
+
+#. Resource IDs: (6069)
 msgid "Screen capture protection is off."
 msgstr "Ekrāna tveršanas aizsardzība ir izslēgta."
 
-#. Resource IDs: (6070)
+#. Resource IDs: (6068, 6071)
 msgid "Screen capture protection is on."
 msgstr "Ekrāna uztveršanas aizsardzība ir ieslēgta."
+
+#. Resource IDs: (6071)
+msgid "Screen capture protection on."
+msgstr "Ekrāna uztveršanas aizsardzība ir ieslēgta."
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection: unexpected system error"
+msgstr "Aizsardzība pret ekrāna tveršanu: neparedzēta sistēmas kļūda"
 
 #. Resource IDs: (5276)
 #, c-format

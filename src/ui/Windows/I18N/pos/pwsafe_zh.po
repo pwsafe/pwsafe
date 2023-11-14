@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2023-09-26 21:07+0300\n"
+"PO-Revision-Date: 2023-11-14 19:02+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: zh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -3184,7 +3197,7 @@ msgstr "结束报告"
 msgid "Enter Key:"
 msgstr "输入密匙:"
 
-#. Resource IDs: (130, 132)
+#. Resource IDs: (130)
 msgid "Enter Master Password"
 msgstr "输入密码库管理密码"
 
@@ -3458,7 +3471,7 @@ msgstr "从剪贴板历史记录中排除"
 
 #. Resource IDs: (1603)
 msgid "Exclude from screen capture"
-msgstr ""
+msgstr "从屏幕截图中排除"
 
 #. Resource IDs: (1004, 32021)
 msgid "Exit"
@@ -4047,7 +4060,7 @@ msgstr "十六进制和所有其它选项互斥."
 
 #. Resource IDs: (5122)
 msgid "Hide Password Safe from screen capture and related apps."
-msgstr ""
+msgstr "从屏幕截图和相关应用程序中隐藏密码保险箱。"
 
 #. Resource IDs: (1426)
 msgid "Hide System Tray icon (Hot Key MUST be active)"
@@ -4503,7 +4516,7 @@ msgstr "无效输入在行 %d，由 '%c' 分隔的各字段的编号是意外的
 #. Resource IDs: (4116)
 #, c-format
 msgid "Invalid lock file \"%ls\"."
-msgstr ""
+msgstr "锁定文件“%ls”无效。"
 
 #. Resource IDs: (5684)
 msgid "Invalid shortcut ignored."
@@ -6193,7 +6206,11 @@ msgstr "字符集(&R):"
 msgid "Schema does not have a version number."
 msgstr "该模式没有一个版本号."
 
-#. Resource IDs: (6064)
+#. Resource IDs: (6073)
+msgid "Screen capture protection disabled by a setup option."
+msgstr "通过设置选项禁用屏幕捕获保护。"
+
+#. Resource IDs: (6092)
 msgid ""
 "Screen capture protection disabled by command line.\n"
 "\n"
@@ -6207,7 +6224,7 @@ msgstr ""
 "\n"
 "单击“确定”继续。"
 
-#. Resource IDs: (6063)
+#. Resource IDs: (6082)
 #, c-format
 msgid ""
 "Screen capture protection disabled by command line.\n"
@@ -6222,17 +6239,70 @@ msgstr ""
 "\n"
 "您可以单击“确定”以在 %d 秒后继续。"
 
+#. Resource IDs: (6090)
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"Click OK to continue."
+msgstr ""
+"屏幕捕获保护因未知原因（状态错误）而禁用。\n"
+"\n"
+"如果出现意外情况，请联系支持人员。\n"
+"\n"
+"单击“确定”继续。"
+
+#. Resource IDs: (6080)
+#, c-format
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"You can click OK to continue in %d seconds."
+msgstr ""
+"屏幕捕获保护因未知原因（状态错误）而禁用。\n"
+"\n"
+"如果出现意外情况，请联系支持人员。\n"
+"\n"
+"您可以单击“确定”在 %d 秒后继续。"
+
+#. Resource IDs: (6073, 6074)
+msgid "Screen capture protection disabled for remote access."
+msgstr "禁用远程访问的屏幕捕获保护。"
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection experienced an unexpected operating system error."
+msgstr "屏幕捕获保护遇到意外的操作系统错误。"
+
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
 msgstr "屏幕捕获保护已被命令行覆盖。"
 
-#. Resource IDs: (6071)
+#. Resource IDs: (6070)
+msgid "Screen capture protection invalid (failure)."
+msgstr "屏幕捕获保护无效（失败）。"
+
+#. Resource IDs: (6081, 6091)
+msgid "Screen capture protection is enabled."
+msgstr "已启用屏幕捕获保护。"
+
+#. Resource IDs: (6069)
 msgid "Screen capture protection is off."
 msgstr "屏幕捕获保护已关闭。"
 
-#. Resource IDs: (6070)
+#. Resource IDs: (6068, 6071)
 msgid "Screen capture protection is on."
 msgstr "屏幕捕获保护已打开。"
+
+#. Resource IDs: (6071)
+msgid "Screen capture protection on."
+msgstr "屏幕捕获保护打开。"
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection: unexpected system error"
+msgstr "屏幕捕获保护：意外的系统错误"
 
 #. Resource IDs: (5276)
 #, c-format
@@ -7067,7 +7137,7 @@ msgstr "下列基本条目已被导出，因为一个或多个它们的依赖关
 
 #. Resource IDs: (3262)
 msgid "The following columns are unrecognized by PasswordSafe and will be ignored: "
-msgstr ""
+msgstr "以下列无法被密码安全识别，将被忽略："
 
 #. Resource IDs: (3375)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
@@ -8412,6 +8482,8 @@ msgid ""
 "\n"
 "Email: "
 msgstr ""
+"\n"
+"电子邮箱："
 
 #. Resource IDs: (3052)
 #, c-format
@@ -9031,7 +9103,7 @@ msgstr "\t名称: %s; 文件名: %s"
 #. Resource IDs: (5538)
 #, c-format
 msgid "\tNo entries were found containing search string '%ls' %ls"
-msgstr ""
+msgstr "\t未找到包含搜索字符串“%ls”的条目%ls"
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
@@ -9054,7 +9126,7 @@ msgstr "\t密码策略名称 '%ls' 不是在该数据库中."
 #. Resource IDs: (5539)
 #, c-format
 msgid "\tThe following entries contain search string '%ls' %ls"
-msgstr ""
+msgstr "\t以下条目包含搜索字符串“%ls”%ls"
 
 #. Resource IDs: (5522)
 #, c-format

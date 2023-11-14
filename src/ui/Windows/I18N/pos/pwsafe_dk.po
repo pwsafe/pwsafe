@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2023-09-26 20:42+0300\n"
+"PO-Revision-Date: 2023-11-14 18:46+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -3122,7 +3135,7 @@ msgstr "Slut På Rapport"
 msgid "Enter Key:"
 msgstr "Indtast nøgle:"
 
-#. Resource IDs: (130, 132)
+#. Resource IDs: (130)
 msgid "Enter Master Password"
 msgstr "Indtast hovedadgangskode"
 
@@ -3564,20 +3577,25 @@ msgid ""
 "%s %s\n"
 "(Only one R/W access at a time is allowed)"
 msgstr ""
+"Kunne ikke skifte fra R-O til R/W, fordi databasen allerede er åben i R/W-tilstand ved at:\n"
+"%s %s\n"
+"(Kun én R/W-adgang ad gangen er tilladt)"
 
 #. Resource IDs: (5853)
 msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be a problem with its drive."
-msgstr ""
+msgstr "Kunne ikke skifte fra R-O til R/W: Databasen kunne ikke åbnes. Det kan være blevet slettet eller omdøbt, eller der kan være et problem med dets drev."
 
 #. Resource IDs: (5854)
 msgid "Failed to switch from R-O to R/W: The file appears to be too short to be a valid database."
-msgstr ""
+msgstr "Kunne ikke skifte fra R-O til R/W: Filen ser ud til at være for kort til at være en gyldig database."
 
 #. Resource IDs: (5851)
 msgid ""
 "Failed to switch from R/W to R-O: Could not release database lock.\n"
 "Try exiting and restarting program."
 msgstr ""
+"Kunne ikke skifte fra R/W til R-O: Kunne ikke frigive databaselås.\n"
+"Prøv at afslutte og genstarte programmet."
 
 #. Resource IDs: (6006)
 msgid "Failed to update YubiKey"
@@ -4190,11 +4208,11 @@ msgstr "Ikon"
 
 #. Resource IDs: (5104)
 msgid "If enabled, a 'snapshot' will be taken before every save, named as specified below."
-msgstr ""
+msgstr "Hvis aktiveret, vil der blive taget et 'øjebliksbillede' før hver lagring, navngivet som angivet nedenfor."
 
 #. Resource IDs: (5267)
 msgid "If requested, then a delimiter character must be entered."
-msgstr ""
+msgstr "Hvis det ønskes, skal der indtastes et afgrænsertegn."
 
 #. Resource IDs: (5774)
 msgid "If the passphrase is the same as the currently opened database, properties of this backup are shown."
@@ -4217,11 +4235,11 @@ msgstr ""
 
 #. Resource IDs: (5112)
 msgid "If unchecked, you will be prompted to save changes upon exiting Password Safe."
-msgstr ""
+msgstr "Hvis afkrydsningsfeltet ikke er markeret, bliver du bedt om at gemme ændringer, når du afslutter Password Safe."
 
 #. Resource IDs: (5919)
 msgid "If you specify using your own symbol list, you cannot leave it empty. Unselecting use of symbols."
-msgstr ""
+msgstr "Hvis du angiver ved hjælp af din egen symbolliste, kan du ikke lade den være tom. Fravalg af brug af symboler."
 
 #. Resource IDs: (8262)
 msgid "Igbo"
@@ -5547,13 +5565,15 @@ msgstr ""
 
 #. Resource IDs: (6033)
 msgid "Please confirm that you wish to clear the recent Safe list."
-msgstr ""
+msgstr "Bekræft, at du ønsker at rydde den seneste sikre liste."
 
 #. Resource IDs: (5287)
 msgid ""
 "Please confirm that you wish to delete current user's PasswordSafe configuration from the Windows registry.\n"
 "\n"
 msgstr ""
+"Bekræft venligst, at du ønsker at slette den aktuelle brugers PasswordSafe-konfiguration fra Windows-registreringsdatabasen.\n"
+"\n"
 
 #. Resource IDs: (5272)
 msgid "Please enter a search string"
@@ -5585,15 +5605,15 @@ msgstr "Indtast hovedadgangskoden til den NYE database, der skal indeholde ekspo
 
 #. Resource IDs: (5876)
 msgid "Please enter the new database description"
-msgstr ""
+msgstr "Indtast den nye databasebeskrivelse"
 
 #. Resource IDs: (5875)
 msgid "Please enter the new database name"
-msgstr ""
+msgstr "Indtast det nye databasenavn"
 
 #. Resource IDs: (5388)
 msgid "Please enter your backup database prefix."
-msgstr ""
+msgstr "Indtast dit backupdatabasepræfiks."
 
 #. Resource IDs: (6001)
 msgid "Please insert your YubiKey"
@@ -5605,7 +5625,7 @@ msgstr "Navngiv venligst XML filen"
 
 #. Resource IDs: (5961)
 msgid "Please name the database file"
-msgstr ""
+msgstr "Navngiv databasefilen"
 
 #. Resource IDs: (5331)
 msgid "Please name the exported database"
@@ -5693,6 +5713,9 @@ msgid ""
 "\n"
 "Pressing Cancel stops the password from being copied."
 msgstr ""
+"Hvis du trykker på OK, kopieres adgangskoden til det valgte element til udklipsholderen. Udklipsholderen ryddes sikkert, når Password Safe lukkes.\n"
+"\n"
+"Hvis du trykker på Annuller, forhindres kopiering af adgangskoden."
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -6079,7 +6102,7 @@ msgstr "Gem ændringer til %1?"
 
 #. Resource IDs: (1045)
 msgid "Save database immediately after any change"
-msgstr ""
+msgstr "Gem databasen umiddelbart efter enhver ændring"
 
 #. Resource IDs: (1094)
 msgid "Sc&ript:"
@@ -6089,7 +6112,11 @@ msgstr "Sc&ript:"
 msgid "Schema does not have a version number."
 msgstr "Skemaet har ikke et versions nummer."
 
-#. Resource IDs: (6064)
+#. Resource IDs: (6073)
+msgid "Screen capture protection disabled by a setup option."
+msgstr "Beskyttelse af skærmoptagelse deaktiveret af en opsætningsindstilling."
+
+#. Resource IDs: (6092)
 msgid ""
 "Screen capture protection disabled by command line.\n"
 "\n"
@@ -6103,7 +6130,7 @@ msgstr ""
 "\n"
 "Klik på OK for at fortsætte."
 
-#. Resource IDs: (6063)
+#. Resource IDs: (6082)
 #, c-format
 msgid ""
 "Screen capture protection disabled by command line.\n"
@@ -6118,17 +6145,70 @@ msgstr ""
 "\n"
 "Du kan klikke på OK for at fortsætte om %d sekunder."
 
+#. Resource IDs: (6090)
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"Click OK to continue."
+msgstr ""
+"Beskyttelse af skærmoptagelse deaktiveret af ukendt årsag (tilstandsfejl).\n"
+"\n"
+"Kontakt support, hvis dette er uventet.\n"
+"\n"
+"Klik på OK for at fortsætte."
+
+#. Resource IDs: (6080)
+#, c-format
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"You can click OK to continue in %d seconds."
+msgstr ""
+"Beskyttelse af skærmoptagelse deaktiveret af ukendt årsag (tilstandsfejl).\n"
+"\n"
+"Kontakt support, hvis dette er uventet.\n"
+"\n"
+"Du kan klikke på OK for at fortsætte om %d sekunder."
+
+#. Resource IDs: (6073, 6074)
+msgid "Screen capture protection disabled for remote access."
+msgstr "Beskyttelse af skærmoptagelse deaktiveret for fjernadgang."
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection experienced an unexpected operating system error."
+msgstr "Beskyttelse mod skærmoptagelse oplevede en uventet operativsystemfejl."
+
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
 msgstr "Beskyttelse af skærmoptagelse er blevet tilsidesat af kommandolinjen."
 
-#. Resource IDs: (6071)
+#. Resource IDs: (6070)
+msgid "Screen capture protection invalid (failure)."
+msgstr "Beskyttelse mod skærmoptagelse ugyldig (fejl)."
+
+#. Resource IDs: (6081, 6091)
+msgid "Screen capture protection is enabled."
+msgstr "Beskyttelse mod skærmoptagelse er aktiveret."
+
+#. Resource IDs: (6069)
 msgid "Screen capture protection is off."
 msgstr "Beskyttelse mod skærmoptagelse er slået fra."
 
-#. Resource IDs: (6070)
+#. Resource IDs: (6068, 6071)
 msgid "Screen capture protection is on."
 msgstr "Beskyttelse mod skærmoptagelse er slået til."
+
+#. Resource IDs: (6071)
+msgid "Screen capture protection on."
+msgstr "Beskyttelse mod skærmoptagelse slået til."
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection: unexpected system error"
+msgstr "Beskyttelse mod skærmoptagelse: uventet systemfejl"
 
 #. Resource IDs: (5276)
 #, c-format
@@ -6141,7 +6221,7 @@ msgstr "Anden dato skal være senere end den første"
 
 #. Resource IDs: (5561)
 msgid "Second number must be greater than first"
-msgstr ""
+msgstr "Andet tal skal være større end første"
 
 #. Resource IDs: (142, 1599)
 msgid "Security"
@@ -7508,11 +7588,11 @@ msgstr ""
 
 #. Resource IDs: (5001)
 msgid "Unrecognised command line argument found"
-msgstr ""
+msgstr "Ikke-genkendt kommandolinjeargument fundet"
 
 #. Resource IDs: (3349)
 msgid "Unsaved changes"
-msgstr ""
+msgstr "Ændringer der ikke er gemt"
 
 #. Resource IDs: (5724)
 #, c-format

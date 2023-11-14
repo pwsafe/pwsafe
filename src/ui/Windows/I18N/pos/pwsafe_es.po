@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2023-09-26 20:45+0300\n"
+"PO-Revision-Date: 2023-11-14 18:47+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -3154,7 +3167,7 @@ msgstr "Informe final"
 msgid "Enter Key:"
 msgstr "Introduzca clave:"
 
-#. Resource IDs: (130, 132)
+#. Resource IDs: (130)
 msgid "Enter Master Password"
 msgstr "Introduzca la contraseña maestra"
 
@@ -5576,7 +5589,7 @@ msgstr "Escoger archivo XML a importar"
 
 #. Resource IDs: (5354)
 msgid "Please choose a database to compare with current database"
-msgstr ""
+msgstr "Elija una base de datos para compararla con la base de datos actual"
 
 #. Resource IDs: (5348)
 msgid "Please choose a database to merge into current database"
@@ -5605,7 +5618,7 @@ msgstr "Por favor confirme el borrado del %s filtro %s?"
 
 #. Resource IDs: (6033)
 msgid "Please confirm that you wish to clear the recent Safe list."
-msgstr ""
+msgstr "Confirme que desea borrar la lista segura reciente."
 
 #. Resource IDs: (5287)
 msgid ""
@@ -5657,7 +5670,7 @@ msgstr "Por favor indique el prefijo de la copia de seguridad de la base de dato
 
 #. Resource IDs: (6001)
 msgid "Please insert your YubiKey"
-msgstr ""
+msgstr "Por favor, inserte su YubiKey"
 
 #. Resource IDs: (5333)
 msgid "Please name the XML file"
@@ -5665,7 +5678,7 @@ msgstr "Introduzca el nombre del archivo XML"
 
 #. Resource IDs: (5961)
 msgid "Please name the database file"
-msgstr ""
+msgstr "Asigne un nombre al archivo de la base de datos"
 
 #. Resource IDs: (5331)
 msgid "Please name the exported database"
@@ -5681,7 +5694,7 @@ msgstr "Nombra este filtro"
 
 #. Resource IDs: (5993)
 msgid "Please select media type"
-msgstr ""
+msgstr "Seleccione el tipo de medio"
 
 #. Resource IDs: (5487)
 msgid "Please select report to view."
@@ -5737,11 +5750,11 @@ msgstr "Portugués (Brasileño ABNT)"
 
 #. Resource IDs: (6049)
 msgid "Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character. Positions must be separated by either spaces, commas or semi-colons to be recognised. There must also be a space, comma or semi-colon at the end of the list."
-msgstr ""
+msgstr "La posición 1 es el primer carácter, 2 es el segundo, etc., hasta N para el último carácter de una contraseña de longitud N. -1 es el último carácter, -2 el penúltimo, etc. hasta -N para el primer carácter de contraseña. Las posiciones deben estar separadas por espacios, comas o punto y coma para ser reconocidas. También debe haber un espacio, una coma o un punto y coma al final de la lista."
 
 #. Resource IDs: (65535)
 msgid "Positions:"
-msgstr ""
+msgstr "Posiciones:"
 
 #. Resource IDs: (8150)
 msgid "Press to delete all added characters."
@@ -5753,6 +5766,9 @@ msgid ""
 "\n"
 "Pressing Cancel stops the password from being copied."
 msgstr ""
+"Al presionar OK se copiará la contraseña del elemento seleccionado en el portapapeles. El portapapeles se borrará de forma segura cuando se cierre Password Safe.\n"
+"\n"
+"Al presionar Cancelar, se detiene la copia de la contraseña."
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -6151,7 +6167,11 @@ msgstr "Guión:"
 msgid "Schema does not have a version number."
 msgstr "El esquema no tiene un número de versión."
 
-#. Resource IDs: (6064)
+#. Resource IDs: (6073)
+msgid "Screen capture protection disabled by a setup option."
+msgstr "Protección de captura de pantalla desactivada por una opción de configuración."
+
+#. Resource IDs: (6092)
 msgid ""
 "Screen capture protection disabled by command line.\n"
 "\n"
@@ -6165,7 +6185,7 @@ msgstr ""
 "\n"
 "Haga clic en Aceptar para continuar."
 
-#. Resource IDs: (6063)
+#. Resource IDs: (6082)
 #, c-format
 msgid ""
 "Screen capture protection disabled by command line.\n"
@@ -6180,17 +6200,70 @@ msgstr ""
 "\n"
 "Puede hacer clic en Aceptar para continuar en %d segundos."
 
+#. Resource IDs: (6090)
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"Click OK to continue."
+msgstr ""
+"Protección de captura de pantalla deshabilitada por causa desconocida (error de estado).\n"
+"\n"
+"Póngase en contacto con el servicio de asistencia si esto es inesperado.\n"
+"\n"
+"Haga clic en Aceptar para continuar."
+
+#. Resource IDs: (6080)
+#, c-format
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"You can click OK to continue in %d seconds."
+msgstr ""
+"Protección de captura de pantalla deshabilitada por causa desconocida (error de estado).\n"
+"\n"
+"Póngase en contacto con el servicio de asistencia si esto es inesperado.\n"
+"\n"
+"Puede hacer clic en Aceptar para continuar en %d segundos."
+
+#. Resource IDs: (6073, 6074)
+msgid "Screen capture protection disabled for remote access."
+msgstr "Protección de captura de pantalla deshabilitada para el acceso remoto."
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection experienced an unexpected operating system error."
+msgstr "La protección de captura de pantalla experimentó un error inesperado del sistema operativo."
+
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
 msgstr "La protección de captura de pantalla ha sido anulada por la línea de comandos."
 
-#. Resource IDs: (6071)
+#. Resource IDs: (6070)
+msgid "Screen capture protection invalid (failure)."
+msgstr "La protección de captura de pantalla no es válida (error)."
+
+#. Resource IDs: (6081, 6091)
+msgid "Screen capture protection is enabled."
+msgstr "La protección de captura de pantalla está habilitada."
+
+#. Resource IDs: (6069)
 msgid "Screen capture protection is off."
 msgstr "La protección de captura de pantalla está desactivada."
 
-#. Resource IDs: (6070)
+#. Resource IDs: (6068, 6071)
 msgid "Screen capture protection is on."
 msgstr "La protección de captura de pantalla está activada."
+
+#. Resource IDs: (6071)
+msgid "Screen capture protection on."
+msgstr "Protección de captura de pantalla activada."
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection: unexpected system error"
+msgstr "Protección de captura de pantalla: error inesperado del sistema"
 
 #. Resource IDs: (5276)
 #, c-format
@@ -6211,7 +6284,7 @@ msgstr "Seguridad"
 
 #. Resource IDs: (3407)
 msgid "See Attachment filters"
-msgstr ""
+msgstr "Consulte Filtros de datos adjuntos"
 
 #. Resource IDs: (65535)
 msgid "See LICENSE for open source details."
