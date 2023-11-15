@@ -96,7 +96,6 @@ private:
     size_t m_numErr;        // Number of ill-formed entries
 
     void sortList();
-    void push_back(const PWHistEntry &pwh_ent) = delete;    // Just to make sure this isn't being used, use addEntry instead
 
 public:
     // Parse a password history string as defined
@@ -117,7 +116,7 @@ public:
     void setMax(size_t x) { m_maxEntries = x; };     // The list will be trimed, if necessary, when a StringX is generated
     void setSaving(bool b) { m_saveHistory = b; };
 
-    void addEntry(const PWHistEntry &pwh_ent) { PWHistVect::push_back(pwh_ent); };
+    void addEntry(const PWHistEntry &pwh_ent) { push_back(pwh_ent); };
 
     static StringX GetPreviousPassword(const StringX &pwh_str);
     static StringX MakePWHistoryHeader(bool status, size_t pwh_max, size_t pwh_num = 0);
