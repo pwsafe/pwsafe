@@ -6275,6 +6275,7 @@ msgstr "Der Bildschirmaufnahmeschutz ist für den Fernzugriff deaktiviert."
 msgid "Screen capture protection experienced an unexpected operating system error."
 msgstr "Beim Schutz vor Bildschirmaufnahmen ist ein unerwarteter Betriebssystemfehler aufgetreten."
 
+
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
 msgstr "Der Bildschirmaufnahmeschutz wurde durch die Kommandozeile aufgehoben."
