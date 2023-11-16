@@ -345,7 +345,7 @@ if (NOT WIN32)
                      COMMAND ${GZIP} ARGS -9 -n -c ${PROJECT_SOURCE_DIR}/docs/pwsafe.1 > pwsafe.1.gz
                      WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
   ADD_CUSTOM_TARGET(manpage ALL DEPENDS ${CMAKE_BINARY_DIR}/pwsafe.1.gz)
-  install (FILES ${CMAKE_BINARY_DIR}/pwsafe.1.gz DESTINATION "share/man/man1") 
+  install (FILES ${CMAKE_BINARY_DIR}/pwsafe.1.gz TYPE MAN)
   install (FILES "install/desktop/pwsafe.desktop" DESTINATION "share/applications")
   install (FILES "install/graphics/pwsafe.png" DESTINATION "share/icons/hicolor/48x48/apps/")
   install (DIRECTORY "${CMAKE_BINARY_DIR}/src/ui/wxWidgets/I18N/mos/"
