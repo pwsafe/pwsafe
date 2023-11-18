@@ -76,7 +76,9 @@ BOOL CPWPropertySheet::OnInitDialog()
   m_bKeepHidden = false;
   ShowWindow(SW_SHOW);
 
-  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
+  CScreenCaptureStateControl::SetLastDisplayAffinityError(
+    WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd, app.IsExcludeFromScreenCapture())
+  );
 
   return TRUE;  // return TRUE unless you set the focus to a control
 }

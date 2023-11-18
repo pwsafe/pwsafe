@@ -40,8 +40,19 @@ struct LANGHELPFILE {
 
 class DboxMain;
 
+#define PWS_ADMIN_OPTIONS_SUBKEY_NAME L"Software\\Password Safe\\Admin"
+#define SCRCAP_PROTECTION_ENABLED_REG_VALUE_NAME L"ScreenCaptureProtection"
+
 class ThisMfcApp : public CWinApp
 {
+public:
+  enum AllowScreenCaptureState
+  {
+    Disallowed,
+    ForceAllowedCommandLine,
+    AllowedRegistrySetting,
+    MaxState
+  };
 public:
   ThisMfcApp();
   ~ThisMfcApp();
@@ -84,7 +95,13 @@ public:
   void GetLanguageFiles();
   void SetLanguage();
   void SetMinidumpUserStreams(const bool bOpen, const bool bRW, UserStream iStream = usAll);
-  bool ForceAllowScreenCapture() const { return m_bForceAllowScreenCapture; }
+
+  // Screen capture protection:
+  static int GetScreenCaptureProtectionEnabledRegValue();
+  bool IsCommandLineForcedAllowScreenCapture() const { return m_allowScreenCaptureState == ForceAllowedCommandLine; }
+  bool IsExcludeFromScreenCapture() const;
+  UINT ResolveAllowScreenCaptureStateResourceId(UINT nIdFirst) const;
+  CString GetAllowScreenCaptureStateMessage(UINT nIdFirst) const;
 
   DWORD GetOSMajorMinor() { return m_dwMajorMinor; }
 
@@ -132,7 +149,7 @@ private:
 
   // Used as needed to detect user command-line override of
   // any ExcludeFromScreenCapture preference in effect.
-  bool m_bForceAllowScreenCapture;
+  AllowScreenCaptureState m_allowScreenCaptureState;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

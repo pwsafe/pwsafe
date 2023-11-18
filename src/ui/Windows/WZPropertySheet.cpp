@@ -117,7 +117,9 @@ INT_PTR CWZPropertySheet::DoModal()
 BOOL CWZPropertySheet::OnInitDialog()
 {
   BOOL bResult = CPropertySheet::OnInitDialog();
-  WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd);
+  CScreenCaptureStateControl::SetLastDisplayAffinityError(
+    WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd, app.IsExcludeFromScreenCapture())
+  );
   return bResult;
 }
 

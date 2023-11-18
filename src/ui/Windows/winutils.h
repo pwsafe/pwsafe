@@ -27,7 +27,7 @@ namespace WinUtil {
   void FixBitmapBackground(CBitmap& bm);
   BOOL LoadScaledBitmap(CBitmap& bitmap, UINT nID, bool fixBckgrnd = true, HWND hwnd = nullptr);
   bool HasTouchscreen(); // for BR1539 workaround
-  void SetWindowExcludeFromScreenCapture(HWND hwnd);
+  DWORD SetWindowExcludeFromScreenCapture(HWND hwnd, bool excludeFromScreenCapture);
 }
 #endif // __WINUTILS_H__
 

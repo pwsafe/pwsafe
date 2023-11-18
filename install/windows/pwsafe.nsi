@@ -43,13 +43,17 @@
 ;    or in the Start Menu, for easy access.  
 ;
 ; 2. The installer optionally places four registry values in 
-;    HKCU\Software\Password Safe\Password Safe.  These registry
+;    HKLM\Software\Password Safe\Password Safe.  These registry
 ;    values are for the use of the installer itself.  Password Safe
 ;    does not rely on these registry values.  If the installer is not
 ;    used, or if a "Green" installation is selected (see below), these
 ;    registry values are not created. 
 ;
-; 3. The installer will create an uninstaller and place an entry to
+; 3. In addition, HKLM "Software\Password Safe\Admin is used to disable
+;    the screen capture protection, if the relevant checkbox is cleared.
+;    This is also skipped when a "Green" installation is selected.
+;
+; 4. The installer will create an uninstaller and place an entry to
 ;    uninstall Password Safe in the Add or Remove Programs Wizard.
 ;
 ; As of PasswordSafe 3.05, this script allows users to choose
@@ -183,6 +187,9 @@ Unicode true
   ;Request application privileges for Windows Vista and later.
   RequestExecutionLevel admin
 
+  ; Error message to use if screen capture protection default setting handling fails.
+  Var ScrCapErrMsg
+
 ;--------------------------------
 ; Pages
 
@@ -294,6 +301,9 @@ LangString START_SHORTCUT ${LANG_ENGLISH} "Install desktop shortcut"
 ; Uninstall shortcut
 LangString UNINSTALL_SHORTCUT ${LANG_ENGLISH} "Uninstall shortcut"
 
+; Screen capture protection.
+LangString SCRCAP_PROTECTION ${LANG_ENGLISH} "Screen capture protection"
+
 ; Descriptions
 LangString DESC_ProgramFiles ${LANG_ENGLISH} "Installs the basic files necessary to run Password Safe."
 LangString DESC_CliTool ${LANG_ENGLISH} "Installs pwsafe-cli, a command line utility."
@@ -302,6 +312,7 @@ LangString DESC_StartMenu ${LANG_ENGLISH} "Creates an entry in the start menu fo
 LangString DESC_DesktopShortcut ${LANG_ENGLISH} "Places a shortcut to Password Safe on your desktop."
 LangString DESC_UninstallMenu ${LANG_ENGLISH} "Places a shortcut in the start menu to Uninstall Password Safe."
 LangString DESC_LangSupport ${LANG_ENGLISH} "Please select the language(s) that Password Safe will use."
+LangString DESC_ScrCapProtection ${LANG_ENGLISH} "Enables screen capture protection."
 
 ; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
 LangString TEXT_GC_TITLE ${LANG_ENGLISH} "Installation Type"
@@ -341,6 +352,9 @@ LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported
 LangString SORRY_NO_98 ${LANG_ENGLISH} "Sorry, Windows 98 is no longer supported.$\r$\nTry Password Safe 2.16"
 LangString SORRY_NO_ME ${LANG_ENGLISH} "Sorry, Windows ME is no longer supported.$\r$\nTry Password Safe 2.16"
 LangString SORRY_NO_2K ${LANG_ENGLISH} "Sorry, Windows 2000 is no longer supported.$\r$\nTry Password Safe 3.18"
+
+LangString SORRY_CANNOT_DISABLE_SCRCAP ${LANG_ENGLISH} "An error occurred disabling screen capture protection. Screen capture protection is not disabled."
+LangString SORRY_CANNOT_ENABLE_SCRCAP ${LANG_ENGLISH} "An error occurred setting screen capture protection to default (enabled)."
 
 LangString Icon_description_Uninstall ${LANG_ENGLISH} "Password Safe Uninstall"
 LangString Icon_description_Help ${LANG_ENGLISH} "Password Safe Help"
@@ -642,6 +656,110 @@ Section "$(START_SHORTCUT)" DesktopShortcut
 SectionEnd
 
 ;--------------------------------
+; Screen capture protection
+
+Function ScrCapErrorHandler
+    Pop $0
+    IfSilent +2 0
+    MessageBox MB_OK|MB_ICONSTOP "$ScrCapErrMsg ($0)"
+    SetErrorlevel $0
+    SetErrors
+    SetRegView Default
+    Abort
+FunctionEnd
+
+Function ScrCapCreateAdminKey
+  WriteRegStr HKLM "Software\Password Safe\Admin" "" "Admin"
+  Pop $0
+
+  ClearErrors
+  ReadRegStr $0 HKLM "Software\Password Safe\Admin" ""
+  IfErrors 0 +3
+  Push 10001
+  Call ScrCapErrorHandler
+FunctionEnd
+
+Section "$(SCRCAP_PROTECTION)" ScrCapProtection
+  IntCmp $INSTALL_TYPE 1 GreenInstall_1
+
+  ; Establish the error message to use for failures while ensuring default screen capture protection.
+  StrCpy $ScrCapErrMsg "$(SORRY_CANNOT_ENABLE_SCRCAP)"
+
+  ; NSIS installer is always 32-bits.
+  ; Set registry affected based on bitness of pwsafe.
+  !if ${ARCH} == "x86"
+    SetRegView 32
+  !else if ${ARCH} == "x64"
+    SetRegView 64
+  !else
+    !error "ARCH must be either x86 or x64"
+  !endif
+
+  ; Ensure the "Software\Password Safe\Admin" is present and admin-only.
+  Call ScrCapCreateAdminKey
+
+  ; Delete the ScreenCaptureProtection value if present.
+  DeleteRegValue HKLM "Software\Password Safe\Admin" "ScreenCaptureProtection"
+
+  ; Ensure the ScreenCaptureProtection value is not present.
+  ClearErrors
+  ReadRegDWORD $0 HKLM "Software\Password Safe\Admin" "ScreenCaptureProtection"
+  IfErrors +3 0
+  Push 10005
+  Call ScrCapErrorHandler
+
+  SetRegView Default
+GreenInstall_1:
+SectionEnd
+
+Section /o -DisableScrCapProtection SidDisableScrCapProtection
+  IntCmp $INSTALL_TYPE 1 GreenInstall_2
+
+  ; Establish the error message to use for failures while disabling screen capture protection.
+  StrCpy $ScrCapErrMsg "$(SORRY_CANNOT_DISABLE_SCRCAP)"
+
+  ; NSIS installer is always 32-bits.
+  ; Set registry affected based on bitness of pwsafe.
+  !if ${ARCH} == "x86"
+    SetRegView 32
+  !else if ${ARCH} == "x64"
+    SetRegView 64
+  !else
+    !error "ARCH must be either x86 or x64"
+  !endif
+
+  ; Ensure the "Software\Password Safe\Admin" is present and admin-only.
+  Call ScrCapCreateAdminKey
+
+  ; Add the ScreenCaptureProtection = 0 value to disable screen capture protection.
+  WriteRegDWORD HKLM "Software\Password Safe\Admin" "ScreenCaptureProtection" 0x00000000
+  Pop $0
+
+  ; Ensure the ScreenCaptureProtection value is present.
+  ClearErrors
+  ReadRegDWORD $0 HKLM "Software\Password Safe\Admin" "ScreenCaptureProtection"
+  IfErrors 0 +3
+  Push 10006
+  Call ScrCapErrorHandler
+
+  ${If} $0 != "0"
+    Push 10007
+    Call ScrCapErrorHandler
+  ${EndIf}
+
+  SetRegView Default
+GreenInstall_2:
+SectionEnd
+
+Function .onSelChange
+${If} ${SectionIsSelected} ${ScrCapProtection}
+    !insertmacro UnselectSection ${SidDisableScrCapProtection}
+${Else}
+    !insertmacro SelectSection ${SidDisableScrCapProtection}
+${EndIf}
+FunctionEnd
+
+;--------------------------------
 ; Descriptions
   
   ; Assign language strings to sections
@@ -653,6 +771,7 @@ SectionEnd
     !insertmacro MUI_DESCRIPTION_TEXT ${UninstallMenu} $(DESC_UninstallMenu)
     !insertmacro MUI_DESCRIPTION_TEXT ${DesktopShortcut} $(DESC_DesktopShortcut)
     !insertmacro MUI_DESCRIPTION_TEXT ${LanguageSupport} $(DESC_LangSupport)
+    !insertmacro MUI_DESCRIPTION_TEXT ${ScrCapProtection} $(DESC_ScrCapProtection)
   !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
 ;--------------------------------
@@ -750,6 +869,17 @@ Section "Uninstall"
   RMDir /r "$SMPROGRAMS\Password Safe"
   Delete "$DESKTOP\Password Safe.lnk"
   Delete "$SMSTARTUP\Password Safe.lnk"
+
+  ; Delete the Password Safe HKLM registry key.
+  !if ${ARCH} == "x86"
+    SetRegView 32
+  !else if ${ARCH} == "x64"
+    SetRegView 64
+  !else
+    !error "ARCH must be either x86 or x64"
+  !endif
+  DeleteRegKey HKLM "Software\Password Safe"
+  SetRegView Default
 
 SectionEnd
 

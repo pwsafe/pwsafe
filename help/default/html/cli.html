@@ -110,7 +110,11 @@ group/title/username combination.</li>
     However, some programs, such as remote desktop viewers and screen readers for the visually impaired, rely on the screen capture capability to function. If you're using such programs on a regular basis, you can disable this by starting <b>Password Safe</b>
     with this command line flag.
     To protect against an adversary surreptitiously adding this flag, <b>Password Safe</b> displays a short notice when starting, informing you that the option has been set.
-    In addition, the "Capture Protection" indicator in the opening and main windows will be in red.
+    In addition, the "Capture Protection" indicator in the opening and main windows will be in red.<br/>
+    This feature can also be silently disabled at installation/setup time, either by clearing the screen capture protection checkbox in the exe (NSIS) Choose Components window,
+    or by passing SCREENCAPTUREPROTECTION=False as an argument to the msiexec command, e.g., <code>msiexec /i &lt;pwsafe_msi_path&gt; SCREENCAPTUREPROTECTION=False</code>. When the feature is 
+    disabled this way, the status icon will be gray, with a tooltip indicating that the feature was disabled at setup. This is implemented via a registry key that requires admin priviledge to write,
+    but is readable by all users.
 </li>
 
 <li><b>--testdump</b><br>

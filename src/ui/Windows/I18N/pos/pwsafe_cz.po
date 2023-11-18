@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2023-09-26 20:37+0300\n"
+"PO-Revision-Date: 2023-11-14 18:44+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -3165,7 +3178,7 @@ msgstr "Konec zprávy"
 msgid "Enter Key:"
 msgstr "Zadejte klávesu:"
 
-#. Resource IDs: (130, 132)
+#. Resource IDs: (130)
 msgid "Enter Master Password"
 msgstr "Zadejte Hlavní heslo"
 
@@ -5592,7 +5605,7 @@ msgstr "Prosím vyberte XML soubor k importování"
 
 #. Resource IDs: (5354)
 msgid "Please choose a database to compare with current database"
-msgstr ""
+msgstr "Vyberte databázi, kterou chcete porovnat s aktuální databází"
 
 #. Resource IDs: (5348)
 msgid "Please choose a database to merge into current database"
@@ -5621,7 +5634,7 @@ msgstr "Prosím potvrďte smazání %s filtru %s"
 
 #. Resource IDs: (6033)
 msgid "Please confirm that you wish to clear the recent Safe list."
-msgstr ""
+msgstr "Potvrďte, že si přejete vymazat poslední seznam bezpečných položek."
 
 #. Resource IDs: (5287)
 msgid ""
@@ -5681,7 +5694,7 @@ msgstr "Prosím pojmenujte XML soubor"
 
 #. Resource IDs: (5961)
 msgid "Please name the database file"
-msgstr ""
+msgstr "Pojmenujte prosím databázový soubor"
 
 #. Resource IDs: (5331)
 msgid "Please name the exported database"
@@ -5697,7 +5710,7 @@ msgstr "Prosím pojmenujte tento filtr"
 
 #. Resource IDs: (5993)
 msgid "Please select media type"
-msgstr ""
+msgstr "Vyberte prosím typ média"
 
 #. Resource IDs: (5487)
 msgid "Please select report to view."
@@ -5753,7 +5766,7 @@ msgstr "Portugalština (Brazilská ABNT)"
 
 #. Resource IDs: (6049)
 msgid "Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character. Positions must be separated by either spaces, commas or semi-colons to be recognised. There must also be a space, comma or semi-colon at the end of the list."
-msgstr ""
+msgstr "Pozice 1 je první znak, 2 je druhý atd. až do N pro poslední znak hesla délky N. -1 je poslední znak, -2 předposlední atd. až do -N pro první znak hesla. Pozice musí být odděleny mezerami, čárkami nebo středníky, aby byly rozpoznány. Na konci seznamu musí být také mezera, čárka nebo středník."
 
 #. Resource IDs: (65535)
 msgid "Positions:"
@@ -5769,6 +5782,9 @@ msgid ""
 "\n"
 "Pressing Cancel stops the password from being copied."
 msgstr ""
+"Stisknutím tlačítka OK zkopírujete heslo vybrané položky do schránky. Po zavření funkce Password Safe bude schránka bezpečně vymazána.\n"
+"\n"
+"Stisknutím tlačítka Storno zastavíte kopírování hesla."
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -5796,7 +5812,7 @@ msgstr "Programy (*.exe)|*.exe|Všechny soubory (*.*)|*.*||"
 
 #. Resource IDs: (1030)
 msgid "Prompt user for default username"
-msgstr ""
+msgstr "Vyzvat uživatele k zadání výchozího uživatelského jména"
 
 #. Resource IDs: (4112)
 msgid "Pronounceable passwords"
@@ -5945,7 +5961,7 @@ msgstr "Vymaž konfigurační záznamy z registru Windows "
 
 #. Resource IDs: (5111)
 msgid "Remove all saved passwords for entries and stop saving password change history in all entries."
-msgstr ""
+msgstr "Odstraňte všechna uložená hesla pro záznamy a zastavte ukládání historie změn hesel ve všech záznamech."
 
 #. Resource IDs: (32291 - Menu)
 msgid "Remove this shortcut"
@@ -6167,7 +6183,11 @@ msgstr "Sk&ript"
 msgid "Schema does not have a version number."
 msgstr "Schéma nemá číslo verze."
 
-#. Resource IDs: (6064)
+#. Resource IDs: (6073)
+msgid "Screen capture protection disabled by a setup option."
+msgstr "Ochrana před snímáním obrazovky je zakázána možností nastavení."
+
+#. Resource IDs: (6092)
 msgid ""
 "Screen capture protection disabled by command line.\n"
 "\n"
@@ -6181,7 +6201,7 @@ msgstr ""
 "\n"
 "Pokračujte kliknutím na tlačítko OK."
 
-#. Resource IDs: (6063)
+#. Resource IDs: (6082)
 #, c-format
 msgid ""
 "Screen capture protection disabled by command line.\n"
@@ -6196,17 +6216,70 @@ msgstr ""
 "\n"
 "Můžete kliknout na tlačítko OK pokračovat za %d sekund."
 
+#. Resource IDs: (6090)
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"Click OK to continue."
+msgstr ""
+"Ochrana před snímáním obrazovky je zakázána z neznámé příčiny (chyba stavu).\n"
+"\n"
+"Pokud je to neočekávané, kontaktujte podporu.\n"
+"\n"
+"Pokračujte kliknutím na tlačítko OK."
+
+#. Resource IDs: (6080)
+#, c-format
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"You can click OK to continue in %d seconds."
+msgstr ""
+"Ochrana před snímáním obrazovky je zakázána z neznámé příčiny (chyba stavu).\n"
+"\n"
+"Pokud je to neočekávané, kontaktujte podporu.\n"
+"\n"
+"Klepnutím na tlačítko OK můžete pokračovat za %d sekund."
+
+#. Resource IDs: (6073, 6074)
+msgid "Screen capture protection disabled for remote access."
+msgstr "Ochrana před snímáním obrazovky je pro vzdálený přístup zakázána."
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection experienced an unexpected operating system error."
+msgstr "Ochrana před snímáním obrazovky zaznamenala neočekávanou chybu operačního systému."
+
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
 msgstr "Ochrana snímání obrazovky byla přepsána příkazovým řádkem."
 
-#. Resource IDs: (6071)
+#. Resource IDs: (6070)
+msgid "Screen capture protection invalid (failure)."
+msgstr "Ochrana před snímáním obrazovky je neplatná (selhání)."
+
+#. Resource IDs: (6081, 6091)
+msgid "Screen capture protection is enabled."
+msgstr "Ochrana před snímáním obrazovky je povolena."
+
+#. Resource IDs: (6069)
 msgid "Screen capture protection is off."
 msgstr "Ochrana snímání obrazovky je vypnutá."
 
-#. Resource IDs: (6070)
+#. Resource IDs: (6068, 6071)
 msgid "Screen capture protection is on."
 msgstr "Ochrana snímků obrazovky je zapnutá."
+
+#. Resource IDs: (6071)
+msgid "Screen capture protection on."
+msgstr "Zapnutá ochrana před snímáním obrazovky."
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection: unexpected system error"
+msgstr "Ochrana před snímáním obrazovky: neočekávaná systémová chyba"
 
 #. Resource IDs: (5276)
 #, c-format
