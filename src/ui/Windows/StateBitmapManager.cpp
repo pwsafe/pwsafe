@@ -51,7 +51,7 @@ CStateBitmapManager::CStateBitmapManager(
 
 CBitmap& CStateBitmapManager::GetStateBitmap(UINT nIdBitmap)
 {
-  int nBitmapIndex = nIdBitmap - m_idFirst;
+  auto nBitmapIndex = nIdBitmap - m_idFirst;
   ASSERT(nBitmapIndex >= 0 && nBitmapIndex < m_stateBitmaps.size());
   if (nBitmapIndex < 0 || nBitmapIndex >= m_stateBitmaps.size())
     nBitmapIndex = m_idError - m_idFirst;

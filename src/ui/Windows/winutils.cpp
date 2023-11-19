@@ -14,6 +14,9 @@
 #include "stdafx.h"
 #include "winutils.h"
 
+#include "WtsApi32.h"
+#pragma comment (lib, "Wtsapi32")
+
 #include <sstream>
 
 #include "core/StringX.h"
@@ -401,14 +404,18 @@ bool WinUtil::HasTouchscreen() // for BR1539 workaround
   return (value != 0);
 }
 
-void WinUtil::SetWindowExcludeFromScreenCapture(HWND hwnd)
+DWORD WinUtil::SetWindowExcludeFromScreenCapture(HWND hwnd, bool excludeFromScreenCapture)
 {
   ASSERT(::IsWindow(hwnd));
   if (!::IsWindow(hwnd))
-    return;
-  bool bExcludeFromScreenCapture = PWSprefs::GetInstance()->GetPref(PWSprefs::ExcludeFromScreenCapture) && !app.ForceAllowScreenCapture();
-  DWORD dwNewDisplayAffinity = bExcludeFromScreenCapture ? WDA_EXCLUDEFROMCAPTURE : WDA_NONE;
+    return ERROR_INVALID_WINDOW_HANDLE;
+  DWORD dwNewDisplayAffinity = excludeFromScreenCapture ? WDA_EXCLUDEFROMCAPTURE : WDA_NONE;
   DWORD dwCurrentDisplayAffinity;
-  if (::GetWindowDisplayAffinity(hwnd, &dwCurrentDisplayAffinity) && dwNewDisplayAffinity != dwCurrentDisplayAffinity)
-    ::SetWindowDisplayAffinity(hwnd, dwNewDisplayAffinity);
+  DWORD dwResult = ERROR_SUCCESS;
+  if (::GetWindowDisplayAffinity(hwnd, &dwCurrentDisplayAffinity) &&
+      dwNewDisplayAffinity != dwCurrentDisplayAffinity &&
+      !::SetWindowDisplayAffinity(hwnd, dwNewDisplayAffinity)) {
+    dwResult = ::GetLastError();
+  }
+  return dwResult;
 }

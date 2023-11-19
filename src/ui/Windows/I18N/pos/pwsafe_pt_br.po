@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2023-09-26 20:59+0300\n"
+"PO-Revision-Date: 2023-11-14 18:58+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -3168,7 +3181,7 @@ msgstr "Finalizar relatório"
 msgid "Enter Key:"
 msgstr "Tecla Enter:"
 
-#. Resource IDs: (130, 132)
+#. Resource IDs: (130)
 msgid "Enter Master Password"
 msgstr "Digite a Senha Mestra"
 
@@ -6176,7 +6189,11 @@ msgstr "Sc&ript:"
 msgid "Schema does not have a version number."
 msgstr "O esquema não possui um número de versão."
 
-#. Resource IDs: (6064)
+#. Resource IDs: (6073)
+msgid "Screen capture protection disabled by a setup option."
+msgstr "Proteção de captura de tela desativada por uma opção de configuração."
+
+#. Resource IDs: (6092)
 msgid ""
 "Screen capture protection disabled by command line.\n"
 "\n"
@@ -6190,7 +6207,7 @@ msgstr ""
 "\n"
 "Clique em OK para continuar."
 
-#. Resource IDs: (6063)
+#. Resource IDs: (6082)
 #, c-format
 msgid ""
 "Screen capture protection disabled by command line.\n"
@@ -6205,17 +6222,70 @@ msgstr ""
 "\n"
 "Você pode clicar em OK para continuar em %d segundos."
 
+#. Resource IDs: (6090)
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"Click OK to continue."
+msgstr ""
+"Proteção de captura de tela desativada por causa desconhecida (erro de estado).\n"
+"\n"
+"Entre em contato com o suporte se isso for inesperado.\n"
+"\n"
+"Clique em OK para continuar."
+
+#. Resource IDs: (6080)
+#, c-format
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"You can click OK to continue in %d seconds."
+msgstr ""
+"Proteção de captura de tela desativada por causa desconhecida (erro de estado).\n"
+"\n"
+"Entre em contato com o suporte se isso for inesperado.\n"
+"\n"
+"Você pode clicar em OK para continuar em %d segundos."
+
+#. Resource IDs: (6073, 6074)
+msgid "Screen capture protection disabled for remote access."
+msgstr "Proteção de captura de tela desativada para acesso remoto."
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection experienced an unexpected operating system error."
+msgstr "A proteção de captura de tela sofreu um erro inesperado do sistema operacional."
+
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
 msgstr "A proteção de captura de tela foi substituída pela linha de comando."
 
-#. Resource IDs: (6071)
+#. Resource IDs: (6070)
+msgid "Screen capture protection invalid (failure)."
+msgstr "Proteção de captura de tela inválida (falha)."
+
+#. Resource IDs: (6081, 6091)
+msgid "Screen capture protection is enabled."
+msgstr "A proteção de captura de tela está ativada."
+
+#. Resource IDs: (6069)
 msgid "Screen capture protection is off."
 msgstr "A proteção de captura de tela está desativada."
 
-#. Resource IDs: (6070)
+#. Resource IDs: (6068, 6071)
 msgid "Screen capture protection is on."
 msgstr "A proteção de captura de tela está ativada."
+
+#. Resource IDs: (6071)
+msgid "Screen capture protection on."
+msgstr "Proteção de captura de tela ativada."
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection: unexpected system error"
+msgstr "Proteção de captura de tela: erro inesperado do sistema"
 
 #. Resource IDs: (5276)
 #, c-format

@@ -147,5 +147,18 @@ LangString Icon_description_Uninstall ${LANG_GERMAN} "Password Safe Uninstall"
 ; LangString Icon_description_Help  "Password Safe Help"
 LangString Icon_description_Help ${LANG_GERMAN} "Password Safe Help"
 
+; Screen Capture Protection texts:
+; LangString SCRCAP_PROTECTION "Screen capture protection"
+LangString SCRCAP_PROTECTION ${LANG_GERMAN} "Bildschirmaufnahmeschutz."
+
+; LangString SORRY_CANNOT_DISABLE_SCRCAP  "An error occurred disabling screen capture protection. Screen capture protection is not disabled."
+LangString SORRY_CANNOT_DISABLE_SCRCAP ${LANG_GERMAN} "Beim Deaktivieren des Bildschirmaufnahmeschutzes ist ein Fehler aufgetreten. Der Bildschirmaufnahmeschutz ist nicht deaktiviert."
+
+; LangString SORRY_CANNOT_ENABLE_SCRCAP "An error occurred setting screen capture protection to default (enabled)."
+LangString SORRY_CANNOT_ENABLE_SCRCAP ${LANG_GERMAN} "Beim Festlegen des Bildschirmaufnahmeschutzes auf die Standardeinstellung (aktiviert) ist ein Fehler aufgetreten."
+
+; LangString DESC_ScrCapProtection "Enables screen capture protection."
+LangString DESC_ScrCapProtection ${LANG_GERMAN} "Aktiviert den Bildschirmaufnahmeschutz."
+
 ;=================================================================
 ; End of pwsafe_de.lng

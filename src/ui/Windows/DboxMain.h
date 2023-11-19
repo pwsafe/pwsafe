@@ -477,7 +477,6 @@ public:
   bool GetInitialTransparencyState() { return m_bOnStartupTransparancyEnabled; }
   bool SetLayered(CWnd *pWnd, const int value = -1);
   void SetThreadDpiAwarenessContext();
-
  protected:
    friend class CSetDBID;  // To access icon creation etc.
 

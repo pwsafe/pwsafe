@@ -159,5 +159,18 @@ LangString Icon_description_Uninstall ${LANG_TRADCHINESE} "密碼安全卸載"
 ; LangString Icon_description_Help  "Password Safe Help"
 LangString Icon_description_Help ${LANG_TRADCHINESE} "密碼安全説明"
 
+; Screen Capture Protection texts:
+; LangString SCRCAP_PROTECTION "Screen capture protection"
+LangString SCRCAP_PROTECTION ${LANG_TRADCHINESE} "螢幕截圖保護"
+
+; LangString SORRY_CANNOT_DISABLE_SCRCAP  "An error occurred disabling screen capture protection. Screen capture protection is not disabled."
+LangString SORRY_CANNOT_DISABLE_SCRCAP ${LANG_TRADCHINESE} "停用螢幕擷取保護時發生錯誤。 螢幕捕獲保護未停用。"
+
+; LangString SORRY_CANNOT_ENABLE_SCRCAP "An error occurred setting screen capture protection to default (enabled)."
+LangString SORRY_CANNOT_ENABLE_SCRCAP ${LANG_TRADCHINESE} "將螢幕擷取保護設定為預設值（啟用）時發生錯誤。"
+
+; LangString DESC_ScrCapProtection "Enables screen capture protection."
+LangString DESC_ScrCapProtection ${LANG_TRADCHINESE} "啟用螢幕擷取保護。"
+
 ;=================================================================
 ; End of pwsafe_tw.lng

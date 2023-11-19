@@ -8,15 +8,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2023-09-21 18:20+0200\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2023-11-14 18:59+0200\n"
+"Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.4.1\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -3304,7 +3317,7 @@ msgstr "Slutrapport"
 msgid "Enter Key:"
 msgstr "Ange nyckel:"
 
-#. Resource IDs: (130, 132)
+#. Resource IDs: (130)
 msgid "Enter Master Password"
 msgstr "Ange huvudlösenord"
 
@@ -6313,7 +6326,11 @@ msgstr "Sk&ript:"
 msgid "Schema does not have a version number."
 msgstr "Schemat har inget versionsnummer."
 
-#. Resource IDs: (6064)
+#. Resource IDs: (6073)
+msgid "Screen capture protection disabled by a setup option."
+msgstr "Skydd mot skärmdumpar inaktiverat med ett inställningsalternativ."
+
+#. Resource IDs: (6092)
 msgid ""
 "Screen capture protection disabled by command line.\n"
 "\n"
@@ -6327,7 +6344,7 @@ msgstr ""
 "\n"
 "Klicka OK för att fortsätta."
 
-#. Resource IDs: (6063)
+#. Resource IDs: (6082)
 #, c-format
 msgid ""
 "Screen capture protection disabled by command line.\n"
@@ -6342,17 +6359,70 @@ msgstr ""
 "\n"
 "Du kan klicka på OK för att fortsätta i %d sekunder."
 
+#. Resource IDs: (6090)
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"Click OK to continue."
+msgstr ""
+"Skärmbildsskydd inaktiverat av okänd orsak (tillståndsfel).\n"
+"\n"
+"Kontakta supporten om detta är oväntat.\n"
+"\n"
+"Klicka på OK för att fortsätta."
+
+#. Resource IDs: (6080)
+#, c-format
+msgid ""
+"Screen capture protection disabled by unknown cause (state error).\n"
+"\n"
+"Contact support if this is unexpected.\n"
+"\n"
+"You can click OK to continue in %d seconds."
+msgstr ""
+"Skärmbildsskydd inaktiverat av okänd orsak (tillståndsfel).\n"
+"\n"
+"Kontakta supporten om detta är oväntat.\n"
+"\n"
+"Du kan klicka på OK för att fortsätta om %d sekunder."
+
+#. Resource IDs: (6073, 6074)
+msgid "Screen capture protection disabled for remote access."
+msgstr "Skärmdumpsskydd inaktiverat för fjärråtkomst."
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection experienced an unexpected operating system error."
+msgstr "Skärmbildsskyddet drabbades av ett oväntat operativsystemfel."
+
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
 msgstr "Skydd mot skärmkopiering har åsidosatts med kommandorad."
 
-#. Resource IDs: (6071)
+#. Resource IDs: (6070)
+msgid "Screen capture protection invalid (failure)."
+msgstr "Skärmbildsskyddet är ogiltigt (fel)."
+
+#. Resource IDs: (6081, 6091)
+msgid "Screen capture protection is enabled."
+msgstr "Skydd mot skärmdumpar är aktiverat."
+
+#. Resource IDs: (6069)
 msgid "Screen capture protection is off."
 msgstr "Skärmkopieringsskyddet är av."
 
-#. Resource IDs: (6070)
+#. Resource IDs: (6068, 6071)
 msgid "Screen capture protection is on."
 msgstr "Skärmkopieringsskyddet är på."
+
+#. Resource IDs: (6071)
+msgid "Screen capture protection on."
+msgstr "Skydd mot skärmdumpar på."
+
+#. Resource IDs: (6067)
+msgid "Screen capture protection: unexpected system error"
+msgstr "Skydd mot skärmdumpar: oväntat systemfel"
 
 #. Resource IDs: (5276)
 #, c-format

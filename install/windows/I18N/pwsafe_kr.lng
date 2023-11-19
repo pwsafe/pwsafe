@@ -145,6 +145,19 @@ LangString Icon_description_Uninstall ${LANG_KOREAN} "Password Safe Uninstall"
 ; LangString Icon_description_Help  "Password Safe Help"
 LangString Icon_description_Help ${LANG_KOREAN} "Password Safe Help"
 
+; Screen Capture Protection texts:
+; LangString SCRCAP_PROTECTION "Screen capture protection"
+LangString SCRCAP_PROTECTION ${LANG_KOREAN} "화면 캡처 보호"
+
+; LangString SORRY_CANNOT_DISABLE_SCRCAP  "An error occurred disabling screen capture protection. Screen capture protection is not disabled."
+LangString SORRY_CANNOT_DISABLE_SCRCAP ${LANG_KOREAN} "화면 캡처 보호를 비활성화하는 중에 오류가 발생했습니다. 화면 캡처 보호가 비활성화되지 않았습니다."
+
+; LangString SORRY_CANNOT_ENABLE_SCRCAP "An error occurred setting screen capture protection to default (enabled)."
+LangString SORRY_CANNOT_ENABLE_SCRCAP ${LANG_KOREAN} "화면 캡처 보호를 기본값(활성화)으로 설정하는 중에 오류가 발생했습니다."
+
+; LangString DESC_ScrCapProtection "Enables screen capture protection."
+LangString DESC_ScrCapProtection ${LANG_KOREAN} "화면 캡처 보호를 활성화합니다."
+
 ;=================================================================
 ; End of pwsafe_kr.lng
 
