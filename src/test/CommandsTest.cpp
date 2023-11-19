@@ -314,8 +314,6 @@ TEST_F(CommandsTest, CountGroups)
 TEST_F(CommandsTest, UpdatePassword)
 {
   PWScore core;
-//  size_t pwh_max, num_err;
-//  PWHistList pwhl;
 
   const stringT fname(L"UpdPWTest.psafe3");
   const StringX passphrase(L"WhyAmIDoingThis?");
