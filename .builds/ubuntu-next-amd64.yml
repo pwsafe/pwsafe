@@ -1,4 +1,4 @@
-image: ubuntu/kinetic
+image: ubuntu/next
 arch: amd64
 triggers:
     - action: email
