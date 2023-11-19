@@ -748,7 +748,7 @@ StringX CItemData::GetPWHistory() const
 
 StringX CItemData::GetPreviousPassword() const
 {
-  return ::GetPreviousPassword(GetField(PWHIST));
+  return PWHistList::GetPreviousPassword(GetField(PWHIST));
 }
 
 StringX CItemData::GetPlaintext(const TCHAR &separator,
@@ -785,15 +785,10 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
   StringX history(_T(""));
   if (bsFields.test(CItemData::PWHIST)) {
     // History exported as "00000" if empty, to make parsing easier
-    bool pwh_status;
-    size_t pwh_max, num_err;
-    PWHistList pwhistlist;
-
-    pwh_status = CreatePWHistoryList(GetPWHistory(), pwh_max, num_err,
-                                     pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
+    PWHistList pwhistlist(GetPWHistory(), PWSUtil::TMC_EXPORT_IMPORT);
 
     //  Build export string
-    history = MakePWHistoryHeader(pwh_status, pwh_max, pwhistlist.size());
+    history = pwhistlist.MakePWHistoryHeader();
     PWHistList::iterator iter;
     for (iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
       const PWHistEntry &pwshe = *iter;
@@ -1078,10 +1073,10 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   }
 
   if (bsExport.test(CItemData::PWHIST)) {
-    size_t pwh_max, num_err;
-    PWHistList pwhistlist;
-    bool pwh_status = CreatePWHistoryList(GetPWHistory(), pwh_max, num_err,
-                                          pwhistlist, PWSUtil::TMC_XML);
+    PWHistList pwhistlist(GetPWHistory(), PWSUtil::TMC_XML);
+    bool pwh_status = pwhistlist.isSaving();
+    size_t pwh_max = pwhistlist.getMax();
+
     oss << dec;
     if (pwh_status || pwh_max > 0 || !pwhistlist.empty()) {
       oss << "\t\t<pwhistory>" << endl;
@@ -1269,24 +1264,18 @@ void CItemData::UpdatePassword(const StringX &password)
 
 void CItemData::UpdatePasswordHistory()
 {
-  PWHistList pwhistlist;
-  size_t pwh_max;
-  bool saving;
   const StringX pwh_str = GetPWHistory();
+  PWHistList pwhistlist(pwh_str, PWSUtil::TMC_EXPORT_IMPORT);
+
   if (pwh_str.empty()) {
     // If GetPWHistory() is empty, use preference values!
     const PWSprefs *prefs = PWSprefs::GetInstance();
-    saving = prefs->GetPref(PWSprefs::SavePasswordHistory);
-    pwh_max = prefs->GetPref(PWSprefs::NumPWHistoryDefault);
-  } else {
-    size_t num_err;
-    saving = CreatePWHistoryList(pwh_str, pwh_max, num_err,
-                                 pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
+    pwhistlist.setSaving(prefs->GetPref(PWSprefs::SavePasswordHistory));
+    pwhistlist.setMax(prefs->GetPref(PWSprefs::NumPWHistoryDefault));
   }
-  if (!saving)
+    
+  if (!pwhistlist.isSaving())
     return;
-
-  size_t num = pwhistlist.size();
 
   time_t t;
   GetPMTime(t); // get mod time of last password
@@ -1306,34 +1295,11 @@ void CItemData::UpdatePasswordHistory()
     pwh_ent.changedate = unk;
   }
 
-  // Now add the latest
-  pwhistlist.push_back(pwh_ent);
+  // Now add the latest PW to the history list
+  pwhistlist.addEntry(pwh_ent);
 
-  // Increment count
-  num++;
-
-  // Too many? remove the excess
-  if (num > pwh_max) {
-    PWHistList hl(pwhistlist.begin() + (num - pwh_max),
-                  pwhistlist.end());
-    ASSERT(hl.size() == pwh_max);
-    pwhistlist = hl;
-    num = pwh_max;
-  }
-
-  // Now create string version!
-  StringX new_PWHistory, buffer;
-
-  Format(new_PWHistory, L"1%02x%02x", pwh_max, num);
-
-  PWHistList::iterator iter;
-  for (iter = pwhistlist.begin(); iter != pwhistlist.end(); iter++) {
-    Format(buffer, L"%08x%04x%ls",
-           static_cast<long>(iter->changetttdate), iter->password.length(),
-           iter->password.c_str());
-    new_PWHistory += buffer;
-    buffer = _T("");
-  }
+  // Remove the excess and format as a StringX
+  StringX new_PWHistory = pwhistlist;
   SetPWHistory(new_PWHistory);
 }
 
@@ -1647,13 +1613,11 @@ bool CItemData::ValidatePWHistory()
     return false;
   }
 
-  size_t pwh_max, num_err;
-  PWHistList pwhistlist;
-  bool pwh_status = CreatePWHistoryList(pwh, pwh_max, num_err,
-                                        pwhistlist, PWSUtil::TMC_EXPORT_IMPORT);
-  if (num_err == 0)
+  PWHistList pwhistlist(pwh, PWSUtil::TMC_EXPORT_IMPORT);
+  if (pwhistlist.getErr() == 0)
     return true;
 
+  size_t pwh_max = pwhistlist.getMax();
   size_t listnum = pwhistlist.size();
 
   if (pwh_max == 0 && listnum == 0) {
@@ -1662,25 +1626,16 @@ bool CItemData::ValidatePWHistory()
   }
 
   if (listnum > pwh_max)
-    pwh_max = listnum;
+    pwhistlist.setMax(listnum);
 
   // Rebuild PWHistory from the data we have
-  StringX sxBuffer;
-  StringX sxNewHistory = MakePWHistoryHeader(pwh_status, pwh_max, listnum);
-
-  PWHistList::const_iterator citer;
-  for (citer = pwhistlist.begin(); citer != pwhistlist.end(); citer++) {
-    Format(sxBuffer, L"%08x%04x%ls",
-             static_cast<long>(citer->changetttdate), citer->password.length(),
-             citer->password.c_str());
-      sxNewHistory += sxBuffer;
-      sxBuffer = _T("");
+  StringX sxNewHistory = pwhistlist;
+  if (pwh != sxNewHistory) {
+    SetPWHistory(sxNewHistory);
+    return false;
   }
 
-  if (pwh != sxNewHistory)
-    SetPWHistory(sxNewHistory);
-
-  return false;
+  return true;
 }
 
 bool CItemData::Matches(const stringT &stValue, int iObject,

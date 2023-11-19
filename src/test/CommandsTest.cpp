@@ -314,8 +314,8 @@ TEST_F(CommandsTest, CountGroups)
 TEST_F(CommandsTest, UpdatePassword)
 {
   PWScore core;
-  size_t pwh_max, num_err;
-  PWHistList pwhl;
+//  size_t pwh_max, num_err;
+//  PWHistList pwhl;
 
   const stringT fname(L"UpdPWTest.psafe3");
   const StringX passphrase(L"WhyAmIDoingThis?");
@@ -361,14 +361,15 @@ TEST_F(CommandsTest, UpdatePassword)
   EXPECT_EQ(it3.GetPassword(), sxNewPassword);
   ASSERT_FALSE(it3.IsExpired());
 
-  EXPECT_TRUE(CreatePWHistoryList(it3.GetPWHistory(), pwh_max, num_err,
-                                  pwhl, PWSUtil::TMC_ASC_UNKNOWN));
-
-  EXPECT_EQ(0U, num_err);
-  EXPECT_EQ(3U, pwh_max);
-  EXPECT_EQ(1U, pwhl.size());
-  EXPECT_EQ(sxOldPassword, pwhl[0].password);
-  EXPECT_EQ(tPMtime, pwhl[0].changetttdate);
+  {
+    PWHistList pwhl(it3.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
+    EXPECT_TRUE(pwhl.isSaving());
+    EXPECT_EQ(0U, pwhl.getErr());
+    EXPECT_EQ(3U, pwhl.getMax());
+    EXPECT_EQ(1U, pwhl.size());
+    EXPECT_EQ(sxOldPassword, pwhl[0].password);
+    EXPECT_EQ(tPMtime, pwhl[0].changetttdate);
+  }
 
   core.Undo();
   EXPECT_FALSE(core.HasDBChanged());
@@ -377,12 +378,13 @@ TEST_F(CommandsTest, UpdatePassword)
   CItemData it4(core.GetEntry(iter));
   EXPECT_EQ(it4.GetPassword(), sxOldPassword);
 
-  EXPECT_TRUE(CreatePWHistoryList(it4.GetPWHistory(), pwh_max, num_err,
-                                  pwhl, PWSUtil::TMC_ASC_UNKNOWN));
-
-  EXPECT_EQ(0U, num_err);
-  EXPECT_EQ(3U, pwh_max);
-  EXPECT_EQ(0U, pwhl.size());
+  {
+    PWHistList pwhl(it4.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
+    EXPECT_TRUE(pwhl.isSaving());
+    EXPECT_EQ(0U, pwhl.getErr());
+    EXPECT_EQ(3U, pwhl.getMax());
+    EXPECT_EQ(0U, pwhl.size());
+  }
 
   core.Redo();
   EXPECT_TRUE(core.HasDBChanged());
@@ -394,13 +396,15 @@ TEST_F(CommandsTest, UpdatePassword)
   // New password change time is that of when Redo is performed & not original time
   it5.GetPMTime(tPMtime);
 
-  EXPECT_TRUE(CreatePWHistoryList(it5.GetPWHistory(), pwh_max, num_err,
-                                  pwhl, PWSUtil::TMC_ASC_UNKNOWN));
-  EXPECT_EQ(0U, num_err);
-  EXPECT_EQ(3U, pwh_max);
-  EXPECT_EQ(1U, pwhl.size());
-  EXPECT_EQ(sxOldPassword, pwhl[0].password);
-  EXPECT_EQ(tPMtime, pwhl[0].changetttdate);
+  {
+    PWHistList pwhl(it5.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
+    EXPECT_TRUE(pwhl.isSaving());
+    EXPECT_EQ(0U, pwhl.getErr());
+    EXPECT_EQ(3U, pwhl.getMax());
+    EXPECT_EQ(1U, pwhl.size());
+    EXPECT_EQ(sxOldPassword, pwhl[0].password);
+    EXPECT_EQ(tPMtime, pwhl[0].changetttdate);
+  }
 
   // Get core to delete any existing commands
   core.ClearCommands();

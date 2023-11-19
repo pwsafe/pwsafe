@@ -455,18 +455,8 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
         }
       }
       if (i == CItemData::PWHIST) {
-        size_t num_err1, num_err2, MaxPWHistory1, MaxPWHistory2;
-        PWHistList pwhistlist1, pwhistlist2;
-        bool status1 = CreatePWHistoryList(sxValue1,
-                                      MaxPWHistory1,
-                                      num_err1,
-                                      pwhistlist1,
-                                      PWSUtil::TMC_EXPORT_IMPORT);
-        bool status2 = CreatePWHistoryList(sxValue2,
-                                      MaxPWHistory2,
-                                      num_err2,
-                                      pwhistlist2,
-                                      PWSUtil::TMC_EXPORT_IMPORT);
+        PWHistList pwhistlist1(sxValue1, PWSUtil::TMC_EXPORT_IMPORT);
+        PWHistList pwhistlist2(sxValue2, PWSUtil::TMC_EXPORT_IMPORT);
 
         // If any password history value is different - it must be red
         if (sxValue1 != sxValue2)
@@ -478,8 +468,8 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
         // Now add sub-fields
         iPos++;
 
-        sxValue1 = status1 ? sxYes : sxNo;
-        sxValue2 = status2 ? sxYes : sxNo;
+        sxValue1 = pwhistlist1.isSaving() ? sxYes : sxNo;
+        sxValue2 = pwhistlist2.isSaving() ? sxYes : sxNo;
         if (bShowAll || sxValue1 != sxValue2) {
           LoadAString(sFieldName, IDS_PWHACTIVE);
           iPos = m_ListCtrl.InsertItem(iPos, sFieldName.c_str());
@@ -492,8 +482,8 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
           iPos++;
         }
 
-        Format(sxValue1, L"%d", MaxPWHistory1);
-        Format(sxValue2, L"%d", MaxPWHistory2);
+        Format(sxValue1, L"%d", pwhistlist1.getMax());
+        Format(sxValue2, L"%d", pwhistlist2.getMax());
         if (bShowAll || sxValue1 != sxValue2) {
           LoadAString(sFieldName, IDS_PWHMAX);
           iPos = m_ListCtrl.InsertItem(iPos, sFieldName.c_str());

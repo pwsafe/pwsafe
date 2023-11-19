@@ -96,7 +96,7 @@ bool PWSAuxParse::GetEffectiveValues(const CItemData *pci, const CItemData *pbci
   sx_title    = pci->GetEffectiveFieldValue(CItem::TITLE, pbci);
   sx_user     = pci->GetEffectiveFieldValue(CItem::USER, pbci);
   sx_pswd     = pci->GetEffectiveFieldValue(CItem::PASSWORD, pbci);
-  sx_lastpswd = ::GetPreviousPassword(pci->GetEffectiveFieldValue(CItem::PWHIST, pbci));
+  sx_lastpswd = PWHistList::GetPreviousPassword(pci->GetEffectiveFieldValue(CItem::PWHIST, pbci));
   sx_notes    = pci->GetEffectiveFieldValue(CItem::NOTES, pbci);
   sx_url      = pci->GetEffectiveFieldValue(CItem::URL, pbci);
   sx_email    = pci->GetEffectiveFieldValue(CItem::EMAIL, pbci);
@@ -143,7 +143,7 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
   sx_title    = pci->GetEffectiveFieldValue(CItem::TITLE, pbci);
   sx_user     = pci->GetEffectiveFieldValue(CItem::USER, pbci);
   sx_pswd     = pci->GetEffectiveFieldValue(CItem::PASSWORD, pbci);
-  sx_lastpswd = ::GetPreviousPassword(pci->GetEffectiveFieldValue(CItem::PWHIST, pbci));
+  sx_lastpswd = PWHistList::GetPreviousPassword(pci->GetEffectiveFieldValue(CItem::PWHIST, pbci));
   sx_notes    = pci->GetEffectiveFieldValue(CItem::NOTES, pbci);
   sx_url      = pci->GetEffectiveFieldValue(CItem::URL, pbci);
   sx_email    = pci->GetEffectiveFieldValue(CItem::EMAIL, pbci);
