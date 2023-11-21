@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2023-11-14 18:59+0200\n"
+"PO-Revision-Date: 2023-11-20 19:48+0100\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -6328,7 +6328,7 @@ msgstr "Schemat har inget versionsnummer."
 
 #. Resource IDs: (6073)
 msgid "Screen capture protection disabled by a setup option."
-msgstr "Skydd mot skärmdumpar inaktiverat med ett inställningsalternativ."
+msgstr "Skyddet mot skärmkopiering inaktiverat med ett inställningsalternativ."
 
 #. Resource IDs: (6092)
 msgid ""
@@ -6338,7 +6338,7 @@ msgid ""
 "\n"
 "Click OK to continue."
 msgstr ""
-"Skydd mot skärmkopiering inaktiverat med kommandorad.\n"
+"Skyddet mot skärmkopiering inaktiverat med kommandorad.\n"
 "\n"
 "Kontakta support om detta är oväntat.\n"
 "\n"
@@ -6353,7 +6353,7 @@ msgid ""
 "\n"
 "You can click OK to continue in %d seconds."
 msgstr ""
-"Skärmkopieringsskyddet inaktiverat med kommandorad.\n"
+"Skyddet mot skärmkopiering inaktiverat med kommandorad.\n"
 "\n"
 "Kontakta support om detta är oväntat.\n"
 "\n"
@@ -6367,7 +6367,7 @@ msgid ""
 "\n"
 "Click OK to continue."
 msgstr ""
-"Skärmbildsskydd inaktiverat av okänd orsak (tillståndsfel).\n"
+"Skyddet mot skärmkopiering inaktiverat av okänd orsak (tillståndsfel).\n"
 "\n"
 "Kontakta supporten om detta är oväntat.\n"
 "\n"
@@ -6382,7 +6382,7 @@ msgid ""
 "\n"
 "You can click OK to continue in %d seconds."
 msgstr ""
-"Skärmbildsskydd inaktiverat av okänd orsak (tillståndsfel).\n"
+"Skyddet mot skärmkopiering inaktiverat av okänd orsak (tillståndsfel).\n"
 "\n"
 "Kontakta supporten om detta är oväntat.\n"
 "\n"
@@ -6390,39 +6390,39 @@ msgstr ""
 
 #. Resource IDs: (6073, 6074)
 msgid "Screen capture protection disabled for remote access."
-msgstr "Skärmdumpsskydd inaktiverat för fjärråtkomst."
+msgstr "Skyddet mot skärmkopiering inaktiverat för fjärråtkomst."
 
 #. Resource IDs: (6067)
 msgid "Screen capture protection experienced an unexpected operating system error."
-msgstr "Skärmbildsskyddet drabbades av ett oväntat operativsystemfel."
+msgstr "Skyddet mot skärmkopiering drabbades av ett oväntat operativsystemfel."
 
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
-msgstr "Skydd mot skärmkopiering har åsidosatts med kommandorad."
+msgstr "Skyddet mot skärmkopiering har åsidosatts med kommandorad."
 
 #. Resource IDs: (6070)
 msgid "Screen capture protection invalid (failure)."
-msgstr "Skärmbildsskyddet är ogiltigt (fel)."
+msgstr "Skyddet mot skärmkopiering är ogiltigt (fel)."
 
 #. Resource IDs: (6081, 6091)
 msgid "Screen capture protection is enabled."
-msgstr "Skydd mot skärmdumpar är aktiverat."
+msgstr "Skyddet mot skärmkopiering är aktiverat."
 
 #. Resource IDs: (6069)
 msgid "Screen capture protection is off."
-msgstr "Skärmkopieringsskyddet är av."
+msgstr "Skyddet mot skärmkopiering är av."
 
 #. Resource IDs: (6068, 6071)
 msgid "Screen capture protection is on."
-msgstr "Skärmkopieringsskyddet är på."
+msgstr "Skyddet mot skärmkopiering är på."
 
 #. Resource IDs: (6071)
 msgid "Screen capture protection on."
-msgstr "Skydd mot skärmdumpar på."
+msgstr "Skyddet mot skärmkopiering på."
 
 #. Resource IDs: (6067)
 msgid "Screen capture protection: unexpected system error"
-msgstr "Skydd mot skärmdumpar: oväntat systemfel"
+msgstr "Skyddet mot skärmkopiering: oväntat systemfel"
 
 #. Resource IDs: (5276)
 #, c-format
@@ -7512,7 +7512,7 @@ msgstr "Detta är en alias för:"
 #. Resource IDs: (5121)
 #, c-format
 msgid "This is the percentage of Window transparency. 0% means normal fully opaque and 100% is totally transparent and invisible. Values greater than 50% are not supported. Note: This only applies to the main dialog window."
-msgstr "Detta är transparensen av Windowfönstret i procent. 0% betyder helt opakt och 100% fullständigt transparent och osynligt. Värden större än 50% accepteras inte. Observera: detta gäller bara huvudfönstret."
+msgstr "Detta är transparensen i Windows fönster i procent. 0% betyder helt opakt och 100% fullständigt transparent och osynligt. Värden större än 50% accepteras inte. Observera: detta gäller bara huvudfönstret."
 
 #. Resource IDs: (61710)
 #, c-format
