@@ -21,6 +21,12 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		5707816E2B0C4D030082EB6E /* YubiCfgDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707816A2B0C4CED0082EB6E /* YubiCfgDlg.cpp */; };
+		5707816F2B0C4D030082EB6E /* YubiCfgDlg.h in Sources */ = {isa = PBXBuildFile; fileRef = 5707816B2B0C4CED0082EB6E /* YubiCfgDlg.h */; };
+		570781702B0C4D030082EB6E /* YubiMixin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707816C2B0C4CED0082EB6E /* YubiMixin.cpp */; };
+		570781712B0C4D030082EB6E /* YubiMixin.h in Sources */ = {isa = PBXBuildFile; fileRef = 5707816D2B0C4CED0082EB6E /* YubiMixin.h */; };
+		570781742B0C4D330082EB6E /* PWYubi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570781692B0C4CD30082EB6E /* PWYubi.cpp */; };
+		570781752B0C4D330082EB6E /* PWYubi.h in Sources */ = {isa = PBXBuildFile; fileRef = 570781682B0C4CD30082EB6E /* PWYubi.h */; };
 		6FF5D4A11DA14EE80032F5B6 /* PasswordSubsetDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */; };
 		8ED7E1C429D9F24C0012034B /* SetDatabaseIdDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */; };
 		A2D181461C8FF86C0018AE03 /* media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D181451C8FF86C0018AE03 /* media.cpp */; };
@@ -271,6 +277,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		570781682B0C4CD30082EB6E /* PWYubi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PWYubi.h; path = unix/PWYubi.h; sourceTree = "<group>"; };
+		570781692B0C4CD30082EB6E /* PWYubi.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PWYubi.cpp; path = unix/PWYubi.cpp; sourceTree = "<group>"; };
+		5707816A2B0C4CED0082EB6E /* YubiCfgDlg.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = YubiCfgDlg.cpp; sourceTree = "<group>"; };
+		5707816B2B0C4CED0082EB6E /* YubiCfgDlg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YubiCfgDlg.h; sourceTree = "<group>"; };
+		5707816C2B0C4CED0082EB6E /* YubiMixin.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = YubiMixin.cpp; sourceTree = "<group>"; };
+		5707816D2B0C4CED0082EB6E /* YubiMixin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YubiMixin.h; sourceTree = "<group>"; };
 		57218E8329C983FA000B1907 /* version.wx */ = {isa = PBXFileReference; lastKnownFileType = text; name = version.wx; path = ../version.wx; sourceTree = "<group>"; };
 		57218E8429C98475000B1907 /* pwsafe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = pwsafe.entitlements; sourceTree = "<group>"; };
 		57218E8529C98481000B1907 /* pwsafe-cli.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "pwsafe-cli.entitlements"; sourceTree = SOURCE_ROOT; };
@@ -1327,6 +1339,10 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				5707816A2B0C4CED0082EB6E /* YubiCfgDlg.cpp */,
+				5707816B2B0C4CED0082EB6E /* YubiCfgDlg.h */,
+				5707816C2B0C4CED0082EB6E /* YubiMixin.cpp */,
+				5707816D2B0C4CED0082EB6E /* YubiMixin.h */,
 				8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */,
 				8ED7E1C229D9F24C0012034B /* SetDatabaseIdDlg.h */,
 				A6F2B3342832B0380096A7E4 /* QueryCancelDlg.cpp */,
@@ -1517,6 +1533,8 @@
 		E6EE837D11E87CD200B01518 /* os */ = {
 			isa = PBXGroup;
 			children = (
+				570781692B0C4CD30082EB6E /* PWYubi.cpp */,
+				570781682B0C4CD30082EB6E /* PWYubi.h */,
 				E6889E011EE4640F0023E376 /* cleanup.cpp */,
 				E698273C14C01ABC0043C243 /* logit.h */,
 				E698273D14C01ABC0043C243 /* logit.cpp */,
@@ -1944,6 +1962,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				570781742B0C4D330082EB6E /* PWYubi.cpp in Sources */,
+				570781752B0C4D330082EB6E /* PWYubi.h in Sources */,
 				E6889E021EE4640F0023E376 /* cleanup.cpp in Sources */,
 				E6C1254811E1B2BA00D22D92 /* debug.cpp in Sources */,
 				E6C1254911E1B2BA00D22D92 /* dir.cpp in Sources */,
@@ -1968,6 +1988,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5707816E2B0C4D030082EB6E /* YubiCfgDlg.cpp in Sources */,
+				5707816F2B0C4D030082EB6E /* YubiCfgDlg.h in Sources */,
+				570781702B0C4D030082EB6E /* YubiMixin.cpp in Sources */,
+				570781712B0C4D030082EB6E /* YubiMixin.h in Sources */,
 				E6E8959B1BD8CB3B009F3A8E /* TimedTaskChain.cpp in Sources */,
 				E6ADBA371195709A004E2BE5 /* AboutDlg.cpp in Sources */,
 				E6ADBA381195709A004E2BE5 /* AddEditPropSheetDlg.cpp in Sources */,
@@ -2285,7 +2309,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Release;
 		};
@@ -2357,6 +2381,7 @@
 					DEBUG,
 					_DEBUG,
 				);
+				HEADER_SEARCH_PATHS = "/opt/homebrew/include/ykpers-1";
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
@@ -2379,6 +2404,7 @@
 					_LARGE_FILES,
 					NDEBUG,
 				);
+				HEADER_SEARCH_PATHS = "/opt/homebrew/include/ykpers-1";
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
@@ -2411,7 +2437,6 @@
 					__WXOSX_COCOA__,
 					DEBUG,
 					_DEBUG,
-					NO_YUBI,
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;

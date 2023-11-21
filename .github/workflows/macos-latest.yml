@@ -46,6 +46,9 @@ jobs:
     - name: Print Xcode version in use
       run: xcode-select -p
 
+    - name: Get Yubikey libs from Homebrew
+      run: brew install yubikey-personalization
+
     - name: Cache wxWidgets build
       id: cache-wxWidgets-build
       uses: actions/cache@v2
