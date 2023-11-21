@@ -2381,7 +2381,10 @@
 					DEBUG,
 					_DEBUG,
 				);
-				HEADER_SEARCH_PATHS = "/opt/homebrew/include/ykpers-1";
+				HEADER_SEARCH_PATHS = (
+					"/usr/local/include/ykpers-1",
+					"/opt/homebrew/include/ykpers-1",
+				);
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
@@ -2404,7 +2407,10 @@
 					_LARGE_FILES,
 					NDEBUG,
 				);
-				HEADER_SEARCH_PATHS = "/opt/homebrew/include/ykpers-1";
+				HEADER_SEARCH_PATHS = (
+					"/usr/local/include/ykpers-1",
+					"/opt/homebrew/include/ykpers-1",
+				);
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",

@@ -40,5 +40,5 @@ my $cxxflags;
 foreach(split /\s+/, `$wxconfig --cxxflags --unicode=yes --debug=$dbgflag`) {
 	$cxxflags .= $1." " if /\A-I(.+)/;
 }
-print "HEADER_SEARCH_PATHS = /usr/local/include/ykpers-1 ", $cxxflags, "\n";
+print "HEADER_SEARCH_PATHS = ", $cxxflags, "\n";
 print "LD_RUNPATH_SEARCH_PATHS = ", $rpath, "\n" if defined($rpath);
