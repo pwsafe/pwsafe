@@ -34,7 +34,7 @@ foreach(split /\s+/, `$wxconfig --libs aui xrc html qa adv core xml net base --u
 	$libflags .= $_." " if /\A-[lL]|\.a\Z/;
 	$rpath .= $1." " if /\A-Wl,-rpath,(.*)\Z/;
 }
-print "OTHER_LDFLAGS = -L/usr/local/lib -lykpers-1 ", $libflags, "\n";
+print "OTHER_LDFLAGS = -L/usr/local/lib -lykpers-1 -lyubikey ", $libflags, "\n";
 
 my $cxxflags;
 foreach(split /\s+/, `$wxconfig --cxxflags --unicode=yes --debug=$dbgflag`) {

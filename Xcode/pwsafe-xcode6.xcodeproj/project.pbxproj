@@ -2309,7 +2309,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 			};
 			name = Release;
 		};
@@ -2381,10 +2381,7 @@
 					DEBUG,
 					_DEBUG,
 				);
-				HEADER_SEARCH_PATHS = (
-					"/usr/local/include/ykpers-1",
-					"/opt/homebrew/include/ykpers-1",
-				);
+				HEADER_SEARCH_PATHS = "/usr/local/include/ykpers-1";
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
@@ -2407,10 +2404,7 @@
 					_LARGE_FILES,
 					NDEBUG,
 				);
-				HEADER_SEARCH_PATHS = (
-					"/usr/local/include/ykpers-1",
-					"/opt/homebrew/include/ykpers-1",
-				);
+				HEADER_SEARCH_PATHS = "/usr/local/include/ykpers-1";
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
@@ -2472,7 +2466,6 @@
 					__WXMAC__,
 					__WXOSX_COCOA__,
 					NDEBUG,
-					NO_YUBI,
 					"wxDEBUG_LEVEL=0",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
