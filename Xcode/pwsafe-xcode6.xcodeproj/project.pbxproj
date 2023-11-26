@@ -22,11 +22,8 @@
 
 /* Begin PBXBuildFile section */
 		5707816E2B0C4D030082EB6E /* YubiCfgDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707816A2B0C4CED0082EB6E /* YubiCfgDlg.cpp */; };
-		5707816F2B0C4D030082EB6E /* YubiCfgDlg.h in Sources */ = {isa = PBXBuildFile; fileRef = 5707816B2B0C4CED0082EB6E /* YubiCfgDlg.h */; };
 		570781702B0C4D030082EB6E /* YubiMixin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707816C2B0C4CED0082EB6E /* YubiMixin.cpp */; };
-		570781712B0C4D030082EB6E /* YubiMixin.h in Sources */ = {isa = PBXBuildFile; fileRef = 5707816D2B0C4CED0082EB6E /* YubiMixin.h */; };
 		570781742B0C4D330082EB6E /* PWYubi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570781692B0C4CD30082EB6E /* PWYubi.cpp */; };
-		570781752B0C4D330082EB6E /* PWYubi.h in Sources */ = {isa = PBXBuildFile; fileRef = 570781682B0C4CD30082EB6E /* PWYubi.h */; };
 		6FF5D4A11DA14EE80032F5B6 /* PasswordSubsetDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */; };
 		8ED7E1C429D9F24C0012034B /* SetDatabaseIdDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */; };
 		A2D181461C8FF86C0018AE03 /* media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D181451C8FF86C0018AE03 /* media.cpp */; };
@@ -1963,7 +1960,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				570781742B0C4D330082EB6E /* PWYubi.cpp in Sources */,
-				570781752B0C4D330082EB6E /* PWYubi.h in Sources */,
 				E6889E021EE4640F0023E376 /* cleanup.cpp in Sources */,
 				E6C1254811E1B2BA00D22D92 /* debug.cpp in Sources */,
 				E6C1254911E1B2BA00D22D92 /* dir.cpp in Sources */,
@@ -1989,9 +1985,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5707816E2B0C4D030082EB6E /* YubiCfgDlg.cpp in Sources */,
-				5707816F2B0C4D030082EB6E /* YubiCfgDlg.h in Sources */,
 				570781702B0C4D030082EB6E /* YubiMixin.cpp in Sources */,
-				570781712B0C4D030082EB6E /* YubiMixin.h in Sources */,
 				E6E8959B1BD8CB3B009F3A8E /* TimedTaskChain.cpp in Sources */,
 				E6ADBA371195709A004E2BE5 /* AboutDlg.cpp in Sources */,
 				E6ADBA381195709A004E2BE5 /* AddEditPropSheetDlg.cpp in Sources */,
@@ -2131,10 +2125,6 @@
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -2253,10 +2243,14 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					NO_YUBI,
 					UNICODE,
-					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
+					"_FILE_OFFSET_BITS=64",
+					DEBUG,
+					_DEBUG,
+					__WXMAC__,
+					__WXDEBUG__,
+					__WXOSX_COCOA__,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -2299,8 +2293,11 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
-					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
+					"_FILE_OFFSET_BITS=64",
+					NDEBUG,
+					__WXMAC__,
+					__WXOSX_COCOA__,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -2321,16 +2318,6 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					UNICODE,
-					"_FILE_OFFSET_BITS=64",
-					_LARGE_FILES,
-					DEBUG,
-					_DEBUG,
-					__WXDEBUG__,
-					__WXMAC__,
-					__WXOSX_COCOA__,
-				);
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
@@ -2348,14 +2335,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					UNICODE,
-					"_FILE_OFFSET_BITS=64",
-					_LARGE_FILES,
-					NDEBUG,
-					__WXMAC__,
-					__WXOSX_COCOA__,
-				);
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
@@ -2374,13 +2353,6 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					UNICODE,
-					"_FILE_OFFSET_BITS=64",
-					_LARGE_FILES,
-					DEBUG,
-					_DEBUG,
-				);
 				HEADER_SEARCH_PATHS = "/usr/local/include/ykpers-1";
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -2398,12 +2370,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					UNICODE,
-					"_FILE_OFFSET_BITS=64",
-					_LARGE_FILES,
-					NDEBUG,
-				);
 				HEADER_SEARCH_PATHS = "/usr/local/include/ykpers-1";
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
@@ -2428,16 +2394,6 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					UNICODE,
-					"_FILE_OFFSET_BITS=64",
-					_LARGE_FILES,
-					__WXDEBUG__,
-					__WXMAC__,
-					__WXOSX_COCOA__,
-					DEBUG,
-					_DEBUG,
-				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
@@ -2459,15 +2415,6 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					_LARGE_FILES,
-					UNICODE,
-					"_FILE_OFFSET_BITS=64",
-					__WXMAC__,
-					__WXOSX_COCOA__,
-					NDEBUG,
-					"wxDEBUG_LEVEL=0",
-				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
