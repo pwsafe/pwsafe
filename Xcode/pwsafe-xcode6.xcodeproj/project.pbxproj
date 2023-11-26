@@ -2298,6 +2298,7 @@
 					NDEBUG,
 					__WXMAC__,
 					__WXOSX_COCOA__,
+					"wxDEBUG_LEVEL=0",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
