@@ -46,7 +46,7 @@ jobs:
     - name: Print Xcode version in use
       run: xcode-select -p
       
-    - name: Install autoconf
+    - name: Install tools for Yubikey build
       run: brew install autoconf automake libtool
       
     - name: Build libyubikey from upstream
@@ -54,7 +54,7 @@ jobs:
         git clone https://github.com/Yubico/yubico-c.git
         cd yubico-c
         autoreconf --install
-        ./configure --disable-shared CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
+        ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
         make check
         make install
 
@@ -63,7 +63,7 @@ jobs:
         git clone https://github.com/Yubico/yubikey-personalization.git
         cd yubikey-personalization
         autoreconf --install
-        ./configure --disable-shared CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
+        ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
         make check
         make install
 
