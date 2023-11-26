@@ -45,22 +45,27 @@ jobs:
 
     - name: Print Xcode version in use
       run: xcode-select -p
-
+      
+    - name: Install autoconf
+      run: brew install autoconf automake libtool
+      
     - name: Build libyubikey from upstream
       run: |
-        curl https://developers.yubico.com/yubico-c/Releases/libyubikey-1.13.tar.gz --output libyubikey.tar.gz
-        tar -xf libyubikey.tar.gz
-        cd libyubikey-1.13
-        ./configure --disable-shared CFLAGS="-g -O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
+        curl https://github.com/Yubico/yubico-c/archive/refs/heads/master.zip --output libyubikey.zip
+        unzip libyubikey.zip
+        cd yubico-c-master
+        autoreconf --install
+        ./configure --disable-shared CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
         make check
         make install
 
     - name: Build ykpers from upstream
       run: |
-        curl https://developers.yubico.com/yubikey-personalization/Releases/ykpers-1.20.0.tar.gz --output ykpers.tar.gz
-        tar -xf ykpers.tar.gz
-        cd ykpers-1.20.0
-        ./configure --disable-shared CFLAGS="-g -O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
+        curl https://github.com/Yubico/yubikey-personalization/archive/refs/heads/master.zip --output ykpers.zip
+        unzip ykpers.zip
+        cd yubikey-personalization-master
+        autoreconf --install
+        ./configure --disable-shared CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
         make check
         make install
 
