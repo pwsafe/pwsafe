@@ -51,9 +51,8 @@ jobs:
       
     - name: Build libyubikey from upstream
       run: |
-        curl https://github.com/Yubico/yubico-c/archive/refs/heads/master.zip --output libyubikey.zip
-        unzip libyubikey.zip
-        cd yubico-c-master
+        git clone https://github.com/Yubico/yubico-c.git
+        cd yubico-c
         autoreconf --install
         ./configure --disable-shared CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
         make check
@@ -61,9 +60,8 @@ jobs:
 
     - name: Build ykpers from upstream
       run: |
-        curl https://github.com/Yubico/yubikey-personalization/archive/refs/heads/master.zip --output ykpers.zip
-        unzip ykpers.zip
-        cd yubikey-personalization-master
+        git clone https://github.com/Yubico/yubikey-personalization.git
+        cd yubikey-personalization
         autoreconf --install
         ./configure --disable-shared CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
         make check
