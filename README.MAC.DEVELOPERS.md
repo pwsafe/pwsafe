@@ -239,6 +239,11 @@ If you have come this far, you only need to launch Xcode, load the pwsafe projec
 file (pwsafe/Xcode/pwsafe-xcode6.xcodeproj), and hit 'Cmd-B' (or from the menu Product => Build).
 This will build the currently selected scheme.
 
+Or, from the command line:
+```
+xcodebuild -project pwsafe-xcode6.xcodeproj -scheme pwsafe -configuration <Debug|Release>
+```
+
 ### Debug and Release Configs
 You need to decide whether to build the Debug or Release configuration of
 pwsafe. Apple has changed the way we (or at least I) used to view Debug and

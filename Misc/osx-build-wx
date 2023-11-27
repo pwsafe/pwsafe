@@ -22,7 +22,7 @@
 #
 
 # Build release configuration by default
-DEBUG_FLAG=--disable-debug
+WX_DEBUG_FLAG=--disable-debug
 
 # If unspecified, assume the user is building wxWidgets inside a subdir of its root dir
 CONF_SCRIPT=../configure
@@ -110,7 +110,7 @@ while getopts "a:dc:t:nk:T:w:" opt; do
 			esac
 			;;
 		d)
-			DEBUG_FLAG="--enable-debug --enable-debug_info"
+			WX_DEBUG_FLAG="--enable-debug --enable-debug_info"
 			;;
 		c)
 			if [ -x $OPTARG ]
@@ -201,10 +201,10 @@ doCocoaBuild() {
         echo "osx-build-wx options:"
         echo "WX_VER" = $WX_VER
         echo "WX_ARCH" = $WX_ARCH
-        echo "MACOS_VER_MIN" = $MACOS_VER_MIN
         echo "WX_BUILD_DIR" = $WX_BUILD_DIR
+        echo "WX_DEBUG_FLAG" = $WX_DEBUG_FLAG
+        echo "MACOS_VER_MIN" = $MACOS_VER_MIN
         echo "SDKFLAG" = $SDKFLAG
-        echo "DEBUG_FLAG" = $DEBUG_FLAG
         echo "CONF_OPTS" = $CONF_OPTS
         echo "=============================="
     else
@@ -298,7 +298,7 @@ doCarbonBuild() {
     OBJCFLAGS="  $arch_flags $sdk_flags"
     OBJCXXFLAGS="$arch_flags $sdk_flags"
 
-	$DRY_RUN $CONF_SCRIPT --prefix=`pwd`                \
+	$DRY_RUN $CONF_SCRIPT --prefix=`pwd`            \
                             CC=$CC                      \
                             CXX=$CXX                    \
                             LD=$LD                      \
@@ -308,7 +308,7 @@ doCarbonBuild() {
                             LDFLAGS="$arch_flags"       \
                             OBJCFLAGS="$OBJCFLAGS"      \
                             OBJCXXFLAGS="$OBJCXXFLAGS"  \
-                            $DEBUG_FLAG                 \
+                            $WX_DEBUG_FLAG              \
                             --disable-shared            \
                             --disable-compat24          \
                             --enable-unicode            \
