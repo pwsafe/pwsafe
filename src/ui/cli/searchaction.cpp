@@ -172,8 +172,8 @@ int GenerateTotpCodeForSearchResults(const ItemPtrVec& items, PWScore&, std::wos
       return;
     }
     uint64_t seconds_remaining = totp_time_step_seconds - ((totp_time_now - totp_start_time) % totp_time_step_seconds);
-    std::string totp_auth_code_str = PWSTotp::TotpCodeToString(data, totp_auth_code);
-    os << "Authentication Code: " << Utf82wstring(totp_auth_code_str.c_str())
+    StringX totp_auth_code_str = PWSTotp::TotpCodeToString(data, totp_auth_code);
+    os << "Authentication Code: " << totp_auth_code_str
        << " valid for approximately " << seconds_remaining
        << (seconds_remaining > 1 ? " seconds." : " second.")
        << endl;

@@ -2039,6 +2039,9 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
     case CItemData::PASSWORD:
       imsg = IDS_PSWDCOPIED;
       break;
+    case DERIVED_VALUE_ACTION_AUTH_CODE:
+      imsg = IDS_TWOFACTORCODE_COPIED;
+      break;
     case CItemData::NOTES:
       imsg = IDS_NOTESCOPIED;
       break;

@@ -16,6 +16,9 @@
 
 #include <string>
 #include <sstream>
+#include <chrono>
+
+#include "core.h"
 #include "core/crypto/totp.h"
 #include "UTF8Conv.h"
 #include "ItemData.h"
@@ -25,14 +28,36 @@ namespace PWSTotp {
 
   std::wstring GetTotpErrorString(TOTP_Result r)
   {
+    std::wstring error_message;
+
     switch (r) {
-    case Success: return L"The TOTP operation was successful";
-    case InvalidTotpConfiguration: return L"The TOTP configuration is invalid.";
-    case TotpKeyNotFound: return L"The TOTP key was not found.";
-    case ConvertKeyToUtf8Failure: return L"Apparent invalid TOTP key. Cannot convert the TOTP key to UTF8.";
-    case KeyBase32DecodingFailure: return L"Apparent invalid TOTP key. The TOTP key base32 decoding failed.";
-    default: return L"An unknown TOTP error occurred.";
+    case Success:
+      LoadAString(error_message, IDSC_TOTP_ERROR_SUCCESS);
+      break;
+    case InvalidTotpConfiguration:
+      LoadAString(error_message, IDSC_TOTP_ERROR_INVALID_CONFIG);
+      break;
+    case TotpKeyNotFound:
+      LoadAString(error_message, IDSC_TOTP_ERROR_KEY_NOT_FOUND);
+      break;
+    case ConvertKeyToUtf8Failure:
+      LoadAString(error_message, IDSC_TOTP_ERROR_KEY_UTF8_FAILURE);
+      break;
+    case KeyBase32DecodingFailure:
+      LoadAString(error_message, IDSC_TOTP_ERROR_BASE32_DECODE_FAILURE);
+      break;
+    default:
+      LoadAString(error_message, IDSC_TOTP_ERROR_UNKNOWN);
+      break;
     }
+
+    if (error_message.empty()) {
+      std::wstringstream os;
+      os << L"A TOTP error occurred but the error message cannot be retrieved (" << static_cast<int>(r) << L")";
+      error_message = os.str();
+    }
+
+    return error_message;
   }
 
   TOTP_Result GetNextTotpAuthCode(const CItemData& data, uint32_t& totpCode, time_t* pBasisTimeNow)
@@ -69,18 +94,15 @@ namespace PWSTotp {
     return Success;
   }
 
-  std::string TotpCodeToString(const CItemData& data, uint32_t totp_auth_code)
+  StringX TotpCodeToString(const CItemData& data, uint32_t totp_auth_code)
   {
-    std::stringstream os;
-    os << totp_auth_code;
-    std::string result = os.str();
     uint8_t totp_code_digit_length = data.GetTotpLengthAsByte();
-    while (result.size() < totp_code_digit_length)
-      result.insert(result.begin(), '0');
+    StringX result;
+    Format(result, L"%0*d", totp_code_digit_length, totp_auth_code);
     return result;
   }
 
-  TOTP_Result GetNextTotpAuthCodeString(const CItemData& data, std::string& totpAuthCodeStr, time_t* pBasisTimeNow)
+  TOTP_Result GetNextTotpAuthCodeString(const CItemData& data, StringX& totpAuthCodeStr, time_t* pBasisTimeNow)
   {
     totpAuthCodeStr.clear();
     uint32_t totp_auth_code;
@@ -98,4 +120,26 @@ namespace PWSTotp {
     return result;
   }
 
+  TOTP_Result GetCurrentTotpIntervalExpiredRatio(uint8_t time_step_seconds, time_t start_time, double& ratio_expired)
+  {
+    const auto one_second_msecs = std::chrono::milliseconds::period::den;
+    const auto interval_msecs = time_step_seconds * one_second_msecs;
+    const auto start_time_msecs = start_time * one_second_msecs;
+
+    const auto time_now = std::chrono::system_clock::now().time_since_epoch();
+    const auto time_now_msecs = std::chrono::duration_cast<std::chrono::milliseconds>(time_now);
+    const auto totp_elapsed_msecs = time_now_msecs.count() - start_time_msecs;
+    ratio_expired = (totp_elapsed_msecs % interval_msecs) / (double)(interval_msecs);
+    return Success;
+  }
+
+  TOTP_Result GetCurrentTotpIntervalExpiredRatio(const CItemData& data, double& ratio)
+  {
+    uint8_t totp_algo = data.GetTotpAlgorithmAsByte();
+    if (totp_algo != TOTP_CONFIG_ALGORITHM_HMAC_SHA1)
+      return InvalidTotpConfiguration;
+    time_t totp_start_time = data.GetTotpStartTimeAsTimeT();
+    uint8_t totp_time_step_seconds = data.GetTotpTimeStepSecondsAsByte();
+    return GetCurrentTotpIntervalExpiredRatio(totp_time_step_seconds, totp_start_time, ratio);
+  }
 }

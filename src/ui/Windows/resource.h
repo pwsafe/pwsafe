@@ -759,6 +759,7 @@
 #define IDC_STATIC_RWSTATUS             1424
 #define IDC_COPYPASSWORD                1425
 #define IDC_DEFPWHIDESYSTRAY            1426
+#define IDC_TWOFACTORCODE               1426
 #define IDC_ADVANCED_RESET              1427
 #define IDC_ENTRY                       1428
 #define IDC_DATABASE                    1430
@@ -931,4 +932,3 @@
 #define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif
-

@@ -49,3 +49,12 @@ BOOL CAddEdit_PropertyPage::OnQueryCancel()
   }
   return CPWPropertyPage::OnQueryCancel();
 }
+
+CItemData* CAddEdit_PropertyPage::M_pci_credential()
+{
+  if (!M_pci())
+    return nullptr;
+  if (!M_pci()->IsAlias())
+    return M_pci();
+  return M_pcore()->GetBaseEntry(M_pci());
+}

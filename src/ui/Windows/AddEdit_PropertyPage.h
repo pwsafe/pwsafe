@@ -122,6 +122,8 @@ public:
   PWScore * &M_pcore() {return m_AEMD.pcore;}
   CItemData * &M_pci() {return m_AEMD.pci;}
 
+  CItemData * M_pci_credential();
+
   StringX &M_currentDB() {return m_AEMD.currentDB;}
 
   // Basic related stuff
