@@ -93,6 +93,9 @@ Timer related values (note - all documented her but some defined only where need
 // Timer causing force allow screen capture bitmap blink.
 #define TIMER_FORCE_ALLOW_CAPTURE_BITMAP_BLINK 0x20    
 
+// Timer used for two factor authentication code interval countdown.
+#define TIMER_TWO_FACTOR_AUTH_CODE_COUNTDOWN 0x21
+
 /*
 HOVER_TIME_ND       The length of time the pointer must remain stationary
 within a tool's bounding rectangle before the tool tip

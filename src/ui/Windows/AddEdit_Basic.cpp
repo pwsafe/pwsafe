@@ -150,6 +150,7 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange *pDX)
   DDX_Control(pDX, IDC_USERNAME, m_ex_username);
   DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
   DDX_Control(pDX, IDC_PASSWORD2, m_ex_password2);
+  DDX_Control(pDX, IDC_TWOFACTORCODE, m_btnTwoFactorCode);
   DDX_Control(pDX, IDC_NOTES, m_ex_notes);
   DDX_Control(pDX, IDC_HIDDEN_NOTES, m_ex_hidden_notes);
   DDX_Control(pDX, IDC_URL, m_ex_URL);
@@ -180,12 +181,14 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange *pDX)
 
 BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   //{{AFX_MSG_MAP(CAddEdit_Basic)
+  ON_WM_TIMER()
   ON_WM_CTLCOLOR()
   ON_BN_CLICKED(ID_HELP, OnHelp)
 
   ON_BN_CLICKED(IDC_SHOWPASSWORD, OnShowPassword)
   ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
   ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
+  ON_BN_CLICKED(IDC_TWOFACTORCODE, OnCopyTwoFactorCode)
   ON_BN_CLICKED(IDC_LAUNCH, OnLaunch)
   ON_BN_CLICKED(IDC_SENDEMAIL, OnSendEmail)
 
@@ -214,6 +217,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
 
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
+  ON_NOTIFY(PSN_SETACTIVE, 0, OnPageSetActive)
   ON_NOTIFY(PSN_KILLACTIVE, 0, OnPageKillActive)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
@@ -280,6 +284,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
     AddTool(IDC_LAUNCH, IDS_CLICKTOGOPLUS);
     AddTool(IDC_SENDEMAIL, IDS_CLICKTOSEND);
     AddTool(IDC_COPYPASSWORD, IDS_CLICKTOCOPYGENPSWD);
+    AddTool(IDC_TWOFACTORCODE, IDS_TWOFACTORCODEBUTTON);
 
     if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
       AddTool(IDC_STATIC_TUTORIAL, IDS_UNPROTECT);
@@ -446,6 +451,8 @@ BOOL CAddEdit_Basic::OnInitDialog()
       pBtn->SetBitmap(m_CopyPswdBitmap);
   }
 
+  SetupAuthenticationCodeUiElements();
+
   // Set initial Word Wrap
   m_ex_notes.SetTargetDevice(nullptr, m_bWordWrap ? 0 : 1);
   m_ex_notes.UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
@@ -527,8 +534,15 @@ BOOL CAddEdit_Basic::OnKillActive()
   return CAddEdit_PropertyPage::OnKillActive();
 }
 
+void CAddEdit_Basic::OnPageSetActive(NMHDR*, LRESULT* pLResult)
+{
+  SetupAuthenticationCodeUiElements();
+  *pLResult = 0;
+}
+
 void CAddEdit_Basic::OnPageKillActive(NMHDR *, LRESULT *pLResult)
 {
+  StopAuthenticationCodeUi();
   // Don't allow page switching if Notes being edited in the user's
   // external editor
   *pLResult = m_bUsingNotesExternalEditor ? 1 : 0;
@@ -1766,6 +1780,99 @@ void CAddEdit_Basic::OnCopyPassword()
   }
   GetMainDlg()->SetClipboardData(effectivePassword);
   GetMainDlg()->UpdateLastClipboardAction(CItemData::PASSWORD);
+}
+
+void CAddEdit_Basic::OnCopyTwoFactorCode()
+{
+  UpdateData(TRUE);
+  CSecString twoFactorKey = GetTwoFactorKey();
+  if (twoFactorKey.IsEmpty()) {
+    CGeneralMsgBox gmb;
+    CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
+    CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_KEYEMPTY));
+    gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
+    return;
+  }
+  CItemData* pci = M_pci_credential();
+  if (!pci) {
+    CGeneralMsgBox gmb;
+    CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
+    CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_KEYNOTFOUND));
+    gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
+    return;
+  }
+  StringX sxAuthCode;
+  PWSTotp::TOTP_Result r = PWSTotp::GetNextTotpAuthCodeString(*pci, sxAuthCode, nullptr);
+  if (r != PWSTotp::Success) {
+    CGeneralMsgBox gmb;
+    CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
+    CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_MESSAGE));
+    cs_message += L" ";
+    cs_message += PWSTotp::GetTotpErrorString(r).c_str();
+    cs_message += L".";
+    gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
+    return;
+  }
+  GetMainDlg()->SetClipboardData(sxAuthCode);
+  GetMainDlg()->UpdateLastClipboardAction(DERIVED_VALUE_ACTION_AUTH_CODE);
+}
+
+CSecString CAddEdit_Basic::GetTwoFactorKey()
+{
+  CSecString twoFactorKey;
+  if (!M_pci() || !M_pci()->IsAlias())
+    twoFactorKey = M_twofactorkey();
+  else {
+    const CItemData* pcbi = M_pcore()->GetBaseEntry(M_pci());
+    if (pcbi != nullptr)
+      twoFactorKey = M_pci()->GetEffectiveFieldValue(CItem::TWOFACTORKEY, pcbi);
+  }
+  return twoFactorKey;
+}
+
+bool CAddEdit_Basic::IsTwoFactorKey()
+{
+  return !GetTwoFactorKey().IsEmpty();
+}
+
+void CAddEdit_Basic::OnTimer(UINT_PTR nIDEvent)
+{
+  if (nIDEvent != TIMER_TWO_FACTOR_AUTH_CODE_COUNTDOWN) {
+    CAddEdit_PropertyPage::OnTimer(nIDEvent);
+    return;
+  }
+
+  CSecString twoFactorKey = GetTwoFactorKey();
+  if (twoFactorKey.IsEmpty()) {
+    KillTimer(TIMER_TWO_FACTOR_AUTH_CODE_COUNTDOWN);
+    return;
+  }
+
+  CItemData* pci_cred = M_pci_credential();
+  if (!pci_cred)
+    return;
+  double ratio;
+  if (PWSTotp::GetCurrentTotpIntervalExpiredRatio(*pci_cred, ratio) != PWSTotp::Success)
+    return;
+  m_btnTwoFactorCode.SetPercent(100.0 * ratio);
+}
+
+void CAddEdit_Basic::SetupAuthenticationCodeUiElements()
+{
+  m_btnTwoFactorCode.SetPieColor(RGB(0, 192, 255));
+  m_btnTwoFactorCode.SetPercent(0);
+  bool isTwoFactorKey = IsTwoFactorKey();
+  m_btnTwoFactorCode.EnableWindow(isTwoFactorKey);
+  m_btnTwoFactorCode.ShowWindow(isTwoFactorKey ? SW_SHOW : SW_HIDE);
+  if (isTwoFactorKey)
+    SetTimer(TIMER_TWO_FACTOR_AUTH_CODE_COUNTDOWN, USER_TIMER_MINIMUM, NULL);
+  else
+    KillTimer(TIMER_TWO_FACTOR_AUTH_CODE_COUNTDOWN);
+}
+
+void CAddEdit_Basic::StopAuthenticationCodeUi()
+{
+  KillTimer(TIMER_TWO_FACTOR_AUTH_CODE_COUNTDOWN);
 }
 
 void CAddEdit_Basic::SetUpDependentsCombo()

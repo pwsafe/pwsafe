@@ -473,3 +473,13 @@ BEGIN
   IDSC_DRAGNUMBER          " Drag # %d"
   IDSC_DRAGPOLICY          "%ls - Drag & Drop %ls"
 END
+
+STRINGTABLE
+BEGIN
+   IDSC_TOTP_ERROR_SUCCESS                "The TOTP operation was successful"
+   IDSC_TOTP_ERROR_UNKNOWN                "An unknown TOTP error occurred"
+   IDSC_TOTP_ERROR_INVALID_CONFIG         "The TOTP configuration is invalid"
+   IDSC_TOTP_ERROR_KEY_NOT_FOUND          "The TOTP key was not found"
+   IDSC_TOTP_ERROR_KEY_UTF8_FAILURE       "The TOTP key appears to be invalid because it cannot be converted to UTF8"
+   IDSC_TOTP_ERROR_BASE32_DECODE_FAILURE  "The TOTP key appears to be invalid because it cannot be base32-decoded"
+END

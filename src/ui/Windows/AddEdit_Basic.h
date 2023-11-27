@@ -15,6 +15,7 @@
 #include "ExtThread.h"
 #include "ControlExtns.h"
 #include "TBMStatic.h"
+#include "ProgressPieCtrl.h"
 
 #include "core/ItemData.h"
 
@@ -47,6 +48,8 @@ public:
   CEditExtn m_ex_base;
 
   CSecEditExtn m_ex_password, m_ex_password2;
+
+  CProgressPieCtrl m_btnTwoFactorCode;
 
   CStaticExtn m_stc_group;
   CStaticExtn m_stc_title;
@@ -92,8 +95,10 @@ protected:
   //{{AFX_MSG(CAddEdit_Basic)
   afx_msg void OnHelp();
   afx_msg LRESULT OnQuerySiblings(WPARAM wParam, LPARAM);
+  afx_msg void OnPageSetActive(NMHDR*, LRESULT* pLResult);
   afx_msg void OnPageKillActive(NMHDR *nmhdr, LRESULT *pLResult);
   afx_msg HBRUSH OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor);
+  afx_msg void OnTimer(UINT_PTR nIDEvent);
 
   afx_msg void OnENSetFocusPassword();
   afx_msg void OnENSetFocusPassword2();
@@ -108,6 +113,7 @@ protected:
   afx_msg void OnGeneratePassword();
   afx_msg void OnCopyPassword();
   afx_msg void OnShowPassword();
+  afx_msg void OnCopyTwoFactorCode();
   afx_msg void OnSTCExClicked(UINT nId);
   afx_msg void OnLaunch();
   afx_msg void OnSendEmail();
@@ -137,6 +143,10 @@ private:
                         pws_os::CUUID &base_uuid, int &ibasedata, bool &b_msg_issued);
   void SetGroupComboBoxWidth();
   void ShowHideBaseInfo(const CItemData::EntryType &entrytype, CSecString &csBase);
+  bool IsTwoFactorKey();
+  void SetupAuthenticationCodeUiElements();
+  void StopAuthenticationCodeUi();
+  CSecString GetTwoFactorKey();
 
   CTBMStatic m_Help1, m_Help2, m_Help3, m_Help4;
 

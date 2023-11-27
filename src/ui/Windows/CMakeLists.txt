@@ -85,6 +85,9 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/PasswordSafe.h
             src/ui/Windows/PasswordSubsetDlg.h
             src/ui/Windows/PKBaseDlg.h
+            src/ui/Windows/ProgressPieCommon.h
+            src/ui/Windows/ProgressPieCtrl.h
+            src/ui/Windows/ProgressPieStaticCtrl.h
             src/ui/Windows/Properties.h
             src/ui/Windows/PupText.h
             src/ui/Windows/PWDialog.h
@@ -236,6 +239,9 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/PasswordPolicyDlg.cpp
             src/ui/Windows/PasswordSubsetDlg.cpp
             src/ui/Windows/PKBaseDlg.cpp
+            src/ui/Windows/ProgressPieCommon.cpp
+            src/ui/Windows/ProgressPieCtrl.cpp
+            src/ui/Windows/ProgressPieStaticCtrl.cpp
             src/ui/Windows/Properties.cpp
             src/ui/Windows/PupText.cpp
             src/ui/Windows/PWDialog.cpp

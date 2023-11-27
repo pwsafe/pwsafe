@@ -122,6 +122,11 @@ enum {GCP_READONLY = 1,
       GCP_HIDEREADONLY = 4,
       GCP_APP_WINDOW = 8};
 
+// Some iAction values for copy/pasted are not a single CItemData field.
+// For those actions, create action codes with numbers well beyond CItemData::LAST_FIELD.
+const int DERIVED_VALUE_ACTION_FIRST            = 0x4000;
+const int DERIVED_VALUE_ACTION_AUTH_CODE        = DERIVED_VALUE_ACTION_FIRST + 1;
+
 class CDDObList;
 class ExpiredList;
 class CAddEdit_PropertySheet;
