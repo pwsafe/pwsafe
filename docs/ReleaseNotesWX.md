@@ -7,6 +7,13 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
+PasswordSafe 1.18.2 Release ??? 2023?
+=====================================
+
+New Features in 1.18.2
+----------------------
+* [GH1056](https://github.com/pwsafe/pwsafe/issues/1056) Added Yubikey support to the macOS version.
+
 PasswordSafe 1.18.1 Release November 2023
 =========================================
 
