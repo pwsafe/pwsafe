@@ -11,8 +11,6 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
-// Adapted from https://github.com/AshleyT3/MFCmisc for Password Safe.
 
 #pragma once
 
@@ -24,10 +22,19 @@ class CProgressPieStaticCtrl : public CStatic
 public:
   CProgressPieStaticCtrl();
   virtual ~CProgressPieStaticCtrl();
+
   void SetPercent(double percent);
   double GetPercent() const { return m_common.GetPercent(); }
-  void SetPieColor(COLORREF clr);
-  void SetOutlineColor(COLORREF clr);
+
+  void SetPieColor(COLORREF clr) { m_common.SetPieColor(clr); }
+  COLORREF GetPieColor() const { return m_common.GetPieColor(); }
+
+  void SetOutlineColor(COLORREF clr) { m_common.SetOutlineColor(clr); }
+  COLORREF GetOutlineColor() const { return m_common.GetOutlineColor(); }
+
+  void SetFullCircleOutline(bool bFullCircleOutline) { m_common.SetFullCircleOutline(bFullCircleOutline); }
+  bool GetFullCircleOutline() const { return m_common.GetFullCircleOutline(); }
+
 protected:
   DECLARE_MESSAGE_MAP()
 public:

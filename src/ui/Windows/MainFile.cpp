@@ -546,7 +546,7 @@ int DboxMain::Close(const bool bTrySave)
   m_titlebar = L"Password Safe";
   SetWindowText(LPCWSTR(m_titlebar));
   m_lastclipboardaction = L"";
-  m_ilastaction = 0;
+  m_ilastaction.Clear();
   UpdateStatusBar();
 
   m_StatusBar.SetFileStatus(false, false);

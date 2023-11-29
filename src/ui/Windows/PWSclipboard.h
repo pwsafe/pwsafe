@@ -35,9 +35,9 @@ public:
     CLIPFORMAT cfFormat = CLIPBOARD_TEXT_FORMAT);
   // returns true if succeeded
   bool ClearCBData(); // return true if cleared or if data wasn't ours
-
+  bool IsLastSensitiveItemPresent();
 private:
-  bool m_set;
+  bool m_bSensitiveDataOnClipboard;
   unsigned char m_digest[SHA256::HASHLEN];
 };
 

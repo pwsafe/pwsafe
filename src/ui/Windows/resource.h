@@ -409,6 +409,12 @@
 #define IDB_SCRCAP_EXCLUDED             570
 #define IDB_SCRCAP_STATE_ERROR          571
 #define IDB_SCRCAP_LAST                 571
+#define IDB_COPY2FAAUTHCODE_CLASSIC     580
+#define IDB_COPY2FAAUTHCODE_NEW         581
+#define IDB_COPY2FAAUTHCODE_NEW_D       582
+#define IDB_VIEW2FAAUTHCODE_CLASSIC     583
+#define IDB_VIEW2FAAUTHCODE_NEW         584
+#define IDB_VIEW2FAAUTHCODE_NEW_D       585
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002

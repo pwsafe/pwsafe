@@ -43,13 +43,3 @@ void CProgressPieStaticCtrl::SetPercent(double percent)
   m_common.SetPercent(percent);
   Invalidate(FALSE);
 }
-
-void CProgressPieStaticCtrl::SetPieColor(COLORREF clr)
-{
-  m_common.SetPieColor(clr);
-}
-
-void CProgressPieStaticCtrl::SetOutlineColor(COLORREF clr)
-{
-  m_common.SetOutlineColor(clr);
-}

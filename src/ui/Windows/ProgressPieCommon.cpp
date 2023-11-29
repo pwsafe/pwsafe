@@ -24,7 +24,8 @@ CProgressPieCommon::CProgressPieCommon(CWnd* pwndCtl)
   m_pwndCtl(pwndCtl),
   m_curRatio(0),
   m_clrPie(RGB(0, 192, 255)),
-  m_clrOutline(RGB(0, 0, 0))
+  m_clrOutline(RGB(0, 0, 0)),
+  m_bFullOutline(true)
 {
 }
 
@@ -32,16 +33,6 @@ void CProgressPieCommon::SetPercent(double percent)
 {
   ASSERT(percent >= 0 && percent <= 100.0);
   m_curRatio = percent / 100.0;
-}
-
-void CProgressPieCommon::SetPieColor(COLORREF clr)
-{
-  m_clrPie = clr;
-}
-
-void CProgressPieCommon::SetOutlineColor(COLORREF clr)
-{
-  m_clrOutline = clr;
 }
 
 int CProgressPieCommon::GetSize()
@@ -62,6 +53,7 @@ int CProgressPieCommon::GetSize()
   ASSERT(size > 0);
   return size;
 }
+
 
 void CProgressPieCommon::PaintToDC(CDC& dcCompat)
 {
@@ -97,6 +89,13 @@ void CProgressPieCommon::PaintToDC(CDC& dcCompat)
   CBrush* oldBrush = dcCompat.SelectObject(&fill_brush);
   dcCompat.StrokeAndFillPath();
   dcCompat.SelectObject(&oldBrush);
+
+  if (m_bFullOutline) {
+    oldPen = dcCompat.SelectObject(&penProgressOutline);
+    dcCompat.MoveTo(cx, rcProgress.top);
+    dcCompat.AngleArc(cx, cy, radius, 90, 360.0);
+    dcCompat.SelectObject(&oldPen);
+  }
 }
 
 

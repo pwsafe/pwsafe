@@ -122,10 +122,60 @@ enum {GCP_READONLY = 1,
       GCP_HIDEREADONLY = 4,
       GCP_APP_WINDOW = 8};
 
-// Some iAction values for copy/pasted are not a single CItemData field.
-// For those actions, create action codes with numbers well beyond CItemData::LAST_FIELD.
-const int DERIVED_VALUE_ACTION_FIRST            = 0x4000;
-const int DERIVED_VALUE_ACTION_AUTH_CODE        = DERIVED_VALUE_ACTION_FIRST + 1;
+struct ClipboardDataSource
+{
+  enum Type
+  {
+    None = 0,
+
+    // For clipboard sources that are solely/directly from DB field,
+    // specify the CItem::FieldType item here.
+    Group = CItemData::GROUP,
+    TITLE = CItemData::TITLE,
+    User = CItemData::USER,
+    Notes = CItemData::NOTES,
+    Password = CItemData::PASSWORD,
+    Url = CItemData::URL,
+    Email = CItemData::EMAIL,
+    RunCmd = CItemData::RUNCMD,
+
+    // Derived sources (sources not directly/solely from a DB field) must appear
+    // here, right after after DerivedSourceFirst. A derived source can also
+    // represent a clipboard-related action such as clearing the clipboard.
+    DerivedSourceFirst = 0x4000, // Must be larger than CItemData::LAST_FIELD.
+    ClearClipboard,
+    PasswordHistoryList,
+    AuthCode
+  };
+
+  ClipboardDataSource() : t(None) {}
+  ClipboardDataSource(Type t) : t(t) {}
+  ClipboardDataSource(CItemData::FieldType ft) : t(static_cast<Type>(ft)) {}
+  ClipboardDataSource(int i) : t(static_cast<Type>(i)) {}
+
+  CItemData::FieldType GetFieldType() const {
+    ASSERT(IsField());
+    return static_cast<CItemData::FieldType>(t);
+  }
+
+  Type GetDerivedType() const {
+    ASSERT(!IsField());
+    return static_cast<Type>(t);
+  }
+
+  int GetAsInt() const { return static_cast<int>(t); }
+
+  operator Type() const { GetDerivedType(); }
+  operator CItemData::FieldType() const { return GetFieldType(); }
+  operator int() const { return GetAsInt(); }
+
+  bool IsField() const { return t < DerivedSourceFirst; }
+  bool IsDerived() const { return !IsField(); }
+  bool IsNone() const { return t == None; }
+  void Clear() { t = None; }
+
+  Type t;
+};
 
 class CDDObList;
 class ExpiredList;
@@ -263,11 +313,17 @@ public:
   void SetInitialDatabaseDisplay();
   void AutoResizeColumns();
   void ResetIdleLockCounter(UINT event = WM_SIZE); // default arg always resets
-  bool ClearClipboardData() {return m_clipboard.ClearCBData();}
+  bool ClearClipboardData() {
+    StopAuthCodeUpdateClipboardTimer();
+    return m_clipboard.ClearCBData();
+  }
   bool SetClipboardData(const StringX &data)
   {return m_clipboard.SetData(data.c_str());}
+  bool IsLastSensitiveItemPresent()
+  {return m_clipboard.IsLastSensitiveItemPresent();}
   void AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
     const std::vector<StringX> &vsxEmptyGroups);
+  void GetTwoFactoryAuthenticationCode(const CItemData* pci, StringX& sxAuthCode);
   StringX GetUniqueTitle(const StringX &group, const StringX &title,
                          const StringX &user, const int IDS_MESSAGE) const
   {return m_core.GetUniqueTitle(group, title, user, IDS_MESSAGE);}
@@ -318,7 +374,7 @@ public:
 
   void DoAutoType(const StringX &sx_autotype, 
                   const std::vector<size_t> &vactionverboffsets);
-  void UpdateLastClipboardAction(const int iaction);
+  void UpdateLastClipboardAction(const ClipboardDataSource& cds);
   void PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd);
   void SetDCAText(CItemData *pci = NULL);
   void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult, const bool bTreeView);
@@ -644,6 +700,11 @@ public:
   void SetupUserFonts();
   void ChangeFont(const CFontsDialog::FontType iType);
 
+  void StartAuthCodeUpdateClipboardTimer(const pws_os::CUUID& uuidEntry);
+  void StopAuthCodeUpdateClipboardTimer();
+  void OnTwoFactorAuthCodeUpdateClipboardTimer();
+  pws_os::CUUID m_uuidEntryTwoFactorAutoCopyToClipboard;
+
   // Generated message map functions
   //{{AFX_MSG(DboxMain)
   afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
@@ -708,6 +769,8 @@ public:
   afx_msg void OnCopyURL();
   afx_msg void OnCopyEmail();
   afx_msg void OnCopyRunCommand();
+  afx_msg void OnViewTwoFactorAuthCode();
+  afx_msg void OnCopyTwoFactorAuthCode();
   afx_msg void OnNew();
   afx_msg void OnOpen();
   afx_msg void OnClose();
@@ -939,7 +1002,7 @@ private:
   void DoBrowse(bool bDoAutotype, bool bSendEmail, bool bForceAlt);
   bool GetSubtreeEntriesProtectedStatus(int &numProtected, int &numUnprotected);
   void ChangeSubtreeEntriesProtectStatus(const UINT nID);
-  void CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSpecial = false);
+  void CopyDataToClipBoard(ClipboardDataSource cds, const bool bSpecial = false);
   void RestoreWindows(); // extended ShowWindow(SW_RESTORE), sort of
   void CancelPendingPasswordDialog();
   void StartForceAllowCaptureBitmapBlinkTimer(bool bEnable);
@@ -1053,7 +1116,7 @@ private:
 
   // Change languages on the fly
   void SetLanguage(LCID lcid);
-  int m_ilastaction;  // Last action
+  ClipboardDataSource m_ilastaction;  // Last action
   void SetDragbarToolTips();
 
   // Database index on Tray icon
