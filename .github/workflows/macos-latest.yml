@@ -33,6 +33,7 @@ jobs:
       # Some usefull debug parameters:
       # "WX_DEBUG_FLAG=--enable-debug --enable-debug_info"
       # "XCODE_CONFIG=Debug"
+      # "XCODE_CONFIG=Debug-no-yubi"
       run: |
         echo "WX_VERS=3.2.2.1" >> $GITHUB_ENV
         echo "WX_SRC_DIR=$HOME/wxWidgets" >> $GITHUB_ENV
