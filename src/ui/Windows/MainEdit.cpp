@@ -1862,6 +1862,17 @@ void DboxMain::OnDuplicateEntry()
   }
 }
 
+void DboxMain::OnViewTwoFactorAuthCode()
+{
+  // PR in progress, to be implemented.
+  MessageBox(L"View two factor auth code dialog will appear here (mid-PR placeholder).");
+}
+    
+void DboxMain::OnCopyTwoFactorAuthCode()
+{
+  CopyDataToClipBoard(ClipboardDataSource::AuthCode);
+}
+
 void DboxMain::OnDisplayPswdSubset()
 {
   if (!SelItemOk())
@@ -1925,8 +1936,10 @@ void DboxMain::OnCopyRunCommand()
   CopyDataToClipBoard(CItemData::RUNCMD, bDoNotExpand);
 }
 
-void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSpecial)
+void DboxMain::CopyDataToClipBoard(ClipboardDataSource cds, const bool bSpecial)
 {
+  StopAuthCodeUpdateClipboardTimer();
+
   // bSpecial's meaning depends on ft:
   //
   //   For "CItemData::PASSWORD": "bSpecial" == true means "Minimize after copy"
@@ -1935,6 +1948,7 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
     return;
 
   CItemData *pci = getSelectedItem();
+  CItemData *pci_credential = pci;
   ASSERT(pci != NULL);
 
   CItemData *pbci(NULL);
@@ -1942,12 +1956,14 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
 
   if (pci->IsDependent()) {
     pbci = GetBaseEntry(pci);
+    pci_credential = pbci;
     ASSERT(pbci != NULL);
   }
 
-  StringX sxData = pci->GetEffectiveFieldValue(ft, pbci);
-
-  switch (ft) {
+  StringX sxData;
+  if (cds.IsField()) {
+    sxData = pci->GetEffectiveFieldValue(cds, pbci);
+    switch (cds.GetFieldType()) {
     case CItemData::PASSWORD:
     {
       //Remind the user about clipboard security
@@ -1991,11 +2007,11 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
         bool bURLSpecial;
 
         sxData = PWSAuxParse::GetExpandedString(sxData,
-                                                 m_core.GetCurFile(),
-                                                 pci, pbci,
-                                                 m_bDoAutoType,
-                                                 m_sxAutoType,
-                                                 errmsg, st_column, bURLSpecial);
+                                                m_core.GetCurFile(),
+                                                pci, pbci,
+                                                m_bDoAutoType,
+                                                m_sxAutoType,
+                                                errmsg, st_column, bURLSpecial);
         if (!errmsg.empty()) {
           CGeneralMsgBox gmb;
           CString cs_title(MAKEINTRESOURCE(IDS_RUNCOMMAND_ERROR));
@@ -2009,21 +2025,30 @@ void DboxMain::CopyDataToClipBoard(const CItemData::FieldType ft, const bool bSp
       break;
     default:
       ASSERT(0);
+    }
+  } else if (cds.IsDerived() && cds.GetDerivedType() == ClipboardDataSource::AuthCode) {
+    GetTwoFactoryAuthenticationCode(pci_credential, sxData);
+    if (sxData.empty())
+      return;
+    StartAuthCodeUpdateClipboardTimer(uuid);
+  } else {
+    ASSERT(FALSE);
+    return;
   }
 
   SetClipboardData(sxData);
-  UpdateLastClipboardAction(ft);
+  UpdateLastClipboardAction(cds);
   UpdateAccessTime(uuid);
 }
 
-void DboxMain::UpdateLastClipboardAction(const int iaction)
+void DboxMain::UpdateLastClipboardAction(const ClipboardDataSource& cds)
 {
   // Note use of CItemData::RESERVED for indicating in the
   // Status bar that an old password has been copied
   int imsg(0);
   m_lastclipboardaction = L"";
-  switch (iaction) {
-    case -1:
+  switch (cds.GetAsInt()) {
+    case ClipboardDataSource::ClearClipboard:
       // Clipboard cleared
       m_lastclipboardaction = L"";
       break;
@@ -2039,7 +2064,7 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
     case CItemData::PASSWORD:
       imsg = IDS_PSWDCOPIED;
       break;
-    case DERIVED_VALUE_ACTION_AUTH_CODE:
+    case ClipboardDataSource::AuthCode:
       imsg = IDS_TWOFACTORCODE_COPIED;
       break;
     case CItemData::NOTES:
@@ -2060,7 +2085,7 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
     case CItemData::PWHIST:
       imsg = IDS_PWHISTORYCOPIED;
       break;
-    case CItemData::RESERVED:
+    case ClipboardDataSource::PasswordHistoryList:
       imsg = IDS_OLDPSWDCOPIED;
       break;
     default:
@@ -2068,7 +2093,7 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
       return;
   }
 
-  if (iaction > 0) {
+  if (!cds.IsNone()) {
     wchar_t szTimeFormat[80], szTimeString[80];
     VERIFY(::GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_STIMEFORMAT,
                            szTimeFormat, 80 /* sizeof(szTimeFormat) / sizeof(wchar_t) */));
@@ -2078,14 +2103,97 @@ void DboxMain::UpdateLastClipboardAction(const int iaction)
     m_lastclipboardaction += szTimeString;
   }
 
-  m_ilastaction = iaction;
+  m_ilastaction = cds;
   UpdateStatusBar();
 }
 
 void DboxMain::OnClearClipboard()
 {
-  UpdateLastClipboardAction(-1);
+  UpdateLastClipboardAction(ClipboardDataSource::ClearClipboard);
   ClearClipboardData();
+}
+
+void DboxMain::StartAuthCodeUpdateClipboardTimer(const pws_os::CUUID& uuidEntry)
+{
+  m_uuidEntryTwoFactorAutoCopyToClipboard = uuidEntry;
+  SetTimer(TIMER_TWO_FACTOR_AUTH_CODE_UPDATE_CLIPBOARD, std::max(USER_TIMER_MINIMUM, 1000), nullptr);
+}
+
+void DboxMain::StopAuthCodeUpdateClipboardTimer()
+{
+  m_uuidEntryTwoFactorAutoCopyToClipboard = pws_os::CUUID::NullUUID();
+  KillTimer(TIMER_TWO_FACTOR_AUTH_CODE_UPDATE_CLIPBOARD);
+}
+
+void DboxMain::OnTwoFactorAuthCodeUpdateClipboardTimer()
+{
+  if (m_uuidEntryTwoFactorAutoCopyToClipboard == pws_os::CUUID::NullUUID()) {
+    StopAuthCodeUpdateClipboardTimer();
+    return;
+  }
+
+  ItemListIter iter = Find(m_uuidEntryTwoFactorAutoCopyToClipboard);
+  ASSERT(iter != End());
+  if (iter == End()) {
+    StopAuthCodeUpdateClipboardTimer();
+    return;
+  }
+
+  CItemData& item = iter->second;
+  CItemData* pci_credential = &item;
+  if (item.IsDependent()) {
+    pci_credential = GetBaseEntry(&item);
+    ASSERT(pci_credential != NULL);
+    if (!pci_credential) {
+      StopAuthCodeUpdateClipboardTimer();
+      return;
+    }
+  }
+
+  if (!IsLastSensitiveItemPresent()) {
+    StopAuthCodeUpdateClipboardTimer();
+    return;
+  }
+
+  StringX sxAuthCode;
+  GetTwoFactoryAuthenticationCode(pci_credential, sxAuthCode);
+  if (sxAuthCode.empty()) {
+    StopAuthCodeUpdateClipboardTimer();
+    return;
+  }
+
+  SetClipboardData(sxAuthCode);
+}
+
+void DboxMain::GetTwoFactoryAuthenticationCode(const CItemData* pci, StringX& sxAuthCode)
+{
+  sxAuthCode.clear();
+  if (!pci) {
+    CGeneralMsgBox gmb;
+    CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
+    CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_KEYNOTFOUND));
+    gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
+    return;
+  }
+  StringX sxTwoFactorKey = pci->GetTwoFactorKey();
+  if (sxTwoFactorKey.empty()) {
+    CGeneralMsgBox gmb;
+    CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
+    CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_KEYEMPTY));
+    gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
+    return;
+  }
+  PWSTotp::TOTP_Result r = PWSTotp::GetNextTotpAuthCodeString(*pci, sxAuthCode, nullptr);
+  if (r != PWSTotp::Success) {
+    CGeneralMsgBox gmb;
+    CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
+    CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_MESSAGE));
+    cs_message += L" ";
+    cs_message += PWSTotp::GetTotpErrorString(r).c_str();
+    cs_message += L".";
+    gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
+    sxAuthCode.clear();
+  }
 }
 
 void DboxMain::MakeRandomPassword(StringX &password, PWPolicy &pwp, bool bIssueMsg)

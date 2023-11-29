@@ -110,6 +110,8 @@ Do NOT change the value of any resource used in a menu from V3.17 onwards.
 #define ID_MENUITEM_EXPORTGRP2DB        32096
 #define ID_MENUITEM_EXPORT_ATTACHMENT   32097
 #define ID_MENUITEM_VIEWATTACHMENT      32098
+#define ID_MENUITEM_VIEW2FAAUTHCODE     32099
+#define ID_MENUITEM_COPY2FAAUTHCODE     32100
 
 // View menu
 #define ID_VIEWMENU                     32101

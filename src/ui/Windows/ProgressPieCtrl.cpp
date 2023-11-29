@@ -52,16 +52,6 @@ void CProgressPieCtrl::SetPercent(double percent)
   Invalidate(FALSE);
 }
 
-void CProgressPieCtrl::SetPieColor(COLORREF clr)
-{
-  m_common.SetPieColor(clr);
-}
-
-void CProgressPieCtrl::SetOutlineColor(COLORREF clr)
-{
-  m_common.SetOutlineColor(clr);
-}
-
 HBRUSH CProgressPieCtrl::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 {
   pDC->SetTextColor(m_clrText);

@@ -23,8 +23,82 @@ static CLIPFORMAT CF_EXCLUDE_CLIPBOARD_CONTENT_FROM_MONITOR_PROCESSING;
 static CLIPFORMAT CF_CAN_INCLUDE_IN_CLIPBOARD_HISTORY;
 static CLIPFORMAT CF_CAN_UPLOAD_TO_CLOUD_CLIPBOARD;
 
+class ClipboardChecker
+{
+public:
+  ClipboardChecker()
+    :
+    m_bError(true),
+    m_podo(NULL),
+    m_hData(NULL),
+    m_pData(NULL),
+    m_dwlength(0)
+  { }
+
+  virtual ~ClipboardChecker()
+  {
+    Reset();
+  }
+
+  void Reset()
+  {
+    if (!m_hData)
+      return;
+    if (m_dwlength > 0)
+      trashMemory((void*)m_pData, m_dwlength);
+    m_pData = NULL;
+    m_dwlength = 0;
+    ::GlobalUnlock(m_hData);
+    ::GlobalFree(m_hData);
+    delete m_podo;
+    m_podo = NULL;
+    m_hData = NULL;
+    memset(m_digest, 0, sizeof(m_digest));
+    m_bError = true;
+  }
+
+  bool Initialize()
+  {
+    Reset();
+    StringX data;
+    m_podo = new COleDataObject;
+    m_podo->AttachClipboard();
+    m_hData = m_podo->GetGlobalData(CLIPBOARD_TEXT_FORMAT);
+    if (m_hData == NULL)
+      return false;
+    m_pData = (LPCTSTR)::GlobalLock(m_hData);
+    if (!m_pData)
+      return false;
+    m_bError = false;
+    m_dwlength = ::GlobalSize(m_hData) - sizeof(wchar_t); // less trailing null
+    if (m_dwlength < 1)
+      return false;
+    SHA256 hasher;
+    hasher.Update((unsigned char*)m_pData, m_dwlength);
+    hasher.Final(m_digest);
+    return true;
+  }
+
+  bool isDigestMatch(unsigned char digest[SHA256::HASHLEN])
+  {
+    if (!m_pData && !Initialize()) {
+      m_bError = true;
+      return false;
+    }
+    return memcmp(digest, m_digest, SHA256::HASHLEN) == 0;
+  }
+
+public:
+  bool m_bError;
+  COleDataObject *m_podo;
+  HANDLE m_hData;
+  LPCTSTR m_pData;
+  SIZE_T m_dwlength;
+  unsigned char m_digest[SHA256::HASHLEN] = { 0 };
+};
+
 PWSclipboard::PWSclipboard()
-  : m_set(false)
+  : m_bSensitiveDataOnClipboard(false)
 {
   memset(m_digest, 0, sizeof(m_digest));
 
@@ -45,19 +119,55 @@ PWSclipboard::~PWSclipboard()
 
 bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfFormat)
 {
+  unsigned char sensitiveDataDigest[SHA256::HASHLEN] = { 0 };
+  if (isSensitive) {
+    // Caller is copying sensitive data to the clipboard (i.e., password or similar).
+    // Retain the hash of the sensitive data so its existence on the clipboard can
+    // be checked later without requiring a cleartext copy of the sensitive data.
+    SHA256 hasher;
+    const wchar_t* str = data.c_str();
+    hasher.Update((const unsigned char*)str, data.length() * sizeof(wchar_t));
+    hasher.Final(sensitiveDataDigest);
+
+    // Do nothing if the sensitive data is already on the clipboard.
+    if (m_bSensitiveDataOnClipboard &&
+        memcmp(sensitiveDataDigest, m_digest, SHA256::HASHLEN) == 0 &&
+        IsLastSensitiveItemPresent())
+      return true;
+  }
+
+  memset(m_digest, 0, sizeof(m_digest));
+  m_bSensitiveDataOnClipboard = false;
+
   // Dummy data
   HGLOBAL hDummyGlobalMemory = ::GlobalAlloc(GMEM_MOVEABLE, 2 * sizeof(wchar_t));
+  if (!hDummyGlobalMemory)
+    return false;
+
   LPTSTR pDummyGlobalLock = (LPTSTR)::GlobalLock(hDummyGlobalMemory);
+  if (!pDummyGlobalLock)
+    return false;
 
   PWSUtil::strCopy(pDummyGlobalLock, 2, L"\0" , 1);
+  pDummyGlobalLock = NULL;
   ::GlobalUnlock(hDummyGlobalMemory);
 
   // Real data
   size_t uGlobalMemSize = (data.length() + 1) * sizeof(wchar_t);
   HGLOBAL hGlobalMemory = ::GlobalAlloc(GMEM_MOVEABLE, uGlobalMemSize);
+  if (!hGlobalMemory) {
+    ::GlobalFree(hDummyGlobalMemory);
+    return false;
+  }
+
   LPTSTR pGlobalLock = (LPTSTR)::GlobalLock(hGlobalMemory);
+  if (!pGlobalLock) {
+    ::GlobalFree(hDummyGlobalMemory);
+    return false;
+  }
 
   PWSUtil::strCopy(pGlobalLock, data.length() + 1, data.c_str(), data.length());
+  pGlobalLock = NULL;
   ::GlobalUnlock(hGlobalMemory);
 
   COleDataSource *pods = new COleDataSource; // deleted automagically by SetClipboard below
@@ -72,46 +182,32 @@ bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfF
   pods->SetClipboard();
   pods = NULL; // As deleted by SetClipboard above
 
-  m_set = isSensitive; // don't set if !isSensitive, so won't be cleared
-  if (m_set) {
-    // identify data in clipboard as ours, so as not to clear the wrong data later
-    // of course, we don't want an extra copy of a password floating around
-    // in memory, so we'll use the hash
-    SHA256 ctx;
-    const wchar_t *str = data.c_str();
-    ctx.Update((const unsigned char *)str, data.length() * sizeof(wchar_t));
-    ctx.Final(m_digest);
+  if (isSensitive) {
+    m_bSensitiveDataOnClipboard = true;
+    memcpy(m_digest, sensitiveDataDigest, sizeof(m_digest));
   }
-  return m_set;
+
+  return m_bSensitiveDataOnClipboard;
 }
 
 bool PWSclipboard::ClearCBData()
 {
-  if (m_set) {
-    COleDataObject odo;
-    StringX data;
-    odo.AttachClipboard();
-    HANDLE hData = odo.GetGlobalData(CLIPBOARD_TEXT_FORMAT);
-    if (hData != NULL) {
-      LPCTSTR pData = (LPCTSTR)::GlobalLock(hData);
-      SIZE_T dwlength = ::GlobalSize(hData) - sizeof(wchar_t); // less trailing null
-      if (dwlength < 1)
-        return !m_set;
+  if (!IsLastSensitiveItemPresent())
+    return false;
+  StringX blank(L"");
+  SetData(blank, false);
+  memset(m_digest, 0, SHA256::HASHLEN);
+  m_bSensitiveDataOnClipboard = false;
+  return true;
+}
 
-      // check if the data on the clipboard is the same we put there
-      unsigned char digest[SHA256::HASHLEN];
-      SHA256 ctx;
-      ctx.Update((unsigned char *)pData, dwlength);
-      ctx.Final(digest);
-      if (memcmp(digest, m_digest, SHA256::HASHLEN) == 0) {
-        trashMemory((void *)pData, dwlength);
-        StringX blank(L"");
-        SetData(blank, false);
-        memset(m_digest, 0, SHA256::HASHLEN);
-      }
-      ::GlobalUnlock(hData);
-      ::GlobalFree(hData);
-    }
-  }
-  return !m_set;
+bool PWSclipboard::IsLastSensitiveItemPresent()
+{
+  if (!m_bSensitiveDataOnClipboard)
+    return false;
+  ClipboardChecker clipboardChecker;
+  m_bSensitiveDataOnClipboard = clipboardChecker.isDigestMatch(m_digest);
+  if (!m_bSensitiveDataOnClipboard)
+    memset(m_digest, 0, SHA256::HASHLEN);
+  return m_bSensitiveDataOnClipboard;
 }

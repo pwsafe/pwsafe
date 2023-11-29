@@ -488,7 +488,8 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
   const int IDs[] = {ID_MENUITEM_COPYPASSWORD, ID_MENUITEM_COPYUSERNAME,
                      ID_MENUITEM_COPYNOTESFLD, ID_MENUITEM_AUTOTYPE, 
                      ID_MENUITEM_RUNCOMMAND,   ID_MENUITEM_EDITENTRY,
-                     ID_MENUITEM_PASSWORDSUBSET};
+                     ID_MENUITEM_PASSWORDSUBSET,
+                     ID_MENUITEM_COPY2FAAUTHCODE, ID_MENUITEM_VIEW2FAAUTHCODE};
 
   // Following test required since this can be called on exit, with a pci
   // from ItemData that's already been deleted. Ugh.
@@ -543,6 +544,14 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
       mainTBCtrl.EnableButton(ID_MENUITEM_COPYUSERNAME, FALSE);
     } else {
       mainTBCtrl.EnableButton(ID_MENUITEM_COPYUSERNAME, TRUE);
+    }
+
+    if (pci_entry == NULL || pci_entry->IsFieldValueEmpty(CItemData::TWOFACTORKEY, pbci)) {
+      mainTBCtrl.EnableButton(ID_MENUITEM_COPY2FAAUTHCODE, FALSE);
+      mainTBCtrl.EnableButton(ID_MENUITEM_VIEW2FAAUTHCODE, FALSE);
+    } else {
+      mainTBCtrl.EnableButton(ID_MENUITEM_COPY2FAAUTHCODE, TRUE);
+      mainTBCtrl.EnableButton(ID_MENUITEM_VIEW2FAAUTHCODE, TRUE);
     }
 
     if (pci_entry == NULL || pci_entry->IsFieldValueEmpty(CItemData::NOTES, pbci)) {
@@ -2628,6 +2637,8 @@ void DboxMain::OnTimer(UINT_PTR nIDEvent)
     m_StatusBar.SetPaneInfo(CPWStatusBar::SB_SCR_CAP, nIdNextBitmap, uiStyle |= SBT_OWNERDRAW, m_StatusBar.GetBitmapWidth());
     m_StatusBar.Invalidate();
     m_StatusBar.UpdateWindow();
+  } else if (nIDEvent == TIMER_TWO_FACTOR_AUTH_CODE_UPDATE_CLIPBOARD) {
+    OnTwoFactorAuthCodeUpdateClipboardTimer();
   }
 }
 

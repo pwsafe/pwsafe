@@ -1148,24 +1148,24 @@ void CAddEdit_Basic::OnSTCExClicked(UINT nID)
   UpdateData(TRUE);
 
   CSecString cs_data;
-  int iaction(0);
+  ClipboardDataSource cds;
 
   // NOTE: These values must be contiguous in "resource.h"
   switch (nID) {
     case IDC_STATIC_GROUP:
       m_stc_group.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
       cs_data = M_group();
-      iaction = CItemData::GROUP;
+      cds = CItemData::GROUP;
       break;
     case IDC_STATIC_TITLE:
       m_stc_title.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
       cs_data = M_title();
-      iaction = CItemData::TITLE;
+      cds = CItemData::TITLE;
       break;
     case IDC_STATIC_USERNAME:
       m_stc_username.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
       cs_data = M_username();
-      iaction = CItemData::USER;
+      cds = CItemData::USER;
       break;
     case IDC_STATIC_PASSWORD:
       m_stc_password.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
@@ -1175,17 +1175,17 @@ void CAddEdit_Basic::OnSTCExClicked(UINT nID)
         if (pcbi != nullptr) // can be null if user changed password, breaking relation
           cs_data = M_pci()->GetEffectiveFieldValue(CItem::PASSWORD, pcbi);
       }
-      iaction = CItemData::PASSWORD;
+      cds = CItemData::PASSWORD;
       break;
     case IDC_STATIC_NOTES:
       m_stc_notes.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
       cs_data = M_notes();
-      iaction = CItemData::NOTES;
+      cds = CItemData::NOTES;
       break;
     case IDC_STATIC_URL:
       cs_data = M_URL();
       m_stc_URL.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
-      iaction = CItemData::URL;
+      cds = CItemData::URL;
       break;
     case IDC_STATIC_EMAIL:
       cs_data = M_email();
@@ -1195,13 +1195,13 @@ void CAddEdit_Basic::OnSTCExClicked(UINT nID)
         UpdateData(FALSE);
       }
       m_stc_email.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
-      iaction = CItemData::EMAIL;
+      cds = CItemData::EMAIL;
       break;
     default:
       ASSERT(0);
   }
   GetMainDlg()->SetClipboardData(cs_data);
-  GetMainDlg()->UpdateLastClipboardAction(iaction);
+  GetMainDlg()->UpdateLastClipboardAction(cds);
 }
 
 void CAddEdit_Basic::SelectAllNotes()
@@ -1785,36 +1785,16 @@ void CAddEdit_Basic::OnCopyPassword()
 void CAddEdit_Basic::OnCopyTwoFactorCode()
 {
   UpdateData(TRUE);
-  CSecString twoFactorKey = GetTwoFactorKey();
-  if (twoFactorKey.IsEmpty()) {
-    CGeneralMsgBox gmb;
-    CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
-    CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_KEYEMPTY));
-    gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
-    return;
-  }
-  CItemData* pci = M_pci_credential();
-  if (!pci) {
-    CGeneralMsgBox gmb;
-    CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
-    CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_KEYNOTFOUND));
-    gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
-    return;
-  }
+
+  // During Add/Edit, the UI may have updated 2FA info.
+  // Use latest 2FA info to produce the auth code.
+  CItemData ciTemp(*M_pci_credential());
+  ciTemp.SetTwoFactorKey(GetTwoFactorKey());
+
   StringX sxAuthCode;
-  PWSTotp::TOTP_Result r = PWSTotp::GetNextTotpAuthCodeString(*pci, sxAuthCode, nullptr);
-  if (r != PWSTotp::Success) {
-    CGeneralMsgBox gmb;
-    CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
-    CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_MESSAGE));
-    cs_message += L" ";
-    cs_message += PWSTotp::GetTotpErrorString(r).c_str();
-    cs_message += L".";
-    gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
-    return;
-  }
+  GetMainDlg()->GetTwoFactoryAuthenticationCode(&ciTemp, sxAuthCode);
   GetMainDlg()->SetClipboardData(sxAuthCode);
-  GetMainDlg()->UpdateLastClipboardAction(DERIVED_VALUE_ACTION_AUTH_CODE);
+  GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::AuthCode);
 }
 
 CSecString CAddEdit_Basic::GetTwoFactorKey()

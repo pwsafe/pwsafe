@@ -95,6 +95,8 @@ Timer related values (note - all documented her but some defined only where need
 
 // Timer used for two factor authentication code interval countdown.
 #define TIMER_TWO_FACTOR_AUTH_CODE_COUNTDOWN 0x21
+// Timer used to repeatedly update the clipboard with an entry's current auth code.
+#define TIMER_TWO_FACTOR_AUTH_CODE_UPDATE_CLIPBOARD 0x22
 
 /*
 HOVER_TIME_ND       The length of time the pointer must remain stationary

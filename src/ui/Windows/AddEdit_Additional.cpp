@@ -816,7 +816,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
 {
   UpdateData(TRUE);
   StringX sxData;
-  int iaction(0);
+  ClipboardDataSource cds;
   std::vector<size_t> vactionverboffsets;
 
   // NOTE: These values must be contiguous in "resource.h"
@@ -860,7 +860,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
         Replace(sxData, sxTabCode, sxTab);
         Replace(sxData, sxSpaceCode, sxSpace);
       }
-      iaction = CItemData::AUTOTYPE;
+      cds = CItemData::AUTOTYPE;
       break;
     case IDC_STATIC_RUNCMD:
       m_stc_runcommand.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
@@ -892,13 +892,13 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
           gmb.MessageBox(cs_errmsg, cs_title, MB_ICONERROR);
         }
       }
-      iaction = CItemData::RUNCMD;
+      cds = CItemData::RUNCMD;
       break;
     default:
       ASSERT(0);
   }
   GetMainDlg()->SetClipboardData(sxData);
-  GetMainDlg()->UpdateLastClipboardAction(iaction);
+  GetMainDlg()->UpdateLastClipboardAction(cds);
 }
 
 void CAddEdit_Additional::OnCheckedSavePasswordHistory()
@@ -1007,7 +1007,7 @@ void CAddEdit_Additional::OnPWHCopyAll()
   }
 
   GetMainDlg()->SetClipboardData(HistStr);
-  GetMainDlg()->UpdateLastClipboardAction(CItemData::RESERVED);
+  GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::PasswordHistoryList);
 }
 
 void CAddEdit_Additional::OnHistListClick(NMHDR *pNMHDR, LRESULT *pResult)
@@ -1021,7 +1021,7 @@ void CAddEdit_Additional::OnHistListClick(NMHDR *pNMHDR, LRESULT *pResult)
 
     // Note use of CItemData::RESERVED for indicating in the
     // Status bar that an old password has been copied
-    GetMainDlg()->UpdateLastClipboardAction(CItemData::RESERVED); 
+    GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::PasswordHistoryList);
   }
   *pResult = 0;
 }
