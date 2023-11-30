@@ -111,6 +111,12 @@ int PWSfileV1V2::ReadV2Header()
     if (_ret != cnt) { status = FAILURE; goto exit;} \
   }
 
+#define SAFE_FREAD(p, sz, cnt, stream) \
+  { \
+    size_t _ret = fread(p, sz, cnt, stream); \
+    if (_ret != cnt) { status = FAILURE; goto exit;} \
+  }
+
 int PWSfileV1V2::Open(const StringX &passkey)
 {
   int status = SUCCESS;
@@ -166,8 +172,8 @@ int PWSfileV1V2::Open(const StringX &passkey)
       Close();
       return status;
     }
-    (void) fread(m_salt, 1, SaltLength, m_fd);
-    (void) fread(m_ipthing, 1, 8, m_fd);
+    SAFE_FREAD(m_salt, 1, SaltLength, m_fd);
+    SAFE_FREAD(m_ipthing, 1, 8, m_fd);
 
     m_fish = makeFish<BlowFish, SHA1>(pstr, static_cast<unsigned int>(passLen),
                                 m_salt, SaltLength);
@@ -200,9 +206,14 @@ int PWSfileV1V2::CheckPasskey(const StringX &filename,
   unsigned char randstuff[StuffSize];
   unsigned char randhash[SHA1::HASHLEN];
 
-  (void) fread(randstuff, 1, 8, fd);
+  if (fread(randstuff, 1, 8, fd) != 8 ||
+      fread(randhash, 1, sizeof(randhash), fd) != sizeof(randhash)) {
+        if (a_fd == nullptr)
+          fclose(fd);
+        return READ_FAIL;
+      }
+
   randstuff[8] = randstuff[9] = '\0'; // Gross fugbix
-  (void) fread(randhash, 1, sizeof(randhash), fd);
 
   if (a_fd == nullptr) // if we opened the file, we close it...
     fclose(fd);
