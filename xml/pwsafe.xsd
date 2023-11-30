@@ -61,7 +61,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
 
 <xs:simpleType name="fileuuidType">
   <xs:restriction base="xs:string">
-    <xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA­F]{12}" />
+    <xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
   </xs:restriction>
 </xs:simpleType>
 
@@ -190,6 +190,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
               <xs:element name="ShowPasswordInTree" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="ShowUsernameInTree" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="UseDefaultUser" type="boolType" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ExcludeFromScreenCapture" type="boolType" minOccurs="0" maxOccurs="1" />
   
               <!-- Integer Preferences -->
               <xs:element name="IdleTimeout" type="timeoutType" minOccurs="0" maxOccurs="1" />
