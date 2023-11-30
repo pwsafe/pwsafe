@@ -45,11 +45,11 @@ namespace PWSTotp {
   const uint8_t TOTP_CONFIG_ALGORITHM_DEFAULT = TOTP_CONFIG_ALGORITHM_HMAC_SHA1;
 
   std::wstring GetTotpErrorString(TOTP_Result r);
-  TOTP_Result GetNextTotpAuthCode(const CItemData& data, uint32_t& totpCode, time_t* pBasisTimeNow);
+  void GetCurrentTotpIntervalInformation(uint8_t time_step_seconds, time_t start_time, time_t& time_now, double& ratio_expired);
+  TOTP_Result GetCurrentTotpIntervalInformation(const CItemData& data, time_t& time_now, double& ratio);
+  TOTP_Result GetNextTotpAuthCode(const CItemData& data, uint32_t& totpCode, time_t* pBasisTimeNow = nullptr, double* pRatioExpired = nullptr);
   StringX TotpCodeToString(const CItemData& data, uint32_t totp_auth_code);
-  TOTP_Result GetNextTotpAuthCodeString(const CItemData& data, StringX& totpAuthCodeStr, time_t* pBasisTimeNow);
-  TOTP_Result ValidateTotpConfiguration(const CItemData& data);
-  TOTP_Result GetCurrentTotpIntervalExpiredRatio(uint8_t time_step_seconds, time_t start_time, double& ratio_expired);
-  TOTP_Result GetCurrentTotpIntervalExpiredRatio(const CItemData& data, double& ratio);
+  TOTP_Result GetNextTotpAuthCodeString(const CItemData& data, StringX& totpAuthCodeStr, time_t* pBasisTimeNow = nullptr, double* pRatioExpired = nullptr);
+  TOTP_Result ValidateTotpConfiguration(const CItemData& data, time_t* pBasisTimeNow = nullptr, double* pRatioExpired = nullptr);
 }
 #endif

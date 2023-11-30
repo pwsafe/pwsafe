@@ -818,3 +818,4 @@
 #define IDS_TWOFACTORCODE_ERROR_MESSAGE                     6105
 #define IDS_TWOFACTORCODE_ERROR_KEYEMPTY                    6106
 #define IDS_TWOFACTORCODE_ERROR_KEYNOTFOUND                 6107
+#define IDS_AC_STATIC_TWOFACTORCODE                         6115

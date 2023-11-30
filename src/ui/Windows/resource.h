@@ -415,6 +415,7 @@
 #define IDB_VIEW2FAAUTHCODE_CLASSIC     583
 #define IDB_VIEW2FAAUTHCODE_NEW         584
 #define IDB_VIEW2FAAUTHCODE_NEW_D       585
+#define IDD_DISPLAY_AUTH_CODE           600
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -927,14 +928,22 @@
 #define IDC_SCRCAP_STATE_CTL            1611
 #define IDC_TWOFACTORKEY                1612
 #define IDC_SHOW_2FAKEY                 1613
+#define IDC_AC_LABEL_GROUP              1614
+#define IDC_AC_EDIT_GROUP               1615
+#define IDC_AC_LABEL_TITLE              1616
+#define IDC_AC_EDIT_TITLE               1617
+#define IDC_AC_LABEL_USERNAME           1618
+#define IDC_AC_EDIT_USERNAME            1619
+#define IDC_AC_BUTTON_COPY_TWOFACTORCODE 1620
+#define IDC_AC_STATIC_TWOFACTORCODE     1621
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        571
+#define _APS_NEXT_RESOURCE_VALUE        573
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1614
+#define _APS_NEXT_CONTROL_VALUE         1622
 #define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif

@@ -18,6 +18,7 @@
 #include "ProgressPieCtrl.h"
 
 #include "core/ItemData.h"
+#include "core/TotpCore.h"
 
 class DboxMain;
 
@@ -146,6 +147,8 @@ private:
   bool IsTwoFactorKey();
   void SetupAuthenticationCodeUiElements();
   void StopAuthenticationCodeUi();
+  PWSTotp::TOTP_Result ValidateTotpConfiguration(double *pRatio = nullptr);
+
   CSecString GetTwoFactorKey();
 
   CTBMStatic m_Help1, m_Help2, m_Help3, m_Help4;

@@ -59,6 +59,8 @@ public:
   void VerifySymbolsSupported();
   bool IsSymbolSuported(const Symbol symbol, const PWSFont font = TREELIST);
 
+  static bool CreateFontMatchingWindowHeight(CWnd& wnd, CFont& font);
+
 private:
   Fonts();
   ~Fonts() {}
