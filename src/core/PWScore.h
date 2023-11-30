@@ -343,6 +343,9 @@ public:
   const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const;
   CItemData *GetBaseEntry(const CItemData *pAliasOrSC);
 
+  const CItemData* GetCredentialEntry(const CItemData* pAny) const;
+  CItemData* GetCredentialEntry(const CItemData* pAny);
+
   // alias/base and shortcut/base handling
   void SortDependents(UUIDVector &dlist, StringX &csDependents);
   void SortDependents(UUIDVector &dlist, std::vector<StringX> &vsxDependents);

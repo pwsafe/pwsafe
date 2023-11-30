@@ -24,6 +24,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/DboxMain.h
             src/ui/Windows/DDStatic.h
             src/ui/Windows/DDSupport.h
+            src/ui/Windows/DisplayAuthCodeDlg.h
             src/ui/Windows/DisplayFSBkupFiles.h
             src/ui/Windows/DropSource.h
             src/ui/Windows/DropTarget.h
@@ -175,6 +176,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/DboxTray.cpp
             src/ui/Windows/DDStatic.cpp
             src/ui/Windows/DDSupport.cpp
+            src/ui/Windows/DisplayAuthCodeDlg.cpp
             src/ui/Windows/DisplayFSBkupFiles.cpp
             src/ui/Windows/DropSource.cpp
             src/ui/Windows/DropTarget.cpp

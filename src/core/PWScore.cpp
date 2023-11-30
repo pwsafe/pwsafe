@@ -3252,6 +3252,25 @@ CItemData *PWScore::GetBaseEntry(const CItemData *pAliasOrSC)
   return nullptr;
 }
 
+const CItemData* PWScore::GetCredentialEntry(const CItemData* pAny) const
+{
+  return const_cast<PWScore*>(this)->GetCredentialEntry(pAny);
+}
+
+CItemData* PWScore::GetCredentialEntry(const CItemData* pAny)
+{
+  ASSERT(pAny != nullptr);
+  if (!pAny)
+    return nullptr;
+  const CUUID uuidCredential = pAny->IsDependent() ? pAny->GetBaseUUID() : pAny->GetUUID();
+  auto iter = Find(uuidCredential);
+  if (iter != GetEntryEndIter())
+    return &iter->second;
+  pws_os::Trace(_T("PWScore::GetCredentialEntry - Find(base_uuid) failed!\n"));
+  ASSERT(FALSE);
+  return nullptr;
+}
+
 /*
  *  Start UI Interface feedback routines
  */

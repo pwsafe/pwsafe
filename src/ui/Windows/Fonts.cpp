@@ -605,3 +605,21 @@ bool Fonts::IsCharacterSupported(std::wstring &sSymbol, const bool bTreeListFont
 
   return bSupported;
 }
+
+bool Fonts::CreateFontMatchingWindowHeight(CWnd& wnd, CFont& font)
+{
+  ASSERT(::IsWindow(wnd.m_hWnd));
+  if (!::IsWindow(wnd.m_hWnd))
+    return false;
+  CRect rcClient;
+  wnd.GetClientRect(&rcClient);
+  CFont* fontWnd = wnd.GetFont();
+  if (!fontWnd)
+    return false;
+  LOGFONT lf;
+  if (!fontWnd->GetLogFont(&lf))
+    return false;
+  lf.lfHeight = rcClient.Height();
+  font.DeleteObject();
+  return font.CreateFontIndirect(&lf);
+}

@@ -26,7 +26,7 @@ public:
   RFC4648_Base32Decoder(const char* base32_encoded_key)
   {
     decoded_bytes.resize((strlen(base32_encoded_key) * BITS_PER_BASE32_CHAR) / BITS_PER_BYTE);
-    is_successful = base32_decode(&decoded_bytes[0], static_cast<int>(decoded_bytes.size()) * BITS_PER_BYTE, base32_encoded_key, 0);
+    is_successful = !decoded_bytes.empty() && base32_decode(&decoded_bytes[0], static_cast<int>(decoded_bytes.size()) * BITS_PER_BYTE, base32_encoded_key, 0);
     if (!is_successful)
       clear();
   }

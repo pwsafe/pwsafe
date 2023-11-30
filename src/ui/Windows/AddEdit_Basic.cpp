@@ -570,7 +570,7 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
           (M_ipolicy() != NAMED_POLICY &&
             M_symbols() != M_pci()->GetSymbols()) ||
           M_realpassword() != M_oldRealPassword() ||
-          M_twofactorkey() != M_oldRealPassword())
+          M_twofactorkey() != M_pci()->GetTwoFactorKey())
           return 1L;
       }
           break;
@@ -1793,8 +1793,10 @@ void CAddEdit_Basic::OnCopyTwoFactorCode()
 
   StringX sxAuthCode;
   GetMainDlg()->GetTwoFactoryAuthenticationCode(&ciTemp, sxAuthCode);
-  GetMainDlg()->SetClipboardData(sxAuthCode);
-  GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::AuthCode);
+  bool bDataSet = GetMainDlg()->SetClipboardData(sxAuthCode);
+  ASSERT(bDataSet);
+  if (bDataSet)
+    GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::AuthCode);
 }
 
 CSecString CAddEdit_Basic::GetTwoFactorKey()
@@ -1828,13 +1830,37 @@ void CAddEdit_Basic::OnTimer(UINT_PTR nIDEvent)
     return;
   }
 
+  double ratio;
+  PWSTotp::TOTP_Result r = ValidateTotpConfiguration(&ratio);
+  if (r == PWSTotp::Success)
+    m_btnTwoFactorCode.SetPercent(100.0 * ratio);
+}
+
+PWSTotp::TOTP_Result CAddEdit_Basic::ValidateTotpConfiguration(double *pRatio)
+{
   CItemData* pci_cred = M_pci_credential();
   if (!pci_cred)
-    return;
-  double ratio;
-  if (PWSTotp::GetCurrentTotpIntervalExpiredRatio(*pci_cred, ratio) != PWSTotp::Success)
-    return;
-  m_btnTwoFactorCode.SetPercent(100.0 * ratio);
+    return PWSTotp::TotpKeyNotFound;
+
+  // During Add/Edit, the UI may have updated 2FA info.
+  // Use latest 2FA info to produce the auth code.
+  CItemData ciTemp(*pci_cred);
+  ciTemp.SetTwoFactorKey(GetTwoFactorKey());
+
+  PWSTotp::TOTP_Result r = PWSTotp::ValidateTotpConfiguration(ciTemp, nullptr, pRatio);
+  if (r != PWSTotp::Success) {
+    StopAuthenticationCodeUi();
+    m_btnTwoFactorCode.EnableWindow(FALSE);
+    m_btnTwoFactorCode.ShowWindow(SW_HIDE);
+    CGeneralMsgBox gmb;
+    CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
+    CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_MESSAGE));
+    cs_message += L" ";
+    cs_message += PWSTotp::GetTotpErrorString(r).c_str();
+    cs_message += L".";
+    gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
+  }
+  return r;
 }
 
 void CAddEdit_Basic::SetupAuthenticationCodeUiElements()
@@ -1844,7 +1870,7 @@ void CAddEdit_Basic::SetupAuthenticationCodeUiElements()
   bool isTwoFactorKey = IsTwoFactorKey();
   m_btnTwoFactorCode.EnableWindow(isTwoFactorKey);
   m_btnTwoFactorCode.ShowWindow(isTwoFactorKey ? SW_SHOW : SW_HIDE);
-  if (isTwoFactorKey)
+  if (isTwoFactorKey && ValidateTotpConfiguration() == PWSTotp::Success)
     SetTimer(TIMER_TWO_FACTOR_AUTH_CODE_COUNTDOWN, USER_TIMER_MINIMUM, NULL);
   else
     KillTimer(TIMER_TWO_FACTOR_AUTH_CODE_COUNTDOWN);

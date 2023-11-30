@@ -26,6 +26,7 @@
 #include "CompareWithSelectDlg.h"
 #include "ShowCompareDlg.h"
 #include "ViewAttachmentDlg.h"
+#include "DisplayAuthCodeDlg.h"
 
 #include "core/pwsprefs.h"
 #include "core/PWSAuxParse.h"
@@ -1864,8 +1865,12 @@ void DboxMain::OnDuplicateEntry()
 
 void DboxMain::OnViewTwoFactorAuthCode()
 {
-  // PR in progress, to be implemented.
-  MessageBox(L"View two factor auth code dialog will appear here (mid-PR placeholder).");
+  CItemData* pci = getSelectedItem();
+  ASSERT(pci != NULL);
+  if (!pci)
+    return;
+  CDisplayAuthCodeDlg dlg(this, m_core, *pci);
+  dlg.DoModal();
 }
     
 void DboxMain::OnCopyTwoFactorAuthCode()
@@ -1873,7 +1878,7 @@ void DboxMain::OnCopyTwoFactorAuthCode()
   CopyDataToClipBoard(ClipboardDataSource::AuthCode);
 }
 
-void DboxMain::OnDisplayPswdSubset()
+void DboxMain::OnDisplayPasswordSubset()
 {
   if (!SelItemOk())
     return;
@@ -2150,7 +2155,7 @@ void DboxMain::OnTwoFactorAuthCodeUpdateClipboardTimer()
     }
   }
 
-  if (!IsLastSensitiveItemPresent()) {
+  if (!IsLastSensitiveClipboardItemPresent()) {
     StopAuthCodeUpdateClipboardTimer();
     return;
   }
@@ -2183,7 +2188,7 @@ void DboxMain::GetTwoFactoryAuthenticationCode(const CItemData* pci, StringX& sx
     gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
     return;
   }
-  PWSTotp::TOTP_Result r = PWSTotp::GetNextTotpAuthCodeString(*pci, sxAuthCode, nullptr);
+  PWSTotp::TOTP_Result r = PWSTotp::GetNextTotpAuthCodeString(*pci, sxAuthCode);
   if (r != PWSTotp::Success) {
     CGeneralMsgBox gmb;
     CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));

@@ -319,7 +319,7 @@ public:
   }
   bool SetClipboardData(const StringX &data)
   {return m_clipboard.SetData(data.c_str());}
-  bool IsLastSensitiveItemPresent()
+  bool IsLastSensitiveClipboardItemPresent()
   {return m_clipboard.IsLastSensitiveItemPresent();}
   void AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
     const std::vector<StringX> &vsxEmptyGroups);
@@ -764,7 +764,7 @@ public:
   afx_msg void OnHeaderEndDrag(NMHDR *pNotifyStruct, LRESULT *pLResult);
   afx_msg void OnCopyPassword();
   afx_msg void OnCopyPasswordMinimize();
-  afx_msg void OnDisplayPswdSubset();
+  afx_msg void OnDisplayPasswordSubset();
   afx_msg void OnCopyNotes();
   afx_msg void OnCopyURL();
   afx_msg void OnCopyEmail();

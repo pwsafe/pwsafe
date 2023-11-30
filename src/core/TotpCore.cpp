@@ -60,7 +60,31 @@ namespace PWSTotp {
     return error_message;
   }
 
-  TOTP_Result GetNextTotpAuthCode(const CItemData& data, uint32_t& totpCode, time_t* pBasisTimeNow)
+  void GetCurrentTotpIntervalInformation(uint8_t time_step_seconds, time_t start_time, time_t& time_now, double& ratio_expired)
+  {
+    const auto one_second_msecs = std::chrono::milliseconds::period::den;
+    const auto interval_msecs = time_step_seconds * one_second_msecs;
+    const auto start_time_msecs = start_time * one_second_msecs;
+
+    auto chrono_time_now = std::chrono::system_clock::now().time_since_epoch();
+    time_now = static_cast<time_t>(std::chrono::duration_cast<std::chrono::seconds>(chrono_time_now).count());
+    const auto time_now_msecs = std::chrono::duration_cast<std::chrono::milliseconds>(chrono_time_now);
+    const auto totp_elapsed_msecs = time_now_msecs.count() - start_time_msecs;
+    ratio_expired = (totp_elapsed_msecs % interval_msecs) / (double)(interval_msecs);
+  }
+
+  TOTP_Result GetCurrentTotpIntervalInformation(const CItemData& data, time_t& time_now, double& ratio)
+  {
+    uint8_t totp_algo = data.GetTotpAlgorithmAsByte();
+    if (totp_algo != TOTP_CONFIG_ALGORITHM_HMAC_SHA1)
+      return InvalidTotpConfiguration;
+    time_t totp_start_time = data.GetTotpStartTimeAsTimeT();
+    uint8_t totp_time_step_seconds = data.GetTotpTimeStepSecondsAsByte();
+    GetCurrentTotpIntervalInformation(totp_time_step_seconds, totp_start_time, time_now, ratio);
+    return Success;
+  }
+
+  TOTP_Result GetNextTotpAuthCode(const CItemData& data, uint32_t& totpCode, time_t* pBasisTimeNow, double* pRatioExpired)
   {
     totpCode = TOTP_INVALID_AUTH_CODE;
 
@@ -87,9 +111,13 @@ namespace PWSTotp {
       return KeyBase32DecodingFailure;
 
     TOTP_SHA1 totp(base32_key, totp_code_digit_length, totp_time_step_seconds, totp_start_time);
-    time_t time_now = time(NULL);
+    time_t time_now;
+    double ratio_expired;
+    GetCurrentTotpIntervalInformation(totp_time_step_seconds, totp_start_time, time_now, ratio_expired);
     if (pBasisTimeNow)
       *pBasisTimeNow = time_now;
+    if (pRatioExpired)
+      *pRatioExpired = ratio_expired;
     totpCode = totp.Generate(time_now);
     return Success;
   }
@@ -102,44 +130,21 @@ namespace PWSTotp {
     return result;
   }
 
-  TOTP_Result GetNextTotpAuthCodeString(const CItemData& data, StringX& totpAuthCodeStr, time_t* pBasisTimeNow)
+  TOTP_Result GetNextTotpAuthCodeString(const CItemData& data, StringX& totpAuthCodeStr, time_t* pBasisTimeNow, double* pRatioExpired)
   {
     totpAuthCodeStr.clear();
     uint32_t totp_auth_code;
-    TOTP_Result result = GetNextTotpAuthCode(data, totp_auth_code, pBasisTimeNow);
+    TOTP_Result result = GetNextTotpAuthCode(data, totp_auth_code, pBasisTimeNow, pRatioExpired);
     if (result == Success)
       totpAuthCodeStr = TotpCodeToString(data, totp_auth_code);
     return result;
   }
 
-  TOTP_Result ValidateTotpConfiguration(const CItemData& data)
+  TOTP_Result ValidateTotpConfiguration(const CItemData& data, time_t* pBasisTimeNow, double* pRatioExpired)
   {
     uint32_t totp_auth_code;
-    TOTP_Result result = GetNextTotpAuthCode(data, totp_auth_code, nullptr);
+    TOTP_Result result = GetNextTotpAuthCode(data, totp_auth_code, pBasisTimeNow, pRatioExpired);
     totp_auth_code = 0xAAAAAAAA;
     return result;
-  }
-
-  TOTP_Result GetCurrentTotpIntervalExpiredRatio(uint8_t time_step_seconds, time_t start_time, double& ratio_expired)
-  {
-    const auto one_second_msecs = std::chrono::milliseconds::period::den;
-    const auto interval_msecs = time_step_seconds * one_second_msecs;
-    const auto start_time_msecs = start_time * one_second_msecs;
-
-    const auto time_now = std::chrono::system_clock::now().time_since_epoch();
-    const auto time_now_msecs = std::chrono::duration_cast<std::chrono::milliseconds>(time_now);
-    const auto totp_elapsed_msecs = time_now_msecs.count() - start_time_msecs;
-    ratio_expired = (totp_elapsed_msecs % interval_msecs) / (double)(interval_msecs);
-    return Success;
-  }
-
-  TOTP_Result GetCurrentTotpIntervalExpiredRatio(const CItemData& data, double& ratio)
-  {
-    uint8_t totp_algo = data.GetTotpAlgorithmAsByte();
-    if (totp_algo != TOTP_CONFIG_ALGORITHM_HMAC_SHA1)
-      return InvalidTotpConfiguration;
-    time_t totp_start_time = data.GetTotpStartTimeAsTimeT();
-    uint8_t totp_time_step_seconds = data.GetTotpTimeStepSecondsAsByte();
-    return GetCurrentTotpIntervalExpiredRatio(totp_time_step_seconds, totp_start_time, ratio);
   }
 }
