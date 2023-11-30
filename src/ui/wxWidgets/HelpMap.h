@@ -29,6 +29,11 @@ DLG_HELP(AdvancedSelectionDlg<FindDlgType>,             html/searching.html)
 //The help for Manage Password Policies dialog
 DLG_HELP(ManagePasswordPoliciesDlg,                     html/named_password_policies.html)
 
+#ifndef NO_YUBI
+//The Yubikey Configuration dialog
+DLG_HELP(YubiCfgDlg,                                    html/manage_menu.html#yubikey)
+#endif
+
 //
 //for property sheet help, note that the second parameter is a locale-specific string
 //and must be translated at runtime, so make sure you use _(...) and not wxT(...)
