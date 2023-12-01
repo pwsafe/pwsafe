@@ -22,7 +22,7 @@
 class CDisplayAuthCodeDlg : public CPWDialog
 {
 public:
-  CDisplayAuthCodeDlg(CWnd* pParent, PWScore& core, CItemData& ci); // standard constructor
+  CDisplayAuthCodeDlg(CWnd* pParent, PWScore& core, const pws_os::CUUID& uuidEntry); // standard constructor
   ~CDisplayAuthCodeDlg();
 
   enum { IDD = IDD_DISPLAY_AUTH_CODE };
@@ -30,6 +30,17 @@ public:
 protected:
   virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   virtual BOOL OnInitDialog();
+
+  CItemData* GetItem() {
+    auto it = m_core.Find(m_uuidItem);
+    ASSERT(it != m_core.GetEntryEndIter());
+    return (it != m_core.GetEntryEndIter()) ? &it->second : nullptr;
+  }
+
+  CItemData* GetCredentialItem() {
+    CItemData* pci = GetItem();
+    return pci ? m_core.GetCredentialEntry(pci) : nullptr;
+  }
 
   CTBMStatic m_Help1, m_Help2;
 
@@ -42,15 +53,14 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  bool UpdateAuthCode();
+  bool UpdateAuthCode(CItemData* pciCred);
   void CopyAuthCodeToClipboard();
   void SetupAuthenticationCodeUiElements();
   void StopAuthenticationCodeUi();
 
 private:
   PWScore& m_core;
-  CItemData& m_ci;
-  CItemData& m_ciCredential;
+  pws_os::CUUID m_uuidItem;
   CProgressPieCtrl m_btnCopyTwoFactorCode;
   CStaticExtn m_stcTwoFactorCode;
   CFont m_fontTwoFactorCode;
