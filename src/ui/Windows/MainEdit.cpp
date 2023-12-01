@@ -1869,7 +1869,7 @@ void DboxMain::OnViewTwoFactorAuthCode()
   ASSERT(pci != NULL);
   if (!pci)
     return;
-  CDisplayAuthCodeDlg dlg(this, m_core, *pci);
+  CDisplayAuthCodeDlg dlg(this, m_core, pci->GetUUID());
   dlg.DoModal();
 }
     

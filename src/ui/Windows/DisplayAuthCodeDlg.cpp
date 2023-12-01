@@ -30,17 +30,14 @@ static char THIS_FILE[] = __FILE__;
 
 
 //-----------------------------------------------------------------------------
-CDisplayAuthCodeDlg::CDisplayAuthCodeDlg(CWnd* pParent, PWScore& core, CItemData& ci)
+CDisplayAuthCodeDlg::CDisplayAuthCodeDlg(CWnd* pParent, PWScore& core, const pws_os::CUUID& uuidEntry)
   :
   CPWDialog(CDisplayAuthCodeDlg::IDD, pParent),
   m_core(core),
-  m_ci(ci),
-  m_ciCredential(*m_core.GetCredentialEntry(&m_ci)),
+  m_uuidItem(uuidEntry),
   m_bCopyToClipboard(false)
 {
   ASSERT(&m_core != NULL);
-  ASSERT(&m_ci != NULL);
-  ASSERT(&m_ciCredential != NULL);
 }
 
 CDisplayAuthCodeDlg::~CDisplayAuthCodeDlg()
@@ -89,9 +86,14 @@ BOOL CDisplayAuthCodeDlg::OnInitDialog()
     ActivateToolTip();
   }
 
+  CItemData* pci = GetItem();
+  ASSERT(pci != NULL);
+  if (!pci)
+    return TRUE;
+
   // Each of Group, Title, Username is on a separate "row."
   // If a value has text, set the control, else mark the "row" for removal.
-  const std::vector<StringX> vRowData = { m_ci.GetGroup(), m_ci.GetTitle(), m_ci.GetUser() };
+  const std::vector<StringX> vRowData = { pci->GetGroup(), pci->GetTitle(), pci->GetUser() };
   const int nColumns = 2;
   const int nRows = static_cast<int>(vRowData.size());
   std::vector<int> vRowsToRemove;
@@ -141,7 +143,10 @@ void CDisplayAuthCodeDlg::SetupAuthenticationCodeUiElements()
 {
   m_btnCopyTwoFactorCode.SetPieColor(RGB(0, 192, 255));
   m_btnCopyTwoFactorCode.SetPercent(0);
-  bool isTwoFactorKey = m_ciCredential.GetTwoFactorKeyLength() > 0;
+  CItemData* pciCred = GetCredentialItem();
+  if (!pciCred)
+    return;
+  bool isTwoFactorKey = pciCred->GetTwoFactorKeyLength() > 0;
   m_btnCopyTwoFactorCode.EnableWindow(isTwoFactorKey);
   m_btnCopyTwoFactorCode.ShowWindow(isTwoFactorKey ? SW_SHOW : SW_HIDE);
   if (isTwoFactorKey)
@@ -156,12 +161,12 @@ void CDisplayAuthCodeDlg::StopAuthenticationCodeUi()
   KillTimer(TIMER_TWO_FACTOR_AUTH_CODE_COUNTDOWN);
 }
 
-bool CDisplayAuthCodeDlg::UpdateAuthCode()
+bool CDisplayAuthCodeDlg::UpdateAuthCode(CItemData* pciCred)
 {
   StringX sxAuthCode;
   time_t time_now;
   double ratio;
-  if (PWSTotp::GetNextTotpAuthCodeString(m_ciCredential, sxAuthCode, &time_now, &ratio) != PWSTotp::Success)
+  if (PWSTotp::GetNextTotpAuthCodeString(*pciCred, sxAuthCode, &time_now, &ratio) != PWSTotp::Success)
     return false;
 
   bool bNewCode = false;
@@ -183,12 +188,18 @@ void CDisplayAuthCodeDlg::OnTimer(UINT_PTR nIDEvent)
     return;
   }
 
-  if (m_ciCredential.GetTwoFactorKeyLength() == 0) {
+  CItemData* pciCred = GetCredentialItem();
+  if (!pciCred) {
     StopAuthenticationCodeUi();
     return;
   }
 
-  bool bNewCode = UpdateAuthCode();
+  if (pciCred->GetTwoFactorKeyLength() == 0) {
+    StopAuthenticationCodeUi();
+    return;
+  }
+
+  bool bNewCode = UpdateAuthCode(pciCred);
 
   if (bNewCode && m_bCopyToClipboard) {
     if (GetMainDlg()->IsLastSensitiveClipboardItemPresent())
@@ -208,7 +219,11 @@ void CDisplayAuthCodeDlg::CopyAuthCodeToClipboard()
 
 void CDisplayAuthCodeDlg::OnCopyTwoFactorCode()
 {
+  CItemData* pciCred = GetCredentialItem();
+  if (!pciCred) {
+    return;
+  }
   m_bCopyToClipboard = true;
   CopyAuthCodeToClipboard();
-  UpdateAuthCode();
+  UpdateAuthCode(pciCred);
 }
