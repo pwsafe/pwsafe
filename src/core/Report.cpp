@@ -119,7 +119,10 @@ static bool isFileUnicode(const stringT &fname, pugi::xml_encoding& encoding)
     retval = false;
   }
   else {
-    (void) fread(buffer, 1, 4, fn);
+    if (fread(buffer, 1, 4, fn) != 4) {
+      fclose(fn);
+      return false;
+    }
       
     encoding = guessBufferEncoding(buffer[0], buffer[1], buffer[2], buffer[3]);
     if(encoding == pugi::encoding_auto) {
@@ -249,14 +252,23 @@ bool CReport::SaveToDisk()
 
       size_t nBytesRead;
       unsigned char inbuffer[4096];
+      size_t skip = 0;
         
       if((encoding == pugi::encoding_utf16_le) || (encoding == pugi::encoding_utf16_be) || (encoding == pugi::encoding_utf16)) {
         // Skip 2 byte header
-        (void) fread(inbuffer, 1, 2, f_in);
+        skip = 2;
       }
       else if((encoding == pugi::encoding_utf32_le) || (encoding == pugi::encoding_utf32_be) || (encoding == pugi::encoding_utf32)) {
         // Skip 4 byte header
-        (void) fread(inbuffer, 1, 4, f_in);
+        skip = 4;
+      }
+
+      if (skip > 0) {
+           if (fread(inbuffer, 1, skip, f_in) != skip) {
+            fclose(f_in);
+            pws_os::IssueError(_T("SaveToDisk: Reading re-opening file"));
+            return false;
+          }
       }
 
       // Now copy and convert
@@ -382,17 +394,24 @@ bool CReport::ReadFromDisk()
   wchar_t inbuffer[4096 / sizeof(wchar_t)];
 
   if (bFileIsUnicode) {
+    size_t skip = 0;
     if((encoding == pugi::encoding_utf16_le) || (encoding == pugi::encoding_utf16_be) || (encoding == pugi::encoding_utf16)) {
       // Skip 2 byte header
-      (void) fread(inbuffer, 1, 2, fd);
+      skip = 2;
     }
     else if((encoding == pugi::encoding_utf32_le) || (encoding == pugi::encoding_utf32_be) || (encoding == pugi::encoding_utf32)) {
       // Skip 4 byte header
-      (void) fread(inbuffer, 1, 4, fd);
+      skip = 4;
     }
     else if(encoding == pugi::encoding_utf8) {
       // Skip 3 byte header
-      (void) fread(inbuffer, 1, 3, fd);
+      skip = 3;
+    }
+    if (skip > 0) {
+      if (fread(inbuffer, 1, skip, fd) != skip) {
+        fclose(fd);
+        return false;
+      }
     }
   }
   

@@ -123,12 +123,12 @@ int PWSfileV3::Close()
     size_t fret;
     fret = fwrite(TERMINAL_BLOCK, sizeof(TERMINAL_BLOCK), 1, m_fd);
     if (fret != 1) {
-      PWSfile::Close();
+      (void)PWSfile::Close();
       return FAILURE;
     }
     fret = fwrite(digest, sizeof(digest), 1, m_fd);
     if (fret != 1) {
-      PWSfile::Close();
+      (void)PWSfile::Close();
       return FAILURE;
     }
     return PWSfile::Close();
@@ -136,11 +136,11 @@ int PWSfileV3::Close()
     // We're here *after* TERMINAL_BLOCK has been read
     // and detected (by _readcbc) - just read hmac & verify
     unsigned char d[SHA256::HASHLEN];
-    (void) fread(d, sizeof(d), 1, m_fd);
-    if (memcmp(d, digest, SHA256::HASHLEN) == 0)
+    if (fread(d, sizeof(d), 1, m_fd) == 1 &&
+        memcmp(d, digest, SHA256::HASHLEN) == 0)
       return PWSfile::Close();
     else {
-      PWSfile::Close();
+      (void)PWSfile::Close();
       return BAD_DIGEST;
     }
   }
@@ -221,10 +221,16 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
 
   fseek(fd, sizeof(V3TAG), SEEK_SET); // skip over tag
   unsigned char salt[PWSaltLength];
-  (void) fread(salt, 1, sizeof(salt), fd);
+  if (fread(salt, 1, sizeof(salt), fd) != sizeof(salt)) {
+    retval = READ_FAIL;
+    goto err;
+  }
 
   unsigned char Nb[sizeof(uint32)];
-  (void) fread(Nb, 1, sizeof(Nb), fd);
+  if (fread(Nb, 1, sizeof(Nb), fd) != sizeof(Nb)) {
+    retval = READ_FAIL;
+    goto err;
+  }
   { // block to shut up compiler warning w.r.t. goto
     const uint32 N = getInt32(Nb);
 
@@ -243,7 +249,10 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
   H.Update(usedPtag, SHA256::HASHLEN);
   H.Final(HPtag);
   unsigned char readHPtag[SHA256::HASHLEN];
-  (void) fread(readHPtag, 1, sizeof(readHPtag), fd);
+  if (fread(readHPtag, 1, sizeof(readHPtag), fd) != sizeof(readHPtag)) {
+    retval = READ_FAIL;
+    goto err;
+  }
   if (memcmp(readHPtag, HPtag, sizeof(readHPtag)) != 0) {
     retval = WRONG_PASSWORD;
     goto err;
@@ -602,7 +611,10 @@ int PWSfileV3::ReadHeader()
 
   unsigned char B1B2[sizeof(m_key)];
   ASSERT(sizeof(B1B2) == 32); // Generalize later
-  (void) fread(B1B2, 1, sizeof(B1B2), m_fd);
+  if (fread(B1B2, 1, sizeof(B1B2), m_fd) != sizeof(B1B2)) {
+    Close();
+    return READ_FAIL;
+  }
   TwoFish TF(Ptag, sizeof(Ptag));
   TF.Decrypt(B1B2, m_key);
   TF.Decrypt(B1B2 + 16, m_key + 16);
@@ -610,13 +622,19 @@ int PWSfileV3::ReadHeader()
   unsigned char L[32]; // for HMAC
   unsigned char B3B4[sizeof(L)];
   ASSERT(sizeof(B3B4) == 32); // Generalize later
-  (void) fread(B3B4, 1, sizeof(B3B4), m_fd);
+  if (fread(B3B4, 1, sizeof(B3B4), m_fd) != sizeof(B3B4)) {
+    Close();
+    return READ_FAIL;
+  }
   TF.Decrypt(B3B4, L);
   TF.Decrypt(B3B4 + 16, L + 16);
 
   m_hmac.Init(L, sizeof(L));
 
-  (void) fread(m_ipthing, 1, sizeof(m_ipthing), m_fd);
+  if (fread(m_ipthing, 1, sizeof(m_ipthing), m_fd) != sizeof(m_ipthing)) {
+    Close();
+    return READ_FAIL;
+  }
 
   m_fish = new TwoFish(m_key, sizeof(m_key));
 
@@ -984,8 +1002,12 @@ int PWSfileV3::ReadHeader()
 
     ASSERT(fd != nullptr);
     char tag[sizeof(V3TAG)];
-    fread(tag, 1, sizeof(tag), fd);
+    auto nread = fread(tag, 1, sizeof(tag), fd);
     fclose(fd);
+    if (nread != sizeof(tag)) {
+      v = UNKNOWN_VERSION;
+      return false;
+    }
 
     if (memcmp(tag, V3TAG, sizeof(tag)) == 0) {
       v = V30;
