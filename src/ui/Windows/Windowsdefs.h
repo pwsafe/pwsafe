@@ -55,6 +55,8 @@
 #define PWS_MSG_INSERTBUFFER            (WM_APP + 70)
 #define PWS_MSG_RESETTIMER              (WM_APP + 71)
 
+#define PWS_MSG_INVOKE_UI_THREAD        (WM_APP + 80)
+
 /*
 Timer related values (note - all documented her but some defined only where needed.
 */

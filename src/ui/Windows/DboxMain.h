@@ -32,6 +32,7 @@
 #include "FontsDialog.h"
 #include "SystemTray.h"
 #include "ScreenCaptureStateControl.h"
+#include "InvokeGuiThreadSupport.h"
 
 #include "core/UIinterface.h"
 #include "core/PWScore.h"
@@ -127,7 +128,7 @@ class CAddEdit_PropertySheet;
 class CPasskeyEntry;
 
 //-----------------------------------------------------------------------------
-class DboxMain : public CDialog, public Observer
+class DboxMain : public CDialog, public Observer, public CInvokeGuiThreadSupport
 {
 public:
   DECLARE_DYNAMIC(DboxMain)
@@ -595,6 +596,7 @@ public:
   LRESULT OnExecuteFilters(WPARAM wParam, LPARAM lParam);
   LRESULT OnApplyEditChanges(WPARAM wParam, LPARAM lParam);
   LRESULT OnDroppedFile(WPARAM wParam, LPARAM lParam);
+  LRESULT OnInvokeUiThread(WPARAM wParam, LPARAM lParam);
 
   void UpdateAlwaysOnTop();
   void ClearAppData(const bool bClearMRE = true);

@@ -63,6 +63,12 @@ void DboxMain::DatabaseModified(bool bChanged)
 {
   PWS_LOGIT_ARGS("bChanged=%s", bChanged ? L"true" : L"false");
 
+  // If called from worker thread, invoke on GUI thread.
+  if (!IsGuiThread()) {
+    InvokeOnGuidThread(m_hWnd, [&]() { DatabaseModified(bChanged); return 0; });
+    return;
+  }
+
   // Callback from PWScore if the database has been changed
   // (entries, preferences, header information,
   //  filters or password policies stored in the database)
@@ -126,6 +132,12 @@ void DboxMain::BlockLogoffShutdown(const bool bChanged)
 void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga, 
                          const CUUID &entry_uuid, CItemData::FieldType ft)
 {
+  // If called from worker thread, invoke on GUI thread.
+  if (!IsGuiThread()) {
+    InvokeOnGuidThread(m_hWnd, [&]() { UpdateGUI(ga, entry_uuid, ft); return 0; });
+    return;
+  }
+
   // Callback from PWScore if GUI needs updating
   // Note: For some values of 'ga', 'entry_uuid' & ft are invalid and not used.
   CItemData *pci(NULL);
@@ -212,6 +224,12 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
 void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
                          const std::vector<StringX> &vGroups)
 {
+  // If called from worker thread, invoke on GUI thread.
+  if (!IsGuiThread()) {
+    InvokeOnGuidThread(m_hWnd, [&]() { UpdateGUI(ga, vGroups); return 0; });
+    return;
+  }
+
   if (ga != UpdateGUICommand::GUI_REFRESH_GROUPS) {
     // Processed in the other overload of UpdateGUI
     ASSERT(0);
@@ -233,11 +251,23 @@ void DboxMain::UpdateGUIDisplay()
 
 void DboxMain::GUIRefreshEntry(const CItemData &ci, bool bAllowFail)
 {
+  // If called from worker thread, invoke on GUI thread.
+  if (!IsGuiThread()) {
+    InvokeOnGuidThread(m_hWnd, [&]() { GUIRefreshEntry(ci, bAllowFail); return 0; });
+    return;
+  }
+
   UpdateEntryImages(ci, bAllowFail);
 }
 
 void DboxMain::UpdateWizard(const std::wstring &s)
 {
+  // If called from worker thread, invoke on GUI thread.
+  if (!IsGuiThread()) {
+    InvokeOnGuidThread(m_hWnd, [&]() { UpdateWizard(s); return 0; });
+    return;
+  }
+
   if (m_pWZWnd != NULL)
     m_pWZWnd->SetWindowText(s.c_str());
 }

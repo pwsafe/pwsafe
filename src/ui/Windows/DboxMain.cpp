@@ -106,7 +106,9 @@ void DboxMain::SetLocalStrings()
 
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(PWScore &core, CWnd* pParent)
-  : CDialog(DboxMain::IDD, pParent),
+  :
+  CDialog(DboxMain::IDD, pParent),
+  CInvokeGuiThreadSupport(PWS_MSG_INVOKE_UI_THREAD),
   m_pCC(nullptr),
   m_RUEList(core),
   m_bDoAutoType(false),
@@ -545,6 +547,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_MESSAGE(PWS_MSG_EXECUTE_FILTERS, OnExecuteFilters)
   ON_MESSAGE(PWS_MSG_EDIT_APPLY, OnApplyEditChanges)
   ON_MESSAGE(PWS_MSG_DROPPED_FILE, OnDroppedFile)
+  ON_MESSAGE(PWS_MSG_INVOKE_UI_THREAD, OnInvokeUiThread)
   ON_MESSAGE(WM_QUERYENDSESSION, OnQueryEndSession)
   ON_MESSAGE(WM_ENDSESSION, OnEndSession)
 
@@ -1135,6 +1138,8 @@ LRESULT DboxMain::OnHdrToCCDragComplete(WPARAM wType, LPARAM /* lParam */)
 BOOL DboxMain::OnInitDialog()
 {
   PWS_LOGIT;
+
+  SetGuiThreadId();
 
   CDialog::OnInitDialog();
 
