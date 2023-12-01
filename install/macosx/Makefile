@@ -5,13 +5,13 @@
 # Uncomment the correct TARGET and RELDIR below:
 TARGET=pwsafe
 MACHINEARCH=universal
-WXDIR=$(shell grep OTHER_LDFLAGS ../../Xcode/pwsafe-release.xcconfig | awk 'BEGIN { RS = " " } /-L/{print $$1}' | grep static-release | sed s/-L// | sed s,static-release/lib,locale,)
+WXDIR := $(shell grep OTHER_LDFLAGS ../../Xcode/pwsafe-release.xcconfig | awk 'BEGIN { RS = " " } /-L/{print $$1}' | grep static-release | sed s/-L// | sed s,static-release/lib,locale,)
 
 # XCODE_CONFIG is defined in the macos-latest.yaml Github build workflow
 ifndef XCODE_CONFIG
 XCODE_CONFIG=Release
 endif
-RELDIR=$(shell xcodebuild -project ../../Xcode/pwsafe-xcode6.xcodeproj -showBuildSettings -scheme pwsafe -configuration $(XCODE_CONFIG) | awk '/TARGET_BUILD_DIR =/{print $$3}')
+RELDIR := $(shell xcodebuild -project ../../Xcode/pwsafe-xcode6.xcodeproj -showBuildSettings -scheme pwsafe -configuration $(XCODE_CONFIG) | awk '/TARGET_BUILD_DIR =/{print $$3}')
 
 #TARGET=pwsafe
 #TARGET=pwsafe-i386
@@ -46,9 +46,9 @@ RELEASENAME := $(VER_MAJOR).$(VER_MINOR).$(VER_REV)
 endif
 
 SRCDIR=./dmg
-DMGNAME = "../../$(TARGET)-$(MACHINEARCH)-$(RELEASENAME).dmg"
-PWSAFE-APP=$(TARGET).app
-RESOURCES=$(RELDIR)/pwsafe.app/Contents/Resources
+DMGNAME := "../../$(TARGET)-$(MACHINEARCH)-$(RELEASENAME).dmg"
+PWSAFE-APP := $(TARGET).app
+RESOURCES := $(RELDIR)/pwsafe.app/Contents/Resources
 DOCS := ../../README.md ../../docs/LICENSE.rtf ../../docs/ReleaseNotesWX.md ../../docs/Yubico ../../docs/wxWidgets
 HELP := ../../help/helpEN.zip ../../help/helpRU.zip ../../help/helpDE.zip ../../help/helpES.zip ../../help/helpFR.zip ../../help/helpZH.zip ../../help/helpPL.zip
 I18N := ../../src/ui/wxWidgets/I18N
@@ -59,6 +59,7 @@ all: loc help lang dist
 
 loc:
 	@echo "Build location: $(RELDIR)"
+	@echo "WX location: $(WXDIR)"
 
 help:
 	cd ../../help; make
