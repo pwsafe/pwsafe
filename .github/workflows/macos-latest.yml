@@ -111,20 +111,16 @@ jobs:
       working-directory: ${{ github.workspace }}
       run: xcodebuild -project Xcode/pwsafe-xcode6.xcodeproj -scheme pwsafe -configuration $XCODE_CONFIG
 
-    - name: Get Xcode build output location
-      run: echo "BUILD_OUTPUT_DIR=$(xcodebuild -showBuildSettings -project Xcode/pwsafe-xcode6.xcodeproj  -scheme pwsafe -configuration $XCODE_CONFIG | fgrep CONFIGURATION_BUILD_DIR | cut -d= -f2 | sed 's/^ *\(.*\)/\1/')" >> $GITHUB_ENV
-
-    - name: Move app to another folder
-      run: mkdir "$BUILD_OUTPUT_DIR"/app && mv "$BUILD_OUTPUT_DIR"/pwsafe.app "$BUILD_OUTPUT_DIR"/app/
-
     - name: Install dependencies for creating dmg
-      run: brew install create-dmg
+      run: brew install gettext create-dmg
 
-    - name: Create dmg
-      run: create-dmg --volname "Password Safe" --volicon "src/ui/wxWidgets/graphics/pwsafe.icns" --eula LICENSE ${{ github.workspace }}/PasswordSafe.dmg "$BUILD_OUTPUT_DIR/app"
+    - name: Install language files and create dmg
+      working-directory: install/macosx
+      run: make
 
     - name: Upload artifacts
-      uses: 'actions/upload-artifact@v2'
+      uses: 'actions/upload-artifact@v3'
       with:
         name: PasswordSafe.${{ github.sha }}.dmg
-        path: ${{ github.workspace }}/PasswordSafe.dmg
+        path: pwsafe-universal-*.dmg
+        if-no-files-found: error

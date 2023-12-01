@@ -31,7 +31,7 @@ In general you need the following:
 * Xcode 6+
 * wxWidgets
 * Perl
-* gettext and create_dmg (For building the installation package, can be fetched from Homebrew)
+* gettext and create-dmg (For building the installation package, can be fetched from Homebrew)
 * Yubikey libraries: libyubikey, libykpers-1
 
 If you are building on Apple Silicon or M1, you need the following in addition to the above:
@@ -275,26 +275,12 @@ depending on how pwsafe was built, above.
 
 Build pwsafe for release. The installation package tools only create a release .dmg file.
 
-You have to create or update help and translations files. Call "make" in folder
-"help" and "src/ui/wxWidgets/I18N".
-
+For this part of the procedure, you need to install **gettext** and **create-dmg**. For example, using Homebrew:
 ```
-cd pwsafe/help
-make
-cd pwsafe/src/ui/wxWidgets/I18N
-make
+brew install gettext create-dmg
 ```
 
-For missing tools install "gettext" from "brew" for instance.
-In I18N you might update related po file in sub-folder pos and call "make mos".
-
-```
-cd pwsafe/src/ui/wxWidgets/I18N
-make mos
-```
-
-After building the pwsafe.app (in Xcode), language files and help you can create
-a .dmg file for installing pwsafe into the Applications folder.
+After building the pwsafe.app (in Xcode), you can create a .dmg file for installing pwsafe into the Applications folder.
 
 To begin this process you might need to make some edits to the pwsafe/install/macosx/Makefile. If you have followed this procedure, the defaults should work.
 
@@ -305,7 +291,7 @@ To begin this process you might need to make some edits to the pwsafe/install/ma
 For example:
 
 ```
-RELDIR=./../../Xcode/build/Products/Release/
+RELDIR=../../../Xcode/build/Products/Release/
 WXDIR=../../../wxWidgets-3.1.5/locale
 MACHINEARCH=$(shell uname -m)
 ```
