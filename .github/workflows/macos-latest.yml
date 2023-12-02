@@ -43,6 +43,7 @@ jobs:
         echo "MACOS_VER_MIN=10.14" >> $GITHUB_ENV
         echo "XCODE_VER=14.0.1" >> $GITHUB_ENV
         echo "XCODE_CONFIG=Release" >> $GITHUB_ENV
+        echo "HOST_NCPU=`sysctl -n hw.ncpu`" >>$GITHUB_ENV
         echo "FORCE_REBUILD_WX=6" >> $GITHUB_ENV
 
     - name: Force compatible Xcode version
@@ -60,7 +61,7 @@ jobs:
         cd yubico-c
         autoreconf --install
         ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
-        make check
+        make -j $HOST_CPU check
         make install
 
     - name: Build ykpers from upstream
@@ -69,7 +70,7 @@ jobs:
         cd yubikey-personalization
         autoreconf --install
         ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
-        make check
+        make -j $HOST_CPU check
         make install
 
     - name: Cache wxWidgets build
@@ -95,8 +96,6 @@ jobs:
         cd $WX_SRC_DIR
         # use built-in versions of jpeg, tiff, png, and regex (pcre2) libs to avoid linking with those in /usr/local/opt
         ./configure --enable-universal_binary=$WX_ARCH --prefix=$WX_BUILD_DIR --disable-shared --enable-unicode --with-macosx-version-min=$MACOS_VER_MIN --with-libpng=builtin --with-libjpeg=builtin --with-libtiff=builtin --with-regex=builtin --without-liblzma $WX_DEBUG_FLAG
-        HOST_NCPU=`sysctl -n hw.ncpu`
-        echo "Running make with -j $HOST_NCPU"
         make -j $HOST_NCPU
         make install
         du -sh $WX_BUILD_DIR

@@ -5,13 +5,18 @@
 # Uncomment the correct TARGET and RELDIR below:
 TARGET=pwsafe
 MACHINEARCH=universal
-WXDIR := $(shell grep OTHER_LDFLAGS ../../Xcode/pwsafe-release.xcconfig | awk 'BEGIN { RS = " " } /-L/{print $$1}' | grep static-release | sed s/-L// | sed s,static-release/lib,locale,)
 
-# XCODE_CONFIG is defined in the macos-latest.yaml Github build workflow
+# XCODE_CONFIG and WX_SRC_DIR are defined in the macos-latest.yaml Github build workflow
 ifndef XCODE_CONFIG
 XCODE_CONFIG=Release
 endif
 RELDIR := $(shell xcodebuild -project ../../Xcode/pwsafe-xcode6.xcodeproj -showBuildSettings -scheme pwsafe -configuration $(XCODE_CONFIG) | awk '/TARGET_BUILD_DIR =/{print $$3}')
+
+ifdef WX_SRC_DIR
+WXDIR := $(WX_SRC_DIR)/locale
+else
+WXDIR := $(shell grep OTHER_LDFLAGS ../../Xcode/pwsafe-release.xcconfig | awk 'BEGIN { RS = " " } /-L/{print $$1}' | sed s/-L// | sed s,/[^/]*/lib,/locale,)
+endif
 
 #TARGET=pwsafe
 #TARGET=pwsafe-i386
