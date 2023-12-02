@@ -44,7 +44,7 @@ jobs:
         echo "XCODE_VER=14.0.1" >> $GITHUB_ENV
         echo "XCODE_CONFIG=Release" >> $GITHUB_ENV
         echo "HOST_NCPU=`sysctl -n hw.ncpu`" >>$GITHUB_ENV
-        echo "FORCE_REBUILD_WX=6" >> $GITHUB_ENV
+        echo "FORCE_REBUILD_WX=7" >> $GITHUB_ENV
 
     - name: Force compatible Xcode version
       run: sudo xcode-select -s /Applications/Xcode_${XCODE_VER}.app/Contents/Developer
@@ -75,21 +75,21 @@ jobs:
 
     - name: Cache wxWidgets build
       id: cache-wxWidgets-build
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
-        path: ${{ env.WX_BUILD_DIR }}
+        path: |
+          ${{ env.WX_BUILD_DIR }}
+          ${{ env.WX_SRC_DIR }}/locale/*mo
         key: wx-${{ env.WX_VERS }}-macOS-${{ env.MACOS_VER_MIN }}-Xcode-${{ env.XCODE_VER }}-build-${{ env.FORCE_REBUILD_WX }}
 
     - name: Checkout wxWidgets
       if: steps.cache-wxWidgets-build.outputs.cache-hit != 'true'
-      run: git clone https://github.com/wxWidgets/wxWidgets.git $WX_SRC_DIR
+      run: git clone --branch v$WX_VERS --single-branch https://github.com/wxWidgets/wxWidgets.git $WX_SRC_DIR
 
     - name: Build wxWidgets
       if: steps.cache-wxWidgets-build.outputs.cache-hit != 'true'
       working-directory: ${{ env.WX_SRC_DIR }}
       run: |
-        git pull --ff-only origin
-        git -C $WX_SRC_DIR reset --hard v${{ env.WX_VERS }}
         git -C $WX_SRC_DIR submodule update --init
         rm -rf $WX_BUILD_DIR
         mkdir -p $WX_BUILD_DIR
