@@ -15,6 +15,7 @@
 
 #include <map>
 #include <algorithm>
+#include <functional>
 
 struct _XMLChDeallocator {
   typedef std::map<const char*, XMLCh*> XMLChStrings;
@@ -80,8 +81,11 @@ struct _XMLChDeallocator {
 
   void Clear() {
     using namespace std;
-    for_each(allocations.begin(), allocations.end(), bind1st(mem_fun(&_XMLChDeallocator::Release), this));
-      allocations.clear();
+    using namespace std::placeholders;
+
+    for_each(allocations.begin(), allocations.end(), bind(& _XMLChDeallocator::Release, this, _1));
+
+    allocations.clear();
   }
 
   ~_XMLChDeallocator() {
