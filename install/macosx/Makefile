@@ -119,13 +119,16 @@ dist: clean
 	$(MDBIN) $(SRCDIR)
 	$(CPBIN) -R $(DOCS) $(SRCDIR)
 	$(CPBIN) -R $(RELDIR)/$(PWSAFE-APP) $(SRCDIR)
+	/usr/bin/codesign -v --force --sign - -o runtime --entitlements \
+		$(RELDIR)/../../Intermediates.noindex/pwsafe-xcode6.build/Release/pwsafe.build/pwsafe.app.xcent \
+		--timestamp=none --generate-entitlement-der $(SRCDIR)/pwsafe.app
 	create-dmg \
 			--window-size 420 560 \
 			--background ./background.png \
 			--icon-size 40 \
 			--volname "Password Safe" \
 			--volicon ../../src/ui/wxWidgets/graphics/pwsafe.icns \
-                        --eula ../../LICENSE \
+			--eula ../../LICENSE \
 			--icon "$(PWSAFE-APP)" 00 110 \
 			--app-drop-link 180 110 \
 			--icon "README.md" 00  300 \
