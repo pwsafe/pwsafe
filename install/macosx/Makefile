@@ -68,12 +68,15 @@ loc:
 
 help:
 	cd ../../help; make
+	$(CPBIN) $(HELP) $(RESOURCES)
 
-I18N:
+pwsI18N:
 	cd $(I18N); make mos
 
-lang: I18N
-	$(CPBIN) $(HELP) $(RESOURCES)
+wxlocale:
+	cd $(WXDIR); make allmo
+
+lang: pwsI18N wxlocale
 	$(MDBIN) $(RESOURCES)/da.lproj
 	$(CPBIN) $(MOS)/da/LC_MESSAGES/pwsafe.mo $(RESOURCES)/da.lproj
 	$(CPBIN) $(WXDIR)/da.mo $(RESOURCES)/da.lproj/wxstd.mo
