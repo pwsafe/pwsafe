@@ -888,6 +888,7 @@ private:
 
   std::vector<bool> m_vGroupDisplayState; // used to save/restore display state over minimize/restore
   StringX m_savedDBprefs;                 // used across minimize/restore events
+  bool m_bMainWindowWasDisabled;          // used to save WS_DISABLED state of main app window.
 
   PWSclipboard m_clipboard;
 

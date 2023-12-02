@@ -135,6 +135,7 @@ DboxMain::DboxMain(PWScore &core, CWnd* pParent)
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_savedDBprefs(EMPTYSAVEDDBPREFS),
+  m_bMainWindowWasDisabled(false),
   m_bImageInLV(false),
   m_pInfoDisplay(nullptr),
   m_bFilterActive(false), m_bUnsavedDisplayed(false), m_bExpireDisplayed(false), m_bFindFilterDisplayed(false),
@@ -2507,6 +2508,11 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow, bool bIsAppWi
       if (m_iCurrentItemFound != -1) {
         m_FindToolBar.Find(m_iCurrentItemFound);
       }
+
+      // Restore app window WS_DISABLED state if it and modal dialogs were detected upon DB lock.
+      if (m_bMainWindowWasDisabled && CPWDialog::GetDialogTracker()->AnyModalDialogs())
+        EnableWindow(FALSE);
+      m_bMainWindowWasDisabled = false;
     } else {
       if (bUseSysTray) {
         ShowWindow(SW_HIDE);
