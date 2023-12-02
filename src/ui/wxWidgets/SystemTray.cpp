@@ -311,7 +311,15 @@ void SystemTray::ProcessSysTrayMenuItem(int itemId)
       break;
 
     case ID_SYSTRAY_UNLOCK:
+#ifdef __WXOSX__
+      // The intent of this menu option is to unlock the DB without restoring the window.
+      // On macOS, an empty window frame appears with no UI elements.
+      // I couldn't find a way to suppress the window frame, so the workaround is to
+      // go ahead and fully restore the UI.  If a better way is found, this ifdef can be removed.
+      m_frame->UnlockSafe(true, false); // true => restore UI
+#else
       m_frame->UnlockSafe(false, false); // false => don't restore UI
+#endif
       break;
 
     case ID_SYSTRAY_CLEAR_RUE:

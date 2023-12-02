@@ -281,6 +281,9 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
     case XLE_PREF_COPYPASSWORDWHENBROWSETOURL:
       bpref = PWSprefs::CopyPasswordWhenBrowseToURL;
       break;
+    case XLE_PREF_EXCLUDEFROMSCREENCAPTURE:
+      bpref = PWSprefs::ExcludeFromScreenCapture;
+      break;
     // Integer DB preferences
     case XLE_PREF_PWDEFAULTLENGTH:
       if (m_bPolicyBeingProcessed)

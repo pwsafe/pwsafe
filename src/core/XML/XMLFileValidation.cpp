@@ -63,6 +63,7 @@ const XMLFileValidation::st_file_elements XMLFileValidation::m_file_elements[XLE
   {_T("DefaultAutotypeString"), {XLE_PREF_DEFAULTAUTOTYPESTRING, 0}},
   {_T("DefaultSymbols"), {XLE_PREF_DEFAULTSYMBOLS, 0}},
   {_T("CopyPasswordWhenBrowseToURL"), {XLE_PREF_COPYPASSWORDWHENBROWSETOURL, 0}},
+  {_T("ExcludeFromScreenCapture"), {XLE_PREF_EXCLUDEFROMSCREENCAPTURE, 0}},
   {_T("group"), {0, XLE_GROUP}},
   {_T("title"), {0, XLE_TITLE}},
   {_T("username"), {0, XLE_USERNAME}},

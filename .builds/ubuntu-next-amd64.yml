@@ -8,6 +8,7 @@ sources:
     - https://git.sr.ht/~ronys/pwsafe
 tasks:
     - setup: |
+        echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections
         sudo apt-get update
         sudo pwsafe/Misc/setup-linux-dev-env.sh
         cd pwsafe
