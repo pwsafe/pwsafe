@@ -142,6 +142,15 @@ bool CPWDialogTracker::AnyOpenDialogs() const
   return retval;
 }
 
+bool CPWDialogTracker::AnyModalDialogs() const
+{
+  CSingleLock autoLock(&m_mutex, TRUE);
+  if (!autoLock.IsLocked()) return false;
+  return m_dialogs.end() != std::find_if(
+    m_dialogs.begin(), m_dialogs.end(),
+    [](CWnd* p) { return p->m_nFlags & (WF_MODALLOOP | WF_CONTINUEMODAL); });
+}
+
 void CPWDialogTracker::AddOpenDialog(CWnd *dlg)
 {
   m_mutex.Lock();

@@ -61,6 +61,10 @@ void DboxMain::OnTrayLockUnLock()
         m_vGroupDisplayState = GetGroupDisplayState();
 
       if (LockDataBase())  { // save db if needed, clear data
+
+        // Prepare to restore app window WS_DISABLED state for the case where modal dialogs are detected.
+        m_bMainWindowWasDisabled = (GetStyle() & WS_DISABLED) && CPWDialog::GetDialogTracker()->AnyModalDialogs();
+
         // Hide everything
         CPWDialog::GetDialogTracker()->HideOpenDialogs();
 
