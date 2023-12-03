@@ -2,8 +2,9 @@
 #
 #
 #
-# Uncomment the correct TARGET and RELDIR below:
+# Define the correct TARGET and RELDIR below:
 TARGET=pwsafe
+PACKAGE=PasswordSafe-macOS
 MACHINEARCH=universal
 
 # XCODE_CONFIG and WX_SRC_DIR are defined in the macos-latest.yaml Github build workflow
@@ -51,7 +52,7 @@ RELEASENAME := $(VER_MAJOR).$(VER_MINOR).$(VER_REV)
 endif
 
 SRCDIR=./dmg
-DMGNAME := "../../$(TARGET)-$(MACHINEARCH)-$(RELEASENAME).dmg"
+DMGNAME := "../../$(PACKAGE)-$(RELEASENAME)-$(MACHINEARCH).dmg"
 PWSAFE-APP := $(TARGET).app
 RESOURCES := $(RELDIR)/pwsafe.app/Contents/Resources
 DOCS := ../../README.md ../../docs/LICENSE.rtf ../../docs/ReleaseNotesWX.md ../../docs/Yubico ../../docs/wxWidgets

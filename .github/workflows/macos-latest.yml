@@ -121,6 +121,6 @@ jobs:
     - name: Upload artifacts
       uses: 'actions/upload-artifact@v3'
       with:
-        name: PasswordSafe.${{ github.sha }}.dmg
-        path: pwsafe-universal-*.dmg
+        name: PasswordSafe-macOS.${{ github.sha }}
+        path: PasswordSafe-macOS*.dmg
         if-no-files-found: error
