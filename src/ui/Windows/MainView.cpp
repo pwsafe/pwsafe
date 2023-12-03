@@ -65,7 +65,7 @@ void DboxMain::DatabaseModified(bool bChanged)
 
   // If called from worker thread, invoke on GUI thread.
   if (!IsGuiThread()) {
-    InvokeOnGuidThread(m_hWnd, [&]() { DatabaseModified(bChanged); return 0; });
+    InvokeOnGuiThread(m_hWnd, [&]() { DatabaseModified(bChanged); return 0; });
     return;
   }
 
@@ -134,7 +134,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
 {
   // If called from worker thread, invoke on GUI thread.
   if (!IsGuiThread()) {
-    InvokeOnGuidThread(m_hWnd, [&]() { UpdateGUI(ga, entry_uuid, ft); return 0; });
+    InvokeOnGuiThread(m_hWnd, [&]() { UpdateGUI(ga, entry_uuid, ft); return 0; });
     return;
   }
 
@@ -226,7 +226,7 @@ void DboxMain::UpdateGUI(UpdateGUICommand::GUI_Action ga,
 {
   // If called from worker thread, invoke on GUI thread.
   if (!IsGuiThread()) {
-    InvokeOnGuidThread(m_hWnd, [&]() { UpdateGUI(ga, vGroups); return 0; });
+    InvokeOnGuiThread(m_hWnd, [&]() { UpdateGUI(ga, vGroups); return 0; });
     return;
   }
 
@@ -253,7 +253,7 @@ void DboxMain::GUIRefreshEntry(const CItemData &ci, bool bAllowFail)
 {
   // If called from worker thread, invoke on GUI thread.
   if (!IsGuiThread()) {
-    InvokeOnGuidThread(m_hWnd, [&]() { GUIRefreshEntry(ci, bAllowFail); return 0; });
+    InvokeOnGuiThread(m_hWnd, [&]() { GUIRefreshEntry(ci, bAllowFail); return 0; });
     return;
   }
 
@@ -264,7 +264,7 @@ void DboxMain::UpdateWizard(const std::wstring &s)
 {
   // If called from worker thread, invoke on GUI thread.
   if (!IsGuiThread()) {
-    InvokeOnGuidThread(m_hWnd, [&]() { UpdateWizard(s); return 0; });
+    InvokeOnGuiThread(m_hWnd, [&]() { UpdateWizard(s); return 0; });
     return;
   }
 
