@@ -63,6 +63,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/ImportXMLDlg.h
             src/ui/Windows/InfoDisplay.h
             src/ui/Windows/InputBox.h
+            src/ui/Windows/InvokeGuiThreadSupport.h
             src/ui/Windows/LVHdrCtrl.h
             src/ui/Windows/ManagePSWDPols.h
             src/ui/Windows/MenuShortcuts.h
