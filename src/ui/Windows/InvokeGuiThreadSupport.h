@@ -41,7 +41,11 @@ public:
     return m_dwGuiThreadId == ::GetCurrentThreadId();
   }
 
-  bool InvokeOnGuidThread(HWND hWnd, std::function<LRESULT()> lambda, LRESULT* plResult = nullptr) {
+  // InvokeOnGuiThread runs 'lambda' on the UI thread of 'hwnd'.
+  // Returns:
+  //   true : Successfully run on the UI thread.
+  //   false: Failed to run on the UI thread. Call GetLastError() for extended error information.
+  bool InvokeOnGuiThread(HWND hWnd, std::function<LRESULT()> lambda, LRESULT* plResult = nullptr) {
     LRESULT lResult;
     if (IsGuiThread()) {
       lResult = lambda();
