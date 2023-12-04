@@ -2138,7 +2138,7 @@ void DboxMain::OnTwoFactorAuthCodeUpdateClipboardTimer()
   }
 
   ItemListIter iter = Find(m_uuidEntryTwoFactorAutoCopyToClipboard);
-  ASSERT(iter != End());
+  // The 'iter' can be end() if the entry has been deleted.
   if (iter == End()) {
     StopAuthCodeUpdateClipboardTimer();
     return;
