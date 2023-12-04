@@ -6,4 +6,4 @@
 VER_MAJOR = 1
 VER_MINOR = 18
 VER_REV = 2
-VER_SPECIAL = Yubikey-test-only
+# VER_SPECIAL =
