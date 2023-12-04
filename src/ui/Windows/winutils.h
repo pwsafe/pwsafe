@@ -29,9 +29,6 @@ namespace WinUtil {
   BOOL LoadScaledBitmap(CBitmap& bitmap, UINT nID, bool fixBckgrnd = true, HWND hwnd = nullptr);
   bool HasTouchscreen(); // for BR1539 workaround
   DWORD SetWindowExcludeFromScreenCapture(HWND hwnd, bool excludeFromScreenCapture);
-  void MoveControlDelta(CWnd& ctl, int dx, int dy);
-  bool RemoveControlRows(CWnd& parent, int nIdFirstCtl, int cColumns, int cRows, const std::vector<int>& vRowsToRemove, int& cyVertDistanceTotal);
-
 }
 #endif // __WINUTILS_H__
 
