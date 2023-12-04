@@ -284,7 +284,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
     AddTool(IDC_LAUNCH, IDS_CLICKTOGOPLUS);
     AddTool(IDC_SENDEMAIL, IDS_CLICKTOSEND);
     AddTool(IDC_COPYPASSWORD, IDS_CLICKTOCOPYGENPSWD);
-    AddTool(IDC_TWOFACTORCODE, IDS_TWOFACTORCODEBUTTON);
 
     if (M_uicaller() == IDS_EDITENTRY && M_protected() != 0) {
       AddTool(IDC_STATIC_TUTORIAL, IDS_UNPROTECT);
@@ -1784,12 +1783,21 @@ void CAddEdit_Basic::OnCopyPassword()
 
 void CAddEdit_Basic::OnCopyTwoFactorCode()
 {
+  CSecString sTwoFactorKey(GetTwoFactorKey());
+  if (sTwoFactorKey.IsEmpty()) {
+    CGeneralMsgBox gmb;
+    CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
+    CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODEBUTTON_NOTCONFIGURED));
+    gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
+    return;
+  }
+
   UpdateData(TRUE);
 
   // During Add/Edit, the UI may have updated 2FA info.
   // Use latest 2FA info to produce the auth code.
   CItemData ciTemp(*M_pci_credential());
-  ciTemp.SetTwoFactorKey(GetTwoFactorKey());
+  ciTemp.SetTwoFactorKey(sTwoFactorKey);
 
   StringX sxAuthCode;
   GetMainDlg()->GetTwoFactoryAuthenticationCode(&ciTemp, sxAuthCode);
@@ -1810,11 +1818,6 @@ CSecString CAddEdit_Basic::GetTwoFactorKey()
       twoFactorKey = M_pci()->GetEffectiveFieldValue(CItem::TWOFACTORKEY, pcbi);
   }
   return twoFactorKey;
-}
-
-bool CAddEdit_Basic::IsTwoFactorKey()
-{
-  return !GetTwoFactorKey().IsEmpty();
 }
 
 void CAddEdit_Basic::OnTimer(UINT_PTR nIDEvent)
@@ -1850,8 +1853,6 @@ PWSTotp::TOTP_Result CAddEdit_Basic::ValidateTotpConfiguration(double *pRatio)
   PWSTotp::TOTP_Result r = PWSTotp::ValidateTotpConfiguration(ciTemp, nullptr, pRatio);
   if (r != PWSTotp::Success) {
     StopAuthenticationCodeUi();
-    m_btnTwoFactorCode.EnableWindow(FALSE);
-    m_btnTwoFactorCode.ShowWindow(SW_HIDE);
     CGeneralMsgBox gmb;
     CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
     CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_MESSAGE));
@@ -1865,15 +1866,17 @@ PWSTotp::TOTP_Result CAddEdit_Basic::ValidateTotpConfiguration(double *pRatio)
 
 void CAddEdit_Basic::SetupAuthenticationCodeUiElements()
 {
-  m_btnTwoFactorCode.SetPieColor(RGB(0, 192, 255));
-  m_btnTwoFactorCode.SetPercent(0);
-  bool isTwoFactorKey = IsTwoFactorKey();
-  m_btnTwoFactorCode.EnableWindow(isTwoFactorKey);
-  m_btnTwoFactorCode.ShowWindow(isTwoFactorKey ? SW_SHOW : SW_HIDE);
-  if (isTwoFactorKey && ValidateTotpConfiguration() == PWSTotp::Success)
+  if (!GetTwoFactorKey().IsEmpty() && ValidateTotpConfiguration() == PWSTotp::Success) {
+    m_btnTwoFactorCode.SetPieColor(RGB(0, 192, 255));
+    m_btnTwoFactorCode.SetPercent(0);
+    AddTool(IDC_TWOFACTORCODE, IDS_TWOFACTORCODEBUTTON_CONFIGURED);
     SetTimer(TIMER_TWO_FACTOR_AUTH_CODE_COUNTDOWN, USER_TIMER_MINIMUM, NULL);
-  else
-    KillTimer(TIMER_TWO_FACTOR_AUTH_CODE_COUNTDOWN);
+  } else {
+    m_btnTwoFactorCode.SetPieColor(::GetSysColor(COLOR_GRAYTEXT));
+    m_btnTwoFactorCode.SetPercent(25);
+    AddTool(IDC_TWOFACTORCODE, IDS_TWOFACTORCODEBUTTON_NOTCONFIGURED);
+    StopAuthenticationCodeUi();
+  }
 }
 
 void CAddEdit_Basic::StopAuthenticationCodeUi()

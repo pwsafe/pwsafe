@@ -812,10 +812,11 @@
 
 #define IDS_ADDEDITERR_INVALID_TOTP_KEY                     6100
 #define IDS_TWOFACTORKEY                                    6101
-#define IDS_TWOFACTORCODEBUTTON                             6102
-#define IDS_TWOFACTORCODE_COPIED                            6103
-#define IDS_TWOFACTORCODE_ERROR_TITLE                       6104
-#define IDS_TWOFACTORCODE_ERROR_MESSAGE                     6105
-#define IDS_TWOFACTORCODE_ERROR_KEYEMPTY                    6106
-#define IDS_TWOFACTORCODE_ERROR_KEYNOTFOUND                 6107
+#define IDS_TWOFACTORCODEBUTTON_CONFIGURED                  6102
+#define IDS_TWOFACTORCODEBUTTON_NOTCONFIGURED               6103
+#define IDS_TWOFACTORCODE_COPIED                            6104
+#define IDS_TWOFACTORCODE_ERROR_TITLE                       6105
+#define IDS_TWOFACTORCODE_ERROR_MESSAGE                     6106
+#define IDS_TWOFACTORCODE_ERROR_KEYEMPTY                    6107
+#define IDS_TWOFACTORCODE_ERROR_KEYNOTFOUND                 6108
 #define IDS_AC_STATIC_TWOFACTORCODE                         6115
