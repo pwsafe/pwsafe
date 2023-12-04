@@ -41,7 +41,7 @@ jobs:
         echo "WX_ARCH=arm64,x86_64" >> $GITHUB_ENV
         echo "WX_DEBUG_FLAG=--disable-debug" >> $GITHUB_ENV
         echo "MACOS_VER_MIN=10.14" >> $GITHUB_ENV
-        echo "XCODE_VER=14.0.1" >> $GITHUB_ENV
+        echo "XCODE_VER=14.2" >> $GITHUB_ENV
         echo "XCODE_CONFIG=Release" >> $GITHUB_ENV
         echo "HOST_NCPU=`sysctl -n hw.ncpu`" >>$GITHUB_ENV
         echo "FORCE_REBUILD_WX=7" >> $GITHUB_ENV
