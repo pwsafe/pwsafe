@@ -104,6 +104,8 @@ void CProgressPieCommon::PaintToBitmap(CDC& dc, CBitmap& bitmap)
   CDC dcCompat;
   dcCompat.CreateCompatibleDC(&dc);
   const int iSize = GetSize();
+  if (iSize <= 0)
+    return;
   bitmap.CreateCompatibleBitmap(&dc, iSize, iSize);
   CBitmap* oldBitmap = dcCompat.SelectObject(&bitmap);
 

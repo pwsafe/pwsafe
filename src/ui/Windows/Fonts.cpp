@@ -487,6 +487,26 @@ LONG Fonts::CalcHeight(const bool bIncludeNotesFont) const
   return height;
 }
 
+bool Fonts::CalculateCaptionWidth(CWnd* pWnd, const CString& csCaption, int& cxWidth) const
+{
+  NONCLIENTMETRICS ncm;
+  ncm.cbSize = sizeof(ncm);
+  CFont fontCap;
+  if (!SystemParametersInfo(SPI_GETNONCLIENTMETRICS, sizeof(NONCLIENTMETRICS), &ncm, 0) ||
+      !fontCap.CreateFontIndirectW(&ncm.lfCaptionFont))
+    return false;
+
+  CDC* pDC = pWnd->GetWindowDC();
+  if (!pDC)
+    return false;
+
+  CFont* ofont = pDC->SelectObject(&fontCap);
+  cxWidth = pDC->GetTextExtent(csCaption).cx;
+  pDC->SelectObject(ofont);
+  pWnd->ReleaseDC(pDC);
+  return true;
+}
+
 std::wstring Fonts::GetProtectedSymbol(const PWSFont font)
 {
   if (font == TREELIST) {

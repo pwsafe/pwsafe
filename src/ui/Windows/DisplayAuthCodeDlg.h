@@ -46,6 +46,9 @@ protected:
 
   //{{AFX_MSG(CDisplayAuthCodeDlg)
   afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+  afx_msg void OnSize(UINT nType, int cx, int cy);
+  afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
+  afx_msg void OnWindowPosChanging(WINDOWPOS* lpwndpos);
   afx_msg void OnTimer(UINT_PTR nIDEvent);
   afx_msg void OnCopyTwoFactorCode();
   //}}AFX_MSG
@@ -63,9 +66,16 @@ private:
   pws_os::CUUID m_uuidItem;
   CProgressPieCtrl m_btnCopyTwoFactorCode;
   CStaticExtn m_stcTwoFactorCode;
+  CButton m_btnClose;
   CFont m_fontTwoFactorCode;
   bool m_bCopyToClipboard;
   StringX m_sxLastAuthCode;
+  CRect m_rcInitial;
+  CRect m_rwInitial;
+  CRect m_rectInitialAuthCodeButton;
+  CRect m_rectInitialAuthCode;
+  CRect m_rectInitialCloseButton;
+  int m_cyAuthCodeButtonMarginBottom;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
