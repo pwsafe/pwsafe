@@ -88,6 +88,9 @@ static bool VerifyEmbeddedSignature(LPCWSTR pwszFile)
   // Not used.
   WinTrustData.pwszURLReference = nullptr;
 
+  // No network retrieval, please.
+  WinTrustData.dwProvFlags = WTD_CACHE_ONLY_URL_RETRIEVAL;
+
   // This is not applicable if there is no UI
   WinTrustData.dwUIContext = 0;
 
