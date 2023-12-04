@@ -64,7 +64,7 @@ END_MESSAGE_MAP()
 BOOL CDisplayAuthCodeDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
-  
+
   // Place dialog where user had it last
   CRect rect, dlgRect;
   GetWindowRect(&dlgRect);
@@ -91,33 +91,15 @@ BOOL CDisplayAuthCodeDlg::OnInitDialog()
   if (!pci)
     return TRUE;
 
-  // Each of Group, Title, Username is on a separate "row."
-  // If a value has text, set the control, else mark the "row" for removal.
-  const std::vector<StringX> vRowData = { pci->GetGroup(), pci->GetTitle(), pci->GetUser() };
-  const int nColumns = 2;
-  const int nRows = static_cast<int>(vRowData.size());
-  std::vector<int> vRowsToRemove;
-  int row = 0;
-  for (auto& v : vRowData) {
-    if (v.empty())
-      vRowsToRemove.push_back(row);
-    else
-      GetDlgItem(IDC_AC_EDIT_GROUP + (row * nColumns))->SetWindowText(v.c_str());
-    row++;
-  }
-
-  // Remove the rows without values.
-  int cyVertDistanceTotal;
-  if (WinUtil::RemoveControlRows(*this, IDC_AC_LABEL_GROUP, nColumns, nRows, vRowsToRemove, cyVertDistanceTotal)) {
-    // Move everything else up.
-    WinUtil::MoveControlDelta(*GetDlgItem(IDC_AC_BUTTON_COPY_TWOFACTORCODE), 0, -cyVertDistanceTotal);
-    WinUtil::MoveControlDelta(*GetDlgItem(IDC_AC_STATIC_TWOFACTORCODE), 0, -cyVertDistanceTotal);
-    WinUtil::MoveControlDelta(*GetDlgItem(IDOK), 0, -cyVertDistanceTotal);
-    CRect rc;
-    GetWindowRect(&rc);
-    rc.bottom -= cyVertDistanceTotal;
-    MoveWindow(&rc);
-  }
+  CString cs_title;
+  StringX sx_group(L""), sx_title, sx_user(L"");
+  if (!pci->IsGroupEmpty())
+    sx_group = pci->GetGroup();
+  sx_title = pci->GetTitle();
+  if (!pci->IsUserEmpty())
+    sx_user = pci->GetUser();
+  cs_title.Format(IDS_DISPLAYAUTHCODE_TITLEFMT, sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
+  SetWindowText(cs_title);
 
   Fonts* pFonts = Fonts::GetInstance();
   pFonts->ApplyPasswordFont(&m_stcTwoFactorCode);
