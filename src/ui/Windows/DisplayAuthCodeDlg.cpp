@@ -119,6 +119,8 @@ BOOL CDisplayAuthCodeDlg::OnInitDialog()
     MoveWindow(&rc);
   }
 
+  Fonts* pFonts = Fonts::GetInstance();
+  pFonts->ApplyPasswordFont(&m_stcTwoFactorCode);
   if (Fonts::CreateFontMatchingWindowHeight(m_stcTwoFactorCode, m_fontTwoFactorCode))
     m_stcTwoFactorCode.SetFont(&m_fontTwoFactorCode);
 
