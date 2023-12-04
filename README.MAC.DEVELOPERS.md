@@ -31,11 +31,12 @@ In general you need the following:
 * Xcode 6+
 * wxWidgets
 * Perl
-* gettext (For building the installation package, can be fetched from brew)
+* gettext and create_dmg (For building the installation package, can be fetched from Homebrew)
+* Yubikey libraries: libyubikey, libykpers-1
 
 If you are building on Apple Silicon or M1, you need the following in addition to the above:
 
-* Apple Silicon or M1 equipped Mac
+* Apple Silicon equipped Mac
 * macOS 11.0 (Big Sur) or later
 * Xcode 12+
 
@@ -58,12 +59,13 @@ pwsafe code now uses C++14 features, and therefore requires a modern-enough comp
 For the x86\_64 architecture, the minimum target is macOS 10.14. For the arm64 architecture, the minimum target is macOS 11.0. 
 
 ### wxWidgets
-wxWidgets is the cross-platform UI toolkit that pwsafe uses for user-interface. To get the latest version of wxWidgets, you may need to
-download the latest sources from wxWidgets.org and build it (instructions below).  This is the most time-consuming part of building pwsafe.
+wxWidgets is the cross-platform UI toolkit that pwsafe uses for user-interface. To get the latest version of wxWidgets, you may need to download the latest sources from wxWidgets.org and build it (instructions below).  This is the most time-consuming part of building pwsafe.
 
 ### Perl
 pwsafe uses Perl for some small build tasks. macOS already ships with Perl, which should suffice.
 
+### Yubikey
+The last official packages published by Yubico, on their web site and via Homebrew, are known not to work on current macOS systems.  (As of this writing, macOS 14.1.)  The source must be retrieved from Github and compiled locally.  The process used by the PasswordSafe release build is in the pwsafe source tree in the file pwsafe/.github/workflows/macos-latest.yml.  If you don't want Yubikey support, the Xcode project file for PasswordSafe has a *Debug-no-yubi* configuration that is the same as Debug, but without reference to the Yubikey libraries.  Note, however, that the .dmg release package can only be made from a *Release* configuration build that does include Yubikey support.
 
 ## Universal Binaries
 
