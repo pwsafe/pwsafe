@@ -50,12 +50,16 @@ void CDisplayAuthCodeDlg::DoDataExchange(CDataExchange* pDX)
     //{{AFX_DATA_MAP(CDisplayAuthCodeDlg)
     DDX_Control(pDX, IDC_AC_BUTTON_COPY_TWOFACTORCODE, m_btnCopyTwoFactorCode);
     DDX_Control(pDX, IDC_AC_STATIC_TWOFACTORCODE, m_stcTwoFactorCode);
+    DDX_Control(pDX, IDOK, m_btnClose);
     //}}AFX_DATA_MAP
 }
 
 BEGIN_MESSAGE_MAP(CDisplayAuthCodeDlg, CPWDialog)
   //{{AFX_MSG_MAP(CDisplayAuthCodeDlg)
   ON_WM_SHOWWINDOW()
+  ON_WM_GETMINMAXINFO()
+  ON_WM_WINDOWPOSCHANGING()
+  ON_WM_SIZE()
   ON_WM_TIMER()
   ON_BN_CLICKED(IDC_AC_BUTTON_COPY_TWOFACTORCODE, OnCopyTwoFactorCode)
   //}}AFX_MSG_MAP
@@ -72,12 +76,10 @@ BOOL CDisplayAuthCodeDlg::OnInitDialog()
                                           rect.left, rect.right);
   HRGN hrgnWork = WinUtil::GetWorkAreaRegion();
   // Ensure window will be visible.
-  if ((rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) || !RectInRegion(hrgnWork, rect)){
+  if ((rect.top == -1 && rect.bottom == -1 && rect.left == -1 && rect.right == -1) || !RectInRegion(hrgnWork, rect)) {
     rect = dlgRect;
   }
   ::DeleteObject(hrgnWork);
-
-  // Ignore size just set position
   SetWindowPos(NULL, rect.left, rect.top, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
 
   if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
@@ -101,16 +103,129 @@ BOOL CDisplayAuthCodeDlg::OnInitDialog()
   cs_title.Format(IDS_DISPLAYAUTHCODE_TITLEFMT, sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
   SetWindowText(cs_title);
 
+  // Calc initial auth code static control margin.
+  LOGFONT lf;
+  CFont* pFont = m_stcTwoFactorCode.GetFont();
+  pFont->GetLogFont(&lf);
+  CRect rcTwoFactorCode;
+  m_stcTwoFactorCode.GetWindowRect(&rcTwoFactorCode);
+  int cyTwoFactorCodeInitialInternalMargin = (rcTwoFactorCode.Height() - abs(lf.lfHeight)) / 2;
+
+  // Change auth code static font to password font.
   Fonts* pFonts = Fonts::GetInstance();
   pFonts->ApplyPasswordFont(&m_stcTwoFactorCode);
-  if (Fonts::CreateFontMatchingWindowHeight(m_stcTwoFactorCode, m_fontTwoFactorCode))
-    m_stcTwoFactorCode.SetFont(&m_fontTwoFactorCode);
+  pFont = m_stcTwoFactorCode.GetFont();
+  LOGFONT lfAuthCode;
+  pFont->GetLogFont(&lfAuthCode);
+  int cyFontHeight = abs(lfAuthCode.lfHeight);
+
+  // Get initial auth code button rect.
+  GetClientRect(&m_rcInitial);
+  GetWindowRect(&m_rwInitial);
+  m_btnCopyTwoFactorCode.GetWindowRect(&m_rectInitialAuthCodeButton);
+  ScreenToClient(&m_rectInitialAuthCodeButton);
+  m_cyAuthCodeButtonMarginBottom = m_rcInitial.bottom - m_rectInitialAuthCodeButton.bottom;
+
+  // Get initial auth code static rect.
+  m_stcTwoFactorCode.GetWindowRect(&m_rectInitialAuthCode);
+  // Resize height to match password font.
+  m_rectInitialAuthCode.bottom = m_rectInitialAuthCode.top + cyFontHeight + (cyTwoFactorCodeInitialInternalMargin * 2);
+  ScreenToClient(&m_rectInitialAuthCode);
+  // Center it vertically based on the button height.
+  int authCodeTop = m_rectInitialAuthCodeButton.top + (m_rectInitialAuthCodeButton.Height() - m_rectInitialAuthCode.Height()) / 2;
+  m_rectInitialAuthCode.MoveToY(authCodeTop);
+  m_stcTwoFactorCode.MoveWindow(m_rectInitialAuthCode.left, m_rectInitialAuthCode.top, m_rectInitialAuthCode.Width(), m_rectInitialAuthCode.Height());
+
+  // Get initial Close button rect.
+  m_btnClose.GetWindowRect(&m_rectInitialCloseButton);
+  ScreenToClient(&m_rectInitialCloseButton);
 
   SetupAuthenticationCodeUiElements();
 
   ShowWindow(SW_SHOW);
 
+  // If caption width can be calculated, use it to widen the window to show
+  // the full caption (group, title, username). 
+  int cxWidth;
+  CString csCaptionWithExtra(cs_title + L"WWW");
+  if (Fonts::GetInstance()->CalculateCaptionWidth(this, csCaptionWithExtra, cxWidth)) {
+    cxWidth = std::max(m_rwInitial.Width(), cxWidth + (GetSystemMetrics(SM_CXSIZEFRAME) * 2));
+    SetWindowPos(NULL, 0, 0, cxWidth, m_rwInitial.Height(), SWP_NOMOVE | SWP_NOZORDER);
+  }
+
   return TRUE;  // return TRUE unless you set the focus to a control
+}
+
+void CDisplayAuthCodeDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+{
+  CPWDialog::OnGetMinMaxInfo(lpMMI);
+  if (!IsWindowVisible())
+    return;
+  lpMMI->ptMinTrackSize.x = std::max(lpMMI->ptMinTrackSize.x, static_cast<LONG>(m_rwInitial.Width()));
+  lpMMI->ptMinTrackSize.y = std::max(lpMMI->ptMinTrackSize.y, static_cast<LONG>(m_rwInitial.Height()));
+}
+
+void CDisplayAuthCodeDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
+{
+  CPWDialog::OnWindowPosChanging(lpwndpos);
+  if (!IsWindowVisible())
+    return;
+  if (lpwndpos->flags & SWP_NOSIZE)
+    return;
+  // Do not let the width to height ratio shrink below its initial value.
+  double ro = m_rwInitial.Width() / static_cast<double>(m_rwInitial.Height());
+  double rc = lpwndpos->cx / static_cast<double>(lpwndpos->cy);
+  if (rc < ro)
+    lpwndpos->cx = static_cast<int>(lpwndpos->cy * ro);
+}
+
+void CDisplayAuthCodeDlg::OnSize(UINT nType, int cx, int cy)
+{
+  CPWDialog::OnSize(nType, cx, cy);
+  if (!IsWindowVisible())
+    return;
+  if (nType == SIZE_MINIMIZED)
+    return;
+
+  CRect rc;
+  GetClientRect(&rc);
+
+  // Calc new button size. It is a square so width == height as it changes size.
+  CRect rectButtonAuthCode;
+  m_btnCopyTwoFactorCode.GetWindowRect(&rectButtonAuthCode);
+  ScreenToClient(&rectButtonAuthCode);
+  rectButtonAuthCode.bottom = rc.bottom - m_cyAuthCodeButtonMarginBottom;
+  rectButtonAuthCode.right = rectButtonAuthCode.left + rectButtonAuthCode.Height();
+  m_btnCopyTwoFactorCode.MoveWindow(
+    rectButtonAuthCode.left,
+    rectButtonAuthCode.top,
+    rectButtonAuthCode.Width(),
+    rectButtonAuthCode.Height()
+  );
+
+  // The two factor code static is center vertically in relation to the auth code button height.
+  // Its width stretches, but its height remains the same, matching the password font height.
+  CRect rectTwoFactorCode;
+  m_stcTwoFactorCode.GetWindowRect(&rectTwoFactorCode);
+  ScreenToClient(&rectTwoFactorCode);
+  rectTwoFactorCode.left = rectButtonAuthCode.right + (m_rectInitialAuthCode.left - m_rectInitialAuthCodeButton.right);
+  rectTwoFactorCode.right = rc.right - (m_rcInitial.right - m_rectInitialAuthCode.right);
+  int cyTwoFactorCodeHeight = rectTwoFactorCode.Height();
+  rectTwoFactorCode.top = rectButtonAuthCode.top + ((rectButtonAuthCode.Height() - rectTwoFactorCode.Height()) / 2);
+  rectTwoFactorCode.bottom = rectTwoFactorCode.top + cyTwoFactorCodeHeight;
+  m_stcTwoFactorCode.MoveWindow(
+    rectTwoFactorCode.left,
+    rectTwoFactorCode.top,
+    rectTwoFactorCode.Width(),
+    rectTwoFactorCode.Height()
+  );
+  m_stcTwoFactorCode.Invalidate();
+
+  // The Close button remains the same size, located in the lower/right.
+  int xClose = rc.right - (m_rcInitial.right - m_rectInitialCloseButton.left);
+  int yClose = rc.bottom - (m_rcInitial.bottom - m_rectInitialCloseButton.top);
+  m_btnClose.MoveWindow(xClose, yClose, m_rectInitialCloseButton.Width(), m_rectInitialCloseButton.Height());
+  m_btnClose.Invalidate();
 }
 
 void CDisplayAuthCodeDlg::OnShowWindow(BOOL bShow, UINT nStatus)
