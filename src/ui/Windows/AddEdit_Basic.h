@@ -144,7 +144,6 @@ private:
                         pws_os::CUUID &base_uuid, int &ibasedata, bool &b_msg_issued);
   void SetGroupComboBoxWidth();
   void ShowHideBaseInfo(const CItemData::EntryType &entrytype, CSecString &csBase);
-  bool IsTwoFactorKey();
   void SetupAuthenticationCodeUiElements();
   void StopAuthenticationCodeUi();
   PWSTotp::TOTP_Result ValidateTotpConfiguration(double *pRatio = nullptr);
