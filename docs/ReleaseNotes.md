@@ -10,6 +10,7 @@ PasswordSafe 3.64.2 Release Dec 2023
 Bugs fixed in 3.64.2
 --------------------
 
+* Modality of dialog windows is now preserved across lock/unlock.
 * [GH1066](https://github.com/pwsafe/pwsafe/issues/1066) Signature verification no longer triggers network traffic.
 
 
