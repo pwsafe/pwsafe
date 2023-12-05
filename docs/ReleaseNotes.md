@@ -4,6 +4,16 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
+PasswordSafe 3.64.2 Release Dec 2023
+====================================
+
+Bugs fixed in 3.64.2
+--------------------
+
+* [GH1066](https://github.com/pwsafe/pwsafe/issues/1066) Signature verification no longer triggers network traffic.
+
+
+
 PasswordSafe 3.64.1 Release Nov 2023
 ====================================
 
