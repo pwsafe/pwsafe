@@ -45,6 +45,7 @@ protected:
   CTBMStatic m_Help1, m_Help2;
 
   //{{AFX_MSG(CDisplayAuthCodeDlg)
+  virtual BOOL PreTranslateMessage(MSG* pMsg);
   afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
   afx_msg void OnSize(UINT nType, int cx, int cy);
   afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);

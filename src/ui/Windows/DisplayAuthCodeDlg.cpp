@@ -83,6 +83,9 @@ BOOL CDisplayAuthCodeDlg::OnInitDialog()
   SetWindowPos(NULL, rect.left, rect.top, 0, 0, SWP_NOZORDER | SWP_NOSIZE);
 
   if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
+    // The tooltips for this control look much better on 1080/4K
+    // with max at 400 rather than default of 300.
+    m_pToolTipCtrl->SetMaxTipWidth(400);
     AddTool(IDC_AC_BUTTON_COPY_TWOFACTORCODE, IDS_TWOFACTORCODEBUTTON_CONFIGURED);
     AddTool(IDC_AC_STATIC_TWOFACTORCODE, IDS_AC_STATIC_TWOFACTORCODE);
     ActivateToolTip();
@@ -154,6 +157,12 @@ BOOL CDisplayAuthCodeDlg::OnInitDialog()
   }
 
   return TRUE;  // return TRUE unless you set the focus to a control
+}
+
+BOOL CDisplayAuthCodeDlg::PreTranslateMessage(MSG* pMsg)
+{
+  RelayToolTipEvent(pMsg);
+  return CPWDialog::PreTranslateMessage(pMsg);
 }
 
 void CDisplayAuthCodeDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
