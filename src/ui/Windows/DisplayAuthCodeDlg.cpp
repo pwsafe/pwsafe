@@ -112,7 +112,7 @@ BOOL CDisplayAuthCodeDlg::OnInitDialog()
   pFont->GetLogFont(&lf);
   CRect rcTwoFactorCode;
   m_stcTwoFactorCode.GetWindowRect(&rcTwoFactorCode);
-  int cyTwoFactorCodeInitialInternalMargin = (rcTwoFactorCode.Height() - abs(lf.lfHeight)) / 2;
+  int cyTwoFactorCodeInitialInternalMargin = (rcTwoFactorCode.Height() - abs(lf.lfHeight) + 1) / 2;
 
   // Change auth code static font to password font.
   Fonts* pFonts = Fonts::GetInstance();
