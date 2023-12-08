@@ -64,6 +64,7 @@ public:
   ~CPWDialogTracker();
 
   bool AnyOpenDialogs() const;
+  bool AnyModalDialogs() const;
   void AddOpenDialog(CWnd *dlg);
   void RemoveOpenDialog(CWnd *dlg);
   void ShowOpenDialogs();

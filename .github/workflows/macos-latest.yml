@@ -30,14 +30,19 @@ jobs:
 
     - name: Set build parameters
       # If you need to rebuild wxWidgets for some reason, say you changed the build params, just increment FORCE_REBUILD_WX
+      # Some usefull debug parameters:
+      # "WX_DEBUG_FLAG=--enable-debug --enable-debug_info"
+      # "XCODE_CONFIG=Debug"
+      # "XCODE_CONFIG=Debug-no-yubi"
       run: |
         echo "WX_VERS=3.2.2.1" >> $GITHUB_ENV
-        echo "MACOS_VER_MIN=10.14" >> $GITHUB_ENV
         echo "WX_SRC_DIR=$HOME/wxWidgets" >> $GITHUB_ENV
         echo "WX_BUILD_DIR=$HOME/wxbuild" >> $GITHUB_ENV
         echo "WX_ARCH=arm64,x86_64" >> $GITHUB_ENV
-        echo "DEBUG_FLAG=--disable-debug" >> $GITHUB_ENV
+        echo "WX_DEBUG_FLAG=--disable-debug" >> $GITHUB_ENV
+        echo "MACOS_VER_MIN=10.14" >> $GITHUB_ENV
         echo "XCODE_VER=14.0.1" >> $GITHUB_ENV
+        echo "XCODE_CONFIG=Release" >> $GITHUB_ENV
         echo "FORCE_REBUILD_WX=6" >> $GITHUB_ENV
 
     - name: Force compatible Xcode version
@@ -45,6 +50,27 @@ jobs:
 
     - name: Print Xcode version in use
       run: xcode-select -p
+      
+    - name: Install tools for Yubikey build
+      run: brew install autoconf automake libtool
+      
+    - name: Build libyubikey from upstream
+      run: |
+        git clone https://github.com/Yubico/yubico-c.git
+        cd yubico-c
+        autoreconf --install
+        ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
+        make check
+        make install
+
+    - name: Build ykpers from upstream
+      run: |
+        git clone https://github.com/Yubico/yubikey-personalization.git
+        cd yubikey-personalization
+        autoreconf --install
+        ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
+        make check
+        make install
 
     - name: Cache wxWidgets build
       id: cache-wxWidgets-build
@@ -68,7 +94,7 @@ jobs:
         mkdir -p $WX_BUILD_DIR
         cd $WX_SRC_DIR
         # use built-in versions of jpeg, tiff, png, and regex (pcre2) libs to avoid linking with those in /usr/local/opt
-        ./configure --enable-universal_binary=$WX_ARCH --prefix=$WX_BUILD_DIR --disable-shared --enable-unicode --with-macosx-version-min=$MACOS_VER_MIN --with-libpng=builtin --with-libjpeg=builtin --with-libtiff=builtin --with-regex=builtin --without-liblzma $DEBUG_FLAG
+        ./configure --enable-universal_binary=$WX_ARCH --prefix=$WX_BUILD_DIR --disable-shared --enable-unicode --with-macosx-version-min=$MACOS_VER_MIN --with-libpng=builtin --with-libjpeg=builtin --with-libtiff=builtin --with-regex=builtin --without-liblzma $WX_DEBUG_FLAG
         HOST_NCPU=`sysctl -n hw.ncpu`
         echo "Running make with -j $HOST_NCPU"
         make -j $HOST_NCPU
@@ -83,10 +109,10 @@ jobs:
     
     - name: Build pwsafe
       working-directory: ${{ github.workspace }}
-      run: xcodebuild -project Xcode/pwsafe-xcode6.xcodeproj -scheme pwsafe
+      run: xcodebuild -project Xcode/pwsafe-xcode6.xcodeproj -scheme pwsafe -configuration $XCODE_CONFIG
 
     - name: Get Xcode build output location
-      run: echo "BUILD_OUTPUT_DIR=$(xcodebuild -showBuildSettings -project Xcode/pwsafe-xcode6.xcodeproj | fgrep CONFIGURATION_BUILD_DIR | cut -d= -f2 | sed 's/^ *\(.*\)/\1/')" >> $GITHUB_ENV
+      run: echo "BUILD_OUTPUT_DIR=$(xcodebuild -showBuildSettings -project Xcode/pwsafe-xcode6.xcodeproj  -scheme pwsafe -configuration $XCODE_CONFIG | fgrep CONFIGURATION_BUILD_DIR | cut -d= -f2 | sed 's/^ *\(.*\)/\1/')" >> $GITHUB_ENV
 
     - name: Move app to another folder
       run: mkdir "$BUILD_OUTPUT_DIR"/app && mv "$BUILD_OUTPUT_DIR"/pwsafe.app "$BUILD_OUTPUT_DIR"/app/

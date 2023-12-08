@@ -106,7 +106,9 @@ void DboxMain::SetLocalStrings()
 
 //-----------------------------------------------------------------------------
 DboxMain::DboxMain(PWScore &core, CWnd* pParent)
-  : CDialog(DboxMain::IDD, pParent),
+  :
+  CDialog(DboxMain::IDD, pParent),
+  CInvokeGuiThreadSupport(PWS_MSG_INVOKE_UI_THREAD),
   m_pCC(nullptr),
   m_RUEList(core),
   m_bDoAutoType(false),
@@ -135,6 +137,7 @@ DboxMain::DboxMain(PWScore &core, CWnd* pParent)
   m_LUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_TUUIDVisibleAtMinimize(pws_os::CUUID::NullUUID()),
   m_savedDBprefs(EMPTYSAVEDDBPREFS),
+  m_bMainWindowWasDisabled(false),
   m_bImageInLV(false),
   m_pInfoDisplay(nullptr),
   m_bFilterActive(false), m_bUnsavedDisplayed(false), m_bExpireDisplayed(false), m_bFindFilterDisplayed(false),
@@ -545,6 +548,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_MESSAGE(PWS_MSG_EXECUTE_FILTERS, OnExecuteFilters)
   ON_MESSAGE(PWS_MSG_EDIT_APPLY, OnApplyEditChanges)
   ON_MESSAGE(PWS_MSG_DROPPED_FILE, OnDroppedFile)
+  ON_MESSAGE(PWS_MSG_INVOKE_UI_THREAD, OnInvokeUiThread)
   ON_MESSAGE(WM_QUERYENDSESSION, OnQueryEndSession)
   ON_MESSAGE(WM_ENDSESSION, OnEndSession)
 
@@ -1135,6 +1139,8 @@ LRESULT DboxMain::OnHdrToCCDragComplete(WPARAM wType, LPARAM /* lParam */)
 BOOL DboxMain::OnInitDialog()
 {
   PWS_LOGIT;
+
+  SetGuiThreadId();
 
   CDialog::OnInitDialog();
 
@@ -2507,6 +2513,11 @@ bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow, bool bIsAppWi
       if (m_iCurrentItemFound != -1) {
         m_FindToolBar.Find(m_iCurrentItemFound);
       }
+
+      // Restore app window WS_DISABLED state if it and modal dialogs were detected upon DB lock.
+      if (m_bMainWindowWasDisabled && CPWDialog::GetDialogTracker()->AnyModalDialogs())
+        EnableWindow(FALSE);
+      m_bMainWindowWasDisabled = false;
     } else {
       if (bUseSysTray) {
         ShowWindow(SW_HIDE);

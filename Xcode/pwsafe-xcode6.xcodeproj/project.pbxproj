@@ -21,6 +21,9 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		5707816E2B0C4D030082EB6E /* YubiCfgDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707816A2B0C4CED0082EB6E /* YubiCfgDlg.cpp */; };
+		570781702B0C4D030082EB6E /* YubiMixin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707816C2B0C4CED0082EB6E /* YubiMixin.cpp */; };
+		570781742B0C4D330082EB6E /* PWYubi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570781692B0C4CD30082EB6E /* PWYubi.cpp */; };
 		6FF5D4A11DA14EE80032F5B6 /* PasswordSubsetDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */; };
 		8ED7E1C429D9F24C0012034B /* SetDatabaseIdDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */; };
 		A2D181461C8FF86C0018AE03 /* media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D181451C8FF86C0018AE03 /* media.cpp */; };
@@ -271,10 +274,19 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		570781682B0C4CD30082EB6E /* PWYubi.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = PWYubi.h; path = unix/PWYubi.h; sourceTree = "<group>"; };
+		570781692B0C4CD30082EB6E /* PWYubi.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = PWYubi.cpp; path = unix/PWYubi.cpp; sourceTree = "<group>"; };
+		5707816A2B0C4CED0082EB6E /* YubiCfgDlg.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = YubiCfgDlg.cpp; sourceTree = "<group>"; };
+		5707816B2B0C4CED0082EB6E /* YubiCfgDlg.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YubiCfgDlg.h; sourceTree = "<group>"; };
+		5707816C2B0C4CED0082EB6E /* YubiMixin.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = YubiMixin.cpp; sourceTree = "<group>"; };
+		5707816D2B0C4CED0082EB6E /* YubiMixin.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YubiMixin.h; sourceTree = "<group>"; };
 		57218E8329C983FA000B1907 /* version.wx */ = {isa = PBXFileReference; lastKnownFileType = text; name = version.wx; path = ../version.wx; sourceTree = "<group>"; };
 		57218E8429C98475000B1907 /* pwsafe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = pwsafe.entitlements; sourceTree = "<group>"; };
 		57218E8529C98481000B1907 /* pwsafe-cli.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "pwsafe-cli.entitlements"; sourceTree = SOURCE_ROOT; };
 		574370962A3CE21800B46A7D /* pwsafe-template.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "pwsafe-template.plist"; sourceTree = "<group>"; };
+		575412A92B14265800507BC5 /* ubuntu-latest.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "ubuntu-latest.yml"; path = "../.github/workflows/ubuntu-latest.yml"; sourceTree = "<group>"; };
+		575412AA2B14265800507BC5 /* macos-latest.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "macos-latest.yml"; path = "../.github/workflows/macos-latest.yml"; sourceTree = "<group>"; };
+		575412AB2B14265800507BC5 /* codeql-analysis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "codeql-analysis.yml"; path = "../.github/workflows/codeql-analysis.yml"; sourceTree = "<group>"; };
 		57C329E72A070EFD00454292 /* ReleaseNotesWX.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotesWX.md; path = ../docs/ReleaseNotesWX.md; sourceTree = "<group>"; };
 		57C329E82A0715F500454292 /* ReleaseNotes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotes.md; path = ../docs/ReleaseNotes.md; sourceTree = "<group>"; };
 		6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordSubsetDlg.cpp; sourceTree = "<group>"; };
@@ -883,6 +895,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		575412A82B14261800507BC5 /* Workflows */ = {
+			isa = PBXGroup;
+			children = (
+				575412AA2B14265800507BC5 /* macos-latest.yml */,
+				575412AB2B14265800507BC5 /* codeql-analysis.yml */,
+				575412A92B14265800507BC5 /* ubuntu-latest.yml */,
+			);
+			name = Workflows;
+			sourceTree = "<group>";
+		};
 		D395E037264FEDD200F049B1 /* Pugi */ = {
 			isa = PBXGroup;
 			children = (
@@ -1293,6 +1315,7 @@
 				57C329E72A070EFD00454292 /* ReleaseNotesWX.md */,
 				57218E8429C98475000B1907 /* pwsafe.entitlements */,
 				E6069D0319FE1CCA0055040F /* Configs */,
+				575412A82B14261800507BC5 /* Workflows */,
 				E690B1031297D76E007EA508 /* Resources */,
 				E6A11A2A1293D20E0060FB35 /* graphics */,
 				E6EE839111E87E9700B01518 /* core */,
@@ -1327,6 +1350,10 @@
 		E6ADB9A411957099004E2BE5 /* wxWidgets */ = {
 			isa = PBXGroup;
 			children = (
+				5707816A2B0C4CED0082EB6E /* YubiCfgDlg.cpp */,
+				5707816B2B0C4CED0082EB6E /* YubiCfgDlg.h */,
+				5707816C2B0C4CED0082EB6E /* YubiMixin.cpp */,
+				5707816D2B0C4CED0082EB6E /* YubiMixin.h */,
 				8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */,
 				8ED7E1C229D9F24C0012034B /* SetDatabaseIdDlg.h */,
 				A6F2B3342832B0380096A7E4 /* QueryCancelDlg.cpp */,
@@ -1517,6 +1544,8 @@
 		E6EE837D11E87CD200B01518 /* os */ = {
 			isa = PBXGroup;
 			children = (
+				570781692B0C4CD30082EB6E /* PWYubi.cpp */,
+				570781682B0C4CD30082EB6E /* PWYubi.h */,
 				E6889E011EE4640F0023E376 /* cleanup.cpp */,
 				E698273C14C01ABC0043C243 /* logit.h */,
 				E698273D14C01ABC0043C243 /* logit.cpp */,
@@ -1944,6 +1973,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				570781742B0C4D330082EB6E /* PWYubi.cpp in Sources */,
 				E6889E021EE4640F0023E376 /* cleanup.cpp in Sources */,
 				E6C1254811E1B2BA00D22D92 /* debug.cpp in Sources */,
 				E6C1254911E1B2BA00D22D92 /* dir.cpp in Sources */,
@@ -1968,6 +1998,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5707816E2B0C4D030082EB6E /* YubiCfgDlg.cpp in Sources */,
+				570781702B0C4D030082EB6E /* YubiMixin.cpp in Sources */,
 				E6E8959B1BD8CB3B009F3A8E /* TimedTaskChain.cpp in Sources */,
 				E6ADBA371195709A004E2BE5 /* AboutDlg.cpp in Sources */,
 				E6ADBA381195709A004E2BE5 /* AddEditPropSheetDlg.cpp in Sources */,
@@ -2082,6 +2114,173 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		5754133A2B16717C00507BC5 /* Debug-no-yubi */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_LINK_OBJC_RUNTIME = NO;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				EXCLUDED_SOURCE_FILE_NAMES = "*Yubi*";
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					NO_YUBI,
+					UNICODE,
+					_LARGE_FILES,
+					"_FILE_OFFSET_BITS=64",
+					DEBUG,
+					_DEBUG,
+					__WXMAC__,
+					__WXDEBUG__,
+					__WXOSX_COCOA__,
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				ONLY_ACTIVE_ARCH = YES;
+			};
+			name = "Debug-no-yubi";
+		};
+		5754133B2B16717C00507BC5 /* Debug-no-yubi */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
+				OTHER_CPLUSPLUSFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
+				PRODUCT_NAME = core;
+				USER_HEADER_SEARCH_PATHS = ../src/;
+			};
+			name = "Debug-no-yubi";
+		};
+		5754133C2B16717C00507BC5 /* Debug-no-yubi */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				HEADER_SEARCH_PATHS = "/usr/local/include/ykpers-1";
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
+				OTHER_CPLUSPLUSFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
+				PRODUCT_NAME = os;
+				USER_HEADER_SEARCH_PATHS = ../src;
+			};
+			name = "Debug-no-yubi";
+		};
+		5754133D2B16717C00507BC5 /* Debug-no-yubi */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = pwsafe.entitlements;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INFOPLIST_FILE = pwsafe.plist;
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
+				OTHER_LDFLAGS = "$(inherited)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = pwsafe;
+				USER_HEADER_SEARCH_PATHS = ../src;
+			};
+			name = "Debug-no-yubi";
+		};
+		5754133E2B16717C00507BC5 /* Debug-no-yubi */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
+				PRODUCT_NAME = "Help Files";
+			};
+			name = "Debug-no-yubi";
+		};
+		5754133F2B16717C00507BC5 /* Debug-no-yubi */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++14";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = "compiler-default";
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../src/core,
+					../src,
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Debug-no-yubi";
+		};
 		E66D29331D02B49B00C9BCBF /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
@@ -2101,16 +2300,11 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
 				CODE_SIGN_IDENTITY = "-";
-				COPY_PHASE_STRIP = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
@@ -2149,7 +2343,6 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
 				CODE_SIGN_IDENTITY = "-";
-				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_NS_ASSERTIONS = NO;
@@ -2224,15 +2417,21 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				EXCLUDED_SOURCE_FILE_NAMES = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					NO_YUBI,
 					UNICODE,
-					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
+					"_FILE_OFFSET_BITS=64",
+					DEBUG,
+					_DEBUG,
+					__WXMAC__,
+					__WXDEBUG__,
+					__WXOSX_COCOA__,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -2270,13 +2469,19 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				EXCLUDED_SOURCE_FILE_NAMES = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					UNICODE,
-					"_FILE_OFFSET_BITS=64",
 					_LARGE_FILES,
+					"_FILE_OFFSET_BITS=64",
+					NDEBUG,
+					__WXMAC__,
+					__WXOSX_COCOA__,
+					"wxDEBUG_LEVEL=0",
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -2297,16 +2502,6 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					UNICODE,
-					"_FILE_OFFSET_BITS=64",
-					_LARGE_FILES,
-					DEBUG,
-					_DEBUG,
-					__WXDEBUG__,
-					__WXMAC__,
-					__WXOSX_COCOA__,
-				);
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
@@ -2324,14 +2519,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					UNICODE,
-					"_FILE_OFFSET_BITS=64",
-					_LARGE_FILES,
-					NDEBUG,
-					__WXMAC__,
-					__WXOSX_COCOA__,
-				);
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
@@ -2350,13 +2537,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					UNICODE,
-					"_FILE_OFFSET_BITS=64",
-					_LARGE_FILES,
-					DEBUG,
-					_DEBUG,
-				);
+				HEADER_SEARCH_PATHS = "/usr/local/include/ykpers-1";
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
@@ -2373,12 +2554,7 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					UNICODE,
-					"_FILE_OFFSET_BITS=64",
-					_LARGE_FILES,
-					NDEBUG,
-				);
+				HEADER_SEARCH_PATHS = "/usr/local/include/ykpers-1";
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_CPLUSPLUSFLAGS = (
 					"-Wall",
@@ -2402,21 +2578,15 @@
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					UNICODE,
-					"_FILE_OFFSET_BITS=64",
-					_LARGE_FILES,
-					__WXDEBUG__,
-					__WXMAC__,
-					__WXOSX_COCOA__,
-					DEBUG,
-					_DEBUG,
-					NO_YUBI,
-				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-L/usr/local/lib",
+					"-lykpers-1",
+					"-lyubikey",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
 				USER_HEADER_SEARCH_PATHS = ../src;
@@ -2434,20 +2604,15 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					_LARGE_FILES,
-					UNICODE,
-					"_FILE_OFFSET_BITS=64",
-					__WXMAC__,
-					__WXOSX_COCOA__,
-					NDEBUG,
-					NO_YUBI,
-					"wxDEBUG_LEVEL=0",
-				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
-				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-L/usr/local/lib",
+					"-lykpers-1",
+					"-lyubikey",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
 				USER_HEADER_SEARCH_PATHS = ../src;
@@ -2462,6 +2627,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E66D29331D02B49B00C9BCBF /* Debug */,
+				5754133F2B16717C00507BC5 /* Debug-no-yubi */,
 				E66D29341D02B49B00C9BCBF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -2471,6 +2637,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E690B53112980BDD007EA508 /* Debug */,
+				5754133E2B16717C00507BC5 /* Debug-no-yubi */,
 				E690B53212980BDD007EA508 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -2480,6 +2647,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E6ADB7F1119569CC004E2BE5 /* Debug */,
+				5754133A2B16717C00507BC5 /* Debug-no-yubi */,
 				E6ADB7F2119569CC004E2BE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -2489,6 +2657,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E6ADB80511956A93004E2BE5 /* Debug */,
+				5754133B2B16717C00507BC5 /* Debug-no-yubi */,
 				E6ADB80611956A93004E2BE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -2498,6 +2667,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E6ADB91D11956DD0004E2BE5 /* Debug */,
+				5754133C2B16717C00507BC5 /* Debug-no-yubi */,
 				E6ADB91E11956DD0004E2BE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
@@ -2507,6 +2677,7 @@
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E6ADB9A11195706B004E2BE5 /* Debug */,
+				5754133D2B16717C00507BC5 /* Debug-no-yubi */,
 				E6ADB9A21195706B004E2BE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;

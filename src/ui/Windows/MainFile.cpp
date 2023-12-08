@@ -3563,6 +3563,11 @@ LRESULT DboxMain::OnDroppedFile(WPARAM /* wParam */, LPARAM /* lParam */)
   return 0;
 }
 
+LRESULT DboxMain::OnInvokeUiThread(WPARAM wParam, LPARAM /* lParam */)
+{
+  return OnHandleInvokeMessage(wParam);
+}
+
 LRESULT DboxMain::ViewCompareResult(PWScore *pcore, const CUUID &entryUUID)
 {
   ItemListIter pos = pcore->Find(entryUUID);
