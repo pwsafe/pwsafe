@@ -12,6 +12,7 @@ PasswordSafe 1.18.2 Release ??? 2023?
 
 New Features in 1.18.2
 ----------------------
+* [GH1009](https://github.com/pwsafe/pwsafe/issues/1009) macOS: Unlock Safe from systray menu fully restores the window.
 * [GH1056](https://github.com/pwsafe/pwsafe/issues/1056) macOS: Add Yubikey support.
 * [GH1063](https://github.com/pwsafe/pwsafe/issues/1063) macOS: Add language translations and re-work packaging.
 

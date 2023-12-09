@@ -55,7 +55,7 @@ SRCDIR=./dmg
 DMGNAME := "../../$(PACKAGE)-$(RELEASENAME)-$(MACHINEARCH).dmg"
 PWSAFE-APP := $(TARGET).app
 RESOURCES := $(RELDIR)/pwsafe.app/Contents/Resources
-DOCS := ../../README.md ../../docs/LICENSE.rtf ../../docs/ReleaseNotesWX.md ../../docs/Yubico ../../docs/wxWidgets
+DOCS := ../../README.md ../../docs/LICENSE.rtf ../../docs/ReleaseNotesWX.md ../../docs/Yubico
 HELP := ../../help/helpEN.zip ../../help/helpRU.zip ../../help/helpDE.zip ../../help/helpES.zip ../../help/helpFR.zip ../../help/helpZH.zip ../../help/helpPL.zip
 I18N := ../../src/ui/wxWidgets/I18N
 MOS := $(I18N)/mos
@@ -135,8 +135,7 @@ dist: clean
 			--icon "README.md" 00  300 \
 			--icon "ReleaseNotesWX.md" 140 300 \
 			--icon "LICENSE.rtf" 00 380 \
-			--icon "wxWidgets" 95 380 \
-			--icon "Yubico" 175 380 \
+			--icon "Yubico" 140 380 \
 		$(DMGNAME) \
 		$(SRCDIR)
 
