@@ -928,14 +928,9 @@
 #define IDC_SCRCAP_STATE_CTL            1611
 #define IDC_TWOFACTORKEY                1612
 #define IDC_SHOW_2FAKEY                 1613
-#define IDC_AC_LABEL_GROUP              1614
-#define IDC_AC_EDIT_GROUP               1615
-#define IDC_AC_LABEL_TITLE              1616
-#define IDC_AC_EDIT_TITLE               1617
-#define IDC_AC_LABEL_USERNAME           1618
-#define IDC_AC_EDIT_USERNAME            1619
-#define IDC_AC_BUTTON_COPY_TWOFACTORCODE 1620
-#define IDC_AC_STATIC_TWOFACTORCODE     1621
+#define IDC_AC_STATIC_ENTRYNAME         1614
+#define IDC_AC_BUTTON_COPY_TWOFACTORCODE 1615
+#define IDC_AC_STATIC_TWOFACTORCODE     1616
 
 // Next default values for new objects
 // 
