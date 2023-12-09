@@ -2170,7 +2170,7 @@ void DboxMain::OnTwoFactorAuthCodeUpdateClipboardTimer()
   SetClipboardData(sxAuthCode);
 }
 
-void DboxMain::GetTwoFactoryAuthenticationCode(const CItemData* pci, StringX& sxAuthCode)
+PWSTotp::TOTP_Result DboxMain::GetTwoFactoryAuthenticationCode(const CItemData* pci, StringX& sxAuthCode, double* pRatio)
 {
   sxAuthCode.clear();
   if (!pci) {
@@ -2178,7 +2178,7 @@ void DboxMain::GetTwoFactoryAuthenticationCode(const CItemData* pci, StringX& sx
     CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
     CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_KEYNOTFOUND));
     gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
-    return;
+    return PWSTotp::InvalidTotpConfiguration;
   }
   StringX sxTwoFactorKey = pci->GetTwoFactorKey();
   if (sxTwoFactorKey.empty()) {
@@ -2186,9 +2186,9 @@ void DboxMain::GetTwoFactoryAuthenticationCode(const CItemData* pci, StringX& sx
     CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
     CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_KEYEMPTY));
     gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
-    return;
+    return PWSTotp::TotpKeyNotFound;
   }
-  PWSTotp::TOTP_Result r = PWSTotp::GetNextTotpAuthCodeString(*pci, sxAuthCode);
+  PWSTotp::TOTP_Result r = PWSTotp::GetNextTotpAuthCodeString(*pci, sxAuthCode, nullptr, pRatio);
   if (r != PWSTotp::Success) {
     CGeneralMsgBox gmb;
     CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
@@ -2199,6 +2199,7 @@ void DboxMain::GetTwoFactoryAuthenticationCode(const CItemData* pci, StringX& sx
     gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
     sxAuthCode.clear();
   }
+  return r;
 }
 
 void DboxMain::MakeRandomPassword(StringX &password, PWPolicy &pwp, bool bIssueMsg)

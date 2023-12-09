@@ -146,6 +146,7 @@ private:
   void ShowHideBaseInfo(const CItemData::EntryType &entrytype, CSecString &csBase);
   void SetupAuthenticationCodeUiElements();
   void StopAuthenticationCodeUi();
+  bool UpdateAuthCode();
   PWSTotp::TOTP_Result ValidateTotpConfiguration(double *pRatio = nullptr);
 
   CSecString GetTwoFactorKey();
@@ -162,6 +163,8 @@ private:
   int m_iPointSize;
 
   CBitmap m_CopyPswdBitmap;
+  StringX m_sxLastAuthCode;
+  bool m_bCopyToClipboard;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

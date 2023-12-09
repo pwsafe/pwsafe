@@ -323,7 +323,7 @@ public:
   {return m_clipboard.IsLastSensitiveItemPresent();}
   void AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
     const std::vector<StringX> &vsxEmptyGroups);
-  void GetTwoFactoryAuthenticationCode(const CItemData* pci, StringX& sxAuthCode);
+  PWSTotp::TOTP_Result GetTwoFactoryAuthenticationCode(const CItemData* pci, StringX& sxAuthCode, double* pRatio = nullptr);
   StringX GetUniqueTitle(const StringX &group, const StringX &title,
                          const StringX &user, const int IDS_MESSAGE) const
   {return m_core.GetUniqueTitle(group, title, user, IDS_MESSAGE);}

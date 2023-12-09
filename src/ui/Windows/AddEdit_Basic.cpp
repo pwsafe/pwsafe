@@ -62,7 +62,8 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
     pAEMD),
   m_thread(nullptr), m_isNotesHidden(false),
   m_bInitdone(false),
-  m_bUsingNotesExternalEditor(false)
+  m_bUsingNotesExternalEditor(false),
+  m_bCopyToClipboard(false)
 {
   if (CS_SHOW.IsEmpty()) { // one-time initializations
     CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT);
@@ -1792,19 +1793,10 @@ void CAddEdit_Basic::OnCopyTwoFactorCode()
     return;
   }
 
+  m_bCopyToClipboard = true;
   UpdateData(TRUE);
-
-  // During Add/Edit, the UI may have updated 2FA info.
-  // Use latest 2FA info to produce the auth code.
-  CItemData ciTemp(*M_pci_credential());
-  ciTemp.SetTwoFactorKey(sTwoFactorKey);
-
-  StringX sxAuthCode;
-  GetMainDlg()->GetTwoFactoryAuthenticationCode(&ciTemp, sxAuthCode);
-  bool bDataSet = GetMainDlg()->SetClipboardData(sxAuthCode);
-  ASSERT(bDataSet);
-  if (bDataSet)
-    GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::AuthCode);
+  m_sxLastAuthCode.clear();
+  UpdateAuthCode();
 }
 
 CSecString CAddEdit_Basic::GetTwoFactorKey()
@@ -1820,6 +1812,46 @@ CSecString CAddEdit_Basic::GetTwoFactorKey()
   return twoFactorKey;
 }
 
+bool CAddEdit_Basic::UpdateAuthCode()
+{
+  CItemData* pci_cred = M_pci_credential();
+  if (!pci_cred)
+    return false;
+
+  // During Add/Edit, the UI may have updated 2FA info.
+  // Use latest 2FA info to produce the auth code.
+  CItemData ciTemp(*pci_cred);
+  ciTemp.SetTwoFactorKey(GetTwoFactorKey());
+
+  StringX sxAuthCode;
+  double ratio;
+  auto r = GetMainDlg()->GetTwoFactoryAuthenticationCode(&ciTemp, sxAuthCode, &ratio);
+  if (r != PWSTotp::Success) {
+    StopAuthenticationCodeUi();
+    return false;
+  }
+
+  bool bNewCode = false;
+  if (m_bCopyToClipboard && (m_sxLastAuthCode.empty() || GetMainDlg()->IsLastSensitiveClipboardItemPresent())) {
+    if (sxAuthCode != m_sxLastAuthCode) {
+      bNewCode = true;
+      m_bCopyToClipboard = GetMainDlg()->SetClipboardData(sxAuthCode);
+      ASSERT(m_bCopyToClipboard);
+      if (m_bCopyToClipboard)
+        GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::AuthCode);
+      m_sxLastAuthCode = sxAuthCode;
+    }
+  } else
+    m_bCopyToClipboard = false;
+
+  if (!m_bCopyToClipboard)
+    m_sxLastAuthCode.clear();
+
+  m_btnTwoFactorCode.SetPercent(100.0 * ratio);
+
+  return bNewCode;
+}
+
 void CAddEdit_Basic::OnTimer(UINT_PTR nIDEvent)
 {
   if (nIDEvent != TIMER_TWO_FACTOR_AUTH_CODE_COUNTDOWN) {
@@ -1833,10 +1865,7 @@ void CAddEdit_Basic::OnTimer(UINT_PTR nIDEvent)
     return;
   }
 
-  double ratio;
-  PWSTotp::TOTP_Result r = ValidateTotpConfiguration(&ratio);
-  if (r == PWSTotp::Success)
-    m_btnTwoFactorCode.SetPercent(100.0 * ratio);
+  UpdateAuthCode();
 }
 
 PWSTotp::TOTP_Result CAddEdit_Basic::ValidateTotpConfiguration(double *pRatio)
@@ -1882,6 +1911,7 @@ void CAddEdit_Basic::SetupAuthenticationCodeUiElements()
 void CAddEdit_Basic::StopAuthenticationCodeUi()
 {
   KillTimer(TIMER_TWO_FACTOR_AUTH_CODE_COUNTDOWN);
+  m_bCopyToClipboard = false;
 }
 
 void CAddEdit_Basic::SetUpDependentsCombo()
