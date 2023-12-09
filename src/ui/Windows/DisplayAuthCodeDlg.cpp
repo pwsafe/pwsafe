@@ -48,6 +48,7 @@ void CDisplayAuthCodeDlg::DoDataExchange(CDataExchange* pDX)
 {
     CPWDialog::DoDataExchange(pDX);
     //{{AFX_DATA_MAP(CDisplayAuthCodeDlg)
+    DDX_Control(pDX, IDC_AC_STATIC_ENTRYNAME, m_stcEntryName);
     DDX_Control(pDX, IDC_AC_BUTTON_COPY_TWOFACTORCODE, m_btnCopyTwoFactorCode);
     DDX_Control(pDX, IDC_AC_STATIC_TWOFACTORCODE, m_stcTwoFactorCode);
     DDX_Control(pDX, IDOK, m_btnClose);
@@ -91,20 +92,50 @@ BOOL CDisplayAuthCodeDlg::OnInitDialog()
     ActivateToolTip();
   }
 
+  GetClientRect(&m_rcInitial);
+  GetWindowRect(&m_rwInitial);
+  m_cxMinWidth = m_rwInitial.Width();
+
   CItemData* pci = GetItem();
   ASSERT(pci != NULL);
   if (!pci)
     return TRUE;
 
-  CString cs_title;
+  // Initial entry name size and location.
+  m_stcEntryName.GetWindowRect(&m_rectInitialEntryName);
+  ScreenToClient(&m_rectInitialEntryName);
+
+  // Create the actual entry name: «group» «title» «username»
+  CString csEntryName;
   StringX sx_group(L""), sx_title, sx_user(L"");
   if (!pci->IsGroupEmpty())
     sx_group = pci->GetGroup();
   sx_title = pci->GetTitle();
   if (!pci->IsUserEmpty())
     sx_user = pci->GetUser();
-  cs_title.Format(IDS_DISPLAYAUTHCODE_TITLEFMT, sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
-  SetWindowText(cs_title);
+  csEntryName.Format(IDS_DISPLAYAUTHCODE_TITLEFMT, sx_group.c_str(), sx_title.c_str(), sx_user.c_str());
+  m_stcEntryName.SetWindowText(csEntryName);
+
+  // Create a pseudo long entry name used in calculations that help put a limit
+  // on the effects of dialog minimum width as affected by the entry name width.
+  CString csMockLongEntryName;
+  csMockLongEntryName.Format(IDS_DISPLAYAUTHCODE_TITLEFMT, L"Some Long Group Name", L"Some Long Title Here, Inc.", L"somelonguser@email.local");
+
+  // Calc and use the minimum width of both m_stcEntryName and csMockLongEntryName...
+  CDC* pDC = m_stcEntryName.GetDC();
+  CFont* pfontEntryName = m_stcEntryName.GetFont();
+  CFont* pofont = pDC->SelectObject(pfontEntryName);
+  TEXTMETRIC tm;
+  pDC->GetTextMetrics(&tm);
+  int cxEntryNameText = pDC->GetTextExtent(csEntryName).cx + tm.tmAveCharWidth;
+  int cxLongEntryNameWidth = pDC->GetTextExtent(csMockLongEntryName).cx + tm.tmAveCharWidth;
+  // Pick the smallest to use for guiding dialog minimum width.
+  int cxEntryNameWidthToUse = std::min(cxLongEntryNameWidth, cxEntryNameText);
+  pDC->SelectObject(pofont);
+  m_stcEntryName.ReleaseDC(pDC);
+  // Adjust dialog min width if entry name min width has increased.
+  if (cxEntryNameWidthToUse > m_rectInitialEntryName.Width())
+    m_cxMinWidth += cxEntryNameWidthToUse - m_rectInitialEntryName.Width();
 
   // Calc initial auth code static control margin.
   LOGFONT lf;
@@ -122,9 +153,6 @@ BOOL CDisplayAuthCodeDlg::OnInitDialog()
   pFont->GetLogFont(&lfAuthCode);
   int cyFontHeight = abs(lfAuthCode.lfHeight);
 
-  // Get initial auth code button rect.
-  GetClientRect(&m_rcInitial);
-  GetWindowRect(&m_rwInitial);
   m_btnCopyTwoFactorCode.GetWindowRect(&m_rectInitialAuthCodeButton);
   ScreenToClient(&m_rectInitialAuthCodeButton);
   m_cyAuthCodeButtonMarginBottom = m_rcInitial.bottom - m_rectInitialAuthCodeButton.bottom;
@@ -147,14 +175,7 @@ BOOL CDisplayAuthCodeDlg::OnInitDialog()
 
   ShowWindow(SW_SHOW);
 
-  // If caption width can be calculated, use it to widen the window to show
-  // the full caption (group, title, username). 
-  int cxWidth;
-  CString csCaptionWithExtra(cs_title + L"WWW");
-  if (Fonts::GetInstance()->CalculateCaptionWidth(this, csCaptionWithExtra, cxWidth)) {
-    cxWidth = std::max(m_rwInitial.Width(), cxWidth + (GetSystemMetrics(SM_CXSIZEFRAME) * 2));
-    SetWindowPos(NULL, 0, 0, cxWidth, m_rwInitial.Height(), SWP_NOMOVE | SWP_NOZORDER);
-  }
+  SetWindowPos(NULL, 0, 0, m_cxMinWidth, m_rwInitial.Height(), SWP_NOMOVE | SWP_NOZORDER);
 
   return TRUE;  // return TRUE unless you set the focus to a control
 }
@@ -170,7 +191,7 @@ void CDisplayAuthCodeDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
   CPWDialog::OnGetMinMaxInfo(lpMMI);
   if (!IsWindowVisible())
     return;
-  lpMMI->ptMinTrackSize.x = std::max(lpMMI->ptMinTrackSize.x, static_cast<LONG>(m_rwInitial.Width()));
+  lpMMI->ptMinTrackSize.x = std::max(lpMMI->ptMinTrackSize.x, static_cast<LONG>(m_cxMinWidth));
   lpMMI->ptMinTrackSize.y = std::max(lpMMI->ptMinTrackSize.y, static_cast<LONG>(m_rwInitial.Height()));
 }
 
@@ -182,7 +203,7 @@ void CDisplayAuthCodeDlg::OnWindowPosChanging(WINDOWPOS* lpwndpos)
   if (lpwndpos->flags & SWP_NOSIZE)
     return;
   // Do not let the width to height ratio shrink below its initial value.
-  double ro = m_rwInitial.Width() / static_cast<double>(m_rwInitial.Height());
+  double ro = m_cxMinWidth / static_cast<double>(m_rwInitial.Height());
   double rc = lpwndpos->cx / static_cast<double>(lpwndpos->cy);
   if (rc < ro)
     lpwndpos->cx = static_cast<int>(lpwndpos->cy * ro);
@@ -198,6 +219,19 @@ void CDisplayAuthCodeDlg::OnSize(UINT nType, int cx, int cy)
 
   CRect rc;
   GetClientRect(&rc);
+
+  int cxEntryNameMargin = m_rectInitialEntryName.left - rc.left;
+  CRect rectEntryName;
+  m_stcEntryName.GetWindowRect(&rectEntryName);
+  ScreenToClient(&rectEntryName);
+  rectEntryName.right = rc.right - cxEntryNameMargin;
+  m_stcEntryName.MoveWindow(
+    rectEntryName.left,
+    rectEntryName.top,
+    rectEntryName.Width(),
+    rectEntryName.Height()
+  );
+  m_stcEntryName.Invalidate();
 
   // Calc new button size. It is a square so width == height as it changes size.
   CRect rectButtonAuthCode;

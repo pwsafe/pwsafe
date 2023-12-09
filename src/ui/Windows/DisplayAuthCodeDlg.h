@@ -65,6 +65,7 @@ private:
 private:
   PWScore& m_core;
   pws_os::CUUID m_uuidItem;
+  CStaticExtn m_stcEntryName;
   CProgressPieCtrl m_btnCopyTwoFactorCode;
   CStaticExtn m_stcTwoFactorCode;
   CButton m_btnClose;
@@ -73,10 +74,12 @@ private:
   StringX m_sxLastAuthCode;
   CRect m_rcInitial;
   CRect m_rwInitial;
+  CRect m_rectInitialEntryName;
   CRect m_rectInitialAuthCodeButton;
   CRect m_rectInitialAuthCode;
   CRect m_rectInitialCloseButton;
   int m_cyAuthCodeButtonMarginBottom;
+  int m_cxMinWidth;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
