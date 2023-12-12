@@ -141,7 +141,7 @@ void ManagePasswordPoliciesDlg::CreateControls()
   m_PolicyNames->SetDefaultRowSize(25);
   m_PolicyNames->SetColLabelSize(25);
   m_PolicyNames->SetRowLabelSize(0);
-  m_PolicyNames->CreateGrid(10, 2, wxGrid::wxGridSelectRows);
+  //m_PolicyNames->CreateGrid(10, 2, wxGrid::wxGridSelectRows);  //As of WX:3.2.3, this needs to be done after the buttons.
   m_PolicyNames->EnableEditing(false);
   itemBoxSizer4->Add(m_PolicyNames, 3, wxEXPAND|wxALL, 5);
 
@@ -241,6 +241,11 @@ void ManagePasswordPoliciesDlg::CreateControls()
     FindWindow(wxID_OK)->SetLabel(_("Close"));
     FindWindow(ID_EDIT_PP)->SetLabel(_("View"));
   }
+
+  // As of WX:3.2.3, CreateGrid causes an OnSelectCell event.
+  // Since that function enables/disables buttons, we need
+  // to call this after they are created.
+  m_PolicyNames->CreateGrid(10, 2, wxGrid::wxGridSelectRows);
 
   // We have 2 grids, but we show only one at a time,
   // toggle when user clicks on ID_LIST button.
