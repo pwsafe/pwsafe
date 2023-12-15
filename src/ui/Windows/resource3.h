@@ -226,6 +226,7 @@
 #define IDS_OPTBACKUPTITLE              5393
 #define IDS_DEFDBNAME                   5394
 #define IDS_CREATENAME                  5395
+#define IDS_COMPTWOFACTORKEY            5396
 #define IDS_MENUEXPCOLGROUP             5400
 #define IDS_MENUEDITENTRY               5401
 #define IDS_MENUVIEWENTRY               5402
