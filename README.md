@@ -121,8 +121,9 @@ https://pwsafe.org
 Release Notes
 =============
 For information on the latest features, bugfixes and known problems,
-see [ReleaseNotes.md](docs/ReleaseNotes.md) that comes with the package.
-For non-Windows versions, see [ReleaseNotesWX.md](docs/ReleaseNotesWX.md).
+see [ReleaseNotes.md](docs/ReleaseNotes.md) for Windows version and 
+[ReleaseNotesWX.md](docs/ReleaseNotesWX.md) for Linux and Mac version
+that comes with the package.
 
 Credits
 =======
