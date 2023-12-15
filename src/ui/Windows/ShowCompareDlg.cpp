@@ -134,6 +134,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
   const int iFields[] = {
     CItemData::NAME,                        // Special processing
     CItemData::PASSWORD,                    // Special processing
+    CItemData::TWOFACTORKEY,
     CItemData::ENTRYTYPE,                   // Special processing
     CItemData::URL, CItemData::AUTOTYPE,
     CItemData::RUNCMD, CItemData::EMAIL,
@@ -153,7 +154,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
   // Include 1: ENTRYTYPE
   // The developer will still need to ensure new fields are processed below
   // Put in compilation check as this may not be regression tested every time
-  static_assert((sizeof(iFields) / sizeof(iFields[0]) == (CItem::LAST_USER_FIELD - 11 + 1)),
+  static_assert((sizeof(iFields) / sizeof(iFields[0]) == (CItem::LAST_USER_FIELD - 11 + 2)),
     "Check user comparison items - there are some missing! They must be before LAST_USER_FIELD");
 
   StringX sxDefPolicyStr;
@@ -338,6 +339,18 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
       sxValue2 = pci_other_base->GetFieldValue((CItemData::FieldType)i);
     else
       sxValue2 = pci_other->GetFieldValue((CItemData::FieldType)i);
+
+    if (i == CItemData::TWOFACTORKEY) {
+      if (m_pci->IsAlias())
+        sxValue1 = pci_base->GetFieldValue(CItemData::TWOFACTORKEY);
+      else
+        sxValue1 = pci->GetFieldValue(CItemData::TWOFACTORKEY);
+
+      if (m_pci_other->IsAlias())
+        sxValue2 = pci_other_base->GetFieldValue(CItemData::TWOFACTORKEY);
+      else
+        sxValue2 = pci_other->GetFieldValue(CItemData::TWOFACTORKEY);
+    }
 
     if (i == CItemData::POLICY && m_bDifferentDB) {
       // If different databases and both policies are their respective defaults

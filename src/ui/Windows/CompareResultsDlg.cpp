@@ -45,6 +45,7 @@ const UINT CCompareResultsDlg::FixedCols[CCompareResultsDlg::USER + 1] = {
 // These columns are optional and in this *preferred* order
 CCompareResultsDlg::OptionalColumns CCompareResultsDlg::OptCols[LAST - PASSWORD] = {
     {CItemData::PASSWORD,   IDS_PASSWORD},
+    {CItemData::TWOFACTORKEY, IDSC_FLDNMTWOFACTORKEY},
     {CItemData::NOTES,      IDS_NOTES},
     {CItemData::URL,        IDS_URL},
     {CItemData::AUTOTYPE,   IDS_AUTOTYPE},
