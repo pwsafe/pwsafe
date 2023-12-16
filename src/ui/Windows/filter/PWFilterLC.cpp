@@ -814,6 +814,7 @@ bool CPWFilterLC::SetField(const int iItem)
         case FT_EMAIL:
         case FT_SYMBOLS:
         case FT_POLICYNAME:
+        case FT_TWOFACTORKEY:
           bAddPresent = true;
           mt = PWSMatch::MT_STRING;
           break;
@@ -1593,6 +1594,10 @@ void CPWFilterLC::SetUpComboBoxData()
 
         stf.cs_text = CItemData::FieldName(CItemData::PASSWORD).c_str();
         stf.ftype = FT_PASSWORD;
+        m_vFcbx_data.push_back(stf);
+
+        stf.cs_text = CItemData::GetUserInterfaceFieldName(CItemData::TWOFACTORKEY).c_str();
+        stf.ftype = FT_TWOFACTORKEY;
         m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::NOTES).c_str();

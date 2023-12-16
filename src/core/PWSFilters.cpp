@@ -225,110 +225,113 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
     oss << "\">" << szendl;
 
     const int ft = static_cast<int>(st_fldata.ftype);
-    const char *pszfieldtype = {"\0"};
+    std::string strFieldType;
 
     // These are the entry names exported and must be recognised by the associated schema
     switch (ft) {
       case FT_GROUPTITLE:
-        pszfieldtype = "grouptitle";
+        strFieldType = "grouptitle";
         break;
       case FT_GROUP:
-        pszfieldtype = "group";
+        strFieldType = "group";
         break;
       case FT_TITLE:
-        pszfieldtype = "title";
+        strFieldType = "title";
         break;
       case FT_USER:
-        pszfieldtype = "user";
+        strFieldType = "user";
         break;
       case FT_NOTES:
-        pszfieldtype = "notes";
+        strFieldType = "notes";
         break;
       case FT_PASSWORD:
-        pszfieldtype = "password";
+        strFieldType = "password";
+        break;
+      case FT_TWOFACTORKEY:
+        strFieldType = CItemData::GetXmlFieldName(CItemData::TWOFACTORKEY);
         break;
       case FT_URL:
-        pszfieldtype = "url";
+        strFieldType = "url";
         break;
       case FT_AUTOTYPE:
-        pszfieldtype = "autotype";
+        strFieldType = "autotype";
         break;
       case FT_RUNCMD:
-        pszfieldtype = "runcommand";
+        strFieldType = "runcommand";
         break;
       case FT_DCA:
-        pszfieldtype = "DCA";
+        strFieldType = "DCA";
         break;
       case FT_SHIFTDCA:
-        pszfieldtype = "ShiftDCA";
+        strFieldType = "ShiftDCA";
         break;
       case FT_EMAIL:
-        pszfieldtype = "email";
+        strFieldType = "email";
         break;
       case FT_PROTECTED:
-        pszfieldtype = "protected";
+        strFieldType = "protected";
         break;
       case FT_SYMBOLS:
-        pszfieldtype = "symbols";
+        strFieldType = "symbols";
         break;
       case FT_POLICYNAME:
-        pszfieldtype = "policy_name";
+        strFieldType = "policy_name";
         break;
       case FT_KBSHORTCUT:
-        pszfieldtype = "kbshortcut";
+        strFieldType = "kbshortcut";
         break;
       // Time fields
       case FT_CTIME:
-        pszfieldtype = "create_time";
+        strFieldType = "create_time";
         break;
       case FT_PMTIME:
-        pszfieldtype = "password_modified_time";
+        strFieldType = "password_modified_time";
         break;
       case FT_ATIME:
-        pszfieldtype = "last_access_time";
+        strFieldType = "last_access_time";
         break;
       case FT_XTIME:
-        pszfieldtype = "expiry_time";
+        strFieldType = "expiry_time";
         break;
       case FT_RMTIME:
-        pszfieldtype = "record_modified_time";
+        strFieldType = "record_modified_time";
         break;
       case FT_XTIME_INT:
-        pszfieldtype = "password_expiry_interval";
+        strFieldType = "password_expiry_interval";
         break;
 
       // History, Policy & Attachments
       case FT_PWHIST:
-        pszfieldtype = "password_history";
+        strFieldType = "password_history";
         break;
       case FT_POLICY:
-        pszfieldtype = "password_policy";
+        strFieldType = "password_policy";
         break;
       case FT_ATTACHMENT:
-        pszfieldtype = "attachment";
+        strFieldType = "attachment";
         break;
 
       // Other!
       case FT_PASSWORDLEN:
-        pszfieldtype = "password_length";
+        strFieldType = "password_length";
         break;
       case FT_UNKNOWNFIELDS:
-        pszfieldtype = "unknownfields";
+        strFieldType = "unknownfields";
         break;
       case FT_ENTRYSIZE:
-        pszfieldtype = "entrysize";
+        strFieldType = "entrysize";
         break;
       case FT_ENTRYTYPE:
-        pszfieldtype = "entrytype";
+        strFieldType = "entrytype";
         break;
       case FT_ENTRYSTATUS:
-        pszfieldtype = "entrystatus";
+        strFieldType = "entrystatus";
         break;
       default:
         ASSERT(0);
     }
 
-    oss << sztab3 << "<" << pszfieldtype << ">" << szendl;
+    oss << sztab3 << "<" << strFieldType << ">" << szendl;
  
     PWSMatch::MatchRule mr = st_fldata.rule;
     if (mr >= PWSMatch::MR_LAST)
@@ -348,7 +351,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
       oss << sztab4 << "<logic>" << (lgc != LC_AND ? "or" : "and")
                                      << "</logic>" << szendl;
 
-    oss << sztab3 << "</" << pszfieldtype << ">" << szendl;
+    oss << sztab3 << "</" << strFieldType << ">" << szendl;
     oss << sztab2 << "</filter_entry>" << szendl;
   }
 
@@ -1149,6 +1152,7 @@ bool PWSFilterManager::PassesFiltering(const CItemData &ci, const PWScore &core)
         case FT_EMAIL:
         case FT_SYMBOLS:
         case FT_POLICYNAME:
+        case FT_TWOFACTORKEY:
           mt = PWSMatch::MT_STRING;
           break;
         case FT_PASSWORD:

@@ -89,6 +89,7 @@ public:
   // Note: Not all XML elements use this immediately. Generally for use with
   // newly added fields or those where appropriate refactoring has taken place.
   static std::string GetXmlFieldName(FieldType ft);
+  static std::wstring GetXmlFieldNameW(FieldType ft);
 
   // Get the field name used in the user interface (i.e., for Advanced XML
   // export field selection, Display Filters, etc.).
