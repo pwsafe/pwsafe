@@ -28,6 +28,7 @@ BEGIN
   IDSC_FLDNMUSERNAME     "Username"
   IDSC_FLDNMPASSWORD     "Password"
   IDSC_FLDNMTWOFACTORKEY "Two Factor Key"
+  IDSC_FLDNMTWOFACTORKEY_UI "Authentication Secret"
   IDSC_FLDNMURL          "URL"
   IDSC_FLDNMAUTOTYPE     "AutoType"
   IDSC_FLDNMCTIME        "Created Time"
