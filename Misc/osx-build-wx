@@ -186,7 +186,7 @@ doCocoaBuild() {
 
         # The configure command in the workflow file uses the above variables.
         # This trick will expand them into the CONF_OPTS variable
-        CONF_OPTS=`grep ./configure $WORKFLOW | cut -w -f 3-`
+        CONF_OPTS=`grep "./configure --enable-universal_binary=" $WORKFLOW | cut -w -f 3-`
         CONF_OPTS=`eval echo $CONF_OPTS`
 
         # This is about the only cocoa build customization we support because everything

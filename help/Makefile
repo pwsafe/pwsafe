@@ -5,8 +5,6 @@ include Makefile.linux
 else ifeq ($(findstring CYGWIN, $(shell uname -s)), CYGWIN)
 include Makefile.windows
 else ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
-#include Makefile.macos
-# $(error "MacOS unsupported (yet)")
 include Makefile.macos
 else ifeq ($(findstring FreeBSD, $(shell uname -s)), FreeBSD)
 include Makefile.freebsd

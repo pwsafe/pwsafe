@@ -26,7 +26,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Set build parameters
       # If you need to rebuild wxWidgets for some reason, say you changed the build params, just increment FORCE_REBUILD_WX
@@ -41,9 +41,10 @@ jobs:
         echo "WX_ARCH=arm64,x86_64" >> $GITHUB_ENV
         echo "WX_DEBUG_FLAG=--disable-debug" >> $GITHUB_ENV
         echo "MACOS_VER_MIN=10.14" >> $GITHUB_ENV
-        echo "XCODE_VER=14.0.1" >> $GITHUB_ENV
+        echo "XCODE_VER=14.2" >> $GITHUB_ENV
         echo "XCODE_CONFIG=Release" >> $GITHUB_ENV
-        echo "FORCE_REBUILD_WX=6" >> $GITHUB_ENV
+        echo "HOST_NCPU=`sysctl -n hw.ncpu`" >>$GITHUB_ENV
+        echo "FORCE_REBUILD_WX=7" >> $GITHUB_ENV
 
     - name: Force compatible Xcode version
       run: sudo xcode-select -s /Applications/Xcode_${XCODE_VER}.app/Contents/Developer
@@ -51,6 +52,9 @@ jobs:
     - name: Print Xcode version in use
       run: xcode-select -p
       
+    - name: Install dependencies for creating dmg
+      run: brew install gettext create-dmg
+
     - name: Install tools for Yubikey build
       run: brew install autoconf automake libtool
       
@@ -60,7 +64,7 @@ jobs:
         cd yubico-c
         autoreconf --install
         ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
-        make check
+        make -j $HOST_CPU check
         make install
 
     - name: Build ykpers from upstream
@@ -69,35 +73,34 @@ jobs:
         cd yubikey-personalization
         autoreconf --install
         ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
-        make check
+        make -j $HOST_CPU check
         make install
 
     - name: Cache wxWidgets build
       id: cache-wxWidgets-build
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       with:
-        path: ${{ env.WX_BUILD_DIR }}
+        path: |
+          ${{ env.WX_BUILD_DIR }}
+          ${{ env.WX_SRC_DIR }}/locale
         key: wx-${{ env.WX_VERS }}-macOS-${{ env.MACOS_VER_MIN }}-Xcode-${{ env.XCODE_VER }}-build-${{ env.FORCE_REBUILD_WX }}
 
     - name: Checkout wxWidgets
       if: steps.cache-wxWidgets-build.outputs.cache-hit != 'true'
-      run: git clone https://github.com/wxWidgets/wxWidgets.git $WX_SRC_DIR
+      run: git clone --branch v$WX_VERS --single-branch https://github.com/wxWidgets/wxWidgets.git $WX_SRC_DIR
 
     - name: Build wxWidgets
       if: steps.cache-wxWidgets-build.outputs.cache-hit != 'true'
       working-directory: ${{ env.WX_SRC_DIR }}
       run: |
-        git pull --ff-only origin
-        git -C $WX_SRC_DIR reset --hard v${{ env.WX_VERS }}
         git -C $WX_SRC_DIR submodule update --init
         rm -rf $WX_BUILD_DIR
         mkdir -p $WX_BUILD_DIR
         cd $WX_SRC_DIR
         # use built-in versions of jpeg, tiff, png, and regex (pcre2) libs to avoid linking with those in /usr/local/opt
         ./configure --enable-universal_binary=$WX_ARCH --prefix=$WX_BUILD_DIR --disable-shared --enable-unicode --with-macosx-version-min=$MACOS_VER_MIN --with-libpng=builtin --with-libjpeg=builtin --with-libtiff=builtin --with-regex=builtin --without-liblzma $WX_DEBUG_FLAG
-        HOST_NCPU=`sysctl -n hw.ncpu`
-        echo "Running make with -j $HOST_NCPU"
         make -j $HOST_NCPU
+        cd locale; make allmo; cd ..
         make install
         du -sh $WX_BUILD_DIR
 
@@ -111,20 +114,13 @@ jobs:
       working-directory: ${{ github.workspace }}
       run: xcodebuild -project Xcode/pwsafe-xcode6.xcodeproj -scheme pwsafe -configuration $XCODE_CONFIG
 
-    - name: Get Xcode build output location
-      run: echo "BUILD_OUTPUT_DIR=$(xcodebuild -showBuildSettings -project Xcode/pwsafe-xcode6.xcodeproj  -scheme pwsafe -configuration $XCODE_CONFIG | fgrep CONFIGURATION_BUILD_DIR | cut -d= -f2 | sed 's/^ *\(.*\)/\1/')" >> $GITHUB_ENV
-
-    - name: Move app to another folder
-      run: mkdir "$BUILD_OUTPUT_DIR"/app && mv "$BUILD_OUTPUT_DIR"/pwsafe.app "$BUILD_OUTPUT_DIR"/app/
-
-    - name: Install dependencies for creating dmg
-      run: brew install create-dmg
-
-    - name: Create dmg
-      run: create-dmg --volname "Password Safe" --volicon "src/ui/wxWidgets/graphics/pwsafe.icns" --eula LICENSE ${{ github.workspace }}/PasswordSafe.dmg "$BUILD_OUTPUT_DIR/app"
+    - name: Install language files and create dmg
+      working-directory: install/macosx
+      run: make
 
     - name: Upload artifacts
-      uses: 'actions/upload-artifact@v2'
+      uses: 'actions/upload-artifact@v3'
       with:
-        name: PasswordSafe.${{ github.sha }}.dmg
-        path: ${{ github.workspace }}/PasswordSafe.dmg
+        name: PasswordSafe-macOS.${{ github.sha }}
+        path: PasswordSafe-macOS*.dmg
+        if-no-files-found: error

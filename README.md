@@ -24,6 +24,9 @@ later. Older versions are still available supporting Windows 95, 98,
 ME, NT, 2000, XP, Vista as well as PocketPC. Support for additional
 platforms is planned for future releases.
 
+The Mac version of PasswordSafe runs on macOS version 10.14 Mojave
+and later, and runs native on Intel and Apple Silicon. (Universal binary.)
+
 Linux packages are also available for popular distributions. See
 README.LINUX.md for more details.
 
@@ -83,6 +86,9 @@ Password Safe 3.29 and later makes use of the
 [pugixml project](http://www.pugixml.org), which is available under
 the [MIT license](http://www.opensource.org/licenses/mit-license.html).
 
+Non-Windows versions of PasswordSafe make use of wxWidgets, under the
+license terms defined in [https://wxwidgets.org/about/licence](https://wxwidgets.org/about/licence).
+
 Helping Out
 ===========
 Please report bugs via the project's bug tracking form, at
@@ -115,7 +121,9 @@ https://pwsafe.org
 Release Notes
 =============
 For information on the latest features, bugfixes and known problems,
-see [ReleaseNotes.md](docs/ReleaseNotes.md) that comes with the package.
+see [ReleaseNotes.md](docs/ReleaseNotes.md) for Windows version and 
+[ReleaseNotesWX.md](docs/ReleaseNotesWX.md) for Linux and Mac version
+that comes with the package.
 
 Credits
 =======

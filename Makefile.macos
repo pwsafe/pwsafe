@@ -33,7 +33,7 @@ dist:
 # mode: makefile
 # End:
 ifndef VER_SPECIAL
-VER_SPECIAL = OSX
+VER_SPECIAL = macOS
 endif
 
 src/ui/wxWidgets/version.h: version.wx Misc/mkversion.pl src/ui/wxWidgets/version.in

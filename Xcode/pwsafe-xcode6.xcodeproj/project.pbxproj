@@ -24,6 +24,7 @@
 		5707816E2B0C4D030082EB6E /* YubiCfgDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707816A2B0C4CED0082EB6E /* YubiCfgDlg.cpp */; };
 		570781702B0C4D030082EB6E /* YubiMixin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707816C2B0C4CED0082EB6E /* YubiMixin.cpp */; };
 		570781742B0C4D330082EB6E /* PWYubi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570781692B0C4CD30082EB6E /* PWYubi.cpp */; };
+		57BD7D042B19BEC2005C0123 /* helpEN.zip in Resources */ = {isa = PBXBuildFile; fileRef = E690B95612984B1D007EA508 /* helpEN.zip */; };
 		6FF5D4A11DA14EE80032F5B6 /* PasswordSubsetDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */; };
 		8ED7E1C429D9F24C0012034B /* SetDatabaseIdDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */; };
 		A2D181461C8FF86C0018AE03 /* media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D181451C8FF86C0018AE03 /* media.cpp */; };
@@ -95,7 +96,6 @@
 		E690B55F12984A1B007EA508 /* pwsafe_filter.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */; };
 		E690B56012984A1B007EA508 /* pwsafe.xsd in Resources */ = {isa = PBXBuildFile; fileRef = E690B55D12984A1A007EA508 /* pwsafe.xsd */; };
 		E690B56112984A1B007EA508 /* pwsafe.xsl in Resources */ = {isa = PBXBuildFile; fileRef = E690B55E12984A1A007EA508 /* pwsafe.xsl */; };
-		E690B95712984B1D007EA508 /* helpEN.zip in Resources */ = {isa = PBXBuildFile; fileRef = E690B95612984B1D007EA508 /* helpEN.zip */; };
 		E6919C641298FB25001F96D9 /* pwsafe.icns in Resources */ = {isa = PBXBuildFile; fileRef = E6919C631298FB25001F96D9 /* pwsafe.icns */; };
 		E691FB5A140D551F00925F96 /* FieldSelectionPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E691FB55140D551E00925F96 /* FieldSelectionPanel.cpp */; };
 		E698274014C01ABC0043C243 /* logit.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E698273D14C01ABC0043C243 /* logit.cpp */; };
@@ -1824,10 +1824,10 @@
 			buildActionMask = 2147483647;
 			comments = "Copy Help files into app bundle";
 			files = (
+				57BD7D042B19BEC2005C0123 /* helpEN.zip in Resources */,
 				E690B55F12984A1B007EA508 /* pwsafe_filter.xsd in Resources */,
 				E690B56012984A1B007EA508 /* pwsafe.xsd in Resources */,
 				E690B56112984A1B007EA508 /* pwsafe.xsl in Resources */,
-				E690B95712984B1D007EA508 /* helpEN.zip in Resources */,
 				E6919C641298FB25001F96D9 /* pwsafe.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1849,7 +1849,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd ../help/\nmake -f Makefile.linux\n";
+			shellScript = "cd ../help/\nmake default\n";
 		};
 		E6CFEEF711EA3E2F001402D8 /* Generate version.h and pwsafe.plist */ = {
 			isa = PBXShellScriptBuildPhase;

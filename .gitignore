@@ -18,3 +18,4 @@ pwsafe*.msi
 /.vs
 *.VC.db
 .vscode
+*dmg
