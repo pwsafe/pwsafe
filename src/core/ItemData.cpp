@@ -2388,3 +2388,19 @@ std::string CItemData::GetXmlFieldName(FieldType ft)
   }
   return s;
 }
+
+stringT CItemData::GetUserInterfaceFieldName(FieldType ft)
+{
+  stringT retval(_T(""));
+  switch (ft) {
+  case TWOFACTORKEY: LoadAString(retval, IDSC_FLDNMTWOFACTORKEY_UI); break;
+  default:
+    // This default returns the FieldName as a placeholder. If you intend
+    // to use this method, put a valid 'case' above for the desired field
+    // to indicate the intention to define a UI field name regardless of
+    // whether or not it differs from the default field name.
+    ASSERT(FALSE);
+    retval = FieldName(ft);
+  }
+  return retval;
+}

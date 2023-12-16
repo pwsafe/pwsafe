@@ -90,6 +90,10 @@ public:
   // newly added fields or those where appropriate refactoring has taken place.
   static std::string GetXmlFieldName(FieldType ft);
 
+  // Get the field name used in the user interface (i.e., for Advanced XML
+  // export field selection, Display Filters, etc.).
+  static stringT GetUserInterfaceFieldName(FieldType ft);
+
   //Data retrieval
   StringX GetName() const {return GetField(NAME);} // V17 - deprecated: replaced by GetTitle & GetUser
   StringX GetTitle() const {return GetField(TITLE);} // V20

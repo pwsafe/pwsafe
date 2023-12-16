@@ -475,7 +475,7 @@ BOOL CWZAdvanced::OnInitDialog()
       m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
       m_bsMandatoryFields.set(CItemData::PASSWORD);
 
-      iItem = m_pLC_Selected->InsertItem(++iItem, CItemData::FieldName(CItemData::TWOFACTORKEY).c_str());
+      iItem = m_pLC_Selected->InsertItem(++iItem, CItemData::GetUserInterfaceFieldName(CItemData::TWOFACTORKEY).c_str());
       m_pLC_Selected->SetItemData(iItem, CItemData::TWOFACTORKEY | NORMALFIELD);
       m_bsAllowedFields.set(CItemData::TWOFACTORKEY);
       m_bsDefaultSelectedFields.set(CItemData::TWOFACTORKEY);
@@ -509,7 +509,7 @@ BOOL CWZAdvanced::OnInitDialog()
       m_bsAllowedFields.set(CItemData::PASSWORD);
       m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
 
-      iItem = m_pLC_Selected->InsertItem(++iItem, CItemData::FieldName(CItemData::TWOFACTORKEY).c_str());
+      iItem = m_pLC_Selected->InsertItem(++iItem, CItemData::GetUserInterfaceFieldName(CItemData::TWOFACTORKEY).c_str());
       m_pLC_Selected->SetItemData(iItem, CItemData::TWOFACTORKEY | NORMALFIELD);
       m_bsAllowedFields.set(CItemData::TWOFACTORKEY);
       m_bsDefaultSelectedFields.set(CItemData::TWOFACTORKEY);
@@ -540,7 +540,7 @@ BOOL CWZAdvanced::OnInitDialog()
       m_bsAllowedFields.set(CItemData::PASSWORD);
       m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
 
-      iItem = m_pLC_Selected->InsertItem(++iItem, CItemData::FieldName(CItemData::TWOFACTORKEY).c_str());
+      iItem = m_pLC_Selected->InsertItem(++iItem, CItemData::GetUserInterfaceFieldName(CItemData::TWOFACTORKEY).c_str());
       m_pLC_Selected->SetItemData(iItem, CItemData::TWOFACTORKEY | NORMALFIELD);
       m_bsAllowedFields.set(CItemData::TWOFACTORKEY);
       m_bsDefaultSelectedFields.set(CItemData::TWOFACTORKEY);
@@ -573,7 +573,7 @@ BOOL CWZAdvanced::OnInitDialog()
       m_bsAllowedFields.set(CItemData::PASSWORD);
       m_bsDefaultSelectedFields.set(CItemData::PASSWORD);
 
-      iItem = m_pLC_Selected->InsertItem(++iItem, CItemData::FieldName(CItemData::TWOFACTORKEY).c_str());
+      iItem = m_pLC_Selected->InsertItem(++iItem, CItemData::GetUserInterfaceFieldName(CItemData::TWOFACTORKEY).c_str());
       m_pLC_Selected->SetItemData(iItem, CItemData::TWOFACTORKEY | NORMALFIELD);
       m_bsAllowedFields.set(CItemData::TWOFACTORKEY);
       m_bsDefaultSelectedFields.set(CItemData::TWOFACTORKEY);
