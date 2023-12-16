@@ -1049,24 +1049,24 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   if (!brc) bXMLErrorsFound = true;
 
   if (IsTotpActive()) {
-    brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TWOFACTORKEY).c_str(), GetTwoFactorKey(), utf8conv);
-    if (!brc) bXMLErrorsFound = true;
+    ConditionalWriteXML(CItemData::TWOFACTORKEY, bsExport, GetXmlFieldName(TWOFACTORKEY).c_str(), GetTwoFactorKey(),
+                        oss, utf8conv, bXMLErrorsFound);
 
     if (!IsTotpConfigDefault()) {
-      brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TOTPCONFIG).c_str(), GetTotpConfig(), utf8conv);
-      if (!brc) bXMLErrorsFound = true;
+      ConditionalWriteXML(CItemData::TWOFACTORKEY, bsExport, GetXmlFieldName(TOTPCONFIG).c_str(), GetTotpConfig(),
+                        oss, utf8conv, bXMLErrorsFound);
     }
 
-    if (!IsTotpStartTimeDefault()) {
+    if (!IsTotpStartTimeDefault() && bsExport.test(CItemData::TOTPSTARTTIME)) {
       oss << PWSUtil::GetXMLTime(2, GetXmlFieldName(TOTPSTARTTIME).c_str(), GetTotpStartTimeAsTimeT(), utf8conv, true, true);
     }
 
-    if (!IsTotpTimeStepSecondsDefault()) {
+    if (!IsTotpTimeStepSecondsDefault() && bsExport.test(CItemData::TOTPTIMESTEP)) {
       brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TOTPTIMESTEP).c_str(), GetTotpTimeStepSeconds(), utf8conv);
       if (!brc) bXMLErrorsFound = true;
     }
 
-    if (!IsTotpLengthDefault()) {
+    if (!IsTotpLengthDefault() && bsExport.test(CItemData::TOTPLENGTH)) {
       brc = PWSUtil::WriteXMLField(oss, GetXmlFieldName(TOTPLENGTH).c_str(), GetTotpLength(), utf8conv);
       if (!brc) bXMLErrorsFound = true;
     }

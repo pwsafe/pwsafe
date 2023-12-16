@@ -149,18 +149,6 @@ StringX PWScore::BuildHeader(const CItemData::FieldBits &bsFields, const bool bI
   if (bittest(bsFields, CItemData::TWOFACTORKEY, bIncluded)) {
     hdr += CItemData::FieldName(CItemData::TWOFACTORKEY) + TAB;
   }
-  if (bittest(bsFields, CItemData::TOTPCONFIG, bIncluded)) {
-    hdr += CItemData::FieldName(CItemData::TOTPCONFIG) + TAB;
-  }
-  if (bittest(bsFields, CItemData::TOTPSTARTTIME, bIncluded)) {
-    hdr += CItemData::FieldName(CItemData::TOTPSTARTTIME) + TAB;
-  }
-  if (bittest(bsFields, CItemData::TOTPTIMESTEP, bIncluded)) {
-    hdr += CItemData::FieldName(CItemData::TOTPTIMESTEP) + TAB;
-  }
-  if (bittest(bsFields, CItemData::TOTPLENGTH, bIncluded)) {
-    hdr += CItemData::FieldName(CItemData::TOTPLENGTH) + TAB;
-  }
   if (bittest(bsFields, CItemData::URL, bIncluded)) {
     hdr += CItemData::FieldName(CItemData::URL) + TAB;
   }
