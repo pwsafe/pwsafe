@@ -2379,7 +2379,12 @@ stringT CItemData::EngFieldName(FieldType ft)
 
 std::string CItemData::GetXmlFieldName(FieldType ft)
 {
-  std::string s = toutf8(EngFieldName(ft));
+  return toutf8(GetXmlFieldNameW(ft));
+}
+
+std::wstring CItemData::GetXmlFieldNameW(FieldType ft)
+{
+  stringT s = EngFieldName(ft);
   ASSERT(!s.empty());
   if (!s.empty()) {
     s.erase(std::remove_if(s.begin(), s.end(), ::isspace), s.end());

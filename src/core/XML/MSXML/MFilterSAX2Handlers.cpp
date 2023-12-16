@@ -399,6 +399,12 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     cur_filterentry->ftype = FT_PASSWORD;
   }
 
+  else if (_tcscmp(szCurElement, CItemData::GetXmlFieldNameW(CItemData::TWOFACTORKEY).c_str()) == 0) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = FT_TWOFACTORKEY;
+  }
+
   else if (_tcscmp(szCurElement, _T("notes")) == 0) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;

@@ -73,7 +73,7 @@
 
 <xs:simpleType name="fileuuidType">
   <xs:restriction base="xs:string">
-    <xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA­F]{12}" />
+    <xs:pattern value="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}" />
   </xs:restriction>
 </xs:simpleType>
 
@@ -463,6 +463,7 @@
     <xs:element name="user" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="notes" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="password" type="passwordfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="twofactorkey" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
 
     <xs:element name="create_time" type="datefilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="password_modified_time" type="datefilterentry" minOccurs="1" maxOccurs="1" />
