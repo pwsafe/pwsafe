@@ -64,8 +64,8 @@ else
     die 3 "Sorry, can't configure for $KERNEL systems (yet)."
 fi
 
-[ -z "$RELEASE" ] && RELEASE=0 # debian testing doesn't have a release number
-[ -z "$RELEASE_MONTH" ] && RELEASE_MONTH=0 # debian testing doesn't have a release number
+[ -z "$RELEASE" ] && RELEASE=0 # debian testing and Arch don't have a release number
+[ -z "$RELEASE_MONTH" ] && RELEASE_MONTH=0 # debian testing and Arch don't have a release month
 
 # We have distro and release, let's get to work
 
@@ -105,7 +105,7 @@ case "$DISTRO" in
         make openssl-devel rpmdevtools rpm-sign $LIBWXBASE $LIBWXGTK xerces-c-devel \
         ykpers-devel qrencode-devel
     ;;
-    manjarolinux)
+    arch|manjarolinux)
         pacman -S --noconfirm base-devel cmake file git libxt qrencode wxwidgets-gtk3 \
         xerces-c yubikey-personalization zip
     ;;
