@@ -1,0 +1,26 @@
+# PKGBUILD
+
+pkgname=pwsafe
+pkgver=1.18.0
+pkgrel=1
+pkgdesc="PasswordSafe password manager"
+arch=('x86_64')
+url="https://github.com/pwsafe/pwsafe/archive/refs/tags"
+license=('Artistic 2.0')
+depends=('libxt' 'qrencode' 'wxwidgets-gtk3' 'xerces-c' 'yubikey-personalization')
+makedepends=('cmake')
+source=("$url/$pkgver.tar.gz")
+sha256sums=('cea4902a677e116890b64b279396f396e920be045ac5f71eb39a52200de8b310')
+
+build() {
+    cd "$srcdir/$pkgname-$pkgver"
+    mkdir build
+    cd build
+    cmake -DCMAKE_INSTALL_PREFIX=/usr ..
+    make
+}
+
+package() {
+    cd "$srcdir/$pkgname-$pkgver/build"
+    make DESTDIR="$pkgdir/" install
+}
