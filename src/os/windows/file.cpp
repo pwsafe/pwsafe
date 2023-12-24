@@ -431,13 +431,13 @@ int pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
   }
 }
 
-ulong64 pws_os::fileLength(std::FILE *fp) {
+size_t pws_os::fileLength(std::FILE *fp) {
   if (fp != nullptr) {
-    __int64 pos = _ftelli64(fp);
+    auto pos = _ftelli64(fp);
     _fseeki64(fp, 0, SEEK_END);
-    __int64 len = _ftelli64(fp);
+    auto len = _ftelli64(fp);
     _fseeki64(fp, pos, SEEK_SET);
-    return ulong64(len);
+    return static_cast<size_t>(len);
   } else
     return 0;
 }

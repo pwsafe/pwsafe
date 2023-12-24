@@ -33,7 +33,7 @@ namespace pws_os {
 
   extern std::FILE *FOpen(const stringT &filename, const TCHAR *mode);
   extern int FClose(std::FILE *fd, const bool &bIsWrite);
-  extern ulong64 fileLength(std::FILE *fp);
+  extern size_t fileLength(std::FILE *fp);
   extern bool GetFileTimes(const stringT &filename,
       time_t &ctime, time_t &mtime, time_t &atime);
   extern bool SetFileTimes(const stringT &filename,

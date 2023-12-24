@@ -433,7 +433,7 @@ int pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
   return 0;
 }
 
-ulong64 pws_os::fileLength(std::FILE *fp)
+size_t pws_os::fileLength(std::FILE *fp)
 {
   int fd = fileno(fp);
   if (fd == -1)
@@ -441,7 +441,7 @@ ulong64 pws_os::fileLength(std::FILE *fp)
   struct stat st;
   if (fstat(fd, &st) == -1)
     return -1;
-  return ulong64(st.st_size);
+  return size_t(st.st_size);
 }
 
 bool pws_os::GetFileTimes(const stringT &filename,
