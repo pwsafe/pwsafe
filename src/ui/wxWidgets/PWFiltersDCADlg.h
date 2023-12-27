@@ -76,7 +76,7 @@ protected:
 
 private:
 
-  void InitDialog();
+  void InitDialog() override;
   void SetValidators();
 
   stringT CurrentDefaultDCAuiString();
