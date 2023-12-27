@@ -65,11 +65,11 @@ private:
   //*)
 
   //(*Identifiers(SetDatabaseIdDlg)
-  static const long ID_SPINCTRL_DATABASEID;
-  static const long ID_COLORPICKERCTRL_LOCKEDTEXTCOLOR;
-  static const long ID_STATICBITMAP_LOCKEDICON;
-  static const long ID_COLORPICKERCTRL_UNLOCKEDTEXTCOLOR;
-  static const long ID_STATICBITMAP_UNLOCKEDICON;
+  static const wxWindowID ID_SPINCTRL_DATABASEID;
+  static const wxWindowID ID_COLORPICKERCTRL_LOCKEDTEXTCOLOR;
+  static const wxWindowID ID_STATICBITMAP_LOCKEDICON;
+  static const wxWindowID ID_COLORPICKERCTRL_UNLOCKEDTEXTCOLOR;
+  static const wxWindowID ID_STATICBITMAP_UNLOCKEDICON;
   //*)
 
   //(*Declarations(SetDatabaseIdDlg)

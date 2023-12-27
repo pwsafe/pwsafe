@@ -25,11 +25,11 @@
 #include "graphics/unlocked_tray.xpm"
 
 //(*IdInit(SetDatabaseIdDlg)
-const long SetDatabaseIdDlg::ID_SPINCTRL_DATABASEID = wxNewId();
-const long SetDatabaseIdDlg::ID_COLORPICKERCTRL_LOCKEDTEXTCOLOR = wxNewId();
-const long SetDatabaseIdDlg::ID_STATICBITMAP_LOCKEDICON = wxNewId();
-const long SetDatabaseIdDlg::ID_COLORPICKERCTRL_UNLOCKEDTEXTCOLOR = wxNewId();
-const long SetDatabaseIdDlg::ID_STATICBITMAP_UNLOCKEDICON = wxNewId();
+const wxWindowID SetDatabaseIdDlg::ID_SPINCTRL_DATABASEID = wxNewId();
+const wxWindowID SetDatabaseIdDlg::ID_COLORPICKERCTRL_LOCKEDTEXTCOLOR = wxNewId();
+const wxWindowID SetDatabaseIdDlg::ID_STATICBITMAP_LOCKEDICON = wxNewId();
+const wxWindowID SetDatabaseIdDlg::ID_COLORPICKERCTRL_UNLOCKEDTEXTCOLOR = wxNewId();
+const wxWindowID SetDatabaseIdDlg::ID_STATICBITMAP_UNLOCKEDICON = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(SetDatabaseIdDlg,wxDialog)
