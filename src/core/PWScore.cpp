@@ -588,6 +588,7 @@ void PWScore::NewFile(const StringX &passkey)
 // functor object type for for_each:
 // Writes out all records to a PasswordSafe database of any version
 struct RecordWriter {
+  RecordWriter(const RecordWriter&) = default;
   RecordWriter(PWSfile *pout, PWScore *pcore, PWSfile::VERSION version)
     : m_pout(pout), m_pcore(pcore), m_version(version) {}
 
@@ -1607,6 +1608,7 @@ struct FieldsMatch {
             m_title == item.GetTitle() &&
             m_user  == item.GetUser());
   }
+  FieldsMatch(const FieldsMatch&) = default;
   FieldsMatch(const StringX &a_group, const StringX &a_title,
               const StringX &a_user) :
   m_group(a_group), m_title(a_title), m_user(a_user) {}
@@ -1633,6 +1635,7 @@ struct TitleMatch {
     return (m_title == item.GetTitle());
   }
 
+  TitleMatch(const TitleMatch&) = default;
   TitleMatch(const StringX &a_title) :
     m_title(a_title) {}
 
@@ -1677,6 +1680,7 @@ struct GroupTitle_TitleUserMatch {
             (m_gt == item.GetTitle() && m_tu == item.GetUser()));
   }
 
+  GroupTitle_TitleUserMatch(const GroupTitle_TitleUserMatch&) = default;
   GroupTitle_TitleUserMatch(const StringX &a_grouptitle,
                             const StringX &a_titleuser) :
                             m_gt(a_grouptitle),  m_tu(a_titleuser) {}
@@ -1988,6 +1992,7 @@ void PWScore::MakePolicyUnique(std::map<StringX, StringX> &mapRenamedPolicies,
 // functor object type for for_each:
 // Updates vector with entries using named password policy
 struct AddEntry {
+  AddEntry(const AddEntry&) = default;
   AddEntry(const StringX sxPolicyName, std::vector<st_GroupTitleUser> &ventries)
     : m_sxPolicyName(sxPolicyName), m_pventries(&ventries) {}
 

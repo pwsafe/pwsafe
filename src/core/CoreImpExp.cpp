@@ -217,6 +217,7 @@ StringX PWScore::BuildHeader(const CItemData::FieldBits &bsFields, const bool bI
 }
 
 struct TextRecordWriter {
+  TextRecordWriter(const TextRecordWriter&) = default;
   TextRecordWriter(const stringT &subgroup_name,
           const int &subgroup_object, const int &subgroup_function,
           const CItemData::FieldBits &bsFields,
@@ -350,6 +351,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
 }
 
 struct XMLRecordWriter {
+  XMLRecordWriter(const XMLRecordWriter&) = default;
   XMLRecordWriter(const stringT &subgroup_name,
                   const int subgroup_object, const int subgroup_function,
                   const CItemData::FieldBits &bsFields,

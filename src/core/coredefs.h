@@ -121,6 +121,7 @@ typedef KBShortcutMap::const_iterator KBShortcutMapConstIter;
 typedef std::pair<int32, pws_os::CUUID> KBShortcutMapPair;
 
 struct PopulatePWPVector {
+  PopulatePWPVector(const PopulatePWPVector&) = default;
   PopulatePWPVector(std::vector<StringX> *pvPWPolicies) :
     m_pvPWPolicies(pvPWPolicies) {}
 
