@@ -2000,7 +2000,6 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   cStringXStream iss;
   unsigned char buffer[IMPORT_BUFFER_SIZE + 1];
   bool bError(false);
-  size_t total(0);
   while(!feof(fs)) {
     size_t count = fread(buffer, 1, IMPORT_BUFFER_SIZE, fs);
     if (ferror(fs)) {
@@ -2009,7 +2008,6 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     }
     buffer[count] = '\0';
     iss << buffer;
-    total += count;
   }
 
   // Close the file
