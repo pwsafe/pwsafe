@@ -12,6 +12,11 @@
 #ifndef __PWSFILEV1V2_H
 #define __PWSFILEV1V2_H
 
+#ifndef _MSC_VER
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Woverloaded-virtual"
+#endif
+
 #include "PWSfile.h"
 #include "crypto/BlowFish.h"
 
@@ -42,5 +47,9 @@ private:
   int WriteV2Header();
   int ReadV2Header();
 };
+
+#ifndef _MSC_VER
+#pragma GCC diagnostic pop
+#endif
 
 #endif /*  __PWSFILEV1V2_H */
