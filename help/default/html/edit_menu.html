@@ -17,14 +17,14 @@
 <tr>
 <td ;="" align="center">Entry</td>
 <td style="width: 10px;"></td>
-<td ;="" align="center">Alias</td>
+<td ;="" align="center">Shortcut</td>
 <td style="width: 10px;"></td>
 <td ;="" align="center">Group</td>
 </tr>
 <tr>
 <td><img alt="Menu Edit Entry" src="images/edit_menu.jpg"></td>
 <td></td>
-<td><img alt="Menu Edit Alias" src="images/edit_x_menu.jpg"></td>
+<td><img alt="Menu Edit Shortcut" src="images/edit_x_menu.jpg"></td>
 <td></td>
 <td><img alt="Menu Edit Group" src="images/edit_g_menu.jpg"></td>
 </tr>
@@ -122,6 +122,16 @@ use spaces, commas or semi-colons to separate the positions. The
 corresponding characters of the password are shown in the lower field.
 To quit, please use the <b>Esc</b> key.</p>
 
+<h3>Copy Auth Code to Clipboard</h3>
+<p>If an Authenticor Secret was defined for the currently selected entry, then this action is displayed. Clicking on it will cause the current 6 digit
+    authenticator code to be copied to the clipboard. The clipboard will be updated when the authenticator code changes.</p>
+
+<h3>Display Auth code</h3>
+<p>If an Authenticor Secret was defined for the currently selected entry, then this action is displayed. Clicking on it will bring up a window displaying the current
+    Authentication Code, as well as an animated button indicating the time that the code will remain current. Clicking on the button will copy the code to the clipboard.<br><br>
+    <img alt="Authenticator Code Display" src="images/auth_code_display.jpg">
+</p>
+
 
 <h3>Copy Notes to Clipboard</h3>
 
@@ -140,7 +150,7 @@ clipboard.</p>
 
 <p>Copy the current selection's Run Command field to the clipboard.</p>
 
-<p><b>Note:</b> Variables will be substituted by their values default <u>unless</u> the Ctrl key
+<p><b>Note:</b> Variables will be substituted by their values <u>unless</u> the Ctrl key
 is pressed down when selecting this menu item.</li>
 
 <h3>Browse to URL</h3>
@@ -241,7 +251,7 @@ new <b>Password Safe</b> database.</p>
 
 <p>The selected entry or group of entries will be protected. A
 protected entry cannot be modified until it is unprotected. Protected entries
-are marked with a '#'.</p>
+are marked with a padlock icon or '#'.</p>
 
 <h2>Right mouse click actions </h2>
 
@@ -301,6 +311,9 @@ section</a>.</p>
 <param name="Keyword" value="Finding Password Entries">
 <param name="Keyword" value="URL">
 <param name="Keyword" value="Browser">
+<param name="Keyword" value="TOTP">
+<param name="Keyword" value="OTP">
+<param name="Keyword" value="Authentication Code">
 
 </object>
 </body>
