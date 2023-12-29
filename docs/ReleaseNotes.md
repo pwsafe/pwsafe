@@ -4,15 +4,19 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.64.2 Release Dec 2023
+PasswordSafe 3.65.0 Release Jan 2024
 ====================================
 
-Bugs fixed in 3.64.2
+Bugs fixed in 3.65.0
 --------------------
 
 * Modality of dialog windows is now preserved across lock/unlock.
 * [GH1066](https://github.com/pwsafe/pwsafe/issues/1066) Signature verification no longer triggers network traffic.
 
+
+New features in 3.65.0
+----------------------
+* PasswordSafe can now generate authentication tokens (one time password codes) for entries for site that require those for stronger security.
 
 
 PasswordSafe 3.64.1 Release Nov 2023
