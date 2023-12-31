@@ -53,12 +53,12 @@ SIGNTOOL_ARGS := /t http://timestamp.digicert.com /a /fd sha256
 RELTAG = V$(subst .,_,$(RELEASENAME))
 
 I18N_DIR := ./src/ui/Windows/I18N
-I18N_DLL_DIR := ./out/build/x86-Release/I18N
-I18N_DLL_DIR_64 := ./out/build/x64-Release/I18N
+I18N_DLL_DIR := ./out/build/windows-x86-release/I18N
+I18N_DLL_DIR_64 := ./out/build/windows-x64-release/I18N
 POT_FILE := $(I18N_DIR)/pwsafe.pot
 HELP_DIR := ./help
-BIN_DIR := ./out/build/x86-Release/Release/
-BIN_DIR_64 := ./out/build/x64-Release/Release/
+BIN_DIR := ./out/build/windows-x86-release/
+BIN_DIR_64 := ./out/build/windows-x64-release/
 TMPDIR := /tmp
 RELNOTES := $(CURDIR)/docs/ReleaseNotes.md
 
@@ -274,7 +274,7 @@ src-release: ChangeLog $(POT_FILE)
 	@$(MKDIR) $(RELEASEDIR)/$(SRCRELNAME)
 	$(GIT) archive HEAD | $(TAR) -x -C $(RELEASEDIR)/$(SRCRELNAME)
 	$(MV) ChangeLog $(RELEASEDIR)/$(SRCRELNAME)
-	$(CP) out/build/x64-Release/version.h $(RELEASEDIR)/$(SRCRELNAME)/src/ui/Windows
+	$(CP) out/build/windows-x64-release/version.h $(RELEASEDIR)/$(SRCRELNAME)/src/ui/Windows
 	$(CP) $(POT_FILE) $(RELEASEDIR)/$(SRCRELNAME)
 	(cd $(RELEASEDIR); $(ZIP) -9 -r  bar ./$(SRCRELNAME); \
 	$(MV) bar.zip $(SRCRELNAME).zip)
@@ -288,7 +288,7 @@ build:
 ChangeLog:
 	$(GIT) --no-pager log --format="%ai %aN %n%n%x09* %s%d%n" > $@
 
-$(POT_FILE): $(BIN_DIR)../src/ui/Windows/language/Release/pwsafe_base.dll
+$(POT_FILE): $(BIN_DIR_64)/src/ui/Windows/language/pwsafe_base.dll
 	$(MAKE) -C $(I18N_DIR) pwsafe.pot
 
 update-pos:

@@ -28,7 +28,7 @@ Dim objFSO
 
 TOOLS = "..\..\..\..\build\bin"
 RESTEXT = TOOLS & "\restext\release\ResText.exe"
-BASE_DLL = "..\..\..\..\out\build\x64-Release\Release\pwsafe_base.dll"
+BASE_DLL = "..\..\..\..\out\build\windows-x64-Release\Release\pwsafe_base.dll"
 
 Set objFSO = CreateObject("Scripting.FileSystemObject")
 

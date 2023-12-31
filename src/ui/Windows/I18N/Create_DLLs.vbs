@@ -68,22 +68,22 @@ Dim CURPATH, TOOLS, RESTEXT, RESPWSL, BASE_DLL, DEST_DIR, DO_ALL, DO_COUNTRY, AR
 
 If ARCH = "x86" Then
   ' 32-bit tools
-  TOOLS = "..\..\..\..\out\build\x86-Release\src\Tools\Windows\I18N"
-  RESPWSL = TOOLS & "\respwsl\release\ResPWSL.exe"
-  BASE_DLL = "..\..\..\..\out\build\x86-Release\src\ui\Windows\language\Release\pwsafe_base.dll"
-  DEST_DIR = "..\..\..\..\out\build\x86-Release\I18N\"
+  TOOLS = "..\..\..\..\out\build\windows-x86-release\src\Tools\Windows\I18N"
+  RESPWSL = TOOLS & "\respwsl\ResPWSL.exe"
+  BASE_DLL = "..\..\..\..\out\build\windows-x86-release\src\ui\Windows\language\pwsafe_base.dll"
+  DEST_DIR = "..\..\..\..\out\build\windows-x86-release\I18N\"
   WScript.Echo "Creating 32-bit language DLLs"
 Else
   ' 64-bit tools
-  TOOLS = "..\..\..\..\out\build\x64-Release\src\Tools\Windows\I18N"
-  RESPWSL = TOOLS & "\respwsl\release64\ResPWSL.exe"
-  BASE_DLL = "..\..\..\..\out\build\x64-Release\src\ui\Windows\language\Release\pwsafe_base.dll"
-  DEST_DIR = "..\..\..\..\out\build\x64-Release\I18N\\"
+  TOOLS = "..\..\..\..\out\build\windows-x64-Release\src\Tools\Windows\I18N"
+  RESPWSL = TOOLS & "\respwsl\ResPWSL.exe"
+  BASE_DLL = "..\..\..\..\out\build\windows-x64-Release\src\ui\Windows\language\pwsafe_base.dll"
+  DEST_DIR = "..\..\..\..\out\build\windows-x64-Release\I18N\\"
   WScript.Echo "Creating 64-bit language DLLs"
 End If
 
-RESTEXT = TOOLS & "\ResText\Release\ResText.exe"
-RESPWSL = TOOLS & "\ResPWSL\Release\ResPWSL.exe"
+RESTEXT = TOOLS & "\ResText\ResText.exe"
+RESPWSL = TOOLS & "\ResPWSL\ResPWSL.exe"
 
 ' Used through out the script
 Dim objFSO
