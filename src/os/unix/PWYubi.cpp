@@ -126,7 +126,7 @@ bool PWYubi::WriteSK(const unsigned char *yubi_sk_bin, size_t sklen)
     if (ykey == nullptr)
       goto done;
     if (!yk_get_status(ykey, st) ||
-        (ykp_configure_version(cfg, st), !ykp_set_tktflag_CHAL_RESP(cfg,true)) ||
+        (static_cast<void>(ykp_configure_version(cfg, st)), !ykp_set_tktflag_CHAL_RESP(cfg,true)) ||
         !ykp_set_cfgflag_CHAL_HMAC(cfg, true) ||
         !ykp_set_cfgflag_HMAC_LT64(cfg, true) ||
         !ykp_set_cfgflag_CHAL_BTN_TRIG(cfg, true) ||
