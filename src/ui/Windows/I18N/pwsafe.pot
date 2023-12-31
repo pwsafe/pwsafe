@@ -159,6 +159,10 @@ msgstr ""
 msgid " 'Title'"
 msgstr ""
 
+#. Resource IDs: (5396)
+msgid " 'Two Factor Key'"
+msgstr ""
+
 #. Resource IDs: (5366)
 msgid " 'URL'"
 msgstr ""
@@ -598,7 +602,7 @@ msgstr ""
 msgid "&Continue"
 msgstr ""
 
-#. Resource IDs: (1343, 34102)
+#. Resource IDs: (1343, 1615, 34102)
 msgid "&Copy"
 msgstr ""
 
@@ -628,6 +632,14 @@ msgstr ""
 
 #. Resource IDs: (1015)
 msgid "&Don't remind me again"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Double-Click Action:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Double-Click\nAction:"
 msgstr ""
 
 #. Resource IDs: (32107 - MenuEx)
@@ -742,6 +754,10 @@ msgstr ""
 msgid "&Minimize"
 msgstr ""
 
+#. Resource IDs: (1229)
+msgid "&Never"
+msgstr ""
+
 #. Resource IDs: (1041, 1341, 5553)
 msgid "&New"
 msgstr ""
@@ -830,6 +846,10 @@ msgstr ""
 msgid "&Recent Safes"
 msgstr ""
 
+#. Resource IDs: (1297)
+msgid "&Recurring"
+msgstr ""
+
 #. Resource IDs: (32111 - MenuEx)
 msgid "&Refresh"
 msgstr ""
@@ -848,6 +868,10 @@ msgstr ""
 
 #. Resource IDs: (5729)
 msgid "&Retry"
+msgstr ""
+
+#. Resource IDs: (1358)
+msgid "&Run Cmd:"
 msgstr ""
 
 #. Resource IDs: (32077 - Menu, 32077 - MenuEx, 5656)
@@ -876,6 +900,14 @@ msgstr ""
 
 #. Resource IDs: (5605)
 msgid "&Set current"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Shift Double-Click Action:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Shift Double-Click\nAction:"
 msgstr ""
 
 #. Resource IDs: (1014, 5245)
@@ -956,6 +988,14 @@ msgstr ""
 
 #. Resource IDs: (32160 - MenuEx)
 msgid "&Yubikey..."
+msgstr ""
+
+#. Resource IDs: (1298)
+msgid "&days"
+msgstr ""
+
+#. Resource IDs: (1144)
+msgid "&last passwords"
 msgstr ""
 
 #. Resource IDs: (8159)
@@ -1195,6 +1235,10 @@ msgstr ""
 msgid "29"
 msgstr ""
 
+#. Resource IDs: (6104)
+msgid "2FA copied "
+msgstr ""
+
 #. Resource IDs: (8023)
 msgid "3"
 msgstr ""
@@ -1305,6 +1349,10 @@ msgstr ""
 
 #. Resource IDs: (8028)
 msgid "8"
+msgstr ""
+
+#. Resource IDs: (1616)
+msgid "888888"
 msgstr ""
 
 #. Resource IDs: (8029)
@@ -1552,9 +1600,17 @@ msgstr ""
 msgid "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr ""
 
+#. Resource IDs: (6106)
+msgid "An error occurred obtaining the authentication code."
+msgstr ""
+
 #. Resource IDs: (61862)
 #, c-format
 msgid "An incorrect file handle was associated with %1."
+msgstr ""
+
+#. Resource IDs: (3501)
+msgid "An unknown TOTP error occurred"
 msgstr ""
 
 #. Resource IDs: (61476)
@@ -1660,6 +1716,22 @@ msgstr ""
 #. Resource IDs: (61874)
 #, c-format
 msgid "Attempted to write to the reading %1."
+msgstr ""
+
+#. Resource IDs: (600)
+msgid "Authentication Code"
+msgstr ""
+
+#. Resource IDs: (3080)
+msgid "Authentication Secret"
+msgstr ""
+
+#. Resource IDs: (6103)
+msgid "Authentication code requires secret key in Additional tab."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Authenticator Secret"
 msgstr ""
 
 #. Resource IDs: (3007)
@@ -1808,6 +1880,10 @@ msgstr ""
 
 #. Resource IDs: (32065 - Menu, 32065 - MenuEx)
 msgid "C&lear Clipboard"
+msgstr ""
+
+#. Resource IDs: (1174)
+msgid "C&opy All"
 msgstr ""
 
 #. Resource IDs: (1386)
@@ -1990,6 +2066,14 @@ msgstr ""
 msgid "Chinese ChaJei"
 msgstr ""
 
+#. Resource IDs: (1)
+msgid "Cl&ose"
+msgstr ""
+
+#. Resource IDs: (1141)
+msgid "Clear &History"
+msgstr ""
+
 #. Resource IDs: (8001)
 msgid "Clear Buffer"
 msgstr ""
@@ -2048,6 +2132,10 @@ msgstr ""
 
 #. Resource IDs: (5917)
 msgid "Click to copy generated password to clipboard"
+msgstr ""
+
+#. Resource IDs: (6102)
+msgid "Click to copy the current authentication code to clipboard."
 msgstr ""
 
 #. Resource IDs: (5646)
@@ -2292,6 +2380,10 @@ msgstr ""
 
 #. Resource IDs: (1174)
 msgid "Copy All"
+msgstr ""
+
+#. Resource IDs: (32100 - Menu, 32100 - MenuEx)
+msgid "Copy Aut&h Code to Clipboard"
 msgstr ""
 
 #. Resource IDs: (32071 - Menu, 32071 - MenuEx, 5723)
@@ -2606,6 +2698,10 @@ msgstr ""
 msgid "Default password expiration (days)"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Default:"
+msgstr ""
+
 #. Resource IDs: (5622)
 msgid "Delete"
 msgstr ""
@@ -2670,6 +2766,10 @@ msgstr ""
 
 #. Resource IDs: (138, 1599, 506)
 msgid "Display"
+msgstr ""
+
+#. Resource IDs: (32099 - Menu, 32099 - MenuEx)
+msgid "Display Auth Code"
 msgstr ""
 
 #. Resource IDs: (151, 152, 153, 154, 155, 156, 161, 163, 165, 166)
@@ -2976,6 +3076,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
+msgstr ""
+
+#. Resource IDs: (6101)
+msgid "Enter the TOTP shared secret key. This is often value copy/pasted from a web page presented by the verifying service."
 msgstr ""
 
 #. Resource IDs: (149)
@@ -3558,6 +3662,10 @@ msgstr ""
 msgid "Fully expanded"
 msgstr ""
 
+#. Resource IDs: (1379)
+msgid "G&o"
+msgstr ""
+
 #. Resource IDs: (8305)
 msgid "Gaelic"
 msgstr ""
@@ -3610,7 +3718,6 @@ msgstr ""
 msgid "Given path is a directory or file is read-only"
 msgstr ""
 
-#. Resource IDs: (1379)
 msgid "Go"
 msgstr ""
 
@@ -3658,6 +3765,10 @@ msgstr ""
 msgid "Greek Polytonic"
 msgstr ""
 
+#. Resource IDs: (1350)
+msgid "Gro&up:"
+msgstr ""
+
 #. Resource IDs: (3055, 5221)
 msgid "Group"
 msgstr ""
@@ -3674,7 +3785,7 @@ msgstr ""
 msgid "Group/Title"
 msgstr ""
 
-#. Resource IDs: (1350, 65535)
+#. Resource IDs: (65535)
 msgid "Group:"
 msgstr ""
 
@@ -3849,6 +3960,14 @@ msgstr ""
 
 #. Accelerator Entry for Menu ID:32084; 'Redo'
 msgid "ID:32084:V C +Y"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32099; 'Display Auth Code'
+msgid "ID:32099:VAC +2"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32100; 'Copy Aut&h Code to Clipboard'
+msgid "ID:32100:VA  +2"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32140; 'Last Find results'
@@ -4143,6 +4262,11 @@ msgstr ""
 msgid "Invalid shortcut ignored."
 msgstr ""
 
+#. Resource IDs: (6100)
+#, c-format
+msgid "Invalid two factor authentication configuration. %s (%d)"
+msgstr ""
+
 #. Resource IDs: (8279)
 msgid "Irish"
 msgstr ""
@@ -4171,6 +4295,10 @@ msgstr ""
 msgid "Kazakh"
 msgstr ""
 
+#. Resource IDs: (65535)
+msgid "Ke&y:"
+msgstr ""
+
 #. Resource IDs: (32024 - MenuEx)
 msgid "KeePass V1 CSV File..."
 msgstr ""
@@ -4183,7 +4311,15 @@ msgstr ""
 msgid "Keep"
 msgstr ""
 
-#. Resource IDs: (3073, 5940, 65535)
+#. Resource IDs: (65535)
+msgid "Key&board Shortcut"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Key&board Shortcut:"
+msgstr ""
+
+#. Resource IDs: (3073, 5940)
 msgid "Keyboard Shortcut"
 msgstr ""
 
@@ -4549,7 +4685,7 @@ msgstr ""
 msgid "Nested &Tree"
 msgstr ""
 
-#. Resource IDs: (1229, 5241)
+#. Resource IDs: (5241)
 msgid "Never"
 msgstr ""
 
@@ -5497,7 +5633,6 @@ msgstr ""
 msgid "Recover the auto-saved documents\nOpen the auto-saved versions instead of the explicitly saved versions"
 msgstr ""
 
-#. Resource IDs: (1297)
 msgid "Recurring"
 msgstr ""
 
@@ -5652,7 +5787,6 @@ msgstr ""
 msgid "Rule:"
 msgstr ""
 
-#. Resource IDs: (1358)
 msgid "Run Cmd:"
 msgstr ""
 
@@ -5670,6 +5804,10 @@ msgstr ""
 
 #. Resource IDs: (8290)
 msgid "Russian (Typewriter)"
+msgstr ""
+
+#. Resource IDs: (1613)
+msgid "S&how"
 msgstr ""
 
 #. Resource IDs: (32022 - MenuEx)
@@ -6253,7 +6391,7 @@ msgstr ""
 msgid "Start saving previous passwords"
 msgstr ""
 
-#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561, 1562, 1588, 8103)
+#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561, 1562, 1588, 1614, 8103)
 msgid "Static"
 msgstr ""
 
@@ -6358,6 +6496,22 @@ msgstr ""
 msgid "Sz"
 msgstr ""
 
+#. Resource IDs: (3081)
+msgid "TOTP Config"
+msgstr ""
+
+#. Resource IDs: (3082)
+msgid "TOTP Length"
+msgstr ""
+
+#. Resource IDs: (3084)
+msgid "TOTP Start Time"
+msgstr ""
+
+#. Resource IDs: (3083)
+msgid "TOTP Time Step"
+msgstr ""
+
 #. Resource IDs: (1079)
 msgid "Tab"
 msgstr ""
@@ -6455,12 +6609,32 @@ msgstr ""
 msgid "The Ctrl key has been added."
 msgstr ""
 
+#. Resource IDs: (3502)
+msgid "The TOTP configuration is invalid"
+msgstr ""
+
+#. Resource IDs: (3500)
+msgid "The TOTP operation was successful"
+msgstr ""
+
 #. Resource IDs: (3424)
 msgid "The TXT or CSV file was not imported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
 msgstr ""
 
 #. Resource IDs: (6003)
 msgid "The YubiKey appears uninitialized. Initialize it?"
+msgstr ""
+
+#. Resource IDs: (3505)
+msgid "The authentication secret appears to be invalid because it cannot be base32-decoded"
+msgstr ""
+
+#. Resource IDs: (3504)
+msgid "The authentication secret appears to be invalid because it cannot be converted to UTF8"
+msgstr ""
+
+#. Resource IDs: (3503)
+msgid "The authentication secret was not found"
 msgstr ""
 
 #. Resource IDs: (5311)
@@ -6661,6 +6835,14 @@ msgstr ""
 msgid "The two entries do not match."
 msgstr ""
 
+#. Resource IDs: (6107)
+msgid "The two factor key was unexpectedly empty."
+msgstr ""
+
+#. Resource IDs: (6108)
+msgid "The two factor key was unexpectedly not found."
+msgstr ""
+
 #. Resource IDs: (3366)
 msgid "The user specified that the following fields be excluded from the export:"
 msgstr ""
@@ -6746,6 +6928,10 @@ msgstr ""
 
 #. Resource IDs: (1269)
 msgid "This is an alias of:"
+msgstr ""
+
+#. Resource IDs: (6115)
+msgid "This is the current authentication code. Click the button to copy it to the clipboard."
 msgstr ""
 
 #. Resource IDs: (5121)
@@ -6865,6 +7051,14 @@ msgstr ""
 
 #. Resource IDs: (8247)
 msgid "Turkmen"
+msgstr ""
+
+#. Resource IDs: (6105)
+msgid "Two Factor Auth Code Error"
+msgstr ""
+
+#. Resource IDs: (3079)
+msgid "Two Factor Key"
 msgstr ""
 
 #. Resource IDs: (1355)
@@ -7562,6 +7756,10 @@ msgstr ""
 msgid "\nCompare two Databases"
 msgstr ""
 
+#. Resource IDs: (32100)
+msgid "\nCopy Auth Code to Clipboard"
+msgstr ""
+
 #. Resource IDs: (32069)
 msgid "\nCopy Notes to Clipboard"
 msgstr ""
@@ -7584,6 +7782,10 @@ msgstr ""
 
 #. Resource IDs: (32056)
 msgid "\nDelete an Entry"
+msgstr ""
+
+#. Resource IDs: (32099)
+msgid "\nDisplay Auth Code"
 msgstr ""
 
 #. Resource IDs: (32067)
@@ -8072,7 +8274,6 @@ msgstr ""
 msgid "day(s)"
 msgstr ""
 
-#. Resource IDs: (1298)
 msgid "days"
 msgstr ""
 
@@ -8406,5 +8607,10 @@ msgstr ""
 
 #. Resource IDs: (8004)
 msgid "xxxxxx"
+msgstr ""
+
+#. Resource IDs: (6116)
+#, c-format
+msgid "«%s» «%s» «%s»"
 msgstr ""
 

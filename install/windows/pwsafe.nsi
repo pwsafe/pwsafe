@@ -213,8 +213,7 @@ Unicode true
     ; Name and file
     Name "Password Safe ${FULL_VERSION} (32-bit)"
     BrandingText "Password Safe ${FULL_VERSION} (32-bit) Installer"
-    !define LANG_DLL "..\..\out\build\x86-Release\I18N"
-    !define BIN_DIR "..\..\out\build\x86-Release\Release"
+    !define BIN_DIR "..\..\out\build\windows-x86-release\"
     !define TARGET_ARCH "(32-bit)"
     !echo "Building x86 installer"
   !else if ${ARCH} == "x64" 
@@ -223,13 +222,14 @@ Unicode true
     ; Name and file
     Name "Password Safe ${FULL_VERSION} (64-bit)"
     BrandingText "Password Safe ${FULL_VERSION} (64-bit) Installer"
-    !define LANG_DLL "..\..\out\build\x64-Release\I18N"
-    !define BIN_DIR "..\..\out\build\x64-Release\Release"
+    !define BIN_DIR "..\..\out\build\windows-x64-release\"
     !define TARGET_ARCH "(64-bit)"
     !echo "Building x64 installer"
   !else
     !error "ARCH must be either x86 or x64"
   !endif
+
+  !define LANG_DLL_DIR "${BIN_DIR}I18N"
   
   ; Get installation folder from registry if available
   InstallDirRegKey HKCU "Software\Password Safe\Password Safe" "installdir"
@@ -466,97 +466,97 @@ Section  "$(ENGLISH_SUPPORT)" EnglishSection
 SectionEnd
 Section /o "$(CHINESE_CN_SUPPORT)" ChineseSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeZH.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeZH.dll"
   File /nonfatal "..\..\help\pwsafeZH\pwsafeZH.chm"
 SectionEnd
 Section /o "$(CHINESE_TW_SUPPORT)" ChineseTWSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeZH_TW.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeZH_TW.dll"
   File /nonfatal "..\..\help\pwsafeZH\pwsafeZH_TW.chm"
 SectionEnd
 Section /o "$(GERMAN_SUPPORT)" GermanSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeDE.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeDE.dll"
   File /nonfatal "..\..\help\pwsafeDE\pwsafeDE.chm"
 SectionEnd
 Section /o "$(SPANISH_SUPPORT)" SpanishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeES.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeES.dll"
   File /nonfatal "..\..\help\pwsafeES\pwsafeES.chm"
 SectionEnd
 Section /o "$(SWEDISH_SUPPORT)" SwedishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeSV.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeSV.dll"
   File /nonfatal "..\..\help\pwsafeSV\pwsafeSV.chm"
 SectionEnd
 Section /o "$(DUTCH_SUPPORT)" DutchSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeNL.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeNL.dll"
   File /nonfatal "..\..\help\pwsafeNL\pwsafeNL.chm"
 SectionEnd
 Section /o "$(FRENCH_SUPPORT)" FrenchSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeFR.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeFR.dll"
   File /nonfatal "..\..\help\pwsafeFR\pwsafeFR.chm"
 SectionEnd
 Section /o "$(RUSSIAN_SUPPORT)" RussianSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeRU.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeRU.dll"
   File /nonfatal "..\..\help\pwsafeRU\pwsafeRU.chm"
 SectionEnd
 Section /o "$(POLISH_SUPPORT)" PolishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafePL.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafePL.dll"
   File /nonfatal "..\..\help\pwsafePL\pwsafePL.chm"
 SectionEnd
 Section /o "$(ITALIAN_SUPPORT)" ItalianSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeIT.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeIT.dll"
   File /nonfatal "..\..\help\pwsafeIT\pwsafeIT.chm"
 SectionEnd
 Section /o "$(DANISH_SUPPORT)" DanishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeDK.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeDK.dll"
   File /nonfatal "..\..\help\pwsafeDA\pwsafeDA.chm"
 SectionEnd
 Section /o "$(KOREAN_SUPPORT)" KoreanSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeKR.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeKR.dll"
   File /nonfatal "..\..\help\pwsafeKR\pwsafeKR.chm"
 SectionEnd
 Section /o "$(PORTUGUESEBR_SUPPORT)" PortugueseBRSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafePT_BR.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafePT_BR.dll"
   File /nonfatal "..\..\help\pwsafeKR\pwsafePT_BR.chm"
 SectionEnd
 Section /o "$(CZECH_SUPPORT)" CzechSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeCZ.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeCZ.dll"
   File /nonfatal "..\..\help\pwsafeCZ\pwsafeCZ.chm"
 SectionEnd
 Section /o "$(TURKISH_SUPPORT)" TurkishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeTR.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeTR.dll"
   File /nonfatal "..\..\help\pwsafeTR\pwsafeTR.chm"
 SectionEnd
 Section /o "$(HUNGARIAN_SUPPORT)" HungarianSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeHU.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeHU.dll"
   File /nonfatal "..\..\help\pwsafeHU\pwsafeHU.chm"
 SectionEnd
 Section /o "$(SLOVENIAN_SUPPORT)" SlovenianSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeSL.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeSL.dll"
   File /nonfatal "..\..\help\pwsafeSL\pwsafeSL.chm"
 SectionEnd
 Section /o "$(ARABIC_SUPPORT)" ArabicSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeAR.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeAR.dll"
   File /nonfatal "..\..\help\pwsafeAR\pwsafeAR.chm"
 SectionEnd
 Section /o "$(LATVIAN_SUPPORT)" LatvianSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL}\pwsafeLV.dll"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeLV.dll"
   File /nonfatal "..\..\help\pwsafeLV\pwsafeLV.chm"
 SectionEnd
 SectionGroupEnd

@@ -18,15 +18,15 @@
     <?define Win64 = "yes" ?>
     <?define PlatformProgramFilesFolder = "ProgramFiles64Folder" ?>
     <?define Architecture = "64-bit" ?>
-    <?define BinDir = "out\build\x64-Release\Release" ?>
-    <?define LangDir = "out/build/x64-Release/I18N/" ?>
+    <?define BinDir = "out\build\windows-x64-release\" ?>
+    <?define LangDir = "out/build/windows-x64-release/I18N/" ?>
   <?else ?>
     <?define ProductName = "Password Safe $(var.PWSAFE_VERSION) for Windows (32 bit)" ?>
     <?define Win64 = "no" ?>
     <?define PlatformProgramFilesFolder = "ProgramFilesFolder" ?>
     <?define Architecture = "32-bit" ?>
-    <?define BinDir = "out\build\x86-Release\Release" ?>
-    <?define LangDir = "out/build/x86-Release/I18N" ?>
+    <?define BinDir = "out\build\windows-x86-release\" ?>
+    <?define LangDir = "out/build/windows-x86-release/I18N" ?>
   <?endif ?>
 
   <Product Id='c2a02857-d138-446b-b181-442dee20c8e6'
