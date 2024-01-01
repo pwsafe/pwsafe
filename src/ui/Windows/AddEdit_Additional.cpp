@@ -718,8 +718,6 @@ BOOL CAddEdit_Additional::OnApply()
     }
   }
 
-  M_twofactorkey().Replace(L" ", L"");
-  M_twofactorkey().Replace(L"-", L"");
   if (!M_twofactorkey().IsEmpty()) {
     // Validate two factor key.
     // Currently, only the base32-encoded key is a non-default.
@@ -729,9 +727,10 @@ BOOL CAddEdit_Additional::OnApply()
     PWSTotp::TOTP_Result totp_result = PWSTotp::ValidateTotpConfiguration(ci_temp);
     if (totp_result != PWSTotp::Success) {
       CGeneralMsgBox gmb;
+      CString csTitle(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
       CString csText;
-      csText.Format(IDS_ADDEDITERR_INVALID_TOTP_KEY, PWSTotp::GetTotpErrorString(totp_result).c_str(), static_cast<int>(totp_result));
-      gmb.AfxMessageBox(csText);
+      csText.Format(IDS_ADDEDITERR_INVALID_TOTP_KEY, PWSTotp::GetTotpErrorString(totp_result).c_str());
+      gmb.AfxMessageBox(csText, csTitle);
       pFocus = GetDlgItem(IDC_TWOFACTORKEY);
       goto error;
     }

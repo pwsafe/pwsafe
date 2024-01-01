@@ -55,10 +55,10 @@ BEGIN
   IDSC_FLDNMCCEXP        "Credit card expiration"
   IDSC_FLDNMCCVV         "Credit card CVV"
   IDSC_FLDNMCCPIN        "Credit card PIN"
-  IDSC_FLDNMTOTPCONFIG   "TOTP Config"
-  IDSC_FLDNMTOTPLENGTH   "TOTP Length"
-  IDSC_FLDNMTOTPTIMESTEP "TOTP Time Step"
-  IDSC_FLDNMTOTPSTARTTIME "TOTP Start Time"
+  IDSC_FLDNMTOTPCONFIG   "Authentication Code Config"
+  IDSC_FLDNMTOTPLENGTH   "Authentication Code Length"
+  IDSC_FLDNMTOTPTIMESTEP "Authentication Code Time Step"
+  IDSC_FLDNMTOTPSTARTTIME "Authentication Code Start Time"
 END
 
 STRINGTABLE
@@ -477,10 +477,10 @@ END
 
 STRINGTABLE
 BEGIN
-   IDSC_TOTP_ERROR_SUCCESS                "The TOTP operation was successful"
-   IDSC_TOTP_ERROR_UNKNOWN                "An unknown TOTP error occurred"
-   IDSC_TOTP_ERROR_INVALID_CONFIG         "The TOTP configuration is invalid"
+   IDSC_TOTP_ERROR_SUCCESS                "The Authentication Code operation was successful"
+   IDSC_TOTP_ERROR_UNKNOWN                "An unknown Authentication Code error occurred"
+   IDSC_TOTP_ERROR_INVALID_CONFIG         "The Authentication Code configuration is invalid"
    IDSC_TOTP_ERROR_KEY_NOT_FOUND          "The authentication secret was not found"
-   IDSC_TOTP_ERROR_KEY_UTF8_FAILURE       "The authentication secret appears to be invalid because it cannot be converted to UTF8"
-   IDSC_TOTP_ERROR_BASE32_DECODE_FAILURE  "The authentication secret appears to be invalid because it cannot be base32-decoded"
+   IDSC_TOTP_ERROR_KEY_INVALID_CHARS      "Allowed characters are a-z, 2-7, space and dash"
+   IDSC_TOTP_ERROR_BASE32_DECODE_FAILURE  "Bad length"
 END
