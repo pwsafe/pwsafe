@@ -250,6 +250,10 @@ msgstr " 'SHIFT+DCA'"
 msgid " 'Title'"
 msgstr " 'Naslov'"
 
+#. Resource IDs: (5396)
+msgid " 'Two Factor Key'"
+msgstr ""
+
 #. Resource IDs: (5366)
 msgid " 'URL'"
 msgstr " 'URL'"
@@ -689,7 +693,7 @@ msgstr "P&rimerjaj"
 msgid "&Continue"
 msgstr "&Nadaljuj"
 
-#. Resource IDs: (1343, 34102)
+#. Resource IDs: (1343, 1615, 34102)
 msgid "&Copy"
 msgstr "&Kopiraj"
 
@@ -720,6 +724,14 @@ msgstr "&Ne sprašuj me več"
 #. Resource IDs: (1015)
 msgid "&Don't remind me again"
 msgstr "N&e opominjaj me več"
+
+#. Resource IDs: (65535)
+msgid "&Double-Click Action:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Double-Click\nAction:"
+msgstr ""
 
 #. Resource IDs: (32107 - MenuEx)
 msgid "&Dragbar visible"
@@ -833,6 +845,10 @@ msgstr "Z&druži"
 msgid "&Minimize"
 msgstr "Po&manjšaj"
 
+#. Resource IDs: (1229)
+msgid "&Never"
+msgstr ""
+
 #. Resource IDs: (1041, 1341, 5553)
 msgid "&New"
 msgstr "&Novo"
@@ -921,6 +937,10 @@ msgstr "Z&godovina nedavnih vnosov"
 msgid "&Recent Safes"
 msgstr "&Nedavni Sefi"
 
+#. Resource IDs: (1297)
+msgid "&Recurring"
+msgstr ""
+
 #. Resource IDs: (32111 - MenuEx)
 msgid "&Refresh"
 msgstr "&Osveži"
@@ -940,6 +960,10 @@ msgstr "O&bnovi"
 #. Resource IDs: (5729)
 msgid "&Retry"
 msgstr "Pono&vi"
+
+#. Resource IDs: (1358)
+msgid "&Run Cmd:"
+msgstr ""
 
 #. Resource IDs: (32077 - Menu, 32077 - MenuEx, 5656)
 msgid "&Run Command"
@@ -968,6 +992,14 @@ msgstr "&Pošlji e-pošto"
 #. Resource IDs: (5605)
 msgid "&Set current"
 msgstr "Nas&tavi trenutno"
+
+#. Resource IDs: (65535)
+msgid "&Shift Double-Click Action:"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "&Shift Double-Click\nAction:"
+msgstr ""
 
 #. Resource IDs: (1014, 5245)
 msgid "&Show"
@@ -1049,6 +1081,14 @@ msgstr "&Da"
 msgid "&Yubikey..."
 msgstr "&Yubikey..."
 
+#. Resource IDs: (1298)
+msgid "&days"
+msgstr ""
+
+#. Resource IDs: (1144)
+msgid "&last passwords"
+msgstr ""
+
 #. Resource IDs: (8159)
 msgid "'Alt Gr' (right Alt) key"
 msgstr " 'Alt Gr' (desna tipka Alt)"
@@ -1096,6 +1136,10 @@ msgstr "(ni občutljivo na m/V črke)"
 #. Resource IDs: (3311, 5525)
 msgid "(case sensitive)"
 msgstr "(občutljivo na m/V črke)"
+
+#. Resource IDs: (6070, 6080, 6090)
+msgid "(state error)"
+msgstr ""
 
 #. Resource IDs: (1286, 1288, 1290, 1292)
 msgid ")"
@@ -1281,6 +1325,10 @@ msgstr "28"
 #. Resource IDs: (8058)
 msgid "29"
 msgstr "29"
+
+#. Resource IDs: (6104)
+msgid "2FA copied "
+msgstr ""
 
 #. Resource IDs: (8023)
 msgid "3"
@@ -1595,6 +1643,10 @@ msgstr "Vse datoteke (*.*)|*.*||"
 msgid "Allow multiple instances (requires all instances to be restarted)"
 msgstr "Dovoli več primerkov (zahteva vnovični zagon vseh primerkov)"
 
+#. Resource IDs: (3504)
+msgid "Allowed characters are a-z, 2-7, space and dash"
+msgstr ""
+
 #. Resource IDs: (1434)
 msgid "Also used to replace periods in the Title field."
 msgstr "Uporablja se tudi za nadomestitev obdobij v polju Naslov."
@@ -1639,10 +1691,18 @@ msgstr "Kratko ime se ne more sklicevati na sebe!"
 msgid "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr "Že obstaja vnos ali bližnjica z isto Skupino, Naslovom, Uporabniškim imenom."
 
+#. Resource IDs: (6106)
+msgid "An error occurred obtaining the authentication code."
+msgstr ""
+
 #. Resource IDs: (61862)
 #, c-format
 msgid "An incorrect file handle was associated with %1."
 msgstr "Nepravilen ročaj datoteke je bil povezan z %1."
+
+#. Resource IDs: (3501)
+msgid "An unknown Authentication Code error occurred"
+msgstr ""
 
 #. Resource IDs: (61476)
 msgid "An unknown error has occurred."
@@ -1749,6 +1809,42 @@ msgstr "Poskušano branja iz pisanja %1."
 msgid "Attempted to write to the reading %1."
 msgstr "Poskušano pisanje v branje %1."
 
+#. Resource IDs: (600)
+msgid "Authentication Code"
+msgstr ""
+
+#. Resource IDs: (3081)
+msgid "Authentication Code Config"
+msgstr ""
+
+#. Resource IDs: (6105)
+msgid "Authentication Code Error"
+msgstr ""
+
+#. Resource IDs: (3082)
+msgid "Authentication Code Length"
+msgstr ""
+
+#. Resource IDs: (3084)
+msgid "Authentication Code Start Time"
+msgstr ""
+
+#. Resource IDs: (3083)
+msgid "Authentication Code Time Step"
+msgstr ""
+
+#. Resource IDs: (3080)
+msgid "Authentication Secret"
+msgstr ""
+
+#. Resource IDs: (6103)
+msgid "Authentication code requires secret key in Additional tab."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Authenticator Secret"
+msgstr ""
+
 #. Resource IDs: (3007)
 msgid "AutoType"
 msgstr "Samodejna vrsta"
@@ -1796,6 +1892,10 @@ msgstr "Ime varnostne kopije"
 #. Resource IDs: (137, 1599, 505)
 msgid "Backups"
 msgstr "Varnostne kopije"
+
+#. Resource IDs: (3505)
+msgid "Bad length"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Base:"
@@ -1896,6 +1996,10 @@ msgstr "Bajtov"
 #. Resource IDs: (32065 - Menu, 32065 - MenuEx)
 msgid "C&lear Clipboard"
 msgstr "Počis&ti odložišče"
+
+#. Resource IDs: (1174)
+msgid "C&opy All"
+msgstr ""
 
 #. Resource IDs: (1386)
 msgid "C++ Terminate"
@@ -2077,6 +2181,14 @@ msgstr "Kitajski Bopomofo"
 msgid "Chinese ChaJei"
 msgstr "Kitajski ChaJei"
 
+#. Resource IDs: (1)
+msgid "Cl&ose"
+msgstr ""
+
+#. Resource IDs: (1141)
+msgid "Clear &History"
+msgstr ""
+
 #. Resource IDs: (8001)
 msgid "Clear Buffer"
 msgstr "Počisti predpomnilnik"
@@ -2136,6 +2248,10 @@ msgstr "Kliknite, za spremembo m/V črk."
 #. Resource IDs: (5917)
 msgid "Click to copy generated password to clipboard"
 msgstr "Kliknite, za kopiranje generiranega gesla v odložišče"
+
+#. Resource IDs: (6102)
+msgid "Click to copy the current authentication code to clipboard."
+msgstr ""
 
 #. Resource IDs: (5646)
 msgid "Click to copy to clipboard"
@@ -2380,6 +2496,10 @@ msgstr "Kopiraj uporabniško i&me v odložišče"
 #. Resource IDs: (1174)
 msgid "Copy All"
 msgstr "Kopiraj &vse"
+
+#. Resource IDs: (32100 - Menu, 32100 - MenuEx)
+msgid "Copy Aut&h Code to Clipboard"
+msgstr ""
 
 #. Resource IDs: (32071 - Menu, 32071 - MenuEx, 5723)
 msgid "Copy Email to Clipboard"
@@ -2693,6 +2813,10 @@ msgstr "Privzeto število shranjenih vnosov zgodovine gesla mora biti med %d in 
 msgid "Default password expiration (days)"
 msgstr "Privzeto potek gesla (dnevi)"
 
+#. Resource IDs: (65535)
+msgid "Default:"
+msgstr ""
+
 #. Resource IDs: (5622)
 msgid "Delete"
 msgstr "Izbriši"
@@ -2758,6 +2882,10 @@ msgstr "Izjema pri odpremi: %1"
 #. Resource IDs: (138, 1599, 506)
 msgid "Display"
 msgstr "Prikaz"
+
+#. Resource IDs: (32099 - Menu, 32099 - MenuEx)
+msgid "Display Auth Code"
+msgstr ""
 
 #. Resource IDs: (151, 152, 153, 154, 155, 156, 161, 163, 165, 166)
 msgid "Display Filter - "
@@ -3064,6 +3192,10 @@ msgstr "Vnesite največ %1 znakov."
 #. Resource IDs: (65535)
 msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
 msgstr "Vnesite položaje znakov gesla, ločenih s presledki, vejami ali poldehi (ali * za polno geslo)."
+
+#. Resource IDs: (6101)
+msgid "Enter the authentication secret key. This usually taken from the authenticator setup page."
+msgstr ""
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -3645,6 +3777,10 @@ msgstr "Popolnoma strnjeno"
 msgid "Fully expanded"
 msgstr "Popolnoma razširjeno"
 
+#. Resource IDs: (1379)
+msgid "G&o"
+msgstr ""
+
 #. Resource IDs: (8305)
 msgid "Gaelic"
 msgstr "Gelščina"
@@ -3697,10 +3833,6 @@ msgstr "Dobi po&moč\tF1"
 msgid "Given path is a directory or file is read-only"
 msgstr "Navedena pot je imenik ali je datoteka samo-za-branje"
 
-#. Resource IDs: (1379)
-msgid "Go"
-msgstr "Pojdi"
-
 #. Resource IDs: (5667)
 msgid "Go "
 msgstr "Pojdi "
@@ -3745,6 +3877,10 @@ msgstr "Grška latinica"
 msgid "Greek Polytonic"
 msgstr "Grščina polifonična"
 
+#. Resource IDs: (1350)
+msgid "Gro&up:"
+msgstr ""
+
 #. Resource IDs: (3055, 5221)
 msgid "Group"
 msgstr "Skupina"
@@ -3761,7 +3897,7 @@ msgstr "Skupina kopirana "
 msgid "Group/Title"
 msgstr "Skupina/Naslov"
 
-#. Resource IDs: (1350, 65535)
+#. Resource IDs: (65535)
 msgid "Group:"
 msgstr "Skupina:"
 
@@ -3958,6 +4094,16 @@ msgstr ""
 #. Accelerator Entry for Menu ID:32084; 'Redo'
 #. Accelerator Entry for Menu ID:32084; 'Redo'
 msgid "ID:32084:V C +Y"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32099; 'Display Auth Code'
+#. Accelerator Entry for Menu ID:32099; 'Display Auth Code'
+msgid "ID:32099:VAC +2"
+msgstr ""
+
+#. Accelerator Entry for Menu ID:32100; 'Copy Aut&h Code to Clipboard'
+#. Accelerator Entry for Menu ID:32100; 'Copy Aut&h Code to Clipboard'
+msgid "ID:32100:VA  +2"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32140; 'Last Find results'
@@ -4291,6 +4437,10 @@ msgstr "Kanadščina"
 msgid "Kazakh"
 msgstr "Kazaščina"
 
+#. Resource IDs: (65535)
+msgid "Ke&y:"
+msgstr ""
+
 #. Resource IDs: (32024 - MenuEx)
 msgid "KeePass V1 CSV File..."
 msgstr "KeePass v1 CSV datoteke..."
@@ -4303,7 +4453,15 @@ msgstr "KeePass v1 txt datoteke..."
 msgid "Keep"
 msgstr "Obdrži"
 
-#. Resource IDs: (3073, 5940, 65535)
+#. Resource IDs: (65535)
+msgid "Key&board Shortcut"
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Key&board Shortcut:"
+msgstr ""
+
+#. Resource IDs: (3073, 5940)
 msgid "Keyboard Shortcut"
 msgstr "Tipka z Bližnjico"
 
@@ -4616,6 +4774,10 @@ msgstr "Razn."
 msgid "Missing XSD File"
 msgstr "Manjka XSD datoteka"
 
+#. Resource IDs: (6107)
+msgid "Missing authentication secret key."
+msgstr ""
+
 #. Resource IDs: (3354)
 msgid "Missing ending curly bracket for variable name"
 msgstr "Manjka končni zaviti oklepaj za ime spremenljivke"
@@ -4669,7 +4831,7 @@ msgstr "Imenovan pravilnik"
 msgid "Nested &Tree"
 msgstr "Ugnezdeno &drevo"
 
-#. Resource IDs: (1229, 5241)
+#. Resource IDs: (5241)
 msgid "Never"
 msgstr "Nikoli"
 
@@ -5496,6 +5658,11 @@ msgstr "Predogled ni na voljo"
 msgid "Previous Passwords"
 msgstr "Prejšnja gesla"
 
+#. Resource IDs: (6100)
+#, c-format
+msgid "Problem with authenticator secret: %s"
+msgstr ""
+
 #. Resource IDs: (1436)
 msgid "Processing entry:"
 msgstr "Obdelava vnosa:"
@@ -5616,10 +5783,6 @@ msgstr "Zapiši zadnji čas dostopa"
 #. Resource IDs: (62184)
 msgid "Recover the auto-saved documents\nOpen the auto-saved versions instead of the explicitly saved versions"
 msgstr "Obnovi samodejno shranjene dokumente\nOdpri samodejno shranjene različice namesto eksplicitno shranjenih različic"
-
-#. Resource IDs: (1297)
-msgid "Recurring"
-msgstr "Ponavljajoče se"
 
 #. Resource IDs: (1487, 32084 - MenuEx)
 msgid "Redo"
@@ -5772,10 +5935,6 @@ msgstr "Pravilo"
 msgid "Rule:"
 msgstr "Pravilo:"
 
-#. Resource IDs: (1358)
-msgid "Run Cmd:"
-msgstr "Zaženi CMD:"
-
 #. Resource IDs: (3063, 4009, 5654)
 msgid "Run Command"
 msgstr "Zaženi ukaz"
@@ -5791,6 +5950,10 @@ msgstr "Ruščina"
 #. Resource IDs: (8290)
 msgid "Russian (Typewriter)"
 msgstr "Ruščina (pisalni stroj)"
+
+#. Resource IDs: (1613)
+msgid "S&how"
+msgstr ""
 
 #. Resource IDs: (32022 - MenuEx)
 msgid "S&ynchronize..."
@@ -5880,34 +6043,9 @@ msgstr "Zaščita pred zajemanjem zaslona je onemogočena z ukazno vrstico.\n\n�
 msgid "Screen capture protection disabled by command line.\n\nContact support if this is unexpected.\n\nYou can click OK to continue in %d seconds."
 msgstr "Zaščita pred zajemanjem zaslona je onemogočena z ukazno vrstico.\n\nČe je to nepričakovano, se obrnite na podporo.\n\nČe želite nadaljevati v %d sekundah, lahko kliknete V redu."
 
-#. Resource IDs: (6090)
-msgid "Screen capture protection disabled by unknown cause (state error).\n\nContact support if this is unexpected.\n\nClick OK to continue."
-msgstr ""
-
-#. Resource IDs: (6080)
-#, c-format
-msgid "Screen capture protection disabled by unknown cause (state error).\n\nContact support if this is unexpected.\n\nYou can click OK to continue in %d seconds."
-msgstr ""
-
-#. Resource IDs: (6073, 6074)
-msgid "Screen capture protection disabled for remote access."
-msgstr ""
-
-#. Resource IDs: (6067)
-msgid "Screen capture protection experienced an unexpected operating system error."
-msgstr ""
-
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
 msgstr "Zaščita pred zajemanjem zaslona je bila preglašena z ukazno vrstico."
-
-#. Resource IDs: (6070)
-msgid "Screen capture protection invalid (failure)."
-msgstr ""
-
-#. Resource IDs: (6081, 6091)
-msgid "Screen capture protection is enabled."
-msgstr ""
 
 #. Resource IDs: (6069)
 msgid "Screen capture protection is off."
@@ -5916,10 +6054,6 @@ msgstr "Zaščita pred zajemanjem zaslona je izklopljena."
 #. Resource IDs: (6068, 6071)
 msgid "Screen capture protection is on."
 msgstr "Zaščita pred zajemanjem zaslona je vklopljena."
-
-#. Resource IDs: (6071)
-msgid "Screen capture protection on."
-msgstr ""
 
 #. Resource IDs: (6067)
 msgid "Screen capture protection: unexpected system error"
@@ -6381,7 +6515,7 @@ msgstr "Začni shranjevanje zgodovine gesel za vse vnose, na zgoraj navedeno št
 msgid "Start saving previous passwords"
 msgstr "Zaženi shranjevanja prejšnjih gesel"
 
-#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561, 1562, 1588, 8103)
+#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561, 1562, 1588, 1614, 8103)
 msgid "Static"
 msgstr "Statično"
 
@@ -6575,6 +6709,14 @@ msgstr "Tipka Alt je dodana."
 msgid "The Alt, Ctrl and Shift keys have been added."
 msgstr "Dodane so tipke Alt, Ctrl in Shift."
 
+#. Resource IDs: (3502)
+msgid "The Authentication Code configuration is invalid"
+msgstr ""
+
+#. Resource IDs: (3500)
+msgid "The Authentication Code operation was successful"
+msgstr ""
+
 #. Resource IDs: (5946)
 msgid "The Ctrl and Shift keys have been added."
 msgstr "Tipki Ctrl in Shift sta dodani."
@@ -6590,6 +6732,10 @@ msgstr "Datoteka TXT ali CSV ni bila uvožena kot je zahtevano, ker zapisi vnosa
 #. Resource IDs: (6003)
 msgid "The YubiKey appears uninitialized. Initialize it?"
 msgstr "YubiKey je videti neinicializiran. Ga inicializiram?"
+
+#. Resource IDs: (3503)
+msgid "The authentication secret was not found"
+msgstr ""
 
 #. Resource IDs: (5311)
 #, c-format
@@ -6876,6 +7022,10 @@ msgstr "To je kratko ime osnovnega vnosa."
 msgid "This is an alias of:"
 msgstr "To je kratko ime:"
 
+#. Resource IDs: (6115)
+msgid "This is the current authentication code. Click the button to copy it to the clipboard."
+msgstr ""
+
 #. Resource IDs: (5121)
 #, c-format
 msgid "This is the percentage of Window transparency. 0% means normal fully opaque and 100% is totally transparent and invisible. Values greater than 50% are not supported. Note: This only applies to the main dialog window."
@@ -6994,6 +7144,10 @@ msgstr "Turščina Q"
 #. Resource IDs: (8247)
 msgid "Turkmen"
 msgstr "Turkmenščina"
+
+#. Resource IDs: (3079)
+msgid "Two Factor Key"
+msgstr ""
 
 #. Resource IDs: (1355)
 msgid "U&RL:"
@@ -7690,6 +7844,10 @@ msgstr "\nPrimerjaj vnose..."
 msgid "\nCompare two Databases"
 msgstr "\nPrimerjaj dve zbirki podatkov"
 
+#. Resource IDs: (32100)
+msgid "\nCopy Auth Code to Clipboard"
+msgstr ""
+
 #. Resource IDs: (32069)
 msgid "\nCopy Notes to Clipboard"
 msgstr "\nKopiraj opombe v odložišče"
@@ -7713,6 +7871,10 @@ msgstr "\nUstvari poročilo o prejšnjem iskanju"
 #. Resource IDs: (32056)
 msgid "\nDelete an Entry"
 msgstr "\nIzbriši vnos"
+
+#. Resource IDs: (32099)
+msgid "\nDisplay Auth Code"
+msgstr ""
 
 #. Resource IDs: (32067)
 msgid "\nDisplay subset of Password"
@@ -8200,10 +8362,6 @@ msgstr "zbirk podatkov."
 msgid "day(s)"
 msgstr "dni"
 
-#. Resource IDs: (1298)
-msgid "days"
-msgstr "dni"
-
 #. Resource IDs: (65535)
 msgid "days before passwords expire"
 msgstr "dni pred potekom gesel"
@@ -8535,4 +8693,9 @@ msgstr "xx%"
 #. Resource IDs: (8004)
 msgid "xxxxxx"
 msgstr "xxxxxx"
+
+#. Resource IDs: (6116)
+#, c-format
+msgid "«%s» «%s» «%s»"
+msgstr ""
 
