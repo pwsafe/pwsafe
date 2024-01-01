@@ -2032,7 +2032,7 @@ void DboxMain::CopyDataToClipBoard(ClipboardDataSource cds, const bool bSpecial)
       ASSERT(0);
     }
   } else if (cds.IsDerived() && cds.GetDerivedType() == ClipboardDataSource::AuthCode) {
-    GetTwoFactoryAuthenticationCode(pci_credential, sxData);
+    GetTwoFactoryAuthenticationCode(*pci_credential, sxData);
     if (sxData.empty())
       return;
     StartAuthCodeUpdateClipboardTimer(uuid);
@@ -2161,7 +2161,7 @@ void DboxMain::OnTwoFactorAuthCodeUpdateClipboardTimer()
   }
 
   StringX sxAuthCode;
-  GetTwoFactoryAuthenticationCode(pci_credential, sxAuthCode);
+  GetTwoFactoryAuthenticationCode(*pci_credential, sxAuthCode);
   if (sxAuthCode.empty()) {
     StopAuthCodeUpdateClipboardTimer();
     return;
@@ -2170,25 +2170,19 @@ void DboxMain::OnTwoFactorAuthCodeUpdateClipboardTimer()
   SetClipboardData(sxAuthCode);
 }
 
-PWSTotp::TOTP_Result DboxMain::GetTwoFactoryAuthenticationCode(const CItemData* pci, StringX& sxAuthCode, double* pRatio)
+PWSTotp::TOTP_Result DboxMain::GetTwoFactoryAuthenticationCode(const CItemData& ci, StringX& sxAuthCode, double* pRatio)
 {
   sxAuthCode.clear();
-  if (!pci) {
-    CGeneralMsgBox gmb;
-    CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
-    CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_KEYNOTFOUND));
-    gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
-    return PWSTotp::InvalidTotpConfiguration;
-  }
-  StringX sxTwoFactorKey = pci->GetTwoFactorKey();
-  if (sxTwoFactorKey.empty()) {
+ 
+  if (ci.GetTwoFactorKey().empty()) {
     CGeneralMsgBox gmb;
     CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
     CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_KEYEMPTY));
     gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
     return PWSTotp::TotpKeyNotFound;
   }
-  PWSTotp::TOTP_Result r = PWSTotp::GetNextTotpAuthCodeString(*pci, sxAuthCode, nullptr, pRatio);
+
+  PWSTotp::TOTP_Result r = PWSTotp::GetNextTotpAuthCodeString(ci, sxAuthCode, nullptr, pRatio);
   if (r != PWSTotp::Success) {
     CGeneralMsgBox gmb;
     CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));

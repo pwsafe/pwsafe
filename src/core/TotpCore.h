@@ -19,7 +19,7 @@
 
 /**
  * Password Safe Core library two factor authentication related structs and
- * funtionality connecting PwSafe Core users (i.e., UI/CLI) with TOTP internals.
+ * functionality connecting PwSafe Core users (i.e., UI/CLI) with TOTP internals.
  */
 
 class CItemData;
@@ -30,7 +30,7 @@ namespace PWSTotp {
     Success = 0,
     InvalidTotpConfiguration = 2,
     TotpKeyNotFound = 3,
-    ConvertKeyToUtf8Failure = 4,
+    InvalidCharactersInKey = 4,
     KeyBase32DecodingFailure = 5,
   };
 
