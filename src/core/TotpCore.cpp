@@ -17,6 +17,7 @@
 #include <string>
 #include <sstream>
 #include <chrono>
+#include <algorithm>
 
 #include "core.h"
 #include "core/crypto/totp.h"
