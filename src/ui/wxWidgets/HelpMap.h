@@ -17,6 +17,7 @@ DLG_HELP(SafeCombinationSetupDlg,                       html/about_combinations.
 DLG_HELP(ImportTextDlg,                                 html/import.html)
 DLG_HELP(ImportXmlDlg,                                  html/import.html#XML)
 DLG_HELP(SafeCombinationEntryDlg,                       html/create_new_db.html)
+DLG_HELP(SafeCombinationPromptDlg,                      html/create_new_db.html)
 
 //The Contents page from main toolbar
 DLG_HELP(wxToolBar,                                     html/Welcome.html)
