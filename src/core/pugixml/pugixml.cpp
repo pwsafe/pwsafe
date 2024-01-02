@@ -4524,7 +4524,7 @@ PUGI__NS_BEGIN
 	PUGI__FN bool set_value_convert(String& dest, Header& header, uintptr_t header_mask, float value)
 	{
 		char buf[128];
-		sprintf(buf, "%.9g", value);
+		snprintf(buf, sizeof(buf), "%.9g", value);
 
 		return set_value_ascii(dest, header, header_mask, buf);
 	}
@@ -4533,7 +4533,7 @@ PUGI__NS_BEGIN
 	PUGI__FN bool set_value_convert(String& dest, Header& header, uintptr_t header_mask, double value)
 	{
 		char buf[128];
-		sprintf(buf, "%.17g", value);
+		snprintf(buf, sizeof(buf), "%.17g", value);
 
 		return set_value_ascii(dest, header, header_mask, buf);
 	}

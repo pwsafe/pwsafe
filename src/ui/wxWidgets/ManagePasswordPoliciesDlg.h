@@ -119,7 +119,7 @@ protected:
   void OnOkClick( wxCommandEvent& event );
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
-  void OnCancelClick( wxCommandEvent& event );
+  void OnCancelClick( wxCommandEvent& event ) override;
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_HELP
   void OnHelpClick( wxCommandEvent& event );
@@ -143,8 +143,8 @@ protected:
   static bool ShowToolTips();
 
   // Overridden virtuals
-  virtual bool Show(bool show = true);
-  
+  virtual bool Show(bool show = true) override;
+
   void DoNewClick();
   void DoEditClick();
 

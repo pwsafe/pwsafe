@@ -554,9 +554,9 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
 }
 
 struct XMLFilterWriterToString {
+  XMLFilterWriterToString(const XMLFilterWriterToString&) = default;
   XMLFilterWriterToString(coStringXStream &os, bool bWithFormatting) :
-  m_os(os), m_bWithFormatting(bWithFormatting)
-  {}
+                          m_os(os), m_bWithFormatting(bWithFormatting) {}
 
   // operator
   void operator()(const pair<const st_Filterkey, st_filters> &p)

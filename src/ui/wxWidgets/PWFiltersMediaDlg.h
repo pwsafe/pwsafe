@@ -84,7 +84,7 @@ protected:
 
 private:
 
-  void InitDialog();
+  void InitDialog() override;
   void SetValidators();
 
   //(*Handlers(pwFiltersMediaTypesDlg)

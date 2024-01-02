@@ -167,10 +167,9 @@ void pwFiltersMediaTypesDlg::InitDialog()
 
   m_MediaTypes->Append(_T("")); // Allow empty selection
   if (m_psMediaTypes != nullptr) {
-    size_t i = 0;
     for (auto iter = m_psMediaTypes->begin();
          iter != m_psMediaTypes->end();
-         i++, iter++) {
+         iter++) {
       wxString value = iter->c_str();
       m_MediaTypes->Append(value);
       // Set column size to fit

@@ -349,6 +349,11 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker, HANDLE &)
 #endif
     return false;
   } else { // valid filehandle, write our info
+
+// Since ASSERT is a no-op in a release build, numWrit
+// becomes an unused variable
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-but-set-variable"
     ssize_t numWrit;
     const stringT user = pws_os::getusername();
     const stringT host = pws_os::gethostname();
@@ -360,6 +365,8 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker, HANDLE &)
     numWrit += write(fh, _T(":"), sizeof(TCHAR));
     numWrit += write(fh, pid.c_str(), pid.length() * sizeof(TCHAR));
     ASSERT(numWrit > 0);
+#pragma GCC diagnostic pop
+
     close(fh);
 #ifdef UNICODE
     delete[] lfn;

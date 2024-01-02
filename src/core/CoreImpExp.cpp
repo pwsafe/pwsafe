@@ -217,6 +217,7 @@ StringX PWScore::BuildHeader(const CItemData::FieldBits &bsFields, const bool bI
 }
 
 struct TextRecordWriter {
+  TextRecordWriter(const TextRecordWriter&) = default;
   TextRecordWriter(const stringT &subgroup_name,
           const int &subgroup_object, const int &subgroup_function,
           const CItemData::FieldBits &bsFields,
@@ -350,6 +351,7 @@ int PWScore::WritePlaintextFile(const StringX &filename,
 }
 
 struct XMLRecordWriter {
+  XMLRecordWriter(const XMLRecordWriter&) = default;
   XMLRecordWriter(const stringT &subgroup_name,
                   const int subgroup_object, const int subgroup_function,
                   const CItemData::FieldBits &bsFields,
@@ -2000,7 +2002,6 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   cStringXStream iss;
   unsigned char buffer[IMPORT_BUFFER_SIZE + 1];
   bool bError(false);
-  size_t total(0);
   while(!feof(fs)) {
     size_t count = fread(buffer, 1, IMPORT_BUFFER_SIZE, fs);
     if (ferror(fs)) {
@@ -2009,7 +2010,6 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     }
     buffer[count] = '\0';
     iss << buffer;
-    total += count;
   }
 
   // Close the file

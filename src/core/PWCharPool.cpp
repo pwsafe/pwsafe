@@ -347,6 +347,7 @@ class FillSC {
   // for "leet" alphabet for pronounceable passwords
   // with usesymbols and/or usedigits specified
 public:
+  FillSC(const FillSC&) = default;
   FillSC(vector<int> &sc, bool digits, bool symbols)
     : m_sc(sc), m_digits(digits), m_symbols(symbols), m_i(0) {}
 

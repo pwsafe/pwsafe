@@ -935,8 +935,6 @@ void PasswordSafeFrame::RefreshToolbarButtons()
  */
 void PasswordSafeFrame::UpdateMainToolbarBitmaps()
 {
-  auto pref = PWSprefs::GetInstance();
-  wxASSERT(pref);
   auto toolbar = GetToolBar();
   wxASSERT(toolbar);
 

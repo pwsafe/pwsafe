@@ -76,7 +76,7 @@ protected:
   static BoolType ConvertType(FieldType ftype);
 private:
 
-  void InitDialog();
+  void InitDialog() override;
   void SetValidators();
 
   //(*Handlers(pwFiltersBoolDlg)

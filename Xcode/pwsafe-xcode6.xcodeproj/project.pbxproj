@@ -26,7 +26,7 @@
 		570781742B0C4D330082EB6E /* PWYubi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570781692B0C4CD30082EB6E /* PWYubi.cpp */; };
 		57BD7D042B19BEC2005C0123 /* helpEN.zip in Resources */ = {isa = PBXBuildFile; fileRef = E690B95612984B1D007EA508 /* helpEN.zip */; };
 		6FF5D4A11DA14EE80032F5B6 /* PasswordSubsetDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */; };
-		89A146668BFBBDB52F97EB58 /* TotpCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DA345B998C630600DF46F90 /* TotpCore.cpp */; };
+		89A146668BFBBDB52F97EB58 /* TotpCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DA345B998C630600DF46F90 /* TotpCore.cpp */; settings = {COMPILER_FLAGS = "-Wno-shorten-64-to-32"; }; };
 		8ED7E1C429D9F24C0012034B /* SetDatabaseIdDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */; };
 		A2D181461C8FF86C0018AE03 /* media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D181451C8FF86C0018AE03 /* media.cpp */; };
 		A2FE258D1C5ACF7500210C36 /* Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25811C5ACF7500210C36 /* Item.cpp */; };
@@ -68,13 +68,13 @@
 		E090D35824D742E90083BA2B /* ViewAttachmentDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E090D35624D742E90083BA2B /* ViewAttachmentDlg.cpp */; };
 		E0A70B9821C8FF8900A2FEA8 /* PolicyManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0A70B9621C8FF8900A2FEA8 /* PolicyManager.cpp */; };
 		E0A70B9B21C905A500A2FEA8 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A70B9A21C905A500A2FEA8 /* libcurl.tbd */; };
-		E0C3C4422379B2C200715124 /* AES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C42F2379B2C200715124 /* AES.cpp */; };
+		E0C3C4422379B2C200715124 /* AES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C42F2379B2C200715124 /* AES.cpp */; settings = {COMPILER_FLAGS = "-Wno-shorten-64-to-32"; }; };
 		E0C3C4432379B2C200715124 /* BlowFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C4322379B2C200715124 /* BlowFish.cpp */; };
 		E0C3C4442379B2C200715124 /* KeyWrap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C4362379B2C200715124 /* KeyWrap.cpp */; };
 		E0C3C4452379B2C200715124 /* pbkdf2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C4382379B2C200715124 /* pbkdf2.cpp */; };
 		E0C3C4462379B2C200715124 /* sha1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C43A2379B2C200715124 /* sha1.cpp */; };
 		E0C3C4472379B2C200715124 /* sha256.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C43C2379B2C200715124 /* sha256.cpp */; };
-		E0C3C4492379B2C200715124 /* TwoFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C43F2379B2C200715124 /* TwoFish.cpp */; };
+		E0C3C4492379B2C200715124 /* TwoFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C43F2379B2C200715124 /* TwoFish.cpp */; settings = {COMPILER_FLAGS = "-Wno-shorten-64-to-32"; }; };
 		E0C3C44F2379CD7500715124 /* MenuFileHandlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C44D2379CA7300715124 /* MenuFileHandlers.cpp */; };
 		E0C3C4502379CD8300715124 /* CryptKeyEntryDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C44A2379CA2A00715124 /* CryptKeyEntryDlg.cpp */; };
 		E60F25D812C4ACEB001E63C4 /* ExternalKeyboardButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */; };
@@ -414,7 +414,7 @@
 		E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SizeRestrictedPanel.cpp; sourceTree = "<group>"; };
 		E66FB84C13ACA5C3004DBB97 /* SizeRestrictedPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SizeRestrictedPanel.h; sourceTree = "<group>"; };
 		E683B217150481DF0013D588 /* pugiconfig.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pugiconfig.hpp; sourceTree = "<group>"; };
-		E683B218150481DF0013D588 /* pugixml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = pugixml.cpp; sourceTree = "<group>"; };
+		E683B218150481DF0013D588 /* pugixml.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = pugixml.cpp; sourceTree = "<group>"; tabWidth = 2; usesTabs = 1; };
 		E683B219150481DF0013D588 /* pugixml.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pugixml.hpp; sourceTree = "<group>"; };
 		E6889E011EE4640F0023E376 /* cleanup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cleanup.cpp; path = unix/cleanup.cpp; sourceTree = "<group>"; };
 		E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = pwsafe_filter.xsd; path = ../xml/pwsafe_filter.xsd; sourceTree = SOURCE_ROOT; };
@@ -2194,12 +2194,12 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
-				OTHER_CPLUSPLUSFLAGS = (
+				PRODUCT_NAME = core;
+				USER_HEADER_SEARCH_PATHS = ../src/;
+				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
 				);
-				PRODUCT_NAME = core;
-				USER_HEADER_SEARCH_PATHS = ../src/;
 			};
 			name = "Debug-no-yubi";
 		};
@@ -2212,12 +2212,12 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = "/usr/local/include/ykpers-1";
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
-				OTHER_CPLUSPLUSFLAGS = (
+				PRODUCT_NAME = os;
+				USER_HEADER_SEARCH_PATHS = ../src;
+				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
 				);
-				PRODUCT_NAME = os;
-				USER_HEADER_SEARCH_PATHS = ../src;
 			};
 			name = "Debug-no-yubi";
 		};
@@ -2263,29 +2263,12 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -2305,29 +2288,12 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				ENABLE_HARDENED_RUNTIME = YES;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -2347,28 +2313,11 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_MODULES = YES;
 				CLANG_ENABLE_OBJC_ARC = YES;
-				CLANG_WARN_BOOL_CONVERSION = YES;
-				CLANG_WARN_CONSTANT_CONVERSION = YES;
-				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
-				CLANG_WARN_EMPTY_BODY = YES;
-				CLANG_WARN_ENUM_CONVERSION = YES;
-				CLANG_WARN_INT_CONVERSION = YES;
-				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
-				CLANG_WARN_UNREACHABLE_CODE = YES;
-				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
 				CODE_SIGN_IDENTITY = "-";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_NS_ASSERTIONS = NO;
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_C_LANGUAGE_STANDARD = "compiler-default";
-				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
-				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
-				GCC_WARN_UNDECLARED_SELECTOR = YES;
-				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
-				GCC_WARN_UNUSED_FUNCTION = YES;
-				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
@@ -2518,12 +2467,12 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
-				OTHER_CPLUSPLUSFLAGS = (
+				PRODUCT_NAME = core;
+				USER_HEADER_SEARCH_PATHS = ../src/;
+				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
 				);
-				PRODUCT_NAME = core;
-				USER_HEADER_SEARCH_PATHS = ../src/;
 			};
 			name = Debug;
 		};
@@ -2535,12 +2484,12 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
-				OTHER_CPLUSPLUSFLAGS = (
+				PRODUCT_NAME = core;
+				USER_HEADER_SEARCH_PATHS = ../src/;
+				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
 				);
-				PRODUCT_NAME = core;
-				USER_HEADER_SEARCH_PATHS = ../src/;
 				ZERO_LINK = NO;
 			};
 			name = Release;
@@ -2554,12 +2503,12 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = "/usr/local/include/ykpers-1";
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
-				OTHER_CPLUSPLUSFLAGS = (
+				PRODUCT_NAME = os;
+				USER_HEADER_SEARCH_PATHS = ../src;
+				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
 				);
-				PRODUCT_NAME = os;
-				USER_HEADER_SEARCH_PATHS = ../src;
 			};
 			name = Debug;
 		};
@@ -2571,12 +2520,12 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				HEADER_SEARCH_PATHS = "/usr/local/include/ykpers-1";
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
-				OTHER_CPLUSPLUSFLAGS = (
+				PRODUCT_NAME = os;
+				USER_HEADER_SEARCH_PATHS = ../src;
+				WARNING_CFLAGS = (
 					"-Wall",
 					"-Wextra",
 				);
-				PRODUCT_NAME = os;
-				USER_HEADER_SEARCH_PATHS = ../src;
 				ZERO_LINK = NO;
 			};
 			name = Release;

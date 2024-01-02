@@ -420,6 +420,7 @@ void PWSfileV4::StretchKey(const unsigned char *salt, unsigned long saltLen,
 const short VersionNum = 0x0400;
 
 struct PWSfileV4::CKeyBlocks::KeyBlockFinder {
+  KeyBlockFinder(const KeyBlockFinder&) = default;
   KeyBlockFinder(const StringX &passkey) : passkey(passkey) {}
 
   bool operator()(const KeyBlock &kb) {
