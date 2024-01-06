@@ -16,7 +16,7 @@ Bugs fixed in 3.65.0
 
 New features in 3.65.0
 ----------------------
-* PasswordSafe can now generate authentication tokens (one time password codes) for entries for site that require those for stronger security.
+* [GH1075](https://github.com/pwsafe/pwsafe/issues/1075) PasswordSafe can now generate authentication tokens (one time password codes) for entries for site that require those for stronger security.
 
 
 PasswordSafe 3.64.1 Release Nov 2023
