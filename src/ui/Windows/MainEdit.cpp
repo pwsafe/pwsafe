@@ -2127,6 +2127,7 @@ void DboxMain::StartAuthCodeUpdateClipboardTimer(const pws_os::CUUID& uuidEntry)
 void DboxMain::StopAuthCodeUpdateClipboardTimer()
 {
   m_uuidEntryTwoFactorAutoCopyToClipboard = pws_os::CUUID::NullUUID();
+  m_sxLastAuthCode.clear();
   KillTimer(TIMER_TWO_FACTOR_AUTH_CODE_UPDATE_CLIPBOARD);
 }
 
@@ -2155,12 +2156,6 @@ void DboxMain::OnTwoFactorAuthCodeUpdateClipboardTimer()
     }
   }
 
-  ClipboardStatus clipboardStatus = GetLastSensitiveClipboardItemStatus();
-  if (clipboardStatus != SuccessSensitivePresent && clipboardStatus != ClipboardNotAvailable) {
-    StopAuthCodeUpdateClipboardTimer();
-    return;
-  }
-
   StringX sxAuthCode;
   GetTwoFactoryAuthenticationCode(*pci_credential, sxAuthCode);
   if (sxAuthCode.empty()) {
@@ -2168,7 +2163,20 @@ void DboxMain::OnTwoFactorAuthCodeUpdateClipboardTimer()
     return;
   }
 
-  SetClipboardData(sxAuthCode);
+  if (sxAuthCode == m_sxLastAuthCode)
+    return;
+
+  ClipboardStatus clipboardStatus = GetLastSensitiveClipboardItemStatus();
+  if (!m_sxLastAuthCode.empty() && clipboardStatus != SuccessSensitivePresent) {
+
+    if (clipboardStatus != ClipboardNotAvailable)
+      StopAuthCodeUpdateClipboardTimer();
+
+    return;
+  }
+
+  if (SetClipboardData(sxAuthCode))
+    m_sxLastAuthCode = sxAuthCode;
 }
 
 PWSTotp::TOTP_Result DboxMain::GetTwoFactoryAuthenticationCode(const CItemData& ci, StringX& sxAuthCode, double* pRatio)

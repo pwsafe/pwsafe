@@ -704,6 +704,7 @@ public:
   void StopAuthCodeUpdateClipboardTimer();
   void OnTwoFactorAuthCodeUpdateClipboardTimer();
   pws_os::CUUID m_uuidEntryTwoFactorAutoCopyToClipboard;
+  StringX m_sxLastAuthCode;
 
   // Generated message map functions
   //{{AFX_MSG(DboxMain)

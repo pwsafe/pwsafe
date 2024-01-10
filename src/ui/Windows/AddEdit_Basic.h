@@ -146,7 +146,7 @@ private:
   void ShowHideBaseInfo(const CItemData::EntryType &entrytype, CSecString &csBase);
   void SetupAuthenticationCodeUiElements();
   void StopAuthenticationCodeUi();
-  bool UpdateAuthCode();
+  void UpdateAuthCode();
   PWSTotp::TOTP_Result ValidateTotpConfiguration(double *pRatio = nullptr);
 
   CSecString GetTwoFactorKey();
