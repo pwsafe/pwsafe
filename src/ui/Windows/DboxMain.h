@@ -315,12 +315,12 @@ public:
   void ResetIdleLockCounter(UINT event = WM_SIZE); // default arg always resets
   bool ClearClipboardData() {
     StopAuthCodeUpdateClipboardTimer();
-    return m_clipboard.ClearCBData();
+    return m_clipboard.ClearCBData() == SuccessSensitivePresent;
   }
   bool SetClipboardData(const StringX &data)
   {return m_clipboard.SetData(data.c_str());}
-  bool IsLastSensitiveClipboardItemPresent()
-  {return m_clipboard.IsLastSensitiveItemPresent();}
+  ClipboardStatus GetLastSensitiveClipboardItemStatus()
+  {return m_clipboard.GetLastSensitiveItemPresent();}
   void AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
     const std::vector<StringX> &vsxEmptyGroups);
   PWSTotp::TOTP_Result GetTwoFactoryAuthenticationCode(const CItemData& ci, StringX& sxAuthCode, double* pRatio = nullptr);

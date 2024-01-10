@@ -344,9 +344,10 @@ void CDisplayAuthCodeDlg::OnTimer(UINT_PTR nIDEvent)
   bool bNewCode = UpdateAuthCode(pciCred);
 
   if (bNewCode && m_bCopyToClipboard) {
-    if (GetMainDlg()->IsLastSensitiveClipboardItemPresent())
+    ClipboardStatus clipboardStatus = GetMainDlg()->GetLastSensitiveClipboardItemStatus();
+    if (clipboardStatus == ClipboardStatus::SuccessSensitivePresent)
       CopyAuthCodeToClipboard();
-    else
+    else if (clipboardStatus != ClipboardStatus::ClipboardNotAvailable)
       m_bCopyToClipboard = false;
   }
 }

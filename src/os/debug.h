@@ -43,4 +43,18 @@ namespace pws_os {
   bool DisableDumpAttach();
 }
 
+#if defined(_DEBUG) || defined(DEBUG)
+
+#define PWSTRACE(lpszFormat,...) pws_os::Trace(lpszFormat,__VA_ARGS__)
+
+#else
+
+#ifdef _WIN32
+#define PWSTRACE(lpszFormat,...) __noop
+#else
+#define PWSTRACE(lpszFormat,...) do {} while(0)
+#endif
+
+#endif
+
 #endif /* _OSDEBUG_H */

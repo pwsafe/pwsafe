@@ -1832,7 +1832,10 @@ bool CAddEdit_Basic::UpdateAuthCode()
   }
 
   bool bNewCode = false;
-  if (m_bCopyToClipboard && (m_sxLastAuthCode.empty() || GetMainDlg()->IsLastSensitiveClipboardItemPresent())) {
+  ClipboardStatus clipboardStatus = ClipboardStatus::Error;
+  if (!m_sxLastAuthCode.empty())
+    clipboardStatus = GetMainDlg()->GetLastSensitiveClipboardItemStatus();
+  if (m_bCopyToClipboard && (m_sxLastAuthCode.empty() || clipboardStatus == ClipboardStatus::SuccessSensitivePresent)) {
     if (sxAuthCode != m_sxLastAuthCode) {
       bNewCode = true;
       m_bCopyToClipboard = GetMainDlg()->SetClipboardData(sxAuthCode);
@@ -1841,7 +1844,7 @@ bool CAddEdit_Basic::UpdateAuthCode()
         GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::AuthCode);
       m_sxLastAuthCode = sxAuthCode;
     }
-  } else
+  } else if (m_bCopyToClipboard && clipboardStatus != ClipboardStatus::ClipboardNotAvailable)
     m_bCopyToClipboard = false;
 
   if (!m_bCopyToClipboard)

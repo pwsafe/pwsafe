@@ -2155,7 +2155,8 @@ void DboxMain::OnTwoFactorAuthCodeUpdateClipboardTimer()
     }
   }
 
-  if (!IsLastSensitiveClipboardItemPresent()) {
+  ClipboardStatus clipboardStatus = GetLastSensitiveClipboardItemStatus();
+  if (clipboardStatus != SuccessSensitivePresent && clipboardStatus != ClipboardNotAvailable) {
     StopAuthCodeUpdateClipboardTimer();
     return;
   }

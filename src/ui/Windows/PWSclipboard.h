@@ -23,6 +23,13 @@
 
 #include "core/StringX.h"
 
+enum ClipboardStatus {
+  Error,
+  ClipboardNotAvailable,
+  SuccessSensitiveNotPresent,
+  SuccessSensitivePresent
+};
+
 class PWSclipboard
 {
 public:
@@ -34,8 +41,8 @@ public:
     bool isSensitive = true,
     CLIPFORMAT cfFormat = CLIPBOARD_TEXT_FORMAT);
   // returns true if succeeded
-  bool ClearCBData(); // return true if cleared or if data wasn't ours
-  bool IsLastSensitiveItemPresent();
+  ClipboardStatus ClearCBData(); // return true if cleared or if data wasn't ours
+  ClipboardStatus GetLastSensitiveItemPresent();
 private:
   bool m_bSensitiveDataOnClipboard;
   unsigned char m_digest[SHA256::HASHLEN];

@@ -28,7 +28,6 @@ class ClipboardChecker
 public:
   ClipboardChecker()
     :
-    m_bError(true),
     m_podo(NULL),
     m_hData(NULL),
     m_pData(NULL),
@@ -42,54 +41,93 @@ public:
 
   void Reset()
   {
-    if (!m_hData)
-      return;
-    if (m_dwlength > 0)
-      trashMemory((void*)m_pData, m_dwlength);
-    m_pData = NULL;
-    m_dwlength = 0;
-    ::GlobalUnlock(m_hData);
-    ::GlobalFree(m_hData);
-    delete m_podo;
-    m_podo = NULL;
-    m_hData = NULL;
+    ReleaseClipboardResources();
     memset(m_digest, 0, sizeof(m_digest));
-    m_bError = true;
   }
 
-  bool Initialize()
+  void ReleaseClipboardResources() {
+    delete m_podo;
+    m_podo = NULL;
+    if (m_hData) {
+      if (m_dwlength > 0)
+        trashMemory((void*)m_pData, m_dwlength);
+      ::GlobalUnlock(m_hData);
+      ::GlobalFree(m_hData);
+    }
+    m_dwlength = 0;
+    m_pData = NULL;
+    m_hData = NULL;
+  }
+
+  ClipboardStatus Initialize()
   {
     Reset();
     StringX data;
+
+    HWND hwndClipboard = GetOpenClipboardWindow();
+    BOOL bIsAvailable = ::IsClipboardFormatAvailable(CF_UNICODETEXT);
+
+    if (hwndClipboard) {
+      PWSTRACE(L"ClipboardChecker::Initialize: hwndClipboard=%x bIsAvailable=%d: FAIL: hwndClipboard non-NULL\n", hwndClipboard, bIsAvailable);
+      return ClipboardStatus::ClipboardNotAvailable;
+    }
+
     m_podo = new COleDataObject;
     m_podo->AttachClipboard();
+    m_podo->EnsureClipboardObject();
+    if (!m_podo->m_lpDataObject) {
+      delete m_podo;
+      m_podo = NULL;
+      PWSTRACE(L"ClipboardChecker::Initialize: hwndClipboard=%x bIsAvailable=%d: FAIL: m_lpDataObject==NULL\n", hwndClipboard, bIsAvailable);
+      return ClipboardStatus::ClipboardNotAvailable;
+    }
+
     m_hData = m_podo->GetGlobalData(CLIPBOARD_TEXT_FORMAT);
-    if (m_hData == NULL)
-      return false;
+    delete m_podo;
+    m_podo = NULL;
+    if (!m_hData) {
+      ReleaseClipboardResources();
+      if (!hwndClipboard)
+        hwndClipboard = GetOpenClipboardWindow();
+      PWSTRACE(L"ClipboardChecker::Initialize: hwndClipboard=%x bIsAvailable=%d: FAIL: m_hData==NULL\n", hwndClipboard, bIsAvailable);
+      return (hwndClipboard != NULL || bIsAvailable) ? ClipboardStatus::ClipboardNotAvailable : ClipboardStatus::SuccessSensitiveNotPresent;
+    }
+
     m_pData = (LPCTSTR)::GlobalLock(m_hData);
-    if (!m_pData)
-      return false;
-    m_bError = false;
+    if (!m_pData) {
+      ReleaseClipboardResources();
+      PWSTRACE(L"ClipboardChecker::Initialize: hwndClipboard=%x bIsAvailable=%d: FAIL: m_pData==NULL\n", hwndClipboard, bIsAvailable);
+      return ClipboardStatus::Error;
+    }
+
     m_dwlength = ::GlobalSize(m_hData) - sizeof(wchar_t); // less trailing null
-    if (m_dwlength < 1)
-      return false;
-    SHA256 hasher;
-    hasher.Update((unsigned char*)m_pData, m_dwlength);
-    hasher.Final(m_digest);
-    return true;
+    if (m_dwlength > 0) {
+      SHA256 hasher;
+      hasher.Update((unsigned char*)m_pData, m_dwlength);
+      hasher.Final(m_digest);
+    } else {
+      PWSTRACE(L"ClipboardChecker::Initialize: Success: m_dwlength==0\n");
+    }
+
+    ReleaseClipboardResources();
+    // Success but caller determines presence.
+    return SuccessSensitiveNotPresent;
   }
 
-  bool isDigestMatch(unsigned char digest[SHA256::HASHLEN])
+  ClipboardStatus isDigestMatch(unsigned char digest[SHA256::HASHLEN])
   {
-    if (!m_pData && !Initialize()) {
-      m_bError = true;
-      return false;
+    ClipboardStatus result = Initialize();
+    if (result != SuccessSensitiveNotPresent) {
+      return result;
     }
-    return memcmp(digest, m_digest, SHA256::HASHLEN) == 0;
+    // Refine SuccessNotPresent result into SuccessPresent if digests match.
+    result = memcmp(digest, m_digest, SHA256::HASHLEN) == 0 ? SuccessSensitivePresent : SuccessSensitiveNotPresent;
+    if (result == SuccessSensitiveNotPresent)
+      PWSTRACE(L"ClipboardChecker::isDigestMatch: digests do not match.\n");
+    return result;
   }
 
 public:
-  bool m_bError;
   COleDataObject *m_podo;
   HANDLE m_hData;
   LPCTSTR m_pData;
@@ -132,7 +170,7 @@ bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfF
     // Do nothing if the sensitive data is already on the clipboard.
     if (m_bSensitiveDataOnClipboard &&
         memcmp(sensitiveDataDigest, m_digest, SHA256::HASHLEN) == 0 &&
-        IsLastSensitiveItemPresent())
+        GetLastSensitiveItemPresent() == SuccessSensitivePresent)
       return true;
   }
 
@@ -190,24 +228,27 @@ bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfF
   return m_bSensitiveDataOnClipboard;
 }
 
-bool PWSclipboard::ClearCBData()
+ClipboardStatus PWSclipboard::ClearCBData()
 {
-  if (!IsLastSensitiveItemPresent())
-    return false;
+  ClipboardStatus result = GetLastSensitiveItemPresent();
+  if (result != SuccessSensitivePresent)
+    return result;
   StringX blank(L"");
   SetData(blank, false);
   memset(m_digest, 0, SHA256::HASHLEN);
   m_bSensitiveDataOnClipboard = false;
-  return true;
+  // Sensitive data was present, now removed.
+  return SuccessSensitivePresent;
 }
 
-bool PWSclipboard::IsLastSensitiveItemPresent()
+ClipboardStatus PWSclipboard::GetLastSensitiveItemPresent()
 {
   if (!m_bSensitiveDataOnClipboard)
-    return false;
+    return SuccessSensitiveNotPresent;
   ClipboardChecker clipboardChecker;
-  m_bSensitiveDataOnClipboard = clipboardChecker.isDigestMatch(m_digest);
-  if (!m_bSensitiveDataOnClipboard)
+  ClipboardStatus result = clipboardChecker.isDigestMatch(m_digest);
+  if (result == Error || result == SuccessSensitiveNotPresent)
     memset(m_digest, 0, SHA256::HASHLEN);
-  return m_bSensitiveDataOnClipboard;
+  return result;
 }
+
