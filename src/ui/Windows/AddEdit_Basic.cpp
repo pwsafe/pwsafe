@@ -1812,11 +1812,11 @@ CSecString CAddEdit_Basic::GetTwoFactorKey()
   return twoFactorKey;
 }
 
-bool CAddEdit_Basic::UpdateAuthCode()
+void CAddEdit_Basic::UpdateAuthCode()
 {
   CItemData* pci_cred = M_pci_credential();
   if (!pci_cred)
-    return false;
+    return;
 
   // During Add/Edit, the UI may have updated 2FA info.
   // Use latest 2FA info to produce the auth code.
@@ -1828,28 +1828,40 @@ bool CAddEdit_Basic::UpdateAuthCode()
   auto r = GetMainDlg()->GetTwoFactoryAuthenticationCode(ciTemp, sxAuthCode, &ratio);
   if (r != PWSTotp::Success) {
     StopAuthenticationCodeUi();
-    return false;
+    return;
   }
-
-  bool bNewCode = false;
-  if (m_bCopyToClipboard && (m_sxLastAuthCode.empty() || GetMainDlg()->IsLastSensitiveClipboardItemPresent())) {
-    if (sxAuthCode != m_sxLastAuthCode) {
-      bNewCode = true;
-      m_bCopyToClipboard = GetMainDlg()->SetClipboardData(sxAuthCode);
-      ASSERT(m_bCopyToClipboard);
-      if (m_bCopyToClipboard)
-        GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::AuthCode);
-      m_sxLastAuthCode = sxAuthCode;
-    }
-  } else
-    m_bCopyToClipboard = false;
-
-  if (!m_bCopyToClipboard)
-    m_sxLastAuthCode.clear();
 
   m_btnTwoFactorCode.SetPercent(100.0 * ratio);
 
-  return bNewCode;
+  if (!m_bCopyToClipboard) {
+    m_sxLastAuthCode.clear();
+    return;
+  }
+
+  if (sxAuthCode == m_sxLastAuthCode)
+    return;
+
+  ClipboardStatus clipboardStatus = GetMainDlg()->GetLastSensitiveClipboardItemStatus();
+
+  if (!m_sxLastAuthCode.empty() && clipboardStatus != SuccessSensitivePresent) {
+
+    if (clipboardStatus != ClipboardNotAvailable) {
+      m_bCopyToClipboard = false;
+      m_sxLastAuthCode.clear();
+    }
+
+    return;
+  }
+
+  m_bCopyToClipboard = GetMainDlg()->SetClipboardData(sxAuthCode);
+  ASSERT(m_bCopyToClipboard);
+  if (!m_bCopyToClipboard) {
+    m_sxLastAuthCode.clear();
+    return;
+  }
+
+  GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::AuthCode);
+  m_sxLastAuthCode = sxAuthCode;
 }
 
 void CAddEdit_Basic::OnTimer(UINT_PTR nIDEvent)
