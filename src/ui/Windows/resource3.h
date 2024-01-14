@@ -815,9 +815,10 @@
 #define IDS_TWOFACTORKEY                                    6101
 #define IDS_TWOFACTORCODEBUTTON_CONFIGURED                  6102
 #define IDS_TWOFACTORCODEBUTTON_NOTCONFIGURED               6103
-#define IDS_TWOFACTORCODE_COPIED                            6104
-#define IDS_TWOFACTORCODE_ERROR_TITLE                       6105
-#define IDS_TWOFACTORCODE_ERROR_MESSAGE                     6106
-#define IDS_TWOFACTORCODE_ERROR_KEYEMPTY                    6107
+#define IDS_TWOFACTORCODESTATIC_CONFIGURED                  6104
+#define IDS_TWOFACTORCODE_COPIED                            6105
+#define IDS_TWOFACTORCODE_ERROR_TITLE                       6106
+#define IDS_TWOFACTORCODE_ERROR_MESSAGE                     6107
+#define IDS_TWOFACTORCODE_ERROR_KEYEMPTY                    6108
 #define IDS_AC_STATIC_TWOFACTORCODE                         6115
 #define IDS_DISPLAYAUTHCODE_TITLEFMT                        6116

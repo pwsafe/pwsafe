@@ -931,6 +931,7 @@
 #define IDC_AC_STATIC_ENTRYNAME         1614
 #define IDC_AC_BUTTON_COPY_TWOFACTORCODE 1615
 #define IDC_AC_STATIC_TWOFACTORCODE     1616
+#define IDC_STATIC_TWOFACTORCODE        1622
 
 // Next default values for new objects
 // 
@@ -938,7 +939,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        573
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1622
+#define _APS_NEXT_CONTROL_VALUE         1623
 #define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif

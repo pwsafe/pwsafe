@@ -62,8 +62,7 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
     pAEMD),
   m_thread(nullptr), m_isNotesHidden(false),
   m_bInitdone(false),
-  m_bUsingNotesExternalEditor(false),
-  m_bCopyToClipboard(false)
+  m_bUsingNotesExternalEditor(false)
 {
   if (CS_SHOW.IsEmpty()) { // one-time initializations
     CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT);
@@ -152,6 +151,7 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange *pDX)
   DDX_Control(pDX, IDC_PASSWORD, m_ex_password);
   DDX_Control(pDX, IDC_PASSWORD2, m_ex_password2);
   DDX_Control(pDX, IDC_TWOFACTORCODE, m_btnTwoFactorCode);
+  DDX_Control(pDX, IDC_STATIC_TWOFACTORCODE, m_stcTwoFactorCode);
   DDX_Control(pDX, IDC_NOTES, m_ex_notes);
   DDX_Control(pDX, IDC_HIDDEN_NOTES, m_ex_hidden_notes);
   DDX_Control(pDX, IDC_URL, m_ex_URL);
@@ -190,6 +190,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_GENERATEPASSWORD, OnGeneratePassword)
   ON_BN_CLICKED(IDC_COPYPASSWORD, OnCopyPassword)
   ON_BN_CLICKED(IDC_TWOFACTORCODE, OnCopyTwoFactorCode)
+  ON_STN_CLICKED(IDC_STATIC_TWOFACTORCODE, OnTwoFactorCodeStaticClicked)
   ON_BN_CLICKED(IDC_LAUNCH, OnLaunch)
   ON_BN_CLICKED(IDC_SENDEMAIL, OnSendEmail)
 
@@ -252,6 +253,11 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
   // Set plain text - not that it seems to do much!
   m_ex_notes.SetTextMode(TM_PLAINTEXT);
+
+  m_bTwoFactorCodeShowStatic = false;
+  m_stcTwoFactorCode.SetWindowText(m_pszNotShowingCode);
+  pFonts->CreateFontMatchingWindowHeight(m_stcTwoFactorCode, m_fontTwoFactorCodeStatic);
+  m_stcTwoFactorCode.SetFont(&m_fontTwoFactorCodeStatic);
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -1793,10 +1799,32 @@ void CAddEdit_Basic::OnCopyTwoFactorCode()
     return;
   }
 
-  m_bCopyToClipboard = true;
+  m_bTwoFactorCodeClipboard = true;
+  m_bTwoFactorCodeClipboardFirstTime = true;
   UpdateData(TRUE);
-  m_sxLastAuthCode.clear();
   UpdateAuthCode();
+}
+
+void CAddEdit_Basic::OnTwoFactorCodeStaticClicked()
+{
+  CSecString sTwoFactorKey(GetTwoFactorKey());
+  if (sTwoFactorKey.IsEmpty()) {
+    CGeneralMsgBox gmb;
+    CString cs_title(MAKEINTRESOURCE(IDS_TWOFACTORCODE_ERROR_TITLE));
+    CString cs_message(MAKEINTRESOURCE(IDS_TWOFACTORCODEBUTTON_NOTCONFIGURED));
+    gmb.MessageBox(cs_message, cs_title, MB_OK | MB_ICONEXCLAMATION);
+    return;
+  }
+
+  m_bTwoFactorCodeShowStatic = !m_bTwoFactorCodeShowStatic;
+  if (m_bTwoFactorCodeShowStatic) {
+    m_sxLastAuthCode.clear();
+    UpdateAuthCode();
+  } else {
+    m_stcTwoFactorCode.SetWindowText(m_pszNotShowingCode);
+    if (!m_bTwoFactorCodeClipboard)
+      m_sxLastAuthCode.clear();
+  }
 }
 
 CSecString CAddEdit_Basic::GetTwoFactorKey()
@@ -1833,35 +1861,46 @@ void CAddEdit_Basic::UpdateAuthCode()
 
   m_btnTwoFactorCode.SetPercent(100.0 * ratio);
 
-  if (!m_bCopyToClipboard) {
+  if (!m_bTwoFactorCodeClipboard && !m_bTwoFactorCodeShowStatic) {
     m_sxLastAuthCode.clear();
     return;
   }
 
-  if (sxAuthCode == m_sxLastAuthCode)
+  if (!m_bTwoFactorCodeClipboardFirstTime && sxAuthCode == m_sxLastAuthCode)
     return;
 
-  ClipboardStatus clipboardStatus = GetMainDlg()->GetLastSensitiveClipboardItemStatus();
+  if (m_bTwoFactorCodeShowStatic)
+    m_stcTwoFactorCode.SetWindowText(sxAuthCode.c_str());
 
-  if (!m_sxLastAuthCode.empty() && clipboardStatus != SuccessSensitivePresent) {
+  if (m_bTwoFactorCodeClipboard) {
 
-    if (clipboardStatus != ClipboardNotAvailable) {
-      m_bCopyToClipboard = false;
-      m_sxLastAuthCode.clear();
+    ClipboardStatus clipboardStatus = GetMainDlg()->GetLastSensitiveClipboardItemStatus();
+
+    // If not first time and last copy not present on clipboard...
+    if (!m_bTwoFactorCodeClipboardFirstTime && clipboardStatus != SuccessSensitivePresent) {
+
+      if (clipboardStatus != ClipboardNotAvailable) {
+        m_bTwoFactorCodeClipboard = false;
+        m_sxLastAuthCode.clear();
+      }
+
+      return;
     }
 
-    return;
+    m_bTwoFactorCodeClipboard = GetMainDlg()->SetClipboardData(sxAuthCode);
+    ASSERT(m_bTwoFactorCodeClipboard);
+    if (!m_bTwoFactorCodeClipboard) {
+      m_sxLastAuthCode.clear();
+      return;
+    }
+
+    m_bTwoFactorCodeClipboardFirstTime = false;
+
+    GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::AuthCode);
   }
 
-  m_bCopyToClipboard = GetMainDlg()->SetClipboardData(sxAuthCode);
-  ASSERT(m_bCopyToClipboard);
-  if (!m_bCopyToClipboard) {
-    m_sxLastAuthCode.clear();
-    return;
-  }
-
-  GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::AuthCode);
-  m_sxLastAuthCode = sxAuthCode;
+  if (m_bTwoFactorCodeShowStatic || m_bTwoFactorCodeClipboard)
+    m_sxLastAuthCode = sxAuthCode;
 }
 
 void CAddEdit_Basic::OnTimer(UINT_PTR nIDEvent)
@@ -1911,11 +1950,15 @@ void CAddEdit_Basic::SetupAuthenticationCodeUiElements()
     m_btnTwoFactorCode.SetPieColor(RGB(0, 192, 255));
     m_btnTwoFactorCode.SetPercent(0);
     AddTool(IDC_TWOFACTORCODE, IDS_TWOFACTORCODEBUTTON_CONFIGURED);
+    AddTool(IDC_STATIC_TWOFACTORCODE, IDS_TWOFACTORCODESTATIC_CONFIGURED);
     SetTimer(TIMER_TWO_FACTOR_AUTH_CODE_COUNTDOWN, USER_TIMER_MINIMUM, NULL);
   } else {
     m_btnTwoFactorCode.SetPieColor(::GetSysColor(COLOR_GRAYTEXT));
     m_btnTwoFactorCode.SetPercent(25);
     AddTool(IDC_TWOFACTORCODE, IDS_TWOFACTORCODEBUTTON_NOTCONFIGURED);
+    AddTool(IDC_STATIC_TWOFACTORCODE, IDS_TWOFACTORCODEBUTTON_NOTCONFIGURED);
+    m_bTwoFactorCodeShowStatic = false;
+    m_stcTwoFactorCode.SetWindowText(m_pszNotShowingCode);
     StopAuthenticationCodeUi();
   }
 }
@@ -1923,7 +1966,10 @@ void CAddEdit_Basic::SetupAuthenticationCodeUiElements()
 void CAddEdit_Basic::StopAuthenticationCodeUi()
 {
   KillTimer(TIMER_TWO_FACTOR_AUTH_CODE_COUNTDOWN);
-  m_bCopyToClipboard = false;
+  m_bTwoFactorCodeClipboard = false;
+  m_bTwoFactorCodeClipboardFirstTime = false;
+  m_bTwoFactorCodeShowStatic = false;
+  m_sxLastAuthCode.clear();
 }
 
 void CAddEdit_Basic::SetUpDependentsCombo()
