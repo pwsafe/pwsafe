@@ -256,7 +256,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
   m_bTwoFactorCodeShowStatic = false;
   m_stcTwoFactorCode.SetWindowText(m_pszNotShowingCode);
-  pFonts->CreateFontMatchingWindowHeight(m_stcTwoFactorCode, m_fontTwoFactorCodeStatic);
+  pFonts->CreateFontMatchingWindowHeight(m_stcTwoFactorCode, m_fontTwoFactorCodeStatic, 8);
   m_stcTwoFactorCode.SetFont(&m_fontTwoFactorCodeStatic);
 
   PWSprefs *prefs = PWSprefs::GetInstance();
@@ -1947,6 +1947,7 @@ PWSTotp::TOTP_Result CAddEdit_Basic::ValidateTotpConfiguration(double *pRatio)
 void CAddEdit_Basic::SetupAuthenticationCodeUiElements()
 {
   if (!GetTwoFactorKey().IsEmpty() && ValidateTotpConfiguration() == PWSTotp::Success) {
+    m_stcTwoFactorCode.ShowWindow(SW_SHOW);
     m_btnTwoFactorCode.SetPieColor(RGB(0, 192, 255));
     m_btnTwoFactorCode.SetPercent(0);
     AddTool(IDC_TWOFACTORCODE, IDS_TWOFACTORCODEBUTTON_CONFIGURED);
@@ -1959,6 +1960,7 @@ void CAddEdit_Basic::SetupAuthenticationCodeUiElements()
     AddTool(IDC_STATIC_TWOFACTORCODE, IDS_TWOFACTORCODEBUTTON_NOTCONFIGURED);
     m_bTwoFactorCodeShowStatic = false;
     m_stcTwoFactorCode.SetWindowText(m_pszNotShowingCode);
+    m_stcTwoFactorCode.ShowWindow(SW_HIDE);
     StopAuthenticationCodeUi();
   }
 }
