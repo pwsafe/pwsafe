@@ -1163,6 +1163,10 @@ msgstr ""
 msgid "12"
 msgstr ""
 
+#. Resource IDs: (1622)
+msgid "123456"
+msgstr ""
+
 #. Resource IDs: (8042)
 msgid "13"
 msgstr ""
@@ -1235,7 +1239,7 @@ msgstr ""
 msgid "29"
 msgstr ""
 
-#. Resource IDs: (6104)
+#. Resource IDs: (6105)
 msgid "2FA copied "
 msgstr ""
 
@@ -1600,7 +1604,7 @@ msgstr ""
 msgid "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr ""
 
-#. Resource IDs: (6106)
+#. Resource IDs: (6107)
 msgid "An error occurred obtaining the authentication code."
 msgstr ""
 
@@ -1726,7 +1730,7 @@ msgstr ""
 msgid "Authentication Code Config"
 msgstr ""
 
-#. Resource IDs: (6105)
+#. Resource IDs: (6106)
 msgid "Authentication Code Error"
 msgstr ""
 
@@ -2208,6 +2212,10 @@ msgstr ""
 
 #. Resource IDs: (5619)
 msgid "Click to set the field to filter by"
+msgstr ""
+
+#. Resource IDs: (6104)
+msgid "Click to show/hide the current authentication code."
 msgstr ""
 
 #. Resource IDs: (8161)
@@ -4651,7 +4659,7 @@ msgstr ""
 msgid "Missing XSD File"
 msgstr ""
 
-#. Resource IDs: (6107)
+#. Resource IDs: (6108)
 msgid "Missing authentication secret key."
 msgstr ""
 

@@ -42,6 +42,8 @@ int CProgressPieCommon::GetSize()
   if (r.Width() != r.Height()) {
     m_pwndCtl->GetParent()->ScreenToClient(&r);
     const int size = std::min(r.Width(), r.Height());
+    r.left = r.left + ((r.Width() - size) / 2);
+    r.top = r.top + ((r.Height() - size) / 2);
     r.right = r.left + size;
     r.bottom = r.top + size;
     m_pwndCtl->MoveWindow(&r);

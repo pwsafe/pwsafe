@@ -626,7 +626,7 @@ bool Fonts::IsCharacterSupported(std::wstring &sSymbol, const bool bTreeListFont
   return bSupported;
 }
 
-bool Fonts::CreateFontMatchingWindowHeight(CWnd& wnd, CFont& font)
+bool Fonts::CreateFontMatchingWindowHeight(CWnd& wnd, CFont& font, int cMaxCharWidth)
 {
   ASSERT(::IsWindow(wnd.m_hWnd));
   if (!::IsWindow(wnd.m_hWnd))
@@ -640,6 +640,9 @@ bool Fonts::CreateFontMatchingWindowHeight(CWnd& wnd, CFont& font)
   if (!fontWnd->GetLogFont(&lf))
     return false;
   lf.lfHeight = rcClient.Height();
+  if (cMaxCharWidth > 0) {
+    lf.lfWidth = rcClient.Width() / cMaxCharWidth;
+  }
   font.DeleteObject();
   return font.CreateFontIndirect(&lf);
 }

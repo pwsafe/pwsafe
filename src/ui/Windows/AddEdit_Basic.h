@@ -56,6 +56,7 @@ public:
   CStaticExtn m_stc_title;
   CStaticExtn m_stc_username;
   CStaticExtn m_stc_password;
+  CStaticExtn m_stcTwoFactorCode;
   CStaticExtn m_stc_notes;
   CStaticExtn m_stc_URL;
   CStaticExtn m_stc_email;
@@ -115,6 +116,7 @@ protected:
   afx_msg void OnCopyPassword();
   afx_msg void OnShowPassword();
   afx_msg void OnCopyTwoFactorCode();
+  afx_msg void OnTwoFactorCodeStaticClicked();
   afx_msg void OnSTCExClicked(UINT nId);
   afx_msg void OnLaunch();
   afx_msg void OnSendEmail();
@@ -164,7 +166,11 @@ private:
 
   CBitmap m_CopyPswdBitmap;
   StringX m_sxLastAuthCode;
-  bool m_bCopyToClipboard;
+  bool m_bTwoFactorCodeClipboard = false;
+  bool m_bTwoFactorCodeClipboardFirstTime = false;
+  bool m_bTwoFactorCodeShowStatic = false;
+  CFont m_fontTwoFactorCodeStatic;
+  const wchar_t* m_pszNotShowingCode = L"********";
 };
 //-----------------------------------------------------------------------------
 // Local variables:
