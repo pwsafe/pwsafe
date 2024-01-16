@@ -4107,12 +4107,7 @@ void DboxMain::OnHideFindToolbar()
 
 void DboxMain::SetFindToolBar(bool bShow)
 {
-  if (m_FindToolBar.GetSafeHwnd() == NULL)
-    return;
-
-  SetToolBarPositions();
-
-  if (!m_FindToolBar.IsWindowVisible() && !bShow)
+  if (m_FindToolBar.GetSafeHwnd() == NULL || (!m_FindToolBar.IsWindowVisible() && !bShow))
     return;  // Nothing to do if not visible
 
   m_FindToolBar.ShowFindToolBar(bShow);
