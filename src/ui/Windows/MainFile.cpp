@@ -248,7 +248,7 @@ BOOL DboxMain::OpenOnInit()
     SetDCAText();
   }
 
-  PostOpenProcessing();
+ 
 
   // Now get window sizes
   PWSprefs::GetInstance()->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
@@ -266,6 +266,8 @@ BOOL DboxMain::OpenOnInit()
     PlaceWindow(this, &rect, SW_HIDE);
   }
   ::DeleteObject(hrgnWork);
+
+  PostOpenProcessing(); // Need to call this after window's positioned since UpdateForceAllowCaptureHandling() displays window
 
   bool bFileIsReadOnly;
   pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
