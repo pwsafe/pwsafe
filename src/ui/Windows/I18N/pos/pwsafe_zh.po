@@ -1267,6 +1267,10 @@ msgstr "11"
 msgid "12"
 msgstr "12"
 
+#. Resource IDs: (1622)
+msgid "123456"
+msgstr ""
+
 #. Resource IDs: (8042)
 msgid "13"
 msgstr "13"
@@ -1339,7 +1343,7 @@ msgstr "28"
 msgid "29"
 msgstr "29"
 
-#. Resource IDs: (6104)
+#. Resource IDs: (6105)
 msgid "2FA copied "
 msgstr ""
 
@@ -1704,7 +1708,7 @@ msgstr "别名不能引用别名自身!"
 msgid "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr "带相同分组、标题和用户名的条目或快捷方式已存在."
 
-#. Resource IDs: (6106)
+#. Resource IDs: (6107)
 msgid "An error occurred obtaining the authentication code."
 msgstr ""
 
@@ -1830,7 +1834,7 @@ msgstr ""
 msgid "Authentication Code Config"
 msgstr ""
 
-#. Resource IDs: (6105)
+#. Resource IDs: (6106)
 msgid "Authentication Code Error"
 msgstr ""
 
@@ -2313,6 +2317,10 @@ msgstr "点击来设定用于匹配字段的条件"
 #. Resource IDs: (5619)
 msgid "Click to set the field to filter by"
 msgstr "点击来设定要筛选的字段"
+
+#. Resource IDs: (6104)
+msgid "Click to show/hide the current authentication code."
+msgstr ""
 
 #. Resource IDs: (8161)
 msgid "Click to switch to English"
@@ -4787,7 +4795,7 @@ msgstr "杂项."
 msgid "Missing XSD File"
 msgstr "缺少 XSD 文件"
 
-#. Resource IDs: (6107)
+#. Resource IDs: (6108)
 msgid "Missing authentication secret key."
 msgstr ""
 

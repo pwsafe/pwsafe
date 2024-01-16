@@ -1241,6 +1241,10 @@ msgstr "11"
 msgid "12"
 msgstr "12"
 
+#. Resource IDs: (1622)
+msgid "123456"
+msgstr ""
+
 #. Resource IDs: (8042)
 msgid "13"
 msgstr "13"
@@ -1313,7 +1317,7 @@ msgstr "28"
 msgid "29"
 msgstr "29"
 
-#. Resource IDs: (6104)
+#. Resource IDs: (6105)
 msgid "2FA copied "
 msgstr ""
 
@@ -1678,7 +1682,7 @@ msgstr "보조 항목은 자기 자신을 참조할 수 없습니다"
 msgid "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr ""
 
-#. Resource IDs: (6106)
+#. Resource IDs: (6107)
 msgid "An error occurred obtaining the authentication code."
 msgstr ""
 
@@ -1804,7 +1808,7 @@ msgstr ""
 msgid "Authentication Code Config"
 msgstr ""
 
-#. Resource IDs: (6105)
+#. Resource IDs: (6106)
 msgid "Authentication Code Error"
 msgstr ""
 
@@ -2287,6 +2291,10 @@ msgstr "값을 맞추기 위해 조건을 설정하려면 클릭"
 #. Resource IDs: (5619)
 msgid "Click to set the field to filter by"
 msgstr "Click to set the field to filter by"
+
+#. Resource IDs: (6104)
+msgid "Click to show/hide the current authentication code."
+msgstr ""
 
 #. Resource IDs: (8161)
 msgid "Click to switch to English"
@@ -4761,7 +4769,7 @@ msgstr "기타"
 msgid "Missing XSD File"
 msgstr "xsd 파일 없음"
 
-#. Resource IDs: (6107)
+#. Resource IDs: (6108)
 msgid "Missing authentication secret key."
 msgstr ""
 
