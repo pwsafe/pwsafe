@@ -109,6 +109,7 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
        %PROGNAME% safe --search=<text> [--ignore-case]
                       [--subset=<Field><OP><string>[/iI] [--fields=f1,f2,..]
                       [--delete | --update=Field1=Value1,Field2=Value2,.. | --print[=field1,field2...] ] [--yes]
+                      [--generate-totp]
 
        %PROGNAME% safe --diff=<other-safe>  [ --subset=<Field><OP><Value>[/iI] ]
                       [--fields=f1,f2,..] [--unified | --context | --sidebyside]
@@ -416,7 +417,8 @@ int main(int argc, char *argv[])
   auto itr = pws_ops.find(ua.Operation);
 
   if (itr != pws_ops.end()) {
-    const bool openReadOnly = ua.Operation == UserArgs::Export || ua.Operation == UserArgs::Diff || (ua.Operation == UserArgs::Search && ua.SearchAction == UserArgs::Print);
+    const bool openReadOnly = ua.Operation == UserArgs::Export || ua.Operation == UserArgs::Diff ||
+                              (ua.Operation == UserArgs::Search && (ua.SearchAction == UserArgs::Print || ua.SearchAction == UserArgs::GenerateTotpCode));
     PWScore core;
     try {
       status = itr->second.pre_op(core, ua.safe, ua.passphrase[0], openReadOnly);
