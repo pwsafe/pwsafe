@@ -7,8 +7,8 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 1.18.2 Release ??? 2024
-====================================
+PasswordSafe 1.18.2 Release January 2024
+========================================
 
 Bugs fixed in 1.18.2
 --------------------
@@ -16,6 +16,7 @@ Bugs fixed in 1.18.2
 
 New Features in 1.18.2
 ----------------------
+* cli support for authentication tokens (TOTP).
 * [GH1009](https://github.com/pwsafe/pwsafe/issues/1009) macOS: Unlock Safe from systray menu fully restores the window.
 * [GH1056](https://github.com/pwsafe/pwsafe/issues/1056) macOS: Add Yubikey support.
 * [GH1063](https://github.com/pwsafe/pwsafe/issues/1063) macOS: Add language translations and re-work packaging.
