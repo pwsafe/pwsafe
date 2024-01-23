@@ -1,7 +1,7 @@
 # PKGBUILD
 
 pkgname=pwsafe
-pkgver=1.18.0
+pkgver=1.18.2
 pkgrel=1
 pkgdesc="PasswordSafe password manager"
 arch=('x86_64')
