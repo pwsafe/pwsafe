@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>org.pwsafe.pwsafe</id>
+  
+  <name>Password Safe</name>
+  <summary>Password Safe is a password management  utility.</summary>
+  
+  <metadata_license>MIT</metadata_license>
+  <project_license>Artistic-2.0</project_license>
+  
+  <description>
+    <p>
+      Password Safe is a password manager. It stores your passwords in an encrypted file, allowing you to remember only one password (the &quot;master password&quot;), instead of all the username/password combinations that you use. For extra security, you can use a Yubikey device to provide two-factor authentication.
+    </p>
+    <p>
+      Password Safe runs on Windows, popular Linux distributions, macOS and FreeBSD.
+    </p>
+  </description>
+  
+  <launchable type="desktop-id">pwsafe.desktop</launchable>
+  <screenshots>
+    <screenshot type="default">
+      <image>https://pwsafe.org/images/wxTreeview.png</image>
+    </screenshot>
+  </screenshots>
+</component>

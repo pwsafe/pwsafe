@@ -347,6 +347,7 @@ if (NOT WIN32)
   ADD_CUSTOM_TARGET(manpage ALL DEPENDS ${CMAKE_BINARY_DIR}/pwsafe.1.gz)
   install (FILES ${CMAKE_BINARY_DIR}/pwsafe.1.gz TYPE MAN)
   install (FILES "install/desktop/pwsafe.desktop" DESTINATION "share/applications")
+  install (FILES "install/metainfo/org.pwsafe.pwsafe.metainfo.xml" DESTINATION "share/metainfo/org.pwsafe.pwsafe.metainfo.xml")
   install (FILES "install/graphics/pwsafe.png" DESTINATION "share/icons/hicolor/48x48/apps/")
   install (DIRECTORY "${CMAKE_BINARY_DIR}/src/ui/wxWidgets/I18N/mos/"
            DESTINATION "share/locale")
@@ -419,9 +420,10 @@ endif (pwsafe_SPECIALBUILD)
 #
 set (CPACK_PACKAGE_CONTACT "Rony Shapiro <ronys@pwsafe.org>")
 set (CPACK_PACKAGE_VENDOR "Rony Shapiro")
-set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "Password Safe is a password database utility.")
+set (CPACK_PACKAGE_DESCRIPTION_SUMMARY "Password Safe is a password management  utility.")
 set (CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/LICENSE")
 set (CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/install/description.txt")
+set (CPACK_PACKAGE_URL "https://pwsafe.org/")
 set (CPACK_STRIP_FILES "TRUE")
 
 #

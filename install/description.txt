@@ -1,5 +1,5 @@
-Password Safe is a password database utility. Like many other such
-products, commercial and otherwise, it stores your passwords in an
-encrypted file, allowing you to remember only one password (the "safe
-combination"), instead of all the username/password combinations that
-you use.
+Password Safe is a password manager.
+It stores your passwords in an encrypted file, allowing you to remember only one password (the "master password"), instead of all the username/password combinations that you use.
+For extra security, you can use a Yubikey device to provide two-factor authentication.
+
+Password Safe runs on Windows, popular Linux distributions, macOS and FreeBSD.
