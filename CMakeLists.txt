@@ -347,7 +347,7 @@ if (NOT WIN32)
   ADD_CUSTOM_TARGET(manpage ALL DEPENDS ${CMAKE_BINARY_DIR}/pwsafe.1.gz)
   install (FILES ${CMAKE_BINARY_DIR}/pwsafe.1.gz TYPE MAN)
   install (FILES "install/desktop/pwsafe.desktop" DESTINATION "share/applications")
-  install (FILES "install/metainfo/org.pwsafe.pwsafe.metainfo.xml" DESTINATION "share/metainfo/org.pwsafe.pwsafe.metainfo.xml")
+  install (FILES "install/metainfo/org.pwsafe.pwsafe.metainfo.xml" DESTINATION "share/metainfo")
   install (FILES "install/graphics/pwsafe.png" DESTINATION "share/icons/hicolor/48x48/apps/")
   install (DIRECTORY "${CMAKE_BINARY_DIR}/src/ui/wxWidgets/I18N/mos/"
            DESTINATION "share/locale")
