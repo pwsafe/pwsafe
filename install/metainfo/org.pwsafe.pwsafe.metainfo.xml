@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Copyright 2024 Rony Shapiro <ronys@pwsafe.org> -->
-<!-- EmailAddress: ronys@pwsafe.org -->
+
 <component type="desktop-application">
   <id type="desktop">org.pwsafe.pwsafe</id>
   
   <name>Password Safe</name>
-  <summary>Password Safe is a password management utility.</summary>
+  <summary>Password management utility</summary>
   
   <metadata_license>MIT</metadata_license>
   <project_license>Artistic-2.0</project_license>
+  <developer_name>Rony Shapiro</developer_name>
   
   <description>
     <p>
@@ -22,7 +23,7 @@
   <launchable type="desktop-id">pwsafe.desktop</launchable>
   <screenshots>
     <screenshot type="default">
-      <caption>Sample tree view"</caption>
+      <caption>Sample tree view</caption>
       <image>https://pwsafe.org/images/wxTreeview.png</image>
     </screenshot>
   </screenshots>
