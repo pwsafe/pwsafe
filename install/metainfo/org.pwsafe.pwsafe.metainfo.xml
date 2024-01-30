@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2024 Rony Shapiro <ronys@pwsafe.org> -->
+<!-- EmailAddress: ronys@pwsafe.org -->
 <component type="desktop-application">
-  <id>org.pwsafe.pwsafe</id>
+  <id type="desktop">org.pwsafe.pwsafe</id>
   
   <name>Password Safe</name>
-  <summary>Password Safe is a password management  utility.</summary>
+  <summary>Password Safe is a password management utility.</summary>
   
   <metadata_license>MIT</metadata_license>
   <project_license>Artistic-2.0</project_license>
@@ -20,7 +22,17 @@
   <launchable type="desktop-id">pwsafe.desktop</launchable>
   <screenshots>
     <screenshot type="default">
+      <caption>Sample tree view"</caption>
       <image>https://pwsafe.org/images/wxTreeview.png</image>
     </screenshot>
   </screenshots>
+   <releases>
+    <release version="v1.18.2" date="2024-01-23">
+      <description>
+        <p>The latest non-Windows release.</p>
+      </description>
+    </release>
+  </releases>
+  <url type="homepage">http://www.pwsafe.org/</url>
+  <content_rating type="oars-1.1"/>
 </component>
