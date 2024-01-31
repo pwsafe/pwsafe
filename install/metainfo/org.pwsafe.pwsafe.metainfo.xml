@@ -34,6 +34,10 @@
       </description>
     </release>
   </releases>
-  <url type="homepage">http://www.pwsafe.org/</url>
+  <url type="homepage">https://www.pwsafe.org/</url>
+  <url type="help">https://pwsafe.org/help/pwsafe.html</url>
+  <url type="bugtracker">https://github.com/pwsafe/pwsafe/issues</url>
+  <url type="translate">https://explore.transifex.com/passwordsafe/passwordsafe/</url>
+  <url type="faq">https://pwsafe.org/faq.shtml</url>
   <content_rating type="oars-1.1"/>
 </component>
