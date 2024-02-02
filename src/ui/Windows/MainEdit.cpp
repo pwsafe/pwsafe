@@ -2032,7 +2032,7 @@ void DboxMain::CopyDataToClipBoard(ClipboardDataSource cds, const bool bSpecial)
       ASSERT(0);
     }
   } else if (cds.IsDerived() && cds.GetDerivedType() == ClipboardDataSource::AuthCode) {
-    GetTwoFactoryAuthenticationCode(*pci_credential, sxData);
+    GetTwoFactorAuthenticationCode(*pci_credential, sxData);
     if (sxData.empty())
       return;
     StartAuthCodeUpdateClipboardTimer(uuid);
@@ -2157,7 +2157,7 @@ void DboxMain::OnTwoFactorAuthCodeUpdateClipboardTimer()
   }
 
   StringX sxAuthCode;
-  GetTwoFactoryAuthenticationCode(*pci_credential, sxAuthCode);
+  GetTwoFactorAuthenticationCode(*pci_credential, sxAuthCode);
   if (sxAuthCode.empty()) {
     StopAuthCodeUpdateClipboardTimer();
     return;
@@ -2179,7 +2179,7 @@ void DboxMain::OnTwoFactorAuthCodeUpdateClipboardTimer()
     m_sxLastAuthCode = sxAuthCode;
 }
 
-PWSTotp::TOTP_Result DboxMain::GetTwoFactoryAuthenticationCode(const CItemData& ci, StringX& sxAuthCode, double* pRatio)
+PWSTotp::TOTP_Result DboxMain::GetTwoFactorAuthenticationCode(const CItemData& ci, StringX& sxAuthCode, double* pRatio)
 {
   sxAuthCode.clear();
  
