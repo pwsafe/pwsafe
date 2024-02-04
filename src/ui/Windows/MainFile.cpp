@@ -897,7 +897,7 @@ exit:
 void DboxMain::PostOpenProcessing()
 {
   PWS_LOGIT;
-
+  
   // Force prior format versions to be read-only
   if (m_core.GetReadFileVersion() < PWSfile::VCURRENT) {
     m_core.SetReadOnly(true);
