@@ -54,7 +54,7 @@ static LOGFONT DragFixLogfont = {
 
 static void tweakFontSizes()
 {
-  const UINT defDPI = 96;
+  const UINT defDPI = WinUtil::defDPI;
   const UINT curDPI = WinUtil::GetDPI();
 
   auto adjust = [&defDPI, &curDPI](LONG& height)

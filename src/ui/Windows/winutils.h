@@ -22,6 +22,7 @@ namespace WinUtil {
   HRGN GetWorkAreaRegion();
   bool OfferConfigMigration();
   bool PerformConfigMigration();
+  const UINT defDPI = 96;
   UINT GetDPI(HWND hwnd = nullptr); // wrapper for debugging and hiding Win10 compatibility breakage
   int  GetSystemMetrics(int nIndex, HWND hwnd = nullptr); // Hide Win10 compatibility breakage
   void ResizeBitmap(CBitmap& bmp_src, CBitmap& bmp_dst, int dstW, int dstH);

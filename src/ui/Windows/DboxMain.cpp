@@ -3799,10 +3799,10 @@ void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd)
 
   // adjust rect for current scale factor
   CRect adjRect;
-  adjRect.bottom = pRect->bottom * curDPI / 96;
-  adjRect.top = pRect->top * curDPI / 96;
-  adjRect.left = pRect->left * curDPI / 96;
-  adjRect.right = pRect->right * curDPI / 96;
+  adjRect.bottom = MulDiv(pRect->bottom, curDPI, WinUtil::defDPI);
+  adjRect.top =    MulDiv(pRect->top, curDPI, WinUtil::defDPI);
+  adjRect.left =   MulDiv(pRect->left, curDPI, WinUtil::defDPI);
+  adjRect.right =  MulDiv(pRect->right, curDPI, WinUtil::defDPI);
 
   pWnd->GetWindowPlacement(&wp);  // Get min/max positions - then add what we know
   wp.flags = 0;
@@ -3816,7 +3816,7 @@ void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd)
       ClipRectToMonitor(NULL, &wp.rcNormalPosition, FALSE);
   }
 
-  BOOL swpStat = pWnd->SetWindowPlacement(&wp);
+  pWnd->SetWindowPlacement(&wp);
   ::DeleteObject(hrgnWork);
 }
 
