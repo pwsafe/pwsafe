@@ -162,8 +162,8 @@ void CDDStatic::SetupBitmap(CBitmap& bitmap, UINT id)
   // Scale for DPI stuff
   // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
   int dpi = WinUtil::GetDPI(); // can't use ForWindow(m_Hwnd) as we don't have a valid one when this is called.
-  int dpiScaledWidth = MulDiv(bm.bmWidth, dpi, 96);
-  int dpiScaledHeight = MulDiv(bm.bmHeight, dpi, 96);
+  int dpiScaledWidth = MulDiv(bm.bmWidth, dpi, WinUtil::defDPI);
+  int dpiScaledHeight = MulDiv(bm.bmHeight, dpi, WinUtil::defDPI);
 
   WinUtil::ResizeBitmap(tmpBitmap, bitmap, dpiScaledWidth, dpiScaledHeight);
   tmpBitmap.DeleteObject();

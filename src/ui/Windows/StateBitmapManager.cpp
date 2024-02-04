@@ -36,8 +36,8 @@ CStateBitmapManager::CStateBitmapManager(
     BITMAP bm;
     origBmp.GetBitmap(&bm);
 
-    int bmWidthDpi = MulDiv(bm.bmWidth, dpi, 96);
-    int bmHeightDpi = MulDiv(bm.bmHeight, dpi, 96);
+    int bmWidthDpi = MulDiv(bm.bmWidth, dpi, WinUtil::defDPI);
+    int bmHeightDpi = MulDiv(bm.bmHeight, dpi, WinUtil::defDPI);
 
     UINT bmpIndex = nId - m_idFirst;
     m_stateBitmaps.push_back(std::make_shared<CBitmap>());

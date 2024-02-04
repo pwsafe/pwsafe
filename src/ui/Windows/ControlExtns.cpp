@@ -1364,8 +1364,8 @@ void CButtonBitmapExtn::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
   // Scale for DPI stuff
   // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
   int dpi = WinUtil::GetDPI(m_hWnd);
-  int dpiScaledWidth = MulDiv(bitMapInfo.bmWidth, dpi, 96);
-  int dpiScaledHeight = MulDiv(bitMapInfo.bmHeight, dpi, 96);
+  int dpiScaledWidth = MulDiv(bitMapInfo.bmWidth, dpi, WinUtil::defDPI);
+  int dpiScaledHeight = MulDiv(bitMapInfo.bmHeight, dpi, WinUtil::defDPI);
 
   WinUtil::ResizeBitmap(bmp, scaledBmp, dpiScaledWidth, dpiScaledHeight);
   bmp.DeleteObject();

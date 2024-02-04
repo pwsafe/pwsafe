@@ -52,8 +52,8 @@ CPWStatusBar::CPWStatusBar()
 
   BITMAP bm;
   origBmp.GetBitmap(&bm);
-  m_bmWidth = MulDiv(bm.bmWidth, dpi, 96);
-  m_bmHeight = MulDiv(bm.bmHeight, dpi, 96);
+  m_bmWidth = MulDiv(bm.bmWidth, dpi, WinUtil::defDPI);
+  m_bmHeight = MulDiv(bm.bmHeight, dpi, WinUtil::defDPI);
 
   WinUtil::ResizeBitmap(origBmp, m_FilterBitmap, m_bmWidth, m_bmHeight);
   origBmp.DeleteObject();

@@ -52,8 +52,8 @@ CCoolMenuManager::CCoolMenuManager()
   int bmpWidth = 16;
   int bmpHeight = 16;
   UINT dpi = WinUtil::GetDPI(m_hWnd);
-  bmpWidth = MulDiv(bmpWidth, dpi, 96);
-  bmpHeight = MulDiv(bmpHeight, dpi, 96);
+  bmpWidth = MulDiv(bmpWidth, dpi, WinUtil::defDPI);
+  bmpHeight = MulDiv(bmpHeight, dpi, WinUtil::defDPI);
 
   m_szBitmap = CSize(bmpWidth, bmpHeight);
   m_szButton = CSize(bmpWidth, bmpHeight) + CSize(CXBUTTONMARGIN << 1, CYBUTTONMARGIN << 1);

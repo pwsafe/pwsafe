@@ -274,7 +274,7 @@ BOOL CWZSelectDB::OnInitDialog()
 
     // Scale text for hi-dpi monitors:
     UINT dpi = WinUtil::GetDPI(m_hWnd);
-    LogFont.lfHeight = MulDiv(LogFont.lfHeight, dpi, 96);
+    LogFont.lfHeight = MulDiv(LogFont.lfHeight, dpi, WinUtil::defDPI);
 
     m_WarningFont.CreateFontIndirect(&LogFont);
     m_stc_warning.SetFont(&m_WarningFont);

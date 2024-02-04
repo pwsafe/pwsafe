@@ -281,7 +281,7 @@ UINT WinUtil::GetDPI(HWND hwnd)
       inited = true;
     }
   }
-  UINT retval = 96;
+  UINT retval = defDPI;
   const stringT dbg_dpi = pws_os::getenv("PWS_DPI", false);
   if (dbg_dpi.empty()) {
     if (fp_getdpi4_window != nullptr && fp_getdpi4_system != nullptr)
@@ -369,8 +369,8 @@ BOOL WinUtil::LoadScaledBitmap(CBitmap &bitmap, UINT nID, bool fixBckgrnd, HWND 
 
   UINT dpi = GetDPI(hwnd);
   tmpBitmap.GetBitmap(&bm);
-  int dpiScaledWidth = MulDiv(bm.bmWidth, dpi, 96);
-  int dpiScaledHeight = MulDiv(bm.bmHeight, dpi, 96);
+  int dpiScaledWidth = MulDiv(bm.bmWidth, dpi, defDPI);
+  int dpiScaledHeight = MulDiv(bm.bmHeight, dpi, defDPI);
 
   WinUtil::ResizeBitmap(tmpBitmap, bitmap, dpiScaledWidth, dpiScaledHeight);
   tmpBitmap.DeleteObject();

@@ -284,12 +284,12 @@ void CPWToolBarX::Init(const int NumBits, bool bRefresh)
 
   // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
   int dpi = WinUtil::GetDPI(); // can't use ForWindow(m_Hwnd) as we don't have a valid one when this is called.
-  int dpiScaledX = MulDiv(origX, dpi, 96);
-  int dpiScaledY = MulDiv(origY, dpi, 96);
+  int dpiScaledX = MulDiv(origX, dpi, WinUtil::defDPI);
+  int dpiScaledY = MulDiv(origY, dpi, WinUtil::defDPI);
 
   int btnX = 24, btnY = 22; // original toolbar button dimensions
-  int dpiScaledBtnX = MulDiv(btnX, dpi, 96);
-  int dpiScaledBtnY = MulDiv(btnY, dpi, 96);
+  int dpiScaledBtnX = MulDiv(btnX, dpi, WinUtil::defDPI);
+  int dpiScaledBtnY = MulDiv(btnY, dpi, WinUtil::defDPI);
 
   GetToolBarCtrl().SetButtonSize(CSize(dpiScaledBtnX, dpiScaledBtnY));
 

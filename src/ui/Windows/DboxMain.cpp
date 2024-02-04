@@ -797,8 +797,8 @@ void DboxMain::InitPasswordSafe()
   // Scale for DPI stuff
   // from https://docs.microsoft.com/en-us/windows/win32/hidpi/high-dpi-desktop-application-development-on-windows
   int dpi = WinUtil::GetDPI(m_hWnd);
-  int dpiScaledWidth = MulDiv(bm.bmWidth, dpi, 96);
-  int dpiScaledHeight = MulDiv(bm.bmHeight, dpi, 96);
+  int dpiScaledWidth = MulDiv(bm.bmWidth, dpi, WinUtil::defDPI);
+  int dpiScaledHeight = MulDiv(bm.bmHeight, dpi, WinUtil::defDPI);
 
   WinUtil::ResizeBitmap(bitmap, scaledBitmap, dpiScaledWidth, dpiScaledHeight);
   bitmap.DeleteObject();
