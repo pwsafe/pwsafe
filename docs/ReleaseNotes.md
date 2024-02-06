@@ -4,11 +4,11 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.65.1 Release ??? 2024
-====================================
+PasswordSafe 3.65.1pre Release Feb 2024
+=======================================
 
-Bugs fixed in 3.65.1
---------------------
+Bugs fixed in 3.65.1pre
+-----------------------
 * [GH1092](https://github.com/pwsafe/pwsafe/issues/1092) Size and position of main window is now restoed correctly on displays with scale > 100%.
 
 Bugs fixed in 3.65.0
