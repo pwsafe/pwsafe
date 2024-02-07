@@ -18,10 +18,10 @@
 # See: https://hub.docker.com/_/debian and
 # https://hub.docker.com/_/ubuntu
 
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 # Build with: sudo docker build -t passwordsafe .
-# --or--      sudo docker build -t passwordsafe:1.10 .
+# --or--      sudo docker build -t passwordsafe:1.18.2 .
 # Run with: sudo docker run --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume="$HOME/.pwsafe:/root/.pwsafe:rw" passwordsafe
 
 LABEL "maintainer"="The Passwordsafe Project <Passwordsafe-linux@lists.sourceforge.net>"
@@ -48,11 +48,11 @@ RUN mkdir -p /root/.local/share
 
 # This is here to leave everything above UNCHANGED as much as possible
 # to allow layer caching to work at build time!
-ARG deb_file=passwordsafe-ubuntu20-1.13-amd64.deb
+ARG deb_file=passwordsafe-ubuntu22-1.18.2-amd64.deb
 
 LABEL "pwsafe"="$deb_file"
 
-ADD https://github.com/pwsafe/pwsafe/releases/download/1.13.0/$deb_file \
+ADD https://github.com/pwsafe/pwsafe/releases/download/1.18.2/$deb_file \
      /tmp/$deb_file
 
 RUN dpkg -i /tmp/$deb_file && rm /tmp/$deb_file
@@ -66,71 +66,84 @@ CMD /usr/bin/pwsafe
 # Build:
 # ----
 #
-# ~/working/docker/passwordsafe$ time sudo docker build -t 
-# passwordsafe:1.13 .
-# Sending build context to Docker daemon  3.584kB
-# Step 1/14 : FROM ubuntu:20.04
-#  ---> 7e0aa2d69a15
+# ~/working/docker/passwordsafe$ time sudo docker build -t passwordsafe:1.18.2 .
+# Sending build context to Docker daemon  7.168kB
+# 
+# Step 1/14 : FROM ubuntu:22.04
+#  ---> fd1d8f58e8ae
 # Step 2/14 : LABEL "maintainer"="The Passwordsafe Project <Passwordsafe-linux@lists.sourceforge.net>"
-#  ---> Using cache
-#  ---> f73b08debbee
+#  ---> Running in eb506b6e0f83
+# Removing intermediate container eb506b6e0f83
+#  ---> f7010ca1d713
 # Step 3/14 : ARG DEBIAN_FRONTEND=noninteractive
-#  ---> Using cache
-#  ---> 87c43ae97eab
+#  ---> Running in 7bfab4ac95f5
+# Removing intermediate container 7bfab4ac95f5
+#  ---> 849e3b9c6f81
 # Step 4/14 : RUN apt-get update      && apt-get install -qy libwxgtk3.0-gtk3-0v5 libxtst6 libxerces-c3.2 libykpers-1-1      libqrencode4 libcurl4 libmagic1 locales xdg-utils      && rm -rf /var/lib/apt/lists/*
-#  ---> Running in da96e7b04f12
-# Removing intermediate container da96e7b04f12
-#  ---> cc4b6053ddd9
+#  ---> Running in 7c8ced5bdfe6
+# ...
+# Removing intermediate container 7c8ced5bdfe6
+ # ---> 3633843b0a5f
 # Step 5/14 : RUN locale-gen en_US.UTF-8
-#  ---> Running in 02f5d5470f45
-# Removing intermediate container 02f5d5470f45
-#  ---> 8a497900a15d
+#  ---> Running in 336486b5bb3b
+# Generating locales (this might take a while)...
+#   en_US.UTF-8... done
+# Generation complete.
+# Removing intermediate container 336486b5bb3b
+#  ---> e9b98c278598
 # Step 6/14 : ENV LANG en_US.UTF-8
-#  ---> Running in 30bf289633f9
-# Removing intermediate container 30bf289633f9
-#  ---> fbd278ea5c8c
+#  ---> Running in 4a2f0074cbbf
+# Removing intermediate container 4a2f0074cbbf
+#  ---> 09c480bea6cb
 # Step 7/14 : ENV LANGUAGE en_US:en
-#  ---> Running in faaae12b16f8
-# Removing intermediate container faaae12b16f8
-#  ---> eb8d814f7443
+#  ---> Running in 0dadf09b3b5e
+# Removing intermediate container 0dadf09b3b5e
+#  ---> c3801b7b4a07
 # Step 8/14 : ENV LC_ALL en_US.UTF-8
-#  ---> Running in c8737036d28c
-# Removing intermediate container c8737036d28c
-#  ---> 7a1d40221f82
+#  ---> Running in f73b90534c90
+# Removing intermediate container f73b90534c90
+#  ---> e21a133ac663
 # Step 9/14 : RUN mkdir -p /root/.local/share
-#  ---> Running in b80f707744df
-# Removing intermediate container b80f707744df
-#  ---> 49318139ad9a
-# Step 10/14 : ARG deb_file=passwordsafe-ubuntu20-1.13-amd64.deb
-#  ---> Running in e3a4a58fa6d6
-# Removing intermediate container e3a4a58fa6d6
-#  ---> b1d8383eb7df
+#  ---> Running in 4ec087679c0e
+# Removing intermediate container 4ec087679c0e
+#  ---> d134920fd14b
+# Step 10/14 : ARG deb_file=passwordsafe-ubuntu22-1.18.2-amd64.deb
+#  ---> Running in 41d28719c32d
+# Removing intermediate container 41d28719c32d
+#  ---> 3ab964b6ec38
 # Step 11/14 : LABEL "pwsafe"="$deb_file"
-#  ---> Running in 301153be3dc4
-# Removing intermediate container 301153be3dc4
-#  ---> c2644a37972d
-# Step 12/14 : ADD https://github.com/pwsafe/pwsafe/releases/download/1.13.0/$deb_file
-#  ---> 807bacbac588
+#  ---> Running in db7ddded96c0
+# Removing intermediate container db7ddded96c0
+#  ---> b3a49a7f7cc4
+# Step 12/14 : ADD https://github.com/pwsafe/pwsafe/releases/download/1.18.2/$deb_file      /tmp/$deb_file
+# ...
+#  ---> 5441b9460729
 # Step 13/14 : RUN dpkg -i /tmp/$deb_file && rm /tmp/$deb_file
-#  ---> Running in b42e203f31aa
-# Removing intermediate container b42e203f31aa
-#  ---> a9435c693fb5
+#  ---> Running in eb9e4c713920
+# Selecting previously unselected package passwordsafe.
+# (Reading database ... 26621 files and directories currently installed.)
+# Preparing to unpack .../passwordsafe-ubuntu22-1.18.2-amd64.deb ...
+# Unpacking passwordsafe (1.18.2) ...
+# Setting up passwordsafe (1.18.2) ...
+# Processing triggers for hicolor-icon-theme (0.17-2) ...
+# Removing intermediate container eb9e4c713920
+#  ---> adf837163c20
 # Step 14/14 : CMD /usr/bin/pwsafe
-#  ---> Running in e1dd74b99040
-# Removing intermediate container e1dd74b99040
-#  ---> 28d5f8ae80b9
-# Successfully built 28d5f8ae80b9
-# Successfully tagged passwordsafe:1.13
-#
-# real	7m49.988s
-# user	0m0.448s
-# sys	0m0.392s
+#  ---> Running in b3ee23483787
+# Removing intermediate container b3ee23483787
+#  ---> 4d7a457ff26b
+# Successfully built 4d7a457ff26b
+# Successfully tagged passwordsafe:1.18.2
+# 
+# real	2m32.595s
+# user	0m0.165s
+# sys	0m0.192s
 # ----
 # 
 # The image is not small because of the large amount of stuff that gets 
 # pulled in to meet the deps:
 # ----
-# ~/working/docker/passwordsafe$ sudo docker image list
-# REPOSITORY           TAG       IMAGE ID       CREATED          SIZE
-# passwordsafe         1.13      28d5f8ae80b9   11 minutes ago   1.05GB
+# docker image list
+# REPOSITORY     TAG       IMAGE ID       CREATED         SIZE
+# passwordsafe   1.18.2    4d7a457ff26b   3 minutes ago   712MB
 # ----
