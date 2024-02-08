@@ -21,7 +21,7 @@ jobs:
   build_mac_pwsafe:
     name: Build pwsafe for macOS
     # The type of runner that the job will run on
-    runs-on: macos-latest
+    runs-on: macos-14
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -68,7 +68,7 @@ jobs:
         autoreconf --install
         ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
         make -j $HOST_CPU check
-        make install
+        sudo make install
 
     - name: Build ykpers from upstream
       run: |
@@ -78,7 +78,7 @@ jobs:
         autoreconf --install
         ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
         make -j $HOST_CPU check
-        make install
+        sudo make install
 
     - name: Cache wxWidgets build
       id: cache-wxWidgets-build
@@ -105,7 +105,7 @@ jobs:
         ./configure --enable-universal_binary=$WX_ARCH --prefix=$WX_BUILD_DIR --disable-shared --enable-unicode --with-macosx-version-min=$MACOS_VER_MIN --with-libpng=builtin --with-libjpeg=builtin --with-libtiff=builtin --with-regex=builtin --without-liblzma $WX_DEBUG_FLAG
         make -j $HOST_NCPU
         cd locale; make allmo; cd ..
-        make install
+        sudo make install
         du -sh $WX_BUILD_DIR
 
     - name: Generate and print xcconfigs
