@@ -153,7 +153,7 @@ void AboutDlg::CreateControls()
   wxButton* closeButton = new wxButton(aboutDialog, wxID_CLOSE, _("&Close"), wxDefaultPosition, wxDefaultSize, 0);
   rightSizer->Add(closeButton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-  const wxString vstring = pwsafeAppName + L" " + pwsafeVersionString;
+  const wxString vstring = pwsafeAppName + L" (" + wxGetLibraryVersionInfo().GetVersionString() + L") " + pwsafeVersionString;
   versionStaticText->SetLabel(vstring);
   const wxString dstring = _("Build date:") + wxT(" ") + wxT(__DATE__) + wxT(" ") + wxT(__TIME__);
   buildStaticText->SetLabel(dstring);
