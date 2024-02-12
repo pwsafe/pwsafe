@@ -113,6 +113,9 @@ void AboutDlg::CreateControls()
   wxStaticText* versionStaticText = new wxStaticText(aboutDialog, wxID_VERSIONSTR, _("Password Safe")+wxT(" vx.yy (abcd)"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
   rightSizer->Add(versionStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
+  wxStaticText* wxVersionStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Built using ") + wxGetLibraryVersionInfo().GetVersionString(), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
+  rightSizer->Add(wxVersionStaticText, 0, wxALIGN_LEFT|wxALL, 5);
+
   wxStaticText* buildStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Build date:")+wxT(" Mon dd yyyy hh:mm:ss"), wxDefaultPosition, wxDefaultSize, 0);
   rightSizer->Add(buildStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 

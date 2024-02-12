@@ -31,11 +31,7 @@
 //   Revision != 0 for all Intermediate versions
 // Full information shown in AboutBox; only Major & Minor are displayed in initial dialog
 
-#ifdef linux
-#define APPNAME _T("PasswordSafe (linux)")
-#else
-#define APPNAME _T("PasswordSafe (wxWidgets)")
-#endif
+#define APPNAME _T("PasswordSafe")
 
 #define MAJORVERSION @pwsafe_VERSION_MAJOR@
 #define MINORVERSION @pwsafe_VERSION_MINOR@
