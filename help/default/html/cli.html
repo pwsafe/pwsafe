@@ -106,15 +106,15 @@ opened.  Some validation is always required e.g. uniqueness of the entry's ID an
 group/title/username combination.</li>
 
 <li><b>--allow-screen-capture</b><br>
-    As described in the <a href="security_tab.html">Security Tab</a> page, <b>Password Safe</b> by default hides itself from Windows' screen capture function.
+    As described in the <a href="security_tab.html">Security Tab</a> page, <b>Password Safe</b> by default hides itself from Windows' screen capture function (on Windows 10 Version 2004 and later).
     However, some programs, such as remote desktop viewers and screen readers for the visually impaired, rely on the screen capture capability to function. If you're using such programs on a regular basis, you can disable this by starting <b>Password Safe</b>
     with this command line flag.
     To protect against an adversary surreptitiously adding this flag, <b>Password Safe</b> displays a short notice when starting, informing you that the option has been set.
     In addition, the "Capture Protection" indicator in the opening and main windows will be in red.<br/>
     This feature can also be silently disabled at installation/setup time, either by clearing the screen capture protection checkbox in the exe (NSIS) Choose Components window,
     or by passing SCREENCAPTUREPROTECTION=False as an argument to the msiexec command, e.g., <code>msiexec /i &lt;pwsafe_msi_path&gt; SCREENCAPTUREPROTECTION=False</code>. When the feature is 
-    disabled this way, the status icon will be gray, with a tooltip indicating that the feature was disabled at setup. This is implemented via a registry key that requires admin priviledge to write,
-    but is readable by all users.
+    disabled this way, the status icon will be gray, with a tooltip indicating that the feature was disabled at setup. This is implemented via a registry key (HKLM\Software\Password Safe\Admin\ScreenCaptureProtection) that requires admin priviledge to write,
+    but is readable by all users, specifically setting a value of zero to the key disables the feature. 
 </li>
 
 <li><b>--testdump</b><br>
