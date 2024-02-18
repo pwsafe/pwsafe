@@ -348,7 +348,8 @@ if (NOT WIN32)
   install (FILES ${CMAKE_BINARY_DIR}/pwsafe.1.gz TYPE MAN)
   install (FILES "install/desktop/pwsafe.desktop" DESTINATION "share/applications")
   install (FILES "install/metainfo/org.pwsafe.pwsafe.metainfo.xml" DESTINATION "share/metainfo")
-  install (FILES "install/graphics/pwsafe.png" DESTINATION "share/icons/hicolor/128x128/apps/")
+  install (FILES "install/graphics/48x48/pwsafe.png" DESTINATION "share/icons/hicolor/48x48/apps/")
+  install (FILES "install/graphics/128x128/pwsafe.png" DESTINATION "share/icons/hicolor/128x128/apps/")
   install (DIRECTORY "${CMAKE_BINARY_DIR}/src/ui/wxWidgets/I18N/mos/"
            DESTINATION "share/locale")
 

@@ -42,7 +42,8 @@ install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/locale
 install -d -m 755 ${RPM_BUILD_ROOT}/tmp
 install -m 755 -s ${RPM_BUILD_DIR}/%{name}-%{version}/src/ui/wxWidgets/GCCUnicodeRelease/pwsafe ${RPM_BUILD_ROOT}/usr/bin
 install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/install/desktop/fedora-pwsafe.desktop ${RPM_BUILD_ROOT}/usr/share/applications
-install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/install/graphics/pwsafe.png ${RPM_BUILD_ROOT}/usr/share/icons/hicolor/48x48/apps
+install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/install/graphics/48x48/pwsafe.png ${RPM_BUILD_ROOT}/usr/share/icons/hicolor/48x48/apps
+install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/install/graphics/128x128/pwsafe.png ${RPM_BUILD_ROOT}/usr/share/icons/hicolor/128x128/apps
 install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/README.md ${RPM_BUILD_DIR}/%{name}-%{version}/docs/ReleaseNotes.md ${RPM_BUILD_DIR}/%{name}-%{version}/docs/ChangeLog.txt ${RPM_BUILD_DIR}/%{name}-%{version}/LICENSE ${RPM_BUILD_DIR}/%{name}-%{version}/install/copyright ${RPM_BUILD_ROOT}/usr/share/doc/passwordsafe
 install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/docs/pwsafe.1 ${RPM_BUILD_ROOT}/usr/share/man/man1
 gzip -9 ${RPM_BUILD_ROOT}/usr/share/man/man1/pwsafe.1

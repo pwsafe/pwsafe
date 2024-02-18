@@ -92,7 +92,9 @@ debtree:
 	@$(SED) s/VERSION/$(RELEASENAME)/ < control > debian/DEBIAN/control
 	@$(CP) ../desktop/pwsafe.desktop debian/usr/share/applications
 	@$(MKDIR) debian/usr/share/icons/hicolor/48x48/apps
-	@$(CP) ../graphics/pwsafe.png debian/usr/share/icons/hicolor/48x48/apps
+	@$(MKDIR) debian/usr/share/icons/hicolor/128x128/apps
+	@$(CP) ../graphics/48x48/pwsafe.png debian/usr/share/icons/hicolor/48x48/apps
+	@$(CP) ../graphics/128x128/pwsafe.png debian/usr/share/icons/hicolor/128x128/apps
 	@$(FIND) debian -type d -exec $(CHMOD) 755 {} \;
 	@$(CHMOD) -R g-w debian/usr/share/passwordsafe
 	@$(CHMOD) -R g-w debian/usr/share/doc/passwordsafe/*
