@@ -138,7 +138,7 @@ void SafeCombinationPromptDlg::CreateControls()
   auto *itemBoxSizer5 = new wxBoxSizer(wxVERTICAL);
   itemBoxSizer3->Add(itemBoxSizer5, 1, wxALL|wxEXPAND, 5);
 
-  wxStaticText* itemStaticText6 = new wxStaticText( itemDialog1, wxID_STATIC, _("Please enter the safe combination for this password database."), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText6 = new wxStaticText( itemDialog1, wxID_STATIC, _("Please enter the master password for this password database."), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("filename"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -150,7 +150,7 @@ void SafeCombinationPromptDlg::CreateControls()
   auto flexGridSizer = new wxFlexGridSizer(2 /*cols*/, 0 /*vgap*/, 0 /*hgap*/);
   flexGridSizer->AddGrowableCol(1);
 
-  wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe combination:"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Master password:"), wxDefaultPosition, wxDefaultSize, 0 );
   flexGridSizer->Add(itemStaticText9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_scctrl = new SafeCombinationCtrl( itemDialog1, ID_PASSWORD, &m_password, wxDefaultPosition, wxDefaultSize );

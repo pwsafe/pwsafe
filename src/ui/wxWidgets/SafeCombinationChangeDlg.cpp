@@ -88,9 +88,9 @@ SafeCombinationChangeDlg::SafeCombinationChangeDlg(wxWindow *parent, PWScore &co
 ////@end SafeCombinationChangeDlg creation
 #ifndef NO_YUBI
   m_yubiMixin1.SetupMixin(this, FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS), YubiMixin::POLLING_TIMER_ID);
-  m_yubiMixin1.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
+  m_yubiMixin1.SetPrompt1(_("Enter old master password (if any) and click on top Yubikey button"));
   m_yubiMixin2.SetupMixin(this, FindWindow(ID_YUBIBTN2), FindWindow(ID_YUBISTATUS), YubiMixin::POLLING_TIMER2_ID);
-  m_yubiMixin2.SetPrompt1(_("Enter old safe combination (if any) and click on top Yubikey button"));
+  m_yubiMixin2.SetPrompt1(_("Enter old master password (if any) and click on top Yubikey button"));
 #endif
 }
 
@@ -137,7 +137,7 @@ void SafeCombinationChangeDlg::CreateControls()
   itemFlexGridSizer4->AddGrowableCol(1);
   mainSizer->Add(itemFlexGridSizer4, 1, wxALIGN_LEFT|wxALL|wxEXPAND, SideMargin);
 
-  wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Old safe combination:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
+  wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Old master password:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
   itemFlexGridSizer4->Add(itemStaticText5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_oldPasswdEntry = new SafeCombinationCtrl( itemDialog1, ID_OLDPASSWD, &m_oldpasswd, wxDefaultPosition, wxDefaultSize );
@@ -149,7 +149,7 @@ void SafeCombinationChangeDlg::CreateControls()
   itemFlexGridSizer4->Add(m_YubiBtn, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT|wxSHAPED, 5);
 #endif
 
-  wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("New safe combination:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
+  wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("New master password:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
   itemFlexGridSizer4->Add(itemStaticText8, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_newPasswdEntry = new SafeCombinationCtrl( itemDialog1, ID_NEWPASSWD, &m_newpasswd, wxDefaultPosition, wxDefaultSize );
@@ -268,15 +268,15 @@ void SafeCombinationChangeDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
     const StringX old = m_oldresponse.empty() ? m_oldpasswd : m_oldresponse;
     int rc = m_core.CheckPasskey(m_core.GetCurFile(), old);
     if (rc == PWScore::WRONG_PASSWORD) {
-      wxMessageDialog err(this, _("The old safe combination is not correct"),
+      wxMessageDialog err(this, _("The old master password is not correct"),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
     } else if (rc == PWScore::CANT_OPEN_FILE) {
-      wxMessageDialog err(this, _("Cannot verify old safe combination - file gone?"),
+      wxMessageDialog err(this, _("Cannot verify old master password - file gone?"),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
     } else if (m_isPasswordHidden && (m_confirm != m_newpasswd)) {
-      wxMessageDialog err(this, _("New safe combination and confirmation do not match"),
+      wxMessageDialog err(this, _("New master password and confirmation do not match"),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
     // Vox populi vox dei - folks want the ability to use a weak
@@ -344,9 +344,9 @@ void SafeCombinationChangeDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
       if (rc == PWScore::WRONG_PASSWORD) {
         m_oldresponse.clear();
         m_yubiStatusCtrl->SetForegroundColour(*wxRED);
-        m_yubiStatusCtrl->SetLabel(_("YubiKey safe combination incorrect"));
+        m_yubiStatusCtrl->SetLabel(_("YubiKey master password incorrect"));
       } else {
-        m_yubiMixin2.SetPrompt1(_("Enter new safe combination (if any) and click on bottom Yubikey button"));
+        m_yubiMixin2.SetPrompt1(_("Enter new master password (if any) and click on bottom Yubikey button"));
         m_yubiMixin2.UpdateStatus();
       }
     }
@@ -378,7 +378,7 @@ void SafeCombinationChangeDlg::OnYubibtn2Click(wxCommandEvent& WXUNUSED(event))
       if (rc == PWScore::WRONG_PASSWORD) {
         m_oldresponse.clear();
         m_yubiStatusCtrl->SetForegroundColour(*wxRED);
-        m_yubiStatusCtrl->SetLabel(_("YubiKey safe combination incorrect"));
+        m_yubiStatusCtrl->SetLabel(_("YubiKey master password incorrect"));
         return;
       }
     } else {
@@ -386,7 +386,7 @@ void SafeCombinationChangeDlg::OnYubibtn2Click(wxCommandEvent& WXUNUSED(event))
       rc = m_core.CheckPasskey(m_core.GetCurFile(), m_oldpasswd);
       if (rc == PWScore::WRONG_PASSWORD) {
         m_yubiStatusCtrl->SetForegroundColour(*wxRED);
-        m_yubiStatusCtrl->SetLabel(_("Current safe combination incorrect"));
+        m_yubiStatusCtrl->SetLabel(_("Current master password incorrect"));
         return;
       }
     }

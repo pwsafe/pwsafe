@@ -173,7 +173,7 @@ void SafeCombinationEntryDlg::CreateControls()
   wxButton* itemButton11 = new wxButton( itemDialog1, ID_ELLIPSIS, wxT("..."), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
   itemBoxSizer9->Add(itemButton11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText12 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe Combination:"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText12 = new wxStaticText( itemDialog1, wxID_STATIC, _("Master Password:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer4->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALL, 3);
 
   auto itemBoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
