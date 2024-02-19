@@ -680,7 +680,7 @@ void PasswordSafeFrame::CreateMenubar()
   /////////////////////////////////////////////////////////////////////////////
 
   auto menuManage = new wxMenu;
-  menuManage->Append(ID_CHANGECOMBO, _("&Change Safe Combination..."), wxEmptyString, wxITEM_NORMAL);
+  menuManage->Append(ID_CHANGECOMBO, _("&Change Master Password..."), wxEmptyString, wxITEM_NORMAL);
   menuManage->AppendSeparator();
   menuManage->Append(ID_BACKUP, _("Make &Backup...\tCtrl+B"), wxEmptyString, wxITEM_NORMAL);
   menuManage->Append(ID_RESTORE, _("&Restore from Backup...\tCtrl+R"), wxEmptyString, wxITEM_NORMAL);
@@ -2671,7 +2671,7 @@ void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
 
     case PWScore::USER_CANCEL:
       //In case the file doesn't exist, user will have to cancel
-      //the safe combination entry box.  In that call, fall through
+      //the master password entry box.  In that call, fall through
       //to the default case of removing the file from history
       if (pws_os::FileExists(stringT(dbfile)))
         break;          // An existing file doesn't need to be removed from history

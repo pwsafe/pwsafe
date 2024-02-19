@@ -77,7 +77,7 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
              wxFileDirPickerEventHandler(DbSelectionPanel::OnFilePicked),
              nullptr, this);
 
-  panelSizer->Add(new wxStaticText(this, wxID_ANY, _("Safe Combination:")), borderFlags);
+  panelSizer->Add(new wxStaticText(this, wxID_ANY, _("Master Password:")), borderFlags);
   panelSizer->AddSpacer(RowSeparation);
   
   m_sc = new SafeCombinationCtrl(this);

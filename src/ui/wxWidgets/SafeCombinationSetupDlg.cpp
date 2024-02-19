@@ -113,13 +113,13 @@ void SafeCombinationSetupDlg::CreateControls()
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
   itemDialog1->SetSizer(itemBoxSizer2);
 
-  wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("A new password database will be created.\nThe safe combination will be used to encrypt the password database file.\nYou can use any keyboard character. The combination is case-sensitive."), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("A new password database will be created.\nThe master password will be used to encrypt the password database file.\nYou can use any keyboard character. The combination is case-sensitive."), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, 15);
 
   wxFlexGridSizer* itemGridSizer4 = new wxFlexGridSizer(2, 0, 10);
   itemBoxSizer2->Add(itemGridSizer4, 0, wxLEFT|wxRIGHT|wxEXPAND, 15);
 
-  wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Safe Combination:"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Master Password:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemGridSizer4->Add(itemStaticText5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl6 = new wxTextCtrl( itemDialog1, ID_PASSWORD, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
