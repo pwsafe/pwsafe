@@ -2099,7 +2099,7 @@
                 <string name="proxy-Id name">"ID_CHANGECOMBO"</string>
                 <long name="proxy-Id value">10057</long>
                 <string name="proxy-Kind">"Normal"</string>
-                <string name="proxy-Label">"&amp;Change Master Passwrod..."</string>
+                <string name="proxy-Label">"&amp;Change Master Password..."</string>
                 <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
                 <string name="title">"&amp;Change Master Password...: ID_CHANGECOMBO"</string>
                 <long name="title-mode">0</long>
