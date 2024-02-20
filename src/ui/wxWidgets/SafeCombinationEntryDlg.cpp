@@ -197,7 +197,7 @@ void SafeCombinationEntryDlg::CreateControls()
   itemBoxSizer14->AddSpacer(25);
   itemBoxSizer14->AddStretchSpacer();
 
-  wxCheckBox* itemCheckBox16 = new wxCheckBox( itemDialog1, ID_SHOWCOMBINATION, _("Show Combination"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxCheckBox* itemCheckBox16 = new wxCheckBox( itemDialog1, ID_SHOWCOMBINATION, _("Show Master Password"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox16->SetValue(false);
   itemBoxSizer14->Add(itemCheckBox16, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 

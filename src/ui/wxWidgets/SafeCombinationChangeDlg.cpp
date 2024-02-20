@@ -171,7 +171,7 @@ void SafeCombinationChangeDlg::CreateControls()
 #endif
 
   itemFlexGridSizer4->AddStretchSpacer(0);
-  auto showCombinationCheckBox = new wxCheckBox(this, ID_SHOWCOMBINATION, _("Show Combination"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto showCombinationCheckBox = new wxCheckBox(this, ID_SHOWCOMBINATION, _("Show Master Password"), wxDefaultPosition, wxDefaultSize, 0 );
   showCombinationCheckBox->SetValue(false);
   m_isPasswordHidden = true;
   showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {
