@@ -124,7 +124,7 @@ void SafeCombinationChangeDlg::CreateControls()
   mainSizer->AddSpacer(TopMargin);
   itemDialog1->SetSizer(mainSizer);
 
-  wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("Please enter the current combination, followed by a new combination.\nType the new combination once again to confirm it."), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("Enter the current master password, followed by a new one.\nType the new one again to confirm it."), wxDefaultPosition, wxDefaultSize, 0 );
   mainSizer->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, SideMargin);
 
 #ifndef NO_YUBI
