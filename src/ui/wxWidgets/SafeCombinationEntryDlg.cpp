@@ -442,7 +442,7 @@ void SafeCombinationEntryDlg::ProcessPhrase()
     if (m_tries++ >= 2) {
       errmess = _("Too many retries - exiting");
     } else {
-      errmess = _("Most commont issues:\n - incorrect master password,\n - not a Password Safe database,\n - a corrupt database, or \n - backup database has been opened instead of original, ending with '~' character.");
+      errmess = _("Password database can't be opened.\n\nMost commont issues:\n - incorrect master password,\n - not a Password Safe database,\n - a corrupt database, or \n - backup database has been opened instead of original, ending with '~' character.");
     }
     break;
   } // switch (status)
