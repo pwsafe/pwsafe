@@ -286,7 +286,7 @@ void SafeCombinationPromptDlg::ProcessPhrase()
       errmess = _("Three strikes - yer out!");
     } else {
       m_tries++;
-      errmess = _("Most commont issues:\n - incorrect Master Password,\n - not a Password Safe database,\n - a corrupt database.\n - backup database has been opened instead of original, ending with '~'");
+      errmess = _("Most commont issues:\n - incorrect master password,\n - not a Password Safe database,\n - a corrupt database, or\n - backup database has been opened instead of original, ending with '~' character.");
     }
     wxMessageDialog err(this, errmess,
                         _("Error"), wxOK | wxICON_EXCLAMATION);
