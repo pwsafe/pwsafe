@@ -2626,7 +2626,7 @@
           <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
           <string name="proxy-Texture">""</string>
           <string name="proxy-Texture style">"Tiled"</string>
-          <string name="proxy-Title">"Safe Combination Entry"</string>
+          <string name="proxy-Title">"Master Password Entry"</string>
           <string name="proxy-Tooltip text">""</string>
           <long name="proxy-Width">400</long>
           <string name="proxy-Window kind">"wxDialog"</string>
@@ -2659,7 +2659,7 @@
           <long name="proxy-X">-1</long>
           <string name="proxy-XRC filename">""</string>
           <long name="proxy-Y">-1</long>
-          <string name="title">"Safe Combination Entry"</string>
+          <string name="title">"Master Password Entry"</string>
           <long name="title-mode">0</long>
           <string name="type">"dialog-document"</string>
           <bool name="use-id-prefix">0</bool>
@@ -2980,7 +2980,7 @@
                 <string name="proxy-Id name">"wxID_STATIC"</string>
                 <long name="proxy-Id value">5105</long>
                 <string name="proxy-Implementation filename">""</string>
-                <string name="proxy-Label">"Open Password Database:"</string>
+                <string name="proxy-Label">"Password Database:"</string>
                 <string name="proxy-Member variable name">""</string>
                 <string name="proxy-Name">""</string>
                 <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
@@ -4848,7 +4848,7 @@ You can use any keyboard character. The combination is case-sensitive.
           <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
           <string name="proxy-Texture">""</string>
           <string name="proxy-Texture style">"Tiled"</string>
-          <string name="proxy-Title">"Enter Safe Combination"</string>
+          <string name="proxy-Title">"Enter Master Password"</string>
           <string name="proxy-Tooltip text">""</string>
           <long name="proxy-Width">400</long>
           <string name="proxy-Window kind">"wxDialog"</string>
@@ -4881,7 +4881,7 @@ You can use any keyboard character. The combination is case-sensitive.
           <long name="proxy-X">-1</long>
           <string name="proxy-XRC filename">""</string>
           <long name="proxy-Y">-1</long>
-          <string name="title">"Enter Safe Combination"</string>
+          <string name="title">"Enter Master Password"</string>
           <long name="title-mode">0</long>
           <string name="type">"dialog-document"</string>
           <bool name="use-id-prefix">0</bool>
@@ -5063,7 +5063,7 @@ You can use any keyboard character. The combination is case-sensitive.
                   <string name="proxy-Id name">"wxID_STATIC"</string>
                   <long name="proxy-Id value">5105</long>
                   <string name="proxy-Implementation filename">""</string>
-                  <string name="proxy-Label">"Please enter the safe combination for this password database."</string>
+                  <string name="proxy-Label">"Enter the Master Password to unlock password database:"</string>
                   <string name="proxy-Member variable name">""</string>
                   <string name="proxy-Name">""</string>
                   <string name="proxy-Platform">"&lt;Any platform&gt;"</string>

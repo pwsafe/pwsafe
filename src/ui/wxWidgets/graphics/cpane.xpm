@@ -4,7 +4,7 @@ static const char * const cpane_xpm[] = {
 "98 98 3 1",
 /* colors */
 "  c None",
-"+ c Black",
+"+ c #800000",
 ". c #808080",
 /* pixels */
 "+.                                                                                                ",
