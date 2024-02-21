@@ -165,7 +165,7 @@ void SafeCombinationPromptDlg::CreateControls()
   itemCheckBox15->SetValue(false);
   m_readOnly = false;
 
-  auto showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Combination"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Master Password"), wxDefaultPosition, wxDefaultSize, 0 );
   showCombinationCheckBox->SetValue(false);
   showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {m_scctrl->SecureTextfield(!event.IsChecked());});
 

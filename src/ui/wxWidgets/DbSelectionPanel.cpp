@@ -96,7 +96,7 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
   panelSizer->Add(horizontalSizer, borderFlags.Expand());
   panelSizer->AddSpacer(5);
 
-  auto showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Combination"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Master Password"), wxDefaultPosition, wxDefaultSize, 0 );
   showCombinationCheckBox->SetValue(false);
   showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {m_sc->SecureTextfield(!event.IsChecked());});
 

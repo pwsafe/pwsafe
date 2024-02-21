@@ -2099,9 +2099,9 @@
                 <string name="proxy-Id name">"ID_CHANGECOMBO"</string>
                 <long name="proxy-Id value">10057</long>
                 <string name="proxy-Kind">"Normal"</string>
-                <string name="proxy-Label">"&amp;Change Safe Combination..."</string>
+                <string name="proxy-Label">"&amp;Change Master Password..."</string>
                 <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
-                <string name="title">"&amp;Change Safe Combination...: ID_CHANGECOMBO"</string>
+                <string name="title">"&amp;Change Master Password...: ID_CHANGECOMBO"</string>
                 <long name="title-mode">0</long>
                 <string name="type">"dialog-control-document"</string>
               </document>
@@ -7322,7 +7322,7 @@ combination:"</string>
           <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
           <string name="proxy-Texture">""</string>
           <string name="proxy-Texture style">"Tiled"</string>
-          <string name="proxy-Title">"Change Safe Combination"</string>
+          <string name="proxy-Title">"Change Master Password"</string>
           <string name="proxy-Tooltip text">""</string>
           <long name="proxy-Width">400</long>
           <string name="proxy-Window kind">"wxDialog"</string>
@@ -7355,7 +7355,7 @@ combination:"</string>
           <long name="proxy-X">-1</long>
           <string name="proxy-XRC filename">""</string>
           <long name="proxy-Y">-1</long>
-          <string name="title">"Change Safe Combination"</string>
+          <string name="title">"Change Master Password"</string>
           <long name="title-mode">0</long>
           <string name="type">"dialog-document"</string>
           <bool name="use-id-prefix">0</bool>
