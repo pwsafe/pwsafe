@@ -5063,7 +5063,7 @@ You can use any keyboard character. The combination is case-sensitive.
                   <string name="proxy-Id name">"wxID_STATIC"</string>
                   <long name="proxy-Id value">5105</long>
                   <string name="proxy-Implementation filename">""</string>
-                  <string name="proxy-Label">"Please enter the safe combination for this password database."</string>
+                  <string name="proxy-Label">"Enter the Master Password to unlock password database:"</string>
                   <string name="proxy-Member variable name">""</string>
                   <string name="proxy-Name">""</string>
                   <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
