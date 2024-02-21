@@ -4848,7 +4848,7 @@ You can use any keyboard character. The combination is case-sensitive.
           <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
           <string name="proxy-Texture">""</string>
           <string name="proxy-Texture style">"Tiled"</string>
-          <string name="proxy-Title">"Enter Safe Combination"</string>
+          <string name="proxy-Title">"Enter Master Password"</string>
           <string name="proxy-Tooltip text">""</string>
           <long name="proxy-Width">400</long>
           <string name="proxy-Window kind">"wxDialog"</string>
@@ -4881,7 +4881,7 @@ You can use any keyboard character. The combination is case-sensitive.
           <long name="proxy-X">-1</long>
           <string name="proxy-XRC filename">""</string>
           <long name="proxy-Y">-1</long>
-          <string name="title">"Enter Safe Combination"</string>
+          <string name="title">"Enter Master Password"</string>
           <long name="title-mode">0</long>
           <string name="type">"dialog-document"</string>
           <bool name="use-id-prefix">0</bool>
