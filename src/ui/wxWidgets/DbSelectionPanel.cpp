@@ -148,7 +148,7 @@ bool DbSelectionPanel::DoValidation()
     m_combination = m_yubiCombination.empty() ? m_sc->GetCombination() : m_yubiCombination;
     //Does the combination match?
     if (m_core->CheckPasskey(tostringx(wxfn.GetFullPath()), m_combination) != PWScore::SUCCESS) {
-      wxString errmess(_("Incorrect passkey, not a PasswordSafe database, or a corrupt database. (Backup database has same name as original, ending with '~')"));
+      wxString errmess(_("Most commont issues:\n - incorrect Master Password,\n - not a Password Safe database,\n - a corrupt database.\n - backup database has been opened instead of original, ending with '~'"));
       wxMessageBox(errmess, _("Error"), wxOK | wxICON_ERROR, this);
       SelectCombinationText();
       m_combination.clear();
