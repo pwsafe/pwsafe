@@ -137,7 +137,7 @@ void SafeCombinationChangeDlg::CreateControls()
   itemFlexGridSizer4->AddGrowableCol(1);
   mainSizer->Add(itemFlexGridSizer4, 1, wxALIGN_LEFT|wxALL|wxEXPAND, SideMargin);
 
-  wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Old master password:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
+  wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Old Master Password:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
   itemFlexGridSizer4->Add(itemStaticText5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_oldPasswdEntry = new SafeCombinationCtrl( itemDialog1, ID_OLDPASSWD, &m_oldpasswd, wxDefaultPosition, wxDefaultSize );
@@ -149,7 +149,7 @@ void SafeCombinationChangeDlg::CreateControls()
   itemFlexGridSizer4->Add(m_YubiBtn, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT|wxSHAPED, 5);
 #endif
 
-  wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("New master password:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
+  wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("New Master Password:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
   itemFlexGridSizer4->Add(itemStaticText8, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   m_newPasswdEntry = new SafeCombinationCtrl( itemDialog1, ID_NEWPASSWD, &m_newpasswd, wxDefaultPosition, wxDefaultSize );
