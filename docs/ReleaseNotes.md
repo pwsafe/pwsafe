@@ -7,8 +7,8 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 PasswordSafe 3.65.1pre Release Feb 2024
 =======================================
 
-Bugs fixed in 3.65.1pre
------------------------
+Bugs fixed in 3.65.1
+--------------------
 * [SF551](https://sourceforge.net/p/passwordsafe/support-requests/551/) Document the fact that Scrren Capture Protection isn't available before Windows 10 Version 2004, as well as the admin registry key used to disable it.
 * [GH1092](https://github.com/pwsafe/pwsafe/issues/1092) Size and position of main window is now restored correctly on displays with scale > 100%.
 
