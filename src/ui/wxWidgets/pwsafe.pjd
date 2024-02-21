@@ -2980,7 +2980,7 @@
                 <string name="proxy-Id name">"wxID_STATIC"</string>
                 <long name="proxy-Id value">5105</long>
                 <string name="proxy-Implementation filename">""</string>
-                <string name="proxy-Label">"Open Password Database:"</string>
+                <string name="proxy-Label">"Password Database:"</string>
                 <string name="proxy-Member variable name">""</string>
                 <string name="proxy-Name">""</string>
                 <string name="proxy-Platform">"&lt;Any platform&gt;"</string>

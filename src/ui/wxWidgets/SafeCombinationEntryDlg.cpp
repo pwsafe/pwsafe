@@ -160,7 +160,7 @@ void SafeCombinationEntryDlg::CreateControls()
   m_version = new wxStaticText( itemDialog1, wxID_STATIC, wxT("VX.YY"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(m_version, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("Open Password Database:"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("Password Database:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer4->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALL, 3);
 
   auto *itemBoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
