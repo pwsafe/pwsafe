@@ -130,7 +130,7 @@ wxMenu* SystemTray::CreatePopupMenu()
         break;
 
     case TrayStatus::CLOSED:
-        menu->Append(wxID_NONE, _("No Safe Open"));
+        menu->Append(wxID_NONE, _("No Password Database Open"));
         break;
 
     default:
