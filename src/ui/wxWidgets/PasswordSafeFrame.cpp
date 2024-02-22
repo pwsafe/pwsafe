@@ -520,10 +520,10 @@ void PasswordSafeFrame::CreateMenubar()
 
   // Added for window managers which have no iconization concept
   if (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::LOCKED) {
-    menuFile->Append(ID_UNLOCK_SAFE, _("&Unlock Safe\tCtrl+I"), wxEmptyString, wxITEM_NORMAL);
+    menuFile->Append(ID_UNLOCK_SAFE, _("&Unlock\tCtrl+I"), wxEmptyString, wxITEM_NORMAL);
   }
   else {
-    menuFile->Append(ID_LOCK_SAFE, _("&Lock Safe\tCtrl+J"), wxEmptyString, wxITEM_NORMAL);
+    menuFile->Append(ID_LOCK_SAFE, _("&Lock\tCtrl+J"), wxEmptyString, wxITEM_NORMAL);
   }
 
   if (wxGetApp().recentDatabases().GetCount() > 0) {
@@ -2496,7 +2496,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
     Show(true);
   }
 
-  CreateMenubar(); // Recreate menubar to replace menu item 'Unlock Safe' by 'Lock Safe'
+  CreateMenubar(); // Recreate menubar to replace menu item 'Unlock' by 'Lock'
   UpdateSearchBarVisibility();
   m_AuiManager.Update();
 }
@@ -2630,7 +2630,7 @@ void PasswordSafeFrame::LockDb()
   if (SaveAndClearDatabaseOnLock()) {
     m_sysTray->SetTrayStatus(SystemTray::TrayStatus::LOCKED);
 
-    CreateMenubar(); // Recreate menubar to replace menu item 'Lock Safe' by 'Unlock Safe'
+    CreateMenubar(); // Recreate menubar to replace menu item 'Lock' by 'Unlock'
   }
 
   // Hide search bar to not populate any search results (see GitHub issue 375)
