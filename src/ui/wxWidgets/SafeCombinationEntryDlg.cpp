@@ -448,7 +448,7 @@ void SafeCombinationEntryDlg::ProcessPhrase()
   } // switch (status)
     // here iff CheckPasskey failed.
   wxMessageDialog err(this, errmess,
-                      _("Error"), wxOK | wxICON_EXCLAMATION);
+                      _("Can't open a password database"), wxOK | wxICON_EXCLAMATION);
   err.ShowModal();
   if (m_tries >= 3) {
     EndModal(wxCANCEL);
