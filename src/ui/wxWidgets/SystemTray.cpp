@@ -122,11 +122,11 @@ wxMenu* SystemTray::CreatePopupMenu()
 
   switch (m_status) {
     case TrayStatus::UNLOCKED:
-        menu->Append(ID_SYSTRAY_LOCK, _("&Lock Safe"))->SetBitmap(wxBitmap(lock_xpm));
+        menu->Append(ID_SYSTRAY_LOCK, _("&Lock"))->SetBitmap(wxBitmap(lock_xpm));
       break;
 
     case TrayStatus::LOCKED:
-        menu->Append(ID_SYSTRAY_UNLOCK, _("&Unlock Safe"))->SetBitmap(wxBitmap(unlock_xpm));
+        menu->Append(ID_SYSTRAY_UNLOCK, _("&Unlock"))->SetBitmap(wxBitmap(unlock_xpm));
         break;
 
     case TrayStatus::CLOSED:
