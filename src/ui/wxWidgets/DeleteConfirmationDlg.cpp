@@ -104,10 +104,10 @@ void DeleteConfirmationDlg::CreateControls()
   wxStdDialogButtonSizer* itemStdDialogButtonSizer5 = new wxStdDialogButtonSizer;
 
   itemBoxSizer2->Add(itemStdDialogButtonSizer5, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
-  wxButton* itemButton6 = new wxButton( itemDialog1, wxID_YES, _("&Yes"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxButton* itemButton6 = new wxButton( itemDialog1, wxID_YES, _("&Delete"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStdDialogButtonSizer5->AddButton(itemButton6);
 
-  wxButton* itemButton7 = new wxButton( itemDialog1, wxID_NO, _("&No"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxButton* itemButton7 = new wxButton( itemDialog1, wxID_NO, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
   itemButton7->SetDefault();
   itemStdDialogButtonSizer5->AddButton(itemButton7);
 
