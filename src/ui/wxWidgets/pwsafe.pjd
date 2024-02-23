@@ -3956,7 +3956,7 @@
           <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
           <string name="proxy-Texture">""</string>
           <string name="proxy-Texture style">"Tiled"</string>
-          <string name="proxy-Title">"Safe Combination Setup"</string>
+          <string name="proxy-Title">"Master Password Setup"</string>
           <string name="proxy-Tooltip text">""</string>
           <long name="proxy-Width">400</long>
           <string name="proxy-Window kind">"wxDialog"</string>
@@ -3989,7 +3989,7 @@
           <long name="proxy-X">-1</long>
           <string name="proxy-XRC filename">""</string>
           <long name="proxy-Y">-1</long>
-          <string name="title">"Safe Combination Setup"</string>
+          <string name="title">"Master Password Setup"</string>
           <long name="title-mode">0</long>
           <string name="type">"dialog-document"</string>
           <bool name="use-id-prefix">0</bool>
