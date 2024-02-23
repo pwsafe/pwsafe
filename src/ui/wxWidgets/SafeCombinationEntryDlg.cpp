@@ -442,13 +442,13 @@ void SafeCombinationEntryDlg::ProcessPhrase()
     if (m_tries++ >= 2) {
       errmess = _("Too many retries - exiting");
     } else {
-      errmess = _("Incorrect master password, not a Password Safe database, or a corrupt database.");
+      errmess = _("Incorrect master password, not a Password Safe database,\nor a corrupt database.");
     }
     break;
   } // switch (status)
     // here iff CheckPasskey failed.
   wxMessageDialog err(this, errmess,
-                      _("Can't open a password database"), wxOK | wxICON_EXCLAMATION);
+                      _("Can't open a password database"), wxOK | wxICON_NONE);
   err.ShowModal();
   if (m_tries >= 3) {
     EndModal(wxCANCEL);
