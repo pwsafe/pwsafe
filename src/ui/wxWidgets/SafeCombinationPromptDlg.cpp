@@ -286,10 +286,10 @@ void SafeCombinationPromptDlg::ProcessPhrase()
       errmess = _("Three strikes - yer out!");
     } else {
       m_tries++;
-      errmess = _("Incorrect master password, not a Password Safe database, or a corrupt database.");
+      errmess = _("Incorrect master password, not a Password Safe database,\nor a corrupt database.");
     }
     wxMessageDialog err(this, errmess,
-                        _("Can't open a password database"), wxOK | wxICON_EXCLAMATION);
+                        _("Can't open a password database"), wxOK | wxICON_NONE);
     err.ShowModal();
     auto *txt = dynamic_cast<wxTextCtrl *>(FindWindow(ID_PASSWORD));
     txt->SetSelection(-1,-1);
