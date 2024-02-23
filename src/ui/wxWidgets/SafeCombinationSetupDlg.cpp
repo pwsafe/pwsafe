@@ -125,7 +125,7 @@ void SafeCombinationSetupDlg::CreateControls()
   wxTextCtrl* itemTextCtrl6 = new wxTextCtrl( itemDialog1, ID_PASSWORD, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
   itemGridSizer4->Add(itemTextCtrl6, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
-  wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("Cofirmation"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("Confirmation:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemGridSizer4->Add(itemStaticText7, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* itemTextCtrl8 = new wxTextCtrl( itemDialog1, ID_VERIFY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
