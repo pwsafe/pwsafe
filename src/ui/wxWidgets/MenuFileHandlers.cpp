@@ -88,9 +88,11 @@ int PasswordSafeFrame::New()
   int rc, rc2;
 
   if (!m_core.IsReadOnly() && m_core.HasDBChanged()) {
-    wxString msg(_("Do you want to save changes to the password database: "));
+    wxString msg(_("Do you want to save changes to the password database:"));
+    msg += wxT("\n");
     msg += m_core.GetCurFile().c_str();
-    wxMessageDialog mbox(this, msg, GetTitle(), wxCANCEL | wxYES_NO | wxICON_QUESTION);
+    wxMessageDialog mbox(this, msg, "Save changes?", wxCANCEL | wxYES_NO | wxICON_QUESTION);
+    mbox.SetYesNoLabels(_("Save"), _("Discard"));
     rc = mbox.ShowModal();
     switch (rc) {
     case wxID_CANCEL:
@@ -563,15 +565,14 @@ int PasswordSafeFrame::SaveIfChanged()
   // Otherwise it won't be saved unless something else has changed
   if ((m_bTSUpdated || m_core.HasDBChanged()) &&
       m_core.GetNumEntries() > 0) {
-    wxString prompt(_("Do you want to save changes to the password database"));
+    wxString prompt(_("Do you want to save changes to the password database:"));
     if (m_core.IsDbOpen()) {
-      prompt += wxT(": ");
+      prompt += wxT("\n");
       prompt += m_core.GetCurFile().c_str();
     }
-    prompt += wxT("?");
-    wxMessageDialog dlg(this, prompt, GetTitle(),
-                        (wxICON_QUESTION | wxCANCEL |
-                         wxYES_NO | wxYES_DEFAULT));
+    wxMessageDialog dlg(this, prompt, "Save changes?",
+                        (wxICON_QUESTION | wxCANCEL | wxYES_NO));
+    dlg.SetYesNoLabels(_("Save"), _("Discard"));
     int rc = dlg.ShowModal();
     switch (rc) {
       case wxID_CANCEL:
