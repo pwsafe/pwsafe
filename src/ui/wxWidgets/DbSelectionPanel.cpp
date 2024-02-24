@@ -149,7 +149,7 @@ bool DbSelectionPanel::DoValidation()
     //Does the combination match?
     if (m_core->CheckPasskey(tostringx(wxfn.GetFullPath()), m_combination) != PWScore::SUCCESS) {
       wxString errmess(_("Incorrect master password, not a Password Safe database,\nor a corrupt database."));
-      wxMessageBox(errmess, _("Can't open a password database"), wxOK | wxICON_NONE, this);
+      wxMessageBox(errmess, _("Can't open a password database"), wxOK | wxICON_ERROR, this);
       SelectCombinationText();
       m_combination.clear();
       return false;
