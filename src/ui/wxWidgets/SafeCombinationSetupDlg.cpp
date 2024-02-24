@@ -231,14 +231,13 @@ void SafeCombinationSetupDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
     StringX errmess;
     if (!CPasswordCharPool::CheckMasterPassword(tostringx(m_password), errmess)) {
       wxString cs_msg;
-      cs_msg = _("Weak passphrase:");
-      cs_msg += wxT("\n\n");
-      cs_msg += errmess.c_str();
+      cs_msg = errmess.c_str();
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
       cs_msg += wxT("\n");
       cs_msg += _("Use it anyway?");
-      wxMessageDialog mb(this, cs_msg, _("Warning"),
-                      wxYES_NO | wxNO_DEFAULT | wxICON_HAND);
+      wxMessageDialog mb(this, cs_msg, _("Weak Master Password"),
+                      wxYES_NO | wxNO_DEFAULT | wxICON_EXCLAMATION);
+      mb.SetYesNoLabels(_("Use anyway"), _("Cancel"));
       int rc = mb.ShowModal();
     if (rc == wxID_NO)
       return;
