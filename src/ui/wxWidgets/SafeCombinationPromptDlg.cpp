@@ -289,7 +289,7 @@ void SafeCombinationPromptDlg::ProcessPhrase()
       errmess = _("Incorrect master password, not a Password Safe database,\nor a corrupt database.");
     }
     wxMessageDialog err(this, errmess,
-                        _("Can't open a password database"), wxOK | wxICON_NONE);
+                        _("Can't open a password database"), wxOK | wxICON_EXCLAMATION);
     err.ShowModal();
     auto *txt = dynamic_cast<wxTextCtrl *>(FindWindow(ID_PASSWORD));
     txt->SetSelection(-1,-1);
