@@ -1,7 +1,7 @@
 ## Introduction
-PasswordSafe has being ported to Linux using the wxWidgets user
+Password Safe has being ported to Linux using the wxWidgets user
 interface library. Following are notes for programmers wishing to
-build the Linux version. Currently, PasswordSafe is being built on
+build the Linux version. Currently, Password Safe is being built on
 Debian-based platforms (Debian and Ubuntu), and Fedora, so
 requirements are described in terms of .deb and .rpm packages.
 
@@ -18,10 +18,12 @@ The following should work for Debian and Fedora-based distros:
 
 3. Setup the build environment:
 
-    `$ mkdir build`
-    `$ cd build`
-    `$ cmake ..`
-(See below on how to customize your build)
+     `$ mkdir build`
+
+     `$ cd build`
+
+     `$ cmake ..` (See below on how to customize your build)
+
 4. Make the executables:
 
     `$ make`
@@ -53,8 +55,12 @@ If it encounters errors, check your locale settings. It is known to work with:
 
     `$ dnf install passwordsafe-fedora-\<version\>.\<arch\>.rpm`
 
+8. Run a program
+
+    `$ pwsafe`
+
 ## Requirements
-The packages that PasswordSafe depends upon are listed in Misc/setup-linux-dev-env.sh. Note that some of the package names differ between DEB and RPM distros, and some, unfortunately, bwteeen versions within a distro. The script attemps to take all this into account. Running it as root or via sudo should install all the packages needed to build PasswordSafe.
+The packages that Password Safe depends upon are listed in Misc/setup-linux-dev-env.sh. Note that some of the package names differ between DEB and RPM distros, and some, unfortunately, between versions within a distro. The script attemps to take all this into account. Running it as root or via sudo should install all the packages needed to build Password Safe.
 
 ## Customization
 The easiest way to customize the build is by running cmake-gui instead of cmake from the build directory, e.g.,
@@ -70,12 +76,12 @@ If you have a custom build of the Wx library you would like to use
 you can point to its 'wx-config' command by use of cmake's command 
 line option 'wxWidgets_CONFIG_EXECUTABLE'. You can also disable the 
 gtest unit testing (option NO_GTEST), YubiKey support (option NO_YUBI) 
-and QR support (option NO_QR) if they are not required.
+and QR support (option NO_QR), if they are not required.
 
 ## wxWidgets
 
 Some distributions lag behind the required version of wxWidgets,
-providing a version older than that required by PasswordSafe. If this
+providing a version older than that required by Password Safe. If this
 is the case, you can either:
 
 (a) Get the wxWidgets package from the relevant link in
