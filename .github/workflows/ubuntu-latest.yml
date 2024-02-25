@@ -51,7 +51,7 @@ jobs:
 
     - name: Test Package
       working-directory: build
-      run: dpkg -i ./p*.deb
+      run: sudo dpkg -i ./p*.deb
 
     - name: Upload artifacts
       uses: 'actions/upload-artifact@v3'
