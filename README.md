@@ -92,7 +92,7 @@ Helping Out
 ===========
 Please report bugs via the project's bug tracking form, on SourceForge at
 https://sourceforge.net/p/passwordsafe/bugs/ or on Github at
-https://github.com/pwsafe/pwsafe/issues It is prevered you to browse
+https://github.com/pwsafe/pwsafe/issues It is preferred you to browse
 the bug list, to see if the issue hasn't already been reported.
 
 Requests for features and enhancements should be submitted to the
