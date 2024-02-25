@@ -286,14 +286,13 @@ void SafeCombinationChangeDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
     // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
     // (also used in CPasskeySetup)
     } else if (!CPasswordCharPool::CheckMasterPassword(m_newpasswd, errmess)) {
-      wxString msg = _("Weak passphrase:");
-      msg += wxT("\n\n");
-      msg += errmess.c_str();
+      wxString msg = errmess.c_str();
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
       msg += wxT("\n");
       msg += _("Use it anyway?");
       wxMessageDialog err(this, msg,
-                          _("Error"), wxYES_NO | wxICON_HAND);
+                          _("Weak Master Password"), wxYES_NO | wxNO_DEFAULT | wxICON_EXCLAMATION);
+      err.SetYesNoLabels(_("Use anyway"), _("Cancel"));
       int rc1 = err.ShowModal();
       if (rc1 == wxID_YES)
         EndModal(wxID_OK);
