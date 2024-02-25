@@ -113,7 +113,7 @@ void SafeCombinationSetupDlg::CreateControls()
   wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
   itemDialog1->SetSizer(itemBoxSizer2);
 
-  wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("A new password database will be created.\nThe master password will be used to encrypt the password database file.\nYou can use any keyboard character. The combination is case-sensitive."), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("A new password database will be created.\nThe Master Password you enter will be used to encrypt the password database file.\nThe Master Password can use any keyboard character and is case-sensitive."), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, 15);
 
   wxFlexGridSizer* itemGridSizer4 = new wxFlexGridSizer(2, 0, 10);
