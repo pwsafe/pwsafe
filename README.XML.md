@@ -1,5 +1,5 @@
 ## Introduction
-PasswordSafe can be built using different XML libraries.
+Password Safe can be built using different XML libraries.
 - The Pugi library (see [pugixml project](http://www.pugixml.org), which is available under the [MIT license](http://www.opensource.org/licenses/mit-license.html)) is part of the source code. This library is used for storage of the runtime parameters in pwsafe.cfg
 
 - Filter and XML Import of databases are supported by
