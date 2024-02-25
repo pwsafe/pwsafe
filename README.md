@@ -24,7 +24,7 @@ later. Older versions are still available supporting Windows 95, 98,
 ME, NT, 2000, XP, Vista as well as PocketPC. Support for additional
 platforms is planned for future releases.
 
-The Mac version of PasswordSafe runs on macOS version 10.14 Mojave
+The Mac version of Password Safe runs on macOS version 10.14 Mojave
 and later, and runs native on Intel and Apple Silicon. (Universal binary.)
 
 Linux packages are also available for popular distributions. See
@@ -41,7 +41,7 @@ or
 
 Internationalization (Non-English Support)
 ==========================================
-Thanks to the help of volunteers from all over the world, PasswordSafe
+Thanks to the help of volunteers from all over the world, Password Safe
 has built-in support for the following languages:
 - Arabic
 - Czech
@@ -86,7 +86,7 @@ Password Safe 3.29 and later makes use of the
 [pugixml project](http://www.pugixml.org), which is available under
 the [MIT license](http://www.opensource.org/licenses/mit-license.html).
 
-Non-Windows versions of PasswordSafe make use of wxWidgets, under the
+Non-Windows versions of Password Safe make use of wxWidgets, under the
 license terms defined in [https://wxwidgets.org/about/licence](https://wxwidgets.org/about/licence).
 
 Helping Out
@@ -110,7 +110,7 @@ http://lists.sourceforge.net/lists/listinfo/passwordsafe-devel
 New releases are announced on the passwordsafe-announce mailing list:
 http://lists.sourceforge.net/lists/listinfo/passwordsafe-announce
 
-Last but not least: PasswordSafe is and will always remain an open
+Last but not least: Password Safe is and will always remain an open
 source project, free for and redistribution. However, donations to the
 project will help me justify the time and effort I spend in
 maintaining and improving this utility. In addition, donations to the
@@ -141,7 +141,7 @@ Shapiro. Karel (Karlo) Van der Gucht also contributed some of the
 password policy code and some GUI improvements for 1.92.
 - Emilijan Mirceski did the new graphics for 2.0.
 - Maxim Tikhonov translated the first online help to Russian.
-- Thanks to the PasswordSafe developer's mailing list for help in
+- Thanks to the Password Safe developer's mailing list for help in
 nailing down the 3.x file format.
 - Many, many new features in 3.x have been implemented by DK.
 - Finally, thanks to the folks at SourceForge and GitHub for hosting
