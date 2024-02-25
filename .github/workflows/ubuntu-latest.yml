@@ -44,3 +44,18 @@ jobs:
       # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       run: ctest --config ${{env.BUILD_TYPE}} .
 
+    - name: Package
+      working-directory: build
+      # create a deb package
+      run: cpack -G DEB ..
+
+    - name: Test Package
+      working-directory: build
+      run: dpkg -i ./p*.deb
+
+    - name: Upload artifacts
+      uses: 'actions/upload-artifact@v3'
+      with:
+        name: PasswordSafe-macOS.${{ github.sha }}
+        path: build/p*.deb
+        if-no-files-found: error
