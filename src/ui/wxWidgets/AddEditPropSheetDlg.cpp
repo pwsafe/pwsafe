@@ -556,7 +556,7 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
   auto *itemBoxSizer89 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer88->Add(itemBoxSizer89, 2, wxEXPAND | wxALL, 0);
 
-  m_PasswordPolicyUseDatabaseCtrl = new wxCheckBox(panel, ID_CHECKBOX42, _("Use Database Policy"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
+  m_PasswordPolicyUseDatabaseCtrl = new wxCheckBox(panel, ID_CHECKBOX42, _("Use Password Policy"), wxDefaultPosition, wxDefaultSize, wxRB_GROUP);
   m_PasswordPolicyUseDatabaseCtrl->SetValue(false);
   itemBoxSizer89->Add(m_PasswordPolicyUseDatabaseCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 

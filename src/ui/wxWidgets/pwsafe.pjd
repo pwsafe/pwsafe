@@ -14476,7 +14476,7 @@ Action:"</string>
                   <long name="proxy-Id value">10115</long>
                   <string name="proxy-Implementation filename">""</string>
                   <bool name="proxy-Initial value">0</bool>
-                  <string name="proxy-Label">"Use Database Policy"</string>
+                  <string name="proxy-Label">"Use Password Policy"</string>
                   <string name="proxy-Member variable name">"m_defPWPRB"</string>
                   <string name="proxy-Name">""</string>
                   <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
