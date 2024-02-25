@@ -1,10 +1,10 @@
 ## Introduction
-This document explains how to build PasswordSafe on macOS.
+This document explains how to build Password Safe on macOS.
 It is organized in the following sections:
 
 * [Terminology](#terminology)
 * [Requirements](#requirements)
-* [Get PasswordSafe Sources](#get-passwordsafe-sources)
+* [Get Password Safe Sources](#get-passwordsafe-sources)
 * [wxWidgets](#wxwidgets)
   * Downloading the Sources
   * Which Version of wxWidgets?
@@ -53,7 +53,7 @@ The full Xcode app includes the command-line tools. However, after you install i
 sudo xcode-select --switch /Applications/Xcode.app
 ```
 
-The Xcode directory in PasswordSafe sources contains the Xcode project file for building it.
+The Xcode directory in Password Safe sources contains the Xcode project file for building it.
 
 pwsafe code now uses C++14 features, and therefore requires a modern-enough compiler (Xcode 6 or later).
 For the x86\_64 architecture, the minimum target is macOS 10.14. For the arm64 architecture, the minimum target is macOS 11.0. 
@@ -65,7 +65,7 @@ wxWidgets is the cross-platform UI toolkit that pwsafe uses for user-interface. 
 pwsafe uses Perl for some small build tasks. macOS already ships with Perl, which should suffice.
 
 ### Yubikey
-The last official packages published by Yubico, on their web site and via Homebrew, are known not to work on current macOS systems.  (As of this writing, macOS 14.1.)  The source must be retrieved from Github and compiled locally.  The process used by the PasswordSafe release build is in the pwsafe source tree in the file pwsafe/.github/workflows/macos-latest.yml.  If you don't want Yubikey support, the Xcode project file for PasswordSafe has a *Debug-no-yubi* configuration that is the same as Debug, but without reference to the Yubikey libraries.  Note, however, that the .dmg release package can only be made from a *Release* configuration build that does include Yubikey support.
+The last official packages published by Yubico, on their web site and via Homebrew, are known not to work on current macOS systems.  (As of this writing, macOS 14.1.)  The source must be retrieved from Github and compiled locally.  The process used by the Password Safe release build is in the pwsafe source tree in the file pwsafe/.github/workflows/macos-latest.yml.  If you don't want Yubikey support, the Xcode project file for Password Safe has a *Debug-no-yubi* configuration that is the same as Debug, but without reference to the Yubikey libraries.  Note, however, that the .dmg release package can only be made from a *Release* configuration build that does include Yubikey support.
 
 ## Universal Binaries
 
@@ -74,7 +74,7 @@ versions of all the dependencies (i.e. wxWidgets as compiled per the procedure b
 with macOS 10.14 and, possibly, older but this has not been throughly tested.
 
 
-## Get PasswordSafe Sources
+## Get Password Safe Sources
 You need to get the Passwordsafe source code (obviously).
 Either download from the website:
 

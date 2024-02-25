@@ -1,5 +1,5 @@
 ## Introduction
-The OpenBSD port of PasswordSafe is currently in BETA.
+The OpenBSD port of Password Safe is currently in BETA.
 This means that (1) you should take care to keep copies of the
 database to protect against possible loss of data due to bugs, and (2)
 there are several unimplemented features. Nonetheless, we feel that

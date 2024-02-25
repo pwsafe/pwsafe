@@ -1,5 +1,5 @@
 ## Introduction
-The Linux port of PasswordSafe is currently stable, although lacking some of the more advanced features of the Windows version.
+The Linux port of Password Safe is currently stable, although lacking some of the more advanced features of the Windows version.
 
 ## Supported Distributions
 Packages for the versions of Debian, Ubuntu and Fedora that were
@@ -16,7 +16,7 @@ Slackware is independently supported, see below.
 
 ## Installation on Debian or Ubuntu
 
-PasswordSafe is available as package (https://packages.debian.org/stable/passwordsafe). To install it just use the following command.
+Password Safe is available as package (https://packages.debian.org/stable/passwordsafe). To install it just use the following command.
 
 ```
 $ sudo apt install passwordsafe
@@ -51,7 +51,7 @@ $ sudo emerge app-admin/passwordsafe
 ```
 
 ## Slackware
-Slackware users can download SlackBuild for PasswordSafe from
+Slackware users can download SlackBuild for Password Safe from
 https://slackbuilds.org, courtesy of rfmae (search for passwordsafe).
 
 ## Reporting Bugs
