@@ -45,3 +45,15 @@ jobs:
     - name: Test
       run: cmake --build build --target test
 
+    - name: Build Windows Artifact
+      if: ${{ runner.os == 'Windows' }}
+      run: cpack -G 7Z -B build --config build\CPackConfig.cmake
+
+    - name: Upload Windows Artifact
+      if: ${{ runner.os == 'Windows' }}
+      uses: 'actions/upload-artifact@v3'
+      with:
+        name: PasswordSafe-Windows-7Z.${{ github.sha }}
+        path: build/passwordsafe-*.7z
+        if-no-files-found: error
+
