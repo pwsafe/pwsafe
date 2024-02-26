@@ -135,28 +135,23 @@ void PasswordSafeFrame::OnDeleteClick(wxCommandEvent& WXUNUSED(evt))
   bool dontaskquestion = PWSprefs::GetInstance()->
     GetPref(PWSprefs::DeleteQuestion);
 
-  int num_children = 0;
+  bool isGroup = false;
   // If tree view, check if group selected
   if (m_tree->IsShown()) {
     wxTreeItemId sel = m_tree->GetSelection();
-    if(m_tree->ItemIsGroup(sel)) {
-      num_children = static_cast<int>(m_tree->GetChildrenCount(sel));
-    }
-    else {
-      num_children = 0;
-    }
-    if (num_children > 0) // ALWAYS confirm group delete
+    isGroup = m_tree->ItemIsGroup(sel);
+    if (isGroup) // ALWAYS confirm group delete
       dontaskquestion = false;
   }
-  CallAfter(&PasswordSafeFrame::DoDeleteItems, !dontaskquestion, num_children);
+  CallAfter(&PasswordSafeFrame::DoDeleteItems, !dontaskquestion, isGroup);
 }
 
-void PasswordSafeFrame::DoDeleteItems(bool askConfirmation, int num_children)
-{  
+void PasswordSafeFrame::DoDeleteItems(bool askConfirmation, bool isGroup)
+{
   bool dodelete = true;
   //Confirm whether to delete the item
   if (askConfirmation) {
-    DestroyWrapper<DeleteConfirmationDlg> deleteDlgWrapper(this, num_children);
+    DestroyWrapper<DeleteConfirmationDlg> deleteDlgWrapper(this, isGroup);
     DeleteConfirmationDlg* deleteDlg = deleteDlgWrapper.Get();
     deleteDlg->SetConfirmdelete(PWSprefs::GetInstance()->GetPref(PWSprefs::DeleteQuestion));
     int rc = deleteDlg->ShowModal();
