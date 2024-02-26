@@ -990,7 +990,7 @@ void TreeCtrl::OnAddGroup(wxCommandEvent& WXUNUSED(evt))
   wxTreeItemId parentId = GetSelection();
   wxString newItemPath = (!parentId || !parentId.IsOk() || parentId == GetRootItem() || !ItemIsGroup(parentId))? wxString(_("New Group")): GetItemGroup(parentId) + GROUP_SEL_STR + _("New Group");
   if(Find(newItemPath, GetRootItem())) {
-    wxMessageBox(_("\"") + _("New Group") + _("\" ") + _("name exists"), _("Double group name"), wxOK|wxICON_ERROR);
+    wxMessageBox(_("\"") + _("New Group") + _("\" ") + _("name exists"), _("Duplicate group name"), wxOK|wxICON_ERROR);
     return;
   }
   wxTreeItemId newItem = AddGroup(tostringx(newItemPath));
@@ -1051,7 +1051,7 @@ void TreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
             const wxString itemText = GetItemText(ti);
             if ((itemText == label.c_str()) && (ti != item)) {
               evt.Veto();
-              wxMessageBox(_("Same group name exists"), _("Double group name"), wxOK|wxICON_ERROR);
+              wxMessageBox(_("Group names on the same level must be unique."), _("Duplicate group name"), wxOK|wxICON_ERROR);
               EditTreeLabel(this, item);
               return;
             }
@@ -1496,7 +1496,7 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
           wxTreeItemId si;
           if(ExistsInTree(itemDst, tostringx(label), si)) {
             evt.Veto();
-            wxMessageBox(_("Duplicate group name (use Shift to overrule)"), _("Double group name"), wxOK|wxICON_ERROR);
+            wxMessageBox(_("Duplicate group name (use Shift to overrule)"), _("Duplicate group name"), wxOK|wxICON_ERROR);
             m_drag_item = nullptr;
             return;
           }
