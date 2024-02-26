@@ -735,8 +735,8 @@ private:
   void SaveLayoutPreferences();
   bool LoadLayoutPreferences();
 
-    void DoCreateShortcut(CItemData* item);
-  void DoDeleteItems(bool askConfirmation, int num_children);
+  void DoCreateShortcut(CItemData* item);
+  void DoDeleteItems(bool askConfirmation, bool isGroup);
   void DoImportXML(wxString filename);
   void DoImportText(wxString filename);
   void DoImportKeePass(wxString filename);
