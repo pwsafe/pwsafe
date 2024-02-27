@@ -92,7 +92,7 @@ Helping Out
 ===========
 Please report bugs via the project's bug tracking form, on SourceForge at
 https://sourceforge.net/p/passwordsafe/bugs/ or on Github at
-https://github.com/pwsafe/pwsafe/issues It is preferred you to browse
+https://github.com/pwsafe/pwsafe/issues. It's worth first
 the bug list, to see if the issue hasn't already been reported.
 
 Requests for features and enhancements should be submitted to the
@@ -106,7 +106,7 @@ https://sourceforge.net/p/passwordsafe/discussion/
 If you wish to contribute to the project by writing code and/or
 documentation, please drop a note to the developer's mailing list:
 http://lists.sourceforge.net/lists/listinfo/passwordsafe-devel
-or fill in simple web form at https://pwsafe.org/contact.php
+or via the web form at https://pwsafe.org/contact.php
 
 New releases are announced on the passwordsafe-announce mailing list:
 http://lists.sourceforge.net/lists/listinfo/passwordsafe-announce
