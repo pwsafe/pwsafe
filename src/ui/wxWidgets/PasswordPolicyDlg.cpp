@@ -150,7 +150,7 @@ void PasswordPolicyDlg::CreateControls()
   wxBoxSizer* itemBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer2->Add(itemBoxSizer4, 0, wxEXPAND|wxALL, 5);
 
-  m_UseDatabasePolicyCtrl = new wxCheckBox( itemDialog1, ID_CHECKBOX41, _("Use Password Policy"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_UseDatabasePolicyCtrl = new wxCheckBox( itemDialog1, ID_CHECKBOX41, _("Use Named Policy"), wxDefaultPosition, wxDefaultSize, 0 );
   m_UseDatabasePolicyCtrl->SetValue(true);
   itemBoxSizer4->Add(m_UseDatabasePolicyCtrl, 2, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
