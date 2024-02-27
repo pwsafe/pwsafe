@@ -12,6 +12,7 @@ PasswordSafe 1.19 Release ??? 2024
 
 Bugs fixed in 1.19
 ------------------
+[GH1128](https://github.com/pwsafe/pwsafe/issues/1128) Correct confirmation text for empty group deletion.
 [GH1085](https://github.com/pwsafe/pwsafe/issues/1085) Unify phrasing across platforms.
 
 
