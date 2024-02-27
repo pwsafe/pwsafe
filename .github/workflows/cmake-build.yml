@@ -19,14 +19,14 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4.1.1
       with:
         fetch-depth: 0
 
 
     - name: Find MSVC (Windows)
       if: ${{ runner.os == 'Windows' }}
-      uses: ilammy/msvc-dev-cmd@7315a94840631165970262a99c72cfb48a65d25d
+      uses: ilammy/msvc-dev-cmd@v1.13.0
       with:
         spectre: true
 
@@ -51,7 +51,7 @@ jobs:
 
     - name: Upload Windows Artifact
       if: ${{ runner.os == 'Windows' }}
-      uses: 'actions/upload-artifact@v3'
+      uses: 'actions/upload-artifact@v4.3.1'
       with:
         name: PasswordSafe-Windows-7Z.${{ github.sha }}
         path: build/passwordsafe-*.7z
