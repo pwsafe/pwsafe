@@ -205,11 +205,15 @@ stringT pws_os::getsafedir(void)
 
 stringT pws_os::getxmldir(void)
 {
+   stringT xmldir = pws_os::getenv("PWS_XMLDIR", true);
+  if (xmldir.empty()) {
 #ifdef __FreeBSD__
-  return _T("/usr/local/share/pwsafe/xml/");
+  xmldir = _T("/usr/local/share/pwsafe/xml/");
 #else
-  return _T("/usr/share/passwordsafe/xml/");
+  xmldir = _T("/usr/share/passwordsafe/xml/");
 #endif
+  }
+  return xmldir;
 }
 
 stringT pws_os::gethelpdir(void)
