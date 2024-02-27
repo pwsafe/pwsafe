@@ -26,11 +26,11 @@ The following should work for Debian and Fedora-based distros:
 
 4. Make the executables:
 
-    `$ make`
+    `$ ninja`
 This will create a 'pwsafe' executable in your build directory.
 5. Run the core test suite:
   
-    `$ make test`
+    `$ ninja test`
 This will run coretest in the src/test sub-directory.  
 If it encounters errors, check your locale settings. It is known to work with:
     `LC_ALL=en_US.UTF-8`
