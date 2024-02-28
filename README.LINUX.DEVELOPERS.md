@@ -22,7 +22,7 @@ The following should work for Debian and Fedora-based distros:
 
      `$ cd build`
 
-     `$ cmake ..` (See below on how to customize your build)
+     `$ cmake -G Ninja ..` (See below on how to customize your build)
 
 4. Make the executables:
 
