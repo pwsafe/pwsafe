@@ -1156,7 +1156,7 @@ wxIcon PasswordSafeFrame::GetIconResource( const wxString& name )
 
 void PasswordSafeFrame::SetTitle(const wxString& title)
 {
-  wxString newtitle = _T("PasswordSafe");
+  wxString newtitle = _T("Password Safe");
   if (!title.empty()) {
     newtitle += _T(" - ");
     StringX fname = tostringx(title);
