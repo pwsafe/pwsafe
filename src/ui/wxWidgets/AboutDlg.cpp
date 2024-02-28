@@ -122,11 +122,8 @@ void AboutDlg::CreateControls()
   wxBoxSizer* verCheckSizer = new wxBoxSizer(wxHORIZONTAL);
   rightSizer->Add(verCheckSizer, 0, wxALIGN_LEFT|wxALL, 0);
 
-  wxStaticText* latestStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _(""), wxDefaultPosition, wxDefaultSize, 0 );
-  verCheckSizer->Add(latestStaticTextBegin, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5);
-
   wxGenericHyperlinkCtrl* latestCheckButton = new wxGenericHyperlinkCtrl(aboutDialog, ID_CHECKNEW, _("Check"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
-  verCheckSizer->Add(latestCheckButton, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM, 5);
+  verCheckSizer->Add(latestCheckButton, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5);
 
   wxStaticText* latestStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _(" for the latest version."), wxDefaultPosition, wxDefaultSize, 0);
   verCheckSizer->Add(latestStaticTextEnd, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5);
