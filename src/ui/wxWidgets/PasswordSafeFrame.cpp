@@ -3036,7 +3036,8 @@ void PasswordSafeFrame::CloseDB(std::function<void(bool)> callback)
   if( m_core.IsDbOpen() ) {
     int rc = SaveIfChanged();
     if (rc != PWScore::SUCCESS) {
-      CallAfter([callback]() {callback(false);});
+      if (callback != nullptr)
+        CallAfter([callback]() {callback(false);});
       return;
     }
 
