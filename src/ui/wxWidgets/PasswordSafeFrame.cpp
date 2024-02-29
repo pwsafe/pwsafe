@@ -2111,8 +2111,11 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_SYNCHRONIZE:
-    case ID_CHANGECOMBO:
       evt.Enable(!isFileReadOnly && m_core.IsDbOpen() && m_core.GetNumEntries() != 0);
+      break;
+
+    case ID_CHANGECOMBO:
+      evt.Enable(!isFileReadOnly && m_core.IsDbOpen());
       break;
 
     case wxID_FIND:
