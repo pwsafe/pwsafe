@@ -254,6 +254,7 @@ void AddEditPropSheetDlg::CreateControls()
   // Non-DialogBlock initializations:
   m_AdditionalPasswordHistoryGrid->SetColLabelValue(0, _("Set Date/Time"));
   m_AdditionalPasswordHistoryGrid->SetColLabelValue(1, _("Password"));
+  m_AdditionalPasswordHistoryGrid->EnableEditing(false);
 
   // Setup symbols
   m_Symbols = CPasswordCharPool::GetDefaultSymbols().c_str();
