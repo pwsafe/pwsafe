@@ -138,7 +138,7 @@ void SafeCombinationPromptDlg::CreateControls()
   auto *itemBoxSizer5 = new wxBoxSizer(wxVERTICAL);
   itemBoxSizer3->Add(itemBoxSizer5, 1, wxALL|wxEXPAND, 5);
 
-  wxStaticText* itemStaticText6 = new wxStaticText( itemDialog1, wxID_STATIC, _("Enter the master password to unlock password database:"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText6 = new wxStaticText( itemDialog1, wxID_STATIC, _("Enter the Master Password to unlock the password database:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer5->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALL, 5);
 
   wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("filename"), wxDefaultPosition, wxDefaultSize, 0 );
