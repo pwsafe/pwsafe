@@ -173,6 +173,9 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
   if (m_Core.GetReadFileVersion() == PWSfile::V40) {
     InitAttachmentTab();
   }
+
+  // Set the initial focus to the Title control (Otherwise it defaults to the Group control)
+  m_BasicTitleTextCtrl->SetFocus();
 }
 
 AddEditPropSheetDlg* AddEditPropSheetDlg::Create(wxWindow *parent, PWScore &core,
