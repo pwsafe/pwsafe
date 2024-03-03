@@ -12,6 +12,7 @@ PasswordSafe 1.19 Release ??? 2024
 
 Bugs fixed in 1.19
 ------------------
+[GH1158](https://github.com/pwsafe/pwsafe/issues/1158) Focus on Title field when opening Add/Edit entry.
 [GH1147](https://github.com/pwsafe/pwsafe/issues/1147) Password history grid is no longer editable in Add/Edit Entry's Additional tab.
 [GH1140](https://github.com/pwsafe/pwsafe/issues/1140) The master password of an empty database can now be changed.
 [GH1132](https://github.com/pwsafe/pwsafe/issues/1132) Handle Cancel button correctly in "Save Changes?" dialog box.
