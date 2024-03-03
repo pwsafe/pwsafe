@@ -9,7 +9,7 @@
 #
 # Parent CMakeLists.txt already called find_package(Gettext)
 
-set (LANGS "da" "de" "es" "fr" "hu" "it" "ko" "nl" "pl" "ru" "sv" "zh")
+set (LANGS "da" "de" "es" "fr" "hu" "it" "ko" "nl" "pl" "ru" "sl" "sv" "zh")
 
 
 # In general, globbing the source file's not recommended for cmake,
