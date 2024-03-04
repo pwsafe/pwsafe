@@ -1,30 +1,30 @@
 ## Introduction
-Flatpak is universal installation package format for Linux. You can install Password Safe as flatpak from Flathub: https://flathub.org/apps/org.pwsafe.pwsafe
+Flatpak is a universal installation package format for Linux. You can install Password Safe as a flatpak from Flathub: https://flathub.org/apps/org.pwsafe.pwsafe
 
 ## Short Guide
-Bellow guide was tested on Ubuntu and Fedora, but probably also works fine on other Linux distributions.
+This guide was tested on Ubuntu and Fedora, but should also works for other Linux distributions.
 
 If you want to build flatpak by yourself, then do the following:
-1. Create new directory. Newly created directory should not contain other files or subdirectories.
-2. Download manifest file from Github https://github.com/flathub/org.pwsafe.pwsafe/blob/master/org.pwsafe.pwsafe.yml and save it to directory created in first step.
-3. Execute commands:
+1. Create a new directory. This directory should not contain other files or subdirectories.
+2. Download the flatpak manifest file from Github https://github.com/flathub/org.pwsafe.pwsafe/blob/master/org.pwsafe.pwsafe.yml and save it the directory created in first step.
+3. Execute the following commands in the same directory:
 
-   NOTICE: Be careful, bellow commands removes Password Safe flatpak from your local machine, if you have installed Password Safe flatpak from Flathub. If you like to retain the current installed Password Safe flatpak from Flathub, then replace every `org.pwsafe.pwsafe` string with new name like `org.pwsafe.pwsafe_new` and make sure to rename the `org.pwsafe.pwsafe.yml` file downloaded in step two to `org.pwsafe.pwsafe_new.yml`
+   NOTICE: Be careful, these commands remove any existing Password Safe flatpak from your local machine, if you have installed the Password Safe flatpak from Flathub. If you'd like to keep the currently installed Password Safe flatpak from Flathub, then replace every `org.pwsafe.pwsafe` string in the manifest with a new name such as `org.pwsafe.pwsafe_new` and make sure to rename the `org.pwsafe.pwsafe.yml` file downloaded in step two to `org.pwsafe.pwsafe_new.yml`
    
-   Bellow commands can take pretty long time. Copy bellow commands to new `make.sh` file and save it to directory created in step one, assign execute permission `chmod 744 make.sh` and execute file with `./make.sh`
+   The following commands can take some time. Copy them commands to a `make.sh` file and save it in the directory created in step one, set execute permission `chmod u+x make.sh` and execute it with `./make.sh`
 
 ```
 #!/bin/bash
 
-# -------------------------------
-# On first error exit bash script
-# -------------------------------
+# --------------------------
+# Exit script on first error
+# --------------------------
 set -e
 
 
-# ----------
-# Start time
-# ----------
+# ---------------
+# Note start time
+# ---------------
 date +'%Y-%m-%d %H:%M:%S'
 
 
@@ -74,12 +74,12 @@ flatpak list | grep pwsafe
 flatpak run org.pwsafe.pwsafe &
 
 
-# ----------
-# End time
-# ----------
+# -------------
+# Note end time
+# -------------
 date +'%Y-%m-%d %H:%M:%S'
 ```
 
-5. After successful flatpak build and install, Password Safe program is automatically started for the first time. If you want to manually start it later, start it with: `flatpak run org.pwsafe.pwsafe &`
+5. After flatpak builds and installs successfully, the script will start the Password Safe program is for the first time. To run it again, type `flatpak run org.pwsafe.pwsafe &`
 
-6. You can safely remove directory created in first step.
+6. You can now safely remove directory created in first step.
