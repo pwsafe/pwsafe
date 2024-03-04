@@ -108,6 +108,9 @@ lang: pwsI18N wxlocale
 	$(MDBIN) $(RESOURCES)/ru.lproj
 	$(CPBIN) $(MOS)/ru/LC_MESSAGES/pwsafe.mo $(RESOURCES)/ru.lproj
 	$(CPBIN) $(WXDIR)/ru.mo $(RESOURCES)/ru.lproj/wxstd.mo
+	$(MDBIN) $(RESOURCES)/sl.lproj
+	$(CPBIN) $(MOS)/sl/LC_MESSAGES/pwsafe.mo $(RESOURCES)/sl.lproj
+	$(CPBIN) $(WXDIR)/sl.mo $(RESOURCES)/sl.lproj/wxstd.mo
 	$(MDBIN) $(RESOURCES)/sv.lproj
 	$(CPBIN) $(MOS)/sv/LC_MESSAGES/pwsafe.mo $(RESOURCES)/sv.lproj
 	$(CPBIN) $(WXDIR)/sv.mo $(RESOURCES)/sv.lproj/wxstd.mo
