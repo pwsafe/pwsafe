@@ -239,7 +239,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
 
 void PasswordSafeFrame::OnOpenClick(wxCommandEvent& WXUNUSED(evt))
 {
-  int rc = DoOpen(_("Please Choose a Database to Open:"));
+  int rc = DoOpen(_("Open Password Database"));
 
   if (rc == PWScore::SUCCESS) {
     m_core.ResumeOnDBNotification();
