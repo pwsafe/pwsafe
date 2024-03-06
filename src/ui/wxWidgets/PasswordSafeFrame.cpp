@@ -545,7 +545,7 @@ void PasswordSafeFrame::CreateMenubar()
     menuFile->AppendSeparator();
   }
 
-  menuFile->Append(ID_MENU_CLEAR_MRU, _("Clear Recent Opened List"), wxEmptyString, wxITEM_NORMAL);
+  menuFile->Append(ID_MENU_CLEAR_MRU, _("Clear Recently Opened List"), wxEmptyString, wxITEM_NORMAL);
   menuFile->AppendSeparator();
   menuFile->Append(wxID_SAVE, _("&Save..."), wxEmptyString, wxITEM_NORMAL);
   menuFile->Append(wxID_SAVEAS, _("Save &As..."), wxEmptyString, wxITEM_NORMAL);
