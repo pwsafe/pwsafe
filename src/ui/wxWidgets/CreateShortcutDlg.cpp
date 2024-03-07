@@ -173,7 +173,7 @@ void CreateShortcutDlg::CreateControls()
 {
   //(*Initialize(ShortcutsDialogDial
   auto BoxSizer1 = new wxBoxSizer(wxVERTICAL);
-  auto StaticText1 = new wxStaticText(this, wxID_ANY, _("Please enter the shortcut properties to the selected base entry."), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  auto StaticText1 = new wxStaticText(this, wxID_ANY, _("Enter the shortcut properties to the selected base entry."), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   BoxSizer1->Add(StaticText1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 10);
 
   auto StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Shortcut"));
