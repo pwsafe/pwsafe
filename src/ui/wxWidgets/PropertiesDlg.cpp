@@ -435,7 +435,7 @@ void PropertiesDlg::OnEditName( wxCommandEvent& WXUNUSED(evt) )
 }
 
 void PropertiesDlg::DoEditName() {
-  auto* inputDialog = new wxTextEntryDialog(this, _("Name:"), _("Short name"), m_NewDbName.c_str(), wxOK|wxCANCEL);
+  auto* inputDialog = new wxTextEntryDialog(this, _("Name:"), _("Name"), m_NewDbName.c_str(), wxOK|wxCANCEL);
 
   inputDialog->SetSize(550, -1);
 
