@@ -435,7 +435,7 @@ void PropertiesDlg::OnEditName( wxCommandEvent& WXUNUSED(evt) )
 }
 
 void PropertiesDlg::DoEditName() {
-  auto* inputDialog = new wxTextEntryDialog(this, _("Name:"), _("Please enter the new database name"), m_NewDbName.c_str(), wxOK|wxCANCEL);
+  auto* inputDialog = new wxTextEntryDialog(this, _("Name:"), _("Short name"), m_NewDbName.c_str(), wxOK|wxCANCEL);
 
   inputDialog->SetSize(550, -1);
 
@@ -467,7 +467,7 @@ void PropertiesDlg::OnEditDescription( wxCommandEvent& WXUNUSED(evt) )
 }
 
 void PropertiesDlg::DoEditDescription() {
-  auto* inputDialog = new wxTextEntryDialog(this, _("Description:"), _("Please enter the new database description"), m_NewDbDescription.c_str(), wxOK|wxCANCEL|wxTE_MULTILINE);
+  auto* inputDialog = new wxTextEntryDialog(this, _("Description:"), _("Description"), m_NewDbDescription.c_str(), wxOK|wxCANCEL|wxTE_MULTILINE);
 
   inputDialog->SetSize(550, 300);
 
