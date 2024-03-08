@@ -94,8 +94,8 @@ protected:
 
 ////@begin PropertiesDlg event handler declarations
 
-  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
-  void OnOkClick(wxCommandEvent& evt);
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
+  void OnCloseClick(wxCommandEvent& evt);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CHANGE_NAME
   void OnEditName(wxCommandEvent& evt);
