@@ -204,7 +204,7 @@ void PasswordSafeFrame::DoRestoreSafe()
   }
 
   //returns empty string if user cancels
-  wxString wxbf = wxFileSelector(_("Please Choose a Backup to Restore:"),
+  wxString wxbf = wxFileSelector(_("Backup File"),
                                  dir,
                                  currbackup.GetFullName(),
                                  wxT("bak"),
