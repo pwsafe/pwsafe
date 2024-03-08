@@ -47,7 +47,7 @@ IMPLEMENT_CLASS( PropertiesDlg, wxDialog )
 BEGIN_EVENT_TABLE( PropertiesDlg, wxDialog )
 
 ////@begin PropertiesDlg event table entries
-  EVT_BUTTON( wxID_OK,                  PropertiesDlg::OnOkClick )
+  EVT_BUTTON( wxID_CLOSE,                  PropertiesDlg::OnCloseClick )
   EVT_BUTTON( wxID_CHANGE_NAME,         PropertiesDlg::OnEditName )
   EVT_BUTTON( wxID_CHANGE_DESCRIPTION,  PropertiesDlg::OnEditDescription )
 
@@ -353,7 +353,7 @@ void PropertiesDlg::CreateControls()
   auto buttonsSizer = new wxStdDialogButtonSizer;
 
   mainSizer->Add(buttonsSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
-  auto okButton = new wxButton( this, wxID_OK, _("&Close"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto okButton = new wxButton( this, wxID_CLOSE);
   okButton->SetDefault();
   buttonsSizer->AddButton(okButton);
   buttonsSizer->Realize();
@@ -418,12 +418,9 @@ wxIcon PropertiesDlg::GetIconResource( const wxString& WXUNUSED(name) )
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
 
-void PropertiesDlg::OnOkClick( wxCommandEvent& WXUNUSED(evt) )
+void PropertiesDlg::OnCloseClick( wxCommandEvent& WXUNUSED(evt) )
 {
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in PropertiesDlg.
-  // Before editing this code, remove the block markers.
-  EndModal(wxID_OK);
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK in PropertiesDlg.
+  EndModal(wxID_CLOSE);
 }
 
 /*!
