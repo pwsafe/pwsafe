@@ -184,7 +184,7 @@ void ImportTextDlg::CreateControls()
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
   dlgSizer->AddSpacer(TopMargin);  //add a margin at the top
 
-  wxString strPrompt(_("Import text file"));
+  wxString strPrompt(_("Import text file:"));
   wxString  wildCards(_("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*; *"));
 
   dlgSizer->Add(new wxStaticText(this, wxID_ANY, strPrompt), Left);
