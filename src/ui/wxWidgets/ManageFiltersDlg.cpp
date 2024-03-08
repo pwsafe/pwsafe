@@ -1041,7 +1041,7 @@ void ManageFiltersDlg::OnImportClick( wxCommandEvent& event )
   // Build default file name
   wxFileName TxtFileName(towxstring(PWSUtil::GetNewFileName(stringx2std(m_core->GetCurFile()) + wxT(".") + wxT("filters"), wxT("xml"))));
   // Ask for file name
-  wxFileDialog fd(this, _("Please Choose a XML File to Import"), TxtFileName.GetPath(),
+  wxFileDialog fd(this, _("Choose a XML File to Import"), TxtFileName.GetPath(),
                   TxtFileName.GetFullName(), _("XML files (*.xml)|*.xml"),
                   wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR);
 
@@ -1115,7 +1115,7 @@ void ManageFiltersDlg::OnExportClick( wxCommandEvent& event )
     // Build default file name
     wxFileName TxtFileName(towxstring(PWSUtil::GetNewFileName(stringx2std(m_core->GetCurFile()), tostdstring(_("filter")) + wxT(".xml"))));
     // Ask for file name
-    wxFileDialog fd(this, _("Please name the XML file"), TxtFileName.GetPath(),
+    wxFileDialog fd(this, _("Name the XML file"), TxtFileName.GetPath(),
                     TxtFileName.GetFullName(), _("XML files (*.xml)|*.xml|All files (*.*; *)|*.*;*"),
                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 

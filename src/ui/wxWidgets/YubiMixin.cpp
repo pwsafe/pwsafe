@@ -59,7 +59,7 @@ void YubiMixin::yubiRemoved(void)
 {
   m_btn->Enable(false);
   m_status->SetForegroundColour(wxNullColour);
-  m_status->SetLabel(_("Please insert your YubiKey"));
+  m_status->SetLabel(_("Insert your YubiKey"));
 }
 
 bool YubiMixin::IsYubiInserted() const

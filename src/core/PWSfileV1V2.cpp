@@ -32,7 +32,7 @@ PWSfileV1V2::~PWSfileV1V2()
 }
 
 // Used to warn pre-2.0 users, and to identify the database as 2.x:
-static const StringX V2ItemName(_T(" !!!Version 2 File Format!!! Please upgrade to PasswordSafe 2.0 or later"));
+static const StringX V2ItemName(_T(" !!!Version 2 File Format!!! Upgrade to PasswordSafe 2.0 or later"));
 // Used to specify the exact version
 static const StringX VersionString(_T("2.0"));
 static const StringX AltVersionString(_T("pre-2.0"));

@@ -45,11 +45,11 @@ CryptKeyEntryDlg::CryptKeyEntryDlg(Mode mode)
 
     if (mode == Mode::ENCRYPT) {
       Create(nullptr, -1, _("Encryption"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxTAB_TRAVERSAL, _T("id"));
-      StaticTextDescription = new wxStaticText(this, wxID_ANY, _("Please enter an encryption key."), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+      StaticTextDescription = new wxStaticText(this, wxID_ANY, _("Enter an encryption key."), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
     }
     else {
       Create(nullptr, -1, _("Decryption"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxTAB_TRAVERSAL, _T("id"));
-      StaticTextDescription = new wxStaticText(this, wxID_ANY, _("Please enter a decryption key."), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+      StaticTextDescription = new wxStaticText(this, wxID_ANY, _("Enter a decryption key."), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
     }
 
     BoxSizer1 = new wxBoxSizer(wxVERTICAL);

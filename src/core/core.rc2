@@ -91,7 +91,7 @@ BEGIN
   IDSC_IMPORTCONFLICTS2   "Entry on line %d with no group"
   IDSC_IMPORTCONFLICTSX1  "Entry with Group=""%ls"""
   IDSC_IMPORTCONFLICTSX2  "Entry with no group"
-  IDSC_IMPORTABORTED      "Import aborted. Please see report."
+  IDSC_IMPORTABORTED      "Import aborted. See report."
   IDSC_IMPORTMISSINGTITLE "Could not find the next entry's title field in the KeePass V1 TXT (should be within square brackets)."
   IDSC_IMPORTINVALIDDELIMITER "Invalid field delimiter: must be within ASCII range."
 END
@@ -173,8 +173,8 @@ BEGIN
   IDSC_NOMOREHANDLES      "Internal error: Out of file handles"
   IDSC_BADPASSWORD        "Incorrect password"
   IDSC_FILEWRITEERROR     "Error while writing file! Try saving in a different location"
-  IDSC_FILE_UNREADABLE    "Cannot read file. Please check file permissions."
-  IDSC_FILE_TRUNCATED     "File is truncated or otherwise corrupt. Please use backup database."
+  IDSC_FILE_UNREADABLE    "Cannot read file. Check file permissions."
+  IDSC_FILE_TRUNCATED     "File is truncated or otherwise corrupt. Use backup database."
   IDSC_FILE_TOO_SHORT     "File is too short."
   IDSC_FILE_TOO_BIG       "File is too big."
   IDSC_EXPORTDESCRIPTION  "DB Export from database: '%s'"
@@ -338,7 +338,7 @@ STRINGTABLE
 BEGIN
   IDSC_FILTEREXISTS        "Filter %ls already exists in the database, do you wish to replace it with this?"
   IDSC_CANTVALIDATEXML     "Missing XSD File"
-  IDSC_MISSINGXSD          "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."
+  IDSC_MISSINGXSD          "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nCopy it from your installation file, or re-install PasswordSafe."
 END
 
 STRINGTABLE
@@ -424,8 +424,8 @@ END
 STRINGTABLE
 BEGIN
   IDSC_DELETEBASET         "Delete Base Entry Confirmation"
-  IDSC_DELETEABASE         "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
-  IDSC_DELETESBASE         "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
+  IDSC_DELETEABASE         "This entry has the following %d %ls:\n%ls\nConfirm to continue (alias entry's passwords will be replaced by this entry's password)?"
+  IDSC_DELETESBASE         "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
 END
 
 STRINGTABLE

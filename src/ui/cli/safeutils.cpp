@@ -97,11 +97,11 @@ StringX GetNewPassphrase()
         passphrase[1] = GetPassphrase(prompt[1]);
 
         if (passphrase[0] != passphrase[1]) {
-            wcerr << "The two passphrases do not match. Please try again." << endl;
+            wcerr << "The two passphrases do not match. Try again." << endl;
             continue;
         }
         if (passphrase[0].length() == 0) {
-            wcerr << "Invalid passphrase. Please try again." << endl;
+            wcerr << "Invalid passphrase. Try again." << endl;
             continue;
         }
 

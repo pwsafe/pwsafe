@@ -144,7 +144,7 @@ void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& WXUNUSED(evt))
   PWSprefs *prefs = PWSprefs::GetInstance();
   const wxFileName currbackup(towxstring(prefs->GetPref(PWSprefs::CurrentBackup)));
 
-  const wxString title(_("Please Choose a Name for this Backup:"));
+  const wxString title(_("Choose a Name for this Backup:"));
 
   wxString dir;
   if (!m_core.IsDbOpen())
@@ -438,7 +438,7 @@ bool PasswordSafeFrame::ChangeMode(bool promptUser)
             // We did get the lock but the DB has been changed
             // Note: PWScore has already freed the lock
             // The user must close and re-open it in R/W mode
-            cs_msg = _("The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n\nPlease close the database and re-open it in R/W mode.");
+            cs_msg = _("The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n\nClose the database and re-open it in R/W mode.");
             break;
 
           case PWScore::CANT_GET_LOCK:

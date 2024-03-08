@@ -208,7 +208,7 @@ void SafeCombinationEntryDlg::CreateControls()
   itemBoxSizer4->Add(itemBoxSizer18, 0, wxEXPAND|wxALL, 5);
 
 #ifndef NO_YUBI
-  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer18->Add(m_yubiStatusCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 #endif
 
@@ -526,7 +526,7 @@ void SafeCombinationEntryDlg::DoNewDbClick()
     return;
 
   while (true) {
-    wxFileDialog fd(this, _("Please choose a name for the new database"),
+    wxFileDialog fd(this, _("Choose a name for the new database"),
                     dir.c_str(), v3FileName.c_str(),
                     _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|*.*;*"),
                   (wxFD_SAVE | wxFD_OVERWRITE_PROMPT| wxFD_CHANGE_DIR));

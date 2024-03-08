@@ -147,7 +147,7 @@ int PasswordSafeFrame::New()
 
 int PasswordSafeFrame::NewFile(StringX &fname)
 {
-  wxString cs_text(_("Please choose a name for the new database"));
+  wxString cs_text(_("Choose a name for the new database"));
 
   wxString cf(wxT("pwsafe")); // reasonable default for first time user
   wxString v3FileName = towxstring(PWSUtil::GetNewFileName(tostdstring(cf), DEFAULT_SUFFIX));
@@ -441,8 +441,8 @@ int PasswordSafeFrame::SaveAs()
   }
   wxString v3FileName = towxstring(PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX));
 
-  wxString title = (!m_core.IsDbOpen()? _("Please choose a name for the current (Untitled) database:") :
-                                    _("Please choose a new name for the current database:"));
+  wxString title = (!m_core.IsDbOpen()? _("Choose a name for the current (Untitled) database:") :
+                                    _("Choose a new name for the current database:"));
   wxFileName filename(v3FileName);
   wxString dir = filename.GetPath();
   if (dir.empty())
@@ -607,7 +607,7 @@ struct ExportFullText
   }
   static wxString GetFailureMsgTitle() {return _("Export Text failed"); }
   static stringT  FileExtension() { return wxT("txt"); }
-  static wxString FileOpenPrompt() { return _("Please name the plaintext file"); }
+  static wxString FileOpenPrompt() { return _("Name the plaintext file"); }
   static wxString WildCards() {return _("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"); }
   static int Write(PWScore& core, const StringX &filename, const CItemData::FieldBits &bsFields,
                           const stringT &subgroup_name, int subgroup_object,
@@ -650,7 +650,7 @@ struct ExportFullXml {
   }
   static wxString GetFailureMsgTitle() {return _("Export XML failed"); }
   static stringT  FileExtension() { return wxT("xml"); }
-  static wxString FileOpenPrompt() { return _("Please name the XML file"); }
+  static wxString FileOpenPrompt() { return _("Name the XML file"); }
   static wxString WildCards() {return _("XML files (*.xml)|*.xml|All files (*.*; *)|*.*;*"); }
   static int Write(PWScore& core, const StringX &filename, const CItemData::FieldBits &bsFields,
                           const stringT &subgroup_name, int subgroup_object,
@@ -715,7 +715,7 @@ void PasswordSafeFrame::OnExportVx(wxCommandEvent& evt)
     //SaveAs-type dialog box
     std::wstring OldFormatFileName = PWSUtil::GetNewFileName(m_core.GetCurFile().c_str(),
                                                              sfx);
-    const wxString cs_text = _("Please name the exported database");
+    const wxString cs_text = _("Name the exported database");
 
     //filename cannot have the path. Need to pass it separately
     wxFileName filename(towxstring(OldFormatFileName));
@@ -875,7 +875,7 @@ void PasswordSafeFrame::DoImportText(wxString filename)
     // Database is not unique to start with - tell user to validate it first
     wxMessageBox(wxString() << _("The database:") << wxT("\n\n") << m_core.GetCurFile() << wxT("\n\n")
                             << _("has duplicate entries with the same group/title/user combination.")
-                            << _("  Please fix by validating database."),
+                            << _("  Fix by validating database."),
                             _("Import Text failed"), wxOK | wxICON_ERROR, this);
     return;
   }
@@ -993,7 +993,7 @@ void PasswordSafeFrame::DoImportXML(wxString filename)
   GTUSet setGTU;
   if (!m_core.GetUniqueGTUValidated() && !m_core.InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
-    wxMessageBox(wxString::Format( _("The database:\n\n%ls\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."),
+    wxMessageBox(wxString::Format( _("The database:\n\n%ls\n\nhas duplicate entries with the same group/title/user combination. Fix by validating database."),
                                     m_core.GetCurFile().c_str()), _("Import XML failed"), wxOK | wxICON_ERROR, this);
     return;
   }
@@ -1004,7 +1004,7 @@ void PasswordSafeFrame::DoImportXML(wxString filename)
 #if USE_XML_LIBRARY == MSXML || USE_XML_LIBRARY == XERCES
   if (!XSDFilename.FileExists()) {
     wxString filepath(XSDFilename.GetFullPath());
-    wxMessageBox(wxString::Format(_("Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."), filepath.c_str()),
+    wxMessageBox(wxString::Format(_("Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nCopy it from your installation file, or re-install PasswordSafe."), filepath.c_str()),
                           wxString(_("Missing XSD File - ")) + wxSTRINGIZE_T(USE_XML_LIBRARY) + _(" Build"), wxOK | wxICON_ERROR, this);
     return;
   }
@@ -1143,7 +1143,7 @@ void PasswordSafeFrame::DoImportKeePass(wxString filename)
   wxString KPsFileName;
   
   if(filename.IsEmpty()) {
-    wxFileDialog fd(this, _("Please Choose a KeePass Text File to Import"),
+    wxFileDialog fd(this, _("Choose a KeePass Text File to Import"),
                   wxEmptyString, filename,
                   _("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"),
                   (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_PREVIEW));

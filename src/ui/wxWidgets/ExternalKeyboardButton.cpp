@@ -68,7 +68,7 @@ void ExternalKeyboardButton::HandleCommandEvent(wxCommandEvent& evt)
   wxString command = wxString(wxT("xvkbd"));
 
   if (!pws_os::ProgramExists(tostdstring(command))) {
-    wxMessageBox(_("Could not launch xvkbd.  Please make sure it's installed and in your PATH"), 
+    wxMessageBox(_("Could not launch xvkbd.  Make sure it's installed and in your PATH"), 
                   _("Could not launch external onscreen keyboard"), wxOK | wxICON_ERROR);
     return;
   }
@@ -76,7 +76,7 @@ void ExternalKeyboardButton::HandleCommandEvent(wxCommandEvent& evt)
   switch(wxExecute(command, wxEXEC_ASYNC, nullptr)) //nullptr => we don't want a wxProcess as callback
   {
     case 0:
-      wxMessageBox(_("Could not launch xvkbd.  Please make sure it's in your PATH"), 
+      wxMessageBox(_("Could not launch xvkbd.  Make sure it's in your PATH"), 
                     _("Could not launch external onscreen keyboard"), wxOK | wxICON_ERROR);
       break;
       
@@ -95,7 +95,7 @@ void ExternalKeyboardButton::HandleCommandEvent(wxCommandEvent& evt)
   wxString command = wxString("open x-apple.systempreferences:com.apple.preference.universalaccess?Keyboard");
 
   if ( wxExecute(command, wxEXEC_ASYNC, nullptr) > 0) {
-    wxMessageBox(_("Please, enable the Accessibility Keyboard in System Settings; the on-screen keyboard should then appear."), "", wxOK | wxICON_INFORMATION);
+    wxMessageBox(_("Enable the Accessibility Keyboard in System Settings; the on-screen keyboard should then appear."), "", wxOK | wxICON_INFORMATION);
   } else {
     wxMessageBox(_("Could not launch the MacOS Settings App"),
                   _("Could not launch external onscreen keyboard"), wxOK | wxICON_ERROR);

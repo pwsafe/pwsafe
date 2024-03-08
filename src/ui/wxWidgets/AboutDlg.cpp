@@ -131,7 +131,7 @@ void AboutDlg::CreateControls()
   wxBoxSizer* visitSiteSizer = new wxBoxSizer(wxHORIZONTAL);
   rightSizer->Add(visitSiteSizer, 0, wxALIGN_LEFT|wxALL, 0);
 
-  wxStaticText* visitSiteStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Please visit the "), wxDefaultPosition, wxDefaultSize, 0);
+  wxStaticText* visitSiteStaticTextBegin = new wxStaticText(aboutDialog, wxID_STATIC, _("Visit the "), wxDefaultPosition, wxDefaultSize, 0);
   visitSiteSizer->Add(visitSiteStaticTextBegin, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5);
 
   wxGenericHyperlinkCtrl* visitSiteHyperlinkCtrl = new wxGenericHyperlinkCtrl(aboutDialog, ID_SITEHYPERLINK, _("Password Safe website"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
@@ -540,7 +540,7 @@ void AboutDlg::CompareVersionData()
       wxString newer(_("Current version: "));
       newer << pwsafeVersionString << L"\n";
       newer << _("Latest version:\t") << latest.c_str() << L"\n\n";
-      newer << _("Please visit the Password Safe website to download the latest version.");
+      newer << _("Visit the Password Safe website to download the latest version.");
       const wxString cs_title(_("Newer Version Found!"));
       *m_VersionStatus << cs_title;
       wxMessageDialog dlg(this, newer, cs_title, wxOK);

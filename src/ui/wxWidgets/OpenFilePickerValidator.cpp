@@ -60,7 +60,7 @@ bool OpenFilePickerValidator::Validate(wxWindow * parent) {
     else {
       //path is blank on Linux/gtk. May be its not so on other platforms
       wxMessageBox(wxString() << _("Selected file doesn't exist.") << wxT("\n\n") << path,
-                              _("Please select a valid file"), wxOK | wxICON_EXCLAMATION, parent);
+                              _("Select a valid file"), wxOK | wxICON_EXCLAMATION, parent);
       return false;
     }
   }

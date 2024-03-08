@@ -3491,7 +3491,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
 
   if (it == m_MapUICommandTable.end()) {
     // Don't have it - allow by default
-    pws_os::Trace(L"Menu resource ID: %d not found in m_UICommandTable. Please investigate and correct.\n", nID);
+    pws_os::Trace(L"Menu resource ID: %d not found in m_UICommandTable. Investigate and correct.\n", nID);
     return TRUE;
   }
 

@@ -434,7 +434,7 @@ DbSelectionPage::DbSelectionPage(wxWizard* parent, SyncData* data, const wxStrin
                              SyncWizardPage(parent, data, _("Select another database"))
 {
   const wxString filePrompt(wxString(_("Choose Database to Synchronize with \"")) << towxstring(data->core->GetCurFile()) << wxT("\""));
-  const wxString filePickerCtrlTitle(_("Please Choose a Database to Synchronize with current database"));
+  const wxString filePickerCtrlTitle(_("Choose a Database to Synchronize with current database"));
 
   wxBoxSizer* sizer = m_pageSizer;
   m_panel = new DbSelectionPanel(this, filePrompt, filePickerCtrlTitle, false, data->core, 5, wxID_OK, filename);
@@ -670,7 +670,7 @@ bool SyncStatusPage::DbHasNoDuplicates(PWScore* core)
   if (!core->GetUniqueGTUValidated() && !core->InitialiseGTU(setGTU)) {
     // Database is not unique to start with - tell user to validate it first
     SetSyncSummary(_("Synchronization failed"));
-    SetProgressText(wxString::Format(_("The database:\n\n%ls\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."), core->GetCurFile().c_str()));
+    SetProgressText(wxString::Format(_("The database:\n\n%ls\n\nhas duplicate entries with the same group/title/user combination. Fix by validating database."), core->GetCurFile().c_str()));
     FindWindow(ID_GAUGE)->Hide();
     return false;
   }

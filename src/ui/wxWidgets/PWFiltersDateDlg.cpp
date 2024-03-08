@@ -540,13 +540,13 @@ bool pwFiltersDateDlg::IsValid(bool showMessage) const {
     if (m_fdatetype == PW_DATE_REL) {
       if (fnum1 >= fnum2) {
         if(showMessage) {
-          wxMessageBox(_("Please correct numeric values."), _("Second number must be greater than first"), wxOK|wxICON_ERROR);
+          wxMessageBox(_("Correct numeric values."), _("Second number must be greater than first"), wxOK|wxICON_ERROR);
         }
         return false;
       }
       else if(fnum1 == m_max) {
         if (showMessage) {
-          wxMessageBox(_("Please correct numeric values."), _("Maximum value for first number and 'Between' rule"), wxOK|wxICON_ERROR);
+          wxMessageBox(_("Correct numeric values."), _("Maximum value for first number and 'Between' rule"), wxOK|wxICON_ERROR);
         }
         return false;
       }
@@ -554,7 +554,7 @@ bool pwFiltersDateDlg::IsValid(bool showMessage) const {
     else {
       if (fdate1 >= fdate2) {
         if (showMessage) {
-          wxMessageBox(_("Please correct date values."), _("Second date must be later than first"), wxOK|wxICON_ERROR);
+          wxMessageBox(_("Correct date values."), _("Second date must be later than first"), wxOK|wxICON_ERROR);
         }
         return false;
       }
@@ -564,14 +564,14 @@ bool pwFiltersDateDlg::IsValid(bool showMessage) const {
   if (m_fdatetype == PW_DATE_REL) {
     if (isRuleSelected(idx, PWSMatch::MR_BEFORE) && (fnum1 == m_min)) {
       if (showMessage) {
-        wxMessageBox(_("Please correct numeric values."), _("Number is set to the minimum value. 'Less than' is not allowed."), wxOK|wxICON_ERROR);
+        wxMessageBox(_("Correct numeric values."), _("Number is set to the minimum value. 'Less than' is not allowed."), wxOK|wxICON_ERROR);
       }
       return false;
     }
 
     if (isRuleSelected(idx, PWSMatch::MR_AFTER) && (fnum1 == m_max)) {
       if (showMessage) {
-        wxMessageBox(_("Please correct numeric values."), _("Number is set to the maximum value. 'Greater than' is not allowed."), wxOK|wxICON_ERROR);
+        wxMessageBox(_("Correct numeric values."), _("Number is set to the maximum value. 'Greater than' is not allowed."), wxOK|wxICON_ERROR);
       }
       return false;
     }
@@ -579,7 +579,7 @@ bool pwFiltersDateDlg::IsValid(bool showMessage) const {
       // All dates, except History must be located in the history
       if ((fnum1 > 0) || (isRuleSelected(idx, PWSMatch::MR_BETWEEN) && (fnum2 > 0))) {
         if (showMessage) {
-          wxMessageBox(_("Please correct numeric values."), _("A future date is not valid for this field"), wxOK|wxICON_ERROR);
+          wxMessageBox(_("Correct numeric values."), _("A future date is not valid for this field"), wxOK|wxICON_ERROR);
         }
         return false;
       }
@@ -589,7 +589,7 @@ bool pwFiltersDateDlg::IsValid(bool showMessage) const {
     // All dates, except History must be located in the history
     if ((fdate1 > wxDateTime::Now()) || (isRuleSelected(idx, PWSMatch::MR_BETWEEN) && (fdate2 > wxDateTime::Now()))) {
       if (showMessage) {
-        wxMessageBox(_("Please correct date values."), _("A future date is not valid for this field"), wxOK|wxICON_ERROR);
+        wxMessageBox(_("Correct date values."), _("A future date is not valid for this field"), wxOK|wxICON_ERROR);
       }
       return false;
     }

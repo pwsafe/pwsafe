@@ -356,7 +356,7 @@ void YubiCfgDlg::yubiInserted(void)
 
 void YubiCfgDlg::yubiRemoved(void)
 {
-  m_ykstatus->SetLabel(_("Please insert your YubiKey"));
+  m_ykstatus->SetLabel(_("Insert your YubiKey"));
   m_yksernum = m_yksk = wxEmptyString;
   ShowSK();
   FindWindow(ID_YK_SERNUM)->Enable(false);

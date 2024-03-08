@@ -367,7 +367,7 @@ void CPasskeyChangeDlg::ProcessPhrase()
       CPKBaseDlg::OnOK(); // skip our OnOK(), irrelevant
       m_newpasskey = save_passkey;
     } else {
-      m_yubi_status.SetWindowText(_T("Please confirm old passphrase"));
+      m_yubi_status.SetWindowText(_T("Confirm old passphrase"));
     }
   } else {
     ASSERT(0);
