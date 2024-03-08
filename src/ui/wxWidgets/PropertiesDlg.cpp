@@ -353,7 +353,7 @@ void PropertiesDlg::CreateControls()
   auto buttonsSizer = new wxStdDialogButtonSizer;
 
   mainSizer->Add(buttonsSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
-  auto okButton = new wxButton( this, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto okButton = new wxButton( this, wxID_OK, _("&Close"), wxDefaultPosition, wxDefaultSize, 0 );
   okButton->SetDefault();
   buttonsSizer->AddButton(okButton);
   buttonsSizer->Realize();
