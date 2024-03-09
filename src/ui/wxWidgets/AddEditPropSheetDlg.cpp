@@ -83,6 +83,7 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
   EVT_BUTTON(       ID_BUTTON_CLEAR_HIST,    AddEditPropSheetDlg::OnClearPasswordHistory    )
 
   EVT_UPDATE_UI(    ID_COMBOBOX_GROUP,       AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_BUTTON_SHOWHIDE,      AddEditPropSheetDlg::OnUpdateUI                )
   EVT_UPDATE_UI(    ID_BUTTON_GENERATE,      AddEditPropSheetDlg::OnUpdateUI                )
   EVT_UPDATE_UI(    ID_BUTTON_ALIAS,         AddEditPropSheetDlg::OnUpdateUI                )
   EVT_UPDATE_UI(    ID_TEXTCTRL_TITLE,       AddEditPropSheetDlg::OnUpdateUI                )
@@ -1445,7 +1446,6 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
     // Update password to alias form
     // Show text stating that it is an alias
     ShowAlias();
-    UpdateShowHideButton();
   } // IsAlias
   else {
     m_BasicPasswordTextCtrl->ChangeValue(m_Password.c_str());
@@ -1454,7 +1454,6 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
     } else {
       HidePassword();
     }
-    UpdateShowHideButton();
   }
   // Enable Go button iff m_url isn't empty
   wxWindow *goBtn = FindWindow(ID_GO_BTN);
@@ -1631,7 +1630,6 @@ void AddEditPropSheetDlg::OnShowHideClick(wxCommandEvent& WXUNUSED(evt))
       HidePassword();
     }
   }
-  UpdateShowHideButton();
 }
 
 /*!
@@ -1678,7 +1676,6 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
         m_Item.SetEntryType(CItemData::ET_NORMAL);
         m_Password = m_Item.GetPassword();
         RemoveAlias();
-        UpdateShowHideButton();
       }
       else if(m_Item.IsAlias() && (m_Core.GetBaseEntry(&m_Item) != pbci)) {
         const pws_os::CUUID baseUUID = pbci->GetUUID();
@@ -1700,7 +1697,6 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
                     pbci->GetTitle() + L":" +
                     pbci->GetUser()  + L"]";
         ShowAlias();
-        UpdateShowHideButton();
       }
     }
   }
@@ -1805,16 +1801,6 @@ void AddEditPropSheetDlg::RemoveAlias()
     UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pwd, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_PASSWORD);
     m_BasicPasswordConfirmationTextCtrl->ChangeValue(pwd);
     m_BasicPasswordConfirmationTextCtrl->Enable(true);
-  }
-}
-
-void AddEditPropSheetDlg::UpdateShowHideButton()
-{
-  if (m_IsPasswordHidden) {
-    m_BasicShowHideCtrl->SetLabel(_("&Show"));
-  }
-  else {
-    m_BasicShowHideCtrl->SetLabel(_("&Hide"));
   }
 }
 
@@ -2755,6 +2741,9 @@ void AddEditPropSheetDlg::OnUpdateUI(wxUpdateUIEvent& event)
       break;
     case ID_BUTTON_ALIAS:
       event.Enable(!dbIsReadOnly || m_Item.IsAlias());
+      break;
+    case ID_BUTTON_SHOWHIDE:
+      m_BasicShowHideCtrl->SetLabel(m_IsPasswordHidden ? _("&Show") : _("&Hide"));
       break;
     case ID_BUTTON_GENERATE:
       event.Enable(!dbIsReadOnly && !m_Item.IsAlias()); // Do not generate password for alias entry
