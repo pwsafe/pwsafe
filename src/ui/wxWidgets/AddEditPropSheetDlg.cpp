@@ -1445,6 +1445,7 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
     // Update password to alias form
     // Show text stating that it is an alias
     ShowAlias();
+    UpdateShowHideButton();
   } // IsAlias
   else {
     m_BasicPasswordTextCtrl->ChangeValue(m_Password.c_str());
@@ -1453,6 +1454,7 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
     } else {
       HidePassword();
     }
+    UpdateShowHideButton();
   }
   // Enable Go button iff m_url isn't empty
   wxWindow *goBtn = FindWindow(ID_GO_BTN);
@@ -1610,9 +1612,9 @@ void AddEditPropSheetDlg::OnShowHideClick(wxCommandEvent& WXUNUSED(evt))
       const CItemData *pbci = m_Core.GetBaseEntry(&m_Item);
       ASSERT(pbci);
       if (pbci) {
+        m_IsPasswordHidden = false;
         UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pbci->GetPassword().c_str(), m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_READONLY);
         m_BasicPasswordConfirmationTextCtrl->Enable(true);
-        m_IsPasswordHidden = false;
       }
     }
     else {
@@ -1629,6 +1631,7 @@ void AddEditPropSheetDlg::OnShowHideClick(wxCommandEvent& WXUNUSED(evt))
       HidePassword();
     }
   }
+  UpdateShowHideButton();
 }
 
 /*!
@@ -1675,6 +1678,7 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
         m_Item.SetEntryType(CItemData::ET_NORMAL);
         m_Password = m_Item.GetPassword();
         RemoveAlias();
+        UpdateShowHideButton();
       }
       else if(m_Item.IsAlias() && (m_Core.GetBaseEntry(&m_Item) != pbci)) {
         const pws_os::CUUID baseUUID = pbci->GetUUID();
@@ -1696,6 +1700,7 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
                     pbci->GetTitle() + L":" +
                     pbci->GetUser()  + L"]";
         ShowAlias();
+        UpdateShowHideButton();
       }
     }
   }
@@ -1725,8 +1730,6 @@ void AddEditPropSheetDlg::UpdatePasswordTextCtrl(wxTextCtrl* &textCtrl, const wx
 void AddEditPropSheetDlg::ShowPassword()
 {
   m_IsPasswordHidden = false;
-  m_BasicShowHideCtrl->SetLabel(_("&Hide"));
-
   UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, m_Password.c_str(), m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, 0);
   // Disable confirmation Ctrl, as the user can see the password entered
   ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
@@ -1737,8 +1740,6 @@ void AddEditPropSheetDlg::ShowPassword()
 void AddEditPropSheetDlg::HidePassword()
 {
   m_IsPasswordHidden = true;
-  m_BasicShowHideCtrl->SetLabel(_("&Show"));
-  
   const wxString pwd = m_Password.c_str();
   UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, pwd, m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, wxTE_PASSWORD);
   ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
@@ -1764,7 +1765,6 @@ void AddEditPropSheetDlg::ShowAlias()
   m_BasicPasswordConfirmationTextLabel->SetLabel(_("Password:"));
   if (pbci && PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
     m_IsPasswordHidden = false;
-    m_BasicShowHideCtrl->SetLabel(_("&Hide"));
     const wxString pwd = pbci->GetPassword().c_str();
     UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pwd, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_READONLY);
     ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
@@ -1773,8 +1773,6 @@ void AddEditPropSheetDlg::ShowAlias()
   }
   else {
     m_IsPasswordHidden = true;
-    m_BasicShowHideCtrl->SetLabel(_("&Show"));
-    
     UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, wxEmptyString, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_READONLY);
     ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
     m_BasicPasswordConfirmationTextCtrl->Clear();
@@ -1796,7 +1794,6 @@ void AddEditPropSheetDlg::RemoveAlias()
   
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
     m_IsPasswordHidden = false;
-    m_BasicShowHideCtrl->SetLabel(_("&Hide"));
     UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, pwd, m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, 0);
     UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pwd, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_PASSWORD);
     m_BasicPasswordConfirmationTextCtrl->Clear();
@@ -1804,11 +1801,20 @@ void AddEditPropSheetDlg::RemoveAlias()
   }
   else {
     m_IsPasswordHidden = true;
-    m_BasicShowHideCtrl->SetLabel(_("&Show"));
     UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, pwd, m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, wxTE_PASSWORD);
     UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pwd, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_PASSWORD);
     m_BasicPasswordConfirmationTextCtrl->ChangeValue(pwd);
     m_BasicPasswordConfirmationTextCtrl->Enable(true);
+  }
+}
+
+void AddEditPropSheetDlg::UpdateShowHideButton()
+{
+  if (m_IsPasswordHidden) {
+    m_BasicShowHideCtrl->SetLabel(_("&Show"));
+  }
+  else {
+    m_BasicShowHideCtrl->SetLabel(_("&Hide"));
   }
 }
 
