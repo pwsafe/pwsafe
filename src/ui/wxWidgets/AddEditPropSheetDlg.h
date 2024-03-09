@@ -302,6 +302,7 @@ private:
   void HidePassword();
   void ShowAlias();
   void RemoveAlias();
+  void UpdateShowHideButton();
   int GetRequiredPWLength() const;
 
   bool ValidateBasicData();
