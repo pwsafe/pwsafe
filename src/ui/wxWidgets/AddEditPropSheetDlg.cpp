@@ -1703,6 +1703,13 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
 
 void AddEditPropSheetDlg::UpdatePasswordTextCtrl(wxTextCtrl* &textCtrl, const wxString value, wxTextCtrl* before, const int id, const int style)
 {
+  ASSERT(textCtrl);
+#if defined(__WXGTK__)
+  // Since this function is called with only a single style flag such as "0", "wxTE_PASSWORD" or "wxTE_READONLY",
+  // we do not care about flags already set for the control and therefore do not preserve them.
+  textCtrl->SetWindowStyle(style);
+  textCtrl->ChangeValue(value);
+#else
   // Per Dave Silvia's suggestion:
   // Following kludge since wxTE_PASSWORD style is immutable
   wxTextCtrl *tmp = textCtrl;
@@ -1710,7 +1717,6 @@ void AddEditPropSheetDlg::UpdatePasswordTextCtrl(wxTextCtrl* &textCtrl, const wx
                             value,
                             wxDefaultPosition, wxDefaultSize,
                             style);
-  ASSERT(textCtrl);
   if (!value.IsEmpty()) {
     textCtrl->ChangeValue(value);
     textCtrl->SetModified(true);
@@ -1718,8 +1724,9 @@ void AddEditPropSheetDlg::UpdatePasswordTextCtrl(wxTextCtrl* &textCtrl, const wx
   ApplyFontPreference(textCtrl, PWSprefs::StringPrefs::PasswordFont);
   textCtrl->MoveAfterInTabOrder(before);
   m_BasicSizer->Replace(tmp, textCtrl);
-  delete tmp;
+  tmp->Destroy();
   m_BasicSizer->Layout();
+#endif
 }
 
 void AddEditPropSheetDlg::ShowPassword()
