@@ -292,19 +292,19 @@ void SelectAliasDlg::CreateControls()
   auto itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer2->Add(itemBoxSizer5, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
 
-  auto itemButton6 = new wxButton(this, wxID_REMOVE, _("&Remove"), wxDefaultPosition, wxDefaultSize, 0);
+  auto itemButton6 = new wxButton(this, wxID_REMOVE);
   itemBoxSizer5->Add(itemButton6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  auto itemButton7 = new wxButton(this, wxID_OK, _("Select"), wxDefaultPosition, wxDefaultSize, 0);
+  auto itemButton7 = new wxButton(this, wxID_OK, _("Select"));
   itemBoxSizer5->Add(itemButton7, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  auto itemButton8 = new wxButton(this, wxID_CANCEL, _("Cancel"), wxDefaultPosition, wxDefaultSize, 0);
+  auto itemButton8 = new wxButton(this, wxID_CANCEL);
   itemBoxSizer5->Add(itemButton8, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  auto itemButton9 = new wxButton(this, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0);
+  auto itemButton9 = new wxButton(this, wxID_HELP);
   itemBoxSizer5->Add(itemButton9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  if(*m_BaseItem == nullptr || m_Core->IsReadOnly()) {
+  if (*m_BaseItem == nullptr || m_Core->IsReadOnly()) {
     itemButton6->Disable();
     itemButton7->Disable();
   }
