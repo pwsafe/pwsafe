@@ -54,7 +54,7 @@ ViewReportDlg::ViewReportDlg(wxWindow *parent, CReport* pRpt, bool fromFile) :
   bs->AddSpacer(ColSeparation);
   bs->Add(new wxButton(this, wxID_COPY, _("&Copy to Clipboard")));
   bs->AddSpacer(ColSeparation);
-  wxButton* finishButton = new wxButton(this, wxID_CLOSE, _("&Finish"));
+  wxButton* finishButton = new wxButton(this, wxID_CLOSE, _("C&lose"));
   finishButton->SetDefault();
   bs->Add(finishButton);
 
