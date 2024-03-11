@@ -554,7 +554,7 @@ bool pwFiltersDateDlg::IsValid(bool showMessage) const {
     else {
       if (fdate1 >= fdate2) {
         if (showMessage) {
-          wxMessageBox(_("Correct date values."), _("Second date must be later than first"), wxOK|wxICON_ERROR);
+          wxMessageBox(_("Please correct date values."), _("Second date must be later than first"), wxOK|wxICON_ERROR);
         }
         return false;
       }

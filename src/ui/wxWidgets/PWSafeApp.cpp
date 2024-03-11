@@ -930,7 +930,7 @@ void PWSafeApp::OnHelp(wxCommandEvent& evt)
     }
     else {
 #ifdef __WXDEBUG__
-      msg << _("Inform the developers.");
+      msg << _("Please inform the developers.");
       wxMessageBox(msg, _("Help Undefined"), wxOK | wxICON_EXCLAMATION);
 #endif
     } // keyName not found in map

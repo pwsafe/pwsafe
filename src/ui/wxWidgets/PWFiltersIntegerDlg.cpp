@@ -500,7 +500,7 @@ bool pwFiltersIntegerDlg::IsValid(bool showMessage) const
   if (isRuleSelected(idx, PWSMatch::MR_BETWEEN)) {
     if (fnum1 >= fnum2) {
       if (showMessage) {
-        wxMessageBox(_("Correct numeric values."), _("Second number must be greater than first"), wxOK|wxICON_ERROR);
+        wxMessageBox(_("Please correct numeric values."), _("Second number must be greater than first"), wxOK|wxICON_ERROR);
       }
       return false;
     }
