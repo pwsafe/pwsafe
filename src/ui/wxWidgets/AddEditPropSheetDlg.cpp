@@ -83,6 +83,7 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
   EVT_BUTTON(       ID_BUTTON_CLEAR_HIST,    AddEditPropSheetDlg::OnClearPasswordHistory    )
 
   EVT_UPDATE_UI(    ID_COMBOBOX_GROUP,       AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_BUTTON_SHOWHIDE,      AddEditPropSheetDlg::OnUpdateUI                )
   EVT_UPDATE_UI(    ID_BUTTON_GENERATE,      AddEditPropSheetDlg::OnUpdateUI                )
   EVT_UPDATE_UI(    ID_BUTTON_ALIAS,         AddEditPropSheetDlg::OnUpdateUI                )
   EVT_UPDATE_UI(    ID_TEXTCTRL_TITLE,       AddEditPropSheetDlg::OnUpdateUI                )
@@ -1610,9 +1611,9 @@ void AddEditPropSheetDlg::OnShowHideClick(wxCommandEvent& WXUNUSED(evt))
       const CItemData *pbci = m_Core.GetBaseEntry(&m_Item);
       ASSERT(pbci);
       if (pbci) {
+        m_IsPasswordHidden = false;
         UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pbci->GetPassword().c_str(), m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_READONLY);
         m_BasicPasswordConfirmationTextCtrl->Enable(true);
-        m_IsPasswordHidden = false;
       }
     }
     else {
@@ -1703,6 +1704,13 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
 
 void AddEditPropSheetDlg::UpdatePasswordTextCtrl(wxTextCtrl* &textCtrl, const wxString value, wxTextCtrl* before, const int id, const int style)
 {
+  ASSERT(textCtrl);
+#if defined(__WXGTK__)
+  // Since this function is called with only a single style flag such as "0", "wxTE_PASSWORD" or "wxTE_READONLY",
+  // we do not care about flags already set for the control and therefore do not preserve them.
+  textCtrl->SetWindowStyle(style);
+  textCtrl->ChangeValue(value);
+#else
   // Per Dave Silvia's suggestion:
   // Following kludge since wxTE_PASSWORD style is immutable
   wxTextCtrl *tmp = textCtrl;
@@ -1710,7 +1718,6 @@ void AddEditPropSheetDlg::UpdatePasswordTextCtrl(wxTextCtrl* &textCtrl, const wx
                             value,
                             wxDefaultPosition, wxDefaultSize,
                             style);
-  ASSERT(textCtrl);
   if (!value.IsEmpty()) {
     textCtrl->ChangeValue(value);
     textCtrl->SetModified(true);
@@ -1718,15 +1725,14 @@ void AddEditPropSheetDlg::UpdatePasswordTextCtrl(wxTextCtrl* &textCtrl, const wx
   ApplyFontPreference(textCtrl, PWSprefs::StringPrefs::PasswordFont);
   textCtrl->MoveAfterInTabOrder(before);
   m_BasicSizer->Replace(tmp, textCtrl);
-  delete tmp;
+  tmp->Destroy();
   m_BasicSizer->Layout();
+#endif
 }
 
 void AddEditPropSheetDlg::ShowPassword()
 {
   m_IsPasswordHidden = false;
-  m_BasicShowHideCtrl->SetLabel(_("&Hide"));
-
   UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, m_Password.c_str(), m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, 0);
   // Disable confirmation Ctrl, as the user can see the password entered
   ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
@@ -1737,8 +1743,6 @@ void AddEditPropSheetDlg::ShowPassword()
 void AddEditPropSheetDlg::HidePassword()
 {
   m_IsPasswordHidden = true;
-  m_BasicShowHideCtrl->SetLabel(_("&Show"));
-  
   const wxString pwd = m_Password.c_str();
   UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, pwd, m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, wxTE_PASSWORD);
   ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
@@ -1764,7 +1768,6 @@ void AddEditPropSheetDlg::ShowAlias()
   m_BasicPasswordConfirmationTextLabel->SetLabel(_("Password:"));
   if (pbci && PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
     m_IsPasswordHidden = false;
-    m_BasicShowHideCtrl->SetLabel(_("&Hide"));
     const wxString pwd = pbci->GetPassword().c_str();
     UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pwd, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_READONLY);
     ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
@@ -1773,8 +1776,6 @@ void AddEditPropSheetDlg::ShowAlias()
   }
   else {
     m_IsPasswordHidden = true;
-    m_BasicShowHideCtrl->SetLabel(_("&Show"));
-    
     UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, wxEmptyString, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_READONLY);
     ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
     m_BasicPasswordConfirmationTextCtrl->Clear();
@@ -1796,7 +1797,6 @@ void AddEditPropSheetDlg::RemoveAlias()
   
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
     m_IsPasswordHidden = false;
-    m_BasicShowHideCtrl->SetLabel(_("&Hide"));
     UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, pwd, m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, 0);
     UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pwd, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_PASSWORD);
     m_BasicPasswordConfirmationTextCtrl->Clear();
@@ -1804,7 +1804,6 @@ void AddEditPropSheetDlg::RemoveAlias()
   }
   else {
     m_IsPasswordHidden = true;
-    m_BasicShowHideCtrl->SetLabel(_("&Show"));
     UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, pwd, m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, wxTE_PASSWORD);
     UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pwd, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_PASSWORD);
     m_BasicPasswordConfirmationTextCtrl->ChangeValue(pwd);
@@ -2749,6 +2748,9 @@ void AddEditPropSheetDlg::OnUpdateUI(wxUpdateUIEvent& event)
       break;
     case ID_BUTTON_ALIAS:
       event.Enable(!dbIsReadOnly || m_Item.IsAlias());
+      break;
+    case ID_BUTTON_SHOWHIDE:
+      m_BasicShowHideCtrl->SetLabel(m_IsPasswordHidden ? _("&Show") : _("&Hide"));
       break;
     case ID_BUTTON_GENERATE:
       event.Enable(!dbIsReadOnly && !m_Item.IsAlias()); // Do not generate password for alias entry

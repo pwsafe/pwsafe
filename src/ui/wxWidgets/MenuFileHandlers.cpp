@@ -1143,7 +1143,7 @@ void PasswordSafeFrame::DoImportKeePass(wxString filename)
   wxString KPsFileName;
   
   if(filename.IsEmpty()) {
-    wxFileDialog fd(this, _("Choose a KeePass Text File to Import"),
+    wxFileDialog fd(this, _("Import a KeePass Text File"),
                   wxEmptyString, filename,
                   _("Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"),
                   (wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_PREVIEW));
