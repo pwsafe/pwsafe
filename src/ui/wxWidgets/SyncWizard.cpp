@@ -434,7 +434,7 @@ DbSelectionPage::DbSelectionPage(wxWizard* parent, SyncData* data, const wxStrin
                              SyncWizardPage(parent, data, _("Select another database"))
 {
   const wxString filePrompt(wxString(_("Choose Database to Synchronize with \"")) << towxstring(data->core->GetCurFile()) << wxT("\""));
-  const wxString filePickerCtrlTitle(_("Choose a Database to Synchronize with current database"));
+  const wxString filePickerCtrlTitle(_("Choose a Database to Synchronize with the current database"));
 
   wxBoxSizer* sizer = m_pageSizer;
   m_panel = new DbSelectionPanel(this, filePrompt, filePickerCtrlTitle, false, data->core, 5, wxID_OK, filename);

@@ -368,7 +368,7 @@ void SafeCombinationChangeDlg::OnYubibtn2Click(wxCommandEvent& WXUNUSED(event))
     // 1. Both old password and old response can't be blank
     if (m_oldpasswd.empty() && m_oldresponse.empty()) {
       m_yubiStatusCtrl->SetForegroundColour(*wxRED);
-      m_yubiStatusCtrl->SetLabel(_("Confirm existing combination"));
+      m_yubiStatusCtrl->SetLabel(_("Confirm existing master password"));
       return;
     }
     // 2. If there's an old response, it should already have been checked, but JIC:
