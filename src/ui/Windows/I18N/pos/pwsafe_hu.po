@@ -596,14 +596,14 @@ msgid "&Clear Recent History"
 msgstr "&Előzmények törlése"
 
 #. Resource IDs: (32008 - MenuEx)
-msgid "&Clear Recent Safe List"
-msgstr "&Legutóbbi széfek listájának törlése "
+msgid "&Clear Recently Opened List"
+msgstr ""
 
 #. Resource IDs: (5606)
 msgid "&Clear current"
 msgstr "&Aktuális törlése"
 
-#. Resource IDs: (32004 - Menu, 32004 - MenuEx)
+#. Resource IDs: (2, 32004 - Menu, 32004 - MenuEx)
 msgid "&Close"
 msgstr "&Bezár"
 
@@ -702,10 +702,6 @@ msgstr "&Keresés"
 #. Resource IDs: (32080 - MenuEx)
 msgid "&Find..."
 msgstr "&Keresés..."
-
-#. Resource IDs: (2)
-msgid "&Finish"
-msgstr "&Befejezés"
 
 #. Resource IDs: (1088)
 msgid "&Font:"
@@ -1020,8 +1016,8 @@ msgid "'Browse to URL' copies password to clipboard"
 msgstr "'URL-re Ugrás' funkció a vágólapra másolja a jelszót"
 
 #. Resource IDs: (5645)
-msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Please change one or both."
-msgstr "Ütközik egymással a 'Vágólap törlése kicsinyítéskor' funkció és a dupla kattintás művelete: 'Kicsinyítéskor a jelszó másolása a vágólapra'. Kérem változtassa meg az egyiket vagy mindkettőt."
+msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Change one or both."
+msgstr ""
 
 #. Resource IDs: (5714)
 msgid "'\n\nIf you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n\nThe diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n\nHowever, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n\nThank you for your help to improve PasswordSafe."
@@ -1414,8 +1410,8 @@ msgid "A future date is not valid for this field"
 msgstr "Jövőbeni dátum nem érvényes ebben a mezőben "
 
 #. Resource IDs: (5116)
-msgid "A hidden password needs to be entered in the Confirm Password field too. If it's not hidden, Confirm shows numbers that may be used to help count the password's characters."
-msgstr "Rejtett jelszót is meg kell adni a Jelszó megerősítése mezőben. Ha nincs elrejtve, a Megerősítés megjeleníti azokat a számokat, amelyek segítségével megszámolhatók a jelszó karakterei."
+msgid "A hidden password needs to be entered in the Confirm Password field too. If it's not hidden, the Confirm field shows numbers that may be used to help count the password's characters."
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "A new password database will be created. The Master Password you enter will be used to encrypt the password database file. The Master Password can use any keyboard character and is case-sensitive."
@@ -1694,8 +1690,8 @@ msgid "Armenian Western"
 msgstr "Armenian, Nyugati"
 
 #. Resource IDs: (5268)
-msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Please enter another character."
-msgstr "Mivel a dupla idézőjel határolja a teljes Megjegyzés mezőt, ezért az nem használható azon belül az egyes sorok elválasztására. Kérem válasszon másik karaktert."
+msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Select another character."
+msgstr ""
 
 #. Resource IDs: (5292)
 msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
@@ -1967,8 +1963,8 @@ msgstr "A jelszó lejárata előtt %d-%d nappal lehetséges a figyelmeztetés"
 
 #. Resource IDs: (3345)
 #, c-format
-msgid "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."
-msgstr "Nem található az XML Sémadefiníciós fájl (%ls) a PasswordSafe alkalmazáskönyvtárában.\n Másolja ide a telepítési fájlból, vagy telepítse újra a PasswordSafe-et."
+msgid "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nCopy it from your installation file, or re-install PasswordSafe."
+msgstr ""
 
 #. Resource IDs: (3320)
 msgid "Can't obtain the schema version."
@@ -2111,6 +2107,46 @@ msgstr "Kínai Bopomofo"
 #. Resource IDs: (8324)
 msgid "Chinese ChaJei"
 msgstr "Kínai ChaJei"
+
+#. Resource IDs: (5376)
+msgid "Choose a Backup to restore:"
+msgstr ""
+
+#. Resource IDs: (5791)
+msgid "Choose a Database to Validate:"
+msgstr ""
+
+#. Resource IDs: (5375)
+msgid "Choose a Name for this Backup:"
+msgstr ""
+
+#. Resource IDs: (5335)
+msgid "Choose a Text File to Import"
+msgstr ""
+
+#. Resource IDs: (5354)
+msgid "Choose a database to compare with current database"
+msgstr ""
+
+#. Resource IDs: (5348)
+msgid "Choose a database to merge into the current database"
+msgstr ""
+
+#. Resource IDs: (5753)
+msgid "Choose a database to synchronize with current database"
+msgstr ""
+
+#. Resource IDs: (5327)
+msgid "Choose a name for the current (Untitled) database:"
+msgstr ""
+
+#. Resource IDs: (5328)
+msgid "Choose a new name for the current database:"
+msgstr ""
+
+#. Resource IDs: (5343)
+msgid "Choose an XML File to Import"
+msgstr ""
 
 #. Resource IDs: (1)
 msgid "Cl&ose"
@@ -2387,6 +2423,19 @@ msgstr "Erősítse meg a jelszó másolatát a vágólapra"
 msgid "Confirm deletion of items"
 msgstr "Erősítse meg a tételek törlését"
 
+#. Resource IDs: (5635)
+#, c-format
+msgid "Confirm deletion of the %s filter %s?"
+msgstr ""
+
+#. Resource IDs: (5322)
+msgid "Confirm old master password"
+msgstr ""
+
+#. Resource IDs: (6033)
+msgid "Confirm that you wish to clear the recent Safe list."
+msgstr ""
+
 #. Resource IDs: (5930)
 #, c-format
 msgid "Confirm that you wish to copy these entries from %s to %s\n\nIf already present in the target database, they will be replaced!"
@@ -2401,6 +2450,10 @@ msgstr "Erősítse meg, hogy ezt az bejegyzést átmásolja innen: %s ide %s\n\n
 #, c-format
 msgid "Confirm that you wish to synchronize these entries from %s to %s?\n\nSelected fields will be replaced in all entries!"
 msgstr "Erősítse meg, hogy szinkronizálja ezeket a bejegyzéseket innen: %s ide %s\n\nA kiválasztott mezők minden bejegyzésben le lesznek cserélve!"
+
+#. Resource IDs: (5287)
+msgid "Confirm to delete the current user's PasswordSafe configuration from the Windows registry.\n\n"
+msgstr ""
 
 #. Resource IDs: (1505, 65535)
 msgid "Confirmation:"
@@ -2623,7 +2676,7 @@ msgstr "A jelenlegi adatbázis csak olvasható"
 
 #. Resource IDs: (5477)
 #, c-format
-msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the Password Safe website to download the latest version."
+msgid "Current version:\t%s\nLatest version:\t%s\n\nVisit the Password Safe website to download the latest version."
 msgstr ""
 
 #. Resource IDs: (32155 - MenuEx)
@@ -2771,6 +2824,10 @@ msgstr "Bejegyzés törlése"
 #. Resource IDs: (5882)
 msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
 msgstr "Kiválasztott jelszószabály törlése\n(csak nem használt, nevesített jelszószabály törölhető)"
+
+#. Resource IDs: (5876)
+msgid "Description"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Description:"
@@ -3098,6 +3155,10 @@ msgstr "Adjon meg egy számot."
 msgid "Enter a positive integer."
 msgstr "Adjon meg egy pozitív számot."
 
+#. Resource IDs: (5272)
+msgid "Enter a search string"
+msgstr ""
+
 #. Resource IDs: (61723)
 msgid "Enter a time."
 msgstr "Adjon meg egy időt."
@@ -3140,9 +3201,17 @@ msgstr "Adja meg a hitelesítési titkos kulcsot. Ez általában a hitelesítő 
 msgid "Enter the current master password, followed by a new one. \r\nType the new one again to confirm it."
 msgstr ""
 
+#. Resource IDs: (5255)
+msgid "Enter the key and verify it."
+msgstr ""
+
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
 msgstr "Adja meg a mintaszöveget alább"
+
+#. Resource IDs: (5388)
+msgid "Enter your backup database prefix."
+msgstr ""
 
 #. Resource IDs: (5362)
 msgid "Entries in both databases but with differences:"
@@ -4150,9 +4219,13 @@ msgstr "XML beállítások importálása"
 msgid "Import XML failed"
 msgstr "XML importálása sikertelen"
 
+#. Resource IDs: (5340)
+msgid "Import a KeePass Text File"
+msgstr ""
+
 #. Resource IDs: (3425)
-msgid "Import aborted. Please see report."
-msgstr "Importálás megszakítva. Kérem tekintse meg a jelentést."
+msgid "Import aborted, see report for details."
+msgstr ""
 
 #. Resource IDs: (5870)
 msgid "Import failed"
@@ -4212,6 +4285,10 @@ msgstr "Ebben az adatbázisban tárolt szűrőket foglalja bele az új adatbázi
 msgid "Incorrect filename."
 msgstr "Helytelen fájlnév."
 
+#. Resource IDs: (5334)
+msgid "Incorrect master password"
+msgstr ""
+
 #. Resource IDs: (5280)
 msgid "Incorrect master password, not a Password Safe database,\nor a corrupt database."
 msgstr ""
@@ -4254,6 +4331,10 @@ msgstr "A bemeneti szöveg üres"
 #. Resource IDs: (8085)
 msgid "Insert"
 msgstr "Beszúrás"
+
+#. Resource IDs: (6001)
+msgid "Insert your YubiKey"
+msgstr ""
 
 #. Resource IDs: (61706)
 msgid "Insufficient memory to perform operation."
@@ -4582,6 +4663,10 @@ msgstr "A mesterjelszó utoljára be van állítva:"
 msgid "Master Password:"
 msgstr "Fő jelszó:"
 
+#. Resource IDs: (5800)
+msgid "Master password needed to save. Unlock database and try again"
+msgstr ""
+
 #. Resource IDs: (1212)
 msgid "Max."
 msgstr "Max."
@@ -4714,9 +4799,29 @@ msgstr "Legalább ennyinek kell lennie: %d"
 msgid "N/A"
 msgstr "N/A"
 
-#. Resource IDs: (5640)
+#. Resource IDs: (5640, 5875)
 msgid "Name"
 msgstr "Név"
+
+#. Resource IDs: (5333)
+msgid "Name the XML file"
+msgstr ""
+
+#. Resource IDs: (5961)
+msgid "Name the database file"
+msgstr ""
+
+#. Resource IDs: (5331)
+msgid "Name the exported database"
+msgstr ""
+
+#. Resource IDs: (5332)
+msgid "Name the plaintext file"
+msgstr ""
+
+#. Resource IDs: (5621)
+msgid "Name this filter"
+msgstr ""
 
 #. Resource IDs: (1039)
 msgid "Name. Name. Name."
@@ -5070,6 +5175,10 @@ msgstr "Áttetsző"
 msgid "Open"
 msgstr "Megnyitás"
 
+#. Resource IDs: (5315)
+msgid "Open Password Database"
+msgstr ""
+
 #. Resource IDs: (1086)
 msgid "Open as read-only"
 msgstr "Megnyitás csak olvasásra"
@@ -5133,14 +5242,6 @@ msgstr "PWS_CPF_CDD"
 #. Resource IDs: (5449)
 msgid "PWS_CPF_TVDD"
 msgstr "PWS_CPF_TVDD"
-
-#. Resource IDs: (5334)
-msgid "Passkey incorrect"
-msgstr "Jelszó érvénytelen"
-
-#. Resource IDs: (5800)
-msgid "Passkey needed to save. Please unlock database and try again"
-msgstr "A mentéshez jelszóra van szükség. Oldja fel az adatbázist és próbálja újra"
 
 #. Resource IDs: (5757)
 msgid "Passphrase"
@@ -5348,146 +5449,17 @@ msgstr "Egyszerű szöveg (tabulátorral tagolt)..."
 msgid "Play sound on key press"
 msgstr "Hang lejátszása gombnyomásra"
 
-#. Resource IDs: (5376)
-msgid "Please Choose a Backup to restore:"
-msgstr "Kérem válasszon egy visszaállítandó mentést:"
-
-#. Resource IDs: (5315)
-msgid "Please Choose a Database to Open:"
-msgstr "Kérem válasszon egy megnyitandó adatbázist:"
-
-#. Resource IDs: (5791)
-msgid "Please Choose a Database to Validate:"
-msgstr "Kérem válasszon egy érvényesítendő adatbázist:"
-
-#. Resource IDs: (5340)
-msgid "Please Choose a KeePass Text File to Import"
-msgstr "Kérem válassza ki az importálandó KeePass szövegfájlt"
-
-#. Resource IDs: (5375)
-msgid "Please Choose a Name for this Backup:"
-msgstr "Kérem adjon nevet ennek a mentésnek:"
-
-#. Resource IDs: (5335)
-msgid "Please Choose a Text File to Import"
-msgstr "Kérem válassza ki az importálandó szövegfájlt"
-
-#. Resource IDs: (5343)
-msgid "Please Choose a XML File to Import"
-msgstr "Kérem válassza ki az importálandó XML fájlt"
-
-#. Resource IDs: (5354)
-msgid "Please choose a database to compare with current database"
-msgstr "Kérjük, válasszon egy adatbázist az aktuális adatbázissal való összehasonlításhoz"
-
-#. Resource IDs: (5348)
-msgid "Please choose a database to merge into current database"
-msgstr "Kérem válassza ki az aktuális adatbázisba fésülendő adatbázist"
-
-#. Resource IDs: (5753)
-msgid "Please choose a database to synchronize with current database"
-msgstr "Kérem válassza ki az aktuális adatbázissal szinkronizálandó adatbázist"
-
-#. Resource IDs: (5327)
-msgid "Please choose a name for the current (Untitled) database:"
-msgstr "Kérem válasszon nevet az aktuális (Névtelen) adatbázisnak:"
-
 #. Resource IDs: (5395)
 msgid "Please choose a name for the new database"
 msgstr "Kérem válasszon nevet az új adatbázisnak:"
-
-#. Resource IDs: (5328)
-msgid "Please choose a new name for the current database:"
-msgstr "Kérem válasszon egy új nevet az aktuális adatbázisnak:"
-
-#. Resource IDs: (5635)
-#, c-format
-msgid "Please confirm delete of the %s filter %s?"
-msgstr "Kérem hagyja jóvá a(z) %s szűrő törlését: %s"
-
-#. Resource IDs: (6033)
-msgid "Please confirm that you wish to clear the recent Safe list."
-msgstr "Kérjük, erősítse meg, hogy törölni kívánja a legutóbbi széflistát."
-
-#. Resource IDs: (5287)
-msgid "Please confirm that you wish to delete current user's PasswordSafe configuration from the Windows registry.\n\n"
-msgstr "Kérem erősítse meg, hogy törölni kívánja az aktuális felhasználó PasswordSafe konfigurációját a Windows rendszerleíróadatbázisból.\n\n"
-
-#. Resource IDs: (5272)
-msgid "Please enter a search string"
-msgstr "Kérem adja meg a keresendő szöveget"
 
 #. Resource IDs: (65535)
 msgid "Please enter an encryption or decryption key"
 msgstr "Kérem adjon meg egy titkosító vagy feloldó kulcsot"
 
-#. Resource IDs: (5255)
-msgid "Please enter the key and verify it."
-msgstr "Kérem adja meg a kulcsot és ellenőrizze."
-
 #. Resource IDs: (1504)
 msgid "Please enter the master password for the NEW database to contain exported entry/entries."
 msgstr "Kérjük, adja meg az új adatbázis fő jelszavát, hogy tartalmazza az exportált bejegyzéseket/bejegyzéseket."
-
-#. Resource IDs: (5876)
-msgid "Please enter the new database description"
-msgstr "Kérem adja meg az új adatbázis leírását"
-
-#. Resource IDs: (5875)
-msgid "Please enter the new database name"
-msgstr "Kérem adja meg az új adatabázis nevét"
-
-#. Resource IDs: (5388)
-msgid "Please enter your backup database prefix."
-msgstr "Kérem adja meg a mentési fájlok előtagját."
-
-#. Resource IDs: (6001)
-msgid "Please insert your YubiKey"
-msgstr "Kérem helyezze be a Yubikey-t"
-
-#. Resource IDs: (5333)
-msgid "Please name the XML file"
-msgstr "Kérem adjon nevet az XML fájlnak"
-
-#. Resource IDs: (5961)
-msgid "Please name the database file"
-msgstr "Kérjük, nevezze el az adatbázisfájlt"
-
-#. Resource IDs: (5331)
-msgid "Please name the exported database"
-msgstr "Kérem adjon nevet az exportált adatbázisnak"
-
-#. Resource IDs: (5332)
-msgid "Please name the plaintext file"
-msgstr "Kérem adjon nevet a szövegfájlnak"
-
-#. Resource IDs: (5621)
-msgid "Please name this filter"
-msgstr "Kérem adjon nevet ennek a szűrőnek"
-
-#. Resource IDs: (5993)
-msgid "Please select media type"
-msgstr "Kérjük, válassza ki a média típusát"
-
-#. Resource IDs: (5487)
-msgid "Please select report to view."
-msgstr "Kérem válassza ki a megtekintendő jelentést."
-
-#. Resource IDs: (5566)
-msgid "Please specify text"
-msgstr "Kérem adja meg a szöveget"
-
-#. Resource IDs: (5390)
-msgid "Please specify the destination location to contain all backups."
-msgstr "Kérem adja meg a mentések helyét."
-
-#. Resource IDs: (5389)
-msgid "Please specify the sub-directory to contain all backups."
-msgstr "Kérem adja meg a mentések helyének alkönyvárát."
-
-#. Resource IDs: (5489)
-msgid "Please visit the <a href=\"https://pwsafe.org/\">Password Safe website.</a>"
-msgstr ""
 
 #. Resource IDs: (5879)
 msgid "Policy Name"
@@ -5811,8 +5783,8 @@ msgstr "Román (Standard)"
 
 #. Resource IDs: (5567)
 #, c-format
-msgid "Row %d is incomplete. Please set both Field and Criteria."
-msgstr "%d. sor nem teljes. Kérem adja meg a mezőt és a kritériumot."
+msgid "Row %d is incomplete. Both Field and Criteria must be set."
+msgstr ""
 
 #. Resource IDs: (5614)
 msgid "Row number"
@@ -6028,6 +6000,10 @@ msgstr "Válassza ki a feloldott szöveg színét:"
 msgid "Select a button."
 msgstr "Válasszon egy gombot."
 
+#. Resource IDs: (5487)
+msgid "Select a report to view."
+msgstr ""
+
 #. Resource IDs: (5431)
 msgid "Select all entries"
 msgstr "Minden bejegyzés kijelölése"
@@ -6035,6 +6011,10 @@ msgstr "Minden bejegyzés kijelölése"
 #. Resource IDs: (523)
 msgid "Select entry to compare"
 msgstr "Válasszon bejegyzést az összehasonlításhoz"
+
+#. Resource IDs: (5993)
+msgid "Select media type"
+msgstr ""
 
 #. Resource IDs: (5430)
 msgid "Select some entries"
@@ -6323,8 +6303,8 @@ msgid "Some characters may be missing or not be displayed correctly, as we were 
 msgstr "Előfordulhat, hogy néhány karakter hiányzik vagy nem megfelelően jelenik meg, mivel nem találtuk az Arial Unicode MS betűtípust."
 
 #. Resource IDs: (5923)
-msgid "Some consistency issues were found while opening the database.\n\nYou should save this database before proceeding. Please view report for details."
-msgstr "Néhány konzisztenciaproblémát találtunk az adatbázis megnyitásakor.\n\nA folytatás előtt el kell mentenie ezt az adatbázist. Kérjük, tekintse meg a jelentést a részletekért."
+msgid "Some consistency issues were found while opening the database.\n\nYou should save this database before proceeding. More details may be found in the report."
+msgstr ""
 
 #. Resource IDs: (5821)
 msgid "Some of the entries in this database have passwords that have expired or are about to.  Do you wish to list them and possibly update them?"
@@ -6382,9 +6362,21 @@ msgstr "Spanyol variáció"
 msgid "Specify a program for editing an entry's Notes field via the right-click context menu during Add/Edit. You can specify command line options to the external editor via the external  editor command line parameters field. Do not enclose this value in single or double quotes unless your chosen external editor requires them."
 msgstr "Adjon meg egy programot a bejegyzés Megjegyzés mezőjének szerkesztéséhez a jobb gombbal kattintva a helyi menüben a Hozzáadás/Szerkesztés során. A külső szerkesztő parancssori paramétereit a külső szerkesztő parancssori paraméterei mezőben adhatja meg. Ne tegye ezt az értéket egyszeres vagy dupla idézőjelbe, kivéve, ha a választott külső szerkesztő ezt igényli."
 
+#. Resource IDs: (5566)
+msgid "Specify text"
+msgstr ""
+
 #. Resource IDs: (5108)
 msgid "Specify the browser to use when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'. You can specify command line options to the browser via the Browser command line parameters field. Do not enclose this value in single or double quotes unless your chosen browser requires them."
 msgstr "Adja meg a használni kívánt böngészőt, ha egy bejegyzés URL-mezője [alt]-tal kezdődik, például „[alt]http://foo.com”. A Böngésző parancssori paraméterei mezőben megadhatja a parancssori beállításokat a böngésző számára. Ne tegye ezt az értéket szimpla vagy dupla idézőjelbe, hacsak a választott böngésző nem igényli."
+
+#. Resource IDs: (5390)
+msgid "Specify the destination location to contain all backups."
+msgstr ""
+
+#. Resource IDs: (5389)
+msgid "Specify the sub-directory to contain all backups."
+msgstr ""
 
 #. Resource IDs: (1497)
 msgid "Standard"
@@ -6634,8 +6626,8 @@ msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere
 msgstr "%s adatbázis nem nyitható meg.\nKívánja megkeresni, létrehoz egy újat vagy kilép?"
 
 #. Resource IDs: (5852)
-msgid "The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n\nPlease close the database and re-open it in R/W mode."
-msgstr "Az adatbázis megváltozott azóta, hogy meg lett nyitva olvasásra, ezért nem lehetséges átváltani író-olvasó módra.\n\nKérem zárja be az adatbázist és nyissa újra író-olvasó módban."
+msgid "The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n\nClose the database and re-open it in R/W mode."
+msgstr ""
 
 #. Resource IDs: (5412)
 #, c-format
@@ -6649,12 +6641,12 @@ msgstr "Az adatbázis:\n%s\n\nhasználatban van:\n%s%s által.\n\nMegnyitja az a
 
 #. Resource IDs: (5775)
 #, c-format
-msgid "The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."
-msgstr "Az adatbázis:\n\n%s\n\nduplikált bejegyzései vannak ugyanazzal a csoport/cím/felhasználó kombinációval. Kérjük, javítsa az adatbázis érvényesítésével."
+msgid "The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. You can fix this by validating the database."
+msgstr ""
 
 #. Resource IDs: (5250)
-msgid "The entered passwords do not match.  Please re-enter them."
-msgstr "A megadott jelszavak nem egyeznek. Kérjük, írja be őket újra."
+msgid "The entered passwords do not match.  Please re-enter."
+msgstr ""
 
 #. Resource IDs: (61701)
 msgid "The file is too large to open."
@@ -6783,8 +6775,8 @@ msgstr "A '%s' billentyűparancs már hozzá van rendelve a következő menüele
 
 #. Resource IDs: (5950)
 #, c-format
-msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nPlease select another shortcut (it has been reset)."
-msgstr "A '%s' billentyűparancsot már használja a következő:\n\t«%s» «%s» «%s»\nKérjük, válasszon másik billentyűparancsot (alaphelyzetbe került)."
+msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nSelect another shortcut (it has been reset)."
+msgstr ""
 
 #. Resource IDs: (5279)
 msgid "The master password cannot be blank."
@@ -6831,8 +6823,8 @@ msgid "The user specified that the following fields be excluded from the export:
 msgstr "A felhasználó megadta, hogy a következő mezőket kizárja az exportálásból:"
 
 #. Resource IDs: (5505)
-msgid "There are more than one entry that fits your selection. Please be more specific."
-msgstr "Több bejegyzés is megfelel az Ön választásának. Kérem, legyen pontosabb."
+msgid "There are more than one entry that fits your selection. Be more specific."
+msgstr ""
 
 #. Resource IDs: (3358)
 msgid "There are unmatched quotes in the run command"
@@ -6865,13 +6857,13 @@ msgstr "Ez a bejegyzés módosult. Biztos, hogy törölni szeretné?"
 
 #. Resource IDs: (3404)
 #, c-format
-msgid "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
-msgstr "Ez a bejegyzés a következőket tartalmazza %d %ls:\n%ls\nKérjük, erősítse meg a folytatást (a bejegyzéshez vezető összes hivatkozás törlődik)?"
+msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
+msgstr ""
 
 #. Resource IDs: (3403)
 #, c-format
-msgid "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
-msgstr "Ez a bejegyzés a következőket tartalmazza: %d %ls:\n%ls\nKérjük, erősítse meg a folytatást (az alias bejegyzés jelszavait felváltja ennek a bejegyzésnek a jelszava)?"
+msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (alias entry's passwords will be replaced by this entry's password)?"
+msgstr ""
 
 #. Resource IDs: (5248)
 msgid "This entry must have a password."
@@ -7376,8 +7368,8 @@ msgid "Verify Key:"
 msgstr "Kulcs ellenőrzése:"
 
 #. Resource IDs: (5690)
-msgid "Version mismatch with On Screen Keyboard DLL. Please install version that came with this version of Password Safe."
-msgstr "A verzió nem egyezik az On Screen Keyboard DLL-lel. Kérjük, telepítse a Password Safe ezen verziójához tartozó verziót."
+msgid "Version mismatch with On Screen Keyboard DLL. Please install the dll that came with this version of Password Safe."
+msgstr ""
 
 #. Resource IDs: (8236)
 msgid "Vietnamese"
@@ -7420,14 +7412,18 @@ msgstr "A kiválasztott bejegyzés megtekintése/szerkesztése"
 msgid "Visit Password Safe &website..."
 msgstr "A Password Safe &weboldalának meglátogatása..."
 
+#. Resource IDs: (5489)
+msgid "Visit the <a href=\"https://pwsafe.org/\">Password Safe website.</a>"
+msgstr ""
+
 #. Resource IDs: (5803)
 msgid "WARNING: If you continue, fields will be updated in entries in your existing database from your selected input database."
 msgstr "FIGYELMEZTETÉS: Ha folytatja, a mezők frissülnek a meglévő adatbázis bejegyzéseiben a kiválasztott bemeneti adatbázisból."
 
 #. Resource IDs: (5804)
 #, c-format
-msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n\nPlease do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
-msgstr "FIGYELMEZTETÉS: Ez a művelet a %s nem védett másolatát hozza létre az adatbázisban. A másolat használat utáni törlése NEM elegendő.\n\nKérjük, ne használja ezt a lehetőséget, hacsak nem érti és elfogadja a kockázatokat. Ez az opció megkerüli a program által biztosított biztonságot."
+msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n\nDo not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
+msgstr ""
 
 #. Resource IDs: (5447)
 msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
@@ -7492,13 +7488,13 @@ msgstr "Windows Registry (Rendszerleíróadatbázis)"
 
 #. Resource IDs: (6036)
 #, c-format
-msgid "Windows can't expand '%s'. Please make sure that you have set this correctly."
-msgstr "A Windows nem tudja kibontani a következőt: '%s'. Kérjük, győződjön meg arról, hogy ezt megfelelően állította be."
+msgid "Windows can't expand '%s'. Make sure that you have set this correctly."
+msgstr ""
 
 #. Resource IDs: (5972)
 #, c-format
-msgid "Windows can't find '%s'. Please make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
-msgstr "A Windows nem találja a következőt: '%s'. Győződjön meg arról, hogy a külső szerkesztőt megfelelően állította be, és telepítette. A külső szerkesztés megszakítva."
+msgid "Windows can't find '%s'. Make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
+msgstr ""
 
 #. Resource IDs: (8264)
 msgid "Wolof"
@@ -8039,8 +8035,8 @@ msgid "\nView Reports"
 msgstr "\nJelentések megtekintése"
 
 #. Resource IDs: (5238)
-msgid "\n\nCannot open database. It probably does not exist.\nPlease select to Open another database, create a New database or Cancel."
-msgstr "\n\nAdatbázis megnyitása sikertelen. Valószínűleg nem létezik.\nKérem válasszon másik adatbázist, hozzon létre újat vagy válassza a Mégse lehetőséget."
+msgid "\n\nCannot open database. It probably does not exist.\nYou can Open another database, create a New one or Cancel."
+msgstr ""
 
 #. Resource IDs: (5662)
 msgid "\n\nIgnore this and save anyway - Yes/no?"
@@ -8068,8 +8064,8 @@ msgid "\nwith warnings"
 msgstr "\nfigyelmeztetésekkel "
 
 #. Resource IDs: (5448)
-msgid "\r\nThis field is being edited in your default text editor.\r\nPlease complete this action before continuing.\r\n\r\n(You may cancel this edit using the Close [X] button above)"
-msgstr "\r\nEz a mező az alapértelmezett szövegszerkesztőben szerkesztés alatt áll.\r\nKérjük, a folytatás előtt hajtsa végre ezt a műveletet.\r\n\r\n(Ezt a szerkesztést a fenti Bezárás [X] gombbal törölheti)"
+msgid "\r\nThis field is being edited in your default text editor.\r\nComplete this action before continuing.\r\n\r\n(You may cancel this edit using the Close [X] button above)"
+msgstr ""
 
 #. Resource IDs: (5526)
 #, c-format

@@ -650,14 +650,14 @@ msgid "&Clear Recent History"
 msgstr "&Очистить историю"
 
 #. Resource IDs: (32008 - MenuEx)
-msgid "&Clear Recent Safe List"
-msgstr "О&чистить список недавних контейнеров"
+msgid "&Clear Recently Opened List"
+msgstr ""
 
 #. Resource IDs: (5606)
 msgid "&Clear current"
 msgstr "&Очистить текущий"
 
-#. Resource IDs: (32004 - Menu, 32004 - MenuEx)
+#. Resource IDs: (2, 32004 - Menu, 32004 - MenuEx)
 msgid "&Close"
 msgstr "&Закрыть"
 
@@ -761,10 +761,6 @@ msgstr "&Поиск"
 #. Resource IDs: (32080 - MenuEx)
 msgid "&Find..."
 msgstr "По&иск..."
-
-#. Resource IDs: (2)
-msgid "&Finish"
-msgstr "&Закончить"
 
 #. Resource IDs: (1088)
 msgid "&Font:"
@@ -1087,8 +1083,8 @@ msgid "'Browse to URL' copies password to clipboard"
 msgstr "«Перейти по ссылке» копирует пароль в буфер обмена"
 
 #. Resource IDs: (5645)
-msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Please change one or both."
-msgstr "Конфликт опций «Очищать буфер обмена при сворачивании» и «Свернуть после копирования пароля». Отключите одну из них."
+msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Change one or both."
+msgstr ""
 
 #. Resource IDs: (5714)
 msgid "'\n\nIf you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n\nThe diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n\nHowever, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n\nThank you for your help to improve PasswordSafe."
@@ -1485,8 +1481,8 @@ msgid "A future date is not valid for this field"
 msgstr "В данное поле нельзя вводить даты из будущего"
 
 #. Resource IDs: (5116)
-msgid "A hidden password needs to be entered in the Confirm Password field too. If it's not hidden, Confirm shows numbers that may be used to help count the password's characters."
-msgstr "Если пароль скрыт, то его нужно повторить в поле подтверждения. Иначе в поле подтверждения будут выведены цифры для того, чтобы было проще определять позиции символов."
+msgid "A hidden password needs to be entered in the Confirm Password field too. If it's not hidden, the Confirm field shows numbers that may be used to help count the password's characters."
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "A new password database will be created. The Master Password you enter will be used to encrypt the password database file. The Master Password can use any keyboard character and is case-sensitive."
@@ -1784,8 +1780,8 @@ msgid "Armenian Western"
 msgstr "Западноармянская"
 
 #. Resource IDs: (5268)
-msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Please enter another character."
-msgstr "Двойную кавычку нельзя использовать как разделитель строк в заметке, так как этот символ используется в качестве ограничителя поля содержащего заметку. Пожалуйста, введите другой символ."
+msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Select another character."
+msgstr ""
 
 #. Resource IDs: (5292)
 msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
@@ -2075,8 +2071,8 @@ msgstr "Предупреждение об истечении срока дейс
 
 #. Resource IDs: (3345)
 #, c-format
-msgid "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."
-msgstr "Невозможно найти файл с определением XML-схемы (%ls) в каталоге Password Safe.\nСкопируйте этот файл из дистрибутива или переустановите Password Safe."
+msgid "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nCopy it from your installation file, or re-install PasswordSafe."
+msgstr ""
 
 #. Resource IDs: (3320)
 msgid "Can't obtain the schema version."
@@ -2225,6 +2221,46 @@ msgstr "Китайская (BoPoMoFo)"
 #. Resource IDs: (8324)
 msgid "Chinese ChaJei"
 msgstr "Китайская (ChaJei)"
+
+#. Resource IDs: (5376)
+msgid "Choose a Backup to restore:"
+msgstr ""
+
+#. Resource IDs: (5791)
+msgid "Choose a Database to Validate:"
+msgstr ""
+
+#. Resource IDs: (5375)
+msgid "Choose a Name for this Backup:"
+msgstr ""
+
+#. Resource IDs: (5335)
+msgid "Choose a Text File to Import"
+msgstr ""
+
+#. Resource IDs: (5354)
+msgid "Choose a database to compare with current database"
+msgstr ""
+
+#. Resource IDs: (5348)
+msgid "Choose a database to merge into the current database"
+msgstr ""
+
+#. Resource IDs: (5753)
+msgid "Choose a database to synchronize with current database"
+msgstr ""
+
+#. Resource IDs: (5327)
+msgid "Choose a name for the current (Untitled) database:"
+msgstr ""
+
+#. Resource IDs: (5328)
+msgid "Choose a new name for the current database:"
+msgstr ""
+
+#. Resource IDs: (5343)
+msgid "Choose an XML File to Import"
+msgstr ""
 
 #. Resource IDs: (1)
 msgid "Cl&ose"
@@ -2507,6 +2543,19 @@ msgstr "Подтверждать копирование пароля в буфе
 msgid "Confirm deletion of items"
 msgstr "Подтверждать удаление элементов"
 
+#. Resource IDs: (5635)
+#, c-format
+msgid "Confirm deletion of the %s filter %s?"
+msgstr ""
+
+#. Resource IDs: (5322)
+msgid "Confirm old master password"
+msgstr ""
+
+#. Resource IDs: (6033)
+msgid "Confirm that you wish to clear the recent Safe list."
+msgstr ""
+
 #. Resource IDs: (5930)
 #, c-format
 msgid "Confirm that you wish to copy these entries from %s to %s\n\nIf already present in the target database, they will be replaced!"
@@ -2521,6 +2570,10 @@ msgstr "Подтвердите копирование элемента из %s �
 #, c-format
 msgid "Confirm that you wish to synchronize these entries from %s to %s?\n\nSelected fields will be replaced in all entries!"
 msgstr "Подтвердите синхронизацию указанных элементов из %s в %s \n\nВыбранные поля будут заменены во всех синхронизируемых элементах!"
+
+#. Resource IDs: (5287)
+msgid "Confirm to delete the current user's PasswordSafe configuration from the Windows registry.\n\n"
+msgstr ""
 
 #. Resource IDs: (1505, 65535)
 msgid "Confirmation:"
@@ -2753,7 +2806,7 @@ msgstr "Контейнер открыт «только для чтения»"
 
 #. Resource IDs: (5477)
 #, c-format
-msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the Password Safe website to download the latest version."
+msgid "Current version:\t%s\nLatest version:\t%s\n\nVisit the Password Safe website to download the latest version."
 msgstr ""
 
 #. Resource IDs: (32155 - MenuEx)
@@ -2910,6 +2963,10 @@ msgstr "Удалить элемент"
 #. Resource IDs: (5882)
 msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
 msgstr "Удалить выбранную политику \n(только неиспользуемые именованные политики могут быть удалены)"
+
+#. Resource IDs: (5876)
+msgid "Description"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Description:"
@@ -3265,6 +3322,10 @@ msgstr "Введите число."
 msgid "Enter a positive integer."
 msgstr "Введите положительное целое число."
 
+#. Resource IDs: (5272)
+msgid "Enter a search string"
+msgstr ""
+
 # AFX_IDP_PARSE_TIME
 #. Resource IDs: (61723)
 msgid "Enter a time."
@@ -3313,9 +3374,17 @@ msgstr "Введите секретный ключ аутентификации.
 msgid "Enter the current master password, followed by a new one. \r\nType the new one again to confirm it."
 msgstr ""
 
+#. Resource IDs: (5255)
+msgid "Enter the key and verify it."
+msgstr ""
+
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
 msgstr "Введите текст для образца"
+
+#. Resource IDs: (5388)
+msgid "Enter your backup database prefix."
+msgstr ""
 
 #. Resource IDs: (5362)
 msgid "Entries in both databases but with differences:"
@@ -4359,9 +4428,13 @@ msgstr "Настройки импорта из XML"
 msgid "Import XML failed"
 msgstr "Сбой при импорте из XML"
 
+#. Resource IDs: (5340)
+msgid "Import a KeePass Text File"
+msgstr ""
+
 #. Resource IDs: (3425)
-msgid "Import aborted. Please see report."
-msgstr "Импорт прерван. Причина указана в отчёте."
+msgid "Import aborted, see report for details."
+msgstr ""
 
 #. Resource IDs: (5870)
 msgid "Import failed"
@@ -4429,6 +4502,10 @@ msgstr "Экспортировать фильтры в новый контейн
 msgid "Incorrect filename."
 msgstr "Неправильное имя файла."
 
+#. Resource IDs: (5334)
+msgid "Incorrect master password"
+msgstr ""
+
 #. Resource IDs: (5280)
 msgid "Incorrect master password, not a Password Safe database,\nor a corrupt database."
 msgstr ""
@@ -4475,6 +4552,10 @@ msgstr "Пустая строка ввода"
 #. Resource IDs: (8085)
 msgid "Insert"
 msgstr "Вставить"
+
+#. Resource IDs: (6001)
+msgid "Insert your YubiKey"
+msgstr ""
 
 # AFX_IDP_FAILED_MEMORY_ALLOC
 #. Resource IDs: (61706)
@@ -4817,6 +4898,10 @@ msgstr "Дата установки мастер-пароля:"
 msgid "Master Password:"
 msgstr "Пароль:"
 
+#. Resource IDs: (5800)
+msgid "Master password needed to save. Unlock database and try again"
+msgstr ""
+
 #. Resource IDs: (1212)
 msgid "Max."
 msgstr "Макс."
@@ -4954,9 +5039,29 @@ msgstr "Должно быть не меньше %d"
 msgid "N/A"
 msgstr "Н/Д"
 
-#. Resource IDs: (5640)
+#. Resource IDs: (5640, 5875)
 msgid "Name"
 msgstr "Имя"
+
+#. Resource IDs: (5333)
+msgid "Name the XML file"
+msgstr ""
+
+#. Resource IDs: (5961)
+msgid "Name the database file"
+msgstr ""
+
+#. Resource IDs: (5331)
+msgid "Name the exported database"
+msgstr ""
+
+#. Resource IDs: (5332)
+msgid "Name the plaintext file"
+msgstr ""
+
+#. Resource IDs: (5621)
+msgid "Name this filter"
+msgstr ""
 
 #. Resource IDs: (1039)
 msgid "Name. Name. Name."
@@ -5330,6 +5435,10 @@ msgstr "Непрозрачное"
 msgid "Open"
 msgstr "Открыть"
 
+#. Resource IDs: (5315)
+msgid "Open Password Database"
+msgstr ""
+
 # урезано (флаг в диалоге ввода пароля)
 #. Resource IDs: (1086)
 msgid "Open as read-only"
@@ -5401,14 +5510,6 @@ msgstr "PWS_CPF_CDD"
 #. Resource IDs: (5449)
 msgid "PWS_CPF_TVDD"
 msgstr "PWS_CPF_TVDD"
-
-#. Resource IDs: (5334)
-msgid "Passkey incorrect"
-msgstr "Неверный пароль"
-
-#. Resource IDs: (5800)
-msgid "Passkey needed to save. Please unlock database and try again"
-msgstr "Для сохранения требуется пароль. Разблокируйте контейнер и повторите попытку"
 
 #. Resource IDs: (5757)
 msgid "Passphrase"
@@ -5626,148 +5727,18 @@ msgstr "Простой текст (разделитель табуляция)...
 msgid "Play sound on key press"
 msgstr "Озвучить нажатия"
 
-#. Resource IDs: (5376)
-msgid "Please Choose a Backup to restore:"
-msgstr "Выберите резервную копию для восстановления"
-
-#. Resource IDs: (5315)
-msgid "Please Choose a Database to Open:"
-msgstr "Укажите контейнер для открытия"
-
-#. Resource IDs: (5791)
-msgid "Please Choose a Database to Validate:"
-msgstr "Укажите контейнер для проверки"
-
-#. Resource IDs: (5340)
-msgid "Please Choose a KeePass Text File to Import"
-msgstr "Укажите текстовый файл KeePass для импорта"
-
-#. Resource IDs: (5375)
-msgid "Please Choose a Name for this Backup:"
-msgstr "Укажите имя для резервной копии:"
-
-#. Resource IDs: (5335)
-msgid "Please Choose a Text File to Import"
-msgstr "Укажите текстовый файл для импорта"
-
-#. Resource IDs: (5343)
-msgid "Please Choose a XML File to Import"
-msgstr "Укажите XML-файл для импорта"
-
-#. Resource IDs: (5354)
-msgid "Please choose a database to compare with current database"
-msgstr "Укажите контейнер для сравнения с текущим"
-
-#. Resource IDs: (5348)
-msgid "Please choose a database to merge into current database"
-msgstr "Укажите контейнер для слияния с открытым контейнером"
-
-#. Resource IDs: (5753)
-msgid "Please choose a database to synchronize with current database"
-msgstr "Укажите контейнер для синхронизации с открытым контейнером"
-
-#. Resource IDs: (5327)
-msgid "Please choose a name for the current (Untitled) database:"
-msgstr "Укажите имя для текущего (безымянного) контейнера:"
-
 #. Resource IDs: (5395)
 msgid "Please choose a name for the new database"
 msgstr "Укажите имя файла для нового контейнера"
-
-#. Resource IDs: (5328)
-msgid "Please choose a new name for the current database:"
-msgstr "Укажите имя нового файла для текущего контейнера"
-
-# "Please confirm you wish to delete the Session filter Filter1"
-#. Resource IDs: (5635)
-#, c-format
-msgid "Please confirm delete of the %s filter %s?"
-msgstr "Подтверждаете удаление %s фильтра %s?"
-
-#. Resource IDs: (6033)
-msgid "Please confirm that you wish to clear the recent Safe list."
-msgstr "Подтвердите очистку списка недавних контейнеров."
-
-#. Resource IDs: (5287)
-msgid "Please confirm that you wish to delete current user's PasswordSafe configuration from the Windows registry.\n\n"
-msgstr "Подтвердите удаление настроек Password Safe для текущего пользователя из реестра Windows.\n\n"
-
-#. Resource IDs: (5272)
-msgid "Please enter a search string"
-msgstr "Введите строку для поиска"
 
 #. Resource IDs: (65535)
 msgid "Please enter an encryption or decryption key"
 msgstr "Введите ключ для шифрования или расшифрования"
 
-#. Resource IDs: (5255)
-msgid "Please enter the key and verify it."
-msgstr "Укажите ключ и подтвердите его."
-
 # урезано
 #. Resource IDs: (1504)
 msgid "Please enter the master password for the NEW database to contain exported entry/entries."
 msgstr "Укажите пароль для НОВОГО контейнера, в который будет произведён экспорт"
-
-#. Resource IDs: (5876)
-msgid "Please enter the new database description"
-msgstr "Введите новое описание контейнера"
-
-#. Resource IDs: (5875)
-msgid "Please enter the new database name"
-msgstr "Введите новое имя контейнера"
-
-#. Resource IDs: (5388)
-msgid "Please enter your backup database prefix."
-msgstr "Укажите приставку для резервных копий контейнеров."
-
-#. Resource IDs: (6001)
-msgid "Please insert your YubiKey"
-msgstr "Вставьте ваш YubiKey"
-
-#. Resource IDs: (5333)
-msgid "Please name the XML file"
-msgstr "Укажите имя XML-файла"
-
-#. Resource IDs: (5961)
-msgid "Please name the database file"
-msgstr "Укажите имя файла"
-
-#. Resource IDs: (5331)
-msgid "Please name the exported database"
-msgstr "Укажите имя экспортируемого контейнера"
-
-#. Resource IDs: (5332)
-msgid "Please name the plaintext file"
-msgstr "Укажите имя текстового файла"
-
-#. Resource IDs: (5621)
-msgid "Please name this filter"
-msgstr "Укажите имя для текущего фильтра"
-
-#. Resource IDs: (5993)
-msgid "Please select media type"
-msgstr "Укажите тип файла"
-
-#. Resource IDs: (5487)
-msgid "Please select report to view."
-msgstr "Выберите отчёт для просмотра."
-
-#. Resource IDs: (5566)
-msgid "Please specify text"
-msgstr "Введите текст"
-
-#. Resource IDs: (5390)
-msgid "Please specify the destination location to contain all backups."
-msgstr "Укажите путь для сохранения резервных копий."
-
-#. Resource IDs: (5389)
-msgid "Please specify the sub-directory to contain all backups."
-msgstr "Укажите подкаталог для сохранения резервных копий."
-
-#. Resource IDs: (5489)
-msgid "Please visit the <a href=\"https://pwsafe.org/\">Password Safe website.</a>"
-msgstr ""
 
 #. Resource IDs: (5879)
 msgid "Policy Name"
@@ -6102,8 +6073,8 @@ msgstr "Румынская (стандартная)"
 
 #. Resource IDs: (5567)
 #, c-format
-msgid "Row %d is incomplete. Please set both Field and Criteria."
-msgstr "Строка %d задана не полностью. Убедитесь, что указаны значения «Поле» и «Условие»."
+msgid "Row %d is incomplete. Both Field and Criteria must be set."
+msgstr ""
 
 #. Resource IDs: (5614)
 msgid "Row number"
@@ -6327,6 +6298,10 @@ msgstr "Цвет текста для разблокированного конт
 msgid "Select a button."
 msgstr "Нажмите кнопку."
 
+#. Resource IDs: (5487)
+msgid "Select a report to view."
+msgstr ""
+
 #. Resource IDs: (5431)
 msgid "Select all entries"
 msgstr "Выбрать все элементы"
@@ -6334,6 +6309,10 @@ msgstr "Выбрать все элементы"
 #. Resource IDs: (523)
 msgid "Select entry to compare"
 msgstr "Выберите элемент для сравнения"
+
+#. Resource IDs: (5993)
+msgid "Select media type"
+msgstr ""
 
 #. Resource IDs: (5430)
 msgid "Select some entries"
@@ -6635,8 +6614,8 @@ msgid "Some characters may be missing or not be displayed correctly, as we were 
 msgstr "Шрифт Arial Unicode MS не найден. Некоторые символы могут отсутствовать или отображаться некорректно."
 
 #. Resource IDs: (5923)
-msgid "Some consistency issues were found while opening the database.\n\nYou should save this database before proceeding. Please view report for details."
-msgstr "При открытии контейнера были обнаружены некоторые несоответствия.\n\nПеред продолжением работы нужно сохранить изменения в контейнере. Подробная информация находится в отчёте."
+msgid "Some consistency issues were found while opening the database.\n\nYou should save this database before proceeding. More details may be found in the report."
+msgstr ""
 
 #. Resource IDs: (5821)
 msgid "Some of the entries in this database have passwords that have expired or are about to.  Do you wish to list them and possibly update them?"
@@ -6694,9 +6673,21 @@ msgstr "Испанская (изменённая)"
 msgid "Specify a program for editing an entry's Notes field via the right-click context menu during Add/Edit. You can specify command line options to the external editor via the external  editor command line parameters field. Do not enclose this value in single or double quotes unless your chosen external editor requires them."
 msgstr "Укажите внешний редактор для заметок (доступен через контекстное меню при вставке/редактировании элемента). Вы можете указать параметры вызова в поле «параметры командной строки». Не заключайте значение в кавычки, если это не требуется для выбранного редактора."
 
+#. Resource IDs: (5566)
+msgid "Specify text"
+msgstr ""
+
 #. Resource IDs: (5108)
 msgid "Specify the browser to use when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'. You can specify command line options to the browser via the Browser command line parameters field. Do not enclose this value in single or double quotes unless your chosen browser requires them."
 msgstr "Укажите браузер, который нужно использовать при открытии ссылок, начинающихся с [alt], например «[alt]http://foo.com».  Вы можете указать параметры вызова в поле «параметры командной строки». Не заключайте значение в кавычки, если это не требуется для выбранного браузера."
+
+#. Resource IDs: (5390)
+msgid "Specify the destination location to contain all backups."
+msgstr ""
+
+#. Resource IDs: (5389)
+msgid "Specify the sub-directory to contain all backups."
+msgstr ""
 
 # Unlock difficulty
 #. Resource IDs: (1497)
@@ -6952,8 +6943,8 @@ msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere
 msgstr "Контейнер %s не может быть открыт.\nВы можете повторить попытку, указать другой путь (Поиск), создать новый контейнер, или выйти."
 
 #. Resource IDs: (5852)
-msgid "The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n\nPlease close the database and re-open it in R/W mode."
-msgstr "Переключение в режим «чтение/запись» невозможно: со времени открытия в режиме «только чтение» контейнер был изменён.\n\nЗакройте контейнер и откройте его заново в режиме «чтение/запись»."
+msgid "The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n\nClose the database and re-open it in R/W mode."
+msgstr ""
 
 #. Resource IDs: (5412)
 #, c-format
@@ -6967,12 +6958,12 @@ msgstr "Вероятно, контейнер:\n%s\n\nуже использует
 
 #. Resource IDs: (5775)
 #, c-format
-msgid "The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."
-msgstr "Контейнер:\n\n%s\n\n содержит дубликаты с совпадающими комбинациями Группа/Заголовок/Имя пользователя. Запустите проверку, чтобы исправить контейнер."
+msgid "The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. You can fix this by validating the database."
+msgstr ""
 
 #. Resource IDs: (5250)
-msgid "The entered passwords do not match.  Please re-enter them."
-msgstr "Введённые пароли не совпадают.  Повторите ввод паролей."
+msgid "The entered passwords do not match.  Please re-enter."
+msgstr ""
 
 # AFX_IDP_FILE_TOO_LARGE
 #. Resource IDs: (61701)
@@ -7102,8 +7093,8 @@ msgstr "Комбинация клавиш '%s' уже назначена пун�
 
 #. Resource IDs: (5950)
 #, c-format
-msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nPlease select another shortcut (it has been reset)."
-msgstr "Комбинация клавиш '%s' уже используется для:\n\t«%s» «%s» «%s»\nВыберите другую комбинацию (текущая была сброшена)."
+msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nSelect another shortcut (it has been reset)."
+msgstr ""
 
 #. Resource IDs: (5279)
 msgid "The master password cannot be blank."
@@ -7151,8 +7142,8 @@ msgid "The user specified that the following fields be excluded from the export:
 msgstr "Пользователь исключил следующие столбцы из экспорта:"
 
 #. Resource IDs: (5505)
-msgid "There are more than one entry that fits your selection. Please be more specific."
-msgstr "Указанным условиям удовлетворяют несколько элементов. Задайте более жёсткие условия."
+msgid "There are more than one entry that fits your selection. Be more specific."
+msgstr ""
 
 #. Resource IDs: (3358)
 msgid "There are unmatched quotes in the run command"
@@ -7184,17 +7175,15 @@ msgstr "Указанный контейнер совпадает с текущи
 msgid "This entry has been changed. Are you sure you wish to cancel?"
 msgstr "Элемент был изменён. Отменить изменения?"
 
-# Ex.: "This entry has the following 3 shortcuts: foo, bar, zog" or
-# "This entry has the following 3 aliases: foo, bar, zog"
 #. Resource IDs: (3404)
 #, c-format
-msgid "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
-msgstr "У данного элемента есть %d подчинённых типа «%ls»:\n%ls\nПродолжить выполнение (все ярлыки для этого элемента будут удалены)?"
+msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
+msgstr ""
 
 #. Resource IDs: (3403)
 #, c-format
-msgid "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
-msgstr "У данного элемента есть %d %ls:\n%ls\nПродолжить выполнение (пароли для псевдонимов будут заменены на пароль этого элемента)?"
+msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (alias entry's passwords will be replaced by this entry's password)?"
+msgstr ""
 
 #. Resource IDs: (5248)
 msgid "This entry must have a password."
@@ -7731,8 +7720,8 @@ msgid "Verify Key:"
 msgstr "Повтор:"
 
 #. Resource IDs: (5690)
-msgid "Version mismatch with On Screen Keyboard DLL. Please install version that came with this version of Password Safe."
-msgstr "Неверная версия DLL для экранной клавиатуры. Установите DLL из дистрибутива используемой версии Password Safe."
+msgid "Version mismatch with On Screen Keyboard DLL. Please install the dll that came with this version of Password Safe."
+msgstr ""
 
 #. Resource IDs: (8236)
 msgid "Vietnamese"
@@ -7777,15 +7766,18 @@ msgstr "Просмотр/редактирование элемента"
 msgid "Visit Password Safe &website..."
 msgstr "Посетить &сайт Password Safe..."
 
+#. Resource IDs: (5489)
+msgid "Visit the <a href=\"https://pwsafe.org/\">Password Safe website.</a>"
+msgstr ""
+
 #. Resource IDs: (5803)
 msgid "WARNING: If you continue, fields will be updated in entries in your existing database from your selected input database."
 msgstr "Внимание! В случае продолжения, значения элементов текущего контейнера будут заменены на значения из указанного контейнера."
 
-# %s - "ALL of the passwords and data" или "this entry's password and data"
 #. Resource IDs: (5804)
 #, c-format
-msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n\nPlease do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
-msgstr "Внимание! Продолжение приведёт к созданию незащищённой копии, содержащей %s. Для обеспечения безопасности простого удаления этой копии НЕДОСТАТОЧНО!\n\nТак как это действие позволяет обойти предоставляемую программой защиту, продолжайте только если вы понимаете и принимаете все риски."
+msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n\nDo not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
+msgstr ""
 
 #. Resource IDs: (5447)
 msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
@@ -7856,13 +7848,13 @@ msgstr "Реестр Windows"
 
 #. Resource IDs: (6036)
 #, c-format
-msgid "Windows can't expand '%s'. Please make sure that you have set this correctly."
-msgstr "Windows не удалось раскрыть путь '%s'. Проверьте, что путь указан верно."
+msgid "Windows can't expand '%s'. Make sure that you have set this correctly."
+msgstr ""
 
 #. Resource IDs: (5972)
 #, c-format
-msgid "Windows can't find '%s'. Please make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
-msgstr "Windows не удалось найти «%s». Проверьте, что путь к внешнему редактору указан корректно. Редактирование во внешнем приложении отменено."
+msgid "Windows can't find '%s'. Make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
+msgstr ""
 
 #. Resource IDs: (8264)
 msgid "Wolof"
@@ -8408,8 +8400,8 @@ msgid "\nView Reports"
 msgstr "\nПросмотр отчётов"
 
 #. Resource IDs: (5238)
-msgid "\n\nCannot open database. It probably does not exist.\nPlease select to Open another database, create a New database or Cancel."
-msgstr "\n\nОшибка при открытии контейнера. Возможно, он не существует.\nВы можете открыть другой контейнер, создать новый или отменить операцию."
+msgid "\n\nCannot open database. It probably does not exist.\nYou can Open another database, create a New one or Cancel."
+msgstr ""
 
 #. Resource IDs: (5662)
 msgid "\n\nIgnore this and save anyway - Yes/no?"
@@ -8437,8 +8429,8 @@ msgid "\nwith warnings"
 msgstr "\nс предупреждениями"
 
 #. Resource IDs: (5448)
-msgid "\r\nThis field is being edited in your default text editor.\r\nPlease complete this action before continuing.\r\n\r\n(You may cancel this edit using the Close [X] button above)"
-msgstr "\r\nПоле редактируется в текстовом редакторе по умолчанию.\r\nЗавершите редактирование до продолжения действия с элементом.\r\n\r\n(Чтобы отменить редактирование, закройте это окно кнопкой [X])"
+msgid "\r\nThis field is being edited in your default text editor.\r\nComplete this action before continuing.\r\n\r\n(You may cancel this edit using the Close [X] button above)"
+msgstr ""
 
 #. Resource IDs: (5526)
 #, c-format

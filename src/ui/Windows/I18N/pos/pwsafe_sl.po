@@ -2,28 +2,36 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
-# Translators:
-# ronys, 2024
-# Jadran Rudec <jrudec@gmail.com>, 2024
-# Procol Lacor, 2024
-# 
+#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2021-09-29 17:34+0000\n"
-"Last-Translator: Procol Lacor, 2024\n"
-"Language-Team: Slovenian (https://app.transifex.com/passwordsafe/teams/125590/sl/)\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sl\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);\n"
 
-#. Resource IDs: (3263)
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
+
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -37,6 +45,7 @@ msgstr ""
 # updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
 # ONLY change the msgstr field. Do NOT change any other.
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
+#. Resource IDs: (3263)
 msgid "  All Password History ignored."
 msgstr "  Vsa zgodovina gesel je zanemarjena."
 
@@ -57,12 +66,8 @@ msgid "  Invalid date/time value."
 msgstr "  Neveljavna vrednost datuma/časa."
 
 #. Resource IDs: (3041)
-msgid ""
-"  Invalid field separator character found - only a single blank is allowed "
-"between fields."
-msgstr ""
-"  Najden je bil neveljaven znak za ločilo polja - med polji je dovoljena le "
-"en presledek."
+msgid "  Invalid field separator character found - only a single blank is allowed between fields."
+msgstr "  Najden je bil neveljaven znak za ločilo polja - med polji je dovoljena le en presledek."
 
 #. Resource IDs: (3034)
 #, c-format
@@ -75,16 +80,12 @@ msgid "  Invalid number of saved old passwords %d."
 msgstr "  Neveljavno število shranjenih starih gesel %d."
 
 #. Resource IDs: (3070)
-msgid ""
-"  Invalid password length found (differs from length of following password)."
-msgstr ""
-"  Najdena je bila neveljavna dolžina gesla (razlikuje se od dolžine "
-"naslednjega gesla)."
+msgid "  Invalid password length found (differs from length of following password)."
+msgstr "  Najdena je bila neveljavna dolžina gesla (razlikuje se od dolžine naslednjega gesla)."
 
 #. Resource IDs: (3038)
 msgid "  Invalid password length found (not a hexadecimal number)."
-msgstr ""
-"  Najdena je bila neveljavna dolžina gesla (ni šestnajstiško število)."
+msgstr "  Najdena je bila neveljavna dolžina gesla (ni šestnajstiško število)."
 
 #. Resource IDs: (3035)
 #, c-format
@@ -332,21 +333,13 @@ msgstr "%1 ni bilo najdeno."
 
 #. Resource IDs: (61744)
 #, c-format
-msgid ""
-"%1: %2\n"
-"Continue running script?"
+msgid "%1: %2\nContinue running script?"
 msgstr "%1: %2 Nadaljujem izvajanje skript?"
 
 #. Resource IDs: (61729)
 #, c-format
-msgid ""
-"%1\n"
-"Cannot find this file.\n"
-"Verify that the correct path and file name are given."
-msgstr ""
-"%1\n"
-"Te datoteke ni mogoče najti.\n"
-"Preverite, ali sta podana pravilna pot in ime datoteke."
+msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
+msgstr "%1\nTe datoteke ni mogoče najti.\nPreverite, ali sta podana pravilna pot in ime datoteke."
 
 #. Resource IDs: (62186)
 #, c-format
@@ -440,23 +433,13 @@ msgstr "%ls%ls%ls_Report.txt"
 
 #. Resource IDs: (3384)
 #, c-format
-msgid ""
-"%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the "
-"Import file. Added imported entry with title=\"%ls\".\n"
-msgstr ""
-"%ls, Naslov=\"%ls\", Uporabnik=\"%ls\" že obstaja v vaši zbirki podatkov ali"
-" v Uvozi datoteko. Dodan je uvožen vnos z naslovom=\"%ls\".\n"
+msgid "%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the Import file. Added imported entry with title=\"%ls\".\n"
+msgstr "%ls, Naslov=\"%ls\", Uporabnik=\"%ls\" že obstaja v vaši zbirki podatkov ali v Uvozi datoteko. Dodan je uvožen vnos z naslovom=\"%ls\".\n"
 
 #. Resource IDs: (3032)
 #, c-format
-msgid ""
-"%ls\n"
-"\n"
-"The configuration file will not be used."
-msgstr ""
-"%ls\n"
-"\n"
-"Konfiguracijska datoteka ne bo uporabljena."
+msgid "%ls\n\nThe configuration file will not be used."
+msgstr "%ls\n\nKonfiguracijska datoteka ne bo uporabljena."
 
 #. Resource IDs: (5878)
 #, c-format
@@ -485,22 +468,13 @@ msgstr "%s Ali želite shraniti spremembe v zbirko podatkov brez tega?"
 
 #. Resource IDs: (5796)
 #, c-format
-msgid ""
-"%s Either try to save database with another name or exit without saving."
-msgstr ""
-"%s Poskusite shraniti zbirko podatkov z drugim imenom ali zaprite brez "
-"shranjevanja."
+msgid "%s Either try to save database with another name or exit without saving."
+msgstr "%s Poskusite shraniti zbirko podatkov z drugim imenom ali zaprite brez shranjevanja."
 
 #. Resource IDs: (5318)
 #, c-format
-msgid ""
-"%s \n"
-"\n"
-"Can't open file. Please choose another."
-msgstr ""
-"%s \n"
-"\n"
-"Ne morem odpreti datoteke. Izberite drugo."
+msgid "%s \n\nCan't open file. Please choose another."
+msgstr "%s \n\nNe morem odpreti datoteke. Izberite drugo."
 
 #. Resource IDs: (5865)
 #, c-format
@@ -524,12 +498,8 @@ msgstr "%s je imenik"
 
 #. Resource IDs: (6020)
 #, c-format
-msgid ""
-"%s. Preferences that are saved in the database can't be changed and are "
-"disabled."
-msgstr ""
-"%s. Nastavitev, ki so shranjene v zbirki podatkov, ni mogoče spreminjati in "
-"so onemogočene."
+msgid "%s. Preferences that are saved in the database can't be changed and are disabled."
+msgstr "%s. Nastavitev, ki so shranjene v zbirki podatkov, ni mogoče spreminjati in so onemogočene."
 
 #. Resource IDs: (5473)
 #, c-format
@@ -553,73 +523,33 @@ msgstr "%s To je najnovejša izdaja!%s"
 
 #. Resource IDs: (5320)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"Could not open file for reading!"
-msgstr ""
-"%s\n"
-"\n"
-"Datoteke ni bilo mogoče odpreti za branje!"
+msgid "%s\n\nCould not open file for reading!"
+msgstr "%s\n\nDatoteke ni bilo mogoče odpreti za branje!"
 
 #. Resource IDs: (5325)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"Could not open file for writing!"
-msgstr ""
-"%s\n"
-"\n"
-"Datoteke ni bilo mogoče odpreti za pisanje!"
+msgid "%s\n\nCould not open file for writing!"
+msgstr "%s\n\nDatoteke ni bilo mogoče odpreti za pisanje!"
 
 #. Resource IDs: (5312)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"File corrupt or truncated!\n"
-"Data may have been lost or modified.\n"
-"Continue anyway?"
-msgstr ""
-"%s\n"
-"\n"
-"Datoteka je poškodovana ali okrnjena!\n"
-"Podatki so morda izgubljeni ali spremenjeni.\n"
-"Naj vseeno nadaljujem?"
+msgid "%s\n\nFile corrupt or truncated!\nData may have been lost or modified.\nContinue anyway?"
+msgstr "%s\n\nDatoteka je poškodovana ali okrnjena!\nPodatki so morda izgubljeni ali spremenjeni.\nNaj vseeno nadaljujem?"
 
 #. Resource IDs: (5329)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"File is currently locked by %s"
-msgstr ""
-"%s\n"
-"\n"
-"Datoteka je trenutno zaklenjena z %s"
+msgid "%s\n\nFile is currently locked by %s"
+msgstr "%s\n\nDatoteka je trenutno zaklenjena z %s"
 
 #. Resource IDs: (5336)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"Invalid format"
-msgstr ""
-"%s\n"
-"\n"
-"Neveljaven format"
+msgid "%s\n\nInvalid format"
+msgstr "%s\n\nNeveljaven format"
 
 #. Resource IDs: (5321)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"Unknown error"
-msgstr ""
-"%s\n"
-"\n"
-"Neznana napaka"
+msgid "%s\n\nUnknown error"
+msgstr "%s\n\nNeznana napaka"
 
 #. Resource IDs: (5728)
 msgid "&Abort"
@@ -666,14 +596,14 @@ msgid "&Clear Recent History"
 msgstr "&Počisti nedavno zgodovino"
 
 #. Resource IDs: (32008 - MenuEx)
-msgid "&Clear Recent Safe List"
-msgstr "Počisti &nedavni seznam Sefa"
+msgid "&Clear Recently Opened List"
+msgstr ""
 
 #. Resource IDs: (5606)
 msgid "&Clear current"
 msgstr "Počisti &trenutno"
 
-#. Resource IDs: (32004 - Menu, 32004 - MenuEx)
+#. Resource IDs: (2, 32004 - Menu, 32004 - MenuEx)
 msgid "&Close"
 msgstr "&Zapri"
 
@@ -722,12 +652,8 @@ msgid "&Double-Click Action:"
 msgstr "&Ukrep dvojnega klika"
 
 #. Resource IDs: (65535)
-msgid ""
-"&Double-Click\n"
-"Action:"
-msgstr ""
-"&Dvojni klik\n"
-"Ukrep:"
+msgid "&Double-Click\nAction:"
+msgstr "&Dvojni klik\nUkrep:"
 
 #. Resource IDs: (32107 - MenuEx)
 msgid "&Dragbar visible"
@@ -776,10 +702,6 @@ msgstr "&Najdi"
 #. Resource IDs: (32080 - MenuEx)
 msgid "&Find..."
 msgstr "&Najdi..."
-
-#. Resource IDs: (2)
-msgid "&Finish"
-msgstr "&Končaj"
 
 #. Resource IDs: (1088)
 msgid "&Font:"
@@ -909,8 +831,7 @@ msgstr "&Geslo:"
 msgid "&Paste"
 msgstr "&Prilepi"
 
-#. Resource IDs: (32010 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu,
-#. 32094 - MenuEx)
+#. Resource IDs: (32010 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu, 32094 - MenuEx)
 msgid "&Plain Text (tab separated)..."
 msgstr "&Golo besedilo (ločeno s TAB)..."
 
@@ -995,12 +916,8 @@ msgid "&Shift Double-Click Action:"
 msgstr "Akcija &Shift in dvojni klik:"
 
 #. Resource IDs: (65535)
-msgid ""
-"&Shift Double-Click\n"
-"Action:"
-msgstr ""
-"&Shift in dvojni klik\n"
-"Ukrep:"
+msgid "&Shift Double-Click\nAction:"
+msgstr "&Shift in dvojni klik\nUkrep:"
 
 #. Resource IDs: (1014, 5245)
 msgid "&Show"
@@ -1070,8 +987,7 @@ msgstr "Prikaz &poročila"
 msgid "&Virtual Keyboard Font"
 msgstr "Pisava na&videzne tipkovnice"
 
-#. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32086 - Menu, 32086 -
-#. MenuEx, 32095 - Menu, 32095 - MenuEx)
+#. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32086 - Menu, 32086 - MenuEx, 32095 - Menu, 32095 - MenuEx)
 msgid "&XML format..."
 msgstr "&XML format..."
 
@@ -1100,46 +1016,20 @@ msgid "'Browse to URL' copies password to clipboard"
 msgstr "'Prebrskaj v URL' kopira gesla v odložišče"
 
 #. Resource IDs: (5645)
-msgid ""
-"'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and "
-"Minimize' conflict. Please change one or both."
+msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Change one or both."
 msgstr ""
-"'Počisti odložišče ob pomanjšanju' in dvoklik akcije 'Kopiraj geslo in "
-"pomanjšaj' sta v sporu. Prosimo, spremenite enega ali oboje."
 
 #. Resource IDs: (5714)
-msgid ""
-"'\n"
-"\n"
-"If you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n"
-"\n"
-"The diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n"
-"\n"
-"However, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n"
-"\n"
-"Thank you for your help to improve PasswordSafe."
-msgstr ""
-"'\n"
-"\n"
-"Če želite prijaviti to napako, odgovorite spodaj na 'Da' in naložite to datoteko v poročilo o napaki. Če odgovorite 'Ne', bo datoteka izbrisana.\n"
-"\n"
-"Diagnostični podatki v tej datoteki ne vključujejo nobenih vaših osebnih podatkov niti podatkov iz zbirke, odprte v času napake.\n"
-"\n"
-"Vendar, če želite (in je težava ponovljiva s testiranjem zbirke podatkov), nam lahko pošljete to minidump datoteko kot tudi testno zbirko podatkov.\n"
-"\n"
-"Hvala za pomoč pri izboljšanju Password Safe."
+msgid "'\n\nIf you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n\nThe diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n\nHowever, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n\nThank you for your help to improve PasswordSafe."
+msgstr "'\n\nČe želite prijaviti to napako, odgovorite spodaj na 'Da' in naložite to datoteko v poročilo o napaki. Če odgovorite 'Ne', bo datoteka izbrisana.\n\nDiagnostični podatki v tej datoteki ne vključujejo nobenih vaših osebnih podatkov niti podatkov iz zbirke, odprte v času napake.\n\nVendar, če želite (in je težava ponovljiva s testiranjem zbirke podatkov), nam lahko pošljete to minidump datoteko kot tudi testno zbirko podatkov.\n\nHvala za pomoč pri izboljšanju Password Safe."
 
 #. Resource IDs: (65535)
 msgid "(Also used to replace periods in Title field)"
 msgstr "(Uporabno je tudi za zamenjavo obdobij v polju Naslov)"
 
 #. Resource IDs: (65535)
-msgid ""
-"(Double-click an entry to edit it. Entries in italics are protected and need"
-" to be unprotected first.)"
-msgstr ""
-"(Dvoklik na vnos za njegovo urejanje. Poševni vnosi so zaščiteni in morajo "
-"biti najprej nezaščiteni.)"
+msgid "(Double-click an entry to edit it. Entries in italics are protected and need to be unprotected first.)"
+msgstr "(Dvoklik na vnos za njegovo urejanje. Poševni vnosi so zaščiteni in morajo biti najprej nezaščiteni.)"
 
 #. Resource IDs: (5957)
 msgid "(Empty)"
@@ -1174,12 +1064,8 @@ msgid ")"
 msgstr ")"
 
 #. Resource IDs: (3451)
-msgid ""
-"*** Invalid XML characters found - see exported XML file for more details "
-"***"
-msgstr ""
-"*** Najdeni so bili nedovoljeni XML znaki - Za več podrobnosti si oglejte "
-"izvoženo XML datoteko ***"
+msgid "*** Invalid XML characters found - see exported XML file for more details ***"
+msgstr "*** Najdeni so bili nedovoljeni XML znaki - Za več podrobnosti si oglejte izvoženo XML datoteko ***"
 
 #. Resource IDs: (5933)
 msgid "*** Operation aborted by User ***"
@@ -1195,10 +1081,8 @@ msgid "- Physical -"
 msgstr "- Fizično -"
 
 #. Resource IDs: (3257)
-msgid ""
-"--------------------------------------------------------------------------------"
-msgstr ""
-"--------------------------------------------------------------------------------"
+msgid "--------------------------------------------------------------------------------"
+msgstr "--------------------------------------------------------------------------------"
 
 #. Resource IDs: (1009, 1010, 1067, 1223, 1432, 1435, 1461, 1462)
 msgid "..."
@@ -1217,18 +1101,8 @@ msgid "......."
 msgstr "......."
 
 #. Resource IDs: (5713)
-msgid ""
-".dmp'\n"
-"\n"
-"in your temporary directory: \n"
-"\n"
-"\t'"
-msgstr ""
-".dmp'\n"
-"\n"
-"v vaš začasni imenik: \n"
-"\n"
-"\t'"
+msgid ".dmp'\n\nin your temporary directory: \n\n\t'"
+msgstr ".dmp'\n\nv vaš začasni imenik: \n\n\t'"
 
 #. Resource IDs: (8020)
 msgid "0"
@@ -1528,43 +1402,24 @@ msgid "A fatal error occurred: "
 msgstr "Prišlo je do usodne napake: "
 
 #. Resource IDs: (3363)
-msgid ""
-"A filter was active. Export of data was restricted to include only those "
-"displayed."
-msgstr ""
-"Filter je bil aktiven. Izvoz podatkov je bil omejen samo na tiste, ki so "
-"prikazani."
+msgid "A filter was active. Export of data was restricted to include only those displayed."
+msgstr "Filter je bil aktiven. Izvoz podatkov je bil omejen samo na tiste, ki so prikazani."
 
 #. Resource IDs: (5798)
 msgid "A future date is not valid for this field"
 msgstr "Za to polje ni veljaven bodoči datum"
 
 #. Resource IDs: (5116)
-msgid ""
-"A hidden password needs to be entered in the Confirm Password field too. If "
-"it's not hidden, Confirm shows numbers that may be used to help count the "
-"password's characters."
+msgid "A hidden password needs to be entered in the Confirm Password field too. If it's not hidden, the Confirm field shows numbers that may be used to help count the password's characters."
 msgstr ""
-"Skrito geslo je treba vnesti tudi v polje Potrdi geslo. Če ni skrito, Potrdi"
-" prikazuje številke, ki se lahko uporabijo za pomoč pri štetju znakov gesla."
 
 #. Resource IDs: (65535)
-msgid ""
-"A new password database will be created. The Master Password you enter will "
-"be used to encrypt the password database file. The Master Password can use "
-"any keyboard character and is case-sensitive."
-msgstr ""
-"Ustvarjena bo nova zbirka podatkov z gesli. Za šifriranje datoteke zbirke "
-"podatkov gesel bo uporabljena varna kombinacija, ki jo vnesete. Varna "
-"kombinacija lahko uporablja poljubne tipke črk in je občutljiva na m/V črke."
+msgid "A new password database will be created. The Master Password you enter will be used to encrypt the password database file. The Master Password can use any keyboard character and is case-sensitive."
+msgstr "Ustvarjena bo nova zbirka podatkov z gesli. Za šifriranje datoteke zbirke podatkov gesel bo uporabljena varna kombinacija, ki jo vnesete. Varna kombinacija lahko uporablja poljubne tipke črk in je občutljiva na m/V črke."
 
 #. Resource IDs: (5861)
-msgid ""
-"A red and white indicator means that a filter is active\n"
-"(if showing, double click to clear filter)"
-msgstr ""
-"Rdeč in bel indikator kaže na to, da je filter aktiven (če prikazuje, dvojni"
-" klik za brisanje filtra)"
+msgid "A red and white indicator means that a filter is active\n(if showing, double click to clear filter)"
+msgstr "Rdeč in bel indikator kaže na to, da je filter aktiven (če prikazuje, dvojni klik za brisanje filtra)"
 
 #. Resource IDs: (61474)
 msgid "A required resource was unavailable."
@@ -1760,10 +1615,8 @@ msgid "An alias cannot refer to itself!"
 msgstr "Kratko ime se ne more sklicevati na sebe!"
 
 #. Resource IDs: (5251)
-msgid ""
-"An entry or shortcut with the same Group, Title and Username already exists."
-msgstr ""
-"Že obstaja vnos ali bližnjica z isto Skupino, Naslovom, Uporabniškim imenom."
+msgid "An entry or shortcut with the same Group, Title and Username already exists."
+msgstr "Že obstaja vnos ali bližnjica z isto Skupino, Naslovom, Uporabniškim imenom."
 
 #. Resource IDs: (6107)
 msgid "An error occurred obtaining the authentication code."
@@ -1837,21 +1690,12 @@ msgid "Armenian Western"
 msgstr "Armenščina Zahodna"
 
 #. Resource IDs: (5268)
-msgid ""
-"As the double quote character is used to delimit the whole notes field, it "
-"cannot be used within it to delimit multiple lines. Please enter another "
-"character."
+msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Select another character."
 msgstr ""
-"Znak kot dvojni narekovaj je uporabljen za ločilo polj celotne opombe. Ni ga"
-" dovoljeno uporabiti za razmejitev več vrstic. Prosimo, vnesite drug znak."
 
 #. Resource IDs: (5292)
-msgid ""
-"At least one type of character (lowercase, uppercase, digits,\n"
-"symbols, hexadecimal) must be permitted."
-msgstr ""
-"Vsaj ena vrsta znaka (male črke, velike črke, številke,\n"
-"simboli, šesnajstiško) mora biti dovoljena."
+msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
+msgstr "Vsaj ena vrsta znaka (male črke, velike črke, številke,\nsimboli, šesnajstiško) mora biti dovoljena."
 
 #. Resource IDs: (538, 539, 5986)
 msgid "Attachment"
@@ -2119,12 +1963,8 @@ msgstr "Lahko le opozori med %d in %d dni, preden poteče veljavnost gesel"
 
 #. Resource IDs: (3345)
 #, c-format
-msgid ""
-"Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\n"
-"Please copy it from your installation file, or re-install PasswordSafe."
+msgid "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nCopy it from your installation file, or re-install PasswordSafe."
 msgstr ""
-"Datoteke definicije sheme XML (%ls) ni mogoče najti v vašem imeniku aplikacije Password Safe.\n"
-"Kopirajte jo iz vaše namestitvene datoteke ali ponovno namestite Password Safe."
 
 #. Resource IDs: (3320)
 msgid "Can't obtain the schema version."
@@ -2165,8 +2005,7 @@ msgstr "Manjkajočih imenikov ni mogoče ustvariti v poti do izvozne datoteke."
 
 #. Resource IDs: (5303)
 msgid "Cannot process as this entry has been deleted from the open database."
-msgstr ""
-"Ni možna obdelava, ker je bil ta vnos izbrisan iz odprte zbirke podatkov."
+msgstr "Ni možna obdelava, ker je bil ta vnos izbrisan iz odprte zbirke podatkov."
 
 #. Resource IDs: (3398)
 msgid "Cannot read file. Please check file permissions."
@@ -2230,14 +2069,8 @@ msgid "Change database mode?"
 msgstr "Spremenim način zbirke podatkov?"
 
 #. Resource IDs: (5858)
-msgid ""
-"Change status since last save:\n"
-"* indicates the database has been changed\n"
-"° indicates a database preference has been changed"
-msgstr ""
-"Stanje spremembe od zadnjega shranjevanja:\n"
-"* označuje, da je bila zbirka podatkov spremenjena\n"
-"° označuje, da je bila nastavitev zbirke podatkov spremenjena"
+msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
+msgstr "Stanje spremembe od zadnjega shranjevanja:\n* označuje, da je bila zbirka podatkov spremenjena\n° označuje, da je bila nastavitev zbirke podatkov spremenjena"
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -2248,22 +2081,16 @@ msgid "Change/View a Database Named Password Policy"
 msgstr "Spremeni/Prikaži Imenovan pravilnik gesel zbirke podatkov"
 
 #. Resource IDs: (5881)
-msgid ""
-"Change/View selected Named Password Policy or the database default policy"
-msgstr ""
-"Spremeni/Prikaži izbran Imenovan pravilnik gesel ali privzet pravilnik "
-"zbirke podatkov"
+msgid "Change/View selected Named Password Policy or the database default policy"
+msgstr "Spremeni/Prikaži izbran Imenovan pravilnik gesel ali privzet pravilnik zbirke podatkov"
 
 #. Resource IDs: (1187)
 msgid "Changes to existing entries will be applied on pressing OK."
 msgstr "Spremembe obstoječih vnosov bodo uporabljene ob pritisku na Vredu."
 
 #. Resource IDs: (5120)
-msgid ""
-"Changing the password of an alias will break the link to its base entry."
-msgstr ""
-"Spreminjanje gesel kratkih imen bo prekinilo povezavo z njihovimi osnovnim "
-"vnosi."
+msgid "Changing the password of an alias will break the link to its base entry."
+msgstr "Spreminjanje gesel kratkih imen bo prekinilo povezavo z njihovimi osnovnim vnosi."
 
 #. Resource IDs: (3359)
 msgid "Characters present between end of index ']' and '}'"
@@ -2280,6 +2107,46 @@ msgstr "Kitajski Bopomofo"
 #. Resource IDs: (8324)
 msgid "Chinese ChaJei"
 msgstr "Kitajski ChaJei"
+
+#. Resource IDs: (5376)
+msgid "Choose a Backup to restore:"
+msgstr ""
+
+#. Resource IDs: (5791)
+msgid "Choose a Database to Validate:"
+msgstr ""
+
+#. Resource IDs: (5375)
+msgid "Choose a Name for this Backup:"
+msgstr ""
+
+#. Resource IDs: (5335)
+msgid "Choose a Text File to Import"
+msgstr ""
+
+#. Resource IDs: (5354)
+msgid "Choose a database to compare with current database"
+msgstr ""
+
+#. Resource IDs: (5348)
+msgid "Choose a database to merge into the current database"
+msgstr ""
+
+#. Resource IDs: (5753)
+msgid "Choose a database to synchronize with current database"
+msgstr ""
+
+#. Resource IDs: (5327)
+msgid "Choose a name for the current (Untitled) database:"
+msgstr ""
+
+#. Resource IDs: (5328)
+msgid "Choose a new name for the current database:"
+msgstr ""
+
+#. Resource IDs: (5343)
+msgid "Choose an XML File to Import"
+msgstr ""
 
 #. Resource IDs: (1)
 msgid "Cl&ose"
@@ -2338,12 +2205,8 @@ msgid "Click here to pick field"
 msgstr "Kliknite za izbor polja"
 
 #. Resource IDs: (5119)
-msgid ""
-"Click on a row in the Password History to copy the password on that row to "
-"the clipboard."
-msgstr ""
-"Kliknite na vrstico v Zgodovini gesel, za kopiranje gesla iz te vrstice v "
-"odložišče."
+msgid "Click on a row in the Password History to copy the password on that row to the clipboard."
+msgstr "Kliknite na vrstico v Zgodovini gesel, za kopiranje gesla iz te vrstice v odložišče."
 
 #. Resource IDs: (8153)
 msgid "Click to change case."
@@ -2362,35 +2225,24 @@ msgid "Click to copy to clipboard"
 msgstr "Kliknite, za kopiranje v odložišče"
 
 #. Resource IDs: (5721)
-msgid ""
-"Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
-msgstr ""
-"Kliknite, za kopiranje v odložišče, Ctrl + klik, da tudi nastavite URL polje"
-" na to vrednost"
+msgid "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
+msgstr "Kliknite, za kopiranje v odložišče, Ctrl + klik, da tudi nastavite URL polje na to vrednost"
 
 #. Resource IDs: (5615)
 msgid "Click to enable/disable this row"
 msgstr "Kliknite, če želite omogočiti/onemogočiti to vrstico"
 
 #. Resource IDs: (8155)
-msgid ""
-"Click to enter a character code via virtual numeric keypad. The character is"
-" added when this button is clicked again."
-msgstr ""
-"Kliknite, za vnos kode znaka prek navidezne številčne tipkovnice. Znak bo "
-"dodan po ponovnem kliku na ta gumb."
+msgid "Click to enter a character code via virtual numeric keypad. The character is added when this button is clicked again."
+msgstr "Kliknite, za vnos kode znaka prek navidezne številčne tipkovnice. Znak bo dodan po ponovnem kliku na ta gumb."
 
 #. Resource IDs: (5658)
 msgid "Click to expand and copy to clipboard, Ctrl+Click to copy unexpanded"
-msgstr ""
-"Kliknite, za razpnenje in kopiranje v odložišče, Ctrl + klik za kopiranje "
-"nerazpnjenega"
+msgstr "Kliknite, za razpnenje in kopiranje v odložišče, Ctrl + klik za kopiranje nerazpnjenega"
 
 #. Resource IDs: (5669)
 msgid "Click to go to link, Ctrl+Click to go and Autotype"
-msgstr ""
-"Kliknite, da greste na povezavo, Ctrl + klik, da greste in Samodejnem "
-"vtipkanju"
+msgstr "Kliknite, da greste na povezavo, Ctrl + klik, da greste in Samodejnem vtipkanju"
 
 #. Resource IDs: (5616)
 msgid "Click to insert a new row below"
@@ -2474,8 +2326,7 @@ msgstr "Izbirnik stolpcev"
 
 #. Resource IDs: (3244)
 msgid "Column header row not recognised as first record. No records imported."
-msgstr ""
-"Vrstica glave stolpca ni prepoznana kot prvi zapis. Ni uvoženih zapisov."
+msgstr "Vrstica glave stolpca ni prepoznana kot prvi zapis. Ni uvoženih zapisov."
 
 #. Resource IDs: (1080)
 msgid "Comma"
@@ -2499,16 +2350,8 @@ msgstr "Primerjaj rezultate zbirke podatkov"
 
 #. Resource IDs: (5356)
 #, c-format
-msgid ""
-"Compare complete of current database:\n"
-"\t %ls\n"
-" and:\n"
-"\t %ls\n"
-msgstr ""
-"Primerjajte celotno trenutno zbirko podatkov:\n"
-"\t %ls\n"
-" in:\n"
-"\t %ls\n"
+msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
+msgstr "Primerjajte celotno trenutno zbirko podatkov:\n\t %ls\n in:\n\t %ls\n"
 
 #. Resource IDs: (32092 - Menu, 32092 - MenuEx)
 msgid "Compare entries..."
@@ -2561,16 +2404,8 @@ msgstr "Podatki o konfiguraciji"
 
 #. Resource IDs: (3049)
 #, c-format
-msgid ""
-"Configuration file error:\n"
-"%ls\n"
-"%ls\n"
-"offset approximately at %d"
-msgstr ""
-"Napaka konfiguracijske datoteke:\n"
-"%ls\n"
-"%ls\n"
-"odmik približno pri %d"
+msgid "Configuration file error:\n%ls\n%ls\noffset approximately at %d"
+msgstr "Napaka konfiguracijske datoteke:\n%ls\n%ls\nodmik približno pri %d"
 
 #. Resource IDs: (5857)
 msgid "Configuration file status"
@@ -2588,38 +2423,37 @@ msgstr "Potrdi kopiranje gesla v odložišče"
 msgid "Confirm deletion of items"
 msgstr "Potrdi brisanja vnosov"
 
+#. Resource IDs: (5635)
+#, c-format
+msgid "Confirm deletion of the %s filter %s?"
+msgstr ""
+
+#. Resource IDs: (5322)
+msgid "Confirm old master password"
+msgstr ""
+
+#. Resource IDs: (6033)
+msgid "Confirm that you wish to clear the recent Safe list."
+msgstr ""
+
 #. Resource IDs: (5930)
 #, c-format
-msgid ""
-"Confirm that you wish to copy these entries from %s to %s\n"
-"\n"
-"If already present in the target database, they will be replaced!"
-msgstr ""
-"Potrdite kopiranje teh vnosov iz %s v %s\n"
-"\n"
-"Če so že prisotni v ciljni zbirki podatkov, bodo zamenjani!"
+msgid "Confirm that you wish to copy these entries from %s to %s\n\nIf already present in the target database, they will be replaced!"
+msgstr "Potrdite kopiranje teh vnosov iz %s v %s\n\nČe so že prisotni v ciljni zbirki podatkov, bodo zamenjani!"
 
 #. Resource IDs: (5429)
 #, c-format
-msgid ""
-"Confirm that you wish to copy this entry from %s to %s.\n"
-"\n"
-"If already present in the target database, it will be replaced!"
-msgstr ""
-"Potrdite kopiranje tega vnosa iz %s v %s.\n"
-"\n"
-"Če je že prisoten v ciljni zbirki podatkov, bo zamenjan!"
+msgid "Confirm that you wish to copy this entry from %s to %s.\n\nIf already present in the target database, it will be replaced!"
+msgstr "Potrdite kopiranje tega vnosa iz %s v %s.\n\nČe je že prisoten v ciljni zbirki podatkov, bo zamenjan!"
 
 #. Resource IDs: (5931)
 #, c-format
-msgid ""
-"Confirm that you wish to synchronize these entries from %s to %s?\n"
-"\n"
-"Selected fields will be replaced in all entries!"
+msgid "Confirm that you wish to synchronize these entries from %s to %s?\n\nSelected fields will be replaced in all entries!"
+msgstr "Potrdite sinhronizacijo teh vnosov iz %s v %s?\n\nIzbrana polja bodo zamenjana v vseh vnosih!"
+
+#. Resource IDs: (5287)
+msgid "Confirm to delete the current user's PasswordSafe configuration from the Windows registry.\n\n"
 msgstr ""
-"Potrdite sinhronizacijo teh vnosov iz %s v %s?\n"
-"\n"
-"Izbrana polja bodo zamenjana v vseh vnosih!"
 
 #. Resource IDs: (1505, 65535)
 msgid "Confirmation:"
@@ -2627,14 +2461,8 @@ msgstr "Potrditev:"
 
 #. Resource IDs: (3414)
 #, c-format
-msgid ""
-"Conflicting entries for «%ls» «%ls» «%ls».\n"
-"  Adding merged entry as «%ls» «%ls» «%ls».\n"
-"    Differing field(s): %ls"
-msgstr ""
-"Vnosi v sporu za «%ls» «%ls» «%ls».\n"
-"  Dodajanje združenega vnosa kot «%ls» «%ls» «%ls».\n"
-"    Različna polja: %ls"
+msgid "Conflicting entries for «%ls» «%ls» «%ls».\n  Adding merged entry as «%ls» «%ls» «%ls».\n    Differing field(s): %ls"
+msgstr "Vnosi v sporu za «%ls» «%ls» «%ls».\n  Dodajanje združenega vnosa kot «%ls» «%ls» «%ls».\n    Različna polja: %ls"
 
 #. Resource IDs: (1)
 msgid "Continue"
@@ -2642,18 +2470,8 @@ msgstr "Nadaljuj"
 
 #. Resource IDs: (5745)
 #, c-format
-msgid ""
-"Copied password\n"
-"\n"
-"\"%s\"\n"
-"\n"
-"to the clipboard."
-msgstr ""
-"Kopirano geslo\n"
-"\n"
-"\"%s\"\n"
-"\n"
-"v odložišče."
+msgid "Copied password\n\n\"%s\"\n\nto the clipboard."
+msgstr "Kopirano geslo\n\n\"%s\"\n\nv odložišče."
 
 #. Resource IDs: (32069 - Menu, 32069 - MenuEx, 5298)
 msgid "Copy &Notes to Clipboard"
@@ -2738,12 +2556,8 @@ msgid "Could not create %1 because the directory is full."
 msgstr "Ni bilo mogoče ustvariti %1, ker je imenik poln."
 
 #. Resource IDs: (3426)
-msgid ""
-"Could not find the next entry's title field in the KeePass V1 TXT (should be"
-" within square brackets)."
-msgstr ""
-"Naslova polja naslednjega vnosa ni bilo mogoče v KeePass V1 TXT (mora biti "
-"znotraj oglatih oklepajev)."
+msgid "Could not find the next entry's title field in the KeePass V1 TXT (should be within square brackets)."
+msgstr "Naslova polja naslednjega vnosa ni bilo mogoče v KeePass V1 TXT (mora biti znotraj oglatih oklepajev)."
 
 #. Resource IDs: (61860)
 #, c-format
@@ -2854,8 +2668,7 @@ msgstr "Trenutno glavno geslo:"
 
 #. Resource IDs: (3460)
 msgid "Current database filters have been exported to this database."
-msgstr ""
-"Trenutni filtri zbirke podatkov so bili izvoženi v to zbirko podatkov."
+msgstr "Trenutni filtri zbirke podatkov so bili izvoženi v to zbirko podatkov."
 
 #. Resource IDs: (6021)
 msgid "Current database is read-only"
@@ -2863,28 +2676,8 @@ msgstr "Trenutna zbirka podatkov je samo-za-branje"
 
 #. Resource IDs: (5477)
 #, c-format
-msgid ""
-"Current version:\t%s\n"
-"Latest version:\t%s\n"
-"\n"
-"Please visit the Password Safe website to download the latest version."
+msgid "Current version:\t%s\nLatest version:\t%s\n\nVisit the Password Safe website to download the latest version."
 msgstr ""
-"Trenutna razljičica:\t%s\n"
-"Zadnja razljičica:\t%s\n"
-"\n"
-"Prosim običite spletno stran Password Safe in prenesite zadnjo različico."
-
-msgid ""
-"Current version:\t%s\n"
-"Latest version:\t%s\n"
-"\n"
-"Please visit the PasswordSafe website to download the latest version."
-msgstr ""
-"Trenutna različica:\t%s\n"
-"\n"
-"Najnovejša različica: \t%s\n"
-"\n"
-"Prosimo, obiščite spletno stran Password Safe, za prenos najnovejše različice."
 
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
@@ -2948,19 +2741,12 @@ msgid "Database format:"
 msgstr "Format zbirke podatkov:"
 
 #. Resource IDs: (5380)
-msgid ""
-"Database is read-only. Sorry, cannot save changed database preferences."
-msgstr ""
-"Zbirka podatkov je samo-za-branje. Žal ni možno shranjevanje nastavitev "
-"zbirke podatkov."
+msgid "Database is read-only. Sorry, cannot save changed database preferences."
+msgstr "Zbirka podatkov je samo-za-branje. Žal ni možno shranjevanje nastavitev zbirke podatkov."
 
 #. Resource IDs: (5859)
-msgid ""
-"Database mode: read-only (R-O) or read/write (R/W)\n"
-"(Doubleclick to toggle mode)"
-msgstr ""
-"Način zbirke podatkov: samo-za-branje (S-B) ali branje/pisanje (B/P) "
-"(Dvoklik za preklop načina)"
+msgid "Database mode: read-only (R-O) or read/write (R/W)\n(Doubleclick to toggle mode)"
+msgstr "Način zbirke podatkov: samo-za-branje (S-B) ali branje/pisanje (B/P) (Dvoklik za preklop načina)"
 
 #. Resource IDs: (1200)
 msgid "Database name"
@@ -3003,19 +2789,13 @@ msgid "Default Username"
 msgstr "Privzeto uporabniško ime"
 
 #. Resource IDs: (5106)
-msgid ""
-"Default is the same directory as the database. If changed, make sure that "
-"you have write permission to the directory."
-msgstr ""
-"Privzet je isti imenik kot zbirka podatkov. Če je spremenjen, se "
-"prepričajte, da imate pravice pisanja v ta imenik."
+msgid "Default is the same directory as the database. If changed, make sure that you have write permission to the directory."
+msgstr "Privzet je isti imenik kot zbirka podatkov. Če je spremenjen, se prepričajte, da imate pravice pisanja v ta imenik."
 
 #. Resource IDs: (5294)
 #, c-format
-msgid ""
-"Default number of saved password history entries must be between %d and %d."
-msgstr ""
-"Privzeto število shranjenih vnosov zgodovine gesla mora biti med %d in %d."
+msgid "Default number of saved password history entries must be between %d and %d."
+msgstr "Privzeto število shranjenih vnosov zgodovine gesla mora biti med %d in %d."
 
 #. Resource IDs: (1447)
 msgid "Default password expiration (days)"
@@ -3042,12 +2822,12 @@ msgid "Delete Entry"
 msgstr "Izbriši vnos"
 
 #. Resource IDs: (5882)
-msgid ""
-"Delete selected Password Policy\n"
-"(only an unused Named Password Policy may be deleted)"
+msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
+msgstr "Izbriši izbran pravilnik gesel\n(možno je izbrisati samo neuporabljen Imenovan pravilnik gesel)"
+
+#. Resource IDs: (5876)
+msgid "Description"
 msgstr ""
-"Izbriši izbran pravilnik gesel\n"
-"(možno je izbrisati samo neuporabljen Imenovan pravilnik gesel)"
 
 #. Resource IDs: (65535)
 msgid "Description:"
@@ -3104,12 +2884,8 @@ msgid "Display Filter - "
 msgstr "Prikazni filter - "
 
 #. Resource IDs: (5883)
-msgid ""
-"Display policy settings or List entries using this named policy\n"
-"(The latter may take a while depending on the number of entries in this database)"
-msgstr ""
-"Prikaži nastavitve pravilnika ali seznam vnosov uporabljenih s tem Poimenovanim pravilnikom\n"
-"(Slednje lahko traja nekaj časa, odvisno od števila vnosov v tej zbirki podatkov)"
+msgid "Display policy settings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
+msgstr "Prikaži nastavitve pravilnika ali seznam vnosov uporabljenih s tem Poimenovanim pravilnikom\n(Slednje lahko traja nekaj časa, odvisno od števila vnosov v tej zbirki podatkov)"
 
 #. Resource IDs: (32067 - Menu, 32067 - MenuEx)
 msgid "Display subset of Password"
@@ -3134,34 +2910,16 @@ msgstr "Ali to želite zamenjati?"
 
 #. Resource IDs: (5239)
 #, c-format
-msgid ""
-"Do you wish to save the changes made to database:\n"
-"\n"
-"%s\n"
-"\n"
-"or Cancel the shutdown\\restart\\logoff?"
-msgstr ""
-"Ali želite shraniti narejene spremembe v zbirki podatkov:\n"
-"\n"
-"%s\n"
-"\n"
-"ali preklicati zaustavitev sistema\\vnovični zagon\\odjavo?"
+msgid "Do you wish to save the changes made to database:\n\n%s\n\nor Cancel the shutdown\\restart\\logoff?"
+msgstr "Ali želite shraniti narejene spremembe v zbirki podatkov:\n\n%s\n\nali preklicati zaustavitev sistema\\vnovični zagon\\odjavo?"
 
 #. Resource IDs: (6023)
-msgid ""
-"Do you wish to save the changes made to this restored database as new "
-"database?"
-msgstr ""
-"Ali želite shraniti narejene spremembe v tej obnovljeni zbirki podatkov kot "
-"novo zbirko podatkov?"
+msgid "Do you wish to save the changes made to this restored database as new database?"
+msgstr "Ali želite shraniti narejene spremembe v tej obnovljeni zbirki podatkov kot novo zbirko podatkov?"
 
 #. Resource IDs: (62185)
-msgid ""
-"Don't recover the auto-saved documents\n"
-"Use the last explicitly saved versions of the documents"
-msgstr ""
-"Ne obnovi samodejno shranjenih dokumentov\n"
-"Uporabi nazadnje izrecno shranjene različice dokumentov"
+msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
+msgstr "Ne obnovi samodejno shranjenih dokumentov\nUporabi nazadnje izrecno shranjene različice dokumentov"
 
 #. Resource IDs: (5953)
 msgid "Double click an entry to Edit/View it."
@@ -3230,19 +2988,12 @@ msgstr "Povlecite to sliko v drugo okno, da prilepite polje '%s'."
 
 #. Resource IDs: (5862)
 msgid "Drag this image onto another window to start AutoType from there."
-msgstr ""
-"Povlecite to sliko v drugo okno, za začetek samodejnega vtipkanja od tam."
+msgstr "Povlecite to sliko v drugo okno, za začetek samodejnega vtipkanja od tam."
 
 #. Resource IDs: (5464)
 #, c-format
-msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
-"\n"
-"The dropped entry now references that entry's base entry."
-msgstr ""
-"Spuščen vnos '%s:%s:%s'  geslo kaže na vnos, ki je tudi kratko ime.\n"
-"\n"
-"Izpuščen vnos se zdaj sklicuje na Osnovni vnos vnosa."
+msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."
+msgstr "Spuščen vnos '%s:%s:%s'  geslo kaže na vnos, ki je tudi kratko ime.\n\nIzpuščen vnos se zdaj sklicuje na Osnovni vnos vnosa."
 
 #. Resource IDs: (32087 - Menu, 32087 - MenuEx)
 msgid "Duplicate Group"
@@ -3306,11 +3057,8 @@ msgid "Editor Command Line parameters:"
 msgstr "Urejevalnik marametrov ukazne vrstice:"
 
 #. Resource IDs: (3243)
-msgid ""
-"Either or both of the Group/Title and Password columns are missing. No "
-"records imported."
-msgstr ""
-"Manjka eno ali oboje stolpcev:Skupina/Naslov in Geslo. Ni uvoženih zapisov."
+msgid "Either or both of the Group/Title and Password columns are missing. No records imported."
+msgstr "Manjka eno ali oboje stolpcev:Skupina/Naslov in Geslo. Ni uvoženih zapisov."
 
 #. Resource IDs: (5718)
 msgid "Email copied "
@@ -3407,14 +3155,17 @@ msgstr "Vnesite število."
 msgid "Enter a positive integer."
 msgstr "Vnesite pozitivno celo število."
 
+#. Resource IDs: (5272)
+msgid "Enter a search string"
+msgstr ""
+
 #. Resource IDs: (61723)
 msgid "Enter a time."
 msgstr "Vnesite čas."
 
 #. Resource IDs: (65535)
 msgid "Enter a value between 0 and 99 (a value of 0 disables icon overlay):"
-msgstr ""
-"Vnesite vrednost med 0 in 99 (vrednost 0 onemogoči prekrivanje ikone):"
+msgstr "Vnesite vrednost med 0 in 99 (vrednost 0 onemogoči prekrivanje ikone):"
 
 #. Resource IDs: (61714)
 #, c-format
@@ -3435,36 +3186,32 @@ msgid "Enter no more than %1 characters."
 msgstr "Vnesite največ %1 znakov."
 
 #. Resource IDs: (65535)
-msgid ""
-"Enter positions of password characters separated by spaces, commas or semi-"
-"colons (or * for full password)."
-msgstr ""
-"Vnesite položaje znakov gesla, ločenih s presledki, vejami ali poldehi (ali "
-"* za polno geslo)."
+msgid "Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password)."
+msgstr "Vnesite položaje znakov gesla, ločenih s presledki, vejami ali poldehi (ali * za polno geslo)."
 
 #. Resource IDs: (65535)
 msgid "Enter the Master Password to unlock the password database:"
 msgstr "Vnesite glavno geslo za odklep zbirke podatkov gesel:"
 
 #. Resource IDs: (6101)
-msgid ""
-"Enter the authentication secret key. This usually taken from the "
-"authenticator setup page."
-msgstr ""
-"Vnesite avtentikacijski skrivni ključ. Le-ta je ponavadi vzet iz "
-"avtentikacijske nastavitvene strani."
+msgid "Enter the authentication secret key. This usually taken from the authenticator setup page."
+msgstr "Vnesite avtentikacijski skrivni ključ. Le-ta je ponavadi vzet iz avtentikacijske nastavitvene strani."
 
 #. Resource IDs: (65535)
-msgid ""
-"Enter the current master password, followed by a new one. \r\n"
-"Type the new one again to confirm it."
+msgid "Enter the current master password, followed by a new one. \r\nType the new one again to confirm it."
+msgstr "Vnesite trenutno glavno geslo, nato novo geslo. \r\nZa potrditev ponovno vnesite geslo."
+
+#. Resource IDs: (5255)
+msgid "Enter the key and verify it."
 msgstr ""
-"Vnesite trenutno glavno geslo, nato novo geslo. \r\n"
-"Za potrditev ponovno vnesite geslo."
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
 msgstr "Spodaj vnesite svoje vzorčno besedilo"
+
+#. Resource IDs: (5388)
+msgid "Enter your backup database prefix."
+msgstr ""
 
 #. Resource IDs: (5362)
 msgid "Entries in both databases but with differences:"
@@ -3519,21 +3266,13 @@ msgstr "Enolični ID vnosa:"
 
 #. Resource IDs: (3275)
 #, c-format
-msgid ""
-"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but"
-" the base entry does not exist."
-msgstr ""
-"Vnos \"%ls, %ls, %ls\" ima geslo v pravilni obliki za kratko ime, vendar "
-"osnovni vnos ne obstaja."
+msgid "Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but the base entry does not exist."
+msgstr "Vnos \"%ls, %ls, %ls\" ima geslo v pravilni obliki za kratko ime, vendar osnovni vnos ne obstaja."
 
 #. Resource IDs: (3273)
 #, c-format
-msgid ""
-"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but"
-" the base entry is already an alias."
-msgstr ""
-"Vnos \"%ls, %ls, %ls\" ima geslo v pravilni obliki za kratko ime, vendar "
-"osnovni vnos je že osnovni vnos."
+msgid "Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but the base entry is already an alias."
+msgstr "Vnos \"%ls, %ls, %ls\" ima geslo v pravilni obliki za kratko ime, vendar osnovni vnos je že osnovni vnos."
 
 #. Resource IDs: (3272)
 msgid "Entry import warnings"
@@ -3541,40 +3280,22 @@ msgstr "Opozorila uvoza vnosa"
 
 #. Resource IDs: (3448)
 #, c-format
-msgid ""
-"Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It "
-"has been removed from the %ls entry."
-msgstr ""
-"Vnos bližnjice s tipkovnico %ls vnos %ls je že dodeljen vnosu %ls. Bil je "
-"odstranjen iz %ls."
+msgid "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been removed from the %ls entry."
+msgstr "Vnos bližnjice s tipkovnico %ls vnos %ls je že dodeljen vnosu %ls. Bil je odstranjen iz %ls."
 
 #. Resource IDs: (3449)
 #, c-format
-msgid ""
-"Entry keyboard shortcut %ls entry %ls is already allocated to the "
-"PasswordSafe application. It has been removed from the entry."
-msgstr ""
-"Vnos bližnjice s tipkovnico %ls vnos %ls je že dodeljen aplikaciji Password "
-"Safe. Bil je odstranjen iz vnosa."
+msgid "Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe application. It has been removed from the entry."
+msgstr "Vnos bližnjice s tipkovnico %ls vnos %ls je že dodeljen aplikaciji Password Safe. Bil je odstranjen iz vnosa."
 
 #. Resource IDs: (5952)
-msgid ""
-"Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys "
-"and an alphanumeric character (0-9, A-Z)."
-msgstr ""
-"Vnos bližnjic s tipkovnico mora imeti bodisi eno od obeh ali obe tipki ALT "
-"in CTRL ter alfanumerične znake (0-9, A-Z)."
+msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys and an alphanumeric character (0-9, A-Z)."
+msgstr "Vnos bližnjic s tipkovnico mora imeti bodisi eno od obeh ali obe tipki ALT in CTRL ter alfanumerične znake (0-9, A-Z)."
 
 #. Resource IDs: (5942)
 #, c-format
-msgid ""
-"Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.\n"
-"\n"
-"%s"
-msgstr ""
-"Vnosi bližnjic s tipkovnico morajo imeti bodisi eno od obeh ali obe tipki Alt in Ctrl..\n"
-"\n"
-"%s"
+msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.\n\n%s"
+msgstr "Vnosi bližnjic s tipkovnico morajo imeti bodisi eno od obeh ali obe tipki Alt in Ctrl..\n\n%s"
 
 #. Resource IDs: (3266)
 #, c-format
@@ -3626,29 +3347,13 @@ msgid "Error (%08X): line %d character %d %ls"
 msgstr "Napaka (%08X): vrstica %d znak %d %ls"
 
 #. Resource IDs: (3031)
-msgid ""
-"Error - unable to determine settings configuration!\n"
-"\n"
-"No application settings will be saved.\n"
-"\n"
-"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"Napaka - ni mogoče določiti nastavitve konfiguracije!\n"
-"\n"
-"Nastavitve aplikacije ne bodo shranjene.\n"
-"\n"
-"Nastavitve, povezane z zbirko podatkov bodo shranjene v odprti zbirki podatkov, ko bo ta zaprta, ob predpostavki, da ni samo-za-branje ali, da jo ni zaklenil drug uporabnik."
+msgid "Error - unable to determine settings configuration!\n\nNo application settings will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr "Napaka - ni mogoče določiti nastavitve konfiguracije!\n\nNastavitve aplikacije ne bodo shranjene.\n\nNastavitve, povezane z zbirko podatkov bodo shranjene v odprti zbirki podatkov, ko bo ta zaprta, ob predpostavki, da ni samo-za-branje ali, da jo ni zaklenil drug uporabnik."
 
 #. Resource IDs: (5661)
 #, c-format
-msgid ""
-"Error at column %d:\n"
-"\n"
-"%s"
-msgstr ""
-"Napaka v stolpcu %d:\n"
-"\n"
-"%s"
+msgid "Error at column %d:\n\n%s"
+msgstr "Napaka v stolpcu %d:\n\n%s"
 
 #. Resource IDs: (3033)
 #, c-format
@@ -3765,12 +3470,8 @@ msgstr "Izvozi datoteko:"
 
 #. Resource IDs: (5863)
 #, c-format
-msgid ""
-"Export file: '%s' already exists.\n"
-"Do you want to replace it?"
-msgstr ""
-"Izvoz datoteke: '%s' že obstaja.\n"
-"Ali jo želite zamenjati?"
+msgid "Export file: '%s' already exists.\nDo you want to replace it?"
+msgstr "Izvoz datoteke: '%s' že obstaja.\nAli jo želite zamenjati?"
 
 #. Resource IDs: (3364)
 msgid "Export of data was restricted to certain fields by the user."
@@ -3821,26 +3522,16 @@ msgid "Failed to launch help."
 msgstr "Zagon pomoči ni uspel.."
 
 #. Resource IDs: (5660)
-msgid ""
-"Failed to load AutoType support DLL (wrong version?).\n"
-"\n"
-"AutoType for Launch of a Browser or Running a command is disabled."
-msgstr ""
-"Ni uspelo nalaganje DLL-a podpore za Samodejnega vtipkanja (napačna različica?).\n"
-"\n"
-"Samodejno vtipkanje za zagon brskalnika ali zagon ukaza je onemogočen."
+msgid "Failed to load AutoType support DLL (wrong version?).\n\nAutoType for Launch of a Browser or Running a command is disabled."
+msgstr "Ni uspelo nalaganje DLL-a podpore za Samodejnega vtipkanja (napačna različica?).\n\nSamodejno vtipkanje za zagon brskalnika ali zagon ukaza je onemogočen."
 
 #. Resource IDs: (6027)
 msgid "Failed to load image"
 msgstr "Ni moč naložiti slike"
 
 #. Resource IDs: (3326)
-msgid ""
-"Failed to lock configuration file - opened by another instance of "
-"PasswordSafe?"
-msgstr ""
-"Ni uspelo zaklepanje konfiguracijske datoteke - Morda je odprta z drugim "
-"primerkom Password Safe?"
+msgid "Failed to lock configuration file - opened by another instance of PasswordSafe?"
+msgstr "Ni uspelo zaklepanje konfiguracijske datoteke - Morda je odprta z drugim primerkom Password Safe?"
 
 #. Resource IDs: (6031)
 msgid "Failed to lock memory"
@@ -3868,39 +3559,20 @@ msgstr "Spodletelo je shranjevanje ključa v podatkovno zbirko"
 
 #. Resource IDs: (5850)
 #, c-format
-msgid ""
-"Failed to switch from R-O to R/W because database is already open in R/W mode by:\n"
-"%s %s\n"
-"(Only one R/W access at a time is allowed)"
-msgstr ""
-"Ni uspel preklop iz S-B v B/P, ker je zbirka podatkov že odprta v načinu B/P z:\n"
-"%s %s\n"
-"(Hkrati je dovoljen le 1 dostop v načinu B/P)"
+msgid "Failed to switch from R-O to R/W because database is already open in R/W mode by:\n%s %s\n(Only one R/W access at a time is allowed)"
+msgstr "Ni uspel preklop iz S-B v B/P, ker je zbirka podatkov že odprta v načinu B/P z:\n%s %s\n(Hkrati je dovoljen le 1 dostop v načinu B/P)"
 
 #. Resource IDs: (5853)
-msgid ""
-"Failed to switch from R-O to R/W: Could not open the database. It may have "
-"been deleted or renamed or there may be a problem with its drive."
-msgstr ""
-"Ni uspel preklop iz S-B v B/P: Zbirke podatkov ni bilo mogoče odpreti. Morda"
-" je bila izbrisana ali preimenovana ali pa je morda prišlo do težave s "
-"pogonom."
+msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be a problem with its drive."
+msgstr "Ni uspel preklop iz S-B v B/P: Zbirke podatkov ni bilo mogoče odpreti. Morda je bila izbrisana ali preimenovana ali pa je morda prišlo do težave s pogonom."
 
 #. Resource IDs: (5854)
-msgid ""
-"Failed to switch from R-O to R/W: The file appears to be too short to be a "
-"valid database."
-msgstr ""
-"Ni uspel preklop iz S-B v B/P: Datoteka se zdi prekratka, da bi lahko bila "
-"veljavna zbirka podatkov."
+msgid "Failed to switch from R-O to R/W: The file appears to be too short to be a valid database."
+msgstr "Ni uspel preklop iz S-B v B/P: Datoteka se zdi prekratka, da bi lahko bila veljavna zbirka podatkov."
 
 #. Resource IDs: (5851)
-msgid ""
-"Failed to switch from R/W to R-O: Could not release database lock.\n"
-"Try exiting and restarting program."
-msgstr ""
-"Ni uspel preklop iz B/P v S-B: Ni možno sprostiti zbirke podatkov.\n"
-"Poskusite zapreti in znova zagnati program."
+msgid "Failed to switch from R/W to R-O: Could not release database lock.\nTry exiting and restarting program."
+msgstr "Ni uspel preklop iz B/P v S-B: Ni možno sprostiti zbirke podatkov.\nPoskusite zapreti in znova zagnati program."
 
 #. Resource IDs: (6006)
 msgid "Failed to update YubiKey"
@@ -3972,11 +3644,8 @@ msgstr "Velikost datoteke:"
 
 #. Resource IDs: (3015)
 #, c-format
-msgid ""
-"File ends on line %d before ending double quote of last entry's note field."
-msgstr ""
-"Datoteka se konča v vrstici %d pred koncem dvojnih narekovajev polja opombe "
-"zadnjega vnosa."
+msgid "File ends on line %d before ending double quote of last entry's note field."
+msgstr "Datoteka se konča v vrstici %d pred koncem dvojnih narekovajev polja opombe zadnjega vnosa."
 
 #. Resource IDs: (3401)
 msgid "File is too big."
@@ -3988,9 +3657,7 @@ msgstr "Datoteka je prekratka."
 
 #. Resource IDs: (3399)
 msgid "File is truncated or otherwise corrupt. Please use backup database."
-msgstr ""
-"Datoteka je okrnjena ali kako drugače poškodovana. Uporabite varnostno "
-"kopijo zbirke podatkov."
+msgstr "Datoteka je okrnjena ali kako drugače poškodovana. Uporabite varnostno kopijo zbirke podatkov."
 
 #. Resource IDs: (5330)
 msgid "File lock error"
@@ -4022,51 +3689,28 @@ msgstr "Datoteka:"
 
 #. Resource IDs: (5344)
 #, c-format
-msgid ""
-"File: %s failed validation against XML Schema:\n"
-"\n"
-"%s"
-msgstr ""
-"Datoteka: %s ni uspela potrditev v skladu s XML shemo:\n"
-"\n"
-"%s"
+msgid "File: %s failed validation against XML Schema:\n\n%s"
+msgstr "Datoteka: %s ni uspela potrditev v skladu s XML shemo:\n\n%s"
 
 #. Resource IDs: (5345)
 #, c-format
-msgid ""
-"File: %s passed Validation but had the following errors during import:\n"
-"\n"
-"%s"
-msgstr ""
-"Datoteka: %s je opravila potrditev, vendar je med uvozom imela te napake:\n"
-"\n"
-"%s"
+msgid "File: %s passed Validation but had the following errors during import:\n\n%s"
+msgstr "Datoteka: %s je opravila potrditev, vendar je med uvozom imela te napake:\n\n%s"
 
 #. Resource IDs: (5905)
 #, c-format
-msgid ""
-"File: %s was imported (%d warning(s) issued about missing Password Policy "
-"Names). See report for details."
-msgstr ""
-"Datoteka: %s je bila uvožena (%d opozoril) izdanih o manjkajočih imenih "
-"pravilnika gesel). Za več podrobnosti si oglejte poročilo."
+msgid "File: %s was imported (%d warning(s) issued about missing Password Policy Names). See report for details."
+msgstr "Datoteka: %s je bila uvožena (%d opozoril) izdanih o manjkajočih imenih pravilnika gesel). Za več podrobnosti si oglejte poročilo."
 
 #. Resource IDs: (5346)
 #, c-format
-msgid ""
-"File: %s was imported (entries validated %d / imported %d%s%s%s). See report"
-" for details."
-msgstr ""
-"Datoteka: %s je bila uvožena (potrejenih vnosov %d / uvoženih %d%s%s%s). Za "
-"več podrobnosti si oglejte poročilo."
+msgid "File: %s was imported (entries validated %d / imported %d%s%s%s). See report for details."
+msgstr "Datoteka: %s je bila uvožena (potrejenih vnosov %d / uvoženih %d%s%s%s). Za več podrobnosti si oglejte poročilo."
 
 #. Resource IDs: (3331)
 #, c-format
-msgid ""
-"Filter %ls already exists in the database, do you wish to replace it with "
-"this?"
-msgstr ""
-"Filter %ls že obstaja v zbirki podatkov. Ali ga želite zamenjati s tem?"
+msgid "Filter %ls already exists in the database, do you wish to replace it with this?"
+msgstr "Filter %ls že obstaja v zbirki podatkov. Ali ga želite zamenjati s tem?"
 
 #. Resource IDs: (65535)
 msgid "Filter name:"
@@ -4121,12 +3765,8 @@ msgid "Font st&yle:"
 msgstr "S&log pisave::"
 
 #. Resource IDs: (5468)
-msgid ""
-"For security, the database must be closed before connecting to the Internet.\n"
-"Press OK to close database and continue (Changes will be saved)"
-msgstr ""
-"Zaradi varnostnih razlogov mora biti zbirka podatkov zaprta, preden vzpostavite povezavo z internetom.\n"
-"Pritisnite na Vredu, da zaprete zbirko podatkov in nadaljujete z delom (Spremembe bodo shranjene)"
+msgid "For security, the database must be closed before connecting to the Internet.\nPress OK to close database and continue (Changes will be saved)"
+msgstr "Zaradi varnostnih razlogov mora biti zbirka podatkov zaprta, preden vzpostavite povezavo z internetom.\nPritisnite na Vredu, da zaprete zbirko podatkov in nadaljujete z delom (Spremembe bodo shranjene)"
 
 #. Resource IDs: (3242)
 #, c-format
@@ -4204,9 +3844,6 @@ msgstr "Dobi po&moč\tF1"
 #. Resource IDs: (5213)
 msgid "Given path is a directory or file is read-only"
 msgstr "Navedena pot je imenik ali je datoteka samo-za-branje"
-
-msgid "Go"
-msgstr "Pojdi"
 
 #. Resource IDs: (5667)
 msgid "Go "
@@ -4318,8 +3955,7 @@ msgstr "Šestnajstiško je medsebojno izključujoče za vse druge možnosti."
 
 #. Resource IDs: (5122)
 msgid "Hide Password Safe from screen capture and related apps."
-msgstr ""
-"Skrij Password Safe pred zajemom enkranske slike in povezanih aplikacij."
+msgstr "Skrij Password Safe pred zajemom enkranske slike in povezanih aplikacij."
 
 #. Resource IDs: (1426)
 msgid "Hide System Tray icon (Hot Key MUST be active)"
@@ -4511,73 +4147,41 @@ msgid "Icon"
 msgstr "Ikona"
 
 #. Resource IDs: (5104)
-msgid ""
-"If enabled, a 'snapshot' will be taken before every save, named as specified"
-" below."
-msgstr ""
-"Če je omogočeno, bo 'posnetek' sprejet pred vsakim shranjevanjem in bo "
-"poimenovan kot je spodaj določeno."
+msgid "If enabled, a 'snapshot' will be taken before every save, named as specified below."
+msgstr "Če je omogočeno, bo 'posnetek' sprejet pred vsakim shranjevanjem in bo poimenovan kot je spodaj določeno."
 
 #. Resource IDs: (5267)
 msgid "If requested, then a delimiter character must be entered."
 msgstr "Če je zahtevano, mora biti vnesen znak za ločilo."
 
 #. Resource IDs: (5774)
-msgid ""
-"If the passphrase is the same as the currently opened database, properties "
-"of this backup are shown."
-msgstr ""
-"Če je geslo enako kot geslo trenutno odprte zbirke podatkov, so prikazane "
-"lastnosti te varnostne kopije."
+msgid "If the passphrase is the same as the currently opened database, properties of this backup are shown."
+msgstr "Če je geslo enako kot geslo trenutno odprte zbirke podatkov, so prikazane lastnosti te varnostne kopije."
 
 #. Resource IDs: (5771)
-msgid ""
-"If this is the first database opened on the startup of PasswordSafe, "
-"PasswordSafe will exit.  If not, the new open will be cancelled and the "
-"existing opened database, if any, will remain open."
-msgstr ""
-"Če je to prva odprta zbirka podatkov ob zagonu Password Safe, Password Safe "
-"se bo zaprl.  Če ne, novo odpiranje bo preklicalo obstoječo odprto zbirko "
-"podatkov, če obstaja, bo ostala odprta."
+msgid "If this is the first database opened on the startup of PasswordSafe, PasswordSafe will exit.  If not, the new open will be cancelled and the existing opened database, if any, will remain open."
+msgstr "Če je to prva odprta zbirka podatkov ob zagonu Password Safe, Password Safe se bo zaprl.  Če ne, novo odpiranje bo preklicalo obstoječo odprto zbirko podatkov, če obstaja, bo ostala odprta."
 
 #. Resource IDs: (8156)
 #, c-format
-msgid ""
-"If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n"
-"\n"
-"You may need to also select the Shift key to see them."
-msgstr ""
-"Če ta tipkovnica podpira znake prek %s, bo ta tipka omogočena in jo je mogoče uporabiti za njun izbor.\n"
-"\n"
-"Morda boste morali izbrati tudi tipko Shift, da jo boste videli."
+msgid "If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n\nYou may need to also select the Shift key to see them."
+msgstr "Če ta tipkovnica podpira znake prek %s, bo ta tipka omogočena in jo je mogoče uporabiti za njun izbor.\n\nMorda boste morali izbrati tudi tipko Shift, da jo boste videli."
 
 #. Resource IDs: (5112)
-msgid ""
-"If unchecked, you will be prompted to save changes upon exiting Password "
-"Safe."
-msgstr ""
-"Če ni izbrano, boste pozvani, da shranite spremembe ob izhodu iz Password "
-"Safe."
+msgid "If unchecked, you will be prompted to save changes upon exiting Password Safe."
+msgstr "Če ni izbrano, boste pozvani, da shranite spremembe ob izhodu iz Password Safe."
 
 #. Resource IDs: (5919)
-msgid ""
-"If you specify using your own symbol list, you cannot leave it empty. "
-"Unselecting use of symbols."
-msgstr ""
-"Če navedete z lastnim seznamom simbolov, ga ne morete pustiti praznega. "
-"Odstranitev izbire simbolov."
+msgid "If you specify using your own symbol list, you cannot leave it empty. Unselecting use of symbols."
+msgstr "Če navedete z lastnim seznamom simbolov, ga ne morete pustiti praznega. Odstranitev izbire simbolov."
 
 #. Resource IDs: (8262)
 msgid "Igbo"
 msgstr "Igbo"
 
 #. Resource IDs: (5768)
-msgid ""
-"Ignore all Failsafe Backup files and continue with the currently selected "
-"database."
-msgstr ""
-"Prezri vse datoteke neuspelih varnostnih kopij in nadaljuj s trenutno "
-"izbrano zbirko podatkov."
+msgid "Ignore all Failsafe Backup files and continue with the currently selected database."
+msgstr "Prezri vse datoteke neuspelih varnostnih kopij in nadaljuj s trenutno izbrano zbirko podatkov."
 
 #. Resource IDs: (32014 - PopupMenuEx)
 msgid "Import &From"
@@ -4615,9 +4219,13 @@ msgstr "Nastavitve uvoza XML"
 msgid "Import XML failed"
 msgstr "Uvoz XML ni uspel"
 
+#. Resource IDs: (5340)
+msgid "Import a KeePass Text File"
+msgstr ""
+
 #. Resource IDs: (3425)
-msgid "Import aborted. Please see report."
-msgstr "Uvoz je bil prekinjen. Prosimo, oglejte si poročilo."
+msgid "Import aborted, see report for details."
+msgstr ""
 
 #. Resource IDs: (5870)
 msgid "Import failed"
@@ -4671,27 +4279,19 @@ msgstr "Neaktiven"
 
 #. Resource IDs: (1552)
 msgid "Include filters stored in this database in the new database"
-msgstr ""
-"Vključi filtre, shranjene v tej zbirki podatkov v novo zbirko podatkov"
+msgstr "Vključi filtre, shranjene v tej zbirki podatkov v novo zbirko podatkov"
 
 #. Resource IDs: (61696)
 msgid "Incorrect filename."
 msgstr "Nepravilno ime datoteke."
 
-#. Resource IDs: (5280)
-msgid ""
-"Incorrect master password, not a Password Safe database,\n"
-"or a corrupt database."
+#. Resource IDs: (5334)
+msgid "Incorrect master password"
 msgstr ""
-"Napačno glavno geslo, ni Password Safe zbirka podatkov,\n"
-"ali pokvarjena zbirka podatkov."
 
-msgid ""
-"Incorrect master password, not a PasswordSafe database, or a corrupt "
-"database."
-msgstr ""
-"Napačno glavno geslo, ne zbirka podatkov PasswordSafe ali poškodovana zbirka"
-" podatkov."
+#. Resource IDs: (5280)
+msgid "Incorrect master password, not a Password Safe database,\nor a corrupt database."
+msgstr "Napačno glavno geslo, ni Password Safe zbirka podatkov,\nali pokvarjena zbirka podatkov."
 
 #. Resource IDs: (3251)
 msgid "Incorrect password"
@@ -4732,6 +4332,10 @@ msgstr "Vhodni niz je prazen"
 msgid "Insert"
 msgstr "Vstavi"
 
+#. Resource IDs: (6001)
+msgid "Insert your YubiKey"
+msgstr ""
+
 #. Resource IDs: (61706)
 msgid "Insufficient memory to perform operation."
 msgstr "Ni dovolj pomnilnika za izvajanje operacije."
@@ -4754,9 +4358,7 @@ msgstr "Notranja napaka: Bila je določena neveljavna zastavica"
 
 #. Resource IDs: (3327)
 msgid "Internal error: Couldn't initialize config file XML structure"
-msgstr ""
-"Notranja napaka: Nii mogoče inicializirati XML strukture konfiguracijske "
-"datoteke"
+msgstr "Notranja napaka: Nii mogoče inicializirati XML strukture konfiguracijske datoteke"
 
 #. Resource IDs: (3022)
 msgid "Internal error: Invalid oflag or pmode argument"
@@ -4784,11 +4386,8 @@ msgstr "Neveljavno ločilo polja: mora biti v območju ASCII."
 
 #. Resource IDs: (3017)
 #, c-format
-msgid ""
-"Invalid input on line %d.  Number of fields separated by '%c' is not as "
-"expected."
-msgstr ""
-"Neveljaven vnos v vrstic %d.  Ni pričakovano število polj, ločenih z '%c'."
+msgid "Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
+msgstr "Neveljaven vnos v vrstic %d.  Ni pričakovano število polj, ločenih z '%c'."
 
 #. Resource IDs: (4116)
 #, c-format
@@ -4911,9 +4510,6 @@ msgstr "Nazadnje shranjeno z:"
 msgid "Last saved on:"
 msgstr "Nazadnje shranjeno:"
 
-msgid "Latest version? Click <a href=\"%s\">here</a> to check."
-msgstr "Najnovejša različica? Kliknite <a href=\"%s\">sem</a> za preverjanje."
-
 #. Resource IDs: (8267)
 msgid "Latin American"
 msgstr "Latinskoameriščka"
@@ -4931,31 +4527,17 @@ msgid "Left Ctrl key"
 msgstr "Leva tipka Ctrl"
 
 #. Resource IDs: (5682)
-msgid ""
-"Left click 'Shortcut Key' value to change or right click it to reset or remove it. After selecting the shortcut key combination, press Enter to set it.\n"
-"\n"
-"The 'Menu item' text will be red if the shortcut differs from its default value."
-msgstr ""
-"Levi klik na vrednost 'Tipka bližnjice' za spremembo vrednost ali desni klik, za njeno ponastavitev ali odstranitev. Po izboru kombinacije tipk pritisnite na tipko ENTER, da jo nastavite.\n"
-"\n"
-"Besedilo 'Menijski vnos' bo rdeče, če se bližnjica razlikuje od njene privzete vrednosti."
+msgid "Left click 'Shortcut Key' value to change or right click it to reset or remove it. After selecting the shortcut key combination, press Enter to set it.\n\nThe 'Menu item' text will be red if the shortcut differs from its default value."
+msgstr "Levi klik na vrednost 'Tipka bližnjice' za spremembo vrednost ali desni klik, za njeno ponastavitev ali odstranitev. Po izboru kombinacije tipk pritisnite na tipko ENTER, da jo nastavite.\n\nBesedilo 'Menijski vnos' bo rdeče, če se bližnjica razlikuje od njene privzete vrednosti."
 
 #. Resource IDs: (5291)
-msgid ""
-"Length of passwords generated in hexadecimal format must be even\n"
-"as each byte is two hexadecimal digits."
-msgstr ""
-"Dolžina gesel, ustvarjenih v šestnajstiški obliki, mora biti parno\n"
-"saj je vsak bajt dvomestno šestnajstiško število."
+msgid "Length of passwords generated in hexadecimal format must be even\nas each byte is two hexadecimal digits."
+msgstr "Dolžina gesel, ustvarjenih v šestnajstiški obliki, mora biti parno\nsaj je vsak bajt dvomestno šestnajstiško število."
 
 #. Resource IDs: (3259)
 #, c-format
-msgid ""
-"Line %d skipped - Only %d fields found, whereas parsing the Header says "
-"there should be %d."
-msgstr ""
-"Vrstica %d je preskočena - Samo %d najdenih polj, medtem, ko razčlenjevanje "
-"glave pravi, da mora biti %d."
+msgid "Line %d skipped - Only %d fields found, whereas parsing the Header says there should be %d."
+msgstr "Vrstica %d je preskočena - Samo %d najdenih polj, medtem, ko razčlenjevanje glave pravi, da mora biti %d."
 
 #. Resource IDs: (3268)
 #, c-format
@@ -5012,21 +4594,13 @@ msgstr "Litovščina standardna"
 msgid "Lock"
 msgstr "Zakleni"
 
-msgid "Lock Safe"
-msgstr "Zakleni sef"
-
 #. Resource IDs: (65535)
 msgid "Lock password database "
 msgstr "Zakleni zbirko podatkov gesel"
 
 #. Resource IDs: (5113)
-msgid ""
-"Locking clears the memory but excludes undo and redo information that can "
-"still be used on unlocking of the database."
-msgstr ""
-"Zaklepanje počisti pomnilnik, vendar izključuje podatke o operacijah "
-"Razveljavi in Povrni, ki jih je še vedno mogoče uporabiti za odklepanje "
-"zbirke podatkov."
+msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
+msgstr "Zaklepanje počisti pomnilnik, vendar izključuje podatke o operacijah Razveljavi in Povrni, ki jih je še vedno mogoče uporabiti za odklepanje zbirke podatkov."
 
 #. Resource IDs: (1413)
 msgid "MBytes"
@@ -5089,6 +4663,10 @@ msgstr "Zadnja nastavitev glavnega gesla ob:"
 msgid "Master Password:"
 msgstr "Glavno geslo:"
 
+#. Resource IDs: (5800)
+msgid "Master password needed to save. Unlock database and try again"
+msgstr ""
+
 #. Resource IDs: (1212)
 msgid "Max."
 msgstr "Največ"
@@ -5099,12 +4677,8 @@ msgstr "Največ"
 
 #. Resource IDs: (5392)
 #, c-format
-msgid ""
-"Maximum number of backups kept using incremented number suffix\n"
-"must be between %d and %d."
-msgstr ""
-"Največje število varnostnih kopij, ohranjenih z uporabo prirastka števila pripon, \n"
-"mora biti med %d in %d."
+msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
+msgstr "Največje število varnostnih kopij, ohranjenih z uporabo prirastka števila pripon, \nmora biti med %d in %d."
 
 #. Resource IDs: (5407)
 #, c-format
@@ -5225,9 +4799,29 @@ msgstr "Mora biti vsaj %d"
 msgid "N/A"
 msgstr "Ni na voljo"
 
-#. Resource IDs: (5640)
+#. Resource IDs: (5640, 5875)
 msgid "Name"
 msgstr "Ime"
+
+#. Resource IDs: (5333)
+msgid "Name the XML file"
+msgstr ""
+
+#. Resource IDs: (5961)
+msgid "Name the database file"
+msgstr ""
+
+#. Resource IDs: (5331)
+msgid "Name the exported database"
+msgstr ""
+
+#. Resource IDs: (5332)
+msgid "Name the plaintext file"
+msgstr ""
+
+#. Resource IDs: (5621)
+msgid "Name this filter"
+msgstr ""
 
 #. Resource IDs: (1039)
 msgid "Name. Name. Name."
@@ -5299,15 +4893,12 @@ msgstr "Trenutno ni odprta nobena zbirka podatkov"
 
 #. Resource IDs: (5353)
 msgid "No database open with which to compare against another database!"
-msgstr ""
-"Nobena zbirka podatkov ni odprta, s katero bi primerjali drugo zbirko "
-"podatkov!"
+msgstr "Nobena zbirka podatkov ni odprta, s katero bi primerjali drugo zbirko podatkov!"
 
 #. Resource IDs: (5737)
 #, c-format
 msgid "No entries satisfied your selection criteria, so none can be %s!"
-msgstr ""
-"Noben vnos ne izpolnjuje vaše kriterije izbora, tako ni mogoče biti %s!"
+msgstr "Noben vnos ne izpolnjuje vaše kriterije izbora, tako ni mogoče biti %s!"
 
 #. Resource IDs: (5736)
 msgid "No entries selected"
@@ -5315,9 +4906,7 @@ msgstr "Ni izbranih vnosov"
 
 #. Resource IDs: (5506)
 msgid "No entry exists within this database matching your specifications."
-msgstr ""
-"Noben vnos ne obstaja znotraj zbirke podatkov, ki bi ustrezala vašim "
-"specifikacijam."
+msgstr "Noben vnos ne obstaja znotraj zbirke podatkov, ki bi ustrezala vašim specifikacijam."
 
 #. Resource IDs: (61472)
 msgid "No error message is available."
@@ -5409,28 +4998,20 @@ msgstr "Norveščina s Sami"
 
 #. Resource IDs: (61708)
 msgid "Not all of the system registry entries (or INI file) were removed."
-msgstr ""
-"Niso bili odstranjeni vsi vpisi sistemskega registra (ali INI datoteka)."
+msgstr "Niso bili odstranjeni vsi vpisi sistemskega registra (ali INI datoteka)."
 
 #. Resource IDs: (5908)
 msgid "Not used"
 msgstr "Ni uporabljeno"
 
 #. Resource IDs: (62183)
-msgid ""
-"Note that if you choose to recover the auto-saved documents, you must "
-"explicitly save them to overwrite the original documents.  If you choose to "
-"not recover the auto-saved versions, they will be deleted."
-msgstr ""
-"Upoštevajte, da če izberete obnovitev samodejno shranjenih dokumentov, jih "
-"morate izrecno shraniti, da prepišejo izvirne dokumente.  Če se odločite, da"
-" ne želite obnoviti samodejno shranjenih različic, bodo te izbrisane."
+msgid "Note that if you choose to recover the auto-saved documents, you must explicitly save them to overwrite the original documents.  If you choose to not recover the auto-saved versions, they will be deleted."
+msgstr "Upoštevajte, da če izberete obnovitev samodejno shranjenih dokumentov, jih morate izrecno shraniti, da prepišejo izvirne dokumente.  Če se odločite, da ne želite obnoviti samodejno shranjenih različic, bodo te izbrisane."
 
 #. Resource IDs: (5114)
 #, c-format
 msgid "Note that you can use an environment variable too, e.g., %TEMP%"
-msgstr ""
-"Upoštevajte, da lahko uporabite tudi spremenljivko okolja, na primer %TEMP%"
+msgstr "Upoštevajte, da lahko uporabite tudi spremenljivko okolja, na primer %TEMP%"
 
 #. Resource IDs: (33150 - Menu)
 msgid "Note: Empty fields are shown as « »"
@@ -5441,19 +5022,12 @@ msgid "Note: Entry format is «Group» «Title» «Username»"
 msgstr "Opomba: Oblika vnosa je «Skupina» «Naslov» «Uporabniško ime»"
 
 #. Resource IDs: (3428)
-msgid ""
-"Note: These Password Policies will not replace existing policies with the "
-"same name in the current database."
-msgstr ""
-"Opomba: Ti pravilniki gesel ne bodo zamenjali obstoječe pravilnike z istim "
-"imenom, v trenutni zbirki podatkov."
+msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."
+msgstr "Opomba: Ti pravilniki gesel ne bodo zamenjali obstoječe pravilnike z istim imenom, v trenutni zbirki podatkov."
 
 #. Resource IDs: (3362)
-msgid ""
-"Note: These preferences are only used when importing into an empty database."
-msgstr ""
-"Opomba: Te nastavitve so uporabljene samo pri uvozu v prazno zbirko "
-"podatkov."
+msgid "Note: These preferences are only used when importing into an empty database."
+msgstr "Opomba: Te nastavitve so uporabljene samo pri uvozu v prazno zbirko podatkov."
 
 #. Resource IDs: (3014, 5225)
 msgid "Notes"
@@ -5509,75 +5083,28 @@ msgstr "Število vnosov v zbirki podatkov"
 
 #. Resource IDs: (3026)
 #, c-format
-msgid ""
-"Number of entries processed: %d\n"
-"\n"
-"Number of invalid UUIDs fixed: %d\n"
-"\n"
-"Number of duplicate UUIDs fixed: %d\n"
-"\n"
-"Number of non-unique Group/Title/User fixed: %d\n"
-"\n"
-"Number of Password Histories fixed: %d\n"
-"\n"
-"Number of Alias warnings issued: %d\n"
-"\n"
-"Number of Shortcut warnings issued: %d\n"
-"\n"
-"Number of entries with fields that cannot be fully displayed: %d.\n"
-"\n"
-"Recommend that the database is now saved."
-msgstr ""
-"Število obdelanih vnosov: %d\n"
-"\n"
-"Število popravljenih neveljavnih UUID: %d\n"
-"\n"
-"Število popravljenih podvojenih UUID: %d\n"
-"\n"
-"Število popravljenih neenoličnih Skupina/Naslov/Uporabnik: %d\n"
-"\n"
-"Število popravljenih zgodovin gesel: %d\n"
-"\n"
-"Število izdanih opozoril Kratkega imena: %d\n"
-"\n"
-"Število opozoril Bližnjice: %d\n"
-"\n"
-"Število vnosov s polji, ki jih ni mogoče v celoti prikazati: %d.\n"
-"\n"
-"Priporočamo, da je zbirka podatkov zdaj shranjena."
+msgid "Number of entries processed: %d\n\nNumber of invalid UUIDs fixed: %d\n\nNumber of duplicate UUIDs fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d\n\nNumber of entries with fields that cannot be fully displayed: %d.\n\nRecommend that the database is now saved."
+msgstr "Število obdelanih vnosov: %d\n\nŠtevilo popravljenih neveljavnih UUID: %d\n\nŠtevilo popravljenih podvojenih UUID: %d\n\nŠtevilo popravljenih neenoličnih Skupina/Naslov/Uporabnik: %d\n\nŠtevilo popravljenih zgodovin gesel: %d\n\nŠtevilo izdanih opozoril Kratkega imena: %d\n\nŠtevilo opozoril Bližnjice: %d\n\nŠtevilo vnosov s polji, ki jih ni mogoče v celoti prikazati: %d.\n\nPriporočamo, da je zbirka podatkov zdaj shranjena."
 
 #. Resource IDs: (5383)
 #, c-format
-msgid ""
-"Number of entries that had their 'maximum saved passwords' changed to the "
-"new default was %d"
-msgstr ""
-"Število vnosov, ki so imeli njihovo 'največje število shranjenih gesel' "
-"spremenjeno na novo privzeto, je bilo %d"
+msgid "Number of entries that had their 'maximum saved passwords' changed to the new default was %d"
+msgstr "Število vnosov, ki so imeli njihovo 'največje število shranjenih gesel' spremenjeno na novo privzeto, je bilo %d"
 
 #. Resource IDs: (5920)
 #, c-format
 msgid "Number of entries that had their password history removed was %d"
-msgstr ""
-"Število vnosov, ki so imeli odstranjeno njihovo zgodovino gesel, je bilo %d"
+msgstr "Število vnosov, ki so imeli odstranjeno njihovo zgodovino gesel, je bilo %d"
 
 #. Resource IDs: (5381)
 #, c-format
-msgid ""
-"Number of entries that had their settings changed to not save password "
-"history was: %d"
-msgstr ""
-"Število vnosov, ki so imeli spremenjene njihove nastavitve v nespremenjeno "
-"zgodovino gesla, je bilo: %d"
+msgid "Number of entries that had their settings changed to not save password history was: %d"
+msgstr "Število vnosov, ki so imeli spremenjene njihove nastavitve v nespremenjeno zgodovino gesla, je bilo: %d"
 
 #. Resource IDs: (5382)
 #, c-format
-msgid ""
-"Number of entries that had their settings changed to save password history "
-"was: %d"
-msgstr ""
-"Število vnosov, ki so imeli spremenjene njihove nastavitve v spremenjeno "
-"zgodovino gesla, je bilo: %d"
+msgid "Number of entries that had their settings changed to save password history was: %d"
+msgstr "Število vnosov, ki so imeli spremenjene njihove nastavitve v spremenjeno zgodovino gesla, je bilo: %d"
 
 #. Resource IDs: (1266)
 msgid "Number of unknown fields:"
@@ -5624,32 +5151,21 @@ msgid "On workstation lock"
 msgstr "Na zaklenjeni delovni postaji"
 
 #. Resource IDs: (5894)
-msgid ""
-"One or more Password Policies have been changed. Are you sure you wish to "
-"cancel?"
-msgstr ""
-"Spremenjena je bila ena ali več Pravilnikov gesel. Ali ste prepričani, da "
-"želite preklicati?"
+msgid "One or more Password Policies have been changed. Are you sure you wish to cancel?"
+msgstr "Spremenjena je bila ena ali več Pravilnikov gesel. Ali ste prepričani, da želite preklicati?"
 
 #. Resource IDs: (62180)
 msgid "One or more auto-saved documents were found."
 msgstr "Najden je bil eden ali več samodejno shranjenih dokumentov."
 
 #. Resource IDs: (5732)
-msgid ""
-"One or more preferences have been changed. Are you sure you wish to cancel?"
-msgstr ""
-"Eden ali več nastavitev je bilo spremenjenih. Ali ste prepričani, da želite "
-"preklicati?"
+msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
+msgstr "Eden ali več nastavitev je bilo spremenjenih. Ali ste prepričani, da želite preklicati?"
 
 #. Resource IDs: (5428)
 #, c-format
-msgid ""
-"Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In "
-"both (identical): %d"
-msgstr ""
-"Samo v izvirniku: %d; Samo v Primerjavi: %d; V obeh (različno): %d; V obeh "
-"(enako): %d"
+msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
+msgstr "Samo v izvirniku: %d; Samo v Primerjavi: %d; V obeh (različno): %d; V obeh (enako): %d"
 
 #. Resource IDs: (1595)
 msgid "Opaque"
@@ -5659,8 +5175,9 @@ msgstr "Neprosojno"
 msgid "Open"
 msgstr "Odpri"
 
-msgid "Open Password Database:"
-msgstr "Odpri zbirko podatkov gesel:"
+#. Resource IDs: (5315)
+msgid "Open Password Database"
+msgstr ""
 
 #. Resource IDs: (1086)
 msgid "Open as read-only"
@@ -5725,16 +5242,6 @@ msgstr "PWS_CPF_CDD"
 #. Resource IDs: (5449)
 msgid "PWS_CPF_TVDD"
 msgstr "PWS_CPF_TVDD"
-
-#. Resource IDs: (5334)
-msgid "Passkey incorrect"
-msgstr "Napačen Ključ gesla"
-
-#. Resource IDs: (5800)
-msgid "Passkey needed to save. Please unlock database and try again"
-msgstr ""
-"Ključ gesla je potrebno shraniti. Prosimo, odklenite zbirko podatkov in "
-"poskusite znova"
 
 #. Resource IDs: (5757)
 msgid "Passphrase"
@@ -5829,12 +5336,8 @@ msgid "Password Safe Application HotKey"
 msgstr "Vroča tipka aplikacije Password Safe"
 
 #. Resource IDs: (5057)
-msgid ""
-"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups "
-"(*.ibak)|*.ibak||"
-msgstr ""
-"Password Safe varnostne kopije (*.bak)|*.bak|Password Safe vmesne varnostne "
-"kopije (*.ibak)|*.ibak||"
+msgid "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak||"
+msgstr "Password Safe varnostne kopije (*.bak)|*.bak|Password Safe vmesne varnostne kopije (*.ibak)|*.ibak||"
 
 #. Resource IDs: (5056)
 msgid "Password Safe Backups (*.bak)|*.bak||"
@@ -5846,31 +5349,19 @@ msgstr "Password Safe zbirke podatkov (*.dat)|*.dat|Vse datoteke (*.*)|*.*||"
 
 #. Resource IDs: (5050)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
-msgstr ""
-"Password Safe zbirke podatkov (*.psafe3)|*.psafe3|Vse datoteke (*.*)|*.*||"
+msgstr "Password Safe zbirke podatkov (*.psafe3)|*.psafe3|Vse datoteke (*.*)|*.*||"
 
 #. Resource IDs: (5051)
-msgid ""
-"Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; "
-"*.dat|All files (*.*)|*.*||"
-msgstr ""
-"Password Safe zbirke podatkov (*.psafe3; *.psafe4; *.dat)|*.psafe3; "
-"*.psafe4; *.dat|Vse datoteke (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|All files (*.*)|*.*||"
+msgstr "Password Safe zbirke podatkov (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Vse datoteke (*.*)|*.*||"
 
 #. Resource IDs: (5052)
-msgid ""
-"Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; "
-"*.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups"
-" (*.ibak)|*.ibak|All files (*.*)|*.*||"
-msgstr ""
-"Password Safe zbirke podatkov (*.psafe3; *.psafe4; *.dat)|*.psafe3; "
-"*.psafe4; *.dat|Password Safe varnostne kopije (*.bak)|*.bak|Password Safe "
-"vmesne varnostne kopije (*.ibak)|*.ibak|Vse datoteke (*.*)|*.*||"
+msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
+msgstr "Password Safe zbirke podatkov (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe varnostne kopije (*.bak)|*.bak|Password Safe vmesne varnostne kopije (*.ibak)|*.ibak|Vse datoteke (*.*)|*.*||"
 
 #. Resource IDs: (5062)
 msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
-msgstr ""
-"Password Safe zbirke podatkov (*.psafe4)|*.psafe4|Vse datoteke (*.*)|*.*||"
+msgstr "Password Safe zbirke podatkov (*.psafe4)|*.psafe4|Vse datoteke (*.*)|*.*||"
 
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
@@ -5889,15 +5380,8 @@ msgid "Password implies this is an alias entry, but "
 msgstr "Geslo pomeni, da je to kratko ime vnosa, vendar "
 
 #. Resource IDs: (5467)
-msgid ""
-"Password implies this is an alias entry, but specifies a base entry with no title.\n"
-"Every entry must have a title."
-msgstr ""
-"Geslo pomeni, da je to kratko ime vnosa, vendar določa osnovni vnos brez naslova.\n"
-"Vsak vnos mora imeti naslov."
-
-msgid "Password is too short"
-msgstr "Geslo je prekratko"
+msgid "Password implies this is an alias entry, but specifies a base entry with no title.\nEvery entry must have a title."
+msgstr "Geslo pomeni, da je to kratko ime vnosa, vendar določa osnovni vnos brez naslova.\nVsak vnos mora imeti naslov."
 
 #. Resource IDs: (3000)
 msgid "Password is too short."
@@ -5925,9 +5409,7 @@ msgid "Password length:"
 msgstr "Dolžina gesla:"
 
 #. Resource IDs: (3001)
-msgid ""
-"Password should be mixed case, with at least one digit or punctuation "
-"character"
+msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr "Geslo mora biti mešano z vsaj enim znakom števila ali ločilnim znakom"
 
 #. Resource IDs: (32093 - Menu, 32093 - MenuEx, 32096 - Menu, 32096 - MenuEx)
@@ -5945,8 +5427,7 @@ msgstr "Password Safe..."
 
 #. Resource IDs: (5822)
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
-msgstr ""
-"Password Safe: Obstajajo vnosi s poteklim ali kmalu-bodo-potekla gesla"
+msgstr "Password Safe: Obstajajo vnosi s poteklim ali kmalu-bodo-potekla gesla"
 
 #. Resource IDs: (32076 - Menu, 32076 - MenuEx, 5296)
 msgid "Perform Auto&Type"
@@ -5968,171 +5449,17 @@ msgstr "Golo besedilo (ločeno s tabulatorji)..."
 msgid "Play sound on key press"
 msgstr "Predvajaj zvok ob pritisku"
 
-#. Resource IDs: (5376)
-msgid "Please Choose a Backup to restore:"
-msgstr "Izberite varnostno kopijo za obnovitev:"
-
-#. Resource IDs: (5315)
-msgid "Please Choose a Database to Open:"
-msgstr "Izberite zbirko podatkov za odpiranje:"
-
-#. Resource IDs: (5791)
-msgid "Please Choose a Database to Validate:"
-msgstr "Izberite zbirko podatkov za potrjevanje:"
-
-#. Resource IDs: (5340)
-msgid "Please Choose a KeePass Text File to Import"
-msgstr "Izberite KeePass besedilno datoteko za uvoz"
-
-#. Resource IDs: (5375)
-msgid "Please Choose a Name for this Backup:"
-msgstr "Prosimo, izberite ime za to varnostno kopijo:"
-
-#. Resource IDs: (5335)
-msgid "Please Choose a Text File to Import"
-msgstr "Izberite besedilno datoteko za uvoz"
-
-#. Resource IDs: (5343)
-msgid "Please Choose a XML File to Import"
-msgstr "Izberite XML datoteko za uvoz"
-
-#. Resource IDs: (5354)
-msgid "Please choose a database to compare with current database"
-msgstr "Izberite zbirko podatkov za primerjavo s trenutno zbirko podatkov"
-
-#. Resource IDs: (5348)
-msgid "Please choose a database to merge into current database"
-msgstr "Izberite zbirko podatkov za združitev s trenutno zbirko podatkov"
-
-#. Resource IDs: (5753)
-msgid "Please choose a database to synchronize with current database"
-msgstr "Izberite zbirko podatkov za sinhronizacijo s trenutno zbirko podatkov"
-
-#. Resource IDs: (5327)
-msgid "Please choose a name for the current (Untitled) database:"
-msgstr "Izberite ime trenutne (neimenovano) zbirke podatkov:"
-
 #. Resource IDs: (5395)
 msgid "Please choose a name for the new database"
 msgstr "Izberite ime nove zbirke podatkov"
-
-#. Resource IDs: (5328)
-msgid "Please choose a new name for the current database:"
-msgstr "Izberite novo ime za trenutno zbirko podatkov:"
-
-#. Resource IDs: (5635)
-#, c-format
-msgid "Please confirm delete of the %s filter %s?"
-msgstr "Potrdite brisanje %s filtra %s?"
-
-#. Resource IDs: (6033)
-msgid "Please confirm that you wish to clear the recent Safe list."
-msgstr "Potrdite čiščenje nedavnega seznama Sefa."
-
-#. Resource IDs: (5287)
-msgid ""
-"Please confirm that you wish to delete current user's PasswordSafe configuration from the Windows registry.\n"
-"\n"
-msgstr ""
-"Potrdite brisanje trenutne uporabniške konfiguracije Password Safe iz registra Windows.\n"
-"\n"
-
-#. Resource IDs: (5272)
-msgid "Please enter a search string"
-msgstr "Vnesite iskalni niz"
 
 #. Resource IDs: (65535)
 msgid "Please enter an encryption or decryption key"
 msgstr "Vnesite šifrirni ali dešifrirni ključ"
 
-msgid "Please enter the Master Password for this password database."
-msgstr "Vnesite glavno geslo za to zbirko gesel."
-
-msgid ""
-"Please enter the current master password, followed by a new one. \r\n"
-"Type the new one again to confirm it."
-msgstr ""
-"Vnesite trenutno glavno geslo, ki mu sledi novo. \r\n"
-"Znova vnesite novo, da jo potrdite."
-
-#. Resource IDs: (5255)
-msgid "Please enter the key and verify it."
-msgstr "Vnesite ključ in ga preverite."
-
 #. Resource IDs: (1504)
-msgid ""
-"Please enter the master password for the NEW database to contain exported "
-"entry/entries."
-msgstr ""
-"Vnesite glavno geslo za novo zbirko podatkov, ki vsebuje izvožene "
-"vnose/vnose."
-
-#. Resource IDs: (5876)
-msgid "Please enter the new database description"
-msgstr "Vnesite opis nove zbirke podatkov"
-
-#. Resource IDs: (5875)
-msgid "Please enter the new database name"
-msgstr "Vesite ime nove zbirke podatkov"
-
-#. Resource IDs: (5388)
-msgid "Please enter your backup database prefix."
-msgstr "Vnesite predpono vaše varnostne kopije zbirke podatkov."
-
-#. Resource IDs: (6001)
-msgid "Please insert your YubiKey"
-msgstr "Vstavite vaš YubiKey"
-
-#. Resource IDs: (5333)
-msgid "Please name the XML file"
-msgstr "Dodelite ime XML datoteki"
-
-#. Resource IDs: (5961)
-msgid "Please name the database file"
-msgstr "Dodelite ime datoteki zbirke podatkov"
-
-#. Resource IDs: (5331)
-msgid "Please name the exported database"
-msgstr "Dodelite ime izvožene zbirke podatkov"
-
-#. Resource IDs: (5332)
-msgid "Please name the plaintext file"
-msgstr "Dodelite ime datoteke z golim besedilom"
-
-#. Resource IDs: (5621)
-msgid "Please name this filter"
-msgstr "Dodelite ime tega filtra"
-
-#. Resource IDs: (5993)
-msgid "Please select media type"
-msgstr "Dodelite ime vrsti predstavnosti"
-
-#. Resource IDs: (5487)
-msgid "Please select report to view."
-msgstr "Izberite poročilo za ogled."
-
-#. Resource IDs: (5566)
-msgid "Please specify text"
-msgstr "Navedite besedilo"
-
-#. Resource IDs: (5390)
-msgid "Please specify the destination location to contain all backups."
-msgstr "Navedite ciljno mesto vseh varnostnih kopij."
-
-#. Resource IDs: (5389)
-msgid "Please specify the sub-directory to contain all backups."
-msgstr "Navedite podimenik vseh varnostnih kopij."
-
-#. Resource IDs: (5489)
-msgid ""
-"Please visit the <a href=\"https://pwsafe.org/\">Password Safe website.</a>"
-msgstr ""
-"Prosim obiščite <a href=\"https://pwsafe.org/\">Password Safe spletno "
-"stran.</a>"
-
-msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
-msgstr ""
-"Obiščite  <a href=\"https://pwsafe.org/\">Spletno stran Password Safe.</a>"
+msgid "Please enter the master password for the NEW database to contain exported entry/entries."
+msgstr "Vnesite glavno geslo za novo zbirko podatkov, ki vsebuje izvožene vnose/vnose."
 
 #. Resource IDs: (5879)
 msgid "Policy Name"
@@ -6167,17 +5494,8 @@ msgid "Portuguese (Brazilian ABNT)"
 msgstr "Portugalščina (brazilska ABNT)"
 
 #. Resource IDs: (6049)
-msgid ""
-"Position 1 is the first character, 2 is the second etc. up to N for the last"
-" character of a password of length N. -1 is the last character, -2 the next "
-"to last etc. up to -N for the first password character. Positions must be "
-"separated by either spaces, commas or semi-colons to be recognised. There "
-"must also be a space, comma or semi-colon at the end of the list."
-msgstr ""
-"Položaj 1 je prvi znak, 2 je drugi itd. do N za zadnji znak gesla dolžine "
-"N.-1 je zadnji znak, -2 naslednji od zadnjega itd. do -N za prvi znak gesla."
-" Položaji morajo biti ločene s presledki, vejicami ali podpičji, da bodo "
-"prepoznani. Na koncu seznama mora biti tudi presledek, vejica ali podpičje."
+msgid "Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character. Positions must be separated by either spaces, commas or semi-colons to be recognised. There must also be a space, comma or semi-colon at the end of the list."
+msgstr "Položaj 1 je prvi znak, 2 je drugi itd. do N za zadnji znak gesla dolžine N.-1 je zadnji znak, -2 naslednji od zadnjega itd. do -N za prvi znak gesla. Položaji morajo biti ločene s presledki, vejicami ali podpičji, da bodo prepoznani. Na koncu seznama mora biti tudi presledek, vejica ali podpičje."
 
 #. Resource IDs: (65535)
 msgid "Positions:"
@@ -6188,14 +5506,8 @@ msgid "Press to delete all added characters."
 msgstr "Pritisnite, za brisanje vseh dodanih znakov."
 
 #. Resource IDs: (65535)
-msgid ""
-"Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n"
-"\n"
-"Pressing Cancel stops the password from being copied."
-msgstr ""
-"S pritiskom na okno kopirate geslo izbranega elementa v odložišče. Odložišče bo varno počistilo, ko bo varna za geslo zaprta.\n"
-"\n"
-"Če pritisnete »Prekliči«, se geslo ne kopira."
+msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password from being copied."
+msgstr "S pritiskom na okno kopirate geslo izbranega elementa v odložišče. Odložišče bo varno počistilo, ko bo varna za geslo zaprta.\n\nČe pritisnete »Prekliči«, se geslo ne kopira."
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -6235,9 +5547,7 @@ msgid "Pronounceable passwords"
 msgstr "Izgovorljiva gesla"
 
 #. Resource IDs: (5918)
-msgid ""
-"Pronounceable passwords must contain either lowercase or uppercase "
-"characters or both"
+msgid "Pronounceable passwords must contain either lowercase or uppercase characters or both"
 msgstr "Izgovorljiva gesla morajo vsebovati male ali velike črke ali oboje"
 
 #. Resource IDs: (136)
@@ -6319,15 +5629,11 @@ msgstr "Nedavno"
 
 #. Resource IDs: (1096)
 msgid "Recent Databases on File Menu rather than as a sub-menu."
-msgstr ""
-"Zgodovina nedavnih zbirk podatkov v meniju Datoteka, namesto kot podmeni."
+msgstr "Zgodovina nedavnih zbirk podatkov v meniju Datoteka, namesto kot podmeni."
 
 #. Resource IDs: (1095)
 msgid "Recent Password Safe Databases"
 msgstr "Nedavne zbirke podatkov gesel"
-
-msgid "Recent PasswordSafe Databases"
-msgstr "Nedavne Password Safe zbirke podatkov"
 
 #. Resource IDs: (3012)
 msgid "Record Modified Time"
@@ -6338,15 +5644,8 @@ msgid "Record last access times"
 msgstr "Zapiši zadnji čas dostopa"
 
 #. Resource IDs: (62184)
-msgid ""
-"Recover the auto-saved documents\n"
-"Open the auto-saved versions instead of the explicitly saved versions"
-msgstr ""
-"Obnovi samodejno shranjene dokumente\n"
-"Odpri samodejno shranjene različice namesto eksplicitno shranjenih različic"
-
-msgid "Recurring"
-msgstr "Ponavljajoče"
+msgid "Recover the auto-saved documents\nOpen the auto-saved versions instead of the explicitly saved versions"
+msgstr "Obnovi samodejno shranjene dokumente\nOdpri samodejno shranjene različice namesto eksplicitno shranjenih različic"
 
 #. Resource IDs: (1487, 32084 - MenuEx)
 msgid "Redo"
@@ -6354,20 +5653,15 @@ msgstr "Povrni"
 
 #. Resource IDs: (5885)
 msgid "Redo the last change to password policies that was previously undone"
-msgstr ""
-"Povrni zadnjo spremembo pravilnikov gesel, ki so bile prej razveljavljene"
+msgstr "Povrni zadnjo spremembo pravilnikov gesel, ki so bile prej razveljavljene"
 
 #. Resource IDs: (1228, 3397)
 msgid "Relative"
 msgstr "Relativno"
 
 #. Resource IDs: (1420)
-msgid ""
-"Relative dates are in days relative to today e.g. '-1' is yesterday and '1' "
-"is tomorrow"
-msgstr ""
-"Relativni datumi so v dnevih glede na danes, npr.  '-1'  je včeraj in '1' je"
-" jutri"
+msgid "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
+msgstr "Relativni datumi so v dnevih glede na danes, npr.  '-1'  je včeraj in '1' je jutri"
 
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
@@ -6386,12 +5680,8 @@ msgid "Remove PasswordSafe configuration from Registry"
 msgstr "Odstrani konfiguracijo Password Safe iz Registra"
 
 #. Resource IDs: (5111)
-msgid ""
-"Remove all saved passwords for entries and stop saving password change "
-"history in all entries."
-msgstr ""
-"Odstrani vsa shranjena gesla vnosov in zaustavi shranjevanje zgodovine "
-"sprememb gesla v vseh vnosih."
+msgid "Remove all saved passwords for entries and stop saving password change history in all entries."
+msgstr "Odstrani vsa shranjena gesla vnosov in zaustavi shranjevanje zgodovine sprememb gesla v vseh vnosih."
 
 #. Resource IDs: (32291 - Menu)
 msgid "Remove this shortcut"
@@ -6423,14 +5713,8 @@ msgid "Requested mode change failed"
 msgstr "Zahtevana sprememba načina ni uspela"
 
 #. Resource IDs: (5694)
-msgid ""
-"Required Unicode font is not installed on this system.\n"
-"\n"
-"Unable to provide Virtual Keyboard."
-msgstr ""
-"Zahtevana pisava Unicode ni nameščena v tem sistemu.\n"
-"\n"
-"Navidezne tipkovnice ni mogoče zagotoviti."
+msgid "Required Unicode font is not installed on this system.\n\nUnable to provide Virtual Keyboard."
+msgstr "Zahtevana pisava Unicode ni nameščena v tem sistemu.\n\nNavidezne tipkovnice ni mogoče zagotoviti."
 
 #. Resource IDs: (5685)
 #, c-format
@@ -6475,16 +5759,11 @@ msgstr "Desna tipka Ctrl"
 
 #. Resource IDs: (5994)
 msgid "Right click a Named Password Policy to list the entries using it"
-msgstr ""
-"Desni klik na Imenovan pravilnik gesel, za uporabo seznama njegovih "
-"uporabljenih vnosov"
+msgstr "Desni klik na Imenovan pravilnik gesel, za uporabo seznama njegovih uporabljenih vnosov"
 
 #. Resource IDs: (65535)
-msgid ""
-"Right-click on the 'Y' in either of the first 2 columns for additional "
-"functions"
-msgstr ""
-"Desni klik na 'D' v enem od prvih dveh stolpcev za prikaz dodatnih funkcij"
+msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
+msgstr "Desni klik na 'D' v enem od prvih dveh stolpcev za prikaz dodatnih funkcij"
 
 #. Resource IDs: (5117)
 msgid "Right-click on the Notes field to access additional functionality."
@@ -6504,8 +5783,8 @@ msgstr "Romunščina (standardna)"
 
 #. Resource IDs: (5567)
 #, c-format
-msgid "Row %d is incomplete. Please set both Field and Criteria."
-msgstr "Vrstica %d je nepopolna. Nastavite oboje Polje in Kriterij."
+msgid "Row %d is incomplete. Both Field and Criteria must be set."
+msgstr ""
 
 #. Resource IDs: (5614)
 msgid "Row number"
@@ -6518,9 +5797,6 @@ msgstr "Pravilo"
 #. Resource IDs: (65535)
 msgid "Rule:"
 msgstr "Pravilo:"
-
-msgid "Run Cmd:"
-msgstr "Zaženi CMD:"
 
 #. Resource IDs: (3063, 4009, 5654)
 msgid "Run Command"
@@ -6548,12 +5824,8 @@ msgstr "Sin&hroniziraj..."
 
 #. Resource IDs: (3059)
 #, c-format
-msgid ""
-"SAX Parse Error during %ls\n"
-"%ls."
-msgstr ""
-"SAX razčlenitvena napaka med %ls\n"
-"%ls."
+msgid "SAX Parse Error during %ls\n%ls."
+msgstr "SAX razčlenitvena napaka med %ls\n%ls."
 
 #. Resource IDs: (3043)
 #, c-format
@@ -6626,78 +5898,17 @@ msgid "Screen capture protection disabled by a setup option."
 msgstr "Zajem zaslona je onemogočen v nastavitvenih možnostih."
 
 #. Resource IDs: (6092)
-msgid ""
-"Screen capture protection disabled by command line.\n"
-"\n"
-"Contact support if this is unexpected.\n"
-"\n"
-"Click OK to continue."
-msgstr ""
-"Zajem zaslona je onemogočen z ukaznega poziva.\n"
-"\n"
-"Vzpostavite stik s podporo, če je to nepričakovano.\n"
-"\n"
-"Kliknite V redu za nadaljevanje."
+msgid "Screen capture protection disabled by command line.\n\nContact support if this is unexpected.\n\nClick OK to continue."
+msgstr "Zajem zaslona je onemogočen z ukaznega poziva.\n\nVzpostavite stik s podporo, če je to nepričakovano.\n\nKliknite V redu za nadaljevanje."
 
 #. Resource IDs: (6082)
 #, c-format
-msgid ""
-"Screen capture protection disabled by command line.\n"
-"\n"
-"Contact support if this is unexpected.\n"
-"\n"
-"You can click OK to continue in %d seconds."
-msgstr ""
-"Zajem zaslona je onemogočen z ukaznega poziva.\n"
-"\n"
-"Vzpostavite stik s podporo, če je to nepričakovano.\n"
-"\n"
-"Kliknite lahko V redu za nadaljevanje čez %d sekund."
-
-msgid ""
-"Screen capture protection disabled by unknown cause (state error).\n"
-"\n"
-"Contact support if this is unexpected.\n"
-"\n"
-"Click OK to continue."
-msgstr ""
-"Zajem zaslona je onemogočen iz neznanega vzroka (napaka stanja).\n"
-"\n"
-"Vzpostavite stik s podporo, če je to nepričakovano.\n"
-"\n"
-"Klinite OK, za nadaljevanje."
-
-msgid ""
-"Screen capture protection disabled by unknown cause (state error).\n"
-"\n"
-"Contact support if this is unexpected.\n"
-"\n"
-"You can click OK to continue in %d seconds."
-msgstr ""
-"Zajem zaslona je onemogočen iz neznanega vzorka (napaka stanja).\n"
-"\n"
-"Vzpostavite stik s podporo, če je to nepričakovano.\n"
-"\n"
-"Kliknete lahko V redu čez %d sekund."
-
-msgid "Screen capture protection disabled for remote access."
-msgstr "Zajem zaslona je onemogočen iz oddaljenega dostopa."
-
-msgid ""
-"Screen capture protection experienced an unexpected operating system error."
-msgstr ""
-"Zaščita zajema zaslona je zaznala nepričakovano napako operacijskega "
-"sistema."
+msgid "Screen capture protection disabled by command line.\n\nContact support if this is unexpected.\n\nYou can click OK to continue in %d seconds."
+msgstr "Zajem zaslona je onemogočen z ukaznega poziva.\n\nVzpostavite stik s podporo, če je to nepričakovano.\n\nKliknite lahko V redu za nadaljevanje čez %d sekund."
 
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
 msgstr "Zaščita zajema zaslona je bila preglašena s strani ukaznega poziva."
-
-msgid "Screen capture protection invalid (failure)."
-msgstr "Zaščita zajema zaslona je neveljavna (neuspelo)."
-
-msgid "Screen capture protection is enabled."
-msgstr "Zaščita zajema zaslona je omogočena."
 
 #. Resource IDs: (6069)
 msgid "Screen capture protection is off."
@@ -6706,9 +5917,6 @@ msgstr "Zaščita zajema zaslona je izključena."
 #. Resource IDs: (6068, 6071)
 msgid "Screen capture protection is on."
 msgstr "Zaščita zajema zaslona je vključena."
-
-msgid "Screen capture protection on."
-msgstr "Zaščita zajema zaslona vključena."
 
 #. Resource IDs: (6067)
 msgid "Screen capture protection: unexpected system error"
@@ -6792,6 +6000,10 @@ msgstr "Izberi barvo odklenjenega besedila:"
 msgid "Select a button."
 msgstr "Izberi gumb."
 
+#. Resource IDs: (5487)
+msgid "Select a report to view."
+msgstr ""
+
 #. Resource IDs: (5431)
 msgid "Select all entries"
 msgstr "Izberi vse vnose"
@@ -6799,6 +6011,10 @@ msgstr "Izberi vse vnose"
 #. Resource IDs: (523)
 msgid "Select entry to compare"
 msgstr "Izberi vnos za primerjavo"
+
+#. Resource IDs: (5993)
+msgid "Select media type"
+msgstr ""
 
 #. Resource IDs: (5430)
 msgid "Select some entries"
@@ -6867,8 +6083,7 @@ msgstr "NastavI ID zbirke podatkov"
 
 #. Resource IDs: (552)
 msgid "Set Database Index to overlay on System Tray icon"
-msgstr ""
-"Nastavi indeks zbirke podatkov za prekrivanje v sistemski programski vrstici"
+msgstr "Nastavi indeks zbirke podatkov za prekrivanje v sistemski programski vrstici"
 
 #. Resource IDs: (5295)
 msgid "Set Date/Time"
@@ -7044,23 +6259,16 @@ msgid "Show a subset of the Password"
 msgstr "Prikaži podmnožico gesla"
 
 #. Resource IDs: (1262)
-msgid ""
-"Show entries with identical compared fields (Note: Unknown fields were not "
-"compared.)"
-msgstr ""
-"Prikaži vnose z identičnimi primerjanimi polji (Opomba: neznana polja niso "
-"bila primerjana.)"
+msgid "Show entries with identical compared fields (Note: Unknown fields were not compared.)"
+msgstr "Prikaži vnose z identičnimi primerjanimi polji (Opomba: neznana polja niso bila primerjana.)"
 
 #. Resource IDs: (1246)
 msgid "Show grid lines in List View"
 msgstr "Prikaži mrežne črte v prikazu seznama"
 
 #. Resource IDs: (1490)
-msgid ""
-"Show identical compared fields (Note: Unknown fields were not compared.)"
-msgstr ""
-"Prikaži identična primerjana polja (Opomba: neznana polja niso bila "
-"primerjana.)"
+msgid "Show identical compared fields (Note: Unknown fields were not compared.)"
+msgstr "Prikaži identična primerjana polja (Opomba: neznana polja niso bila primerjana.)"
 
 #. Resource IDs: (5755)
 msgid "Shutdown, Restart or Logoff in progress"
@@ -7091,30 +6299,16 @@ msgid "Slovenian"
 msgstr "Slovenščina"
 
 #. Resource IDs: (5710)
-msgid ""
-"Some characters may be missing or not be displayed correctly, as we were "
-"unable to find the Arial Unicode MS font."
-msgstr ""
-"Nekateri znaki morda manjkajo ali pa niso pravilno prikazani, saj ne moremo "
-"najti pisave Arial Unicode MS."
+msgid "Some characters may be missing or not be displayed correctly, as we were unable to find the Arial Unicode MS font."
+msgstr "Nekateri znaki morda manjkajo ali pa niso pravilno prikazani, saj ne moremo najti pisave Arial Unicode MS."
 
 #. Resource IDs: (5923)
-msgid ""
-"Some consistency issues were found while opening the database.\n"
-"\n"
-"You should save this database before proceeding. Please view report for details."
+msgid "Some consistency issues were found while opening the database.\n\nYou should save this database before proceeding. More details may be found in the report."
 msgstr ""
-"Med odpiranjem zbirke podatkov so bile najdene nekatere težave z doslednostjo.\n"
-"\n"
-"To zbirko podatkov shranite, preden nadaljujete. Za podrobnosti preberite poročilo."
 
 #. Resource IDs: (5821)
-msgid ""
-"Some of the entries in this database have passwords that have expired or are"
-" about to.  Do you wish to list them and possibly update them?"
-msgstr ""
-"Nekateri vnosi v tej zbirki podatkov imajo gesla, ki so ali bodo kmalu "
-"potekla.  Ali jih želite videti na seznamu in jih morebiti posodobiti?"
+msgid "Some of the entries in this database have passwords that have expired or are about to.  Do you wish to list them and possibly update them?"
+msgstr "Nekateri vnosi v tej zbirki podatkov imajo gesla, ki so ali bodo kmalu potekla.  Ali jih želite videti na seznamu in jih morebiti posodobiti?"
 
 #. Resource IDs: (8313)
 msgid "Sorbian Standard"
@@ -7125,42 +6319,20 @@ msgid "Sorbian Standard (Legacy)"
 msgstr "Standardna sorbščina (zapuščina)"
 
 #. Resource IDs: (5288)
-msgid ""
-"Sorry - your requested HotKey is already being used.\n"
-"\n"
-"This feature has been temporarily disabled.\n"
-"\n"
-"To re-enable in this session, please select a different key combination."
-msgstr ""
-"Žal - vaša zahtevana vroča tipka je že uporabljena.\n"
-"\n"
-"Ta funkcija je bila začasno onemogočena.\n"
-"\n"
-"Za ponovno omogočitev seje izberite drugo kombinacijo tipk."
+msgid "Sorry - your requested HotKey is already being used.\n\nThis feature has been temporarily disabled.\n\nTo re-enable in this session, please select a different key combination."
+msgstr "Žal - vaša zahtevana vroča tipka je že uporabljena.\n\nTa funkcija je bila začasno onemogočena.\n\nZa ponovno omogočitev seje izberite drugo kombinacijo tipk."
 
 #. Resource IDs: (5712)
-msgid ""
-"Sorry but PasswordSafe has had a problem.\n"
-"\n"
-"Minimal diagnostic information has been written to file: \n"
-"\n"
-"\t'"
-msgstr ""
-"Žal, vendar je Password Safe imel težavo.\n"
-"\n"
-"Najmanjši diagnostični podatki so bili zapisani v datoteko:"
+msgid "Sorry but PasswordSafe has had a problem.\n\nMinimal diagnostic information has been written to file: \n\n\t'"
+msgstr "Žal, vendar je Password Safe imel težavo.\n\nNajmanjši diagnostični podatki so bili zapisani v datoteko:"
 
 #. Resource IDs: (5507)
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
 msgstr "Žal, 'Izgovorljivo in 'Enostavno-za-branje' ni skupaj podprto"
 
 #. Resource IDs: (5512)
-msgid ""
-"Sorry, can't specify a minimum number of characters with 'pronounceable' "
-"option. Specified values ignored."
-msgstr ""
-"Žal, ne morem določiti najmanjšega število znakov z možnostjo 'izgovorjave'."
-" Navedene vrednosti so zanemarjene."
+msgid "Sorry, can't specify a minimum number of characters with 'pronounceable' option. Specified values ignored."
+msgstr "Žal, ne morem določiti najmanjšega število znakov z možnostjo 'izgovorjave'. Navedene vrednosti so zanemarjene."
 
 #. Resource IDs: (5938)
 msgid "Sorry, couldn't find help file - help unavailable."
@@ -7187,31 +6359,24 @@ msgid "Spanish Variation"
 msgstr "Španščina - variacija"
 
 #. Resource IDs: (5109)
-msgid ""
-"Specify a program for editing an entry's Notes field via the right-click "
-"context menu during Add/Edit. You can specify command line options to the "
-"external editor via the external  editor command line parameters field. Do "
-"not enclose this value in single or double quotes unless your chosen "
-"external editor requires them."
+msgid "Specify a program for editing an entry's Notes field via the right-click context menu during Add/Edit. You can specify command line options to the external editor via the external  editor command line parameters field. Do not enclose this value in single or double quotes unless your chosen external editor requires them."
+msgstr "Določite program za urejanje opomb polja 'Opombe vnosa' prek desnega klika pojavnega menija med 'Dodaj/Uredi'. Lahko določite možnosti ukazne vrstice, v zunanjem urejevalniku prek polj zunanjega urejevalnika ukazne vrstice. Te vrednosti ne ogradite v enojnih ali dvojnih narekovajih razen, če jih zahteva izbrani zunanji urejevalnik."
+
+#. Resource IDs: (5566)
+msgid "Specify text"
 msgstr ""
-"Določite program za urejanje opomb polja 'Opombe vnosa' prek desnega klika "
-"pojavnega menija med 'Dodaj/Uredi'. Lahko določite možnosti ukazne vrstice, "
-"v zunanjem urejevalniku prek polj zunanjega urejevalnika ukazne vrstice. Te "
-"vrednosti ne ogradite v enojnih ali dvojnih narekovajih razen, če jih "
-"zahteva izbrani zunanji urejevalnik."
 
 #. Resource IDs: (5108)
-msgid ""
-"Specify the browser to use when an entry's URL field starts with [alt], "
-"e.g., '[alt]http://foo.com'. You can specify command line options to the "
-"browser via the Browser command line parameters field. Do not enclose this "
-"value in single or double quotes unless your chosen browser requires them."
+msgid "Specify the browser to use when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'. You can specify command line options to the browser via the Browser command line parameters field. Do not enclose this value in single or double quotes unless your chosen browser requires them."
+msgstr "Določite brskalnik, ki ga želite uporabiti, ko se začne vnos polja URL vnosa z [alt], npr., '[alt]http://foo.com'. V brskalnik lahko določite možnosti ukazne vrstice prek polja Parametri ukazne vrstice brskalnika. Te vrednosti ne ogradite v enojnih ali dvojnih narekovajih, razen če jih izbrani brskalnik zahteva."
+
+#. Resource IDs: (5390)
+msgid "Specify the destination location to contain all backups."
 msgstr ""
-"Določite brskalnik, ki ga želite uporabiti, ko se začne vnos polja URL vnosa"
-" z [alt], npr., '[alt]http://foo.com'. V brskalnik lahko določite možnosti "
-"ukazne vrstice prek polja Parametri ukazne vrstice brskalnika. Te vrednosti "
-"ne ogradite v enojnih ali dvojnih narekovajih, razen če jih izbrani "
-"brskalnik zahteva."
+
+#. Resource IDs: (5389)
+msgid "Specify the sub-directory to contain all backups."
+msgstr ""
 
 #. Resource IDs: (1497)
 msgid "Standard"
@@ -7221,27 +6386,19 @@ msgstr "Standardno"
 msgid "Start Password Safe at Login"
 msgstr "Ob prijavi zaženi Password Safe"
 
-msgid "Start PasswordSafe at Login"
-msgstr "Zaženi Password Safe ob prijavi"
-
 #. Resource IDs: (3255)
 msgid "Start Report"
 msgstr "Začetek poročila"
 
 #. Resource IDs: (5101)
-msgid ""
-"Start saving password history for all entries, to the above number of "
-"entries."
-msgstr ""
-"Začni shranjevanje zgodovine gesel za vse vnose, na zgoraj navedeno število "
-"vnosov."
+msgid "Start saving password history for all entries, to the above number of entries."
+msgstr "Začni shranjevanje zgodovine gesel za vse vnose, na zgoraj navedeno število vnosov."
 
 #. Resource IDs: (1185)
 msgid "Start saving previous passwords"
 msgstr "Zaženi shranjevanja prejšnjih gesel"
 
-#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561,
-#. 1562, 1588, 1614, 8103)
+#. Resource IDs: (1264, 1370, 1408, 1410, 1423, 1424, 1428, 1464, 1521, 1561, 1562, 1588, 1614, 8103)
 msgid "Static"
 msgstr "Statično"
 
@@ -7258,14 +6415,8 @@ msgid "Status"
 msgstr "Stanje"
 
 #. Resource IDs: (5100)
-msgid ""
-"Stop saving password history for all entries.\n"
-"\n"
-"Saved histories will not be removed, but changed passwords will no longer be added."
-msgstr ""
-"Ustavi shranjevanje zgodovine gesel za vse vnose.\n"
-"\n"
-"Shranjenih zgodovin ne bo mogoče odstraniti, vendar spremenjena gesla ne bodo več dodana."
+msgid "Stop saving password history for all entries.\n\nSaved histories will not be removed, but changed passwords will no longer be added."
+msgstr "Ustavi shranjevanje zgodovine gesel za vse vnose.\n\nShranjenih zgodovin ne bo mogoče odstraniti, vendar spremenjena gesla ne bodo več dodana."
 
 #. Resource IDs: (1184)
 msgid "Stop saving previous passwords"
@@ -7273,8 +6424,7 @@ msgstr "Zaustavi shranjevanja prejšnjih gesel"
 
 #. Resource IDs: (3347)
 msgid "Stored filters will be unusable until the file's restored."
-msgstr ""
-"Shranjeni filtri bodo neuporabni, dokler ne bo ta datoteka obnovljena."
+msgstr "Shranjeni filtri bodo neuporabni, dokler ne bo ta datoteka obnovljena."
 
 #. Resource IDs: (1322)
 msgid "String value:"
@@ -7342,12 +6492,8 @@ msgid "System error: No more file handles available"
 msgstr "Sistemska napaka: Ni več na voljo ročajev datoteke"
 
 #. Resource IDs: (61707)
-msgid ""
-"System registry entries have been removed and the INI file (if any) was "
-"deleted."
-msgstr ""
-"Vnosi sistemskega registra so bili odstranjeni in datoteka INI (če je "
-"obstajala) je bila izbrisana."
+msgid "System registry entries have been removed and the INI file (if any) was deleted."
+msgstr "Vnosi sistemskega registra so bili odstranjeni in datoteka INI (če je obstajala) je bila izbrisana."
 
 #. Resource IDs: (65535)
 msgid "SystemTray"
@@ -7395,9 +6541,7 @@ msgstr "Besedilne datoteke (*.txt)|*.txt|Vse datoteke (*.*)|*.*||"
 
 #. Resource IDs: (5053)
 msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*||"
-msgstr ""
-"Besedilne datoteke (*.txt)|*.txt|Datoteke CSV (*.csv)|*.csv|Vse datoteke "
-"(*.*)|*.*||"
+msgstr "Besedilne datoteke (*.txt)|*.txt|Datoteke CSV (*.csv)|*.csv|Vse datoteke (*.*)|*.*||"
 
 #. Resource IDs: (1322)
 msgid "Text:"
@@ -7425,20 +6569,12 @@ msgstr "Ta datoteka je že odprta."
 
 #. Resource IDs: (3277)
 #, c-format
-msgid ""
-"The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls "
-"base entry. It cannot be imported."
-msgstr ""
-"%ls vnos \"%ls, %ls, %ls\" ne kaže na normalni ali obstoječ %ls osnovni "
-"vnos. Ni ga mogoče uvoziti."
+msgid "The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls base entry. It cannot be imported."
+msgstr "%ls vnos \"%ls, %ls, %ls\" ne kaže na normalni ali obstoječ %ls osnovni vnos. Ni ga mogoče uvoziti."
 
 #. Resource IDs: (8154)
-msgid ""
-"The ALT key is not used on any keyboard to select characters. Use the 'Alt "
-"Num' key to enter a character via its decimal value."
-msgstr ""
-"Tipka ALT se ne uporablja na nobeni tipkovnici za izbiranje znakov. "
-"Uporabite tipko 'Alt Num' za vnos znaka prek njegove decimalne vrednosti."
+msgid "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key to enter a character via its decimal value."
+msgstr "Tipka ALT se ne uporablja na nobeni tipkovnici za izbiranje znakov. Uporabite tipko 'Alt Num' za vnos znaka prek njegove decimalne vrednosti."
 
 #. Resource IDs: (5947)
 msgid "The Alt and Ctrl keys have been added."
@@ -7473,14 +6609,8 @@ msgid "The Ctrl key has been added."
 msgstr "Tipka Ctrl je dodana."
 
 #. Resource IDs: (3424)
-msgid ""
-"The TXT or CSV file was not imported as required as entry records span multiple lines in the CSV file.\n"
-"\n"
-"Import aborted."
-msgstr ""
-"Datoteka TXT ali CSV ni bila uvožena kot je zahtevano, ker zapisi vnosa preklapljajo več vrstic v datoteki CSV..\n"
-"\n"
-"Uvoz je bil prekinjen."
+msgid "The TXT or CSV file was not imported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
+msgstr "Datoteka TXT ali CSV ni bila uvožena kot je zahtevano, ker zapisi vnosa preklapljajo več vrstic v datoteki CSV..\n\nUvoz je bil prekinjen."
 
 #. Resource IDs: (6003)
 msgid "The YubiKey appears uninitialized. Initialize it?"
@@ -7492,89 +6622,31 @@ msgstr "Avtentikacijska skrivnost ni bila najdena"
 
 #. Resource IDs: (5311)
 #, c-format
-msgid ""
-"The database %s couldn't be opened.\n"
-"Do you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
-msgstr ""
-"Zbirke podatkov %s ni bilo mogoče odpreti.\n"
-"Ali želite pogledati drugje (Poišči), ustvariti novo zbirko podatkov (Nova) ali izstopiti?"
+msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
+msgstr "Zbirke podatkov %s ni bilo mogoče odpreti.\nAli želite pogledati drugje (Poišči), ustvariti novo zbirko podatkov (Nova) ali izstopiti?"
 
 #. Resource IDs: (5852)
-msgid ""
-"The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n"
-"\n"
-"Please close the database and re-open it in R/W mode."
+msgid "The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n\nClose the database and re-open it in R/W mode."
 msgstr ""
-"Zbirka podatkov je bila spremenjena, odkar ste jo odprli v načinu R-O, tako da jo ni mogoče preklopiti v način R/W.\n"
-"\n"
-"Zaprite zbirko podatkov in jo ponovno odprite v načinu R/W."
 
 #. Resource IDs: (5412)
 #, c-format
-msgid ""
-"The database:\n"
-"%s\n"
-"\n"
-"is apparently being used by:\n"
-"%s%s.\n"
-"\n"
-"Open the database for Read-Only or Exit?\n"
-"\n"
-"Note: Only one user at a time can open the database for writing."
-msgstr ""
-"Zbirka podatkov:\n"
-"%s\n"
-"\n"
-"je očitno uporabljena z:\n"
-"%s%s.\n"
-"\n"
-"Odprem zbirko podatkov Samo-za-branje ali zapustim?\n"
-"\n"
-"Opomba: Hkrati lahko odpre zbirko podatkov za pisanje en uporabnik."
+msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only or Exit?\n\nNote: Only one user at a time can open the database for writing."
+msgstr "Zbirka podatkov:\n%s\n\nje očitno uporabljena z:\n%s%s.\n\nOdprem zbirko podatkov Samo-za-branje ali zapustim?\n\nOpomba: Hkrati lahko odpre zbirko podatkov za pisanje en uporabnik."
 
 #. Resource IDs: (5235)
 #, c-format
-msgid ""
-"The database:\n"
-"%s\n"
-"\n"
-"is apparently being used by:\n"
-"%s%s.\n"
-"\n"
-"Open the database for Read-Only, Read-Write, or Exit?\n"
-"\n"
-"Note: Choose \"Read-Write\" only if you are certain that the file isn't being used by anyone else,\n"
-"including another copy of Password Safe running on your machine."
-msgstr ""
-"Zbirka podatkov:\n"
-"%s\n"
-"\n"
-"je očitno bila uporabljena z:\n"
-"%s %s.\n"
-"\n"
-"Odprem zbirko podatkov za Samo-za-branje, Branje in pisanje ali zapustim??\n"
-"\n"
-"Opomba: Izberite \"Samo-za-branje\" le, če ste prepričani, da datoteke ne uporablja noben drug,\n"
-"vključno z drugo delujočo kopijo Safe Safe v vašem računalniku."
+msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\n\nNote: Choose \"Read-Write\" only if you are certain that the file isn't being used by anyone else,\nincluding another copy of Password Safe running on your machine."
+msgstr "Zbirka podatkov:\n%s\n\nje očitno bila uporabljena z:\n%s %s.\n\nOdprem zbirko podatkov za Samo-za-branje, Branje in pisanje ali zapustim??\n\nOpomba: Izberite \"Samo-za-branje\" le, če ste prepričani, da datoteke ne uporablja noben drug,\nvključno z drugo delujočo kopijo Safe Safe v vašem računalniku."
 
 #. Resource IDs: (5775)
 #, c-format
-msgid ""
-"The database:\n"
-"\n"
-"%s\n"
-"\n"
-"has duplicate entries with the same group/title/user combination. Please fix by validating database."
+msgid "The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. You can fix this by validating the database."
 msgstr ""
-"Zbirka podatkov::\n"
-"\n"
-"%s\n"
-"\n"
-"ima podvojene vnose z isto kombinacijo skupina/naslov/uporabnik. Popravite jo s Potrjevanje zbirke podatkov."
 
 #. Resource IDs: (5250)
-msgid "The entered passwords do not match.  Please re-enter them."
-msgstr "Vneseni gesli se ne ujemata.  Ponovite vnos gesel."
+msgid "The entered passwords do not match.  Please re-enter."
+msgstr ""
 
 #. Resource IDs: (61701)
 msgid "The file is too large to open."
@@ -7586,12 +6658,8 @@ msgstr "Datoteka ni bila najdena."
 
 #. Resource IDs: (3323)
 #, c-format
-msgid ""
-"The filter XML version (%d) is greater than that supported by this instance "
-"of PasswordSafe (%d)."
-msgstr ""
-"Različica filtra XML (%d) je novejša od tiste, ki jo podpira ta primerek "
-"Password Safe (%d)."
+msgid "The filter XML version (%d) is greater than that supported by this instance of PasswordSafe (%d)."
+msgstr "Različica filtra XML (%d) je novejša od tiste, ki jo podpira ta primerek Password Safe (%d)."
 
 #. Resource IDs: (3322)
 #, c-format
@@ -7607,102 +6675,64 @@ msgid "The following ERRORS were detected and were FIXED."
 msgstr "Odkrite so bile naslednje NAPAKE in so bile POPRAVLJENE."
 
 #. Resource IDs: (3443)
-msgid ""
-"The following WARNINGS were detected - you should review and fix them "
-"manually."
-msgstr ""
-"Zaznana so bila naslednja OPOZORILA - morate jih pregledati in popraviti "
-"ročno."
+msgid "The following WARNINGS were detected - you should review and fix them manually."
+msgstr "Zaznana so bila naslednja OPOZORILA - morate jih pregledati in popraviti ročno."
 
 #. Resource IDs: (3454)
 msgid "The following attachments are not referred to by any entry."
 msgstr "Naslednje priloge ne kažejo na noben vnos."
 
 #. Resource IDs: (6055)
-msgid ""
-"The following base entries have been exported because one or more of their "
-"dependents have been included."
-msgstr ""
-"Izvoženi so bili naslednji osnovni vnosi, ker so bile vključene ena ali več "
-"njihovih odvisnosti."
+msgid "The following base entries have been exported because one or more of their dependents have been included."
+msgstr "Izvoženi so bili naslednji osnovni vnosi, ker so bile vključene ena ali več njihovih odvisnosti."
 
 #. Resource IDs: (3262)
-msgid ""
-"The following columns are unrecognized by PasswordSafe and will be ignored: "
+msgid "The following columns are unrecognized by PasswordSafe and will be ignored: "
 msgstr "GesloSafe ne priznava teh stolpcev in bodo prezrti: "
 
 #. Resource IDs: (3375)
-msgid ""
-"The following columns were recognised but only Group/Title, Username and "
-"Password will be processed:"
-msgstr ""
-"Naslednji stolpci so bili prepoznani, vendar bodo obdelani le "
-"Skupina/Naslov, Uporabniško ime in Geslo:"
+msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
+msgstr "Naslednji stolpci so bili prepoznani, vendar bodo obdelani le Skupina/Naslov, Uporabniško ime in Geslo:"
 
 #. Resource IDs: (3260)
 msgid "The following columns will be processed: "
 msgstr "Obdelani bodo naslednji stolpci: "
 
 #. Resource IDs: (3439)
-msgid ""
-"The following entries had a duplicate UUID field.  This has been corrected."
+msgid "The following entries had a duplicate UUID field.  This has been corrected."
 msgstr "Naslednji vnosi so imeli podvojen UUID polja. To je bilo popravljeno."
 
 #. Resource IDs: (3433)
 #, c-format
-msgid ""
-"The following entries had a policy name that already existed in this database but with different settings.\n"
-"A new named policy has been created with the current date/time (%ls) appended:%ls"
-msgstr ""
-"Naslednji vnosi so imeli Ime pravilnika, ki je že obstajalo v tej zbirki podatkov, vendar z različnimi nastavitvami.\n"
-"Ustvarjen je bila nov Imenovan pravilnik s trenutnim datumom/časom (%ls), dodanim:%ls"
+msgid "The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%ls) appended:%ls"
+msgstr "Naslednji vnosi so imeli Ime pravilnika, ki je že obstajalo v tej zbirki podatkov, vendar z različnimi nastavitvami.\nUstvarjen je bila nov Imenovan pravilnik s trenutnim datumom/časom (%ls), dodanim:%ls"
 
 #. Resource IDs: (3438)
 #, c-format
-msgid ""
-"The following entries had an empty Password field, which is not permitted. "
-"The password has been set to '%ls'"
-msgstr ""
-"Naslednji vnosi so imeli prazno polje Geslo, kar ni dovoljeno. Geslo je bilo"
-" nastavljeno na '%ls'"
+msgid "The following entries had an empty Password field, which is not permitted. The password has been set to '%ls'"
+msgstr "Naslednji vnosi so imeli prazno polje Geslo, kar ni dovoljeno. Geslo je bilo nastavljeno na '%ls'"
 
 #. Resource IDs: (3437)
-msgid ""
-"The following entries had an empty Title field, which is not permitted."
+msgid "The following entries had an empty Title field, which is not permitted."
 msgstr "Naslednji vnosi so imeli prazno polje Naslov, kar ni dovoljeno."
 
 #. Resource IDs: (3271)
-msgid ""
-"The following entries had an invalid Password History.  This has been "
-"rebuilt with available data.  There may be some loss of history."
-msgstr ""
-"Naslednji vnosi so imeli neveljavno Zgodovino gesel.  To je bilo obnovljeno "
-"z razpoložljivimi podatki.  Morda je je izgubljeno nekaj zgodovine."
+msgid "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
+msgstr "Naslednji vnosi so imeli neveljavno Zgodovino gesel.  To je bilo obnovljeno z razpoložljivimi podatki.  Morda je je izgubljeno nekaj zgodovine."
 
 #. Resource IDs: (3270)
-msgid ""
-"The following entries had an invalid UUID field.  This has been corrected."
-msgstr ""
-"Naslednji vnosi so imeli neveljavno polje UUID.  To je bilo popravljeno."
+msgid "The following entries had an invalid UUID field.  This has been corrected."
+msgstr "Naslednji vnosi so imeli neveljavno polje UUID.  To je bilo popravljeno."
 
 #. Resource IDs: (3390)
 #, c-format
-msgid ""
-"The following entries have one or more text fields too long to display or "
-"edit (over %d characters).  The largest entry size found was ~%d %ls."
-msgstr ""
-"Naslednji vnosi imajo eno ali več besedilnih polj, ki so predolga za prikaz "
-"ali urejanje (več kot %d znakov).  Najdena je bila največja velikost vnosa "
-"~%d %ls."
+msgid "The following entries have one or more text fields too long to display or edit (over %d characters).  The largest entry size found was ~%d %ls."
+msgstr "Naslednji vnosi imajo eno ali več besedilnih polj, ki so predolga za prikaz ali urejanje (več kot %d znakov).  Najdena je bila največja velikost vnosa ~%d %ls."
 
 #. Resource IDs: (3441)
 #, c-format
-msgid ""
-"The following entries have passwords in the correct form for %ls, but the "
-"base entry does not exist."
-msgstr ""
-"Naslednji vnosi imajo gesla v pravilni obliki za %ls, vendar pa osnovni vnos"
-" ne obstaja."
+msgid "The following entries have passwords in the correct form for %ls, but the base entry does not exist."
+msgstr "Naslednji vnosi imajo gesla v pravilni obliki za %ls, vendar pa osnovni vnos ne obstaja."
 
 #. Resource IDs: (3453)
 msgid "The following entries refer to missing attachments."
@@ -7713,9 +6743,7 @@ msgid "The following entries were duplicates of an existing entry."
 msgstr "Naslednji vnosi so bili dvojniki obstoječega vnosa."
 
 #. Resource IDs: (65535)
-msgid ""
-"The following entries' passwords are about to expire or have already "
-"expired:"
+msgid "The following entries' passwords are about to expire or have already expired:"
 msgstr "Naslednja gesla vnosov gesla bodo kmalu potekla ali so že potekla:"
 
 #. Resource IDs: (5481)
@@ -7733,12 +6761,8 @@ msgid "The following records had errors in their Password History:"
 msgstr "Naslednji zapisi so imeli napake v njihovi Zgodovini gesla:"
 
 #. Resource IDs: (5786)
-msgid ""
-"The following records were renamed as an entry already exists in your "
-"database or in the Import file:"
-msgstr ""
-"Naslednji zapisi so bili preimenovani kot vnos, ki že obstaja v vaši zbirki "
-"podatkov ali v uvozni datoteki:"
+msgid "The following records were renamed as an entry already exists in your database or in the Import file:"
+msgstr "Naslednji zapisi so bili preimenovani kot vnos, ki že obstaja v vaši zbirki podatkov ali v uvozni datoteki:"
 
 #. Resource IDs: (5785)
 msgid "The following records were skipped:"
@@ -7746,25 +6770,13 @@ msgstr "Naslednji zapisi so bili preskočeni:"
 
 #. Resource IDs: (5951)
 #, c-format
-msgid ""
-"The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\n"
-"The %s will override this menu item shortcut.\n"
-"Press OK/Apply to accept or change your selection."
-msgstr ""
-"Tipka bližnjice '%s' je že bila dodeljena menijskem vnosu:\t'%s'\n"
-"%s bo preglasil bližnjico menijskega vnosa.\n"
-"Pritisnite Vredu/Uporabi, da uporabite ali spremenite svoj izbor."
+msgid "The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\nThe %s will override this menu item shortcut.\nPress OK/Apply to accept or change your selection."
+msgstr "Tipka bližnjice '%s' je že bila dodeljena menijskem vnosu:\t'%s'\n%s bo preglasil bližnjico menijskega vnosa.\nPritisnite Vredu/Uporabi, da uporabite ali spremenite svoj izbor."
 
 #. Resource IDs: (5950)
 #, c-format
-msgid ""
-"The keyboard shortcut '%s' is already in use by:\n"
-"\t«%s» «%s» «%s»\n"
-"Please select another shortcut (it has been reset)."
+msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nSelect another shortcut (it has been reset)."
 msgstr ""
-"Bližnjico s tipkovnico '%s' je že v uporabi z:\n"
-"\t«%s» «%s» «%s»\n"
-"Izberite drugo bližnjico (ta je bila ponastavljena)."
 
 #. Resource IDs: (5279)
 msgid "The master password cannot be blank."
@@ -7772,33 +6784,13 @@ msgstr "Glavno geslo ne more biti prazno."
 
 #. Resource IDs: (5958)
 #, c-format
-msgid ""
-"The master password has been entered %d times without success:\n"
-"- Is Caps Lock off?\n"
-"- Is the language correct (if multilingual)?\n"
-"- Is this the correct database?\n"
-"- Perhaps the database was damaged. Try opening a backup copy."
-msgstr ""
-"Glavno geslo je bilo vneseno %d brez uspeha:\n"
-"- Je Caps Lock izklopljen?\n"
-"- Je jezik pravilen (če je večjezični)?\n"
-"- Je to pravilna zbirka podatkov?\n"
-"- Morda je bila zbirka podatkov poškodovana. Poskusite odpreti varnostno kopijo."
+msgid "The master password has been entered %d times without success:\n- Is Caps Lock off?\n- Is the language correct (if multilingual)?\n- Is this the correct database?\n- Perhaps the database was damaged. Try opening a backup copy."
+msgstr "Glavno geslo je bilo vneseno %d brez uspeha:\n- Je Caps Lock izklopljen?\n- Je jezik pravilen (če je večjezični)?\n- Je to pravilna zbirka podatkov?\n- Morda je bila zbirka podatkov poškodovana. Poskusite odpreti varnostno kopijo."
 
 #. Resource IDs: (5792)
 #, c-format
-msgid ""
-"The notes field of this entry has more text than can be displayed. Changing "
-"this field and saving the entry will result in this field being truncated "
-"after %d characters.  To view the full contents, either export this entry to"
-" XML before changing it or open the database in read-only mode and copy it "
-"to an editor via the clipboard."
-msgstr ""
-"V polju Opombe tega vnosa je več besedila, kot ga je mogoče prikazati. "
-"Spreminjanje tega polja in shranjevanje vnosa, bo povzročilo odsekan "
-"rezultat v tem polju po %d znakih.  Za ogled celotne vsebine, bodisi "
-"izvozite ta vnos v XML, preden ga spremenite ali odprite zbirko podatkov v "
-"načinu samo-za- branje, in ga kopirajte v urejevalnik prek odložišča."
+msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either export this entry to XML before changing it or open the database in read-only mode and copy it to an editor via the clipboard."
+msgstr "V polju Opombe tega vnosa je več besedila, kot ga je mogoče prikazati. Spreminjanje tega polja in shranjevanje vnosa, bo povzročilo odsekan rezultat v tem polju po %d znakih.  Za ogled celotne vsebine, bodisi izvozite ta vnos v XML, preden ga spremenite ali odprite zbirko podatkov v načinu samo-za- branje, in ga kopirajte v urejevalnik prek odložišča."
 
 #. Resource IDs: (5284)
 msgid "The old master password is not correct"
@@ -7806,87 +6798,49 @@ msgstr "Staro glavno geslo ni pravilno"
 
 #. Resource IDs: (5323)
 #, c-format
-msgid ""
-"The original database, \"%s\", is in pre-3.0 format. The data will now be "
-"written in the new format, which is unusable by old versions of "
-"PasswordSafe. To save the data in the old format, use \"File->Export To->Old"
-" (1.x or 2) format\"."
-msgstr ""
-"Izvirna zbirka podatkov, \"%s\", je v obliki pred formatom 3.0. Podatki bodo"
-" zdaj zapisani v novem formatu, ki je neuporaben za stare različice Password"
-" Safe. Za shranjevanje podatkov v starem formatu uporabite "
-"\"Datoteka->Izvozi v->Star (1.x ali 2) format\"."
+msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use \"File->Export To->Old (1.x or 2) format\"."
+msgstr "Izvirna zbirka podatkov, \"%s\", je v obliki pred formatom 3.0. Podatki bodo zdaj zapisani v novem formatu, ki je neuporaben za stare različice Password Safe. Za shranjevanje podatkov v starem formatu uporabite \"Datoteka->Izvozi v->Star (1.x ali 2) format\"."
 
 #. Resource IDs: (5465)
 #, c-format
-msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not "
-"supported."
-msgstr ""
-"Navedeni vnos '%s:%s:%s' je njegovo kratko ime ali bližnjica. To ni podprto."
+msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+msgstr "Navedeni vnos '%s:%s:%s' je njegovo kratko ime ali bližnjica. To ni podprto."
 
 #. Resource IDs: (5770)
-msgid ""
-"The selected Failsafe Backup file will be opened instead of selected "
-"database."
-msgstr ""
-"Izbrana datoteka neuspele varnostne kopije bo odprta namesto izbrane zbirke "
-"podatkov."
+msgid "The selected Failsafe Backup file will be opened instead of selected database."
+msgstr "Izbrana datoteka neuspele varnostne kopije bo odprta namesto izbrane zbirke podatkov."
 
 #. Resource IDs: (5970)
-msgid ""
-"The selected output format does not support all features of the current "
-"database. If these features are used, information may be lost. Continue?"
-msgstr ""
-"Izbran izhodni format ne podpira vseh funkcij trenutne zbirke podatkov. Če "
-"so uporabljene te funkcije lahko pride do izgube podatkov. Nadaljujem?"
+msgid "The selected output format does not support all features of the current database. If these features are used, information may be lost. Continue?"
+msgstr "Izbran izhodni format ne podpira vseh funkcij trenutne zbirke podatkov. Če so uporabljene te funkcije lahko pride do izgube podatkov. Nadaljujem?"
 
 #. Resource IDs: (5254)
 msgid "The two entries do not match."
 msgstr "Dva vnosa se ne ujemata."
 
 #. Resource IDs: (3366)
-msgid ""
-"The user specified that the following fields be excluded from the export:"
+msgid "The user specified that the following fields be excluded from the export:"
 msgstr "Uporabnik je določil, da bodo naslednja polja izključena iz izvoza:"
 
 #. Resource IDs: (5505)
-msgid ""
-"There are more than one entry that fits your selection. Please be more "
-"specific."
+msgid "There are more than one entry that fits your selection. Be more specific."
 msgstr ""
-"Obstaja več kot en vnos, ki ustreza vašemu izboru. Prosimo, bodite bolj "
-"natančni."
 
 #. Resource IDs: (3358)
 msgid "There are unmatched quotes in the run command"
 msgstr "V ukazu Zaženi niso pravilno postavljeni narekovaji"
 
 #. Resource IDs: (5767)
-msgid ""
-"There does not appear to be a Recycle Bin on the media containing this "
-"Failsafe Backup file. You will not be able to undo deletes. Do you wish to "
-"continue?"
-msgstr ""
-"Ni videti, da bi bil Koš na mediju, ki vsebuje to datoteko neuspele "
-"varnostne kopije. Brisanja ne boste mogli razveljaviti. Ali želite "
-"nadaljevati?"
+msgid "There does not appear to be a Recycle Bin on the media containing this Failsafe Backup file. You will not be able to undo deletes. Do you wish to continue?"
+msgstr "Ni videti, da bi bil Koš na mediju, ki vsebuje to datoteko neuspele varnostne kopije. Brisanja ne boste mogli razveljaviti. Ali želite nadaljevati?"
 
 #. Resource IDs: (62181)
-msgid ""
-"These are more recently saved than the currently open documents and contain "
-"changes that were made before the application closed."
-msgstr ""
-"To so nedavno shranjeni od trenutno odprtih dokumentov in vsebujejo "
-"spremembe, ki so bile narejene pred zapiranjem programa."
+msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
+msgstr "To so nedavno shranjeni od trenutno odprtih dokumentov in vsebujejo spremembe, ki so bile narejene pred zapiranjem programa."
 
 #. Resource IDs: (5954)
-msgid ""
-"This Hotkey value is not available as it is already assigned to the "
-"PasswordSafe application (Manage->Options->Shortcuts)."
-msgstr ""
-"Ta vrednost vroče tipke ni na voljo, ker je že dodeljena v programu Password"
-" Safe (Upravljaj->Možnosti->Bližnjice)."
+msgid "This Hotkey value is not available as it is already assigned to the PasswordSafe application (Manage->Options->Shortcuts)."
+msgstr "Ta vrednost vroče tipke ni na voljo, ker je že dodeljena v programu Password Safe (Upravljaj->Možnosti->Bližnjice)."
 
 #. Resource IDs: (5499)
 #, c-format
@@ -7903,25 +6857,13 @@ msgstr "Ta vnos je bil spremenjen. Ali ste prepričani, da želite preklicati?"
 
 #. Resource IDs: (3404)
 #, c-format
-msgid ""
-"This entry has the following %d %ls:\n"
-"%ls\n"
-"Please confirm to continue (All shortcuts to this entry will be deleted)?"
+msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
 msgstr ""
-"Ta vnos ima naslednje %d %ls:\n"
-"%ls\n"
-"Potrdite, če želite nadaljevati (Vse bližnjice do tega vnosa bodo izbrisane)?"
 
 #. Resource IDs: (3403)
 #, c-format
-msgid ""
-"This entry has the following %d %ls:\n"
-"%ls\n"
-"Please confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
+msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (alias entry's passwords will be replaced by this entry's password)?"
 msgstr ""
-"Ta vnos ima naslednje %d %ls:\n"
-"%ls\n"
-"Potrdite, če želite nadaljevati (kratka imena gesel vnosa bodo zamenjana z geslom tega vnosa)?"
 
 #. Resource IDs: (5248)
 msgid "This entry must have a password."
@@ -7944,12 +6886,8 @@ msgid "This index is currently in use. Please select another."
 msgstr "Ta indeks je trenutno v uporabi. Prosimo, izberite drugega."
 
 #. Resource IDs: (8170)
-msgid ""
-"This is a DeadKey. Press it and then one of the combined keys then shown to "
-"add that new character to the Passphrase."
-msgstr ""
-"To je MrtvaTipka. Pritisnite to tipko, nato pa eno od kombiniranih tipk, ki "
-"so nato prikazane, da dodate novi znak v Geslo."
+msgid "This is a DeadKey. Press it and then one of the combined keys then shown to add that new character to the Passphrase."
+msgstr "To je MrtvaTipka. Pritisnite to tipko, nato pa eno od kombiniranih tipk, ki so nato prikazane, da dodate novi znak v Geslo."
 
 #. Resource IDs: (5703)
 msgid "This is a shortcut base entry."
@@ -7968,38 +6906,23 @@ msgid "This is an alias of:"
 msgstr "To je kratko ime:"
 
 #. Resource IDs: (6115)
-msgid ""
-"This is the current authentication code. Click the button to copy it to the "
-"clipboard."
-msgstr ""
-"To je trenutna avtentikacijska koda. Klinite gumb, da kopirate v odložišče."
+msgid "This is the current authentication code. Click the button to copy it to the clipboard."
+msgstr "To je trenutna avtentikacijska koda. Klinite gumb, da kopirate v odložišče."
 
 #. Resource IDs: (5121)
 #, c-format
-msgid ""
-"This is the percentage of Window transparency. 0% means normal fully opaque "
-"and 100% is totally transparent and invisible. Values greater than 50% are "
-"not supported. Note: This only applies to the main dialog window."
-msgstr ""
-"Odstotek prosojnosti okna.  0 % pomeni normalno povsem neprosojno in 100 % "
-"povsem prosojno in nevidno. Večje vrednosti od 50 % niso podprte. Opomba: To"
-" velja samo za glavno pogovorno okno."
+msgid "This is the percentage of Window transparency. 0% means normal fully opaque and 100% is totally transparent and invisible. Values greater than 50% are not supported. Note: This only applies to the main dialog window."
+msgstr "Odstotek prosojnosti okna.  0 % pomeni normalno povsem neprosojno in 100 % povsem prosojno in nevidno. Večje vrednosti od 50 % niso podprte. Opomba: To velja samo za glavno pogovorno okno."
 
 #. Resource IDs: (61710)
 #, c-format
-msgid ""
-"This program is linked to the missing export %Ts in the file %Ts. This "
-"machine may have an incompatible version of %Ts."
-msgstr ""
-"Ta program je povezan z manjkajočim izvozom% Ts v datoteko %Ts. Ta naprava "
-"ima morda nezdružljivo različico %Ts."
+msgid "This program is linked to the missing export %Ts in the file %Ts. This machine may have an incompatible version of %Ts."
+msgstr "Ta program je povezan z manjkajočim izvozom% Ts v datoteko %Ts. Ta naprava ima morda nezdružljivo različico %Ts."
 
 #. Resource IDs: (61709)
 #, c-format
-msgid ""
-"This program requires the file %Ts, which was not found on this system."
-msgstr ""
-"Ta program zahteva datoteko %Ts, ki je ni bilo mogoče najti v tem sistemu."
+msgid "This program requires the file %Ts, which was not found on this system."
+msgstr "Ta program zahteva datoteko %Ts, ki je ni bilo mogoče najti v tem sistemu."
 
 #. Resource IDs: (5500)
 #, c-format
@@ -8007,59 +6930,33 @@ msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
 msgstr "Ta cilj bližnjice [%s:%s:%s] ni normalni vnos."
 
 #. Resource IDs: (5110)
-msgid ""
-"This will allow you to migrate your settings from the configuration file in "
-"the Password Safe installation directory into a file in your own local "
-"Application Data directory at the next invocation of PasswordSafe."
-msgstr ""
-"To vam bo dovolilo selitev vaših nastavitev iz konfiguracijske datoteke (ki "
-"se nahaja v imeniku nameščenega Password Safe), v datoteko na lokaciji "
-"vašega lastnega imenika Application Data, ob naslednjem pozivu Password "
-"Safe."
+msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."
+msgstr "To vam bo dovolilo selitev vaših nastavitev iz konfiguracijske datoteke (ki se nahaja v imeniku nameščenega Password Safe), v datoteko na lokaciji vašega lastnega imenika Application Data, ob naslednjem pozivu Password Safe."
 
 #. Resource IDs: (1071)
 msgid "This will be a shortcut to base entry:"
 msgstr "To bo bližnjica do osnovnega vnosa:"
 
 #. Resource IDs: (6047)
-msgid ""
-"This will cancel the edit of the Notes field but leaving it in your external"
-" editor and on disk. Do you wish to cancel?"
-msgstr ""
-"To bo preklicalo urejanje polja Opombe, vendar ga bo pustilo v vašem "
-"zunanjem urejevalniku in na disku. Ali želite preklicati?"
+msgid "This will cancel the edit of the Notes field but leaving it in your external editor and on disk. Do you wish to cancel?"
+msgstr "To bo preklicalo urejanje polja Opombe, vendar ga bo pustilo v vašem zunanjem urejevalniku in na disku. Ali želite preklicati?"
 
 #. Resource IDs: (5103)
-msgid ""
-"This will clear all traces of Password Safe from the machine's registry. It "
-"may also cause old versions of Password Safe to revert to default values for"
-" some settings."
-msgstr ""
-"To bo počistilo vse sledi Password Safe iz Registra naprave. Lahko tudi "
-"povzroči, da se za stare različice programa Password Safe, za nekatere "
-"nastavitve, povrnejo privzete vrednosti."
+msgid "This will clear all traces of Password Safe from the machine's registry. It may also cause old versions of Password Safe to revert to default values for some settings."
+msgstr "To bo počistilo vse sledi Password Safe iz Registra naprave. Lahko tudi povzroči, da se za stare različice programa Password Safe, za nekatere nastavitve, povrnejo privzete vrednosti."
 
 #. Resource IDs: (5445)
 #, c-format
-msgid ""
-"This will delete %d entries which are within this group and its subgroups."
-msgstr ""
-"To bo izbrisalo %d vnosov, ki so znotraj te skupine in/ali njenih podskupin."
+msgid "This will delete %d entries which are within this group and its subgroups."
+msgstr "To bo izbrisalo %d vnosov, ki so znotraj te skupine in/ali njenih podskupin."
 
 #. Resource IDs: (5444)
-msgid ""
-"This will delete an entry which is within this group and/or its subgroups."
-msgstr ""
-"To bo izbrisalo vnos, ki je znotraj te skupine in/ali njenih podskupin."
+msgid "This will delete an entry which is within this group and/or its subgroups."
+msgstr "To bo izbrisalo vnos, ki je znotraj te skupine in/ali njenih podskupin."
 
 #. Resource IDs: (5769)
-msgid ""
-"This will delete the selected Failsafe Backup file.  If the current drive "
-"has a Recycle Bin, it will be moved there. If not, it will be permanently "
-"deleted."
-msgstr ""
-"To bo izbrisalo izbrano datoteko neuspele varnostne kopije.  Če je na "
-"trenutnem pogonu Koš, bo ta premaknjena vanj. Če ne, bo trajno izbrisana."
+msgid "This will delete the selected Failsafe Backup file.  If the current drive has a Recycle Bin, it will be moved there. If not, it will be permanently deleted."
+msgstr "To bo izbrisalo izbrano datoteko neuspele varnostne kopije.  Če je na trenutnem pogonu Koš, bo ta premaknjena vanj. Če ne, bo trajno izbrisana."
 
 #. Resource IDs: (5289)
 #, c-format
@@ -8083,32 +6980,16 @@ msgid "Title:"
 msgstr "Naslov:"
 
 #. Resource IDs: (1525)
-msgid ""
-"To add a new entry, simply fill in the fields below. At least a title and a "
-"password are required. If you have set a default username, it will appear in"
-" the username field."
-msgstr ""
-"Za dodajanje novega vnosa, preprosto izpolnite spodnja polja. Potrebujete "
-"vsaj naslov in geslo. Če ste nastavili privzeto uporabniško ime, bo to "
-"prikazano v polju Uporabniško ime."
+msgid "To add a new entry, simply fill in the fields below. At least a title and a password are required. If you have set a default username, it will appear in the username field."
+msgstr "Za dodajanje novega vnosa, preprosto izpolnite spodnja polja. Potrebujete vsaj naslov in geslo. Če ste nastavili privzeto uporabniško ime, bo to prikazano v polju Uporabniško ime."
 
 #. Resource IDs: (3373)
-msgid ""
-"To replace passwords of existing entries, all the following columns must be "
-"present: Group/Title, Username and Password.  One or more are missing and no"
-" entries have been updated."
-msgstr ""
-"Za zamenjavo gesel obstoječih vnosov, morajo biti prisotni vsi naslednji "
-"stolpci: Skupina/Naslov, Uporabniško ime in Geslo.  Eden ali več manjka in "
-"nobeni vnosi niso bili posodobljeni."
+msgid "To replace passwords of existing entries, all the following columns must be present: Group/Title, Username and Password.  One or more are missing and no entries have been updated."
+msgstr "Za zamenjavo gesel obstoječih vnosov, morajo biti prisotni vsi naslednji stolpci: Skupina/Naslov, Uporabniško ime in Geslo.  Eden ali več manjka in nobeni vnosi niso bili posodobljeni."
 
 #. Resource IDs: (5802)
-msgid ""
-"To unprotect this entry, click on Close, use the Edit menu or right-click on"
-" the entry and select Unprotect."
-msgstr ""
-"Za odstranitev zaščite tega vnosa kliknite na Zapri, uporabite meni Urejanje"
-" ali z desno tipko miške kliknite na vnos in izberite Odstrani zaščito."
+msgid "To unprotect this entry, click on Close, use the Edit menu or right-click on the entry and select Unprotect."
+msgstr "Za odstranitev zaščite tega vnosa kliknite na Zapri, uporabite meni Urejanje ali z desno tipko miške kliknite na vnos in izberite Odstrani zaščito."
 
 #. Resource IDs: (32106 - MenuEx)
 msgid "Toolbar &visible"
@@ -8123,21 +7004,13 @@ msgid "Tree1"
 msgstr "Drevo1"
 
 #. Resource IDs: (3317)
-msgid ""
-"Trouble reading stored filters (version mismatch?). Filters will be "
-"unusable."
-msgstr ""
-"Težave pri branju shranjenih filtrov (neujemanje različic?). Filtri bodo "
-"neuporabni."
+msgid "Trouble reading stored filters (version mismatch?). Filters will be unusable."
+msgstr "Težave pri branju shranjenih filtrov (neujemanje različic?). Filtri bodo neuporabni."
 
 #. Resource IDs: (3246)
 #, c-format
-msgid ""
-"Trouble with a non-textual (e.g., time) field in record '%ls' - please check"
-" data carefully."
-msgstr ""
-"Težave z ne besedilnim poljem (npr. čas) v zapisu '%ls' - prosimo, da "
-"previdno preverite podatke."
+msgid "Trouble with a non-textual (e.g., time) field in record '%ls' - please check data carefully."
+msgstr "Težave z ne besedilnim poljem (npr. čas) v zapisu '%ls' - prosimo, da previdno preverite podatke."
 
 #. Resource IDs: (5475)
 msgid "Trying to contact server..."
@@ -8188,18 +7061,8 @@ msgid "Ukrainian (Enhanced)"
 msgstr "Ukrajinščina (okrepljena)"
 
 #. Resource IDs: (3029)
-msgid ""
-"Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n"
-"\n"
-"All application configuration settings will be saved in your registry entry on this computer.\n"
-"\n"
-"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"Nove XML konfiguracijske datoteke ni mogoče ustvariti ali dodati vaše nastavitve v obstoječo XML konfiguracijsko datoteko.\n"
-"\n"
-"Vsie nastavitve konfiguracije aplikacije bodo shranjene v vaš vnos registra v tem računalniku.\n"
-"\n"
-"Nastavitve, povezane z zbirko podatkov, bodo shranjene v odprti zbirki podatkov, ko bo ta zaprta, ob predpostavki, da ni samo-za-branje ali pa zaklenjena s strani drugega uporabnika."
+msgid "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr "Nove XML konfiguracijske datoteke ni mogoče ustvariti ali dodati vaše nastavitve v obstoječo XML konfiguracijsko datoteko.\n\nVsie nastavitve konfiguracije aplikacije bodo shranjene v vaš vnos registra v tem računalniku.\n\nNastavitve, povezane z zbirko podatkov, bodo shranjene v odprti zbirki podatkov, ko bo ta zaprta, ob predpostavki, da ni samo-za-branje ali pa zaklenjena s strani drugega uporabnika."
 
 #. Resource IDs: (5385)
 #, c-format
@@ -8211,25 +7074,13 @@ msgid "Unable to display URL"
 msgstr "Ni možen prikaz URL naslova"
 
 #. Resource IDs: (3028)
-msgid ""
-"Unable to get configuration file lock.\n"
-"\n"
-"Will use registry."
-msgstr ""
-"Ni mogoče dobiti zaklepanja konfiguracijske datoteke.\n"
-"\n"
-"Uporabljen bo register."
+msgid "Unable to get configuration file lock.\n\nWill use registry."
+msgstr "Ni mogoče dobiti zaklepanja konfiguracijske datoteke.\n\nUporabljen bo register."
 
 #. Resource IDs: (5630)
 #, c-format
-msgid ""
-"Unable to import \"autoload_filters.xml\" filters.\n"
-"\n"
-"%s"
-msgstr ""
-"Filtrov \"autoload_filters.xml\" ni mogoče uvoziti.\n"
-"\n"
-"%s"
+msgid "Unable to import \"autoload_filters.xml\" filters.\n\n%s"
+msgstr "Filtrov \"autoload_filters.xml\" ni mogoče uvoziti.\n\n%s"
 
 #. Resource IDs: (3050)
 msgid "Unable to load configuration file"
@@ -8265,31 +7116,16 @@ msgid "Unable to send Email"
 msgstr "E-pošte ni mogoče poslati"
 
 #. Resource IDs: (3030)
-msgid ""
-"Unable to update your entries in the existing XML configuration file.\n"
-"\n"
-"All application configuration settings will be loaded from this file but no changes will be saved.\n"
-"\n"
-"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"Vnosov v obstoječi konfiguracijski datoteki XML ni mogoče posodobiti.\n"
-"\n"
-"Vse konfiguracijske nastavitve aplikacije bodo naložene iz te datoteke vendar, nobena sprememba ne bo shranjena.\n"
-"\n"
-"Nastavitve, povezane z zbirko podatkov, bodo shranjene v odprti zbirki podatkov, ko bo ta zaprta, ob predpostavki, da ni samo-za-branje ali pa zaklenjena s strani drugega uporabnika."
+msgid "Unable to update your entries in the existing XML configuration file.\n\nAll application configuration settings will be loaded from this file but no changes will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr "Vnosov v obstoječi konfiguracijski datoteki XML ni mogoče posodobiti.\n\nVse konfiguracijske nastavitve aplikacije bodo naložene iz te datoteke vendar, nobena sprememba ne bo shranjena.\n\nNastavitve, povezane z zbirko podatkov, bodo shranjene v odprti zbirki podatkov, ko bo ta zaprta, ob predpostavki, da ni samo-za-branje ali pa zaklenjena s strani drugega uporabnika."
 
 #. Resource IDs: (3047)
-msgid ""
-"Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 "
-"seems available."
-msgstr ""
-"Bralnika MS XML ni mogoče uporabiti v vašem sistemu.  Videti je, da niti MS "
-"XML v3, v4 ali V6 ni na voljo."
+msgid "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
+msgstr "Bralnika MS XML ni mogoče uporabiti v vašem sistemu.  Videti je, da niti MS XML v3, v4 ali V6 ni na voljo."
 
 #. Resource IDs: (3042)
 msgid "Unable to validate a XML file using a XML Schema (XSD) on your system."
-msgstr ""
-"Datoteke XML ni mogoče potrditi z uporabo XML sheme (XSD) v vašem sistemu."
+msgstr "Datoteke XML ni mogoče potrditi z uporabo XML sheme (XSD) v vašem sistemu."
 
 #. Resource IDs: (61837)
 msgid "Unable to write read-only property."
@@ -8298,8 +7134,7 @@ msgstr "Lastnosti» 'samo-za-branje' ni mogoče zapisati."
 #. Resource IDs: (61732)
 #, c-format
 msgid "Unable to write to %1, it is read-only or opened by someone else."
-msgstr ""
-"Ni mogoče zapisati v %1. Je samo-za-branje ali pa jo je odprl nekdo drug."
+msgstr "Ni mogoče zapisati v %1. Je samo-za-branje ali pa jo je odprl nekdo drug."
 
 #. Resource IDs: (62177)
 msgid "Uncheck"
@@ -8361,9 +7196,6 @@ msgstr "Odkleni"
 msgid "Unlock Difficulty"
 msgstr "Težavnost pri odklepanju"
 
-msgid "Unlock Safe"
-msgstr "Odkleni sef"
-
 #. Resource IDs: (32091 - MenuEx)
 msgid "Unprotect All Entries"
 msgstr "Odstrani zaščito vseh vnosov"
@@ -8382,12 +7214,8 @@ msgstr "Neshranjene spremembe"
 
 #. Resource IDs: (5724)
 #, c-format
-msgid ""
-"Unsaved changes have been made to database:\n"
-" %s."
-msgstr ""
-"Neshranjene spremembe so bile narejene v zbirki podatkov:n\n"
-" %s."
+msgid "Unsaved changes have been made to database:\n %s."
+msgstr "Neshranjene spremembe so bile narejene v zbirki podatkov:n\n %s."
 
 #. Resource IDs: (6024)
 msgid "Unsaved restored database"
@@ -8411,50 +7239,8 @@ msgid "Urdu"
 msgstr "Urdujščina"
 
 #. Resource IDs: (5000)
-msgid ""
-"Usage:\n"
-"pwsafe [-r|-v] [password database]\n"
-"or pwsafe [-e|-d] filename\n"
-"or pwsafe [-c]\n"
-"or pwsafe [-s] [password database]\n"
-"or pwsafe -m\n"
-"\n"
-" where:\n"
-"  -r = open read-only\n"
-"  -v = validate & repair\n"
-"  -e/d = encrypt/decrypt file\n"
-"  -c = start closed i.e., no open database\n"
-"  -s = start silently (minimized)\n"
-"  -m = start minimized & closed\n"
-"\n"
-"In addition, the following flags may be used:\n"
-" -u user (use user's preferences instead of login name)\n"
-" -h host (use host to look up preferences instead of the machine's name)\n"
-" -g config_file (use config_file instead of pwsafe.cfg)\n"
-" -q (don't complain about missing fonts, dlls, etc.)\n"
-"See online help for more options."
-msgstr ""
-"Uporaba: \n"
-"pwsafe [-r|-v] [geslo zbrike podatkov]\n"
-"ali pwsafe [-e|-d] ime datoteke\n"
-"ali pwsafe [-c]\n"
-"ali pwsafe [-s] [geslo zbirke podatkov]\n"
-"ali pwsafe -m\n"
-"\n"
-" kjer:\n"
-"  -r = Odpri samo-za-branje\n"
-" -v = preveri in popravi\n"
-"  -e/d = šifriraj/dešifriraj datoteko\n"
-"  -c = začni zaprto, npr. ne odpri zbirko podatkov\n"
-"  -s = začni tiho (pomanjšano)\n"
-"  -m = začni pomanjšano in zaprto\n"
-"\n"
-"Poleg tega se lahko uporabijo naslednje zastavice:\n"
-" -u uporabnik (uporabi uporabnika namesto imena za prijavo)\n"
-" -h gostitelj (uporabi nastavitve gostitelja namesto imena naprave )\n"
-" -g konfiguracijska datoteka (uporabi konfiguracijsko datoteko namesto pwsafe.cfg)\n"
-" -q (ne pritožujej se zaradi manjkajočih pisav, DLL-jev itd.)\n"
-"Za več možnosti si oglejte spletno pomoč."
+msgid "Usage:\npwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nSee online help for more options."
+msgstr "Uporaba: \npwsafe [-r|-v] [geslo zbrike podatkov]\nali pwsafe [-e|-d] ime datoteke\nali pwsafe [-c]\nali pwsafe [-s] [geslo zbirke podatkov]\nali pwsafe -m\n\n kjer:\n  -r = Odpri samo-za-branje\n -v = preveri in popravi\n  -e/d = šifriraj/dešifriraj datoteko\n  -c = začni zaprto, npr. ne odpri zbirko podatkov\n  -s = začni tiho (pomanjšano)\n  -m = začni pomanjšano in zaprto\n\nPoleg tega se lahko uporabijo naslednje zastavice:\n -u uporabnik (uporabi uporabnika namesto imena za prijavo)\n -h gostitelj (uporabi nastavitve gostitelja namesto imena naprave )\n -g konfiguracijska datoteka (uporabi konfiguracijsko datoteko namesto pwsafe.cfg)\n -q (ne pritožujej se zaradi manjkajočih pisav, DLL-jev itd.)\nZa več možnosti si oglejte spletno pomoč."
 
 #. Resource IDs: (1029)
 msgid "Use"
@@ -8483,9 +7269,6 @@ msgstr "Uporabi &simbole (npr., &, %, $, itd.)"
 #. Resource IDs: (1048)
 msgid "Use &UPPERCASE letters"
 msgstr "Uporabi &VELIKE črke"
-
-msgid "Use Database Policy"
-msgstr "Uporabi pravilnik zbirke podatkov"
 
 #. Resource IDs: (1476, 1481)
 msgid "Use Named Policy"
@@ -8557,14 +7340,8 @@ msgstr "Potrdi"
 
 #. Resource IDs: (5347)
 #, c-format
-msgid ""
-"Validated %d %s\n"
-"\n"
-"Imported %d %s"
-msgstr ""
-"Potrjeno %d %s\n"
-"\n"
-"Uvoženo %d %s"
+msgid "Validated %d %s\n\nImported %d %s"
+msgstr "Potrjeno %d %s\n\nUvoženo %d %s"
 
 #. Resource IDs: (5891)
 msgid "Value"
@@ -8590,16 +7367,9 @@ msgstr "Ime spremenljivke mora biti alfanumerično"
 msgid "Verify Key:"
 msgstr "Preveri ključ:"
 
-msgid "Verify:"
-msgstr "Preveri:"
-
 #. Resource IDs: (5690)
-msgid ""
-"Version mismatch with On Screen Keyboard DLL. Please install version that "
-"came with this version of Password Safe."
+msgid "Version mismatch with On Screen Keyboard DLL. Please install the dll that came with this version of Password Safe."
 msgstr ""
-"Različica se ne ujema z On Screen Keyboard DLL. Prosim namestite različico, "
-"ki je prišla s to različico Password Safe."
 
 #. Resource IDs: (8236)
 msgid "Vietnamese"
@@ -8642,34 +7412,22 @@ msgstr "Prikaz/Urejanje izbranega vnosa"
 msgid "Visit Password Safe &website..."
 msgstr "O&bišči spletno stran Password Safe..."
 
-#. Resource IDs: (5803)
-msgid ""
-"WARNING: If you continue, fields will be updated in entries in your existing"
-" database from your selected input database."
+#. Resource IDs: (5489)
+msgid "Visit the <a href=\"https://pwsafe.org/\">Password Safe website.</a>"
 msgstr ""
-"OPOZORILO: Če nadaljujete, bodo polja posodobljena v vnosih vaše obstoječe "
-"zbirke podatkov iz vaše izbrane vhodne zbirke podatkov."
+
+#. Resource IDs: (5803)
+msgid "WARNING: If you continue, fields will be updated in entries in your existing database from your selected input database."
+msgstr "OPOZORILO: Če nadaljujete, bodo polja posodobljena v vnosih vaše obstoječe zbirke podatkov iz vaše izbrane vhodne zbirke podatkov."
 
 #. Resource IDs: (5804)
 #, c-format
-msgid ""
-"WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n"
-"\n"
-"Please do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
+msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n\nDo not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
 msgstr ""
-"OPOZORILO: Ta operacija bo ustvarila nezaščiteno kopijo %s v zbirki podatkov. Brisanje te kopije po uporabi NI zadostno.\n"
-"\n"
-"Prosimo, ne uporabljajte te možnosti, razen če razumete kaj počnete in sprejmete tveganja. Ta možnost zaobide varnost, ki jo zagotavlja ta program."
 
 #. Resource IDs: (5447)
-msgid ""
-"WARNING: Use of an external editor may leave sensitive data on your hard disk.\n"
-"\n"
-"Do you wish to continue?"
-msgstr ""
-"OPOZORILO: Uporaba zunanjega urejevalnika lahko pusti občutljive podatke na vašem trdem disku.\n"
-"\n"
-"Ali želite nadaljevati?"
+msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
+msgstr "OPOZORILO: Uporaba zunanjega urejevalnika lahko pusti občutljive podatke na vašem trdem disku.\n\nAli želite nadaljevati?"
 
 #. Resource IDs: (1232)
 msgid "Warn"
@@ -8689,14 +7447,8 @@ msgstr "Opozorilo - polje je predolgo"
 
 #. Resource IDs: (5281)
 #, c-format
-msgid ""
-"Weak master password:\n"
-"\n"
-" %s"
-msgstr ""
-"Šibko glavno geslo:\n"
-"\n"
-"%s"
+msgid "Weak master password:\n\n %s"
+msgstr "Šibko glavno geslo:\n\n%s"
 
 #. Resource IDs: (5763)
 msgid "What saved"
@@ -8707,12 +7459,8 @@ msgid "Whatever"
 msgstr "Karkoli"
 
 #. Resource IDs: (6050)
-msgid ""
-"When a subset is visible and there is no warning message, the button will be"
-" enabled and can be clicked to copy the subset to the clipboard."
-msgstr ""
-"Ko je podnabor viden in ni opozorilnega sporočila, bo gumb omogočen in ga "
-"lahko kliknete za kopiranje podnabora v odložišče."
+msgid "When a subset is visible and there is no warning message, the button will be enabled and can be clicked to copy the subset to the clipboard."
+msgstr "Ko je podnabor viden in ni opozorilnega sporočila, bo gumb omogočen in ga lahko kliknete za kopiranje podnabora v odložišče."
 
 #. Resource IDs: (5761)
 msgid "When saved"
@@ -8740,20 +7488,13 @@ msgstr "Windows Register"
 
 #. Resource IDs: (6036)
 #, c-format
-msgid ""
-"Windows can't expand '%s'. Please make sure that you have set this "
-"correctly."
+msgid "Windows can't expand '%s'. Make sure that you have set this correctly."
 msgstr ""
-"Oken ni možno razširiti '%s'. Prepričajte se, da ste to pravilno nastavili."
 
 #. Resource IDs: (5972)
 #, c-format
-msgid ""
-"Windows can't find '%s'. Please make sure that you have set the external "
-"editor correctly and that it is installed. External Edit cancelled."
+msgid "Windows can't find '%s'. Make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
 msgstr ""
-"Windows ne najde '%s'. Prepričajte se, da ste pravilno nastavili zunanji "
-"urejevalnik in da je nameščen. Zunanje urejanje preklicano."
 
 #. Resource IDs: (8264)
 msgid "Wolof"
@@ -8769,35 +7510,20 @@ msgstr "Prelom vrstic opomb v Dodaj in Uredi"
 
 #. Resource IDs: (5305)
 #, c-format
-msgid ""
-"Would you like to set \"%s\" as your default username?\n"
-"\n"
-"It would then be used by default for new items."
-msgstr ""
-"Ali želite nastaviti \"%s\" kot vaše privzeto uporabniško ime?\n"
-"\n"
-"To bo nato privzeto uporabljeno za vse nove vnose."
+msgid "Would you like to set \"%s\" as your default username?\n\nIt would then be used by default for new items."
+msgstr "Ali želite nastaviti \"%s\" kot vaše privzeto uporabniško ime?\n\nTo bo nato privzeto uporabljeno za vse nove vnose."
 
 #. Resource IDs: (5326)
 msgid "Write Error"
 msgstr "Napaka pri pisanju"
 
 #. Resource IDs: (5742)
-msgid ""
-"Write operation failed!\n"
-"File may have been corrupted.\n"
-"Try saving in a different location"
-msgstr ""
-"Operacija pisanja ni uspela!\n"
-"Datoteka je bila morda poškodovana.\n"
-"Poskusite shraniti na drugo mesto"
+msgid "Write operation failed!\nFile may have been corrupted.\nTry saving in a different location"
+msgstr "Operacija pisanja ni uspela!\nDatoteka je bila morda poškodovana.\nPoskusite shraniti na drugo mesto"
 
 #. Resource IDs: (5107)
-msgid ""
-"Writes the database when an entry was accessed, unless in read-only mode."
-msgstr ""
-"Zapiše zbirko podatkov, ko dostopate do vnosa, razen v načinu samo-za-"
-"branje."
+msgid "Writes the database when an entry was accessed, unless in read-only mode."
+msgstr "Zapiše zbirko podatkov, ko dostopate do vnosa, razen v načinu samo-za-branje."
 
 #. Resource IDs: (1384, 8003)
 msgid "X"
@@ -8852,62 +7578,34 @@ msgstr "Jorubščina"
 
 #. Resource IDs: (6040)
 #, c-format
-msgid ""
-"You are changing an Alias Base entry to a %s. This will move all current "
-"aliases of this base entry to be aliases of its new base. Do you wish to "
-"continue?"
-msgstr ""
-"Spreminjate kratko ime osnovnega vnosa v %s. To bo premaknilo vsa trenutna "
-"kratka imena tega osnovnega vnosa, da bodo kratka imena njegove nove osnove."
-" Ali želite nadaljevati?"
+msgid "You are changing an Alias Base entry to a %s. This will move all current aliases of this base entry to be aliases of its new base. Do you wish to continue?"
+msgstr "Spreminjate kratko ime osnovnega vnosa v %s. To bo premaknilo vsa trenutna kratka imena tega osnovnega vnosa, da bodo kratka imena njegove nove osnove. Ali želite nadaljevati?"
 
 #. Resource IDs: (6041)
 #, c-format
-msgid ""
-"You are changing an Shortcut Base entry to a %s. This will cause all "
-"shortcuts to this base entry to be deleted. Do you wish to continue?"
-msgstr ""
-"Spreminjate Bližnjico osnovnega vnosa v %s. To bo povzročilo izbris vseh "
-"bližnjic tega osnovnega vnosa. Ali želite nadaljevati?"
+msgid "You are changing an Shortcut Base entry to a %s. This will cause all shortcuts to this base entry to be deleted. Do you wish to continue?"
+msgstr "Spreminjate Bližnjico osnovnega vnosa v %s. To bo povzročilo izbris vseh bližnjic tega osnovnega vnosa. Ali želite nadaljevati?"
 
 #. Resource IDs: (5115)
 msgid "You can click on a field's name to copy its value to the clipboard."
 msgstr "Lahko kliknete na ime polja, da kopirate njuno vrednost v odložišče."
 
 #. Resource IDs: (5847)
-msgid ""
-"You have chosen not to save your changes, which will be lost. Do you wish to"
-" continue?"
-msgstr ""
-"Izbrali ste, da ne shranite sprememb, ki bodo izgubljene. Ali želite "
-"nadaljevati?"
+msgid "You have chosen not to save your changes, which will be lost. Do you wish to continue?"
+msgstr "Izbrali ste, da ne shranite sprememb, ki bodo izgubljene. Ali želite nadaljevati?"
 
 #. Resource IDs: (5788)
 msgid "You must save this database before it can be exported."
 msgstr "To zbirko podatkov morate shraniti, preden jo lahko izvozite."
 
 #. Resource IDs: (5772)
-msgid ""
-"Your currently opened database will be in the first row.  Failsafe Backup "
-"files will be displayed below this.  If the passphrase is the same as the "
-"current database, the properties of these backups will also be shown.  If "
-"you aren't sure, continue with the current database and use the database "
-"Compare function to view the differences between the versions."
-msgstr ""
-"Vaša trenutno odprta zbirka podatkov bo v prvi vrstici. Neuspešne varnostne "
-"kopije datotek bodo prikazane pod tem. Če je geslo enako kot v trenutni "
-"zbirki podatkov, bodo prikazane tudi lastnosti teh varnostnih kopij. Če "
-"niste prepričani, nadaljujte s trenutno zbirko podatkov in uporabite "
-"funkcijo Primerjaj za ogled razlik med različicama."
+msgid "Your currently opened database will be in the first row.  Failsafe Backup files will be displayed below this.  If the passphrase is the same as the current database, the properties of these backups will also be shown.  If you aren't sure, continue with the current database and use the database Compare function to view the differences between the versions."
+msgstr "Vaša trenutno odprta zbirka podatkov bo v prvi vrstici. Neuspešne varnostne kopije datotek bodo prikazane pod tem. Če je geslo enako kot v trenutni zbirki podatkov, bodo prikazane tudi lastnosti teh varnostnih kopij. Če niste prepričani, nadaljujte s trenutno zbirko podatkov in uporabite funkcijo Primerjaj za ogled razlik med različicama."
 
 #. Resource IDs: (5711)
 #, c-format
-msgid ""
-"Your requested font, '%s', could not be found (not installed?), using '%s' "
-"instead."
-msgstr ""
-"Vaše zahtevane pisave '%s' ni bilo mogoče najti (ni nameščena?). Uporabite "
-"'%s' namesto te."
+msgid "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
+msgstr "Vaše zahtevane pisave '%s' ni bilo mogoče najti (ni nameščena?). Uporabite '%s' namesto te."
 
 #. Resource IDs: (527)
 msgid "YubiKey Configuration"
@@ -8922,19 +7620,12 @@ msgid "YubiKey Serial Number:"
 msgstr "YubiKey serijska številka:"
 
 #. Resource IDs: (1469)
-msgid ""
-"YubiKey for PasswordSafe can be purchased at https://www.yubico.com/works-"
-"with-yubikey/catalog/password-safe/"
-msgstr ""
-"YubiKey za Password Safe lahko kupite na https://www.yubico.com/works-with-"
-"yubikey/catalog/password-safe/"
+msgid "YubiKey for PasswordSafe can be purchased at https://www.yubico.com/works-with-yubikey/catalog/password-safe/"
+msgstr "YubiKey za Password Safe lahko kupite na https://www.yubico.com/works-with-yubikey/catalog/password-safe/"
 
 #. Resource IDs: (6005)
-msgid ""
-"YubiKey initialized successfully, close this message box and activate it."
-msgstr ""
-"YubiKey je uspešno inicializiran. Zaprite to sporočilno okno in ga "
-"aktivirajte."
+msgid "YubiKey initialized successfully, close this message box and activate it."
+msgstr "YubiKey je uspešno inicializiran. Zaprite to sporočilno okno in ga aktivirajte."
 
 #. Resource IDs: (6007)
 msgid "YubiKey updated successfully, you may close this window."
@@ -8965,838 +7656,416 @@ msgid "[Notes hidden - click here to display]"
 msgstr "[Skrite opombe - kliknite sem za prikaz]"
 
 #. Resource IDs: (32064)
-msgid ""
-"\n"
-"Add Group"
-msgstr ""
-"\n"
-"Dodaj skupino"
+msgid "\nAdd Group"
+msgstr "\nDodaj skupino"
 
 #. Resource IDs: (32051)
-msgid ""
-"\n"
-"Add New Entry"
-msgstr ""
-"\n"
-"Dodaj Nov vnos"
+msgid "\nAdd New Entry"
+msgstr "\nDodaj Nov vnos"
 
 #. Resource IDs: (32307)
-msgid ""
-"\n"
-"Advanced Find Options"
-msgstr ""
-"\n"
-"Napredne možnosti iskanja"
+msgid "\nAdvanced Find Options"
+msgstr "\nNapredne možnosti iskanja"
 
 #. Resource IDs: (32072)
-msgid ""
-"\n"
-"Browse to URL"
-msgstr ""
-"\n"
-"Prebrskaj do URL"
+msgid "\nBrowse to URL"
+msgstr "\nPrebrskaj do URL"
 
 #. Resource IDs: (32073)
-msgid ""
-"\n"
-"Browse to URL + AutoType"
-msgstr ""
-"\n"
-"Prebrskaj URL + Samodejno vtipkanje"
+msgid "\nBrowse to URL + AutoType"
+msgstr "\nPrebrskaj URL + Samodejno vtipkanje"
 
 #. Resource IDs: (32074)
-msgid ""
-"\n"
-"Browse to URL with Alternate Browser"
-msgstr ""
-"\n"
-"Prebrskajte do URL-ja z nadomestnim brskalnikom"
+msgid "\nBrowse to URL with Alternate Browser"
+msgstr "\nPrebrskajte do URL-ja z nadomestnim brskalnikom"
 
 #. Resource IDs: (32305)
-msgid ""
-"\n"
-"Case insensitive search"
-msgstr ""
-"\n"
-"Iskanje ni občutljivo na m/V črke"
+msgid "\nCase insensitive search"
+msgstr "\nIskanje ni občutljivo na m/V črke"
 
 #. Resource IDs: (32306)
-msgid ""
-"\n"
-"Case sensitive search"
-msgstr ""
-"\n"
-"Iskanje, občutljivo na m/V črke"
+msgid "\nCase sensitive search"
+msgstr "\nIskanje, občutljivo na m/V črke"
 
 #. Resource IDs: (32134)
-msgid ""
-"\n"
-"Clear Filters"
-msgstr ""
-"\n"
-"Počisti filtre"
+msgid "\nClear Filters"
+msgstr "\nPočisti filtre"
 
 #. Resource IDs: (32302)
-msgid ""
-"\n"
-"Clear Find"
-msgstr ""
-"\n"
-"Počisti Najdi"
+msgid "\nClear Find"
+msgstr "\nPočisti Najdi"
 
 #. Resource IDs: (32065)
-msgid ""
-"\n"
-"Clear the clipboard contents"
-msgstr ""
-"\n"
-"Počistiti vsebine odložišča"
+msgid "\nClear the clipboard contents"
+msgstr "\nPočistiti vsebine odložišča"
 
 #. Resource IDs: (32004)
-msgid ""
-"\n"
-"Close Database"
-msgstr ""
-"\n"
-"Zapri zbirko podatkov"
+msgid "\nClose Database"
+msgstr "\nZapri zbirko podatkov"
 
 #. Resource IDs: (32301)
-msgid ""
-"\n"
-"Close Find Bar"
-msgstr ""
-"\n"
-"Zapri vrstico Najdi"
+msgid "\nClose Find Bar"
+msgstr "\nZapri vrstico Najdi"
 
 #. Resource IDs: (32110)
-msgid ""
-"\n"
-"Collapse All"
-msgstr ""
-"\n"
-"Strni vse"
+msgid "\nCollapse All"
+msgstr "\nStrni vse"
 
 #. Resource IDs: (32092)
-msgid ""
-"\n"
-"Compare entries..."
-msgstr ""
-"\n"
-"Primerjaj vnose..."
+msgid "\nCompare entries..."
+msgstr "\nPrimerjaj vnose..."
 
 #. Resource IDs: (32019)
-msgid ""
-"\n"
-"Compare two Databases"
-msgstr ""
-"\n"
-"Primerjaj dve zbirki podatkov"
+msgid "\nCompare two Databases"
+msgstr "\nPrimerjaj dve zbirki podatkov"
 
 #. Resource IDs: (32100)
-msgid ""
-"\n"
-"Copy Auth Code to Clipboard"
-msgstr ""
-"\n"
-"Kopiraj avtentikacijsko kodo v odložišče"
+msgid "\nCopy Auth Code to Clipboard"
+msgstr "\nKopiraj avtentikacijsko kodo v odložišče"
 
 #. Resource IDs: (32069)
-msgid ""
-"\n"
-"Copy Notes to Clipboard"
-msgstr ""
-"\n"
-"Kopiraj opombe v odložišče"
+msgid "\nCopy Notes to Clipboard"
+msgstr "\nKopiraj opombe v odložišče"
 
 #. Resource IDs: (32066)
-msgid ""
-"\n"
-"Copy Password to Clipboard"
-msgstr ""
-"\n"
-"Kopiraj geslo v odložišče"
+msgid "\nCopy Password to Clipboard"
+msgstr "\nKopiraj geslo v odložišče"
 
 #. Resource IDs: (32081)
-msgid ""
-"\n"
-"Copy Run Command to Clipboard"
-msgstr ""
-"\n"
-"Kopiraj ukaz Zaženi v odložišče"
+msgid "\nCopy Run Command to Clipboard"
+msgstr "\nKopiraj ukaz Zaženi v odložišče"
 
 #. Resource IDs: (32068)
-msgid ""
-"\n"
-"Copy Username to Clipboard"
-msgstr ""
-"\n"
-"Kopiraj Uporabniško ime v odložišče"
+msgid "\nCopy Username to Clipboard"
+msgstr "\nKopiraj Uporabniško ime v odložišče"
 
 #. Resource IDs: (32308)
-msgid ""
-"\n"
-"Create report of previous Find search"
-msgstr ""
-"\n"
-"Ustvari poročilo o prejšnjem iskanju"
+msgid "\nCreate report of previous Find search"
+msgstr "\nUstvari poročilo o prejšnjem iskanju"
 
 #. Resource IDs: (32056)
-msgid ""
-"\n"
-"Delete an Entry"
-msgstr ""
-"\n"
-"Izbriši vnos"
+msgid "\nDelete an Entry"
+msgstr "\nIzbriši vnos"
 
 #. Resource IDs: (32099)
-msgid ""
-"\n"
-"Display Auth Code"
-msgstr ""
-"\n"
-"Prikaz avtentikacijske kode"
+msgid "\nDisplay Auth Code"
+msgstr "\nPrikaz avtentikacijske kode"
 
 #. Resource IDs: (32067)
-msgid ""
-"\n"
-"Display subset of Password"
-msgstr ""
-"\n"
-"Prikaži podnabor Gesla"
+msgid "\nDisplay subset of Password"
+msgstr "\nPrikaži podnabor Gesla"
 
 #. Resource IDs: (32063)
-msgid ""
-"\n"
-"Duplicate Entry"
-msgstr ""
-"\n"
-"Podvoji vnos"
+msgid "\nDuplicate Entry"
+msgstr "\nPodvoji vnos"
 
 #. Resource IDs: (32087)
-msgid ""
-"\n"
-"Duplicate Group"
-msgstr ""
-"\n"
-"Podvoji skupino"
+msgid "\nDuplicate Group"
+msgstr "\nPodvoji skupino"
 
 #. Resource IDs: (32082)
-msgid ""
-"\n"
-"Edit Base entry"
-msgstr ""
-"\n"
-"Uredi Osnovni vnos"
+msgid "\nEdit Base entry"
+msgstr "\nUredi Osnovni vnos"
 
 #. Resource IDs: (32052)
-msgid ""
-"\n"
-"Edit Entry"
-msgstr ""
-"\n"
-"Uredi vnos"
+msgid "\nEdit Entry"
+msgstr "\nUredi vnos"
 
 #. Resource IDs: (32113)
-msgid ""
-"\n"
-"Edit Filters"
-msgstr ""
-"\n"
-"Uredi filtre"
+msgid "\nEdit Filters"
+msgstr "\nUredi filtre"
 
 #. Resource IDs: (5517)
-msgid ""
-"\n"
-"Email: "
-msgstr ""
-"\n"
-"E-pošta: "
+msgid "\nEmail: "
+msgstr "\nE-pošta: "
 
 #. Resource IDs: (3052)
 #, c-format
-msgid ""
-"\n"
-"Error in Password History for entry: »%ls»%ls»%ls»: "
-msgstr ""
-"\n"
-"Napaka v zgodovini gesla za vnos:»% ls»% ls»% ls»: "
+msgid "\nError in Password History for entry: »%ls»%ls»%ls»: "
+msgstr "\nNapaka v zgodovini gesla za vnos:»% ls»% ls»% ls»: "
 
 #. Resource IDs: (32109)
-msgid ""
-"\n"
-"Expand All"
-msgstr ""
-"\n"
-"Razpni vse"
+msgid "\nExpand All"
+msgstr "\nRazpni vse"
 
 #. Resource IDs: (32097)
-msgid ""
-"\n"
-"Export Attachment..."
-msgstr ""
-"\n"
-"Izvoz prilogo..."
+msgid "\nExport Attachment..."
+msgstr "\nIzvoz prilogo..."
 
 #. Resource IDs: (32086)
-msgid ""
-"\n"
-"Export Entry in XML format..."
-msgstr ""
-"\n"
-"Izvoz vnos v formatu XML..."
+msgid "\nExport Entry in XML format..."
+msgstr "\nIzvoz vnos v formatu XML..."
 
 #. Resource IDs: (32085)
-msgid ""
-"\n"
-"Export Entry to Plain Text..."
-msgstr ""
-"\n"
-"Izvozi vnos v golo besedilo..."
+msgid "\nExport Entry to Plain Text..."
+msgstr "\nIzvozi vnos v golo besedilo..."
 
 #. Resource IDs: (32093)
-msgid ""
-"\n"
-"Export Entry to another Safe..."
-msgstr ""
-"\n"
-"Izvozi vnos v drugi Sef..."
+msgid "\nExport Entry to another Safe..."
+msgstr "\nIzvozi vnos v drugi Sef..."
 
 #. Resource IDs: (32095)
-msgid ""
-"\n"
-"Export Group in XML format..."
-msgstr ""
-"\n"
-"Izvozi skupino v XML formatu..."
+msgid "\nExport Group in XML format..."
+msgstr "\nIzvozi skupino v XML formatu..."
 
 #. Resource IDs: (32094)
-msgid ""
-"\n"
-"Export Group to Plain Text..."
-msgstr ""
-"\n"
-"Izvozi skupino v golo besedilo..."
+msgid "\nExport Group to Plain Text..."
+msgstr "\nIzvozi skupino v golo besedilo..."
 
 #. Resource IDs: (32096)
-msgid ""
-"\n"
-"Export Group to another Safe..."
-msgstr ""
-"\n"
-"Izvozi skupino v drugi Sef..."
+msgid "\nExport Group to another Safe..."
+msgstr "\nIzvozi skupino v drugi Sef..."
 
 #. Resource IDs: (32010)
-msgid ""
-"\n"
-"Export to Text"
-msgstr ""
-"\n"
-"Izvozi v besedilo"
+msgid "\nExport to Text"
+msgstr "\nIzvozi v besedilo"
 
 #. Resource IDs: (32011)
-msgid ""
-"\n"
-"Export to V1 database"
-msgstr ""
-"\n"
-"Izvozi v V1 zbirko podatkov"
+msgid "\nExport to V1 database"
+msgstr "\nIzvozi v V1 zbirko podatkov"
 
 #. Resource IDs: (32012)
-msgid ""
-"\n"
-"Export to V2 database"
-msgstr ""
-"\n"
-"Izvozi v V2 zbirko podatkov"
+msgid "\nExport to V2 database"
+msgstr "\nIzvozi v V2 zbirko podatkov"
 
 #. Resource IDs: (32025)
-msgid ""
-"\n"
-"Export to V3 database"
-msgstr ""
-"\n"
-"Izvozi v V3 zbirko podatkov"
+msgid "\nExport to V3 database"
+msgstr "\nIzvozi v V3 zbirko podatkov"
 
 #. Resource IDs: (32013)
-msgid ""
-"\n"
-"Export to XML"
-msgstr ""
-"\n"
-"Izvozi v XML"
+msgid "\nExport to XML"
+msgstr "\nIzvozi v XML"
 
 #. Resource IDs: (32026)
-msgid ""
-"\n"
-"Export to v4 database (EXPERIMENTAL)"
-msgstr ""
-"\n"
-"Izvozi v V4 zbirko podatkov (eksperimentalno)"
+msgid "\nExport to v4 database (EXPERIMENTAL)"
+msgstr "\nIzvozi v V4 zbirko podatkov (eksperimentalno)"
 
 #. Resource IDs: (32028)
-msgid ""
-"\n"
-"Filtered entries to PasswordSafe..."
-msgstr ""
-"\n"
-"Filtrirani vnosi v Password Safe…"
+msgid "\nFiltered entries to PasswordSafe..."
+msgstr "\nFiltrirani vnosi v Password Safe…"
 
 #. Resource IDs: (32061)
-msgid ""
-"\n"
-"Find Next"
-msgstr ""
-"\n"
-"Najdi naslednje"
+msgid "\nFind Next"
+msgstr "\nNajdi naslednje"
 
 #. Resource IDs: (32062)
-msgid ""
-"\n"
-"Find Previous"
-msgstr ""
-"\n"
-"Najdi prejšnje"
+msgid "\nFind Previous"
+msgstr "\nNajdi prejšnje"
 
 #. Resource IDs: (32080)
-msgid ""
-"\n"
-"Find..."
-msgstr ""
-"\n"
-"Najdi..."
+msgid "\nFind..."
+msgstr "\nNajdi..."
 
 #. Resource IDs: (32157)
-msgid ""
-"\n"
-"Generate Password"
-msgstr ""
-"\n"
-"Ustvari geslo"
+msgid "\nGenerate Password"
+msgstr "\nUstvari geslo"
 
 #. Resource IDs: (32079)
-msgid ""
-"\n"
-"Go to Base entry"
-msgstr ""
-"\n"
-"Pojdi na Osnovni vnos"
+msgid "\nGo to Base entry"
+msgstr "\nPojdi na Osnovni vnos"
 
 #. Resource IDs: (57670)
-msgid ""
-"\n"
-"Help"
-msgstr ""
-"\n"
-"Po&moč"
+msgid "\nHelp"
+msgstr "\nPo&moč"
 
 #. Resource IDs: (32016)
-msgid ""
-"\n"
-"Import Text"
-msgstr ""
-"\n"
-"Uvozi besedilo"
+msgid "\nImport Text"
+msgstr "\nUvozi besedilo"
 
 #. Resource IDs: (32015)
-msgid ""
-"\n"
-"Import XML"
-msgstr ""
-"\n"
-"Uvozi XML"
+msgid "\nImport XML"
+msgstr "\nUvozi XML"
 
 #. Resource IDs: (32260)
-msgid ""
-"\n"
-"List or Tree View"
-msgstr ""
-"\n"
-"Seznam ali drevesni pogled"
+msgid "\nList or Tree View"
+msgstr "\nSeznam ali drevesni pogled"
 
 #. Resource IDs: (32027)
-msgid ""
-"\n"
-"Lock Database"
-msgstr ""
-"\n"
-"Zakleni zbirko podatkov"
+msgid "\nLock Database"
+msgstr "\nZakleni zbirko podatkov"
 
 #. Resource IDs: (32003)
-msgid ""
-"\n"
-"Make New Database"
-msgstr ""
-"\n"
-"Naredi novo zbirko podatkov"
+msgid "\nMake New Database"
+msgstr "\nNaredi novo zbirko podatkov"
 
 #. Resource IDs: (32115)
-msgid ""
-"\n"
-"Manage Filters"
-msgstr ""
-"\n"
-"Upravljaj filtre"
+msgid "\nManage Filters"
+msgstr "\nUpravljaj filtre"
 
 #. Resource IDs: (3415)
 #, c-format
-msgid ""
-"\n"
-"Merge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
-msgstr ""
-"\n"
-"Združi končano: %d %ls dodano (%d %ls, %d %ls, %d %ls, %d %ls)"
+msgid "\nMerge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
+msgstr "\nZdruži končano: %d %ls dodano (%d %ls, %d %ls, %d %ls, %d %ls)"
 
 #. Resource IDs: (32018)
-msgid ""
-"\n"
-"Merge into Database"
-msgstr ""
-"\n"
-"Združi v zbirko podatkov"
+msgid "\nMerge into Database"
+msgstr "\nZdruži v zbirko podatkov"
 
 #. Resource IDs: (32002)
-msgid ""
-"\n"
-"Open Another Database"
-msgstr ""
-"\n"
-"Odpri drugo zbirko podatkov"
+msgid "\nOpen Another Database"
+msgstr "\nOdpri drugo zbirko podatkov"
 
 #. Resource IDs: (32154)
-msgid ""
-"\n"
-"Options"
-msgstr ""
-"\n"
-"Možnosti"
+msgid "\nOptions"
+msgstr "\nMožnosti"
 
 #. Resource IDs: (32159)
-msgid ""
-"\n"
-"Password Policies"
-msgstr ""
-"\n"
-"Pravilniki o gesel"
+msgid "\nPassword Policies"
+msgstr "\nPravilniki o gesel"
 
 #. Resource IDs: (32076)
-msgid ""
-"\n"
-"Perform AutoType"
-msgstr ""
-"\n"
-"Izvedi samodejno vtipkanje"
+msgid "\nPerform AutoType"
+msgstr "\nIzvedi samodejno vtipkanje"
 
 #. Resource IDs: (5283)
-msgid ""
-"\n"
-"Please try another"
-msgstr ""
-"\n"
-"Prosim, poskusite drugo"
+msgid "\nPlease try another"
+msgstr "\nProsim, poskusite drugo"
 
 #. Resource IDs: (5215)
-msgid ""
-"\n"
-"Program will terminate."
-msgstr ""
-"\n"
-"Program bo prenehal delovati."
+msgid "\nProgram will terminate."
+msgstr "\nProgram bo prenehal delovati."
 
 #. Resource IDs: (32090)
-msgid ""
-"\n"
-"Protect All Entries"
-msgstr ""
-"\n"
-"Zaščiti vse vnose"
+msgid "\nProtect All Entries"
+msgstr "\nZaščiti vse vnose"
 
 #. Resource IDs: (32088)
-msgid ""
-"\n"
-"Protect Entry"
-msgstr ""
-"\n"
-"Zaščiti vnos"
+msgid "\nProtect Entry"
+msgstr "\nZaščiti vnos"
 
 #. Resource IDs: (32084)
-msgid ""
-"\n"
-"Redo"
-msgstr ""
-"\n"
-"Povrni"
+msgid "\nRedo"
+msgstr "\nPovrni"
 
 #. Resource IDs: (5780)
 #, c-format
-msgid ""
-"\n"
-"Renamed %d %s"
-msgstr ""
-"\n"
-"Preimenovano %d %s"
+msgid "\nRenamed %d %s"
+msgstr "\nPreimenovano %d %s"
 
 #. Resource IDs: (32077)
-msgid ""
-"\n"
-"Run Command"
-msgstr ""
-"\n"
-"Zaženi ukaz"
+msgid "\nRun Command"
+msgstr "\nZaženi ukaz"
 
 #. Resource IDs: (32005)
-msgid ""
-"\n"
-"Save Database"
-msgstr ""
-"\n"
-"Shrani zbirko podatkov"
+msgid "\nSave Database"
+msgstr "\nShrani zbirko podatkov"
 
 #. Resource IDs: (32006)
-msgid ""
-"\n"
-"Save Database As..."
-msgstr ""
-"\n"
-"Shrani zbirko podatkov kot..."
+msgid "\nSave Database As..."
+msgstr "\nShrani zbirko podatkov kot..."
 
 #. Resource IDs: (32255)
-msgid ""
-"\n"
-"Select Entry"
-msgstr ""
-"\n"
-"Izberi vnos"
+msgid "\nSelect Entry"
+msgstr "\nIzberi vnos"
 
 #. Resource IDs: (32075)
-msgid ""
-"\n"
-"Send Email"
-msgstr ""
-"\n"
-"Pošlji e-pošto"
+msgid "\nSend Email"
+msgstr "\nPošlji e-pošto"
 
 #. Resource IDs: (32114)
-msgid ""
-"\n"
-"Set/Clear Filters"
-msgstr ""
-"\n"
-"Nastavi/Počisti filtre"
+msgid "\nSet/Clear Filters"
+msgstr "\nNastavi/Počisti filtre"
 
 #. Resource IDs: (32127)
-msgid ""
-"\n"
-"Show Unsaved Changes"
-msgstr ""
-"\n"
-"Prikaži neshranjene spremembe"
+msgid "\nShow Unsaved Changes"
+msgstr "\nPrikaži neshranjene spremembe"
 
 #. Resource IDs: (32131)
-msgid ""
-"\n"
-"Show entries with Password Expiry dates"
-msgstr ""
-"\n"
-"Prikaži vnose z datumi poteka gesla"
+msgid "\nShow entries with Password Expiry dates"
+msgstr "\nPrikaži vnose z datumi poteka gesla"
 
 #. Resource IDs: (32140)
-msgid ""
-"\n"
-"Show only found entries"
-msgstr ""
-"\n"
-"Prikaži samo najdene vnose"
+msgid "\nShow only found entries"
+msgstr "\nPrikaži samo najdene vnose"
 
 #. Resource IDs: (5339)
 #, c-format
-msgid ""
-"\n"
-"Skipped %d %s"
-msgstr ""
-"\n"
-"Preskočeno %d %s"
+msgid "\nSkipped %d %s"
+msgstr "\nPreskočeno %d %s"
 
 #. Resource IDs: (32022)
-msgid ""
-"\n"
-"Synchronize Databases"
-msgstr ""
-"\n"
-"Sinhroniziraj zbirko podatkov"
+msgid "\nSynchronize Databases"
+msgstr "\nSinhroniziraj zbirko podatkov"
 
 #. Resource IDs: (3413)
 #, c-format
-msgid ""
-"\n"
-"Synchronize completed: %d %ls updated"
-msgstr ""
-"\n"
-"Sinhronizacija je končana: %d %ls posodobljeno"
+msgid "\nSynchronize completed: %d %ls updated"
+msgstr "\nSinhronizacija je končana: %d %ls posodobljeno"
 
 #. Resource IDs: (3412)
 #, c-format
-msgid ""
-"\n"
-"The following %ls %ls updated:"
-msgstr ""
-"\n"
-"Naslednje %ls %ls posodobljeno:"
+msgid "\nThe following %ls %ls updated:"
+msgstr "\nNaslednje %ls %ls posodobljeno:"
 
 #. Resource IDs: (3419)
 #, c-format
-msgid ""
-"\n"
-"The following new %ls %ls merged into this database:"
-msgstr ""
-"\n"
-"Naslednje novo %ls %ls je združeno v to zbirko podatkov:"
+msgid "\nThe following new %ls %ls merged into this database:"
+msgstr "\nNaslednje novo %ls %ls je združeno v to zbirko podatkov:"
 
 #. Resource IDs: (32083)
-msgid ""
-"\n"
-"Undo"
-msgstr ""
-"\n"
-"Razveljavi"
+msgid "\nUndo"
+msgstr "\nRazveljavi"
 
 #. Resource IDs: (3060)
-msgid ""
-"\n"
-"Unexpected exception during parsing."
-msgstr ""
-"\n"
-"Nepričakovana izjema med razčlenjevanjem."
+msgid "\nUnexpected exception during parsing."
+msgstr "\nNepričakovana izjema med razčlenjevanjem."
 
 #. Resource IDs: (32091)
-msgid ""
-"\n"
-"Unprotect All Entries"
-msgstr ""
-"\n"
-"Odstrani zaščito vseh vnosov"
+msgid "\nUnprotect All Entries"
+msgstr "\nOdstrani zaščito vseh vnosov"
 
 #. Resource IDs: (32089)
-msgid ""
-"\n"
-"Unprotect Entry"
-msgstr ""
-"\n"
-"Odstrani zaščito vnosa"
+msgid "\nUnprotect Entry"
+msgstr "\nOdstrani zaščito vnosa"
 
 #. Resource IDs: (5282)
-msgid ""
-"\n"
-"Use it anyway?"
-msgstr ""
-"\n"
-"Vseeno ga uporabim?"
+msgid "\nUse it anyway?"
+msgstr "\nVseeno ga uporabim?"
 
 #. Resource IDs: (32098)
-msgid ""
-"\n"
-"View Attachment"
-msgstr ""
-"\n"
-"Ogled Priloge"
+msgid "\nView Attachment"
+msgstr "\nOgled Priloge"
 
 #. Resource IDs: (32053)
-msgid ""
-"\n"
-"View Entry"
-msgstr ""
-"\n"
-"Ogled vnosa"
+msgid "\nView Entry"
+msgstr "\nOgled vnosa"
 
 #. Resource IDs: (32261)
-msgid ""
-"\n"
-"View Reports"
-msgstr ""
-"\n"
-"Ogled poročil"
+msgid "\nView Reports"
+msgstr "\nOgled poročil"
 
 #. Resource IDs: (5238)
-msgid ""
-"\n"
-"\n"
-"Cannot open database. It probably does not exist.\n"
-"Please select to Open another database, create a New database or Cancel."
+msgid "\n\nCannot open database. It probably does not exist.\nYou can Open another database, create a New one or Cancel."
 msgstr ""
-"\n"
-"\n"
-"Zbirke podatkov ni mogoče odpreti. Verjetno ne obstaja.\n"
-"Izberite, Odpri drugo zbirko podatkov, Ustvariti novo zbirko podatkov ali Prekliči."
 
 #. Resource IDs: (5662)
-msgid ""
-"\n"
-"\n"
-"Ignore this and save anyway - Yes/no?"
-msgstr ""
-"\n"
-"\n"
-"Prezrem to in vseeno shranim - Da/Ne?"
+msgid "\n\nIgnore this and save anyway - Yes/no?"
+msgstr "\n\nPrezrem to in vseeno shranim - Da/Ne?"
 
 #. Resource IDs: (5463)
-msgid ""
-"\n"
-"\n"
-"Select Yes to continue with this password or No to cancel"
-msgstr ""
-"\n"
-"\n"
-"Izberite Da, če želite nadaljevati s tem geslom ali Ne, če želite preklicati"
+msgid "\n\nSelect Yes to continue with this password or No to cancel"
+msgstr "\n\nIzberite Da, če želite nadaljevati s tem geslom ali Ne, če želite preklicati"
 
 #. Resource IDs: (5357)
-msgid ""
-"\n"
-"\n"
-"The databases are identical when comparing the selected or default fields!"
-msgstr ""
-"\n"
-"\n"
-"Podatkovni zbirki sta identični pri primerjanju izbranih ali privzetih polj!"
+msgid "\n\nThe databases are identical when comparing the selected or default fields!"
+msgstr "\n\nPodatkovni zbirki sta identični pri primerjanju izbranih ali privzetih polj!"
 
 #. Resource IDs: (5441)
-msgid ""
-"\n"
-"\n"
-"Unknown fields will also be copied with the entry."
-msgstr ""
-"\n"
-"\n"
-"Neznana polja bodo tudi kopirana z vnosom."
+msgid "\n\nUnknown fields will also be copied with the entry."
+msgstr "\n\nNeznana polja bodo tudi kopirana z vnosom."
 
 #. Resource IDs: (5784)
 #, c-format
-msgid ""
-"\n"
-"with Password History errors %d"
-msgstr ""
-"\n"
-"z napakami Zgodovine gesel %d"
+msgid "\nwith Password History errors %d"
+msgstr "\nz napakami Zgodovine gesel %d"
 
 #. Resource IDs: (5867)
-msgid ""
-"\n"
-"with warnings"
-msgstr ""
-"\n"
-"z opozorili"
+msgid "\nwith warnings"
+msgstr "\nz opozorili"
 
 #. Resource IDs: (5448)
-msgid ""
-"\r\n"
-"This field is being edited in your default text editor.\r\n"
-"Please complete this action before continuing.\r\n"
-"\r\n"
-"(You may cancel this edit using the Close [X] button above)"
+msgid "\r\nThis field is being edited in your default text editor.\r\nComplete this action before continuing.\r\n\r\n(You may cancel this edit using the Close [X] button above)"
 msgstr ""
-"\r\n"
-"To polje urejate v vašem privzetem urejevalniku besedila.\r\n"
-"Pred nadaljevanjem dokončajte to akcijo .\r\n"
-"\r\n"
-"(To urejanje lahko prekličete z uporabo zgornjega gumba Zapri [X])"
 
 #. Resource IDs: (5526)
 #, c-format
@@ -9805,12 +8074,8 @@ msgstr "\t%s je bilo omejeno na naslednja polja:"
 
 #. Resource IDs: (5363)
 #, c-format
-msgid ""
-"\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\n"
-"\t\thas differences in the following fields:"
-msgstr ""
-"\tVnos - Skupina:\"%s\"; Naslov:\"%s\"; Uporabnik:\"%s\"\n"
-"\t\tima razlike v naslednjih poljih:"
+msgid "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\n\t\thas differences in the following fields:"
+msgstr "\tVnos - Skupina:\"%s\"; Naslov:\"%s\"; Uporabnik:\"%s\"\n\t\tima razlike v naslednjih poljih:"
 
 #. Resource IDs: (5359)
 #, c-format
@@ -9833,30 +8098,17 @@ msgid "\tNo entries were found containing search string '%ls' %ls"
 msgstr "\tNi bilo najdenih vnosov, ki bi vsebovali iskalni niz \"%ls\" %ls"
 
 #. Resource IDs: (3434)
-msgid ""
-"\tOne or more Password Policy Names were already in this database but had "
-"different settings. They have been renamed."
-msgstr ""
-"\tEno ali več imen pravilnikov gesel je bilo že v tej zbirki podatkov, "
-"vendar so imele različne nastavitve. Preimenovana so."
+msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
+msgstr "\tEno ali več imen pravilnikov gesel je bilo že v tej zbirki podatkov, vendar so imele različne nastavitve. Preimenovana so."
 
 #. Resource IDs: (3430)
-msgid ""
-"\tOne or more Password Policy Names were not found in the database. The "
-"affected entries have been changed to use the database's default policy."
-msgstr ""
-"\tEnega ali več imen pravilnika gesel ni bilo mogoče najti v zbirki "
-"podatkov. Prizadeti vnosi so bili spremenjeni za uporabo privzetega "
-"pravilnika zbirke podatkov."
+msgid "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
+msgstr "\tEnega ali več imen pravilnika gesel ni bilo mogoče najti v zbirki podatkov. Prizadeti vnosi so bili spremenjeni za uporabo privzetega pravilnika zbirke podatkov."
 
 #. Resource IDs: (3450)
 #, c-format
-msgid ""
-"\tOne or more entry keyboard shortcuts were already assigned to entries in "
-"this database. They have been removed from the %ls entries."
-msgstr ""
-"\tNekatere bližnjice s tipkovnico so bile že dodeljene vnosom v tej zbirki "
-"podatkov. Odstranjeni so iz %ls vnosov."
+msgid "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %ls entries."
+msgstr "\tNekatere bližnjice s tipkovnico so bile že dodeljene vnosom v tej zbirki podatkov. Odstranjeni so iz %ls vnosov."
 
 #. Resource IDs: (3429)
 #, c-format
@@ -9870,20 +8122,15 @@ msgstr "\tNaslednji vnosi vsebujejo iskalni niz \"%ls\" %ls"
 
 #. Resource IDs: (5522)
 #, c-format
-msgid ""
-"\tThe following restrictions were selected:\n"
-"\t\t %s"
-msgstr ""
-"\tIzbrane so bile naslednje omejitve: \n"
-"\t\t %s"
+msgid "\tThe following restrictions were selected:\n\t\t %s"
+msgstr "\tIzbrane so bile naslednje omejitve: \n\t\t %s"
 
 #. Resource IDs: (3274)
 msgid "\tThis entry has been made an alias of associated base entry."
 msgstr "\tTa vnos je bil narejen iz kratkega imena povezanega osnovnega vnosa."
 
 #. Resource IDs: (3276)
-msgid ""
-"\tThis entry remains a normal entry and the password has not been changed."
+msgid "\tThis entry remains a normal entry and the password has not been changed."
 msgstr "\tTa vnos ostane normalni vnos in geslo ni bilo spremenjeno."
 
 #. Resource IDs: (3285)
@@ -9988,9 +8235,6 @@ msgstr "zbirk podatkov."
 
 #. Resource IDs: (1321)
 msgid "day(s)"
-msgstr "dni"
-
-msgid "days"
 msgstr "dni"
 
 #. Resource IDs: (65535)
@@ -10160,12 +8404,8 @@ msgstr "minut nedejavnosti"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid ""
-"multiple entries exist with title=%s and username=%s or with group=%s and "
-"title=%s."
-msgstr ""
-"obstaja več več vnosov z naslov= %s in uporabniško ime= %s ali s skupina= %s"
-" in naslo= %s."
+msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+msgstr "obstaja več več vnosov z naslov= %s in uporabniško ime= %s ali s skupina= %s in naslo= %s."
 
 #. Resource IDs: (5456)
 #, c-format
@@ -10180,23 +8420,17 @@ msgstr "v korenu ne obstaja noben vnos z naslov= %s in uporabniško ime= %s."
 #. Resource IDs: (5461)
 #, c-format
 msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr ""
-"noben vnos ne obstaja s skupina= %s, naslov= %s in praznim uporabniškim "
-"imenom."
+msgstr "noben vnos ne obstaja s skupina= %s, naslov= %s in praznim uporabniškim imenom."
 
 #. Resource IDs: (5460)
 #, c-format
 msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr ""
-"noben vnos ne obstaja s skupina= %s, naslov= %s in uporabniško ime= %s."
+msgstr "noben vnos ne obstaja s skupina= %s, naslov= %s in uporabniško ime= %s."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid ""
-"no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr ""
-"noben vnos ne obstaja z naslov= %s in uporabniško ime= %s ali s skupina= %s,"
-" naslov= %s."
+msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgstr "noben vnos ne obstaja z naslov= %s in uporabniško ime= %s ali s skupina= %s, naslov= %s."
 
 #. Resource IDs: (5457)
 #, c-format
@@ -10339,3 +8573,4 @@ msgstr "xxxxxx"
 #, c-format
 msgid "«%s» «%s» «%s»"
 msgstr "«%s» «%s» «%s»"
+

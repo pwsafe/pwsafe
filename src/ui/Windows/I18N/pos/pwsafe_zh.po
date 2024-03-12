@@ -700,14 +700,14 @@ msgid "&Clear Recent History"
 msgstr "清除近期历史(&C)"
 
 #. Resource IDs: (32008 - MenuEx)
-msgid "&Clear Recent Safe List"
-msgstr "清除近期保险箱列表(&C)"
+msgid "&Clear Recently Opened List"
+msgstr ""
 
 #. Resource IDs: (5606)
 msgid "&Clear current"
 msgstr "清除当前(&C)"
 
-#. Resource IDs: (32004 - Menu, 32004 - MenuEx)
+#. Resource IDs: (2, 32004 - Menu, 32004 - MenuEx)
 msgid "&Close"
 msgstr "关闭(&C)"
 
@@ -806,10 +806,6 @@ msgstr "查找(&F)"
 #. Resource IDs: (32080 - MenuEx)
 msgid "&Find..."
 msgstr "查找(&F)..."
-
-#. Resource IDs: (2)
-msgid "&Finish"
-msgstr "完成(&F)"
 
 #. Resource IDs: (1088)
 msgid "&Font:"
@@ -1124,8 +1120,8 @@ msgid "'Browse to URL' copies password to clipboard"
 msgstr "'浏览 URL' 复制密码到剪贴板"
 
 #. Resource IDs: (5645)
-msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Please change one or both."
-msgstr "'最小化时清除剪贴板'和双击动作'复制密码并最小化'冲突。 请更改一个或两者."
+msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Change one or both."
+msgstr ""
 
 #. Resource IDs: (5714)
 msgid "'\n\nIf you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n\nThe diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n\nHowever, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n\nThank you for your help to improve PasswordSafe."
@@ -1518,8 +1514,8 @@ msgid "A future date is not valid for this field"
 msgstr "一个未来的日期对于这个字段来说无效"
 
 #. Resource IDs: (5116)
-msgid "A hidden password needs to be entered in the Confirm Password field too. If it's not hidden, Confirm shows numbers that may be used to help count the password's characters."
-msgstr "一个隐藏的密码需要在“确认密码”字段中也被输入。若它不是隐藏的，则确认显示可被用于帮助计算密码的字符数的数量."
+msgid "A hidden password needs to be entered in the Confirm Password field too. If it's not hidden, the Confirm field shows numbers that may be used to help count the password's characters."
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "A new password database will be created. The Master Password you enter will be used to encrypt the password database file. The Master Password can use any keyboard character and is case-sensitive."
@@ -1798,8 +1794,8 @@ msgid "Armenian Western"
 msgstr "亚美尼亚(西部)"
 
 #. Resource IDs: (5268)
-msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Please enter another character."
-msgstr "因为双引号字符是用于界定整个备注字段，所以不能在其中使用它来界定多行。. 请输入另一个字符."
+msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Select another character."
+msgstr ""
 
 #. Resource IDs: (5292)
 msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
@@ -2071,8 +2067,8 @@ msgstr "在密码失效前，仅在 %d 到 %d 天前警告"
 
 #. Resource IDs: (3345)
 #, c-format
-msgid "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nPlease copy it from your installation file, or re-install PasswordSafe."
-msgstr "未能找到 XML 方案定义文件 (%ls) 在你的 PasswordSafe 应用程序目录中。\n请从你的安装文件中复制它，或重新安装 PasswordSafe."
+msgid "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nCopy it from your installation file, or re-install PasswordSafe."
+msgstr ""
 
 #. Resource IDs: (3320)
 msgid "Can't obtain the schema version."
@@ -2215,6 +2211,46 @@ msgstr "汉语拼音"
 #. Resource IDs: (8324)
 msgid "Chinese ChaJei"
 msgstr "汉字"
+
+#. Resource IDs: (5376)
+msgid "Choose a Backup to restore:"
+msgstr ""
+
+#. Resource IDs: (5791)
+msgid "Choose a Database to Validate:"
+msgstr ""
+
+#. Resource IDs: (5375)
+msgid "Choose a Name for this Backup:"
+msgstr ""
+
+#. Resource IDs: (5335)
+msgid "Choose a Text File to Import"
+msgstr ""
+
+#. Resource IDs: (5354)
+msgid "Choose a database to compare with current database"
+msgstr ""
+
+#. Resource IDs: (5348)
+msgid "Choose a database to merge into the current database"
+msgstr ""
+
+#. Resource IDs: (5753)
+msgid "Choose a database to synchronize with current database"
+msgstr ""
+
+#. Resource IDs: (5327)
+msgid "Choose a name for the current (Untitled) database:"
+msgstr ""
+
+#. Resource IDs: (5328)
+msgid "Choose a new name for the current database:"
+msgstr ""
+
+#. Resource IDs: (5343)
+msgid "Choose an XML File to Import"
+msgstr ""
 
 #. Resource IDs: (1)
 msgid "Cl&ose"
@@ -2491,6 +2527,19 @@ msgstr "确认密码复制到剪贴板"
 msgid "Confirm deletion of items"
 msgstr "确认项目的删除"
 
+#. Resource IDs: (5635)
+#, c-format
+msgid "Confirm deletion of the %s filter %s?"
+msgstr ""
+
+#. Resource IDs: (5322)
+msgid "Confirm old master password"
+msgstr ""
+
+#. Resource IDs: (6033)
+msgid "Confirm that you wish to clear the recent Safe list."
+msgstr ""
+
 #. Resource IDs: (5930)
 #, c-format
 msgid "Confirm that you wish to copy these entries from %s to %s\n\nIf already present in the target database, they will be replaced!"
@@ -2505,6 +2554,10 @@ msgstr "确认你希望从 %s 复制这个条目到 %s。\n\n若已存在于目�
 #, c-format
 msgid "Confirm that you wish to synchronize these entries from %s to %s?\n\nSelected fields will be replaced in all entries!"
 msgstr "确认你希望从 %s 同步这些条目到 %s\n\n选择的字段将在所有条目中被替换!"
+
+#. Resource IDs: (5287)
+msgid "Confirm to delete the current user's PasswordSafe configuration from the Windows registry.\n\n"
+msgstr ""
 
 #. Resource IDs: (1505, 65535)
 msgid "Confirmation:"
@@ -2727,7 +2780,7 @@ msgstr "当前数据库是只读的"
 
 #. Resource IDs: (5477)
 #, c-format
-msgid "Current version:\t%s\nLatest version:\t%s\n\nPlease visit the Password Safe website to download the latest version."
+msgid "Current version:\t%s\nLatest version:\t%s\n\nVisit the Password Safe website to download the latest version."
 msgstr ""
 
 #. Resource IDs: (32155 - MenuEx)
@@ -2875,6 +2928,10 @@ msgstr "删除条目"
 #. Resource IDs: (5882)
 msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
 msgstr "删除选择的密码策略\n(只有未使用的命名密码策略可以被删除)"
+
+#. Resource IDs: (5876)
+msgid "Description"
+msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Description:"
@@ -3202,6 +3259,10 @@ msgstr "请输入一个数字."
 msgid "Enter a positive integer."
 msgstr "请输入一个正整数."
 
+#. Resource IDs: (5272)
+msgid "Enter a search string"
+msgstr ""
+
 #. Resource IDs: (61723)
 msgid "Enter a time."
 msgstr "请输入一个时间."
@@ -3244,9 +3305,17 @@ msgstr "输入身份验证密钥。这通常取自身份验证器设置页面。
 msgid "Enter the current master password, followed by a new one. \r\nType the new one again to confirm it."
 msgstr ""
 
+#. Resource IDs: (5255)
+msgid "Enter the key and verify it."
+msgstr ""
+
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
 msgstr "在下面输入你的示例文本"
+
+#. Resource IDs: (5388)
+msgid "Enter your backup database prefix."
+msgstr ""
 
 #. Resource IDs: (5362)
 msgid "Entries in both databases but with differences:"
@@ -4254,9 +4323,13 @@ msgstr "导入 XML 设置"
 msgid "Import XML failed"
 msgstr "导入 XML 失败"
 
+#. Resource IDs: (5340)
+msgid "Import a KeePass Text File"
+msgstr ""
+
 #. Resource IDs: (3425)
-msgid "Import aborted. Please see report."
-msgstr "导入已放弃。请查看报告."
+msgid "Import aborted, see report for details."
+msgstr ""
 
 #. Resource IDs: (5870)
 msgid "Import failed"
@@ -4316,6 +4389,10 @@ msgstr "在新数据库中包含存储在这个数据库中的筛选器"
 msgid "Incorrect filename."
 msgstr "错误文件名."
 
+#. Resource IDs: (5334)
+msgid "Incorrect master password"
+msgstr ""
+
 #. Resource IDs: (5280)
 msgid "Incorrect master password, not a Password Safe database,\nor a corrupt database."
 msgstr ""
@@ -4358,6 +4435,10 @@ msgstr "输入字符串是空的"
 #. Resource IDs: (8085)
 msgid "Insert"
 msgstr "插入"
+
+#. Resource IDs: (6001)
+msgid "Insert your YubiKey"
+msgstr ""
 
 #. Resource IDs: (61706)
 msgid "Insufficient memory to perform operation."
@@ -4686,6 +4767,10 @@ msgstr "主密码最后修改时间:"
 msgid "Master Password:"
 msgstr "设定主密码："
 
+#. Resource IDs: (5800)
+msgid "Master password needed to save. Unlock database and try again"
+msgstr ""
+
 #. Resource IDs: (1212)
 msgid "Max."
 msgstr "最大."
@@ -4818,9 +4903,29 @@ msgstr "必须至少 %d"
 msgid "N/A"
 msgstr "不可用"
 
-#. Resource IDs: (5640)
+#. Resource IDs: (5640, 5875)
 msgid "Name"
 msgstr "名称"
+
+#. Resource IDs: (5333)
+msgid "Name the XML file"
+msgstr ""
+
+#. Resource IDs: (5961)
+msgid "Name the database file"
+msgstr ""
+
+#. Resource IDs: (5331)
+msgid "Name the exported database"
+msgstr ""
+
+#. Resource IDs: (5332)
+msgid "Name the plaintext file"
+msgstr ""
+
+#. Resource IDs: (5621)
+msgid "Name this filter"
+msgstr ""
 
 #. Resource IDs: (1039)
 msgid "Name. Name. Name."
@@ -5174,6 +5279,10 @@ msgstr "实心"
 msgid "Open"
 msgstr "打开"
 
+#. Resource IDs: (5315)
+msgid "Open Password Database"
+msgstr ""
+
 #. Resource IDs: (1086)
 msgid "Open as read-only"
 msgstr "只读方式打开"
@@ -5237,14 +5346,6 @@ msgstr "PWS_CPF_CDD"
 #. Resource IDs: (5449)
 msgid "PWS_CPF_TVDD"
 msgstr "PWS_CPF_TVDD"
-
-#. Resource IDs: (5334)
-msgid "Passkey incorrect"
-msgstr "密钥不正确"
-
-#. Resource IDs: (5800)
-msgid "Passkey needed to save. Please unlock database and try again"
-msgstr "密匙需要保存。请解锁数据库并重试"
 
 #. Resource IDs: (5757)
 msgid "Passphrase"
@@ -5452,146 +5553,17 @@ msgstr "纯文本 (制表符分隔)..."
 msgid "Play sound on key press"
 msgstr "按键时播放声音"
 
-#. Resource IDs: (5376)
-msgid "Please Choose a Backup to restore:"
-msgstr "请选择一个要恢复的备份:"
-
-#. Resource IDs: (5315)
-msgid "Please Choose a Database to Open:"
-msgstr "请选择要打开的数据库:"
-
-#. Resource IDs: (5791)
-msgid "Please Choose a Database to Validate:"
-msgstr "请选择要验证的一个数据库:"
-
-#. Resource IDs: (5340)
-msgid "Please Choose a KeePass Text File to Import"
-msgstr "请选择要导入的一个 KeePass 文本文件"
-
-#. Resource IDs: (5375)
-msgid "Please Choose a Name for this Backup:"
-msgstr "请为这个备份选择一个名称:"
-
-#. Resource IDs: (5335)
-msgid "Please Choose a Text File to Import"
-msgstr "请选择一个要导入的文本文件"
-
-#. Resource IDs: (5343)
-msgid "Please Choose a XML File to Import"
-msgstr "请选择要导入的一个 XML 文件"
-
-#. Resource IDs: (5354)
-msgid "Please choose a database to compare with current database"
-msgstr "请选择一个和当前数据库比较的数据库"
-
-#. Resource IDs: (5348)
-msgid "Please choose a database to merge into current database"
-msgstr "请选择一个要合并到当前数据库中的数据库"
-
-#. Resource IDs: (5753)
-msgid "Please choose a database to synchronize with current database"
-msgstr "请选择一个和当前数据库同步的数据库"
-
-#. Resource IDs: (5327)
-msgid "Please choose a name for the current (Untitled) database:"
-msgstr "请为当前(未命名)数据库选择一个名称:"
-
 #. Resource IDs: (5395)
 msgid "Please choose a name for the new database"
 msgstr "请为新数据库选择一个名称"
-
-#. Resource IDs: (5328)
-msgid "Please choose a new name for the current database:"
-msgstr "请为当前数据库选择一个新名称:"
-
-#. Resource IDs: (5635)
-#, c-format
-msgid "Please confirm delete of the %s filter %s?"
-msgstr "请确认 %s 筛选器 %s 的删除?"
-
-#. Resource IDs: (6033)
-msgid "Please confirm that you wish to clear the recent Safe list."
-msgstr "请确认你希望清除近期保险箱列表."
-
-#. Resource IDs: (5287)
-msgid "Please confirm that you wish to delete current user's PasswordSafe configuration from the Windows registry.\n\n"
-msgstr "请确认你是希望从 Windows 注册表中删除当前用户的 PasswordSafe 配置.\n\n"
-
-#. Resource IDs: (5272)
-msgid "Please enter a search string"
-msgstr "请输入一个搜索字符串"
 
 #. Resource IDs: (65535)
 msgid "Please enter an encryption or decryption key"
 msgstr "请输入一个加密或解密密匙"
 
-#. Resource IDs: (5255)
-msgid "Please enter the key and verify it."
-msgstr "请输入密匙并验证它."
-
 #. Resource IDs: (1504)
 msgid "Please enter the master password for the NEW database to contain exported entry/entries."
 msgstr "请输入新数据库的主密码以包含导出的条目/条目。"
-
-#. Resource IDs: (5876)
-msgid "Please enter the new database description"
-msgstr "请输入新数据库描述"
-
-#. Resource IDs: (5875)
-msgid "Please enter the new database name"
-msgstr "请输入新数据库名称"
-
-#. Resource IDs: (5388)
-msgid "Please enter your backup database prefix."
-msgstr "请输入你的备份数据库前缀."
-
-#. Resource IDs: (6001)
-msgid "Please insert your YubiKey"
-msgstr "请插入你的 YubiKey"
-
-#. Resource IDs: (5333)
-msgid "Please name the XML file"
-msgstr "请命名 XML 文件"
-
-#. Resource IDs: (5961)
-msgid "Please name the database file"
-msgstr "请命名数据库文件"
-
-#. Resource IDs: (5331)
-msgid "Please name the exported database"
-msgstr "请命名导出的数据库"
-
-#. Resource IDs: (5332)
-msgid "Please name the plaintext file"
-msgstr "请命名纯文本文件"
-
-#. Resource IDs: (5621)
-msgid "Please name this filter"
-msgstr "请命名这个筛选器"
-
-#. Resource IDs: (5993)
-msgid "Please select media type"
-msgstr "请选择媒体类型"
-
-#. Resource IDs: (5487)
-msgid "Please select report to view."
-msgstr "请选择要查看的报告."
-
-#. Resource IDs: (5566)
-msgid "Please specify text"
-msgstr "请指定文本"
-
-#. Resource IDs: (5390)
-msgid "Please specify the destination location to contain all backups."
-msgstr "请指定包含所有备份的目标位置."
-
-#. Resource IDs: (5389)
-msgid "Please specify the sub-directory to contain all backups."
-msgstr "请指定包含所有备份的子目录."
-
-#. Resource IDs: (5489)
-msgid "Please visit the <a href=\"https://pwsafe.org/\">Password Safe website.</a>"
-msgstr ""
 
 #. Resource IDs: (5879)
 msgid "Policy Name"
@@ -5915,8 +5887,8 @@ msgstr "罗马尼亚语(标准)"
 
 #. Resource IDs: (5567)
 #, c-format
-msgid "Row %d is incomplete. Please set both Field and Criteria."
-msgstr "行 %d 不完整。 请设置“字段”和“条件”."
+msgid "Row %d is incomplete. Both Field and Criteria must be set."
+msgstr ""
 
 #. Resource IDs: (5614)
 msgid "Row number"
@@ -6132,6 +6104,10 @@ msgstr "选择解锁的文本颜色:"
 msgid "Select a button."
 msgstr "请选择一个按钮."
 
+#. Resource IDs: (5487)
+msgid "Select a report to view."
+msgstr ""
+
 #. Resource IDs: (5431)
 msgid "Select all entries"
 msgstr "选择全部条目"
@@ -6139,6 +6115,10 @@ msgstr "选择全部条目"
 #. Resource IDs: (523)
 msgid "Select entry to compare"
 msgstr "选择要比较的条目"
+
+#. Resource IDs: (5993)
+msgid "Select media type"
+msgstr ""
 
 #. Resource IDs: (5430)
 msgid "Select some entries"
@@ -6427,8 +6407,8 @@ msgid "Some characters may be missing or not be displayed correctly, as we were 
 msgstr "某些字符可能会丢失或显示不正确，因为我们无法找到的 Arial Unicode MS 字体."
 
 #. Resource IDs: (5923)
-msgid "Some consistency issues were found while opening the database.\n\nYou should save this database before proceeding. Please view report for details."
-msgstr "在打开数据库时发现一些统一性问题。\n\n你应该在继续前保存这个数据库。请查看报告了解详情."
+msgid "Some consistency issues were found while opening the database.\n\nYou should save this database before proceeding. More details may be found in the report."
+msgstr ""
 
 #. Resource IDs: (5821)
 msgid "Some of the entries in this database have passwords that have expired or are about to.  Do you wish to list them and possibly update them?"
@@ -6486,9 +6466,21 @@ msgstr "西班牙语(变种)"
 msgid "Specify a program for editing an entry's Notes field via the right-click context menu during Add/Edit. You can specify command line options to the external editor via the external  editor command line parameters field. Do not enclose this value in single or double quotes unless your chosen external editor requires them."
 msgstr "指定在添加/编辑期间用于经由右击上下文菜单编辑一个条目的备注字段的程序。 你可以经由外置编辑器命令行参数字段来指定外置编辑器的命令行选项。 除非你选择的外部编辑器需要，否则不要用单引号或双引号围住这个值."
 
+#. Resource IDs: (5566)
+msgid "Specify text"
+msgstr ""
+
 #. Resource IDs: (5108)
 msgid "Specify the browser to use when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'. You can specify command line options to the browser via the Browser command line parameters field. Do not enclose this value in single or double quotes unless your chosen browser requires them."
 msgstr "指定当一个条目的 URL 字段以 [alt] 开始(如 '[alt]http://foo.com')时使用的浏览器。 你可以经由浏览器命令行参数字段来指定浏览器的命令行选项。 除非你选择的浏览器需要，否则不要用单引号或双引号围住这个值."
+
+#. Resource IDs: (5390)
+msgid "Specify the destination location to contain all backups."
+msgstr ""
+
+#. Resource IDs: (5389)
+msgid "Specify the sub-directory to contain all backups."
+msgstr ""
 
 #. Resource IDs: (1497)
 msgid "Standard"
@@ -6738,8 +6730,8 @@ msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere
 msgstr "数据库“%s”不能打开。\n你是否希望在别处查找它(搜索)，创建一个新数据库(新建)或退出?"
 
 #. Resource IDs: (5852)
-msgid "The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n\nPlease close the database and re-open it in R/W mode."
-msgstr "自从你以只读模式打开数据库以来，该数据库已被更改，所以不能切换到读写模式。\n\n请关闭数据库并以读写模式重新打开它."
+msgid "The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n\nClose the database and re-open it in R/W mode."
+msgstr ""
 
 #. Resource IDs: (5412)
 #, c-format
@@ -6753,12 +6745,12 @@ msgstr "数据库:\n%s\n\n显然被使用:\n%s%s\n\n打开数据库用于只读�
 
 #. Resource IDs: (5775)
 #, c-format
-msgid "The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. Please fix by validating database."
-msgstr "数据库:\n\n%s\n\n有具有相同分组/标题/用户组合的重复条目。请通过验证数据库来修复."
+msgid "The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. You can fix this by validating the database."
+msgstr ""
 
 #. Resource IDs: (5250)
-msgid "The entered passwords do not match.  Please re-enter them."
-msgstr "输入的密码不匹配。请重新输入它们."
+msgid "The entered passwords do not match.  Please re-enter."
+msgstr ""
 
 #. Resource IDs: (61701)
 msgid "The file is too large to open."
@@ -6887,8 +6879,8 @@ msgstr "键盘快捷方式 '%s' 已经被指派给菜单项:\t'%s'\n该 %s 将�
 
 #. Resource IDs: (5950)
 #, c-format
-msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nPlease select another shortcut (it has been reset)."
-msgstr "键盘快捷方式 '%s' 已被下列内容使用中:\n\t«%s» «%s» «%s»\n请选择另一个快捷方式(它已被重置)."
+msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nSelect another shortcut (it has been reset)."
+msgstr ""
 
 #. Resource IDs: (5279)
 msgid "The master password cannot be blank."
@@ -6935,8 +6927,8 @@ msgid "The user specified that the following fields be excluded from the export:
 msgstr "用户指定从导出中排除下列字段:"
 
 #. Resource IDs: (5505)
-msgid "There are more than one entry that fits your selection. Please be more specific."
-msgstr "有超过一个条目符合你的选择。 请更具体一些."
+msgid "There are more than one entry that fits your selection. Be more specific."
+msgstr ""
 
 #. Resource IDs: (3358)
 msgid "There are unmatched quotes in the run command"
@@ -6969,13 +6961,13 @@ msgstr "这个条目已被更改。你确认你希望取消?"
 
 #. Resource IDs: (3404)
 #, c-format
-msgid "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (All shortcuts to this entry will be deleted)?"
-msgstr "这个条目拥有下列 %d %ls:\n%ls\n请确认继续(所有指向这个条目的快捷方式将被删除)?"
+msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
+msgstr ""
 
 #. Resource IDs: (3403)
 #, c-format
-msgid "This entry has the following %d %ls:\n%ls\nPlease confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
-msgstr "这个条目拥有下列 %d %ls:\n%ls\n请确认要继续(别名条目的密码将由这个条目的密码所替代)?"
+msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (alias entry's passwords will be replaced by this entry's password)?"
+msgstr ""
 
 #. Resource IDs: (5248)
 msgid "This entry must have a password."
@@ -7480,8 +7472,8 @@ msgid "Verify Key:"
 msgstr "验证密匙:"
 
 #. Resource IDs: (5690)
-msgid "Version mismatch with On Screen Keyboard DLL. Please install version that came with this version of Password Safe."
-msgstr "和上屏键盘 DLL 的版本不匹配。 请安装随这个 Password Safe 版本附带的版本."
+msgid "Version mismatch with On Screen Keyboard DLL. Please install the dll that came with this version of Password Safe."
+msgstr ""
 
 #. Resource IDs: (8236)
 msgid "Vietnamese"
@@ -7524,14 +7516,18 @@ msgstr "查看/编辑选定条目"
 msgid "Visit Password Safe &website..."
 msgstr "访问 Password Safe 网站(&W)..."
 
+#. Resource IDs: (5489)
+msgid "Visit the <a href=\"https://pwsafe.org/\">Password Safe website.</a>"
+msgstr ""
+
 #. Resource IDs: (5803)
 msgid "WARNING: If you continue, fields will be updated in entries in your existing database from your selected input database."
 msgstr "警告: 若你继续的话，字段将从你选择的输入数据库中来更新你已有数据库中的条目中的字段."
 
 #. Resource IDs: (5804)
 #, c-format
-msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n\nPlease do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
-msgstr "警告: 这个操作将在数据库中创建一个 %s 的未保护副本。 在使用后删除这个副本是不足够的。 .\n\n请不要使用这个选项，除非你明白并接受风险。 这个选项会绕过了由这个程序提供的安全性."
+msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n\nDo not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
+msgstr ""
 
 #. Resource IDs: (5447)
 msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
@@ -7596,13 +7592,13 @@ msgstr "Windows 注册表"
 
 #. Resource IDs: (6036)
 #, c-format
-msgid "Windows can't expand '%s'. Please make sure that you have set this correctly."
-msgstr "Windows 不能展开 '%s'。请确保你已正确设定这个."
+msgid "Windows can't expand '%s'. Make sure that you have set this correctly."
+msgstr ""
 
 #. Resource IDs: (5972)
 #, c-format
-msgid "Windows can't find '%s'. Please make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
-msgstr "Windows 无法查找 '%s'。 请确保你已正确设定外部编辑器并且它已安装。 外置编辑已取消."
+msgid "Windows can't find '%s'. Make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
+msgstr ""
 
 #. Resource IDs: (8264)
 msgid "Wolof"
@@ -8143,8 +8139,8 @@ msgid "\nView Reports"
 msgstr "\n查看报告"
 
 #. Resource IDs: (5238)
-msgid "\n\nCannot open database. It probably does not exist.\nPlease select to Open another database, create a New database or Cancel."
-msgstr "\n\n不能打开数据库，它可能不存在!\n请选择打开另一个数据库，创建一个新数据库或取消."
+msgid "\n\nCannot open database. It probably does not exist.\nYou can Open another database, create a New one or Cancel."
+msgstr ""
 
 #. Resource IDs: (5662)
 msgid "\n\nIgnore this and save anyway - Yes/no?"
@@ -8172,8 +8168,8 @@ msgid "\nwith warnings"
 msgstr "\n带警告"
 
 #. Resource IDs: (5448)
-msgid "\r\nThis field is being edited in your default text editor.\r\nPlease complete this action before continuing.\r\n\r\n(You may cancel this edit using the Close [X] button above)"
-msgstr "\r\n这个字段是在你的默认文本编辑器中编辑。\r\n请在继续前完整这个动作。\r\n\r\n(你可以使用上面的关闭[X]按钮取消这个编辑)"
+msgid "\r\nThis field is being edited in your default text editor.\r\nComplete this action before continuing.\r\n\r\n(You may cancel this edit using the Close [X] button above)"
+msgstr ""
 
 #. Resource IDs: (5526)
 #, c-format
