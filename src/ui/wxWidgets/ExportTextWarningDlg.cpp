@@ -59,7 +59,7 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow *parent) : wxDialog(
   wxString text(
     _("Warning! This operation will create an unprotected copy of ALL of the passwords\nin the database. Deleting this copy after use is NOT sufficient.")
     + wxT("\n\n") +
-    _("Please do not use this option unless you understand and accept the risks. This option\nbypasses the security provided by this program.")
+    _("Do not use this option unless you understand and accept the risks. This option\nbypasses the security provided by this program.")
   );
 
   auto warningText = new wxStaticText(this, wxID_ANY, text, wxDefaultPosition, wxDefaultSize, 0);
@@ -101,7 +101,7 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow *parent) : wxDialog(
 #endif
 
 #ifndef NO_YUBI
-  auto yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Please insert your YubiKey"),
+  auto yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Insert your YubiKey"),
                                          wxDefaultPosition, wxDefaultSize, 0 );
   flexGridSizer->AddStretchSpacer(0);                                // 1st column of wxFlexGridSizer
   flexGridSizer->Add(yubiStatusCtrl, 1, wxALL|wxEXPAND, 5);          // 2nd column of wxFlexGridSizer

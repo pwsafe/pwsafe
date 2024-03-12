@@ -189,7 +189,7 @@ void SafeCombinationChangeDlg::CreateControls()
 #ifndef NO_YUBI
   itemFlexGridSizer4->AddStretchSpacer(0);
 
-  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
   mainSizer->Add(m_yubiStatusCtrl, 0, wxEXPAND|wxALL, SideMargin);
 #endif
 
@@ -368,7 +368,7 @@ void SafeCombinationChangeDlg::OnYubibtn2Click(wxCommandEvent& WXUNUSED(event))
     // 1. Both old password and old response can't be blank
     if (m_oldpasswd.empty() && m_oldresponse.empty()) {
       m_yubiStatusCtrl->SetForegroundColour(*wxRED);
-      m_yubiStatusCtrl->SetLabel(_("Please confirm existing combination"));
+      m_yubiStatusCtrl->SetLabel(_("Confirm existing master password"));
       return;
     }
     // 2. If there's an old response, it should already have been checked, but JIC:

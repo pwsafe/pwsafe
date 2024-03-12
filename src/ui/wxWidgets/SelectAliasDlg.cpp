@@ -391,7 +391,7 @@ void SelectAliasDlg::OnOkClick( wxCommandEvent& event )
 {
   if (Validate() && TransferDataFromWindow()) {
     if(m_AliasName.IsEmpty()) {
-      wxMessageBox(_("No Alias name given."), _("Please name the alias."), wxOK|wxICON_ERROR);
+      wxMessageBox(_("No Alias name given."), _("Name the alias."), wxOK|wxICON_ERROR);
       return;
     }
   }

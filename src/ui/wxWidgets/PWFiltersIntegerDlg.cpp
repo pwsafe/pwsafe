@@ -506,20 +506,20 @@ bool pwFiltersIntegerDlg::IsValid(bool showMessage) const
     }
     else if (fnum1 == m_max) {
       if (showMessage) {
-        wxMessageBox(_("Please correct numeric values."), _("Maximum value for first number and 'Between' rule"), wxOK|wxICON_ERROR);
+        wxMessageBox(_("Correct numeric values."), _("Maximum value for first number and 'Between' rule"), wxOK|wxICON_ERROR);
       }
       return false;
     }
   }
   else if(isRuleSelected(idx, PWSMatch::MR_LT) && (fnum1 == m_min)) {
     if (showMessage) {
-      wxMessageBox(_("Please correct numeric values."), _("Number is set to the minimum value. 'Less than' is not allowed."), wxOK|wxICON_ERROR);
+      wxMessageBox(_("Correct numeric values."), _("Number is set to the minimum value. 'Less than' is not allowed."), wxOK|wxICON_ERROR);
     }
     return false;
   }
   else if(isRuleSelected(idx, PWSMatch::MR_GT) && (fnum1 == m_max)) {
     if (showMessage) {
-      wxMessageBox(_("Please correct numeric values."), _("Number is set to the maximum value. 'Greater than' is not allowed."), wxOK|wxICON_ERROR);
+      wxMessageBox(_("Correct numeric values."), _("Number is set to the maximum value. 'Greater than' is not allowed."), wxOK|wxICON_ERROR);
     }
     return false;
   }

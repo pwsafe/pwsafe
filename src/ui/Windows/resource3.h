@@ -160,6 +160,7 @@
 #define IDS_FILEOPENERROR               5319
 #define IDS_CANTOPENREADING             5320
 #define IDS_UNKNOWNERROR                5321
+#define IDS_CONFIRMOLDPHRASE            5322
 #define IDS_NEWFORMAT2                  5323
 #define IDS_VERSIONWARNING              5324
 #define IDS_CANTOPENWRITING             5325

@@ -225,7 +225,7 @@ void EditShortcutDlg::CreateControls()
 {
   //(*Initialize(EditShortcutDlgDialog)
   auto BoxSizer1 = new wxBoxSizer(wxVERTICAL);
-  auto StaticText1 = new wxStaticText(this, wxID_ANY, _("Please edit the shortcut properties to the selected base entry."), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
+  auto StaticText1 = new wxStaticText(this, wxID_ANY, _("Edit the shortcut properties to the selected base entry."), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
   BoxSizer1->Add(StaticText1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 10);
 
   auto StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Shortcut"));

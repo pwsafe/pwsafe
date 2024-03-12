@@ -104,7 +104,7 @@ DbSelectionPanel::DbSelectionPanel(wxWindow* parent,
   panelSizer->AddSpacer(RowSeparation);
 
 #ifndef NO_YUBI
-  auto yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Please insert your YubiKey"),
+  auto yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Insert your YubiKey"),
     wxDefaultPosition, wxDefaultSize, 0 );
   panelSizer->Add(yubiStatusCtrl, borderFlags.Expand());
 #endif

@@ -47,7 +47,7 @@ MergeDlg::MergeDlg(wxWindow *parent, PWScore* core, const wxString& filename) :
 
   const wxString filePrompt(wxString(_("Choose Database to Merge into \"")) <<
                                           towxstring(m_core->GetCurFile()) << wxT("\""));
-  const wxString filePickerCtrlTitle(_("Please Choose a Database to Merge into current database"));
+  const wxString filePickerCtrlTitle(_("Choose a Database to Merge into current database"));
 
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
 

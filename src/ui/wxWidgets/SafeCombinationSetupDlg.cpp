@@ -135,7 +135,7 @@ void SafeCombinationSetupDlg::CreateControls()
   m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
   itemGridSizer4->Add(m_YubiBtn, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
 
-  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Please insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
   itemGridSizer4->Add(m_yubiStatusCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
 #endif
 
@@ -216,7 +216,7 @@ void SafeCombinationSetupDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
       return;
     }
     if (m_password.empty()) {
-      wxMessageDialog err(this, _("Please enter the key and verify it."),
+      wxMessageDialog err(this, _("Enter the key and verify it."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
       return;
@@ -243,7 +243,7 @@ void SafeCombinationSetupDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
       return;
 #else
     cs_msg += wxT("\n");
-    cs_msg += _("Please try another");
+    cs_msg += _("Try another");
     wxMessageDialog mb(this, cs_msg, _("Error"), wxOK | wxICON_HAND);
     mb.ShowModal();
     return;

@@ -47,7 +47,7 @@ ImportXmlDlg::ImportXmlDlg(wxWindow *parent, const wxString& filename) : wxDialo
   dlgSizer->AddSpacer(RowSeparation/2);
   OpenFilePickerValidator validator(filepath);
   dlgSizer->Add(new wxFilePickerCtrl(this, wxID_ANY, filepath,
-                                          _("Please Choose a XML File to Import"), 
+                                          _("Choose an XML File to Import"), 
                                           _("XML files (*.xml)|*.xml"), 
                                           wxDefaultPosition, wxDefaultSize, 
                                           wxFLP_DEFAULT_STYLE | wxFLP_USE_TEXTCTRL, 

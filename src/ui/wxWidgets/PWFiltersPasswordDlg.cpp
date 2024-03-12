@@ -367,7 +367,7 @@ void pwFiltersPasswordDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     if(*m_prule != PWSMatch::MR_EXPIRED &&
        *m_prule != PWSMatch::MR_WILLEXPIRE &&
        m_string.IsEmpty()) {
-      wxMessageBox(_("Please specify text."), _("Missing text for the selected rule."), wxOK|wxICON_ERROR);
+      wxMessageBox(_("Specify text."), _("Missing text for the selected rule."), wxOK|wxICON_ERROR);
       return;
     }
     
