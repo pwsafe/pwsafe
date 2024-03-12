@@ -144,29 +144,57 @@ bool MultiCheckboxValidator::Validate(wxWindow* parent)
   }
 }
 
-void ShowHideText(wxTextCtrl *&txtCtrl, const wxString &text,
-                  wxSizer *sizer, bool show)
+/**
+ * @brief The purpose of this function is to update or remove the style flags "wxTE_PASSWORD" or "wxTE_READONLY" of a wxTextCtrl.
+ *
+ * According to the documentation of wxTextCtrl the style flags "wxTE_PASSWORD" and "wxTE_READONLY" can be changed during
+ * runtime under wxGTK but not wxMSW. This circumstance is taken into account by this function.
+ *
+ * In the current version, under wxGTK the style flag is applied dynamically to the text control and on other platforms
+ * the text control is replaced by a newly created one with the desired style flag.
+ *
+ * @param sizer the sizer to which the text control belongs
+ * @param textCtrl the control whose style are to be changed
+ * @param text the text to update the text control with
+ * @param before the control element in the layout before "textCtrl" to respect the TAB order
+ * @param style the new style flag for "textCtrl" (previous flags will not be preserved)
+ *
+ * @see https://docs.wxwidgets.org/stable/classwx_text_ctrl.html
+ */
+void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxTextCtrl* before, const int style)
 {
-  wxWindow *parent = txtCtrl->GetParent();
-  wxWindowID id = txtCtrl->GetId();
-  wxValidator *validator = txtCtrl->GetValidator();
+  ASSERT(textCtrl);
+#if defined(__WXGTK__)
+  // Since this function is called with only a single style flag such as "0", "wxTE_PASSWORD" or "wxTE_READONLY",
+  // we do not care about flags already set for the control and therefore do not preserve them.
+  textCtrl->SetWindowStyle(style);
+  textCtrl->ChangeValue(text);
+#else
+  wxWindow *parent = textCtrl->GetParent();
+  wxWindowID id = textCtrl->GetId();
+  wxValidator *validator = textCtrl->GetValidator();
 
   // Per Dave Silvia's suggestion:
   // Following kludge since wxTE_PASSWORD style is immutable
-  wxTextCtrl *tmp = txtCtrl;
-  txtCtrl = new wxTextCtrl(parent, id, text,
+  wxTextCtrl *tmp = textCtrl;
+  textCtrl = new wxTextCtrl(parent, id, text,
                            wxDefaultPosition, wxDefaultSize,
-                           show ? 0 : wxTE_PASSWORD);
-  if (validator != nullptr)
-    txtCtrl->SetValidator(*validator);
-  ApplyFontPreference(txtCtrl, PWSprefs::StringPrefs::PasswordFont);
-  sizer->Replace(tmp, txtCtrl);
-  delete tmp;
-  sizer->Layout();
+                           style);
   if (!text.IsEmpty()) {
-    txtCtrl->ChangeValue(text);
-    txtCtrl->SetModified(true);
+    textCtrl->ChangeValue(text);
+    textCtrl->SetModified(true);
   }
+  if (validator != nullptr) {
+    textCtrl->SetValidator(*validator);
+  }
+  if (before != nullptr) {
+    textCtrl->MoveAfterInTabOrder(before);
+  }
+  ApplyFontPreference(textCtrl, PWSprefs::StringPrefs::PasswordFont);
+  sizer->Replace(tmp, textCtrl);
+  tmp->Destroy();
+  sizer->Layout();
+#endif
 }
 
 int pless(int* first, int* second) { return *first - *second; }

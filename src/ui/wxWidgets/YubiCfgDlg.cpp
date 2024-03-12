@@ -311,7 +311,7 @@ void YubiCfgDlg::ShowSK()
   if (Validate() && TransferDataFromWindow()) {
     m_isSKHidden = false;
     FindWindow(ID_YK_HIDESHOW)->SetLabel(_("Hide"));
-    ShowHideText(m_SKCtrl, m_yksk, m_SKSizer, true);
+    UpdatePasswordTextCtrl(m_SKSizer, m_SKCtrl, m_yksk, nullptr, 0);
   }
 }
 
@@ -320,7 +320,7 @@ void YubiCfgDlg::HideSK()
   if (Validate() && TransferDataFromWindow()) {
     m_isSKHidden = true;
     FindWindow(ID_YK_HIDESHOW)->SetLabel(_("Show"));
-    ShowHideText(m_SKCtrl, m_yksk, m_SKSizer, false);
+    UpdatePasswordTextCtrl(m_SKSizer, m_SKCtrl, m_yksk, nullptr, wxTE_PASSWORD);
   }
 }
 
