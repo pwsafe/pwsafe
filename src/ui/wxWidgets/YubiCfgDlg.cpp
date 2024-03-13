@@ -152,18 +152,18 @@ void YubiCfgDlg::CreateControls()
   itemDialog1->SetSizer(itemBoxSizer2);
 
   wxBoxSizer* itemBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer2->Add(itemBoxSizer3, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  itemBoxSizer2->Add(itemBoxSizer3, 0, wxEXPAND|wxALL, 5);
 
   wxStaticText* itemStaticText4 = new wxStaticText( itemDialog1, wxID_STATIC, _("YubiKey Serial Number: "), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer3->Add(itemStaticText4, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   // With wx:3.2.2.1 this text wxTextCtrl doesn't resize, it stays one character wide. The initial string of 0s forces it.
   wxTextCtrl* itemTextCtrl5 = new wxTextCtrl( itemDialog1, ID_YK_SERNUM, "000000000", wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-  itemBoxSizer3->Add(itemTextCtrl5, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  itemBoxSizer3->Add(itemTextCtrl5, 1, wxEXPAND|wxTOP|wxBOTTOM|wxRIGHT, 5);
 
   wxStaticBox* itemStaticBoxSizer6Static = new wxStaticBox(itemDialog1, wxID_ANY, _("YubiKey Secret Key (20 Byte Hex)"));
   m_SKSizer = new wxStaticBoxSizer(itemStaticBoxSizer6Static, wxVERTICAL);
-  itemBoxSizer2->Add(m_SKSizer, 0, wxEXPAND|wxALL, 5);
+  itemBoxSizer2->Add(m_SKSizer, 1, wxEXPAND|wxALL, 5);
 
   m_SKCtrl = new wxTextCtrl( itemDialog1, ID_YKSK, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
   m_SKSizer->Add(m_SKCtrl, 0, wxEXPAND|wxALL, 5);
