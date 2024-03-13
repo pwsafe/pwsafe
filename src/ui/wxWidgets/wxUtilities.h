@@ -177,7 +177,7 @@ inline const wxChar* ToStr(bool b) {
 }
 
 /**
- * @brief The purpose of this function is to update or remove the style flags "wxTE_PASSWORD" or "wxTE_READONLY" of a wxTextCtrl.
+ * The purpose of this function is to add/remove the style flags "wxTE_PASSWORD" or "wxTE_READONLY" to/from a wxTextCtrl.
  *
  * According to the documentation of wxTextCtrl the style flags "wxTE_PASSWORD" and "wxTE_READONLY" can be changed during
  * runtime under wxGTK but not wxMSW. This circumstance is taken into account by this function.
@@ -191,7 +191,8 @@ inline const wxChar* ToStr(bool b) {
  * @param before the control element in the layout before "textCtrl" to respect the TAB order
  * @param style the new style flag for "textCtrl" (previous flags will not be preserved)
  *
- * @see https://docs.wxwidgets.org/stable/classwx_text_ctrl.html
+ * @note See <a href="https://docs.wxwidgets.org/stable/classwx_text_ctrl.html">Styles</a> section of wxTextCtrl
+ *       documentation about restrictions.
  */
 void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxTextCtrl* before, const int style);
 
