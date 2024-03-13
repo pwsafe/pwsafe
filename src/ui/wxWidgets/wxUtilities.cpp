@@ -144,23 +144,6 @@ bool MultiCheckboxValidator::Validate(wxWindow* parent)
   }
 }
 
-/**
- * @brief The purpose of this function is to update or remove the style flags "wxTE_PASSWORD" or "wxTE_READONLY" of a wxTextCtrl.
- *
- * According to the documentation of wxTextCtrl the style flags "wxTE_PASSWORD" and "wxTE_READONLY" can be changed during
- * runtime under wxGTK but not wxMSW. This circumstance is taken into account by this function.
- *
- * In the current version, under wxGTK the style flag is applied dynamically to the text control and on other platforms
- * the text control is replaced by a newly created one with the desired style flag.
- *
- * @param sizer the sizer to which the text control belongs
- * @param textCtrl the control whose style are to be changed
- * @param text the text to update the text control with
- * @param before the control element in the layout before "textCtrl" to respect the TAB order
- * @param style the new style flag for "textCtrl" (previous flags will not be preserved)
- *
- * @see https://docs.wxwidgets.org/stable/classwx_text_ctrl.html
- */
 void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxTextCtrl* before, const int style)
 {
   ASSERT(textCtrl);
