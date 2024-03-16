@@ -971,7 +971,7 @@ void TreeCtrl::PreferencesChanged()
   ;
 }
 
-void EditTreeLabel(wxTreeCtrl* tree, const wxTreeItemId& id)
+void TreeCtrl::EditTreeLabel(wxTreeCtrl* tree, const wxTreeItemId& id)
 {
   if (!id) return;
   wxTextCtrl* edit = tree->EditLabel(id);
@@ -1052,7 +1052,14 @@ void TreeCtrl::OnEndLabelEdit( wxTreeEvent& evt )
             if ((itemText == label.c_str()) && (ti != item)) {
               evt.Veto();
               wxMessageBox(_("Group names on the same level must be unique."), _("Duplicate group name"), wxOK|wxICON_ERROR);
-              EditTreeLabel(this, item);
+              /*
+                Wrapped in a 'CallAfter' so the veto and current event can be finalized.
+                A call to 'EditTreeLabel' will trigger a new event for editing the label
+                and will open a new text entry field, whereas the previously open seems
+                still to exists. Hence, without a delay the new event seems to be in
+                conflict with the current one.
+              */
+              CallAfter(&TreeCtrl::EditTreeLabel, this, item);
               return;
             }
             ti = GetNextSibling(ti);

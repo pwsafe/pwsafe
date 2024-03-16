@@ -297,6 +297,8 @@ private:
   bool ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem);
   void AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, StringX &sxDropPath);
 
+  void EditTreeLabel(wxTreeCtrl* tree, const wxTreeItemId& id);
+
 ////@begin TreeCtrl member variables
   wxTreeItemId m_drag_item;
   wxColour m_drag_text_colour;
