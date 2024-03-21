@@ -75,7 +75,7 @@ SafeCombinationPromptDlg::SafeCombinationPromptDlg(wxWindow *parent, PWScore &co
                                                const wxString& caption,
                                                const wxPoint& pos,
                                                const wxSize& size, long style)
-: m_core(core), m_filename(fname), m_tries(0), m_allowExit(allowExit)
+: m_core(core), m_filename(fname), m_allowExit(allowExit)
 {
   wxASSERT(!parent || parent->IsTopLevel());
 ////@begin SafeCombinationPromptDlg creation
@@ -279,21 +279,31 @@ wxIcon SafeCombinationPromptDlg::GetIconResource( const wxString& WXUNUSED(name)
 
 void SafeCombinationPromptDlg::ProcessPhrase()
 {
+  static unsigned tries = 0;
+
   if (m_core.CheckPasskey(tostringx(m_filename),
                           m_password) != PWScore::SUCCESS) {
     wxString errmess;
-    if (m_tries >= 2) {
-      errmess = _("Three strikes - yer out!");
+    if (++tries > 2) {
+      errmess = wxString::Format(_("The master password has been entered %d times without success:\n"), tries);
+      errmess += _("- Is Caps Lock off?\n");
+      errmess += _("- Is the language correct (if multilingual)?\n");
+      errmess += _("- Is this the correct database?\n");
+      errmess += _("- Perhaps the database was damaged. Try opening a backup copy.");
     } else {
-      m_tries++;
-      errmess = _("Incorrect master password, not a Password Safe database,\nor a corrupt database.");
+      errmess =  _("Incorrect master password,\n");
+      errmess += _("not a Password Safe database,\n");
+      errmess += _("or a corrupt database.");
     }
     wxMessageDialog err(this, errmess,
                         _("Can't open a password database"), wxOK | wxICON_EXCLAMATION);
     err.ShowModal();
-    auto *txt = dynamic_cast<wxTextCtrl *>(FindWindow(ID_PASSWORD));
-    txt->SetSelection(-1,-1);
-    txt->SetFocus();
+
+    auto *txt = wxDynamicCast(FindWindow(ID_PASSWORD), wxTextCtrl);
+    if (txt) {
+      txt->SetSelection(-1,-1);
+      txt->SetFocus();
+    }
     return;
   }
   m_core.SetReadOnly(m_readOnly);

@@ -125,7 +125,6 @@ protected:
   PWScore &m_core;
   wxString m_filename;
   StringX  m_password;
-  unsigned m_tries;
   bool m_readOnly;
   bool m_allowExit;
   
