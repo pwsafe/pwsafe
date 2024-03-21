@@ -158,7 +158,6 @@ private:
   wxString m_ellipsizedFilename = wxEmptyString;
   bool m_readOnly;
   PWScore &m_core;
-  unsigned m_tries = 0;
   bool m_postInitDone = false;
 
 #ifndef NO_YUBI

@@ -389,6 +389,7 @@ void SafeCombinationEntryDlg::OnOk( wxCommandEvent& )
 
 void SafeCombinationEntryDlg::ProcessPhrase()
 {
+  static unsigned tries = 0;
   int status = m_core.CheckPasskey(tostringx(m_filename), m_password);
   wxString errmess;
   switch (status) {
@@ -439,10 +440,16 @@ void SafeCombinationEntryDlg::ProcessPhrase()
     break;
   case PWScore::WRONG_PASSWORD:
   default:
-    if (m_tries++ >= 2) {
-      errmess = _("Too many retries - exiting");
+    if (++tries > 2) {
+      errmess = wxString::Format(_("The master password has been entered %d times without success:\n"), tries);
+      errmess += _("- Is Caps Lock off?\n");
+      errmess += _("- Is the language correct (if multilingual)?\n");
+      errmess += _("- Is this the correct database?\n");
+      errmess += _("- Perhaps the database was damaged. Try opening a backup copy.");
     } else {
-      errmess = _("Incorrect master password, not a Password Safe database,\nor a corrupt database.");
+      errmess =  _("Incorrect master password,\n");
+      errmess += _("not a Password Safe database,\n");
+      errmess += _("or a corrupt database.");
     }
     break;
   } // switch (status)
@@ -450,14 +457,10 @@ void SafeCombinationEntryDlg::ProcessPhrase()
   wxMessageDialog err(this, errmess,
                       _("Can't open a password database"), wxOK | wxICON_EXCLAMATION);
   err.ShowModal();
-  if (m_tries >= 3) {
-    EndModal(wxCANCEL);
-  } else {
-    auto *txt = wxDynamicCast(FindWindow(ID_COMBINATION), wxTextCtrl);
-    if (txt) {
-      txt->SetSelection(-1,-1);
-      txt->SetFocus();
-    }
+  auto *txt = wxDynamicCast(FindWindow(ID_COMBINATION), wxTextCtrl);
+  if (txt) {
+    txt->SetSelection(-1,-1);
+    txt->SetFocus();
   }
 }
 
