@@ -20,11 +20,12 @@
 
 // #define CurrentBackgroundColor    *wxWHITE
 #if wxVERSION_NUMBER >= 3103
-#define CurrentBackgroundColor    (wxSystemSettings::GetAppearance().IsUsingDarkBackground() ? wxColor(29, 30, 32) : *wxWHITE)
+#define CurrentBackgroundColor    (wxSystemSettings::GetAppearance().IsUsingDarkBackground() ? wxTheColourDatabase->Find("DARK GREY") : wxTheColourDatabase->Find("WHITE"))
+#define ComparisonBackgroundColor (wxSystemSettings::GetAppearance().IsUsingDarkBackground() ? wxTheColourDatabase->Find("DIM GREY")  : wxTheColourDatabase->Find("LIGHT GREY"))
 #else
 #define CurrentBackgroundColor    (*wxWHITE)
+#define ComparisonBackgroundColor (*wxWHITE)
 #endif
-#define ComparisonBackgroundColor *wxWHITE
 
 struct SelectionCriteria;
 class PWScore;
