@@ -18,10 +18,10 @@
 #include "../../core/DBCompareData.h"
 #include "../../core/UIinterface.h"
 
-// #define CurrentBackgroundColor    *wxWHITE
+// Use different background shades for the currently open file and the one being compared to it.
 #if wxVERSION_NUMBER >= 3103
-#define CurrentBackgroundColor    (wxSystemSettings::GetAppearance().IsUsingDarkBackground() ? wxTheColourDatabase->Find("DARK GREY") : wxTheColourDatabase->Find("WHITE"))
-#define ComparisonBackgroundColor (wxSystemSettings::GetAppearance().IsUsingDarkBackground() ? wxTheColourDatabase->Find("DIM GREY")  : wxTheColourDatabase->Find("LIGHT GREY"))
+#define CurrentBackgroundColor    (wxSystemSettings::GetAppearance().IsDark() ? wxTheColourDatabase->Find("DARK GREY") : wxTheColourDatabase->Find("WHITE"))
+#define ComparisonBackgroundColor (wxSystemSettings::GetAppearance().IsDark() ? wxTheColourDatabase->Find("DIM GREY")  : wxTheColourDatabase->Find("LIGHT GREY"))
 #else
 #define CurrentBackgroundColor    (*wxWHITE)
 #define ComparisonBackgroundColor (*wxWHITE)
