@@ -14,6 +14,7 @@ Bugs fixed in 1.19
 ------------------
 * [GH1158](https://github.com/pwsafe/pwsafe/issues/1158) Focus on Title field when opening Add/Edit entry.
 * [GH1147](https://github.com/pwsafe/pwsafe/issues/1147) Password history grid is no longer editable in Add/Edit Entry's Additional tab.
+* [GH1145](https://github.com/pwsafe/pwsafe/issues/1145) Fixed issue with editing a group's name.
 * [GH1140](https://github.com/pwsafe/pwsafe/issues/1140) The master password of an empty database can now be changed.
 * [GH1132](https://github.com/pwsafe/pwsafe/issues/1132) Handle Cancel button correctly in "Save Changes?" dialog box.
 * [GH1128](https://github.com/pwsafe/pwsafe/issues/1128) Correct confirmation text for empty group deletion.
@@ -22,7 +23,7 @@ Bugs fixed in 1.19
 
 New features in 1.19
 --------------------
-* Added Slovenian language support thatnks to grof.
+* Added Slovenian language support thanks to grof.
 
 PasswordSafe 1.18.2 Release January 2024
 ========================================
