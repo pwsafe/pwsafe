@@ -18,6 +18,7 @@ Bugs fixed in 1.19
 * [GH1140](https://github.com/pwsafe/pwsafe/issues/1140) The master password of an empty database can now be changed.
 * [GH1132](https://github.com/pwsafe/pwsafe/issues/1132) Handle Cancel button correctly in "Save Changes?" dialog box.
 * [GH1128](https://github.com/pwsafe/pwsafe/issues/1128) Correct confirmation text for empty group deletion.
+* [GH1115](https://github.com/pwsafe/pwsafe/issues/1115) More helpful handling of incorrect master password entry.
 * [GH1085](https://github.com/pwsafe/pwsafe/issues/1085) Unify phrasing across platforms.
 
 
