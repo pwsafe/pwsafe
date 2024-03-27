@@ -1612,13 +1612,13 @@ void AddEditPropSheetDlg::OnShowHideClick(wxCommandEvent& WXUNUSED(evt))
       ASSERT(pbci);
       if (pbci) {
         m_IsPasswordHidden = false;
-        UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pbci->GetPassword().c_str(), m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_READONLY);
+        UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordConfirmationTextCtrl, pbci->GetPassword().c_str(), m_BasicPasswordTextCtrl, wxTE_READONLY);
         m_BasicPasswordConfirmationTextCtrl->Enable(true);
       }
     }
     else {
       m_IsPasswordHidden = true;
-      UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, wxEmptyString, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_READONLY);
+      UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordConfirmationTextCtrl, wxEmptyString, m_BasicPasswordTextCtrl, wxTE_READONLY);
       m_BasicPasswordConfirmationTextCtrl->Enable(false);
     }
   }
@@ -1702,38 +1702,10 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
   }
 }
 
-void AddEditPropSheetDlg::UpdatePasswordTextCtrl(wxTextCtrl* &textCtrl, const wxString value, wxTextCtrl* before, const int id, const int style)
-{
-  ASSERT(textCtrl);
-#if defined(__WXGTK__)
-  // Since this function is called with only a single style flag such as "0", "wxTE_PASSWORD" or "wxTE_READONLY",
-  // we do not care about flags already set for the control and therefore do not preserve them.
-  textCtrl->SetWindowStyle(style);
-  textCtrl->ChangeValue(value);
-#else
-  // Per Dave Silvia's suggestion:
-  // Following kludge since wxTE_PASSWORD style is immutable
-  wxTextCtrl *tmp = textCtrl;
-  textCtrl = new wxTextCtrl(m_BasicPanel, id,
-                            value,
-                            wxDefaultPosition, wxDefaultSize,
-                            style);
-  if (!value.IsEmpty()) {
-    textCtrl->ChangeValue(value);
-    textCtrl->SetModified(true);
-  }
-  ApplyFontPreference(textCtrl, PWSprefs::StringPrefs::PasswordFont);
-  textCtrl->MoveAfterInTabOrder(before);
-  m_BasicSizer->Replace(tmp, textCtrl);
-  tmp->Destroy();
-  m_BasicSizer->Layout();
-#endif
-}
-
 void AddEditPropSheetDlg::ShowPassword()
 {
   m_IsPasswordHidden = false;
-  UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, m_Password.c_str(), m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, 0);
+  UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordTextCtrl, m_Password.c_str(), m_BasicUsernameTextCtrl, 0);
   // Disable confirmation Ctrl, as the user can see the password entered
   ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
   m_BasicPasswordConfirmationTextCtrl->Clear();
@@ -1744,7 +1716,7 @@ void AddEditPropSheetDlg::HidePassword()
 {
   m_IsPasswordHidden = true;
   const wxString pwd = m_Password.c_str();
-  UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, pwd, m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, wxTE_PASSWORD);
+  UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordTextCtrl, pwd, m_BasicUsernameTextCtrl, wxTE_PASSWORD);
   ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
   m_BasicPasswordConfirmationTextCtrl->ChangeValue(pwd);
   m_BasicPasswordConfirmationTextCtrl->Enable(true);
@@ -1763,20 +1735,20 @@ void AddEditPropSheetDlg::ShowAlias()
                 pbci->GetUser()  + L"]";
   }
   m_BasicPasswordTextLabel->SetLabel(_("Alias:"));
-  UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, m_Password.c_str(), m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, wxTE_READONLY);
+  UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordTextCtrl, m_Password.c_str(), m_BasicUsernameTextCtrl, wxTE_READONLY);
   
   m_BasicPasswordConfirmationTextLabel->SetLabel(_("Password:"));
   if (pbci && PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
     m_IsPasswordHidden = false;
     const wxString pwd = pbci->GetPassword().c_str();
-    UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pwd, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_READONLY);
+    UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordConfirmationTextCtrl, pwd, m_BasicPasswordTextCtrl, wxTE_READONLY);
     ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
     m_BasicPasswordConfirmationTextCtrl->ChangeValue(pwd);
     m_BasicPasswordConfirmationTextCtrl->Enable(true);
   }
   else {
     m_IsPasswordHidden = true;
-    UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, wxEmptyString, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_READONLY);
+    UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordConfirmationTextCtrl, wxEmptyString, m_BasicPasswordTextCtrl, wxTE_READONLY);
     ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
     m_BasicPasswordConfirmationTextCtrl->Clear();
     m_BasicPasswordConfirmationTextCtrl->Enable(false);
@@ -1797,15 +1769,15 @@ void AddEditPropSheetDlg::RemoveAlias()
   
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
     m_IsPasswordHidden = false;
-    UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, pwd, m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, 0);
-    UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pwd, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_PASSWORD);
+    UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordTextCtrl, pwd, m_BasicUsernameTextCtrl, 0);
+    UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordConfirmationTextCtrl, pwd, m_BasicPasswordTextCtrl, wxTE_PASSWORD);
     m_BasicPasswordConfirmationTextCtrl->Clear();
     m_BasicPasswordConfirmationTextCtrl->Enable(false);
   }
   else {
     m_IsPasswordHidden = true;
-    UpdatePasswordTextCtrl(m_BasicPasswordTextCtrl, pwd, m_BasicUsernameTextCtrl, ID_TEXTCTRL_PASSWORD, wxTE_PASSWORD);
-    UpdatePasswordTextCtrl(m_BasicPasswordConfirmationTextCtrl, pwd, m_BasicPasswordTextCtrl, ID_TEXTCTRL_PASSWORD2, wxTE_PASSWORD);
+    UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordTextCtrl, pwd, m_BasicUsernameTextCtrl, wxTE_PASSWORD);
+    UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordConfirmationTextCtrl, pwd, m_BasicPasswordTextCtrl, wxTE_PASSWORD);
     m_BasicPasswordConfirmationTextCtrl->ChangeValue(pwd);
     m_BasicPasswordConfirmationTextCtrl->Enable(true);
   }

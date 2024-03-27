@@ -297,7 +297,6 @@ private:
   bool CheckPWPolicyFromUI();
   void ShowPWPSpinners(bool show);
   void EnableNonHexCBs(bool enable);
-  void UpdatePasswordTextCtrl(wxTextCtrl* &textCtrl, const wxString value, wxTextCtrl* before, const int id = ID_TEXTCTRL_PASSWORD, const int style = 0);
   void ShowPassword();
   void HidePassword();
   void ShowAlias();

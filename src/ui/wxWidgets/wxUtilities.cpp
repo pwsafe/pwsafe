@@ -144,29 +144,40 @@ bool MultiCheckboxValidator::Validate(wxWindow* parent)
   }
 }
 
-void ShowHideText(wxTextCtrl *&txtCtrl, const wxString &text,
-                  wxSizer *sizer, bool show)
+void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxTextCtrl* before, const int style)
 {
-  wxWindow *parent = txtCtrl->GetParent();
-  wxWindowID id = txtCtrl->GetId();
-  wxValidator *validator = txtCtrl->GetValidator();
+  ASSERT(textCtrl);
+#if defined(__WXGTK__)
+  // Since this function is called with only a single style flag such as "0", "wxTE_PASSWORD" or "wxTE_READONLY",
+  // we do not care about flags already set for the control and therefore do not preserve them.
+  textCtrl->SetWindowStyle(style);
+  textCtrl->ChangeValue(text);
+#else
+  wxWindow *parent = textCtrl->GetParent();
+  wxWindowID id = textCtrl->GetId();
+  wxValidator *validator = textCtrl->GetValidator();
 
   // Per Dave Silvia's suggestion:
   // Following kludge since wxTE_PASSWORD style is immutable
-  wxTextCtrl *tmp = txtCtrl;
-  txtCtrl = new wxTextCtrl(parent, id, text,
+  wxTextCtrl *tmp = textCtrl;
+  textCtrl = new wxTextCtrl(parent, id, text,
                            wxDefaultPosition, wxDefaultSize,
-                           show ? 0 : wxTE_PASSWORD);
-  if (validator != nullptr)
-    txtCtrl->SetValidator(*validator);
-  ApplyFontPreference(txtCtrl, PWSprefs::StringPrefs::PasswordFont);
-  sizer->Replace(tmp, txtCtrl);
-  delete tmp;
-  sizer->Layout();
+                           style);
   if (!text.IsEmpty()) {
-    txtCtrl->ChangeValue(text);
-    txtCtrl->SetModified(true);
+    textCtrl->ChangeValue(text);
+    textCtrl->SetModified(true);
   }
+  if (validator != nullptr) {
+    textCtrl->SetValidator(*validator);
+  }
+  if (before != nullptr) {
+    textCtrl->MoveAfterInTabOrder(before);
+  }
+  ApplyFontPreference(textCtrl, PWSprefs::StringPrefs::PasswordFont);
+  sizer->Replace(tmp, textCtrl);
+  tmp->Destroy();
+  sizer->Layout();
+#endif
 }
 
 int pless(int* first, int* second) { return *first - *second; }

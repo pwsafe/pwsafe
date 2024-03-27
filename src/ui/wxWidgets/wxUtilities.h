@@ -176,9 +176,25 @@ inline const wxChar* ToStr(bool b) {
   return b? wxT("True"): wxT("False");
 }
 
-// Workaround for wxTE_PASSWORD being immutable:
-void ShowHideText(wxTextCtrl *&txtCtrl, const wxString &text,
-                  wxSizer *sizer, bool show);
+/**
+ * The purpose of this function is to add/remove the style flags "wxTE_PASSWORD" or "wxTE_READONLY" to/from a wxTextCtrl.
+ *
+ * According to the documentation of wxTextCtrl the style flags "wxTE_PASSWORD" and "wxTE_READONLY" can be changed during
+ * runtime under wxGTK but not wxMSW. This circumstance is taken into account by this function.
+ *
+ * In the current version, under wxGTK the style flag is applied dynamically to the text control and on other platforms
+ * the text control is replaced by a newly created one with the desired style flag.
+ *
+ * @param sizer the sizer to which the text control belongs
+ * @param textCtrl the control whose style are to be changed
+ * @param text the text to update the text control with
+ * @param before the control element in the layout before "textCtrl" to respect the TAB order
+ * @param style the new style flag for "textCtrl" (previous flags will not be preserved)
+ *
+ * @note See <a href="https://docs.wxwidgets.org/stable/classwx_text_ctrl.html">Styles</a> section of wxTextCtrl
+ *       documentation about restrictions.
+ */
+void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxTextCtrl* before, const int style);
 
 //ensures at least one of the checkboxes are selected
 class MultiCheckboxValidator: public wxValidator
