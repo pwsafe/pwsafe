@@ -277,12 +277,12 @@ wxCollapsiblePane* CompareDlg::CreateDataPanel(wxSizer* dlgSizer, const wxString
   //create a way to get to the ComparisonData object from the grid, which is the only thing we have in events
   wxASSERT_MSG(cd->grid->GetClientData() == nullptr, wxT("wxGrid::ClientData is not nullptr on creation.  Need to use that for our purposes"));
   cd->grid->SetClientData(cd);
-#ifndef __WXMSW__
+#if defined(__WXMSW__) || defined(__WXOSX__)
+  cd->grid->SetDefaultCellFont(wxSystemSettings::GetFont(wxSYS_OEM_FIXED_FONT));
+#else
   wxFont monospacedFont(10, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
   if (monospacedFont.IsFixedWidth())
     cd->grid->SetDefaultCellFont(monospacedFont);
-#else
-  cd->grid->SetDefaultCellFont(wxSystemSettings::GetFont(wxSYS_OEM_FIXED_FONT));
 #endif
   cd->grid->SetColLabelAlignment(wxALIGN_LEFT, wxALIGN_BOTTOM);
   auto *gridSizer = new wxBoxSizer(wxVERTICAL);
