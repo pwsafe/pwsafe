@@ -1824,8 +1824,8 @@ bool AddEditPropSheetDlg::ValidateBasicData()
     if (password != secondPassword) {
       wxMessageDialog msg(
         this,
-        _("Passwords do not match"),
-        _("Error"),
+        _("Passwords do not match."),
+        _("Mismatching passwords"),
         wxOK|wxICON_ERROR
       );
       msg.ShowModal();
