@@ -87,8 +87,6 @@ SafeCombinationPromptDlg::SafeCombinationPromptDlg(wxWindow *parent, PWScore &co
   {
     GetSizer()->SetSizeHints(this);
   }
-  // Allow to resize the dialog in width, only.
-  SetMaxSize(wxSize(wxDefaultCoord, GetMinSize().y));
   Centre();
 ////@end SafeCombinationPromptDlg creation
 #ifndef NO_YUBI
@@ -123,100 +121,80 @@ SafeCombinationPromptDlg::~SafeCombinationPromptDlg()
 
 void SafeCombinationPromptDlg::CreateControls()
 {
-////@begin SafeCombinationPromptDlg content construction
-  SafeCombinationPromptDlg* itemDialog1 = this;
+  auto *mainSizer = new wxBoxSizer(wxVERTICAL);
+  SetSizer(mainSizer);
 
-  auto *itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
-  itemDialog1->SetSizer(itemBoxSizer2);
+  auto *itemStaticText6 = new wxStaticText(this, wxID_STATIC, _("Enter the Master Password to unlock the password database:"), wxDefaultPosition, wxDefaultSize, 0);
+  mainSizer->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALL, 12);
 
-  auto *itemBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer2->Add(itemBoxSizer3, 1, wxALL|wxEXPAND, 5);
+  auto *itemStaticText7 = new wxStaticText(this, wxID_STATIC, _("filename"), wxDefaultPosition, wxDefaultSize, 0);
+  mainSizer->Add(itemStaticText7, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT, 12);
 
-  wxStaticBitmap* itemStaticBitmap4 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(L"graphics/cpane.xpm"), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
-  itemBoxSizer3->Add(itemStaticBitmap4, 0, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL, 5);
+  auto *verticalBoxSizer1 = new wxBoxSizer(wxVERTICAL);
+  mainSizer->Add(verticalBoxSizer1, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
 
-  auto *itemBoxSizer5 = new wxBoxSizer(wxVERTICAL);
-  itemBoxSizer3->Add(itemBoxSizer5, 1, wxALL|wxEXPAND, 5);
+  auto *itemStaticText9 = new wxStaticText(this, wxID_STATIC, _("Master Password"), wxDefaultPosition, wxDefaultSize, 0);
+  verticalBoxSizer1->Add(itemStaticText9, 0, wxBOTTOM, 5);
 
-  wxStaticText* itemStaticText6 = new wxStaticText( itemDialog1, wxID_STATIC, _("Enter the Master Password to unlock the password database:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer5->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALL, 5);
-
-  wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("filename"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer5->Add(itemStaticText7, 0, wxALIGN_LEFT|wxALL, 5);
-
-  auto *itemBoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer5->Add(itemBoxSizer8, 0, wxALL|wxEXPAND, 5);
-
-  auto flexGridSizer = new wxFlexGridSizer(2 /*cols*/, 0 /*vgap*/, 0 /*hgap*/);
-  flexGridSizer->AddGrowableCol(1);
-
-  wxStaticText* itemStaticText9 = new wxStaticText( itemDialog1, wxID_STATIC, _("Master password:"), wxDefaultPosition, wxDefaultSize, 0 );
-  flexGridSizer->Add(itemStaticText9, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-  m_scctrl = new SafeCombinationCtrl( itemDialog1, ID_PASSWORD, &m_password, wxDefaultPosition, wxDefaultSize );
+  m_scctrl = new SafeCombinationCtrl(this, ID_PASSWORD, &m_password, wxDefaultPosition, wxDefaultSize);
   m_scctrl->SetFocus();
-  flexGridSizer->Add(m_scctrl, 1, wxALL|wxEXPAND, 5);
+  verticalBoxSizer1->Add(m_scctrl, 1, wxALL|wxEXPAND, 0);
   
-  flexGridSizer->AddStretchSpacer(0);
+  auto *horizontalBoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
+  mainSizer->Add(horizontalBoxSizer1, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
 
-  auto *itemBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
-
-  auto itemCheckBox15 = new wxCheckBox(this, ID_READONLY, _("Open as read-only"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto *itemCheckBox15 = new wxCheckBox(this, ID_READONLY, _("Open as read-only"), wxDefaultPosition, wxDefaultSize, 0 );
   itemCheckBox15->SetValue(false);
   m_readOnly = false;
 
-  auto showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Master Password"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto *showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Master Password"), wxDefaultPosition, wxDefaultSize, 0 );
   showCombinationCheckBox->SetValue(false);
   showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {m_scctrl->SecureTextfield(!event.IsChecked());});
 
-  itemBoxSizer14->Add(itemCheckBox15, 1, wxALIGN_LEFT|wxALL, 5);
-  itemBoxSizer14->AddSpacer(1);
-  itemBoxSizer14->Add(showCombinationCheckBox, 1, wxALIGN_LEFT|wxALL, 5);
-
-  flexGridSizer->Add(itemBoxSizer14, 0, wxEXPAND|wxALL, 5);
-  
-  itemBoxSizer5->Add(flexGridSizer, 0, wxEXPAND|wxALL, 5);
+  horizontalBoxSizer1->Add(itemCheckBox15, 2, wxALIGN_LEFT|wxALL, 0);
+  horizontalBoxSizer1->AddSpacer(1);
+  horizontalBoxSizer1->Add(showCombinationCheckBox, 2, wxALIGN_LEFT|wxALL, 0);
   
   itemCheckBox15->SetValidator( wxGenericValidator(& m_readOnly) );
   UpdateReadOnlyCheckbox(itemCheckBox15);
 
-  auto *itemBoxSizer11 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer5->Add(itemBoxSizer11, 0, wxEXPAND|wxALL, 5);
+  auto *horizontalBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
+  mainSizer->Add(horizontalBoxSizer2, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
 
 #ifndef NO_YUBI
-  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 12)), wxBU_AUTODRAW );
-  itemBoxSizer11->Add(m_YubiBtn, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT|wxSHAPED, 5);
+  horizontalBoxSizer2->AddStretchSpacer(1);
+
+  m_yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0);
+  horizontalBoxSizer2->Add(m_yubiStatusCtrl, 2, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+
+  m_YubiBtn = new wxBitmapButton(this, ID_YUBIBTN, GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, ConvertDialogToPixels(wxSize(40, 12)), wxBU_AUTODRAW);
+  horizontalBoxSizer2->Add(m_YubiBtn, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
 #endif
 
-  itemBoxSizer11->Add(4, 10, 0, wxALIGN_CENTER_VERTICAL|wxALL, 1);
+  mainSizer->AddStretchSpacer();
 
-#ifndef NO_YUBI
-  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer11->Add(m_yubiStatusCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
-#endif
+  auto horizontalBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
+  mainSizer->Add(horizontalBoxSizer3, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
 
-  auto itemBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer2->Add(itemBoxSizer4, 0, wxALL|wxEXPAND, 5);
-
-  itemBoxSizer4->Add(
-    new wxButton(itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0), 
+  horizontalBoxSizer3->Add(
+    new wxButton(this, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0),
     0, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL, 5
   );
 
-  itemBoxSizer4->Add(
-    new wxButton(itemDialog1, wxID_EXIT, _("&Exit"), wxDefaultPosition, wxDefaultSize, 0), 
+  horizontalBoxSizer3->Add(
+    new wxButton(this, wxID_EXIT, _("&Exit"), wxDefaultPosition, wxDefaultSize, 0),
     0, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL, 5
   );
 
-  itemBoxSizer4->AddStretchSpacer();
+  horizontalBoxSizer3->AddStretchSpacer();
 
-  itemBoxSizer4->Add(
-    new wxButton(itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0), 
+  horizontalBoxSizer3->Add(
+    new wxButton(this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0),
     0, wxALIGN_CENTER_VERTICAL|wxALL, 5
   );
 
-  auto *okButton = new wxButton(itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0);
-  itemBoxSizer4->Add(
+  auto *okButton = new wxButton(this, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0);
+  horizontalBoxSizer3->Add(
     okButton, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5
   );
   okButton->SetDefault();
