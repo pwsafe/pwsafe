@@ -211,13 +211,13 @@ void SafeCombinationSetupDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
   if (Validate() && TransferDataFromWindow()) {
     if (m_password != m_verify) {
       wxMessageDialog err(this, _("The two entries do not match."),
-                          _("Error"), wxOK | wxICON_EXCLAMATION);
+                          _("Mismatch Master Password"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
       return;
     }
     if (m_password.empty()) {
       wxMessageDialog err(this, _("Enter the key and verify it."),
-                          _("Error"), wxOK | wxICON_EXCLAMATION);
+                          _("Empty Master Password"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
       return;
     }
@@ -283,7 +283,7 @@ void SafeCombinationSetupDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
   if (Validate() && TransferDataFromWindow()) {
     if (m_password != m_verify) {
       wxMessageDialog err(this, _("The two entries do not match."),
-                          _("Error"), wxOK | wxICON_EXCLAMATION);
+                          _("Mismatch entries"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
       return;
     }
