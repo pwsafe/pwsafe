@@ -1870,7 +1870,7 @@ bool AddEditPropSheetDlg::IsGroupUsernameTitleCombinationUnique()
       wxMessageDialog msg(
         this,
         _("An entry or shortcut with the same Group, Title and Username already exists."),
-        _("Error"),
+        _("Duplicate entry"),
         wxOK|wxICON_ERROR
       );
       msg.ShowModal();
