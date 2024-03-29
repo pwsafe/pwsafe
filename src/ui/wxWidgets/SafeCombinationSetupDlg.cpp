@@ -211,7 +211,7 @@ void SafeCombinationSetupDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
   if (Validate() && TransferDataFromWindow()) {
     if (m_password != m_verify) {
       wxMessageDialog err(this, _("The two entries do not match."),
-                          _("Mismatch Master Password"), wxOK | wxICON_EXCLAMATION);
+                          _("Mismatching Master Password"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
       return;
     }
@@ -283,7 +283,7 @@ void SafeCombinationSetupDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
   if (Validate() && TransferDataFromWindow()) {
     if (m_password != m_verify) {
       wxMessageDialog err(this, _("The two entries do not match."),
-                          _("Mismatch entries"), wxOK | wxICON_EXCLAMATION);
+                          _("Mismatching entries"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
       return;
     }
