@@ -3031,7 +3031,7 @@ void AddEditPropSheetDlg::OnEasyReadCBClick(wxCommandEvent& evt)
     // Check if pronounceable is also set - forbid both
     if (m_PasswordPolicyUsePronounceableCtrl->GetValue()) {
       m_PasswordPolicyUseEasyCtrl->SetValue(false);
-      wxMessageBox(_("\"Pronounceable\" and \"easy-to-read\" cannot be both selected"),
+      wxMessageBox(_("\"Pronounceable\" and \"easy-to-read\" cannot be both selected."),
                    _("Duplicate selection"), wxOK|wxICON_ERROR, this);
       return;
     }
@@ -3058,7 +3058,7 @@ void AddEditPropSheetDlg::OnPronouceableCBClick( wxCommandEvent& evt)
     // Check if ezread is also set - forbid both
     if (m_PasswordPolicyUseEasyCtrl->GetValue()) {
       m_PasswordPolicyUsePronounceableCtrl->SetValue(false);
-      wxMessageBox(_("\"Pronounceable\" and \"easy-to-read\" cannot be both selected"),
+      wxMessageBox(_("\"Pronounceable\" and \"easy-to-read\" cannot be both selected."),
                    _("Duplicate selection"), wxOK|wxICON_ERROR, this);
       return;
     }
