@@ -679,7 +679,7 @@ void PasswordPolicyDlg::OnPronouceableCBClick( wxCommandEvent& event )
     // Check if ezread is also set - forbid both
     if (m_pwpEasyCtrl->GetValue()) {
       m_pwpPronounceCtrl->SetValue(false);
-      wxMessageBox(_("\"Pronounceable\" and "\"easy-to-read\" cannot be both selected."),
+      wxMessageBox(_("\"Pronounceable\" and \"easy-to-read\" cannot be both selected."),
                    _("Unsupported selection"), wxOK|wxICON_ERROR, this);
       return;
     }
@@ -698,7 +698,7 @@ void PasswordPolicyDlg::OnEZreadCBClick( wxCommandEvent& event )
     // Check if pronounceable is also set - forbid both
     if (m_pwpPronounceCtrl->GetValue()) {
       m_pwpEasyCtrl->SetValue(false);
-      wxMessageBox(_("\"Easy-to-read\" and "\"pronounceable\" cannot be both selected."),
+      wxMessageBox(_("\"Easy-to-read\" and \"pronounceable\" cannot be both selected."),
                    _("Unsupported selection"), wxOK|wxICON_ERROR, this);
       return;
     }
