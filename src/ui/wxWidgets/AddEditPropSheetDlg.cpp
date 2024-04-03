@@ -3032,7 +3032,7 @@ void AddEditPropSheetDlg::OnEasyReadCBClick(wxCommandEvent& evt)
     if (m_PasswordPolicyUsePronounceableCtrl->GetValue()) {
       m_PasswordPolicyUseEasyCtrl->SetValue(false);
       wxMessageBox(_("\"Easy-to read\" and \"Pronounceable\" cannot be both selected."),
-                   _("Duplicate selection"), wxOK|wxICON_ERROR, this);
+                   _("Unsupported selection"), wxOK|wxICON_ERROR, this);
       return;
     }
 
@@ -3059,7 +3059,7 @@ void AddEditPropSheetDlg::OnPronouceableCBClick( wxCommandEvent& evt)
     if (m_PasswordPolicyUseEasyCtrl->GetValue()) {
       m_PasswordPolicyUsePronounceableCtrl->SetValue(false);
       wxMessageBox(_("\"Pronounceable\" and \"easy-to-read\" cannot be both selected."),
-                   _("Duplicate selection"), wxOK|wxICON_ERROR, this);
+                   _("Unsupported selection"), wxOK|wxICON_ERROR, this);
       return;
     }
     st_symbols = CPasswordCharPool::GetPronounceableSymbols();
