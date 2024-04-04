@@ -3031,7 +3031,7 @@ void AddEditPropSheetDlg::OnEasyReadCBClick(wxCommandEvent& evt)
     // Check if pronounceable is also set - forbid both
     if (m_PasswordPolicyUsePronounceableCtrl->GetValue()) {
       m_PasswordPolicyUseEasyCtrl->SetValue(false);
-      wxMessageBox(_("\"Easy-to-read\" and \"Pronounceable\" cannot be both selected."),
+      wxMessageBox(_("\"Easy-to-read\" and \"pronounceable\" cannot be both selected."),
                    _("Unsupported selection"), wxOK|wxICON_ERROR, this);
       return;
     }
