@@ -289,16 +289,25 @@ void DboxMain::OnNew()
   New();
 }
 
+static INT_PTR AskSaveDatabase(const StringX &curFile)
+{
+  CGeneralMsgBox gmb;
+  CString cs_temp;
+  cs_temp.Format(IDS_SAVEDATABASE, curFile.c_str());
+  std::vector<std::tuple<int, int>> tuples = {
+    std::make_tuple(IDNO, IDS_DISCARD),
+    std::make_tuple(IDCANCEL, IDS_CANCEL),
+    std::make_tuple(IDYES, IDS_SAVE)
+  };
+  return gmb.AfxMessageBox(cs_temp, AfxGetAppName(), tuples, 2, MB_ICONQUESTION);
+}
+
 int DboxMain::New()
 {
   INT_PTR rc, rc2;
 
   if (!m_core.IsReadOnly() && !m_bUserDeclinedSave && m_core.HasDBChanged()) {
-    CGeneralMsgBox gmb;
-    CString cs_temp;
-    cs_temp.Format(IDS_SAVEDATABASE, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
-    rc = gmb.MessageBox(cs_temp, AfxGetAppName(),
-                             MB_YESNOCANCEL | MB_ICONQUESTION);
+    rc = AskSaveDatabase(m_core.GetCurFile());
     switch (rc) {
       case IDCANCEL:
         return PWScore::USER_CANCEL;
@@ -1329,10 +1338,8 @@ int DboxMain::SaveIfChanged()
   if (m_core.HasDBChanged()) {
     CGeneralMsgBox gmb;
     INT_PTR rc, rc2;
-    CString cs_temp;
-    cs_temp.Format(IDS_SAVEDATABASE, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
-    rc = gmb.MessageBox(cs_temp, AfxGetAppName(),
-                            MB_YESNOCANCEL | MB_ICONQUESTION);
+
+    rc = AskSaveDatabase(m_core.GetCurFile());
     switch (rc) {
       case IDCANCEL:
         return PWScore::USER_CANCEL;
