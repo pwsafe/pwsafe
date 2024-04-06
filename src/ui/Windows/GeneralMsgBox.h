@@ -38,6 +38,8 @@
 #pragma once
 
 #include "RichEditCtrlExtn.h"
+#include <vector>
+#include <tuple>
 
 /////////////////////////////////////////////////////////////////////////////
 // CGeneralMsgBox
@@ -58,9 +60,10 @@ public:
     LPCWSTR lpTextBeforeAllowed, LPCWSTR lpTextAfterAllowed,
     LPCWSTR lpCaption = nullptr,
     UINT uiFlags = MB_OK, DWORD dwSeconds = 0);
-  INT_PTR MessageBox(LPCWSTR lpText, LPCWSTR lpCaption, UINT uiFlags = MB_OK);
+  INT_PTR MessageBox(LPCWSTR lpText, LPCWSTR lpCaption, UINT uiFlags = MB_OK); // rename, move to private ???
   INT_PTR AfxMessageBox(LPCWSTR lpszText, LPCWSTR lpCaption = nullptr, UINT uiFlags = MB_OK);
   INT_PTR AfxMessageBox(UINT uiIDPrompt, UINT uiFlags = MB_OK);
+  INT_PTR AfxMessageBox(LPCWSTR lpszText, LPCWSTR lpCaption, const std::vector<std::tuple<int, int>>& tuples, int defBtn = 0, UINT uiIcon = 0);
 
   // Execute
   INT_PTR DoModal();
