@@ -64,12 +64,12 @@ void CPWPropertySheet::OnShowWindow(BOOL bShow, UINT nStatus)
 
 BOOL CPWPropertySheet::OnInitDialog()
 {
-  CMFCPropertySheet::OnInitDialog();
+  BOOL retval = CMFCPropertySheet::OnInitDialog();
 
   // If started with Tall and won't fit - return to be called again with Wide
   if (m_bLongPPs && !GetMainDlg()->LongPPs(this)) {
     EndDialog(-1);
-    return TRUE;
+    return retval;
   }
 
   // It's OK - show it
@@ -80,7 +80,7 @@ BOOL CPWPropertySheet::OnInitDialog()
     WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd, app.IsExcludeFromScreenCapture())
   );
 
-  return TRUE;  // return TRUE unless you set the focus to a control
+  return retval;  // return TRUE unless you set the focus to a control
 }
 
 INT_PTR CPWPropertySheet::DoModal()

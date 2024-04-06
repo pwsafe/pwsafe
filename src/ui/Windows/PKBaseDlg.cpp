@@ -94,7 +94,7 @@ END_MESSAGE_MAP()
 
 BOOL CPKBaseDlg::OnInitDialog(void)
 {
-  CPWDialog::OnInitDialog();
+  BOOL retval = CPWDialog::OnInitDialog();
 
   // Setup a timer to poll the key every 250 ms
   SetTimer(TIMER_YUBIKEYPOLL, 250, 0);
@@ -132,7 +132,7 @@ BOOL CPKBaseDlg::OnInitDialog(void)
     m_yubi_status.SetWindowText(CString(MAKEINTRESOURCE(IDS_YUBI_INSERT_PROMPT)));
   }
 
-  return TRUE;  // return TRUE unless you set the focus to a control
+  return retval;  // return TRUE unless you set the focus to a control
 }
 
 BOOL CPKBaseDlg::PreTranslateMessage(MSG *pMsg)

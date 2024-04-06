@@ -170,7 +170,7 @@ void CAddEdit_PropertySheet::OnSysCommand(UINT nID, LPARAM lParam)
 
 BOOL CAddEdit_PropertySheet::OnInitDialog()
 {
-  CPWPropertySheet::OnInitDialog();
+  BOOL retval = CPWPropertySheet::OnInitDialog();
 
   // Change the Window title for Edit/View
   switch (m_AEMD.uicaller) {
@@ -211,7 +211,7 @@ BOOL CAddEdit_PropertySheet::OnInitDialog()
       break;
   }
   
-  return TRUE;  // return TRUE unless you set the focus to a control
+  return retval;  // return TRUE unless you set the focus to a control
 }
 
 void CAddEdit_PropertySheet::SetSymbolsChanged(bool bSymbolsChanged)
