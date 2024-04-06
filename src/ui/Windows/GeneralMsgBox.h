@@ -64,6 +64,13 @@ public:
   INT_PTR AfxMessageBox(LPCWSTR lpszText, LPCWSTR lpCaption = nullptr, UINT uiFlags = MB_OK);
   INT_PTR AfxMessageBox(UINT uiIDPrompt, UINT uiFlags = MB_OK);
   INT_PTR AfxMessageBox(LPCWSTR lpszText, LPCWSTR lpCaption, const std::vector<std::tuple<int, int>>& tuples, int defBtn = 0, UINT uiIcon = 0);
+  INT_PTR AfxMessageBox(UINT uiIDPrompt, LPCWSTR lpCaption, const std::vector<std::tuple<int, int>>& tuples, int defBtn = 0, UINT uiIcon = 0)
+  {
+    CString cs_text;
+    cs_text.LoadString(uiIDPrompt);
+    return AfxMessageBox(cs_text, lpCaption, tuples, defBtn, uiIcon);
+  }
+
 
   // Execute
   INT_PTR DoModal();

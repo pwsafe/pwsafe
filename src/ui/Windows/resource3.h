@@ -793,6 +793,7 @@
 #define IDS_GC_ONE_CHILD                6060
 #define IDS_GC_N_CHILDREN               6061
 #define IDS_USEANYWAY                   6062
+#define IDS_DISCARD                     6063
 
 #define IDS_SCRCAP_TT_STATE_ERROR                           6067
 #define IDS_SCRCAP_TT_DISALLOWED_DEFAULT                    6068

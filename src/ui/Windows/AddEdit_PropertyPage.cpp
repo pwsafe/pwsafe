@@ -39,12 +39,15 @@ BOOL CAddEdit_PropertyPage::OnQueryCancel()
 {
   // Check whether there have been any changes in order to ask the user
   // if they really want to cancel
-  // QuerySiblings is only sent to loaded PropertyPages (i.e. user has
+  // QuerySiblings is only sent to loaded PropertyPages (i.e., user has
   // selected to view them as ones not yet loaded cannot have changed fields)
   if (QuerySiblings(PP_DATA_CHANGED, 0L) != 0L) {
     CGeneralMsgBox gmb;
-    if (gmb.AfxMessageBox(IDS_AREYOUSURE,
-                          MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2) == IDNO)
+    std::vector<std::tuple<int, int>> tuples = {
+      std::make_tuple(IDYES, IDS_DISCARD),
+      std::make_tuple(IDCANCEL, IDS_CANCEL)
+    };
+    if (gmb.AfxMessageBox(IDS_AREYOUSURE, nullptr, tuples, 1, MB_ICONEXCLAMATION) == IDCANCEL)
       return FALSE;
   }
   return CPWPropertyPage::OnQueryCancel();
