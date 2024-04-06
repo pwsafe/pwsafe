@@ -164,7 +164,11 @@ void CPasskeyChangeDlg::OnOK()
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
     cs_text.LoadString(IDS_USEITANYWAY);
     cs_msg += cs_text;
-    rc = (int)gmb.AfxMessageBox(cs_msg, NULL, MB_YESNO | MB_ICONSTOP);
+    std::vector<std::tuple<int, int>> tuples = {
+      std::make_tuple(IDCANCEL, IDS_CANCEL),
+      std::make_tuple(IDYES, IDS_USEANYWAY)
+    };
+    rc = (int)gmb.AfxMessageBox(cs_msg, nullptr, tuples, 0, MB_ICONSTOP);
     if (rc == IDYES)
       CPKBaseDlg::OnOK();
 #else
