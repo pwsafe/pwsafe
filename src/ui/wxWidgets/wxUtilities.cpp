@@ -29,8 +29,14 @@
 
 #include "core/PWScore.h"
 #include "PWSafeApp.h"
+#include "SafeCombinationCtrl.h"
 
 #include "wxUtilities.h"
+
+#include "graphics/cpane.xpm"
+#ifndef NO_YUBI
+#include "graphics/Yubikey-button.xpm"
+#endif
 
 /*
  * Reads a file into a PWScore object, and displays an appropriate msgbox
@@ -178,6 +184,66 @@ void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxStrin
   tmp->Destroy();
   sizer->Layout();
 #endif
+}
+
+SafeCombinationCtrl* wxUtilities::CreateLabeledSafeCombinationCtrl(wxWindow* parent, wxWindowID id, const wxString& label, StringX* password, bool hasFocus)
+{
+  auto *sizer = new wxBoxSizer(wxVERTICAL);
+  parent->GetSizer()->Add(sizer, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
+
+  auto *labelCtrl = new wxStaticText(parent, wxID_STATIC, _(label), wxDefaultPosition, wxDefaultSize, 0);
+  sizer->Add(labelCtrl, 0, wxBOTTOM, 5);
+
+  auto *safeCombinationCtrl = new SafeCombinationCtrl(parent, id, password, wxDefaultPosition, wxDefaultSize);
+  sizer->Add(safeCombinationCtrl, 0, wxALL|wxEXPAND, 0);
+
+  if (hasFocus) {
+    safeCombinationCtrl->SetFocus();
+  }
+
+  return safeCombinationCtrl;
+}
+
+std::tuple<wxBitmapButton*, wxStaticText*> wxUtilities::CreateYubiKeyControls(wxWindow *parent, wxWindowID buttonId, wxWindowID statusTextId)
+{
+  auto *sizer = new wxBoxSizer(wxHORIZONTAL);
+  parent->GetSizer()->Add(sizer, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
+
+  auto *button = new wxBitmapButton(parent, buttonId, GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, wxSize(35,  35), wxBU_AUTODRAW);
+  button->SetToolTip(_("YubiKey"));
+  sizer->Add(button, 0, wxALL|wxALIGN_CENTER|wxALIGN_LEFT, 0);
+
+  auto *statusText = new wxStaticText(parent, statusTextId, _("Insert YubiKey"), wxDefaultPosition, wxDefaultSize, 0);
+  sizer->Add(statusText, 0, wxLEFT|wxALIGN_CENTER|wxALIGN_LEFT, 12);
+
+  return std::make_tuple(button, statusText);
+}
+
+wxBitmapButton* wxUtilities::GetYubiKeyButtonControl(std::tuple<wxBitmapButton*, wxStaticText*>& controls)
+{
+  return std::get<wxBitmapButton*>(controls);
+}
+
+wxStaticText* wxUtilities::GetYubiKeyStatusControl(std::tuple<wxBitmapButton*, wxStaticText*>& controls)
+{
+  return std::get<wxStaticText*>(controls);
+}
+
+wxBitmap wxUtilities::GetBitmapResource( const wxString& name )
+{
+  if (name == wxT("graphics/cpane.xpm"))
+  {
+    wxBitmap bitmap(cpane_xpm);
+    return bitmap;
+  }
+#ifndef NO_YUBI
+  else if (name == wxT("graphics/Yubikey-button.xpm"))
+  {
+    wxBitmap bitmap(Yubikey_button_xpm);
+    return bitmap;
+  }
+#endif
+  return wxNullBitmap;
 }
 
 int pless(int* first, int* second) { return *first - *second; }

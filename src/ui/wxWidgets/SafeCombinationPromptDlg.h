@@ -50,7 +50,7 @@ class wxTimer;
 #endif
 #define ID_YUBIBTN 10229
 #define ID_YUBISTATUS 10230
-#define SYMBOL_SAFECOMBINATIONPROMPTDLG_TITLE _("Enter Master Password")
+#define SYMBOL_SAFECOMBINATIONPROMPTDLG_TITLE _("Unlock Password Database")
 #define SYMBOL_SAFECOMBINATIONPROMPTDLG_IDNAME ID_SAFECOMBINATIONPROMPTDLG
 #define SYMBOL_SAFECOMBINATIONPROMPTDLG_SIZE wxSize(400, 300)
 #define SYMBOL_SAFECOMBINATIONPROMPTDLG_POSITION wxDefaultPosition
@@ -104,13 +104,7 @@ protected:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_EXIT
   void OnExitClick( wxCommandEvent& event );
 
-  /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_READONLY
-  void OnReadonlyClick( wxCommandEvent& event );
-  
 ////@begin SafeCombinationPromptDlg member function declarations
-
-  /// Retrieves bitmap resources
-  wxBitmap GetBitmapResource( const wxString& name );
 
   /// Retrieves icon resources
   wxIcon GetIconResource( const wxString& name );
@@ -125,7 +119,6 @@ protected:
   PWScore &m_core;
   wxString m_filename;
   StringX  m_password;
-  bool m_readOnly;
   bool m_allowExit;
   
 #ifndef NO_YUBI
@@ -134,7 +127,6 @@ protected:
 #endif
 
   void ProcessPhrase();
-  void UpdateReadOnlyCheckbox(wxCheckBox *checkBox);
 };
 
 #endif // _SAFECOMBINATIONPROMPTDLG_H_
