@@ -44,9 +44,10 @@ ExternalKeyboardButton::ExternalKeyboardButton( wxWindow* parent,
                                                                                        name)
 {
   //Create an event table entry in this class for the button's id
-  Connect(GetId(), wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ExternalKeyboardButton::HandleCommandEvent));
+  Bind(wxEVT_COMMAND_BUTTON_CLICKED, &ExternalKeyboardButton::HandleCommandEvent, this, GetId());
   //hook into the button so that we actually get events
   //PushEventHandler(this);
+  SetToolTip(_("Virtual Keyboard"));
 }
 
 ExternalKeyboardButton::~ExternalKeyboardButton()
@@ -102,4 +103,7 @@ void ExternalKeyboardButton::HandleCommandEvent(wxCommandEvent& evt)
   }
 #endif
 
+  if (m_TargetSafeCombinationCtrl != nullptr) {
+    m_TargetSafeCombinationCtrl->SetFocus();
+  }
 }

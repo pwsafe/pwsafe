@@ -29,8 +29,8 @@ int YubiMixin::s_pollingInterval = YubiMixin::POLLING_INTERVAL_DEFAULT;
 
 void YubiMixin::SetupMixin(wxEvtHandler *eventHandler, wxWindow *btn, wxWindow *status, int timerId)
 {
-  m_prompt1 = _("Click the button labeled 'Yubikey' in green"); // change via SetPrompt1
-  m_prompt2 = _("Now touch your YubiKey's button"); // change via SetPrompt2
+  m_prompt1 = _("Activate YubiKey"); // change via SetPrompt1
+  m_prompt2 = _("Touch YubiKey's button"); // change via SetPrompt2
   m_btn = btn;
   m_status = status;
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer even
@@ -59,7 +59,7 @@ void YubiMixin::yubiRemoved(void)
 {
   m_btn->Enable(false);
   m_status->SetForegroundColour(wxNullColour);
-  m_status->SetLabel(_("Insert your YubiKey"));
+  m_status->SetLabel(_("Insert YubiKey"));
 }
 
 bool YubiMixin::IsYubiInserted() const

@@ -26,18 +26,11 @@
 #include "os/file.h"
 
 ////@begin includes
+#include "ExternalKeyboardButton.h"
 #include "SafeCombinationCtrl.h"
 #include "SafeCombinationPromptDlg.h"
 #include "wxUtilities.h"
 ////@end includes
-
-#ifndef NO_YUBI
-////@begin XPM images
-#include "graphics/Yubikey-button.xpm"
-////@end XPM images
-#endif
-
-#include "graphics/cpane.xpm"
 
 /*!
  * SafeCombinationPromptDlg type definition
@@ -61,7 +54,6 @@ BEGIN_EVENT_TABLE( SafeCombinationPromptDlg, wxDialog )
   EVT_BUTTON( wxID_OK,     SafeCombinationPromptDlg::OnOkClick           )
   EVT_BUTTON( wxID_CANCEL, SafeCombinationPromptDlg::OnCancelClick       )
   EVT_BUTTON( wxID_EXIT,   SafeCombinationPromptDlg::OnExitClick         )
-  EVT_CHECKBOX(ID_READONLY,SafeCombinationPromptDlg::OnReadonlyClick     )
 
 END_EVENT_TABLE()
 
@@ -124,51 +116,24 @@ void SafeCombinationPromptDlg::CreateControls()
   auto *mainSizer = new wxBoxSizer(wxVERTICAL);
   SetSizer(mainSizer);
 
-  auto *itemStaticText6 = new wxStaticText(this, wxID_STATIC, _("Enter the Master Password to unlock the password database:"), wxDefaultPosition, wxDefaultSize, 0);
-  mainSizer->Add(itemStaticText6, 0, wxALIGN_LEFT|wxALL, 12);
-
-  auto *itemStaticText7 = new wxStaticText(this, wxID_STATIC, _("filename"), wxDefaultPosition, wxDefaultSize, 0);
-  mainSizer->Add(itemStaticText7, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxALIGN_LEFT, 12);
-
   auto *verticalBoxSizer1 = new wxBoxSizer(wxVERTICAL);
-  mainSizer->Add(verticalBoxSizer1, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
+  mainSizer->Add(verticalBoxSizer1, 0, wxALL|wxEXPAND, 12);
 
-  auto *itemStaticText9 = new wxStaticText(this, wxID_STATIC, _("Master Password"), wxDefaultPosition, wxDefaultSize, 0);
-  verticalBoxSizer1->Add(itemStaticText9, 0, wxBOTTOM, 5);
+  auto *itemStaticText7 = new wxStaticText(this, wxID_STATIC, _("Password Database"), wxDefaultPosition, wxDefaultSize, 0);
+  auto textColor = itemStaticText7->GetForegroundColour();
+  verticalBoxSizer1->Add(itemStaticText7, 0, wxBOTTOM, 5);
 
-  m_scctrl = new SafeCombinationCtrl(this, ID_PASSWORD, &m_password, wxDefaultPosition, wxDefaultSize);
-  m_scctrl->SetFocus();
-  verticalBoxSizer1->Add(m_scctrl, 1, wxALL|wxEXPAND, 0);
-  
-  auto *horizontalBoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
-  mainSizer->Add(horizontalBoxSizer1, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
+  auto *textCtrlFilename = new wxTextCtrl(this, wxID_STATIC, _("filename"), wxDefaultPosition, wxSize(-1, 35), wxST_ELLIPSIZE_MIDDLE);
+  textCtrlFilename->Disable();
+  textCtrlFilename->SetForegroundColour(textColor);
+  verticalBoxSizer1->Add(textCtrlFilename, 0, wxALL|wxEXPAND, 0);
 
-  auto *itemCheckBox15 = new wxCheckBox(this, ID_READONLY, _("Open as read-only"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox15->SetValue(false);
-  m_readOnly = false;
-
-  auto *showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Master Password"), wxDefaultPosition, wxDefaultSize, 0 );
-  showCombinationCheckBox->SetValue(false);
-  showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {m_scctrl->SecureTextfield(!event.IsChecked());});
-
-  horizontalBoxSizer1->Add(itemCheckBox15, 2, wxALIGN_LEFT|wxALL, 0);
-  horizontalBoxSizer1->AddSpacer(1);
-  horizontalBoxSizer1->Add(showCombinationCheckBox, 2, wxALIGN_LEFT|wxALL, 0);
-  
-  itemCheckBox15->SetValidator( wxGenericValidator(& m_readOnly) );
-  UpdateReadOnlyCheckbox(itemCheckBox15);
-
-  auto *horizontalBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
-  mainSizer->Add(horizontalBoxSizer2, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
+  m_scctrl = wxUtilities::CreateLabeledSafeCombinationCtrl(this, ID_PASSWORD, _("Master Password"), &m_password, true);
 
 #ifndef NO_YUBI
-  horizontalBoxSizer2->AddStretchSpacer(1);
-
-  m_yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0);
-  horizontalBoxSizer2->Add(m_yubiStatusCtrl, 2, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
-
-  m_YubiBtn = new wxBitmapButton(this, ID_YUBIBTN, GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, ConvertDialogToPixels(wxSize(40, 12)), wxBU_AUTODRAW);
-  horizontalBoxSizer2->Add(m_YubiBtn, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 0);
+  auto yubiControls = wxUtilities::CreateYubiKeyControls(this, ID_YUBIBTN, ID_YUBISTATUS);
+  m_YubiBtn = wxUtilities::GetYubiKeyButtonControl(yubiControls);
+  m_yubiStatusCtrl = wxUtilities::GetYubiKeyStatusControl(yubiControls);
 #endif
 
   mainSizer->AddStretchSpacer();
@@ -177,15 +142,11 @@ void SafeCombinationPromptDlg::CreateControls()
   mainSizer->Add(horizontalBoxSizer3, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
 
   horizontalBoxSizer3->Add(
-    new wxButton(this, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0),
-    0, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL, 5
-  );
-
-  horizontalBoxSizer3->Add(
     new wxButton(this, wxID_EXIT, _("&Exit"), wxDefaultPosition, wxDefaultSize, 0),
     0, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL, 5
   );
 
+  horizontalBoxSizer3->AddSpacer(60);
   horizontalBoxSizer3->AddStretchSpacer();
 
   horizontalBoxSizer3->Add(
@@ -193,16 +154,27 @@ void SafeCombinationPromptDlg::CreateControls()
     0, wxALIGN_CENTER_VERTICAL|wxALL, 5
   );
 
-  auto *okButton = new wxButton(this, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0);
+  auto *unlockButton = new wxButton(this, wxID_OK, _("&Unlock"), wxDefaultPosition, wxDefaultSize, 0);
   horizontalBoxSizer3->Add(
-    okButton, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5
+    unlockButton,
+    0, wxALIGN_CENTER_VERTICAL|wxALL, 5
   );
-  okButton->SetDefault();
+  unlockButton->SetDefault();
+
+  horizontalBoxSizer3->AddSpacer(60);
+  horizontalBoxSizer3->AddStretchSpacer();
+
+  auto *keyboardButton = new ExternalKeyboardButton(this);
+  keyboardButton->SetFocusOnSafeCombinationCtrl(m_scctrl);
+  horizontalBoxSizer3->Add(
+    keyboardButton,
+    0, wxALIGN_CENTER_VERTICAL|wxALL, 0
+  );
 
   if(! m_allowExit)
     FindWindow(wxID_EXIT)->Disable();
   // Set validators
-  itemStaticText7->SetValidator( wxGenericValidator(& m_filename) );
+  textCtrlFilename->SetValidator(wxGenericValidator(&m_filename));
 ////@end SafeCombinationPromptDlg content construction
   wxWindow* passwdCtrl = FindWindow(ID_PASSWORD);
   if (passwdCtrl) {
@@ -217,30 +189,6 @@ void SafeCombinationPromptDlg::CreateControls()
 bool SafeCombinationPromptDlg::ShowToolTips()
 {
   return true;
-}
-
-/*!
- * Get bitmap resources
- */
-
-wxBitmap SafeCombinationPromptDlg::GetBitmapResource( const wxString& name )
-{
-  // Bitmap retrieval
-////@begin SafeCombinationPromptDlg bitmap retrieval
-  if (name == L"graphics/cpane.xpm")
-  {
-    wxBitmap bitmap(cpane_xpm);
-    return bitmap;
-  }
-#ifndef NO_YUBI
-  else if (name == _T("graphics/Yubikey-button.xpm"))
-  {
-    wxBitmap bitmap(Yubikey_button_xpm);
-    return bitmap;
-  }
-#endif
-  return wxNullBitmap;
-////@end SafeCombinationPromptDlg bitmap retrieval
 }
 
 /*!
@@ -284,7 +232,6 @@ void SafeCombinationPromptDlg::ProcessPhrase()
     }
     return;
   }
-  m_core.SetReadOnly(m_readOnly);
   m_core.SetCurFile(tostringx(m_filename));
   EndModal(wxID_OK);
 }
@@ -334,33 +281,6 @@ void SafeCombinationPromptDlg::OnExitClick(wxCommandEvent& WXUNUSED(evt))
   // Before editing this code, remove the block markers.
   EndModal(wxID_EXIT);
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SafeCombinationPromptDlg.
-}
-
-/*!
- * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_READONLY
- */
-
-void SafeCombinationPromptDlg::OnReadonlyClick( wxCommandEvent& event )
-{
-  m_readOnly = event.IsChecked();
-}
-
-void SafeCombinationPromptDlg::UpdateReadOnlyCheckbox(wxCheckBox *checkBox)
-{
-  wxFileName fn(m_filename);
-
-  wxASSERT_MSG(checkBox, wxT("checkbox NULL"));
-  if (m_core.IsDbOpen()) {
-    m_readOnly = m_core.IsReadOnly();
-    checkBox->SetValue(m_readOnly);
-    checkBox->Enable(false);
-  } else if ( fn.FileExists() ) { // Do nothing if the file doesn't exist
-    bool writeable = fn.IsFileWritable();
-    bool defaultRO = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
-    m_readOnly = (writeable? defaultRO : true);
-    checkBox->SetValue(m_readOnly);
-    checkBox->Enable(writeable);
-  }
 }
 
 #ifndef NO_YUBI

@@ -13,6 +13,7 @@
 #ifndef _WXUTILITIES_H_
 #define _WXUTILITIES_H_
 
+#include <wx/bmpbuttn.h>
 #include <wx/eventfilter.h>
 #include <wx/dataobj.h>
 #include <wx/panel.h>
@@ -25,7 +26,10 @@
 #include "core/StringX.h"
 #include "core/PWSprefs.h"
 
+#include "SafeCombinationCtrl.h"
+
 #include <set>
+#include <tuple>
 
 #if !wxCHECK_VERSION(3,1,0)
 #define wxOVERRIDE
@@ -195,6 +199,57 @@ inline const wxChar* ToStr(bool b) {
  *       documentation about restrictions.
  */
 void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxTextCtrl* before, const int style);
+
+namespace wxUtilities
+{
+  /**
+   * Creates a label (wxStaticText) and password entry field (SafeCombinationCtrl) both vertically aligned.
+   * 
+   * @param parent the parent widget of both controls.
+   * @param id the id for the password entry field (SafeCombinationCtrl).
+   * @param label the label for the pasword entry field.
+   * @param password the password provided by the password entry control.
+   * @param hasFocus indicates whether the password entry should get the focus.
+   *                 Usefull if more than one password entry field is created for a dialog.
+   * @returns the created password entry control.
+   */
+  SafeCombinationCtrl* CreateLabeledSafeCombinationCtrl(wxWindow *parent, wxWindowID id, const wxString& label, StringX* password, bool hasFocus = true);
+
+  /**
+   * Creates the YubiKey controls, which are a button (wxBitmapButton) and
+   * a text control (wxStaticText) for representing status information.
+   * 
+   * @param parent the parent widget of both controls.
+   * @param buttonId the id for the button (wxBitmapButton).
+   * @param statusTextId the id for the status text (wxStaticText).
+   * @returns a pointer to both controls in a tuple.
+   */
+  std::tuple<wxBitmapButton*, wxStaticText*> CreateYubiKeyControls(wxWindow *parent, wxWindowID buttonId, wxWindowID statusTextId);
+
+  /**
+   * A helper function for easier access to the result of 'CreateYubiKeyControls'.
+   * 
+   * @param controls tuple with pointer to a wxBitmapButton and a wxStaticText.
+   * @returns the pointer to the wxBitmapButton (the YubiKey button control).
+   */
+  wxBitmapButton* GetYubiKeyButtonControl(std::tuple<wxBitmapButton*, wxStaticText*>& controls);
+
+  /**
+   * A helper function for easier access to the result of 'CreateYubiKeyControls'.
+   * 
+   * @param controls a tuple with pointer to a wxBitmapButton and a wxStaticText.
+   * @returns the pointer to the wxStaticText (the YubiKey status text control).
+   */
+  wxStaticText* GetYubiKeyStatusControl(std::tuple<wxBitmapButton*, wxStaticText*>& controls);
+
+  /**
+   * Provides a bitmap resource
+   * 
+   * @param name to a XPM file with image data, e.g. 'graphics/Yubikey-button.xpm'
+   * @returns a bitmap resource.
+   */
+  wxBitmap GetBitmapResource(const wxString& name);
+}
 
 //ensures at least one of the checkboxes are selected
 class MultiCheckboxValidator: public wxValidator
