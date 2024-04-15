@@ -2909,7 +2909,7 @@ msgstr "默认密码有效期(天)"
 msgid "Default:"
 msgstr ""
 
-#. Resource IDs: (5622)
+#. Resource IDs: (1, 5622)
 msgid "Delete"
 msgstr "删除"
 
@@ -2964,6 +2964,10 @@ msgstr "梵文字母(碑文)"
 #. Resource IDs: (498, 511)
 msgid "Dialog"
 msgstr "对话"
+
+#. Resource IDs: (6063)
+msgid "Discard"
+msgstr ""
 
 #. Resource IDs: (61869)
 #, c-format
@@ -5266,6 +5270,10 @@ msgstr "找到一个或多个自动保存的文档."
 msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "一个或多个首选项已被更改。你是否确认你希望取消?"
 
+#. Resource IDs: (5650)
+msgid "One or more values have been changed. Do you want to discard the changes?"
+msgstr ""
+
 #. Resource IDs: (5428)
 #, c-format
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
@@ -5960,7 +5968,7 @@ msgstr "示例"
 msgid "Sample text cannot be empty"
 msgstr "示例文本不能空白"
 
-#. Resource IDs: (1137)
+#. Resource IDs: (1137, 6064)
 msgid "Save"
 msgstr "保存"
 
@@ -6955,10 +6963,6 @@ msgstr "这个别名的目标 [%s:%s:%s] 不是一个普通条目."
 msgid "This database is the same as the current database!"
 msgstr "这个数据库和当前数据库相同!"
 
-#. Resource IDs: (5650)
-msgid "This entry has been changed. Are you sure you wish to cancel?"
-msgstr "这个条目已被更改。你确认你希望取消?"
-
 #. Resource IDs: (3404)
 #, c-format
 msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
@@ -7377,6 +7381,10 @@ msgstr "使用大写字母(&U)"
 #. Resource IDs: (1476, 1481)
 msgid "Use Named Policy"
 msgstr "使用命名策略"
+
+#. Resource IDs: (6062)
+msgid "Use anyway"
+msgstr ""
 
 #. Resource IDs: (5888)
 msgid "Use count"

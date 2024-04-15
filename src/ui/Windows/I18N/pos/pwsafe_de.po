@@ -2922,7 +2922,7 @@ msgstr "Standard Ablaufdatum des Passworts (Tage)"
 msgid "Default:"
 msgstr "Standard:"
 
-#. Resource IDs: (5622)
+#. Resource IDs: (1, 5622)
 msgid "Delete"
 msgstr "Löschen"
 
@@ -2977,6 +2977,10 @@ msgstr "Dewanagari - INSCRIPT"
 #. Resource IDs: (498, 511)
 msgid "Dialog"
 msgstr "Dialog"
+
+#. Resource IDs: (6063)
+msgid "Discard"
+msgstr ""
 
 #. Resource IDs: (61869)
 #, c-format
@@ -5279,6 +5283,10 @@ msgstr "Es wurden ein oder mehr automatisch gesicherte Dokumente gefunden."
 msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "Ein oder mehrere Präferenzen wurden geändert. Möchten Sie wirklich Abbrechen?"
 
+#. Resource IDs: (5650)
+msgid "One or more values have been changed. Do you want to discard the changes?"
+msgstr ""
+
 #. Resource IDs: (5428)
 #, c-format
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
@@ -5973,7 +5981,7 @@ msgstr "Beispiel"
 msgid "Sample text cannot be empty"
 msgstr "Beispieltext kann nicht leer sein"
 
-#. Resource IDs: (1137)
+#. Resource IDs: (1137, 6064)
 msgid "Save"
 msgstr "Speichere"
 
@@ -6968,10 +6976,6 @@ msgstr "Dieses Aliasziel [%s:%s:%s] ist kein normaler Eintrag."
 msgid "This database is the same as the current database!"
 msgstr "Das ist die gleiche Datenbank, wie die aktuell geöffnete!"
 
-#. Resource IDs: (5650)
-msgid "This entry has been changed. Are you sure you wish to cancel?"
-msgstr "Dieser Eintrag wurde geändert. Möchten Sie wirklich Abbrechen?"
-
 #. Resource IDs: (3404)
 #, c-format
 msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
@@ -7390,6 +7394,10 @@ msgstr "&Großbuchstaben verwenden"
 #. Resource IDs: (1476, 1481)
 msgid "Use Named Policy"
 msgstr "Benannte Richtlinie verwenden"
+
+#. Resource IDs: (6062)
+msgid "Use anyway"
+msgstr ""
 
 #. Resource IDs: (5888)
 msgid "Use count"

@@ -2943,7 +2943,7 @@ msgstr "Срок действия пароля по умолчанию"
 msgid "Default:"
 msgstr "По умолчанию:"
 
-#. Resource IDs: (5622)
+#. Resource IDs: (1, 5622)
 msgid "Delete"
 msgstr "Удалить"
 
@@ -3000,6 +3000,10 @@ msgstr "Деванагари (инскрипт)"
 #. Resource IDs: (498, 511)
 msgid "Dialog"
 msgstr "Диалог"
+
+#. Resource IDs: (6063)
+msgid "Discard"
+msgstr ""
 
 # AFX_IDP_FILE_DISKFULL
 #. Resource IDs: (61869)
@@ -5421,6 +5425,10 @@ msgstr "Были найдены один или несколько автома�
 msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "Один или несколько параметров были изменены. Вы уверены, что нужно отклонить изменения?"
 
+#. Resource IDs: (5650)
+msgid "One or more values have been changed. Do you want to discard the changes?"
+msgstr ""
+
 #. Resource IDs: (5428)
 #, c-format
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
@@ -6149,7 +6157,7 @@ msgid "Sample text cannot be empty"
 msgstr "Текст образца не может быть пустым"
 
 # Хранить n предыдущих паролей
-#. Resource IDs: (1137)
+#. Resource IDs: (1137, 6064)
 msgid "Save"
 msgstr "Хранить"
 
@@ -7171,10 +7179,6 @@ msgstr "Исходный элемент [%s:%s:%s] для данного псе�
 msgid "This database is the same as the current database!"
 msgstr "Указанный контейнер совпадает с текущим!"
 
-#. Resource IDs: (5650)
-msgid "This entry has been changed. Are you sure you wish to cancel?"
-msgstr "Элемент был изменён. Отменить изменения?"
-
 #. Resource IDs: (3404)
 #, c-format
 msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
@@ -7616,6 +7620,10 @@ msgstr "П&РОПИСНЫЕ буквы"
 #. Resource IDs: (1476, 1481)
 msgid "Use Named Policy"
 msgstr "Использовать политику"
+
+#. Resource IDs: (6062)
+msgid "Use anyway"
+msgstr ""
 
 # столбец в информации о политике
 #. Resource IDs: (5888)

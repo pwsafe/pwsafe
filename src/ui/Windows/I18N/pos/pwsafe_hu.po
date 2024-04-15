@@ -2805,7 +2805,7 @@ msgstr "Az alapértelmezett jelszó lejárata (nap)"
 msgid "Default:"
 msgstr "Alapértelmezett:"
 
-#. Resource IDs: (5622)
+#. Resource IDs: (1, 5622)
 msgid "Delete"
 msgstr "Törlés"
 
@@ -2860,6 +2860,10 @@ msgstr "Devanagari - INSCRIPT"
 #. Resource IDs: (498, 511)
 msgid "Dialog"
 msgstr "Dialógus"
+
+#. Resource IDs: (6063)
+msgid "Discard"
+msgstr ""
 
 #. Resource IDs: (61869)
 #, c-format
@@ -5162,6 +5166,10 @@ msgstr "Egy vagy több automatikusan mentett dokumentum található."
 msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "Egy vagy több beállítás meg lett változtatva. Biztos, hogy elveti?"
 
+#. Resource IDs: (5650)
+msgid "One or more values have been changed. Do you want to discard the changes?"
+msgstr ""
+
 #. Resource IDs: (5428)
 #, c-format
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
@@ -5856,7 +5864,7 @@ msgstr "Minta"
 msgid "Sample text cannot be empty"
 msgstr "A mintaszöveg nem lehet üres"
 
-#. Resource IDs: (1137)
+#. Resource IDs: (1137, 6064)
 msgid "Save"
 msgstr "Mentés"
 
@@ -6851,10 +6859,6 @@ msgstr "Ez az alias célpont [%s:%s:%s] nem egy normál bejegyzés."
 msgid "This database is the same as the current database!"
 msgstr "Ez az adatbázis megegyezik a jelenlegi adatbázissal!"
 
-#. Resource IDs: (5650)
-msgid "This entry has been changed. Are you sure you wish to cancel?"
-msgstr "Ez a bejegyzés módosult. Biztos, hogy törölni szeretné?"
-
 #. Resource IDs: (3404)
 #, c-format
 msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
@@ -7273,6 +7277,10 @@ msgstr "Használjon &nagybetűket"
 #. Resource IDs: (1476, 1481)
 msgid "Use Named Policy"
 msgstr "Névre szóló szabályzat használata"
+
+#. Resource IDs: (6062)
+msgid "Use anyway"
+msgstr ""
 
 #. Resource IDs: (5888)
 msgid "Use count"

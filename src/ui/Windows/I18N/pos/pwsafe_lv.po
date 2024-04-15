@@ -2857,7 +2857,7 @@ msgstr "Paroļu derīguma termiņš (dienas)"
 msgid "Default:"
 msgstr "Pēc noklusējuma:"
 
-#. Resource IDs: (5622)
+#. Resource IDs: (1, 5622)
 msgid "Delete"
 msgstr "Dzēst"
 
@@ -2912,6 +2912,10 @@ msgstr "Devanagari - INSCRIPT"
 #. Resource IDs: (498, 511)
 msgid "Dialog"
 msgstr "Dialogs"
+
+#. Resource IDs: (6063)
+msgid "Discard"
+msgstr ""
 
 #. Resource IDs: (61869)
 #, c-format
@@ -5214,6 +5218,10 @@ msgstr "Tika atrasts viens vai vairāki automātiski saglabāti dokumenti."
 msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "Viena vai vairākas preferences ir mainītas. Vai tiešām vēlaties atcelt?"
 
+#. Resource IDs: (5650)
+msgid "One or more values have been changed. Do you want to discard the changes?"
+msgstr ""
+
 #. Resource IDs: (5428)
 #, c-format
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
@@ -5908,7 +5916,7 @@ msgstr "Paraugs"
 msgid "Sample text cannot be empty"
 msgstr "Parauga teksta lauks nedrīkst būt tukšs"
 
-#. Resource IDs: (1137)
+#. Resource IDs: (1137, 6064)
 msgid "Save"
 msgstr "Saglabāt"
 
@@ -6903,10 +6911,6 @@ msgstr "Šī pseidonīma mērķis [%s:%s:%s] nav parasts ieraksts."
 msgid "This database is the same as the current database!"
 msgstr "Šī datu bāze ir tāda pati kā esošā datu bāze!"
 
-#. Resource IDs: (5650)
-msgid "This entry has been changed. Are you sure you wish to cancel?"
-msgstr "Šis ieraksts ir mainīts.Vai tiešām vēlaties atcelt?"
-
 #. Resource IDs: (3404)
 #, c-format
 msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
@@ -7325,6 +7329,10 @@ msgstr "Izmantot &LIELOS burtus"
 #. Resource IDs: (1476, 1481)
 msgid "Use Named Policy"
 msgstr "Izmantot nosaukto politiku"
+
+#. Resource IDs: (6062)
+msgid "Use anyway"
+msgstr ""
 
 #. Resource IDs: (5888)
 msgid "Use count"

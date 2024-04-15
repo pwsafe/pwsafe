@@ -2883,7 +2883,7 @@ msgstr ""
 msgid "Default:"
 msgstr ""
 
-#. Resource IDs: (5622)
+#. Resource IDs: (1, 5622)
 msgid "Delete"
 msgstr "삭제"
 
@@ -2938,6 +2938,10 @@ msgstr "Devanagari - INSCRIPT"
 #. Resource IDs: (498, 511)
 msgid "Dialog"
 msgstr "Dialog"
+
+#. Resource IDs: (6063)
+msgid "Discard"
+msgstr ""
 
 #. Resource IDs: (61869)
 #, c-format
@@ -5240,6 +5244,10 @@ msgstr "최소 한 개 이상의 자동저장된 문서가 발견되었습니다
 msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "하나 이상의 설정이 변경되었습니다. 변경사항을 취소하시겠습니까?"
 
+#. Resource IDs: (5650)
+msgid "One or more values have been changed. Do you want to discard the changes?"
+msgstr ""
+
 #. Resource IDs: (5428)
 #, c-format
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
@@ -5934,7 +5942,7 @@ msgstr "임시"
 msgid "Sample text cannot be empty"
 msgstr "임시 텍스트는 공백으로 남겨질 수 없습니다"
 
-#. Resource IDs: (1137)
+#. Resource IDs: (1137, 6064)
 msgid "Save"
 msgstr "저장"
 
@@ -6929,10 +6937,6 @@ msgstr ""
 msgid "This database is the same as the current database!"
 msgstr "이 데이터베이스는 현재 데이터베이스와 같습니다."
 
-#. Resource IDs: (5650)
-msgid "This entry has been changed. Are you sure you wish to cancel?"
-msgstr "이 항목이 막 변경되었습니다. 변경을 취소하시겠습니까?"
-
 #. Resource IDs: (3404)
 #, c-format
 msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
@@ -7350,6 +7354,10 @@ msgstr "대문자 사용"
 
 #. Resource IDs: (1476, 1481)
 msgid "Use Named Policy"
+msgstr ""
+
+#. Resource IDs: (6062)
+msgid "Use anyway"
 msgstr ""
 
 #. Resource IDs: (5888)

@@ -2818,7 +2818,7 @@ msgstr "Scadenza password predefinita (giorni)"
 msgid "Default:"
 msgstr "Predefinito:"
 
-#. Resource IDs: (5622)
+#. Resource IDs: (1, 5622)
 msgid "Delete"
 msgstr "Elimina"
 
@@ -2873,6 +2873,10 @@ msgstr "Devanagari (INSCRIPT)"
 #. Resource IDs: (498, 511)
 msgid "Dialog"
 msgstr "Dialogo"
+
+#. Resource IDs: (6063)
+msgid "Discard"
+msgstr ""
 
 #. Resource IDs: (61869)
 #, c-format
@@ -5175,6 +5179,10 @@ msgstr "Uno o più documenti salvato/i automaticamente è/sono stato/i trovato/i
 msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "Una o più preferenze sono state modificate.\nSei sicuro di volere annullare?"
 
+#. Resource IDs: (5650)
+msgid "One or more values have been changed. Do you want to discard the changes?"
+msgstr ""
+
 #. Resource IDs: (5428)
 #, c-format
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
@@ -5869,7 +5877,7 @@ msgstr "Esempio"
 msgid "Sample text cannot be empty"
 msgstr "Il testo di esempio non può essere vuoto"
 
-#. Resource IDs: (1137)
+#. Resource IDs: (1137, 6064)
 msgid "Save"
 msgstr "Salva"
 
@@ -6864,10 +6872,6 @@ msgstr "La destinazione di questo alias [% s:% s:% s] non è un elemento normale
 msgid "This database is the same as the current database!"
 msgstr "Questo database è la stesso del database attuale!"
 
-#. Resource IDs: (5650)
-msgid "This entry has been changed. Are you sure you wish to cancel?"
-msgstr "Questo elemento è stata modificato.\nSei sicuro di volere annullare?"
-
 #. Resource IDs: (3404)
 #, c-format
 msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
@@ -7286,6 +7290,10 @@ msgstr "Usa lettere MA&IUSCOLE"
 #. Resource IDs: (1476, 1481)
 msgid "Use Named Policy"
 msgstr "Usa regola specifica"
+
+#. Resource IDs: (6062)
+msgid "Use anyway"
+msgstr ""
 
 #. Resource IDs: (5888)
 msgid "Use count"

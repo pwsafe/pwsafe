@@ -2805,7 +2805,7 @@ msgstr "Privzeto potek gesla (dnevi)"
 msgid "Default:"
 msgstr "Privzeto:"
 
-#. Resource IDs: (5622)
+#. Resource IDs: (1, 5622)
 msgid "Delete"
 msgstr "Izbriši"
 
@@ -2860,6 +2860,10 @@ msgstr "Devanagari-INSCRIPT"
 #. Resource IDs: (498, 511)
 msgid "Dialog"
 msgstr "Pogovorno okno"
+
+#. Resource IDs: (6063)
+msgid "Discard"
+msgstr ""
 
 #. Resource IDs: (61869)
 #, c-format
@@ -5162,6 +5166,10 @@ msgstr "Najden je bil eden ali več samodejno shranjenih dokumentov."
 msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "Eden ali več nastavitev je bilo spremenjenih. Ali ste prepričani, da želite preklicati?"
 
+#. Resource IDs: (5650)
+msgid "One or more values have been changed. Do you want to discard the changes?"
+msgstr ""
+
 #. Resource IDs: (5428)
 #, c-format
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
@@ -5856,7 +5864,7 @@ msgstr "Vzorec"
 msgid "Sample text cannot be empty"
 msgstr "Vzorec besedila ne more biti prazen"
 
-#. Resource IDs: (1137)
+#. Resource IDs: (1137, 6064)
 msgid "Save"
 msgstr "Shrani"
 
@@ -6851,10 +6859,6 @@ msgstr "Ta cilj kratkega imena [%s:%s:%s] ni normalni vnos."
 msgid "This database is the same as the current database!"
 msgstr "Ta zbirka podatkov je enaka trenutni zbirki podatkov!"
 
-#. Resource IDs: (5650)
-msgid "This entry has been changed. Are you sure you wish to cancel?"
-msgstr "Ta vnos je bil spremenjen. Ali ste prepričani, da želite preklicati?"
-
 #. Resource IDs: (3404)
 #, c-format
 msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
@@ -7273,6 +7277,10 @@ msgstr "Uporabi &VELIKE črke"
 #. Resource IDs: (1476, 1481)
 msgid "Use Named Policy"
 msgstr "Uporabi Poimenovan pravilnik"
+
+#. Resource IDs: (6062)
+msgid "Use anyway"
+msgstr ""
 
 #. Resource IDs: (5888)
 msgid "Use count"

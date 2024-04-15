@@ -3039,7 +3039,7 @@ msgstr "Förvalt lösenords utgångstid (dagar)"
 msgid "Default:"
 msgstr "Standard:"
 
-#. Resource IDs: (5622)
+#. Resource IDs: (1, 5622)
 msgid "Delete"
 msgstr "Radera"
 
@@ -3094,6 +3094,10 @@ msgstr "Sanskrit - INSCRIPT"
 #. Resource IDs: (498, 511)
 msgid "Dialog"
 msgstr "Dialog"
+
+#. Resource IDs: (6063)
+msgid "Discard"
+msgstr ""
 
 #. Resource IDs: (61869)
 #, c-format
@@ -5396,6 +5400,10 @@ msgstr "Ett eller fler autosparade dokument hittades."
 msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "En av fler preferenser har ändrats. Vil du verkligen avbryta?"
 
+#. Resource IDs: (5650)
+msgid "One or more values have been changed. Do you want to discard the changes?"
+msgstr ""
+
 #. Resource IDs: (5428)
 #, c-format
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
@@ -6090,7 +6098,7 @@ msgstr "Exempel"
 msgid "Sample text cannot be empty"
 msgstr "Exempeltext kan inte vara tom"
 
-#. Resource IDs: (1137)
+#. Resource IDs: (1137, 6064)
 msgid "Save"
 msgstr "Spara"
 
@@ -7085,10 +7093,6 @@ msgstr "Detta alias mål [%s:%s:%s] är inte en normal post."
 msgid "This database is the same as the current database!"
 msgstr "Denna databas är densamma som den aktuella databasen!"
 
-#. Resource IDs: (5650)
-msgid "This entry has been changed. Are you sure you wish to cancel?"
-msgstr "Denna post har ändrats. Säker på att du vill avbryta?"
-
 #. Resource IDs: (3404)
 #, c-format
 msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
@@ -7507,6 +7511,10 @@ msgstr "Använd &VERSALA tecken"
 #. Resource IDs: (1476, 1481)
 msgid "Use Named Policy"
 msgstr "Använd angiven policy"
+
+#. Resource IDs: (6062)
+msgid "Use anyway"
+msgstr ""
 
 #. Resource IDs: (5888)
 msgid "Use count"

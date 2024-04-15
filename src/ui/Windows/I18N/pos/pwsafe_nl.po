@@ -2805,7 +2805,7 @@ msgstr "Standaard wachtwoord verloopt (dagen)"
 msgid "Default:"
 msgstr "Standaard:"
 
-#. Resource IDs: (5622)
+#. Resource IDs: (1, 5622)
 msgid "Delete"
 msgstr "Verwijder"
 
@@ -2860,6 +2860,10 @@ msgstr "Devanāgarī - INSCRIPT"
 #. Resource IDs: (498, 511)
 msgid "Dialog"
 msgstr "Dialoog"
+
+#. Resource IDs: (6063)
+msgid "Discard"
+msgstr ""
 
 #. Resource IDs: (61869)
 #, c-format
@@ -5163,6 +5167,10 @@ msgstr "Een of meer automatisch bewaarde documenten zijn gevonden."
 msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "Een of meer voorkeuren zijn gewijzigd. Weet u zeker dat u wilt annuleren?"
 
+#. Resource IDs: (5650)
+msgid "One or more values have been changed. Do you want to discard the changes?"
+msgstr ""
+
 #. Resource IDs: (5428)
 #, c-format
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
@@ -5857,7 +5865,7 @@ msgstr "Voorbeeld"
 msgid "Sample text cannot be empty"
 msgstr "Voorbeeld tekst kan niet leeg zijn"
 
-#. Resource IDs: (1137)
+#. Resource IDs: (1137, 6064)
 msgid "Save"
 msgstr "Opslaan"
 
@@ -6852,10 +6860,6 @@ msgstr "Dit alias doel [%s:%s:%s]is niet een gewone invoer."
 msgid "This database is the same as the current database!"
 msgstr "Deze database is het hetzelfde als de huidige database!"
 
-#. Resource IDs: (5650)
-msgid "This entry has been changed. Are you sure you wish to cancel?"
-msgstr "Deze invoer is veranderd. Weet u zeker dat u wilt annuleren?"
-
 #. Resource IDs: (3404)
 #, c-format
 msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
@@ -7274,6 +7278,10 @@ msgstr "Gebruik &HOOFDletters"
 #. Resource IDs: (1476, 1481)
 msgid "Use Named Policy"
 msgstr "Gebruik Gelabelde Regels"
+
+#. Resource IDs: (6062)
+msgid "Use anyway"
+msgstr ""
 
 #. Resource IDs: (5888)
 msgid "Use count"

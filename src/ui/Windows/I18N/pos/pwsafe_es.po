@@ -2896,7 +2896,7 @@ msgstr ""
 msgid "Default:"
 msgstr ""
 
-#. Resource IDs: (5622)
+#. Resource IDs: (1, 5622)
 msgid "Delete"
 msgstr "Eliminar"
 
@@ -2951,6 +2951,10 @@ msgstr "Devanagari - INSCRIPT"
 #. Resource IDs: (498, 511)
 msgid "Dialog"
 msgstr "Dialogo"
+
+#. Resource IDs: (6063)
+msgid "Discard"
+msgstr ""
 
 #. Resource IDs: (61869)
 #, c-format
@@ -5253,6 +5257,10 @@ msgstr "Se encontraron uno o más documentos guardados automáticamente."
 msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "Hay cambios en las preferencias. ¿Seguro que deseas cancelar?"
 
+#. Resource IDs: (5650)
+msgid "One or more values have been changed. Do you want to discard the changes?"
+msgstr ""
+
 #. Resource IDs: (5428)
 #, c-format
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
@@ -5947,7 +5955,7 @@ msgstr "Ejemplo"
 msgid "Sample text cannot be empty"
 msgstr "El texto de ejemplo no puede estar vacío"
 
-#. Resource IDs: (1137)
+#. Resource IDs: (1137, 6064)
 msgid "Save"
 msgstr "Guardar"
 
@@ -6942,10 +6950,6 @@ msgstr ""
 msgid "This database is the same as the current database!"
 msgstr "¡Esta base de datos es la misma que la actual!"
 
-#. Resource IDs: (5650)
-msgid "This entry has been changed. Are you sure you wish to cancel?"
-msgstr "Esta entrada ha cambiado. ¿Está seguro que desea cancelar?"
-
 #. Resource IDs: (3404)
 #, c-format
 msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
@@ -7364,6 +7368,10 @@ msgstr "Usar letras MAY&USCULAS"
 #. Resource IDs: (1476, 1481)
 msgid "Use Named Policy"
 msgstr "Utilizar política nominalizada"
+
+#. Resource IDs: (6062)
+msgid "Use anyway"
+msgstr ""
 
 #. Resource IDs: (5888)
 msgid "Use count"

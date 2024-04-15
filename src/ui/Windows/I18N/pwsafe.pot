@@ -2816,7 +2816,7 @@ msgstr ""
 msgid "Default:"
 msgstr ""
 
-#. Resource IDs: (5622)
+#. Resource IDs: (1, 5622)
 msgid "Delete"
 msgstr ""
 
@@ -2870,6 +2870,10 @@ msgstr ""
 
 #. Resource IDs: (498, 511)
 msgid "Dialog"
+msgstr ""
+
+#. Resource IDs: (6063)
+msgid "Discard"
 msgstr ""
 
 #. Resource IDs: (61869)
@@ -5188,6 +5192,10 @@ msgstr ""
 msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
 msgstr ""
 
+#. Resource IDs: (5650)
+msgid "One or more values have been changed. Do you want to discard the changes?"
+msgstr ""
+
 #. Resource IDs: (5428)
 #, c-format
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
@@ -6011,7 +6019,7 @@ msgstr ""
 msgid "Sample text cannot be empty"
 msgstr ""
 
-#. Resource IDs: (1137)
+#. Resource IDs: (1137, 6064)
 msgid "Save"
 msgstr ""
 
@@ -7048,7 +7056,6 @@ msgstr ""
 msgid "This database is the same as the current database!"
 msgstr ""
 
-#. Resource IDs: (5650)
 msgid "This entry has been changed. Are you sure you wish to cancel?"
 msgstr ""
 
@@ -7481,6 +7488,10 @@ msgstr ""
 
 #. Resource IDs: (1476, 1481)
 msgid "Use Named Policy"
+msgstr ""
+
+#. Resource IDs: (6062)
+msgid "Use anyway"
 msgstr ""
 
 #. Resource IDs: (5888)

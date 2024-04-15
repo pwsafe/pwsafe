@@ -2909,7 +2909,7 @@ msgstr ""
 msgid "Default:"
 msgstr ""
 
-#. Resource IDs: (5622)
+#. Resource IDs: (1, 5622)
 msgid "Delete"
 msgstr "Smazat"
 
@@ -2964,6 +2964,10 @@ msgstr "Devanagari (písemná)"
 #. Resource IDs: (498, 511)
 msgid "Dialog"
 msgstr "Dialog"
+
+#. Resource IDs: (6063)
+msgid "Discard"
+msgstr ""
 
 #. Resource IDs: (61869)
 #, c-format
@@ -5266,6 +5270,10 @@ msgstr "Jeden nebo více automaticky uložených bylo nalezeno."
 msgid "One or more preferences have been changed. Are you sure you wish to cancel?"
 msgstr "Jedna nebo více předvoleb bylo změněno. Určitě chcete akci zrušit?"
 
+#. Resource IDs: (5650)
+msgid "One or more values have been changed. Do you want to discard the changes?"
+msgstr ""
+
 #. Resource IDs: (5428)
 #, c-format
 msgid "Only in Original: %d; Only in Comparison: %d; In both (differing): %d; In both (identical): %d"
@@ -5960,7 +5968,7 @@ msgstr "Ukázka"
 msgid "Sample text cannot be empty"
 msgstr "Ukázkový text nemůže být prázdný"
 
-#. Resource IDs: (1137)
+#. Resource IDs: (1137, 6064)
 msgid "Save"
 msgstr "Ulož"
 
@@ -6955,10 +6963,6 @@ msgstr ""
 msgid "This database is the same as the current database!"
 msgstr "Tato databáze je ta samá jako současná databáze!"
 
-#. Resource IDs: (5650)
-msgid "This entry has been changed. Are you sure you wish to cancel?"
-msgstr "Tento záznam byl změněn. Určitě chcete akci zrušit?"
-
 #. Resource IDs: (3404)
 #, c-format
 msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
@@ -7377,6 +7381,10 @@ msgstr "Použij VELKÁ písmena (&U)"
 #. Resource IDs: (1476, 1481)
 msgid "Use Named Policy"
 msgstr "Použij pojmenovanou politiku"
+
+#. Resource IDs: (6062)
+msgid "Use anyway"
+msgstr ""
 
 #. Resource IDs: (5888)
 msgid "Use count"
