@@ -18,6 +18,7 @@
 #include <wx/dataobj.h>
 #include <wx/panel.h>
 #include <wx/spinctrl.h>
+#include <wx/stattext.h>
 #include <wx/stream.h>
 #include <wx/textctrl.h>
 #include <wx/toplevel.h>
