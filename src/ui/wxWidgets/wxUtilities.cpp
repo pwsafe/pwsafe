@@ -192,10 +192,10 @@ SafeCombinationCtrl* wxUtilities::CreateLabeledSafeCombinationCtrl(wxWindow* par
   parent->GetSizer()->Add(sizer, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
 
   auto *labelCtrl = new wxStaticText(parent, wxID_STATIC, _(label), wxDefaultPosition, wxDefaultSize, 0);
-  sizer->Add(labelCtrl, 0, wxBOTTOM, 5);
+  sizer->Add(labelCtrl, 0, wxBOTTOM|wxALIGN_LEFT, 5);
 
   auto *safeCombinationCtrl = new SafeCombinationCtrl(parent, id, password, wxDefaultPosition, wxDefaultSize);
-  sizer->Add(safeCombinationCtrl, 0, wxALL|wxEXPAND, 0);
+  sizer->Add(safeCombinationCtrl, 0, wxALL|wxEXPAND|wxALIGN_LEFT, 0);
 
   if (hasFocus) {
     safeCombinationCtrl->SetFocus();

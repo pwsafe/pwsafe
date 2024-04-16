@@ -130,7 +130,7 @@ void SafeCombinationCtrl::Init(wxWindow* parent,
     showHideButton->SetToolTip(m_IsPasswordHidden ? _("Hide password") : _("Show password"));
     m_IsPasswordHidden = !m_IsPasswordHidden;
   });
-  Add(showHideButton, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT, 5);
+  Add(showHideButton, 0, wxLEFT|wxRIGHT|wxEXPAND, 5);
 }
 
 SafeCombinationCtrl::~SafeCombinationCtrl()
