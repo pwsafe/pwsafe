@@ -123,7 +123,7 @@ void SafeCombinationPromptDlg::CreateControls()
   auto textColor = itemStaticText7->GetForegroundColour();
   verticalBoxSizer1->Add(itemStaticText7, 0, wxBOTTOM, 5);
 
-  auto *textCtrlFilename = new wxTextCtrl(this, wxID_STATIC, _("filename"), wxDefaultPosition, wxSize(-1, 35), wxST_ELLIPSIZE_MIDDLE);
+  auto *textCtrlFilename = new wxTextCtrl(this, wxID_STATIC, _("filename"), wxDefaultPosition, wxDefaultSize, wxST_ELLIPSIZE_MIDDLE);
   textCtrlFilename->Disable();
   textCtrlFilename->SetForegroundColour(textColor);
   verticalBoxSizer1->Add(textCtrlFilename, 0, wxALL|wxEXPAND, 0);
