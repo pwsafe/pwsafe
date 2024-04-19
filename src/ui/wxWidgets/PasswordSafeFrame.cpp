@@ -1390,7 +1390,7 @@ int PasswordSafeFrame::Open(const wxString &fname)
     return rc;
 
   // prompt for password, try to Load.
-  DestroyWrapper<SafeCombinationPromptDlg> pwdpromptWrapper(this, m_core, fname, false);
+  DestroyWrapper<SafeCombinationPromptDlg> pwdpromptWrapper(this, m_core, fname);
   SafeCombinationPromptDlg* pwdprompt = pwdpromptWrapper.Get();
 
   if (pwdprompt->ShowModal() == wxID_OK) {
@@ -2435,7 +2435,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
   }
 
   if (m_sysTray->IsLocked()) {
-    DestroyWrapper<SafeCombinationPromptDlg> scpWrapper(this, m_core, towxstring(m_core.GetCurFile()), CanCloseDialogs());
+    DestroyWrapper<SafeCombinationPromptDlg> scpWrapper(this, m_core, towxstring(m_core.GetCurFile()));
     SafeCombinationPromptDlg* scp = scpWrapper.Get();
 
     switch (scp->ShowModal()) {
@@ -2453,16 +2453,6 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
           return;
         }
         break;
-      }
-      case (wxID_EXIT):
-      {
-        CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}), CloseFlags::CLOSE_NORMAL, [this](bool success) {
-          if (!success) {
-            // `this` should be valid here, because we haven't closed DB
-            wxMessageBox(_("Can't close database. There are unsaved changes in opened dialogs."), wxTheApp->GetAppName(), wxOK | wxICON_WARNING, this);
-          }
-        });
-        return;
       }
       case (wxID_CANCEL):
       {

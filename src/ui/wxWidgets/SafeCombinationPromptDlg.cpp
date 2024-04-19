@@ -53,7 +53,6 @@ BEGIN_EVENT_TABLE( SafeCombinationPromptDlg, wxDialog )
 
   EVT_BUTTON( wxID_OK,     SafeCombinationPromptDlg::OnOkClick           )
   EVT_BUTTON( wxID_CANCEL, SafeCombinationPromptDlg::OnCancelClick       )
-  EVT_BUTTON( wxID_EXIT,   SafeCombinationPromptDlg::OnExitClick         )
 
 END_EVENT_TABLE()
 
@@ -62,12 +61,12 @@ END_EVENT_TABLE()
  */
 
 SafeCombinationPromptDlg::SafeCombinationPromptDlg(wxWindow *parent, PWScore &core,
-                                               const wxString &fname, const bool allowExit,
+                                               const wxString &fname,
                                                wxWindowID id,
                                                const wxString& caption,
                                                const wxPoint& pos,
                                                const wxSize& size, long style)
-: m_core(core), m_filename(fname), m_allowExit(allowExit)
+: m_core(core), m_filename(fname)
 {
   wxASSERT(!parent || parent->IsTopLevel());
 ////@begin SafeCombinationPromptDlg creation
@@ -88,13 +87,13 @@ SafeCombinationPromptDlg::SafeCombinationPromptDlg(wxWindow *parent, PWScore &co
 
 
 SafeCombinationPromptDlg* SafeCombinationPromptDlg::Create(wxWindow *parent, PWScore &core,
-                                               const wxString &fname, const bool allowExit,
+                                               const wxString &fname,
                                                wxWindowID id,
                                                const wxString& caption,
                                                const wxPoint& pos,
                                                const wxSize& size, long style)
 {
-  return new SafeCombinationPromptDlg(parent, core, fname, allowExit, id, caption, pos, size, style);
+  return new SafeCombinationPromptDlg(parent, core, fname, id, caption, pos, size, style);
 }
 
 /*!
@@ -141,12 +140,7 @@ void SafeCombinationPromptDlg::CreateControls()
   auto horizontalBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
   mainSizer->Add(horizontalBoxSizer3, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
 
-  horizontalBoxSizer3->Add(
-    new wxButton(this, wxID_EXIT, _("&Exit"), wxDefaultPosition, wxDefaultSize, 0),
-    0, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxALL, 5
-  );
-
-  horizontalBoxSizer3->AddSpacer(60);
+  horizontalBoxSizer3->AddSpacer(90);
   horizontalBoxSizer3->AddStretchSpacer();
 
   horizontalBoxSizer3->Add(
@@ -171,8 +165,6 @@ void SafeCombinationPromptDlg::CreateControls()
     0, wxALIGN_CENTER_VERTICAL|wxALL, 0
   );
 
-  if(! m_allowExit)
-    FindWindow(wxID_EXIT)->Disable();
   // Set validators
   textCtrlFilename->SetValidator(wxGenericValidator(&m_filename));
 ////@end SafeCombinationPromptDlg content construction
@@ -268,18 +260,6 @@ void SafeCombinationPromptDlg::OnCancelClick(wxCommandEvent& WXUNUSED(evt))
 ////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SafeCombinationPromptDlg.
   // Before editing this code, remove the block markers.
   EndModal(wxID_CANCEL);
-////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SafeCombinationPromptDlg.
-}
-
-/*!
- * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_EXIT
- */
-
-void SafeCombinationPromptDlg::OnExitClick(wxCommandEvent& WXUNUSED(evt))
-{
-////@begin wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_EXIT in SafeCombinationPromptDlg.
-  // Before editing this code, remove the block markers.
-  EndModal(wxID_EXIT);
 ////@end wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL in SafeCombinationPromptDlg.
 }
 
