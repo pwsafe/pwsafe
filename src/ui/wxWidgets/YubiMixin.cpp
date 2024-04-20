@@ -74,10 +74,15 @@ void YubiMixin::HandlePollingTimer()
 {
   // Show Yubi controls when inserted first time:
   if (yubiExists() && !m_btn->IsShown() && !m_status->IsShown()) {
-    wxWindow *parent = nullptr; // assume both have same parent
-    m_btn->Show(true); parent = m_btn->GetParent();
-    m_status->Show(true); parent = m_btn->GetParent();
-    if (parent != nullptr) parent->GetSizer()->SetSizeHints(parent);
+    m_btn->Show(true);
+    m_status->Show(true);
+
+    // Update the dialog's size hints to honor the required minimum
+    // control sizes as additional controls have appeared.
+    auto *parent = m_btn->GetParent();
+    if (parent != nullptr) {
+      parent->GetSizer()->SetSizeHints(parent);
+    }
   }
 
   // Currently hmac check is blocking (ugh), so no need to check here
