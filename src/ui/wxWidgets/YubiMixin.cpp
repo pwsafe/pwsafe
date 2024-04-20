@@ -34,12 +34,14 @@ void YubiMixin::SetupMixin(wxEvtHandler *eventHandler, wxWindow *btn, wxWindow *
   m_btn = btn;
   m_status = status;
   m_present = !IsYubiInserted(); // lie to trigger correct actions in timer even
-  // Hide Yubi controls if user doesn't have one:
-  if (m_btn != nullptr) m_btn->Show(yubiExists());
-  if (m_status != nullptr) m_status->Show(yubiExists());
-  if (IsPollingEnabled()) {
-    m_pollingTimer = new wxTimer(eventHandler, timerId);
-    m_pollingTimer->Start(GetPollingInterval());
+  if ((m_btn != nullptr) && (m_status != nullptr)) {
+    // Hide Yubi controls if user doesn't have one:
+    m_btn->Show(yubiExists());
+    m_status->Show(yubiExists());
+    if (IsPollingEnabled()) {
+      m_pollingTimer = new wxTimer(eventHandler, timerId);
+      m_pollingTimer->Start(GetPollingInterval());
+    }
   }
 }
 
@@ -71,11 +73,11 @@ bool YubiMixin::IsYubiInserted() const
 void YubiMixin::HandlePollingTimer()
 {
   // Show Yubi controls when inserted first time:
-  if (yubiExists()) {
+  if (yubiExists() && !m_btn->IsShown() && !m_status->IsShown()) {
     wxWindow *parent = nullptr; // assume both have same parent
-    if (m_btn != nullptr) {m_btn->Show(true); parent = m_btn->GetParent();}
-    if (m_status != nullptr) {m_status->Show(true); parent = m_btn->GetParent();}
-    if (parent != nullptr) parent->Layout();
+    m_btn->Show(true); parent = m_btn->GetParent();
+    m_status->Show(true); parent = m_btn->GetParent();
+    if (parent != nullptr) parent->GetSizer()->SetSizeHints(parent);
   }
 
   // Currently hmac check is blocking (ugh), so no need to check here
