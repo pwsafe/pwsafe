@@ -16,7 +16,7 @@
       Password Safe is a password manager. It stores your passwords in an encrypted file, allowing you to remember only one password (the &quot;master password&quot;), instead of all the username/password combinations that you use. For extra security, you can use a Yubikey device to provide two-factor authentication.
     </p>
     <p>
-      Password Safe runs on Windows, popular Linux distributions, macOS and FreeBSD.
+      Password Safe runs on Windows, Linux, macOS and FreeBSD.
     </p>
   </description>
   
