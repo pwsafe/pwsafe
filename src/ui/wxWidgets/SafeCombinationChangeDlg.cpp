@@ -54,7 +54,8 @@ BEGIN_EVENT_TABLE( SafeCombinationChangeDlg, wxDialog )
 #ifndef NO_YUBI
   EVT_BUTTON( ID_YUBIBTN,                   SafeCombinationChangeDlg::OnYubibtnClick  )
   EVT_BUTTON( ID_YUBIBTN2,                  SafeCombinationChangeDlg::OnYubibtn2Click )
-  EVT_TIMER(  YubiMixin::POLLING_TIMER_ID, SafeCombinationChangeDlg::OnPollingTimer  )
+  EVT_TIMER(  YubiMixin::POLLING_TIMER_ID,  SafeCombinationChangeDlg::OnPollingTimer  )
+  EVT_TIMER(  YubiMixin::POLLING_TIMER2_ID, SafeCombinationChangeDlg::OnPollingTimer  )
 #endif
   EVT_BUTTON( wxID_OK,                      SafeCombinationChangeDlg::OnOkClick       )
   EVT_BUTTON( wxID_CANCEL,                  SafeCombinationChangeDlg::OnCancelClick   )
@@ -82,8 +83,6 @@ SafeCombinationChangeDlg::SafeCombinationChangeDlg(wxWindow *parent, PWScore &co
   {
     GetSizer()->SetSizeHints(this);
   }
-  // Allow to resize the dialog in width, only.
-  SetMaxSize(wxSize(wxDefaultCoord, GetMinSize().y));
   Centre();
 ////@end SafeCombinationChangeDlg creation
 #ifndef NO_YUBI
