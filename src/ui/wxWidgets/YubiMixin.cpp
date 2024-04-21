@@ -73,7 +73,7 @@ bool YubiMixin::IsYubiInserted() const
 void YubiMixin::HandlePollingTimer()
 {
   // Show Yubi controls when inserted first time:
-  if (yubiExists() && !m_btn->IsShown() && !m_status->IsShown()) {
+  if (yubiExists() && (!m_btn->IsShown() || !m_status->IsShown())) {
     m_btn->Show(true);
     m_status->Show(true);
 
