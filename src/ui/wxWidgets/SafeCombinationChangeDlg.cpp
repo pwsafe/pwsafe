@@ -55,7 +55,6 @@ BEGIN_EVENT_TABLE( SafeCombinationChangeDlg, wxDialog )
   EVT_BUTTON( ID_YUBIBTN,                   SafeCombinationChangeDlg::OnYubibtnClick  )
   EVT_BUTTON( ID_YUBIBTN2,                  SafeCombinationChangeDlg::OnYubibtn2Click )
   EVT_TIMER(  YubiMixin::POLLING_TIMER_ID,  SafeCombinationChangeDlg::OnPollingTimer  )
-  EVT_TIMER(  YubiMixin::POLLING_TIMER2_ID, SafeCombinationChangeDlg::OnPollingTimer  )
 #endif
   EVT_BUTTON( wxID_OK,                      SafeCombinationChangeDlg::OnOkClick       )
   EVT_BUTTON( wxID_CANCEL,                  SafeCombinationChangeDlg::OnCancelClick   )
@@ -88,7 +87,7 @@ SafeCombinationChangeDlg::SafeCombinationChangeDlg(wxWindow *parent, PWScore &co
 #ifndef NO_YUBI
   m_yubiMixin1.SetupMixin(this, FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS), YubiMixin::POLLING_TIMER_ID);
   m_yubiMixin1.SetPrompt1(_("Enter old master password (if any) and click on top Yubikey button"));
-  m_yubiMixin2.SetupMixin(this, FindWindow(ID_YUBIBTN2), FindWindow(ID_YUBISTATUS), YubiMixin::POLLING_TIMER2_ID);
+  m_yubiMixin2.SetupMixin(this, FindWindow(ID_YUBIBTN2), FindWindow(ID_YUBISTATUS), YubiMixin::POLLING_TIMER_NONE);
   m_yubiMixin2.SetPrompt1(_("Enter old master password (if any) and click on top Yubikey button"));
 #endif
 }
@@ -402,8 +401,6 @@ void SafeCombinationChangeDlg::OnPollingTimer(wxTimerEvent &evt)
 {
   if (evt.GetId() == YubiMixin::POLLING_TIMER_ID) {
     m_yubiMixin1.HandlePollingTimer();
-  }
-  else if (evt.GetId() == YubiMixin::POLLING_TIMER2_ID) {
     m_yubiMixin2.HandlePollingTimer();
   }
 }
