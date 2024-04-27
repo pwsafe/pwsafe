@@ -57,7 +57,7 @@ class YubiMixin
   static int GetPollingInterval() { return s_pollingInterval; }
   static bool IsPollingEnabled() { return s_pollingInterval > YubiMixin::POLLING_INTERVAL_OFF; }
 
-  enum { POLLING_TIMER_ID = 83, POLLING_TIMER2_ID = 84 };  
+  enum { POLLING_TIMER_NONE = -1, POLLING_TIMER_ID = 83 };
 
  private:
   bool m_present; // key present?
