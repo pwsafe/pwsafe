@@ -217,6 +217,8 @@ private:
 
   bool SyncAndQueryCancel(bool showDialog) override;
 
+  void InitDialog() override;
+
   enum Changes : uint32_t {
     None = 0,
     Flags = 1u,
