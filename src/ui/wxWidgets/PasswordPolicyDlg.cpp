@@ -134,12 +134,12 @@ void PasswordPolicyDlg::CreateControls()
   auto* itemBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer2->Add(itemBoxSizer3, 0, wxEXPAND|wxALL, 5);
 
-  wxStaticText* itemStaticText4 = new wxStaticText( itemDialog1, wxID_STATIC, _("Policy Name:"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto* itemStaticText4 = new wxStaticText( itemDialog1, wxID_STATIC, _("Policy Name:"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer3->Add(itemStaticText4, 1, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   itemBoxSizer3->AddStretchSpacer();
 
-  wxTextCtrl* itemTextCtrl5 = new wxTextCtrl( itemDialog1, ID_POLICYNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  auto* itemTextCtrl5 = new wxTextCtrl( itemDialog1, ID_POLICYNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer3->Add(itemTextCtrl5, 2, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   /////////////////////////////////////////////////////////////////////////////
@@ -611,8 +611,8 @@ void PasswordPolicyDlg::SetPolicyData(const wxString &policyname, const PWPolicy
 
 void PasswordPolicyDlg::InitDialog()
 {
+  TransferDataToWindow();
   if (m_DialogType == DialogType::EDITOR) {
-    TransferDataToWindow();
     m_pwpLCSpin->Enable(m_pwpUseLowerCtrl->GetValue());
     m_pwpUCSpin->Enable(m_pwpUseUpperCtrl->GetValue());
     m_pwpDigSpin->Enable(m_pwpUseDigitsCtrl->GetValue());
