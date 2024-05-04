@@ -36,6 +36,7 @@
       "inherits": "base",
       "displayName": "Windows default",
       "description": "Default Windows build",
+      "generator": "Visual Studio 17 2022",
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
           "hostOS": [
