@@ -105,10 +105,6 @@ SafeCombinationEntryDlg::SafeCombinationEntryDlg(wxWindow *parent, PWScore &core
   {
     GetSizer()->SetSizeHints(this);
   }
-  // TODO: Check if the previous line of code can be added back.
-  // The line of code was commented out, due to reported issue #674
-  // for Fedora 32 with wxGtk 3.0.4 based on Gtk 3.24.13.
-  // See https://github.com/pwsafe/pwsafe/issues/674
   Centre();
 ////@end SafeCombinationEntryDlg creation
 #ifndef NO_YUBI
