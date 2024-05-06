@@ -1227,6 +1227,8 @@ msgstr "Master-Passwort:"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:211
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:138
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
+#: ../../../ui/wxWidgets/wxUtilities.cpp:216
+#: ../../../ui/wxWidgets/YubiMixin.cpp:62
 msgid "Insert YubiKey"
 msgstr "YubiKey hineinstecken"
 
@@ -5043,12 +5045,6 @@ msgstr ""
 #, fuzzy
 msgid "YubiKey"
 msgstr "YubiKey..."
-
-#: ../../../ui/wxWidgets/wxUtilities.cpp:216
-#: ../../../ui/wxWidgets/YubiMixin.cpp:62
-#, fuzzy
-msgid "Insert YubiKey"
-msgstr "YubiKey hineinstecken"
 
 #: ../../../ui/wxWidgets/wxUtilities.cpp:471
 msgid ""

@@ -1323,6 +1323,8 @@ msgstr "이전 비밀번호"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:211
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:138
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
+#: ../../../ui/wxWidgets/wxUtilities.cpp:216
+#: ../../../ui/wxWidgets/YubiMixin.cpp:62
 msgid "Insert YubiKey"
 msgstr ""
 
@@ -5438,12 +5440,6 @@ msgstr ""
 #: ../../../ui/wxWidgets/wxUtilities.cpp:213
 msgid "YubiKey"
 msgstr ""
-
-#: ../../../ui/wxWidgets/wxUtilities.cpp:216
-#: ../../../ui/wxWidgets/YubiMixin.cpp:62
-#, fuzzy
-msgid "Insert YubiKey"
-msgstr "삽입"
 
 #: ../../../ui/wxWidgets/wxUtilities.cpp:471
 msgid ""
