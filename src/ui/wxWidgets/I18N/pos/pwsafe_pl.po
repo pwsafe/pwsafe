@@ -1320,8 +1320,8 @@ msgstr "ostatnie hasła"
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:138
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
 #, fuzzy
-msgid "Insert your YubiKey"
-msgstr "Proszę wprowadzić swój YubiKey"
+msgid "Insert YubiKey"
+msgstr "Proszę wprowadzić YubiKey"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:130
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:380

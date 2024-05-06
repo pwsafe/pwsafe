@@ -1311,7 +1311,7 @@ msgstr "个最后密码"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:211
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:138
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
-msgid "Insert your YubiKey"
+msgid "Insert YubiKey"
 msgstr ""
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:130

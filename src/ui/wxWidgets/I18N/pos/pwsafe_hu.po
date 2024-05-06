@@ -1265,7 +1265,7 @@ msgstr "utolsó jelszót"
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:138
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
 #, fuzzy
-msgid "Insert your YubiKey"
+msgid "Insert YubiKey"
 msgstr "Kérem helyezze be a Yubikey-t"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:130

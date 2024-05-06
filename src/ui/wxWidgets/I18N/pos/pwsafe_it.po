@@ -1250,7 +1250,7 @@ msgstr "password"
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:138
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
 #, fuzzy
-msgid "Insert your YubiKey"
+msgid "Insert YubiKey"
 msgstr "Inserire la YubiKey"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:130
