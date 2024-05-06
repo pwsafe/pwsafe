@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
-# ronys, 2022
 # Jadran Rudec <jrudec@gmail.com>, 2024
+# ronys, 2024
 # Procol Lacor, 2024
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -16,14 +16,12 @@ msgstr ""
 "POT-Creation-Date: 2024-05-05 22:05+0300\n"
 "PO-Revision-Date: 2021-12-23 19:16+0000\n"
 "Last-Translator: Procol Lacor, 2024\n"
-"Language-Team: Slovenian (https://app.transifex.com/passwordsafe/"
-"teams/125590/sl/)\n"
-"Language: sl\n"
+"Language-Team: Slovenian (https://app.transifex.com/passwordsafe/teams/125590/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
-"n%100==4 ? 2 : 3);\n"
+"Language: sl\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);\n"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:113
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1383
@@ -33,7 +31,7 @@ msgstr "Password Safe"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:116
 msgid "Built using "
-msgstr ""
+msgstr "Program uporablja"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:119
 #: ../../../ui/wxWidgets/AboutDlg.cpp:158
@@ -42,22 +40,19 @@ msgstr "Datum izgradnje:"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:125
 msgid "Check"
-msgstr ""
+msgstr "Preveri"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:128
-#, fuzzy
 msgid " for the latest version."
-msgstr "Najnovejša različica:"
+msgstr "za zadnjo razljičico"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:134
-#, fuzzy
 msgid "Visit the "
-msgstr "Prosimo, obiščite"
+msgstr "Obiščite"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:137
-#, fuzzy
 msgid "Password Safe website"
-msgstr "spletno stran PasswordSafe"
+msgstr "Password Safe spletno stran"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:140
 msgid "."
@@ -68,9 +63,8 @@ msgid "See LICENSE for open source details."
 msgstr "Preberite LICENCO za odpiranje podrobnosti vira."
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:146
-#, fuzzy
 msgid "Copyright (c) 2003-2024 Rony Shapiro"
-msgstr "Avtorske pravice (c) 2003-2021 Rony Shapiro"
+msgstr "Avtorske pravice (c) 2003-2024 Rony Shapiro"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:153
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:399
@@ -104,14 +98,11 @@ msgstr "Ni mogoče nastaviti možnosti \"Funkcija pisanja\".\n"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:403
 msgid ""
-"For security, the database must be closed before connecting to the "
-"Internet.\n"
+"For security, the database must be closed before connecting to the Internet.\n"
 "Press OK to close database and continue (Changes will be saved)"
 msgstr ""
-"Zaradi varnostnih razlogov mora biti zbirka podatkov zaprta, preden "
-"vzpostavite povezavo z internetom.\n"
-"Pritisnite na Vredu, da zaprete zbirko podatkov in nadaljujete z delom "
-"(Spremembe bodo shranjene)"
+"Zaradi varnostnih razlogov mora biti zbirka podatkov zaprta, preden vzpostavite povezavo z internetom.\n"
+"Pritisnite na Vredu, da zaprete zbirko podatkov in nadaljujete z delom (Spremembe bodo shranjene)"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:408
 msgid "Confirm Close Dialog"
@@ -138,7 +129,6 @@ msgid "Latest version:\t"
 msgstr "Najnovejša različica:"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:543
-#, fuzzy
 msgid "Visit the Password Safe website to download the latest version."
 msgstr "Za prenos najnovejše različice obiščite spletno stran PasswordSafe."
 
@@ -250,9 +240,9 @@ msgid ""
 "a password are required. If you have set a default username, it will\n"
 "appear in the username field."
 msgstr ""
-"Za dodajanje novega vnosa preprosto izpolnite spodnja polja. Potrebna sta "
-"vsaj naslov in geslo. Če ste nastavili privzeto uporabniško ime, bo to vidno "
-"v polju 'Uporabniško ime'."
+"Za dodajanje novega vnosa preprosto izpolnite spodnja polja.\n"
+"Potrebna sta vsaj naslov in geslo. Če ste nastavili privzeto\n"
+"uporabniško ime, bo to vidno v polju 'Uporabniško ime'."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:285
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:183
@@ -292,7 +282,7 @@ msgstr "S&krij"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:312
 msgid "&Generate"
-msgstr "&Generiraj"
+msgstr "&Ustvari"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:315
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1766
@@ -325,7 +315,7 @@ msgstr "Opombe:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:372
 msgid "Autotype:"
-msgstr "Samodejna vrsta:"
+msgstr "Samodejno vtipkanje:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:378
 msgid "Run Cmd:"
@@ -339,7 +329,7 @@ msgstr "Akcija dvoklika:"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:392
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:555
 msgid "Shift-Double-Click Action:"
-msgstr "Akcija Shift-Dvojni klik:"
+msgstr "Akcija Shift-dvojni klik:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:400
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:234
@@ -382,7 +372,7 @@ msgstr "dni"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:493
 msgid "Recurring"
-msgstr "Ponavljajoče se"
+msgstr "Ponavljajoče"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:499
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1359
@@ -465,18 +455,17 @@ msgstr "Ni na voljo"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:534
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:265
 msgid "Any field last changed on:"
-msgstr "Vsako polje je bilo nazadnje spremenjeno:"
+msgstr "Katerokoli polje je bilo nazadnje spremenjeno:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:557
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:165
 msgid "Random password generation rules"
-msgstr "Pravila naključnega generiranja gesla"
+msgstr "Pravila naključnega ustvarjanja gesla"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:564
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:152
-#, fuzzy
 msgid "Use Named Policy"
-msgstr "Uporabi pravilnik zbirke podatkov"
+msgstr "Uporabi Poimenovan pravilnik"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:579
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:172
@@ -544,7 +533,7 @@ msgstr "npr.., št. 'l', '1', itn."
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:707
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:300
 msgid "Generate pronounceable passwords"
-msgstr "Ustvari izgovorna gesla"
+msgstr "Ustvari izgovorljiva gesla"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:713
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:306
@@ -742,7 +731,7 @@ msgstr "Privzet Pravilnik"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1589
 msgid "Couldn't generate password - invalid policy"
-msgstr "Gesla ni bilo mogoče ustvariti – neveljavna politika"
+msgstr "Gesla ni bilo mogoče ustvariti - neveljavna politika"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1590
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1815
@@ -803,7 +792,7 @@ msgstr "Kratko ime:"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1813
 #, c-format
 msgid "This entry must have a %ls"
-msgstr "Ta vnos mora imeti %ls"
+msgstr "Ta vnos mora imeti %l"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1814
 msgid "title"
@@ -814,14 +803,12 @@ msgid "password"
 msgstr "geslo"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1827
-#, fuzzy
 msgid "Passwords do not match."
 msgstr "Gesli se ne ujemata"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1828
-#, fuzzy
 msgid "Mismatching passwords"
-msgstr "zadnja gesla"
+msgstr "Neujemajoča gesla"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1849
 msgid "Database name must not be empty if a database policy shall be used."
@@ -836,9 +823,8 @@ msgstr ""
 "Že obstaja vnos ali bližnjica z isto Skupino, Naslovom, Uporabniškim imenom."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1873
-#, fuzzy
 msgid "Duplicate entry"
-msgstr "Pod&voji vnos"
+msgstr "Podvoj vnos"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2633
 #, c-format
@@ -865,24 +851,20 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3034
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:713
-#, fuzzy
 msgid "\"Easy-to-read\" and \"pronounceable\" cannot be both selected."
-msgstr ""
-"Oprostite, \"lahko berljivo\" in \"izgovorljivo\" ni mogoče izbrati hkrati"
+msgstr "\"Lahko berljivo\" in \"izgovorljivo\" ni mogoče izbrati hkrati."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3035
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3062
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:695
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:714
 msgid "Unsupported selection"
-msgstr ""
+msgstr "Nepodprta izbira"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3061
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:694
-#, fuzzy
 msgid "\"Pronounceable\" and \"easy-to-read\" cannot be both selected."
-msgstr ""
-"Oprostite, \"izgovorljivo\" in \"lahko berljivo\" ni mogoče izbrati hkrati"
+msgstr "\"Izgovorljivo\" in \"lahko berljivo\" ni mogoče izbrati hkrati"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3113
 msgid "mailto:"
@@ -893,12 +875,14 @@ msgid ""
 "One or more values have been changed.\n"
 "Do you want to discard the changes?"
 msgstr ""
+"Ena ali več nastavitev je bilo spremenjenih.\n"
+"Ali ste prepričani, da želite zavreči spremembe?"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3239
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:95
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:575
 msgid "Discard"
-msgstr ""
+msgstr "Zavrzi"
 
 #: ../../../ui/wxWidgets/AdvancedSelectionDlg.cpp:65
 msgid "&Restrict to a subset of entries:"
@@ -979,7 +963,7 @@ msgstr "Izberite zbirko podatkov za primerjavo s trenutno zbirko podatkov ("
 #: ../../../ui/wxWidgets/CompareDlg.cpp:227
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:121
 msgid "Password Database"
-msgstr "Podatkovna zbirka gesel"
+msgstr "Zbirka podatkov gesel"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:228
 msgid "Select a PasswordSafe database to compare"
@@ -1063,21 +1047,19 @@ msgid "Current safe was opened read-only"
 msgstr "Trenutni sef je bil odprt samo za branje"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:817
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The database:\n"
 "\n"
 "%ls\n"
 "\n"
-"has duplicate entries with the same group/title/user combination. You can "
-"fix this by validating the database."
+"has duplicate entries with the same group/title/user combination. You can fix this by validating the database."
 msgstr ""
 "Zbirka podatkov:\n"
 "\n"
 "%ls\n"
 "\n"
-"ima podvojene vnose z isto kombinacijo skupine/naslova/uporabnika. Popravite "
-"s preverjanjem zbirke podatkov."
+"ima podvojene vnose z isto kombinacijo skupine/naslova/uporabnika. Popravite s preverjanjem zbirke podatkov."
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:818
 #: ../../../ui/wxWidgets/SyncWizard.cpp:672
@@ -1138,7 +1120,6 @@ msgid "Create Shortcut"
 msgstr "Ustvari bližnjico"
 
 #: ../../../ui/wxWidgets/CreateShortcutDlg.cpp:176
-#, fuzzy
 msgid "Enter the shortcut properties to the selected base entry."
 msgstr "Vnesite lastnosti bližnjice do izbranega osnovnega vnosa."
 
@@ -1161,7 +1142,6 @@ msgid "Encryption"
 msgstr "Šifriranje"
 
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:48
-#, fuzzy
 msgid "Enter an encryption key."
 msgstr "Vnesite šifrirni ključ."
 
@@ -1170,7 +1150,6 @@ msgid "Decryption"
 msgstr "Dešifriranje"
 
 #: ../../../ui/wxWidgets/CryptKeyEntryDlg.cpp:52
-#, fuzzy
 msgid "Enter a decryption key."
 msgstr "Vnesite dešifrirni ključ."
 
@@ -1202,21 +1181,21 @@ msgstr "Vnos ne sme biti prazen."
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:70
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1364
 msgid ""
-"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|"
-"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
-"ibak)|*.ibak|All files (*.*; *)|*.*;*"
+"Password Safe Databases (*.psafe4; *.psafe3; "
+"*.dat)|*.psafe4;*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password "
+"Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"
 msgstr ""
-"Password Safe zbirke podatkov (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;"
-"*.dat|Password Safe varnostne kopije (*.bak)|*.bak|Password Safe vmesne "
-"varnostne kopije (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"
+"Password Safe zbirke podatkov (*.psafe4; *.psafe3; "
+"*.dat)|*.psafe4;*.psafe3;*.dat|Password Safe varnostne kopije "
+"(*.bak)|*.bak|Password Safe vmesne varnostne kopije (*.ibak)|*.ibak|All "
+"files (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:80
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:80
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:176
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:122
-#, fuzzy
 msgid "Master Password:"
-msgstr "zadnja gesla"
+msgstr "Glavno geslo:"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:100
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:104
@@ -1224,7 +1203,6 @@ msgstr "zadnja gesla"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:211
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:138
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
-#, fuzzy
 msgid "Insert your YubiKey"
 msgstr "Vstavite vaš YubiKey"
 
@@ -1242,21 +1220,18 @@ msgid "That file is already open."
 msgstr "Ta datoteka je že odprta."
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:144
-#, fuzzy
 msgid ""
 "Incorrect master password, not a Password Safe database,\n"
 "or a corrupt database."
 msgstr ""
-"Napačno geslo, ni Password Safe podatkovna zbirka, ali pokvarjena zbirka "
-"podatkov. (Arhivske podaktovna zbirka ima enako ime kot osnovna, s končnico "
-"'~')"
+"Napačno glavno geslo, ni Password Safe zbirka podatkov,\n"
+"ali pokvarjena zbirka podatkov."
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:145
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:458
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:217
-#, fuzzy
 msgid "Can't open a password database"
-msgstr "Odpri zbirko podatkov gesel:"
+msgstr "Ne morem odpreti zbirke podatkov gesel"
 
 #: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:93
 msgid "Are you sure you want to delete the selected group?"
@@ -1360,7 +1335,6 @@ msgid "Edit Shortcut"
 msgstr "Uredi bližnjico"
 
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:228
-#, fuzzy
 msgid "Edit the shortcut properties to the selected base entry."
 msgstr "Vnesite lastnosti bližnjice do izbranega osnovnega vnosa."
 
@@ -1370,31 +1344,25 @@ msgstr "Cilj je bil nazadnje spremenjen ob:"
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:60
 msgid ""
-"Warning! This operation will create an unprotected copy of ALL of the "
-"passwords\n"
+"Warning! This operation will create an unprotected copy of ALL of the passwords\n"
 "in the database. Deleting this copy after use is NOT sufficient."
 msgstr ""
 "Opozorilo! To opravilo bo ustvarilo nezaščiteno kopijo VSEH gesel\n"
-"v podatkovni zbiri. Brisanje kopije datoteke po končanju ni ZADOSTNO "
-"opravilo."
+"v podatkovni zbiri. Brisanje kopije datoteke po končanju ni ZADOSTNO opravilo."
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:62
-#, fuzzy
 msgid ""
-"Do not use this option unless you understand and accept the risks. This "
-"option\n"
+"Do not use this option unless you understand and accept the risks. This option\n"
 "bypasses the security provided by this program."
 msgstr ""
-"Prosim ne uporabljatje te možnosti razen, če razumete in prevzamete "
-"tveganje. Ta možnost\n"
+"Ne uporabljatje te možnosti razen, če razumete in prevzamete tveganje. Ta možnost\n"
 "naredi obvod pri varnostni zaščiti, ki jo zagotavlja ta program."
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:83
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:174
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:200
-#, fuzzy
 msgid "Show Master Password"
-msgstr "Prikaži podmnožico gesla"
+msgstr "Pokaži glavno geslo"
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:116
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:166
@@ -1433,16 +1401,15 @@ msgid "&Advanced..."
 msgstr "Na&predno..."
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:50
-#, fuzzy
 msgid "Virtual Keyboard"
-msgstr "Izberi pisavo navidezne tipkovnice"
+msgstr "Navidezna tipkovnica"
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:72
 msgid ""
 "Could not launch xvkbd.  Please make sure it's installed and in your PATH"
 msgstr ""
-"Ne morem zagnati programa xvkdb. Prosim preverite, da je program nameščen in "
-"določen v PATH spremenljivki"
+"Ne morem zagnati programa xvkdb. Prosim preverite, da je program nameščen in"
+" določen v PATH spremenljivki"
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:73
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:81
@@ -1454,8 +1421,8 @@ msgstr "Ne morem zagnati zunanje ekranske tipkovnice"
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:80
 msgid "Could not launch xvkbd.  Please make sure it's in your PATH"
 msgstr ""
-"Ne morem zagnati programa xvkdb. Prosim preverite, da je program nameščen in "
-"določen v PATH spremenljivki"
+"Ne morem zagnati programa xvkdb. Prosim preverite, da je program nameščen in"
+" določen v PATH spremenljivki"
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:85
 msgid ""
@@ -1469,10 +1436,12 @@ msgid ""
 "Please enable the Accessibility Keyboard in System Settings; the on-screen "
 "keyboard should then appear."
 msgstr ""
+"Prosim omogočite tipkovnico za ljudi s posebnimi potrebami v sistemskih "
+"nastavitvah; zaslonska tipkovnica bi se nato morala prikazati."
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:101
 msgid "Could not launch the MacOS Settings App"
-msgstr ""
+msgstr "Ne morem zagnati MacOS Settings App"
 
 #: ../../../ui/wxWidgets/GridShortcutsValidator.cpp:638
 msgid "&Reset/Remove shortcut\tDel"
@@ -1532,29 +1501,26 @@ msgid "Other"
 msgstr "Drugo"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:187
-#, fuzzy
 msgid "Import text file:"
-msgstr "Uvoz besedila ni uspel"
+msgstr "Uvoz besedilne datoteke:"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:188
 msgid ""
 "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*; *"
 msgstr ""
-"Besedilne datoteke (*.txt)|*.txt|Datoteke CSV (*.csv)|*.csv|Vse datoteke (*."
-"*)|*.*||"
+"Besedilne datoteke (*.txt)|*.txt|Datoteke CSV (*.csv)|*.csv|Vse datoteke "
+"(*.*)|*.*||"
 
 #: ../../../ui/wxWidgets/ImportXmlDlg.cpp:31
 msgid "Import XML Settings"
 msgstr "Nastavitve uvoza XML"
 
 #: ../../../ui/wxWidgets/ImportXmlDlg.cpp:46
-#, fuzzy
 msgid "Import XML file:"
-msgstr "Uvoz XML ni uspel"
+msgstr "Uvoz XML datoteke:"
 
 #: ../../../ui/wxWidgets/ImportXmlDlg.cpp:50
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1044
-#, fuzzy
 msgid "Choose an XML File to Import"
 msgstr "Izberite XML datoteko za uvoz"
 
@@ -1648,7 +1614,6 @@ msgstr "filter"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1118
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:653
-#, fuzzy
 msgid "Name the XML file"
 msgstr "Dodelite ime XML datoteki"
 
@@ -1729,7 +1694,7 @@ msgstr "Besedilo izbranega Pravilnika"
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:327
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:180
 msgid "Generate"
-msgstr "Generiraj"
+msgstr "Ustvari"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:190
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:333
@@ -1798,16 +1763,17 @@ msgid ""
 "\n"
 "Pressing Cancel stops the password from being copied."
 msgstr ""
+"Pritisk na V redu bo kopiralo geslo izbranega vnosa v odložišče. Odložišč bo varno počiščeno, ko bo program zaprt.\n"
+"\n"
+"Pritisk na Prekliči ustavi kopiranje gesla."
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:385
-#, fuzzy
 msgid "Clear Clipboard"
-msgstr "&Počisti odložišče"
+msgstr "Počisti odložišče"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:388
-#, fuzzy
 msgid "&Don't remind me again"
-msgstr "Ne sprašuj me več"
+msgstr "N&e opominjaj me več"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:562
 msgid ""
@@ -1899,7 +1865,6 @@ msgstr "Neznana napaka"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:91
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:568
-#, fuzzy
 msgid "Do you want to save changes to the password database:"
 msgstr "Ali želite shraniti spremembe v zbirki podatkov gesel:"
 
@@ -1912,7 +1877,6 @@ msgstr "Shrani"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:150
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:532
-#, fuzzy
 msgid "Choose a name for the new database"
 msgstr "Izberite ime nove zbirke podatkov"
 
@@ -1947,14 +1911,12 @@ msgstr "Zaklenjeno od"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:242
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:485
-#, fuzzy
 msgid "Open Password Database"
 msgstr "Odpri zbirko podatkov gesel:"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:336
 msgid ""
-"Unable to create intermediate backup.  Save database elsewhere or with "
-"another name?\n"
+"Unable to create intermediate backup.  Save database elsewhere or with another name?\n"
 "\n"
 "Click 'No' to exit without saving."
 msgstr ""
@@ -1978,15 +1940,10 @@ msgstr "Vmesne varnostne kopije ni mogoče ustvariti."
 #, c-format
 msgid ""
 "The original database, \"%ls\", is in pre-3.0 format. It will be unchanged.\n"
-"Your changes will be written as \"%ls\" in the new format, which is unusable "
-"by old versions of PasswordSafe. To save your changes in the old format, use "
-"the \"File->Export To-> Old (1.x or 2) format\" command."
+"Your changes will be written as \"%ls\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
 msgstr ""
-"Osnovna podatkovna zbirka \"%ls\", je zapisa pred-3.0 oblike, zato bo "
-"spremenjena.\n"
-"Vaše spremembe dodo zapisane kot \"%ls\" v novi obliki, ki je neprimerna za "
-"starejše različice PasswordSafe programa. Za shranjevanje v starejšo obliko "
-"uporabite zapis Datoteka->Izvoz v> Starejši (1.x or 2)\" ."
+"Osnovna zbirka podatkov \"%ls\", je zapisa pred-3.0 oblike, zato bo spremenjena.\n"
+"Vaše spremembe dodo zapisane kot \"%ls\" v novi obliki, ki je neprimerna za starejše različice PasswordSafe programa. Za shranjevanje v starejšo obliko uporabite zapis Datoteka->Izvoz v> Starejši (1.x or 2)\" ."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:371
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:432
@@ -1998,28 +1955,26 @@ msgstr "Opozorilo o različici datoteke"
 msgid ""
 "The original database, '%ls', is in pre-3.0 format. The data will now be "
 "written in the new format, which is unusable by old versions of "
-"PasswordSafe. To save the data in the old format, use the 'File->Export To-> "
-"Old (1.x or 2) format' command."
+"PasswordSafe. To save the data in the old format, use the 'File->Export To->"
+" Old (1.x or 2) format' command."
 msgstr ""
-"Osnovna podatkovna zbirka, '%ls', je zapisa pred-3.0 oblike. Podatki bodo "
+"Osnovna zbirka podatkov, '%ls', je zapisa pred-3.0 oblike. Podatki bodo "
 "sedaj zapisani v novo obliko, ki je nezdružljiva s starejšo različico "
-"programa Password Safe. Za shranjevanje podatkov v starejšo obliko uporabite "
-"'Datoteka->Izvozi v>Starejši(1.x or 2) zapis'"
+"programa Password Safe. Za shranjevanje podatkov v starejšo obliko uporabite"
+" 'Datoteka->Izvozi v>Starejši(1.x or 2) zapis'"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:444
-#, fuzzy
 msgid "Choose a name for the current (Untitled) database:"
 msgstr "Izberite ime trenutne (neimenovano) zbirke podatkov:"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:445
-#, fuzzy
 msgid "Choose a new name for the current database:"
 msgstr "Izberite novo ime za trenutno zbirko podatkov:"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:453
 msgid ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|"
-"*.*;*"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; "
+"*)|*.*;*"
 msgstr ""
 "Podatkovne zbirke Password Safe (*.psafe3; *.dat)|*.psafe3;*.dat|Vse "
 "datoteke (*.*; *)|*.*;*"
@@ -2057,7 +2012,6 @@ msgid "Export Text failed"
 msgstr "Besedilni izvoz je spodletel"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:610
-#, fuzzy
 msgid "Name the plaintext file"
 msgstr "Dodelite ime datoteke z golim besedilom"
 
@@ -2093,22 +2047,23 @@ msgstr "Napredne možnosti izvoza XML"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:699
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:703
 msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*; *)|*.*;*"
-msgstr "Podatkovne zbirke Password Safe (*.dat)|*.dat|All files (*.*; *)|*.*;*"
+msgstr ""
+"Podatkovne zbirke Password Safe (*.dat)|*.dat|All files (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:707
 msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*; *)|*.*;*"
 msgstr ""
-"Podatkovne zbirke Password Safe (*.psafe4)|*.psafe4|Vse datoteke (*.*; *)|*."
-"*;*"
+"Podatkovne zbirke Password Safe (*.psafe4)|*.psafe4|Vse datoteke (*.*; "
+"*)|*.*;*"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:718
-#, fuzzy
 msgid "Name the exported database"
-msgstr "Dodelite ime izvožene zbirke podatkov"
+msgstr "Dodelite ime izvoženi zbirki podatkov"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:735
 msgid "Could not figure out why PasswordSafeFrame::OnExportVx was invoked"
-msgstr "Ne morem ugotoviti, zakaj je bil zagnan PasswordSafeFrame::OnExportVx "
+msgstr ""
+"Ne morem ugotoviti, zakaj je bil zagnan PasswordSafeFrame::OnExportVx "
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:769
 msgid "You must save this database before it can be exported."
@@ -2127,10 +2082,11 @@ msgid "Export complete.  Do you wish to see a detailed report?"
 msgstr "Izvoz je končan. Želite videti podroben pregled?"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:841
-msgid "No entries satisfied your selection criteria and so none were exported!"
+msgid ""
+"No entries satisfied your selection criteria and so none were exported!"
 msgstr ""
-"Nobeden vnos ne zadostuje vašemu merilu izbire, zato nobeden vnos ni bil bil "
-"izvožen."
+"Nobeden vnos ne zadostuje vašemu merilu izbire, zato nobeden vnos ni bil bil"
+" izvožen."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:854
 msgid "Passkey incorrect"
@@ -2141,7 +2097,7 @@ msgid ""
 "The current database was opened in read-only mode.  You cannot import into "
 "it."
 msgstr ""
-"Trenutna podatkovna zbirka je odprta v samo-bralnem načinu, zato ne morete "
+"Trenutna zbirka podatkov je odprta v samo-bralnem načinu, zato ne morete "
 "uvoziti vanjo."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:868
@@ -2150,16 +2106,15 @@ msgstr "Izvozno besedilo"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:876
 msgid "The database:"
-msgstr "Podatkovna zbirka:"
+msgstr "Zbirka podatkov:"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:877
 msgid "has duplicate entries with the same group/title/user combination."
 msgstr "ima dvojne vnose z enako kombinacijo skupine/naslova/uporabnika."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:878
-#, fuzzy
 msgid "  Fix by validating database."
-msgstr "Prosim popravite s potrjevanjem podatkovne zbirke."
+msgstr "Popravite s potrjevanjem podatkovne zbirke."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:879
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:926
@@ -2246,21 +2201,19 @@ msgstr "Želite videti podroben pregled?"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:996
 #: ../../../ui/wxWidgets/SyncWizard.cpp:673
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "The database:\n"
 "\n"
 "%ls\n"
 "\n"
-"has duplicate entries with the same group/title/user combination. Fix by "
-"validating database."
+"has duplicate entries with the same group/title/user combination. Fix by validating database."
 msgstr ""
-"Zbirka podatkov:\n"
+"Zbirka podatkov::\n"
 "\n"
 "%ls\n"
 "\n"
-"ima podvojene vnose z isto kombinacijo skupine/naslova/uporabnika. Popravite "
-"s preverjanjem zbirke podatkov."
+"ima podvojene vnose z isto kombinacijo skupina/naslov/uporabnik. Popravite jo s Potrjevanje zbirke podatkov."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:997
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1047
@@ -2268,16 +2221,13 @@ msgid "Import XML failed"
 msgstr "Uvoz XML ni uspel"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1007
-#, fuzzy, c-format
+#, c-format
 msgid ""
-"Can't find XML Schema Definition file (%ls) in your PasswordSafe Application "
-"Directory.\n"
+"Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\n"
 "Copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
-"Datoteke definicije sheme XML (%ls) ni mogoče najti v vašem imeniku "
-"aplikacije Password Safe.\n"
-"Kopirajte jo iz vaše namestitvene datoteke ali ponovno namestite Password "
-"Safe."
+"Datoteke definicije sheme XML (%ls) ni mogoče najti v vašem imeniku aplikacije Password Safe.\n"
+"Kopirajte jo iz vaše namestitvene datoteke ali ponovno namestite Password Safe."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1008
 msgid "Missing XSD File - "
@@ -2392,9 +2342,8 @@ msgid "XML import: Unexpected return code(%d)"
 msgstr "XML uvoz: Nepričakovana povratna koda (%d)"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1146
-#, fuzzy
 msgid "Import a KeePass Text File"
-msgstr "Uvozi &KeePass V1 besedilo"
+msgstr "Uvozite KeePass besedilno datoteko"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1168
 #, c-format
@@ -2439,7 +2388,7 @@ msgstr "Uvožena%d %ls"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1277
 msgid "Merging database: "
-msgstr "Združujoča podatkovna zbirka:"
+msgstr "Združujoča zbirka podatkov:"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1292
 msgid "Merge Complete"
@@ -2449,11 +2398,12 @@ msgstr "Združevanje je končano"
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3058
 msgid "Can't close database. There are unsaved changes in opened dialogs."
 msgstr ""
+"Ne morem shraniti podatkovne zbirke. V odprtem oknu obstajajo neshranjene "
+"spremembe."
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:147
-#, fuzzy
 msgid "Choose a Name for this Backup:"
-msgstr "Prosimo, izberite ime za to varnostno kopijo:"
+msgstr "Izberite ime za to varnostno kopijo:"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:154
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:203
@@ -2465,14 +2415,13 @@ msgid "Password Safe Backups (*.bak)|*.bak"
 msgstr "Varnostna kopija Password Safe (*.bak)|*.bak"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:207
-#, fuzzy
 msgid "Backup File"
 msgstr "Ime varnostne kopije"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:211
 msgid ""
-"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
-"ibak)|*.ibak||"
+"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups "
+"(*.ibak)|*.ibak||"
 msgstr ""
 "Password Safe varnostne kopije (*.bak)|*.bak|Password Safe vmesne varnostne "
 "kopije (*.ibak)|*.ibak||"
@@ -2483,8 +2432,8 @@ msgstr "Password Safe - <Neimenovana obnovljena varnostna kopij>"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:398
 msgid ""
-"You have chosen not to save your changes, which will be lost. Do you wish to "
-"continue?"
+"You have chosen not to save your changes, which will be lost. Do you wish to"
+" continue?"
 msgstr ""
 "Izbrali ste, da ne shranite sprememb, ki bodo izgubljene. Ali želite "
 "nadaljevati?"
@@ -2498,15 +2447,12 @@ msgid "Requested mode change failed"
 msgstr "Zahtevana sprememba načina ni uspela"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:441
-#, fuzzy
 msgid ""
-"The database has been changed since you opened it in R-O mode, so it is not "
-"possible to switch to R/W mode.\n"
+"The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n"
 "\n"
 "Close the database and re-open it in R/W mode."
 msgstr ""
-"Zbirka podatkov je bila spremenjena, odkar ste jo odprli v načinu R-O, tako "
-"da jo ni mogoče preklopiti v način R/W.\n"
+"Zbirka podatkov je bila spremenjena, odkar ste jo odprli v načinu R-O, tako da jo ni mogoče preklopiti v način R/W.\n"
 "\n"
 "Zaprite zbirko podatkov in jo ponovno odprite v načinu R/W."
 
@@ -2518,13 +2464,11 @@ msgstr " [Številka procesa=%ls]"
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:471
 #, c-format
 msgid ""
-"Failed to switch from R-O to R/W because database is already open in R/W "
-"mode by:\n"
+"Failed to switch from R-O to R/W because database is already open in R/W mode by:\n"
 "%ls %ls\n"
 "(Only one R/W access at a time is allowed)"
 msgstr ""
-"Spodletelo spreminjanje datoteke iz samo za branje v branje in pisanje, ker "
-"je podatkovna zbirka že odprta v samo za pisanje načinu z:\n"
+"Spodletelo spreminjanje datoteke iz samo za branje v branje in pisanje, ker je zbirka podatkov že odprta v samo za pisanje načinu z:\n"
 "%ls %ls\n"
 "(Samo eden hkarti lahko zaklene za branje s pisanjem)"
 
@@ -2533,8 +2477,8 @@ msgid ""
 "Failed to switch from R-O to R/W: Could not open the database. It may have "
 "been deleted or renamed or there may be a problem with its drive."
 msgstr ""
-"Ni uspel preklop iz S-B v B/P: Zbirke podatkov ni bilo mogoče odpreti. Morda "
-"je bila izbrisana ali preimenovana ali pa je morda prišlo do težave s "
+"Ni uspel preklop iz S-B v B/P: Zbirke podatkov ni bilo mogoče odpreti. Morda"
+" je bila izbrisana ali preimenovana ali pa je morda prišlo do težave s "
 "pogonom."
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:480
@@ -2547,7 +2491,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:485
 msgid "Given path is a directory or file is read-only"
-msgstr "Navedena pot je imenik ali je datoteka samo-za-branje"
+msgstr "Navedena pot je imenik ali je datoteka samo za branje"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:493
 msgid ""
@@ -2587,14 +2531,11 @@ msgstr "Združi drugo podatkovno zbirko"
 
 #: ../../../ui/wxWidgets/MergeDlg.cpp:48
 msgid "Choose Database to Merge into \""
-msgstr "Izberite podatkovno bazo, v katero želite združiti \""
+msgstr "Izberite izbirko podatkov, v katero želite združiti \""
 
 #: ../../../ui/wxWidgets/MergeDlg.cpp:50
-#, fuzzy
 msgid "Choose a Database to Merge into current database"
-msgstr ""
-"Prosim izberite podatkovno zbirko, v katero želite združiti trenutno "
-"podatkovno zbirko"
+msgstr "Izberite zbirko podatkov za združitev s trenutno zbirko podatkov"
 
 #: ../../../ui/wxWidgets/MergeDlg.cpp:93
 msgid "Advanced Merge Options"
@@ -2645,7 +2586,7 @@ msgstr "Uredi/Pogled izbranega vnosa"
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:561
 #: ../../../ui/wxWidgets/ToolbarButtons.h:237
 msgid "Autotype"
-msgstr "Samodejna vrsta"
+msgstr "Samodejno vtipkanje"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:135
 #: ../../../ui/wxWidgets/ToolbarButtons.h:238
@@ -2666,7 +2607,7 @@ msgstr "Kopiraj geslo v odložišče, pomanjšaj"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:139
 msgid "Browse to URL + Autotype"
-msgstr "Prebrskaj v URL + Samodejna vrsta"
+msgstr "Prebrskaj v URL + Samodejno vtipkanje"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:140
 msgid "Run Command"
@@ -2703,7 +2644,7 @@ msgstr "Bližnjice"
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:264
 #: ../../../ui/wxWidgets/HelpMap.h:49
 msgid "System"
-msgstr "Sistemska"
+msgstr "Sistem"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:311
 msgid "Save database immediately after any change"
@@ -2740,7 +2681,7 @@ msgstr "Končnica:"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:356
 msgid "Max."
-msgstr "Najv."
+msgstr "Največ"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:372
 msgid "Example:"
@@ -2772,7 +2713,7 @@ msgstr "Prikaži geslo v Dodaj in Uredi"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:434
 msgid "Show Notes in Edit"
-msgstr "Prikaži Opombe v Uredi"
+msgstr "Prikaži opombe v Uredi"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:438
 msgid "Show Notes as ToolTips in Tree && List views"
@@ -2784,7 +2725,7 @@ msgstr "Prelom vrstic opomb v Dodaj in Uredi"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:446
 msgid "Put Groups first in Tree View"
-msgstr "Najprej postavi Skupine v prikaz drevesa"
+msgstr "Najprej postavi skupine v prikaz drevesa"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:452
 msgid "Warn"
@@ -2792,7 +2733,7 @@ msgstr "Opozori"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:467
 msgid "Show Menu Separator"
-msgstr "Prikažite meni razdelica"
+msgstr "Prikaži ločilo menija"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:471
 msgid "Auto-adjust column width"
@@ -2800,7 +2741,7 @@ msgstr "Samodejna prilagoditev širine stolpca"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:475
 msgid "Show Text in Toolbar"
-msgstr "Prikažite besedilo v orodni vrstici"
+msgstr "Prikaž besedilo v orodni vrstici"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:479
 msgid "Show Alias Selection in Add && Edit"
@@ -2812,15 +2753,15 @@ msgstr "dni pred potekom gesel"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:487
 msgid "&Fully collapsed"
-msgstr "%Polno zložljiv"
+msgstr "Popolnoma &strnjeno"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:488
 msgid "&Fully expanded"
-msgstr "%Polno razširljiv"
+msgstr "Polnoma &razširljeno"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:489
 msgid "&Same as when last saved"
-msgstr "&Enako kot zadnjič shranjeno"
+msgstr "&Enako kot pri zadnjem shranjevanju"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:490
 msgid "Initial Tree View"
@@ -2828,7 +2769,7 @@ msgstr "Začetni prikaz drevesa"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:520
 msgid "Confirm deletion of items"
-msgstr "Potrdi brisanja vnosov"
+msgstr "Potrdi brisanje vnosov"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:524
 msgid "Record last access times"
@@ -2840,11 +2781,11 @@ msgstr "Tipka Esc zapre aplikacijo"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:564
 msgid "Minimize after Autotype"
-msgstr "Pomanjšaj po samodejni vrsti"
+msgstr "Pomanjšaj po samodejnem vtipkanju"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:570
 msgid "Default Autotype string:"
-msgstr "Privzet niz Samodejne vrste:"
+msgstr "Privzet niz samodejnega vtipkanja:"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:577
 msgid "Default Username"
@@ -2876,7 +2817,7 @@ msgstr "prejšnja gesla na vnos"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:662
 msgid "Default password expiration (days)"
-msgstr "Veljavnost privzetega gesla (dni)"
+msgstr "Privzeto geslo poteče (dni)"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:677
 msgid "Manage password history of current entries"
@@ -2924,15 +2865,15 @@ msgstr "'Prebrskaj v URL' kopira gesla v odložišče"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:739
 msgid "Lock password database on minimize"
-msgstr "Zakleni podatkovno zbirko bb minimiranju programa"
+msgstr "Zakleni zbirko podatkov ob minimiranju programa"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:743
 msgid "Lock password database on workstation lock"
-msgstr "Zakleni podatkovno zbirko ob zaklepanju delovne postaje"
+msgstr "Zakleni zbirko podatkov ob zaklepanju delovne postaje"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:749
 msgid "Lock password database after"
-msgstr "Zakleni podatkovno zbirko po"
+msgstr "Zakleni zbirko podatkov po"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:764
 msgid "minutes idle"
@@ -2968,9 +2909,8 @@ msgid "used entries in System Tray menu"
 msgstr "uporabljeni vnosi v meniju sistemske vrstice"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:852
-#, fuzzy
 msgid "Start Password Safe at Login"
-msgstr "Zaženi Password Safe ob prijavi"
+msgstr "Ob prijavi zaženi Password Safe"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:856
 msgid ""
@@ -2978,12 +2918,11 @@ msgid ""
 "Any related functionality may not work as expected."
 msgstr ""
 "Zgleda, da sistemska vrstica ne obstaja v vašem trenutnem okolju.\n"
-"Povezane funkcionalnosti morda ne bodo delovale kot se pričakuje."
+"Povezane funkcionalnosti morda ne bodo delovale kot pričakujete."
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:861
-#, fuzzy
 msgid "Recent Password Safe Databases"
-msgstr "Nedavne Password Safe zbirke podatkov"
+msgstr "Nedavne zbirke podatkov gesel"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:880
 msgid "databases"
@@ -3007,21 +2946,19 @@ msgstr "Uporabiti osnovno izbiro za odložišče"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:900
 msgid "Use alternate AutoType method"
-msgstr "Uporabite nadomestno metodo samodejnega vnosa"
+msgstr "Uporabite nadomestno metodo samodejnega vtipkanja"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:902
 msgid ""
 "When set, use XTEST for AutoType instead of XSendEvent.\n"
-"XSendEvent can handle more control keys, but may be blocked by some "
-"applications."
+"XSendEvent can handle more control keys, but may be blocked by some applications."
 msgstr ""
-"Če je nastavljeno, uporabite XTEST kot samodejni vnos namesto XSendEvent.\n"
-"XSendEvent zmore več nadzornih tipk, vendar je lahko blokiran s strani "
-"nekaterih aplikacij."
+"Če je nastavljeno, uporabite XTEST kot samodejno vtipkanje namesto XSendEvent.\n"
+"XSendEvent zmore več nadzornih tipk, vendar je lahko blokiran s strani nekaterih aplikacij."
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:904
 msgid "If AutoType doesn't work, setting this may help."
-msgstr "Če samodejni vnos ne deluje, lahko pomaga ta nastavitev."
+msgstr "Če samodejno vtipkanje ne deluje, lahko pomaga ta nastavitev."
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1331
 msgid "Select a Browser"
@@ -3114,12 +3051,10 @@ msgid "&Open..."
 msgstr "&Odpri..."
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:524
-#, fuzzy
 msgid "&Unlock\tCtrl+I"
 msgstr "&Odkleni\tCtrl+I"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:527
-#, fuzzy
 msgid "&Lock\tCtrl+J"
 msgstr "&Zakleni\tCtrl+J"
 
@@ -3128,9 +3063,8 @@ msgid "&Recent Safes..."
 msgstr "&Nedavni sefi..."
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:548
-#, fuzzy
 msgid "Clear Recently Opened List"
-msgstr "Počistite nedavni seznam"
+msgstr "Počisti seznam nazadnje odprtih baz"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:550
 msgid "&Save..."
@@ -3323,7 +3257,7 @@ msgstr "Vidna &spustna vrstica"
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:636
 #: ../../../ui/wxWidgets/ToolbarButtons.h:246
 msgid "Expand All"
-msgstr "Razširi vse"
+msgstr "Razpni vse"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:637
 #: ../../../ui/wxWidgets/ToolbarButtons.h:247
@@ -3439,9 +3373,8 @@ msgid "&View"
 msgstr "Pri&kaz"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:684
-#, fuzzy
 msgid "&Change Master Password..."
-msgstr "Generiraj geslo"
+msgstr "&Spremeni glavno geslo..."
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:686
 msgid "Make &Backup...\tCtrl+B"
@@ -3465,7 +3398,7 @@ msgstr "Ustvari &geslo...\tCtrl+P"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:692
 msgid "Generate Password"
-msgstr "Generiraj geslo"
+msgstr "Ustvari geslo"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:694
 msgid "YubiKey..."
@@ -3562,7 +3495,7 @@ msgstr "Pre&brskaj v URL"
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1792
 #: ../../../ui/wxWidgets/SystemTray.cpp:223
 msgid "Browse to URL + &Autotype"
-msgstr "Brskaj spletni naslov + &samodejni vnos"
+msgstr "Brskaj spletni naslov + &samodejno vtipkanje"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1793
 msgid "Send &email"
@@ -3660,7 +3593,7 @@ msgstr "URL je kopiran "
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2768
 msgid "Autotype copied "
-msgstr "Samodejna vrsta je kopirana "
+msgstr "Samodejno vtipkanje je kopirano"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:2771
 msgid "RunCmd copied "
@@ -3769,17 +3702,12 @@ msgstr "1 zadetek"
 
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:93
 msgid ""
-"Enter positions of password characters separated by spaces, commas or semi-"
-"colons (or * for full password).\n"
-"Position 1 is the first character, 2 is the second, etc. up to N for the "
-"last character of a password of length N.\n"
-"-1 is the last character, -2 the next to last, etc. up to -N for the first "
-"password character."
+"Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password).\n"
+"Position 1 is the first character, 2 is the second, etc. up to N for the last character of a password of length N.\n"
+"-1 is the last character, -2 the next to last, etc. up to -N for the first password character."
 msgstr ""
-"Vnesite položaj znakov gesla ločenega s presledki, vejicami or podpičji (ali "
-"* za celotno geslo)\n"
-"Položaj 1 j eprvi znak, 2 je drugi znak, itd vse do N za zadnji znak dolžine "
-"gesla N.\n"
+"Vnesite položaj znakov gesla ločenega s presledki, vejicami or podpičji (ali * za celotno geslo)\n"
+"Položaj 1 j eprvi znak, 2 je drugi znak, itd vse do N za zadnji znak dolžine gesla N.\n"
 "-1 je zadnji znak, -2 je predzadnji znak, itd vse do -N za prvi znak gesla."
 
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:99
@@ -3875,9 +3803,8 @@ msgid "Description:"
 msgstr "Opis:"
 
 #: ../../../ui/wxWidgets/PropertiesDlg.cpp:467
-#, fuzzy
 msgid "Description"
-msgstr "Opis:"
+msgstr "Opis"
 
 #: ../../../ui/wxWidgets/PWFiltersBoolDlg.cpp:71
 msgid "Display Filter Boolean Value"
@@ -3914,8 +3841,8 @@ msgid ""
 "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' "
 "is tomorrow"
 msgstr ""
-"Relativni datumi so v dnevih glede na danes, npr.  '-1'  je včeraj in '1' je "
-"jutri"
+"Relativni datumi so v dnevih glede na danes, npr.  '-1'  je včeraj in '1' je"
+" jutri"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:295
 msgid "Relative"
@@ -3936,9 +3863,8 @@ msgstr "Razpon [%d do %d]"
 #: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:509
 #: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:516
 #: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:522
-#, fuzzy
 msgid "Correct numeric values."
-msgstr "Prosim popravite številčne vrednosti."
+msgstr "Popravite številčne vrednosti."
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:543
 #: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:503
@@ -3975,9 +3901,8 @@ msgid "A future date is not valid for this field"
 msgstr "Za to polje ni veljaven bodoči datum"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:592
-#, fuzzy
 msgid "Correct date values."
-msgstr "Prosim popravite datumske vrednosti."
+msgstr "Popravite datumske vrednosti."
 
 #: ../../../ui/wxWidgets/PWFiltersDCADlg.cpp:86
 msgid "Display Filter DCA Value"
@@ -4143,9 +4068,8 @@ msgid "expiry in day(s):"
 msgstr "poteče v dnevu(dneh):"
 
 #: ../../../ui/wxWidgets/PWFiltersPasswordDlg.cpp:370
-#, fuzzy
 msgid "Specify text."
-msgstr "Prosim določite besedilo."
+msgstr "Določite besedilo."
 
 #: ../../../ui/wxWidgets/PWFiltersPasswordDlg.cpp:370
 msgid "Missing text for the selected rule."
@@ -4241,33 +4165,30 @@ msgstr "%d sekund"
 #: ../../../ui/wxWidgets/QueryCancelDlg.cpp:49
 msgid "Unsaved changes have been made. Are you sure you wish to cancel?"
 msgstr ""
+"Eden ali več nastavitev je bilo spremenjenih. Ali ste prepričani, da želite "
+"preklicati?"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:91
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:93
-#, fuzzy
 msgid "Enter old master password (if any) and click on top Yubikey button"
 msgstr ""
-"Vnesite staro kombinacijo sefa (če obstaja) in kliknite na zgornji Yubikey "
-"gumb"
+"Vnesite staro glavno geslo (če obstaja) in kliknite na zgornji Yubikey gumb"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:127
-#, fuzzy
 msgid ""
 "Enter the current master password, followed by a new one.\n"
 "Type the new one again to confirm it."
 msgstr ""
-"Prosim vnesite trenutno kombinacijo, ki ji naj sledi nova kombinacija.\n"
-"Vtipkajte novo kombinacijo še enkrat, da potrditev vnos."
+"Vnesite trenutno glavno geslo, nato novo geslo. \r\n"
+"Za potrditev ponovno vnesite geslo."
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:140
-#, fuzzy
 msgid "Old Master Password:"
-msgstr "zadnja gesla"
+msgstr "Staro glavno geslo:"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:152
-#, fuzzy
 msgid "New Master Password:"
-msgstr "Generiraj geslo"
+msgstr "Novo glavno geslo:"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:163
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:128
@@ -4275,19 +4196,16 @@ msgid "Confirmation:"
 msgstr "Potrditev:"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:271
-#, fuzzy
 msgid "The old master password is not correct"
-msgstr "Stara varna kombinacija ni pravilna"
+msgstr "Staro glavno geslo ni pravilno"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:275
-#, fuzzy
 msgid "Cannot verify old master password - file gone?"
-msgstr "Ne morem preveriti stare varne kombinacije - datoteke ni več?"
+msgstr "Ni mogoče preveriti starega glavnega gesla - datoteka je izginila?"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:279
-#, fuzzy
 msgid "New master password and confirmation do not match"
-msgstr "Nova kombinacija Sefa in potrditev se ne ujemata"
+msgstr "Novo glavno geslo in potrditev se ne ujemata"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:292
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:237
@@ -4296,15 +4214,13 @@ msgstr "Vseeno uporabite?"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:294
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:238
-#, fuzzy
 msgid "Weak Master Password"
-msgstr "Generiraj geslo"
+msgstr "Šibko glavno geslo"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:295
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:240
-#, fuzzy
 msgid "Use anyway"
-msgstr "Vseeno uporabite?"
+msgstr "Vseeno uporabite"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:295
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:240
@@ -4314,44 +4230,37 @@ msgstr "Prekliči"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:346
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:380
-#, fuzzy
 msgid "YubiKey master password incorrect"
-msgstr "Napačna kombinacija vnosa za Yubikey"
+msgstr "Napačno Yubikey glavno geslo"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:348
-#, fuzzy
 msgid "Enter new master password (if any) and click on bottom Yubikey button"
 msgstr ""
-"Vnesite novo kombinacijo sefa (če obstaja) ali pa kliknite na dno Yubikey "
-"gumba"
+"Vnesite novo glavno geslo (če obstaja) in kliknite na spodnji Yubikey gumb"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:371
 msgid "Confirm existing master password"
-msgstr ""
+msgstr "Potrdite staro glavno geslo"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:388
-#, fuzzy
 msgid "Current master password incorrect"
-msgstr "Trenutna kombinacija sefa je napačna"
+msgstr "Trenutno glavno geslo je napačno"
 
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:130
-#, fuzzy
 msgid "Hide password"
-msgstr "geslo"
+msgstr "Skrij geslo"
 
 #: ../../../ui/wxWidgets/SafeCombinationCtrl.cpp:130
-#, fuzzy
 msgid "Show password"
-msgstr "geslo"
+msgstr "Prikaži geslo"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:163
-#, fuzzy
 msgid "Password Database:"
-msgstr "Podatkovna zbirka gesel"
+msgstr "Zbirka podatkov gesel:"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:193
 msgid "Open as read-only"
-msgstr "Odpri kot samo-za-branje"
+msgstr "Odpri samo za branje"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:204
 msgid "New..."
@@ -4365,58 +4274,57 @@ msgstr "Ne morem zakleniti datoteke, odpiram jo v načinu samo za branje.\n"
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:206
 #, c-format
 msgid "The master password has been entered %d times without success:\n"
-msgstr ""
+msgstr "Glavno geslo je bilo vneseno %d krat brez uspeha:\n"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:445
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:207
 msgid "- Is Caps Lock off?\n"
-msgstr ""
+msgstr "- Ali je tipka Caps Lock vključena?\n"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:446
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:208
 msgid "- Is the language correct (if multilingual)?\n"
-msgstr ""
+msgstr "- Ali je jezik pravilno nastavljen (če je večjezično)?\n"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:447
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:209
 msgid "- Is this the correct database?\n"
-msgstr ""
+msgstr "- Ali je to pravilna zbirka podatkov?\n"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:448
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:210
 msgid "- Perhaps the database was damaged. Try opening a backup copy."
 msgstr ""
+"- Mogoče je podatkovna zbirka poškodovana. Poskusite odpreti iz varnostne "
+"kopije."
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:450
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:212
-#, fuzzy
 msgid "Incorrect master password,\n"
-msgstr "Trenutna kombinacija sefa je napačna"
+msgstr "Napačno glavno geslo,\n"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:451
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:213
-#, fuzzy
 msgid "not a Password Safe database,\n"
-msgstr "Nedavne Password Safe zbirke podatkov"
+msgstr "ni podatkovna zbirka Password Safe,\n"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:452
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:214
-#, fuzzy
 msgid "or a corrupt database."
-msgstr "Kopiraj v zbirko podatkov"
+msgstr "ali poškodovana podatkovna zbirka."
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:487
 msgid ""
-"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat| "
-"All files (*.*; *)|*.*;*"
+"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|"
+" All files (*.*; *)|*.*;*"
 msgstr ""
-"Password Safe podatkovne zbirke (*.psafe4; *.psafe3; *.dat)|*.psafe4;*."
-"psafe3;*.dat| Vse datoteke (*.*; *)|*.*;*"
+"Password Safe podatkovne zbirke (*.psafe4; *.psafe3; "
+"*.dat)|*.psafe4;*.psafe3;*.dat| Vse datoteke (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:534
 msgid ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|"
-"*.*;*"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; "
+"*)|*.*;*"
 msgstr ""
 "Password Safe podatkovne zbirke (*.psafe3; *.dat)|*.psafe3;*.dat| Vse "
 "datoteke (*.*; *)|*.*;*"
@@ -4426,53 +4334,43 @@ msgid "filename"
 msgstr "ime datoteke"
 
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:130
-#, fuzzy
 msgid "Master Password"
-msgstr "zadnja gesla"
+msgstr "Glavno geslo"
 
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:151
 #: ../../../ui/wxWidgets/SystemTray.cpp:129
-#, fuzzy
 msgid "&Unlock"
-msgstr "&Odkleni sef"
+msgstr "&Odkleni"
 
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:116
-#, fuzzy
 msgid ""
 "A new password database will be created.\n"
-"The Master Password you enter will be used to encrypt the password database "
-"file.\n"
+"The Master Password you enter will be used to encrypt the password database file.\n"
 "The Master Password can use any keyboard character and is case-sensitive."
 msgstr ""
-"Ustvarjena bo nova podakotvna zbirka gesel.\n"
-"Kombinacija sefa bo uporabljena za šifriranje podatkovne zbirke gesel.\n"
-"Uporabite lahko katerokoli kombinacijo tipkovnice. Vnos je občutljiv na "
-"velikost črk."
+"Ustvarjena bo nova zbirka podatkov z gesli. Za šifriranje datoteke zbirke "
+"podatkov gesel bo uporabljeno glavno geslo, ki jo vnesete. Glavno geslo "
+"lahko uporablja poljubne tipke črk in je občutljiva na velikost črk."
 
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:214
-#, fuzzy
 msgid "Mismatching Master Password"
-msgstr "Generiraj geslo"
+msgstr "Neujemajoča glavna gesla"
 
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:219
-#, fuzzy
 msgid "Enter the key and verify it."
 msgstr "Vnesite ključ in ga preverite."
 
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:220
-#, fuzzy
 msgid "Empty Master Password"
-msgstr "Generiraj geslo"
+msgstr "Glavno geslo je prazno"
 
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:246
-#, fuzzy
 msgid "Try another"
-msgstr "Prosim poskusite druga"
+msgstr "Ponovno poskusite"
 
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:286
-#, fuzzy
 msgid "Mismatching entries"
-msgstr "\tVsa poslja v ujemajočih vnosih so bila %ls"
+msgstr "Neujemajoči vnosi"
 
 #: ../../../ui/wxWidgets/SelectAliasDlg.cpp:273
 msgid "Alias name:"
@@ -4487,19 +4385,18 @@ msgid "No Alias name given."
 msgstr "Ime vzdevka ni določeno."
 
 #: ../../../ui/wxWidgets/SelectAliasDlg.cpp:394
-#, fuzzy
 msgid "Name the alias."
-msgstr "Prosim poimenujte vzdevek."
+msgstr "Poimenujte vzdevek."
 
 #: ../../../ui/wxWidgets/SelectAliasDlg.cpp:501
 #: ../../../ui/wxWidgets/ToolbarButtons.h:246
 msgid "Expand"
-msgstr "Razširi"
+msgstr "Razpni"
 
 #: ../../../ui/wxWidgets/SelectAliasDlg.cpp:502
 #: ../../../ui/wxWidgets/ToolbarButtons.h:247
 msgid "Collapse"
-msgstr "Združi"
+msgstr "Strni"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:38
 msgid "equals"
@@ -4572,19 +4469,20 @@ msgid ""
 "Enter a value between 0 and 99 to overlay on system tray icon.\n"
 "A value of zero disables the overlay."
 msgstr ""
+"Vstavite številko med 0 in 99 za prekrivanje ikone sistemske vrstice.\n"
+"Vrednost nič onemogoči prekrivanje."
 
 #: ../../../ui/wxWidgets/SetDatabaseIdDlg.cpp:76
-#, fuzzy
 msgid "Database Id:"
-msgstr "Zbirka podatkov"
+msgstr "NastavI ID zbirke podatkov"
 
 #: ../../../ui/wxWidgets/SetDatabaseIdDlg.cpp:81
 msgid "Text color in locked state:"
-msgstr ""
+msgstr "Barva besedila v zaklenjenem stanju:"
 
 #: ../../../ui/wxWidgets/SetDatabaseIdDlg.cpp:88
 msgid "Text color in unlocked state:"
-msgstr ""
+msgstr "Barva besedila v oklenjenem stanju:"
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:159
 msgid "Filter name:"
@@ -4606,9 +4504,8 @@ msgstr "Ni dano imena filtra."
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:226
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:257
-#, fuzzy
 msgid "Name this filter."
-msgstr "Poimenujte ta filter."
+msgstr "Dodelite ime temu filtru"
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:244
 msgid "Clear"
@@ -4623,22 +4520,18 @@ msgid "Row %d is incomplete."
 msgstr "Vrstica %d je nepopolna."
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:375
-#, fuzzy
 msgid "Set both Field and Criteria."
 msgstr "Nastavite oboje: Polje in Kriterij."
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:383
-#, fuzzy
 msgid "Set both Field and Criteria or update History filters."
 msgstr "Nastavite oboje: Polje in Kriterij, ali posodobite Zgodovino filtrov."
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:389
-#, fuzzy
 msgid "Set both Field and Criteria or update Policy filters."
 msgstr "Nastavite oboje: Polje in Kriterij, ali posodobite Politiko filtrov."
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:395
-#, fuzzy
 msgid "Set both Field and Criteria or update Attachment filters."
 msgstr "Nastavite oboje: Polje in Kriterij, ali posodobite Filtre prilog."
 
@@ -4662,6 +4555,8 @@ msgstr ""
 #: ../../../ui/wxWidgets/SyncWizard.cpp:303
 msgid "One or more items have been changed. Are you sure you wish to cancel?"
 msgstr ""
+"Eden ali več nastavitev je bilo spremenjenih. Ali ste prepričani, da želite "
+"preklicati?"
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:404
 msgid "Introduction"
@@ -4684,8 +4579,7 @@ msgid ""
 "1. Two entries from different databases match if their Group, Title\n"
 "and User fields match."
 msgstr ""
-"1. Vnosa iz različnih podatkovnih zbirk se ujemata, če se ujemajo skupina, "
-"naslov\n"
+"1. Vnosa iz različnih podatkovnih zbirk se ujemata, če se ujemajo skupina, naslov\n"
 "in uporabniško ime."
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:415
@@ -4721,11 +4615,8 @@ msgid "Choose Database to Synchronize with \""
 msgstr "Izberite podatkovno zbirko, ki jo želite sinhronizirati z \""
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:437
-#, fuzzy
 msgid "Choose a Database to Synchronize with the current database"
-msgstr ""
-"Prosim izberite podatkovno zbirko za sinhronizacijo s trenutno podatkovno "
-"zbirko"
+msgstr "Izberite zbirko podatkov za sinhronizacijo s trenutno zbirko podatkov"
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:460
 msgid "Synchronization options"
@@ -4773,7 +4664,7 @@ msgstr "Oglejte si podrobno poročilo"
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:616
 msgid "Your database is being synchronized with \""
-msgstr "Vaša podatkovna zbirka se sinhronizira z \""
+msgstr "Vaša zbirka podatkov se sinhronizira z \""
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:626
 msgid "There was an error during synchronization"
@@ -4782,7 +4673,7 @@ msgstr "Nastala je napaka med sinhronizacijo"
 #: ../../../ui/wxWidgets/SyncWizard.cpp:640
 #, c-format
 msgid "Your database has been synchronized with \"%ls\""
-msgstr "Vaša podatkovna zbirka je bila sinhronizirana z \"%ls\""
+msgstr "Vaša zbirka podatkov je bila sinhronizirana z \"%ls\""
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:641
 #, c-format
@@ -4852,14 +4743,12 @@ msgstr ""
 "Sinhronizacija je končana: %d %ls posodobljeno"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:125
-#, fuzzy
 msgid "&Lock"
-msgstr "Zakleni"
+msgstr "Zak&leni"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:133
-#, fuzzy
 msgid "No Password Database Open"
-msgstr "Podatkovna zbirka gesel"
+msgstr "Nobena zbirka podatkov gesel ni odprta"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:145
 msgid "&Recent Entries History"
@@ -4874,9 +4763,8 @@ msgid "&Restore"
 msgstr "O&bnovi"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:152
-#, fuzzy
 msgid "Set Database &ID"
-msgstr "Shrani podatkovno zbirko"
+msgstr "NastavI &ID zbirke podatkov"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:154
 msgid "&Clear Clipboard"
@@ -4950,9 +4838,8 @@ msgstr "ime obstaja"
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:993
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1054
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1506
-#, fuzzy
 msgid "Duplicate group name"
-msgstr "Dvojno ime skupine"
+msgstr "Podvojeno ime skupine"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:997
 msgid "Could not add empty group item to tree"
@@ -4964,7 +4851,7 @@ msgstr "Preimenovanje ne-skupinskih vnosov se ne izvaja"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1054
 msgid "Group names on the same level must be unique."
-msgstr ""
+msgstr "Ime skupin na isti ravni mora biti enolično."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1075
 msgid "Dots are not allowed in group names"
@@ -4993,7 +4880,7 @@ msgstr "Podvojeno ime skupine (uporabi tipko Shift za uveljavitev)"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2339
 msgid "Attachments not overtaken due to data base version"
-msgstr "Priloge niso prevzete zaradi različice podatkovne baze"
+msgstr "Priloge niso prevzete zaradi različice zbirke podatkove"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2339
 msgid "Drag and Drop"
@@ -5023,15 +4910,11 @@ msgstr "Ta cilj bližnjice [%s:%s:%s] ni normalni vnos."
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2668
 #, c-format
 msgid ""
-"The following entries had a policy name that already existed in this "
-"database but with different settings.\n"
-"A new named policy has been created with the current date/time (%ls) "
-"appended:%ls"
+"The following entries had a policy name that already existed in this database but with different settings.\n"
+"A new named policy has been created with the current date/time (%ls) appended:%ls"
 msgstr ""
-"Naslednji vnosi so imeli Ime pravilnika, ki je že obstajalo v tej zbirki "
-"podatkov, vendar z različnimi nastavitvami.\n"
-"Ustvarjen je bila nov Imenovan pravilnik s trenutnim datumom/časom (%ls), "
-"dodanim:%ls"
+"Naslednji vnosi so imeli Ime pravilnika, ki je že obstajalo v tej zbirki podatkov, vendar z različnimi nastavitvami.\n"
+"Ustvarjen je bila nov Imenovan pravilnik s trenutnim datumom/časom (%ls), dodanim:%ls"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2671
 msgid "Entry Password Policy Changes"
@@ -5077,29 +4960,25 @@ msgstr ""
 "Vseeno želite nadaljevati?"
 
 #: ../../../ui/wxWidgets/wxUtilities.cpp:213
-#, fuzzy
 msgid "YubiKey"
-msgstr "YubiKey..."
+msgstr "YubiKey"
 
 #: ../../../ui/wxWidgets/wxUtilities.cpp:216
 #: ../../../ui/wxWidgets/YubiMixin.cpp:62
-#, fuzzy
 msgid "Insert YubiKey"
-msgstr "Vstavite vaš YubiKey"
+msgstr "Vstavite YubiKey"
 
 #: ../../../ui/wxWidgets/wxUtilities.cpp:471
 msgid ""
 "An error occurred while trying to get the image data from database item.\n"
 "Therefore, the image cannot be displayed in the preview."
 msgstr ""
-"Med poskusom pridobitve slik iz vnosa zbirke podatkov se je pojavila "
-"napaka.\n"
+"Med poskusom pridobitve slik iz vnosa zbirke podatkov se je pojavila napaka.\n"
 "Zato slike ni mogoče prikazati v predogledu."
 
 #: ../../../ui/wxWidgets/wxUtilities.cpp:484
 msgid ""
-"An error occurred while trying to load the image data into the preview "
-"area.\n"
+"An error occurred while trying to load the image data into the preview area.\n"
 "Therefore, the image cannot be displayed in the preview."
 msgstr ""
 "Pri poskusu nalaganja slik v območje predogleda je prišlo do napake. Zato "
@@ -5127,14 +5006,12 @@ msgid "Show"
 msgstr "Prikaži"
 
 #: ../../../ui/wxWidgets/YubiMixin.cpp:32
-#, fuzzy
 msgid "Activate YubiKey"
-msgstr "Nastavi YubiKey"
+msgstr "Sprožite Yubikey"
 
 #: ../../../ui/wxWidgets/YubiMixin.cpp:33
-#, fuzzy
 msgid "Touch YubiKey's button"
-msgstr "Zdaj se dotaknite gumba Yubikey"
+msgstr "Dotaknite se Yubikey gumba"
 
 #: ../../../ui/wxWidgets/YubiMixin.cpp:177
 msgid "Timeout - please try again"
@@ -5179,7 +5056,7 @@ msgstr "Izbriši potrditev"
 
 #: ../../../ui/wxWidgets/HelpMap.h:45
 msgid "Misc."
-msgstr "Razn."
+msgstr "Razno"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.h:62
 msgid "Manage Filters"
@@ -5208,22 +5085,18 @@ msgid "No criteria defined"
 msgstr "Ni določen kriterij"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.h:55
-#, fuzzy
 msgid "Change Master Password"
-msgstr "Generiraj geslo"
+msgstr "Spremeni geslo glavnega računalnika"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.h:57
-#, fuzzy
 msgid "Master Password Entry"
-msgstr "Zadnja nastavitev glavnega gesla ob:"
+msgstr "Vnos glavnega gesla"
 
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.h:53
-#, fuzzy
 msgid "Unlock Password Database"
-msgstr "Podatkovna zbirka gesel"
+msgstr "Odkleni zbirko podatkov gesel"
 
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.h:53
-#, fuzzy
 msgid "Master Password Setup"
 msgstr "Zadnja nastavitev glavnega gesla ob:"
 
@@ -5232,9 +5105,8 @@ msgid "Select Alias"
 msgstr "Izberite vzdevek"
 
 #: ../../../ui/wxWidgets/SetDatabaseIdDlg.h:25
-#, fuzzy
 msgid "Set Database ID"
-msgstr "Shrani podatkovno zbirko"
+msgstr "NastavI ID zbirke podatkov"
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.h:47
 msgid "Set Display Filters"
@@ -5278,7 +5150,7 @@ msgstr "Zakleni"
 
 #: ../../../ui/wxWidgets/ToolbarButtons.h:229
 msgid "Lock Database"
-msgstr "Zakleni podatkovno zbirko"
+msgstr "Zakleni zbirko podatkov"
 
 #: ../../../ui/wxWidgets/ToolbarButtons.h:230
 msgid "Save Database"
@@ -5310,7 +5182,7 @@ msgstr "Počisti vsebino odložišča"
 
 #: ../../../ui/wxWidgets/ToolbarButtons.h:237
 msgid "Perform Autotype"
-msgstr "Izvedi samodejno vrsto"
+msgstr "Izvedi samodejno vtipkanje"
 
 #: ../../../ui/wxWidgets/ToolbarButtons.h:238
 msgid "Browse URL"
@@ -5392,8 +5264,7 @@ msgstr "Napačna vrednost XML \"%ls\" za <%ls>"
 #: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:117
 #, c-format
 msgid "Error in filter XML structure: excpected \"%ls\", found \"%ls\""
-msgstr ""
-"Napaka v strukturi XML filtra: pričakovano je \"%ls\", najdeno je \"%ls\""
+msgstr "Napaka v strukturi XML filtra: pričakovano je \"%ls\", najdeno je \"%ls\""
 
 #: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:146
 msgid "Missing filtername"
@@ -5475,131 +5346,3 @@ msgstr "Manjkajoča logika ali pravila XML oznaka v vnosu filtra %d od '%ls'"
 #, c-format
 msgid "Unknown XML tag \"%ls\" in test in filter entry %d of '%ls'"
 msgstr "Neznana oznaka XML \"%ls\" v testu v vnosu filtra %d od '%ls'"
-
-#~ msgid "Too many retries - exiting"
-#~ msgstr "Preveč poizkusov - zapuščam program"
-
-#, fuzzy
-#~ msgid "Enter the Master Password to unlock the password database:"
-#~ msgstr "Ali želite shraniti spremembe v zbirki podatkov gesel:"
-
-#, fuzzy
-#~ msgid "Master password:"
-#~ msgstr "zadnja gesla"
-
-#~ msgid "Three strikes - yer out!"
-#~ msgstr "Tri zaporedni poskusi - končano!"
-
-#~ msgid "Click the button labeled 'Yubikey' in green"
-#~ msgstr "Kliknite gumb z oznako \"Yubikey\" v zeleni"
-
-#~ msgid "Latest version? Click "
-#~ msgstr "Želite najnovejšo različico? Kliknite"
-
-#~ msgid "here"
-#~ msgstr "tukaj"
-
-#~ msgid " to check."
-#~ msgstr "da preverite."
-
-#~ msgid "Safe Combination:"
-#~ msgstr "Varna kombinacija:"
-
-#~ msgid "Show Combination"
-#~ msgstr "Prikaži kombinacijo"
-
-#~ msgid "&Yes"
-#~ msgstr "&Da"
-
-#~ msgid "&No"
-#~ msgstr "&Ne"
-
-#~ msgid "Select a text file to import:"
-#~ msgstr "Izberite besedilno datoteko, da uvozite:"
-
-#~ msgid "XML file to import:"
-#~ msgstr "Uvoz XML datoteka za uvoz:"
-
-#~ msgid "Please Choose a Database to Open:"
-#~ msgstr "Izberite zbirko podatkov za odpiranje:"
-
-#~ msgid "Do you want to save changes to the password database"
-#~ msgstr "Želite shraniti spremembe v podatkovno zbirko"
-
-#~ msgid "Please Choose a KeePass Text File to Import"
-#~ msgstr "Izberite KeePass besedilno datoteko za uvoz"
-
-#~ msgid "Please Choose a Backup to Restore:"
-#~ msgstr "Prosim izberite varnostno kopijo za povrnitev:"
-
-#~ msgid "&Change Safe Combination..."
-#~ msgstr "Spreme&ni varno kombinacijo..."
-
-#~ msgid "Main Toolbar"
-#~ msgstr "Osnovna orodna vrstica"
-
-#~ msgid "Dragbar"
-#~ msgstr "Povlecna vrstica"
-
-#~ msgid "Searchbar"
-#~ msgstr "Izskalna vrstica"
-
-#~ msgid "Please close modal dialog manually"
-#~ msgstr "Prosim ročno zaprite pogovorno okno"
-
-#~ msgid "Modal dialog open"
-#~ msgstr "Pogovorno okno je odprto"
-
-#~ msgid "Please enter the new database name"
-#~ msgstr "Vesite ime nove zbirke podatkov"
-
-#~ msgid "Please enter the new database description"
-#~ msgstr "Vnesite opis nove zbirke podatkov"
-
-#~ msgid "Old safe combination:"
-#~ msgstr "Stara kombinacija sefa:"
-
-#~ msgid "New safe combination:"
-#~ msgstr "Nova kombinacija sefa:"
-
-#~ msgid "Weak passphrase:"
-#~ msgstr "Šibko geslo:"
-
-#~ msgid "Please confirm existing combination"
-#~ msgstr "Prosim potrdite obsoječo kombinacijo"
-
-#~ msgid "Change Safe Combination"
-#~ msgstr "Spremeni varno kombinacijo"
-
-#~ msgid "Safe Combination Entry"
-#~ msgstr "Vnos varne kombinacije"
-
-#~ msgid "Please enter the safe combination for this password database."
-#~ msgstr "Vnesite varno kombinacijo za to zbirko podatkov gesel."
-
-#~ msgid "Safe combination:"
-#~ msgstr "Kombinacija sefa:"
-
-#~ msgid "Enter Safe Combination"
-#~ msgstr "Vnesite varno kombinacijo"
-
-#~ msgid "Verify:"
-#~ msgstr "Preveri:"
-
-#~ msgid "Safe Combination Setup"
-#~ msgstr "Nastavitev varne kombinacije"
-
-#~ msgid "&Remove"
-#~ msgstr "&Odstrani"
-
-#~ msgid "&Lock Safe"
-#~ msgstr "&Zakleni sef"
-
-#~ msgid "No Safe Open"
-#~ msgstr "Noben sef ni odprt"
-
-#~ msgid "Same group name exists"
-#~ msgstr "Obstaja isto ime skupine "
-
-#~ msgid "&Finish"
-#~ msgstr "&Končaj"
