@@ -1,5 +1,5 @@
 #!/bin/sh
-REV=f3a2ded
+REV=b3425af0e50
 GIT_ROOT=`git rev-parse --show-toplevel`
 CDIR=$GIT_ROOT/help/pwsafeRU/html/images
 DDIR=$GIT_ROOT/help/default/html/images
