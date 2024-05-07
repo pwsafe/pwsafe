@@ -830,7 +830,7 @@ int PWScore::ImportXMLFile(const stringT &ImportedPrefix, const stringT &strXMLF
     return XML_FAILED_IMPORT;
   }
 
-  return ((numRenamed + numPWHErrors) == 0) ? SUCCESS : OK_WITH_ERRORS;
+  return ((numRenamed + numPWHErrors + numSkipped + numRenamedPolicies) == 0) ? SUCCESS : OK_WITH_ERRORS;
 }
 #endif
 
