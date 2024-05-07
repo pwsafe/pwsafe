@@ -47,11 +47,11 @@ bool QueryCancelDlg::SyncAndQueryCancel(bool showDialog) {
       wxMessageDialog dialog(
         nullptr,
         _("Do you want to discard the changes?"), wxEmptyString,
-        wxYES_NO | wxNO_DEFAULT | wxICON_EXCLAMATION
+        wxOK | wxCANCEL | wxCANCEL_DEFAULT | wxICON_EXCLAMATION
       );
-      dialog.SetYesNoLabels(_("Discard"), _("Cancel"));
+      dialog.SetOKLabel(_("Discard"));
       auto res = dialog.ShowModal();
-      if (res == wxID_YES) {
+      if (res == wxID_OK) {
         return true;
       }
     }
