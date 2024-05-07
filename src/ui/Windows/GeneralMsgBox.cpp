@@ -267,6 +267,7 @@ INT_PTR CGeneralMsgBox::MessageBox(LPCWSTR lpText, LPCWSTR lpCaption, UINT uiFla
       tuples.push_back(std::make_tuple(IDCANCEL, IDS_CANCEL));
       tuples.push_back(std::make_tuple(IDTRYAGAIN, IDS_TRYAGAIN));
       tuples.push_back(std::make_tuple(IDCONTINUE, IDS_CONTINUE));
+      break;
     default:
       ASSERT(0);
   }
