@@ -1255,7 +1255,7 @@ msgstr "Пароль:"
 #: ../../../ui/wxWidgets/YubiMixin.cpp:62
 #, fuzzy
 msgid "Insert YubiKey"
-msgstr "Вставьте ваш YubiKey"
+msgstr "Вставьте YubiKey"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:130
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:380

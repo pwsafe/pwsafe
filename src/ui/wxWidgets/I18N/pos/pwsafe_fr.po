@@ -1309,7 +1309,7 @@ msgstr "derniers mots de passe"
 #: ../../../ui/wxWidgets/YubiMixin.cpp:62
 #, fuzzy
 msgid "Insert YubiKey"
-msgstr "Veuillez insérer votre YubiKey"
+msgstr "Veuillez insérer le YubiKey"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:130
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:380
