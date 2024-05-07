@@ -2780,7 +2780,7 @@ void DboxMain::OnImportXML()
         }
 
         if (!strXMLErrors.empty() ||
-            numRenamed > 0 || numPWHErrors > 0) {
+            numRenamed > 0 || numPWHErrors > 0 || numSkipped > 0) {
           if (!strXMLErrors.empty())
             csErrors = strXMLErrors + L"\n";
 
