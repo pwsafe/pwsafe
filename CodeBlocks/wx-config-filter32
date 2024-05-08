@@ -4,4 +4,4 @@ exec=/usr/bin/32/wx-config
 if ! [ -x "$exec" ]; then
 exec=wx-config
 fi
-$exec --version=3.0 "$@" | sed 's/\(^\|\s\)-I/ -isystem /g'
+$exec --version=3.2 "$@" | sed 's/\(^\|\s\)-I/ -isystem /g'
