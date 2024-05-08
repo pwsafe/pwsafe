@@ -1,9 +1,12 @@
             |-----handy-ruler-----------------------------------------|
-passwordsafe: Password Safe -- password database utility
+passwordsafe: Password Safe is a password manager
 passwordsafe: 
-passwordsafe: Like many other such products, commercial and otherwise,
-passwordsafe: it stores your passwords in an encrypted file, allowing
-passwordsafe: you to remember only one password 
-passwordsafe: (the "safe combination"), instead of all 
-passwordsafe: the username/password combinations that you use.
+passwordsafe: It stores your passwords in an encrypted file, allowing
+passwordsafe: you to remember only one password
+passwordsafe: (the "master password"), instead of all the
+passwordsafe: username/password combinations that you use.
+passwordsafe: For extra security, you can use a Yubikey device to
+passwordsafe: provide two-factor authentication.
+passwordsafe: 
+passwordsafe: Password Safe runs on Windows, Linux, macOS and FreeBSD.
 passwordsafe: 
