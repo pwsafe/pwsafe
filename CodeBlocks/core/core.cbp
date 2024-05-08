@@ -19,7 +19,6 @@
 				<Compiler>
 					<Add option="-m64" />
 					<Add option="-g" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
@@ -53,7 +52,6 @@
 					<Add option="-m32" />
 					<Add option="-g" />
 					<Add option="-fsanitize=address" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fno-omit-frame-pointer" />
 					<Add option="-D_DEBUG" />
@@ -86,7 +84,6 @@
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
 					<Add option="-m64" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
@@ -114,7 +111,6 @@
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
 					<Add option="-m32" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
@@ -141,7 +137,6 @@
 				<Compiler>
 					<Add option="-m64" />
 					<Add option="-g" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
@@ -173,7 +168,6 @@
 				<Compiler>
 					<Add option="-m32" />
 					<Add option="-g" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
@@ -206,7 +200,6 @@
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
 					<Add option="-m64" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
@@ -233,7 +226,6 @@
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
 					<Add option="-m32" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DUSE_XML_LIBRARY=XERCES" />
@@ -248,11 +240,11 @@
 					<Mode after="always" />
 				</ExtraCommands>
 			</Target>
-			<Target title="Release_L64Y-Clang">
+			<Target title="Release_L64Y_Clang">
 				<Option platforms="Unix;" />
-				<Option output="core64y" prefix_auto="1" extension_auto="1" />
+				<Option output="core64yc" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
-				<Option object_output="obj/Release64YCLang/" />
+				<Option object_output="obj/Release64YClang/" />
 				<Option type="2" />
 				<Option compiler="clang" />
 				<Option createDefFile="1" />
@@ -268,7 +260,6 @@
 					<Add option="-Wextra-tokens" />
 					<Add option="-Weverything" />
 					<Add option="-Wall" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-Wformat=2" />
 					<Add option="-Wdouble-promotion" />
@@ -308,9 +299,9 @@
 			<Add option="-Wzero-as-null-pointer-constant" />
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
+			<Add option="-std=c++14" />
 			<Add option="-std=c11" />
 			<Add option="-fPIC" />
-			<Add option="-std=c++11" />
 			<Add option="-Wformat=2" />
 			<Add option="-Wdouble-promotion" />
 			<Add option="-Wnull-dereference" />
