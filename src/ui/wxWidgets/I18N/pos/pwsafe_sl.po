@@ -792,7 +792,7 @@ msgstr "Kratko ime:"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1813
 #, c-format
 msgid "This entry must have a %ls"
-msgstr "Ta vnos mora imeti %l"
+msgstr "Ta vnos mora imeti %ls"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1814
 msgid "title"
