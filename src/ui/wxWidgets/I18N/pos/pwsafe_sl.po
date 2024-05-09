@@ -31,7 +31,7 @@ msgstr "Password Safe"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:116
 msgid "Built using "
-msgstr "Program uporablja"
+msgstr "Built using "
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:119
 #: ../../../ui/wxWidgets/AboutDlg.cpp:158
@@ -40,7 +40,7 @@ msgstr "Datum izgradnje:"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:125
 msgid "Check"
-msgstr "Preveri"
+msgstr "Preveri "
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:128
 msgid " for the latest version."
@@ -48,7 +48,7 @@ msgstr "za zadnjo razljičico"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:134
 msgid "Visit the "
-msgstr "Obiščite"
+msgstr "Obiščite "
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:137
 msgid "Password Safe website"
@@ -465,7 +465,7 @@ msgstr "Pravila naključnega ustvarjanja gesla"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:564
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:152
 msgid "Use Named Policy"
-msgstr "Uporabi Poimenovan pravilnik"
+msgstr "Uporabi poimenovan pravilnik"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:579
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:172
@@ -727,7 +727,7 @@ msgstr "[Skrite opombe - kliknite sem za prikaz]"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2236
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3128
 msgid "Default Policy"
-msgstr "Privzet Pravilnik"
+msgstr "Privzet pravilnik"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1589
 msgid "Couldn't generate password - invalid policy"
@@ -792,7 +792,7 @@ msgstr "Kratko ime:"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1813
 #, c-format
 msgid "This entry must have a %ls"
-msgstr "Ta vnos mora imeti %ls"
+msgstr "Ta vnos mora imeti %l"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1814
 msgid "title"
@@ -1676,7 +1676,7 @@ msgstr "Uredi"
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:163
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:349
 msgid "List"
-msgstr "SeznamUredi seznam vnosov"
+msgstr "Seznam"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:166
 msgid "&Undo"
@@ -1688,7 +1688,7 @@ msgstr "&Ponovno uveljavi"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:172
 msgid "Test Selected Policy"
-msgstr "Besedilo izbranega Pravilnika"
+msgstr "Preizkusi izbrani pravilnik"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:176
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:327
@@ -1699,7 +1699,7 @@ msgstr "Ustvari"
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:190
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:333
 msgid "Copy Password to clipboard"
-msgstr "Kopiraj &geslo v odložišče"
+msgstr "Kopiraj geslo v odložišče"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:193
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:350
@@ -1727,7 +1727,7 @@ msgstr "Uporabi račun"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:265
 msgid "Policy Field"
-msgstr "Polje Pravilnika"
+msgstr "Polje pravilnika"
 
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:266
 #: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:326
@@ -2801,7 +2801,7 @@ msgstr "kot privzeto uporabniško ime"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:593
 msgid "Query user to set default username"
-msgstr "Povprašaj uporabnika za nastavitev privzetega uporabniškega imena"
+msgstr "Povprašaj za nastavitev privzetega uporabniškega imena"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:597
 msgid "Alternate Browser"
@@ -2865,7 +2865,7 @@ msgstr "'Prebrskaj v URL' kopira gesla v odložišče"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:739
 msgid "Lock password database on minimize"
-msgstr "Zakleni zbirko podatkov ob minimiranju programa"
+msgstr "Zakleni zbirko podatkov ob pomanjšanju programa"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:743
 msgid "Lock password database on workstation lock"
@@ -2918,7 +2918,7 @@ msgid ""
 "Any related functionality may not work as expected."
 msgstr ""
 "Zgleda, da sistemska vrstica ne obstaja v vašem trenutnem okolju.\n"
-"Povezane funkcionalnosti morda ne bodo delovale kot pričakujete."
+"Povezane funkcionalnosti morda ne bodo delovale kot bi pričakovali."
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:861
 msgid "Recent Password Safe Databases"
@@ -2934,11 +2934,11 @@ msgstr "Nedavne podatkovne zbirke v meniju Datoteka kot podmeni"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:887
 msgid "Open database as read-only by default"
-msgstr "Po privzetem odprtje podatkovne zbirke samo za branje"
+msgstr "Po privzetem odpri podatkovno zbirko samo za branje"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:891
 msgid "Allow multiple instances"
-msgstr "Omogočite več primerkov"
+msgstr "Omogočite več primerkov programa"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:896
 msgid "Use Primary Selection for clipboard"
@@ -3979,7 +3979,7 @@ msgstr "Najmanj simbolov"
 
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:106
 msgid "Easyvision characters"
-msgstr "Easyvision znaki"
+msgstr "Lahkoberljivi znaki"
 
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:107
 msgid "Pronounceable passwords"
@@ -4165,7 +4165,7 @@ msgstr "%d sekund"
 #: ../../../ui/wxWidgets/QueryCancelDlg.cpp:49
 msgid "Unsaved changes have been made. Are you sure you wish to cancel?"
 msgstr ""
-"Eden ali več nastavitev je bilo spremenjenih. Ali ste prepričani, da želite "
+"Ena ali več nastavitev je bilo spremenjenih. Ali ste prepričani, da želite "
 "preklicati?"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:91
@@ -4210,7 +4210,7 @@ msgstr "Novo glavno geslo in potrditev se ne ujemata"
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:292
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:237
 msgid "Use it anyway?"
-msgstr "Vseeno uporabite?"
+msgstr "Vseeno uporabim?"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:294
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:238
@@ -4220,7 +4220,7 @@ msgstr "Šibko glavno geslo"
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:295
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:240
 msgid "Use anyway"
-msgstr "Vseeno uporabite"
+msgstr "Vseeno uporabi"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:295
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:240
@@ -4529,7 +4529,7 @@ msgstr "Nastavite oboje: Polje in Kriterij, ali posodobite Zgodovino filtrov."
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:389
 msgid "Set both Field and Criteria or update Policy filters."
-msgstr "Nastavite oboje: Polje in Kriterij, ali posodobite Politiko filtrov."
+msgstr "Nastavite oboje: Polje in Kriterij, ali posodobite politiko filtrov."
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:395
 msgid "Set both Field and Criteria or update Attachment filters."
@@ -4555,7 +4555,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/SyncWizard.cpp:303
 msgid "One or more items have been changed. Are you sure you wish to cancel?"
 msgstr ""
-"Eden ali več nastavitev je bilo spremenjenih. Ali ste prepričani, da želite "
+"Ena ali več nastavitev je bilo spremenjenih. Ali ste prepričani, da želite "
 "preklicati?"
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:404
@@ -4918,7 +4918,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2671
 msgid "Entry Password Policy Changes"
-msgstr "Spremembe vnosa Pravilnika gesel"
+msgstr "Spremembe vnosa pravilnika gesel"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2678
 #, c-format
