@@ -173,15 +173,6 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
   GetDlgItem(IDC_DEFAULTAUTOTYPE)->SetWindowText(cs_dats);
 
-  if (InitToolTip()) {
-    AddTool(IDC_STATIC_AUTO, IDS_CLICKTOCOPYEXPAND);
-    AddTool(IDC_STATIC_RUNCMD, IDS_CLICKTOCOPYEXPAND);
-    AddTool(IDC_ENTKBSHCTHOTKEY, IDS_KBS_TOOLTIP0);
-    AddTool(IDC_TWOFACTORKEY, IDS_TWOFACTORKEY);
-
-    ActivateToolTip();
-  }
-
   m_stc_autotype.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
   m_stc_runcommand.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
 
@@ -268,6 +259,12 @@ BOOL CAddEdit_Additional::OnInitDialog()
 
     // Note: clicking on IDC_AUTOTYPEHELP opens AutoType Help rather than
     // showing a Tooltip
+
+    // Old style tooltips
+    AddTool(IDC_STATIC_AUTO, IDS_CLICKTOCOPYEXPAND);
+    AddTool(IDC_STATIC_RUNCMD, IDS_CLICKTOCOPYEXPAND);
+    AddTool(IDC_ENTKBSHCTHOTKEY, IDS_KBS_TOOLTIP0);
+    AddTool(IDC_TWOFACTORKEY, IDS_TWOFACTORKEY);
 
     ActivateToolTip();
   } else {
