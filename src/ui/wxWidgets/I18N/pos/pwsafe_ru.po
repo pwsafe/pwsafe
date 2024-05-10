@@ -1495,6 +1495,7 @@ msgstr "Пароль:"
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
 #: ../../../ui/wxWidgets/wxUtilities.cpp:216
 #: ../../../ui/wxWidgets/YubiMixin.cpp:62
+#: src/ui/wxWidgets/wxUtilities.cpp:216 src/ui/wxWidgets/YubiMixin.cpp:62
 #, fuzzy
 msgid "Insert YubiKey"
 msgstr "Вставьте YubiKey"
@@ -5240,12 +5241,8 @@ msgstr ""
 msgid "YubiKey"
 msgstr "YubiKey"
 
-#: src/ui/wxWidgets/wxUtilities.cpp:216 src/ui/wxWidgets/YubiMixin.cpp:62
-msgid "Insert YubiKey"
-msgstr "Вставьте ваш YubiKey"
-
 #: ../../../ui/wxWidgets/wxUtilities.cpp:471
-"An error occurred while trying to get the image data from database item.\n"
+msgid "An error occurred while trying to get the image data from database item.\n"
 "Therefore, the image cannot be displayed in the preview."
 msgstr ""
 "Ошибка при получении данных об изображении из элемента контейнера.\n"
