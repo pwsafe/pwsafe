@@ -1311,7 +1311,10 @@ msgstr "seneste adgangskode"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:211
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:138
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
-msgid "Insert your YubiKey"
+#: ../../../ui/wxWidgets/wxUtilities.cpp:216
+#: ../../../ui/wxWidgets/YubiMixin.cpp:62
+#, fuzzy
+msgid "Insert YubiKey"
 msgstr ""
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:130
@@ -5383,12 +5386,6 @@ msgstr ""
 #: ../../../ui/wxWidgets/wxUtilities.cpp:213
 msgid "YubiKey"
 msgstr ""
-
-#: ../../../ui/wxWidgets/wxUtilities.cpp:216
-#: ../../../ui/wxWidgets/YubiMixin.cpp:62
-#, fuzzy
-msgid "Insert YubiKey"
-msgstr "Indsæt"
 
 #: ../../../ui/wxWidgets/wxUtilities.cpp:471
 msgid ""

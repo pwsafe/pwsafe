@@ -101,7 +101,7 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow *parent) : wxDialog(
 #endif
 
 #ifndef NO_YUBI
-  auto yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Insert your YubiKey"),
+  auto yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Insert YubiKey"),
                                          wxDefaultPosition, wxDefaultSize, 0 );
   flexGridSizer->AddStretchSpacer(0);                                // 1st column of wxFlexGridSizer
   flexGridSizer->Add(yubiStatusCtrl, 1, wxALL|wxEXPAND, 5);          // 2nd column of wxFlexGridSizer

@@ -1249,8 +1249,10 @@ msgstr "password"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:211
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:138
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
+#: ../../../ui/wxWidgets/wxUtilities.cpp:216
+#: ../../../ui/wxWidgets/YubiMixin.cpp:62
 #, fuzzy
-msgid "Insert your YubiKey"
+msgid "Insert YubiKey"
 msgstr "Inserire la YubiKey"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:130
@@ -5199,12 +5201,6 @@ msgstr ""
 #, fuzzy
 msgid "YubiKey"
 msgstr "YubiKey..."
-
-#: ../../../ui/wxWidgets/wxUtilities.cpp:216
-#: ../../../ui/wxWidgets/YubiMixin.cpp:62
-#, fuzzy
-msgid "Insert YubiKey"
-msgstr "Inserire la YubiKey"
 
 #: ../../../ui/wxWidgets/wxUtilities.cpp:471
 msgid ""

@@ -1203,8 +1203,10 @@ msgstr "Glavno geslo:"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:211
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:138
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
-msgid "Insert your YubiKey"
-msgstr "Vstavite vaš YubiKey"
+#: ../../../ui/wxWidgets/wxUtilities.cpp:216
+#: ../../../ui/wxWidgets/YubiMixin.cpp:62
+msgid "Insert YubiKey"
+msgstr "Vstavite YubiKey"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:130
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:380
@@ -4962,11 +4964,6 @@ msgstr ""
 #: ../../../ui/wxWidgets/wxUtilities.cpp:213
 msgid "YubiKey"
 msgstr "YubiKey"
-
-#: ../../../ui/wxWidgets/wxUtilities.cpp:216
-#: ../../../ui/wxWidgets/YubiMixin.cpp:62
-msgid "Insert YubiKey"
-msgstr "Vstavite YubiKey"
 
 #: ../../../ui/wxWidgets/wxUtilities.cpp:471
 msgid ""
