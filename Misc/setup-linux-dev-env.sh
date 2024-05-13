@@ -92,7 +92,7 @@ case "$DISTRO" in
         # dpkg-sig is nice-to-have, not available on debian testing?
         apt-get install -qy dpkg-sig || (echo "dpkg-sig isn't mandatory"; true)
     ;;
-    fedora)
+    fedora|fedora-asahi-remix)
         if test "$RELEASE" -lt 39 ; then
             LIBWXBASE="wxBase3-devel"
             LIBWXGTK="wxGTK3-devel"
