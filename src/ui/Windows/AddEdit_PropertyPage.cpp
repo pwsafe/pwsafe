@@ -53,6 +53,24 @@ BOOL CAddEdit_PropertyPage::OnQueryCancel()
   return CPWPropertyPage::OnQueryCancel();
 }
 
+BOOL CAddEdit_PropertyPage::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult)
+{
+  ASSERT(pResult != NULL);
+  NMHDR* pNMHDR = (NMHDR*)lParam;
+
+  if (pNMHDR->hwndFrom != m_hWnd && pNMHDR->hwndFrom != ::GetParent(m_hWnd))
+    return FALSE;
+
+  if (pNMHDR->code == PSN_QUERYINITIALFOCUS) {
+    CWnd* pCtl = GetDlgItem(IDC_TITLE);
+    if (pCtl) {
+      *pResult = (LRESULT)pCtl->m_hWnd;
+      return TRUE;
+    }
+  }
+  return CPropertyPage::OnNotify(wParam, lParam, pResult);
+}
+
 CItemData* CAddEdit_PropertyPage::M_pci_credential()
 {
   if (!M_pci())
