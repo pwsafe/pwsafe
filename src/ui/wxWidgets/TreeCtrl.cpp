@@ -1615,12 +1615,23 @@ void TreeCtrl::FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem)
     }
     StringX sxGroup = tostringx(groupName);
 
+    auto *commands = MultiCommands::Create(&m_core);
     // The new item we just added above will get removed once the update GUI callback from core happens.
-    DBEmptyGroupsCommand* cmd = DBEmptyGroupsCommand::Create(&m_core,
-                                                             sxGroup,
-                                                             DBEmptyGroupsCommand::EG_ADD);
-    if (cmd)
-      m_core.Execute(cmd);
+    commands->Add(
+      DBEmptyGroupsCommand::Create(&m_core, sxGroup, DBEmptyGroupsCommand::EG_ADD)
+    );
+
+    auto parent = GetItemParent(groupItem);
+    auto sxParentGroupName = tostringx(GetItemGroup(parent));
+    if (parent != GetRootItem() && m_core.IsEmptyGroup(sxParentGroupName)) {
+      commands->Add(
+        DBEmptyGroupsCommand::Create(&m_core, sxParentGroupName, DBEmptyGroupsCommand::EG_DELETE)
+      );
+    }
+
+    if (commands) {
+      m_core.Execute(commands);
+    }
 
     // evt.GetItem() is not valid anymore.  A new item has been inserted instead.
     // We can select it using the full path we computed earlier

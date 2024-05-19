@@ -164,15 +164,47 @@ void PasswordSafeFrame::DoDeleteItems(bool askConfirmation, bool isGroup)
   }
 
   if (dodelete) {
-    Command *doit = nullptr;
+    auto *commands = MultiCommands::Create(&m_core);
+    Command *deleteCommand = nullptr;
     CItemData *item = GetSelectedEntry();
+    wxTreeItemId tid;
     if (item != nullptr) {
-      doit = DeleteItem(item);
+      tid = m_tree->Find(*item);
+      deleteCommand = DeleteItem(item);
     } else if (m_tree->GetSelection() != m_tree->GetRootItem()) {
-      doit = Delete(m_tree->GetSelection());
+      tid = m_tree->GetSelection();
+      deleteCommand = Delete(tid);
     }
-    if (doit != nullptr)
-      m_core.Execute(doit);
+    if (deleteCommand != nullptr) {
+      commands->Add(deleteCommand);
+    }
+    // If the item was the only child of its parent we make the parent empty.
+    // See src/ui/Windows/MainEdit::OnDelete
+    if (tid.IsOk()) {
+      auto root = m_tree->GetRootItem();
+      auto parent = m_tree->GetItemParent(tid);
+      auto children = m_tree->GetChildrenCount(parent, false);
+      if (parent != nullptr && root != nullptr && parent != root && children == 1) {
+        StringX sxPath = tostringx(m_tree->GetItemGroup(parent));
+        commands->Add(
+          DBEmptyGroupsCommand::Create(&m_core, sxPath, DBEmptyGroupsCommand::EG_ADD)
+        );
+      }
+    }
+    // If MultiCommands is empty, delete
+    if (commands->GetSize() == 0) {
+      delete commands;
+    }
+    else {
+      commands->Add(
+        UpdateGUICommand::Create(
+          &m_core,
+          UpdateGUICommand::ExecuteFn::WN_EXECUTE,
+          UpdateGUICommand::GUI_Action::GUI_REFRESH_TREE
+        )
+      );
+      m_core.Execute(commands);
+    }
   } // dodelete
 }
 

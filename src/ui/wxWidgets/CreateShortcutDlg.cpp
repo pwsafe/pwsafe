@@ -274,6 +274,15 @@ void CreateShortcutDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     if (!valid)
       return;
 
+    auto *commands = MultiCommands::Create(&m_Core);
+    auto shortcutGroup = tostringx(m_ShortcutGroup);
+
+    if (!shortcutGroup.empty() && m_Core.IsEmptyGroup(shortcutGroup)) { // The group is no longer empty if a new item is added
+      commands->Add(
+        DBEmptyGroupsCommand::Create(&m_Core, shortcutGroup, DBEmptyGroupsCommand::EG_DELETE)
+      );
+    }
+
     CItemData shortcut;
     shortcut.SetShortcut();
     shortcut.CreateUUID();
@@ -295,8 +304,12 @@ void CreateShortcutDlg::OnOk(wxCommandEvent& WXUNUSED(event))
     shortcut.SetXTime(time_t(0));
     shortcut.SetStatus(CItemData::ES_ADDED);
 
-    m_Core.Execute(
+    commands->Add(
       AddEntryCommand::Create(&m_Core, shortcut, m_Base->GetUUID())
+    );
+
+    m_Core.Execute(
+      commands
     );
   }
   EndModal(wxID_OK);
