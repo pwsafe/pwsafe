@@ -166,7 +166,7 @@ void SafeCombinationEntryDlg::CreateControls()
   browseButton->SetToolTip(_("Browse for an existing password database"));
   horizontalBoxSizer2->Add(browseButton, 0, wxEXPAND|wxLEFT|wxBOTTOM, 5);
 
-  auto* newButton = new wxButton(this, ID_NEWDB, _(" New... "), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+  auto* newButton = new wxButton(this, ID_NEWDB, wxT(" ") + _("New...") + wxT(" "), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
   newButton->SetToolTip(_("Create a new password database"));
   horizontalBoxSizer2->Add(newButton, 0, wxEXPAND|wxLEFT|wxBOTTOM|wxRIGHT, 5);
 
