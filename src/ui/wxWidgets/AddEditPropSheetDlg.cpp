@@ -1983,9 +1983,17 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
   /////////////////////////////////////////////////////////////////////////////
 
   m_Item.SetStatus(CItemData::ES_ADDED);
-    
+
+  auto *commands = MultiCommands::Create(&m_Core);
+  auto itemGroup = m_Item.GetGroup();
+
+  if (m_Core.IsEmptyGroup(itemGroup)) { // The group is no longer empty if a new item is added
+    commands->Add(
+      DBEmptyGroupsCommand::Create(&m_Core, itemGroup, DBEmptyGroupsCommand::EG_DELETE)
+    );
+  }
+
   if(m_Item.IsAlias()) { // If alias is pointing to shortcut base the shortcuts must be removed before converting to alias base
-    auto commands = MultiCommands::Create(&m_Core);
     const CItemData *pbci = m_Core.GetBaseEntry(&m_Item);
     ASSERT(pbci);
     if (pbci && pbci->IsShortcutBase()) {
@@ -1999,18 +2007,15 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
         );
       }
     }
-  
-    commands->Add(AddEntryCommand::Create(&m_Core, m_Item, m_Item.GetBaseUUID(),
-                                          (m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) ? &m_ItemAttachment : nullptr)
-                  );
-    return commands;
   }
-  
-  return AddEntryCommand::Create(
-    &m_Core,
-    m_Item, m_Item.GetBaseUUID(),
-    (m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) ? &m_ItemAttachment : nullptr
+
+  commands->Add(
+    AddEntryCommand::Create(
+      &m_Core, m_Item, m_Item.GetBaseUUID(),
+      (m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) ? &m_ItemAttachment : nullptr
+    )
   );
+  return commands;
 }
 
 uint32_t AddEditPropSheetDlg::GetChanges() const
