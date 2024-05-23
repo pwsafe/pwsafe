@@ -225,8 +225,8 @@ public:
   void SetPrefRect(long top, long bottom, long left, long right);
   void GetPrefPSSRect(long &top, long &bottom, long &left, long &right) const;
   void SetPrefPSSRect(long top, long bottom, long left, long right);
-  unsigned int GetMRUList(stringT *MRUFiles) const;
-  int SetMRUList(const stringT *MRUFiles, int n, int max_MRU);
+  unsigned int GetMRUList(std::vector<stringT> &MRUFiles) const;
+  unsigned int SetMRUList(const std::vector<stringT> &MRUFiles, int max_MRU);
   PWPolicy GetDefaultPolicy(const bool bUseCopy = false) const;
   void SetDefaultPolicy(const PWPolicy &pol, const bool bUseCopy = false);
 
@@ -326,7 +326,7 @@ private:
   unsigned int m_intCopyValues[NumIntPrefs];
   StringX m_stringCopyValues[NumStringPrefs];
 
-  stringT *m_MRUitems;
+  std::vector<stringT> m_MRUitems;
   stringT m_PrefLayout;
   std::vector<st_prefShortcut> m_vShortcuts;
 

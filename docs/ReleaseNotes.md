@@ -9,6 +9,7 @@ PasswordSafe 3.66.0 Release May ?? 2024
 Busg fixed in 3.66.0
 --------------------
 
+* [GH1272](https://github.com/pwsafe/pwsafe/issues/1272) "Remember last N databases" now works correctly with N set to zero.
 * [GH1203](https://github.com/pwsafe/pwsafe/issues/1203) The initial focus for new entries is now on the Title control, which is more useful.
 * Saving intermediate backups should no longer fail due to different security attributes.
 
