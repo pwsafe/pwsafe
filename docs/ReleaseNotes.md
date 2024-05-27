@@ -4,7 +4,7 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.66.0 Release May ?? 2024
+PasswordSafe 3.66.0 Release May 27 2024
 =======================================
 Busg fixed in 3.66.0
 --------------------
