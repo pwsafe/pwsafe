@@ -278,8 +278,9 @@ private:
   void FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, const wxString& oldPath);
   CItemData CreateNewItemAsCopy(const CItemData *dataSrc, StringX sxNewPath, bool checkName, bool newEntry = false);
   void ExtendCommandCopyGroup(MultiCommands* pmCmd, wxTreeItemId itemSrc, StringX sxNewPath, bool checkName);
-  void CreateCommandRenamingGroup(StringX sxNewPath, StringX sxOldPath);
-  void CreateCommandCopyGroup(wxTreeItemId itemSrc, StringX sxNewPath, StringX sxOldPath, bool checkName);
+  MultiCommands* CreateCommandRenamingGroup(StringX sxNewPath, StringX sxOldPath);
+  MultiCommands* CreateCommandCopyGroup(wxTreeItemId itemSrc, StringX sxNewPath, StringX sxOldPath, bool checkName);
+  void ExecuteMultiCommands(MultiCommands* commands);
   bool IsDescendant(const wxTreeItemId itemDst, const wxTreeItemId itemSrc);
   void markDragItem(const wxTreeItemId itemSrc, bool markIt = true);
   void resetDragItems(bool initSize = false);
