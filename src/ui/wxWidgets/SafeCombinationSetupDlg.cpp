@@ -108,57 +108,51 @@ SafeCombinationSetupDlg::~SafeCombinationSetupDlg()
 void SafeCombinationSetupDlg::CreateControls()
 {
 ////@begin SafeCombinationSetupDlg content construction
-  SafeCombinationSetupDlg* itemDialog1 = this;
+  auto* mainSizer = new wxBoxSizer(wxVERTICAL);
+  SetSizer(mainSizer);
 
-  wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
-  itemDialog1->SetSizer(itemBoxSizer2);
+  auto* itemStaticText3 = new wxStaticText(this, wxID_STATIC,
+    _("A new password database will be created.\nThe Master Password you enter will be used to encrypt the password database file.\nThe Master Password can use any keyboard character and is case-sensitive."),
+    wxDefaultPosition, wxDefaultSize, 0
+  );
+  mainSizer->Add(itemStaticText3, 0, wxALL|wxEXPAND, 12);
 
-  wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("A new password database will be created.\nThe Master Password you enter will be used to encrypt the password database file.\nThe Master Password can use any keyboard character and is case-sensitive."), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer2->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, 15);
-
-  wxFlexGridSizer* itemGridSizer4 = new wxFlexGridSizer(2, 0, 10);
-  itemBoxSizer2->Add(itemGridSizer4, 0, wxLEFT|wxRIGHT|wxEXPAND, 15);
-
-  wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Master Password:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemStaticText5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-  wxTextCtrl* itemTextCtrl6 = new wxTextCtrl( itemDialog1, ID_PASSWORD, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
-  itemGridSizer4->Add(itemTextCtrl6, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
-
-  wxStaticText* itemStaticText7 = new wxStaticText( itemDialog1, wxID_STATIC, _("Confirmation:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(itemStaticText7, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-  wxTextCtrl* itemTextCtrl8 = new wxTextCtrl( itemDialog1, ID_VERIFY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
-  itemGridSizer4->Add(itemTextCtrl8, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  auto* passwordSafeCombinationCtrl = wxUtilities::CreateLabeledSafeCombinationCtrl(this, ID_PASSWORD, _("Master Password"), &m_password, true);
+  auto* verifySafeCombinationCtrl = wxUtilities::CreateLabeledSafeCombinationCtrl(this, ID_VERIFY, _("Confirmation"), &m_verify, false);
 
 #ifndef NO_YUBI
-  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 15)), wxBU_AUTODRAW );
-  itemGridSizer4->Add(m_YubiBtn, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT|wxBOTTOM|wxSHAPED, 5);
-
-  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Insert YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemGridSizer4->Add(m_yubiStatusCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto yubiControls = wxUtilities::CreateYubiKeyControls(this, ID_YUBIBTN, ID_YUBISTATUS);
+  m_YubiBtn = wxUtilities::GetYubiKeyButtonControl(yubiControls);
+  m_yubiStatusCtrl = wxUtilities::GetYubiKeyStatusControl(yubiControls);
 #endif
 
-  itemGridSizer4->AddGrowableCol(1, 2);
-  
-  wxStdDialogButtonSizer* itemStdDialogButtonSizer11 = new wxStdDialogButtonSizer;
+  mainSizer->AddStretchSpacer();
 
-  itemBoxSizer2->Add(itemStdDialogButtonSizer11, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 10);
-  wxButton* itemButton12 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto* horizontalBoxSizer = new wxBoxSizer(wxHORIZONTAL);
+  mainSizer->Add(horizontalBoxSizer, 0, wxEXPAND|wxALL, 0);
+
+  auto* itemStdDialogButtonSizer11 = new wxStdDialogButtonSizer;
+  horizontalBoxSizer->Add(itemStdDialogButtonSizer11, 1, wxEXPAND|wxALL, 5);
+
+  auto* itemButton12 = new wxButton(this, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
   itemButton12->SetDefault();
   itemStdDialogButtonSizer11->AddButton(itemButton12);
 
-  wxButton* itemButton13 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto* itemButton13 = new wxButton(this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStdDialogButtonSizer11->AddButton(itemButton13);
 
-  wxButton* itemButton14 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto* itemButton14 = new wxButton(this, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStdDialogButtonSizer11->AddButton(itemButton14);
 
   itemStdDialogButtonSizer11->Realize();
 
+  auto *keyboardButton = new ExternalKeyboardButton(this);
+  keyboardButton->SetFocusOnSafeCombinationCtrl(passwordSafeCombinationCtrl);
+  horizontalBoxSizer->Add(keyboardButton, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+
   // Set validators
-  itemTextCtrl6->SetValidator( wxGenericValidator(& m_password) );
-  itemTextCtrl8->SetValidator( wxGenericValidator(& m_verify) );
+  passwordSafeCombinationCtrl->SetValidatorTarget(&m_password);
+  verifySafeCombinationCtrl->SetValidatorTarget(&m_verify);
 ////@end SafeCombinationSetupDlg content construction
 }
 
@@ -229,7 +223,7 @@ void SafeCombinationSetupDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
     // (also used in CPasskeyChangeDlg)
 #ifndef _DEBUG // for debug, we want no checks at all, to save time
     StringX errmess;
-    if (!CPasswordCharPool::CheckMasterPassword(tostringx(m_password), errmess)) {
+    if (!CPasswordCharPool::CheckMasterPassword(m_password, errmess)) {
       wxString cs_msg;
       cs_msg = errmess.c_str();
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
@@ -289,7 +283,7 @@ void SafeCombinationSetupDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
     }
     StringX response;
     bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
-    if (PerformChallengeResponse(this, tostringx(m_password), response, oldYubiChallenge)) {
+    if (PerformChallengeResponse(this, m_password, response, oldYubiChallenge)) {
       m_password = response.c_str();
       EndModal(wxID_OK);
     }

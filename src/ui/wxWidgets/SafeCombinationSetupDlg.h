@@ -50,7 +50,7 @@ class wxTimer;
 #endif
 #define ID_YUBIBTN 10229
 #define ID_YUBISTATUS 10230
-#define SYMBOL_SAFECOMBINATIONSETUPDLG_TITLE _("Master Password Setup")
+#define SYMBOL_SAFECOMBINATIONSETUPDLG_TITLE _("Set Master Password")
 #define SYMBOL_SAFECOMBINATIONSETUPDLG_IDNAME ID_SAFECOMBINATIONSETUPDLG
 #define SYMBOL_SAFECOMBINATIONSETUPDLG_SIZE wxSize(400, 300)
 #define SYMBOL_SAFECOMBINATIONSETUPDLG_POSITION wxDefaultPosition
@@ -74,7 +74,7 @@ public:
 
   /// Destructor
   ~SafeCombinationSetupDlg();
-  wxString GetPassword() const {return m_password;}
+  StringX GetPassword() const {return m_password;}
 protected:
   /// Constructors
   SafeCombinationSetupDlg(wxWindow *parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
@@ -116,8 +116,8 @@ protected:
 #endif
 ////@end SafeCombinationSetupDlg member variables
  private:
-  wxString m_password;
-  wxString m_verify;
+  StringX m_password;
+  StringX m_verify;
 };
 
 #endif // _SAFECOMBINATIONSETUPDLG_H_

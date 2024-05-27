@@ -225,7 +225,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
     m_core.SetCurFile(fname);
 
     m_core.SetReadOnly(false); // new file can't be read-only...
-    m_core.NewFile(tostringx(dbox_pksetup->GetPassword()));
+    m_core.NewFile(dbox_pksetup->GetPassword());
 #ifdef notyet
     startLockCheckTimer();
 #endif
