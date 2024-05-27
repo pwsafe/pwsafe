@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2024-05-12 21:49+0300\n"
+"PO-Revision-Date: 2024-05-27 21:05+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: es\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4.4\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -7174,7 +7187,7 @@ msgstr ""
 
 #. Resource IDs: (5250)
 msgid "The entered passwords do not match.  Please re-enter."
-msgstr ""
+msgstr "La contraseña introducida no coincide. Por favor, introdúzcala de nuevo."
 
 #. Resource IDs: (61701)
 msgid "The file is too large to open."
@@ -7307,6 +7320,9 @@ msgid ""
 "The %s will override this menu item shortcut.\n"
 "Press OK/Apply to accept or change your selection."
 msgstr ""
+"El atajo de teclado '%s' ya se ha asignado a la opción de menú: '%s'\n"
+"El %s anulará este acceso directo de elemento de menú.\n"
+"Pulse OK/Apply para aceptar o cambiar su selección."
 
 #. Resource IDs: (5950)
 #, c-format
@@ -7372,7 +7388,7 @@ msgstr "El usuario ha especificado que los siguientes campos queden excluidos de
 
 #. Resource IDs: (5505)
 msgid "There are more than one entry that fits your selection. Be more specific."
-msgstr ""
+msgstr "Hay más de una entrada que se ajusta a su selección. Sé más específico."
 
 #. Resource IDs: (3358)
 msgid "There are unmatched quotes in the run command"
@@ -7472,7 +7488,7 @@ msgstr ""
 #. Resource IDs: (61709)
 #, c-format
 msgid "This program requires the file %Ts, which was not found on this system."
-msgstr ""
+msgstr "Este programa requiere el archivo %Ts, que no se encontró en este sistema."
 
 #. Resource IDs: (5500)
 #, c-format
@@ -7986,7 +8002,7 @@ msgstr "Verificar Clave:"
 
 #. Resource IDs: (5690)
 msgid "Version mismatch with On Screen Keyboard DLL. Please install the dll that came with this version of Password Safe."
-msgstr ""
+msgstr "La versión no coincide con la DLL del teclado en pantalla. Instale la dll que viene con esta versión de Password Safe."
 
 #. Resource IDs: (8236)
 msgid "Vietnamese"
@@ -8044,6 +8060,9 @@ msgid ""
 "\n"
 "Do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
 msgstr ""
+"ADVERTENCIA: Esta operación creará una copia desprotegida de %s en la base de datos. Eliminar esta copia después de su uso NO es suficiente.\n"
+"\n"
+"No utilice esta opción a menos que comprenda y acepte los riesgos. Esta opción omite la seguridad proporcionada por este programa."
 
 #. Resource IDs: (5447)
 msgid ""
@@ -8069,7 +8088,7 @@ msgstr ""
 
 #. Resource IDs: (5793)
 msgid "Warning - field too long"
-msgstr ""
+msgstr "Advertencia: campo demasiado largo"
 
 #. Resource IDs: (5281)
 #, c-format
@@ -8092,7 +8111,7 @@ msgstr ""
 
 #. Resource IDs: (6050)
 msgid "When a subset is visible and there is no warning message, the button will be enabled and can be clicked to copy the subset to the clipboard."
-msgstr ""
+msgstr "Cuando un subconjunto está visible y no hay ningún mensaje de advertencia, el botón se habilitará y se puede hacer clic en él para copiar el subconjunto en el portapapeles."
 
 #. Resource IDs: (5761)
 msgid "When saved"
@@ -8112,7 +8131,7 @@ msgstr "Excepción no controlada Win32"
 
 #. Resource IDs: (65535)
 msgid "Window Transparency"
-msgstr ""
+msgstr "Transparencia de la ventana"
 
 #. Resource IDs: (5799)
 msgid "Windows Registry"
@@ -8167,7 +8186,7 @@ msgstr ""
 
 #. Resource IDs: (5107)
 msgid "Writes the database when an entry was accessed, unless in read-only mode."
-msgstr ""
+msgstr "Escribe la base de datos cuando se tiene acceso a una entrada, a menos que esté en modo de solo lectura."
 
 #. Resource IDs: (1384, 8003)
 msgid "X"
@@ -8223,16 +8242,16 @@ msgstr "Yoruba"
 #. Resource IDs: (6040)
 #, c-format
 msgid "You are changing an Alias Base entry to a %s. This will move all current aliases of this base entry to be aliases of its new base. Do you wish to continue?"
-msgstr ""
+msgstr "Está cambiando una entrada de base de alias a una %s. Esto moverá todos los alias actuales de esta entrada base para que sean alias de su nueva base. ¿Desea continuar?"
 
 #. Resource IDs: (6041)
 #, c-format
 msgid "You are changing an Shortcut Base entry to a %s. This will cause all shortcuts to this base entry to be deleted. Do you wish to continue?"
-msgstr ""
+msgstr "Está cambiando una entrada de base de acceso directo a una %s. Esto hará que se eliminen todos los accesos directos a esta entrada base. ¿Desea continuar?"
 
 #. Resource IDs: (5115)
 msgid "You can click on a field's name to copy its value to the clipboard."
-msgstr ""
+msgstr "Puede hacer clic en el nombre de un campo para copiar su valor en el portapapeles."
 
 #. Resource IDs: (5847)
 msgid "You have chosen not to save your changes, which will be lost. Do you wish to continue?"
@@ -8810,6 +8829,8 @@ msgid ""
 "\n"
 "Perform AutoType"
 msgstr ""
+"\n"
+"Realizar AutoType"
 
 #. Resource IDs: (5283)
 msgid ""
@@ -8897,6 +8918,8 @@ msgid ""
 "\n"
 "Send Email"
 msgstr ""
+"\n"
+"Enviar correo electrónico"
 
 #. Resource IDs: (32114)
 msgid ""
@@ -8927,6 +8950,8 @@ msgid ""
 "\n"
 "Show only found entries"
 msgstr ""
+"\n"
+"Mostrar solo las entradas encontradas"
 
 #. Resource IDs: (5339)
 #, c-format
@@ -9017,12 +9042,16 @@ msgid ""
 "\n"
 "View Attachment"
 msgstr ""
+"\n"
+"Ver archivo adjunto"
 
 #. Resource IDs: (32053)
 msgid ""
 "\n"
 "View Entry"
 msgstr ""
+"\n"
+"Ver entrada"
 
 #. Resource IDs: (32261)
 msgid ""
@@ -9168,7 +9197,7 @@ msgstr "\tLa política de contraseñas '%ls' no está en la base de datos."
 #. Resource IDs: (5539)
 #, c-format
 msgid "\tThe following entries contain search string '%ls' %ls"
-msgstr ""
+msgstr "\tLas siguientes entradas contienen la cadena de búsqueda '%ls' %ls"
 
 #. Resource IDs: (5522)
 #, c-format

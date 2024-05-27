@@ -9,15 +9,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2024-05-04 17:57+0200\n"
-"Last-Translator: \n"
+"PO-Revision-Date: 2024-05-27 21:18+0300\n"
+"Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: sv\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -7351,10 +7364,15 @@ msgid ""
 "\n"
 "has duplicate entries with the same group/title/user combination. You can fix this by validating the database."
 msgstr ""
+"Databasen:\n"
+"\n"
+"%s\n"
+"\n"
+"har dubblettposter med samma kombination av grupp/titel/användare. Du kan åtgärda detta genom att verifiera databasen."
 
 #. Resource IDs: (5250)
 msgid "The entered passwords do not match.  Please re-enter."
-msgstr ""
+msgstr "De angivna lösenorden matchar inte.  Vänligen, ange dem igen."
 
 #. Resource IDs: (61701)
 msgid "The file is too large to open."
@@ -7498,6 +7516,9 @@ msgid ""
 "\t«%s» «%s» «%s»\n"
 "Select another shortcut (it has been reset)."
 msgstr ""
+"Kortkommandot \"%s\" används redan av:\n"
+"\t«%s» «%s» «%s»\n"
+"Välj en annan genväg (den har återställts)."
 
 #. Resource IDs: (5279)
 msgid "The master password cannot be blank."
@@ -7555,7 +7576,7 @@ msgstr "Användaren angav att följande fält ska undantas från exporten:"
 
 #. Resource IDs: (5505)
 msgid "There are more than one entry that fits your selection. Be more specific."
-msgstr ""
+msgstr "Det finns mer än en post som passar ditt val. Var mer specifik."
 
 #. Resource IDs: (3358)
 msgid "There are unmatched quotes in the run command"
@@ -7589,6 +7610,9 @@ msgid ""
 "%ls\n"
 "Confirm to continue (All shortcuts to this entry will be deleted)?"
 msgstr ""
+"Den här posten har följande %d %ls:\n"
+"%ls\n"
+"Bekräfta att du vill fortsätta (Alla genvägar till den här posten kommer att raderas)?"
 
 #. Resource IDs: (3403)
 #, c-format
@@ -7597,6 +7621,9 @@ msgid ""
 "%ls\n"
 "Confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
 msgstr ""
+"Den här posten har följande %d %ls:\n"
+"%ls\n"
+"Bekräfta att du vill fortsätta (aliaspostens lösenord kommer att ersättas av den här postens lösenord)?"
 
 #. Resource IDs: (5248)
 msgid "This entry must have a password."
@@ -8087,7 +8114,7 @@ msgstr "Använd angiven policy"
 
 #. Resource IDs: (6062)
 msgid "Use anyway"
-msgstr ""
+msgstr "Använd ändå"
 
 #. Resource IDs: (5888)
 msgid "Use count"
@@ -8190,7 +8217,7 @@ msgstr "Verifiera nyckel:"
 
 #. Resource IDs: (5690)
 msgid "Version mismatch with On Screen Keyboard DLL. Please install the dll that came with this version of Password Safe."
-msgstr ""
+msgstr "Versionen stämmer inte överens med DLL-filen med skärmtangentbordet. Installera dll-filen som medföljde den här versionen av Password Safe."
 
 #. Resource IDs: (8236)
 msgid "Vietnamese"
@@ -8235,7 +8262,7 @@ msgstr "Besök Password Safe's &webbsida..."
 
 #. Resource IDs: (5489)
 msgid "Visit the <a href=\"https://pwsafe.org/\">Password Safe website.</a>"
-msgstr ""
+msgstr "Besök <a href=\"https://pwsafe.org/\">webbplatsen Lösenordsskyddad.</a>"
 
 #. Resource IDs: (5803)
 msgid "WARNING: If you continue, fields will be updated in entries in your existing database from your selected input database."
@@ -8248,6 +8275,9 @@ msgid ""
 "\n"
 "Do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
 msgstr ""
+"VARNING: Den här åtgärden skapar en oskyddad kopia av %s i databasen. Det räcker INTE att ta bort den här kopian efter användning.\n"
+"\n"
+"Använd inte det här alternativet om du inte förstår och accepterar riskerna. Det här alternativet kringgår den säkerhet som tillhandahålls av det här programmet."
 
 #. Resource IDs: (5447)
 msgid ""
@@ -8325,12 +8355,12 @@ msgstr "Windows Register"
 #. Resource IDs: (6036)
 #, c-format
 msgid "Windows can't expand '%s'. Make sure that you have set this correctly."
-msgstr ""
+msgstr "Windows kan inte expandera \"%s\". Se till att du har ställt in detta korrekt."
 
 #. Resource IDs: (5972)
 #, c-format
 msgid "Windows can't find '%s'. Make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
-msgstr ""
+msgstr "Windows kan inte hitta \"%s\". Kontrollera att du har ställt in den externa redigeraren korrekt och att den är installerad. Extern redigering avbryts."
 
 #. Resource IDs: (8264)
 msgid "Wolof"
@@ -9261,6 +9291,9 @@ msgid ""
 "Cannot open database. It probably does not exist.\n"
 "You can Open another database, create a New one or Cancel."
 msgstr ""
+"\n"
+"Det går inte att öppna databasen. Det finns förmodligen inte.\n"
+"Du kan öppna en annan databas, skapa en ny eller avbryta."
 
 #. Resource IDs: (5662)
 msgid ""
@@ -9327,6 +9360,11 @@ msgid ""
 "\r\n"
 "(You may cancel this edit using the Close [X] button above)"
 msgstr ""
+"\r\n"
+"Det här fältet redigeras i din standardtextredigerare.\r\n"
+"Slutför den här åtgärden innan du fortsätter.\r\n"
+"\r\n"
+"(Du kan avbryta den här redigeringen genom att klicka på knappen Stäng [X] ovan)"
 
 #. Resource IDs: (5526)
 #, c-format

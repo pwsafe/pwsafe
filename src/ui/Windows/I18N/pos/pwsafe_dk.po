@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2024-05-12 21:46+0300\n"
+"PO-Revision-Date: 2024-05-27 21:04+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: da\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.4.4\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -208,7 +221,7 @@ msgstr " 'Har vedhæftede filer'"
 
 #. Resource IDs: (5941)
 msgid " 'Keyboard Shortcut'"
-msgstr ""
+msgstr " 'Tastaturgenvej'"
 
 #. Resource IDs: (5370)
 msgid " 'Last Access Time'"
@@ -996,7 +1009,7 @@ msgstr "&Egenskaber"
 
 #. Resource IDs: (32090 - Menu)
 msgid "&Protect All Entries"
-msgstr ""
+msgstr "&Beskyt alle poster"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Recent Entries History"
@@ -1064,13 +1077,15 @@ msgstr "&Sæt nuværende"
 
 #. Resource IDs: (65535)
 msgid "&Shift Double-Click Action:"
-msgstr ""
+msgstr "&Skift-dobbeltklik-handling:"
 
 #. Resource IDs: (65535)
 msgid ""
 "&Shift Double-Click\n"
 "Action:"
 msgstr ""
+"&Skift-dobbeltklik\n"
+"Handling:"
 
 #. Resource IDs: (1014, 5245)
 msgid "&Show"
@@ -1158,7 +1173,7 @@ msgstr ""
 
 #. Resource IDs: (1144)
 msgid "&last passwords"
-msgstr ""
+msgstr "seneste adgangskode"
 
 #. Resource IDs: (8159)
 msgid "'Alt Gr' (right Alt) key"
@@ -1170,7 +1185,7 @@ msgstr ""
 
 #. Resource IDs: (5645)
 msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Change one or both."
-msgstr ""
+msgstr "'Ryd udklipsholder på Minimer' og dobbeltklik på handlingen 'Kopier adgangskode og minimer' konflikt. Skift den ene eller begge."
 
 #. Resource IDs: (5714)
 msgid ""
@@ -2582,7 +2597,7 @@ msgstr "sammenlign Database:"
 
 #. Resource IDs: (5925)
 msgid "Comparison Entry"
-msgstr ""
+msgstr "Sammenligning Entry"
 
 #. Resource IDs: (5778)
 msgid "Completed but ...."
@@ -2653,6 +2668,9 @@ msgid ""
 "\n"
 "If already present in the target database, they will be replaced!"
 msgstr ""
+"Bekræft, at du vil kopiere disse poster fra %s til %s\n"
+"\n"
+"Hvis de allerede findes i måldatabasen, erstattes de!"
 
 #. Resource IDs: (5429)
 #, c-format
@@ -2687,6 +2705,9 @@ msgid ""
 "  Adding merged entry as «%ls» «%ls» «%ls».\n"
 "    Differing field(s): %ls"
 msgstr ""
+"Modstridende poster for «%ls» «%ls» «%ls».\n"
+"  Tilføjelse af flettet post som «%ls» «%ls» «%ls».\n"
+"    Forskellige områder: %ls"
 
 #. Resource IDs: (1)
 msgid "Continue"
@@ -2841,7 +2862,7 @@ msgstr "Oprettet"
 
 #. Resource IDs: (3008)
 msgid "Created Time"
-msgstr ""
+msgstr "Oprettet tid"
 
 #. Resource IDs: (1108)
 msgid "Created on:"
@@ -2849,7 +2870,7 @@ msgstr "Oprettet den:"
 
 #. Resource IDs: (65535)
 msgid "Creation date:"
-msgstr ""
+msgstr "Oprettelsesår:"
 
 #. Resource IDs: (3077)
 msgid "Credit card CVV"
@@ -2889,7 +2910,7 @@ msgstr "Kl&ip"
 
 #. Resource IDs: (5924)
 msgid "Current Entry"
-msgstr ""
+msgstr "Nuværende indgang"
 
 #. Resource IDs: (65535)
 msgid "Current Master Password:"
@@ -2897,11 +2918,11 @@ msgstr "Nuværende hovedadgangskode:"
 
 #. Resource IDs: (3460)
 msgid "Current database filters have been exported to this database."
-msgstr ""
+msgstr "Aktuelle databasefiltre er blevet eksporteret til denne database."
 
 #. Resource IDs: (6021)
 msgid "Current database is read-only"
-msgstr ""
+msgstr "Den aktuelle database er skrivebeskyttet"
 
 #. Resource IDs: (5477)
 #, c-format
@@ -7383,7 +7404,7 @@ msgstr "Dette er en genvejs basis post."
 
 #. Resource IDs: (1294)
 msgid "This is a shortcut to base entry:"
-msgstr ""
+msgstr "Dette er en genvej til basisindtastning:"
 
 #. Resource IDs: (5702)
 msgid "This is an alias base entry."
@@ -7391,7 +7412,7 @@ msgstr "Dette er en alias basis post."
 
 #. Resource IDs: (1269)
 msgid "This is an alias of:"
-msgstr ""
+msgstr "Dette er et alias for:"
 
 #. Resource IDs: (6115)
 msgid "This is the current authentication code. Click the button to copy it to the clipboard."
@@ -7465,7 +7486,7 @@ msgstr "Titel kopieret "
 
 #. Resource IDs: (65535)
 msgid "Title:"
-msgstr ""
+msgstr "Titel:"
 
 #. Resource IDs: (1525)
 msgid "To add a new entry, simply fill in the fields below. At least a title and a password are required. If you have set a default username, it will appear in the username field."
@@ -7493,7 +7514,7 @@ msgstr "Træ1"
 
 #. Resource IDs: (3317)
 msgid "Trouble reading stored filters (version mismatch?). Filters will be unusable."
-msgstr ""
+msgstr "Problemer med at læse gemte filtre (versionsuoverensstemmelse?). Filtre vil være ubrugelige."
 
 #. Resource IDs: (3246)
 #, c-format
@@ -7518,7 +7539,7 @@ msgstr "Turkmen"
 
 #. Resource IDs: (3079)
 msgid "Two Factor Key"
-msgstr ""
+msgstr "To-faktor nøgle"
 
 #. Resource IDs: (1355)
 msgid "U&RL:"
@@ -7565,7 +7586,7 @@ msgstr ""
 #. Resource IDs: (5385)
 #, c-format
 msgid "Unable to create intermediate backup in %s.\n"
-msgstr ""
+msgstr "Kan ikke oprette mellemliggende sikkerhedskopiering i %s.\n"
 
 #. Resource IDs: (5310)
 msgid "Unable to display URL"
@@ -7838,7 +7859,7 @@ msgstr "Brug &STORE bogstaver"
 
 #. Resource IDs: (1476, 1481)
 msgid "Use Named Policy"
-msgstr ""
+msgstr "Brug navngivet politik"
 
 #. Resource IDs: (6062)
 msgid "Use anyway"
@@ -7850,11 +7871,11 @@ msgstr ""
 
 #. Resource IDs: (4102)
 msgid "Use digits"
-msgstr ""
+msgstr "Brug &Tal"
 
 #. Resource IDs: (4100)
 msgid "Use lowercase characters"
-msgstr ""
+msgstr "Brug små bogstaver"
 
 #. Resource IDs: (1051)
 msgid "Use only &Easy-to-read characters (i.e., no  'l', '1', etc.)"
@@ -7862,7 +7883,7 @@ msgstr "Brug kun &let læselige tegn (d.v.s., ingen  'l', '1', o.s.v.)"
 
 #. Resource IDs: (4103)
 msgid "Use symbols"
-msgstr ""
+msgstr "Brug symboler"
 
 #. Resource IDs: (1376)
 msgid "Use the P&olicy below:"
@@ -7870,7 +7891,7 @@ msgstr "Brug P&olitiken herunder:"
 
 #. Resource IDs: (4101)
 msgid "Use uppercase characters"
-msgstr ""
+msgstr "Brug store bogstaver"
 
 #. Resource IDs: (5223)
 msgid "User Name"
@@ -8126,7 +8147,7 @@ msgstr ""
 
 #. Resource IDs: (5107)
 msgid "Writes the database when an entry was accessed, unless in read-only mode."
-msgstr ""
+msgstr "Skriver databasen, når der blev åbnet en post, medmindre den er skrivebeskyttet."
 
 #. Resource IDs: (1384, 8003)
 msgid "X"
@@ -8151,7 +8172,7 @@ msgstr "XML filer (*.xml)|*.xml||"
 
 #. Resource IDs: (5937)
 msgid "XML format..."
-msgstr ""
+msgstr "&XML format..."
 
 #. Resource IDs: (5726)
 msgid "YYMMDD_HHMMSS"
@@ -9274,7 +9295,7 @@ msgstr "dage før adgangskode udløber"
 
 #. Resource IDs: (4109)
 msgid "default symbol set"
-msgstr ""
+msgstr "Standardsymbolsæt"
 
 #. Resource IDs: (3289)
 msgid "does not begin with"
@@ -9375,7 +9396,7 @@ msgstr "i databasen"
 #. Resource IDs: (3459)
 #, c-format
 msgid "including %d empty group(s)."
-msgstr ""
+msgstr "herunder %d tom gruppe(r)."
 
 #. Resource IDs: (3302)
 msgid "invalid!"
@@ -9533,11 +9554,11 @@ msgstr ""
 
 #. Resource IDs: (6051)
 msgid "the passwords and data of these filtered entries"
-msgstr ""
+msgstr "adgangskoder og data for disse filtrerede poster"
 
 #. Resource IDs: (5815)
 msgid "this entry's password and data"
-msgstr ""
+msgstr "Denne indtastnings adgangskode og data"
 
 #. Resource IDs: (5663)
 msgid "top"
