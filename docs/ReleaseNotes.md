@@ -6,7 +6,7 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 
 PasswordSafe 3.66.0 Release May 27 2024
 =======================================
-Busg fixed in 3.66.0
+Bugs fixed in 3.66.0
 --------------------
 
 * [GH1272](https://github.com/pwsafe/pwsafe/issues/1272) "Remember last N databases" now works correctly with N set to zero.
