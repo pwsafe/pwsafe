@@ -146,9 +146,11 @@ void SafeCombinationSetupDlg::CreateControls()
 
   itemStdDialogButtonSizer11->Realize();
 
-  auto *keyboardButton = new ExternalKeyboardButton(this);
-  keyboardButton->SetFocusOnSafeCombinationCtrl(passwordSafeCombinationCtrl);
-  horizontalBoxSizer->Add(keyboardButton, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  if (wxUtilities::IsDisplayManagerX11()) {
+    auto *keyboardButton = new ExternalKeyboardButton(this);
+    keyboardButton->SetFocusOnSafeCombinationCtrl(passwordSafeCombinationCtrl);
+    horizontalBoxSizer->Add(keyboardButton, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  }
 
   // Set validators
   passwordSafeCombinationCtrl->SetValidatorTarget(&m_password);
