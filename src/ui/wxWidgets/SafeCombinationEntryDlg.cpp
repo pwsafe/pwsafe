@@ -33,11 +33,13 @@
 #include "os/env.h"
 
 ////@begin includes
+#include "ExternalKeyboardButton.h"
 #include "PWSafeApp.h"
 #include "SafeCombinationCtrl.h"
 #include "SafeCombinationEntryDlg.h"
 #include "SafeCombinationSetupDlg.h"
 #include "version.h"
+#include "wxUtilities.h"
 ////@end includes
 
 #include <iostream> // for debugging
@@ -76,7 +78,6 @@ BEGIN_EVENT_TABLE( SafeCombinationEntryDlg, wxDialog )
   EVT_BUTTON(   wxID_CANCEL,        SafeCombinationEntryDlg::OnCancel             )
   EVT_COMBOBOX( ID_DBASECOMBOBOX,   SafeCombinationEntryDlg::OnDBSelectionChange  )
   EVT_CHECKBOX( ID_READONLY,        SafeCombinationEntryDlg::OnReadonlyClick      )
-  EVT_CHECKBOX( ID_SHOWCOMBINATION, SafeCombinationEntryDlg::OnShowCombination    )
 ////@end SafeCombinationEntryDlg event table entries
 END_EVENT_TABLE()
 
@@ -104,12 +105,6 @@ SafeCombinationEntryDlg::SafeCombinationEntryDlg(wxWindow *parent, PWScore &core
   {
     GetSizer()->SetSizeHints(this);
   }
-  // Allow to resize the dialog in width, only.
-  //SetMaxSize(wxSize(wxDefaultCoord, GetMinSize().y));
-  // TODO: Check if the previous line of code can be added back.
-  // The line of code was commented out, due to reported issue #674
-  // for Fedora 32 with wxGtk 3.0.4 based on Gtk 3.24.13.
-  // See https://github.com/pwsafe/pwsafe/issues/674
   Centre();
 ////@end SafeCombinationEntryDlg creation
 #ifndef NO_YUBI
@@ -139,99 +134,104 @@ SafeCombinationEntryDlg::~SafeCombinationEntryDlg()
 
 void SafeCombinationEntryDlg::CreateControls()
 {
-////@begin SafeCombinationEntryDlg content construction
-  SafeCombinationEntryDlg* itemDialog1 = this;
+  auto* mainSizer = new wxBoxSizer(wxHORIZONTAL);
+  this->SetSizer(mainSizer);
 
-  auto *itemBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
-  itemDialog1->SetSizer(itemBoxSizer2);
+  auto* itemStaticBitmap3 = new wxStaticBitmap(this, wxID_STATIC, GetBitmapResource(wxT("graphics/cpane.xpm")), wxDefaultPosition, ConvertDialogToPixels(wxSize(49, 46)), 0);
+  mainSizer->Add(itemStaticBitmap3, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxTOP|wxBOTTOM, 12);
 
-  wxStaticBitmap* itemStaticBitmap3 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("graphics/cpane.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(49, 46)), 0 );
-  itemBoxSizer2->Add(itemStaticBitmap3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto* verticalBoxSizer1 = new wxBoxSizer(wxVERTICAL);
+  mainSizer->Add(verticalBoxSizer1, 1, wxEXPAND|wxALL, 12);
 
-  auto *itemBoxSizer4 = new wxBoxSizer(wxVERTICAL);
-  itemBoxSizer2->Add(itemBoxSizer4, 1, wxEXPAND|wxALL, 5);
+  auto* horizontalBoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
+  verticalBoxSizer1->Add(horizontalBoxSizer1, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 12);
 
-  auto *itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer4->Add(itemBoxSizer5, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
+  auto* itemStaticBitmap6 = new wxStaticBitmap(this, wxID_STATIC, GetBitmapResource(wxT("graphics/psafetxt.xpm")), wxDefaultPosition, wxDefaultSize, 0);
+  horizontalBoxSizer1->Add(itemStaticBitmap6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticBitmap* itemStaticBitmap6 = new wxStaticBitmap( itemDialog1, wxID_STATIC, itemDialog1->GetBitmapResource(wxT("graphics/psafetxt.xpm")), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer5->Add(itemStaticBitmap6, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_version = new wxStaticText(this, wxID_STATIC, wxT("VX.YY"), wxDefaultPosition, wxDefaultSize, 0);
+  horizontalBoxSizer1->Add(m_version, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  m_version = new wxStaticText( itemDialog1, wxID_STATIC, wxT("VX.YY"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer5->Add(m_version, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto* itemStaticText8 = new wxStaticText(this, wxID_STATIC, _("Password Database"), wxDefaultPosition, wxDefaultSize, 0);
+  verticalBoxSizer1->Add(itemStaticText8, 0, wxALIGN_LEFT|wxBOTTOM|wxTOP, 5);
 
-  wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("Password Database:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer4->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALL, 3);
-
-  auto *itemBoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer4->Add(itemBoxSizer9, 0, wxEXPAND|wxALL, 0);
+  auto* horizontalBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
+  verticalBoxSizer1->Add(horizontalBoxSizer2, 0, wxEXPAND|wxBOTTOM, 12);
 
   wxArrayString m_filenameCBStrings;
-  m_filenameCB = new wxComboBox( itemDialog1, ID_DBASECOMBOBOX, wxEmptyString, wxDefaultPosition, wxSize(itemDialog1->ConvertDialogToPixels(wxSize(150, -1)).x, -1), m_filenameCBStrings, wxCB_DROPDOWN );
-  itemBoxSizer9->Add(m_filenameCB, 1, wxEXPAND|wxTOP|wxBOTTOM, 5);
+  m_filenameCB = new wxComboBox(this, ID_DBASECOMBOBOX, wxEmptyString, wxDefaultPosition, wxSize(ConvertDialogToPixels(wxSize(150, -1)).x, -1), m_filenameCBStrings, wxCB_DROPDOWN);
+  horizontalBoxSizer2->Add(m_filenameCB, 1, wxEXPAND|wxBOTTOM, 5);
 
-  wxButton* itemButton11 = new wxButton( itemDialog1, ID_ELLIPSIS, wxT("..."), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
-  itemBoxSizer9->Add(itemButton11, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto* browseButton = new wxButton(this, ID_ELLIPSIS, wxT(" ... "), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+  browseButton->SetToolTip(_("Browse for an existing password database"));
+  horizontalBoxSizer2->Add(browseButton, 0, wxEXPAND|wxLEFT|wxBOTTOM, 5);
 
-  wxStaticText* itemStaticText12 = new wxStaticText( itemDialog1, wxID_STATIC, _("Master Password:"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer4->Add(itemStaticText12, 0, wxALIGN_LEFT|wxALL, 3);
+  auto* newButton = new wxButton(this, ID_NEWDB, wxT(" ") + _("New...") + wxT(" "), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+  newButton->SetToolTip(_("Create a new password database"));
+  horizontalBoxSizer2->Add(newButton, 0, wxEXPAND|wxLEFT|wxBOTTOM|wxRIGHT, 5);
 
-  auto itemBoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
-  m_combinationEntry = new SafeCombinationCtrl( itemDialog1, ID_COMBINATION, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  auto* itemStaticText12 = new wxStaticText(this, wxID_STATIC, _("Master Password"), wxDefaultPosition, wxDefaultSize, 0);
+  verticalBoxSizer1->Add(itemStaticText12, 0, wxALIGN_LEFT|wxBOTTOM, 5);
+
+  m_combinationEntry = new SafeCombinationCtrl(this, ID_COMBINATION, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
   m_combinationEntry->SetFocus();
-  itemBoxSizer10->Add(m_combinationEntry, 1, wxEXPAND|wxRIGHT|wxTOP|wxBOTTOM, 5);
+  verticalBoxSizer1->Add(m_combinationEntry, 0, wxEXPAND|wxBOTTOM, 12);
 
-#ifndef NO_YUBI
-  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 12)), wxBU_AUTODRAW );
-  itemBoxSizer10->Add(m_YubiBtn, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT|wxSHAPED, 5);
-#endif
-  itemBoxSizer4->Add(itemBoxSizer10, 0, wxEXPAND, 0);
-
-  auto *itemBoxSizer14 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer4->Add(itemBoxSizer14, 0, wxEXPAND|wxALL, 5);
-
-  wxCheckBox* itemCheckBox15 = new wxCheckBox( itemDialog1, ID_READONLY, _("Open as read-only"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto* itemCheckBox15 = new wxCheckBox(this, ID_READONLY, _("Open as read-only"), wxDefaultPosition, wxDefaultSize, 0);
   itemCheckBox15->SetValue(false);
-  itemBoxSizer14->Add(itemCheckBox15, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
+  verticalBoxSizer1->Add(itemCheckBox15, 0, wxALIGN_LEFT|wxBOTTOM, 12);
 
-  itemBoxSizer14->AddSpacer(25);
-  itemBoxSizer14->AddStretchSpacer();
-
-  wxCheckBox* itemCheckBox16 = new wxCheckBox( itemDialog1, ID_SHOWCOMBINATION, _("Show Master Password"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemCheckBox16->SetValue(false);
-  itemBoxSizer14->Add(itemCheckBox16, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
-
-  wxButton* itemButton17 = new wxButton( itemDialog1, ID_NEWDB, _("New..."), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT );
-  itemBoxSizer14->Add(itemButton17, 0, wxALIGN_CENTER_VERTICAL|wxLEFT|wxTOP|wxBOTTOM, 5);
-
-  auto *itemBoxSizer18 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer4->Add(itemBoxSizer18, 0, wxEXPAND|wxALL, 5);
+  auto* horizontalBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
+  verticalBoxSizer1->Add(horizontalBoxSizer3, 0, wxEXPAND|wxBOTTOM, 12);
 
 #ifndef NO_YUBI
-  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Insert YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer18->Add(m_yubiStatusCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_YubiBtn = new wxBitmapButton(this, ID_YUBIBTN, GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, wxSize(35,  35), wxBU_AUTODRAW);
+  horizontalBoxSizer3->Add(m_YubiBtn, 0, wxALL|wxALIGN_CENTER|wxALIGN_LEFT, 0);
+
+  m_yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0);
+  horizontalBoxSizer3->Add(m_yubiStatusCtrl, 0, wxLEFT|wxALIGN_CENTER|wxALIGN_LEFT, 12);
 #endif
 
-  itemBoxSizer4->AddStretchSpacer();
+  verticalBoxSizer1->AddStretchSpacer();
 
-  auto *itemStdDialogButtonSizer21 = new wxStdDialogButtonSizer;
+  auto* horizontalBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
+  verticalBoxSizer1->Add(horizontalBoxSizer4, 0, wxEXPAND|wxALL, 0);
 
-  itemBoxSizer4->Add(itemStdDialogButtonSizer21, 0, wxEXPAND|wxALL, 5);
-  wxButton* itemButton22 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemButton22->SetDefault();
-  itemStdDialogButtonSizer21->AddButton(itemButton22);
+#ifndef NO_YUBI
+  m_yubiStatusCtrl = new wxStaticText( this, ID_YUBISTATUS, _("Insert YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
+  horizontalBoxSizer4->Add(m_yubiStatusCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+#endif
 
-  wxButton* itemButton23 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer21->AddButton(itemButton23);
+  auto* helpButton = new wxButton(this, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0);
+  horizontalBoxSizer4->Add(
+    helpButton,
+    0, wxALIGN_LEFT|wxALL, 0
+  );
 
-  wxButton* itemButton24 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer21->AddButton(itemButton24);
+  horizontalBoxSizer4->AddSpacer(60);
+
+  auto* itemStdDialogButtonSizer21 = new wxStdDialogButtonSizer;
+
+  horizontalBoxSizer4->Add(itemStdDialogButtonSizer21, 1, wxEXPAND|wxALL, 0);
+  auto* okButton = new wxButton(this, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0);
+  okButton->SetDefault();
+  itemStdDialogButtonSizer21->AddButton(okButton);
+
+  auto* cancelButton = new wxButton(this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0);
+  itemStdDialogButtonSizer21->AddButton(cancelButton);
 
   itemStdDialogButtonSizer21->Realize();
 
+  auto *keyboardButton = new ExternalKeyboardButton(this);
+  keyboardButton->SetFocusOnSafeCombinationCtrl(m_combinationEntry);
+  horizontalBoxSizer4->Add(
+    keyboardButton,
+    0, wxALIGN_CENTER_VERTICAL|wxALL, 0
+  );
+
   // Set validators
-  m_filenameCB->SetValidator( wxGenericValidator(& m_filename) );
-  itemCheckBox15->SetValidator( wxGenericValidator(& m_readOnly) );
+  m_filenameCB->SetValidator( wxGenericValidator(& m_filename));
+  itemCheckBox15->SetValidator( wxGenericValidator(& m_readOnly));
 ////@end SafeCombinationEntryDlg content construction
   m_combinationEntry->SetValidatorTarget(& m_password);
 
@@ -675,15 +675,6 @@ void SafeCombinationEntryDlg::OnReadonlyClick( wxCommandEvent& event )
 {
   m_readOnly = event.IsChecked();
   UpdateNew(m_readOnly);
-}
-
-/*!
- * wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_SHOWCOMBINATION
- */
-
-void SafeCombinationEntryDlg::OnShowCombination( wxCommandEvent& event )
-{
-  m_combinationEntry->SecureTextfield(!event.IsChecked());
 }
 
 wxString SafeCombinationEntryDlg::EllipsizeFilePathname(const wxString& filename)
