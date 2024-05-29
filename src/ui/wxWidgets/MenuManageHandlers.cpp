@@ -214,7 +214,7 @@ void PasswordSafeFrame::DoRestoreSafe()
   if (wxbf.empty())
     return;
 
-  DestroyWrapper<SafeCombinationPromptDlg> pwdprompt(this, m_core, wxbf, false);
+  DestroyWrapper<SafeCombinationPromptDlg> pwdprompt(this, m_core, wxbf);
   if (pwdprompt.Get()->ShowModal() == wxID_OK) {
     const StringX passkey = pwdprompt.Get()->GetPassword();
     // unlock the file we're leaving
@@ -410,7 +410,7 @@ bool PasswordSafeFrame::ChangeMode(bool promptUser)
   } else if (promptUser) { // R-O -> R/W
     // Taken from GetAndCheckPassword.
     // We don't want all the other processing that GetAndCheckPassword does
-    int rc = ShowModalAndGetResult<SafeCombinationPromptDlg>(this, m_core, towxstring(m_core.GetCurFile()), false);
+    int rc = ShowModalAndGetResult<SafeCombinationPromptDlg>(this, m_core, towxstring(m_core.GetCurFile()));
 
     if(rc != wxID_OK)
       return false;

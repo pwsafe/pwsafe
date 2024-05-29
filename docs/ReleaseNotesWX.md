@@ -12,6 +12,7 @@ PasswordSafe 1.19 Release ??? 2024
 
 Bugs fixed in 1.19
 ------------------
+* [GH1272](https://github.com/pwsafe/pwsafe/issues/1272) "Remember last N databases" now works correctly with N set to zero.
 * [GH1158](https://github.com/pwsafe/pwsafe/issues/1158) Focus on Title field when opening Add/Edit entry.
 * [GH1147](https://github.com/pwsafe/pwsafe/issues/1147) Password history grid is no longer editable in Add/Edit Entry's Additional tab.
 * [GH1145](https://github.com/pwsafe/pwsafe/issues/1145) Fixed issue with editing a group's name.

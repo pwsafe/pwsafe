@@ -111,6 +111,8 @@ public:
   virtual ~CAddEdit_PropertyPage() {}
 
   virtual BOOL OnQueryCancel();
+  virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+
 
   static COLORREF crefGreen, crefWhite;
 

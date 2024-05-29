@@ -44,12 +44,14 @@ void QueryCancelDlg::OnCancelClick(wxCommandEvent& /*event*/) {
 bool QueryCancelDlg::SyncAndQueryCancel(bool showDialog) {
   if (!(Validate() && TransferDataFromWindow()) || IsChanged()) {
     if (showDialog) {
-      auto res = wxMessageDialog(
+      wxMessageDialog dialog(
         nullptr,
-        _("Unsaved changes have been made. Are you sure you wish to cancel?"), wxEmptyString,
-        wxYES_NO | wxNO_DEFAULT | wxICON_EXCLAMATION
-      ).ShowModal();
-      if (res == wxID_YES) {
+        _("Do you want to discard the changes?"), wxEmptyString,
+        wxOK | wxCANCEL | wxCANCEL_DEFAULT | wxICON_EXCLAMATION
+      );
+      dialog.SetOKLabel(_("Discard"));
+      auto res = dialog.ShowModal();
+      if (res == wxID_OK) {
         return true;
       }
     }

@@ -14,6 +14,8 @@
         <glossary_dir>../glossary</glossary_dir>
         <glossary_file>pwsafe_ru-glossary.utf8</glossary_file>
         <dictionary_dir>__DEFAULT__</dictionary_dir>
+        <export_tm_dir>__DEFAULT__</export_tm_dir>
+        <export_tm_levels>omegat level1 level2</export_tm_levels>
         <source_lang>en-US</source_lang>
         <target_lang>ru-RU</target_lang>
         <source_tok>org.omegat.tokenizer.LuceneEnglishTokenizer</source_tok>

@@ -4,10 +4,13 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.65.2pre Release ??? 2024
+PasswordSafe 3.66.0 Release May 27 2024
 =======================================
-Busg fixed in 3.65.2
+Bugs fixed in 3.66.0
 --------------------
+
+* [GH1272](https://github.com/pwsafe/pwsafe/issues/1272) "Remember last N databases" now works correctly with N set to zero.
+* [GH1203](https://github.com/pwsafe/pwsafe/issues/1203) The initial focus for new entries is now on the Title control, which is more useful.
 * Saving intermediate backups should no longer fail due to different security attributes.
 
 PasswordSafe 3.65.1 Release Feb 2024

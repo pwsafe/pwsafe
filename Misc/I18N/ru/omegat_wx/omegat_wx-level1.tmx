@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="5.7.0_0_8ae1ecfb" segtype="sentence" srclang="en-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="6.0.0_0_1bf1729c" segtype="sentence" srclang="en-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -18,6 +18,22 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T150226Z">
         <seg>" из "</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>"Easy-to-read" and "pronounceable" cannot be both selected.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T155229Z" creationid="pm_kan" creationdate="20240508T155229Z">
+        <seg>Параметры «удобочитаемые» и «произносимые» несовместимы</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>"Pronounceable" and "easy-to-read" cannot be both selected.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T155350Z" creationid="pm_kan" creationdate="20240508T155350Z">
+        <seg>Параметры «произносимые» и «удобочитаемые» несовместимы</seg>
       </tuv>
     </tu>
     <tu>
@@ -318,7 +334,7 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>&amp;Change Safe Combination...</seg>
+        <seg>&amp;Change Master Password...</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>&amp;Изменить пароль для контейнера...</seg>
@@ -582,14 +598,6 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>&amp;Finish</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>&amp;Закончить</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>&amp;Fully collapsed</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T113433Z">
@@ -654,18 +662,18 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>&amp;Lock Safe</seg>
+        <seg>&amp;Lock</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T150806Z">
-        <seg>&amp;Заблокировать контейнер</seg>
+      <tuv lang="ru-RU">
+        <seg>За&amp;блокировать</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>&amp;Lock Safe	Ctrl+J</seg>
+        <seg>&amp;Lock	Ctrl+J</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20190819T162133Z" creationid="pm_kan" creationdate="20190819T162133Z">
-        <seg>&amp;Заблокировать контейнер	Ctrl+J</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142301Z" creationid="pm_kan" creationdate="20240508T142301Z">
+        <seg>&amp;Заблокировать	Ctrl+J</seg>
       </tuv>
     </tu>
     <tu>
@@ -738,14 +746,6 @@ Unknown error</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T115423Z">
         <seg>&amp;Создать/Редактировать фильтр...</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>&amp;No</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>&amp;Нет</seg>
       </tuv>
     </tu>
     <tu>
@@ -834,14 +834,6 @@ Unknown error</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T112947Z">
         <seg>&amp;Повторить</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>&amp;Remove</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T104932Z" creationid="pm_kan" creationdate="20211010T104932Z">
-        <seg>&amp;Удалить</seg>
       </tuv>
     </tu>
     <tu>
@@ -974,18 +966,18 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>&amp;Unlock Safe</seg>
+        <seg>&amp;Unlock</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T150810Z">
-        <seg>&amp;Разблокировать контейнер</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143153Z" creationid="pm_kan" creationdate="20240508T143153Z">
+        <seg>&amp;Разблокировать</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>&amp;Unlock Safe	Ctrl+I</seg>
+        <seg>&amp;Unlock	Ctrl+I</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20190819T162115Z" creationid="pm_kan" creationdate="20190819T162115Z">
-        <seg>&amp;Разблокировать контейнер	Ctrl+I</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142246Z" creationid="pm_kan" creationdate="20240508T142246Z">
+        <seg>&amp;Разблокировать	Ctrl+I</seg>
       </tuv>
     </tu>
     <tu>
@@ -1062,14 +1054,6 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>&amp;Yes</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>&amp;Да</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>' not readable</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210614T182135Z" creationid="pm_kan" creationdate="20210614T182135Z">
@@ -1106,14 +1090,6 @@ Unknown error</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T104417Z">
         <seg>(не менее</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>(Backup database has same name as original, ending with '~')</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T123353Z">
-        <seg>(Резервная копия контейнера имеет то же имя, но заканчивается символом «~»)</seg>
       </tuv>
     </tu>
     <tu>
@@ -1206,10 +1182,42 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>- Is Caps Lock off?</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142927Z" creationid="pm_kan" creationdate="20240508T142927Z">
+        <seg>- Не нажата клавиша Caps Lock.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>- Is the language correct (if multilingual)?</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142931Z" creationid="pm_kan" creationdate="20240508T142931Z">
+        <seg>- Выбрана верная раскладка клавиатуры (если вы используете несколько языков ввода).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>- Is this the correct database?</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142935Z" creationid="pm_kan" creationdate="20240508T142935Z">
+        <seg>- Верно выбран контейнер.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>- Its title has been changed to:'%ls'</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>— Его заголовок был изменён на: «%ls»</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>- Perhaps the database was damaged.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143000Z" creationid="pm_kan" creationdate="20240508T143000Z">
+        <seg>Возможно, контейнер повреждён.</seg>
       </tuv>
     </tu>
     <tu>
@@ -1370,6 +1378,14 @@ Unknown error</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Абсолютное</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Activate YubiKey</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143816Z" creationid="pm_kan" creationdate="20240508T143816Z">
+        <seg>Активируйте YubiKey</seg>
       </tuv>
     </tu>
     <tu>
@@ -1574,6 +1590,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Allowed characters are a-z, 2-7, space and dash</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Разрешённые символы a-z, 2-7, пробел, дефис</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Also used to replace periods in the Title field</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T112108Z">
@@ -1634,6 +1658,14 @@ Unknown error</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20200823T124537Z" creationid="pm_kan" creationdate="20200823T124537Z">
         <seg>Ошибка при записи файла.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>An unknown Authentication Code error occurred</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Неопознанная ошибка при получении кода двухфакторной аутентификации</seg>
       </tuv>
     </tu>
     <tu>
@@ -1769,6 +1801,46 @@ a password are required.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Authentication Code Config</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Параметры кода двухфакторной аутентификации</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Authentication Code Length</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Длина кода двухфакторной аутентификации</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Authentication Code Start Time</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Начальное время для TOTP</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Authentication Code Time Step</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Срок действия кода TOTP</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Authentication Secret</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Ключ двухфакторной аутентификации</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Auto Type</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T103753Z">
@@ -1849,6 +1921,14 @@ a password are required.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Backup File</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142107Z" creationid="pm_kan" creationdate="20240508T142107Z">
+        <seg>Фай с резервной копией</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Backup Name</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -1869,6 +1949,14 @@ a password are required.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Резервные копии</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Bad length</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Некорректная длина</seg>
       </tuv>
     </tu>
     <tu>
@@ -1969,6 +2057,14 @@ a password are required.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Built using</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T154751Z" creationid="pm_kan" creationdate="20240508T154751Z">
+        <seg>Информация о сборке:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Bytes</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -2041,6 +2137,14 @@ a password are required.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Can't open a password database</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T155503Z" creationid="pm_kan" creationdate="20240508T155503Z">
+        <seg>Невозможно открыть контейнер</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Cancel</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -2073,7 +2177,7 @@ a password are required.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Cannot verify old safe combination - file gone?</seg>
+        <seg>Cannot verify old master password - file gone?</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Невозможно проверить старый пароль. Проверьте наличие файла.</seg>
@@ -2113,18 +2217,18 @@ a password are required.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Change R/W Mode</seg>
+        <seg>Change Master Password</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210620T162143Z" creationid="pm_kan" creationdate="20210614T174347Z">
-        <seg>Переключить в режим «чтение/запись» (R-W)</seg>
+      <tuv lang="ru-RU">
+        <seg>Изменить пароль для контейнера</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Change Safe Combination</seg>
+        <seg>Change R/W Mode</seg>
       </tuv>
-      <tuv lang="ru-RU">
-        <seg>Изменить пароль для контейнера</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210620T162143Z" creationid="pm_kan" creationdate="20210614T174347Z">
+        <seg>Переключить в режим «чтение/запись» (R-W)</seg>
       </tuv>
     </tu>
     <tu>
@@ -2161,6 +2265,14 @@ a password are required.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Check</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T154842Z">
+        <seg>Проверить</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Choose Database to Merge into "</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T113313Z">
@@ -2173,6 +2285,62 @@ a password are required.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T131257Z">
         <seg>Укажите контейнер для синхронизации с "</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Choose a Database to Merge into current database</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142124Z" creationid="pm_kan" creationdate="20240508T142124Z">
+        <seg>Выберите контейнер для слияния с открытым контейнером</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Choose a Database to Synchronize with the current database</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143539Z" creationid="pm_kan" creationdate="20240508T143539Z">
+        <seg>Выберите контейнер для синхронизации с открытым контейнером</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Choose a Name for this Backup:</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Укажите имя для резервной копии:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Choose a name for the current (Untitled) database:</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Укажите имя для текущего (безымянного) контейнера:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Choose a name for the new database</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T141903Z" creationid="pm_kan" creationdate="20240508T141903Z">
+        <seg>Укажите имя файла для нового контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Choose a new name for the current database:</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Укажите имя файла для нового контейнера:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Choose an XML File to Import</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Выберите XML-файл для импорта</seg>
       </tuv>
     </tu>
     <tu>
@@ -2209,10 +2377,10 @@ a password are required.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Clear Recent Safe List</seg>
+        <seg>Clear Recently Opened List</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20190819T162339Z">
-        <seg>О&amp;чистить список недавних контейнеров</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142310Z" creationid="pm_kan" creationdate="20240508T142310Z">
+        <seg>Очистить список недавних контейнеров</seg>
       </tuv>
     </tu>
     <tu>
@@ -2249,14 +2417,6 @@ a password are required.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Click</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T092243Z">
-        <seg>Нажмите</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Click 'No' to exit without saving.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T115839Z">
@@ -2273,14 +2433,6 @@ a password are required.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Click the button labeled 'Yubikey' in green</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210131T172407Z" creationid="pm_kan" creationdate="20210131T172407Z">
-        <seg>Нажмите кнопку с зелёной надписью «Yubikey»</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Close</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -2293,6 +2445,14 @@ a password are required.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20140705T101646Z" creationid="pm_kan" creationdate="20140705T101646Z">
         <seg>Закрыть контейнер</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Close the database and re-open it in R/W mode.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142114Z" creationid="pm_kan" creationdate="20240508T142114Z">
+        <seg>Закройте контейнер и откройте его заново в режиме «чтение/запись».</seg>
       </tuv>
     </tu>
     <tu>
@@ -2437,6 +2597,14 @@ offset approximately at %d</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Подтверждать удаление элементов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Confirm existing master password</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142642Z" creationid="pm_kan" creationdate="20240508T142642Z">
+        <seg>Укажите старый пароль для контейнера</seg>
       </tuv>
     </tu>
     <tu>
@@ -2673,6 +2841,14 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Copy it from your installation file, or re-install PasswordSafe.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T141917Z" creationid="pm_kan" creationdate="20240508T141917Z">
+        <seg>Скопируйте этот файл из дистрибутива или переустановите Password Safe.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Copy notes to clipboard</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -2725,6 +2901,22 @@ offset approximately at %d</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20150105T162645Z" creationid="pm_kan" creationdate="20150105T162645Z">
         <seg>Copyright (c) 2003-2024 Rony Shapiro</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Correct date values.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142322Z" creationid="pm_kan" creationdate="20240508T142322Z">
+        <seg>Укажите корректную дату</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Correct numeric values.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142318Z" creationid="pm_kan" creationdate="20240508T142318Z">
+        <seg>Укажите корректное числовое значение</seg>
       </tuv>
     </tu>
     <tu>
@@ -3105,10 +3297,10 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Current safe combination incorrect</seg>
+        <seg>Current master password incorrect</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20130915T181250Z">
-        <seg>Указан неверный пароль для контейнера</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142714Z" creationid="pm_kan" creationdate="20240508T142714Z">
+        <seg>Неверный пароль для контейнера</seg>
       </tuv>
     </tu>
     <tu>
@@ -3345,6 +3537,14 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Description</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Описание</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Description:</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -3373,6 +3573,14 @@ offset approximately at %d</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20141226T152623Z" creationid="pm_kan" creationdate="20141226T152623Z">
         <seg>Различающиеся поля: %ls</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Discard</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Отменить изменения</seg>
       </tuv>
     </tu>
     <tu>
@@ -3482,10 +3690,18 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Do you want to save changes to the password database</seg>
+        <seg>Do not use this option unless you understand and accept the risks.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T120131Z">
-        <seg>Сохранить изменения в контейнер</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T155546Z" creationid="pm_kan" creationdate="20240508T155546Z">
+        <seg>Продолжайте только в случае, если понимаете и принимаете все возможные риски.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Do you want to discard the changes?</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142415Z" creationid="pm_kan" creationdate="20240508T142415Z">
+        <seg>Отклонить изменения?</seg>
       </tuv>
     </tu>
     <tu>
@@ -3566,14 +3782,6 @@ offset approximately at %d</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T150744Z">
         <seg>Использование точек в имени группы запрещено</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Double group name</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210131T171148Z" creationid="pm_kan" creationdate="20210131T171148Z">
-        <seg>Дубликат группы</seg>
       </tuv>
     </tu>
     <tu>
@@ -3730,6 +3938,22 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Duplicate entry</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T155220Z" creationid="pm_kan" creationdate="20240508T155220Z">
+        <seg>Дубликат элемента</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Duplicate group name</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143646Z" creationid="pm_kan" creationdate="20240508T143646Z">
+        <seg>Дубликат группы</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Duplicate group name (use Shift to overrule)</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T150257Z" creationid="pm_kan" creationdate="20210131T171722Z">
@@ -3810,6 +4034,14 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Edit the shortcut properties to the selected base entry.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T155537Z" creationid="pm_kan" creationdate="20240508T155537Z">
+        <seg>Изменение параметров ярлыка для выбранного исходного элемента</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Edit/View Entry</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T104109Z">
@@ -3858,6 +4090,14 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Empty Master Password</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143252Z" creationid="pm_kan" creationdate="20240508T143252Z">
+        <seg>Пустой пароль</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Empty line %d skipped</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -3890,10 +4130,10 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Enter Safe Combination</seg>
+        <seg>Enter a decryption key.</seg>
       </tuv>
-      <tuv lang="ru-RU">
-        <seg>Введите пароль для контейнера</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T155433Z" creationid="pm_kan" creationdate="20240508T155433Z">
+        <seg>Введите ключ для расшифрования</seg>
       </tuv>
     </tu>
     <tu>
@@ -3906,17 +4146,25 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Enter new safe combination (if any) and click on bottom Yubikey button</seg>
+        <seg>Enter an encryption key.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20130915T181958Z">
-        <seg>Введите новый пароль для контейнера (если был задан) и щёлкните по кнопке YubiKey</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T155427Z" creationid="pm_kan" creationdate="20240508T155427Z">
+        <seg>Введите ключ для шифрования</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Enter old safe combination (if any) and click on top Yubikey button</seg>
+        <seg>Enter new master password (if any) and click on bottom Yubikey button</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20130915T181942Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142542Z" creationid="pm_kan" creationdate="20240508T142542Z">
+        <seg>Введите старый пароль для контейнера (если был задан) и щёлкните по кнопке YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Enter old master password (if any) and click on top Yubikey button</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142430Z" creationid="pm_kan" creationdate="20240508T142430Z">
         <seg>Введите старый пароль для контейнера (если был задан) и щёлкните по кнопке YubiKey</seg>
       </tuv>
     </tu>
@@ -3926,6 +4174,30 @@ offset approximately at %d</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210708T171255Z" creationid="pm_kan" creationdate="20210708T171255Z">
         <seg>Введите номера символов пароля через пробел, запятую или точку с запятой (* покажет весь пароль).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Enter the current master password, followed by a new one.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142446Z" creationid="pm_kan" creationdate="20240508T142446Z">
+        <seg>Укажите текущий пароль, а затем новый пароль.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Enter the key and verify it.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Укажите ключ и подтвердите его.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Enter the shortcut properties to the selected base entry.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T155423Z" creationid="pm_kan" creationdate="20240508T155423Z">
+        <seg>Укажите параметры ярлыка для выбранного исходного элемента</seg>
       </tuv>
     </tu>
     <tu>
@@ -4858,6 +5130,14 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Fix by validating database.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T141909Z" creationid="pm_kan" creationdate="20240508T141909Z">
+        <seg>Для исправления запустите проверку.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Flattened &amp;List</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -4986,6 +5266,14 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Group names on the same level must be unique.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143740Z" creationid="pm_kan" creationdate="20240508T143740Z">
+        <seg>На одном уровне имена групп должны быть уникальны</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Group/Title</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -5079,6 +5367,14 @@ offset approximately at %d</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20130915T181351Z">
         <seg>Скрыть</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Hide password</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142724Z" creationid="pm_kan" creationdate="20240508T142724Z">
+        <seg>Скрыть пароль</seg>
       </tuv>
     </tu>
     <tu>
@@ -5229,6 +5525,30 @@ appear in the username field.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Import XML file:</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T141854Z" creationid="pm_kan" creationdate="20240508T141854Z">
+        <seg>Настройки импорта из XML</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Import a KeePass Text File</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Укажите текстовый файл KeePass для импорта</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Import aborted, see report for details.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Импорт прерван. Причина указана в отчёте.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Import aborted.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T134045Z">
@@ -5265,6 +5585,14 @@ appear in the username field.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T142858Z">
         <seg>Импорт из простого текста</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Import text file:</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T141849Z" creationid="pm_kan" creationdate="20240508T141849Z">
+        <seg>Настройки импорта из простого текста</seg>
       </tuv>
     </tu>
     <tu>
@@ -5365,10 +5693,19 @@ appear in the username field.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Incorrect passkey, not a PasswordSafe database, or a corrupt database.</seg>
+        <seg>Incorrect master password,</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20150418T091251Z">
-        <seg>Указан неверный пароль или файл повреждён/не␣является контейнером Password Safe.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143008Z" creationid="pm_kan" creationdate="20240508T143008Z">
+        <seg>Неверный пароль,</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Incorrect master password, not a Password Safe database,
+or a corrupt database.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Указан неверный пароль или файл повреждён/не является контейнером Password Safe.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5417,6 +5754,22 @@ appear in the username field.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Пустая строка ввода</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Insert YubiKey</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143756Z" creationid="pm_kan" creationdate="20240508T143756Z">
+        <seg>Вставьте ваш YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Insert your YubiKey</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Вставьте ваш YubiKey</seg>
       </tuv>
     </tu>
     <tu>
@@ -5741,14 +6094,6 @@ appear in the username field.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Latest version?</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T092349Z">
-        <seg>Новая версия?</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Line %d skipped - Only %d fields found, whereas parsing the Header says there should be %d.</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -5917,10 +6262,42 @@ appear in the username field.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Master Password</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143148Z" creationid="pm_kan" creationdate="20240508T143148Z">
+        <seg>Пароль</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Master Password Entry</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Пароль для контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Master Password Setup</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Установка пароля для контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Master Password last set on:</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Дата смены мастер-пароля:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Master Password:</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Пароль:</seg>
       </tuv>
     </tu>
     <tu>
@@ -6069,6 +6446,30 @@ appear in the username field.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Mismatching Master Password</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143243Z" creationid="pm_kan" creationdate="20240508T143243Z">
+        <seg>Неверный пароль</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Mismatching entries</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143417Z" creationid="pm_kan" creationdate="20240508T143417Z">
+        <seg>Значения не совпадают</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Mismatching passwords</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T155123Z" creationid="pm_kan" creationdate="20240508T155123Z">
+        <seg>Неверный пароль</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Missing XSD File</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20150418T091631Z">
@@ -6165,6 +6566,46 @@ appear in the username field.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Name the XML file</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Укажите имя XML-файла</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Name the alias.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143422Z" creationid="pm_kan" creationdate="20240508T143422Z">
+        <seg>Укажите имя псевдонима</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Name the exported database</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Укажите имя экспортируемого контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Name the plaintext file</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Укажите имя текстового файла</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Name this filter.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143457Z" creationid="pm_kan" creationdate="20240508T143457Z">
+        <seg>Укажите имя для текущего фильтра</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Name:</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -6221,18 +6662,18 @@ appear in the username field.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>New safe combination and confirmation do not match</seg>
+        <seg>New Master Password:</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20150418T091510Z">
-        <seg>Новый пароль и его подтверждение не␣совпадают</seg>
+      <tuv lang="ru-RU">
+        <seg>Новый пароль:</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>New safe combination:</seg>
+        <seg>New master password and confirmation do not match</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T132308Z">
-        <seg>Новый пароль:</seg>
+      <tuv lang="ru-RU">
+        <seg>Новый пароль и его подтверждение не совпадают</seg>
       </tuv>
     </tu>
     <tu>
@@ -6285,10 +6726,10 @@ appear in the username field.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>No Safe Open</seg>
+        <seg>No Password Database Open</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T150815Z">
-        <seg>Нет открытых контейнеров</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143616Z" creationid="pm_kan" creationdate="20240508T143616Z">
+        <seg>Нет открытого контейнера</seg>
       </tuv>
     </tu>
     <tu>
@@ -6510,14 +6951,6 @@ added or existing entries removed during this process.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Now touch your YubiKey's button</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20130915T181811Z">
-        <seg>Нажмите кнопку на YubiKey</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Number is set to the maximum value.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210614T182515Z" creationid="pm_kan" creationdate="20210614T182515Z">
@@ -6650,18 +7083,18 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Old Pswd copied</seg>
+        <seg>Old Master Password:</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20190503T164540Z" creationid="pm_kan" creationdate="20190503T164540Z">
-        <seg>Старый пароль скопирован</seg>
+      <tuv lang="ru-RU">
+        <seg>Старый пароль:</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Old safe combination:</seg>
+        <seg>Old Pswd copied</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T132305Z">
-        <seg>Старый пароль:</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20190503T164540Z" creationid="pm_kan" creationdate="20190503T164540Z">
+        <seg>Старый пароль скопирован</seg>
       </tuv>
     </tu>
     <tu>
@@ -6770,10 +7203,10 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Open Password Database:</seg>
+        <seg>Open Password Database</seg>
       </tuv>
       <tuv lang="ru-RU">
-        <seg>Открыть контейнер:</seg>
+        <seg>Открыть контейнер</seg>
       </tuv>
     </tu>
     <tu>
@@ -6878,6 +7311,14 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T110040Z">
         <seg>Контейнер</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Password Database:</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Контейнер:</seg>
       </tuv>
     </tu>
     <tu>
@@ -7042,6 +7483,14 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Password Safe website</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T154932Z" creationid="pm_kan" creationdate="20240508T154932Z">
+        <seg>сайт Password Safe</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Password Safe: Error initializing help</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20150103T101423Z" creationid="pm_kan" creationdate="20150103T101423Z">
@@ -7050,7 +7499,7 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Password is too short</seg>
+        <seg>Password is too short.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Пароль слишком короткий</seg>
@@ -7130,17 +7579,9 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>PasswordSafe website</seg>
+        <seg>Passwords do not match.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T092953Z">
-        <seg>сайт Password Safe</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Passwords do not match</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20150418T091232Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T155113Z" creationid="pm_kan" creationdate="20240508T155113Z">
         <seg>Пароли не␣совпадают</seg>
       </tuv>
     </tu>
@@ -7178,114 +7619,10 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Please Choose a Backup to Restore:</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T141551Z" creationid="pm_kan" creationdate="20161105T141551Z">
-        <seg>Выберите резервную копию для восстановления</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please Choose a Database to Merge into current database</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T113318Z">
-        <seg>Укажите контейнер для слияния с открытым контейнером</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please Choose a Database to Open:</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Укажите контейнер для открытия</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please Choose a Database to Synchronize with current database</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T131302Z">
-        <seg>Укажите контейнер для синхронизации с открытым контейнером</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please Choose a KeePass Text File to Import</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Укажите текстовый файл KeePass для импорта</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please Choose a Name for this Backup:</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Укажите имя для резервной копии:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please Choose a XML File to Import</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Укажите XML-файл для импорта</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Please check file permissions.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T133915Z">
         <seg>Проверьте права доступа.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please choose a name for the current (Untitled) database:</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Укажите имя для текущего (безымянного) контейнера:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please choose a name for the new database</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Укажите имя файла для нового контейнера</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please choose a new name for the current database:</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Укажите имя нового файла для текущего контейнера</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please close the database and re-open it in R/W mode.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210614T181731Z" creationid="pm_kan" creationdate="20210614T181731Z">
-        <seg>Закройте контейнер и откройте его заново в режиме «чтение/запись».</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please confirm existing combination</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20130915T181232Z">
-        <seg>Введите пароль для подтверждения</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please copy it from your installation file, or re-install PasswordSafe.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T123519Z">
-        <seg>Скопируйте этот файл из дистрибутива или переустановите Password Safe.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7306,90 +7643,10 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Please do not use this option unless you understand and accept the risks.</seg>
+        <seg>Please enable the Accessibility Keyboard in System Settings; the on-screen keyboard should then appear.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T112033Z">
-        <seg>Продолжайте только в случае, если понимаете и принимаете все возможные риски.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please edit the shortcut properties to the selected base entry.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20200823T115049Z" creationid="pm_kan" creationdate="20200823T115049Z">
-        <seg>Изменение параметров ярлыка для выбранного исходного элемента</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please enter a decryption key.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20190503T175631Z" creationid="pm_kan" creationdate="20190503T175411Z">
-        <seg>Введите ключ для расшифрования</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please enter an encryption key.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20190503T175633Z" creationid="pm_kan" creationdate="20190503T175316Z">
-        <seg>Введите ключ для шифрования</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please enter the current combination, followed by a new combination.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T132258Z">
-        <seg>Укажите текущий пароль, а затем новый пароль.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please enter the key and verify it.</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Укажите ключ и подтвердите его.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please enter the new database description</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Введите новое описание контейнера</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please enter the new database name</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Введите новое имя контейнера</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please enter the safe combination for this password database.</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Введите пароль для указанного контейнера</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please enter the shortcut properties to the selected base entry.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20200823T114954Z" creationid="pm_kan" creationdate="20200823T114954Z">
-        <seg>Укажите параметры ярлыка для выбранного исходного элемента</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please fix by validating database.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T110541Z">
-        <seg>Для исправления запустите проверку.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T141507Z" creationid="pm_kan" creationdate="20240508T141507Z">
+        <seg>Для включения внешней экранной клавиатуры включите параметр «Ассистивная клавиатура» в настройках операционной системы.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7398,14 +7655,6 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T150304Z">
         <seg>Пожалуйста, сообщите об этом разработчикам.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please insert your YubiKey</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Вставьте ваш YubiKey</seg>
       </tuv>
     </tu>
     <tu>
@@ -7426,54 +7675,6 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Please name the XML file</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Укажите имя XML-файла</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please name the alias.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T105000Z" creationid="pm_kan" creationdate="20211010T105000Z">
-        <seg>Укажите имя псевдонима</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please name the exported database</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Укажите имя экспортируемого контейнера</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please name the plaintext file</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Укажите имя текстового файла</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please name this filter.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210614T183608Z" creationid="pm_kan" creationdate="20210614T183608Z">
-        <seg>Укажите имя для текущего фильтра</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please see report.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T134052Z">
-        <seg>Причина указана в отчёте.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Please select a valid file</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T142656Z">
@@ -7482,83 +7683,10 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Please set both Field and Criteria or update Attachment filters.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210615T163840Z" creationid="pm_kan" creationdate="20210615T163840Z">
-        <seg>Убедитесь, что указаны значения «Поле» и «Условие» или обновите фильтры вложений.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please set both Field and Criteria or update History filters.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210615T163807Z" creationid="pm_kan" creationdate="20210615T163645Z">
-        <seg>Убедитесь, что указаны значения «Поле» и «Условие» или обновите фильтры истории паролей.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please set both Field and Criteria or update Policy filters.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210615T163823Z" creationid="pm_kan" creationdate="20210615T163804Z">
-        <seg>Убедитесь, что указаны значения «Поле» и «Условие» или обновите фильтры политик создания паролей.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please set both Field and Criteria.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210615T163443Z" creationid="pm_kan" creationdate="20210615T163443Z">
-        <seg>Убедитесь, что указаны значения «Поле» и «Условие».</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please specify text.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210614T183425Z" creationid="pm_kan" creationdate="20210614T183425Z">
-        <seg>Введите текст</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please try another</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Попробуйте другой</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Please use backup database.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T133908Z">
         <seg>Используйте резервную копию.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please visit the</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T092439Z">
-        <seg>Пожалуйста, посетите</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Please visit the PasswordSafe website to download the latest version.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T092951Z">
-        <seg>Пожалуйста, посетите сайт Password Safe для загрузки новой версии.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <note>Accessibility Keyboard  = Ассистивная клавиатура в русской локали на Mac</note>
-      <tuv lang="en-US">
-        <seg>Please, enable the Accessibility Keyboard in System Settings; the on-screen keyboard should then appear.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20231022T133124Z" creationid="pm_kan" creationdate="20231022T133045Z">
-        <seg>Для включения внешней экранной клавиатуры включите параметр «Ассистивная клавиатура» в настройках операционной системы.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7672,8 +7800,8 @@ to the clipboard.</seg>
       <tuv lang="en-US">
         <seg>Project-Id-Version: 
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2023-10-22 16:23+0300
-PO-Revision-Date: 2023-10-01 17:30+0300
+POT-Creation-Date: 2024-05-08 22:38+0300
+PO-Revision-Date: 2024-05-07 15:30+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team:
 Language: ru
@@ -7681,11 +7809,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20231022T132405Z" creationid="pm_kan" creationdate="20231022T132405Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T193959Z" creationid="pm_kan" creationdate="20240508T193959Z">
         <seg>Project-Id-Version: Password Safe
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2023-10-22 17:00+0300
-PO-Revision-Date: 2023-10-22 17:00+0300
+POT-Creation-Date: 2024-05-08 22:30+0300
+PO-Revision-Date: 2024-05-08 22:30+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: none
 Language: ru_RU
@@ -7784,9 +7912,9 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Recent PasswordSafe Databases</seg>
+        <seg>Recent Password Safe Databases</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20190819T162258Z">
+      <tuv lang="ru-RU">
         <seg>Недавние контейнеры</seg>
       </tuv>
     </tu>
@@ -7994,50 +8122,10 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Safe Combination Entry</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Пароль для контейнера</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Safe Combination Setup</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Установка пароля для контейнера</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Safe Combination:</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Пароль:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Safe combination:</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20181208T123255Z" creationid="pm_kan" creationdate="20181208T123255Z">
-        <seg>Пароль:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Same as database's</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Такой же как у контейнера</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Same group name exists</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210131T171414Z" creationid="pm_kan" creationdate="20210131T171414Z">
-        <seg>Группа с таким именем уже существует</seg>
       </tuv>
     </tu>
     <tu>
@@ -8283,14 +8371,6 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Select a text file to import:</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T142445Z">
-        <seg>Укажите текстовый файл для импорта:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Select another database</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T131230Z">
@@ -8443,6 +8523,38 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Set both Field and Criteria or update Attachment filters.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143531Z" creationid="pm_kan" creationdate="20240508T143531Z">
+        <seg>Убедитесь, что указаны значения «Поле» и «Условие» или обновите фильтры вложений.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Set both Field and Criteria or update History filters.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143518Z" creationid="pm_kan" creationdate="20240508T143518Z">
+        <seg>Убедитесь, что указаны значения «Поле» и «Условие» или обновите фильтры истории паролей.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Set both Field and Criteria or update Policy filters.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143523Z" creationid="pm_kan" creationdate="20240508T143523Z">
+        <seg>Убедитесь, что указаны значения «Поле» и «Условие» или обновите фильтры политик создания паролей.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Set both Field and Criteria.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143503Z" creationid="pm_kan" creationdate="20240508T143503Z">
+        <seg>Убедитесь, что указаны значения «Поле» и «Условие».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Set maximum number of passwords saved to above value</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -8523,7 +8635,7 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Show Combination</seg>
+        <seg>Show Master Password</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Показать пароль</seg>
@@ -8595,6 +8707,14 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Show password</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142728Z" creationid="pm_kan" creationdate="20240508T142728Z">
+        <seg>Показать пароль</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Simultaneous execution disabled?</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20141226T145946Z" creationid="pm_kan" creationdate="20141226T145946Z">
@@ -8607,22 +8727,6 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T143000Z">
         <seg>Пропущено</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Sorry, "easy-to-read" and "pronounceable" cannot be both selected</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20160617T172225Z" creationid="pm_kan" creationdate="20160617T172225Z">
-        <seg>Параметры «удобочитаемые» и «произносимые» несовместимы</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Sorry, "pronounceable" and "easy-to-read" cannot be both selected</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20160617T172235Z" creationid="pm_kan" creationdate="20160617T172235Z">
-        <seg>Параметры «произносимые» и «удобочитаемые» несовместимы</seg>
       </tuv>
     </tu>
     <tu>
@@ -8667,6 +8771,14 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Specify text.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142328Z" creationid="pm_kan" creationdate="20240508T142328Z">
+        <seg>Введите текст</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Standard</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -8675,7 +8787,7 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Start PasswordSafe at Login</seg>
+        <seg>Start Password Safe at Login</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Запускать Password Safe при входе в систему</seg>
@@ -8988,6 +9100,38 @@ database with matching entries from the other database.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>The Authentication Code configuration is invalid</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Недопустимые настройки двухфакторной аутентификации</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>The Authentication Code operation was successful</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Действие с кодом двухфакторной аутентификации выполнено успешно</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>The Master Password can use any keyboard character and is case-sensitive.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143230Z" creationid="pm_kan" creationdate="20240508T143230Z">
+        <seg>Пароль для контейнера может содержать любые символы с учётом регистра букв.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>The Master Password you enter will be used to encrypt the password database file.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143159Z" creationid="pm_kan" creationdate="20240508T143159Z">
+        <seg>Введённый пароль будет использован для шифрования контейнера.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>The TXT or CSV file was not imported as required as entry records span multiple lines in the CSV file.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20170814T194328Z" creationid="pm_kan" creationdate="20170814T194328Z">
@@ -9000,6 +9144,14 @@ database with matching entries from the other database.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T134743Z">
         <seg>В связанных с ними элементах была настроена политика контейнера по умолчанию.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>The authentication secret was not found</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Не найден ключ двухфакторной аутентификации</seg>
       </tuv>
     </tu>
     <tu>
@@ -9021,18 +9173,10 @@ when Password Safe is closed.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>The combination is case-sensitive.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T133224Z">
-        <seg>При вводе и проверке пароля учитывается регистр букв.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>The current database was opened in read-only mode.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T142835Z">
-        <seg>Контейнер открыт «только для чтения»</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T193925Z">
+        <seg>Контейнер открыт «только для чтения».</seg>
       </tuv>
     </tu>
     <tu>
@@ -9333,7 +9477,15 @@ has duplicate entries with the same group/title/user combination.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>The old safe combination is not correct</seg>
+        <seg>The master password has been entered %d times without success:</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142923Z" creationid="pm_kan" creationdate="20240508T142923Z">
+        <seg>Пароль для контейнера был введён неверно %d раз(а) подряд. Убедитесь, что</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>The old master password is not correct</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Старый пароль для контейнера указан неверно</seg>
@@ -9361,14 +9513,6 @@ has duplicate entries with the same group/title/user combination.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20141226T152740Z" creationid="pm_kan" creationdate="20141226T152740Z">
         <seg>Был установлен пароль «%ls»</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>The safe combination will be used to encrypt the password database file.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T133121Z">
-        <seg>Введённый пароль будет использован для шифрования контейнера.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9495,7 +9639,7 @@ has duplicate entries with the same group/title/user combination.</seg>
       <tuv lang="en-US">
         <seg>This entry has the following %d %ls:
 %ls
-Please confirm to continue (All shortcuts to this entry will be deleted)?</seg>
+Confirm to continue (All shortcuts to this entry will be deleted)?</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>У данного элемента есть %d подчинённых типа «%ls»:
@@ -9507,7 +9651,7 @@ Please confirm to continue (All shortcuts to this entry will be deleted)?</seg>
       <tuv lang="en-US">
         <seg>This entry has the following %d %ls:
 %ls
-Please confirm to continue (alias entry's passwords will be replaced by this entry's password)?</seg>
+Confirm to continue (alias entry's passwords will be replaced by this entry's password)?</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>У данного элемента есть %d %ls:
@@ -9591,14 +9735,6 @@ bypasses the security provided by this program.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Three strikes - yer out!</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T133006Z">
-        <seg>Пароль для контейнера был введён неверно три раза подряд.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Timeout - please try again</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20130915T181734Z">
@@ -9663,14 +9799,6 @@ bypasses the security provided by this program.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Too many retries - exiting</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T141453Z" creationid="pm_kan" creationdate="20161105T141453Z">
-        <seg>Выход (слишком много попыток)</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Toolbar &amp;visible</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T145752Z">
@@ -9683,6 +9811,14 @@ bypasses the security provided by this program.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20211010T103354Z" creationid="pm_kan" creationdate="20211010T103354Z">
         <seg>Общая длина меньше суммы количеств разных классов символов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Touch YubiKey's button</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143822Z" creationid="pm_kan" creationdate="20240508T143822Z">
+        <seg>Нажмите кнопку на YubiKey</seg>
       </tuv>
     </tu>
     <tu>
@@ -9711,10 +9847,26 @@ bypasses the security provided by this program.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Try another</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143325Z" creationid="pm_kan" creationdate="20240508T143325Z">
+        <seg>Попробуйте другой</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Try exiting and restarting program.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210614T181949Z" creationid="pm_kan" creationdate="20210614T181949Z">
         <seg>Попробуйте выйти из программы и запустить её заново.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Try opening a backup copy.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143001Z" creationid="pm_kan" creationdate="20240508T143001Z">
+        <seg>Попробуйте открыть резервную копию.</seg>
       </tuv>
     </tu>
     <tu>
@@ -9731,6 +9883,14 @@ bypasses the security provided by this program.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Соединение с сервером...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Two Factor Key</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Ключ двухфакторной аутентификации</seg>
       </tuv>
     </tu>
     <tu>
@@ -9752,9 +9912,9 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Type the new combination once again to confirm it.</seg>
+        <seg>Type the new one again to confirm it.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T132302Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142506Z" creationid="pm_kan" creationdate="20240508T142506Z">
         <seg>Повторите новый пароль для подтверждения.</seg>
       </tuv>
     </tu>
@@ -9984,6 +10144,14 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Unlock Password Database</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T154617Z" creationid="pm_kan" creationdate="20240508T154617Z">
+        <seg>Открыть контейнер</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Unsaved changes</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -9992,18 +10160,18 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Unsaved changes have been made.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T120401Z" creationid="pm_kan" creationdate="20220814T120251Z">
-        <seg>Есть несохранённые изменения.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Unsaved restored database</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Восстановленный контейнер с изменениями</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Unsupported selection</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T155338Z" creationid="pm_kan" creationdate="20240508T155338Z">
+        <seg>Неподдерживаемая комбинация</seg>
       </tuv>
     </tu>
     <tu>
@@ -10032,7 +10200,7 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Use Database Policy</seg>
+        <seg>Use Named Policy</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Использовать политику</seg>
@@ -10060,6 +10228,14 @@ and User fields match.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20140705T102609Z" creationid="pm_kan" creationdate="20140705T102609Z">
         <seg>Использовать альтернативный способ автонабора</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Use anyway</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Игнорировать предупреждение</seg>
       </tuv>
     </tu>
     <tu>
@@ -10244,14 +10420,6 @@ Imported %d %ls</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Verify:</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Подтверждение:</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>View</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -10300,10 +10468,34 @@ Imported %d %ls</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Virtual Keyboard</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T155601Z" creationid="pm_kan" creationdate="20240508T155601Z">
+        <seg>Экранная клавиатура</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Visit Password Safe &amp;website...</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Посетить &amp;сайт Password Safe...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Visit the</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T154924Z" creationid="pm_kan" creationdate="20240508T154924Z">
+        <seg>Посетить</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Visit the Password Safe website to download the latest version.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T154946Z" creationid="pm_kan" creationdate="20240508T154946Z">
+        <seg>Посетите сайт Password Safe для загрузки новой версии.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10340,10 +10532,10 @@ Imported %d %ls</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Weak passphrase:</seg>
+        <seg>Weak Master Password</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T132314Z">
-        <seg>Слабый пароль:</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142517Z" creationid="pm_kan" creationdate="20240508T142517Z">
+        <seg>Слабый пароль</seg>
       </tuv>
     </tu>
     <tu>
@@ -10408,14 +10600,6 @@ Imported %d %ls</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>XML %ls: строка %d символ %d: %ls</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>XML file to import:</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T112542Z">
-        <seg>XML-файл для импорта:</seg>
       </tuv>
     </tu>
     <tu>
@@ -10492,6 +10676,14 @@ Imported %d %ls</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>You can fix this by validating the database.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T155400Z" creationid="pm_kan" creationdate="20240508T155400Z">
+        <seg>Для исправления запустите проверку.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>You can select the fields to update, as well as filter the entries
 for synchronization.</seg>
       </tuv>
@@ -10506,14 +10698,6 @@ able to abort it mid-way.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20150418T091458Z">
         <seg>Действия могут быть отменены после завершения, но сам процесс не␣может быть прерван.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>You can use any keyboard character.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T133145Z">
-        <seg>Пароль для контейнера может содержать любые символы.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10598,6 +10782,14 @@ able to abort it mid-way.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>YubiKey</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143747Z" creationid="pm_kan" creationdate="20240508T143747Z">
+        <seg>YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>YubiKey Configuration</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -10622,9 +10814,9 @@ able to abort it mid-way.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>YubiKey safe combination incorrect</seg>
+        <seg>YubiKey master password incorrect</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20130915T181947Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142526Z" creationid="pm_kan" creationdate="20240508T142526Z">
         <seg>Неверный YubiKey-пароль для контейнера</seg>
       </tuv>
     </tu>
@@ -11073,6 +11265,14 @@ able to abort it mid-way.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>for the latest version.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T154916Z" creationid="pm_kan" creationdate="20240508T154916Z">
+        <seg>наличие обновлений.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>found</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T145903Z" creationid="pm_kan" creationdate="20211212T145903Z">
@@ -11125,14 +11325,6 @@ able to abort it mid-way.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>истёк</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>here</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T092245Z">
-        <seg>здесь</seg>
       </tuv>
     </tu>
     <tu>
@@ -11354,6 +11546,14 @@ able to abort it mid-way.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>not a Password Safe database,</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143048Z" creationid="pm_kan" creationdate="20240508T143048Z">
+        <seg>файл не является контейнером Password Safe</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>on database %ls</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -11366,6 +11566,14 @@ able to abort it mid-way.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T134329Z">
         <seg>в строке</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>or a corrupt database.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143107Z" creationid="pm_kan" creationdate="20240508T143107Z">
+        <seg>или повреждён.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11487,14 +11695,6 @@ able to abort it mid-way.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210614T181559Z" creationid="pm_kan" creationdate="20210614T181559Z">
         <seg>в</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>to check.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T092301Z">
-        <seg>для проверки.</seg>
       </tuv>
     </tu>
     <tu>

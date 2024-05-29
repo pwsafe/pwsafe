@@ -189,7 +189,7 @@ void SafeCombinationChangeDlg::CreateControls()
 #ifndef NO_YUBI
   itemFlexGridSizer4->AddStretchSpacer(0);
 
-  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Insert YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
   mainSizer->Add(m_yubiStatusCtrl, 0, wxEXPAND|wxALL, SideMargin);
 #endif
 

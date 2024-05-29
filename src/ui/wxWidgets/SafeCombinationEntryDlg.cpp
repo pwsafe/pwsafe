@@ -197,6 +197,11 @@ void SafeCombinationEntryDlg::CreateControls()
   auto* horizontalBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
   verticalBoxSizer1->Add(horizontalBoxSizer4, 0, wxEXPAND|wxALL, 0);
 
+#ifndef NO_YUBI
+  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Insert YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
+  horizontalBoxSizer4->Add(m_yubiStatusCtrl, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+#endif
+
   auto* helpButton = new wxButton(this, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0);
   horizontalBoxSizer4->Add(
     helpButton,

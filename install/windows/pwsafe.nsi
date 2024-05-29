@@ -176,7 +176,7 @@ Unicode true
 ; Set installer and uninstaller icons
 !define MUI_ICON "..\..\src\ui\Windows\graphics\cpane.ico"
 !define MUI_HEADERIMAGE
-!define MUI_HEADERIMAGE_BITMAP "..\..\src\ui\Windows\graphics\cpane.bmp"
+!define MUI_HEADERIMAGE_BITMAP "..\graphics\pwsafe-150x57.bmp"
 !define MUI_UNICON "..\..\src\ui\Windows\graphics\cpane.ico"
 
 ;--------------------------------

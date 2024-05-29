@@ -43,7 +43,7 @@ add_custom_command(OUTPUT "pwsafe.pot"
   ARGS "--default-domain=pwsafe" "--from-code=UTF-8"
   "--language=C++" "--keyword=_" "--keyword=wxTRANSLATE" "--output=pwsafe.pot" ${I18N_SRCS}
   DEPENDS ${I18N_SRCS}
-  COMMENT "Updating pwsafe.pot"
+  COMMENT "Updating pwsafe.pot in build directory."
   )
 
 add_custom_target("pos"
@@ -54,7 +54,7 @@ macro(update_po LANG)
 	  COMMAND ${GETTEXT_MSGMERGE_EXECUTABLE} "--update" "--backup=off"
     "pos/pwsafe_${LANG}.po" "${CMAKE_CURRENT_BINARY_DIR}/pwsafe.pot"
     DEPENDS "pwsafe.pot"
-    COMMENT "Updating pwsafe_${LANG}.po"
+    COMMENT "Updating pwsafe_${LANG}.po in build directory."
     )
 endmacro(update_po)
 foreach (LANG ${LANGS})

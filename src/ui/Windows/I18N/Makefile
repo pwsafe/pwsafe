@@ -29,7 +29,7 @@ DLL_LIST = pwsafeAR.dll pwsafeCZ.dll pwsafeES.dll pwsafeDE.dll \
 	pwsafeDA.dll pwsafeKR.dll pwsafeNL.dll pwsafeSV.dll pwsafeTR.dll \
 	pwsafeHU.dll pwsafeSL.dll pwsafePT.dll pwsafeLV.dll
 
-DEST_DIR := ../../../../out/build/winodws-x86-Release/I18N
+DEST_DIR := ../../../../out/build/windows-x86-Release/I18N
 DEST_DIR_64 := ../../../../out/build/windows-x64-Release/I18N
 DLLS = $(DLL_LIST:%=$(DEST_DIR)/%)
 DLLS_64 = $(DLL_LIST:%=$(DEST_DIR_64)/%)

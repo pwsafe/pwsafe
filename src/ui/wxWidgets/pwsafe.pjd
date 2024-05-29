@@ -3643,7 +3643,7 @@
                   <string name="proxy-Id name">"ID_YUBISTATUS"</string>
                   <long name="proxy-Id value">10230</long>
                   <string name="proxy-Implementation filename">""</string>
-                  <string name="proxy-Label">"Please insert your YubiKey"</string>
+                  <string name="proxy-Label">"Insert YubiKey"</string>
                   <string name="proxy-Member variable name">"m_yubiStatusCtrl"</string>
                   <string name="proxy-Name">""</string>
                   <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
@@ -4536,7 +4536,7 @@ You can use any keyboard character. The combination is case-sensitive.
                 <string name="proxy-Id name">"ID_YUBISTATUS"</string>
                 <long name="proxy-Id value">10230</long>
                 <string name="proxy-Implementation filename">""</string>
-                <string name="proxy-Label">"Please insert your YubiKey"</string>
+                <string name="proxy-Label">"Insert YubiKey"</string>
                 <string name="proxy-Member variable name">"m_yubiStatusCtrl"</string>
                 <string name="proxy-Name">""</string>
                 <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
@@ -5508,7 +5508,7 @@ combination:"</string>
                     <string name="proxy-Id name">"ID_YUBISTATUS"</string>
                     <long name="proxy-Id value">10230</long>
                     <string name="proxy-Implementation filename">""</string>
-                    <string name="proxy-Label">"Please insert your YubiKey"</string>
+                    <string name="proxy-Label">"Insert YubiKey"</string>
                     <string name="proxy-Member variable name">"m_yubiStatusCtrl"</string>
                     <string name="proxy-Name">""</string>
                     <string name="proxy-Platform">"&lt;Any platform&gt;"</string>
@@ -8157,7 +8157,7 @@ Type the new combination once again to confirm it."</string>
               <string name="proxy-Id name">"ID_YUBISTATUS"</string>
               <long name="proxy-Id value">10230</long>
               <string name="proxy-Implementation filename">""</string>
-              <string name="proxy-Label">"Please insert your YubiKey"</string>
+              <string name="proxy-Label">"Insert YubiKey"</string>
               <string name="proxy-Member variable name">"m_yubiStatusCtrl"</string>
               <string name="proxy-Name">""</string>
               <string name="proxy-Platform">"&lt;Any platform&gt;"</string>

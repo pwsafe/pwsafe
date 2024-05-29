@@ -43,15 +43,14 @@ public:
       for (size_t idx = 0, max = GetCount(); idx < max; ++idx) {
         mruList.push_back(stringT(GetHistoryFile(idx)));
       }
-      PWSprefs::GetInstance()->SetMRUList(&mruList[0], static_cast<int>(mruList.size()), 
-                  PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems));
+      PWSprefs::GetInstance()->SetMRUList(mruList, PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems));
     }
 
     void Load() {
       PWSprefs* prefs = PWSprefs::GetInstance();
       const auto nExpected = prefs->GetPref(PWSprefs::MaxMRUItems);
       std::vector<stringT> mruList(nExpected);
-      const auto nFound = prefs->GetMRUList(&mruList[0]);
+      const auto nFound = prefs->GetMRUList(mruList);
       wxASSERT(nExpected >= nFound);
       for (unsigned int idx = 0; idx < nFound; ++idx) {
         if (!mruList[idx].empty())

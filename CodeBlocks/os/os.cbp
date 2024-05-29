@@ -17,7 +17,6 @@
 				<Compiler>
 					<Add option="-m64" />
 					<Add option="-g" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --unicode=yes --debug=yes --inplace --cxxflags`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
@@ -44,7 +43,6 @@
 				<Compiler>
 					<Add option="-m32" />
 					<Add option="-g" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="-fsanitize=address" />
 					<Add option="-fno-omit-frame-pointer" />
@@ -73,7 +71,6 @@
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
 					<Add option="-m64" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DNO_YUBI" />
@@ -96,7 +93,6 @@
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
 					<Add option="-m32" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
 					<Add option="-DNO_YUBI" />
@@ -119,7 +115,6 @@
 				<Compiler>
 					<Add option="-m64" />
 					<Add option="-g" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --unicode=yes --debug=yes --inplace --cxxflags`" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-fsanitize=address" />
@@ -146,7 +141,6 @@
 				<Compiler>
 					<Add option="-m32" />
 					<Add option="-g" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=yes --inplace`" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-fsanitize=address" />
@@ -175,7 +169,6 @@
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
 					<Add option="-m64" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-DNDEBUG" />
@@ -198,7 +191,6 @@
 					<Add option="-fomit-frame-pointer" />
 					<Add option="-O2" />
 					<Add option="-m32" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-DNDEBUG" />
@@ -212,7 +204,7 @@
 			</Target>
 			<Target title="Release_L64Y_Clang">
 				<Option platforms="Unix;" />
-				<Option output="os64y" prefix_auto="1" extension_auto="1" />
+				<Option output="os64yc" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="" />
 				<Option object_output="obj/Release64YClang/" />
 				<Option type="2" />
@@ -229,7 +221,6 @@
 					<Add option="-Wbind-to-temporary-copy" />
 					<Add option="-Wextra-tokens" />
 					<Add option="-Wall" />
-					<Add option="-std=c++11" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-Wformat=2" />
@@ -263,6 +254,7 @@
 			<Add option="-Wzero-as-null-pointer-constant" />
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
+			<Add option="-std=c++14" />
 			<Add option="-std=c11" />
 			<Add option="-fPIC" />
 			<Add option="-Wformat=2" />
