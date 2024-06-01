@@ -129,7 +129,7 @@ void SafeCombinationSetupDlg::CreateControls()
   mainSizer->AddStretchSpacer();
 
   auto* horizontalBoxSizer = new wxBoxSizer(wxHORIZONTAL);
-  mainSizer->Add(horizontalBoxSizer, 0, wxEXPAND|wxALL, 0);
+  mainSizer->Add(horizontalBoxSizer, 0, wxEXPAND|wxLEFT|wxBOTTOM|wxRIGHT, 12);
 
   auto* itemStdDialogButtonSizer11 = new wxStdDialogButtonSizer;
   horizontalBoxSizer->Add(itemStdDialogButtonSizer11, 1, wxEXPAND|wxALL, 5);
