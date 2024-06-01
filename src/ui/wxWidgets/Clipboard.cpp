@@ -46,6 +46,27 @@
 
 #include "wxUtilities.h"
 
+#if defined(__UNIX__) && !defined(__WXOSX__)
+const char* KDEClipboardSecretMarkerValue = "secret";
+
+class KDEClipboardSecretMarkerObject : public wxDataObjectSimple
+{
+public:
+  KDEClipboardSecretMarkerObject() : wxDataObjectSimple(wxDataFormat(wxT("x-kde-passwordManagerHint"))) {}
+
+  virtual bool GetDataHere(void* buf) const wxOVERRIDE
+  {
+    strcpy((char*)buf, KDEClipboardSecretMarkerValue);
+    return true;
+  }
+
+  virtual size_t GetDataSize() const wxOVERRIDE
+  {
+    return strlen(KDEClipboardSecretMarkerValue);
+  }
+};
+#endif
+
 Clipboard *Clipboard::self = nullptr;
 
 /**
@@ -85,7 +106,14 @@ bool Clipboard::SetData(const StringX &data)
 
   bool res = false;
   if (wxTheClipboard->Open()) {
+#if defined(__UNIX__) && !defined(__WXOSX__)
+    wxDataObjectComposite *dataObjectComposite = new wxDataObjectComposite();
+    dataObjectComposite->Add(new wxTextDataObjectEx(data.c_str()), true);
+    dataObjectComposite->Add(new KDEClipboardSecretMarkerObject(), false);
+    res = wxTheClipboard->SetData(dataObjectComposite);
+#else
     res = wxTheClipboard->SetData(new wxTextDataObjectEx(data.c_str()));
+#endif
     wxTheClipboard->Close();
   }
   m_set = true;
