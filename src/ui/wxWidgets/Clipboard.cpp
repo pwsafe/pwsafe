@@ -47,16 +47,16 @@
 #include "wxUtilities.h"
 
 #if defined(__UNIX__) && !defined(__WXOSX__)
-const char* KDEClipboardSecretMarkerValue = "secret";
+const char *KDEClipboardSecretMarkerValue = "secret";
 
 class KDEClipboardSecretMarkerObject : public wxDataObjectSimple
 {
 public:
   KDEClipboardSecretMarkerObject() : wxDataObjectSimple(wxDataFormat(wxT("x-kde-passwordManagerHint"))) {}
 
-  virtual bool GetDataHere(void* buf) const wxOVERRIDE
+  virtual bool GetDataHere(void *buf) const wxOVERRIDE
   {
-    strcpy((char*)buf, KDEClipboardSecretMarkerValue);
+    strcpy((char *)buf, KDEClipboardSecretMarkerValue);
     return true;
   }
 
