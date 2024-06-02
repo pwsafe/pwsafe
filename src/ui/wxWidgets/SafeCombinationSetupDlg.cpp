@@ -117,8 +117,8 @@ void SafeCombinationSetupDlg::CreateControls()
   );
   mainSizer->Add(itemStaticText3, 0, wxALL|wxEXPAND, 12);
 
-  auto* passwordSafeCombinationCtrl = wxUtilities::CreateLabeledSafeCombinationCtrl(this, ID_PASSWORD, _("Master Password"), &m_password, true);
-  auto* verifySafeCombinationCtrl = wxUtilities::CreateLabeledSafeCombinationCtrl(this, ID_VERIFY, _("Confirmation"), &m_verify, false);
+  m_PasswordEntryCtrl = wxUtilities::CreateLabeledSafeCombinationCtrl(this, ID_PASSWORD, _("Master Password"), &m_password, true);
+  m_VerifyEntryCtrl = wxUtilities::CreateLabeledSafeCombinationCtrl(this, ID_VERIFY, _("Confirmation"), &m_verify, false);
 
 #ifndef NO_YUBI
   auto yubiControls = wxUtilities::CreateYubiKeyControls(this, ID_YUBIBTN, ID_YUBISTATUS);
@@ -147,12 +147,12 @@ void SafeCombinationSetupDlg::CreateControls()
   itemStdDialogButtonSizer11->Realize();
 
   auto *keyboardButton = new ExternalKeyboardButton(this);
-  keyboardButton->SetFocusOnSafeCombinationCtrl(passwordSafeCombinationCtrl);
+  keyboardButton->SetFocusOnSafeCombinationCtrl(m_PasswordEntryCtrl);
   horizontalBoxSizer->Add(keyboardButton, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   // Set validators
-  passwordSafeCombinationCtrl->SetValidatorTarget(&m_password);
-  verifySafeCombinationCtrl->SetValidatorTarget(&m_verify);
+  m_PasswordEntryCtrl->SetValidatorTarget(&m_password);
+  m_VerifyEntryCtrl->SetValidatorTarget(&m_verify);
 ////@end SafeCombinationSetupDlg content construction
 }
 
@@ -274,6 +274,8 @@ void SafeCombinationSetupDlg::OnPollingTimer(wxTimerEvent &evt)
 
 void SafeCombinationSetupDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
 {
+  m_PasswordEntryCtrl->AllowEmptyCombinationOnce();
+  m_VerifyEntryCtrl->AllowEmptyCombinationOnce();
   if (Validate() && TransferDataFromWindow()) {
     if (m_password != m_verify) {
       wxMessageDialog err(this, _("The two entries do not match."),
