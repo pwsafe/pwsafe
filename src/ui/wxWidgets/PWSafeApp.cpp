@@ -107,7 +107,7 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
   {wxCMD_LINE_OPTION, STR("v"), STR("validate"),
    STR("validate (and repair) database"),
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_OPTION, STR("e"), STR("encrypt"),
+  {wxCMD_LINE_OPTION, STR("e"), STR("encrypt"),instead 
    STR("encrypt a file"),
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
   {wxCMD_LINE_OPTION, STR("d"), STR("decrypt"),
@@ -133,7 +133,7 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
 #ifndef NO_YUBI
   {wxCMD_LINE_OPTION, nullptr, STR("yubi-polling-interval"),
-   STR("use specified polling interval (in ms) for YubiKey instead of default (500ms), or 0 to disable polling."),
+   STR("use specified polling interval (in ms) for YubiKey instead of default (900ms), or 0 to disable polling."),
    wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL},
 #endif
   {wxCMD_LINE_PARAM, nullptr, nullptr, STR("database"),
