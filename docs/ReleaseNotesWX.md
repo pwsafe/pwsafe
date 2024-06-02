@@ -28,6 +28,10 @@ New features in 1.19
 --------------------
 * Added Slovenian language support thanks to grof.
 
+Changes to existing features in 1.19
+------------------------------------
+* Default polling interval for Yubikey changed from 0.5 to 0.9 seconds to avoid deadlocks on slow systems.
+
 PasswordSafe 1.18.2 Release January 2024
 ========================================
 
