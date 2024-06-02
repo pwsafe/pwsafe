@@ -116,6 +116,8 @@ protected:
 #endif
 ////@end SafeCombinationSetupDlg member variables
  private:
+  SafeCombinationCtrl* m_PasswordEntryCtrl = nullptr;
+  SafeCombinationCtrl* m_VerifyEntryCtrl = nullptr;
   StringX m_password;
   StringX m_verify;
 };
