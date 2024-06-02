@@ -25,7 +25,7 @@ class wxWindow;
 class YubiMixin
 {
  public:
-  enum {POLLING_INTERVAL_OFF = 0, POLLING_INTERVAL_MIN = 100, POLLING_INTERVAL_DEFAULT = 500, POLLING_INTERVAL_MAX = 60000}; // mSec
+  enum {POLLING_INTERVAL_OFF = 0, POLLING_INTERVAL_MIN = 100, POLLING_INTERVAL_DEFAULT = 900, POLLING_INTERVAL_MAX = 60000}; // mSec
   YubiMixin() : m_present(false), m_pollingTimer(nullptr), m_btn(nullptr), m_status(nullptr) {}
   ~YubiMixin() { delete m_pollingTimer; }
 

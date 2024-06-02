@@ -452,13 +452,13 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
           sxtmp += TCHAR('\v');
           break;
         case TCHAR('g'):
-          sxtmp += sx_group;
+          sxtmp += duplicateCharInString(sx_group, L'\\');
           break;
         case TCHAR('i'):
-          sxtmp += sx_title;
+          sxtmp += duplicateCharInString(sx_title, L'\\');
           break;
         case TCHAR('u'):
-          sxtmp += sx_user;
+          sxtmp += duplicateCharInString(sx_user, L'\\');
           break;
         case TCHAR('p'):
           sxtmp += duplicateCharInString(sx_pwd, L'\\');
@@ -467,10 +467,10 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
           sxtmp += duplicateCharInString(sx_lastpwd, L'\\');
           break;
         case TCHAR('l'):
-          sxtmp += sx_url;
+          sxtmp += duplicateCharInString(sx_url, L'\\');
           break;
         case TCHAR('m'):
-          sxtmp += sx_email;
+          sxtmp += duplicateCharInString(sx_email, L'\\');
           break;
 
         case TCHAR('o'):

@@ -12,6 +12,7 @@ PasswordSafe 1.19 Release ??? 2024
 
 Bugs fixed in 1.19
 ------------------
+* [GH1282](https://github.com/pwsafe/pwsafe/issues/1282) Autotype now handles backslashes correctly in all field values, not only password.
 * [GH1272](https://github.com/pwsafe/pwsafe/issues/1272) "Remember last N databases" now works correctly with N set to zero.
 * [GH1158](https://github.com/pwsafe/pwsafe/issues/1158) Focus on Title field when opening Add/Edit entry.
 * [GH1147](https://github.com/pwsafe/pwsafe/issues/1147) Password history grid is no longer editable in Add/Edit Entry's Additional tab.
@@ -26,6 +27,10 @@ Bugs fixed in 1.19
 New features in 1.19
 --------------------
 * Added Slovenian language support thanks to grof.
+
+Changes to existing features in 1.19
+------------------------------------
+* Default polling interval for Yubikey changed from 0.5 to 0.9 seconds to avoid deadlocks on slow systems.
 
 PasswordSafe 1.18.2 Release January 2024
 ========================================

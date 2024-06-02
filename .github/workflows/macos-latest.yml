@@ -53,7 +53,8 @@ jobs:
       run: xcode-select -p
       
     - name: Install dependencies for creating dmg
-      run: brew install gettext create-dmg
+      # gettext is already installed in the runner image
+      run: brew install create-dmg
 
     - name: Install tools for Yubikey build
       run: brew install autoconf automake libtool

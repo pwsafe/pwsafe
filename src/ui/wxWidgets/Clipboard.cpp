@@ -56,7 +56,7 @@ public:
 
   virtual bool GetDataHere(void *buf) const wxOVERRIDE
   {
-    strcpy((char *)buf, KDEClipboardSecretMarkerValue);
+    memcpy(buf, KDEClipboardSecretMarkerValue, this->GetDataSize());
     return true;
   }
 
