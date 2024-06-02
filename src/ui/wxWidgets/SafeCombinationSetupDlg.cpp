@@ -146,7 +146,7 @@ void SafeCombinationSetupDlg::CreateControls()
 
   itemStdDialogButtonSizer11->Realize();
 
-  if (wxUtilities::IsDisplayManagerX11()) {
+  if (wxUtilities::IsVirtualKeyboardSupported()) {
     auto *keyboardButton = new ExternalKeyboardButton(this);
     keyboardButton->SetFocusOnSafeCombinationCtrl(passwordSafeCombinationCtrl);
     horizontalBoxSizer->Add(keyboardButton, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);

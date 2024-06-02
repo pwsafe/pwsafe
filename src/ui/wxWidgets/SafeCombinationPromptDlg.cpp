@@ -158,7 +158,7 @@ void SafeCombinationPromptDlg::CreateControls()
   horizontalBoxSizer3->AddSpacer(60);
   horizontalBoxSizer3->AddStretchSpacer();
 
-  if (wxUtilities::IsDisplayManagerX11()) {
+  if (wxUtilities::IsVirtualKeyboardSupported()) {
     auto *keyboardButton = new ExternalKeyboardButton(this);
     keyboardButton->SetFocusOnSafeCombinationCtrl(m_scctrl);
     horizontalBoxSizer3->Add(

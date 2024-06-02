@@ -263,7 +263,7 @@ bool IsCurrentDesktopKde()
 #endif
 }
 
-bool wxUtilities::IsDisplayManagerX11()
+bool wxUtilities::IsVirtualKeyboardSupported()
 {
 #ifdef __WINDOWS__
   return false;
