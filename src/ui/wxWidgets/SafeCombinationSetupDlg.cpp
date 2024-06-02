@@ -112,7 +112,7 @@ void SafeCombinationSetupDlg::CreateControls()
   SetSizer(mainSizer);
 
   auto* itemStaticText3 = new wxStaticText(this, wxID_STATIC,
-    _("The Master Password will be used to protect new password database file."),
+    _("The Master Password will be used to protect the new password database file."),
     wxDefaultPosition, wxDefaultSize, 0
   );
   mainSizer->Add(itemStaticText3, 0, wxALL|wxEXPAND, 12);
