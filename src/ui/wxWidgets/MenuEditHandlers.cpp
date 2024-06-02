@@ -877,7 +877,6 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
           }
           break;
         default:
-          sxtmp += L'\\';
           sxtmp += curChar;
           break;
       }
