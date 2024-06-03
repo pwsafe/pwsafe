@@ -142,8 +142,6 @@ private:
   StringX m_oldresponse;
   PWScore &m_core;
   
-  bool m_isPasswordHidden;
-
 #ifndef NO_YUBI
   // try having 2 mixin objects to handle things:
   YubiMixin m_yubiMixin1, m_yubiMixin2;
