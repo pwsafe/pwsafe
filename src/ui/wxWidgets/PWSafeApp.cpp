@@ -107,7 +107,7 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
   {wxCMD_LINE_OPTION, STR("v"), STR("validate"),
    STR("validate (and repair) database"),
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
-  {wxCMD_LINE_OPTION, STR("e"), STR("encrypt"),instead 
+  {wxCMD_LINE_OPTION, STR("e"), STR("encrypt"),
    STR("encrypt a file"),
    wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
   {wxCMD_LINE_OPTION, STR("d"), STR("decrypt"),
