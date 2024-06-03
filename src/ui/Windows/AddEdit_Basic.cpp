@@ -316,7 +316,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
   m_stc_URL.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
   m_stc_email.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
 
-  m_ex_group.ChangeColour();
   GetDlgItem(IDC_LAUNCH)->EnableWindow(M_URL().IsEmpty() ? FALSE : TRUE);
   GetDlgItem(IDC_SENDEMAIL)->EnableWindow(M_email().IsEmpty() ? FALSE : TRUE);
 
