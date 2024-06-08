@@ -217,12 +217,14 @@ void SafeCombinationEntryDlg::CreateControls()
 
   itemStdDialogButtonSizer21->Realize();
 
-  auto *keyboardButton = new ExternalKeyboardButton(this);
-  keyboardButton->SetFocusOnSafeCombinationCtrl(m_combinationEntry);
-  horizontalBoxSizer4->Add(
-    keyboardButton,
-    0, wxALIGN_CENTER_VERTICAL|wxALL, 0
-  );
+  if (wxUtilities::IsVirtualKeyboardSupported()) {
+    auto *keyboardButton = new ExternalKeyboardButton(this);
+    keyboardButton->SetFocusOnSafeCombinationCtrl(m_combinationEntry);
+    horizontalBoxSizer4->Add(
+      keyboardButton,
+      0, wxALIGN_CENTER_VERTICAL|wxALL, 0
+    );
+  }
 
   // Set validators
   m_filenameCB->SetValidator( wxGenericValidator(& m_filename));

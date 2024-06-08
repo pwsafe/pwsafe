@@ -263,6 +263,33 @@ bool IsCurrentDesktopKde()
 #endif
 }
 
+bool wxUtilities::IsVirtualKeyboardSupported()
+{
+#ifdef __WINDOWS__
+  return false;
+#elif defined __WXOSX__
+  return true;
+#else
+  static int isDisplayManagerX11 = 0;
+
+  // Get the env. variable only once
+  if (isDisplayManagerX11 == 0) {
+    wxString XDG_SESSION_TYPE = wxEmptyString;
+    if (wxGetEnv(wxT("XDG_SESSION_TYPE"), &XDG_SESSION_TYPE)) { // provides 'x11' or 'wayland'
+
+      if (!XDG_SESSION_TYPE.IsEmpty() && XDG_SESSION_TYPE == wxT("x11")) {
+        isDisplayManagerX11 = 1;
+      } else {
+        isDisplayManagerX11 = 2; // Don't call wxGetEnv() more than once per process if value is bad
+      }
+    } else {
+      isDisplayManagerX11 = 3; // Don't call wxGetEnv() more than once per process if value is not set/available
+    }
+  }
+  return (isDisplayManagerX11 == 1);
+#endif
+}
+
 // Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable()

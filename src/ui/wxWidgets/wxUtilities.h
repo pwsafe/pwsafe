@@ -423,6 +423,17 @@ typedef wxTextDataObject wxTextDataObjectEx;
 
 bool IsCurrentDesktopKde();
 
+namespace wxUtilities
+{
+  /**
+   * @brief Checks environment variable 'XDG_SESSION_TYPE' for display manager 'x11'.
+   * 
+   * @return true if environment variable is set to 'x11' on Linux,
+   *         always true on Mac and false on Windows.
+   */
+  bool IsVirtualKeyboardSupported();
+}
+
 // Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable();
