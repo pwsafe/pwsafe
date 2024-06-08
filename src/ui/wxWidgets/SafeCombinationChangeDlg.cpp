@@ -86,9 +86,9 @@ SafeCombinationChangeDlg::SafeCombinationChangeDlg(wxWindow *parent, PWScore &co
 ////@end SafeCombinationChangeDlg creation
 #ifndef NO_YUBI
   m_yubiMixin1.SetupMixin(this, FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS), YubiMixin::POLLING_TIMER_ID);
-  m_yubiMixin1.SetPrompt1(_("Enter old master password (if any) and click on top Yubikey button"));
+  m_yubiMixin1.SetPrompt1(_("Enter old master password and click on top Yubikey button"));
   m_yubiMixin2.SetupMixin(this, FindWindow(ID_YUBIBTN2), FindWindow(ID_YUBISTATUS), YubiMixin::POLLING_TIMER_NONE);
-  m_yubiMixin2.SetPrompt1(_("Enter old master password (if any) and click on top Yubikey button"));
+  m_yubiMixin2.SetPrompt1(_("Enter old master password and click on top Yubikey button"));
 #endif
 }
 
@@ -339,7 +339,7 @@ void SafeCombinationChangeDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
         m_yubiStatusCtrl->SetForegroundColour(*wxRED);
         m_yubiStatusCtrl->SetLabel(_("YubiKey master password incorrect"));
       } else {
-        m_yubiMixin2.SetPrompt1(_("Enter new master password (if any) and click on bottom Yubikey button"));
+        m_yubiMixin2.SetPrompt1(_("Enter new master password and click on bottom Yubikey button"));
         m_yubiMixin2.UpdateStatus();
       }
     }
