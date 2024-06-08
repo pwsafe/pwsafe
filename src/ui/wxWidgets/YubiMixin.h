@@ -59,6 +59,9 @@ class YubiMixin
 
   enum { POLLING_TIMER_NONE = -1, POLLING_TIMER_ID = 83 };
 
+private:
+  void updateSizeHints();
+
  private:
   bool m_present; // key present?
   wxTimer* m_pollingTimer;

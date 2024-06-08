@@ -86,9 +86,9 @@ SafeCombinationChangeDlg::SafeCombinationChangeDlg(wxWindow *parent, PWScore &co
 ////@end SafeCombinationChangeDlg creation
 #ifndef NO_YUBI
   m_yubiMixin1.SetupMixin(this, FindWindow(ID_YUBIBTN), FindWindow(ID_YUBISTATUS), YubiMixin::POLLING_TIMER_ID);
-  m_yubiMixin1.SetPrompt1(_("Enter old master password (if any) and click on top Yubikey button"));
+  m_yubiMixin1.SetPrompt1(_("Enter old master password and click on top Yubikey button"));
   m_yubiMixin2.SetupMixin(this, FindWindow(ID_YUBIBTN2), FindWindow(ID_YUBISTATUS), YubiMixin::POLLING_TIMER_NONE);
-  m_yubiMixin2.SetPrompt1(_("Enter old master password (if any) and click on top Yubikey button"));
+  m_yubiMixin2.SetPrompt1(_("Enter old master password and click on top Yubikey button"));
 #endif
 }
 
@@ -115,104 +115,100 @@ SafeCombinationChangeDlg::~SafeCombinationChangeDlg()
 
 void SafeCombinationChangeDlg::CreateControls()
 {
-////@begin SafeCombinationChangeDlg content construction
-  SafeCombinationChangeDlg* itemDialog1 = this;
+  auto *mainSizer = new wxBoxSizer(wxVERTICAL);
+  SetSizer(mainSizer);
 
-  wxBoxSizer* mainSizer = new wxBoxSizer(wxVERTICAL);
-  mainSizer->AddSpacer(TopMargin);
-  itemDialog1->SetSizer(mainSizer);
-
-  wxStaticText* itemStaticText3 = new wxStaticText( itemDialog1, wxID_STATIC, _("Enter the current master password, followed by a new one.\nType the new one again to confirm it."), wxDefaultPosition, wxDefaultSize, 0 );
-  mainSizer->Add(itemStaticText3, 0, wxALIGN_LEFT|wxALL, SideMargin);
+  auto *itemStaticText3 = new wxStaticText(
+    this, wxID_STATIC,
+    _("Enter the current master password, followed by a new one.\nType the new one again to confirm it."),
+    wxDefaultPosition, wxDefaultSize, 0
+  );
+  mainSizer->Add(itemStaticText3, 0, wxALL|wxEXPAND, 12);
 
 #ifndef NO_YUBI
-  enum { DLGITEM_COLS = 3 };
-#else
   enum { DLGITEM_COLS = 2 };
+#else
+  enum { DLGITEM_COLS = 1 };
 #endif
 
-  wxFlexGridSizer* itemFlexGridSizer4 = new wxFlexGridSizer(DLGITEM_COLS, 0, 0);
-  itemFlexGridSizer4->AddGrowableCol(1);
-  mainSizer->Add(itemFlexGridSizer4, 1, wxALIGN_LEFT|wxALL|wxEXPAND, SideMargin);
+  auto *itemFlexGridSizer4 = new wxFlexGridSizer(DLGITEM_COLS, 0, 0);
+  itemFlexGridSizer4->AddGrowableCol(0);
+  mainSizer->Add(itemFlexGridSizer4, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
 
-  wxStaticText* itemStaticText5 = new wxStaticText( itemDialog1, wxID_STATIC, _("Old Master Password:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
-  itemFlexGridSizer4->Add(itemStaticText5, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto *itemStaticText5 = new wxStaticText(this, wxID_STATIC, _("Old Master Password"), wxDefaultPosition, wxDefaultSize, 0);
+  itemFlexGridSizer4->Add(itemStaticText5, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5);
+#ifndef NO_YUBI
+  itemFlexGridSizer4->AddStretchSpacer(0);
+#endif
 
-  m_oldPasswdEntry = new SafeCombinationCtrl( itemDialog1, ID_OLDPASSWD, &m_oldpasswd, wxDefaultPosition, wxDefaultSize );
+  m_oldPasswdEntry = new SafeCombinationCtrl(this, ID_OLDPASSWD, &m_oldpasswd, wxDefaultPosition, wxDefaultSize);
   m_oldPasswdEntry->SetFocus();
-  itemFlexGridSizer4->Add(m_oldPasswdEntry, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
-
+  itemFlexGridSizer4->Add(m_oldPasswdEntry, 1, wxALIGN_LEFT|wxBOTTOM|wxEXPAND, 12);
 #ifndef NO_YUBI
-  m_YubiBtn = new wxBitmapButton( itemDialog1, ID_YUBIBTN, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 12)), wxBU_AUTODRAW );
-  itemFlexGridSizer4->Add(m_YubiBtn, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT|wxSHAPED, 5);
+  m_YubiBtn = new wxBitmapButton(this, ID_YUBIBTN, GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+  itemFlexGridSizer4->Add(m_YubiBtn, 0, wxLEFT|wxBOTTOM|wxEXPAND, 12);
 #endif
 
-  wxStaticText* itemStaticText8 = new wxStaticText( itemDialog1, wxID_STATIC, _("New Master Password:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
-  itemFlexGridSizer4->Add(itemStaticText8, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-  m_newPasswdEntry = new SafeCombinationCtrl( itemDialog1, ID_NEWPASSWD, &m_newpasswd, wxDefaultPosition, wxDefaultSize );
-  itemFlexGridSizer4->Add(m_newPasswdEntry, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
-
-#ifndef NO_YUBI
-  m_YubiBtn2 = new wxBitmapButton( itemDialog1, ID_YUBIBTN2, itemDialog1->GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, itemDialog1->ConvertDialogToPixels(wxSize(40, 12)), wxBU_AUTODRAW );
-  itemFlexGridSizer4->Add(m_YubiBtn2, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT|wxSHAPED, 5);
-#endif
-
-  wxStaticText* itemStaticText11 = new wxStaticText( itemDialog1, wxID_STATIC, _("Confirmation:"), wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT );
-  itemFlexGridSizer4->Add(itemStaticText11, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-
-  m_confirmEntry = new SafeCombinationCtrl( itemDialog1, ID_CONFIRM, &m_confirm, wxDefaultPosition, wxDefaultSize );
-  itemFlexGridSizer4->Add(m_confirmEntry, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
-
+  auto *itemStaticText8 = new wxStaticText(this, wxID_STATIC, _("New Master Password"), wxDefaultPosition, wxDefaultSize, 0);
+  itemFlexGridSizer4->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5);
 #ifndef NO_YUBI
   itemFlexGridSizer4->AddStretchSpacer(0);
 #endif
 
-  itemFlexGridSizer4->AddStretchSpacer(0);
-  auto showCombinationCheckBox = new wxCheckBox(this, ID_SHOWCOMBINATION, _("Show Master Password"), wxDefaultPosition, wxDefaultSize, 0 );
-  showCombinationCheckBox->SetValue(false);
-  m_isPasswordHidden = true;
-  showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {
-    m_oldPasswdEntry->SecureTextfield(!event.IsChecked());
-    m_newPasswdEntry->SecureTextfield(!event.IsChecked());
-    m_confirmEntry->DisableAndClear(event.IsChecked());
-    m_isPasswordHidden = !event.IsChecked();
-    if(event.IsChecked())
-      m_confirmEntry->AllowEmptyCombinationOnce();
-    else
-      m_confirmEntry->ForbidEmptyCombinationOnce();
-  });
-  itemFlexGridSizer4->Add(showCombinationCheckBox, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
-
+  m_newPasswdEntry = new SafeCombinationCtrl(this, ID_NEWPASSWD, &m_newpasswd, wxDefaultPosition, wxDefaultSize);
+  itemFlexGridSizer4->Add(m_newPasswdEntry, 1, wxALIGN_LEFT|wxBOTTOM|wxEXPAND, 12);
 #ifndef NO_YUBI
-  itemFlexGridSizer4->AddStretchSpacer(0);
-
-  m_yubiStatusCtrl = new wxStaticText( itemDialog1, ID_YUBISTATUS, _("Insert YubiKey"), wxDefaultPosition, wxDefaultSize, 0 );
-  mainSizer->Add(m_yubiStatusCtrl, 0, wxEXPAND|wxALL, SideMargin);
+  m_YubiBtn2 = new wxBitmapButton(this, ID_YUBIBTN2, GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
+  itemFlexGridSizer4->Add(m_YubiBtn2, 0, wxLEFT|wxBOTTOM|wxEXPAND, 12);
 #endif
 
-  mainSizer->AddSpacer(RowSeparation);
-  mainSizer->Add(new wxStaticLine(this), 0, wxLEFT|wxRIGHT|wxEXPAND, SideMargin);
-  mainSizer->AddSpacer(RowSeparation);
+  auto *itemStaticText11 = new wxStaticText(this, wxID_STATIC, _("Confirmation"), wxDefaultPosition, wxDefaultSize, 0);
+  itemFlexGridSizer4->Add(itemStaticText11, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5);
+#ifndef NO_YUBI
+  itemFlexGridSizer4->AddStretchSpacer(0);
+#endif
 
-  wxStdDialogButtonSizer* itemStdDialogButtonSizer15 = new wxStdDialogButtonSizer;
+  m_confirmEntry = new SafeCombinationCtrl(this, ID_CONFIRM, &m_confirm, wxDefaultPosition, wxDefaultSize);
+  itemFlexGridSizer4->Add(m_confirmEntry, 1, wxALIGN_LEFT|wxBOTTOM|wxEXPAND, 12);
+#ifndef NO_YUBI
+  itemFlexGridSizer4->AddStretchSpacer(0);
+#endif
 
-  mainSizer->Add(itemStdDialogButtonSizer15, 0, wxLEFT|wxRIGHT|wxEXPAND, SideMargin);
-  wxButton* itemButton16 = new wxButton( itemDialog1, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemButton16->SetDefault();
-  itemStdDialogButtonSizer15->AddButton(itemButton16);
+#ifndef NO_YUBI
+  m_yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0);
+  mainSizer->Add(m_yubiStatusCtrl, 0, wxEXPAND|wxALL, 12);
+#endif
 
-  wxButton* itemButton17 = new wxButton( itemDialog1, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer15->AddButton(itemButton17);
+  auto horizontalBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
+  mainSizer->Add(horizontalBoxSizer3, 0, wxEXPAND|wxALL, 12);
 
-  wxButton* itemButton18 = new wxButton( itemDialog1, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 );
-  itemStdDialogButtonSizer15->AddButton(itemButton18);
+  horizontalBoxSizer3->AddSpacer(90);
+  horizontalBoxSizer3->AddStretchSpacer();
 
-  itemStdDialogButtonSizer15->Realize();
+  horizontalBoxSizer3->Add(
+    new wxButton(this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0),
+    0, wxALIGN_CENTER_VERTICAL|wxALL, 5
+  );
 
-  mainSizer->AddSpacer(BottomMargin);
+  auto *changeButton = new wxButton(this, wxID_OK, _("&Change"), wxDefaultPosition, wxDefaultSize, 0);
+  horizontalBoxSizer3->Add(
+    changeButton,
+    0, wxALIGN_CENTER_VERTICAL|wxALL, 5
+  );
+  changeButton->SetDefault();
 
-////@end SafeCombinationChangeDlg content construction
+  horizontalBoxSizer3->AddSpacer(60);
+  horizontalBoxSizer3->AddStretchSpacer();
+
+  // ToDo: Add check for virtual keyboard support when PR1284 is merged
+  //if (wxUtilities::IsVirtualKeyboardSupported()) {
+  auto *keyboardButton = new ExternalKeyboardButton(this);
+  keyboardButton->SetFocusOnSafeCombinationCtrl(m_oldPasswdEntry);
+  horizontalBoxSizer3->Add(
+    keyboardButton,
+    0, wxALIGN_CENTER_VERTICAL|wxALL, 0
+  );
+  //}
 }
 
 /*!
@@ -273,7 +269,7 @@ void SafeCombinationChangeDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
       wxMessageDialog err(this, _("Cannot verify old master password - file gone?"),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
-    } else if (m_isPasswordHidden && (m_confirm != m_newpasswd)) {
+    } else if (m_confirm != m_newpasswd) {
       wxMessageDialog err(this, _("New master password and confirmation do not match"),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
@@ -343,7 +339,7 @@ void SafeCombinationChangeDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
         m_yubiStatusCtrl->SetForegroundColour(*wxRED);
         m_yubiStatusCtrl->SetLabel(_("YubiKey master password incorrect"));
       } else {
-        m_yubiMixin2.SetPrompt1(_("Enter new master password (if any) and click on bottom Yubikey button"));
+        m_yubiMixin2.SetPrompt1(_("Enter new master password and click on bottom Yubikey button"));
         m_yubiMixin2.UpdateStatus();
       }
     }
