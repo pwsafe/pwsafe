@@ -7,8 +7,8 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 1.19 Release ??? 2024
-==================================
+PasswordSafe 1.19 Release 8 June 2024
+=====================================
 
 Bugs fixed in 1.19
 ------------------
@@ -31,6 +31,7 @@ New features in 1.19
 Changes to existing features in 1.19
 ------------------------------------
 * Default polling interval for Yubikey changed from 0.5 to 0.9 seconds to avoid deadlocks on slow systems.
+* Texts cleaned up, now simpler and more direct
 
 PasswordSafe 1.18.2 Release January 2024
 ========================================
