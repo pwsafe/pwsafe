@@ -200,15 +200,14 @@ void SafeCombinationChangeDlg::CreateControls()
   horizontalBoxSizer3->AddSpacer(60);
   horizontalBoxSizer3->AddStretchSpacer();
 
-  // ToDo: Add check for virtual keyboard support when PR1284 is merged
-  //if (wxUtilities::IsVirtualKeyboardSupported()) {
-  auto *keyboardButton = new ExternalKeyboardButton(this);
-  keyboardButton->SetFocusOnSafeCombinationCtrl(m_oldPasswdEntry);
-  horizontalBoxSizer3->Add(
-    keyboardButton,
-    0, wxALIGN_CENTER_VERTICAL|wxALL, 0
-  );
-  //}
+  if (wxUtilities::IsVirtualKeyboardSupported()) {
+    auto *keyboardButton = new ExternalKeyboardButton(this);
+    keyboardButton->SetFocusOnSafeCombinationCtrl(m_oldPasswdEntry);
+    horizontalBoxSizer3->Add(
+      keyboardButton,
+      0, wxALIGN_CENTER_VERTICAL|wxALL, 0
+    );
+  }
 }
 
 /*!
