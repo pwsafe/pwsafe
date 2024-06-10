@@ -351,6 +351,7 @@ void SafeCombinationChangeDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
         }
         m_yubiMixin2.SetPrompt1(_("Enter new master password and click on bottom Yubikey button"));
         m_yubiMixin2.UpdateStatus();
+        m_newPasswdEntry->SetFocus();
       }
     }
   }
