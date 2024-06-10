@@ -298,6 +298,11 @@ void SafeCombinationChangeDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
     } else { // password checks out OK.
       EndModal(wxID_OK);
     }
+    // If we got here, there was an error in a PW entry.  A case exists where switching from a
+    // (Yubikey without a PW), to (PW only), we may need to allow the old PW to be
+    // blank again for the next retry.
+    if (!m_oldresponse.empty() && m_oldpasswd.empty())
+      m_oldPasswdEntry->AllowEmptyCombinationOnce();
   }
 }
 
@@ -339,6 +344,11 @@ void SafeCombinationChangeDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
         m_yubiStatusCtrl->SetForegroundColour(*wxRED);
         m_yubiStatusCtrl->SetLabel(_("YubiKey master password incorrect"));
       } else {
+        // The old password has been validated.  If it was blank, allow it to be blank on the next check.
+        // e.g. changing from (Yubikey w/blank PW) to (PW only).
+        if (m_oldpasswd.empty()) {
+          m_oldPasswdEntry->AllowEmptyCombinationOnce();
+        }
         m_yubiMixin2.SetPrompt1(_("Enter new master password and click on bottom Yubikey button"));
         m_yubiMixin2.UpdateStatus();
       }
