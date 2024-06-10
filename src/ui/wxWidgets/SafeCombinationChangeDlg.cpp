@@ -383,6 +383,14 @@ void SafeCombinationChangeDlg::OnYubibtn2Click(wxCommandEvent& WXUNUSED(event))
         return;
       }
     }
+
+    if (m_confirm != m_newpasswd) {
+      wxMessageDialog err(this, _("New master password and confirmation do not match"),
+                          _("Error"), wxOK | wxICON_EXCLAMATION);
+      err.ShowModal();
+      return;
+    }
+
     StringX response;
     bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
     if (m_yubiMixin2.PerformChallengeResponse(this, m_newpasswd, response, oldYubiChallenge)) {
