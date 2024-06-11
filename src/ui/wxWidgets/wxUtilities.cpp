@@ -28,6 +28,7 @@
 #include <wx/versioninfo.h>
 
 #include "core/PWScore.h"
+#include "core/PWCharPool.h" // for CheckMasterPassword()
 #include "PWSafeApp.h"
 #include "SafeCombinationCtrl.h"
 
@@ -184,6 +185,37 @@ void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxStrin
   tmp->Destroy();
   sizer->Layout();
 #endif
+}
+
+bool CheckPasswordStrengthAndWarn(wxWindow *win, StringX &password)
+{
+  // Vox populi vox dei - folks want the ability to use a weak
+  // passphrase, best we can do is warn them...
+  // If someone want to build a version that insists on proper
+  // passphrases, then just define the preprocessor macro
+  // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
+  // (also used in CPasskeyChangeDlg)
+  StringX errmess;
+  if (!CPasswordCharPool::CheckMasterPassword(password, errmess)) {
+    wxString cs_msg;
+    cs_msg = errmess.c_str();
+#ifndef PWS_FORCE_STRONG_PASSPHRASE
+    cs_msg += wxT("\n");
+    cs_msg += _("Use it anyway?");
+    wxMessageDialog mb(win, cs_msg, _("Weak Master Password"),
+                       wxYES_NO | wxNO_DEFAULT | wxICON_EXCLAMATION);
+    mb.SetYesNoLabels(_("Use anyway"), _("Cancel"));
+    int rc = mb.ShowModal();
+    return (rc == wxID_YES);
+#else
+    cs_msg += wxT("\n");
+    cs_msg += _("Try another");
+    wxMessageDialog mb(win, cs_msg, _("Error"), wxOK | wxICON_HAND);
+    mb.ShowModal();
+    return false;
+#endif // PWS_FORCE_STRONG_PASSPHRASE
+  }
+  return true;
 }
 
 SafeCombinationCtrl* wxUtilities::CreateLabeledSafeCombinationCtrl(wxWindow* parent, wxWindowID id, const wxString& label, StringX* password, bool hasFocus)

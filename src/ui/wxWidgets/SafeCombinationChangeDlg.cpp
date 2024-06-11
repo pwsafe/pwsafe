@@ -23,8 +23,6 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
-#include "core/PWCharPool.h" // for CheckMasterPassword()
-
 ////@begin includes
 #include "ExternalKeyboardButton.h"
 #include "SafeCombinationCtrl.h"
@@ -272,30 +270,8 @@ void SafeCombinationChangeDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
       wxMessageDialog err(this, _("New master password and confirmation do not match"),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
-    // Vox populi vox dei - folks want the ability to use a weak
-    // passphrase, best we can do is warn them...
-    // If someone want to build a version that insists on proper
-    // passphrases, then just define the preprocessor macro
-    // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
-    // (also used in CPasskeySetup)
-    } else if (!CPasswordCharPool::CheckMasterPassword(m_newpasswd, errmess)) {
-      wxString msg = errmess.c_str();
-#ifndef PWS_FORCE_STRONG_PASSPHRASE
-      msg += wxT("\n");
-      msg += _("Use it anyway?");
-      wxMessageDialog err(this, msg,
-                          _("Weak Master Password"), wxYES_NO | wxNO_DEFAULT | wxICON_EXCLAMATION);
-      err.SetYesNoLabels(_("Use anyway"), _("Cancel"));
-      int rc1 = err.ShowModal();
-      if (rc1 == wxID_YES)
-        EndModal(wxID_OK);
-#else
-      wxMessageDialog err(this, msg,
-                          _("Error"), wxOK | wxICON_HAND);
-      err.ShowModal();
-#endif // PWS_FORCE_STRONG_PASSPHRASE
-    } else { // password checks out OK.
-      EndModal(wxID_OK);
+    } else if (CheckPasswordStrengthAndWarn(this, m_newpasswd)) {
+      EndModal(wxID_OK); // password checks out OK.
     }
     // If we got here, there was an error in a PW entry.  A case exists where switching from a
     // (Yubikey without a PW), to (PW only), we may need to allow the old PW to be
@@ -398,6 +374,10 @@ void SafeCombinationChangeDlg::OnYubibtn2Click(wxCommandEvent& WXUNUSED(event))
       wxMessageDialog err(this, _("New master password and confirmation do not match"),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
+      return;
+    }
+    // A blank password with a Yubikey is a common use case
+    if (!m_newpasswd.empty() && !CheckPasswordStrengthAndWarn(this, m_newpasswd)) {
       return;
     }
 
