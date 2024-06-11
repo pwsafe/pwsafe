@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # Jadran Rudec <jrudec@gmail.com>, 2024
 # ronys, 2024
 # Procol Lacor, 2024
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
@@ -16,43 +16,40 @@ msgstr ""
 "POT-Creation-Date: 2024-06-08 12:15+0300\n"
 "PO-Revision-Date: 2021-12-23 19:16+0000\n"
 "Last-Translator: Procol Lacor, 2024\n"
-"Language-Team: Slovenian (https://app.transifex.com/passwordsafe/"
-"teams/125590/sl/)\n"
-"Language: sl\n"
+"Language-Team: Slovenian (https://app.transifex.com/passwordsafe/teams/125590/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || "
-"n%100==4 ? 2 : 3);\n"
+"Language: sl\n"
+"Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);\n"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:27
 msgid "<Not Set>"
-msgstr ""
+msgstr "<Ni nastavljeno>"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:28
-#, fuzzy
 msgid ""
 "\n"
 "Unexpected exception during parsing."
-msgstr "Nepričakovan izid pri povlačenju"
+msgstr ""
+"\n"
+"Nepričakovana izjema med razčlenjevanjem."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:29
 msgid "OutOfMemoryException."
-msgstr ""
+msgstr "IzjemaPomanjkanjePomnilnika."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:30
 msgid "after"
-msgstr ""
+msgstr "po"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:31
-#, fuzzy
 msgid "alias"
-msgstr "Kratko ime:"
+msgstr "vzdevek"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:32
-#, fuzzy
 msgid "aliases"
-msgstr "podatkovne zbirke"
+msgstr "kratka imena"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:33
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersEditor.cpp:905
@@ -71,21 +68,19 @@ msgstr "in"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:35
 msgid " (at least N restrictions may be ignored)"
-msgstr ""
+msgstr "(najmanj N omejitev se lahko prezre)"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:36
-#, fuzzy
 msgid "autotype:"
-msgstr "Samodejno vtipkanje:"
+msgstr "samodejno vtipkanje:"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:37
-#, fuzzy
 msgid "Incorrect password"
-msgstr "Napačno glavno geslo,\n"
+msgstr "Napačno geslo"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:38
 msgid "before"
-msgstr ""
+msgstr "pred"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:39
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SelectionCriteria.cpp:40
@@ -94,19 +89,21 @@ msgstr "se začne z"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:40
 msgid "between"
-msgstr ""
+msgstr "med"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:41
 msgid ""
-"Unable to create a new XML configuration file or add your settings to an "
-"existing XML configuration file.\n"
+"Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n"
 "\n"
-"All application configuration settings will be saved in your registry entry "
-"on this computer.\n"
+"All application configuration settings will be saved in your registry entry on this computer.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
 msgstr ""
+"Nove XML konfiguracijske datoteke ni mogoče ustvariti ali dodati vaše nastavitve v obstoječo XML konfiguracijsko datoteko.\n"
+"\n"
+"Vsie nastavitve konfiguracije aplikacije bodo shranjene v vaš vnos registra v tem računalniku.\n"
+"\n"
+"Nastavitve, povezane z zbirko podatkov, bodo shranjene v odprti zbirki podatkov, ko bo ta zaprta, ob predpostavki, da ni samo-za-branje ali pa zaklenjena s strani drugega uporabnika."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:42
 msgid ""
@@ -114,30 +111,39 @@ msgid ""
 "\n"
 "No application settings will be saved.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
 msgstr ""
+"Napaka - ni mogoče določiti nastavitve konfiguracije!\n"
+"\n"
+"Nastavitve aplikacije ne bodo shranjene.\n"
+"\n"
+"Nastavitve, povezane z zbirko podatkov bodo shranjene v odprti zbirki podatkov, ko bo ta zaprta, ob predpostavki, da ni samo za branje ali, da jo ni zaklenil drug uporabnik."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:43
 msgid ""
-"Trouble reading stored filters (version mismatch?). Filters will be unusable."
+"Trouble reading stored filters (version mismatch?). Filters will be "
+"unusable."
 msgstr ""
+"Težave pri branju shranjenih filtrov (neujemanje različic?). Filtri bodo "
+"neuporabni."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:44
-#, fuzzy
 msgid "Unable to read locker?"
-msgstr "E-pošte ni mogoče poslati"
+msgstr "Ni mogoče prebrati zaklenjene omarice?"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:45
 msgid ""
 "Unable to update your entries in the existing XML configuration file.\n"
 "\n"
-"All application configuration settings will be loaded from this file but no "
-"changes will be saved.\n"
+"All application configuration settings will be loaded from this file but no changes will be saved.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
 msgstr ""
+"Vnosov v obstoječi konfiguracijski datoteki XML ni mogoče posodobiti.\n"
+"\n"
+"Vse konfiguracijske nastavitve aplikacije bodo naložene iz te datoteke vendar, nobena sprememba ne bo shranjena.\n"
+"\n"
+"Nastavitve, povezane z zbirko podatkov, bodo shranjene v odprti zbirki podatkov, ko bo ta zaprta, ob predpostavki, da ni samo-za-branje ali pa zaklenjena s strani drugega uporabnika."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:46
 #, c-format
@@ -146,25 +152,26 @@ msgid ""
 "\n"
 "The configuration file will not be used."
 msgstr ""
+"%ls\n"
+"\n"
+"Konfiguracijska datoteka ne bo uporabljena."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:47
-#, fuzzy
 msgid "Missing XSD File"
-msgstr "Manjkajoča XSD Datoteka -"
+msgstr "Manjka XSD datoteka"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:48
 msgid "Unable to validate a XML file using a XML Schema (XSD) on your system."
 msgstr ""
+"Datoteke XML ni mogoče potrditi z uporabo XML sheme (XSD) v vašem sistemu."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:49
-#, fuzzy
 msgid "(case insensitive)"
-msgstr "(občutljivo na velikost črk)"
+msgstr "(ni občutljivo na m/V črke)"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:50
-#, fuzzy
 msgid "(case sensitive)"
-msgstr "(občutljivo na velikost črk)"
+msgstr "(občutljivo na m/V črke)"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:51
 #, c-format
@@ -174,37 +181,39 @@ msgid ""
 " and:\n"
 "\t %ls\n"
 msgstr ""
+"Primerjajte celotno trenutno zbirko podatkov:\n"
+"\t %ls\n"
+" in:\n"
+"\t %ls\n"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:52
 #, c-format
 msgid "\tGroup:'%ls'; Title:'%ls'; User:'%ls'"
-msgstr ""
+msgstr "\tSkupina:'%ls'; Naslov:'%ls'; Uporabnik:'%ls'"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:53
 msgid "C:F[R-O]"
-msgstr ""
+msgstr "C:F[S-B]"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:54
 msgid "C:F[R/W]"
-msgstr ""
+msgstr "C:F[B/P]"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:55
-#, fuzzy
 msgid "C:None  "
-msgstr "Nič"
+msgstr "C:Brez  "
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:56
 msgid "C:Reg   "
-msgstr ""
+msgstr "C:Reg   "
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:57
 msgid "conflict"
-msgstr ""
+msgstr "spor"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:58
-#, fuzzy
 msgid "conflicts"
-msgstr "Nasprotujoči si vnosi"
+msgstr "spori"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:59
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SelectionCriteria.cpp:44
@@ -212,29 +221,26 @@ msgid "contains"
 msgstr "vsebuje"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:60
-#, fuzzy
 msgid "contains all of"
-msgstr "vsebuje"
+msgstr "vsebuje vse od"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:61
-#, fuzzy
 msgid "contains any of"
-msgstr "vsebuje"
+msgstr "vsebuje katero koli od"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:62
-#, fuzzy
 msgid "copied"
-msgstr "URL je kopiran "
+msgstr "kopirano"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:63
-#, fuzzy, c-format
+#, c-format
 msgid "%ls - Copied %ls"
-msgstr "%ls na %ls"
+msgstr "%ls - Kopirano %ls"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:64
 #, c-format
 msgid " Current default (%ls)"
-msgstr ""
+msgstr " Trenutno privzeto (%ls)"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:65
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:134
@@ -286,19 +292,16 @@ msgid "Send Email"
 msgstr "Pošlji e-pošto"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:74
-#, fuzzy
 msgid "View/Edit selected entry"
-msgstr "Uredi/Pogled izbranega vnosa"
+msgstr "Prikaz/Urejanje izbranega vnosa"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:75
-#, fuzzy
 msgid " (application default)"
-msgstr "Uporaba aplikacije:"
+msgstr " (privzeto za aplikacijo)"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:76
-#, fuzzy
 msgid "default symbol set"
-msgstr "Uporabi simbole"
+msgstr "privzeti nabor simbolov"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:77
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1536
@@ -313,14 +316,15 @@ msgstr "Privzet pravilnik"
 msgid ""
 "This entry has the following %d %ls:\n"
 "%ls\n"
-"Confirm to continue (alias entry's passwords will be replaced by this "
-"entry's password)?"
+"Confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
 msgstr ""
+"Ta vnos ima naslednje %d %ls:\n"
+"%ls\n"
+"Potrdite, če želite nadaljevati (kratka imena gesel vnosa bodo zamenjana z geslom tega vnosa)?"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:79
-#, fuzzy
 msgid "Delete Base Entry Confirmation"
-msgstr "Izbriši potrditev"
+msgstr "Izbriši potrditev osnovnega vnosa"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:80
 #, c-format
@@ -329,6 +333,9 @@ msgid ""
 "%ls\n"
 "Confirm to continue (All shortcuts to this entry will be deleted)?"
 msgstr ""
+"Ta vnos ima naslednje %d %ls:\n"
+"%ls\n"
+"Potrdite, če želite nadaljevati (Vse bližnjice do tega vnosa bodo izbrisane)?"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:81
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SelectionCriteria.cpp:41
@@ -341,14 +348,12 @@ msgid "does not contain"
 msgstr "ne vsebuje"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:83
-#, fuzzy
 msgid "does not contain all of"
-msgstr "ne vsebuje"
+msgstr "ne vsebuje vseh"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:84
-#, fuzzy
 msgid "does not contain any of"
-msgstr "ne vsebuje"
+msgstr "ne vsebuje nobenega od"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:85
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SelectionCriteria.cpp:43
@@ -363,34 +368,34 @@ msgstr "ni enako"
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:87
 #, c-format
 msgid " Drag # %d"
-msgstr ""
+msgstr " Povleci # %d"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:88
 #, c-format
 msgid "%ls - Drag & Drop %ls"
-msgstr ""
+msgstr "%ls - Povleci in spusti %ls"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:89
-#, fuzzy, c-format
+#, c-format
 msgid " Duplicate # %d"
-msgstr "Podvoj vnos"
+msgstr " Podvoji # %d"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:90
-#, fuzzy
 msgid "empty group"
-msgstr "Uvoz pod skupino?"
+msgstr "prazna skupina"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:91
-#, fuzzy
 msgid "empty groups"
-msgstr "Uvoz pod skupino?"
+msgstr "prazne skupine"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:92
 #, c-format
 msgid ""
-"Trouble with a non-textual (e.g., time) field in record '%ls' - please check "
-"data carefully."
+"Trouble with a non-textual (e.g., time) field in record '%ls' - please check"
+" data carefully."
 msgstr ""
+"Težave z ne besedilnim poljem (npr. čas) v zapisu '%ls' - prosimo, da "
+"previdno preverite podatke."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:93
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SelectionCriteria.cpp:42
@@ -398,13 +403,14 @@ msgid "ends with"
 msgstr "se konča z"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:94
-#, fuzzy
 msgid "End Report"
-msgstr "Poročila"
+msgstr "Konec poročila"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:95
-msgid "--------------------------------------------------------------------------------"
+msgid ""
+"--------------------------------------------------------------------------------"
 msgstr ""
+"--------------------------------------------------------------------------------"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:96
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:1104
@@ -420,15 +426,11 @@ msgstr "vnosi"
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/TreeCtrl.cpp:2732
 #, c-format
 msgid ""
-"The following entries had a policy name that already existed in this "
-"database but with different settings.\n"
-"A new named policy has been created with the current date/time (%ls) "
-"appended:%ls"
+"The following entries had a policy name that already existed in this database but with different settings.\n"
+"A new named policy has been created with the current date/time (%ls) appended:%ls"
 msgstr ""
-"Naslednji vnosi so imeli Ime pravilnika, ki je že obstajalo v tej zbirki "
-"podatkov, vendar z različnimi nastavitvami.\n"
-"Ustvarjen je bila nov Imenovan pravilnik s trenutnim datumom/časom (%ls), "
-"dodanim:%ls"
+"Naslednji vnosi so imeli Ime pravilnika, ki je že obstajalo v tej zbirki podatkov, vendar z različnimi nastavitvami.\n"
+"Ustvarjen je bila nov Imenovan pravilnik s trenutnim datumom/časom (%ls), dodanim:%ls"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:98
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:1104
@@ -447,122 +449,115 @@ msgstr "je enako"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:100
 msgid "has expired"
-msgstr ""
+msgstr "je poteklo"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:101
-#, fuzzy
 msgid "Entries with a password expiry"
-msgstr "Vnosi z datumi po&teka"
+msgstr "Vnosi z iztekom gesla"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:102
-#, fuzzy, c-format
+#, c-format
 msgid "within %d day(s)"
-msgstr "poteče v dnevu(dneh):"
+msgstr "znotraj %d dni"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid "DB Export from database: '%s'"
-msgstr "Izvoz podatkovne zbirke:"
+msgstr "DB izvoz iz zbirke podatkov: '%s'"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:104
 msgid "First character of variable name must be alphabetic"
-msgstr ""
+msgstr "Prvi znak imena spremenljivke mora biti abecedni"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:105
 msgid "Index not numeric"
-msgstr ""
+msgstr "Indeks ni številčen"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:106
 msgid "Input string is empty"
-msgstr ""
+msgstr "Vhodni niz je prazen"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:107
 msgid "Characters present between end of index ']' and '}'"
-msgstr ""
+msgstr "Znaki, prisotni med koncem indeksa ']' in'}'"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:108
 msgid "Index is invalid or missing"
-msgstr ""
+msgstr "Indeks ni veljaven ali manjka"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:109
 msgid "Missing ending curly bracket for variable name"
-msgstr ""
+msgstr "Manjka končni zaviti oklepaj za ime spremenljivke"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:110
 msgid "Missing ending round bracket for Autotype value"
-msgstr ""
+msgstr "Manjka končni zaklepaj za vrednost Samodejnem vtipkanju"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:111
 msgid "Missing ending square bracket for index value"
-msgstr ""
+msgstr "Manjka končni kvadratni zaklepaj za vrednost indeksa"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:112
 msgid "There are unmatched quotes in the run command"
-msgstr ""
+msgstr "V ukazu Zaženi niso pravilno postavljeni narekovaji"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:113
 msgid "Variable name is empty"
-msgstr ""
+msgstr "Ime spremenljivke je prazno"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:114
 msgid "Variable name must be alphanumeric"
-msgstr ""
+msgstr "Ime spremenljivke mora biti alfanumerično"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:115
-#, fuzzy
 msgid "an alias entry"
-msgstr "Podvoj vnos"
+msgstr "kratko ime vnosa"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:116
 msgid "a base entry of an alias"
-msgstr ""
+msgstr "osnovni vnos kratkega imena"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:117
 msgid "  Field is too long."
-msgstr ""
+msgstr "  Polje je predolgo."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:118
 msgid "  Field is too short."
-msgstr ""
+msgstr "  Polje je prekratko."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:119
-#, fuzzy
 msgid "Error: A file with this name already exists"
-msgstr "Ta filter že obstaja"
+msgstr "Napaka: Datoteka s tem imenom že obstaja"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:120
-#, fuzzy
 msgid "The file was not found."
-msgstr "Datoteka ali pot ni bila najdena."
+msgstr "Datoteka ni bila najdena."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:121
-#, fuzzy
 msgid "Error: File is read-only"
-msgstr "Odpri samo za branje"
+msgstr "Napaka: Datoteka je samo za branje"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:122
-#, fuzzy
 msgid "Error while writing file! Try saving in a different location"
-msgstr ""
-"Operacija pisanja ni uspela!\n"
-"Datoteka je bila morda poškodovana.\n"
-"Poskusite shraniti na drugo mesto"
+msgstr "Napaka pri pisanju datoteke! Poskusite shranjevanje na drugo mesto"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:123
 msgid "File is too big."
-msgstr ""
+msgstr "Datoteka je prevelika."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:124
 msgid "File is too short."
-msgstr ""
+msgstr "Datoteka je prekratka."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:125
 msgid "File is truncated or otherwise corrupt. Please use backup database."
 msgstr ""
+"Datoteka je okrnjena ali kako drugače poškodovana. Uporabite varnostno "
+"kopijo zbirke podatkov."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:126
 msgid "Cannot read file. Please check file permissions."
-msgstr ""
+msgstr "Datoteke ni mogoče prebrati. Prreverite pravice datoteke."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:127
 #, c-format
@@ -570,52 +565,49 @@ msgid ""
 "Filter %ls already exists in the database, do you wish to replace it with "
 "this?"
 msgstr ""
+"Filter %ls že obstaja v zbirki podatkov. Ali ga želite zamenjati s tem?"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:128
-#, fuzzy
 msgid "Current database filters have been exported to this database."
-msgstr "Primerjaj trenutno zbirko podatkov z drugo zbirko podatkov"
+msgstr ""
+"Trenutni filtri zbirke podatkov so bili izvoženi v to zbirko podatkov."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:129
 msgid "Stored filters will be unusable until the file's restored."
 msgstr ""
+"Shranjeni filtri bodo neuporabni, dokler ne bo ta datoteka obnovljena."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:130
-#, fuzzy
 msgid "Last Access Time"
-msgstr "Datum zadnjega dostopa datoteke"
+msgstr "Čas zadnjega dostopa"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:131
-#, fuzzy
 msgid "Attachment Reference"
-msgstr "Priponka"
+msgstr "Sklic priloge"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:132
-#, fuzzy
 msgid "AutoType"
-msgstr "Samodejna vrsta"
+msgstr "Samodejno vtipkanje"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:133
-#, fuzzy
 msgid "Credit card expiration"
-msgstr "Privzeto geslo poteče (dni)"
+msgstr "Potek kreditne kartice"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:134
 msgid "Credit card number"
-msgstr ""
+msgstr "Številka kreditne kartice"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:135
 msgid "Credit card PIN"
-msgstr ""
+msgstr "PIN kreditne kartice"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:136
 msgid "Credit card CVV"
-msgstr ""
+msgstr "Kreditna kartica CVV"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:137
-#, fuzzy
 msgid "Created Time"
-msgstr "Ustvarjeno dne:"
+msgstr "Čas ustvarjanja"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:138
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersDCADlg.cpp:284
@@ -623,9 +615,8 @@ msgid "DCA"
 msgstr "DCA"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:139
-#, fuzzy
 msgid "e-mail"
-msgstr "E-pošta"
+msgstr "e-pošta"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:140
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/DragBarCtrl.cpp:150
@@ -634,14 +625,12 @@ msgid "Group"
 msgstr "Skupina"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:141
-#, fuzzy
 msgid "Group/Title"
-msgstr "Skupina"
+msgstr "Skupina/Naslov"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:142
-#, fuzzy
 msgid "Keyboard Shortcut"
-msgstr "Ustvari bližnjico"
+msgstr "Tipka z Bližnjico"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:143
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/DragBarCtrl.cpp:154
@@ -657,19 +646,16 @@ msgid "Password"
 msgstr "Geslo"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:145
-#, fuzzy
 msgid "Password Modified Time"
-msgstr "Password Safe spletno stran"
+msgstr "Čas spremembe gesla"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:146
-#, fuzzy
 msgid "Protected"
-msgstr "Zaščiti vnos"
+msgstr "Zaščiten"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:147
-#, fuzzy
 msgid "History"
-msgstr "Počisti Zgodovino"
+msgstr "Zgodovina"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:148
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:238
@@ -681,22 +667,20 @@ msgid "Password Policy"
 msgstr "Pravilnik gesel"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:149
-#, fuzzy
 msgid "Password Policy Name"
-msgstr "Pravilnik gesel"
+msgstr "Ime pravilnika gesel"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:150
 msgid "Record Modified Time"
-msgstr ""
+msgstr "Čas spremembe zapisa"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:152
 msgid "Shift+DCA"
-msgstr ""
+msgstr "Shift+DCA"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:153
-#, fuzzy
 msgid "Symbols"
-msgstr "Uporabi simbole"
+msgstr "Simboli"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:154
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/DragBarCtrl.cpp:151
@@ -708,32 +692,31 @@ msgstr "Naslov"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:155
 msgid "Authentication Code Config"
-msgstr ""
+msgstr "Nastavitev avtentikacijske kode"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:156
 msgid "Authentication Code Length"
-msgstr ""
+msgstr "Dolžina avtentikacijske kode"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:157
 msgid "Authentication Code Start Time"
-msgstr ""
+msgstr "Začetni čas avtentikacijske kode"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:158
 msgid "Authentication Code Time Step"
-msgstr ""
+msgstr "Časovni korak avtentikacijske kode"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:159
 msgid "Two Factor Key"
-msgstr ""
+msgstr "Dvo-faktorski ključ"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:160
 msgid "Authentication Secret"
-msgstr ""
+msgstr "Skrivnost avtentikacije"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:161
-#, fuzzy
 msgid "URL"
-msgstr "URL:"
+msgstr "URL"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:162
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:233
@@ -742,60 +725,51 @@ msgstr "Uporabniško ime"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:163
 msgid "UUID"
-msgstr ""
+msgstr "UUID"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:164
-#, fuzzy
 msgid "Password Expiry Date"
-msgstr "Geslo neha veljati"
+msgstr "Datum poteka veljavnosti gesla"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:165
-#, fuzzy
 msgid "Password Expiry Interval"
-msgstr "Geslo neha veljati"
+msgstr "Interval izteka gesla"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:166
-#, fuzzy
 msgid "a normal entry"
-msgstr "vnos"
+msgstr "normalni vnos"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:167
-#, fuzzy
 msgid "Last found entries"
-msgstr "Zadnji rezultati iskanja"
+msgstr "Zadnji najdeni vnosi"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:168
-#, fuzzy
 msgid "added but not yet saved to database"
-msgstr "Neshranjena obnovljena zbirka podatkov"
+msgstr "dodano vendar še ni shranjeno v zbirko podatkov"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:169
-#, fuzzy
 msgid "in the database"
-msgstr "Zbirka podatkov:"
+msgstr "v zbirki podatkov"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:170
-#, fuzzy
 msgid "a shortcut entry"
-msgstr "Bližnjica do"
+msgstr "vnos bližnjice"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:171
-#, fuzzy
 msgid "a base entry of a shortcut"
-msgstr "ni veljavna bližnjica"
+msgstr "osnovni vnos bližnjice"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:172
 msgid "changed but not yet saved to database"
-msgstr ""
+msgstr "spremenjeno, vendar še ni shranjeno v zbirko podatkov"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:173
-#, fuzzy
 msgid "greater than"
-msgstr "Ustvarjeno dne:"
+msgstr "večje od"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:174
 msgid "greater than or equal to"
-msgstr ""
+msgstr "večje ali enako kot"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:175
 #, c-format
@@ -803,29 +777,34 @@ msgid ""
 "Invalid input on line %d.  Number of fields separated by '%c' is not as "
 "expected."
 msgstr ""
+"Neveljaven vnos v vrstic %d.  Ni pričakovano število polj, ločenih z '%c'."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:176
 #, c-format
 msgid "Line %d: "
-msgstr ""
+msgstr "Vrstica %d: "
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:177
 #, c-format
 msgid ""
 "File ends on line %d before ending double quote of last entry's note field."
 msgstr ""
+"Datoteka se konča v vrstici %d pred koncem dvojnih narekovajev polja opombe "
+"zadnjega vnosa."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:178
 msgid "Import aborted, see report for details."
-msgstr ""
+msgstr "Uvoz je preklican. Poglejte podrobno poročilo."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:179
 msgid ""
-"The TXT or CSV file was not imported as required as entry records span "
-"multiple lines in the CSV file.\n"
+"The TXT or CSV file was not imported as required as entry records span multiple lines in the CSV file.\n"
 "\n"
 "Import aborted."
 msgstr ""
+"Datoteka TXT ali CSV ni bila uvožena kot je zahtevano, ker zapisi vnosa preklapljajo več vrstic v datoteki CSV..\n"
+"\n"
+"Uvoz je bil prekinjen."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:180
 #, c-format
@@ -833,74 +812,76 @@ msgid ""
 "%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the "
 "Import file. Added imported entry with title=\"%ls\".\n"
 msgstr ""
+"%ls, Naslov=\"%ls\", Uporabnik=\"%ls\" že obstaja v vaši zbirki podatkov ali"
+" v Uvozi datoteko. Dodan je uvožen vnos z naslovom=\"%ls\".\n"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:181
 #, c-format
 msgid "Entry on line %d with Group=\"%ls\""
-msgstr ""
+msgstr "Vnos v vrstico %d s Skupina=\"%ls\""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:182
 #, c-format
 msgid "Entry on line %d with no group"
-msgstr ""
+msgstr "Vnos v vrstico %d z Brez skupine"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:183
 #, c-format
 msgid "Entry with Group=\"%ls\""
-msgstr ""
+msgstr "Vnos s Skupina=\"%ls\""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:184
 msgid "Entry with no group"
-msgstr ""
+msgstr "Vnos z Brez skupine"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:185
-#, fuzzy
 msgid "imported"
-msgstr "Uvoženo"
+msgstr "uvoženo"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:186
 #, c-format
 msgid "including %d empty group(s)."
-msgstr ""
+msgstr "vključno z %d praznimi skupinami."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:187
 #, c-format
 msgid "Empty line %d skipped"
-msgstr ""
+msgstr "Prazna vrstica %d je preskočena"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:188
 #, c-format
 msgid "Entry %ls%d with Group=\"%ls\", Title=\"%ls\", User=\"%ls\""
-msgstr ""
+msgstr "Vnos %ls%d s Skupin=\"%ls\", Naslov=\"%ls\", Uporabnik=\"%ls\""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:189
 msgid "Internal error. Import failed. No records imported."
-msgstr ""
+msgstr "Notranja napaka. Uvoz ni uspel. Ni uvoženih zapisov."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:190
 #, c-format
 msgid "Found %d known column headers:"
-msgstr ""
+msgstr "Najdeno je %d znanih glav stolpcev:"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:191
 msgid "Invalid field delimiter: must be within ASCII range."
-msgstr ""
+msgstr "Neveljavno ločilo polja: mora biti v območju ASCII."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:192
 #, c-format
 msgid "Entry of line %d has an invalid \"%ls\" field. It has been ignored."
-msgstr ""
+msgstr "Vnos vrstice %d ima neveljavno polje \"%ls\". To je bilo prezrto."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:193
-#, fuzzy
 msgid "The following columns will be processed: "
-msgstr "Naslednji zapisi so bili preskočeni:"
+msgstr "Obdelani bodo naslednji stolpci: "
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:194
 msgid ""
 "The following columns were recognised but only Group/Title, Username and "
 "Password will be processed:"
 msgstr ""
+"Naslednji stolpci so bili prepoznani, vendar bodo obdelani le "
+"Skupina/Naslov, Uporabniško ime in Geslo:"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:195
 #, c-format
@@ -908,86 +889,99 @@ msgid ""
 "Line %d skipped - Only %d fields found, whereas parsing the Header says "
 "there should be %d."
 msgstr ""
+"Vrstica %d je preskočena - Samo %d najdenih polj, medtem, ko razčlenjevanje "
+"glave pravi, da mora biti %d."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:196
 msgid ""
 "Either or both of the Group/Title and Password columns are missing. No "
 "records imported."
 msgstr ""
+"Manjka eno ali oboje stolpcev:Skupina/Naslov in Geslo. Ni uvoženih zapisov."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:197
 msgid ""
-"Could not find the next entry's title field in the KeePass V1 TXT (should be "
-"within square brackets)."
+"Could not find the next entry's title field in the KeePass V1 TXT (should be"
+" within square brackets)."
 msgstr ""
+"Naslova polja naslednjega vnosa ni bilo mogoče v KeePass V1 TXT (mora biti "
+"znotraj oglatih oklepajev)."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:198
 msgid "Column header row not recognised as first record. No records imported."
 msgstr ""
+"Vrstica glave stolpca ni prepoznana kot prvi zapis. Ni uvoženih zapisov."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:199
 msgid "No records in import file!"
-msgstr ""
+msgstr "V uvozni datoteki ni zapisov!"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:200
 #, c-format
 msgid "Line %d skipped: Empty mandatory Password field."
-msgstr ""
+msgstr "Vrstica %d je preskočena: Prazno obvezno polje Geslo."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:201
 #, c-format
 msgid "Line %d skipped: Empty mandatory Title field."
-msgstr ""
+msgstr "Vrstica %d je preskočena: Prazno obvezno polje Naslov."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:202
-#, fuzzy, c-format
+#, c-format
 msgid " Import # %d"
-msgstr "Uvoženo"
+msgstr " Uvozi # %d"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:203
-#, fuzzy, c-format
+#, c-format
 msgid "%ls - Imported %ls"
-msgstr "Uvožena%d %ls"
+msgstr "%ls - Uvoženo %ls"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:204
 msgid ""
 "To replace passwords of existing entries, all the following columns must be "
-"present: Group/Title, Username and Password.  One or more are missing and no "
-"entries have been updated."
+"present: Group/Title, Username and Password.  One or more are missing and no"
+" entries have been updated."
 msgstr ""
+"Za zamenjavo gesel obstoječih vnosov, morajo biti prisotni vsi naslednji "
+"stolpci: Skupina/Naslov, Uporabniško ime in Geslo.  Eden ali več manjka in "
+"nobeni vnosi niso bili posodobljeni."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:205
 #, c-format
 msgid "%ls not found. Cannot update entry's password.\n"
-msgstr ""
+msgstr "%ls ni bila najdena. Gesla za vnos ni mogoče posodobiti.\n"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:206
 #, c-format
 msgid "%ls has an empty %ls.\n"
-msgstr ""
+msgstr "%ls ima prazno %ls.\n"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:207
 #, c-format
 msgid ""
-"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
-"the base entry is already an alias."
+"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but"
+" the base entry is already an alias."
 msgstr ""
+"Vnos \"%ls, %ls, %ls\" ima geslo v pravilni obliki za kratko ime, vendar "
+"osnovni vnos je že osnovni vnos."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:208
 msgid "\tThis entry has been made an alias of associated base entry."
-msgstr ""
+msgstr "\tTa vnos je bil narejen iz kratkega imena povezanega osnovnega vnosa."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:209
 #, c-format
 msgid ""
-"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
-"the base entry does not exist."
+"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but"
+" the base entry does not exist."
 msgstr ""
+"Vnos \"%ls, %ls, %ls\" ima geslo v pravilni obliki za kratko ime, vendar "
+"osnovni vnos ne obstaja."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:210
 msgid ""
 "\tThis entry remains a normal entry and the password has not been changed."
-msgstr ""
+msgstr "\tTa vnos ostane normalni vnos in geslo ni bilo spremenjeno."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:211
 #, c-format
@@ -995,87 +989,93 @@ msgid ""
 "The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls "
 "base entry. It cannot be imported."
 msgstr ""
+"%ls vnos \"%ls, %ls, %ls\" ne kaže na normalni ali obstoječ %ls osnovni "
+"vnos. Ni ga mogoče uvoziti."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:212
 msgid "Entry import warnings"
-msgstr ""
+msgstr "Opozorila uvoza vnosa"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:213
 msgid "id="
-msgstr ""
+msgstr "id="
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:214
 msgid "on line "
-msgstr ""
+msgstr "povezano "
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:215
 msgid "Internal error: Invalid oflag or pmode argument"
-msgstr ""
+msgstr "Notranja napaka: neveljaven argument oflag ali pmode"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:216
 msgid "invalid!"
-msgstr ""
+msgstr "neveljavno!"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:217
 msgid "  Invalid date/time value."
-msgstr ""
+msgstr "  Neveljavna vrednost datuma/časa."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:218
 msgid "  Field length is incorrect."
-msgstr ""
+msgstr "  Dolžina polja je napačna."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:219
 msgid "Internal error: An invalid flag was specified"
-msgstr ""
+msgstr "Notranja napaka: Bila je določena neveljavna zastavica"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:220
 #, c-format
 msgid "  Invalid header: '%ls' (must be 5 hexadecimal characters)."
-msgstr ""
+msgstr "  Neveljavna glava:'%ls' (mora biti 5 šestnajstiških znakov)."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:221
 #, c-format
 msgid "Invalid lock file \"%ls\"."
-msgstr ""
+msgstr "Neveljavna zaklenjena datoteka \"%ls\"."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:222
 #, c-format
 msgid "  Invalid number of saved old passwords %d."
-msgstr ""
+msgstr "  Neveljavno število shranjenih starih gesel %d."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:223
 #, c-format
 msgid "  Invalid status value: %d (must be either 0 or 1)."
-msgstr ""
+msgstr "  Neveljavna vrednost stanja: %d (mora biti 0 ali 1)."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:224
 msgid "  Invalid password length found (not a hexadecimal number)."
 msgstr ""
+"  Najdena je bila neveljavna dolžina gesla (ni šestnajstiško število)."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:225
 msgid ""
 "  Invalid password length found (differs from length of following password)."
 msgstr ""
+"  Najdena je bila neveljavna dolžina gesla (razlikuje se od dolžine "
+"naslednjega gesla)."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:226
 msgid ""
 "  Invalid field separator character found - only a single blank is allowed "
 "between fields."
 msgstr ""
+"  Najden je bil neveljaven znak za ločilo polja - med polji je dovoljena le "
+"en presledek."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:227
-#, fuzzy
 msgid "Invalid Filter schema."
-msgstr "Napačna oblika"
+msgstr "Neveljavna shema filtra."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:228
 msgid "Schema does not have a version number."
-msgstr ""
+msgstr "Shema nima številke različice."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:229
 #, c-format
 msgid "The filter XML version (%d) is greater than the current schema (%d)."
-msgstr ""
+msgstr "Različica filtra XML (%d) je večja od trenutne sheme (%d)."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:230
 #, c-format
@@ -1083,35 +1083,32 @@ msgid ""
 "The filter XML version (%d) is greater than that supported by this instance "
 "of PasswordSafe (%d)."
 msgstr ""
+"Različica filtra XML (%d) je novejša od tiste, ki jo podpira ta primerek "
+"Password Safe (%d)."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:231
-#, fuzzy
 msgid "is"
-msgstr "Seznam"
+msgstr "je"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:232
-#, fuzzy
 msgid "is active"
-msgstr "Polje je aktivno"
+msgstr "je aktivno"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:233
-#, fuzzy
 msgid "is inactive"
-msgstr "Polje je aktivno"
+msgstr "ni aktivno"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:234
 msgid "is not"
-msgstr ""
+msgstr "ni"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:235
-#, fuzzy
 msgid "is not present"
-msgstr "Polje je prisotno"
+msgstr "ni prisotno"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:236
-#, fuzzy
 msgid "is present"
-msgstr "Polje je prisotno"
+msgstr "je prisotno"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:237
 #, c-format
@@ -1119,6 +1116,8 @@ msgid ""
 "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It "
 "has been removed from the %ls entry."
 msgstr ""
+"Vnos bližnjice s tipkovnico %ls vnos %ls je že dodeljen vnosu %ls. Bil je "
+"odstranjen iz %ls."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:238
 #, c-format
@@ -1126,29 +1125,29 @@ msgid ""
 "Entry keyboard shortcut %ls entry %ls is already allocated to the "
 "PasswordSafe application. It has been removed from the entry."
 msgstr ""
+"Vnos bližnjice s tipkovnico %ls vnos %ls je že dodeljen aplikaciji Password "
+"Safe. Bil je odstranjen iz vnosa."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:239
 msgid "less than"
-msgstr ""
+msgstr "manj od"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:240
-#, fuzzy
 msgid "less than or equal to"
-msgstr "ni enako"
+msgstr "manj od ali enako kot"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:241
-#, fuzzy
 msgid "File or path not found"
-msgstr "Datoteka ali pot ni bila najdena."
+msgstr "Datoteke ali poti ni bilo mogoče najti"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:242
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "The following new %ls %ls merged into this database:"
 msgstr ""
 "\n"
-"Naslednje %ls %ls posodobljeno:"
+"Naslednje novo %ls %ls je združeno v to zbirko podatkov:"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:243
 #, c-format
@@ -1156,6 +1155,8 @@ msgid ""
 "\n"
 "Merge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
 msgstr ""
+"\n"
+"Združi končano: %d %ls dodano (%d %ls, %d %ls, %d %ls, %d %ls)"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:244
 #, c-format
@@ -1164,73 +1165,74 @@ msgid ""
 "  Adding merged entry as «%ls» «%ls» «%ls».\n"
 "    Differing field(s): %ls"
 msgstr ""
+"Vnosi v sporu za «%ls» «%ls» «%ls».\n"
+"  Dodajanje združenega vnosa kot «%ls» «%ls» «%ls».\n"
+"    Različna polja: %ls"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:245
-#, fuzzy
 msgid "merged"
-msgstr "združi"
+msgstr "združeno"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:246
-#, fuzzy, c-format
+#, c-format
 msgid "%ls - Merged %ls"
-msgstr "%ls na %ls"
+msgstr "%ls - Združeno %ls"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:247
 msgid "MISSING PASSWORD"
-msgstr ""
+msgstr "MANJKA GESLO"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:248
 #, c-format
 msgid "\tPassword policy name '%ls' is not in the database."
-msgstr ""
+msgstr "\tIme pravilnika gesel '%ls' ni v zbirki podatkov."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:249
 msgid ""
 "\tOne or more Password Policy Names were not found in the database. The "
 "affected entries have been changed to use the database's default policy."
 msgstr ""
+"\tEnega ali več imen pravilnika gesel ni bilo mogoče najti v zbirki "
+"podatkov. Prizadeti vnosi so bili spremenjeni za uporabo privzetega "
+"pravilnika zbirke podatkov."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:250
 #, c-format
 msgid "MISSING TITLE # %d"
-msgstr ""
+msgstr "MANJKA NASLOV # %d"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:251
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:1007
 #, c-format
 msgid ""
-"Can't find XML Schema Definition file (%ls) in your PasswordSafe Application "
-"Directory.\n"
+"Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\n"
 "Copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
-"Datoteke definicije sheme XML (%ls) ni mogoče najti v vašem imeniku "
-"aplikacije Password Safe.\n"
-"Kopirajte jo iz vaše namestitvene datoteke ali ponovno namestite Password "
-"Safe."
+"Datoteke definicije sheme XML (%ls) ni mogoče najti v vašem imeniku aplikacije Password Safe.\n"
+"Kopirajte jo iz vaše namestitvene datoteke ali ponovno namestite Password Safe."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:252
-#, fuzzy
 msgid "Can't obtain the schema version."
-msgstr "za zadnjo razljičico"
+msgstr "Različice sheme ni mogoče pridobiti."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:253
 msgid "The filter XML version is missing."
-msgstr ""
+msgstr "Manjka različica filtra XML."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:254
 #, c-format
 msgid "Create SchemaCache60 Error 0x%08X during %ls."
-msgstr ""
+msgstr "Ustvari SchemaCache60 Napaka 0x%08X med %ls."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:255
 #, c-format
 msgid "SAX Parse60 Error 0x%08X during %ls."
-msgstr ""
+msgstr "SAX Parse60 napaka 0x%08X med %ls."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:256
 #, c-format
 msgid "Error (%08X): line %d character %d %ls"
-msgstr ""
+msgstr "Napaka (%08X): vrstica %d znak %d %ls"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:257
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:222
@@ -1243,20 +1245,25 @@ msgid ""
 "\n"
 "Will use registry."
 msgstr ""
+"Ni mogoče dobiti zaklepanja konfiguracijske datoteke.\n"
+"\n"
+"Uporabljen bo register."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:259
 msgid "Cannot create lock file - no permission in directory?"
-msgstr ""
+msgstr "Ne morem zagnati datoteke za zaklepanje - Ni pravic za imenik?"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:260
 msgid "Internal error: Out of file handles"
-msgstr ""
+msgstr "Notranja napaka: Pomanjkanje ročajev datoteke"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:261
 msgid ""
 "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 "
 "seems available."
 msgstr ""
+"Bralnika MS XML ni mogoče uporabiti v vašem sistemu.  Videti je, da niti MS "
+"XML v3, v4 ali V6 ni na voljo."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:262
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:123
@@ -1265,13 +1272,12 @@ msgid "None"
 msgstr "Nič"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:263
-#, fuzzy
 msgid "Unsaved changes"
-msgstr "&Neshranjene spremembe"
+msgstr "Neshranjene spremembe"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:264
 msgid "is not set"
-msgstr ""
+msgstr "ni nastavljeno"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:265
 #, c-format
@@ -1294,6 +1300,23 @@ msgid ""
 "\n"
 "Recommend that the database is now saved."
 msgstr ""
+"Število obdelanih vnosov: %d\n"
+"\n"
+"Število popravljenih neveljavnih UUID: %d\n"
+"\n"
+"Število popravljenih podvojenih UUID: %d\n"
+"\n"
+"Število popravljenih neenoličnih Skupina/Naslov/Uporabnik: %d\n"
+"\n"
+"Število popravljenih zgodovin gesel: %d\n"
+"\n"
+"Število izdanih opozoril Kratkega imena: %d\n"
+"\n"
+"Število opozoril Bližnjice: %d\n"
+"\n"
+"Število vnosov s polji, ki jih ni mogoče v celoti prikazati: %d.\n"
+"\n"
+"Priporočamo, da je zbirka podatkov zdaj shranjena."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:266
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:713
@@ -1309,12 +1332,11 @@ msgstr "Ali"
 msgid ""
 "Password should be mixed case, with at least one digit or punctuation "
 "character"
-msgstr ""
+msgstr "Geslo mora biti mešano z vsaj enim znakom števila ali ločilnim znakom"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:268
-#, fuzzy
 msgid "Password is too short."
-msgstr "Zgodovina gesel"
+msgstr "Geslo je prekratko."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:269
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersEditor.cpp:106
@@ -1343,9 +1365,8 @@ msgid "Use digits"
 msgstr "Uporabi števila"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:274
-#, fuzzy
 msgid "Use lowercase characters"
-msgstr "Najmanj malih črk"
+msgstr "Uporabi znake malih črk"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:275
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:669
@@ -1354,29 +1375,26 @@ msgid "Use symbols"
 msgstr "Uporabi simbole"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:276
-#, fuzzy
 msgid "Use uppercase characters"
-msgstr "Najmanj velikih črk"
+msgstr "Uporabi velike črke"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:277
-#, fuzzy, c-format
+#, c-format
 msgid "Error in a Password History %ls:"
-msgstr "Nastavi filtre za zgodovino gesla"
+msgstr "Napaka v zgodovini gesla %ls:"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:278
 #, c-format
 msgid "sub-field starting at position %d (within the History field): "
-msgstr ""
+msgstr "podpolje se začne na položaju %d (znotraj polja Zgodovina): "
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:279
-#, fuzzy
 msgid "  All Password History ignored."
-msgstr "Zgodovina gesel je kopirana"
+msgstr "  Vsa zgodovina gesel je zanemarjena."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:280
-#, fuzzy
 msgid "Read Error"
-msgstr "Napaka pri branju datoteke"
+msgstr "Napaka pri branju"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:281
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersDateDlg.cpp:295
@@ -1384,9 +1402,8 @@ msgid "Relative"
 msgstr "Relativno"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:282
-#, fuzzy
 msgid "relative"
-msgstr "Relativno"
+msgstr "relativno"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:283
 #, c-format
@@ -1394,77 +1411,71 @@ msgid ""
 "\tOne or more entry keyboard shortcuts were already assigned to entries in "
 "this database. They have been removed from the %ls entries."
 msgstr ""
+"\tNekatere bližnjice s tipkovnico so bile že dodeljene vnosom v tej zbirki "
+"podatkov. Odstranjeni so iz %ls vnosov."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:284
 msgid ""
 "\tOne or more Password Policy Names were already in this database but had "
 "different settings. They have been renamed."
 msgstr ""
+"\tEno ali več imen pravilnikov gesel je bilo že v tej zbirki podatkov, "
+"vendar so imele različne nastavitve. Preimenovana so."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:285
 #, c-format
 msgid "%ls%ls%ls_Report.txt"
-msgstr ""
+msgstr "%ls%ls%ls_Report.txt"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:286
 #, c-format
 msgid "Report of %ls function started at %ls"
-msgstr ""
+msgstr "Poročilo o funkciji %ls se je začelo pri % ls"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:287
-#, fuzzy, c-format
+#, c-format
 msgid "on database %ls"
-msgstr "podatkovne zbirke"
+msgstr "v zbirki podatkov %ls"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:288
-#, fuzzy
 msgid "Compare"
-msgstr "P&rimerjaj"
+msgstr "Primerjaj"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:289
-#, fuzzy
 msgid "Export_DB"
-msgstr "Izvozi"
+msgstr "Izvoz_ZP"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:290
-#, fuzzy
 msgid "Export_Text"
-msgstr "Izvozi besedilo"
+msgstr "Izvoz_Besedilo"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:291
-#, fuzzy
 msgid "Export_XML"
-msgstr "Izvozi XML"
+msgstr "Izvoz_XML"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:292
-#, fuzzy
 msgid "Find"
-msgstr "&Najdi"
+msgstr "Najdi"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:293
-#, fuzzy
 msgid "Import_KeePassV1_CSV"
-msgstr "Uvozi Kee&Pass V1 CSV"
+msgstr "Import_KeePassV1_CSV"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:294
-#, fuzzy
 msgid "Import_KeePassV1_TXT"
-msgstr "Uvozi &KeePass V1 besedilo"
+msgstr "Import_KeePassV1_TXT"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:295
-#, fuzzy
 msgid "Import_Text"
-msgstr "Uvozi &besedilo"
+msgstr "Import_Text"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:296
-#, fuzzy
 msgid "Import_XML"
-msgstr "Uvozi &XML"
+msgstr "Import_XML"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:297
-#, fuzzy
 msgid "Merge"
-msgstr "Z&druži"
+msgstr "Združi"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:298
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CompareDlg.cpp:489
@@ -1473,9 +1484,8 @@ msgid "Synchronize"
 msgstr "Sinhroniziraj"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:299
-#, fuzzy
 msgid "Validate"
-msgstr "&Preveri"
+msgstr "Potrdi"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:300
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1590
@@ -1510,9 +1520,8 @@ msgid "Error"
 msgstr "Napaka"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:301
-#, fuzzy
 msgid "Fatal Error"
-msgstr "Napaka pri pisanju"
+msgstr "Usodna napaka"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:302
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1649
@@ -1528,101 +1537,94 @@ msgid ""
 "\n"
 "Error in Password History for entry: »%ls»%ls»%ls»: "
 msgstr ""
+"\n"
+"Napaka v zgodovini gesla za vnos:»% ls»% ls»% ls»: "
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:304
 #, c-format
 msgid "\tNo entries were found containing search string '%ls' %ls"
-msgstr ""
+msgstr "\tNi bilo najdenih vnosov, ki bi vsebovali iskalni niz \"%ls\" %ls"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:305
 #, c-format
 msgid "\tThe following entries contain search string '%ls' %ls"
-msgstr ""
+msgstr "\tNaslednji vnosi vsebujejo iskalni niz \"%ls\" %ls"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:306
-#, fuzzy
 msgid "See Attachment filters"
-msgstr "Nastavi filtre za priloge"
+msgstr "Glejte Filtri prilog"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:307
-#, fuzzy
 msgid "See Password History filters"
-msgstr "Nastavi filtre za zgodovino gesla"
+msgstr "Glejte Filtri zgodovine gesel"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:308
-#, fuzzy
 msgid "See Password Policy filters"
-msgstr "Nastavi filtre pravil za gesla"
+msgstr "Glejte Filtri pravilnika gesel"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:309
 msgid "is set"
-msgstr ""
+msgstr "je nastavljeno"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:310
-#, fuzzy
 msgid "shortcut"
-msgstr "Bližnjica"
+msgstr "bližnjica"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:311
-#, fuzzy
 msgid "shortcuts"
-msgstr "Bližnjice"
+msgstr "bližnjice"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:312
 msgid "policy specific symbols"
-msgstr ""
+msgstr "simboli določeni s Pravilnikom"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:313
-#, fuzzy
 msgid "Start Report"
-msgstr "Poročila"
+msgstr "Začetek poročila"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:314
-#, fuzzy
 msgid "Double-Click on entry to Autotype"
-msgstr "Akcija dvoklika:"
+msgstr "Dvokliknite na vnos za Samodejno vtipkanje"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:315
 msgid "Double-Click on entry to Browse to URL"
-msgstr ""
+msgstr "Dvokliknite na vnos za brskanje v URL"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:316
-#, fuzzy
 msgid "Double-Click on entry to Browse to URL + Autotype"
-msgstr "Prebrskaj v URL + Samodejno vtipkanje"
+msgstr "Dvokliknite na vstop za brskanje v URL + Samodejno vtipkanje"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:317
 msgid "https://pwsafe.org/"
-msgstr ""
+msgstr "https://pwsafe.org/"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:318
 msgid "Double-Click on entry to Copy Notes"
-msgstr ""
+msgstr "Dvokliknite na vnos za Kopiraj opombe"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:319
 msgid "Double-Click on entry to Copy Password"
-msgstr ""
+msgstr "Dvokliknite na vnos za kopiranje gesla"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:320
-#, fuzzy
 msgid "Double-Click on entry to Copy Password and Minimize"
-msgstr "Kopiraj geslo in pomanjšaj"
+msgstr "Dvokliknite na vnos za kopiranje gesla in pomanjšanje"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:321
 msgid "Double-Click on entry to Copy Username"
-msgstr ""
+msgstr "Dvokliknite na vnos za kopiranje uporabniškega imena"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:322
 msgid "Double-Click on entry to Run Command"
-msgstr ""
+msgstr "Dvokliknite na vnos za zagon ukaza"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:323
 msgid "Double-Click on entry to Send Email"
-msgstr ""
+msgstr "Dvokliknite na vnos za pošiljanje e-pošte"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:324
 msgid "Double-Click on entry to View/Edit it"
-msgstr ""
+msgstr "Dvokliknite na vnos za njegov prikaz/urejanje"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:325
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SyncWizard.cpp:803
@@ -1645,38 +1647,37 @@ msgstr ""
 "Naslednje %ls %ls posodobljeno:"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:327
-#, fuzzy, c-format
+#, c-format
 msgid "%ls - Sync'd %ls"
-msgstr "%ls na %ls"
+msgstr "%ls - Sinhronizirano %ls"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:328
 msgid "System error: No more file handles available"
-msgstr ""
+msgstr "Sistemska napaka: Ni več na voljo ročajev datoteke"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:329
-#, fuzzy
 msgid "Bad length"
-msgstr "Dolžina gesla"
+msgstr "Slaba dolžina"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:330
 msgid "The Authentication Code configuration is invalid"
-msgstr ""
+msgstr "Nastavitev avtentikacijske kode je napačna"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:331
 msgid "Allowed characters are a-z, 2-7, space and dash"
-msgstr ""
+msgstr "Dovoljeni znaki so a-z, 2-7, presledek in pomišljaj"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:332
 msgid "The authentication secret was not found"
-msgstr ""
+msgstr "Avtentikacijska skrivnost ni bila najdena"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:333
 msgid "The Authentication Code operation was successful"
-msgstr ""
+msgstr "Uspešna izvedba nastavitve avtentikacijske kode"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:334
 msgid "An unknown Authentication Code error occurred"
-msgstr ""
+msgstr "Nastala je neznana avtentikacijska koda"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:335
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:877
@@ -1694,23 +1695,21 @@ msgid "In Headers(%ls)/In Entries("
 msgstr "V glavah(% ls)/V vnosih("
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:337
-#, fuzzy
 msgid "Unknown function"
-msgstr "Neznana polja"
+msgstr "Neznana funkcija"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:338
 msgid ""
 "The following columns are unrecognized by PasswordSafe and will be ignored: "
-msgstr ""
+msgstr "GesloSafe ne priznava teh stolpcev in bodo prezrti: "
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:339
-#, fuzzy
 msgid "Unknown object"
-msgstr "Neznana napaka"
+msgstr "Neznan predmet"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:340
 msgid "Internal error: Unexpected error number"
-msgstr ""
+msgstr "Notranja napaka: Nepričakovana številka napake"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:341
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:172
@@ -1721,12 +1720,13 @@ msgstr "%ls na %ls"
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:342
 #, c-format
 msgid "\tName: %s; Filename: %s"
-msgstr ""
+msgstr "\tIme: %s; Ime datoteke: %s"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:343
 msgid ""
 "The following entries had an invalid UUID field.  This has been corrected."
 msgstr ""
+"Naslednji vnosi so imeli neveljavno polje UUID.  To je bilo popravljeno."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:344
 #, c-format
@@ -1734,15 +1734,17 @@ msgid ""
 "The following entries have passwords in the correct form for %ls, but the "
 "base entry does not exist."
 msgstr ""
+"Naslednji vnosi imajo gesla v pravilni obliki za %ls, vendar pa osnovni vnos"
+" ne obstaja."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:345
 msgid "The following entries were duplicates of an existing entry."
-msgstr ""
+msgstr "Naslednji vnosi so bili dvojniki obstoječega vnosa."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:346
 msgid ""
 "The following entries had a duplicate UUID field.  This has been corrected."
-msgstr ""
+msgstr "Naslednji vnosi so imeli podvojen UUID polja. To je bilo popravljeno."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:347
 #, c-format
@@ -1750,38 +1752,43 @@ msgid ""
 "The following entries had an empty Password field, which is not permitted. "
 "The password has been set to '%ls'"
 msgstr ""
+"Naslednji vnosi so imeli prazno polje Geslo, kar ni dovoljeno. Geslo je bilo"
+" nastavljeno na '%ls'"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:348
-msgid "The following entries had an empty Title field, which is not permitted."
-msgstr ""
+msgid ""
+"The following entries had an empty Title field, which is not permitted."
+msgstr "Naslednji vnosi so imeli prazno polje Naslov, kar ni dovoljeno."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:349
 #, c-format
 msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
-msgstr ""
+msgstr "\tSkupina='%ls', Naslov='%ls', Uporabnik='%ls' %ls"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:350
 #, c-format
 msgid "- Its title has been changed to:'%ls'"
-msgstr ""
+msgstr "Njegov naslov je bil spremenjen v:'%ls'"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:351
 msgid "The following ERRORS were detected and were FIXED."
-msgstr ""
+msgstr "Odkrite so bile naslednje NAPAKE in so bile POPRAVLJENE."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:352
 msgid "The following entries refer to missing attachments."
-msgstr ""
+msgstr "Naslednji vnosi se nanašajo na manjkajoče Priloge."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:353
 msgid "The following attachments are not referred to by any entry."
-msgstr ""
+msgstr "Naslednje priloge ne kažejo na noben vnos."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:354
 msgid ""
 "The following entries had an invalid Password History.  This has been "
 "rebuilt with available data.  There may be some loss of history."
 msgstr ""
+"Naslednji vnosi so imeli neveljavno Zgodovino gesel.  To je bilo obnovljeno "
+"z razpoložljivimi podatki.  Morda je je izgubljeno nekaj zgodovine."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:355
 #, c-format
@@ -1789,12 +1796,17 @@ msgid ""
 "The following entries have one or more text fields too long to display or "
 "edit (over %d characters).  The largest entry size found was ~%d %ls."
 msgstr ""
+"Naslednji vnosi imajo eno ali več besedilnih polj, ki so predolga za prikaz "
+"ali urejanje (več kot %d znakov).  Najdena je bila največja velikost vnosa "
+"~%d %ls."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:356
 msgid ""
 "The following WARNINGS were detected - you should review and fix them "
 "manually."
 msgstr ""
+"Zaznana so bila naslednja OPOZORILA - morate jih pregledati in popraviti "
+"ročno."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:357
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SyncWizard.cpp:786
@@ -1808,7 +1820,7 @@ msgstr "je bilo"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:359
 msgid "will expire"
-msgstr ""
+msgstr "bo poteklo"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:360
 #, c-format
@@ -1816,84 +1828,100 @@ msgid ""
 "SAX Parse Error during %ls\n"
 "%ls."
 msgstr ""
+"SAX razčlenitvena napaka med %ls\n"
+"%ls."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:361
 #, c-format
 msgid "XML %ls: line %d character %d: %ls"
-msgstr ""
+msgstr "XML %ls: vrstica %d znak %d: %ls"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:362
 msgid ""
-"*** Invalid XML characters found - see exported XML file for more details ***"
+"*** Invalid XML characters found - see exported XML file for more details "
+"***"
 msgstr ""
+"*** Najdeni so bili nedovoljeni XML znaki - Za več podrobnosti si oglejte "
+"izvoženo XML datoteko ***"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:363
 msgid "Internal error: Couldn't initialize config file XML structure"
 msgstr ""
+"Notranja napaka: Nii mogoče inicializirati XML strukture konfiguracijske "
+"datoteke"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:364
 msgid ""
 "A filter was active. Export of data was restricted to include only those "
 "displayed."
 msgstr ""
+"Filter je bil aktiven. Izvoz podatkov je bil omejen samo na tiste, ki so "
+"prikazani."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:365
 msgid "Export of data was restricted to certain fields by the user."
-msgstr ""
+msgstr "Uporabnik je omejil izvoz podatkov na določena polja."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:366
 msgid ""
 "Note: These Password Policies will not replace existing policies with the "
 "same name in the current database."
 msgstr ""
+"Opomba: Ti pravilniki gesel ne bodo zamenjali obstoječe pravilnike z istim "
+"imenom, v trenutni zbirki podatkov."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:367
 msgid ""
 "Note: These preferences are only used when importing into an empty database."
 msgstr ""
+"Opomba: Te nastavitve so uporabljene samo pri uvozu v prazno zbirko "
+"podatkov."
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:368
 msgid "Subset of entries restricted by the following rule:"
-msgstr ""
+msgstr "Podnabor vnosov, ki so omejeni z naslednjim pravilom:"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:369
 msgid ""
 "The user specified that the following fields be excluded from the export:"
-msgstr ""
+msgstr "Uporabnik je določil, da bodo naslednja polja izključena iz izvoza:"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:370
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Configuration file error:\n"
 "%ls\n"
 "%ls\n"
 "offset approximately at %d"
-msgstr "Napaka XML: %ls %ls odmik približno pri %d"
+msgstr ""
+"Napaka konfiguracijske datoteke:\n"
+"%ls\n"
+"%ls\n"
+"odmik približno pri %d"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:371
-#, fuzzy
 msgid "import"
-msgstr "&Uvozi"
+msgstr "uvoz"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:372
 msgid "Unable to load configuration file"
-msgstr ""
+msgstr "Konfiguracijske datoteke ni mogoče naložiti"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:373
 msgid ""
 "Failed to lock configuration file - opened by another instance of "
 "PasswordSafe?"
 msgstr ""
+"Ni uspelo zaklepanje konfiguracijske datoteke - Morda je odprta z drugim "
+"primerkom Password Safe?"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:374
-#, fuzzy
 msgid "Unable to save configuration file"
-msgstr "E-pošte ni mogoče poslati"
+msgstr "Konfiguracijske datoteke ni mogoče shraniti"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:375
-#, fuzzy
 msgid "validation"
-msgstr "Neveljaven položaj"
+msgstr "potrjevanje"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:376
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:222
@@ -1902,22 +1930,21 @@ msgstr "Da"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:377
 msgid " (EasyVision Symbols)"
-msgstr ""
+msgstr "(Simboli EasyVision)"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:378
-#, fuzzy, c-format
+#, c-format
 msgid "Yes (at least %d)"
-msgstr "(Vsaj"
+msgstr "Da (vsaj %d)"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:379
-#, fuzzy
 msgid " (Pronounceable Symbols)"
-msgstr "Izgovorljiva gesla"
+msgstr "(Izgovorljivi simboli)"
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:380
 #, c-format
 msgid "Yes - At least %d from %ls: %ls%ls"
-msgstr ""
+msgstr "Da - vsaj %d iz %ls: %ls%ls"
 
 #: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFileXMLProcessor.cpp:113
 #: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:96
@@ -1967,8 +1994,7 @@ msgstr "Napačna vrednost XML \"%ls\" za <%ls>"
 #: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:117
 #, c-format
 msgid "Error in filter XML structure: excpected \"%ls\", found \"%ls\""
-msgstr ""
-"Napaka v strukturi XML filtra: pričakovano je \"%ls\", najdeno je \"%ls\""
+msgstr "Napaka v strukturi XML filtra: pričakovano je \"%ls\", najdeno je \"%ls\""
 
 #: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:146
 msgid "Missing filtername"
@@ -2126,14 +2152,11 @@ msgstr "Ni mogoče nastaviti možnosti \"Funkcija pisanja\".\n"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/AboutDlg.cpp:403
 msgid ""
-"For security, the database must be closed before connecting to the "
-"Internet.\n"
+"For security, the database must be closed before connecting to the Internet.\n"
 "Press OK to close database and continue (Changes will be saved)"
 msgstr ""
-"Zaradi varnostnih razlogov mora biti zbirka podatkov zaprta, preden "
-"vzpostavite povezavo z internetom.\n"
-"Pritisnite na Vredu, da zaprete zbirko podatkov in nadaljujete z delom "
-"(Spremembe bodo shranjene)"
+"Zaradi varnostnih razlogov mora biti zbirka podatkov zaprta, preden vzpostavite povezavo z internetom.\n"
+"Pritisnite na Vredu, da zaprete zbirko podatkov in nadaljujete z delom (Spremembe bodo shranjene)"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/AboutDlg.cpp:408
 msgid "Confirm Close Dialog"
@@ -3021,15 +3044,13 @@ msgid ""
 "\n"
 "%ls\n"
 "\n"
-"has duplicate entries with the same group/title/user combination. You can "
-"fix this by validating the database."
+"has duplicate entries with the same group/title/user combination. You can fix this by validating the database."
 msgstr ""
 "Zbirka podatkov:\n"
 "\n"
 "%ls\n"
 "\n"
-"ima podvojene vnose z isto kombinacijo skupine/naslova/uporabnika. Popravite "
-"s preverjanjem zbirke podatkov."
+"ima podvojene vnose z isto kombinacijo skupine/naslova/uporabnika. Popravite s preverjanjem zbirke podatkov."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CompareDlg.cpp:818
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SyncWizard.cpp:672
@@ -3151,13 +3172,14 @@ msgstr "Vnos ne sme biti prazen."
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/DbSelectionPanel.cpp:70
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1364
 msgid ""
-"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|"
-"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
-"ibak)|*.ibak|All files (*.*; *)|*.*;*"
+"Password Safe Databases (*.psafe4; *.psafe3; "
+"*.dat)|*.psafe4;*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password "
+"Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"
 msgstr ""
-"Password Safe zbirke podatkov (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;"
-"*.dat|Password Safe varnostne kopije (*.bak)|*.bak|Password Safe vmesne "
-"varnostne kopije (*.ibak)|*.ibak|All files (*.*; *)|*.*;*"
+"Password Safe zbirke podatkov (*.psafe4; *.psafe3; "
+"*.dat)|*.psafe4;*.psafe3;*.dat|Password Safe varnostne kopije "
+"(*.bak)|*.bak|Password Safe vmesne varnostne kopije (*.ibak)|*.ibak|All "
+"files (*.*; *)|*.*;*"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/DbSelectionPanel.cpp:80
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExportTextWarningDlg.cpp:80
@@ -3297,22 +3319,18 @@ msgstr "Cilj je bil nazadnje spremenjen ob:"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExportTextWarningDlg.cpp:60
 msgid ""
-"Warning! This operation will create an unprotected copy of ALL of the "
-"passwords\n"
+"Warning! This operation will create an unprotected copy of ALL of the passwords\n"
 "in the database. Deleting this copy after use is NOT sufficient."
 msgstr ""
 "Opozorilo! To opravilo bo ustvarilo nezaščiteno kopijo VSEH gesel\n"
-"v podatkovni zbiri. Brisanje kopije datoteke po končanju ni ZADOSTNO "
-"opravilo."
+"v podatkovni zbiri. Brisanje kopije datoteke po končanju ni ZADOSTNO opravilo."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExportTextWarningDlg.cpp:62
 msgid ""
-"Do not use this option unless you understand and accept the risks. This "
-"option\n"
+"Do not use this option unless you understand and accept the risks. This option\n"
 "bypasses the security provided by this program."
 msgstr ""
-"Ne uporabljatje te možnosti razen, če razumete in prevzamete tveganje. Ta "
-"možnost\n"
+"Ne uporabljatje te možnosti razen, če razumete in prevzamete tveganje. Ta možnost\n"
 "naredi obvod pri varnostni zaščiti, ki jo zagotavlja ta program."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExportTextWarningDlg.cpp:83
@@ -3361,8 +3379,8 @@ msgstr "Navidezna tipkovnica"
 msgid ""
 "Could not launch xvkbd.  Please make sure it's installed and in your PATH"
 msgstr ""
-"Ne morem zagnati programa xvkdb. Prosim preverite, da je program nameščen in "
-"določen v PATH spremenljivki"
+"Ne morem zagnati programa xvkdb. Prosim preverite, da je program nameščen in"
+" določen v PATH spremenljivki"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:73
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:81
@@ -3374,8 +3392,8 @@ msgstr "Ne morem zagnati zunanje ekranske tipkovnice"
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:80
 msgid "Could not launch xvkbd.  Please make sure it's in your PATH"
 msgstr ""
-"Ne morem zagnati programa xvkdb. Prosim preverite, da je program nameščen in "
-"določen v PATH spremenljivki"
+"Ne morem zagnati programa xvkdb. Prosim preverite, da je program nameščen in"
+" določen v PATH spremenljivki"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:85
 msgid ""
@@ -3490,8 +3508,8 @@ msgstr "Uvoz besedilne datoteke:"
 msgid ""
 "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*; *"
 msgstr ""
-"Besedilne datoteke (*.txt)|*.txt|Datoteke CSV (*.csv)|*.csv|Vse datoteke (*."
-"*)|*.*||"
+"Besedilne datoteke (*.txt)|*.txt|Datoteke CSV (*.csv)|*.csv|Vse datoteke "
+"(*.*)|*.*||"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ImportXmlDlg.cpp:31
 msgid "Import XML Settings"
@@ -3753,8 +3771,7 @@ msgid ""
 "\n"
 "Pressing Cancel stops the password from being copied."
 msgstr ""
-"Pritisk na V redu bo kopiralo geslo izbranega vnosa v odložišče. Odložišč bo "
-"varno počiščeno, ko bo program zaprt.\n"
+"Pritisk na V redu bo kopiralo geslo izbranega vnosa v odložišče. Odložišč bo varno počiščeno, ko bo program zaprt.\n"
 "\n"
 "Pritisk na Prekliči ustavi kopiranje gesla."
 
@@ -3907,8 +3924,7 @@ msgstr "Odpri zbirko podatkov gesel:"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:336
 msgid ""
-"Unable to create intermediate backup.  Save database elsewhere or with "
-"another name?\n"
+"Unable to create intermediate backup.  Save database elsewhere or with another name?\n"
 "\n"
 "Click 'No' to exit without saving."
 msgstr ""
@@ -3932,15 +3948,10 @@ msgstr "Vmesne varnostne kopije ni mogoče ustvariti."
 #, c-format
 msgid ""
 "The original database, \"%ls\", is in pre-3.0 format. It will be unchanged.\n"
-"Your changes will be written as \"%ls\" in the new format, which is unusable "
-"by old versions of PasswordSafe. To save your changes in the old format, use "
-"the \"File->Export To-> Old (1.x or 2) format\" command."
+"Your changes will be written as \"%ls\" in the new format, which is unusable by old versions of PasswordSafe. To save your changes in the old format, use the \"File->Export To-> Old (1.x or 2) format\" command."
 msgstr ""
-"Osnovna zbirka podatkov \"%ls\", je zapisa pred-3.0 oblike, zato bo "
-"spremenjena.\n"
-"Vaše spremembe dodo zapisane kot \"%ls\" v novi obliki, ki je neprimerna za "
-"starejše različice PasswordSafe programa. Za shranjevanje v starejšo obliko "
-"uporabite zapis Datoteka->Izvoz v> Starejši (1.x or 2)\" ."
+"Osnovna zbirka podatkov \"%ls\", je zapisa pred-3.0 oblike, zato bo spremenjena.\n"
+"Vaše spremembe dodo zapisane kot \"%ls\" v novi obliki, ki je neprimerna za starejše različice PasswordSafe programa. Za shranjevanje v starejšo obliko uporabite zapis Datoteka->Izvoz v> Starejši (1.x or 2)\" ."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:371
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:432
@@ -3952,13 +3963,13 @@ msgstr "Opozorilo o različici datoteke"
 msgid ""
 "The original database, '%ls', is in pre-3.0 format. The data will now be "
 "written in the new format, which is unusable by old versions of "
-"PasswordSafe. To save the data in the old format, use the 'File->Export To-> "
-"Old (1.x or 2) format' command."
+"PasswordSafe. To save the data in the old format, use the 'File->Export To->"
+" Old (1.x or 2) format' command."
 msgstr ""
 "Osnovna zbirka podatkov, '%ls', je zapisa pred-3.0 oblike. Podatki bodo "
 "sedaj zapisani v novo obliko, ki je nezdružljiva s starejšo različico "
-"programa Password Safe. Za shranjevanje podatkov v starejšo obliko uporabite "
-"'Datoteka->Izvozi v>Starejši(1.x or 2) zapis'"
+"programa Password Safe. Za shranjevanje podatkov v starejšo obliko uporabite"
+" 'Datoteka->Izvozi v>Starejši(1.x or 2) zapis'"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:444
 msgid "Choose a name for the current (Untitled) database:"
@@ -3970,8 +3981,8 @@ msgstr "Izberite novo ime za trenutno zbirko podatkov:"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:453
 msgid ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|"
-"*.*;*"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; "
+"*)|*.*;*"
 msgstr ""
 "Podatkovne zbirke Password Safe (*.psafe3; *.dat)|*.psafe3;*.dat|Vse "
 "datoteke (*.*; *)|*.*;*"
@@ -4044,13 +4055,14 @@ msgstr "Napredne možnosti izvoza XML"
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:699
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:703
 msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*; *)|*.*;*"
-msgstr "Podatkovne zbirke Password Safe (*.dat)|*.dat|All files (*.*; *)|*.*;*"
+msgstr ""
+"Podatkovne zbirke Password Safe (*.dat)|*.dat|All files (*.*; *)|*.*;*"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:707
 msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*; *)|*.*;*"
 msgstr ""
-"Podatkovne zbirke Password Safe (*.psafe4)|*.psafe4|Vse datoteke (*.*; *)|*."
-"*;*"
+"Podatkovne zbirke Password Safe (*.psafe4)|*.psafe4|Vse datoteke (*.*; "
+"*)|*.*;*"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:718
 msgid "Name the exported database"
@@ -4058,7 +4070,8 @@ msgstr "Dodelite ime izvoženi zbirki podatkov"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:735
 msgid "Could not figure out why PasswordSafeFrame::OnExportVx was invoked"
-msgstr "Ne morem ugotoviti, zakaj je bil zagnan PasswordSafeFrame::OnExportVx "
+msgstr ""
+"Ne morem ugotoviti, zakaj je bil zagnan PasswordSafeFrame::OnExportVx "
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:769
 msgid "You must save this database before it can be exported."
@@ -4077,10 +4090,11 @@ msgid "Export complete.  Do you wish to see a detailed report?"
 msgstr "Izvoz je končan. Želite videti podroben pregled?"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:841
-msgid "No entries satisfied your selection criteria and so none were exported!"
+msgid ""
+"No entries satisfied your selection criteria and so none were exported!"
 msgstr ""
-"Nobeden vnos ne zadostuje vašemu merilu izbire, zato nobeden vnos ni bil bil "
-"izvožen."
+"Nobeden vnos ne zadostuje vašemu merilu izbire, zato nobeden vnos ni bil bil"
+" izvožen."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:854
 msgid "Passkey incorrect"
@@ -4201,15 +4215,13 @@ msgid ""
 "\n"
 "%ls\n"
 "\n"
-"has duplicate entries with the same group/title/user combination. Fix by "
-"validating database."
+"has duplicate entries with the same group/title/user combination. Fix by validating database."
 msgstr ""
 "Zbirka podatkov::\n"
 "\n"
 "%ls\n"
 "\n"
-"ima podvojene vnose z isto kombinacijo skupina/naslov/uporabnik. Popravite "
-"jo s Potrjevanje zbirke podatkov."
+"ima podvojene vnose z isto kombinacijo skupina/naslov/uporabnik. Popravite jo s Potrjevanje zbirke podatkov."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:997
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:1047
@@ -4389,8 +4401,8 @@ msgstr "Ime varnostne kopije"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuManageHandlers.cpp:211
 msgid ""
-"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
-"ibak)|*.ibak||"
+"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups "
+"(*.ibak)|*.ibak||"
 msgstr ""
 "Password Safe varnostne kopije (*.bak)|*.bak|Password Safe vmesne varnostne "
 "kopije (*.ibak)|*.ibak||"
@@ -4401,8 +4413,8 @@ msgstr "Password Safe - <Neimenovana obnovljena varnostna kopij>"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuManageHandlers.cpp:398
 msgid ""
-"You have chosen not to save your changes, which will be lost. Do you wish to "
-"continue?"
+"You have chosen not to save your changes, which will be lost. Do you wish to"
+" continue?"
 msgstr ""
 "Izbrali ste, da ne shranite sprememb, ki bodo izgubljene. Ali želite "
 "nadaljevati?"
@@ -4417,13 +4429,11 @@ msgstr "Zahtevana sprememba načina ni uspela"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuManageHandlers.cpp:441
 msgid ""
-"The database has been changed since you opened it in R-O mode, so it is not "
-"possible to switch to R/W mode.\n"
+"The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n"
 "\n"
 "Close the database and re-open it in R/W mode."
 msgstr ""
-"Zbirka podatkov je bila spremenjena, odkar ste jo odprli v načinu R-O, tako "
-"da jo ni mogoče preklopiti v način R/W.\n"
+"Zbirka podatkov je bila spremenjena, odkar ste jo odprli v načinu R-O, tako da jo ni mogoče preklopiti v način R/W.\n"
 "\n"
 "Zaprite zbirko podatkov in jo ponovno odprite v načinu R/W."
 
@@ -4435,13 +4445,11 @@ msgstr " [Številka procesa=%ls]"
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuManageHandlers.cpp:471
 #, c-format
 msgid ""
-"Failed to switch from R-O to R/W because database is already open in R/W "
-"mode by:\n"
+"Failed to switch from R-O to R/W because database is already open in R/W mode by:\n"
 "%ls %ls\n"
 "(Only one R/W access at a time is allowed)"
 msgstr ""
-"Spodletelo spreminjanje datoteke iz samo za branje v branje in pisanje, ker "
-"je zbirka podatkov že odprta v samo za pisanje načinu z:\n"
+"Spodletelo spreminjanje datoteke iz samo za branje v branje in pisanje, ker je zbirka podatkov že odprta v samo za pisanje načinu z:\n"
 "%ls %ls\n"
 "(Samo eden hkarti lahko zaklene za branje s pisanjem)"
 
@@ -4450,8 +4458,8 @@ msgid ""
 "Failed to switch from R-O to R/W: Could not open the database. It may have "
 "been deleted or renamed or there may be a problem with its drive."
 msgstr ""
-"Ni uspel preklop iz S-B v B/P: Zbirke podatkov ni bilo mogoče odpreti. Morda "
-"je bila izbrisana ali preimenovana ali pa je morda prišlo do težave s "
+"Ni uspel preklop iz S-B v B/P: Zbirke podatkov ni bilo mogoče odpreti. Morda"
+" je bila izbrisana ali preimenovana ali pa je morda prišlo do težave s "
 "pogonom."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuManageHandlers.cpp:480
@@ -4564,7 +4572,7 @@ msgstr "Vmesne varnostne kopije"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:318
 msgid "Create intermediate backups (.ibak) before saving"
-msgstr "Pred shranjevanjem ustvari vmesne varnostne kopije (. ibak)"
+msgstr "Pred shranjevanjem ustvari vmesne varnostne kopije (.ibak)"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:322
 msgid "Backup Name"
@@ -4826,7 +4834,7 @@ msgid ""
 "Any related functionality may not work as expected."
 msgstr ""
 "Zgleda, da sistemska vrstica ne obstaja v vašem trenutnem okolju.\n"
-"Povezane funkcionalnosti morda ne bodo delovale kot bi pričakovali."
+"Povezane funkcionalnosti morda ne bodo delovale, kot bi pričakovali."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:861
 msgid "Recent Password Safe Databases"
@@ -4859,13 +4867,10 @@ msgstr "Uporabite nadomestno metodo samodejnega vtipkanja"
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:902
 msgid ""
 "When set, use XTEST for AutoType instead of XSendEvent.\n"
-"XSendEvent can handle more control keys, but may be blocked by some "
-"applications."
+"XSendEvent can handle more control keys, but may be blocked by some applications."
 msgstr ""
-"Če je nastavljeno, uporabite XTEST kot samodejno vtipkanje namesto "
-"XSendEvent.\n"
-"XSendEvent zmore več nadzornih tipk, vendar je lahko blokiran s strani "
-"nekaterih aplikacij."
+"Če je nastavljeno, uporabite XTEST kot samodejno vtipkanje namesto XSendEvent.\n"
+"XSendEvent zmore več nadzornih tipk, vendar je lahko blokiran s strani nekaterih aplikacij."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:904
 msgid "If AutoType doesn't work, setting this may help."
@@ -4946,8 +4951,8 @@ msgid ""
 "Relative dates are in days relative to today e.g. '-1' is yesterday and '1' "
 "is tomorrow"
 msgstr ""
-"Relativni datumi so v dnevih glede na danes, npr.  '-1'  je včeraj in '1' je "
-"jutri"
+"Relativni datumi so v dnevih glede na danes, npr.  '-1'  je včeraj in '1' je"
+" jutri"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersDateDlg.cpp:312
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersIntegerDlg.cpp:289
@@ -5934,17 +5939,12 @@ msgstr "1 zadetek"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSubsetDlg.cpp:93
 msgid ""
-"Enter positions of password characters separated by spaces, commas or semi-"
-"colons (or * for full password).\n"
-"Position 1 is the first character, 2 is the second, etc. up to N for the "
-"last character of a password of length N.\n"
-"-1 is the last character, -2 the next to last, etc. up to -N for the first "
-"password character."
+"Enter positions of password characters separated by spaces, commas or semi-colons (or * for full password).\n"
+"Position 1 is the first character, 2 is the second, etc. up to N for the last character of a password of length N.\n"
+"-1 is the last character, -2 the next to last, etc. up to -N for the first password character."
 msgstr ""
-"Vnesite položaj znakov gesla ločenega s presledki, vejicami or podpičji (ali "
-"* za celotno geslo)\n"
-"Položaj 1 j eprvi znak, 2 je drugi znak, itd vse do N za zadnji znak dolžine "
-"gesla N.\n"
+"Vnesite položaj znakov gesla ločenega s presledki, vejicami or podpičji (ali * za celotno geslo)\n"
+"Položaj 1 j eprvi znak, 2 je drugi znak, itd vse do N za zadnji znak dolžine gesla N.\n"
 "-1 je zadnji znak, -2 je predzadnji znak, itd vse do -N za prvi znak gesla."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSubsetDlg.cpp:99
@@ -6043,18 +6043,13 @@ msgid "%d seconds"
 msgstr "%d sekund"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/QueryCancelDlg.cpp:49
-#, fuzzy
 msgid "Do you want to discard the changes?"
-msgstr ""
-"Ena ali več nastavitev je bilo spremenjenih.\n"
-"Ali ste prepričani, da želite zavreči spremembe?"
+msgstr "Ali želite zavreči spremembe?"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:89
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:91
-#, fuzzy
 msgid "Enter old master password and click on top Yubikey button"
-msgstr ""
-"Vnesite staro glavno geslo (če obstaja) in kliknite na zgornji Yubikey gumb"
+msgstr "Vstavite staro geslo in pritisnite zgornji Yubikey gumb"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:123
 msgid ""
@@ -6065,31 +6060,26 @@ msgstr ""
 "Za potrditev ponovno vnesite geslo."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:138
-#, fuzzy
 msgid "Old Master Password"
-msgstr "Staro glavno geslo:"
+msgstr "Staro glavno geslo"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:152
-#, fuzzy
 msgid "New Master Password"
-msgstr "Novo glavno geslo:"
+msgstr "Novo glavno geslo"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:165
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:121
-#, fuzzy
 msgid "Confirmation"
-msgstr "Potrditev:"
+msgstr "Potrditev"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:178
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:191
-#, fuzzy
 msgid "Insert your YubiKey"
-msgstr "Vstavite YubiKey"
+msgstr "Vstavite vaš YubiKey"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:193
-#, fuzzy
 msgid "&Change"
-msgstr "Spremeni datum"
+msgstr "&Sprememba"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:265
 msgid "The old master password is not correct"
@@ -6130,10 +6120,8 @@ msgid "YubiKey master password incorrect"
 msgstr "Napačno Yubikey glavno geslo"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:342
-#, fuzzy
 msgid "Enter new master password and click on bottom Yubikey button"
-msgstr ""
-"Vnesite novo glavno geslo (če obstaja) in kliknite na spodnji Yubikey gumb"
+msgstr "Vstavite novo glavno geslo in pritisnite spodnji Yubikey gumb."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:365
 msgid "Confirm existing master password"
@@ -6156,18 +6144,16 @@ msgid "Show password"
 msgstr "Prikaži geslo"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:166
-#, fuzzy
 msgid "Browse for an existing password database"
-msgstr "Ne morem odpreti zbirke podatkov gesel"
+msgstr "Pobrskajte za obstoječo podatkovno zbirko gesel"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:169
 msgid "New..."
 msgstr "&Nova..."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:170
-#, fuzzy
 msgid "Create a new password database"
-msgstr "Ne morem odpreti zbirke podatkov gesel"
+msgstr "Ustvarite novo podatkovno zbirko gesel"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:173
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:130
@@ -6228,16 +6214,16 @@ msgstr "ali poškodovana podatkovna zbirka."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:482
 msgid ""
-"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat| "
-"All files (*.*; *)|*.*;*"
+"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|"
+" All files (*.*; *)|*.*;*"
 msgstr ""
-"Password Safe podatkovne zbirke (*.psafe4; *.psafe3; *.dat)|*.psafe4;*."
-"psafe3;*.dat| Vse datoteke (*.*; *)|*.*;*"
+"Password Safe podatkovne zbirke (*.psafe4; *.psafe3; "
+"*.dat)|*.psafe4;*.psafe3;*.dat| Vse datoteke (*.*; *)|*.*;*"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:529
 msgid ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|"
-"*.*;*"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; "
+"*)|*.*;*"
 msgstr ""
 "Password Safe podatkovne zbirke (*.psafe3; *.dat)|*.psafe3;*.dat| Vse "
 "datoteke (*.*; *)|*.*;*"
@@ -6263,6 +6249,8 @@ msgstr "Odkleni zbirko podatkov gesel"
 msgid ""
 "The Master Password will be used to protect the new password database file."
 msgstr ""
+"Glavno geslo bo uporabljeno za zaščito nove datoteke podatkovne zbirke "
+"gesel."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:208
 msgid "Mismatching Master Password"
@@ -6285,9 +6273,8 @@ msgid "Mismatching entries"
 msgstr "Neujemajoči vnosi"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationSetupDlg.h:53
-#, fuzzy
 msgid "Set Master Password"
-msgstr "Glavno geslo"
+msgstr "Določi glavno geslo"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SelectAliasDlg.cpp:273
 msgid "Alias name:"
@@ -6488,8 +6475,7 @@ msgid ""
 "1. Two entries from different databases match if their Group, Title\n"
 "and User fields match."
 msgstr ""
-"1. Vnosa iz različnih podatkovnih zbirk se ujemata, če se ujemajo skupina, "
-"naslov\n"
+"1. Vnosa iz različnih podatkovnih zbirk se ujemata, če se ujemajo skupina, naslov\n"
 "in uporabniško ime."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SyncWizard.cpp:415
@@ -6968,36 +6954,13 @@ msgid ""
 "An error occurred while trying to get the image data from database item.\n"
 "Therefore, the image cannot be displayed in the preview."
 msgstr ""
-"Med poskusom pridobitve slik iz vnosa zbirke podatkov se je pojavila "
-"napaka.\n"
+"Med poskusom pridobitve slik iz vnosa zbirke podatkov se je pojavila napaka.\n"
 "Zato slike ni mogoče prikazati v predogledu."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/wxUtilities.cpp:484
 msgid ""
-"An error occurred while trying to load the image data into the preview "
-"area.\n"
+"An error occurred while trying to load the image data into the preview area.\n"
 "Therefore, the image cannot be displayed in the preview."
 msgstr ""
 "Pri poskusu nalaganja slik v območje predogleda je prišlo do napake. Zato "
 "slike ni mogoče prikazati v predogledu."
-
-#~ msgid "Password Database:"
-#~ msgstr "Zbirka podatkov gesel:"
-
-#~ msgid ""
-#~ "A new password database will be created.\n"
-#~ "The Master Password you enter will be used to encrypt the password "
-#~ "database file.\n"
-#~ "The Master Password can use any keyboard character and is case-sensitive."
-#~ msgstr ""
-#~ "Ustvarjena bo nova zbirka podatkov z gesli. Za šifriranje datoteke zbirke "
-#~ "podatkov gesel bo uporabljeno glavno geslo, ki jo vnesete. Glavno geslo "
-#~ "lahko uporablja poljubne tipke črk in je občutljiva na velikost črk."
-
-#~ msgid "Master Password Setup"
-#~ msgstr "Zadnja nastavitev glavnega gesla ob:"
-
-#~ msgid "Unsaved changes have been made. Are you sure you wish to cancel?"
-#~ msgstr ""
-#~ "Ena ali več nastavitev je bilo spremenjenih. Ali ste prepričani, da "
-#~ "želite preklicati?"
