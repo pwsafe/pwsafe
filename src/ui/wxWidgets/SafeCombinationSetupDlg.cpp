@@ -26,8 +26,6 @@
 ////@begin includes
 ////@end includes
 
-#include "core/PWCharPool.h" // for CheckMasterPassword()
-
 #include "ExternalKeyboardButton.h"
 #include "SafeCombinationSetupDlg.h"
 #include "wxUtilities.h"          // for ApplyPasswordFont()
@@ -217,36 +215,9 @@ void SafeCombinationSetupDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
       err.ShowModal();
       return;
     }
-    // Vox populi vox dei - folks want the ability to use a weak
-    // passphrase, best we can do is warn them...
-    // If someone want to build a version that insists on proper
-    // passphrases, then just define the preprocessor macro
-    // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
-    // (also used in CPasskeyChangeDlg)
-#ifndef _DEBUG // for debug, we want no checks at all, to save time
-    StringX errmess;
-    if (!CPasswordCharPool::CheckMasterPassword(m_password, errmess)) {
-      wxString cs_msg;
-      cs_msg = errmess.c_str();
-#ifndef PWS_FORCE_STRONG_PASSPHRASE
-      cs_msg += wxT("\n");
-      cs_msg += _("Use it anyway?");
-      wxMessageDialog mb(this, cs_msg, _("Weak Master Password"),
-                      wxYES_NO | wxNO_DEFAULT | wxICON_EXCLAMATION);
-      mb.SetYesNoLabels(_("Use anyway"), _("Cancel"));
-      int rc = mb.ShowModal();
-    if (rc == wxID_NO)
-      return;
-#else
-    cs_msg += wxT("\n");
-    cs_msg += _("Try another");
-    wxMessageDialog mb(this, cs_msg, _("Error"), wxOK | wxICON_HAND);
-    mb.ShowModal();
-    return;
-#endif // PWS_FORCE_STRONG_PASSPHRASE
+    if (CheckPasswordStrengthAndWarn(this, m_password)) {
+      EndModal(wxID_OK);
     }
-#endif // _DEBUG
-    EndModal(wxID_OK);
   }
 }
 
@@ -285,6 +256,11 @@ void SafeCombinationSetupDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
       err.ShowModal();
       return;
     }
+    // A blank password with a Yubikey is a common use case
+    if (!m_password.empty() && !CheckPasswordStrengthAndWarn(this, m_password)) {
+      return;
+    }
+
     StringX response;
     bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
     if (PerformChallengeResponse(this, m_password, response, oldYubiChallenge)) {
