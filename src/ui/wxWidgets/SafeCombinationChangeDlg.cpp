@@ -173,12 +173,18 @@ void SafeCombinationChangeDlg::CreateControls()
 #endif
 
 #ifndef NO_YUBI
-  m_yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0);
-  mainSizer->Add(m_yubiStatusCtrl, 0, wxEXPAND|wxALL, 12);
+  auto* panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1,  35));
+  mainSizer->Add(panel, 0, wxEXPAND|wxBOTTOM, 12);
+
+  auto* horizontalBoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
+  panel->SetSizer(horizontalBoxSizer1);
+
+  m_yubiStatusCtrl = new wxStaticText(panel, ID_YUBISTATUS, _("Insert your YubiKey"), wxDefaultPosition, wxSize(-1,  35), 0);
+  horizontalBoxSizer1->Add(m_yubiStatusCtrl, 0, wxLEFT|wxALIGN_CENTER|wxALIGN_LEFT, 12);
 #endif
 
   auto horizontalBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
-  mainSizer->Add(horizontalBoxSizer3, 0, wxEXPAND|wxALL, 12);
+  mainSizer->Add(horizontalBoxSizer3, 0, wxEXPAND|wxLEFT|wxBOTTOM|wxRIGHT, 12);
 
   horizontalBoxSizer3->AddSpacer(90);
   horizontalBoxSizer3->AddStretchSpacer();

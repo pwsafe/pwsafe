@@ -60,7 +60,7 @@ class YubiMixin
   enum { POLLING_TIMER_NONE = -1, POLLING_TIMER_ID = 83 };
 
 private:
-  void updateSizeHints();
+  void updateLayout();
 
  private:
   bool m_present; // key present?

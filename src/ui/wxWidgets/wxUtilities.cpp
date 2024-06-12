@@ -236,14 +236,17 @@ SafeCombinationCtrl* wxUtilities::CreateLabeledSafeCombinationCtrl(wxWindow* par
 
 std::tuple<wxBitmapButton*, wxStaticText*> wxUtilities::CreateYubiKeyControls(wxWindow *parent, wxWindowID buttonId, wxWindowID statusTextId)
 {
-  auto *sizer = new wxBoxSizer(wxHORIZONTAL);
-  parent->GetSizer()->Add(sizer, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
+  auto* panel = new wxPanel(parent, wxID_ANY, wxDefaultPosition, wxSize(-1,  35));
+  parent->GetSizer()->Add(panel, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
 
-  auto *button = new wxBitmapButton(parent, buttonId, GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, wxSize(35,  35), wxBU_AUTODRAW);
+  auto *sizer = new wxBoxSizer(wxHORIZONTAL);
+  panel->SetSizer(sizer);
+
+  auto *button = new wxBitmapButton(panel, buttonId, GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, wxSize(35,  35), wxBU_AUTODRAW);
   button->SetToolTip(_("YubiKey"));
   sizer->Add(button, 0, wxALL|wxALIGN_CENTER|wxALIGN_LEFT, 0);
 
-  auto *statusText = new wxStaticText(parent, statusTextId, _("Insert YubiKey"), wxDefaultPosition, wxDefaultSize, 0);
+  auto *statusText = new wxStaticText(panel, statusTextId, _("Insert YubiKey"), wxDefaultPosition, wxDefaultSize, 0);
   sizer->Add(statusText, 0, wxLEFT|wxALIGN_CENTER|wxALIGN_LEFT, 12);
 
   return std::make_tuple(button, statusText);

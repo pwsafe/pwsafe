@@ -76,7 +76,7 @@ void YubiMixin::HandlePollingTimer()
   if (yubiExists() && (!m_btn->IsShown() || !m_status->IsShown())) {
     m_btn->Show(true);
     m_status->Show(true);
-    updateSizeHints();
+    updateLayout();
   }
 
   // Currently hmac check is blocking (ugh), so no need to check here
@@ -110,18 +110,17 @@ void YubiMixin::UpdateStatus()
   else
     yubiRemoved();
 
-  updateSizeHints();
+  updateLayout();
 }
 
-void YubiMixin::updateSizeHints()
+void YubiMixin::updateLayout()
 {
-  // Update the dialog's size hints to honor the required minimum
-  // control sizes as additional controls have appeared or the
-  // prompt has changed.
+  // Update the dialog's layout as additional controls
+  // have appeared or the prompt has changed.
   if (m_btn) {
     auto *parent = m_btn->GetParent();
     if (parent != nullptr) {
-      parent->GetSizer()->SetSizeHints(parent);
+      parent->GetSizer()->Layout();
     }
   }
 }
