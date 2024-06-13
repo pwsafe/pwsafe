@@ -194,7 +194,6 @@ bool CheckPasswordStrengthAndWarn(wxWindow *win, StringX &password)
   // If someone want to build a version that insists on proper
   // passphrases, then just define the preprocessor macro
   // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
-  // (also used in CPasskeyChangeDlg)
   StringX errmess;
   if (!CPasswordCharPool::CheckMasterPassword(password, errmess)) {
     wxString cs_msg;
