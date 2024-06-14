@@ -428,7 +428,7 @@ namespace wxUtilities
   /**
    * @brief Checks environment variable 'XDG_SESSION_TYPE' for display manager 'x11'.
    *
-   * @return whether if environment variable is set to 'x11'.
+   * @return whether the environment variable is set to 'x11'.
    */
   bool IsDisplayManagerX11();
   /**
