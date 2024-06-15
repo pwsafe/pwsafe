@@ -196,8 +196,7 @@ bool CheckPasswordStrengthAndWarn(wxWindow *win, StringX &password)
   // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
   StringX errmess;
   if (!CPasswordCharPool::CheckMasterPassword(password, errmess)) {
-    wxString cs_msg;
-    cs_msg = errmess.c_str();
+    wxString cs_msg = errmess.c_str();
 #ifndef PWS_FORCE_STRONG_PASSPHRASE
     cs_msg += wxT("\n");
     cs_msg += _("Use it anyway?");
