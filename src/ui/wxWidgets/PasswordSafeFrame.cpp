@@ -1389,6 +1389,9 @@ int PasswordSafeFrame::Open(const wxString &fname)
   if (rc != PWScore::SUCCESS)
     return rc;
 
+  // Clear the lock on the old file, if any.
+  m_core.SafeUnlockCurFile();
+
   // prompt for password, try to Load.
   DestroyWrapper<SafeCombinationPromptDlg> pwdpromptWrapper(this, m_core, fname);
   SafeCombinationPromptDlg* pwdprompt = pwdpromptWrapper.Get();
