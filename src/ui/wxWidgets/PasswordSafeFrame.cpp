@@ -1390,6 +1390,8 @@ int PasswordSafeFrame::Open(const wxString &fname)
     return rc;
 
   // Clear the lock on the old file, if any.
+  // This has to be done after the old file is saved (see SaveIfChanged() above)
+  // and before a call to SetCurFile() (see below)
   m_core.SafeUnlockCurFile();
 
   // prompt for password, try to Load.
