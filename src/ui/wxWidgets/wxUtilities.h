@@ -202,7 +202,7 @@ inline const wxChar* ToStr(bool b) {
 void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxTextCtrl* before, const int style);
 
 /**
- * Checi if the password passes the strength rules, prompt the user if it does not.
+ * Check whether the password passes the strength rules, prompt the user if it does not.
  *
  * @param win Parent window for the prompt dialog
  * @param password the proposed password
