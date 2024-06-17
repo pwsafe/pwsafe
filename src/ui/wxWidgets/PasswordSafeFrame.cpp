@@ -1389,10 +1389,8 @@ int PasswordSafeFrame::Open(const wxString &fname)
   if (rc != PWScore::SUCCESS)
     return rc;
 
-  // Clear the lock on the old file, if any.
-  // This has to be done after the old file is saved (see SaveIfChanged() above)
-  // and before a call to SetCurFile() (see below)
-  m_core.SafeUnlockCurFile();
+  // Save the current file name so we can unlock it later.
+  stringT oldfn = GetCurrentFile().c_str();
 
   // prompt for password, try to Load.
   DestroyWrapper<SafeCombinationPromptDlg> pwdpromptWrapper(this, m_core, fname);
@@ -1406,6 +1404,9 @@ int PasswordSafeFrame::Open(const wxString &fname)
       m_InitialTreeDisplayStatusAtOpen = true;
       Show();
       wxGetApp().recentDatabases().AddFileToHistory(fname);
+
+      // The new file is open.  Clear the lock on the old file, if any.
+      m_core.SafeUnlockFile(oldfn);
     }
     return retval;
   } else

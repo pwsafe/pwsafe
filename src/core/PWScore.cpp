@@ -3357,8 +3357,12 @@ void PWScore::UnlockFile(const stringT &filename)
 
 void PWScore::SafeUnlockCurFile()
 {
-  const std::wstring filename(GetCurFile().c_str());
+  const stringT filename(GetCurFile().c_str());
+  SafeUnlockFile(filename);
+}
 
+void PWScore::SafeUnlockFile(const stringT &filename)
+{
   // The only way we're the locker is if it's locked & we're !readonly
   if (!filename.empty() && !IsReadOnly() && IsLockedFile(filename))
     UnlockFile(filename);
