@@ -217,7 +217,7 @@ std::tuple<wxBitmapButton*, wxStaticText*> wxUtilities::CreateYubiKeyControls(wx
   sizer->Add(button, 0, wxALL|wxALIGN_CENTER|wxALIGN_LEFT, 0);
 
   auto *statusText = new wxStaticText(panel, statusTextId, _("Insert YubiKey"), wxDefaultPosition, wxDefaultSize, 0);
-  sizer->Add(statusText, 0, wxLEFT|wxALIGN_CENTER|wxALIGN_LEFT, 12);
+  sizer->Add(statusText, 0, wxLEFT|wxRIGHT|wxALIGN_CENTER|wxALIGN_LEFT, 12);
 
   return std::make_tuple(button, statusText);
 }
