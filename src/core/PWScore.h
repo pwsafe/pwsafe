@@ -249,6 +249,7 @@ public:
   void UnlockFile(const stringT &filename);
 
   void SafeUnlockCurFile(); // unlocks current file iff we locked it.
+  void SafeUnlockFile(const stringT &filename);
 
   // Following 3 routines only for SaveAs to use a temporary lock handle
   // LockFile2, UnLockFile2 & MoveLock
