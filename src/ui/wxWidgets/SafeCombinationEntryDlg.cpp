@@ -181,14 +181,17 @@ void SafeCombinationEntryDlg::CreateControls()
   itemCheckBox15->SetValue(false);
   verticalBoxSizer1->Add(itemCheckBox15, 0, wxALIGN_LEFT|wxBOTTOM, 12);
 
-  auto* horizontalBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
-  verticalBoxSizer1->Add(horizontalBoxSizer3, 0, wxEXPAND|wxBOTTOM, 12);
-
 #ifndef NO_YUBI
-  m_YubiBtn = new wxBitmapButton(this, ID_YUBIBTN, GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, wxSize(35,  35), wxBU_AUTODRAW);
+  auto* panel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxSize(-1,  35));
+  verticalBoxSizer1->Add(panel, 0, wxEXPAND|wxBOTTOM, 12);
+
+  auto* horizontalBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
+  panel->SetSizer(horizontalBoxSizer3);
+
+  m_YubiBtn = new wxBitmapButton(panel, ID_YUBIBTN, GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, wxSize(35,  35), wxBU_AUTODRAW);
   horizontalBoxSizer3->Add(m_YubiBtn, 0, wxALL|wxALIGN_CENTER|wxALIGN_LEFT, 0);
 
-  m_yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0);
+  m_yubiStatusCtrl = new wxStaticText(panel, ID_YUBISTATUS, _("Insert your YubiKey"), wxDefaultPosition, wxDefaultSize, 0);
   horizontalBoxSizer3->Add(m_yubiStatusCtrl, 0, wxLEFT|wxALIGN_CENTER|wxALIGN_LEFT, 12);
 #endif
 

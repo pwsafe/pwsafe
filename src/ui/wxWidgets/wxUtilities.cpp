@@ -28,6 +28,7 @@
 #include <wx/versioninfo.h>
 
 #include "core/PWScore.h"
+#include "core/PWCharPool.h" // for CheckMasterPassword()
 #include "PWSafeApp.h"
 #include "SafeCombinationCtrl.h"
 
@@ -186,6 +187,35 @@ void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxStrin
 #endif
 }
 
+bool CheckPasswordStrengthAndWarn(wxWindow *win, StringX &password)
+{
+  // Vox populi vox dei - folks want the ability to use a weak
+  // passphrase, best we can do is warn them...
+  // If someone want to build a version that insists on proper
+  // passphrases, then just define the preprocessor macro
+  // PWS_FORCE_STRONG_PASSPHRASE in the build properties/Makefile
+  StringX errmess;
+  if (!CPasswordCharPool::CheckMasterPassword(password, errmess)) {
+    wxString cs_msg = errmess.c_str();
+#ifndef PWS_FORCE_STRONG_PASSPHRASE
+    cs_msg += wxT("\n");
+    cs_msg += _("Use it anyway?");
+    wxMessageDialog mb(win, cs_msg, _("Weak Master Password"),
+                       wxYES_NO | wxNO_DEFAULT | wxICON_EXCLAMATION);
+    mb.SetYesNoLabels(_("Use anyway"), _("Cancel"));
+    int rc = mb.ShowModal();
+    return (rc == wxID_YES);
+#else
+    cs_msg += wxT("\n");
+    cs_msg += _("Try another");
+    wxMessageDialog mb(win, cs_msg, _("Error"), wxOK | wxICON_HAND);
+    mb.ShowModal();
+    return false;
+#endif // PWS_FORCE_STRONG_PASSPHRASE
+  }
+  return true;
+}
+
 SafeCombinationCtrl* wxUtilities::CreateLabeledSafeCombinationCtrl(wxWindow* parent, wxWindowID id, const wxString& label, StringX* password, bool hasFocus)
 {
   auto *sizer = new wxBoxSizer(wxVERTICAL);
@@ -206,15 +236,18 @@ SafeCombinationCtrl* wxUtilities::CreateLabeledSafeCombinationCtrl(wxWindow* par
 
 std::tuple<wxBitmapButton*, wxStaticText*> wxUtilities::CreateYubiKeyControls(wxWindow *parent, wxWindowID buttonId, wxWindowID statusTextId)
 {
-  auto *sizer = new wxBoxSizer(wxHORIZONTAL);
-  parent->GetSizer()->Add(sizer, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
+  auto* panel = new wxPanel(parent, wxID_ANY, wxDefaultPosition, wxSize(-1,  35));
+  parent->GetSizer()->Add(panel, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
 
-  auto *button = new wxBitmapButton(parent, buttonId, GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, wxSize(35,  35), wxBU_AUTODRAW);
+  auto *sizer = new wxBoxSizer(wxHORIZONTAL);
+  panel->SetSizer(sizer);
+
+  auto *button = new wxBitmapButton(panel, buttonId, GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, wxSize(35,  35), wxBU_AUTODRAW);
   button->SetToolTip(_("YubiKey"));
   sizer->Add(button, 0, wxALL|wxALIGN_CENTER|wxALIGN_LEFT, 0);
 
-  auto *statusText = new wxStaticText(parent, statusTextId, _("Insert YubiKey"), wxDefaultPosition, wxDefaultSize, 0);
-  sizer->Add(statusText, 0, wxLEFT|wxALIGN_CENTER|wxALIGN_LEFT, 12);
+  auto *statusText = new wxStaticText(panel, statusTextId, _("Insert YubiKey"), wxDefaultPosition, wxDefaultSize, 0);
+  sizer->Add(statusText, 0, wxLEFT|wxRIGHT|wxALIGN_CENTER|wxALIGN_LEFT, 12);
 
   return std::make_tuple(button, statusText);
 }

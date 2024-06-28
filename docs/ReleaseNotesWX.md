@@ -19,6 +19,7 @@ New features in 1.20
 
 Changes to existing features in 1.20
 ------------------------------------
+* [GH1300](https://github.com/pwsafe/pwsafe/issues/1300) Add the password strength check with a Yubikey
 
 
 PasswordSafe 1.19 Release 8 June 2024
