@@ -107,6 +107,7 @@ bool Clipboard::SetData(const StringX &data)
   bool res = false;
   if (wxTheClipboard->Open()) {
 #if defined(__UNIX__) && !defined(__WXOSX__)
+    // Copying composite object is currently not working as expected on Wayland
     if (wxUtilities::IsDisplayManagerX11()) {
       wxDataObjectComposite *dataObjectComposite = new wxDataObjectComposite();
       dataObjectComposite->Add(new wxTextDataObjectEx(data.c_str()), true);

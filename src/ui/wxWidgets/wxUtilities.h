@@ -443,8 +443,7 @@ namespace wxUtilities
   /**
    * @brief Checks if virtual keyboard is supported.
    * 
-   * @return true if IsDisplayManagerX11() returns true on Linux,
-   *         always true on Mac and false on Windows.
+   * @return IsDisplayManagerX11() on Linux, true on Mac, and false on Windows.
    */
   bool IsVirtualKeyboardSupported();
 }
