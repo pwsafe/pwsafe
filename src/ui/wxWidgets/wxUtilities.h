@@ -436,9 +436,14 @@ namespace wxUtilities
 {
   /**
    * @brief Checks environment variable 'XDG_SESSION_TYPE' for display manager 'x11'.
+   *
+   * @return whether the environment variable is set to 'x11'.
+   */
+  bool IsDisplayManagerX11();
+  /**
+   * @brief Checks if virtual keyboard is supported.
    * 
-   * @return true if environment variable is set to 'x11' on Linux,
-   *         always true on Mac and false on Windows.
+   * @return IsDisplayManagerX11() on Linux, true on Mac, and false on Windows.
    */
   bool IsVirtualKeyboardSupported();
 }

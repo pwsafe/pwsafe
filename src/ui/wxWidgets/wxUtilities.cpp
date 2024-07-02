@@ -296,13 +296,8 @@ bool IsCurrentDesktopKde()
 #endif
 }
 
-bool wxUtilities::IsVirtualKeyboardSupported()
+bool wxUtilities::IsDisplayManagerX11()
 {
-#ifdef __WINDOWS__
-  return false;
-#elif defined __WXOSX__
-  return true;
-#else
   static int isDisplayManagerX11 = 0;
 
   // Get the env. variable only once
@@ -320,6 +315,16 @@ bool wxUtilities::IsVirtualKeyboardSupported()
     }
   }
   return (isDisplayManagerX11 == 1);
+}
+
+bool wxUtilities::IsVirtualKeyboardSupported()
+{
+#ifdef __WINDOWS__
+  return false;
+#elif defined __WXOSX__
+  return true;
+#else
+  return wxUtilities::IsDisplayManagerX11();
 #endif
 }
 

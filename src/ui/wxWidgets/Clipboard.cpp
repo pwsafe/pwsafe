@@ -107,10 +107,15 @@ bool Clipboard::SetData(const StringX &data)
   bool res = false;
   if (wxTheClipboard->Open()) {
 #if defined(__UNIX__) && !defined(__WXOSX__)
-    wxDataObjectComposite *dataObjectComposite = new wxDataObjectComposite();
-    dataObjectComposite->Add(new wxTextDataObjectEx(data.c_str()), true);
-    dataObjectComposite->Add(new KDEClipboardSecretMarkerObject(), false);
-    res = wxTheClipboard->SetData(dataObjectComposite);
+    // Copying composite object is currently not working as expected on Wayland
+    if (wxUtilities::IsDisplayManagerX11()) {
+      wxDataObjectComposite *dataObjectComposite = new wxDataObjectComposite();
+      dataObjectComposite->Add(new wxTextDataObjectEx(data.c_str()), true);
+      dataObjectComposite->Add(new KDEClipboardSecretMarkerObject(), false);
+      res = wxTheClipboard->SetData(dataObjectComposite);
+    } else {
+      res = wxTheClipboard->SetData(new wxTextDataObjectEx(data.c_str()));
+    }
 #else
     res = wxTheClipboard->SetData(new wxTextDataObjectEx(data.c_str()));
 #endif
