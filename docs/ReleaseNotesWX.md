@@ -7,18 +7,19 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 1.20 Release ??? 2024
-=====================================
+PasswordSafe 1.19.1 Release 2 July 2024
+=======================================
 
-Bugs fixed in 1.20
-------------------
+Bugs fixed in 1.19.1
+--------------------
+* [GH1307](https://github.com/pwsafe/pwsafe/issues/1307), [GH1308](https://github.com/pwsafe/pwsafe/issues/1308) Regression: Clipboard works correctly under Wayland
 * [GH1230](https://github.com/pwsafe/pwsafe/issues/1230) The Change Master Password dialog now accepts a blank old password with a Yubikey
 
-New features in 1.20
---------------------
+New features in 1.19.1
+----------------------
 
-Changes to existing features in 1.20
-------------------------------------
+Changes to existing features in 1.19.1
+--------------------------------------
 * [GH1300](https://github.com/pwsafe/pwsafe/issues/1300) Add the password strength check with a Yubikey
 
 
