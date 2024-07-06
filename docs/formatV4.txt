@@ -382,6 +382,10 @@ Credit Card Expiration      0x1d        Text          N              [23]
 Credit Card Verif. Value    0x1e        Text          N              [23]
 Credit Card PIN             0x1f        Text          N              [23]
 QR Code                     0x20        Text          N              [24]
+TOTP Config                 0x21        1 byte        N              [29]
+TOTP Length                 0x22        1 byte        N              [29]
+TOTP Time Step              0x23        1 byte        N              [29]
+TOTP Start Time             0x24        time_t        N              [29]
 BaseUUID                    0x41        UUID          Y              [25]
 AliasUUID                   0x42        UUID          Y
 ShortcutUUID                0x43        UUID          Y
@@ -550,6 +554,33 @@ to QR code without any further encoding.
 
 [28] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
+
+[29] The TOTP parameters fields are TOTP Config (0x21), TOTP Digits (0x22),
+TOTP Time Step (0x23), and TOTP Start Time (0x24). If any of these fields is not
+present, a default applies as specified below. These fields, or their implicit
+default values, are only used by Password Safe if the "Two Factor Key" field (0x1b)
+is present.
+These TOTP parameters fields have the following format:
+
+    TOTP Config     = 1 byte with the following format (bit 7 is MSB):
+                        bits 0-1: HMAC hash algorithm as follows:
+                            0x00: SHA1
+                            (all other values 0x01 through 0x03 are reserved.)
+                        bits 2-7: Reserved.
+                      If this TOTP Config field is not present, the default
+                      HMAC hash algorithm is SHA1 (HMAC-SHA1).
+
+    TOTP Length     = 1 byte indicating the number of TOTP code digits.
+                      This is the RFC4226 "Digit" value. If not specified,
+                      the default length for a TOTP code is 6 digits (0x06).
+
+    TOTP Time Step  = 1 byte indicating the RFC6238 time step "X" value in seconds.
+                      If not specified, the default is 30 seconds (0x1E).
+
+    TOTP Start Time = This is the RFC6238 "T0" value, the time at which to
+                      start counting time steps. If not specified, the
+                      default is 0. The format is that of a 40 bit (5 byte)
+                      Password Safe time_t value as specified in Section 3.1.3.
 
 3.4 Attachments
 
