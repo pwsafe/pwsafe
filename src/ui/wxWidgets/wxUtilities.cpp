@@ -34,7 +34,12 @@
 
 #include "wxUtilities.h"
 
+#include "graphics/checkmark_placeholder.xpm"
+#include "graphics/checkmark_green.xpm" // https://www.pngrepo.com/svg/311890/check-mark
+#include "graphics/checkmark_gray.xpm"  // https://www.pngrepo.com/svg/311890/check-mark
 #include "graphics/cpane.xpm"
+#include "graphics/eye.xpm"         // https://www.pngrepo.com/svg/10151/eye
+#include "graphics/eye_close.xpm"   // https://www.pngrepo.com/svg/391829/eye-close
 #ifndef NO_YUBI
 #include "graphics/Yubikey-button.xpm"
 #endif
@@ -267,6 +272,31 @@ wxBitmap wxUtilities::GetBitmapResource( const wxString& name )
   if (name == wxT("graphics/cpane.xpm"))
   {
     wxBitmap bitmap(cpane_xpm);
+    return bitmap;
+  }
+  else if (name == wxT("graphics/checkmark_placeholder.xpm"))
+  {
+    wxBitmap bitmap(checkmark_placeholder_xpm);
+    return bitmap;
+  }
+  else if (name == wxT("graphics/checkmark_green.xpm"))
+  {
+    wxBitmap bitmap(checkmark_green_xpm);
+    return bitmap;
+  }
+  else if (name == wxT("graphics/checkmark_gray.xpm"))
+  {
+    wxBitmap bitmap(checkmark_gray_xpm);
+    return bitmap;
+  }
+  else if (name == wxT("graphics/eye.xpm"))
+  {
+    wxBitmap bitmap(eye_xpm);
+    return bitmap;
+  }
+  else if (name == wxT("graphics/eye_close.xpm"))
+  {
+    wxBitmap bitmap(eye_close_xpm);
     return bitmap;
   }
 #ifndef NO_YUBI

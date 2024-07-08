@@ -53,6 +53,8 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
   EVT_BUTTON(       wxID_OK,                 AddEditPropSheetDlg::OnOk                      )
   EVT_BUTTON(       wxID_CANCEL,             AddEditPropSheetDlg::OnCancel                  )
 ////@begin AddEditPropSheetDlg event table entries
+  EVT_TEXT(         ID_TEXTCTRL_PASSWORD,    AddEditPropSheetDlg::OnPasswordChanged         )
+  EVT_TEXT(         ID_TEXTCTRL_PASSWORD2,   AddEditPropSheetDlg::OnPasswordChanged         )
   EVT_BUTTON(       ID_BUTTON_SHOWHIDE,      AddEditPropSheetDlg::OnShowHideClick           )
   EVT_BUTTON(       ID_BUTTON_GENERATE,      AddEditPropSheetDlg::OnGenerateButtonClick     )
   EVT_BUTTON(       ID_BUTTON_ALIAS,         AddEditPropSheetDlg::OnAliasButtonClick        )
@@ -273,84 +275,104 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   auto *itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
   panel->SetSizer(itemBoxSizer3);
 
-  auto *itemStaticText4 = new wxStaticText( panel, wxID_STATIC, _(
-    "To add a new entry, simply fill in the fields below. At least a title and\n"
-    "a password are required. If you have set a default username, it will\n"
-    "appear in the username field."), wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer3->Add(itemStaticText4, 0, wxALIGN_LEFT/*|wxALIGN_CENTER_VERTICAL*/|wxALL, 5);
+  m_BasicSizer = new wxGridBagSizer(/*vgap:*/ 5, /*hgap:*/ 5);
+  itemBoxSizer3->Add(m_BasicSizer, 1, wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP|wxALL, 10);
 
-  m_BasicSizer = new wxGridBagSizer();
-
-  itemBoxSizer3->Add(m_BasicSizer, 1, wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP|wxALL, 0);
-  auto *itemStaticText6 = new wxStaticText( panel, wxID_STATIC, _("Group:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText6, wxGBPosition(/*row:*/ 0, /*column:*/ 0), wxDefaultSpan,  wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto *itemStaticText6 = new wxStaticText( panel, wxID_STATIC, _("Group"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_BasicSizer->Add(itemStaticText6, wxGBPosition(/*row:*/ 0, /*column:*/ 0), wxDefaultSpan,  wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicGroupNamesCtrl = new wxComboBox( panel, ID_COMBOBOX_GROUP, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxCB_DROPDOWN);
-  m_BasicSizer->Add(m_BasicGroupNamesCtrl, wxGBPosition(/*row:*/ 0, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicSizer->Add(m_BasicGroupNamesCtrl, wxGBPosition(/*row:*/ 1, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
-  auto *itemStaticText9 = new wxStaticText( panel, wxID_STATIC, _("Title:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText9, wxGBPosition(/*row:*/ 1, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto *itemStaticText9 = new wxStaticText( panel, wxID_STATIC, _("Title"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_BasicSizer->Add(itemStaticText9, wxGBPosition(/*row:*/ 2, /*column:*/ 0), wxDefaultSpan, wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicTitleTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_TITLE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicTitleTextCtrl, wxGBPosition(/*row:*/ 1, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicSizer->Add(m_BasicTitleTextCtrl, wxGBPosition(/*row:*/ 3, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
-  auto *itemStaticText12 = new wxStaticText( panel, wxID_STATIC, _("Username:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText12, wxGBPosition(/*row:*/ 2, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto *itemStaticText12 = new wxStaticText( panel, wxID_STATIC, _("Username"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto *itemStaticText13 = new wxStaticText( panel, wxID_STATIC, _("(Optional)"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto *itemBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
+  itemBoxSizer4->Add(itemStaticText12, 0, wxALIGN_CENTER_VERTICAL, 0);
+  itemBoxSizer4->AddStretchSpacer(1);
+  itemBoxSizer4->Add(itemStaticText13, 0, wxALIGN_CENTER_VERTICAL, 0);
+  m_BasicSizer->Add(itemBoxSizer4, wxGBPosition(/*row:*/ 4, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicUsernameTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_USERNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicUsernameTextCtrl , wxGBPosition(/*row:*/ 2, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicSizer->Add(m_BasicUsernameTextCtrl , wxGBPosition(/*row:*/ 5, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
-  m_BasicPasswordTextLabel = new wxStaticText( panel, wxID_STATIC, _("Password:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicPasswordTextLabel, wxGBPosition(/*row:*/ 3, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicPasswordTextLabel = new wxStaticText( panel, wxID_STATIC, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_BasicSizer->Add(m_BasicPasswordTextLabel, wxGBPosition(/*row:*/ 6, /*column:*/ 0), wxDefaultSpan, wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicPasswordTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_PASSWORD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicPasswordTextCtrl, wxGBPosition(/*row:*/ 3, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicSizer->Add(m_BasicPasswordTextCtrl, wxGBPosition(/*row:*/ 7, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 1), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
-  m_BasicShowHideCtrl = new wxButton( panel, ID_BUTTON_SHOWHIDE, _("&Hide"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicShowHideCtrl, wxGBPosition(/*row:*/ 3, /*column:*/ 2), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicPasswordBitmap = new wxStaticBitmap(panel, wxID_ANY, wxUtilities::GetBitmapResource(wxT("graphics/checkmark_placeholder.xpm")), wxDefaultPosition, wxDefaultSize, 0);
+  m_BasicSizer->Add(m_BasicPasswordBitmap, wxGBPosition(/*row:*/ 7, /*column:*/ 1), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxBOTTOM, 7);
+
+  m_BasicShowHideCtrl = new wxBitmapButton(panel, ID_BUTTON_SHOWHIDE, wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
+  m_BasicSizer->Add(m_BasicShowHideCtrl, wxGBPosition(/*row:*/ 7, /*column:*/ 2), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   auto *itemButton21 = new wxButton( panel, ID_BUTTON_GENERATE, _("&Generate"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemButton21, wxGBPosition(/*row:*/ 3, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicSizer->Add(itemButton21, wxGBPosition(/*row:*/ 7, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
-  m_BasicPasswordConfirmationTextLabel = new wxStaticText( panel, wxID_STATIC, _("Confirm:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicPasswordConfirmationTextLabel, wxGBPosition(/*row:*/ 4, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicPasswordConfirmationTextLabel = new wxStaticText( panel, wxID_STATIC, _("Confirm"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_BasicSizer->Add(m_BasicPasswordConfirmationTextLabel, wxGBPosition(/*row:*/ 8, /*column:*/ 0), wxDefaultSpan, wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicPasswordConfirmationTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_PASSWORD2, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
-  m_BasicSizer->Add(m_BasicPasswordConfirmationTextCtrl, wxGBPosition(/*row:*/ 4, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicSizer->Add(m_BasicPasswordConfirmationTextCtrl, wxGBPosition(/*row:*/ 9, /*column:*/ 0), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
+
+  m_BasicPasswordConfirmationBitmap = new wxStaticBitmap(panel, wxID_ANY, wxUtilities::GetBitmapResource(wxT("graphics/checkmark_placeholder.xpm")), wxDefaultPosition, wxDefaultSize, 0);
+  m_BasicSizer->Add(m_BasicPasswordConfirmationBitmap, wxGBPosition(/*row:*/ 9, /*column:*/ 1), wxDefaultSpan, wxALIGN_CENTER|wxALIGN_LEFT|wxBOTTOM, 7);
   
   auto *itemButton22 = new wxButton( panel, ID_BUTTON_ALIAS, _("&Alias To..."), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemButton22, wxGBPosition(/*row:*/ 4, /*column:*/ 2), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicSizer->Add(itemButton22, wxGBPosition(/*row:*/ 9, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
   if(! PWSprefs::GetInstance()->GetPref(PWSprefs::ShowAliasSelection)) {
     // Per default do not show this button
     itemButton22->Hide();
   }
   
-  auto *itemStaticText25 = new wxStaticText( panel, wxID_STATIC, _("URL:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText25, wxGBPosition(/*row:*/ 5, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto *itemStaticText25 = new wxStaticText( panel, wxID_STATIC, _("Web address"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto *itemStaticText26 = new wxStaticText( panel, wxID_STATIC, _("(Optional)"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto *itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
+  itemBoxSizer5->Add(itemStaticText25, 0, wxALIGN_CENTER_VERTICAL, 0);
+  itemBoxSizer5->AddStretchSpacer(1);
+  itemBoxSizer5->Add(itemStaticText26, 0, wxALIGN_CENTER_VERTICAL, 0);
+  m_BasicSizer->Add(itemBoxSizer5, wxGBPosition(/*row:*/ 10, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicUrlTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_URL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicUrlTextCtrl, wxGBPosition(/*row:*/ 5, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicSizer->Add(m_BasicUrlTextCtrl, wxGBPosition(/*row:*/ 11, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   auto *itemButton29 = new wxButton( panel, ID_GO_BTN, _("Go"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemButton29, wxGBPosition(/*row:*/ 5, /*column:*/ 2), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT, 5);
+  m_BasicSizer->Add(itemButton29, wxGBPosition(/*row:*/ 11, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
-  auto *itemStaticText30 = new wxStaticText( panel, wxID_STATIC, _("EMail:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText30, wxGBPosition(/*row:*/ 6, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto *itemStaticText30 = new wxStaticText( panel, wxID_STATIC, _("Email"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto *itemStaticText31 = new wxStaticText( panel, wxID_STATIC, _("(Optional)"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto *itemBoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
+  itemBoxSizer6->Add(itemStaticText30, 0, wxALIGN_CENTER_VERTICAL, 0);
+  itemBoxSizer6->AddStretchSpacer(1);
+  itemBoxSizer6->Add(itemStaticText31, 0, wxALIGN_CENTER_VERTICAL, 0);
+  m_BasicSizer->Add(itemBoxSizer6, wxGBPosition(/*row:*/ 12, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicEmailTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_EMAIL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicEmailTextCtrl, wxGBPosition(/*row:*/ 6, /*column:*/ 1), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  m_BasicSizer->Add(m_BasicEmailTextCtrl, wxGBPosition(/*row:*/ 13, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   auto *itemButton34 = new wxButton( panel, ID_SEND_BTN, _("Send"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemButton34, wxGBPosition(/*row:*/ 6, /*column:*/ 2), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT, 5);
+  m_BasicSizer->Add(itemButton34, wxGBPosition(/*row:*/ 13, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
-  auto *itemStaticText36 = new wxStaticText( panel, wxID_STATIC, _("Notes:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText36, wxGBPosition(/*row:*/ 7, /*column:*/ 0), wxDefaultSpan, wxALIGN_RIGHT|wxALIGN_TOP|wxALL, 5);
+  auto *itemStaticText36 = new wxStaticText( panel, wxID_STATIC, _("Notes"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto *itemStaticText37 = new wxStaticText( panel, wxID_STATIC, _("(Optional)"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto *itemBoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
+  itemBoxSizer7->Add(itemStaticText36, 0, wxALIGN_CENTER_VERTICAL, 0);
+  itemBoxSizer7->AddStretchSpacer(1);
+  itemBoxSizer7->Add(itemStaticText37, 0, wxALIGN_CENTER_VERTICAL, 0);
+  m_BasicSizer->Add(itemBoxSizer7, wxGBPosition(/*row:*/ 14, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 4), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
-  m_BasicNotesTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_NOTES, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
-  m_BasicSizer->Add(m_BasicNotesTextCtrl, wxGBPosition(/*row:*/ 7, /*column:*/ 1), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3) , wxEXPAND|wxALL, 5);
+  m_BasicNotesTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_NOTES, wxEmptyString, wxDefaultPosition, wxSize(-1, 80), wxTE_MULTILINE );
+  m_BasicSizer->Add(m_BasicNotesTextCtrl, wxGBPosition(/*row:*/ 15, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 4), wxEXPAND|wxBOTTOM, 7);
 
-  m_BasicSizer->AddGrowableCol(1);  // Growable text entry fields
-  m_BasicSizer->AddGrowableRow(7);  // Growable notes field
+  m_BasicSizer->AddGrowableCol(0);  // Growable text entry fields
+  m_BasicSizer->AddGrowableRow(15); // Growable notes field
 
   m_BasicTitleTextCtrl->SetValidator(wxGenericValidator(&m_Title));
   m_BasicUsernameTextCtrl->SetValidator(wxGenericValidator(&m_User));
@@ -1601,6 +1623,15 @@ void AddEditPropSheetDlg::OnGenerateButtonClick(wxCommandEvent& WXUNUSED(evt))
 }
 
 /*!
+ * wxEVT_TEXT event handler for ID_TEXTCTRL_PASSWORD and ID_TEXTCTRL_PASSWORD2
+ */
+
+void AddEditPropSheetDlg::OnPasswordChanged(wxCommandEvent& event)
+{
+  UpdatePasswordConfirmationIcon(event.GetId());
+}
+
+/*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_SHOWHIDE
  */
 
@@ -1614,12 +1645,16 @@ void AddEditPropSheetDlg::OnShowHideClick(wxCommandEvent& WXUNUSED(evt))
         m_IsPasswordHidden = false;
         UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordConfirmationTextCtrl, pbci->GetPassword().c_str(), m_BasicPasswordTextCtrl, wxTE_READONLY);
         m_BasicPasswordConfirmationTextCtrl->Enable(true);
+        m_BasicPasswordConfirmationTextCtrl->SetModified(false);   // Reset the modification flag to indicate no changes made by the user.
+                                                                   // See also 'UpdatePasswordConfirmationIcon'.
       }
     }
     else {
       m_IsPasswordHidden = true;
       UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordConfirmationTextCtrl, wxEmptyString, m_BasicPasswordTextCtrl, wxTE_READONLY);
       m_BasicPasswordConfirmationTextCtrl->Enable(false);
+      m_BasicPasswordConfirmationTextCtrl->SetModified(false);     // Reset the modification flag to indicate no changes made by the user.
+                                                                   // See also 'UpdatePasswordConfirmationIcon'.
     }
   }
   else {
@@ -1628,6 +1663,7 @@ void AddEditPropSheetDlg::OnShowHideClick(wxCommandEvent& WXUNUSED(evt))
       ShowPassword();
     } else {
       HidePassword();
+      UpdatePasswordConfirmationIcon(ID_TEXTCTRL_PASSWORD2);
     }
   }
 }
@@ -1707,9 +1743,11 @@ void AddEditPropSheetDlg::ShowPassword()
   m_IsPasswordHidden = false;
   UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordTextCtrl, m_Password.c_str(), m_BasicUsernameTextCtrl, 0);
   // Disable confirmation Ctrl, as the user can see the password entered
-  ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
-  m_BasicPasswordConfirmationTextCtrl->Clear();
+  m_BasicPasswordConfirmationTextCtrl->ChangeValue(wxEmptyString); // Use of ChangeValue instead of SetValue to not trigger an input event.
   m_BasicPasswordConfirmationTextCtrl->Enable(false);
+  m_BasicPasswordConfirmationTextCtrl->SetModified(false);         // Reset of modification flag for password confirmation icon handling.
+  m_BasicShowHideCtrl->SetBitmapLabel(wxUtilities::GetBitmapResource(wxT("graphics/eye_close.xpm")));
+  m_BasicShowHideCtrl->SetToolTip(_("Hide password"));
 }
 
 void AddEditPropSheetDlg::HidePassword()
@@ -1717,9 +1755,45 @@ void AddEditPropSheetDlg::HidePassword()
   m_IsPasswordHidden = true;
   const wxString pwd = m_Password.c_str();
   UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordTextCtrl, pwd, m_BasicUsernameTextCtrl, wxTE_PASSWORD);
-  ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);
-  m_BasicPasswordConfirmationTextCtrl->ChangeValue(pwd);
+  m_BasicPasswordConfirmationTextCtrl->ChangeValue(pwd);           // Use of ChangeValue instead of SetValue to not trigger an input event.
   m_BasicPasswordConfirmationTextCtrl->Enable(true);
+  m_BasicPasswordConfirmationTextCtrl->SetModified(false);         // Reset of modification flag for password confirmation icon handling.
+  m_BasicShowHideCtrl->SetBitmapLabel(wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")));
+  m_BasicShowHideCtrl->SetToolTip(_("Show password"));
+}
+
+void AddEditPropSheetDlg::UpdatePasswordConfirmationIcon(int controlId)
+{
+  auto updateLayout = false;
+
+  // There is nothing to do if there is no user input, but the content of
+  // the password input fields may have been changed by the hide/show functionality.
+  if (!m_BasicPasswordTextCtrl->IsModified() && !m_BasicPasswordConfirmationTextCtrl->IsModified()) {
+    return;
+  }
+  // If both passwords entered are the same, the green checkmark icons will appear to indicate the match.
+  if (m_BasicPasswordTextCtrl->GetValue() == m_BasicPasswordConfirmationTextCtrl->GetValue()) {
+    m_BasicPasswordBitmap->SetBitmap(wxUtilities::GetBitmapResource(wxT("graphics/checkmark_green.xpm")));
+    m_BasicPasswordConfirmationBitmap->SetBitmap(wxUtilities::GetBitmapResource(wxT("graphics/checkmark_green.xpm")));
+  }
+  // The gray checkmark icons will be shown to indicate that some input is given that do not match.
+  else {
+    m_BasicPasswordBitmap->SetBitmap(wxUtilities::GetBitmapResource(wxT("graphics/checkmark_gray.xpm")));
+    m_BasicPasswordConfirmationBitmap->SetBitmap(wxUtilities::GetBitmapResource(wxT("graphics/checkmark_gray.xpm")));
+  }
+  // Only display the check mark symbol to the right of each input field when there is some input.
+  // This also requires re-layout of the dialog.
+  if (controlId == ID_TEXTCTRL_PASSWORD) {
+    updateLayout = !m_BasicPasswordBitmap->IsShown() && !m_BasicPasswordTextCtrl->IsEmpty();
+    m_BasicPasswordBitmap->Show(!m_BasicPasswordTextCtrl->IsEmpty());
+  }
+  else if (controlId == ID_TEXTCTRL_PASSWORD2) {
+    updateLayout = !m_BasicPasswordConfirmationBitmap->IsShown() && !m_BasicPasswordConfirmationTextCtrl->IsEmpty();
+    m_BasicPasswordConfirmationBitmap->Show(!m_BasicPasswordConfirmationTextCtrl->IsEmpty());
+  }
+  if (updateLayout) {
+    m_BasicSizer->Layout();
+  }
 }
 
 void AddEditPropSheetDlg::ShowAlias()
