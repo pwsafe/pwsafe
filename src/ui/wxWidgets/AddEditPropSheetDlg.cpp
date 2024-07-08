@@ -386,42 +386,43 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
 wxPanel* AddEditPropSheetDlg::CreateAdditionalPanel()
 {
   auto *panel = new wxPanel(GetBookCtrl(), ID_PANEL_ADDITIONAL, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-  auto *itemBoxSizer39 = new wxBoxSizer(wxVERTICAL);
-  panel->SetSizer(itemBoxSizer39);
+  auto *mainSizer = new wxBoxSizer(wxVERTICAL);
+  panel->SetSizer(mainSizer);
 
-  auto *itemFlexGridSizer40 = new wxFlexGridSizer(0, 2, 0, 0);
-  itemBoxSizer39->Add(itemFlexGridSizer40, 0, wxEXPAND | wxALL, 5);
-  auto *itemStaticText41 = new wxStaticText(panel, wxID_STATIC, _("Autotype:"), wxDefaultPosition, wxDefaultSize, 0);
-  itemFlexGridSizer40->Add(itemStaticText41, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  auto *vBoxSizer = new wxBoxSizer(wxVERTICAL);
+  mainSizer->Add(vBoxSizer, 1, wxEXPAND|wxALL, 10);
+
+  auto *itemStaticText41 = new wxStaticText(panel, wxID_STATIC, _("Autotype"), wxDefaultPosition, wxDefaultSize, 0);
+  vBoxSizer->Add(itemStaticText41, 0, wxALIGN_LEFT|wxBOTTOM, 5);
 
   auto *itemTextCtrl42 = new wxTextCtrl(panel, ID_TEXTCTRL_AUTOTYPE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-  itemFlexGridSizer40->Add(itemTextCtrl42, 0, wxEXPAND | wxALL, 5);
+  vBoxSizer->Add(itemTextCtrl42, 0, wxALIGN_LEFT|wxEXPAND|wxBOTTOM, 12);
 
-  auto *itemStaticText43 = new wxStaticText(panel, wxID_STATIC, _("Run Cmd:"), wxDefaultPosition, wxDefaultSize, 0);
-  itemFlexGridSizer40->Add(itemStaticText43, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  auto *itemStaticText43 = new wxStaticText(panel, wxID_STATIC, _("Run Command"), wxDefaultPosition, wxDefaultSize, 0);
+  vBoxSizer->Add(itemStaticText43, 0, wxALIGN_LEFT|wxBOTTOM, 5);
 
   auto *itemTextCtrl44 = new wxTextCtrl(panel, ID_TEXTCTRL_RUN_CMD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-  itemFlexGridSizer40->Add(itemTextCtrl44, 0, wxEXPAND | wxALL, 5);
+  vBoxSizer->Add(itemTextCtrl44, 0, wxALIGN_LEFT|wxEXPAND|wxBOTTOM, 12);
 
-  auto *itemStaticText45 = new wxStaticText(panel, wxID_STATIC, _("Double-Click Action:"), wxDefaultPosition, wxDefaultSize, 0);
-  itemFlexGridSizer40->Add(itemStaticText45, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  auto *itemStaticText45 = new wxStaticText(panel, wxID_STATIC, _("Double-Click Action"), wxDefaultPosition, wxDefaultSize, 0);
+  vBoxSizer->Add(itemStaticText45, 0, wxALIGN_LEFT|wxBOTTOM, 5);
 
   wxArrayString dcaComboBoxStrings;
   setupDCAStrings(dcaComboBoxStrings);
   m_AdditionalDoubleClickActionCtrl = new wxComboBox(panel, ID_COMBOBOX_DBC_ACTION, wxEmptyString, wxDefaultPosition, wxDefaultSize, dcaComboBoxStrings, wxCB_READONLY);
-  itemFlexGridSizer40->Add(m_AdditionalDoubleClickActionCtrl, 0, wxEXPAND | wxALL, 5);
+  vBoxSizer->Add(m_AdditionalDoubleClickActionCtrl, 0, wxALIGN_LEFT|wxEXPAND|wxBOTTOM, 12);
 
-  auto *itemStaticText47 = new wxStaticText(panel, wxID_STATIC, _("Shift-Double-Click Action:"), wxDefaultPosition, wxDefaultSize, 0);
-  itemFlexGridSizer40->Add(itemStaticText47, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  auto *itemStaticText47 = new wxStaticText(panel, wxID_STATIC, _("Shift-Double-Click Action"), wxDefaultPosition, wxDefaultSize, 0);
+  vBoxSizer->Add(itemStaticText47, 0, wxALIGN_LEFT|wxBOTTOM, 5);
 
   wxArrayString sdcaComboBoxStrings;
   setupDCAStrings(sdcaComboBoxStrings);
   m_AdditionalShiftDoubleClickActionCtrl = new wxComboBox(panel, ID_COMBOBOX_SDBC_ACTION, wxEmptyString, wxDefaultPosition, wxDefaultSize, sdcaComboBoxStrings, wxCB_READONLY);
-  itemFlexGridSizer40->Add(m_AdditionalShiftDoubleClickActionCtrl, 0, wxEXPAND | wxALL, 5);
+  vBoxSizer->Add(m_AdditionalShiftDoubleClickActionCtrl, 0, wxALIGN_LEFT|wxEXPAND|wxBOTTOM, 12);
 
   auto *itemStaticBoxSizer49Static = new wxStaticBox(panel, wxID_ANY, _("Password History"));
   auto *itemStaticBoxSizer49 = new wxStaticBoxSizer(itemStaticBoxSizer49Static, wxVERTICAL);
-  itemBoxSizer39->Add(itemStaticBoxSizer49, 0, wxEXPAND | wxALL, 5);
+  vBoxSizer->Add(itemStaticBoxSizer49, 1, wxEXPAND | wxALL, 0);
   auto *itemBoxSizer50 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer49->Add(itemBoxSizer50, 0, wxEXPAND | wxALL, 5);
   auto *itemCheckBox51 = new wxCheckBox(panel, ID_CHECKBOX_KEEP, _("Keep"), wxDefaultPosition, wxDefaultSize, 0);
@@ -448,16 +449,16 @@ wxPanel* AddEditPropSheetDlg::CreateAdditionalPanel()
   m_AdditionalPasswordHistoryGrid->SetColLabelSize(25);
   m_AdditionalPasswordHistoryGrid->SetRowLabelSize(0);
   m_AdditionalPasswordHistoryGrid->CreateGrid(5, 2, wxGrid::wxGridSelectRows);
-  itemStaticBoxSizer49->Add(m_AdditionalPasswordHistoryGrid, 0, wxEXPAND | wxALL, 5);
+  itemStaticBoxSizer49->Add(m_AdditionalPasswordHistoryGrid, 1, wxEXPAND | wxALL, 5);
 
   auto *itemBoxSizer55 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer49->Add(itemBoxSizer55, 0, wxEXPAND | wxALL, 5);
-  wxButton *itemButton56 = new wxButton(panel, ID_BUTTON_CLEAR_HIST, _("Clear History"), wxDefaultPosition, wxDefaultSize, 0);
+  auto *itemButton56 = new wxButton(panel, ID_BUTTON_CLEAR_HIST, _("Clear History"), wxDefaultPosition, wxDefaultSize, 0);
   itemBoxSizer55->Add(itemButton56, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   itemBoxSizer55->AddStretchSpacer();
 
-  wxButton *itemButton58 = new wxButton(panel, ID_BUTTON_COPY_ALL, _("Copy All"), wxDefaultPosition, wxDefaultSize, 0);
+  auto *itemButton58 = new wxButton(panel, ID_BUTTON_COPY_ALL, _("Copy All"), wxDefaultPosition, wxDefaultSize, 0);
   itemBoxSizer55->Add(itemButton58, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   itemTextCtrl42->SetValidator(wxGenericValidator(&m_Autotype));
