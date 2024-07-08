@@ -579,7 +579,7 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
 
   auto *itemStaticBoxSizer88Static = new wxStaticBox(panel, wxID_ANY, _("Random password generation rules"));
   auto *itemStaticBoxSizer88 = new wxStaticBoxSizer(itemStaticBoxSizer88Static, wxVERTICAL);
-  itemBoxSizer61->Add(itemStaticBoxSizer88, 0, wxEXPAND | wxALL, 5);
+  itemBoxSizer61->Add(itemStaticBoxSizer88, 0, wxEXPAND | wxALL, 10);
 
   auto *itemBoxSizer89 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer88->Add(itemBoxSizer89, 2, wxEXPAND | wxALL, 0);
