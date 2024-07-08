@@ -478,7 +478,7 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
 
   auto *itemStaticBoxSizer61Static = new wxStaticBox(panel, wxID_ANY, _("Password Expiry"));
   auto *itemStaticBoxSizer61 = new wxStaticBoxSizer(itemStaticBoxSizer61Static, wxVERTICAL);
-  itemBoxSizer60->Add(itemStaticBoxSizer61, 0, wxEXPAND | wxALL, 5);
+  itemBoxSizer60->Add(itemStaticBoxSizer61, 0, wxEXPAND | wxALL, 10);
   auto *itemBoxSizer62 = new wxBoxSizer(wxVERTICAL);
   itemStaticBoxSizer61->Add(itemBoxSizer62, 0, wxEXPAND | wxALL, 0);
   auto *itemFlexGridSizer63 = new wxFlexGridSizer(0, 3, 0, 0);
@@ -533,7 +533,7 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
 
   auto *itemStaticBoxSizer77Static = new wxStaticBox(panel, wxID_ANY, _("Statistics"));
   auto *itemStaticBoxSizer77 = new wxStaticBoxSizer(itemStaticBoxSizer77Static, wxVERTICAL);
-  itemBoxSizer60->Add(itemStaticBoxSizer77, 0, wxEXPAND | wxALL, 5);
+  itemBoxSizer60->Add(itemStaticBoxSizer77, 0, wxEXPAND | wxALL, 10);
   auto *itemFlexGridSizer78 = new wxFlexGridSizer(0, 2, 0, 0);
   itemStaticBoxSizer77->Add(itemFlexGridSizer78, 0, wxALIGN_LEFT | wxALL, 5);
   auto *itemStaticText79 = new wxStaticText(panel, wxID_STATIC, _("Created on:"), wxDefaultPosition, wxDefaultSize, 0);
