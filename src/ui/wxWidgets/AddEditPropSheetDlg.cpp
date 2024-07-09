@@ -368,8 +368,8 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   itemBoxSizer7->Add(itemStaticText37, 0, wxALIGN_CENTER_VERTICAL, 0);
   m_BasicSizer->Add(itemBoxSizer7, wxGBPosition(/*row:*/ 14, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 4), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
-  m_BasicNotesTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_NOTES, wxEmptyString, wxDefaultPosition, wxSize(-1, 80), wxTE_MULTILINE );
-  m_BasicSizer->Add(m_BasicNotesTextCtrl, wxGBPosition(/*row:*/ 15, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 4), wxEXPAND|wxBOTTOM, 7);
+  m_BasicNotesTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_NOTES, wxEmptyString, wxDefaultPosition, wxSize(-1, 100), wxTE_MULTILINE );
+  m_BasicSizer->Add(m_BasicNotesTextCtrl, wxGBPosition(/*row:*/ 15, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 4), wxEXPAND, 0);
 
   m_BasicSizer->AddGrowableCol(0);  // Growable text entry fields
   m_BasicSizer->AddGrowableRow(15); // Growable notes field
@@ -573,7 +573,7 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
 
 wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
 {
-  auto *panel = new wxPanel(GetBookCtrl(), ID_PANEL_PPOLICY, wxDefaultPosition, wxDefaultSize, wxHSCROLL | wxTAB_TRAVERSAL);
+  auto *panel = new wxPanel(GetBookCtrl(), ID_PANEL_PPOLICY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
   auto *itemBoxSizer61 = new wxBoxSizer(wxVERTICAL);
   panel->SetSizer(itemBoxSizer61);
 
@@ -763,11 +763,11 @@ wxPanel* AddEditPropSheetDlg::CreateAttachmentPanel()
   m_AttachmentPreviewStatus = new wxStaticText(panel, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE_HORIZONTAL, _T("ID_STATICTEXT_STATUS"));
   StaticBoxSizerPreview->Add(m_AttachmentPreviewStatus, 1, wxALL|wxALIGN_CENTER, 5);
   StaticBoxSizerPreview->SetMinSize(wxSize(-1, 300));
-  BoxSizerMain->Add(StaticBoxSizerPreview, 1, wxALL|wxEXPAND, 5);
+  BoxSizerMain->Add(StaticBoxSizerPreview, 1, wxALL|wxEXPAND, 10);
 
   auto *StaticBoxSizerFile = new wxStaticBoxSizer(wxVERTICAL, panel, _("File"));
   m_AttachmentFilePath = new wxStaticText(panel, wxID_ANY, _("N/A"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT|wxST_ELLIPSIZE_MIDDLE, _T("ID_STATICTEXT_PATH"));
-  StaticBoxSizerFile->Add(m_AttachmentFilePath, 0, wxALL|wxEXPAND, 5);
+  StaticBoxSizerFile->Add(m_AttachmentFilePath, 0, wxLEFT|wxBOTTOM|wxRIGHT|wxEXPAND, 10);
 
   auto *BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
   m_AttachmentButtonImport = new wxButton(panel, ID_BUTTON_IMPORT, _("Import..."), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_IMPORT"));
@@ -777,7 +777,7 @@ wxPanel* AddEditPropSheetDlg::CreateAttachmentPanel()
   m_AttachmentButtonRemove = new wxButton(panel, ID_BUTTON_REMOVE, _("Remove"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON_REMOVE"));
   BoxSizer3->Add(m_AttachmentButtonRemove, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
   StaticBoxSizerFile->Add(BoxSizer3, 0, wxALL|wxEXPAND, 5);
-  BoxSizerMain->Add(StaticBoxSizerFile, 0, wxALL|wxEXPAND, 5);
+  BoxSizerMain->Add(StaticBoxSizerFile, 0, wxLEFT|wxBOTTOM|wxRIGHT|wxEXPAND, 10);
 
   auto *StaticBoxSizerProperties = new wxStaticBoxSizer(wxHORIZONTAL, panel, _("Properties"));
   auto *FlexGridSizer1 = new wxFlexGridSizer(0, 2, 0, 0);
@@ -813,7 +813,7 @@ wxPanel* AddEditPropSheetDlg::CreateAttachmentPanel()
   m_AttachmentFileLastModifiedDate = new wxStaticText(panel, wxID_ANY, _T(""), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(m_AttachmentFileLastModifiedDate, 1, wxALL|wxEXPAND, 5);
   StaticBoxSizerProperties->Add(FlexGridSizer1, 1, wxALL|wxEXPAND, 5);
-  BoxSizerMain->Add(StaticBoxSizerProperties, 0, wxALL|wxEXPAND, 5);
+  BoxSizerMain->Add(StaticBoxSizerProperties, 0, wxLEFT|wxBOTTOM|wxRIGHT|wxEXPAND, 10);
 
   panel->SetSizer(BoxSizerMain);
 
