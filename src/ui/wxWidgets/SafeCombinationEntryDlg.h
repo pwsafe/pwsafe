@@ -159,10 +159,10 @@ private:
 #ifndef NO_YUBI
   // Not strictly yubi, but refactored to work with it:
 #endif
-  void ProcessPhrase();
+  bool ProcessPhrase();
   void UpdateReadOnlyCheckbox();
   void UpdateNew(bool isRO);
-  wxString EllipsizeFilePathname(const wxString& filename);
+  void EllipsizeFilePathname();
 };
 
 #endif // _SAFECOMBINATIONENTRYDLG_H_
