@@ -46,6 +46,7 @@ BEGIN_EVENT_TABLE( SafeCombinationPromptDlg, wxDialog )
 
 #ifndef NO_YUBI
 ////@begin SafeCombinationPromptDlg event table entries
+  EVT_ACTIVATE( SafeCombinationPromptDlg::OnActivate                     )
   EVT_BUTTON( ID_YUBIBTN,  SafeCombinationPromptDlg::OnYubibtnClick      )
   EVT_TIMER(  POLLING_TIMER_ID, SafeCombinationPromptDlg::OnPollingTimer )
 ////@end SafeCombinationPromptDlg event table entries
@@ -122,10 +123,10 @@ void SafeCombinationPromptDlg::CreateControls()
   auto textColor = itemStaticText7->GetForegroundColour();
   verticalBoxSizer1->Add(itemStaticText7, 0, wxBOTTOM, 5);
 
-  auto *textCtrlFilename = new wxTextCtrl(this, wxID_STATIC, _("filename"), wxDefaultPosition, wxDefaultSize, wxST_ELLIPSIZE_MIDDLE);
-  textCtrlFilename->Disable();
-  textCtrlFilename->SetForegroundColour(textColor);
-  verticalBoxSizer1->Add(textCtrlFilename, 0, wxALL|wxEXPAND, 0);
+  m_textCtrlFilename = new wxTextCtrl(this, wxID_STATIC, _("filename"), wxDefaultPosition, wxDefaultSize, 0);
+  m_textCtrlFilename->Disable();
+  m_textCtrlFilename->SetForegroundColour(textColor);
+  verticalBoxSizer1->Add(m_textCtrlFilename, 0, wxALL|wxEXPAND, 0);
 
   m_scctrl = wxUtilities::CreateLabeledSafeCombinationCtrl(this, ID_PASSWORD, _("Master Password"), &m_password, true);
 
@@ -167,9 +168,14 @@ void SafeCombinationPromptDlg::CreateControls()
     );
   }
 
+  // Event handler to update the file path name string if the size of the text field changed.
+  m_textCtrlFilename->Bind(wxEVT_SIZE, [&](wxSizeEvent& WXUNUSED(event)) {
+    EllipsizeFilePathname();
+  });
+
   // Set validators
-  textCtrlFilename->SetValidator(wxGenericValidator(&m_filename));
-////@end SafeCombinationPromptDlg content construction
+  m_textCtrlFilename->SetValidator(wxGenericValidator(&m_filename));
+
   wxWindow* passwdCtrl = FindWindow(ID_PASSWORD);
   if (passwdCtrl) {
     passwdCtrl->SetFocus();
@@ -197,7 +203,7 @@ wxIcon SafeCombinationPromptDlg::GetIconResource( const wxString& WXUNUSED(name)
 ////@end SafeCombinationPromptDlg icon retrieval
 }
 
-void SafeCombinationPromptDlg::ProcessPhrase()
+bool SafeCombinationPromptDlg::ProcessPhrase()
 {
   static unsigned tries = 0;
 
@@ -224,10 +230,35 @@ void SafeCombinationPromptDlg::ProcessPhrase()
       txt->SetSelection(-1,-1);
       txt->SetFocus();
     }
-    return;
+    return false;
   }
   m_core.SetCurFile(tostringx(m_filename));
-  EndModal(wxID_OK);
+  return true;
+}
+
+void SafeCombinationPromptDlg::EllipsizeFilePathname()
+{
+  if (m_filename.IsEmpty()) {
+    return;
+  }
+
+  wxScreenDC dc;
+
+  m_textCtrlFilename->ChangeValue(
+    wxControl::Ellipsize(
+      m_filename, dc, wxEllipsizeMode::wxELLIPSIZE_MIDDLE,
+      /* The limiting width for the text is the text input field width reduced by the margins. */
+      (m_textCtrlFilename->GetSize()).GetWidth() - 18
+    )
+  );
+}
+
+void SafeCombinationPromptDlg::OnActivate(wxActivateEvent& WXUNUSED(event))
+{
+  if (!m_DialogActivated) {
+    EllipsizeFilePathname();
+    m_DialogActivated = true;
+  }
 }
 
 /*!
@@ -236,20 +267,35 @@ void SafeCombinationPromptDlg::ProcessPhrase()
 
 void SafeCombinationPromptDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
 {
-  if (Validate() && TransferDataFromWindow()) {
+  // For the validation process, put the full file path name back into the text input field.
+  // Calling 'EllipsizeFilePathname' will undo this.
+  m_textCtrlFilename->ChangeValue(m_filename);
+
+  if (!Validate()) {
+    EllipsizeFilePathname();
+    return;
+  }
+  if (TransferDataFromWindow()) {
     if (m_password.empty()) {
       wxMessageDialog err(this, _("The combination cannot be blank."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
+      EllipsizeFilePathname();
       return;
     }
     if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
+      EllipsizeFilePathname();
       return;
     }
-    ProcessPhrase();
+    if (ProcessPhrase()) {
+      EndModal(wxID_OK);
+    }
+    else {
+      EllipsizeFilePathname();
+    }
   }
 }
 
