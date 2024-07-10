@@ -417,7 +417,7 @@ void PWSprefs::GetPrefPSSRect(long &top, long &bottom,
 
 unsigned int PWSprefs::GetMRUList(std::vector<stringT> &MRUFiles) const
 {
-  if (m_ConfigOption == CF_NONE || m_ConfigOption == CF_REGISTRY) {
+  if (m_ConfigOption == CF_NONE || m_ConfigOption == CF_REGISTRY || m_ConfigOption == CF_FILE_RW_NEW) {
     MRUFiles.clear();
     return 0;
   }
@@ -428,7 +428,7 @@ unsigned int PWSprefs::GetMRUList(std::vector<stringT> &MRUFiles) const
   if (MRUFiles.size() > n)
     MRUFiles.erase(MRUFiles.begin() + n, MRUFiles.end());
  
-  return n;
+  return static_cast<unsigned int>(MRUFiles.size());
 }
 
 unsigned int PWSprefs::SetMRUList(const std::vector<stringT> &MRUFiles, int max_MRU)
