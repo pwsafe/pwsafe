@@ -630,10 +630,13 @@ void SafeCombinationEntryDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
     bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
     if (PerformChallengeResponse(this, m_password, response, oldYubiChallenge)) {
       m_password = response;
-      ProcessPhrase();
-      UpdateStatus();
+      if (ProcessPhrase()) {
+        EndModal(wxID_OK);
+      }
     }
   }
+  EllipsizeFilePathname();
+  UpdateStatus();
 }
 
 void SafeCombinationEntryDlg::OnPollingTimer(wxTimerEvent &evt)
@@ -653,7 +656,7 @@ void SafeCombinationEntryDlg::OnDBSelectionChange(wxCommandEvent& WXUNUSED(event
 
 void SafeCombinationEntryDlg::UpdateReadOnlyCheckbox()
 {
-  wxFileName fn(m_filenameCB->GetValue());
+  wxFileName fn(m_filename);
 
   // Do nothing if the file doesn't exist
   if ( fn.FileExists() ) {
