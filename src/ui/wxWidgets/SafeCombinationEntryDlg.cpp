@@ -651,6 +651,11 @@ void SafeCombinationEntryDlg::OnDBSelectionChange(wxCommandEvent& WXUNUSED(event
 {
   m_filename = m_filenameCB->GetValue(); // Update for tooltip which shows the full path
   m_filenameCB->SetToolTip(m_filename);
+  // On Linux, after selecting from the list nothing has focus, so the name should be ellipsized.
+  // On macOS, the combobox keeps focus, so this should be skipped
+  if (!m_filenameCB->HasFocus()) {
+    EllipsizeFilePathname();
+  }
   UpdateReadOnlyCheckbox();
 }
 
