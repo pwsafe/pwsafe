@@ -289,8 +289,8 @@ void SafeCombinationEntryDlg::CreateControls()
   m_filenameCB->Append(recentFiles);
   // The underlying native combobox widget might not yet be ready
   //  to hand back the string we just added
-  wxCommandEvent cmdEvent(wxEVT_COMBOBOX, m_filenameCB->GetId());
-  GetEventHandler()->AddPendingEvent(cmdEvent);
+//  wxCommandEvent cmdEvent(wxEVT_COMBOBOX, m_filenameCB->GetId());
+//  GetEventHandler()->AddPendingEvent(cmdEvent);
   SetIcons(wxGetApp().GetAppIcons());
 }
 
