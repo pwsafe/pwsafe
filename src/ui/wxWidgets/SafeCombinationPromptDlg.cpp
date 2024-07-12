@@ -320,6 +320,11 @@ void SafeCombinationPromptDlg::OnCancelClick(wxCommandEvent& WXUNUSED(evt))
 void SafeCombinationPromptDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
 {
   m_scctrl->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
+
+  // For the validation process, put the full file path name back into the text input field.
+  // Calling 'EllipsizeFilePathname' will undo this.
+  m_textCtrlFilename->ChangeValue(m_filename);
+
   if (Validate() && TransferDataFromWindow()) {
     if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),
@@ -332,10 +337,13 @@ void SafeCombinationPromptDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
     bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
     if (PerformChallengeResponse(this, m_password, response, oldYubiChallenge)) {
       m_password = response;
-      ProcessPhrase();
-      UpdateStatus();
+      if (ProcessPhrase()) {
+        EndModal(wxID_OK);
+      }
     }
   }
+  EllipsizeFilePathname();
+  UpdateStatus();
 }
 
 void SafeCombinationPromptDlg::OnPollingTimer(wxTimerEvent &evt)
