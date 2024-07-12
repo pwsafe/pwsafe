@@ -125,6 +125,8 @@ public:
   time_t GetTotpStartTimeAsTimeT() const { time_t t;  CItem::GetTime(TOTPSTARTTIME, t); return t; }
   StringX GetTotpStartTime() const { return GetTime(TOTPSTARTTIME, PWSUtil::TMC_ASC_UNKNOWN, true, true); }
   bool IsTotpStartTimeDefault() const { return GetTotpStartTimeAsTimeT() == 0; }
+  StringX GetTotpAuthCode(time_t* pBasisTimeNow = nullptr, double* pRatioExpired = nullptr) const;
+
 
   StringX GetNotes(TCHAR delimiter = 0) const;
   void GetUUID(uuid_array_t &, FieldType ft = END) const; // V20
