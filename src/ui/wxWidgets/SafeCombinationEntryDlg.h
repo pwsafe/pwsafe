@@ -151,7 +151,6 @@ protected:
 private:
   StringX m_password;
   wxString m_filename;
-  wxString m_ellipsizedFilename = wxEmptyString;
   bool m_readOnly;
   PWScore &m_core;
   bool m_postInitDone = false;
