@@ -57,8 +57,8 @@ I18N_DLL_DIR := ./out/build/windows-x86-release/I18N
 I18N_DLL_DIR_64 := ./out/build/windows-x64-release/I18N
 POT_FILE := $(I18N_DIR)/pwsafe.pot
 HELP_DIR := ./help
-BIN_DIR := ./out/build/windows-x86-release/
-BIN_DIR_64 := ./out/build/windows-x64-release/
+BIN_DIR := ./out/build/windows-x86-release/Release/
+BIN_DIR_64 := ./out/build/windows-x64-release/Release/
 TMPDIR := /tmp
 RELNOTES := $(CURDIR)/docs/ReleaseNotes.md
 
@@ -70,10 +70,10 @@ I18N_HELPS := $(foreach i,\
 								DE ES FR RU ZH,\
 								help/pwsafe$(i)/pwsafe$(i).chm)
 I18N_DLLS := $(foreach i,\
-								AR CZ DE DK ES FR HU IT KR LV NL PL PT_BR RU SL SV TR ZH,\
+								AR CZ DA DE ES FR HU IT KR LV NL PL PT_BR RU SL SV TR ZH,\
 								$(I18N_DLL_DIR)/pwsafe$(i).dll)
 I18N_DLLS_64 := $(foreach i,\
-								AR CZ DE DK ES FR HU IT KR LV NL PL PT_BR RU SL SV TR ZH,\
+								AR CZ DA DE ES FR HU IT KR LV NL PL PT_BR RU SL SV TR ZH,\
 								$(I18N_DLL_DIR_64)/pwsafe$(i).dll)
 
 BIN_MANIFEST = README.md docs/ReleaseNotes.md LICENSE \
@@ -288,7 +288,7 @@ build:
 ChangeLog:
 	$(GIT) --no-pager log --format="%ai %aN %n%n%x09* %s%d%n" > $@
 
-$(POT_FILE): $(BIN_DIR_64)/src/ui/Windows/language/pwsafe_base.dll
+$(POT_FILE): $(BIN_DIR_64)../src/ui/Windows/language/Release/pwsafe_base.dll
 	$(MAKE) -C $(I18N_DIR) pwsafe.pot
 
 update-pos:
