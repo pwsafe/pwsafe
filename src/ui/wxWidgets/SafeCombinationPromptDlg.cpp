@@ -251,6 +251,7 @@ void SafeCombinationPromptDlg::EllipsizeFilePathname()
       (m_textCtrlFilename->GetSize()).GetWidth() - 18
     )
   );
+  m_textCtrlFilename->SetToolTip(m_filename);
 }
 
 void SafeCombinationPromptDlg::OnActivate(wxActivateEvent& WXUNUSED(event))
