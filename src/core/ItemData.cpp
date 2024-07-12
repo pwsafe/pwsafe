@@ -21,14 +21,10 @@
 #include "PWSfile.h"
 #include "PWSfileV4.h"
 #include "PWStime.h"
-#include "PWHistory.h"
-
-#include "os/typedefs.h"
 #include "os/pws_tchar.h"
-#include "os/mem.h"
 #include "os/utf8conv.h"
 
-#include <time.h>
+#include <ctime>
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
@@ -2406,6 +2402,17 @@ stringT CItemData::GetUserInterfaceFieldName(FieldType ft)
     // whether or not it differs from the default field name.
     ASSERT(FALSE);
     retval = FieldName(ft);
+  }
+  return retval;
+}
+
+
+StringX CItemData::GetTotpAuthCode(time_t* pBasisTimeNow, double* pRatioExpired) const
+{
+  StringX retval;
+  if (PWSTotp::GetNextTotpAuthCodeString(*this, retval, pBasisTimeNow, pRatioExpired) != PWSTotp::Success)
+  {
+    retval.clear();
   }
   return retval;
 }
