@@ -384,17 +384,14 @@ void SafeCombinationEntryDlg::OnOk( wxCommandEvent& )
       wxMessageDialog err(this, _("File or path not found."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
-      EllipsizeFilePathname();
       m_filenameCB->SetFocus();
       return;
     }
     if (ProcessPhrase()) {
       EndModal(wxID_OK);
     }
-    else {
-      EllipsizeFilePathname();
-    }
-  } // Validate && TransferDataFromWindow
+  } // TransferDataFromWindow
+  EllipsizeFilePathname();
 }
 
 bool SafeCombinationEntryDlg::ProcessPhrase()
