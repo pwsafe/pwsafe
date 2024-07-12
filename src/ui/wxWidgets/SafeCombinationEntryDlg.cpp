@@ -235,17 +235,18 @@ void SafeCombinationEntryDlg::CreateControls()
 ////@end SafeCombinationEntryDlg content construction
   m_combinationEntry->SetValidatorTarget(& m_password);
 
-  // Event handler to show full path of filename as tooltip.
-  m_filenameCB->Bind(wxEVT_MOTION, [&](wxMouseEvent& WXUNUSED(event)) {
-    m_filenameCB->SetToolTip(m_filename);
-  });
+//  // Event handler to show full path of filename as tooltip.
+//  m_filenameCB->Bind(wxEVT_MOTION, [&](wxMouseEvent& WXUNUSED(event)) {
+//    m_filenameCB->SetToolTip(m_filename);
+//  });
 
   // Event handler to shorten the file path name if it doesn't fit into the combobox.
-  m_filenameCB->Bind(wxEVT_COMBOBOX, [&](wxCommandEvent& WXUNUSED(event)) {
-    m_filename = m_filenameCB->GetValue(); // Update for tooltip which shows the full path
-    EllipsizeFilePathname();
-    // EllipsizeFilePathname is build up in wxEVT_KILL_FOCUS
-  });
+//  m_filenameCB->Bind(wxEVT_COMBOBOX, [&](wxCommandEvent& WXUNUSED(event)) {
+//    m_filename = m_filenameCB->GetValue(); // Update for tooltip which shows the full path
+//    m_filenameCB->SetToolTip(m_filename);
+//    UpdateReadOnlyCheckbox();
+//    //EllipsizeFilePathname();
+//  });
 
   // Event handler to show the full file path name for editing if text entry field of combobox got the focus.
   m_filenameCB->Bind(wxEVT_SET_FOCUS, [&](wxFocusEvent& WXUNUSED(event)) {
@@ -267,11 +268,13 @@ void SafeCombinationEntryDlg::CreateControls()
   });
 
   // Event handler to update the internal member that is used to show the tooltip.
-  m_filenameCB->Bind(wxEVT_TEXT, [&](wxCommandEvent& WXUNUSED(event)) {
-    if (m_filenameCB->HasFocus()) {
-      m_filename = m_filenameCB->GetValue(); // The user may have changed the file name or path manually.
-    }
-  });
+  // 2024-07, v3.2.4: On macOS, ChangeValue() generates this event even though the documenatation
+  // says it does not.  That causes some problems with respect to EllipsizeFilePathname().
+//  m_filenameCB->Bind(wxEVT_TEXT, [&](wxCommandEvent& WXUNUSED(event)) {
+//    if (m_filenameCB->HasFocus()) {
+//      m_filename = m_filenameCB->GetValue(); // The user may have changed the file name or path manually.
+//    }
+//  });
 
 #if (REVISION == 0)
   m_version->SetLabel(wxString::Format(wxT("V%d.%d %ls"),
@@ -646,6 +649,8 @@ void SafeCombinationEntryDlg::OnPollingTimer(wxTimerEvent &evt)
 
 void SafeCombinationEntryDlg::OnDBSelectionChange(wxCommandEvent& WXUNUSED(event))
 {
+  m_filename = m_filenameCB->GetValue(); // Update for tooltip which shows the full path
+  m_filenameCB->SetToolTip(m_filename);
   UpdateReadOnlyCheckbox();
 }
 
@@ -697,4 +702,6 @@ void SafeCombinationEntryDlg::EllipsizeFilePathname()
       (m_filenameCB->GetSize()).GetWidth() - 50
     )
   );
+  // Make sure the tooltip has the current full filename
+  m_filenameCB->SetToolTip(m_filename);
 }
