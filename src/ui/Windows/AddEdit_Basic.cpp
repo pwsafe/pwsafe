@@ -1250,6 +1250,8 @@ void CAddEdit_Basic::OnLaunch()
   std::vector<size_t> vactionverboffsets;
 
   CSecString sPassword(M_realpassword()), sLastPassword(M_lastpassword());
+  const CSecString stotpauthcode = m_AEMD.pci->GetTotpAuthCode();
+
   if (m_AEMD.pci->IsAlias()) {
     CItemData *pciA = m_AEMD.pcore->GetBaseEntry(m_AEMD.pci);
     ASSERT(pciA != NULL);
@@ -1266,6 +1268,7 @@ void CAddEdit_Basic::OnLaunch()
                                                        M_notes(),
                                                        M_URL(),
                                                        M_email(),
+                                                       stotpauthcode,
                                                        vactionverboffsets);
 
   const bool bDoAutoType = (GetKeyState(VK_CONTROL) & 0x8000) != 0;
