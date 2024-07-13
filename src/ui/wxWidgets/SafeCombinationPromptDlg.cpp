@@ -258,6 +258,11 @@ void SafeCombinationPromptDlg::OnActivate(wxActivateEvent& WXUNUSED(event))
 {
   if (!m_DialogActivated) {
     EllipsizeFilePathname();
+#ifdef __WXOSX__
+    // On macOS the ellipsized text gets overwritten by the full pathname
+    // sometime after OnActivate returns.  This hack forces a correction.
+    m_textCtrlFilename->PostSizeEvent();
+#endif
     m_DialogActivated = true;
   }
 }

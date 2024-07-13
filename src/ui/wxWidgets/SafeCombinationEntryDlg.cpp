@@ -276,6 +276,12 @@ void SafeCombinationEntryDlg::OnActivate( wxActivateEvent& event )
     if (!m_filename.empty()) {
       FindWindow(ID_COMBINATION)->SetFocus();
       EllipsizeFilePathname();
+#ifdef __WXOSX__
+      // On macOS the ellipsized text gets overwritten by the full pathname
+      // sometime after OnActivate returns.  I suspect the validator is (re)loading the
+      // control.  This hack forces a correction.
+      m_filenameCB->PostSizeEvent();
+#endif
     }
     m_postInitDone = true;
   }
@@ -626,7 +632,7 @@ void SafeCombinationEntryDlg::OnDBSelectionChange(wxCommandEvent& WXUNUSED(event
   m_filename = m_filenameCB->GetValue(); // Update for tooltip which shows the full path
   m_filenameCB->SetToolTip(m_filename);
   // On Linux, after selecting from the list nothing has focus, so the name should be ellipsized.
-  // On macOS, the combobox keeps focus, so this should be skipped
+  // On macOS, the combobox keeps focus, so this will be skipped
   if (!m_filenameCB->HasFocus()) {
     EllipsizeFilePathname();
   }
