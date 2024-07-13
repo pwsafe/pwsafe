@@ -832,6 +832,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
           sxData = static_cast<LPCWSTR>(M_autotype());
       } else {
         CSecString sPassword(M_realpassword()), sLastPassword(M_lastpassword());
+        const CSecString stotpauthcode = m_AEMD.pci->GetTotpAuthCode();
         if (m_AEMD.pci->IsAlias()) {
           CItemData *pciA = m_AEMD.pcore->GetBaseEntry(m_AEMD.pci);
           ASSERT(pciA != NULL);
@@ -848,6 +849,7 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
                                                 M_notes(),
                                                 M_URL(),
                                                 M_email(),
+                                stotpauthcode,
                                                 vactionverboffsets);
 
         // Replace any special code that we can - i.e. only \{\t} and \{ }
