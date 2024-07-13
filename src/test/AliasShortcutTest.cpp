@@ -70,24 +70,24 @@ TEST_F(AliasShortcutTest, Alias)
 
   const CItemData al2 = core.GetEntry(core.Find(al.GetUUID()));
 
-  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
+  CItemData effci;
+  StringX sx_lastpswd, sx_totpauthcode;
 
-  bool status = PWSAuxParse::GetEffectiveValues(&al2, &base,
-                                               sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes,
-                                               sx_url, sx_email, sx_autotype, sx_runcmd);
-  EXPECT_TRUE(status);
+  PWSAuxParse::GetEffectiveValues(&al2, &base, effci, sx_lastpswd, sx_totpauthcode);
+
   // Password should be from base:
-  EXPECT_EQ(sx_pswd, base.GetPassword());
+  EXPECT_EQ(effci.GetPassword(), base.GetPassword());
   // All the rest should be from alias:
-  EXPECT_EQ(sx_group, al.GetGroup());
-  EXPECT_EQ(sx_title, al.GetTitle());
-  EXPECT_EQ(sx_user, al.GetUser());
-  EXPECT_EQ(sx_lastpswd, L"");
-  EXPECT_EQ(sx_notes, al.GetNotes());
-  EXPECT_EQ(sx_url, al.GetURL());
-  EXPECT_EQ(sx_email, al.GetEmail());
-  EXPECT_EQ(sx_autotype, al.GetAutoType());
-  EXPECT_EQ(sx_runcmd, al.GetRunCommand());
+  EXPECT_EQ(effci.GetGroup(), al.GetGroup());
+  EXPECT_EQ(effci.GetTitle(), al.GetTitle());
+  EXPECT_EQ(effci.GetUser(), al.GetUser());
+  EXPECT_TRUE(sx_lastpswd.empty());
+  EXPECT_EQ(effci.GetNotes(), al.GetNotes());
+  EXPECT_EQ(effci.GetURL(), al.GetURL());
+  EXPECT_EQ(effci.GetEmail(), al.GetEmail());
+  EXPECT_EQ(effci.GetAutoType(), al.GetAutoType());
+  EXPECT_EQ(effci.GetRunCommand(), al.GetRunCommand());
+  EXPECT_TRUE(sx_totpauthcode.empty());
 }
 
 TEST_F(AliasShortcutTest, Shortcut)
@@ -110,22 +110,22 @@ TEST_F(AliasShortcutTest, Shortcut)
 
   const CItemData sc2 = core.GetEntry(core.Find(sc.GetUUID()));
 
-  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
+  CItemData effci;
+  StringX sx_lastpswd, sx_totpauthcode;
 
-  bool status = PWSAuxParse::GetEffectiveValues(&sc2, &base,
-                                               sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes,
-                                               sx_url, sx_email, sx_autotype, sx_runcmd);
-  EXPECT_TRUE(status);
+  PWSAuxParse::GetEffectiveValues(&sc2, &base, effci, sx_lastpswd, sx_totpauthcode);
+
   // Group, title and user should all be from sc:
-  EXPECT_EQ(sx_group, sc.GetGroup());
-  EXPECT_EQ(sx_title, sc.GetTitle());
-  EXPECT_EQ(sx_user, sc.GetUser());
+  EXPECT_EQ(effci.GetGroup(), sc.GetGroup());
+  EXPECT_EQ(effci.GetTitle(), sc.GetTitle());
+  EXPECT_EQ(effci.GetUser(), sc.GetUser());
   // All the rest should be from base:
-  EXPECT_EQ(sx_pswd, base.GetPassword());
-  EXPECT_EQ(sx_lastpswd, L"");
-  EXPECT_EQ(sx_notes, base.GetNotes());
-  EXPECT_EQ(sx_url, base.GetURL());
-  EXPECT_EQ(sx_email, base.GetEmail());
-  EXPECT_EQ(sx_autotype, base.GetAutoType());
-  EXPECT_EQ(sx_runcmd, base.GetRunCommand());
+  EXPECT_EQ(effci.GetPassword(), base.GetPassword());
+  EXPECT_TRUE(sx_lastpswd.empty());
+  EXPECT_EQ(effci.GetNotes(), base.GetNotes());
+  EXPECT_EQ(effci.GetURL(), base.GetURL());
+  EXPECT_EQ(effci.GetEmail(), base.GetEmail());
+  EXPECT_EQ(effci.GetAutoType(), base.GetAutoType());
+  EXPECT_EQ(effci.GetRunCommand(), base.GetRunCommand());
+  EXPECT_TRUE(sx_totpauthcode.empty());
 }

@@ -26,11 +26,9 @@ namespace PWSAuxParse {
   // Used whenever entry values are needed for copy, autotype or run command
   // For shortcuts and aliases, get values from base when appropriate
   // For others, just get values from pci.
-  bool GetEffectiveValues(const CItemData *pci, const CItemData *pbci,
-                          StringX &sx_group, StringX &sx_title, StringX &sx_user,
-                          StringX &sx_pswd, StringX &sx_lastpswd,
-                          StringX &sx_notes, StringX &sx_url,
-                          StringX &sx_email, StringX &sx_autotype, StringX &sx_runcmd);
+  // effectiveItemData will have the "normal" fields. prevPassword will be extracted from password history, and totpAuthCode will be calculated from TOTP values.
+
+  void GetEffectiveValues(const CItemData* pci, const CItemData* pbci, CItemData& effectiveItemData, StringX& prevPassword, StringX& totpAuthCode);
 
   
   // Call following with nullptr ci and/or empty sxCurrentDB
@@ -49,7 +47,7 @@ namespace PWSAuxParse {
                             const StringX &sxuser,
                             const StringX &sxpwd, const StringX &sxlastpwd,
                             const StringX &sxnotes, const StringX &sx_url,
-                            const StringX &sx_email,
+                            const StringX &sx_email, const StringX &sx_totpauthcode,
                             std::vector<size_t> &vactionverboffsets);
   StringX GetAutoTypeString(const CItemData &ci,
                             const PWScore &core,

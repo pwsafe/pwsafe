@@ -20,26 +20,24 @@
 
 TEST(AuxParseTest, testGetEffectiveValuesNoBase)
 {
-  StringX group, title, user, pswd, lastpswd, notes, url,
-    email, autotype, runcmd;
+  StringX lastpswd, totpauthcode;
 
-  CItemData item;
+  CItemData item, effitem;
   // null test, all empty values
-  bool status = PWSAuxParse::GetEffectiveValues(&item, nullptr,
-                                                group, title, user, pswd,
-                                                lastpswd, notes, url,
-                                                email, autotype, runcmd);
-  EXPECT_TRUE(status);
-  EXPECT_EQ(group, item.GetGroup());
-  EXPECT_EQ(title, item.GetTitle());
-  EXPECT_EQ(user, item.GetUser());
-  EXPECT_EQ(pswd, item.GetPassword());
+  PWSAuxParse::GetEffectiveValues(&item, nullptr, effitem, lastpswd, totpauthcode);
+  EXPECT_EQ(effitem.GetGroup(), item.GetGroup());
+  EXPECT_EQ(effitem.GetTitle(), item.GetTitle());
+  EXPECT_EQ(effitem.GetUser(), item.GetUser());
+  EXPECT_EQ(effitem.GetPassword(), item.GetPassword());
   EXPECT_TRUE(lastpswd.empty());
-  EXPECT_EQ(notes, item.GetNotes());
-  EXPECT_EQ(url, item.GetURL());
-  EXPECT_EQ(email, item.GetEmail());
-  EXPECT_EQ(autotype, item.GetAutoType());
-  EXPECT_EQ(runcmd, item.GetRunCommand());
+  EXPECT_EQ(effitem.GetNotes(), item.GetNotes());
+  EXPECT_EQ(effitem.GetURL(), item.GetURL());
+  EXPECT_EQ(effitem.GetEmail(), item.GetEmail());
+  EXPECT_EQ(effitem.GetAutoType(), item.GetAutoType());
+  EXPECT_EQ(effitem.GetRunCommand(), item.GetRunCommand());
+  EXPECT_TRUE(totpauthcode.empty());
+
+  EXPECT_EQ(effitem, item);
 
   // populate fields
   item.SetGroup(L"goldfish");
@@ -51,21 +49,22 @@ TEST(AuxParseTest, testGetEffectiveValuesNoBase)
   item.SetEmail(L"eel");
   item.SetAutoType(L"aden splitfin");
   item.SetRunCommand(L"red bellied dace");
-  status = PWSAuxParse::GetEffectiveValues(&item, nullptr,
-                                           group, title, user, pswd,
-                                           lastpswd, notes, url,
-                                           email, autotype, runcmd);
-  EXPECT_TRUE(status);
-  EXPECT_EQ(group, item.GetGroup());
-  EXPECT_EQ(title, item.GetTitle());
-  EXPECT_EQ(user, item.GetUser());
-  EXPECT_EQ(pswd, item.GetPassword());
+
+  PWSAuxParse::GetEffectiveValues(&item, nullptr, effitem, lastpswd, totpauthcode);
+
+  EXPECT_EQ(effitem.GetGroup(), item.GetGroup());
+  EXPECT_EQ(effitem.GetTitle(), item.GetTitle());
+  EXPECT_EQ(effitem.GetUser(), item.GetUser());
+  EXPECT_EQ(effitem.GetPassword(), item.GetPassword());
   EXPECT_TRUE(lastpswd.empty());
-  EXPECT_EQ(notes, item.GetNotes());
-  EXPECT_EQ(url, item.GetURL());
-  EXPECT_EQ(email, item.GetEmail());
-  EXPECT_EQ(autotype, item.GetAutoType());
-  EXPECT_EQ(runcmd, item.GetRunCommand());
+  EXPECT_EQ(effitem.GetNotes(), item.GetNotes());
+  EXPECT_EQ(effitem.GetURL(), item.GetURL());
+  EXPECT_EQ(effitem.GetEmail(), item.GetEmail());
+  EXPECT_EQ(effitem.GetAutoType(), item.GetAutoType());
+  EXPECT_EQ(effitem.GetRunCommand(), item.GetRunCommand());
+  EXPECT_TRUE(totpauthcode.empty());
+
+  EXPECT_EQ(effitem, item);
 }
 
 TEST(AuxParseTest, testGetExpandedString)

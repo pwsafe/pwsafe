@@ -190,20 +190,19 @@ void DboxMain::OnTrayBrowse(UINT nID)
   }
 
   const CItemData *pbci = ci.IsDependent() ? m_core.GetBaseEntry(&ci) : nullptr;
-  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
+  CItemData effci;
 
-  if (!PWSAuxParse::GetEffectiveValues(&ci, pbci, sx_group, sx_title, sx_user,
-                                       sx_pswd, sx_lastpswd,
-                                       sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd))
-    return;
+  StringX sx_lastpswd, sx_totpauthcode;
 
+  PWSAuxParse::GetEffectiveValues(&ci, pbci, effci, sx_lastpswd, sx_totpauthcode);
+  StringX sx_url(effci.GetURL());
+ 
   if (!sx_url.empty()) {
     std::vector<size_t> vactionverboffsets;
-    StringX sxAutotype = PWSAuxParse::GetAutoTypeString(sx_autotype,
-                                  sx_group, sx_title, sx_user,
-                                  sx_pswd, sx_lastpswd,
-                                  sx_notes, sx_url, sx_email,
-                                  vactionverboffsets);
+    StringX sxAutotype = PWSAuxParse::GetAutoTypeString(effci.GetAutoType(),effci.GetGroup(), effci.GetTitle(), effci.GetUser(),
+                                                        effci.GetPassword(), sx_lastpswd, effci.GetNotes(),
+                                                        effci.GetURL(), effci.GetEmail(), sx_totpauthcode,
+                                                     vactionverboffsets);
 
     if (bUseAltBrowser)
       sx_url = L"[alt] " + sx_url; // LaunchBrowser can handle > 1 "[alt]", so no need to check if already there.
@@ -211,7 +210,7 @@ void DboxMain::OnTrayBrowse(UINT nID)
     LaunchBrowser(sx_url.c_str(), sxAutotype, vactionverboffsets, bDoAutotype);
 
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
-      SetClipboardData(sx_pswd);
+      SetClipboardData(effci.GetPassword());
       UpdateLastClipboardAction(CItemData::PASSWORD);
     }
   }
@@ -436,21 +435,19 @@ void DboxMain::OnTrayRunCommand(UINT nID)
     return;
 
   const CItemData *pbci = ci.IsDependent() ? m_core.GetBaseEntry(&ci) : nullptr;
-  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
+  StringX sx_lastpswd, sx_totpauthcode;
+  CItemData effci;
 
-  if (!PWSAuxParse::GetEffectiveValues(&ci, pbci, sx_group, sx_title, sx_user,
-                                       sx_pswd, sx_lastpswd,
-                                       sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd))
-    return;
+  PWSAuxParse::GetEffectiveValues(&ci, pbci, effci, sx_lastpswd, sx_totpauthcode);
 
   StringX sx_Expanded_ES;
-  if (sx_runcmd.empty())
+  if (effci.GetRunCommand().empty())
     return;
 
   std::wstring errmsg;
   StringX::size_type st_column;
   bool bURLSpecial;
-  sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_runcmd,
+  sx_Expanded_ES = PWSAuxParse::GetExpandedString(effci.GetRunCommand(),
                                                   m_core.GetCurFile(), &ci, pbci,
                                                   m_bDoAutoType, m_sxAutoType,
                                                   errmsg, st_column, bURLSpecial);
@@ -468,12 +465,11 @@ void DboxMain::OnTrayRunCommand(UINT nID)
   if (m_sxAutoType.empty())
     m_sxAutoType = ci.GetAutoType();
 
-  m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType,
-                                                sx_group, sx_title, sx_user,
-                                                sx_pswd, sx_lastpswd,
-                                                sx_notes, sx_url, sx_email,
+  m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType, effci.GetGroup(), effci.GetTitle(), effci.GetUser(),
+                                                effci.GetPassword(), sx_lastpswd, effci.GetNotes(),
+                                                effci.GetURL(), effci.GetEmail(), sx_totpauthcode,
                                                 m_vactionverboffsets);
-  SetClipboardData(sx_pswd);
+  SetClipboardData(effci.GetPassword());
   UpdateLastClipboardAction(CItemData::PASSWORD);
 
   // Password always comes from a normal or base entry
