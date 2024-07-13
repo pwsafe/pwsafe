@@ -2407,21 +2407,19 @@ void DboxMain::OnRunCommand()
     return;
 
   const CItemData *pbci = pci->IsDependent() ? m_core.GetBaseEntry(pci) : nullptr;
-  StringX sx_group, sx_title, sx_user, sx_pswd, sx_lastpswd, sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd;
+  CItemData effci;
+  StringX sx_lastpswd, sx_totpauthcode;
 
-  if (!PWSAuxParse::GetEffectiveValues(pci, pbci, sx_group, sx_title, sx_user,
-                                       sx_pswd, sx_lastpswd,
-                                       sx_notes, sx_url, sx_email, sx_autotype, sx_runcmd))
-    return;
-
+  PWSAuxParse::GetEffectiveValues(pci, pbci, effci, sx_lastpswd, sx_totpauthcode);
+  
   StringX sx_Expanded_ES;
-  if (sx_runcmd.empty())
+  if (effci.GetRunCommand().empty())
     return;
 
   std::wstring errmsg;
   StringX::size_type st_column;
   bool bURLSpecial;
-  sx_Expanded_ES = PWSAuxParse::GetExpandedString(sx_runcmd,
+  sx_Expanded_ES = PWSAuxParse::GetExpandedString(effci.GetRunCommand(),
                                                    m_core.GetCurFile(), pci, pbci,
                                                    m_bDoAutoType, m_sxAutoType,
                                                    errmsg, st_column, bURLSpecial);
@@ -2441,10 +2439,9 @@ void DboxMain::OnRunCommand()
   if (m_sxAutoType.empty())
     m_sxAutoType = pci->GetAutoType();
 
-  m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType,
-                                                sx_group, sx_title, sx_user,
-                                                sx_pswd, sx_lastpswd,
-                                                sx_notes, sx_url, sx_email,
+  m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType, effci.GetGroup(), effci.GetTitle(), effci.GetUser(),
+                                                effci.GetPassword(), sx_lastpswd,
+                                                effci.GetNotes(), effci.GetURL(), effci.GetEmail(), sx_totpauthcode,
                                                 m_vactionverboffsets);
   UpdateAccessTime(uuid);
 
@@ -2469,7 +2466,7 @@ void DboxMain::OnRunCommand()
 
   // FR856 - Copy Password to Clipboard on Run-Command When copy-on-browse set.
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
-    SetClipboardData(sx_pswd);
+    SetClipboardData(effci.GetPassword());
     UpdateLastClipboardAction(CItemData::PASSWORD);
   }
   
