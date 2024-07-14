@@ -244,6 +244,7 @@ void SafeCombinationEntryDlg::CreateControls()
   m_filenameCB->Bind(wxEVT_KILL_FOCUS, [&](wxFocusEvent& WXUNUSED(event)) {
     m_filename = m_filenameCB->GetValue(); // The user may have changed the file name or path manually.
     EllipsizeFilePathname();
+    UpdateReadOnlyCheckbox();
   });
 
   // Event handler to update the file path name string if the size of the combobox changed.
@@ -276,6 +277,7 @@ void SafeCombinationEntryDlg::OnActivate( wxActivateEvent& event )
     if (!m_filename.empty()) {
       FindWindow(ID_COMBINATION)->SetFocus();
       EllipsizeFilePathname();
+      UpdateReadOnlyCheckbox();
 #ifdef __WXOSX__
       // On macOS the ellipsized text gets overwritten by the full pathname
       // sometime after OnActivate returns.  I suspect the validator is (re)loading the
