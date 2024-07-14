@@ -1009,17 +1009,12 @@ void PasswordSafeFrame::DoRun(CItemData& item)
   const CItemData *pci  = &item;
   const CItemData *pbci = pci->IsDependent() ? m_core.GetBaseEntry(pci) : nullptr;
 
-  StringX group, title, user, password, lastpassword, notes, url, email, autotype, runcommand;
+  CItemData effci;
+  StringX lastpassword, totpauthcode;
 
-  if (!PWSAuxParse::GetEffectiveValues(pci, pbci, 
-                                       group, title, 
-                                       user, password, lastpassword, 
-                                       notes, url, email, 
-                                       autotype, runcommand)) {
-    return;
-  }
+  PWSAuxParse::GetEffectiveValues(pci, pbci, effci, lastpassword, totpauthcode);
 
-  if (runcommand.empty()) {
+  if (effci.GetRunCommand().empty()) {
     return;
   }
 
@@ -1028,7 +1023,7 @@ void PasswordSafeFrame::DoRun(CItemData& item)
   bool isSpecialUrl, doAutoType;
   StringX expandedAutoType;
 
-  StringX expandedES(PWSAuxParse::GetExpandedString(runcommand,
+  StringX expandedES(PWSAuxParse::GetExpandedString(effci.GetRunCommand(),
                                                     m_core.GetCurFile(), pci, pbci,
                                                     doAutoType, expandedAutoType,
                                                     errorMessage, columnPosition, isSpecialUrl));
@@ -1052,9 +1047,10 @@ void PasswordSafeFrame::DoRun(CItemData& item)
   }
 
   expandedAutoType = PWSAuxParse::GetAutoTypeString(expandedAutoType,
-                                                    group, title, user,
-                                                    password, lastpassword,
-                                                    notes, url, email,
+                                                    effci.GetGroup(), effci.GetTitle(), effci.GetUser(),
+                                                    effci.GetPassword(), lastpassword,
+                                                    effci.GetNotes(), effci.GetURL(), effci.GetEmail(),
+                                                    totpauthcode,
                                                     vactionverboffsets);
 
   // Now honour presence of [alt], {alt} or [ssh] in the url if present
@@ -1078,7 +1074,7 @@ void PasswordSafeFrame::DoRun(CItemData& item)
 
   // FR856 - Copy Password to Clipboard on Run-Command When copy-on-browse set.
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
-    Clipboard::GetInstance()->SetData(password);
+    Clipboard::GetInstance()->SetData(effci.GetPassword());
     UpdateLastClipboardAction(CItemData::FieldType::PASSWORD);
   }
 
