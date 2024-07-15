@@ -4,8 +4,17 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
+PasswordSafe 3.67.0 Release ??? ?? 2024
+=======================================
+
+New features in 3.67.0
+----------------------
+
+* [GH1301](https://github.com/pwsafe/pwsafe/issues/1301) TOTP authorization code can be used in autotype via '\2'
+
 PasswordSafe 3.66.1 Release Jun 4 2024
 ======================================
+
 Bugs fixed in 3.66.1
 --------------------
 
