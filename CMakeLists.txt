@@ -51,6 +51,7 @@ include(create-harden-interface)
 
 
 # Configurable options:
+option (FLATPAK "Set ON to build for Flatpak" OFF)
 option (NO_YUBI "Set ON to disable YubiKey support" OFF)
 option (NO_GTEST "Set ON to disable gtest unit testing" OFF)
 option (GTEST_BUILD "Set OFF to disable gtest download and build on-fly" ON)
@@ -134,6 +135,11 @@ if (NOT WIN32)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
     message(STATUS "Yubikey support disabled")
   endif(NOT HAVE_YKPERS_H)
+
+  if(FLATPAK)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DFLATPAK")
+    message(STATUS "Building for Flatpak")
+  endif(FLATPAK)
 endif (NOT WIN32)
 
 if (XML_XERCESC)
