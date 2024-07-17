@@ -80,11 +80,7 @@ static void ParseNotes(const StringX &sxNotes,
 
 void PWSAuxParse::GetEffectiveValues(const CItemData* pci, const CItemData* pbci, CItemData& effectiveItemData, StringX& prevPassword, StringX& totpAuthCode)
 {
-  // The one place to get the values needed for AutoType & RunCmd based on entry type
-  // "Effective" here means "the right thing" for normal, shortcut and alias entries.
-  // previous password and TOTP auth codes are calculated, so it's slightly easier to handle them separately.
-
-  if (pci->IsDependent()) {
+   if (pci->IsDependent()) {
     ASSERT(pbci != nullptr);
     if (pbci == nullptr)
       return;
@@ -138,10 +134,6 @@ StringX PWSAuxParse::GetExpandedString(const StringX &sxRun_Command,
   CItemData effci;
   StringX sx_lastpswd, sx_totpauthcode;
   GetEffectiveValues(pci, pbci, effci, sx_lastpswd, sx_totpauthcode);
-
-
-  // GetEffectiveFieldValue() encapsulates what we take from where depending in the entry type (alias, shortcut, etc.)
-
 
   for (rc_iter = v_rctokens.begin(); rc_iter < v_rctokens.end(); rc_iter++) {
     st_RunCommandTokens &st_rctoken = *rc_iter;
