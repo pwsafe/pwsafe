@@ -119,6 +119,7 @@ void AboutDlg::CreateControls()
   wxStaticText* buildStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Build date:")+wxT(" Mon dd yyyy hh:mm:ss"), wxDefaultPosition, wxDefaultSize, 0);
   rightSizer->Add(buildStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
+#ifndef FLATPAK
   wxBoxSizer* verCheckSizer = new wxBoxSizer(wxHORIZONTAL);
   rightSizer->Add(verCheckSizer, 0, wxALIGN_LEFT|wxALL, 0);
 
@@ -127,6 +128,7 @@ void AboutDlg::CreateControls()
 
   wxStaticText* latestStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _(" for the latest version."), wxDefaultPosition, wxDefaultSize, 0);
   verCheckSizer->Add(latestStaticTextEnd, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5);
+#endif //FLATPAK
 
   wxBoxSizer* visitSiteSizer = new wxBoxSizer(wxHORIZONTAL);
   rightSizer->Add(visitSiteSizer, 0, wxALIGN_LEFT|wxALL, 0);
