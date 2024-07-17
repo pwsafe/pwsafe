@@ -23,14 +23,14 @@ class CItemData;
 class PWScore;
 
 namespace PWSAuxParse {
-  // Used whenever entry values are needed for copy, autotype or run command
-  // For shortcuts and aliases, get values from base when appropriate
+  
+  // GetEffectiveValues() should be used whenever entry values are needed for copy, autotype or run command
+  // For shortcuts and aliases, get values from base (pbci) when appropriate
   // For others, just get values from pci.
-  // effectiveItemData will have the "normal" fields. prevPassword will be extracted from password history, and totpAuthCode will be calculated from TOTP values.
-
+  // effectiveItemData will have the "normal" fields.
+  // prevPassword will be extracted from password history, and totpAuthCode will be calculated from TOTP values.
   void GetEffectiveValues(const CItemData* pci, const CItemData* pbci, CItemData& effectiveItemData, StringX& prevPassword, StringX& totpAuthCode);
 
-  
   // Call following with nullptr ci and/or empty sxCurrentDB
   // will only validate the run command (non-empty serrmsg means
   // parse failed, reason in same).
