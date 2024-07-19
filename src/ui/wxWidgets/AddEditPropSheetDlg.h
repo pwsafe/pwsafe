@@ -465,6 +465,9 @@ private:
   SheetType m_Type;
   CItemData m_Item;
   CItemAtt  m_ItemAttachment;
+
+  wxBitmap bitmapCheckmarkGreen;
+  wxBitmap bitmapCheckmarkGray;
 };
 
 #endif // _ADDEDITPROPSHEETDLG_H_

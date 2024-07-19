@@ -179,6 +179,9 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
 
   // Set the initial focus to the Title control (Otherwise it defaults to the Group control)
   m_BasicTitleTextCtrl->SetFocus();
+
+  bitmapCheckmarkGreen = wxUtilities::GetBitmapResource(wxT("graphics/checkmark_green.xpm"));
+  bitmapCheckmarkGray = wxUtilities::GetBitmapResource(wxT("graphics/checkmark_gray.xpm"));
 }
 
 AddEditPropSheetDlg* AddEditPropSheetDlg::Create(wxWindow *parent, PWScore &core,
@@ -1774,13 +1777,13 @@ void AddEditPropSheetDlg::UpdatePasswordConfirmationIcon(int controlId)
   }
   // If both passwords entered are the same, the green checkmark icons will appear to indicate the match.
   if (m_BasicPasswordTextCtrl->GetValue() == m_BasicPasswordConfirmationTextCtrl->GetValue()) {
-    m_BasicPasswordBitmap->SetBitmap(wxUtilities::GetBitmapResource(wxT("graphics/checkmark_green.xpm")));
-    m_BasicPasswordConfirmationBitmap->SetBitmap(wxUtilities::GetBitmapResource(wxT("graphics/checkmark_green.xpm")));
+    m_BasicPasswordBitmap->SetBitmap(bitmapCheckmarkGreen);
+    m_BasicPasswordConfirmationBitmap->SetBitmap(bitmapCheckmarkGreen);
   }
   // The gray checkmark icons will be shown to indicate that some input is given that do not match.
   else {
-    m_BasicPasswordBitmap->SetBitmap(wxUtilities::GetBitmapResource(wxT("graphics/checkmark_gray.xpm")));
-    m_BasicPasswordConfirmationBitmap->SetBitmap(wxUtilities::GetBitmapResource(wxT("graphics/checkmark_gray.xpm")));
+    m_BasicPasswordBitmap->SetBitmap(bitmapCheckmarkGray);
+    m_BasicPasswordConfirmationBitmap->SetBitmap(bitmapCheckmarkGray);
   }
   // Only display the check mark symbol to the right of each input field when there is some input.
   // This also requires re-layout of the dialog.
