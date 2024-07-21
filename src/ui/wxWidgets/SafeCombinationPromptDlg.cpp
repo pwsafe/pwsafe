@@ -277,11 +277,7 @@ void SafeCombinationPromptDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
   // Calling 'EllipsizeFilePathname' will undo this.
   m_textCtrlFilename->ChangeValue(m_filename);
 
-  if (!Validate()) {
-    EllipsizeFilePathname();
-    return;
-  }
-  if (TransferDataFromWindow()) {
+  if (Validate() && TransferDataFromWindow()) {
     if (m_password.empty()) {
       wxMessageDialog err(this, _("The combination cannot be blank."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
@@ -299,10 +295,8 @@ void SafeCombinationPromptDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
     if (ProcessPhrase()) {
       EndModal(wxID_OK);
     }
-    else {
-      EllipsizeFilePathname();
-    }
   }
+  EllipsizeFilePathname();
 }
 
 /*!
