@@ -118,8 +118,7 @@ protected:
   SafeCombinationCtrl* m_scctrl = nullptr;
 ////@end SafeCombinationPromptDlg member variables
   PWScore &m_core;
-  wxString m_filename;        // Full filename to open
-  wxString m_filenameForCB;  // For use with the combobox validator, might be ellipsized
+  wxString m_filename;
   StringX  m_password;
   bool m_DialogActivated = false;
   

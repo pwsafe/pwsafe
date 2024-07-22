@@ -94,7 +94,7 @@ SafeCombinationEntryDlg::SafeCombinationEntryDlg(wxWindow *parent, PWScore &core
   wxASSERT(!parent || parent->IsTopLevel());
 
   m_readOnly = m_core.IsReadOnly() || PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
-  m_filename = m_filenameForCB = m_core.GetCurFile().c_str();
+  m_filename = m_core.GetCurFile().c_str();
 
 ////@begin SafeCombinationEntryDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
@@ -230,7 +230,6 @@ void SafeCombinationEntryDlg::CreateControls()
   }
 
   // Set validators
-  m_filenameCB->SetValidator( wxGenericValidator(& m_filenameForCB));
   itemCheckBox15->SetValidator( wxGenericValidator(& m_readOnly));
 ////@end SafeCombinationEntryDlg content construction
   m_combinationEntry->SetValidatorTarget(& m_password);
@@ -660,6 +659,9 @@ void SafeCombinationEntryDlg::OnReadonlyClick( wxCommandEvent& event )
 
 void SafeCombinationEntryDlg::EllipsizeFilePathname()
 {
+  // Make sure the tooltip has the current full filename
+  m_filenameCB->SetToolTip(m_filename);
+
   if (m_filename.IsEmpty()) {
     return;
   }
@@ -673,6 +675,4 @@ void SafeCombinationEntryDlg::EllipsizeFilePathname()
       (m_filenameCB->GetSize()).GetWidth() - 50
     )
   );
-  // Make sure the tooltip has the current full filename
-  m_filenameCB->SetToolTip(m_filename);
 }
