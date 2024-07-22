@@ -94,7 +94,7 @@ SafeCombinationEntryDlg::SafeCombinationEntryDlg(wxWindow *parent, PWScore &core
   wxASSERT(!parent || parent->IsTopLevel());
 
   m_readOnly = m_core.IsReadOnly() || PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
-  m_filename = m_core.GetCurFile().c_str();
+  m_filename = m_filenameForCB = m_core.GetCurFile().c_str();
 
 ////@begin SafeCombinationEntryDlg creation
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
@@ -230,7 +230,7 @@ void SafeCombinationEntryDlg::CreateControls()
   }
 
   // Set validators
-  m_filenameCB->SetValidator( wxGenericValidator(& m_filename));
+  m_filenameCB->SetValidator( wxGenericValidator(& m_filenameForCB));
   itemCheckBox15->SetValidator( wxGenericValidator(& m_readOnly));
 ////@end SafeCombinationEntryDlg content construction
   m_combinationEntry->SetValidatorTarget(& m_password);
@@ -345,31 +345,23 @@ wxIcon SafeCombinationEntryDlg::GetIconResource( const wxString& WXUNUSED(name) 
 
 void SafeCombinationEntryDlg::OnOk( wxCommandEvent& )
 {
-  // For the validation process, put the full file path name back into the combo box.
-  // Calling 'EllipsizeFilePathname' will undo this.
-  m_filenameCB->ChangeValue(m_filename);
-
   if (Validate() && TransferDataFromWindow()) {
     if (m_password.empty()) {
       wxMessageDialog err(this, _("The combination cannot be blank."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
-      EllipsizeFilePathname();
       FindWindow(ID_COMBINATION)->SetFocus();
-      return;
-    }
-    if (!pws_os::FileExists(tostdstring(m_filename))) {
+
+    } else if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
       m_filenameCB->SetFocus();
-      return;
-    }
-    if (ProcessPhrase()) {
+
+    } else if (ProcessPhrase()) {
       EndModal(wxID_OK);
     }
   }
-  EllipsizeFilePathname();
 }
 
 bool SafeCombinationEntryDlg::ProcessPhrase()
@@ -592,28 +584,24 @@ void SafeCombinationEntryDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
 {
   m_combinationEntry->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
 
-  // For the validation process, put the full file path name back into the combo box.
-  m_filenameCB->ChangeValue(m_filename);
-
   if (Validate() && TransferDataFromWindow()) {
     if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
       m_filenameCB->SetFocus();
-      return;
-    }
 
-    StringX response;
-    bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
-    if (PerformChallengeResponse(this, m_password, response, oldYubiChallenge)) {
-      m_password = response;
-      if (ProcessPhrase()) {
-        EndModal(wxID_OK);
+    } else {
+      StringX response;
+      bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
+      if (PerformChallengeResponse(this, m_password, response, oldYubiChallenge)) {
+        m_password = response;
+        if (ProcessPhrase()) {
+          EndModal(wxID_OK);
+        }
       }
     }
   }
-  EllipsizeFilePathname();
   UpdateStatus();
 }
 
