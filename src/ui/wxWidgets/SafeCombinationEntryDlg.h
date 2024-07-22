@@ -150,7 +150,8 @@ protected:
 
 private:
   StringX m_password;
-  wxString m_filename;
+  wxString m_filename;        // Full filename to open
+  wxString m_filenameForCB;  // For use with the combobox validator, might be ellipsized
   bool m_readOnly;
   PWScore &m_core;
   bool m_postInitDone = false;
