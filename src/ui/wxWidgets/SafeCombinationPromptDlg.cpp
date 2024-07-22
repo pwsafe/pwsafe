@@ -67,7 +67,7 @@ SafeCombinationPromptDlg::SafeCombinationPromptDlg(wxWindow *parent, PWScore &co
                                                const wxString& caption,
                                                const wxPoint& pos,
                                                const wxSize& size, long style)
-: m_core(core), m_filename(fname), m_filenameForCB(fname)
+: m_core(core), m_filename(fname)
 {
   wxASSERT(!parent || parent->IsTopLevel());
 ////@begin SafeCombinationPromptDlg creation
@@ -172,9 +172,6 @@ void SafeCombinationPromptDlg::CreateControls()
   m_textCtrlFilename->Bind(wxEVT_SIZE, [&](wxSizeEvent& WXUNUSED(event)) {
     EllipsizeFilePathname();
   });
-
-  // Set validators
-  m_textCtrlFilename->SetValidator(wxGenericValidator(&m_filenameForCB));
 
   wxWindow* passwdCtrl = FindWindow(ID_PASSWORD);
   if (passwdCtrl) {
