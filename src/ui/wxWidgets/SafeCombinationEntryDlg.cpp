@@ -279,12 +279,6 @@ void SafeCombinationEntryDlg::OnActivate( wxActivateEvent& event )
       FindWindow(ID_COMBINATION)->SetFocus();
       EllipsizeFilePathname();
       UpdateReadOnlyCheckbox();
-#ifdef __WXOSX__
-      // On macOS the read-only checkbox doesn't actually get checked on start-up
-      // if the last file used is read-only.  The above call should have set it.
-      // This hack forces a correction.
-      CallAfter(&SafeCombinationEntryDlg::UpdateReadOnlyCheckbox);
-#endif
     }
     m_postInitDone = true;
   }
@@ -637,7 +631,11 @@ void SafeCombinationEntryDlg::UpdateReadOnlyCheckbox()
     wxCheckBox *ro = wxDynamicCast(FindWindow(ID_READONLY), wxCheckBox);
     wxASSERT_MSG(ro, wxT("Could not get RO checkbox"));
     if (ro) {
-      ro->SetValue( writeable? (m_core.IsReadOnly() || defaultRO) : true );
+      // On macOS, the initial state of the checkbox won't be set unless we set the variable.
+      // I suspect it has to do with validator action after OnActivate() returns.
+      // It seems like a good thing to do in any case.
+      m_readOnly = writeable ? (m_core.IsReadOnly() || defaultRO) : true;
+      ro->SetValue(m_readOnly);
       ro->Enable(writeable);
     }
     UpdateNew(!writeable || defaultRO);
