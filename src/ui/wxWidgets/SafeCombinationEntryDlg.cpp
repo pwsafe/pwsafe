@@ -230,7 +230,6 @@ void SafeCombinationEntryDlg::CreateControls()
   }
 
   // Set validators
-  m_filenameCB->SetValidator( wxGenericValidator(& m_filename));
   itemCheckBox15->SetValidator( wxGenericValidator(& m_readOnly));
 ////@end SafeCombinationEntryDlg content construction
   m_combinationEntry->SetValidatorTarget(& m_password);
@@ -242,9 +241,11 @@ void SafeCombinationEntryDlg::CreateControls()
 
   // Event handler if text entry field of combobox lost the focus.
   m_filenameCB->Bind(wxEVT_KILL_FOCUS, [&](wxFocusEvent& WXUNUSED(event)) {
+    wxString old_filename = m_filename;
     m_filename = m_filenameCB->GetValue(); // The user may have changed the file name or path manually.
     EllipsizeFilePathname();
-    UpdateReadOnlyCheckbox();
+    if (old_filename != m_filename)
+      UpdateReadOnlyCheckbox(); // Only call this if the filename actually changed.
   });
 
   // Event handler to update the file path name string if the size of the combobox changed.
@@ -278,12 +279,6 @@ void SafeCombinationEntryDlg::OnActivate( wxActivateEvent& event )
       FindWindow(ID_COMBINATION)->SetFocus();
       EllipsizeFilePathname();
       UpdateReadOnlyCheckbox();
-#ifdef __WXOSX__
-      // On macOS the ellipsized text gets overwritten by the full pathname
-      // sometime after OnActivate returns.  I suspect the validator is (re)loading the
-      // control.  This hack forces a correction.
-      m_filenameCB->PostSizeEvent();
-#endif
     }
     m_postInitDone = true;
   }
@@ -345,31 +340,23 @@ wxIcon SafeCombinationEntryDlg::GetIconResource( const wxString& WXUNUSED(name) 
 
 void SafeCombinationEntryDlg::OnOk( wxCommandEvent& )
 {
-  // For the validation process, put the full file path name back into the combo box.
-  // Calling 'EllipsizeFilePathname' will undo this.
-  m_filenameCB->ChangeValue(m_filename);
-
   if (Validate() && TransferDataFromWindow()) {
     if (m_password.empty()) {
       wxMessageDialog err(this, _("The combination cannot be blank."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
-      EllipsizeFilePathname();
       FindWindow(ID_COMBINATION)->SetFocus();
-      return;
-    }
-    if (!pws_os::FileExists(tostdstring(m_filename))) {
+
+    } else if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
       m_filenameCB->SetFocus();
-      return;
-    }
-    if (ProcessPhrase()) {
+
+    } else if (ProcessPhrase()) {
       EndModal(wxID_OK);
     }
   }
-  EllipsizeFilePathname();
 }
 
 bool SafeCombinationEntryDlg::ProcessPhrase()
@@ -592,28 +579,24 @@ void SafeCombinationEntryDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
 {
   m_combinationEntry->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
 
-  // For the validation process, put the full file path name back into the combo box.
-  m_filenameCB->ChangeValue(m_filename);
-
   if (Validate() && TransferDataFromWindow()) {
     if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
       m_filenameCB->SetFocus();
-      return;
-    }
 
-    StringX response;
-    bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
-    if (PerformChallengeResponse(this, m_password, response, oldYubiChallenge)) {
-      m_password = response;
-      if (ProcessPhrase()) {
-        EndModal(wxID_OK);
+    } else {
+      StringX response;
+      bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
+      if (PerformChallengeResponse(this, m_password, response, oldYubiChallenge)) {
+        m_password = response;
+        if (ProcessPhrase()) {
+          EndModal(wxID_OK);
+        }
       }
     }
   }
-  EllipsizeFilePathname();
   UpdateStatus();
 }
 
@@ -648,7 +631,11 @@ void SafeCombinationEntryDlg::UpdateReadOnlyCheckbox()
     wxCheckBox *ro = wxDynamicCast(FindWindow(ID_READONLY), wxCheckBox);
     wxASSERT_MSG(ro, wxT("Could not get RO checkbox"));
     if (ro) {
-      ro->SetValue( writeable? (m_core.IsReadOnly() || defaultRO) : true );
+      // On macOS, the initial state of the checkbox won't be set unless we set the variable.
+      // I suspect it has to do with validator action after OnActivate() returns.
+      // It seems like a good thing to do in any case.
+      m_readOnly = writeable ? (m_core.IsReadOnly() || defaultRO) : true;
+      ro->SetValue(m_readOnly);
       ro->Enable(writeable);
     }
     UpdateNew(!writeable || defaultRO);
@@ -672,6 +659,9 @@ void SafeCombinationEntryDlg::OnReadonlyClick( wxCommandEvent& event )
 
 void SafeCombinationEntryDlg::EllipsizeFilePathname()
 {
+  // Make sure the tooltip has the current full filename
+  m_filenameCB->SetToolTip(m_filename);
+
   if (m_filename.IsEmpty()) {
     return;
   }
@@ -685,6 +675,4 @@ void SafeCombinationEntryDlg::EllipsizeFilePathname()
       (m_filenameCB->GetSize()).GetWidth() - 50
     )
   );
-  // Make sure the tooltip has the current full filename
-  m_filenameCB->SetToolTip(m_filename);
 }

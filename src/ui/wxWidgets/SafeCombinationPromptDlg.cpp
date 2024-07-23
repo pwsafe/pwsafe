@@ -173,9 +173,6 @@ void SafeCombinationPromptDlg::CreateControls()
     EllipsizeFilePathname();
   });
 
-  // Set validators
-  m_textCtrlFilename->SetValidator(wxGenericValidator(&m_filename));
-
   wxWindow* passwdCtrl = FindWindow(ID_PASSWORD);
   if (passwdCtrl) {
     passwdCtrl->SetFocus();
@@ -258,11 +255,6 @@ void SafeCombinationPromptDlg::OnActivate(wxActivateEvent& WXUNUSED(event))
 {
   if (!m_DialogActivated) {
     EllipsizeFilePathname();
-#ifdef __WXOSX__
-    // On macOS the ellipsized text gets overwritten by the full pathname
-    // sometime after OnActivate returns.  This hack forces a correction.
-    m_textCtrlFilename->PostSizeEvent();
-#endif
     m_DialogActivated = true;
   }
 }
@@ -273,30 +265,21 @@ void SafeCombinationPromptDlg::OnActivate(wxActivateEvent& WXUNUSED(event))
 
 void SafeCombinationPromptDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
 {
-  // For the validation process, put the full file path name back into the text input field.
-  // Calling 'EllipsizeFilePathname' will undo this.
-  m_textCtrlFilename->ChangeValue(m_filename);
-
   if (Validate() && TransferDataFromWindow()) {
     if (m_password.empty()) {
       wxMessageDialog err(this, _("The combination cannot be blank."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
-      EllipsizeFilePathname();
-      return;
-    }
-    if (!pws_os::FileExists(tostdstring(m_filename))) {
+
+    } else if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
-      EllipsizeFilePathname();
-      return;
-    }
-    if (ProcessPhrase()) {
+
+    } else if (ProcessPhrase()) {
       EndModal(wxID_OK);
     }
   }
-  EllipsizeFilePathname();
 }
 
 /*!
@@ -320,28 +303,23 @@ void SafeCombinationPromptDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
 {
   m_scctrl->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
 
-  // For the validation process, put the full file path name back into the text input field.
-  // Calling 'EllipsizeFilePathname' will undo this.
-  m_textCtrlFilename->ChangeValue(m_filename);
-
   if (Validate() && TransferDataFromWindow()) {
     if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
-      return;
-    }
 
-    StringX response;
-    bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
-    if (PerformChallengeResponse(this, m_password, response, oldYubiChallenge)) {
-      m_password = response;
-      if (ProcessPhrase()) {
-        EndModal(wxID_OK);
+    } else {
+      StringX response;
+      bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
+      if (PerformChallengeResponse(this, m_password, response, oldYubiChallenge)) {
+        m_password = response;
+        if (ProcessPhrase()) {
+          EndModal(wxID_OK);
+        }
       }
     }
   }
-  EllipsizeFilePathname();
   UpdateStatus();
 }
 
