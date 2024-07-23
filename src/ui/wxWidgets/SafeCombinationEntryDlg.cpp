@@ -241,9 +241,11 @@ void SafeCombinationEntryDlg::CreateControls()
 
   // Event handler if text entry field of combobox lost the focus.
   m_filenameCB->Bind(wxEVT_KILL_FOCUS, [&](wxFocusEvent& WXUNUSED(event)) {
+    wxString old_filename = m_filename;
     m_filename = m_filenameCB->GetValue(); // The user may have changed the file name or path manually.
     EllipsizeFilePathname();
-    UpdateReadOnlyCheckbox();
+    if (old_filename != m_filename)
+      UpdateReadOnlyCheckbox(); // Only call this if the filename actually changed.
   });
 
   // Event handler to update the file path name string if the size of the combobox changed.
@@ -278,10 +280,10 @@ void SafeCombinationEntryDlg::OnActivate( wxActivateEvent& event )
       EllipsizeFilePathname();
       UpdateReadOnlyCheckbox();
 #ifdef __WXOSX__
-      // On macOS the ellipsized text gets overwritten by the full pathname
-      // sometime after OnActivate returns.  I suspect the validator is (re)loading the
-      // control.  This hack forces a correction.
-      m_filenameCB->PostSizeEvent();
+      // On macOS the read-only checkbox doesn't actually get checked on start-up
+      // if the last file used is read-only.  The above call should have set it.
+      // This hack forces a correction.
+      CallAfter(&SafeCombinationEntryDlg::UpdateReadOnlyCheckbox);
 #endif
     }
     m_postInitDone = true;
