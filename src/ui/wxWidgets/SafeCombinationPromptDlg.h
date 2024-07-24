@@ -98,6 +98,9 @@ protected:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
   void OnOkClick( wxCommandEvent& event );
 
+  /// wxEVT_ACTIVATE  event handler
+  void OnActivate( wxActivateEvent& event );
+
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
   void OnCancelClick( wxCommandEvent& event );
 
@@ -111,18 +114,21 @@ protected:
   static bool ShowToolTips();
 
 ////@begin SafeCombinationPromptDlg member variables
+  wxTextCtrl* m_textCtrlFilename = nullptr;
   SafeCombinationCtrl* m_scctrl = nullptr;
 ////@end SafeCombinationPromptDlg member variables
   PWScore &m_core;
   wxString m_filename;
   StringX  m_password;
+  bool m_DialogActivated = false;
   
 #ifndef NO_YUBI
   wxBitmapButton* m_YubiBtn = nullptr;
   wxStaticText* m_yubiStatusCtrl = nullptr;
 #endif
 
-  void ProcessPhrase();
+  bool ProcessPhrase();
+  void EllipsizeFilePathname();
 };
 
 #endif // _SAFECOMBINATIONPROMPTDLG_H_

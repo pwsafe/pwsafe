@@ -151,7 +151,6 @@ protected:
 private:
   StringX m_password;
   wxString m_filename;
-  wxString m_ellipsizedFilename = wxEmptyString;
   bool m_readOnly;
   PWScore &m_core;
   bool m_postInitDone = false;
@@ -159,10 +158,10 @@ private:
 #ifndef NO_YUBI
   // Not strictly yubi, but refactored to work with it:
 #endif
-  void ProcessPhrase();
+  bool ProcessPhrase();
   void UpdateReadOnlyCheckbox();
   void UpdateNew(bool isRO);
-  wxString EllipsizeFilePathname(const wxString& filename);
+  void EllipsizeFilePathname();
 };
 
 #endif // _SAFECOMBINATIONENTRYDLG_H_

@@ -46,6 +46,7 @@ BEGIN_EVENT_TABLE( SafeCombinationPromptDlg, wxDialog )
 
 #ifndef NO_YUBI
 ////@begin SafeCombinationPromptDlg event table entries
+  EVT_ACTIVATE( SafeCombinationPromptDlg::OnActivate                     )
   EVT_BUTTON( ID_YUBIBTN,  SafeCombinationPromptDlg::OnYubibtnClick      )
   EVT_TIMER(  POLLING_TIMER_ID, SafeCombinationPromptDlg::OnPollingTimer )
 ////@end SafeCombinationPromptDlg event table entries
@@ -122,10 +123,10 @@ void SafeCombinationPromptDlg::CreateControls()
   auto textColor = itemStaticText7->GetForegroundColour();
   verticalBoxSizer1->Add(itemStaticText7, 0, wxBOTTOM, 5);
 
-  auto *textCtrlFilename = new wxTextCtrl(this, wxID_STATIC, _("filename"), wxDefaultPosition, wxDefaultSize, wxST_ELLIPSIZE_MIDDLE);
-  textCtrlFilename->Disable();
-  textCtrlFilename->SetForegroundColour(textColor);
-  verticalBoxSizer1->Add(textCtrlFilename, 0, wxALL|wxEXPAND, 0);
+  m_textCtrlFilename = new wxTextCtrl(this, wxID_STATIC, _("filename"), wxDefaultPosition, wxDefaultSize, 0);
+  m_textCtrlFilename->Disable();
+  m_textCtrlFilename->SetForegroundColour(textColor);
+  verticalBoxSizer1->Add(m_textCtrlFilename, 0, wxALL|wxEXPAND, 0);
 
   m_scctrl = wxUtilities::CreateLabeledSafeCombinationCtrl(this, ID_PASSWORD, _("Master Password"), &m_password, true);
 
@@ -167,9 +168,11 @@ void SafeCombinationPromptDlg::CreateControls()
     );
   }
 
-  // Set validators
-  textCtrlFilename->SetValidator(wxGenericValidator(&m_filename));
-////@end SafeCombinationPromptDlg content construction
+  // Event handler to update the file path name string if the size of the text field changed.
+  m_textCtrlFilename->Bind(wxEVT_SIZE, [&](wxSizeEvent& WXUNUSED(event)) {
+    EllipsizeFilePathname();
+  });
+
   wxWindow* passwdCtrl = FindWindow(ID_PASSWORD);
   if (passwdCtrl) {
     passwdCtrl->SetFocus();
@@ -197,7 +200,7 @@ wxIcon SafeCombinationPromptDlg::GetIconResource( const wxString& WXUNUSED(name)
 ////@end SafeCombinationPromptDlg icon retrieval
 }
 
-void SafeCombinationPromptDlg::ProcessPhrase()
+bool SafeCombinationPromptDlg::ProcessPhrase()
 {
   static unsigned tries = 0;
 
@@ -224,10 +227,36 @@ void SafeCombinationPromptDlg::ProcessPhrase()
       txt->SetSelection(-1,-1);
       txt->SetFocus();
     }
-    return;
+    return false;
   }
   m_core.SetCurFile(tostringx(m_filename));
-  EndModal(wxID_OK);
+  return true;
+}
+
+void SafeCombinationPromptDlg::EllipsizeFilePathname()
+{
+  if (m_filename.IsEmpty()) {
+    return;
+  }
+
+  wxScreenDC dc;
+
+  m_textCtrlFilename->ChangeValue(
+    wxControl::Ellipsize(
+      m_filename, dc, wxEllipsizeMode::wxELLIPSIZE_MIDDLE,
+      /* The limiting width for the text is the text input field width reduced by the margins. */
+      (m_textCtrlFilename->GetSize()).GetWidth() - 18
+    )
+  );
+  m_textCtrlFilename->SetToolTip(m_filename);
+}
+
+void SafeCombinationPromptDlg::OnActivate(wxActivateEvent& WXUNUSED(event))
+{
+  if (!m_DialogActivated) {
+    EllipsizeFilePathname();
+    m_DialogActivated = true;
+  }
 }
 
 /*!
@@ -241,15 +270,15 @@ void SafeCombinationPromptDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
       wxMessageDialog err(this, _("The combination cannot be blank."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
-      return;
-    }
-    if (!pws_os::FileExists(tostdstring(m_filename))) {
+
+    } else if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
-      return;
+
+    } else if (ProcessPhrase()) {
+      EndModal(wxID_OK);
     }
-    ProcessPhrase();
   }
 }
 
@@ -273,22 +302,25 @@ void SafeCombinationPromptDlg::OnCancelClick(wxCommandEvent& WXUNUSED(evt))
 void SafeCombinationPromptDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
 {
   m_scctrl->AllowEmptyCombinationOnce();  // Allow blank password when Yubi's used
+
   if (Validate() && TransferDataFromWindow()) {
     if (!pws_os::FileExists(tostdstring(m_filename))) {
       wxMessageDialog err(this, _("File or path not found."),
                           _("Error"), wxOK | wxICON_EXCLAMATION);
       err.ShowModal();
-      return;
-    }
 
-    StringX response;
-    bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
-    if (PerformChallengeResponse(this, m_password, response, oldYubiChallenge)) {
-      m_password = response;
-      ProcessPhrase();
-      UpdateStatus();
+    } else {
+      StringX response;
+      bool oldYubiChallenge = ::wxGetKeyState(WXK_SHIFT); // for pre-0.94 databases
+      if (PerformChallengeResponse(this, m_password, response, oldYubiChallenge)) {
+        m_password = response;
+        if (ProcessPhrase()) {
+          EndModal(wxID_OK);
+        }
+      }
     }
   }
+  UpdateStatus();
 }
 
 void SafeCombinationPromptDlg::OnPollingTimer(wxTimerEvent &evt)
