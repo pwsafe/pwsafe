@@ -317,10 +317,10 @@ void SafeCombinationPromptDlg::OnYubibtnClick(wxCommandEvent& WXUNUSED(event))
         if (ProcessPhrase()) {
           EndModal(wxID_OK);
         }
+        UpdateStatus();
       }
     }
   }
-  UpdateStatus();
 }
 
 void SafeCombinationPromptDlg::OnPollingTimer(wxTimerEvent &evt)
