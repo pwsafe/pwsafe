@@ -10,6 +10,12 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 PasswordSafe 1.20.0 Release ??? ?? 2024
 =======================================
 
+Bugs fixed in 1.20.0
+--------------------
+* [1331](https://github.com/pwsafe/pwsafe/issues/1331) Correctly display long paths with ellipsis (...) in Master Password Entry window
+* [1332](https://github.com/pwsafe/pwsafe/issues/1332) Correctly display long paths with ellipsis (...) in Unlock Password Database window
+
+
 New features in 1.20.0
 ----------------------
 
