@@ -535,10 +535,10 @@ void PasswordSafeFrame::CreateMenubar()
     }
     // Most recently used DBs listed as submenu of File menu
     else {
-      auto recentSafesMenu = new wxMenu;
-      wxGetApp().recentDatabases().AddFilesToMenu(recentSafesMenu);
+      auto recentDatabasesMenu = new wxMenu;
+      wxGetApp().recentDatabases().AddFilesToMenu(recentDatabasesMenu);
       menuFile->AppendSeparator();
-      menuFile->Append(ID_RECENTSAFES, _("&Recent Safes..."), recentSafesMenu);
+      menuFile->Append(ID_RECENTSAFES, _("&Recent Databases..."), recentDatabasesMenu);
     }
   }
   else {
