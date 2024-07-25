@@ -29,7 +29,7 @@
     <?define LangDir = "out/build/windows-x86-release/I18N" ?>
   <?endif ?>
 
-  <Product Id='c2a02857-d138-446b-b181-442dee20c8e6'
+  <Product Id='*'
 	   UpgradeCode='6dbf5233-ad08-4345-9ac7-746f32614a43'
 	   Name='Password Safe $(var.PWSAFE_VERSION) for Windows ($(var.Architecture))'
 	   Version='$(var.PWSAFE_VERSION)'
