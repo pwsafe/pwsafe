@@ -331,6 +331,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicPasswordConfirmationTextLabel = new wxStaticText( panel, wxID_STATIC, _("Confirm"), wxDefaultPosition, wxDefaultSize, 0 );
   auto *itemStaticText13 = new wxStaticText( panel, wxID_STATIC, wxT("*"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticText13->SetForegroundColour(*wxRED);
+  itemStaticText13->Show(m_Type == SheetType::ADD);
   auto *itemBoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer6->Add(m_BasicPasswordConfirmationTextLabel, 0, wxALIGN_CENTER_VERTICAL, 0);
   itemBoxSizer6->Add(itemStaticText13, 0, wxALIGN_CENTER_VERTICAL, 0);
