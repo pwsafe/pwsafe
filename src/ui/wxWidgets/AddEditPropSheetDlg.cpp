@@ -280,7 +280,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
 
   auto *itemStaticTextHint = new wxStaticText(panel, wxID_STATIC, _("All fields marked with an asterisk (*) are required."), wxDefaultPosition, wxDefaultSize, 0);
   itemStaticTextHint->SetFont((itemStaticTextHint->GetFont()).Italic());
-  itemBoxSizer3->Add(itemStaticTextHint, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 10);
+  itemBoxSizer3->Add(itemStaticTextHint, 0, wxALIGN_LEFT|wxALL, 10);
 
   m_BasicSizer = new wxGridBagSizer(/*vgap:*/ 5, /*hgap:*/ 5);
   itemBoxSizer3->Add(m_BasicSizer, 1, wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP|wxLEFT|wxBOTTOM|wxRIGHT, 10);
