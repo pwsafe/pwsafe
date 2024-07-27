@@ -278,8 +278,12 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   auto *itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
   panel->SetSizer(itemBoxSizer3);
 
+  auto *itemStaticTextHint = new wxStaticText(panel, wxID_STATIC, _("All fields marked with an asterisk (*) are required."), wxDefaultPosition, wxDefaultSize, 0);
+  itemStaticTextHint->SetFont((itemStaticTextHint->GetFont()).Italic());
+  itemBoxSizer3->Add(itemStaticTextHint, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 10);
+
   m_BasicSizer = new wxGridBagSizer(/*vgap:*/ 5, /*hgap:*/ 5);
-  itemBoxSizer3->Add(m_BasicSizer, 1, wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP|wxALL, 10);
+  itemBoxSizer3->Add(m_BasicSizer, 1, wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP|wxLEFT|wxBOTTOM|wxRIGHT, 10);
 
   auto *itemStaticText6 = new wxStaticText( panel, wxID_STATIC, _("Group"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(itemStaticText6, wxGBPosition(/*row:*/ 0, /*column:*/ 0), wxDefaultSpan,  wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
@@ -288,24 +292,29 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicSizer->Add(m_BasicGroupNamesCtrl, wxGBPosition(/*row:*/ 1, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   auto *itemStaticText9 = new wxStaticText( panel, wxID_STATIC, _("Title"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText9, wxGBPosition(/*row:*/ 2, /*column:*/ 0), wxDefaultSpan, wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  auto *itemStaticText10 = new wxStaticText( panel, wxID_STATIC, wxT("*"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStaticText10->SetForegroundColour(*wxRED);
+  auto *itemBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
+  itemBoxSizer4->Add(itemStaticText9, 0, wxALIGN_CENTER_VERTICAL, 0);
+  itemBoxSizer4->Add(itemStaticText10, 0, wxALIGN_CENTER_VERTICAL, 0);
+  m_BasicSizer->Add(itemBoxSizer4, wxGBPosition(/*row:*/ 2, /*column:*/ 0), wxDefaultSpan, wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicTitleTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_TITLE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(m_BasicTitleTextCtrl, wxGBPosition(/*row:*/ 3, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   auto *itemStaticText12 = new wxStaticText( panel, wxID_STATIC, _("Username"), wxDefaultPosition, wxDefaultSize, 0 );
-  auto *itemStaticText13 = new wxStaticText( panel, wxID_STATIC, _("(Optional)"), wxDefaultPosition, wxDefaultSize, 0 );
-  auto *itemBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer4->Add(itemStaticText12, 0, wxALIGN_CENTER_VERTICAL, 0);
-  itemBoxSizer4->AddStretchSpacer(1);
-  itemBoxSizer4->Add(itemStaticText13, 0, wxALIGN_CENTER_VERTICAL, 0);
-  m_BasicSizer->Add(itemBoxSizer4, wxGBPosition(/*row:*/ 4, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicSizer->Add(itemStaticText12/*itemBoxSizer4*/, wxGBPosition(/*row:*/ 4, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicUsernameTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_USERNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(m_BasicUsernameTextCtrl , wxGBPosition(/*row:*/ 5, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   m_BasicPasswordTextLabel = new wxStaticText( panel, wxID_STATIC, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicPasswordTextLabel, wxGBPosition(/*row:*/ 6, /*column:*/ 0), wxDefaultSpan, wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  auto *itemStaticText11 = new wxStaticText( panel, wxID_STATIC, wxT("*"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStaticText11->SetForegroundColour(*wxRED);
+  auto *itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
+  itemBoxSizer5->Add(m_BasicPasswordTextLabel, 0, wxALIGN_CENTER_VERTICAL, 0);
+  itemBoxSizer5->Add(itemStaticText11, 0, wxALIGN_CENTER_VERTICAL, 0);
+  m_BasicSizer->Add(itemBoxSizer5, wxGBPosition(/*row:*/ 6, /*column:*/ 0), wxDefaultSpan, wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicPasswordTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_PASSWORD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(m_BasicPasswordTextCtrl, wxGBPosition(/*row:*/ 7, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 1), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
@@ -320,7 +329,12 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicSizer->Add(itemButton21, wxGBPosition(/*row:*/ 7, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
   m_BasicPasswordConfirmationTextLabel = new wxStaticText( panel, wxID_STATIC, _("Confirm"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicPasswordConfirmationTextLabel, wxGBPosition(/*row:*/ 8, /*column:*/ 0), wxDefaultSpan, wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  auto *itemStaticText13 = new wxStaticText( panel, wxID_STATIC, wxT("*"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemStaticText13->SetForegroundColour(*wxRED);
+  auto *itemBoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
+  itemBoxSizer6->Add(m_BasicPasswordConfirmationTextLabel, 0, wxALIGN_CENTER_VERTICAL, 0);
+  itemBoxSizer6->Add(itemStaticText13, 0, wxALIGN_CENTER_VERTICAL, 0);
+  m_BasicSizer->Add(itemBoxSizer6, wxGBPosition(/*row:*/ 8, /*column:*/ 0), wxDefaultSpan, wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicPasswordConfirmationTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_PASSWORD2, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
   m_BasicSizer->Add(m_BasicPasswordConfirmationTextCtrl, wxGBPosition(/*row:*/ 9, /*column:*/ 0), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
@@ -335,13 +349,8 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
     itemButton22->Hide();
   }
   
-  auto *itemStaticText25 = new wxStaticText( panel, wxID_STATIC, _("Web address"), wxDefaultPosition, wxDefaultSize, 0 );
-  auto *itemStaticText26 = new wxStaticText( panel, wxID_STATIC, _("(Optional)"), wxDefaultPosition, wxDefaultSize, 0 );
-  auto *itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer5->Add(itemStaticText25, 0, wxALIGN_CENTER_VERTICAL, 0);
-  itemBoxSizer5->AddStretchSpacer(1);
-  itemBoxSizer5->Add(itemStaticText26, 0, wxALIGN_CENTER_VERTICAL, 0);
-  m_BasicSizer->Add(itemBoxSizer5, wxGBPosition(/*row:*/ 10, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  auto *itemStaticText25 = new wxStaticText( panel, wxID_STATIC, _("URL"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_BasicSizer->Add(itemStaticText25, wxGBPosition(/*row:*/ 10, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicUrlTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_URL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(m_BasicUrlTextCtrl, wxGBPosition(/*row:*/ 11, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
@@ -350,12 +359,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicSizer->Add(itemButton29, wxGBPosition(/*row:*/ 11, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
   auto *itemStaticText30 = new wxStaticText( panel, wxID_STATIC, _("Email"), wxDefaultPosition, wxDefaultSize, 0 );
-  auto *itemStaticText31 = new wxStaticText( panel, wxID_STATIC, _("(Optional)"), wxDefaultPosition, wxDefaultSize, 0 );
-  auto *itemBoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer6->Add(itemStaticText30, 0, wxALIGN_CENTER_VERTICAL, 0);
-  itemBoxSizer6->AddStretchSpacer(1);
-  itemBoxSizer6->Add(itemStaticText31, 0, wxALIGN_CENTER_VERTICAL, 0);
-  m_BasicSizer->Add(itemBoxSizer6, wxGBPosition(/*row:*/ 12, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicSizer->Add(itemStaticText30, wxGBPosition(/*row:*/ 12, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicEmailTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_EMAIL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(m_BasicEmailTextCtrl, wxGBPosition(/*row:*/ 13, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
@@ -364,12 +368,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicSizer->Add(itemButton34, wxGBPosition(/*row:*/ 13, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
   auto *itemStaticText36 = new wxStaticText( panel, wxID_STATIC, _("Notes"), wxDefaultPosition, wxDefaultSize, 0 );
-  auto *itemStaticText37 = new wxStaticText( panel, wxID_STATIC, _("(Optional)"), wxDefaultPosition, wxDefaultSize, 0 );
-  auto *itemBoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
-  itemBoxSizer7->Add(itemStaticText36, 0, wxALIGN_CENTER_VERTICAL, 0);
-  itemBoxSizer7->AddStretchSpacer(1);
-  itemBoxSizer7->Add(itemStaticText37, 0, wxALIGN_CENTER_VERTICAL, 0);
-  m_BasicSizer->Add(itemBoxSizer7, wxGBPosition(/*row:*/ 14, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 4), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicSizer->Add(itemStaticText36, wxGBPosition(/*row:*/ 14, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 4), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicNotesTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_NOTES, wxEmptyString, wxDefaultPosition, wxSize(-1, 100), wxTE_MULTILINE );
   m_BasicSizer->Add(m_BasicNotesTextCtrl, wxGBPosition(/*row:*/ 15, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 4), wxEXPAND, 0);
