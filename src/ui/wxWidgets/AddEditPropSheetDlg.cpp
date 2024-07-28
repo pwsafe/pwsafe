@@ -180,6 +180,7 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
   // Set the initial focus to the Title control (Otherwise it defaults to the Group control)
   m_BasicTitleTextCtrl->SetFocus();
 
+  bitmapCheckmarkPlaceholder = wxUtilities::GetBitmapResource(wxT("graphics/checkmark_placeholder.xpm"));
   bitmapCheckmarkGreen = wxUtilities::GetBitmapResource(wxT("graphics/checkmark_green.xpm"));
   bitmapCheckmarkGray = wxUtilities::GetBitmapResource(wxT("graphics/checkmark_gray.xpm"));
 }
@@ -319,7 +320,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicPasswordTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_PASSWORD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(m_BasicPasswordTextCtrl, wxGBPosition(/*row:*/ 7, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 1), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
-  m_BasicPasswordBitmap = new wxStaticBitmap(panel, wxID_ANY, wxUtilities::GetBitmapResource(wxT("graphics/checkmark_placeholder.xpm")), wxDefaultPosition, wxDefaultSize, 0);
+  m_BasicPasswordBitmap = new wxStaticBitmap(panel, wxID_ANY, bitmapCheckmarkPlaceholder, wxDefaultPosition, wxDefaultSize, 0);
   m_BasicSizer->Add(m_BasicPasswordBitmap, wxGBPosition(/*row:*/ 7, /*column:*/ 1), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxBOTTOM, 7);
 
   m_BasicShowHideCtrl = new wxBitmapButton(panel, ID_BUTTON_SHOWHIDE, wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
@@ -329,9 +330,8 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicSizer->Add(itemButton21, wxGBPosition(/*row:*/ 7, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
   m_BasicPasswordConfirmationTextLabel = new wxStaticText( panel, wxID_STATIC, _("Confirm"), wxDefaultPosition, wxDefaultSize, 0 );
-  auto *itemStaticText13 = new wxStaticText( panel, wxID_STATIC, wxT("*"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto *itemStaticText13 = new wxStaticText( panel, ID_STATICTEXT_PASSWORD2, wxT("*"), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticText13->SetForegroundColour(*wxRED);
-  itemStaticText13->Show(m_Type == SheetType::ADD);
   auto *itemBoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer6->Add(m_BasicPasswordConfirmationTextLabel, 0, wxALIGN_CENTER_VERTICAL, 0);
   itemBoxSizer6->Add(itemStaticText13, 0, wxALIGN_CENTER_VERTICAL, 0);
@@ -1632,7 +1632,7 @@ void AddEditPropSheetDlg::OnGenerateButtonClick(wxCommandEvent& WXUNUSED(evt))
 
 void AddEditPropSheetDlg::OnPasswordChanged(wxCommandEvent& event)
 {
-  UpdatePasswordConfirmationIcon(event.GetId());
+  UpdatePasswordConfirmationIcons();
 }
 
 /*!
@@ -1650,7 +1650,7 @@ void AddEditPropSheetDlg::OnShowHideClick(wxCommandEvent& WXUNUSED(evt))
         UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordConfirmationTextCtrl, pbci->GetPassword().c_str(), m_BasicPasswordTextCtrl, wxTE_READONLY);
         m_BasicPasswordConfirmationTextCtrl->Enable(true);
         m_BasicPasswordConfirmationTextCtrl->SetModified(false);   // Reset the modification flag to indicate no changes made by the user.
-                                                                   // See also 'UpdatePasswordConfirmationIcon'.
+                                                                   // See also 'UpdatePasswordConfirmationIcons'.
       }
     }
     else {
@@ -1658,16 +1658,19 @@ void AddEditPropSheetDlg::OnShowHideClick(wxCommandEvent& WXUNUSED(evt))
       UpdatePasswordTextCtrl(m_BasicSizer, m_BasicPasswordConfirmationTextCtrl, wxEmptyString, m_BasicPasswordTextCtrl, wxTE_READONLY);
       m_BasicPasswordConfirmationTextCtrl->Enable(false);
       m_BasicPasswordConfirmationTextCtrl->SetModified(false);     // Reset the modification flag to indicate no changes made by the user.
-                                                                   // See also 'UpdatePasswordConfirmationIcon'.
+                                                                   // See also 'UpdatePasswordConfirmationIcons'.
     }
   }
   else {
     m_Password = m_BasicPasswordTextCtrl->GetValue().c_str(); // save visible password
     if (m_IsPasswordHidden) {
       ShowPassword();
+      UpdatePasswordConfirmationIcons(false);     // Hide confirmation icons
+      UpdatePasswordConfirmationAsterisk(false);  // Hide asterisk at password confirmation label, if only one password entry field is shown
     } else {
       HidePassword();
-      UpdatePasswordConfirmationIcon(ID_TEXTCTRL_PASSWORD2);
+      UpdatePasswordConfirmationIcons(true);      // Show confirmation icons
+      UpdatePasswordConfirmationAsterisk(true);   // Show asterisk at password confirmation label when two password entry fields are shown
     }
   }
 }
@@ -1766,10 +1769,8 @@ void AddEditPropSheetDlg::HidePassword()
   m_BasicShowHideCtrl->SetToolTip(_("Show password"));
 }
 
-void AddEditPropSheetDlg::UpdatePasswordConfirmationIcon(int controlId)
+void AddEditPropSheetDlg::UpdatePasswordConfirmationIcons(bool show)
 {
-  auto updateLayout = false;
-
   // There is nothing to do if there is no user input, but the content of
   // the password input fields may have been changed by the hide/show functionality.
   if (!m_BasicPasswordTextCtrl->IsModified() && !m_BasicPasswordConfirmationTextCtrl->IsModified()) {
@@ -1786,18 +1787,22 @@ void AddEditPropSheetDlg::UpdatePasswordConfirmationIcon(int controlId)
     m_BasicPasswordConfirmationBitmap->SetBitmap(bitmapCheckmarkGray);
   }
   // Only display the check mark symbol to the right of each input field when there is some input.
-  // This also requires re-layout of the dialog.
-  if (controlId == ID_TEXTCTRL_PASSWORD) {
-    updateLayout = !m_BasicPasswordBitmap->IsShown() && !m_BasicPasswordTextCtrl->IsEmpty();
+  if (show) {
     m_BasicPasswordBitmap->Show(!m_BasicPasswordTextCtrl->IsEmpty());
-  }
-  else if (controlId == ID_TEXTCTRL_PASSWORD2) {
-    updateLayout = !m_BasicPasswordConfirmationBitmap->IsShown() && !m_BasicPasswordConfirmationTextCtrl->IsEmpty();
     m_BasicPasswordConfirmationBitmap->Show(!m_BasicPasswordConfirmationTextCtrl->IsEmpty());
   }
-  if (updateLayout) {
-    m_BasicSizer->Layout();
+  // Show empty icons to mimic hidden icons, avoiding layout issues with text input fields.
+  else {
+    m_BasicPasswordBitmap->SetBitmap(bitmapCheckmarkPlaceholder);
+    m_BasicPasswordBitmap->Show();
+    m_BasicPasswordConfirmationBitmap->SetBitmap(bitmapCheckmarkPlaceholder);
+    m_BasicPasswordConfirmationBitmap->Show();
   }
+}
+
+void AddEditPropSheetDlg::UpdatePasswordConfirmationAsterisk(bool show)
+{
+  FindWindow(ID_STATICTEXT_PASSWORD2)->Show(show);
 }
 
 void AddEditPropSheetDlg::ShowAlias()

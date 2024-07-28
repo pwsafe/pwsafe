@@ -66,6 +66,7 @@ class wxBoxSizer;
 #define ID_BUTTON_SHOWHIDE 10090
 #define ID_BUTTON_GENERATE 10097
 #define ID_TEXTCTRL_PASSWORD2 10091
+#define ID_STATICTEXT_PASSWORD2 10191
 #define ID_TEXTCTRL_URL 10092
 #define ID_GO_BTN 10093
 #define ID_TEXTCTRL_EMAIL 10100
@@ -302,7 +303,8 @@ private:
   void EnableNonHexCBs(bool enable);
   void ShowPassword();
   void HidePassword();
-  void UpdatePasswordConfirmationIcon(int controlId);
+  void UpdatePasswordConfirmationIcons(bool show = true);
+  void UpdatePasswordConfirmationAsterisk(bool show = true);
   void ShowAlias();
   void RemoveAlias();
   int GetRequiredPWLength() const;
@@ -466,6 +468,7 @@ private:
   CItemData m_Item;
   CItemAtt  m_ItemAttachment;
 
+  wxBitmap bitmapCheckmarkPlaceholder;
   wxBitmap bitmapCheckmarkGreen;
   wxBitmap bitmapCheckmarkGray;
 };
