@@ -131,7 +131,7 @@ dist: clean
 			--background ./background.png \
 			--icon-size 40 \
 			--volname "Password Safe" \
-			--volicon ../../src/ui/wxWidgets/graphics/pwsafe.icns \
+			--volicon $(SRCDIR)/$(PWSAFE-APP)/Contents/Resources/AppIcon.icns \
 			--eula ../../LICENSE \
 			--icon "$(PWSAFE-APP)" 00 110 \
 			--app-drop-link 180 110 \
