@@ -294,6 +294,7 @@ private:
   void SetupDCAComboBoxes(wxComboBox *pcbox, short &iDCA, bool isShift);
   void UpdateExpTimes();        // entry -> controls
   void SetXTime(wxObject *src); // sync controls + controls -> entry
+  void SetIntervalFromDate();
   void UpdatePWPolicyControls(const PWPolicy &pwp);
   void EnablePWPolicyControls(bool enable);
   PWPolicy GetPWPolicyFromUI() const;
