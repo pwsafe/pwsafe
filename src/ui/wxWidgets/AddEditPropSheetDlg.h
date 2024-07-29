@@ -397,10 +397,9 @@ private:
   wxString m_RMTime; // Any field modification time
   wxString m_AccessTime;
   wxString m_CreationTime;
-  wxString m_CurrentExpirationTime;
+  wxString m_OriginalExpirationTime;
   wxString m_ModificationTime;
   bool m_Recurring;
-  wxString m_ExpirationTime;
   int m_ExpirationTimeInterval = 0; // Password expiration interval in days
   time_t m_tttExpirationTime;   // Password expiration date in time_t
 
