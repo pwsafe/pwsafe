@@ -539,7 +539,7 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
 
   m_DatesTimesExpiryTimeCtrl->SetValidator(wxGenericValidator(&m_ExpirationTimeInterval));
   m_DatesTimesRecurringExpiryCtrl->SetValidator(wxGenericValidator(&m_Recurring));
-  itemStaticText76->SetValidator(wxGenericValidator(&m_CurrentExpirationTime));
+  itemStaticText76->SetValidator(wxGenericValidator(&m_OriginalExpirationTime));
   itemStaticText80->SetValidator(wxGenericValidator(&m_CreationTime));
   itemStaticText82->SetValidator(wxGenericValidator(&m_ModificationTime));
   itemStaticText84->SetValidator(wxGenericValidator(&m_AccessTime));
@@ -1353,10 +1353,7 @@ void AddEditPropSheetDlg::UpdateExpTimes()
 
   m_Item.GetXTime(m_tttExpirationTime);
   m_Item.GetXTimeInt(m_ExpirationTimeInterval);
-  m_ExpirationTime = m_CurrentExpirationTime = m_Item.GetXTimeL().c_str();
-
-  if (m_ExpirationTime.empty())
-    m_ExpirationTime = m_CurrentExpirationTime = _("Never");
+  m_OriginalExpirationTime = m_Item.GetXTimeL().c_str();
 
   wxCommandEvent dummy;
   wxDateTime exp;
@@ -1387,6 +1384,14 @@ void AddEditPropSheetDlg::UpdateExpTimes()
     m_DatesTimesRecurringExpiryCtrl->Enable(m_Recurring);
     m_DatesTimesExpiryDateCtrl->SetValue(exp);
   }
+
+  if (m_Recurring) {
+    wxString rstr;
+    rstr.Printf(_(" (every %d days)"), m_ExpirationTimeInterval);
+    m_OriginalExpirationTime += rstr;
+  }
+  if (m_OriginalExpirationTime.empty())
+    m_OriginalExpirationTime = _("Never");
 
   if (exp > wxDateTime::Today())
     exp = wxDateTime::Today(); // otherwise we can never move exp date back
@@ -2627,10 +2632,7 @@ void AddEditPropSheetDlg::SetXTime(wxObject *src)
     wxDateTime xdt;
     if (src == m_DatesTimesExpiryDateCtrl) { // expiration date changed, update interval
       SetIntervalFromDate();
-      xdt = m_DatesTimesExpiryDateCtrl->GetValue();
-      xdt.SetHour(0);
-      xdt.SetMinute(1);
-      m_ExpirationTime = xdt.FormatDate();
+
     } else if (src == m_DatesTimesExpiryTimeCtrl) { // expiration interval changed, update date
       // If it's a non-recurring interval, just set XTime to
       // now + interval, XTimeInt should be stored as zero
@@ -2639,12 +2641,7 @@ void AddEditPropSheetDlg::SetXTime(wxObject *src)
         xdt = wxDateTime::Now();
         xdt += wxDateSpan(0, 0, 0, m_ExpirationTimeInterval);
         m_DatesTimesExpiryDateCtrl->SetValue(xdt);
-        m_ExpirationTime = xdt.FormatDate();
-      if (m_Recurring) {
-        wxString rstr;
-        rstr.Printf(_(" (every %d days)"), m_ExpirationTimeInterval);
-        m_ExpirationTime += rstr;
-      }
+
     } else {
       ASSERT(0);
     }
@@ -2663,8 +2660,6 @@ void AddEditPropSheetDlg::OnExpRadiobuttonSelected( wxCommandEvent& evt )
   bool Never = (evt.GetEventObject() == m_DatesTimesNeverExpireCtrl);
 
   if (Never) {
-    m_ExpirationTime = _("Never");
-    m_CurrentExpirationTime.Clear();
     m_tttExpirationTime = time_t(0);
     m_ExpirationTimeInterval = 90;
     wxDateTime xdt(wxDateTime::Now());
