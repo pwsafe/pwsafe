@@ -1930,7 +1930,7 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
   /////////////////////////////////////////////////////////////////////////////
 
   m_Item.SetXTime(m_tttExpirationTime);
-  if (m_ExpirationTimeInterval > 0 && m_ExpirationTimeInterval <= 3650) {
+  if (m_Recurring && m_ExpirationTimeInterval > 0 && m_ExpirationTimeInterval <= 3650) {
     m_Item.SetXTimeInt(m_ExpirationTimeInterval);
   }
 
@@ -2613,16 +2613,23 @@ void AddEditPropSheetDlg::OnOverrideDCAClick(wxCommandEvent& WXUNUSED(evt))
 }
 #endif
 
+void AddEditPropSheetDlg::SetIntervalFromDate() {
+  wxDateTime xdt(m_DatesTimesExpiryDateCtrl->GetValue());
+  xdt.SetHour(0);
+  xdt.SetMinute(1);
+  wxTimeSpan delta = xdt.Subtract(wxDateTime::Today());
+  m_ExpirationTimeInterval = delta.GetDays();
+}
+
 void AddEditPropSheetDlg::SetXTime(wxObject *src)
 {
   if (Validate() && TransferDataFromWindow()) {
     wxDateTime xdt;
     if (src == m_DatesTimesExpiryDateCtrl) { // expiration date changed, update interval
+      SetIntervalFromDate();
       xdt = m_DatesTimesExpiryDateCtrl->GetValue();
       xdt.SetHour(0);
       xdt.SetMinute(1);
-      wxTimeSpan delta = xdt.Subtract(wxDateTime::Today());
-      m_ExpirationTimeInterval = delta.GetDays();
       m_ExpirationTime = xdt.FormatDate();
     } else if (src == m_DatesTimesExpiryTimeCtrl) { // expiration interval changed, update date
       // If it's a non-recurring interval, just set XTime to
@@ -2664,6 +2671,11 @@ void AddEditPropSheetDlg::OnExpRadiobuttonSelected( wxCommandEvent& evt )
     xdt += wxDateSpan(0, 0, 0, m_ExpirationTimeInterval);
     m_DatesTimesExpiryDateCtrl->SetValue(xdt);
     m_Recurring = false;
+    TransferDataToWindow();
+
+  } else if (On) {
+    // Set the interval value to match the specified date
+    SetIntervalFromDate();
     TransferDataToWindow();
   }
 
