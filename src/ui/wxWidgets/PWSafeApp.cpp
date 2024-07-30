@@ -33,6 +33,10 @@
 #include <wx/tokenzr.h>
 #include <wx/spinctrl.h>
 
+#if wxCHECK_VERSION(3, 2, 2)
+#include <wx/uilocale.h>
+#endif
+
 #if wxCHECK_VERSION(2,9,2)
 #include <wx/richmsgdlg.h>
 #endif
@@ -676,6 +680,22 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
     const wxLanguageInfo *langInfo = nullptr;
     langInfo = wxLocale::GetLanguageInfo(language);
     if(langInfo) {
+
+#if defined(__WXMAC__) && wxCHECK_VERSION(3, 2, 2)
+      // There are multiple locale variations for english.  (i.e. en_US, en_GB, etc.)
+      // Just using en.UTF-8 causes some inconsistent results. Specifically, the date
+      // format seems to default to en_GB in WX but not in native macOS controls, such
+      // as the date picker.  If we are trying to activate generic English, check the
+      // system locale and, if it is more specific, use that instead.
+      if (langInfo->CanonicalName == "en") {
+        wxLocaleIdent sysLocaleId = wxUILocale::GetSystemLocaleId();
+        if (sysLocaleId.GetLanguage() == "en" && sysLocaleId.GetRegion() != "") {
+          if (auto litmp = wxUILocale::FindLanguageInfo(sysLocaleId))
+            langInfo = litmp;
+        }
+      }
+#endif // __WXMAC__
+
       wxString envString = langInfo->CanonicalName + ".UTF-8";
       setlocale(LC_CTYPE, envString.c_str());
       setlocale(LC_TIME, envString.c_str());
