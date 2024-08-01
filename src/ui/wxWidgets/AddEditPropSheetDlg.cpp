@@ -1361,6 +1361,7 @@ void AddEditPropSheetDlg::UpdateExpTimes()
     m_DatesTimesExpireOnCtrl->SetValue(false);
     m_DatesTimesExpireInCtrl->SetValue(false);
     m_DatesTimesNeverExpireCtrl->SetValue(true);
+    m_Recurring = m_OriginalRecurring = false;
     exp = wxDateTime::Today();
     dummy.SetEventObject(m_DatesTimesNeverExpireCtrl);
   } else {
@@ -1370,7 +1371,7 @@ void AddEditPropSheetDlg::UpdateExpTimes()
       m_DatesTimesExpireInCtrl->SetValue(false);
       m_DatesTimesNeverExpireCtrl->SetValue(false);
       m_DatesTimesExpiryTimeCtrl->Enable(false);
-      m_Recurring = false;
+      m_Recurring = m_OriginalRecurring = false;
       dummy.SetEventObject(m_DatesTimesExpireOnCtrl);
     } else { // exp. specified as interval
       m_DatesTimesExpireOnCtrl->SetValue(false);
@@ -1378,7 +1379,7 @@ void AddEditPropSheetDlg::UpdateExpTimes()
       m_DatesTimesNeverExpireCtrl->SetValue(false);
       m_DatesTimesExpiryDateCtrl->Enable(false);
       m_DatesTimesExpiryTimeCtrl->SetValue(m_ExpirationTimeInterval);
-      m_Recurring = true;
+      m_Recurring = m_OriginalRecurring = true;
       dummy.SetEventObject(m_DatesTimesExpireInCtrl);
     }
     m_DatesTimesRecurringExpiryCtrl->Enable(m_Recurring);
@@ -2088,21 +2089,25 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
     }
   }
   {
+    int lastXTimeInt;
     time_t lastXtime;
     m_Item.GetXTime(lastXtime);
-    if (m_DatesTimesExpireOnCtrl->GetValue() && m_tttExpirationTime != lastXtime) {
+    m_Item.GetXTimeInt(lastXTimeInt);
+
+    if ( m_DatesTimesExpireOnCtrl->GetValue() && ((m_tttExpirationTime != lastXtime)
+                                                  || (!m_Recurring && lastXTimeInt != 0)) ) {
       changes |= Changes::XTime;
     }
 
-    int lastXTimeInt;
-    m_Item.GetXTimeInt(lastXTimeInt);
-    if ( m_DatesTimesExpireInCtrl->GetValue() && (m_ExpirationTimeInterval != lastXTimeInt
-                                                  || ( m_Recurring && lastXTimeInt == 0)
-                                                  || (!m_Recurring && lastXTimeInt != 0)) ) {
+    if ( m_DatesTimesExpireInCtrl->GetValue() && ((m_ExpirationTimeInterval != lastXTimeInt)
+                                                  || (m_Recurring != m_OriginalRecurring)) ) {
       changes |= Changes::XTimeInt;
     }
 
-    if (m_DatesTimesNeverExpireCtrl->GetValue() && (lastXtime || lastXTimeInt)) {
+    // For compatibility issue, see the comment in OnExpRadiobuttonSelected.
+    if (m_DatesTimesNeverExpireCtrl->GetValue()
+        && (lastXtime || (lastXTimeInt
+                          && lastXTimeInt != m_ExpirationTimeInterval))) { // Compatibility
       changes |= Changes::XTimeNever;
     }
   }
@@ -2656,7 +2661,9 @@ void AddEditPropSheetDlg::OnExpRadiobuttonSelected( wxCommandEvent& evt )
     // Set the interval value to match the specified date
     auto xdt = NormalizeExpDate(m_DatesTimesExpiryDateCtrl->GetValue());
     m_tttExpirationTime = xdt.GetTicks();
-    m_ExpirationTimeInterval = IntervalFromDate(xdt);
+    if (!m_ExpirationTimeInterval) {
+      m_ExpirationTimeInterval = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays);;
+    }
     m_Recurring = false;
 
   } else {

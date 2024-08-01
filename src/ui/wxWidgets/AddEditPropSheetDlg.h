@@ -395,6 +395,7 @@ private:
   wxString m_OriginalExpirationTime;
   wxString m_ModificationTime;
   bool m_Recurring;
+  bool m_OriginalRecurring;
   int m_ExpirationTimeInterval = 0; // Password expiration interval in days
   time_t m_tttExpirationTime;   // Password expiration date in time_t
 
