@@ -1412,10 +1412,23 @@ void AddEditPropSheetDlg::UpdateExpTimes()
     m_DatesTimesExpiryDateCtrl->SetValue(exp);
   }
 
+  if (m_tttExpirationTime) {
+    wxString rstr;
+    int interval = IntervalFromDate(exp);
+
+    if (interval > 0) {
+      wxString str = (interval == 1) ? _(" (Expires in %d day)") : _(" (Expires in %d days)") ;
+      rstr.Printf(str, interval);
+    } else {
+      rstr.Printf(_(" (Expired)"), interval);
+    }
+    m_OriginalExpirationTime += rstr;
+  }
   if (m_Recurring) {
     wxString rstr;
-    rstr.Printf(_(" (every %d days)"), m_ExpirationTimeInterval);
-    m_OriginalExpirationTime += rstr;
+    wxString str = (m_ExpirationTimeInterval == 1) ? _(" (every %d day)") : _(" (every %d days)") ;
+    rstr.Printf(str, m_ExpirationTimeInterval);
+    m_OriginalExpirationDate += rstr;
   }
   if (m_OriginalExpirationTime.empty())
     m_OriginalExpirationTime = _("Never");
