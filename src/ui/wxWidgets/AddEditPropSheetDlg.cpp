@@ -1383,7 +1383,7 @@ void AddEditPropSheetDlg::UpdateExpTimes()
       dummy.SetEventObject(m_DatesTimesExpireInCtrl);
     }
     m_DatesTimesRecurringExpiryCtrl->Enable(m_Recurring);
-    m_DatesTimesExpiryDateCtrl->SetValue(NormalizeExpDate(exp));
+    m_DatesTimesExpiryDateCtrl->SetValue(exp);
   }
 
   if (m_Recurring) {
@@ -2099,12 +2099,12 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
       changes |= Changes::XTime;
     }
 
-    if ( m_DatesTimesExpireInCtrl->GetValue() && ((m_ExpirationTimeInterval != lastXTimeInt)
+    if ( m_DatesTimesExpireInCtrl->GetValue() && ((m_OriginalButton != m_DatesTimesExpireInCtrl)
+                                                  || (m_ExpirationTimeInterval != lastXTimeInt)
                                                   || (m_Recurring != m_OriginalRecurring)) ) {
       changes |= Changes::XTimeInt;
     }
 
-    // For compatibility issue, see the comment in OnExpRadiobuttonSelected.
     if (m_DatesTimesNeverExpireCtrl->GetValue()
         && (lastXtime || (lastXTimeInt
                           && lastXTimeInt != m_ExpirationTimeInterval))) { // Compatibility
@@ -2303,7 +2303,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
   }
   
   if (changes & (Changes::XTime | Changes::XTimeInt)) {
-    m_Item.SetXTime(m_tttExpirationTime);
+    m_Item.SetXTime(NormalizeExpDate(wxDateTime(m_tttExpirationTime)).GetTicks());
   }
 
   if (m_Recurring) {
@@ -2619,7 +2619,7 @@ void AddEditPropSheetDlg::SetXTime(wxObject *src)
   if (Validate() && TransferDataFromWindow()) {
     wxDateTime xdt;
     if (src == m_DatesTimesExpiryDateCtrl) { // expiration date changed, update interval
-      xdt = NormalizeExpDate(m_DatesTimesExpiryDateCtrl->GetValue());
+      xdt = m_DatesTimesExpiryDateCtrl->GetValue();
       m_ExpirationTimeInterval = IntervalFromDate(xdt);
 
     } else if (src == m_DatesTimesExpiryTimeCtrl) { // expiration interval changed, update date
@@ -2627,7 +2627,7 @@ void AddEditPropSheetDlg::SetXTime(wxObject *src)
       // now + interval, XTimeInt should be stored as zero
       // (one-shot semantics)
       // Otherwise, XTime += interval, keep XTimeInt
-      xdt = NormalizeExpDate(wxDateTime::Today());
+      xdt = wxDateTime::Today();
       xdt += wxDateSpan(0, 0, 0, m_ExpirationTimeInterval);
       m_DatesTimesExpiryDateCtrl->SetValue(xdt);
 
@@ -2650,23 +2650,33 @@ void AddEditPropSheetDlg::OnExpRadiobuttonSelected( wxCommandEvent& evt )
 
   if (Never) {
     m_tttExpirationTime = time_t(0);
-    m_ExpirationTimeInterval = 90;
+    // If it has an interval, keep it.  Otherwise, use the user defined default.
+    // This applies to new entries and old entries with no interval setting.
+    //
+    // Some entries, created with recent versions of pwsafe, will have an interval but no date,
+    // which is interpreted as "Never".  But, we need to use the given interval to prevent
+    // a false change detection when the entry is opened and closed.  If an actual change is made,
+    // the entry will be re-written correctly.
+    if (!m_ExpirationTimeInterval) {
+      m_ExpirationTimeInterval = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays);;
+    }
     wxDateTime xdt(wxDateTime::Today());
     xdt += wxDateSpan(0, 0, 0, m_ExpirationTimeInterval);
-    m_DatesTimesExpiryDateCtrl->SetValue(NormalizeExpDate(xdt));
+    m_DatesTimesExpiryDateCtrl->SetValue(xdt);
     m_Recurring = false;
-    //TransferDataToWindow();
 
   } else if (On) {
-    // Set the interval value to match the specified date
-    auto xdt = NormalizeExpDate(m_DatesTimesExpiryDateCtrl->GetValue());
-    m_tttExpirationTime = xdt.GetTicks();
+    m_tttExpirationTime = m_DatesTimesExpiryDateCtrl->GetValue().GetTicks();
     if (!m_ExpirationTimeInterval) {
       m_ExpirationTimeInterval = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays);;
     }
     m_Recurring = false;
 
   } else {
+    wxDateTime xdt(wxDateTime::Today());
+    xdt += wxDateSpan(0, 0, 0, m_DatesTimesExpiryTimeCtrl->GetValue());
+    m_DatesTimesExpiryDateCtrl->SetValue(xdt);
+    m_tttExpirationTime = xdt.GetTicks();
     m_Recurring = true;
   }
   TransferDataToWindow();
