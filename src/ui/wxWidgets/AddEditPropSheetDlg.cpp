@@ -2609,25 +2609,6 @@ void AddEditPropSheetDlg::OnKeepHistoryClick(wxCommandEvent &)
    }
 }
 
-#if 0 // XXX Remove, as we did away with this checkbox!
-void AddEditPropSheetDlg::OnOverrideDCAClick(wxCommandEvent& WXUNUSED(evt))
-{
-  if (Validate() && TransferDataFromWindow()) {
-    m_DCAcomboBox->Enable(!m_useDefaultDCA);
-    if (m_useDefaultDCA) { // restore default
-      short dca = short(PWSprefs::GetInstance()->
-                        GetPref(PWSprefs::DoubleClickAction));
-      for (size_t i = 0; i < sizeof(dcaMapping)/sizeof(dcaMapping[0]); i++)
-        if (dca == dcaMapping[i].pv) {
-          m_DCAcomboBox->SetValue(dcaMapping[i].name);
-          break;
-        }
-      m_DCA = -1; // 'use default' value
-    }
-  }
-}
-#endif
-
 void AddEditPropSheetDlg::SetXTime(wxObject *src)
 {
   if (Validate() && TransferDataFromWindow()) {
