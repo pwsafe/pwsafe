@@ -290,7 +290,9 @@ private:
   void SetupDCAComboBoxes(wxComboBox *pcbox, short &iDCA, bool isShift);
   void UpdateExpTimes();        // entry -> controls
   void SetXTime(wxObject *src); // sync controls + controls -> entry
-  void SetIntervalFromDate();
+  wxDateTime NormalizeExpDate(const wxDateTime &xdt) { return xdt.GetDateOnly().SetMinute(1); }
+  int IntervalFromDate(const wxDateTime &xdt) { return xdt.Subtract(wxDateTime::Today()).GetDays(); }
+
   void UpdatePWPolicyControls(const PWPolicy &pwp);
   void EnablePWPolicyControls(bool enable);
   PWPolicy GetPWPolicyFromUI() const;
@@ -328,6 +330,7 @@ private:
     Password = 1u << 14,
     Policy = 1u << 15,
     Attachment = 1u << 16,
+    XTimeNever = 1u << 17,
   };
   
   uint32_t GetChanges() const;
