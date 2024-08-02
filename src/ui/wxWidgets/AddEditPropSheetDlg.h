@@ -290,7 +290,7 @@ private:
   void SetupDCAComboBoxes(wxComboBox *pcbox, short &iDCA, bool isShift);
   void UpdateExpTimes();        // entry -> controls
   void SetXTime(wxObject *src); // sync controls + controls -> entry
-  wxDateTime NormalizeExpDate(const wxDateTime &xdt) { return xdt.GetDateOnly().SetMinute(1); }
+  wxDateTime NormalizeExpDate(const wxDateTime &xdt) { return xdt.GetDateOnly(); }
   int IntervalFromDate(const wxDateTime &xdt) { return xdt.Subtract(wxDateTime::Today()).GetDays(); }
 
   void UpdatePWPolicyControls(const PWPolicy &pwp);
@@ -392,10 +392,12 @@ private:
   wxString m_RMTime; // Any field modification time
   wxString m_AccessTime;
   wxString m_CreationTime;
-  wxString m_OriginalExpirationTime;
+  wxString m_OriginalExpirationDate;
   wxString m_ModificationTime;
+  wxRadioButton *m_OriginalButton;
   bool m_Recurring;
   bool m_OriginalRecurring;
+  time_t m_OriginalDayttt;
   int m_ExpirationTimeInterval = 0; // Password expiration interval in days
   time_t m_tttExpirationTime;   // Password expiration date in time_t
 
