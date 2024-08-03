@@ -2044,15 +2044,14 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
   // Tab: "Dates and Times"
   /////////////////////////////////////////////////////////////////////////////
 
-  if (m_Recurring && m_ExpirationTimeInterval > 0 && m_ExpirationTimeInterval <= 3650) {
+  if (m_DatesTimesExpireInCtrl->GetValue() && m_Recurring) {
     m_Item.SetXTimeInt(m_ExpirationTimeInterval);
   }
 
   if (m_Item.IsAlias()) {
     m_Item.SetXTime(time_t(0));
-  }
-  else {
-    m_Item.SetXTime(m_tttExpirationTime);
+  } else if (!m_DatesTimesNeverExpireCtrl->GetValue()) {
+    m_Item.SetXTime(NormalizeExpDate(m_DatesTimesExpiryDateCtrl->GetValue()).GetTicks());
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -2766,10 +2765,11 @@ void AddEditPropSheetDlg::OnExpRadiobuttonSelected( wxCommandEvent& evt )
     if (!m_ExpirationTimeInterval) { // Compatibility
       m_ExpirationTimeInterval = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays);;
     }
+    // Needed here for initialization and the above compatibility problem.
     wxDateTime xdt(wxDateTime::Today());
     xdt += wxDateSpan(0, 0, 0, m_ExpirationTimeInterval);
     m_DatesTimesExpiryDateCtrl->SetValue(xdt.GetDateOnly());
-    m_Recurring = false;
+    m_Recurring = (m_Type == SheetType::ADD) ? true : false;
 
   } else if (On) {  // Specific Date
     if (!m_ExpirationTimeInterval) { // Compatibility
@@ -2784,7 +2784,9 @@ void AddEditPropSheetDlg::OnExpRadiobuttonSelected( wxCommandEvent& evt )
     m_tttExpirationTime = xdt.GetDateOnly().GetTicks();
     m_Recurring = true;
   }
-  TransferDataToWindow();
+  // In add mode, the item data is not prepared for this, fields will go blank.
+  if (m_Type != SheetType::ADD)
+    TransferDataToWindow();
 
   m_DatesTimesExpiryDateCtrl->Enable(On && !Never);
   m_DatesTimesExpiryTimeCtrl->Enable(!On && !Never);
