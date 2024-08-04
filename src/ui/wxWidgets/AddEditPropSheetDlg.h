@@ -292,7 +292,7 @@ private:
 
   void ItemFieldsToPropSheet();
   void SetupDCAComboBoxes(wxComboBox *pcbox, short &iDCA, bool isShift);
-  void UpdateExpTimes();        // entry -> controls
+  void InitializeExpTimes();        // entry -> controls
   void SetXTime(wxObject *src); // sync controls + controls -> entry
   wxDateTime NormalizeExpDate(const wxDateTime &xdt) { return xdt.GetDateOnly(); }
   int IntervalFromDate(const wxDateTime &xdt) { return xdt.Subtract(wxDateTime::Today()).GetDays(); }
