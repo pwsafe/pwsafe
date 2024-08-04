@@ -2646,7 +2646,7 @@ void AddEditPropSheetDlg::SetXTime(wxObject *src)
       // now + interval, XTimeInt should be stored as zero
       // (one-shot semantics)
       // Otherwise, XTime += interval, keep XTimeInt
-      xdt = wxDateTime::Today();
+      xdt = wxDateTime::Today();  // Today returns time part == 0
       xdt += wxDateSpan(0, 0, 0, m_ExpirationTimeInterval);
       m_DatesTimesExpiryDateCtrl->SetValue(xdt);
 
@@ -2680,9 +2680,10 @@ void AddEditPropSheetDlg::OnExpRadiobuttonSelected( wxCommandEvent& evt )
       m_ExpirationTimeInterval = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays);;
     }
     // Needed here for initialization and the above compatibility problem.
-    wxDateTime xdt(wxDateTime::Today());
+    wxDateTime xdt(wxDateTime::Today());  // Today returns time part == 0
     xdt += wxDateSpan(0, 0, 0, m_ExpirationTimeInterval);
-    m_DatesTimesExpiryDateCtrl->SetValue(xdt.GetDateOnly());
+    m_DatesTimesExpiryDateCtrl->SetValue(xdt);
+    m_tttExpirationTime = xdt.GetTicks();
     m_Recurring = (m_Type == SheetType::ADD) ? true : false;
 
   } else if (On) {  // Specific Date
@@ -2692,10 +2693,10 @@ void AddEditPropSheetDlg::OnExpRadiobuttonSelected( wxCommandEvent& evt )
     m_Recurring = false;
 
   } else {  // Interval
-    wxDateTime xdt(wxDateTime::Today());
+    wxDateTime xdt(wxDateTime::Today());  // Today returns time part 0
     xdt += wxDateSpan(0, 0, 0, m_DatesTimesExpiryTimeCtrl->GetValue());
     m_DatesTimesExpiryDateCtrl->SetValue(xdt);
-    m_tttExpirationTime = xdt.GetDateOnly().GetTicks();
+    m_tttExpirationTime = xdt.GetTicks();
     m_Recurring = true;
   }
   // In add mode, the item data is not prepared for this, fields will go blank.
