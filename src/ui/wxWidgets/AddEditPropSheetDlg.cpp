@@ -461,7 +461,6 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
   auto *itemFlexGridSizer63 = new wxFlexGridSizer(0, 3, 0, 0);
   itemBoxSizer62->Add(itemFlexGridSizer63, 0, wxEXPAND | wxALL, 5);
   m_DatesTimesExpireOnCtrl = new wxRadioButton(panel, ID_RADIOBUTTON_ON, _("On"), wxDefaultPosition, wxDefaultSize, 0);
-  m_DatesTimesExpireOnCtrl->SetValue(false);
   itemFlexGridSizer63->Add(m_DatesTimesExpireOnCtrl, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   m_DatesTimesExpiryDateCtrl = new wxDatePickerCtrl(panel, ID_DATECTRL_EXP_DATE, wxDateTime(), wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT);
@@ -470,7 +469,6 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
   itemFlexGridSizer63->AddStretchSpacer();
 
   m_DatesTimesExpireInCtrl = new wxRadioButton(panel, ID_RADIOBUTTON_IN, _("In"), wxDefaultPosition, wxDefaultSize, 0);
-  m_DatesTimesExpireInCtrl->SetValue(false);
   itemFlexGridSizer63->Add(m_DatesTimesExpireInCtrl, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   auto *itemBoxSizer68 = new wxBoxSizer(wxHORIZONTAL);
@@ -491,13 +489,11 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
   itemBoxSizer68->Add(itemStaticText70, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   m_DatesTimesRecurringExpiryCtrl = new wxCheckBox(panel, ID_CHECKBOX_RECURRING, _("Recurring"), wxDefaultPosition, wxDefaultSize, 0);
-  m_DatesTimesRecurringExpiryCtrl->SetValue(true);
   itemFlexGridSizer63->Add(m_DatesTimesRecurringExpiryCtrl, 0, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   auto *itemBoxSizer72 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer62->Add(itemBoxSizer72, 0, wxALIGN_LEFT | wxLEFT | wxRIGHT | wxBOTTOM, 5);
   m_DatesTimesNeverExpireCtrl = new wxRadioButton(panel, ID_RADIOBUTTON_NEVER, _("Never"), wxDefaultPosition, wxDefaultSize, 0);
-  m_DatesTimesNeverExpireCtrl->SetValue(false);
   itemBoxSizer72->Add(m_DatesTimesNeverExpireCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   auto *itemBoxSizer74 = new wxBoxSizer(wxHORIZONTAL);
@@ -1347,7 +1343,8 @@ static struct {short pv; wxString name;}
   }
 }
 
-void AddEditPropSheetDlg::UpdateExpTimes()
+// Called once to initialize the expiration state
+void AddEditPropSheetDlg::InitializeExpTimes()
 {
   // From m_item to display
 
@@ -1555,7 +1552,7 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
   } // m_type
 
   // Password Expiration
-  UpdateExpTimes();
+  InitializeExpTimes();
   // Modification times
   m_CreationTime = m_Item.GetCTimeL().c_str();
   m_ModificationTime = m_Item.GetPMTimeL().c_str();
