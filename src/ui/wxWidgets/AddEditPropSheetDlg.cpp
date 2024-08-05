@@ -2664,11 +2664,10 @@ void AddEditPropSheetDlg::SetXTime(wxObject *src)
 
 void AddEditPropSheetDlg::OnExpRadiobuttonSelected( wxCommandEvent& evt )
 {
-  bool On = (evt.GetEventObject() == m_DatesTimesExpireOnCtrl);
-  bool Never = (evt.GetEventObject() == m_DatesTimesNeverExpireCtrl);
+  bool On = evt.GetEventObject() == m_DatesTimesExpireOnCtrl;
+  bool Never = evt.GetEventObject() == m_DatesTimesNeverExpireCtrl;
 
   if (Never) {
-    //m_tttExpirationTime = time_t(0);
     // If it has an interval, keep it.  Otherwise, use the user defined default.
     // This applies to new entries and old entries with no interval setting.
     //
@@ -2684,7 +2683,7 @@ void AddEditPropSheetDlg::OnExpRadiobuttonSelected( wxCommandEvent& evt )
     xdt += wxDateSpan(0, 0, 0, m_ExpirationTimeInterval);
     m_DatesTimesExpiryDateCtrl->SetValue(xdt);
     m_tttExpirationTime = xdt.GetTicks();
-    m_Recurring = (m_Type == SheetType::ADD) ? true : false;
+    m_Recurring = m_Type == SheetType::ADD;
 
   } else if (On) {  // Specific Date
     if (!m_ExpirationTimeInterval) { // Compatibility
