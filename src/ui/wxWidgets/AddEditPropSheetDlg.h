@@ -294,6 +294,9 @@ private:
   void SetupDCAComboBoxes(wxComboBox *pcbox, short &iDCA, bool isShift);
   void InitializeExpTimes();        // entry -> controls
   void SetXTime(wxObject *src); // sync controls + controls -> entry
+
+  // Today returns time part == 0
+  wxDateTime TodayPlusInterval() { return wxDateTime::Today().Add(wxDateSpan(0, 0, 0, m_ExpirationTimeInterval)); };
   wxDateTime NormalizeExpDate(const wxDateTime &xdt) { return xdt.GetDateOnly(); }
   int IntervalFromDate(const wxDateTime &xdt) { return xdt.Subtract(wxDateTime::Today()).GetDays(); }
 
