@@ -136,9 +136,9 @@ representation.
  specified in 64 bits as well.
 
 3.1.4 Password Expiration
- There are four possible combinations of the password expiry records.
+ There are four possible combinations of the password expiry fields.
  When an entry is read, the type of expiration setting is inferred
- from which records are recorded in the entry.
+ from which fields are recorded in the record.
 
  Password Expiry Time        0x0a
  Password Expiry Interval    0x11
@@ -156,10 +156,9 @@ specific date.
 [2] If the user sets a recurring interval, the interval and the
 next expiration date are both recorded.
 
-[3] This case is interpreted as "Never", but the interval will override
-the application wide default specified in Options.  This case is not
-currently written to the file, but exists in some older files.
-
+[3] This case is interpreted as "Never" and the interval will be
+ignored.  This case is not currently written to the file, but exists
+in some older files.
 
 3.2 Field types for the PasswordSafe database header:
                                                  Currently
