@@ -292,9 +292,9 @@ private:
   void SetXTime(wxObject *src); // sync controls + controls -> entry
 
   // Today returns time part == 0
-  wxDateTime TodayPlusInterval(const int interval) { return wxDateTime::Today().Add(wxDateSpan(0, 0, 0, interval)); };
-  wxDateTime NormalizeExpDate(const wxDateTime &xdt) { return xdt.GetDateOnly(); }
-  int IntervalFromDate(const wxDateTime &xdt) { return xdt.Subtract(wxDateTime::Today()).GetDays(); }
+  wxDateTime TodayPlusInterval(const int interval) const { return wxDateTime::Today().Add(wxDateSpan(0, 0, 0, interval)); };
+  wxDateTime NormalizeExpDate(const wxDateTime &xdt) const { return xdt.GetDateOnly(); }
+  int IntervalFromDate(const wxDateTime &xdt) const { return xdt.Subtract(wxDateTime::Today()).GetDays(); }
 
   void UpdatePWPolicyControls(const PWPolicy &pwp);
   void EnablePWPolicyControls(bool enable);
@@ -402,7 +402,6 @@ private:
   bool m_OriginalRecurring;
   time_t m_OriginalDayttt;
   int m_ExpirationTimeInterval = 0; // Password expiration interval in days
-  time_t m_tttExpirationTime;   // Password expiration date in time_t
 
   // Tab: "Password Policy"
   wxPanel *m_PasswordPolicyPanel = nullptr;
