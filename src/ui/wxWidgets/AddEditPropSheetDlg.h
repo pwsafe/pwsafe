@@ -292,7 +292,7 @@ private:
   void SetXTime(wxObject *src); // sync controls + controls -> entry
 
   // Today returns time part == 0
-  wxDateTime TodayPlusInterval() { return wxDateTime::Today().Add(wxDateSpan(0, 0, 0, m_ExpirationTimeInterval)); };
+  wxDateTime TodayPlusInterval(const int interval) { return wxDateTime::Today().Add(wxDateSpan(0, 0, 0, interval)); };
   wxDateTime NormalizeExpDate(const wxDateTime &xdt) { return xdt.GetDateOnly(); }
   int IntervalFromDate(const wxDateTime &xdt) { return xdt.Subtract(wxDateTime::Today()).GetDays(); }
 
