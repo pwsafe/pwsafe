@@ -97,7 +97,8 @@ const map<UserArgs::OpType, pws_op> pws_ops = {
 
 static void usage(char *pname)
 {
-  std::string usage_str = R"usagestring(
+  std::wstring s_pname = Utf82wstring(pname);
+  std::wstring usage_str = LR"usagestring(
 Usage: %PROGNAME% safe --imp[=file] --text|--xml
 
        %PROGNAME% safe --exp[=file] --text|--xml
@@ -131,30 +132,78 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
        for the master passphrase(s). However, this should be avoided if possible for security reasons.
 
        Valid field names are:
+       %FIELDNAMES%
+
+       Note:
+        ° Field names and values that contain whitespace characters must be quoted ("Created Time").
+        ° Times are expected in Universal Time Coordinated (UTC) format ("YYYY/MM/DD hh:mm:ss").
+        ° The current time can also be referenced using the keyword "now".
+
+       Examples:
+
+       1) Creating a database
+
+            %PROGNAME% pwsafe.psafe3 --create
+
+          This creates the empty database "pwsafe.psafe3".
+
+       2) Adding an entry
+
+          To add an entry to a database, the title is mandatory. All other fields are optional.
+          If no password is specified, a password will be generated for the entry.
+
+            %PROGNAME% pwsafe.psafe3 --add=Title="Login"
+
+          The simplest way to add a new entry to a database, specifying the minimum required fields.
+
+            %PROGNAME% pwsafe.psafe3 --add=Title="Bank Account",Username="John Doe",Password=SecretPassword,"Created Time"="2020/01/01 12:00:00"
+
+          This adds an entry with the title "Bank Account" to the database "pwsafe.psafe3" which does not belong to any group.
+
+            %PROGNAME% pwsafe.psafe3 --add=Group=Email,Title=Yahoo,Username="Richard Miles",Password=SecretPassword,"Created Time"=now
+
+          Similar to the previous example, except that the entry is added to the "Email" group. If the group does not exist, it is created.
+
+       3) Deleting an entry
+
+            %PROGNAME% pwsafe11.psafe3 --search="Richard Miles" --delete
+
+          This will delete the entry that matches the search criteria after the deletion is confirmed.
+
+            %PROGNAME% pwsafe11.psafe3 --search="John Doe" --delete --yes
+
+          This deletes the found entry without asking for confirmation.
 )usagestring";
 
-	const std::string placeholder{"%PROGNAME%"};
-    const auto pname_len = strlen(pname);
-
-	for( auto itr = usage_str.find(placeholder); itr != std::string::npos; itr = usage_str.find(placeholder, itr + pname_len)) {
-			usage_str.replace(itr, placeholder.length(), pname);
-	}
-
-
-  cerr << pname << " version " << CLI_MAJOR_VERSION << "." << CLI_MINOR_VERSION << "." << CLI_REVISION << endl;
-	cerr << usage_str;
-
-	constexpr auto names_per_line = 5;
-	auto nnames = 0;
-	const auto fieldnames = GetValidFieldNames();
-	for (const stringT &name: fieldnames) {
+  std::wstringstream ss_fieldnames;
+  constexpr auto names_per_line = 5;
+  auto nnames = 0;
+  const auto fieldnames = GetValidFieldNames();
+  for (const stringT &name: fieldnames) {
     if (nnames)
-			wcerr << ", ";
-		if ( nnames++ % names_per_line == 0 )
-			cerr << "\n\t\t";
-		wcerr << name;
+    ss_fieldnames << L", ";
+    if ( nnames++ % names_per_line == 0 )
+      ss_fieldnames << L"\n\t\t";
+    ss_fieldnames << name;
 	}
-	cerr << '\n';
+
+  std::wstring s_fieldnames = ss_fieldnames.str();
+  const std::wstring s_fn_placeholder{L"%FIELDNAMES%"};
+  auto pos = usage_str.find(s_fn_placeholder);
+  if (pos != std::string::npos) {
+    usage_str.replace(pos, s_fn_placeholder.length(), s_fieldnames);
+  }
+
+  const std::wstring s_pn_placeholder{L"%PROGNAME%"};
+  const auto pname_len = s_pname.length();
+
+  for(auto itr = usage_str.find(s_pn_placeholder); itr != std::string::npos; itr = usage_str.find(s_pn_placeholder, itr + pname_len)) {
+    usage_str.replace(itr, s_pn_placeholder.length(), s_pname);
+  }
+
+  wcerr << s_pname << L" version " << CLI_MAJOR_VERSION << L"." << CLI_MINOR_VERSION << L"." << CLI_REVISION << endl;
+  wcerr << usage_str;
+  wcerr << '\n';
 }
 
 #if 0
