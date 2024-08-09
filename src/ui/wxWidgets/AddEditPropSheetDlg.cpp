@@ -2338,13 +2338,16 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
     m_Item.SetStatus(CItemData::ES_MODIFIED);
   }
   
-  // Specific date or interval changed, save the date
-  if (changes & (Changes::XTime | Changes::XTimeInt)) {
+  // Setting a specific date
+  if (changes & Changes::XTime) {
     m_Item.SetXTime(NormalizeExpDate(m_DatesTimesExpiryDateCtrl->GetValue()).GetTicks());
+    m_Item.SetXTimeInt(0);
   }
 
-  // Only save an interval if recurring is set
+  // Setting by interval
+  // The date control should already be correct.  Only save the interval value if recurring is set
   if (changes & Changes::XTimeInt) {
+    m_Item.SetXTime(NormalizeExpDate(m_DatesTimesExpiryDateCtrl->GetValue()).GetTicks());
     if (m_Recurring) {
       m_Item.SetXTimeInt(m_ExpirationTimeInterval);
     } else {
@@ -2352,7 +2355,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
     }
   }
 
-  // Never expire, zeros won't be written to the file
+  // Never expire, zeros are not written to the file
   if (changes & Changes::XTimeNever) {
     m_Item.SetXTime(0);
     m_Item.SetXTimeInt(0);
