@@ -1373,7 +1373,8 @@ static struct {short pv; wxString name;}
 void AddEditPropSheetDlg::InitializeExpTimes()
 {
   // From m_item to display
-  m_Item.GetXTime(m_tttExpirationTime);
+  time_t tttExpirationTime;
+  m_Item.GetXTime(tttExpirationTime);
   m_Item.GetXTimeInt(m_ExpirationTimeInterval);
   m_OriginalDayttt = 0;
 
@@ -1384,7 +1385,7 @@ void AddEditPropSheetDlg::InitializeExpTimes()
   int defaultInterval = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays);
 
   wxDateTime expiryDate;
-  if (m_tttExpirationTime == 0) { // never expires
+  if (tttExpirationTime == 0) { // never expires
     m_DatesTimesExpireOnCtrl->SetValue(false);
     m_DatesTimesExpireInCtrl->SetValue(false);
     m_DatesTimesNeverExpireCtrl->SetValue(true);
@@ -1395,7 +1396,7 @@ void AddEditPropSheetDlg::InitializeExpTimes()
     expiryDate = TodayPlusInterval(m_ExpirationTimeInterval);
 
   } else {
-    expiryDate = wxDateTime(m_tttExpirationTime).GetDateOnly();  // Remove time part
+    expiryDate = wxDateTime(tttExpirationTime).GetDateOnly();  // Remove time part
     m_OriginalDayttt = expiryDate.GetTicks();
 
     if (m_ExpirationTimeInterval == 0) { // expiration specified as date
@@ -1430,7 +1431,6 @@ void AddEditPropSheetDlg::InitializeExpTimes()
   // Note the wxWidgets documentation says Today() returns the
   // time part set to 0, and Today() and Now() both use the local time zone.
   m_DatesTimesExpiryDateCtrl->SetValue(expiryDate);
-  m_tttExpirationTime = expiryDate.GetTicks();
 
   // Set the recurring checkbox default state.
   // The Recurring checkbox is only used if the user selects the interval radio button.
@@ -2214,8 +2214,9 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
     m_Item.GetXTime(lastXtime);
     m_Item.GetXTimeInt(lastXTimeInt);
 
+    time_t newExpirationDate = m_DatesTimesExpiryDateCtrl->GetValue().GetDateOnly().GetTicks();
     if ( m_DatesTimesExpireOnCtrl->GetValue() && ((m_OriginalButton != m_DatesTimesExpireOnCtrl)
-                                                  || (m_tttExpirationTime != m_OriginalDayttt)) ) {
+                                                  || (newExpirationDate != m_OriginalDayttt)) ) {
       changes |= Changes::XTime;
     }
 
@@ -2750,7 +2751,6 @@ void AddEditPropSheetDlg::SetXTime(wxObject *src)
     } else {
       ASSERT(0);
     }
-    m_tttExpirationTime = xdt.GetDateOnly().GetTicks();
     Validate(); TransferDataToWindow();
   } // Validated & transferred from controls
 }
@@ -2768,7 +2768,6 @@ void AddEditPropSheetDlg::OnExpRadiobuttonSelected( wxCommandEvent& evt )
   if (!On && !Never) {
     wxDateTime xdt = TodayPlusInterval(m_ExpirationTimeInterval);
     m_DatesTimesExpiryDateCtrl->SetValue(xdt);
-    m_tttExpirationTime = xdt.GetTicks();
   }
 
   m_DatesTimesExpiryDateCtrl->Enable(On && !Never);
