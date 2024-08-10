@@ -650,9 +650,6 @@
 		E6A11B081293D20F0060FB35 /* viewreports.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = viewreports.xpm; sourceTree = "<group>"; };
 		E6A11B091293D20F0060FB35 /* viewreports_disabled.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = viewreports_disabled.xpm; sourceTree = "<group>"; };
 		E6A11B0A1293D20F0060FB35 /* tray.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tray.xpm; sourceTree = "<group>"; };
-		E6A11B0B1293D20F0060FB35 /* tray_blue.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tray_blue.xpm; sourceTree = "<group>"; };
-		E6A11B0C1293D20F0060FB35 /* tray_white.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tray_white.xpm; sourceTree = "<group>"; };
-		E6A11B0D1293D20F0060FB35 /* tray_yellow.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = tray_yellow.xpm; sourceTree = "<group>"; };
 		E6A11B0E1293D20F0060FB35 /* unlock.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unlock.xpm; sourceTree = "<group>"; };
 		E6A11B0F1293D20F0060FB35 /* unlocked_tray.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = unlocked_tray.xpm; sourceTree = "<group>"; };
 		E6A11B101293D20F0060FB35 /* vkbd.xpm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = vkbd.xpm; sourceTree = "<group>"; };
@@ -1052,9 +1049,6 @@
 				E6A11A721293D20E0060FB35 /* shortcut.xpm */,
 				E6A11A731293D20E0060FB35 /* toolbar */,
 				E6A11B0A1293D20F0060FB35 /* tray.xpm */,
-				E6A11B0B1293D20F0060FB35 /* tray_blue.xpm */,
-				E6A11B0C1293D20F0060FB35 /* tray_white.xpm */,
-				E6A11B0D1293D20F0060FB35 /* tray_yellow.xpm */,
 				E6A11B0E1293D20F0060FB35 /* unlock.xpm */,
 				E6A11B0F1293D20F0060FB35 /* unlocked_tray.xpm */,
 				E6A11B101293D20F0060FB35 /* vkbd.xpm */,
