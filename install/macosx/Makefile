@@ -128,7 +128,7 @@ dist: clean
 		--timestamp=none --generate-entitlement-der $(SRCDIR)/pwsafe.app
 	create-dmg \
 			--window-size 420 560 \
-			--background ./background.png \
+			--background ./background_flat_icon.png \
 			--icon-size 40 \
 			--volname "Password Safe" \
 			--volicon $(SRCDIR)/$(PWSAFE-APP)/Contents/Resources/AppIcon.icns \
