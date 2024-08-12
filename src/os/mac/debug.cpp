@@ -16,6 +16,9 @@
 #include <syslog.h>
 #include <iostream>
 
+// Provides TARGET_OS_.. defines
+#include <TargetConditionals.h>
+
 enum {MAX_LOG_STATEMENT = 1024*64, STARTING_LOG_STATEMENT = 256};
 
 #if defined(UNICODE) || defined(_UNICODE)
@@ -94,7 +97,9 @@ bool pws_os::DisableDumpAttach()
 
 #else   /* _DEBUG || DEBUG */
 #include <sys/types.h>
+#if !TARGET_OS_IPHONE
 #include <sys/ptrace.h>
+#endif
 #include <sys/resource.h>
 
 bool pws_os::DisableDumpAttach()
@@ -104,7 +109,11 @@ bool pws_os::DisableDumpAttach()
 
   // prevent ptrace and creation of core dumps
   lret = setrlimit(RLIMIT_CORE, &rl);
+#if !TARGET_OS_IPHONE
   pret = ptrace(PT_DENY_ATTACH, 0, 0, 0);
+#else
+  pret = 0;
+#endif
   return (pret == 0 && lret == 0);
 }
 
