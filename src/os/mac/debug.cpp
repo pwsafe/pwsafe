@@ -8,6 +8,9 @@
 
 #include "../debug.h"
 
+// Provides TARGET_OS_.. defines
+#include <TargetConditionals.h>
+
 #if defined(_DEBUG) || defined(DEBUG)
 
 // TRACE replacement - only need this Debug mode
@@ -15,9 +18,6 @@
 #include <stdarg.h>
 #include <syslog.h>
 #include <iostream>
-
-// Provides TARGET_OS_.. defines
-#include <TargetConditionals.h>
 
 enum {MAX_LOG_STATEMENT = 1024*64, STARTING_LOG_STATEMENT = 256};
 
