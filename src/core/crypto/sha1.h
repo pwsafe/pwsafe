@@ -16,12 +16,12 @@ public:
   static const unsigned int BLOCKSIZE = 64;
   SHA1();
   ~SHA1();
-  void Update(const unsigned char* data, unsigned int len);
+  void Update(const unsigned char* data, uint64 len);
   void Final(unsigned char digest[HASHLEN]);
 
 private:
   uint32 state[5];
-  uint32 count[2];
+  uint64 count;  // Use a single 64-bit value instead of two 32-bit values
   unsigned char buffer[BLOCKSIZE];
 };
 #endif /* __SHA1_H */
