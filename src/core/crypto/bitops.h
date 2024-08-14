@@ -44,6 +44,12 @@
 #define ENDIAN_64BITWORD
 #endif
 
+/* detect 64bit arm */
+#if defined(__aarch64__)
+#define ENDIAN_LITTLE
+#define ENDIAN_64BITWORD
+#endif
+
 /* #define ENDIAN_LITTLE */
 /* #define ENDIAN_BIG */
 
