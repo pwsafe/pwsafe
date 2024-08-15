@@ -1406,7 +1406,7 @@ void AddEditPropSheetDlg::InitializeExpTimes()
       m_DatesTimesExpiryTimeCtrl->Enable(false);
       m_OriginalRecurring = false;
       m_OriginalButton = m_DatesTimesExpireOnCtrl;
-      m_ExpirationTimeInterval = defaultInterval;
+      m_ExpirationTimeInterval = IntervalFromDate(expiryDate);
 
     } else { // exp. specified as recurring interval
       m_DatesTimesExpireOnCtrl->SetValue(false);
