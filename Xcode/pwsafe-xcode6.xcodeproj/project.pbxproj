@@ -26,7 +26,7 @@
 		570781742B0C4D330082EB6E /* PWYubi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570781692B0C4CD30082EB6E /* PWYubi.cpp */; };
 		57BD7D042B19BEC2005C0123 /* helpEN.zip in Resources */ = {isa = PBXBuildFile; fileRef = E690B95612984B1D007EA508 /* helpEN.zip */; };
 		6FF5D4A11DA14EE80032F5B6 /* PasswordSubsetDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */; };
-		89A146668BFBBDB52F97EB58 /* TotpCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DA345B998C630600DF46F90 /* TotpCore.cpp */; settings = {COMPILER_FLAGS = "-Wno-shorten-64-to-32"; }; };
+		89A146668BFBBDB52F97EB58 /* TotpCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DA345B998C630600DF46F90 /* TotpCore.cpp */; };
 		8ED7E1C429D9F24C0012034B /* SetDatabaseIdDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */; };
 		A2D181461C8FF86C0018AE03 /* media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D181451C8FF86C0018AE03 /* media.cpp */; };
 		A2FE258D1C5ACF7500210C36 /* Item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25811C5ACF7500210C36 /* Item.cpp */; };
@@ -68,13 +68,13 @@
 		E090D35824D742E90083BA2B /* ViewAttachmentDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E090D35624D742E90083BA2B /* ViewAttachmentDlg.cpp */; };
 		E0A70B9821C8FF8900A2FEA8 /* PolicyManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0A70B9621C8FF8900A2FEA8 /* PolicyManager.cpp */; };
 		E0A70B9B21C905A500A2FEA8 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = E0A70B9A21C905A500A2FEA8 /* libcurl.tbd */; };
-		E0C3C4422379B2C200715124 /* AES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C42F2379B2C200715124 /* AES.cpp */; settings = {COMPILER_FLAGS = "-Wno-shorten-64-to-32"; }; };
+		E0C3C4422379B2C200715124 /* AES.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C42F2379B2C200715124 /* AES.cpp */; };
 		E0C3C4432379B2C200715124 /* BlowFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C4322379B2C200715124 /* BlowFish.cpp */; };
 		E0C3C4442379B2C200715124 /* KeyWrap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C4362379B2C200715124 /* KeyWrap.cpp */; };
 		E0C3C4452379B2C200715124 /* pbkdf2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C4382379B2C200715124 /* pbkdf2.cpp */; };
 		E0C3C4462379B2C200715124 /* sha1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C43A2379B2C200715124 /* sha1.cpp */; };
 		E0C3C4472379B2C200715124 /* sha256.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C43C2379B2C200715124 /* sha256.cpp */; };
-		E0C3C4492379B2C200715124 /* TwoFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C43F2379B2C200715124 /* TwoFish.cpp */; settings = {COMPILER_FLAGS = "-Wno-shorten-64-to-32"; }; };
+		E0C3C4492379B2C200715124 /* TwoFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C43F2379B2C200715124 /* TwoFish.cpp */; };
 		E0C3C44F2379CD7500715124 /* MenuFileHandlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C44D2379CA7300715124 /* MenuFileHandlers.cpp */; };
 		E0C3C4502379CD8300715124 /* CryptKeyEntryDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C44A2379CA2A00715124 /* CryptKeyEntryDlg.cpp */; };
 		E60F25D812C4ACEB001E63C4 /* ExternalKeyboardButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */; };
