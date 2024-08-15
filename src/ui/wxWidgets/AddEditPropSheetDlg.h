@@ -299,6 +299,7 @@ private:
   wxDateTime TodayPlusInterval(const int interval) const { return wxDateTime::Today().Add(wxDateSpan(0, 0, 0, interval)); };
   wxDateTime NormalizeExpDate(const wxDateTime &xdt) const { return xdt.GetDateOnly(); }
   int IntervalFromDate(const wxDateTime &xdt) const { return xdt.Subtract(wxDateTime::Today()).GetDays(); }
+  wxString makeExpiryString();
 
   void UpdatePWPolicyControls(const PWPolicy &pwp);
   void EnablePWPolicyControls(bool enable);
@@ -399,11 +400,12 @@ private:
   wxSpinCtrl *m_DatesTimesExpiryTimeCtrl = nullptr;
   wxCheckBox *m_DatesTimesRecurringExpiryCtrl = nullptr;
   wxRadioButton *m_DatesTimesNeverExpireCtrl = nullptr;
+  wxStaticText *m_DatesTimesCurrentCtrl = nullptr;
 
   wxString m_RMTime; // Any field modification time
   wxString m_AccessTime;
   wxString m_CreationTime;
-  wxString m_OriginalExpirationDate;
+  wxString m_OriginalExpirationStr;
   wxString m_ModificationTime;
   wxRadioButton *m_OriginalButton;
   bool m_Recurring;
