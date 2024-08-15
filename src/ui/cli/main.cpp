@@ -188,11 +188,11 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
 
        5) Deleting an entry
 
-            %PROGNAME% pwsafe11.psafe3 --search="Richard Miles" --delete
+            %PROGNAME% pwsafe.psafe3 --search="Richard Miles" --delete
 
           This will delete the entry that matches the search criteria after the deletion is confirmed.
 
-            %PROGNAME% pwsafe11.psafe3 --search="John Doe" --delete --yes
+            %PROGNAME% pwsafe.psafe3 --search="John Doe" --delete --yes
 
           This deletes the found entry without asking for confirmation.
 )usagestring";
