@@ -498,11 +498,11 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
 
   auto *itemBoxSizer74 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer62->Add(itemBoxSizer74, 0, wxEXPAND | wxALL, 5);
-  auto *itemStaticText75 = new wxStaticText(panel, wxID_STATIC, _("Original Value:"), wxDefaultPosition, wxDefaultSize, 0);
-  itemBoxSizer74->Add(itemStaticText75, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  auto *itemStaticText75 = new wxStaticText(panel, wxID_STATIC, _("Current Setting:"), wxDefaultPosition, wxDefaultSize, 0);
+  itemBoxSizer74->Add(itemStaticText75, 0, wxALIGN_TOP | wxALL, 5);
 
-  auto *itemStaticText76 = new wxStaticText(panel, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-  itemBoxSizer74->Add(itemStaticText76, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  m_DatesTimesCurrentCtrl = new wxStaticText(panel, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxSize(-1, 30), 0);
+  itemBoxSizer74->Add(m_DatesTimesCurrentCtrl, 0, wxALIGN_TOP | wxALL, 5);
 
   auto *itemStaticBoxSizer77Static = new wxStaticBox(panel, wxID_ANY, _("Statistics"));
   auto *itemStaticBoxSizer77 = new wxStaticBoxSizer(itemStaticBoxSizer77Static, wxVERTICAL);
@@ -535,7 +535,7 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
 
   m_DatesTimesExpiryTimeCtrl->SetValidator(wxGenericValidator(&m_ExpirationTimeInterval));
   m_DatesTimesRecurringExpiryCtrl->SetValidator(wxGenericValidator(&m_Recurring));
-  itemStaticText76->SetValidator(wxGenericValidator(&m_OriginalExpirationDate));
+  m_DatesTimesCurrentCtrl->SetValidator(wxGenericValidator(&m_OriginalExpirationStr));
   itemStaticText80->SetValidator(wxGenericValidator(&m_CreationTime));
   itemStaticText82->SetValidator(wxGenericValidator(&m_ModificationTime));
   itemStaticText84->SetValidator(wxGenericValidator(&m_AccessTime));
@@ -1343,6 +1343,46 @@ static struct {short pv; wxString name;}
   }
 }
 
+// Build a string to describe the original expiry setting in the entry
+wxString AddEditPropSheetDlg::makeExpiryString()
+{
+  wxString finished;
+  wxString dateStr = m_Item.GetXTimeL().c_str();  // Get the expiration date, formatted based on locale
+  int expDays = IntervalFromDate(wxDateTime(m_OriginalDayttt));  // Days until expiration
+
+  // Specific date
+  if (m_OriginalDayttt && !m_OriginalRecurring) {
+    if (expDays > 0) {
+      wxString str = (expDays == 1) ? _("Expires in %d day (%s)") : _("Expires in %d days (%s)") ;
+      finished.Printf(str, expDays, dateStr);
+    } else {
+      finished.Printf(_("Expired on %s"), dateStr);
+      m_DatesTimesCurrentCtrl->SetForegroundColour(*wxRED);
+    }
+  }
+
+  // Recurring interval
+  if (m_OriginalRecurring) {
+    wxString str = (m_ExpirationTimeInterval == 1) ? _("Every %d day from last change")
+                                                   : _("Every %d days from last change") ;
+
+    finished.Printf(str, m_ExpirationTimeInterval);
+    if (expDays > 0) {
+      str.Printf(_("\n(Next expiration on %s)"), dateStr);
+    } else {
+      str.Printf(_("\n(Expired on %s)"), dateStr);
+      m_DatesTimesCurrentCtrl->SetForegroundColour(*wxRED);
+    }
+    finished += str;
+  }
+
+  // Never expires
+  if (finished.empty())
+    finished = _("Never Expires");
+
+  return finished;
+}
+
 // Called once to initialize the expiration controls
 void AddEditPropSheetDlg::InitializeExpTimes()
 {
@@ -1411,27 +1451,7 @@ void AddEditPropSheetDlg::InitializeExpTimes()
   m_Recurring = true;
 
   // Build a string to describe the original setting in the entry
-  m_OriginalExpirationDate = m_Item.GetXTimeL().c_str();
-  if (m_OriginalDayttt) {
-    wxString rstr;
-    int interval = IntervalFromDate(wxDateTime(m_OriginalDayttt));
-
-    if (interval > 0) {
-      wxString str = (interval == 1) ? _(" (Expires in %d day)") : _(" (Expires in %d days)") ;
-      rstr.Printf(str, interval);
-    } else {
-      rstr.Printf(_(" (Expired)"));
-    }
-    m_OriginalExpirationDate += rstr;
-  }
-  if (m_OriginalRecurring) {
-    wxString rstr;
-    wxString str = (m_ExpirationTimeInterval == 1) ? _(" (every %d day)") : _(" (every %d days)") ;
-    rstr.Printf(str, m_ExpirationTimeInterval);
-    m_OriginalExpirationDate += rstr;
-  }
-  if (m_OriginalExpirationDate.empty())
-    m_OriginalExpirationDate = _("Never");
+  m_OriginalExpirationStr = makeExpiryString();
 
   if (expiryDate > wxDateTime::Today())
     expiryDate = wxDateTime::Today(); // otherwise we can never move exp date back
