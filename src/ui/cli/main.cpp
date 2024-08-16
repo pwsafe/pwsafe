@@ -135,7 +135,7 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
        %FIELDNAMES%
 
        Note:
-        ° Field names and values that contain whitespace characters must be quoted ("Created Time").
+        ° Field names and values that contain whitespace characters must be quoted (e.g. "Created Time").
         ° Times are expected in Universal Time Coordinated (UTC) format ("YYYY/MM/DD hh:mm:ss").
         ° The current time can also be referenced using the keyword "now".
 
@@ -164,13 +164,35 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
 
           Similar to the previous example, except that the entry is added to the "Email" group. If the group does not exist, it is created.
 
-       3) Deleting an entry
+       3) Updating an entry
 
-            %PROGNAME% pwsafe11.psafe3 --search="Richard Miles" --delete
+          In this example, an entry containing "Richard Miles" is searched for.
+
+            %PROGNAME% pwsafe.psafe3 --search="Richard Miles" --update=Title=Google
+
+          If such an entry is found, its title is updated after the user has confirmed this.
+
+       4) Searching for an entry
+
+          The search option is very helpful for referring to specific entries. It can search the entire database for a specific textual occurrence,
+          as well as content in specific fields of entries to further narrow the search. This is particularly helpful when multiple entries have the
+          same text, such as the same title.
+
+            %PROGNAME% pwsafe.psafe3 --search="Login" --print=Title,Username
+
+          This would output the title and username of the entries found that contain "Login".
+
+            %PROGNAME% pwsafe.psafe3 --search="Login" --subset=Username=="John Doe" --print=Title,Username
+
+          This search command would limit the results to all entries containing the occurrence "Login" and the username "John Doe".
+
+       5) Deleting an entry
+
+            %PROGNAME% pwsafe.psafe3 --search="Richard Miles" --delete
 
           This will delete the entry that matches the search criteria after the deletion is confirmed.
 
-            %PROGNAME% pwsafe11.psafe3 --search="John Doe" --delete --yes
+            %PROGNAME% pwsafe.psafe3 --search="John Doe" --delete --yes
 
           This deletes the found entry without asking for confirmation.
 )usagestring";
