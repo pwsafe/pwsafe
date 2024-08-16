@@ -527,7 +527,7 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
   auto *itemStaticText75 = new wxStaticText(panel, wxID_STATIC, _("Current Setting:"), wxDefaultPosition, wxDefaultSize, 0);
   itemBoxSizer74->Add(itemStaticText75, 0, wxALIGN_TOP | wxALL, 5);
 
-  m_DatesTimesCurrentCtrl = new wxStaticText(panel, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxSize(-1, 30), 0);
+  m_DatesTimesCurrentCtrl = new wxStaticText(panel, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxSize(-1, 40), 0);
   itemBoxSizer74->Add(m_DatesTimesCurrentCtrl, 0, wxALIGN_TOP | wxALL, 5);
 
   auto *itemStaticBoxSizer77Static = new wxStaticBox(panel, wxID_ANY, _("Statistics"));
