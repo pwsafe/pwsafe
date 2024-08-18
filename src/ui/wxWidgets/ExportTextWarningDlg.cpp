@@ -17,8 +17,9 @@
 #include "wx/wx.h"
 #endif
 
-#include "SafeCombinationCtrl.h"
 #include "ExportTextWarningDlg.h"
+#include "ExternalKeyboardButton.h"
+#include "SafeCombinationCtrl.h"
 #include "SelectionCriteria.h"
 
 #include <wx/statline.h>
@@ -53,8 +54,8 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow *parent) : wxDialog(
 {
   wxASSERT(!parent || parent->IsTopLevel());
 
-  auto mainSizer = new wxBoxSizer(wxVERTICAL);
-  mainSizer->AddSpacer(TopMargin);
+  auto *mainSizer = new wxBoxSizer(wxVERTICAL);
+  SetSizer(mainSizer);
 
   wxString text(
     _("Warning! This operation will create an unprotected copy of ALL of the passwords\nin the database. Deleting this copy after use is NOT sufficient.")
@@ -62,98 +63,69 @@ ExportTextWarningDlgBase::ExportTextWarningDlgBase(wxWindow *parent) : wxDialog(
     _("Do not use this option unless you understand and accept the risks. This option\nbypasses the security provided by this program.")
   );
 
-  auto warningText = new wxStaticText(this, wxID_ANY, text, wxDefaultPosition, wxDefaultSize, 0);
-
+  auto *warningText = new wxStaticText(this, wxID_ANY, text, wxDefaultPosition, wxDefaultSize, 0);
   warningText->SetForegroundColour(*wxRED);
-  mainSizer->Add(warningText, 0, wxALIGN_LEFT|wxLEFT|wxRIGHT, SideMargin);
-  mainSizer->AddSpacer(BottomMargin);
+  mainSizer->Add(warningText, 0, wxALIGN_LEFT|wxALL, 12);
 
-#ifndef NO_YUBI
-  int DLGITEM_COLS = 3;
-#else
-  int DLGITEM_COLS = 2;
-#endif
-
-  auto flexGridSizer = new wxFlexGridSizer(DLGITEM_COLS /*cols*/, 0 /*vgap*/, 0 /*hgap*/);
-  flexGridSizer->AddGrowableCol(1);
-
-  auto safeCombinationStaticText = new wxStaticText(this, wxID_ANY, _("Master Password:"), wxDefaultPosition, wxDefaultSize, 0);
-  m_combinationEntry = new SafeCombinationCtrl(this, wxID_ANY, &passKey);
-  m_combinationEntry->SetFocus();
-  auto showCombinationCheckBox = new wxCheckBox(this, wxID_ANY, _("Show Master Password"), wxDefaultPosition, wxDefaultSize, 0 );
-  showCombinationCheckBox->SetValue(false);
-  showCombinationCheckBox->Bind(wxEVT_CHECKBOX, [&](wxCommandEvent& event) {m_combinationEntry->SecureTextfield(!event.IsChecked());});
-
-  flexGridSizer->Add(safeCombinationStaticText, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-  flexGridSizer->Add(m_combinationEntry       , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
-
-#ifndef NO_YUBI
-  auto yubiBtn = new wxBitmapButton(this , ID_YUBIBTN, wxBitmap(Yubikey_button_xpm),
-    wxDefaultPosition, ConvertDialogToPixels(wxSize(40, 12)), wxBU_AUTODRAW );
-  flexGridSizer->Add(yubiBtn, 0, wxALIGN_CENTER|wxLEFT|wxRIGHT|wxSHAPED, 5);
-#endif
-
-  flexGridSizer->AddStretchSpacer(0);                                // 1st column of wxFlexGridSizer
-  flexGridSizer->Add(showCombinationCheckBox, 0, wxALL|wxEXPAND, 5); // 2nd column of wxFlexGridSizer
-
-#ifndef NO_YUBI
-  flexGridSizer->AddStretchSpacer(0);                                // 3rd column of wxFlexGridSizer
-#endif
-
-#ifndef NO_YUBI
-  auto yubiStatusCtrl = new wxStaticText(this, ID_YUBISTATUS, _("Insert YubiKey"),
-                                         wxDefaultPosition, wxDefaultSize, 0 );
-  flexGridSizer->AddStretchSpacer(0);                                // 1st column of wxFlexGridSizer
-  flexGridSizer->Add(yubiStatusCtrl, 1, wxALL|wxEXPAND, 5);          // 2nd column of wxFlexGridSizer
-  flexGridSizer->AddStretchSpacer(0);                                // 3rd column of wxFlexGridSizer
-#endif
+  m_combinationEntry = wxUtilities::CreateLabeledSafeCombinationCtrl(this, wxID_ANY, _("Master Password"), &passKey, true);
 
   delimiter = wxT('\xbb');
   wxTextValidator delimValidator(wxFILTER_EXCLUDE_CHAR_LIST, &delimiter);
   const wxChar* excludes[] = {wxT("\""), nullptr};
   delimValidator.SetExcludes(wxArrayString(1, excludes));
 
-  auto delimiterStaticText     = new wxStaticText(this, wxID_ANY, _("Line delimiter in Notes field:"), wxDefaultPosition, wxDefaultSize, 0);
-  auto delimiterTextCtrl       = new wxTextCtrl(this, ID_LINE_DELIMITER, wxT("\xbb"), wxDefaultPosition, wxDefaultSize, 0, delimValidator);
-  auto delimiterInfoStaticText = new wxStaticText(this, wxID_ANY, _("Also used to replace periods in the Title field"), wxDefaultPosition, wxDefaultSize, 0);
+  auto *verticalBoxSizer1 = new wxBoxSizer(wxVERTICAL);
+  mainSizer->Add(verticalBoxSizer1, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
 
-  auto delimiterSizer = new wxBoxSizer(wxHORIZONTAL);
-  delimiterSizer->Add(delimiterTextCtrl      , 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5);
-  delimiterSizer->Add(delimiterInfoStaticText, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
+  auto *delimiterStaticText = new wxStaticText(this, wxID_ANY, _("Line Delimiter"), wxDefaultPosition, wxDefaultSize, 0);
+  verticalBoxSizer1->Add(delimiterStaticText, 0, wxBOTTOM|wxALIGN_LEFT, 5);
 
-  flexGridSizer->Add(delimiterStaticText     , 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL, 5);
-  flexGridSizer->Add(delimiterSizer          , 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
+  auto *horizontalBoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
+  verticalBoxSizer1->Add(horizontalBoxSizer1, 1, wxEXPAND, 0);
 
-  mainSizer->Add(flexGridSizer, 0, wxLEFT|wxRIGHT|wxEXPAND, SideMargin);
-  mainSizer->AddSpacer(RowSeparation);
+  auto *delimiterTextCtrl = new wxTextCtrl(this, ID_LINE_DELIMITER, wxT("\xbb"), wxDefaultPosition, wxDefaultSize, 0, delimValidator);
+  delimiterTextCtrl->SetToolTip(_("The delimiter in the Notes field, also used to replace periods in the Title field."));
+  auto *advancedButton = new wxButton(this, ID_ADVANCED, _("&Advanced..."), wxDefaultPosition, wxDefaultSize, 0);
+  horizontalBoxSizer1->Add(delimiterTextCtrl, 0, 0, 0);
+  horizontalBoxSizer1->AddStretchSpacer();
+  horizontalBoxSizer1->Add(advancedButton, 0, 0, 0);
+
+#ifndef NO_YUBI
+  wxUtilities::CreateYubiKeyControls(this, ID_YUBIBTN, ID_YUBISTATUS);
+#endif
 
   mainSizer->AddStretchSpacer();
 
-  mainSizer->Add(new wxStaticLine(this), 0, wxLEFT|wxRIGHT|wxEXPAND, SideMargin);
-  mainSizer->AddSpacer(RowSeparation);
+  auto *horizontalBoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
+  mainSizer->Add(horizontalBoxSizer2, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
 
-  auto stdDialogButtonSizer = new wxStdDialogButtonSizer;
+  auto *helpButton = new wxButton(this, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0);
+  horizontalBoxSizer2->Add(helpButton, 0, wxALIGN_CENTER_VERTICAL|wxALL, 0);
 
-  auto okButton = new wxButton(this, wxID_OK, _("&OK"), wxDefaultPosition, wxDefaultSize, 0);
-  okButton->SetDefault();
-  stdDialogButtonSizer->AddButton(okButton);
+  horizontalBoxSizer2->AddStretchSpacer();
 
-  auto cancelButton = new wxButton(this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0);
+  auto *stdDialogButtonSizer = new wxStdDialogButtonSizer;
+  horizontalBoxSizer2->Add(stdDialogButtonSizer, 0, wxALIGN_CENTER_VERTICAL, 0);
+
+  auto exportButton = new wxButton(this, wxID_OK, _("&Export"), wxDefaultPosition, wxDefaultSize, 0);
+  exportButton->SetDefault();
+  stdDialogButtonSizer->AddButton(exportButton);
+
+  auto *cancelButton = new wxButton(this, wxID_CANCEL, _("&Cancel"), wxDefaultPosition, wxDefaultSize, 0);
   stdDialogButtonSizer->AddButton(cancelButton);
-
-  auto helpButton = new wxButton(this, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0);
-  stdDialogButtonSizer->AddButton(helpButton);
 
   stdDialogButtonSizer->Realize();
 
-  //This might not be a very wise thing to do.  We are only supposed to add certain
-  //pre-defined button-ids to StdDlgBtnSizer
-  auto advancedButton = new wxButton(this, ID_ADVANCED, _("&Advanced..."), wxDefaultPosition, wxDefaultSize, 0);
-  stdDialogButtonSizer->Add(advancedButton, 0, wxLEFT|wxRIGHT|wxALIGN_CENTER_VERTICAL, SideMargin);
+  horizontalBoxSizer2->AddStretchSpacer();
 
-  mainSizer->Add(stdDialogButtonSizer, 0, wxLEFT|wxRIGHT|wxEXPAND, SideMargin);
-
-  mainSizer->AddSpacer(BottomMargin);
+  if (wxUtilities::IsVirtualKeyboardSupported()) {
+    auto *keyboardButton = new ExternalKeyboardButton(this);
+    keyboardButton->SetFocusOnSafeCombinationCtrl(m_combinationEntry);
+    horizontalBoxSizer2->Add(
+      keyboardButton,
+      0, wxALIGN_CENTER_VERTICAL|wxALL, 0
+    );
+  }
 
   SetSizerAndFit(mainSizer);
 #ifndef NO_YUBI
