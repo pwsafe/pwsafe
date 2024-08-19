@@ -2921,7 +2921,10 @@ void AddEditPropSheetDlg::OnUpdateUI(wxUpdateUIEvent& event)
     case ID_STATICTEXT_DAYS:
     case ID_CHECKBOX_RECURRING:
     case ID_RADIOBUTTON_NEVER:
-      event.Enable(!dbIsReadOnly);
+      // Disable these if DB is read-only; otherwise they are controlled elsewhere.
+      if (dbIsReadOnly)
+        event.Enable(false);
+
       break;
 
     default:
