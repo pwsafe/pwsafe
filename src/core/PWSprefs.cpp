@@ -262,7 +262,7 @@ PWSprefs::PWSprefs() : m_pXML_Config(nullptr)
   m_PSSrect.top = m_PSSrect.bottom = m_PSSrect.left = m_PSSrect.right = -1;
   m_PSSrect.changed = false;
 
-  m_MRUitems.reserve(m_int_prefs[MaxMRUItems].maxVal);
+  m_MRUitems.resize(m_int_prefs[MaxMRUItems].maxVal);
   InitializePreferences();
 }
 
