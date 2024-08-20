@@ -393,6 +393,7 @@ private:
   wxCheckBox *m_DatesTimesRecurringExpiryCtrl = nullptr;
   wxRadioButton *m_DatesTimesNeverExpireCtrl = nullptr;
   wxStaticText *m_DatesTimesCurrentCtrl = nullptr;
+  wxStaticText *m_DatesTimesStaticTextDays = nullptr;
 
   wxString m_RMTime; // Any field modification time
   wxString m_AccessTime;
@@ -403,6 +404,7 @@ private:
   bool m_Recurring;
   bool m_OriginalRecurring;
   time_t m_OriginalDayttt;
+  bool m_FirstInClick;
   int m_ExpirationTimeInterval = 0; // Password expiration interval in days
 
   // Tab: "Password Policy"
