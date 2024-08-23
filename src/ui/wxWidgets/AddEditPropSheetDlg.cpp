@@ -287,10 +287,10 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   itemBoxSizer3->Add(m_BasicSizer, 1, wxEXPAND|wxALIGN_LEFT|wxALIGN_TOP|wxLEFT|wxBOTTOM|wxRIGHT, 10);
 
   auto *itemStaticText6 = new wxStaticText( panel, wxID_STATIC, _("Group"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText6, wxGBPosition(/*row:*/ 0, /*column:*/ 0), wxDefaultSpan,  wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicSizer->Add(itemStaticText6, wxGBPosition(/*row:*/ 0, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5),  wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicGroupNamesCtrl = new wxComboBox( panel, ID_COMBOBOX_GROUP, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, nullptr, wxCB_DROPDOWN);
-  m_BasicSizer->Add(m_BasicGroupNamesCtrl, wxGBPosition(/*row:*/ 1, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
+  m_BasicSizer->Add(m_BasicGroupNamesCtrl, wxGBPosition(/*row:*/ 1, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   auto *itemStaticText9 = new wxStaticText( panel, wxID_STATIC, _("Title"), wxDefaultPosition, wxDefaultSize, 0 );
   auto *itemStaticText10 = new wxStaticText( panel, wxID_STATIC, wxT("*"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -298,16 +298,16 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   auto *itemBoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer4->Add(itemStaticText9, 0, wxALIGN_CENTER_VERTICAL, 0);
   itemBoxSizer4->Add(itemStaticText10, 0, wxALIGN_CENTER_VERTICAL, 0);
-  m_BasicSizer->Add(itemBoxSizer4, wxGBPosition(/*row:*/ 2, /*column:*/ 0), wxDefaultSpan, wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicSizer->Add(itemBoxSizer4, wxGBPosition(/*row:*/ 2, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicTitleTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_TITLE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicTitleTextCtrl, wxGBPosition(/*row:*/ 3, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
+  m_BasicSizer->Add(m_BasicTitleTextCtrl, wxGBPosition(/*row:*/ 3, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   auto *itemStaticText12 = new wxStaticText( panel, wxID_STATIC, _("Username"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText12/*itemBoxSizer4*/, wxGBPosition(/*row:*/ 4, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicSizer->Add(itemStaticText12, wxGBPosition(/*row:*/ 4, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicUsernameTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_USERNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicUsernameTextCtrl , wxGBPosition(/*row:*/ 5, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
+  m_BasicSizer->Add(m_BasicUsernameTextCtrl , wxGBPosition(/*row:*/ 5, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   m_BasicPasswordTextLabel = new wxStaticText( panel, wxID_STATIC, _("Password"), wxDefaultPosition, wxDefaultSize, 0 );
   auto *itemStaticText11 = new wxStaticText( panel, wxID_STATIC, wxT("*"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -315,19 +315,19 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   auto *itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer5->Add(m_BasicPasswordTextLabel, 0, wxALIGN_CENTER_VERTICAL, 0);
   itemBoxSizer5->Add(itemStaticText11, 0, wxALIGN_CENTER_VERTICAL, 0);
-  m_BasicSizer->Add(itemBoxSizer5, wxGBPosition(/*row:*/ 6, /*column:*/ 0), wxDefaultSpan, wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicSizer->Add(itemBoxSizer5, wxGBPosition(/*row:*/ 6, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicPasswordTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_PASSWORD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicPasswordTextCtrl, wxGBPosition(/*row:*/ 7, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 1), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
+  m_BasicSizer->Add(m_BasicPasswordTextCtrl, wxGBPosition(/*row:*/ 7, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   m_BasicPasswordBitmap = new wxStaticBitmap(panel, wxID_ANY, bitmapCheckmarkPlaceholder, wxDefaultPosition, wxDefaultSize, 0);
-  m_BasicSizer->Add(m_BasicPasswordBitmap, wxGBPosition(/*row:*/ 7, /*column:*/ 1), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxBOTTOM, 7);
+  m_BasicSizer->Add(m_BasicPasswordBitmap, wxGBPosition(/*row:*/ 7, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxBOTTOM, 7);
 
   m_BasicShowHideCtrl = new wxBitmapButton(panel, ID_BUTTON_SHOWHIDE, wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
-  m_BasicSizer->Add(m_BasicShowHideCtrl, wxGBPosition(/*row:*/ 7, /*column:*/ 2), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
+  m_BasicSizer->Add(m_BasicShowHideCtrl, wxGBPosition(/*row:*/ 7, /*column:*/ 4), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   auto *itemButton21 = new wxButton( panel, ID_BUTTON_GENERATE, _("&Generate"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemButton21, wxGBPosition(/*row:*/ 7, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
+  m_BasicSizer->Add(itemButton21, wxGBPosition(/*row:*/ 7, /*column:*/ 5), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
   m_BasicPasswordConfirmationTextLabel = new wxStaticText( panel, wxID_STATIC, _("Confirm"), wxDefaultPosition, wxDefaultSize, 0 );
   auto *itemStaticText13 = new wxStaticText( panel, ID_STATICTEXT_PASSWORD2, wxT("*"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -335,46 +335,46 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   auto *itemBoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer6->Add(m_BasicPasswordConfirmationTextLabel, 0, wxALIGN_CENTER_VERTICAL, 0);
   itemBoxSizer6->Add(itemStaticText13, 0, wxALIGN_CENTER_VERTICAL, 0);
-  m_BasicSizer->Add(itemBoxSizer6, wxGBPosition(/*row:*/ 8, /*column:*/ 0), wxDefaultSpan, wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicSizer->Add(itemBoxSizer6, wxGBPosition(/*row:*/ 8, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicPasswordConfirmationTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_PASSWORD2, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
-  m_BasicSizer->Add(m_BasicPasswordConfirmationTextCtrl, wxGBPosition(/*row:*/ 9, /*column:*/ 0), wxDefaultSpan, wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
+  m_BasicSizer->Add(m_BasicPasswordConfirmationTextCtrl, wxGBPosition(/*row:*/ 9, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
-  m_BasicPasswordConfirmationBitmap = new wxStaticBitmap(panel, wxID_ANY, wxUtilities::GetBitmapResource(wxT("graphics/checkmark_placeholder.xpm")), wxDefaultPosition, wxDefaultSize, 0);
-  m_BasicSizer->Add(m_BasicPasswordConfirmationBitmap, wxGBPosition(/*row:*/ 9, /*column:*/ 1), wxDefaultSpan, wxALIGN_CENTER|wxALIGN_LEFT|wxBOTTOM, 7);
+  m_BasicPasswordConfirmationBitmap = new wxStaticBitmap(panel, wxID_ANY, bitmapCheckmarkPlaceholder, wxDefaultPosition, wxDefaultSize, 0);
+  m_BasicSizer->Add(m_BasicPasswordConfirmationBitmap, wxGBPosition(/*row:*/ 9, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER|wxALIGN_LEFT|wxBOTTOM, 7);
   
   auto *itemButton22 = new wxButton( panel, ID_BUTTON_ALIAS, _("&Alias To..."), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemButton22, wxGBPosition(/*row:*/ 9, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
+  m_BasicSizer->Add(itemButton22, wxGBPosition(/*row:*/ 9, /*column:*/ 5), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
   if(! PWSprefs::GetInstance()->GetPref(PWSprefs::ShowAliasSelection)) {
     // Per default do not show this button
     itemButton22->Hide();
   }
   
   auto *itemStaticText25 = new wxStaticText( panel, wxID_STATIC, _("URL"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText25, wxGBPosition(/*row:*/ 10, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicSizer->Add(itemStaticText25, wxGBPosition(/*row:*/ 10, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicUrlTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_URL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicUrlTextCtrl, wxGBPosition(/*row:*/ 11, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
+  m_BasicSizer->Add(m_BasicUrlTextCtrl, wxGBPosition(/*row:*/ 11, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   auto *itemButton29 = new wxButton( panel, ID_GO_BTN, _("Go"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemButton29, wxGBPosition(/*row:*/ 11, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
+  m_BasicSizer->Add(itemButton29, wxGBPosition(/*row:*/ 11, /*column:*/ 5), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
   auto *itemStaticText30 = new wxStaticText( panel, wxID_STATIC, _("Email"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText30, wxGBPosition(/*row:*/ 12, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicSizer->Add(itemStaticText30, wxGBPosition(/*row:*/ 12, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicEmailTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_EMAIL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicEmailTextCtrl, wxGBPosition(/*row:*/ 13, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
+  m_BasicSizer->Add(m_BasicEmailTextCtrl, wxGBPosition(/*row:*/ 13, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   auto *itemButton34 = new wxButton( panel, ID_SEND_BTN, _("Send"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemButton34, wxGBPosition(/*row:*/ 13, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
+  m_BasicSizer->Add(itemButton34, wxGBPosition(/*row:*/ 13, /*column:*/ 5), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
   auto *itemStaticText36 = new wxStaticText( panel, wxID_STATIC, _("Notes"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText36, wxGBPosition(/*row:*/ 14, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 4), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicSizer->Add(itemStaticText36, wxGBPosition(/*row:*/ 14, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 6), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicNotesTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_NOTES, wxEmptyString, wxDefaultPosition, wxSize(-1, 100), wxTE_MULTILINE );
-  m_BasicSizer->Add(m_BasicNotesTextCtrl, wxGBPosition(/*row:*/ 15, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 4), wxEXPAND, 0);
+  m_BasicSizer->Add(m_BasicNotesTextCtrl, wxGBPosition(/*row:*/ 15, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 6), wxEXPAND, 0);
 
-  m_BasicSizer->AddGrowableCol(0);  // Growable text entry fields
+  m_BasicSizer->AddGrowableCol(2);  // Growable text entry fields
   m_BasicSizer->AddGrowableRow(15); // Growable notes field
 
   m_BasicTitleTextCtrl->SetValidator(wxGenericValidator(&m_Title));
