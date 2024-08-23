@@ -210,6 +210,7 @@ public:
   void UpdatePassword(const StringX &password); // use when password changed!
   void SetTwoFactorKey(const StringX& value) { CItem::SetField(TWOFACTORKEY, value); }
   bool SetTotpConfig(const StringX& value) { return SetFieldAsByte(TOTPCONFIG, value.c_str()); }
+  void SetTotpStartTime(time_t t) { CItem::SetTime(TOTPSTARTTIME, t); }
   bool SetTotpStartTime(const StringX& value) { return SetTime(TOTPSTARTTIME, value.c_str(), true); }
   bool SetTotpTimeStep(const StringX& value) { return SetFieldAsByte(TOTPTIMESTEP, value.c_str()); }
   bool SetTotpLength(const StringX& value) { return SetFieldAsByte(TOTPLENGTH, value.c_str()); }
