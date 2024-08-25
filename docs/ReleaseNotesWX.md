@@ -14,6 +14,7 @@ Bugs fixed in 1.20.0
 --------------------
 * [1331](https://github.com/pwsafe/pwsafe/issues/1331) Correctly display long paths with ellipsis (...) in Master Password Entry window
 * [1332](https://github.com/pwsafe/pwsafe/issues/1332) Correctly display long paths with ellipsis (...) in Unlock Password Database window
+* [1372](https://github.com/pwsafe/pwsafe/issues/1372) Man page is now installed in the correct location (regression).
 
 
 New features in 1.20.0
