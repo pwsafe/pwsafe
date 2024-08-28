@@ -288,8 +288,15 @@ private:
 
   void ItemFieldsToPropSheet();
   void SetupDCAComboBoxes(wxComboBox *pcbox, short &iDCA, bool isShift);
-  void UpdateExpTimes();        // entry -> controls
+  void InitializeExpTimes();        // entry -> controls
   void SetXTime(wxObject *src); // sync controls + controls -> entry
+
+  // Today returns time part == 0
+  wxDateTime TodayPlusInterval(const int interval) const { return wxDateTime::Today().Add(wxDateSpan(0, 0, 0, interval)); };
+  wxDateTime NormalizeExpDate(const wxDateTime &xdt) const { return xdt.GetDateOnly(); }
+  int IntervalFromDate(const wxDateTime &xdt) const { return xdt.Subtract(wxDateTime::Today()).GetDays(); }
+  wxString makeExpiryString();
+
   void UpdatePWPolicyControls(const PWPolicy &pwp);
   void EnablePWPolicyControls(bool enable);
   PWPolicy GetPWPolicyFromUI() const;
@@ -327,6 +334,7 @@ private:
     Password = 1u << 14,
     Policy = 1u << 15,
     Attachment = 1u << 16,
+    XTimeNever = 1u << 17,
   };
   
   uint32_t GetChanges() const;
@@ -384,16 +392,20 @@ private:
   wxSpinCtrl *m_DatesTimesExpiryTimeCtrl = nullptr;
   wxCheckBox *m_DatesTimesRecurringExpiryCtrl = nullptr;
   wxRadioButton *m_DatesTimesNeverExpireCtrl = nullptr;
+  wxStaticText *m_DatesTimesCurrentCtrl = nullptr;
+  wxStaticText *m_DatesTimesStaticTextDays = nullptr;
 
   wxString m_RMTime; // Any field modification time
   wxString m_AccessTime;
   wxString m_CreationTime;
-  wxString m_CurrentExpirationTime;
+  wxString m_OriginalExpirationStr;
   wxString m_ModificationTime;
+  wxRadioButton *m_OriginalButton;
   bool m_Recurring;
-  wxString m_ExpirationTime;
+  bool m_OriginalRecurring;
+  time_t m_OriginalDayttt;
+  bool m_FirstInClick;
   int m_ExpirationTimeInterval = 0; // Password expiration interval in days
-  time_t m_tttExpirationTime;   // Password expiration date in time_t
 
   // Tab: "Password Policy"
   wxPanel *m_PasswordPolicyPanel = nullptr;

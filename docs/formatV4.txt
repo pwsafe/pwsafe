@@ -209,6 +209,31 @@ representation.
  Macintosh, the value needs to be adjusted by the constant value 2082844800
  to account for the different epoch of its time_t type.)
 
+3.1.4 Password Expiration
+ There are four possible combinations of the password expiry fields.
+ When an entry is read, the type of expiration setting is inferred
+ from which fields are recorded in the record.
+
+ Password Expiry Time        0x0a
+ Password Expiry Interval    0x11
+
+Setting                       Time (0x0a)  Interval (0x11)  Comments
+--------------------------------------------------------------------
+Never
+Specific Date                      X                           [1]
+Date with recurring interval       X             X             [2]  
+Special Case                                     X             [3] 
+
+[1] If the user sets a non-recurring interval, it is recorded as a
+specific date.
+
+[2] If the user sets a recurring interval, the interval and the
+next expiration date are both recorded.
+
+[3] This case is interpreted as "Never" and the interval will be
+ignored.  This case is not currently written to the file, but exists
+in some older files.
+
 3.2 Field types for the PasswordSafe database header:
                                                  Currently
 Name                        Value        Type    Implemented      Comments

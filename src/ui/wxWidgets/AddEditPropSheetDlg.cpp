@@ -263,8 +263,6 @@ void AddEditPropSheetDlg::CreateControls()
   // Setup symbols
   m_Symbols = CPasswordCharPool::GetDefaultSymbols().c_str();
   m_PasswordPolicyOwnSymbolsTextCtrl->SetValue(m_Symbols);
-
-  m_DatesTimesExpiryTimeCtrl->SetRange(1, 3650);
 }
 
 wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
@@ -461,7 +459,6 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
   auto *itemFlexGridSizer63 = new wxFlexGridSizer(0, 3, 0, 0);
   itemBoxSizer62->Add(itemFlexGridSizer63, 0, wxEXPAND | wxALL, 5);
   m_DatesTimesExpireOnCtrl = new wxRadioButton(panel, ID_RADIOBUTTON_ON, _("On"), wxDefaultPosition, wxDefaultSize, 0);
-  m_DatesTimesExpireOnCtrl->SetValue(false);
   itemFlexGridSizer63->Add(m_DatesTimesExpireOnCtrl, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   m_DatesTimesExpiryDateCtrl = new wxDatePickerCtrl(panel, ID_DATECTRL_EXP_DATE, wxDateTime(), wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT);
@@ -470,7 +467,6 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
   itemFlexGridSizer63->AddStretchSpacer();
 
   m_DatesTimesExpireInCtrl = new wxRadioButton(panel, ID_RADIOBUTTON_IN, _("In"), wxDefaultPosition, wxDefaultSize, 0);
-  m_DatesTimesExpireInCtrl->SetValue(false);
   itemFlexGridSizer63->Add(m_DatesTimesExpireInCtrl, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   auto *itemBoxSizer68 = new wxBoxSizer(wxHORIZONTAL);
@@ -487,26 +483,24 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
 
   itemBoxSizer68->Add(m_DatesTimesExpiryTimeCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-  auto *itemStaticText70 = new wxStaticText(panel, ID_STATICTEXT_DAYS, _("days"), wxDefaultPosition, wxDefaultSize, 0);
-  itemBoxSizer68->Add(itemStaticText70, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  m_DatesTimesStaticTextDays = new wxStaticText(panel, ID_STATICTEXT_DAYS, _("days"), wxDefaultPosition, wxDefaultSize, 0);
+  itemBoxSizer68->Add(m_DatesTimesStaticTextDays, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   m_DatesTimesRecurringExpiryCtrl = new wxCheckBox(panel, ID_CHECKBOX_RECURRING, _("Recurring"), wxDefaultPosition, wxDefaultSize, 0);
-  m_DatesTimesRecurringExpiryCtrl->SetValue(true);
   itemFlexGridSizer63->Add(m_DatesTimesRecurringExpiryCtrl, 0, wxALIGN_CENTER_HORIZONTAL | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   auto *itemBoxSizer72 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer62->Add(itemBoxSizer72, 0, wxALIGN_LEFT | wxLEFT | wxRIGHT | wxBOTTOM, 5);
   m_DatesTimesNeverExpireCtrl = new wxRadioButton(panel, ID_RADIOBUTTON_NEVER, _("Never"), wxDefaultPosition, wxDefaultSize, 0);
-  m_DatesTimesNeverExpireCtrl->SetValue(false);
   itemBoxSizer72->Add(m_DatesTimesNeverExpireCtrl, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   auto *itemBoxSizer74 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer62->Add(itemBoxSizer74, 0, wxEXPAND | wxALL, 5);
-  auto *itemStaticText75 = new wxStaticText(panel, wxID_STATIC, _("Original Value:"), wxDefaultPosition, wxDefaultSize, 0);
-  itemBoxSizer74->Add(itemStaticText75, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  auto *itemStaticText75 = new wxStaticText(panel, wxID_STATIC, _("Current Setting:"), wxDefaultPosition, wxDefaultSize, 0);
+  itemBoxSizer74->Add(itemStaticText75, 0, wxALIGN_TOP | wxALL, 5);
 
-  auto *itemStaticText76 = new wxStaticText(panel, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-  itemBoxSizer74->Add(itemStaticText76, 0, wxALIGN_CENTER_VERTICAL | wxALL, 5);
+  m_DatesTimesCurrentCtrl = new wxStaticText(panel, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxSize(-1, 40), 0);
+  itemBoxSizer74->Add(m_DatesTimesCurrentCtrl, 0, wxALIGN_TOP | wxALL, 5);
 
   auto *itemStaticBoxSizer77Static = new wxStaticBox(panel, wxID_ANY, _("Statistics"));
   auto *itemStaticBoxSizer77 = new wxStaticBoxSizer(itemStaticBoxSizer77Static, wxVERTICAL);
@@ -539,7 +533,7 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
 
   m_DatesTimesExpiryTimeCtrl->SetValidator(wxGenericValidator(&m_ExpirationTimeInterval));
   m_DatesTimesRecurringExpiryCtrl->SetValidator(wxGenericValidator(&m_Recurring));
-  itemStaticText76->SetValidator(wxGenericValidator(&m_CurrentExpirationTime));
+  m_DatesTimesCurrentCtrl->SetValidator(wxGenericValidator(&m_OriginalExpirationStr));
   itemStaticText80->SetValidator(wxGenericValidator(&m_CreationTime));
   itemStaticText82->SetValidator(wxGenericValidator(&m_ModificationTime));
   itemStaticText84->SetValidator(wxGenericValidator(&m_AccessTime));
@@ -1347,52 +1341,128 @@ static struct {short pv; wxString name;}
   }
 }
 
-void AddEditPropSheetDlg::UpdateExpTimes()
+// Build a string to describe the original expiry setting in the entry
+wxString AddEditPropSheetDlg::makeExpiryString()
 {
-  // From m_item to display
+  wxString finished;
+  wxString dateStr = m_Item.GetXTimeL().c_str();  // Get the expiration date, formatted based on locale
+  int expDays = IntervalFromDate(wxDateTime(m_OriginalDayttt));  // Days until expiration
 
-  m_Item.GetXTime(m_tttExpirationTime);
-  m_Item.GetXTimeInt(m_ExpirationTimeInterval);
-  m_ExpirationTime = m_CurrentExpirationTime = m_Item.GetXTimeL().c_str();
-
-  if (m_ExpirationTime.empty())
-    m_ExpirationTime = m_CurrentExpirationTime = _("Never");
-
-  wxCommandEvent dummy;
-  wxDateTime exp;
-  if (m_tttExpirationTime == 0) { // never expires
-    m_DatesTimesExpireOnCtrl->SetValue(false);
-    m_DatesTimesExpireInCtrl->SetValue(false);
-    m_DatesTimesNeverExpireCtrl->SetValue(true);
-    exp = wxDateTime::Now();
-    dummy.SetEventObject(m_DatesTimesNeverExpireCtrl);
-  } else {
-    exp = wxDateTime(m_tttExpirationTime);
-    if (m_ExpirationTimeInterval == 0) { // expiration specified as date
-      m_DatesTimesExpireOnCtrl->SetValue(true);
-      m_DatesTimesExpireInCtrl->SetValue(false);
-      m_DatesTimesNeverExpireCtrl->SetValue(false);
-      m_DatesTimesExpiryTimeCtrl->Enable(false);
-      m_Recurring = false;
-      dummy.SetEventObject(m_DatesTimesExpireOnCtrl);
-    } else { // exp. specified as interval
-      m_DatesTimesExpireOnCtrl->SetValue(false);
-      m_DatesTimesExpireInCtrl->SetValue(true);
-      m_DatesTimesNeverExpireCtrl->SetValue(false);
-      m_DatesTimesExpiryDateCtrl->Enable(false);
-      m_DatesTimesExpiryTimeCtrl->SetValue(m_ExpirationTimeInterval);
-      m_Recurring = true;
-      dummy.SetEventObject(m_DatesTimesExpireInCtrl);
+  // Specific date
+  if (m_OriginalDayttt && !m_OriginalRecurring) {
+    if (expDays > 0) {
+      wxString str = (expDays == 1) ? _("Expires in %d day (%s)") : _("Expires in %d days (%s)") ;
+      finished.Printf(str, expDays, dateStr);
+    } else {
+      finished.Printf(_("Expired on %s"), dateStr);
+      m_DatesTimesCurrentCtrl->SetForegroundColour(*wxRED);
     }
-    m_DatesTimesRecurringExpiryCtrl->Enable(m_Recurring);
-    m_DatesTimesExpiryDateCtrl->SetValue(exp);
   }
 
-  if (exp > wxDateTime::Today())
-    exp = wxDateTime::Today(); // otherwise we can never move exp date back
-  m_DatesTimesExpiryDateCtrl->SetRange(exp, wxDateTime(time_t(-1)));
+  // Recurring interval
+  if (m_OriginalRecurring) {
+    wxString str = (m_ExpirationTimeInterval == 1) ? _("Every %d day from last change")
+                                                   : _("Every %d days from last change") ;
 
-  OnExpRadiobuttonSelected(dummy); // setup enable/disable of expiry-related controls
+    finished.Printf(str, m_ExpirationTimeInterval);
+    if (expDays > 0) {
+      str.Printf(_("\n(Next expiration on %s)"), dateStr);
+    } else {
+      str.Printf(_("\n(Expired on %s)"), dateStr);
+      m_DatesTimesCurrentCtrl->SetForegroundColour(*wxRED);
+    }
+    finished += str;
+  }
+
+  // Never expires
+  if (finished.empty())
+    finished = _("Never Expires");
+
+  return finished;
+}
+
+// Called once to initialize the expiration controls
+void AddEditPropSheetDlg::InitializeExpTimes()
+{
+  // From m_item to display
+  time_t tttExpirationTime;
+  m_Item.GetXTime(tttExpirationTime);
+  m_Item.GetXTimeInt(m_ExpirationTimeInterval);
+  m_OriginalDayttt = 0;
+  m_FirstInClick = true;
+
+  // Special case: Some entries, created with recent versions of pwsafe, might have
+  // an interval but no date, which is interpreted as "Never".  We are going to ignore
+  // the interval and use the user-set default.  If an expiry change is made, the entry will
+  // be re-written correctly.
+  int defaultInterval = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays);
+
+  // Initialize these controls as disabled, they will be enabled as needed.
+  m_DatesTimesExpiryDateCtrl->Disable();
+  m_DatesTimesExpiryTimeCtrl->Disable();
+  m_DatesTimesStaticTextDays->Disable();
+  m_DatesTimesRecurringExpiryCtrl->Disable();
+
+  wxDateTime expiryDate;
+  if (tttExpirationTime == 0) { // never expires
+    m_DatesTimesNeverExpireCtrl->SetValue(true);
+    m_OriginalRecurring = false;
+    m_Item.SetXTimeInt(0);  // Special case: No date, there should be no interval
+    m_ExpirationTimeInterval = defaultInterval;
+    expiryDate = TodayPlusInterval(m_ExpirationTimeInterval);
+    m_OriginalButton = m_DatesTimesNeverExpireCtrl;
+
+  } else {
+    expiryDate = wxDateTime(tttExpirationTime).GetDateOnly();  // Remove time part
+    m_OriginalDayttt = expiryDate.GetTicks();
+
+    if (m_ExpirationTimeInterval == 0) { // expiration specified as date
+      m_DatesTimesExpireOnCtrl->SetValue(true);
+      m_DatesTimesExpiryDateCtrl->Enable();
+      m_OriginalRecurring = false;
+
+      // Set initierval to days until expiration
+      // If it's already expired, use the default value
+      m_ExpirationTimeInterval = IntervalFromDate(expiryDate);
+      if (m_ExpirationTimeInterval <= 0)
+        m_ExpirationTimeInterval = defaultInterval;
+
+      m_OriginalButton = m_DatesTimesExpireOnCtrl;
+
+    } else { // exp. specified as recurring interval
+      m_DatesTimesExpireInCtrl->SetValue(true);
+      m_DatesTimesExpiryTimeCtrl->Enable();
+      m_DatesTimesStaticTextDays->Enable();
+      m_DatesTimesRecurringExpiryCtrl->Enable();
+      m_OriginalRecurring = true;
+      m_FirstInClick = false;
+      expiryDate = TodayPlusInterval(m_ExpirationTimeInterval);
+      m_OriginalButton = m_DatesTimesExpireInCtrl;
+    }
+  }
+
+  // The date picker controls on different platforms (i.e. Mac vs. GTK)
+  // behave differently with respect to handling the time portion.  This
+  // results in different values when converting to or from time_t and
+  // false or missed change detections.
+  // GTK seems to remove the time part, macOS preserves it.
+  // Since we only care about the date for expiration, let's just
+  // remove the time wherever we need the date.
+  // Note the wxWidgets documentation says Today() returns the
+  // time part set to 0, and Today() and Now() both use the local time zone.
+  m_DatesTimesExpiryDateCtrl->SetValue(expiryDate);
+
+  // Set the recurring checkbox default state.
+  // The Recurring checkbox is only used if the user selects the interval radio button.
+  m_Recurring = m_OriginalRecurring;
+
+  // Build a string to describe the original setting in the entry
+  m_OriginalExpirationStr = makeExpiryString();
+
+  if (expiryDate > wxDateTime::Today())
+    expiryDate = wxDateTime::Today(); // otherwise we can never move exp date back
+  m_DatesTimesExpiryDateCtrl->SetRange(expiryDate, wxDateTime(time_t(-1)));
+  m_DatesTimesExpiryTimeCtrl->SetRange(1, 3650);
 }
 
 void AddEditPropSheetDlg::ItemFieldsToPropSheet()
@@ -1523,7 +1593,7 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
   } // m_type
 
   // Password Expiration
-  UpdateExpTimes();
+  InitializeExpTimes();
   // Modification times
   m_CreationTime = m_Item.GetCTimeL().c_str();
   m_ModificationTime = m_Item.GetPMTimeL().c_str();
@@ -1929,16 +1999,16 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
   // Tab: "Dates and Times"
   /////////////////////////////////////////////////////////////////////////////
 
-  m_Item.SetXTime(m_tttExpirationTime);
-  if (m_ExpirationTimeInterval > 0 && m_ExpirationTimeInterval <= 3650) {
-    m_Item.SetXTimeInt(m_ExpirationTimeInterval);
-  }
 
   if (m_Item.IsAlias()) {
     m_Item.SetXTime(time_t(0));
-  }
-  else {
-    m_Item.SetXTime(m_tttExpirationTime);
+    m_Item.SetXTimeInt(time_t(0));
+
+  } else if (!m_DatesTimesNeverExpireCtrl->GetValue()) {
+    m_Item.SetXTime(NormalizeExpDate(m_DatesTimesExpiryDateCtrl->GetValue()).GetTicks());
+    if (m_DatesTimesExpireInCtrl->GetValue() && m_Recurring) {
+      m_Item.SetXTimeInt(m_ExpirationTimeInterval);
+    }
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -2083,17 +2153,25 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
     }
   }
   {
+    int lastXTimeInt;
     time_t lastXtime;
     m_Item.GetXTime(lastXtime);
-    if (m_tttExpirationTime != lastXtime) {
+    m_Item.GetXTimeInt(lastXTimeInt);
+
+    time_t newExpirationDate = m_DatesTimesExpiryDateCtrl->GetValue().GetDateOnly().GetTicks();
+    if ( m_DatesTimesExpireOnCtrl->GetValue() && ((m_OriginalButton != m_DatesTimesExpireOnCtrl)
+                                                  || (newExpirationDate != m_OriginalDayttt)) ) {
       changes |= Changes::XTime;
     }
-  }
-  {
-    int lastXTimeInt;
-    m_Item.GetXTimeInt(lastXTimeInt);
-    if (m_ExpirationTimeInterval != lastXTimeInt && !(!m_Recurring && lastXTimeInt == 0)) {
+
+    if ( m_DatesTimesExpireInCtrl->GetValue() && ((m_OriginalButton != m_DatesTimesExpireInCtrl)
+                                                  || (m_ExpirationTimeInterval != lastXTimeInt)
+                                                  || (m_Recurring != m_OriginalRecurring)) ) {
       changes |= Changes::XTimeInt;
+    }
+
+    if (m_DatesTimesNeverExpireCtrl->GetValue() && (m_OriginalButton != m_DatesTimesNeverExpireCtrl)) {
+      changes |= Changes::XTimeNever;
     }
   }
   // password
@@ -2287,15 +2365,26 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
     m_Item.SetStatus(CItemData::ES_MODIFIED);
   }
   
+  // Setting a specific date
   if (changes & Changes::XTime) {
-    m_Item.SetXTime(m_tttExpirationTime);
+    m_Item.SetXTime(NormalizeExpDate(m_DatesTimesExpiryDateCtrl->GetValue()).GetTicks());
+    m_Item.SetXTimeInt(0);
   }
 
-  if (m_Recurring) {
-    if (changes & Changes::XTimeInt) {
+  // Setting by interval
+  // The date control should already be correct.  Only save the interval value if recurring is set
+  if (changes & Changes::XTimeInt) {
+    m_Item.SetXTime(NormalizeExpDate(m_DatesTimesExpiryDateCtrl->GetValue()).GetTicks());
+    if (m_Recurring) {
       m_Item.SetXTimeInt(m_ExpirationTimeInterval);
+    } else {
+      m_Item.SetXTimeInt(0);
     }
-  } else {
+  }
+
+  // Never expire, zeros are not written to the file
+  if (changes & Changes::XTimeNever) {
+    m_Item.SetXTime(0);
     m_Item.SetXTimeInt(0);
   }
 
@@ -2594,54 +2683,21 @@ void AddEditPropSheetDlg::OnKeepHistoryClick(wxCommandEvent &)
    }
 }
 
-#if 0 // XXX Remove, as we did away with this checkbox!
-void AddEditPropSheetDlg::OnOverrideDCAClick(wxCommandEvent& WXUNUSED(evt))
-{
-  if (Validate() && TransferDataFromWindow()) {
-    m_DCAcomboBox->Enable(!m_useDefaultDCA);
-    if (m_useDefaultDCA) { // restore default
-      short dca = short(PWSprefs::GetInstance()->
-                        GetPref(PWSprefs::DoubleClickAction));
-      for (size_t i = 0; i < sizeof(dcaMapping)/sizeof(dcaMapping[0]); i++)
-        if (dca == dcaMapping[i].pv) {
-          m_DCAcomboBox->SetValue(dcaMapping[i].name);
-          break;
-        }
-      m_DCA = -1; // 'use default' value
-    }
-  }
-}
-#endif
-
 void AddEditPropSheetDlg::SetXTime(wxObject *src)
 {
   if (Validate() && TransferDataFromWindow()) {
     wxDateTime xdt;
     if (src == m_DatesTimesExpiryDateCtrl) { // expiration date changed, update interval
-      xdt = m_DatesTimesExpiryDateCtrl->GetValue();
-      xdt.SetHour(0);
-      xdt.SetMinute(1);
-      wxTimeSpan delta = xdt.Subtract(wxDateTime::Today());
-      m_ExpirationTimeInterval = delta.GetDays();
-      m_ExpirationTime = xdt.FormatDate();
+      xdt = m_DatesTimesExpiryDateCtrl->GetValue().GetDateOnly();
+      m_ExpirationTimeInterval = IntervalFromDate(xdt);
+
     } else if (src == m_DatesTimesExpiryTimeCtrl) { // expiration interval changed, update date
-      // If it's a non-recurring interval, just set XTime to
-      // now + interval, XTimeInt should be stored as zero
-      // (one-shot semantics)
-      // Otherwise, XTime += interval, keep XTimeInt
-        xdt = wxDateTime::Now();
-        xdt += wxDateSpan(0, 0, 0, m_ExpirationTimeInterval);
-        m_DatesTimesExpiryDateCtrl->SetValue(xdt);
-        m_ExpirationTime = xdt.FormatDate();
-      if (m_Recurring) {
-        wxString rstr;
-        rstr.Printf(_(" (every %d days)"), m_ExpirationTimeInterval);
-        m_ExpirationTime += rstr;
-      }
+      xdt = TodayPlusInterval(m_ExpirationTimeInterval);
+      m_DatesTimesExpiryDateCtrl->SetValue(xdt);
+
     } else {
       ASSERT(0);
     }
-    m_tttExpirationTime = xdt.GetTicks();
     Validate(); TransferDataToWindow();
   } // Validated & transferred from controls
 }
@@ -2652,23 +2708,22 @@ void AddEditPropSheetDlg::SetXTime(wxObject *src)
 
 void AddEditPropSheetDlg::OnExpRadiobuttonSelected( wxCommandEvent& evt )
 {
-  bool On = (evt.GetEventObject() == m_DatesTimesExpireOnCtrl);
-  bool Never = (evt.GetEventObject() == m_DatesTimesNeverExpireCtrl);
+  bool On = evt.GetEventObject() == m_DatesTimesExpireOnCtrl;
+  bool Never = evt.GetEventObject() == m_DatesTimesNeverExpireCtrl;
 
-  if (Never) {
-    m_ExpirationTime = _("Never");
-    m_CurrentExpirationTime.Clear();
-    m_tttExpirationTime = time_t(0);
-    m_ExpirationTimeInterval = 90;
-    wxDateTime xdt(wxDateTime::Now());
-    xdt += wxDateSpan(0, 0, 0, m_ExpirationTimeInterval);
+  // Sync the date with the interval so the user can see when it will expire
+  if (!On && !Never) {
+    wxDateTime xdt = TodayPlusInterval(m_DatesTimesExpiryTimeCtrl->GetValue());
     m_DatesTimesExpiryDateCtrl->SetValue(xdt);
-    m_Recurring = false;
-    TransferDataToWindow();
+    if (m_FirstInClick) {
+      m_DatesTimesRecurringExpiryCtrl->SetValue(true);
+      m_FirstInClick = false;
+    }
   }
 
   m_DatesTimesExpiryDateCtrl->Enable(On && !Never);
   m_DatesTimesExpiryTimeCtrl->Enable(!On && !Never);
+  m_DatesTimesStaticTextDays->Enable(!On && !Never);
   m_DatesTimesRecurringExpiryCtrl->Enable(!On && !Never);
 }
 
@@ -2795,7 +2850,10 @@ void AddEditPropSheetDlg::OnUpdateUI(wxUpdateUIEvent& event)
     case ID_STATICTEXT_DAYS:
     case ID_CHECKBOX_RECURRING:
     case ID_RADIOBUTTON_NEVER:
-      event.Enable(!dbIsReadOnly);
+      // Disable these if DB is read-only; otherwise they are controlled elsewhere.
+      if (dbIsReadOnly)
+        event.Enable(false);
+
       break;
 
     default:
