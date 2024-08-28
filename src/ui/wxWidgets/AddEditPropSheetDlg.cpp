@@ -461,7 +461,12 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
   m_DatesTimesExpireOnCtrl = new wxRadioButton(panel, ID_RADIOBUTTON_ON, _("On"), wxDefaultPosition, wxDefaultSize, 0);
   itemFlexGridSizer63->Add(m_DatesTimesExpireOnCtrl, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-  m_DatesTimesExpiryDateCtrl = new wxDatePickerCtrl(panel, ID_DATECTRL_EXP_DATE, wxDateTime(), wxDefaultPosition, wxDefaultSize, wxDP_DEFAULT);
+  auto DatePickerType = wxDP_DEFAULT;
+#if wxCHECK_VERSION(3, 1, 0)
+  if ((wxGetOsVersion() & wxOS_MAC) && wxCheckOsVersion(10, 15, 4))
+    DatePickerType = wxDP_DROPDOWN;
+#endif
+  m_DatesTimesExpiryDateCtrl = new wxDatePickerCtrl(panel, ID_DATECTRL_EXP_DATE, wxDateTime(), wxDefaultPosition, wxDefaultSize, DatePickerType);
   itemFlexGridSizer63->Add(m_DatesTimesExpiryDateCtrl, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   itemFlexGridSizer63->AddStretchSpacer();
