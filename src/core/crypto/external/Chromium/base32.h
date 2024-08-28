@@ -33,7 +33,7 @@ uint8_t crc5_sym(uint8_t sym, uint8_t previous_crc);
  * @param dest			Destination buffer; set to empty string on
  *				error
  * @param destlen_chars		Length of destination buffer in characters
- * @param src			Source binary data
+ * @param srcbits			Source binary data
  * @param srclen_bits		Length of source *in bits*.  If this is not a
  *				multiple of 8, the *most significant* bits of
  *				the last byte will be used.  If this is not a

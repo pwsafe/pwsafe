@@ -796,7 +796,8 @@ void PWSafeApp::RestoreFrameCoords(void)
   long top, bottom, left, right;
   PWSprefs::GetInstance()->GetPrefRect(top, bottom, left, right);
   if (!(left == -1 && top == -1 && right == -1 && bottom == -1)) {
-    wxRect rcApp(static_cast<int>(left), static_cast<int>(top), static_cast<int>(right - left), static_cast<int>(bottom - top));
+    wxRect rcApp(static_cast<int>(left), static_cast<int>(top), 
+                 static_cast<int>(right - left + 1), static_cast<int>(bottom - top + 1));
 
     int displayWidth, displayHeight;
     ::wxDisplaySize(&displayWidth, &displayHeight);

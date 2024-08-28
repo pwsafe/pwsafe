@@ -41,13 +41,13 @@ jobs:
         echo "WX_ARCH=arm64,x86_64" >> $GITHUB_ENV
         echo "WX_DEBUG_FLAG=--disable-debug" >> $GITHUB_ENV
         echo "MACOS_VER_MIN=10.14" >> $GITHUB_ENV
-        echo "XCODE_VER=15.3" >> $GITHUB_ENV
+        echo "XCODE_VER=15.4" >> $GITHUB_ENV
         echo "XCODE_CONFIG=Release" >> $GITHUB_ENV
         echo "HOST_NCPU=`sysctl -n hw.ncpu`" >>$GITHUB_ENV
         echo "FORCE_REBUILD_WX=7" >> $GITHUB_ENV
 
     - name: Force compatible Xcode version
-      run: sudo xcode-select -s /Applications/Xcode_${XCODE_VER}.app/Contents/Developer
+      run: sudo xcode-select -s /Applications/Xcode_${XCODE_VER}.app
 
     - name: Print Xcode version in use
       run: xcode-select -p

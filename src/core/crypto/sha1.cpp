@@ -102,17 +102,16 @@ SHA1::SHA1()
   state[2] = 0x98BADCFE;
   state[3] = 0x10325476;
   state[4] = 0xC3D2E1F0;
-  count[0] = count[1] = 0;  
+  count = 0;
 }
 
 /* Run your data through this. */
-void SHA1::Update(const unsigned char* data, unsigned int len)
+void SHA1::Update(const unsigned char* data, uint64 len)
 {
-  unsigned int i, j;
+  uint64 i, j;
 
-  j = (count[0] >> 3) & 63;
-  if ((count[0] += len << 3) < (len << 3)) count[1]++;
-  count[1] += (len >> 29);
+  j = (count >> 3) & 63;
+  count += len << 3;
   if ((j + len) > 63) {
     memcpy(&buffer[j], data, (i = 64-j));
     SHA1Transform(state, buffer);
@@ -132,11 +131,10 @@ void SHA1::Final(unsigned char digest[HASHLEN])
   unsigned char finalcount[8];
 
   for (i = 0; i < 8; i++) {
-    finalcount[i] = static_cast<unsigned char>((count[(i >= 4 ? 0 : 1)]
-    >> ((3-(i & 3)) * 8) ) & 255);  /* Endian independent */
+    finalcount[i] = static_cast<unsigned char>((count >> ((7 - i) * 8)) & 255);  /* Endian independent */
   }
   Update(reinterpret_cast<const unsigned char *>("\200"), 1);
-  while ((count[0] & 504) != 448) {
+  while ((count & 504) != 448) {
     Update(reinterpret_cast<const unsigned char *>("\0"), 1);
   }
   Update(finalcount, 8);  /* Should cause a SHA1Transform() */
@@ -147,7 +145,7 @@ void SHA1::Final(unsigned char digest[HASHLEN])
   /* Wipe variables */
   memset(buffer, 0, 64);
   memset(state, 0, 20);
-  memset(count, 0, 8);
+  count = 0;
   memset(finalcount, 0, 8);
 #ifdef SHA1HANDSOFF  /* make SHA1Transform overwrite it's own static vars */
   SHA1Transform(state, buffer);

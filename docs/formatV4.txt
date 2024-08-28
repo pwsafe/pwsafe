@@ -256,7 +256,7 @@ Reserved                    0x0e        -                            [13]
 Recently Used Entries       0x0f        Text                         [14]
 Named Password Policies     0x10        Text                         [15]
 Empty Groups                0x11        Text                         [16]
-Yubico                      0x12        Text                         [13]
+Yubico                      0x12        Text                         [18]
 Timestamp of last master
 password change             0x13        time_t        Y              [5]
 End of Entry                0xff        [empty]       Y              [17]
@@ -370,6 +370,9 @@ fields, this field can appear multiple times.
 
 [17] An explicit end of entry field is useful for supporting new fields
 without breaking backwards compatability.
+
+[18] YubiKey secret key, saved so that it can be used to initialize
+additional YubiKeys.  20 bytes.  Introduced in format version 0x030C.
 
 3.3 Field types for database Records:
                                                  Currently

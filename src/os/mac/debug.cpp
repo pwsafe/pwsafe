@@ -8,6 +8,9 @@
 
 #include "../debug.h"
 
+// Provides TARGET_OS_.. defines
+#include <TargetConditionals.h>
+
 #if defined(_DEBUG) || defined(DEBUG)
 
 // TRACE replacement - only need this Debug mode
@@ -94,7 +97,9 @@ bool pws_os::DisableDumpAttach()
 
 #else   /* _DEBUG || DEBUG */
 #include <sys/types.h>
+#if !TARGET_OS_IPHONE
 #include <sys/ptrace.h>
+#endif
 #include <sys/resource.h>
 
 bool pws_os::DisableDumpAttach()
@@ -104,7 +109,11 @@ bool pws_os::DisableDumpAttach()
 
   // prevent ptrace and creation of core dumps
   lret = setrlimit(RLIMIT_CORE, &rl);
+#if !TARGET_OS_IPHONE
   pret = ptrace(PT_DENY_ATTACH, 0, 0, 0);
+#else
+  pret = 0;
+#endif
   return (pret == 0 && lret == 0);
 }
 
