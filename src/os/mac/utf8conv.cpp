@@ -18,6 +18,14 @@
 #include <cstring>
 #include <string>
 
+#include <CoreFoundation/CoreFoundation.h>
+
+#if defined(PWS_LITTLE_ENDIAN)
+static const CFStringEncoding wcharEncoding = kCFStringEncodingUTF32LE;
+#else
+static const CFStringEncoding wcharEncoding = kCFStringEncodingUTF32BE;
+#endif
+
 using namespace std;
 
 class Startup {
@@ -32,9 +40,30 @@ public:
 static Startup startup;
 
 size_t pws_os::wcstombs(char *dst, size_t maxdstlen,
-                        const wchar_t *src, size_t , bool )
+                        const wchar_t *src, size_t srclen, bool isUTF8)
 {
-  return ::wcstombs(dst, src, maxdstlen) + 1;
+  if (!isUTF8)
+    return ::wcstombs(dst, src, maxdstlen) + 1;
+
+  // Convert to UTF-16
+  CFStringRef str = CFStringCreateWithBytes(kCFAllocatorDefault, reinterpret_cast<const unsigned char *>(src), srclen*sizeof(wchar_t), wcharEncoding, false);
+  if (str == NULL)
+    return 0;  // return wcstombs + 1, so 0 to signal error
+
+  CFRange range = CFRangeMake(0, CFStringGetLength(str));
+  CFIndex usedBufLen;
+
+  // Convert to UTF-8
+  // Note: in case dst == NULL this only calculates usedBufLen
+  CFIndex idx = CFStringGetBytes(str, range, kCFStringEncodingUTF8, 0, false, reinterpret_cast<unsigned char *>(dst), maxdstlen, &usedBufLen);
+  CFRelease(str);
+  if (idx != range.length)
+    return 0;  // return wcstombs + 1, so 0 to signal error
+
+  if (dst != NULL && usedBufLen < maxdstlen)
+    dst[usedBufLen] = 0;
+
+  return usedBufLen + 1;
 }
 
 size_t pws_os::mbstowcs(wchar_t *dst, size_t maxdstlen,
