@@ -45,6 +45,9 @@ size_t pws_os::wcstombs(char *dst, size_t maxdstlen,
   if (!isUTF8)
     return ::wcstombs(dst, src, maxdstlen) + 1;
 
+  if (srclen == size_t(-1))
+    srclen = wcslen(src);
+
   // Convert to UTF-16
   CFStringRef str = CFStringCreateWithBytes(kCFAllocatorDefault, reinterpret_cast<const unsigned char *>(src), srclen*sizeof(wchar_t), wcharEncoding, false);
   if (str == NULL)
@@ -71,6 +74,9 @@ size_t pws_os::mbstowcs(wchar_t *dst, size_t maxdstlen,
 {
   if (!isUTF8)
     return ::mbstowcs(dst, src, maxdstlen) + 1;
+
+  if (srclen == size_t(-1))
+    srclen = strlen(src);
 
   // Convert to UTF-16
   CFStringRef str = CFStringCreateWithBytes(kCFAllocatorDefault, reinterpret_cast<const unsigned char *>(src), srclen, kCFStringEncodingUTF8, false);
