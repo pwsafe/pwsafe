@@ -91,7 +91,7 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
   // first get needed wide char buffer size
   size_t wcLen = pws_os::mbstowcs(nullptr, 0,
                                   reinterpret_cast<const char *>(utf8),
-                                  size_t(-1), !m_cp_acp);
+                                  utf8Len, !m_cp_acp);
   if (wcLen == 0) { // uh-oh
     // it seems that this always returns non-zero, even if encoding
     // broken. Therefore, we'll give a conservative value here,
@@ -110,7 +110,7 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
   // next translate to buffer
   wcLen = pws_os::mbstowcs(m_wc, wcLen,
                            reinterpret_cast<const char *>(utf8),
-                           size_t(-1), !m_cp_acp);
+                           utf8Len, !m_cp_acp);
 #ifdef _WIN32
   if (wcLen == 0) {
     DWORD errCode = GetLastError();
