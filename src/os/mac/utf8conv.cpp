@@ -21,9 +21,9 @@
 #include <CoreFoundation/CoreFoundation.h>
 
 #if defined(PWS_LITTLE_ENDIAN)
-static const CFStringEncoding wcharEncoding = kCFStringEncodingUTF32LE;
+#define wcharEncoding kCFStringEncodingUTF32LE
 #else
-static const CFStringEncoding wcharEncoding = kCFStringEncodingUTF32BE;
+#define wcharEncoding kCFStringEncodingUTF32BE
 #endif
 
 using namespace std;
