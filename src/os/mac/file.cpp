@@ -22,6 +22,10 @@
 #include <dirent.h>
 #include <fnmatch.h>
 
+#ifdef UNICODE
+#include <CoreFoundation/CoreFoundation.h>
+#endif
+
 #include "../file.h"
 #include "../env.h"
 
@@ -32,9 +36,37 @@
 
 #include "../../core/pugixml/pugixml.hpp"
 
+#ifdef UNICODE
+#if defined(PWS_LITTLE_ENDIAN)
+#define wcharEncoding kCFStringEncodingUTF32LE
+#else
+#define wcharEncoding kCFStringEncodingUTF32BE
+#endif
+#endif
+
 using namespace std;
 
 const TCHAR pws_os::PathSeparator = _T('/');
+
+#ifdef UNICODE
+// This function returns a pointer to an allocated char[],
+// the caller must delete the array.
+static char *createFileSystemRepresentation(const stringT &filename)
+{
+  // Convert to UTF-16
+  CFStringRef str = CFStringCreateWithBytes(kCFAllocatorDefault, reinterpret_cast<const unsigned char *>(filename.c_str()), filename.length()*sizeof(wchar_t), wcharEncoding, false);
+  assert(str != NULL);
+
+  CFIndex maxBufLen = CFStringGetMaximumSizeOfFileSystemRepresentation(str);
+  char *buffer = new char[maxBufLen];
+
+  bool res = CFStringGetFileSystemRepresentation(str, buffer, maxBufLen);
+  assert(res);
+
+  CFRelease(str);
+  return buffer;
+}
+#endif
 
 bool pws_os::FileExists(const stringT &filename)
 {
@@ -406,10 +438,7 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
   const char *cfname = NULL;
   const char *cmode = NULL;
 #ifdef UNICODE
-  size_t fnsize = wcstombs(NULL, filename.c_str(), 0) + 1;
-  assert(fnsize > 0);
-  cfname = new char[fnsize];
-  wcstombs(const_cast<char *>(cfname), filename.c_str(), fnsize);
+  cfname = createFileSystemRepresentation(filename);
 
   size_t modesize = wcstombs(NULL, mode, 0) + 1;
   assert(modesize > 0);
