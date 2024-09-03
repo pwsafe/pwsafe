@@ -66,6 +66,7 @@ class wxBoxSizer;
 #define ID_BUTTON_SHOWHIDE 10090
 #define ID_BUTTON_GENERATE 10097
 #define ID_TEXTCTRL_PASSWORD2 10091
+#define ID_STATICTEXT_PASSWORD2 10191
 #define ID_TEXTCTRL_URL 10092
 #define ID_GO_BTN 10093
 #define ID_TEXTCTRL_EMAIL 10100
@@ -155,6 +156,9 @@ protected:
                       const wxPoint &pos, const wxSize &size, long style);
 
   ////@begin AddEditPropSheetDlg event handler declarations
+
+  /// wxEVT_TEXT event handler for ID_TEXTCTRL_PASSWORD and ID_TEXTCTRL_PASSWORD2
+  void OnPasswordChanged(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_SHOWHIDE
   void OnShowHideClick(wxCommandEvent &event);
@@ -306,6 +310,8 @@ private:
   void EnableNonHexCBs(bool enable);
   void ShowPassword();
   void HidePassword();
+  void UpdatePasswordConfirmationIcons(bool show = true);
+  void UpdatePasswordConfirmationAsterisk(bool show = true);
   void ShowAlias();
   void RemoveAlias();
   int GetRequiredPWLength() const;
@@ -354,9 +360,11 @@ private:
   wxTextCtrl *m_BasicUsernameTextCtrl = nullptr;
   wxTextCtrl *m_BasicPasswordTextCtrl = nullptr;
   wxStaticText *m_BasicPasswordTextLabel = nullptr;
-  wxButton *m_BasicShowHideCtrl = nullptr;
+  wxStaticBitmap *m_BasicPasswordBitmap = nullptr;
+  wxBitmapButton *m_BasicShowHideCtrl = nullptr;
   wxTextCtrl *m_BasicPasswordConfirmationTextCtrl = nullptr;
   wxStaticText *m_BasicPasswordConfirmationTextLabel = nullptr;
+  wxStaticBitmap *m_BasicPasswordConfirmationBitmap = nullptr;
   wxTextCtrl *m_BasicUrlTextCtrl = nullptr;
   wxTextCtrl *m_BasicEmailTextCtrl = nullptr;
   wxTextCtrl *m_BasicNotesTextCtrl = nullptr;
@@ -471,6 +479,10 @@ private:
   SheetType m_Type;
   CItemData m_Item;
   CItemAtt  m_ItemAttachment;
+
+  wxBitmap bitmapCheckmarkPlaceholder;
+  wxBitmap bitmapCheckmarkGreen;
+  wxBitmap bitmapCheckmarkGray;
 };
 
 #endif // _ADDEDITPROPSHEETDLG_H_
