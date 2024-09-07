@@ -1376,8 +1376,9 @@ static struct {short pv; wxString name;}
 wxString AddEditPropSheetDlg::makeExpiryString()
 {
   wxString finished;
-  wxString dateStr = m_Item.GetXTimeL().c_str();  // Get the expiration date, formatted based on locale
-  int expDays = IntervalFromDate(wxDateTime(m_OriginalDayttt));  // Days until expiration
+  wxDateTime dtX(m_OriginalDayttt);
+  wxString dateStr = dtX.FormatISODate();  // Expiration date as YYYY-MM-DD
+  int expDays = IntervalFromDate(dtX);     // Days until expiration
 
   // Specific date
   if (m_OriginalDayttt && !m_OriginalRecurring) {
