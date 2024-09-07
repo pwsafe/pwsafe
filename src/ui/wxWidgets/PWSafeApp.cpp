@@ -681,7 +681,8 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
     langInfo = wxLocale::GetLanguageInfo(language);
     if(langInfo) {
 
-#if defined(__WXMAC__) && wxCHECK_VERSION(3, 2, 2)
+#if defined(__WXMAC__)
+#if wxCHECK_VERSION(3, 2, 2)
       // Some languages have multiple locale variations.  (e.g. en_US, en_GB, etc.)
       // Just using the two letter languane identifier (e.g. en.UTF-8) does not work
       // on macOS, there needs to be a region as well (e.g. en_US.UTF-8), not doing
@@ -700,6 +701,7 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
         setlocale(LC_CTYPE, envString.c_str());
         setlocale(LC_TIME, envString.c_str());
       }
+#endif // wxCHECK_VERSION
       // This value must be set for mac OS starting with version 11, but is no problem for earlier versions, see
       // https://github.com/wxWidgets/wxWidgets/issues/19023
       // https://docs.wxwidgets.org/3.2/classwx_locale.html
