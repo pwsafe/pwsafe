@@ -1489,9 +1489,15 @@ bool PWSprefs::LoadProfileFromFile()
   m_PrefLayout = m_pXML_Config->Get(m_csHKCU_PREF, _T("Layout"), L"");
 
   // Load most recently used file list
+  if (m_MRUitems.size() < m_intValues[MaxMRUItems])
+    m_MRUitems.resize(m_intValues[MaxMRUItems]);
   for (i = m_intValues[MaxMRUItems]; i > 0; i--) {
     Format(csSubkey, L"Safe%02d", i);
-    m_MRUitems.push_back(m_pXML_Config->Get(m_csHKCU_MRU, csSubkey, L""));
+    auto value = m_pXML_Config->Get(m_csHKCU_MRU, csSubkey, L"");
+    if (!value.empty())
+    {
+      m_MRUitems[i-1] = value;
+    }
   }
 
   m_vShortcuts = m_pXML_Config->GetShortcuts(m_csHKCU_SHCT);
