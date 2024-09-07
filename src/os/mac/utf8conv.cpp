@@ -63,7 +63,7 @@ size_t pws_os::wcstombs(char *dst, size_t maxdstlen,
   if (idx != range.length)
     return 0;  // return wcstombs + 1, so 0 to signal error
 
-  if (dst != NULL && usedBufLen < maxdstlen)
+  if (dst != NULL && static_cast<size_t>(usedBufLen) < maxdstlen)
     dst[usedBufLen] = 0;
 
   return usedBufLen + 1;
@@ -98,7 +98,7 @@ size_t pws_os::mbstowcs(wchar_t *dst, size_t maxdstlen,
   if (idx != range.length)
     return 0;  // return mbstowcs + 1, so 0 to signal error
 
-  if (idx < maxdstlen)
+  if (static_cast<size_t>(idx) < maxdstlen)
     dst[idx] = 0;
 
   return idx + 1;
