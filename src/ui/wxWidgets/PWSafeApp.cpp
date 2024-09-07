@@ -33,7 +33,7 @@
 #include <wx/tokenzr.h>
 #include <wx/spinctrl.h>
 
-#if wxCHECK_VERSION(3, 2, 2)
+#if wxCHECK_VERSION(3, 1, 6)
 #include <wx/uilocale.h>
 #endif
 
@@ -682,28 +682,33 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
     if(langInfo) {
 
 #if defined(__WXMAC__) && wxCHECK_VERSION(3, 2, 2)
-      // There are multiple locale variations for english.  (i.e. en_US, en_GB, etc.)
-      // Just using en.UTF-8 causes some inconsistent results. Specifically, the date
-      // format seems to default to en_GB in WX but not in native macOS controls, such
-      // as the date picker.  If we are trying to activate generic English, check the
-      // system locale and, if it is more specific, use that instead.
-      if (langInfo->CanonicalName == "en") {
-        wxLocaleIdent sysLocaleId = wxUILocale::GetSystemLocaleId();
-        if (sysLocaleId.GetLanguage() == "en" && sysLocaleId.GetRegion() != "") {
-          if (auto litmp = wxUILocale::FindLanguageInfo(sysLocaleId))
-            langInfo = litmp;
-        }
-      }
-#endif // __WXMAC__
+      // Some languages have multiple locale variations.  (e.g. en_US, en_GB, etc.)
+      // Just using the two letter languane identifier (e.g. en.UTF-8) does not work
+      // on macOS, there needs to be a region as well (e.g. en_US.UTF-8), not doing
+      // so causes some inconsistent results. Specifically, the date format seems to
+      // default to en_GB in WX but not in native macOS controls, such as the date picker.
+      wxString envString;
+      wxLocaleIdent sysLocaleId = wxUILocale::GetSystemLocaleId();
+      if (langInfo->CanonicalName == sysLocaleId.GetLanguage() && !sysLocaleId.GetRegion().empty()) {
+        envString = sysLocaleId.GetName();
 
-      wxString envString = langInfo->CanonicalName + ".UTF-8";
-      setlocale(LC_CTYPE, envString.c_str());
-      setlocale(LC_TIME, envString.c_str());
-#if defined(__WXMAC__)
+      } else if (!langInfo->CanonicalRef.empty()) {
+        envString = langInfo->CanonicalRef;
+      }
+      if (!envString.empty()) {
+        envString += ".UTF-8";
+        setlocale(LC_CTYPE, envString.c_str());
+        setlocale(LC_TIME, envString.c_str());
+      }
       // This value must be set for mac OS starting with version 11, but is no problem for earlier versions, see
       // https://trac.wxwidgets.org/ticket/19023
       setlocale(LC_NUMERIC, "C");
-#endif
+#else // __WXMAC__
+      wxString envString = langInfo->CanonicalName + ".UTF-8";
+      setlocale(LC_CTYPE, envString.c_str());
+      setlocale(LC_TIME, envString.c_str());
+#endif // __WXMAC__
+
     }
   }
   return bRes;
