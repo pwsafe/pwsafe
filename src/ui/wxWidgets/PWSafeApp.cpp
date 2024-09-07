@@ -701,7 +701,8 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
         setlocale(LC_TIME, envString.c_str());
       }
       // This value must be set for mac OS starting with version 11, but is no problem for earlier versions, see
-      // https://trac.wxwidgets.org/ticket/19023
+      // https://github.com/wxWidgets/wxWidgets/issues/19023
+      // https://docs.wxwidgets.org/3.2/classwx_locale.html
       setlocale(LC_NUMERIC, "C");
 #else // __WXMAC__
       wxString envString = langInfo->CanonicalName + ".UTF-8";
