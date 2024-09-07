@@ -17,7 +17,7 @@
 #include <cassert>
 #include <cstdlib>
 #include <sys/stat.h>
-#include <Carbon/Carbon.h>
+#include <CoreFoundation/CoreFoundation.h>
 
 /*
  * GetStringTFromURLRef

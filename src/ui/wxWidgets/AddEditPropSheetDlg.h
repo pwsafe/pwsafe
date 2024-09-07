@@ -66,6 +66,7 @@ class wxBoxSizer;
 #define ID_BUTTON_SHOWHIDE 10090
 #define ID_BUTTON_GENERATE 10097
 #define ID_TEXTCTRL_PASSWORD2 10091
+#define ID_STATICTEXT_PASSWORD2 10191
 #define ID_TEXTCTRL_URL 10092
 #define ID_GO_BTN 10093
 #define ID_TEXTCTRL_EMAIL 10100
@@ -155,6 +156,9 @@ protected:
                       const wxPoint &pos, const wxSize &size, long style);
 
   ////@begin AddEditPropSheetDlg event handler declarations
+
+  /// wxEVT_TEXT event handler for ID_TEXTCTRL_PASSWORD and ID_TEXTCTRL_PASSWORD2
+  void OnPasswordChanged(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_SHOWHIDE
   void OnShowHideClick(wxCommandEvent &event);
@@ -288,8 +292,15 @@ private:
 
   void ItemFieldsToPropSheet();
   void SetupDCAComboBoxes(wxComboBox *pcbox, short &iDCA, bool isShift);
-  void UpdateExpTimes();        // entry -> controls
+  void InitializeExpTimes();        // entry -> controls
   void SetXTime(wxObject *src); // sync controls + controls -> entry
+
+  // Today returns time part == 0
+  wxDateTime TodayPlusInterval(const int interval) const { return wxDateTime::Today().Add(wxDateSpan(0, 0, 0, interval)); };
+  wxDateTime NormalizeExpDate(const wxDateTime &xdt) const { return xdt.GetDateOnly(); }
+  int IntervalFromDate(const wxDateTime &xdt) const { return xdt.Subtract(wxDateTime::Today()).GetDays(); }
+  wxString makeExpiryString();
+
   void UpdatePWPolicyControls(const PWPolicy &pwp);
   void EnablePWPolicyControls(bool enable);
   PWPolicy GetPWPolicyFromUI() const;
@@ -299,6 +310,8 @@ private:
   void EnableNonHexCBs(bool enable);
   void ShowPassword();
   void HidePassword();
+  void UpdatePasswordConfirmationIcons(bool show = true);
+  void UpdatePasswordConfirmationAsterisk(bool show = true);
   void ShowAlias();
   void RemoveAlias();
   int GetRequiredPWLength() const;
@@ -327,6 +340,7 @@ private:
     Password = 1u << 14,
     Policy = 1u << 15,
     Attachment = 1u << 16,
+    XTimeNever = 1u << 17,
   };
   
   uint32_t GetChanges() const;
@@ -346,9 +360,11 @@ private:
   wxTextCtrl *m_BasicUsernameTextCtrl = nullptr;
   wxTextCtrl *m_BasicPasswordTextCtrl = nullptr;
   wxStaticText *m_BasicPasswordTextLabel = nullptr;
-  wxButton *m_BasicShowHideCtrl = nullptr;
+  wxStaticBitmap *m_BasicPasswordBitmap = nullptr;
+  wxBitmapButton *m_BasicShowHideCtrl = nullptr;
   wxTextCtrl *m_BasicPasswordConfirmationTextCtrl = nullptr;
   wxStaticText *m_BasicPasswordConfirmationTextLabel = nullptr;
+  wxStaticBitmap *m_BasicPasswordConfirmationBitmap = nullptr;
   wxTextCtrl *m_BasicUrlTextCtrl = nullptr;
   wxTextCtrl *m_BasicEmailTextCtrl = nullptr;
   wxTextCtrl *m_BasicNotesTextCtrl = nullptr;
@@ -384,16 +400,20 @@ private:
   wxSpinCtrl *m_DatesTimesExpiryTimeCtrl = nullptr;
   wxCheckBox *m_DatesTimesRecurringExpiryCtrl = nullptr;
   wxRadioButton *m_DatesTimesNeverExpireCtrl = nullptr;
+  wxStaticText *m_DatesTimesCurrentCtrl = nullptr;
+  wxStaticText *m_DatesTimesStaticTextDays = nullptr;
 
   wxString m_RMTime; // Any field modification time
   wxString m_AccessTime;
   wxString m_CreationTime;
-  wxString m_CurrentExpirationTime;
+  wxString m_OriginalExpirationStr;
   wxString m_ModificationTime;
+  wxRadioButton *m_OriginalButton;
   bool m_Recurring;
-  wxString m_ExpirationTime;
+  bool m_OriginalRecurring;
+  time_t m_OriginalDayttt;
+  bool m_FirstInClick;
   int m_ExpirationTimeInterval = 0; // Password expiration interval in days
-  time_t m_tttExpirationTime;   // Password expiration date in time_t
 
   // Tab: "Password Policy"
   wxPanel *m_PasswordPolicyPanel = nullptr;
@@ -459,6 +479,10 @@ private:
   SheetType m_Type;
   CItemData m_Item;
   CItemAtt  m_ItemAttachment;
+
+  wxBitmap bitmapCheckmarkPlaceholder;
+  wxBitmap bitmapCheckmarkGreen;
+  wxBitmap bitmapCheckmarkGray;
 };
 
 #endif // _ADDEDITPROPSHEETDLG_H_
