@@ -161,7 +161,7 @@ public:
 
   // Check/Change master passphrase
   int CheckPasskey(const StringX &filename, const StringX &passkey);
-  void ChangePasskey(const StringX &newPasskey);
+  void ChangePasskey(const StringX &newPasskey, bool bWriteFile = true);
   void SetPassKey(const StringX &new_passkey);
 
   // Database functions

@@ -1593,11 +1593,12 @@ bool PWScore::BackupCurFile(unsigned int maxNumIncBackups, int backupSuffix,
   return pws_os::RenameFile(m_currfile.c_str(), bu_fname);
 }
 
-void PWScore::ChangePasskey(const StringX &newPasskey)
+void PWScore::ChangePasskey(const StringX &newPasskey, bool bWriteFile)
 {
   SetPassKey(newPasskey);
   time(&m_hdr.m_whenpwdlastchanged); // update master password changed timestamp
-  WriteCurFile(); // Save immediately!
+  if (bWriteFile)
+    WriteCurFile(); // Save immediately!
 }
 
 // functor object type for find_if:
