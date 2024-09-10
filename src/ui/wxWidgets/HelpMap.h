@@ -42,7 +42,7 @@ DLG_HELP(YubiCfgDlg,                                    html/manage_menu.html#yu
 //Options dialog
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Backups"),          html/backups_tab.html)
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Display"),          html/display_tab.html)
-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Misc."),            html/misc_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Miscellaneous"),    html/misc_tab.html)
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Password Policy"),  html/password_policies.html)
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Password History"), html/password_history_tab.html)
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Security"),         html/security_tab.html)
