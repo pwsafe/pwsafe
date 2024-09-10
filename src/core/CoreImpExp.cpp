@@ -2411,7 +2411,7 @@ stringT PWScore::GetXMLPWPolicies(const OrderedItemList *pOIL)
     return retval;
 
   std::vector<StringX> vPWPolicies;
-  const bool bSubset = pOIL->size() != GetNumEntries();
+  const bool bSubset = pOIL != nullptr && pOIL->size() != GetNumEntries();
   bool bNamedPasswordPolicies = !bSubset;
   PSWDPolicyMapCIter iter;
 
