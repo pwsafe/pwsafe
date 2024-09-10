@@ -257,7 +257,7 @@ private:
   wxComboBox*     m_Misc_ShiftDoubleClickActionCB = nullptr;
   wxTextCtrl*     m_Misc_DefaultUsernameTXT = nullptr;
   wxStaticText*   m_Misc_DefaultUsernameLBL = nullptr;
-  wxString        m_Misc_OtherBrowserLocationparams;
+  wxString        m_Misc_OtherBrowserParams;
 
   // Tab: "Password History"
   wxPanel*        m_PasswordHistory_Panel = nullptr;

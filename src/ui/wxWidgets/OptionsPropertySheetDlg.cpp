@@ -611,8 +611,8 @@ wxPanel* OptionsPropertySheetDlg::CreateMiscellaneousPanel(const wxString& title
   wxStaticText* itemStaticText73 = new wxStaticText( itemPanel44, wxID_STATIC, _("Browser Command Line parameters"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer71->Add(itemStaticText73, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxTextCtrl* itemTextCtrl72 = new wxTextCtrl( itemPanel44, ID_TEXTCTRL14, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  itemBoxSizer71->Add(itemTextCtrl72, 1, wxEXPAND|wxALL, 5);
+  wxTextCtrl* misc_OtherBrowserParamsTXT = new wxTextCtrl( itemPanel44, ID_TEXTCTRL14, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  itemBoxSizer71->Add(misc_OtherBrowserParamsTXT, 1, wxEXPAND|wxALL, 5);
 
   // Miscellaneous Preferences
   misc_ConfirmDeleteCB->SetValidator( wxGenericValidator(& m_Misc_ConfirmDelete) );
@@ -623,6 +623,7 @@ wxPanel* OptionsPropertySheetDlg::CreateMiscellaneousPanel(const wxString& title
   misc_UseDefUsernameCB->SetValidator( wxGenericValidator(& m_Misc_UseDefUsername) );
   misc_QuerySetDefUsernameCB->SetValidator( wxGenericValidator(& m_Misc_QuerySetDefUsername) );
   misc_OtherBrowserLocationTXT->SetValidator( wxGenericValidator(& m_Misc_OtherBrowserLocation) );
+  misc_OtherBrowserParamsTXT->SetValidator( wxGenericValidator(& m_Misc_OtherBrowserParams) );
 
   return itemPanel44;
 }
@@ -1016,7 +1017,7 @@ void OptionsPropertySheetDlg::PrefsToPropSheet()
   m_Misc_DefaultUsernameLBL->Enable(m_Misc_UseDefUsername);
   m_Misc_QuerySetDefUsername = prefs->GetPref(PWSprefs::QuerySetDef);
   m_Misc_OtherBrowserLocation = prefs->GetPref(PWSprefs::AltBrowser).c_str();
-  m_Misc_OtherBrowserLocationparams = prefs->GetPref(PWSprefs::AltBrowserCmdLineParms).c_str();
+  m_Misc_OtherBrowserParams = prefs->GetPref(PWSprefs::AltBrowserCmdLineParms).c_str();
 
   // Password History preferences
   m_PasswordHistory_Save = prefs->GetPref(PWSprefs::SavePasswordHistory);
@@ -1118,7 +1119,7 @@ void OptionsPropertySheetDlg::PropSheetToPrefs()
   prefs->SetPref(PWSprefs::QuerySetDef, m_Misc_QuerySetDefUsername);
   prefs->SetPref(PWSprefs::AltBrowser, tostringx(m_Misc_OtherBrowserLocation));
   prefs->SetPref(PWSprefs::AltBrowserCmdLineParms,
-                 tostringx(m_Misc_OtherBrowserLocationparams));
+                 tostringx(m_Misc_OtherBrowserParams));
 
   // Password History preferences
   prefs->SetPref(PWSprefs::SavePasswordHistory, m_PasswordHistory_Save);
