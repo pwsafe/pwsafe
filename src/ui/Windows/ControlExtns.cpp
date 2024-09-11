@@ -990,6 +990,17 @@ CSecEditExtn::~CSecEditExtn()
   delete m_pImpl;
 }
 
+BOOL CSecEditExtn::PreTranslateMessage(MSG* pMsg)
+{
+  // Clear the text when Ctrl + Backspace is pressed
+  if (pMsg->message == WM_KEYDOWN && (GetKeyState(VK_CONTROL) & 0x8000) && pMsg->wParam == VK_BACK)
+    {
+      SetWindowText(_T(""));
+      return TRUE;
+    }
+  return CEdit::PreTranslateMessage(pMsg);
+}
+
 void CSecEditExtn::SetSecure(bool on_off)
 {
   m_secure = on_off;
