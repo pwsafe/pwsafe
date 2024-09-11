@@ -210,6 +210,9 @@ public:
   CSecEditExtn(std::vector<st_context_menu> vmenu_items);
   virtual ~CSecEditExtn();
 
+  virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+
+
   // Overriding virtuals doesn't work, due to defective
   // implementation of DDX_Text. Grr.
   void DoDDX(CDataExchange *pDX, CSecString &str);
