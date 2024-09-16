@@ -854,6 +854,7 @@ wxPanel* OptionsPropertySheetDlg::CreateSystemPanel(const wxString& title)
   wxCheckBox* system_StartupCB = new wxCheckBox( itemPanel104, ID_CHECKBOX31, _("Start Password Safe at Login"), wxDefaultPosition, wxDefaultSize, 0 );
   system_StartupCB->SetValue(false);
   itemStaticBoxSizer106->Add(system_StartupCB, 0, wxALIGN_LEFT|wxALL, 5);
+  system_StartupCB->Disable();  // Disable until implemented
 
   m_System_SystemTrayWarningST = new wxStaticText( itemPanel104, wxID_STATIC, _("There appears to be no system tray support in your current environment.\nAny related functionality may not work as expected."), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer106->Add(m_System_SystemTrayWarningST, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
