@@ -744,6 +744,7 @@ wxPanel* OptionsPropertySheetDlg::CreateSecurityPanel(const wxString& title)
   wxCheckBox* security_LockOnWindowLockCB = new wxCheckBox( itemPanel86, ID_CHECKBOX28, _("Lock password database on workstation lock"), wxDefaultPosition, wxDefaultSize, 0 );
   security_LockOnWindowLockCB->SetValue(false);
   itemBoxSizer87->Add(security_LockOnWindowLockCB, 0, wxALIGN_LEFT|wxALL, 5);
+  security_LockOnWindowLockCB->Disable();  // Disable until implemented
 
   auto *itemBoxSizer93 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer87->Add(itemBoxSizer93, 0, wxEXPAND|wxALL, 0);
