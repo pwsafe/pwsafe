@@ -1051,6 +1051,8 @@ void OptionsPropertySheetDlg::PrefsToPropSheet()
   m_System_UseSystemTrayCB->SetValue(prefs->GetPref(PWSprefs::UseSystemTray));
   if (!IsTaskBarIconAvailable()) {
     m_System_SystemTrayWarningST->Show();
+    m_System_UseSystemTrayCB->SetValue(false);
+    m_System_UseSystemTrayCB->Disable();
   }
   m_System_Startup = false; // XXX TBD
   m_System_MaxMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);
