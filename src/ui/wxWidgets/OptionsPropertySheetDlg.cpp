@@ -256,7 +256,7 @@ void OptionsPropertySheetDlg::CreateControls()
   m_Shortcuts_Panel = CreateShortcutsPanel(shortcutsTabTitle);
 
   GetBookCtrl()->AddPage(m_Shortcuts_Panel, shortcutsTabTitle, false, 5);
-#endif // __WXMSW__
+#endif
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "System"
   /////////////////////////////////////////////////////////////////////////////
