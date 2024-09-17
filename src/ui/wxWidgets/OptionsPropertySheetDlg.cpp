@@ -250,13 +250,16 @@ void OptionsPropertySheetDlg::CreateControls()
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Shortcuts"
   /////////////////////////////////////////////////////////////////////////////
-#if 0  // Disable until implemented
+
   wxString shortcutsTabTitle = _("Shortcuts");
 
-  m_Shortcuts_Panel = CreateShortcutsPanel(shortcutsTabTitle);
+  // TODO: Disabled until implemented
+  m_Shortcuts_Panel = CreateShortcutsPanel(shortcutsTabTitle + " (Not Implemented)");
+  m_Shortcuts_Panel->Disable();
+  //
 
   GetBookCtrl()->AddPage(m_Shortcuts_Panel, shortcutsTabTitle, false, 5);
-#endif
+
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "System"
   /////////////////////////////////////////////////////////////////////////////
@@ -744,7 +747,6 @@ wxPanel* OptionsPropertySheetDlg::CreateSecurityPanel(const wxString& title)
   wxCheckBox* security_LockOnWindowLockCB = new wxCheckBox( itemPanel86, ID_CHECKBOX28, _("Lock password database on workstation lock"), wxDefaultPosition, wxDefaultSize, 0 );
   security_LockOnWindowLockCB->SetValue(false);
   itemBoxSizer87->Add(security_LockOnWindowLockCB, 0, wxALIGN_LEFT|wxALL, 5);
-  security_LockOnWindowLockCB->Disable();  // Disable until implemented
 
   auto *itemBoxSizer93 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer87->Add(itemBoxSizer93, 0, wxEXPAND|wxALL, 0);
@@ -790,7 +792,10 @@ wxPanel* OptionsPropertySheetDlg::CreateSecurityPanel(const wxString& title)
   security_ConfirmCopyCB->SetValidator( wxGenericValidator(& m_Security_ConfirmCopy) );
   security_CopyPswdBrowseURLCB->SetValidator( wxGenericValidator(& m_Security_CopyPswdBrowseURL) );
   security_LockOnMinimizeCB->SetValidator( wxGenericValidator(& m_Security_LockOnMinimize) );
-  security_LockOnWindowLockCB->SetValidator( wxGenericValidator(& m_Security_LockOnWindowLock) );
+  // TODO: Disabled until implemented
+  //security_LockOnWindowLockCB->SetValidator( wxGenericValidator(& m_Security_LockOnWindowLock) );
+  security_LockOnWindowLockCB->Disable();
+  //
   m_Security_LockOnIdleTimeoutCB->SetValidator( wxGenericValidator(& m_Security_LockOnIdleTimeout) );
   security_HashIterSliderSL->SetValidator( wxGenericValidator(& m_Security_HashIterSlider) );
 
@@ -854,7 +859,7 @@ wxPanel* OptionsPropertySheetDlg::CreateSystemPanel(const wxString& title)
   wxCheckBox* system_StartupCB = new wxCheckBox( itemPanel104, ID_CHECKBOX31, _("Start Password Safe at Login"), wxDefaultPosition, wxDefaultSize, 0 );
   system_StartupCB->SetValue(false);
   itemStaticBoxSizer106->Add(system_StartupCB, 0, wxALIGN_LEFT|wxALL, 5);
-  system_StartupCB->Disable();  // Disable until implemented
+  system_StartupCB->Disable();  // TODO: Disabled until implemented
 
   m_System_SystemTrayWarningST = new wxStaticText( itemPanel104, wxID_STATIC, _("There appears to be no system tray support in your current environment.\nAny related functionality may not work as expected."), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer106->Add(m_System_SystemTrayWarningST, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
