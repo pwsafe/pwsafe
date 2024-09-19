@@ -58,9 +58,6 @@ BOOL CAddEdit_PropertyPage::OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pRes
   ASSERT(pResult != NULL);
   NMHDR* pNMHDR = (NMHDR*)lParam;
 
-  if (pNMHDR->hwndFrom != m_hWnd && pNMHDR->hwndFrom != ::GetParent(m_hWnd))
-    return FALSE;
-
   if (pNMHDR->code == PSN_QUERYINITIALFOCUS) {
     CWnd* pCtl = GetDlgItem(IDC_TITLE);
     if (pCtl) {
