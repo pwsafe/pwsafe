@@ -1412,7 +1412,6 @@ msgstr ""
 msgid "A hidden password needs to be entered in the Confirm Password field too. If it's not hidden, the Confirm field shows numbers that may be used to help count the password's characters."
 msgstr ""
 
-#. Resource IDs: (65535)
 msgid "A new password database will be created. The Master Password you enter will be used to encrypt the password database file. The Master Password can use any keyboard character and is case-sensitive."
 msgstr ""
 
@@ -6796,6 +6795,10 @@ msgstr ""
 
 #. Resource IDs: (5945)
 msgid "The Ctrl key has been added."
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "The Master Password will be used to protect the new password database file."
 msgstr ""
 
 #. Resource IDs: (3424)
