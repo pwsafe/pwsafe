@@ -57,8 +57,8 @@ I18N_DLL_DIR := ./out/build/windows-x86-release/I18N
 I18N_DLL_DIR_64 := ./out/build/windows-x64-release/I18N
 POT_FILE := $(I18N_DIR)/pwsafe.pot
 HELP_DIR := ./help
-BIN_DIR := ./out/build/windows-x86-release/Release/
-BIN_DIR_64 := ./out/build/windows-x64-release/Release/
+BIN_DIR := ./out/build/windows-x86-release/
+BIN_DIR_64 := ./out/build/windows-x64-release/
 TMPDIR := /tmp
 RELNOTES := $(CURDIR)/docs/ReleaseNotes.md
 
@@ -288,7 +288,7 @@ build:
 ChangeLog:
 	$(GIT) --no-pager log --format="%ai %aN %n%n%x09* %s%d%n" > $@
 
-$(POT_FILE): $(BIN_DIR_64)../src/ui/Windows/language/Release/pwsafe_base.dll
+$(POT_FILE): $(BIN_DIR_64)src/ui/Windows/language/pwsafe_base.dll
 	$(MAKE) -C $(I18N_DIR) pwsafe.pot
 
 update-pos:
