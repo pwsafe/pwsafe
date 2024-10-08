@@ -158,6 +158,7 @@ public:
     LastUsedKeyboard, VKeyboardFontName, VKSampleText, AltNotesEditor,
     LanguageFile, DefaultSymbols, NotesFont, NotesSampleText, AutotypeTaskDelays,
     AddEditFont, AddEditSampleText, AltNotesEditorCmdLineParms, TreeSort,
+    ActiveFilterName,
     NumStringPrefs};
 
   // for DoubleClickAction and ShiftDoubleClickAction

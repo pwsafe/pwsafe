@@ -222,7 +222,7 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("AddEditSampleText"), _T("AaBbYyZz 0O1IlL"), ptApplication},  // application
   {_T("AltNotesEditorCmdLineParms"), _T(""), ptApplication},        // application
   {_T("TreeSort"), _T("group"), ptApplication},                     // application
-
+  {_T("ActiveFilterName"), _T(""), ptDatabase},                     // database
 };
 
 PWSprefs *PWSprefs::GetInstance()
