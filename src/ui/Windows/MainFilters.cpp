@@ -102,6 +102,9 @@ bool DboxMain::ApplyFilter(bool bJustDoIt)
   else
     m_bFilterActive = !m_bFilterActive;
 
+  // Set/Clear ActiveFilterName DB preference
+  PWSprefs::GetInstance()->SetPref(PWSprefs::ActiveFilterName, m_bFilterActive ? CurrentFilter().fname.c_str() : L"");
+
   ApplyFilters();
   return true;
 }

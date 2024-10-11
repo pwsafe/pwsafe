@@ -951,6 +951,28 @@ void DboxMain::PostOpenProcessing()
 
   m_RUEList.SetRUEList(m_core.GetRUEList());
 
+  // Set filter view, if one was saved
+  const auto savedFilter = PWSprefs::GetInstance()->GetPref(PWSprefs::ActiveFilterName);
+
+  if (!savedFilter.empty())
+  {
+    m_currentfilterpool = FilterPool::FPOOL_DATABASE; // Is this always right?
+    m_selectedfiltername = savedFilter.c_str();
+    
+    // add only saved filter to m_mapAllFilters for ApplyFilter to work
+    const PWSFilters core_filters = m_core.GetDBFilters();
+    
+    for (const auto& filter : core_filters) {
+      if (filter.first.cs_filtername.c_str() == m_selectedfiltername) {
+        m_MapAllFilters.emplace(filter.first, filter.second);
+        break;  // there should be at most one match
+      }
+    }
+
+    ApplyFilter(true);
+  }
+
+
   // Set timer for user-defined idle lockout, if selected (DB preference)
   KillTimer(TIMER_LOCKDBONIDLETIMEOUT);
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::LockDBOnIdleTimeout)) {
@@ -1279,7 +1301,7 @@ int DboxMain::SaveIfChanged()
   /*
     Save silently (without asking user) iff:
     1. NOT read-only AND
-    2. (timestamp updates OR tree view display vector changed) AND
+    2. (timestamp updates OR tree view display vector changed OR DB pref) AND
     3. Database NOT empty
 
     Less formally:
@@ -1314,7 +1336,8 @@ int DboxMain::SaveIfChanged()
   // Here we save the DB if the DB has at least one entry or empty group AND:
   //  Entry Access Times have been changed OR
   //  The Group Display has changed and the User specified to use it at open time OR
-  //  RUE list has changed and the user wants them saved
+  //  RUE list has changed and the user wants them saved OR
+  //  A DB preference has changed (added for persisting active filter)
   PWSprefs *prefs = PWSprefs::GetInstance();
   if (!m_bUserDeclinedSave &&
       (m_bEntryTimestampsChanged || 
@@ -1322,7 +1345,8 @@ int DboxMain::SaveIfChanged()
             m_core.HasGroupDisplayChanged()) ||
        (prefs->GetPref(PWSprefs::MaxREItems) > 0 &&
             m_core.HasRUEListChanged())) &&
-      (m_core.GetNumEntries() > 0 || m_core.GetNumberEmptyGroups() > 0)) {
+      (m_core.GetNumEntries() > 0 || m_core.GetNumberEmptyGroups() > 0) ||
+      prefs->IsDBprefsChanged()) {
     int rc = Save();
 
     if (rc != PWScore::SUCCESS)
