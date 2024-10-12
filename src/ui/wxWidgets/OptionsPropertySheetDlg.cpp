@@ -744,7 +744,7 @@ wxPanel* OptionsPropertySheetDlg::CreateSecurityPanel(const wxString& title)
   security_LockOnMinimizeCB->SetValue(false);
   itemBoxSizer87->Add(security_LockOnMinimizeCB, 0, wxALIGN_LEFT|wxALL, 5);
 
-  wxCheckBox* security_LockOnWindowLockCB = new wxCheckBox( itemPanel86, ID_CHECKBOX28, _("Lock password database on workstation lock"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxCheckBox* security_LockOnWindowLockCB = new wxCheckBox( itemPanel86, ID_CHECKBOX28, _("Lock password database on workstation lock (Not Implemented)"), wxDefaultPosition, wxDefaultSize, 0 );
   security_LockOnWindowLockCB->SetValue(false);
   itemBoxSizer87->Add(security_LockOnWindowLockCB, 0, wxALIGN_LEFT|wxALL, 5);
 
@@ -856,12 +856,12 @@ wxPanel* OptionsPropertySheetDlg::CreateSystemPanel(const wxString& title)
   wxStaticText* itemStaticText111 = new wxStaticText( itemPanel104, ID_STATICTEXT_7, _("used entries in System Tray menu"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer108->Add(itemStaticText111, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxCheckBox* system_StartupCB = new wxCheckBox( itemPanel104, ID_CHECKBOX31, _("Start Password Safe at Login"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxCheckBox* system_StartupCB = new wxCheckBox( itemPanel104, ID_CHECKBOX31, _("Start Password Safe at Login (Not Implemented)"), wxDefaultPosition, wxDefaultSize, 0 );
   system_StartupCB->SetValue(false);
   itemStaticBoxSizer106->Add(system_StartupCB, 0, wxALIGN_LEFT|wxALL, 5);
   system_StartupCB->Disable();  // TODO: Disabled until implemented
 
-  m_System_SystemTrayWarningST = new wxStaticText( itemPanel104, wxID_STATIC, _("There appears to be no system tray support in your current environment.\nAny related functionality may not work as expected."), wxDefaultPosition, wxDefaultSize, 0 );
+  m_System_SystemTrayWarningST = new wxStaticText( itemPanel104, wxID_STATIC, _("There appears to be no system tray support in your current environment."), wxDefaultPosition, wxDefaultSize, 0 );
   itemStaticBoxSizer106->Add(m_System_SystemTrayWarningST, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
   m_System_SystemTrayWarningST->SetForegroundColour(*wxRED);
   m_System_SystemTrayWarningST->Hide();
