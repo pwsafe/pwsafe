@@ -9,7 +9,7 @@ PasswordSafe 3.67.0 Release Oct ?? 2024
 
 Bugs Fixed in 3.67.0
 ----------------------
-* [GH1390](https://github.com/pwsafe/pwsafe/issues/1390) Fixed regression, an entry's password history list now responds to mouse clicks.
+* [GH1390](https://github.com/pwsafe/pwsafe/issues/1390), [SF1602](https://sourceforge.net/p/passwordsafe/bugs/1602/) Fixed regression, an entry's password history list now responds to mouse clicks.
 * [GH1371](https://github.com/pwsafe/pwsafe/issues/1371) Fixed regresssion, recently used files are now remembered correctly.
 * [GH1351](https://github.com/pwsafe/pwsafe/issues/1351) Fixed crash in pwsafe-cli when exporting database with named policy to XML.
 
