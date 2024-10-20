@@ -17,7 +17,7 @@ class CommandInterface;
 #include "ItemData.h"
 #include "PWSfile.h"
 #include "StringX.h"
-#include "os/UUID.h"
+#include "../os/UUID.h"
 
 #include "coredefs.h"
 

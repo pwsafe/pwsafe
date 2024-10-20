@@ -11,7 +11,7 @@
 #define __BLOWFISH_H
 
 #include "Fish.h"
-#include "os/typedefs.h"
+#include "../../os/typedefs.h"
 
 class BlowFish : public Fish
 {

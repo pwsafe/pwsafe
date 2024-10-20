@@ -13,7 +13,7 @@
 #define __TWOFISH_H
 
 #include "Fish.h"
-#include "os/typedefs.h"
+#include "../../os/typedefs.h"
 
 #ifndef TWOFISH_SMALL
 struct twofish_key {

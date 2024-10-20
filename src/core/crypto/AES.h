@@ -13,7 +13,7 @@
 #define __AES_H
 
 #include "Fish.h"
-#include "os/typedefs.h"
+#include "../../os/typedefs.h"
 
 struct rijndael_key {
    ulong32 eK[60], dK[60];

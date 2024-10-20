@@ -7,7 +7,7 @@
 */
 #ifndef __SHA1_H
 #define __SHA1_H
-#include "os/typedefs.h"
+#include "../../os/typedefs.h"
 
 class SHA1
 {

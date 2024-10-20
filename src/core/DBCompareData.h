@@ -11,9 +11,9 @@
 /// DBCompareData.h
 //-----------------------------------------------------------------------------
 
-#include "core/ItemData.h"
-#include "core/StringX.h"
-#include "os/UUID.h"
+#include "ItemData.h"
+#include "StringX.h"
+#include "../os/UUID.h"
 
 enum {BOTH = -1 , CURRENT = 0, COMPARE = 1};
 

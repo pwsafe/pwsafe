@@ -8,7 +8,7 @@
 #ifndef __XMLPREFS_H
 #define __XMLPREFS_H
 
-#include "os/typedefs.h"
+#include "../os/typedefs.h"
 #include "PWSprefs.h"
 
 #include "pugixml/pugixml.hpp"

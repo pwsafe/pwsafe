@@ -14,7 +14,7 @@
 
 #include "StringX.h"
 #include "PwsPlatform.h"
-#include "os/typedefs.h"
+#include "../os/typedefs.h"
 
 // Verify PWHistory String return codes
 enum {PWH_OK = 0, PWH_IGNORE, PWH_INVALID_HDR, PWH_INVALID_STATUS,

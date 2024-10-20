@@ -1,8 +1,8 @@
 #ifndef _POLICYMANAGER_H_
 #define _POLICYMANAGER_H_
 
-#include "core/Command.h"
-#include "core/CommandInterface.h"
+#include "Command.h"
+#include "CommandInterface.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // The Policy Manager

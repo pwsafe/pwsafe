@@ -16,7 +16,7 @@
 #include "Item.h"
 #include "PWSprefs.h"
 #include "PWPolicy.h"
-#include "os/UUID.h"
+#include "../os/UUID.h"
 #include "StringX.h"
 #include "TotpCore.h"
 

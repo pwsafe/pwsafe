@@ -11,7 +11,7 @@
 #ifndef __PWCHARPOOL_H
 #define __PWCHARPOOL_H
 
-#include "os/typedefs.h"
+#include "../os/typedefs.h"
 #include "StringX.h"
 #include "PWPolicy.h"
 

@@ -11,7 +11,7 @@
 // PWScore.h
 //-----------------------------------------------------------------------------
 
-#include "os/pws_tchar.h"
+#include "../os/pws_tchar.h"
 #include "StringX.h"
 #include "PWSfile.h"
 #include "PWSFilters.h"
