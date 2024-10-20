@@ -9,8 +9,8 @@
 #ifndef _PWSLOG_H
 #define _PWSLOG_H
 
-#include "os/typedefs.h"
-#include "os/logit.h"
+#include "../os/typedefs.h"
+#include "../os/logit.h"
 
 #include <deque>
 

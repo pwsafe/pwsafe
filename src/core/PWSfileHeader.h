@@ -15,7 +15,7 @@
 //-----------------------------------------------------------------------------
 
 #include <vector>
-#include "os/UUID.h"
+#include "../os/UUID.h"
 #include "StringX.h"
 #include "coredefs.h"
 

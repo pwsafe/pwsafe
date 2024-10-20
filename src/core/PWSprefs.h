@@ -31,7 +31,7 @@
 
 #include "StringX.h"
 #include "Proxy.h"
-#include "os/typedefs.h"
+#include "../os/typedefs.h"
 
 #include <vector>
 
