@@ -18,7 +18,7 @@
  */
 //-----------------------------------------------------------------------------
 
-#include "os/typedefs.h" // for stringT
+#include "../os/typedefs.h" // for stringT
 
 class CheckVersion {
  public:

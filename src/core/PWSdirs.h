@@ -15,7 +15,7 @@
 // PWS_PREFSDIR if defined.
 //
 //-----------------------------------------------------------------------------
-#include "os/typedefs.h"
+#include "../os/typedefs.h"
 #include <stack>
 
 class PWSdirs

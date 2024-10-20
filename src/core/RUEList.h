@@ -17,7 +17,7 @@
 #include <vector>
 #include "ItemData.h"
 #include "StringX.h"
-#include "os/UUID.h"
+#include "../os/UUID.h"
 #include "coredefs.h"
 //-----------------------------------------------------------------------------
 class PWScore;

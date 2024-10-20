@@ -19,7 +19,7 @@
 // The "effective" is initially set to be == the real value, but
 // may be overridden by the relevant SetEffective*() member function.
 //-----------------------------------------------------------------
-#include "os/typedefs.h"
+#include "../os/typedefs.h"
 
 class SysInfo
 {

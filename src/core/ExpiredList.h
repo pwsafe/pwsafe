@@ -12,7 +12,7 @@
 #define __EXPIREDLIST_H
 
 #include "StringX.h"
-#include "os/UUID.h"
+#include "../os/UUID.h"
 #include "ItemData.h"
 
 #include <vector>
