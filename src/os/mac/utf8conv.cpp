@@ -90,22 +90,17 @@ size_t pws_os::mbstowcs(wchar_t *dst, size_t maxdstlen,
   CFRange range = CFRangeMake(0, CFStringGetLength(str));
   CFIndex usedBufLen;
 
-  // Skip UTF-32 encoding if no output buffer provided, we have the number of wchars
-  if (dst == NULL) {
-      CFRelease(str);
-      return range.length + 1;
-  }
-
   // Convert to UTF-32
   CFIndex idx = CFStringGetBytes(str, range, wcharEncoding, 0, false, reinterpret_cast<unsigned char *>(dst), maxdstlen*sizeof(wchar_t), &usedBufLen);
   CFRelease(str);
   if (idx != range.length)
     return 0;  // return mbstowcs + 1, so 0 to signal error
 
-  if (static_cast<size_t>(idx) < maxdstlen)
-    dst[idx] = 0;
+  size_t dstlen = static_cast<size_t>(usedBufLen) / sizeof(wchar_t);
+  if (dst != NULL && dstlen < maxdstlen)
+    dst[dstlen] = 0;
 
-  return idx + 1;
+  return dstlen + 1;
 }
 
 wstring pws_os::towc(const char *val)
