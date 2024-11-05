@@ -40,7 +40,7 @@ DEB)
     elif command -v debsigs >/dev/null 2>&1; then
         DEBSIGN=$(command -v debsigs)
     else
-        echo "Couldn't find dpkg-sig or debsign"
+        echo "Couldn't find dpkg-sig or debsigs"
         exit 2
     fi
     $DEBSIGN --sign builder -k $KEYID $PACKAGE
