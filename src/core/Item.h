@@ -124,6 +124,13 @@ public:
     LAST_FIELD
   };
 
+  static bool IsTimeField(int ft)
+  {
+    return ft == CTIME || ft == PMTIME || ft == ATIME || ft == XTIME || ft == RMTIME ||
+      ft == TOTPSTARTTIME ||
+      ft == ATTCTIME || ft == FILECTIME || ft == FILEMTIME || ft == FILEATIME;
+  }
+
   // Status returns from "ProcessInputRecordField"
   enum {SUCCESS = 0, FAILURE, END_OF_FILE = 8};
 
@@ -151,6 +158,14 @@ public:
   virtual void Clear();
   void ClearField(int ft) {m_fields.erase(ft);}
 
+  void CopyTime(int ft, const CItem & src)
+  {
+    ASSERT(IsTimeField(ft));
+    time_t t;
+    src.GetTime(ft, t);
+    SetTime(ft, t);
+  }
+
   bool operator==(const CItem &that) const;
 
   size_t GetSize() const;
@@ -166,7 +181,7 @@ public:
     }
   }
   void push(std::vector<char> &v, char type, const StringX &str) const;
-    
+
 protected:
   typedef std::map<int, CItemField> FieldMap;
   typedef FieldMap::const_iterator FieldConstIter;

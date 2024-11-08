@@ -227,6 +227,7 @@ bool CItem::SetTextField(int ft, const unsigned char *value,
 
 void CItem::SetTime(const int whichtime, time_t t)
 {
+  ASSERT(IsTimeField(whichtime));
   unsigned char buf[sizeof(time_t)];
   putInt(buf, t);
   SetField(whichtime, buf, sizeof(time_t));
@@ -300,6 +301,7 @@ StringX CItem::GetField(const CItemField &field) const
 
 void CItem::GetTime(int whichtime, time_t &t) const
 {
+  ASSERT(IsTimeField(whichtime));
   auto fiter = m_fields.find(whichtime);
   if (fiter != m_fields.end()) {
     unsigned char in[TwoFish::BLOCKSIZE] = {0}; // required by GetField

@@ -3778,10 +3778,16 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
              sxSync_DateTime, IDSC_SYNCPOLICY);
         if (pPolicyCmd != NULL)
           pmulticmds->Add(pPolicyCmd);
+      } else if (i == 8) { // XXX hack test theory
+        time_t t;
+        updtEntry.SetPMTime(pfromEntry->GetPMTime(t));
       } else {
         if (sxValue != updtEntry.GetFieldValue((CItemData::FieldType)i)) {
           bUpdated = true;
-          updtEntry.SetFieldValue((CItemData::FieldType)i, sxValue);
+          if (!CItem::IsTimeField(i))
+            updtEntry.SetFieldValue((CItemData::FieldType)i, sxValue);
+          else
+            updtEntry.CopyTime(i, *pfromEntry); // avoid hassle of parsing locale-time representations
         }
       }
     }
