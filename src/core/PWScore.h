@@ -191,6 +191,11 @@ public:
                    const int &subgroup_object, const int &subgroup_function,
                    int &numUpdated, CReport *pRpt, bool *pbCancel = nullptr);
 
+  // helper function to Sync a single item, returns true if dstItem was updated.
+  // Adds ProcessPolicyName command to multiCommand if a password policy was updated.
+  bool SyncItem(const CItemData& srcItem, CItemData& dstItem,
+                const CItemData::FieldBits& bsFields, MultiCommands &mcmd, PWScore *potherCore);
+
   // Used for Empty Groups during Merge
   bool MatchGroupName(const StringX &stValue, const StringX &subgroup_name,
                       const int &iFunction) const;

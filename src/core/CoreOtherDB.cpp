@@ -998,6 +998,45 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
   return numadded;
 }
 
+bool PWScore::SyncItem(const CItemData& srcItem, CItemData& dstItem, const CItemData::FieldBits& bsFields, MultiCommands& mcmd, PWScore *potherCore)
+{
+  bool bUpdated(false);
+  // Do not try and change GROUPTITLE = 0x00 (use GROUP & TITLE separately) or UUID = 0x01
+  for (size_t i = 2; i < bsFields.size(); i++) {
+
+    if (bsFields.test(i)) {
+      const CItem::FieldType ft = static_cast<CItem::FieldType>(i);
+      const StringX sxValue = srcItem.GetFieldValue(ft);
+
+      // Special processing for password policies (default & named)
+      if (ft == CItemData::POLICYNAME) {
+        // Don't really need the map and vector as only sync'ing 1 entry
+        std::map<StringX, StringX> mapRenamedPolicies;
+        std::vector<StringX> vs_PoliciesAdded;
+
+        const StringX sxSync_DateTime = PWSUtil::GetTimeStamp(true).c_str();
+        StringX sxPolicyName = srcItem.GetPolicyName();
+
+        Command* pPolicyCmd = ProcessPolicyName(potherCore, dstItem,
+          mapRenamedPolicies, vs_PoliciesAdded, sxPolicyName, bUpdated,
+          sxSync_DateTime, IDSC_SYNCPOLICY);
+        if (pPolicyCmd != nullptr)
+          mcmd.Add(pPolicyCmd);
+      } else {
+        if (sxValue != dstItem.GetFieldValue(ft)) {
+          bUpdated = true;
+          if (!CItem::IsTimeField(ft))
+            dstItem.SetFieldValue(ft, sxValue);
+          else
+            dstItem.CopyTime(ft, srcItem); // avoid hassle of parsing locale-time representations
+        }
+      }
+    }
+  }
+  return bUpdated;
+}
+
+
 void PWScore::Synchronize(PWScore *pothercore,
                           const CItemData::FieldBits &bsFields, const bool &subgroup_bset,
                           const stringT &subgroup_name,
@@ -1093,10 +1132,11 @@ void PWScore::Synchronize(PWScore *pothercore,
       // Do not try and change GROUPTITLE = 0x00 (use GROUP & TITLE separately) or UUID = 0x01
       for (size_t i = 2; i < bsSyncFields.size(); i++) {
         if (bsSyncFields.test(i)) {
-          StringX sxValue = otherItem.GetFieldValue(static_cast<CItemData::FieldType>(i));
+          const CItem::FieldType ft = static_cast<CItem::FieldType>(i);
+          StringX sxValue = otherItem.GetFieldValue(ft);
 
           // Special processing for password policies (default & named)
-          if (static_cast<CItemData::FieldType>(i) == CItemData::POLICYNAME) {
+          if (ft == CItemData::POLICYNAME) {
             Command *pPolicyCmd = ProcessPolicyName(pothercore, updItem,
                                    mapRenamedPolicies, vs_PoliciesAdded,
                                    sxValue, bUpdated,
@@ -1104,9 +1144,12 @@ void PWScore::Synchronize(PWScore *pothercore,
             if (pPolicyCmd != nullptr)
               pmulticmds->Add(pPolicyCmd);
           } else {
-            if (sxValue != updItem.GetFieldValue(static_cast<CItemData::FieldType>(i))) {
+            if (sxValue != updItem.GetFieldValue(ft)) {
               bUpdated = true;
-              updItem.SetFieldValue(static_cast<CItemData::FieldType>(i), sxValue);
+              if (!CItem::IsTimeField(ft))
+                updItem.SetFieldValue(ft, sxValue);
+              else
+                updItem.CopyTime(ft, otherItem); // avoid hassle of parsing locale-time representations
             }
           }
         }

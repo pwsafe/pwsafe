@@ -3759,38 +3759,9 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
 
   MultiCommands *pmulticmds = MultiCommands::Create(ptocore);
 
-  bool bUpdated(false);
-  for (size_t i = 0; i < m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.size(); i++) {
-    const CItem::FieldType ft = static_cast<CItem::FieldType>(i);
-
-    if (m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.test(i)) {
-      const StringX sxValue = pfromEntry->GetFieldValue(ft);
-
-      // Special processing for password policies (default & named)
-      if (ft == CItemData::POLICYNAME) {
-        // Don't really need the map and vector as only sync'ing 1 entry
-        std::map<StringX, StringX> mapRenamedPolicies;
-        std::vector<StringX> vs_PoliciesAdded;
-
-        const StringX sxSync_DateTime = PWSUtil::GetTimeStamp(true).c_str();
-        StringX sxPolicyName = pfromEntry->GetPolicyName();
-
-        Command *pPolicyCmd = ptocore->ProcessPolicyName(pfromcore, updtEntry,
-             mapRenamedPolicies, vs_PoliciesAdded, sxPolicyName, bUpdated,
-             sxSync_DateTime, IDSC_SYNCPOLICY);
-        if (pPolicyCmd != NULL)
-          pmulticmds->Add(pPolicyCmd);
-      } else {
-        if (sxValue != updtEntry.GetFieldValue(ft)) {
-          bUpdated = true;
-          if (!CItem::IsTimeField(ft))
-            updtEntry.SetFieldValue(ft, sxValue);
-          else
-            updtEntry.CopyTime(ft, *pfromEntry); // avoid hassle of parsing locale-time representations
-        }
-      }
-    }
-  }
+   bool bUpdated = ptocore->SyncItem(*pfromEntry, updtEntry,
+                                     m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields,
+                                     *pmulticmds, pfromcore);
 
   if (bUpdated) {
     updtEntry.SetStatus(CItemData::ES_MODIFIED);
