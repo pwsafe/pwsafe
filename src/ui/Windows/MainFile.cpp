@@ -3761,11 +3761,13 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
 
   bool bUpdated(false);
   for (size_t i = 0; i < m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.size(); i++) {
+    const CItem::FieldType ft = static_cast<CItem::FieldType>(i);
+
     if (m_SaveAdvValues[CAdvancedDlg::COMPARESYNCH].bsFields.test(i)) {
-      const StringX sxValue = pfromEntry->GetFieldValue((CItemData::FieldType)i);
+      const StringX sxValue = pfromEntry->GetFieldValue(ft);
 
       // Special processing for password policies (default & named)
-      if ((CItemData::FieldType)i == CItemData::POLICYNAME) {
+      if (ft == CItemData::POLICYNAME) {
         // Don't really need the map and vector as only sync'ing 1 entry
         std::map<StringX, StringX> mapRenamedPolicies;
         std::vector<StringX> vs_PoliciesAdded;
@@ -3778,16 +3780,13 @@ LRESULT DboxMain::SynchCompareResult(PWScore *pfromcore, PWScore *ptocore,
              sxSync_DateTime, IDSC_SYNCPOLICY);
         if (pPolicyCmd != NULL)
           pmulticmds->Add(pPolicyCmd);
-      } else if (i == 8) { // XXX hack test theory
-        time_t t;
-        updtEntry.SetPMTime(pfromEntry->GetPMTime(t));
       } else {
-        if (sxValue != updtEntry.GetFieldValue((CItemData::FieldType)i)) {
+        if (sxValue != updtEntry.GetFieldValue(ft)) {
           bUpdated = true;
-          if (!CItem::IsTimeField(i))
-            updtEntry.SetFieldValue((CItemData::FieldType)i, sxValue);
+          if (!CItem::IsTimeField(ft))
+            updtEntry.SetFieldValue(ft, sxValue);
           else
-            updtEntry.CopyTime(i, *pfromEntry); // avoid hassle of parsing locale-time representations
+            updtEntry.CopyTime(ft, *pfromEntry); // avoid hassle of parsing locale-time representations
         }
       }
     }
