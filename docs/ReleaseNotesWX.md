@@ -7,6 +7,13 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
+
+
+PasswordSafe 1.20.1pre Release ???
+==================================
+
+* [GH1408](https://github.com/pwsafe/pwsafe/issues/1408) Time fields (such as password modification time) are now copied over correctly in sync operations between databases.
+
 PasswordSafe 1.20.0 Release 6 November 2024
 ===========================================
 

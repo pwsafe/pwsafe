@@ -998,7 +998,8 @@ int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
   return numadded;
 }
 
-bool PWScore::SyncItem(const CItemData& srcItem, CItemData& dstItem, const CItemData::FieldBits& bsFields, MultiCommands& mcmd, PWScore *potherCore)
+bool PWScore::SyncItem(const CItemData& srcItem, CItemData& dstItem, const CItemData::FieldBits& bsFields,
+                       MultiCommands& mcmd, const PWScore *potherCore)
 {
   bool bUpdated(false);
   // Do not try and change GROUPTITLE = 0x00 (use GROUP & TITLE separately) or UUID = 0x01
@@ -1218,7 +1219,7 @@ void PWScore::Synchronize(PWScore *pothercore,
   pRpt->WriteLine(str_results.c_str());
 }
 
-Command *PWScore::ProcessPolicyName(PWScore *pothercore, CItemData &updtEntry,
+Command *PWScore::ProcessPolicyName(const PWScore *pothercore, CItemData &updtEntry,
                                     std::map<StringX, StringX> &mapRenamedPolicies,
                                     std::vector<StringX> &vs_PoliciesAdded,
                                     StringX &sxOtherPolicyName, bool &bUpdated,

@@ -610,7 +610,7 @@ void SyncStatusPage::OnPageEnter(PageDirection direction)
     auto *othercore = new PWSAuxCore;
     const wxString otherDBPath = m_syncData->otherDB.GetFullPath();
     const int rc = ReadCore(*othercore, otherDBPath, m_syncData->combination,
-                                    false, this);
+                                    false, this, true);
     if (rc == PWScore::SUCCESS) {
       if (DbHasNoDuplicates(othercore) && DbHasNoDuplicates(m_syncData->core)) {
         SetHeaderText(_("Your database is being synchronized with \"") + otherDBPath + _T('"'));
@@ -753,6 +753,8 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
         pws_os::Trace(wxT("Synchronize: Mis-match UUIDs for [%ls:%ls:%ls]\n"), otherGroup.c_str(), otherTitle.c_str(), otherUser.c_str());
       }
 
+          bool bUpdated = currentCore->SyncItem(otherItem, updItem, criteria.GetSelectedFields(), *pmulticmds, otherCore);
+#if 0 // XXX remove when done!
       bool bUpdated(false);
       for (size_t i = 0; i < criteria.TotalFieldsCount(); i++) {
         auto ft = static_cast<CItemData::FieldType>(i);
@@ -764,7 +766,7 @@ void SyncStatusPage::Synchronize(PWScore* currentCore, const PWScore *otherCore)
           }
         }
       }
-
+#endif
       if (!bUpdated)
         continue;
 
