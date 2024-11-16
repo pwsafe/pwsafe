@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx14.dtd">
 <tmx version="1.4">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="6.0.0_0_1bf1729c" segtype="sentence" srclang="en-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="6.0.1_0_42ef0143" segtype="sentence" srclang="en-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -2617,6 +2617,15 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>\2<ept i="0">&lt;/b0&gt;</ept> is replaced by the current authentication code associated with the entry, if an authenticator secret key has been defined for the entry.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20241116T200152Z" creationid="pm_kan" creationdate="20241116T200152Z">
+        <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>\2<ept i="0">&lt;/b0&gt;</ept> заменяется на текущий код двухфакторной аутентификации, соответствующий данному элементу (если для этого элемента указан секретный ключ).
+</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>\\<ept i="0">&lt;/b0&gt;</ept> is replaced by the backslash (\) key.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110620T114210Z">
@@ -2721,9 +2730,9 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>\o<ept i="0">&lt;/b0&gt;</ept> is replaced by the contents of the (possibly multilined) Notes field.</seg>
+        <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>\o<ept i="0">&lt;/b0&gt;</ept> is replaced by the contents of the (possibly multi-line) Notes field.</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110620T113745Z">
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20241116T200225Z" creationid="pm_kan" creationdate="20241116T200225Z">
         <seg><bpt i="0" x="0">&lt;b0&gt;</bpt>\o<ept i="0">&lt;/b0&gt;</ept> заменяется содержимым (возможно многострочным) поля «заметки»:</seg>
       </tuv>
     </tu>
