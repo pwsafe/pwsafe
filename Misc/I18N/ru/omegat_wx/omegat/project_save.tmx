@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE tmx SYSTEM "tmx11.dtd">
 <tmx version="1.1">
-  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="6.0.0_0_1bf1729c" segtype="sentence" srclang="en-US"/>
+  <header creationtool="OmegaT" o-tmf="OmegaT TMX" adminlang="EN-US" datatype="plaintext" creationtoolversion="6.0.1_0_42ef0143" segtype="sentence" srclang="en-US"/>
   <body>
 <!-- Default translations -->
     <tu>
@@ -534,6 +534,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>&amp;Change</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T191756Z" creationid="pm_kan" creationdate="20241116T191756Z">
+        <seg> &amp;Изменить</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>&amp;Change Master Password...</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -750,6 +758,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>&amp;Export</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>&amp;Экспорт</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>&amp;Export Text</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210614T174431Z" creationid="pm_kan" creationdate="20210614T174431Z">
@@ -888,8 +904,8 @@ Unknown error</seg>
       <tuv lang="en-US">
         <seg>&amp;Lock	Ctrl+J</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142301Z" creationid="pm_kan" creationdate="20240508T142301Z">
-        <seg>&amp;Заблокировать	Ctrl+J</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T191306Z" creationid="pm_kan" creationdate="20240508T142301Z">
+        <seg>За&amp;блокировать	Ctrl+J</seg>
       </tuv>
     </tu>
     <tu>
@@ -936,8 +952,8 @@ Unknown error</seg>
       <tuv lang="en-US">
         <seg>&amp;Merge...</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20190503T164440Z" creationid="pm_kan" creationdate="20190503T164440Z">
-        <seg>&amp;Слияние...</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T191428Z" creationid="pm_kan" creationdate="20190503T164440Z">
+        <seg>С&amp;лияние...</seg>
       </tuv>
     </tu>
     <tu>
@@ -1050,6 +1066,14 @@ Unknown error</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Сво&amp;йства</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>&amp;Recent Databases...</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T191212Z" creationid="pm_kan" creationdate="20241116T191212Z">
+        <seg>&amp;Недавние контейнеры...</seg>
       </tuv>
     </tu>
     <tu>
@@ -1402,6 +1426,24 @@ Unknown error</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>(удобочитаемые символы)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>&lt;пароль&gt; ...</note>
+      <tuv lang="en-US">
+        <seg>(Expired on %s)</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T190456Z" creationid="pm_kan" creationdate="20241116T190456Z">
+        <seg>(Истёк %s)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>&lt;пароль&gt; ...</note>
+      <tuv lang="en-US">
+        <seg>(Next expiration on %s)</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T190415Z" creationid="pm_kan" creationdate="20241116T190415Z">
+        <seg>(Истечёт %s)</seg>
       </tuv>
     </tu>
     <tu>
@@ -2659,6 +2701,14 @@ This version of PasswordSafe does not support more than %d entries in a database
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>All fields marked with an asterisk (*) are required.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T185305Z" creationid="pm_kan" creationdate="20241116T185305Z">
+        <seg>Помеченные звёздочкой (*) поля являются обязательными.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>All files (*.*)|*.*</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20200823T123431Z" creationid="pm_kan" creationdate="20200823T123431Z">
@@ -3116,6 +3166,14 @@ symbols, hexadecimal) must be permitted.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210131T172647Z" creationid="pm_kan" creationdate="20210131T172647Z">
         <seg>Перейти по ссылке</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Browse for an existing password database</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T192119Z" creationid="pm_kan" creationdate="20241116T192119Z">
+        <seg>Выбрать существующий контейнер</seg>
       </tuv>
     </tu>
     <tu>
@@ -3793,6 +3851,15 @@ offset approximately at %d</seg>
       </tuv>
     </tu>
     <tu>
+      <note>в диалоге изменения элемента</note>
+      <tuv lang="en-US">
+        <seg>Confirm</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T185805Z" creationid="pm_kan" creationdate="20241116T185805Z">
+        <seg>Подтверждение:</seg>
+      </tuv>
+    </tu>
+    <tu>
       <tuv lang="en-US">
         <seg>Confirm Close Dialog</seg>
       </tuv>
@@ -3838,6 +3905,14 @@ offset approximately at %d</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T103644Z">
         <seg>Подтверждение:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Confirmation</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T191735Z" creationid="pm_kan" creationdate="20241116T191735Z">
+        <seg>Подтверждение</seg>
       </tuv>
     </tu>
     <tu>
@@ -4485,6 +4560,14 @@ Locked by</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Create a new password database</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T192132Z" creationid="pm_kan" creationdate="20241116T192132Z">
+        <seg>Создать новый контейнер</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Create intermediate backups (.ibak) before saving</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -4617,6 +4700,15 @@ Locked by</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T115631Z">
         <seg>Ctrl+R</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>для политики истечения пароля</note>
+      <tuv lang="en-US">
+        <seg>Current Setting:</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T185925Z" creationid="pm_kan" creationdate="20241116T185925Z">
+        <seg>Текущие настройки:</seg>
       </tuv>
     </tu>
     <tu>
@@ -5231,6 +5323,14 @@ Action:</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Double-Click Action</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>По двойному клику</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Double-Click Action:</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20190503T181751Z">
@@ -5679,6 +5779,14 @@ Action:</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Enter new master password and click on bottom Yubikey button</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T192045Z" creationid="pm_kan" creationdate="20241116T192045Z">
+        <seg>Введите новый пароль для контейнера и щёлкните по нижней кнопке YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Enter new safe combination (if any) and click on bottom Yubikey button</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20130915T181958Z">
@@ -5691,6 +5799,14 @@ Action:</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142430Z" creationid="pm_kan" creationdate="20240508T142430Z">
         <seg>Введите старый пароль для контейнера (если был задан) и щёлкните по кнопке YubiKey</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Enter old master password and click on top Yubikey button</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T191659Z" creationid="pm_kan" creationdate="20241116T191659Z">
+        <seg>Введите старый пароль для контейнера и щёлкните по верхней кнопке YubiKey</seg>
       </tuv>
     </tu>
     <tu>
@@ -6162,6 +6278,24 @@ Action:</seg>
       </tuv>
     </tu>
     <tu>
+      <note>&lt;пароль&gt; истекает ... здесь %d всегда 1 (по тексту 1 лишнее, но убрать нельзя из-за проверок корректности .po)</note>
+      <tuv lang="en-US">
+        <seg>Every %d day from last change</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T194830Z" creationid="pm_kan" creationdate="20241116T190334Z">
+        <seg>Через %d день после изменения</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>&lt;пароль&gt; ...</note>
+      <tuv lang="en-US">
+        <seg>Every %d days from last change</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T190401Z" creationid="pm_kan" creationdate="20241116T190401Z">
+        <seg>Через %d дней после изменения</seg>
+      </tuv>
+    </tu>
+    <tu>
       <tuv lang="en-US">
         <seg>Example:</seg>
       </tuv>
@@ -6191,6 +6325,33 @@ Action:</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Развернуть все</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>&lt;пароль&gt; истёк</note>
+      <tuv lang="en-US">
+        <seg>Expired on %s</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T190146Z" creationid="pm_kan" creationdate="20241116T190146Z">
+        <seg>Истёк %s</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>&lt;пароль&gt; истекает через 1 день (%d всегда 1, подстановка в коде для единообразия)</note>
+      <tuv lang="en-US">
+        <seg>Expires in %d day (%s)</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T190101Z" creationid="pm_kan" creationdate="20241116T190101Z">
+        <seg>Истекает через %d день (%s) </seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>&lt;пароль&gt; истекает ...</note>
+      <tuv lang="en-US">
+        <seg>Expires in %d days (%s)</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T190120Z" creationid="pm_kan" creationdate="20241116T190120Z">
+        <seg>Истекает через %d дней (%s)</seg>
       </tuv>
     </tu>
     <tu>
@@ -7987,6 +8148,15 @@ or a corrupt database.</seg>
       </tuv>
     </tu>
     <tu>
+      <note>в диалоге экспорта в текст</note>
+      <tuv lang="en-US">
+        <seg>Line Delimiter</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T190626Z" creationid="pm_kan" creationdate="20241116T190626Z">
+        <seg>Разделитель строк</seg>
+      </tuv>
+    </tu>
+    <tu>
       <tuv lang="en-US">
         <seg>Line delimiter in Notes field:</seg>
       </tuv>
@@ -8048,6 +8218,14 @@ or a corrupt database.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Блокировать контейнер при блокировке компьютера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Lock password database on workstation lock (Not Implemented)</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T191041Z" creationid="pm_kan" creationdate="20241116T191041Z">
+        <seg>Блокировать контейнер при блокировке компьютера (не реализовано)</seg>
       </tuv>
     </tu>
     <tu>
@@ -8579,6 +8757,15 @@ or a corrupt database.</seg>
       </tuv>
     </tu>
     <tu>
+      <note>&lt;пароль&gt; ...</note>
+      <tuv lang="en-US">
+        <seg>Never Expires</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T190517Z" creationid="pm_kan" creationdate="20241116T190517Z">
+        <seg>Действует бессрочно</seg>
+      </tuv>
+    </tu>
+    <tu>
       <tuv lang="en-US">
         <seg>New</seg>
       </tuv>
@@ -8592,6 +8779,14 @@ or a corrupt database.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Новая группа</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>New Master Password</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T191719Z" creationid="pm_kan" creationdate="20241116T191719Z">
+        <seg>Новый пароль</seg>
       </tuv>
     </tu>
     <tu>
@@ -9077,6 +9272,14 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>OK</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Old Master Password</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T191717Z" creationid="pm_kan" creationdate="20241116T191717Z">
+        <seg>Старый пароль</seg>
       </tuv>
     </tu>
     <tu>
@@ -10324,6 +10527,58 @@ Content-Transfer-Encoding: 8bit</seg>
 Report-Msgid-Bugs-To: 
 POT-Creation-Date: 2024-05-08 22:30+0300
 PO-Revision-Date: 2024-05-08 22:30+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: none
+Language: ru_RU
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Project-Id-Version: 
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2024-11-16 21:49+0300
+PO-Revision-Date: 2024-11-16 21:30+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team:
+Language: ru
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T185115Z" creationid="pm_kan" creationdate="20241116T185115Z">
+        <seg>Project-Id-Version: Password Safe
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2024-11-16 21:00+0300
+PO-Revision-Date: 2024-11-16 21:00+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team: none
+Language: ru_RU
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Project-Id-Version: 
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2024-11-16 22:29+0300
+PO-Revision-Date: 2024-11-16 21:30+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team:
+Language: ru
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T194844Z" creationid="pm_kan" creationdate="20241116T194844Z">
+        <seg>Project-Id-Version: Password Safe
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2024-11-16 21:00+0300
+PO-Revision-Date: 2024-11-16 21:00+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: none
 Language: ru_RU
@@ -12625,6 +12880,14 @@ combination:</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Set Master Password</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T185157Z" creationid="pm_kan" creationdate="20241116T185157Z">
+        <seg>Задать пароль для контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Set Password History Filters</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210615T163723Z" creationid="pm_kan" creationdate="20210615T163723Z">
@@ -12725,6 +12988,14 @@ combination:</seg>
 Action:</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20150418T091026Z">
+        <seg>Действие по Shift␣+ двойной␣клик:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Shift-Double-Click Action</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T185816Z" creationid="pm_kan" creationdate="20241116T185816Z">
         <seg>Действие по Shift␣+ двойной␣клик:</seg>
       </tuv>
     </tu>
@@ -13046,6 +13317,14 @@ Action:</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Запускать Password Safe при входе в систему</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Start Password Safe at Login (Not Implemented)</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T191047Z" creationid="pm_kan" creationdate="20241116T191047Z">
+        <seg>Запускать Password Safe при входе в систему (не реализовано)</seg>
       </tuv>
     </tu>
     <tu>
@@ -13428,6 +13707,14 @@ database with matching entries from the other database.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>The Master Password will be used to protect the new password database file.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Указанный пароль будет использован для защиты нового контейнера.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>The Master Password you enter will be used to encrypt the password database file.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T143159Z" creationid="pm_kan" creationdate="20240508T143159Z">
@@ -13573,6 +13860,14 @@ has duplicate entries with the same group/title/user combination.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Содержимое контейнеров совпадает (сравнивались только указанные поля или поля по умолчанию)!</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>The delimiter in the Notes field, also used to replace periods in the Title field.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20241116T191024Z" creationid="pm_kan" creationdate="20241116T191024Z">
+        <seg>Разделитель строк для поля заметок, также используется для замены точек в заголовке.</seg>
       </tuv>
     </tu>
     <tu>
