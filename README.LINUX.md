@@ -56,20 +56,29 @@ https://slackbuilds.org, courtesy of rfmae (search for passwordsafe).
 
 ## Installation on Arch
 The package description file (PKGBUILD) can be dowloaded via
-'''
+```
 $ git clone https://aur.archlinux.org/passwordsafe.git
-'''
+```
 After downloading, cd to the passwordsafe directory and run
-'''
+```
 $ makepkg
-'''
+```
 to download the code, compile and package it.
 Finally, run
-'''
+```
 $ sudo pacman -U passwordsafe-*.zst
-'''
+```
 to install the package on your machine. 
+
 For more details on building and installing packages on Arch, see https://wiki.archlinux.org/title/Arch_User_Repository
+
+## Flatpak
+Finally, Password Safe may be installed as a flatpak from Flathub:
+```
+$ flatpak install flathub org.pwsafe.pwsafe
+$ flatpak run org.pwsafe.pwsafe
+```
+See https://flathub.org/setup to get started using flatpak.
 
 ## Reporting Bugs
 Please submit bugs via https://sourceforge.net/p/passwordsafe/bugs/.
