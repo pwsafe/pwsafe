@@ -54,6 +54,23 @@ $ sudo emerge app-admin/passwordsafe
 Slackware users can download SlackBuild for Password Safe from
 https://slackbuilds.org, courtesy of rfmae (search for passwordsafe).
 
+## Installation on Arch
+The package description file (PKGBUILD) can be dowloaded via
+'''
+$ git clone https://aur.archlinux.org/passwordsafe.git
+'''
+After downloading, cd to the passwordsafe directory and run
+'''
+$ makepkg
+'''
+to download the code, compile and package it.
+Finally, run
+'''
+$ sudo pacman -U passwordsafe-*.zst
+'''
+to install the package on your machine. 
+For more details on building and installing packages on Arch, see https://wiki.archlinux.org/title/Arch_User_Repository
+
 ## Reporting Bugs
 Please submit bugs via https://sourceforge.net/p/passwordsafe/bugs/.
 Set the Category field to Linux to help ensure timely response.
