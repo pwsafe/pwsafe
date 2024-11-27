@@ -26,6 +26,18 @@
       <caption>Sample tree view</caption>
       <image>https://pwsafe.org/images/wxTreeview.png</image>
     </screenshot>
+    <screenshot>
+      <caption>Sample tree view dark mode</caption>
+      <image>https://pwsafe.org/images/wxTreeviewDarkMode.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Program options</caption>
+      <image>https://pwsafe.org/images/wxMiscOptions.png</image>
+    </screenshot>
+    <screenshot>
+      <caption>Password Policy</caption>
+      <image>https://pwsafe.org/images/wxPasswordPolicy.png</image>
+    </screenshot>
   </screenshots>
    <releases>
     <release version="v1.20.0" date="2024-11-06">
