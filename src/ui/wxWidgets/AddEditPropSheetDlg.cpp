@@ -2446,8 +2446,15 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
   time_t t;
   time(&t);
   if (changes & Changes::Password) {
-    m_Item.UpdatePassword(tostringx(m_BasicPasswordTextCtrl->GetValue()));
-    m_Item.SetPMTime(t);
+    BaseEntryParms pl;
+    auto password = tostringx(m_BasicPasswordTextCtrl->GetValue());
+    if (m_Core.ParseBaseEntryPWD(password, pl) && (pl.ibasedata > 0)) {
+      m_Item.SetAlias();
+      m_Item.SetBaseUUID(pl.base_uuid);
+    } else {
+      m_Item.UpdatePassword(password);
+      m_Item.SetPMTime(t);
+    }
   }
   if ((changes & ~Changes::Attachment) != Changes::None) { // anything besides attachment
     m_Item.SetRMTime(t);
