@@ -2582,7 +2582,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
     BaseEntryParms pl;
     pl.InputType = CItemData::ET_NORMAL;
 
-    // Potentially remove outer single square brackets as ParseBaseEntryPWD expects only
+    // Potentially remove outer single square brackets as ParseAliasPassword expects only
     // one set of square brackets (processing import and user edit of entries)
     if (cs_tmp.substr(0, 2) == L"[[" &&
         cs_tmp.substr(cs_tmp.length() - 2) == L"]]") {
@@ -2590,7 +2590,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
       pl.InputType = CItemData::ET_ALIAS;
     }
 
-    // Potentially remove tilde as ParseBaseEntryPWD expects only
+    // Potentially remove tilde as ParseAliasPassword expects only
     // one set of square brackets (processing import and user edit of entries)
     if (cs_tmp.substr(0, 2) == L"[~" &&
         cs_tmp.substr(cs_tmp.length() - 2) == L"~]") {
@@ -2604,7 +2604,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
       pl.base_uuid = ci_temp.GetBaseUUID();
       pl.TargetType = CItemData::ET_NORMAL;
     } else {
-      m_core.ParseBaseEntryPWD(cs_tmp, pl);
+      m_core.ParseAliasPassword(cs_tmp, pl);
     }
     if (pl.ibasedata > 0) {
       // Add to pwlist
@@ -2617,7 +2617,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
         ItemListIter iter = m_core.Find(pl.base_uuid);
         ASSERT(iter != End());
         if (pl.TargetType == CItemData::ET_ALIAS) {
-          // This base is in fact an alias. ParseBaseEntryPWD already found 'proper base'
+          // This base is in fact an alias. ParseAliasPassword already found 'proper base'
           // So dropped entry will point to the 'proper base' and tell the user.
           cs_msg.Format(IDS_DDBASEISALIAS, static_cast<LPCWSTR>(sxgroup.c_str()),
                         static_cast<LPCWSTR>(sxtitle.c_str()),

@@ -2448,7 +2448,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
   if (changes & Changes::Password) {
     BaseEntryParms pl;
     auto password = tostringx(m_BasicPasswordTextCtrl->GetValue());
-    if (m_Core.ParseBaseEntryPWD(password, pl) && (pl.ibasedata > 0)) {
+    if (m_Core.ParseAliasPassword(password, pl) && (pl.ibasedata > 0)) {
       m_Item.SetAlias();
       m_Item.SetBaseUUID(pl.base_uuid);
     } else {

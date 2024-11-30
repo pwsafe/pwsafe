@@ -25,7 +25,7 @@
 
 #include "coredefs.h"
 
-// Parameter list for ParseBaseEntryPWD
+// Parameter list for ParseAliasPassword
 struct BaseEntryParms {
   // All fields except "InputType" are 'output'.
   StringX csPwdGroup;
@@ -344,7 +344,7 @@ public:
                               UUIDVector &dependentslist, 
                               const CItemData::EntryType type);
   // Takes apart a 'special' password into its components:
-  bool ParseBaseEntryPWD(const StringX &passwd, BaseEntryParms &pl);
+  bool ParseAliasPassword(const StringX &passwd, BaseEntryParms &pl);
 
   const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const;
   CItemData *GetBaseEntry(const CItemData *pAliasOrSC);

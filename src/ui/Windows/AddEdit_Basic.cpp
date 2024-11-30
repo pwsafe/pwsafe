@@ -1600,7 +1600,7 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
   BaseEntryParms pl;
   pl.InputType = InputType;
 
-  bool bPswdIsInAliasFormat = M_pcore()->ParseBaseEntryPWD(password, pl);
+  bool bPswdIsInAliasFormat = M_pcore()->ParseAliasPassword(password, pl);
 
   // Copy data back before possibly returning
   ibasedata = pl.ibasedata;
