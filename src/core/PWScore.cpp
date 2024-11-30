@@ -3154,7 +3154,7 @@ void PWScore::GetAllDependentEntries(const CUUID &base_uuid, UUIDVector &tlist,
   }
 }
 
-bool PWScore::ParseBaseEntryPWD(const StringX &Password, BaseEntryParms &pl)
+bool PWScore::ParseAliasPassword(const StringX &Password, BaseEntryParms &pl)
 {
   // pl.ibasedata is:
   //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
