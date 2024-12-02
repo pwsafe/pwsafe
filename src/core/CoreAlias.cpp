@@ -28,10 +28,12 @@ bool PWScore::ParseAliasPassword(const StringX& Password, BaseEntryParms& pl)
 
   pl.bMultipleEntriesFound = false;
 
-  // Take a copy of the Password field to do the counting!
-  StringX passwd(Password);
+  if (Password.empty())
+    return false;
 
-  int num_colonsP1 = Replace(passwd, _T(':'), _T(';')) + 1;
+  // number of colons + 1 is the possible number of GTU elements
+  int num_colonsP1 = static_cast<int>(std::count(Password.begin(), Password.end(), _T(':'))) + 1;
+
   if ((Password[0] == _T('[')) &&
     (Password[Password.length() - 1] == _T(']')) &&
     num_colonsP1 <= 3) {
@@ -81,7 +83,7 @@ bool PWScore::ParseAliasPassword(const StringX& Password, BaseEntryParms& pl)
         pl.base_uuid = iter->second.GetBaseUUID();
       }
       else {
-        // This may not be a valid combination of source+target entries - sorted out by caller
+        // This may not be a valid combination of source+target entries - sorted out by CheckAliasValidity()
         pl.base_uuid = iter->second.GetUUID();
       }
       // Valid and found
@@ -95,4 +97,10 @@ bool PWScore::ParseAliasPassword(const StringX& Password, BaseEntryParms& pl)
   }
   pl.ibasedata = 0; // invalid password format for an alias
   return false;
+}
+
+
+bool PWScore::CheckAliasValidity(const BaseEntryParms& pl, StringX &errmess)
+{
+  return true;
 }
