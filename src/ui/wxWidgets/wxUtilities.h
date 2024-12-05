@@ -440,12 +440,20 @@ namespace wxUtilities
    * @return whether the environment variable is set to 'x11'.
    */
   bool IsDisplayManagerX11();
+
   /**
    * @brief Checks if virtual keyboard is supported.
    * 
    * @return IsDisplayManagerX11() on Linux, true on Mac, and false on Windows.
    */
   bool IsVirtualKeyboardSupported();
+
+  /**
+   * @brief Disables a control if Wayland is detected.
+   * 
+   * @param control the control to disable.
+   */
+  void DisableForWayland(wxWindow* control);
 }
 
 // Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash
