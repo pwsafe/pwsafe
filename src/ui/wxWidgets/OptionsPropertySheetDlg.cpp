@@ -562,18 +562,22 @@ wxPanel* OptionsPropertySheetDlg::CreateMiscellaneousPanel(const wxString& title
   itemFlexGridSizer50->Add(m_Misc_ShiftDoubleClickActionCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer56Static = new wxStaticBox(itemPanel44, wxID_ANY, _("Autotype"));
+  wxUtilities::DisableForWayland(itemStaticBoxSizer56Static);
   auto *itemStaticBoxSizer56 = new wxStaticBoxSizer(itemStaticBoxSizer56Static, wxVERTICAL);
   itemBoxSizer45->Add(itemStaticBoxSizer56, 0, wxEXPAND|wxALL, 5);
   wxCheckBox* misc_AutotypeMinimizeCB = new wxCheckBox( itemPanel44, ID_CHECKBOX23, _("Minimize after Autotype"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxUtilities::DisableForWayland(misc_AutotypeMinimizeCB);
   misc_AutotypeMinimizeCB->SetValue(false);
   itemStaticBoxSizer56->Add(misc_AutotypeMinimizeCB, 0, wxALIGN_LEFT|wxALL, 5);
 
   auto *itemBoxSizer58 = new wxBoxSizer(wxHORIZONTAL);
   itemStaticBoxSizer56->Add(itemBoxSizer58, 0, wxEXPAND|wxALL, 0);
   wxStaticText* itemStaticText59 = new wxStaticText( itemPanel44, wxID_STATIC, _("Default Autotype string:"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxUtilities::DisableForWayland(itemStaticText59);
   itemBoxSizer58->Add(itemStaticText59, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxTextCtrl* misc_AutotypeStringTXT = new wxTextCtrl( itemPanel44, ID_TEXTCTRL11, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  wxUtilities::DisableForWayland(misc_AutotypeStringTXT);
   itemBoxSizer58->Add(misc_AutotypeStringTXT, 2, wxEXPAND|wxALL, 5);
   itemBoxSizer58->AddStretchSpacer();
 
@@ -1402,6 +1406,7 @@ void OptionsPropertySheetDlg::OnPWHistApply(wxCommandEvent& WXUNUSED(evt))
 void OptionsPropertySheetDlg::OnUpdateUI(wxUpdateUIEvent& evt)
 {
   bool dbIsReadOnly = m_core.IsReadOnly();
+  const bool isX11  = wxUtilities::IsDisplayManagerX11();
 
   switch (evt.GetId()) {
   /////////////////////////////////////////////////////////////////////////////
@@ -1439,7 +1444,7 @@ void OptionsPropertySheetDlg::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(!dbIsReadOnly);
       break;
     case ID_TEXTCTRL11:
-      evt.Enable(!dbIsReadOnly);
+      evt.Enable(isX11 && !dbIsReadOnly);
       break;
     case ID_CHECKBOX24:
       evt.Enable(!dbIsReadOnly);
