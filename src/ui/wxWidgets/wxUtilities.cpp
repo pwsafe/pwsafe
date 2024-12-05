@@ -351,6 +351,14 @@ bool wxUtilities::IsVirtualKeyboardSupported()
 #endif
 }
 
+void wxUtilities::DisableForWayland(wxWindow* window)
+{
+  if (!wxUtilities::IsDisplayManagerX11()) {
+    window->Disable();
+    window->SetToolTip(_("Not supported by Wayland"));
+  }
+}
+
 // Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable()
