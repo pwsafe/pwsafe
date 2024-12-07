@@ -2625,7 +2625,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
           gmb.AfxMessageBox(cs_msg, NULL, MB_OK);
         } else if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
           // Only normal or alias base allowed as target
-          cs_msg.Format(IDS_ABASEINVALID, static_cast<LPCWSTR>(sxgroup.c_str()),
+          cs_msg.Format(IDSC_ABASEINVALID, static_cast<LPCWSTR>(sxgroup.c_str()),
                         static_cast<LPCWSTR>(sxtitle.c_str()),
                         static_cast<LPCWSTR>(sxuser.c_str()));
           gmb.AfxMessageBox(cs_msg, NULL, MB_OK);

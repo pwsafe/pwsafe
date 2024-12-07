@@ -1586,6 +1586,7 @@ error_exit:
   return 0L;
 }
 
+#include "core.h" // XXX temporary until refactor finished
 bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title,
                                       const StringX &user, const StringX &password,
                                       const bool bIsEdit, const CItemData::EntryType InputType, 
@@ -1616,7 +1617,7 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
     // In Edit, check user isn't changing entry to point to itself (circular/self reference)
     // Can't happen during Add as already checked entry does not exist so if accepted the
     // password would be treated as an unusual "normal" password
-    gmb.AfxMessageBox(IDS_ALIASCANTREFERTOITSELF, MB_OK);
+    gmb.AfxMessageBox(IDSC_ALIASCANTREFERTOITSELF, MB_OK);
     return false;
   }
 
@@ -1639,16 +1640,16 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
     }
 
     CString cs_msg;
-    const CString cs_msgA(MAKEINTRESOURCE(IDS_ALIASNOTFOUNDA));
-    const CString cs_msgZ(MAKEINTRESOURCE(IDS_ALIASNOTFOUNDZ));
+    const CString cs_msgA(MAKEINTRESOURCE(IDSC_ALIASNOTFOUNDA));
+    const CString cs_msgZ(MAKEINTRESOURCE(IDSC_ALIASNOTFOUNDZ));
     INT_PTR rc(IDNO);
     switch (pl.ibasedata) {
       case -1: // [t] - must be title as this is the only mandatory field
         if (pl.bMultipleEntriesFound)
-          cs_msg.Format(IDS_ALIASNOTFOUND0A,
+          cs_msg.Format(IDSC_ALIASNOTFOUND0A,
                         pl.csPwdTitle.c_str());  // multiple entries exist with title=x
         else
-          cs_msg.Format(IDS_ALIASNOTFOUND0B,
+          cs_msg.Format(IDSC_ALIASNOTFOUND0B,
                         pl.csPwdTitle.c_str());  // no entry exists with title=x
         rc = gmb.AfxMessageBox(cs_msgA + cs_msg + cs_msgZ,
                                NULL, MB_YESNO | MB_DEFBUTTON2);
@@ -1656,13 +1657,13 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
       case -2: // [g,t], [t:u]
         // In this case the 2 fields from the password are in Group & Title
         if (pl.bMultipleEntriesFound)
-          cs_msg.Format(IDS_ALIASNOTFOUND1A, 
+          cs_msg.Format(IDSC_ALIASNOTFOUND1A, 
                         pl.csPwdGroup.c_str(),
                         pl.csPwdTitle.c_str(),
                         pl.csPwdGroup.c_str(),
                         pl.csPwdTitle.c_str());
         else
-          cs_msg.Format(IDS_ALIASNOTFOUND1B, 
+          cs_msg.Format(IDSC_ALIASNOTFOUND1B, 
                         pl.csPwdGroup.c_str(),
                         pl.csPwdTitle.c_str(),
                         pl.csPwdGroup.c_str(),
@@ -1677,24 +1678,24 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
         const bool bUE = pl.csPwdUser.empty();
         if (bTE) {
           // Title is mandatory for all entries!
-          gmb.AfxMessageBox(IDS_BASEHASNOTITLE, MB_OK);
+          gmb.AfxMessageBox(IDSC_BASEHASNOTITLE, MB_OK);
           rc = IDNO;
           break;
         } else if (!bGE && !bUE)  // [x:y:z]
-          cs_msg.Format(IDS_ALIASNOTFOUND2A, 
+          cs_msg.Format(IDSC_ALIASNOTFOUND2A, 
                         pl.csPwdGroup.c_str(), 
                         pl.csPwdTitle.c_str(), 
                         pl.csPwdUser.c_str());
         else if (!bGE && bUE)     // [x:y:]
-          cs_msg.Format(IDS_ALIASNOTFOUND2B, 
+          cs_msg.Format(IDSC_ALIASNOTFOUND2B, 
                         pl.csPwdGroup.c_str(), 
                         pl.csPwdTitle.c_str());
         else if (bGE && !bUE)     // [:y:z]
-          cs_msg.Format(IDS_ALIASNOTFOUND2C, 
+          cs_msg.Format(IDSC_ALIASNOTFOUND2C, 
                         pl.csPwdTitle.c_str(), 
                         pl.csPwdUser.c_str());
         else if (bGE && bUE)      // [:y:]
-          cs_msg.Format(IDS_ALIASNOTFOUND0B, 
+          cs_msg.Format(IDSC_ALIASNOTFOUND0B, 
                         pl.csPwdTitle.c_str());
 
         rc = gmb.AfxMessageBox(cs_msgA + cs_msg + cs_msgZ, 
@@ -1714,7 +1715,7 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
     if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
       // An alias can only point to a normal entry or an alias base entry
       CString cs_msg;
-      cs_msg.Format(IDS_BASEISALIAS, 
+      cs_msg.Format(IDSC_BASEISALIAS, 
                     pl.csPwdGroup.c_str(),
                     pl.csPwdTitle.c_str(),
                     pl.csPwdUser.c_str());
@@ -1724,7 +1725,7 @@ bool CAddEdit_Basic::CheckNewPassword(const StringX &group, const StringX &title
       if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
         // An alias can only point to a normal entry or an alias base entry
         CString cs_msg;
-        cs_msg.Format(IDS_ABASEINVALID, 
+        cs_msg.Format(IDSC_ABASEINVALID, 
                       pl.csPwdGroup.c_str(),
                       pl.csPwdTitle.c_str(), 
                       pl.csPwdUser.c_str());

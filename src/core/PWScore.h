@@ -346,7 +346,7 @@ public:
   // Takes apart a 'special' password into its components:
   bool ParseAliasPassword(const StringX &passwd, BaseEntryParms &pl);
   // Check an Alias
-  bool PWScore::CheckAliasValidity(const BaseEntryParms& pl, StringX& errmess);
+  bool CheckAliasValidity(const BaseEntryParms& pl, const StringX& selfGTU, StringX& errmess, bool &yesNoError);
 
   const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const;
   CItemData *GetBaseEntry(const CItemData *pAliasOrSC);

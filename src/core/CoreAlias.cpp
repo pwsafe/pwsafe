@@ -10,6 +10,7 @@
 * CoreAlias.cpp - parsing and validating alias 'passwords'
 */
 
+#include "core.h"
 #include "PWScore.h"
 
 
@@ -99,8 +100,158 @@ bool PWScore::ParseAliasPassword(const StringX& Password, BaseEntryParms& pl)
   return false;
 }
 
+/*
+ *struct BaseEntryParms {
+  // All fields except "InputType" are 'output'.
+  StringX csPwdGroup;
+  StringX csPwdTitle;
+  StringX csPwdUser;
+  pws_os::CUUID base_uuid;
+  CItemData::EntryType InputType;
+  CItemData::EntryType TargetType;
+  int ibasedata;  // > 0 -> base entry found, 0 -> not alias format, < 0 -> base entry not found
+  bool bMultipleEntriesFound; // found but not unique
+ */
 
-bool PWScore::CheckAliasValidity(const BaseEntryParms& pl, StringX &errmess)
+/**
+ * Check that an alias password is Kosher
+ * @param pl - the base entry parameters, as returned by ParseAliasPassword() ???
+ * @param selfGTU - the [g:t:u] string of the current entry, to test for self-reference.
+ * @param errmess - if return value is false, this is the text to display to the user
+ * @return - true if alias is valid, false if there's a problem
+ */
+bool PWScore::CheckAliasValidity(const BaseEntryParms& pl, const StringX &selfGTU, StringX &errmess, bool& yesNoError)
 {
-  return true;
+  yesNoError = false; // true means caller should prompt user with Yes/No dialog with errmess, accept alias if Yes returned.
+
+  if (pl.ibasedata == 0) {// shouldn't call me in this case, but whatever
+    ASSERT(0);
+    errmess = L"Internal Error - CheckAliasValidity called when it shouldn't have been";
+    return false;
+  }
+  // Parsed correctly, let's see what we have
+  if (pl.ibasedata > 0  && !pl.bMultipleEntriesFound)
+  {
+    // are we self-referential?
+    if (selfGTU == L"[" + pl.csPwdGroup + L":" + pl.csPwdTitle + L":" + pl.csPwdUser + L"]")
+    {
+      LoadAString(errmess, IDSC_ALIASCANTREFERTOITSELF);
+      return false;
+    }
+    // Now verify that the base entry indeed exists and is a regular entry
+
+  }
+
+
+  if (pl.ibasedata > 0) { // base entry exists
+    if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
+      // An alias can only point to a normal entry or an alias base entry
+      Format(errmess, IDSC_BASEISALIAS,
+        pl.csPwdGroup.c_str(), pl.csPwdTitle.c_str(), pl.csPwdUser.c_str());
+      return false;
+    }
+    else { // <= 0, no base entry. What's TargetType in this case??
+      if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
+        // An alias can only point to a normal entry or an alias base entry
+        Format(errmess, IDSC_ABASEINVALID,
+          pl.csPwdGroup.c_str(), pl.csPwdTitle.c_str(), pl.csPwdUser.c_str());
+        return false;
+      }
+      else {
+        return true;
+      }
+    }
+  }
+
+  ASSERT(pl.ibasedata < 0); // otherwise we should have returned by now
+
+#if 0 // no longer relevant, as only called for alias entry candidate
+  if (InputType == CItemData::ET_SHORTCUT) {
+    if (pl.bMultipleEntriesFound) // originally for InputType == CItemData::ET_SHORTCUT - don't think we need this anymore!
+    {
+      LoadAString(errmess, IDS_MULTIPLETARGETSFOUND);
+    } else
+    {
+      LoadAString(errmess, IDS_TARGETNOTFOUND);
+    }
+#endif
+
+    // ibasedata:
+    //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
+    //   0: password not in alias format
+    //  -n: password contains (n-1) colons but base entry NOT found (n = 1, 2 or 3)
+
+    // "bMultipleEntriesFound" is set if no "unique" base entry could be found and
+    // is only valid if n = -1 or -2.
+
+    if (pl.ibasedata < 0) {
+      StringX msgA, msgZ;
+      LoadAString(msgA, IDSC_ALIASNOTFOUNDA);
+      LoadAString(msgZ, IDSC_ALIASNOTFOUNDZ);
+
+      switch (pl.ibasedata) {
+      case -1: // [t] - must be title as this is the only mandatory field
+        if (pl.bMultipleEntriesFound)
+          Format(errmess, IDSC_ALIASNOTFOUND0A, pl.csPwdTitle.c_str());  // multiple entries exist with title=x
+        else
+          Format(errmess, IDSC_ALIASNOTFOUND0B, pl.csPwdTitle.c_str());  // no entry exists with title=x
+        errmess = msgA + errmess + msgZ;
+        yesNoError = true;
+        break;
+      case -2: // [g,t], [t:u]
+        // In this case the 2 fields from the password are in Group & Title
+        if (pl.bMultipleEntriesFound)
+          Format(errmess, IDSC_ALIASNOTFOUND1A,
+                  pl.csPwdGroup.c_str(),
+                  pl.csPwdTitle.c_str(),
+                  pl.csPwdGroup.c_str(),
+                  pl.csPwdTitle.c_str());
+        else
+          Format(errmess, IDSC_ALIASNOTFOUND1B,
+                  pl.csPwdGroup.c_str(),
+                  pl.csPwdTitle.c_str(),
+                  pl.csPwdGroup.c_str(),
+                  pl.csPwdTitle.c_str());
+        errmess = msgA + errmess + msgZ;
+        yesNoError = true;
+        break;
+      case -3: // [g:t:u], [g:t:], [:t:u], [:t:] (title cannot be empty)
+      {
+        const bool bGE = pl.csPwdGroup.empty();
+        const bool bTE = pl.csPwdTitle.empty();
+        const bool bUE = pl.csPwdUser.empty();
+        if (bTE) {
+          // Title is mandatory for all entries!
+          LoadAString(errmess, IDSC_BASEHASNOTITLE);
+          break;
+        }
+        if (!bGE && !bUE)  // [x:y:z]
+          Format(errmess, IDSC_ALIASNOTFOUND2A,
+            pl.csPwdGroup.c_str(),
+            pl.csPwdTitle.c_str(),
+            pl.csPwdUser.c_str());
+        else if (!bGE && bUE)     // [x:y:]
+          Format(errmess, IDSC_ALIASNOTFOUND2B,
+            pl.csPwdGroup.c_str(),
+            pl.csPwdTitle.c_str());
+        else if (bGE && !bUE)     // [:y:z]
+          Format(errmess, IDSC_ALIASNOTFOUND2C,
+            pl.csPwdTitle.c_str(),
+            pl.csPwdUser.c_str());
+        else if (bGE && bUE)      // [:y:]
+          Format(errmess, IDSC_ALIASNOTFOUND0B,
+            pl.csPwdTitle.c_str());
+
+        errmess = msgA + errmess + msgZ;
+        yesNoError = true;
+        break;
+      }
+      default:
+        // Never happens
+        ASSERT(0);
+        errmess = L"Internal error parsing alias string";
+        return false;
+      }
+    }
+  return true; // All OK
 }
