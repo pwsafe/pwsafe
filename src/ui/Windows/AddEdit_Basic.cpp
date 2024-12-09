@@ -684,10 +684,12 @@ BOOL CAddEdit_Basic::OnApply()
   if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
     return FALSE; //CAddEdit_PropertyPage::OnApply();
 
-  CWnd *pFocus(nullptr);
+  CWnd* pFocus(nullptr);
   CGeneralMsgBox gmb;
   ItemListIter listindex;
-  bool bPswdIsInAliasFormat, b_msg_issued;
+  bool bPswdIsInAliasFormat;
+  BaseEntryParms pl;
+
   CSecString csBase(L"");
 
   UpdateData(TRUE);
@@ -745,8 +747,9 @@ BOOL CAddEdit_Basic::OnApply()
       gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);
       pFocus = &m_ex_title;
       goto error;
-    } else { // Edit entry
-      const CItemData &listItem = GetMainDlg()->GetEntryAt(listindex);
+    }
+    else { // Edit entry
+      const CItemData& listItem = GetMainDlg()->GetEntryAt(listindex);
       if (listItem.GetUUID() != M_pci()->GetUUID()) {
         gmb.AfxMessageBox(IDS_ENTRYEXISTS, MB_OK | MB_ICONASTERISK);
         pFocus = &m_ex_title;
@@ -755,90 +758,99 @@ BOOL CAddEdit_Basic::OnApply()
     }
   }
 
-  // Returns true if in alias format, false if not
 
-  // ibasedata:
-  //  +n: password contains (n-1) colons and base entry found (n = 1, 2 or 3)
-  //   0: password not in alias format
-  //  -n: password contains (n-1) colons but base entry NOT found (n = 1, 2 or 3)
+  bPswdIsInAliasFormat = M_pcore()->ParseAliasPassword(M_realpassword(), pl);
 
-  // "bMultipleEntriesFound" is set if no "unique" base entry could be found and
-  // is only valid if n = -1 or -2.
-  bPswdIsInAliasFormat = CheckNewPassword(M_group(), M_title(), M_username(), M_realpassword(),
-                                          M_uicaller() != IDS_ADDENTRY, CItemData::ET_ALIAS,
-                                          M_base_uuid(), M_ibasedata(), b_msg_issued);
+  if (bPswdIsInAliasFormat)
+  {
+    const StringX selfGTU = L"[" + M_group() + L":" + M_title() + L":" + M_username() + L"]";
+    StringX errmess;
+    bool yesNoError;
 
-  if (!bPswdIsInAliasFormat && M_ibasedata() != 0) {
-    if (!b_msg_issued)
-      gmb.AfxMessageBox(IDS_MUSTHAVETARGET, MB_OK);
+    bool isAliasValid = M_pcore()->CheckAliasValidity(pl, selfGTU, errmess, yesNoError);
 
-    UpdateData(FALSE);
-    pFocus = &m_ex_password;
-    goto error;
-  }
 
-  if (bPswdIsInAliasFormat && M_ibasedata() > 0) {
-    if (M_original_entrytype() == CItemData::ET_ALIASBASE ||
-        M_original_entrytype() == CItemData::ET_SHORTCUTBASE) {
-      // User is trying to change a base to an alias!
-      CString cs_errmsg, cs_title, cs_base, cs_alias;
-      cs_base.LoadString(M_original_entrytype() == CItemData::ET_ALIASBASE ? IDS_EXP_ABASE : IDS_EXP_SBASE);
-      cs_alias.LoadString(IDS_EXP_ALIAS);
-      cs_title.Format(IDS_CHANGINGBASEENTRY, static_cast<LPCWSTR>(cs_base),
-                      static_cast<LPCWSTR>(cs_alias));
-      cs_errmsg.Format(M_original_entrytype() == CItemData::ET_ALIASBASE ?
-                       IDS_CHANGINGBASEENTRY1 : IDS_CHANGINGBASEENTRY2,
-                       static_cast<LPCWSTR>(cs_alias));
-      int rc = static_cast<int>(gmb.MessageBox(cs_errmsg, cs_title, MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2));
+    if (!isAliasValid) {
+      UINT uiFlags = yesNoError ? (MB_YESNO | MB_DEFBUTTON2) : MB_OK;
+      gmb.AfxMessageBox(errmess.c_str(), nullptr, uiFlags);
 
-      if (rc == IDNO) {
-        UpdateData(FALSE);
-        pFocus = &m_ex_password;
-        goto error;
-      }
-
-      pws_os::CUUID entry_uuid = M_pci()->GetUUID();
-      M_pci()->SetAlias();
-      M_pci()->SetUUID(entry_uuid, CItemData::ALIASUUID);
-      ShowHideBaseInfo(CItemData::ET_ALIAS, csBase);
+      UpdateData(FALSE);
+      pFocus = &m_ex_password;
+      goto error;
     }
-  }
-  //End check
 
-  if (!bPswdIsInAliasFormat && M_original_entrytype() == CItemData::ET_ALIAS) {
-    // User has made this a normal entry
-    M_pci()->SetNormal();
-    ShowHideBaseInfo(CItemData::ET_NORMAL, csBase);
-  }
+    // If we're creating a new alias, life's simple
+    if (M_uicaller() == IDS_ADDENTRY) {
+      M_pci()->SetAlias();
+      M_pci()->SetBaseUUID(pl.base_uuid);
+      ShowHideBaseInfo(CItemData::ET_ALIAS, selfGTU.c_str());
+    }
+    else {
+      // Following is for editing an existing entry
 
-  if (bPswdIsInAliasFormat && M_ibasedata() > 0) {
-    if (M_original_base_uuid() != pws_os::CUUID::NullUUID() &&
+      if (M_original_entrytype() == CItemData::ET_ALIASBASE ||
+        M_original_entrytype() == CItemData::ET_SHORTCUTBASE) {
+        // User is trying to change a base to an alias!
+        CString cs_errmsg, cs_title, cs_base, cs_alias;
+        cs_base.LoadString(M_original_entrytype() == CItemData::ET_ALIASBASE ? IDS_EXP_ABASE : IDS_EXP_SBASE);
+        cs_alias.LoadString(IDS_EXP_ALIAS);
+        cs_title.Format(IDS_CHANGINGBASEENTRY, static_cast<LPCWSTR>(cs_base),
+          static_cast<LPCWSTR>(cs_alias));
+        cs_errmsg.Format(M_original_entrytype() == CItemData::ET_ALIASBASE ?
+          IDS_CHANGINGBASEENTRY1 : IDS_CHANGINGBASEENTRY2,
+          static_cast<LPCWSTR>(cs_alias));
+        int rc = static_cast<int>(gmb.MessageBox(cs_errmsg, cs_title, MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2));
+
+        if (rc == IDNO) {
+          UpdateData(FALSE);
+          pFocus = &m_ex_password;
+          goto error;
+        }
+
+        pws_os::CUUID entry_uuid = M_pci()->GetUUID();
+        M_pci()->SetAlias();
+        M_pci()->SetUUID(entry_uuid, CItemData::ALIASUUID);
+        ShowHideBaseInfo(CItemData::ET_ALIAS, csBase);
+      }
+    }
+    //End check
+
+    if (!bPswdIsInAliasFormat && M_original_entrytype() == CItemData::ET_ALIAS) {
+      // User has made this a normal entry
+      M_pci()->SetNormal();
+      ShowHideBaseInfo(CItemData::ET_NORMAL, csBase);
+    }
+
+    if (bPswdIsInAliasFormat && M_ibasedata() > 0) {
+      if (M_original_base_uuid() != pws_os::CUUID::NullUUID() &&
         M_original_base_uuid() != M_base_uuid()) {
-      // User has changed the alias to point to a different base entry
-      CItemData *pbci(nullptr);
-      ItemListIter iter = M_pcore()->Find(M_base_uuid());
-      if (iter != M_pcore()->GetEntryEndIter())
-        pbci = &iter->second;
+        // User has changed the alias to point to a different base entry
+        CItemData* pbci(nullptr);
+        ItemListIter iter = M_pcore()->Find(M_base_uuid());
+        if (iter != M_pcore()->GetEntryEndIter())
+          pbci = &iter->second;
 
-      ASSERT(pbci != NULL);
+        ASSERT(pbci != NULL);
 
-      if (pbci != nullptr) {
-        csBase = L"[" +
-          pbci->GetGroup() + L":" +
-          pbci->GetTitle() + L":" +
-          pbci->GetUser() + L"]";
-      } else
-        csBase.Empty();
+        if (pbci != nullptr) {
+          csBase = L"[" +
+            pbci->GetGroup() + L":" +
+            pbci->GetTitle() + L":" +
+            pbci->GetUser() + L"]";
+        }
+        else
+          csBase.Empty();
 
-      M_pci()->SetAlias(); // Still an alias
-      M_pci()->SetBaseUUID(M_base_uuid());
-      ShowHideBaseInfo(CItemData::ET_ALIAS, csBase);
+        M_pci()->SetAlias(); // Still an alias
+        M_pci()->SetBaseUUID(M_base_uuid());
+        ShowHideBaseInfo(CItemData::ET_ALIAS, csBase);
+      }
     }
 
     if (M_original_base_uuid() == pws_os::CUUID::NullUUID() &&
-        M_original_base_uuid() != M_base_uuid()) {
+      M_original_base_uuid() != M_base_uuid()) {
       // User has changed the normal entry into an alias
-      CItemData *pbci(nullptr);
+      CItemData* pbci(nullptr);
       auto iter = M_pcore()->Find(M_base_uuid());
       if (iter != M_pcore()->GetEntryEndIter())
         pbci = &iter->second;
@@ -849,7 +861,8 @@ BOOL CAddEdit_Basic::OnApply()
           pbci->GetGroup() + L":" +
           pbci->GetTitle() + L":" +
           pbci->GetUser() + L"]";
-      } else
+      }
+      else
         csBase.Empty();
 
       pws_os::CUUID entry_uuid = M_pci()->GetUUID();
@@ -859,7 +872,6 @@ BOOL CAddEdit_Basic::OnApply()
       ShowHideBaseInfo(CItemData::ET_ALIAS, csBase);
     }
   }
-
   return CAddEdit_PropertyPage::OnApply();
 
 error:
@@ -876,7 +888,7 @@ error:
   return FALSE;
 }
 
-void CAddEdit_Basic::ShowHideBaseInfo(const CItemData::EntryType &entrytype, CSecString &csBase)
+void CAddEdit_Basic::ShowHideBaseInfo(const CItemData::EntryType &entrytype, const CSecString &csBase)
 {
   switch (entrytype) {
   case CItemData::ET_ALIAS:

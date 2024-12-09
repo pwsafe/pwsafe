@@ -118,11 +118,12 @@ bool PWScore::ParseAliasPassword(const StringX& Password, BaseEntryParms& pl)
  * @param pl - the base entry parameters, as returned by ParseAliasPassword() ???
  * @param selfGTU - the [g:t:u] string of the current entry, to test for self-reference.
  * @param errmess - if return value is false, this is the text to display to the user
+ * @param yesNoError - true means caller should prompt user with Yes/No dialog with errmess, accept alias if Yes returned
  * @return - true if alias is valid, false if there's a problem
  */
 bool PWScore::CheckAliasValidity(const BaseEntryParms& pl, const StringX &selfGTU, StringX &errmess, bool& yesNoError)
 {
-  yesNoError = false; // true means caller should prompt user with Yes/No dialog with errmess, accept alias if Yes returned.
+  yesNoError = false; // default
 
   if (pl.ibasedata == 0) {// shouldn't call me in this case, but whatever
     ASSERT(0);
