@@ -130,19 +130,15 @@ bool PWScore::CheckAliasValidity(const BaseEntryParms& pl, const StringX &selfGT
     errmess = L"Internal Error - CheckAliasValidity called when it shouldn't have been";
     return false;
   }
-  // Parsed correctly, let's see what we have
-  if (pl.ibasedata > 0  && !pl.bMultipleEntriesFound)
-  {
-    // are we self-referential?
-    if (selfGTU == L"[" + pl.csPwdGroup + L":" + pl.csPwdTitle + L":" + pl.csPwdUser + L"]")
-    {
-      LoadAString(errmess, IDSC_ALIASCANTREFERTOITSELF);
-      return false;
-    }
-    // Now verify that the base entry indeed exists and is a regular entry
 
+  // are we self-referential?
+  if (selfGTU == L"[" + pl.csPwdGroup + L":" + pl.csPwdTitle + L":" + pl.csPwdUser + L"]")
+  {
+    LoadAString(errmess, IDSC_ALIASCANTREFERTOITSELF);
+    return false;
   }
 
+  // Parsed correctly, let's see what we have
 
   if (pl.ibasedata > 0) { // base entry exists
     if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
