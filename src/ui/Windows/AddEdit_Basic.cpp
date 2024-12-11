@@ -782,7 +782,8 @@ BOOL CAddEdit_Basic::OnApply()
     // If we're creating a new alias, life's simple
     if (M_uicaller() == IDS_ADDENTRY) {
       M_pci()->SetAlias();
-      M_pci()->SetBaseUUID(pl.base_uuid);
+      M_base_uuid() = pl.base_uuid;
+      M_ibasedata() = pl.ibasedata;
       ShowHideBaseInfo(CItemData::ET_ALIAS, selfGTU.c_str());
     }
     else {
@@ -815,12 +816,6 @@ BOOL CAddEdit_Basic::OnApply()
     }
     //End check
 
-    if (!bPswdIsInAliasFormat && M_original_entrytype() == CItemData::ET_ALIAS) {
-      // User has made this a normal entry
-      M_pci()->SetNormal();
-      ShowHideBaseInfo(CItemData::ET_NORMAL, csBase);
-    }
-
     if (bPswdIsInAliasFormat && M_ibasedata() > 0) {
       if (M_original_base_uuid() != pws_os::CUUID::NullUUID() &&
         M_original_base_uuid() != M_base_uuid()) {
@@ -841,7 +836,7 @@ BOOL CAddEdit_Basic::OnApply()
         else
           csBase.Empty();
 
-        M_pci()->SetAlias(); // Still an alias
+        M_pci()->SetAlias(); 
         M_pci()->SetBaseUUID(M_base_uuid());
         ShowHideBaseInfo(CItemData::ET_ALIAS, csBase);
       }
@@ -870,6 +865,13 @@ BOOL CAddEdit_Basic::OnApply()
       M_pci()->SetBaseUUID(M_base_uuid());
       M_pci()->SetUUID(entry_uuid, CItemData::ALIASUUID);
       ShowHideBaseInfo(CItemData::ET_ALIAS, csBase);
+    }
+  } else // password's not in alias format. Check if we're changing an alias back to a normal entry
+  {
+    if (M_original_entrytype() == CItemData::ET_ALIAS) {
+      // User has made this a normal entry
+      M_pci()->SetNormal();
+      ShowHideBaseInfo(CItemData::ET_NORMAL, csBase);
     }
   }
   return CAddEdit_PropertyPage::OnApply();
