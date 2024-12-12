@@ -394,11 +394,11 @@ wxPanel* AddEditPropSheetDlg::CreateAdditionalPanel()
   mainSizer->Add(vBoxSizer, 1, wxEXPAND|wxALL, 10);
 
   auto *itemStaticText41 = new wxStaticText(panel, wxID_STATIC, _("Autotype"), wxDefaultPosition, wxDefaultSize, 0);
-  wxUtilities::DisableForWayland(itemStaticText41);
+  wxUtilities::DisableIfUnsupported(wxUtilities::Feature::Autotype, itemStaticText41);
   vBoxSizer->Add(itemStaticText41, 0, wxALIGN_LEFT|wxBOTTOM, 5);
 
   auto *itemTextCtrl42 = new wxTextCtrl(panel, ID_TEXTCTRL_AUTOTYPE, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
-  wxUtilities::DisableForWayland(itemTextCtrl42);
+  wxUtilities::DisableIfUnsupported(wxUtilities::Feature::Autotype, itemTextCtrl42);
   vBoxSizer->Add(itemTextCtrl42, 0, wxALIGN_LEFT|wxEXPAND|wxBOTTOM, 12);
 
   auto *itemStaticText43 = new wxStaticText(panel, wxID_STATIC, _("Run Command"), wxDefaultPosition, wxDefaultSize, 0);
