@@ -434,6 +434,8 @@ bool IsCurrentDesktopKde();
 
 namespace wxUtilities
 {
+  enum Feature { Autotype };
+
   /**
    * @brief Checks environment variable 'XDG_SESSION_TYPE' for display manager 'x11'.
    *
@@ -449,11 +451,11 @@ namespace wxUtilities
   bool IsVirtualKeyboardSupported();
 
   /**
-   * @brief Disables a control if Wayland is detected.
+   * @brief Disables a control for the specified feature(s).
    * 
    * @param control the control to disable.
    */
-  void DisableForWayland(wxWindow* control);
+  void DisableIfUnsupported(enum Feature feature, wxWindow* window);
 }
 
 // Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash

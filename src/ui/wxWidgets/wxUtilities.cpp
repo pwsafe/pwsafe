@@ -351,9 +351,11 @@ bool wxUtilities::IsVirtualKeyboardSupported()
 #endif
 }
 
-void wxUtilities::DisableForWayland(wxWindow* window)
+void wxUtilities::DisableIfUnsupported(enum Feature feature, wxWindow* window)
 {
-  if (!wxUtilities::IsDisplayManagerX11()) {
+  const bool isWayland = !wxUtilities::IsDisplayManagerX11();
+
+  if (feature == Autotype && isWayland) {
     window->Disable();
     window->SetToolTip(_("Not supported by Wayland"));
   }
