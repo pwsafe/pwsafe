@@ -71,6 +71,21 @@ void CItemAtt::SetTitle(const StringX &title)
   CItem::SetField(ATTTITLE, title);
 }
 
+void CItemAtt::SetFileName(const StringX &fileName)
+{
+  CItem::SetField(FILENAME, fileName);
+}
+
+void CItemAtt::SetFilePath(const StringX &filePath)
+{
+  CItem::SetField(FILEPATH, filePath);
+}
+
+void CItemAtt::SetMediaType(const StringX &mediaType)
+{
+  CItem::SetField(MEDIATYPE, mediaType);
+}
+
 void CItemAtt::CreateUUID()
 {
   CUUID uuid;

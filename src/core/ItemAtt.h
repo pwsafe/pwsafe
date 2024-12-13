@@ -70,6 +70,9 @@ public:
   void SetTitle(const StringX &title);
   void SetCTime(time_t t);
   void SetContent(const unsigned char *content, size_t clen);
+  void SetFileName(const StringX &fileName);
+  void SetFilePath(const StringX &filePath);
+  void SetMediaType(const StringX &mediaType);
 
   StringX GetTitle() const {return GetField(ATTTITLE);}
   void GetUUID(uuid_array_t &) const;
