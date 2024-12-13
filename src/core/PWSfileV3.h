@@ -21,6 +21,7 @@
 class PWSfileV3 : public PWSfile
 {
 public:
+  enum {KLEN = 32};
 
   static int CheckPasskey(const StringX &filename,
                           const StringX &passkey,
@@ -36,6 +37,13 @@ public:
 
   virtual int WriteRecord(const CItemData &item);
   virtual int ReadRecord(CItemData &item);
+
+  virtual int WriteRecord(const CItemAtt &att);
+  virtual int ReadRecord(CItemAtt &att);
+
+  virtual size_t WriteContentFields(unsigned char *content, size_t len);
+  virtual size_t ReadContent(Fish *fish, unsigned char *cbcbuffer,
+                       unsigned char *&content, size_t clen);
 
   virtual uint32 GetNHashIters() const {return m_nHashIters;}
   virtual void SetNHashIters(uint32 N) {m_nHashIters = N;}

@@ -669,8 +669,8 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
     RecordWriter write_record(out, this, version);
     for_each(m_pwlist.begin(), m_pwlist.end(), write_record);
 
-    // Write attachments (only from V4)
-    if (version >= PWSfile::V40)
+    // Write attachments (only from V3)
+    if (version >= PWSfile::V30)
       for_each(m_attlist.begin(), m_attlist.end(),
                [&](std::pair<CUUID const, CItemAtt> &p)
                {

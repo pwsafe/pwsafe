@@ -35,6 +35,13 @@ public:
   virtual int WriteRecord(const CItemData &item);
   virtual int ReadRecord(CItemData &item);
 
+  virtual int WriteRecord(const CItemAtt &att);
+  virtual int ReadRecord(CItemAtt &att);
+
+  virtual size_t WriteContentFields(unsigned char *content, size_t len);
+  virtual size_t ReadContent(Fish *fish, unsigned char *cbcbuffer,
+                       unsigned char *&content, size_t clen);
+
 protected:
   virtual size_t WriteCBC(unsigned char type, const StringX &data);
 

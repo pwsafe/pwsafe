@@ -117,6 +117,17 @@ public:
   virtual int WriteRecord(const CItemData &item) = 0;
   virtual int ReadRecord(CItemData &item) = 0;
 
+  virtual int WriteRecord(const CItemAtt &att) = 0;
+  virtual int ReadRecord(CItemAtt &att) = 0;
+
+  // Following writes AttIV, AttEK, AttAK, AttContent
+  // and AttContentHMAC per format spec.
+  // All except the content are generated internally.
+  virtual size_t WriteContentFields(unsigned char *content, size_t len) = 0;
+  // Following allocates content, caller responsible for deallocating
+  virtual size_t ReadContent(Fish *fish, unsigned char *cbcbuffer,
+                       unsigned char *&content, size_t clen) = 0;
+
   const PWSfileHeader &GetHeader() const {return m_hdr;}
   void SetHeader(const PWSfileHeader &h) {m_hdr = h;}
 

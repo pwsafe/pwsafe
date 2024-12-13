@@ -383,9 +383,7 @@ int CItemAtt::Read(PWSfile *in)
         trashMemory(EK, sizeof(EK));
         const unsigned int BS = fish.GetBlockSize();
 
-        auto *in4 = dynamic_cast<PWSfileV4 *>(in);
-        ASSERT(in4 != nullptr);
-        size_t nread = in4->ReadContent(&fish, IV, content, content_len);
+        size_t nread = in->ReadContent(&fish, IV, content, content_len);
         // nread should be content_len rounded up to nearest BS:
         ASSERT(nread == (content_len/BS + 1)*BS);
         if (nread != (content_len/BS + 1)*BS) {
@@ -516,13 +514,10 @@ int CItemAtt::Write(PWSfile *out) const
   auto fiter = m_fields.find(CONTENT);
   // XXX TBD - fail if no content, as this is a mandatory field
   if (fiter != m_fields.end()) {
-    auto *out4 = dynamic_cast<PWSfileV4 *>(out);
-    ASSERT(out4 != nullptr);
-
     size_t clength = fiter->second.GetLength() + BlowFish::BLOCKSIZE;
     auto *content = new unsigned char[clength];
     CItem::GetField(fiter->second, content, clength);
-    out4->WriteContentFields(content, clength);
+    out->WriteContentFields(content, clength);
     trashMemory(content, clength);
     delete[] content;
   }
