@@ -204,6 +204,7 @@ PasswordSafe V3.29 introduced Format 0x030B
 PasswordSafe V3.29Y introduced Format 0x030C
 PasswordSafe V3.30 introduced Format 0x030D
 PasswordSafe V3.47 introduced Format 0x030E
+PasswordSafe V3.68 introduced Format 0x030F
 
 [2] A universally unique identifier is needed in order to synchronize
 databases across different machine. Representation is described in
@@ -543,6 +544,7 @@ Note: A 'base' entry can not have both aliases and shortcuts.
 
 [22] The UUID of an attachment record associated with an entry.
 Different entries can refer to the same attachment uuid.
+This was introduced in version 0x030F (PasswordSafe V3.68).
 
 [23] This is the shared secret for sites using Time-Based One-Time
 Password Algorithm (per RFC6238) such as Google Authenticator. At
