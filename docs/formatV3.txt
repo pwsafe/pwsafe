@@ -362,7 +362,7 @@ Own symbols for password    0x16        Text          Y              [18]
 Shift Double-Click Action   0x17        2 bytes       Y              [15]
 Password Policy Name        0x18        Text          Y              [19]
 Entry keyboard shortcut     0x19        4 bytes       Y              [20]
-*RESERVED*                  0x1a        UUID          -              [22]
+AttRef                      0x1a        UUID          Y              [22]
 Two-Factor Key              0x1b        Binary        N              [23]
 Credit Card Number          0x1c        Text          N              [24]
 Credit Card Expiration      0x1d        Text          N              [24]
@@ -541,8 +541,8 @@ This was introduced in version 0x030D (PasswordSafe V3.30).
   e. Shortcut entry (as described in note [4])
 Note: A 'base' entry can not have both aliases and shortcuts.
 
-[22] This value is used in V4 of the PasswordSafe format. Reserving it here to
-maintain consistency with values that follow.
+[22] The UUID of an attachment record associated with an entry.
+Different entries can refer to the same attachment uuid.
 
 [23] This is the shared secret for sites using Time-Based One-Time
 Password Algorithm (per RFC6238) such as Google Authenticator. At
@@ -590,6 +590,88 @@ These TOTP parameters fields have the following format:
                       start counting time steps. If not specified, the
                       default is 0. The format is that of a 40 bit (5 byte)
                       Password Safe time_t value as specified in Section 3.1.3.
+
+3.4 Attachments
+
+3.4.1 Attachment record fields
+
+An Attachment record has the following fields:
+
+Name                        Value        Type     Mandatory       Comments
+--------------------------------------------------------------------------
+AttUUID                     0x60        UUID          Y              [1]
+Title                       0x61        Text          N              [2]
+Creation Time               0x62        time_t        Y              [3]
+MediaType                   0x63        Text          Y              [4]
+FileName                    0x64        Text          N              [5]
+FilePath                    0x65        Text          N              [6]
+FileCreationTime            0x66        time_t        N              [7]
+FileModificationTime        0x67        time_t        N              [7]
+FileAccessTime              0x68        time_t        N              [7]
+AttEK                       0x70        32 bytes      Y              [8]
+AttAK                       0x71        32 bytes      Y              [9]
+ATTIV                       0x71        binary        Y              [10]
+Content                     0x73        4 byte+binary Y              [11]
+ContentHMAC                 0x74        32 bytes      Y              [12]
+End of Entry                0xff        [empty]       Y              
+
+[1] This is the UUID of the attachment record, which is referred to by
+password entries' AttRef field. Representation is described in Section
+3.1.1. This is the first field in the record, and identifies it as an
+attachment record.
+[2] The title is a user-friendly name for the attachment.
+[3] The time when the attachment was added. Representation is as
+described in Section 3.1.3.
+[4] MIME type - text string describing Media Type, per
+http://www.iana.org/assignments/media-types
+[5] Original file name - kept mainly for the extension, to support
+applications that require this for proper viewing.
+[6] Path component of file. May be relative or absolute (or absent).
+[7] Times associated with the attachment file at the time of attachment.
+Application may try to restore these when exporting the attachment.
+Representation is as described in Section 3.1.3.
+[8] Attachment encryption key: This is a 256 bit random key encrypting the
+content.
+[9] Attachment authentication key: This is a 256 bit random key used to
+verify the integrity of the content.
+[10] The initialization vector (IV) used in the CBC encryption of the
+attachment. Size is the blocksize of the underlying block cipher.
+[11] The binary representation of the attachment. Note that this is limited
+to 4GB (2^32 bytes), which should suffice.
+The first block of this field is encrypted under the database's
+encryption key. This is so the field's type and length can be determined
+without relying on the implicit order of the fields. The length of
+this field is 4, and its contents is 4 byte little-endian value of the
+length of the actual content, padded as usual with random data. The
+actual content is in the following blocks, that are encrypted under
+the AttEK in CBC mode with the value of ATTIV as the IV, using the
+same algorithm as the rest of the database. Padding of content is done
+with random data, as needed.
+[12] The content HMAC is calculated over the same plaintext data that
+is protected using the AttEK, including padding. HMAC calculation uses
+AttAK and SHA256.
+This field is encrypted with K (see 2.2.5). The first block of the
+Content field is used as the IV, so as to continue the database CBC
+stream. This field must immediately follow the Content field.
+
+3.4.2 Changes to database HMAC calculation
+
+3.4.2.1 The HMAC of the database file will not be calculated over the data
+that is covered by content field HMAC. This enables saving databases
+without the need to recalculate the HMAC of contents.
+
+3.4.2.2 The database HMAC will cover the attachment records' other fields,
+specifically the content HMAC key and the HMAC calculated under that key.
+The database HMAC will also cover the first block of the attachment content
+fields, as these are not covered by content HMAC.
+
+3.4.3 Implementation note
+
+When reading the database, it is assumed that the offsets of the attachment
+records will be noted for rapid access to the attachments when
+required. Care must be taken to ensure that the database was not modified
+between when the offsets were recorded and when they are actually
+required.
 
 4. Extensibility
 
