@@ -12,6 +12,8 @@
 #endif
 
 #include "core/PWSfileV3.h"
+#include "core/PWScore.h"
+
 #include "os/file.h"
 
 #include "gtest/gtest.h"
@@ -21,7 +23,9 @@ class FileV3Test : public ::testing::Test
 {
 protected:
   FileV3Test(); // to init members
+  PWSfileHeader hdr;
   CItemData smallItem, fullItem, item;
+  CItemAtt attItem;
   void SetUp();
   void TearDown();
 
@@ -54,6 +58,14 @@ FileV3Test::FileV3Test()
 
 void FileV3Test::SetUp()
 {
+  hdr.m_prefString = _T("aPrefString");
+  hdr.m_whenlastsaved = 1413129351; // overwritten in Open()
+  hdr.m_lastsavedby = _T("aUser");
+  hdr.m_lastsavedon = _T("aMachine");
+  hdr.m_whatlastsaved = _T("PasswordSafe test framework");
+  hdr.m_DB_Name = fname.c_str();
+  hdr.m_DB_Description = _T("Test the header's persistency");
+
   fullItem.CreateUUID();
   fullItem.SetTitle(title);
   fullItem.SetPassword(password);
@@ -78,6 +90,12 @@ void FileV3Test::SetUp()
   smallItem.CreateUUID();
   smallItem.SetTitle(_T("picollo"));
   smallItem.SetPassword(_T("tiny-passw"));
+
+  attItem.CreateUUID();
+  attItem.SetTitle(L"I'm an attachment");
+  const stringT testAttFile(L"data/image1.jpg");
+  int status = attItem.Import(testAttFile);
+  ASSERT_EQ(PWSfile::SUCCESS, status);
 }
 
 void FileV3Test::TearDown()
@@ -176,4 +194,94 @@ TEST_F(FileV3Test, UnknownPersistencyTest)
   EXPECT_EQ(d1, item);
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+}
+
+TEST_F(FileV3Test, AttTest)
+{
+  PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(attItem));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+  ASSERT_TRUE(pws_os::FileExists(fname));
+
+  CItemAtt readAtt;
+  PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readAtt));
+  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+  attItem.SetOffset(readAtt.GetOffset());
+  EXPECT_EQ(attItem, readAtt);
+}
+
+TEST_F(FileV3Test, HdrItemAttTest)
+{
+  PWSfileHeader hdr1;
+  PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
+
+  pws_os::CUUID att_uuid = attItem.GetUUID();
+  fullItem.SetAttUUID(att_uuid);
+
+  fw.SetHeader(hdr);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+
+  hdr1 = fw.GetHeader(); // Some fields set by Open()
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(fullItem));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(attItem));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+  ASSERT_TRUE(pws_os::FileExists(fname));
+
+  CItemData readData[2];
+  CItemAtt readAtt;
+  PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readData[0]));
+  EXPECT_EQ(fullItem, readData[0]);
+  EXPECT_EQ(PWSfile::WRONG_RECORD, fr.ReadRecord(readData[1])); // att here!
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readAtt));
+  attItem.SetOffset(readAtt.GetOffset());
+  EXPECT_EQ(attItem, readAtt);
+  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(readData[1]));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+}
+
+TEST_F(FileV3Test, CoreRWTest)
+{
+  PWScore core;
+  const StringX passkey(L"3rdMambo");
+
+  fullItem.SetAttUUID(attItem.GetUUID());
+  EXPECT_EQ(0U, attItem.GetRefcount());
+
+  core.SetPassKey(passkey);
+  core.Execute(AddEntryCommand::Create(&core, fullItem, pws_os::CUUID::NullUUID(), &attItem));
+  EXPECT_TRUE(core.HasAtt(attItem.GetUUID()));
+  EXPECT_EQ(1U, core.GetAtt(attItem.GetUUID()).GetRefcount());
+  EXPECT_EQ(PWSfile::SUCCESS, core.WriteFile(fname.c_str(), PWSfile::V30));
+
+  core.ClearDBData();
+  EXPECT_EQ(PWSfile::WRONG_PASSWORD, core.ReadFile(fname.c_str(), L"WrongPassword", true));
+  EXPECT_EQ(PWSfile::SUCCESS, core.ReadFile(fname.c_str(), passkey, true));
+  ASSERT_EQ(1U, core.GetNumEntries());
+  ASSERT_EQ(1U, core.GetNumAtts());
+  ASSERT_TRUE(core.Find(fullItem.GetUUID()) != core.GetEntryEndIter());
+
+  CItemData readFullItem = core.GetEntry(core.Find(fullItem.GetUUID()));
+  EXPECT_TRUE(readFullItem.HasAttRef());
+  EXPECT_EQ(attItem.GetUUID(), readFullItem.GetAttUUID());
+  // Fix obvious differences before comparing to original
+  readFullItem.SetPolicyName(fullItem.GetPolicyName());
+  int32 kbs;
+  fullItem.GetKBShortcut(kbs);
+  readFullItem.SetKBShortcut(kbs);
+  EXPECT_EQ(fullItem, readFullItem);
+  ASSERT_TRUE(core.HasAtt(attItem.GetUUID()));
+  EXPECT_EQ(1U, core.GetAtt(attItem.GetUUID()).GetRefcount());
+
+  core.Execute(DeleteEntryCommand::Create(&core, readFullItem));
+  ASSERT_EQ(0U, core.GetNumEntries());
+  ASSERT_EQ(0U, core.GetNumAtts());
+
+  // Get core to delete any existing commands
+  core.ClearCommands();
 }
