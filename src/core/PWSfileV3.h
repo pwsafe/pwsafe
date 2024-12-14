@@ -64,6 +64,15 @@ public:
   int WriteHeader();
   int ReadHeader();
 
+  // Following to allow rollback when reverting an ItemAtt read
+  // as an ItemData
+  long m_savepos;
+  unsigned char m_saveIV[TwoFish::BLOCKSIZE];
+  HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> m_savehmac;
+
+  void SaveState();
+  void RestoreState();
+
   static int SanityCheck(FILE *stream); // Check for TAG and EOF marker
   static void StretchKey(const unsigned char *salt, unsigned long saltLen,
                          const StringX &passkey,

@@ -370,29 +370,32 @@ size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char* &data,
   return numRead;
 }
 
+void PWSfileV3::SaveState()
+{
+  m_savepos = ftell(m_fd);
+  memcpy(m_saveIV, m_IV, m_fish->GetBlockSize());
+  m_savehmac = m_hmac;
+}
+
+void PWSfileV3::RestoreState()
+{
+  int seekstat = fseek(m_fd, m_savepos, SEEK_SET);
+  if (seekstat != 0)
+    ASSERT(0);
+  memcpy(m_IV, m_saveIV, m_fish->GetBlockSize());
+  m_hmac = m_savehmac;
+}
+
 int PWSfileV3::ReadRecord(CItemData &item)
 {
   ASSERT(m_fd != nullptr);
   ASSERT(m_curversion == V30);
-
-  long m_savepos;
-  unsigned char m_saveIV[TwoFish::BLOCKSIZE];
-  HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> m_savehmac;
-
-  m_savepos = ftell(m_fd);
-  memcpy(m_saveIV, m_IV, m_fish->GetBlockSize());
-  m_savehmac = m_hmac;
-
+  SaveState();
   int status = item.Read(this);
   if (status < 0) {
-    int seekstat = fseek(m_fd, m_savepos, SEEK_SET);
-    if (seekstat != 0)
-      ASSERT(0);
-    memcpy(m_IV, m_saveIV, m_fish->GetBlockSize());
-    m_hmac = m_savehmac;
-    return WRONG_RECORD;
+    RestoreState();
+    status = WRONG_RECORD;
   }
-
   return status;
 }
 
