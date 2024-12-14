@@ -274,19 +274,7 @@
 #define IDS_RECORDUNKNOWNFIELDS         5450
 #define IDS_IMPORTFILE                  5451
 #define IDS_EXPORTFILE                  5453
-#define IDS_ALIASNOTFOUNDA              5455
-#define IDS_ALIASNOTFOUND0A             5456
-#define IDS_ALIASNOTFOUND0B             5457
-#define IDS_ALIASNOTFOUND1A             5458
-#define IDS_ALIASNOTFOUND1B             5459
-#define IDS_ALIASNOTFOUND2A             5460
-#define IDS_ALIASNOTFOUND2B             5461
-#define IDS_ALIASNOTFOUND2C             5462
-#define IDS_ALIASNOTFOUNDZ              5463
 #define IDS_DDBASEISALIAS               5464
-#define IDS_BASEISALIAS                 5465
-#define IDS_ALIASCANTREFERTOITSELF      5466
-#define IDS_BASEHASNOTITLE              5467
 #define IDS_CLOSE_B4_CHECK              5468
 #define IDS_CONFIRM_CLOSE               5469
 #define IDS_LATEST_VERSION              5470
@@ -309,7 +297,6 @@
 #define IDS_VISIT_WEBSITE               5489
 #define IDS_ICON                        5496
 #define IDS_ABASE_MISSING               5497
-#define IDS_ABASEINVALID                5499
 #define IDS_SBASEINVALID                5500
 #define IDS_MUSTHAVETARGET              5501
 #define IDS_VIEWSHORTCUTS               5502

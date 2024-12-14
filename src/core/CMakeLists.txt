@@ -4,6 +4,7 @@ set (CORE_SRCS
  
   CheckVersion.cpp
   Command.cpp
+  CoreAlias.cpp
   CoreImpExp.cpp
   CoreOtherDB.cpp
   ExpiredList.cpp
