@@ -542,8 +542,10 @@ This was introduced in version 0x030D (PasswordSafe V3.30).
   e. Shortcut entry (as described in note [4])
 Note: A 'base' entry can not have both aliases and shortcuts.
 
-[22] The UUID of an attachment record associated with an entry.
-Different entries can refer to the same attachment uuid.
+[22] The UUID of an attachment record associated with an entry.  An
+entry record can have zero or more such fields. Each attachment field
+in a given password entry record must have a different value, but
+different entries can refer to the same attachment uuid.
 This was introduced in version 0x030F (PasswordSafe V3.68).
 
 [23] This is the shared secret for sites using Time-Based One-Time
