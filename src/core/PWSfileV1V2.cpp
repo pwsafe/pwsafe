@@ -331,6 +331,25 @@ int PWSfileV1V2::WriteRecord(const CItemData &item)
   return status;
 }
 
+int PWSfileV1V2::WriteRecord(const CItemAtt &att)
+{
+  ASSERT(0);
+  return UNSUPPORTED_VERSION;
+}
+
+size_t PWSfileV1V2::WriteContentFields(unsigned char *content, size_t len)
+{
+  ASSERT(0);
+  return 0;
+}
+
+size_t PWSfileV1V2::ReadContent(Fish *fish,  unsigned char *cbcbuffer,
+                              unsigned char *&content, size_t clen)
+{
+  ASSERT(0);
+  return 0;
+}
+
 static void ExtractAutoTypeCmd(StringX &notesStr, StringX &autotypeStr)
 {
   StringX instr(notesStr);
@@ -502,4 +521,10 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
       ASSERT(0);
       return UNSUPPORTED_VERSION;
   }
+}
+
+int PWSfileV1V2::ReadRecord(CItemAtt &att)
+{
+  ASSERT(0);
+  return UNSUPPORTED_VERSION;
 }

@@ -374,6 +374,12 @@ int CItemData::Write(PWSfile *out) const
   const StringX saved_password = GetPassword();
   self->SetSpecialPasswords(); // encode baseuuid in password if IsDependent
 
+  if (IsFieldSet(ATTREF)) {
+    uuid_array_t ref_uuid;
+    GetUUID(ref_uuid, ATTREF);
+    out->WriteField(ATTREF, ref_uuid, sizeof(uuid_array_t));
+  }
+
   int status = WriteCommon(out);
 
   self->SetPassword(saved_password);

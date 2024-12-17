@@ -21,6 +21,7 @@
 class PWSfileV3 : public PWSfile
 {
 public:
+  enum {KLEN = 32};
 
   static int CheckPasskey(const StringX &filename,
                           const StringX &passkey,
@@ -36,6 +37,13 @@ public:
 
   virtual int WriteRecord(const CItemData &item);
   virtual int ReadRecord(CItemData &item);
+
+  virtual int WriteRecord(const CItemAtt &att);
+  virtual int ReadRecord(CItemAtt &att);
+
+  virtual size_t WriteContentFields(unsigned char *content, size_t len);
+  virtual size_t ReadContent(Fish *fish, unsigned char *cbcbuffer,
+                       unsigned char *&content, size_t clen);
 
   virtual uint32 GetNHashIters() const {return m_nHashIters;}
   virtual void SetNHashIters(uint32 N) {m_nHashIters = N;}
@@ -55,6 +63,15 @@ public:
                          size_t &length);
   int WriteHeader();
   int ReadHeader();
+
+  // Following to allow rollback when reverting an ItemAtt read
+  // as an ItemData
+  long m_savepos;
+  unsigned char m_saveIV[TwoFish::BLOCKSIZE];
+  HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> m_savehmac;
+
+  void SaveState();
+  void RestoreState();
 
   static int SanityCheck(FILE *stream); // Check for TAG and EOF marker
   static void StretchKey(const unsigned char *salt, unsigned long saltLen,

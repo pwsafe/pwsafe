@@ -54,9 +54,10 @@ using pws_os::CUUID;
  *         V3.29Y          0x030C
  *         V3.30           0x030D
  *         V3.47           0x030E
+ *         V3.68           0x030F
 */
 
-const short VersionNum = 0x030E;
+const short VersionNum = 0x030F;
 
 static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F',
@@ -288,6 +289,75 @@ int PWSfileV3::WriteRecord(const CItemData &item)
   return item.Write(this);
 }
 
+int PWSfileV3::WriteRecord(const CItemAtt &att)
+{
+  ASSERT(m_fd != nullptr);
+  ASSERT(m_curversion == V30);
+  return att.Write(this);
+}
+
+// Following writes AttIV, AttEK, AttAK, AttContent
+// and AttContentHMAC per format spec.
+// All except the content are generated internally.
+size_t PWSfileV3::WriteContentFields(unsigned char *content, size_t len)
+{
+  if (len == 0)
+    return SUCCESS;
+  ASSERT(content != nullptr);
+    
+  unsigned char IV[TwoFish::BLOCKSIZE];
+  unsigned char EK[KLEN];
+  unsigned char AK[KLEN];
+    
+  PWSrand::GetInstance()->GetRandomData(IV, sizeof(IV));
+  PWSrand::GetInstance()->GetRandomData(EK, sizeof(EK));
+  PWSrand::GetInstance()->GetRandomData(AK, sizeof(AK));
+    
+  WriteField(CItemAtt::ATTIV, IV, sizeof(IV));
+  WriteField(CItemAtt::ATTEK, EK, sizeof(EK));
+  WriteField(CItemAtt::ATTAK, AK, sizeof(AK));
+    
+  // Write content length as the "value" of the content field
+  int32 len32 = static_cast<int>(len);
+  unsigned char buf[4];
+  putInt32(buf, len32);
+  WriteField(CItemAtt::CONTENT, buf, sizeof(buf));
+    
+  // Create fish with EK
+  TwoFish fish(EK, sizeof(EK));
+  trashMemory(EK, sizeof(EK));
+    
+  // Create hmac with AK
+  HMAC<SHA256, SHA256::HASHLEN, SHA256::BLOCKSIZE> hmac;
+  hmac.Init(AK, sizeof(AK));
+  trashMemory(AK, sizeof(AK));
+    
+  // write actual content using EK
+  _writecbcRest(m_fd, content, len, &fish, IV); // length already written
+    
+  // update content's HMAC
+  hmac.Update(content, static_cast<unsigned long>(len));
+    
+  // write content's HMAC
+  unsigned char digest[SHA256::HASHLEN];
+  hmac.Final(digest);
+  WriteField(CItemAtt::CONTENTHMAC, digest, sizeof(digest));
+    
+  return len;
+}
+
+size_t PWSfileV3::ReadContent(Fish *fish,  unsigned char *cbcbuffer,
+                              unsigned char *&content, size_t clen)
+{
+  ASSERT(clen > 0 && fish != nullptr && cbcbuffer != nullptr);
+  // round up clen to nearest BS:
+  const unsigned int BS = fish->GetBlockSize();
+  size_t blen = (clen/BS + 1)*BS;
+
+  content = new unsigned char[blen]; // caller's responsible for delete[]
+  return _readcbc(m_fd, content, blen, fish, cbcbuffer);
+}
+
 size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char* &data,
                           size_t &length)
 {
@@ -300,11 +370,40 @@ size_t PWSfileV3::ReadCBC(unsigned char &type, unsigned char* &data,
   return numRead;
 }
 
+void PWSfileV3::SaveState()
+{
+  m_savepos = ftell(m_fd);
+  memcpy(m_saveIV, m_IV, m_fish->GetBlockSize());
+  m_savehmac = m_hmac;
+}
+
+void PWSfileV3::RestoreState()
+{
+  int seekstat = fseek(m_fd, m_savepos, SEEK_SET);
+  if (seekstat != 0)
+    ASSERT(0);
+  memcpy(m_IV, m_saveIV, m_fish->GetBlockSize());
+  m_hmac = m_savehmac;
+}
+
 int PWSfileV3::ReadRecord(CItemData &item)
 {
   ASSERT(m_fd != nullptr);
   ASSERT(m_curversion == V30);
-  return item.Read(this);
+  SaveState();
+  int status = item.Read(this);
+  if (status < 0) {
+    RestoreState();
+    status = WRONG_RECORD;
+  }
+  return status;
+}
+
+int PWSfileV3::ReadRecord(CItemAtt &att)
+{
+  ASSERT(m_fd != nullptr);
+  ASSERT(m_curversion == V30);
+  return att.Read(this);
 }
 
 void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,

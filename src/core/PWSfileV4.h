@@ -41,15 +41,11 @@ public:
   virtual int WriteRecord(const CItemData &item);
   virtual int ReadRecord(CItemData &item);
 
-  int WriteRecord(const CItemAtt &att);
-  int ReadRecord(CItemAtt &att);
+  virtual int WriteRecord(const CItemAtt &att);
+  virtual int ReadRecord(CItemAtt &att);
 
-  // Following writes AttIV, AttEK, AttAK, AttContent
-  // and AttContentHMAC per format spec.
-  // All except the content are generated internally.
-  size_t WriteContentFields(unsigned char *content, size_t len);
-  // Following allocates content, caller responsible for deallocating
-  size_t ReadContent(Fish *fish, unsigned char *cbcbuffer,
+  virtual size_t WriteContentFields(unsigned char *content, size_t len);
+  virtual size_t ReadContent(Fish *fish, unsigned char *cbcbuffer,
                      unsigned char *&content, size_t clen);
 
   uint32 GetNHashIters() const {return m_nHashIters;}
