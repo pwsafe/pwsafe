@@ -25,7 +25,7 @@ protected:
   FileV4Test(); // to init members
   PWSfileHeader hdr;
   CItemData smallItem, fullItem, item;
-  CItemAtt attItem;
+  CItemAtt attItem, attItem16;
   void SetUp();
   void TearDown();
 
@@ -93,6 +93,12 @@ void FileV4Test::SetUp()
   const stringT testAttFile(L"data/image1.jpg");
   int status = attItem.Import(testAttFile);
   ASSERT_EQ(PWSfile::SUCCESS, status);
+
+  // Attachment with size = 16 bytes (block size)
+  attItem16.CreateUUID();
+  attItem16.SetFileCTime(123);
+  attItem16.SetMediaType(L"text/plain");
+  attItem16.SetContent((const unsigned char *) "0123456789abcdef", 16);
 }
 
 void FileV4Test::TearDown()
@@ -209,17 +215,21 @@ TEST_F(FileV4Test, AttTest)
   PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
   ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
   EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(attItem));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(attItem16));
   ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
   ASSERT_TRUE(pws_os::FileExists(fname));
 
-  CItemAtt readAtt;
+  CItemAtt readAtt, readAtt16;
   PWSfileV4 fr(fname.c_str(), PWSfile::Read, PWSfile::V40);
   ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
   EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readAtt));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readAtt16));
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
   attItem.SetOffset(readAtt.GetOffset());
   EXPECT_EQ(attItem, readAtt);
+  attItem16.SetOffset(readAtt16.GetOffset());
+  EXPECT_EQ(attItem16, readAtt16);
 }
 
 TEST_F(FileV4Test, HdrItemAttTest)
