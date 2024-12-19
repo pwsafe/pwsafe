@@ -194,7 +194,7 @@ bool PWScore::CheckAliasValidity(const BaseEntryParms& pl, const StringX &selfGT
           Format(errmess, IDSC_ALIASNOTFOUND0B, pl.csPwdTitle.c_str());  // no entry exists with title=x
         errmess = msgA + errmess + msgZ;
         yesNoError = true;
-        break;
+        return false;
       case -2: // [g,t], [t:u]
         // In this case the 2 fields from the password are in Group & Title
         if (pl.bMultipleEntriesFound)
@@ -211,7 +211,7 @@ bool PWScore::CheckAliasValidity(const BaseEntryParms& pl, const StringX &selfGT
                   pl.csPwdTitle.c_str());
         errmess = msgA + errmess + msgZ;
         yesNoError = true;
-        break;
+        return false;
       case -3: // [g:t:u], [g:t:], [:t:u], [:t:] (title cannot be empty)
       {
         const bool bGE = pl.csPwdGroup.empty();
@@ -241,7 +241,7 @@ bool PWScore::CheckAliasValidity(const BaseEntryParms& pl, const StringX &selfGT
 
         errmess = msgA + errmess + msgZ;
         yesNoError = true;
-        break;
+        return false;
       }
       default:
         // Never happens

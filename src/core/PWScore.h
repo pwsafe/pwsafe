@@ -37,7 +37,8 @@ struct BaseEntryParms {
   int ibasedata;
   bool bMultipleEntriesFound;
 
-  BaseEntryParms() : base_uuid(pws_os::CUUID::NullUUID()) {}
+  BaseEntryParms() : base_uuid(pws_os::CUUID::NullUUID()), InputType(CItemData::ET_INVALID), TargetType(CItemData::ET_INVALID)
+    {}
 };
 
 // Formatted Database properties

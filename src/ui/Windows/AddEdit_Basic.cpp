@@ -758,7 +758,7 @@ BOOL CAddEdit_Basic::OnApply()
     }
   }
 
-
+  pl.InputType = M_pci()->GetEntryType(); // where we're coming from
   bPswdIsInAliasFormat = M_pcore()->ParseAliasPassword(M_realpassword(), pl);
 
   if (bPswdIsInAliasFormat)
@@ -772,18 +772,19 @@ BOOL CAddEdit_Basic::OnApply()
 
     if (!isAliasValid) {
       UINT uiFlags = yesNoError ? (MB_YESNO | MB_DEFBUTTON2) : MB_OK;
-      gmb.AfxMessageBox(errmess.c_str(), nullptr, uiFlags);
-
-      UpdateData(FALSE);
-      pFocus = &m_ex_password;
-      goto error;
+      if (gmb.AfxMessageBox(errmess.c_str(), nullptr, uiFlags) == IDNO) {
+        UpdateData(FALSE);
+        pFocus = &m_ex_password;
+        goto error;
+      }
     }
+
+    M_base_uuid() = pl.base_uuid;
+    M_ibasedata() = pl.ibasedata;
 
     // If we're creating a new alias, life's simple
     if (M_uicaller() == IDS_ADDENTRY) {
       M_pci()->SetAlias();
-      M_base_uuid() = pl.base_uuid;
-      M_ibasedata() = pl.ibasedata;
       ShowHideBaseInfo(CItemData::ET_ALIAS, selfGTU.c_str());
     }
     else {
