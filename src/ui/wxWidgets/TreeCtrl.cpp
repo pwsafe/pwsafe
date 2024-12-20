@@ -2608,7 +2608,7 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
         pl.base_uuid = CUUID::NullUUID();
       }
     } else {
-        m_core.ParseBaseEntryPWD(cs_tmp, pl);
+        m_core.ParseAliasPassword(cs_tmp, pl);
     }
     
     if (pl.ibasedata > 0) {

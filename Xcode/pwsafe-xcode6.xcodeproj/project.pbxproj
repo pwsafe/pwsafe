@@ -78,6 +78,7 @@
 		E0C3C4492379B2C200715124 /* TwoFish.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C43F2379B2C200715124 /* TwoFish.cpp */; };
 		E0C3C44F2379CD7500715124 /* MenuFileHandlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C44D2379CA7300715124 /* MenuFileHandlers.cpp */; };
 		E0C3C4502379CD8300715124 /* CryptKeyEntryDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C44A2379CA2A00715124 /* CryptKeyEntryDlg.cpp */; };
+		E0C3C4522379CD8300715124 /* CoreAlias.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E0C3C4512379CD8300715124 /* CoreAlias.cpp */; };
 		E60F25D812C4ACEB001E63C4 /* ExternalKeyboardButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */; };
 		E6112A64131D720E00AA1454 /* ExpiredList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6112A61131D720E00AA1454 /* ExpiredList.cpp */; };
 		E61D6FA312617EFC0049FA2A /* MergeDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E61D6FA112617EFC0049FA2A /* MergeDlg.cpp */; };
@@ -371,6 +372,7 @@
 		E0A70B9621C8FF8900A2FEA8 /* PolicyManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolicyManager.cpp; sourceTree = "<group>"; };
 		E0A70B9721C8FF8900A2FEA8 /* PolicyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolicyManager.h; sourceTree = "<group>"; };
 		E0A70B9A21C905A500A2FEA8 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
+		E0C3C4512379CD8300715124 /* CoreAlias.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CoreAlias.cpp; sourceTree = "<group>"; };
 		E0C3C42F2379B2C200715124 /* AES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AES.cpp; path = crypto/AES.cpp; sourceTree = "<group>"; };
 		E0C3C4302379B2C200715124 /* AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AES.h; path = crypto/AES.h; sourceTree = "<group>"; };
 		E0C3C4312379B2C200715124 /* bitops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bitops.h; path = crypto/bitops.h; sourceTree = "<group>"; };
@@ -1640,6 +1642,7 @@
 				E6EE83C111E87E9700B01518 /* PWSfileV3.h */,
 				A2FE258B1C5ACF7500210C36 /* PWSfileV4.cpp */,
 				A2FE258C1C5ACF7500210C36 /* PWSfileV4.h */,
+				E0C3C4512379CD8300715124 /* CoreAlias.cpp */,
 				E6EE83C211E87E9700B01518 /* PWSFilters.cpp */,
 				E6EE83C311E87E9700B01518 /* PWSFilters.h */,
 				E698275814C01B7D0043C243 /* PWSLog.cpp */,
@@ -1952,6 +1955,7 @@
 				E0C3C4442379B2C200715124 /* KeyWrap.cpp in Sources */,
 				E0C3C4462379B2C200715124 /* sha1.cpp in Sources */,
 				E0C3C4472379B2C200715124 /* sha256.cpp in Sources */,
+				E0C3C4522379CD8300715124 /* CoreAlias.cpp in Sources */,
 				E6EE843111E87E9800B01518 /* Report.cpp in Sources */,
 				E6EE843411E87E9800B01518 /* StringX.cpp in Sources */,
 				E6EE843511E87E9800B01518 /* SysInfo.cpp in Sources */,

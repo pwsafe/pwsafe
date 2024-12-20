@@ -371,3 +371,18 @@
 
 #define IDSC_RELATIVE_SMALL             5968
 #define IDSC_AND_SMALL                  5969
+
+// Alias Errors
+#define IDSC_ALIASNOTFOUNDA             5455
+#define IDSC_ALIASNOTFOUND0A            5456
+#define IDSC_ALIASNOTFOUND0B            5457
+#define IDSC_ALIASNOTFOUND1A            5458
+#define IDSC_ALIASNOTFOUND1B            5459
+#define IDSC_ALIASNOTFOUND2A            5460
+#define IDSC_ALIASNOTFOUND2B            5461
+#define IDSC_ALIASNOTFOUND2C            5462
+#define IDSC_ALIASNOTFOUNDZ             5463
+#define IDSC_BASEISALIAS                5465
+#define IDSC_ALIASCANTREFERTOITSELF     5466
+#define IDSC_BASEHASNOTITLE             5467
+#define IDSC_ABASEINVALID               5499

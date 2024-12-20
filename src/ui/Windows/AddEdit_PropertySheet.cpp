@@ -468,7 +468,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
       if (m_AEMD.ibasedata > 0) {
         // Password in alias format AND base entry exists
         // No need to check if base is an alias as already done in
-        // call to PWScore::ParseBaseEntryPWD
+        // call to PWScore::ParseAliasPassword
         m_AEMD.pci->SetPassword(L"[Alias]");
         m_AEMD.pci->SetAlias();
         ItemListIter iter = m_AEMD.pcore->Find(m_AEMD.base_uuid);

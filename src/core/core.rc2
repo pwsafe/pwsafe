@@ -484,3 +484,21 @@ BEGIN
    IDSC_TOTP_ERROR_KEY_INVALID_CHARS      "Allowed characters are a-z, 2-7, space and dash"
    IDSC_TOTP_ERROR_BASE32_DECODE_FAILURE  "Bad length"
 END
+
+STRINGTABLE
+BEGIN
+  IDSC_ALIASNOTFOUNDA      "Password implies this is an alias entry, but "
+  IDSC_ALIASNOTFOUND0A     "multiple entries exist with title=%s."
+  IDSC_ALIASNOTFOUND0B     "no entry exists with title=%s."
+  IDSC_ALIASNOTFOUND1A     "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+  IDSC_ALIASNOTFOUND1B     "no entry exists with title=%s and username=%s or with group=%s, title=%s."
+  IDSC_ALIASNOTFOUND2A     "no entry exists with group=%s, title=%s and username=%s."
+  IDSC_ALIASNOTFOUND2B     "no entry exists with group=%s, title=%s and empty username."
+  IDSC_ALIASNOTFOUND2C     "no entry exists in the root with title=%s and username=%s."
+  IDSC_ALIASNOTFOUNDZ      "\n\nSelect Yes to continue with this password or No to cancel"
+  IDSC_ALIASCANTREFERTOITSELF             "An alias cannot refer to itself!"
+  IDSC_BASEHASNOTITLE      "Password implies this is an alias entry, but specifies a base entry with no title.\nEvery entry must have a title."
+  IDSC_BASEISALIAS         "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+  IDSC_ABASEINVALID          "This alias' target [%s:%s:%s] is not a normal entry."
+
+END
