@@ -1,0 +1,90 @@
+name: Build pwsafe with CMake on macOS
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    env:
+      MACOS_VER_MIN: 10.15
+      WX_VERS: 3.1.5
+      WX_SRC_DIR: ${{ github.workspace }}/wxWidgets
+      WX_BUILD_DIR: ${{ github.workspace }}/wxWidgets/build
+      WX_ARCH: "arm64,x86_64"
+      HOST_NCPU: 4
+      XCODE_CONFIG: Release
+      FORCE_REBUILD_WX: 0
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Build ykpers from upstream
+      run: |
+        git clone --no-checkout https://github.com/Yubico/yubikey-personalization.git
+        cd yubikey-personalization
+        git checkout db0c0d641d47ee52e43af94dcee603d76186b6d3
+        autoreconf --install
+        ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
+        make -j $HOST_NCPU check
+        sudo make install
+
+    - name: Cache wxWidgets build
+      id: cache-wxWidgets-build
+      uses: actions/cache@v4.0.0
+      with:
+        path: |
+          ${{ env.WX_BUILD_DIR }}
+          ${{ env.WX_SRC_DIR }}/locale
+        key: wx-${{ env.WX_VERS }}-macOS-${{ env.MACOS_VER_MIN }}-Xcode-${{ env.XCODE_VER }}-build-${{ env.FORCE_REBUILD_WX }}
+
+    - name: Checkout wxWidgets
+      if: steps.cache-wxWidgets-build.outputs.cache-hit != 'true'
+      run: git clone --branch v$WX_VERS --single-branch https://github.com/wxWidgets/wxWidgets.git $WX_SRC_DIR
+
+    - name: Build wxWidgets
+      if: steps.cache-wxWidgets-build.outputs.cache-hit != 'true'
+      working-directory: ${{ env.WX_SRC_DIR }}
+      run: |
+        git -C $WX_SRC_DIR submodule update --init
+        rm -rf $WX_BUILD_DIR
+        mkdir -p $WX_BUILD_DIR
+        cd $WX_SRC_DIR
+        ./configure --enable-universal_binary=$WX_ARCH --prefix=$WX_BUILD_DIR --disable-shared --enable-unicode --with-macosx-version-min=$MACOS_VER_MIN --with-libpng=builtin --with-libjpeg=builtin --with-libtiff=builtin --with-regex=builtin --without-liblzma $WX_DEBUG_FLAG
+        make -j $HOST_NCPU
+        cd locale; make allmo; cd ..
+        sudo make install
+        du -sh $WX_BUILD_DIR
+
+    - name: Generate and print xcconfigs
+      working-directory: ${{ github.workspace }}
+      run: |
+        Xcode/generate-configs -r $WX_BUILD_DIR/bin/wx-config > Xcode/pwsafe-release.xcconfig
+        cat Xcode/pwsafe-release.xcconfig
+
+    - name: Generate Xcode project with CMake
+      working-directory: ${{ github.workspace }}
+      run: |
+        cmake -G "Xcode" -S . -B build
+
+    - name: Build pwsafe
+      working-directory: ${{ github.workspace }}
+      run: xcodebuild -project build/pwsafe.xcodeproj -scheme pwsafe -configuration $XCODE_CONFIG
+
+    - name: Install language files and create dmg
+      working-directory: install/macosx
+      run: make
+
+    - name: Upload artifacts
+      uses: 'actions/upload-artifact@v4.3.1'
+      with:
+        name: PasswordSafe-macOS.${{ github.sha }}
+        path: PasswordSafe-macOS*.dmg
+        if-no-files-found: error
