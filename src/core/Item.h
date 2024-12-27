@@ -84,6 +84,11 @@ public:
     TOTPLENGTH = 0x22,            // TOTP Length
     TOTPTIMESTEP = 0x23,          // TOTP Time Step
     TOTPSTARTTIME = 0x24,         // TOTP Start Time
+    DATA_ATT_TITLE = 0x25,        // User-friendly name for the attachment
+    DATA_ATT_MEDIATYPE = 0x26,    // MIME type - text string describing Media Type
+    DATA_ATT_FILENAME = 0x27,     // Original file name
+    DATA_ATT_MTIME = 0x28,        // Modification time associated with the attachment file at the time of attachment
+    DATA_ATT_CONTENT = 0x29,      // The binary representation of the attachment
     LAST_USER_FIELD,              // All "user" fields MUST be before this for entry compare
 
     BASEUUID = 0x41,              // Base UUID of Alias or Shortcut (v4)
@@ -127,7 +132,7 @@ public:
   static bool IsTimeField(int ft)
   {
     return ft == CTIME || ft == PMTIME || ft == ATIME || ft == XTIME || ft == RMTIME ||
-      ft == TOTPSTARTTIME ||
+      ft == TOTPSTARTTIME || ft == DATA_ATT_MTIME ||
       ft == ATTCTIME || ft == FILECTIME || ft == FILEMTIME || ft == FILEATIME;
   }
 
