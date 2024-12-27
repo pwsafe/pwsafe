@@ -352,6 +352,29 @@ public:
   bool IsURLEmail(const CItemData *pbci) const
   { return GetEffectiveFieldValue(URL, pbci).find(_T("mailto:")) != StringX::npos; }
 
+  // V3 attachment
+  bool IsAttTitleSet() const            { return IsFieldSet(DATA_ATT_TITLE);     }
+  bool IsAttMediaTypeSet() const        { return IsFieldSet(DATA_ATT_MEDIATYPE); }
+  bool IsAttFileNameSet() const         { return IsFieldSet(DATA_ATT_FILENAME);  }
+  bool IsAttModificationTimeSet() const { return IsFieldSet(DATA_ATT_MTIME);     }
+  bool IsAttContentSet() const          { return IsFieldSet(DATA_ATT_CONTENT);   }
+
+  StringX GetAttTitle() const           { return GetField(DATA_ATT_TITLE);     }
+  StringX GetAttMediaType() const       { return GetField(DATA_ATT_MEDIATYPE); }
+  StringX GetAttFileName() const        { return GetField(DATA_ATT_FILENAME);  }
+  time_t GetAttModificationTime(time_t &t) const { CItem::GetTime(DATA_ATT_MTIME, t); return t; }
+  size_t GetAttContentLength() const;
+  std::vector<unsigned char> GetAttContent() const;
+
+  void SetAttTitle(const StringX &title)         { CItem::SetField(DATA_ATT_TITLE, title); }
+  void SetAttMediaType(const StringX &mediaType) { CItem::SetField(DATA_ATT_MEDIATYPE, mediaType); }
+  void SetAttFileName(const StringX &fileName)   { CItem::SetField(DATA_ATT_FILENAME, fileName); }
+  void SetAttModificationTime(time_t t)          { CItem::SetTime(DATA_ATT_MTIME, t); }
+  void SetAttContent(const unsigned char *content, size_t clen) { CItem::SetField(DATA_ATT_CONTENT, content, clen); }
+
+  bool HasAttachment() const            { return IsAttMediaTypeSet();            }
+  void ClearAttachment();
+
 private:
   EntryType m_entrytype;
   EntryStatus m_entrystatus;
@@ -388,6 +411,7 @@ inline bool CItemData::IsTextField(unsigned char t)
     t == KBSHORTCUT || t == ATTREF || t == BASEUUID || t == ALIASUUID ||
     t == SHORTCUTUUID ||
     t == TOTPCONFIG || t == TOTPLENGTH || t == TOTPSTARTTIME || t == TOTPTIMESTEP ||
+    t == DATA_ATT_TITLE || t == DATA_ATT_MEDIATYPE || t == DATA_ATT_FILENAME ||
     t >= LAST_DATA);
 }
 #endif /* __ITEMDATA_H */

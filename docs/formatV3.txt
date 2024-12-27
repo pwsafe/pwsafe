@@ -204,6 +204,7 @@ PasswordSafe V3.29 introduced Format 0x030B
 PasswordSafe V3.29Y introduced Format 0x030C
 PasswordSafe V3.30 introduced Format 0x030D
 PasswordSafe V3.47 introduced Format 0x030E
+PasswordSafe V3.68 introduced Format 0x030F
 
 [2] A universally unique identifier is needed in order to synchronize
 databases across different machine. Representation is described in
@@ -373,6 +374,11 @@ TOTP Config                 0x21        1 byte        N              [29]
 TOTP Length                 0x22        1 byte        N              [29]
 TOTP Time Step              0x23        1 byte        N              [29]
 TOTP Start Time             0x24        time_t        N              [29]
+Att Title                   0x25        Text          Y              [30]
+Att MediaType               0x26        Text          Y              [30]
+Att FileName                0x27        Text          Y              [30]
+Att Modification Time       0x28        time_t        Y              [30]
+Att Content                 0x29        Binary        Y              [30]
 Unknown (testing)           0xdf        -             N              [26]
 Implementation-specific     0xe0-0xfe   -             N              [27]
 End of Entry                0xff        [empty]       Y              [28]
@@ -590,6 +596,35 @@ These TOTP parameters fields have the following format:
                       start counting time steps. If not specified, the
                       default is 0. The format is that of a 40 bit (5 byte)
                       Password Safe time_t value as specified in Section 3.1.3.
+
+[30] The attachment parameters fields are listed below. If an entry contains
+an attachment the field Att MediaType must be present and non-empty,
+the others are optional (default to empty/zero).
+
+    Att Title = User-friendly name for the attachment
+
+    Att MediaType = MIME type - text string describing Media Type, per
+      http://www.iana.org/assignments/media-types
+
+    Att FileName = Original file name - kept mainly for the extension, to support
+      applications that require this for proper viewing.
+
+    Att Modification Time = Modification time associated with the attachment file
+      at the time of attachment. Application may try to restore this when exporting
+      the attachment. Representation is as described in Section 3.1.3.
+
+    Att Content = The binary representation of the attachment.
+      Note that this is limited to 4GB (2^32 bytes), which should suffice.
+      Interpretation of this field's value is per the media type specified
+      in Att MediaType (0x26)
+      Absence of this field implies a zero-sized attachment.
+
+These parameters were introduced in version 0x030F (PasswordSafe V3.68).
+
+Although the Att Content field is theoretically limited to 4GB, attaching large
+files will impact performance and synchronization times, and could make the database
+inaccessible on mobile platforms. It is advised to keep the total database size
+below 100MB.
 
 4. Extensibility
 
