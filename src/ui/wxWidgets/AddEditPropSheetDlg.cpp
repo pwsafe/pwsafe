@@ -1791,12 +1791,13 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
       if(bChangeToBaseEntry) {
         wxMessageBox(_("Shortcut or Alias selected, use Base entry instead"), _("Warning"), wxOK | wxICON_EXCLAMATION);
       }
-      if(m_Item.IsAlias() && (pbci == nullptr)) {
+      if(m_Item.IsAlias() && (pbci == nullptr)) { // user chose to change alias to normal entry
         m_Item.SetEntryType(CItemData::ET_NORMAL);
         m_Password = m_Item.GetPassword();
+        m_AliasChange = Alias2Normal;
         RemoveAlias();
       }
-      else if(m_Item.IsAlias() && (m_Core.GetBaseEntry(&m_Item) != pbci)) {
+      else if(m_Item.IsAlias() && (m_Core.GetBaseEntry(&m_Item) != pbci)) { // user changed alias to another base entry
         const pws_os::CUUID baseUUID = pbci->GetUUID();
         m_Item.SetBaseUUID(baseUUID);
         m_Password = L"[" +
@@ -1804,10 +1805,11 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
                     pbci->GetTitle() + L":" +
                     pbci->GetUser()  + L"]";
         m_BasicPasswordTextCtrl->SetValue(m_Password.c_str());
+        m_AliasChange = AliasRebased;
         if(! m_IsPasswordHidden)
           m_BasicPasswordConfirmationTextCtrl->SetValue(pbci->GetPassword().c_str());
       }
-      else if(! m_Item.IsAlias() && pbci) {
+      else if(! m_Item.IsAlias() && pbci) { // user chose to change normal entry to alias
         const pws_os::CUUID baseUUID = pbci->GetUUID();
         m_Item.SetAlias();
         m_Item.SetBaseUUID(baseUUID);
@@ -1815,6 +1817,7 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
                     pbci->GetGroup() + L":" +
                     pbci->GetTitle() + L":" +
                     pbci->GetUser()  + L"]";
+        m_AliasChange = Normal2Alias;
         ShowAlias();
       }
     }
@@ -2061,10 +2064,34 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
   m_Item.SetNotes(tostringx(m_Notes));
   m_Item.SetURL(tostringx(m_Url));
   m_Item.SetEmail(tostringx(m_Email));
-  if(! m_Item.IsAlias())
-    m_Item.SetPassword(password);
-  else
-    m_Item.SetPassword(L"");
+  m_Item.SetPassword(password);
+
+  // Are we dealing with a new alias?
+     BaseEntryParms pl;
+    pl.InputType = CItemData::ET_NORMAL;
+    if (m_Core.ParseAliasPassword(password, pl)) {
+      // Core validations:
+      const StringX selfGTU = L"[" + m_Item.GetGroup() + L":" + m_Item.GetTitle() + L":" + m_Item.GetUser() + L"]";
+      StringX errmess;
+      bool yesNoError;
+
+      bool isAliasValid = m_Core.CheckAliasValidity(pl, selfGTU, errmess, yesNoError);
+
+
+      if (!isAliasValid) {
+        long style = yesNoError ? (wxYES_NO | wxNO_DEFAULT) : wxOK;
+
+	      wxMessageDialog msg(this, errmess.c_str(), _("Alias Password Error"), style);
+
+        if (msg.ShowModal() == wxID_NO) {
+          m_BasicPasswordTextCtrl->SetFocus();
+          return nullptr;
+        }
+      } else {
+        m_Item.SetAlias();
+        m_Item.SetBaseUUID(pl.base_uuid);
+      }
+    }
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Additional"
@@ -2447,13 +2474,37 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
   time(&t);
   if (changes & Changes::Password) {
     BaseEntryParms pl;
+    pl.InputType = m_Item.GetEntryType();
     auto password = tostringx(m_BasicPasswordTextCtrl->GetValue());
-    if (m_Core.ParseAliasPassword(password, pl) && (pl.ibasedata > 0)) {
-      m_Item.SetAlias();
-      m_Item.SetBaseUUID(pl.base_uuid);
-    } else {
-      m_Item.UpdatePassword(password);
-      m_Item.SetPMTime(t);
+    if (m_Core.ParseAliasPassword(password, pl)) {
+      // Core validations:
+      const StringX selfGTU = L"[" + m_Item.GetGroup() + L":" + m_Item.GetTitle() + L":" + m_Item.GetUser() + L"]";
+      StringX errmess;
+      bool yesNoError;
+
+      bool isAliasValid = m_Core.CheckAliasValidity(pl, selfGTU, errmess, yesNoError);
+
+
+      if (!isAliasValid) {
+        long style = yesNoError ? (wxYES_NO | wxNO_DEFAULT) : wxOK;
+
+	      wxMessageDialog msg(this, errmess.c_str(), _("Alias Password Error"), style);
+
+        if (msg.ShowModal() == wxID_NO) {
+          m_BasicPasswordTextCtrl->SetFocus();
+          return nullptr;
+        }
+        // here if user decided to accept this as a regular password
+        m_Item.UpdatePassword(password);
+        m_Item.SetPMTime(t);
+      } else {
+        m_Item.SetAlias();
+        m_Item.SetBaseUUID(pl.base_uuid);
+      } 
+    } else { // password not an alias format
+        m_Item.SetNormal(); // in case we're changing an alias to a normal entry
+        m_Item.UpdatePassword(password);
+        m_Item.SetPMTime(t);
     }
   }
   if ((changes & ~Changes::Attachment) != Changes::None) { // anything besides attachment
@@ -2618,7 +2669,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
     }
   }
 
-  if (changes != Changes::None) {
+  if (changes != Changes::None || m_AliasChange != AliasChanges::NoChange) {
     // All fields in m_item now reflect user's edits
     // Let's update the core's data
     uuid_array_t uuid;
@@ -2761,6 +2812,8 @@ void AddEditPropSheetDlg::OnOk(wxCommandEvent& WXUNUSED(evt))
 
     if (command) {
       m_Core.Execute(command);
+    } else if (m_Type != SheetType::VIEW) {
+      return; // no command created for add/edit, don't exit dialog box.
     }
 
     EndModal(wxID_OK);

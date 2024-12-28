@@ -342,6 +342,13 @@ private:
     Attachment = 1u << 16,
     XTimeNever = 1u << 17,
   };
+
+  enum AliasChanges {
+    NoChange,
+    Alias2Normal,
+    AliasRebased,
+    Normal2Alias,
+  };
   
   uint32_t GetChanges() const;
   
@@ -377,6 +384,8 @@ private:
   bool m_IsNotesHidden;
   StringX m_Password;
   bool m_IsPasswordHidden;
+
+  AliasChanges m_AliasChange = AliasChanges::NoChange;
 
   // Tab: "Additional"
   wxPanel *m_AdditionalPanel = nullptr;
