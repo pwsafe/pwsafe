@@ -252,11 +252,8 @@ void CItem::GetField(const CItemField &field,
 
 void CItem::GetField(const CItemField &field, std::vector<unsigned char> &v) const
 {
-  size_t length = field.GetLength();
-  if (length < TwoFish::BLOCKSIZE)
-    length = TwoFish::BLOCKSIZE;
+  size_t length = roundUp(field.GetLength(), BlowFish::BLOCKSIZE);
   v.resize(length);
-  length = v.size();
   field.Get(& v[0], length, MakeBlowFish());
   v.resize(length);
 }
