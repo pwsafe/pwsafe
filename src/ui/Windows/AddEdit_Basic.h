@@ -145,7 +145,7 @@ private:
                         const bool bIsEdit, const CItemData::EntryType InputType, 
                         pws_os::CUUID &base_uuid, int &ibasedata, bool &b_msg_issued);
   void SetGroupComboBoxWidth();
-  void ShowHideBaseInfo(const CItemData::EntryType &entrytype, CSecString &csBase);
+  void ShowHideBaseInfo(const CItemData::EntryType &entrytype, const CSecString &csBase);
   void SetupAuthenticationCodeUiElements();
   void StopAuthenticationCodeUi();
   void UpdateAuthCode();
