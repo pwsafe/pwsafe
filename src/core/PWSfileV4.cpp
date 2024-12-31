@@ -324,7 +324,7 @@ size_t PWSfileV4::ReadContent(Fish *fish,  unsigned char *cbcbuffer,
   ASSERT(clen > 0 && fish != nullptr && cbcbuffer != nullptr);
   // round up clen to nearest BS:
   const unsigned int BS = fish->GetBlockSize();
-  size_t blen = (clen/BS + 1)*BS;
+  size_t blen = roundUp(clen, BS);
 
   content = new unsigned char[blen]; // caller's responsible for delete[]
   return _readcbc(m_fd, content, blen, fish, cbcbuffer);
