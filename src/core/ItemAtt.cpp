@@ -402,8 +402,8 @@ int CItemAtt::Read(PWSfile *in)
         ASSERT(in4 != nullptr);
         size_t nread = in4->ReadContent(&fish, IV, content, content_len);
         // nread should be content_len rounded up to nearest BS:
-        ASSERT(nread == (content_len/BS + 1)*BS);
-        if (nread != (content_len/BS + 1)*BS) {
+        ASSERT(nread == roundUp(content_len, BS));
+        if (nread != roundUp(content_len, BS)) {
           status = PWSfile::READ_FAIL;
           goto exit;
         }
