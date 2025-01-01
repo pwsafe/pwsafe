@@ -89,6 +89,11 @@ public:
     BASEUUID = 0x41,              // Base UUID of Alias or Shortcut (v4)
     ALIASUUID = 0x42,             // UUID indicates this is an Alias (v4)
     SHORTCUTUUID = 0x43,          // UUID indicates this is a Shortcut (v4)
+    DATA_ATT_TITLE = 0x44,        // User-friendly name for the attachment
+    DATA_ATT_MEDIATYPE = 0x45,    // MIME type - text string describing Media Type
+    DATA_ATT_FILENAME = 0x46,     // Original file name
+    DATA_ATT_MTIME = 0x47,        // Modification time associated with the attachment file at the time of attachment
+    DATA_ATT_CONTENT = 0x48,      // The binary representation of the attachment
     LAST_DATA,                    // Start of unknown fields!
     LAST_ITEM_DATA_FIELD = 0x5f,  // beyond this is for other CItem subclasses
 

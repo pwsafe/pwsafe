@@ -274,10 +274,14 @@ int CItemData::WriteCommon(PWSfile *out) const
                                   NOTES, URL, AUTOTYPE, POLICY,
                                   PWHIST, RUNCMD, EMAIL,
                                   SYMBOLS, POLICYNAME,
+                                  DATA_ATT_TITLE, DATA_ATT_MEDIATYPE, DATA_ATT_FILENAME,
                                   END};
   const FieldType TimeFields[] = {ATIME, CTIME, XTIME, PMTIME, RMTIME, TOTPSTARTTIME,
+                                  DATA_ATT_MTIME,
                                   END};
-  const FieldType BinaryFields[] = { TOTPCONFIG, TOTPTIMESTEP, TOTPLENGTH, END };
+  const FieldType BinaryFields[] = { TOTPCONFIG, TOTPTIMESTEP, TOTPLENGTH,
+                                  DATA_ATT_CONTENT,
+                                  END };
 
   for (i = 0; TextFields[i] != END; i++)
     WriteIfSet(TextFields[i], out, true);
@@ -2113,11 +2117,15 @@ bool CItemData::SetField(CItem::FieldType ft, const unsigned char* data, size_t 
     case EMAIL:
     case SYMBOLS:
     case POLICYNAME:
+    case DATA_ATT_TITLE:
+    case DATA_ATT_MEDIATYPE:
+    case DATA_ATT_FILENAME:
       if (!SetTextField(ft, data, len)) return false;
       break;
     case TOTPCONFIG:
     case TOTPTIMESTEP:
     case TOTPLENGTH:
+    case DATA_ATT_CONTENT:
       CItem::SetField(ft, data, len);
       break;
     case CTIME:
@@ -2126,6 +2134,7 @@ bool CItemData::SetField(CItem::FieldType ft, const unsigned char* data, size_t 
     case XTIME:
     case RMTIME:
     case TOTPSTARTTIME:
+    case DATA_ATT_MTIME:
       if (!SetTimeField(ft, data, len)) return false;
       break;
     case XTIME_INT:
@@ -2415,4 +2424,59 @@ StringX CItemData::GetTotpAuthCode(time_t* pBasisTimeNow, double* pRatioExpired)
     retval.clear();
   }
   return retval;
+}
+
+void CItemData::TransferAttOut(CItemAtt &att)
+{
+  std::vector<unsigned char> content;
+  time_t t;
+
+  ASSERT(CanTransferAtt());
+  att.CreateUUID();
+  att.SetCTime(GetCTime(t));
+
+  if (IsFieldSet(DATA_ATT_TITLE))
+    att.SetTitle(GetField(DATA_ATT_TITLE));
+  att.SetMediaType(GetField(DATA_ATT_MEDIATYPE));
+  if (IsFieldSet(DATA_ATT_FILENAME))
+    att.SetFileName(GetField(DATA_ATT_FILENAME));
+  if (IsFieldSet(DATA_ATT_MTIME)) {
+    CItem::GetTime(DATA_ATT_MTIME, t);
+    att.SetFileMTime(t);
+  }
+
+  GetField(DATA_ATT_CONTENT, content);
+  att.SetContent(content.data(), content.size());
+  trashMemory(content.data(), content.size());
+
+  // Remove duplicate content
+  TransferClear();
+
+  // Keep ref to att
+  SetAttUUID(att.GetUUID());
+}
+
+void CItemData::TransferAttIn(const CItemAtt &att) {
+  time_t t;
+
+  if (!att.GetTitle().empty())
+    CItem::SetField(DATA_ATT_TITLE, att.GetTitle());
+  CItem::SetField(DATA_ATT_MEDIATYPE, att.GetMediaType());
+  if (!att.GetFileName().empty())
+    CItem::SetField(DATA_ATT_FILENAME, att.GetFileName());
+  if (att.GetFileMTime(t) > 0)
+    CItem::SetTime(DATA_ATT_MTIME, t);
+
+  std::vector<unsigned char> content(att.GetContentSize());
+  att.GetContent(content.data(), content.size());
+  CItem::SetField(DATA_ATT_CONTENT, content.data(), att.GetContentLength());
+  trashMemory(content.data(), content.size());
+}
+
+void CItemData::TransferClear() {
+  ClearField(DATA_ATT_TITLE);
+  ClearField(DATA_ATT_MEDIATYPE);
+  ClearField(DATA_ATT_FILENAME);
+  ClearField(DATA_ATT_MTIME);
+  ClearField(DATA_ATT_CONTENT);
 }

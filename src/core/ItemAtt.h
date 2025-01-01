@@ -18,6 +18,7 @@
 #include "StringX.h"
 
 #include <time.h> // for time_t
+#include <bitset>
 
 //-----------------------------------------------------------------------------
 

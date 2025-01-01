@@ -54,9 +54,10 @@ using pws_os::CUUID;
  *         V3.29Y          0x030C
  *         V3.30           0x030D
  *         V3.47           0x030E
+ *         V3.68           0x030F
 */
 
-const short VersionNum = 0x030E;
+const short VersionNum = 0x030F;
 
 static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F',

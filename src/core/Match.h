@@ -13,7 +13,6 @@
 //-----------------------------------------------------------------------------
 
 #include "StringX.h"
-#include "ItemData.h"
 //#include "PWSFilters.h"  // For DateType
 
 namespace PWSMatch {
