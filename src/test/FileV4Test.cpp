@@ -25,7 +25,7 @@ protected:
   FileV4Test(); // to init members
   PWSfileHeader hdr;
   CItemData smallItem, fullItem, item;
-  CItemAtt attItem, attItem16;
+  CItemAtt attItem, attItem15, attItem16, attItem17;
   void SetUp();
   void TearDown();
 
@@ -94,11 +94,19 @@ void FileV4Test::SetUp()
   int status = attItem.Import(testAttFile);
   ASSERT_EQ(PWSfile::SUCCESS, status);
 
-  // Attachment with size = 16 bytes (block size)
+  // Attachments with size = block size - 1, block size, block size + 1
+  attItem15.CreateUUID();
+  attItem15.SetFileCTime(123);
+  attItem15.SetMediaType(L"text/plain");
+  attItem15.SetContent((const unsigned char*)"0123456789abcde", 15);
   attItem16.CreateUUID();
-  attItem16.SetFileCTime(123);
+  attItem16.SetFileCTime(456);
   attItem16.SetMediaType(L"text/plain");
   attItem16.SetContent((const unsigned char *) "0123456789abcdef", 16);
+  attItem17.CreateUUID();
+  attItem17.SetFileCTime(789);
+  attItem17.SetMediaType(L"text/plain");
+  attItem17.SetContent((const unsigned char*)"0123456789abcdefg", 17);
 }
 
 void FileV4Test::TearDown()
@@ -215,21 +223,29 @@ TEST_F(FileV4Test, AttTest)
   PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
   ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
   EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(attItem));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(attItem15));
   EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(attItem16));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(attItem17));
   ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
   ASSERT_TRUE(pws_os::FileExists(fname));
 
-  CItemAtt readAtt, readAtt16;
+  CItemAtt readAtt, readAtt15, readAtt16, readAtt17;
   PWSfileV4 fr(fname.c_str(), PWSfile::Read, PWSfile::V40);
   ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
   EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readAtt));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readAtt15));
   EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readAtt16));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(readAtt17));
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
   attItem.SetOffset(readAtt.GetOffset());
   EXPECT_EQ(attItem, readAtt);
+  attItem15.SetOffset(readAtt15.GetOffset());
   attItem16.SetOffset(readAtt16.GetOffset());
+  attItem17.SetOffset(readAtt17.GetOffset());
+  EXPECT_EQ(attItem15, readAtt15);
   EXPECT_EQ(attItem16, readAtt16);
+  EXPECT_EQ(attItem17, readAtt17);
 }
 
 TEST_F(FileV4Test, HdrItemAttTest)
