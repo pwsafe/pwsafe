@@ -265,6 +265,10 @@ inline void byteswap(T& v) {
   byteswap(a, a + sizeof(v) - 1);
 }
 
+inline size_t roundUp(size_t x, const size_t m) {
+    return ((x + m - 1) / m) * m;
+}
+
 namespace PWSUtil {
 
   // namespace of common utility functions
