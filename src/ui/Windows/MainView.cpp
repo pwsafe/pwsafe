@@ -2702,7 +2702,7 @@ bool DboxMain::LockDataBase()
   PWS_LOGIT;
 
   // Bug 1149: Check DB open before doing anything
-  if (!m_core.IsDbOpen())
+  if (!m_core.IsDbFileSet())
     return true;
 
   /*
@@ -3056,7 +3056,7 @@ void DboxMain::ChangeFont(const CFontsDialog::FontType iType)
 void DboxMain::UpdateSystemTray(const DBSTATE s)
 {
   CString csTooltip(L"");
-  if (m_core.IsDbOpen()) {
+  if (m_core.IsDbFileSet()) {
     std::wstring cdrive, cdir, cFilename, cExtn;
     pws_os::splitpath(m_core.GetCurFile().c_str(), cdrive, cdir, cFilename, cExtn);
 

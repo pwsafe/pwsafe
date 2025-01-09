@@ -114,7 +114,7 @@ void PasswordSafeFrame::DoPreferencesClick()
     if (m_sysTray && prefs->GetPref(PWSprefs::UseSystemTray))
         m_sysTray->ShowIcon();
 
-    if (m_core.IsDbOpen() && !m_core.IsReadOnly() &&
+    if (m_core.IsDbFileSet() && !m_core.IsReadOnly() &&
         m_core.GetReadFileVersion() >= PWSfile::V30) { // older versions don't have prefs
       if (sxOldDBPrefsString != sxNewDBPrefsString ||
           m_core.GetHashIters() != window->GetHashItersValue()) {
@@ -147,7 +147,7 @@ void PasswordSafeFrame::OnBackupSafe(wxCommandEvent& WXUNUSED(evt))
   const wxString title(_("Choose a Name for this Backup:"));
 
   wxString dir;
-  if (!m_core.IsDbOpen())
+  if (!m_core.IsDbFileSet())
     dir = towxstring(PWSdirs::GetSafeDir());
   else {
     wxFileName::SplitPath(towxstring(m_core.GetCurFile()), &dir, nullptr, nullptr);
@@ -196,7 +196,7 @@ void PasswordSafeFrame::DoRestoreSafe()
   const wxFileName currbackup(towxstring(PWSprefs::GetInstance()->GetPref(PWSprefs::CurrentBackup)));
 
   wxString dir;
-  if (!m_core.IsDbOpen())
+  if (!m_core.IsDbFileSet())
     dir = towxstring(PWSdirs::GetSafeDir());
   else {
     wxFileName::SplitPath(towxstring(m_core.GetCurFile()), &dir, nullptr, nullptr);

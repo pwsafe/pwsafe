@@ -174,7 +174,6 @@ PWScore::PWScore() :
                      m_ReadFileVersion(PWSfile::UNKNOWN_VERSION),
                      m_bIsReadOnly(false),
                      m_bNotifyDB(false),
-                     m_bIsOpen(false),
                      m_nRecordsWithUnknownFields(0),
                      m_DBCurrentState(CLEAN),
                      m_pFileSig(nullptr),
@@ -555,9 +554,6 @@ void PWScore::ClearDBData()
 
   // Clear any unknown preferences from previous databases
   PWSprefs::GetInstance()->ClearUnknownPrefs();
-
-  // OK now closed
-  m_bIsOpen = false;
 }
 
 void PWScore::ReInit(bool bNewFile)
@@ -1428,9 +1424,6 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   // Make return code negative if validation errors
   if (closeStatus == SUCCESS && bValidateRC)
     closeStatus = OK_WITH_VALIDATION_ERRORS;
-
-  // OK DB open
-  m_bIsOpen = true;
 
   return closeStatus;
 }

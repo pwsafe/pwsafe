@@ -735,7 +735,7 @@ int PWSafeApp::OnExit()
   m_idleTimer->Stop();
   recentDatabases().Save();
   PWSprefs *prefs = PWSprefs::GetInstance();
-  if (m_core.IsDbOpen()) {
+  if (m_core.IsDbFileSet()) {
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
     // Don't leave dangling locks!
     m_core.SafeUnlockCurFile();
