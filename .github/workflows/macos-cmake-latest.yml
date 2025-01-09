@@ -57,6 +57,18 @@ jobs:
     - name: Install tools for Yubikey build
       run: brew install autoconf automake libtool
 
+    # The Yubico repos don't maintain tags, so checkout specific commits for the sake of safety and repeatability
+    # These are the master HEAD commits as of 2024-02-08
+    - name: Build libyubikey from upstream
+      run: |
+        git clone --no-checkout https://github.com/Yubico/yubico-c.git
+        cd yubico-c
+        git checkout e4334554857b0367085cbf845bf87dd92433e020
+        autoreconf --install
+        ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
+        make -j $HOST_CPU check
+        sudo make install
+
     - name: Build ykpers from upstream
       run: |
         git clone --no-checkout https://github.com/Yubico/yubikey-personalization.git
