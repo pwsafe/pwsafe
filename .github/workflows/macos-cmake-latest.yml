@@ -3,10 +3,10 @@ name: Build pwsafe with CMake on macOS
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
 
 jobs:
   build:
