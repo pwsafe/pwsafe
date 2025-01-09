@@ -26,6 +26,37 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
+    - name: Set build parameters
+      # If you need to rebuild wxWidgets for some reason, say you changed the build params, just increment FORCE_REBUILD_WX
+      # Some usefull debug parameters:
+      # "WX_DEBUG_FLAG=--enable-debug --enable-debug_info"
+      # "XCODE_CONFIG=Debug"
+      # "XCODE_CONFIG=Debug-no-yubi"
+      run: |
+        echo "WX_VERS=3.2.4" >> $GITHUB_ENV
+        echo "WX_SRC_DIR=$HOME/wxWidgets" >> $GITHUB_ENV
+        echo "WX_BUILD_DIR=$HOME/wxbuild" >> $GITHUB_ENV
+        echo "WX_ARCH=arm64,x86_64" >> $GITHUB_ENV
+        echo "WX_DEBUG_FLAG=--disable-debug" >> $GITHUB_ENV
+        echo "MACOS_VER_MIN=10.14" >> $GITHUB_ENV
+        echo "XCODE_VER=15.4" >> $GITHUB_ENV
+        echo "XCODE_CONFIG=Release" >> $GITHUB_ENV
+        echo "HOST_NCPU=`sysctl -n hw.ncpu`" >>$GITHUB_ENV
+        echo "FORCE_REBUILD_WX=7" >> $GITHUB_ENV
+
+    - name: Force compatible Xcode version
+      run: sudo xcode-select -s /Applications/Xcode_${XCODE_VER}.app
+
+    - name: Print Xcode version in use
+      run: xcode-select -p
+      
+    - name: Install dependencies for creating dmg
+      # gettext is already installed in the runner image
+      run: brew install create-dmg
+
+    - name: Install tools for Yubikey build
+      run: brew install autoconf automake libtool
+
     - name: Build ykpers from upstream
       run: |
         git clone --no-checkout https://github.com/Yubico/yubikey-personalization.git
