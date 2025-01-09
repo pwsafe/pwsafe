@@ -2,7 +2,7 @@
  * Initial version created as 'SetDatabaseIdDlg.cpp'
  * by rafaelx on 2023-02-21.
  *
- * Copyright (c) 2019-2024 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2019-2025 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from

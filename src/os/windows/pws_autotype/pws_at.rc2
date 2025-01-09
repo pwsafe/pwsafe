@@ -44,8 +44,8 @@ BEGIN
             VALUE "FileDescription", "Password Safe Autotype DLL"
             VALUE "FileVersion", STRATFILEVER
             VALUE "InternalName", "Password Safe"
-            VALUE "LegalCopyright", "Copyright © 2003-2024 Rony Shapiro"
-            VALUE "LegalTrademarks", "Copyright © 1997-8 by Counterpane Systems, 2003-2024 Rony Shapiro"
+            VALUE "LegalCopyright", "Copyright © 2003-2025 Rony Shapiro"
+            VALUE "LegalTrademarks", "Copyright © 1997-8 by Counterpane Systems, 2003-2025 Rony Shapiro"
             VALUE "OriginalFilename", "pws_at.dll"
             VALUE "ProductName", "Password Safe Autotype DLL"
             VALUE "ProductVersion", STRATPRODUCTVER
