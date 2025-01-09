@@ -1951,7 +1951,7 @@ msgid "See LICENSE for open source details."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/AboutDlg.cpp:146
-msgid "Copyright (c) 2003-2024 Rony Shapiro"
+msgid "Copyright (c) 2003-2025 Rony Shapiro"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/AboutDlg.cpp:153

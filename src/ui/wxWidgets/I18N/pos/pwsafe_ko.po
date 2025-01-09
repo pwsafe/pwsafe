@@ -2142,7 +2142,7 @@ msgid "See LICENSE for open source details."
 msgstr "공개 소스에 대해 알고싶으시다면 LICENSE를 읽으십시오."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/AboutDlg.cpp:146
-msgid "Copyright (c) 2003-2024 Rony Shapiro"
+msgid "Copyright (c) 2003-2025 Rony Shapiro"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/AboutDlg.cpp:153
