@@ -127,7 +127,7 @@ public:
   void ReInit(bool bNewfile = false);
 
   // Following used to read/write databases and Get/Set file name
-  bool IsDbOpen() const { return !m_currfile.empty(); }
+  bool IsDbFileSet() const { return !m_currfile.empty(); }
   StringX GetCurFile() const {return m_currfile;}
   void SetCurFile(const StringX &file) {m_currfile = file;}
 
@@ -580,7 +580,6 @@ private:
   bool m_bIsReadOnly;
   bool m_bUniqueGTUValidated;
   bool m_bNotifyDB;
-  bool m_bIsOpen;
 
     PWSfileHeader m_hdr;
   StringX m_InitialDBName, m_InitialDBDesc;
