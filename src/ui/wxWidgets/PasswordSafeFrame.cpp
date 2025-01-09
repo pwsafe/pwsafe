@@ -404,7 +404,7 @@ PasswordSafeFrame::~PasswordSafeFrame()
 {
 ////@begin PasswordSafeFrame destruction
 ////@end PasswordSafeFrame destruction
-  if (m_core.IsDbOpen())
+  if (m_core.IsDbFileSet())
     SaveIfChanged(); // moved here from PWSafeApp::OnExit(), where it's called too late.
 
   m_AuiManager.UnInit();
@@ -1935,7 +1935,7 @@ CItemData* PasswordSafeFrame::GetBaseEntry(const CItemData *item) const
 
 bool PasswordSafeFrame::CheckReportPresent(int iAction)
 {
-  if(m_core.IsDbOpen()) {
+  if(m_core.IsDbFileSet()) {
     CReport rpt;
     rpt.StartReport(iAction, m_core.GetCurFile().c_str(), false);
     return rpt.ReportExistsOnDisk();
@@ -1971,7 +1971,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
   switch (evt.GetId()) {
     case wxID_SAVE:
-      evt.Enable(m_core.IsDbOpen() && !isFileReadOnly && (m_core.HasDBChanged() || m_core.HaveDBPrefsChanged()));
+      evt.Enable(m_core.IsDbFileSet() && !isFileReadOnly && (m_core.HasDBChanged() || m_core.HaveDBPrefsChanged()));
       break;
 
     case wxID_SAVEAS:
@@ -1985,7 +1985,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 #ifndef NO_YUBI
     case ID_YUBIKEY_MNG:
 #endif
-      evt.Enable(m_core.IsDbOpen());
+      evt.Enable(m_core.IsDbFileSet());
       break;
       
     case ID_REPORT_SYNCHRONIZE:
@@ -2040,21 +2040,21 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_SORT_TREE_BY_GROUP:
     case ID_SORT_TREE_BY_NAME:
     case ID_SORT_TREE_BY_DATE:
-      evt.Enable(m_core.IsDbOpen() && isTreeView);
+      evt.Enable(m_core.IsDbFileSet() && isTreeView);
       break;
       
     case ID_EXPORTMENU:
     case ID_COMPARE:
-      evt.Enable(m_core.IsDbOpen() && m_core.GetNumEntries() != 0);
+      evt.Enable(m_core.IsDbFileSet() && m_core.GetNumEntries() != 0);
       break;
 
     case ID_ADDGROUP:
-      evt.Enable((isTreeViewGroupSelected || isTreeViewEmpty || !isTreeViewItemSelected) && !isFileReadOnly && IsTreeSortGroup() && m_core.IsDbOpen());
+      evt.Enable((isTreeViewGroupSelected || isTreeViewEmpty || !isTreeViewItemSelected) && !isFileReadOnly && IsTreeSortGroup() && m_core.IsDbFileSet());
       break;
 
     case ID_EXPANDALL:
     case ID_COLLAPSEALL:
-      evt.Enable(!isTreeViewEmpty && m_core.IsDbOpen());
+      evt.Enable(!isTreeViewEmpty && m_core.IsDbFileSet());
       break;
 
     case ID_RENAME:
@@ -2122,19 +2122,19 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_SYNCHRONIZE:
-      evt.Enable(!isFileReadOnly && m_core.IsDbOpen() && m_core.GetNumEntries() != 0);
+      evt.Enable(!isFileReadOnly && m_core.IsDbFileSet() && m_core.GetNumEntries() != 0);
       break;
 
     case ID_CHANGECOMBO:
-      evt.Enable(!isFileReadOnly && m_core.IsDbOpen());
+      evt.Enable(!isFileReadOnly && m_core.IsDbFileSet());
       break;
 
     case wxID_FIND:
-      evt.Enable(m_core.IsDbOpen() && m_core.GetNumEntries() != 0);
+      evt.Enable(m_core.IsDbFileSet() && m_core.GetNumEntries() != 0);
       break;
 
     case wxID_ADD:
-      evt.Enable(!isFileReadOnly && m_core.IsDbOpen());
+      evt.Enable(!isFileReadOnly && m_core.IsDbFileSet());
       break;
 
     case wxID_DELETE:
@@ -2146,34 +2146,34 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_SHOWHIDE_UNSAVED:
-      evt.Enable((m_CurrentPredefinedFilter == UNSAVED) || ((m_CurrentPredefinedFilter == NONE) && m_core.IsDbOpen() && !isFileReadOnly && m_core.HasDBChanged()));
+      evt.Enable((m_CurrentPredefinedFilter == UNSAVED) || ((m_CurrentPredefinedFilter == NONE) && m_core.IsDbFileSet() && !isFileReadOnly && m_core.HasDBChanged()));
       evt.Check(m_CurrentPredefinedFilter == UNSAVED);
       break;
 
     case ID_SHOW_ALL_EXPIRY:
       evt.Enable((m_CurrentPredefinedFilter == EXPIRY) || ((m_CurrentPredefinedFilter == NONE) &&
-       m_core.IsDbOpen() &&
+       m_core.IsDbFileSet() &&
        m_core.GetExpirySize() != 0));
       evt.Check(m_CurrentPredefinedFilter == EXPIRY);
       break;
 
     case ID_SHOW_LAST_FIND_RESULTS:
       evt.Enable((m_CurrentPredefinedFilter == LASTFIND) || ((m_CurrentPredefinedFilter == NONE) &&
-                  m_core.IsDbOpen() &&
+                  m_core.IsDbFileSet() &&
                   m_FilterManager.GetFindFilterSize() != 0));
       evt.Check(m_CurrentPredefinedFilter == LASTFIND);
       break;
 
     case ID_MERGE:
     case ID_IMPORTMENU:
-      evt.Enable(!isFileReadOnly && m_core.IsDbOpen());
+      evt.Enable(!isFileReadOnly && m_core.IsDbFileSet());
       break;
       
     case ID_IMPORT_XML:
 #if (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
       evt.Enable(false);
 #else
-      evt.Enable(!isFileReadOnly && m_core.IsDbOpen());
+      evt.Enable(!isFileReadOnly && m_core.IsDbFileSet());
 #endif
       break;
 
@@ -2189,23 +2189,23 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_PWDPOLSM:
     case ID_LOCK_SAFE:
     case ID_SETDATABASEID:
-      evt.Enable(m_core.IsDbOpen() && !m_sysTray->IsLocked());
+      evt.Enable(m_core.IsDbFileSet() && !m_sysTray->IsLocked());
       break;
 
     case ID_UNLOCK_SAFE:
-      evt.Enable(m_core.IsDbOpen() && m_sysTray->IsLocked());
+      evt.Enable(m_core.IsDbFileSet() && m_sysTray->IsLocked());
       break;
 
     case ID_FILTERMENU:
-      evt.Enable(m_core.IsDbOpen());
+      evt.Enable(m_core.IsDbFileSet());
       break;
       
     case ID_EDITFILTER:
-      evt.Enable(m_core.IsDbOpen() && m_CurrentPredefinedFilter == NONE); // Mark unimplemented
+      evt.Enable(m_core.IsDbFileSet() && m_CurrentPredefinedFilter == NONE); // Mark unimplemented
       break;
       
     case ID_APPLYFILTER:
-      evt.Enable(m_core.IsDbOpen() && (m_bFilterActive || CurrentFilter().IsActive()));
+      evt.Enable(m_core.IsDbFileSet() && (m_bFilterActive || CurrentFilter().IsActive()));
       if(m_bFilterActive) {
         m_ApplyClearFilter->SetItemLabel(_("&Clear current"));
       }
@@ -2215,15 +2215,15 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
       
     case ID_MANAGEFILTERS:
-      evt.Enable(m_core.IsDbOpen() && m_CurrentPredefinedFilter == NONE); // Mark unimplemented
+      evt.Enable(m_core.IsDbFileSet() && m_CurrentPredefinedFilter == NONE); // Mark unimplemented
       break;
       
     case ID_SHOW_EMPTY_GROUP_IN_FILTER:
-      evt.Enable(m_core.IsDbOpen() && isTreeView && m_bFilterActive);
+      evt.Enable(m_core.IsDbFileSet() && isTreeView && m_bFilterActive);
       break;
 
     case ID_SUBVIEWSMENU:
-      evt.Enable(m_core.IsDbOpen());
+      evt.Enable(m_core.IsDbFileSet());
       break;
 
     case ID_CUSTOMIZETOOLBAR:
@@ -2241,10 +2241,10 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_CHANGEMODE:
     {
       bool bFileIsReadOnly = true;
-      if(m_core.IsDbOpen()) {
+      if(m_core.IsDbFileSet()) {
         pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
       }
-      evt.Enable(m_core.IsDbOpen() && !bFileIsReadOnly);
+      evt.Enable(m_core.IsDbFileSet() && !bFileIsReadOnly);
       break;
     }
     default:
@@ -2254,7 +2254,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
 bool PasswordSafeFrame::IsClosed() const
 {
-  return (!m_core.IsDbOpen() && m_core.GetNumEntries() == 0 &&
+  return (!m_core.IsDbFileSet() && m_core.GetNumEntries() == 0 &&
           !m_core.HasDBChanged() && !m_core.AnyToUndo() && !m_core.AnyToRedo());
 }
 
@@ -2516,7 +2516,7 @@ void PasswordSafeFrame::SetFocus()
 void PasswordSafeFrame::OnIconize(wxIconizeEvent& evt) {
 
   // If database was closed than there is nothing to do
-  if (!m_core.IsDbOpen()) {
+  if (!m_core.IsDbFileSet()) {
     return;
   }
 
@@ -2707,7 +2707,7 @@ void PasswordSafeFrame::UpdateStatusBar()
   if(menuBar != nullptr) {
     menu = menuBar->FindItem(ID_CHANGEMODE);
   }
-  if (m_core.IsDbOpen()) {
+  if (m_core.IsDbFileSet()) {
     wxString text;
     // SB_DBLCLICK pane is set per selected entry, not here
 
@@ -3034,7 +3034,7 @@ void PasswordSafeFrame::CloseDB(std::function<void(bool)> callback)
 
   // Save Application related preferences
   prefs->SaveApplicationPreferences();
-  if( m_core.IsDbOpen() ) {
+  if( m_core.IsDbFileSet() ) {
     int rc = SaveIfChanged();
     if (rc != PWScore::SUCCESS) {
       if (callback != nullptr)

@@ -45,7 +45,7 @@ bool DnDFile::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)
   
   if (m_pOwner != NULL)
   {
-    if(! m_pOwner->m_core.IsDbOpen()) {
+    if(! m_pOwner->m_core.IsDbFileSet()) {
       if(m_pOwner->Open(filenames[0]) != PWScore::SUCCESS)
         return false;
     }
