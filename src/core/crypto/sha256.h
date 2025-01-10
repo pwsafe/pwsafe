@@ -14,6 +14,9 @@
 
 #include "../../os/typedefs.h"
 #include "../PwsPlatform.h"
+#ifdef __APPLE__
+#include <CommonCrypto/CommonDigest.h>
+#endif
 
 class SHA256
 {
@@ -26,10 +29,14 @@ public:
   void Final(unsigned char digest[HASHLEN]);
 
 private:
+#ifdef __APPLE__
+  CC_SHA256_CTX ctx;
+#else
   ulong64 length;
   size_t curlen;
   ulong32 state[8];
   unsigned char buf[BLOCKSIZE];
+#endif
 };
 
 #endif /* __SHA256_H */
