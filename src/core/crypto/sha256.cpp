@@ -10,6 +10,47 @@
 // Tom St Denis, tomstdenis@iahu.ca, http://libtomcrypt.org
 //-----------------------------------------------------------------------------
 #include "sha256.h"
+
+#ifdef __APPLE__
+/*
+  Initialize the hash state
+*/
+SHA256::SHA256()
+{
+  CC_SHA256_Init(&ctx);
+}
+
+SHA256::~SHA256()
+{
+  // CC_SHA256_Final has erased ctx
+}
+
+/*
+  Process a block of memory though the hash
+  @param in     The data to hash
+  @param inlen  The length of the data (octets)
+*/
+void SHA256::Update(const unsigned char *in, size_t inlen)
+{
+  while (inlen) {
+    unsigned int len = inlen > UINT32_MAX ? UINT32_MAX : (unsigned int) inlen;
+    CC_SHA256_Update(&ctx, in, len);
+    in += len;
+    inlen -= len;
+  }
+}
+
+/*
+  Terminate the hash to get the digest
+  @param digest The destination of the hash (32 bytes)
+*/
+void SHA256::Final(unsigned char digest[HASHLEN])
+{
+  CC_SHA256_Final(digest, &ctx);
+}
+#else
+// not __APPLE__
+
 #include "bitops.h"
 #include "../Util.h"
 
@@ -281,3 +322,4 @@ void SHA256::Final(unsigned char digest[HASHLEN])
   trashMemory(buf, sizeof(buf));
 #endif
 }
+#endif
