@@ -51,7 +51,7 @@ version 3 file. This tag has no cryptographic value.
 2.3 P' is the "stretched key" generated from the user's passphrase and
 the SALT, as defined by the hash-function-based key stretching
 algorithm in [KEYSTRETCH] (Section 4.1), with SHA-256 [SHA256] as the
-hash function, and ITER iterations (at least 2048, i.e., t = 11).
+hash function, and ITER iterations (at least 16,348).
 
 2.4 ITER is the number of iterations on the hash function to calculate P',
 stored as a 32 bit little-endian value. This value is stored here in order
