@@ -93,7 +93,7 @@ in processing power.
 user's passphrase (UTF-8 encoded) and the SALT, as defined by the
 hash-function-based key stretching algorithm in [PBKDF2], with SHA-256
 [SHA256] as the hash function, and ITER iterations (at least
-2048). The intention is that Key Block i will be generated with user
+16,348). The intention is that Key Block i will be generated with user
 i's passphrase. All keyblocks protect the same K and L values (see
 below).
 
