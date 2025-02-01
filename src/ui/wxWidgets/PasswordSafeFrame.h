@@ -39,6 +39,7 @@
 #include "TimedTaskChain.h"
 
 #include <tuple>
+#include <utility>
 #include <vector>
 
 /*!
@@ -85,6 +86,9 @@ class DnDFile;
 #define ID_CLEARCLIPBOARD 10028
 #define ID_COPYPASSWORD 10029
 #define ID_COPYUSERNAME 10030
+#define ID_COPYAUTHCODE 10130
+#define ID_SHOWAUTHCODE 10131
+#define ID_TIMER_TOTP 10132
 #define ID_COPYNOTESFLD 10031
 #define ID_COPYURL 10032
 #define ID_BROWSEURL 10033
@@ -194,9 +198,9 @@ enum {
 };
 
 #if wxVERSION_NUMBER >= 3103
-#define CurrentBackgroundColor    (wxSystemSettings::GetAppearance().IsUsingDarkBackground() ? wxColor(29, 30, 32) : *wxWHITE)
+#define CurrentBackgroundColor2    (wxSystemSettings::GetAppearance().IsUsingDarkBackground() ? wxColor(29, 30, 32) : *wxWHITE)
 #else
-#define CurrentBackgroundColor    (*wxWHITE)
+#define CurrentBackgroundColor2    (*wxWHITE)
 #endif
 
 /*!
@@ -291,6 +295,15 @@ public:
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYUSERNAME
   void OnCopyUsernameClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYAUTHCODE
+  void OnCopyAuthCodeClick( wxCommandEvent& event );
+
+  /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SHOWAUTHCODE
+  void OnShowAuthCodeClick( wxCommandEvent& event );
+
+  /// wxEVT_TIMER_EVENT event handler for ID_TIMER_TOTP
+  void OnTotpCountdownTimer( wxTimerEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYNOTESFLD
   void OnCopyNotesFieldClick( wxCommandEvent& event );
@@ -604,6 +617,15 @@ public:
 
   CItemData *GetSelectedEntry() const;
   CItemData* GetBaseEntry(const CItemData *item) const;
+  const CItemData* GetTotpItem(const CItemData *item) const;
+  bool IsItemNormalOrBase(const CItemData *item) const;
+  bool HasItemTwoFactorKey(const CItemData *item) const;
+  int GetTotpCountdownInterval() const { return s_TotpCountdownInterval; }
+  void StartTotp();
+  void StopTotp();
+  void UpdateTotp(const CItemData *item);
+  std::pair<StringX, StringX> GetTotpData(const CItemData *item);
+  PWSTotp::TOTP_Result GetTwoFactorAuthenticationCode(const CItemData& ci, StringX& sxAuthCode, double* pRatio = nullptr);
   CItemData *GetSelectedEntry(const wxCommandEvent& evt, CItemData &rueItem) const;
   wxString GetCurrentSafe() const { return towxstring(m_core.GetCurFile()); }
   StringX GetCurrentFile() const { return m_core.GetCurFile(); }
@@ -616,11 +638,15 @@ public:
   void ShowSearchBar();
   void HideSearchBar();
 
+  void ShowTotpBar();
+  void HideTotpBar();
+
   bool IsClosed() const;
   bool IsLocked() const;
   /// Get top dialog (shown or hidden)
   wxTopLevelWindow* GetTopWindow() const;
   static void DisplayFileWriteError(int rc, const StringX &fname);
+
 
 ////@begin PasswordSafeFrame member variables
   GridCtrl* m_grid;
@@ -668,6 +694,9 @@ private:
   wxAuiPaneInfo& GetDragBarPane();
   DragBarCtrl* GetDragBar() { return m_Dragbar; };
 
+  void CreateTotpBar();
+  wxAuiPaneInfo& GetTotpBarPane();
+
   void CreateSearchBar();
   wxAuiPaneInfo& GetSearchBarPane();
   PasswordSafeSearch* GetSearchBar() { return m_search; };
@@ -696,6 +725,7 @@ private:
   void DoCopyPassword(CItemData &item);
   void DoCopyNotes(CItemData &item);
   void DoCopyUsername(CItemData &item);
+  void DoCopyAuthCode(const CItemData *item);
   void DoCopyURL(CItemData &item);
   void DoCopyEmail(CItemData &item);
   void DoCopyRunCmd(CItemData &item);
@@ -824,6 +854,11 @@ private:
   wxAuiManager m_AuiManager;
   wxAuiToolBar* m_Toolbar;
   DragBarCtrl* m_Dragbar;
+
+  wxTimer *m_TotpTimer = nullptr;
+  wxStaticText* m_TotpStaticText = nullptr;
+  static int s_TotpCountdownInterval;
+  static int s_TotpCalculationInterval;
 
   // top-level windows that we hide while locking the UI
   std::vector<wxTopLevelWindow*> m_hiddenWindows;
