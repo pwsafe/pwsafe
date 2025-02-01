@@ -26,6 +26,7 @@
 #include <wx/clipbrd.h>
 #include <wx/filename.h>
 #include <wx/fontdlg.h>
+#include <wx/numformatter.h>
 
 #include "core/core.h"
 #include "core/PWScore.h"
@@ -152,6 +153,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( ID_CLEARCLIPBOARD,          PasswordSafeFrame::OnClearClipboardClick         )
   EVT_MENU( ID_COPYPASSWORD,            PasswordSafeFrame::OnCopyPasswordClick           )
   EVT_MENU( ID_COPYUSERNAME,            PasswordSafeFrame::OnCopyUsernameClick           )
+  EVT_MENU( ID_COPYAUTHCODE,            PasswordSafeFrame::OnCopyAuthCodeClick           )
+  EVT_MENU( ID_SHOWAUTHCODE,            PasswordSafeFrame::OnShowAuthCodeClick           )
   EVT_MENU( ID_COPYNOTESFLD,            PasswordSafeFrame::OnCopyNotesFieldClick         )
   EVT_MENU( ID_COPYURL,                 PasswordSafeFrame::OnCopyUrlClick                )
   EVT_MENU( ID_BROWSEURL,               PasswordSafeFrame::OnBrowseUrl                   )
@@ -173,6 +176,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( ID_CLEARCLIPBOARD,     PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_COPYPASSWORD,       PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_COPYUSERNAME,       PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_COPYAUTHCODE,       PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_SHOWAUTHCODE,       PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_COPYNOTESFLD,       PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_COPYURL,            PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_BROWSEURL,          PasswordSafeFrame::OnUpdateUI                    )
@@ -322,6 +327,9 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
 END_EVENT_TABLE()
 
+int PasswordSafeFrame::s_TotpCountdownInterval = 1000; // ms
+int PasswordSafeFrame::s_TotpCalculationInterval = 30; // s
+
 /*!
  * PasswordSafeFrame constructors
  */
@@ -384,6 +392,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
 ////@end PasswordSafeFrame creation
   CreateMainToolbar();
   CreateDragBar();
+  CreateTotpBar();
   CreateSearchBar();
   CreateStatusBar();
 
@@ -391,6 +400,7 @@ bool PasswordSafeFrame::Create( wxWindow* parent, wxWindowID id, const wxString&
     pws_os::Trace(L"The AUI manager failed to load the layout preferences.");
   }
 
+  GetTotpBarPane().Hide();
   UpdateSearchBarVisibility();
   m_AuiManager.Update();
   return true;
@@ -414,6 +424,8 @@ PasswordSafeFrame::~PasswordSafeFrame()
 
   delete m_guiInfo;
   m_guiInfo = nullptr;
+
+  StopTotp();
 
   m_core.ClearDBData();
   m_core.UnregisterObserver(this);
@@ -601,6 +613,12 @@ void PasswordSafeFrame::CreateMenubar()
   menuEdit->AppendSeparator();
   menuEdit->Append(ID_COPYPASSWORD, _("&Copy Password to Clipboard\tCtrl+C"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_COPYUSERNAME, _("Copy &Username to Clipboard\tCtrl+U"), wxEmptyString, wxITEM_NORMAL);
+  menuEdit->Append(ID_PASSWORDSUBSET, _("Display subset of Password\tCtrl+B"), wxEmptyString, wxITEM_NORMAL);
+  if (HasQRCode()) {
+    menuEdit->Append(ID_PASSWORDQRCODE, _("Display Password as &QR code"), wxEmptyString, wxITEM_NORMAL);
+  }
+  menuEdit->Append(ID_COPYAUTHCODE, _("Copy Aut&h Code to Clipboard\tAlt+2"), wxEmptyString, wxITEM_NORMAL);
+  menuEdit->Append(ID_SHOWAUTHCODE, _("Display Auth Code\tAlt+Ctrl+2"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_COPYNOTESFLD, _("Copy &Notes to Clipboard\tCtrl+G"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_COPYURL, _("Copy URL to Clipboard\tCtrl+Alt+L"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_BROWSEURL, _("&Browse to URL\tCtrl+L"), wxEmptyString, wxITEM_NORMAL);
@@ -773,7 +791,7 @@ void PasswordSafeFrame::CreateControls()
     m_tree->SetSortingDate();
     m_tree->SetShowGroup(true);
   }
-  SetBackgroundColour(CurrentBackgroundColor);
+  SetBackgroundColour(CurrentBackgroundColor2);
 
   // let the tree ctrl handle ID_ADDGROUP & ID_RENAME all by itself
   Connect(ID_ADDGROUP, wxEVT_COMMAND_MENU_SELECTED,
@@ -871,7 +889,7 @@ void PasswordSafeFrame::CreateMainToolbar()
 
   m_AuiManager.AddPane(m_Toolbar, wxAuiPaneInfo().
     Name(wxT("maintoolbar")).Caption(wxT("Main Toolbar")).
-    ToolbarPane().Top().Row(0).Layer(0).
+    ToolbarPane().Top().Row(0).Layer(1).
     Dockable(true).Floatable(false).Gripper(true).
     Show(showToolbar).MinSize(-1, 25)
   );
@@ -1017,7 +1035,7 @@ void PasswordSafeFrame::CreateDragBar()
 
   m_AuiManager.AddPane(m_Dragbar, wxAuiPaneInfo().
     Name(wxT("dragbar")).Caption(wxT("Dragbar")).
-    ToolbarPane().Top().Row(1).Layer(0).
+    ToolbarPane().Top().Layer(0).
     Dockable(true).Floatable(false).Gripper(true).
     Show(showToolbar).MinSize(-1, 25)
   );
@@ -1043,6 +1061,31 @@ wxAuiPaneInfo& PasswordSafeFrame::GetDragBarPane()
 }
 
 /**
+ * Creates the TOTP-Bar.
+ */
+void PasswordSafeFrame::CreateTotpBar()
+{
+  m_TotpStaticText = new wxStaticText(this, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+  m_TotpStaticText->SetFont((m_TotpStaticText->GetFont()).MakeLarger());
+
+  m_AuiManager.AddPane(m_TotpStaticText, wxAuiPaneInfo().
+    Name(wxT("totpbar")).Caption(wxT("TOTP Toolbar")).
+    ToolbarPane().Bottom().Layer(1).
+    Dockable(false).Floatable(false).Gripper(false).
+    MinSize(-1, 25).Hide()
+  );
+}
+
+/**
+ * Provides the pane on which the totp bar is located.
+ * @return the <code>wxAuiPaneInfo</code>
+ */
+wxAuiPaneInfo& PasswordSafeFrame::GetTotpBarPane()
+{
+  return m_AuiManager.GetPane(wxT("totpbar"));
+}
+
+/**
  * Creates an instance of <code>PasswordSafeSearch</code> without creating the search bar related controls.
  * This is done when 'Find' is issued by the user for the first time.
  * @see PasswordSafeFrame::OnFindClick
@@ -1054,7 +1097,7 @@ void PasswordSafeFrame::CreateSearchBar()
 
   m_AuiManager.AddPane(m_search, wxAuiPaneInfo().
     Name(wxT("searchbar")).Caption(wxT("Searchbar")).
-    ToolbarPane().Bottom().Layer(1).
+    ToolbarPane().Bottom().Layer(0).
     Dockable(false).Floatable(false).Gripper(false).
     MinSize(-1, 35).Hide()
   );
@@ -1088,6 +1131,27 @@ void PasswordSafeFrame::HideSearchBar()
   m_AuiManager.Update();
   SetFocus();
   PWSprefs::GetInstance()->SetPref(PWSprefs::FindToolBarActive, false);
+}
+
+/**
+ * Shows the TOTP bar.
+ */
+void PasswordSafeFrame::ShowTotpBar()
+{
+  GetTotpBarPane().Show();
+  m_AuiManager.Update();
+  StartTotp();
+}
+
+/**
+ * Hides the TOTP bar.
+ */
+void PasswordSafeFrame::HideTotpBar()
+{
+  GetTotpBarPane().Hide();
+  m_AuiManager.Update();
+  SetFocus();
+  StopTotp();
 }
 
 /**
@@ -1789,6 +1853,8 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     if (HasQRCode()) {
       itemEditMenu.Append(ID_PASSWORDQRCODE, _("Display Password as &QR code"));
     }
+    itemEditMenu.Append(ID_COPYAUTHCODE,   _("Copy Aut&h Code to Clipboard"));
+    itemEditMenu.Append(ID_SHOWAUTHCODE,   _("Display Auth Code"));
     itemEditMenu.Append(ID_COPYNOTESFLD,   _("Copy &Notes to Clipboard"));
     itemEditMenu.Append(ID_COPYURL,        _("Copy UR&L to Clipboard"));
     itemEditMenu.Append(ID_COPYEMAIL,      _("Copy email to Clipboard"));
@@ -1932,6 +1998,124 @@ CItemData* PasswordSafeFrame::GetBaseEntry(const CItemData *item) const
   }
   return nullptr;
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// TOTP Begin
+
+const CItemData* PasswordSafeFrame::GetTotpItem(const CItemData *item) const
+{
+  if (item == nullptr) {
+    // GetBaseEntry doesn't like nullptr
+    return nullptr;
+  }
+  if (item->IsNormal() || item->IsBase()) {
+    return item;
+  }
+  return m_core.GetBaseEntry(item);
+}
+
+bool PasswordSafeFrame::IsItemNormalOrBase(const CItemData *item) const
+{
+  return item == nullptr ? false : item->IsNormal() || item->IsBase();
+}
+
+bool PasswordSafeFrame::HasItemTwoFactorKey(const CItemData *item) const
+{
+  auto totpItem = GetTotpItem(item);
+  return (totpItem == nullptr) ? false : totpItem->IsTotpActive();
+}
+
+std::pair<StringX, StringX> PasswordSafeFrame::GetTotpData(const CItemData *item)
+{
+  if (item == nullptr) {
+    return std::make_pair(tostringx(wxT("n/a")), tostringx(wxT("n/a")));
+  }
+  StringX totp;
+  double ratio;
+  CItemData ciTemp(*GetTotpItem(item));
+  auto r = GetTwoFactorAuthenticationCode(ciTemp, totp, &ratio);
+  if (r != PWSTotp::Success) {
+    return std::make_pair(tostringx(wxT("------")), tostringx(wxT("--")));
+  }
+  return std::make_pair(
+    totp,
+    tostringx(wxNumberFormatter::ToString(
+      s_TotpCalculationInterval - s_TotpCalculationInterval * ratio, 0)
+    )
+  );
+}
+
+PWSTotp::TOTP_Result PasswordSafeFrame::GetTwoFactorAuthenticationCode(const CItemData& ci, StringX& sxAuthCode, double* pRatio)
+{
+  sxAuthCode.clear();
+
+  if (ci.GetTwoFactorKey().empty()) {
+    wxMessageBox(
+      _("Missing authentication secret key."),
+      _("Authentication Code Error"),
+      wxOK|wxCENTER|wxICON_INFORMATION, this
+    );
+    return PWSTotp::TotpKeyNotFound;
+  }
+
+  PWSTotp::TOTP_Result r = PWSTotp::GetNextTotpAuthCodeString(ci, sxAuthCode, nullptr, pRatio);
+  if (r != PWSTotp::Success) {
+    wxMessageBox(
+      _("An error occurred obtaining the authentication code."),
+      _("Authentication Code Error"),
+      wxOK|wxCENTER|wxICON_INFORMATION, this
+    );
+    sxAuthCode.clear();
+  }
+  return r;
+}
+
+/// wxEVT_TIMER_EVENT event handler for ID_TIMER_TOTP
+void PasswordSafeFrame::OnTotpCountdownTimer(wxTimerEvent& WXUNUSED(event))
+{
+  auto item = GetSelectedEntry();
+  // No item selected
+  if (item == nullptr) {
+    m_TotpStaticText->SetLabel(wxEmptyString);
+    return;
+  }
+  // Item with no TOTP configuration selected
+  if (!HasItemTwoFactorKey(item)) {
+    m_TotpStaticText->SetLabel(_("\tSelected entry has no TOTP configuration"));
+    return;
+  }
+  UpdateTotp(item);
+}
+
+void PasswordSafeFrame::StartTotp()
+{
+  m_TotpTimer = new wxTimer(this, ID_TIMER_TOTP);
+  Bind(wxEVT_TIMER, &PasswordSafeFrame::OnTotpCountdownTimer, this, m_TotpTimer->GetId());
+  m_TotpTimer->Start(GetTotpCountdownInterval());
+}
+
+void PasswordSafeFrame::StopTotp()
+{
+  if (m_TotpTimer) {
+    Unbind(wxEVT_TIMER, &PasswordSafeFrame::OnTotpCountdownTimer, this, m_TotpTimer->GetId());
+  }
+  // The wxTimer destructor stops the timer if it is running.
+  delete m_TotpTimer;
+  m_TotpTimer = nullptr;
+}
+
+void PasswordSafeFrame::UpdateTotp(const CItemData *item)
+{
+  auto totpData = GetTotpData(item);
+  auto totpString = wxString::Format(
+    _("\tTOTP %ls is valid for %ls seconds"), 
+    towxstring(totpData.first), towxstring(totpData.second)
+  );
+  m_TotpStaticText->SetLabel(totpString);
+}
+
+// TOTP End
+///////////////////////////////////////////////////////////////////////////////
 
 bool PasswordSafeFrame::CheckReportPresent(int iAction)
 {
@@ -2102,6 +2286,10 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_PASSWORDSUBSET:
     case ID_PASSWORDQRCODE:
       evt.Enable(!isTreeViewGroupSelected && pci);
+      break;
+
+    case ID_COPYAUTHCODE:
+      evt.Enable(!isTreeViewGroupSelected && ((pci && pci->IsTotpActive()) || (pbci && pbci->IsTotpActive())));
       break;
 
     case ID_VIEWATTACHMENT:
@@ -2768,6 +2956,9 @@ void PasswordSafeFrame::UpdateLastClipboardAction(const CItemData::FieldType fie
     case CItemData::FieldType::PASSWORD:
       m_LastClipboardAction = _("Pswd copied ") + wxDateTime::Now().FormatTime();
       break;
+    case CItemData::FieldType::TOTPCONFIG:
+      m_LastClipboardAction = _("TOTP copied ") + wxDateTime::Now().FormatTime();
+      break;
     case CItemData::FieldType::NOTES:
       m_LastClipboardAction = _("Notes copied ") + wxDateTime::Now().FormatTime();
       break;
@@ -3205,6 +3396,7 @@ bool PasswordSafeFrame::CanCloseDialogs() const
 #endif
   return true;
 }
+
   //-----------------------------------------------------------------
   // Remove all DialogBlock-generated stubs below this line, as we
   // already have them implemented in main*.cpp

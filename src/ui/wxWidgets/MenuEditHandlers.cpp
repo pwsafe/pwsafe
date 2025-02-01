@@ -476,6 +476,34 @@ void PasswordSafeFrame::DoCopyUsername(CItemData &item)
 }
 
 /*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYAUTHCODE
+ */
+
+void PasswordSafeFrame::OnCopyAuthCodeClick(wxCommandEvent& evt)
+{
+  CItemData rueItem;
+  CItemData* item = GetSelectedEntry(evt, rueItem);
+  if (item != nullptr)
+    DoCopyAuthCode(item);
+}
+
+void PasswordSafeFrame::DoCopyAuthCode(const CItemData *item)
+{
+  auto totp = GetTotpData(item);
+  Clipboard::GetInstance()->SetData(totp.first);
+  UpdateLastClipboardAction(CItemData::FieldType::TOTPCONFIG);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_SHOWAUTHCODE
+ */
+
+void PasswordSafeFrame::OnShowAuthCodeClick(wxCommandEvent& WXUNUSED(evt))
+{
+  GetTotpBarPane().IsShown() ? HideTotpBar() : ShowTotpBar();
+}
+
+/*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYNOTESFLD
  */
 
