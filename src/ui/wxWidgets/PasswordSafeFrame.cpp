@@ -2074,14 +2074,10 @@ PWSTotp::TOTP_Result PasswordSafeFrame::GetTwoFactorAuthenticationCode(const CIt
 void PasswordSafeFrame::OnTotpCountdownTimer(wxTimerEvent& WXUNUSED(event))
 {
   auto item = GetSelectedEntry();
-  // No item selected
-  if (item == nullptr) {
+  // No item selected or item with
+  // no TOTP configuration selected
+  if (item == nullptr || !HasItemTwoFactorKey(item)) {
     m_TotpStaticText->SetLabel(wxEmptyString);
-    return;
-  }
-  // Item with no TOTP configuration selected
-  if (!HasItemTwoFactorKey(item)) {
-    m_TotpStaticText->SetLabel(_("\tSelected entry has no TOTP configuration"));
     return;
   }
   UpdateTotp(item);
@@ -2108,7 +2104,7 @@ void PasswordSafeFrame::UpdateTotp(const CItemData *item)
 {
   auto totpData = GetTotpData(item);
   auto totpString = wxString::Format(
-    _("\tTOTP %ls is valid for %ls seconds"), 
+    _("\tAuthentication code %ls is valid for %ls seconds"),
     towxstring(totpData.first), towxstring(totpData.second)
   );
   m_TotpStaticText->SetLabel(totpString);
@@ -2957,7 +2953,7 @@ void PasswordSafeFrame::UpdateLastClipboardAction(const CItemData::FieldType fie
       m_LastClipboardAction = _("Pswd copied ") + wxDateTime::Now().FormatTime();
       break;
     case CItemData::FieldType::TOTPCONFIG:
-      m_LastClipboardAction = _("TOTP copied ") + wxDateTime::Now().FormatTime();
+      m_LastClipboardAction = _("Auth Code copied ") + wxDateTime::Now().FormatTime();
       break;
     case CItemData::FieldType::NOTES:
       m_LastClipboardAction = _("Notes copied ") + wxDateTime::Now().FormatTime();

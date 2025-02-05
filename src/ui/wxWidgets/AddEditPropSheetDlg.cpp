@@ -359,7 +359,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
     itemButton22->Hide();
   }
 
-  auto basicTotpTextLabel = new wxStaticText( panel, wxID_STATIC, _("Timebased One Time Password"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto basicTotpTextLabel = new wxStaticText( panel, wxID_STATIC, _("Authentication Code"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(basicTotpTextLabel, wxGBPosition(/*row:*/ 10, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicTotpTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_TOTP, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD|wxTE_READONLY );
@@ -372,7 +372,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicSizer->Add(m_BasicShowHideTotpCtrl, wxGBPosition(/*row:*/ 11, /*column:*/ 4), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   m_BasicTotpButton = new wxButton( panel, ID_BUTTON_COPY_TOTP, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicTotpButton->SetToolTip(_("Copy TOTP to clipboard"));
+  m_BasicTotpButton->SetToolTip(_("Copy authentication code to clipboard"));
   m_BasicSizer->Add(m_BasicTotpButton, wxGBPosition(/*row:*/ 11, /*column:*/ 5), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
   if (!HasItemTwoFactorKey()) {
@@ -461,7 +461,7 @@ wxPanel* AddEditPropSheetDlg::CreateAdditionalPanel()
   auto *vBoxSizerTwoFactoryKey = new wxBoxSizer(wxVERTICAL);
   vBoxSizer->Add(vBoxSizerTwoFactoryKey, 0, wxALIGN_LEFT|wxEXPAND|wxBOTTOM, 12);
 
-  auto *staticTextTwoFactorKey = new wxStaticText(panel, wxID_STATIC, _("Authenticator Secret (2FA-Key)"), wxDefaultPosition, wxDefaultSize, 0);
+  auto *staticTextTwoFactorKey = new wxStaticText(panel, wxID_STATIC, _("Authentication Secret"), wxDefaultPosition, wxDefaultSize, 0);
   vBoxSizerTwoFactoryKey->Add(staticTextTwoFactorKey, 0, wxALIGN_LEFT|wxBOTTOM, 5);
 
   auto *hBoxSizerTwoFactoryKey = new wxBoxSizer(wxHORIZONTAL);
@@ -1922,7 +1922,7 @@ void AddEditPropSheetDlg::ShowTwoFactorKey()
   m_AdditionalTwoFactorKeyCtrl->SetWindowStyle(0);
   m_AdditionalTwoFactorKeyCtrl->SetModified(false);
   m_AdditionalShowHideCtrl->SetBitmapLabel(wxUtilities::GetBitmapResource(wxT("graphics/eye_close.xpm")));
-  m_AdditionalShowHideCtrl->SetToolTip(_("Hide 2FA key"));
+  m_AdditionalShowHideCtrl->SetToolTip(_("Hide authentication secret"));
 }
 
 void AddEditPropSheetDlg::HideTwoFactorKey()
@@ -1931,7 +1931,7 @@ void AddEditPropSheetDlg::HideTwoFactorKey()
   m_AdditionalTwoFactorKeyCtrl->SetWindowStyle(wxTE_PASSWORD);
   m_AdditionalTwoFactorKeyCtrl->SetModified(false);
   m_AdditionalShowHideCtrl->SetBitmapLabel(wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")));
-  m_AdditionalShowHideCtrl->SetToolTip(_("Show 2FA key"));
+  m_AdditionalShowHideCtrl->SetToolTip(_("Show authentication secret"));
 }
 
 void AddEditPropSheetDlg::ShowTotp()
@@ -1940,7 +1940,7 @@ void AddEditPropSheetDlg::ShowTotp()
   m_BasicTotpTextCtrl->SetWindowStyle(wxTE_READONLY);
   m_BasicTotpTextCtrl->SetModified(false);
   m_BasicShowHideTotpCtrl->SetBitmapLabel(wxUtilities::GetBitmapResource(wxT("graphics/eye_close.xpm")));
-  m_BasicShowHideTotpCtrl->SetToolTip(_("Hide TOTP"));
+  m_BasicShowHideTotpCtrl->SetToolTip(_("Hide authentication code"));
 }
 
 void AddEditPropSheetDlg::HideTotp()
@@ -1949,7 +1949,7 @@ void AddEditPropSheetDlg::HideTotp()
   m_BasicTotpTextCtrl->SetWindowStyle(wxTE_PASSWORD|wxTE_READONLY);
   m_BasicTotpTextCtrl->SetModified(false);
   m_BasicShowHideTotpCtrl->SetBitmapLabel(wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")));
-  m_BasicShowHideTotpCtrl->SetToolTip(_("Show TOTP"));
+  m_BasicShowHideTotpCtrl->SetToolTip(_("Show authentication code"));
 }
 
 void AddEditPropSheetDlg::ShowPassword()
