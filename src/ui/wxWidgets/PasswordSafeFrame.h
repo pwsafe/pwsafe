@@ -621,6 +621,7 @@ public:
   bool IsItemNormalOrBase(const CItemData *item) const;
   bool HasItemTwoFactorKey(const CItemData *item) const;
   int GetTotpCountdownInterval() const { return s_TotpCountdownInterval; }
+  void CopyAuthCodeToClipboard(const CItemData *item) { DoCopyAuthCode(item); }
   void StartTotp();
   void StopTotp();
   void UpdateTotp(const CItemData *item);
