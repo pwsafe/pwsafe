@@ -1035,7 +1035,7 @@ void PasswordSafeFrame::CreateDragBar()
 
   m_AuiManager.AddPane(m_Dragbar, wxAuiPaneInfo().
     Name(wxT("dragbar")).Caption(wxT("Dragbar")).
-    ToolbarPane().Top().Layer(0).
+    ToolbarPane().Top().Row(1).Layer(0).
     Dockable(true).Floatable(false).Gripper(true).
     Show(showToolbar).MinSize(-1, 25)
   );
@@ -1070,7 +1070,7 @@ void PasswordSafeFrame::CreateTotpBar()
 
   m_AuiManager.AddPane(m_TotpStaticText, wxAuiPaneInfo().
     Name(wxT("totpbar")).Caption(wxT("TOTP Toolbar")).
-    ToolbarPane().Bottom().Layer(1).
+    ToolbarPane().Bottom().Row(0).Layer(1).
     Dockable(false).Floatable(false).Gripper(false).
     MinSize(-1, 25).Hide()
   );
@@ -1097,7 +1097,7 @@ void PasswordSafeFrame::CreateSearchBar()
 
   m_AuiManager.AddPane(m_search, wxAuiPaneInfo().
     Name(wxT("searchbar")).Caption(wxT("Searchbar")).
-    ToolbarPane().Bottom().Layer(0).
+    ToolbarPane().Bottom().Row(1).Layer(0).
     Dockable(false).Floatable(false).Gripper(false).
     MinSize(-1, 35).Hide()
   );
