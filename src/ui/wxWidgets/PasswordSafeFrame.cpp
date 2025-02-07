@@ -1065,7 +1065,7 @@ wxAuiPaneInfo& PasswordSafeFrame::GetDragBarPane()
  */
 void PasswordSafeFrame::CreateTotpBar()
 {
-  m_TotpStaticText = new wxStaticText(this, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+  m_TotpStaticText = new wxStaticText(this, wxID_STATIC, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxST_ELLIPSIZE_END);
   m_TotpStaticText->SetFont((m_TotpStaticText->GetFont()).MakeLarger());
 
   m_AuiManager.AddPane(m_TotpStaticText, wxAuiPaneInfo().
@@ -2107,7 +2107,14 @@ void PasswordSafeFrame::UpdateTotp(const CItemData *item)
     _("\tAuthentication code %ls is valid for %ls seconds"),
     towxstring(totpData.first), towxstring(totpData.second)
   );
-  m_TotpStaticText->SetLabel(totpString);
+  wxScreenDC dc;
+  m_TotpStaticText->SetLabel(
+    wxControl::Ellipsize(
+      totpString, dc, wxEllipsizeMode::wxELLIPSIZE_END,
+      /* The limiting width for the text is the main frame's width. */
+      GetSize().GetWidth() - 80
+    )
+  );
 }
 
 // TOTP End
