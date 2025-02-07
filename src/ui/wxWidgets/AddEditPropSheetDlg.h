@@ -178,6 +178,9 @@ protected:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_SHOWHIDE_TOTP
   void OnShowHideTotpClick(wxCommandEvent &event);
 
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_COPY_TOTP
+  void OnCopyAuthCodeClick(wxCommandEvent &event);
+
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_GENERATE
   void OnGenerateButtonClick(wxCommandEvent &event);
   

@@ -58,6 +58,7 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
   EVT_BUTTON(       ID_BUTTON_SHOWHIDE,      AddEditPropSheetDlg::OnShowHideClick           )
   EVT_BUTTON(       ID_BUTTON_SHOWHIDE_2FK,  AddEditPropSheetDlg::OnShowHide2FKClick        )
   EVT_BUTTON(       ID_BUTTON_SHOWHIDE_TOTP, AddEditPropSheetDlg::OnShowHideTotpClick       )
+  EVT_BUTTON(       ID_BUTTON_COPY_TOTP,     AddEditPropSheetDlg::OnCopyAuthCodeClick       )
   EVT_BUTTON(       ID_BUTTON_GENERATE,      AddEditPropSheetDlg::OnGenerateButtonClick     )
   EVT_BUTTON(       ID_BUTTON_ALIAS,         AddEditPropSheetDlg::OnAliasButtonClick        )
   EVT_BUTTON(       ID_GO_BTN,               AddEditPropSheetDlg::OnGoButtonClick           )
@@ -1841,6 +1842,15 @@ void AddEditPropSheetDlg::OnShowHideTotpClick(wxCommandEvent& WXUNUSED(evt))
   } else {
     HideTotp();
   }
+}
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_COPY_TOTP
+ */
+
+void AddEditPropSheetDlg::OnCopyAuthCodeClick(wxCommandEvent &event)
+{
+  const_cast<PasswordSafeFrame*>(GetPwSafe())->CopyAuthCodeToClipboard(&m_Item);
 }
 
 /*!
