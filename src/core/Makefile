@@ -27,7 +27,7 @@ WX_CONFIG?=$(shell if [ -e $(WX3) ]; then echo $(WX3); else echo $(WX2); fi)
 NOTSRC          = PWSclipboard.cpp
 
 LIBSRC          = CheckVersion.cpp \
-                  Item.cpp ItemData.cpp ItemAtt.cpp ItemField.cpp  \
+                  Item.cpp ItemData.cpp ItemAtt.cpp ItemField.cpp \
                   Match.cpp PolicyManager.cpp PWCharPool.cpp CoreImpExp.cpp \
                   PWPolicy.cpp PWHistory.cpp PWSAuxParse.cpp \
                   PWScore.cpp PWSdirs.cpp PWSfile.cpp PWSfileHeader.cpp \
@@ -36,20 +36,22 @@ LIBSRC          = CheckVersion.cpp \
                   Command.cpp PWSrand.cpp Report.cpp \
                   core_st.cpp RUEList.cpp \
                   StringX.cpp SysInfo.cpp \
+                  TotpCore.cpp \
                   UnknownField.cpp  \
                   UTF8Conv.cpp Util.cpp CoreOtherDB.cpp \
                   VerifyFormat.cpp XMLprefs.cpp \
-                  ExpiredList.cpp PWStime.cpp\
+                  ExpiredList.cpp PWStime.cpp \
                   pugixml/pugixml.cpp \
                   XML/Pugi/PFileXMLProcessor.cpp XML/Pugi/PFilterXMLProcessor.cpp \
                   XML/XMLFileHandlers.cpp XML/XMLFileValidation.cpp \
                   XML/Xerces/XFileSAX2Handlers.cpp XML/Xerces/XFileValidator.cpp \
                   XML/Xerces/XFileXMLProcessor.cpp XML/Xerces/XFilterSAX2Handlers.cpp \
                   XML/Xerces/XFilterXMLProcessor.cpp XML/Xerces/XSecMemMgr.cpp PWSLog.cpp \
-				  RUEList.cpp \
-				  crypto/AES.cpp crypto/BlowFish.cpp crypto/pbkdf2.cpp \
-				  crypto/KeyWrap.cpp crypto/sha1.cpp crypto/sha256.cpp \
-				  crypto/TwoFish.cpp
+                  RUEList.cpp \
+                  crypto/AES.cpp crypto/BlowFish.cpp crypto/pbkdf2.cpp \
+                  crypto/KeyWrap.cpp crypto/sha1.cpp crypto/sha256.cpp \
+                  crypto/TwoFish.cpp \
+                  crypto/external/Chromium/base32.cpp
 
 SRC             = $(LIBSRC)
 
@@ -110,10 +112,10 @@ clean:
 	@rm core_st.cpp core_st.h
 
 setup:
-	@mkdir -p $(OBJPATH) $(OBJPATH)/pugixml $(OBJPATH)/crypto $(OBJPATH)/XML/Xerces $(OBJPATH)/XML/Pugi $(LIBPATH) $(DEPDIR)
+	@mkdir -p $(OBJPATH) $(OBJPATH)/pugixml $(OBJPATH)/crypto/external/Chromium $(OBJPATH)/XML/Xerces $(OBJPATH)/XML/Pugi $(LIBPATH) $(DEPDIR)
 
 $(DEPDIR)/%.d: %.cpp
-	@set -e; mkdir -p $(DEPDIR) $(DEPDIR)/pugixml $(DEPDIR)/crypto; \
+	@set -e; mkdir -p $(DEPDIR) $(DEPDIR)/pugixml $(DEPDIR)/crypto/external/Chromium; \
 	mkdir -p $(DEPDIR)/XML/Xerces $(DEPDIR)/XML/Pugi; \
 	$(RM) $@; \
 	$(CXX) -MM $(CPPFLAGS) $< > $@.$$$$; \
