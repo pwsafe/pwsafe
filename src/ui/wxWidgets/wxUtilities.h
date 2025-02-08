@@ -199,7 +199,7 @@ inline const wxChar* ToStr(bool b) {
  * @note See <a href="https://docs.wxwidgets.org/stable/classwx_text_ctrl.html">Styles</a> section of wxTextCtrl
  *       documentation about restrictions.
  */
-void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxTextCtrl* before, const int style);
+void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxControl* before, const int style);
 
 /**
  * Check whether the password passes the strength rules, prompt the user if it does not.

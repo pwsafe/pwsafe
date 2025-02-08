@@ -465,14 +465,14 @@ wxPanel* AddEditPropSheetDlg::CreateAdditionalPanel()
   auto *staticTextTwoFactorKey = new wxStaticText(panel, wxID_STATIC, _("Authentication Secret"), wxDefaultPosition, wxDefaultSize, 0);
   vBoxSizerTwoFactoryKey->Add(staticTextTwoFactorKey, 0, wxALIGN_LEFT|wxBOTTOM, 5);
 
-  auto *hBoxSizerTwoFactoryKey = new wxBoxSizer(wxHORIZONTAL);
-  vBoxSizerTwoFactoryKey->Add(hBoxSizerTwoFactoryKey, 1, wxALIGN_LEFT|wxEXPAND|wxBOTTOM, 12);
+  m_AdditionalHBoxSizerTwoFactoryKey = new wxBoxSizer(wxHORIZONTAL);
+  vBoxSizerTwoFactoryKey->Add(m_AdditionalHBoxSizerTwoFactoryKey, 1, wxALIGN_LEFT|wxEXPAND|wxBOTTOM, 12);
 
   m_AdditionalTwoFactorKeyCtrl = new wxTextCtrl(panel, ID_TEXTCTRL_2FK, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD);
-  hBoxSizerTwoFactoryKey->Add(m_AdditionalTwoFactorKeyCtrl, 1, wxALIGN_LEFT|wxEXPAND|wxRIGHT, 5);
+  m_AdditionalHBoxSizerTwoFactoryKey->Add(m_AdditionalTwoFactorKeyCtrl, 1, wxALIGN_LEFT|wxEXPAND|wxRIGHT, 5);
 
   m_AdditionalShowHideCtrl = new wxBitmapButton(panel, ID_BUTTON_SHOWHIDE_2FK, wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
-  hBoxSizerTwoFactoryKey->Add(m_AdditionalShowHideCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER|wxRIGHT, 5);
+  m_AdditionalHBoxSizerTwoFactoryKey->Add(m_AdditionalShowHideCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER|wxRIGHT, 5);
 
   if (m_Core.IsReadOnly() || !IsItemNormalOrBase()) {
     staticTextTwoFactorKey->Disable();
@@ -1929,8 +1929,8 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
 void AddEditPropSheetDlg::ShowTwoFactorKey()
 {
   m_IsTwoFactorKeyHidden = false;
-  m_AdditionalTwoFactorKeyCtrl->SetWindowStyle(0);
-  m_AdditionalTwoFactorKeyCtrl->SetModified(false);
+  auto text = m_AdditionalTwoFactorKeyCtrl->GetValue();
+  UpdatePasswordTextCtrl(m_AdditionalHBoxSizerTwoFactoryKey, m_AdditionalTwoFactorKeyCtrl, text, m_AdditionalShiftDoubleClickActionCtrl, 0);
   m_AdditionalShowHideCtrl->SetBitmapLabel(wxUtilities::GetBitmapResource(wxT("graphics/eye_close.xpm")));
   m_AdditionalShowHideCtrl->SetToolTip(_("Hide authentication secret"));
 }
@@ -1938,8 +1938,8 @@ void AddEditPropSheetDlg::ShowTwoFactorKey()
 void AddEditPropSheetDlg::HideTwoFactorKey()
 {
   m_IsTwoFactorKeyHidden = true;
-  m_AdditionalTwoFactorKeyCtrl->SetWindowStyle(wxTE_PASSWORD);
-  m_AdditionalTwoFactorKeyCtrl->SetModified(false);
+  auto text = m_AdditionalTwoFactorKeyCtrl->GetValue();
+  UpdatePasswordTextCtrl(m_AdditionalHBoxSizerTwoFactoryKey, m_AdditionalTwoFactorKeyCtrl, text, m_AdditionalShiftDoubleClickActionCtrl, wxTE_PASSWORD);
   m_AdditionalShowHideCtrl->SetBitmapLabel(wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")));
   m_AdditionalShowHideCtrl->SetToolTip(_("Show authentication secret"));
 }
@@ -1947,8 +1947,10 @@ void AddEditPropSheetDlg::HideTwoFactorKey()
 void AddEditPropSheetDlg::ShowTotp()
 {
   m_IsTotpHidden = false;
-  m_BasicTotpTextCtrl->SetWindowStyle(wxTE_READONLY);
-  m_BasicTotpTextCtrl->SetModified(false);
+  auto *window = wxWindow::FindWindowById(ID_BUTTON_ALIAS, GetBookCtrl());
+  wxControl *control = window ? dynamic_cast<wxControl*>(window) : m_BasicPasswordConfirmationBitmap;
+  auto text = m_BasicTotpTextCtrl->GetValue();
+  UpdatePasswordTextCtrl(m_BasicSizer, m_BasicTotpTextCtrl, text, control, wxTE_READONLY);
   m_BasicShowHideTotpCtrl->SetBitmapLabel(wxUtilities::GetBitmapResource(wxT("graphics/eye_close.xpm")));
   m_BasicShowHideTotpCtrl->SetToolTip(_("Hide authentication code"));
 }
@@ -1956,8 +1958,10 @@ void AddEditPropSheetDlg::ShowTotp()
 void AddEditPropSheetDlg::HideTotp()
 {
   m_IsTotpHidden = true;
-  m_BasicTotpTextCtrl->SetWindowStyle(wxTE_PASSWORD|wxTE_READONLY);
-  m_BasicTotpTextCtrl->SetModified(false);
+  auto *window = wxWindow::FindWindowById(ID_BUTTON_ALIAS, GetBookCtrl());
+  wxControl *control = window ? dynamic_cast<wxControl*>(window) : m_BasicPasswordConfirmationBitmap;
+  auto text = m_BasicTotpTextCtrl->GetValue();
+  UpdatePasswordTextCtrl(m_BasicSizer, m_BasicTotpTextCtrl, text, control, wxTE_PASSWORD|wxTE_READONLY);
   m_BasicShowHideTotpCtrl->SetBitmapLabel(wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")));
   m_BasicShowHideTotpCtrl->SetToolTip(_("Show authentication code"));
 }
