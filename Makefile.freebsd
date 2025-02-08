@@ -45,12 +45,9 @@ SF_UPLOAD_CMD := /usr/local/bin/rsync -avP -e ssh
 SF_UPLOAD_DST := $(SF_UPLOAD_ROOT)/Linux-BETA/$(RELEASENUM)
 RELTAG = wx$(subst .,_,$(RELEASENAME))
 
-export CPPFLAGS += -std=c++11
-export CXXFLAGS += --stdlib=libc++ -I/usr/local/include
+export CPPFLAGS += -std=c++14
+export CXXFLAGS += -I/usr/local/include
 export CFLAGS += -I/usr/local/include
-export CC = clang
-export CXX = clang++
-export CPP = clang++
 export PLATFORM = FreeBSD
 
 all: I18N unicodedebug unicoderelease
