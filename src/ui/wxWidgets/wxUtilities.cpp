@@ -365,7 +365,7 @@ void wxUtilities::DisableIfUnsupported(enum Feature feature, wxWindow* window)
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable()
 {
-#if defined(__WXGTK__) && !defined(__OpenBSD__)
+#if defined(__WXGTK__) && !defined(__OpenBSD__) && !defined(__FreeBSD__)
   const wxVersionInfo verInfo = wxGetLibraryVersionInfo();
   int major = verInfo.GetMajor();
   int minor = verInfo.GetMinor();
