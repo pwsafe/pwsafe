@@ -156,7 +156,7 @@ bool MultiCheckboxValidator::Validate(wxWindow* parent)
   }
 }
 
-void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxTextCtrl* before, const int style)
+void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxControl* before, const int style)
 {
   ASSERT(textCtrl);
 #if defined(__WXGTK__)
@@ -164,6 +164,7 @@ void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxStrin
   // we do not care about flags already set for the control and therefore do not preserve them.
   textCtrl->SetWindowStyle(style);
   textCtrl->ChangeValue(text);
+  textCtrl->SetModified(false);
 #else
   wxWindow *parent = textCtrl->GetParent();
   wxWindowID id = textCtrl->GetId();
@@ -177,7 +178,7 @@ void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxStrin
                            style);
   if (!text.IsEmpty()) {
     textCtrl->ChangeValue(text);
-    textCtrl->SetModified(true);
+    textCtrl->SetModified(false);
   }
   if (validator != nullptr) {
     textCtrl->SetValidator(*validator);

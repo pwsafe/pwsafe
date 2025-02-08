@@ -421,10 +421,10 @@ private:
   wxString m_Url;
   wxString m_Email;
   wxString m_Notes;
-  bool m_IsNotesHidden;
+  bool m_IsNotesHidden = true;
   StringX m_Password;
-  bool m_IsPasswordHidden;
-  bool m_IsTotpHidden;
+  bool m_IsPasswordHidden = true;
+  bool m_IsTotpHidden = true;
 
   AliasChanges m_AliasChange = AliasChanges::NoChange;
 
@@ -432,12 +432,13 @@ private:
   wxPanel *m_AdditionalPanel = nullptr;
   wxComboBox *m_AdditionalDoubleClickActionCtrl = nullptr;
   wxComboBox *m_AdditionalShiftDoubleClickActionCtrl = nullptr;
+  wxBoxSizer *m_AdditionalHBoxSizerTwoFactoryKey = nullptr;
   wxTextCtrl *m_AdditionalTwoFactorKeyCtrl = nullptr;
   wxBitmapButton *m_AdditionalShowHideCtrl = nullptr;
   wxSpinCtrl *m_AdditionalMaxPasswordHistoryCtrl = nullptr;
   wxGrid *m_AdditionalPasswordHistoryGrid = nullptr;
 
-  bool m_IsTwoFactorKeyHidden;
+  bool m_IsTwoFactorKeyHidden = true;
   wxString m_Autotype;
   wxString m_RunCommand;
   wxString m_PasswordHistory; // String as stored in CItemData
