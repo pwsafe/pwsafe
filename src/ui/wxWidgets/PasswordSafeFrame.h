@@ -88,7 +88,8 @@ class DnDFile;
 #define ID_COPYUSERNAME 10030
 #define ID_COPYAUTHCODE 10130
 #define ID_SHOWAUTHCODE 10131
-#define ID_TIMER_TOTP 10132
+#define ID_TIMER_DISPLAY_TOTP 10132
+#define ID_TIMER_COPY_TOTP 10133
 #define ID_COPYNOTESFLD 10031
 #define ID_COPYURL 10032
 #define ID_BROWSEURL 10033
@@ -302,8 +303,11 @@ public:
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_SHOWAUTHCODE
   void OnShowAuthCodeClick( wxCommandEvent& event );
 
-  /// wxEVT_TIMER_EVENT event handler for ID_TIMER_TOTP
+  /// wxEVT_TIMER_EVENT event handler for ID_TIMER_DISPLAY_TOTP
   void OnTotpCountdownTimer( wxTimerEvent& event );
+
+  /// wxEVT_TIMER_EVENT event handler for ID_TIMER_COPY_TOTP
+  void OnTotpCopyAuthCodeTimer( wxTimerEvent& event );
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYNOTESFLD
   void OnCopyNotesFieldClick( wxCommandEvent& event );
@@ -622,9 +626,11 @@ public:
   bool HasItemTwoFactorKey(const CItemData *item) const;
   int GetTotpCountdownInterval() const { return s_TotpCountdownInterval; }
   void CopyAuthCodeToClipboard(const CItemData *item) { DoCopyAuthCode(item); }
-  void StartTotp();
-  void StopTotp();
-  void UpdateTotp(const CItemData *item);
+  void StartTotpDisplayAuthCode();
+  void StopTotpDisplayAuthCode();
+  void StartTotpCopyAuthCode();
+  void StopTotpCopyAuthCode();
+  void UpdateTotpDisplayOnBar(const CItemData *item);
   std::pair<StringX, StringX> GetTotpData(const CItemData *item);
   PWSTotp::TOTP_Result GetTwoFactorAuthenticationCode(const CItemData& ci, StringX& sxAuthCode, double* pRatio = nullptr);
   CItemData *GetSelectedEntry(const wxCommandEvent& evt, CItemData &rueItem) const;
@@ -856,7 +862,9 @@ private:
   wxAuiToolBar* m_Toolbar;
   DragBarCtrl* m_Dragbar;
 
-  wxTimer *m_TotpTimer = nullptr;
+  CItemData *m_TotpLastSelectedItem = nullptr;
+  wxTimer *m_TotpCountdownTimer = nullptr;
+  wxTimer *m_TotpCopyAuthCodeTimer = nullptr;
   wxStaticText* m_TotpStaticText = nullptr;
   static int s_TotpCountdownInterval;
   static int s_TotpCalculationInterval;
