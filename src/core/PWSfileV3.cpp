@@ -998,6 +998,8 @@ int PWSfileV3::ReadHeader()
     FILE *fd = pws_os::FOpen(filename.c_str(), _T("rb"));
 
     ASSERT(fd != nullptr);
+    if (fd == nullptr)
+      return false;
     char tag[sizeof(V3TAG)];
     auto nread = fread(tag, 1, sizeof(tag), fd);
     fclose(fd);
