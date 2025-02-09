@@ -1281,7 +1281,8 @@ int PWSfileV4::ReadHeader()
 
 bool PWSfileV4::IsV4x(const StringX &filename, const StringX &passkey, VERSION &v)
 {
-  if (CheckPasskey(filename, passkey) == SUCCESS) {
+  if (filename.rfind(_T(".") V4_SUFFIX) == filename.size() - wcslen(V4_SUFFIX) - 1
+      || CheckPasskey(filename, passkey) == SUCCESS) {
     v = V40;
     return true;
   } else

@@ -293,7 +293,7 @@ TEST_F(FileV4Test, CoreRWTest)
   EXPECT_EQ(PWSfile::SUCCESS, core.WriteFile(fname.c_str(), PWSfile::V40));
 
   core.ClearDBData();
-  EXPECT_EQ(PWSfile::FAILURE, core.ReadFile(fname.c_str(), L"WrongPassword", true));
+  EXPECT_EQ(PWSfile::WRONG_PASSWORD, core.ReadFile(fname.c_str(), L"WrongPassword", true));
   EXPECT_EQ(PWSfile::SUCCESS, core.ReadFile(fname.c_str(), passkey, true));
   ASSERT_EQ(1U, core.GetNumEntries());
   ASSERT_EQ(1U, core.GetNumAtts());
