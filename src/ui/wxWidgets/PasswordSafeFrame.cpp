@@ -425,7 +425,8 @@ PasswordSafeFrame::~PasswordSafeFrame()
   delete m_guiInfo;
   m_guiInfo = nullptr;
 
-  StopTotp();
+  StopTotpDisplayAuthCode();
+  StopTotpCopyAuthCode();
 
   m_core.ClearDBData();
   m_core.UnregisterObserver(this);
@@ -1140,7 +1141,7 @@ void PasswordSafeFrame::ShowTotpBar()
 {
   GetTotpBarPane().Show();
   m_AuiManager.Update();
-  StartTotp();
+  StartTotpDisplayAuthCode();
 }
 
 /**
@@ -1151,7 +1152,7 @@ void PasswordSafeFrame::HideTotpBar()
   GetTotpBarPane().Hide();
   m_AuiManager.Update();
   SetFocus();
-  StopTotp();
+  StopTotpDisplayAuthCode();
 }
 
 /**
@@ -2070,7 +2071,7 @@ PWSTotp::TOTP_Result PasswordSafeFrame::GetTwoFactorAuthenticationCode(const CIt
   return r;
 }
 
-/// wxEVT_TIMER_EVENT event handler for ID_TIMER_TOTP
+/// wxEVT_TIMER_EVENT event handler for ID_TIMER_DISPLAY_TOTP
 void PasswordSafeFrame::OnTotpCountdownTimer(wxTimerEvent& WXUNUSED(event))
 {
   auto item = GetSelectedEntry();
@@ -2080,27 +2081,67 @@ void PasswordSafeFrame::OnTotpCountdownTimer(wxTimerEvent& WXUNUSED(event))
     m_TotpStaticText->SetLabel(wxEmptyString);
     return;
   }
-  UpdateTotp(item);
+  UpdateTotpDisplayOnBar(item);
 }
 
-void PasswordSafeFrame::StartTotp()
+/// wxEVT_TIMER_EVENT event handler for ID_TIMER_COPY_TOTP
+void PasswordSafeFrame::OnTotpCopyAuthCodeTimer(wxTimerEvent& WXUNUSED(event))
 {
-  m_TotpTimer = new wxTimer(this, ID_TIMER_TOTP);
-  Bind(wxEVT_TIMER, &PasswordSafeFrame::OnTotpCountdownTimer, this, m_TotpTimer->GetId());
-  m_TotpTimer->Start(GetTotpCountdownInterval());
+  static StringX s_LatestAuthCode(L"");
+  auto item = GetSelectedEntry();
+  // No item selected or item with
+  // no TOTP configuration selected
+  // or new item selected than stop
+  // updating the auth code in clipboard
+  if (item == nullptr || !HasItemTwoFactorKey(item) || (m_TotpLastSelectedItem != item)) {
+    m_TotpLastSelectedItem = nullptr;
+    s_LatestAuthCode.clear();
+    StopTotpCopyAuthCode();
+    return;
+  }
+
+  auto totpData = GetTotpData(item);
+  if (s_LatestAuthCode != totpData.first) {
+    s_LatestAuthCode = totpData.first;
+    DoCopyAuthCode(item);
+  }
 }
 
-void PasswordSafeFrame::StopTotp()
+void PasswordSafeFrame::StartTotpDisplayAuthCode()
 {
-  if (m_TotpTimer) {
-    Unbind(wxEVT_TIMER, &PasswordSafeFrame::OnTotpCountdownTimer, this, m_TotpTimer->GetId());
+  m_TotpCountdownTimer = new wxTimer(this, ID_TIMER_DISPLAY_TOTP);
+  Bind(wxEVT_TIMER, &PasswordSafeFrame::OnTotpCountdownTimer, this, m_TotpCountdownTimer->GetId());
+  m_TotpCountdownTimer->Start(GetTotpCountdownInterval());
+}
+
+void PasswordSafeFrame::StopTotpDisplayAuthCode()
+{
+  if (m_TotpCountdownTimer) {
+    Unbind(wxEVT_TIMER, &PasswordSafeFrame::OnTotpCountdownTimer, this, m_TotpCountdownTimer->GetId());
   }
   // The wxTimer destructor stops the timer if it is running.
-  delete m_TotpTimer;
-  m_TotpTimer = nullptr;
+  delete m_TotpCountdownTimer;
+  m_TotpCountdownTimer = nullptr;
 }
 
-void PasswordSafeFrame::UpdateTotp(const CItemData *item)
+void PasswordSafeFrame::StartTotpCopyAuthCode()
+{
+  m_TotpCopyAuthCodeTimer = new wxTimer(this, ID_TIMER_COPY_TOTP);
+  Bind(wxEVT_TIMER, &PasswordSafeFrame::OnTotpCopyAuthCodeTimer, this, m_TotpCopyAuthCodeTimer->GetId());
+  m_TotpCopyAuthCodeTimer->Start(GetTotpCountdownInterval());
+}
+
+void PasswordSafeFrame::StopTotpCopyAuthCode()
+{
+  if (m_TotpCopyAuthCodeTimer) {
+    Unbind(wxEVT_TIMER, &PasswordSafeFrame::OnTotpCopyAuthCodeTimer, this, m_TotpCopyAuthCodeTimer->GetId());
+  }
+  // The wxTimer destructor stops the timer if it is running.
+  delete m_TotpCopyAuthCodeTimer;
+  m_TotpCopyAuthCodeTimer = nullptr;
+}
+
+void PasswordSafeFrame::UpdateTotpDisplayOnBar(const CItemData *item)
 {
   auto totpData = GetTotpData(item);
   auto totpString = wxString::Format(
