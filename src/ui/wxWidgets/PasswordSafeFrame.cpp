@@ -2036,7 +2036,7 @@ std::pair<StringX, StringX> PasswordSafeFrame::GetTotpData(const CItemData *item
   CItemData ciTemp(*GetTotpItem(item));
   auto r = GetTwoFactorAuthenticationCode(ciTemp, totp, &ratio);
   if (r != PWSTotp::Success) {
-    return std::make_pair(tostringx(wxT("------")), tostringx(wxT("--")));
+    return std::make_pair(tostringx(wxT("n/a")), tostringx(wxT("n/a")));
   }
   return std::make_pair(
     totp,

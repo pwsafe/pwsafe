@@ -381,7 +381,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
     m_BasicTotpTextCtrl->Disable();
     m_BasicShowHideTotpCtrl->Disable();
     m_BasicTotpButton->Disable();
-    m_BasicTotpButton->SetLabel(_("Copy"));
+    m_BasicTotpButton->SetLabel(_("30"));
   }
 
   auto *itemStaticText25 = new wxStaticText( panel, wxID_STATIC, _("URL"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -465,14 +465,14 @@ wxPanel* AddEditPropSheetDlg::CreateAdditionalPanel()
   auto *staticTextTwoFactorKey = new wxStaticText(panel, wxID_STATIC, _("Authentication Secret"), wxDefaultPosition, wxDefaultSize, 0);
   vBoxSizerTwoFactoryKey->Add(staticTextTwoFactorKey, 0, wxALIGN_LEFT|wxBOTTOM, 5);
 
-  m_AdditionalHBoxSizerTwoFactoryKey = new wxBoxSizer(wxHORIZONTAL);
-  vBoxSizerTwoFactoryKey->Add(m_AdditionalHBoxSizerTwoFactoryKey, 1, wxALIGN_LEFT|wxEXPAND|wxBOTTOM, 12);
+  m_AdditionalHBoxSizerTwoFactorKey = new wxBoxSizer(wxHORIZONTAL);
+  vBoxSizerTwoFactoryKey->Add(m_AdditionalHBoxSizerTwoFactorKey, 1, wxALIGN_LEFT|wxEXPAND|wxBOTTOM, 12);
 
   m_AdditionalTwoFactorKeyCtrl = new wxTextCtrl(panel, ID_TEXTCTRL_2FK, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD);
-  m_AdditionalHBoxSizerTwoFactoryKey->Add(m_AdditionalTwoFactorKeyCtrl, 1, wxALIGN_LEFT|wxEXPAND|wxRIGHT, 5);
+  m_AdditionalHBoxSizerTwoFactorKey->Add(m_AdditionalTwoFactorKeyCtrl, 1, wxALIGN_LEFT|wxEXPAND|wxRIGHT, 5);
 
   m_AdditionalShowHideCtrl = new wxBitmapButton(panel, ID_BUTTON_SHOWHIDE_2FK, wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
-  m_AdditionalHBoxSizerTwoFactoryKey->Add(m_AdditionalShowHideCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER|wxRIGHT, 5);
+  m_AdditionalHBoxSizerTwoFactorKey->Add(m_AdditionalShowHideCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER|wxRIGHT, 5);
 
   if (m_Core.IsReadOnly() || !IsItemNormalOrBase()) {
     staticTextTwoFactorKey->Disable();
@@ -1930,7 +1930,7 @@ void AddEditPropSheetDlg::ShowTwoFactorKey()
 {
   m_IsTwoFactorKeyHidden = false;
   auto text = m_AdditionalTwoFactorKeyCtrl->GetValue();
-  UpdatePasswordTextCtrl(m_AdditionalHBoxSizerTwoFactoryKey, m_AdditionalTwoFactorKeyCtrl, text, m_AdditionalShiftDoubleClickActionCtrl, 0);
+  UpdatePasswordTextCtrl(m_AdditionalHBoxSizerTwoFactorKey, m_AdditionalTwoFactorKeyCtrl, text, m_AdditionalShiftDoubleClickActionCtrl, 0);
   m_AdditionalShowHideCtrl->SetBitmapLabel(wxUtilities::GetBitmapResource(wxT("graphics/eye_close.xpm")));
   m_AdditionalShowHideCtrl->SetToolTip(_("Hide authentication secret"));
 }
@@ -1939,7 +1939,7 @@ void AddEditPropSheetDlg::HideTwoFactorKey()
 {
   m_IsTwoFactorKeyHidden = true;
   auto text = m_AdditionalTwoFactorKeyCtrl->GetValue();
-  UpdatePasswordTextCtrl(m_AdditionalHBoxSizerTwoFactoryKey, m_AdditionalTwoFactorKeyCtrl, text, m_AdditionalShiftDoubleClickActionCtrl, wxTE_PASSWORD);
+  UpdatePasswordTextCtrl(m_AdditionalHBoxSizerTwoFactorKey, m_AdditionalTwoFactorKeyCtrl, text, m_AdditionalShiftDoubleClickActionCtrl, wxTE_PASSWORD);
   m_AdditionalShowHideCtrl->SetBitmapLabel(wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")));
   m_AdditionalShowHideCtrl->SetToolTip(_("Show authentication secret"));
 }
@@ -2213,7 +2213,8 @@ bool AddEditPropSheetDlg::IsGroupUsernameTitleCombinationUnique()
 void AddEditPropSheetDlg::OnTotpCountdownTimer(wxTimerEvent& WXUNUSED(event))
 {
   if (GetTotpItem() == nullptr) {
-    m_TotpTimer->Stop();
+    if (m_TotpTimer)
+      m_TotpTimer->Stop();
     return;
   }
 

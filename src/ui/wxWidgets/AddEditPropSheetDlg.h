@@ -432,7 +432,7 @@ private:
   wxPanel *m_AdditionalPanel = nullptr;
   wxComboBox *m_AdditionalDoubleClickActionCtrl = nullptr;
   wxComboBox *m_AdditionalShiftDoubleClickActionCtrl = nullptr;
-  wxBoxSizer *m_AdditionalHBoxSizerTwoFactoryKey = nullptr;
+  wxBoxSizer *m_AdditionalHBoxSizerTwoFactorKey = nullptr;
   wxTextCtrl *m_AdditionalTwoFactorKeyCtrl = nullptr;
   wxBitmapButton *m_AdditionalShowHideCtrl = nullptr;
   wxSpinCtrl *m_AdditionalMaxPasswordHistoryCtrl = nullptr;
