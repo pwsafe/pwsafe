@@ -2091,7 +2091,7 @@ void PasswordSafeFrame::OnTotpCopyAuthCodeTimer(wxTimerEvent& WXUNUSED(event))
   auto item = GetSelectedEntry();
   // No item selected or item with
   // no TOTP configuration selected
-  // or new item selected than stop
+  // or new item selected then stop
   // updating the auth code in clipboard
   if (item == nullptr || !HasItemTwoFactorKey(item) || (m_TotpLastSelectedItem != item)) {
     m_TotpLastSelectedItem = nullptr;
@@ -2099,11 +2099,23 @@ void PasswordSafeFrame::OnTotpCopyAuthCodeTimer(wxTimerEvent& WXUNUSED(event))
     StopTotpCopyAuthCode();
     return;
   }
-
+  // Update the auth code in the clipboard
   auto totpData = GetTotpData(item);
   if (s_LatestAuthCode != totpData.first) {
     s_LatestAuthCode = totpData.first;
     DoCopyAuthCode(item);
+    return;
+  }
+  // Stop updating the auth code in the clipboard
+  // if the data in the clipboard has been changed
+  // by the user through a copy action or by deleting
+  // the clipboard
+  auto isAuthCodeInClipboard = Clipboard::GetInstance()->HasData(totpData.first);
+  if (!isAuthCodeInClipboard) {
+    m_TotpLastSelectedItem = nullptr;
+    s_LatestAuthCode.clear();
+    StopTotpCopyAuthCode();
+    return;
   }
 }
 

@@ -134,6 +134,17 @@ bool Clipboard::SetData(const StringX &data)
   return res;
 }
 
+bool Clipboard::HasData(const StringX &data) const
+{
+  unsigned char digest[SHA256::HASHLEN];
+  SHA256 ctx;
+  const wchar_t *str = data.c_str();
+  ctx.Update(reinterpret_cast<const unsigned char *>(str), data.length()*sizeof(wchar_t));
+  ctx.Final(digest);
+
+  return (memcmp(digest, m_digest, SHA256::HASHLEN) == 0);
+}
+
 /**
  * Clear from clipboard data, that we put there previously
  * @return \c true, if we cleared our data, or stored data don't belong to us
