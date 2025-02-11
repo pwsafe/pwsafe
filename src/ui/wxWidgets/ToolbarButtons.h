@@ -27,6 +27,10 @@
 #include "./graphics/toolbar/new/copypassword_disabled.xpm"
 #include "./graphics/toolbar/new/copyuser.xpm"
 #include "./graphics/toolbar/new/copyuser_disabled.xpm"
+#include "./graphics/toolbar/new/copyauthcode.xpm"
+#include "./graphics/toolbar/new/copyauthcode_disabled.xpm"
+#include "./graphics/toolbar/new/displayauthcode.xpm"
+#include "./graphics/toolbar/new/displayauthcode_disabled.xpm"
 #include "./graphics/toolbar/new/copynotes.xpm"
 #include "./graphics/toolbar/new/copynotes_disabled.xpm"
 #include "./graphics/toolbar/new/clearclipboard.xpm"
@@ -105,6 +109,10 @@
 #include "./graphics/toolbar/classic/copypassword_disabled.xpm"
 #include "./graphics/toolbar/classic/copyuser.xpm"
 #include "./graphics/toolbar/classic/copyuser_disabled.xpm"
+#include "./graphics/toolbar/classic/copyauthcode.xpm"
+#include "./graphics/toolbar/classic/copyauthcode_disabled.xpm"
+#include "./graphics/toolbar/classic/displayauthcode.xpm"
+#include "./graphics/toolbar/classic/displayauthcode_disabled.xpm"
 #include "./graphics/toolbar/classic/copynotes.xpm"
 #include "./graphics/toolbar/classic/copynotes_disabled.xpm"
 #include "./graphics/toolbar/classic/clearclipboard.xpm"
@@ -231,6 +239,8 @@ _PwsToolbarInfo(int aid, const wxString &atoollabel, const wxString &atooltip, c
           SEPARATOR,
           { ID_COPYPASSWORD,   _("Password"),        _("Copy Password to Clipboard"),   PWS_TOOLBAR_BITMAPS(copypassword)   },
           { ID_COPYUSERNAME,   _("Username"),        _("Copy Username to Clipboard"),   PWS_TOOLBAR_BITMAPS(copyuser)       },
+          { ID_COPYAUTHCODE,   _("Auth Code"),       _("Copy Auth Code to Clipboard"),  PWS_TOOLBAR_BITMAPS(copyauthcode)   },
+          { ID_SHOWAUTHCODE,   _("Display Auth"),    _("Display Auth Code"),            PWS_TOOLBAR_BITMAPS(displayauthcode)},
           { ID_COPYNOTESFLD,   _("Notes"),           _("Copy Notes to Clipboard"),      PWS_TOOLBAR_BITMAPS(copynotes)      },
           { ID_CLEARCLIPBOARD, _("Clr Clipboard"),   _("Clear the clipboard contents"), PWS_TOOLBAR_BITMAPS(clearclipboard) },
           SEPARATOR,

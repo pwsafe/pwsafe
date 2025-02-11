@@ -208,6 +208,7 @@ public:
   void SetUser(const StringX &user) {CItem::SetField(USER, user);} // V20
   void SetPassword(const StringX &password) {CItem::SetField(PASSWORD, password);}
   void UpdatePassword(const StringX &password); // use when password changed!
+  void ClearTwoFactorKey() {ClearField(CItemData::TWOFACTORKEY);}
   void SetTwoFactorKey(const StringX& value) { CItem::SetField(TWOFACTORKEY, value); }
   bool SetTotpConfig(const StringX& value) { return SetFieldAsByte(TOTPCONFIG, value.c_str()); }
   void SetTotpStartTime(time_t t) { CItem::SetTime(TOTPSTARTTIME, t); }
