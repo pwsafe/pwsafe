@@ -340,6 +340,11 @@ bool wxUtilities::IsDisplayManagerX11()
   return (isDisplayManagerX11 == 1);
 }
 
+bool wxUtilities::IsDisplayManagerWayland()
+{
+  return (wxGetOsVersion() == wxOS_UNIX_LINUX) && !wxUtilities::IsDisplayManagerX11();
+}
+
 bool wxUtilities::IsVirtualKeyboardSupported()
 {
 #ifdef __WINDOWS__
@@ -353,9 +358,7 @@ bool wxUtilities::IsVirtualKeyboardSupported()
 
 void wxUtilities::DisableIfUnsupported(enum Feature feature, wxWindow* window)
 {
-  const bool isWayland = !wxUtilities::IsDisplayManagerX11();
-
-  if (feature == Autotype && isWayland) {
+  if (feature == Autotype && IsDisplayManagerWayland()) {
     window->Disable();
     window->SetToolTip(_("Not supported by Wayland"));
   }

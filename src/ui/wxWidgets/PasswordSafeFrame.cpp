@@ -1959,7 +1959,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
   const bool isTreeViewGroupSelected = isTreeView && m_tree->IsGroupSelected();
   const bool isTreeViewEmpty         = isTreeView && !m_tree->HasItems(); // excludes the invisible root item
   const bool isTreeViewItemSelected  = isTreeView && m_tree->HasSelection();
-  const bool isX11                   = wxUtilities::IsDisplayManagerX11();
+  const bool isWayland               = wxUtilities::IsDisplayManagerWayland();
 
   pci = GetSelectedEntry();
 
@@ -2094,7 +2094,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_AUTOTYPE:
-      evt.Enable(isX11 && !isTreeViewGroupSelected && pci);
+      evt.Enable(!isWayland && !isTreeViewGroupSelected && pci);
       break;
 
     case ID_EDIT:

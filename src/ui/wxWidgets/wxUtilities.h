@@ -444,6 +444,13 @@ namespace wxUtilities
   bool IsDisplayManagerX11();
 
   /**
+   * @brief True if the Linux system is using Wayland
+   *
+   * @return true if OS is Linux and IsDisplayManagerX11 == false.
+   */
+  bool IsDisplayManagerWayland();
+
+  /**
    * @brief Checks if virtual keyboard is supported.
    * 
    * @return IsDisplayManagerX11() on Linux, true on Mac, and false on Windows.
