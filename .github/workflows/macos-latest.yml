@@ -83,7 +83,7 @@ jobs:
 
     - name: Cache wxWidgets build
       id: cache-wxWidgets-build
-      uses: actions/cache@v4.0.0
+      uses: actions/cache@v4
       with:
         path: |
           ${{ env.WX_BUILD_DIR }}
@@ -124,7 +124,7 @@ jobs:
       run: make
 
     - name: Upload artifacts
-      uses: 'actions/upload-artifact@v4.3.1'
+      uses: actions/upload-artifact@v4
       with:
         name: PasswordSafe-macOS.${{ github.sha }}
         path: PasswordSafe-macOS*.dmg
