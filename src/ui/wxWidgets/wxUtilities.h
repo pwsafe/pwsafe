@@ -430,23 +430,30 @@ public:
 typedef wxTextDataObject wxTextDataObjectEx;
 #endif // __WXGTK20__
 
-bool IsCurrentDesktopKde();
 
 namespace wxUtilities
 {
   enum Feature { Autotype };
+  enum WindowSystem {
+    Undefined,    // Only used to identify the first pass through WhatWindowSystem()
+    Unknown,
+    X11,
+    Wayland,
+    macOS,
+    Windows
+  };
 
   /**
-   * @brief Checks environment variable 'XDG_SESSION_TYPE' for display manager 'x11'.
+   * @brief Identifies the type of window manager (X11, Wayland, etc.).
    *
-   * @return whether the environment variable is set to 'x11'.
+   * @return Window system type or Unknown
    */
-  bool IsDisplayManagerX11();
+  enum WindowSystem WhatWindowSystem();
 
   /**
    * @brief Checks if virtual keyboard is supported.
    * 
-   * @return IsDisplayManagerX11() on Linux, true on Mac, and false on Windows.
+   * @return True on X11, true on Mac, and false on Windows.
    */
   bool IsVirtualKeyboardSupported();
 
