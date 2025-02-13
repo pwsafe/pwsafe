@@ -311,34 +311,25 @@ enum wxUtilities::WindowSystem wxUtilities::WhatWindowSystem()
 
   // Get the env. variable and OS version only once
   if (wsType == Undefined) {
+    wsType = Unknown;
     osid = wxGetOsVersion();
-    switch (osid) {
-    case wxOS_MAC:
+    
+    if (osid & wxOS_MAC) {
       wsType = macOS;
-      break;
-    case wxOS_WINDOWS:
+    } else if (osid & wxOS_WINDOWS) {
       wsType = Windows;
-      break;
-    case wxOS_UNIX:
-      {
-        wsType = Unknown;
-        wxString XDG_SESSION_TYPE = wxEmptyString;
+    } else if (osid & wxOS_UNIX) {
+      wxString XDG_SESSION_TYPE = wxEmptyString;
 
-        if (wxGetEnv(wxT("XDG_SESSION_TYPE"), &XDG_SESSION_TYPE)) { // provides 'x11' or 'wayland'
-          if (!XDG_SESSION_TYPE.IsEmpty()) {
-            if (XDG_SESSION_TYPE == wxT("x11")) {
-              wsType = X11;
-            } else if (XDG_SESSION_TYPE == wxT("Wayland")) {
-              wsType = Wayland;
-            }
+      if (wxGetEnv(wxT("XDG_SESSION_TYPE"), &XDG_SESSION_TYPE)) { // provides 'x11' or 'wayland'
+        if (!XDG_SESSION_TYPE.IsEmpty()) {
+          if (XDG_SESSION_TYPE == wxT("x11")) {
+            wsType = X11;
+          } else if (XDG_SESSION_TYPE == wxT("wayland")) {
+            wsType = Wayland;
           }
         }
-        break;
       }
-
-    default:
-      wsType = Unknown;
-      break;
     }
   }
   return wsType;
@@ -351,7 +342,7 @@ bool wxUtilities::IsVirtualKeyboardSupported()
 #elif defined __WXOSX__
   return true;
 #else
-  return wxUtilities::IsDisplayManagerX11();
+  return (wxUtilities::WhatWindowSystem() == wxUtilities::X11);
 #endif
 }
 
