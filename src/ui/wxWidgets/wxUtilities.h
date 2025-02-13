@@ -435,7 +435,7 @@ namespace wxUtilities
 {
   enum Feature { Autotype };
   enum WindowSystem {
-    Undefined,
+    Undefined,    // Only used to identify the first pass through WhatWindowSystem()
     Unknown,
     X11,
     Wayland,

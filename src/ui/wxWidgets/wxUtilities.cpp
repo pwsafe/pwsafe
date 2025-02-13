@@ -312,13 +312,13 @@ enum wxUtilities::WindowSystem wxUtilities::WhatWindowSystem()
   // Get the env. variable and OS version only once
   if (wsType == Undefined) {
     wsType = Unknown;
-    osid = wxGetOsVersion();
-    
+    osid = wxGetOsVersion();    // Returns a bit flag.  The wxOS_* symbols used below are groups.
+
     if (osid & wxOS_MAC) {
       wsType = macOS;
     } else if (osid & wxOS_WINDOWS) {
       wsType = Windows;
-    } else if (osid & wxOS_UNIX) {
+    } else if (osid & wxOS_UNIX) {    // Includes Linux
       wxString XDG_SESSION_TYPE = wxEmptyString;
 
       if (wxGetEnv(wxT("XDG_SESSION_TYPE"), &XDG_SESSION_TYPE)) { // provides 'x11' or 'wayland'
