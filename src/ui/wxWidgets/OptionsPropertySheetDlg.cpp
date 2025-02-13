@@ -1406,7 +1406,7 @@ void OptionsPropertySheetDlg::OnPWHistApply(wxCommandEvent& WXUNUSED(evt))
 void OptionsPropertySheetDlg::OnUpdateUI(wxUpdateUIEvent& evt)
 {
   bool dbIsReadOnly = m_core.IsReadOnly();
-  const bool isWayland = wxUtilities::IsDisplayManagerWayland();
+  const bool isWayland = (wxUtilities::WhatWindowSystem() == wxUtilities::Wayland);
 
   switch (evt.GetId()) {
   /////////////////////////////////////////////////////////////////////////////

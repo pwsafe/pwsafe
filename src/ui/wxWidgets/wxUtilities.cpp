@@ -304,45 +304,44 @@ wxBitmap wxUtilities::GetBitmapResource( const wxString& name )
 
 int pless(int* first, int* second) { return *first - *second; }
 
-bool IsCurrentDesktopKde()
+enum wxUtilities::WindowSystem wxUtilities::WhatWindowSystem()
 {
-#ifdef __WINDOWS__
-  return false;
-#else
-  wxString currentDesktop = wxEmptyString;
+  static enum wxUtilities::WindowSystem wsType = Undefined;
+  wxOperatingSystemId osid;
 
-  if (!wxGetEnv(wxT("XDG_CURRENT_DESKTOP"), &currentDesktop)) {
-    return false; // Environment variable does not exist
-  }
+  // Get the env. variable and OS version only once
+  if (wsType == Undefined) {
+    osid = wxGetOsVersion();
+    switch (osid) {
+    case wxOS_MAC:
+      wsType = macOS;
+      break;
+    case wxOS_WINDOWS:
+      wsType = Windows;
+      break;
+    case wxOS_UNIX:
+      {
+        wsType = Unknown;
+        wxString XDG_SESSION_TYPE = wxEmptyString;
 
-  return (!currentDesktop.IsEmpty() && (currentDesktop.MakeLower().Trim() == wxT("kde")));
-#endif
-}
-
-bool wxUtilities::IsDisplayManagerX11()
-{
-  static int isDisplayManagerX11 = 0;
-
-  // Get the env. variable only once
-  if (isDisplayManagerX11 == 0) {
-    wxString XDG_SESSION_TYPE = wxEmptyString;
-    if (wxGetEnv(wxT("XDG_SESSION_TYPE"), &XDG_SESSION_TYPE)) { // provides 'x11' or 'wayland'
-
-      if (!XDG_SESSION_TYPE.IsEmpty() && XDG_SESSION_TYPE == wxT("x11")) {
-        isDisplayManagerX11 = 1;
-      } else {
-        isDisplayManagerX11 = 2; // Don't call wxGetEnv() more than once per process if value is bad
+        if (wxGetEnv(wxT("XDG_SESSION_TYPE"), &XDG_SESSION_TYPE)) { // provides 'x11' or 'wayland'
+          if (!XDG_SESSION_TYPE.IsEmpty()) {
+            if (XDG_SESSION_TYPE == wxT("x11")) {
+              wsType = X11;
+            } else if (XDG_SESSION_TYPE == wxT("Wayland")) {
+              wsType = Wayland;
+            }
+          }
+        }
+        break;
       }
-    } else {
-      isDisplayManagerX11 = 3; // Don't call wxGetEnv() more than once per process if value is not set/available
+
+    default:
+      wsType = Unknown;
+      break;
     }
   }
-  return (isDisplayManagerX11 == 1);
-}
-
-bool wxUtilities::IsDisplayManagerWayland()
-{
-  return (wxGetOsVersion() == wxOS_UNIX_LINUX) && !wxUtilities::IsDisplayManagerX11();
+  return wsType;
 }
 
 bool wxUtilities::IsVirtualKeyboardSupported()
@@ -358,7 +357,7 @@ bool wxUtilities::IsVirtualKeyboardSupported()
 
 void wxUtilities::DisableIfUnsupported(enum Feature feature, wxWindow* window)
 {
-  if (feature == Autotype && IsDisplayManagerWayland()) {
+  if (feature == Autotype && WhatWindowSystem() == Wayland) {
     window->Disable();
     window->SetToolTip(_("Not supported by Wayland"));
   }

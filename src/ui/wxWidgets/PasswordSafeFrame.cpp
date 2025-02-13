@@ -1959,7 +1959,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
   const bool isTreeViewGroupSelected = isTreeView && m_tree->IsGroupSelected();
   const bool isTreeViewEmpty         = isTreeView && !m_tree->HasItems(); // excludes the invisible root item
   const bool isTreeViewItemSelected  = isTreeView && m_tree->HasSelection();
-  const bool isWayland               = wxUtilities::IsDisplayManagerWayland();
+  const bool isWayland               = (wxUtilities::WhatWindowSystem() == wxUtilities::Wayland);
 
   pci = GetSelectedEntry();
 
