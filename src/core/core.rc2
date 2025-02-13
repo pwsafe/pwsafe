@@ -59,6 +59,11 @@ BEGIN
   IDSC_FLDNMTOTPLENGTH   "Authentication Code Length"
   IDSC_FLDNMTOTPTIMESTEP "Authentication Code Time Step"
   IDSC_FLDNMTOTPSTARTTIME "Authentication Code Start Time"
+  IDSC_FLDNMDATAATTTITLE     "Attachment Title"
+  IDSC_FLDNMDATAATTMEDIATYPE "Attachment Media Type"
+  IDSC_FLDNMDATAATTFILENAME  "Attachment File Name"
+  IDSC_FLDNMDATAATTMTIME     "Attachment Modification Time"
+  IDSC_FLDNMDATAATTCONTENT   "Attachment Content"
 END
 
 STRINGTABLE

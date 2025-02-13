@@ -9,6 +9,7 @@
 #pragma once
 
 #include "FilterBaseDlg.h"
+#include "core/PWSprefs.h"
 
 // CFilterDCADlg dialog
 
