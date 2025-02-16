@@ -234,10 +234,8 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
   { // block to shut up compiler warning w.r.t. goto
     const uint32 N = getInt32(Nb);
 
-    ASSERT(N >= MIN_HASH_ITERATIONS);
     if (N < MIN_HASH_ITERATIONS) {
-      retval = FAILURE;
-      goto err;
+      PWSTRACE(L"File's ITER value %d is below current minimum %d. It will be updated when file is saved", N, MIN_HASH_ITERATIONS);
     }
 
     if (nITER != nullptr)
@@ -330,7 +328,6 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   trashMemory(pstr, passLen);
   delete[] pstr;
 
-  ASSERT(N >= MIN_HASH_ITERATIONS); // minimal value we're willing to use
   for (unsigned int i = 0; i < N; i++) {
     SHA256 H;
     // The 2nd param in next line was sizeof(X) in Beta-1

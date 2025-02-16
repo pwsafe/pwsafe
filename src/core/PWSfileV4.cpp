@@ -121,6 +121,8 @@ int PWSfileV4::Open(const StringX &passkey)
     // Nonce is used to detect end of keyblocks
     static_assert(int(NONCELEN) == int(SHA256::HASHLEN), "can't call HashRandom256");
     HashRandom256(m_nonce); // Generate nonce
+    if (m_nHashIters < MIN_HASH_ITERATIONS) // here we silently upgrade files to the new MIN_HASH_ITERATIONS value
+      m_nHashIters = MIN_HASH_ITERATIONS;
     if (!m_keyblocks.GetKeys(passkey, m_nHashIters, m_key, m_ell)) {
       PWSfile::Close();
       return WRONG_PASSWORD;
@@ -403,7 +405,9 @@ void PWSfileV4::StretchKey(const unsigned char *salt, unsigned long saltLen,
   * by the hash-function-based key stretching algorithm PBKDF2, with SHA-256
   * as the hash function, and N iterations.
   */
-  ASSERT(N >= MIN_HASH_ITERATIONS); // minimal value we're willing to use
+  if (N < MIN_HASH_ITERATIONS) {
+    PWSTRACE(L"File's ITER value %d is below current minimum %d. It will be updated when file is saved", N, MIN_HASH_ITERATIONS);
+  }
   size_t passLen = 0;
   unsigned char *pstr = nullptr;
 
