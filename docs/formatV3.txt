@@ -51,11 +51,13 @@ version 3 file. This tag has no cryptographic value.
 2.3 P' is the "stretched key" generated from the user's passphrase and
 the SALT, as defined by the hash-function-based key stretching
 algorithm in [KEYSTRETCH] (Section 4.1), with SHA-256 [SHA256] as the
-hash function, and ITER iterations (at least 16,348).
+hash function, and ITER iterations.
 
 2.4 ITER is the number of iterations on the hash function to calculate P',
 stored as a 32 bit little-endian value. This value is stored here in order
 to future-proof the file format against increases in processing power.
+The original minimum was 2,048.  As of file format 0x030F, the minimum is
+262,144. Older databases are silently upgraded to this vaule when saved.
 
 2.5 H(P') is SHA-256(P'), and is used to verify that the user has the
 correct passphrase.
@@ -204,6 +206,7 @@ PasswordSafe V3.29 introduced Format 0x030B
 PasswordSafe V3.29Y introduced Format 0x030C
 PasswordSafe V3.30 introduced Format 0x030D
 PasswordSafe V3.47 introduced Format 0x030E
+PasswordSafe V3.68 introduced Format 0x030F
 
 [2] A universally unique identifier is needed in order to synchronize
 databases across different machine. Representation is described in
