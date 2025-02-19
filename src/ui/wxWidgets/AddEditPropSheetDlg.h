@@ -18,6 +18,7 @@
  */
 
 ////@begin includes
+#include <wx/bookctrl.h>
 #include <wx/combobox.h>
 #include <wx/propdlg.h>
 #include <wx/valgen.h>
@@ -260,6 +261,9 @@ protected:
 
   /// wxEVT_TIMER_EVENT event handler for ID_TIMER_TOTP_COUNTDOWN
   void OnTotpCountdownTimer(wxTimerEvent &event);
+
+  /// wxEVT_NOTEBOOK_PAGE_CHANGING event handler
+  void OnTabChanging(wxBookCtrlEvent& event);
   ////@begin AddEditPropSheetDlg member function declarations
 
   /// Retrieves bitmap resources
@@ -350,11 +354,13 @@ private:
   void HideTotp();
   void ShowTwoFactorKey();
   void HideTwoFactorKey();
-  void ApplyTwoFactorKey();
+  void ApplyTwoFactorKey(CItemData& item);
+  void EnableAuthenticationCodeControls();
+  void DisableAuthenticationCodeControls();
   const PasswordSafeFrame* GetPwSafe() const { return wxGetApp().GetPasswordSafeFrame(); }
-  bool HasItemTwoFactorKey() const { return GetPwSafe()->HasItemTwoFactorKey(&m_Item); };
-  bool IsItemNormalOrBase() const { return GetPwSafe()->IsItemNormalOrBase(&m_Item); }
-  const CItemData *GetTotpItem() const { return GetPwSafe()->GetTotpItem(&m_Item); };
+  bool HasItemTwoFactorKey() const { return GetPwSafe()->HasItemTwoFactorKey(&m_ItemTotp); };
+  bool IsItemNormalOrBase() const { return GetPwSafe()->IsItemNormalOrBase(&m_ItemTotp); }
+  const CItemData *GetTotpItem() const { return GetPwSafe()->GetTotpItem(&m_ItemTotp); };
   int GetTotpCountdownInterval() const { return GetPwSafe()->GetTotpCountdownInterval(); }
 
   enum Changes : uint32_t {
@@ -409,6 +415,7 @@ private:
   wxTextCtrl *m_BasicPasswordConfirmationTextCtrl = nullptr;
   wxStaticText *m_BasicPasswordConfirmationTextLabel = nullptr;
   wxStaticBitmap *m_BasicPasswordConfirmationBitmap = nullptr;
+  wxStaticText *m_BasicTotpTextLabel = nullptr;
   wxTextCtrl *m_BasicTotpTextCtrl = nullptr;
   wxBitmapButton *m_BasicShowHideTotpCtrl = nullptr;
   wxButton *m_BasicTotpButton = nullptr;
@@ -532,6 +539,7 @@ private:
 
   SheetType m_Type;
   CItemData m_Item;
+  CItemData m_ItemTotp;
   CItemAtt  m_ItemAttachment;
 
   wxBitmap bitmapCheckmarkPlaceholder;
