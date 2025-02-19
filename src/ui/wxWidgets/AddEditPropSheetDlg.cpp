@@ -140,7 +140,8 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
   else {
     m_Item.CreateUUID(); // We're adding a new entry
   }
-  
+
+  m_ItemTotp = m_Item; // The copy is used to show the TOTP on the 'Basic' tab
   m_IsNotesHidden = !PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault);
 
   wxString dlgTitle;
@@ -182,7 +183,16 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
     InitAttachmentTab();
   }
 
-  StartTotp();
+  // If a new item is created and therefore no TOTP configuration exists yet,
+  // it is not necessary to start the TOTP update on the user interface.
+  if (m_Type != SheetType::ADD) {
+    StartTotp();
+  }
+
+  // If the user has added a two factor key in the 'Additional' tab
+  // the TOTP update on the user interface is started by the tab change.
+  auto noteBook = (AddEditPropSheetDlg*)wxPropertySheetDialog::GetBookCtrl(); 
+  Bind(wxEVT_NOTEBOOK_PAGE_CHANGING, &AddEditPropSheetDlg::OnTabChanging, this, noteBook->GetId());
 
   // Set the initial focus to the Title control (Otherwise it defaults to the Group control)
   m_BasicTitleTextCtrl->SetFocus();
@@ -360,8 +370,8 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
     itemButton22->Hide();
   }
 
-  auto basicTotpTextLabel = new wxStaticText( panel, wxID_STATIC, _("Authentication Code"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(basicTotpTextLabel, wxGBPosition(/*row:*/ 10, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicTotpTextLabel = new wxStaticText( panel, wxID_STATIC, _("Authentication Code"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_BasicSizer->Add(m_BasicTotpTextLabel, wxGBPosition(/*row:*/ 10, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicTotpTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_TOTP, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD|wxTE_READONLY );
   m_BasicSizer->Add(m_BasicTotpTextCtrl, wxGBPosition(/*row:*/ 11, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
@@ -377,11 +387,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicSizer->Add(m_BasicTotpButton, wxGBPosition(/*row:*/ 11, /*column:*/ 5), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
   if (!HasItemTwoFactorKey()) {
-    basicTotpTextLabel->Disable();
-    m_BasicTotpTextCtrl->Disable();
-    m_BasicShowHideTotpCtrl->Disable();
-    m_BasicTotpButton->Disable();
-    m_BasicTotpButton->SetLabel(_("30"));
+    DisableAuthenticationCodeControls();
   }
 
   auto *itemStaticText25 = new wxStaticText( panel, wxID_STATIC, _("URL"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -2221,12 +2227,41 @@ void AddEditPropSheetDlg::OnTotpCountdownTimer(wxTimerEvent& WXUNUSED(event))
   UpdateTotp();
 }
 
+/// wxEVT_NOTEBOOK_PAGE_CHANGING event handler
+void AddEditPropSheetDlg::OnTabChanging(wxBookCtrlEvent& event)
+{
+  // The second tab ('Additional') has the id 1.
+  // The event is to be ignored if the change does not originate
+  // from the additional tab to one of the other tabs.
+  if (event.GetOldSelection() != 1) {
+    event.Skip();
+    return;
+  }
+  // Do not allow tab change if two-factor key is invalid
+  if (!ValidateAdditionalData()) {
+    event.Veto();
+    return;
+  }
+  ApplyTwoFactorKey(m_ItemTotp);
+  if (HasItemTwoFactorKey()) {
+    EnableAuthenticationCodeControls();
+    StartTotp();
+  }
+  else {
+    DisableAuthenticationCodeControls();
+    StopTotp();
+  }
+}
+
 void AddEditPropSheetDlg::StartTotp()
 {
+  if (m_TotpTimer && m_TotpTimer->IsRunning()) {
+    return;
+  }
   // Show and update the TOTP only when an existing item 
   // with an existing TOTP configuration is edited or viewed.
   m_TotpTimer = new wxTimer(this, ID_TIMER_TOTP_COUNTDOWN);
-  if ((m_Type != SheetType::ADD) && HasItemTwoFactorKey()) {
+  if (HasItemTwoFactorKey()) {
     m_TotpTimer->Start(GetTotpCountdownInterval());
   }
 }
@@ -2240,22 +2275,40 @@ void AddEditPropSheetDlg::StopTotp()
 
 void AddEditPropSheetDlg::UpdateTotp()
 {
-  auto totpData = wxGetApp().GetPasswordSafeFrame()->GetTotpData(&m_Item);
+  auto totpData = wxGetApp().GetPasswordSafeFrame()->GetTotpData(&m_ItemTotp);
   m_BasicTotpTextCtrl->ChangeValue(towxstring(totpData.first));
   m_BasicTotpButton->SetLabel(towxstring(totpData.second));
 }
 
 // Remark: Validation check is already done in ValidateAdditionalData() called by OnOk()
-void AddEditPropSheetDlg::ApplyTwoFactorKey()
+void AddEditPropSheetDlg::ApplyTwoFactorKey(CItemData& item)
 {
   const StringX twofactorkey = tostringx(m_AdditionalTwoFactorKeyCtrl->GetValue());
   if (!twofactorkey.empty()) {
-    m_Item.SetTwoFactorKey(twofactorkey);
+    item.SetTwoFactorKey(twofactorkey);
   }
-  else if ((m_Type == SheetType::EDIT) && HasItemTwoFactorKey()) {
+  else if (HasItemTwoFactorKey()) {
     // Remove existing two factor key if text input field is empty in Edit mode
-    m_Item.ClearTwoFactorKey();
+    item.ClearTwoFactorKey();
   }
+}
+
+void AddEditPropSheetDlg::EnableAuthenticationCodeControls()
+{
+  m_BasicTotpTextLabel->Enable();
+  m_BasicTotpTextCtrl->Enable();
+  m_BasicShowHideTotpCtrl->Enable();
+  m_BasicTotpButton->Enable();
+}
+
+void AddEditPropSheetDlg::DisableAuthenticationCodeControls()
+{
+  m_BasicTotpTextLabel->Disable();
+  m_BasicTotpTextCtrl->Disable();
+  m_BasicTotpTextCtrl->ChangeValue(wxEmptyString);
+  m_BasicShowHideTotpCtrl->Disable();
+  m_BasicTotpButton->Disable();
+  m_BasicTotpButton->SetLabel(wxEmptyString);
 }
 
 // TOTP End
@@ -2328,7 +2381,7 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
   }
 
   if (IsItemNormalOrBase()) {
-    ApplyTwoFactorKey();
+    ApplyTwoFactorKey(m_Item);
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -2592,7 +2645,7 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
   {
     if (IsItemNormalOrBase()) {
       const StringX twofactorkey = tostringx(m_AdditionalTwoFactorKeyCtrl->GetValue());
-      if (twofactorkey != m_Item.GetTwoFactorKey()) {
+      if (twofactorkey != m_ItemTotp.GetTwoFactorKey()) {
         changes |= Changes::TwoFactorKey;
       }
     }
@@ -2765,7 +2818,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
   }
 
   if (changes & Changes::TwoFactorKey) {
-    ApplyTwoFactorKey();
+    ApplyTwoFactorKey(m_Item);
   }
 
   auto commands = MultiCommands::Create(&m_Core);
