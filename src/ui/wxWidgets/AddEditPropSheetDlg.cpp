@@ -1856,9 +1856,7 @@ void AddEditPropSheetDlg::OnShowHideTotpClick(wxCommandEvent& WXUNUSED(evt))
 
 void AddEditPropSheetDlg::OnCopyAuthCodeClick(wxCommandEvent &event)
 {
-  CItemData temp(m_Item);
-  ApplyTwoFactorKey(temp);
-  const_cast<PasswordSafeFrame*>(GetPwSafe())->CopyAuthCodeToClipboard(&temp);
+  const_cast<PasswordSafeFrame*>(GetPwSafe())->CopyAuthCodeToClipboard(&m_ItemTotp);
 }
 
 /*!
