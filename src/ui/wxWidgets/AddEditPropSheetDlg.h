@@ -432,6 +432,7 @@ private:
   StringX m_Password;
   bool m_IsPasswordHidden = true;
   bool m_IsTotpHidden = true;
+  bool m_UpdateTotpInClipboard = false;
 
   AliasChanges m_AliasChange = AliasChanges::NoChange;
 
