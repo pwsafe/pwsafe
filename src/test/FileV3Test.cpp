@@ -209,6 +209,7 @@ TEST_F(FileV3Test, AttachmentTest)
     EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
     EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
   }
+}
 
   TEST_F(FileV3Test, V4Extension)
 {
