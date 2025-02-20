@@ -1857,6 +1857,7 @@ void AddEditPropSheetDlg::OnShowHideTotpClick(wxCommandEvent& WXUNUSED(evt))
 void AddEditPropSheetDlg::OnCopyAuthCodeClick(wxCommandEvent &event)
 {
   const_cast<PasswordSafeFrame*>(GetPwSafe())->CopyAuthCodeToClipboard(&m_ItemTotp);
+  m_UpdateTotpInClipboard = true;
 }
 
 /*!
@@ -2271,19 +2272,35 @@ void AddEditPropSheetDlg::StopTotp()
   // The wxTimer destructor stops the timer if it is running.
   delete m_TotpTimer;
   m_TotpTimer = nullptr;
+  m_UpdateTotpInClipboard = false;
 }
 
 void AddEditPropSheetDlg::UpdateTotp()
 {
-  auto totpData = wxGetApp().GetPasswordSafeFrame()->GetTotpData(&m_ItemTotp);
+  static StringX s_LatestAuthCode(L"");
+  auto pwsafe = wxGetApp().GetPasswordSafeFrame();
+  auto totpData = pwsafe->GetTotpData(&m_ItemTotp);
+  // Update the authentication code in the text input field
+  // and the countdown on the 'Copy' authentication code button
   m_BasicTotpTextCtrl->ChangeValue(towxstring(totpData.first));
   m_BasicTotpButton->SetLabel(towxstring(totpData.second));
+  // Update the authentication code in the clipboard only
+  // if copying was triggered by the user and if it changed
+  if (m_UpdateTotpInClipboard && (s_LatestAuthCode != totpData.first)) {
+    s_LatestAuthCode = totpData.first;
+    pwsafe->CopyAuthCodeToClipboard(&m_ItemTotp);
+  }
 }
 
 // Remark: Validation check is already done in ValidateAdditionalData() called by OnOk()
 void AddEditPropSheetDlg::ApplyTwoFactorKey(CItemData& item)
 {
   const StringX twofactorkey = tostringx(m_AdditionalTwoFactorKeyCtrl->GetValue());
+  if (twofactorkey != item.GetTwoFactorKey()) {
+    // Stop updating the authentication code in the clipboard
+    // if the user has changed the two-factor key
+    m_UpdateTotpInClipboard = false;
+  }
   if (!twofactorkey.empty()) {
     item.SetTwoFactorKey(twofactorkey);
   }
