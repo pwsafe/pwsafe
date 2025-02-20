@@ -54,7 +54,7 @@ using pws_os::CUUID;
  *         V3.29Y          0x030C
  *         V3.30           0x030D
  *         V3.47           0x030E
- *         V3.68           0x030F
+ *         V3.68           0x030F (new fields and MIN_HASH_ITERATIONS updated)
 */
 
 const short VersionNum = 0x030F;
@@ -235,10 +235,8 @@ int PWSfileV3::CheckPasskey(const StringX &filename,
   { // block to shut up compiler warning w.r.t. goto
     const uint32 N = getInt32(Nb);
 
-    ASSERT(N >= MIN_HASH_ITERATIONS);
     if (N < MIN_HASH_ITERATIONS) {
-      retval = FAILURE;
-      goto err;
+      PWSTRACE(L"File's ITER value %d is below current minimum %d. It will be updated when file is saved", N, MIN_HASH_ITERATIONS);
     }
 
     if (nITER != nullptr)
@@ -331,7 +329,6 @@ void PWSfileV3::StretchKey(const unsigned char *salt, unsigned long saltLen,
   trashMemory(pstr, passLen);
   delete[] pstr;
 
-  ASSERT(N >= MIN_HASH_ITERATIONS); // minimal value we're willing to use
   for (unsigned int i = 0; i < N; i++) {
     SHA256 H;
     // The 2nd param in next line was sizeof(X) in Beta-1
@@ -1002,6 +999,8 @@ int PWSfileV3::ReadHeader()
     FILE *fd = pws_os::FOpen(filename.c_str(), _T("rb"));
 
     ASSERT(fd != nullptr);
+    if (fd == nullptr)
+      return false;
     char tag[sizeof(V3TAG)];
     auto nread = fread(tag, 1, sizeof(tag), fd);
     fclose(fd);

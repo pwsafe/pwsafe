@@ -13,6 +13,8 @@
 
 #include "core/PWSfileV3.h"
 #include "os/file.h"
+#include "core/PWScore.h"
+#include <cstdio>
 
 #include "gtest/gtest.h"
 
@@ -207,4 +209,22 @@ TEST_F(FileV3Test, AttachmentTest)
     EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
     EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
   }
+
+  TEST_F(FileV3Test, V4Extension)
+{
+  PWScore core;
+  stringT fname4(_T("V3test.psafe4"));
+
+  PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+  ASSERT_TRUE(pws_os::FileExists(fname));
+
+  // Change extension to psafe4
+  ASSERT_EQ(0, std::rename("V3test.psafe3", "V3test.psafe4"));
+
+  EXPECT_EQ(PWSfile::WRONG_PASSWORD, core.ReadFile(fname4.c_str(), L"WrongPassword", true));
+  EXPECT_EQ(PWSfile::SUCCESS, core.ReadFile(fname4.c_str(), passphrase, true));
+
+  ASSERT_EQ(0, std::rename("V3test.psafe4", "V3test.psafe3"));
 }

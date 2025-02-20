@@ -26,6 +26,7 @@ public:
   static Clipboard *GetInstance();
   static void DeleteInstance();
   bool SetData(const StringX &data);
+  bool HasData(const StringX &data) const;
   bool ClearCBData();
 #if defined(__X__) || defined(__WXGTK__)
   void UsePrimarySelection(bool primary, bool clearOnChange=true);

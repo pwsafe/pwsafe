@@ -156,7 +156,7 @@ bool MultiCheckboxValidator::Validate(wxWindow* parent)
   }
 }
 
-void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxTextCtrl* before, const int style)
+void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxControl* before, const int style)
 {
   ASSERT(textCtrl);
 #if defined(__WXGTK__)
@@ -164,6 +164,7 @@ void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxStrin
   // we do not care about flags already set for the control and therefore do not preserve them.
   textCtrl->SetWindowStyle(style);
   textCtrl->ChangeValue(text);
+  textCtrl->SetModified(false);
 #else
   wxWindow *parent = textCtrl->GetParent();
   wxWindowID id = textCtrl->GetId();
@@ -177,7 +178,7 @@ void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxStrin
                            style);
   if (!text.IsEmpty()) {
     textCtrl->ChangeValue(text);
-    textCtrl->SetModified(true);
+    textCtrl->SetModified(false);
   }
   if (validator != nullptr) {
     textCtrl->SetValidator(*validator);
@@ -365,7 +366,7 @@ void wxUtilities::DisableIfUnsupported(enum Feature feature, wxWindow* window)
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable()
 {
-#if defined(__WXGTK__) && !defined(__OpenBSD__)
+#if defined(__WXGTK__) && !defined(__OpenBSD__) && !defined(__FreeBSD__)
   const wxVersionInfo verInfo = wxGetLibraryVersionInfo();
   int major = verInfo.GetMajor();
   int minor = verInfo.GetMinor();

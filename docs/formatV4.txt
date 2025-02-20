@@ -87,15 +87,14 @@ time.
 2.2.2 ITER is the number of iterations on the hash function to
 calculate Pi', stored as a 32 bit little-endian value. This value is
 stored here in order to future-proof the file format against increases
-in processing power.
+in processing power. The current minimum is 262,144.
 
 2.2.3 Pi' is the "stretched key" for Key Block i, generated from the
 user's passphrase (UTF-8 encoded) and the SALT, as defined by the
 hash-function-based key stretching algorithm in [PBKDF2], with SHA-256
-[SHA256] as the hash function, and ITER iterations (at least
-2048). The intention is that Key Block i will be generated with user
-i's passphrase. All keyblocks protect the same K and L values (see
-below).
+[SHA256] as the hash function, and ITER iterations. The intention is 
+that Key Block i will be generated with user i's passphrase.
+All keyblocks protect the same K and L values (see below).
 
 2.2.4 KW is the Key Wrap algorithm defined in [RFC3394], using the
 user-specified encryption algorithm (TwoFish, AES,...).
