@@ -211,7 +211,7 @@ TEST_F(FileV3Test, AttachmentTest)
   }
 }
 
-  TEST_F(FileV3Test, V4Extension)
+TEST_F(FileV3Test, V4Extension)
 {
   PWScore core;
   stringT fname4(_T("V3test.psafe4"));
