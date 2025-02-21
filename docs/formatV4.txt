@@ -413,6 +413,11 @@ TOTP Config                 0x21        1 byte        N              [29]
 TOTP Length                 0x22        1 byte        N              [29]
 TOTP Time Step              0x23        1 byte        N              [29]
 TOTP Start Time             0x24        time_t        N              [29]
+*RESERVED*                  0x25        Text          Y              [30]
+*RESERVED*                  0x26        Text          Y              [30]
+*RESERVED*                  0x27        Text          Y              [30]
+*RESERVED*                  0x28        time_t        Y              [30]
+*RESERVED*                  0x29        Binary        Y              [30]
 BaseUUID                    0x41        UUID          Y              [25]
 AliasUUID                   0x42        UUID          Y
 ShortcutUUID                0x43        UUID          Y
@@ -608,6 +613,9 @@ These TOTP parameters fields have the following format:
                       start counting time steps. If not specified, the
                       default is 0. The format is that of a 40 bit (5 byte)
                       Password Safe time_t value as specified in Section 3.1.3.
+
+[30] This value is used in V3 of the PasswordSafe format. Reserving it here to
+maintain consistency with values that follow.
 
 3.4 Attachments
 
