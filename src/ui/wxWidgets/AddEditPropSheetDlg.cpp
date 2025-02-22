@@ -380,6 +380,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicSizer->Add(BasicPasswordBitmap, wxGBPosition(/*row:*/ 11, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxBOTTOM, 7);
 
   m_BasicShowHideTotpCtrl = new wxBitmapButton(panel, ID_BUTTON_SHOWHIDE_TOTP, wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
+  m_BasicShowHideTotpCtrl->SetToolTip(_("Show authentication code"));
   m_BasicSizer->Add(m_BasicShowHideTotpCtrl, wxGBPosition(/*row:*/ 11, /*column:*/ 4), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   m_BasicTotpButton = new wxButton( panel, ID_BUTTON_COPY_TOTP, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
@@ -478,6 +479,7 @@ wxPanel* AddEditPropSheetDlg::CreateAdditionalPanel()
   m_AdditionalHBoxSizerTwoFactorKey->Add(m_AdditionalTwoFactorKeyCtrl, 1, wxALIGN_LEFT|wxEXPAND|wxRIGHT, 5);
 
   m_AdditionalShowHideCtrl = new wxBitmapButton(panel, ID_BUTTON_SHOWHIDE_2FK, wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
+  m_AdditionalShowHideCtrl->SetToolTip(_("Show authentication secret"));
   m_AdditionalHBoxSizerTwoFactorKey->Add(m_AdditionalShowHideCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER|wxRIGHT, 5);
 
   if (m_Core.IsReadOnly() || !IsItemNormalOrBase()) {
