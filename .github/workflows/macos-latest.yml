@@ -54,7 +54,7 @@ jobs:
       
     - name: Install dependencies for creating dmg
       # gettext is already installed in the runner image
-      run: brew install create-dmg
+      run: brew install create-dmg googletest
 
     - name: Install tools for Yubikey build
       run: brew install autoconf automake libtool
@@ -118,6 +118,10 @@ jobs:
     - name: Build pwsafe
       working-directory: ${{ github.workspace }}
       run: xcodebuild -project Xcode/pwsafe-xcode6.xcodeproj -scheme pwsafe -configuration $XCODE_CONFIG
+
+    - name: Build and run coretest
+      working-directory: src/test
+      run: make -f Makefile.macos
 
     - name: Install language files and create dmg
       working-directory: install/macosx
