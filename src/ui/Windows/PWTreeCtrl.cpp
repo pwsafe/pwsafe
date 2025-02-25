@@ -2296,8 +2296,8 @@ void CPWTreeCtrlX::SetFilterState(bool bState)
 {
   m_bTreeFilterActive = bState;
 
-  // Red if filter active, black if not
-  SetTextColor(m_bTreeFilterActive ? RGB(168, 0, 0) : RGB(0, 0, 0));
+  // Red if filter active, default if not
+  SetTextColor(m_bTreeFilterActive ? RGB(168, 0, 0) : ::GetSysColor(COLOR_WINDOWTEXT));
 }
 
 BOOL CPWTreeCtrlX::OnEraseBkgnd(CDC* pDC)

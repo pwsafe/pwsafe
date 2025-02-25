@@ -334,7 +334,7 @@ void CPasswordSubsetDlg::OnCopy()
   m_csWarningMsg.LoadString(IDS_PASSWORDCOPIED);
 
   m_stcWarningMsg.SetWindowText(m_csWarningMsg);
-  m_stcWarningMsg.SetColour(RGB(0, 0, 0));
+  m_stcWarningMsg.SetColour(::GetSysColor(COLOR_WINDOWTEXT));
   m_stcWarningMsg.Invalidate();
 }
 
