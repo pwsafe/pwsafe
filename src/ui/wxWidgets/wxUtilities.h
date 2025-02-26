@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -199,7 +199,7 @@ inline const wxChar* ToStr(bool b) {
  * @note See <a href="https://docs.wxwidgets.org/stable/classwx_text_ctrl.html">Styles</a> section of wxTextCtrl
  *       documentation about restrictions.
  */
-void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxTextCtrl* before, const int style);
+void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxControl* before, const int style);
 
 /**
  * Check whether the password passes the strength rules, prompt the user if it does not.
@@ -430,23 +430,30 @@ public:
 typedef wxTextDataObject wxTextDataObjectEx;
 #endif // __WXGTK20__
 
-bool IsCurrentDesktopKde();
 
 namespace wxUtilities
 {
   enum Feature { Autotype };
+  enum WindowSystem {
+    Undefined,    // Only used to identify the first pass through WhatWindowSystem()
+    Unknown,
+    X11,
+    Wayland,
+    macOS,
+    Windows
+  };
 
   /**
-   * @brief Checks environment variable 'XDG_SESSION_TYPE' for display manager 'x11'.
+   * @brief Identifies the type of window manager (X11, Wayland, etc.).
    *
-   * @return whether the environment variable is set to 'x11'.
+   * @return Window system type or Unknown
    */
-  bool IsDisplayManagerX11();
+  enum WindowSystem WhatWindowSystem();
 
   /**
    * @brief Checks if virtual keyboard is supported.
    * 
-   * @return IsDisplayManagerX11() on Linux, true on Mac, and false on Windows.
+   * @return True on X11, true on Mac, and false on Windows.
    */
   bool IsVirtualKeyboardSupported();
 

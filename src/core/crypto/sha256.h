@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -14,6 +14,9 @@
 
 #include "../../os/typedefs.h"
 #include "../PwsPlatform.h"
+#ifdef __APPLE__
+#include <CommonCrypto/CommonDigest.h>
+#endif
 
 class SHA256
 {
@@ -26,10 +29,14 @@ public:
   void Final(unsigned char digest[HASHLEN]);
 
 private:
+#ifdef __APPLE__
+  CC_SHA256_CTX ctx;
+#else
   ulong64 length;
   size_t curlen;
   ulong32 state[8];
   unsigned char buf[BLOCKSIZE];
+#endif
 };
 
 #endif /* __SHA256_H */

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -153,7 +153,7 @@ BOOL DboxMain::OpenOnInit()
       UpdateSystemTray(UNLOCKED);
       break;
     case PWScore::CANT_OPEN_FILE:
-      if (!m_core.IsDbOpen()) {
+      if (!m_core.IsDbFileSet()) {
         // Empty filename. Assume they are starting Password Safe
         // for the first time and don't confuse them.
         // fall through to New()
@@ -395,7 +395,7 @@ int DboxMain::NewFile(StringX &newfilename)
   CString cf(MAKEINTRESOURCE(IDS_DEFDBNAME)); // reasonable default for first time user
   std::wstring newFileName = PWSUtil::GetNewFileName(LPCWSTR(cf), DEFAULT_SUFFIX);
   std::wstring dir;
-  if (!m_core.IsDbOpen())
+  if (!m_core.IsDbFileSet())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -642,7 +642,7 @@ int DboxMain::Open(const UINT uiTitle)
   StringX sx_Filename;
   CString cs_text(MAKEINTRESOURCE(uiTitle));
   std::wstring DBpath, cdrive, cdir, dontCare;
-  if (!m_core.IsDbOpen()) {
+  if (!m_core.IsDbFileSet()) {
     // Can't use same directory as currently open DB as there isn't one.
     // Attempt to get path from last opened database from MRU
     // If valid and accessible, use it, if not valid or not accessible use
@@ -1442,7 +1442,7 @@ int DboxMain::SaveAs()
                 current_version == PWSfile::V40 ? V4_SUFFIX : V3_SUFFIX);
 
   std::wstring dir;
-  if (!m_core.IsDbOpen())
+  if (!m_core.IsDbFileSet())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -1458,7 +1458,7 @@ int DboxMain::SaveAs()
                         OFN_LONGNAMES | OFN_OVERWRITEPROMPT,
                         CString(MAKEINTRESOURCE(current_version == PWSfile::V40 ? IDS_FDF_V4_ALL : IDS_FDF_V3_ALL)),
                      this);
-    if (!m_core.IsDbOpen())
+    if (!m_core.IsDbFileSet())
       cs_text.LoadString(IDS_NEWNAME1);
     else
       cs_text.LoadString(IDS_NEWNAME2);
@@ -1627,7 +1627,7 @@ void DboxMain::OnExportVx(UINT nID)
   cs_text.LoadString(IDS_NAMEEXPORTFILE);
 
   std::wstring dir;
-  if (!m_core.IsDbOpen())
+  if (!m_core.IsDbFileSet())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -2330,7 +2330,7 @@ void DboxMain::OnImportText()
   CString cs_text;
 
   std::wstring dir;
-  if (!m_core.IsDbOpen())
+  if (!m_core.IsDbFileSet())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -2484,7 +2484,7 @@ void DboxMain::OnImportKeePassV1CSV()
   CString cs_title, cs_msg;
   cs_title.LoadString(IDS_PICKKEEPASSFILE);
   std::wstring dir;
-  if (!m_core.IsDbOpen())
+  if (!m_core.IsDbFileSet())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -2591,7 +2591,7 @@ void DboxMain::OnImportKeePassV1TXT()
   CString cs_title, cs_msg;
   cs_title.LoadString(IDS_PICKKEEPASSFILE);
   std::wstring dir;
-  if (!m_core.IsDbOpen())
+  if (!m_core.IsDbFileSet())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -2727,7 +2727,7 @@ void DboxMain::OnImportXML()
 
   std::wstring ImportedPrefix(dlg.m_groupName);
   std::wstring dir;
-  if (!m_core.IsDbOpen())
+  if (!m_core.IsDbFileSet())
     dir = PWSdirs::GetSafeDir();
   else {
     std::wstring cdrive, cdir, dontCare;
@@ -3094,7 +3094,7 @@ void DboxMain::OnChangeMode()
 
 void DboxMain::OnCompare()
 {
-  if (!m_core.IsDbOpen() || m_core.GetNumEntries() == 0) {
+  if (!m_core.IsDbFileSet() || m_core.GetNumEntries() == 0) {
     CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_NOCOMPAREFILE, MB_OK | MB_ICONWARNING);
     return;
@@ -3142,7 +3142,7 @@ void DboxMain::OnMerge()
 void DboxMain::OnSynchronize()
 {
   // disable in read-only mode or empty
-  if (m_core.IsReadOnly() || !m_core.IsDbOpen() || m_core.GetNumEntries() == 0)
+  if (m_core.IsReadOnly() || !m_core.IsDbFileSet() || m_core.GetNumEntries() == 0)
     return;
 
   CWZPropertySheet wizard(ID_MENUITEM_SYNCHRONIZE,
@@ -4037,7 +4037,7 @@ void DboxMain::SavePreferencesOnExit()
     // Naughty Windows saves information in the registry for every Open and Save!
     RegistryAnonymity();
   } else
-    if (m_core.IsDbOpen()) {
+    if (m_core.IsDbFileSet()) {
       std::wstring curFile = m_core.GetCurFile().c_str();
       WinUtil::RelativizePath(curFile);
       prefs->SetPref(PWSprefs::CurrentFile, curFile.c_str());

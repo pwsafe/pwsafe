@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -735,7 +735,7 @@ int PWSafeApp::OnExit()
   m_idleTimer->Stop();
   recentDatabases().Save();
   PWSprefs *prefs = PWSprefs::GetInstance();
-  if (m_core.IsDbOpen()) {
+  if (m_core.IsDbFileSet()) {
     prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
     // Don't leave dangling locks!
     m_core.SafeUnlockCurFile();

@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -145,7 +145,7 @@ private:
                         const bool bIsEdit, const CItemData::EntryType InputType, 
                         pws_os::CUUID &base_uuid, int &ibasedata, bool &b_msg_issued);
   void SetGroupComboBoxWidth();
-  void ShowHideBaseInfo(const CItemData::EntryType &entrytype, CSecString &csBase);
+  void ShowHideBaseInfo(const CItemData::EntryType &entrytype, const CSecString &csBase);
   void SetupAuthenticationCodeUiElements();
   void StopAuthenticationCodeUi();
   void UpdateAuthCode();

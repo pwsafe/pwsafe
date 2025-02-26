@@ -82,6 +82,11 @@
 #define IDSC_FLDNMTOTPLENGTH            3082
 #define IDSC_FLDNMTOTPTIMESTEP          3083
 #define IDSC_FLDNMTOTPSTARTTIME         3084
+#define IDSC_FLDNMDATAATTTITLE          3085
+#define IDSC_FLDNMDATAATTMEDIATYPE      3086
+#define IDSC_FLDNMDATAATTFILENAME       3087
+#define IDSC_FLDNMDATAATTMTIME          3088
+#define IDSC_FLDNMDATAATTCONTENT        3089
 
 #define IDSC_CONFIG_NONE                3230
 #define IDSC_CONFIG_REGISTRY            3231
@@ -371,3 +376,18 @@
 
 #define IDSC_RELATIVE_SMALL             5968
 #define IDSC_AND_SMALL                  5969
+
+// Alias Errors
+#define IDSC_ALIASNOTFOUNDA             5455
+#define IDSC_ALIASNOTFOUND0A            5456
+#define IDSC_ALIASNOTFOUND0B            5457
+#define IDSC_ALIASNOTFOUND1A            5458
+#define IDSC_ALIASNOTFOUND1B            5459
+#define IDSC_ALIASNOTFOUND2A            5460
+#define IDSC_ALIASNOTFOUND2B            5461
+#define IDSC_ALIASNOTFOUND2C            5462
+#define IDSC_ALIASNOTFOUNDZ             5463
+#define IDSC_BASEISALIAS                5465
+#define IDSC_ALIASCANTREFERTOITSELF     5466
+#define IDSC_BASEHASNOTITLE             5467
+#define IDSC_ABASEINVALID               5499

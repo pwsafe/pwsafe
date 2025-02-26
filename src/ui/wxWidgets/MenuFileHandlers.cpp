@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -318,7 +318,7 @@ int PasswordSafeFrame::Save(SaveType savetype /* = SaveType::INVALID*/)
     m_tree->SaveGroupDisplayState();
   }
 
-  if (!m_core.IsDbOpen())
+  if (!m_core.IsDbFileSet())
     return SaveAs();
 
   switch (m_core.GetReadFileVersion()) {
@@ -396,7 +396,7 @@ int PasswordSafeFrame::Save(SaveType savetype /* = SaveType::INVALID*/)
 
   if (rc != PWScore::SUCCESS) { // Save failed!
     // Restore backup, if we have one
-    if (!bu_fname.empty() && m_core.IsDbOpen())
+    if (!bu_fname.empty() && m_core.IsDbFileSet())
       pws_os::RenameFile(bu_fname, m_core.GetCurFile().c_str());
     // Show user that we have a problem
     DisplayFileWriteError(rc, m_core.GetCurFile());
@@ -441,7 +441,7 @@ int PasswordSafeFrame::SaveAs()
   }
   wxString v3FileName = towxstring(PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX));
 
-  wxString title = (!m_core.IsDbOpen()? _("Choose a name for the current (Untitled) database:") :
+  wxString title = (!m_core.IsDbFileSet()? _("Choose a name for the current (Untitled) database:") :
                                     _("Choose a new name for the current database:"));
   wxFileName filename(v3FileName);
   wxString dir = filename.GetPath();
@@ -566,7 +566,7 @@ int PasswordSafeFrame::SaveIfChanged()
   if ((m_bTSUpdated || m_core.HasDBChanged()) &&
       m_core.GetNumEntries() > 0) {
     wxString prompt(_("Do you want to save changes to the password database:"));
-    if (m_core.IsDbOpen()) {
+    if (m_core.IsDbFileSet()) {
       prompt += wxT("\n");
       prompt += m_core.GetCurFile().c_str();
     }
@@ -1312,7 +1312,7 @@ void PasswordSafeFrame::OnSynchronize(wxCommandEvent& evt)
 void PasswordSafeFrame::DoSynchronize(wxString filename)
 {
   // disable in read-only mode or empty
-  wxCHECK_RET(!m_core.IsReadOnly() && m_core.IsDbOpen() && m_core.GetNumEntries() != 0,
+  wxCHECK_RET(!m_core.IsReadOnly() && m_core.IsDbFileSet() && m_core.GetNumEntries() != 0,
                 wxT("Synchronize menu enabled for empty or read-only database!"));
 
   SyncWizard wiz(this, &m_core, filename);

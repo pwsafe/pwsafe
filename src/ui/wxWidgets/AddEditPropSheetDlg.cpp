@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -56,6 +56,9 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
   EVT_TEXT(         ID_TEXTCTRL_PASSWORD,    AddEditPropSheetDlg::OnPasswordChanged         )
   EVT_TEXT(         ID_TEXTCTRL_PASSWORD2,   AddEditPropSheetDlg::OnPasswordChanged         )
   EVT_BUTTON(       ID_BUTTON_SHOWHIDE,      AddEditPropSheetDlg::OnShowHideClick           )
+  EVT_BUTTON(       ID_BUTTON_SHOWHIDE_2FK,  AddEditPropSheetDlg::OnShowHide2FKClick        )
+  EVT_BUTTON(       ID_BUTTON_SHOWHIDE_TOTP, AddEditPropSheetDlg::OnShowHideTotpClick       )
+  EVT_BUTTON(       ID_BUTTON_COPY_TOTP,     AddEditPropSheetDlg::OnCopyAuthCodeClick       )
   EVT_BUTTON(       ID_BUTTON_GENERATE,      AddEditPropSheetDlg::OnGenerateButtonClick     )
   EVT_BUTTON(       ID_BUTTON_ALIAS,         AddEditPropSheetDlg::OnAliasButtonClick        )
   EVT_BUTTON(       ID_GO_BTN,               AddEditPropSheetDlg::OnGoButtonClick           )
@@ -83,6 +86,8 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
   EVT_SPINCTRL(     ID_SPINCTRL8,            AddEditPropSheetDlg::OnAtLeastPasswordChars    )
 
   EVT_BUTTON(       ID_BUTTON_CLEAR_HIST,    AddEditPropSheetDlg::OnClearPasswordHistory    )
+
+  EVT_TIMER(        ID_TIMER_TOTP_COUNTDOWN, AddEditPropSheetDlg::OnTotpCountdownTimer      )
 
   EVT_UPDATE_UI(    ID_COMBOBOX_GROUP,       AddEditPropSheetDlg::OnUpdateUI                )
   EVT_UPDATE_UI(    ID_BUTTON_SHOWHIDE,      AddEditPropSheetDlg::OnUpdateUI                )
@@ -135,7 +140,8 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
   else {
     m_Item.CreateUUID(); // We're adding a new entry
   }
-  
+
+  m_ItemTotp = m_Item; // The copy is used to show the TOTP on the 'Basic' tab
   m_IsNotesHidden = !PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault);
 
   wxString dlgTitle;
@@ -177,12 +183,28 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
     InitAttachmentTab();
   }
 
+  // If a new item is created and therefore no TOTP configuration exists yet,
+  // it is not necessary to start the TOTP update on the user interface.
+  if (m_Type != SheetType::ADD) {
+    StartTotp();
+  }
+
+  // If the user has added a two factor key in the 'Additional' tab
+  // the TOTP update on the user interface is started by the tab change.
+  auto noteBook = (AddEditPropSheetDlg*)wxPropertySheetDialog::GetBookCtrl(); 
+  Bind(wxEVT_NOTEBOOK_PAGE_CHANGING, &AddEditPropSheetDlg::OnTabChanging, this, noteBook->GetId());
+
   // Set the initial focus to the Title control (Otherwise it defaults to the Group control)
   m_BasicTitleTextCtrl->SetFocus();
 
   bitmapCheckmarkPlaceholder = wxUtilities::GetBitmapResource(wxT("graphics/checkmark_placeholder.xpm"));
   bitmapCheckmarkGreen = wxUtilities::GetBitmapResource(wxT("graphics/checkmark_green.xpm"));
   bitmapCheckmarkGray = wxUtilities::GetBitmapResource(wxT("graphics/checkmark_gray.xpm"));
+}
+
+AddEditPropSheetDlg::~AddEditPropSheetDlg()
+{
+  StopTotp();
 }
 
 AddEditPropSheetDlg* AddEditPropSheetDlg::Create(wxWindow *parent, PWScore &core,
@@ -313,7 +335,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   auto *itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer5->Add(m_BasicPasswordTextLabel, 0, wxALIGN_CENTER_VERTICAL, 0);
   itemBoxSizer5->Add(itemStaticText11, 0, wxALIGN_CENTER_VERTICAL, 0);
-  m_BasicSizer->Add(itemBoxSizer5, wxGBPosition(/*row:*/ 6, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicSizer->Add(itemBoxSizer5, wxGBPosition(/*row:*/ 6, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicPasswordTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_PASSWORD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(m_BasicPasswordTextCtrl, wxGBPosition(/*row:*/ 7, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
@@ -333,7 +355,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   auto *itemBoxSizer6 = new wxBoxSizer(wxHORIZONTAL);
   itemBoxSizer6->Add(m_BasicPasswordConfirmationTextLabel, 0, wxALIGN_CENTER_VERTICAL, 0);
   itemBoxSizer6->Add(itemStaticText13, 0, wxALIGN_CENTER_VERTICAL, 0);
-  m_BasicSizer->Add(itemBoxSizer6, wxGBPosition(/*row:*/ 8, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicSizer->Add(itemBoxSizer6, wxGBPosition(/*row:*/ 8, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicPasswordConfirmationTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_PASSWORD2, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD );
   m_BasicSizer->Add(m_BasicPasswordConfirmationTextCtrl, wxGBPosition(/*row:*/ 9, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
@@ -347,30 +369,51 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
     // Per default do not show this button
     itemButton22->Hide();
   }
-  
+
+  m_BasicTotpTextLabel = new wxStaticText( panel, wxID_STATIC, _("Authentication Code"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_BasicSizer->Add(m_BasicTotpTextLabel, wxGBPosition(/*row:*/ 10, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+
+  m_BasicTotpTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_TOTP, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD|wxTE_READONLY );
+  m_BasicSizer->Add(m_BasicTotpTextCtrl, wxGBPosition(/*row:*/ 11, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
+
+  auto BasicPasswordBitmap = new wxStaticBitmap(panel, wxID_ANY, bitmapCheckmarkPlaceholder, wxDefaultPosition, wxDefaultSize, 0);
+  m_BasicSizer->Add(BasicPasswordBitmap, wxGBPosition(/*row:*/ 11, /*column:*/ 3), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxALIGN_LEFT|wxBOTTOM, 7);
+
+  m_BasicShowHideTotpCtrl = new wxBitmapButton(panel, ID_BUTTON_SHOWHIDE_TOTP, wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
+  m_BasicShowHideTotpCtrl->SetToolTip(_("Show authentication code"));
+  m_BasicSizer->Add(m_BasicShowHideTotpCtrl, wxGBPosition(/*row:*/ 11, /*column:*/ 4), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
+
+  m_BasicTotpButton = new wxButton( panel, ID_BUTTON_COPY_TOTP, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
+  m_BasicTotpButton->SetToolTip(_("Copy authentication code to clipboard"));
+  m_BasicSizer->Add(m_BasicTotpButton, wxGBPosition(/*row:*/ 11, /*column:*/ 5), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
+
+  if (!HasItemTwoFactorKey()) {
+    DisableAuthenticationCodeControls();
+  }
+
   auto *itemStaticText25 = new wxStaticText( panel, wxID_STATIC, _("URL"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText25, wxGBPosition(/*row:*/ 10, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicSizer->Add(itemStaticText25, wxGBPosition(/*row:*/ 12, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicUrlTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_URL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicUrlTextCtrl, wxGBPosition(/*row:*/ 11, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
+  m_BasicSizer->Add(m_BasicUrlTextCtrl, wxGBPosition(/*row:*/ 13, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   auto *itemButton29 = new wxButton( panel, ID_GO_BTN, _("Go"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemButton29, wxGBPosition(/*row:*/ 11, /*column:*/ 5), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
+  m_BasicSizer->Add(itemButton29, wxGBPosition(/*row:*/ 13, /*column:*/ 5), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
   auto *itemStaticText30 = new wxStaticText( panel, wxID_STATIC, _("Email"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText30, wxGBPosition(/*row:*/ 12, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicSizer->Add(itemStaticText30, wxGBPosition(/*row:*/ 14, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicEmailTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_EMAIL, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(m_BasicEmailTextCtrl, wxGBPosition(/*row:*/ 13, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
+  m_BasicSizer->Add(m_BasicEmailTextCtrl, wxGBPosition(/*row:*/ 15, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   auto *itemButton34 = new wxButton( panel, ID_SEND_BTN, _("Send"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemButton34, wxGBPosition(/*row:*/ 13, /*column:*/ 5), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
+  m_BasicSizer->Add(itemButton34, wxGBPosition(/*row:*/ 15, /*column:*/ 5), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
   auto *itemStaticText36 = new wxStaticText( panel, wxID_STATIC, _("Notes"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText36, wxGBPosition(/*row:*/ 14, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 6), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  m_BasicSizer->Add(itemStaticText36, wxGBPosition(/*row:*/ 16, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 6), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
 
   m_BasicNotesTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_NOTES, wxEmptyString, wxDefaultPosition, wxSize(-1, 100), wxTE_MULTILINE );
-  m_BasicSizer->Add(m_BasicNotesTextCtrl, wxGBPosition(/*row:*/ 15, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 6), wxEXPAND, 0);
+  m_BasicSizer->Add(m_BasicNotesTextCtrl, wxGBPosition(/*row:*/ 17, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 6), wxEXPAND, 0);
 
   m_BasicSizer->AddGrowableCol(2);  // Growable text entry fields
   m_BasicSizer->AddGrowableRow(15); // Growable notes field
@@ -422,6 +465,28 @@ wxPanel* AddEditPropSheetDlg::CreateAdditionalPanel()
   setupDCAStrings(sdcaComboBoxStrings);
   m_AdditionalShiftDoubleClickActionCtrl = new wxComboBox(panel, ID_COMBOBOX_SDBC_ACTION, wxEmptyString, wxDefaultPosition, wxDefaultSize, sdcaComboBoxStrings, wxCB_READONLY);
   vBoxSizer->Add(m_AdditionalShiftDoubleClickActionCtrl, 0, wxALIGN_LEFT|wxEXPAND|wxBOTTOM, 12);
+
+  auto *vBoxSizerTwoFactoryKey = new wxBoxSizer(wxVERTICAL);
+  vBoxSizer->Add(vBoxSizerTwoFactoryKey, 0, wxALIGN_LEFT|wxEXPAND|wxBOTTOM, 12);
+
+  auto *staticTextTwoFactorKey = new wxStaticText(panel, wxID_STATIC, _("Authentication Secret"), wxDefaultPosition, wxDefaultSize, 0);
+  vBoxSizerTwoFactoryKey->Add(staticTextTwoFactorKey, 0, wxALIGN_LEFT|wxBOTTOM, 5);
+
+  m_AdditionalHBoxSizerTwoFactorKey = new wxBoxSizer(wxHORIZONTAL);
+  vBoxSizerTwoFactoryKey->Add(m_AdditionalHBoxSizerTwoFactorKey, 1, wxALIGN_LEFT|wxEXPAND|wxBOTTOM, 12);
+
+  m_AdditionalTwoFactorKeyCtrl = new wxTextCtrl(panel, ID_TEXTCTRL_2FK, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD);
+  m_AdditionalHBoxSizerTwoFactorKey->Add(m_AdditionalTwoFactorKeyCtrl, 1, wxALIGN_LEFT|wxEXPAND|wxRIGHT, 5);
+
+  m_AdditionalShowHideCtrl = new wxBitmapButton(panel, ID_BUTTON_SHOWHIDE_2FK, wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
+  m_AdditionalShowHideCtrl->SetToolTip(_("Show authentication secret"));
+  m_AdditionalHBoxSizerTwoFactorKey->Add(m_AdditionalShowHideCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER|wxRIGHT, 5);
+
+  if (m_Core.IsReadOnly() || !IsItemNormalOrBase()) {
+    staticTextTwoFactorKey->Disable();
+    m_AdditionalTwoFactorKeyCtrl->Disable();
+    m_AdditionalShowHideCtrl->Disable();
+  }
 
   auto *itemStaticBoxSizer49Static = new wxStaticBox(panel, wxID_ANY, _("Password History"));
   auto *itemStaticBoxSizer49 = new wxStaticBoxSizer(itemStaticBoxSizer49Static, wxVERTICAL);
@@ -1207,9 +1272,13 @@ void AddEditPropSheetDlg::ApplyFontPreferences()
   ApplyFontPreference(m_BasicUsernameTextCtrl, PWSprefs::StringPrefs::AddEditFont);               // Username
   ApplyFontPreference(m_BasicPasswordTextCtrl, PWSprefs::StringPrefs::PasswordFont);              // Password
   ApplyFontPreference(m_BasicPasswordConfirmationTextCtrl, PWSprefs::StringPrefs::PasswordFont);  // Confirmation Password
+  ApplyFontPreference(m_BasicTotpTextCtrl, PWSprefs::StringPrefs::PasswordFont);                  // TOTP
   ApplyFontPreference(m_BasicUrlTextCtrl, PWSprefs::StringPrefs::AddEditFont);                    // URL
   ApplyFontPreference(m_BasicEmailTextCtrl, PWSprefs::StringPrefs::AddEditFont);                  // Email
   ApplyFontPreference(m_BasicNotesTextCtrl, PWSprefs::StringPrefs::NotesFont);                    // Notes
+
+  // Tab: "Additional"
+  ApplyFontPreference(m_AdditionalTwoFactorKeyCtrl, PWSprefs::StringPrefs::AddEditFont);          // Two Factor Key
 
   // Tab: "Password Policy"
   ApplyFontPreference(m_PasswordPolicyOwnSymbolsTextCtrl, PWSprefs::StringPrefs::PasswordFont);   // User defined symbols
@@ -1546,6 +1615,10 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
   m_Email = m_Item.GetEmail().c_str();
   m_Password = m_Item.GetPassword();
 
+  if (IsItemNormalOrBase() && HasItemTwoFactorKey()) {
+    auto twoFactorKey = m_Item.GetTwoFactorKey();
+    m_AdditionalTwoFactorKeyCtrl->ChangeValue(twoFactorKey.c_str());
+  }
   if (m_Item.IsAlias()) {
     // Update password to alias form
     // Show text stating that it is an alias
@@ -1754,6 +1827,42 @@ void AddEditPropSheetDlg::OnShowHideClick(wxCommandEvent& WXUNUSED(evt))
 }
 
 /*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_SHOWHIDE_2FK
+ */
+
+void AddEditPropSheetDlg::OnShowHide2FKClick(wxCommandEvent& WXUNUSED(evt))
+{
+  if (m_IsTwoFactorKeyHidden) {
+    ShowTwoFactorKey();
+  } else {
+    HideTwoFactorKey();
+  }
+}
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_SHOWHIDE_TOTP
+ */
+
+void AddEditPropSheetDlg::OnShowHideTotpClick(wxCommandEvent& WXUNUSED(evt))
+{
+  if (m_IsTotpHidden) {
+    ShowTotp();
+  } else {
+    HideTotp();
+  }
+}
+
+/*!
+ * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_COPY_TOTP
+ */
+
+void AddEditPropSheetDlg::OnCopyAuthCodeClick(wxCommandEvent &event)
+{
+  const_cast<PasswordSafeFrame*>(GetPwSafe())->CopyAuthCodeToClipboard(&m_ItemTotp);
+  m_UpdateTotpInClipboard = true;
+}
+
+/*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_ALIAS
  */
 
@@ -1793,12 +1902,13 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
       if(bChangeToBaseEntry) {
         wxMessageBox(_("Shortcut or Alias selected, use Base entry instead"), _("Warning"), wxOK | wxICON_EXCLAMATION);
       }
-      if(m_Item.IsAlias() && (pbci == nullptr)) {
+      if(m_Item.IsAlias() && (pbci == nullptr)) { // user chose to change alias to normal entry
         m_Item.SetEntryType(CItemData::ET_NORMAL);
         m_Password = m_Item.GetPassword();
+        m_AliasChange = Alias2Normal;
         RemoveAlias();
       }
-      else if(m_Item.IsAlias() && (m_Core.GetBaseEntry(&m_Item) != pbci)) {
+      else if(m_Item.IsAlias() && (m_Core.GetBaseEntry(&m_Item) != pbci)) { // user changed alias to another base entry
         const pws_os::CUUID baseUUID = pbci->GetUUID();
         m_Item.SetBaseUUID(baseUUID);
         m_Password = L"[" +
@@ -1806,10 +1916,11 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
                     pbci->GetTitle() + L":" +
                     pbci->GetUser()  + L"]";
         m_BasicPasswordTextCtrl->SetValue(m_Password.c_str());
+        m_AliasChange = AliasRebased;
         if(! m_IsPasswordHidden)
           m_BasicPasswordConfirmationTextCtrl->SetValue(pbci->GetPassword().c_str());
       }
-      else if(! m_Item.IsAlias() && pbci) {
+      else if(! m_Item.IsAlias() && pbci) { // user chose to change normal entry to alias
         const pws_os::CUUID baseUUID = pbci->GetUUID();
         m_Item.SetAlias();
         m_Item.SetBaseUUID(baseUUID);
@@ -1817,10 +1928,51 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
                     pbci->GetGroup() + L":" +
                     pbci->GetTitle() + L":" +
                     pbci->GetUser()  + L"]";
+        m_AliasChange = Normal2Alias;
         ShowAlias();
       }
     }
   }
+}
+
+void AddEditPropSheetDlg::ShowTwoFactorKey()
+{
+  m_IsTwoFactorKeyHidden = false;
+  auto text = m_AdditionalTwoFactorKeyCtrl->GetValue();
+  UpdatePasswordTextCtrl(m_AdditionalHBoxSizerTwoFactorKey, m_AdditionalTwoFactorKeyCtrl, text, m_AdditionalShiftDoubleClickActionCtrl, 0);
+  m_AdditionalShowHideCtrl->SetBitmapLabel(wxUtilities::GetBitmapResource(wxT("graphics/eye_close.xpm")));
+  m_AdditionalShowHideCtrl->SetToolTip(_("Hide authentication secret"));
+}
+
+void AddEditPropSheetDlg::HideTwoFactorKey()
+{
+  m_IsTwoFactorKeyHidden = true;
+  auto text = m_AdditionalTwoFactorKeyCtrl->GetValue();
+  UpdatePasswordTextCtrl(m_AdditionalHBoxSizerTwoFactorKey, m_AdditionalTwoFactorKeyCtrl, text, m_AdditionalShiftDoubleClickActionCtrl, wxTE_PASSWORD);
+  m_AdditionalShowHideCtrl->SetBitmapLabel(wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")));
+  m_AdditionalShowHideCtrl->SetToolTip(_("Show authentication secret"));
+}
+
+void AddEditPropSheetDlg::ShowTotp()
+{
+  m_IsTotpHidden = false;
+  auto *window = wxWindow::FindWindowById(ID_BUTTON_ALIAS, GetBookCtrl());
+  wxControl *control = window ? dynamic_cast<wxControl*>(window) : m_BasicPasswordConfirmationBitmap;
+  auto text = m_BasicTotpTextCtrl->GetValue();
+  UpdatePasswordTextCtrl(m_BasicSizer, m_BasicTotpTextCtrl, text, control, wxTE_READONLY);
+  m_BasicShowHideTotpCtrl->SetBitmapLabel(wxUtilities::GetBitmapResource(wxT("graphics/eye_close.xpm")));
+  m_BasicShowHideTotpCtrl->SetToolTip(_("Hide authentication code"));
+}
+
+void AddEditPropSheetDlg::HideTotp()
+{
+  m_IsTotpHidden = true;
+  auto *window = wxWindow::FindWindowById(ID_BUTTON_ALIAS, GetBookCtrl());
+  wxControl *control = window ? dynamic_cast<wxControl*>(window) : m_BasicPasswordConfirmationBitmap;
+  auto text = m_BasicTotpTextCtrl->GetValue();
+  UpdatePasswordTextCtrl(m_BasicSizer, m_BasicTotpTextCtrl, text, control, wxTE_PASSWORD|wxTE_READONLY);
+  m_BasicShowHideTotpCtrl->SetBitmapLabel(wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")));
+  m_BasicShowHideTotpCtrl->SetToolTip(_("Show authentication code"));
 }
 
 void AddEditPropSheetDlg::ShowPassword()
@@ -2002,6 +2154,26 @@ bool AddEditPropSheetDlg::ValidateBasicData()
   return true;
 }
 
+bool AddEditPropSheetDlg::ValidateAdditionalData()
+{
+  const StringX twofactorkey = tostringx(m_AdditionalTwoFactorKeyCtrl->GetValue());
+  if (!twofactorkey.empty()) {
+    CItemData ci_temp;
+    ci_temp.SetTwoFactorKey(twofactorkey);
+    PWSTotp::TOTP_Result totp_result = PWSTotp::ValidateTotpConfiguration(ci_temp);
+    if (totp_result != PWSTotp::Success) {
+      wxMessageDialog msg(this, 
+        _("The authentication key is invalid.\nAllowed characters are a-z, A-Z, 2-7, space and dash."), 
+        _("Authentication Key Error"), wxICON_ERROR|wxOK);
+
+      msg.ShowModal();
+      m_AdditionalTwoFactorKeyCtrl->SetFocus();
+      return false;
+    }
+  }
+  return true;
+}
+
 bool AddEditPropSheetDlg::ValidatePasswordPolicy()
 {
   if (m_PasswordPolicyUseDatabaseCtrl->GetValue() && (m_PasswordPolicyNamesCtrl->GetValue().IsEmpty())) {
@@ -2043,6 +2215,123 @@ bool AddEditPropSheetDlg::IsGroupUsernameTitleCombinationUnique()
   return true;
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// TOTP Begin
+
+/// wxEVT_TIMER_EVENT event handler for ID_TIMER_TOTP_COUNTDOWN
+void AddEditPropSheetDlg::OnTotpCountdownTimer(wxTimerEvent& WXUNUSED(event))
+{
+  if (GetTotpItem() == nullptr) {
+    if (m_TotpTimer)
+      m_TotpTimer->Stop();
+    return;
+  }
+
+  UpdateTotp();
+}
+
+/// wxEVT_NOTEBOOK_PAGE_CHANGING event handler
+void AddEditPropSheetDlg::OnTabChanging(wxBookCtrlEvent& event)
+{
+  // The second tab ('Additional') has the id 1.
+  // The event is to be ignored if the change does not originate
+  // from the additional tab to one of the other tabs.
+  if (event.GetOldSelection() != 1) {
+    event.Skip();
+    return;
+  }
+  // Do not allow tab change if two-factor key is invalid
+  if (!ValidateAdditionalData()) {
+    event.Veto();
+    return;
+  }
+  ApplyTwoFactorKey(m_ItemTotp);
+  if (HasItemTwoFactorKey()) {
+    EnableAuthenticationCodeControls();
+    StartTotp();
+  }
+  else {
+    DisableAuthenticationCodeControls();
+    StopTotp();
+  }
+}
+
+void AddEditPropSheetDlg::StartTotp()
+{
+  if (m_TotpTimer && m_TotpTimer->IsRunning()) {
+    return;
+  }
+  // Show and update the TOTP only when an existing item 
+  // with an existing TOTP configuration is edited or viewed.
+  m_TotpTimer = new wxTimer(this, ID_TIMER_TOTP_COUNTDOWN);
+  if (HasItemTwoFactorKey()) {
+    m_TotpTimer->Start(GetTotpCountdownInterval());
+  }
+}
+
+void AddEditPropSheetDlg::StopTotp()
+{
+  // The wxTimer destructor stops the timer if it is running.
+  delete m_TotpTimer;
+  m_TotpTimer = nullptr;
+  m_UpdateTotpInClipboard = false;
+}
+
+void AddEditPropSheetDlg::UpdateTotp()
+{
+  static StringX s_LatestAuthCode(L"");
+  auto pwsafe = wxGetApp().GetPasswordSafeFrame();
+  auto totpData = pwsafe->GetTotpData(&m_ItemTotp);
+  // Update the authentication code in the text input field
+  // and the countdown on the 'Copy' authentication code button
+  m_BasicTotpTextCtrl->ChangeValue(towxstring(totpData.first));
+  m_BasicTotpButton->SetLabel(towxstring(totpData.second));
+  // Update the authentication code in the clipboard only
+  // if copying was triggered by the user and if it changed
+  if (m_UpdateTotpInClipboard && (s_LatestAuthCode != totpData.first)) {
+    s_LatestAuthCode = totpData.first;
+    pwsafe->CopyAuthCodeToClipboard(&m_ItemTotp);
+  }
+}
+
+// Remark: Validation check is already done in ValidateAdditionalData() called by OnOk()
+void AddEditPropSheetDlg::ApplyTwoFactorKey(CItemData& item)
+{
+  const StringX twofactorkey = tostringx(m_AdditionalTwoFactorKeyCtrl->GetValue());
+  if (twofactorkey != item.GetTwoFactorKey()) {
+    // Stop updating the authentication code in the clipboard
+    // if the user has changed the two-factor key
+    m_UpdateTotpInClipboard = false;
+  }
+  if (!twofactorkey.empty()) {
+    item.SetTwoFactorKey(twofactorkey);
+  }
+  else if (HasItemTwoFactorKey()) {
+    // Remove existing two factor key if text input field is empty in Edit mode
+    item.ClearTwoFactorKey();
+  }
+}
+
+void AddEditPropSheetDlg::EnableAuthenticationCodeControls()
+{
+  m_BasicTotpTextLabel->Enable();
+  m_BasicTotpTextCtrl->Enable();
+  m_BasicShowHideTotpCtrl->Enable();
+  m_BasicTotpButton->Enable();
+}
+
+void AddEditPropSheetDlg::DisableAuthenticationCodeControls()
+{
+  m_BasicTotpTextLabel->Disable();
+  m_BasicTotpTextCtrl->Disable();
+  m_BasicTotpTextCtrl->ChangeValue(wxEmptyString);
+  m_BasicShowHideTotpCtrl->Disable();
+  m_BasicTotpButton->Disable();
+  m_BasicTotpButton->SetLabel(wxEmptyString);
+}
+
+// TOTP End
+///////////////////////////////////////////////////////////////////////////////
 
 Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
 {
@@ -2063,10 +2352,34 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
   m_Item.SetNotes(tostringx(m_Notes));
   m_Item.SetURL(tostringx(m_Url));
   m_Item.SetEmail(tostringx(m_Email));
-  if(! m_Item.IsAlias())
-    m_Item.SetPassword(password);
-  else
-    m_Item.SetPassword(L"");
+  m_Item.SetPassword(password);
+
+  // Are we dealing with a new alias?
+     BaseEntryParms pl;
+    pl.InputType = CItemData::ET_NORMAL;
+    if (m_Core.ParseAliasPassword(password, pl)) {
+      // Core validations:
+      const StringX selfGTU = L"[" + m_Item.GetGroup() + L":" + m_Item.GetTitle() + L":" + m_Item.GetUser() + L"]";
+      StringX errmess;
+      bool yesNoError;
+
+      bool isAliasValid = m_Core.CheckAliasValidity(pl, selfGTU, errmess, yesNoError);
+
+
+      if (!isAliasValid) {
+        long style = yesNoError ? (wxYES_NO | wxNO_DEFAULT) : wxOK;
+
+	      wxMessageDialog msg(this, errmess.c_str(), _("Alias Password Error"), style);
+
+        if (msg.ShowModal() == wxID_NO) {
+          m_BasicPasswordTextCtrl->SetFocus();
+          return nullptr;
+        }
+      } else {
+        m_Item.SetAlias();
+        m_Item.SetBaseUUID(pl.base_uuid);
+      }
+    }
 
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Additional"
@@ -2084,6 +2397,10 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
   wxASSERT(m_Item.IsCreationTimeSet());
   if (m_KeepPasswordHistory) {
     m_Item.SetPWHistory(PWHistList::MakePWHistoryHeader(true, m_MaxPasswordHistory));
+  }
+
+  if (IsItemNormalOrBase()) {
+    ApplyTwoFactorKey(m_Item);
   }
 
   /////////////////////////////////////////////////////////////////////////////
@@ -2343,6 +2660,15 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
       }
     }
   }
+  // two factor key
+  {
+    if (IsItemNormalOrBase()) {
+      const StringX twofactorkey = tostringx(m_AdditionalTwoFactorKeyCtrl->GetValue());
+      if (twofactorkey != m_ItemTotp.GetTwoFactorKey()) {
+        changes |= Changes::TwoFactorKey;
+      }
+    }
+  }
   return changes;
 }
 
@@ -2448,8 +2774,39 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
   time_t t;
   time(&t);
   if (changes & Changes::Password) {
-    m_Item.UpdatePassword(tostringx(m_BasicPasswordTextCtrl->GetValue()));
-    m_Item.SetPMTime(t);
+    BaseEntryParms pl;
+    pl.InputType = m_Item.GetEntryType();
+    auto password = tostringx(m_BasicPasswordTextCtrl->GetValue());
+    if (m_Core.ParseAliasPassword(password, pl)) {
+      // Core validations:
+      const StringX selfGTU = L"[" + m_Item.GetGroup() + L":" + m_Item.GetTitle() + L":" + m_Item.GetUser() + L"]";
+      StringX errmess;
+      bool yesNoError;
+
+      bool isAliasValid = m_Core.CheckAliasValidity(pl, selfGTU, errmess, yesNoError);
+
+
+      if (!isAliasValid) {
+        long style = yesNoError ? (wxYES_NO | wxNO_DEFAULT) : wxOK;
+
+	      wxMessageDialog msg(this, errmess.c_str(), _("Alias Password Error"), style);
+
+        if (msg.ShowModal() == wxID_NO) {
+          m_BasicPasswordTextCtrl->SetFocus();
+          return nullptr;
+        }
+        // here if user decided to accept this as a regular password
+        m_Item.UpdatePassword(password);
+        m_Item.SetPMTime(t);
+      } else {
+        m_Item.SetAlias();
+        m_Item.SetBaseUUID(pl.base_uuid);
+      } 
+    } else { // password not an alias format
+        m_Item.SetNormal(); // in case we're changing an alias to a normal entry
+        m_Item.UpdatePassword(password);
+        m_Item.SetPMTime(t);
+    }
   }
   if ((changes & ~Changes::Attachment) != Changes::None) { // anything besides attachment
     m_Item.SetRMTime(t);
@@ -2477,6 +2834,10 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
   if (changes & Changes::XTimeNever) {
     m_Item.SetXTime(0);
     m_Item.SetXTimeInt(0);
+  }
+
+  if (changes & Changes::TwoFactorKey) {
+    ApplyTwoFactorKey(m_Item);
   }
 
   auto commands = MultiCommands::Create(&m_Core);
@@ -2613,7 +2974,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
     }
   }
 
-  if (changes != Changes::None) {
+  if (changes != Changes::None || m_AliasChange != AliasChanges::NoChange) {
     // All fields in m_item now reflect user's edits
     // Let's update the core's data
     uuid_array_t uuid;
@@ -2732,7 +3093,7 @@ void AddEditPropSheetDlg::OnOk(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
 
-    if (!ValidateBasicData() || !ValidatePasswordPolicy()) {
+    if (!ValidateBasicData() || !ValidateAdditionalData() || !ValidatePasswordPolicy()) {
       return; // don't exit dialog box (BR759)
     }
 
@@ -2756,6 +3117,8 @@ void AddEditPropSheetDlg::OnOk(wxCommandEvent& WXUNUSED(evt))
 
     if (command) {
       m_Core.Execute(command);
+    } else if (m_Type != SheetType::VIEW) {
+      return; // no command created for add/edit, don't exit dialog box.
     }
 
     EndModal(wxID_OK);

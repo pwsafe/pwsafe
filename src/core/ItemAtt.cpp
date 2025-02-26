@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -402,8 +402,8 @@ int CItemAtt::Read(PWSfile *in)
         ASSERT(in4 != nullptr);
         size_t nread = in4->ReadContent(&fish, IV, content, content_len);
         // nread should be content_len rounded up to nearest BS:
-        ASSERT(nread == (content_len/BS + 1)*BS);
-        if (nread != (content_len/BS + 1)*BS) {
+        ASSERT(nread == roundUp(content_len, BS));
+        if (nread != roundUp(content_len, BS)) {
           status = PWSfile::READ_FAIL;
           goto exit;
         }

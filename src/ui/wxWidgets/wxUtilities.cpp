@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -156,7 +156,7 @@ bool MultiCheckboxValidator::Validate(wxWindow* parent)
   }
 }
 
-void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxTextCtrl* before, const int style)
+void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxControl* before, const int style)
 {
   ASSERT(textCtrl);
 #if defined(__WXGTK__)
@@ -164,6 +164,7 @@ void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxStrin
   // we do not care about flags already set for the control and therefore do not preserve them.
   textCtrl->SetWindowStyle(style);
   textCtrl->ChangeValue(text);
+  textCtrl->SetModified(false);
 #else
   wxWindow *parent = textCtrl->GetParent();
   wxWindowID id = textCtrl->GetId();
@@ -177,7 +178,7 @@ void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxStrin
                            style);
   if (!text.IsEmpty()) {
     textCtrl->ChangeValue(text);
-    textCtrl->SetModified(true);
+    textCtrl->SetModified(false);
   }
   if (validator != nullptr) {
     textCtrl->SetValidator(*validator);
@@ -304,40 +305,35 @@ wxBitmap wxUtilities::GetBitmapResource( const wxString& name )
 
 int pless(int* first, int* second) { return *first - *second; }
 
-bool IsCurrentDesktopKde()
+enum wxUtilities::WindowSystem wxUtilities::WhatWindowSystem()
 {
-#ifdef __WINDOWS__
-  return false;
-#else
-  wxString currentDesktop = wxEmptyString;
+  static enum wxUtilities::WindowSystem wsType = Undefined;
+  wxOperatingSystemId osid;
 
-  if (!wxGetEnv(wxT("XDG_CURRENT_DESKTOP"), &currentDesktop)) {
-    return false; // Environment variable does not exist
-  }
+  // Get the env. variable and OS version only once
+  if (wsType == Undefined) {
+    wsType = Unknown;
+    osid = wxGetOsVersion();    // Returns a bit flag.  The wxOS_* symbols used below are groups.
 
-  return (!currentDesktop.IsEmpty() && (currentDesktop.MakeLower().Trim() == wxT("kde")));
-#endif
-}
+    if (osid & wxOS_MAC) {
+      wsType = macOS;
+    } else if (osid & wxOS_WINDOWS) {
+      wsType = Windows;
+    } else if (osid & wxOS_UNIX) {    // Includes Linux
+      wxString XDG_SESSION_TYPE = wxEmptyString;
 
-bool wxUtilities::IsDisplayManagerX11()
-{
-  static int isDisplayManagerX11 = 0;
-
-  // Get the env. variable only once
-  if (isDisplayManagerX11 == 0) {
-    wxString XDG_SESSION_TYPE = wxEmptyString;
-    if (wxGetEnv(wxT("XDG_SESSION_TYPE"), &XDG_SESSION_TYPE)) { // provides 'x11' or 'wayland'
-
-      if (!XDG_SESSION_TYPE.IsEmpty() && XDG_SESSION_TYPE == wxT("x11")) {
-        isDisplayManagerX11 = 1;
-      } else {
-        isDisplayManagerX11 = 2; // Don't call wxGetEnv() more than once per process if value is bad
+      if (wxGetEnv(wxT("XDG_SESSION_TYPE"), &XDG_SESSION_TYPE)) { // provides 'x11' or 'wayland'
+        if (!XDG_SESSION_TYPE.IsEmpty()) {
+          if (XDG_SESSION_TYPE == wxT("x11")) {
+            wsType = X11;
+          } else if (XDG_SESSION_TYPE == wxT("wayland")) {
+            wsType = Wayland;
+          }
+        }
       }
-    } else {
-      isDisplayManagerX11 = 3; // Don't call wxGetEnv() more than once per process if value is not set/available
     }
   }
-  return (isDisplayManagerX11 == 1);
+  return wsType;
 }
 
 bool wxUtilities::IsVirtualKeyboardSupported()
@@ -347,15 +343,13 @@ bool wxUtilities::IsVirtualKeyboardSupported()
 #elif defined __WXOSX__
   return true;
 #else
-  return wxUtilities::IsDisplayManagerX11();
+  return (wxUtilities::WhatWindowSystem() == wxUtilities::X11);
 #endif
 }
 
 void wxUtilities::DisableIfUnsupported(enum Feature feature, wxWindow* window)
 {
-  const bool isWayland = !wxUtilities::IsDisplayManagerX11();
-
-  if (feature == Autotype && isWayland) {
+  if (feature == Autotype && WhatWindowSystem() == Wayland) {
     window->Disable();
     window->SetToolTip(_("Not supported by Wayland"));
   }
@@ -365,7 +359,7 @@ void wxUtilities::DisableIfUnsupported(enum Feature feature, wxWindow* window)
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable()
 {
-#if defined(__WXGTK__) && !defined(__OpenBSD__)
+#if defined(__WXGTK__) && !defined(__OpenBSD__) && !defined(__FreeBSD__)
   const wxVersionInfo verInfo = wxGetLibraryVersionInfo();
   int major = verInfo.GetMajor();
   int minor = verInfo.GetMinor();

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -18,6 +18,7 @@
  */
 
 ////@begin includes
+#include <wx/bookctrl.h>
 #include <wx/combobox.h>
 #include <wx/propdlg.h>
 #include <wx/valgen.h>
@@ -32,6 +33,9 @@
 ////@end includes
 #include "core/ItemData.h"
 #include "core/PWScore.h"
+
+#include "PasswordSafeFrame.h"
+#include "PWSafeApp.h"
 
 #include "wxUtilities.h"
 
@@ -67,6 +71,10 @@ class wxBoxSizer;
 #define ID_BUTTON_GENERATE 10097
 #define ID_TEXTCTRL_PASSWORD2 10091
 #define ID_STATICTEXT_PASSWORD2 10191
+#define ID_TEXTCTRL_TOTP 11191
+#define ID_BUTTON_SHOWHIDE_TOTP 11192
+#define ID_BUTTON_COPY_TOTP 11193
+#define ID_TIMER_TOTP_COUNTDOWN 11194
 #define ID_TEXTCTRL_URL 10092
 #define ID_GO_BTN 10093
 #define ID_TEXTCTRL_EMAIL 10100
@@ -77,6 +85,8 @@ class wxBoxSizer;
 #define ID_TEXTCTRL_RUN_CMD 10099
 #define ID_COMBOBOX_DBC_ACTION 10101
 #define ID_COMBOBOX_SDBC_ACTION 10000
+#define ID_TEXTCTRL_2FK 10002
+#define ID_BUTTON_SHOWHIDE_2FK 10003
 #define ID_CHECKBOX_KEEP 10102
 #define ID_SPINCTRL_MAX_PW_HIST 10103
 #define ID_GRID_PW_HIST 10104
@@ -147,7 +157,7 @@ public:
                       long style = SYMBOL_ADDEDITPROPSHEETDLG_STYLE);
 
   /// Destructor
-  ~AddEditPropSheetDlg() = default;
+  ~AddEditPropSheetDlg();
 protected:
   /// Constructor
   AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
@@ -162,6 +172,15 @@ protected:
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_SHOWHIDE
   void OnShowHideClick(wxCommandEvent &event);
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_SHOWHIDE_2FK
+  void OnShowHide2FKClick(wxCommandEvent &event);
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_SHOWHIDE_TOTP
+  void OnShowHideTotpClick(wxCommandEvent &event);
+
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_COPY_TOTP
+  void OnCopyAuthCodeClick(wxCommandEvent &event);
 
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_GENERATE
   void OnGenerateButtonClick(wxCommandEvent &event);
@@ -239,6 +258,12 @@ protected:
 
   /// wxEVT_SPINCTRL event handler for ID_SPINCTRL5, ID_SPINCTRL6, ID_SPINCTRL7, ID_SPINCTRL8
   void OnAtLeastPasswordChars(wxSpinEvent &event);
+
+  /// wxEVT_TIMER_EVENT event handler for ID_TIMER_TOTP_COUNTDOWN
+  void OnTotpCountdownTimer(wxTimerEvent &event);
+
+  /// wxEVT_NOTEBOOK_PAGE_CHANGING event handler
+  void OnTabChanging(wxBookCtrlEvent& event);
   ////@begin AddEditPropSheetDlg member function declarations
 
   /// Retrieves bitmap resources
@@ -317,10 +342,27 @@ private:
   int GetRequiredPWLength() const;
 
   bool ValidateBasicData();
+  bool ValidateAdditionalData();
   bool ValidatePasswordPolicy();
   bool IsGroupUsernameTitleCombinationUnique();
   bool SyncAndQueryCancel(bool showDialog);
-  
+
+  void StartTotp();
+  void StopTotp();
+  void UpdateTotp();
+  void ShowTotp();
+  void HideTotp();
+  void ShowTwoFactorKey();
+  void HideTwoFactorKey();
+  void ApplyTwoFactorKey(CItemData& item);
+  void EnableAuthenticationCodeControls();
+  void DisableAuthenticationCodeControls();
+  const PasswordSafeFrame* GetPwSafe() const { return wxGetApp().GetPasswordSafeFrame(); }
+  bool HasItemTwoFactorKey() const { return GetPwSafe()->HasItemTwoFactorKey(&m_ItemTotp); };
+  bool IsItemNormalOrBase() const { return GetPwSafe()->IsItemNormalOrBase(&m_ItemTotp); }
+  const CItemData *GetTotpItem() const { return GetPwSafe()->GetTotpItem(&m_ItemTotp); };
+  int GetTotpCountdownInterval() const { return GetPwSafe()->GetTotpCountdownInterval(); }
+
   enum Changes : uint32_t {
     None = 0,
     Group = 1u,
@@ -341,6 +383,14 @@ private:
     Policy = 1u << 15,
     Attachment = 1u << 16,
     XTimeNever = 1u << 17,
+    TwoFactorKey = 1u << 18,
+  };
+
+  enum AliasChanges {
+    NoChange,
+    Alias2Normal,
+    AliasRebased,
+    Normal2Alias,
   };
   
   uint32_t GetChanges() const;
@@ -365,6 +415,10 @@ private:
   wxTextCtrl *m_BasicPasswordConfirmationTextCtrl = nullptr;
   wxStaticText *m_BasicPasswordConfirmationTextLabel = nullptr;
   wxStaticBitmap *m_BasicPasswordConfirmationBitmap = nullptr;
+  wxStaticText *m_BasicTotpTextLabel = nullptr;
+  wxTextCtrl *m_BasicTotpTextCtrl = nullptr;
+  wxBitmapButton *m_BasicShowHideTotpCtrl = nullptr;
+  wxButton *m_BasicTotpButton = nullptr;
   wxTextCtrl *m_BasicUrlTextCtrl = nullptr;
   wxTextCtrl *m_BasicEmailTextCtrl = nullptr;
   wxTextCtrl *m_BasicNotesTextCtrl = nullptr;
@@ -374,17 +428,25 @@ private:
   wxString m_Url;
   wxString m_Email;
   wxString m_Notes;
-  bool m_IsNotesHidden;
+  bool m_IsNotesHidden = true;
   StringX m_Password;
-  bool m_IsPasswordHidden;
+  bool m_IsPasswordHidden = true;
+  bool m_IsTotpHidden = true;
+  bool m_UpdateTotpInClipboard = false;
+
+  AliasChanges m_AliasChange = AliasChanges::NoChange;
 
   // Tab: "Additional"
   wxPanel *m_AdditionalPanel = nullptr;
   wxComboBox *m_AdditionalDoubleClickActionCtrl = nullptr;
   wxComboBox *m_AdditionalShiftDoubleClickActionCtrl = nullptr;
+  wxBoxSizer *m_AdditionalHBoxSizerTwoFactorKey = nullptr;
+  wxTextCtrl *m_AdditionalTwoFactorKeyCtrl = nullptr;
+  wxBitmapButton *m_AdditionalShowHideCtrl = nullptr;
   wxSpinCtrl *m_AdditionalMaxPasswordHistoryCtrl = nullptr;
   wxGrid *m_AdditionalPasswordHistoryGrid = nullptr;
 
+  bool m_IsTwoFactorKeyHidden = true;
   wxString m_Autotype;
   wxString m_RunCommand;
   wxString m_PasswordHistory; // String as stored in CItemData
@@ -478,11 +540,14 @@ private:
 
   SheetType m_Type;
   CItemData m_Item;
+  CItemData m_ItemTotp;
   CItemAtt  m_ItemAttachment;
 
   wxBitmap bitmapCheckmarkPlaceholder;
   wxBitmap bitmapCheckmarkGreen;
   wxBitmap bitmapCheckmarkGray;
+
+  wxTimer *m_TotpTimer = nullptr;
 };
 
 #endif // _ADDEDITPROPSHEETDLG_H_

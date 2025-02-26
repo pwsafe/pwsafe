@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -1406,7 +1406,7 @@ void OptionsPropertySheetDlg::OnPWHistApply(wxCommandEvent& WXUNUSED(evt))
 void OptionsPropertySheetDlg::OnUpdateUI(wxUpdateUIEvent& evt)
 {
   bool dbIsReadOnly = m_core.IsReadOnly();
-  const bool isX11  = wxUtilities::IsDisplayManagerX11();
+  const bool isWayland = (wxUtilities::WhatWindowSystem() == wxUtilities::Wayland);
 
   switch (evt.GetId()) {
   /////////////////////////////////////////////////////////////////////////////
@@ -1444,7 +1444,7 @@ void OptionsPropertySheetDlg::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(!dbIsReadOnly);
       break;
     case ID_TEXTCTRL11:
-      evt.Enable(isX11 && !dbIsReadOnly);
+      evt.Enable(!dbIsReadOnly && !isWayland);
       break;
     case ID_CHECKBOX24:
       evt.Enable(!dbIsReadOnly);

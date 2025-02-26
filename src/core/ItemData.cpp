@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -274,10 +274,12 @@ int CItemData::WriteCommon(PWSfile *out) const
                                   NOTES, URL, AUTOTYPE, POLICY,
                                   PWHIST, RUNCMD, EMAIL,
                                   SYMBOLS, POLICYNAME,
+                                  DATA_ATT_TITLE, DATA_ATT_MEDIATYPE, DATA_ATT_FILENAME,
                                   END};
   const FieldType TimeFields[] = {ATIME, CTIME, XTIME, PMTIME, RMTIME, TOTPSTARTTIME,
+                                  DATA_ATT_MTIME,
                                   END};
-  const FieldType BinaryFields[] = { TOTPCONFIG, TOTPTIMESTEP, TOTPLENGTH, END };
+  const FieldType BinaryFields[] = { TOTPCONFIG, TOTPTIMESTEP, TOTPLENGTH, DATA_ATT_CONTENT, END };
 
   for (i = 0; TextFields[i] != END; i++)
     WriteIfSet(TextFields[i], out, true);
@@ -2113,11 +2115,15 @@ bool CItemData::SetField(CItem::FieldType ft, const unsigned char* data, size_t 
     case EMAIL:
     case SYMBOLS:
     case POLICYNAME:
+    case DATA_ATT_TITLE:
+    case DATA_ATT_MEDIATYPE:
+    case DATA_ATT_FILENAME:
       if (!SetTextField(ft, data, len)) return false;
       break;
     case TOTPCONFIG:
     case TOTPTIMESTEP:
     case TOTPLENGTH:
+    case DATA_ATT_CONTENT:
       CItem::SetField(ft, data, len);
       break;
     case CTIME:
@@ -2126,6 +2132,7 @@ bool CItemData::SetField(CItem::FieldType ft, const unsigned char* data, size_t 
     case XTIME:
     case RMTIME:
     case TOTPSTARTTIME:
+    case DATA_ATT_MTIME:
       if (!SetTimeField(ft, data, len)) return false;
       break;
     case XTIME_INT:
@@ -2322,6 +2329,11 @@ stringT CItemData::FieldName(FieldType ft)
   case CCEXP:        LoadAString(retval, IDSC_FLDNMCCEXP); break;
   case CCVV:         LoadAString(retval, IDSC_FLDNMCCVV); break;
   case CCPIN:        LoadAString(retval, IDSC_FLDNMCCPIN); break;
+  case DATA_ATT_TITLE:     LoadAString(retval, IDSC_FLDNMDATAATTTITLE); break;
+  case DATA_ATT_MEDIATYPE: LoadAString(retval, IDSC_FLDNMDATAATTMEDIATYPE); break;
+  case DATA_ATT_FILENAME:  LoadAString(retval, IDSC_FLDNMDATAATTFILENAME); break;
+  case DATA_ATT_MTIME:     LoadAString(retval, IDSC_FLDNMDATAATTMTIME); break;
+  case DATA_ATT_CONTENT:   LoadAString(retval, IDSC_FLDNMDATAATTCONTENT); break;
 
   default:
     ASSERT(0);
@@ -2415,4 +2427,27 @@ StringX CItemData::GetTotpAuthCode(time_t* pBasisTimeNow, double* pRatioExpired)
     retval.clear();
   }
   return retval;
+}
+
+size_t CItemData::GetAttContentLength() const {
+  auto fiter = m_fields.find(DATA_ATT_CONTENT);
+
+  if (fiter != m_fields.end())
+    return fiter->second.GetLength();
+  else
+    return 0;
+}
+
+std::vector<unsigned char> CItemData::GetAttContent() const {
+  std::vector<unsigned char> v;
+  GetField(DATA_ATT_CONTENT, v);
+  return v;
+}
+
+void CItemData::ClearAttachment() {
+  ClearField(DATA_ATT_TITLE);
+  ClearField(DATA_ATT_MEDIATYPE);
+  ClearField(DATA_ATT_FILENAME);
+  ClearField(DATA_ATT_MTIME);
+  ClearField(DATA_ATT_CONTENT);
 }

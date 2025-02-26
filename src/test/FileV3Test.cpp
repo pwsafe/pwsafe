@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -13,6 +13,8 @@
 
 #include "core/PWSfileV3.h"
 #include "os/file.h"
+#include "core/PWScore.h"
+#include <cstdio>
 
 #include "gtest/gtest.h"
 
@@ -176,4 +178,54 @@ TEST_F(FileV3Test, UnknownPersistencyTest)
   EXPECT_EQ(d1, item);
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+}
+
+TEST_F(FileV3Test, AttachmentTest)
+{
+  int attSizes[] = {0, 1, 8, 15, 16, 17, 32, 48 };
+
+  for (unsigned long i=0; i<sizeof(attSizes) / sizeof(int); i++) {
+    printf("%lu\n", i);
+    int attSize = attSizes[i];
+
+    CItemData d1;
+    d1.CreateUUID();
+    d1.SetTitle(_T("future"));
+    d1.SetPassword(_T("possible"));
+    d1.SetAttMediaType(_T("image/png"));
+    std::vector<unsigned char> buf(attSize, static_cast<unsigned char>(attSize));
+    d1.SetAttContent(buf.data(), buf.size());
+
+    PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
+    ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+    EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(d1));
+    ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+    ASSERT_TRUE(pws_os::FileExists(fname));
+
+    PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
+    ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+    EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(item));
+    EXPECT_EQ(d1, item);
+    EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
+    EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+  }
+}
+
+TEST_F(FileV3Test, V4Extension)
+{
+  PWScore core;
+  stringT fname4(_T("V3test.psafe4"));
+
+  PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+  ASSERT_TRUE(pws_os::FileExists(fname));
+
+  // Change extension to psafe4
+  ASSERT_EQ(0, std::rename("V3test.psafe3", "V3test.psafe4"));
+
+  EXPECT_EQ(PWSfile::WRONG_PASSWORD, core.ReadFile(fname4.c_str(), L"WrongPassword", true));
+  EXPECT_EQ(PWSfile::SUCCESS, core.ReadFile(fname4.c_str(), passphrase, true));
+
+  ASSERT_EQ(0, std::rename("V3test.psafe4", "V3test.psafe3"));
 }

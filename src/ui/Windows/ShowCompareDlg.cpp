@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -144,6 +144,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
     CItemData::CTIME, CItemData::PMTIME, CItemData::ATIME, CItemData::XTIME,
     CItemData::RMTIME, CItemData::XTIME_INT, CItemData::PWHIST, CItemData::NOTES,
     CItemData::CCNUM, CItemData::CCEXP, CItemData::CCVV, CItemData::CCPIN,
+    CItemData::DATA_ATT_TITLE, CItemData::DATA_ATT_MEDIATYPE, CItemData::DATA_ATT_FILENAME, CItemData::DATA_ATT_MTIME, CItemData::DATA_ATT_CONTENT,
   };
 
   // Check we have considered all user fields
@@ -399,12 +400,22 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
             if (t1 == 0) sxValue1 = L"N/A";
             if (t2 == 0) sxValue2 = L"N/A";
             break;
+          case CItemData::DATA_ATT_MTIME: /* 0x28 */
+            pci->GetAttModificationTime(t1);
+            pci_other->GetAttModificationTime(t2);
+            if (t1 == 0) sxValue1 = L"N/A";
+            if (t2 == 0) sxValue2 = L"N/A";
+            break;
           case CItemData::XTIME_INT:  /* 0x11 */
           case CItemData::PROTECTED:  /* 0x15 */
             break;
           case CItemData::ATTREF:     /* 0x1a */
             sxValue1 = pci->HasAttRef() ? sxNo : sxYes;
             sxValue2 = pci_other->HasAttRef() ? sxNo : sxYes;
+            break;
+          case CItemData::DATA_ATT_CONTENT: /* 0x29 */
+            sxValue1 = pci->IsAttContentSet() ? sxYes : sxNo;
+            sxValue2 = pci_other->IsAttContentSet() ? sxYes : sxNo;
             break;
           case CItemData::DCA:        /* 0x13 */
           case CItemData::SHIFTDCA:   /* 0x17 */
@@ -426,7 +437,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
             ASSERT(0);
         }
         if (i == CItemData::CTIME  || i == CItemData::ATIME || i == CItemData::XTIME ||
-            i == CItemData::PMTIME || i == CItemData::RMTIME) {
+            i == CItemData::PMTIME || i == CItemData::RMTIME || i == CItemData::DATA_ATT_MTIME) {
           if (t1 != 0)
             sxValue1 = PWSUtil::ConvertToDateTimeString(t1, PWSUtil::TMC_EXPORT_IMPORT);
           if (t2 != 0)

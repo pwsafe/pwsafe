@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2013-2024 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2013-2025 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -121,6 +121,8 @@ int PWSfileV4::Open(const StringX &passkey)
     // Nonce is used to detect end of keyblocks
     static_assert(int(NONCELEN) == int(SHA256::HASHLEN), "can't call HashRandom256");
     HashRandom256(m_nonce); // Generate nonce
+    if (m_nHashIters < MIN_HASH_ITERATIONS) // here we silently upgrade files to the new MIN_HASH_ITERATIONS value
+      m_nHashIters = MIN_HASH_ITERATIONS;
     if (!m_keyblocks.GetKeys(passkey, m_nHashIters, m_key, m_ell)) {
       PWSfile::Close();
       return WRONG_PASSWORD;
@@ -324,7 +326,7 @@ size_t PWSfileV4::ReadContent(Fish *fish,  unsigned char *cbcbuffer,
   ASSERT(clen > 0 && fish != nullptr && cbcbuffer != nullptr);
   // round up clen to nearest BS:
   const unsigned int BS = fish->GetBlockSize();
-  size_t blen = (clen/BS + 1)*BS;
+  size_t blen = roundUp(clen, BS);
 
   content = new unsigned char[blen]; // caller's responsible for delete[]
   return _readcbc(m_fd, content, blen, fish, cbcbuffer);
@@ -403,7 +405,9 @@ void PWSfileV4::StretchKey(const unsigned char *salt, unsigned long saltLen,
   * by the hash-function-based key stretching algorithm PBKDF2, with SHA-256
   * as the hash function, and N iterations.
   */
-  ASSERT(N >= MIN_HASH_ITERATIONS); // minimal value we're willing to use
+  if (N < MIN_HASH_ITERATIONS) {
+    PWSTRACE(L"File's ITER value %d is below current minimum %d. It will be updated when file is saved", N, MIN_HASH_ITERATIONS);
+  }
   size_t passLen = 0;
   unsigned char *pstr = nullptr;
 
@@ -1281,7 +1285,8 @@ int PWSfileV4::ReadHeader()
 
 bool PWSfileV4::IsV4x(const StringX &filename, const StringX &passkey, VERSION &v)
 {
-  if (CheckPasskey(filename, passkey) == SUCCESS) {
+  if (filename.rfind(_T(".") V4_SUFFIX) == filename.size() - wcslen(V4_SUFFIX) - 1
+      || CheckPasskey(filename, passkey) == SUCCESS) {
     v = V40;
     return true;
   } else

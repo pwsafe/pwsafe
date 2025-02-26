@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -263,6 +263,10 @@ template<class T>
 inline void byteswap(T& v) {
   unsigned char* a = reinterpret_cast<unsigned char*>(&v);
   byteswap(a, a + sizeof(v) - 1);
+}
+
+inline size_t roundUp(size_t x, const size_t m) {
+    return ((x + m - 1) / m) * m;
 }
 
 namespace PWSUtil {

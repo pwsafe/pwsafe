@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -473,6 +473,40 @@ void PasswordSafeFrame::DoCopyUsername(CItemData &item)
   Clipboard::GetInstance()->SetData(item.GetUser());
   UpdateLastClipboardAction(CItemData::FieldType::USER);
   UpdateAccessTime(item);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYAUTHCODE
+ */
+
+void PasswordSafeFrame::OnCopyAuthCodeClick(wxCommandEvent& evt)
+{
+  CItemData rueItem;
+  CItemData* item = GetSelectedEntry(evt, rueItem);
+  if (item != nullptr) {
+    m_TotpLastSelectedItem = item;
+    DoCopyAuthCode(item);
+    StartTotpCopyAuthCode();
+  }
+  else {
+    StopTotpCopyAuthCode();
+  }
+}
+
+void PasswordSafeFrame::DoCopyAuthCode(const CItemData *item)
+{
+  auto totp = GetTotpData(item);
+  Clipboard::GetInstance()->SetData(totp.first);
+  UpdateLastClipboardAction(CItemData::FieldType::TOTPCONFIG);
+}
+
+/*!
+ * wxEVT_COMMAND_MENU_SELECTED event handler for ID_SHOWAUTHCODE
+ */
+
+void PasswordSafeFrame::OnShowAuthCodeClick(wxCommandEvent& WXUNUSED(evt))
+{
+  GetTotpBarPane().IsShown() ? HideTotpBar() : ShowTotpBar();
 }
 
 /*!

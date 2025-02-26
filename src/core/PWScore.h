@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+* Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
 * All rights reserved. Use of the code is allowed under the
 * Artistic License 2.0 terms, as specified in the LICENSE file
 * distributed with this code, or available from
@@ -25,7 +25,7 @@
 
 #include "coredefs.h"
 
-// Parameter list for ParseBaseEntryPWD
+// Parameter list for ParseAliasPassword
 struct BaseEntryParms {
   // All fields except "InputType" are 'output'.
   StringX csPwdGroup;
@@ -37,7 +37,8 @@ struct BaseEntryParms {
   int ibasedata;
   bool bMultipleEntriesFound;
 
-  BaseEntryParms() : base_uuid(pws_os::CUUID::NullUUID()) {}
+  BaseEntryParms() : base_uuid(pws_os::CUUID::NullUUID()), InputType(CItemData::ET_INVALID), TargetType(CItemData::ET_INVALID)
+    {}
 };
 
 // Formatted Database properties
@@ -126,7 +127,7 @@ public:
   void ReInit(bool bNewfile = false);
 
   // Following used to read/write databases and Get/Set file name
-  bool IsDbOpen() const { return !m_currfile.empty(); }
+  bool IsDbFileSet() const { return !m_currfile.empty(); }
   StringX GetCurFile() const {return m_currfile;}
   void SetCurFile(const StringX &file) {m_currfile = file;}
 
@@ -344,7 +345,9 @@ public:
                               UUIDVector &dependentslist, 
                               const CItemData::EntryType type);
   // Takes apart a 'special' password into its components:
-  bool ParseBaseEntryPWD(const StringX &passwd, BaseEntryParms &pl);
+  bool ParseAliasPassword(const StringX &passwd, BaseEntryParms &pl);
+  // Check an Alias
+  bool CheckAliasValidity(const BaseEntryParms& pl, const StringX& selfGTU, StringX& errmess, bool &yesNoError);
 
   const CItemData *GetBaseEntry(const CItemData *pAliasOrSC) const;
   CItemData *GetBaseEntry(const CItemData *pAliasOrSC);
@@ -577,7 +580,6 @@ private:
   bool m_bIsReadOnly;
   bool m_bUniqueGTUValidated;
   bool m_bNotifyDB;
-  bool m_bIsOpen;
 
     PWSfileHeader m_hdr;
   StringX m_InitialDBName, m_InitialDBDesc;

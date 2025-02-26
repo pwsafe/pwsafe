@@ -268,6 +268,15 @@ Product => Show Build Folder in Finder
 From the command line:
 xcodebuild -project pwsafe-xcode6.xcodeproj -configuration <Debug|Release> -showBuildSettings | grep TARGET_BUILD_DIR
 ```
+## Run unit tests
+To run the unit tests, you need to have googletest installed.  The makefile expects to use the Homebrew version.  You also need
+to provide the path to the wx-config command.  If you're using the Homebrew wxWidgets installation, it should be able to find it.
+Otherwise, provide the full path to the command in your wxWidgets build directory.
+```
+brew install googletest
+cd src/test         #under the main pwsafe directory
+make -f Makefile.macos [WX_CONFIG=<path to the wx-config command>]
+```
 
 ## Build installation package
 This procedure will build a .dmg file for the Universal Binary or the current machine's architecture, 

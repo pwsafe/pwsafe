@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -108,7 +108,7 @@ bool Clipboard::SetData(const StringX &data)
   if (wxTheClipboard->Open()) {
 #if defined(__UNIX__) && !defined(__WXOSX__)
     // Copying composite object is currently not working as expected on Wayland
-    if (wxUtilities::IsDisplayManagerX11()) {
+    if (wxUtilities::WhatWindowSystem() == wxUtilities::X11) {
       wxDataObjectComposite *dataObjectComposite = new wxDataObjectComposite();
       dataObjectComposite->Add(new wxTextDataObjectEx(data.c_str()), true);
       dataObjectComposite->Add(new KDEClipboardSecretMarkerObject(), false);
@@ -132,6 +132,17 @@ bool Clipboard::SetData(const StringX &data)
     ctx.Final(m_digest);
   }
   return res;
+}
+
+bool Clipboard::HasData(const StringX &data) const
+{
+  unsigned char digest[SHA256::HASHLEN];
+  SHA256 ctx;
+  const wchar_t *str = data.c_str();
+  ctx.Update(reinterpret_cast<const unsigned char *>(str), data.length()*sizeof(wchar_t));
+  ctx.Final(digest);
+
+  return (memcmp(digest, m_digest, SHA256::HASHLEN) == 0);
 }
 
 /**

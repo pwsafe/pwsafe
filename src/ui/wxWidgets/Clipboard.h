@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -26,6 +26,7 @@ public:
   static Clipboard *GetInstance();
   static void DeleteInstance();
   bool SetData(const StringX &data);
+  bool HasData(const StringX &data) const;
   bool ClearCBData();
 #if defined(__X__) || defined(__WXGTK__)
   void UsePrimarySelection(bool primary, bool clearOnChange=true);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2024 Rony Shapiro <ronys@pwsafe.org>.
+ * Copyright (c) 2003-2025 Rony Shapiro <ronys@pwsafe.org>.
  * All rights reserved. Use of the code is allowed under the
  * Artistic License 2.0 terms, as specified in the LICENSE file
  * distributed with this code, or available from
@@ -2608,7 +2608,7 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
         pl.base_uuid = CUUID::NullUUID();
       }
     } else {
-        m_core.ParseBaseEntryPWD(cs_tmp, pl);
+        m_core.ParseAliasPassword(cs_tmp, pl);
     }
     
     if (pl.ibasedata > 0) {
