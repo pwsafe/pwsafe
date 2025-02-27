@@ -2306,7 +2306,7 @@ void AddEditPropSheetDlg::ApplyTwoFactorKey(CItemData& item)
   if (!twofactorkey.empty()) {
     item.SetTwoFactorKey(twofactorkey);
   }
-  else if (HasItemTwoFactorKey()) {
+  else if (GetPwSafe()->HasItemTwoFactorKey(&item)) {
     // Remove existing two factor key if text input field is empty in Edit mode
     item.ClearTwoFactorKey();
   }
@@ -2664,7 +2664,7 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
   {
     if (IsItemNormalOrBase()) {
       const StringX twofactorkey = tostringx(m_AdditionalTwoFactorKeyCtrl->GetValue());
-      if (twofactorkey != m_ItemTotp.GetTwoFactorKey()) {
+      if (twofactorkey != m_Item.GetTwoFactorKey()) {
         changes |= Changes::TwoFactorKey;
       }
     }
