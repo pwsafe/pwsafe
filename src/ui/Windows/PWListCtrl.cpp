@@ -285,8 +285,8 @@ void CPWListCtrlX::SetFilterState(bool bState)
 {
   m_bListFilterActive = bState;
 
-  // Red if filter active, black if not
-  SetTextColor(m_bListFilterActive ? RGB(168, 0, 0) : RGB(0, 0, 0));
+  // Red if filter active, default if not
+  SetTextColor(m_bListFilterActive ? RGB(168, 0, 0) : ::GetSysColor(COLOR_WINDOWTEXT));
 }
 
 BOOL CPWListCtrlX::OnEraseBkgnd(CDC* pDC)

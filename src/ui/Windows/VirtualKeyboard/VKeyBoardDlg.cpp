@@ -2150,9 +2150,14 @@ HBRUSH CVKeyBoardDlg::OnCtlColor(CDC* pDC, CWnd *pWnd, UINT nCtlColor)
   switch (nCtlColor) {
     case CTLCOLOR_STATIC:
     case CTLCOLOR_DLG:
-      // Black text on white background - except passphrase if visible
-      pDC->SetTextColor(RGB(nID == IDC_STATIC_VKPASSPHRASE ? 255 : 0, 0, 0));
-      pDC->SetBkColor(RGB(255, 255, 255));
+      // default text and background, except passphrase if visible
+      if (nID == IDC_STATIC_VKPASSPHRASE)
+      {
+        pDC->SetTextColor(RGB(255, 0, 0));
+      } else {
+        pDC->SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
+      }
+      pDC->SetBkColor(::GetSysColor(COLOR_WINDOW));
       return (HBRUSH)(m_pBkBrush.GetSafeHandle());
     default:
       return hbr;

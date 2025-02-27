@@ -32,7 +32,7 @@ CViewReport::CViewReport(CWnd* pParent /*=NULL*/,
 
   m_dwDatasize = (DWORD)(m_pString.length() * sizeof(wchar_t));
 
-  m_backgroundcolour = RGB(255, 255, 255);
+  m_backgroundcolour = ::GetSysColor(COLOR_WINDOW);
   m_backgroundbrush.CreateSolidBrush(m_backgroundcolour);
   m_textcolor = ::GetSysColor(COLOR_WINDOWTEXT);
 }

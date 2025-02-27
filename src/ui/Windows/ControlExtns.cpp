@@ -32,9 +32,8 @@ static char THIS_FILE[] = __FILE__;
 
 #define EDIT_CLIPBOARD_TEXT_FORMAT  CF_UNICODETEXT
 
-const COLORREF crefInFocus = (RGB(222, 255, 222));  // Light green
-const COLORREF crefNoFocus = (RGB(255, 255, 255));  // White
-const COLORREF crefBlack   = (RGB(  0,   0,   0));  // Black
+const COLORREF crefInFocus = RGB(222, 255, 222);  // Light green
+const COLORREF crefNoFocus = ::GetSysColor(COLOR_WINDOW);
 
 // timer event numbers used to by ControlExtns for ListBox tooltips. See DboxMain.h
 #define TIMER_LB_HOVER     0x0A
@@ -286,7 +285,7 @@ HBRUSH CEditExtnX::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
   if (!this->IsWindowEnabled())
     return NULL;
 
-  pDC->SetTextColor(crefBlack);
+  pDC->SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
   if (m_bIsFocused == TRUE) {
     pDC->SetBkColor(m_crefInFocus);
     return m_brInFocus;
