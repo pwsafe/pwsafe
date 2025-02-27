@@ -2108,8 +2108,6 @@ void PasswordSafeFrame::OnTotpCopyAuthCodeTimer(wxTimerEvent& WXUNUSED(event))
   }
   // Stop updating the auth code in the clipboard
   // if the data in the clipboard has been changed
-  // by the user through a copy action or by deleting
-  // the clipboard
   auto isAuthCodeInClipboard = Clipboard::GetInstance()->HasData(totpData.first);
   if (!isAuthCodeInClipboard) {
     m_TotpLastSelectedItem = nullptr;
