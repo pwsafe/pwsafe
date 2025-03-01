@@ -62,6 +62,7 @@
 #include "core/Report.h"
 
 #include <algorithm>
+#include <math.h>
 
 ////@begin XPM images
 ////@end XPM images
@@ -2041,7 +2042,7 @@ std::pair<StringX, StringX> PasswordSafeFrame::GetTotpData(const CItemData *item
   return std::make_pair(
     totp,
     tostringx(wxNumberFormatter::ToString(
-      s_TotpCalculationInterval - s_TotpCalculationInterval * ratio, 0)
+      ceil(s_TotpCalculationInterval - s_TotpCalculationInterval * ratio), 0)
     )
   );
 }
