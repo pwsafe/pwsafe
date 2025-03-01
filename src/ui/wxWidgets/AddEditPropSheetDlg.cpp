@@ -2282,15 +2282,27 @@ void AddEditPropSheetDlg::UpdateTotp()
   static StringX s_LatestAuthCode(L"");
   auto pwsafe = wxGetApp().GetPasswordSafeFrame();
   auto totpData = pwsafe->GetTotpData(&m_ItemTotp);
+
   // Update the authentication code in the text input field
   // and the countdown on the 'Copy' authentication code button
   m_BasicTotpTextCtrl->ChangeValue(towxstring(totpData.first));
   m_BasicTotpButton->SetLabel(towxstring(totpData.second));
+
   // Update the authentication code in the clipboard only
   // if copying was triggered by the user and if it changed
   if (m_UpdateTotpInClipboard && (s_LatestAuthCode != totpData.first)) {
     s_LatestAuthCode = totpData.first;
     pwsafe->CopyAuthCodeToClipboard(&m_ItemTotp);
+  }
+
+  // Stop updating the auth code in the clipboard
+  // if the data in the clipboard has been changed
+  if (m_UpdateTotpInClipboard) {
+    auto isAuthCodeInClipboard = Clipboard::GetInstance()->HasData(totpData.first);
+    if (!isAuthCodeInClipboard) {
+      m_UpdateTotpInClipboard = false;
+      s_LatestAuthCode.clear();
+    }
   }
 }
 
