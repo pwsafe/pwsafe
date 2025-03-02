@@ -24,7 +24,7 @@ jobs:
       MACOS_VER_MIN: 10.15
       WX_VERS: 3.2.5
       WX_SRC_DIR: ${{ github.workspace }}/wxWidgets
-      WX_BUILD_DIR: ${{ github.workspace }}/wxWidgets/build
+      WX_BUILD_DIR: ${{ github.workspace }}/wxWidgets/build-wx
       WX_ARCH: "arm64,x86_64"
       XCODE_CONFIG: Release
       FORCE_REBUILD_WX: 1
