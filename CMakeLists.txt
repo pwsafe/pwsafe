@@ -109,8 +109,10 @@ if (NOT WIN32 OR WX_WINDOWS)
   find_package(OpenSSL REQUIRED)
   include_directories(${OPENSSL_INCLUDE_DIR})
 
-  find_package(Magic REQUIRED)
-  include_directories(${MAGIC_INCLUDE_DIRS})
+  if (NOT APPLE)
+    find_package(Magic REQUIRED)
+    include_directories(${MAGIC_INCLUDE_DIRS})
+  endif (NOT APPLE)
 endif (NOT WIN32 OR WX_WINDOWS)
 
 if (NOT WIN32)
