@@ -17,7 +17,7 @@ jobs:
 
     env:
       # If you need to rebuild wxWidgets for some reason, say you changed the build params, just increment FORCE_REBUILD_WX
-      # Some usefull debug parameters:
+      # Some useful debug parameters:
       # "WX_DEBUG_FLAG=--enable-debug --enable-debug_info"
       # "XCODE_CONFIG=Debug"
       # "XCODE_CONFIG=Debug-no-yubi"
