@@ -136,13 +136,21 @@ bool Clipboard::SetData(const StringX &data)
 
 bool Clipboard::HasData(const StringX &data) const
 {
-  unsigned char digest[SHA256::HASHLEN];
-  SHA256 ctx;
-  const wchar_t *str = data.c_str();
-  ctx.Update(reinterpret_cast<const unsigned char *>(str), data.length()*sizeof(wchar_t));
-  ctx.Final(digest);
-
-  return (memcmp(digest, m_digest, SHA256::HASHLEN) == 0);
+  if (wxTheClipboard->Open()) {
+    wxString clipboardText;
+    // Our data is of type text
+    if (
+      wxTheClipboard->IsSupported(wxDF_TEXT) ||
+      wxTheClipboard->IsSupported(wxDF_UNICODETEXT)) 
+    {
+      wxTextDataObject textData;
+      wxTheClipboard->GetData(textData);
+      clipboardText = textData.GetText();
+    }
+    wxTheClipboard->Close();
+    return towxstring(data) == clipboardText;
+  }
+  return false;
 }
 
 /**
