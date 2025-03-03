@@ -110,26 +110,23 @@ jobs:
         Xcode/generate-configs -r $WX_BUILD_DIR/bin/wx-config > Xcode/pwsafe-release.xcconfig
         cat Xcode/pwsafe-release.xcconfig
 
-    - name: Generate Xcode project with CMake
+    - name: Create Xcode project with CMake
       working-directory: ${{ github.workspace }}
       run: |
-        cmake -D wxWidgets_CONFIG_EXECUTABLE=$WX_BUILD_DIR/bin/wx-config -G "Xcode" -S . -B build
+        cmake -D wxWidgets_CONFIG_EXECUTABLE=$WX_BUILD_DIR/bin/wx-config -D XML_XERCESC=OFF -G "Xcode" -S . -B build
 
-    - name: Build pwsafe
+    - name: Build pwsafe and related targets
       working-directory: ${{ github.workspace }}/build
       run: |
-        echo -n "Listing files in "
-        pwd
-        ls
-        xcodebuild -project pwsafe.xcodeproj -scheme pwsafe -configuration $XCODE_CONFIG
+        xcodebuild -project passwordsafe.xcodeproj -scheme ALL_BUILD -configuration $XCODE_CONFIG
 
-    - name: Build and run coretest
-      working-directory: ${{ github.workspace }}/build/src/test
-      run: make -f Makefile.macos
+    - name: Run coretest
+      working-directory: ${{ github.workspace }}/build
+      run: ctest --output-on-failure -C $XCODE_CONFIG
 
-    - name: Install language files and create dmg
-      working-directory: install/macosx
-      run: make
+    - name: Create DMG
+      working-directory: ${{ github.workspace }}/build
+      run: cpack -G DragNDrop -C $XCODE_CONFIG
 
     - name: Upload artifacts
       uses: 'actions/upload-artifact@v4'

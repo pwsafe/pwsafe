@@ -33,13 +33,22 @@ if (IPO_SUPPORTED)
   set_property(TARGET pwsafe-cli PROPERTY INTERPROCEDURAL_OPTIMIZATION_RELEASE True)
 endif (IPO_SUPPORTED)
 
-target_link_libraries(pwsafe-cli core os core uuid ${wxWidgets_LIBRARIES})
+target_link_libraries(pwsafe-cli core os core ${wxWidgets_LIBRARIES})
 if (XercesC_LIBRARY)
   target_link_libraries(pwsafe-cli ${XercesC_LIBRARY})
 endif (XercesC_LIBRARY)
 
+if (NOT APPLE)
+  target_link_libraries(pwsafe-cli uuid)
+endif (NOT APPLE)
+
+if (NOT APPLE AND NOT WIN32)
+  target_link_libraries(pwsafe-cli magic)
+endif (NOT APPLE AND NOT WIN32)
+
+
 if (NOT WIN32)
-	target_link_libraries(pwsafe-cli pthread magic)
+	target_link_libraries(pwsafe-cli pthread)
 else ()
 	target_link_libraries(pwsafe-cli Rpcrt4)
 	set_target_properties(pwsafe-cli PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}")
