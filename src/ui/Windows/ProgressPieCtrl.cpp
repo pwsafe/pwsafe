@@ -24,7 +24,7 @@ CProgressPieCtrl::CProgressPieCtrl()
   m_common(this),
   m_clrBackground(::GetSysColor(COLOR_3DFACE)),
   m_backgroundBrush(m_clrBackground),
-  m_clrText(RGB(0, 0, 0))
+  m_clrText(::GetSysColor(COLOR_WINDOWTEXT))
 {
 }
 

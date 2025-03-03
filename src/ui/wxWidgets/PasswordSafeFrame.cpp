@@ -62,6 +62,7 @@
 #include "core/Report.h"
 
 #include <algorithm>
+#include <math.h>
 
 ////@begin XPM images
 ////@end XPM images
@@ -2041,7 +2042,7 @@ std::pair<StringX, StringX> PasswordSafeFrame::GetTotpData(const CItemData *item
   return std::make_pair(
     totp,
     tostringx(wxNumberFormatter::ToString(
-      s_TotpCalculationInterval - s_TotpCalculationInterval * ratio, 0)
+      ceil(s_TotpCalculationInterval - s_TotpCalculationInterval * ratio), 0)
     )
   );
 }
@@ -2088,12 +2089,21 @@ void PasswordSafeFrame::OnTotpCountdownTimer(wxTimerEvent& WXUNUSED(event))
 void PasswordSafeFrame::OnTotpCopyAuthCodeTimer(wxTimerEvent& WXUNUSED(event))
 {
   static StringX s_LatestAuthCode(L"");
+  auto isAuthCodeInClipboard = Clipboard::GetInstance()->HasData(s_LatestAuthCode);
   auto item = GetSelectedEntry();
   // No item selected or item with
   // no TOTP configuration selected
   // or new item selected then stop
-  // updating the auth code in clipboard
-  if (item == nullptr || !HasItemTwoFactorKey(item) || (m_TotpLastSelectedItem != item)) {
+  // updating the auth code in clipboard.
+  // Stop also updating the auth code in
+  // clipboard if a code was ever copied
+  // (s_LatestAuthCode is not empty) and
+  // if this data is no longer present in
+  // the clipboard.
+  if (
+    (item == nullptr || !HasItemTwoFactorKey(item) || (m_TotpLastSelectedItem != item))
+    ||
+    (!isAuthCodeInClipboard && !s_LatestAuthCode.empty())) {
     m_TotpLastSelectedItem = nullptr;
     s_LatestAuthCode.clear();
     StopTotpCopyAuthCode();
@@ -2104,17 +2114,6 @@ void PasswordSafeFrame::OnTotpCopyAuthCodeTimer(wxTimerEvent& WXUNUSED(event))
   if (s_LatestAuthCode != totpData.first) {
     s_LatestAuthCode = totpData.first;
     DoCopyAuthCode(item);
-    return;
-  }
-  // Stop updating the auth code in the clipboard
-  // if the data in the clipboard has been changed
-  // by the user through a copy action or by deleting
-  // the clipboard
-  auto isAuthCodeInClipboard = Clipboard::GetInstance()->HasData(totpData.first);
-  if (!isAuthCodeInClipboard) {
-    m_TotpLastSelectedItem = nullptr;
-    s_LatestAuthCode.clear();
-    StopTotpCopyAuthCode();
     return;
   }
 }

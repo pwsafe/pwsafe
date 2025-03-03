@@ -2282,10 +2282,22 @@ void AddEditPropSheetDlg::UpdateTotp()
   static StringX s_LatestAuthCode(L"");
   auto pwsafe = wxGetApp().GetPasswordSafeFrame();
   auto totpData = pwsafe->GetTotpData(&m_ItemTotp);
+
   // Update the authentication code in the text input field
   // and the countdown on the 'Copy' authentication code button
   m_BasicTotpTextCtrl->ChangeValue(towxstring(totpData.first));
   m_BasicTotpButton->SetLabel(towxstring(totpData.second));
+
+  // Stop updating the auth code in the clipboard
+  // if the data in the clipboard has been changed
+  if (m_UpdateTotpInClipboard) {
+    auto isAuthCodeInClipboard = Clipboard::GetInstance()->HasData(s_LatestAuthCode);
+    if (!isAuthCodeInClipboard && !s_LatestAuthCode.empty()) {
+      m_UpdateTotpInClipboard = false;
+      s_LatestAuthCode.clear();
+    }
+  }
+
   // Update the authentication code in the clipboard only
   // if copying was triggered by the user and if it changed
   if (m_UpdateTotpInClipboard && (s_LatestAuthCode != totpData.first)) {
@@ -2306,7 +2318,7 @@ void AddEditPropSheetDlg::ApplyTwoFactorKey(CItemData& item)
   if (!twofactorkey.empty()) {
     item.SetTwoFactorKey(twofactorkey);
   }
-  else if (HasItemTwoFactorKey()) {
+  else if (GetPwSafe()->HasItemTwoFactorKey(&item)) {
     // Remove existing two factor key if text input field is empty in Edit mode
     item.ClearTwoFactorKey();
   }
@@ -2664,7 +2676,7 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
   {
     if (IsItemNormalOrBase()) {
       const StringX twofactorkey = tostringx(m_AdditionalTwoFactorKeyCtrl->GetValue());
-      if (twofactorkey != m_ItemTotp.GetTwoFactorKey()) {
+      if (twofactorkey != m_Item.GetTwoFactorKey()) {
         changes |= Changes::TwoFactorKey;
       }
     }

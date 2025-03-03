@@ -7,6 +7,10 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 PasswordSafe 3.68.0pre Release ???
 ==================================
 
+New features in 3.68.0pre
+-------------------------
+* [GH1439](https://github.com/pwsafe/pwsafe/issues/1439) PasswordSafe now uses the system text color and background instead of assuming black and white, respectively.
+
 Bugs Fixed in 3.68.0pre
 -----------------------
 * [GH1408](https://github.com/pwsafe/pwsafe/issues/1408) Time fields (such as password modification time) are now copied over correctly in sync operations between databases.
