@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - master
+  workflow_dispatch: # allow manual triggering for debugging
 
 permissions:
   contents: read
@@ -116,7 +117,11 @@ jobs:
 
     - name: Build pwsafe
       working-directory: ${{ github.workspace }}/build
-      run: xcodebuild -project pwsafe.xcodeproj -scheme pwsafe -configuration $XCODE_CONFIG
+      run: |
+        echo -n "Listing files in "
+        pwd
+        ls
+        xcodebuild -project pwsafe.xcodeproj -scheme pwsafe -configuration $XCODE_CONFIG
 
     - name: Build and run coretest
       working-directory: ${{ github.workspace }}/build/src/test
