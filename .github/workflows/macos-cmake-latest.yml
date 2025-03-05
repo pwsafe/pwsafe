@@ -128,9 +128,30 @@ jobs:
       working-directory: ${{ github.workspace }}/build
       run: cpack -G DragNDrop -C $XCODE_CONFIG
 
+    - name: Test DMG deployment
+    # This is disabled for now, as the DMG is not signed
+      if: false
+      run: |
+        DMG_PATH=$(find ${{ github.workspace }}/build -name "passwordsafe-*.dmg")
+        if [ -z "$DMG_PATH" ]; then
+          echo "DMG file not found!"
+          exit 1
+        fi
+        hdiutil attach "$DMG_PATH"
+        MOUNT_POINT=$(hdiutil info | grep -i "/Volumes/PasswordSafe" | awk '{print $1}')
+        if [ -d "$MOUNT_POINT" ]; then
+          echo "DMG mounted successfully at $MOUNT_POINT"
+          ls "$MOUNT_POINT"
+          hdiutil detach "$MOUNT_POINT"
+        else
+          echo "Failed to mount DMG"
+          exit 1
+        fi
+
+
     - name: Upload artifacts
       uses: 'actions/upload-artifact@v4'
       with:
         name: PasswordSafe-macOS.${{ github.sha }}
-        path: PasswordSafe-macOS*.dmg
+        path: ${{ github.workspace }}/build/passwordsafe-*.dmg
         if-no-files-found: error
