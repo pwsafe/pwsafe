@@ -183,32 +183,44 @@ TEST_F(FileV3Test, UnknownPersistencyTest)
 TEST_F(FileV3Test, AttachmentTest)
 {
   int attSizes[] = {0, 1, 8, 15, 16, 17, 32, 48 };
+  std::vector<CItemData> cItems;
 
-  for (unsigned long i=0; i<sizeof(attSizes) / sizeof(int); i++) {
-    printf("%lu\n", i);
-    int attSize = attSizes[i];
-
-    CItemData d1;
-    d1.CreateUUID();
-    d1.SetTitle(_T("future"));
-    d1.SetPassword(_T("possible"));
-    d1.SetAttMediaType(_T("image/png"));
+  for (auto attSize : attSizes)
+  {
+    CItemData ci;
+    ci.CreateUUID();
+    auto title = _T("future") + std::to_wstring(attSize);
+    ci.SetTitle(title.c_str());
+    ci.SetPassword(_T("possible"));
+    ci.SetAttMediaType(_T("image/png"));
     std::vector<unsigned char> buf(attSize, static_cast<unsigned char>(attSize));
-    d1.SetAttContent(buf.data(), buf.size());
-
-    PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
-    ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
-    EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(d1));
-    ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
-    ASSERT_TRUE(pws_os::FileExists(fname));
-
-    PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
-    ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
-    EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(item));
-    EXPECT_EQ(d1, item);
-    EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
-    EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+    ci.SetAttContent(buf.data(), buf.size());
+    cItems.push_back(ci);
   }
+
+  PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+
+  for (auto ci : cItems)
+  {
+    EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(ci));
+  }
+
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+  ASSERT_TRUE(pws_os::FileExists(fname));
+
+
+  PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+
+  for (auto ci : cItems)
+  {
+    EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(item));
+    EXPECT_EQ(ci, item);
+  }
+
+  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
 }
 
 TEST_F(FileV3Test, V4Extension)
