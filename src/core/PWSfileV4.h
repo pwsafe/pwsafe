@@ -52,8 +52,8 @@ public:
   size_t ReadContent(Fish *fish, unsigned char *cbcbuffer,
                      unsigned char *&content, size_t clen);
 
-  uint32 GetNHashIters() const {return m_nHashIters;}
-  void SetNHashIters(uint32 N) {m_nHashIters = N;}
+  uint32 GetNHashIters() const {return m_nHashIters * HASH_FACTOR;} // we're fine with rounding errors
+  void SetNHashIters(uint32 N) {m_nHashIters = N / HASH_FACTOR;}
   
   // Following for low-level details that changed between format versions
   virtual size_t timeFieldLen() const {return 5;} // Experimental
@@ -69,7 +69,7 @@ public:
     ~CKeyBlocks();
     CKeyBlocks & operator=(const CKeyBlocks &that);
     bool AddKeyBlock(const StringX &current_passkey, const StringX &new_passkey,
-                     uint nHashIters = MIN_HASH_ITERATIONS);
+                     uint nHashIters = MIN_V4_HASH_ITERATIONS);
     bool RemoveKeyBlock(const StringX &passkey); // fails if m_keyblocks.size() <= 1...
     // ... or if passkey doesn't match.
   private:
@@ -78,7 +78,7 @@ public:
     // V4 Format constants:
     enum {PWSaltLength = 32,KWLEN = (KLEN + 8)};
     struct KeyBlock { // See formatV4.txt
-    KeyBlock() : m_nHashIters(MIN_HASH_ITERATIONS) {}
+    KeyBlock() : m_nHashIters(MIN_V4_HASH_ITERATIONS) {}
       KeyBlock(const KeyBlock &kb);
       KeyBlock &operator=(const KeyBlock &kb);
       unsigned char m_salt[PWSaltLength];
@@ -105,6 +105,8 @@ public:
 
  private:
   enum  {NONCELEN = 32};
+  static constexpr uint32 HASH_FACTOR = 7; // Since number of hash iterations is defined for V3, this represents how much V4 hash is slower than V3. Otherwise, V4 is too slow for comfort.
+  static constexpr uint32 MIN_V4_HASH_ITERATIONS = MIN_HASH_ITERATIONS / HASH_FACTOR;
   CKeyBlocks m_keyblocks;
   // Following set by CKeyBlocks::GetKeys(), call before writing database
   unsigned char m_key[KLEN]; // K
