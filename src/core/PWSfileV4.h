@@ -52,7 +52,7 @@ public:
   size_t ReadContent(Fish *fish, unsigned char *cbcbuffer,
                      unsigned char *&content, size_t clen);
 
-  uint32 GetNHashIters() const {return m_nHashIters;}
+  uint32 GetNHashIters() const {return m_nHashIters * HASH_FACTOR;} // we're fine with rounding errors
   void SetNHashIters(uint32 N) {m_nHashIters = N / HASH_FACTOR;}
   
   // Following for low-level details that changed between format versions
