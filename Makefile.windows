@@ -114,7 +114,7 @@ endif
 
 .PHONY: all release bin-release bin-release-64 src-release installables signatures \
 	upload upload-sf upload-github upload-latest sha1sums msi msi-64 nsis nsis-64 \
-	update-pos i18n save-map save-map-64 help git-tag build cmpsrc-github
+	update-pos i18n save-map save-map-64 help git-tag build cmpsrc-github vt-checks
 
 all: help release installables signatures sha1sums
 
@@ -207,6 +207,16 @@ signatures:
 	$(GPG_SIGN) $(RELEASEDIR)/$(SRCRELNAME).zip
 	$(GPG_SIGN) $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
 	$(GPG_SIGN) $(RELEASEDIR)/pwsafe64-$(RELEASENAME).msi
+
+vt-checks:
+ifndef VT_API_KEY
+	$(error VT_API_KEY is not defined)
+else
+	python3 Misc/vt-scan.py $(RELEASEDIR)/pwsafe-$(RELEASENAME).exe
+	python3 Misc/vt-scan.py $(RELEASEDIR)/pwsafe64-$(RELEASENAME).exe
+	python3 Misc/vt-scan.py $(RELEASEDIR)/pwsafe-$(RELEASENAME).msi
+	python3 Misc/vt-scan.py $(RELEASEDIR)/pwsafe64-$(RELEASENAME).msi
+endif
 
 installables: nsis msi nsis-64 msi-64
 
