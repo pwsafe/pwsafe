@@ -42,7 +42,7 @@ def upload_and_scan_file(api_key, file_path):
         print("Error: Could not retrieve analysis ID.")
         return None
 
-    print(f"File uploaded successfully! Analysis ID: {analysis_id}")
+    print(f"done.\nAnalysis ID: {analysis_id}")
     return analysis_id
 
 def get_scan_results(api_key, analysis_id):
@@ -59,14 +59,14 @@ def get_scan_results(api_key, analysis_id):
         if status == "completed":
             return response_data
         elif status == "queued":
-            print("Scan is still in progress. Retrying in 10 seconds...")
-            time.sleep(10)
+            print(".", end="", flush=True)
+            time.sleep(5)
         else:
-            print("Error: Scan failed or unexpected status.")
+            print("\nError: Scan failed or unexpected status.")
             return None
 
 def pretty_print_stats(stats):
-    print("\nScan Results Summary:")
+    print("\n\nScan Results Summary:")
     print("-" * 30)
 
     # Red for malicious or suspicious detections
@@ -110,12 +110,12 @@ def main():
         print("Error: API key not provided. Please set the VT_API_KEY environment variable or provide it as an argument.")
         sys.exit(1)
 
-    print("Uploading file...")
+    print(f"Uploading {file_path}...", end="", flush=True)
     analysis_id = upload_and_scan_file(api_key, file_path)
     if not analysis_id:
         sys.exit(1)
 
-    print("Getting scan results...")
+    print("Getting scan results...", end="")
     results = get_scan_results(api_key, analysis_id)
     if not results:
         sys.exit(1)
