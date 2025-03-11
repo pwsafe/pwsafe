@@ -412,7 +412,7 @@ inline bool CItemData::IsTextField(unsigned char t)
     t == KBSHORTCUT || t == ATTREF || t == BASEUUID || t == ALIASUUID ||
     t == SHORTCUTUUID ||
     t == TOTPCONFIG || t == TOTPLENGTH || t == TOTPSTARTTIME || t == TOTPTIMESTEP ||
-    t == DATA_ATT_TITLE || t == DATA_ATT_MEDIATYPE || t == DATA_ATT_FILENAME ||
+    t == DATA_ATT_MTIME || t == DATA_ATT_CONTENT ||
     t >= LAST_DATA);
 }
 #endif /* __ITEMDATA_H */

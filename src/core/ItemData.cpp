@@ -521,6 +521,11 @@ StringX CItemData::GetFieldValue(FieldType ft) const
     case TOTPSTARTTIME:
       str = GetTotpStartTime();
       break;
+    case DATA_ATT_MTIME:
+      str = GetTime(DATA_ATT_MTIME, PWSUtil::TMC_LOCALE);
+      break;
+    case DATA_ATT_CONTENT:
+      break;
     default:
       ASSERT(0);
     }
