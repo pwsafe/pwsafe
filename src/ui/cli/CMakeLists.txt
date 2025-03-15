@@ -58,6 +58,7 @@ endif (NOT WIN32)
 
 # Add test executable
 add_executable(pwsafe-cli-test ${CLI_TEST_SRCS})
+set_target_properties(pwsafe-cli-test PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1)
 target_link_libraries(pwsafe-cli-test harden_interface gtest gtest_main core os core ${wxWidgets_LIBRARIES})
 
 if (XercesC_LIBRARY)
