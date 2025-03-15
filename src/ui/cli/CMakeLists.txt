@@ -81,7 +81,9 @@ else ()
 endif (NOT WIN32)
 
 # Add test target
+if (NOT WIN32) # Windows cli-test broken, doesn't recognize rc resources.
 add_test(NAME cli-test
   COMMAND pwsafe-cli-test
   WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
+endif (NOT WIN32)
