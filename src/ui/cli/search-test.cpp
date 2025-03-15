@@ -38,7 +38,6 @@ class SearchTest : public ::testing::Test {
     // Code here will be called immediately after the constructor (right
     // before each test).
     using std::make_tuple;
-    std::wostringstream os;
 
     AddEntryWithFields(core, {make_tuple(CItemData::TITLE, L"SomeTitle"),
                               make_tuple(CItemData::EMAIL, L"test@example.com"),
