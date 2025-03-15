@@ -1528,6 +1528,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Alias Password Error</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T093334Z" creationid="pm_kan" creationdate="20250315T093334Z">
+        <seg>Ошибка в параметрах псевдонима</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Alias name:</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211010T104925Z" creationid="pm_kan" creationdate="20211010T104925Z">
@@ -1624,6 +1632,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Allowed characters are a-z, A-Z, 2-7, space and dash.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T093110Z" creationid="pm_kan" creationdate="20250315T093110Z">
+        <seg>Разрешённые символы a-z, A-Z, 2-7, пробел, дефис.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Alternate Browser</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T113509Z">
@@ -1640,10 +1656,26 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>An alias cannot refer to itself!</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Псевдоним не может ссылаться на себя!</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>An entry or shortcut with the same Group, Title and Username already exists.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Элемент или ярлык с такими же значениями Группы, Заголовка и Имени пользователя уже существует.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>An error occurred obtaining the authentication code.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Ошибка при получении кода двухфакторной аутентификации.</seg>
       </tuv>
     </tu>
     <tu>
@@ -1785,10 +1817,50 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Attachment Content</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Содержимое вложения</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Attachment File Name</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Имя файла во вложении</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Attachment Media Type</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Тип файла во вложении</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Attachment Modification Time</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Время изменения вложения</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Attachment Reference</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20170930T164304Z" creationid="pm_kan" creationdate="20170930T164304Z">
         <seg>Ссылка на вложение</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Attachment Title</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Заголовок вложения</seg>
       </tuv>
     </tu>
     <tu>
@@ -1802,10 +1874,42 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Auth Code</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T094738Z" creationid="pm_kan" creationdate="20250315T092202Z">
+        <seg>Код аутентификации</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Auth Code copied</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T093757Z" creationid="pm_kan" creationdate="20250315T093753Z">
+        <seg>Код аутентификации скопирован</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Authentication Code</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Код аутентификации</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Authentication Code Config</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Параметры кода двухфакторной аутентификации</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Authentication Code Error</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Ошибка при получении кода двухфакторной аутентификации</seg>
       </tuv>
     </tu>
     <tu>
@@ -1834,10 +1938,26 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Authentication Key Error</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T093136Z" creationid="pm_kan" creationdate="20250315T093136Z">
+        <seg>Ошибка в ключе двухфакторной аутентификации</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Authentication Secret</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Ключ двухфакторной аутентификации</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Authentication code %ls is valid for %ls seconds</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T093719Z" creationid="pm_kan" creationdate="20250315T093719Z">
+        <seg>Код аутентификации %ls действителен %ls с</seg>
       </tuv>
     </tu>
     <tu>
@@ -2739,6 +2859,30 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Copy Aut&amp;h Code to Clipboard</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Копировать код &amp;аутентификации в буфер обмена</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Copy Aut&amp;h Code to Clipboard	Alt+2</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T093524Z" creationid="pm_kan" creationdate="20250315T093524Z">
+        <seg>Копировать код &amp;аутентификации в буфер обмена	Alt+2</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Copy Auth Code to Clipboard</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T092229Z" creationid="pm_kan" creationdate="20250315T092210Z">
+        <seg>Копировать код двухфакторной аутентификации в буфер обмена</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Copy Notes</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T103848Z">
@@ -2831,6 +2975,14 @@ offset approximately at %d</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20140705T101713Z" creationid="pm_kan" creationdate="20140705T101713Z">
         <seg>Копировать имя пользователя в буфер</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Copy authentication code to clipboard</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T092441Z" creationid="pm_kan" creationdate="20250315T092441Z">
+        <seg>Копировать код двухфакторной аутентификации в буфер обмена</seg>
       </tuv>
     </tu>
     <tu>
@@ -3620,6 +3772,30 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Display Auth</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T092353Z" creationid="pm_kan" creationdate="20250315T092353Z">
+        <seg>Показать код аутентификации</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Display Auth Code</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Показать код аутентификации</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Display Auth Code	Alt+Ctrl+2</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T093540Z" creationid="pm_kan" creationdate="20250315T093540Z">
+        <seg>Показать код аутентификации	Alt+Ctrl+2</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Display Filter Boolean Value</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210614T182257Z" creationid="pm_kan" creationdate="20210614T182257Z">
@@ -3704,6 +3880,14 @@ offset approximately at %d</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Показать часть пароля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Display subset of Password	Ctrl+B</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T093356Z" creationid="pm_kan" creationdate="20250315T093356Z">
+        <seg>Показать часть пароля	Ctrl+B</seg>
       </tuv>
     </tu>
     <tu>
@@ -4559,6 +4743,14 @@ offset approximately at %d</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20241116T190401Z" creationid="pm_kan" creationdate="20241116T190401Z">
         <seg>Через %d дней после изменения</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Every entry must have a title.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T091749Z" creationid="pm_kan" creationdate="20250315T091749Z">
+        <seg>У каждого элемента должен быть заголовок.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5439,6 +5631,22 @@ offset approximately at %d</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20130915T181351Z">
         <seg>Скрыть</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Hide authentication code</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T092713Z" creationid="pm_kan" creationdate="20250315T092713Z">
+        <seg>Скрыть код двухфакторной аутентификации</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Hide authentication secret</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T092537Z" creationid="pm_kan" creationdate="20250315T092537Z">
+        <seg>Скрыть секретный ключ для двухфакторной аутентификации</seg>
       </tuv>
     </tu>
     <tu>
@@ -6542,6 +6750,14 @@ or a corrupt database.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Missing authentication secret key.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Не указан секретный ключ для двухфакторной аутентификации.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Missing ending curly bracket for variable name</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
@@ -6670,10 +6886,10 @@ or a corrupt database.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>Name: %s; Filename: %s</seg>
+        <seg>Name: %ls; Filename: %ls</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
-        <seg>Имя: %s; Имя файла: %s</seg>
+        <seg>Имя: %ls; Имя файла: %ls</seg>
       </tuv>
     </tu>
     <tu>
@@ -6940,6 +7156,14 @@ added or existing entries removed during this process.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Нет</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Not supported by Wayland</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T095225Z" creationid="pm_kan" creationdate="20250315T091716Z">
+        <seg>Не поддерживается в Wayland</seg>
       </tuv>
     </tu>
     <tu>
@@ -7540,6 +7764,22 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Password implies this is an alias entry, but</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Предполагается, что это псевдоним, но</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Password implies this is an alias entry, but specifies a base entry with no title.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T091741Z" creationid="pm_kan" creationdate="20250315T091741Z">
+        <seg>Предполагается, что это псевдоним, но ссылка указывает на безымянный элемент.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Password is too short.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
@@ -7841,8 +8081,8 @@ to the clipboard.</seg>
       <tuv xml:lang="en-US">
         <seg>Project-Id-Version: 
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2024-11-16 22:29+0300
-PO-Revision-Date: 2024-11-16 21:30+0300
+POT-Creation-Date: 2025-03-15 12:16+0300
+PO-Revision-Date: 2025-03-15 12:30+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team:
 Language: ru
@@ -7850,11 +8090,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20241116T194844Z" creationid="pm_kan" creationdate="20241116T194844Z">
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T092055Z" creationid="pm_kan" creationdate="20250315T092055Z">
         <seg>Project-Id-Version: Password Safe
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2024-11-16 21:00+0300
-PO-Revision-Date: 2024-11-16 21:00+0300
+POT-Creation-Date: 2025-03-15 12:30+0300
+PO-Revision-Date: 2025-03-15 12:30+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team: none
 Language: ru_RU
@@ -8380,6 +8620,14 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Select Yes to continue with this password or No to cancel</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Выберите «Да» для использования этого пароля или «Нет» для отмены.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Select a Browser</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T114239Z">
@@ -8744,6 +8992,22 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Показать часть пароля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Show authentication code</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T092811Z" creationid="pm_kan" creationdate="20250315T092408Z">
+        <seg>Показать код двухфакторной аутентификации</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Show authentication secret</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T092520Z" creationid="pm_kan" creationdate="20250315T092520Z">
+        <seg>Показать секретный ключ для двухфакторной аутентификации</seg>
       </tuv>
     </tu>
     <tu>
@@ -9181,6 +9445,14 @@ database with matching entries from the other database.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>The authentication key is invalid.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T093045Z" creationid="pm_kan" creationdate="20250315T093045Z">
+        <seg>Некорректный ключ двухфакторной аутентификации.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>The authentication secret was not found</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
@@ -9558,6 +9830,14 @@ has duplicate entries with the same group/title/user combination.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>The referenced entry '%s:%s:%s' is itself an alias or shortcut.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T091820Z" creationid="pm_kan" creationdate="20250315T091820Z">
+        <seg>Элемент «%s:%s:%s», является псевдонимом или ссылкой.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>The two entries do not match.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20150418T091522Z">
@@ -9662,6 +9942,14 @@ has duplicate entries with the same group/title/user combination.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>This alias' target [%s:%s:%s] is not a normal entry.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Исходный элемент [%s:%s:%s] для данного псевдонима не является обычным элементом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>This alias's target [%s:%s:%s] is not a normal entry.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T163938Z" creationid="pm_kan" creationdate="20210615T163938Z">
@@ -9738,6 +10026,14 @@ Confirm to continue (alias entry's passwords will be replaced by this entry's pa
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T140310Z">
         <seg>Они были восстановлены по имеющимся данным.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>This is not supported.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T095529Z" creationid="pm_kan" creationdate="20250315T091829Z">
+        <seg>Создание псевдонимов для таких элементов не поддерживается.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11553,12 +11849,68 @@ able to abort it mid-way.</seg>
       </tuv>
     </tu>
     <tu>
+      <tuv xml:lang="en-US">
+        <seg>multiple entries exist with title=%s and username=%s or with group=%s and title=%s.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>существует несколько элементов с заголовком «%s» и именем пользователя «%s» или с группой «%s» и заголовком «%s».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>multiple entries exist with title=%s.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>существует несколько элементов с заголовком «%s».</seg>
+      </tuv>
+    </tu>
+    <tu>
       <note>"New Group" + _("name exists")</note>
       <tuv xml:lang="en-US">
         <seg>name exists</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210131T171120Z" creationid="pm_kan" creationdate="20210131T171120Z">
         <seg>уже существует</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>no entry exists in the root with title=%s and username=%s.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>не существует корневого элемента с заголовком «%s» и именем пользователя «%s».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>no entry exists with group=%s, title=%s and empty username.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>не существует элемента без имени пользователя с группой «%s» и заголовком «%s».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>no entry exists with group=%s, title=%s and username=%s.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>не существует элемента с группой «%s», заголовком «%s» и именем пользователя «%s».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>no entry exists with title=%s and username=%s or with group=%s, title=%s.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>не существует элемента с заголовком «%s» и именем пользователя «%s» или с группой «%s» и заголовком «%s».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>no entry exists with title=%s.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>не существует элемента с заголовком «%s».</seg>
       </tuv>
     </tu>
     <tu>

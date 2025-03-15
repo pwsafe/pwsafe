@@ -7214,7 +7214,7 @@ msgstr "Формат исходного контейнера «%s», имеет 
 #. Resource IDs: (5465)
 #, c-format
 msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "Элемент «%s:%s:%s», является псевдонимом или ссылкой. Создание пседвонимов для таких элементов не поддерживается."
+msgstr "Элемент «%s:%s:%s», является псевдонимом или ссылкой. Создание псевдонимов для таких элементов не поддерживается."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
