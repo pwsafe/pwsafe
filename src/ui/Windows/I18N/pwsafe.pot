@@ -1702,8 +1702,24 @@ msgstr ""
 msgid "Attachment"
 msgstr ""
 
+#. Resource IDs: (3089)
+msgid "Attachment Content"
+msgstr ""
+
+#. Resource IDs: (3087)
+msgid "Attachment File Name"
+msgstr ""
+
 #. Resource IDs: (5991)
 msgid "Attachment Filter"
+msgstr ""
+
+#. Resource IDs: (3086)
+msgid "Attachment Media Type"
+msgstr ""
+
+#. Resource IDs: (3088)
+msgid "Attachment Modification Time"
 msgstr ""
 
 #. Resource IDs: (65535)
@@ -1712,6 +1728,10 @@ msgstr ""
 
 #. Resource IDs: (3074)
 msgid "Attachment Reference"
+msgstr ""
+
+#. Resource IDs: (3085)
+msgid "Attachment Title"
 msgstr ""
 
 #. Resource IDs: (5976)
@@ -8333,6 +8353,9 @@ msgstr ""
 
 #. Resource IDs: (3455)
 #, c-format
+msgid "\tName: %ls; Filename: %ls"
+msgstr ""
+
 msgid "\tName: %s; Filename: %s"
 msgstr ""
 

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2024-10-20 21:52+0300\n"
+"PO-Revision-Date: 2025-03-12 20:11+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: cs\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.5\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -243,7 +256,7 @@ msgstr " 'Skupina'"
 
 #. Resource IDs: (5980)
 msgid " 'Has Attachments'"
-msgstr " 'Má přílohy'"
+msgstr " \"Má přílohy\""
 
 #. Resource IDs: (5941)
 msgid " 'Keyboard Shortcut'"
@@ -335,7 +348,7 @@ msgstr " (výchozí nastavení aplikace)"
 
 #. Resource IDs: (4115)
 msgid " (at least N restrictions may be ignored)"
-msgstr ""
+msgstr " (alespoň N omezení lze ignorovat)"
 
 #. Resource IDs: (5781)
 #, c-format
@@ -393,7 +406,7 @@ msgstr "# znaky: %d"
 
 #. Resource IDs: (1198)
 msgid "#attachments"
-msgstr ""
+msgstr "#attachments"
 
 #. Resource IDs: (1460)
 msgid "#description"
@@ -756,7 +769,7 @@ msgstr "&Přidej záznam..."
 
 #. Resource IDs: (32139 - MenuEx)
 msgid "&Add/Edit Font"
-msgstr ""
+msgstr "&Přidat/upravit písmo"
 
 #. Resource IDs: (1026, 1306)
 msgid "&Apply"
@@ -788,7 +801,7 @@ msgstr "&Vymaž historii"
 
 #. Resource IDs: (32008 - MenuEx)
 msgid "&Clear Recently Opened List"
-msgstr ""
+msgstr "&Vymazat nedávno otevřený seznam"
 
 #. Resource IDs: (5606)
 msgid "&Clear current"
@@ -840,13 +853,13 @@ msgstr "&Nepřipomínej znovu"
 
 #. Resource IDs: (65535)
 msgid "&Double-Click Action:"
-msgstr ""
+msgstr "Dvojklik:"
 
 #. Resource IDs: (65535)
 msgid ""
 "&Double-Click\n"
 "Action:"
-msgstr ""
+msgstr "Dvojklik:"
 
 #. Resource IDs: (32107 - MenuEx)
 msgid "&Dragbar visible"
@@ -862,7 +875,7 @@ msgstr "&Duplikuj skupinu"
 
 #. Resource IDs: (1356)
 msgid "&E-mail:"
-msgstr ""
+msgstr "&E-mail:"
 
 #. Resource IDs: (1342, 1472, 32050 - PopupMenuEx)
 msgid "&Edit"
@@ -882,7 +895,7 @@ msgstr "&Soubor"
 
 #. Resource IDs: (32028 - MenuEx)
 msgid "&Filtered entries to PasswordSafe..."
-msgstr ""
+msgstr "&Filtrované položky do PasswordSafe..."
 
 #. Resource IDs: (32112 - PopupMenuEx)
 msgid "&Filters"
@@ -938,7 +951,7 @@ msgstr "&Seznam"
 
 #. Resource IDs: (32027 - MenuEx)
 msgid "&Lock"
-msgstr ""
+msgstr "&Zámek"
 
 #. Resource IDs: (32150 - PopupMenuEx)
 msgid "&Manage"
@@ -958,7 +971,7 @@ msgstr "&Minimalizovat"
 
 #. Resource IDs: (1229)
 msgid "&Never"
-msgstr ""
+msgstr "&Nikdy"
 
 #. Resource IDs: (1041, 1341, 5553)
 msgid "&New"
@@ -986,7 +999,7 @@ msgstr "&Ne"
 
 #. Resource IDs: (32138 - MenuEx)
 msgid "&Notes Font"
-msgstr ""
+msgstr "&Notes Písmo"
 
 #. Resource IDs: (1354)
 msgid "&Notes:"
@@ -1002,7 +1015,7 @@ msgstr "&Otevřít"
 
 #. Resource IDs: (32002 - Menu)
 msgid "&Open Another"
-msgstr ""
+msgstr "&Otevřít další"
 
 #. Resource IDs: (32002 - MenuEx)
 msgid "&Open..."
@@ -1039,6 +1052,8 @@ msgstr "&Vlastnosti"
 #. Resource IDs: (32090 - Menu)
 msgid "&Protect All Entries"
 msgstr ""
+"\n"
+"Zamknout všechny záznamy"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "&Recent Entries History"
@@ -1050,7 +1065,7 @@ msgstr "&Poslední sejfy"
 
 #. Resource IDs: (1297)
 msgid "&Recurring"
-msgstr ""
+msgstr "Opakující se"
 
 #. Resource IDs: (32111 - MenuEx)
 msgid "&Refresh"
@@ -1926,9 +1941,25 @@ msgstr "Musí být povolen alespoň jeden znak z následujících: malá a valk�
 msgid "Attachment"
 msgstr "Příloha"
 
+#. Resource IDs: (3089)
+msgid "Attachment Content"
+msgstr "Obsah přílohy"
+
+#. Resource IDs: (3087)
+msgid "Attachment File Name"
+msgstr "Název souboru přílohy"
+
 #. Resource IDs: (5991)
 msgid "Attachment Filter"
-msgstr ""
+msgstr "Filtr příloh"
+
+#. Resource IDs: (3086)
+msgid "Attachment Media Type"
+msgstr "Typ média přílohy"
+
+#. Resource IDs: (3088)
+msgid "Attachment Modification Time"
+msgstr "Doba úpravy přílohy"
 
 #. Resource IDs: (65535)
 msgid "Attachment Properties"
@@ -1936,11 +1967,15 @@ msgstr "Vlastnosti přílohy"
 
 #. Resource IDs: (3074)
 msgid "Attachment Reference"
-msgstr ""
+msgstr "Odkaz na přílohu"
+
+#. Resource IDs: (3085)
+msgid "Attachment Title"
+msgstr "Název přílohy"
 
 #. Resource IDs: (5976)
 msgid "Attachment not found"
-msgstr ""
+msgstr "Soubor přílohy nebyl nalezen"
 
 #. Resource IDs: (61473)
 msgid "Attempted an unsupported operation."
@@ -2115,7 +2150,7 @@ msgstr "Jdi na adresu + Automaticky zadej"
 
 #. Resource IDs: (32074 - Menu, 32074 - MenuEx, 5679)
 msgid "Browse to URL w/Alt Browser"
-msgstr ""
+msgstr "Přejít na adresu URL s prohlížečem Alt"
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
@@ -2192,6 +2227,8 @@ msgid ""
 "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\n"
 "Copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
+"Nelze najít soubor definice schématu XML (%ls) v adresáři aplikace PasswordSafe.\n"
+"Zkopírujte jej z instalačního souboru nebo znovu nainstalujte aplikaci PasswordSafe."
 
 #. Resource IDs: (3320)
 msgid "Can't obtain the schema version."
@@ -2301,6 +2338,9 @@ msgid ""
 "* indicates the database has been changed\n"
 "° indicates a database preference has been changed"
 msgstr ""
+"Změnit stav od posledního uložení:\n"
+"* označuje, že databáze byla změněna\n"
+"° označuje, že předvolba databáze byla změněna"
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -2340,11 +2380,11 @@ msgstr "Čínština ChaJei"
 
 #. Resource IDs: (5376)
 msgid "Choose a Backup to restore:"
-msgstr ""
+msgstr "Vyberte zálohu, kterou chcete obnovit:"
 
 #. Resource IDs: (5791)
 msgid "Choose a Database to Validate:"
-msgstr ""
+msgstr "Vyberte databázi k ověření:"
 
 #. Resource IDs: (5375)
 msgid "Choose a Name for this Backup:"
@@ -2352,7 +2392,7 @@ msgstr "Vyberte název této zálohy:"
 
 #. Resource IDs: (5335)
 msgid "Choose a Text File to Import"
-msgstr ""
+msgstr "Výběr textového souboru k importu"
 
 #. Resource IDs: (5354)
 msgid "Choose a database to compare with current database"
@@ -3123,7 +3163,7 @@ msgstr ""
 
 #. Resource IDs: (5876)
 msgid "Description"
-msgstr ""
+msgstr "Popis"
 
 #. Resource IDs: (65535)
 msgid "Description:"
@@ -3159,7 +3199,7 @@ msgstr "Dialog"
 
 #. Resource IDs: (6063)
 msgid "Discard"
-msgstr ""
+msgstr "Zrušit"
 
 #. Resource IDs: (61869)
 #, c-format
@@ -4312,7 +4352,7 @@ msgstr "HK"
 
 #. Resource IDs: (5979)
 msgid "Has Attachment(s)"
-msgstr ""
+msgstr "Má přílohu (přílohy)"
 
 #. Resource IDs: (8259)
 msgid "Hausa"
@@ -5102,7 +5142,7 @@ msgstr "Hlavní heslo:"
 
 #. Resource IDs: (5800)
 msgid "Master password needed to save. Unlock database and try again"
-msgstr ""
+msgstr "Pro uložení je nutné hlavní heslo. Odemkněte databázi a zkuste to znovu"
 
 #. Resource IDs: (1212)
 msgid "Max."
@@ -5140,11 +5180,11 @@ msgstr "Maximální hodnot pro první číslo a pravidlo 'Mezi'"
 
 #. Resource IDs: (5984)
 msgid "Media Type"
-msgstr ""
+msgstr "Typ média"
 
 #. Resource IDs: (65535)
 msgid "Media Type:"
-msgstr ""
+msgstr "Typ média:"
 
 #. Resource IDs: (5680)
 msgid "Menu Item"
@@ -5824,7 +5864,7 @@ msgstr "Password Safe zálohy (*.bak)|*.bak||"
 
 #. Resource IDs: (5061)
 msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Databáze bezpečné pro hesla (*.dat)|*.dat|Všechny soubory (*.*)|*.*||"
 
 #. Resource IDs: (5050)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
@@ -6726,7 +6766,7 @@ msgstr "Klávesová zkratka"
 
 #. Resource IDs: (5997)
 msgid "Shortcut WARNING...."
-msgstr ""
+msgstr "Zkratka VAROVÁNÍ...."
 
 #. Resource IDs: (5520)
 #, c-format
@@ -6913,11 +6953,11 @@ msgstr ""
 
 #. Resource IDs: (5566)
 msgid "Specify text"
-msgstr ""
+msgstr "Určení textu"
 
 #. Resource IDs: (5108)
 msgid "Specify the browser to use when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'. You can specify command line options to the browser via the Browser command line parameters field. Do not enclose this value in single or double quotes unless your chosen browser requires them."
-msgstr ""
+msgstr "Určete prohlížeč, který se má použít, když pole URL položky začíná znakem [alt], např. '[alt]http://foo.com'. Možnosti příkazového řádku prohlížeče můžete zadat pomocí pole Parametry příkazového řádku prohlížeče. Neuzavírejte tuto hodnotu do jednoduchých nebo dvojitých uvozovek, pokud to vámi zvolený prohlížeč nevyžaduje."
 
 #. Resource IDs: (5390)
 msgid "Specify the destination location to contain all backups."
@@ -7486,7 +7526,7 @@ msgstr "Tato hodnota zkratky není k dispozici, jelikož je již přiřazena apl
 #. Resource IDs: (5499)
 #, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr ""
+msgstr "Cíl tohoto aliasu [%s:%s:%s] není normální položka."
 
 #. Resource IDs: (5355)
 msgid "This database is the same as the current database!"
@@ -9268,7 +9308,7 @@ msgstr "\tSkupina='%ls', Název='%ls', Uživatel='%ls' %ls"
 
 #. Resource IDs: (3455)
 #, c-format
-msgid "\tName: %s; Filename: %s"
+msgid "\tName: %ls; Filename: %ls"
 msgstr ""
 
 #. Resource IDs: (5538)
@@ -9709,11 +9749,11 @@ msgstr "v&2 formát..."
 
 #. Resource IDs: (32025 - MenuEx, 5977)
 msgid "v&3 format..."
-msgstr ""
+msgstr "formát v&3..."
 
 #. Resource IDs: (32026 - MenuEx, 5978)
 msgid "v&4 format (EXPERIMENTAL)..."
-msgstr ""
+msgstr "formát v&4 (EXPERIMENTÁLNÍ)..."
 
 #. Resource IDs: (3045)
 msgid "validation"

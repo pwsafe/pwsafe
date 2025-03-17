@@ -4,12 +4,14 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.68.0pre Release ???
-==================================
+PasswordSafe 3.68.0pre Release March 9 2025
+===========================================
 
 New features in 3.68.0pre
 -------------------------
 * [GH1439](https://github.com/pwsafe/pwsafe/issues/1439) PasswordSafe now uses the system text color and background instead of assuming black and white, respectively.
+* In this release, PasswordSafe will significantly increase the standard (default) unlock difficulty of PasswordSafe databases. This will cause a noticeable slowdown when reading and writing databases.
+ This is necessary to maintain the same level of security on today's hardware as when PasswordSafe was originally released.
 
 Bugs Fixed in 3.68.0pre
 -----------------------

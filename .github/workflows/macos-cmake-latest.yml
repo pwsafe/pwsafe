@@ -1,0 +1,157 @@
+name: Build pwsafe with CMake on macOS
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+  workflow_dispatch: # allow manual triggering for debugging
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    env:
+      # If you need to rebuild wxWidgets for some reason, say you changed the build params, just increment FORCE_REBUILD_WX
+      # Some useful debug parameters:
+      # "WX_DEBUG_FLAG=--enable-debug --enable-debug_info"
+      # "XCODE_CONFIG=Debug"
+      # "XCODE_CONFIG=Debug-no-yubi"
+      MACOS_VER_MIN: 10.15
+      WX_VERS: 3.2.5
+      WX_SRC_DIR: ${{ github.workspace }}/wxWidgets
+      WX_BUILD_DIR: ${{ github.workspace }}/wxWidgets/build-wx
+      WX_ARCH: "arm64,x86_64"
+      XCODE_CONFIG: Release
+      FORCE_REBUILD_WX: 1
+      WX_DEBUG_FLAG: "--disable-debug" 
+      XCODE_VER: "15.4"
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set build parameters
+
+      run: |
+        echo "HOST_NCPU=`sysctl -n hw.ncpu`" >>$GITHUB_ENV
+
+
+    - name: Force compatible Xcode version
+      run: sudo xcode-select -s /Applications/Xcode_${XCODE_VER}.app
+
+    - name: Print Xcode version in use
+      run: xcode-select -p
+      
+    - name: Install dependencies for creating dmg and googletest
+      # gettext is already installed in the runner image
+      run: brew install create-dmg googletest
+
+    - name: Install tools for Yubikey build
+      run: brew install autoconf automake libtool
+
+    # The Yubico repos don't maintain tags, so checkout specific commits for the sake of safety and repeatability
+    # These are the master HEAD commits as of 2024-02-08
+    - name: Build libyubikey from upstream
+      run: |
+        git clone --no-checkout https://github.com/Yubico/yubico-c.git
+        cd yubico-c
+        git checkout e4334554857b0367085cbf845bf87dd92433e020
+        autoreconf --install
+        ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
+        make -j $HOST_CPU check
+        sudo make install
+
+    - name: Build ykpers from upstream
+      run: |
+        git clone --no-checkout https://github.com/Yubico/yubikey-personalization.git
+        cd yubikey-personalization
+        git checkout db0c0d641d47ee52e43af94dcee603d76186b6d3
+        autoreconf --install
+        ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
+        make -j $HOST_NCPU check
+        sudo make install
+
+    - name: Cache wxWidgets build
+      id: cache-wxWidgets-build
+      uses: actions/cache@v4
+      with:
+        path: |
+          ${{ env.WX_BUILD_DIR }}
+          ${{ env.WX_SRC_DIR }}/locale
+        key: wx-${{ env.WX_VERS }}-macOS-${{ env.MACOS_VER_MIN }}-Xcode-${{ env.XCODE_VER }}-build-${{ env.FORCE_REBUILD_WX }}
+
+    - name: Checkout wxWidgets
+      if: steps.cache-wxWidgets-build.outputs.cache-hit != 'true'
+      run: git clone --branch v$WX_VERS --single-branch https://github.com/wxWidgets/wxWidgets.git $WX_SRC_DIR
+
+    - name: Build wxWidgets
+      if: steps.cache-wxWidgets-build.outputs.cache-hit != 'true'
+      working-directory: ${{ env.WX_SRC_DIR }}
+      run: |
+        git -C $WX_SRC_DIR submodule update --init
+        rm -rf $WX_BUILD_DIR
+        mkdir -p $WX_BUILD_DIR
+        cd $WX_SRC_DIR
+        ./configure --enable-universal_binary=$WX_ARCH --prefix=$WX_BUILD_DIR --disable-shared --enable-unicode --with-macosx-version-min=$MACOS_VER_MIN --with-libpng=builtin --with-libjpeg=builtin --with-libtiff=builtin --with-regex=builtin --without-liblzma $WX_DEBUG_FLAG
+        make -j $HOST_NCPU
+        cd locale; make allmo; cd ..
+        sudo make install
+        du -sh $WX_BUILD_DIR
+
+    - name: Generate and print xcconfigs
+      working-directory: ${{ github.workspace }}
+      run: |
+        Xcode/generate-configs -r $WX_BUILD_DIR/bin/wx-config > Xcode/pwsafe-release.xcconfig
+        cat Xcode/pwsafe-release.xcconfig
+
+    - name: Create Xcode project with CMake
+      working-directory: ${{ github.workspace }}
+      run: |
+        cmake -D wxWidgets_CONFIG_EXECUTABLE=$WX_BUILD_DIR/bin/wx-config -D XML_XERCESC=OFF -G "Xcode" -S . -B build
+
+    - name: Build pwsafe and related targets
+      working-directory: ${{ github.workspace }}/build
+      run: |
+        xcodebuild -project passwordsafe.xcodeproj -scheme ALL_BUILD -configuration $XCODE_CONFIG
+
+    - name: Run coretest
+      working-directory: ${{ github.workspace }}/build
+      run: ctest --output-on-failure -C $XCODE_CONFIG
+
+    - name: Create DMG
+      working-directory: ${{ github.workspace }}/build
+      run: cpack -G DragNDrop -C $XCODE_CONFIG
+
+    - name: Test DMG deployment
+    # This is disabled for now, as the DMG is not signed
+      if: false
+      run: |
+        DMG_PATH=$(find ${{ github.workspace }}/build -name "passwordsafe-*.dmg")
+        if [ -z "$DMG_PATH" ]; then
+          echo "DMG file not found!"
+          exit 1
+        fi
+        hdiutil attach "$DMG_PATH"
+        MOUNT_POINT=$(hdiutil info | grep -i "/Volumes/PasswordSafe" | awk '{print $1}')
+        if [ -d "$MOUNT_POINT" ]; then
+          echo "DMG mounted successfully at $MOUNT_POINT"
+          ls "$MOUNT_POINT"
+          hdiutil detach "$MOUNT_POINT"
+        else
+          echo "Failed to mount DMG"
+          exit 1
+        fi
+
+
+    - name: Upload artifacts
+      uses: 'actions/upload-artifact@v4'
+      with:
+        name: PasswordSafe-macOS.${{ github.sha }}
+        path: ${{ github.workspace }}/build/passwordsafe-*.dmg
+        if-no-files-found: error

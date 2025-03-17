@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2024-10-20 22:12+0300\n"
+"PO-Revision-Date: 2025-03-12 20:29+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: tr\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.5\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -271,19 +284,19 @@ msgstr " 'semboller'"
 
 #. Resource IDs: (4105)
 msgid " (EasyVision Symbols)"
-msgstr ""
+msgstr " (EasyVision Sembolleri)"
 
 #. Resource IDs: (4106)
 msgid " (Pronounceable Symbols)"
-msgstr ""
+msgstr " (Telaffuz Edilebilir Semboller)"
 
 #. Resource IDs: (4011)
 msgid " (application default)"
-msgstr ""
+msgstr " (uygulama varsayılanı)"
 
 #. Resource IDs: (4115)
 msgid " (at least N restrictions may be ignored)"
-msgstr ""
+msgstr " (en az N kısıtlama göz ardı edilebilir)"
 
 #. Resource IDs: (5781)
 #, c-format
@@ -341,7 +354,7 @@ msgstr "# karakterler: %d"
 
 #. Resource IDs: (1198)
 msgid "#attachments"
-msgstr ""
+msgstr "#attachments"
 
 #. Resource IDs: (1460)
 msgid "#description"
@@ -431,7 +444,7 @@ msgstr ""
 #. Resource IDs: (62186)
 #, c-format
 msgid "%Ts [Recovered]"
-msgstr ""
+msgstr "%ts [Kurtarıldı]"
 
 #. Resource IDs: (5450)
 #, c-format
@@ -481,12 +494,12 @@ msgstr "%ls - %ls kopyalandı"
 #. Resource IDs: (5907)
 #, c-format
 msgid "%ls - Drag & Drop %ls"
-msgstr ""
+msgstr "%ls - Sürükle & Bırak %ls"
 
 #. Resource IDs: (3431)
 #, c-format
 msgid "%ls - Imported %ls"
-msgstr ""
+msgstr "%ls - İthal %ls"
 
 #. Resource IDs: (3432)
 #, c-format
@@ -537,7 +550,7 @@ msgstr ""
 #. Resource IDs: (5878)
 #, c-format
 msgid "%s (%s empty)"
-msgstr ""
+msgstr "%s (%s boş)"
 
 #. Resource IDs: (5934)
 #, c-format
@@ -547,7 +560,7 @@ msgstr "%s (%s)"
 #. Resource IDs: (5064)
 #, c-format
 msgid "%s (*%s)|*%s||"
-msgstr ""
+msgstr "%s (*%s)|*%s||"
 
 #. Resource IDs: (5841)
 #, c-format
@@ -736,7 +749,7 @@ msgstr "&Geçmişi Temizle"
 
 #. Resource IDs: (32008 - MenuEx)
 msgid "&Clear Recently Opened List"
-msgstr ""
+msgstr "&Son Açılan Listeyi Temizle"
 
 #. Resource IDs: (5606)
 msgid "&Clear current"
@@ -810,7 +823,7 @@ msgstr "&Grubun Kopyasını Üret"
 
 #. Resource IDs: (1356)
 msgid "&E-mail:"
-msgstr ""
+msgstr "&E-posta:"
 
 #. Resource IDs: (1342, 1472, 32050 - PopupMenuEx)
 msgid "&Edit"
@@ -830,7 +843,7 @@ msgstr "&Dosya"
 
 #. Resource IDs: (32028 - MenuEx)
 msgid "&Filtered entries to PasswordSafe..."
-msgstr ""
+msgstr "&PasswordSafe'e filtrelenmiş girişler..."
 
 #. Resource IDs: (32112 - PopupMenuEx)
 msgid "&Filters"
@@ -886,7 +899,7 @@ msgstr "&Listele"
 
 #. Resource IDs: (32027 - MenuEx)
 msgid "&Lock"
-msgstr ""
+msgstr "&Kilitle"
 
 #. Resource IDs: (32150 - PopupMenuEx)
 msgid "&Manage"
@@ -934,7 +947,7 @@ msgstr "&Hayır"
 
 #. Resource IDs: (32138 - MenuEx)
 msgid "&Notes Font"
-msgstr ""
+msgstr "&Notes Yazı Tipi"
 
 #. Resource IDs: (1354)
 msgid "&Notes:"
@@ -1022,7 +1035,7 @@ msgstr "&Tekrar Dene"
 
 #. Resource IDs: (1358)
 msgid "&Run Cmd:"
-msgstr ""
+msgstr "Komut Çalıştır:"
 
 #. Resource IDs: (32077 - Menu, 32077 - MenuEx, 5656)
 msgid "&Run Command"
@@ -1074,7 +1087,7 @@ msgstr "&Boyut: "
 
 #. Resource IDs: (32141 - PopupMenuEx)
 msgid "&Subviews"
-msgstr ""
+msgstr "&Alt Görünümler"
 
 #. Resource IDs: (32128 - MenuEx)
 msgid "&Synchronize"
@@ -1118,7 +1131,7 @@ msgstr "&Göster"
 
 #. Resource IDs: (32098 - Menu)
 msgid "&View Attachment"
-msgstr ""
+msgstr "&Eki Görüntüle"
 
 #. Resource IDs: (32053 - MenuEx)
 msgid "&View Entry..."
@@ -1228,7 +1241,7 @@ msgstr ")"
 
 #. Resource IDs: (3451)
 msgid "*** Invalid XML characters found - see exported XML file for more details ***"
-msgstr ""
+msgstr "Geçersiz XML karakterleri bulundu - daha fazla ayrıntı için dışa aktarılan XML dosyasına bakın ***"
 
 #. Resource IDs: (5933)
 msgid "*** Operation aborted by User ***"
@@ -1556,7 +1569,7 @@ msgstr ""
 #. Resource IDs: (5470)
 #, c-format
 msgid "<a href=\"%s\">Check</a> for the latest version."
-msgstr ""
+msgstr "En son sürümü <a href=\"%s\">kontrol edin</a>."
 
 #. Resource IDs: (1154)
 msgid ">"
@@ -1725,7 +1738,7 @@ msgstr "Tüm Dosyalar"
 
 #. Resource IDs: (5974)
 msgid "All Image Files"
-msgstr ""
+msgstr "Tüm Görüntü Dosyaları"
 
 #. Resource IDs: (5414)
 msgid "All available columns are being displayed."
@@ -1864,7 +1877,7 @@ msgstr "Batı Ermenicesi"
 
 #. Resource IDs: (5268)
 msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Select another character."
-msgstr ""
+msgstr "Çift tırnak karakteri tüm not alanını sınırlamak için kullanıldığından, birden çok satırı sınırlamak için kullanılamaz. Başka bir karakter seçin."
 
 #. Resource IDs: (5292)
 msgid ""
@@ -1878,21 +1891,41 @@ msgstr ""
 msgid "Attachment"
 msgstr "Ek dosya"
 
+#. Resource IDs: (3089)
+msgid "Attachment Content"
+msgstr "Eklenti İçeriği"
+
+#. Resource IDs: (3087)
+msgid "Attachment File Name"
+msgstr "Ek Dosya Adı"
+
 #. Resource IDs: (5991)
 msgid "Attachment Filter"
-msgstr ""
+msgstr "Ek Filtresi"
+
+#. Resource IDs: (3086)
+msgid "Attachment Media Type"
+msgstr "Ek Ortam Türü"
+
+#. Resource IDs: (3088)
+msgid "Attachment Modification Time"
+msgstr "Ek Değiştirme Süresi"
 
 #. Resource IDs: (65535)
 msgid "Attachment Properties"
-msgstr ""
+msgstr "Ek Özellikleri"
 
 #. Resource IDs: (3074)
 msgid "Attachment Reference"
-msgstr ""
+msgstr "Ek Referansı"
+
+#. Resource IDs: (3085)
+msgid "Attachment Title"
+msgstr "Attachment  Başlık"
 
 #. Resource IDs: (5976)
 msgid "Attachment not found"
-msgstr ""
+msgstr "Ek bulunamadı"
 
 #. Resource IDs: (61473)
 msgid "Attempted an unsupported operation."
@@ -2055,11 +2088,11 @@ msgstr "URL'ye Git"
 
 #. Resource IDs: (32073 - Menu, 5666)
 msgid "Browse to URL + &AutoType"
-msgstr ""
+msgstr "URL'ye git + Otomatik Doldur"
 
 #. Resource IDs: (32073 - MenuEx)
 msgid "Browse to URL + AutoType"
-msgstr ""
+msgstr "URL'ye git + Otomatik Doldur"
 
 #. Resource IDs: (4008)
 msgid "Browse to URL + Autotype"
@@ -2067,7 +2100,7 @@ msgstr "URL'ye git + Otomatik Doldur"
 
 #. Resource IDs: (32074 - Menu, 32074 - MenuEx, 5679)
 msgid "Browse to URL w/Alt Browser"
-msgstr ""
+msgstr "Alt Tarayıcı ile URL'ye Gözat"
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
@@ -2075,7 +2108,7 @@ msgstr "Tarayıcı Komut Satırı parametreleri:"
 
 #. Resource IDs: (1020)
 msgid "Built on "
-msgstr ""
+msgstr "Üzerine inşa edilmiştir "
 
 #. Resource IDs: (8317)
 msgid "Bulgarian"
@@ -2103,7 +2136,7 @@ msgstr "&Panoyu Temizle"
 
 #. Resource IDs: (1174)
 msgid "C&opy All"
-msgstr ""
+msgstr "C&opy Tümü"
 
 #. Resource IDs: (1386)
 msgid "C++ Terminate"
@@ -2144,6 +2177,8 @@ msgid ""
 "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\n"
 "Copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
+"XML Şema Tanım dosyası (%ls) PasswordSafe Uygulama Dizininizde bulunamıyor.\n"
+"Kurulum dosyanızdan kopyalayın veya PasswordSafe'i yeniden yükleyin."
 
 #. Resource IDs: (3320)
 msgid "Can't obtain the schema version."
@@ -2241,7 +2276,7 @@ msgstr "Ana Parolayı Değiştir"
 #. Resource IDs: (6039)
 #, c-format
 msgid "Change a %s to a %s"
-msgstr ""
+msgstr "Bir %s %s değiştirme"
 
 #. Resource IDs: (5848)
 msgid "Change database mode?"
@@ -2339,7 +2374,7 @@ msgstr ""
 
 #. Resource IDs: (1141)
 msgid "Clear &History"
-msgstr ""
+msgstr "Geçmişi Temizle"
 
 #. Resource IDs: (8001)
 msgid "Clear Buffer"
@@ -2628,7 +2663,7 @@ msgstr "Ögeler silinirken onay iste"
 #. Resource IDs: (5635)
 #, c-format
 msgid "Confirm deletion of the %s filter %s?"
-msgstr ""
+msgstr "%s filtresinin silinmesi onaylansın %s?"
 
 #. Resource IDs: (5322)
 msgid "Confirm old master password"
@@ -3026,7 +3061,7 @@ msgstr "Varsayılan"
 
 #. Resource IDs: (65535)
 msgid "Default Autotype delay (mS):"
-msgstr ""
+msgstr "Varsayılan Otomatik Yazma gecikmesi (mS):"
 
 #. Resource IDs: (1447)
 msgid "Default Autotype string:"
@@ -3148,6 +3183,8 @@ msgid ""
 "Display policy settings or List entries using this named policy\n"
 "(The latter may take a while depending on the number of entries in this database)"
 msgstr ""
+"Bu adlandırılmış ilkeyi kullanarak ilke ayarlarını görüntüle veya Girdileri listele\n"
+"(İkincisi, bu veritabanındaki girişlerin sayısına bağlı olarak biraz zaman alabilir)"
 
 #. Resource IDs: (32067 - Menu, 32067 - MenuEx)
 msgid "Display subset of Password"
@@ -3187,7 +3224,7 @@ msgstr ""
 
 #. Resource IDs: (6023)
 msgid "Do you wish to save the changes made to this restored database as new database?"
-msgstr ""
+msgstr "Bu geri yüklenen veritabanında yapılan değişiklikleri yeni veritabanı olarak kaydetmek istiyor musunuz?"
 
 #. Resource IDs: (62185)
 msgid ""
@@ -3299,7 +3336,7 @@ msgstr "Girdiyi Dışa A&ktar"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "E&xport Group To"
-msgstr ""
+msgstr "E&xport Grubu Nereye"
 
 #. Resource IDs: (5719)
 msgid "E-mail"
@@ -3344,7 +3381,7 @@ msgstr "Grup/Başlık ve Şifre sütunlarından biri ya da her ikisi kayıp. Hi�
 
 #. Resource IDs: (5718)
 msgid "Email copied "
-msgstr ""
+msgstr "E-posta kopyalandı "
 
 #. Resource IDs: (3261)
 #, c-format
@@ -3353,11 +3390,11 @@ msgstr "Boş satır %d atlandı."
 
 #. Resource IDs: (1088)
 msgid "Enable"
-msgstr ""
+msgstr "Etkinleştir"
 
 #. Resource IDs: (1591)
 msgid "Enable Transparency"
-msgstr ""
+msgstr "Saydamlığı etkinleştir"
 
 #. Resource IDs: (61866)
 #, c-format
@@ -3439,7 +3476,7 @@ msgstr "Pozitif bir tam sayı giriniz."
 
 #. Resource IDs: (5272)
 msgid "Enter a search string"
-msgstr ""
+msgstr "Bir arama dizesi girin"
 
 #. Resource IDs: (61723)
 msgid "Enter a time."
@@ -3473,7 +3510,7 @@ msgstr "Boşluk, virgül veya noktalı virgülle (veya tam parola için * olarak
 
 #. Resource IDs: (65535)
 msgid "Enter the Master Password to unlock the password database:"
-msgstr ""
+msgstr "Parola veritabanının kilidini açmak için Ana Parolayı girin:"
 
 #. Resource IDs: (6101)
 msgid "Enter the authentication secret key. This usually taken from the authenticator setup page."
@@ -3484,10 +3521,12 @@ msgid ""
 "Enter the current master password, followed by a new one. \r\n"
 "Type the new one again to confirm it."
 msgstr ""
+"Lütfen mevcut ana şifreyi ve ardından yeni bir şifre girin. \r\n"
+"Onaylamak için yenisini tekrar yazın."
 
 #. Resource IDs: (5255)
 msgid "Enter the key and verify it."
-msgstr ""
+msgstr "Anahtarı girin ve doğrulayın."
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -3495,7 +3534,7 @@ msgstr "Örnek metninizi aşağıya giriniz"
 
 #. Resource IDs: (5388)
 msgid "Enter your backup database prefix."
-msgstr ""
+msgstr "Yedekleme veritabanı önekinizi girin."
 
 #. Resource IDs: (5362)
 msgid "Entries in both databases but with differences:"
@@ -3513,7 +3552,7 @@ msgstr "Sadece geçerli veritabanında olan girdiler (%s):"
 
 #. Resource IDs: (546)
 msgid "Entries using Named Password Policy: "
-msgstr ""
+msgstr "Adlandırılmış Parola Politikası'nı kullanan girişler: "
 
 #. Resource IDs: (1480)
 msgid "Entries using selected policy:"
@@ -3521,7 +3560,7 @@ msgstr "Seçili planı kullanan girdiler:"
 
 #. Resource IDs: (32131 - MenuEx)
 msgid "Entries with E&xpiry dates"
-msgstr ""
+msgstr "E&xpiry tarihlerine sahip girişler"
 
 #. Resource IDs: (3348)
 msgid "Entries with a password expiry"
@@ -3538,7 +3577,7 @@ msgstr "Girdi Karşılaştırması"
 
 #. Resource IDs: (5956)
 msgid "Entry Keyboard Shortcut"
-msgstr ""
+msgstr "Giriş Klavye Kısayolu"
 
 #. Resource IDs: (5906)
 msgid "Entry Password Policy Changes"
@@ -3565,16 +3604,16 @@ msgstr "Girdi içe aktarma uyarıları"
 #. Resource IDs: (3448)
 #, c-format
 msgid "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been removed from the %ls entry."
-msgstr ""
+msgstr "Giriş klavye kısayolu %ls giriş %ls zaten giriş %ls ayrılmıştır. %ls girişinden kaldırıldı."
 
 #. Resource IDs: (3449)
 #, c-format
 msgid "Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe application. It has been removed from the entry."
-msgstr ""
+msgstr "Giriş klavye kısayolu %ls giriş %ls zaten PasswordSafe uygulamasına tahsis edilmiştir. Girişten kaldırıldı."
 
 #. Resource IDs: (5952)
 msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys and an alphanumeric character (0-9, A-Z)."
-msgstr ""
+msgstr "Giriş klavyesi kısayolları, Alt ve Ctrl tuşlarından birine veya her ikisine ve alfasayısal bir karaktere (0-9, A-Z) sahip olmalıdır."
 
 #. Resource IDs: (5942)
 #, c-format
@@ -3583,6 +3622,9 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"Giriş klavyesi kısayolları Alt ve Ctrl tuşlarından birine veya her ikisine birden sahip olmalıdır.\n"
+"\n"
+"%s"
 
 #. Resource IDs: (3266)
 #, c-format
@@ -3741,11 +3783,11 @@ msgstr "&XML Dışa Aktar"
 
 #. Resource IDs: (32097 - Menu, 32097 - MenuEx)
 msgid "Export Attachment..."
-msgstr ""
+msgstr "Eki Dışa Aktar..."
 
 #. Resource IDs: (32135 - MenuEx)
 msgid "Export Current &DB"
-msgstr ""
+msgstr "Akımı ve DB'yi Dışa Aktar"
 
 #. Resource IDs: (32136 - PopupMenuEx, 5935)
 msgid "Export Entry To"
@@ -3753,7 +3795,7 @@ msgstr "Girdiyi Dışa Aktar"
 
 #. Resource IDs: (32137 - PopupMenuEx, 5960)
 msgid "Export Group To"
-msgstr ""
+msgstr "Grubu Dışa Aktar"
 
 #. Resource IDs: (5833)
 msgid "Export Text"
@@ -3786,11 +3828,11 @@ msgstr "Veri dışa aktarması kullanıcı tarafından belirli alanlara kısıtl
 
 #. Resource IDs: (1515)
 msgid "Export..."
-msgstr ""
+msgstr "Dışa Aktar..."
 
 #. Resource IDs: (5965)
 msgid "Export_DB"
-msgstr ""
+msgstr "Export_DB"
 
 #. Resource IDs: (5805)
 msgid "Export_Text"
@@ -4008,7 +4050,7 @@ msgstr "Dosya sürümü uyarısı"
 
 #. Resource IDs: (65535)
 msgid "File:"
-msgstr ""
+msgstr "Dosya:"
 
 #. Resource IDs: (5344)
 #, c-format
@@ -4190,11 +4232,11 @@ msgstr "Git"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Go to Aliases..."
-msgstr ""
+msgstr "Takma Adlar'a gidin..."
 
 #. Resource IDs: (6052)
 msgid "Go to Shortcuts..."
-msgstr ""
+msgstr "Kısayollar'a gidin..."
 
 #. Resource IDs: (5668)
 msgid "Go+"
@@ -4230,7 +4272,7 @@ msgstr "Yunanca Politonik"
 
 #. Resource IDs: (1350)
 msgid "Gro&up:"
-msgstr ""
+msgstr "Gro ve yukarı:"
 
 #. Resource IDs: (3055, 5221)
 msgid "Group"
@@ -4266,7 +4308,7 @@ msgstr "HK"
 
 #. Resource IDs: (5979)
 msgid "Has Attachment(s)"
-msgstr ""
+msgstr "Ek(ler)i var"
 
 #. Resource IDs: (8259)
 msgid "Hausa"
@@ -4319,7 +4361,7 @@ msgstr "Geçmiş girdisi"
 #. Resource IDs: (6043)
 #, c-format
 msgid "Host: %s; User: %s"
-msgstr ""
+msgstr "Ev sahibi: %s; Kullanıcı: %s"
 
 #. Resource IDs: (1087)
 msgid "HotKey1"
@@ -4621,7 +4663,7 @@ msgstr "Grup altına içe aktar?"
 
 #. Resource IDs: (1516)
 msgid "Import..."
-msgstr ""
+msgstr "İçe aktar..."
 
 #. Resource IDs: (5869)
 msgid "Import_KeePassV1_CSV"
@@ -4718,7 +4760,7 @@ msgstr "Gir"
 
 #. Resource IDs: (6001)
 msgid "Insert your YubiKey"
-msgstr ""
+msgstr "YubiKey'inizi takın"
 
 #. Resource IDs: (61706)
 msgid "Insufficient memory to perform operation."
@@ -4766,7 +4808,7 @@ msgstr "Geçersiz Parametre"
 
 #. Resource IDs: (3462)
 msgid "Invalid field delimiter: must be within ASCII range."
-msgstr ""
+msgstr "Geçersiz alan sınırlayıcısı: ASCII aralığında olmalıdır."
 
 #. Resource IDs: (3017)
 #, c-format
@@ -4776,7 +4818,7 @@ msgstr "%d. satırda geçersiz giriş. '%c' ile ayrılmış alanların sayısı 
 #. Resource IDs: (4116)
 #, c-format
 msgid "Invalid lock file \"%ls\"."
-msgstr ""
+msgstr "Geçersiz kilit dosyası \"%ls\"."
 
 #. Resource IDs: (5684)
 msgid "Invalid shortcut ignored."
@@ -5019,7 +5061,7 @@ msgstr "Yedek Al"
 
 #. Resource IDs: (32150)
 msgid "Manage"
-msgstr ""
+msgstr "Yönet"
 
 #. Resource IDs: (158)
 msgid "Manage Filters"
@@ -5067,7 +5109,7 @@ msgstr "Maks."
 
 #. Resource IDs: (1498)
 msgid "Maximum"
-msgstr ""
+msgstr "Maksimum"
 
 #. Resource IDs: (5392)
 #, c-format
@@ -5097,11 +5139,11 @@ msgstr "İlk sayı ve 'arasında' kuralı için en yüksek değer"
 
 #. Resource IDs: (5984)
 msgid "Media Type"
-msgstr ""
+msgstr "Medya Türü"
 
 #. Resource IDs: (65535)
 msgid "Media Type:"
-msgstr ""
+msgstr "Medya Türü:"
 
 #. Resource IDs: (5680)
 msgid "Menu Item"
@@ -5409,7 +5451,7 @@ msgstr "Unutmayın, otomatik kaydedilmiş belgeleri geri getirmeyi seçerseniz, 
 #. Resource IDs: (5114)
 #, c-format
 msgid "Note that you can use an environment variable too, e.g., %TEMP%"
-msgstr ""
+msgstr "Bir ortam değişkeni de kullanabileceğinizi unutmayın, örneğin %TEMP%"
 
 #. Resource IDs: (33150 - Menu)
 msgid "Note: Empty fields are shown as « »"
@@ -5445,15 +5487,15 @@ msgstr "Sayı minimum değere ayarlandı. 'Küçük' kullanılamaz."
 
 #. Resource IDs: (5985)
 msgid "Number of Attachments"
-msgstr ""
+msgstr "Eklerin Sayısı"
 
 #. Resource IDs: (65535)
 msgid "Number of Attachments:"
-msgstr ""
+msgstr "Ek Sayısı:"
 
 #. Resource IDs: (5995)
 msgid "Number of Empty Groups"
-msgstr ""
+msgstr "Boş Grup Sayısı"
 
 #. Resource IDs: (5760)
 msgid "Number of Entries"
@@ -5568,7 +5610,7 @@ msgstr "Eski Kasa Kombinasyonu:"
 
 #. Resource IDs: (6038)
 msgid "Old Pswd copied"
-msgstr ""
+msgstr "Eski Pswd kopyalandı"
 
 #. Resource IDs: (5265)
 msgid "On"
@@ -5596,7 +5638,7 @@ msgstr "Tercihlerden biri değiştirildi. İptal etmek istediğinize emin misini
 
 #. Resource IDs: (5650)
 msgid "One or more values have been changed. Do you want to discard the changes?"
-msgstr ""
+msgstr "Bir veya daha fazla değer değiştirildi. Değişiklikleri atmak istiyor musunuz?"
 
 #. Resource IDs: (5428)
 #, c-format
@@ -5781,7 +5823,7 @@ msgstr "Password Safe Yedekleri (*.bak)|*.bak||"
 
 #. Resource IDs: (5061)
 msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Parola Güvenli Veritabanları (*.dat)|*.dat|Tüm dosyalar (*.*)|*.*||"
 
 #. Resource IDs: (5050)
 msgid "Password Safe Databases (*.psafe3)|*.psafe3|All files (*.*)|*.*||"
@@ -5789,15 +5831,15 @@ msgstr "Password Safe Veritabanları (*.psafe3)|*.psafe3|Tüm dosyalar (*.*)|*.*
 
 #. Resource IDs: (5051)
 msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Parola Güvenli Veritabanları (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Tüm dosyalar (*.*)|*.*||"
 
 #. Resource IDs: (5052)
 msgid "Password Safe Databases (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Parola Güvenli Veritabanları (*.psafe3; *.psafe4; *.dat)|*.psafe3; *.psafe4; *.dat|Parola Güvenli Yedeklemeler (*.bak)|*.bak|Password Safe Ara Yedeklemeler (*.ibak)|*.ibak|Tüm dosyalar (*.*)|*.*||"
 
 #. Resource IDs: (5062)
 msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*)|*.*||"
-msgstr ""
+msgstr "Parola Güvenli Veritabanları (*.psafe4)|*.psafe4|Tüm dosyalar (*.*)|*.*||"
 
 #. Resource IDs: (1000)
 msgid "Password Safe x.xx"
@@ -5854,7 +5896,7 @@ msgstr "Şifre büyük ve küçük harf karışık olmalı, en az bir rakam ya d
 
 #. Resource IDs: (32093 - Menu, 32093 - MenuEx, 32096 - Menu, 32096 - MenuEx)
 msgid "Password&Safe..."
-msgstr ""
+msgstr "Şifre ve Güvenli..."
 
 #. Resource IDs: (5715)
 #, c-format
@@ -5863,7 +5905,7 @@ msgstr "PasswordSafe V%d.%d.%d (Yapı %s) bir hatayla karşılaştı."
 
 #. Resource IDs: (5959)
 msgid "PasswordSafe..."
-msgstr ""
+msgstr "(Etkili olması için PasswordSafe'in yeniden başlatılmasını gerektirir.)"
 
 #. Resource IDs: (5822)
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
@@ -5887,7 +5929,7 @@ msgstr "Düz Metin(sekmelerle ayrılmış)..."
 
 #. Resource IDs: (8101)
 msgid "Play sound on key press"
-msgstr ""
+msgstr "Tuşa basıldığında ses çalın"
 
 #. Resource IDs: (5395)
 msgid "Please choose a name for the new database"
@@ -5957,11 +5999,11 @@ msgstr ""
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
-msgstr ""
+msgstr "Ön izleme kullanılamıyor"
 
 #. Resource IDs: (5975)
 msgid "Preview is unavailable"
-msgstr ""
+msgstr "Önizleme kullanılamıyor"
 
 #. Resource IDs: (5580)
 msgid "Previous Passwords"
@@ -5978,7 +6020,7 @@ msgstr "İşlenen girdi:"
 
 #. Resource IDs: (65535)
 msgid "Program Shortcuts"
-msgstr ""
+msgstr "Program Kısayolları"
 
 #. Resource IDs: (5058)
 msgid "Programs (*.exe)|*.exe|All files (*.*)|*.*||"
@@ -6119,11 +6161,11 @@ msgstr "Hatırla son"
 
 #. Resource IDs: (8100)
 msgid "Remember this keyboard"
-msgstr ""
+msgstr "Bu klavyeyi hatırla"
 
 #. Resource IDs: (1468)
 msgid "Remove"
-msgstr ""
+msgstr "Kaldır"
 
 #. Resource IDs: (1188)
 msgid "Remove PasswordSafe configuration from Registry"
@@ -6240,7 +6282,7 @@ msgstr "Rumence (Standart)"
 #. Resource IDs: (5567)
 #, c-format
 msgid "Row %d is incomplete. Both Field and Criteria must be set."
-msgstr ""
+msgstr "Satır %d eksik. Hem Alan hem de Kriter ayarlanmalıdır."
 
 #. Resource IDs: (5614)
 msgid "Row number"
@@ -9194,8 +9236,8 @@ msgstr "\tGup='%ls', Başlık='%ls', Kullanıcı='%ls' %ls"
 
 #. Resource IDs: (3455)
 #, c-format
-msgid "\tName: %s; Filename: %s"
-msgstr "\tİsim: %s; Dosya adı: %s"
+msgid "\tName: %ls; Filename: %ls"
+msgstr ""
 
 #. Resource IDs: (5538)
 #, c-format

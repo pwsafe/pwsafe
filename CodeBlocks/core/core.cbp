@@ -317,6 +317,7 @@
 		<Unit filename="../../src/core/Command.cpp" />
 		<Unit filename="../../src/core/Command.h" />
 		<Unit filename="../../src/core/CommandInterface.h" />
+		<Unit filename="../../src/core/CoreAlias.cpp" />
 		<Unit filename="../../src/core/CoreImpExp.cpp" />
 		<Unit filename="../../src/core/CoreOtherDB.cpp" />
 		<Unit filename="../../src/core/DBCompareData.h" />
@@ -377,6 +378,8 @@
 		<Unit filename="../../src/core/StringXStream.h" />
 		<Unit filename="../../src/core/SysInfo.cpp" />
 		<Unit filename="../../src/core/SysInfo.h" />
+		<Unit filename="../../src/core/TotpCore.cpp" />
+		<Unit filename="../../src/core/TotpCore.h" />
 		<Unit filename="../../src/core/UIinterface.h" />
 		<Unit filename="../../src/core/UTF8Conv.cpp" />
 		<Unit filename="../../src/core/UTF8Conv.h" />
@@ -421,6 +424,8 @@
 		<Unit filename="../../src/core/crypto/TwoFish.cpp" />
 		<Unit filename="../../src/core/crypto/TwoFish.h" />
 		<Unit filename="../../src/core/crypto/bitops.h" />
+		<Unit filename="../../src/core/crypto/external/Chromium/base32.cpp" />
+		<Unit filename="../../src/core/crypto/external/Chromium/base32.h" />
 		<Unit filename="../../src/core/crypto/hmac.h" />
 		<Unit filename="../../src/core/crypto/pbkdf2.cpp" />
 		<Unit filename="../../src/core/crypto/pbkdf2.h" />

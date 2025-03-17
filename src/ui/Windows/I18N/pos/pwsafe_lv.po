@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2024-10-20 22:05+0300\n"
+"PO-Revision-Date: 2025-03-12 20:22+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: lv\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.5\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -723,7 +736,7 @@ msgstr "&Notīrīt neseno vēsturi"
 
 #. Resource IDs: (32008 - MenuEx)
 msgid "&Clear Recently Opened List"
-msgstr ""
+msgstr "&Notīrīt nesen atvērto sarakstu"
 
 #. Resource IDs: (5606)
 msgid "&Clear current"
@@ -1867,9 +1880,25 @@ msgstr ""
 msgid "Attachment"
 msgstr "Pielikums"
 
+#. Resource IDs: (3089)
+msgid "Attachment Content"
+msgstr "Pielikuma saturs"
+
+#. Resource IDs: (3087)
+msgid "Attachment File Name"
+msgstr "Pielikuma faila nosaukums"
+
 #. Resource IDs: (5991)
 msgid "Attachment Filter"
 msgstr "Pielikumu filtrs"
+
+#. Resource IDs: (3086)
+msgid "Attachment Media Type"
+msgstr "Pielikuma materiāla tips"
+
+#. Resource IDs: (3088)
+msgid "Attachment Modification Time"
+msgstr "Pielikuma modifikācijas laiks"
 
 #. Resource IDs: (65535)
 msgid "Attachment Properties"
@@ -1878,6 +1907,10 @@ msgstr "Pielikumu īpašības"
 #. Resource IDs: (3074)
 msgid "Attachment Reference"
 msgstr "Pielikuma atsauce"
+
+#. Resource IDs: (3085)
+msgid "Attachment Title"
+msgstr "Pielikuma nosaukums"
 
 #. Resource IDs: (5976)
 msgid "Attachment not found"
@@ -9242,8 +9275,8 @@ msgstr "\tGrupa='%ls', Nosaukums='%ls', Lietotājs='%ls' %ls"
 
 #. Resource IDs: (3455)
 #, c-format
-msgid "\tName: %s; Filename: %s"
-msgstr "\tNosaukums: %s;Faila nosaukums: %s"
+msgid "\tName: %ls; Filename: %ls"
+msgstr "\tVārds, uzvārds: %ls; Faila nosaukums: %ls"
 
 #. Resource IDs: (5538)
 #, c-format

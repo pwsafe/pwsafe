@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-16 21:30+0300\n"
-"PO-Revision-Date: 2024-11-16 21:30+0300\n"
+"POT-Creation-Date: 2025-03-15 12:30+0300\n"
+"PO-Revision-Date: 2025-03-15 12:30+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team:\n"
 "Language: ru\n"
@@ -1816,11 +1816,26 @@ msgstr "Хотя бы один из типов символов (прописн�
 #. Resource IDs: (538, 539, 5986)
 msgid "Attachment"
 msgstr "Вложение"
+#. Resource IDs: (3089)
+msgid "Attachment Content"
+msgstr "Содержимое вложения"
+
+#. Resource IDs: (3087)
+msgid "Attachment File Name"
+msgstr "Имя файла во вложении"
 
 # заголовок диалога
 #. Resource IDs: (5991)
 msgid "Attachment Filter"
 msgstr "Фильтр вложений"
+
+#. Resource IDs: (3086)
+msgid "Attachment Media Type"
+msgstr "Тип файла во вложении"
+
+#. Resource IDs: (3088)
+msgid "Attachment Modification Time"
+msgstr "Время изменения вложения"
 
 # заголовок группы на вкладке свойств
 #. Resource IDs: (65535)
@@ -1831,6 +1846,10 @@ msgstr "Свойства вложения"
 #. Resource IDs: (3074)
 msgid "Attachment Reference"
 msgstr "Ссылка на вложение"
+
+#. Resource IDs: (3085)
+msgid "Attachment Title"
+msgstr "Заголовок вложения"
 
 # текст предупреждения
 #. Resource IDs: (5976)
@@ -7195,7 +7214,7 @@ msgstr "Формат исходного контейнера «%s», имеет 
 #. Resource IDs: (5465)
 #, c-format
 msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "Элемент «%s:%s:%s», является псевдонимом или ссылкой. Создание пседвонимов для таких элементов не поддерживается."
+msgstr "Элемент «%s:%s:%s», является псевдонимом или ссылкой. Создание псевдонимов для таких элементов не поддерживается."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -8535,8 +8554,8 @@ msgstr "\tГруппа=«%ls», Заголовок=«%ls», Имя пользо�
 
 #. Resource IDs: (3455)
 #, c-format
-msgid "\tName: %s; Filename: %s"
-msgstr "\tИмя: %s; Имя файла: %s"
+msgid "\tName: %ls; Filename: %ls"
+msgstr "\tИмя: %ls; Имя файла: %ls"
 
 #. Resource IDs: (5538)
 #, c-format

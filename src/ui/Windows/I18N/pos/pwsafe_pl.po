@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2024-10-20 22:06+0300\n"
+"PO-Revision-Date: 2025-03-12 20:25+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.5\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -494,7 +507,7 @@ msgstr "%ls - Skopiowano %ls"
 #. Resource IDs: (5907)
 #, c-format
 msgid "%ls - Drag & Drop %ls"
-msgstr ""
+msgstr "%ls - Przeciągnij i upuść %ls"
 
 #. Resource IDs: (3431)
 #, c-format
@@ -749,7 +762,7 @@ msgstr "&Wyczyść Ostatnią Historię"
 
 #. Resource IDs: (32008 - MenuEx)
 msgid "&Clear Recently Opened List"
-msgstr ""
+msgstr "&Wyczyść ostatnio otwieraną listę"
 
 #. Resource IDs: (5606)
 msgid "&Clear current"
@@ -801,13 +814,13 @@ msgstr "&Nie przypominaj ponownie"
 
 #. Resource IDs: (65535)
 msgid "&Double-Click Action:"
-msgstr ""
+msgstr "Akcja Dwukrotne Kliknięcie:"
 
 #. Resource IDs: (65535)
 msgid ""
 "&Double-Click\n"
 "Action:"
-msgstr ""
+msgstr "Akcja Dwukrotne Kliknięcie:"
 
 #. Resource IDs: (32107 - MenuEx)
 msgid "&Dragbar visible"
@@ -1035,7 +1048,7 @@ msgstr "&Ponów"
 
 #. Resource IDs: (1358)
 msgid "&Run Cmd:"
-msgstr ""
+msgstr "Komenda Run:"
 
 #. Resource IDs: (32077 - Menu, 32077 - MenuEx, 5656)
 msgid "&Run Command"
@@ -1067,13 +1080,13 @@ msgstr "&Ustaw bieżący"
 
 #. Resource IDs: (65535)
 msgid "&Shift Double-Click Action:"
-msgstr ""
+msgstr "Działanie Shift Dwuklik:"
 
 #. Resource IDs: (65535)
 msgid ""
 "&Shift Double-Click\n"
 "Action:"
-msgstr ""
+msgstr "Działanie Shift Dwuklik:"
 
 #. Resource IDs: (1014, 5245)
 msgid "&Show"
@@ -1157,11 +1170,11 @@ msgstr "&Yubikey..."
 
 #. Resource IDs: (1298)
 msgid "&days"
-msgstr ""
+msgstr "&dni"
 
 #. Resource IDs: (1144)
 msgid "&last passwords"
-msgstr ""
+msgstr "ostatnie hasła"
 
 #. Resource IDs: (8159)
 msgid "'Alt Gr' (right Alt) key"
@@ -1173,7 +1186,7 @@ msgstr "'Przejdź do URL' kopiuje hasło do schowka"
 
 #. Resource IDs: (5645)
 msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Change one or both."
-msgstr ""
+msgstr "Konflikt \"Wyczyść schowek przy minimalizacji\" i akcja dwukrotnego kliknięcia \"Kopiuj hasło i minimalizuj\". Zmień jedno lub oba."
 
 #. Resource IDs: (5714)
 msgid ""
@@ -1231,7 +1244,7 @@ msgstr "(uwzględniaj wielkość liter)"
 
 #. Resource IDs: (6070, 6080, 6090)
 msgid "(state error)"
-msgstr ""
+msgstr "(błąd stanu)"
 
 #. Resource IDs: (1286, 1288, 1290, 1292)
 msgid ")"
@@ -1567,7 +1580,7 @@ msgstr "<Nie ustawiono>"
 #. Resource IDs: (5470)
 #, c-format
 msgid "<a href=\"%s\">Check</a> for the latest version."
-msgstr ""
+msgstr "<a href=\"%s\">Sprawdź</a> najnowszą wersję."
 
 #. Resource IDs: (1154)
 msgid ">"
@@ -1595,7 +1608,7 @@ msgstr "Data przyszła nie jest poprawna w tym polu"
 
 #. Resource IDs: (5116)
 msgid "A hidden password needs to be entered in the Confirm Password field too. If it's not hidden, the Confirm field shows numbers that may be used to help count the password's characters."
-msgstr ""
+msgstr "W polu Potwierdź hasło należy również wprowadzić ukryte hasło. Jeśli pole Potwierdź nie jest ukryte, w polu Potwierdź wyświetlane są liczby, które mogą być używane do liczenia znaków hasła."
 
 #. Resource IDs: (5861)
 msgid ""
@@ -1875,7 +1888,7 @@ msgstr "Armeński zachodninian"
 
 #. Resource IDs: (5268)
 msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Select another character."
-msgstr ""
+msgstr "Ponieważ znak podwójnego cudzysłowu jest używany do oddzielania całego pola notatek, nie można go w nim używać do rozdzielania wielu wierszy. Wybierz inny znak."
 
 #. Resource IDs: (5292)
 msgid ""
@@ -1889,9 +1902,25 @@ msgstr ""
 msgid "Attachment"
 msgstr "Załącznik"
 
+#. Resource IDs: (3089)
+msgid "Attachment Content"
+msgstr "Zawartość załącznika"
+
+#. Resource IDs: (3087)
+msgid "Attachment File Name"
+msgstr "Nazwa pliku załącznika"
+
 #. Resource IDs: (5991)
 msgid "Attachment Filter"
 msgstr "Filtr załącznika"
+
+#. Resource IDs: (3086)
+msgid "Attachment Media Type"
+msgstr "Typ nośnika załącznika"
+
+#. Resource IDs: (3088)
+msgid "Attachment Modification Time"
+msgstr "Czas modyfikacji załącznika"
 
 #. Resource IDs: (65535)
 msgid "Attachment Properties"
@@ -1900,6 +1929,10 @@ msgstr "Właściwości załącznika"
 #. Resource IDs: (3074)
 msgid "Attachment Reference"
 msgstr "Referencje załącznika"
+
+#. Resource IDs: (3085)
+msgid "Attachment Title"
+msgstr "Tytuł załącznika"
 
 #. Resource IDs: (5976)
 msgid "Attachment not found"
@@ -2155,6 +2188,8 @@ msgid ""
 "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\n"
 "Copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
+"Nie można odnaleźć pliku definicji schematu XML (%ls) w katalogu aplikacji PasswordSafe.\n"
+"Skopiuj go z pliku instalacyjnego lub ponownie zainstaluj program PasswordSafe."
 
 #. Resource IDs: (3320)
 msgid "Can't obtain the schema version."
@@ -2306,43 +2341,43 @@ msgstr "Chiński ChaJei"
 
 #. Resource IDs: (5376)
 msgid "Choose a Backup to restore:"
-msgstr ""
+msgstr "Wybierz kopię zapasową do przywrócenia:"
 
 #. Resource IDs: (5791)
 msgid "Choose a Database to Validate:"
-msgstr ""
+msgstr "Wybierz bazę danych do zweryfikowania:"
 
 #. Resource IDs: (5375)
 msgid "Choose a Name for this Backup:"
-msgstr ""
+msgstr "Wybierz nazwę dla tej kopii zapasowej:"
 
 #. Resource IDs: (5335)
 msgid "Choose a Text File to Import"
-msgstr ""
+msgstr "Wybierz plik tekstowy do zaimportowania"
 
 #. Resource IDs: (5354)
 msgid "Choose a database to compare with current database"
-msgstr ""
+msgstr "Wybierz bazę danych do porównania z aktualną bazą danych"
 
 #. Resource IDs: (5348)
 msgid "Choose a database to merge into the current database"
-msgstr ""
+msgstr "Wybieranie bazy danych do scalenia z bieżącą bazą danych"
 
 #. Resource IDs: (5753)
 msgid "Choose a database to synchronize with current database"
-msgstr ""
+msgstr "Wybierz bazę danych do synchronizacji z aktualną bazą"
 
 #. Resource IDs: (5327)
 msgid "Choose a name for the current (Untitled) database:"
-msgstr ""
+msgstr "Wybierz nazwę dla bieżącej (bez nazwy) bazy danych:"
 
 #. Resource IDs: (5328)
 msgid "Choose a new name for the current database:"
-msgstr ""
+msgstr "Wybierz nową nazwę bieżącej bazy danych:"
 
 #. Resource IDs: (5343)
 msgid "Choose an XML File to Import"
-msgstr ""
+msgstr "Wybieranie pliku XML do zaimportowania"
 
 #. Resource IDs: (1)
 msgid "Cl&ose"
@@ -2638,7 +2673,7 @@ msgstr "Potwierdź usunięcie pozycji"
 #. Resource IDs: (5635)
 #, c-format
 msgid "Confirm deletion of the %s filter %s?"
-msgstr ""
+msgstr "Potwierdzić usunięcie filtra %s %s?"
 
 #. Resource IDs: (5322)
 msgid "Confirm old master password"
@@ -2646,7 +2681,7 @@ msgstr "Potwierdź stare hasło główne"
 
 #. Resource IDs: (6033)
 msgid "Confirm that you wish to clear the recent Safe list."
-msgstr ""
+msgstr "Potwierdź, że chcesz wyczyścić ostatnią listę Sejfu."
 
 #. Resource IDs: (5930)
 #, c-format
@@ -2932,6 +2967,10 @@ msgid ""
 "\n"
 "Visit the Password Safe website to download the latest version."
 msgstr ""
+"Aktualna wersja: %s\n"
+"Najnowsza wersja: %s\n"
+"\n"
+"Odwiedź witrynę Sejf haseł, aby pobrać najnowszą wersję."
 
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
@@ -3089,7 +3128,7 @@ msgstr ""
 
 #. Resource IDs: (5876)
 msgid "Description"
-msgstr ""
+msgstr "Opis"
 
 #. Resource IDs: (65535)
 msgid "Description:"
@@ -3125,7 +3164,7 @@ msgstr "Okno"
 
 #. Resource IDs: (6063)
 msgid "Discard"
-msgstr ""
+msgstr "Odrzuć"
 
 #. Resource IDs: (61869)
 #, c-format
@@ -3492,10 +3531,12 @@ msgid ""
 "Enter the current master password, followed by a new one. \r\n"
 "Type the new one again to confirm it."
 msgstr ""
+"Wprowadź bieżące hasło główne, a następnie nowe. \r\n"
+"Wpisz nowy ponownie, aby go potwierdzić."
 
 #. Resource IDs: (5255)
 msgid "Enter the key and verify it."
-msgstr ""
+msgstr "Wprowadź klucz i zweryfikuj go."
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -4612,11 +4653,11 @@ msgstr "Import XML nie powiódł się"
 
 #. Resource IDs: (5340)
 msgid "Import a KeePass Text File"
-msgstr ""
+msgstr "Importowanie pliku tekstowego KeePass"
 
 #. Resource IDs: (3425)
 msgid "Import aborted, see report for details."
-msgstr ""
+msgstr "Importowanie przerwane, zobacz raport, aby uzyskać szczegółowe informacje."
 
 #. Resource IDs: (5870)
 msgid "Import failed"
@@ -4997,7 +5038,7 @@ msgstr "Litewski standardowy"
 
 #. Resource IDs: (5257)
 msgid "Lock"
-msgstr ""
+msgstr "Zablokuj"
 
 #. Resource IDs: (65535)
 msgid "Lock password database "
@@ -5214,23 +5255,23 @@ msgstr "Nazwa"
 
 #. Resource IDs: (5333)
 msgid "Name the XML file"
-msgstr ""
+msgstr "Nazwij plik XML"
 
 #. Resource IDs: (5961)
 msgid "Name the database file"
-msgstr ""
+msgstr "Nazwij plik bazy danych"
 
 #. Resource IDs: (5331)
 msgid "Name the exported database"
-msgstr ""
+msgstr "Nadawanie nazwy wyeksportowanej bazie danych"
 
 #. Resource IDs: (5332)
 msgid "Name the plaintext file"
-msgstr ""
+msgstr "Nazwij plik w postaci zwykłego tekstu"
 
 #. Resource IDs: (5621)
 msgid "Name this filter"
-msgstr ""
+msgstr "Nazwij ten filtr"
 
 #. Resource IDs: (1039)
 msgid "Name. Name. Name."
@@ -6251,7 +6292,7 @@ msgstr "Rumuński (standardowy)"
 #. Resource IDs: (5567)
 #, c-format
 msgid "Row %d is incomplete. Both Field and Criteria must be set."
-msgstr ""
+msgstr "Wiersz %d jest niekompletny. Musi być ustawione zarówno pole, jak i kryteria."
 
 #. Resource IDs: (5614)
 msgid "Row number"
@@ -6493,7 +6534,7 @@ msgstr "Wybierz przycisk."
 
 #. Resource IDs: (5487)
 msgid "Select a report to view."
-msgstr ""
+msgstr "Wybierz raport do wyświetlenia."
 
 #. Resource IDs: (5431)
 msgid "Select all entries"
@@ -6505,7 +6546,7 @@ msgstr "Wybierz wpis do porównania"
 
 #. Resource IDs: (5993)
 msgid "Select media type"
-msgstr ""
+msgstr "Wybierz typ nośnika"
 
 #. Resource IDs: (5430)
 msgid "Select some entries"
@@ -6799,6 +6840,9 @@ msgid ""
 "\n"
 "You should save this database before proceeding. More details may be found in the report."
 msgstr ""
+"Podczas otwierania bazy danych znaleziono pewne problemy ze spójnością.\n"
+"\n"
+"Przed kontynuowaniem należy zapisać tę bazę danych. Więcej szczegółów można znaleźć w raporcie."
 
 #. Resource IDs: (5821)
 msgid "Some of the entries in this database have passwords that have expired or are about to.  Do you wish to list them and possibly update them?"
@@ -6878,7 +6922,7 @@ msgstr "Określ program do edycji pola, wpisów Notatek za pomocą menu kontekst
 
 #. Resource IDs: (5566)
 msgid "Specify text"
-msgstr ""
+msgstr "Określanie tekstu"
 
 #. Resource IDs: (5108)
 msgid "Specify the browser to use when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'. You can specify command line options to the browser via the Browser command line parameters field. Do not enclose this value in single or double quotes unless your chosen browser requires them."
@@ -7226,6 +7270,11 @@ msgid ""
 "\n"
 "has duplicate entries with the same group/title/user combination. You can fix this by validating the database."
 msgstr ""
+"Baza danych:\n"
+"\n"
+"%s\n"
+"\n"
+"zawiera zduplikowane wpisy z tą samą kombinacją grupy/tytułu/użytkownika. Możesz to naprawić, sprawdzając poprawność bazy danych."
 
 #. Resource IDs: (5250)
 msgid "The entered passwords do not match.  Please re-enter."
@@ -7373,6 +7422,9 @@ msgid ""
 "\t«%s» «%s» «%s»\n"
 "Select another shortcut (it has been reset)."
 msgstr ""
+"Skrót klawiaturowy \"%s\" jest już używany przez:\n"
+"\t«%s» «%s» «%s»\n"
+"Wybierz inny skrót (został zresetowany)."
 
 #. Resource IDs: (5279)
 msgid "The master password cannot be blank."
@@ -7464,6 +7516,9 @@ msgid ""
 "%ls\n"
 "Confirm to continue (All shortcuts to this entry will be deleted)?"
 msgstr ""
+"Ten wpis ma następujące %d %ls:\n"
+"%ls\n"
+"Potwierdź, aby kontynuować (wszystkie skróty do tego wpisu zostaną usunięte)?"
 
 #. Resource IDs: (3403)
 #, c-format
@@ -7472,6 +7527,9 @@ msgid ""
 "%ls\n"
 "Confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
 msgstr ""
+"Ten wpis ma następujące %d %ls:\n"
+"%ls\n"
+"Potwierdź, aby kontynuować (hasła do wpisu aliasu zostaną zastąpione hasłem tego wpisu)?"
 
 #. Resource IDs: (5248)
 msgid "This entry must have a password."
@@ -8065,7 +8123,7 @@ msgstr "Zweryfikuj Klucz:"
 
 #. Resource IDs: (5690)
 msgid "Version mismatch with On Screen Keyboard DLL. Please install the dll that came with this version of Password Safe."
-msgstr ""
+msgstr "Niezgodność wersji z biblioteką DLL klawiatury ekranowej. Zainstaluj bibliotekę DLL dołączoną do tej wersji sejfu haseł."
 
 #. Resource IDs: (8236)
 msgid "Vietnamese"
@@ -8110,7 +8168,7 @@ msgstr "Odwiedź stronę Pass&word Safe ..."
 
 #. Resource IDs: (5489)
 msgid "Visit the <a href=\"https://pwsafe.org/\">Password Safe website.</a>"
-msgstr ""
+msgstr "Odwiedź <a href=\"https://pwsafe.org/\">witrynę Password Safe (Sejf haseł).</a>"
 
 #. Resource IDs: (5803)
 msgid "WARNING: If you continue, fields will be updated in entries in your existing database from your selected input database."
@@ -8203,12 +8261,12 @@ msgstr "Rejest Windows"
 #. Resource IDs: (6036)
 #, c-format
 msgid "Windows can't expand '%s'. Make sure that you have set this correctly."
-msgstr ""
+msgstr "System Windows nie może rozwinąć \"%s\". Upewnij się, że ustawiłeś to poprawnie."
 
 #. Resource IDs: (5972)
 #, c-format
 msgid "Windows can't find '%s'. Make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
-msgstr ""
+msgstr "System Windows nie może znaleźć \"%s\". Upewnij się, że edytor zewnętrzny został poprawnie skonfigurowany i że jest on zainstalowany. Edycja zewnętrzna została anulowana."
 
 #. Resource IDs: (8264)
 msgid "Wolof"
@@ -9240,8 +9298,8 @@ msgstr "\tGrupa='%ls', Nazwa='%ls', Użytkownik='%ls' %ls"
 
 #. Resource IDs: (3455)
 #, c-format
-msgid "\tName: %s; Filename: %s"
-msgstr "\tNazwa: %s; Nazwa pliku: %s"
+msgid "\tName: %ls; Filename: %ls"
+msgstr "\tImię i nazwisko: %ls; Nazwa pliku: %ls"
 
 #. Resource IDs: (5538)
 #, c-format

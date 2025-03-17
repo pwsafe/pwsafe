@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2024-10-20 21:52+0300\n"
+"PO-Revision-Date: 2025-03-12 20:11+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.5\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -1928,9 +1941,25 @@ msgstr ""
 msgid "Attachment"
 msgstr "Anhang"
 
+#. Resource IDs: (3089)
+msgid "Attachment Content"
+msgstr "Inhalt des Anhangs"
+
+#. Resource IDs: (3087)
+msgid "Attachment File Name"
+msgstr "Anhang Dateiname"
+
 #. Resource IDs: (5991)
 msgid "Attachment Filter"
 msgstr "Anhang Filter"
+
+#. Resource IDs: (3086)
+msgid "Attachment Media Type"
+msgstr "Art des Anhangsmediums"
+
+#. Resource IDs: (3088)
+msgid "Attachment Modification Time"
+msgstr "Zeit für die Änderung des Anhangs"
 
 #. Resource IDs: (65535)
 msgid "Attachment Properties"
@@ -1939,6 +1968,10 @@ msgstr "Anhang Eigenschaften"
 #. Resource IDs: (3074)
 msgid "Attachment Reference"
 msgstr "Anhang Referenz"
+
+#. Resource IDs: (3085)
+msgid "Attachment Title"
+msgstr "Anhangstitel"
 
 #. Resource IDs: (5976)
 msgid "Attachment not found"
@@ -9302,8 +9335,8 @@ msgstr "\tGruppe:'%ls'; Titel:'%ls'; Benutzer:'%ls' %ls"
 
 #. Resource IDs: (3455)
 #, c-format
-msgid "\tName: %s; Filename: %s"
-msgstr "\tName: %s; Dateiname: %s"
+msgid "\tName: %ls; Filename: %ls"
+msgstr "\tName: %ls; Dateiname: %ls"
 
 #. Resource IDs: (5538)
 #, c-format

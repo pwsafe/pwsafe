@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2024-10-20 22:14+0300\n"
+"PO-Revision-Date: 2025-03-12 20:30+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: zh\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.5\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -1174,7 +1187,7 @@ msgstr ""
 
 #. Resource IDs: (1144)
 msgid "&last passwords"
-msgstr ""
+msgstr "个最后密码"
 
 #. Resource IDs: (8159)
 msgid "'Alt Gr' (right Alt) key"
@@ -1371,7 +1384,7 @@ msgstr "12"
 
 #. Resource IDs: (1622)
 msgid "123456"
-msgstr ""
+msgstr "123456"
 
 #. Resource IDs: (8042)
 msgid "13"
@@ -1580,7 +1593,7 @@ msgstr "<未设定>"
 #. Resource IDs: (5470)
 #, c-format
 msgid "<a href=\"%s\">Check</a> for the latest version."
-msgstr ""
+msgstr "<a href=\"%s\">检查</a> 最新版本。"
 
 #. Resource IDs: (1154)
 msgid ">"
@@ -1608,7 +1621,7 @@ msgstr "一个未来的日期对于这个字段来说无效"
 
 #. Resource IDs: (5116)
 msgid "A hidden password needs to be entered in the Confirm Password field too. If it's not hidden, the Confirm field shows numbers that may be used to help count the password's characters."
-msgstr ""
+msgstr "还需要在 Confirm Password 字段中输入隐藏密码。如果未隐藏，则 Confirm （确认） 字段将显示可用于帮助计算密码字符数的数字。"
 
 #. Resource IDs: (5861)
 msgid ""
@@ -1888,7 +1901,7 @@ msgstr "亚美尼亚(西部)"
 
 #. Resource IDs: (5268)
 msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Select another character."
-msgstr ""
+msgstr "由于双引号字符用于分隔整个 notes 字段，因此不能在其中使用它来分隔多行。选择另一个字符。"
 
 #. Resource IDs: (5292)
 msgid ""
@@ -1900,9 +1913,25 @@ msgstr "至少允许一个类型的字符(小写字母，大写字母，数字�
 msgid "Attachment"
 msgstr "附件"
 
+#. Resource IDs: (3089)
+msgid "Attachment Content"
+msgstr "附件内容"
+
+#. Resource IDs: (3087)
+msgid "Attachment File Name"
+msgstr "附件文件名"
+
 #. Resource IDs: (5991)
 msgid "Attachment Filter"
 msgstr "附件筛选器"
+
+#. Resource IDs: (3086)
+msgid "Attachment Media Type"
+msgstr "附件介质类型"
+
+#. Resource IDs: (3088)
+msgid "Attachment Modification Time"
+msgstr "附件修改时间"
 
 #. Resource IDs: (65535)
 msgid "Attachment Properties"
@@ -1911,6 +1940,10 @@ msgstr "附件属性"
 #. Resource IDs: (3074)
 msgid "Attachment Reference"
 msgstr "附件引用"
+
+#. Resource IDs: (3085)
+msgid "Attachment Title"
+msgstr "附件标题"
 
 #. Resource IDs: (5976)
 msgid "Attachment not found"
@@ -2089,7 +2122,7 @@ msgstr "浏览 URL +自动键入"
 
 #. Resource IDs: (32074 - Menu, 32074 - MenuEx, 5679)
 msgid "Browse to URL w/Alt Browser"
-msgstr ""
+msgstr "使用 Alt 浏览器浏览到 URL"
 
 #. Resource IDs: (65535)
 msgid "Browser Command Line parameters:"
@@ -2125,7 +2158,7 @@ msgstr "清空剪贴板(&L)"
 
 #. Resource IDs: (1174)
 msgid "C&opy All"
-msgstr ""
+msgstr "C&opy 全部"
 
 #. Resource IDs: (1386)
 msgid "C++ Terminate"
@@ -2166,6 +2199,8 @@ msgid ""
 "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\n"
 "Copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
+"在 PasswordSafe 应用程序目录中找不到 XML 架构定义文件 （%ls）。\n"
+"从安装文件中复制它，或重新安装 PasswordSafe。"
 
 #. Resource IDs: (3320)
 msgid "Can't obtain the schema version."
@@ -2361,7 +2396,7 @@ msgstr ""
 
 #. Resource IDs: (1141)
 msgid "Clear &History"
-msgstr ""
+msgstr "清除历史"
 
 #. Resource IDs: (8001)
 msgid "Clear Buffer"
@@ -2650,7 +2685,7 @@ msgstr "确认项目的删除"
 #. Resource IDs: (5635)
 #, c-format
 msgid "Confirm deletion of the %s filter %s?"
-msgstr ""
+msgstr "确认删除 %s 过滤器%s？"
 
 #. Resource IDs: (5322)
 msgid "Confirm old master password"
@@ -2698,6 +2733,8 @@ msgid ""
 "Confirm to delete the current user's PasswordSafe configuration from the Windows registry.\n"
 "\n"
 msgstr ""
+"确认以从 Windows 注册表中删除当前用户的 PasswordSafe 配置。\n"
+"\n"
 
 #. Resource IDs: (1505, 65535)
 msgid "Confirmation:"
@@ -2942,6 +2979,10 @@ msgid ""
 "\n"
 "Visit the Password Safe website to download the latest version."
 msgstr ""
+"当前版本： %s\n"
+"最新版本： %s\n"
+"\n"
+"访问 Password Safe 网站以下载最新版本。"
 
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
@@ -3071,7 +3112,7 @@ msgstr "默认密码有效期(天)"
 
 #. Resource IDs: (65535)
 msgid "Default:"
-msgstr ""
+msgstr "默认："
 
 #. Resource IDs: (1, 5622)
 msgid "Delete"
@@ -3099,7 +3140,7 @@ msgstr ""
 
 #. Resource IDs: (5876)
 msgid "Description"
-msgstr ""
+msgstr "描述"
 
 #. Resource IDs: (65535)
 msgid "Description:"
@@ -3135,7 +3176,7 @@ msgstr "对话"
 
 #. Resource IDs: (6063)
 msgid "Discard"
-msgstr ""
+msgstr "丢弃"
 
 #. Resource IDs: (61869)
 #, c-format
@@ -3507,7 +3548,7 @@ msgstr ""
 
 #. Resource IDs: (5255)
 msgid "Enter the key and verify it."
-msgstr ""
+msgstr "输入密钥并验证它。"
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -3515,7 +3556,7 @@ msgstr "在下面输入你的示例文本"
 
 #. Resource IDs: (5388)
 msgid "Enter your backup database prefix."
-msgstr ""
+msgstr "输入您的备份数据库前缀。"
 
 #. Resource IDs: (5362)
 msgid "Entries in both databases but with differences:"
@@ -4624,11 +4665,11 @@ msgstr "导入 XML 失败"
 
 #. Resource IDs: (5340)
 msgid "Import a KeePass Text File"
-msgstr ""
+msgstr "导入 KeePass 文本文件"
 
 #. Resource IDs: (3425)
 msgid "Import aborted, see report for details."
-msgstr ""
+msgstr "导入中止，有关详细信息，请参阅报告。"
 
 #. Resource IDs: (5870)
 msgid "Import failed"
@@ -4648,11 +4689,11 @@ msgstr "导入..."
 
 #. Resource IDs: (5869)
 msgid "Import_KeePassV1_CSV"
-msgstr ""
+msgstr "Import_KeePassV1_CSV"
 
 #. Resource IDs: (5868)
 msgid "Import_KeePassV1_TXT"
-msgstr ""
+msgstr "Import_KeePassV1_TXT"
 
 #. Resource IDs: (5534)
 msgid "Import_Text"
@@ -4690,13 +4731,15 @@ msgstr "错误文件名."
 
 #. Resource IDs: (5334)
 msgid "Incorrect master password"
-msgstr ""
+msgstr "主密码不正确"
 
 #. Resource IDs: (5280)
 msgid ""
 "Incorrect master password, not a Password Safe database,\n"
 "or a corrupt database."
 msgstr ""
+"主密码不正确，不是 Password Safe 数据库，\n"
+"或损坏的数据库。"
 
 #. Resource IDs: (3251)
 msgid "Incorrect password"
@@ -4739,7 +4782,7 @@ msgstr "插入"
 
 #. Resource IDs: (6001)
 msgid "Insert your YubiKey"
-msgstr ""
+msgstr "插入您的 YubiKey"
 
 #. Resource IDs: (61706)
 msgid "Insufficient memory to perform operation."
@@ -5007,7 +5050,7 @@ msgstr "立陶宛语(标准)"
 
 #. Resource IDs: (5257)
 msgid "Lock"
-msgstr ""
+msgstr "锁定"
 
 #. Resource IDs: (65535)
 msgid "Lock password database "
@@ -6503,7 +6546,7 @@ msgstr "请选择一个按钮."
 
 #. Resource IDs: (5487)
 msgid "Select a report to view."
-msgstr ""
+msgstr "选择并查看报告."
 
 #. Resource IDs: (5431)
 msgid "Select all entries"
@@ -6515,7 +6558,7 @@ msgstr "选择要比较的条目"
 
 #. Resource IDs: (5993)
 msgid "Select media type"
-msgstr ""
+msgstr "选择介质类型"
 
 #. Resource IDs: (5430)
 msgid "Select some entries"
@@ -6893,7 +6936,7 @@ msgstr "指定在添加/编辑期间用于经由右击上下文菜单编辑一�
 
 #. Resource IDs: (5566)
 msgid "Specify text"
-msgstr ""
+msgstr "指定文本"
 
 #. Resource IDs: (5108)
 msgid "Specify the browser to use when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'. You can specify command line options to the browser via the Browser command line parameters field. Do not enclose this value in single or double quotes unless your chosen browser requires them."
@@ -6901,7 +6944,7 @@ msgstr "指定当一个条目的 URL 字段以 [alt] 开始(如 '[alt]http://foo
 
 #. Resource IDs: (5390)
 msgid "Specify the destination location to contain all backups."
-msgstr ""
+msgstr "请指定包含所有备份的目标位置."
 
 #. Resource IDs: (5389)
 msgid "Specify the sub-directory to contain all backups."
@@ -7180,6 +7223,9 @@ msgid ""
 "\n"
 "Close the database and re-open it in R/W mode."
 msgstr ""
+"在 R-O 模式下打开数据库后，数据库已更改，因此无法切换到 R/W 模式。\n"
+"\n"
+"关闭数据库，然后在 R/W 模式下重新打开它。"
 
 #. Resource IDs: (5412)
 #, c-format
@@ -7239,6 +7285,11 @@ msgid ""
 "\n"
 "has duplicate entries with the same group/title/user combination. You can fix this by validating the database."
 msgstr ""
+"数据库：\n"
+"\n"
+"%s\n"
+"\n"
+"具有相同的组/标题/用户组合的重复条目。您可以通过验证数据库来解决此问题。"
 
 #. Resource IDs: (5250)
 msgid "The entered passwords do not match.  Please re-enter."
@@ -7386,6 +7437,9 @@ msgid ""
 "\t«%s» «%s» «%s»\n"
 "Select another shortcut (it has been reset)."
 msgstr ""
+"键盘快捷键“%s”已被以下人员使用：\n"
+"\t«%s» «%s» «%s»\n"
+"选择另一个快捷键（已重置）。"
 
 #. Resource IDs: (5279)
 msgid "The master password cannot be blank."
@@ -7443,7 +7497,7 @@ msgstr "用户指定从导出中排除下列字段:"
 
 #. Resource IDs: (5505)
 msgid "There are more than one entry that fits your selection. Be more specific."
-msgstr ""
+msgstr "有多个条目符合您的选择。更具体。"
 
 #. Resource IDs: (3358)
 msgid "There are unmatched quotes in the run command"
@@ -9250,8 +9304,8 @@ msgstr "\t分组='%ls', 标题='%ls', 用户='%ls' %ls"
 
 #. Resource IDs: (3455)
 #, c-format
-msgid "\tName: %s; Filename: %s"
-msgstr "\t名称: %s; 文件名: %s"
+msgid "\tName: %ls; Filename: %ls"
+msgstr ""
 
 #. Resource IDs: (5538)
 #, c-format

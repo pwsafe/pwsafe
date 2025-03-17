@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2024-10-20 22:02+0300\n"
+"PO-Revision-Date: 2025-03-12 20:19+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: hu\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.5\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -670,7 +683,7 @@ msgstr "&Előzmények törlése"
 
 #. Resource IDs: (32008 - MenuEx)
 msgid "&Clear Recently Opened List"
-msgstr ""
+msgstr "&Nemrég megnyitott lista törlése"
 
 #. Resource IDs: (5606)
 msgid "&Clear current"
@@ -1098,7 +1111,7 @@ msgstr "'URL-re Ugrás' funkció a vágólapra másolja a jelszót"
 
 #. Resource IDs: (5645)
 msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Change one or both."
-msgstr ""
+msgstr "A \"Vágólap törlése a kis méretben\" és a dupla kattintás \"Jelszó másolása és minimalizálása\" művelet ütközik. Változtassa meg az egyiket vagy mindkettőt."
 
 #. Resource IDs: (5714)
 msgid ""
@@ -1283,7 +1296,7 @@ msgstr "12"
 
 #. Resource IDs: (1622)
 msgid "123456"
-msgstr ""
+msgstr "123456"
 
 #. Resource IDs: (8042)
 msgid "13"
@@ -1492,7 +1505,7 @@ msgstr "<Not Set>"
 #. Resource IDs: (5470)
 #, c-format
 msgid "<a href=\"%s\">Check</a> for the latest version."
-msgstr ""
+msgstr "<a href=\"%s\">Ellenőrizze</a> a legújabb verziót."
 
 #. Resource IDs: (1154)
 msgid ">"
@@ -1520,7 +1533,7 @@ msgstr "Jövőbeni dátum nem érvényes ebben a mezőben "
 
 #. Resource IDs: (5116)
 msgid "A hidden password needs to be entered in the Confirm Password field too. If it's not hidden, the Confirm field shows numbers that may be used to help count the password's characters."
-msgstr ""
+msgstr "A Jelszó megerősítése mezőbe is be kell írni egy rejtett jelszót. Ha nincs elrejtve, a Megerősítés mezőben azok a számok jelennek meg, amelyek segítségével megszámolhatja a jelszó karaktereit."
 
 #. Resource IDs: (5861)
 msgid ""
@@ -1800,7 +1813,7 @@ msgstr "Armenian, Nyugati"
 
 #. Resource IDs: (5268)
 msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Select another character."
-msgstr ""
+msgstr "Mivel a dupla idézőjel a teljes jegyzetmező elhatárolására szolgál, nem használható több sor elhatárolására. Válasszon másik karaktert."
 
 #. Resource IDs: (5292)
 msgid ""
@@ -1814,9 +1827,25 @@ msgstr ""
 msgid "Attachment"
 msgstr "Melléklet"
 
+#. Resource IDs: (3089)
+msgid "Attachment Content"
+msgstr "Melléklet tartalma"
+
+#. Resource IDs: (3087)
+msgid "Attachment File Name"
+msgstr "Melléklet fájlneve"
+
 #. Resource IDs: (5991)
 msgid "Attachment Filter"
 msgstr "Mellékletszűrő"
+
+#. Resource IDs: (3086)
+msgid "Attachment Media Type"
+msgstr "Melléklet hordozó típusa"
+
+#. Resource IDs: (3088)
+msgid "Attachment Modification Time"
+msgstr "Melléklet módosítási ideje"
 
 #. Resource IDs: (65535)
 msgid "Attachment Properties"
@@ -1825,6 +1854,10 @@ msgstr "Melléklet tulajdonságai"
 #. Resource IDs: (3074)
 msgid "Attachment Reference"
 msgstr "Melléklet hivatkozás"
+
+#. Resource IDs: (3085)
+msgid "Attachment Title"
+msgstr "Melléklet címe"
 
 #. Resource IDs: (5976)
 msgid "Attachment not found"
@@ -2080,6 +2113,8 @@ msgid ""
 "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\n"
 "Copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
+"Nem található XML-sémadefiníciós fájl (%ls) a PasswordSafe alkalmazáskönyvtárban.\n"
+"Másolja ki a telepítőfájlból, vagy telepítse újra a PasswordSafe-et."
 
 #. Resource IDs: (3320)
 msgid "Can't obtain the schema version."
@@ -2231,19 +2266,19 @@ msgstr "Kínai ChaJei"
 
 #. Resource IDs: (5376)
 msgid "Choose a Backup to restore:"
-msgstr ""
+msgstr "Válasszon egy biztonsági másolatot a visszaállításhoz:"
 
 #. Resource IDs: (5791)
 msgid "Choose a Database to Validate:"
-msgstr ""
+msgstr "Válassza ki az érvényesíteni kívánt adatbázist:"
 
 #. Resource IDs: (5375)
 msgid "Choose a Name for this Backup:"
-msgstr ""
+msgstr "Válasszon nevet a biztonsági mentésnek:"
 
 #. Resource IDs: (5335)
 msgid "Choose a Text File to Import"
-msgstr ""
+msgstr "Válassza ki az importálni kívánt szövegfájlt"
 
 #. Resource IDs: (5354)
 msgid "Choose a database to compare with current database"
@@ -2267,7 +2302,7 @@ msgstr "Válasszon új nevet az aktuális adatbázisnak:"
 
 #. Resource IDs: (5343)
 msgid "Choose an XML File to Import"
-msgstr ""
+msgstr "Importálni kívánt XML-fájl kiválasztása"
 
 #. Resource IDs: (1)
 msgid "Cl&ose"
@@ -2566,15 +2601,15 @@ msgstr "Erősítse meg a tételek törlését"
 #. Resource IDs: (5635)
 #, c-format
 msgid "Confirm deletion of the %s filter %s?"
-msgstr ""
+msgstr "Erősítse meg a %s szűrő törlését %s?"
 
 #. Resource IDs: (5322)
 msgid "Confirm old master password"
-msgstr ""
+msgstr "Erősítse meg a régi mesterjelszót"
 
 #. Resource IDs: (6033)
 msgid "Confirm that you wish to clear the recent Safe list."
-msgstr ""
+msgstr "Erősítse meg, hogy törölni kívánja a legutóbbi biztonságos listát."
 
 #. Resource IDs: (5930)
 #, c-format
@@ -2860,6 +2895,10 @@ msgid ""
 "\n"
 "Visit the Password Safe website to download the latest version."
 msgstr ""
+"Jelenlegi verzió: %s\n"
+"Legújabb verzió: %s\n"
+"\n"
+"Látogasson el a Password Safe webhelyére a legújabb verzió letöltéséhez."
 
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
@@ -6182,7 +6221,7 @@ msgstr "Román (Standard)"
 #. Resource IDs: (5567)
 #, c-format
 msgid "Row %d is incomplete. Both Field and Criteria must be set."
-msgstr ""
+msgstr "A %d. sor hiányos. A mezőt és a feltételt is be kell állítani."
 
 #. Resource IDs: (5614)
 msgid "Row number"
@@ -6442,7 +6481,7 @@ msgstr "Válasszon bejegyzést az összehasonlításhoz"
 
 #. Resource IDs: (5993)
 msgid "Select media type"
-msgstr ""
+msgstr "Válassza ki a hordozótípust"
 
 #. Resource IDs: (5430)
 msgid "Select some entries"
@@ -6818,7 +6857,7 @@ msgstr "Adjon meg egy programot a bejegyzés Megjegyzés mezőjének szerkeszté
 
 #. Resource IDs: (5566)
 msgid "Specify text"
-msgstr ""
+msgstr "Szöveg megadása"
 
 #. Resource IDs: (5108)
 msgid "Specify the browser to use when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'. You can specify command line options to the browser via the Browser command line parameters field. Do not enclose this value in single or double quotes unless your chosen browser requires them."
@@ -7318,6 +7357,9 @@ msgid ""
 "\t«%s» «%s» «%s»\n"
 "Select another shortcut (it has been reset)."
 msgstr ""
+"A \"%s\" billentyűparancsot már használják:\n"
+"\t«%s» «%s» «%s»\n"
+"Válasszon másik parancsikont (alaphelyzetbe állították)."
 
 #. Resource IDs: (5279)
 msgid "The master password cannot be blank."
@@ -7420,6 +7462,9 @@ msgid ""
 "%ls\n"
 "Confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
 msgstr ""
+"Ennek a bejegyzésnek a következő %d %ls van:\n"
+"%ls\n"
+"Erősítse meg a folytatást (az alias bejegyzés jelszavait a bejegyzés jelszava váltja fel)?"
 
 #. Resource IDs: (5248)
 msgid "This entry must have a password."
@@ -7916,7 +7961,7 @@ msgstr "Névre szóló szabályzat használata"
 
 #. Resource IDs: (6062)
 msgid "Use anyway"
-msgstr ""
+msgstr "Mindenesetre használd"
 
 #. Resource IDs: (5888)
 msgid "Use count"
@@ -9194,8 +9239,8 @@ msgstr "\tCsoport='%ls', Megnevezés='%ls', Felhasználó='%ls' %ls"
 
 #. Resource IDs: (3455)
 #, c-format
-msgid "\tName: %s; Filename: %s"
-msgstr "\tNév: %s; Fájlnév: %s"
+msgid "\tName: %ls; Filename: %ls"
+msgstr "\tNév: %ls; Fájlnév: %ls"
 
 #. Resource IDs: (5538)
 #, c-format
