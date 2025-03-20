@@ -6404,7 +6404,7 @@ msgstr "YubiKey hineinstecken"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:197
 msgid "&Change"
-msgstr "&Änderungsdatum"
+msgstr "&Ändern"
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:268
 msgid "The old master password is not correct"
