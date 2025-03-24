@@ -57,9 +57,11 @@ else ()
 endif (NOT WIN32)
 
 # Add test executable
-add_executable(pwsafe-cli-test ${CLI_TEST_SRCS})
-set_target_properties(pwsafe-cli-test PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1)
-target_link_libraries(pwsafe-cli-test harden_interface gtest gtest_main core os core ${wxWidgets_LIBRARIES})
+if (NOT NO_GTEST)
+  add_executable(pwsafe-cli-test ${CLI_TEST_SRCS})
+  set_target_properties(pwsafe-cli-test PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1)
+  target_link_libraries(pwsafe-cli-test harden_interface gtest gtest_main core os core ${wxWidgets_LIBRARIES})
+endif(NOT NO_GTEST)
 
 if (XercesC_LIBRARY)
   target_link_libraries(pwsafe-cli-test ${XercesC_LIBRARY})
@@ -81,9 +83,11 @@ else ()
 endif (NOT WIN32)
 
 # Add test target
-if (NOT WIN32) # Windows cli-test broken, doesn't recognize rc resources.
-add_test(NAME cli-test
-  COMMAND pwsafe-cli-test
-  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-)
-endif (NOT WIN32)
+if (NOT NO_GTEST)
+  if (NOT WIN32) # Windows cli-test broken, doesn't recognize rc resources.
+    add_test(NAME cli-test
+      COMMAND pwsafe-cli-test
+      WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+    )
+  endif (NOT WIN32)
+endif(NOT NO_GTEST)
