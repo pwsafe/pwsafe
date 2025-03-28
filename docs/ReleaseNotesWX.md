@@ -9,9 +9,12 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 
 
 
-PasswordSafe 1.20.1pre Release ???
-==================================
+PasswordSafe 1.21.0 Release 28 March 2025
+=========================================
 
+* In this release, PasswordSafe will significantly increase the standard (default) unlock difficulty of PasswordSafe databases. This may cause a noticeable slowdown when reading and writing databases.
+ This is necessary to maintain the same level of security on today's hardware as when PasswordSafe was originally released.
+* Authenticator codes (One-time passwords, OTP, TOTP) can be configured and used via the UI.
 * [GH1317](https://github.com/pwsafe/pwsafe/issues/1317) Aliases can now be created from new or edited entries.
 * [GH1408](https://github.com/pwsafe/pwsafe/issues/1408) Time fields (such as password modification time) are now copied over correctly in sync operations between databases.
 
