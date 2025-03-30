@@ -958,7 +958,7 @@ void PasswordSafeFrame::DoBrowse(CItemData &item, bool bAutotype)
 
 bool PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX & WXUNUSED(sxAutotype),
                              const std::vector<size_t> & WXUNUSED(vactionverboffsets),
-                             bool WXUNUSED(bDoAutotype))
+                             bool WXUNUSED(bDoAutotype)) const
 {
   /*
    * This is a straight port of DBoxMain::LaunchBrowser.  See the comments in that function
@@ -1032,7 +1032,7 @@ bool PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX & WXU
 #endif
 
   if (!rc) {
-    wxMessageBox(errMsg, wxTheApp->GetAppName(), wxOK|wxICON_STOP, this);
+    wxMessageBox(errMsg, wxTheApp->GetAppName(), wxOK|wxICON_STOP, const_cast<PasswordSafeFrame*>(this));
   }
   return rc;
 }
