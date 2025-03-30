@@ -30,6 +30,8 @@
 
 #include "core/PWCharPool.h"
 #include "core/PWHistory.h"
+#include "core/PWSAuxParse.h"
+
 #include "os/media.h"
 #include "os/run.h"
 
@@ -1749,10 +1751,15 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
 
 void AddEditPropSheetDlg::OnGoButtonClick(wxCommandEvent& WXUNUSED(evt))
 {
-  if (Validate() && TransferDataFromWindow() && !m_Url.IsEmpty())
-    ::wxLaunchDefaultBrowser(m_Url, wxBROWSER_NEW_WINDOW);
-}
+  if (Validate() && TransferDataFromWindow() && !m_Url.IsEmpty()) {
+    std::vector<size_t> vactionverboffsets;
+    const StringX sxAutotype = PWSAuxParse::GetAutoTypeString(m_Item, m_Core, vactionverboffsets);
+    bool bDoAutotype = !sxAutotype.empty();
 
+    GetPwSafe()->LaunchBrowser(m_Url, sxAutotype, vactionverboffsets, bDoAutotype);
+  }
+}
+  
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_GENERATE
  */

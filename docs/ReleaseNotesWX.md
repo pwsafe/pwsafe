@@ -8,6 +8,13 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
 
+PasswordSafe 1.21.1 Release ???
+===============================
+
+Bugs fixed in 1.21.1
+--------------------
+[GH1472](https://github.com/pwsafe/pwsafe/issues/1472) 'Go' button in Add/Edit window now respects "alt" browser specification.
+
 
 PasswordSafe 1.21.0 Release 28 March 2025
 =========================================
@@ -15,6 +22,9 @@ PasswordSafe 1.21.0 Release 28 March 2025
 * In this release, PasswordSafe will significantly increase the standard (default) unlock difficulty of PasswordSafe databases. This may cause a noticeable slowdown when reading and writing databases.
  This is necessary to maintain the same level of security on today's hardware as when PasswordSafe was originally released.
 * Authenticator codes (One-time passwords, OTP, TOTP) can be configured and used via the UI.
+
+Bugs fixed in 1.21.0
+--------------------
 * [GH1317](https://github.com/pwsafe/pwsafe/issues/1317) Aliases can now be created from new or edited entries.
 * [GH1408](https://github.com/pwsafe/pwsafe/issues/1408) Time fields (such as password modification time) are now copied over correctly in sync operations between databases.
 

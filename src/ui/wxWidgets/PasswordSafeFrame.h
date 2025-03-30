@@ -653,6 +653,9 @@ public:
   /// Get top dialog (shown or hidden)
   wxTopLevelWindow* GetTopWindow() const;
   static void DisplayFileWriteError(int rc, const StringX &fname);
+  
+  bool LaunchBrowser(const wxString &csURL, const StringX &sxAutotype,
+    const std::vector<size_t> &vactionverboffsets, bool bDoAutotype) const;
 
 
 ////@begin PasswordSafeFrame member variables
@@ -725,8 +728,6 @@ private:
                               const bool bTitleRenamed, wxString &timeStr,
                               const CItemData::EntryType et,
                               std::vector<StringX> &vs_added);
-  bool LaunchBrowser(const wxString &csURL, const StringX &sxAutotype,
-                     const std::vector<size_t> &vactionverboffsets, bool bDoAutotype);
 
   // Do* member functions for right-click and menu-accessible actions
   void DoCopyPassword(CItemData &item);
