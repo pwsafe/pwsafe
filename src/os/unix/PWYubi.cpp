@@ -43,7 +43,7 @@ PWYubi::~PWYubi()
   pthread_mutex_unlock(&s_mutex);
 }
 
-bool PWYubi::IsYubiInserted() const
+bool PWYubi::IsYubiInserted()
 {
   bool retval = false;
   pthread_mutex_lock(&s_mutex);

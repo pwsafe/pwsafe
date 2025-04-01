@@ -66,7 +66,7 @@ void YubiMixin::yubiRemoved(void)
 
 bool YubiMixin::IsYubiInserted() const
 {
-  const PWYubi yubi;
+  PWYubi yubi;
   return yubi.IsYubiInserted();
 }
 

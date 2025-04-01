@@ -16,7 +16,7 @@ class PWYubi {
 public:
   PWYubi();
   ~PWYubi();
-  bool IsYubiInserted() const;
+  bool IsYubiInserted();
   bool GetSerial(unsigned int &serial) const;
   bool WriteSK(const unsigned char *sk, size_t sklen);
 
@@ -38,7 +38,7 @@ public:
   const std::wstring &GetErrStr() const {return m_ykerrstr;}
 private:
   void report_error() const;
-  mutable bool m_isInited;
+  bool m_isInited;
   static bool s_yubiDetected;
   static pthread_mutex_t s_mutex;
   mutable std::wstring m_ykerrstr;

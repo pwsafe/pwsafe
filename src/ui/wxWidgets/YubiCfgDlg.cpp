@@ -366,6 +366,6 @@ void YubiCfgDlg::yubiRemoved(void)
 
 bool YubiCfgDlg::IsYubiInserted() const
 {
-  const PWYubi yubi;
+  PWYubi yubi;
   return yubi.IsYubiInserted();
 }
