@@ -4,6 +4,41 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeIconSystemGenerated</key>
+			<integer>1</integer>
+			<key>CFBundleTypeName</key>
+			<string>Password Safe Database</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>org.pwsafe.pwsafe.safe</string>
+			</array>
+			<key>NSDocumentClass</key>
+			<string>Document</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeIconSystemGenerated</key>
+			<integer>1</integer>
+			<key>CFBundleTypeName</key>
+			<string>Password Safe Backup</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>org.pwsafe.pwsafe.backup</string>
+			</array>
+			<key>NSDocumentClass</key>
+			<string>Document</string>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>CFBundleIdentifier</key>
@@ -26,5 +61,56 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>UTExportedTypeDeclarations</key>
+	<array>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+				<string>public.contents</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Password Safe Database</string>
+			<key>UTTypeIcons</key>
+			<dict>
+				<key>UTTypeIconBadgeName</key>
+				<string>AppIcon</string>
+			</dict>
+			<key>UTTypeIdentifier</key>
+			<string>org.pwsafe.pwsafe.safe</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>psafe3</string>
+					<string>psafe4</string>
+					<string>dat</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+				<string>public.contents</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Password Safe Backup</string>
+			<key>UTTypeIcons</key>
+			<dict>
+				<key>UTTypeIconBadgeName</key>
+				<string>AppIcon</string>
+			</dict>
+			<key>UTTypeIdentifier</key>
+			<string>org.pwsafe.pwsafe.backup</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>ibak</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
 </dict>
 </plist>
