@@ -26,6 +26,22 @@
 			<key>CFBundleTypeIconSystemGenerated</key>
 			<integer>1</integer>
 			<key>CFBundleTypeName</key>
+			<string>Password Safe v1 or v2</string>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>LSHandlerRank</key>
+			<string>Alternate</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>org.pwsafe.pwsafe.v1v2</string>
+			</array>
+			<key>NSDocumentClass</key>
+			<string>Document</string>
+		</dict>
+		<dict>
+			<key>CFBundleTypeIconSystemGenerated</key>
+			<integer>1</integer>
+			<key>CFBundleTypeName</key>
 			<string>Password Safe Backup</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
@@ -84,6 +100,28 @@
 				<array>
 					<string>psafe3</string>
 					<string>psafe4</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.data</string>
+				<string>public.contents</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Password Safe v1 or v2</string>
+			<key>UTTypeIcons</key>
+			<dict>
+				<key>UTTypeIconBadgeName</key>
+				<string>AppIcon</string>
+			</dict>
+			<key>UTTypeIdentifier</key>
+			<string>org.pwsafe.pwsafe.v1v2</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
 					<string>dat</string>
 				</array>
 			</dict>
