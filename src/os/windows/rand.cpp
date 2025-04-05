@@ -29,12 +29,9 @@ bool pws_os::InitRandomDataFunction()
   }
   // Check if BCryptGenRandom function is available
   FARPROC pFunc = GetProcAddress(hBcrypt, "BCryptGenRandom");
-  if (pFunc == nullptr) {
-    FreeLibrary(hBcrypt);
-    return false; // BCryptGenRandom function not available
-  }
   FreeLibrary(hBcrypt);
-  return true;
+
+  return pFunc != nullptr;
 }
 
 
