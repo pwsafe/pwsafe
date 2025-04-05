@@ -372,7 +372,6 @@
 		E0A70B9621C8FF8900A2FEA8 /* PolicyManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PolicyManager.cpp; sourceTree = "<group>"; };
 		E0A70B9721C8FF8900A2FEA8 /* PolicyManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PolicyManager.h; sourceTree = "<group>"; };
 		E0A70B9A21C905A500A2FEA8 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
-		E0C3C4512379CD8300715124 /* CoreAlias.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CoreAlias.cpp; sourceTree = "<group>"; };
 		E0C3C42F2379B2C200715124 /* AES.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AES.cpp; path = crypto/AES.cpp; sourceTree = "<group>"; };
 		E0C3C4302379B2C200715124 /* AES.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AES.h; path = crypto/AES.h; sourceTree = "<group>"; };
 		E0C3C4312379B2C200715124 /* bitops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = bitops.h; path = crypto/bitops.h; sourceTree = "<group>"; };
@@ -393,6 +392,7 @@
 		E0C3C44A2379CA2A00715124 /* CryptKeyEntryDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CryptKeyEntryDlg.cpp; sourceTree = "<group>"; };
 		E0C3C44B2379CA2A00715124 /* CryptKeyEntryDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CryptKeyEntryDlg.h; sourceTree = "<group>"; };
 		E0C3C44D2379CA7300715124 /* MenuFileHandlers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MenuFileHandlers.cpp; sourceTree = "<group>"; };
+		E0C3C4512379CD8300715124 /* CoreAlias.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CoreAlias.cpp; sourceTree = "<group>"; };
 		E60F25D612C4ACEB001E63C4 /* ExternalKeyboardButton.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExternalKeyboardButton.cpp; sourceTree = "<group>"; };
 		E60F25D712C4ACEB001E63C4 /* ExternalKeyboardButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExternalKeyboardButton.h; sourceTree = "<group>"; };
 		E6112A61131D720E00AA1454 /* ExpiredList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ExpiredList.cpp; sourceTree = "<group>"; };
@@ -1590,10 +1590,7 @@
 			children = (
 				E6EE83EA11E87E9800B01518 /* XML */,
 				E0C3C42D2379B2A700715124 /* crypto */,
-				E0A70B9621C8FF8900A2FEA8 /* PolicyManager.cpp */,
-				E0A70B9721C8FF8900A2FEA8 /* PolicyManager.h */,
-				E6F8DC201D132657007DFBEC /* RUEList.cpp */,
-				E6F8DC211D132657007DFBEC /* RUEList.h */,
+				E683B216150481DF0013D588 /* pugixml */,
 				E6EE839411E87E9700B01518 /* CheckVersion.cpp */,
 				E6EE839511E87E9700B01518 /* CheckVersion.h */,
 				E6EE839611E87E9700B01518 /* Command.cpp */,
@@ -1602,6 +1599,7 @@
 				E6EE83A211E87E9700B01518 /* core_st.cpp */,
 				E6EE83A311E87E9700B01518 /* core_st.h */,
 				E6EE839F11E87E9700B01518 /* core.h */,
+				E0C3C4512379CD8300715124 /* CoreAlias.cpp */,
 				E6EE839D11E87E9700B01518 /* coredefs.h */,
 				E6EE839E11E87E9700B01518 /* CoreImpExp.cpp */,
 				E6DDC6FF1389120E00F0C0D1 /* CoreOtherDB.cpp */,
@@ -1618,8 +1616,9 @@
 				E6EE83AA11E87E9700B01518 /* ItemField.h */,
 				E6EE83AC11E87E9700B01518 /* Match.cpp */,
 				E6EE83AD11E87E9700B01518 /* Match.h */,
+				E0A70B9621C8FF8900A2FEA8 /* PolicyManager.cpp */,
+				E0A70B9721C8FF8900A2FEA8 /* PolicyManager.h */,
 				E6EE83AF11E87E9700B01518 /* Proxy.h */,
-				E683B216150481DF0013D588 /* pugixml */,
 				E6EE83B011E87E9700B01518 /* PWCharPool.cpp */,
 				E6EE83B111E87E9700B01518 /* PWCharPool.h */,
 				E6EE83B211E87E9700B01518 /* PWHistory.cpp */,
@@ -1642,7 +1641,6 @@
 				E6EE83C111E87E9700B01518 /* PWSfileV3.h */,
 				A2FE258B1C5ACF7500210C36 /* PWSfileV4.cpp */,
 				A2FE258C1C5ACF7500210C36 /* PWSfileV4.h */,
-				E0C3C4512379CD8300715124 /* CoreAlias.cpp */,
 				E6EE83C211E87E9700B01518 /* PWSFilters.cpp */,
 				E6EE83C311E87E9700B01518 /* PWSFilters.h */,
 				E698275814C01B7D0043C243 /* PWSLog.cpp */,
@@ -1656,6 +1654,8 @@
 				A2FE25941C5ACFBD00210C36 /* PWStime.h */,
 				E6EE83C911E87E9700B01518 /* Report.cpp */,
 				E6EE83CA11E87E9700B01518 /* Report.h */,
+				E6F8DC201D132657007DFBEC /* RUEList.cpp */,
+				E6F8DC211D132657007DFBEC /* RUEList.h */,
 				E6299FB91D07161E00D03FD1 /* SearchUtils.h */,
 				E6EE83CF11E87E9700B01518 /* StringX.cpp */,
 				E6EE83D011E87E9700B01518 /* StringX.h */,
