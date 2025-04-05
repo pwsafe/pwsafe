@@ -75,7 +75,7 @@ public:
 
 ////@begin PWSafeApp event handler declarations
 #ifdef __WXMAC__
-  virtual void MacNewFile() wxOVERRIDE;
+  virtual void MacReopenApp() wxOVERRIDE;
 #endif // __WXMAC__
 ////@end PWSafeApp event handler declarations
 
