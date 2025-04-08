@@ -53,7 +53,7 @@ CryptKeyEntryDlg::CryptKeyEntryDlg(Mode mode)
     }
 
     BoxSizer1 = new wxBoxSizer(wxVERTICAL);
-    BoxSizer1->Add(StaticTextDescription, 0, wxALL|wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer1->Add(StaticTextDescription, 0, wxALL|wxALIGN_LEFT, 5);
     FlexGridSizer1 = new wxFlexGridSizer(0, 2, 0, 0);
     FlexGridSizer1->AddGrowableCol(1);
     StaticTextKey1 = new wxStaticText(this, wxID_ANY, _("Enter Key:"), wxDefaultPosition, wxDefaultSize, 0, _T("wxID_ANY"));
