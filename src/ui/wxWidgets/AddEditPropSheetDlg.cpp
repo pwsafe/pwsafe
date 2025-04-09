@@ -3768,7 +3768,7 @@ bool AddEditPropSheetDlg::SyncAndQueryCancel(bool showDialog) {
   else if (!(Validate() && TransferDataFromWindow()) || GetChanges() != Changes::None) {
     if (showDialog) {
       wxMessageDialog dialog(
-        nullptr,
+        this,
         _("One or more values have been changed.\nDo you want to discard the changes?"), wxEmptyString,
         wxOK | wxCANCEL | wxCANCEL_DEFAULT | wxICON_EXCLAMATION
       );
@@ -3786,7 +3786,7 @@ bool AddEditPropSheetDlg::SyncAndQueryCancel(bool showDialog) {
 
 void AddEditPropSheetDlg::OnCancel(wxCommandEvent& WXUNUSED(evt))
 {
-  if (SyncAndQueryCancel(true)) {
+  if (SyncAndQueryCancel(true) && IsShown()) {
     EndModal(wxID_CANCEL);
   }
 }
