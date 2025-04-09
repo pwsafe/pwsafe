@@ -75,7 +75,6 @@ public:
 
 ////@begin PWSafeApp event handler declarations
 #ifdef __WXMAC__
-  bool InitPart2();
   virtual void MacReopenApp() wxOVERRIDE;
   virtual void MacNewFile() wxOVERRIDE;
   virtual void MacOpenFiles(const wxArrayString& fileNames) wxOVERRIDE;
@@ -128,6 +127,7 @@ private:
   bool m_cmd_minimized;
   bool m_file_in_cmd = false;
   bool m_initComplete = false;
+  bool InitPart2();
 
 public:
   RecentDbList &recentDatabases();

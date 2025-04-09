@@ -508,15 +508,16 @@ bool PWSafeApp::OnInit()
  * InitPart2() is called from those functions so that MacOpenFiles() has a chance
  * to set the file name before the password entry dialog is displayed.
  * All other information needed is stored in the PWSafeApp object.
- * On Linux/Unix, this is still one big happy function.
+ * On Linux/Unix, just call the second part direct, so this is still like one big happy function.
  */
 #ifdef __WXMAC__
   return true;
+#else
+  return PWSafeApp::InitPart2();
+#endif //__WXMAC__
 }
 
 bool PWSafeApp::InitPart2() {
-#endif //__WXMAC__
-
   if (!m_cmd_closed && !m_cmd_silent && !m_cmd_minimized) {
     // Get the file, r/w mode and password from user
     // Note that file may be new
@@ -748,23 +749,32 @@ void PWSafeApp::MacReopenApp()
 
 // This is called when a file, of a type associated with the app, is double-clicked
 // or drag-and-dropped onto the dock icon.  We need to set the current file name before
-// showing the SafeCombinationEntryDlg dialog.  (Which happens in InitPart2().  If
+// showing the SafeCombinationEntryDlg dialog.  (Which happens in InitPart2().)  If
 // InitPart2() does not create the PasswordSafeFrame, (i.e. the user clicked cancel)
 // the the framework will call OnExit() for us.
 void PWSafeApp::MacOpenFiles(const wxArrayString& fileNames) {
   StringX filename;
-  if (m_initComplete || fileNames.IsEmpty())
+  if (fileNames.IsEmpty())
     return;
 
-//  wxString msg = wxString::Format("MacOpenFiles entered with %zd names, the first one is: %s", fileNames.GetCount(), fileNames[0].c_str());
+//  wxString msg = wxString::Format("MacOpenFiles entered with %zd names, the first one is: %s",
+//                                  fileNames.GetCount(), fileNames[0].c_str());
 //  (void)wxMessageBox("We're here!", msg, wxICON_INFORMATION | wxOK );
 
+  // Really, we can only open one file at a time, so just use the first one.
   filename = fileNames[0];
-  m_core.SetCurFile(filename);
-  InitPart2();
+  if (m_initComplete) {
+    int rc = m_frame->Open(filename.c_str());
+    if (rc == PWScore::SUCCESS) {
+      m_frame->FinishGoodOpen();
+    }
+  } else {
+    m_core.SetCurFile(filename);
+    InitPart2();
+  }
 }
 
-// This is called when the app is started by itself (not by clicking a file)
+// This is called when the app is started by itself (not by clicking a data file)
 // Just finish the init.
 void PWSafeApp::MacNewFile() {
 //  (void)wxMessageBox("We're here!", "MacNewFile", wxICON_INFORMATION | wxOK );

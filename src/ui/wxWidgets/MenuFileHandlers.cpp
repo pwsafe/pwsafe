@@ -242,11 +242,16 @@ void PasswordSafeFrame::OnOpenClick(wxCommandEvent& WXUNUSED(evt))
   int rc = DoOpen(_("Open Password Database"));
 
   if (rc == PWScore::SUCCESS) {
-    m_core.ResumeOnDBNotification();
-    CreateMenubar(); // Recreate the menu with updated list of most recently used DBs
-    UpdateSearchBarVisibility();
-    m_AuiManager.Update();
+    FinishGoodOpen();
   }
+}
+
+void PasswordSafeFrame::FinishGoodOpen()
+{
+  m_core.ResumeOnDBNotification();
+  CreateMenubar(); // Recreate the menu with updated list of most recently used DBs
+  UpdateSearchBarVisibility();
+  m_AuiManager.Update();
 }
 
 /*!
