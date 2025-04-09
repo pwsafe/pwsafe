@@ -123,6 +123,7 @@
 				<key>public.filename-extension</key>
 				<array>
 					<string>dat</string>
+					<string>bak</string>
 				</array>
 			</dict>
 		</dict>
