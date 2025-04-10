@@ -742,7 +742,7 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
 // Not to be confused with the system tray (menu bar) icon.
 void PWSafeApp::MacReopenApp()
 {
-//  (void)wxMessageBox("We're here!", "MacReopenApp", wxICON_INFORMATION | wxOK );
+//  (void)wxMessageBox("We're here!", "MacReopenApp", wxOK );
   if (m_initComplete)
     GetPasswordSafeFrame()->UnlockSafe(true, false);
 }
@@ -763,22 +763,32 @@ void PWSafeApp::MacOpenFiles(const wxArrayString& fileNames) {
 
   // Really, we can only open one file at a time, so just use the first one.
   filename = fileNames[0];
-  if (m_initComplete) {
-    int rc = m_frame->Open(filename.c_str());
-    if (rc == PWScore::SUCCESS) {
-      m_frame->FinishGoodOpen();
+
+  // Only allow one pass through InitPart2. While SafeCombinationEntryDlg is displayed,
+  // clicking another file causes another pass through here.  In this situation, the mutex
+  // seems to only be advisory.
+  wxMutexLocker lock(m_MacFileEventMutex);
+  if (lock.IsOk()) {
+    if (m_initComplete) {
+      int rc = m_frame->Open(filename.c_str());
+      if (rc == PWScore::SUCCESS) {
+        m_frame->FinishGoodOpen();
+      }
+    } else {
+      m_core.SetCurFile(filename);
+      InitPart2();
     }
-  } else {
-    m_core.SetCurFile(filename);
-    InitPart2();
   }
 }
 
 // This is called when the app is started by itself (not by clicking a data file)
 // Just finish the init.
 void PWSafeApp::MacNewFile() {
-//  (void)wxMessageBox("We're here!", "MacNewFile", wxICON_INFORMATION | wxOK );
-  InitPart2();
+//  (void)wxMessageBox("We're here!", "MacNewFile", wxOK );
+  wxMutexLocker lock(m_MacFileEventMutex);
+  if (lock.IsOk()) {
+    InitPart2();
+  }
 }
 #endif // __WXMAC__
 

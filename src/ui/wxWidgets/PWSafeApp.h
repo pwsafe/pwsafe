@@ -78,6 +78,7 @@ public:
   virtual void MacReopenApp() wxOVERRIDE;
   virtual void MacNewFile() wxOVERRIDE;
   virtual void MacOpenFiles(const wxArrayString& fileNames) wxOVERRIDE;
+  wxMutex m_MacFileEventMutex;
 #endif // __WXMAC__
 ////@end PWSafeApp event handler declarations
 
