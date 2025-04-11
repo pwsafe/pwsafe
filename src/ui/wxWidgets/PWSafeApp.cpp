@@ -765,10 +765,13 @@ void PWSafeApp::MacOpenFiles(const wxArrayString& fileNames) {
   filename = fileNames[0];
 
   // Only allow one pass through InitPart2. While SafeCombinationEntryDlg is displayed,
-  // clicking another file causes another pass through here.  In this situation, the mutex
-  // seems to only be advisory.
+  // clicking another file causes another pass through here, which resulted in a second
+  // SafeCombinationEntryDlg window!  The mutex ignores subsequent events until the first
+  // file is open.  However, in this situation, the mutex is only advisory.
   wxMutexLocker lock(m_MacFileEventMutex);
   if (lock.IsOk()) {
+    // After the first open, subsequent file double-clicks are equvalent to the
+    // File->Open menu action.
     if (m_initComplete) {
       int rc = m_frame->Open(filename.c_str());
       if (rc == PWScore::SUCCESS) {
@@ -798,6 +801,9 @@ void PWSafeApp::MacNewFile() {
 
 int PWSafeApp::OnExit()
 {
+  // OnExit() is only called after OnInit() returns true.
+  // Now that it's in two parts, we want to make sure the
+  // second part is also complete.
   if (m_initComplete) {
     m_idleTimer->Stop();
     recentDatabases().Save();
