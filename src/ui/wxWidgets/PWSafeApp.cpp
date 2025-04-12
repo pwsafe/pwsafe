@@ -742,7 +742,6 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
 // Not to be confused with the system tray (menu bar) icon.
 void PWSafeApp::MacReopenApp()
 {
-//  (void)wxMessageBox("We're here!", "MacReopenApp", wxOK );
   if (m_initComplete)
     GetPasswordSafeFrame()->UnlockSafe(true, false);
 }
@@ -756,10 +755,6 @@ void PWSafeApp::MacOpenFiles(const wxArrayString& fileNames) {
   StringX filename;
   if (fileNames.IsEmpty())
     return;
-
-//  wxString msg = wxString::Format("MacOpenFiles entered with %zd names, the first one is: %s",
-//                                  fileNames.GetCount(), fileNames[0].c_str());
-//  (void)wxMessageBox("We're here!", msg, wxICON_INFORMATION | wxOK );
 
   // Really, we can only open one file at a time, so just use the first one.
   filename = fileNames[0];
@@ -787,7 +782,6 @@ void PWSafeApp::MacOpenFiles(const wxArrayString& fileNames) {
 // This is called when the app is started by itself (not by clicking a data file)
 // Just finish the init.
 void PWSafeApp::MacNewFile() {
-//  (void)wxMessageBox("We're here!", "MacNewFile", wxOK );
   wxMutexLocker lock(m_MacFileEventMutex);
   if (lock.IsOk()) {
     InitPart2();
