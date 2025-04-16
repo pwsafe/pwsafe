@@ -141,7 +141,7 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
    wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL},
 #endif
   {wxCMD_LINE_PARAM, nullptr, nullptr, STR("database"),
-   wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},   // We only really use one param
+   wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
   wxCMD_LINE_DESC_END
 };
 
@@ -505,19 +505,18 @@ bool PWSafeApp::OnInit()
  * On macOS, Finder GUI file actions, such as double-clicking a file to open it, are sent
  * to the app via calls to MacOpenFiles() and MacNewFile().  However, those messages
  * are not processed until OnInit() returns.  This hack splits OnInit() into two parts,
- * InitPart2() is called from those functions so that MacOpenFiles() has a chance
+ * FinishInit() is called from those functions so that MacOpenFiles() has a chance
  * to set the file name before the password entry dialog is displayed.
  * All other information needed is stored in the PWSafeApp object.
  * On Linux/Unix, just call the second part direct, so this is still like one big happy function.
  */
-#ifdef __WXMAC__
+#ifndef __WXMAC__
+  PWSafeApp::FinishInit();
+#endif
   return true;
-#else
-  return PWSafeApp::InitPart2();
-#endif //__WXMAC__
 }
 
-bool PWSafeApp::InitPart2() {
+void PWSafeApp::FinishInit() {
   if (!m_cmd_closed && !m_cmd_silent && !m_cmd_minimized) {
     // Get the file, r/w mode and password from user
     // Note that file may be new
@@ -526,7 +525,7 @@ bool PWSafeApp::InitPart2() {
     int returnValue = initWindow->ShowModal();
 
     if (returnValue != wxID_OK) {
-      return false;
+      return;
     }
     wxASSERT_MSG(!m_frame, wxT("Frame window created unexpectedly"));
     m_frame = new PasswordSafeFrame(nullptr, m_core);
@@ -588,7 +587,7 @@ bool PWSafeApp::InitPart2() {
 
   m_frame->Register(); // register modal dialog hook
   m_initComplete = true;
-  return true;
+  return;
 }
 
 /*!
@@ -748,8 +747,8 @@ void PWSafeApp::MacReopenApp()
 
 // This is called when a file, of a type associated with the app, is double-clicked
 // or drag-and-dropped onto the dock icon.  We need to set the current file name before
-// showing the SafeCombinationEntryDlg dialog.  (Which happens in InitPart2().)  If
-// InitPart2() does not create the PasswordSafeFrame, (i.e. the user clicked cancel)
+// showing the SafeCombinationEntryDlg dialog.  (Which happens in FinishInit().)  If
+// FinishInit() does not create the PasswordSafeFrame, (i.e. the user clicked cancel)
 // the the framework will call OnExit() for us.
 void PWSafeApp::MacOpenFiles(const wxArrayString& fileNames) {
   StringX filename;
@@ -759,7 +758,7 @@ void PWSafeApp::MacOpenFiles(const wxArrayString& fileNames) {
   // Really, we can only open one file at a time, so just use the first one.
   filename = fileNames[0];
 
-  // Only allow one pass through InitPart2. While SafeCombinationEntryDlg is displayed,
+  // Only allow one pass through FinishInit(). While SafeCombinationEntryDlg is displayed,
   // clicking another file causes another pass through here, which resulted in a second
   // SafeCombinationEntryDlg window!  The mutex ignores subsequent events until the first
   // file is open.  However, in this situation, the mutex is only advisory.
@@ -774,7 +773,7 @@ void PWSafeApp::MacOpenFiles(const wxArrayString& fileNames) {
       }
     } else {
       m_core.SetCurFile(filename);
-      InitPart2();
+      FinishInit();
     }
   }
 }
@@ -784,7 +783,7 @@ void PWSafeApp::MacOpenFiles(const wxArrayString& fileNames) {
 void PWSafeApp::MacNewFile() {
   wxMutexLocker lock(m_MacFileEventMutex);
   if (lock.IsOk()) {
-    InitPart2();
+    FinishInit();
   }
 }
 #endif // __WXMAC__

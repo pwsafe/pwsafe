@@ -128,7 +128,7 @@ private:
   bool m_cmd_minimized;
   bool m_file_in_cmd = false;
   bool m_initComplete = false;
-  bool InitPart2();
+  void FinishInit();
 
 public:
   RecentDbList &recentDatabases();
