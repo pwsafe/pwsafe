@@ -68,7 +68,7 @@ class DnDFile;
  * Control identifiers
  */
 enum {
-  ID_PASSWORDSAFEFRAME = wxID_HIGHEST+1,
+  ID_PASSWORDSAFEFRAME = wxID_HIGHEST + 1,
 
   // File menu
   ID_RECENTSAFES,
