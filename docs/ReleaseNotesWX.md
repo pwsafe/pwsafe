@@ -15,6 +15,10 @@ Bugs fixed in 1.21.1
 --------------------
 [GH1472](https://github.com/pwsafe/pwsafe/issues/1472) 'Go' button in Add/Edit window now respects "alt" browser specification.
 
+New features in 1.21.1
+----------------------
+* macOS: File type associations are now supported for .psafe3 and .ibak files.  The Pwsafe icon will be used in Finder and the app can be launched by double-clicking a file.
+
 
 PasswordSafe 1.21.0 Release 28 March 2025
 =========================================

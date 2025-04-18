@@ -688,6 +688,7 @@ private:
   int NewFile(StringX &fname);
   int DoOpen(const wxString& title);
   int Open(const wxString &fname); // prompt for password, try to Load.
+  void FinishGoodOpen();
   int SaveIfChanged();
   int SaveAs(void);
   int Save(SaveType savetype = SaveType::INVALID);
