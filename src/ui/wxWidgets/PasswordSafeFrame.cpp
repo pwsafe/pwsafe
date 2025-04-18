@@ -2848,26 +2848,24 @@ void PasswordSafeFrame::HideUI(bool lock)
 
 void PasswordSafeFrame::IconizeOrHideAndLock()
 {
-  // Close child Dialogs, hide if close failed:
-  auto children = GetChildren();
-  for (auto child : children)
-    if (dynamic_cast<wxDialog *>(child) != nullptr)
-      if (!child->Close(true))
-        child->Hide();
-  
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
-    if (!m_sysTray->IsLocked()) {
-      HideUI(true);
-    }
-  }
-  else {
-    TryIconize();
-  }
+  CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}),
+    static_cast<CloseFlags>(CloseFlags::CLOSE_FORCED|CloseFlags::LEAVE_MAIN),
+    [this](bool success) {
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
+        if (!m_sysTray->IsLocked()) {
+          HideUI(true);
+        }
+      }
+      else {
+        TryIconize();
+      }
 
-  // If not already locked by HideUI or OnIconize due to user preference than do it now
-  if (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED) {
-    LockDb();
-  }
+      // If not already locked by HideUI or OnIconize due to user preference than do it now
+      if (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED) {
+        LockDb();
+      }
+    }
+  );
 }
 
 void PasswordSafeFrame::LockDb()
