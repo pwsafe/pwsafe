@@ -71,8 +71,8 @@ static void tweakFontSizes()
 
 Fonts *Fonts::GetInstance()
 {
+  tweakFontSizes();
   if (self == nullptr) {
-    tweakFontSizes();
     self = new Fonts();
   }
   return self;
@@ -191,10 +191,25 @@ void Fonts::SetTreeListFont(LOGFONT *pLF, const int iPtSz)
   }
 
   if (iPtSz == 0) {
-    m_pTreeListFont->CreateFontIndirect(pLF);
+    // Create a new LOGFONT structure based on provided font
+    LOGFONT lf(*pLF);
+    
+    // Use WinUtil::GetDPI() for DPI scaling
+    UINT dpi = WinUtil::GetDPI();
+    
+    // Scale the font height based on DPI
+    lf.lfHeight = MulDiv(lf.lfHeight, dpi, WinUtil::defDPI);
+    
+    m_pTreeListFont->CreateFontIndirect(&lf);
   } else {
     LOGFONT lf(*pLF);
-    lf.lfHeight = iPtSz;
+    
+    // Use WinUtil::GetDPI() for DPI scaling
+    UINT dpi = WinUtil::GetDPI();
+    
+    // Scale the point size based on DPI
+    int scaledPtSize = MulDiv(iPtSz, dpi, WinUtil::defDPI);
+    lf.lfHeight = scaledPtSize;
     m_pTreeListFont->CreatePointFontIndirect(&lf);
   }
 }
@@ -221,10 +236,25 @@ void Fonts::SetAddEditFont(LOGFONT *pLF, const int iPtSz)
   }
 
   if (iPtSz == 0) {
-    m_pAddEditFont->CreateFontIndirect(pLF);
+    // Create a new LOGFONT structure based on provided font
+    LOGFONT lf(*pLF);
+    
+    // Use WinUtil::GetDPI() for DPI scaling
+    UINT dpi = WinUtil::GetDPI();
+    
+    // Scale the font height based on DPI
+    lf.lfHeight = MulDiv(lf.lfHeight, dpi, WinUtil::defDPI);
+    
+    m_pAddEditFont->CreateFontIndirect(&lf);
   } else {
     LOGFONT lf(*pLF);
-    lf.lfHeight = iPtSz;
+    
+    // Use WinUtil::GetDPI() for DPI scaling
+    UINT dpi = WinUtil::GetDPI();
+    
+    // Scale the point size based on DPI
+    int scaledPtSize = MulDiv(iPtSz, dpi, WinUtil::defDPI);
+    lf.lfHeight = scaledPtSize;
     m_pAddEditFont->CreatePointFontIndirect(&lf);
   }
 
@@ -282,10 +312,21 @@ void Fonts::SetPasswordFont(LOGFONT *pLF, const int iPtSz)
   }
 
   if (iPtSz == 0 || pLF == nullptr) {
-    m_pPasswordFont->CreateFontIndirect(pLF == nullptr ? &dfltPasswordLogfont : pLF);
+    // Create a new LOGFONT structure based on default or provided font
+    LOGFONT lf = (pLF == nullptr ? dfltPasswordLogfont : *pLF);
+    
+    UINT dpi = WinUtil::GetDPI();
+    
+    lf.lfHeight = MulDiv(lf.lfHeight, dpi, WinUtil::defDPI);
+    
+    m_pPasswordFont->CreateFontIndirect(&lf);
   } else {
     LOGFONT lf(*pLF);
-    lf.lfHeight = iPtSz;
+    
+    UINT dpi = WinUtil::GetDPI();
+    
+    int scaledPtSize = MulDiv(iPtSz, dpi, WinUtil::defDPI);
+    lf.lfHeight = scaledPtSize;
     m_pPasswordFont->CreatePointFontIndirect(&lf);
   }
 }
@@ -298,9 +339,16 @@ void Fonts::ApplyPasswordFont(CWnd *pDlgItem)
 
   if (m_pPasswordFont == nullptr) {
     m_pPasswordFont = new CFont;
-    // Initialize a CFont object with the characteristics given
-    // in a LOGFONT structure.
-    m_pPasswordFont->CreateFontIndirect(&dfltPasswordLogfont);
+    
+    // Use WinUtil::GetDPI() with the window handle for per-window DPI
+    UINT dpi = WinUtil::GetDPI(pDlgItem->GetSafeHwnd());
+    
+    // Create a scaled LOGFONT
+    LOGFONT lf = dfltPasswordLogfont;
+    lf.lfHeight = MulDiv(lf.lfHeight, dpi, WinUtil::defDPI);
+    
+    // Initialize a CFont object with the DPI-aware characteristics
+    m_pPasswordFont->CreateFontIndirect(&lf);
   }
 
   pDlgItem->SetFont(m_pPasswordFont);
@@ -327,11 +375,19 @@ void Fonts::SetNotesFont(LOGFONT *pLF, const int iPtSz)
     m_pNotesFont->DeleteObject();
   }
 
+  LOGFONT lf(*pLF);
+  UINT dpi = WinUtil::GetDPI();
+
   if (iPtSz == 0) {
-    m_pNotesFont->CreateFontIndirect(pLF);
+    // Scale the font height based on DPI
+    lf.lfHeight = MulDiv(lf.lfHeight, dpi, WinUtil::defDPI);
+    
+    m_pNotesFont->CreateFontIndirect(&lf);
   } else {
-    LOGFONT lf(*pLF);
-    lf.lfHeight = iPtSz;
+    
+    // Scale the point size based on DPI
+    int scaledPtSize = MulDiv(iPtSz, dpi, WinUtil::defDPI);
+    lf.lfHeight = scaledPtSize;
     m_pNotesFont->CreatePointFontIndirect(&lf);
   }
 }
