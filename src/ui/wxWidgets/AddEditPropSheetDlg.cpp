@@ -168,7 +168,15 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
   wxPropertySheetDialog::Create( parent, id, caption, pos, size, style );
 
-  int flags = (m_Type == SheetType::VIEW) ? (wxCANCEL|wxHELP) : (wxOK|wxCANCEL|wxHELP); // Use Cancel instead of wxCLOSE on view to allow Command-C as copy operation in macOS, otherwise the Command-C is connected to the Close-Button.
+  int flags = (m_Type == SheetType::VIEW) ? 
+  // Use Cancel instead of wxCLOSE on view to allow Command-C as copy operation in macOS,
+  // otherwise the Command-C is connected to the Close-Button.
+#ifdef __WXOSX__
+  (wxCANCEL|wxHELP)
+#else
+  (wxCLOSE|wxHELP)
+#endif
+  : (wxOK|wxCANCEL|wxHELP);
   CreateButtons(flags);
   CreateControls();
   ApplyFontPreferences();
