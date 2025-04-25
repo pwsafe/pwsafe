@@ -95,6 +95,8 @@ int CPWStatusBar::OnCreate(LPCREATESTRUCT pCreateStruct)
 
 void CPWStatusBar::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
+  const int dpi = WinUtil::GetDPI(m_hWnd);
+
   switch (lpDrawItemStruct->itemID) {
     case SB_FILTER:
     {
@@ -106,8 +108,8 @@ void CPWStatusBar::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
       CRect rect(&lpDrawItemStruct->rcItem);
       if (m_bSTBFilterStatus) {
         // Centre bitmap in pane.
-        int ileft = rect.left + rect.Width() / 2 - m_bmWidth / 2;
-        int itop = rect.top + rect.Height() / 2 - m_bmHeight / 2;
+        int ileft = MulDiv(rect.left + rect.Width() / 2 - m_bmWidth / 2, dpi, WinUtil::defDPI);
+        int itop = MulDiv(rect.top + rect.Height() / 2 - m_bmHeight / 2, dpi, WinUtil::defDPI);
 
         CBitmap *pBitmap = &m_FilterBitmap;
         CDC srcDC; // select current bitmap into a compatible CDC
@@ -139,8 +141,8 @@ void CPWStatusBar::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
       CRect rect(&lpDrawItemStruct->rcItem);
       // Center bitmap.
-      int ileft = rect.left + rect.Width() / 2 - m_bmWidth / 2;
-      int itop = rect.top + rect.Height() / 2 - m_bmHeight / 2;
+      int ileft = MulDiv(rect.left + rect.Width() / 2 - m_bmWidth / 2, dpi, WinUtil::defDPI);
+      int itop = MulDiv(rect.top + rect.Height() / 2 - m_bmHeight / 2, dpi, WinUtil::defDPI);
       m_ExcludeCaptureBitmaps.BitBltStateBitmap(nIdStateBitmap, ileft, itop, lpDrawItemStruct->hDC);
       return;
     }
