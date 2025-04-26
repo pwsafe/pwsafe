@@ -708,6 +708,12 @@ void DboxMain::setupBars()
     pws_os::Trace(L"Failed to create Main toolbar\n");
     return;      // fail to create
   }
+  // Get DPI and adjust toolbar height
+  int dpi = WinUtil::GetDPI(m_hWnd);
+  int baseHeight = 30; // Base height at 100% DPI
+  int scaledHeight = MulDiv(baseHeight, dpi, WinUtil::defDPI);
+  m_MainToolBar.SetHeight(scaledHeight);
+
   m_MainToolBar.Init(NumBits); // Must be after CreateEx() due to DPI fixes
 
   DWORD dwStyle = m_MainToolBar.GetBarStyle();
