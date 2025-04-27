@@ -24,6 +24,7 @@
 #include <cstddef> // for ptrdiff_t
 #include <cstdlib> // for malloc
 #include <cstring> // for memset
+#include <vector>
 
 #include "../os/typedefs.h"
 #include "PwsPlatform.h"
@@ -150,6 +151,9 @@ namespace S_Alloc
 typedef std::basic_string<wchar_t,
                           std::char_traits<wchar_t>,
                           S_Alloc::SecureAlloc<wchar_t> > StringX;
+
+template <typename T>
+using VectorX = std::vector<T, S_Alloc::SecureAlloc<T>>;
 
 // Following should really be StringX member functions, but there's no 
 // elegant way of extending a template class without public inheritance, 

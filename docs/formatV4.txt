@@ -261,7 +261,8 @@ password change             0x13        time_t        Y              [5]
 End of Entry                0xff        [empty]       Y              [17]
 
 [1] The version number of the database format. For this version, the value
-is 0x0400 (stored in little-endian format, that is, 0x00, 0x04).
+is 0x0401 (stored in little-endian format, that is, 0x01, 0x04).
+PasswordSafe V3.69 introduced Format 0x0401
 
 [2] A universally unique database identifier is needed in order to
 synchronize databases across different machine. Representation is
@@ -418,6 +419,12 @@ TOTP Start Time             0x24        time_t        N              [29]
 *RESERVED*                  0x27        Text          Y              [30]
 *RESERVED*                  0x28        time_t        Y              [30]
 *RESERVED*                  0x29        Binary        Y              [30]
+Passkey Credential ID       0x2a        Binary        Y              [31]
+Passkey Relying Party ID    0x2b        Text          Y              [31]
+Passkey User Handle         0x2c        Binary        Y              [31]
+Passkey Algorithm ID        0x2d        4 bytes       Y              [31]
+Passkey Private Key         0x2e        Binary        Y              [31]
+Passkey Sign Count          0x2f        4 bytes       Y              [31]
 BaseUUID                    0x41        UUID          Y              [25]
 AliasUUID                   0x42        UUID          Y
 ShortcutUUID                0x43        UUID          Y
@@ -616,6 +623,37 @@ These TOTP parameters fields have the following format:
 
 [30] This value is used in V3 of the PasswordSafe format. Reserving it here to
 maintain consistency with values that follow.
+
+[31] The passkey parameters fields are listed below. If an entry contains
+a passkey, all fields must be present and non-empty. Below are references
+to the official specification documenting each field, including requirements
+of the contents.
+
+    Passkey Credential ID
+    https://www.w3.org/TR/webauthn-2/#credential-id
+
+    Passkey Relying Party ID
+    https://www.w3.org/TR/webauthn-2/#relying-party-identifier
+
+    Passkey User Handle
+    https://www.w3.org/TR/webauthn-2/#user-handle
+
+    Passkey Algorithm ID = IANA COSE Algorithm Identifier
+    https://www.w3.org/TR/webauthn-2/#sctn-alg-identifier
+    Encode as signed (!) 32 bit little-endian value, example for ES256:
+    0xf9 0xff 0xff 0xff
+    To enhance platform compatability, the application should prefer to
+    create passkeys using ES256 (if supported by the Relying Party).
+
+    Passkey Private Key
+    https://www.w3.org/TR/webauthn-2/#credential-private-key
+    For maximum platform compatability, the private key must be encoded
+    in DER format.
+
+    Passkey Sign Count, encoded as unsigned 32 bit little-endian value
+    https://www.w3.org/TR/webauthn-2/#sctn-sign-counter
+
+These parameters were introduced in version 0x0401 (PasswordSafe V3.69).
 
 3.4 Attachments
 

@@ -64,6 +64,12 @@ BEGIN
   IDSC_FLDNMDATAATTFILENAME  "Attachment File Name"
   IDSC_FLDNMDATAATTMTIME     "Attachment Modification Time"
   IDSC_FLDNMDATAATTCONTENT   "Attachment Content"
+  IDSC_FLDNMPASSKEYCREDID     "Passkey Credential ID"
+  IDSC_FLDNMPASSKEYRPID       "Passkey Relying Party ID"
+  IDSC_FLDNMPASSKEYUSERHANDLE "Passkey User Handle"
+  IDSC_FLDNMPASSKEYALGOID     "Passkey Algorithm ID"
+  IDSC_FLDNMPASSKEYPRIVATEKEY "Passkey Private Key"
+  IDSC_FLDNMPASSKEYSIGNCOUNT  "Passkey Sign Count"
 END
 
 STRINGTABLE
