@@ -22,7 +22,6 @@ template<class T>
 class CPWTouch : public T
 {
 protected:
-#if (NTDDI_VERSION >= NTDDI_WIN7)
   virtual ULONG GetGestureStatus(CPoint)
   {
     // Windows 7 dependent
@@ -43,5 +42,4 @@ protected:
     pws_os::Trace(L"CPWTouch::GetGestureStatus - running on %s\n", bTablet ? L"Tablet" : L"Desktop");
     return bTablet ? dwTabletProperty : TABLET_DISABLE_PRESSANDHOLD;
   }
-#endif
 };
