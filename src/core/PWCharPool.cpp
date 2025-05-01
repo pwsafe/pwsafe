@@ -18,7 +18,9 @@
 #include "os/typedefs.h"
 #include "os/pws_tchar.h"
 
+#include <cmath>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #include <algorithm>
@@ -541,4 +543,41 @@ bool CPasswordCharPool::CheckMasterPassword(const StringX &pwd, StringX &error)
     LoadAString(error, IDSC_PASSWORDPOOR);
     return false;
   }
+}
+
+double CPasswordCharPool::CalculatePasswordStrength(const StringX &password)
+{
+  if (password.empty()) {
+    return 0.0; // Empty password has no strength
+  }
+
+  // Determine the character pool size
+  std::unordered_set<char> charSet(password.begin(), password.end());
+  int poolSize = 0;
+
+  bool hasLower = false, hasUpper = false, hasDigits = false, hasSpecial = false;
+  for (char c : charSet) {
+    if (std::islower(c)) hasLower = true;
+    else if (std::isupper(c)) hasUpper = true;
+    else if (std::isdigit(c)) hasDigits = true;
+    else hasSpecial = true;
+  }
+
+  if (hasLower) poolSize += 26; // a-z
+  if (hasUpper) poolSize += 26; // A-Z
+  if (hasDigits) poolSize += 10; // 0-9
+  if (hasSpecial) poolSize += 32; // Special characters (approximation)
+
+  // Calculate entropy
+  double entropy = password.size() * std::log2(poolSize);
+
+  // Normalize entropy to a range of 0 to 100
+  double maxEntropy = 100.0; // Threshold for max entropy
+  double normalizedStrength = (entropy / maxEntropy) * 100.0;
+
+  // Cap the value between 0 and 100
+  if (normalizedStrength > 100.0) {
+    normalizedStrength = 100.0;
+  }
+  return normalizedStrength;
 }

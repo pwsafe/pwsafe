@@ -41,6 +41,7 @@ public:
   ~CPasswordCharPool();
 
   static bool CheckMasterPassword(const StringX &pwd, StringX &error);
+  static double CalculatePasswordStrength(const StringX &password);
   static stringT GetDefaultSymbols();
   static stringT GetEasyVisionSymbols() {return easyvision_symbol_chars;}
   static stringT GetPronounceableSymbols() {return pronounceable_symbol_chars;}
