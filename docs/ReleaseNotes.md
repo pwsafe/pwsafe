@@ -4,8 +4,12 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.68.0 Release March 18 2025
+PasswordSafe 3.68.2 Release ??? ?? 2025
 =========================================
+Bugs Fixed in 3.68.2
+-----------------------
+* [SF1613](https://sourceforge.net/p/passwordsafe/bugs/1613/) Text in file merge/sync/compare dialog is no longer truncated on some displays.
+
 
 New features in 3.68.0
 ----------------------
