@@ -24,6 +24,7 @@
 		5707816E2B0C4D030082EB6E /* YubiCfgDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707816A2B0C4CED0082EB6E /* YubiCfgDlg.cpp */; };
 		570781702B0C4D030082EB6E /* YubiMixin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707816C2B0C4CED0082EB6E /* YubiMixin.cpp */; };
 		570781742B0C4D330082EB6E /* PWYubi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570781692B0C4CD30082EB6E /* PWYubi.cpp */; };
+		572D9E232DC4920900AF81D4 /* StrengthMeter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 572D9E222DC4920900AF81D4 /* StrengthMeter.cpp */; };
 		579BDA4F2C55F0A1004C727B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 579BDA4E2C55F0A1004C727B /* Assets.xcassets */; };
 		57BD7D042B19BEC2005C0123 /* helpEN.zip in Resources */ = {isa = PBXBuildFile; fileRef = E690B95612984B1D007EA508 /* helpEN.zip */; };
 		6FF5D4A11DA14EE80032F5B6 /* PasswordSubsetDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */; };
@@ -289,6 +290,9 @@
 		57218E8329C983FA000B1907 /* version.wx */ = {isa = PBXFileReference; lastKnownFileType = text; name = version.wx; path = ../version.wx; sourceTree = "<group>"; };
 		57218E8429C98475000B1907 /* pwsafe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = pwsafe.entitlements; sourceTree = "<group>"; };
 		57218E8529C98481000B1907 /* pwsafe-cli.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "pwsafe-cli.entitlements"; sourceTree = SOURCE_ROOT; };
+		572D9E202DC4920900AF81D4 /* StatusBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusBar.h; sourceTree = "<group>"; };
+		572D9E212DC4920900AF81D4 /* StrengthMeter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrengthMeter.h; sourceTree = "<group>"; };
+		572D9E222DC4920900AF81D4 /* StrengthMeter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StrengthMeter.cpp; sourceTree = "<group>"; };
 		574370962A3CE21800B46A7D /* pwsafe-template.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "pwsafe-template.plist"; sourceTree = "<group>"; };
 		575412A92B14265800507BC5 /* ubuntu-latest.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "ubuntu-latest.yml"; path = "../.github/workflows/ubuntu-latest.yml"; sourceTree = "<group>"; };
 		575412AA2B14265800507BC5 /* macos-latest.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "macos-latest.yml"; path = "../.github/workflows/macos-latest.yml"; sourceTree = "<group>"; };
@@ -1430,6 +1434,7 @@
 				8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */,
 				D36479FC2615B773000CCA4A /* SetFiltersDlg.cpp */,
 				E66FB84B13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp */,
+				572D9E222DC4920900AF81D4 /* StrengthMeter.cpp */,
 				E6A7ECAB12CDEAA40021D898 /* SyncWizard.cpp */,
 				E6ADBA2F1195709A004E2BE5 /* SystemTray.cpp */,
 				E6E895981BD8C5E1009F3A8E /* TimedTaskChain.cpp */,
@@ -1505,6 +1510,8 @@
 				8ED7E1C229D9F24C0012034B /* SetDatabaseIdDlg.h */,
 				D36479FD2615B773000CCA4A /* SetFiltersDlg.h */,
 				E66FB84C13ACA5C3004DBB97 /* SizeRestrictedPanel.h */,
+				572D9E202DC4920900AF81D4 /* StatusBar.h */,
+				572D9E212DC4920900AF81D4 /* StrengthMeter.h */,
 				E6A7ECAC12CDEAA40021D898 /* SyncWizard.h */,
 				E6ADBA301195709A004E2BE5 /* SystemTray.h */,
 				E6ADBA311195709A004E2BE5 /* SystemTrayMenuId.h */,
@@ -2091,6 +2098,7 @@
 				E66C16AB16731ECD00C996B1 /* MenuManageHandlers.cpp in Sources */,
 				E6F8DC1F1D132618007DFBEC /* MenuViewHandlers.cpp in Sources */,
 				E66C16B316731EFE00C996B1 /* ManagePasswordPoliciesDlg.cpp in Sources */,
+				572D9E232DC4920900AF81D4 /* StrengthMeter.cpp in Sources */,
 				D365C70C2639943700AB0F97 /* PWFiltersPasswordDlg.cpp in Sources */,
 				D3AC55172631774600C78510 /* PWFiltersIntegerDlg.cpp in Sources */,
 				E66C16BB16731F9400C996B1 /* PasswordPolicyDlg.cpp in Sources */,
