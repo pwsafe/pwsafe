@@ -1,5 +1,5 @@
 /*
- * Initial version created as 'StrengthMeter.h'
+ * Initial version created as 'StrengthMeter.cpp'
  * by rafaelx on 2025-05-01.
  *
  * Copyright (c) 2019-2025 Rony Shapiro <ronys@pwsafe.org>.
@@ -102,27 +102,28 @@ void StrengthMeter::OnPaint(wxPaintEvent& event)
   auto size = GetSize();
     
   // Draw background
-  dc.SetBrush(wxBrush(GetBackgroundColour()));
+  auto bgColor = GetBackgroundColour();
+  dc.SetBrush(wxBrush(bgColor));
   dc.SetPen(*wxTRANSPARENT_PEN);
   dc.DrawRectangle(0, 0, size.GetWidth(), size.GetHeight());
 
   // Calculate metrics
-  int barX = 1;
-  int barY = 0;
-  int radius = 3;
+  int barX = 1, barY = 0, radius = 3;
   int barHeight = size.GetHeight();
   int barWidth = static_cast<int>((size.GetWidth() - 1) * (m_strength / 100.0));
     
   // Draw meter background
-  dc.SetBrush(wxBrush(wxColor(230, 230, 230)));
-  dc.SetPen(wxPen(wxColor(200, 200, 200)));
+  auto brushLightness = wxSystemSettings::GetAppearance().IsUsingDarkBackground() ? 65 : 95;
+  auto penLightness = wxSystemSettings::GetAppearance().IsUsingDarkBackground() ? 125 : 80;
+  dc.SetBrush(wxBrush(bgColor.ChangeLightness(brushLightness)));
+  dc.SetPen(wxPen(bgColor.ChangeLightness(penLightness)));
   dc.DrawRoundedRectangle(barX, barY, size.GetWidth() - 1, barHeight, radius);
 
   // Draw strength bar
   if (barWidth > 0) {
     auto barColor = GetColorForStrength();
     dc.SetBrush(wxBrush(barColor));
-    dc.SetPen(wxPen(barColor.ChangeLightness(85)));
+    dc.SetPen(wxPen(barColor.ChangeLightness(75)));
     dc.DrawRoundedRectangle(barX, barY, barWidth, barHeight, radius);
   }
 }
