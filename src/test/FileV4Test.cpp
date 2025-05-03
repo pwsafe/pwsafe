@@ -313,3 +313,30 @@ TEST_F(FileV4Test, CoreRWTest)
   // Get core to delete any existing commands
   core.ClearCommands();
 }
+
+TEST_F(FileV4Test, PasskeyTest)
+{
+  CItemData ci;
+  ci.CreateUUID();
+  ci.SetTitle(_T("passkey"));
+  ci.SetPassword(_T("possible"));
+  ci.SetPasskeyCredentialID(VectorX<unsigned char>(64,1));
+  ci.SetPasskeyRelyingPartyID(_T("relying party"));
+  ci.SetPasskeyUserHandle(VectorX<unsigned char>(32,2));
+  ci.SetPasskeyAlgorithmID(123);
+  ci.SetPasskeySignCount(456);
+  ci.SetPasskeyPrivateKey(VectorX<unsigned char>(512,3));
+
+  PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(ci));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+  ASSERT_TRUE(pws_os::FileExists(fname));
+
+  PWSfileV4 fr(fname.c_str(), PWSfile::Read, PWSfile::V40);
+  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(item));
+  EXPECT_EQ(ci, item);
+  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+}

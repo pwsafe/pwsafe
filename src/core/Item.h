@@ -89,6 +89,12 @@ public:
     DATA_ATT_FILENAME = 0x27,     // Original file name
     DATA_ATT_MTIME = 0x28,        // Modification time associated with the attachment file at the time of attachment
     DATA_ATT_CONTENT = 0x29,      // The binary representation of the attachment
+    PASSKEY_CRED_ID = 0x2a,       // Passkey Credential ID
+    PASSKEY_RP_ID = 0x2b,         // Passkey Relying Party ID
+    PASSKEY_USER_HANDLE = 0x2c,   // Passkey User Handle
+    PASSKEY_ALGO_ID = 0x2d,       // Passkey Algorithm ID
+    PASSKEY_PRIVATE_KEY = 0x2e,   // Passkey Private Key
+    PASSKEY_SIGN_COUNT = 0x2f,    // Passkey Sign Count
     LAST_USER_FIELD,              // All "user" fields MUST be before this for entry compare
 
     BASEUUID = 0x41,              // Base UUID of Alias or Shortcut (v4)
@@ -204,7 +210,9 @@ protected:
 
   void GetField(const CItemField &field, unsigned char *value, size_t &length) const;
   void GetField(const CItemField &field, std::vector<unsigned char> &v) const;
+  void GetField(const CItemField &field, VectorX<unsigned char> &v) const;
   void GetField(const int ft, std::vector<unsigned char> &v) const;
+  void GetField(const int ft, VectorX<unsigned char> &v) const;
   uint8_t GetFieldAsByte(const CItemField& field, uint8_t default_value = 0) const;
   uint8_t GetFieldAsByte(const int ft, uint8_t default_value = 0) const;
   StringX GetField(int ft) const;
