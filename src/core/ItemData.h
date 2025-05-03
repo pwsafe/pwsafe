@@ -399,6 +399,7 @@ public:
   void SetPasskeyPrivateKey(const VectorX<unsigned char> &v)   { CItem::SetField(PASSKEY_PRIVATE_KEY, v.data(), v.size()); };
 
   bool HasPasskey() const                  { return IsPasskeyPrivateKeySet();        }
+  bool HasIncompletePasskey() const;
   void ClearPasskey();
 
 private:

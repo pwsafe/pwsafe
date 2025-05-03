@@ -229,6 +229,7 @@ BEGIN
   IDSC_VALIDATE_ORPHAN_ATT "The following attachments are not referred to by any entry."
   IDSC_VALIDATE_ATTACHMENT "\tName: %ls; Filename: %ls"
   IDCS_VALIDATE_NOTSET     "<Not Set>"
+  IDSC_VALIDATE_PASSKEY    "The following entries contain incomplete passkeys."
 END
 
 STRINGTABLE

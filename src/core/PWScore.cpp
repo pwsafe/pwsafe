@@ -89,7 +89,6 @@ Reporter *PWScore::m_pReporter = nullptr;
 
 
 
-
 //-----------------------------------------------------------------
 
 PWScore::PWScore() :
