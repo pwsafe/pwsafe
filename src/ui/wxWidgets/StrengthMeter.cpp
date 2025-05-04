@@ -16,11 +16,6 @@ wxBEGIN_EVENT_TABLE(StrengthMeter, wxControl)
   EVT_SIZE(StrengthMeter::OnSize)
 wxEND_EVENT_TABLE()
 
-// const int StrengthMeter::STRENGTH_MIN = 0;
-// const int StrengthMeter::STRENGTH_WEAK = 33;
-// const int StrengthMeter::STRENGTH_MEDIUM = 66;
-// const int StrengthMeter::STRENGTH_MAX = 100;
-
 StrengthMeter::StrengthMeter(wxWindow* parent, wxWindowID id,
                              const wxPoint& pos, const wxSize& size)
   : wxControl(parent, id, pos, size, wxBORDER_NONE)
@@ -69,7 +64,7 @@ void StrengthMeter::SetLabels(const wxString& weak, const wxString& medium, cons
 
 wxColor StrengthMeter::GetColorForStrength() const
 {
-  if (IsWeekStrength()) {
+  if (IsWeakStrength()) {
     return m_weakColor;
   }
   else if (IsMediumStrength()) {
@@ -85,7 +80,7 @@ wxString StrengthMeter::GetLabelForStrength() const
   if (!HasStrength()) {
     return wxEmptyString;
   }
-  else if (IsWeekStrength()) {
+  else if (IsWeakStrength()) {
     return m_weakLabel;
   }
   else if (IsMediumStrength()) {
