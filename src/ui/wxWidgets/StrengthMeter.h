@@ -44,8 +44,8 @@ private:
   wxString GetLabelForStrength() const;
 
   bool HasStrength() const { return m_strength > STRENGTH_MIN; }
-  bool IsWeekStrength() const { return m_strength < STRENGTH_WEAK; }
-  bool IsMediumStrength() const { return m_strength >= STRENGTH_WEAK && m_strength < STRENGTH_MEDIUM;; }
+  bool IsWeakStrength() const { return m_strength < STRENGTH_WEAK; }
+  bool IsMediumStrength() const { return m_strength >= STRENGTH_WEAK && m_strength < STRENGTH_MEDIUM; }
 
   int m_strength;
   wxColor m_weakColor;
