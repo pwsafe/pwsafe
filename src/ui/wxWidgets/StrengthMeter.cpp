@@ -16,10 +16,10 @@ wxBEGIN_EVENT_TABLE(StrengthMeter, wxControl)
   EVT_SIZE(StrengthMeter::OnSize)
 wxEND_EVENT_TABLE()
 
-const int StrengthMeter::STRENGTH_MIN = 0;
-const int StrengthMeter::STRENGTH_WEEK = 33;
-const int StrengthMeter::STRENGTH_MEDIUM = 66;
-const int StrengthMeter::STRENGTH_MAX = 100;
+// const int StrengthMeter::STRENGTH_MIN = 0;
+// const int StrengthMeter::STRENGTH_WEAK = 33;
+// const int StrengthMeter::STRENGTH_MEDIUM = 66;
+// const int StrengthMeter::STRENGTH_MAX = 100;
 
 StrengthMeter::StrengthMeter(wxWindow* parent, wxWindowID id,
                              const wxPoint& pos, const wxSize& size)

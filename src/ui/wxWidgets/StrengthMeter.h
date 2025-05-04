@@ -16,10 +16,10 @@
 
 class StrengthMeter : public wxControl {
 public:
-  static const int STRENGTH_MIN;
-  static const int STRENGTH_WEEK;
-  static const int STRENGTH_MEDIUM;
-  static const int STRENGTH_MAX;
+  static const int STRENGTH_MIN = 0;
+  static const int STRENGTH_WEAK = 33;
+  static const int STRENGTH_MEDIUM = 66;
+  static const int STRENGTH_MAX = 100;
 
 public:
   StrengthMeter(wxWindow* parent,
@@ -44,8 +44,8 @@ private:
   wxString GetLabelForStrength() const;
 
   bool HasStrength() const { return m_strength > STRENGTH_MIN; }
-  bool IsWeekStrength() const { return m_strength < STRENGTH_WEEK; }
-  bool IsMediumStrength() const { return m_strength < STRENGTH_MEDIUM; }
+  bool IsWeekStrength() const { return m_strength < STRENGTH_WEAK; }
+  bool IsMediumStrength() const { return m_strength >= STRENGTH_WEAK && m_strength < STRENGTH_MEDIUM;; }
 
   int m_strength;
   wxColor m_weakColor;
