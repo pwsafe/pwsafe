@@ -24,6 +24,7 @@
 #endif
 
 ////@begin includes
+#include "core/PWCharPool.h"
 #include "ExternalKeyboardButton.h"
 #include "SafeCombinationCtrl.h"
 #include "SafeCombinationChangeDlg.h"
@@ -154,10 +155,26 @@ void SafeCombinationChangeDlg::CreateControls()
 #endif
 
   m_newPasswdEntry = new SafeCombinationCtrl(this, ID_NEWPASSWD, &m_newpasswd, wxDefaultPosition, wxDefaultSize);
-  itemFlexGridSizer4->Add(m_newPasswdEntry, 1, wxALIGN_LEFT|wxBOTTOM|wxEXPAND, 12);
+  itemFlexGridSizer4->Add(m_newPasswdEntry, 1, wxALIGN_LEFT|wxBOTTOM|wxEXPAND, 5);
 #ifndef NO_YUBI
   m_YubiBtn2 = new wxBitmapButton(this, ID_YUBIBTN2, GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-  itemFlexGridSizer4->Add(m_YubiBtn2, 0, wxLEFT|wxBOTTOM|wxEXPAND, 12);
+  itemFlexGridSizer4->Add(m_YubiBtn2, 0, wxLEFT|wxBOTTOM|wxEXPAND, 5);
+#endif
+
+  auto *hBoxSizer = new wxBoxSizer(wxHORIZONTAL);
+  m_strengthMeter = new StrengthMeter(this);
+  m_newPasswdEntry->SetTextChangedHandler(
+    [&](const StringX& password) {
+      m_strengthMeter->SetStrength(
+        CPasswordCharPool::CalculatePasswordStrength(password)
+      );
+    }
+  );
+  hBoxSizer->Add(m_strengthMeter, 1, wxALIGN_LEFT|wxEXPAND, 0);
+  hBoxSizer->AddSpacer(29 /*eye icon width*/ + 10 /*margin*/);
+  itemFlexGridSizer4->Add(hBoxSizer, 1, wxALIGN_LEFT|wxBOTTOM|wxEXPAND, 12);
+#ifndef NO_YUBI
+  itemFlexGridSizer4->AddStretchSpacer(0);
 #endif
 
   auto *itemStaticText11 = new wxStaticText(this, wxID_STATIC, _("Confirmation"), wxDefaultPosition, wxDefaultSize, 0);

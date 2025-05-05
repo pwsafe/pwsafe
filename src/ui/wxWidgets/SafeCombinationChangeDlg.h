@@ -21,6 +21,7 @@
 #include "wx/valgen.h"
 ////@end includes
 #include "core/PWScore.h"
+#include "StrengthMeter.h"
 #ifndef NO_YUBI
 #include "YubiMixin.h"
 #endif
@@ -128,6 +129,7 @@ private:
 ////@begin SafeCombinationChangeDlg member variables
   SafeCombinationCtrl* m_oldPasswdEntry = nullptr;
   SafeCombinationCtrl* m_newPasswdEntry = nullptr;
+  StrengthMeter* m_strengthMeter = nullptr;
 #ifndef NO_YUBI
   wxBitmapButton* m_YubiBtn = nullptr;
   wxBitmapButton* m_YubiBtn2 = nullptr;
