@@ -25,7 +25,7 @@
 
 ////@begin includes
 ////@end includes
-
+#include "core/PWCharPool.h"
 #include "ExternalKeyboardButton.h"
 #include "SafeCombinationSetupDlg.h"
 #include "wxUtilities.h"          // for ApplyPasswordFont()
@@ -116,6 +116,18 @@ void SafeCombinationSetupDlg::CreateControls()
   mainSizer->Add(itemStaticText3, 0, wxALL|wxEXPAND, 12);
 
   m_PasswordEntryCtrl = wxUtilities::CreateLabeledSafeCombinationCtrl(this, ID_PASSWORD, _("Master Password"), &m_password, true);
+  auto *hBoxSizer = new wxBoxSizer(wxHORIZONTAL);
+  m_strengthMeter = new StrengthMeter(this);
+  m_PasswordEntryCtrl->SetTextChangedHandler(
+    [&](const StringX& password) {
+      m_strengthMeter->SetStrength(
+        CPasswordCharPool::CalculatePasswordStrength(password)
+      );
+    }
+  );
+  hBoxSizer->Add(m_strengthMeter, 1, wxALIGN_LEFT|wxEXPAND, 0);
+  hBoxSizer->AddSpacer(29 /*eye icon width*/ + 11 /*margin*/);
+  mainSizer->Add(hBoxSizer, 0, wxALIGN_LEFT|wxLEFT|wxBOTTOM|wxRIGHT|wxEXPAND, 12);
   m_VerifyEntryCtrl = wxUtilities::CreateLabeledSafeCombinationCtrl(this, ID_VERIFY, _("Confirmation"), &m_verify, false);
 
 #ifndef NO_YUBI
