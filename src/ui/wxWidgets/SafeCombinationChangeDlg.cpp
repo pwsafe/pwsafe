@@ -171,7 +171,12 @@ void SafeCombinationChangeDlg::CreateControls()
     }
   );
   hBoxSizer->Add(m_strengthMeter, 1, wxALIGN_LEFT|wxEXPAND, 0);
-  hBoxSizer->AddSpacer(29 /*eye icon width*/ + 10 /*margin*/);
+  hBoxSizer->AddSpacer(
+    29 /*eye icon width*/ + 10 /*margin*/
+#ifdef __WXOSX__
+    + 10 /*extra margin*/
+#endif
+  );
   itemFlexGridSizer4->Add(hBoxSizer, 1, wxALIGN_LEFT|wxBOTTOM|wxEXPAND, 12);
 #ifndef NO_YUBI
   itemFlexGridSizer4->AddStretchSpacer(0);
