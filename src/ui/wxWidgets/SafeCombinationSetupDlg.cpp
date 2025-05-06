@@ -126,7 +126,12 @@ void SafeCombinationSetupDlg::CreateControls()
     }
   );
   hBoxSizer->Add(m_strengthMeter, 1, wxALIGN_LEFT|wxEXPAND, 0);
-  hBoxSizer->AddSpacer(29 /*eye icon width*/ + 11 /*margin*/);
+  hBoxSizer->AddSpacer(
+    29 /*eye icon width*/ + 11 /*margin*/
+#ifdef __WXOSX__
+    + 9 /*extra margin*/
+#endif
+  );
   mainSizer->Add(hBoxSizer, 0, wxALIGN_LEFT|wxLEFT|wxBOTTOM|wxRIGHT|wxEXPAND, 12);
   m_VerifyEntryCtrl = wxUtilities::CreateLabeledSafeCombinationCtrl(this, ID_VERIFY, _("Confirmation"), &m_verify, false);
 
