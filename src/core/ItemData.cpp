@@ -2131,6 +2131,8 @@ bool CItemData::SetField(CItem::FieldType ft, const unsigned char* data, size_t 
       {
         uuid_array_t uuid_array;
         ASSERT(len == sizeof(uuid_array_t));
+        if (data == nullptr || len < sizeof(uuid_array_t))
+          return false;
         for (size_t i = 0; i < sizeof(uuid_array_t); i++)
           uuid_array[i] = data[i];
         SetUUID(uuid_array, ft);
