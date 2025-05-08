@@ -131,6 +131,10 @@ void SafeCombinationCtrl::Init(wxWindow* parent,
     m_IsPasswordHidden = !m_IsPasswordHidden;
   });
   Add(showHideButton, 0, wxLEFT|wxRIGHT|wxEXPAND, 5);
+
+  m_textCtrl->Bind(wxEVT_TEXT, [&](wxCommandEvent& WXUNUSED(event)) { 
+    if (m_onTextChanged != nullptr) m_onTextChanged(GetCombination());
+  });
 }
 
 SafeCombinationCtrl::~SafeCombinationCtrl()

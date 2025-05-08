@@ -21,6 +21,7 @@
 
 ////@begin includes
 #include "wx/valgen.h"
+#include "StrengthMeter.h"
 ////@end includes
 
 #ifndef NO_YUBI
@@ -118,6 +119,7 @@ protected:
  private:
   SafeCombinationCtrl* m_PasswordEntryCtrl = nullptr;
   SafeCombinationCtrl* m_VerifyEntryCtrl = nullptr;
+  StrengthMeter* m_strengthMeter = nullptr;
   StringX m_password;
   StringX m_verify;
 };

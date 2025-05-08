@@ -72,6 +72,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/PWFiltersMediaDlg.h
     src/ui/wxWidgets/PWFiltersPasswordDlg.h
     src/ui/wxWidgets/ManageFiltersTable.h
+    src/ui/wxWidgets/StrengthMeter.h
     )
 
 
@@ -149,6 +150,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/PWFiltersPasswordDlg.cpp
     src/ui/wxWidgets/ManageFiltersTable.cpp
     src/ui/wxWidgets/QueryCancelDlg.cpp
+    src/ui/wxWidgets/StrengthMeter.cpp
     )
 
 if(HAVE_YKPERS_H)

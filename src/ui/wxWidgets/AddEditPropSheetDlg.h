@@ -36,6 +36,7 @@
 
 #include "PasswordSafeFrame.h"
 #include "PWSafeApp.h"
+#include "StrengthMeter.h"
 
 #include "wxUtilities.h"
 
@@ -337,6 +338,7 @@ private:
   void HidePassword();
   void UpdatePasswordConfirmationIcons(bool show = true);
   void UpdatePasswordConfirmationAsterisk(bool show = true);
+  void UpdatePasswordStrengthMeter();
   void ShowAlias();
   void RemoveAlias();
   int GetRequiredPWLength() const;
@@ -409,6 +411,7 @@ private:
   wxTextCtrl *m_BasicTitleTextCtrl = nullptr;
   wxTextCtrl *m_BasicUsernameTextCtrl = nullptr;
   wxTextCtrl *m_BasicPasswordTextCtrl = nullptr;
+  StrengthMeter* m_BasicStrengthMeter = nullptr;
   wxStaticText *m_BasicPasswordTextLabel = nullptr;
   wxStaticBitmap *m_BasicPasswordBitmap = nullptr;
   wxBitmapButton *m_BasicShowHideCtrl = nullptr;

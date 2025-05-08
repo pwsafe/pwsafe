@@ -17,6 +17,7 @@
 #include <wx/event.h> // Base class: wxEvtHandler
 
 #include "core/StringX.h"
+#include <functional>
 
 //without this class, we get 'pointer to member conversion via virtual base' error
 class CommandEventHandler : public wxEvtHandler {
@@ -49,8 +50,10 @@ public:
   void SecureTextfield(bool secured);
   void SetFocus() const;
   void DisableAndClear(bool disableClear = true);
+  void SetTextChangedHandler(std::function<void(const StringX&)> handler) { m_onTextChanged = handler; }
 
 private:
+  std::function<void(const StringX&)> m_onTextChanged;
   wxTextCtrl* m_textCtrl;
   bool m_IsPasswordHidden;
 };

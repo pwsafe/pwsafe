@@ -18,6 +18,7 @@
 #include "os/typedefs.h"
 #include "os/pws_tchar.h"
 
+#include <cmath>
 #include <string>
 #include <vector>
 
@@ -541,4 +542,38 @@ bool CPasswordCharPool::CheckMasterPassword(const StringX &pwd, StringX &error)
     LoadAString(error, IDSC_PASSWORDPOOR);
     return false;
   }
+}
+
+double CPasswordCharPool::CalculatePasswordStrength(const StringX &password)
+{
+  auto length = password.length();
+
+  if (length == 0) {
+    return 0.0; // Empty password has no strength
+  }
+
+  // Determine the character pool size
+  int poolSize = 0;
+  bool hasLower = false, hasUpper = false, hasDigits = false, hasSpecial = false;
+  for (size_t i = 0; i < length; i++) {
+    charT c = password[i];
+    if (_istlower(c)) hasLower = true;
+    else if (_istupper(c)) hasUpper = true;
+    else if (_istdigit(c)) hasDigits = true;
+    else hasSpecial = true;
+  }
+
+  if (hasLower) poolSize += 26; // a-z
+  if (hasUpper) poolSize += 26; // A-Z
+  if (hasDigits) poolSize += 10; // 0-9
+  if (hasSpecial) poolSize += 32; // Special characters (approximation)
+
+  // Calculate entropy
+  double entropy = length * std::log2(poolSize);
+
+  // Cap the value between 0 and 100
+  if (entropy > 100.0) {
+    entropy = 100.0;
+  }
+  return entropy;
 }
