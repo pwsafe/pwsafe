@@ -108,9 +108,16 @@ void StrengthMeter::OnPaint(wxPaintEvent& event)
   int barWidth = static_cast<int>((size.GetWidth() - 1) * (m_strength / 100.0));
     
   // Draw meter background
-  auto brushLightness = wxSystemSettings::GetAppearance().IsUsingDarkBackground() ? 65 : 95;
-  auto penLightness = wxSystemSettings::GetAppearance().IsUsingDarkBackground() ? 125 : 80;
-  dc.SetBrush(wxBrush(bgColor.ChangeLightness(brushLightness)));
+  if (wxSystemSettings::GetAppearance().IsDark()) {
+    // Use background color of text controls when dark theme is in use
+    dc.SetBrush(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX)));
+  }
+  else {
+    // When using a light theme, reduce the brightness so that the background appears slightly darker
+    auto brushLightness = 95;
+    dc.SetBrush(wxBrush(bgColor.ChangeLightness(brushLightness)));
+  }
+  auto penLightness = wxSystemSettings::GetAppearance().IsDark() ? 125 : 80;
   dc.SetPen(wxPen(bgColor.ChangeLightness(penLightness)));
   dc.DrawRoundedRectangle(barX, barY, size.GetWidth() - 1, barHeight, radius);
 
