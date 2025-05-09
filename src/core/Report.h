@@ -11,6 +11,7 @@
 
 // Create an action report file
 
+#include "coredefs.h"
 #include "../os/typedefs.h"
 #include "StringXStream.h"
 #include <map>
@@ -34,6 +35,7 @@ public:
   StringX GetString() {return m_osxs.rdbuf()->str();}
   bool StringEmpty() const {return !m_osxs.rdbuf() || m_osxs.rdbuf()->str().empty();}
   const stringT GetFileName() const {return m_cs_filename;}
+  void AppendPasskeyValidationResults(const std::vector<st_GroupTitleUser> &incomplete);
 
   static const std::map<int, LPCTSTR> ReportNames;
 

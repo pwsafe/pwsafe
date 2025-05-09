@@ -30,6 +30,7 @@
 #include <locale>
 #include <iomanip>
 #include <codecvt>
+#include <algorithm>
 
 #include "pugixml/pugixml.hpp"
 
@@ -489,4 +490,18 @@ bool CReport::ReportExistsOnDisk() const
          drive.c_str(), dir.c_str(), ReportNames.find(m_iAction)->second);
     
   return pws_os::FileExists(filename);
+}
+
+void CReport::AppendPasskeyValidationResults(const std::vector<st_GroupTitleUser> &incomplete)
+{
+  stringT cs_Error;
+
+  WriteLine();
+  LoadAString(cs_Error, IDSC_VALIDATE_PASSKEY);
+  WriteLine(cs_Error);
+  for_each(incomplete.begin(), incomplete.end(), [&](const st_GroupTitleUser &gtu) {
+    Format(cs_Error, IDSC_VALIDATE_ENTRY,
+           gtu.group.c_str(), gtu.title.c_str(), gtu.user.c_str(), _T(""));
+    WriteLine(cs_Error);
+  } );
 }

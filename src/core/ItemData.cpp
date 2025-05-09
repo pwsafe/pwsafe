@@ -29,6 +29,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <functional>
+#include <array>
 
 using namespace std;
 using pws_os::CUUID;
@@ -2541,6 +2542,21 @@ void CItemData::SetPasskeySignCount(const uint32 sign_count) {
     unsigned char buf[4];
     putInt32(buf, sign_count);
     CItem::SetField(PASSKEY_SIGN_COUNT, buf, 4);
+}
+
+bool CItemData::HasIncompletePasskey() const {
+    constexpr static std::array<int, 6> fields = {
+        PASSKEY_CRED_ID,
+        PASSKEY_RP_ID,
+        PASSKEY_USER_HANDLE,
+        PASSKEY_ALGO_ID,
+        PASSKEY_PRIVATE_KEY,
+        PASSKEY_SIGN_COUNT
+    };
+    int numSet = 0;
+    for (int ft : fields)
+        numSet += IsFieldSet(ft) ? 1 : 0;
+    return !(numSet == 0 || numSet == fields.size());
 }
 
 void CItemData::ClearPasskey() {
