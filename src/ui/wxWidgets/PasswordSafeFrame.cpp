@@ -322,6 +322,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   // Update menu elements
   EVT_UPDATE_UI( ID_PASSWORDSUBSET,     PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_PASSWORDQRCODE,     PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_COPYEMAIL,          PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_BROWSEURLPLUS,      PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SENDEMAIL,          PasswordSafeFrame::OnUpdateUI                    )
