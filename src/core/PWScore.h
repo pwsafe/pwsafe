@@ -462,6 +462,8 @@ public:
   
 protected:
   bool m_isAuxCore; // set in c'tor, if true, never update prefs from DB.  
+  // Validate() returns true if data modified, false if all OK
+  bool Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults &st_vr); // protected for unit testing
 
 private:
 
@@ -544,8 +546,7 @@ private:
                         std::vector<st_GroupTitleUser> &vGTU_INVALID_UUID,
                         std::vector<st_GroupTitleUser> &vGTU_DUPLICATE_UUID,
                         st_ValidateResults &st_vr);
-  // Validate() returns true if data modified, false if all OK
-  bool Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults &st_vr);
+  
 
   void ParseDependants(); // populate data structures as needed - called in ReadFile()
   void ResetAllAliasPasswords(const pws_os::CUUID &base_uuid);

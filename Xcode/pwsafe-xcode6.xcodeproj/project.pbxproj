@@ -205,6 +205,7 @@
 		E6EE845311E87E9800B01518 /* XMLFileHandlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841511E87E9800B01518 /* XMLFileHandlers.cpp */; };
 		E6EE845411E87E9800B01518 /* XMLFileValidation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841711E87E9800B01518 /* XMLFileValidation.cpp */; };
 		E6EE845511E87E9800B01518 /* XMLprefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841911E87E9800B01518 /* XMLprefs.cpp */; };
+		E6EE845711E87E9800B01518 /* Validate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE845611E87E9800B01518 /* Validate.cpp */; };
 		E6F8DC1F1D132618007DFBEC /* MenuViewHandlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6F8DC1E1D132618007DFBEC /* MenuViewHandlers.cpp */; };
 		E6F8DC221D132657007DFBEC /* RUEList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6F8DC201D132657007DFBEC /* RUEList.cpp */; };
 /* End PBXBuildFile section */
@@ -863,6 +864,7 @@
 		E6EE841811E87E9800B01518 /* XMLFileValidation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLFileValidation.h; sourceTree = "<group>"; };
 		E6EE841911E87E9800B01518 /* XMLprefs.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = XMLprefs.cpp; sourceTree = "<group>"; };
 		E6EE841A11E87E9800B01518 /* XMLprefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMLprefs.h; sourceTree = "<group>"; };
+		E6EE845611E87E9800B01518 /* Validate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Validate.cpp; sourceTree = "<group>"; };
 		E6F8DC1E1D132618007DFBEC /* MenuViewHandlers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MenuViewHandlers.cpp; sourceTree = "<group>"; };
 		E6F8DC201D132657007DFBEC /* RUEList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RUEList.cpp; sourceTree = "<group>"; };
 		E6F8DC211D132657007DFBEC /* RUEList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RUEList.h; sourceTree = "<group>"; };
@@ -1984,6 +1986,7 @@
 				E698275A14C01B7D0043C243 /* PWSLog.cpp in Sources */,
 				E683B21A150481DF0013D588 /* pugixml.cpp in Sources */,
 				D3961C8B2674B39500C50C88 /* PFileXMLProcessor.cpp in Sources */,
+				E6EE845711E87E9800B01518 /* Validate.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

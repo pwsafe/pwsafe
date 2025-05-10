@@ -38,6 +38,7 @@ set (CORE_SRCS
   UnknownField.cpp
   UTF8Conv.cpp
   Util.cpp
+  Validate.cpp
   VerifyFormat.cpp
   XMLprefs.cpp
   crypto/AES.cpp
