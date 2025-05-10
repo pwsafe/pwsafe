@@ -27,8 +27,6 @@
 ////@end includes
 
 #include "PropertiesDlg.h"
-#include "PasswordSafeFrame.h"
-#include "PWSafeApp.h"
 #include "wxUtilities.h"
 
 #include <vector>
@@ -360,7 +358,7 @@ void PropertiesDlg::CreateControls()
   buttonsSizer->AddButton(okButton);
   buttonsSizer->Realize();
 
-  if (m_core.IsReadOnly() || wxGetApp().GetPasswordSafeFrame()->IsLocked()) {
+  if (m_core.IsReadOnly()) {
     onEditNameButton->Enable(false);
     onEditDescriptionButton->Enable(false);
   }

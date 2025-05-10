@@ -231,11 +231,13 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   // Update menu items
   EVT_UPDATE_UI( ID_LIST_VIEW,          PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_TREE_VIEW,          PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_SORT_TREE_MENU,     PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SORT_TREE_BY_GROUP, PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SORT_TREE_BY_NAME,  PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SORT_TREE_BY_DATE,  PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOWHIDE_TOOLBAR,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOWHIDE_DRAGBAR,   PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_SUBVIEWSMENU,       PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOWHIDE_UNSAVED,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOW_ALL_EXPIRY,    PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOW_LAST_FIND_RESULTS, PasswordSafeFrame::OnUpdateUI                )
@@ -246,11 +248,12 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( ID_APPLYFILTER,        PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_MANAGEFILTERS,      PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOW_EMPTY_GROUP_IN_FILTER, PasswordSafeFrame::OnUpdateUI            )
-  EVT_UPDATE_UI( ID_CHANGETREEFONT,   PasswordSafeFrame::OnUpdateUI                      )
-  EVT_UPDATE_UI( ID_CHANGEADDEDITFONT,   PasswordSafeFrame::OnUpdateUI                   )
-  EVT_UPDATE_UI( ID_CHANGEPSWDFONT,   PasswordSafeFrame::OnUpdateUI                      )
-  EVT_UPDATE_UI( ID_CHANGENOTESFONT,   PasswordSafeFrame::OnUpdateUI                     )
-  EVT_UPDATE_UI( ID_CHANGEVKBFONT,   PasswordSafeFrame::OnUpdateUI                       )
+  EVT_UPDATE_UI( ID_CHANGETREEFONT,     PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_CHANGEADDEDITFONT,  PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_CHANGEPSWDFONT,     PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_CHANGENOTESFONT,    PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_CHANGEVKBFONT,      PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_CHANGEFONTMENU,     PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_CUSTOMIZETOOLBAR,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_REPORTSMENU,        PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_REPORT_COMPARE,     PasswordSafeFrame::OnUpdateUI                    )
@@ -2231,13 +2234,8 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
   switch (evt.GetId()) {
     case wxID_NEW:
     case wxID_OPEN:
-    case ID_MENU_CLEAR_MRU:
     case ID_SHOWAUTHCODE:
-    case ID_CHANGETREEFONT:
-    case ID_CHANGEADDEDITFONT:
-    case ID_CHANGEPSWDFONT:
-    case ID_CHANGENOTESFONT:
-    case ID_CHANGEVKBFONT:
+    case ID_CHANGEFONTMENU:
       evt.Enable(isUnlocked);
       break;
 
@@ -2247,6 +2245,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
 
     case wxID_SAVEAS:
     case wxID_PREFERENCES:
+    case wxID_PROPERTIES:
     case ID_CLEARCLIPBOARD:
     case ID_LIST_VIEW:
     case ID_TREE_VIEW:
@@ -2260,10 +2259,6 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(isUnlocked && m_core.IsDbFileSet());
       break;
 
-    case wxID_PROPERTIES:
-      evt.Enable(m_core.IsDbFileSet());
-      break;
-
     case ID_REPORT_SYNCHRONIZE:
       evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTSYNCH));
       break;
@@ -2271,54 +2266,54 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_REPORT_COMPARE:
       evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTCOMPARE));
       break;
-      
+
     case ID_REPORT_MERGE:
       evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTMERGE));
       break;
-      
+
     case ID_REPORT_IMPORTTEXT:
       evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTIMPORTTEXT));
       break;
-      
+
     case ID_REPORT_IMPORTXML:
       evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTIMPORTXML));
       break;
-      
+
     case ID_REPORT_IMPORTKEEPASS_TXT:
       evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTIMPORTKPV1TXT));
       break;
-      
+
     case ID_REPORT_IMPORTKEEPASS_CSV:
       evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTIMPORTKPV1CSV));
       break;
-      
+
     case ID_REPORT_EXPORTTEXT:
       evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTEXPORTTEXT));
       break;
-      
+
     case ID_REPORT_EXPORTXML:
       evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTEXPORTXML));
       break;
-      
+
     case ID_REPORT_EXPORT_DB:
       evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTEXPORTDB));
       break;
-      
+
     case ID_REPORT_FIND:
       evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTFIND));
       break;
-      
+
     case ID_REPORT_VALIDATE:
       evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTVALIDATE));
       break;
-      
+
     case ID_SORT_TREE_MENU:
     case ID_SORT_TREE_BY_GROUP:
     case ID_SORT_TREE_BY_NAME:
     case ID_SORT_TREE_BY_DATE:
       evt.Enable(isUnlocked && m_core.IsDbFileSet() && isTreeView);
       break;
-      
+
     case ID_EXPORTMENU:
     case ID_COMPARE:
       evt.Enable(isUnlocked && m_core.IsDbFileSet() && m_core.GetNumEntries() != 0);
@@ -2448,7 +2443,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_IMPORTMENU:
       evt.Enable(isUnlocked && !isFileReadOnly && m_core.IsDbFileSet());
       break;
-      
+
     case ID_IMPORT_XML:
 #if (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
       evt.Enable(false);
@@ -2479,11 +2474,11 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_FILTERMENU:
       evt.Enable(isUnlocked && m_core.IsDbFileSet());
       break;
-      
+
     case ID_EDITFILTER:
       evt.Enable(isUnlocked && m_core.IsDbFileSet() && m_CurrentPredefinedFilter == NONE); // Mark unimplemented
       break;
-      
+
     case ID_APPLYFILTER:
       evt.Enable(isUnlocked && m_core.IsDbFileSet() && (m_bFilterActive || CurrentFilter().IsActive()));
       if(m_bFilterActive) {
@@ -2493,11 +2488,11 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
         m_ApplyClearFilter->SetItemLabel(_("&Apply current"));
       }
       break;
-      
+
     case ID_MANAGEFILTERS:
       evt.Enable(isUnlocked && m_core.IsDbFileSet() && m_CurrentPredefinedFilter == NONE); // Mark unimplemented
       break;
-      
+
     case ID_SHOW_EMPTY_GROUP_IN_FILTER:
       evt.Enable(isUnlocked && m_core.IsDbFileSet() && isTreeView && m_bFilterActive);
       break;
@@ -2511,13 +2506,13 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_SHOWHIDE_TOOLBAR:
-      evt.Check(isUnlocked && GetMainToolbarPane().IsShown());
+      evt.Check(GetMainToolbarPane().IsShown());
       break;
 
     case ID_SHOWHIDE_DRAGBAR:
-      evt.Check(isUnlocked && GetDragBarPane().IsShown());
+      evt.Check(GetDragBarPane().IsShown());
       break;
-      
+
     case ID_CHANGEMODE:
     {
       bool bFileIsReadOnly = true;
@@ -2662,7 +2657,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga, const CUUID &
 
 void PasswordSafeFrame::OnUpdateClearRecentDBHistory(wxUpdateUIEvent& evt)
 {
-  evt.Enable(wxGetApp().recentDatabases().GetCount() > 0);
+  evt.Enable(!IsLocked() && wxGetApp().recentDatabases().GetCount() > 0);
 }
 
 void PasswordSafeFrame::Execute(Command *pcmd, PWScore *pcore /*= nullptr*/)
