@@ -652,6 +652,8 @@ of the contents.
 
     Passkey Sign Count, encoded as unsigned 32 bit little-endian value
     https://www.w3.org/TR/webauthn-2/#sctn-sign-counter
+    The value stored in the database is the last-used value, so the next
+    assertion must first increment it and use the incremented value.
 
 These parameters were introduced in version 0x0401 (PasswordSafe V3.69).
 
