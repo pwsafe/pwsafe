@@ -336,6 +336,7 @@ private:
   void EnableNonHexCBs(bool enable);
   void ShowPassword();
   void HidePassword();
+  void HidePasswordConfirmationIcons();
   void UpdatePasswordConfirmationIcons(bool show = true);
   void UpdatePasswordConfirmationAsterisk(bool show = true);
   void UpdatePasswordStrengthMeter();

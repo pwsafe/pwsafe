@@ -361,6 +361,9 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
 
   m_BasicStrengthMeter = new StrengthMeter(panel);
   m_BasicSizer->Add(m_BasicStrengthMeter, wxGBPosition(/*row:*/ 8, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 3), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
+  if (m_Item.IsAlias()) {
+    m_BasicStrengthMeter->Hide();
+  }
 
   m_BasicPasswordConfirmationTextLabel = new wxStaticText( panel, wxID_STATIC, _("Confirm"), wxDefaultPosition, wxDefaultSize, 0 );
   auto *itemStaticText13 = new wxStaticText( panel, ID_STATICTEXT_PASSWORD2, wxT("*"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1928,6 +1931,8 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
         m_Password = m_Item.GetPassword();
         m_AliasChange = Alias2Normal;
         RemoveAlias();
+        m_BasicStrengthMeter->Show();
+        m_BasicPanel->Layout();
       }
       else if(m_Item.IsAlias() && (m_Core.GetBaseEntry(&m_Item) != pbci)) { // user changed alias to another base entry
         const pws_os::CUUID baseUUID = pbci->GetUUID();
@@ -1951,6 +1956,9 @@ void AddEditPropSheetDlg::DoAliasButtonClick()
                     pbci->GetUser()  + L"]";
         m_AliasChange = Normal2Alias;
         ShowAlias();
+        HidePasswordConfirmationIcons();
+        m_BasicStrengthMeter->Hide();
+        m_BasicPanel->Layout();
       }
     }
   }
@@ -2044,11 +2052,16 @@ void AddEditPropSheetDlg::UpdatePasswordConfirmationIcons(bool show)
   }
   // Show empty icons to mimic hidden icons, avoiding layout issues with text input fields.
   else {
-    m_BasicPasswordBitmap->SetBitmap(bitmapCheckmarkPlaceholder);
-    m_BasicPasswordBitmap->Show();
-    m_BasicPasswordConfirmationBitmap->SetBitmap(bitmapCheckmarkPlaceholder);
-    m_BasicPasswordConfirmationBitmap->Show();
+    HidePasswordConfirmationIcons();
   }
+}
+
+void AddEditPropSheetDlg::HidePasswordConfirmationIcons()
+{
+  m_BasicPasswordBitmap->SetBitmap(bitmapCheckmarkPlaceholder);
+  m_BasicPasswordBitmap->Show();
+  m_BasicPasswordConfirmationBitmap->SetBitmap(bitmapCheckmarkPlaceholder);
+  m_BasicPasswordConfirmationBitmap->Show();
 }
 
 void AddEditPropSheetDlg::UpdatePasswordConfirmationAsterisk(bool show)
