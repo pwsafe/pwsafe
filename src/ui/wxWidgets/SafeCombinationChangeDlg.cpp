@@ -24,6 +24,7 @@
 #endif
 
 ////@begin includes
+#include "core/PWCharPool.h"
 #include "ExternalKeyboardButton.h"
 #include "SafeCombinationCtrl.h"
 #include "SafeCombinationChangeDlg.h"
@@ -129,45 +130,66 @@ void SafeCombinationChangeDlg::CreateControls()
   enum { DLGITEM_COLS = 1 };
 #endif
 
-  auto *itemFlexGridSizer4 = new wxFlexGridSizer(DLGITEM_COLS, 0, 0);
+  auto *itemFlexGridSizer4 = new wxFlexGridSizer(DLGITEM_COLS, 5, 5);
   itemFlexGridSizer4->AddGrowableCol(0);
   mainSizer->Add(itemFlexGridSizer4, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
 
   auto *itemStaticText5 = new wxStaticText(this, wxID_STATIC, _("Old Master Password"), wxDefaultPosition, wxDefaultSize, 0);
-  itemFlexGridSizer4->Add(itemStaticText5, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5);
+  itemFlexGridSizer4->Add(itemStaticText5, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 0);
 #ifndef NO_YUBI
   itemFlexGridSizer4->AddStretchSpacer(0);
 #endif
 
   m_oldPasswdEntry = new SafeCombinationCtrl(this, ID_OLDPASSWD, &m_oldpasswd, wxDefaultPosition, wxDefaultSize);
   m_oldPasswdEntry->SetFocus();
-  itemFlexGridSizer4->Add(m_oldPasswdEntry, 1, wxALIGN_LEFT|wxBOTTOM|wxEXPAND, 12);
+  itemFlexGridSizer4->Add(m_oldPasswdEntry, 1, wxALIGN_LEFT|wxBOTTOM|wxEXPAND, 7);
 #ifndef NO_YUBI
   m_YubiBtn = new wxBitmapButton(this, ID_YUBIBTN, GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-  itemFlexGridSizer4->Add(m_YubiBtn, 0, wxLEFT|wxBOTTOM|wxEXPAND, 12);
+  itemFlexGridSizer4->Add(m_YubiBtn, 0, wxLEFT|wxBOTTOM|wxEXPAND, 7);
 #endif
 
   auto *itemStaticText8 = new wxStaticText(this, wxID_STATIC, _("New Master Password"), wxDefaultPosition, wxDefaultSize, 0);
-  itemFlexGridSizer4->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5);
+  itemFlexGridSizer4->Add(itemStaticText8, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 0);
 #ifndef NO_YUBI
   itemFlexGridSizer4->AddStretchSpacer(0);
 #endif
 
   m_newPasswdEntry = new SafeCombinationCtrl(this, ID_NEWPASSWD, &m_newpasswd, wxDefaultPosition, wxDefaultSize);
-  itemFlexGridSizer4->Add(m_newPasswdEntry, 1, wxALIGN_LEFT|wxBOTTOM|wxEXPAND, 12);
+  itemFlexGridSizer4->Add(m_newPasswdEntry, 1, wxALIGN_LEFT|wxBOTTOM|wxEXPAND, 0);
 #ifndef NO_YUBI
   m_YubiBtn2 = new wxBitmapButton(this, ID_YUBIBTN2, GetBitmapResource(wxT("graphics/Yubikey-button.xpm")), wxDefaultPosition, wxDefaultSize, wxBU_EXACTFIT);
-  itemFlexGridSizer4->Add(m_YubiBtn2, 0, wxLEFT|wxBOTTOM|wxEXPAND, 12);
+  itemFlexGridSizer4->Add(m_YubiBtn2, 0, wxLEFT|/*wxBOTTOM|*/wxEXPAND, 7/*5*/);
+#endif
+
+  auto *hBoxSizer = new wxBoxSizer(wxHORIZONTAL);
+  m_strengthMeter = new StrengthMeter(this);
+  m_newPasswdEntry->SetTextChangedHandler(
+    [&](const StringX& password) {
+      m_strengthMeter->SetStrength(
+        CPasswordCharPool::CalculatePasswordStrength(password)
+      );
+    }
+  );
+  hBoxSizer->Add(m_strengthMeter, 1, wxALIGN_LEFT|wxEXPAND, 0);
+  hBoxSizer->AddSpacer(
+    29 /*eye icon width*/ + 10 /*margin*/
+#ifdef __WXOSX__
+    + 10 /*extra margin*/
+#endif
+  );
+  itemFlexGridSizer4->Add(hBoxSizer, 1, wxALIGN_LEFT|wxBOTTOM|wxEXPAND, 7);
+#ifndef NO_YUBI
+  itemFlexGridSizer4->AddStretchSpacer(0);
 #endif
 
   auto *itemStaticText11 = new wxStaticText(this, wxID_STATIC, _("Confirmation"), wxDefaultPosition, wxDefaultSize, 0);
-  itemFlexGridSizer4->Add(itemStaticText11, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 5);
+  itemFlexGridSizer4->Add(itemStaticText11, 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 0);
 #ifndef NO_YUBI
   itemFlexGridSizer4->AddStretchSpacer(0);
 #endif
 
   m_confirmEntry = new SafeCombinationCtrl(this, ID_CONFIRM, &m_confirm, wxDefaultPosition, wxDefaultSize);
-  itemFlexGridSizer4->Add(m_confirmEntry, 1, wxALIGN_LEFT|wxBOTTOM|wxEXPAND, 12);
+  itemFlexGridSizer4->Add(m_confirmEntry, 1, wxALIGN_LEFT|wxBOTTOM|wxEXPAND, 7);
 #ifndef NO_YUBI
   itemFlexGridSizer4->AddStretchSpacer(0);
 #endif
