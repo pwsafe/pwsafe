@@ -111,6 +111,7 @@ struct st_ValidateResults {
   int num_shortcuts_warnings;
   int num_missing_att;
   int num_orphan_att;
+  int num_incomplete_passkeys;
 
   st_ValidateResults()
     : num_invalid_UUIDs(0), num_duplicate_UUIDs(0),
@@ -118,7 +119,7 @@ struct st_ValidateResults {
     num_duplicate_GTU_fixed(0),
     num_PWH_fixed(0), num_excessivetxt_found(0),
     num_alias_warnings(0), num_shortcuts_warnings(0),
-    num_missing_att(0), num_orphan_att(0)
+    num_missing_att(0), num_orphan_att(0), num_incomplete_passkeys(0)
   {}
 
   st_ValidateResults(const st_ValidateResults &that)
@@ -131,7 +132,8 @@ struct st_ValidateResults {
     num_excessivetxt_found(that.num_excessivetxt_found),
     num_alias_warnings(that.num_alias_warnings),
     num_shortcuts_warnings(that.num_shortcuts_warnings),
-    num_missing_att(that.num_missing_att), num_orphan_att(that.num_orphan_att)
+    num_missing_att(that.num_missing_att), num_orphan_att(that.num_orphan_att),
+    num_incomplete_passkeys(that.num_incomplete_passkeys)
   {}
 
   st_ValidateResults &operator=(const st_ValidateResults &that) {
@@ -147,6 +149,7 @@ struct st_ValidateResults {
       num_shortcuts_warnings = that.num_shortcuts_warnings;
       num_missing_att = that.num_missing_att;
       num_orphan_att = that.num_orphan_att;
+      num_incomplete_passkeys = that.num_incomplete_passkeys;
     }
     return *this;
   }
@@ -158,7 +161,8 @@ struct st_ValidateResults {
       num_duplicate_GTU_fixed +
       num_PWH_fixed + num_excessivetxt_found +
       num_alias_warnings + num_shortcuts_warnings +
-      num_missing_att + num_orphan_att);
+      num_missing_att + num_orphan_att +
+      num_incomplete_passkeys);
   }
 };
 
@@ -2120,6 +2124,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
      6. For attachments (V4):
      6.1 Check that each ATTREF in a data entry has a corresponding ItemAtt
      6.2 Check that each ItemAtt has a corresponding "owner" ItemData
+     7. Validate passkeys: all passkey fields set or none
 
      Note:
      m_pwlist is implemented as a map keyed on UUIDs, each entry is
@@ -2143,7 +2148,7 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
   std::vector<st_GroupTitleUser> vGTU_UUID, vGTU_EmptyPassword, vGTU_PWH, vGTU_TEXT,
                                  vGTU_ALIASES, vGTU_SHORTCUTS;
   std::vector<st_GroupTitleUser2> vGTU_NONUNIQUE, vGTU_EmptyTitle;
-  std::vector<st_GroupTitleUser> vGTU_MissingAtt;
+  std::vector<st_GroupTitleUser> vGTU_MissingAtt, vGTU_IncompletePasskey;
   std::vector<st_AttTitle_Filename> vOrphanAtt;
   std::set<CUUID> sAtts;
 
@@ -2260,6 +2265,12 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
         fixedItem.ClearAttUUID();
         bFixed = true;
       }
+    }
+
+    // Test if passkey is complete
+    if (ci.HasIncompletePasskey()) {
+      vGTU_IncompletePasskey.push_back(st_GroupTitleUser(sxgroup, sxtitle, sxuser));
+      st_vr.num_incomplete_passkeys++;
     }
 
     // Empty group can't have entries!
@@ -2527,6 +2538,11 @@ bool PWScore::Validate(const size_t iMAXCHARS, CReport *pRpt, st_ValidateResults
         Format(cs_Error, IDSC_VALIDATE_ATTACHMENT, sTitle.c_str(), stATFN.filename.c_str());
         pRpt->WriteLine(cs_Error);
       } );
+    }
+
+    // Passkey-related issues
+    if (st_vr.num_incomplete_passkeys > 0) {
+        pRpt->AppendPasskeyValidationResults(vGTU_IncompletePasskey);
     }
   } // End of issues report handling
 
