@@ -2465,11 +2465,11 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_PWDPOLSM:
     case ID_LOCK_SAFE:
     case ID_SETDATABASEID:
-      evt.Enable(m_core.IsDbFileSet() && !m_sysTray->IsLocked());
+      evt.Enable(isUnlocked && m_core.IsDbFileSet());
       break;
 
     case ID_UNLOCK_SAFE:
-      evt.Enable(m_core.IsDbFileSet() && m_sysTray->IsLocked());
+      evt.Enable(!isUnlocked && m_core.IsDbFileSet());
       break;
 
     case ID_FILTERMENU:
