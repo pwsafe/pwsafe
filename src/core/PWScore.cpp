@@ -88,7 +88,6 @@ Asker *PWScore::m_pAsker = nullptr;
 Reporter *PWScore::m_pReporter = nullptr;
 
 
-
 //-----------------------------------------------------------------
 
 PWScore::PWScore() :
