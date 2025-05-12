@@ -1685,6 +1685,7 @@
 				E6EE83E911E87E9800B01518 /* VerifyFormat.h */,
 				E6EE841911E87E9800B01518 /* XMLprefs.cpp */,
 				E6EE841A11E87E9800B01518 /* XMLprefs.h */,
+				E6EE845611E87E9800B01518 /* Validate.cpp */,
 			);
 			indentWidth = 4;
 			name = core;
