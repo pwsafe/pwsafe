@@ -1785,6 +1785,11 @@ bool CItemData::ValidatePWHistory()
   if (pwhistlist.getErr() == 0)
     return true;
 
+  if (pwhistlist.getErr() == static_cast<size_t>(-1)) { // unrecoverable error
+    SetPWHistory(_T(""));
+    return false;
+  }
+
   size_t pwh_max = pwhistlist.getMax();
   size_t listnum = pwhistlist.size();
 
