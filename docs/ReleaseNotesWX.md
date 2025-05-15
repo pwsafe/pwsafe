@@ -13,6 +13,7 @@ PasswordSafe 1.21.1 Release ???
 
 Bugs fixed in 1.21.1
 --------------------
+[GH1227](https://github.com/pwsafe/pwsafe/issues/1227), [GH1228](https://github.com/pwsafe/pwsafe/issues/1228) Irrelevant functions are now disabled when databased is locked.
 [GH1472](https://github.com/pwsafe/pwsafe/issues/1472) 'Go' button in Add/Edit window now respects "alt" browser specification.
 
 New features in 1.21.1
