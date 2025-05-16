@@ -109,8 +109,12 @@ void StrengthMeter::OnPaint(wxPaintEvent& event)
     
   // Draw meter background
   if (wxSystemSettings::GetAppearance().IsDark()) {
+#ifndef __WXMAC__
     // Use background color of text controls when dark theme is in use
-    dc.SetBrush(wxBrush(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX)));
+    auto brushLightness = 104;
+    auto bgListbox = wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX);
+    dc.SetBrush(wxBrush(bgListbox.ChangeLightness(brushLightness)));
+#endif // __WXMAC__
   }
   else {
     // When using a light theme, reduce the brightness so that the background appears slightly darker
