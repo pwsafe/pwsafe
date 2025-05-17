@@ -49,12 +49,14 @@ public:
     void Load() {
       PWSprefs* prefs = PWSprefs::GetInstance();
       const auto nExpected = prefs->GetPref(PWSprefs::MaxMRUItems);
-      std::vector<stringT> mruList(nExpected);
+      std::vector<stringT> mruList;
       const auto nFound = prefs->GetMRUList(mruList);
       wxASSERT(nExpected >= nFound);
-      for (unsigned int idx = 0; idx < nFound; ++idx) {
-        if (!mruList[idx].empty())
-          AddFileToHistory(towxstring(mruList[idx]));
+
+      // wxFileHistory::AddFileToHistory() appears to add to the begining of the list,
+      // so we iterate backward to keep the order the same.
+      for (auto iter = mruList.rbegin(); iter != mruList.rend(); iter++) {
+        AddFileToHistory(towxstring(*iter));
       }
     }
 
