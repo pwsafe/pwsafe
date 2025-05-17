@@ -32,8 +32,17 @@ class Startup {
 public:
   Startup() {
     char *sl = setlocale(LC_ALL, "");
-    if (sl == NULL)
-      throw "Couldn't initialize locale - bailing out";
+    if (sl == NULL) {
+      // According to setlocale(3):
+      // An argument of "" will determine the name of the new locale taking into account the environment variables LANG and LC_*.  If these environment variables yield a locale that is invalid, NULL will be returned and the current locale will remain unchanged.
+      // Apparently these environment variables are setup incorrectly, let's try some sane defaults
+      sl = setlocale(LC_ALL, "C.UTF-8");
+      if (sl == NULL)
+        sl = setlocale(LC_ALL, "en_US.UTF-8");
+    }
+    // If s1 is still NULL, all three setlocale calls failed.
+    // According to setlocale(3): By default, C programs start in the "C" locale.
+    // Continue using the "C" locale. UTF8 will not work.
   }
 };
 
