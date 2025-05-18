@@ -826,8 +826,10 @@ void PasswordSafeFrame::CreateControls()
   itemBoxSizer83->Layout();
 
   const RecentDbList& rdb = wxGetApp().recentDatabases();
-  Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
+  if (rdb.GetMaxFiles() > 0) {
+    Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(PasswordSafeFrame::OnOpenRecentDB));
+  }
 
   m_AuiManager.AddPane(panel, wxAuiPaneInfo().
     Name(wxT("mainview")).Caption(wxT("Main View")).

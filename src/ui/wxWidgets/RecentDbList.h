@@ -22,7 +22,13 @@ class RecentDbList : public wxFileHistory
 {
 public:
     RecentDbList() : wxFileHistory(PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems))
-    {} 
+    {}
+
+    // Calling wxFileHistory::AddFileToHistory() crashes if maxFiles is initialized to 0.
+    void AddFileToHistory(const wxString& file) {
+      if (GetMaxFiles() > 0)
+        wxFileHistory::AddFileToHistory(file);
+    }
 
     void RemoveFile(const wxString& file) {
       for (size_t idx = 0, max = GetCount(); idx < max; ++idx) {
@@ -56,7 +62,7 @@ public:
       // wxFileHistory::AddFileToHistory() appears to add to the begining of the list,
       // so we iterate backward to keep the order the same.
       for (auto iter = mruList.rbegin(); iter != mruList.rend(); iter++) {
-        AddFileToHistory(towxstring(*iter));
+        wxFileHistory::AddFileToHistory(towxstring(*iter));
       }
     }
 

@@ -889,7 +889,7 @@ wxPanel* OptionsPropertySheetDlg::CreateSystemPanel(const wxString& title)
 
   itemBoxSizer114->Add(system_MaxMRUItemsSB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
-  wxStaticText* itemStaticText117 = new wxStaticText( itemPanel104, wxID_STATIC, _("databases"), wxDefaultPosition, wxDefaultSize, 0 );
+  wxStaticText* itemStaticText117 = new wxStaticText( itemPanel104, wxID_STATIC, _("databases (Change requires restart)"), wxDefaultPosition, wxDefaultSize, 0 );
   itemBoxSizer114->Add(itemStaticText117, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
 
   wxCheckBox* system_MRUOnFileMenuCB = new wxCheckBox( itemPanel104, ID_CHECKBOX32, _("Recent Databases on File Menu rather than as a sub-menu"), wxDefaultPosition, wxDefaultSize, 0 );
