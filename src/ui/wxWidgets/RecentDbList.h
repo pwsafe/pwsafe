@@ -54,9 +54,9 @@ public:
 
     void Load() {
       PWSprefs* prefs = PWSprefs::GetInstance();
-      const auto nExpected = prefs->GetPref(PWSprefs::MaxMRUItems);
+      [[maybe_unused]] const auto nExpected = prefs->GetPref(PWSprefs::MaxMRUItems);
       std::vector<stringT> mruList;
-      const auto nFound = prefs->GetMRUList(mruList);
+      [[maybe_unused]] const auto nFound = prefs->GetMRUList(mruList);
       wxASSERT(nExpected >= nFound);
 
       // wxFileHistory::AddFileToHistory() appears to add to the begining of the list,
