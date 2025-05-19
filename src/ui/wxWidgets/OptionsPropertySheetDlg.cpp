@@ -277,6 +277,9 @@ void OptionsPropertySheetDlg::CreateControls()
 
 wxPanel* OptionsPropertySheetDlg::CreateHeaderPanel(wxWindow* parent, const wxString& title)
 {
+#ifdef __WXMAC__
+  auto headerPanel = new wxPanel(parent, wxID_ANY, wxDefaultPosition, wxSize(605, -1));
+#else
   auto headerPanel = new wxPanel(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize);
   auto bgColor = headerPanel->GetBackgroundColour();
 
@@ -288,6 +291,7 @@ wxPanel* OptionsPropertySheetDlg::CreateHeaderPanel(wxWindow* parent, const wxSt
 
   wxColor::ChangeLightness(&red, &green, &blue, alpha);
   headerPanel->SetBackgroundColour(wxColor(red, green, blue));
+#endif
 
   auto sizer = new wxBoxSizer(wxVERTICAL);
   headerPanel->SetSizer(sizer);
