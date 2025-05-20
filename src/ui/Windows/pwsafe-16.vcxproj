@@ -645,6 +645,9 @@
     <ClCompile Include="WZSelectDB.cpp" />
     <ClCompile Include="YubiCfgDlg.cpp" />
     <ClCompile Include="YubiMixin.cpp" />
+    <ClCompile Include="StateBitmapManager.cpp" />
+    <ClCompile Include="StdAfx.cpp" />
+    <ClCompile Include="StrengthMeterCtrl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h" />
@@ -787,6 +790,9 @@
     <ClInclude Include="WZSelectDB.h" />
     <ClInclude Include="YubiCfgDlg.h" />
     <ClInclude Include="YubiMixin.h" />
+    <ClInclude Include="StateBitmapManager.h" />
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="StrengthMeterCtrl.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="graphics\abase.bmp" />
