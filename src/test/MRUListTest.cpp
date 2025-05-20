@@ -19,12 +19,17 @@ class MRUListTest : public ::testing::Test
 {
 protected:
   MRUListTest();
+  ~MRUListTest() { prefs->PrepForUnitTests(false); }
 
+  PWSprefs *prefs;
   std::vector<stringT> MRUFiles;
 };
 
 MRUListTest::MRUListTest()
 {
+  prefs = PWSprefs::GetInstance();
+  prefs->PrepForUnitTests(true);
+
   MRUFiles.push_back(L"filename1");
   MRUFiles.push_back(L"filename2");
   MRUFiles.push_back(L"filename3");
@@ -37,11 +42,18 @@ TEST_F(MRUListTest, MRUList)
 {
   unsigned int is, ig;
   std::vector<stringT> MRURet, v4, v0;
-  
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  prefs->SetPref(PWSprefs::MaxMRUItems, 10);
+
+  // Test no-op behavior
+  prefs->PrepForUnitTests(false);
+  is = prefs->SetMRUList(MRUFiles, 10);
+  ig = prefs->GetMRUList(MRURet);
+  EXPECT_EQ(is, 0);
+  EXPECT_EQ(ig, 0);
+  EXPECT_EQ(MRURet.size(), 0);
+  prefs->PrepForUnitTests(true);
 
   // Basic Set/Get
+  prefs->SetPref(PWSprefs::MaxMRUItems, 10);
   is = prefs->SetMRUList(MRUFiles, 10);
   ig = prefs->GetMRUList(MRURet);
   EXPECT_EQ(is, 5);
@@ -107,13 +119,18 @@ class RecentDBTest : public ::testing::Test
 {
 protected:
   RecentDBTest();
+  ~RecentDBTest() { prefs->PrepForUnitTests(false); }
 
+  PWSprefs *prefs;
   std::vector<stringT> MRUFiles;
   wxArrayString StrList;
 };
 
 RecentDBTest::RecentDBTest()
 {
+  prefs = PWSprefs::GetInstance();
+  prefs->PrepForUnitTests(true);
+
   MRUFiles.push_back(L"filename1");
   MRUFiles.push_back(L"filename2");
   MRUFiles.push_back(L"filename3");
@@ -134,18 +151,18 @@ TEST_F(RecentDBTest, RecentList)
   wxArrayString GotStrings;
   std::vector<stringT> MRURet;
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
+  // Initial prep
   prefs->SetPref(PWSprefs::MaxMRUItems, 10);
   is = prefs->SetMRUList(MRUFiles, 10);
   EXPECT_EQ(is, 5);
 
-  // Initialize after setting MaxMRUItems
+  // Initialize RecentDbList after setting MaxMRUItems
   RecentDbList rdb;
   is = rdb.GetMaxFiles();
   EXPECT_EQ(is, 10);
   EXPECT_EQ(rdb.GetCount(), 0);
 
-  // Load the list from the Prefs and get the list of strings
+  // Load the list from PWSprefs and get the list of strings
   rdb.Load();
   rdb.GetAll(GotStrings);
   EXPECT_EQ(rdb.GetCount(), 5);
@@ -172,7 +189,7 @@ TEST_F(RecentDBTest, RecentList)
   EXPECT_EQ(GotStrings.size(), 5);
   EXPECT_EQ(StrList, GotStrings);
 
-  // Save the modified list to Prefs
+  // Save the modified list to PWSprefs and check that it got there
   auto pos = MRUFiles.begin();
   auto pos2 = MRUFiles.insert(pos, L"NewFilename1");
   MRUFiles.erase(++pos2);
@@ -188,6 +205,11 @@ TEST_F(RecentDBTest, RecentList)
   rdb.GetAll(GotStrings);
   EXPECT_EQ(rdb.GetCount(), 0);
   EXPECT_EQ(GotStrings.size(), 0);
+
+  rdb.Save();
+  ig = prefs->GetMRUList(MRURet);
+  EXPECT_EQ(ig, 0);
+  EXPECT_EQ(MRURet.size(), 0);
 }
 
 TEST_F(RecentDBTest, RecentListLimit)
@@ -195,12 +217,11 @@ TEST_F(RecentDBTest, RecentListLimit)
   int is;
   wxArrayString GotStrings;
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
   prefs->SetPref(PWSprefs::MaxMRUItems, 4);
   is = prefs->SetMRUList(MRUFiles, 10);
   EXPECT_EQ(is, 5);
 
-  // Initialize after MacMRUItems is set
+  // Initialize after MaxMRUItems is set
   RecentDbList rdb;
   is = rdb.GetMaxFiles();
   EXPECT_EQ(is, 4);
@@ -232,7 +253,6 @@ TEST_F(RecentDBTest, RecentListLimit0)
   wxArrayString GotStrings;
   std::vector<stringT> MRURet;
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
   prefs->SetPref(PWSprefs::MaxMRUItems, 0);
   is = prefs->SetMRUList(MRUFiles, 10);
   ig = prefs->GetMRUList(MRURet);
@@ -251,9 +271,8 @@ TEST_F(RecentDBTest, RecentListLimit0)
   EXPECT_EQ(rdb.GetCount(), 0);
   EXPECT_EQ(GotStrings.size(), 0);
 
-  // Add should not be allowed
+  // Add should be sliently ignored
   GotStrings.clear();
-
   rdb.AddFileToHistory("NewName1");
   rdb.GetAll(GotStrings);
   EXPECT_EQ(rdb.GetCount(), 0);

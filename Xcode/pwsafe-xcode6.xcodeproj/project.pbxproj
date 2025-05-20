@@ -1565,6 +1565,7 @@
 		E6EE837D11E87CD200B01518 /* os */ = {
 			isa = PBXGroup;
 			children = (
+				E6C1253511E1B2BA00D22D92 /* mac */,
 				570781692B0C4CD30082EB6E /* PWYubi.cpp */,
 				570781682B0C4CD30082EB6E /* PWYubi.h */,
 				E6889E011EE4640F0023E376 /* cleanup.cpp */,
@@ -1585,7 +1586,6 @@
 				E6EE838B11E87DAC00B01518 /* sleep.h */,
 				E6EE838C11E87DAC00B01518 /* typedefs.h */,
 				E6EE838D11E87DAC00B01518 /* utf8conv.h */,
-				E6C1253511E1B2BA00D22D92 /* mac */,
 			);
 			indentWidth = 2;
 			name = os;
@@ -1681,11 +1681,11 @@
 				E6EE83E311E87E9800B01518 /* UTF8Conv.h */,
 				E6EE83E411E87E9800B01518 /* Util.cpp */,
 				E6EE83E511E87E9800B01518 /* Util.h */,
+				E6EE845611E87E9800B01518 /* Validate.cpp */,
 				E6EE83E811E87E9800B01518 /* VerifyFormat.cpp */,
 				E6EE83E911E87E9800B01518 /* VerifyFormat.h */,
 				E6EE841911E87E9800B01518 /* XMLprefs.cpp */,
 				E6EE841A11E87E9800B01518 /* XMLprefs.h */,
-				E6EE845611E87E9800B01518 /* Validate.cpp */,
 			);
 			indentWidth = 4;
 			name = core;
