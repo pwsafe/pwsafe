@@ -132,6 +132,7 @@ private:
 
 public:
   RecentDbList &recentDatabases();
+  void ResizeRecentDatabases();
   uint32 GetHashIters() const { return m_core.GetHashIters(); }
   bool ActivateLanguage(wxLanguage language, bool tryOnly);
   wxLanguage GetSystemLanguage();

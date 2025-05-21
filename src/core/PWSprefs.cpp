@@ -262,7 +262,6 @@ PWSprefs::PWSprefs() : m_pXML_Config(nullptr)
   m_PSSrect.top = m_PSSrect.bottom = m_PSSrect.left = m_PSSrect.right = -1;
   m_PSSrect.changed = false;
 
-  m_MRUitems.resize(m_int_prefs[MaxMRUItems].maxVal);
   InitializePreferences();
 }
 
@@ -457,9 +456,7 @@ unsigned int PWSprefs::SetMRUList(const std::vector<stringT> &MRUFiles, int max_
   if (cleanMRU.size() > static_cast<std::size_t>(max_MRU))
     cleanMRU.erase(cleanMRU.begin() + max_MRU, cleanMRU.end());
 
-  bool changed = (cleanMRU != m_MRUitems);
-
-  if (changed) {
+  if (cleanMRU != m_MRUitems) {
     m_MRUitems = cleanMRU;
     m_prefs_changed[APP_PREF] = true;
   }
@@ -1489,14 +1486,12 @@ bool PWSprefs::LoadProfileFromFile()
   m_PrefLayout = m_pXML_Config->Get(m_csHKCU_PREF, _T("Layout"), L"");
 
   // Load most recently used file list
-  if (m_MRUitems.size() < m_intValues[MaxMRUItems])
-    m_MRUitems.resize(m_intValues[MaxMRUItems]);
-  for (i = m_intValues[MaxMRUItems]; i > 0; i--) {
-    Format(csSubkey, L"Safe%02d", i);
+  m_MRUitems.clear();
+  for (unsigned int idx = 1; idx <= m_intValues[MaxMRUItems]; idx++) {
+    Format(csSubkey, L"Safe%02u", idx);
     auto value = m_pXML_Config->Get(m_csHKCU_MRU, csSubkey, L"");
-    if (!value.empty())
-    {
-      m_MRUitems[i-1] = value;
+    if (!value.empty()) {
+      m_MRUitems.push_back(value);
     }
   }
 
@@ -1648,10 +1643,8 @@ void PWSprefs::SaveApplicationPreferences()
     // Now put back the ones we want
     stringT csSubkey;
     for (auto item : m_MRUitems) {
-      if (!item.empty()) {
-        Format(csSubkey, L"Safe%02d", ++j);
-        m_pXML_Config->Set(m_csHKCU_MRU, csSubkey, item);
-      }
+      Format(csSubkey, L"Safe%02d", ++j);
+      m_pXML_Config->Set(m_csHKCU_MRU, csSubkey, item);
     }
 
     // Since we may have changed the MRU - update timestamp in config file

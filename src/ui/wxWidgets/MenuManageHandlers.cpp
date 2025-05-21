@@ -81,6 +81,8 @@ void PasswordSafeFrame::DoPreferencesClick()
   bool showMenuSeprator = prefs->GetPref(PWSprefs::ShowMenuSeparator);
   bool autoAdjColWidth = prefs->GetPref(PWSprefs::AutoAdjColWidth);
   bool toolbarShowText = prefs->GetPref(PWSprefs::ToolbarShowText);
+  bool MRUOnFileMenu = prefs->GetPref(PWSprefs::MRUOnFileMenu);
+  unsigned int maxMRUItems = prefs->GetPref(PWSprefs::MaxMRUItems);
   const StringX sxOldDBPrefsString(prefs->Store());
   DestroyWrapper<OptionsPropertySheetDlg> windowWrapper(this, m_core);
   OptionsPropertySheetDlg* window = windowWrapper.Get();
@@ -108,7 +110,15 @@ void PasswordSafeFrame::DoPreferencesClick()
       DoLayout();
       SendSizeEvent();
     }
-    
+
+    bool resizeMRU = (maxMRUItems != prefs->GetPref(PWSprefs::MaxMRUItems));
+    if (resizeMRU) {
+      wxGetApp().ResizeRecentDatabases();
+    }
+    if (resizeMRU || (MRUOnFileMenu != prefs->GetPref(PWSprefs::MRUOnFileMenu))) {
+      CreateMenubar();
+    }
+
     StringX sxNewDBPrefsString(prefs->Store(true));
     // Update system tray icon if visible so changes show up immediately
     if (m_sysTray && prefs->GetPref(PWSprefs::UseSystemTray))

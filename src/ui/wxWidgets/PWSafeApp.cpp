@@ -869,6 +869,16 @@ RecentDbList &PWSafeApp::recentDatabases()
   return *m_recentDatabases;
 }
 
+void PWSafeApp::ResizeRecentDatabases()
+{
+  if (m_recentDatabases != nullptr) {
+    m_recentDatabases->Save();
+    delete m_recentDatabases;
+    m_recentDatabases = new RecentDbList;
+    m_recentDatabases->Load();
+  }
+}
+
 void PWSafeApp::SaveFrameCoords(void)
 {
   if (m_frame->IsMaximized()) {

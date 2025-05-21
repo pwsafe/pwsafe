@@ -61,7 +61,7 @@ static char *createFileSystemRepresentation(const stringT &filename)
   CFIndex maxBufLen = CFStringGetMaximumSizeOfFileSystemRepresentation(str);
   char *buffer = new char[maxBufLen];
 
-  bool res = CFStringGetFileSystemRepresentation(str, buffer, maxBufLen);
+  [[maybe_unused]] bool res = CFStringGetFileSystemRepresentation(str, buffer, maxBufLen);
   assert(res);
 
   CFRelease(str);
