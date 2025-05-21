@@ -8,6 +8,8 @@
 
 #pragma once
 
+#include <afxcmn.h>
+
 // CStrengthMeterCtrl
 // A control that displays password strength using a progress bar
 class CStrengthMeterCtrl : public CProgressCtrl
@@ -25,10 +27,13 @@ protected:
     DECLARE_MESSAGE_MAP()
     afx_msg void OnPaint();
     afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+    virtual BOOL PreTranslateMessage(MSG* pMsg) override;
+    virtual void PreSubclassWindow() override;
 
 private:
     double m_nStrength;  // Current strength value (0-100)
     COLORREF m_crWeak;    // Color for weak passwords
     COLORREF m_crMedium;  // Color for medium strength passwords
     COLORREF m_crStrong;  // Color for strong passwords
+    CToolTipCtrl m_tooltip;
 }; 

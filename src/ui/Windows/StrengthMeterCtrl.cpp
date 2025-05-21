@@ -8,6 +8,7 @@
 
 #include "stdafx.h"
 #include "StrengthMeterCtrl.h"
+#include "resource3.h"
 #include <algorithm>
 
 IMPLEMENT_DYNAMIC(CStrengthMeterCtrl, CProgressCtrl)
@@ -36,6 +37,20 @@ void CStrengthMeterCtrl::SetStrength(double nStrength)
     
     // Update the progress control
     SetPos(static_cast<int>(m_nStrength));
+    
+    // Update tooltip text
+    CString tipText;
+    UINT nID = 0;
+    if (m_nStrength < 33.0)
+        nID = IDS_PWSTRNGTH_WEAK;
+    else if (m_nStrength < 66.0)
+        nID = IDS_PWSTRNGTH_MEDIUM;
+    else
+        nID = IDS_PWSTRNGTH_STRONG;
+    if (nID != 0)
+        tipText.LoadString(nID);
+    if (m_tooltip.GetSafeHwnd())
+        m_tooltip.UpdateTipText(tipText, this);
     
     // Force a redraw
     Invalidate();
@@ -87,4 +102,21 @@ HBRUSH CStrengthMeterCtrl::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
     pDC->SetBkMode(TRANSPARENT);
     
     return hbr;
+}
+
+BOOL CStrengthMeterCtrl::PreTranslateMessage(MSG* pMsg)
+{
+    if (m_tooltip.GetSafeHwnd())
+        m_tooltip.RelayEvent(pMsg);
+    return CProgressCtrl::PreTranslateMessage(pMsg);
+}
+
+void CStrengthMeterCtrl::PreSubclassWindow()
+{
+    CProgressCtrl::PreSubclassWindow();
+    if (!m_tooltip.GetSafeHwnd()) {
+        m_tooltip.Create(this);
+        m_tooltip.AddTool(this, L"");
+        m_tooltip.Activate(TRUE);
+    }
 } 
