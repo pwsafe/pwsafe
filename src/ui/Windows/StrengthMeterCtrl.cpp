@@ -18,7 +18,7 @@ BEGIN_MESSAGE_MAP(CStrengthMeterCtrl, CProgressCtrl)
 END_MESSAGE_MAP()
 
 CStrengthMeterCtrl::CStrengthMeterCtrl()
-    : m_nStrength(0)
+    : m_nStrength(0.0)
     , m_crWeak(RGB(255, 0, 0))      // Red for weak
     , m_crMedium(RGB(255, 165, 0))  // Orange for medium
     , m_crStrong(RGB(0, 255, 0))    // Green for strong
@@ -29,21 +29,16 @@ CStrengthMeterCtrl::~CStrengthMeterCtrl()
 {
 }
 
-void CStrengthMeterCtrl::SetStrength(int nStrength)
+void CStrengthMeterCtrl::SetStrength(double nStrength)
 {
     // Ensure strength is within valid range
-    m_nStrength = std::max(0, std::min(100, nStrength));
+    m_nStrength = std::max(0.0, std::min(100.0, nStrength));
     
     // Update the progress control
-    SetPos(m_nStrength);
+    SetPos(static_cast<int>(m_nStrength));
     
     // Force a redraw
     Invalidate();
-}
-
-int CStrengthMeterCtrl::GetStrength() const
-{
-    return m_nStrength;
 }
 
 void CStrengthMeterCtrl::OnPaint()
@@ -52,9 +47,8 @@ void CStrengthMeterCtrl::OnPaint()
     CRect rect;
     GetClientRect(&rect);
 
-    // Get the current position
     int nPos = GetPos();
-    
+
     // Determine the color based on strength
     COLORREF crColor;
     if (nPos < 33)
@@ -64,9 +58,24 @@ void CStrengthMeterCtrl::OnPaint()
     else
         crColor = m_crStrong;
 
-    // Create a brush with the appropriate color
-    CBrush brush(crColor);
-    dc.FillRect(&rect, &brush);
+    // Calculate the width to fill
+    int fillWidth = rect.Width() * nPos / 100;
+
+    // Draw the filled (strength) part
+    if (fillWidth > 0) {
+        CRect fillRect = rect;
+        fillRect.right = fillRect.left + fillWidth;
+        CBrush fillBrush(crColor);
+        dc.FillRect(&fillRect, &fillBrush);
+    }
+
+    // Draw the remaining (background) part
+    if (fillWidth < rect.Width()) {
+        CRect bgRect = rect;
+        bgRect.left += fillWidth;
+        CBrush bgBrush(GetSysColor(COLOR_3DFACE));
+        dc.FillRect(&bgRect, &bgBrush);
+    }
 }
 
 HBRUSH CStrengthMeterCtrl::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)

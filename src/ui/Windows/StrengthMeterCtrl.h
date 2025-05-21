@@ -19,10 +19,7 @@ public:
     virtual ~CStrengthMeterCtrl();
 
     // Set the strength value (0-100)
-    void SetStrength(int nStrength);
-    
-    // Get the current strength value
-    int GetStrength() const;
+    void SetStrength(double nStrength);
 
 protected:
     DECLARE_MESSAGE_MAP()
@@ -30,7 +27,7 @@ protected:
     afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 
 private:
-    int m_nStrength;  // Current strength value (0-100)
+    double m_nStrength;  // Current strength value (0-100)
     COLORREF m_crWeak;    // Color for weak passwords
     COLORREF m_crMedium;  // Color for medium strength passwords
     COLORREF m_crStrong;  // Color for strong passwords
