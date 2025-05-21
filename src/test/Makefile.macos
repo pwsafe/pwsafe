@@ -2,6 +2,13 @@
 # Coretest makefile for macOS
 #
 
+TARGET = coretest
+
+# CONFIGURATION and TARGET_BUILD_DIR are set when executed by Xcode
+# WX_BUILD_DIR is set by the GitHub build workflow
+# HOMEBREW_PREFIX is used to locate googletest
+# When run from the command line, you can provide these variables or use the defaults
+
 # The Xcode configuration: Debug or Release
 ifdef CONFIGURATION
 CONFIG := $(CONFIGURATION)
@@ -18,7 +25,7 @@ endif
 
 # Following sets the location of the wx-config command
 # WX_BUILD_DIR is set by the GitHub workflow
-# Override this to use a local build
+# For command line use, make sure wx-config is in your PATH
 ifdef WX_BUILD_DIR
 WX_CONFIG := $(WX_BUILD_DIR)/bin/wx-config
 else
@@ -26,7 +33,7 @@ WX_CONFIG := $(shell which wx-config)
 endif
 
 
-TESTSRC         := coretest.cpp $(wildcard *Test.cpp)
+TESTSRC         := $(TARGET).cpp $(wildcard *Test.cpp)
 
 OBJPATH         = ../../obj/$(CONFIG)
 LIBPATH         = $(XRELDIR)
@@ -42,8 +49,8 @@ GTEST_OBJ     = $(OBJPATH)/gtest-all.o
 
 #destination related macros
 TESTOBJ	 = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(TESTSRC)))
-TEST	 = $(BINPATH)/coretest
-OBJS     = $(TESTOBJ) $(GTEST_OBJ)
+TEST	 = $(BINPATH)/$(TARGET)
+OBJS     = $(TESTOBJ) $(GTEST_OBJ) $(XRELDIR)/libcore.a $(XRELDIR)/libos.a
 
 CXXFLAGS += -DUNICODE -Wall -I$(INCPATH) -I$(INCPATH)/core -std=c++17 -I $(HOMEBREW_PREFIX)/include -Wno-overloaded-virtual
 LDFLAGS  += -L$(LIBPATH) -lcore -los 
@@ -74,13 +81,21 @@ $(GTEST_OBJ): $(GTEST_SRCS) $(GTEST_HEADERS)
 run test : $(TEST)
 	$(TEST)
 
-build: $(TEST)
+build: setup $(TEST)
+
+xcodebuild: setup $(XRELDIR)/$(TARGET)
+
+$(XRELDIR)/$(TARGET): $(TEST)
+	cp $(TEST) $(XRELDIR)
 
 $(TEST): $(OBJS)
 	$(CXX) -g $(CXXFLAGS) $(filter %.o,$^) $(LDFLAGS) -o $@
 
 clean:
 	rm -f *~ $(OBJPATH)/*.o $(TEST)
+ifdef TARGET_BUILD_DIR
+	rm -f $(TARGET_BUILD_DIR)/$(TARGETNAME)
+endif
 
 setup:
 	@mkdir -p $(OBJPATH) $(BINPATH)

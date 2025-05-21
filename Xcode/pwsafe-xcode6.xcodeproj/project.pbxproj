@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -212,6 +212,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		579723522DDD5E5A001582BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6ADB80211956A93004E2BE5;
+			remoteInfo = core;
+		};
+		579723542DDD5E5A001582BE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6ADB91B11956DD0004E2BE5;
+			remoteInfo = os;
+		};
 		E66D29361D02B50400C9BCBF /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
@@ -257,6 +271,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		579723672DDD5E5A001582BE /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		E66D292D1D02B49B00C9BCBF /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -293,10 +316,47 @@
 		572D9E202DC4920900AF81D4 /* StatusBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusBar.h; sourceTree = "<group>"; };
 		572D9E212DC4920900AF81D4 /* StrengthMeter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrengthMeter.h; sourceTree = "<group>"; };
 		572D9E222DC4920900AF81D4 /* StrengthMeter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StrengthMeter.cpp; sourceTree = "<group>"; };
+		573ED8DF2DDD61DB00177684 /* filter_for_test.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = filter_for_test.xml; sourceTree = "<group>"; };
+		573ED8E02DDD61DB00177684 /* image1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image1.jpg; sourceTree = "<group>"; };
+		573ED8E12DDD61DB00177684 /* import-text-unit-test1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "import-text-unit-test1.txt"; sourceTree = "<group>"; };
+		573ED8E22DDD61DB00177684 /* import-text-unit-test2.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = "import-text-unit-test2.csv"; sourceTree = "<group>"; };
+		573ED8E32DDD61DB00177684 /* import-text-unit-test3.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = "import-text-unit-test3.csv"; sourceTree = "<group>"; };
+		573ED8E42DDD61DB00177684 /* import-text-unit-test4.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = "import-text-unit-test4.csv"; sourceTree = "<group>"; };
+		573ED8E52DDD61DB00177684 /* import-text-unit-test5.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = "import-text-unit-test5.csv"; sourceTree = "<group>"; };
+		573ED8E62DDD61DB00177684 /* text1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = text1.txt; sourceTree = "<group>"; };
+		573ED8E92DDD61DB00177684 /* AESTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AESTest.cpp; path = ../AESTest.cpp; sourceTree = "<group>"; };
+		573ED8EA2DDD61DB00177684 /* AliasShortcutTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AliasShortcutTest.cpp; path = ../AliasShortcutTest.cpp; sourceTree = "<group>"; };
+		573ED8EB2DDD61DB00177684 /* AuxParseTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AuxParseTest.cpp; path = ../AuxParseTest.cpp; sourceTree = "<group>"; };
+		573ED8EC2DDD61DB00177684 /* Base32Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Base32Test.cpp; path = ../Base32Test.cpp; sourceTree = "<group>"; };
+		573ED8ED2DDD61DB00177684 /* BlowFishTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BlowFishTest.cpp; path = ../BlowFishTest.cpp; sourceTree = "<group>"; };
+		573ED8EF2DDD61DB00177684 /* CommandsTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CommandsTest.cpp; path = ../CommandsTest.cpp; sourceTree = "<group>"; };
+		573ED8F02DDD61DB00177684 /* coretest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = coretest.cpp; path = ../coretest.cpp; sourceTree = "<group>"; };
+		573ED8F52DDD61DB00177684 /* FileEncDecTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileEncDecTest.cpp; path = ../FileEncDecTest.cpp; sourceTree = "<group>"; };
+		573ED8F62DDD61DB00177684 /* FileV3Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileV3Test.cpp; path = ../FileV3Test.cpp; sourceTree = "<group>"; };
+		573ED8F72DDD61DB00177684 /* FileV4Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileV4Test.cpp; path = ../FileV4Test.cpp; sourceTree = "<group>"; };
+		573ED8F92DDD61DB00177684 /* HMAC_SHA1Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HMAC_SHA1Test.cpp; path = ../HMAC_SHA1Test.cpp; sourceTree = "<group>"; };
+		573ED8FA2DDD61DB00177684 /* HMAC_SHA256Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HMAC_SHA256Test.cpp; path = ../HMAC_SHA256Test.cpp; sourceTree = "<group>"; };
+		573ED8FB2DDD61DB00177684 /* ImportTextTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ImportTextTest.cpp; path = ../ImportTextTest.cpp; sourceTree = "<group>"; };
+		573ED8FC2DDD61DB00177684 /* ItemAttTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ItemAttTest.cpp; path = ../ItemAttTest.cpp; sourceTree = "<group>"; };
+		573ED8FD2DDD61DB00177684 /* ItemDataTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ItemDataTest.cpp; path = ../ItemDataTest.cpp; sourceTree = "<group>"; };
+		573ED8FE2DDD61DB00177684 /* ItemFieldTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ItemFieldTest.cpp; path = ../ItemFieldTest.cpp; sourceTree = "<group>"; };
+		573ED8FF2DDD61DB00177684 /* KeyWrapTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = KeyWrapTest.cpp; path = ../KeyWrapTest.cpp; sourceTree = "<group>"; };
+		573ED9012DDD61DB00177684 /* Makefile.macos */ = {isa = PBXFileReference; lastKnownFileType = text; name = Makefile.macos; path = ../Makefile.macos; sourceTree = "<group>"; };
+		573ED9022DDD61DB00177684 /* MRUListTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = MRUListTest.cpp; path = ../MRUListTest.cpp; sourceTree = "<group>"; };
+		573ED9032DDD61DB00177684 /* OSTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = OSTest.cpp; path = ../OSTest.cpp; sourceTree = "<group>"; };
+		573ED9042DDD61DB00177684 /* SHA1Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SHA1Test.cpp; path = ../SHA1Test.cpp; sourceTree = "<group>"; };
+		573ED9052DDD61DB00177684 /* SHA256Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SHA256Test.cpp; path = ../SHA256Test.cpp; sourceTree = "<group>"; };
+		573ED9062DDD61DB00177684 /* StringXTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = StringXTest.cpp; path = ../StringXTest.cpp; sourceTree = "<group>"; };
+		573ED9072DDD61DB00177684 /* TestCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TestCommon.h; path = ../TestCommon.h; sourceTree = "<group>"; };
+		573ED9082DDD61DB00177684 /* TOTPTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TOTPTest.cpp; path = ../TOTPTest.cpp; sourceTree = "<group>"; };
+		573ED9092DDD61DB00177684 /* TwoFishTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TwoFishTest.cpp; path = ../TwoFishTest.cpp; sourceTree = "<group>"; };
+		573ED90A2DDD61DB00177684 /* UtilTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = UtilTest.cpp; path = ../UtilTest.cpp; sourceTree = "<group>"; };
+		573ED90B2DDD61DB00177684 /* ValidateTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ValidateTest.cpp; path = ../ValidateTest.cpp; sourceTree = "<group>"; };
 		574370962A3CE21800B46A7D /* pwsafe-template.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "pwsafe-template.plist"; sourceTree = "<group>"; };
 		575412A92B14265800507BC5 /* ubuntu-latest.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "ubuntu-latest.yml"; path = "../.github/workflows/ubuntu-latest.yml"; sourceTree = "<group>"; };
 		575412AA2B14265800507BC5 /* macos-latest.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "macos-latest.yml"; path = "../.github/workflows/macos-latest.yml"; sourceTree = "<group>"; };
 		575412AB2B14265800507BC5 /* codeql-analysis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "codeql-analysis.yml"; path = "../.github/workflows/codeql-analysis.yml"; sourceTree = "<group>"; };
+		5797236C2DDD5E5A001582BE /* coretest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = coretest; sourceTree = BUILT_PRODUCTS_DIR; };
 		579BDA4E2C55F0A1004C727B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		57C329E72A070EFD00454292 /* ReleaseNotesWX.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotesWX.md; path = ../docs/ReleaseNotesWX.md; sourceTree = "<group>"; };
 		57C329E82A0715F500454292 /* ReleaseNotes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotes.md; path = ../docs/ReleaseNotes.md; sourceTree = "<group>"; };
@@ -875,6 +935,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5797235E2DDD5E5A001582BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E66D292C1D02B49B00C9BCBF /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -910,6 +977,59 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		573ED8E72DDD61DB00177684 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				573ED8DF2DDD61DB00177684 /* filter_for_test.xml */,
+				573ED8E02DDD61DB00177684 /* image1.jpg */,
+				573ED8E12DDD61DB00177684 /* import-text-unit-test1.txt */,
+				573ED8E22DDD61DB00177684 /* import-text-unit-test2.csv */,
+				573ED8E32DDD61DB00177684 /* import-text-unit-test3.csv */,
+				573ED8E42DDD61DB00177684 /* import-text-unit-test4.csv */,
+				573ED8E52DDD61DB00177684 /* import-text-unit-test5.csv */,
+				573ED8E62DDD61DB00177684 /* text1.txt */,
+			);
+			name = data;
+			path = ../data;
+			sourceTree = "<group>";
+		};
+		573ED9292DDD629000177684 /* coretest */ = {
+			isa = PBXGroup;
+			children = (
+				573ED8E72DDD61DB00177684 /* data */,
+				573ED8E92DDD61DB00177684 /* AESTest.cpp */,
+				573ED8EA2DDD61DB00177684 /* AliasShortcutTest.cpp */,
+				573ED8EB2DDD61DB00177684 /* AuxParseTest.cpp */,
+				573ED8EC2DDD61DB00177684 /* Base32Test.cpp */,
+				573ED8ED2DDD61DB00177684 /* BlowFishTest.cpp */,
+				573ED8EF2DDD61DB00177684 /* CommandsTest.cpp */,
+				573ED8F02DDD61DB00177684 /* coretest.cpp */,
+				573ED8F52DDD61DB00177684 /* FileEncDecTest.cpp */,
+				573ED8F62DDD61DB00177684 /* FileV3Test.cpp */,
+				573ED8F72DDD61DB00177684 /* FileV4Test.cpp */,
+				573ED8F92DDD61DB00177684 /* HMAC_SHA1Test.cpp */,
+				573ED8FA2DDD61DB00177684 /* HMAC_SHA256Test.cpp */,
+				573ED8FB2DDD61DB00177684 /* ImportTextTest.cpp */,
+				573ED8FC2DDD61DB00177684 /* ItemAttTest.cpp */,
+				573ED8FD2DDD61DB00177684 /* ItemDataTest.cpp */,
+				573ED8FE2DDD61DB00177684 /* ItemFieldTest.cpp */,
+				573ED8FF2DDD61DB00177684 /* KeyWrapTest.cpp */,
+				573ED9012DDD61DB00177684 /* Makefile.macos */,
+				573ED9022DDD61DB00177684 /* MRUListTest.cpp */,
+				573ED9032DDD61DB00177684 /* OSTest.cpp */,
+				573ED9042DDD61DB00177684 /* SHA1Test.cpp */,
+				573ED9052DDD61DB00177684 /* SHA256Test.cpp */,
+				573ED9062DDD61DB00177684 /* StringXTest.cpp */,
+				573ED9072DDD61DB00177684 /* TestCommon.h */,
+				573ED9082DDD61DB00177684 /* TOTPTest.cpp */,
+				573ED9092DDD61DB00177684 /* TwoFishTest.cpp */,
+				573ED90A2DDD61DB00177684 /* UtilTest.cpp */,
+				573ED90B2DDD61DB00177684 /* ValidateTest.cpp */,
+			);
+			name = coretest;
+			path = ../src/test/coretest;
+			sourceTree = "<group>";
+		};
 		575412A82B14261800507BC5 /* Workflows */ = {
 			isa = PBXGroup;
 			children = (
@@ -1340,6 +1460,7 @@
 				E6EE837D11E87CD200B01518 /* os */,
 				E6ADB9A411957099004E2BE5 /* wxWidgets */,
 				E66D29301D02B49B00C9BCBF /* pwsafe-cli */,
+				573ED9292DDD629000177684 /* coretest */,
 				E6ADB80411956A93004E2BE5 /* Products */,
 				E69B800911F61CF20084F6C4 /* Carbon.framework */,
 				E6B1448112B26CEE00415AAE /* OpenGL.framework */,
@@ -1358,6 +1479,7 @@
 				E6ADB91C11956DD0004E2BE5 /* libos.a */,
 				E6ADB99E1195706A004E2BE5 /* pwsafe.app */,
 				E66D292F1D02B49B00C9BCBF /* pwsafe-cli */,
+				5797236C2DDD5E5A001582BE /* coretest */,
 			);
 			indentWidth = 2;
 			name = Products;
@@ -1731,6 +1853,26 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		579723502DDD5E5A001582BE /* coretest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 579723682DDD5E5A001582BE /* Build configuration list for PBXNativeTarget "coretest" */;
+			buildPhases = (
+				579723552DDD5E5A001582BE /* Sources */,
+				5797235E2DDD5E5A001582BE /* Frameworks */,
+				579723672DDD5E5A001582BE /* CopyFiles */,
+				5797236D2DDD5E83001582BE /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				579723512DDD5E5A001582BE /* PBXTargetDependency */,
+				579723532DDD5E5A001582BE /* PBXTargetDependency */,
+			);
+			name = coretest;
+			productName = "pwsafe-cli";
+			productReference = 5797236C2DDD5E5A001582BE /* coretest */;
+			productType = "com.apple.product-type.tool";
+		};
 		E66D292E1D02B49B00C9BCBF /* pwsafe-cli */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = E66D29351D02B49B00C9BCBF /* Build configuration list for PBXNativeTarget "pwsafe-cli" */;
@@ -1839,6 +1981,7 @@
 				E6ADB99D1195706A004E2BE5 /* pwsafe */,
 				E690B53012980BDD007EA508 /* Help Files */,
 				E66D292E1D02B49B00C9BCBF /* pwsafe-cli */,
+				579723502DDD5E5A001582BE /* coretest */,
 			);
 		};
 /* End PBXProject section */
@@ -1860,6 +2003,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		5797236D2DDD5E83001582BE /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(TARGET_BUILD_DIR)/$(TARGETNAME)",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export HOMEBREW_PREFIX=/opt/homebrew\nmake -C ../src/test -f Makefile.macos xcodebuild\n";
+		};
 		E690B54212980CFC007EA508 /* Default English Help */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1895,6 +2057,7 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "make -C .. -f Makefile.macos src/ui/wxWidgets/version.h Xcode/pwsafe.plist\n";
+			showEnvVarsInLog = 0;
 		};
 		E6CFEF1811EA41FB001402D8 /* Generate core_st */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1916,6 +2079,13 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		579723552DDD5E5A001582BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		E66D292B1D02B49B00C9BCBF /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2111,6 +2281,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		579723512DDD5E5A001582BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6ADB80211956A93004E2BE5 /* core */;
+			targetProxy = 579723522DDD5E5A001582BE /* PBXContainerItemProxy */;
+		};
+		579723532DDD5E5A001582BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6ADB91B11956DD0004E2BE5 /* os */;
+			targetProxy = 579723542DDD5E5A001582BE /* PBXContainerItemProxy */;
+		};
 		E66D29371D02B50400C9BCBF /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E6ADB80211956A93004E2BE5 /* core */;
@@ -2293,6 +2473,79 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Debug-no-yubi";
+		};
+		579723692DDD5E5A001582BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../src/core,
+					../src,
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		5797236A2DDD5E5A001582BE /* Debug-no-yubi */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../src/core,
+					../src,
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Debug-no-yubi";
+		};
+		5797236B2DDD5E5A001582BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../src/core,
+					../src,
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
 		};
 		E66D29331D02B49B00C9BCBF /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2604,6 +2857,16 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		579723682DDD5E5A001582BE /* Build configuration list for PBXNativeTarget "coretest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				579723692DDD5E5A001582BE /* Debug */,
+				5797236A2DDD5E5A001582BE /* Debug-no-yubi */,
+				5797236B2DDD5E5A001582BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		E66D29351D02B49B00C9BCBF /* Build configuration list for PBXNativeTarget "pwsafe-cli" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
