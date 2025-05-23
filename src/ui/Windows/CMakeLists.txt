@@ -1,4 +1,3 @@
-
 list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/AboutDlg.h
             src/ui/Windows/AddEdit_Additional.h
@@ -128,6 +127,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/StateBitmapControl.h
             src/ui/Windows/StateBitmapManager.h
             src/ui/Windows/StdAfx.h
+            src/ui/Windows/StrengthMeterCtrl.h
             src/ui/Windows/Subclass.h
             src/ui/Windows/SysColStatic.h
             src/ui/Windows/SystemTray.h
@@ -279,6 +279,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/StateBitmapControl.cpp
             src/ui/Windows/StateBitmapManager.cpp
             src/ui/Windows/StdAfx.cpp
+            src/ui/Windows/StrengthMeterCtrl.cpp
             src/ui/Windows/Subclass.cpp
             src/ui/Windows/SysColStatic.cpp
             src/ui/Windows/SystemTray.cpp

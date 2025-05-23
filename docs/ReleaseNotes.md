@@ -4,12 +4,17 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.68.2 Release ??? ?? 2025
+PasswordSafe 3.69.0 Release ??? ?? 2025
 =========================================
-Bugs Fixed in 3.68.2
+Bugs Fixed in 3.69.0
 -----------------------
 * [SF1613](https://sourceforge.net/p/passwordsafe/bugs/1613/) Text in file merge/sync/compare dialog is no longer truncated on some displays.
 
+
+New features in 3.69.0
+----------------------
+* [GH1237](https://github.com/pwsafe/pwsafe/issues/1237), [SF823](https://sourceforge.net/p/passwordsafe/feature-requests/823/) A rough password strength meter now displays the strength of the password
+for entries and the master password.
 
 New features in 3.68.0
 ----------------------

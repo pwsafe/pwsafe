@@ -12,6 +12,7 @@
 
 #include "PKBaseDlg.h"
 #include "ControlExtns.h"
+#include "StrengthMeterCtrl.h"
 
 class DboxMain;
 class PWScore;
@@ -37,6 +38,7 @@ protected:
   virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
   //}}AFX_VIRTUAL
 
+  afx_msg void OnEnChangePasskey();
   void ProcessPhrase(); // Check the passphrase, call OnOK, OnCancel or just return
   void YubiFailed(); // If YubiKey failed, offer to initialize it.
   void YubiInitialize(); // called if YubiFailed and user confirmed
@@ -63,6 +65,7 @@ private:
   UINT m_CtrlID;
   UINT m_LastFocus;
   PWScore &m_core;
+  CStrengthMeterCtrl m_prgStrengthMeter;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

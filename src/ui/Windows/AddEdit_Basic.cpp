@@ -21,8 +21,7 @@
 
 #include "core/PWSprefs.h"
 #include "core/PWSAuxParse.h"
-#include "core/Command.h"
-
+#include "core/PWCharPool.h"
 #include "os/file.h"
 
 #include "os/debug.h"
@@ -152,6 +151,7 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange *pDX)
   DDX_Control(pDX, IDC_PASSWORD2, m_ex_password2);
   DDX_Control(pDX, IDC_TWOFACTORCODE, m_btnTwoFactorCode);
   DDX_Control(pDX, IDC_STATIC_TWOFACTORCODE, m_stcTwoFactorCode);
+  DDX_Control(pDX, IDC_PASSWORD_STRENGTH, m_prgStrengthMeter);
   DDX_Control(pDX, IDC_NOTES, m_ex_notes);
   DDX_Control(pDX, IDC_HIDDEN_NOTES, m_ex_hidden_notes);
   DDX_Control(pDX, IDC_URL, m_ex_URL);
@@ -465,6 +465,9 @@ BOOL CAddEdit_Basic::OnInitDialog()
   UpdateData(FALSE);
   m_bInitdone = true;
   GetDlgItem(IDC_TITLE)->SetFocus();
+
+  m_prgStrengthMeter.SetStrength(CPasswordCharPool::CalculatePasswordStrength(m_password));
+
   return FALSE;  // return TRUE unless you set the focus to a control
 }
 
@@ -951,6 +954,8 @@ void CAddEdit_Basic::OnENChangePassword()
   UpdateData(TRUE);
   m_ae_psh->SetChanged(true);
   M_realpassword() = m_password;
+  auto strength =  CPasswordCharPool::CalculatePasswordStrength(m_password);
+  m_prgStrengthMeter.SetStrength(strength);
 }
 
 void CAddEdit_Basic::OnShowPassword()
@@ -1111,6 +1116,7 @@ void CAddEdit_Basic::OnGeneratePassword()
   }
   m_ae_psh->SetChanged(true);
   UpdateData(FALSE);
+  m_prgStrengthMeter.SetStrength(CPasswordCharPool::CalculatePasswordStrength(m_password));
 
   QuerySiblings(PP_UPDATE_PWPOLICY, 0L);
 }

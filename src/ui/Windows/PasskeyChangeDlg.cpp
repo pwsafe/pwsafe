@@ -66,6 +66,7 @@ void CPasskeyChangeDlg::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_PASSKEY, *m_pctlPasskey);
 
   DDX_Check(pDX, IDC_SHOWMASTERPASSWORD, m_btnShowMasterPassword);
+  DDX_Control(pDX, IDC_PASSWORD_STRENGTH, m_prgStrengthMeter);
 }
 
 BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPKBaseDlg)
@@ -81,6 +82,7 @@ BEGIN_MESSAGE_MAP(CPasskeyChangeDlg, CPKBaseDlg)
   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_NEWPASSKEY, OnNewPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_CONFIRMNEW, OnConfirmNewSetfocus)
+  ON_EN_CHANGE(IDC_NEWPASSKEY, OnEnChangeNewPasskey)
 
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
 END_MESSAGE_MAP()
@@ -378,4 +380,11 @@ void CPasskeyChangeDlg::ProcessPhrase()
   } else {
     ASSERT(0);
   }
+}
+
+void CPasskeyChangeDlg::OnEnChangeNewPasskey()
+{
+  UpdateData(TRUE);
+  double strength = CPasswordCharPool::CalculatePasswordStrength(m_newpasskey);
+  m_prgStrengthMeter.SetStrength(strength);
 }
