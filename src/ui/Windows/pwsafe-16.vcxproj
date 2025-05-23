@@ -791,7 +791,6 @@
     <ClInclude Include="YubiCfgDlg.h" />
     <ClInclude Include="YubiMixin.h" />
     <ClInclude Include="StateBitmapManager.h" />
-    <ClInclude Include="StdAfx.h" />
     <ClInclude Include="StrengthMeterCtrl.h" />
   </ItemGroup>
   <ItemGroup>
