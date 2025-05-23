@@ -64,6 +64,7 @@ void CPasskeySetup::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_VERIFY, *m_pctlVerify);
 
   DDX_Check(pDX, IDC_SHOWMASTERPASSWORD, m_btnShowMasterPassword);
+  DDX_Control(pDX, IDC_PASSWORD_STRENGTH, m_prgStrengthMeter);
 }
 
 BEGIN_MESSAGE_MAP(CPasskeySetup, CPKBaseDlg)
@@ -76,6 +77,7 @@ BEGIN_MESSAGE_MAP(CPasskeySetup, CPKBaseDlg)
 
   ON_EN_SETFOCUS(IDC_PASSKEY, OnPasskeySetfocus)
   ON_EN_SETFOCUS(IDC_VERIFY, OnVerifykeySetfocus)
+  ON_EN_CHANGE(IDC_PASSKEY, OnEnChangePasskey)
 
   ON_MESSAGE(PWS_MSG_INSERTBUFFER, OnInsertBuffer)
 END_MESSAGE_MAP()
@@ -321,4 +323,11 @@ void CPasskeySetup::YubiInitialize()
                       MB_OK | MB_ICONERROR);
   }
 #endif /* NO_YUBI */
+}
+
+void CPasskeySetup::OnEnChangePasskey()
+{
+  UpdateData(TRUE);
+  double strength = CPasswordCharPool::CalculatePasswordStrength(m_passkey);
+  m_prgStrengthMeter.SetStrength(strength);
 }
