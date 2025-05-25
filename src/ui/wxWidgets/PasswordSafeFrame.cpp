@@ -528,6 +528,12 @@ void PasswordSafeFrame::CreateMenubar()
 
   menuBar->Freeze();
 
+  // Remove any prior menu references from the recent DB list
+  auto& rdb = wxGetApp().recentDatabases();
+  for (auto item : rdb.GetMenus()) {
+    rdb.RemoveMenu(dynamic_cast<wxMenu *>(item));
+  }
+
   // Removing all existing menu items is necessary for language switching
   while (menuBar->GetMenuCount()) {
     delete menuBar->Remove(0);
@@ -554,16 +560,17 @@ void PasswordSafeFrame::CreateMenubar()
     menuFile->Append(ID_LOCK_SAFE, _("&Lock\tCtrl+J"), wxEmptyString, wxITEM_NORMAL);
   }
 
-  if (wxGetApp().recentDatabases().GetCount() > 0) {
-
+  if (rdb.GetCount() > 0) {
     // Most recently used DBs listed directly on File menu
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::MRUOnFileMenu)) {
-      wxGetApp().recentDatabases().AddFilesToMenu(menuFile);
+      rdb.UseMenu(menuFile);
+      rdb.AddFilesToMenu(menuFile);
     }
     // Most recently used DBs listed as submenu of File menu
     else {
       auto recentDatabasesMenu = new wxMenu;
-      wxGetApp().recentDatabases().AddFilesToMenu(recentDatabasesMenu);
+      rdb.UseMenu(recentDatabasesMenu);
+      rdb.AddFilesToMenu(recentDatabasesMenu);
       menuFile->AppendSeparator();
       menuFile->Append(ID_RECENTSAFES, _("&Recent Databases..."), recentDatabasesMenu);
     }
@@ -819,8 +826,10 @@ void PasswordSafeFrame::CreateControls()
   itemBoxSizer83->Layout();
 
   const RecentDbList& rdb = wxGetApp().recentDatabases();
-  Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
+  if (rdb.GetMaxFiles() > 0) {
+    Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(PasswordSafeFrame::OnOpenRecentDB));
+  }
 
   m_AuiManager.AddPane(panel, wxAuiPaneInfo().
     Name(wxT("mainview")).Caption(wxT("Main View")).

@@ -138,6 +138,7 @@ int PasswordSafeFrame::New()
   m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
   m_RUEList.ClearEntries();
   wxGetApp().recentDatabases().AddFileToHistory(towxstring(cs_newfile));
+  CreateMenubar(); // Recreate the menu with updated list of most recently used DBs
   ResetFilters();
   GetSearchBarPane().Hide(); // There is nothing to search for in an empty database
   m_AuiManager.Update();
