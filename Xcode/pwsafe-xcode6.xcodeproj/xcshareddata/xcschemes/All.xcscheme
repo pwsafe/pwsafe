@@ -28,6 +28,20 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E66D292E1D02B49B00C9BCBF"
+               BuildableName = "pwsafe-cli"
+               BlueprintName = "pwsafe-cli"
+               ReferencedContainer = "container:pwsafe-xcode6.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "579723502DDD5E5A001582BE"
                BuildableName = "coretest"
                BlueprintName = "coretest"
