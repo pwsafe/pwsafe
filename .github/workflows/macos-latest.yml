@@ -43,8 +43,10 @@ jobs:
         echo "MACOS_VER_MIN=10.14" >> $GITHUB_ENV
         echo "XCODE_VER=15.4" >> $GITHUB_ENV
         echo "XCODE_CONFIG=Release" >> $GITHUB_ENV
+        echo "XCODE_DERIVED=xcderived" >> $GITHUB_ENV
         echo "HOST_NCPU=`sysctl -n hw.ncpu`" >>$GITHUB_ENV
         echo "FORCE_REBUILD_WX=7" >> $GITHUB_ENV
+        mkdir xcderived
 
     - name: Force compatible Xcode version
       run: sudo xcode-select -s /Applications/Xcode_${XCODE_VER}.app
@@ -117,11 +119,17 @@ jobs:
     
     - name: Build pwsafe
       working-directory: ${{ github.workspace }}
-      run: xcodebuild -project Xcode/pwsafe-xcode6.xcodeproj -scheme pwsafe -configuration $XCODE_CONFIG
+      run: xcodebuild -derivedDataPath $XCODE_DERIVED -project Xcode/pwsafe-xcode6.xcodeproj -scheme pwsafe -configuration $XCODE_CONFIG
 
     - name: Build and run coretest
       working-directory: src/test
-      run: make -f Makefile.macos
+      run: make -f Makefile.macos XRELDIR=${{ github.workspace }}/$XCODE_DERIVED/Build/Products/Release
+
+    - name: Build and run pwsafe-cli-test
+      working-directory: ${{ github.workspace }}
+      run: |
+        xcodebuild -derivedDataPath $XCODE_DERIVED -project Xcode/pwsafe-xcode6.xcodeproj -scheme pwsafe-cli-test -configuration $XCODE_CONFIG
+        $XCODE_DERIVED/Build/Products/Release/pwsafe-cli-test
 
     - name: Install language files and create dmg
       working-directory: install/macosx
