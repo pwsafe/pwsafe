@@ -25,6 +25,23 @@
 		570781702B0C4D030082EB6E /* YubiMixin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707816C2B0C4CED0082EB6E /* YubiMixin.cpp */; };
 		570781742B0C4D330082EB6E /* PWYubi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570781692B0C4CD30082EB6E /* PWYubi.cpp */; };
 		572D9E232DC4920900AF81D4 /* StrengthMeter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 572D9E222DC4920900AF81D4 /* StrengthMeter.cpp */; };
+		5762BC162DE7E26800322CA5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C94E991FA33BA6008F0072 /* QuartzCore.framework */; };
+		5762BC172DE7E26800322CA5 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
+		5762BC182DE7E26800322CA5 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69B800911F61CF20084F6C4 /* Carbon.framework */; };
+		5762BC192DE7E26800322CA5 /* libcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB80311956A93004E2BE5 /* libcore.a */; };
+		5762BC1A2DE7E26800322CA5 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448112B26CEE00415AAE /* OpenGL.framework */; };
+		5762BC1B2DE7E26800322CA5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A7B67C254824C000E780B8 /* AppKit.framework */; };
+		5762BC1C2DE7E26800322CA5 /* libos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB91C11956DD0004E2BE5 /* libos.a */; };
+		5762BC1D2DE7E26800322CA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A7B656254817F700E780B8 /* Foundation.framework */; };
+		5762BC282DE7E32A00322CA5 /* arg-fields-test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5762BC252DE7E32A00322CA5 /* arg-fields-test.cpp */; };
+		5762BC292DE7E32A00322CA5 /* search-test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5762BC262DE7E32A00322CA5 /* search-test.cpp */; };
+		5762BC2A2DE7E32A00322CA5 /* split-test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5762BC272DE7E32A00322CA5 /* split-test.cpp */; };
+		5762BC2B2DE7E32A00322CA5 /* add-entry-test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5762BC242DE7E32A00322CA5 /* add-entry-test.cpp */; };
+		5762BC2C2DE7E38800322CA5 /* safeutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B908E01D30C8980050CFF1 /* safeutils.cpp */; };
+		5762BC2D2DE7E38800322CA5 /* search.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EBC80F1D16F47F00AF61CD /* search.cpp */; };
+		5762BC2E2DE7E38800322CA5 /* argutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EBC8121D16F9B600AF61CD /* argutils.cpp */; };
+		5762BC2F2DE7E38800322CA5 /* searchaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EBC8151D17165300AF61CD /* searchaction.cpp */; };
+		5762BC302DE7E38800322CA5 /* strutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EBC8181D17184F00AF61CD /* strutils.cpp */; };
 		579BDA4F2C55F0A1004C727B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 579BDA4E2C55F0A1004C727B /* Assets.xcassets */; };
 		57BD7D042B19BEC2005C0123 /* helpEN.zip in Resources */ = {isa = PBXBuildFile; fileRef = E690B95612984B1D007EA508 /* helpEN.zip */; };
 		6FF5D4A11DA14EE80032F5B6 /* PasswordSubsetDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */; };
@@ -212,6 +229,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5762BC092DE7E26800322CA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6ADB80211956A93004E2BE5;
+			remoteInfo = core;
+		};
+		5762BC0B2DE7E26800322CA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6ADB91B11956DD0004E2BE5;
+			remoteInfo = os;
+		};
 		579723522DDD5E5A001582BE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
@@ -271,6 +302,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		5762BC1E2DE7E26800322CA5 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		579723672DDD5E5A001582BE /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -356,6 +396,13 @@
 		575412A92B14265800507BC5 /* ubuntu-latest.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "ubuntu-latest.yml"; path = "../.github/workflows/ubuntu-latest.yml"; sourceTree = "<group>"; };
 		575412AA2B14265800507BC5 /* macos-latest.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "macos-latest.yml"; path = "../.github/workflows/macos-latest.yml"; sourceTree = "<group>"; };
 		575412AB2B14265800507BC5 /* codeql-analysis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "codeql-analysis.yml"; path = "../.github/workflows/codeql-analysis.yml"; sourceTree = "<group>"; };
+		5762BC232DE7E26800322CA5 /* pwsafe-cli-test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "pwsafe-cli-test"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5762BC242DE7E32A00322CA5 /* add-entry-test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "add-entry-test.cpp"; sourceTree = "<group>"; };
+		5762BC252DE7E32A00322CA5 /* arg-fields-test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "arg-fields-test.cpp"; sourceTree = "<group>"; };
+		5762BC262DE7E32A00322CA5 /* search-test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "search-test.cpp"; sourceTree = "<group>"; };
+		5762BC272DE7E32A00322CA5 /* split-test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "split-test.cpp"; sourceTree = "<group>"; };
+		5762BC312DE7E3BF00322CA5 /* safeutils-internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "safeutils-internal.h"; sourceTree = "<group>"; };
+		5762BC322DE7E3BF00322CA5 /* search-internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "search-internal.h"; sourceTree = "<group>"; };
 		5797236C2DDD5E5A001582BE /* coretest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = coretest; sourceTree = BUILT_PRODUCTS_DIR; };
 		579BDA4E2C55F0A1004C727B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		57C329E72A070EFD00454292 /* ReleaseNotesWX.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotesWX.md; path = ../docs/ReleaseNotesWX.md; sourceTree = "<group>"; };
@@ -935,6 +982,21 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5762BC152DE7E26800322CA5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5762BC162DE7E26800322CA5 /* QuartzCore.framework in Frameworks */,
+				5762BC172DE7E26800322CA5 /* IOKit.framework in Frameworks */,
+				5762BC182DE7E26800322CA5 /* Carbon.framework in Frameworks */,
+				5762BC192DE7E26800322CA5 /* libcore.a in Frameworks */,
+				5762BC1A2DE7E26800322CA5 /* OpenGL.framework in Frameworks */,
+				5762BC1B2DE7E26800322CA5 /* AppKit.framework in Frameworks */,
+				5762BC1C2DE7E26800322CA5 /* libos.a in Frameworks */,
+				5762BC1D2DE7E26800322CA5 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5797235E2DDD5E5A001582BE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -1107,19 +1169,25 @@
 			isa = PBXGroup;
 			children = (
 				57218E8529C98481000B1907 /* pwsafe-cli.entitlements */,
+				5762BC242DE7E32A00322CA5 /* add-entry-test.cpp */,
+				5762BC252DE7E32A00322CA5 /* arg-fields-test.cpp */,
 				E61C265C1D3FD0C000CA0370 /* impexp.cpp */,
 				E61C265D1D3FD0C000CA0370 /* impexp.h */,
 				E6B908DE1D30C8980050CFF1 /* diff.cpp */,
 				E6B908DF1D30C8980050CFF1 /* diff.h */,
 				E6B908E01D30C8980050CFF1 /* safeutils.cpp */,
 				E6B908E11D30C8980050CFF1 /* safeutils.h */,
+				5762BC312DE7E3BF00322CA5 /* safeutils-internal.h */,
 				E66D293A1D02B54600C9BCBF /* main.cpp */,
 				E6EBC80F1D16F47F00AF61CD /* search.cpp */,
 				E6EBC8101D16F47F00AF61CD /* search.h */,
+				5762BC322DE7E3BF00322CA5 /* search-internal.h */,
 				E6EBC8121D16F9B600AF61CD /* argutils.cpp */,
 				E6EBC8131D16F9B600AF61CD /* argutils.h */,
 				E6EBC8151D17165300AF61CD /* searchaction.cpp */,
 				E6EBC8161D17165300AF61CD /* searchaction.h */,
+				5762BC262DE7E32A00322CA5 /* search-test.cpp */,
+				5762BC272DE7E32A00322CA5 /* split-test.cpp */,
 				E6EBC8181D17184F00AF61CD /* strutils.cpp */,
 				E6EBC8191D17184F00AF61CD /* strutils.h */,
 			);
@@ -1480,6 +1548,7 @@
 				E6ADB99E1195706A004E2BE5 /* pwsafe.app */,
 				E66D292F1D02B49B00C9BCBF /* pwsafe-cli */,
 				5797236C2DDD5E5A001582BE /* coretest */,
+				5762BC232DE7E26800322CA5 /* pwsafe-cli-test */,
 			);
 			indentWidth = 2;
 			name = Products;
@@ -1853,6 +1922,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5762BC072DE7E26800322CA5 /* pwsafe-cli-test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5762BC1F2DE7E26800322CA5 /* Build configuration list for PBXNativeTarget "pwsafe-cli-test" */;
+			buildPhases = (
+				5762BC0C2DE7E26800322CA5 /* Sources */,
+				5762BC152DE7E26800322CA5 /* Frameworks */,
+				5762BC1E2DE7E26800322CA5 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5762BC082DE7E26800322CA5 /* PBXTargetDependency */,
+				5762BC0A2DE7E26800322CA5 /* PBXTargetDependency */,
+			);
+			name = "pwsafe-cli-test";
+			productName = "pwsafe-cli";
+			productReference = 5762BC232DE7E26800322CA5 /* pwsafe-cli-test */;
+			productType = "com.apple.product-type.tool";
+		};
 		579723502DDD5E5A001582BE /* coretest */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 579723682DDD5E5A001582BE /* Build configuration list for PBXNativeTarget "coretest" */;
@@ -1982,6 +2070,7 @@
 				E690B53012980BDD007EA508 /* Help Files */,
 				E66D292E1D02B49B00C9BCBF /* pwsafe-cli */,
 				579723502DDD5E5A001582BE /* coretest */,
+				5762BC072DE7E26800322CA5 /* pwsafe-cli-test */,
 			);
 		};
 /* End PBXProject section */
@@ -2079,6 +2168,22 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5762BC0C2DE7E26800322CA5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5762BC2C2DE7E38800322CA5 /* safeutils.cpp in Sources */,
+				5762BC2D2DE7E38800322CA5 /* search.cpp in Sources */,
+				5762BC2E2DE7E38800322CA5 /* argutils.cpp in Sources */,
+				5762BC2F2DE7E38800322CA5 /* searchaction.cpp in Sources */,
+				5762BC302DE7E38800322CA5 /* strutils.cpp in Sources */,
+				5762BC282DE7E32A00322CA5 /* arg-fields-test.cpp in Sources */,
+				5762BC292DE7E32A00322CA5 /* search-test.cpp in Sources */,
+				5762BC2A2DE7E32A00322CA5 /* split-test.cpp in Sources */,
+				5762BC2B2DE7E32A00322CA5 /* add-entry-test.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		579723552DDD5E5A001582BE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2281,6 +2386,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5762BC082DE7E26800322CA5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6ADB80211956A93004E2BE5 /* core */;
+			targetProxy = 5762BC092DE7E26800322CA5 /* PBXContainerItemProxy */;
+		};
+		5762BC0A2DE7E26800322CA5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6ADB91B11956DD0004E2BE5 /* os */;
+			targetProxy = 5762BC0B2DE7E26800322CA5 /* PBXContainerItemProxy */;
+		};
 		579723512DDD5E5A001582BE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E6ADB80211956A93004E2BE5 /* core */;
@@ -2473,6 +2588,100 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Debug-no-yubi";
+		};
+		5762BC202DE7E26800322CA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../src/core,
+					../src,
+					/opt/homebrew/include,
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"-L/opt/homebrew/lib",
+					"-lgtest",
+					"-lgtest_main",
+					"$(inherited)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		5762BC212DE7E26800322CA5 /* Debug-no-yubi */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../src/core,
+					../src,
+					/opt/homebrew/include,
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"-L/opt/homebrew/lib",
+					"-lgtest",
+					"-lgtest_main",
+					"$(inherited)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Debug-no-yubi";
+		};
+		5762BC222DE7E26800322CA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../src/core,
+					../src,
+					/opt/homebrew/include,
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = (
+					"-L/opt/homebrew/lib",
+					"-lgtest",
+					"-lgtest_main",
+					"$(inherited)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
 		};
 		579723692DDD5E5A001582BE /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -2857,6 +3066,16 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5762BC1F2DE7E26800322CA5 /* Build configuration list for PBXNativeTarget "pwsafe-cli-test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5762BC202DE7E26800322CA5 /* Debug */,
+				5762BC212DE7E26800322CA5 /* Debug-no-yubi */,
+				5762BC222DE7E26800322CA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		579723682DDD5E5A001582BE /* Build configuration list for PBXNativeTarget "coretest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
