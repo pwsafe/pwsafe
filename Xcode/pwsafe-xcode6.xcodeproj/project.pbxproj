@@ -2673,6 +2673,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-L/opt/homebrew/lib",
 					"-lgtest",
@@ -2752,6 +2753,7 @@
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

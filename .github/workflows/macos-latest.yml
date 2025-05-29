@@ -117,23 +117,21 @@ jobs:
         Xcode/generate-configs -r $WX_BUILD_DIR/bin/wx-config > Xcode/pwsafe-release.xcconfig
         cat Xcode/pwsafe-release.xcconfig
     
-    - name: Build pwsafe
+    - name: Build pwsafe and unit tests
       working-directory: ${{ github.workspace }}
-      run: xcodebuild -derivedDataPath $XCODE_DERIVED -project Xcode/pwsafe-xcode6.xcodeproj -scheme pwsafe -configuration $XCODE_CONFIG
+      run: xcodebuild -derivedDataPath $XCODE_DERIVED -project Xcode/pwsafe-xcode6.xcodeproj -scheme GitHub -configuration $XCODE_CONFIG
 
-    - name: Build and run coretest
+    - name: Run coretest
       working-directory: src/test
-      run: make -f Makefile.macos XRELDIR=${{ github.workspace }}/$XCODE_DERIVED/Build/Products/Release
+      run: ${{ github.workspace }}/$XCODE_DERIVED/Build/Products/Release/coretest
 
-    - name: Build and run pwsafe-cli-test
+    - name: Run pwsafe-cli-test
       working-directory: ${{ github.workspace }}
-      run: |
-        xcodebuild -derivedDataPath $XCODE_DERIVED -project Xcode/pwsafe-xcode6.xcodeproj -scheme pwsafe-cli-test -configuration $XCODE_CONFIG
-        $XCODE_DERIVED/Build/Products/Release/pwsafe-cli-test
+      run: $XCODE_DERIVED/Build/Products/Release/pwsafe-cli-test
 
     - name: Install language files and create dmg
       working-directory: install/macosx
-      run: make
+      run: make RELDIR=${{ github.workspace }}/$XCODE_DERIVED/Build/Products/Release
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
