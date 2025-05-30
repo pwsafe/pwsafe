@@ -8,10 +8,8 @@ PACKAGE=PasswordSafe-macOS
 MACHINEARCH=universal
 
 # XCODE_CONFIG and WX_SRC_DIR are defined in the macos-latest.yaml Github build workflow
-ifndef XCODE_CONFIG
-XCODE_CONFIG=Release
-endif
-RELDIR := $(shell xcodebuild -project ../../Xcode/pwsafe-xcode6.xcodeproj -showBuildSettings -scheme pwsafe -configuration $(XCODE_CONFIG) | awk '/TARGET_BUILD_DIR =/{print $$3}')
+XCODE_CONFIG ?= Release
+RELDIR ?= $(shell xcodebuild -project ../../Xcode/pwsafe-xcode6.xcodeproj -showBuildSettings -scheme pwsafe -configuration $(XCODE_CONFIG) | awk '/TARGET_BUILD_DIR =/{print $$3}')
 
 ifdef WX_SRC_DIR
 WXDIR := $(WX_SRC_DIR)/locale
