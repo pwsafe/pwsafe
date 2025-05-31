@@ -1114,20 +1114,12 @@
 				57E9522D2DE93B7A00DE9640 /* UtilTest.cpp */,
 				57E9522E2DE93B7A00DE9640 /* ValidateTest.cpp */,
 			);
-			path = coretest;
-			sourceTree = "<group>";
-		};
-		57E952112DE93B7A00DE9640 /* Users */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Users;
+			name = coretest;
 			sourceTree = "<group>";
 		};
 		57E9521A2DE93B7A00DE9640 /* data */ = {
 			isa = PBXGroup;
 			children = (
-				57E952112DE93B7A00DE9640 /* Users */,
 				57E952122DE93B7A00DE9640 /* filter_for_test.xml */,
 				57E952132DE93B7A00DE9640 /* image1.jpg */,
 				57E952142DE93B7A00DE9640 /* import-text-unit-test1.txt */,
