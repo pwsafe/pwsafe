@@ -1,11 +1,11 @@
-# This is a basic workflow to help you get started with Actions
+# This is the workflow to build pwsafe.app for macOS (OSX)
 # This file is also read by the osx-build-wx script to fetch the
 # parameters for a manual build.
 
 name: mac-pwsafe
 
 # Controls when the action will run. Triggers the workflow on all push requests,
-# or pull request for the master branch
+# or pull request for the master branch, or on demand.
 on:
   push:
 #    branches: [ master ]
@@ -13,38 +13,42 @@ on:
     branches: [ master ]
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 permissions:
   contents: read
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   build_mac_pwsafe:
     name: Build pwsafe for macOS
     # The type of runner that the job will run on
     runs-on: macos-14
 
+    env:
+      # If you need to rebuild wxWidgets for some reason, say you changed the build params, just increment FORCE_REBUILD_WX
+      # Some useful debug parameters:
+      # "WX_DEBUG_FLAG: --enable-debug --enable-debug_info"
+      # "XCODE_CONFIG:  Debug"
+      # "XCODE_CONFIG:  Debug-no-yubi"
+      WX_VERS:          3.2.4
+      WX_SRC_DIR:       ${{ github.workspace }}/wxWidgets
+      WX_BUILD_DIR:     ${{ github.workspace }}/wxWidgets/static-release
+      WX_ARCH:          "arm64,x86_64"
+      WX_DEBUG_FLAG:    "--disable-debug"
+      MACOS_VER_MIN:    10.14
+      XCODE_VER:        15.4
+      XCODE_CONFIG:     Release
+      XCODE_DIR:        ${{ github.workspace }}/xcderived
+      XCODE_PROD:       ${{ github.workspace }}/xcderived/Build/Products
+      FORCE_REBUILD_WX: 7
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v4
 
-    - name: Set build parameters
-      # If you need to rebuild wxWidgets for some reason, say you changed the build params, just increment FORCE_REBUILD_WX
-      # Some usefull debug parameters:
-      # "WX_DEBUG_FLAG=--enable-debug --enable-debug_info"
-      # "XCODE_CONFIG=Debug"
-      # "XCODE_CONFIG=Debug-no-yubi"
+    - name: Set additional build parameters
       run: |
-        echo "WX_VERS=3.2.4" >> $GITHUB_ENV
-        echo "WX_SRC_DIR=$HOME/wxWidgets" >> $GITHUB_ENV
-        echo "WX_BUILD_DIR=$HOME/wxbuild" >> $GITHUB_ENV
-        echo "WX_ARCH=arm64,x86_64" >> $GITHUB_ENV
-        echo "WX_DEBUG_FLAG=--disable-debug" >> $GITHUB_ENV
-        echo "MACOS_VER_MIN=10.14" >> $GITHUB_ENV
-        echo "XCODE_VER=15.4" >> $GITHUB_ENV
-        echo "XCODE_CONFIG=Release" >> $GITHUB_ENV
         echo "HOST_NCPU=`sysctl -n hw.ncpu`" >>$GITHUB_ENV
-        echo "FORCE_REBUILD_WX=7" >> $GITHUB_ENV
 
     - name: Force compatible Xcode version
       run: sudo xcode-select -s /Applications/Xcode_${XCODE_VER}.app
@@ -60,7 +64,7 @@ jobs:
       run: brew install autoconf automake libtool
 
     # The Yubico repos don't maintain tags, so checkout specific commits for the sake of safety and repeatability
-    # These are the master HEAD commits as of 2024-02-08
+    # These are the master HEAD commits as of 2024-02-08 (Last confirmed: 2025-02-18)
     - name: Build libyubikey from upstream
       run: |
         git clone --no-checkout https://github.com/Yubico/yubico-c.git
@@ -115,17 +119,21 @@ jobs:
         Xcode/generate-configs -r $WX_BUILD_DIR/bin/wx-config > Xcode/pwsafe-release.xcconfig
         cat Xcode/pwsafe-release.xcconfig
     
-    - name: Build pwsafe
+    - name: Build pwsafe and test programs
       working-directory: ${{ github.workspace }}
-      run: xcodebuild -project Xcode/pwsafe-xcode6.xcodeproj -scheme pwsafe -configuration $XCODE_CONFIG
+      run: xcodebuild -derivedDataPath $XCODE_DIR -project Xcode/pwsafe-xcode6.xcodeproj -scheme All -configuration $XCODE_CONFIG
 
-    - name: Build and run coretest
+    - name: Run coretest
       working-directory: src/test
-      run: make -f Makefile.macos
+      run: $XCODE_PROD/$XCODE_CONFIG/coretest
+
+    - name: Run pwsafe-cli-test
+      working-directory: ${{ github.workspace }}
+      run: $XCODE_PROD/$XCODE_CONFIG/pwsafe-cli-test
 
     - name: Install language files and create dmg
       working-directory: install/macosx
-      run: make
+      run: make RELDIR=$XCODE_PROD/$XCODE_CONFIG
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4

@@ -84,9 +84,9 @@ Usage (all flags are optional):
 	    You can get the path to any installed SDK that Xcode is aware of like this
 	    xcodebuild -version -sdk macosx10.9 Path
 
-     -w <Path to macos-latest.yml>
-        Path to the GitHub workflow file from which to retrieve build parameters.  The default
-        is relative to the location of this script.
+	-w <Path to macos-latest.yml>
+	    Path to the GitHub workflow file from which to retrieve build parameters.  The default
+	    is relative to the location of this script.
 
 	-T <toolchain dir>
 	    Directory where gcc-4.0, g++4.0, etc. should be.  Only required for building wx2.8 on OS X 10.9
@@ -180,9 +180,9 @@ doCocoaBuild() {
         # Fetch some parameters from the macos-latest.yaml workflow
         if [ -z $WX_ARCH ]
         then
-            eval `grep WX_ARCH= $WORKFLOW | sed -E -e 's/^.*"(.*)".*$/\1/'`
+            eval `grep WX_ARCH: $WORKFLOW | sed -E -H -e 's/^\s*(.*):\s*(".*")$/\1=\2/'`
         fi
-        eval `grep MACOS_VER_MIN= $WORKFLOW | sed -E -e 's/^.*"(.*)".*$/\1/'`
+        eval `grep MACOS_VER_MIN: $WORKFLOW | sed -E -H -e 's/^\s*(.*):\s*(\d.*)$/\1=\2/'`
 
         # The configure command in the workflow file uses the above variables.
         # This trick will expand them into the CONF_OPTS variable
