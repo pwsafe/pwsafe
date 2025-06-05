@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -2070,7 +2070,8 @@
 		E6ADB7F0119569CC004E2BE5 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1420;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1640;
 				ORGANIZATIONNAME = "Open Source Software";
 				TargetAttributes = {
 					E66D292E1D02B49B00C9BCBF = {
@@ -2479,6 +2480,7 @@
 		5754133A2B16717C00507BC5 /* Debug-no-yubi */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -2505,6 +2507,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				EXCLUDED_SOURCE_FILE_NAMES = "*Yubi*";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2539,7 +2542,6 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				PRODUCT_NAME = core;
 				USER_HEADER_SEARCH_PATHS = ../src/;
 				WARNING_CFLAGS = (
@@ -2557,7 +2559,6 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = "/usr/local/include/ykpers-1";
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				PRODUCT_NAME = os;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				WARNING_CFLAGS = (
@@ -2582,7 +2583,6 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
@@ -2598,7 +2598,6 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				PRODUCT_NAME = "Help Files";
 			};
 			name = "Debug-no-yubi";
@@ -2622,7 +2621,6 @@
 					../src/core,
 					../src,
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -2648,7 +2646,6 @@
 					../src,
 					"$(GTEST_INC)",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = (
 					"-L$(GTEST_LIB)",
@@ -2680,7 +2677,6 @@
 					../src,
 					"$(GTEST_INC)",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = (
 					"-L$(GTEST_LIB)",
@@ -2710,7 +2706,6 @@
 					../src,
 					"$(GTEST_INC)",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -2743,7 +2738,6 @@
 					../src,
 					"$(GTEST_INC)",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = (
 					"-L$(GTEST_LIB)",
@@ -2775,7 +2769,6 @@
 					../src,
 					"$(GTEST_INC)",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = (
 					"-L$(GTEST_LIB)",
@@ -2805,7 +2798,6 @@
 					../src,
 					"$(GTEST_INC)",
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -2837,7 +2829,6 @@
 					../src/core,
 					../src,
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -2860,7 +2851,6 @@
 					../src/core,
 					../src,
 				);
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -2874,7 +2864,6 @@
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				PRODUCT_NAME = "Help Files";
 			};
 			name = Debug;
@@ -2886,7 +2875,6 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				PRODUCT_NAME = "Help Files";
 				ZERO_LINK = NO;
 			};
@@ -2895,6 +2883,7 @@
 		E6ADB7F1119569CC004E2BE5 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -2921,6 +2910,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				EXCLUDED_SOURCE_FILE_NAMES = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -2949,6 +2939,7 @@
 		E6ADB7F2119569CC004E2BE5 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -2978,6 +2969,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEPLOYMENT_POSTPROCESSING = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				EXCLUDED_SOURCE_FILE_NAMES = "";
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -3010,7 +3002,6 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				PRODUCT_NAME = core;
 				USER_HEADER_SEARCH_PATHS = ../src/;
 				WARNING_CFLAGS = (
@@ -3027,7 +3018,6 @@
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				PRODUCT_NAME = core;
 				USER_HEADER_SEARCH_PATHS = ../src/;
 				WARNING_CFLAGS = (
@@ -3046,7 +3036,6 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = "/usr/local/include/ykpers-1";
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				PRODUCT_NAME = os;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				WARNING_CFLAGS = (
@@ -3063,7 +3052,6 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				HEADER_SEARCH_PATHS = "/usr/local/include/ykpers-1";
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				PRODUCT_NAME = os;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				WARNING_CFLAGS = (
@@ -3089,7 +3077,6 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-L/usr/local/lib",
@@ -3116,7 +3103,6 @@
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = pwsafe.plist;
-				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-L/usr/local/lib",
