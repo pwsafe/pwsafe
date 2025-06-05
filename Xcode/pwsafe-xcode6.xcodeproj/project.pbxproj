@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -25,8 +25,57 @@
 		570781702B0C4D030082EB6E /* YubiMixin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5707816C2B0C4CED0082EB6E /* YubiMixin.cpp */; };
 		570781742B0C4D330082EB6E /* PWYubi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570781692B0C4CD30082EB6E /* PWYubi.cpp */; };
 		572D9E232DC4920900AF81D4 /* StrengthMeter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 572D9E222DC4920900AF81D4 /* StrengthMeter.cpp */; };
+		5762BC162DE7E26800322CA5 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C94E991FA33BA6008F0072 /* QuartzCore.framework */; };
+		5762BC172DE7E26800322CA5 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
+		5762BC182DE7E26800322CA5 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69B800911F61CF20084F6C4 /* Carbon.framework */; };
+		5762BC192DE7E26800322CA5 /* libcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB80311956A93004E2BE5 /* libcore.a */; };
+		5762BC1B2DE7E26800322CA5 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A7B67C254824C000E780B8 /* AppKit.framework */; };
+		5762BC1C2DE7E26800322CA5 /* libos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB91C11956DD0004E2BE5 /* libos.a */; };
+		5762BC1D2DE7E26800322CA5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A7B656254817F700E780B8 /* Foundation.framework */; };
+		5762BC282DE7E32A00322CA5 /* arg-fields-test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5762BC252DE7E32A00322CA5 /* arg-fields-test.cpp */; };
+		5762BC292DE7E32A00322CA5 /* search-test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5762BC262DE7E32A00322CA5 /* search-test.cpp */; };
+		5762BC2A2DE7E32A00322CA5 /* split-test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5762BC272DE7E32A00322CA5 /* split-test.cpp */; };
+		5762BC2B2DE7E32A00322CA5 /* add-entry-test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5762BC242DE7E32A00322CA5 /* add-entry-test.cpp */; };
+		5762BC2C2DE7E38800322CA5 /* safeutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B908E01D30C8980050CFF1 /* safeutils.cpp */; };
+		5762BC2D2DE7E38800322CA5 /* search.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EBC80F1D16F47F00AF61CD /* search.cpp */; };
+		5762BC2E2DE7E38800322CA5 /* argutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EBC8121D16F9B600AF61CD /* argutils.cpp */; };
+		5762BC2F2DE7E38800322CA5 /* searchaction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EBC8151D17165300AF61CD /* searchaction.cpp */; };
+		5762BC302DE7E38800322CA5 /* strutils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EBC8181D17184F00AF61CD /* strutils.cpp */; };
 		579BDA4F2C55F0A1004C727B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 579BDA4E2C55F0A1004C727B /* Assets.xcassets */; };
 		57BD7D042B19BEC2005C0123 /* helpEN.zip in Resources */ = {isa = PBXBuildFile; fileRef = E690B95612984B1D007EA508 /* helpEN.zip */; };
+		57E951B42DE9377000DE9640 /* libcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB80311956A93004E2BE5 /* libcore.a */; };
+		57E951B52DE9377500DE9640 /* libos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB91C11956DD0004E2BE5 /* libos.a */; };
+		57E951B62DE937D200DE9640 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A7B67C254824C000E780B8 /* AppKit.framework */; };
+		57E951B72DE937E300DE9640 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A7B656254817F700E780B8 /* Foundation.framework */; };
+		57E951B92DE9382400DE9640 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
+		57E951BA2DE9384B00DE9640 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6C94E991FA33BA6008F0072 /* QuartzCore.framework */; };
+		57E951BB2DE93AD100DE9640 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69B800911F61CF20084F6C4 /* Carbon.framework */; };
+		57E9522F2DE93B7A00DE9640 /* ImportTextTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E952202DE93B7A00DE9640 /* ImportTextTest.cpp */; };
+		57E952302DE93B7A00DE9640 /* KeyWrapTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E952242DE93B7A00DE9640 /* KeyWrapTest.cpp */; };
+		57E952312DE93B7A00DE9640 /* OSTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E952262DE93B7A00DE9640 /* OSTest.cpp */; };
+		57E952322DE93B7A00DE9640 /* FileV4Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E9521D2DE93B7A00DE9640 /* FileV4Test.cpp */; };
+		57E952332DE93B7A00DE9640 /* UtilTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E9522D2DE93B7A00DE9640 /* UtilTest.cpp */; };
+		57E952342DE93B7A00DE9640 /* ItemDataTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E952222DE93B7A00DE9640 /* ItemDataTest.cpp */; };
+		57E952352DE93B7A00DE9640 /* MRUListTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E952252DE93B7A00DE9640 /* MRUListTest.cpp */; };
+		57E952362DE93B7A00DE9640 /* HMAC_SHA1Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E9521E2DE93B7A00DE9640 /* HMAC_SHA1Test.cpp */; };
+		57E952372DE93B7A00DE9640 /* SHA1Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E952272DE93B7A00DE9640 /* SHA1Test.cpp */; };
+		57E952382DE93B7A00DE9640 /* TwoFishTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E9522C2DE93B7A00DE9640 /* TwoFishTest.cpp */; };
+		57E952392DE93B7A00DE9640 /* AliasShortcutTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E9520B2DE93B7A00DE9640 /* AliasShortcutTest.cpp */; };
+		57E9523A2DE93B7A00DE9640 /* FileEncDecTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E9521B2DE93B7A00DE9640 /* FileEncDecTest.cpp */; };
+		57E9523B2DE93B7A00DE9640 /* AESTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E9520A2DE93B7A00DE9640 /* AESTest.cpp */; };
+		57E9523C2DE93B7A00DE9640 /* FileV3Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E9521C2DE93B7A00DE9640 /* FileV3Test.cpp */; };
+		57E9523D2DE93B7A00DE9640 /* BlowFishTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E9520E2DE93B7A00DE9640 /* BlowFishTest.cpp */; };
+		57E9523E2DE93B7A00DE9640 /* coretest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E952102DE93B7A00DE9640 /* coretest.cpp */; };
+		57E9523F2DE93B7A00DE9640 /* CommandsTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E9520F2DE93B7A00DE9640 /* CommandsTest.cpp */; };
+		57E952402DE93B7A00DE9640 /* ValidateTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E9522E2DE93B7A00DE9640 /* ValidateTest.cpp */; };
+		57E952412DE93B7A00DE9640 /* TOTPTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E9522B2DE93B7A00DE9640 /* TOTPTest.cpp */; };
+		57E952422DE93B7A00DE9640 /* SHA256Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E952282DE93B7A00DE9640 /* SHA256Test.cpp */; };
+		57E952432DE93B7A00DE9640 /* StringXTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E952292DE93B7A00DE9640 /* StringXTest.cpp */; };
+		57E952442DE93B7A00DE9640 /* Base32Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E9520D2DE93B7A00DE9640 /* Base32Test.cpp */; };
+		57E952452DE93B7A00DE9640 /* ItemAttTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E952212DE93B7A00DE9640 /* ItemAttTest.cpp */; };
+		57E952462DE93B7A00DE9640 /* ItemFieldTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E952232DE93B7A00DE9640 /* ItemFieldTest.cpp */; };
+		57E952472DE93B7A00DE9640 /* HMAC_SHA256Test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E9521F2DE93B7A00DE9640 /* HMAC_SHA256Test.cpp */; };
+		57E952482DE93B7A00DE9640 /* AuxParseTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E9520C2DE93B7A00DE9640 /* AuxParseTest.cpp */; };
 		6FF5D4A11DA14EE80032F5B6 /* PasswordSubsetDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */; };
 		89A146668BFBBDB52F97EB58 /* TotpCore.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8DA345B998C630600DF46F90 /* TotpCore.cpp */; };
 		8ED7E1C429D9F24C0012034B /* SetDatabaseIdDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */; };
@@ -42,7 +91,6 @@
 		D31B027926384D29000EAA61 /* PWFiltersMediaDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D31B027726384D29000EAA61 /* PWFiltersMediaDlg.cpp */; };
 		D3206A1E25B8B22300F6E115 /* DnDPWSafeObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3206A1D25B8B22200F6E115 /* DnDPWSafeObject.cpp */; };
 		D335B4A925C8866B00E76A7B /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
-		D35472A625D1287100F8CCEB /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448112B26CEE00415AAE /* OpenGL.framework */; };
 		D36375CC2635BCCC001B370A /* PWFiltersDateDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D36375CA2635BCCC001B370A /* PWFiltersDateDlg.cpp */; };
 		D36479FE2615B773000CCA4A /* SetFiltersDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D36479FC2615B773000CCA4A /* SetFiltersDlg.cpp */; };
 		D3647A062615B78C000CCA4A /* ManageFiltersDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D3647A042615B78C000CCA4A /* ManageFiltersDlg.cpp */; };
@@ -133,7 +181,6 @@
 		E6ADBB2211957CD3004E2BE5 /* libos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB91C11956DD0004E2BE5 /* libos.a */; };
 		E6AF167E11F1FD77002C253B /* ImportTextDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6AF167C11F1FD77002C253B /* ImportTextDlg.cpp */; };
 		E6B1447B12B26CB700415AAE /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69B800911F61CF20084F6C4 /* Carbon.framework */; };
-		E6B1448212B26CEE00415AAE /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448112B26CEE00415AAE /* OpenGL.framework */; };
 		E6B1448812B26D1500415AAE /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1448712B26D1500415AAE /* Cocoa.framework */; };
 		E6B1449412B26D7E00415AAE /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
 		E6B5C6461232B3D000AC8B45 /* DragBarCtrl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6B5C6431232B3D000AC8B45 /* DragBarCtrl.cpp */; };
@@ -212,6 +259,20 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		5762BC092DE7E26800322CA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6ADB80211956A93004E2BE5;
+			remoteInfo = core;
+		};
+		5762BC0B2DE7E26800322CA5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = E6ADB91B11956DD0004E2BE5;
+			remoteInfo = os;
+		};
 		579723522DDD5E5A001582BE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = E6ADB7F0119569CC004E2BE5 /* Project object */;
@@ -271,6 +332,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		5762BC1E2DE7E26800322CA5 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		579723672DDD5E5A001582BE /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -316,51 +386,57 @@
 		572D9E202DC4920900AF81D4 /* StatusBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusBar.h; sourceTree = "<group>"; };
 		572D9E212DC4920900AF81D4 /* StrengthMeter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrengthMeter.h; sourceTree = "<group>"; };
 		572D9E222DC4920900AF81D4 /* StrengthMeter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StrengthMeter.cpp; sourceTree = "<group>"; };
-		573ED8DF2DDD61DB00177684 /* filter_for_test.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = filter_for_test.xml; sourceTree = "<group>"; };
-		573ED8E02DDD61DB00177684 /* image1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image1.jpg; sourceTree = "<group>"; };
-		573ED8E12DDD61DB00177684 /* import-text-unit-test1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "import-text-unit-test1.txt"; sourceTree = "<group>"; };
-		573ED8E22DDD61DB00177684 /* import-text-unit-test2.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = "import-text-unit-test2.csv"; sourceTree = "<group>"; };
-		573ED8E32DDD61DB00177684 /* import-text-unit-test3.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = "import-text-unit-test3.csv"; sourceTree = "<group>"; };
-		573ED8E42DDD61DB00177684 /* import-text-unit-test4.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = "import-text-unit-test4.csv"; sourceTree = "<group>"; };
-		573ED8E52DDD61DB00177684 /* import-text-unit-test5.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = "import-text-unit-test5.csv"; sourceTree = "<group>"; };
-		573ED8E62DDD61DB00177684 /* text1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = text1.txt; sourceTree = "<group>"; };
-		573ED8E92DDD61DB00177684 /* AESTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AESTest.cpp; path = ../AESTest.cpp; sourceTree = "<group>"; };
-		573ED8EA2DDD61DB00177684 /* AliasShortcutTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AliasShortcutTest.cpp; path = ../AliasShortcutTest.cpp; sourceTree = "<group>"; };
-		573ED8EB2DDD61DB00177684 /* AuxParseTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AuxParseTest.cpp; path = ../AuxParseTest.cpp; sourceTree = "<group>"; };
-		573ED8EC2DDD61DB00177684 /* Base32Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Base32Test.cpp; path = ../Base32Test.cpp; sourceTree = "<group>"; };
-		573ED8ED2DDD61DB00177684 /* BlowFishTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BlowFishTest.cpp; path = ../BlowFishTest.cpp; sourceTree = "<group>"; };
-		573ED8EF2DDD61DB00177684 /* CommandsTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CommandsTest.cpp; path = ../CommandsTest.cpp; sourceTree = "<group>"; };
-		573ED8F02DDD61DB00177684 /* coretest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = coretest.cpp; path = ../coretest.cpp; sourceTree = "<group>"; };
-		573ED8F52DDD61DB00177684 /* FileEncDecTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileEncDecTest.cpp; path = ../FileEncDecTest.cpp; sourceTree = "<group>"; };
-		573ED8F62DDD61DB00177684 /* FileV3Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileV3Test.cpp; path = ../FileV3Test.cpp; sourceTree = "<group>"; };
-		573ED8F72DDD61DB00177684 /* FileV4Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileV4Test.cpp; path = ../FileV4Test.cpp; sourceTree = "<group>"; };
-		573ED8F92DDD61DB00177684 /* HMAC_SHA1Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HMAC_SHA1Test.cpp; path = ../HMAC_SHA1Test.cpp; sourceTree = "<group>"; };
-		573ED8FA2DDD61DB00177684 /* HMAC_SHA256Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HMAC_SHA256Test.cpp; path = ../HMAC_SHA256Test.cpp; sourceTree = "<group>"; };
-		573ED8FB2DDD61DB00177684 /* ImportTextTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ImportTextTest.cpp; path = ../ImportTextTest.cpp; sourceTree = "<group>"; };
-		573ED8FC2DDD61DB00177684 /* ItemAttTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ItemAttTest.cpp; path = ../ItemAttTest.cpp; sourceTree = "<group>"; };
-		573ED8FD2DDD61DB00177684 /* ItemDataTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ItemDataTest.cpp; path = ../ItemDataTest.cpp; sourceTree = "<group>"; };
-		573ED8FE2DDD61DB00177684 /* ItemFieldTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ItemFieldTest.cpp; path = ../ItemFieldTest.cpp; sourceTree = "<group>"; };
-		573ED8FF2DDD61DB00177684 /* KeyWrapTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = KeyWrapTest.cpp; path = ../KeyWrapTest.cpp; sourceTree = "<group>"; };
-		573ED9012DDD61DB00177684 /* Makefile.macos */ = {isa = PBXFileReference; lastKnownFileType = text; name = Makefile.macos; path = ../Makefile.macos; sourceTree = "<group>"; };
-		573ED9022DDD61DB00177684 /* MRUListTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = MRUListTest.cpp; path = ../MRUListTest.cpp; sourceTree = "<group>"; };
-		573ED9032DDD61DB00177684 /* OSTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = OSTest.cpp; path = ../OSTest.cpp; sourceTree = "<group>"; };
-		573ED9042DDD61DB00177684 /* SHA1Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SHA1Test.cpp; path = ../SHA1Test.cpp; sourceTree = "<group>"; };
-		573ED9052DDD61DB00177684 /* SHA256Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SHA256Test.cpp; path = ../SHA256Test.cpp; sourceTree = "<group>"; };
-		573ED9062DDD61DB00177684 /* StringXTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = StringXTest.cpp; path = ../StringXTest.cpp; sourceTree = "<group>"; };
-		573ED9072DDD61DB00177684 /* TestCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TestCommon.h; path = ../TestCommon.h; sourceTree = "<group>"; };
-		573ED9082DDD61DB00177684 /* TOTPTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TOTPTest.cpp; path = ../TOTPTest.cpp; sourceTree = "<group>"; };
-		573ED9092DDD61DB00177684 /* TwoFishTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TwoFishTest.cpp; path = ../TwoFishTest.cpp; sourceTree = "<group>"; };
-		573ED90A2DDD61DB00177684 /* UtilTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = UtilTest.cpp; path = ../UtilTest.cpp; sourceTree = "<group>"; };
-		573ED90B2DDD61DB00177684 /* ValidateTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ValidateTest.cpp; path = ../ValidateTest.cpp; sourceTree = "<group>"; };
 		574370962A3CE21800B46A7D /* pwsafe-template.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "pwsafe-template.plist"; sourceTree = "<group>"; };
 		575412A92B14265800507BC5 /* ubuntu-latest.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "ubuntu-latest.yml"; path = "../.github/workflows/ubuntu-latest.yml"; sourceTree = "<group>"; };
 		575412AA2B14265800507BC5 /* macos-latest.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "macos-latest.yml"; path = "../.github/workflows/macos-latest.yml"; sourceTree = "<group>"; };
 		575412AB2B14265800507BC5 /* codeql-analysis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "codeql-analysis.yml"; path = "../.github/workflows/codeql-analysis.yml"; sourceTree = "<group>"; };
+		5762BC232DE7E26800322CA5 /* pwsafe-cli-test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "pwsafe-cli-test"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5762BC242DE7E32A00322CA5 /* add-entry-test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "add-entry-test.cpp"; sourceTree = "<group>"; };
+		5762BC252DE7E32A00322CA5 /* arg-fields-test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "arg-fields-test.cpp"; sourceTree = "<group>"; };
+		5762BC262DE7E32A00322CA5 /* search-test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "search-test.cpp"; sourceTree = "<group>"; };
+		5762BC272DE7E32A00322CA5 /* split-test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = "split-test.cpp"; sourceTree = "<group>"; };
+		5762BC312DE7E3BF00322CA5 /* safeutils-internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "safeutils-internal.h"; sourceTree = "<group>"; };
+		5762BC322DE7E3BF00322CA5 /* search-internal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "search-internal.h"; sourceTree = "<group>"; };
 		5797236C2DDD5E5A001582BE /* coretest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = coretest; sourceTree = BUILT_PRODUCTS_DIR; };
 		579BDA4E2C55F0A1004C727B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		57C329E72A070EFD00454292 /* ReleaseNotesWX.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotesWX.md; path = ../docs/ReleaseNotesWX.md; sourceTree = "<group>"; };
 		57C329E82A0715F500454292 /* ReleaseNotes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotes.md; path = ../docs/ReleaseNotes.md; sourceTree = "<group>"; };
 		57D3F0072B782AF600E4A662 /* version.in */ = {isa = PBXFileReference; lastKnownFileType = text; name = version.in; path = ../src/ui/wxWidgets/version.in; sourceTree = "<group>"; };
+		57E9520A2DE93B7A00DE9640 /* AESTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AESTest.cpp; path = ../src/test/AESTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E9520B2DE93B7A00DE9640 /* AliasShortcutTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AliasShortcutTest.cpp; path = ../src/test/AliasShortcutTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E9520C2DE93B7A00DE9640 /* AuxParseTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AuxParseTest.cpp; path = ../src/test/AuxParseTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E9520D2DE93B7A00DE9640 /* Base32Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Base32Test.cpp; path = ../src/test/Base32Test.cpp; sourceTree = SOURCE_ROOT; };
+		57E9520E2DE93B7A00DE9640 /* BlowFishTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = BlowFishTest.cpp; path = ../src/test/BlowFishTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E9520F2DE93B7A00DE9640 /* CommandsTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = CommandsTest.cpp; path = ../src/test/CommandsTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E952102DE93B7A00DE9640 /* coretest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = coretest.cpp; path = ../src/test/coretest.cpp; sourceTree = SOURCE_ROOT; };
+		57E952122DE93B7A00DE9640 /* filter_for_test.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = filter_for_test.xml; sourceTree = "<group>"; };
+		57E952132DE93B7A00DE9640 /* image1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image1.jpg; sourceTree = "<group>"; };
+		57E952142DE93B7A00DE9640 /* import-text-unit-test1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "import-text-unit-test1.txt"; sourceTree = "<group>"; };
+		57E952152DE93B7A00DE9640 /* import-text-unit-test2.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = "import-text-unit-test2.csv"; sourceTree = "<group>"; };
+		57E952162DE93B7A00DE9640 /* import-text-unit-test3.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = "import-text-unit-test3.csv"; sourceTree = "<group>"; };
+		57E952172DE93B7A00DE9640 /* import-text-unit-test4.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = "import-text-unit-test4.csv"; sourceTree = "<group>"; };
+		57E952182DE93B7A00DE9640 /* import-text-unit-test5.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = "import-text-unit-test5.csv"; sourceTree = "<group>"; };
+		57E952192DE93B7A00DE9640 /* text1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = text1.txt; sourceTree = "<group>"; };
+		57E9521B2DE93B7A00DE9640 /* FileEncDecTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileEncDecTest.cpp; path = ../src/test/FileEncDecTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E9521C2DE93B7A00DE9640 /* FileV3Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileV3Test.cpp; path = ../src/test/FileV3Test.cpp; sourceTree = SOURCE_ROOT; };
+		57E9521D2DE93B7A00DE9640 /* FileV4Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileV4Test.cpp; path = ../src/test/FileV4Test.cpp; sourceTree = SOURCE_ROOT; };
+		57E9521E2DE93B7A00DE9640 /* HMAC_SHA1Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HMAC_SHA1Test.cpp; path = ../src/test/HMAC_SHA1Test.cpp; sourceTree = SOURCE_ROOT; };
+		57E9521F2DE93B7A00DE9640 /* HMAC_SHA256Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HMAC_SHA256Test.cpp; path = ../src/test/HMAC_SHA256Test.cpp; sourceTree = SOURCE_ROOT; };
+		57E952202DE93B7A00DE9640 /* ImportTextTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ImportTextTest.cpp; path = ../src/test/ImportTextTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E952212DE93B7A00DE9640 /* ItemAttTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ItemAttTest.cpp; path = ../src/test/ItemAttTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E952222DE93B7A00DE9640 /* ItemDataTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ItemDataTest.cpp; path = ../src/test/ItemDataTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E952232DE93B7A00DE9640 /* ItemFieldTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ItemFieldTest.cpp; path = ../src/test/ItemFieldTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E952242DE93B7A00DE9640 /* KeyWrapTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = KeyWrapTest.cpp; path = ../src/test/KeyWrapTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E952252DE93B7A00DE9640 /* MRUListTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = MRUListTest.cpp; path = ../src/test/MRUListTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E952262DE93B7A00DE9640 /* OSTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = OSTest.cpp; path = ../src/test/OSTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E952272DE93B7A00DE9640 /* SHA1Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SHA1Test.cpp; path = ../src/test/SHA1Test.cpp; sourceTree = SOURCE_ROOT; };
+		57E952282DE93B7A00DE9640 /* SHA256Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SHA256Test.cpp; path = ../src/test/SHA256Test.cpp; sourceTree = SOURCE_ROOT; };
+		57E952292DE93B7A00DE9640 /* StringXTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = StringXTest.cpp; path = ../src/test/StringXTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E9522A2DE93B7A00DE9640 /* TestCommon.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = TestCommon.h; path = ../src/test/TestCommon.h; sourceTree = SOURCE_ROOT; };
+		57E9522B2DE93B7A00DE9640 /* TOTPTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TOTPTest.cpp; path = ../src/test/TOTPTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E9522C2DE93B7A00DE9640 /* TwoFishTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TwoFishTest.cpp; path = ../src/test/TwoFishTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E9522D2DE93B7A00DE9640 /* UtilTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = UtilTest.cpp; path = ../src/test/UtilTest.cpp; sourceTree = SOURCE_ROOT; };
+		57E9522E2DE93B7A00DE9640 /* ValidateTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ValidateTest.cpp; path = ../src/test/ValidateTest.cpp; sourceTree = SOURCE_ROOT; };
 		5BE1417792CF637AD3D45F4D /* base32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = base32.cpp; path = crypto/external/Chromium/base32.cpp; sourceTree = "<group>"; };
 		6FF5D49D1DA14AB20032F5B6 /* PasswordSubsetDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PasswordSubsetDlg.cpp; sourceTree = "<group>"; };
 		6FF5D49E1DA14AB20032F5B6 /* PasswordSubsetDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PasswordSubsetDlg.h; sourceTree = "<group>"; };
@@ -935,10 +1011,31 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5762BC152DE7E26800322CA5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5762BC162DE7E26800322CA5 /* QuartzCore.framework in Frameworks */,
+				5762BC172DE7E26800322CA5 /* IOKit.framework in Frameworks */,
+				5762BC182DE7E26800322CA5 /* Carbon.framework in Frameworks */,
+				5762BC192DE7E26800322CA5 /* libcore.a in Frameworks */,
+				5762BC1B2DE7E26800322CA5 /* AppKit.framework in Frameworks */,
+				5762BC1C2DE7E26800322CA5 /* libos.a in Frameworks */,
+				5762BC1D2DE7E26800322CA5 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		5797235E2DDD5E5A001582BE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57E951BB2DE93AD100DE9640 /* Carbon.framework in Frameworks */,
+				57E951BA2DE9384B00DE9640 /* QuartzCore.framework in Frameworks */,
+				57E951B92DE9382400DE9640 /* IOKit.framework in Frameworks */,
+				57E951B72DE937E300DE9640 /* Foundation.framework in Frameworks */,
+				57E951B62DE937D200DE9640 /* AppKit.framework in Frameworks */,
+				57E951B52DE9377500DE9640 /* libos.a in Frameworks */,
+				57E951B42DE9377000DE9640 /* libcore.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -950,7 +1047,6 @@
 				D335B4A925C8866B00E76A7B /* IOKit.framework in Frameworks */,
 				E66D293E1D02B94C00C9BCBF /* Carbon.framework in Frameworks */,
 				E66D293C1D02B92F00C9BCBF /* libcore.a in Frameworks */,
-				D35472A625D1287100F8CCEB /* OpenGL.framework in Frameworks */,
 				D3A7B67D254824C000E780B8 /* AppKit.framework in Frameworks */,
 				E66D293D1D02B92F00C9BCBF /* libos.a in Frameworks */,
 				D3A7B6712548229D00E780B8 /* Foundation.framework in Frameworks */,
@@ -966,7 +1062,6 @@
 				E6ADBB2111957CCB004E2BE5 /* libcore.a in Frameworks */,
 				E6ADBB2211957CD3004E2BE5 /* libos.a in Frameworks */,
 				E6B1447B12B26CB700415AAE /* Carbon.framework in Frameworks */,
-				E6B1448212B26CEE00415AAE /* OpenGL.framework in Frameworks */,
 				E6B1448812B26D1500415AAE /* Cocoa.framework in Frameworks */,
 				D3A7B67E254824CB00E780B8 /* AppKit.framework in Frameworks */,
 				E6C94E9A1FA33BA6008F0072 /* QuartzCore.framework in Frameworks */,
@@ -977,59 +1072,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		573ED8E72DDD61DB00177684 /* data */ = {
-			isa = PBXGroup;
-			children = (
-				573ED8DF2DDD61DB00177684 /* filter_for_test.xml */,
-				573ED8E02DDD61DB00177684 /* image1.jpg */,
-				573ED8E12DDD61DB00177684 /* import-text-unit-test1.txt */,
-				573ED8E22DDD61DB00177684 /* import-text-unit-test2.csv */,
-				573ED8E32DDD61DB00177684 /* import-text-unit-test3.csv */,
-				573ED8E42DDD61DB00177684 /* import-text-unit-test4.csv */,
-				573ED8E52DDD61DB00177684 /* import-text-unit-test5.csv */,
-				573ED8E62DDD61DB00177684 /* text1.txt */,
-			);
-			name = data;
-			path = ../data;
-			sourceTree = "<group>";
-		};
-		573ED9292DDD629000177684 /* coretest */ = {
-			isa = PBXGroup;
-			children = (
-				573ED8E72DDD61DB00177684 /* data */,
-				573ED8E92DDD61DB00177684 /* AESTest.cpp */,
-				573ED8EA2DDD61DB00177684 /* AliasShortcutTest.cpp */,
-				573ED8EB2DDD61DB00177684 /* AuxParseTest.cpp */,
-				573ED8EC2DDD61DB00177684 /* Base32Test.cpp */,
-				573ED8ED2DDD61DB00177684 /* BlowFishTest.cpp */,
-				573ED8EF2DDD61DB00177684 /* CommandsTest.cpp */,
-				573ED8F02DDD61DB00177684 /* coretest.cpp */,
-				573ED8F52DDD61DB00177684 /* FileEncDecTest.cpp */,
-				573ED8F62DDD61DB00177684 /* FileV3Test.cpp */,
-				573ED8F72DDD61DB00177684 /* FileV4Test.cpp */,
-				573ED8F92DDD61DB00177684 /* HMAC_SHA1Test.cpp */,
-				573ED8FA2DDD61DB00177684 /* HMAC_SHA256Test.cpp */,
-				573ED8FB2DDD61DB00177684 /* ImportTextTest.cpp */,
-				573ED8FC2DDD61DB00177684 /* ItemAttTest.cpp */,
-				573ED8FD2DDD61DB00177684 /* ItemDataTest.cpp */,
-				573ED8FE2DDD61DB00177684 /* ItemFieldTest.cpp */,
-				573ED8FF2DDD61DB00177684 /* KeyWrapTest.cpp */,
-				573ED9012DDD61DB00177684 /* Makefile.macos */,
-				573ED9022DDD61DB00177684 /* MRUListTest.cpp */,
-				573ED9032DDD61DB00177684 /* OSTest.cpp */,
-				573ED9042DDD61DB00177684 /* SHA1Test.cpp */,
-				573ED9052DDD61DB00177684 /* SHA256Test.cpp */,
-				573ED9062DDD61DB00177684 /* StringXTest.cpp */,
-				573ED9072DDD61DB00177684 /* TestCommon.h */,
-				573ED9082DDD61DB00177684 /* TOTPTest.cpp */,
-				573ED9092DDD61DB00177684 /* TwoFishTest.cpp */,
-				573ED90A2DDD61DB00177684 /* UtilTest.cpp */,
-				573ED90B2DDD61DB00177684 /* ValidateTest.cpp */,
-			);
-			name = coretest;
-			path = ../src/test/coretest;
-			sourceTree = "<group>";
-		};
 		575412A82B14261800507BC5 /* Workflows */ = {
 			isa = PBXGroup;
 			children = (
@@ -1039,6 +1081,57 @@
 			);
 			name = Workflows;
 			sourceTree = "<group>";
+		};
+		57E952092DE93B3600DE9640 /* coretest */ = {
+			isa = PBXGroup;
+			children = (
+				57E9521A2DE93B7A00DE9640 /* data */,
+				57E9520A2DE93B7A00DE9640 /* AESTest.cpp */,
+				57E9520B2DE93B7A00DE9640 /* AliasShortcutTest.cpp */,
+				57E9520C2DE93B7A00DE9640 /* AuxParseTest.cpp */,
+				57E9520D2DE93B7A00DE9640 /* Base32Test.cpp */,
+				57E9520E2DE93B7A00DE9640 /* BlowFishTest.cpp */,
+				57E9520F2DE93B7A00DE9640 /* CommandsTest.cpp */,
+				57E952102DE93B7A00DE9640 /* coretest.cpp */,
+				57E9521B2DE93B7A00DE9640 /* FileEncDecTest.cpp */,
+				57E9521C2DE93B7A00DE9640 /* FileV3Test.cpp */,
+				57E9521D2DE93B7A00DE9640 /* FileV4Test.cpp */,
+				57E9521E2DE93B7A00DE9640 /* HMAC_SHA1Test.cpp */,
+				57E9521F2DE93B7A00DE9640 /* HMAC_SHA256Test.cpp */,
+				57E952202DE93B7A00DE9640 /* ImportTextTest.cpp */,
+				57E952212DE93B7A00DE9640 /* ItemAttTest.cpp */,
+				57E952222DE93B7A00DE9640 /* ItemDataTest.cpp */,
+				57E952232DE93B7A00DE9640 /* ItemFieldTest.cpp */,
+				57E952242DE93B7A00DE9640 /* KeyWrapTest.cpp */,
+				57E952252DE93B7A00DE9640 /* MRUListTest.cpp */,
+				57E952262DE93B7A00DE9640 /* OSTest.cpp */,
+				57E952272DE93B7A00DE9640 /* SHA1Test.cpp */,
+				57E952282DE93B7A00DE9640 /* SHA256Test.cpp */,
+				57E952292DE93B7A00DE9640 /* StringXTest.cpp */,
+				57E9522A2DE93B7A00DE9640 /* TestCommon.h */,
+				57E9522B2DE93B7A00DE9640 /* TOTPTest.cpp */,
+				57E9522C2DE93B7A00DE9640 /* TwoFishTest.cpp */,
+				57E9522D2DE93B7A00DE9640 /* UtilTest.cpp */,
+				57E9522E2DE93B7A00DE9640 /* ValidateTest.cpp */,
+			);
+			name = coretest;
+			sourceTree = "<group>";
+		};
+		57E9521A2DE93B7A00DE9640 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				57E952122DE93B7A00DE9640 /* filter_for_test.xml */,
+				57E952132DE93B7A00DE9640 /* image1.jpg */,
+				57E952142DE93B7A00DE9640 /* import-text-unit-test1.txt */,
+				57E952152DE93B7A00DE9640 /* import-text-unit-test2.csv */,
+				57E952162DE93B7A00DE9640 /* import-text-unit-test3.csv */,
+				57E952172DE93B7A00DE9640 /* import-text-unit-test4.csv */,
+				57E952182DE93B7A00DE9640 /* import-text-unit-test5.csv */,
+				57E952192DE93B7A00DE9640 /* text1.txt */,
+			);
+			name = data;
+			path = ../src/test/data;
+			sourceTree = SOURCE_ROOT;
 		};
 		D395E037264FEDD200F049B1 /* Pugi */ = {
 			isa = PBXGroup;
@@ -1107,19 +1200,25 @@
 			isa = PBXGroup;
 			children = (
 				57218E8529C98481000B1907 /* pwsafe-cli.entitlements */,
+				5762BC242DE7E32A00322CA5 /* add-entry-test.cpp */,
+				5762BC252DE7E32A00322CA5 /* arg-fields-test.cpp */,
 				E61C265C1D3FD0C000CA0370 /* impexp.cpp */,
 				E61C265D1D3FD0C000CA0370 /* impexp.h */,
 				E6B908DE1D30C8980050CFF1 /* diff.cpp */,
 				E6B908DF1D30C8980050CFF1 /* diff.h */,
 				E6B908E01D30C8980050CFF1 /* safeutils.cpp */,
 				E6B908E11D30C8980050CFF1 /* safeutils.h */,
+				5762BC312DE7E3BF00322CA5 /* safeutils-internal.h */,
 				E66D293A1D02B54600C9BCBF /* main.cpp */,
 				E6EBC80F1D16F47F00AF61CD /* search.cpp */,
 				E6EBC8101D16F47F00AF61CD /* search.h */,
+				5762BC322DE7E3BF00322CA5 /* search-internal.h */,
 				E6EBC8121D16F9B600AF61CD /* argutils.cpp */,
 				E6EBC8131D16F9B600AF61CD /* argutils.h */,
 				E6EBC8151D17165300AF61CD /* searchaction.cpp */,
 				E6EBC8161D17165300AF61CD /* searchaction.h */,
+				5762BC262DE7E32A00322CA5 /* search-test.cpp */,
+				5762BC272DE7E32A00322CA5 /* split-test.cpp */,
 				E6EBC8181D17184F00AF61CD /* strutils.cpp */,
 				E6EBC8191D17184F00AF61CD /* strutils.h */,
 			);
@@ -1460,7 +1559,7 @@
 				E6EE837D11E87CD200B01518 /* os */,
 				E6ADB9A411957099004E2BE5 /* wxWidgets */,
 				E66D29301D02B49B00C9BCBF /* pwsafe-cli */,
-				573ED9292DDD629000177684 /* coretest */,
+				57E952092DE93B3600DE9640 /* coretest */,
 				E6ADB80411956A93004E2BE5 /* Products */,
 				E69B800911F61CF20084F6C4 /* Carbon.framework */,
 				E6B1448112B26CEE00415AAE /* OpenGL.framework */,
@@ -1480,6 +1579,7 @@
 				E6ADB99E1195706A004E2BE5 /* pwsafe.app */,
 				E66D292F1D02B49B00C9BCBF /* pwsafe-cli */,
 				5797236C2DDD5E5A001582BE /* coretest */,
+				5762BC232DE7E26800322CA5 /* pwsafe-cli-test */,
 			);
 			indentWidth = 2;
 			name = Products;
@@ -1853,6 +1953,25 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		5762BC072DE7E26800322CA5 /* pwsafe-cli-test */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 5762BC1F2DE7E26800322CA5 /* Build configuration list for PBXNativeTarget "pwsafe-cli-test" */;
+			buildPhases = (
+				5762BC0C2DE7E26800322CA5 /* Sources */,
+				5762BC152DE7E26800322CA5 /* Frameworks */,
+				5762BC1E2DE7E26800322CA5 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5762BC082DE7E26800322CA5 /* PBXTargetDependency */,
+				5762BC0A2DE7E26800322CA5 /* PBXTargetDependency */,
+			);
+			name = "pwsafe-cli-test";
+			productName = "pwsafe-cli";
+			productReference = 5762BC232DE7E26800322CA5 /* pwsafe-cli-test */;
+			productType = "com.apple.product-type.tool";
+		};
 		579723502DDD5E5A001582BE /* coretest */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 579723682DDD5E5A001582BE /* Build configuration list for PBXNativeTarget "coretest" */;
@@ -1860,7 +1979,6 @@
 				579723552DDD5E5A001582BE /* Sources */,
 				5797235E2DDD5E5A001582BE /* Frameworks */,
 				579723672DDD5E5A001582BE /* CopyFiles */,
-				5797236D2DDD5E83001582BE /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1982,6 +2100,7 @@
 				E690B53012980BDD007EA508 /* Help Files */,
 				E66D292E1D02B49B00C9BCBF /* pwsafe-cli */,
 				579723502DDD5E5A001582BE /* coretest */,
+				5762BC072DE7E26800322CA5 /* pwsafe-cli-test */,
 			);
 		};
 /* End PBXProject section */
@@ -2003,25 +2122,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		5797236D2DDD5E83001582BE /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(TARGET_BUILD_DIR)/$(TARGETNAME)",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export HOMEBREW_PREFIX=/opt/homebrew\nmake -C ../src/test -f Makefile.macos xcodebuild\n";
-		};
 		E690B54212980CFC007EA508 /* Default English Help */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2079,10 +2179,52 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		5762BC0C2DE7E26800322CA5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5762BC2C2DE7E38800322CA5 /* safeutils.cpp in Sources */,
+				5762BC2D2DE7E38800322CA5 /* search.cpp in Sources */,
+				5762BC2E2DE7E38800322CA5 /* argutils.cpp in Sources */,
+				5762BC2F2DE7E38800322CA5 /* searchaction.cpp in Sources */,
+				5762BC302DE7E38800322CA5 /* strutils.cpp in Sources */,
+				5762BC282DE7E32A00322CA5 /* arg-fields-test.cpp in Sources */,
+				5762BC292DE7E32A00322CA5 /* search-test.cpp in Sources */,
+				5762BC2A2DE7E32A00322CA5 /* split-test.cpp in Sources */,
+				5762BC2B2DE7E32A00322CA5 /* add-entry-test.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		579723552DDD5E5A001582BE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57E9522F2DE93B7A00DE9640 /* ImportTextTest.cpp in Sources */,
+				57E952302DE93B7A00DE9640 /* KeyWrapTest.cpp in Sources */,
+				57E952312DE93B7A00DE9640 /* OSTest.cpp in Sources */,
+				57E952322DE93B7A00DE9640 /* FileV4Test.cpp in Sources */,
+				57E952332DE93B7A00DE9640 /* UtilTest.cpp in Sources */,
+				57E952342DE93B7A00DE9640 /* ItemDataTest.cpp in Sources */,
+				57E952352DE93B7A00DE9640 /* MRUListTest.cpp in Sources */,
+				57E952362DE93B7A00DE9640 /* HMAC_SHA1Test.cpp in Sources */,
+				57E952372DE93B7A00DE9640 /* SHA1Test.cpp in Sources */,
+				57E952382DE93B7A00DE9640 /* TwoFishTest.cpp in Sources */,
+				57E952392DE93B7A00DE9640 /* AliasShortcutTest.cpp in Sources */,
+				57E9523A2DE93B7A00DE9640 /* FileEncDecTest.cpp in Sources */,
+				57E9523B2DE93B7A00DE9640 /* AESTest.cpp in Sources */,
+				57E9523C2DE93B7A00DE9640 /* FileV3Test.cpp in Sources */,
+				57E9523D2DE93B7A00DE9640 /* BlowFishTest.cpp in Sources */,
+				57E9523E2DE93B7A00DE9640 /* coretest.cpp in Sources */,
+				57E9523F2DE93B7A00DE9640 /* CommandsTest.cpp in Sources */,
+				57E952402DE93B7A00DE9640 /* ValidateTest.cpp in Sources */,
+				57E952412DE93B7A00DE9640 /* TOTPTest.cpp in Sources */,
+				57E952422DE93B7A00DE9640 /* SHA256Test.cpp in Sources */,
+				57E952432DE93B7A00DE9640 /* StringXTest.cpp in Sources */,
+				57E952442DE93B7A00DE9640 /* Base32Test.cpp in Sources */,
+				57E952452DE93B7A00DE9640 /* ItemAttTest.cpp in Sources */,
+				57E952462DE93B7A00DE9640 /* ItemFieldTest.cpp in Sources */,
+				57E952472DE93B7A00DE9640 /* HMAC_SHA256Test.cpp in Sources */,
+				57E952482DE93B7A00DE9640 /* AuxParseTest.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2281,6 +2423,16 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		5762BC082DE7E26800322CA5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6ADB80211956A93004E2BE5 /* core */;
+			targetProxy = 5762BC092DE7E26800322CA5 /* PBXContainerItemProxy */;
+		};
+		5762BC0A2DE7E26800322CA5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = E6ADB91B11956DD0004E2BE5 /* os */;
+			targetProxy = 5762BC0B2DE7E26800322CA5 /* PBXContainerItemProxy */;
+		};
 		579723512DDD5E5A001582BE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = E6ADB80211956A93004E2BE5 /* core */;
@@ -2372,6 +2524,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				GTEST_INC = /opt/homebrew/include;
+				GTEST_LIB = /opt/homebrew/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				ONLY_ACTIVE_ARCH = YES;
 			};
@@ -2474,6 +2628,101 @@
 			};
 			name = "Debug-no-yubi";
 		};
+		5762BC202DE7E26800322CA5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../src/core,
+					../src,
+					"$(GTEST_INC)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"-L$(GTEST_LIB)",
+					"-lgtest",
+					"-lgtest_main",
+					"$(inherited)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		5762BC212DE7E26800322CA5 /* Debug-no-yubi */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				ENABLE_HARDENED_RUNTIME = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../src/core,
+					../src,
+					"$(GTEST_INC)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"-L$(GTEST_LIB)",
+					"-lgtest",
+					"-lgtest_main",
+					"$(inherited)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = "Debug-no-yubi";
+		};
+		5762BC222DE7E26800322CA5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CODE_SIGN_ENTITLEMENTS = "pwsafe-cli.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../src/core,
+					../src,
+					"$(GTEST_INC)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-L$(GTEST_LIB)",
+					"-lgtest",
+					"-lgtest_main",
+					"$(inherited)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		579723692DDD5E5A001582BE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */;
@@ -2492,9 +2741,16 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../src/core,
 					../src,
+					"$(GTEST_INC)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"-L$(GTEST_LIB)",
+					"-lgtest",
+					"-lgtest_main",
+					"$(inherited)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -2517,9 +2773,16 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../src/core,
 					../src,
+					"$(GTEST_INC)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = (
+					"-L$(GTEST_LIB)",
+					"-lgtest",
+					"-lgtest_main",
+					"$(inherited)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = "Debug-no-yubi";
@@ -2540,9 +2803,17 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../src/core,
 					../src,
+					"$(GTEST_INC)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = "$(inherited)";
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-L$(GTEST_LIB)",
+					"-lgtest",
+					"-lgtest_main",
+					"$(inherited)",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -2668,6 +2939,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				GTEST_INC = /opt/homebrew/include;
+				GTEST_LIB = /opt/homebrew/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				ONLY_ACTIVE_ARCH = YES;
 			};
@@ -2721,6 +2994,8 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
+				GTEST_INC = /opt/homebrew/include;
+				GTEST_LIB = /opt/homebrew/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				ONLY_ACTIVE_ARCH = NO;
 			};
@@ -2857,6 +3132,16 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		5762BC1F2DE7E26800322CA5 /* Build configuration list for PBXNativeTarget "pwsafe-cli-test" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5762BC202DE7E26800322CA5 /* Debug */,
+				5762BC212DE7E26800322CA5 /* Debug-no-yubi */,
+				5762BC222DE7E26800322CA5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		579723682DDD5E5A001582BE /* Build configuration list for PBXNativeTarget "coretest" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
