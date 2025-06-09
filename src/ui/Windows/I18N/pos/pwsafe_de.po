@@ -4917,11 +4917,11 @@ msgstr "Behalten"
 
 #. Resource IDs: (65535)
 msgid "Key&board Shortcut"
-msgstr "Tasten- und Tastaturkürzel"
+msgstr "Tastaturkürzel"
 
 #. Resource IDs: (65535)
 msgid "Key&board Shortcut:"
-msgstr "Tasten- und Kartenkürzel:"
+msgstr "Tastaturkürzel:"
 
 #. Resource IDs: (3073, 5940)
 msgid "Keyboard Shortcut"
