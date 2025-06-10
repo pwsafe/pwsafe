@@ -189,8 +189,8 @@ TEST_F(FileV3Test, AttachmentTest)
   {
     CItemData ci;
     ci.CreateUUID();
-    auto title = _T("future") + std::to_wstring(attSize);
-    ci.SetTitle(title.c_str());
+    auto t = _T("future") + std::to_wstring(attSize);
+    ci.SetTitle(t.c_str());
     ci.SetPassword(_T("possible"));
     ci.SetAttMediaType(_T("image/png"));
     std::vector<unsigned char> buf(attSize, static_cast<unsigned char>(attSize));

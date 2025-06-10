@@ -2560,7 +2560,7 @@ bool CItemData::HasIncompletePasskey() const {
         PASSKEY_PRIVATE_KEY,
         PASSKEY_SIGN_COUNT
     };
-    int numSet = 0;
+    auto numSet = 0;
     for (int ft : fields)
         numSet += IsFieldSet(ft) ? 1 : 0;
     return !(numSet == 0 || numSet == fields.size());
