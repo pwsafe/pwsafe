@@ -549,7 +549,7 @@ ImagePanel::~ImagePanel()
 
 bool ImagePanel::LoadFromAttachment(const CItemAtt& itemAttachment, wxWindow* parent, const wxString& messageBoxTitle)
 {
-  auto size = itemAttachment.GetContentSize();
+  const auto size = itemAttachment.GetContentSize();
 
   if (size <= 0) {
     return false;
