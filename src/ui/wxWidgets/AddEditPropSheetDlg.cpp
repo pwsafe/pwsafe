@@ -432,7 +432,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicSizer->Add(m_BasicNotesTextCtrl, wxGBPosition(/*row:*/ 18, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 6), wxEXPAND, 0);
 
   m_BasicSizer->AddGrowableCol(2);  // Growable text entry fields
-  m_BasicSizer->AddGrowableRow(15); // Growable notes field
+  m_BasicSizer->AddGrowableRow(18); // Growable notes field
 
   m_BasicTitleTextCtrl->SetValidator(wxGenericValidator(&m_Title));
   m_BasicUsernameTextCtrl->SetValidator(wxGenericValidator(&m_User));
