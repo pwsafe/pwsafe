@@ -530,8 +530,9 @@ void PasswordSafeFrame::CreateMenubar()
 
   // Remove any prior menu references from the recent DB list
   auto& rdb = wxGetApp().recentDatabases();
-  for (auto item : rdb.GetMenus()) {
-    rdb.RemoveMenu(dynamic_cast<wxMenu *>(item));
+  auto menuVect = rdb.GetMenus().AsVector<wxMenu *>();
+  for (auto item : menuVect) {
+    rdb.RemoveMenu(item);
   }
 
   // Removing all existing menu items is necessary for language switching
