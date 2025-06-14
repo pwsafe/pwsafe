@@ -29,7 +29,7 @@ jobs:
       # "WX_DEBUG_FLAG: --enable-debug --enable-debug_info"
       # "XCODE_CONFIG:  Debug"
       # "XCODE_CONFIG:  Debug-no-yubi"
-      WX_VERS:          3.2.4
+      WX_VERS:          3.3.0
       WX_SRC_DIR:       ${{ github.workspace }}/wxWidgets
       WX_BUILD_DIR:     ${{ github.workspace }}/wxWidgets/static-release
       WX_ARCH:          "arm64,x86_64"
@@ -39,7 +39,7 @@ jobs:
       XCODE_CONFIG:     Release
       XCODE_DIR:        ${{ github.workspace }}/xcderived
       XCODE_PROD:       ${{ github.workspace }}/xcderived/Build/Products
-      FORCE_REBUILD_WX: 7
+      FORCE_REBUILD_WX: 1
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -107,7 +107,7 @@ jobs:
         mkdir -p $WX_BUILD_DIR
         cd $WX_SRC_DIR
         # use built-in versions of jpeg, tiff, png, and regex (pcre2) libs to avoid linking with those in /usr/local/opt
-        ./configure --enable-universal_binary=$WX_ARCH --prefix=$WX_BUILD_DIR --disable-shared --enable-unicode --with-macosx-version-min=$MACOS_VER_MIN --with-libpng=builtin --with-libjpeg=builtin --with-libtiff=builtin --with-regex=builtin --without-liblzma $WX_DEBUG_FLAG
+        ./configure --enable-universal_binary=$WX_ARCH --prefix=$WX_BUILD_DIR --disable-shared --with-macosx-version-min=$MACOS_VER_MIN --with-libpng=builtin --with-libjpeg=builtin --with-libtiff=builtin --with-regex=builtin --without-liblzma $WX_DEBUG_FLAG
         make -j $HOST_NCPU
         cd locale; make allmo; cd ..
         sudo make install
