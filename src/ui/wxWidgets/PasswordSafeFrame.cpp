@@ -851,7 +851,7 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
   wxLanguage system_language = wxGetApp().GetSystemLanguage();
 
   for (auto &item : m_languages) {
-    wxString lang_name = _(get<1>(item.second));
+    wxString lang_name = get<1>(item.second);
     if (get<0>(item.second) == system_language) {
       lang_name = L"[ " + lang_name + L" ]";
     }
@@ -3016,7 +3016,7 @@ void PasswordSafeFrame::UpdateStatusBar()
       menu->SetItemLabel(m_core.IsReadOnly() ? _("Change to R/W") : _("Change to R-O"));
   }
   else { // no open file
-    m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(-1)), StatusBar::Field::DOUBLECLICK);
+    m_statusBar->SetStatusText(PWSprefs::GetDCAdescription(-1), StatusBar::Field::DOUBLECLICK);
     m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::CLIPBOARDACTION);
     m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::MODIFIED);
     m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::READONLY);
@@ -3098,7 +3098,7 @@ void PasswordSafeFrame::UpdateSelChanged(const CItemData *pci)
     if (dca == -1)
       dca = PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
   }
-  m_statusBar->SetStatusText(_(PWSprefs::GetDCAdescription(dca)), StatusBar::Field::DOUBLECLICK);
+  m_statusBar->SetStatusText(PWSprefs::GetDCAdescription(dca), StatusBar::Field::DOUBLECLICK);
 }
 
 void PasswordSafeFrame::ChangeFontPreference(const PWSprefs::StringPrefs fontPreference)
