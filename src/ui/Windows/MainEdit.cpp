@@ -2509,7 +2509,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
     // Only set to false if adding a shortcut where the base isn't there (yet)
     bool bAddToViews = true;
     pDDObject->ToItem(ci_temp);
-    ASSERT(ci_temp.GetBaseUUID() != CUUID::NullUUID());
+    ASSERT(!ci_temp.IsDependent() || ci_temp.GetBaseUUID() != CUUID::NullUUID()); // an alias or shortcut must have a base entry
 
     StringX sxPolicyName = ci_temp.GetPolicyName();
     if (!sxPolicyName.empty()) {
@@ -2552,7 +2552,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
     }
 
     if (in_oblist.m_bDragNode) {
-      wchar_t *dot = (!DropGroup.empty() && !ci_temp.GetGroup().empty()) ? L"." : L"";
+      const wchar_t *dot = (!DropGroup.empty() && !ci_temp.GetGroup().empty()) ? L"." : L"";
       sxgroup = DropGroup + dot + ci_temp.GetGroup();
     } else {
       sxgroup = DropGroup;
@@ -2639,8 +2639,12 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
         ci_temp.SetPassword(L"[Alias]");
         ci_temp.SetAlias();
       } else if (pl.InputType == CItemData::ET_SHORTCUT) {
+        // we may get a shortcut before the base entry arrived
         ItemListIter iter = m_core.Find(pl.base_uuid);
-        ASSERT(iter != End());
+        if (iter == End())
+        {
+          pws_os::Trace(L"Alias arrived without matching base");
+        }
         if (pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_SHORTCUTBASE) {
           // Only normal or shortcut base allowed as target
           cs_msg.Format(IDS_SBASEINVALID, static_cast<LPCWSTR>(sxgroup.c_str()),
