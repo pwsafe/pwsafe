@@ -2501,25 +2501,46 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
   pmulticmds->Add(UpdateGUICommand::Create(&m_core,
      UpdateGUICommand::WN_UNDO, UpdateGUICommand::GUI_REFRESH_BOTHVIEWS));
 
-  for (pos = in_oblist.GetHeadPosition(); pos != NULL; in_oblist.GetNext(pos)) {
-    CDDObject *pDDObject = (CDDObject *)in_oblist.GetAt(pos);
+  // Create a vector to hold the entries
+  std::vector<CItemData> sorted_entries;
+  
+  // First pass: collect all entries
+  for (pos = in_oblist.GetHeadPosition(); pos != NULL;) {
+    CDDObject *pDDObject = (CDDObject *)in_oblist.GetNext(pos);
+    pDDObject->ToItem(ci_temp);
+    sorted_entries.push_back(ci_temp);
+  }
 
+  // Sort entries by type in the desired order
+  std::sort(sorted_entries.begin(), sorted_entries.end(),
+    [](const CItemData& a, const CItemData& b) {
+      // Define the order: NORMAL, ALIASBASE, SHORTCUTBASE, ALIAS, SHORTCUT
+      static const std::map<CItemData::EntryType, int> type_order = {
+        {CItemData::ET_NORMAL, 0},
+        {CItemData::ET_ALIASBASE, 1},
+        {CItemData::ET_SHORTCUTBASE, 2},
+        {CItemData::ET_ALIAS, 3},
+        {CItemData::ET_SHORTCUT, 4}
+      };
+      return type_order.at(a.GetEntryType()) < type_order.at(b.GetEntryType());
+    });
+
+  // Second pass: process entries in sorted order
+  for (auto & ci : sorted_entries) {
     bool bChangedPolicy(false);
-    ci_temp.Clear();
     // Only set to false if adding a shortcut where the base isn't there (yet)
     bool bAddToViews = true;
-    pDDObject->ToItem(ci_temp);
-    ASSERT(!ci_temp.IsDependent() || ci_temp.GetBaseUUID() != CUUID::NullUUID()); // an alias or shortcut must have a base entry
+    ASSERT(!ci.IsDependent() || ci.GetBaseUUID() != CUUID::NullUUID()); // an alias or shortcut must refer to a base entry
 
-    StringX sxPolicyName = ci_temp.GetPolicyName();
+    StringX sxPolicyName = ci.GetPolicyName();
     if (!sxPolicyName.empty()) {
       // D&D put the entry's name here and the details in the entry
       // which we now have to add to this core and remove from the entry
 
       // Get the source database PWPolicy & symbols for this name
       PWPolicy st_pp;
-      ci_temp.GetPWPolicy(st_pp);
-      st_pp.symbols = ci_temp.GetSymbols();
+      ci.GetPWPolicy(st_pp);
+      st_pp.symbols = ci.GetSymbols();
 
       // Get the same info if the policy is in the target database
       PWPolicy currentDB_st_pp;
@@ -2530,7 +2551,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
           // They are not the same - make this policy unique
           m_core.MakePolicyUnique(mapRenamedPolicies, sxPolicyName, sxDD_DateTime,
                                   IDSC_DRAGPOLICY);
-          ci_temp.SetPolicyName(sxPolicyName);
+          ci.SetPolicyName(sxPolicyName);
           bChangedPolicy = true;
         }
       }
@@ -2546,25 +2567,25 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
           vAddedPolicyNames.push_back(sxPolicyName);
         }
         // No longer need these values
-        ci_temp.SetPWPolicy(L"");
-        ci_temp.SetSymbols(L"");
+        ci.SetPWPolicy(L"");
+        ci.SetSymbols(L"");
       }
     }
 
     if (in_oblist.m_bDragNode) {
-      const wchar_t *dot = (!DropGroup.empty() && !ci_temp.GetGroup().empty()) ? L"." : L"";
-      sxgroup = DropGroup + dot + ci_temp.GetGroup();
+      const wchar_t *dot = (!DropGroup.empty() && !ci.GetGroup().empty()) ? L"." : L"";
+      sxgroup = DropGroup + dot + ci.GetGroup();
     } else {
       sxgroup = DropGroup;
     }
 
-    sxuser = ci_temp.GetUser();
-    StringX sxnewtitle(ci_temp.GetTitle());
+    sxuser = ci.GetUser();
+    StringX sxnewtitle(ci.GetTitle());
     m_core.MakeEntryUnique(setGTU, sxgroup, sxnewtitle, sxuser, IDSC_DRAGNUMBER);
 
-    if (m_core.Find(ci_temp.GetUUID()) != End()) {
+    if (m_core.Find(ci.GetUUID()) != End()) {
       // Already in use - get a new one!
-      ci_temp.CreateUUID();
+      ci.CreateUUID();
     }
 
     if (bChangedPolicy) {
@@ -2574,10 +2595,10 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
       sxEntriesWithNewNamedPolicies += sxChanged;
     }
 
-    ci_temp.SetGroup(sxgroup);
-    ci_temp.SetTitle(sxnewtitle);
+    ci.SetGroup(sxgroup);
+    ci.SetTitle(sxnewtitle);
 
-    StringX cs_tmp = ci_temp.GetPassword();
+    StringX cs_tmp = ci.GetPassword();
 
     BaseEntryParms pl;
     pl.InputType = CItemData::ET_NORMAL;
@@ -2599,9 +2620,9 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
     }
 
     // If we have BASEUUID, life is simple
-    if (ci_temp.GetBaseUUID() != CUUID::NullUUID()) {
+    if (ci.GetBaseUUID() != CUUID::NullUUID()) {
       pl.ibasedata = 1;
-      pl.base_uuid = ci_temp.GetBaseUUID();
+      pl.base_uuid = ci.GetBaseUUID();
       pl.TargetType = CItemData::ET_NORMAL;
     } else {
       m_core.ParseAliasPassword(cs_tmp, pl);
@@ -2609,7 +2630,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
     if (pl.ibasedata > 0) {
       // Add to pwlist
       pmulticmds->Add(AddEntryCommand::Create(&m_core,
-                                              ci_temp, ci_temp.GetBaseUUID())); // need to do this as well as AddDep...
+                                              ci, ci.GetBaseUUID())); // need to do this as well as AddDep...
       CGeneralMsgBox gmb;
       CString cs_msg;
       // Password in alias/shortcut format AND base entry exists
@@ -2632,12 +2653,12 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
           continue;
         }
         Command *pcmd = AddDependentEntryCommand::Create(&m_core, pl.base_uuid,
-                                                         ci_temp.GetUUID(),
+                                                         ci.GetUUID(),
                                                          CItemData::ET_ALIAS);
         pmulticmds->Add(pcmd);
 
-        ci_temp.SetPassword(L"[Alias]");
-        ci_temp.SetAlias();
+        ci.SetPassword(L"[Alias]");
+        ci.SetAlias();
       } else if (pl.InputType == CItemData::ET_SHORTCUT) {
         // we may get a shortcut before the base entry arrived
         ItemListIter iter = m_core.Find(pl.base_uuid);
@@ -2655,16 +2676,16 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
         }
         Command *pcmd = AddDependentEntryCommand::Create(&m_core,
                                                          pl.base_uuid,
-                                                         ci_temp.GetUUID(),
+                                                         ci.GetUUID(),
                                                          CItemData::ET_SHORTCUT);
         pmulticmds->Add(pcmd);
 
-        ci_temp.SetPassword(L"[Shortcut]");
-        ci_temp.SetShortcut();
+        ci.SetPassword(L"[Shortcut]");
+        ci.SetShortcut();
       }
     } else if (pl.ibasedata == 0) {
       // Password NOT in alias/shortcut format
-      ci_temp.SetNormal();
+      ci.SetNormal();
     } else if (pl.ibasedata < 0) {
       // Password in alias/shortcut format AND base entry does not exist or multiple possible
       // base entries exit.
@@ -2672,27 +2693,27 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
       // "no unique exists" or "multiple exist".
       // Let the code that processes the possible aliases after all have been added sort this out.
       if (pl.InputType == CItemData::ET_ALIAS) {
-        Possible_Aliases.push_back(ci_temp.GetUUID());
+        Possible_Aliases.push_back(ci.GetUUID());
       } else if (pl.InputType == CItemData::ET_SHORTCUT) {
-        Possible_Shortcuts.push_back(ci_temp.GetUUID());
+        Possible_Shortcuts.push_back(ci.GetUUID());
         bAddToViews = false;
       }
     }
-    ci_temp.SetStatus(CItemData::ES_ADDED);
+    ci.SetStatus(CItemData::ES_ADDED);
     
     // Need to check that entry keyboard shortcut not already in use!
     int32 iKBShortcut;
-    ci_temp.GetKBShortcut(iKBShortcut);
+    ci.GetKBShortcut(iKBShortcut);
     
     if (iKBShortcut != 0 && 
       m_core.GetKBShortcut(iKBShortcut) != CUUID::NullUUID()) {
       // Remove it but no mechanism to tell user!
-      ci_temp.SetKBShortcut(0);
+      ci.SetKBShortcut(0);
     }
 
-    if (!ci_temp.IsDependent()) { // Dependents handled later
+    if (!ci.IsDependent()) { // Dependents handled later
       // Add to pwlist
-      Command *pcmd = AddEntryCommand::Create(&m_core, ci_temp);
+      Command *pcmd = AddEntryCommand::Create(&m_core, ci);
 
       if (!bAddToViews) {
         // ONLY Add to pwlist and NOT to Tree or List views
@@ -2702,7 +2723,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
       }
       pmulticmds->Add(pcmd);
     }
-  } // iteration over in_oblist
+  } // iteration over sorted_entries
 
   // Now try to add aliases/shortcuts we couldn't add in previous processing
   if (!Possible_Aliases.empty()) {
