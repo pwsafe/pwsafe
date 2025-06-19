@@ -139,7 +139,7 @@ LangString ARABIC_SUPPORT ${LANG_ITALIAN} "Arabo"
 ; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
 LangString PORTUGUESEBR_SUPPORT ${LANG_ITALIAN} "Portoghese (Brasile)"
 LangString LATVIAN_SUPPORT ${LANG_ITALIAN} "Lettone"
-
+LangString SLOVAK_SUPPORT ${LANG_ITALIAN} "Slovacca"
 
 
 ; LANG_PROGRAM "Program Language"
