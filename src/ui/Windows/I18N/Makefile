@@ -22,12 +22,12 @@ POS := pwsafe.pot pos/pwsafe_ar.po \
 	pos/pwsafe_it.po pos/pwsafe_fr.po pos/pwsafe_dk.po \
 	pos/pwsafe_kr.po pos/pwsafe_sv.po pos/pwsafe_nl.po \
 	pos/pwsafe_tr.po pos/pwsafe_hu.po pos/pwsafe_sl.po \
-	pos/pwsafe_pt_br.po pos/pwsafe_lv.po
+	pos/pwsafe_pt_br.po pos/pwsafe_lv.po pos/pwsafe_sk.po
 
 DLL_LIST = pwsafeAR.dll pwsafeCZ.dll pwsafeES.dll pwsafeDE.dll \
 	pwsafePL.dll pwsafeZH.dll pwsafeRU.dll pwsafeIT.dll pwsafeFR.dll \
 	pwsafeDA.dll pwsafeKR.dll pwsafeNL.dll pwsafeSV.dll pwsafeTR.dll \
-	pwsafeHU.dll pwsafeSL.dll pwsafePT.dll pwsafeLV.dll
+	pwsafeHU.dll pwsafeSL.dll pwsafePT.dll pwsafeLV.dll pwsafeSK.dll
 
 DEST_DIR := ../../../../out/build/windows-x86-Release/I18N
 DEST_DIR_64 := ../../../../out/build/windows-x64-Release/I18N
