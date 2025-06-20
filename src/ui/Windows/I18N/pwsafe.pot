@@ -4754,6 +4754,10 @@ msgstr ""
 msgid "Media Type:"
 msgstr ""
 
+#. Resource IDs: (5124)
+msgid "Medium Password"
+msgstr ""
+
 #. Resource IDs: (5680)
 msgid "Menu Item"
 msgstr ""
@@ -5297,6 +5301,30 @@ msgstr ""
 
 #. Resource IDs: (5449)
 msgid "PWS_CPF_TVDD"
+msgstr ""
+
+#. Resource IDs: (3093)
+msgid "Passkey Algorithm ID"
+msgstr ""
+
+#. Resource IDs: (3090)
+msgid "Passkey Credential ID"
+msgstr ""
+
+#. Resource IDs: (3094)
+msgid "Passkey Private Key"
+msgstr ""
+
+#. Resource IDs: (3091)
+msgid "Passkey Relying Party ID"
+msgstr ""
+
+#. Resource IDs: (3095)
+msgid "Passkey Sign Count"
+msgstr ""
+
+#. Resource IDs: (3092)
+msgid "Passkey User Handle"
 msgstr ""
 
 msgid "Passkey incorrect"
@@ -6639,6 +6667,10 @@ msgstr ""
 msgid "String value:"
 msgstr ""
 
+#. Resource IDs: (5125)
+msgid "Strong Password"
+msgstr ""
+
 #. Resource IDs: (3365)
 msgid "Subset of entries restricted by the following rule:"
 msgstr ""
@@ -6918,6 +6950,10 @@ msgstr ""
 
 #. Resource IDs: (3260)
 msgid "The following columns will be processed: "
+msgstr ""
+
+#. Resource IDs: (3463)
+msgid "The following entries contain incomplete passkeys."
 msgstr ""
 
 #. Resource IDs: (3439)
@@ -7695,6 +7731,10 @@ msgstr ""
 
 #. Resource IDs: (5793)
 msgid "Warning - field too long"
+msgstr ""
+
+#. Resource IDs: (5123)
+msgid "Weak Password"
 msgstr ""
 
 #. Resource IDs: (5281)
