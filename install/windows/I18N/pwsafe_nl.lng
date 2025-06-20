@@ -125,6 +125,7 @@ LangString ARABIC_SUPPORT ${LANG_DUTCH} "Arabisch"
 ; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
 LangString PORTUGUESEBR_SUPPORT ${LANG_DUTCH} "Portugees (Brazilië)"
 LangString LATVIAN_SUPPORT ${LANG_DUTCH} "Lets"
+LangString SLOVAK_SUPPORT ${LANG_DUTCH} "Slowaaks"
 
 
 ; LANG_PROGRAM "Program Language"

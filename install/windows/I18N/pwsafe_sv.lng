@@ -128,6 +128,7 @@ LangString ARABIC_SUPPORT ${LANG_SWEDISH} "Arabiska"
 ; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
 LangString PORTUGUESEBR_SUPPORT ${LANG_SWEDISH} "Portugisiska (Brasilien)"
 LangString LATVIAN_SUPPORT ${LANG_SWEDISH} "Lettiska"
+LangString SLOVAK_SUPPORT ${LANG_SWEDISH} "Slovakiska"
  
 ; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
 LangString SORRY_NO_95 ${LANG_SWEDISH} "Tyvärr, Windows 95 stöds inte längre. Försök med PasswordSafe 2.16"

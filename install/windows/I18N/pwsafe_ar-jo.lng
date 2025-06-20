@@ -140,6 +140,8 @@ LangString ARABIC_SUPPORT ${LANG_Arabic} "اللغة العربية"
 ; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
 LangString PORTUGUESEBR_SUPPORT ${LANG_Arabic} "البرتغالية (البرازيل)"
 LangString LATVIAN_SUPPORT ${LANG_Arabic} "اللاتفية"
+; SLOVAK_SUPPORT "Slovak"
+LangString SLOVAK_SUPPORT ${LANG_Arabic} "اللغة السلوفاكية"
 
 
 ; LANG_PROGRAM "Program Language"
