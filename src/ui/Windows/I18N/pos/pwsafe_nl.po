@@ -6423,8 +6423,8 @@ msgid "Select &All"
 msgstr "Selecteer &Alles"
 
 #. Resource IDs: (5384)
-msgid "Select Browser:"
-msgstr "Selecteer Browser:"
+msgid "Select Program"
+msgstr "Selecteer programma"
 
 #. Resource IDs: (497, 537)
 msgid "Select Database"
