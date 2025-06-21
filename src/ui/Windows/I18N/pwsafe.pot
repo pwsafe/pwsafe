@@ -6200,7 +6200,7 @@ msgid "Select &All"
 msgstr ""
 
 #. Resource IDs: (5384)
-msgid "Select Browser:"
+msgid "Select Program"
 msgstr ""
 
 #. Resource IDs: (497, 537)

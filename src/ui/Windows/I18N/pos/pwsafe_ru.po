@@ -6353,8 +6353,8 @@ msgid "Select &All"
 msgstr "В&ыделить все"
 
 #. Resource IDs: (5384)
-msgid "Select Browser:"
-msgstr "Укажите браузер:"
+msgid "Select Program"
+msgstr "Выбрать программу"
 
 #. Resource IDs: (497, 537)
 msgid "Select Database"

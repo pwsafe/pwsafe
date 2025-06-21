@@ -218,7 +218,7 @@
 #define IDS_ENTRIESCHANGEDSTOP          5381
 #define IDS_ENTRIESCHANGEDSAVE          5382
 #define IDS_ENTRIESRESETMAX             5383
-#define IDS_SELECTBROWSER               5384
+#define IDS_SELECTPROGRAM               5384
 #define IDS_NOIBACKUP                   5385
 #define IDS_NONE                        5386
 #define IDS_INCREMENTNUM                5387
