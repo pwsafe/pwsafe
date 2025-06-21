@@ -227,7 +227,7 @@ SafeCombinationCtrl* wxUtilities::CreateLabeledSafeCombinationCtrl(wxWindow* par
   auto *sizer = new wxBoxSizer(wxVERTICAL);
   parent->GetSizer()->Add(sizer, 0, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 12);
 
-  auto *labelCtrl = new wxStaticText(parent, wxID_STATIC, _(label), wxDefaultPosition, wxDefaultSize, 0);
+  auto *labelCtrl = new wxStaticText(parent, wxID_STATIC, label, wxDefaultPosition, wxDefaultSize, 0);
   sizer->Add(labelCtrl, 0, wxBOTTOM|wxALIGN_LEFT, 5);
 
   auto *safeCombinationCtrl = new SafeCombinationCtrl(parent, id, password, wxDefaultPosition, wxDefaultSize);
