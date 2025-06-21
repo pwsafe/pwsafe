@@ -565,7 +565,7 @@ SectionEnd
 Section /o "$(SLOVAK_SUPPORT)" SlovakSection
   SetOutPath "$INSTDIR"  
   File /nonfatal "${LANG_DLL_DIR}\pwsafeSK.dll"
-  File /nonfatal "..\..\help\pwsafeSL\pwsafeSK.chm"
+  File /nonfatal "..\..\help\pwsafeSK\pwsafeSK.chm"
 SectionEnd
 SectionGroupEnd
 
