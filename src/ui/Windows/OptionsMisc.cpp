@@ -395,7 +395,7 @@ void COptionsMisc::OnBrowseForLocation(UINT nID)
                    CString(MAKEINTRESOURCE(IDS_FDF_PR_ALL)),
                    this);
 
-  cs_title.LoadString(IDS_SELECTBROWSER);
+  cs_title.LoadString(IDS_SELECTPROGRAM);
   fd.m_ofn.lpstrTitle = cs_title;
   fd.m_ofn.lpstrInitialDir = cs_initiallocation;
 
