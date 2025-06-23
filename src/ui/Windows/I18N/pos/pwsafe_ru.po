@@ -6354,7 +6354,7 @@ msgstr "В&ыделить все"
 
 #. Resource IDs: (5384)
 msgid "Select Program"
-msgstr "Выбрать программу"
+msgstr "Выберите программу"
 
 #. Resource IDs: (497, 537)
 msgid "Select Database"

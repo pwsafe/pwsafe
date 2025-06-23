@@ -6528,7 +6528,7 @@ msgstr "Sélectionner &tout"
 
 #. Resource IDs: (5384)
 msgid "Select Program"
-msgstr "Sélectionner un programme"
+msgstr "Sélectionner une programme"
 
 #. Resource IDs: (497, 537)
 msgid "Select Database"

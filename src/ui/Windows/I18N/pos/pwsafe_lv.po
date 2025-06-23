@@ -6479,7 +6479,7 @@ msgstr "Izvēlēties &visus"
 
 #. Resource IDs: (5384)
 msgid "Select Program"
-msgstr "Izvēlieties programmu"
+msgstr "Izvēlēties programmu"
 
 #. Resource IDs: (497, 537)
 msgid "Select Database"

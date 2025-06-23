@@ -6531,7 +6531,7 @@ msgstr "Vybr&at vše"
 
 #. Resource IDs: (5384)
 msgid "Select Program"
-msgstr "Vyberte program"
+msgstr "Vybrat program"
 
 #. Resource IDs: (497, 537)
 msgid "Select Database"

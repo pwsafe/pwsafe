@@ -6437,7 +6437,7 @@ msgstr "&Összes kiválasztása"
 
 #. Resource IDs: (5384)
 msgid "Select Program"
-msgstr "Program kiválasztása"
+msgstr "Válasszon program"
 
 #. Resource IDs: (497, 537)
 msgid "Select Database"

@@ -6396,7 +6396,7 @@ msgstr "Izberi &vse"
 
 #. Resource IDs: (5384)
 msgid "Select Program"
-msgstr "Izberite program"
+msgstr "Izberi program"
 
 #. Resource IDs: (497, 537)
 msgid "Select Database"
