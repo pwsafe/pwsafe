@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-15 12:30+0300\n"
-"PO-Revision-Date: 2025-03-15 12:30+0300\n"
-"Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
-"Language-Team:\n"
-"Language: ru\n"
+"POT-Creation-Date: 1900-01-01 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -31,49 +31,6 @@ msgstr ""
 
 # ONLY change the msgstr field. Do NOT change any other.
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
-# поля msgid/msgstr для горячих клавиш
-# Формат: "ID:xxxxxx:VACS+X" где:
-#    ID:xxxxx = menu ID для соответствующей горячей клавиши
-#    V = Virtual key (пусто, если не используется) - установлено почти всегда!
-#    A = Alt key     (пусто, если не используется)
-#    C = Ctrl key    (пусто, если не используется)
-#    S = Shift key   (пусто, если не используется)
-#    X = символ в верхнем регистре
-# напр. "V CS+Q" == Ctrl + Shift + 'Q'
-# ТОЛЬКО горячие клавиши с буквенными или числовыми символами могут быть изменены. Функциональные клавиши (F2), специальные клавиши (Delete, Home) и т. п. не должны изменяться.
-# Только поле msgstr может быть изменено. НЕ ИЗМЕНЯЙТЕ другие поля.
-# Если вы не хотите изменять горячую клавишу, просто скопируйте значение поля msgid в поле msgstr
-# Соглашения о русскоязычном переводе.
-# В переводе использована следующая терминология (её следует придерживаться во всём файле):
-# database - контейнер
-# entry - элемент
-# autotype - автонабор
-# instance - экземпляр
-# field - поле
-# master password - пароль/мастер-пароль/пароль для контейнера (в зависимости от размера метки)
-# Flattened list - Простой список
-# Nested tree - Древовидный список
-# Group - группа
-# Notes - заметки
-# Run command - выполнить команду
-# Browse to URL - перейти по ссылке
-# Password Expiry (Time|Date) Interval - срок действия пароля (напр. 10 дней)
-# Password Expiry (Time|Date) - дата истечения пароля (напр. 10.11.2013)
-# Virtual keyboard - экранная клавиатура
-# Base entry - исходный элемент
-# Legacy - в раскладках клавиатуры "традиционная"
-# Generate password - создать пароль
-# Undo - вернуть
-# Redo - повторить
-# Failsafe Backup - Аварийная резервная копия
-# Original - исходный
-# Configuration file - файл настроек
-# В главном меню, по аналогии с другими программами
-# "Edit" - "Правка"
-# "View" - "Вид"
-# "Manage" - "Сервис"
-# drag / drag-and-drop - перетащить, перетаскивание
-# dragbar - панель значков для перетаскивания
 
 #. Resource IDs: (3263)
 msgid "  All Password History ignored."
@@ -1815,7 +1772,8 @@ msgstr "Хотя бы один из типов символов (прописн�
 
 #. Resource IDs: (538, 539, 5986)
 msgid "Attachment"
-msgstr "Вложение"
+msgstr ""
+
 #. Resource IDs: (3089)
 msgid "Attachment Content"
 msgstr "Содержимое вложения"
@@ -4284,141 +4242,176 @@ msgid "Hungarian 101-key"
 msgstr "Венгерская (101 клавиша)"
 
 #. Accelerator Entry for Menu ID:32002; '&Open Another'
+#. Accelerator Entry for Menu ID:32002; '&Open Another'
 msgid "ID:32002:V C +O"
 msgstr "ID:32002:V C +O"
 
+#. Accelerator Entry for Menu ID:32003; '&New...'
 #. Accelerator Entry for Menu ID:32003; '&New...'
 msgid "ID:32003:V C +N"
 msgstr "ID:32003:V C +N"
 
 #. Accelerator Entry for Menu ID:32005; '&Save'
+#. Accelerator Entry for Menu ID:32005; '&Save'
 msgid "ID:32005:V C +S"
 msgstr "ID:32005:V C +S"
 
+#. Accelerator Entry for Menu ID:32021; 'E&xit'
 #. Accelerator Entry for Menu ID:32021; 'E&xit'
 msgid "ID:32021:V C +Q"
 msgstr "ID:32021:V C +Q"
 
 #. Accelerator Entry for Menu ID:32027; '&Lock'
+#. Accelerator Entry for Menu ID:32027; '&Lock'
 msgid "ID:32027:V CS+L"
 msgstr "ID:32027:V CS+L"
 
+#. Accelerator Entry for Menu ID:32051; '&Add Entry...'
 #. Accelerator Entry for Menu ID:32051; '&Add Entry...'
 msgid "ID:32051:V C +A"
 msgstr "ID:32051:V C +A"
 
 #. Accelerator Entry for Menu ID:32063; '&Duplicate Entry'
+#. Accelerator Entry for Menu ID:32063; '&Duplicate Entry'
 msgid "ID:32063:V C +D"
 msgstr "ID:32063:V C +D"
 
+#. Accelerator Entry for Menu ID:32066; '&Copy Password to Clipboard'
 #. Accelerator Entry for Menu ID:32066; '&Copy Password to Clipboard'
 msgid "ID:32066:V C +C"
 msgstr "ID:32066:V C +C"
 
 #. Accelerator Entry for Menu ID:32067; 'Display subset of Password'
+#. Accelerator Entry for Menu ID:32067; 'Display subset of Password'
 msgid "ID:32067:V C +B"
 msgstr "ID:32067:V C +B"
 
+#. Accelerator Entry for Menu ID:32068; 'Copy &Username to Clipboard'
 #. Accelerator Entry for Menu ID:32068; 'Copy &Username to Clipboard'
 msgid "ID:32068:V C +U"
 msgstr "ID:32068:V C +U"
 
 #. Accelerator Entry for Menu ID:32069; 'Copy &Notes to Clipboard'
+#. Accelerator Entry for Menu ID:32069; 'Copy &Notes to Clipboard'
 msgid "ID:32069:V C +G"
 msgstr "ID:32069:V C +G"
 
+#. Accelerator Entry for Menu ID:32070; 'Copy UR&L to Clipboard'
 #. Accelerator Entry for Menu ID:32070; 'Copy UR&L to Clipboard'
 msgid "ID:32070:VAC +L"
 msgstr "ID:32070:VAC +L"
 
 #. Accelerator Entry for Menu ID:32072; '&Browse to URL'
+#. Accelerator Entry for Menu ID:32072; '&Browse to URL'
 msgid "ID:32072:V C +L"
 msgstr "ID:32072:V C +L"
 
+#. Accelerator Entry for Menu ID:32073; 'Browse to URL + &AutoType'
 #. Accelerator Entry for Menu ID:32073; 'Browse to URL + &AutoType'
 msgid "ID:32073:VA  +L"
 msgstr "ID:32073:VA  +L"
 
 #. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
+#. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
 msgid "ID:32074:VA S+L"
 msgstr "ID:32074:VA S+L"
 
+#. Accelerator Entry for Menu ID:32075; 'Send &Email'
 #. Accelerator Entry for Menu ID:32075; 'Send &Email'
 msgid "ID:32075:V C +E"
 msgstr "ID:32075:V C +E"
 
 #. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
+#. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
 msgid "ID:32076:V C +T"
 msgstr "ID:32076:V C +T"
 
+#. Accelerator Entry for Menu ID:32077; '&Run Command'
 #. Accelerator Entry for Menu ID:32077; '&Run Command'
 msgid "ID:32077:V C +R"
 msgstr "ID:32077:V C +R"
 
 #. Accelerator Entry for Menu ID:32080; '&Find...'
+#. Accelerator Entry for Menu ID:32080; '&Find...'
 msgid "ID:32080:V C +F"
 msgstr "ID:32080:V C +F"
 
+#. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
 #. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
 msgid "ID:32081:VAC +R"
 msgstr "ID:32081:VAC +R"
 
 #. Accelerator Entry for Menu ID:32083; 'Undo'
+#. Accelerator Entry for Menu ID:32083; 'Undo'
 msgid "ID:32083:V C +Z"
 msgstr "ID:32083:V C +Z"
 
+#. Accelerator Entry for Menu ID:32084; 'Redo'
 #. Accelerator Entry for Menu ID:32084; 'Redo'
 msgid "ID:32084:V C +Y"
 msgstr "ID:32084:V C +Y"
 
 #. Accelerator Entry for Menu ID:32099; 'Display Auth Code'
+#. Accelerator Entry for Menu ID:32099; 'Display Auth Code'
 msgid "ID:32099:VAC +2"
 msgstr "ID:32099:VAC +2"
 
+#. Accelerator Entry for Menu ID:32100; 'Copy Aut&h Code to Clipboard'
 #. Accelerator Entry for Menu ID:32100; 'Copy Aut&h Code to Clipboard'
 msgid "ID:32100:VA  +2"
 msgstr "ID:32100:VA  +2"
 
 #. Accelerator Entry for Menu ID:32140; 'Last Find results'
+#. Accelerator Entry for Menu ID:32140; 'Last Find results'
 msgid "ID:32140:V C +K"
 msgstr "ID:32140:V C +K"
 
+#. Accelerator Entry for Menu ID:32154; '&Options...'
 #. Accelerator Entry for Menu ID:32154; '&Options...'
 msgid "ID:32154:V C +M"
 msgstr "ID:32154:V C +M"
 
 #. Accelerator Entry for Menu ID:32157; 'Cancel'
+#. Accelerator Entry for Menu ID:32157; 'Cancel'
 msgid "ID:32157:V C +P"
 msgstr "ID:32157:V C +P"
 
+#. Accelerator Entry for Menu ID:32302; 'Clear Find'
 #. Accelerator Entry for Menu ID:32302; 'Clear Find'
 msgid "ID:32302:VAC +C"
 msgstr "ID:32302:VAC +C"
 
 #. Accelerator Entry for Menu ID:32304; ''
+#. Accelerator Entry for Menu ID:32304; ''
 msgid "ID:32304:VAC +S"
 msgstr "ID:32304:VAC +S"
 
+#. Accelerator Entry for Menu ID:32307; 'Advanced Find Options'
 #. Accelerator Entry for Menu ID:32307; 'Advanced Find Options'
 msgid "ID:32307:VAC +A"
 msgstr "ID:32307:VAC +A"
 
 #. Accelerator Entry for Menu ID:32500; ''
+#. Accelerator Entry for Menu ID:32500; ''
 msgid "ID:32500:V C +C"
 msgstr "ID:32500:V C +C"
 
+#. Accelerator Entry for Menu ID:32501; ''
 #. Accelerator Entry for Menu ID:32501; ''
 msgid "ID:32501:V C +E"
 msgstr "ID:32501:V C +E"
 
 #. Accelerator Entry for Menu ID:32502; ''
+#. Accelerator Entry for Menu ID:32502; ''
 msgid "ID:32502:V C +F"
 msgstr "ID:32502:V C +F"
 
 #. Accelerator Entry for Menu ID:32503; ''
+#. Accelerator Entry for Menu ID:32503; ''
 msgid "ID:32503:V C +L"
 msgstr "ID:32503:V C +L"
 
+#. Accelerator Entry for Menu ID:32504; ''
 #. Accelerator Entry for Menu ID:32504; ''
 msgid "ID:32504:V C +S"
 msgstr "ID:32504:V C +S"
@@ -5023,6 +5016,10 @@ msgstr "Тип файла"
 msgid "Media Type:"
 msgstr "Тип файла:"
 
+#. Resource IDs: (5124)
+msgid "Medium Password"
+msgstr ""
+
 #. Resource IDs: (5680)
 msgid "Menu Item"
 msgstr "Пункт меню"
@@ -5339,6 +5336,7 @@ msgid "Note that if you choose to recover the auto-saved documents, you must exp
 msgstr "Заметьте, при выборе восстановления автоматически сохранённых документов вам потребуется явно сохранить их, чтобы перезаписать исходные документы.  Если не восстановить автоматически сохранённые версии, они будут удалены."
 
 #. Resource IDs: (5114)
+#, c-format
 msgid "Note that you can use an environment variable too, e.g., %TEMP%"
 msgstr "Допускается использование переменных окружения, например, %TEMP%"
 
@@ -5593,6 +5591,30 @@ msgstr "PWS_CPF_CDD"
 #. Resource IDs: (5449)
 msgid "PWS_CPF_TVDD"
 msgstr "PWS_CPF_TVDD"
+
+#. Resource IDs: (3093)
+msgid "Passkey Algorithm ID"
+msgstr ""
+
+#. Resource IDs: (3090)
+msgid "Passkey Credential ID"
+msgstr ""
+
+#. Resource IDs: (3094)
+msgid "Passkey Private Key"
+msgstr ""
+
+#. Resource IDs: (3091)
+msgid "Passkey Relying Party ID"
+msgstr ""
+
+#. Resource IDs: (3095)
+msgid "Passkey Sign Count"
+msgstr ""
+
+#. Resource IDs: (3092)
+msgid "Passkey User Handle"
+msgstr ""
 
 #. Resource IDs: (5757)
 msgid "Passphrase"
@@ -6352,10 +6374,6 @@ msgstr "Выбор"
 msgid "Select &All"
 msgstr "В&ыделить все"
 
-#. Resource IDs: (5384)
-msgid "Select Program"
-msgstr "Выберите программу"
-
 #. Resource IDs: (497, 537)
 msgid "Select Database"
 msgstr "Выберите контейнер"
@@ -6371,6 +6389,10 @@ msgstr "Укажите каталог для промежуточных резе
 #. Resource IDs: (65535)
 msgid "Select Locked Text Color:"
 msgstr "Цвет текста для заблокированного контейнера:"
+
+#. Resource IDs: (5384)
+msgid "Select Program"
+msgstr "Выберите программу"
 
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"
@@ -6832,6 +6854,10 @@ msgstr "Сохранённые фильтры будут недоступны, �
 msgid "String value:"
 msgstr "Строка:"
 
+#. Resource IDs: (5125)
+msgid "Strong Password"
+msgstr ""
+
 #. Resource IDs: (3365)
 msgid "Subset of entries restricted by the following rule:"
 msgstr "Подмножество элементов отобрано по правилу:"
@@ -7107,6 +7133,10 @@ msgstr "Указанные столбцы распознаны, но тольк�
 #. Resource IDs: (3260)
 msgid "The following columns will be processed: "
 msgstr "Были обработаны следующие столбцы: "
+
+#. Resource IDs: (3463)
+msgid "The following entries contain incomplete passkeys."
+msgstr ""
 
 #. Resource IDs: (3439)
 msgid "The following entries had a duplicate UUID field.  This has been corrected."
@@ -7899,6 +7929,10 @@ msgstr "Внимание: заметки открыты во внешнем ре
 msgid "Warning - field too long"
 msgstr "Внимание: поле содержит слишком много данных"
 
+#. Resource IDs: (5123)
+msgid "Weak Password"
+msgstr ""
+
 #. Resource IDs: (5281)
 #, c-format
 msgid "Weak master password:\n\n %s"
@@ -8676,7 +8710,6 @@ msgstr "изменён, но ещё не сохранён в контейнер"
 
 # No entries satisfied your selection criteria, so none can be %s!, сейчас не используется
 #. Resource IDs: (5839)
-#, fuzzy
 msgid "compared"
 msgstr "сравнено"
 
@@ -8781,7 +8814,6 @@ msgstr "совпадает с"
 
 # No entries satisfied your selection criteria, so none can be %s!, сейчас не используется
 #. Resource IDs: (5838)
-#, fuzzy
 msgid "exported"
 msgstr "экспортирован"
 
@@ -8816,7 +8848,6 @@ msgstr "импорт"
 
 # подстановка в "Entry keyboard shortcut %s entry %s is already allocated ..." и "They have been removed from the %s entries"
 #. Resource IDs: (3446)
-#, fuzzy
 msgid "imported"
 msgstr "из импортированного"
 
@@ -8890,7 +8921,6 @@ msgstr "меньше либо равно"
 
 # подстановка в имени нового элемента, полученного при конфликте слияния (yandex-из объединяемого-20150608 203915 и без пробелов для зависимых) 
 #. Resource IDs: (3418)
-#, fuzzy
 msgid "merged"
 msgstr "из объединяемого"
 
@@ -9048,13 +9078,11 @@ msgstr "проверка"
 
 # The following new %ls %ls merged into this database: и т.п. (случай для 1 элемента)
 #. Resource IDs: (3410)
-#, fuzzy
 msgid "was"
 msgstr "был"
 
 # The following new %ls %ls merged into this database: и т.п. (случай для нескольких элементов)
 #. Resource IDs: (3411)
-#, fuzzy
 msgid "were"
 msgstr "были"
 
