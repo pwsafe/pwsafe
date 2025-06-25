@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2025-06-21 19:29+0300\n"
+"PO-Revision-Date: 2025-06-25 11:53+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: sv\n"
@@ -4901,7 +4901,7 @@ msgid ""
 "Incorrect master password, not a Password Safe database,\n"
 "or a corrupt database."
 msgstr ""
-"Felaktigt huvudlösenord, inte en lösenordssäker databas,\n"
+"Felaktigt huvudlösenord, inte en Password Safe databas,\n"
 "eller en korrupt databas."
 
 #. Resource IDs: (3251)
@@ -5270,7 +5270,7 @@ msgstr "Marathi"
 
 #. Resource IDs: (131)
 msgid "Master Password Entry"
-msgstr "Huvudlösenordsinmatning"
+msgstr "Inmatning av huvudlösenordet"
 
 #. Resource IDs: (133)
 msgid "Master Password Setup"
@@ -5278,7 +5278,7 @@ msgstr "Inställning av huvudlösenordet"
 
 #. Resource IDs: (65535)
 msgid "Master Password last set on:"
-msgstr "Huvudlösenordet senast inställt på:"
+msgstr "Huvudlösenordet angavs senast:"
 
 #. Resource IDs: (1506, 65535)
 msgid "Master Password:"
@@ -7603,7 +7603,7 @@ msgstr ""
 
 #. Resource IDs: (5279)
 msgid "The master password cannot be blank."
-msgstr "Huvudlösenordet får inte vara tomt."
+msgstr "Huvudlösenordet kan inte vara tomt."
 
 #. Resource IDs: (5958)
 #, c-format
