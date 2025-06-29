@@ -5027,7 +5027,7 @@ msgstr "Тип файла:"
 
 #. Resource IDs: (5124)
 msgid "Medium Password"
-msgstr "Пароль средней сложности"
+msgstr "Пароль средней надёжности"
 
 #. Resource IDs: (5680)
 msgid "Menu Item"
