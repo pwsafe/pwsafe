@@ -2489,10 +2489,10 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Password: The password</seg>
+        <seg>Password: The password, with a password strength meter beneath it</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110214T102900Z">
-        <seg>Пароль: пароль;</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T100237Z" creationid="pm_kan" creationdate="20250629T100237Z">
+        <seg>Пароль: пароль и шкала надёжности под ним;</seg>
       </tuv>
     </tu>
     <tu>
@@ -3638,6 +3638,22 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T215835Z">
         <seg>Для доступа к ним вам необходимо запомнить лишь один мастер-пароль.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>A strength meter underneath the New Master Password field gives a rough indication of the strength of the password.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T095613Z" creationid="pm_kan" creationdate="20250629T093858Z">
+        <seg>Под полем для ввода нового пароля расположена шкала сложности, отображающая грубую оценку надёжности пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>A strength meter underneath the Password field gives a rough indication of the strength of the password.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T100308Z" creationid="pm_kan" creationdate="20250629T100308Z">
+        <seg>Под полем пароля расположена шкала сложности, отображающая грубую оценку надёжности пароля.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10027,10 +10043,10 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>If you use several databases, drop-down list.</seg>
+        <seg>If you use several databases, they will appear in the drop-down list.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170814T214941Z" creationid="pm_kan" creationdate="20170814T214941Z">
-        <seg>Если вы используете несколько контейнеров, можно выбрать другой контейнер из выпадающего списка.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T100519Z" creationid="pm_kan" creationdate="20250629T100519Z">
+        <seg>Если вы используете несколько контейнеров, можно выбрать другой из выпадающего списка.</seg>
       </tuv>
     </tu>
     <tu>
@@ -13908,6 +13924,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Red indicates a weak password, Yellow a medium-strength one, and Green indicates a strong password.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T095756Z" creationid="pm_kan" creationdate="20250629T093931Z">
+        <seg>Красный цвет соответствует слабому паролю, жёлтый␣— паролю средней надёжности, зелёный␣— надёжному паролю.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Redo</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20101004T183333Z">
@@ -17037,14 +17061,6 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>The master password can be entered using the physical or virtual keyboard.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110622T160246Z">
-        <seg>Для ввода пароля можно использовать физическую или экранную клавиатуру.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>The migration function will move the current user's settings (associated with the current PC) from the configuration file to the new location.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20101105T200719Z">
@@ -17689,6 +17705,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20101031T155849Z">
         <seg>Резервные копии следует хранить в безопасном месте.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>These can be entered using the physical or virtual keyboard.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T092621Z" creationid="pm_kan" creationdate="20250629T092555Z">
+        <seg>Для ввода паролей можно использовать физическую или экранную клавиатуру.</seg>
       </tuv>
     </tu>
     <tu>
@@ -21172,6 +21196,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20101031T152427Z">
         <seg>Можно выбрать одно из следующих действий:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Your master password should be strong, that is, the bar should be full and green.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T100051Z" creationid="pm_kan" creationdate="20250629T100051Z">
+        <seg>Мастер-пароль должен быть надёжным, то есть шкала должна быть зелёного цвета и заполнена целиком.</seg>
       </tuv>
     </tu>
     <tu>
