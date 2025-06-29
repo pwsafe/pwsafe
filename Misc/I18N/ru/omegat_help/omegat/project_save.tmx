@@ -3457,6 +3457,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>&lt;b0&gt;Password&lt;/b0&gt;: The password, with a password strength meter beneath it</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T100237Z" creationid="pm_kan" creationdate="20250629T100237Z">
+        <seg>&lt;b0&gt;Пароль:&lt;/b0&gt; пароль и шкала надёжности под ним;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>&lt;b0&gt;PasswordSafe&lt;/b0&gt; V3.28 and later provide the facility to create and manage &lt;b1&gt;Named Password Policies&lt;/b1&gt; via the "Manage → Password Policies..." menu item.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T175746Z">
@@ -5390,6 +5398,22 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T215835Z">
         <seg>Для доступа к ним вам необходимо запомнить лишь один &lt;b3&gt;мастер-пароль&lt;/b3&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>A strength meter underneath the New Master Password field gives a rough indication of the strength of the password.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T095613Z" creationid="pm_kan" creationdate="20250629T093858Z">
+        <seg>Под полем для ввода нового пароля расположена шкала сложности, отображающая грубую оценку надёжности пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>A strength meter underneath the Password field gives a rough indication of the strength of the password.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T100308Z" creationid="pm_kan" creationdate="20250629T100308Z">
+        <seg>Под полем пароля расположена шкала сложности, отображающая грубую оценку надёжности пароля.</seg>
       </tuv>
     </tu>
     <tu>
@@ -13619,6 +13643,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>If you use several databases, they will appear in the drop-down list.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T100519Z" creationid="pm_kan" creationdate="20250629T100519Z">
+        <seg>Если вы используете несколько контейнеров, можно выбрать другой из выпадающего списка.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>If you use several databases, you can choose between them using the drop-down list.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20100926T182401Z">
@@ -18796,6 +18828,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Red indicates a weak password, Yellow a medium-strength one, and Green indicates a strong password.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T095756Z" creationid="pm_kan" creationdate="20250629T093931Z">
+        <seg>Красный цвет соответствует слабому паролю, жёлтый␣— паролю средней надёжности, зелёный␣— надёжному паролю.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Redo</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20101004T183333Z">
@@ -23574,6 +23614,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>These can be entered using the physical or virtual keyboard.&lt;br0/&gt;</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T092621Z" creationid="pm_kan" creationdate="20250629T092555Z">
+        <seg>Для ввода паролей можно использовать физическую или экранную клавиатуру.&lt;br0/&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>These come from the alias's base entry.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20161128T171813Z" creationid="pm_kan" creationdate="20161128T171813Z">
@@ -28309,6 +28357,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20101031T152427Z">
         <seg>Можно выбрать одно из следующих действий:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Your master password should be strong, that is, the bar should be full and green.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T100051Z" creationid="pm_kan" creationdate="20250629T100051Z">
+        <seg>Мастер-пароль должен быть надёжным, то есть шкала должна быть зелёного цвета и заполнена целиком.</seg>
       </tuv>
     </tu>
     <tu>
