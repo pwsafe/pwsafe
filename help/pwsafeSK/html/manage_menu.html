@@ -1,0 +1,143 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Menu Spravovať</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control --><script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Menu Spravovať</h2>
+
+<img alt="Menu Spravovať" src="images/manage_menu.png">
+
+<p>V menu <b>Spravovať</b> sa nachádzajú všetky možnosti a nastavenia aplikácie <b>Password Safe</b>.</p>
+
+<h3>Zmeniť hlavné heslo...</h3>
+
+<p>Výberom tejto možnosti sa zobrazí dialógové okno Zmeniť hlavné heslo.</p>
+
+<p><small><i>Ďalšie informácie nájdete v časti <a href="change_combo.html">Zmena hlavného hesla</a>.</i></small></p>
+
+<h3>Vytvoriť zálohu...</h3>
+
+<p>Vytvorí záložnú kópiu aktuálnej databázy hesiel.</p>
+
+<p><small><i>Ďalšie informácie nájdete v časti <a href="backup_and_restore.html">Zálohovanie a obnovenie databázy</a>.</i></small></p>
+
+<h3>Obnoviť zo zálohy...</h3>
+
+<p>Obnoví zálohovaný súbor databázy hesiel.</p>
+
+<p><small><i>Pozri <a href="backup_and_restore.html">Zálohovanie a obnovenie databázy</a> pre viac informácií.</i></small></p>
+
+<h3>Nastavenia...</h3>
+
+<p>Výberom <b>Nastavenia...</b> sa zobrazí dialógové okno s kartami, kde je možné zobraziť a upraviť mnohé nastavenia Password Safe.
+Ak sa chcete dozvedieť viac o konkrétnej karte, vyberte ju nižšie:</p>
+
+<a href="backups_tab.html">Karta Zálohy</a><br>
+<a href="display_tab.html">Karta Zobraziť</a><br>
+<a href="misc_tab.html">Karta Rôzne</a><br>
+<a href="password_history_tab.html">Karta História hesiel</a><br>
+<a href="security_tab.html">Karta Zabezpečenie</a><br>
+<a href="shortcuts_tab.html">Karta Skratky</a><br>
+<a href="system_tab.html">Karta Systém</a><br>
+
+<hr style="width: 100%; height: 2px;"><b>Poznámka:</b><br>
+<small>Mnohé nastavenia sú uložené ako <i>predvoľby</i>, ako je popísané <a href="preferences.html">tu</a>.</small>
+
+<hr>
+
+<h3>Zásady hesiel...</h3>
+
+<p>Toto vám umožňuje spravovať predvolené zásady hesiel v databáze aj vlastné zásady hesiel. 
+Môžete vytvoriť až 255 vlastných zásad.</p>
+
+<img alt="Zásady hesiel" src="images/password_policies.png">
+
+<p>Ďalšie informácie nájdete v časti <a href="password_policies.html">Nastavenie zásad hesiel</a>.</p>
+
+<h3>Prispôsobiť hlavný panel s nástrojmi</h3>
+
+<p>Toto vám umožňuje vybrať, ktoré príkazy sa zobrazia na paneli s nástrojmi a v akom poradí.</p>
+
+<img alt="Panel s nástrojmi" src="images/menu_toolbar.png">
+
+<p>Ďalšie informácie nájdete v časti <a href="menu_toolbar.html">Panel s nástrojmi</a>.</p>
+
+<h3>Generovať heslo</h3>
+
+<p>Toto vám umožňuje vygenerovať heslo podľa konkrétnych zásad hesiel stlačením tlačidla <i>Generovať</i>.
+A to bez toho aby ste museli vybrať nejaký záznam a otvoriť okno s jeho vlastnosťami, a hľadať miesto kde sa normálne nastavujú heslá. 
+Heslo sa dá skopírovať do schránky, potom ho iná aplikácia môže zo schránky použiť. 
+Môžete si vybrať predvolené zásady hesiel pre aktuálnu databázu, alebo použiť vlastné zásady.</p>
+
+<img alt="Okno Generovať heslo" src="images/generate_password.png">
+
+<h3><a name="yubikey"></a>Yubikey</h3>
+
+<p>Toto vám umožňuje prispôsobiť si voliteľné zariadenie <a href="about_pws_yubi.html">YubiKey</a> tak, 
+aby ste ho mohli použiť na prístup k databáze <b>Password Safe</b>, ako aj vytvoriť záložný YubiKey pre prípad, že by sa originál stratil alebo poškodil.</p>
+<img alt="Konfigurácia YubiKey" src="images/yubi_config.png">
+
+<h4>Prispôsobenie vášho YubiKey</h4>
+
+<ol>
+<li>Vložte svoj YubiKey do USB slotu počítača.</li>
+<li>Vyberte položku menu Spravovať&nbsp;&gt;&nbsp;Yubikey.... Zobrazí sa dialógové okno Konfigurácia YubiKey.</li>
+<li>Malo by sa zobraziť sériové číslo vášho YubiKey. Ak je toto pole prázdne, uistite sa, že váš YubiKey je správne zapojený.</li>
+<li>Kliknite na tlačidlo Generovať. Týmto sa vytvorí 20-bajtový náhodný tajný kľúč, ktorý sa zapíše do vášho YubiKey a použije sa na prístup k vašej databáze.</li>
+<li>Kliknite na Nastaviť. Týmto sa vygenerovaný kľúč zapíše do vášho YubiKey a dáta sa uložia v zašifrovanej forme do vašej databázy, aby ste ho mohli použiť na konfiguráciu záložného kľúča.</li>
+<li>Ak je konfigurácia úspešná, dialógové okno sa zatvorí. Ak nie, zobrazí sa chybové hlásenie s popisom problému.</li>
+<li>Kliknite na Zatvoriť pre zatvorenie dialógového okna.</li>
+</ol>
+<b>Poznámka:</b> Po konfigurácii vášho YubiKey musíte zmeniť heslo databázy, aby ste mohli používať YubiKey na autentifikáciu, 
+ako je popísané v časti <a href="change_combo.html">Zmena hlavného hesla</a>
+
+<h4>Vytvorenie záložného YubiKey</h4>
+
+<ol>
+<li>Vložte záložný YubiKey do USB slotu počítača.</li>
+<li>Vyberte položku menu Spravovať&nbsp;&gt;&nbsp;Yubikey.... Zobrazí sa dialógové okno Konfigurácia YubiKey.</li>
+<li>Malo by sa zobraziť sériové číslo vášho záložného YubiKey. Ak je toto pole prázdne, uistite sa, že váš YubiKey je správne zapojený.</li>
+<li><b>Neklikajte</b> na tlačidlo Generovať. Údaje zobrazené v poli "Tajný kľúč YubiKey" sú kľúčom priradeným k tejto databáze. 
+Toto je kľúč, ktorý bude zapísaný do vášho záložného YubiKey.</li>
+<li>Kliknite na Nastaviť YubiKey. Týmto sa existujúci kľúč zapíše do vášho záložného YubiKey.</li>
+<li>Ak je konfigurácia úspešná, dialógové okno sa zatvorí. Ak nie, zobrazí sa chybové hlásenie s popisom problému.</li>
+<li>Kliknutím na tlačidlo Zavrieť zatvoríte dialógové okno.</li>
+</ol>
+
+<h3>Zmeniť jazyk</h3>
+
+<img alt="Zmeniť jazyk" src="images/change_language.png">
+
+<p>Ak ste pri inštalácii aplikácie <b>Password Safe</b> nainštalovali 
+všetky aktuálne dostupné knižnice DLL pre ďalšie jazyky (čo je predvolená hodnota), budete môcť prepínať medzi týmito jazykmi za chodu prostredníctvom tejto položky menu.</p>
+
+<p>Po zmene jazyka budú všetky ponuky, dialógové okná a správy vo vami zvolenom jazyku.</p>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Menu Spravovať">
+<param name="Keyword" value="Karta Zálohy">
+<param name="Keyword" value="Karta Zobrazenie">
+<param name="Keyword" value="Karta Rôzne">
+<param name="Keyword" value="Zásady hesiel">
+<param name="Keyword" value="Karta História hesiel">
+<param name="Keyword" value="Karta Zabezpečenie">
+<param name="Keyword" value="Karta Skratky">
+<param name="Keyword" value="Karta Systém">
+<param name="Keyword" value="Obnovenie zo zálohy">
+<param name="Keyword" value="Vytvoriť zálohu">
+<param name="Keyword" value="Zmeniť hlavné heslo">
+<param name="Keyword" value="YubiKey">
+</object>
+
+</body></html>
