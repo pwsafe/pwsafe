@@ -226,7 +226,7 @@ void PasswordSafeFrame::RunShowReport(int iAction)
   }
   else {
     wxString tcAction = CReport::ReportNames.find(iAction)->second;
-    wxMessageBox(tcAction + _(L" file \'") + rpt.GetFileName() + _(L"' not readable"), _("View Report"), wxOK|wxICON_ERROR);
+    wxMessageBox(_(tcAction) + _(L" file \'") + rpt.GetFileName() + _(L"' not readable"), _("View Report"), wxOK|wxICON_ERROR);
   }
 }
 
