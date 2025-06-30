@@ -355,7 +355,7 @@ wxPanel* OptionsPropertySheetDlg::CreateBackupsPanel(const wxString& title)
   itemStaticBoxSizer7->Add(itemBoxSizer15, 0, wxEXPAND|wxALL, 0);
   wxArrayString Backup_SuffixCBStrings;
   for (int i = 0; i < int(sizeof(BACKUP_SUFFIX)/sizeof(BACKUP_SUFFIX[0])); ++i) {
-    Backup_SuffixCBStrings.Add(BACKUP_SUFFIX[i]);
+    Backup_SuffixCBStrings.Add(_(BACKUP_SUFFIX[i]));
   }
   m_Backups_SuffixCB = new wxComboBox( itemPanel2, ID_COMBOBOX2, wxEmptyString, wxDefaultPosition, wxSize(itemPanel2->ConvertDialogToPixels(wxSize(140, -1)).x, -1), Backup_SuffixCBStrings, wxCB_READONLY );
   itemBoxSizer15->Add(m_Backups_SuffixCB, 0, wxALIGN_CENTER_VERTICAL|wxALL, 5);
@@ -545,7 +545,7 @@ wxPanel* OptionsPropertySheetDlg::CreateMiscellaneousPanel(const wxString& title
   wxArrayString m_Misc_DoubleClickActionCBStrings;
   wxArrayString m_Misc_ShiftDoubleClickActionCBStrings;
   for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i) {
-    wxString tmp = DCAStrings[i];
+    wxString tmp = _(DCAStrings[i]);
     m_Misc_DoubleClickActionCBStrings.Add(tmp);
     m_Misc_ShiftDoubleClickActionCBStrings.Add(tmp);
   }
@@ -1016,12 +1016,12 @@ void OptionsPropertySheetDlg::PrefsToPropSheet()
   if (m_DoubleClickAction < 0 ||
       m_DoubleClickAction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
     m_DoubleClickAction = 0;
-  m_Misc_DoubleClickActionCB->SetValue(DCAStrings[m_DoubleClickAction]);
+  m_Misc_DoubleClickActionCB->SetValue(_(DCAStrings[m_DoubleClickAction]));
   m_ShiftDoubleClickAction = prefs->GetPref(PWSprefs::ShiftDoubleClickAction);
   if (m_ShiftDoubleClickAction < 0 ||
       m_ShiftDoubleClickAction >= int(sizeof(DCAStrings)/sizeof(DCAStrings[0])))
     m_ShiftDoubleClickAction = 0;
-  m_Misc_ShiftDoubleClickActionCB->SetValue(DCAStrings[m_ShiftDoubleClickAction]);
+  m_Misc_ShiftDoubleClickActionCB->SetValue(_(DCAStrings[m_ShiftDoubleClickAction]));
   m_Misc_AutotypeMinimize = prefs->GetPref(PWSprefs::MinimizeOnAutotype);
   m_Misc_AutotypeString = prefs->GetPref(PWSprefs::DefaultAutotypeString).c_str();
   if (m_Misc_AutotypeString.empty())
@@ -1081,7 +1081,7 @@ void OptionsPropertySheetDlg::PrefsToPropSheet()
 static int DCAStr2Int(const wxString &str)
 {
   for (int i = 0; i < int(sizeof(DCAStrings)/sizeof(DCAStrings[0])); ++i)
-    if (str == DCAStrings[i]) {
+    if (str == _(DCAStrings[i])) {
       return i;
     }
   ASSERT(0);
