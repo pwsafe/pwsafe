@@ -9,15 +9,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2025-03-12 20:14+0200\n"
+"PO-Revision-Date: 2025-06-25 20:48+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -1207,7 +1220,7 @@ msgstr "'Alt Gr' (højre Alt) tast"
 
 #. Resource IDs: (1444)
 msgid "'Browse to URL' copies password to clipboard"
-msgstr ""
+msgstr "'Gå til URL' kopierer adgangskoden til udklipsholderen"
 
 #. Resource IDs: (5645)
 msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Change one or both."
@@ -1766,7 +1779,7 @@ msgstr "Alias Base-post - advarselsadgangskode udløber"
 
 #. Resource IDs: (6042)
 msgid "Alias entry"
-msgstr ""
+msgstr "Alias-indgang"
 
 #. Resource IDs: (61442)
 msgid "All Files (*.*)"
@@ -3124,7 +3137,7 @@ msgstr "Slet"
 
 #. Resource IDs: (3402)
 msgid "Delete Base Entry Confirmation"
-msgstr ""
+msgstr "Sletning af basispostbekræftelse"
 
 #. Resource IDs: (116)
 msgid "Delete Confirmation"
@@ -5156,6 +5169,10 @@ msgstr ""
 msgid "Media Type:"
 msgstr ""
 
+#. Resource IDs: (5124)
+msgid "Medium Password"
+msgstr "Medium adgangskode"
+
 #. Resource IDs: (5680)
 msgid "Menu Item"
 msgstr "Menu Punkt"
@@ -5284,7 +5301,7 @@ msgstr ""
 
 #. Resource IDs: (1482)
 msgid "Named Policy"
-msgstr ""
+msgstr "Navngivet politik"
 
 #. Resource IDs: (32103 - MenuEx)
 msgid "Nested &Tree"
@@ -5714,6 +5731,30 @@ msgstr "PWS_CPF_CDD"
 #. Resource IDs: (5449)
 msgid "PWS_CPF_TVDD"
 msgstr "PWS_CPF_TVDD"
+
+#. Resource IDs: (3093)
+msgid "Passkey Algorithm ID"
+msgstr ""
+
+#. Resource IDs: (3090)
+msgid "Passkey Credential ID"
+msgstr ""
+
+#. Resource IDs: (3094)
+msgid "Passkey Private Key"
+msgstr ""
+
+#. Resource IDs: (3091)
+msgid "Passkey Relying Party ID"
+msgstr ""
+
+#. Resource IDs: (3095)
+msgid "Passkey Sign Count"
+msgstr ""
+
+#. Resource IDs: (3092)
+msgid "Passkey User Handle"
+msgstr ""
 
 #. Resource IDs: (5757)
 msgid "Passphrase"
@@ -6480,13 +6521,9 @@ msgstr "Vælg"
 msgid "Select &All"
 msgstr "Vælg &Alle"
 
-#. Resource IDs: (5384)
-msgid "Select Browser:"
-msgstr "Vælg Browser:"
-
 #. Resource IDs: (497, 537)
 msgid "Select Database"
-msgstr ""
+msgstr "Vælg database"
 
 #. Resource IDs: (65535)
 msgid "Select Keyboard:"
@@ -6499,6 +6536,10 @@ msgstr "Vælg Mappe til Mellemliggende Sikkerhedskopier"
 #. Resource IDs: (65535)
 msgid "Select Locked Text Color:"
 msgstr ""
+
+#. Resource IDs: (5384)
+msgid "Select Program"
+msgstr "Vælg program"
 
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"
@@ -6968,6 +7009,10 @@ msgstr ""
 msgid "String value:"
 msgstr "Streng værdi:"
 
+#. Resource IDs: (5125)
+msgid "Strong Password"
+msgstr "Stærk adgangskode"
+
 #. Resource IDs: (3365)
 msgid "Subset of entries restricted by the following rule:"
 msgstr "Delmængde af adgange begrænset af følgende regel:"
@@ -7286,6 +7331,10 @@ msgstr "De følgende kolonner blev genkendt men kun Gruppe/Titel, Brugernavn og 
 msgid "The following columns will be processed: "
 msgstr "De følgende kolonner vil blive behandlet: "
 
+#. Resource IDs: (3463)
+msgid "The following entries contain incomplete passkeys."
+msgstr ""
+
 #. Resource IDs: (3439)
 msgid "The following entries had a duplicate UUID field.  This has been corrected."
 msgstr ""
@@ -7600,7 +7649,7 @@ msgstr "For at erstatte adgangskoder til eksisterende adgange, alle de følgende
 
 #. Resource IDs: (5802)
 msgid "To unprotect this entry, click on Close, use the Edit menu or right-click on the entry and select Unprotect."
-msgstr ""
+msgstr "For at fjerne beskyttelsen af denne post skal du klikke på Luk, bruge menuen Rediger eller højreklikke på posten og vælge Fjern beskyttelse."
 
 #. Resource IDs: (32106 - MenuEx)
 msgid "Toolbar &visible"
@@ -8155,6 +8204,10 @@ msgstr "Advarsel - Noter, der redigeres eksternt"
 #. Resource IDs: (5793)
 msgid "Warning - field too long"
 msgstr "Advarsel - feltet er for langt"
+
+#. Resource IDs: (5123)
+msgid "Weak Password"
+msgstr "Svag adgangskode"
 
 #. Resource IDs: (5281)
 #, c-format

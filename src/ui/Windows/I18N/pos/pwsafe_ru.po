@@ -74,6 +74,7 @@ msgstr ""
 # "Manage" - "Сервис"
 # drag / drag-and-drop - перетащить, перетаскивание
 # dragbar - панель значков для перетаскивания
+# passkey - ключ доступа
 
 #. Resource IDs: (3263)
 msgid "  All Password History ignored."
@@ -1816,6 +1817,7 @@ msgstr "Хотя бы один из типов символов (прописн�
 #. Resource IDs: (538, 539, 5986)
 msgid "Attachment"
 msgstr "Вложение"
+
 #. Resource IDs: (3089)
 msgid "Attachment Content"
 msgstr "Содержимое вложения"
@@ -5023,6 +5025,10 @@ msgstr "Тип файла"
 msgid "Media Type:"
 msgstr "Тип файла:"
 
+#. Resource IDs: (5124)
+msgid "Medium Password"
+msgstr "Пароль средней надёжности"
+
 #. Resource IDs: (5680)
 msgid "Menu Item"
 msgstr "Пункт меню"
@@ -5593,6 +5599,30 @@ msgstr "PWS_CPF_CDD"
 #. Resource IDs: (5449)
 msgid "PWS_CPF_TVDD"
 msgstr "PWS_CPF_TVDD"
+
+#. Resource IDs: (3093)
+msgid "Passkey Algorithm ID"
+msgstr "Ключ доступа: идентификатор алгоритма"
+
+#. Resource IDs: (3090)
+msgid "Passkey Credential ID"
+msgstr "Ключ доступа: идентификатор учётных данных"
+
+#. Resource IDs: (3094)
+msgid "Passkey Private Key"
+msgstr "Ключ доступа: закрытый ключ"
+
+#. Resource IDs: (3091)
+msgid "Passkey Relying Party ID"
+msgstr "Ключ доступа: идентификатор проверяющей стороны"
+
+#. Resource IDs: (3095)
+msgid "Passkey Sign Count"
+msgstr "Ключ доступа: количество входов"
+
+#. Resource IDs: (3092)
+msgid "Passkey User Handle"
+msgstr "Ключ доступа: дескриптор пользователя"
 
 #. Resource IDs: (5757)
 msgid "Passphrase"
@@ -6372,6 +6402,10 @@ msgstr "Укажите каталог для промежуточных резе
 msgid "Select Locked Text Color:"
 msgstr "Цвет текста для заблокированного контейнера:"
 
+#. Resource IDs: (5384)
+msgid "Select Program"
+msgstr "Выберите программу"
+
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"
 msgstr "Выберите тип тестового дампа"
@@ -6832,6 +6866,10 @@ msgstr "Сохранённые фильтры будут недоступны, �
 msgid "String value:"
 msgstr "Строка:"
 
+#. Resource IDs: (5125)
+msgid "Strong Password"
+msgstr "Надёжный пароль"
+
 #. Resource IDs: (3365)
 msgid "Subset of entries restricted by the following rule:"
 msgstr "Подмножество элементов отобрано по правилу:"
@@ -7107,6 +7145,10 @@ msgstr "Указанные столбцы распознаны, но тольк�
 #. Resource IDs: (3260)
 msgid "The following columns will be processed: "
 msgstr "Были обработаны следующие столбцы: "
+
+#. Resource IDs: (3463)
+msgid "The following entries contain incomplete passkeys."
+msgstr "Указанные элементы содержат неполные данные о ключе доступа."
 
 #. Resource IDs: (3439)
 msgid "The following entries had a duplicate UUID field.  This has been corrected."
@@ -7898,6 +7940,10 @@ msgstr "Внимание: заметки открыты во внешнем ре
 #. Resource IDs: (5793)
 msgid "Warning - field too long"
 msgstr "Внимание: поле содержит слишком много данных"
+
+#. Resource IDs: (5123)
+msgid "Weak Password"
+msgstr "Слабый пароль"
 
 #. Resource IDs: (5281)
 #, c-format

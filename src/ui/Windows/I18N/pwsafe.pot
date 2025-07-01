@@ -6199,10 +6199,6 @@ msgstr ""
 msgid "Select &All"
 msgstr ""
 
-#. Resource IDs: (5384)
-msgid "Select Browser:"
-msgstr ""
-
 #. Resource IDs: (497, 537)
 msgid "Select Database"
 msgstr ""
@@ -6217,6 +6213,10 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Select Locked Text Color:"
+msgstr ""
+
+#. Resource IDs: (5384)
+msgid "Select Program"
 msgstr ""
 
 #. Resource IDs: (162)

@@ -4011,7 +4011,7 @@ int DboxMain::OnUpdateViewReports(const int nID)
   if (!GetDriveAndDirectory(cs_Database, cs_drive, cs_directory))
     return FALSE;
 
-  csAction.LoadString(SetupViewReports(nID));
+  csAction = CReport::ReportNames.find(SetupViewReports(nID))->second;
   cs_filename.Format(IDSC_REPORTFILENAME, static_cast<LPCWSTR>(cs_drive),
                      static_cast<LPCWSTR>(cs_directory),
                      static_cast<LPCWSTR>(csAction));

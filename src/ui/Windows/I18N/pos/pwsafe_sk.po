@@ -134,7 +134,7 @@ msgstr " 'Čas úpravy hesla'"
 
 #. Resource IDs: (5509)
 msgid " 'Password Policy'"
-msgstr " 'Zásady tvorby hesla'"
+msgstr " 'Zásady hesiel'"
 
 #. Resource IDs: (5364)
 msgid " 'Password'"
@@ -142,7 +142,7 @@ msgstr " 'Heslo'"
 
 #. Resource IDs: (5909)
 msgid " 'Policy Name'"
-msgstr " 'Názov zásad tvorby hesla'"
+msgstr " 'Názov zásad hesiel'"
 
 #. Resource IDs: (5372)
 msgid " 'Record Modification Time'"
@@ -608,7 +608,7 @@ msgstr "Pokračovať"
 
 #. Resource IDs: (1343, 1615, 34102)
 msgid "&Copy"
-msgstr "Skopírovať"
+msgstr "Kopírovať"
 
 #. Resource IDs: (32066 - Menu, 32066 - MenuEx, 5299)
 msgid "&Copy Password to Clipboard"
@@ -703,7 +703,7 @@ msgstr "Písmo:"
 
 #. Resource IDs: (1025)
 msgid "&Generate"
-msgstr "Vygenerovať"
+msgstr "Generovať"
 
 #. Resource IDs: (32079 - Menu, 32079 - MenuEx)
 msgid "&Go to Base entry"
@@ -1007,7 +1007,7 @@ msgstr "'Alt Gr' (pravý Alt)"
 
 #. Resource IDs: (1444)
 msgid "'Browse to URL' copies password to clipboard"
-msgstr "'Prejsť na URL' zároveň skopíruje heslo do schránky"
+msgstr "'Otvoriť URL v prehliadači' zároveň skopíruje heslo do schránky"
 
 #. Resource IDs: (5645)
 msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Change one or both."
@@ -1467,7 +1467,7 @@ msgstr "Pridať skupinu"
 
 #. Resource IDs: (5914)
 msgid "Add a New Database Named Password Policy"
-msgstr "Pridať vlastné zásady tvorby hesla"
+msgstr "Pridať vlastné zásady hesiel"
 
 #. Resource IDs: (466, 504)
 msgid "Additional"
@@ -1559,7 +1559,7 @@ msgstr "Zobrazujú sa všetky dostupné stĺpce."
 
 #. Resource IDs: (5886)
 msgid "All changes to Password Policies will be lost"
-msgstr "Všetky zmeny v zásadách tvorby hesla sa stratia"
+msgstr "Všetky zmeny v zásadách hesiel sa stratia"
 
 #. Resource IDs: (5063)
 msgid "All files (*.*)|*.*||"
@@ -1567,7 +1567,7 @@ msgstr "Všetky súbory (*.*)|*.*||"
 
 #. Resource IDs: (1333)
 msgid "Allow multiple instances (requires all instances to be restarted)"
-msgstr "Povoliť viacero inštancií (vyžaduje reštartovanie všetkých inštancií)"
+msgstr "Povoliť viacero inštancií (vyžaduje reštartovanie všetkých)"
 
 #. Resource IDs: (3504)
 msgid "Allowed characters are a-z, 2-7, space and dash"
@@ -1820,7 +1820,7 @@ msgstr "Dostupné filtre:"
 
 #. Resource IDs: (65535)
 msgid "Available Password Policies:"
-msgstr "Dostupné zásady tvorby hesla:"
+msgstr "Dostupné zásady hesiel:"
 
 #. Resource IDs: (8272)
 msgid "Azeri Cyrillic"
@@ -2099,15 +2099,15 @@ msgstr "Stav zmien od posledného uloženia:\n* označuje že databáza bola zme
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
-msgstr "Zmeniť/zobraziť predvolené zásady tvorby hesla v databáze"
+msgstr "Zmeniť/zobraziť predvolené zásady hesiel v databáze"
 
 #. Resource IDs: (5915)
 msgid "Change/View a Database Named Password Policy"
-msgstr "Zmeniť/zobraziť vlastné zásady tvorby hesla v databáze"
+msgstr "Zmeniť/zobraziť vlastné zásady hesiel v databáze"
 
 #. Resource IDs: (5881)
 msgid "Change/View selected Named Password Policy or the database default policy"
-msgstr "Zmeniť/zobraziť vybraté vlastné alebo predvolené zásady tvorby hesla"
+msgstr "Zmeniť/zobraziť vybraté vlastné alebo predvolené zásady hesiel"
 
 #. Resource IDs: (1187)
 msgid "Changes to existing entries will be applied on pressing OK."
@@ -2215,7 +2215,7 @@ msgstr "Vymazať históriu hesiel pre všetky záznamy"
 
 #. Resource IDs: (1457, 6000)
 msgid "Click button, then touch your YubiKey"
-msgstr "Kliknite na tlačidlo a potom sa dotknite svojho Yubikey"
+msgstr "Kliknite na tlačidlo a potom aktivujte Yubikey"
 
 #. Resource IDs: (1451)
 msgid "Click here for details on the various preferences."
@@ -2347,7 +2347,7 @@ msgstr "Zbaliť všetko"
 
 #. Resource IDs: (114, 32210 - Menu)
 msgid "Column Picker"
-msgstr "Výbrať stĺpce"
+msgstr "Vybrať stĺpce"
 
 #. Resource IDs: (3244)
 msgid "Column header row not recognised as first record. No records imported."
@@ -2478,7 +2478,7 @@ msgstr "Potvrďte že chcete synchronizovať tieto záznamy z %s do %s.\n\nVybra
 
 #. Resource IDs: (5287)
 msgid "Confirm to delete the current user's PasswordSafe configuration from the Windows registry.\n\n"
-msgstr "Potvrďte odstránenie konfigurácie programu aktuálneho používateľa z registra systému Windows.\n\n"
+msgstr "Potvrďte odstránenie konfigurácie programu aktuálneho používateľa z registra Windows.\n\n"
 
 #. Resource IDs: (1505, 65535)
 msgid "Confirmation:"
@@ -2520,7 +2520,7 @@ msgstr "Skopíruj email do schránky"
 
 #. Resource IDs: (32270 - Menu)
 msgid "Copy Here"
-msgstr "Skopírovať sem"
+msgstr "Kopírovať sem"
 
 #. Resource IDs: (32081 - Menu, 32081 - MenuEx)
 msgid "Copy Run Command to Clipboard"
@@ -2560,7 +2560,7 @@ msgstr "Skopíruj do pôvodnej"
 
 #. Resource IDs: (5642)
 msgid "Copy to database"
-msgstr "Skopírovať do databázy"
+msgstr "Kopírovať do databázy"
 
 #. Resource IDs: (4005)
 msgid "Copy username to clipboard"
@@ -2621,7 +2621,7 @@ msgstr "Vytvoriť odkaz"
 
 #. Resource IDs: (5880)
 msgid "Create a new Password Policy"
-msgstr "Vytvorte vlastné zásady tvorby hesla"
+msgstr "Vytvorte vlastné zásady hesiel"
 
 #. Resource IDs: (1199)
 msgid "Create intermediate backups (.ibak) before saving"
@@ -2753,7 +2753,7 @@ msgstr "Databáza"
 
 #. Resource IDs: (65535)
 msgid "Database Entry Shortcuts"
-msgstr "Záznamy v databáze ktoré majú pridelené odkazy"
+msgstr "Záznamy v databáze ktoré majú pridelené skratky"
 
 #. Resource IDs: (5758)
 msgid "Database Format"
@@ -2813,7 +2813,7 @@ msgstr "Predvolený reťazec AutoType:"
 
 #. Resource IDs: (4114)
 msgid "Default Policy"
-msgstr "Predvolené zásady tvorby hesla"
+msgstr "Predvolené zásady hesiel"
 
 #. Resource IDs: (65535)
 msgid "Default Username"
@@ -2854,7 +2854,7 @@ msgstr "Odstrániť záznam"
 
 #. Resource IDs: (5882)
 msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
-msgstr "Odstrániť vybraté zásady tvorby hesla\n(Odstránené môžu byť iba nepoužité zásady)"
+msgstr "Odstrániť vybraté zásady hesiel\n(Odstránené môžu byť iba nepoužité zásady)"
 
 #. Resource IDs: (5876)
 msgid "Description"
@@ -2920,7 +2920,7 @@ msgstr "Filter zobrazenia - "
 
 #. Resource IDs: (5883)
 msgid "Display policy settings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
-msgstr "Zobraz nastavenia zásad tvorby hesla alebo zobraz zoznam záznamov používajúcich tieto vlastné zásady\n(Druhá možnosť môže chvíľu trvať v závislosti od počtu položiek v tejto databáze)"
+msgstr "Zobraz nastavenia zásad hesiel alebo zobraz zoznam záznamov používajúcich tieto vlastné zásady\n(Druhá možnosť môže chvíľu trvať v závislosti od počtu položiek v tejto databáze)"
 
 #. Resource IDs: (32067 - Menu, 32067 - MenuEx)
 msgid "Display subset of Password"
@@ -3264,11 +3264,11 @@ msgstr "Záznamy iba v aktuálnej databáze (%s):"
 
 #. Resource IDs: (546)
 msgid "Entries using Named Password Policy: "
-msgstr "Záznamy používajúce vlastné zásady tvorby hesla: "
+msgstr "Záznamy používajúce vlastné zásady hesiel: "
 
 #. Resource IDs: (1480)
 msgid "Entries using selected policy:"
-msgstr "Záznamy používajúce vybraté zásady tvorby hesla:"
+msgstr "Záznamy používajúce vybraté zásady hesiel:"
 
 #. Resource IDs: (32131 - MenuEx)
 msgid "Entries with E&xpiry dates"
@@ -3293,7 +3293,7 @@ msgstr "Klávesová skratka záznamu"
 
 #. Resource IDs: (5906)
 msgid "Entry Password Policy Changes"
-msgstr "Zmeny zásad tvorby hesla pre tento záznam"
+msgstr "Zmeny zásad hesiel pre tento záznam"
 
 #. Resource IDs: (1407)
 msgid "Entry Unique ID:"
@@ -3615,11 +3615,11 @@ msgstr "Nepodarilo sa aktualizovať Yubikey"
 
 #. Resource IDs: (5766)
 msgid "Failsafe Backup Deletion"
-msgstr "Vymazanie zálohy"
+msgstr "Vymazanie Failsafe zálohy"
 
 #. Resource IDs: (164)
 msgid "Failsafe Backup Files"
-msgstr "Záložné súbory"
+msgstr "Súbory Failsafe záloh"
 
 #. Resource IDs: (3328)
 msgid "Fatal Error"
@@ -3735,7 +3735,7 @@ msgstr "Súbor: %s prešiel overením, ale počas importu mal tieto chyby:\n\n%s
 #. Resource IDs: (5905)
 #, c-format
 msgid "File: %s was imported (%d warning(s) issued about missing Password Policy Names). See report for details."
-msgstr "Súbor: %s sa naimportoval (%d varovaní o chýbajúcich názvoch zásad tvorby hesla). Pozrite si podrobnosti v reporte."
+msgstr "Súbor: %s sa naimportoval (%d varovaní o chýbajúcich názvoch zásad hesiel). Pozrite si podrobnosti v reporte."
 
 #. Resource IDs: (5346)
 #, c-format
@@ -3814,7 +3814,7 @@ msgstr "Nájdená 1 zhoda."
 
 #. Resource IDs: (8210)
 msgid "French"
-msgstr "Francúzština"
+msgstr "Francúzska"
 
 #. Resource IDs: (1176)
 msgid "Fully collapsed"
@@ -3834,23 +3834,23 @@ msgstr ""
 
 #. Resource IDs: (1025, 1467)
 msgid "Generate"
-msgstr "Vygenerovať"
+msgstr "Generovať"
 
 #. Resource IDs: (32157 - MenuEx)
 msgid "Generate &Password"
-msgstr "Vygenerovať &heslo"
+msgstr "&Generovať heslo"
 
 #. Resource IDs: (1052)
 msgid "Generate &Pronounceable passwords"
-msgstr "Vygenerovať vysloviteľné &heslo"
+msgstr "Generovať vysloviteľné heslo"
 
 #. Resource IDs: (5743)
 msgid "Generate Password"
-msgstr "Vygenerovať heslo"
+msgstr "Generovať heslo"
 
 #. Resource IDs: (5916)
 msgid "Generate Password using selected Password Policy"
-msgstr "Vygeneruj heslo s použitím vybratej zásady tvorby hesla"
+msgstr "Generuj heslo s použitím vybratých zásad hesiel"
 
 #. Resource IDs: (8241)
 msgid "Georgian"
@@ -4219,7 +4219,7 @@ msgstr ""
 
 #. Resource IDs: (5768)
 msgid "Ignore all Failsafe Backup files and continue with the currently selected database."
-msgstr "Ignorovať všetky súbory záloh a pokračovať s aktuálne vybratou databázou."
+msgstr "Ignorovať všetky súbory Failsafe záloh a pokračovať s aktuálne vybratou databázou."
 
 #. Resource IDs: (32014 - PopupMenuEx)
 msgid "Import &From"
@@ -4611,7 +4611,7 @@ msgstr "Zoznam"
 
 #. Resource IDs: (34200 - Menu)
 msgid "List entries using this policy"
-msgstr "Zoznam záznamov používajúcich tieto zásady tvorby hesla"
+msgstr "Zoznam záznamov používajúcich tieto zásady hesiel"
 
 #. Resource IDs: (6044)
 msgid "List of aliases:"
@@ -4683,7 +4683,7 @@ msgstr "Spravovať filtre"
 
 #. Resource IDs: (515)
 msgid "Manage Password Policies"
-msgstr "Spravovať zásady tvorby hesla"
+msgstr "Spravovať zásady hesiel"
 
 #. Resource IDs: (1544)
 msgid "Manage password history of current entries"
@@ -4707,7 +4707,7 @@ msgstr "Nastavenie hlavného hesla"
 
 #. Resource IDs: (65535)
 msgid "Master Password last set on:"
-msgstr "Hlavné heslo naposledy nastavené dňa:"
+msgstr "Hlavné heslo naposledy nastavené:"
 
 #. Resource IDs: (1506, 65535)
 msgid "Master Password:"
@@ -4931,7 +4931,7 @@ msgstr "Žiadna databáza nie je otvorená"
 
 #. Resource IDs: (1183)
 msgid "No change"
-msgstr "Žiadna zmena"
+msgstr "Bez zmeny"
 
 #. Resource IDs: (5601)
 msgid "No criteria defined"
@@ -5073,7 +5073,7 @@ msgstr "Poznámka: Formát záznamu je «Skupina» «Názov» «Používateľ»"
 
 #. Resource IDs: (3428)
 msgid "Note: These Password Policies will not replace existing policies with the same name in the current database."
-msgstr "Poznámka: Tieto zásady tvorby hesla nenahradia existujúce zásady s rovnakým názvom v aktuálnej databáze."
+msgstr "Poznámka: Tieto zásady hesiel nenahradia existujúce zásady s rovnakým názvom v aktuálnej databáze."
 
 #. Resource IDs: (3362)
 msgid "Note: These preferences are only used when importing into an empty database."
@@ -5336,7 +5336,7 @@ msgstr "Interval uplynutia platnosti hesla"
 
 #. Resource IDs: (5744)
 msgid "Password Generated based on displayed policy"
-msgstr "Heslo vygenerované na základe zobrazenej zásady tvorby hesla"
+msgstr "Heslo vygenerované na základe zobrazených zásad hesiel"
 
 #. Resource IDs: (120, 1381, 1382, 140, 1599, 5425, 5589)
 msgid "Password History"
@@ -5364,23 +5364,23 @@ msgstr "Čas úpravy hesla"
 
 #. Resource IDs: (32159 - MenuEx)
 msgid "Password Policies..."
-msgstr "Zásady tvorby hesla..."
+msgstr "Zásady hesiel..."
 
 #. Resource IDs: (141, 3057, 468, 503, 508, 5508, 5889)
 msgid "Password Policy"
-msgstr "Zásady tvorby hesla"
+msgstr "Zásady hesiel"
 
 #. Resource IDs: (5604)
 msgid "Password Policy Filter"
-msgstr "Filter zásad tvorby hesla"
+msgstr "Filter zásad hesiel"
 
 #. Resource IDs: (3072)
 msgid "Password Policy Name"
-msgstr "Názov zásad tvorby hesla"
+msgstr "Názov zásad hesiel"
 
 #. Resource IDs: (5256)
 msgid "Password Policy Override"
-msgstr "Prepísanie nastavení zásad tvorby hesla"
+msgstr "Prepísanie nastavení zásad hesiel"
 
 #. Resource IDs: (134, 57344)
 msgid "Password Safe"
@@ -5480,7 +5480,7 @@ msgstr "Heslo by malo obsahovať malé/veľké písmená, byť s aspoň jednou �
 
 #. Resource IDs: (32093 - Menu, 32093 - MenuEx, 32096 - Menu, 32096 - MenuEx)
 msgid "Password&Safe..."
-msgstr "Databáza Password&Safe..."
+msgstr "Databáza Password Safe..."
 
 #. Resource IDs: (5715)
 #, c-format
@@ -5489,7 +5489,7 @@ msgstr "Aplikácia Password Safe V%d.%d.%d (Build %s) zaznamenala chybu."
 
 #. Resource IDs: (5959)
 msgid "PasswordSafe..."
-msgstr ""
+msgstr "Databáza Password Safe..."
 
 #. Resource IDs: (5822)
 msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
@@ -5634,11 +5634,11 @@ msgstr "Navštíviť <a href=\"https://pwsafe.org/\">webovú stránku PasswordSa
 
 #. Resource IDs: (5879)
 msgid "Policy Name"
-msgstr "Názov zásad tvorby hesla"
+msgstr "Názov zásad hesiel"
 
 #. Resource IDs: (5896)
 msgid "Policy Name is already in use"
-msgstr "Tieto zásady tvorby hesla sa už používajú"
+msgstr "Tieto zásady hesiel sa už používajú"
 
 #. Resource IDs: (5895)
 msgid "Policy Name is blank"
@@ -5646,7 +5646,7 @@ msgstr "Názov zásad je prázdny"
 
 #. Resource IDs: (5890)
 msgid "Policy field"
-msgstr "Oblasť"
+msgstr "Pravidlo"
 
 #. Resource IDs: (8288)
 msgid "Polish (214)"
@@ -5760,7 +5760,7 @@ msgstr "Dať skupiny na prvé miesto v zobrazení stromu"
 
 #. Resource IDs: (1072)
 msgid "Put icon in System Tray"
-msgstr "Pridať ikonu aplikácie na panel úloh"
+msgstr "Pridať ikonu aplikácie do systémovej lišty"
 
 #. Resource IDs: (8010)
 msgid "R Ctrl"
@@ -5815,7 +5815,7 @@ msgstr "Čas úpravy záznamu"
 
 #. Resource IDs: (1121)
 msgid "Record last access times"
-msgstr "Čas posledného prístupu k záznamu"
+msgstr "Zaznamenávať čas posledného prístupu k záznamu"
 
 #. Resource IDs: (62184)
 msgid "Recover the auto-saved documents\nOpen the auto-saved versions instead of the explicitly saved versions"
@@ -5830,7 +5830,7 @@ msgstr "Zopakovať"
 
 #. Resource IDs: (5885)
 msgid "Redo the last change to password policies that was previously undone"
-msgstr "Zopakovať poslednú zmenu v zásadách tvorby hesla, ktorá bola predtým vrátená"
+msgstr "Zopakovať poslednú zmenu v zásadách hesiel, ktorá bola predtým vrátená"
 
 #. Resource IDs: (1228, 3397)
 msgid "Relative"
@@ -5936,7 +5936,7 @@ msgstr "Pravý kláves Ctrl"
 
 #. Resource IDs: (5994)
 msgid "Right click a Named Password Policy to list the entries using it"
-msgstr "Kliknutím pravým tlačidlom myši na uvedenú položku zobrazíte záznamy, ktoré používajú dané zásady tvorby hesla"
+msgstr "Kliknutím pravým tlačidlom myši na uvedenú položku zobrazíte záznamy, ktoré používajú dané zásady hesiel"
 
 #. Resource IDs: (65535)
 msgid "Right-click on the 'Y' in either of the first 2 columns for additional functions"
@@ -6057,7 +6057,7 @@ msgstr "Chyba pri ukladaní"
 
 #. Resource IDs: (5887)
 msgid "Save all changes to Password Policies"
-msgstr "Uložiť všetky zmeny do pravidiel tvorby hesla"
+msgstr "Uložiť všetky zmeny do zásad hesiel"
 
 #. Resource IDs: (61699)
 #, c-format
@@ -6157,7 +6157,7 @@ msgstr "Pozri filtre histórie hesiel"
 
 #. Resource IDs: (3316)
 msgid "See Password Policy filters"
-msgstr "Pozri filtre pravidiel tvorby hesla"
+msgstr "Pozri filtre zásad hesiel"
 
 #. Resource IDs: (61865)
 #, c-format
@@ -6238,7 +6238,7 @@ msgstr "Podrobnosti vybratého filtra:"
 
 #. Resource IDs: (1479)
 msgid "Selected policy details:"
-msgstr "Podrobnosti vybratých zásad tvorby hesla:"
+msgstr "Podrobnosti vybratých zásad hesiel:"
 
 #. Resource IDs: (1380)
 msgid "Send"
@@ -6312,7 +6312,7 @@ msgstr "Nastaviť filtre zobrazenia: %d pridané; %d aktívne"
 
 #. Resource IDs: (5510)
 msgid "Set Entry's Password Policy"
-msgstr "Nastaviť zásady tvorby hesla pre tento záznam"
+msgstr "Nastaviť zásady hesiel pre tento záznam"
 
 #. Resource IDs: (5971)
 msgid "Set Notes display font"
@@ -6326,7 +6326,7 @@ msgstr "Nastaviť filtre histórie hesiel: %d pridané; %d aktívne"
 #. Resource IDs: (5574)
 #, c-format
 msgid "Set Password Policy Filters: %d Added; %d Active"
-msgstr "Nastaviť filtre zásad tvorby hesla: %d pridané; %d aktívne"
+msgstr "Nastaviť filtre zásad hesiel: %d pridané; %d aktívne"
 
 #. Resource IDs: (5693)
 msgid "Set Password display font"
@@ -6382,7 +6382,7 @@ msgstr "Akcia na Shift dvojklik"
 
 #. Resource IDs: (5555)
 msgid "Shift+click to view current policy"
-msgstr "Shift+klikni pre zobrazenie aktuálnych zásad tvorby hesla"
+msgstr "Shift+klikni pre zobrazenie aktuálnych zásad hesiel"
 
 #. Resource IDs: (5686)
 #, c-format
@@ -6731,7 +6731,7 @@ msgstr "Cieľ sa naposledy zmenil dňa:"
 
 #. Resource IDs: (8248)
 msgid "Tatar"
-msgstr ""
+msgstr "Tatárska"
 
 #. Resource IDs: (8254)
 msgid "Telugu"
@@ -6928,7 +6928,7 @@ msgstr "Nasledovné záznamy mali duplicitné pole UUID. Bola vykonaná oprava."
 #. Resource IDs: (3433)
 #, c-format
 msgid "The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%ls) appended:%ls"
-msgstr "Nasledovné záznamy mali zásady tvorby hesla s názvom, ktorý už existoval v tejto databáze, ale s inými nastaveniami.\nBola vytvorená nová položka s aktuálnym dátumom/časom (%ls): (%ls)"
+msgstr "Nasledovné záznamy mali zásady hesiel s názvom, ktorý už existoval v tejto databáze, ale s inými nastaveniami.\nBola vytvorená nová položka s aktuálnym dátumom/časom (%ls): (%ls)"
 
 #. Resource IDs: (3438)
 #, c-format
@@ -7034,7 +7034,7 @@ msgstr "Odkazovaný záznam '%s:%s:%s' je sám alias alebo odkaz. Toto nie je po
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
-msgstr "Namiesto vybratej databázy sa otvorí vybratý záložný súbor."
+msgstr "Namiesto vybratej databázy sa otvorí vybratý súbor Failsafe zálohy."
 
 #. Resource IDs: (5970)
 msgid "The selected output format does not support all features of the current database. If these features are used, information may be lost. Continue?"
@@ -7061,7 +7061,7 @@ msgstr "V príkaze na spustenie sú nespárované úvodzovky"
 
 #. Resource IDs: (5767)
 msgid "There does not appear to be a Recycle Bin on the media containing this Failsafe Backup file. You will not be able to undo deletes. Do you wish to continue?"
-msgstr "Nezdá sa, že by tento disk obsahujúci záložný súbor mal Kôš. Vymazanie nebudete môcť vrátiť späť. Chcete pokračovať?"
+msgstr "Nezdá sa, že by tento disk obsahujúci súbor Failsafe zálohy mal Kôš. Vymazanie nebudete môcť vrátiť späť. Chcete pokračovať?"
 
 #. Resource IDs: (62181)
 msgid "These are more recently saved than the currently open documents and contain changes that were made before the application closed."
@@ -7190,7 +7190,7 @@ msgstr "Odstráni sa záznam zo skupiny a/alebo podskupín."
 
 #. Resource IDs: (5769)
 msgid "This will delete the selected Failsafe Backup file.  If the current drive has a Recycle Bin, it will be moved there. If not, it will be permanently deleted."
-msgstr "Týmto sa odstráni vybratý záložný súbor. Ak má aktuálny disk Kôš, bude tam presunutý. Ak nie, bude natrvalo odstránený."
+msgstr "Týmto sa odstráni vybratý súbor Failsafe zálohy. Ak má aktuálny disk Kôš, bude tam presunutý. Ak nie, bude natrvalo odstránený."
 
 #. Resource IDs: (5289)
 #, c-format
@@ -7380,7 +7380,7 @@ msgstr "Vrátiť späť"
 
 #. Resource IDs: (5884)
 msgid "Undo the last change to password policies"
-msgstr "Vrátiť späť poslednú zmenu zásad tvorby hesla"
+msgstr "Vrátiť späť poslednú zmenu zásad hesiel"
 
 #. Resource IDs: (61728)
 msgid "Unexpected file format."
@@ -7585,7 +7585,7 @@ msgstr "Overiť"
 #. Resource IDs: (5347)
 #, c-format
 msgid "Validated %d %s\n\nImported %d %s"
-msgstr "Overené %d %s\n\nImportované %d %s"
+msgstr "Overené: %d %s\n\nImportované: %d %s"
 
 #. Resource IDs: (5891)
 msgid "Value"
@@ -7859,7 +7859,7 @@ msgstr "Pred exportom musíte túto databázu uložiť."
 
 #. Resource IDs: (5772)
 msgid "Your currently opened database will be in the first row.  Failsafe Backup files will be displayed below this.  If the passphrase is the same as the current database, the properties of these backups will also be shown.  If you aren't sure, continue with the current database and use the database Compare function to view the differences between the versions."
-msgstr "Aktuálne otvorená databáza bude v prvom riadku. Pod týmto sa zobrazia súbory záloh. Ak je prístupová fráza rovnaká ako v aktuálnej databáze, zobrazia sa aj vlastnosti týchto záloh. Ak si nie ste istí, pokračujte s aktuálnou databázou a použite funkciu porovnania databázy na zobrazenie rozdielov medzi verziami."
+msgstr "Aktuálne otvorená databáza bude v prvom riadku. Pod týmto sa zobrazia súbory Failsafe záloh. Ak je prístupová fráza rovnaká ako v aktuálnej databáze, zobrazia sa aj vlastnosti týchto záloh. Ak si nie ste istí, pokračujte s aktuálnou databázou a použite funkciu porovnania databázy na zobrazenie rozdielov medzi verziami."
 
 #. Resource IDs: (5711)
 #, c-format
@@ -8117,7 +8117,7 @@ msgstr "\nHľadať..."
 
 #. Resource IDs: (32157)
 msgid "\nGenerate Password"
-msgstr "\nVygenerovať heslo"
+msgstr "\nGenerovať heslo"
 
 #. Resource IDs: (32079)
 msgid "\nGo to Base entry"
@@ -8170,7 +8170,7 @@ msgstr "\nPredvoľby"
 
 #. Resource IDs: (32159)
 msgid "\nPassword Policies"
-msgstr "\nZásady tvorby hesla"
+msgstr "\nZásady hesiel"
 
 #. Resource IDs: (32076)
 msgid "\nPerform AutoType"
@@ -8364,11 +8364,11 @@ msgstr "\tNeboli nájdené žiadne záznamy obsahujúce vyhľadávací reťazec 
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
-msgstr "\tJedna alebo viacero vlastných zásad tvorby hesla už boli v tejto databáze, ale mali iné nastavenia. Boli premenované."
+msgstr "\tJedna alebo viacero vlastných zásad hesiel už boli v tejto databáze, ale mali iné nastavenia. Boli premenované."
 
 #. Resource IDs: (3430)
 msgid "\tOne or more Password Policy Names were not found in the database. The affected entries have been changed to use the database's default policy."
-msgstr "\tV databáze sa nenašla jedna alebo viacero vlastných zásad tvorby hesla. Dotknuté záznamy boli zmenené tak, aby používali predvolené zásady databázy."
+msgstr "\tV databáze sa nenašla jedna alebo viacero vlastných zásad hesiel. Dotknuté záznamy boli zmenené tak, aby používali predvolené zásady databázy."
 
 #. Resource IDs: (3450)
 #, c-format
@@ -8378,7 +8378,7 @@ msgstr "\tJedna alebo viac klávesových skratiek pre záznam už boli priraden�
 #. Resource IDs: (3429)
 #, c-format
 msgid "\tPassword policy name '%ls' is not in the database."
-msgstr "\tZásady tvorby hesla s názvom '%ls' nie sú v databáze."
+msgstr "\tZásady hesiel s názvom '%ls' nie sú v databáze."
 
 #. Resource IDs: (5539)
 #, c-format
@@ -8720,7 +8720,7 @@ msgstr "pixely"
 
 #. Resource IDs: (4110)
 msgid "policy specific symbols"
-msgstr "symboly špecifické pre zásady tvorby hesla"
+msgstr "symboly špecifické pre zásady hesiel"
 
 #. Resource IDs: (1446)
 msgid "previous passwords per entry"

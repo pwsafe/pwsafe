@@ -1,0 +1,896 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Predvoľby programu</title>
+<!-- pwsafe version: 3.06--><!-- Modified: 21/02/2007 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Predvoľby programu</h2>
+
+<hr style="width: 100%; height: 2px;">
+
+<p>Rovnako ako mnoho iných aplikácií, aj <b>Password Safe</b> vám umožňuje nakonfigurovať jeho
+správanie a vzhľad tak, aby čo najlepšie vyhovovali vášmu vkusu a potrebám. Mnohé aplikácie ukladajú 
+takéto nastavenia do "registra" systému Windows z dôvodu zvyku a pohodlia. 
+Predchádzajúce verzie aplikácie <b>Password Safe</b> tiež používali register,
+ale to sa ukázalo ako problematické z nasledujúcich dôvodov:</p>
+
+<ul>
+<li>Niektoré z nastavení súvisia s bezpečnosťou a ich uloženie do otvoreného úložiska, 
+akým je register systému Windows, môže útočníkovi umožniť získať prístup k databáze 
+(napríklad ak by útočník po uplynutí časového limitu nečinnosti zakázal uzamknutie databázy, 
+používateľ by predpokladal, že databáza je bezpečne uzamknutá počas jeho neprítomnosti, 
+zatiaľ čo útočník by k nej mohol pristupovať keď sa mu to hodí).</li>
+
+<li>Navyše, mnoho ľudí spúšťa <b>Password Safe</b> z USB kľúča alebo inak zdieľajú tú istú databázu na viacerých počítačoch. 
+Nie je preto praktické zdieľať konfiguračné údaje v registri takýmto spôsobom.</li>
+</ul>
+
+<p><b>Password Safe</b> má niekoľko predvolieb, každú s rozumnou predvolenou hodnotou. 
+Keď používateľ zmení konfiguráciu na inú ako predvolenú hodnotu, nová hodnota sa uloží do <b>Password Safe</b>.</p>
+
+<p><b>Password Safe</b> definuje predvoľby ako súvisiace so zabezpečením alebo nesúvisiace so zabezpečením. 
+Prvé sú uchovávané v databáze, šifrované rovnakým kľúčom ako údaje používateľa.</p>
+
+<p>Predvoľby nesúvisiace so zabezpečením sú uchovávané v konfiguračnom súbore pwsafe.cfg. 
+Tento súbor je vo formáte XML so sekciami pre počítač a pre používateľa, takže ho je možné 
+zdieľať medzi rôznymi používateľmi a medzi rôznymi počítačmi.</p>
+
+<p>Predvolene sa súbor pwsafe.cfg uchováva v priečinku "Local AppData", teda C:\Users\<code>username</code>\AppData\Local\PasswordSafe.
+Tento priečinok býva zvyčajne skrytý, a je potrebné upraviť vlastnosti zobrazenia priečinkov v Prieskumníkovi aby ste ho mohli zobraziť.
+Priečinok kde sa nachádza súbor pwsafe.cfg je možné zmeniť nastavením premennej prostredia <b>PWS_PREFSDIR</b>.
+Prepínač príkazového riadka <b>-g</b> (ako je popísané v časti <a href="cli.html">Parametre príkazového riadka</a>) sa môže použiť buď na zadanie iného názvu súboru 
+(ktorý sa bude hľadať vo vyššie uvedenom priečinku) alebo absolútnej cesty k súboru.
+<br/>
+Historicky (pred verziou 3.22) bol konfiguračný súbor uložený v rovnakom priečinku ako súbor pwsafe.exe.
+Preto Password Safe bude konfiguračný súbor vyhľadávať aj v tomto priečinku, ak sa nenájde v adresári "Local AppData".
+</p>
+
+<p>Nasledujúce tabuľky popisujú konfiguračné položky. Väčšina z nich je konfigurovateľná prostredníctvom dialógového okna Nastavenie v menu <a href="manage_menu.html">"Spravovať"</a>. 
+Keďže na ukladanie týchto hodnôt sa používa XML, názvy polí rozlišujú veľké a malé písmená.
+Predvoľby uložené v súbore "pwsafe.cfg" sa vzťahujú na všetky otvorené databázy. 
+Tie ktoré sú uložené v databáze, sa vzťahujú iba na danú databázu.</p>
+
+Poznámky:
+<ul>
+<li>Zastarané predvoľby nie sú uvedené.</li>
+<li>V konfiguračnom súbore alebo databáze sú uložené hodnoty predvolieb iba ak boli zmenené predvolené hodnoty.</li>
+</ul>
+
+<p><b>Upozornenie:</b> <b>NEUPRAVUJTE</b> žiadne predvoľby v súbore pwsafe.cfg ručne, pretože to môže spôsobiť neočakávané následky.</p>
+
+<hr style="width: 100%; height: 2px;">
+
+<h3>Predvoľby špecifické pre databázu</h3>
+
+<p>Predvoľby databázy sa ukladajú v databáze iba vtedy, ak sa ich hodnota líši od ich predvolenej hodnoty.
+
+<h4>Boolean (true ('1')/false '(0')) predvoľby v abecednom poradí</h4>
+
+<table border="1" cellpadding="2" cellspacing="2" width="100%">
+<col style="font-size:10pt;" align="left" width="150px;" />
+<col style="font-size:10pt;" align="center" width="120px;" />
+<col style="font-size:10pt;" align="left" />
+
+<thead>
+<th>Predvoľba</th>
+<th>Predvolené</th>
+<th>Komentár</th>
+</thead>
+
+<tbody>
+<tr>
+<td>CopyPasswordWhenBrowseToURL</td>
+<td>false</td>
+<td>Skopírovať heslo záznamu do schránky pri spustení funkcie "Otvoriť URL v prehliadači"</td>
+</tr>
+
+<tr>
+<td>LockDBOnIdleTimeout</td>
+<td>true</td>
+<td>Uzamknúť databázu, ak používateľ nepoužíval počítač určitý počet minút. Hodnotu času nájdete v časti "IdleTimeout" v tabuľke číselných predvolieb.</td>
+</tr>
+
+<tr>
+<td>MaintainDateTimeStamps</td>
+<td>false</td>
+<td>Časy posledných prístupov sa zaznamenávajú, ak je databáza v režime čítania/zápisu.</td>
+</tr>
+
+<tr>
+<td>PWMakePronounceable</td>
+<td>false</td>
+<td>Zásady hesiel – previesť vygenerované heslá na také, ktoré sú lepšie vysloviteľné</td>
+</tr>
+
+<tr>
+<td>PWUseDigits</td>
+<td>true</td>
+<td>Zásady hesiel – používať čísla</td>
+</tr>
+
+<tr>
+<td>PWUseEasyVision</td>
+<td>false</td>
+<td>Zásady hesiel – používať znaky Easy-Vision, aby znaky nepomýlili s iným, napr. číslo 0 (nula) a písmeno O (veľké O) atď.</td>
+</tr>
+
+<tr>
+<td>PWUseHexDigits</td>
+<td>false</td>
+<td>Zásady hesiel - vygenerujte heslo iba s hexadecimálnymi znakmi (vždy párne číslo)</td>
+</tr>
+
+<tr>
+<td>PWUseLowercase</td>
+<td>true</td>
+<td>Zásady hesiel - používať malé písmená</td>
+</tr>
+
+<tr>
+<td>PWUseSymbols</td>
+<td>true</td>
+<td>Zásady hesiel - používať symboly</td>
+</tr>
+
+<tr>
+<td>PWUseUppercase</td>
+<td>true</td>
+<td>Zásady hesiel - používať veľké písmená</td>
+</tr>
+
+<tr>
+<td>SaveImmediately</td>
+<td>true</td>
+<td>Uložiť databázu po každej zmene databázy</td>
+</tr>
+
+<tr>
+<td>SavePasswordHistory</td>
+<td>false</td>
+<td>Uložiť staré heslá záznamov, keď je priradené nové heslo</td>
+</tr>
+
+<tr>
+<td>ShowDragbar</td>
+<td>true</td>
+<td>Zobraziť panel Drag & Drop</td>
+</tr>
+
+<tr>
+<td>ShowNotesDefault</td>
+<td>false</td>
+<td>Zobraziť poznámky pri použití príkazu Pridať a Upraviť záznam</td>
+</tr>
+
+<tr>
+<td>ShowPasswordInTree</td>
+<td>false</td>
+<td>Heslo sa zobrazuje v stromovom zobrazení (vyžaduje sa zobrazenie používateľského mena)</td>
+</tr>
+
+<tr>
+<td>ShowPWDefault</td>
+<td>false</td>
+<td>Zobraziť heslo pri použití príkazu Pridať a Upraviť záznam</td>
+</tr>
+
+<tr>
+<td>ShowUsernameInTree</td>
+<td>true</td>
+<td>Používateľské meno sa zobrazuje v stromovom zobrazení</td>
+</tr>
+
+<tr>
+<td>UseDefaultUser</td>
+<td>false</td>
+<td>Pri pridávaní nového záznamu použiť predvolené meno používateľa</td>
+</tr>
+
+<tr>
+    <td>ExcludeFromClipboardHistory</td>
+    <td>true</td>
+    <td>Zabraňuje ukladaniu údajov odoslaných do schránky do histórie schránky (Windows 10 a novšie verzie).</td>
+</tr>
+
+<tr>
+    <td>ExcludeFromScreenCapture</td>
+    <td>true</td>
+    <td>Skryť <b>Password Safe</b> pred funkciou snímania obrazovky systému Windows</td>
+</tr>
+</tbody>
+</table>
+
+<h4>Číselné predvoľby v abecednom poradí</h4>
+
+<table border="1" cellpadding="2" cellspacing="2" width="100%">
+<col style="font-size:10pt;" align="left" width="150px;" />
+<col style="font-size:10pt;" align="center" width="120px;" />
+<col style="font-size:10pt;" align="center" width="50px;" />
+<col style="font-size:10pt;" align="center" width="50px;" />
+<col style="font-size:10pt;" align="left" />
+
+<thead>
+<th>Predvoľba</th>
+<th>Predvolené</th>
+<th>Min</th>
+<th>Max</th>
+<th>Komentár</th>
+</thead>
+
+<tbody>
+<tr>
+<td>IdleTimeout</td>
+<td>5</td>
+<td>1</td>
+<td>600</td>
+<td>Prahová hodnota v minútach na určenie, či sa má uzamknúť Password Safe z dôvodu nečinnosti</td>
+</tr>
+
+<tr>
+<td>NumPWHistoryDefault</td>
+<td>3</td>
+<td>0</td>
+<td>255</td>
+<td>Koľko hesiel sa má uchovávať v poli histórie hesiel záznamu</td>
+</tr>
+
+<tr>
+<td>PWDefaultLength</td>
+<td>12</td>
+<td>4</td>
+<td>1024</td>
+<td>Predvolená dĺžka hesla</td>
+</tr>
+
+<tr>
+<td>PWDigitMinLength</td>
+<td>0</td>
+<td>0</td>
+<td>1024</td>
+<td>Predvolený minimálny počet číslic vo vygenerovanom hesle</td>
+</tr>
+
+<tr>
+<td>PWLowercaseMinLength</td>
+<td>0</td>
+<td>0</td>
+<td>1024</td>
+<td>Predvolený minimálny počet malých písmen vo vygenerovanom hesle</td>
+</tr>
+
+<tr>
+<td>PWSymbolMinLength</td>
+<td>0</td>
+<td>0</td>
+<td>1024</td>
+<td>Predvolený minimálny počet symbolov vo vygenerovanom hesle</td>
+</tr>
+
+<tr>
+<td>PWUppercaseMinLength</td>
+<td>0</td>
+<td>0</td>
+<td>1024</td>
+<td>Predvolený minimálny počet veľkých písmen vo vygenerovanom hesle</td>
+</tr>
+
+<tr>
+<td>TreeDisplayStatusAtOpen</td>
+<td>AllCollapsed</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Hodnoty sú: AllCollapsed, AllExpanded alebo AsPerLastSave</td>
+</tr>
+</tbody>
+</table>
+
+<h4>Textové predvoľby v abecednom poradí</h4>
+
+<table border="1" cellpadding="2" cellspacing="2" width="100%">
+<col style="font-size:10pt;" align="left" width="150px;" />
+<col style="font-size:10pt;" align="center" width="120px;" />
+<col style="font-size:10pt;" align="left" />
+
+<thead>
+<th>Predvoľba</th>
+<th>Predvolené</th>
+<th>Komentár</th>
+</thead>
+
+<tbody>
+<tr>
+<td>DefaultAutotypeString</td>
+<td>\u\t\p\t\n</td>
+<td>Predvolený reťazec AutoType pre databázy. Každý záznam môže túto hodnotu prepísať.</td>
+</tr>
+
+<tr>
+<td>DefaultSymbols</td>
+<td>&lt;none&gt;</td>
+<td>Predvolený zoznam symbolov, ktoré sa majú použiť pri generovaní hesla so symbolmi.
+<b>Poznámka:</b> Každý záznam môže túto hodnotu prepísať.</td>
+</tr>
+
+<tr>
+<td>DefaultUsername</td>
+<td>&lt;none&gt;</td>
+<td>Predvolená hodnota pre pole Používateľské meno pri vytváraní nových záznamov</td>
+</tr>
+
+<tr>
+<td>TreeListSampleText</td>
+<td>"AaBbYyZz 0O1IlL"</td>
+<td>Vzorový text ktorý sa má použiť pri rozhodovaní o tom, aké písmo sa má použiť v stromovom zobrazení</td>
+</tbody>
+</table>
+
+<h3>Predvoľby týkajúce sa aplikácie uložené v konfiguračnom súbore (pwsafe.cfg)</h3>
+
+<p>Upozorňujeme, že predvoľby sa uložia iba vtedy, ak sa ich hodnota líši od ich predvolenej hodnoty.
+Tieto predvoľby sa vzťahujú na všetky databázy na danom počítači a pre daného používateľa.</p>
+
+<h4>Boolean (true ('1')/false '(0')) predvoľby v abecednom poradí</h4>
+
+<table border="1" cellpadding="2" cellspacing="2" width="100%">
+<col style="font-size:10pt;" align="left" width="150px;" />
+<col style="font-size:10pt;" align="center" width="120px;" />
+<col style="font-size:10pt;" align="left" />
+
+<thead>
+<th>Predvoľba</th>
+<th>Predvolené</th>
+<th>Komentár</th>
+</thead>
+
+<tbody>
+<tr>
+<td>AlwaysOnTop</td>
+<td>false</td>
+<td>Hlavné okno je vždy navrchu</td>
+</tr>
+
+<tr>
+<td>BackupBeforeEverySave</td>
+<td>true</td>
+<td>Pred uložením akýchkoľvek zmien v databáze premenuje aktuálnu databázu podľa nastavení záloh</td>
+</tr>
+
+<td>ClearClipboardOnExit</td>
+<td>true</td>
+<td>Vymazať schránku informácií z <b>Password Safe</b> pri končení programu</b>
+ends</td>
+</tr>
+
+<tr>
+<td>ClearClipboardOnMinimize</td>
+<td>true</td>
+<td>Vymazať schránku informácií z <b>Password Safe</b> pri minimalizácii programu</td>
+</tr>
+<tr>
+
+<tr>
+<td>DatabaseClear</td>
+<td>false</td>
+<td>Zamknúť databázu pri minimalizácii, čo znamená vymazať info z databázy z pamäte</td>
+</tr>
+
+<tr>
+<td>DefaultOpenRO</td>
+<td>false</td>
+<td>Predvolene otvárať databázy v režime Iba na čítanie</td>
+</tr>
+
+<tr>
+<td>deletequestion</td>
+<td>false</td>
+<td>Nežiadať o potvrdenie pri odstraňovaní záznamu</td>
+</tr>
+
+<tr>
+<td>dontaskquestion</td>
+<td>false</td>
+<td>Nepýtať sa na potvrdenie pri kopírovaní hesla do schránky</td>
+</tr>
+
+<tr>
+<td>EscExits</td>
+<td>true</td>
+<td>Kláves ESC zatvorí databázu a ukončí program (ak sa nepoužíva System Tray)</td>
+</tr>
+
+<tr>
+<td>ExplorerTypeTree</td>
+<td>false</td>
+<td>Zobraziť skupiny ako prvé v stromovom zobrazení</td>
+</tr>
+
+<tr>
+<td>HideSystemTray</td>
+<td>false</td>
+<td>Skryť ikonu aplikácie v systémovej lište. Dá sa nastaviť iba v prípade, že používateľ nastavil klávesovú skratku pre aplikáciu.</td>
+</tr>
+
+<tr>
+<td>HighlightChanges</td>
+<td>true</td>
+<td>Zvýrazniť zmenené a neuložené záznamy modrou farbou</td>
+</tr>
+
+<tr>
+<td>HotKeyEnabled</td>
+<td>false</td>
+<td>Používateľ nastavil klávesovú skratku pre aplikáciu</td>
+</tr>
+
+<tr>
+<td>ListSortAscending</td>
+<td>true</td>
+<td>Posledný smer zoradenia v zobrazení zoznamu (vzostupne [true] alebo zostupne [false])</td>
+</tr>
+
+<tr>
+<td>ListViewGridLines</td>
+<td>false</td>
+<td>Zobraziť mriežku v zobrazení zoznamu</td>
+</tr>
+
+<tr>
+<td>LockOnWindowLock</td>
+<td>true</td>
+<td>Zamknúť databázu <b>Password Safe</b>, keď používateľ zamkne svoju reláciu systému Windows</td>
+</tr>
+
+<tr>
+<td>MinimizeOnAutotype</td>
+<td>true</td>
+<td>Minimalizovať aplikáciu počas vykonávania AutoType. Databáza môže byť tiež uzamknutá v závislosti od nastavenia uzamknutia pri minimalizácii.</td>
+</tr>
+
+<tr>
+<td>MRUOnFileMenu</td>
+<td>true</td>
+<td>Naposledy použité databázy sa zobrazujú v ponuke Súbor alebo vo vlastnej podponuke v ponuke Súbor</td>
+</tr>
+
+<tr>
+<td>MultipleInstances</td>
+<td>true</td>
+<td>Povoliť spustenie viacerých inštancií aplikácie. Zmena tejto hodnoty bude vyžadovať reštart aplikácie, aby sa zmena prejavila.</td>
+</tr>
+
+<tr>
+<td>NotesWordWrap</td>
+<td>true</td>
+<td>Text v poli Poznámky sa bude počas pridávania/úpravy zalamovať.</td>
+</tr>
+
+<tr>
+<td>PreExpiryWarn</td>
+<td>false</td>
+<td>Upozorniť používateľa pri otvorení databázy, ak existujú záznamy s heslami, ktorých platnosť vypršala alebo čoskoro vyprší</td>
+</tr>
+
+<tr>
+<td>QuerySetDef</td>
+<td>true</td>
+<td>Pri každom pridaní záznamu sa používateľa pýtať, či má pre všetky nové záznamy použiť dané používateľské meno</td>
+</tr>
+
+<tr>
+<td>ShowDragbar</td>
+<td>true</td>
+<td>Zobraziť panel Drag & Drop</td>
+</tr>
+
+<tr>
+<td>ShowFindToolBarOnOpen</td>
+<td>true</td>
+<td>Zobraziť panel Hľadať pri spustení aplikácie. Toto je určené stavom tohto panela pri poslednom ukončení aplikácie.</td>
+</tr>
+
+<tr>
+<td>ShowNotesAsToolTipsInViews</td>
+<td>false</td>
+<td>Zobraziť poznámky k záznamu ako popis v stromovom zobrazení aj v zobrazení zoznamo (zobrazí sa iba prvých 250 znakov)</td>
+</tr>
+
+<tr>
+<td>ShowToolbar</td>
+<td>true</td>
+<td>Zobraziť panel s nástrojmi</td>
+</tr>
+
+<tr>
+<td>UseNewToolbar</td>
+<td>true</td>
+<td>Použiť nový (true) alebo klasický (false) panel s nástrojmi</td>
+</tr>
+
+<tr>
+<td>UsePrimarySelectionForClipboard</td>
+<td>false</td>
+<td>Určiť ktorú schránku použiť (iba Linux)</td>
+</tr>
+
+<tr>
+<td>UseSystemTray</td>
+<td>true</td>
+<td>Umiestniť ikonu aplikácie do systémovej lišty Windows</td>
+</tr>
+</tbody>
+</table>
+
+<h4>Číselné predvoľby v abecednom poradí</h4>
+
+<table border="1" cellpadding="2" cellspacing="2" width="100%">
+<col style="font-size:10pt;" align="left" width="150px;" />
+<col style="font-size:10pt;" align="center" width="120px;" />
+<col style="font-size:10pt;" align="center" width="50px;" />
+<col style="font-size:10pt;" align="center" width="50px;" />
+<col style="font-size:10pt;" align="left" />
+
+<thead>
+<th>Predvoľba</th>
+<th>Predvolené</th>
+<th>Min</th>
+<th>Max</th>
+<th>Komentár</th>
+</thead>
+
+<tbody>
+<tr>
+<td>AddEditFontPtSz</td>
+<td>n/a</td>
+<td>0</td>
+<td>n/a</td>
+<td>Veľkosť písma v desatinách bodu pri príkazoch Pridať/Upraviť</td>
+</tr>
+
+<tr>
+<td>BackupMaxIncremented</td>
+<td>1</td>
+<td>1</td>
+<td>999</td>
+<td>Platí iba v prípade, že sa pre BackupSuffix použije prírastkové číslo.</td>
+</tr>
+
+<tr>
+<td>BackupSuffix</td>
+<td>0</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Hodnoty sú: None, datetime or an incremental number</td>
+</tr>
+
+<tr>
+<td>column1width</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Šírka prvého stĺpca v zobrazení zoznamu pri poslednom ukončení aplikácie</td>
+</tr>
+
+<tr>
+<td>column2width</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Šírka druhého stĺpca v zobrazení zoznamu pri poslednom ukončení aplikácie</td>
+</tr>
+
+<tr>
+<td>column3width</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Šírka tretieho stĺpca v zobrazení zoznamu pri poslednom ukončení aplikácie</td>
+</tr>
+
+<tr>
+<td>column4width</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Šírka štvrtého stĺpca v zobrazení zoznamu pri poslednom ukončení aplikácie</td>
+</tr>
+
+<tr>
+<td>DlgOrientation</td>
+<td>0</td>
+<td>0</td>
+<td>2</td>
+<td>Ako vybrať široké alebo vysoké dialógové okná: 0 – automaticky (predvolené), 1 – vynútene vysoké, 2 – vynútene široké.</td>
+</tr>
+
+<tr>
+<td>DoubleClickAction</td>
+<td>Copy Password</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Pozri tému Nápovedy <a href="imp_exp_text_details.html">hodnoty DCA</a> ohľadom podrobností</td>
+</tr>
+
+<tr>
+<td>HotKey</td>
+<td>&lt;none&gt;</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>The Hot Key value. Up to and including <b>Password Safe</b> version 3.42.1, this is stored as a decimal integer
+created from the virtual keycode for the character in the lower word plus the Microsoft
+Foundation Class CHotKeyCtrl modifier flags in the higher word. After version 3.42.1, the preference element is augmented with
+XML attributes that are used to set the virtual key code
+and modifier flags (e.g., Ctrl="1" Key="30") to the internal <b>Password Safe</b> format
+that can be used across other platforms.</td>
+</tr>
+
+<tr>
+<td>maxmruitems</td>
+<td>4</td>
+<td>0</td>
+<td>20</td>
+<td>Počet naposledy použitých databáz uložených v ponuke Súbor</td>
+</tr>
+
+<tr>
+<td>MaxREItems</td>
+<td>25</td>
+<td>0</td>
+<td>25</td>
+<td>Maximálny počet "Naposledy použitých položiek", ktoré sa majú uložiť do databázy a zobraziť z ikony na paneli úloh pre rýchly prístup</td>
+</tr>
+
+<tr>
+<td>NotesFontPtSz</td>
+<td>n/a</td>
+<td>0</td>
+<td>n/a</td>
+<td>Veľkosť písma poznámok v desatinách bodu</td>
+</tr>
+
+<tr>
+<td>OptShortcutColumnWidth</td>
+<td>92</td>
+<td>10</td>
+<td>512</td>
+<td>Veľkosť stĺpcov na karte Nastavení <a href="shortcuts_tab.html">Skratky</a></td>
+</tr>
+
+<tr>
+<td>PasswordFontPtSz</td>
+<td>n/a</td>
+<td>0</td>
+<td>n/a</td>
+<td>Veľkosť písma hesla v desatinách bodu</td>
+</tr>
+
+<tr>
+<td>PreExpiryWarnDays</td>
+<td>1</td>
+<td>1</td>
+<td>30</td>
+<td>Kedy upozorniť na heslá, ktorých platnosť sa blíži k vypršaniu</td>
+</tr>
+
+<tr>
+<td>sortedcolumn</td>
+<td>0</td>
+<td>0</td>
+<td>15</td>
+<td>Predchádzajúci stĺpec použitý na zoradenie v zobrazení zoznamu</td>
+</tr>
+
+<tr>
+<td>ShiftDoubleClickAction</td>
+<td>Copy Password</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>Pozri tému Nápovedy <a href="imp_exp_text_details.html">hodnoty Shift+DCA</a> ohľadom podrobností</td>
+</tr>
+
+<tr>
+<td>TreeFontPtSz</td>
+<td>n/a</td>
+<td>0</td>
+<td>n/a</td>
+<td>Veľkosť písma v desatinách bodu pri zobrazení stromu a zoznamu</td>
+</tr>
+
+<tr>
+<td>VKFontPtSz</td>
+<td>n/a</td>
+<td>0</td>
+<td>n/a</td>
+<td>Veľkosť písma virtuálnej klávesnice v desatinách bodu</td>
+</tr>
+</tbody>
+</table>
+
+<h4>Textové predvoľby v abecednom poradí</h4>
+
+<table border="1" cellpadding="2" cellspacing="2" width="100%">
+<col style="font-size:10pt;" align="left" width="150px;" />
+<col style="font-size:10pt;" align="center" width="120px;" />
+<col style="font-size:10pt;" align="left" />
+
+<thead>
+<th>Predvoľba</th>
+<th>Predvolené</th>
+<th>Komentár</th>
+</thead>
+
+<tbody>
+
+<tr>
+<td>AddEditFont</td>
+<td>&lt;none&gt;, which corresponds to Segoe UI Symbol 10pt on Windows</td>
+<td>Informácia o písme použitom na zobrazenie polí na kartách vlastností Pridať/Upraviť záznam</td>
+</tr>
+
+<tr>
+<td>AddEditSampleText</td>
+<td>"AaBbYyZz 0O1IlL"</td>
+<td>Ukážkový text, ktorý sa má použiť pri rozhodovaní o tom, aké písmo sa má zobraziť pri pridávaní alebo úprave záznamov</td>
+</tr>
+
+<tr>
+<td>AltBrowser</td>
+<td>&lt;none&gt;</td>
+<td>Úplná cesta k alternatívnemu prehliadaču</td>
+</tr>
+
+<tr>
+<td>AltBrowserCmdLineParms</td>
+<td>&lt;none&gt;</td>
+<td>Špeciálne parametre príkazového riadka pre alternatívny prehliadač, ak je nastavený.
+Neuzatvárajte túto hodnotu do jednoduchých alebo dvojitých úvodzoviek, pokiaľ to váš zvolený prehliadač nevyžaduje.</td>
+</tr>
+
+<tr>
+<td>AltNotesEditor</td>
+<td>&lt;none&gt;</td>
+<td>Úplná cesta k textovému editoru, ktorý sa má použiť na úpravu poľa Poznámky, namiesto predvolenej aplikácie systému Windows.</td>
+</tr>
+
+<tr>
+<td>AltNotesEditorCmdLineParms</td>
+<td>&lt;none&gt;</td>
+<td>Špeciálne parametre príkazového riadka pre alternatívny textový editor, ak je nastavený.
+Neuzatvárajte túto hodnotu do jednoduchých alebo dvojitých úvodzoviek, pokiaľ to váš zvolený externý editor nevyžaduje.</td>
+</tr>
+
+<tr>
+<td>BackupDir</td>
+<td>&lt;none&gt;</td>
+<td>Záloha databázy sa zvyčajne ukladá do rovnakého adresára ako samotná databáza.
+Toto je možné prepísať pomocou tejto predvoľby.</td>
+</tr>
+
+<tr>
+<td>BackupPrefixValue</td>
+<td>&lt;none&gt;</td>
+<td>Zvyčajne sa pred názvami záložných súborov používa názov aktuálnej databázy.
+Toto je možné prepísať pomocou tejto predvoľby.</td>
+</tr>
+
+<tr>
+<td>ColumnWidths</td>
+<td>&lt;none&gt;</td>
+<td>Zmenené šírky stĺpcov v zobrazení zoznamu</td>
+</tr>
+
+<tr>
+<td>currentbackup</td>
+<td>&lt;none&gt;</td>
+<td>Cesta a názov posledného záložného súboru</td>
+</tr>
+
+<tr>
+<td>currentfile</td>
+<td>&lt;none&gt;</td>
+<td>Aktuálny (t.j. posledný) otvorený súbor</td>
+</tr>
+
+<tr>
+<td>LanguageFile</td>
+<td>&lt;none&gt;</td>
+<td>Kód posledného jazykového súboru použitého používateľom. Má tvar "LL" alebo "LL_CC", 
+kde LL = dvojmiestny kód jazyka podľa normy ISO 639-1, napr. EN, FR, DE, HE... pozri
+<a target="newWin" href="http://www.loc.gov/standards/iso639-2/">http://www.loc.gov/standards/iso639-2/</a>
+a CC = dvojmiestny kód krajiny podľa ISO 3166-1, napr. US, GB, FR, CA... pozri
+<a target="newWin" href="http://www.iso.org/iso/en/prods-services/iso3166ma/index.html">
+http://www.iso.org/iso/en/prods-services/iso3166ma/index.html</a>
+</td>
+</tr>
+
+<tr>
+<td>lastview</td>
+<td>tree</td>
+<td>Posledné vybraté zobrazenie: strom alebo zoznam</td>
+</tr>
+
+<tr>
+<td>LastUsedKeyboard</td>
+<td>&lt;none&gt;</td>
+<td>Uloží kód poslednej použitej virtuálnej klávesnice</td>
+</tr>
+
+<tr>
+<td>ListColumns</td>
+<td>&lt;none&gt;</td>
+<td>Neštandardné poradie stĺpcov v zobrazení zoznamu. Vedzte, že zoznam čísel stĺpcov oddelených čiarkami odráža interné číslovanie polí a nemalo by sa upravovať manuálne.</td>
+</tr>
+
+<tr>
+<td>MainToolBarButtons</td>
+<td>&lt;none&gt;</td>
+<td>Zoznam tlačidiel panela s nástrojmi a ich poradie prispôsobené používateľom. Oddeľovač sa zobrazuje ako &#126;</td>
+</tr>
+
+<tr>
+<td>NotesFont</td>
+<td>&lt;none&gt;, which corresponds to Segoe UI Symbol 10pt on Windows</td>
+<td>Informácia o písme použitom na zobrazenie poľa Poznámky na základnej karte vlastností Pridať/Upraviť záznam</td>
+</tr>
+
+<tr>
+<td>NotesSampleText</td>
+<td>"AaBbYyZz 0O1IlL"</td>
+<td>Vzorový text, ktorý sa má použiť pri rozhodovaní o tom, aké písmo sa má použiť na zobrazenie poľa Poznámky na základnej karte vlastností Pridať/Upraviť záznam</td>
+</tr>
+<tr>
+<td>PasswordFont</td>
+<td>&lt;none&gt;, which corresponds to Consolas 12pt on Windows</td>
+<td>Informácia o písme použitom na zobrazenie hesla</td>
+</tr>
+
+<tr>
+<td>PswdSampleText</td>
+<td>"AaBbYyZz 0O1IlL"</td>
+<td>Vzorový text, ktorý sa má použiť pri rozhodovaní o tom, aké písmo sa má použiť na zobrazenie hesiel</td>
+</tr>
+
+<tr>
+<td>treefont</td>
+<td>&lt;none&gt;, which corresponds to Segoe UI Symbol 10pt on Windows</td>
+<td>Informácia o písme použitom v stromovom a zoznamovom zobrazení</td>
+</tr>
+
+<tr>
+<td>TreeListSampleText</td>
+<td>"AaBbYyZz 0O1IlL"</td>
+<td>Vzorový text, ktorý sa má použiť pri rozhodovaní o tom, aké písmo sa má použiť v stromovom a zoznamovom zobrazení</td>
+</tr>
+
+<tr>
+<td>VKeyboardFontName</td>
+<td>&lt;none&gt;</td>
+<td>Názov písma Unicode, ktoré sa má použiť na zobrazenie všetkých znakov použitých vo virtuálnej klávesnici. Zahŕňa to latinské aj nelatinské znaky.</td>
+</tr>
+
+<tr>
+<td>VKSampleText</td>
+<td>"AaBbYyZz 0O1IlL"</td>
+<td>Ukážkový text, ktorý sa má použiť pri rozhodovaní o tom, aké písmo sa má použiť vo virtuálnej klávesnici</td>
+</tr>
+</tbody>
+</table>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Predvoľby">
+<param name="Keyword" value="Konfigurácia">
+<param name="Keyword" valuetext="" password="" data="">
+</object>
+
+</body>
+</html>

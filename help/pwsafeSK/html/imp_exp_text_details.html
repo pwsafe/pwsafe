@@ -1,0 +1,404 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Poznámky k exportu do textu</title>
+<!-- pwsafe version: 3.06--><!-- Modified: 21/02/2007 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Poznámky k exportu do textu</h2>
+
+<hr style="width: 100%; height: 2px;">
+
+<b><i><u>Upozornenie</u></i></b>: Export citlivých informácií z databázy
+<b>Password Safe</b> do textového súboru má vážne bezpečnostné dôsledky. 
+Táto operácia vytvorí nechránenú kópiu hesiel v databáze. Odstránenie tejto kópie po použití <b>nestačí</b>
+a mali by sa vykonať ďalšie opatrenia na správne vymazanie údajov 
+(aj po vymazaní exportovaného súboru z disku dáta zostávajú na disku a dajú sa extrahovať). 
+Export citlivých údajov v podstate obchádza zabezpečenie ktoré poskytuje program Password Safe.</p>
+
+<hr style="width: 100%; height: 2px;">
+
+<small><b>Poznámka:</b> Funkcia exportu a importu do/z textových súborov bola vo verzii V3.06 zmenená. Táto stránka popisuje aktuálny formát.</small>
+
+<hr style="width: 100%; height: 2px;">
+
+<p>Exportovaný text bude:</p>
+<ul>
+<li>Začínať riadkom hlavičky ako prvým záznamom v textovom súbore</li>
+<li>Použije oddeľovač na nahradenie znaku 'nový riadok' vo viacriadkovom poli Poznámky a bodku ('.'), ak je prítomná v poli Názov.
+Predvolená hodnota je '&raquo;' [Alt+0187], ktorú je možné v prípade potreby prepísať.</li>
+</ul>
+<p>Predpokladá sa, že importovaný text bude mať:</p>
+<ul>
+<li>Riadok hlavičky ako prvý záznam v textovom súbore.</li>
+<li>Oddeľovač na obnovenie znaku 'nový riadok' vo viacriadkovom poli Poznámky a bodky ('.'), ak je prítomná, v poli Názov. 
+Predvolená hodnota je '&raquo;' [Alt+0187], ktorú je možné v prípade potreby prepísať.></li>
+</ul>
+<p>Riadok hlavičky pre úplný export údajov v súčasnosti štandardne obsahuje nasledujúce polia (uložené sú v angličtine), oddelené tabulátorom.</span></p>
+<ul>
+<li>Skupina/Názov (Group/Title)</li>
+<li>Používateľské meno (Username)</li>
+<li>Heslo (Password)</li>
+<li>URL (URL)</li>
+<li>Automatické dopĺňanie (AutoType)</li>
+<li>Čas vytvorenia (Created Time)</li>
+<li>Čas úpravy hesla (Password Modified Time)</li>
+<li>Čas posledného prístupu (Last Access Time)</li>
+<li>Čas úpravy záznamu (Record Modified Time)</li>
+<li>Čas vypršania hesla (Password Expiry Date)</li>
+<li>Interval uplynutia platnosti hesla (Password Expiry Interval)</li>
+<li>Klávesová skratka (Keyboard Shortcut)</li>
+<li>Tajný kľúč (Two Factor Key)</li>
+<li>Zásady hesiel (Password Policy)</li>
+<li>Názov zásad hesiel (Password Policy Name)</li>
+<li>História hesiel (History)</li>
+<li>Spustiť príkaz (Run Command)</li>
+<li>Akcia na dvojklik (DCA)</li>
+<li>Akcia na Shift dvojklik (Shift+DCA)</li>
+<li>Email (e-mail)</li>
+<li>Zamknutý (Protected)</li>
+<li>Symboly (Symbols)</li>
+<li>Poznámky (Notes)</li>
+</ul>
+
+<p>Pri exporte údajov môžete použiť funkciu "Pokročilé možnosti exportu" na vylúčenie niektorých z týchto polí. 
+Táto možnosť vám tiež umožňuje určiť podmnožinu záznamov na export (filter), ako je znázornené nižšie.</p>
+
+<p><img alt="Okno Pokročilé možnosti exportu" src="images/export_text_adv.png"></p>
+
+<p>Počas importu musí prvý riadok obsahovať "hlavičky stĺpcov", ktoré sa zhodujú presne s jedným z vyššie uvedených. 
+Ak sa akýkoľvek "hlavičkový stĺpec" opakuje, počas importu sa k záznamom pridajú iba údaje v poslednom z nich. 
+Ak sa "hlavičkový stĺpec" nezhoduje s jedným z vyššie uvedených, údaje v danom stĺpci sa počas importu ignorujú. 
+Polia musia byť oddelené oddeľovačom polí zadaným v dialógovom okne Importovať text.</p>
+
+<hr style="width: 100%; height: 2px;">
+
+<small><b>Poznámky:</b><br>
+<ul>
+<li>Ak chcete importovať akékoľvek údaje do Password Safe, polia Názov a Heslo <i><u>musia</u></i> byť prítomné a nesmú byť prázdne.</li>
+</ul>
+<ul>
+<li>Poradie stĺpcov v riadku hlavičky nie je obmedzené. Password Safe použije daný riadok na správne pridanie údajov do správneho poľa.</li>
+</ul>
+</small>
+
+<hr style="width: 100%; height: 2px;">
+
+<h3><u>Formáty údajov</u></h3>
+
+<table border="1" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="border: 1pt solid windowtext; padding: 0in 5.4pt; width: 200.4pt;" valign="top" width="191">
+<b>Hlavička stĺpca/Pole</b>
+</td>
+<td style="border-style: solid solid solid none; border-color: windowtext windowtext windowtext -moz-use-text-color; border-width: 1pt 1pt 1pt medium; padding: 0in 5.4pt; width: 4.75in;" valign="top" width="456">
+<b>Poznámka</b>
+</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Group/Title</td>
+<td style="padding: 0in 5.4pt;">Ak sú prítomné, skupiny sú oddelené bodkami ('.').
+Pole Názov nemôže byť prázdne, nevyplnené ani obsahovať oddeľovací znak.</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Username</td>
+<td style="padding: 0in 5.4pt;"> </td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Password</td>
+<td style="padding: 0in 5.4pt;">Nemôže byť prázdne ani nevyplnené.</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">URL</td>
+<td style="padding: 0in 5.4pt;"> </td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">AutoType</td>
+<td style="padding: 0in 5.4pt;"> </td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Created Time</td>
+<td style="padding: 0in 5.4pt;">Pozri poznámky <a href="#1"><sup>1</sup></a> nižšie</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Password Modified Time</td>
+<td style="padding: 0in 5.4pt;">Pozri poznámky <a href="#1"><sup>1</sup></a> nižšie</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Last Access Time</td>
+<td style="padding: 0in 5.4pt;">Pozri poznámky <a href="#1"><sup>1</sup></a> nižšie</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Password Expiry Date</td>
+<td style="padding: 0in 5.4pt;">Pozri poznámky <a href="#1"><sup>1</sup></a> nižšie</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Password Expiry Interval</td>
+<td style="padding: 0in 5.4pt;">Pozri poznámky <a href="#1"><sup>1</sup></a> nižšie</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Record Modified Time</td>
+<td style="padding: 0in 5.4pt;">Pozri poznámky <a href="#1"><sup>1</sup></a> nižšie</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Password Policy</td>
+<td style="padding: 0in 5.4pt;">Pozri poznámky <a href="#3"><sup>3</sup></a> nižšie</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">History</td>
+<td style="padding: 0in 5.4pt;">Pozri poznámky <a href="#2"><sup>2</sup></a> nižšie</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Run Command</td>
+<td style="padding: 0in 5.4pt;"></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">DCA</td>
+<td style="padding: 0in 5.4pt;"> = Pozri poznámky <a href="#4"><sup>4</sup></a> nižšie</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Shift+DCA</td>
+<td style="padding: 0in 5.4pt;"> = Pozri poznámky <a href="#4"><sup>4</sup></a> nižšie</td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">e-mail</td>
+<td style="padding: 0in 5.4pt;"></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Protected</td>
+<td style="padding: 0in 5.4pt;"></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Symbols</td>
+<td style="padding: 0in 5.4pt;"></td>
+</tr>
+<tr>
+<td style="padding: 0in 5.4pt;">Notes</td>
+<td style="padding: 0in 5.4pt;">
+<ul>
+<li>Pole Poznámky by malo byť uzavreté v úvodzovkách ("takto").</li>
+<li>Pole Poznámky by nemalo obsahovať oddeľovač polí, pretože pri importe sa preloží na nový riadok.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+
+<br>
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="padding: 0in 5.4pt; width: 80pt;">
+<p><a name="1"></a><b><u>Poznámky:</u> <sup>1</sup></b></p>
+</td>
+<td style="padding: 0in 5.4pt;">
+<p>Časové polia môžu mať jeden z nasledujúcich 7 formátov:</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+<br>
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="padding: 0in 15.4pt;">1.</td>
+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy/MM/dd hh:mm:ss</td>
+<td style="padding: 0in 15.4pt;">napr. 2007/01/26 19:31:25</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">2.</td>
+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">ddd MMM dd hh:mm:ss yyyy</td>
+<td style="padding: 0in 15.4pt;">napr. Fri Jan 26 19:31:25 2007</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">3.</td>
+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy-MM-ddThh:mm:ss</td>
+<td style="padding: 0in 15.4pt;">napr. 2007-01-26T19:31:25</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">4.</td>
+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy-MM-ddThh:mm:ssZ (XML only)</td>
+<td style="padding: 0in 15.4pt;">napr. 2007-01-26T19:31:25Z</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">5.</td>
+<td style="padding: 0in 15.4pt; font-size: 11pt; font-family: 'Courier New'">yyyy-MM-ddThh:mm:ss&plusmn;hh:mm (XML only)</td>
+<td style="padding: 0in 15.4pt;">napr. 2007-01-26T19:31:25+01:00</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">6.</td>
+<td style="padding: 0in 15.4pt;">0</td>
+<td style="padding: 0in 15.4pt;">Ponechať pole nenastavené</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">7.</td>
+<td style="padding: 0in 15.4pt;">now</td>
+<td style="padding: 0in 15.4pt;">Použiť čas operácie importu</td>
+</tr>
+</tbody>
+</table>
+
+<p>kde:</p>
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="padding: 0in 15.4pt;">yyyy</td><td>Celý rok. Hodnota je medzi rokmi 1970 a 2038.</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">MM</td><td>Mesiac; napr. 01 = január, 02 = február atď.</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">dd</td><td>Deň v mesiaci</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">MMM</td><td>Skrátený tvar mesiaca; napr. Jan = január, Feb = február atď.</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">ddd</td><td>Skrátený tvar dňa v týždni; napr. Mon = pondelok, Tue = utorok atď.</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">hh</td><td>Hodina pri použití 24-hodinového formátu.</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">mm</td><td>Minúty</td>
+</tr>
+<tr>
+<td style="padding: 0in 15.4pt;">ss</td><td>Sekundy</td>
+</tr>
+</tbody>
+</table>
+
+<p><small><b>Poznámka:</b> Formát '2' je výstupom funkcie ANSI C <big><a name="asctime">'</a><code>asctime</code>'</big> a formát
+'3' zodpovedá norme ISO 8601.</small></p>
+
+<hr style="width: 100%; height: 2px;">
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr style="">
+<td style="padding: 0in 5.4pt; width: 80pt;" valign="top" width="47">
+<p><a name="2"></a><b><u>Poznámky:</u> <sup>2</sup></b></p>
+</td>
+<td style="padding: 0in 5.4pt; ">
+<p>História hesiel je v exportovanom zázname zobrazená ako textové pole
+ktoré obsahuje hlavičku, za ktorou nasleduje požadovaný počet položiek starých hesiel:</p>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p>Hlavička histórie hesiel:</p>
+
+<ul>
+<li>1 hexadecimálna číslica - stav uloženia PWH pre túto položku (0 = nie; 1 = áno)</li>
+<li>2 hexadecimálne číslice - maximálny počet položiek v tomto zázname</li>
+<li>2 hexadecimálne číslice - počet aktuálne uložených položiek</li>
+</ul>
+<p>Každá položka histórie hesiel:</p>
+<ul>
+<li>8 hexadecimálnych číslic - čas nastavenia starého hesla</li>
+<li>4 hexadecimálne číslice - dĺžka starého hesla</li>
+<li>reťazec znakov - staré heslo</li>
+</ul>
+
+<hr>
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="padding: 0in 5.4pt; width: 80pt;">
+<p><a name="3"></a><b><u>Poznámky:</u> <sup>3</sup></b></p>
+</td>
+<td style="padding: 0in 5.4pt;">
+<p>Zásady hesiel sú v exportovanom zázname reprezentované ako textové pole 'ffffnnnllluuudddssss' v hexadecimálnom formáte, napr. 'F000010004002005003'.
+V tomto formáte je obsiahnutých 6 hexadecimálnych hodnôt. Prvá hodnota má 4 číslice, všetky ostatné 3.</p>
+<p>'ffffnnnllluuudddssss' znamená podrobne:</p>
+
+<ul>
+<li>ffff: 4 hexadecimálne číslice predstavujúce nasledujúce príznaky
+<ul>
+<li>0x8000: použiť malé písmená</li>
+<li>0x4000: použiť veľké písmená</li>
+<li>0x2000: použiť číslice</li>
+<li>0x1000: použiť symboly</li>
+<li>0x0800: použiť iba hexadecimálne znaky (0-9, a-f) (ak sú nastavené, nie je možné nastaviť žiadne iné príznaky)</li>
+<li>0x0400: použiť znaky EasyVision</li>
+<li>0x0200: použiť vysloviteľné znaky</li>
+<li>0x01FF: nepoužíva sa</li>
+</ul>
+</li>
+<li>nnn: 3 hexadecimálne číslice: celková dĺžka hesla</li>
+<li>lll: 3 hexadecimálne číslice: minimálny počet malých písmen v hesle</li>
+<li>uuu : 3 hexadecimálne číslice : minimálny počet veľkých písmen</li>
+<li>ddd : 3 hexadecimálne číslice : minimálny počet číslic</li>
+<li>sss : 3 hexadecimálne číslice : minimálny počet symbolov</li>
+</ul>
+
+<p>Zásady hesiel 'F000010004002005003' znamenajú</p>
+
+<ul>
+<li>F000: použiť malé písmená, veľké písmená, číslice a symboly</li>
+<li>010: použiť aspoň 16 (dec) znakov</li>
+<li>004: použiť aspoň 4 malé písmená</li>
+<li>002: použiť aspoň 2 veľké písmená</li>
+<li>005: použiť aspoň 5 číslic</li>
+<li>003: použiť aspoň 3 symboly</li>
+</ul>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td style="padding: 0in 5.4pt; width: 80pt;">
+<p><a name="4"></a><b><u>Poznámky:</u> <sup>4</sup></b></p>
+</td>
+<td style="padding: 0in 5.4pt;">
+<p>K dispozícii sú nasledujúce hodnoty pre <i><b>Akcia na dvojklik</b></i>:</p>
+<ul>
+<li>-1: Použiť predvolenú hodnotu databázy</li>
+<li>0: Kopírovať heslo do schránky</li>
+<li>1: Zobraziť/Upraviť záznam</li>
+<li>2: Automatické dopĺňanie</li>
+<li>3: Otvoriť adresu URL</li>
+<li>4: Kopírovať poznámky do schránky</li>
+<li>5: Kopírovať používateľské meno do schránky</li>
+<li>6: Kopírovať heslo do schránky a minimalizovať</li>
+<li>7: Prejsť na URL + automatické dopĺňanie</li>
+<li>8: Spustiť príkaz</li>
+<li>9: Odoslať email</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Exportovať záznamy">
+<param name="Keyword" value="Importovať záznamy">
+<param name="Keyword" value="Konverzia existujúcich dáť">
+</object>
+
+</body>
+</html>

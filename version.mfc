@@ -4,7 +4,7 @@
 # be integers
 
 VER_MAJOR = 3
-VER_MINOR = 68
+VER_MINOR = 69
 VER_REV = 0
 #VER_SPECIAL = pre
 

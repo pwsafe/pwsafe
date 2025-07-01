@@ -9,15 +9,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2025-03-12 20:30+0200\n"
+"PO-Revision-Date: 2025-06-25 21:04+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: zh\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -5167,6 +5180,10 @@ msgstr "媒体类型"
 msgid "Media Type:"
 msgstr "介质类型:"
 
+#. Resource IDs: (5124)
+msgid "Medium Password"
+msgstr "中等密码"
+
 #. Resource IDs: (5680)
 msgid "Menu Item"
 msgstr "菜单项"
@@ -5742,6 +5759,30 @@ msgstr "PWS_CPF_CDD"
 #. Resource IDs: (5449)
 msgid "PWS_CPF_TVDD"
 msgstr "PWS_CPF_TVDD"
+
+#. Resource IDs: (3093)
+msgid "Passkey Algorithm ID"
+msgstr ""
+
+#. Resource IDs: (3090)
+msgid "Passkey Credential ID"
+msgstr ""
+
+#. Resource IDs: (3094)
+msgid "Passkey Private Key"
+msgstr ""
+
+#. Resource IDs: (3091)
+msgid "Passkey Relying Party ID"
+msgstr ""
+
+#. Resource IDs: (3095)
+msgid "Passkey Sign Count"
+msgstr ""
+
+#. Resource IDs: (3092)
+msgid "Passkey User Handle"
+msgstr ""
 
 #. Resource IDs: (5757)
 msgid "Passphrase"
@@ -6512,10 +6553,6 @@ msgstr "选择"
 msgid "Select &All"
 msgstr "全选(&A)"
 
-#. Resource IDs: (5384)
-msgid "Select Browser:"
-msgstr "选择浏览器:"
-
 #. Resource IDs: (497, 537)
 msgid "Select Database"
 msgstr "选择数据库"
@@ -6531,6 +6568,10 @@ msgstr "选定用于中间备份的位置"
 #. Resource IDs: (65535)
 msgid "Select Locked Text Color:"
 msgstr "选择锁定的文本颜色:"
+
+#. Resource IDs: (5384)
+msgid "Select Program"
+msgstr "选择程序"
 
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"
@@ -7008,6 +7049,10 @@ msgstr "存储的筛选器将不可用，直到文件被还原."
 msgid "String value:"
 msgstr "字符串值:"
 
+#. Resource IDs: (5125)
+msgid "Strong Password"
+msgstr "强密码"
+
 #. Resource IDs: (3365)
 msgid "Subset of entries restricted by the following rule:"
 msgstr "由下列规则限定的条目子集:"
@@ -7344,6 +7389,10 @@ msgstr "下列栏目被识别，但只有分组/标题、用户名和密码将�
 #. Resource IDs: (3260)
 msgid "The following columns will be processed: "
 msgstr "下列栏目将被处理: "
+
+#. Resource IDs: (3463)
+msgid "The following entries contain incomplete passkeys."
+msgstr ""
 
 #. Resource IDs: (3439)
 msgid "The following entries had a duplicate UUID field.  This has been corrected."
@@ -8174,7 +8223,7 @@ msgstr "访问 Password Safe 网站(&W)..."
 
 #. Resource IDs: (5489)
 msgid "Visit the <a href=\"https://pwsafe.org/\">Password Safe website.</a>"
-msgstr ""
+msgstr "访问 <a href=\"https://pwsafe.org/\">Password Safe 网站。</a>"
 
 #. Resource IDs: (5803)
 msgid "WARNING: If you continue, fields will be updated in entries in your existing database from your selected input database."
@@ -8216,6 +8265,10 @@ msgstr "警告 - 备注正被外部编辑"
 #. Resource IDs: (5793)
 msgid "Warning - field too long"
 msgstr "警告 - 字段太长"
+
+#. Resource IDs: (5123)
+msgid "Weak Password"
+msgstr "弱密码"
 
 #. Resource IDs: (5281)
 #, c-format

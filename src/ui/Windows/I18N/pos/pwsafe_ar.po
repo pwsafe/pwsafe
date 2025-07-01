@@ -9,15 +9,28 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2025-03-12 20:08+0200\n"
+"PO-Revision-Date: 2025-06-25 20:45+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: ar\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -5212,6 +5225,10 @@ msgstr "نوع الوسيط"
 msgid "Media Type:"
 msgstr "نوع الوسيط:"
 
+#. Resource IDs: (5124)
+msgid "Medium Password"
+msgstr "كلمة مرور متوسطة"
+
 #. Resource IDs: (5680)
 msgid "Menu Item"
 msgstr "عنصر القائمة"
@@ -5786,6 +5803,30 @@ msgstr "PWS_CPF_CDD"
 #. Resource IDs: (5449)
 msgid "PWS_CPF_TVDD"
 msgstr "PWS_CPF_TVDD"
+
+#. Resource IDs: (3093)
+msgid "Passkey Algorithm ID"
+msgstr ""
+
+#. Resource IDs: (3090)
+msgid "Passkey Credential ID"
+msgstr ""
+
+#. Resource IDs: (3094)
+msgid "Passkey Private Key"
+msgstr ""
+
+#. Resource IDs: (3091)
+msgid "Passkey Relying Party ID"
+msgstr ""
+
+#. Resource IDs: (3095)
+msgid "Passkey Sign Count"
+msgstr ""
+
+#. Resource IDs: (3092)
+msgid "Passkey User Handle"
+msgstr ""
 
 #. Resource IDs: (5757)
 msgid "Passphrase"
@@ -6556,10 +6597,6 @@ msgstr "إختار"
 msgid "Select &All"
 msgstr "اختيار &الكل"
 
-#. Resource IDs: (5384)
-msgid "Select Browser:"
-msgstr "إختر متصفح:"
-
 #. Resource IDs: (497, 537)
 msgid "Select Database"
 msgstr "إختار قاعدة بيانات"
@@ -6575,6 +6612,10 @@ msgstr "حدد الموقع للنسخ الاحتياطية المتوسطة"
 #. Resource IDs: (65535)
 msgid "Select Locked Text Color:"
 msgstr "حدد لون نص مقفل:"
+
+#. Resource IDs: (5384)
+msgid "Select Program"
+msgstr "أختر برنامجاً"
 
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"
@@ -7050,6 +7091,10 @@ msgstr "ستكون الفلاتر المخزنة غير قابلة للاستخ�
 msgid "String value:"
 msgstr "قيمة نصية:"
 
+#. Resource IDs: (5125)
+msgid "Strong Password"
+msgstr "كلمة مرور قوية"
+
 #. Resource IDs: (3365)
 msgid "Subset of entries restricted by the following rule:"
 msgstr "مجموعة فرعية من المدخلات مقيدة بالقاعدة التالية:"
@@ -7385,6 +7430,10 @@ msgstr "تم التعرف على الأعمدة التالية ولكن ستتم
 #. Resource IDs: (3260)
 msgid "The following columns will be processed: "
 msgstr "ستتم معالجة الأعمدة التالية: "
+
+#. Resource IDs: (3463)
+msgid "The following entries contain incomplete passkeys."
+msgstr ""
 
 #. Resource IDs: (3439)
 msgid "The following entries had a duplicate UUID field.  This has been corrected."
@@ -8268,6 +8317,10 @@ msgstr "تحذير - يتم تحرير الملاحظات خارجيًا"
 #. Resource IDs: (5793)
 msgid "Warning - field too long"
 msgstr "تحذير - الحقل طويل جدًا"
+
+#. Resource IDs: (5123)
+msgid "Weak Password"
+msgstr "كلمة مرور ضعيفة"
 
 #. Resource IDs: (5281)
 #, c-format

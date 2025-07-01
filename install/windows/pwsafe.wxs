@@ -84,10 +84,8 @@
 	    Source='help\pwsafeES\pwsafeES.chm' /> 
 	    <File Id='file8' Name='pwsafefr.chm' DiskId='1'
 	    Source='help\pwsafeFR\pwsafefr.chm' /> 
-<!--
-	    <File Id='file9' Name='pwsafePL.chm' DiskId='1'
-	    Source='help\pwsafePL\pwsafePL.chm' /> 
--->
+	    <File Id='file9' Name='pwsafeSK.chm' DiskId='1'
+	    Source='help\pwsafeSK\pwsafeSK.chm' /> 
 	    <File Id='file10' Name='pwsaferu.chm' DiskId='1'
 	    Source='help\pwsafeRU\pwsaferu.chm' /> 
 	    <File Id='file11' Name='pwsafeZH.chm' DiskId='1'
@@ -163,6 +161,21 @@
 	    </File>
 		<File Id='file28' Name='pwsafeLV.dll' DiskId='1'
 	      Source='$(var.LangDir)\pwsafeLV.dll' Vital='yes'> 
+		</File>
+		<File Id='file29' Name='pwsafeCZ.dll' DiskId='1'
+	      Source='$(var.LangDir)\pwsafeCZ.dll' Vital='yes'>
+		</File>
+		<File Id='file30' Name='pwsafeHU.dll' DiskId='1'
+	      Source='$(var.LangDir)\pwsafeHU.dll' Vital='yes'>
+		</File>
+		<File Id='file31' Name='pwsafeSK.dll' DiskId='1'
+	      Source='$(var.LangDir)\pwsafeSK.dll' Vital='yes'>
+		</File>
+		<File Id='file32' Name='pwsafeSL.dll' DiskId='1'
+	      Source='$(var.LangDir)\pwsafeSL.dll' Vital='yes'>
+		</File>
+		<File Id='file33' Name='pwsafeTR.dll' DiskId='1'
+	      Source='$(var.LangDir)\pwsafeTR.dll' Vital='yes'>
 	    </File>
 		<RegistryKey Root="HKLM" Key="Software\Password Safe\Admin" ForceDeleteOnUninstall="yes">
 		  <RegistryValue Type="integer" Name="ScreenCaptureProtection" Value="[RESOLVEDSCREENCAPTUREPROTECTIONVALUE]"/>
@@ -170,15 +183,15 @@
 	  </Component>
 	  <Component Id='SupportingFiles'
 	    Guid='2cb36029-a029-4f15-9838-4acacb823ce7'> 
-	    <File Id='file29' Name='pwsafe.xsd' DiskId='1'
+	    <File Id='file34' Name='pwsafe.xsd' DiskId='1'
 	    Source='xml\pwsafe.xsd' Vital='yes' />
-	    <File Id='file30' Name='pwsafe.xsl' DiskId='1'
+	    <File Id='file35' Name='pwsafe.xsl' DiskId='1'
 	    Source='xml\pwsafe.xsl' Vital='yes' />
-	    <File Id='file31' Name='pwsafe_filter.xsd' DiskId='1'
+	    <File Id='file36' Name='pwsafe_filter.xsd' DiskId='1'
 	    Source='xml\pwsafe_filter.xsd' Vital='yes' />
-	    <File Id='file32' Name='KPV1_to_PWS.xslt' DiskId='1'
+	    <File Id='file37' Name='KPV1_to_PWS.xslt' DiskId='1'
 	    Source='xml\KPV1_to_PWS.xslt' Vital='yes' />
-	    <File Id='file33' Name='KPV2_to_PWS.xslt' DiskId='1'
+	    <File Id='file38' Name='KPV2_to_PWS.xslt' DiskId='1'
 	    Source='xml\KPV2_to_PWS.xslt' Vital='yes' />
 	  </Component>
 	</Directory>
@@ -201,7 +214,5 @@
       <Custom Action='AssignAllusersProperty'
       After='LaunchConditions'>Privileged</Custom>
     </InstallExecuteSequence>
-
   </Product>
-
 </Wix>
