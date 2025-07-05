@@ -472,11 +472,11 @@ Section /o "$(CHINESE_CN_SUPPORT)" ChineseSection
   File /nonfatal "${LANG_DLL_DIR}\pwsafeZH.dll"
   File /nonfatal "..\..\help\pwsafeZH\pwsafeZH.chm"
 SectionEnd
-Section /o "$(CHINESE_TW_SUPPORT)" ChineseTWSection
-  SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL_DIR}\pwsafeZH_TW.dll"
-  File /nonfatal "..\..\help\pwsafeZH\pwsafeZH_TW.chm"
-SectionEnd
+;Section /o "$(CHINESE_TW_SUPPORT)" ChineseTWSection
+;  SetOutPath "$INSTDIR"  
+;  File /nonfatal "${LANG_DLL_DIR}\pwsafeZH_TW.dll"
+;  File /nonfatal "..\..\help\pwsafeZH\pwsafeZH_TW.chm"
+;SectionEnd
 Section /o "$(GERMAN_SUPPORT)" GermanSection
   SetOutPath "$INSTDIR"  
   File /nonfatal "${LANG_DLL_DIR}\pwsafeDE.dll"
@@ -1002,8 +1002,8 @@ Function .onInit
   SectionSetFlags ${GermanSection} ${SF_SELECTED}
   StrCmp $LANGUAGE ${LANG_SIMPCHINESE} 0 +2
   SectionSetFlags ${ChineseSection} ${SF_SELECTED}
-  StrCmp $LANGUAGE ${LANG_TRADCHINESE} 0 +2
-  SectionSetFlags ${ChineseTWSection} ${SF_SELECTED}
+  ;StrCmp $LANGUAGE ${LANG_TRADCHINESE} 0 +2
+  ;SectionSetFlags ${ChineseTWSection} ${SF_SELECTED}
   StrCmp $LANGUAGE ${LANG_SPANISH} 0 +2
   SectionSetFlags ${SpanishSection} ${SF_SELECTED}
   StrCmp $LANGUAGE ${LANG_SWEDISH} 0 +2
