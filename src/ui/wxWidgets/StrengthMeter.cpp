@@ -91,6 +91,21 @@ wxString StrengthMeter::GetLabelForStrength() const
   }
 }
 
+static bool IsDarkTheme()
+{
+#if wxCHECK_VERSION(3,1,3)
+  return wxSystemSettings::GetAppearance().IsDark();
+#else
+    wxColour bg = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW);
+    wxColour fg = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
+    // Calculate luminance for background and foreground colors
+    double bgLum = 0.299 * bg.Red() + 0.587 * bg.Green() + 0.114 * bg.Blue();
+    double fgLum = 0.299 * fg.Red() + 0.587 * fg.Green() + 0.114 * fg.Blue();;
+
+    return bgLum < fgLum; // darker background than text
+#endif
+}
+
 void StrengthMeter::OnPaint(wxPaintEvent& event)
 {
   wxPaintDC dc(this);
@@ -108,7 +123,7 @@ void StrengthMeter::OnPaint(wxPaintEvent& event)
   int barWidth = static_cast<int>((size.GetWidth() - 1) * (m_strength / 100.0));
     
   // Draw meter background
-  if (wxSystemSettings::GetAppearance().IsDark()) {
+  if (IsDarkTheme()) {
 #ifndef __WXMAC__
     // Use background color of text controls when dark theme is in use
     auto brushLightness = 104;
@@ -121,7 +136,7 @@ void StrengthMeter::OnPaint(wxPaintEvent& event)
     auto brushLightness = 95;
     dc.SetBrush(wxBrush(bgColor.ChangeLightness(brushLightness)));
   }
-  auto penLightness = wxSystemSettings::GetAppearance().IsDark() ? 125 : 80;
+  auto penLightness = IsDarkTheme() ? 125 : 80;
   dc.SetPen(wxPen(bgColor.ChangeLightness(penLightness)));
   dc.DrawRoundedRectangle(barX, barY, size.GetWidth() - 1, barHeight, radius);
 
