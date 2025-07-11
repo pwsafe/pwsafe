@@ -866,7 +866,9 @@ RecentDbList &PWSafeApp::recentDatabases()
   // sure that prefs' is set correctly (user, machine, etc.)
   if (m_recentDatabases == nullptr) {
     m_recentDatabases = new RecentDbList;
+#if wxCHECK_VERSION(3,1,5)
     m_recentDatabases->SetMenuPathStyle(wxFH_PATH_SHOW_ALWAYS);
+#endif
   }
   return *m_recentDatabases;
 }
@@ -877,7 +879,9 @@ void PWSafeApp::ResizeRecentDatabases()
     m_recentDatabases->Save();
     delete m_recentDatabases;
     m_recentDatabases = new RecentDbList;
+#if wxCHECK_VERSION(3,1,5)
     m_recentDatabases->SetMenuPathStyle(wxFH_PATH_SHOW_ALWAYS);
+#endif
     m_recentDatabases->Load();
   }
 }

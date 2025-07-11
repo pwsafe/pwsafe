@@ -53,12 +53,13 @@ has built-in support for the following languages:
 - Polish
 - Portuguese (Brazilian)
 - Russian
+- Slovak
 - Slovenian
 - Spanish
 - Swedish
 - Turkish
 
-You can update the translations or add another language via [transifex](https://www.transifex.com/passwordsafe/passwordsafe/),
+You can update the translations or add another language via [transifex](https://explore.transifex.com/passwordsafe/passwordsafe/),
 or by dropping [me](https://pwsafe.org/contact.php) a note.
 
 Installation
