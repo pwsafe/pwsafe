@@ -3,13 +3,17 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+# Translators:
+# ronys, 2025
+# Dmitr Y, 2025
+
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-15 12:30+0300\n"
-"PO-Revision-Date: 2025-03-15 12:30+0300\n"
-"Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
+"POT-Creation-Date: 2025-07-15 23:30+0300\n"
+"PO-Revision-Date: 2025-07-15 23:30+0300\n"
+"Last-Translator:\n"
 "Language-Team:\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
@@ -63,7 +67,7 @@ msgstr ""
 # Base entry - исходный элемент
 # Legacy - в раскладках клавиатуры "традиционная"
 # Generate password - создать пароль
-# Undo - вернуть
+# Undo - отменить
 # Redo - повторить
 # Failsafe Backup - Аварийная резервная копия
 # Original - исходный
@@ -75,6 +79,8 @@ msgstr ""
 # drag / drag-and-drop - перетащить, перетаскивание
 # dragbar - панель значков для перетаскивания
 # passkey - ключ доступа
+# click - щелчок
+# Help - справка
 
 #. Resource IDs: (3263)
 msgid "  All Password History ignored."
@@ -98,7 +104,7 @@ msgstr "  Недопустимое значение даты/времени."
 
 #. Resource IDs: (3041)
 msgid "  Invalid field separator character found - only a single blank is allowed between fields."
-msgstr "  Обнаружен недопустимый разделитель полей. В качестве разделителя может использовать только одиночный пробел."
+msgstr "  Обнаружен недопустимый разделитель полей. В качестве разделителя можно использовать только одиночный пробел."
 
 #. Resource IDs: (3034)
 #, c-format
@@ -116,7 +122,7 @@ msgstr "  Неверная длина пароля (отличается от д
 
 #. Resource IDs: (3038)
 msgid "  Invalid password length found (not a hexadecimal number)."
-msgstr "  Недопустимая длина пароля (не является шестнадцатеричным числом)."
+msgstr "  Недопустимое длина пароля (не шестнадцатеричное число)."
 
 #. Resource IDs: (3035)
 #, c-format
@@ -131,10 +137,10 @@ msgstr " 'Автонабор'"
 msgid " 'Creation Time'"
 msgstr " 'Время создания'"
 
-# Действие по двойному клику (Double click action)
+# Действие по двойному щелчку (Double click action)
 #. Resource IDs: (5704)
 msgid " 'DCA'"
-msgstr " 'По дв. клику'"
+msgstr " 'По дв. щелчку'"
 
 #. Resource IDs: (5720)
 msgid " 'Email'"
@@ -202,10 +208,10 @@ msgstr " 'Время изменения элемента'"
 msgid " 'Run Command'"
 msgstr " 'Выполнить команду'"
 
-# Действие по Shift+двойной клик (Shift+Double click action)
+# Действие по Shift+двойной щелчок (Shift+Double click action)
 #. Resource IDs: (5874)
 msgid " 'Shift+DCA'"
-msgstr " 'По Shift+дв. клик'"
+msgstr " 'По Shift+дв. щелчок'"
 
 #. Resource IDs: (5542)
 msgid " 'Title'"
@@ -296,7 +302,7 @@ msgstr " (импортировано № %d)"
 #. Resource IDs: (5234)
 #, c-format
 msgid " [Process ID=%s]"
-msgstr " [Process ID=%s]"
+msgstr " [ID процесса=%s]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -544,7 +550,7 @@ msgstr "%s Сохраните контейнер под другим имене�
 #. Resource IDs: (5318)
 #, c-format
 msgid "%s \n\nCan't open file. Please choose another."
-msgstr "%s \n\nНевозможно открыть файл. Пожалуйста, выберите другой."
+msgstr "%s \n\nНевозможно открыть файл. Выберите другой."
 
 # В конце мастера %s=Слияние/Синхронизация/Экспорт ...
 #. Resource IDs: (5865)
@@ -639,7 +645,7 @@ msgstr "&Добавить элемент..."
 
 #. Resource IDs: (32139 - MenuEx)
 msgid "&Add/Edit Font"
-msgstr "Шрифт в диалоге &Вставки/Редактирования"
+msgstr "Шрифт в окне &Вставки/Редактирования"
 
 #. Resource IDs: (1026, 1306)
 msgid "&Apply"
@@ -659,7 +665,7 @@ msgstr "Пе&рейти по ссылке"
 
 #. Resource IDs: (32151 - MenuEx)
 msgid "&Change Master Password..."
-msgstr "&Изменить пароль для контейнера..."
+msgstr "&Изменить мастер-пароль..."
 
 #. Resource IDs: (32105 - MenuEx)
 msgid "&Classic Toolbar"
@@ -716,21 +722,21 @@ msgstr "&Удалить из списка недавних"
 
 #. Resource IDs: (1015, 1038)
 msgid "&Don't ask me again"
-msgstr "&Не спрашивать снова"
+msgstr "Больше &не спрашивать"
 
 #. Resource IDs: (1015)
 msgid "&Don't remind me again"
-msgstr "&Не напоминать снова"
+msgstr "Больше &не напоминать"
 
 # Вкладка Дополнительно, широкий режим и в полях фильтра, урезано
 #. Resource IDs: (65535)
 msgid "&Double-Click Action:"
-msgstr "По &двойному клику:"
+msgstr "По &двойному щелчку:"
 
 # Вкладка Дополнительно, обычный режим, урезано
 #. Resource IDs: (65535)
 msgid "&Double-Click\nAction:"
-msgstr "По &двойному\nклику:"
+msgstr "По &двойному\nщелчку:"
 
 #. Resource IDs: (32107 - MenuEx)
 msgid "&Dragbar visible"
@@ -798,7 +804,7 @@ msgstr "Перейти &к исходному элементу"
 
 #. Resource IDs: (32200 - PopupMenuEx, 57670, 9)
 msgid "&Help"
-msgstr "&Помощь"
+msgstr "&Справка"
 
 #. Resource IDs: (5246, 61457)
 msgid "&Hide"
@@ -921,7 +927,7 @@ msgstr "&Вставить"
 
 #. Resource IDs: (32010 - MenuEx, 32085 - Menu, 32085 - MenuEx, 32094 - Menu, 32094 - MenuEx)
 msgid "&Plain Text (tab separated)..."
-msgstr "&Простой текст (разделитель табуляция)..."
+msgstr "&Простой текст (разделитель - табуляция)..."
 
 #. Resource IDs: (32016 - MenuEx)
 msgid "&Plain Text..."
@@ -1004,12 +1010,12 @@ msgstr "&Сделать текущим"
 # урезано, вкладка дополнительно, широкий режим
 #. Resource IDs: (65535)
 msgid "&Shift Double-Click Action:"
-msgstr "По Shift+двойной &клик:"
+msgstr "По Shift+двойной &щелчок:"
 
 # урезано, вкладка дополнительно, обычный режим
 #. Resource IDs: (65535)
 msgid "&Shift Double-Click\nAction:"
-msgstr "По Shift+двойной &клик:"
+msgstr "По Shift+двойной &щелчок:"
 
 #. Resource IDs: (1014, 5245)
 msgid "&Show"
@@ -1043,7 +1049,7 @@ msgstr "&Повторить"
 
 #. Resource IDs: (34100)
 msgid "&Undo"
-msgstr "&Отмена"
+msgstr "&Отменить"
 
 #. Resource IDs: (32091 - Menu)
 msgid "&Unprotect All Entries"
@@ -1084,7 +1090,7 @@ msgstr "Шрифт для &экранной клавиатуры"
 
 #. Resource IDs: (32013 - MenuEx, 32015 - MenuEx, 32086 - Menu, 32086 - MenuEx, 32095 - Menu, 32095 - MenuEx)
 msgid "&XML format..."
-msgstr "&XML формат..."
+msgstr "&XML-формат..."
 
 #. Resource IDs: (1, 5437)
 msgid "&Yes"
@@ -1112,7 +1118,7 @@ msgstr "«Перейти по ссылке» копирует пароль в б
 
 #. Resource IDs: (5645)
 msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' conflict. Change one or both."
-msgstr "Конфликт опций «Очищать буфер обмена при сворачивании» и «Свернуть после копирования пароля». Отключите одну из них."
+msgstr "Конфликт опций «Очищать буфер обмена при сворачивании» и «Свернуть после копирования пароля». Отключите одну или обе."
 
 #. Resource IDs: (5714)
 msgid "'\n\nIf you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n\nThe diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n\nHowever, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n\nThank you for your help to improve PasswordSafe."
@@ -2036,7 +2042,7 @@ msgstr "Перейти по ссылке и выполнить &автонабо
 msgid "Browse to URL + AutoType"
 msgstr "Перейти по ссылке и выполнить автонабор"
 
-# урезано (в настройках вып. меню для двойного клика)
+# урезано (в настройках вып. меню для двойного щелчка)
 #. Resource IDs: (4008)
 msgid "Browse to URL + Autotype"
 msgstr "Переход по ссылке и автонабор"
@@ -2900,7 +2906,7 @@ msgstr "Экспортировано из контейнера: '%s'"
 
 #. Resource IDs: (3064, 5705)
 msgid "DCA"
-msgstr "Действие по двойному клику"
+msgstr "Действие по двойному щелчку"
 
 #. Resource IDs: (8204)
 msgid "Danish"
@@ -3144,12 +3150,12 @@ msgstr "Щёлкните дважды для просмотра/редактир
 # Вкладка прочее, широкий режим и в полях фильтра, урезано
 #. Resource IDs: (5738, 65535)
 msgid "Double-Click Action"
-msgstr "По двойному клику"
+msgstr "По двойному щелчку"
 
 # Вкладка прочее, обычный режим, урезано
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
-msgstr "По двойному клику"
+msgstr "По двойному щелчку"
 
 #. Resource IDs: (4021)
 msgid "Double-Click on entry to Autotype"
@@ -4121,7 +4127,7 @@ msgstr "Немецкая (IBM)"
 
 #. Resource IDs: (32203 - MenuEx)
 msgid "Get &Help\tF1"
-msgstr "&Помощь\tF1"
+msgstr "&Справка\tF1"
 
 #. Resource IDs: (5213)
 msgid "Given path is a directory or file is read-only"
@@ -4224,11 +4230,11 @@ msgstr "Иврит"
 
 #. Resource IDs: (32203, 5607, 57670)
 msgid "Help"
-msgstr "Помощь"
+msgstr "Справка"
 
 #. Resource IDs: (57670)
 msgid "Help (F1)"
-msgstr "Помощь (F1)"
+msgstr "Справка (F1)"
 
 #. Resource IDs: (4113)
 msgid "Hexadecimal characters"
@@ -4838,7 +4844,7 @@ msgstr "левый Ctrl"
 
 #. Resource IDs: (5682)
 msgid "Left click 'Shortcut Key' value to change or right click it to reset or remove it. After selecting the shortcut key combination, press Enter to set it.\n\nThe 'Menu item' text will be red if the shortcut differs from its default value."
-msgstr "Левый клик по комбинации клавиш — изменение, правый — сброс или удаление. После выбора комбинации нажмите Enter для сохранения.\n\nТекст в столбце «Пункт меню» будет выделен красным, если комбинация отличается от значения по умолчанию."
+msgstr "Щелчок левой кнопкой по комбинации клавиш — изменение, правой — сброс или удаление. После выбора комбинации нажмите Enter для сохранения.\n\nТекст в столбце «Пункт меню» будет выделен красным, если комбинация отличается от значения по умолчанию."
 
 #. Resource IDs: (5291)
 msgid "Length of passwords generated in hexadecimal format must be even\nas each byte is two hexadecimal digits."
@@ -6382,10 +6388,6 @@ msgstr "Выбор"
 msgid "Select &All"
 msgstr "В&ыделить все"
 
-#. Resource IDs: (5384)
-msgid "Select Browser:"
-msgstr "Укажите браузер:"
-
 #. Resource IDs: (497, 537)
 msgid "Select Database"
 msgstr "Выберите контейнер"
@@ -6491,7 +6493,7 @@ msgstr "Сессия"
 
 #. Resource IDs: (5996)
 msgid "Set Add/Edit display font"
-msgstr "Выбор шрифта для диалога Вставки/Редактирования"
+msgstr "Выбор шрифта для окна Вставки/Редактирования"
 
 #. Resource IDs: (5992)
 #, c-format
@@ -6582,12 +6584,12 @@ msgstr "Shift"
 # Вкладка прочее, широкий режим, урезано
 #. Resource IDs: (65535)
 msgid "Shift Double-Click Action"
-msgstr "По Shift+двойной клик"
+msgstr "По Shift+двойной щелчок"
 
 # Вкладка прочее, обычный режим, урезано
 #. Resource IDs: (65535)
 msgid "Shift Double-Click Action:"
-msgstr "По Shift+двойной клик"
+msgstr "По Shift+двойной щелчок"
 
 #. Resource IDs: (5689)
 msgid "Shift+"
@@ -6595,12 +6597,12 @@ msgstr "Shift+"
 
 #. Resource IDs: (3071, 5872)
 msgid "Shift+DCA"
-msgstr "Действие по Shift+двойной клик"
+msgstr "Действие по Shift+двойной щелчок"
 
 # В полях фильтра, урезано, чтобы было в таком же формате, что и в параметрах
 #. Resource IDs: (5873)
 msgid "Shift+Double-Click Action"
-msgstr "По Shift+двойной клик"
+msgstr "По Shift+двойной щелчок"
 
 #. Resource IDs: (5555)
 msgid "Shift+click to view current policy"
@@ -6768,7 +6770,7 @@ msgstr "При выборе параметра «произносимые» не
 
 #. Resource IDs: (5938)
 msgid "Sorry, couldn't find help file - help unavailable."
-msgstr "Помощь недоступна: не найден файл справки"
+msgstr "Справка недоступна: не найден файл справки"
 
 #. Resource IDs: (6028)
 msgid "Sorry, currently there is a limit of only one attachment per entry"
@@ -7610,7 +7612,7 @@ msgstr "Снять"
 
 #. Resource IDs: (1486, 32083 - MenuEx)
 msgid "Undo"
-msgstr "Вернуть"
+msgstr "Отменить"
 
 #. Resource IDs: (5884)
 msgid "Undo the last change to password policies"
@@ -8054,7 +8056,7 @@ msgstr "XML-файлы (*.xml)|*.xml||"
 
 #. Resource IDs: (5937)
 msgid "XML format..."
-msgstr "XML формат..."
+msgstr "XML-формат..."
 
 #. Resource IDs: (5726)
 msgid "YYMMDD_HHMMSS"
@@ -8163,7 +8165,7 @@ msgstr "[Контейнер не выбран]"
 
 #. Resource IDs: (5242)
 msgid "[Notes hidden - click here to display]"
-msgstr "[Заметки скрыты. Кликните здесь, чтобы показать.]"
+msgstr "[Заметки скрыты. Щёлкните здесь, чтобы показать.]"
 
 #. Resource IDs: (32064)
 msgid "\nAdd Group"
@@ -8376,7 +8378,7 @@ msgstr "\nПерейти к исходному элементу"
 
 #. Resource IDs: (57670)
 msgid "\nHelp"
-msgstr "\nПомощь"
+msgstr "\nСправка"
 
 #. Resource IDs: (32016)
 msgid "\nImport Text"
@@ -8467,7 +8469,7 @@ msgstr "\nСохранить контейнер как..."
 # Переход к элементу из контекстного меню недавних
 #. Resource IDs: (32255)
 msgid "\nSelect Entry"
-msgstr "Перейти к элементу"
+msgstr "\nПерейти к элементу"
 
 #. Resource IDs: (32075)
 msgid "\nSend Email"
@@ -8515,7 +8517,7 @@ msgstr "\nНовые %ls %ls добавлены в данный контейне
 
 #. Resource IDs: (32083)
 msgid "\nUndo"
-msgstr "\nВернуть"
+msgstr "\nОтменить"
 
 #. Resource IDs: (3060)
 msgid "\nUnexpected exception during parsing."
