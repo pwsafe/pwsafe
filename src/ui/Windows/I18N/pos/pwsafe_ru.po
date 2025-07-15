@@ -1518,7 +1518,7 @@ msgid ""
 "A hidden password needs to be entered in the Confirm Password field too. If it's not hidden, the Confirm field shows numbers that may be used to help count the "
 "password's characters."
 msgstr ""
-"Если пароль скрыт, то его нужно повторить в поле подтверждения. Иначе в поле подтверждения будут выведены цифры для того, чтобы было проще определять позиции символов."
+"Если пароль скрыт, его нужно повторить в поле подтверждения. Если не скрыт, то в поле подтверждения выводятся цифры для подсчёта символов пароля."
 
 msgid ""
 "A new password database will be created. The Master Password you enter will be used to encrypt the password database file. The Master Password can use any keyboard "
@@ -7170,7 +7170,7 @@ msgstr "Строка:"
 
 #. Resource IDs: (5125)
 msgid "Strong Password"
-msgstr "Надежный пароль"
+msgstr "Надёжный пароль"
 
 #. Resource IDs: (3365)
 msgid "Subset of entries restricted by the following rule:"
