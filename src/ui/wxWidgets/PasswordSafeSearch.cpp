@@ -750,7 +750,7 @@ void SearchPointer::PrintLabel(const TCHAR* prefix /*= 0*/)
     // need a const object so we get both args to distance() as const iterators
     const SearchIndices& idx = m_indices;
     m_label.Clear();
-    m_label << std::distance(idx.begin(), m_currentIndex)+1 << '/' << m_indices.size() << wxT(" matches");
+    m_label << std::distance(idx.begin(), m_currentIndex)+1 << '/' << m_indices.size() << _(" matches");
     if (prefix) {
       m_label = wxString(prefix) + wxT(".  ") + m_label;
     }
