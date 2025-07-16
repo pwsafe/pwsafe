@@ -1,4 +1,4 @@
-set (LANGS "RU" "DE" "ES" "FR" "ZH" "PL")
+set (LANGS "RU" "DE" "ES" "FR" "ZH" "PL" "SK")
 
 macro(set_lang_help_files FILES_VAR DIR)
   file(GLOB_RECURSE ${FILES_VAR}
