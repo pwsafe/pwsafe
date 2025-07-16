@@ -88,8 +88,20 @@
 			<param name="Local" value="html/change_combo.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Filtrovanie záznamov">
+			<param name="Local" value="html/filters.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Používanie aliasov">
+			<param name="Local" value="html/aliases.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Používanie AutoType">
 			<param name="Local" value="html/autotype.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Funkcia Spusti príkaz">
+			<param name="Local" value="html/run_command.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Zálohovanie a obnovenie databázy">
@@ -110,22 +122,6 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Exportovanie záznamov">
 			<param name="Local" value="html/export.html">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Filtrovanie záznamov">
-			<param name="Local" value="html/filters.html">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Používanie aliasov">
-			<param name="Local" value="html/aliases.html">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Funkcia Spusti príkaz">
-			<param name="Local" value="html/run_command.html">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Parametre príkazového riadka">
-			<param name="Local" value="html/cli.html">
 			</OBJECT>
 	</UL>
 	<LI> <OBJECT type="text/sitemap">
@@ -221,6 +217,10 @@
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Klávesové skratky">
 			<param name="Local" value="html/Shortcut_Keys.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Parametre príkazového riadka">
+			<param name="Local" value="html/cli.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Ikony záznamov">

@@ -6,17 +6,16 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2025-07-15 21:36+0300\n"
-"Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
-"Language-Team: \n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.6\n"
 
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
@@ -27,10 +26,13 @@ msgstr ""
 #    S = Shift key   (or blank if not used)
 #    X = upper case character
 # e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+
 # ONLY Accelerator Keys with corresponding alphanumeric characters can be
 # updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+
 # ONLY change the msgstr field. Do NOT change any other.
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
+
 #. Resource IDs: (3263)
 msgid "  All Password History ignored."
 msgstr "  Celá história hesiel ignorovaná."
@@ -53,7 +55,7 @@ msgstr " Neplatná hodnota dátumu/času."
 
 #. Resource IDs: (3041)
 msgid "  Invalid field separator character found - only a single blank is allowed between fields."
-msgstr " Zistený znak neplatného oddeľovača poľa - medzi poliami je povolený iba jeden prázdny znak."
+msgstr " Zistený neplatný znak oddeľovača poľa - medzi poliami je povolený iba jeden prázdny znak."
 
 #. Resource IDs: (3034)
 #, c-format
@@ -160,7 +162,7 @@ msgstr " 'Názov'"
 
 #. Resource IDs: (5396)
 msgid " 'Two Factor Key'"
-msgstr " 'Dvoj-faktorový kľúč'"
+msgstr " 'Dvojfaktorový kľúč'"
 
 #. Resource IDs: (5366)
 msgid " 'URL'"
@@ -202,7 +204,7 @@ msgstr " / premenované %d"
 #. Resource IDs: (5782)
 #, c-format
 msgid " / skipped %d"
-msgstr " / preskočené %d"
+msgstr " / vynechané %d"
 
 #. Resource IDs: (5783)
 #, c-format
@@ -232,7 +234,7 @@ msgstr " Duplikát # %d"
 #. Resource IDs: (3240)
 #, c-format
 msgid " Import # %d"
-msgstr " Importovať # %d"
+msgstr ""
 
 #. Resource IDs: (5234)
 #, c-format
@@ -319,23 +321,13 @@ msgstr "%1 sa nenašlo."
 
 #. Resource IDs: (61744)
 #, c-format
-msgid ""
-"%1: %2\n"
-"Continue running script?"
-msgstr ""
-"%1: %2\n"
-"Pokračovať vo vykonávaní skriptu?"
+msgid "%1: %2\nContinue running script?"
+msgstr "%1: %2\nPokračovať vo vykonávaní skriptu?"
 
 #. Resource IDs: (61729)
 #, c-format
-msgid ""
-"%1\n"
-"Cannot find this file.\n"
-"Verify that the correct path and file name are given."
-msgstr ""
-"%1\n"
-"Tento súbor sa nedá nájsť.\n"
-"Overte, že je uvedená správna cesta a názov súboru."
+msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
+msgstr "%1\nTento súbor sa nedá nájsť.\nOverte, že je uvedená správna cesta a názov súboru."
 
 #. Resource IDs: (62186)
 #, c-format
@@ -395,7 +387,7 @@ msgstr ""
 #. Resource IDs: (3431)
 #, c-format
 msgid "%ls - Imported %ls"
-msgstr "%ls - Naimportované %ls"
+msgstr "%ls - Importované %ls"
 
 #. Resource IDs: (3432)
 #, c-format
@@ -434,14 +426,8 @@ msgstr "%ls, Názov=\"%ls\", Používateľske meno=\"%ls\" už existuje v datab�
 
 #. Resource IDs: (3032)
 #, c-format
-msgid ""
-"%ls\n"
-"\n"
-"The configuration file will not be used."
-msgstr ""
-"%ls\n"
-"\n"
-"Konfiguračný súbor sa nepoužije."
+msgid "%ls\n\nThe configuration file will not be used."
+msgstr "%ls\n\nKonfiguračný súbor sa nepoužije."
 
 #. Resource IDs: (5878)
 #, c-format
@@ -466,7 +452,7 @@ msgstr "%s (špecifické pre databázu)"
 #. Resource IDs: (5998)
 #, c-format
 msgid "%s Do you wish to save changes to your database without it?"
-msgstr "%s Prajete si uložiť zmeny do databázy bez toho?"
+msgstr "%s Prajete si uložiť zmeny do databázy aj tak?"
 
 #. Resource IDs: (5796)
 #, c-format
@@ -475,14 +461,8 @@ msgstr "%s Snažte sa buď uložiť databázu pod iným menom alebo skončite be
 
 #. Resource IDs: (5318)
 #, c-format
-msgid ""
-"%s \n"
-"\n"
-"Can't open file. Please choose another."
-msgstr ""
-"%s \n"
-"\n"
-"Nedá sa otvoriť súbor. Vyberte prosím iný súbor."
+msgid "%s \n\nCan't open file. Please choose another."
+msgstr "%s \n\nNedá sa otvoriť súbor. Vyberte prosím iný súbor."
 
 #. Resource IDs: (5865)
 #, c-format
@@ -531,73 +511,33 @@ msgstr "%sToto je najnovšia verzia!%s"
 
 #. Resource IDs: (5320)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"Could not open file for reading!"
-msgstr ""
-"%s\n"
-"\n"
-"Nepodarilo sa otvoriť súbor na čítanie!"
+msgid "%s\n\nCould not open file for reading!"
+msgstr "%s\n\nNepodarilo sa otvoriť súbor na čítanie!"
 
 #. Resource IDs: (5325)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"Could not open file for writing!"
-msgstr ""
-"%s\n"
-"\n"
-"Nepodarilo sa otvoriť súbor na zápis!"
+msgid "%s\n\nCould not open file for writing!"
+msgstr "%s\n\nNepodarilo sa otvoriť súbor na zápis!"
 
 #. Resource IDs: (5312)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"File corrupt or truncated!\n"
-"Data may have been lost or modified.\n"
-"Continue anyway?"
-msgstr ""
-"%s\n"
-"\n"
-"Súbor je poškodený alebo skrátený!\n"
-"Nejaké dáta sa mohli stratiť alebo boli zmenené.\n"
-"Napriek tomu pokračovať?"
+msgid "%s\n\nFile corrupt or truncated!\nData may have been lost or modified.\nContinue anyway?"
+msgstr "%s\n\nSúbor je poškodený alebo skrátený!\nNejaké dáta sa mohli stratiť alebo boli zmenené.\nNapriek tomu pokračovať?"
 
 #. Resource IDs: (5329)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"File is currently locked by %s"
-msgstr ""
-"%s\n"
-"\n"
-"Súbor je v súčasnosti uzamknutý %s"
+msgid "%s\n\nFile is currently locked by %s"
+msgstr "%s\n\nSúbor je v súčasnosti uzamknutý %s"
 
 #. Resource IDs: (5336)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"Invalid format"
-msgstr ""
-"%s\n"
-"\n"
-"Neplatný formát"
+msgid "%s\n\nInvalid format"
+msgstr "%s\n\nNeplatný formát"
 
 #. Resource IDs: (5321)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"Unknown error"
-msgstr ""
-"%s\n"
-"\n"
-"Neznáma chyba"
+msgid "%s\n\nUnknown error"
+msgstr "%s\n\nNeznáma chyba"
 
 #. Resource IDs: (5728)
 msgid "&Abort"
@@ -637,11 +577,11 @@ msgstr "&Zmeniť hlavné heslo..."
 
 #. Resource IDs: (32105 - MenuEx)
 msgid "&Classic Toolbar"
-msgstr "Klasický panel s nástrojmi"
+msgstr "Klasický panel nástrojov"
 
 #. Resource IDs: (32252 - Menu)
 msgid "&Clear Recent History"
-msgstr "Vymaž históriu nedávnych položiek"
+msgstr "Vymazať históriu nedávnych položiek"
 
 #. Resource IDs: (32008 - MenuEx)
 msgid "&Clear Recently Opened List"
@@ -700,12 +640,8 @@ msgid "&Double-Click Action:"
 msgstr "Akcia pri dvojkliku:"
 
 #. Resource IDs: (65535)
-msgid ""
-"&Double-Click\n"
-"Action:"
-msgstr ""
-"Akcia\n"
-"pri dvojkliku:"
+msgid "&Double-Click\nAction:"
+msgstr "Akcia\npri dvojkliku:"
 
 #. Resource IDs: (32107 - MenuEx)
 msgid "&Dragbar visible"
@@ -829,7 +765,7 @@ msgstr "Nový "
 
 #. Resource IDs: (32104 - MenuEx)
 msgid "&New Toolbar"
-msgstr "Nový panel s nástrojmi"
+msgstr "Nový panel nástrojov"
 
 #. Resource IDs: (32003 - MenuEx)
 msgid "&New..."
@@ -841,7 +777,7 @@ msgstr "Nový/upraviť filter"
 
 #. Resource IDs: (2, 5438)
 msgid "&No"
-msgstr "Nie"
+msgstr "&Nie"
 
 #. Resource IDs: (32138 - MenuEx)
 msgid "&Notes Font"
@@ -861,7 +797,7 @@ msgstr "Otvoriť"
 
 #. Resource IDs: (32002 - Menu)
 msgid "&Open Another"
-msgstr "Otvoriť inú"
+msgstr "Otvoriť inú databázu"
 
 #. Resource IDs: (32002 - MenuEx)
 msgid "&Open..."
@@ -965,15 +901,11 @@ msgstr "&Nastav aktuálny"
 
 #. Resource IDs: (65535)
 msgid "&Shift Double-Click Action:"
-msgstr "Akcia na Shift dvojklik:"
+msgstr "Akcia pri Shift dvojkliku:"
 
 #. Resource IDs: (65535)
-msgid ""
-"&Shift Double-Click\n"
-"Action:"
-msgstr ""
-"Akcia na\n"
-"Shift dvojklik:"
+msgid "&Shift Double-Click\nAction:"
+msgstr "Akcia pri\nShift dvojkliku:"
 
 #. Resource IDs: (1014, 5245)
 msgid "&Show"
@@ -1049,7 +981,7 @@ msgstr "Súbor vo formáte XML..."
 
 #. Resource IDs: (1, 5437)
 msgid "&Yes"
-msgstr "Áno"
+msgstr "&Áno"
 
 #. Resource IDs: (32160 - MenuEx)
 msgid "&Yubikey..."
@@ -1076,26 +1008,8 @@ msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and 
 msgstr "Konflikt akcií 'Vymazať schránku po minimalizácii aplikácie' a 'Skopíruj heslo do schránky a minimalizuj' pri dvojitom kliknutí. Zmeňte jednu alebo obe."
 
 #. Resource IDs: (5714)
-msgid ""
-"'\n"
-"\n"
-"If you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n"
-"\n"
-"The diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n"
-"\n"
-"However, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n"
-"\n"
-"Thank you for your help to improve PasswordSafe."
-msgstr ""
-"'\n"
-"\n"
-"Ak by ste chceli nahlásiť túto chybu, odpovedzte 'Áno' nižšie a nahrajte tento súbor do svojej správy o chybe. Ak odpoviete 'Nie', súbor bude vymazaný.\n"
-"\n"
-"Diagnostické informácie v tomto súbore neobsahujú žiadne vaše osobné údaje ani žiadne informácie z databázy otvorenej v čase chyby.\n"
-"\n"
-"Ak však chcete (a problém sa dá opakovať aj v testovacej databáze), môžete nám poslať tento súbor s minivýpisom, ako aj testovaciu databázu.\n"
-"\n"
-"Ďakujeme za vašu pomoc pri vylepšovaní Password Safe."
+msgid "'\n\nIf you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n\nThe diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n\nHowever, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n\nThank you for your help to improve PasswordSafe."
+msgstr "'\n\nAk by ste chceli nahlásiť túto chybu, odpovedzte 'Áno' nižšie a priložte tento súbor do svojej správy o chybe. Ak odpoviete 'Nie', súbor bude vymazaný.\n\nDiagnostické informácie v tomto súbore neobsahujú žiadne vaše osobné údaje ani žiadne informácie z databázy otvorenej v čase výskytu chyby.\n\nAk však chcete (a problém sa dá opakovať aj v testovacej databáze), môžete nám poslať tento súbor s minidumpom, ako aj testovaciu databázu.\n\nĎakujeme za vašu pomoc pri vylepšovaní Password Safe."
 
 #. Resource IDs: (65535)
 msgid "(Also used to replace periods in Title field)"
@@ -1175,18 +1089,8 @@ msgid "......."
 msgstr "......."
 
 #. Resource IDs: (5713)
-msgid ""
-".dmp'\n"
-"\n"
-"in your temporary directory: \n"
-"\n"
-"\t'"
-msgstr ""
-".dmp '\n"
-"\n"
-"vo vašom dočasnom priečinku: \n"
-"\n"
-"\t'"
+msgid ".dmp'\n\nin your temporary directory: \n\n\t'"
+msgstr ".dmp '\n\nvo vašom dočasnom priečinku: \n\n\t'"
 
 #. Resource IDs: (8020)
 msgid "0"
@@ -1238,15 +1142,15 @@ msgstr ""
 
 #. Resource IDs: (8081, 8167)
 msgid "101 Keys"
-msgstr "101 kláves"
+msgstr "101 klávesov"
 
 #. Resource IDs: (8082, 8168)
 msgid "102 Keys"
-msgstr "102 kláves"
+msgstr "102 klávesov"
 
 #. Resource IDs: (8083, 8169)
 msgid "106 Keys"
-msgstr "106 kláves"
+msgstr "106 klávesov"
 
 #. Resource IDs: (8040)
 msgid "11"
@@ -1334,7 +1238,7 @@ msgstr ""
 
 #. Resource IDs: (6105)
 msgid "2FA copied "
-msgstr "2FA skopírované "
+msgstr "TOTP token skopírovaný "
 
 #. Resource IDs: (8023)
 msgid "3"
@@ -1495,15 +1399,11 @@ msgstr "Dátum v budúcnosti nie je platný pre toto pole"
 
 #. Resource IDs: (5116)
 msgid "A hidden password needs to be entered in the Confirm Password field too. If it's not hidden, the Confirm field shows numbers that may be used to help count the password's characters."
-msgstr "Aj do poľa Potvrdiť heslo je potrebné zadať skryté heslo. Ak nie je skryté, pole Potvrdiť heslo zobrazuje číslo ktoré sa môže použiť na spočítanie znakov hesla."
+msgstr "Je potrebné zadať skryté heslo aj do poľa Potvrdiť heslo. Ak nie je skryté, pole Potvrdiť heslo zobrazuje čísla ktoré sa môžu použiť na spočítanie znakov hesla. Ak chcete vytvoriť alias na iný záznam, nezadávajte jeho heslo ale špecifikujte heslo ako odkaz na iný záznam, a to v tvare [skupina:záznam] alebo len [záznam]."
 
 #. Resource IDs: (5861)
-msgid ""
-"A red and white indicator means that a filter is active\n"
-"(if showing, double click to clear filter)"
-msgstr ""
-"Červeno-biely indikátor znamená že filter je aktívny\n"
-"(ak je zobrazený, dvojklik zruší filter)"
+msgid "A red and white indicator means that a filter is active\n(if showing, double click to clear filter)"
+msgstr "Červeno-biely indikátor znamená že filter je aktívny\n(ak je zobrazený, dvojklik zruší filter)"
 
 #. Resource IDs: (61474)
 msgid "A required resource was unavailable."
@@ -1656,7 +1556,7 @@ msgstr "Povoliť viacero inštancií (vyžaduje reštartovanie všetkých)"
 
 #. Resource IDs: (3504)
 msgid "Allowed characters are a-z, 2-7, space and dash"
-msgstr "Povolené znaky sú a-z, 2-7, medzera a pomlčka"
+msgstr "Povolené znaky sú a-z, A-Z, 2-7, medzera a pomlčka"
 
 #. Resource IDs: (1434)
 msgid "Also used to replace periods in the Title field."
@@ -1778,12 +1678,8 @@ msgid "As the double quote character is used to delimit the whole notes field, i
 msgstr "Keďže sa znak úvodzovky používa na oddelenie samotného poľa poznámok, nemôže sa v ňom použiť na oddelenie riadkov. Vyberte iný znak."
 
 #. Resource IDs: (5292)
-msgid ""
-"At least one type of character (lowercase, uppercase, digits,\n"
-"symbols, hexadecimal) must be permitted."
-msgstr ""
-"Musí sa povoliť aspoň jeden typ znaku (malé písmená, veľké písmená, číslice, \n"
-"symboly, hexadecimálne)."
+msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
+msgstr "Musí sa povoliť aspoň jeden typ znaku (malé písmená, veľké písmená, číslice, \nsymboly, hexadecimálne)."
 
 #. Resource IDs: (538, 539, 5986)
 msgid "Attachment"
@@ -1799,7 +1695,7 @@ msgstr "Názov súboru prílohy"
 
 #. Resource IDs: (5991)
 msgid "Attachment Filter"
-msgstr "Filter prílohy"
+msgstr "Filter príloh"
 
 #. Resource IDs: (3086)
 msgid "Attachment Media Type"
@@ -1807,7 +1703,7 @@ msgstr "Typ prílohy"
 
 #. Resource IDs: (3088)
 msgid "Attachment Modification Time"
-msgstr "Čas poslendej úpravy prílohy"
+msgstr "Čas poslednej úpravy prílohy"
 
 #. Resource IDs: (65535)
 msgid "Attachment Properties"
@@ -1823,7 +1719,7 @@ msgstr "Názov prílohy"
 
 #. Resource IDs: (5976)
 msgid "Attachment not found"
-msgstr "Príloha nenájdená"
+msgstr "Príloha nebola nájdená"
 
 #. Resource IDs: (61473)
 msgid "Attempted an unsupported operation."
@@ -1832,21 +1728,21 @@ msgstr "Pokus o nepodporovanú operáciu."
 #. Resource IDs: (61870, 61875)
 #, c-format
 msgid "Attempted to access %1 past its end."
-msgstr "Pokúsil sa získať prístup k %1 za jeho koncom."
+msgstr "Pokus o získanie prístupu k %1 za jeho koncom."
 
 #. Resource IDs: (61876)
 #, c-format
 msgid "Attempted to read from the writing %1."
-msgstr "Pokúsil sa čítať počas zápisu %1."
+msgstr "Pokus o čítanie počas zápisu %1."
 
 #. Resource IDs: (61874)
 #, c-format
 msgid "Attempted to write to the reading %1."
-msgstr "Pokúsil sa zapísať počas čítania %1."
+msgstr "Pokus o zápis počas čítania %1."
 
 #. Resource IDs: (600)
 msgid "Authentication Code"
-msgstr "Overovací kód"
+msgstr "Overovací kód (TOTP token)"
 
 #. Resource IDs: (3081)
 msgid "Authentication Code Config"
@@ -1854,7 +1750,7 @@ msgstr "Konfigurácia overovacieho kódu"
 
 #. Resource IDs: (6106)
 msgid "Authentication Code Error"
-msgstr "Chyba overovacieho kódu"
+msgstr "Chyba nastavenia 2FA"
 
 #. Resource IDs: (3082)
 msgid "Authentication Code Length"
@@ -1874,7 +1770,7 @@ msgstr "Tajný kľúč"
 
 #. Resource IDs: (6103)
 msgid "Authentication code requires secret key in Additional tab."
-msgstr "Overovací kód vyžaduje tajný kľúč na karte Doplňujúce."
+msgstr "Na generovanie overovacích kódov (TOTP tokenov) sa vyžaduje tajný kľúč na karte Doplňujúce."
 
 #. Resource IDs: (65535)
 msgid "Authenticator Secret"
@@ -2071,16 +1967,12 @@ msgstr "Možno upozorniť iba medzi %d a %d dňami pred vypršaním platnosti he
 
 #. Resource IDs: (3345)
 #, c-format
-msgid ""
-"Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\n"
-"Copy it from your installation file, or re-install PasswordSafe."
-msgstr ""
-"Nemôžem nájsť súbor definície schémy XML (%ls) v priečinku aplikácie Password Safe.\n"
-"Skopírujte ho z inštalačného súboru alebo preinštalujte Password Safe."
+msgid "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nCopy it from your installation file, or re-install PasswordSafe."
+msgstr "Nemôžem nájsť súbor definície schémy XML (%ls) v priečinku aplikácie Password Safe.\nSkopírujte ho z inštalačného súboru alebo preinštalujte Password Safe."
 
 #. Resource IDs: (3320)
 msgid "Can't obtain the schema version."
-msgstr "Nemôžem získať verziu schémy."
+msgstr "Nemôžem zistiť verziu schémy."
 
 #. Resource IDs: (8277)
 msgid "Canadian French"
@@ -2178,17 +2070,11 @@ msgstr "Zmeň %s na %s"
 
 #. Resource IDs: (5848)
 msgid "Change database mode?"
-msgstr "Zmeniť mód databázy?"
+msgstr "Zmeniť režim databázy?"
 
 #. Resource IDs: (5858)
-msgid ""
-"Change status since last save:\n"
-"* indicates the database has been changed\n"
-"° indicates a database preference has been changed"
-msgstr ""
-"Stav zmien od posledného uloženia:\n"
-"* označuje že databáza bola zmenená\n"
-"° označuje že predvoľby databázy boli zmenené"
+msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
+msgstr "Stav zmien od posledného uloženia:\n* označuje že databáza bola zmenená\n° označuje že predvoľby databázy boli zmenené"
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -2304,7 +2190,7 @@ msgstr "Vymazať schránku po minimalizácii aplikácie"
 
 #. Resource IDs: (1488)
 msgid "Clear password history for ALL entries"
-msgstr "Vymazať históriu hesiel pre všetky záznamy"
+msgstr "Vymazať históriu hesiel pre VŠETKY záznamy"
 
 #. Resource IDs: (1457, 6000)
 msgid "Click button, then touch your YubiKey"
@@ -2336,7 +2222,7 @@ msgstr "Kliknutím sa skopíruje vygenerované heslo do schránky"
 
 #. Resource IDs: (6102)
 msgid "Click to copy the current authentication code to clipboard."
-msgstr "Kliknutím skopírujete aktuálny overovací kód do schránky."
+msgstr "Kliknutím skopírujete aktuálny overovací kód (TOTP token) do schránky."
 
 #. Resource IDs: (5646)
 msgid "Click to copy to clipboard"
@@ -2356,7 +2242,7 @@ msgstr "Kliknutím zadáte znakový kód cez virtuálnu číselnú klávesnicu. 
 
 #. Resource IDs: (5658)
 msgid "Click to expand and copy to clipboard, Ctrl+Click to copy unexpanded"
-msgstr "AutoType/Spustiť príkaz: Kliknutím sa vyhodnotia vzorce a premenné a výsledok sa skopíruje do schránky, Ctrl+Click skopíruje samotnú definíciu. Napr. AutoType '\\u\\t\\p\\n' skopíruje toto: 'Meno<tabulátor>Heslo<Enter>'. V nápovede pozri aké sú možnosti a príklady použitia."
+msgstr "AutoType/Spustiť príkaz: Kliknutím sa vyhodnotia vzorce a premenné a výsledok sa skopíruje do schránky, Ctrl+Click skopíruje samotnú definíciu. Napr. AutoType '\u\\t\p\\n' skopíruje toto: 'Meno<tabulátor>Heslo<Enter>'. V nápovede pozri aké sú možnosti a príklady použitia."
 
 #. Resource IDs: (5669)
 msgid "Click to go to link, Ctrl+Click to go and Autotype"
@@ -2388,7 +2274,7 @@ msgstr "Kliknutím nastavíte pole na filtrovanie"
 
 #. Resource IDs: (6104)
 msgid "Click to show/hide the current authentication code."
-msgstr "Kliknutím zobrazíte/skryjete aktuálny overovací kód."
+msgstr "Kliknutím zobrazíte/skryjete aktuálny overovací kód (TOTP token)."
 
 #. Resource IDs: (8161)
 msgid "Click to switch to English"
@@ -2468,16 +2354,8 @@ msgstr "Výsledky porovnania databáz"
 
 #. Resource IDs: (5356)
 #, c-format
-msgid ""
-"Compare complete of current database:\n"
-"\t %ls\n"
-" and:\n"
-"\t %ls\n"
-msgstr ""
-"Porovnanie dokončené pre súčasnú databázu:\n"
-"\t %ls\n"
-" a:\n"
-"\t %ls\n"
+msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
+msgstr "Porovnanie dokončené pre súčasnú databázu:\n\t %ls\n a:\n\t %ls\n"
 
 #. Resource IDs: (32092 - Menu, 32092 - MenuEx)
 msgid "Compare entries..."
@@ -2530,16 +2408,8 @@ msgstr "Informácia o nastaveniach"
 
 #. Resource IDs: (3049)
 #, c-format
-msgid ""
-"Configuration file error:\n"
-"%ls\n"
-"%ls\n"
-"offset approximately at %d"
-msgstr ""
-"Chyba konfiguračného súboru:\n"
-"%ls\n"
-"%ls\n"
-"offset približne na %d"
+msgid "Configuration file error:\n%ls\n%ls\noffset approximately at %d"
+msgstr "Chyba konfiguračného súboru:\n%ls\n%ls\noffset približne na %d"
 
 #. Resource IDs: (5857)
 msgid "Configuration file status"
@@ -2547,7 +2417,7 @@ msgstr "Stav konfiguračného súboru"
 
 #. Resource IDs: (5469)
 msgid "Confirm Close Dialog"
-msgstr "Potvrdiť zatvorenie okna"
+msgstr "Potvrďte zatvorenie databázy"
 
 #. Resource IDs: (1021)
 msgid "Confirm copy of password to clipboard"
@@ -2560,7 +2430,7 @@ msgstr "Potvrdiť vymazanie záznamov"
 #. Resource IDs: (5635)
 #, c-format
 msgid "Confirm deletion of the %s filter %s?"
-msgstr "(%s): Potvrdiť vymazanie filtra %s?"
+msgstr "(%s): Potvrďte vymazanie filtra %s."
 
 #. Resource IDs: (5322)
 msgid "Confirm old master password"
@@ -2572,44 +2442,22 @@ msgstr "Potvrďte že chcete vymazať zoznam nedávno otvorených súborov."
 
 #. Resource IDs: (5930)
 #, c-format
-msgid ""
-"Confirm that you wish to copy these entries from %s to %s\n"
-"\n"
-"If already present in the target database, they will be replaced!"
-msgstr ""
-"Potvrďte že chcete skopírovať tieto záznamy z %s do %s.\n"
-"\n"
-"Ak už sú prítomné v cieľovej databáze, budú nahradené!"
+msgid "Confirm that you wish to copy these entries from %s to %s\n\nIf already present in the target database, they will be replaced!"
+msgstr "Potvrďte že chcete skopírovať tieto záznamy z %s do %s.\n\nAk už sú prítomné v cieľovej databáze, budú nahradené!"
 
 #. Resource IDs: (5429)
 #, c-format
-msgid ""
-"Confirm that you wish to copy this entry from %s to %s.\n"
-"\n"
-"If already present in the target database, it will be replaced!"
-msgstr ""
-"Potvrďte že chcete skopírovať tento záznam z %s do %s.\n"
-"\n"
-"Ak už je prítomný v cieľovej databáze, bude nahradený!"
+msgid "Confirm that you wish to copy this entry from %s to %s.\n\nIf already present in the target database, it will be replaced!"
+msgstr "Potvrďte že chcete skopírovať tento záznam z %s do %s.\n\nAk už je prítomný v cieľovej databáze, bude nahradený!"
 
 #. Resource IDs: (5931)
 #, c-format
-msgid ""
-"Confirm that you wish to synchronize these entries from %s to %s?\n"
-"\n"
-"Selected fields will be replaced in all entries!"
-msgstr ""
-"Potvrďte že chcete synchronizovať tieto záznamy z %s do %s.\n"
-"\n"
-"Vybraté polia budú nahradené vo všetkých záznamoch!"
+msgid "Confirm that you wish to synchronize these entries from %s to %s?\n\nSelected fields will be replaced in all entries!"
+msgstr "Potvrďte že chcete synchronizovať tieto záznamy z %s do %s.\n\nVybraté polia budú nahradené vo všetkých záznamoch!"
 
 #. Resource IDs: (5287)
-msgid ""
-"Confirm to delete the current user's PasswordSafe configuration from the Windows registry.\n"
-"\n"
-msgstr ""
-"Potvrďte odstránenie konfigurácie programu aktuálneho používateľa z registra Windows.\n"
-"\n"
+msgid "Confirm to delete the current user's PasswordSafe configuration from the Windows registry.\n\n"
+msgstr "Potvrďte odstránenie konfigurácie programu aktuálneho používateľa z registra Windows.\n\n"
 
 #. Resource IDs: (1505, 65535)
 msgid "Confirmation:"
@@ -2617,14 +2465,8 @@ msgstr "Potvrdenie:"
 
 #. Resource IDs: (3414)
 #, c-format
-msgid ""
-"Conflicting entries for «%ls» «%ls» «%ls».\n"
-"  Adding merged entry as «%ls» «%ls» «%ls».\n"
-"    Differing field(s): %ls"
-msgstr ""
-"Konfliktné položky pre «%ls» «%ls» «%ls».\n"
-"  Pridávam zlúčený záznam ako «%ls» «%ls» «%ls».\n"
-"    Odlišné polia: %ls"
+msgid "Conflicting entries for «%ls» «%ls» «%ls».\n  Adding merged entry as «%ls» «%ls» «%ls».\n    Differing field(s): %ls"
+msgstr "Konfliktné položky pre «%ls» «%ls» «%ls».\n  Pridávam zlúčený záznam ako «%ls» «%ls» «%ls».\n    Odlišné polia: %ls"
 
 #. Resource IDs: (1)
 msgid "Continue"
@@ -2632,18 +2474,8 @@ msgstr "Pokračovať"
 
 #. Resource IDs: (5745)
 #, c-format
-msgid ""
-"Copied password\n"
-"\n"
-"\"%s\"\n"
-"\n"
-"to the clipboard."
-msgstr ""
-"Heslo bolo skopírované\n"
-"\n"
-"\"%s\"\n"
-"\n"
-"do schránky."
+msgid "Copied password\n\n\"%s\"\n\nto the clipboard."
+msgstr "Heslo bolo skopírované\n\n\"%s\"\n\ndo schránky."
 
 #. Resource IDs: (32069 - Menu, 32069 - MenuEx, 5298)
 msgid "Copy &Notes to Clipboard"
@@ -2720,7 +2552,7 @@ msgstr "Oznámenie o autorských právach"
 #. Resource IDs: (5210)
 #, c-format
 msgid "Could not access file: %s"
-msgstr "Nedalo sa pristúpiť k súboru: %s"
+msgstr "Nepodarilo sa získať prístup k súboru: %s"
 
 #. Resource IDs: (61864)
 #, c-format
@@ -2840,32 +2672,24 @@ msgstr "Aktuálne hlavné heslo:"
 
 #. Resource IDs: (3460)
 msgid "Current database filters have been exported to this database."
-msgstr "Do tejto databázy boli exportované aktuálne filtre databázy."
+msgstr "Do tejto databázy boli exportované filtre aktuálnej databázy."
 
 #. Resource IDs: (6021)
 msgid "Current database is read-only"
-msgstr "Aktuálna databáza je iba na čítanie"
+msgstr "Aktuálna databáza je otvorená iba na čítanie"
 
 #. Resource IDs: (5477)
 #, c-format
-msgid ""
-"Current version:\t%s\n"
-"Latest version:\t%s\n"
-"\n"
-"Visit the Password Safe website to download the latest version."
-msgstr ""
-"Aktuálna verzia:\t%s\n"
-"Posledná verzia:\t%s\n"
-"\n"
-"Navštívte webovú stránku Password Safe a stiahnite si najnovšiu verziu."
+msgid "Current version:\t%s\nLatest version:\t%s\n\nVisit the Password Safe website to download the latest version."
+msgstr "Aktuálna verzia:\t%s\nPosledná verzia:\t%s\n\nNavštívte webovú stránku Password Safe a stiahnite si najnovšiu verziu."
 
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
-msgstr "Prispôsobiť hlavný panel s nástrojmi"
+msgstr "Prispôsobiť panel nástrojov"
 
 #. Resource IDs: (32155 - Menu)
 msgid "Customize Main Toolbar"
-msgstr "Prispôsobiť hlavný panel s nástrojmi"
+msgstr "Prispôsobiť panel nástrojov"
 
 #. Resource IDs: (8203)
 msgid "Czech"
@@ -2922,15 +2746,11 @@ msgstr "Formát databázy:"
 
 #. Resource IDs: (5380)
 msgid "Database is read-only. Sorry, cannot save changed database preferences."
-msgstr "Databáza je iba na čítanie. Je mi ľúto ale nemôžem uložiť zmenené predvoľby databázy."
+msgstr "Databáza je otvorená iba na čítanie. Je mi ľúto ale nemôžem uložiť zmenené predvoľby databázy."
 
 #. Resource IDs: (5859)
-msgid ""
-"Database mode: read-only (R-O) or read/write (R/W)\n"
-"(Doubleclick to toggle mode)"
-msgstr ""
-"Databázový režim: iba na čítanie (R-O) alebo Read/Write (R/W)\n"
-"(Dvojklik zmení režim)"
+msgid "Database mode: read-only (R-O) or read/write (R/W)\n(Doubleclick to toggle mode)"
+msgstr "Databázový režim: iba na čítanie (R-O) alebo Read/Write (R/W)\n(Dvojklik zmení režim)"
 
 #. Resource IDs: (1200)
 msgid "Database name"
@@ -2995,23 +2815,19 @@ msgstr "Vymazať"
 
 #. Resource IDs: (3402)
 msgid "Delete Base Entry Confirmation"
-msgstr "Potvrdiť vymazanie základného záznamu"
+msgstr "Potvrďte vymazanie základného záznamu"
 
 #. Resource IDs: (116)
 msgid "Delete Confirmation"
-msgstr "Potvrdiť vymazanie"
+msgstr "Potvrďte vymazanie"
 
 #. Resource IDs: (32056 - Menu)
 msgid "Delete Entry"
 msgstr "Odstrániť záznam"
 
 #. Resource IDs: (5882)
-msgid ""
-"Delete selected Password Policy\n"
-"(only an unused Named Password Policy may be deleted)"
-msgstr ""
-"Odstrániť vybraté zásady hesiel\n"
-"(Odstránené môžu byť iba nepoužité zásady)"
+msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
+msgstr "Odstrániť vybraté zásady hesiel\n(Odstránené môžu byť iba nepoužívané zásady)"
 
 #. Resource IDs: (5876)
 msgid "Description"
@@ -3035,7 +2851,7 @@ msgstr "Cieľová disková jednotka je plná."
 
 #. Resource IDs: (5391)
 msgid "Destination location does not exist or is not accessible."
-msgstr "Cieľové miesto neexistuje alebo nie je prístupné."
+msgstr "Cieľové umiestnenie neexistuje alebo sa k nemu nedá získať prístup."
 
 #. Resource IDs: (5911)
 msgid "Details"
@@ -3076,12 +2892,8 @@ msgid "Display Filter - "
 msgstr "Filter zobrazenia - "
 
 #. Resource IDs: (5883)
-msgid ""
-"Display policy settings or List entries using this named policy\n"
-"(The latter may take a while depending on the number of entries in this database)"
-msgstr ""
-"Zobraz nastavenia zásad hesiel alebo zobraz zoznam záznamov používajúcich tieto vlastné zásady\n"
-"(Druhá možnosť môže chvíľu trvať v závislosti od počtu položiek v tejto databáze)"
+msgid "Display policy settings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
+msgstr "Zobraziť nastavenia zásad hesiel alebo zobraziť zoznam záznamov používajúcich tieto vlastné zásady\n(Druhá možnosť môže chvíľu trvať v závislosti od počtu záznamov v tejto databáze)"
 
 #. Resource IDs: (32067 - Menu, 32067 - MenuEx)
 msgid "Display subset of Password"
@@ -3106,29 +2918,16 @@ msgstr "Chcete ho nahradiť?"
 
 #. Resource IDs: (5239)
 #, c-format
-msgid ""
-"Do you wish to save the changes made to database:\n"
-"\n"
-"%s\n"
-"\n"
-"or Cancel the shutdown\\restart\\logoff?"
-msgstr ""
-"Prajete si uložiť zmeny vykonané v databáze:\n"
-"\n"
-"%s\n"
-"\\Alebo zrušiť vypnutie\\reštart\\odhlásenie?"
+msgid "Do you wish to save the changes made to database:\n\n%s\n\nor Cancel the shutdown\\restart\\logoff?"
+msgstr "Prajete si uložiť zmeny vykonané v databáze:\n\n%s\n\Alebo zrušiť vypnutie\\reštart\\odhlásenie?"
 
 #. Resource IDs: (6023)
 msgid "Do you wish to save the changes made to this restored database as new database?"
 msgstr "Chcete uložiť zmeny vykonané v tejto obnovenej databáze ako novú databázu?"
 
 #. Resource IDs: (62185)
-msgid ""
-"Don't recover the auto-saved documents\n"
-"Use the last explicitly saved versions of the documents"
-msgstr ""
-"Neobnoviť automaticky uložené dokumenty\n"
-"Použiť posledné explicitne uložené verzie dokumentov"
+msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
+msgstr "Neobnoviť automaticky uložené dokumenty\nPoužiť posledné explicitne uložené verzie dokumentov"
 
 #. Resource IDs: (5953)
 msgid "Double click an entry to Edit/View it."
@@ -3201,14 +3000,8 @@ msgstr "Pretiahnite tento obrázok do iného okna aby ste odtiaľ spustili autom
 
 #. Resource IDs: (5464)
 #, c-format
-msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
-"\n"
-"The dropped entry now references that entry's base entry."
-msgstr ""
-"Heslo zrušeného záznamu '%s:%s:%s' odkazuje na záznam, ktorý je taktiež alias.\n"
-"\n"
-"Zrušený záznam teraz odkazuje na základný záznam daného záznamu."
+msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."
+msgstr "Heslo vloženého záznamu '%s:%s:%s' odkazuje na záznam, ktorý je taktiež alias.\n\nVložený záznam teraz odkazuje na základný záznam daného záznamu."
 
 #. Resource IDs: (32087 - Menu, 32087 - MenuEx)
 msgid "Duplicate Group"
@@ -3277,12 +3070,12 @@ msgstr "Chýba buď jeden alebo obidva stĺpce Skupina/Názov a Heslo. Žiadny z
 
 #. Resource IDs: (5718)
 msgid "Email copied "
-msgstr "Email bol skopírovaný "
+msgstr "Email skopírovaný "
 
 #. Resource IDs: (3261)
 #, c-format
 msgid "Empty line %d skipped"
-msgstr "Prázdny riadok %d sa preskočil"
+msgstr "Prázdny riadok %d sa vynechal"
 
 #. Resource IDs: (1088)
 msgid "Enable"
@@ -3290,7 +3083,7 @@ msgstr "Povoliť"
 
 #. Resource IDs: (1591)
 msgid "Enable Transparency"
-msgstr "Povoliť priehľadnosť"
+msgstr "Zapnúť priehľadnosť"
 
 #. Resource IDs: (61866)
 #, c-format
@@ -3410,15 +3203,11 @@ msgstr "Zadajte hlavné heslo na odomknutie databázy hesiel:"
 
 #. Resource IDs: (6101)
 msgid "Enter the authentication secret key. This usually taken from the authenticator setup page."
-msgstr "Zadajte tajný kľúč autentifikácie. Dá sa nájsť na stránke s nastavením u overovateľa."
+msgstr "Zadajte tajný kľúč autentifikácie na generovanie jednorazových overovacích kódov/TOTP tokenov. Dá sa nájsť na webovej stránke v nastaveniach prihlásenia, kde sa zapína dvojfaktorová autentifikácia. Stránka môže ukazovať tajný kľúč priamo alebo treba naskenovať QR kód mobilom a z vygenerovanej URL adresy odpísať kľúč sem."
 
 #. Resource IDs: (65535)
-msgid ""
-"Enter the current master password, followed by a new one. \r\n"
-"Type the new one again to confirm it."
-msgstr ""
-"Zadajte aktuálne hlavné heslo, a následne nové heslo. \r\n"
-"Zadajte nové heslo znova kvôli potvrdeniu."
+msgid "Enter the current master password, followed by a new one. \r\nType the new one again to confirm it."
+msgstr "Zadajte aktuálne hlavné heslo, a následne nové heslo. \r\nZadajte nové heslo znova kvôli potvrdeniu."
 
 #. Resource IDs: (5255)
 msgid "Enter the key and verify it."
@@ -3477,7 +3266,7 @@ msgstr "Klávesová skratka záznamu"
 
 #. Resource IDs: (5906)
 msgid "Entry Password Policy Changes"
-msgstr "Zmeny zásad hesiel pre tento záznam"
+msgstr "Zmeny v zásadách hesiel pre tento záznam"
 
 #. Resource IDs: (1407)
 msgid "Entry Unique ID:"
@@ -3500,12 +3289,12 @@ msgstr "Upozornenia pri importe záznamov"
 #. Resource IDs: (3448)
 #, c-format
 msgid "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been removed from the %ls entry."
-msgstr "Klávesová skratka %ls záznamu %ls je už pridelená záznamu %ls. Bola odstránená zo záznamu %ls."
+msgstr "Klávesová skratka %ls záznamu %ls je už pridelená záznamu %ls. Bola odobratá záznamu %ls."
 
 #. Resource IDs: (3449)
 #, c-format
 msgid "Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe application. It has been removed from the entry."
-msgstr "Klávesová skratka %ls záznamu %ls je už pridelená aplikácii Password Safe. Bola odstránená zo záznamu."
+msgstr "Klávesová skratka %ls záznamu %ls je už pridelená aplikácii Password Safe. Bola odobratá záznamu."
 
 #. Resource IDs: (5952)
 msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys and an alphanumeric character (0-9, A-Z)."
@@ -3513,14 +3302,8 @@ msgstr "Klávesové skratky záznamov musia mať pridelený buď jeden alebo obi
 
 #. Resource IDs: (5942)
 #, c-format
-msgid ""
-"Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.\n"
-"\n"
-"%s"
-msgstr ""
-"Klávesové skratky záznamov musia mať pridelený buď jeden alebo obidve klávesy Alt a Ctrl.\n"
-"\n"
-"%s"
+msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.\n\n%s"
+msgstr "Klávesové skratky záznamov musia mať pridelený buď jeden alebo obidve klávesy Alt a Ctrl.\n\n%s"
 
 #. Resource IDs: (3266)
 #, c-format
@@ -3572,29 +3355,13 @@ msgid "Error (%08X): line %d character %d %ls"
 msgstr "Chyba (%08X): riadok %d stĺpec %d %ls"
 
 #. Resource IDs: (3031)
-msgid ""
-"Error - unable to determine settings configuration!\n"
-"\n"
-"No application settings will be saved.\n"
-"\n"
-"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"Chyba - nepodarilo sa určiť konfiguráciu nastavení!\n"
-"\n"
-"Nastavenia aplikácie sa neuložia.\n"
-"\n"
-"Nastavenia súvisiace s databázou sa uložia do databázy pri zatvorení, za predpokladu že nie je otvorená len na čítanie alebo zamknutá iným používateľom."
+msgid "Error - unable to determine settings configuration!\n\nNo application settings will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr "Chyba - nepodarilo sa určiť konfiguráciu nastavení!\n\nNastavenia aplikácie sa neuložia.\n\nNastavenia súvisiace s databázou sa uložia do databázy pri zatvorení, za predpokladu že nie je otvorená len na čítanie alebo zamknutá iným používateľom."
 
 #. Resource IDs: (5661)
 #, c-format
-msgid ""
-"Error at column %d:\n"
-"\n"
-"%s"
-msgstr ""
-"Chyba v stĺpci %d:\n"
-"\n"
-"%s"
+msgid "Error at column %d:\n\n%s"
+msgstr "Chyba v stĺpci %d:\n\n%s"
 
 #. Resource IDs: (3033)
 #, c-format
@@ -3619,7 +3386,7 @@ msgstr "Chyba: Súbor s týmto názvom už existuje"
 
 #. Resource IDs: (3247)
 msgid "Error: File is read-only"
-msgstr "Chyba: Súbor je iba na čítanie"
+msgstr "Chyba: Súbor je otvorený iba na čítanie"
 
 #. Resource IDs: (1078)
 msgid "Escape key closes application"
@@ -3643,7 +3410,7 @@ msgstr "Vylúčiť zo snímania obrazovky"
 
 #. Resource IDs: (1004, 32021)
 msgid "Exit"
-msgstr "Koniec"
+msgstr "Ukončiť"
 
 #. Resource IDs: (32109 - MenuEx)
 msgid "Expand All"
@@ -3711,12 +3478,8 @@ msgstr "Exportovaný súbor:"
 
 #. Resource IDs: (5863)
 #, c-format
-msgid ""
-"Export file: '%s' already exists.\n"
-"Do you want to replace it?"
-msgstr ""
-"Exportovaný súbor: '%s' už existuje.\n"
-"Prajete si ho prepísať?"
+msgid "Export file: '%s' already exists.\nDo you want to replace it?"
+msgstr "Exportovaný súbor: '%s' už existuje.\nPrajete si ho prepísať?"
 
 #. Resource IDs: (3364)
 msgid "Export of data was restricted to certain fields by the user."
@@ -3767,14 +3530,8 @@ msgid "Failed to launch help."
 msgstr "Nepodarilo sa spustiť nápovedu."
 
 #. Resource IDs: (5660)
-msgid ""
-"Failed to load AutoType support DLL (wrong version?).\n"
-"\n"
-"AutoType for Launch of a Browser or Running a command is disabled."
-msgstr ""
-"Nepodarilo sa načítať AutoType DLL (nesprávna verzia?).\n"
-"\n"
-"AutoType na spustenie prehliadača alebo spustenie príkazu je vypnuté."
+msgid "Failed to load AutoType support DLL (wrong version?).\n\nAutoType for Launch of a Browser or Running a command is disabled."
+msgstr "Nepodarilo sa načítať AutoType DLL (nesprávna verzia?).\n\nAutoType na spustenie prehliadača alebo spustenie príkazu je vypnuté."
 
 #. Resource IDs: (6027)
 msgid "Failed to load image"
@@ -3810,30 +3567,20 @@ msgstr "Nepodarilo sa uložiť kľúč do databázy"
 
 #. Resource IDs: (5850)
 #, c-format
-msgid ""
-"Failed to switch from R-O to R/W because database is already open in R/W mode by:\n"
-"%s %s\n"
-"(Only one R/W access at a time is allowed)"
-msgstr ""
-"Nepodarilo sa prepnúť z R-O na R/W, pretože databáza je už otvorená v režime R/W v:\n"
-"%s %s\n"
-"(Je povolený iba jeden prístup R/W v danom čase)"
+msgid "Failed to switch from R-O to R/W because database is already open in R/W mode by:\n%s %s\n(Only one R/W access at a time is allowed)"
+msgstr "Nepodarilo sa prepnúť z R-O na R/W, pretože databáza je už otvorená v režime R/W používateľom:\n%s %s\n(Je povolený iba jeden prístup R/W v danom čase)"
 
 #. Resource IDs: (5853)
 msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be a problem with its drive."
-msgstr "Nepodarilo sa prepnúť z R-O na R/W: nemohol som otvoriť databázu. Je možné že bola zmazaná alebo premenovaná alebo je problém s diskom."
+msgstr "Nepodarilo sa prepnúť z R-O na R/W: nepodarilo sa otvoriť databázu. Je možné že bola zmazaná alebo premenovaná alebo je problém s diskom."
 
 #. Resource IDs: (5854)
 msgid "Failed to switch from R-O to R/W: The file appears to be too short to be a valid database."
 msgstr "Nepodarilo sa prepnúť z R-O na R/W: Súbor sa zdá byť príliš krátky na to aby bol platnou databázou."
 
 #. Resource IDs: (5851)
-msgid ""
-"Failed to switch from R/W to R-O: Could not release database lock.\n"
-"Try exiting and restarting program."
-msgstr ""
-"Nepodarilo sa prepnúť z R/W na R-O: nemohol som uvoľniť zámok na databázu.\n"
-"Skúste program ukončiť a znova spustiť."
+msgid "Failed to switch from R/W to R-O: Could not release database lock.\nTry exiting and restarting program."
+msgstr "Nepodarilo sa prepnúť z R/W na R-O: nepodarilo sa uvoľniť zámok na databázu.\nSkúste program ukončiť a znova spustiť."
 
 #. Resource IDs: (6006)
 msgid "Failed to update YubiKey"
@@ -3950,30 +3697,18 @@ msgstr "Súbor:"
 
 #. Resource IDs: (5344)
 #, c-format
-msgid ""
-"File: %s failed validation against XML Schema:\n"
-"\n"
-"%s"
-msgstr ""
-"Súbor: %s neprešiel overením voči schéme XML:\n"
-"\n"
-"%s"
+msgid "File: %s failed validation against XML Schema:\n\n%s"
+msgstr "Súbor: %s neprešiel overením voči schéme XML:\n\n%s"
 
 #. Resource IDs: (5345)
 #, c-format
-msgid ""
-"File: %s passed Validation but had the following errors during import:\n"
-"\n"
-"%s"
-msgstr ""
-"Súbor: %s prešiel overením, ale počas importu mal tieto chyby:\n"
-"\n"
-"%s"
+msgid "File: %s passed Validation but had the following errors during import:\n\n%s"
+msgstr "Súbor: %s prešiel overením, ale počas importu mal tieto chyby:\n\n%s"
 
 #. Resource IDs: (5905)
 #, c-format
 msgid "File: %s was imported (%d warning(s) issued about missing Password Policy Names). See report for details."
-msgstr "Súbor: %s sa naimportoval (%d varovaní o chýbajúcich názvoch zásad hesiel). Pozrite si podrobnosti v reporte."
+msgstr "Súbor: %s sa naimportoval (%d upozornení o chýbajúcich názvoch zásad hesiel). Pozrite si podrobnosti v reporte."
 
 #. Resource IDs: (5346)
 #, c-format
@@ -3983,7 +3718,7 @@ msgstr "Súbor: %s sa naimportoval (overené záznamy %d / importované %d%s%s%s
 #. Resource IDs: (3331)
 #, c-format
 msgid "Filter %ls already exists in the database, do you wish to replace it with this?"
-msgstr "Filter %ls už existuje v databáze, chcete ho týmto nahradiť?"
+msgstr "Filter %ls už existuje v databáze, chcete ho nahradiť týmto?"
 
 #. Resource IDs: (65535)
 msgid "Filter name:"
@@ -4038,17 +3773,13 @@ msgid "Font st&yle:"
 msgstr "Štýl písma:"
 
 #. Resource IDs: (5468)
-msgid ""
-"For security, the database must be closed before connecting to the Internet.\n"
-"Press OK to close database and continue (Changes will be saved)"
-msgstr ""
-"Kvôli bezpečnosti musí byť databáza zatvorená pred pripojením sa na internet.\n"
-"Stlačte OK na zatvorenie databázy a pokračovanie (zmeny sa uložia)."
+msgid "For security, the database must be closed before connecting to the Internet.\nPress OK to close database and continue (Changes will be saved)"
+msgstr "Kvôli bezpečnosti musí byť databáza zatvorená pred pripojením sa na internet.\nStlačte OK na zatvorenie databázy a pokračovanie (zmeny sa uložia)."
 
 #. Resource IDs: (3242)
 #, c-format
 msgid "Found %d known column headers:"
-msgstr "Počet nájdených známych hlavičiek stĺpcov: %d"
+msgstr "Počet nájdených rozpoznaných hlavičiek stĺpcov: %d"
 
 #. Resource IDs: (5274)
 msgid "Found 1 match."
@@ -4084,7 +3815,7 @@ msgstr "&Generovať heslo"
 
 #. Resource IDs: (1052)
 msgid "Generate &Pronounceable passwords"
-msgstr "Generovať vysloviteľné heslo"
+msgstr "Generovať vysloviteľné heslá"
 
 #. Resource IDs: (5743)
 msgid "Generate Password"
@@ -4092,7 +3823,7 @@ msgstr "Generovať heslo"
 
 #. Resource IDs: (5916)
 msgid "Generate Password using selected Password Policy"
-msgstr "Generuj heslo s použitím vybratých zásad hesiel"
+msgstr "Generovať heslo s použitím vybratých zásad hesiel"
 
 #. Resource IDs: (8241)
 msgid "Georgian"
@@ -4120,7 +3851,7 @@ msgstr "Zobraziť &nápovedu\tF1"
 
 #. Resource IDs: (5213)
 msgid "Given path is a directory or file is read-only"
-msgstr "Daná cesta je priečinok alebo je súbor iba na čítanie"
+msgstr "Daná cesta je priečinok alebo je súbor otvorený iba na čítanie"
 
 #. Resource IDs: (5667)
 msgid "Go "
@@ -4276,176 +4007,141 @@ msgid "Hungarian 101-key"
 msgstr "Maďarská 101"
 
 #. Accelerator Entry for Menu ID:32002; '&Open Another'
-#. Accelerator Entry for Menu ID:32002; '&Open Another'
 msgid "ID:32002:V C +O"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32003; '&New...'
 #. Accelerator Entry for Menu ID:32003; '&New...'
 msgid "ID:32003:V C +N"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32005; '&Save'
-#. Accelerator Entry for Menu ID:32005; '&Save'
 msgid "ID:32005:V C +S"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32021; 'E&xit'
 #. Accelerator Entry for Menu ID:32021; 'E&xit'
 msgid "ID:32021:V C +Q"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32027; '&Lock'
-#. Accelerator Entry for Menu ID:32027; '&Lock'
 msgid "ID:32027:V CS+L"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32051; '&Add Entry...'
 #. Accelerator Entry for Menu ID:32051; '&Add Entry...'
 msgid "ID:32051:V C +A"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32063; '&Duplicate Entry'
-#. Accelerator Entry for Menu ID:32063; '&Duplicate Entry'
 msgid "ID:32063:V C +D"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32066; '&Copy Password to Clipboard'
 #. Accelerator Entry for Menu ID:32066; '&Copy Password to Clipboard'
 msgid "ID:32066:V C +C"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32067; 'Display subset of Password'
-#. Accelerator Entry for Menu ID:32067; 'Display subset of Password'
 msgid "ID:32067:V C +B"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32068; 'Copy &Username to Clipboard'
 #. Accelerator Entry for Menu ID:32068; 'Copy &Username to Clipboard'
 msgid "ID:32068:V C +U"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32069; 'Copy &Notes to Clipboard'
-#. Accelerator Entry for Menu ID:32069; 'Copy &Notes to Clipboard'
 msgid "ID:32069:V C +G"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32070; 'Copy UR&L to Clipboard'
 #. Accelerator Entry for Menu ID:32070; 'Copy UR&L to Clipboard'
 msgid "ID:32070:VAC +L"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32072; '&Browse to URL'
-#. Accelerator Entry for Menu ID:32072; '&Browse to URL'
 msgid "ID:32072:V C +L"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32073; 'Browse to URL + &AutoType'
 #. Accelerator Entry for Menu ID:32073; 'Browse to URL + &AutoType'
 msgid "ID:32073:VA  +L"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
-#. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
 msgid "ID:32074:VA S+L"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32075; 'Send &Email'
 #. Accelerator Entry for Menu ID:32075; 'Send &Email'
 msgid "ID:32075:V C +E"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
-#. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
 msgid "ID:32076:V C +T"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32077; '&Run Command'
 #. Accelerator Entry for Menu ID:32077; '&Run Command'
 msgid "ID:32077:V C +R"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32080; '&Find...'
-#. Accelerator Entry for Menu ID:32080; '&Find...'
 msgid "ID:32080:V C +F"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
 #. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
 msgid "ID:32081:VAC +R"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32083; 'Undo'
-#. Accelerator Entry for Menu ID:32083; 'Undo'
 msgid "ID:32083:V C +Z"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32084; 'Redo'
 #. Accelerator Entry for Menu ID:32084; 'Redo'
 msgid "ID:32084:V C +Y"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32099; 'Display Auth Code'
-#. Accelerator Entry for Menu ID:32099; 'Display Auth Code'
 msgid "ID:32099:VAC +2"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32100; 'Copy Aut&h Code to Clipboard'
 #. Accelerator Entry for Menu ID:32100; 'Copy Aut&h Code to Clipboard'
 msgid "ID:32100:VA  +2"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32140; 'Last Find results'
-#. Accelerator Entry for Menu ID:32140; 'Last Find results'
 msgid "ID:32140:V C +K"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32154; '&Options...'
 #. Accelerator Entry for Menu ID:32154; '&Options...'
 msgid "ID:32154:V C +M"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32157; 'Cancel'
-#. Accelerator Entry for Menu ID:32157; 'Cancel'
 msgid "ID:32157:V C +P"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32302; 'Clear Find'
 #. Accelerator Entry for Menu ID:32302; 'Clear Find'
 msgid "ID:32302:VAC +C"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32304; ''
-#. Accelerator Entry for Menu ID:32304; ''
 msgid "ID:32304:VAC +S"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32307; 'Advanced Find Options'
 #. Accelerator Entry for Menu ID:32307; 'Advanced Find Options'
 msgid "ID:32307:VAC +A"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32500; ''
-#. Accelerator Entry for Menu ID:32500; ''
 msgid "ID:32500:V C +C"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32501; ''
 #. Accelerator Entry for Menu ID:32501; ''
 msgid "ID:32501:V C +E"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32502; ''
-#. Accelerator Entry for Menu ID:32502; ''
 msgid "ID:32502:V C +F"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32503; ''
-#. Accelerator Entry for Menu ID:32503; ''
 msgid "ID:32503:V C +L"
 msgstr ""
 
-#. Accelerator Entry for Menu ID:32504; ''
 #. Accelerator Entry for Menu ID:32504; ''
 msgid "ID:32504:V C +S"
 msgstr ""
@@ -4460,7 +4156,7 @@ msgstr "Ikona"
 
 #. Resource IDs: (5104)
 msgid "If enabled, a 'snapshot' will be taken before every save, named as specified below."
-msgstr "Ak je povolené, urobí sa \"snímka\" pred každým uložením, bude pomenovaná ako je uvedené nižšie."
+msgstr "Ak je povolené, urobí sa "snímka" pred každým uložením, bude pomenovaná ako je uvedené nižšie."
 
 #. Resource IDs: (5267)
 msgid "If requested, then a delimiter character must be entered."
@@ -4476,14 +4172,8 @@ msgstr "Ak je toto prvá databáza otvorená pri spustení Password Safe, Passwo
 
 #. Resource IDs: (8156)
 #, c-format
-msgid ""
-"If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n"
-"\n"
-"You may need to also select the Shift key to see them."
-msgstr ""
-"Ak táto klávesnica podporuje znaky prostredníctvom %s, potom sa tento kláves povolí a dá sa použiť na ich výber.\n"
-"\n"
-"Možno bude potrebné použiť Shift na ich zobrazenie."
+msgid "If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n\nYou may need to also select the Shift key to see them."
+msgstr "Ak táto klávesnica podporuje znaky prostredníctvom %s, potom sa tento kláves povolí a dá sa použiť na ich výber.\n\nMožno bude potrebné použiť Shift na ich zobrazenie."
 
 #. Resource IDs: (5112)
 msgid "If unchecked, you will be prompted to save changes upon exiting Password Safe."
@@ -4539,7 +4229,7 @@ msgstr "Import XML zlyhal"
 
 #. Resource IDs: (5340)
 msgid "Import a KeePass Text File"
-msgstr "Importovať textový súbor Keepass"
+msgstr "Vyberte súbor Keepass na import"
 
 #. Resource IDs: (3425)
 msgid "Import aborted, see report for details."
@@ -4608,12 +4298,8 @@ msgid "Incorrect master password"
 msgstr "Nesprávne hlavné heslo"
 
 #. Resource IDs: (5280)
-msgid ""
-"Incorrect master password, not a Password Safe database,\n"
-"or a corrupt database."
-msgstr ""
-"Nesprávne hlavné heslo, nie je to databáza Password Safe,\n"
-" alebo je databáza poškodená."
+msgid "Incorrect master password, not a Password Safe database,\nor a corrupt database."
+msgstr "Nesprávne hlavné heslo, nie je to databáza Password Safe,\nalebo je databáza poškodená."
 
 #. Resource IDs: (3251)
 msgid "Incorrect password"
@@ -4688,7 +4374,7 @@ msgstr "Interná chyba: neplatný oflag alebo pmode argument"
 
 #. Resource IDs: (3250)
 msgid "Internal error: Out of file handles"
-msgstr "Interná chyba: Nedá sa priradiť popisovač súboru"
+msgstr "Interná chyba: Súboru sa nedá priradiť popisovač"
 
 #. Resource IDs: (3025)
 msgid "Internal error: Unexpected error number"
@@ -4849,37 +4535,27 @@ msgid "Left Ctrl key"
 msgstr "Ľavý kláves Ctrl"
 
 #. Resource IDs: (5682)
-msgid ""
-"Left click 'Shortcut Key' value to change or right click it to reset or remove it. After selecting the shortcut key combination, press Enter to set it.\n"
-"\n"
-"The 'Menu item' text will be red if the shortcut differs from its default value."
-msgstr ""
-"Klikni ľavým tlačidlom myši na 'skratku' pre zmenu hodnoty alebo klikni pravým tlačidlom myši na resetovanie či odstránenie. Po výbere kombinácie klávesovej skratky stlačte kláves Enter pre jej nastavenie.\n"
-"\n"
-"Text 'Položka menu' bude červený, ak sa skratka líši od svojej predvolenej hodnoty."
+msgid "Left click 'Shortcut Key' value to change or right click it to reset or remove it. After selecting the shortcut key combination, press Enter to set it.\n\nThe 'Menu item' text will be red if the shortcut differs from its default value."
+msgstr "Klikni ľavým tlačidlom myši na 'skratku' pre zmenu hodnoty alebo klikni pravým tlačidlom myši na resetovanie či odstránenie. Po výbere kombinácie klávesovej skratky stlačte kláves Enter pre jej nastavenie.\n\nText 'Položka menu' bude červený, ak sa skratka líši od svojej predvolenej hodnoty."
 
 #. Resource IDs: (5291)
-msgid ""
-"Length of passwords generated in hexadecimal format must be even\n"
-"as each byte is two hexadecimal digits."
-msgstr ""
-"Dĺžka hesiel generovaných v hexadecimálnom formáte musí byť párna\n"
-" keďže každý bajt sú dve hexadecimálne číslice."
+msgid "Length of passwords generated in hexadecimal format must be even\nas each byte is two hexadecimal digits."
+msgstr "Dĺžka hesiel generovaných v hexadecimálnom formáte musí byť párna\n keďže každý bajt sú dve hexadecimálne číslice."
 
 #. Resource IDs: (3259)
 #, c-format
 msgid "Line %d skipped - Only %d fields found, whereas parsing the Header says there should be %d."
-msgstr "Riadok %d bol preskočený - nájdené iba %d polia, zatiaľ čo analýza hlavičky tvrdí že by to malo byť %d."
+msgstr "Riadok %d bol vynechaný - nájdené iba %d polia, zatiaľ čo analýza hlavičky tvrdí že by to malo byť %d."
 
 #. Resource IDs: (3268)
 #, c-format
 msgid "Line %d skipped: Empty mandatory Password field."
-msgstr "Riadok %d bol preskočený: pole pre povinné Heslo je prázdne."
+msgstr "Riadok %d bol vynechaný: pole pre povinné Heslo je prázdne."
 
 #. Resource IDs: (3269)
 #, c-format
 msgid "Line %d skipped: Empty mandatory Title field."
-msgstr "Riadok %d bol preskočený: pole pre povinný Názov je prázdne."
+msgstr "Riadok %d bol vynechaný: pole pre povinný Názov je prázdne."
 
 #. Resource IDs: (3018)
 #, c-format
@@ -5009,12 +4685,8 @@ msgstr ""
 
 #. Resource IDs: (5392)
 #, c-format
-msgid ""
-"Maximum number of backups kept using incremented number suffix\n"
-"must be between %d and %d."
-msgstr ""
-"Maximálny počet záloh uchovávaných s použitím prípony s prírastkovým číslom\n"
-"musí byť medzi %d a %d."
+msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
+msgstr "Maximálny počet záloh uchovávaných s použitím prípony s prírastkovým číslom\nmusí byť medzi %d a %d."
 
 #. Resource IDs: (5407)
 #, c-format
@@ -5043,7 +4715,7 @@ msgstr "Typ média:"
 
 #. Resource IDs: (5124)
 msgid "Medium Password"
-msgstr "Stredné heslo"
+msgstr "Stredne silné heslo"
 
 #. Resource IDs: (5680)
 msgid "Menu Item"
@@ -5145,23 +4817,23 @@ msgstr "Názov"
 
 #. Resource IDs: (5333)
 msgid "Name the XML file"
-msgstr "Pomenujte súbor XML"
+msgstr "Zadajte názov pre súbor XML"
 
 #. Resource IDs: (5961)
 msgid "Name the database file"
-msgstr "Pomenujte databázový súbor"
+msgstr "Zadajte názov pre databázový súbor"
 
 #. Resource IDs: (5331)
 msgid "Name the exported database"
-msgstr "Pomenujte exportovanú databázu"
+msgstr "Zadajte názov pre exportovanú databázu"
 
 #. Resource IDs: (5332)
 msgid "Name the plaintext file"
-msgstr "Pomenujte textový súbor"
+msgstr "Zadajte názov pre textový súbor"
 
 #. Resource IDs: (5621)
 msgid "Name this filter"
-msgstr "Pomenujte tento filter"
+msgstr "Zadajte názov pre tento filter"
 
 #. Resource IDs: (1039)
 msgid "Name. Name. Name."
@@ -5423,42 +5095,8 @@ msgstr "Počet záznamov v databáze (filtrované/celkom)"
 
 #. Resource IDs: (3026)
 #, c-format
-msgid ""
-"Number of entries processed: %d\n"
-"\n"
-"Number of invalid UUIDs fixed: %d\n"
-"\n"
-"Number of duplicate UUIDs fixed: %d\n"
-"\n"
-"Number of non-unique Group/Title/User fixed: %d\n"
-"\n"
-"Number of Password Histories fixed: %d\n"
-"\n"
-"Number of Alias warnings issued: %d\n"
-"\n"
-"Number of Shortcut warnings issued: %d\n"
-"\n"
-"Number of entries with fields that cannot be fully displayed: %d.\n"
-"\n"
-"Recommend that the database is now saved."
-msgstr ""
-"Počet spracovaných záznamov: %d\n"
-"\n"
-"Počet opravených poškodených UUID: %d\n"
-"\n"
-"Počet duplicitných UUID: %d\n"
-"\n"
-"Počet opravených nie-jedinečných Skupina/Názov/Meno: %d\n"
-"\n"
-"Počet opravených histórií hesiel: %d\n"
-"\n"
-"Počet upozornení na aliasy: %d\n"
-"\n"
-"Počet upozornení na odkazy: %d\n"
-"\n"
-"Počet položiek s poľami, ktoré nie je možné úplne zobraziť: %d.\n"
-"\n"
-"Odporúča sa teraz uložiť databázu."
+msgid "Number of entries processed: %d\n\nNumber of invalid UUIDs fixed: %d\n\nNumber of duplicate UUIDs fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d\n\nNumber of entries with fields that cannot be fully displayed: %d.\n\nRecommend that the database is now saved."
+msgstr "Počet spracovaných záznamov: %d\n\nPočet opravených poškodených UUID: %d\n\nPočet duplicitných UUID: %d\n\nPočet opravených nie-jedinečných Skupina/Názov/Meno: %d\n\nPočet opravených histórií hesiel: %d\n\nPočet upozornení na aliasy: %d\n\nPočet upozornení na odkazy: %d\n\nPočet položiek s poľami, ktoré nie je možné úplne zobraziť: %d.\n\nOdporúča sa teraz uložiť databázu."
 
 #. Resource IDs: (5383)
 #, c-format
@@ -5486,11 +5124,11 @@ msgstr "Počet neznámych polí:"
 
 #. Resource IDs: (5928)
 msgid "Number saved"
-msgstr "Počet uložených"
+msgstr "Aktuálny počet uložených"
 
 #. Resource IDs: (5577)
 msgid "Number stored"
-msgstr "Počet uchovaných"
+msgstr "Aktuálny počet uchovaných"
 
 #. Resource IDs: (65535)
 msgid "Numeric Pad"
@@ -5555,7 +5193,7 @@ msgstr "Otvoriť"
 
 #. Resource IDs: (5315)
 msgid "Open Password Database"
-msgstr "Otvoriť databázu hesiel"
+msgstr "Otvorte databázu hesiel"
 
 #. Resource IDs: (1086)
 msgid "Open as read-only"
@@ -5623,27 +5261,27 @@ msgstr ""
 
 #. Resource IDs: (3093)
 msgid "Passkey Algorithm ID"
-msgstr ""
+msgstr "Prístupový kľúč: ID algoritmu"
 
 #. Resource IDs: (3090)
 msgid "Passkey Credential ID"
-msgstr ""
+msgstr "Prístupový kľúč: ID overenia"
 
 #. Resource IDs: (3094)
 msgid "Passkey Private Key"
-msgstr ""
+msgstr "Prístupový kľúč: súkromný kľúč"
 
 #. Resource IDs: (3091)
 msgid "Passkey Relying Party ID"
-msgstr ""
+msgstr "Prístupový kľúč: ID domény"
 
 #. Resource IDs: (3095)
 msgid "Passkey Sign Count"
-msgstr ""
+msgstr "Prístupový kľúč: počet prihlásení"
 
 #. Resource IDs: (3092)
 msgid "Passkey User Handle"
-msgstr ""
+msgstr "Prístupový kľúč: ID používateľa"
 
 #. Resource IDs: (5757)
 msgid "Passphrase"
@@ -5782,12 +5420,8 @@ msgid "Password implies this is an alias entry, but "
 msgstr "Heslo naznačuje, že ide o záznam typu alias, ale "
 
 #. Resource IDs: (5467)
-msgid ""
-"Password implies this is an alias entry, but specifies a base entry with no title.\n"
-"Every entry must have a title."
-msgstr ""
-"Heslo naznačuje, že ide o záznam aliasu, ale špecifikuje základný záznam bez názvu.\n"
-"Každý záznam musí mať názov."
+msgid "Password implies this is an alias entry, but specifies a base entry with no title.\nEvery entry must have a title."
+msgstr "Heslo naznačuje, že ide o záznam aliasu, ale špecifikuje základný záznam bez názvu.\nKaždý záznam musí mať názov."
 
 #. Resource IDs: (3000)
 msgid "Password is too short."
@@ -5825,7 +5459,7 @@ msgstr "Databáza Password Safe..."
 #. Resource IDs: (5715)
 #, c-format
 msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
-msgstr "Aplikácia Password Safe V%d.%d.%d (Build %s) zaznamenala chybu."
+msgstr "Aplikácia Password Safe V%d.%d.%d (Zostava %s) zaznamenala chybu."
 
 #. Resource IDs: (5959)
 msgid "PasswordSafe..."
@@ -5837,7 +5471,7 @@ msgstr "Password Safe: existujú záznamy s heslami, ktorých platnosť vypršal
 
 #. Resource IDs: (32076 - Menu, 32076 - MenuEx, 5296)
 msgid "Perform Auto&Type"
-msgstr "Vykonaj &automatické dopĺňanie"
+msgstr "Vykonať automatické dopĺňanie"
 
 #. Resource IDs: (8235)
 msgid "Persian"
@@ -5873,7 +5507,7 @@ msgstr "Názov zásad hesiel"
 
 #. Resource IDs: (5896)
 msgid "Policy Name is already in use"
-msgstr "Tieto zásady hesiel sa už používajú"
+msgstr "Tento názov pre zásady hesiel sa už používa"
 
 #. Resource IDs: (5895)
 msgid "Policy Name is blank"
@@ -5901,7 +5535,7 @@ msgstr "Portugalská (brazílska ABNT)"
 
 #. Resource IDs: (6049)
 msgid "Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character. Positions must be separated by either spaces, commas or semi-colons to be recognised. There must also be a space, comma or semi-colon at the end of the list."
-msgstr "Pozícia 1 je prvý znak, 2 je druhý atď. Až do n pre posledný znak hesla dĺžky N. -1 je posledný znak, -2 ďalší až posledný atď. Až do -n pre prvý znak hesla. Pozície musia byť oddelené medzerami, čiarkami alebo bodkočiarkami, aby boli rozpoznateľné. Medzera, čiarka alebo bodkočiarka musí byť aj na konci zoznamu."
+msgstr "Pozícia 1 je prvý znak, 2 je druhý atď. Až do N pre posledný znak hesla dĺžky N. -1 je posledný znak, -2 ďalší až posledný atď. Až do -N pre prvý znak hesla. Pozície musia byť oddelené medzerami, čiarkami alebo bodkočiarkami, aby boli rozpoznateľné. Medzera, čiarka alebo bodkočiarka musí byť aj na konci zoznamu."
 
 #. Resource IDs: (65535)
 msgid "Positions:"
@@ -5912,14 +5546,8 @@ msgid "Press to delete all added characters."
 msgstr "Stlačením odstráňte všetky pridané znaky."
 
 #. Resource IDs: (65535)
-msgid ""
-"Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n"
-"\n"
-"Pressing Cancel stops the password from being copied."
-msgstr ""
-"Stlačením OK skopírujete heslo vybratého záznamu do schránky. Schránka sa bezpečne vymaže po zatvorení aplikácie Password Safe.\n"
-"\n"
-"Stlačením tlačidla Zrušiť sa zruší kopírovanie hesla."
+msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password from being copied."
+msgstr "Stlačením OK skopírujete heslo vybratého záznamu do schránky. Schránka sa bezpečne vymaže po zatvorení aplikácie Password Safe.\n\nStlačením tlačidla Zrušiť sa zruší kopírovanie hesla."
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -6056,12 +5684,8 @@ msgid "Record last access times"
 msgstr "Zaznamenávať čas posledného prístupu k záznamu"
 
 #. Resource IDs: (62184)
-msgid ""
-"Recover the auto-saved documents\n"
-"Open the auto-saved versions instead of the explicitly saved versions"
-msgstr ""
-"Obnovte automaticky uložené dokumenty\n"
-"Otvorte automaticky uložené verzie namiesto explicitne uložených verzií"
+msgid "Recover the auto-saved documents\nOpen the auto-saved versions instead of the explicitly saved versions"
+msgstr "Obnovte automaticky uložené dokumenty\nOtvorte automaticky uložené verzie namiesto explicitne uložených verzií"
 
 #. Resource IDs: (1487, 32084 - MenuEx)
 msgid "Redo"
@@ -6129,14 +5753,8 @@ msgid "Requested mode change failed"
 msgstr "Požadovaná zmena režimu zlyhala"
 
 #. Resource IDs: (5694)
-msgid ""
-"Required Unicode font is not installed on this system.\n"
-"\n"
-"Unable to provide Virtual Keyboard."
-msgstr ""
-"Požadované písmo Unicode nie je v tomto systéme nainštalované.\n"
-"\n"
-"Nepodarilo sa poskytnúť virtuálnu klávesnicu."
+msgid "Required Unicode font is not installed on this system.\n\nUnable to provide Virtual Keyboard."
+msgstr "Požadované písmo Unicode nie je v tomto systéme nainštalované.\n\nNepodarilo sa poskytnúť virtuálnu klávesnicu."
 
 #. Resource IDs: (5685)
 #, c-format
@@ -6246,12 +5864,8 @@ msgstr "&Synchronizovať..."
 
 #. Resource IDs: (3059)
 #, c-format
-msgid ""
-"SAX Parse Error during %ls\n"
-"%ls."
-msgstr ""
-"SAX chyba spracovania počas %ls\n"
-"%ls."
+msgid "SAX Parse Error during %ls\n%ls."
+msgstr "SAX chyba spracovania počas %ls\n%ls."
 
 #. Resource IDs: (3043)
 #, c-format
@@ -6300,7 +5914,7 @@ msgstr "Chyba pri ukladaní"
 
 #. Resource IDs: (5887)
 msgid "Save all changes to Password Policies"
-msgstr "Uložiť všetky zmeny do zásad hesiel"
+msgstr "Uložiť všetky zmeny v zásadách hesiel"
 
 #. Resource IDs: (61699)
 #, c-format
@@ -6324,33 +5938,13 @@ msgid "Screen capture protection disabled by a setup option."
 msgstr "Ochrana snímania obrazovky bola vypnutá počas inštalácie programu."
 
 #. Resource IDs: (6092)
-msgid ""
-"Screen capture protection disabled by command line.\n"
-"\n"
-"Contact support if this is unexpected.\n"
-"\n"
-"Click OK to continue."
-msgstr ""
-"Ochrana pred snímaním obrazovky bola vypnutá na príkazovom riadku.\n"
-"\n"
-"Ak to tak nemá byť, kontaktujte podporu.\n"
-"\n"
-"Kliknite na OK a pokračujte."
+msgid "Screen capture protection disabled by command line.\n\nContact support if this is unexpected.\n\nClick OK to continue."
+msgstr "Ochrana pred snímaním obrazovky bola vypnutá na príkazovom riadku.\n\nAk to tak nemá byť, kontaktujte podporu.\n\nKliknite na OK a pokračujte."
 
 #. Resource IDs: (6082)
 #, c-format
-msgid ""
-"Screen capture protection disabled by command line.\n"
-"\n"
-"Contact support if this is unexpected.\n"
-"\n"
-"You can click OK to continue in %d seconds."
-msgstr ""
-"Ochrana pred snímaním obrazovky bola vypnutá na príkazovom riadku.\n"
-"\n"
-"Ak to tak nemá byť, kontaktujte podporu.\n"
-"\n"
-"Kliknite na OK a bude sa pokračovať o %d sekúnd."
+msgid "Screen capture protection disabled by command line.\n\nContact support if this is unexpected.\n\nYou can click OK to continue in %d seconds."
+msgstr "Ochrana pred snímaním obrazovky bola vypnutá na príkazovom riadku.\n\nAk to tak nemá byť, kontaktujte podporu.\n\nKliknite na OK a bude sa pokračovať o %d sekúnd."
 
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
@@ -6371,7 +5965,7 @@ msgstr "Ochrana pred snímaním obrazovky: Neočakávaná chyba systému"
 #. Resource IDs: (5276)
 #, c-format
 msgid "Search has wrapped, continuing from the %s."
-msgstr "Vyhľadávanie je na konci, pokračujem znova %s."
+msgstr "Vyhľadávanie dosiahlo koniec, pokračujem znova %s."
 
 #. Resource IDs: (5565)
 msgid "Second date must be later than first"
@@ -6387,7 +5981,7 @@ msgstr "Zabezpečenie"
 
 #. Resource IDs: (3407)
 msgid "See Attachment filters"
-msgstr "Pozri filtre príloh"
+msgstr "Pozri filter príloh"
 
 #. Resource IDs: (65535)
 msgid "See LICENSE for open source details."
@@ -6395,11 +5989,11 @@ msgstr "Podrobnosti o open source sú v súbore LICENSE."
 
 #. Resource IDs: (3315)
 msgid "See Password History filters"
-msgstr "Pozri filtre histórie hesiel"
+msgstr "Pozri filter histórie hesiel"
 
 #. Resource IDs: (3316)
 msgid "See Password Policy filters"
-msgstr "Pozri filtre zásad hesiel"
+msgstr "Pozri filter zásad hesiel"
 
 #. Resource IDs: (61865)
 #, c-format
@@ -6428,11 +6022,11 @@ msgstr "Vyberte umiestnenie pre prechodné zálohy"
 
 #. Resource IDs: (65535)
 msgid "Select Locked Text Color:"
-msgstr "Vybrať farbu textu pre zamknuté:"
+msgstr "Vyberte farbu textu pre zamknuté:"
 
 #. Resource IDs: (5384)
 msgid "Select Program"
-msgstr ""
+msgstr "Vyberte program"
 
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"
@@ -6440,7 +6034,7 @@ msgstr "Vybrať typ testovacieho dump exportu"
 
 #. Resource IDs: (65535)
 msgid "Select Unlocked Text Color:"
-msgstr "Vybrať farbu textu pre odomknuté:"
+msgstr "Vyberte farbu textu pre odomknuté:"
 
 #. Resource IDs: (61717)
 msgid "Select a button."
@@ -6516,12 +6110,12 @@ msgstr "Relácia"
 
 #. Resource IDs: (5996)
 msgid "Set Add/Edit display font"
-msgstr "Nastaviť písmo pre Pridať/Upraviť"
+msgstr "Nastavte písmo pre Pridať/Upraviť"
 
 #. Resource IDs: (5992)
 #, c-format
 msgid "Set Attachment Filters: %d Added; %d Active"
-msgstr "Nastaviť filtre príloh: %d pridané; %d aktívne"
+msgstr "Nastavte filter príloh: %d pridané; %d aktívne"
 
 #. Resource IDs: (32256 - Menu)
 msgid "Set Database ID"
@@ -6541,16 +6135,16 @@ msgstr "Nastaviť ako predvolené používateľské meno?"
 
 #. Resource IDs: (5602)
 msgid "Set Display Filter"
-msgstr "Nastaviť filter zobrazenia"
+msgstr "Nastavte filter zobrazenia"
 
 #. Resource IDs: (150, 5571)
 msgid "Set Display Filters"
-msgstr "Nastaviť filtre zobrazenia"
+msgstr "Nastavte filtre zobrazenia"
 
 #. Resource IDs: (5572)
 #, c-format
 msgid "Set Display Filters: %d Added; %d Active"
-msgstr "Nastaviť filtre zobrazenia: %d pridané; %d aktívne"
+msgstr "Nastavte filter zobrazenia: %d pridané; %d aktívne"
 
 #. Resource IDs: (5510)
 msgid "Set Entry's Password Policy"
@@ -6558,21 +6152,21 @@ msgstr "Nastaviť zásady hesiel pre tento záznam"
 
 #. Resource IDs: (5971)
 msgid "Set Notes display font"
-msgstr "Nastaviť písmo pre zobrazenie poznámok"
+msgstr "Nastavte písmo pre zobrazenie poznámok"
 
 #. Resource IDs: (5573)
 #, c-format
 msgid "Set Password History Filters: %d Added; %d Active"
-msgstr "Nastaviť filtre histórie hesiel: %d pridané; %d aktívne"
+msgstr "Nastavte filter histórie hesiel: %d pridané; %d aktívne"
 
 #. Resource IDs: (5574)
 #, c-format
 msgid "Set Password Policy Filters: %d Added; %d Active"
-msgstr "Nastaviť filtre zásad hesiel: %d pridané; %d aktívne"
+msgstr "Nastavte filter zásad hesiel: %d pridané; %d aktívne"
 
 #. Resource IDs: (5693)
 msgid "Set Password display font"
-msgstr "Nastaviť písmo pre zobrazenie hesla"
+msgstr "Nastavte písmo pre zobrazenie hesla"
 
 #. Resource IDs: (1373)
 msgid "Set Sample &Text"
@@ -6580,11 +6174,11 @@ msgstr "Nastaviť vzorový text"
 
 #. Resource IDs: (5692)
 msgid "Set Tree/List display font"
-msgstr "Nastaviť písmo zobrazenia stromu/zoznamu"
+msgstr "Nastavte písmo pre zobrazenie stromu/zoznamu"
 
 #. Resource IDs: (5709)
 msgid "Set Virtual Keyboard font"
-msgstr "Nastaviť písmo virtuálnej klávesnice"
+msgstr "Nastavte písmo virtuálnej klávesnice"
 
 #. Resource IDs: (1)
 msgid "Set Yubikey"
@@ -6604,11 +6198,11 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Shift Double-Click Action"
-msgstr "Akcia na Shift dvojklik"
+msgstr "Akcia pri Shift dvojkliku"
 
 #. Resource IDs: (65535)
 msgid "Shift Double-Click Action:"
-msgstr "Akcia na Shift dvojklik:"
+msgstr "Akcia pri Shift dvojkliku:"
 
 #. Resource IDs: (5689)
 msgid "Shift+"
@@ -6620,7 +6214,7 @@ msgstr ""
 
 #. Resource IDs: (5873)
 msgid "Shift+Double-Click Action"
-msgstr "Akcia na Shift dvojklik"
+msgstr "Akcia pri Shift dvojkliku"
 
 #. Resource IDs: (5555)
 msgid "Shift+click to view current policy"
@@ -6686,7 +6280,7 @@ msgstr "Zobraziť prístupovú frázu"
 
 #. Resource IDs: (1028)
 msgid "Show Password in Add && Edit"
-msgstr "Zobraziť heslo počas vytvárania a úprave záznamu"
+msgstr "Zobraziť heslo počas vytvárania a úpravy záznamu"
 
 #. Resource IDs: (1031)
 msgid "Show Password in Tree View"
@@ -6749,18 +6343,12 @@ msgid "Some characters may be missing or not be displayed correctly, as we were 
 msgstr "Niektoré znaky môžu chýbať alebo nie sú zobrazené správne, pretože sme neboli schopní nájsť písmo Arial Unicode MS."
 
 #. Resource IDs: (5923)
-msgid ""
-"Some consistency issues were found while opening the database.\n"
-"\n"
-"You should save this database before proceeding. More details may be found in the report."
-msgstr ""
-"Pri otváraní databázy sa vyskytli problémy s konzistentnosťou.\n"
-"\n"
-"Pred pokračovaním by ste mali uložiť túto databázu. Viac podrobností je možné nájsť v správe."
+msgid "Some consistency issues were found while opening the database.\n\nYou should save this database before proceeding. More details may be found in the report."
+msgstr "Pri otváraní databázy sa vyskytli problémy s konzistentnosťou.\n\nPred pokračovaním by ste mali uložiť túto databázu. Viac podrobností je možné nájsť v správe."
 
 #. Resource IDs: (5821)
 msgid "Some of the entries in this database have passwords that have expired or are about to.  Do you wish to list them and possibly update them?"
-msgstr "Niektoré zo záznamov v tejto databáze majú heslá, ktoré vypršali alebo čoskoro vypršia. Chcete ich uviesť v zozname a prípadne aktualizovať?"
+msgstr "Niektoré zo záznamov v tejto databáze majú heslá, ktoré vypršali alebo čoskoro vypršia.\n\nChcete zobraziť ich zoznam kde ich budete môcť aktualizovať?"
 
 #. Resource IDs: (8313)
 msgid "Sorbian Standard"
@@ -6771,32 +6359,12 @@ msgid "Sorbian Standard (Legacy)"
 msgstr ""
 
 #. Resource IDs: (5288)
-msgid ""
-"Sorry - your requested HotKey is already being used.\n"
-"\n"
-"This feature has been temporarily disabled.\n"
-"\n"
-"To re-enable in this session, please select a different key combination."
-msgstr ""
-"Je mi ľúto - vami požadovaná klávesová skratka sa už používa.\n"
-"\n"
-"Táto možnosť bola dočasne zakázaná.\n"
-"\n"
-"Ak chcete túto možnosť v tejto relácii znova povoliť, vyberte inú kombináciu klávesov."
+msgid "Sorry - your requested HotKey is already being used.\n\nThis feature has been temporarily disabled.\n\nTo re-enable in this session, please select a different key combination."
+msgstr "Je mi ľúto - vami požadovaná klávesová skratka sa už používa.\n\nTáto možnosť bola dočasne zakázaná.\n\nAk chcete túto možnosť v tejto relácii znova povoliť, vyberte inú kombináciu klávesov."
 
 #. Resource IDs: (5712)
-msgid ""
-"Sorry but PasswordSafe has had a problem.\n"
-"\n"
-"Minimal diagnostic information has been written to file: \n"
-"\n"
-"\t'"
-msgstr ""
-"Je mi ľúto, ale PasswordSafe mal problém.\n"
-"\n"
-"Diagnostické informácie boli zapísané do súboru: \n"
-"\n"
-"\t'"
+msgid "Sorry but PasswordSafe has had a problem.\n\nMinimal diagnostic information has been written to file: \n\n\t'"
+msgstr "Je mi ľúto, ale PasswordSafe mal problém.\n\nDiagnostické informácie boli zapísané do súboru: \n\n\t'"
 
 #. Resource IDs: (5507)
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
@@ -6852,7 +6420,7 @@ msgstr "Zadajte podpriečinok, ktorý sa bude používať na ukladanie záloh."
 
 #. Resource IDs: (1497)
 msgid "Standard"
-msgstr "Štandard"
+msgstr "Štandardná"
 
 #. Resource IDs: (1220)
 msgid "Start Password Safe at Login"
@@ -6887,14 +6455,8 @@ msgid "Status"
 msgstr "Stav"
 
 #. Resource IDs: (5100)
-msgid ""
-"Stop saving password history for all entries.\n"
-"\n"
-"Saved histories will not be removed, but changed passwords will no longer be added."
-msgstr ""
-"Prestať ukladať históriu hesiel pre všetky záznamy.\n"
-"\n"
-"Uložené histórie nebudú odstránené, ale zmenené heslá už nebudú pridané."
+msgid "Stop saving password history for all entries.\n\nSaved histories will not be removed, but changed passwords will no longer be added."
+msgstr "Prestať ukladať históriu hesiel pre všetky záznamy.\n\nUložené histórie nebudú odstránené, ale zmenené heslá už nebudú pridané."
 
 #. Resource IDs: (1184)
 msgid "Stop saving previous passwords"
@@ -6995,7 +6557,7 @@ msgstr "Tadžická"
 
 #. Resource IDs: (8253)
 msgid "Tamil"
-msgstr ""
+msgstr "Tamilská"
 
 #. Resource IDs: (1110)
 msgid "Target last changed on:"
@@ -7095,14 +6657,8 @@ msgid "The Master Password will be used to protect the new password database fil
 msgstr "Hlavné heslo sa použije na ochranu nového súboru databázy hesiel."
 
 #. Resource IDs: (3424)
-msgid ""
-"The TXT or CSV file was not imported as required as entry records span multiple lines in the CSV file.\n"
-"\n"
-"Import aborted."
-msgstr ""
-"Súbor TXT alebo CSV nebol importovaný tak ako sa vyžaduje, pretože položky záznamov preklenujú viac riadkov v súbore CSV.\n"
-"\n"
-"Import bol prerušený."
+msgid "The TXT or CSV file was not imported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
+msgstr "Súbor TXT alebo CSV nebol importovaný tak ako sa vyžaduje, pretože položky záznamov preklenujú viac riadkov v súbore CSV.\n\nImport bol prerušený."
 
 #. Resource IDs: (6003)
 msgid "The YubiKey appears uninitialized. Initialize it?"
@@ -7114,84 +6670,27 @@ msgstr "Tajný kľúč autentifikácie nebol nájdený"
 
 #. Resource IDs: (5311)
 #, c-format
-msgid ""
-"The database %s couldn't be opened.\n"
-"Do you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
-msgstr ""
-"Databázu %s nebolo možné otvoriť.\n"
-"Chcete ju vyhľadať inde (Hľadať), vytvoriť novú databázu (Nový) alebo Ukončiť?"
+msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
+msgstr "Databázu %s nebolo možné otvoriť.\nChcete ju vyhľadať inde (Hľadať), vytvoriť novú databázu (Nový) alebo Ukončiť?"
 
 #. Resource IDs: (5852)
-msgid ""
-"The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n"
-"\n"
-"Close the database and re-open it in R/W mode."
-msgstr ""
-"Databáza sa zmenila, odkedy ste ju otvorili v režime R-O, takže nie je možné ju prepnúť do režimu R/W.\n"
-"\n"
-"Zatvorte databázu a znovu ju otvorte v režime R/W."
+msgid "The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n\nClose the database and re-open it in R/W mode."
+msgstr "Databáza sa zmenila, odkedy ste ju otvorili v režime R-O, takže nie je možné ju prepnúť do režimu R/W.\n\nZatvorte databázu a znovu ju otvorte v režime R/W."
 
 #. Resource IDs: (5412)
 #, c-format
-msgid ""
-"The database:\n"
-"%s\n"
-"\n"
-"is apparently being used by:\n"
-"%s%s.\n"
-"\n"
-"Open the database for Read-Only or Exit?\n"
-"\n"
-"Note: Only one user at a time can open the database for writing."
-msgstr ""
-"Databáza:\n"
-"%s\n"
-"\n"
-"je zjavne používaná:\n"
-"%s%s.\n"
-"\n"
-"Otvoriť databázu iba na čítanie alebo ukončiť?\n"
-"\n"
-"Poznámka: Databázu môže naraz otvoriť na zápis iba jeden používateľ."
+msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only or Exit?\n\nNote: Only one user at a time can open the database for writing."
+msgstr "Databáza:\n%s\n\nje zjavne používaná:\n%s%s.\n\nOtvoriť databázu iba na čítanie alebo ukončiť?\n\nPoznámka: Databázu môže naraz otvoriť na zápis iba jeden používateľ."
 
 #. Resource IDs: (5235)
 #, c-format
-msgid ""
-"The database:\n"
-"%s\n"
-"\n"
-"is apparently being used by:\n"
-"%s%s.\n"
-"\n"
-"Open the database for Read-Only, Read-Write, or Exit?\n"
-"\n"
-"Note: Choose \"Read-Write\" only if you are certain that the file isn't being used by anyone else,\n"
-"including another copy of Password Safe running on your machine."
-msgstr ""
-"Databáza:\n"
-"%s\n"
-"\n"
-"je zjavne používaná:\n"
-"%s%s.\n"
-"\n"
-"Otvoriť databázu iba na čítanie, čítanie-zápis alebo ukončiť?\n"
-"\n"
-"Poznámka: Možnosť \"Čítanie-zápis\" vyberte iba v prípade, že ste si istí, že súbor nepoužíva nikto iný, vrátane inej kópie aplikácie Password Safe spustenej na vašom počítači."
+msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\n\nNote: Choose \"Read-Write\" only if you are certain that the file isn't being used by anyone else,\nincluding another copy of Password Safe running on your machine."
+msgstr "Databáza:\n%s\n\nje zjavne používaná:\n%s%s.\n\nOtvoriť databázu iba na čítanie, čítanie-zápis alebo ukončiť?\n\nPoznámka: Možnosť \"Čítanie-zápis\" vyberte iba v prípade, že ste si istí, že súbor nepoužíva nikto iný, vrátane inej kópie aplikácie Password Safe spustenej na vašom počítači."
 
 #. Resource IDs: (5775)
 #, c-format
-msgid ""
-"The database:\n"
-"\n"
-"%s\n"
-"\n"
-"has duplicate entries with the same group/title/user combination. You can fix this by validating the database."
-msgstr ""
-"Databáza:\n"
-"\n"
-"%s\n"
-"\n"
-"obsahuje duplikáty s rovnakou kombináciou skupina/názov/používateľské meno. Opravte to overením databázy."
+msgid "The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. You can fix this by validating the database."
+msgstr "Databáza:\n\n%s\n\nobsahuje duplikáty s rovnakou kombináciou skupina/názov/používateľské meno. Môžete to opraviť overením databázy."
 
 #. Resource IDs: (5250)
 msgid "The entered passwords do not match.  Please re-enter."
@@ -7217,7 +6716,7 @@ msgstr "Verzia filtra XML (%d) je vyššia ako súčasná schéma (%d)."
 
 #. Resource IDs: (3321)
 msgid "The filter XML version is missing."
-msgstr "Chýba verzia filtra XML."
+msgstr "Chýbajúca verzia filtra v XML."
 
 #. Resource IDs: (3442)
 msgid "The following ERRORS were detected and were FIXED."
@@ -7225,7 +6724,7 @@ msgstr "Zistili sa nasledovné chyby a boli opravené."
 
 #. Resource IDs: (3443)
 msgid "The following WARNINGS were detected - you should review and fix them manually."
-msgstr "Zistili sa nasledovné varovania - mali by ste ich ručne skontrolovať a opraviť."
+msgstr "Zistili sa nasledovné nezrovnalosti - mali by ste ich ručne skontrolovať a opraviť."
 
 #. Resource IDs: (3454)
 msgid "The following attachments are not referred to by any entry."
@@ -7237,7 +6736,7 @@ msgstr "Exportovali sa nasledovné základné záznamy, pretože jeden alebo via
 
 #. Resource IDs: (3262)
 msgid "The following columns are unrecognized by PasswordSafe and will be ignored: "
-msgstr "Nasledovné stĺpce sú nerozpoznané aplikáciou Password Safe a budú ignorované: "
+msgstr "Nasledovné stĺpce nie sú rozpoznané aplikáciou Password Safe a budú ignorované: "
 
 #. Resource IDs: (3375)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
@@ -7249,7 +6748,7 @@ msgstr "Spracujú sa nasledovné stĺpce: "
 
 #. Resource IDs: (3463)
 msgid "The following entries contain incomplete passkeys."
-msgstr ""
+msgstr "Nasledovné záznamy obsahujú neúplné prístupové kľúče."
 
 #. Resource IDs: (3439)
 msgid "The following entries had a duplicate UUID field.  This has been corrected."
@@ -7257,12 +6756,8 @@ msgstr "Nasledovné záznamy mali duplicitné pole UUID. Bola vykonaná oprava."
 
 #. Resource IDs: (3433)
 #, c-format
-msgid ""
-"The following entries had a policy name that already existed in this database but with different settings.\n"
-"A new named policy has been created with the current date/time (%ls) appended:%ls"
-msgstr ""
-"Nasledovné záznamy mali zásady hesiel s názvom, ktorý už existoval v tejto databáze, ale s inými nastaveniami.\n"
-"Bola vytvorená nová položka s aktuálnym dátumom/časom (%ls): (%ls)"
+msgid "The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%ls) appended:%ls"
+msgstr "Nasledovné záznamy mali zásady hesiel s názvom, ktorý už existoval v tejto databáze, ale s inými nastaveniami.\nBola vytvorená nová položka s aktuálnym dátumom/časom (%ls): (%ls)"
 
 #. Resource IDs: (3438)
 #, c-format
@@ -7275,7 +6770,7 @@ msgstr "Nasledovné záznamy mali prázdne pole Názov, čo nie je povolené."
 
 #. Resource IDs: (3271)
 msgid "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
-msgstr "Nasledovné záznamy mali neplatnú históriu hesiel. Toto bolo znovu vytvorené s dostupnými údajmi. Môže dôjsť k strate časti histórie."
+msgstr "Nasledovné záznamy mali neplatnú históriu hesiel. Táto bola znovu vytvorená s použitím dostupných údajov, môže však dôjsť k strate časti histórie."
 
 #. Resource IDs: (3270)
 msgid "The following entries had an invalid UUID field.  This has been corrected."
@@ -7319,7 +6814,7 @@ msgstr "Nasledovné záznamy mali v histórii hesiel chyby:"
 
 #. Resource IDs: (5786)
 msgid "The following records were renamed as an entry already exists in your database or in the Import file:"
-msgstr "Nasledovné záznamy boli premenované ako záznam, ktorý už existuje v databáze alebo v importovanom súbore:"
+msgstr "Nasledovné záznamy boli premenované keďže už záznam existuje v databáze alebo v importovanom súbore:"
 
 #. Resource IDs: (5785)
 msgid "The following records were skipped:"
@@ -7327,24 +6822,13 @@ msgstr "Nasledovné záznamy boli vynechané:"
 
 #. Resource IDs: (5951)
 #, c-format
-msgid ""
-"The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\n"
-"The %s will override this menu item shortcut.\n"
-"Press OK/Apply to accept or change your selection."
-msgstr ""
-"Klávesová skratka '%s' už bola priradená k položke ponuky: \t'%s'\n"
-"%s prepíše túto skratku položky ponuky."
+msgid "The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\nThe %s will override this menu item shortcut.\nPress OK/Apply to accept or change your selection."
+msgstr "Klávesová skratka '%s' už bola priradená k položke ponuky: \t'%s'\n%s prepíše túto skratku položky ponuky."
 
 #. Resource IDs: (5950)
 #, c-format
-msgid ""
-"The keyboard shortcut '%s' is already in use by:\n"
-"\t«%s» «%s» «%s»\n"
-"Select another shortcut (it has been reset)."
-msgstr ""
-"Klávesová skratka '%s' sa už používa pre:\n"
-"\t«%s» «%s» «%s»\n"
-"Vyberte inú skratku (bola resetovaná)."
+msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nSelect another shortcut (it has been reset)."
+msgstr "Klávesová skratka '%s' sa už používa pre:\n\t«%s» «%s» «%s»\nVyberte inú skratku (bola resetovaná)."
 
 #. Resource IDs: (5279)
 msgid "The master password cannot be blank."
@@ -7352,18 +6836,8 @@ msgstr "Hlavné heslo nemôže byť prázdne."
 
 #. Resource IDs: (5958)
 #, c-format
-msgid ""
-"The master password has been entered %d times without success:\n"
-"- Is Caps Lock off?\n"
-"- Is the language correct (if multilingual)?\n"
-"- Is this the correct database?\n"
-"- Perhaps the database was damaged. Try opening a backup copy."
-msgstr ""
-"Hlavné heslo bolo zadané %d-krát bezúspešne:\n"
-"- Je CapsLock vypnutý?\n"
-"- Je jazyk klávesnice správny (ak používate viacero rozložení)?\n"
-"- Je toto správna databáza?\n"
-"- Možno bola databáza poškodená. Skúste otvoriť záložnú kópiu."
+msgid "The master password has been entered %d times without success:\n- Is Caps Lock off?\n- Is the language correct (if multilingual)?\n- Is this the correct database?\n- Perhaps the database was damaged. Try opening a backup copy."
+msgstr "Hlavné heslo bolo zadané %d-krát bezúspešne:\n- Je CapsLock vypnutý?\n- Je jazyk klávesnice správny (ak používate viacero rozložení)?\n- Je toto správna databáza?\n- Možno bola databáza poškodená. Skúste otvoriť záložnú kópiu."
 
 #. Resource IDs: (5792)
 #, c-format
@@ -7377,7 +6851,7 @@ msgstr "Staré hlavné heslo nie je správne"
 #. Resource IDs: (5323)
 #, c-format
 msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use \"File->Export To->Old (1.x or 2) format\"."
-msgstr "Pôvodná databáza, \"%s\", je vo formáte pred verziou 3.0. Dáta budú teraz zapísané v novom formáte, ktorý nie je možné použiť v starých verziách Password Safe. Ak chcete uložiť dáta v starom formáte, použite \"Súbor->Exportovať do->Formát (v1.x alebo v2)\"."
+msgstr "Pôvodná databáza, \"%s\", je vo formáte pred verziou 3.0. Dáta budú teraz zapísané v novom formáte, ktorý nie je možné použiť v starých verziách Password Safe. Ak chcete uložiť dáta v starom formáte, použite príkaz \"Súbor->Exportovať do->Formát (v1.x alebo v2)\"."
 
 #. Resource IDs: (5465)
 #, c-format
@@ -7390,7 +6864,7 @@ msgstr "Namiesto vybratej databázy sa otvorí vybratý súbor Failsafe zálohy.
 
 #. Resource IDs: (5970)
 msgid "The selected output format does not support all features of the current database. If these features are used, information may be lost. Continue?"
-msgstr "Vybratý výstupný formát nepodporuje všetky funkcie aktuálnej databázy. Ak sa tieto funkcie použijú, môžu sa stratiť nejaké informácie. Chcete pokračovať?"
+msgstr "Vybratý výstupný formát nepodporuje všetky funkcie aktuálnej databázy.\n\nAk sa tieto funkcie použijú, môžu sa stratiť nejaké informácie. Chcete pokračovať?"
 
 #. Resource IDs: (5254)
 msgid "The two entries do not match."
@@ -7423,7 +6897,7 @@ msgstr "Táto klávesová skratka nie je k dispozícii, pretože už je priraden
 #. Resource IDs: (5499)
 #, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Tento cieľ aliasu [%s:%s:%s] nie je normálnym záznamom."
+msgstr "Cieľ tohto aliasu [%s:%s:%s] nie je normálnym záznamom."
 
 #. Resource IDs: (5355)
 msgid "This database is the same as the current database!"
@@ -7431,25 +6905,13 @@ msgstr "Táto databáza je rovnaká ako aktuálna databáza!"
 
 #. Resource IDs: (3404)
 #, c-format
-msgid ""
-"This entry has the following %d %ls:\n"
-"%ls\n"
-"Confirm to continue (All shortcuts to this entry will be deleted)?"
-msgstr ""
-"Tento záznam má nasledovné %d %ls:\n"
-"%ls\n"
-"Potvrďte pre pokračovanie (všetky odkazy k tomuto záznamu budú odstránené)."
+msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
+msgstr "Tento záznam má nasledovné %d %ls:\n%ls\nPotvrďte pre pokračovanie (všetky odkazy k tomuto záznamu budú odstránené)."
 
 #. Resource IDs: (3403)
 #, c-format
-msgid ""
-"This entry has the following %d %ls:\n"
-"%ls\n"
-"Confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
-msgstr ""
-"Tento záznam má nasledovné %d %ls:\n"
-"%ls\n"
-"Potvrďte pre pokračovanie (heslá aliasového záznamu budú nahradené heslom tohto záznamu)."
+msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (alias entry's passwords will be replaced by this entry's password)?"
+msgstr "Tento záznam má nasledovné %d %ls:\n%ls\nPotvrďte pre pokračovanie (heslo všetkých aliasov tohto záznamu bude nahradené heslom tohto záznamu)."
 
 #. Resource IDs: (5248)
 msgid "This entry must have a password."
@@ -7493,7 +6955,7 @@ msgstr "Toto je alias pre:"
 
 #. Resource IDs: (6115)
 msgid "This is the current authentication code. Click the button to copy it to the clipboard."
-msgstr "Toto je aktuálny overovací kód. Kliknite na tlačidlo a skopírujte ho do schránky."
+msgstr "Toto je aktuálny overovací kód (TOTP token). Kliknite na tlačidlo čím ho skopírujete do schránky."
 
 #. Resource IDs: (5121)
 #, c-format
@@ -7579,7 +7041,7 @@ msgstr "Ak chcete odomknúť tento záznam, kliknite na Zavrieť, použite menu 
 
 #. Resource IDs: (32106 - MenuEx)
 msgid "Toolbar &visible"
-msgstr "Panel s nástrojmi je viditeľný"
+msgstr "Panel nástrojov je viditeľný"
 
 #. Resource IDs: (1284)
 msgid "Treat fields that only contain 'whitespace' as empty"
@@ -7616,7 +7078,7 @@ msgstr "Turkménska"
 
 #. Resource IDs: (3079)
 msgid "Two Factor Key"
-msgstr "Dvoj-faktorový kľúč"
+msgstr "Dvojfaktorový kľúč"
 
 #. Resource IDs: (1355)
 msgid "U&RL:"
@@ -7647,18 +7109,8 @@ msgid "Ukrainian (Enhanced)"
 msgstr "Ukrajinská (rozšírená)"
 
 #. Resource IDs: (3029)
-msgid ""
-"Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n"
-"\n"
-"All application configuration settings will be saved in your registry entry on this computer.\n"
-"\n"
-"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"Nie je možné vytvoriť nový konfiguračný súbor XML ani pridať nastavenia do existujúceho konfiguračného súboru XML.\n"
-"\n"
-"Všetky konfiguračné nastavenia aplikácie budú uložené do registra Windows.\n"
-"\n"
-"Nastavenia súvisiace s databázou budú uložené v otvorenej databáze po jej zatvorení, za predpokladu, že nie je určená len na čítanie alebo nie je uzamknutá iným používateľom."
+msgid "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr "Nie je možné vytvoriť nový konfiguračný súbor XML ani pridať nastavenia do existujúceho konfiguračného súboru XML.\n\nVšetky konfiguračné nastavenia aplikácie budú uložené do registra Windows.\n\nNastavenia súvisiace s databázou budú uložené v otvorenej databáze po jej zatvorení, za predpokladu že nie je určená len na čítanie alebo nie je uzamknutá iným používateľom."
 
 #. Resource IDs: (5385)
 #, c-format
@@ -7670,25 +7122,13 @@ msgid "Unable to display URL"
 msgstr "Nepodarilo sa zobraziť URL"
 
 #. Resource IDs: (3028)
-msgid ""
-"Unable to get configuration file lock.\n"
-"\n"
-"Will use registry."
-msgstr ""
-"Nepodarilo sa získať zámok konfiguračného súboru.\n"
-"\n"
-"Použije sa register Windows."
+msgid "Unable to get configuration file lock.\n\nWill use registry."
+msgstr "Nepodarilo sa získať zámok konfiguračného súboru.\n\nPoužije sa register Windows."
 
 #. Resource IDs: (5630)
 #, c-format
-msgid ""
-"Unable to import \"autoload_filters.xml\" filters.\n"
-"\n"
-"%s"
-msgstr ""
-"Nepodarilo sa importovať filtre \"autoload_filters.xml\".\n"
-"\n"
-"%s"
+msgid "Unable to import \"autoload_filters.xml\" filters.\n\n%s"
+msgstr "Nepodarilo sa importovať filtre \"autoload_filters.xml\".\n\n%s"
 
 #. Resource IDs: (3050)
 msgid "Unable to load configuration file"
@@ -7701,19 +7141,19 @@ msgstr "Nepodarilo sa načítať podporu emailového systému."
 #. Resource IDs: (61731)
 #, c-format
 msgid "Unable to read from %1, it is opened by someone else."
-msgstr "Nemožno čítať z %1, je otvorený niekým iným."
+msgstr "Nie je možné čítať z %1, je otvorený niekým iným."
 
 #. Resource IDs: (3021)
 msgid "Unable to read locker?"
-msgstr "Nemožno načítať locker?"
+msgstr "Nie je možné načítať locker?"
 
 #. Resource IDs: (61836)
 msgid "Unable to read write-only property."
-msgstr "Nemožno čítať vlastnosť iba na zápis."
+msgstr "Nie je možné čítať vlastnosť iba na zápis."
 
 #. Resource IDs: (5657)
 msgid "Unable to run command"
-msgstr "Nemožno spustiť príkaz"
+msgstr "Nie je možné spustiť príkaz"
 
 #. Resource IDs: (3051)
 msgid "Unable to save configuration file"
@@ -7721,21 +7161,11 @@ msgstr "Nie je možné uložiť konfiguračný súbor"
 
 #. Resource IDs: (5484)
 msgid "Unable to send Email"
-msgstr "Nemožno poslať email"
+msgstr "Nie je možné poslať email"
 
 #. Resource IDs: (3030)
-msgid ""
-"Unable to update your entries in the existing XML configuration file.\n"
-"\n"
-"All application configuration settings will be loaded from this file but no changes will be saved.\n"
-"\n"
-"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"Nie je možné aktualizovať záznamy v existujúcom konfiguračnom súbore XML.\n"
-"\n"
-"Všetky nastavenia aplikácie sa načítajú z tohto súboru, ale žiadne zmeny sa neuložia.\n"
-"\n"
-"Nastavenia súvisiace s databázou sa uložia do otvorenej databázy po jej zatvorení, za predpokladu, že nie je určená len na čítanie alebo je uzamknutá iným používateľom."
+msgid "Unable to update your entries in the existing XML configuration file.\n\nAll application configuration settings will be loaded from this file but no changes will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr "Nie je možné aktualizovať záznamy v existujúcom konfiguračnom súbore XML.\n\nVšetky nastavenia aplikácie sa načítajú z tohto súboru, ale žiadne zmeny sa neuložia.\n\nNastavenia súvisiace s databázou sa uložia do otvorenej databázy po jej zatvorení, za predpokladu že nie je určená len na čítanie alebo je uzamknutá iným používateľom."
 
 #. Resource IDs: (3047)
 msgid "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
@@ -7824,7 +7254,7 @@ msgstr "Odomknúť záznam"
 
 #. Resource IDs: (5001)
 msgid "Unrecognised command line argument found"
-msgstr "Našiel sa nerozpoznaný argument príkazového riadku"
+msgstr "Našiel sa nerozpoznaný parameter príkazového riadku"
 
 #. Resource IDs: (3349)
 msgid "Unsaved changes"
@@ -7832,12 +7262,8 @@ msgstr "Neuložené zmeny"
 
 #. Resource IDs: (5724)
 #, c-format
-msgid ""
-"Unsaved changes have been made to database:\n"
-" %s."
-msgstr ""
-"V databáze sa uskutočnili neuložené zmeny:\n"
-" %s."
+msgid "Unsaved changes have been made to database:\n %s."
+msgstr "V databáze sa uskutočnili neuložené zmeny:\n %s."
 
 #. Resource IDs: (6024)
 msgid "Unsaved restored database"
@@ -7861,50 +7287,8 @@ msgid "Urdu"
 msgstr ""
 
 #. Resource IDs: (5000)
-msgid ""
-"Usage:\n"
-"pwsafe [-r|-v] [password database]\n"
-"or pwsafe [-e|-d] filename\n"
-"or pwsafe [-c]\n"
-"or pwsafe [-s] [password database]\n"
-"or pwsafe -m\n"
-"\n"
-" where:\n"
-"  -r = open read-only\n"
-"  -v = validate & repair\n"
-"  -e/d = encrypt/decrypt file\n"
-"  -c = start closed i.e., no open database\n"
-"  -s = start silently (minimized)\n"
-"  -m = start minimized & closed\n"
-"\n"
-"In addition, the following flags may be used:\n"
-" -u user (use user's preferences instead of login name)\n"
-" -h host (use host to look up preferences instead of the machine's name)\n"
-" -g config_file (use config_file instead of pwsafe.cfg)\n"
-" -q (don't complain about missing fonts, dlls, etc.)\n"
-"See online help for more options."
-msgstr ""
-"Použitie:\n"
-"pwsafe [-r|-v] [password database]\n"
-"alebo pwsafe [-e|-d] filename\n"
-"alebo pwsafe [-c]\n"
-"alebo pwsafe [-s] [password database]\n"
-"alebo pwsafe -m\n"
-"\n"
-" kde:\n"
-"  -r = open read-only\n"
-"  -v = validate & repair\n"
-"  -e/d = encrypt/decrypt file\n"
-"  -c = start closed i.e., no open database\n"
-"  -s = start silently (minimized)\n"
-"  -m = start minimized & closed\n"
-"\n"
-"In addition, the following flags may be used:\n"
-" -u user (use user's preferences instead of login name)\n"
-" -h host (use host to look up preferences instead of the machine's name)\n"
-" -g config_file (use config_file instead of pwsafe.cfg)\n"
-" -q (don't complain about missing fonts, dlls, etc.)\n"
-"Pozri online nápovedu pre ďalšie možnosti."
+msgid "Usage:\npwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nSee online help for more options."
+msgstr "Použitie:\npwsafe [-r|-v] [password database]\nalebo pwsafe [-e|-d] filename\nalebo pwsafe [-c]\nalebo pwsafe [-s] [password database]\nalebo pwsafe -m\n\n kde:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nPozri online nápovedu pre ďalšie možnosti."
 
 #. Resource IDs: (1029)
 msgid "Use"
@@ -7916,7 +7300,7 @@ msgstr "Použiť číslice"
 
 #. Resource IDs: (1070)
 msgid "Use &Hexadecimal digits only (0-9,a-f)"
-msgstr "Použiť iba hexadecimálne číslice (0-9,a-f)"
+msgstr "Použiť iba hexadecimálne číslice (0-9, a-f)"
 
 #. Resource IDs: (1047)
 msgid "Use &Lowercase letters"
@@ -7928,7 +7312,7 @@ msgstr "Použiť symboly"
 
 #. Resource IDs: (1050)
 msgid "Use &Symbols (i.e., &, %, $, etc.)"
-msgstr "Použiť symboly (t.j., &, %, $, etc.)"
+msgstr "Použiť symboly (t.j. &, %, $ atď.)"
 
 #. Resource IDs: (1048)
 msgid "Use &UPPERCASE letters"
@@ -8008,14 +7392,8 @@ msgstr "Overiť"
 
 #. Resource IDs: (5347)
 #, c-format
-msgid ""
-"Validated %d %s\n"
-"\n"
-"Imported %d %s"
-msgstr ""
-"Overené: %d %s\n"
-"\n"
-"Importované: %d %s"
+msgid "Validated %d %s\n\nImported %d %s"
+msgstr "Overené: %d %s\n\nImportované: %d %s"
 
 #. Resource IDs: (5891)
 msgid "Value"
@@ -8096,40 +7474,28 @@ msgstr "UPOZORNENIE: Ak budete pokračovať, polia v záznamoch v existujúcej d
 
 #. Resource IDs: (5804)
 #, c-format
-msgid ""
-"WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n"
-"\n"
-"Do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
-msgstr ""
-"UPOZORNENIE: Táto operácia vytvorí nechránenú kópiu %s z databázy. Odstránenie tejto kópie po použití NIE JE postačujúce.\n"
-"\n"
-"Túto možnosť nepoužívajte, jedine ak jej rozumiete a akceptujete riziká. Táto možnosť obchádza zabezpečenie poskytované týmto programom."
+msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n\nDo not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
+msgstr "UPOZORNENIE: Táto operácia vytvorí nechránenú kópiu %s z databázy. Odstránenie tejto kópie po použití NIE JE postačujúce.\n\nTúto možnosť nepoužívajte, jedine ak jej rozumiete a akceptujete riziká. Táto možnosť obchádza zabezpečenie poskytované týmto programom."
 
 #. Resource IDs: (5447)
-msgid ""
-"WARNING: Use of an external editor may leave sensitive data on your hard disk.\n"
-"\n"
-"Do you wish to continue?"
-msgstr ""
-"UPOZORNENIE: Použitie externého editora môže zanechať citlivé údaje na disku.\n"
-"\n"
-"Chcete pokračovať?"
+msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
+msgstr "UPOZORNENIE: Použitie externého editora môže zanechať citlivé údaje na disku.\n\nChcete pokračovať?"
 
 #. Resource IDs: (1232)
 msgid "Warn"
-msgstr "Varovať"
+msgstr "Upozorniť"
 
 #. Resource IDs: (1362, 3330)
 msgid "Warning"
-msgstr "Varovanie"
+msgstr "Upozornenie"
 
 #. Resource IDs: (6046)
 msgid "Warning - Notes being externally edited"
-msgstr "Varovanie - Poznámky sú externe upravované"
+msgstr "Upozornenie - Poznámky sú externe upravované"
 
 #. Resource IDs: (5793)
 msgid "Warning - field too long"
-msgstr "Varovanie - pole je príliš dlhé"
+msgstr "Upozornenie - pole je príliš dlhé"
 
 #. Resource IDs: (5123)
 msgid "Weak Password"
@@ -8137,14 +7503,8 @@ msgstr "Slabé heslo"
 
 #. Resource IDs: (5281)
 #, c-format
-msgid ""
-"Weak master password:\n"
-"\n"
-" %s"
-msgstr ""
-"Slabé hlavné heslo:\n"
-"\n"
-" %s"
+msgid "Weak master password:\n\n %s"
+msgstr "Slabé hlavné heslo:\n\n %s"
 
 #. Resource IDs: (5763)
 msgid "What saved"
@@ -8156,7 +7516,7 @@ msgstr "Čokoľvek"
 
 #. Resource IDs: (6050)
 msgid "When a subset is visible and there is no warning message, the button will be enabled and can be clicked to copy the subset to the clipboard."
-msgstr "Ak je časť viditeľná a nie je zobrazené varovanie, tlačidlo bude povolené a dá sa kliknúť na skopírovanie časti do schránky."
+msgstr "Ak je časť viditeľná a nie je zobrazené upozornenie, tlačidlo bude povolené a dá sa kliknúť na skopírovanie časti do schránky."
 
 #. Resource IDs: (5761)
 msgid "When saved"
@@ -8190,7 +7550,7 @@ msgstr "Windows nedokáže rozbaliť '%s'. Uistite sa, že ste to nastavili spr�
 #. Resource IDs: (5972)
 #, c-format
 msgid "Windows can't find '%s'. Make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
-msgstr "Windows nemôžu nájsť '%s'. Uistite sa, že ste správne nastavili externý editor a že je nainštalovaný. Externá úprava zrušená."
+msgstr "Windows nemôže nájsť '%s'. Uistite sa, že ste správne nastavili externý editor a že je nainštalovaný. Externá úprava zrušená."
 
 #. Resource IDs: (8264)
 msgid "Wolof"
@@ -8206,28 +7566,16 @@ msgstr "Zalomiť text v poznámkach pri zobrazení záznamu"
 
 #. Resource IDs: (5305)
 #, c-format
-msgid ""
-"Would you like to set \"%s\" as your default username?\n"
-"\n"
-"It would then be used by default for new items."
-msgstr ""
-"Chcete nastaviť \"%s\" ako predvolené používateľské meno?\n"
-"\n"
-"Potom by sa predvolene používalo pre nové záznamy."
+msgid "Would you like to set \"%s\" as your default username?\n\nIt would then be used by default for new items."
+msgstr "Chcete nastaviť \"%s\" ako predvolené používateľské meno?\n\nPotom by sa predvolene používalo pre nové záznamy."
 
 #. Resource IDs: (5326)
 msgid "Write Error"
 msgstr "Chyba zápisu"
 
 #. Resource IDs: (5742)
-msgid ""
-"Write operation failed!\n"
-"File may have been corrupted.\n"
-"Try saving in a different location"
-msgstr ""
-"Operácia zápisu zlyhala!\n"
-"Súbor mohol byť poškodený.\n"
-"Skúste uložiť na inom mieste."
+msgid "Write operation failed!\nFile may have been corrupted.\nTry saving in a different location"
+msgstr "Operácia zápisu zlyhala!\nSúbor mohol byť poškodený.\nSkúste uložiť v inom umiestnení."
 
 #. Resource IDs: (5107)
 msgid "Writes the database when an entry was accessed, unless in read-only mode."
@@ -8300,7 +7648,7 @@ msgstr "Kliknutím na názov poľa môžete skopírovať jeho hodnotu do schrán
 
 #. Resource IDs: (5847)
 msgid "You have chosen not to save your changes, which will be lost. Do you wish to continue?"
-msgstr "Vybrali ste aby sa neuložili zmeny, ktoré sa tak stratia. Chcete pokračovať?"
+msgstr "Rozhodli ste sa neuložiť zmeny, ktoré sa tak stratia. Chcete pokračovať?"
 
 #. Resource IDs: (5788)
 msgid "You must save this database before it can be exported."
@@ -8364,838 +7712,416 @@ msgid "[Notes hidden - click here to display]"
 msgstr "[Poznámky sú skryté - kliknutím sem zobrazíte]"
 
 #. Resource IDs: (32064)
-msgid ""
-"\n"
-"Add Group"
-msgstr ""
-"\n"
-"Pridať skupinu"
+msgid "\nAdd Group"
+msgstr "\nPridať skupinu"
 
 #. Resource IDs: (32051)
-msgid ""
-"\n"
-"Add New Entry"
-msgstr ""
-"\n"
-"Pridať nový záznam"
+msgid "\nAdd New Entry"
+msgstr "\nPridať nový záznam"
 
 #. Resource IDs: (32307)
-msgid ""
-"\n"
-"Advanced Find Options"
-msgstr ""
-"\n"
-"Pokročilé vyhľadávanie"
+msgid "\nAdvanced Find Options"
+msgstr "\nPokročilé vyhľadávanie"
 
 #. Resource IDs: (32072)
-msgid ""
-"\n"
-"Browse to URL"
-msgstr ""
-"\n"
-"Otvoriť adresu URL"
+msgid "\nBrowse to URL"
+msgstr "\nOtvoriť adresu URL"
 
 #. Resource IDs: (32073)
-msgid ""
-"\n"
-"Browse to URL + AutoType"
-msgstr ""
-"\n"
-"Otvoriť URL + automatické dopĺňanie"
+msgid "\nBrowse to URL + AutoType"
+msgstr "\nOtvoriť URL + automatické dopĺňanie"
 
 #. Resource IDs: (32074)
-msgid ""
-"\n"
-"Browse to URL with Alternate Browser"
-msgstr ""
-"\n"
-"Otvoriť URL s alternatívnym prehliadačom"
+msgid "\nBrowse to URL with Alternate Browser"
+msgstr "\nOtvoriť URL s alternatívnym prehliadačom"
 
 #. Resource IDs: (32305)
-msgid ""
-"\n"
-"Case insensitive search"
-msgstr ""
-"\n"
-"Vyhľadávanie nerozlišuje malé/veľké písmená"
+msgid "\nCase insensitive search"
+msgstr "\nVyhľadávanie nerozlišuje malé/veľké písmená"
 
 #. Resource IDs: (32306)
-msgid ""
-"\n"
-"Case sensitive search"
-msgstr ""
-"\n"
-"Vyhľadávanie rozlišuje malé/veľké písmená"
+msgid "\nCase sensitive search"
+msgstr "\nVyhľadávanie rozlišuje malé/veľké písmená"
 
 #. Resource IDs: (32134)
-msgid ""
-"\n"
-"Clear Filters"
-msgstr ""
-"\n"
-"Vymazať filtre"
+msgid "\nClear Filters"
+msgstr "\nZrušiť filtre"
 
 #. Resource IDs: (32302)
-msgid ""
-"\n"
-"Clear Find"
-msgstr ""
-"\n"
-"Vymazať vyhľadávanie"
+msgid "\nClear Find"
+msgstr "\nVymazať vyhľadávanie"
 
 #. Resource IDs: (32065)
-msgid ""
-"\n"
-"Clear the clipboard contents"
-msgstr ""
-"\n"
-"Vymazať obsah schránky"
+msgid "\nClear the clipboard contents"
+msgstr "\nVymazať obsah schránky"
 
 #. Resource IDs: (32004)
-msgid ""
-"\n"
-"Close Database"
-msgstr ""
-"\n"
-"Zatvoriť databázu"
+msgid "\nClose Database"
+msgstr "\nZatvoriť databázu"
 
 #. Resource IDs: (32301)
-msgid ""
-"\n"
-"Close Find Bar"
-msgstr ""
-"\n"
-"Zatvoriť panel vyhľadávania"
+msgid "\nClose Find Bar"
+msgstr "\nZatvoriť panel vyhľadávania"
 
 #. Resource IDs: (32110)
-msgid ""
-"\n"
-"Collapse All"
-msgstr ""
-"\n"
-"Zbaliť všetko"
+msgid "\nCollapse All"
+msgstr "\nZbaliť všetko"
 
 #. Resource IDs: (32092)
-msgid ""
-"\n"
-"Compare entries..."
-msgstr ""
-"\n"
-"Porovnať záznamy..."
+msgid "\nCompare entries..."
+msgstr "\nPorovnať záznamy..."
 
 #. Resource IDs: (32019)
-msgid ""
-"\n"
-"Compare two Databases"
-msgstr ""
-"\n"
-"Porovnať dve databázy"
+msgid "\nCompare two Databases"
+msgstr "\nPorovnať dve databázy"
 
 #. Resource IDs: (32100)
-msgid ""
-"\n"
-"Copy Auth Code to Clipboard"
-msgstr ""
-"\n"
-"Skopírovať overovací kód do schránky"
+msgid "\nCopy Auth Code to Clipboard"
+msgstr "\nSkopírovať overovací kód do schránky"
 
 #. Resource IDs: (32069)
-msgid ""
-"\n"
-"Copy Notes to Clipboard"
-msgstr ""
-"\n"
-"Skopírovať poznámky do schránky"
+msgid "\nCopy Notes to Clipboard"
+msgstr "\nSkopírovať poznámky do schránky"
 
 #. Resource IDs: (32066)
-msgid ""
-"\n"
-"Copy Password to Clipboard"
-msgstr ""
-"\n"
-"Skopírovať heslo do schránky"
+msgid "\nCopy Password to Clipboard"
+msgstr "\nSkopírovať heslo do schránky"
 
 #. Resource IDs: (32081)
-msgid ""
-"\n"
-"Copy Run Command to Clipboard"
-msgstr ""
-"\n"
-"Skopírovať príkaz na spustenie do schránky"
+msgid "\nCopy Run Command to Clipboard"
+msgstr "\nSkopírovať príkaz na spustenie do schránky"
 
 #. Resource IDs: (32068)
-msgid ""
-"\n"
-"Copy Username to Clipboard"
-msgstr ""
-"\n"
-"Skopírovať používateľské meno do schránky"
+msgid "\nCopy Username to Clipboard"
+msgstr "\nSkopírovať používateľské meno do schránky"
 
 #. Resource IDs: (32308)
-msgid ""
-"\n"
-"Create report of previous Find search"
-msgstr ""
-"\n"
-"Vytvoriť report o predchádzajúcom vyhľadávaní"
+msgid "\nCreate report of previous Find search"
+msgstr "\nVytvoriť report o predchádzajúcom vyhľadávaní"
 
 #. Resource IDs: (32056)
-msgid ""
-"\n"
-"Delete an Entry"
-msgstr ""
-"\n"
-"Zmazať záznam"
+msgid "\nDelete an Entry"
+msgstr "\nZmazať záznam"
 
 #. Resource IDs: (32099)
-msgid ""
-"\n"
-"Display Auth Code"
-msgstr ""
-"\n"
-"Zobraziť overovací kód"
+msgid "\nDisplay Auth Code"
+msgstr "\nZobraziť overovací kód"
 
 #. Resource IDs: (32067)
-msgid ""
-"\n"
-"Display subset of Password"
-msgstr ""
-"\n"
-"Zobraziť časť hesla"
+msgid "\nDisplay subset of Password"
+msgstr "\nZobraziť časť hesla"
 
 #. Resource IDs: (32063)
-msgid ""
-"\n"
-"Duplicate Entry"
-msgstr ""
-"\n"
-"Duplikovať záznam"
+msgid "\nDuplicate Entry"
+msgstr "\nDuplikovať záznam"
 
 #. Resource IDs: (32087)
-msgid ""
-"\n"
-"Duplicate Group"
-msgstr ""
-"\n"
-"Duplicitná skupina"
+msgid "\nDuplicate Group"
+msgstr "\nDuplikovať skupinu"
 
 #. Resource IDs: (32082)
-msgid ""
-"\n"
-"Edit Base entry"
-msgstr ""
-"\n"
-"Upraviť základný záznam"
+msgid "\nEdit Base entry"
+msgstr "\nUpraviť základný záznam"
 
 #. Resource IDs: (32052)
-msgid ""
-"\n"
-"Edit Entry"
-msgstr ""
-"\n"
-"Upraviť záznam"
+msgid "\nEdit Entry"
+msgstr "\nUpraviť záznam"
 
 #. Resource IDs: (32113)
-msgid ""
-"\n"
-"Edit Filters"
-msgstr ""
-"\n"
-"Upraviť filtre"
+msgid "\nEdit Filters"
+msgstr "\nUpraviť filtre"
 
 #. Resource IDs: (5517)
-msgid ""
-"\n"
-"Email: "
-msgstr ""
-"\n"
-"Email: "
+msgid "\nEmail: "
+msgstr "\nEmail: "
 
 #. Resource IDs: (3052)
 #, c-format
-msgid ""
-"\n"
-"Error in Password History for entry: »%ls»%ls»%ls»: "
-msgstr ""
-"\n"
-"Chyba v histórii hesiel pre záznam: »%ls»%ls»%ls»: "
+msgid "\nError in Password History for entry: »%ls»%ls»%ls»: "
+msgstr "\nChyba v histórii hesiel pre záznam: »%ls»%ls»%ls»: "
 
 #. Resource IDs: (32109)
-msgid ""
-"\n"
-"Expand All"
-msgstr ""
-"\n"
-"Rozbaliť všetko"
+msgid "\nExpand All"
+msgstr "\nRozbaliť všetko"
 
 #. Resource IDs: (32097)
-msgid ""
-"\n"
-"Export Attachment..."
-msgstr ""
-"\n"
-"Exportovať prílohu..."
+msgid "\nExport Attachment..."
+msgstr "\nExportovať prílohu..."
 
 #. Resource IDs: (32086)
-msgid ""
-"\n"
-"Export Entry in XML format..."
-msgstr ""
-"\n"
-"Export záznamu vo formáte XML..."
+msgid "\nExport Entry in XML format..."
+msgstr "\nExport záznamu vo formáte XML..."
 
 #. Resource IDs: (32085)
-msgid ""
-"\n"
-"Export Entry to Plain Text..."
-msgstr ""
-"\n"
-"Export záznamu do obyčajného textu..."
+msgid "\nExport Entry to Plain Text..."
+msgstr "\nExport záznamu do obyčajného textu..."
 
 #. Resource IDs: (32093)
-msgid ""
-"\n"
-"Export Entry to another Safe..."
-msgstr ""
-"\n"
-"Export záznamu do inej databázy..."
+msgid "\nExport Entry to another Safe..."
+msgstr "\nExport záznamu do inej databázy..."
 
 #. Resource IDs: (32095)
-msgid ""
-"\n"
-"Export Group in XML format..."
-msgstr ""
-"\n"
-"Export skupiny vo formáte XML..."
+msgid "\nExport Group in XML format..."
+msgstr "\nExport skupiny vo formáte XML..."
 
 #. Resource IDs: (32094)
-msgid ""
-"\n"
-"Export Group to Plain Text..."
-msgstr ""
-"\n"
-"Export skupiny do obyčajného textu..."
+msgid "\nExport Group to Plain Text..."
+msgstr "\nExport skupiny do obyčajného textu..."
 
 #. Resource IDs: (32096)
-msgid ""
-"\n"
-"Export Group to another Safe..."
-msgstr ""
-"\n"
-"Export skupiny do inej databázy..."
+msgid "\nExport Group to another Safe..."
+msgstr "\nExport skupiny do inej databázy..."
 
 #. Resource IDs: (32010)
-msgid ""
-"\n"
-"Export to Text"
-msgstr ""
-"\n"
-"Export do textu"
+msgid "\nExport to Text"
+msgstr "\nExport do textu"
 
 #. Resource IDs: (32011)
-msgid ""
-"\n"
-"Export to V1 database"
-msgstr ""
-"\n"
-"Export do databázy V1"
+msgid "\nExport to V1 database"
+msgstr "\nExport do databázy V1"
 
 #. Resource IDs: (32012)
-msgid ""
-"\n"
-"Export to V2 database"
-msgstr ""
-"\n"
-"Export do databázy V2"
+msgid "\nExport to V2 database"
+msgstr "\nExport do databázy V2"
 
 #. Resource IDs: (32025)
-msgid ""
-"\n"
-"Export to V3 database"
-msgstr ""
-"\n"
-"Export do databázy V3"
+msgid "\nExport to V3 database"
+msgstr "\nExport do databázy V3"
 
 #. Resource IDs: (32013)
-msgid ""
-"\n"
-"Export to XML"
-msgstr ""
-"\n"
-"Export do XML"
+msgid "\nExport to XML"
+msgstr "\nExport do XML"
 
 #. Resource IDs: (32026)
-msgid ""
-"\n"
-"Export to v4 database (EXPERIMENTAL)"
-msgstr ""
-"\n"
-"Export do databázy V4 (experimentálne)"
+msgid "\nExport to v4 database (EXPERIMENTAL)"
+msgstr "\nExport do databázy V4 (experimentálne)"
 
 #. Resource IDs: (32028)
-msgid ""
-"\n"
-"Filtered entries to PasswordSafe..."
-msgstr ""
-"\n"
-"Vyfiltrované záznamy do Password Safe..."
+msgid "\nFiltered entries to PasswordSafe..."
+msgstr "\nVyfiltrované záznamy do Password Safe..."
 
 #. Resource IDs: (32061)
-msgid ""
-"\n"
-"Find Next"
-msgstr ""
-"\n"
-"Nájdi ďalšie"
+msgid "\nFind Next"
+msgstr "\nNájdi ďalšie"
 
 #. Resource IDs: (32062)
-msgid ""
-"\n"
-"Find Previous"
-msgstr ""
-"\n"
-"Nájdi predchádzajúce"
+msgid "\nFind Previous"
+msgstr "\nNájdi predchádzajúce"
 
 #. Resource IDs: (32080)
-msgid ""
-"\n"
-"Find..."
-msgstr ""
-"\n"
-"Hľadať..."
+msgid "\nFind..."
+msgstr "\nHľadať..."
 
 #. Resource IDs: (32157)
-msgid ""
-"\n"
-"Generate Password"
-msgstr ""
-"\n"
-"Generovať heslo"
+msgid "\nGenerate Password"
+msgstr "\nGenerovať heslo"
 
 #. Resource IDs: (32079)
-msgid ""
-"\n"
-"Go to Base entry"
-msgstr ""
-"\n"
-"Prejsť na základný záznam"
+msgid "\nGo to Base entry"
+msgstr "\nPrejsť na základný záznam"
 
 #. Resource IDs: (57670)
-msgid ""
-"\n"
-"Help"
-msgstr ""
-"\n"
-"Nápoveda"
+msgid "\nHelp"
+msgstr "\nNápoveda"
 
 #. Resource IDs: (32016)
-msgid ""
-"\n"
-"Import Text"
-msgstr ""
-"\n"
-"Import textu"
+msgid "\nImport Text"
+msgstr "\nImport textu"
 
 #. Resource IDs: (32015)
-msgid ""
-"\n"
-"Import XML"
-msgstr ""
-"\n"
-"Import XML"
+msgid "\nImport XML"
+msgstr "\nImport XML"
 
 #. Resource IDs: (32260)
-msgid ""
-"\n"
-"List or Tree View"
-msgstr ""
-"\n"
-"Zoznam alebo zobrazenie stromu"
+msgid "\nList or Tree View"
+msgstr "\nZobraziť zoznam alebo strom"
 
 #. Resource IDs: (32027)
-msgid ""
-"\n"
-"Lock Database"
-msgstr ""
-"\n"
-"Zamknúť databázu"
+msgid "\nLock Database"
+msgstr "\nZamknúť databázu"
 
 #. Resource IDs: (32003)
-msgid ""
-"\n"
-"Make New Database"
-msgstr ""
-"\n"
-"Vytvoriť novú databáza"
+msgid "\nMake New Database"
+msgstr "\nVytvoriť novú databázu"
 
 #. Resource IDs: (32115)
-msgid ""
-"\n"
-"Manage Filters"
-msgstr ""
-"\n"
-"Spravovať filtre"
+msgid "\nManage Filters"
+msgstr "\nSpravovať filtre"
 
 #. Resource IDs: (3415)
 #, c-format
-msgid ""
-"\n"
-"Merge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
-msgstr ""
-"\n"
-"Zlúčenie dokončené: %d %ls pridané (%d %ls, %d %ls, %d %ls, %d %ls)"
+msgid "\nMerge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
+msgstr "\nZlúčenie dokončené: %d %ls pridané (%d %ls, %d %ls, %d %ls, %d %ls)"
 
 #. Resource IDs: (32018)
-msgid ""
-"\n"
-"Merge into Database"
-msgstr ""
-"\n"
-"Zlúčiť do databázy"
+msgid "\nMerge into Database"
+msgstr "\nZlúčiť do databázy"
 
 #. Resource IDs: (32002)
-msgid ""
-"\n"
-"Open Another Database"
-msgstr ""
-"\n"
-"Otvoriť inú databázu"
+msgid "\nOpen Another Database"
+msgstr "\nOtvoriť inú databázu"
 
 #. Resource IDs: (32154)
-msgid ""
-"\n"
-"Options"
-msgstr ""
-"\n"
-"Predvoľby"
+msgid "\nOptions"
+msgstr "\nPredvoľby"
 
 #. Resource IDs: (32159)
-msgid ""
-"\n"
-"Password Policies"
-msgstr ""
-"\n"
-"Zásady hesiel"
+msgid "\nPassword Policies"
+msgstr "\nZásady hesiel"
 
 #. Resource IDs: (32076)
-msgid ""
-"\n"
-"Perform AutoType"
-msgstr ""
-"\n"
-"Vykonať automatické dopĺňanie"
+msgid "\nPerform AutoType"
+msgstr "\nVykonať automatické dopĺňanie"
 
 #. Resource IDs: (5283)
-msgid ""
-"\n"
-"Please try another"
-msgstr ""
-"\n"
-"Skúste prosím iný"
+msgid "\nPlease try another"
+msgstr "\nSkúste prosím iný"
 
 #. Resource IDs: (5215)
-msgid ""
-"\n"
-"Program will terminate."
-msgstr ""
-"\n"
-"Program sa ukončí."
+msgid "\nProgram will terminate."
+msgstr "\nProgram sa ukončí."
 
 #. Resource IDs: (32090)
-msgid ""
-"\n"
-"Protect All Entries"
-msgstr ""
-"\n"
-"Zamknúť všetky záznamy"
+msgid "\nProtect All Entries"
+msgstr "\nZamknúť všetky záznamy"
 
 #. Resource IDs: (32088)
-msgid ""
-"\n"
-"Protect Entry"
-msgstr ""
-"\n"
-"Zamknúť záznam"
+msgid "\nProtect Entry"
+msgstr "\nZamknúť záznam"
 
 #. Resource IDs: (32084)
-msgid ""
-"\n"
-"Redo"
-msgstr ""
-"\n"
-"Zopakovať"
+msgid "\nRedo"
+msgstr "\nZopakovať"
 
 #. Resource IDs: (5780)
 #, c-format
-msgid ""
-"\n"
-"Renamed %d %s"
-msgstr ""
-"\n"
-"Premenovaný %d %s"
+msgid "\nRenamed %d %s"
+msgstr "\nPremenovaný %d %s"
 
 #. Resource IDs: (32077)
-msgid ""
-"\n"
-"Run Command"
-msgstr ""
-"\n"
-"Spustiť príkaz"
+msgid "\nRun Command"
+msgstr "\nSpustiť príkaz"
 
 #. Resource IDs: (32005)
-msgid ""
-"\n"
-"Save Database"
-msgstr ""
-"\n"
-"Uložiť databázu"
+msgid "\nSave Database"
+msgstr "\nUložiť databázu"
 
 #. Resource IDs: (32006)
-msgid ""
-"\n"
-"Save Database As..."
-msgstr ""
-"\n"
-"Uložiť databázu ako..."
+msgid "\nSave Database As..."
+msgstr "\nUložiť databázu ako..."
 
 #. Resource IDs: (32255)
-msgid ""
-"\n"
-"Select Entry"
-msgstr ""
-"\n"
-"Vybrať záznam"
+msgid "\nSelect Entry"
+msgstr "\nVybrať záznam"
 
 #. Resource IDs: (32075)
-msgid ""
-"\n"
-"Send Email"
-msgstr ""
-"\n"
-"Odoslať email"
+msgid "\nSend Email"
+msgstr "\nOdoslať email"
 
 #. Resource IDs: (32114)
-msgid ""
-"\n"
-"Set/Clear Filters"
-msgstr ""
-"\n"
-"Nastaviť/vymazať filtre"
+msgid "\nSet/Clear Filters"
+msgstr "\nNastaviť/Zrušiť filtre"
 
 #. Resource IDs: (32127)
-msgid ""
-"\n"
-"Show Unsaved Changes"
-msgstr ""
-"\n"
-"Zobraziť neuložené zmeny"
+msgid "\nShow Unsaved Changes"
+msgstr "\nZobraziť neuložené zmeny"
 
 #. Resource IDs: (32131)
-msgid ""
-"\n"
-"Show entries with Password Expiry dates"
-msgstr ""
-"\n"
-"Zobraziť záznamy s dátumom platnosti hesla"
+msgid "\nShow entries with Password Expiry dates"
+msgstr "\nZobraziť záznamy s dátumom platnosti hesla"
 
 #. Resource IDs: (32140)
-msgid ""
-"\n"
-"Show only found entries"
-msgstr ""
-"\n"
-"Zobraziť iba nájdené záznamy"
+msgid "\nShow only found entries"
+msgstr "\nZobraziť iba nájdené záznamy"
 
 #. Resource IDs: (5339)
 #, c-format
-msgid ""
-"\n"
-"Skipped %d %s"
-msgstr ""
-"\n"
-"Preskočené %d %s"
+msgid "\nSkipped %d %s"
+msgstr "\nVynechané %d %s"
 
 #. Resource IDs: (32022)
-msgid ""
-"\n"
-"Synchronize Databases"
-msgstr ""
-"\n"
-"Synchronizovať databázy"
+msgid "\nSynchronize Databases"
+msgstr "\nSynchronizovať databázy"
 
 #. Resource IDs: (3413)
 #, c-format
-msgid ""
-"\n"
-"Synchronize completed: %d %ls updated"
-msgstr ""
-"\n"
-"Synchronizácia dokončená: %d %ls boli aktualizované"
+msgid "\nSynchronize completed: %d %ls updated"
+msgstr "\nSynchronizácia dokončená: %d %ls boli aktualizované"
 
 #. Resource IDs: (3412)
 #, c-format
-msgid ""
-"\n"
-"The following %ls %ls updated:"
-msgstr ""
-"\n"
-"Nasledovné %ls %ls boli aktualizované:"
+msgid "\nThe following %ls %ls updated:"
+msgstr "\nNasledovné %ls %ls boli aktualizované:"
 
 #. Resource IDs: (3419)
 #, c-format
-msgid ""
-"\n"
-"The following new %ls %ls merged into this database:"
-msgstr ""
-"\n"
-"Nasledovné nové %ls %ls sa zlúčili do tejto databázy:"
+msgid "\nThe following new %ls %ls merged into this database:"
+msgstr "\nNasledovné nové %ls %ls sa zlúčili do tejto databázy:"
 
 #. Resource IDs: (32083)
-msgid ""
-"\n"
-"Undo"
-msgstr ""
-"\n"
-"Vrátiť späť"
+msgid "\nUndo"
+msgstr "\nVrátiť späť"
 
 #. Resource IDs: (3060)
-msgid ""
-"\n"
-"Unexpected exception during parsing."
-msgstr ""
-"\n"
-"Neočakávaná výnimka počas spracovania."
+msgid "\nUnexpected exception during parsing."
+msgstr "\nNeočakávaná výnimka počas spracovania."
 
 #. Resource IDs: (32091)
-msgid ""
-"\n"
-"Unprotect All Entries"
-msgstr ""
-"\n"
-"Odomknúť všetky záznamy"
+msgid "\nUnprotect All Entries"
+msgstr "\nOdomknúť všetky záznamy"
 
 #. Resource IDs: (32089)
-msgid ""
-"\n"
-"Unprotect Entry"
-msgstr ""
-"\n"
-"Odomknúť záznam"
+msgid "\nUnprotect Entry"
+msgstr "\nOdomknúť záznam"
 
 #. Resource IDs: (5282)
-msgid ""
-"\n"
-"Use it anyway?"
-msgstr ""
-"\n"
-"Napriek tomu použiť?"
+msgid "\nUse it anyway?"
+msgstr "\nNapriek tomu použiť?"
 
 #. Resource IDs: (32098)
-msgid ""
-"\n"
-"View Attachment"
-msgstr ""
-"\n"
-"Zobraziť prílohu"
+msgid "\nView Attachment"
+msgstr "\nZobraziť prílohu"
 
 #. Resource IDs: (32053)
-msgid ""
-"\n"
-"View Entry"
-msgstr ""
-"\n"
-"Zobraziť záznam"
+msgid "\nView Entry"
+msgstr "\nZobraziť záznam"
 
 #. Resource IDs: (32261)
-msgid ""
-"\n"
-"View Reports"
-msgstr ""
-"\n"
-"Zobraziť reporty"
+msgid "\nView Reports"
+msgstr "\nZobraziť reporty"
 
 #. Resource IDs: (5238)
-msgid ""
-"\n"
-"\n"
-"Cannot open database. It probably does not exist.\n"
-"You can Open another database, create a New one or Cancel."
-msgstr ""
-"\n"
-"\n"
-"Databázu nie je možné otvoriť. Pravdepodobne neexistuje.\n"
-"Môžete Otvoriť inú databázu, vytvoriť Novú alebo Zrušiť akciu."
+msgid "\n\nCannot open database. It probably does not exist.\nYou can Open another database, create a New one or Cancel."
+msgstr "\n\nDatabázu nie je možné otvoriť. Pravdepodobne neexistuje.\nMôžete Otvoriť inú databázu, vytvoriť Novú alebo Zrušiť akciu."
 
 #. Resource IDs: (5662)
-msgid ""
-"\n"
-"\n"
-"Ignore this and save anyway - Yes/no?"
-msgstr ""
-"\n"
-"\n"
-"Ignorovať a napriek tomu uložiť - áno/nie?"
+msgid "\n\nIgnore this and save anyway - Yes/no?"
+msgstr "\n\nIgnorovať a napriek tomu uložiť - áno/nie?"
 
 #. Resource IDs: (5463)
-msgid ""
-"\n"
-"\n"
-"Select Yes to continue with this password or No to cancel"
-msgstr ""
-"\n"
-"\n"
-"Vyberte Áno ak chcete pokračovať s týmto heslom alebo Nie ak chcete akciu zrušiť."
+msgid "\n\nSelect Yes to continue with this password or No to cancel"
+msgstr "\n\nVyberte Áno ak chcete pokračovať s týmto heslom alebo Nie ak chcete akciu zrušiť."
 
 #. Resource IDs: (5357)
-msgid ""
-"\n"
-"\n"
-"The databases are identical when comparing the selected or default fields!"
-msgstr ""
-"\n"
-"\n"
-"Databázy sú identické pri porovnaní vybratých alebo predvolených polí!"
+msgid "\n\nThe databases are identical when comparing the selected or default fields!"
+msgstr "\n\nDatabázy sú identické pri porovnaní vybratých alebo predvolených polí!"
 
 #. Resource IDs: (5441)
-msgid ""
-"\n"
-"\n"
-"Unknown fields will also be copied with the entry."
-msgstr ""
-"\n"
-"\n"
-"Neznáme polia sa skopírujú spolu so záznamom."
+msgid "\n\nUnknown fields will also be copied with the entry."
+msgstr "\n\nNeznáme polia sa skopírujú spolu so záznamom."
 
 #. Resource IDs: (5784)
 #, c-format
-msgid ""
-"\n"
-"with Password History errors %d"
-msgstr ""
-"\n"
-"Aj s chybami histórie hesiel %d"
+msgid "\nwith Password History errors %d"
+msgstr "\nAj s chybami histórie hesiel %d"
 
 #. Resource IDs: (5867)
-msgid ""
-"\n"
-"with warnings"
-msgstr ""
-"\n"
-"s upozorneniami"
+msgid "\nwith warnings"
+msgstr "\ns upozorneniami"
 
 #. Resource IDs: (5448)
-msgid ""
-"\r\n"
-"This field is being edited in your default text editor.\r\n"
-"Complete this action before continuing.\r\n"
-"\r\n"
-"(You may cancel this edit using the Close [X] button above)"
-msgstr ""
-"\r\n"
-"Toto pole je práve upravované vo vašom predvolenom textovom editore.\r\n"
-"Dokončite túto akciu pred pokračovaním.\r\n"
-"\r\n"
-"(Môžete prerušiť editovanie použitím tlačidla Zavrieť [X])"
+msgid "\r\nThis field is being edited in your default text editor.\r\nComplete this action before continuing.\r\n\r\n(You may cancel this edit using the Close [X] button above)"
+msgstr "\r\nToto pole je práve upravované vo vašom predvolenom textovom editore.\r\nDokončite túto akciu pred pokračovaním.\r\n\r\n(Môžete prerušiť editovanie použitím tlačidla Zavrieť [X])"
 
 #. Resource IDs: (5526)
 #, c-format
@@ -9204,12 +8130,8 @@ msgstr "\t%s bolo obmedzené na tieto polia:"
 
 #. Resource IDs: (5363)
 #, c-format
-msgid ""
-"\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\n"
-"\t\thas differences in the following fields:"
-msgstr ""
-"\tZáznam - Skupina:\"%s\"; Názov:\"%s\"; Používateľské meno:\"%s\"\n"
-"\t\tobsahuje odlišnosti v nasledovných poliach:"
+msgid "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\n\t\thas differences in the following fields:"
+msgstr "\tZáznam - Skupina:\"%s\"; Názov:\"%s\"; Používateľské meno:\"%s\"\n\t\tobsahuje odlišnosti v nasledovných poliach:"
 
 #. Resource IDs: (5359)
 #, c-format
@@ -9219,7 +8141,7 @@ msgstr "\tSkupina:'%ls'; Názov:'%ls'; Používateľské meno:'%ls'"
 #. Resource IDs: (3391)
 #, c-format
 msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
-msgstr "\tSkupina='%ls', Názov='%ls', Používateľské meno='%ls'%ls"
+msgstr "\tSkupina='%ls', Názov='%ls', Používateľské meno='%ls' %ls"
 
 #. Resource IDs: (3455)
 #, c-format
@@ -9229,7 +8151,7 @@ msgstr "\tNázov: %ls; Súbor: %ls"
 #. Resource IDs: (5538)
 #, c-format
 msgid "\tNo entries were found containing search string '%ls' %ls"
-msgstr "\tNeboli nájdené žiadne záznamy obsahujúce vyhľadávací reťazec '%ls' %ls"
+msgstr "\tNeboli nájdené žiadne záznamy obsahujúce hľadaný reťazec '%ls' %ls"
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
@@ -9242,7 +8164,7 @@ msgstr "\tV databáze sa nenašla jedna alebo viacero vlastných zásad hesiel. 
 #. Resource IDs: (3450)
 #, c-format
 msgid "\tOne or more entry keyboard shortcuts were already assigned to entries in this database. They have been removed from the %ls entries."
-msgstr "\tJedna alebo viac klávesových skratiek pre záznam už boli priradené k záznamom v tejto databáze. Boli odstránené zo záznamov %ls."
+msgstr "\tJedna alebo viac klávesových skratiek pre záznam už boli priradené k záznamom v tejto databáze. Boli odobraté záznamom %ls."
 
 #. Resource IDs: (3429)
 #, c-format
@@ -9252,16 +8174,12 @@ msgstr "\tZásady hesiel s názvom '%ls' nie sú v databáze."
 #. Resource IDs: (5539)
 #, c-format
 msgid "\tThe following entries contain search string '%ls' %ls"
-msgstr "\tNasledovné záznamy obsahujú vyhľadávací reťazec '%ls' %ls\""
+msgstr "\tNasledovné záznamy obsahujú hľadaný reťazec '%ls' %ls."
 
 #. Resource IDs: (5522)
 #, c-format
-msgid ""
-"\tThe following restrictions were selected:\n"
-"\t\t %s"
-msgstr ""
-"\tBoli vybraté nasledovné obmedzenia:\n"
-"\t\t %s"
+msgid "\tThe following restrictions were selected:\n\t\t %s"
+msgstr "\tBoli vybraté nasledovné obmedzenia:\n\t\t %s"
 
 #. Resource IDs: (3274)
 msgid "\tThis entry has been made an alias of associated base entry."
@@ -9289,7 +8207,7 @@ msgstr "záznam typu odkaz"
 
 #. Resource IDs: (3370)
 msgid "added but not yet saved to database"
-msgstr "pridané, ale ešte neuložené do databázy"
+msgstr "pridaný ale ešte neuložený do databázy"
 
 #. Resource IDs: (3309)
 msgid "after"
@@ -9325,7 +8243,7 @@ msgstr "automatické dopĺňanie:"
 
 #. Resource IDs: (3308)
 msgid "before"
-msgstr "predtým"
+msgstr "pred"
 
 #. Resource IDs: (3288)
 msgid "begins with"
@@ -9335,13 +8253,9 @@ msgstr "začína sa na"
 msgid "between"
 msgstr "medzi"
 
-#. Resource IDs: (5665)
-msgid "bottom"
-msgstr "dole"
-
 #. Resource IDs: (3371)
 msgid "changed but not yet saved to database"
-msgstr "zmenené, ale ešte nie sú uložené do databázy"
+msgstr "zmenený ale ešte neuložený do databázy"
 
 #. Resource IDs: (5839)
 msgid "compared"
@@ -9654,6 +8568,10 @@ msgstr "heslo a údaje tohto záznamu"
 msgid "top"
 msgstr "zhora"
 
+#. Resource IDs: (5665)
+msgid "bottom"
+msgstr "zdola"
+
 #. Resource IDs: (1098)
 msgid "used entries in System Tray menu."
 msgstr "nedávno použitých položiek (história)"
@@ -9715,3 +8633,4 @@ msgstr ""
 #, c-format
 msgid "«%s» «%s» «%s»"
 msgstr ""
+

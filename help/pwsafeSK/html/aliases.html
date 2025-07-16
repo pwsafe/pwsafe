@@ -14,11 +14,11 @@
 
 <h2>Vytváranie aliasov</h2>
 
-<p>V prípade že využívate infraštruktúru "jednotného prihlásenia" Single-Sign On, tak používate jednotné prihlasovacie údaje 
+<p>V prípade že využívate infraštruktúru "jednotného prihlásenia" Single Sign-On, tak používate jednotné prihlasovacie údaje 
 na rôzne servery/aplikácie/weby ktoré sú navzájom prepojené centrálnou autentifikáciou. 
 <b>Password Safe</b> vám v tomto prípade vychádza v ústrety vďaka možnosti použiť aliasy.<br>
 Základnou myšlienkou je umožniť odkazovanie sa na heslo jedného záznamu inému záznamu. 
-"Odkazovaný" záznam sa nazýva <b>základný</b> a "odkazujúci" záznam (alebo záznamy) sa nazývajú <b>alias(y)</b>. 
+"Odkazovaný" záznam sa nazýva <b>základný</b> a "odkazujúci" záznam (alebo záznamy) sa nazýva <b>alias(y)</b>. 
 Keď je záznam nastavený ako alias iného záznamu, heslo aliasu efektívne "nasleduje" heslo tohto záznamu: 
 Ak skopírujete heslo aliasu do schránky, skopírované heslo je heslo základného záznamu. 
 Ak zmeníte heslo základného záznamu, okamžite sa to prejaví vo všetkých aliasových záznamoch spojených s týmto záznamom. 
@@ -83,6 +83,12 @@ Tieto aliasy fungujú ako bežné záznamy ale zdieľajú jedno heslo. Každý a
 <img alt="Alias example" src="images/alias_example3.png">
 <img alt="Alias example" src="images/alias_example4.png">
 </p>
+
+<p>V prípade vymazania základného záznamu budete vyzvaní na potvrdenie, keďže táto akcia bude mať za následok, že aliasy stratia prepojenie na tento záznam.
+Tým pádom sa heslo každého aliasu nahradí "doslovnou" hodnotou hesla základného záznamu.
+</p>
+
+<p><img alt="Príklad aliasu" src="images/alias_delete_be.png"></p>
 
 <!-- Added some white space at the bottom for natural scrolling -->
 <br>

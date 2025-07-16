@@ -1,3 +1,5 @@
+BASEDIRNAME=pwsafe
+LANGS=RU DE ES FR ZH SK
 OS:= $(findstring Linux, $(shell uname -s))
 
 ifeq ($(findstring Linux, $(shell uname -s)), Linux)

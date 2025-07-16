@@ -1,6 +1,3 @@
-BASEDIRNAME=pwsafe
-LANGS=RU DE ES FR ZH PL
-
 ZIP = /usr/local/bin/zip
 
 all: default $(LANGS)
