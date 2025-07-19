@@ -227,6 +227,7 @@ void PasswordSafeSearch::OnDoSearchT(Iter begin, Iter end, Accessor afn)
 
   UpdateView();
   txtCtrl->SelectNone();
+  txtCtrl->SetInsertionPointEnd();
 
   // Replace the "Find" menu item under Edit menu by "Find Next" and "Find Previous"
   wxMenu* editMenu = nullptr;
@@ -674,6 +675,7 @@ void PasswordSafeSearch::Activate()
   }
 
   UpdateStatusAreaWidth();
+  wxDynamicCast(FindControl(ID_FIND_EDITBOX), wxSearchCtrl)->SelectAll();
 }
 
 void PasswordSafeSearch::SetFocusIntoEditField()
