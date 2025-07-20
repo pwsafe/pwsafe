@@ -1298,7 +1298,7 @@ void OptionsPropertySheetDlg::OnSuffixCBSet(wxCommandEvent& WXUNUSED(evt))
 
 void OptionsPropertySheetDlg::OnBuDirBrowseClick(wxCommandEvent& WXUNUSED(evt))
 {
-  wxDirDialog dirdlg(this);
+  wxDirDialog dirdlg(this, _("Select a directory"));
   int status = dirdlg.ShowModal();
   if (status == wxID_OK)
     m_Backups_UserDirTXT->SetValue(dirdlg.GetPath());
