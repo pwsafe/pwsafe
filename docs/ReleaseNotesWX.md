@@ -8,6 +8,14 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
 
+PasswordSafe 1.22.1pre Release  ???
+========================================
+
+Bugs fixed in 1.22.1pre
+-----------------------
+[GH1543](https://github.com/pwsafe/pwsafe/issues/1543) Tweak Find functionality: selection and translation fixes.
+
+
 PasswordSafe 1.22.0 Release 11 July 2025
 ========================================
 
