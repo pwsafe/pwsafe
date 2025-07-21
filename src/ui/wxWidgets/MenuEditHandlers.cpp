@@ -1177,11 +1177,20 @@ void PasswordSafeFrame::DoPasswordQRCode(CItemData* item)
 {
 #ifndef NO_QR
   if (item) {
+    auto gtu = item->GetTitle();
+    if (!item->GetGroup().empty()) {
+      gtu = item->GetGroup() + _T(':') + gtu;
+    }
+    if (!item->GetUser().empty()) {
+      gtu += _T(':') + item->GetUser();
+    }
+
+    if (!item->GetGroup().empty() || !item->GetUser().empty()) {
+      gtu = _T('[') + gtu + _T(']');
+    }
+
     ShowModalAndGetResult<QRCodeDlg>(this, item->GetPassword(),
-            towxstring(CItemData::FieldName(CItem::PASSWORD)) + _T(" of ") +
-            towxstring(item->GetGroup()) +
-            _T('[') + towxstring(item->GetTitle()) + _T(']') +
-            _T(':') + towxstring(item->GetUser()));
+            _("Password of ") + towxstring(gtu));
   }
 #endif
 }
