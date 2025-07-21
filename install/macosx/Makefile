@@ -6,10 +6,14 @@
 TARGET=pwsafe
 PACKAGE=PasswordSafe-macOS
 MACHINEARCH=universal
+LANGS=da de es fr hu it ko nl pl ru sk sl sv zh
 
 # XCODE_CONFIG and WX_SRC_DIR are defined in the macos-latest.yaml Github build workflow
 XCODE_CONFIG ?= Release
-RELDIR ?= $(shell xcodebuild -project ../../Xcode/pwsafe-xcode6.xcodeproj -showBuildSettings -scheme pwsafe -configuration $(XCODE_CONFIG) | awk '/TARGET_BUILD_DIR =/{print $$3}')
+
+ifndef RELDIR
+RELDIR := $(shell xcodebuild -project ../../Xcode/pwsafe-xcode6.xcodeproj -showBuildSettings -scheme pwsafe -configuration $(XCODE_CONFIG) | awk '/TARGET_BUILD_DIR =/{print $$3}')
+endif
 
 ifdef WX_SRC_DIR
 WXDIR := $(WX_SRC_DIR)/locale
@@ -17,25 +21,10 @@ else
 WXDIR := $(shell grep OTHER_LDFLAGS ../../Xcode/pwsafe-release.xcconfig | awk 'BEGIN { RS = " " } /-L/{print $$1}' | sed s/-L// | sed s,/[^/]*/lib,/locale,)
 endif
 
-#TARGET=pwsafe
-#TARGET=pwsafe-i386
-###TARGET=pwsafe64
-#TARGET=pwsafe-llvm
-#RELDIR=../../Xcode/build/Release/
-#RELDIR=../../Xcode/build-i386/Release/
-###RELDIR=../../Xcode/build64/Release/
-#RELDIR=../../Xcode/build-llvm/Release/
-#RELDIR=$(HOME)/Library/Developer/Xcode/DerivedData/pwsafe-xcode6-*/Build/Products/Release/
-# RELDIR=./../../Xcode/build/Products/Release/
-#RELDIR=$(shell xcodebuild -project ../../Xcode/pwsafe-xcode6.xcodeproj -showBuildSettings | grep TARGET_BUILD_DIR | awk 'BEGIN { } /TARGET_BUILD_DIR =/{print $$3}' | sed "s/$$/\//")
-# Path to wxWidgets library path has to be adapted for each environment
-# WXDIR=../../../wxWidgets-3.1.5/locale
-# Machine architecture - these days we are building Universal Binaries
-#MACHINEARCH=$(shell uname -m)
-
 CPBIN=/bin/cp
 RMBIN=/bin/rm
 MDBIN=/bin/mkdir -p
+
 
 include ../../version.wx
 
@@ -58,6 +47,8 @@ HELP := ../../help/helpEN.zip ../../help/helpRU.zip ../../help/helpDE.zip ../../
 I18N := ../../src/ui/wxWidgets/I18N
 MOS := $(I18N)/mos
 
+.PHONY: all loc help lang pwsI18N wxlocale dist clean clean-dist
+
 all: loc help lang dist
 	@echo Version $(RELEASENAME) generated in $(DMGNAME)
 
@@ -76,46 +67,17 @@ wxlocale:
 	cd $(WXDIR); make allmo
 
 lang: pwsI18N wxlocale
-	$(MDBIN) $(RESOURCES)/da.lproj
-	$(CPBIN) $(MOS)/da/LC_MESSAGES/pwsafe.mo $(RESOURCES)/da.lproj
-	$(CPBIN) $(WXDIR)/da.mo $(RESOURCES)/da.lproj/wxstd.mo
-	$(MDBIN) $(RESOURCES)/de.lproj
-	$(CPBIN) $(MOS)/de/LC_MESSAGES/pwsafe.mo $(RESOURCES)/de.lproj
-	$(CPBIN) $(WXDIR)/de.mo $(RESOURCES)/de.lproj/wxstd.mo
-	$(MDBIN) $(RESOURCES)/es.lproj
-	$(CPBIN) $(MOS)/es/LC_MESSAGES/pwsafe.mo $(RESOURCES)/es.lproj
-	$(CPBIN) $(WXDIR)/es.mo $(RESOURCES)/es.lproj/wxstd.mo
-	$(MDBIN) $(RESOURCES)/fr.lproj
-	$(CPBIN) $(MOS)/fr/LC_MESSAGES/pwsafe.mo $(RESOURCES)/fr.lproj
-	$(CPBIN) $(WXDIR)/fr.mo $(RESOURCES)/fr.lproj/wxstd.mo
-	$(MDBIN) $(RESOURCES)/hu.lproj
-	$(CPBIN) $(MOS)/hu/LC_MESSAGES/pwsafe.mo $(RESOURCES)/hu.lproj
-	$(CPBIN) $(WXDIR)/hu.mo $(RESOURCES)/hu.lproj/wxstd.mo
-	$(MDBIN) $(RESOURCES)/it.lproj
-	$(CPBIN) $(MOS)/it/LC_MESSAGES/pwsafe.mo $(RESOURCES)/it.lproj
-	$(CPBIN) $(WXDIR)/it.mo $(RESOURCES)/it.lproj/wxstd.mo
-	$(MDBIN) $(RESOURCES)/ko.lproj
-	$(CPBIN) $(MOS)/ko/LC_MESSAGES/pwsafe.mo $(RESOURCES)/ko.lproj
-	$(CPBIN) $(WXDIR)/ko_KR.mo $(RESOURCES)/ko.lproj/wxstd.mo
-	$(MDBIN) $(RESOURCES)/nl.lproj
-	$(CPBIN) $(MOS)/nl/LC_MESSAGES/pwsafe.mo $(RESOURCES)/nl.lproj
-	$(CPBIN) $(WXDIR)/nl.mo $(RESOURCES)/nl.lproj/wxstd.mo
-	$(MDBIN) $(RESOURCES)/pl.lproj
-	$(CPBIN) $(MOS)/pl/LC_MESSAGES/pwsafe.mo $(RESOURCES)/pl.lproj
-	$(CPBIN) $(WXDIR)/pl.mo $(RESOURCES)/pl.lproj/wxstd.mo
-	$(MDBIN) $(RESOURCES)/ru.lproj
-	$(CPBIN) $(MOS)/ru/LC_MESSAGES/pwsafe.mo $(RESOURCES)/ru.lproj
-	$(CPBIN) $(WXDIR)/ru.mo $(RESOURCES)/ru.lproj/wxstd.mo
-	$(MDBIN) $(RESOURCES)/sl.lproj
-	$(CPBIN) $(MOS)/sl/LC_MESSAGES/pwsafe.mo $(RESOURCES)/sl.lproj
-	$(CPBIN) $(WXDIR)/sl.mo $(RESOURCES)/sl.lproj/wxstd.mo
-	$(MDBIN) $(RESOURCES)/sv.lproj
-	$(CPBIN) $(MOS)/sv/LC_MESSAGES/pwsafe.mo $(RESOURCES)/sv.lproj
-	$(CPBIN) $(WXDIR)/sv.mo $(RESOURCES)/sv.lproj/wxstd.mo
-	$(MDBIN) $(RESOURCES)/zh.lproj
-	$(CPBIN) $(MOS)/zh/LC_MESSAGES/pwsafe.mo $(RESOURCES)/zh.lproj
-	$(CPBIN) $(WXDIR)/zh_CN.mo $(RESOURCES)/zh.lproj/wxstd.mo
-#	$(CPBIN) $(WXDIR)/zh_TW.mo $(RESOURCES)/zh.lproj/wxstd.mo
+	@for l in $(LANGS); do			\
+		case $$l in			\
+		ko)	LL=ko_KR;;		\
+		zh)	LL=zh_CN;;		\
+		 *)	LL=$$l;;		\
+		esac;				\
+		echo "Copying files for $$LL ...";	\
+		$(MDBIN) $(RESOURCES)/$$l.lproj ;	\
+		$(CPBIN) $(MOS)/$$l/LC_MESSAGES/pwsafe.mo $(RESOURCES)/$$l.lproj ;	\
+		$(CPBIN) $(WXDIR)/$$LL.mo $(RESOURCES)/$$l.lproj/wxstd.mo ;		\
+	done
 
 dist: clean
 	$(MDBIN) $(SRCDIR)
