@@ -6,16 +6,17 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-21 21:42+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2025-07-23 11:49+0300\n"
+"Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
+"Language-Team: \n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:113
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1401
@@ -27,8 +28,7 @@ msgstr "Password Safe"
 msgid "Built using "
 msgstr ""
 
-#: ../../../ui/wxWidgets/AboutDlg.cpp:119
-#: ../../../ui/wxWidgets/AboutDlg.cpp:158
+#: ../../../ui/wxWidgets/AboutDlg.cpp:119 ../../../ui/wxWidgets/AboutDlg.cpp:158
 msgid "Build date:"
 msgstr ""
 
@@ -63,13 +63,11 @@ msgstr "Zie LICENTIE voor detail over open source."
 msgid "Copyright (c) 2003-2025 Rony Shapiro"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AboutDlg.cpp:153
-#: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:399
+#: ../../../ui/wxWidgets/AboutDlg.cpp:153 ../../../ui/wxWidgets/ManageFiltersDlg.cpp:399
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:362
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:555
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:131
-#: ../../../ui/wxWidgets/SystemTray.cpp:143
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:189
+#: ../../../ui/wxWidgets/SystemTray.cpp:143 ../../../ui/wxWidgets/YubiCfgDlg.cpp:189
 msgid "&Close"
 msgstr "&Afsluiten"
 
@@ -100,14 +98,11 @@ msgstr "Kon print opdracht niet starten."
 #: ../../../ui/wxWidgets/AboutDlg.cpp:403
 #, fuzzy
 msgid ""
-"For security, the database must be closed before connecting to the "
-"Internet.\n"
+"For security, the database must be closed before connecting to the Internet.\n"
 "Press OK to close database and continue (Changes will be saved)"
 msgstr ""
-"De databse moet afgesloten worden voordat verbinding gemaakt wordt met "
-"Internet.\n"
-"Druk op OK om de databse te sluiten en verder te gaan (Wijzigingen worden "
-"bewaard)"
+"De databse moet afgesloten worden voordat verbinding gemaakt wordt met Internet.\n"
+"Druk op OK om de databse te sluiten en verder te gaan (Wijzigingen worden bewaard)"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:408
 msgid "Confirm Close Dialog"
@@ -218,25 +213,22 @@ msgstr "Bekijk vermelding"
 msgid "Execute Run command"
 msgstr " 'Commando Uitvoer'"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:256
-#: ../../../ui/wxWidgets/HelpMap.h:52
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:256 ../../../ui/wxWidgets/HelpMap.h:52
 msgid "Basic"
 msgstr "Eenvoudig"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:263
-#: ../../../ui/wxWidgets/HelpMap.h:55
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:263 ../../../ui/wxWidgets/HelpMap.h:55
 msgid "Additional"
 msgstr "Additioneel"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:269
-#: ../../../ui/wxWidgets/HelpMap.h:53
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:269 ../../../ui/wxWidgets/HelpMap.h:53
 msgid "Dates and Times"
 msgstr "Data en Tijden"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:276
-#: ../../../ui/wxWidgets/PWFiltersTable.cpp:317
-#: ../../../ui/wxWidgets/HelpMap.h:46 ../../../ui/wxWidgets/HelpMap.h:54
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.h:70 ../../../core/core_st.cpp:172
+#: ../../../ui/wxWidgets/PWFiltersTable.cpp:317 ../../../ui/wxWidgets/HelpMap.h:46
+#: ../../../ui/wxWidgets/HelpMap.h:54 ../../../ui/wxWidgets/PasswordPolicyDlg.h:70
+#: ../../../core/core_st.cpp:172
 msgid "Password Policy"
 msgstr "Wachtwoord regels"
 
@@ -254,8 +246,8 @@ msgstr "Zetten Datum/Tijd"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:298
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:342
-#: ../../../ui/wxWidgets/DragBarCtrl.cpp:153
-#: ../../../ui/wxWidgets/ToolbarButtons.h:245 ../../../core/core_st.cpp:168
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:153 ../../../ui/wxWidgets/ToolbarButtons.h:245
+#: ../../../core/core_st.cpp:168
 msgid "Password"
 msgstr "Wachtwoord"
 
@@ -265,14 +257,12 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:319
 #: ../../../ui/wxWidgets/DragBarCtrl.cpp:150
-#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:270
-#: ../../../core/core_st.cpp:158
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:270 ../../../core/core_st.cpp:158
 msgid "Group"
 msgstr "Groep"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:325
-#: ../../../ui/wxWidgets/DragBarCtrl.cpp:151
-#: ../../../ui/wxWidgets/GridCtrl.cpp:165
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:151 ../../../ui/wxWidgets/GridCtrl.cpp:165
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:271
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:111 ../../../core/core_st.cpp:178
 msgid "Title"
@@ -312,8 +302,7 @@ msgstr "Het bestand is niet gevonden."
 msgid "Copy authentication code to clipboard"
 msgstr "Kopieer gebruikersnaam naar klembord"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:410
-#: ../../../core/core_st.cpp:185
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:410 ../../../core/core_st.cpp:185
 msgid "URL"
 msgstr "URL"
 
@@ -332,8 +321,8 @@ msgid "Send"
 msgstr "Verzenden"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
-#: ../../../ui/wxWidgets/DragBarCtrl.cpp:154
-#: ../../../ui/wxWidgets/ToolbarButtons.h:249 ../../../core/core_st.cpp:161
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:154 ../../../ui/wxWidgets/ToolbarButtons.h:249
+#: ../../../core/core_st.cpp:161
 #, fuzzy
 msgid "Notes"
 msgstr "&Notities:"
@@ -346,8 +335,8 @@ msgid "Autotype"
 msgstr "Automatische invoer"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:463
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:140
-#: ../../../core/core_st.cpp:85 ../../../core/core_st.cpp:175
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:140 ../../../core/core_st.cpp:85
+#: ../../../core/core_st.cpp:175
 msgid "Run Command"
 msgstr "Uitvoeren commando"
 
@@ -361,8 +350,7 @@ msgstr "Dubbel-Klik Actie:"
 msgid "Shift-Double-Click Action"
 msgstr "Dubbel-Klik Actie:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:488
-#: ../../../core/core_st.cpp:184
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:488 ../../../core/core_st.cpp:184
 msgid "Authentication Secret"
 msgstr ""
 
@@ -374,8 +362,7 @@ msgstr "Het bestand is niet gevonden."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:507
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:234
-#: ../../../ui/wxWidgets/PWFiltersTable.cpp:314
-#: ../../../ui/wxWidgets/HelpMap.h:47
+#: ../../../ui/wxWidgets/PWFiltersTable.cpp:314 ../../../ui/wxWidgets/HelpMap.h:47
 msgid "Password History"
 msgstr "Wachtwoord geschiedenis"
 
@@ -548,15 +535,13 @@ msgid "Use UPPERCASE letters"
 msgstr "Gebruik &HOOFDletters"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:753
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:237
-#: ../../../core/core_st.cpp:297
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:237 ../../../core/core_st.cpp:297
 #, fuzzy
 msgid "Use digits"
 msgstr "Gebruik &Cijfers"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:777
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:261
-#: ../../../core/core_st.cpp:299
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:261 ../../../core/core_st.cpp:299
 #, fuzzy
 msgid "Use symbols"
 msgstr "symbolen"
@@ -843,8 +828,7 @@ msgstr "[Notities verborgen - hier klikken om zichtbaar te maken]"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1730
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1756
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2789
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3698
-#: ../../../core/core_st.cpp:90
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3698 ../../../core/core_st.cpp:90
 #, fuzzy
 msgid "Default Policy"
 msgstr "Standaard set"
@@ -887,16 +871,15 @@ msgstr "Fout"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1903
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1924
 msgid ""
-"On changing this entry of type Shortcut Base to an Alias all Shortcut to "
-"this entry will be removed!"
+"On changing this entry of type Shortcut Base to an Alias all Shortcut to this entry "
+"will be removed!"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1903
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1924
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1927
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3806
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:397
-#: ../../../core/core_st.cpp:326
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:397 ../../../core/core_st.cpp:326
 msgid "Warning"
 msgstr "Waarschuwing"
 
@@ -984,11 +967,9 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2246
 #, fuzzy
-msgid ""
-"An entry or shortcut with the same Group, Title and Username already exists."
+msgid "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr ""
-"Een vermelding met een lege Groep, Titel \"%s\" en Gebruikers Naam \"%s\" "
-"bestaat al."
+"Een vermelding met een lege Groep, Titel \"%s\" en Gebruikers Naam \"%s\" bestaat al."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2247
 #, fuzzy
@@ -1027,9 +1008,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:713
 #, fuzzy
 msgid "\"Easy-to-read\" and \"pronounceable\" cannot be both selected."
-msgstr ""
-"Sorry, 'uitspreekbare' of 'makkelijk te lezen' opties zijn niet samen "
-"mogelijk. "
+msgstr "Sorry, 'uitspreekbare' of 'makkelijk te lezen' opties zijn niet samen mogelijk. "
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3605
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3632
@@ -1042,9 +1021,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:694
 #, fuzzy
 msgid "\"Pronounceable\" and \"easy-to-read\" cannot be both selected."
-msgstr ""
-"Sorry, 'uitspreekbare' of 'makkelijk te lezen' opties zijn niet samen "
-"mogelijk. "
+msgstr "Sorry, 'uitspreekbare' of 'makkelijk te lezen' opties zijn niet samen mogelijk. "
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3683
 #, fuzzy
@@ -1056,8 +1033,7 @@ msgstr "&e-mail:"
 msgid ""
 "One or more values have been changed.\n"
 "Do you want to discard the changes?"
-msgstr ""
-"Een of meer voorkeuren zijn gewijzigd. Weet u zeker dat u wilt annuleren?"
+msgstr "Een of meer voorkeuren zijn gewijzigd. Weet u zeker dat u wilt annuleren?"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3809
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:95
@@ -1155,8 +1131,7 @@ msgstr "vergeleken"
 #: ../../../ui/wxWidgets/CompareDlg.cpp:220
 #, fuzzy
 msgid "Select a database to compare with current database ("
-msgstr ""
-"Kies alstublieft een database om te vergelijken met de huidige open database"
+msgstr "Kies alstublieft een database om te vergelijken met de huidige open database"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:227
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:155
@@ -1180,13 +1155,12 @@ msgstr "Geavanceerde Opties voor Zoeken"
 msgid "Synchronize this item..."
 msgstr "S&ynchronizeren..."
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:489
-#: ../../../ui/wxWidgets/CompareDlg.cpp:810 ../../../core/core_st.cpp:322
+#: ../../../ui/wxWidgets/CompareDlg.cpp:489 ../../../ui/wxWidgets/CompareDlg.cpp:810
+#: ../../../core/core_st.cpp:322
 msgid "Synchronize"
 msgstr "Synchroniseren"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:489
-#: ../../../ui/wxWidgets/CompareDlg.cpp:497
+#: ../../../ui/wxWidgets/CompareDlg.cpp:489 ../../../ui/wxWidgets/CompareDlg.cpp:497
 #: ../../../ui/wxWidgets/CompareDlg.cpp:502
 #, fuzzy
 msgid "selected "
@@ -1206,14 +1180,12 @@ msgstr "S&ynchronizeren..."
 msgid "Copy"
 msgstr "&Kopieer"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:497
-#: ../../../ui/wxWidgets/CompareDlg.cpp:523
+#: ../../../ui/wxWidgets/CompareDlg.cpp:497 ../../../ui/wxWidgets/CompareDlg.cpp:523
 #, fuzzy
 msgid " to current db"
 msgstr "&Stel huidig"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:502
-#: ../../../ui/wxWidgets/ToolbarButtons.h:259
+#: ../../../ui/wxWidgets/CompareDlg.cpp:502 ../../../ui/wxWidgets/ToolbarButtons.h:259
 msgid "Delete"
 msgstr "Verwijder"
 
@@ -1269,23 +1241,21 @@ msgid ""
 "\n"
 "%ls\n"
 "\n"
-"has duplicate entries with the same group/title/user combination. You can "
-"fix this by validating the database."
+"has duplicate entries with the same group/title/user combination. You can fix this by "
+"validating the database."
 msgstr ""
 "De database:\n"
 "\n"
 "%ls\n"
 "\n"
-"heeft dubbelele vermeldingen met dezelfde groep/titel/gebruiker combinatie. "
-"SVP dit oplossen door de database te valideren."
+"heeft dubbelele vermeldingen met dezelfde groep/titel/gebruiker combinatie. SVP dit "
+"oplossen door de database te valideren."
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:818
-#: ../../../ui/wxWidgets/SyncWizard.cpp:672
+#: ../../../ui/wxWidgets/CompareDlg.cpp:818 ../../../ui/wxWidgets/SyncWizard.cpp:672
 msgid "Synchronization failed"
 msgstr "Synchronisatie mislukt"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:839
-#: ../../../ui/wxWidgets/CompareDlg.cpp:842
+#: ../../../ui/wxWidgets/CompareDlg.cpp:839 ../../../ui/wxWidgets/CompareDlg.cpp:842
 #, fuzzy
 msgid "Synchronize items"
 msgstr "Vermeldingen synchroniseren"
@@ -1308,8 +1278,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"De databases zijn identiek als de geselecteerde of standaard velden "
-"vergeleken worden!"
+"De databases zijn identiek als de geselecteerde of standaard velden vergeleken worden!"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:921
 #, fuzzy, c-format
@@ -1431,13 +1400,13 @@ msgstr "De combinatie kan niet leeg zijn."
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1458
 #, fuzzy
 msgid ""
-"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|"
-"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
-"ibak)|*.ibak|All files (*.*; *)|*.*;*"
+"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|Password "
+"Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All "
+"files (*.*; *)|*.*;*"
 msgstr ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe back-"
-"ups (*.bak)|*.bak|Password Safe tussentijdse back-ups (*.ibak)|*.ibak|Alle "
-"bestanden (*.*)|*.*||"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Password Safe back-ups "
+"(*.bak)|*.bak|Password Safe tussentijdse back-ups (*.ibak)|*.ibak|Alle bestanden (*.*)|"
+"*.*||"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:80
 #, fuzzy
@@ -1445,8 +1414,7 @@ msgid "Master Password:"
 msgstr "laatste wachtwoorden"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:100
-#: ../../../ui/wxWidgets/wxUtilities.cpp:255
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
+#: ../../../ui/wxWidgets/wxUtilities.cpp:255 ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
 #: ../../../ui/wxWidgets/YubiMixin.cpp:64
 msgid "Insert YubiKey"
 msgstr ""
@@ -1469,8 +1437,7 @@ msgstr "Dat bestand is al open."
 msgid ""
 "Incorrect master password, not a Password Safe database,\n"
 "or a corrupt database."
-msgstr ""
-"Ongeldige wachtwoord, geen PasswordSafe database of een beschadigde database."
+msgstr "Ongeldige wachtwoord, geen PasswordSafe database of een beschadigde database."
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:145
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:429
@@ -1512,8 +1479,7 @@ msgstr "Annuleer"
 
 #: ../../../ui/wxWidgets/DragBarCtrl.cpp:143
 #, fuzzy
-msgid ""
-"Drag this image onto another window to paste the selected element or tree."
+msgid "Drag this image onto another window to paste the selected element or tree."
 msgstr "Sleep dit plaatje naar een ander scherm om het  '%s' veld te plakken."
 
 #: ../../../ui/wxWidgets/DragBarCtrl.cpp:144
@@ -1521,8 +1487,7 @@ msgstr "Sleep dit plaatje naar een ander scherm om het  '%s' veld te plakken."
 msgid "Drag this image onto another window to paste the '%s' field."
 msgstr "Sleep dit plaatje naar een ander scherm om het  '%s' veld te plakken."
 
-#: ../../../ui/wxWidgets/DragBarCtrl.cpp:152
-#: ../../../ui/wxWidgets/GridCtrl.cpp:166
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:152 ../../../ui/wxWidgets/GridCtrl.cpp:166
 #, fuzzy
 msgid "User"
 msgstr " 'Gebruiker'"
@@ -1580,24 +1545,21 @@ msgstr "Doel laatst gewijzigd op:"
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:61
 msgid ""
-"Warning! This operation will create an unprotected copy of ALL of the "
-"passwords\n"
+"Warning! This operation will create an unprotected copy of ALL of the passwords\n"
 "in the database. Deleting this copy after use is NOT sufficient."
 msgstr ""
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:63
 #, fuzzy
 msgid ""
-"Do not use this option unless you understand and accept the risks. This "
-"option\n"
+"Do not use this option unless you understand and accept the risks. This option\n"
 "bypasses the security provided by this program."
 msgstr ""
-"WAARSCHUWING: Deze activiteit maakt een onbeschermde kopie van %s in de "
-"database. Verwijderen van deze kopie na gebruik is NIET voldoende.\n"
+"WAARSCHUWING: Deze activiteit maakt een onbeschermde kopie van %s in de database. "
+"Verwijderen van deze kopie na gebruik is NIET voldoende.\n"
 "\n"
-"Gebruikt u deze optie alstublieft niet tenzij u de risico's begrijpt en "
-"accepteert. Deze optie omzeilt de veiligheden die door dit programma worden "
-"geboden."
+"Gebruikt u deze optie alstublieft niet tenzij u de risico's begrijpt en accepteert. "
+"Deze optie omzeilt de veiligheden die door dit programma worden geboden."
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:70
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:173
@@ -1614,8 +1576,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:87
 #, fuzzy
 msgid ""
-"The delimiter in the Notes field, also used to replace periods in the Title "
-"field."
+"The delimiter in the Notes field, also used to replace periods in the Title field."
 msgstr "Ook gebruikt om spaties te vervangen in het Titel veld."
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:88
@@ -1631,8 +1592,7 @@ msgstr "Geavanceerd "
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:750
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:203
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:159
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:193
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:192
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:193 ../../../ui/wxWidgets/YubiCfgDlg.cpp:192
 msgid "&Help"
 msgstr "&Help"
 
@@ -1647,8 +1607,7 @@ msgid "Virtual Keyboard"
 msgstr "Toon Virtueel Toetsenbord"
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:72
-msgid ""
-"Could not launch xvkbd.  Please make sure it's installed and in your PATH"
+msgid "Could not launch xvkbd.  Please make sure it's installed and in your PATH"
 msgstr ""
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:73
@@ -1663,14 +1622,13 @@ msgid "Could not launch xvkbd.  Please make sure it's in your PATH"
 msgstr ""
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:85
-msgid ""
-"Could not launch a new process for xvkbd.  Simultaneous execution disabled?"
+msgid "Could not launch a new process for xvkbd.  Simultaneous execution disabled?"
 msgstr ""
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:99
 msgid ""
-"Please enable the Accessibility Keyboard in System Settings; the on-screen "
-"keyboard should then appear."
+"Please enable the Accessibility Keyboard in System Settings; the on-screen keyboard "
+"should then appear."
 msgstr ""
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:101
@@ -1711,8 +1669,7 @@ msgstr "Importeren XML instellingen"
 msgid "Import under group"
 msgstr "Importeren in Groep?"
 
-#: ../../../ui/wxWidgets/ImportTextDlg.cpp:100
-#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:67
+#: ../../../ui/wxWidgets/ImportTextDlg.cpp:100 ../../../ui/wxWidgets/ImportXmlDlg.cpp:67
 msgid "Import to change passwords of existing entries ONLY"
 msgstr "Importeren om ALLEEN wachtwoorden van bestaande Elementen"
 
@@ -1752,11 +1709,9 @@ msgstr "Importeren tekst mislukt"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:188
 #, fuzzy
-msgid ""
-"Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*; *"
+msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*; *"
 msgstr ""
-"Tekst bestanden (*.txt)|*.txt|CSV bestanden (*.csv)|*.csv|Alle bestanden (*."
-"*)|*.*||"
+"Tekst bestanden (*.txt)|*.txt|CSV bestanden (*.csv)|*.csv|Alle bestanden (*.*)|*.*||"
 
 #: ../../../ui/wxWidgets/ImportXmlDlg.cpp:31
 msgid "Import XML Settings"
@@ -2036,8 +1991,7 @@ msgstr "Geen elementen geselecteerd"
 msgid "Not used"
 msgstr ""
 
-#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:334
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1774
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:334 ../../../ui/wxWidgets/TreeCtrl.cpp:1774
 #, fuzzy
 msgid " Copy # "
 msgstr "Kopieer # %d"
@@ -2051,9 +2005,8 @@ msgid ""
 "\n"
 "Pressing Cancel stops the password from being copied."
 msgstr ""
-"Indrukken van OK zal het wachtwoord van de geselecteerde vermelding naar het "
-"klembord kopieren. Het klembord wordt veilig leeg gemaakt als Password Safe "
-"wordt afgesloten.\n"
+"Indrukken van OK zal het wachtwoord van de geselecteerde vermelding naar het klembord "
+"kopieren. Het klembord wordt veilig leeg gemaakt als Password Safe wordt afgesloten.\n"
 "\n"
 "Indrukken van Annuleren zal het wachtwoord niet kopieren."
 
@@ -2067,9 +2020,7 @@ msgid "&Don't remind me again"
 msgstr "&Niet opnieuw herinneren"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:629
-msgid ""
-"There is no view available for attachments that are not of image media "
-"type.\n"
+msgid "There is no view available for attachments that are not of image media type.\n"
 msgstr ""
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:630
@@ -2097,8 +2048,8 @@ msgstr "Automatische invoer"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:802
 msgid ""
-"Error switching to another application before autotyping. Switch manually "
-"within 5 seconds"
+"Error switching to another application before autotyping. Switch manually within 5 "
+"seconds"
 msgstr ""
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:972
@@ -2125,9 +2076,8 @@ msgid "Error parsing Run Command"
 msgstr "Fout bij het analyzeren van het commando uitvoeren"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:1193
-#, fuzzy
 msgid "Password of "
-msgstr "Password Safe"
+msgstr "Wachtwoord van "
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:57
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:343
@@ -2175,9 +2125,8 @@ msgstr "Wilt u de wijzigingen bewaren van de wachtwoord database: %s?"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:94
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:579
-#, fuzzy
 msgid "Save changes?"
-msgstr "Wijzigingen bewaren in %1?"
+msgstr "Wijzigingen opslaan?"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:95
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:581
@@ -2235,22 +2184,19 @@ msgstr "Open wachtwoord database:"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:342
 #, fuzzy
 msgid ""
-"Unable to create intermediate backup.  Save database elsewhere or with "
-"another name?\n"
+"Unable to create intermediate backup.  Save database elsewhere or with another name?\n"
 "\n"
 "Click 'No' to exit without saving."
 msgstr ""
-"%s. Probeer het bestand met een andere naam op te slaan of beeindig sonder "
-"op te slaan."
+"%s. Probeer het bestand met een andere naam op te slaan of beeindig sonder op te slaan."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:349
 #, fuzzy
 msgid ""
-"Unable to create intermediate backup.  Do you wish to save changes to your "
-"database without it?"
+"Unable to create intermediate backup.  Do you wish to save changes to your database "
+"without it?"
 msgstr ""
-"%s. Probeer het bestand met een andere naam op te slaan of beeindig sonder "
-"op te slaan."
+"%s. Probeer het bestand met een andere naam op te slaan of beeindig sonder op te slaan."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:356
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:364
@@ -2261,16 +2207,14 @@ msgstr "Niet mogelijk om tussentijdse backup te creëeren"
 #, fuzzy, c-format
 msgid ""
 "The original database, \"%ls\", is in pre-3.0 format. It will be unchanged.\n"
-"Your changes will be written as \"%ls\" in the new format, which is unusable "
-"by old versions of PasswordSafe. To save your changes in the old format, use "
-"the \"File->Export To-> Old (1.x or 2) format\" command."
+"Your changes will be written as \"%ls\" in the new format, which is unusable by old "
+"versions of PasswordSafe. To save your changes in the old format, use the \"File-"
+">Export To-> Old (1.x or 2) format\" command."
 msgstr ""
-"De originele database, \"%ls\", is in pre-3.0 formaat. Die blijft "
-"ongewijzigd.\n"
-"Uw wijzigingen worden geschreven als \"%ls\" in het nieuwe formaat, dat niet "
-"bruikbaar is in oude versies van PasswordSafe. Om uw wijzigingen in het oude "
-"formaat te bewaren, gebruikt u het \"Bestand->Exporteren naar->Oud (1.x of "
-"2) formaat\" commando."
+"De originele database, \"%ls\", is in pre-3.0 formaat. Die blijft ongewijzigd.\n"
+"Uw wijzigingen worden geschreven als \"%ls\" in het nieuwe formaat, dat niet bruikbaar "
+"is in oude versies van PasswordSafe. Om uw wijzigingen in het oude formaat te bewaren, "
+"gebruikt u het \"Bestand->Exporteren naar->Oud (1.x of 2) formaat\" commando."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:377
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:438
@@ -2280,15 +2224,14 @@ msgstr "Bestand versie waarschuwing"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:437
 #, fuzzy, c-format
 msgid ""
-"The original database, '%ls', is in pre-3.0 format. The data will now be "
-"written in the new format, which is unusable by old versions of "
-"PasswordSafe. To save the data in the old format, use the 'File->Export To-> "
-"Old (1.x or 2) format' command."
+"The original database, '%ls', is in pre-3.0 format. The data will now be written in "
+"the new format, which is unusable by old versions of PasswordSafe. To save the data in "
+"the old format, use the 'File->Export To-> Old (1.x or 2) format' command."
 msgstr ""
-"De originele database, \"%ls\", is in pre-3.0 formaat. De gegevens worden nu "
-"in het nieuwe formaat geschreven, dat niet bruikbaar is in oude versies van "
-"PasswordSafe. Om uw wijzigingen in het oude formaat te bewaren, gebruikt u "
-"het \"Bestand->Exporteren naar->Oud (1.x of 2) formaat\" commando."
+"De originele database, \"%ls\", is in pre-3.0 formaat. De gegevens worden nu in het "
+"nieuwe formaat geschreven, dat niet bruikbaar is in oude versies van PasswordSafe. Om "
+"uw wijzigingen in het oude formaat te bewaren, gebruikt u het \"Bestand->Exporteren "
+"naar->Oud (1.x of 2) formaat\" commando."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:450
 #, fuzzy
@@ -2302,12 +2245,9 @@ msgstr "Kies alstublieft een nieuwe naam voor de actieve database:"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:459
 #, fuzzy
-msgid ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|"
-"*.*;*"
+msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|*.*;*"
 msgstr ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Alle bestanden (*."
-"*)|*.*||"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Alle bestanden (*.*)|*.*||"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:471
 #, fuzzy, c-format
@@ -2351,11 +2291,9 @@ msgstr "SVP dit text bestand een naam geven"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:617
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1154
 #, fuzzy
-msgid ""
-"Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
+msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
 msgstr ""
-"Tekst bestanden (*.txt)|*.txt|CSV bestanden (*.csv)|*.csv|Alle bestanden (*."
-"*)|*.*||"
+"Tekst bestanden (*.txt)|*.txt|CSV bestanden (*.csv)|*.csv|Alle bestanden (*.*)|*.*||"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:627
 msgid "Advanced Text Export Options"
@@ -2385,15 +2323,13 @@ msgstr "Geavanceerde Opties voor XML Exporteren"
 #, fuzzy
 msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*; *)|*.*;*"
 msgstr ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Alle bestanden (*."
-"*)|*.*||"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Alle bestanden (*.*)|*.*||"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:713
 #, fuzzy
 msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*; *)|*.*;*"
 msgstr ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Alle bestanden (*."
-"*)|*.*||"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Alle bestanden (*.*)|*.*||"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:724
 #, fuzzy
@@ -2426,17 +2362,14 @@ msgstr "Wilt u het vervangen?"
 #, fuzzy
 msgid "No entries satisfied your selection criteria and so none were exported!"
 msgstr ""
-"Geen enkele vermelding voldoet aan uw selectie kriteria, dus geen enkele kan "
-"worden %s!"
+"Geen enkele vermelding voldoet aan uw selectie kriteria, dus geen enkele kan worden %s!"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:860
 msgid "Passkey incorrect"
 msgstr "Wachtwoordsleutel is onjuist"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:873
-msgid ""
-"The current database was opened in read-only mode.  You cannot import into "
-"it."
+msgid "The current database was opened in read-only mode.  You cannot import into it."
 msgstr ""
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:874
@@ -2457,8 +2390,8 @@ msgstr ""
 "\n"
 "%s\n"
 "\n"
-"heeft dubbelele vermeldingen met dezelfde groep/titel/gebruiker combinatie. "
-"SVP dit oplossen door de database te valideren."
+"heeft dubbelele vermeldingen met dezelfde groep/titel/gebruiker combinatie. SVP dit "
+"oplossen door de database te valideren."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:884
 msgid "  Fix by validating database."
@@ -2479,10 +2412,8 @@ msgstr "%ls bestand wordt geïmporteerd: %ls"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:922
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:927
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:241
-#: ../../../ui/wxWidgets/SyncWizard.cpp:627
-#: ../../../ui/wxWidgets/wxUtilities.cpp:72
-#: ../../../ui/wxWidgets/wxUtilities.cpp:77
-#: ../../../ui/wxWidgets/wxUtilities.cpp:84
+#: ../../../ui/wxWidgets/SyncWizard.cpp:627 ../../../ui/wxWidgets/wxUtilities.cpp:72
+#: ../../../ui/wxWidgets/wxUtilities.cpp:77 ../../../ui/wxWidgets/wxUtilities.cpp:84
 msgid "File Read Error"
 msgstr "Leesfout in bestand"
 
@@ -2576,31 +2507,30 @@ msgid ""
 "\n"
 "%ls\n"
 "\n"
-"has duplicate entries with the same group/title/user combination. Fix by "
-"validating database."
+"has duplicate entries with the same group/title/user combination. Fix by validating "
+"database."
 msgstr ""
 "De database:\n"
 "\n"
 "%ls\n"
 "\n"
-"heeft dubbelele vermeldingen met dezelfde groep/titel/gebruiker combinatie. "
-"SVP dit oplossen door de database te valideren."
+"heeft dubbelele vermeldingen met dezelfde groep/titel/gebruiker combinatie. SVP dit "
+"oplossen door de database te valideren."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1003
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1053
 msgid "Import XML failed"
 msgstr "Importeren XML mislukt"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1013
-#: ../../../core/core_st.cpp:275
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1013 ../../../core/core_st.cpp:275
 #, fuzzy, c-format
 msgid ""
 "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application "
 "Directory.\n"
 "Copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
-"Kan XML Schema Definitie bestand (%ls) niet vinden in uw PasswordSafe "
-"programma folder.\n"
+"Kan XML Schema Definitie bestand (%ls) niet vinden in uw PasswordSafe programma "
+"folder.\n"
 "SVP kopieer het van uw installatie folder of herinstalleer PasswordSafe."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1014
@@ -2659,11 +2589,11 @@ msgstr "/ met fouten in Wachtwoord Geschiedenis %d"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1098
 msgid ""
-"The following records were renamed as an entry already exists in your "
-"database or in the Import file:"
+"The following records were renamed as an entry already exists in your database or in "
+"the Import file:"
 msgstr ""
-"De volgende records hebben een andere naam gekregen. De vermelding bestaat "
-"al in uw database of in het import bestand:"
+"De volgende records hebben een andere naam gekregen. De vermelding bestaat al in uw "
+"database of in het import bestand:"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1100
 #, c-format
@@ -2673,17 +2603,16 @@ msgstr "/ naam gewijzigd %d"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
 #, fuzzy, c-format
 msgid ""
-"File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See "
-"report for details."
+"File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See report for "
+"details."
 msgstr ""
-"Bestand: %ls is geïmporteerd (%d Elementen gevalideerd / ingelezen "
-"%d%ls%ls%ls). Zie rapportage voor details."
+"Bestand: %ls is geïmporteerd (%d Elementen gevalideerd / ingelezen %d%ls%ls%ls). Zie "
+"rapportage voor details."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1110
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1111
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1223
-#: ../../../ui/wxWidgets/SyncWizard.cpp:642
-#: ../../../ui/wxWidgets/SyncWizard.cpp:787
+#: ../../../ui/wxWidgets/SyncWizard.cpp:642 ../../../ui/wxWidgets/SyncWizard.cpp:787
 #: ../../../ui/wxWidgets/SyncWizard.cpp:804 ../../../core/core_st.cpp:111
 msgid "entry"
 msgstr "vermelding"
@@ -2691,8 +2620,7 @@ msgstr "vermelding"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1110
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1111
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1223
-#: ../../../ui/wxWidgets/SyncWizard.cpp:642
-#: ../../../ui/wxWidgets/SyncWizard.cpp:787
+#: ../../../ui/wxWidgets/SyncWizard.cpp:642 ../../../ui/wxWidgets/SyncWizard.cpp:787
 #: ../../../ui/wxWidgets/SyncWizard.cpp:804 ../../../core/core_st.cpp:109
 msgid "entries"
 msgstr "vermeldingen"
@@ -2801,11 +2729,11 @@ msgstr "Backup Naam"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:221
 msgid ""
-"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
-"ibak)|*.ibak||"
+"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|"
+"*.ibak||"
 msgstr ""
-"Password Safe back-ups (*.bak)|*.bak|Password Safe tussentijdse back-ups(*."
-"ibak)|*.ibak||"
+"Password Safe back-ups (*.bak)|*.bak|Password Safe tussentijdse back-ups(*.ibak)|"
+"*.ibak||"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:248
 msgid "Password Safe - <Untitled Restored Backup>"
@@ -2813,11 +2741,10 @@ msgstr "Password Safe - <Titelloze herstelde backup>"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:408
 msgid ""
-"You have chosen not to save your changes, which will be lost. Do you wish to "
-"continue?"
+"You have chosen not to save your changes, which will be lost. Do you wish to continue?"
 msgstr ""
-"U kiest voor het niet opslaan van uw veranderingen. Deze veranderingen "
-"zullen kwijt raken. Wilt u doorgaan?"
+"U kiest voor het niet opslaan van uw veranderingen. Deze veranderingen zullen kwijt "
+"raken. Wilt u doorgaan?"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:408
 msgid "Change database mode?"
@@ -2829,8 +2756,8 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:451
 msgid ""
-"The database has been changed since you opened it in R-O mode, so it is not "
-"possible to switch to R/W mode.\n"
+"The database has been changed since you opened it in R-O mode, so it is not possible "
+"to switch to R/W mode.\n"
 "\n"
 "Close the database and re-open it in R/W mode."
 msgstr ""
@@ -2843,32 +2770,31 @@ msgstr " [Proces ID=%s]"
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:481
 #, fuzzy, c-format
 msgid ""
-"Failed to switch from R-O to R/W because database is already open in R/W "
-"mode by:\n"
+"Failed to switch from R-O to R/W because database is already open in R/W mode by:\n"
 "%ls %ls\n"
 "(Only one R/W access at a time is allowed)"
 msgstr ""
-"Omschakelen van Alleen-Lezen naar Lezen/Schrijven is mislukt omdat de "
-"database is al geopend in Lezen/Schrijven modus door:\n"
+"Omschakelen van Alleen-Lezen naar Lezen/Schrijven is mislukt omdat de database is al "
+"geopend in Lezen/Schrijven modus door:\n"
 "%s %s\n"
 "(slechts een Lezen/Schrijven toegang tegelijkertijd is toegestaan)"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:487
 msgid ""
-"Failed to switch from R-O to R/W: Could not open the database. It may have "
-"been deleted or renamed or there may be a problem with its drive."
+"Failed to switch from R-O to R/W: Could not open the database. It may have been "
+"deleted or renamed or there may be a problem with its drive."
 msgstr ""
-"Omschakelen van Alleen-Lezen naar Lezen/Schrijven is mislukt. Kon de "
-"database niet openen. Deze kan verwijderd zijn of de naam is veranderd of er "
-"is een probleem met het opslag medium."
+"Omschakelen van Alleen-Lezen naar Lezen/Schrijven is mislukt. Kon de database niet "
+"openen. Deze kan verwijderd zijn of de naam is veranderd of er is een probleem met het "
+"opslag medium."
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:490
 msgid ""
-"Failed to switch from R-O to R/W: The file appears to be too short to be a "
-"valid database."
+"Failed to switch from R-O to R/W: The file appears to be too short to be a valid "
+"database."
 msgstr ""
-"Omschakelen van Alleen-Lezen naar Lezen/Schrijven is mislukt. De "
-"bestandsnaam lijkt te kort voor een geldige database"
+"Omschakelen van Alleen-Lezen naar Lezen/Schrijven is mislukt. De bestandsnaam lijkt te "
+"kort voor een geldige database"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:495
 msgid "Given path is a directory or file is read-only"
@@ -2879,8 +2805,8 @@ msgid ""
 "Failed to switch from R/W to R-O: Could not release database lock.\n"
 "Try exiting and restarting program."
 msgstr ""
-"Omschakelen van Lezen/Schrijven naar Alleen-Lezen is mislukt. De "
-"vergrendeling van de database kon niet verwijderd worden.\n"
+"Omschakelen van Lezen/Schrijven naar Alleen-Lezen is mislukt. De vergrendeling van de "
+"database kon niet verwijderd worden.\n"
 "Probeer het programma af te sluiten en opnieuw te starten. "
 
 #: ../../../ui/wxWidgets/MenuViewHandlers.cpp:229
@@ -2923,8 +2849,7 @@ msgstr "Kies alstublieft een database om te openen:"
 #: ../../../ui/wxWidgets/MergeDlg.cpp:50
 #, fuzzy
 msgid "Choose a Database to Merge into current database"
-msgstr ""
-"Kies alstublieft een database om met de huidige database samen te voegen"
+msgstr "Kies alstublieft een database om met de huidige database samen te voegen"
 
 #: ../../../ui/wxWidgets/MergeDlg.cpp:93
 msgid "Advanced Merge Options"
@@ -2967,8 +2892,7 @@ msgstr "JJMMDD_UUMMSS"
 msgid "Incremented Number [001-999]"
 msgstr "Opgehoogd getal [001-999]"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:132
-#: ../../../core/core_st.cpp:82
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:132 ../../../core/core_st.cpp:82
 #, fuzzy
 msgid "Copy password to clipboard"
 msgstr "&Kopieer Wachtwoord naar klembord"
@@ -2983,23 +2907,19 @@ msgstr "Bekijk/Bewerk geselecteerd vermelding"
 msgid "Browse to URL"
 msgstr "Brows naar URL"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:136
-#: ../../../core/core_st.cpp:81
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:136 ../../../core/core_st.cpp:81
 msgid "Copy notes to clipboard"
 msgstr "Kopieer notities naar klembord"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:137
-#: ../../../core/core_st.cpp:84
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:137 ../../../core/core_st.cpp:84
 msgid "Copy username to clipboard"
 msgstr "Kopieer gebruikersnaam naar klembord"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:138
-#: ../../../core/core_st.cpp:83
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:138 ../../../core/core_st.cpp:83
 msgid "Copy password to clipboard, minimize"
 msgstr "Kopieer wachtwoord naar klembord, minimaliseer"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:139
-#: ../../../core/core_st.cpp:80
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:139 ../../../core/core_st.cpp:80
 msgid "Browse to URL + Autotype"
 msgstr "Brows naar URL + Automatisch invoer"
 
@@ -3250,8 +3170,7 @@ msgstr "Begin met opslaan vorige wachtwoorden"
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:704
 #, fuzzy
 msgid "Set maximum number of passwords saved to above value"
-msgstr ""
-"Zet het maximum aantal wachtwoorden dat bewaard wordt op bovnestaande waarde"
+msgstr "Zet het maximum aantal wachtwoorden dat bewaard wordt op bovnestaande waarde"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:708
 #, fuzzy
@@ -3286,8 +3205,7 @@ msgstr "Vergrendelen van de wachtwoord database bij minimaliseren"
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:755
 #, fuzzy
 msgid "Lock password database on workstation lock (Not Implemented)"
-msgstr ""
-"Vergrendelen van de wachtwoord database bij vergrendelen van het werkstation"
+msgstr "Vergrendelen van de wachtwoord database bij vergrendelen van het werkstation"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:761
 #, fuzzy
@@ -3375,8 +3293,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:918
 msgid ""
 "When set, use XTEST for AutoType instead of XSendEvent.\n"
-"XSendEvent can handle more control keys, but may be blocked by some "
-"applications."
+"XSendEvent can handle more control keys, but may be blocked by some applications."
 msgstr ""
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:920
@@ -3396,36 +3313,34 @@ msgstr "Selecteer Browser:"
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1373
 #, c-format
 msgid ""
-"Number of entries that had their settings changed to not save password "
-"history was: %d"
+"Number of entries that had their settings changed to not save password history was: %d"
 msgstr ""
-"Aantal elementen waarbij de instellling gewizjigd is dat de wachtwoord "
-"geschiedenis niet bewaard wordt was %d"
+"Aantal elementen waarbij de instellling gewizjigd is dat de wachtwoord geschiedenis "
+"niet bewaard wordt was %d"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1378
 #, c-format
 msgid ""
-"Number of entries that had their settings changed to save password history "
-"was: %d"
+"Number of entries that had their settings changed to save password history was: %d"
 msgstr ""
-"Aantal elementen waarbij de instellling gewizjigd is dat de wachtwoord "
-"geschiedenis bewaard wordt was %d"
+"Aantal elementen waarbij de instellling gewizjigd is dat de wachtwoord geschiedenis "
+"bewaard wordt was %d"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1383
 #, c-format
 msgid ""
-"Number of entries that had their 'maximum saved passwords' changed to the "
-"new default was %d"
+"Number of entries that had their 'maximum saved passwords' changed to the new default "
+"was %d"
 msgstr ""
-"Aantal elementen waarbij het \"maximum aantal bewaarde wachtwoorden' "
-"gewijzigd is naar de nieuwe standaard waarde was %d"
+"Aantal elementen waarbij het \"maximum aantal bewaarde wachtwoorden' gewijzigd is naar "
+"de nieuwe standaard waarde was %d"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1388
 #, fuzzy, c-format
 msgid "Number of entries that had their password history removed was %d"
 msgstr ""
-"Aantal elementen waarbij de instellling gewizjigd is dat de wachtwoord "
-"geschiedenis bewaard wordt was %d"
+"Aantal elementen waarbij de instellling gewizjigd is dat de wachtwoord geschiedenis "
+"bewaard wordt was %d"
 
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:137
 #, fuzzy
@@ -3438,15 +3353,14 @@ msgid "Hexadecimal is mutually exclusive to all other options."
 msgstr "Hexadecimaal kan met geen enkele keuze gecombineerd worden!"
 
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:458
-msgid ""
-"Hexadecimal passwords must have even length - each byte is two characters"
+msgid "Hexadecimal passwords must have even length - each byte is two characters"
 msgstr ""
 
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:463
 #, fuzzy
 msgid ""
-"At least one type of character (lowercase, uppercase, digits, symbols or "
-"hexadecimal) must be chosen"
+"At least one type of character (lowercase, uppercase, digits, symbols or hexadecimal) "
+"must be chosen"
 msgstr ""
 "Minstens een type teken (kleine letter, hoofdletter, cijfers,\n"
 "symbolen, hexadecimaal) moet toegestaan worden."
@@ -3458,8 +3372,7 @@ msgstr "Wachtwoord lengte moet liggen tussen 4 en 1024."
 
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:476
 msgid "Password length is less than sum of 'at least' constraints"
-msgstr ""
-"Wachtwoord lengte is minder dan de som van de \"tenminste\" randvoorwaardes"
+msgstr "Wachtwoord lengte is minder dan de som van de \"tenminste\" randvoorwaardes"
 
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:486
 #, fuzzy
@@ -4282,12 +4195,12 @@ msgstr "%d van %d overeenkomsten."
 
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:93
 msgid ""
-"Enter positions of password characters separated by spaces, commas or semi-"
-"colons (or * for full password).\n"
-"Position 1 is the first character, 2 is the second, etc. up to N for the "
-"last character of a password of length N.\n"
-"-1 is the last character, -2 the next to last, etc. up to -N for the first "
-"password character."
+"Enter positions of password characters separated by spaces, commas or semi-colons (or "
+"* for full password).\n"
+"Position 1 is the first character, 2 is the second, etc. up to N for the last "
+"character of a password of length N.\n"
+"-1 is the last character, -2 the next to last, etc. up to -N for the first password "
+"character."
 msgstr ""
 
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:99
@@ -4424,18 +4337,16 @@ msgstr "Absoluut"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:284
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:304
-#: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:337
-#: ../../../core/core_st.cpp:45
+#: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:337 ../../../core/core_st.cpp:45
 msgid "and"
 msgstr "en"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:291
 msgid ""
-"Relative dates are in days relative to today e.g. '-1' is yesterday and '1' "
-"is tomorrow"
+"Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
 msgstr ""
-"Relatieve datums zijn dagen ten opzichte van vandaag. Bijvoorbeeld  '-1' is "
-"gisteren en '1' is morgen"
+"Relatieve datums zijn dagen ten opzichte van vandaag. Bijvoorbeeld  '-1' is gisteren "
+"en '1' is morgen"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:295 ../../../core/core_st.cpp:305
 msgid "Relative"
@@ -4730,13 +4641,11 @@ msgstr "Automatische Invoer"
 msgid "Another instance of Password Safe is already running"
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:489
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:498
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:489 ../../../ui/wxWidgets/PWSafeApp.cpp:498
 msgid "Could not initialize help subsystem. Help will not be available."
 msgstr ""
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:490
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:499
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:490 ../../../ui/wxWidgets/PWSafeApp.cpp:499
 msgid "Password Safe: Error initializing help"
 msgstr ""
 
@@ -4791,8 +4700,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/QueryCancelDlg.cpp:49
 #, fuzzy
 msgid "Do you want to discard the changes?"
-msgstr ""
-"Een of meer voorkeuren zijn gewijzigd. Weet u zeker dat u wilt annuleren?"
+msgstr "Een of meer voorkeuren zijn gewijzigd. Weet u zeker dat u wilt annuleren?"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:88
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:90
@@ -4806,8 +4714,8 @@ msgid ""
 "Enter the current master password, followed by a new one.\n"
 "Type the new one again to confirm it."
 msgstr ""
-"Voer alstublieft de huidige combinatie in, gevolgd door een nieuwe "
-"combinatie. Daarna de nieuwe combinatie nog een keer als bevestiging."
+"Voer alstublieft de huidige combinatie in, gevolgd door een nieuwe combinatie. Daarna "
+"de nieuwe combinatie nog een keer als bevestiging."
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:137
 #, fuzzy
@@ -4946,20 +4854,17 @@ msgstr "Kopieer naar database"
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:459
 #, fuzzy
 msgid ""
-"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat| "
-"All files (*.*; *)|*.*;*"
+"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat| All files "
+"(*.*; *)|*.*;*"
 msgstr ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Alle bestanden (*."
-"*)|*.*||"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Alle bestanden (*.*)|*.*||"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:504
 #, fuzzy
 msgid ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|"
-"*.*;*"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|*.*;*"
 msgstr ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Alle bestanden (*."
-"*)|*.*||"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3; *.dat|Alle bestanden (*.*)|*.*||"
 
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:126
 msgid "filename"
@@ -4973,8 +4878,7 @@ msgstr "Ontsluit"
 
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:113
 #, fuzzy
-msgid ""
-"The Master Password will be used to protect the new password database file."
+msgid "The Master Password will be used to protect the new password database file."
 msgstr "Geef alstublieft de kluis combinatie van deze wachtwoord database."
 
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:225
@@ -5130,8 +5034,7 @@ msgstr "&Toepassen"
 msgid "OK"
 msgstr "OK"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:190
-#: ../../../ui/wxWidgets/wxUtilities.cpp:211
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:190 ../../../ui/wxWidgets/wxUtilities.cpp:211
 #, fuzzy
 msgid "Cancel"
 msgstr "Annuleer"
@@ -5217,8 +5120,7 @@ msgstr "Samenvoegen van deze database met de actieve database"
 #: ../../../ui/wxWidgets/SyncWizard.cpp:303
 #, fuzzy
 msgid "One or more items have been changed. Are you sure you wish to cancel?"
-msgstr ""
-"Een of meer voorkeuren zijn gewijzigd. Weet u zeker dat u wilt annuleren?"
+msgstr "Een of meer voorkeuren zijn gewijzigd. Weet u zeker dat u wilt annuleren?"
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:404
 msgid "Introduction"
@@ -5266,14 +5168,12 @@ msgstr "Selecteer database"
 #: ../../../ui/wxWidgets/SyncWizard.cpp:436
 #, fuzzy
 msgid "Choose Database to Synchronize with \""
-msgstr ""
-"Kies alstublieft een database om met de huidige database te synchroniseren"
+msgstr "Kies alstublieft een database om met de huidige database te synchroniseren"
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:437
 #, fuzzy
 msgid "Choose a Database to Synchronize with the current database"
-msgstr ""
-"Kies alstublieft een database om met de huidige database te synchroniseren"
+msgstr "Kies alstublieft een database om met de huidige database te synchroniseren"
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:460
 #, fuzzy
@@ -5293,8 +5193,8 @@ msgid ""
 "If you continue, fields will be updated in your existing database\n"
 "from your selected input database"
 msgstr ""
-"WAARSCHUWING: Als u doorgaat zullen vermeldingen in uw bestaande database "
-"worden gewijzigd door uw geselecteerde bron database."
+"WAARSCHUWING: Als u doorgaat zullen vermeldingen in uw bestaande database worden "
+"gewijzigd door uw geselecteerde bron database."
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:526
 msgid " will be updated with corresponding entries from \""
@@ -5491,8 +5391,7 @@ msgstr "&Verzend e-mail"
 msgid "&Delete from Recent Entry List"
 msgstr "&Verwijder van Lijst Recente Vermeldingen"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:991
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:993
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:991 ../../../ui/wxWidgets/TreeCtrl.cpp:993
 msgid "New Group"
 msgstr "Nieuwe groep"
 
@@ -5508,8 +5407,7 @@ msgstr ""
 msgid "name exists"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:993
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1054
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:993 ../../../ui/wxWidgets/TreeCtrl.cpp:1054
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1532
 #, fuzzy
 msgid "Duplicate group name"
@@ -5536,15 +5434,12 @@ msgstr ""
 msgid "Invalid Character"
 msgstr "Ongeldige parameter"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1462
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2781
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1462 ../../../ui/wxWidgets/TreeCtrl.cpp:2781
 msgid "Destination cannot be inside source tree"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1462
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2629
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2636
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2653
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1462 ../../../ui/wxWidgets/TreeCtrl.cpp:2629
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2636 ../../../ui/wxWidgets/TreeCtrl.cpp:2653
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2781
 msgid "Drag and Drop failed"
 msgstr ""
@@ -5568,8 +5463,8 @@ msgid ""
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-" Het wachtwoord van de vervallen vermelding   '%s:%s:%'s verwijst naar een "
-"vermelding dat ook een alias is.\n"
+" Het wachtwoord van de vervallen vermelding   '%s:%s:%'s verwijst naar een vermelding "
+"dat ook een alias is.\n"
 "\n"
 "De vervallen vermelding verwijst nu naar die vermeldings basis vermelding"
 
@@ -5577,23 +5472,22 @@ msgstr ""
 #, fuzzy, c-format
 msgid "This alias's target [%s:%s:%s] is not a normal entry."
 msgstr ""
-"Het doel van deze alias [%s:%s:%s] is geen normale vermelding of is al het "
-"doel van een snelkoppeling"
+"Het doel van deze alias [%s:%s:%s] is geen normale vermelding of is al het doel van "
+"een snelkoppeling"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2649
 #, fuzzy, c-format
 msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
 msgstr ""
-"Het doel van deze snelkoppeling [%s:%s:%s] is geen normale vermelding of is "
-"al het doel van een snelkoppeling"
+"Het doel van deze snelkoppeling [%s:%s:%s] is geen normale vermelding of is al het "
+"doel van een snelkoppeling"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
 #, c-format
 msgid ""
-"The following entries had a policy name that already existed in this "
-"database but with different settings.\n"
-"A new named policy has been created with the current date/time (%ls) "
-"appended:%ls"
+"The following entries had a policy name that already existed in this database but with "
+"different settings.\n"
+"A new named policy has been created with the current date/time (%ls) appended:%ls"
 msgstr ""
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2735
@@ -5604,8 +5498,8 @@ msgstr "Zet vermelding wachtwoord beleid"
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2742
 #, c-format
 msgid ""
-"The following alias or shortcut entries did not match to a base entry and "
-"had been converted to normal entries:%ls"
+"The following alias or shortcut entries did not match to a base entry and had been "
+"converted to normal entries:%ls"
 msgstr ""
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2744
@@ -5687,8 +5581,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/wxUtilities.cpp:576
 msgid ""
-"An error occurred while trying to load the image data into the preview "
-"area.\n"
+"An error occurred while trying to load the image data into the preview area.\n"
 "Therefore, the image cannot be displayed in the preview."
 msgstr ""
 
@@ -5700,8 +5593,7 @@ msgstr ""
 msgid "YubiKey Secret Key (20 Byte Hex)"
 msgstr ""
 
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:177
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:312
+#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:177 ../../../ui/wxWidgets/YubiCfgDlg.cpp:312
 #, fuzzy
 msgid "Hide"
 msgstr "&Verberg"
@@ -5785,8 +5677,8 @@ msgstr ""
 "\n"
 "Opties"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.h:62
-#: ../../../ui/wxWidgets/wxMessages.h:23 ../../../ui/wxWidgets/wxMessages.h:38
+#: ../../../ui/wxWidgets/PasswordSafeFrame.h:62 ../../../ui/wxWidgets/wxMessages.h:23
+#: ../../../ui/wxWidgets/wxMessages.h:38
 #, fuzzy
 msgid "PasswordSafe"
 msgstr "Password Safe"
@@ -6023,8 +5915,8 @@ msgstr "Onvoldoende geheugen Uitzondering"
 #, fuzzy, c-format
 msgid "This alias' target [%s:%s:%s] is not a normal entry."
 msgstr ""
-"Het doel van deze alias [%s:%s:%s] is geen normale vermelding of is al het "
-"doel van een snelkoppeling"
+"Het doel van deze alias [%s:%s:%s] is geen normale vermelding of is al het doel van "
+"een snelkoppeling"
 
 #: ../../../core/core_st.cpp:31
 msgid "after"
@@ -6055,31 +5947,27 @@ msgstr "er bestaat geen vermelding met titel=%s."
 #: ../../../core/core_st.cpp:37
 #, c-format
 msgid ""
-"multiple entries exist with title=%s and username=%s or with group=%s and "
-"title=%s."
+"multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
 msgstr ""
-"meerdere vermeldingen bestaan met titel=%s en gebruikersnaam=%s of met "
-"groep=%s en titel=%s."
+"meerdere vermeldingen bestaan met titel=%s en gebruikersnaam=%s of met groep=%s en "
+"titel=%s."
 
 #: ../../../core/core_st.cpp:38
 #, c-format
-msgid ""
-"no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
 msgstr ""
-"er bestaat geen vermelding met titel=%s en gebruikersnaam=%s of met "
-"groep=%s, titel=%s. "
+"er bestaat geen vermelding met titel=%s en gebruikersnaam=%s of met groep=%s, "
+"titel=%s. "
 
 #: ../../../core/core_st.cpp:39
 #, c-format
 msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr ""
-"er bestaat geen vermelding met groep=%s, titel=%s en gebruikersnaam=%s."
+msgstr "er bestaat geen vermelding met groep=%s, titel=%s en gebruikersnaam=%s."
 
 #: ../../../core/core_st.cpp:40
 #, c-format
 msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr ""
-"er bestaat geen vermelding met groep=%s, titel=%s en een lege gebruikersnaam."
+msgstr "er bestaat geen vermelding met groep=%s, titel=%s en een lege gebruikersnaam."
 
 #: ../../../core/core_st.cpp:41
 #, c-format
@@ -6116,19 +6004,17 @@ msgstr "Verkeerd wachwoord"
 
 #: ../../../core/core_st.cpp:49
 msgid ""
-"Password implies this is an alias entry, but specifies a base entry with no "
-"title.\n"
+"Password implies this is an alias entry, but specifies a base entry with no title.\n"
 "Every entry must have a title."
 msgstr ""
-"Wachtwoord impliceert dat dit een alias vermelding is, maar specificieert "
-"een basis vermelding zonder titel.\n"
+"Wachtwoord impliceert dat dit een alias vermelding is, maar specificieert een basis "
+"vermelding zonder titel.\n"
 "Elke vermelding moet een titel hebben."
 
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not "
-"supported."
+"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
 msgstr ""
 
 #: ../../../core/core_st.cpp:51
@@ -6141,24 +6027,24 @@ msgstr "tussen"
 
 #: ../../../core/core_st.cpp:54
 msgid ""
-"Unable to create a new XML configuration file or add your settings to an "
-"existing XML configuration file.\n"
+"Unable to create a new XML configuration file or add your settings to an existing XML "
+"configuration file.\n"
 "\n"
-"All application configuration settings will be saved in your registry entry "
-"on this computer.\n"
+"All application configuration settings will be saved in your registry entry on this "
+"computer.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, "
+"assuming it is not read-only or locked by another user."
 msgstr ""
-"Niet mogelijk om een nieuw XML configuratie bestand te creëeren of om uw "
-"instellingen toe te voegen aan een bestaande XML configuratie bestand.\n"
+"Niet mogelijk om een nieuw XML configuratie bestand te creëeren of om uw instellingen "
+"toe te voegen aan een bestaande XML configuratie bestand.\n"
 "\n"
-"Alle applicatie configuratie instellingen zullen op geslagen worden in uw "
-"register op deze computer.\n"
+"Alle applicatie configuratie instellingen zullen op geslagen worden in uw register op "
+"deze computer.\n"
 "\n"
-"Database gerelateerde Instellingen zullen opgeslagen worden in de open "
-"database zodra deze afgesloten wordt. Aangenomen dat deze database niet "
-"alleen-lezen is of vergrendeld is door een andere gebruiker"
+"Database gerelateerde Instellingen zullen opgeslagen worden in de open database zodra "
+"deze afgesloten wordt. Aangenomen dat deze database niet alleen-lezen is of "
+"vergrendeld is door een andere gebruiker"
 
 #: ../../../core/core_st.cpp:55
 msgid ""
@@ -6166,23 +6052,22 @@ msgid ""
 "\n"
 "No application settings will be saved.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, "
+"assuming it is not read-only or locked by another user."
 msgstr ""
 "Fout - het is niet mogelijk om de configuratie instellingen te bepalen!\n"
 "\n"
 "De programma voorkeuren worden niet opgeslagen.\n"
 "\n"
-"Database gerelateerde voorkeuren zullen in de geopende database worden "
-"opgeslagen, mits deze niet in alleen lezen modus is en ook niet in gebruik "
-"door een andere gebruiker."
+"Database gerelateerde voorkeuren zullen in de geopende database worden opgeslagen, "
+"mits deze niet in alleen lezen modus is en ook niet in gebruik door een andere "
+"gebruiker."
 
 #: ../../../core/core_st.cpp:56
-msgid ""
-"Trouble reading stored filters (version mismatch?). Filters will be unusable."
+msgid "Trouble reading stored filters (version mismatch?). Filters will be unusable."
 msgstr ""
-"Probleem met lezen opgeslagen filters (andere versie?). FIlters kunnen niet "
-"gebruikt worden."
+"Probleem met lezen opgeslagen filters (andere versie?). FIlters kunnen niet gebruikt "
+"worden."
 
 #: ../../../core/core_st.cpp:57
 msgid "Unable to read locker?"
@@ -6192,21 +6077,21 @@ msgstr "Niet mogelijk om kluis te lezen?"
 msgid ""
 "Unable to update your entries in the existing XML configuration file.\n"
 "\n"
-"All application configuration settings will be loaded from this file but no "
-"changes will be saved.\n"
+"All application configuration settings will be loaded from this file but no changes "
+"will be saved.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, "
+"assuming it is not read-only or locked by another user."
 msgstr ""
-"Niet mogelijk om uw vermeldingen in de bestaande XML configuratie bestand "
-"bij te werken. \n"
+"Niet mogelijk om uw vermeldingen in de bestaande XML configuratie bestand bij te "
+"werken. \n"
 "\n"
-"Alle applicatie configuratie instellingen zullen geladen worden van dit "
-"bestand, maar wijzigingen kunnen niet opgeslagen worden.\n"
+"Alle applicatie configuratie instellingen zullen geladen worden van dit bestand, maar "
+"wijzigingen kunnen niet opgeslagen worden.\n"
 "\n"
-"De database gerelateerde instellingen zullen opgeslagen worden in de open "
-"database, zodra deze afgesloten wordt. Aangenomen dat deze database niet "
-"alleen-lezen is of vergrendeld is door een andere gebruiker."
+"De database gerelateerde instellingen zullen opgeslagen worden in de open database, "
+"zodra deze afgesloten wordt. Aangenomen dat deze database niet alleen-lezen is of "
+"vergrendeld is door een andere gebruiker."
 
 #: ../../../core/core_st.cpp:59
 #, fuzzy, c-format
@@ -6226,8 +6111,8 @@ msgstr "Ontbrekend XSD bestand"
 #: ../../../core/core_st.cpp:61
 msgid "Unable to validate a XML file using a XML Schema (XSD) on your system."
 msgstr ""
-"Niet mogelijk om een XML bestand te valideren met gebruik van een XML Schema "
-"(XSD) op uw computer"
+"Niet mogelijk om een XML bestand te valideren met gebruik van een XML Schema (XSD) op "
+"uw computer"
 
 #: ../../../core/core_st.cpp:62
 msgid "(case insensitive)"
@@ -6321,13 +6206,13 @@ msgstr "Standaard set"
 msgid ""
 "This entry has the following %d %ls:\n"
 "%ls\n"
-"Confirm to continue (alias entry's passwords will be replaced by this "
-"entry's password)?"
+"Confirm to continue (alias entry's passwords will be replaced by this entry's "
+"password)?"
 msgstr ""
 "Deze vermelding heeft de volgende %d %ls:\n"
 "%ls\n"
-"Svp bevestigen om door te gaan (wachwoorden alias vermeldingen worden "
-"vervangen door het wachtwoord van deze vermelding)?"
+"Svp bevestigen om door te gaan (wachwoorden alias vermeldingen worden vervangen door "
+"het wachtwoord van deze vermelding)?"
 
 #: ../../../core/core_st.cpp:92
 #, fuzzy
@@ -6343,8 +6228,8 @@ msgid ""
 msgstr ""
 "Deze vermelding heeft de volgende %d %ls:\n"
 "%ls\n"
-"Svp bevestigen om door te gaan (Alle verwijzingen naar deze vermeldingen "
-"worden verwijderd)?"
+"Svp bevestigen om door te gaan (Alle verwijzingen naar deze vermeldingen worden "
+"verwijderd)?"
 
 #: ../../../core/core_st.cpp:96
 msgid "does not contain all of"
@@ -6382,11 +6267,11 @@ msgstr "#groepen"
 #: ../../../core/core_st.cpp:105
 #, fuzzy, c-format
 msgid ""
-"Trouble with a non-textual (e.g., time) field in record '%ls' - please check "
-"data carefully."
+"Trouble with a non-textual (e.g., time) field in record '%ls' - please check data "
+"carefully."
 msgstr ""
-"Probleem met een niet-tekst veld (bv tijd) in record '%ls' - svp gegevens "
-"goed controleren"
+"Probleem met een niet-tekst veld (bv tijd) in record '%ls' - svp gegevens goed "
+"controleren"
 
 #: ../../../core/core_st.cpp:107
 msgid "End Report"
@@ -6489,8 +6374,7 @@ msgstr "Fout: Het bestand is in alleen lezen modus"
 #: ../../../core/core_st.cpp:135
 msgid "Error while writing file! Try saving in a different location"
 msgstr ""
-"Fout bij het schrijven van het bestand! Probeer om deze op een ander plaats "
-"op te slaan"
+"Fout bij het schrijven van het bestand! Probeer om deze op een ander plaats op te slaan"
 
 #: ../../../core/core_st.cpp:136
 #, fuzzy
@@ -6505,8 +6389,7 @@ msgstr "Veld is te kort."
 #: ../../../core/core_st.cpp:138
 msgid "File is truncated or otherwise corrupt. Please use backup database."
 msgstr ""
-"Bestand is afgekort of op andere wijze beschadigd. SVP een backup database "
-"gebruiken."
+"Bestand is afgekort of op andere wijze beschadigd. SVP een backup database gebruiken."
 
 #: ../../../core/core_st.cpp:139
 msgid "Cannot read file. Please check file permissions."
@@ -6514,9 +6397,7 @@ msgstr "Kan bestand niet lezen. Controleer bestandspermissies"
 
 #: ../../../core/core_st.cpp:140
 #, fuzzy, c-format
-msgid ""
-"Filter %ls already exists in the database, do you wish to replace it with "
-"this?"
+msgid "Filter %ls already exists in the database, do you wish to replace it with this?"
 msgstr "Filter %ls bestaat al in de database, wilt U het vervangen met deze?"
 
 #: ../../../core/core_st.cpp:141
@@ -6730,12 +6611,10 @@ msgstr "groter dan of gelijk aan"
 
 #: ../../../core/core_st.cpp:199
 #, c-format
-msgid ""
-"Invalid input on line %d.  Number of fields separated by '%c' is not as "
-"expected."
+msgid "Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
 msgstr ""
-"Ongeldig invoer op regel %d. Het aantal velden, gescheiden door '%c', is "
-"niet volgens verwachting."
+"Ongeldig invoer op regel %d. Het aantal velden, gescheiden door '%c', is niet volgens "
+"verwachting."
 
 #: ../../../core/core_st.cpp:200
 #, c-format
@@ -6744,11 +6623,10 @@ msgstr "Regel %d:"
 
 #: ../../../core/core_st.cpp:201
 #, c-format
-msgid ""
-"File ends on line %d before ending double quote of last entry's note field."
+msgid "File ends on line %d before ending double quote of last entry's note field."
 msgstr ""
-"Bestand eindigt op regel %d voor een afsluitend aanhalingsteken van het "
-"opmerking veld van de vermelding ."
+"Bestand eindigt op regel %d voor een afsluitend aanhalingsteken van het opmerking veld "
+"van de vermelding ."
 
 #: ../../../core/core_st.cpp:202
 #, fuzzy
@@ -6757,8 +6635,8 @@ msgstr "Importeren afgebroken. Lees de rapportage."
 
 #: ../../../core/core_st.cpp:203
 msgid ""
-"The TXT or CSV file was not imported as required as entry records span "
-"multiple lines in the CSV file.\n"
+"The TXT or CSV file was not imported as required as entry records span multiple lines "
+"in the CSV file.\n"
 "\n"
 "Import aborted."
 msgstr ""
@@ -6766,11 +6644,11 @@ msgstr ""
 #: ../../../core/core_st.cpp:204
 #, fuzzy, c-format
 msgid ""
-"%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the "
-"Import file. Added imported entry with title=\"%ls\".\n"
+"%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the Import "
+"file. Added imported entry with title=\"%ls\".\n"
 msgstr ""
-"%ls, Titel=\"%ls\", Gebruiker=\"%ls\" bestaat al in uw databse of in het "
-"Importeer bestand. Vermelding geimporteerd met titel=\"%ls\".\n"
+"%ls, Titel=\"%ls\", Gebruiker=\"%ls\" bestaat al in uw databse of in het Importeer "
+"bestand. Vermelding geimporteerd met titel=\"%ls\".\n"
 
 # egin vertaling fred
 #: ../../../core/core_st.cpp:205
@@ -6828,8 +6706,7 @@ msgstr ""
 #: ../../../core/core_st.cpp:216
 #, fuzzy, c-format
 msgid "Entry of line %d has an invalid \"%ls\" field. It has been ignored."
-msgstr ""
-"Vermelding op regel %d heeft een ongeldig \"%ls\" veld. Het is overgeslagen."
+msgstr "Vermelding op regel %d heeft een ongeldig \"%ls\" veld. Het is overgeslagen."
 
 #: ../../../core/core_st.cpp:217
 msgid "The following columns will be processed: "
@@ -6837,40 +6714,38 @@ msgstr "De volgende kolommen worden bewerkt:"
 
 #: ../../../core/core_st.cpp:218
 msgid ""
-"The following columns were recognised but only Group/Title, Username and "
-"Password will be processed:"
+"The following columns were recognised but only Group/Title, Username and Password will "
+"be processed:"
 msgstr ""
-"De volgende kolommen waren herkend maar alleen Groep/Titel, Gebruikersnaam "
-"en Wachtwoord worden bewerkt:"
+"De volgende kolommen waren herkend maar alleen Groep/Titel, Gebruikersnaam en "
+"Wachtwoord worden bewerkt:"
 
 #: ../../../core/core_st.cpp:219
 #, c-format
 msgid ""
-"Line %d skipped - Only %d fields found, whereas parsing the Header says "
-"there should be %d."
+"Line %d skipped - Only %d fields found, whereas parsing the Header says there should "
+"be %d."
 msgstr ""
-"Regel %d overgeslagen - Slechts %d velden gevonden, terwijl analyze van de "
-"kop zegt dat er %d zouden moeten zijn."
+"Regel %d overgeslagen - Slechts %d velden gevonden, terwijl analyze van de kop zegt "
+"dat er %d zouden moeten zijn."
 
 #: ../../../core/core_st.cpp:220
 msgid ""
-"Either or both of the Group/Title and Password columns are missing. No "
-"records imported."
-msgstr ""
-"Groep/Titel en/of Wachtwoord kolommen ontbreken. Geen regels geïmporteerd"
+"Either or both of the Group/Title and Password columns are missing. No records "
+"imported."
+msgstr "Groep/Titel en/of Wachtwoord kolommen ontbreken. Geen regels geïmporteerd"
 
 #: ../../../core/core_st.cpp:221
 msgid ""
-"Could not find the next entry's title field in the KeePass V1 TXT (should be "
-"within square brackets)."
+"Could not find the next entry's title field in the KeePass V1 TXT (should be within "
+"square brackets)."
 msgstr ""
-"Kan van de volgende vermelding het titel veld niet vinden in de Keepass V1 "
-"TXT (moet tussen vierkante haakjes staan)"
+"Kan van de volgende vermelding het titel veld niet vinden in de Keepass V1 TXT (moet "
+"tussen vierkante haakjes staan)"
 
 #: ../../../core/core_st.cpp:222
 msgid "Column header row not recognised as first record. No records imported."
-msgstr ""
-"Regel met Kolom titels niet herkend als eerste rij. Geen rijen geïmporteerd"
+msgstr "Regel met Kolom titels niet herkend als eerste rij. Geen rijen geïmporteerd"
 
 #: ../../../core/core_st.cpp:223
 msgid "No records in import file!"
@@ -6898,13 +6773,13 @@ msgstr "%ls - Geïmporteerd %ls"
 
 #: ../../../core/core_st.cpp:228
 msgid ""
-"To replace passwords of existing entries, all the following columns must be "
-"present: Group/Title, Username and Password.  One or more are missing and no "
-"entries have been updated."
+"To replace passwords of existing entries, all the following columns must be present: "
+"Group/Title, Username and Password.  One or more are missing and no entries have been "
+"updated."
 msgstr ""
-"Om wachtwoorden te vervangen van bestande vermeldingen, moeten de volgende "
-"kolommen zichtbaar zijn: Groep/Titel, Gebruikersnaam en Wachtwoord. Een of "
-"meer ontbreken en geen enkel vermelding is aangepast."
+"Om wachtwoorden te vervangen van bestande vermeldingen, moeten de volgende kolommen "
+"zichtbaar zijn: Groep/Titel, Gebruikersnaam en Wachtwoord. Een of meer ontbreken en "
+"geen enkel vermelding is aangepast."
 
 #: ../../../core/core_st.cpp:229
 #, fuzzy, c-format
@@ -6919,41 +6794,38 @@ msgstr "%ls heeft een lege %ls.\n"
 #: ../../../core/core_st.cpp:231
 #, fuzzy, c-format
 msgid ""
-"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
-"the base entry is already an alias."
+"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but the base "
+"entry is already an alias."
 msgstr ""
-"Vermelding \"%ls, %ls, %ls\" heeft een wachtwoord met de correcte opmaak "
-"voor een alias, maar de basis vermelding is al een alias."
+"Vermelding \"%ls, %ls, %ls\" heeft een wachtwoord met de correcte opmaak voor een "
+"alias, maar de basis vermelding is al een alias."
 
 #: ../../../core/core_st.cpp:232
 msgid "\tThis entry has been made an alias of associated base entry."
-msgstr ""
-"\tDeze vermelding is een alias gemaakt van het geassocieerde basis vermelding"
+msgstr "\tDeze vermelding is een alias gemaakt van het geassocieerde basis vermelding"
 
 #: ../../../core/core_st.cpp:233
 #, fuzzy, c-format
 msgid ""
-"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
-"the base entry does not exist."
+"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but the base "
+"entry does not exist."
 msgstr ""
-"Vermelding \"%ls, %ls, %ls\" heeft een wachtwoord met de correcte opmaak "
-"voor een alias, maar de basis vermelding bestaat niet."
+"Vermelding \"%ls, %ls, %ls\" heeft een wachtwoord met de correcte opmaak voor een "
+"alias, maar de basis vermelding bestaat niet."
 
 #: ../../../core/core_st.cpp:234
-msgid ""
-"\tThis entry remains a normal entry and the password has not been changed."
+msgid "\tThis entry remains a normal entry and the password has not been changed."
 msgstr ""
-"\tDeze vermelding blijft een gewone vermelding en het wachtwoord is niet "
-"gewijzigd"
+"\tDeze vermelding blijft een gewone vermelding en het wachtwoord is niet gewijzigd"
 
 #: ../../../core/core_st.cpp:235
 #, fuzzy, c-format
 msgid ""
-"The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls "
-"base entry. It cannot be imported."
+"The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls base entry. "
+"It cannot be imported."
 msgstr ""
-"De %ls vermelding \"%ls, %ls, %ls\" wijst niet naar een gewone of bestaande "
-"%ls basis vermelding. Het kan niet geïmporteerd worden."
+"De %ls vermelding \"%ls, %ls, %ls\" wijst niet naar een gewone of bestaande %ls basis "
+"vermelding. Het kan niet geïmporteerd worden."
 
 #: ../../../core/core_st.cpp:236
 msgid "Entry import warnings"
@@ -7009,23 +6881,21 @@ msgstr "Ongeldige status waarde: %d (moet 0 of 1 zijn)."
 
 #: ../../../core/core_st.cpp:248
 msgid "  Invalid password length found (not a hexadecimal number)."
-msgstr ""
-"Wachtwoord met ongeldige lengte gevonden (niet een hexadecimale getal)."
+msgstr "Wachtwoord met ongeldige lengte gevonden (niet een hexadecimale getal)."
 
 #: ../../../core/core_st.cpp:249
-msgid ""
-"  Invalid password length found (differs from length of following password)."
+msgid "  Invalid password length found (differs from length of following password)."
 msgstr ""
 "Wachtwoord met ongeldige lengte gevonden (verschilt van lengte met volgende "
 "wachtwoord)."
 
 #: ../../../core/core_st.cpp:250
 msgid ""
-"  Invalid field separator character found - only a single blank is allowed "
-"between fields."
+"  Invalid field separator character found - only a single blank is allowed between "
+"fields."
 msgstr ""
-"Ongeldig teken voor veldscheiding gevonden -  alleen een enkele spatie is "
-"toegestaan tussen velden"
+"Ongeldig teken voor veldscheiding gevonden -  alleen een enkele spatie is toegestaan "
+"tussen velden"
 
 #: ../../../core/core_st.cpp:251
 msgid "Invalid Filter schema."
@@ -7043,11 +6913,11 @@ msgstr "Het filter XML versie (%d) is groter dan het huidige schema (%d)"
 #: ../../../core/core_st.cpp:254
 #, c-format
 msgid ""
-"The filter XML version (%d) is greater than that supported by this instance "
-"of PasswordSafe (%d)."
+"The filter XML version (%d) is greater than that supported by this instance of "
+"PasswordSafe (%d)."
 msgstr ""
-"Het filter XML versie (%d) is groter dan ondersteund wordt door deze versie "
-"van PasswordSafe (%d)."
+"Het filter XML versie (%d) is groter dan ondersteund wordt door deze versie van "
+"PasswordSafe (%d)."
 
 #: ../../../core/core_st.cpp:255
 msgid "is"
@@ -7076,15 +6946,15 @@ msgstr "is aanwezig"
 #: ../../../core/core_st.cpp:261
 #, c-format
 msgid ""
-"Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It "
-"has been removed from the %ls entry."
+"Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been "
+"removed from the %ls entry."
 msgstr ""
 
 #: ../../../core/core_st.cpp:262
 #, c-format
 msgid ""
-"Entry keyboard shortcut %ls entry %ls is already allocated to the "
-"PasswordSafe application. It has been removed from the entry."
+"Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe "
+"application. It has been removed from the entry."
 msgstr ""
 
 #: ../../../core/core_st.cpp:263
@@ -7149,8 +7019,8 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:273
 msgid ""
-"\tOne or more Password Policy Names were not found in the database. The "
-"affected entries have been changed to use the database's default policy."
+"\tOne or more Password Policy Names were not found in the database. The affected "
+"entries have been changed to use the database's default policy."
 msgstr ""
 
 #: ../../../core/core_st.cpp:274
@@ -7202,11 +7072,11 @@ msgstr "Interne programma fout: Er zijn geen bestands adressen meer"
 
 #: ../../../core/core_st.cpp:285
 msgid ""
-"Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 "
-"seems available."
+"Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 seems "
+"available."
 msgstr ""
-"Niet mogelijk om een MS XML lezer op uw computer te gebruiken. MS XML V3, "
-"V4,  of V6 lijkt niet aanwezig te zijn."
+"Niet mogelijk om een MS XML lezer op uw computer te gebruiken. MS XML V3, V4,  of V6 "
+"lijkt niet aanwezig te zijn."
 
 #: ../../../core/core_st.cpp:287
 msgid "Unsaved changes"
@@ -7252,12 +7122,10 @@ msgstr ""
 "Aantal elementen met velden die niet volledig getoond kunne worden: %d"
 
 #: ../../../core/core_st.cpp:291
-msgid ""
-"Password should be mixed case, with at least one digit or punctuation "
-"character"
+msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr ""
-"Wachtwoord moet hoofdletters en kleine letters bevatten, met tenminste een "
-"cijfer of leesteken"
+"Wachtwoord moet hoofdletters en kleine letters bevatten, met tenminste een cijfer of "
+"leesteken"
 
 #: ../../../core/core_st.cpp:292
 #, fuzzy
@@ -7299,14 +7167,14 @@ msgstr "relatief"
 #: ../../../core/core_st.cpp:307
 #, c-format
 msgid ""
-"\tOne or more entry keyboard shortcuts were already assigned to entries in "
-"this database. They have been removed from the %ls entries."
+"\tOne or more entry keyboard shortcuts were already assigned to entries in this "
+"database. They have been removed from the %ls entries."
 msgstr ""
 
 #: ../../../core/core_st.cpp:308
 msgid ""
-"\tOne or more Password Policy Names were already in this database but had "
-"different settings. They have been renamed."
+"\tOne or more Password Policy Names were already in this database but had different "
+"settings. They have been renamed."
 msgstr ""
 
 #: ../../../core/core_st.cpp:309
@@ -7436,8 +7304,8 @@ msgstr "Dubbel klik de vermelding om de URL in de browser te openen"
 #: ../../../core/core_st.cpp:340
 msgid "Double-Click on entry to Browse to URL + Autotype"
 msgstr ""
-"Dubbel klik de vermelding om de URL in de browser te openen en automatische "
-"invoer te gebruiken"
+"Dubbel klik de vermelding om de URL in de browser te openen en automatische invoer te "
+"gebruiken"
 
 #: ../../../core/core_st.cpp:341
 #, fuzzy
@@ -7515,11 +7383,10 @@ msgstr "Onbekende functie"
 
 #: ../../../core/core_st.cpp:362
 #, fuzzy
-msgid ""
-"The following columns are unrecognized by PasswordSafe and will be ignored: "
+msgid "The following columns are unrecognized by PasswordSafe and will be ignored: "
 msgstr ""
-"De volgende kolommen waren herkend maar alleen Groep/Titel, Gebruikersnaam "
-"en Wachtwoord worden bewerkt:"
+"De volgende kolommen waren herkend maar alleen Groep/Titel, Gebruikersnaam en "
+"Wachtwoord worden bewerkt:"
 
 #: ../../../core/core_st.cpp:363
 msgid "Unknown object"
@@ -7535,19 +7402,17 @@ msgid "\tName: %ls; Filename: %ls"
 msgstr ""
 
 #: ../../../core/core_st.cpp:367
-msgid ""
-"The following entries had an invalid UUID field.  This has been corrected."
-msgstr ""
-"De volgende vermeldingen hadden een ongeldige UUID waarde. Dit is aangepast."
+msgid "The following entries had an invalid UUID field.  This has been corrected."
+msgstr "De volgende vermeldingen hadden een ongeldige UUID waarde. Dit is aangepast."
 
 #: ../../../core/core_st.cpp:368
 #, fuzzy, c-format
 msgid ""
-"The following entries have passwords in the correct form for %ls, but the "
-"base entry does not exist."
+"The following entries have passwords in the correct form for %ls, but the base entry "
+"does not exist."
 msgstr ""
-"Vermelding \"%ls, %ls, %ls\" heeft een wachtwoord met de correcte opmaak "
-"voor een alias, maar de basis vermelding bestaat niet."
+"Vermelding \"%ls, %ls, %ls\" heeft een wachtwoord met de correcte opmaak voor een "
+"alias, maar de basis vermelding bestaat niet."
 
 #: ../../../core/core_st.cpp:369
 msgid "The following entries were duplicates of an existing entry."
@@ -7555,24 +7420,20 @@ msgstr "De volgende vermeldingen zijn een kopie van een bestaande vermelding."
 
 #: ../../../core/core_st.cpp:370
 #, fuzzy
-msgid ""
-"The following entries had a duplicate UUID field.  This has been corrected."
-msgstr ""
-"De volgende vermeldingen hadden een ongeldige UUID waarde. Dit is aangepast."
+msgid "The following entries had a duplicate UUID field.  This has been corrected."
+msgstr "De volgende vermeldingen hadden een ongeldige UUID waarde. Dit is aangepast."
 
 #: ../../../core/core_st.cpp:371
 #, fuzzy, c-format
 msgid ""
-"The following entries had an empty Password field, which is not permitted. "
-"The password has been set to '%ls'"
-msgstr ""
-"De volgende vermeldingen hadden een ongeldige UUID waarde. Dit is aangepast."
+"The following entries had an empty Password field, which is not permitted. The "
+"password has been set to '%ls'"
+msgstr "De volgende vermeldingen hadden een ongeldige UUID waarde. Dit is aangepast."
 
 #: ../../../core/core_st.cpp:372
 #, fuzzy
 msgid "The following entries had an empty Title field, which is not permitted."
-msgstr ""
-"De volgende vermeldingen hadden een ongeldige UUID waarde. Dit is aangepast."
+msgstr "De volgende vermeldingen hadden een ongeldige UUID waarde. Dit is aangepast."
 
 #: ../../../core/core_st.cpp:373
 #, fuzzy, c-format
@@ -7605,24 +7466,21 @@ msgstr "\tDe volgende vermeldingen bevatten de zoek tekst '%s'"
 
 #: ../../../core/core_st.cpp:379
 msgid ""
-"The following entries had an invalid Password History.  This has been "
-"rebuilt with available data.  There may be some loss of history."
+"The following entries had an invalid Password History.  This has been rebuilt with "
+"available data.  There may be some loss of history."
 msgstr ""
-"De volgende vermeldingen hadden een ongeldig Wachtwoord Geschiedenis. Dit is "
-"hersteld met beschikbare gegevens. Een deel van de geschiedenis kan hierdoor "
-"verloren zijn."
+"De volgende vermeldingen hadden een ongeldig Wachtwoord Geschiedenis. Dit is hersteld "
+"met beschikbare gegevens. Een deel van de geschiedenis kan hierdoor verloren zijn."
 
 #: ../../../core/core_st.cpp:380
 #, c-format
 msgid ""
-"The following entries have one or more text fields too long to display or "
-"edit (over %d characters).  The largest entry size found was ~%d %ls."
+"The following entries have one or more text fields too long to display or edit (over "
+"%d characters).  The largest entry size found was ~%d %ls."
 msgstr ""
 
 #: ../../../core/core_st.cpp:381
-msgid ""
-"The following WARNINGS were detected - you should review and fix them "
-"manually."
+msgid "The following WARNINGS were detected - you should review and fix them manually."
 msgstr ""
 
 #: ../../../core/core_st.cpp:384
@@ -7644,8 +7502,7 @@ msgid "XML %ls: line %d character %d: %ls"
 msgstr "XML %ls: regel %d teken %d: %ls"
 
 #: ../../../core/core_st.cpp:387
-msgid ""
-"*** Invalid XML characters found - see exported XML file for more details ***"
+msgid "*** Invalid XML characters found - see exported XML file for more details ***"
 msgstr ""
 
 #: ../../../core/core_st.cpp:388
@@ -7656,40 +7513,34 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:389
 msgid ""
-"A filter was active. Export of data was restricted to include only those "
-"displayed."
+"A filter was active. Export of data was restricted to include only those displayed."
 msgstr ""
-"Een filter was actief. De geëxporteerde data was beperkt tot alleen de "
-"getoonde data."
+"Een filter was actief. De geëxporteerde data was beperkt tot alleen de getoonde data."
 
 #: ../../../core/core_st.cpp:390
 msgid "Export of data was restricted to certain fields by the user."
-msgstr ""
-"Exporteren van gegevens was door de gebruiker beperkt tot bepaalde velden"
+msgstr "Exporteren van gegevens was door de gebruiker beperkt tot bepaalde velden"
 
 #: ../../../core/core_st.cpp:391
 msgid ""
-"Note: These Password Policies will not replace existing policies with the "
-"same name in the current database."
+"Note: These Password Policies will not replace existing policies with the same name in "
+"the current database."
 msgstr ""
 
 #: ../../../core/core_st.cpp:392
-msgid ""
-"Note: These preferences are only used when importing into an empty database."
+msgid "Note: These preferences are only used when importing into an empty database."
 msgstr ""
-"Opmerking: Deze voorkeuren worden alleen gebruikt bij het importeren in een "
-"lege database."
+"Opmerking: Deze voorkeuren worden alleen gebruikt bij het importeren in een lege "
+"database."
 
 #: ../../../core/core_st.cpp:393
 msgid "Subset of entries restricted by the following rule:"
 msgstr "Deel van de vermeldingen beperkt door de volgende regel:"
 
 #: ../../../core/core_st.cpp:394
-msgid ""
-"The user specified that the following fields be excluded from the export:"
+msgid "The user specified that the following fields be excluded from the export:"
 msgstr ""
-"De gebruiker gaf op dat de volgende velden uitgesloten moeten worden van de "
-"export:"
+"De gebruiker gaf op dat de volgende velden uitgesloten moeten worden van de export:"
 
 #: ../../../core/core_st.cpp:395
 #, fuzzy, c-format
@@ -7713,12 +7564,10 @@ msgid "Unable to load configuration file"
 msgstr "Niet mogelijk om configuratie bestand te laden."
 
 #: ../../../core/core_st.cpp:398
-msgid ""
-"Failed to lock configuration file - opened by another instance of "
-"PasswordSafe?"
+msgid "Failed to lock configuration file - opened by another instance of PasswordSafe?"
 msgstr ""
-"Het vergrendelen van het configuratie bestand is mislukt - geopend door een "
-"andere instantie van PasswordSafe?"
+"Het vergrendelen van het configuratie bestand is mislukt - geopend door een andere "
+"instantie van PasswordSafe?"
 
 #: ../../../core/core_st.cpp:399
 msgid "Unable to save configuration file"
@@ -7821,8 +7670,8 @@ msgstr ""
 #: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:201
 #, c-format
 msgid ""
-"Unexpected attribute value \"%ls\" (expected \"yes\" or \"no\") in filter "
-"entry %d of '%ls'"
+"Unexpected attribute value \"%ls\" (expected \"yes\" or \"no\") in filter entry %d of "
+"'%ls'"
 msgstr ""
 
 #: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:322
@@ -7872,15 +7721,14 @@ msgstr ""
 
 #, fuzzy
 #~ msgid ""
-#~ "To add a new entry, simply fill in the fields below. At least a title "
-#~ "and\n"
+#~ "To add a new entry, simply fill in the fields below. At least a title and\n"
 #~ "a password are required. If you have set a default username, it will\n"
 #~ "appear in the username field."
 #~ msgstr ""
-#~ "Om een nieuw vermelding toe te voegen is het voldoende de velden "
-#~ "hieronder in te vullen. Minimaal moet een titel en een wachtwoord op "
-#~ "gegeven worden. Als u een standaard gebruikersnaam hebt gekozen zal deze "
-#~ "te zien zijn in het gebruikersnaam veld."
+#~ "Om een nieuw vermelding toe te voegen is het voldoende de velden hieronder in te "
+#~ "vullen. Minimaal moet een titel en een wachtwoord op gegeven worden. Als u een "
+#~ "standaard gebruikersnaam hebt gekozen zal deze te zien zijn in het gebruikersnaam "
+#~ "veld."
 
 #, fuzzy
 #~ msgid "EMail:"
@@ -7918,14 +7766,13 @@ msgstr ""
 #, fuzzy
 #~ msgid ""
 #~ "A new password database will be created.\n"
-#~ "The Master Password you enter will be used to encrypt the password "
-#~ "database file.\n"
+#~ "The Master Password you enter will be used to encrypt the password database file.\n"
 #~ "The Master Password can use any keyboard character and is case-sensitive."
 #~ msgstr ""
-#~ "Een nieuw wachtwoord database zal gemaakt worden. De kluis combinatie die "
-#~ "u ingevoerd heeft zal gebruikt worden om het wachtwoord database bestand "
-#~ "te versleutelen. De Kluis Combinatie kan bestaan uit alle toetsenbord "
-#~ "tekens en is hoofdletter gevoelig."
+#~ "Een nieuw wachtwoord database zal gemaakt worden. De kluis combinatie die u "
+#~ "ingevoerd heeft zal gebruikt worden om het wachtwoord database bestand te "
+#~ "versleutelen. De Kluis Combinatie kan bestaan uit alle toetsenbord tekens en is "
+#~ "hoofdletter gevoelig."
 
 #, fuzzy
 #~ msgid "Master Password Setup"
@@ -8159,24 +8006,23 @@ msgstr ""
 
 #~ msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
 #~ msgstr ""
-#~ "Sorry, 'uitspreekbare' of 'makkelijk te lezen' opties zijn niet samen "
-#~ "mogelijk. "
+#~ "Sorry, 'uitspreekbare' of 'makkelijk te lezen' opties zijn niet samen mogelijk. "
 
 #, fuzzy
 #~ msgid ""
 #~ "Please specify the name & group\n"
 #~ " for shortcut to "
 #~ msgstr ""
-#~ "Geef altublieft de naam && groep voor deze snelkoppeling naar de basis "
-#~ "vermelding '%s':"
+#~ "Geef altublieft de naam && groep voor deze snelkoppeling naar de basis vermelding "
+#~ "'%s':"
 
 #, fuzzy
 #~ msgid ""
 #~ "Please specify the name and group for this shortcut\n"
 #~ "to the base entry "
 #~ msgstr ""
-#~ "Geef altublieft de naam && groep voor deze snelkoppeling naar de basis "
-#~ "vermelding '%s':"
+#~ "Geef altublieft de naam && groep voor deze snelkoppeling naar de basis vermelding "
+#~ "'%s':"
 
 #~ msgid "Date/Time Information"
 #~ msgstr "Datum/Tijd Informatie"
@@ -8193,8 +8039,8 @@ msgstr ""
 #~ "Use only easy-to-read characters\n"
 #~ "(i.e., no 'l', '1', etc.)"
 #~ msgstr ""
-#~ "Gebruik alleen &makkelijk te lezen letters (bijvoorbeeld geen letters die "
-#~ "op anderen lijken zoals \"1\",'i',\"I\")"
+#~ "Gebruik alleen &makkelijk te lezen letters (bijvoorbeeld geen letters die op "
+#~ "anderen lijken zoals \"1\",'i',\"I\")"
 
 #, fuzzy
 #~ msgid "Initial tray icon color"
@@ -8243,12 +8089,11 @@ msgstr ""
 #~ msgstr "Wilt u het vervangen?"
 
 #~ msgid ""
-#~ "This version of PasswordSafe does not support more than %d entries in a "
-#~ "database.\n"
+#~ "This version of PasswordSafe does not support more than %d entries in a database.\n"
 #~ "Note: Saving this database will result in the removal of unread entries!"
 #~ msgstr ""
-#~ "Deze versie van PasswordSafe kan niet meer dan %d vermeldingen bevatten "
-#~ "in de database.\n"
+#~ "Deze versie van PasswordSafe kan niet meer dan %d vermeldingen bevatten in de "
+#~ "database.\n"
 #~ "Opmerking: Opslaan van deze database heeft tot gevolg dat alle ongelezen "
 #~ "vermeldingen verwijderd worden!"
 
@@ -8343,15 +8188,15 @@ msgstr ""
 #~ msgstr "Database heeft enkele grote vermeldingen!"
 
 #~ msgid ""
-#~ "Warning - %d %s in your database may have one or more fields too large to "
-#~ "display or edit.\n"
+#~ "Warning - %d %s in your database may have one or more fields too large to display "
+#~ "or edit.\n"
 #~ "\n"
 #~ "The largest entry size found was ~%d %s.\n"
 #~ "\n"
 #~ "You can use the Filter to selectively display these record(s)."
 #~ msgstr ""
-#~ "Waarschuwing - %d %s in de database kan een of meerdere velden hebben die "
-#~ "te groot zijn om te tonen of te bewerken.\n"
+#~ "Waarschuwing - %d %s in de database kan een of meerdere velden hebben die te groot "
+#~ "zijn om te tonen of te bewerken.\n"
 #~ "\n"
 #~ "De grootste gevonden vermelding was ~%d %s.\n"
 #~ "\n"
@@ -8566,40 +8411,35 @@ msgstr ""
 #~ msgstr "'Alt Gr' (rechtse Alt) toets"
 
 #~ msgid ""
-#~ "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and "
-#~ "Minimize' conflict. Please change one or both."
+#~ "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' "
+#~ "conflict. Please change one or both."
 #~ msgstr ""
-#~ "'Klembord legen bij minimaliseren' en 'Dubbel klik Actie 'kopieer "
-#~ "wachtwoord en minimaliseer' tegenspraak. SVP een van beiden kiezen."
+#~ "'Klembord legen bij minimaliseren' en 'Dubbel klik Actie 'kopieer wachtwoord en "
+#~ "minimaliseer' tegenspraak. SVP een van beiden kiezen."
 
 #~ msgid ""
 #~ "'\n"
 #~ "\n"
-#~ "If you would like to report this error, please reply 'Yes' below and "
-#~ "upload this file to your Bug Report. If you reply 'No', the file will be "
-#~ "deleted.\n"
+#~ "If you would like to report this error, please reply 'Yes' below and upload this "
+#~ "file to your Bug Report. If you reply 'No', the file will be deleted.\n"
 #~ "\n"
-#~ "The diagnostic information in this file does not include any of your "
-#~ "personal data nor any information from the database open at the time of "
-#~ "the error.\n"
+#~ "The diagnostic information in this file does not include any of your personal data "
+#~ "nor any information from the database open at the time of the error.\n"
 #~ "\n"
-#~ "However, if you prefer (and the problem is repeatable with a test "
-#~ "database), you may send us that minidump file as well as the test "
-#~ "database.\n"
+#~ "However, if you prefer (and the problem is repeatable with a test database), you "
+#~ "may send us that minidump file as well as the test database.\n"
 #~ "\n"
 #~ "Thank you for your help to improve PasswordSafe."
 #~ msgstr ""
 #~ "'\n"
 #~ "\n"
-#~ "Als u deze fout wilt melden klik dan op 'Ja' hieronder en verstuur dit "
-#~ "bestand naar uw Bug Rapport. Als u kiest voor 'Nee' wordt het bestand "
-#~ "verwijdert.\n"
-#~ "De diagnostische informatie in dit bestand bevat geen persoonlijke "
-#~ "informatie. Het bevat ook geen informatie van de database die geopend was "
-#~ "ten tijde van de fout.\n"
+#~ "Als u deze fout wilt melden klik dan op 'Ja' hieronder en verstuur dit bestand naar "
+#~ "uw Bug Rapport. Als u kiest voor 'Nee' wordt het bestand verwijdert.\n"
+#~ "De diagnostische informatie in dit bestand bevat geen persoonlijke informatie. Het "
+#~ "bevat ook geen informatie van de database die geopend was ten tijde van de fout.\n"
 #~ "\n"
-#~ "Als u wilt (en het probleem is te herhalen in een testdatabase), mag u "
-#~ "deze testdatabase en de minidump bestand naar ons toezenden.\n"
+#~ "Als u wilt (en het probleem is te herhalen in een testdatabase), mag u deze "
+#~ "testdatabase en de minidump bestand naar ons toezenden.\n"
 #~ "\n"
 #~ "Bedankt voor uw hulp in bij het verbeteren van PasswordSafe."
 
@@ -8613,8 +8453,7 @@ msgstr ""
 #~ msgstr "(Vereist een herstart van PasswordSafe om effectief te worden.)"
 
 #~ msgid "* means that the database has been modified since last save"
-#~ msgstr ""
-#~ "* betekent dat de database verandert is sinds de laatste keer opslaan"
+#~ msgstr "* betekent dat de database verandert is sinds de laatste keer opslaan"
 
 #~ msgid "- Physical -"
 #~ msgstr "- Fysiek - "
@@ -8907,8 +8746,7 @@ msgstr ""
 #~ msgstr "Alle beschikbare kolommen worden getoond."
 
 #~ msgid "Allow multiple instances (requires all instances to be restarted)"
-#~ msgstr ""
-#~ "Sta meerdere exemplaren toe (vereist een herstart van alle exemplaren)"
+#~ msgstr "Sta meerdere exemplaren toe (vereist een herstart van alle exemplaren)"
 
 #~ msgid "Alt"
 #~ msgstr "Alt"
@@ -8928,26 +8766,19 @@ msgstr ""
 #~ msgid "Always on top"
 #~ msgstr "Altijd in zicht"
 
-#~ msgid ""
-#~ "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already "
-#~ "exists."
+#~ msgid "An entry with Group \"%s\", Title \"%s\" and User Name \"%s\" already exists."
 #~ msgstr ""
-#~ "Een vermelding met Groep \"%s\", Titel \"%s\" en Gebruikers Naam \"%s\" "
-#~ "bestaat al."
+#~ "Een vermelding met Groep \"%s\", Titel \"%s\" en Gebruikers Naam \"%s\" bestaat al."
 
-#~ msgid ""
-#~ "An entry with Group \"%s\", Title \"%s\" and empty User Name already "
-#~ "exists."
+#~ msgid "An entry with Group \"%s\", Title \"%s\" and empty User Name already exists."
 #~ msgstr ""
-#~ "Een vermelding met Groep \"%s\", Titel \"%s\" en een lege Gebruikers Naam "
-#~ "bestaat al."
+#~ "Een vermelding met Groep \"%s\", Titel \"%s\" en een lege Gebruikers Naam bestaat "
+#~ "al."
 
-#~ msgid ""
-#~ "An entry with an empty Group, Title \"%s\" and empty User Name already "
-#~ "exists."
+#~ msgid "An entry with an empty Group, Title \"%s\" and empty User Name already exists."
 #~ msgstr ""
-#~ "Een vermelding met een lege Groep, Titel \"%s\" en een lege Gebruikers "
-#~ "Naam bestaat al."
+#~ "Een vermelding met een lege Groep, Titel \"%s\" en een lege Gebruikers Naam bestaat "
+#~ "al."
 
 #~ msgid "An incorrect file handle was associated with %1."
 #~ msgstr "Een verkeerde bestandsverwijzing was gebruikt bij %1."
@@ -8965,13 +8796,12 @@ msgstr ""
 #~ msgstr "West Armeens"
 
 #~ msgid ""
-#~ "As the double quotation character is used to delimit the whole notes "
-#~ "field, it cannot be used within it to delimit multiple lines. Please "
-#~ "enter another character."
+#~ "As the double quotation character is used to delimit the whole notes field, it "
+#~ "cannot be used within it to delimit multiple lines. Please enter another character."
 #~ msgstr ""
-#~ "De dubbele aanhalingstekens zijn gebruikt om het gehele notitie veld af "
-#~ "te bakenen. Daarom kunnen ze niet gebruikt worden om meerdere regels af "
-#~ "te bakenen. Hiervoor  alstublieft een ander teken invoeren."
+#~ "De dubbele aanhalingstekens zijn gebruikt om het gehele notitie veld af te bakenen. "
+#~ "Daarom kunnen ze niet gebruikt worden om meerdere regels af te bakenen. Hiervoor  "
+#~ "alstublieft een ander teken invoeren."
 
 #~ msgid "Attempted an unsupported operation."
 #~ msgstr "Deed een poging tot een niet ondersteunde operatie."
@@ -9040,8 +8870,7 @@ msgstr ""
 #~ msgstr "CSVbestanden (*.csv)|*.csv|Alle bestanden (*.*)|*.*||"
 
 #~ msgid "Can only warn between 1 and 30 days before passwords expire"
-#~ msgstr ""
-#~ "Kan alleen tussen 1 en 30 dagen voor het wachtwoord verloop waarschuwen"
+#~ msgstr "Kan alleen tussen 1 en 30 dagen voor het wachtwoord verloop waarschuwen"
 
 #~ msgid "Canadian French"
 #~ msgstr "Canadees Frans"
@@ -9060,14 +8889,10 @@ msgstr ""
 
 #~ msgid "Cannot create missing directories in path to the export file."
 #~ msgstr ""
-#~ "Kan ontbrekende mappen niet aanmaken in het pad van het te exporteren "
-#~ "bestand."
+#~ "Kan ontbrekende mappen niet aanmaken in het pad van het te exporteren bestand."
 
-#~ msgid ""
-#~ "Cannot process as this entry has been deleted from the open database."
-#~ msgstr ""
-#~ "Kan niet verwerken omdat deze vermelding verwijderd is van de open "
-#~ "database."
+#~ msgid "Cannot process as this entry has been deleted from the open database."
+#~ msgstr "Kan niet verwerken omdat deze vermelding verwijderd is van de open database."
 
 #~ msgid "Case sensitive search"
 #~ msgstr "Hoofdlettergevoelig zoeken"
@@ -9079,24 +8904,23 @@ msgstr ""
 #~ msgstr "Wijzig Dit"
 
 #~ msgid ""
-#~ "Change the maximum number of saved passwords for entries currently saving "
-#~ "password history to the new maximum, if currently saving fewer.\n"
+#~ "Change the maximum number of saved passwords for entries currently saving password "
+#~ "history to the new maximum, if currently saving fewer.\n"
 #~ "\n"
-#~ "Entries with more than this new maximum already saved will remain "
-#~ "unchanged."
+#~ "Entries with more than this new maximum already saved will remain unchanged."
 #~ msgstr ""
 #~ "Wijzig het maximaal aantal opgeslagen wachtwoorden naar het nieuwe aantal "
-#~ "opgeslagen wachtwoorden voor vermeldingen waar de wachtwoord geschiedenis "
-#~ "voor bewaard wordt. Wijzig het aantal alleen als het oude aantal kleiner "
-#~ "is dan het nieuwe aantal.\n"
+#~ "opgeslagen wachtwoorden voor vermeldingen waar de wachtwoord geschiedenis voor "
+#~ "bewaard wordt. Wijzig het aantal alleen als het oude aantal kleiner is dan het "
+#~ "nieuwe aantal.\n"
 #~ "\n"
-#~ "Vermeldingen waar meer dan het nieuwe maximale aantal oude wachtwoorden "
-#~ "bewaard werden zullen niet aangepast worden."
+#~ "Vermeldingen waar meer dan het nieuwe maximale aantal oude wachtwoorden bewaard "
+#~ "werden zullen niet aangepast worden."
 
 #~ msgid "Changes to existing entries will be applied on pressing OK"
 #~ msgstr ""
-#~ "Wijzigigen van bestaande vermeldingen zullen toegepast worden zodra op OK "
-#~ "gedrukt wordt."
+#~ "Wijzigigen van bestaande vermeldingen zullen toegepast worden zodra op OK gedrukt "
+#~ "wordt."
 
 #~ msgid "Chinese Bopomofo"
 #~ msgstr "Chinees Bopomofo"
@@ -9110,27 +8934,25 @@ msgstr ""
 #~ msgid "Click to copy to clipboard"
 #~ msgstr "Klim om naar het klembord te kopiëeren"
 
-#~ msgid ""
-#~ "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
+#~ msgid "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
 #~ msgstr ""
-#~ "Klim om naar het klembord te kopiëeren, Ctrl+klik om ook het URL veld "
-#~ "deze waarde te geven."
+#~ "Klim om naar het klembord te kopiëeren, Ctrl+klik om ook het URL veld deze waarde "
+#~ "te geven."
 
 #~ msgid "Click to enable/disable this row"
 #~ msgstr "Klik om deze rij aan of uit te zetten"
 
 #~ msgid ""
-#~ "Click to enter a character code via virtual numeric keypad. The character "
-#~ "is added when this button is clicked again."
+#~ "Click to enter a character code via virtual numeric keypad. The character is added "
+#~ "when this button is clicked again."
 #~ msgstr ""
-#~ "Klik om een een teken code in te voeren via het virtuele numeriek "
-#~ "toetsenblok. Het teken wordt toegevoegd als deze knop opnieuw aangeklikt "
-#~ "wordt."
+#~ "Klik om een een teken code in te voeren via het virtuele numeriek toetsenblok. Het "
+#~ "teken wordt toegevoegd als deze knop opnieuw aangeklikt wordt."
 
 #~ msgid "Click to expand and copy to clipboard, Ctrl+Click to copy unexpanded"
 #~ msgstr ""
-#~ "Klik om uit te vouwen en te kopiëeren naar klembord, Ctrl+Klik om "
-#~ "ingevouwen te kopiëeren"
+#~ "Klik om uit te vouwen en te kopiëeren naar klembord, Ctrl+Klik om ingevouwen te "
+#~ "kopiëeren"
 
 #~ msgid "Click to go to link, Ctrl+Click to go and Autotype"
 #~ msgstr "Klik om naar te link te gaan, Ctrl+klik om te gaan en Auto invoer "
@@ -9205,16 +9027,14 @@ msgstr ""
 #~ msgstr "Configuratie bestand status"
 
 #~ msgid ""
-#~ "Confirm that you wish to copy this entry from the %s database to the %s "
-#~ "database?\n"
+#~ "Confirm that you wish to copy this entry from the %s database to the %s database?\n"
 #~ "\n"
 #~ "If already present in the target database, it will be replaced!"
 #~ msgstr ""
-#~ "Bevestig dat u deze vermelding van de %s database naar de %s database "
-#~ "wenst te kopiëren\n"
+#~ "Bevestig dat u deze vermelding van de %s database naar de %s database wenst te "
+#~ "kopiëren\n"
 #~ "\n"
-#~ "Als de vermelding al aanwezig is in de doeldatabase wordt deze "
-#~ "overschreven!"
+#~ "Als de vermelding al aanwezig is in de doeldatabase wordt deze overschreven!"
 
 #~ msgid "Continue"
 #~ msgstr "Doorgaan"
@@ -9286,11 +9106,8 @@ msgstr ""
 #~ msgid "Database Unique ID"
 #~ msgstr "Unieke Database ID"
 
-#~ msgid ""
-#~ "Database is read-only. Sorry, cannot save changed any database "
-#~ "preferences."
-#~ msgstr ""
-#~ "Database is alleen-lezen. Kan gewijzigde database voorkeuren niet bewaren."
+#~ msgid "Database is read-only. Sorry, cannot save changed any database preferences."
+#~ msgstr "Database is alleen-lezen. Kan gewijzigde database voorkeuren niet bewaren."
 
 #~ msgid ""
 #~ "Database mode: read-only (R-O) or read/write (R/W)\n"
@@ -9299,12 +9116,10 @@ msgstr ""
 #~ "Database modus: Alleen-Lezen of Lezen/Schrijven\n"
 #~ "(dubbel klik om de modus te veranderen)"
 
-#~ msgid ""
-#~ "Default number of saved password history entries must be between 1 and "
-#~ "255."
+#~ msgid "Default number of saved password history entries must be between 1 and 255."
 #~ msgstr ""
-#~ "Standaard aantal bewaarde wachtwoorden voor de wachtwoord geschiedenis "
-#~ "moet tussen de 1 en 255 zijn."
+#~ "Standaard aantal bewaarde wachtwoorden voor de wachtwoord geschiedenis moet tussen "
+#~ "de 1 en 255 zijn."
 
 #~ msgid "Delete a filter"
 #~ msgstr "Verwijder een filter"
@@ -9337,11 +9152,11 @@ msgstr ""
 #~ msgstr "Wilt u de wijzigingen van de wachtwoord lijst bewaren?"
 
 #~ msgid ""
-#~ "Do you wish to change this entry's Base entry's password or change this "
-#~ "entry's own password?"
+#~ "Do you wish to change this entry's Base entry's password or change this entry's own "
+#~ "password?"
 #~ msgstr ""
-#~ "Wilt u van deze vermelding het wachtwoord van de basis vermelding of het "
-#~ "wachtwoord van deze vermelding veranderen?"
+#~ "Wilt u van deze vermelding het wachtwoord van de basis vermelding of het wachtwoord "
+#~ "van deze vermelding veranderen?"
 
 #~ msgid ""
 #~ "Do you wish to save the changes made to database:\n"
@@ -9371,8 +9186,7 @@ msgstr ""
 
 #~ msgid "Drag this image onto another window to start AutoType from there."
 #~ msgstr ""
-#~ "Versleep dit plaatje naar een ander scherm om Auto Invoer van daaraf te "
-#~ "starten."
+#~ "Versleep dit plaatje naar een ander scherm om Auto Invoer van daaraf te starten."
 
 #~ msgid "E&xit\tCtrl+Q\\Alt+F4"
 #~ msgstr "A&fsluiten\tCtrl+Q\\Alt+F4"
@@ -9384,14 +9198,14 @@ msgstr ""
 #~ msgstr "Bewerk Vermelding:   «%s» «%s» «%s»"
 
 #~ msgid ""
-#~ "Either unable to load the necessary DLL, or it is the incorrect version, "
-#~ "to support Autotype during Launch of a Browser or Run a command.\n"
+#~ "Either unable to load the necessary DLL, or it is the incorrect version, to support "
+#~ "Autotype during Launch of a Browser or Run a command.\n"
 #~ "\n"
 #~ "Autotype for these functions is disabled."
 #~ msgstr ""
-#~ "Of niet mogelijk om de benodigde DLL te laden, of de DLL versie is niet "
-#~ "correct, om automatische invoer mogelijk te maken tijdens opstarten van "
-#~ "een Browser of het uitvoeren van de opdracht.\n"
+#~ "Of niet mogelijk om de benodigde DLL te laden, of de DLL versie is niet correct, om "
+#~ "automatische invoer mogelijk te maken tijdens opstarten van een Browser of het "
+#~ "uitvoeren van de opdracht.\n"
 #~ "\n"
 #~ "Automatische invoer voor deze functies is uit gezet."
 
@@ -9450,11 +9264,10 @@ msgstr ""
 #~ msgstr "Geef niet meer dan %1 tekens op."
 
 #~ msgid ""
-#~ "Enter positions of password characters separated by spaces, commas or "
-#~ "semi-colons:"
+#~ "Enter positions of password characters separated by spaces, commas or semi-colons:"
 #~ msgstr ""
-#~ "Geef posities op van wachtwoord tekens gescheiden door spaties, komma's "
-#~ "of punt-komma's:"
+#~ "Geef posities op van wachtwoord tekens gescheiden door spaties, komma's of punt-"
+#~ "komma's:"
 
 #~ msgid "Enter your Sample Text below"
 #~ msgstr "Geef uw Voorbeeld Tekst hieronder op"
@@ -9728,40 +9541,39 @@ msgstr ""
 #~ msgstr "Pictogram"
 
 #~ msgid ""
-#~ "If enabled, a 'snapshot' will be taken before every save, and named "
-#~ "according to the options listed below."
+#~ "If enabled, a 'snapshot' will be taken before every save, and named according to "
+#~ "the options listed below."
 #~ msgstr ""
-#~ "Indien ingeschakeld wordt er voor het opslaan een moment opname gemaakt "
-#~ "en benoemd volgens onderstaande opties."
+#~ "Indien ingeschakeld wordt er voor het opslaan een moment opname gemaakt en benoemd "
+#~ "volgens onderstaande opties."
 
 #~ msgid "If requested, then a delimiter character must be entered!"
 #~ msgstr "Indien gevraagd, dan moet een scheidingsteken worden ingevoerd!"
 
 #~ msgid ""
-#~ "If the passphrase is the same as the currently opened database, "
-#~ "properties of this backup are shown."
+#~ "If the passphrase is the same as the currently opened database, properties of this "
+#~ "backup are shown."
 #~ msgstr ""
-#~ " De eigenschappen van deze back-up worden getoond als het wachtwoord is "
-#~ "hetzelfde als van de momenteel geopende database."
+#~ " De eigenschappen van deze back-up worden getoond als het wachtwoord is hetzelfde "
+#~ "als van de momenteel geopende database."
 
 #~ msgid ""
-#~ "If this is the first database opened on the startup of PasswordSafe, "
-#~ "PasswordSafe will exit.  If not, the new open will be cancelled and the "
-#~ "existing opened database, if any, will remain open."
+#~ "If this is the first database opened on the startup of PasswordSafe, PasswordSafe "
+#~ "will exit.  If not, the new open will be cancelled and the existing opened "
+#~ "database, if any, will remain open."
 #~ msgstr ""
-#~ "PasswordSafe zal stoppen als dit de eerste database is die geopend wordt "
-#~ "bij het opstarten van PasswordSafe. Zo niet, dan zal de nieuwe open "
-#~ "worden geannuleerd en de huidige  geopende database, indien van "
-#~ "toepassing, zal open blijven."
+#~ "PasswordSafe zal stoppen als dit de eerste database is die geopend wordt bij het "
+#~ "opstarten van PasswordSafe. Zo niet, dan zal de nieuwe open worden geannuleerd en "
+#~ "de huidige  geopende database, indien van toepassing, zal open blijven."
 
 #~ msgid ""
-#~ "If this keyboard supports characters via the %s, then this key will be "
-#~ "enabled and can be used to select them.\n"
+#~ "If this keyboard supports characters via the %s, then this key will be enabled and "
+#~ "can be used to select them.\n"
 #~ "\n"
 #~ "You may need to also select the Shift key to see them."
 #~ msgstr ""
-#~ "Als dit toetsenbord letters ondersteund met de %s, dan zal deze toets "
-#~ "worden geactiveerd en kan gebruikt worden om deze te selecteren.\n"
+#~ "Als dit toetsenbord letters ondersteund met de %s, dan zal deze toets worden "
+#~ "geactiveerd en kan gebruikt worden om deze te selecteren.\n"
 #~ "\n"
 #~ "Het kan zijn dat ook de Shift toets gebruikt moet worden om ze te zien."
 
@@ -9769,11 +9581,9 @@ msgstr ""
 #~ msgstr "Igbo"
 
 #~ msgid ""
-#~ "Ignore all Failsafe Backup files and continue with the currently selected "
-#~ "database."
+#~ "Ignore all Failsafe Backup files and continue with the currently selected database."
 #~ msgstr ""
-#~ "Negeer alle Veilige Back-up bestanden en ga verder met de geselecteerde "
-#~ "database."
+#~ "Negeer alle Veilige Back-up bestanden en ga verder met de geselecteerde database."
 
 #~ msgid "Inactive"
 #~ msgstr "Niet actief"
@@ -9839,19 +9649,19 @@ msgstr ""
 #~ msgstr "Linker Ctrl toets"
 
 #~ msgid ""
-#~ "Left click here to change. Right click here to reset or remove it. After "
-#~ "selecting the shortcut key combination, press Enter to set it."
+#~ "Left click here to change. Right click here to reset or remove it. After selecting "
+#~ "the shortcut key combination, press Enter to set it."
 #~ msgstr ""
-#~ "Linkermuis klik hier om aan te passen. Rechtermuis klik hier om te "
-#~ "herstellen of te verwijderen. Na selectie van de snel toets combinatie op "
-#~ "enter drukken om deze in te stellen."
+#~ "Linkermuis klik hier om aan te passen. Rechtermuis klik hier om te herstellen of te "
+#~ "verwijderen. Na selectie van de snel toets combinatie op enter drukken om deze in "
+#~ "te stellen."
 
 #~ msgid ""
 #~ "Length of passwords generated in hexadecimal format must be even\n"
 #~ "as each byte is two hexadecimal digits."
 #~ msgstr ""
-#~ "De lengte van wachtwoorden die gegeneerd worden in hexadecimaal formaat "
-#~ "moet even zijn\n"
+#~ "De lengte van wachtwoorden die gegeneerd worden in hexadecimaal formaat moet even "
+#~ "zijn\n"
 #~ "omdat elke byte twee hexadecimale cijfers geeft."
 
 #~ msgid "List1"
@@ -9879,8 +9689,8 @@ msgstr ""
 #~ "Maximum number of backups kept using incremented number suffix\n"
 #~ "must be between 1 and 999."
 #~ msgstr ""
-#~ "Maximum aantal back-ups dat bewaard wordt, bij het gebruik van een "
-#~ "achtervoegsel met een getal dat opgehoogd wordt,\n"
+#~ "Maximum aantal back-ups dat bewaard wordt, bij het gebruik van een achtervoegsel "
+#~ "met een getal dat opgehoogd wordt,\n"
 #~ "moet tussen 1 en 999 liggen."
 
 #~ msgid "Maximum number of days that can be specified is %d"
@@ -9902,11 +9712,11 @@ msgstr ""
 #~ msgstr "Hier naar toe verplaatsen"
 
 #~ msgid ""
-#~ "NOTE: Changing this entry's own password will make this a normal entry "
-#~ "and break the link with its base?"
+#~ "NOTE: Changing this entry's own password will make this a normal entry and break "
+#~ "the link with its base?"
 #~ msgstr ""
-#~ "LET OP: Wijzigen van het eigen wachtwoord van dit vermelding maakt er een "
-#~ "gewone vermelding van en verbreekt de relatie met zijn basis"
+#~ "LET OP: Wijzigen van het eigen wachtwoord van dit vermelding maakt er een gewone "
+#~ "vermelding van en verbreekt de relatie met zijn basis"
 
 #~ msgid "Name. Name. Name."
 #~ msgstr "Naam. Naam. Naam."
@@ -9918,9 +9728,7 @@ msgstr ""
 #~ msgstr "Geen database open om te vergelijken met een andere database!"
 
 #~ msgid "No entry exists within this database matching your specifications."
-#~ msgstr ""
-#~ "Er bestaat geen vermelding in deze database die aan de specificaties "
-#~ "voldoen."
+#~ msgstr "Er bestaat geen vermelding in deze database die aan de specificaties voldoen."
 
 #~ msgid "No error occurred."
 #~ msgstr "Er is geen fout opgetreden"
@@ -9971,14 +9779,13 @@ msgstr ""
 #~ msgstr "Niet alle register gegevens (of INI bestand) werden verwijderd."
 
 #~ msgid ""
-#~ "Note that if you choose to recover the auto-saved documents, you must "
-#~ "explicitly save them to overwrite the original documents.  If you choose "
-#~ "to not recover the auto-saved versions, they will be deleted."
+#~ "Note that if you choose to recover the auto-saved documents, you must explicitly "
+#~ "save them to overwrite the original documents.  If you choose to not recover the "
+#~ "auto-saved versions, they will be deleted."
 #~ msgstr ""
-#~ "Bedenk dat bij de keuze om de automatisch bewaarde documenten te "
-#~ "herstellen deze expliciet opgeslagen moeten worden om de originele "
-#~ "documenten te overschrijven. Bij de keuze om de automatisch bewaarde "
-#~ "versies niet te herstellen worden ze verwijderd."
+#~ "Bedenk dat bij de keuze om de automatisch bewaarde documenten te herstellen deze "
+#~ "expliciet opgeslagen moeten worden om de originele documenten te overschrijven. Bij "
+#~ "de keuze om de automatisch bewaarde versies niet te herstellen worden ze verwijderd."
 
 #~ msgid "Number of Entries"
 #~ msgstr "Aantal elementen"
@@ -10005,11 +9812,11 @@ msgstr ""
 #~ msgstr "Een of meer automatisch bewaarde documenten zijn gevonden."
 
 #~ msgid ""
-#~ "Only in Original DB: %d; Only in Comparison DB: %d; In both "
-#~ "(differences): %d; In both (identical): %d"
+#~ "Only in Original DB: %d; Only in Comparison DB: %d; In both (differences): %d; In "
+#~ "both (identical): %d"
 #~ msgstr ""
-#~ "Alleen in de originele database: %d; Alleen in de vergelijkings database: "
-#~ "%d; In beide (verschillen): %d; In beide (gelijk): %d"
+#~ "Alleen in de originele database: %d; Alleen in de vergelijkings database: %d; In "
+#~ "beide (verschillen): %d; In beide (gelijk): %d"
 
 #~ msgid "Original"
 #~ msgstr "Origineel"
@@ -10034,8 +9841,8 @@ msgstr ""
 
 #~ msgid "Passkey needed to save. Please unlock database and try again"
 #~ msgstr ""
-#~ "Wachtwoordsleutel is vereist om op te kunnen slaan. De database "
-#~ "ontgrendelen alstublieft en opnieuw proberen"
+#~ "Wachtwoordsleutel is vereist om op te kunnen slaan. De database ontgrendelen "
+#~ "alstublieft en opnieuw proberen"
 
 #~ msgid "Passphrase"
 #~ msgstr "Wachtwoord zin"
@@ -10057,12 +9864,12 @@ msgstr ""
 
 #~ msgid ""
 #~ "Password Safe has been compiled as %s but CPU is really %s.\n"
-#~ "You may not be able to open files or saved files may be incompatible with "
-#~ "other platforms."
+#~ "You may not be able to open files or saved files may be incompatible with other "
+#~ "platforms."
 #~ msgstr ""
 #~ "Password Safe is gecompileerd als %s maar de CPU is in werkelijkheid %s.\n"
-#~ "Het is mischien niet mogelijk om bestanden te openen of opgeslagen "
-#~ "bestanden kunnen misschien niet geopend worden op andere computers."
+#~ "Het is mischien niet mogelijk om bestanden te openen of opgeslagen bestanden kunnen "
+#~ "misschien niet geopend worden op andere computers."
 
 #~ msgid "Password [Mandatory Field]"
 #~ msgstr "Wachtwoord [Verplicht veld]"
@@ -10088,12 +9895,12 @@ msgstr ""
 #~ msgstr "Kies alstublieft een tekst bestand om te importeren"
 
 #~ msgid ""
-#~ "Please confirm that you wish to delete current user's PasswordSafe "
-#~ "configuration information from the Windows registry.\n"
+#~ "Please confirm that you wish to delete current user's PasswordSafe configuration "
+#~ "information from the Windows registry.\n"
 #~ "\n"
 #~ msgstr ""
-#~ "Bevestig SVP dat u de PasswordSafe Configuratie informatie van de huidige "
-#~ "gebruiker wilt verwijderen uit het Windows register.\n"
+#~ "Bevestig SVP dat u de PasswordSafe Configuratie informatie van de huidige gebruiker "
+#~ "wilt verwijderen uit het Windows register.\n"
 #~ "\n"
 
 #~ msgid "Please confirm you wish to delete the %s filter %s?"
@@ -10111,11 +9918,9 @@ msgstr ""
 #~ msgid "Please specify the sub-directory to contain all backups."
 #~ msgstr "Geef alstublieft de sub-folder waar alle back-ups worden bewaard."
 
-#~ msgid ""
-#~ "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
+#~ msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
 #~ msgstr ""
-#~ "Bezoek alstublieft de <a href=\"https://pwsafe.org/\">PasswordSafe "
-#~ "website.</a>"
+#~ "Bezoek alstublieft de <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
 
 #~ msgid "Polish (Programmers)"
 #~ msgstr "Pools (Programmeurs)"
@@ -10167,8 +9972,7 @@ msgstr ""
 #~ "Open the auto-saved versions instead of the explicitly saved versions"
 #~ msgstr ""
 #~ "Herstel de automatisch bewaarde documenten\n"
-#~ "Open de automatisch bewaarde versies in plaats van de expliciet bewaarde "
-#~ "versies"
+#~ "Open de automatisch bewaarde versies in plaats van de expliciet bewaarde versies"
 
 #~ msgid "Remove PasswordSafe configuration from Registry"
 #~ msgstr "Verwijder PasswordSafe configuratie uit het Register"
@@ -10201,11 +10005,8 @@ msgstr ""
 #~ msgstr "Rechter Ctrl toets"
 
 #~ msgid ""
-#~ "Right-click on the 'Y' in either of the first 2 columns for additional "
-#~ "functions"
-#~ msgstr ""
-#~ "Rechtermuis klil op de 'Y' in een van de 2 eerste kolommen voor meer "
-#~ "functies"
+#~ "Right-click on the 'Y' in either of the first 2 columns for additional functions"
+#~ msgstr "Rechtermuis klil op de 'Y' in een van de 2 eerste kolommen voor meer functies"
 
 #~ msgid "Romanian (Legacy)"
 #~ msgstr "Roemeens (verouderd)"
@@ -10325,11 +10126,11 @@ msgstr ""
 #~ msgstr "Snelkoppeling Basis vermelding - wachtwoord gaat verlopen"
 
 #~ msgid ""
-#~ "Show entries with identical compared fields (Note: Unknown fields were "
-#~ "not compared.)"
+#~ "Show entries with identical compared fields (Note: Unknown fields were not "
+#~ "compared.)"
 #~ msgstr ""
-#~ "Toon vermeldingen met gelijke velden (Opmerking: Onbekende velden werden "
-#~ "niet vergeleken.)"
+#~ "Toon vermeldingen met gelijke velden (Opmerking: Onbekende velden werden niet "
+#~ "vergeleken.)"
 
 #~ msgid "Show grid lines in List View"
 #~ msgstr "Toon rasterlijnen in Lijstweergave"
@@ -10356,19 +10157,18 @@ msgstr ""
 #~ msgstr "Sloveens"
 
 #~ msgid ""
-#~ "Some characters may be missing or not be displayed correctly, as we were "
-#~ "unable to find the Arial Unicode MS font."
+#~ "Some characters may be missing or not be displayed correctly, as we were unable to "
+#~ "find the Arial Unicode MS font."
 #~ msgstr ""
-#~ "Sommige tekens kunnen ontbreken of verkeerd getoond worden, omdat het "
-#~ "Arial Unicode MS font niet gevonden is."
+#~ "Sommige tekens kunnen ontbreken of verkeerd getoond worden, omdat het Arial Unicode "
+#~ "MS font niet gevonden is."
 
 #~ msgid ""
-#~ "Some of the entries in this database have passwords that have expired or "
-#~ "are about to.  Do you wish to list them and possibly update them?"
+#~ "Some of the entries in this database have passwords that have expired or are about "
+#~ "to.  Do you wish to list them and possibly update them?"
 #~ msgstr ""
-#~ "Een aantal vermeldingen in deze database hebben wachtwoorden die verlopen "
-#~ "zijn of bijna verlopen zijn. Wilt U deze lijst zien en eventueel "
-#~ "bijwerken?"
+#~ "Een aantal vermeldingen in deze database hebben wachtwoorden die verlopen zijn of "
+#~ "bijna verlopen zijn. Wilt U deze lijst zien en eventueel bijwerken?"
 
 #~ msgid "Sorbian Standard (Legacy)"
 #~ msgstr "Standaard Sorbisch (Verouderd)"
@@ -10384,8 +10184,8 @@ msgstr ""
 #~ "\n"
 #~ "Deze mogelijkheid is tijdelijk uit gezet.\n"
 #~ "\n"
-#~ "Het kan in deze sessie weer aan gezet worden door een andere "
-#~ "toetscombinatie te kiezen. "
+#~ "Het kan in deze sessie weer aan gezet worden door een andere toetscombinatie te "
+#~ "kiezen. "
 
 #~ msgid ""
 #~ "Sorry but PasswordSafe has had a problem.\n"
@@ -10401,22 +10201,19 @@ msgstr ""
 #~ "\t'"
 
 #~ msgid ""
-#~ "Sorry, can't specify a minimum number of characters with 'pronounceable' "
-#~ "or 'easy-to-read' options. Specified values ignored."
+#~ "Sorry, can't specify a minimum number of characters with 'pronounceable' or 'easy-"
+#~ "to-read' options. Specified values ignored."
 #~ msgstr ""
-#~ "Sorry, een minimum aantal tekens kan niet opgegeven worden als ook "
-#~ "'uitspreekbare' of 'makkelijk te lezen' opties aan staan. Opgegeven "
-#~ "waarden worden genegeerd."
+#~ "Sorry, een minimum aantal tekens kan niet opgegeven worden als ook 'uitspreekbare' "
+#~ "of 'makkelijk te lezen' opties aan staan. Opgegeven waarden worden genegeerd."
 
 #~ msgid "Spanish Variation"
 #~ msgstr "Spaanse variatie"
 
-#~ msgid ""
-#~ "Start saving password history for all entries, to the above number of "
-#~ "entries."
+#~ msgid "Start saving password history for all entries, to the above number of entries."
 #~ msgstr ""
-#~ "Begin met opslaan wachtwoordgeschiedenis voor alle waarden, met het "
-#~ "bovenvermelde maximale aantal."
+#~ "Begin met opslaan wachtwoordgeschiedenis voor alle waarden, met het bovenvermelde "
+#~ "maximale aantal."
 
 #~ msgid "Static_Static"
 #~ msgstr "Statisch_Statisch"
@@ -10424,8 +10221,8 @@ msgstr ""
 #~ msgid ""
 #~ "Stop saving password history for all entries.\n"
 #~ "\n"
-#~ "Saved histories will not be touched, but password changes will no longer "
-#~ "be stored by default."
+#~ "Saved histories will not be touched, but password changes will no longer be stored "
+#~ "by default."
 #~ msgstr ""
 #~ "Stop met opslaan wachtwoord geschiedenis voor alle vermeldingen:\n"
 #~ "\n"
@@ -10448,11 +10245,10 @@ msgstr ""
 #~ msgstr "Synchronizeren van de huidige database met:"
 
 #~ msgid ""
-#~ "System registry entries have been removed and the INI file (if any) was "
-#~ "deleted."
+#~ "System registry entries have been removed and the INI file (if any) was deleted."
 #~ msgstr ""
-#~ "Vermeldingen in het register zijn verwijderd en de (eventuele) INI "
-#~ "bestand is weggegooid."
+#~ "Vermeldingen in het register zijn verwijderd en de (eventuele) INI bestand is "
+#~ "weggegooid."
 
 #~ msgid "Sz"
 #~ msgstr "Sz"
@@ -10488,17 +10284,15 @@ msgstr ""
 #~ msgstr "Thais Pattachote (zonder ShiftLock)"
 
 #~ msgid ""
-#~ "The ALT key is not used on any keyboard to select characters. Use the "
-#~ "'Alt Num' key to enter a character via its decimal value."
+#~ "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key "
+#~ "to enter a character via its decimal value."
 #~ msgstr ""
-#~ "De ALT toest wordt bij geen enkele toetsenbord gebruikt om tekens te "
-#~ "selecteren. Gebruik de \"ALT NUM\" toets om een teken via de decimale "
-#~ "waarde in te voeren."
+#~ "De ALT toest wordt bij geen enkele toetsenbord gebruikt om tekens te selecteren. "
+#~ "Gebruik de \"ALT NUM\" toets om een teken via de decimale waarde in te voeren."
 
 #~ msgid ""
 #~ "The database %s couldn't be opened.\n"
-#~ "Do you wish to look for it elsewhere (Search), create a new database "
-#~ "(New), or Exit?"
+#~ "Do you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
 #~ msgstr ""
 #~ "De database %s kan niet geopend worden.  \n"
 #~ " Wilt u de database elders zoeken, een nieuwe aanmaken of afsluiten?"
@@ -10533,8 +10327,8 @@ msgstr ""
 #~ "\n"
 #~ "Open the database for Read-Only, Read-Write, or Exit?\n"
 #~ "\n"
-#~ "Note: Choose \"Read-Write\" only if you are certain that the file is in "
-#~ "fact not being used by anyone else,\n"
+#~ "Note: Choose \"Read-Write\" only if you are certain that the file is in fact not "
+#~ "being used by anyone else,\n"
 #~ "including another copy of Password Safe running on your machine."
 #~ msgstr ""
 #~ "De database:\n"
@@ -10543,51 +10337,44 @@ msgstr ""
 #~ "is blijkbaar in gebruik door:\n"
 #~ "%s%s.\n"
 #~ "\n"
-#~ "De database openen als Alleen-Lezen, Lezen-Schrijven, of verlaat "
-#~ "database?\n"
+#~ "De database openen als Alleen-Lezen, Lezen-Schrijven, of verlaat database?\n"
 #~ "\n"
-#~ "Opmerkingen: kies \"Lezen-Schrijven\" alleen als u zeker weet dat de "
-#~ "database door niemand anders geopend is,\n"
-#~ "ook niet door een andere kopie van Password Safe wat actief is op uw "
-#~ "computer."
+#~ "Opmerkingen: kies \"Lezen-Schrijven\" alleen als u zeker weet dat de database door "
+#~ "niemand anders geopend is,\n"
+#~ "ook niet door een andere kopie van Password Safe wat actief is op uw computer."
 
 #~ msgid "The entered passwords do not match.  Please re-enter them."
-#~ msgstr ""
-#~ "De ingevoerde wachtwoorden komen niet overeen. SVP opnieuw invoeren."
+#~ msgstr "De ingevoerde wachtwoorden komen niet overeen. SVP opnieuw invoeren."
 
 #~ msgid "The file is too large to open."
 #~ msgstr "Het bestand is te groot om te openen."
 
 #~ msgid "The following entries' passwords are about to expire or expired:"
-#~ msgstr ""
-#~ "De wachtwoorden van de volgende vermeldingen zijn verlopen of bijna "
-#~ "verlopen:"
+#~ msgstr "De wachtwoorden van de volgende vermeldingen zijn verlopen of bijna verlopen:"
 
 #~ msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-#~ msgstr ""
-#~ "De volgende vermelding werd gekopieerd naar de %s database: '%s:%s:%s'"
+#~ msgstr "De volgende vermelding werd gekopieerd naar de %s database: '%s:%s:%s'"
 
 #~ msgid ""
-#~ "The notes field of this entry has more text than can be displayed. "
-#~ "Changing this field and saving the entry will result in this field being "
-#~ "truncated after %d characters.  To view the full contents, either copy it "
-#~ "to an editor via the clipboard or export this entry to XML before "
-#~ "changing it."
+#~ "The notes field of this entry has more text than can be displayed. Changing this "
+#~ "field and saving the entry will result in this field being truncated after %d "
+#~ "characters.  To view the full contents, either copy it to an editor via the "
+#~ "clipboard or export this entry to XML before changing it."
 #~ msgstr ""
-#~ "De notities veld van deze vermelding heeft meer tekst dat getoond kan "
-#~ "worden. Veranderen van dit veld en het opslaan van de vermelding zal "
-#~ "resulteren in het afbreken van inhoud van dit veld na %d tekens. Om de "
-#~ "gehele notitie te zien kunt u deze naar een tekst editor kopiÃ«ren of "
-#~ "naar XML exporteren voordat u de notitie wijzigt."
+#~ "De notities veld van deze vermelding heeft meer tekst dat getoond kan worden. "
+#~ "Veranderen van dit veld en het opslaan van de vermelding zal resulteren in het "
+#~ "afbreken van inhoud van dit veld na %d tekens. Om de gehele notitie te zien kunt u "
+#~ "deze naar een tekst editor kopiÃ«ren of naar XML exporteren voordat u de notitie "
+#~ "wijzigt."
 
 #~ msgid ""
-#~ "The password is in 'alias' form but the referenced entry '%s:%s:%s' is "
-#~ "itself an alias.\n"
+#~ "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an "
+#~ "alias.\n"
 #~ "\n"
 #~ "Do you wish this entry to point to the 'real' base entry?"
 #~ msgstr ""
-#~ "Het wachtwoord is in de vorm van een 'alias'. Maar de vermelding waar "
-#~ "naar verwezen wordt,  '%s:%s:%s', is zelf een alias.\n"
+#~ "Het wachtwoord is in de vorm van een 'alias'. Maar de vermelding waar naar verwezen "
+#~ "wordt,  '%s:%s:%s', is zelf een alias.\n"
 #~ "\n"
 #~ "Wilt u dat deze vermelding verwijst naar de 'werkelijke' basis vermelding?"
 
@@ -10605,51 +10392,45 @@ msgstr ""
 #~ "is naar het klembord gekopieerd."
 
 #~ msgid ""
-#~ "The safe combination has been entered three times without success. If you "
-#~ "don't know the safe combination, you can either try to open another "
-#~ "password database, or create a new blank password database."
+#~ "The safe combination has been entered three times without success. If you don't "
+#~ "know the safe combination, you can either try to open another password database, or "
+#~ "create a new blank password database."
 #~ msgstr ""
-#~ "De kluis combinatie is drie keer ingevoerd zonder succes. Als u de kluis "
-#~ "combinatie niet weet kunt u proberen een andere wachtwoord database te "
-#~ "openen of een nieuwe blanco wachtwoord database aan maken."
+#~ "De kluis combinatie is drie keer ingevoerd zonder succes. Als u de kluis combinatie "
+#~ "niet weet kunt u proberen een andere wachtwoord database te openen of een nieuwe "
+#~ "blanco wachtwoord database aan maken."
 
-#~ msgid ""
-#~ "The selected Failsafe Backup file will be opened instead of selected "
+#~ msgid "The selected Failsafe Backup file will be opened instead of selected database."
+#~ msgstr ""
+#~ "De gekozen Veilige Back-up bestand zal geopend worden inplaats van de geselecteerde "
 #~ "database."
-#~ msgstr ""
-#~ "De gekozen Veilige Back-up bestand zal geopend worden inplaats van de "
-#~ "geselecteerde database."
 
 #~ msgid ""
-#~ "There are more than one entry that fits your selection. Please be more "
-#~ "specific."
+#~ "There are more than one entry that fits your selection. Please be more specific."
 #~ msgstr ""
 #~ "Er is meer dan een vermelding dat voldoet aan uw selectie. Wees svp iets "
 #~ "specifieker."
 
 #~ msgid ""
-#~ "There does not appear to be a Recycle Bin on the media containing this "
-#~ "Failsafe Backup file. You will not be able to undo deletes. Do you wish "
-#~ "to continue?"
+#~ "There does not appear to be a Recycle Bin on the media containing this Failsafe "
+#~ "Backup file. You will not be able to undo deletes. Do you wish to continue?"
 #~ msgstr ""
-#~ "Er lijkt geen Prullenbak te bestaan op het medium waarop deze Veilige "
-#~ "Backup bestand staat. U kunt verwijderingen niet ongedaan maken. Wilt u "
-#~ "doorgaan?"
+#~ "Er lijkt geen Prullenbak te bestaan op het medium waarop deze Veilige Backup "
+#~ "bestand staat. U kunt verwijderingen niet ongedaan maken. Wilt u doorgaan?"
 
 #~ msgid ""
-#~ "These are more recently saved than the currently open documents and "
-#~ "contain changes that were made before the application closed."
+#~ "These are more recently saved than the currently open documents and contain changes "
+#~ "that were made before the application closed."
 #~ msgstr ""
-#~ "Deze zijn recenter opgeslagen dan de huidige open documenten en ze "
-#~ "bevatten veranderingen die gemaakt zijn voordat de applicatie afgesloten "
-#~ "werd."
+#~ "Deze zijn recenter opgeslagen dan de huidige open documenten en ze bevatten "
+#~ "veranderingen die gemaakt zijn voordat de applicatie afgesloten werd."
 
 #~ msgid ""
-#~ "This allows you to keep backups in a separate location. Make sure that "
-#~ "you have write permission to the directory you specify."
+#~ "This allows you to keep backups in a separate location. Make sure that you have "
+#~ "write permission to the directory you specify."
 #~ msgstr ""
-#~ "Dit geeft u de mogelijkheid om back-ups te bewaren op verschillende "
-#~ "plaatsen. Verzeker u van schrijf rechten in de map die u kiest."
+#~ "Dit geeft u de mogelijkheid om back-ups te bewaren op verschillende plaatsen. "
+#~ "Verzeker u van schrijf rechten in de map die u kiest."
 
 #~ msgid ""
 #~ "This entry has the following %d %s:\n"
@@ -10668,12 +10449,11 @@ msgstr ""
 #~ msgstr "Deze vermelding moet een geldig doel vermelding hebben."
 
 #~ msgid ""
-#~ "This is a DeadKey. Press it and then one of the combined keys then shown "
-#~ "to add that new character to the Passphrase."
+#~ "This is a DeadKey. Press it and then one of the combined keys then shown to add "
+#~ "that new character to the Passphrase."
 #~ msgstr ""
-#~ "Dit is een dode toets. Druk deze in en daarna een van de combinatie "
-#~ "toetsen die dan getoond worden om dat teken toe te voegen aan het "
-#~ "Wachtwoord. "
+#~ "Dit is een dode toets. Druk deze in en daarna een van de combinatie toetsen die dan "
+#~ "getoond worden om dat teken toe te voegen aan het Wachtwoord. "
 
 #~ msgid "This is a shortcut base entry."
 #~ msgstr "Dit is een snelkoppeling naar een basis vermelding."
@@ -10685,69 +10465,62 @@ msgstr ""
 #~ msgstr "Dit is een alias van: '%s'"
 
 #~ msgid ""
-#~ "This program is linked to the missing export %s in the file %s. This "
-#~ "machine may have an incompatible version of %s."
+#~ "This program is linked to the missing export %s in the file %s. This machine may "
+#~ "have an incompatible version of %s."
 #~ msgstr ""
-#~ "Dit programma is verbonden aan het ontbrekende export %s in het bestand "
-#~ "%s. Deze computer heeft waarschijnlijk een ongeschikte versie van %s."
+#~ "Dit programma is verbonden aan het ontbrekende export %s in het bestand %s. Deze "
+#~ "computer heeft waarschijnlijk een ongeschikte versie van %s."
+
+#~ msgid "This program requires the file %s, which was not found on this system."
+#~ msgstr ""
+#~ "Dit programma vereist het bestand %s, welke niet gevonden werd op deze computer."
 
 #~ msgid ""
-#~ "This program requires the file %s, which was not found on this system."
-#~ msgstr ""
-#~ "Dit programma vereist het bestand %s, welke niet gevonden werd op deze "
-#~ "computer."
-
-#~ msgid ""
-#~ "This version of PasswordSafe does not support more than %d entries in a "
-#~ "database.\n"
+#~ "This version of PasswordSafe does not support more than %d entries in a database.\n"
 #~ "Do you want to open this database anyway?\n"
 #~ "(Saving this database will result in the removal of unread entries!)"
 #~ msgstr ""
-#~ "Deze versie van PasswordSafe kan niet meer dan %d vermeldingen bevatten "
-#~ "in de database.\n"
+#~ "Deze versie van PasswordSafe kan niet meer dan %d vermeldingen bevatten in de "
+#~ "database.\n"
 #~ "Wilt u deze database toch openen?\n"
-#~ "(Opslaan van deze database heeft tot gevolg dat alle ongelezen "
-#~ "vermeldingen verwijderd worden!)"
+#~ "(Opslaan van deze database heeft tot gevolg dat alle ongelezen vermeldingen "
+#~ "verwijderd worden!)"
 
 #~ msgid ""
-#~ "This will allow you to migrate your settings from the configuration file "
-#~ "in the PasswordSafe installation directory into a file in your own local "
-#~ "Application Data directory at the next invocation of PasswordSafe."
+#~ "This will allow you to migrate your settings from the configuration file in the "
+#~ "PasswordSafe installation directory into a file in your own local Application Data "
+#~ "directory at the next invocation of PasswordSafe."
 #~ msgstr ""
-#~ "Dit geeft u de mogelijkheid uw instellingen te verplaatsen van het "
-#~ "configuratie bestand in de map waarin PasswordSafe geÃ¯nstalleerd is naar "
-#~ "een bestand in uw eigen lokale Application Data map de volgende keer dat "
-#~ "PasswordSafe opgestart wordt."
+#~ "Dit geeft u de mogelijkheid uw instellingen te verplaatsen van het configuratie "
+#~ "bestand in de map waarin PasswordSafe geÃ¯nstalleerd is naar een bestand in uw "
+#~ "eigen lokale Application Data map de volgende keer dat PasswordSafe opgestart wordt."
 
 #~ msgid ""
-#~ "This will clear all traces of Password Safe from the machine's registry. "
-#~ "It may also cause previous versions of Password Safe to revert to default "
-#~ "values for some settings."
+#~ "This will clear all traces of Password Safe from the machine's registry. It may "
+#~ "also cause previous versions of Password Safe to revert to default values for some "
+#~ "settings."
 #~ msgstr ""
-#~ "Dit verwijdert alle sporen van Password Safe van het register van deze "
-#~ "computer. Hierdoor kunnen vorige versies van Password Safe terugvallen "
-#~ "naar standaard waarden voor sommige instellingen."
+#~ "Dit verwijdert alle sporen van Password Safe van het register van deze computer. "
+#~ "Hierdoor kunnen vorige versies van Password Safe terugvallen naar standaard waarden "
+#~ "voor sommige instellingen."
+
+#~ msgid "This will delete %d entries which are within this group and its subgroups."
+#~ msgstr ""
+#~ "Hierdoor worden %d vermeldingen verwijderd welke tot deze groep behoort en/of "
+#~ "bijbehorende subgroepen."
+
+#~ msgid "This will delete an entry which is within this group and/or its subgroups."
+#~ msgstr ""
+#~ "Hierdoor wordt een vermelding verwijderd welke tot deze groep behoort en/of "
+#~ "bijbehorende subgroepen"
 
 #~ msgid ""
-#~ "This will delete %d entries which are within this group and its subgroups."
+#~ "This will delete the selected Failsafe Backup file.  If the current drive has a "
+#~ "Recycle Bin, it will be moved there. If not, it will be permanently deleted."
 #~ msgstr ""
-#~ "Hierdoor worden %d vermeldingen verwijderd welke tot deze groep behoort "
-#~ "en/of bijbehorende subgroepen."
-
-#~ msgid ""
-#~ "This will delete an entry which is within this group and/or its subgroups."
-#~ msgstr ""
-#~ "Hierdoor wordt een vermelding verwijderd welke tot deze groep behoort en/"
-#~ "of bijbehorende subgroepen"
-
-#~ msgid ""
-#~ "This will delete the selected Failsafe Backup file.  If the current drive "
-#~ "has a Recycle Bin, it will be moved there. If not, it will be permanently "
-#~ "deleted."
-#~ msgstr ""
-#~ "Dit verwijdert de gekozen Veilige Backup bestand. Als de huidige schijf "
-#~ "een Prullenbak heeft, zal het bestand daarheen verplaatst worden. Zo "
-#~ "niet, dan wordt het bestand permanent verwijderd."
+#~ "Dit verwijdert de gekozen Veilige Backup bestand. Als de huidige schijf een "
+#~ "Prullenbak heeft, zal het bestand daarheen verplaatst worden. Zo niet, dan wordt "
+#~ "het bestand permanent verwijderd."
 
 #~ msgid "Time out period must be between 1 and 600 minutes."
 #~ msgstr "Pauze tijd moet tussen de 1 en 600 minuten zijn."
@@ -10756,12 +10529,12 @@ msgstr ""
 #~ msgstr "Titel [Verplicht Veld]"
 
 #~ msgid ""
-#~ "To unprotect this entry, click on Close, use the Edit menu or right-click "
-#~ "on the entry and select Unprotect."
+#~ "To unprotect this entry, click on Close, use the Edit menu or right-click on the "
+#~ "entry and select Unprotect."
 #~ msgstr ""
-#~ "Om de bescherming van deze vermelding op te heffen, klik op Sluiten, "
-#~ "gebruik het men Bewerken of klik met de rechtermuis toets op de "
-#~ "vermelding en selecteer Bescherming Opheffen."
+#~ "Om de bescherming van deze vermelding op te heffen, klik op Sluiten, gebruik het "
+#~ "men Bewerken of klik met de rechtermuis toets op de vermelding en selecteer "
+#~ "Bescherming Opheffen."
 
 #~ msgid "Treat fields that only contain 'whitespace' as empty"
 #~ msgstr "Behandel velden die alleen 'witte ruimte' bevatten als leeg."
@@ -10804,8 +10577,8 @@ msgstr ""
 
 #~ msgid "Unable to write to %1, it is read-only or opened by someone else."
 #~ msgstr ""
-#~ "Niet mogelijk om te schrijven naar %1, het is alleen-lezen of geopend "
-#~ "door iemand anders."
+#~ "Niet mogelijk om te schrijven naar %1, het is alleen-lezen of geopend door iemand "
+#~ "anders."
 
 #~ msgid "Unexpected file format."
 #~ msgstr "Onverwacht bestands formaat."
@@ -10878,8 +10651,8 @@ msgstr ""
 #~ "\n"
 #~ "Als toevoeging kunnen de volgende parameters gebruikt worden:\n"
 #~ " -u gebruiker (gebruik gebruikers voorkeuren in plaats van login naam)\n"
-#~ " -h host (gebruik de andere computers naam \"host\" in plaats van de naam "
-#~ "van deze computer om de voorkeuren op te zoeken)\n"
+#~ " -h host (gebruik de andere computers naam \"host\" in plaats van de naam van deze "
+#~ "computer om de voorkeuren op te zoeken)\n"
 #~ " -g config_bestand (gebruik  config_bestand in plaats van pwsafe.cfg)\n"
 #~ " -q (niet klagen over ontbrekende fonts, dll's enzovoorts.)"
 
@@ -10887,19 +10660,18 @@ msgstr ""
 #~ msgstr "Gebruik &Symbolen (b.v.  &&, %, $, etc.)"
 
 #~ msgid ""
-#~ "Use the application specified here to browse when an entry's URL field "
-#~ "starts with [alt], e.g., '[alt]http://foo.com'"
+#~ "Use the application specified here to browse when an entry's URL field starts with "
+#~ "[alt], e.g., '[alt]http://foo.com'"
 #~ msgstr ""
-#~ "Gebruik de hier gespecificieerde applicatie om bladeren wanneer het URL "
-#~ "veld van een vermelding begint met  [alt], bijvoorbeeld, '[alt]http://foo."
-#~ "com'"
+#~ "Gebruik de hier gespecificieerde applicatie om bladeren wanneer het URL veld van "
+#~ "een vermelding begint met  [alt], bijvoorbeeld, '[alt]http://foo.com'"
 
 #~ msgid ""
-#~ "Use the application specified here to edit an entry's Notes field via the "
-#~ "right-click context menu during Add/Edit."
+#~ "Use the application specified here to edit an entry's Notes field via the right-"
+#~ "click context menu during Add/Edit."
 #~ msgstr ""
-#~ "Gebruik de hier gespecificieerde applicatie om een Notitie te bewerken "
-#~ "via het rechtermuis klik menu tijdens Toevoegen/Bewerken."
+#~ "Gebruik de hier gespecificieerde applicatie om een Notitie te bewerken via het "
+#~ "rechtermuis klik menu tijdens Toevoegen/Bewerken."
 
 #~ msgid "Uyghur"
 #~ msgstr "Uyghur"
@@ -10908,11 +10680,11 @@ msgstr ""
 #~ msgstr "Oezbeeks"
 
 #~ msgid ""
-#~ "Version mismatch with On Screen Keyboard DLL. Please install version that "
-#~ "came with this version of Password Safe."
+#~ "Version mismatch with On Screen Keyboard DLL. Please install version that came with "
+#~ "this version of Password Safe."
 #~ msgstr ""
-#~ "Verschillende versies van Scherm Toetsenbord DLL. SVP de versie "
-#~ "installeren die bij deze versie van Password Safe hoort"
+#~ "Verschillende versies van Scherm Toetsenbord DLL. SVP de versie installeren die bij "
+#~ "deze versie van Password Safe hoort"
 
 #~ msgid "Vietnamese"
 #~ msgstr "Vietnamees"
@@ -10933,13 +10705,12 @@ msgstr ""
 #~ msgstr "Bekijk een filter"
 
 #~ msgid ""
-#~ "WARNING: Use of an external editor may leave sensitive data on your hard "
-#~ "disk.\n"
+#~ "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n"
 #~ "\n"
 #~ "Do you wish to continue?"
 #~ msgstr ""
-#~ "Waarschuwing: door gebruik van een externe editor kan er gevoelige "
-#~ "informaite op uw harde schijf komen.\n"
+#~ "Waarschuwing: door gebruik van een externe editor kan er gevoelige informaite op uw "
+#~ "harde schijf komen.\n"
 #~ "\n"
 #~ "Wilt u doorgaan?"
 
@@ -10970,20 +10741,16 @@ msgstr ""
 #~ msgid ""
 #~ "Would you like to set \"%s\" as your default username?\n"
 #~ "\n"
-#~ "It would then automatically be put in the dialog each time you add a new "
-#~ "item."
+#~ "It would then automatically be put in the dialog each time you add a new item."
 #~ msgstr ""
 #~ "Wilt u  \"%s\" gebruiken als uw standaard gebruikersnaam?\n"
 #~ "\n"
-#~ "Dit wordt dan automatisch gebruikt elke keer dat u een nieuwe vermelding "
-#~ "toevoegt"
+#~ "Dit wordt dan automatisch gebruikt elke keer dat u een nieuwe vermelding toevoegt"
 
-#~ msgid ""
-#~ "Write when an entry was accessed in the database. Ignored in read-only "
-#~ "mode."
+#~ msgid "Write when an entry was accessed in the database. Ignored in read-only mode."
 #~ msgstr ""
-#~ "Schrijven nadat een vermelding succesvol is bewerkt in de database. "
-#~ "Genegeerd in alleen lezen modus."
+#~ "Schrijven nadat een vermelding succesvol is bewerkt in de database. Genegeerd in "
+#~ "alleen lezen modus."
 
 #~ msgid "X"
 #~ msgstr "X"
@@ -10995,25 +10762,22 @@ msgstr ""
 #~ msgstr "Yoruba"
 
 #~ msgid ""
-#~ "Your currently opened database will be in the first row.  Failsafe Backup "
-#~ "files will be displayed below this.  If the passphrase is the same as the "
-#~ "current database, the properties of these backups will also be shown.  If "
-#~ "you aren't sure, continue with the current database and use the database "
-#~ "Compare function to view the differences between the versions."
+#~ "Your currently opened database will be in the first row.  Failsafe Backup files "
+#~ "will be displayed below this.  If the passphrase is the same as the current "
+#~ "database, the properties of these backups will also be shown.  If you aren't sure, "
+#~ "continue with the current database and use the database Compare function to view "
+#~ "the differences between the versions."
 #~ msgstr ""
-#~ "Uw huidige geopende database zal in de eerste rij staan. Veilige Backup "
-#~ "bestanden zullen daaronder getoond worden. Als het wachtwoord hetzelfde "
-#~ "is als bij de huidige database zullen de eigenschappen van deze backups "
-#~ "ook getoond worden. Als u het niet zeker weet, ga dan door met de huidige "
-#~ "database en gebruik de database Vergelijk functie om de verschillen "
-#~ "tussen de versies te zien."
+#~ "Uw huidige geopende database zal in de eerste rij staan. Veilige Backup bestanden "
+#~ "zullen daaronder getoond worden. Als het wachtwoord hetzelfde is als bij de huidige "
+#~ "database zullen de eigenschappen van deze backups ook getoond worden. Als u het "
+#~ "niet zeker weet, ga dan door met de huidige database en gebruik de database "
+#~ "Vergelijk functie om de verschillen tussen de versies te zien."
 
-#~ msgid ""
-#~ "Your requested font '%s' is not installed on this system, using '%s' "
-#~ "instead."
+#~ msgid "Your requested font '%s' is not installed on this system, using '%s' instead."
 #~ msgstr ""
-#~ "Het door U gekozen font  '%s' is niet op deze computer geïnstalleerd. "
-#~ "Font  '%s' wordt als vervanging gebruikt"
+#~ "Het door U gekozen font  '%s' is niet op deze computer geïnstalleerd. Font  '%s' "
+#~ "wordt als vervanging gebruikt"
 
 #~ msgid ""
 #~ "\n"
@@ -11346,8 +11110,7 @@ msgstr ""
 #~ "\n"
 #~ "\n"
 #~ "Kan database niet openen. Het bestaat waarschijnlijk niet. \n"
-#~ "SVP kiezen uit Open een andere database, creÃƒÂ«er een Nieuwe database of "
-#~ "Annuleren"
+#~ "SVP kiezen uit Open een andere database, creÃƒÂ«er een Nieuwe database of Annuleren"
 
 #~ msgid ""
 #~ "\n"

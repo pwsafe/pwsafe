@@ -6,16 +6,17 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-21 21:42+0300\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"PO-Revision-Date: 2025-07-23 11:51+0300\n"
+"Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
+"Language-Team: \n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.6\n"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:113
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1401
@@ -27,8 +28,7 @@ msgstr ""
 msgid "Built using "
 msgstr "Zostavené pomocou "
 
-#: ../../../ui/wxWidgets/AboutDlg.cpp:119
-#: ../../../ui/wxWidgets/AboutDlg.cpp:158
+#: ../../../ui/wxWidgets/AboutDlg.cpp:119 ../../../ui/wxWidgets/AboutDlg.cpp:158
 msgid "Build date:"
 msgstr "Zostavené dňa: "
 
@@ -60,13 +60,11 @@ msgstr "Podrobnosti o open source sú v súbore LICENSE."
 msgid "Copyright (c) 2003-2025 Rony Shapiro"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AboutDlg.cpp:153
-#: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:399
+#: ../../../ui/wxWidgets/AboutDlg.cpp:153 ../../../ui/wxWidgets/ManageFiltersDlg.cpp:399
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:362
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:555
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:131
-#: ../../../ui/wxWidgets/SystemTray.cpp:143
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:189
+#: ../../../ui/wxWidgets/SystemTray.cpp:143 ../../../ui/wxWidgets/YubiCfgDlg.cpp:189
 msgid "&Close"
 msgstr "&Zatvoriť"
 
@@ -92,12 +90,10 @@ msgstr "Nepodarilo sa nastaviť 'Write Function'.\n"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:403
 msgid ""
-"For security, the database must be closed before connecting to the "
-"Internet.\n"
+"For security, the database must be closed before connecting to the Internet.\n"
 "Press OK to close database and continue (Changes will be saved)"
 msgstr ""
-"Kvôli bezpečnosti musí byť databáza zatvorená pred pripojením sa na "
-"internet.\n"
+"Kvôli bezpečnosti musí byť databáza zatvorená pred pripojením sa na internet.\n"
 "Stlačte OK na zatvorenie databázy a pokračovanie (zmeny sa uložia)."
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:408
@@ -126,8 +122,7 @@ msgstr "Posledná verzia:\t"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:543
 msgid "Visit the Password Safe website to download the latest version."
-msgstr ""
-"Navštívte webovú stránku Password Safe a stiahnite si najnovšiu verziu."
+msgstr "Navštívte webovú stránku Password Safe a stiahnite si najnovšiu verziu."
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:544
 msgid "Newer Version Found!"
@@ -192,25 +187,22 @@ msgstr "Upraviť/Zobraziť záznam"
 msgid "Execute Run command"
 msgstr "Vykonaj 'Spustiť príkaz'"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:256
-#: ../../../ui/wxWidgets/HelpMap.h:52
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:256 ../../../ui/wxWidgets/HelpMap.h:52
 msgid "Basic"
 msgstr "Základné"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:263
-#: ../../../ui/wxWidgets/HelpMap.h:55
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:263 ../../../ui/wxWidgets/HelpMap.h:55
 msgid "Additional"
 msgstr "Doplňujúce"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:269
-#: ../../../ui/wxWidgets/HelpMap.h:53
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:269 ../../../ui/wxWidgets/HelpMap.h:53
 msgid "Dates and Times"
 msgstr "Dátumy a časy"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:276
-#: ../../../ui/wxWidgets/PWFiltersTable.cpp:317
-#: ../../../ui/wxWidgets/HelpMap.h:46 ../../../ui/wxWidgets/HelpMap.h:54
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.h:70 ../../../core/core_st.cpp:172
+#: ../../../ui/wxWidgets/PWFiltersTable.cpp:317 ../../../ui/wxWidgets/HelpMap.h:46
+#: ../../../ui/wxWidgets/HelpMap.h:54 ../../../ui/wxWidgets/PasswordPolicyDlg.h:70
+#: ../../../core/core_st.cpp:172
 msgid "Password Policy"
 msgstr "Zásady hesiel"
 
@@ -227,8 +219,8 @@ msgstr "Dátum/čas nastavenia"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:298
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:342
-#: ../../../ui/wxWidgets/DragBarCtrl.cpp:153
-#: ../../../ui/wxWidgets/ToolbarButtons.h:245 ../../../core/core_st.cpp:168
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:153 ../../../ui/wxWidgets/ToolbarButtons.h:245
+#: ../../../core/core_st.cpp:168
 msgid "Password"
 msgstr "Heslo"
 
@@ -238,14 +230,12 @@ msgstr "Všetky polia označené hviezdičkou (*) sú povinné."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:319
 #: ../../../ui/wxWidgets/DragBarCtrl.cpp:150
-#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:270
-#: ../../../core/core_st.cpp:158
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:270 ../../../core/core_st.cpp:158
 msgid "Group"
 msgstr "Skupina"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:325
-#: ../../../ui/wxWidgets/DragBarCtrl.cpp:151
-#: ../../../ui/wxWidgets/GridCtrl.cpp:165
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:151 ../../../ui/wxWidgets/GridCtrl.cpp:165
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:271
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:111 ../../../core/core_st.cpp:178
 msgid "Title"
@@ -281,8 +271,7 @@ msgstr "Zobraziť overovací kód"
 msgid "Copy authentication code to clipboard"
 msgstr "Skopírovať overovací kód do schránky"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:410
-#: ../../../core/core_st.cpp:185
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:410 ../../../core/core_st.cpp:185
 msgid "URL"
 msgstr ""
 
@@ -300,8 +289,8 @@ msgid "Send"
 msgstr "Odoslať"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
-#: ../../../ui/wxWidgets/DragBarCtrl.cpp:154
-#: ../../../ui/wxWidgets/ToolbarButtons.h:249 ../../../core/core_st.cpp:161
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:154 ../../../ui/wxWidgets/ToolbarButtons.h:249
+#: ../../../core/core_st.cpp:161
 msgid "Notes"
 msgstr "Poznámky"
 
@@ -313,8 +302,8 @@ msgid "Autotype"
 msgstr "Automatické dopĺňanie"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:463
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:140
-#: ../../../core/core_st.cpp:85 ../../../core/core_st.cpp:175
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:140 ../../../core/core_st.cpp:85
+#: ../../../core/core_st.cpp:175
 msgid "Run Command"
 msgstr "Spustiť príkaz"
 
@@ -326,8 +315,7 @@ msgstr "Akcia pri dvojkliku"
 msgid "Shift-Double-Click Action"
 msgstr "Akcia pri Shift dvojkliku"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:488
-#: ../../../core/core_st.cpp:184
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:488 ../../../core/core_st.cpp:184
 msgid "Authentication Secret"
 msgstr "Tajný kľúč 2FA"
 
@@ -338,8 +326,7 @@ msgstr "Zobraziť tajný kľúč"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:507
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:234
-#: ../../../ui/wxWidgets/PWFiltersTable.cpp:314
-#: ../../../ui/wxWidgets/HelpMap.h:47
+#: ../../../ui/wxWidgets/PWFiltersTable.cpp:314 ../../../ui/wxWidgets/HelpMap.h:47
 msgid "Password History"
 msgstr "História hesiel"
 
@@ -504,14 +491,12 @@ msgid "Use UPPERCASE letters"
 msgstr "Použiť VEĽKÉ písmená"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:753
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:237
-#: ../../../core/core_st.cpp:297
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:237 ../../../core/core_st.cpp:297
 msgid "Use digits"
 msgstr "Použiť číslice"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:777
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:261
-#: ../../../core/core_st.cpp:299
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:261 ../../../core/core_st.cpp:299
 msgid "Use symbols"
 msgstr "Použiť symboly"
 
@@ -784,8 +769,7 @@ msgstr "[Poznámky sú skryté - kliknutím sem zobrazíte]"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1730
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1756
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2789
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3698
-#: ../../../core/core_st.cpp:90
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3698 ../../../core/core_st.cpp:90
 msgid "Default Policy"
 msgstr "Predvolené zásady hesiel"
 
@@ -827,18 +811,17 @@ msgstr "Chyba"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1903
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1924
 msgid ""
-"On changing this entry of type Shortcut Base to an Alias all Shortcut to "
-"this entry will be removed!"
+"On changing this entry of type Shortcut Base to an Alias all Shortcut to this entry "
+"will be removed!"
 msgstr ""
-"Po zmene tohto záznamu (typu odkaz) na alias ​​budú všetky odkazy k tomuto "
-"záznamu odstránené!"
+"Po zmene tohto záznamu (typu odkaz) na alias ​​budú všetky odkazy k tomuto záznamu "
+"odstránené!"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1903
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1924
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1927
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3806
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:397
-#: ../../../core/core_st.cpp:326
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:397 ../../../core/core_st.cpp:326
 msgid "Warning"
 msgstr "Upozornenie"
 
@@ -912,16 +895,12 @@ msgstr "Chyba nastavenia 2FA"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2223
 msgid "Database name must not be empty if a database policy shall be used."
-msgstr ""
-"Názov databázy nesmie byť prázdny, ak sa majú použiť zásady hesiel v "
-"databáze."
+msgstr "Názov databázy nesmie byť prázdny, ak sa majú použiť zásady hesiel v databáze."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2246
-msgid ""
-"An entry or shortcut with the same Group, Title and Username already exists."
+msgid "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr ""
-"Záznam alebo odkaz s rovnakou skupinou, názvom a používateľským menom už "
-"existuje."
+"Záznam alebo odkaz s rovnakou skupinou, názvom a používateľským menom už existuje."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2247
 msgid "Duplicate entry"
@@ -951,8 +930,7 @@ msgstr "Pri dĺžke hesla musí byť nastavený aspoň jeden z príznakov"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3522
 msgid "HexDigits implies no easyvision or pronounceable to be set"
 msgstr ""
-"Hexadecimálne znaky sa navzájom vylučujú so znakmi Easyvision alebo "
-"Vysloviteľné."
+"Hexadecimálne znaky sa navzájom vylučujú so znakmi Easyvision alebo Vysloviteľné."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3604
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:713
@@ -1082,13 +1060,12 @@ msgstr "Pokročilé možnosti..."
 msgid "Synchronize this item..."
 msgstr "Synchronizovať tento záznam..."
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:489
-#: ../../../ui/wxWidgets/CompareDlg.cpp:810 ../../../core/core_st.cpp:322
+#: ../../../ui/wxWidgets/CompareDlg.cpp:489 ../../../ui/wxWidgets/CompareDlg.cpp:810
+#: ../../../core/core_st.cpp:322
 msgid "Synchronize"
 msgstr "Synchronizovať"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:489
-#: ../../../ui/wxWidgets/CompareDlg.cpp:497
+#: ../../../ui/wxWidgets/CompareDlg.cpp:489 ../../../ui/wxWidgets/CompareDlg.cpp:497
 #: ../../../ui/wxWidgets/CompareDlg.cpp:502
 msgid "selected "
 msgstr "vybratý "
@@ -1105,13 +1082,11 @@ msgstr "Synchronizovať všetky záznamy..."
 msgid "Copy"
 msgstr "Kopírovať"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:497
-#: ../../../ui/wxWidgets/CompareDlg.cpp:523
+#: ../../../ui/wxWidgets/CompareDlg.cpp:497 ../../../ui/wxWidgets/CompareDlg.cpp:523
 msgid " to current db"
 msgstr " do aktuálnej databázy"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:502
-#: ../../../ui/wxWidgets/ToolbarButtons.h:259
+#: ../../../ui/wxWidgets/CompareDlg.cpp:502 ../../../ui/wxWidgets/ToolbarButtons.h:259
 msgid "Delete"
 msgstr "Zmazať"
 
@@ -1158,23 +1133,21 @@ msgid ""
 "\n"
 "%ls\n"
 "\n"
-"has duplicate entries with the same group/title/user combination. You can "
-"fix this by validating the database."
+"has duplicate entries with the same group/title/user combination. You can fix this by "
+"validating the database."
 msgstr ""
 "Databáza:\n"
 "\n"
 "%ls\n"
 "\n"
-"obsahuje duplikáty s rovnakou kombináciou skupina/názov/používateľské meno. "
-"Môžete to opraviť overením databázy."
+"obsahuje duplikáty s rovnakou kombináciou skupina/názov/používateľské meno. Môžete to "
+"opraviť overením databázy."
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:818
-#: ../../../ui/wxWidgets/SyncWizard.cpp:672
+#: ../../../ui/wxWidgets/CompareDlg.cpp:818 ../../../ui/wxWidgets/SyncWizard.cpp:672
 msgid "Synchronization failed"
 msgstr "Synchronizácia zlyhala"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:839
-#: ../../../ui/wxWidgets/CompareDlg.cpp:842
+#: ../../../ui/wxWidgets/CompareDlg.cpp:839 ../../../ui/wxWidgets/CompareDlg.cpp:842
 msgid "Synchronize items"
 msgstr "Synchronizovať položky"
 
@@ -1302,21 +1275,20 @@ msgstr "Vstup nemôže byť prázdny."
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:70
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1458
 msgid ""
-"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|"
-"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
-"ibak)|*.ibak|All files (*.*; *)|*.*;*"
+"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|Password "
+"Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All "
+"files (*.*; *)|*.*;*"
 msgstr ""
-"Databázy Password Safe (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|"
-"Zálohy Password Safe (*.bak)|*.bak|Prechodné zálohy Password Safe (*.ibak)|*."
-"ibak|Všetky súbory (*.*; *)|*.*;*"
+"Databázy Password Safe (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|Zálohy "
+"Password Safe (*.bak)|*.bak|Prechodné zálohy Password Safe (*.ibak)|*.ibak|Všetky "
+"súbory (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:80
 msgid "Master Password:"
 msgstr "Hlavné heslo:"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:100
-#: ../../../ui/wxWidgets/wxUtilities.cpp:255
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
+#: ../../../ui/wxWidgets/wxUtilities.cpp:255 ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
 #: ../../../ui/wxWidgets/YubiMixin.cpp:64
 msgid "Insert YubiKey"
 msgstr "Vložte YubiKey"
@@ -1378,19 +1350,16 @@ msgid "&Cancel"
 msgstr "Zrušiť"
 
 #: ../../../ui/wxWidgets/DragBarCtrl.cpp:143
-msgid ""
-"Drag this image onto another window to paste the selected element or tree."
+msgid "Drag this image onto another window to paste the selected element or tree."
 msgstr ""
-"Pretiahnite tento obrázok do iného okna aby ste vložili vybratý prvok alebo "
-"strom."
+"Pretiahnite tento obrázok do iného okna aby ste vložili vybratý prvok alebo strom."
 
 #: ../../../ui/wxWidgets/DragBarCtrl.cpp:144
 #, c-format
 msgid "Drag this image onto another window to paste the '%s' field."
 msgstr "Pretiahnite tento obrázok do iného okna aby ste vložili pole '%s'."
 
-#: ../../../ui/wxWidgets/DragBarCtrl.cpp:152
-#: ../../../ui/wxWidgets/GridCtrl.cpp:166
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:152 ../../../ui/wxWidgets/GridCtrl.cpp:166
 msgid "User"
 msgstr "Používateľské meno"
 
@@ -1440,21 +1409,19 @@ msgstr "Cieľ sa naposledy zmenil dňa:"
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:61
 msgid ""
-"Warning! This operation will create an unprotected copy of ALL of the "
-"passwords\n"
+"Warning! This operation will create an unprotected copy of ALL of the passwords\n"
 "in the database. Deleting this copy after use is NOT sufficient."
 msgstr ""
-"UPOZORNENIE: Táto operácia vytvorí nechránenú kópiu VŠETKÝCH hesiel v "
-"databáze. Odstránenie tejto kópie po použití NIE JE postačujúce."
+"UPOZORNENIE: Táto operácia vytvorí nechránenú kópiu VŠETKÝCH hesiel v databáze. "
+"Odstránenie tejto kópie po použití NIE JE postačujúce."
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:63
 msgid ""
-"Do not use this option unless you understand and accept the risks. This "
-"option\n"
+"Do not use this option unless you understand and accept the risks. This option\n"
 "bypasses the security provided by this program."
 msgstr ""
-"Túto možnosť nepoužívajte, jedine ak jej rozumiete a akceptujete riziká. "
-"Táto možnosť obchádza zabezpečenie poskytované týmto programom."
+"Túto možnosť nepoužívajte, jedine ak jej rozumiete a akceptujete riziká. Táto možnosť "
+"obchádza zabezpečenie poskytované týmto programom."
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:70
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:173
@@ -1469,10 +1436,8 @@ msgstr "Oddeľovač riadkov"
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:87
 msgid ""
-"The delimiter in the Notes field, also used to replace periods in the Title "
-"field."
-msgstr ""
-"Oddeľovač v poli Poznámky, tiež sa používa na nahradenie bodiek v poli Názov "
+"The delimiter in the Notes field, also used to replace periods in the Title field."
+msgstr "Oddeľovač v poli Poznámky, tiež sa používa na nahradenie bodiek v poli Názov "
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:88
 #: ../../../ui/wxWidgets/MergeDlg.cpp:66
@@ -1486,8 +1451,7 @@ msgstr "Pokročilé..."
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:750
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:203
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:159
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:193
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:192
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:193 ../../../ui/wxWidgets/YubiCfgDlg.cpp:192
 msgid "&Help"
 msgstr "&Nápoveda"
 
@@ -1500,11 +1464,9 @@ msgid "Virtual Keyboard"
 msgstr "Virtuálna klávesnica"
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:72
-msgid ""
-"Could not launch xvkbd.  Please make sure it's installed and in your PATH"
+msgid "Could not launch xvkbd.  Please make sure it's installed and in your PATH"
 msgstr ""
-"Nepodarilo sa spustiť xvkbd. Uistite sa že je nainštalovaný a nastavený v "
-"ceste PATH."
+"Nepodarilo sa spustiť xvkbd. Uistite sa že je nainštalovaný a nastavený v ceste PATH."
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:73
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:81
@@ -1518,18 +1480,16 @@ msgid "Could not launch xvkbd.  Please make sure it's in your PATH"
 msgstr "Nepodarilo sa spustiť xvkbd. Uistite sa že je nastavený v ceste PATH."
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:85
-msgid ""
-"Could not launch a new process for xvkbd.  Simultaneous execution disabled?"
-msgstr ""
-"Nepodarilo sa spustiť nový proces pre xvkbd. Súbežné vykonávanie je zakázané?"
+msgid "Could not launch a new process for xvkbd.  Simultaneous execution disabled?"
+msgstr "Nepodarilo sa spustiť nový proces pre xvkbd. Súbežné vykonávanie je zakázané?"
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:99
 msgid ""
-"Please enable the Accessibility Keyboard in System Settings; the on-screen "
-"keyboard should then appear."
+"Please enable the Accessibility Keyboard in System Settings; the on-screen keyboard "
+"should then appear."
 msgstr ""
-"V nastaveniach systému povoľte Klávesnicu pre prístupnosť; potom by sa mala "
-"zobraziť klávesnica na obrazovke."
+"V nastaveniach systému povoľte Klávesnicu pre prístupnosť; potom by sa mala zobraziť "
+"klávesnica na obrazovke."
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:101
 msgid "Could not launch the MacOS Settings App"
@@ -1563,8 +1523,7 @@ msgstr "Predvoľby importu"
 msgid "Import under group"
 msgstr "Importovať pod novou skupinou"
 
-#: ../../../ui/wxWidgets/ImportTextDlg.cpp:100
-#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:67
+#: ../../../ui/wxWidgets/ImportTextDlg.cpp:100 ../../../ui/wxWidgets/ImportXmlDlg.cpp:67
 msgid "Import to change passwords of existing entries ONLY"
 msgstr "Import zmení heslá IBA existujúcich záznamov"
 
@@ -1601,11 +1560,9 @@ msgid "Import text file:"
 msgstr "Textový súbor na import:"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:188
-msgid ""
-"Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*; *"
+msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*; *"
 msgstr ""
-"Textové súbory (*.txt)|*.txt|CSV súbory (*.csv)|*.csv|Všetky súbory (*.*; *)|"
-"*.*; *"
+"Textové súbory (*.txt)|*.txt|CSV súbory (*.csv)|*.csv|Všetky súbory (*.*; *)|*.*; *"
 
 #: ../../../ui/wxWidgets/ImportXmlDlg.cpp:31
 msgid "Import XML Settings"
@@ -1682,8 +1639,7 @@ msgstr "Chcete ho nahradiť?"
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1059
 #, c-format
 msgid "File %ls was not imported (failed validation against XML Schema)"
-msgstr ""
-"Súbor %ls sa nepodarilo importovať (nepodarilo sa overiť oproti schéme XML)"
+msgstr "Súbor %ls sa nepodarilo importovať (nepodarilo sa overiť oproti schéme XML)"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1062
 #, c-format
@@ -1866,8 +1822,8 @@ msgid ""
 "\n"
 "Pressing Cancel stops the password from being copied."
 msgstr ""
-"Stlačením OK skopírujete heslo vybratého záznamu do schránky. Schránka sa "
-"bezpečne vymaže po zatvorení aplikácie Password Safe.\n"
+"Stlačením OK skopírujete heslo vybratého záznamu do schránky. Schránka sa bezpečne "
+"vymaže po zatvorení aplikácie Password Safe.\n"
 "\n"
 "Stlačením tlačidla Zrušiť sa zruší kopírovanie hesla."
 
@@ -1880,12 +1836,9 @@ msgid "&Don't remind me again"
 msgstr "Už mi toto nepripomínať"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:629
-msgid ""
-"There is no view available for attachments that are not of image media "
-"type.\n"
+msgid "There is no view available for attachments that are not of image media type.\n"
 msgstr ""
-"Pre prílohy, ktoré nie sú typu obrázok, nie je k dispozícii žiadne "
-"zobrazenie.\n"
+"Pre prílohy, ktoré nie sú typu obrázok, nie je k dispozícii žiadne zobrazenie.\n"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:630
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:647
@@ -1910,11 +1863,11 @@ msgstr "Chyba pri automatickom dopĺňaní"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:802
 msgid ""
-"Error switching to another application before autotyping. Switch manually "
-"within 5 seconds"
+"Error switching to another application before autotyping. Switch manually within 5 "
+"seconds"
 msgstr ""
-"Chyba pri prepínaní sa do inej aplikácie pred automatickým dopĺňaním. "
-"Prepnite manuálne do 5 sekúnd."
+"Chyba pri prepínaní sa do inej aplikácie pred automatickým dopĺňaním. Prepnite "
+"manuálne do 5 sekúnd."
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:972
 msgid "Unable to send email"
@@ -1981,9 +1934,8 @@ msgstr "Chcete uložiť zmeny v databáze hesiel:"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:94
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:579
-#, fuzzy
 msgid "Save changes?"
-msgstr "Neuložené zmeny"
+msgstr "Uložiť zmeny?"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:95
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:581
@@ -2033,23 +1985,20 @@ msgstr "Otvorte databázu hesiel"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:342
 msgid ""
-"Unable to create intermediate backup.  Save database elsewhere or with "
-"another name?\n"
+"Unable to create intermediate backup.  Save database elsewhere or with another name?\n"
 "\n"
 "Click 'No' to exit without saving."
 msgstr ""
-"Nepodarilo sa vytvoriť prechodnú zálohu. Uložiť databázu inde alebo pod iným "
-"názvom?\n"
+"Nepodarilo sa vytvoriť prechodnú zálohu. Uložiť databázu inde alebo pod iným názvom?\n"
 "\n"
 "Kliknutím na 'Nie' ukončíte program bez uloženia."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:349
 msgid ""
-"Unable to create intermediate backup.  Do you wish to save changes to your "
-"database without it?"
+"Unable to create intermediate backup.  Do you wish to save changes to your database "
+"without it?"
 msgstr ""
-"Nepodarilo sa vytvoriť prechodnú zálohu. Prajete si uložiť zmeny do databázy "
-"aj tak?"
+"Nepodarilo sa vytvoriť prechodnú zálohu. Prajete si uložiť zmeny do databázy aj tak?"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:356
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:364
@@ -2060,14 +2009,14 @@ msgstr "Nepodarilo sa vytvoriť prechodnú zálohu. "
 #, c-format
 msgid ""
 "The original database, \"%ls\", is in pre-3.0 format. It will be unchanged.\n"
-"Your changes will be written as \"%ls\" in the new format, which is unusable "
-"by old versions of PasswordSafe. To save your changes in the old format, use "
-"the \"File->Export To-> Old (1.x or 2) format\" command."
+"Your changes will be written as \"%ls\" in the new format, which is unusable by old "
+"versions of PasswordSafe. To save your changes in the old format, use the \"File-"
+">Export To-> Old (1.x or 2) format\" command."
 msgstr ""
-"Pôvodná databáza, \"%ls\", je vo formáte pred verziou 3.0. Dáta budú teraz "
-"zapísané v novom formáte do \"%ls\", ktorý nie je možné použiť v starých "
-"verziách Password Safe. Ak chcete uložiť dáta v starom formáte, použite "
-"príkaz \"Súbor->Exportovať do->Formát (v1.x alebo v2)\"."
+"Pôvodná databáza, \"%ls\", je vo formáte pred verziou 3.0. Dáta budú teraz zapísané v "
+"novom formáte do \"%ls\", ktorý nie je možné použiť v starých verziách Password Safe. "
+"Ak chcete uložiť dáta v starom formáte, použite príkaz \"Súbor->Exportovať do->Formát "
+"(v1.x alebo v2)\"."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:377
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:438
@@ -2077,15 +2026,14 @@ msgstr "Problém s verziou súboru"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:437
 #, c-format
 msgid ""
-"The original database, '%ls', is in pre-3.0 format. The data will now be "
-"written in the new format, which is unusable by old versions of "
-"PasswordSafe. To save the data in the old format, use the 'File->Export To-> "
-"Old (1.x or 2) format' command."
+"The original database, '%ls', is in pre-3.0 format. The data will now be written in "
+"the new format, which is unusable by old versions of PasswordSafe. To save the data "
+"in the old format, use the 'File->Export To-> Old (1.x or 2) format' command."
 msgstr ""
-"Pôvodná databáza, '%ls', je vo formáte pred verziou 3.0. Dáta budú teraz "
-"zapísané v novom formáte ktorý nie je možné použiť v starých verziách "
-"Password Safe. Ak chcete uložiť dáta v starom formáte, použite príkaz 'Súbor-"
-">Exportovať do->Formát (v1.x alebo v2)'."
+"Pôvodná databáza, '%ls', je vo formáte pred verziou 3.0. Dáta budú teraz zapísané v "
+"novom formáte ktorý nie je možné použiť v starých verziách Password Safe. Ak chcete "
+"uložiť dáta v starom formáte, použite príkaz 'Súbor->Exportovať do->Formát (v1.x "
+"alebo v2)'."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:450
 msgid "Choose a name for the current (Untitled) database:"
@@ -2097,11 +2045,9 @@ msgstr "Vyberte nový názov pre aktuálnu databázu:"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:459
 msgid ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|"
-"*.*;*"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|*.*;*"
 msgstr ""
-"Databázy Password Safe (*.psafe3; *.dat)|*.psafe3;*.dat|Všetky súbory (*.*; "
-"*)|*.*;*"
+"Databázy Password Safe (*.psafe3; *.dat)|*.psafe3;*.dat|Všetky súbory (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:471
 #, c-format
@@ -2140,11 +2086,9 @@ msgstr "Zadajte názov pre textový súbor"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:617
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1154
-msgid ""
-"Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
+msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
 msgstr ""
-"Textové súbory (*.txt)|*.txt|CSV súbory (*.csv)|*.csv|Všetky súbory (*.*; *)|"
-"*.*;*"
+"Textové súbory (*.txt)|*.txt|CSV súbory (*.csv)|*.csv|Všetky súbory (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:627
 msgid "Advanced Text Export Options"
@@ -2174,8 +2118,7 @@ msgstr "Databázy Password Safe (*.dat)|*.dat|Všetky súbory (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:713
 msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*; *)|*.*;*"
-msgstr ""
-"Databázy Password Safe (*.psafe4)|*.psafe4|Všetky súbory (*.*; *)|*.*;*"
+msgstr "Databázy Password Safe (*.psafe4)|*.psafe4|Všetky súbory (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:724
 msgid "Name the exported database"
@@ -2203,18 +2146,14 @@ msgstr "Export dokončený. Chcete zobraziť podrobnú správu?"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:847
 msgid "No entries satisfied your selection criteria and so none were exported!"
-msgstr ""
-"Žiadne záznamy nesplnili vaše kritériá výberu, takže žiadne neboli "
-"exportované!"
+msgstr "Žiadne záznamy nesplnili vaše kritériá výberu, takže žiadne neboli exportované!"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:860
 msgid "Passkey incorrect"
 msgstr "Nesprávny prístupový kľúč"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:873
-msgid ""
-"The current database was opened in read-only mode.  You cannot import into "
-"it."
+msgid "The current database was opened in read-only mode.  You cannot import into it."
 msgstr "Aktuálna databáza je otvorená iba na čítanie, import sa nedá vykonať."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:874
@@ -2227,8 +2166,7 @@ msgstr "Databáza:"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:883
 msgid "has duplicate entries with the same group/title/user combination."
-msgstr ""
-"obsahuje duplikáty s rovnakou kombináciou skupina/názov/používateľské meno."
+msgstr "obsahuje duplikáty s rovnakou kombináciou skupina/názov/používateľské meno."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:884
 msgid "  Fix by validating database."
@@ -2248,10 +2186,8 @@ msgstr "Importuje sa %ls súbor: %ls"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:922
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:927
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:241
-#: ../../../ui/wxWidgets/SyncWizard.cpp:627
-#: ../../../ui/wxWidgets/wxUtilities.cpp:72
-#: ../../../ui/wxWidgets/wxUtilities.cpp:77
-#: ../../../ui/wxWidgets/wxUtilities.cpp:84
+#: ../../../ui/wxWidgets/SyncWizard.cpp:627 ../../../ui/wxWidgets/wxUtilities.cpp:72
+#: ../../../ui/wxWidgets/wxUtilities.cpp:77 ../../../ui/wxWidgets/wxUtilities.cpp:84
 msgid "File Read Error"
 msgstr "Chyba pri čítaní súboru"
 
@@ -2325,31 +2261,29 @@ msgid ""
 "\n"
 "%ls\n"
 "\n"
-"has duplicate entries with the same group/title/user combination. Fix by "
-"validating database."
+"has duplicate entries with the same group/title/user combination. Fix by validating "
+"database."
 msgstr ""
 "Databáza:\n"
 "\n"
 "%ls\n"
 "\n"
-"obsahuje duplikáty s rovnakou kombináciou skupina/názov/používateľské meno. "
-"Môžete to opraviť overením databázy."
+"obsahuje duplikáty s rovnakou kombináciou skupina/názov/používateľské meno. Môžete to "
+"opraviť overením databázy."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1003
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1053
 msgid "Import XML failed"
 msgstr "Import XML zlyhal"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1013
-#: ../../../core/core_st.cpp:275
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1013 ../../../core/core_st.cpp:275
 #, c-format
 msgid ""
 "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application "
 "Directory.\n"
 "Copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
-"Nemôžem nájsť súbor definície schémy XML (%ls) v priečinku aplikácie "
-"Password Safe.\n"
+"Nemôžem nájsť súbor definície schémy XML (%ls) v priečinku aplikácie Password Safe.\n"
 "Skopírujte ho z inštalačného súboru alebo preinštalujte Password Safe."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1014
@@ -2406,11 +2340,11 @@ msgstr " / s chybami histórie hesiel %d"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1098
 msgid ""
-"The following records were renamed as an entry already exists in your "
-"database or in the Import file:"
+"The following records were renamed as an entry already exists in your database or in "
+"the Import file:"
 msgstr ""
-"Nasledovné záznamy boli premenované keďže už záznam existuje v databáze "
-"alebo v importovanom súbore:"
+"Nasledovné záznamy boli premenované keďže už záznam existuje v databáze alebo v "
+"importovanom súbore:"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1100
 #, c-format
@@ -2420,17 +2354,16 @@ msgstr " / premenované %d"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
 #, c-format
 msgid ""
-"File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See "
-"report for details."
+"File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See report for "
+"details."
 msgstr ""
-"Súbor: %ls sa naimportoval (overené záznamy %d / importované %d%ls%ls%ls). "
-"Pozrite si podrobnosti v reporte."
+"Súbor: %ls sa naimportoval (overené záznamy %d / importované %d%ls%ls%ls). Pozrite si "
+"podrobnosti v reporte."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1110
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1111
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1223
-#: ../../../ui/wxWidgets/SyncWizard.cpp:642
-#: ../../../ui/wxWidgets/SyncWizard.cpp:787
+#: ../../../ui/wxWidgets/SyncWizard.cpp:642 ../../../ui/wxWidgets/SyncWizard.cpp:787
 #: ../../../ui/wxWidgets/SyncWizard.cpp:804 ../../../core/core_st.cpp:111
 msgid "entry"
 msgstr "záznam"
@@ -2438,8 +2371,7 @@ msgstr "záznam"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1110
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1111
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1223
-#: ../../../ui/wxWidgets/SyncWizard.cpp:642
-#: ../../../ui/wxWidgets/SyncWizard.cpp:787
+#: ../../../ui/wxWidgets/SyncWizard.cpp:642 ../../../ui/wxWidgets/SyncWizard.cpp:787
 #: ../../../ui/wxWidgets/SyncWizard.cpp:804 ../../../core/core_st.cpp:109
 msgid "entries"
 msgstr "záznamy"
@@ -2521,8 +2453,7 @@ msgstr "Zlúčenie dokončené"
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:3361
 msgid "Can't close database. There are unsaved changes in opened dialogs."
 msgstr ""
-"Databázu nie je možné zatvoriť. V otvorených dialógových oknách sú neuložené "
-"zmeny."
+"Databázu nie je možné zatvoriť. V otvorených dialógových oknách sú neuložené zmeny."
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:157
 msgid "Choose a Name for this Backup:"
@@ -2543,11 +2474,10 @@ msgstr "Súbor zálohy"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:221
 msgid ""
-"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
-"ibak)|*.ibak||"
+"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|"
+"*.ibak||"
 msgstr ""
-"Zálohy Password Safe (*.bak)|*.bak|Prechodné zálohy Password Safe (*.ibak)|*."
-"ibak||"
+"Zálohy Password Safe (*.bak)|*.bak|Prechodné zálohy Password Safe (*.ibak)|*.ibak||"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:248
 msgid "Password Safe - <Untitled Restored Backup>"
@@ -2555,10 +2485,8 @@ msgstr "Password Safe - <Obnovená záloha bez názvu>"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:408
 msgid ""
-"You have chosen not to save your changes, which will be lost. Do you wish to "
-"continue?"
-msgstr ""
-"Rozhodli ste sa neuložiť zmeny, ktoré sa tak stratia. Chcete pokračovať?"
+"You have chosen not to save your changes, which will be lost. Do you wish to continue?"
+msgstr "Rozhodli ste sa neuložiť zmeny, ktoré sa tak stratia. Chcete pokračovať?"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:408
 msgid "Change database mode?"
@@ -2570,13 +2498,13 @@ msgstr "Požadovaná zmena režimu zlyhala"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:451
 msgid ""
-"The database has been changed since you opened it in R-O mode, so it is not "
-"possible to switch to R/W mode.\n"
+"The database has been changed since you opened it in R-O mode, so it is not possible "
+"to switch to R/W mode.\n"
 "\n"
 "Close the database and re-open it in R/W mode."
 msgstr ""
-"Databáza sa zmenila, odkedy ste ju otvorili v režime R-O, takže nie je možné "
-"ju prepnúť do režimu R/W.\n"
+"Databáza sa zmenila, odkedy ste ju otvorili v režime R-O, takže nie je možné ju "
+"prepnúť do režimu R/W.\n"
 "\n"
 "Zatvorte databázu a znovu ju otvorte v režime R/W."
 
@@ -2588,31 +2516,30 @@ msgstr " [ID procesu=%ls]"
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:481
 #, c-format
 msgid ""
-"Failed to switch from R-O to R/W because database is already open in R/W "
-"mode by:\n"
+"Failed to switch from R-O to R/W because database is already open in R/W mode by:\n"
 "%ls %ls\n"
 "(Only one R/W access at a time is allowed)"
 msgstr ""
-"Nepodarilo sa prepnúť z R-O na R/W, pretože databáza je už otvorená v režime "
-"R/W používateľom:\n"
+"Nepodarilo sa prepnúť z R-O na R/W, pretože databáza je už otvorená v režime R/W "
+"používateľom:\n"
 "%ls %ls\n"
 "(Je povolený iba jeden prístup R/W v danom čase)"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:487
 msgid ""
-"Failed to switch from R-O to R/W: Could not open the database. It may have "
-"been deleted or renamed or there may be a problem with its drive."
+"Failed to switch from R-O to R/W: Could not open the database. It may have been "
+"deleted or renamed or there may be a problem with its drive."
 msgstr ""
-"Nepodarilo sa prepnúť z R-O na R/W: nepodarilo sa otvoriť databázu. Je možné "
-"že bola zmazaná alebo premenovaná alebo je problém s diskom."
+"Nepodarilo sa prepnúť z R-O na R/W: nepodarilo sa otvoriť databázu. Je možné že bola "
+"zmazaná alebo premenovaná alebo je problém s diskom."
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:490
 msgid ""
-"Failed to switch from R-O to R/W: The file appears to be too short to be a "
-"valid database."
+"Failed to switch from R-O to R/W: The file appears to be too short to be a valid "
+"database."
 msgstr ""
-"Nepodarilo sa prepnúť z R-O na R/W: Súbor sa zdá byť príliš krátky na to aby "
-"bol platnou databázou."
+"Nepodarilo sa prepnúť z R-O na R/W: Súbor sa zdá byť príliš krátky na to aby bol "
+"platnou databázou."
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:495
 msgid "Given path is a directory or file is read-only"
@@ -2623,8 +2550,7 @@ msgid ""
 "Failed to switch from R/W to R-O: Could not release database lock.\n"
 "Try exiting and restarting program."
 msgstr ""
-"Nepodarilo sa prepnúť z R/W na R-O: nepodarilo sa uvoľniť zámok na "
-"databázu.\n"
+"Nepodarilo sa prepnúť z R/W na R-O: nepodarilo sa uvoľniť zámok na databázu.\n"
 "Skúste program ukončiť a znova spustiť."
 
 #: ../../../ui/wxWidgets/MenuViewHandlers.cpp:229
@@ -2700,8 +2626,7 @@ msgstr ""
 msgid "Incremented Number [001-999]"
 msgstr "Prírastkové číslo [001-999]"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:132
-#: ../../../core/core_st.cpp:82
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:132 ../../../core/core_st.cpp:82
 msgid "Copy password to clipboard"
 msgstr "Skopíruj heslo do schránky"
 
@@ -2714,23 +2639,19 @@ msgstr "Upraviť/Zobraziť vybraný záznam"
 msgid "Browse to URL"
 msgstr "Otvoriť URL v prehliadači"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:136
-#: ../../../core/core_st.cpp:81
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:136 ../../../core/core_st.cpp:81
 msgid "Copy notes to clipboard"
 msgstr "Skopíruj poznámky do schránky"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:137
-#: ../../../core/core_st.cpp:84
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:137 ../../../core/core_st.cpp:84
 msgid "Copy username to clipboard"
 msgstr "Skopíruj používateľské meno do schránky"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:138
-#: ../../../core/core_st.cpp:83
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:138 ../../../core/core_st.cpp:83
 msgid "Copy password to clipboard, minimize"
 msgstr "Skopíruj heslo do schránky a minimalizuj"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:139
-#: ../../../core/core_st.cpp:80
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:139 ../../../core/core_st.cpp:80
 msgid "Browse to URL + Autotype"
 msgstr "Prejsť na adresu URL + automatické dopĺňanie"
 
@@ -3044,8 +2965,7 @@ msgstr "Spustiť Password Safe pri prihlásení (Neimplementované)"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:872
 msgid "There appears to be no system tray support in your current environment."
-msgstr ""
-"Zdá sa že vo vašom systéme nie je k dispozícii podpora pre System Tray."
+msgstr "Zdá sa že vo vašom systéme nie je k dispozícii podpora pre System Tray."
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:877
 msgid "Recent Password Safe Databases"
@@ -3078,12 +2998,11 @@ msgstr "Použiť alternatívnu metódu automatického dopĺňania"
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:918
 msgid ""
 "When set, use XTEST for AutoType instead of XSendEvent.\n"
-"XSendEvent can handle more control keys, but may be blocked by some "
-"applications."
+"XSendEvent can handle more control keys, but may be blocked by some applications."
 msgstr ""
 "Keď je nastavené, použite pre AutoType XTEST namiesto XSendEvent.\n"
-"XSendEvent dokáže spracovať viac ovládacích klávesov, ale niektoré aplikácie "
-"ho môžu blokovať."
+"XSendEvent dokáže spracovať viac ovládacích klávesov, ale niektoré aplikácie ho môžu "
+"blokovať."
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:920
 msgid "If AutoType doesn't work, setting this may help."
@@ -3101,29 +3020,25 @@ msgstr "Vyberte program"
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1373
 #, c-format
 msgid ""
-"Number of entries that had their settings changed to not save password "
-"history was: %d"
+"Number of entries that had their settings changed to not save password history was: %d"
 msgstr ""
-"Počet záznamov, ktorým sa zmenilo nastavenie tak aby neukladali históriu "
-"hesiel: %d."
+"Počet záznamov, ktorým sa zmenilo nastavenie tak aby neukladali históriu hesiel: %d."
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1378
 #, c-format
 msgid ""
-"Number of entries that had their settings changed to save password history "
-"was: %d"
+"Number of entries that had their settings changed to save password history was: %d"
 msgstr ""
-"Počet záznamov, ktorým sa zmenilo nastavenie tak aby ukladali históriu "
-"hesiel: %d."
+"Počet záznamov, ktorým sa zmenilo nastavenie tak aby ukladali históriu hesiel: %d."
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1383
 #, c-format
 msgid ""
-"Number of entries that had their 'maximum saved passwords' changed to the "
-"new default was %d"
+"Number of entries that had their 'maximum saved passwords' changed to the new default "
+"was %d"
 msgstr ""
-"Počet záznamov, ktorým sa zmenil 'maximálny počet uložených hesiel' na "
-"predvolenú hodnotu: %d."
+"Počet záznamov, ktorým sa zmenil 'maximálny počet uložených hesiel' na predvolenú "
+"hodnotu: %d."
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1388
 #, c-format
@@ -3139,18 +3054,16 @@ msgid "Hexadecimal is mutually exclusive to all other options."
 msgstr "Hexadecimálne znaky sa navzájom vylučujú s ostatnými možnosťami."
 
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:458
-msgid ""
-"Hexadecimal passwords must have even length - each byte is two characters"
-msgstr ""
-"Dĺžka hexadecimálnych hesiel musí byť párna keďže každý bajt sú dva znaky."
+msgid "Hexadecimal passwords must have even length - each byte is two characters"
+msgstr "Dĺžka hexadecimálnych hesiel musí byť párna keďže každý bajt sú dva znaky."
 
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:463
 msgid ""
-"At least one type of character (lowercase, uppercase, digits, symbols or "
-"hexadecimal) must be chosen"
+"At least one type of character (lowercase, uppercase, digits, symbols or hexadecimal) "
+"must be chosen"
 msgstr ""
-"Musíte vybrať aspoň jeden typ znaku z množiny (malé písmená, veľké písmená, "
-"číslice, symboly alebo hexadecimálne)."
+"Musíte vybrať aspoň jeden typ znaku z množiny (malé písmená, veľké písmená, číslice, "
+"symboly alebo hexadecimálne)."
 
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:468
 msgid "Password must be between 4 and 1024 characters"
@@ -3888,17 +3801,16 @@ msgstr " sa zhoduje"
 
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:93
 msgid ""
-"Enter positions of password characters separated by spaces, commas or semi-"
-"colons (or * for full password).\n"
-"Position 1 is the first character, 2 is the second, etc. up to N for the "
-"last character of a password of length N.\n"
-"-1 is the last character, -2 the next to last, etc. up to -N for the first "
-"password character."
+"Enter positions of password characters separated by spaces, commas or semi-colons (or "
+"* for full password).\n"
+"Position 1 is the first character, 2 is the second, etc. up to N for the last "
+"character of a password of length N.\n"
+"-1 is the last character, -2 the next to last, etc. up to -N for the first password "
+"character."
 msgstr ""
-"Zadajte pozície znakov hesla oddelené medzerami, čiarkami alebo "
-"bodkočiarkami (alebo * pre úplné heslo).\n"
-"Pozícia 1 je prvý znak, 2 je druhý atď. Až do N pre posledný znak hesla "
-"dĺžky N.\n"
+"Zadajte pozície znakov hesla oddelené medzerami, čiarkami alebo bodkočiarkami (alebo "
+"* pre úplné heslo).\n"
+"Pozícia 1 je prvý znak, 2 je druhý atď. Až do N pre posledný znak hesla dĺžky N.\n"
 "-1 je posledný znak, -2 ďalší až posledný atď. Až do -N pre prvý znak hesla."
 
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:99
@@ -4023,15 +3935,14 @@ msgstr "Absolútne"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:284
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:304
-#: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:337
-#: ../../../core/core_st.cpp:45
+#: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:337 ../../../core/core_st.cpp:45
 msgid "and"
 msgstr "a"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:291
 msgid ""
-"Relative dates are in days relative to today e.g. '-1' is yesterday and '1' "
-"is tomorrow"
+"Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is "
+"tomorrow"
 msgstr "Relatívne dátumy sú voči dnešku, napr. '-1' je včera a '1' je zajtra"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:295 ../../../core/core_st.cpp:305
@@ -4300,14 +4211,11 @@ msgstr "Typ"
 msgid "Another instance of Password Safe is already running"
 msgstr "Už je spustená iná inštancia Password Safe"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:489
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:498
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:489 ../../../ui/wxWidgets/PWSafeApp.cpp:498
 msgid "Could not initialize help subsystem. Help will not be available."
-msgstr ""
-"Nepodarilo sa inicializovať podsystém Nápovedy. Nápoveda nebude k dispozícii."
+msgstr "Nepodarilo sa inicializovať podsystém Nápovedy. Nápoveda nebude k dispozícii."
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:490
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:499
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:490 ../../../ui/wxWidgets/PWSafeApp.cpp:499
 msgid "Password Safe: Error initializing help"
 msgstr "Password Safe: Chyba pri inicializácii Nápovedy"
 
@@ -4484,19 +4392,17 @@ msgstr "alebo je databáza poškodená."
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:459
 msgid ""
-"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat| "
-"All files (*.*; *)|*.*;*"
+"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat| All "
+"files (*.*; *)|*.*;*"
 msgstr ""
-"Databázy Password Safe (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat| "
-"Všetky súbory (*.*; *)|*.*;*"
+"Databázy Password Safe (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat| Všetky "
+"súbory (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:504
 msgid ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|"
-"*.*;*"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|*.*;*"
 msgstr ""
-"Databázy Password Safe (*.psafe3; *.dat)|*.psafe3;*.dat| Všetky súbory (*.*; "
-"*)|*.*;*"
+"Databázy Password Safe (*.psafe3; *.dat)|*.psafe3;*.dat| Všetky súbory (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:126
 msgid "filename"
@@ -4508,8 +4414,7 @@ msgid "&Unlock"
 msgstr "Odomknúť"
 
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:113
-msgid ""
-"The Master Password will be used to protect the new password database file."
+msgid "The Master Password will be used to protect the new password database file."
 msgstr "Hlavné heslo sa použije na ochranu nového súboru databázy hesiel."
 
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:225
@@ -4653,8 +4558,7 @@ msgstr "Použiť"
 msgid "OK"
 msgstr ""
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:190
-#: ../../../ui/wxWidgets/wxUtilities.cpp:211
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:190 ../../../ui/wxWidgets/wxUtilities.cpp:211
 msgid "Cancel"
 msgstr "Zrušiť"
 
@@ -4737,8 +4641,8 @@ msgid ""
 "Synchronizing with another database will update the entries in your\n"
 "database with matching entries from the other database."
 msgstr ""
-"Synchronizácia s inou databázou aktualizuje záznamy vo vašej databáze "
-"zodpovedajúcimi záznamami z druhej databázy."
+"Synchronizácia s inou databázou aktualizuje záznamy vo vašej databáze zodpovedajúcimi "
+"záznamami z druhej databázy."
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:411
 msgid "More Info"
@@ -4749,33 +4653,32 @@ msgid ""
 "1. Two entries from different databases match if their Group, Title\n"
 "and User fields match."
 msgstr ""
-"1. Dva záznamy z rôznych databáz sa zhodujú, ak sa zhodujú ich polia "
-"Skupina, Názov a Používateľské meno."
+"1. Dva záznamy z rôznych databáz sa zhodujú, ak sa zhodujú ich polia Skupina, Názov a "
+"Používateľské meno."
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:415
 msgid ""
 "2. You can select the fields to update, as well as filter the entries\n"
 "for synchronization."
 msgstr ""
-"2. Môžete vybrať polia ktoré chcete aktualizovať, ako aj filtrovať záznamy "
-"na synchronizáciu."
+"2. Môžete vybrať polia ktoré chcete aktualizovať, ako aj filtrovať záznamy na "
+"synchronizáciu."
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:416
 msgid ""
 "3. Only existing entries in your database are updated.  No new entries are\n"
 "added or existing entries removed during this process."
 msgstr ""
-"3. Aktualizujú sa iba existujúce záznamy vo vašej databáze. Počas tohto "
-"procesu sa nepridávajú žiadne nové záznamy ani sa neodstraňujú existujúce "
-"záznamy."
+"3. Aktualizujú sa iba existujúce záznamy vo vašej databáze. Počas tohto procesu sa "
+"nepridávajú žiadne nové záznamy ani sa neodstraňujú existujúce záznamy."
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:417
 msgid ""
 "4. You can undo the operation once it is complete, but won't be\n"
 "able to abort it mid-way."
 msgstr ""
-"4. Operáciu môžete po jej dokončení vrátiť späť, ale nebudete ju môcť "
-"prerušiť počas vykonávania."
+"4. Operáciu môžete po jej dokončení vrátiť späť, ale nebudete ju môcť prerušiť počas "
+"vykonávania."
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:434
 msgid "Select another database"
@@ -4806,8 +4709,8 @@ msgid ""
 msgstr ""
 "UPOZORNENIE!!!\n"
 "\n"
-"Ak budete pokračovať, polia v záznamoch v existujúcej databáze sa "
-"aktualizujú z vami vybratej vstupnej databázy."
+"Ak budete pokračovať, polia v záznamoch v existujúcej databáze sa aktualizujú z vami "
+"vybratej vstupnej databázy."
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:526
 msgid " will be updated with corresponding entries from \""
@@ -4990,8 +4893,7 @@ msgstr "Odoslať email"
 msgid "&Delete from Recent Entry List"
 msgstr "Zmazať zo zoznamu nedávnych položiek"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:991
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:993
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:991 ../../../ui/wxWidgets/TreeCtrl.cpp:993
 msgid "New Group"
 msgstr "Nová skupina"
 
@@ -5007,8 +4909,7 @@ msgstr ""
 msgid "name exists"
 msgstr "názov existuje"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:993
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1054
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:993 ../../../ui/wxWidgets/TreeCtrl.cpp:1054
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1532
 msgid "Duplicate group name"
 msgstr "Duplicitný názov skupiny"
@@ -5019,8 +4920,7 @@ msgstr "Nepodarilo sa pridať prázdnu skupinu do stromu"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1010
 msgid "Renaming of non-Group items is not implemented"
-msgstr ""
-"Premenovanie položiek, ktoré nepatria do skupiny, nie je implementované"
+msgstr "Premenovanie položiek, ktoré nepatria do skupiny, nie je implementované"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1054
 msgid "Group names on the same level must be unique."
@@ -5034,15 +4934,12 @@ msgstr "Bodky nie sú povolené v názvoch skupín"
 msgid "Invalid Character"
 msgstr "Neplatný znak"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1462
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2781
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1462 ../../../ui/wxWidgets/TreeCtrl.cpp:2781
 msgid "Destination cannot be inside source tree"
 msgstr "Cieľ nemôže byť vo vnútri zdrojového stromu"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1462
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2629
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2636
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2653
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1462 ../../../ui/wxWidgets/TreeCtrl.cpp:2629
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2636 ../../../ui/wxWidgets/TreeCtrl.cpp:2653
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2781
 msgid "Drag and Drop failed"
 msgstr "Operácia Drag and Drop zlyhala"
@@ -5066,8 +4963,7 @@ msgid ""
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Heslo vloženého záznamu '%s:%s:%s' odkazuje na záznam, ktorý je taktiež "
-"alias.\n"
+"Heslo vloženého záznamu '%s:%s:%s' odkazuje na záznam, ktorý je taktiež alias.\n"
 "\n"
 "Vložený záznam teraz odkazuje na základný záznam daného záznamu."
 
@@ -5084,13 +4980,12 @@ msgstr "Cieľ tohto odkazu [%s:%s:%s] nie je normálnym záznamom."
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
 #, c-format
 msgid ""
-"The following entries had a policy name that already existed in this "
-"database but with different settings.\n"
-"A new named policy has been created with the current date/time (%ls) "
-"appended:%ls"
+"The following entries had a policy name that already existed in this database but "
+"with different settings.\n"
+"A new named policy has been created with the current date/time (%ls) appended:%ls"
 msgstr ""
-"Nasledovné záznamy mali zásady hesiel s názvom, ktorý už existoval v tejto "
-"databáze, ale s inými nastaveniami.\n"
+"Nasledovné záznamy mali zásady hesiel s názvom, ktorý už existoval v tejto databáze, "
+"ale s inými nastaveniami.\n"
 "Bola vytvorená nová položka s aktuálnym dátumom/časom (%ls): (%ls)"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2735
@@ -5100,8 +4995,8 @@ msgstr "Zmeny v zásadách hesiel pre tento záznam"
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2742
 #, c-format
 msgid ""
-"The following alias or shortcut entries did not match to a base entry and "
-"had been converted to normal entries:%ls"
+"The following alias or shortcut entries did not match to a base entry and had been "
+"converted to normal entries:%ls"
 msgstr ""
 "Nasledovné aliasy alebo odkazy neboli priradené k základnému záznamu a boli "
 "konvertované na normálne záznamy:%ls"
@@ -5165,17 +5060,16 @@ msgid ""
 "An error occurred while trying to get the image data from database item.\n"
 "Therefore, the image cannot be displayed in the preview."
 msgstr ""
-"Pri pokuse o získanie údajov obrázka zo záznamu sa vyskytla chyba. Nedá sa "
-"preto zobraziť náhľad obrázka."
+"Pri pokuse o získanie údajov obrázka zo záznamu sa vyskytla chyba. Nedá sa preto "
+"zobraziť náhľad obrázka."
 
 #: ../../../ui/wxWidgets/wxUtilities.cpp:576
 msgid ""
-"An error occurred while trying to load the image data into the preview "
-"area.\n"
+"An error occurred while trying to load the image data into the preview area.\n"
 "Therefore, the image cannot be displayed in the preview."
 msgstr ""
-"Pri pokuse o načítanie údajov obrázka do oblasti s náhľadom sa vyskytla "
-"chyba. Nedá sa preto zobraziť náhľad obrázku."
+"Pri pokuse o načítanie údajov obrázka do oblasti s náhľadom sa vyskytla chyba. Nedá "
+"sa preto zobraziť náhľad obrázku."
 
 #: ../../../ui/wxWidgets/YubiCfgDlg.cpp:157
 msgid "YubiKey Serial Number: "
@@ -5185,8 +5079,7 @@ msgstr "Sériové číslo Yubikey:"
 msgid "YubiKey Secret Key (20 Byte Hex)"
 msgstr "Tajný kľúč Yubikey (20 bajtov hex)"
 
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:177
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:312
+#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:177 ../../../ui/wxWidgets/YubiCfgDlg.cpp:312
 msgid "Hide"
 msgstr "Skryť"
 
@@ -5260,8 +5153,8 @@ msgstr "Spravovať zásady hesiel"
 msgid "Options"
 msgstr "Nastavenia"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.h:62
-#: ../../../ui/wxWidgets/wxMessages.h:23 ../../../ui/wxWidgets/wxMessages.h:38
+#: ../../../ui/wxWidgets/PasswordSafeFrame.h:62 ../../../ui/wxWidgets/wxMessages.h:23
+#: ../../../ui/wxWidgets/wxMessages.h:38
 msgid "PasswordSafe"
 msgstr "Password Safe"
 
@@ -5471,39 +5364,34 @@ msgstr "neexistuje žiadny záznam s názvom=%s."
 #: ../../../core/core_st.cpp:37
 #, c-format
 msgid ""
-"multiple entries exist with title=%s and username=%s or with group=%s and "
-"title=%s."
+"multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
 msgstr ""
-"existuje viacero záznamov s názvom=%s a používateľským menom=%s alebo so "
-"skupinou=%s a názvom=%s."
+"existuje viacero záznamov s názvom=%s a používateľským menom=%s alebo so skupinou=%s "
+"a názvom=%s."
 
 #: ../../../core/core_st.cpp:38
 #, c-format
-msgid ""
-"no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
 msgstr ""
-"neexistuje žiadny záznam s názvom=%s a používateľským menom=%s alebo so "
-"skupinou=%s, názvom =%s."
+"neexistuje žiadny záznam s názvom=%s a používateľským menom=%s alebo so skupinou=%s, "
+"názvom =%s."
 
 #: ../../../core/core_st.cpp:39
 #, c-format
 msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr ""
-"neexistuje žiadny záznam so skupinou=%s, názvom=%s a používateľským menom=%s."
+msgstr "neexistuje žiadny záznam so skupinou=%s, názvom=%s a používateľským menom=%s."
 
 #: ../../../core/core_st.cpp:40
 #, c-format
 msgid "no entry exists with group=%s, title=%s and empty username."
 msgstr ""
-"neexistuje žiadny záznam so skupinou=%s, názvom=%s a prázdnym používateľským "
-"menom."
+"neexistuje žiadny záznam so skupinou=%s, názvom=%s a prázdnym používateľským menom."
 
 #: ../../../core/core_st.cpp:41
 #, c-format
 msgid "no entry exists in the root with title=%s and username=%s."
 msgstr ""
-"na základnej úrovni neexistuje žiadny záznam s názvom=%s a používateľským "
-"menom=%s."
+"na základnej úrovni neexistuje žiadny záznam s názvom=%s a používateľským menom=%s."
 
 #: ../../../core/core_st.cpp:42
 msgid "Password implies this is an alias entry, but "
@@ -5517,8 +5405,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"Vyberte Áno ak chcete pokračovať s týmto heslom alebo Nie ak chcete akciu "
-"zrušiť."
+"Vyberte Áno ak chcete pokračovať s týmto heslom alebo Nie ak chcete akciu zrušiť."
 
 #: ../../../core/core_st.cpp:46
 msgid " (at least N restrictions may be ignored)"
@@ -5534,22 +5421,17 @@ msgstr "Nesprávne heslo"
 
 #: ../../../core/core_st.cpp:49
 msgid ""
-"Password implies this is an alias entry, but specifies a base entry with no "
-"title.\n"
+"Password implies this is an alias entry, but specifies a base entry with no title.\n"
 "Every entry must have a title."
 msgstr ""
-"Heslo naznačuje, že ide o záznam aliasu, ale špecifikuje základný záznam bez "
-"názvu.\n"
+"Heslo naznačuje, že ide o záznam aliasu, ale špecifikuje základný záznam bez názvu.\n"
 "Každý záznam musí mať názov."
 
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not "
-"supported."
-msgstr ""
-"Odkazovaný záznam '%s:%s:%s' je sám alias alebo odkaz. Toto nie je "
-"podporované."
+"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+msgstr "Odkazovaný záznam '%s:%s:%s' je sám alias alebo odkaz. Toto nie je podporované."
 
 #: ../../../core/core_st.cpp:51
 msgid "before"
@@ -5561,23 +5443,23 @@ msgstr "medzi"
 
 #: ../../../core/core_st.cpp:54
 msgid ""
-"Unable to create a new XML configuration file or add your settings to an "
-"existing XML configuration file.\n"
+"Unable to create a new XML configuration file or add your settings to an existing XML "
+"configuration file.\n"
 "\n"
-"All application configuration settings will be saved in your registry entry "
-"on this computer.\n"
+"All application configuration settings will be saved in your registry entry on this "
+"computer.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, "
+"assuming it is not read-only or locked by another user."
 msgstr ""
 "Nie je možné vytvoriť nový konfiguračný súbor XML ani pridať nastavenia do "
 "existujúceho konfiguračného súboru XML.\n"
 "\n"
 "Všetky konfiguračné nastavenia aplikácie budú uložené do registra Windows.\n"
 "\n"
-"Nastavenia súvisiace s databázou budú uložené v otvorenej databáze po jej "
-"zatvorení, za predpokladu že nie je určená len na čítanie alebo nie je "
-"uzamknutá iným používateľom."
+"Nastavenia súvisiace s databázou budú uložené v otvorenej databáze po jej zatvorení, "
+"za predpokladu že nie je určená len na čítanie alebo nie je uzamknutá iným "
+"používateľom."
 
 #: ../../../core/core_st.cpp:55
 msgid ""
@@ -5585,23 +5467,20 @@ msgid ""
 "\n"
 "No application settings will be saved.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, "
+"assuming it is not read-only or locked by another user."
 msgstr ""
 "Chyba - nepodarilo sa určiť konfiguráciu nastavení!\n"
 "\n"
 "Nastavenia aplikácie sa neuložia.\n"
 "\n"
-"Nastavenia súvisiace s databázou sa uložia do databázy pri zatvorení, za "
-"predpokladu že nie je otvorená len na čítanie alebo zamknutá iným "
-"používateľom."
+"Nastavenia súvisiace s databázou sa uložia do databázy pri zatvorení, za predpokladu "
+"že nie je otvorená len na čítanie alebo zamknutá iným používateľom."
 
 #: ../../../core/core_st.cpp:56
-msgid ""
-"Trouble reading stored filters (version mismatch?). Filters will be unusable."
+msgid "Trouble reading stored filters (version mismatch?). Filters will be unusable."
 msgstr ""
-"Problém s čítaním uložených filtrov (nezhoda verzií?). Filtre budú "
-"nepoužiteľné."
+"Problém s čítaním uložených filtrov (nezhoda verzií?). Filtre budú nepoužiteľné."
 
 #: ../../../core/core_st.cpp:57
 msgid "Unable to read locker?"
@@ -5611,20 +5490,19 @@ msgstr "Nie je možné načítať locker?"
 msgid ""
 "Unable to update your entries in the existing XML configuration file.\n"
 "\n"
-"All application configuration settings will be loaded from this file but no "
-"changes will be saved.\n"
+"All application configuration settings will be loaded from this file but no changes "
+"will be saved.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, "
+"assuming it is not read-only or locked by another user."
 msgstr ""
 "Nie je možné aktualizovať záznamy v existujúcom konfiguračnom súbore XML.\n"
 "\n"
 "Všetky nastavenia aplikácie sa načítajú z tohto súboru, ale žiadne zmeny sa "
 "neuložia.\n"
 "\n"
-"Nastavenia súvisiace s databázou sa uložia do otvorenej databázy po jej "
-"zatvorení, za predpokladu že nie je určená len na čítanie alebo je uzamknutá "
-"iným používateľom."
+"Nastavenia súvisiace s databázou sa uložia do otvorenej databázy po jej zatvorení, za "
+"predpokladu že nie je určená len na čítanie alebo je uzamknutá iným používateľom."
 
 #: ../../../core/core_st.cpp:59
 #, c-format
@@ -5643,8 +5521,7 @@ msgstr "Chýbajúci súbor XSD"
 
 #: ../../../core/core_st.cpp:61
 msgid "Unable to validate a XML file using a XML Schema (XSD) on your system."
-msgstr ""
-"Na vašom počítači nie je možné overiť súbor XML pomocou schémy XML (XSD)."
+msgstr "Na vašom počítači nie je možné overiť súbor XML pomocou schémy XML (XSD)."
 
 #: ../../../core/core_st.cpp:62
 msgid "(case insensitive)"
@@ -5735,13 +5612,13 @@ msgstr "predvolenej sady symbolov"
 msgid ""
 "This entry has the following %d %ls:\n"
 "%ls\n"
-"Confirm to continue (alias entry's passwords will be replaced by this "
-"entry's password)?"
+"Confirm to continue (alias entry's passwords will be replaced by this entry's "
+"password)?"
 msgstr ""
 "Tento záznam má nasledovné %d %ls:\n"
 "%ls\n"
-"Potvrďte pre pokračovanie (heslo všetkých aliasov tohto záznamu bude "
-"nahradené heslom tohto záznamu)."
+"Potvrďte pre pokračovanie (heslo všetkých aliasov tohto záznamu bude nahradené heslom "
+"tohto záznamu)."
 
 #: ../../../core/core_st.cpp:92
 msgid "Delete Base Entry Confirmation"
@@ -5792,11 +5669,10 @@ msgstr "prázdne skupiny"
 #: ../../../core/core_st.cpp:105
 #, c-format
 msgid ""
-"Trouble with a non-textual (e.g., time) field in record '%ls' - please check "
-"data carefully."
+"Trouble with a non-textual (e.g., time) field in record '%ls' - please check data "
+"carefully."
 msgstr ""
-"Problém s netextovým (napr. časovým) poľom v zázname '%ls' – skontrolujte "
-"údaje."
+"Problém s netextovým (napr. časovým) poľom v zázname '%ls' – skontrolujte údaje."
 
 #: ../../../core/core_st.cpp:107
 msgid "End Report"
@@ -5910,8 +5786,7 @@ msgstr "Súbor je príliš krátky."
 
 #: ../../../core/core_st.cpp:138
 msgid "File is truncated or otherwise corrupt. Please use backup database."
-msgstr ""
-"Súbor je skrátený alebo inak poškodený. Použite prosím záložnú databázu."
+msgstr "Súbor je skrátený alebo inak poškodený. Použite prosím záložnú databázu."
 
 #: ../../../core/core_st.cpp:139
 msgid "Cannot read file. Please check file permissions."
@@ -5919,9 +5794,7 @@ msgstr "Nemôžem čítať súbor. Skontrolujte oprávnenia k súboru."
 
 #: ../../../core/core_st.cpp:140
 #, c-format
-msgid ""
-"Filter %ls already exists in the database, do you wish to replace it with "
-"this?"
+msgid "Filter %ls already exists in the database, do you wish to replace it with this?"
 msgstr "Filter %ls už existuje v databáze, chcete ho nahradiť týmto?"
 
 #: ../../../core/core_st.cpp:141
@@ -6120,10 +5993,8 @@ msgstr "väčšie alebo rovné"
 #: ../../../core/core_st.cpp:199
 #, c-format
 msgid ""
-"Invalid input on line %d.  Number of fields separated by '%c' is not as "
-"expected."
-msgstr ""
-"Neplatný vstup na riadku %d. Počet polí oddelených '%c' je neočakávaný."
+"Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
+msgstr "Neplatný vstup na riadku %d. Počet polí oddelených '%c' je neočakávaný."
 
 #: ../../../core/core_st.cpp:200
 #, c-format
@@ -6132,11 +6003,9 @@ msgstr "Riadok %d: "
 
 #: ../../../core/core_st.cpp:201
 #, c-format
-msgid ""
-"File ends on line %d before ending double quote of last entry's note field."
+msgid "File ends on line %d before ending double quote of last entry's note field."
 msgstr ""
-"Súbor končí na riadku %d pred koncovou úvodzovkou poľa poznámky posledného "
-"záznamu."
+"Súbor končí na riadku %d pred koncovou úvodzovkou poľa poznámky posledného záznamu."
 
 #: ../../../core/core_st.cpp:202
 msgid "Import aborted, see report for details."
@@ -6144,24 +6013,24 @@ msgstr "Import prerušený, podrobnosti nájdete v reporte."
 
 #: ../../../core/core_st.cpp:203
 msgid ""
-"The TXT or CSV file was not imported as required as entry records span "
-"multiple lines in the CSV file.\n"
+"The TXT or CSV file was not imported as required as entry records span multiple lines "
+"in the CSV file.\n"
 "\n"
 "Import aborted."
 msgstr ""
-"Súbor TXT alebo CSV nebol importovaný tak ako sa vyžaduje, pretože položky "
-"záznamov preklenujú viac riadkov v súbore CSV.\n"
+"Súbor TXT alebo CSV nebol importovaný tak ako sa vyžaduje, pretože položky záznamov "
+"preklenujú viac riadkov v súbore CSV.\n"
 "\n"
 "Import bol prerušený."
 
 #: ../../../core/core_st.cpp:204
 #, c-format
 msgid ""
-"%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the "
-"Import file. Added imported entry with title=\"%ls\".\n"
+"%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the Import "
+"file. Added imported entry with title=\"%ls\".\n"
 msgstr ""
-"%ls, Názov=\"%ls\", Používateľske meno=\"%ls\" už existuje v databáze alebo "
-"v importovanom súbore. Pridaný záznam s názvom=\"%ls\".\n"
+"%ls, Názov=\"%ls\", Používateľske meno=\"%ls\" už existuje v databáze alebo v "
+"importovanom súbore. Pridaný záznam s názvom=\"%ls\".\n"
 
 #: ../../../core/core_st.cpp:205
 #, c-format
@@ -6199,9 +6068,7 @@ msgstr "Prázdny riadok %d sa vynechal"
 #: ../../../core/core_st.cpp:212
 #, c-format
 msgid "Entry %ls%d with Group=\"%ls\", Title=\"%ls\", User=\"%ls\""
-msgstr ""
-"Záznam %ls%d so skupinou=\"%ls\", názvom=\"%ls\", používateľským "
-"menom=\"%ls\""
+msgstr "Záznam %ls%d so skupinou=\"%ls\", názvom=\"%ls\", používateľským menom=\"%ls\""
 
 #: ../../../core/core_st.cpp:213
 msgid "Internal error. Import failed. No records imported."
@@ -6227,42 +6094,42 @@ msgstr "Spracujú sa nasledovné stĺpce: "
 
 #: ../../../core/core_st.cpp:218
 msgid ""
-"The following columns were recognised but only Group/Title, Username and "
-"Password will be processed:"
+"The following columns were recognised but only Group/Title, Username and Password "
+"will be processed:"
 msgstr ""
-"Boli rozpoznané nasledovné stĺpce, ale spracujú sa iba Skupina/Názov, "
-"Používateľské meno a Heslo:"
+"Boli rozpoznané nasledovné stĺpce, ale spracujú sa iba Skupina/Názov, Používateľské "
+"meno a Heslo:"
 
 #: ../../../core/core_st.cpp:219
 #, c-format
 msgid ""
-"Line %d skipped - Only %d fields found, whereas parsing the Header says "
-"there should be %d."
+"Line %d skipped - Only %d fields found, whereas parsing the Header says there should "
+"be %d."
 msgstr ""
-"Riadok %d bol vynechaný - nájdené iba %d polia, zatiaľ čo analýza hlavičky "
-"tvrdí že by to malo byť %d."
+"Riadok %d bol vynechaný - nájdené iba %d polia, zatiaľ čo analýza hlavičky tvrdí že "
+"by to malo byť %d."
 
 #: ../../../core/core_st.cpp:220
 msgid ""
-"Either or both of the Group/Title and Password columns are missing. No "
-"records imported."
+"Either or both of the Group/Title and Password columns are missing. No records "
+"imported."
 msgstr ""
-"Chýba buď jeden alebo obidva stĺpce Skupina/Názov a Heslo. Žiadny záznam "
-"nebol importovaný."
+"Chýba buď jeden alebo obidva stĺpce Skupina/Názov a Heslo. Žiadny záznam nebol "
+"importovaný."
 
 #: ../../../core/core_st.cpp:221
 msgid ""
-"Could not find the next entry's title field in the KeePass V1 TXT (should be "
-"within square brackets)."
+"Could not find the next entry's title field in the KeePass V1 TXT (should be within "
+"square brackets)."
 msgstr ""
-"Nepodarilo sa nájsť pole názvu nasledovného záznamu v KeePass V1 TXT (malo "
-"by byť v hranatých zátvorkách)."
+"Nepodarilo sa nájsť pole názvu nasledovného záznamu v KeePass V1 TXT (malo by byť v "
+"hranatých zátvorkách)."
 
 #: ../../../core/core_st.cpp:222
 msgid "Column header row not recognised as first record. No records imported."
 msgstr ""
-"Riadok s hlavičkami stĺpcov nebol rozpoznaný ako prvý záznam. Žiadne záznamy "
-"neboli importované."
+"Riadok s hlavičkami stĺpcov nebol rozpoznaný ako prvý záznam. Žiadne záznamy neboli "
+"importované."
 
 #: ../../../core/core_st.cpp:223
 msgid "No records in import file!"
@@ -6290,13 +6157,13 @@ msgstr "%ls - Importované %ls"
 
 #: ../../../core/core_st.cpp:228
 msgid ""
-"To replace passwords of existing entries, all the following columns must be "
-"present: Group/Title, Username and Password.  One or more are missing and no "
-"entries have been updated."
+"To replace passwords of existing entries, all the following columns must be present: "
+"Group/Title, Username and Password.  One or more are missing and no entries have been "
+"updated."
 msgstr ""
-"Na nahradenie hesiel existujúcich záznamov musia byť prítomné všetky "
-"nasledovné stĺpce: Skupina/Názov, Používateľské meno a Heslo. Chýba jeden "
-"alebo viacero položiek a neboli aktualizované žiadne záznamy."
+"Na nahradenie hesiel existujúcich záznamov musia byť prítomné všetky nasledovné "
+"stĺpce: Skupina/Názov, Používateľské meno a Heslo. Chýba jeden alebo viacero položiek "
+"a neboli aktualizované žiadne záznamy."
 
 #: ../../../core/core_st.cpp:229
 #, c-format
@@ -6311,11 +6178,11 @@ msgstr "%ls má prázdny %ls.\n"
 #: ../../../core/core_st.cpp:231
 #, c-format
 msgid ""
-"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
-"the base entry is already an alias."
+"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but the base "
+"entry is already an alias."
 msgstr ""
-"Záznam \"%ls, %ls, %ls\" má heslo v správnom tvare pre alias, ale základný "
-"záznam už aliasom je."
+"Záznam \"%ls, %ls, %ls\" má heslo v správnom tvare pre alias, ale základný záznam už "
+"aliasom je."
 
 #: ../../../core/core_st.cpp:232
 msgid "\tThis entry has been made an alias of associated base entry."
@@ -6324,25 +6191,24 @@ msgstr "\tTento záznam sa stal aliasom pridruženým k základnému záznamu."
 #: ../../../core/core_st.cpp:233
 #, c-format
 msgid ""
-"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
-"the base entry does not exist."
+"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but the base "
+"entry does not exist."
 msgstr ""
-"Záznam \"%ls, %ls, %ls\" má heslo v správnom tvare pre alias, ale základný "
-"záznam neexistuje."
+"Záznam \"%ls, %ls, %ls\" má heslo v správnom tvare pre alias, ale základný záznam "
+"neexistuje."
 
 #: ../../../core/core_st.cpp:234
-msgid ""
-"\tThis entry remains a normal entry and the password has not been changed."
+msgid "\tThis entry remains a normal entry and the password has not been changed."
 msgstr "\tTento záznam zostáva normálnym záznamom a heslo sa nezmenilo."
 
 #: ../../../core/core_st.cpp:235
 #, c-format
 msgid ""
-"The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls "
-"base entry. It cannot be imported."
+"The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls base entry. "
+"It cannot be imported."
 msgstr ""
-"Záznam %ls \"%ls, %ls, %ls\" neukazuje na normálny alebo existujúci %ls "
-"základný záznam. Nedá sa naimportovať."
+"Záznam %ls \"%ls, %ls, %ls\" neukazuje na normálny alebo existujúci %ls základný "
+"záznam. Nedá sa naimportovať."
 
 #: ../../../core/core_st.cpp:236
 msgid "Entry import warnings"
@@ -6401,18 +6267,16 @@ msgid "  Invalid password length found (not a hexadecimal number)."
 msgstr " Nájdená neplatná dĺžka hesla (nie je hexadecimálne číslo)."
 
 #: ../../../core/core_st.cpp:249
-msgid ""
-"  Invalid password length found (differs from length of following password)."
-msgstr ""
-" Nájdená neplatná dĺžka hesla (odlišuje sa od dĺžky nasledovného hesla)."
+msgid "  Invalid password length found (differs from length of following password)."
+msgstr " Nájdená neplatná dĺžka hesla (odlišuje sa od dĺžky nasledovného hesla)."
 
 #: ../../../core/core_st.cpp:250
 msgid ""
-"  Invalid field separator character found - only a single blank is allowed "
-"between fields."
+"  Invalid field separator character found - only a single blank is allowed between "
+"fields."
 msgstr ""
-" Zistený neplatný znak oddeľovača poľa - medzi poliami je povolený iba jeden "
-"prázdny znak."
+" Zistený neplatný znak oddeľovača poľa - medzi poliami je povolený iba jeden prázdny "
+"znak."
 
 #: ../../../core/core_st.cpp:251
 msgid "Invalid Filter schema."
@@ -6430,8 +6294,8 @@ msgstr "Verzia filtra XML (%d) je vyššia ako súčasná schéma (%d)."
 #: ../../../core/core_st.cpp:254
 #, c-format
 msgid ""
-"The filter XML version (%d) is greater than that supported by this instance "
-"of PasswordSafe (%d)."
+"The filter XML version (%d) is greater than that supported by this instance of "
+"PasswordSafe (%d)."
 msgstr ""
 "Verzia filtra XML (%d) je väčšia ako verzia podporovaná v tejto inštancii "
 "PasswordSafe (%d)."
@@ -6463,20 +6327,20 @@ msgstr "je prítomný"
 #: ../../../core/core_st.cpp:261
 #, c-format
 msgid ""
-"Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It "
-"has been removed from the %ls entry."
+"Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been "
+"removed from the %ls entry."
 msgstr ""
-"Klávesová skratka %ls záznamu %ls je už pridelená záznamu %ls. Bola odobratá "
-"záznamu %ls."
+"Klávesová skratka %ls záznamu %ls je už pridelená záznamu %ls. Bola odobratá záznamu "
+"%ls."
 
 #: ../../../core/core_st.cpp:262
 #, c-format
 msgid ""
-"Entry keyboard shortcut %ls entry %ls is already allocated to the "
-"PasswordSafe application. It has been removed from the entry."
+"Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe "
+"application. It has been removed from the entry."
 msgstr ""
-"Klávesová skratka %ls záznamu %ls je už pridelená aplikácii Password Safe. "
-"Bola odobratá záznamu."
+"Klávesová skratka %ls záznamu %ls je už pridelená aplikácii Password Safe. Bola "
+"odobratá záznamu."
 
 #: ../../../core/core_st.cpp:263
 msgid "less than"
@@ -6539,11 +6403,11 @@ msgstr "\tZásady hesiel s názvom '%ls' nie sú v databáze."
 
 #: ../../../core/core_st.cpp:273
 msgid ""
-"\tOne or more Password Policy Names were not found in the database. The "
-"affected entries have been changed to use the database's default policy."
+"\tOne or more Password Policy Names were not found in the database. The affected "
+"entries have been changed to use the database's default policy."
 msgstr ""
-"\tV databáze sa nenašla jedna alebo viacero vlastných zásad hesiel. Dotknuté "
-"záznamy boli zmenené tak, aby používali predvolené zásady databázy."
+"\tV databáze sa nenašla jedna alebo viacero vlastných zásad hesiel. Dotknuté záznamy "
+"boli zmenené tak, aby používali predvolené zásady databázy."
 
 #: ../../../core/core_st.cpp:274
 #, c-format
@@ -6585,8 +6449,7 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:283
 msgid "Cannot create lock file - no permission in directory?"
-msgstr ""
-"Nedá sa vytvoriť súbor zámku - nemáte povolenia na prístup k priečinku?"
+msgstr "Nedá sa vytvoriť súbor zámku - nemáte povolenia na prístup k priečinku?"
 
 #: ../../../core/core_st.cpp:284
 msgid "Internal error: Out of file handles"
@@ -6594,11 +6457,11 @@ msgstr "Interná chyba: Súboru sa nedá priradiť popisovač"
 
 #: ../../../core/core_st.cpp:285
 msgid ""
-"Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 "
-"seems available."
+"Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 seems "
+"available."
 msgstr ""
-"Vo vašom systéme nie je možné použiť čítačku MS XML. Zdá sa, že ani MS XML "
-"V3, V4 alebo V6 nie sú k dispozícii."
+"Vo vašom systéme nie je možné použiť čítačku MS XML. Zdá sa, že ani MS XML V3, V4 "
+"alebo V6 nie sú k dispozícii."
 
 #: ../../../core/core_st.cpp:287
 msgid "Unsaved changes"
@@ -6648,12 +6511,10 @@ msgstr ""
 "Odporúča sa teraz uložiť databázu."
 
 #: ../../../core/core_st.cpp:291
-msgid ""
-"Password should be mixed case, with at least one digit or punctuation "
-"character"
+msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr ""
-"Heslo by malo obsahovať malé/veľké písmená, byť s aspoň jednou číslicou "
-"alebo interpunkčným znakom"
+"Heslo by malo obsahovať malé/veľké písmená, byť s aspoň jednou číslicou alebo "
+"interpunkčným znakom"
 
 #: ../../../core/core_st.cpp:292
 msgid "Password is too short."
@@ -6692,19 +6553,19 @@ msgstr "relatívny"
 #: ../../../core/core_st.cpp:307
 #, c-format
 msgid ""
-"\tOne or more entry keyboard shortcuts were already assigned to entries in "
-"this database. They have been removed from the %ls entries."
+"\tOne or more entry keyboard shortcuts were already assigned to entries in this "
+"database. They have been removed from the %ls entries."
 msgstr ""
-"\tJedna alebo viac klávesových skratiek pre záznam už boli priradené k "
-"záznamom v tejto databáze. Boli odobraté záznamom %ls."
+"\tJedna alebo viac klávesových skratiek pre záznam už boli priradené k záznamom v "
+"tejto databáze. Boli odobraté záznamom %ls."
 
 #: ../../../core/core_st.cpp:308
 msgid ""
-"\tOne or more Password Policy Names were already in this database but had "
-"different settings. They have been renamed."
+"\tOne or more Password Policy Names were already in this database but had different "
+"settings. They have been renamed."
 msgstr ""
-"\tJedna alebo viacero vlastných zásad hesiel už boli v tejto databáze, ale "
-"mali iné nastavenia. Boli premenované."
+"\tJedna alebo viacero vlastných zásad hesiel už boli v tejto databáze, ale mali iné "
+"nastavenia. Boli premenované."
 
 #: ../../../core/core_st.cpp:309
 #, c-format
@@ -6831,8 +6692,7 @@ msgstr "Dvojklik na záznam otvorí URL adresu v prehliadači"
 #: ../../../core/core_st.cpp:340
 msgid "Double-Click on entry to Browse to URL + Autotype"
 msgstr ""
-"Dvojklik na záznam otvorí URL adresu v prehliadači a vykoná automatické "
-"dopĺňanie"
+"Dvojklik na záznam otvorí URL adresu v prehliadači a vykoná automatické dopĺňanie"
 
 #: ../../../core/core_st.cpp:341
 msgid "https://pwsafe.org/"
@@ -6904,11 +6764,9 @@ msgid "Unknown function"
 msgstr "Neznáma funkcia"
 
 #: ../../../core/core_st.cpp:362
-msgid ""
-"The following columns are unrecognized by PasswordSafe and will be ignored: "
+msgid "The following columns are unrecognized by PasswordSafe and will be ignored: "
 msgstr ""
-"Nasledovné stĺpce nie sú rozpoznané aplikáciou Password Safe a budú "
-"ignorované: "
+"Nasledovné stĺpce nie sú rozpoznané aplikáciou Password Safe a budú ignorované: "
 
 #: ../../../core/core_st.cpp:363
 msgid "Unknown object"
@@ -6924,36 +6782,34 @@ msgid "\tName: %ls; Filename: %ls"
 msgstr "\tNázov: %s; Súbor: %s"
 
 #: ../../../core/core_st.cpp:367
-msgid ""
-"The following entries had an invalid UUID field.  This has been corrected."
+msgid "The following entries had an invalid UUID field.  This has been corrected."
 msgstr "Nasledovné záznamy mali neplatné pole UUID. Bola vykonaná oprava."
 
 #: ../../../core/core_st.cpp:368
 #, c-format
 msgid ""
-"The following entries have passwords in the correct form for %ls, but the "
-"base entry does not exist."
+"The following entries have passwords in the correct form for %ls, but the base entry "
+"does not exist."
 msgstr ""
-"Nasledovné záznamy majú heslá v správnom formáte pre %ls, ale základný "
-"záznam neexistuje."
+"Nasledovné záznamy majú heslá v správnom formáte pre %ls, ale základný záznam "
+"neexistuje."
 
 #: ../../../core/core_st.cpp:369
 msgid "The following entries were duplicates of an existing entry."
 msgstr "Nasledovné záznamy boli duplikátmi existujúceho záznamu."
 
 #: ../../../core/core_st.cpp:370
-msgid ""
-"The following entries had a duplicate UUID field.  This has been corrected."
+msgid "The following entries had a duplicate UUID field.  This has been corrected."
 msgstr "Nasledovné záznamy mali duplicitné pole UUID. Bola vykonaná oprava."
 
 #: ../../../core/core_st.cpp:371
 #, c-format
 msgid ""
-"The following entries had an empty Password field, which is not permitted. "
-"The password has been set to '%ls'"
+"The following entries had an empty Password field, which is not permitted. The "
+"password has been set to '%ls'"
 msgstr ""
-"Nasledovné záznamy mali prázdne pole Heslo, čo nie je povolené. Heslo bolo "
-"nastavené na '%ls'"
+"Nasledovné záznamy mali prázdne pole Heslo, čo nie je povolené. Heslo bolo nastavené "
+"na '%ls'"
 
 #: ../../../core/core_st.cpp:372
 msgid "The following entries had an empty Title field, which is not permitted."
@@ -6988,29 +6844,25 @@ msgstr "\tNasledovné záznamy obsahujú hľadaný reťazec '%ls' %ls."
 
 #: ../../../core/core_st.cpp:379
 msgid ""
-"The following entries had an invalid Password History.  This has been "
-"rebuilt with available data.  There may be some loss of history."
+"The following entries had an invalid Password History.  This has been rebuilt with "
+"available data.  There may be some loss of history."
 msgstr ""
-"Nasledovné záznamy mali neplatnú históriu hesiel. Táto bola znovu vytvorená "
-"s použitím dostupných údajov, môže však dôjsť k strate časti histórie."
+"Nasledovné záznamy mali neplatnú históriu hesiel. Táto bola znovu vytvorená s "
+"použitím dostupných údajov, môže však dôjsť k strate časti histórie."
 
 #: ../../../core/core_st.cpp:380
 #, c-format
 msgid ""
-"The following entries have one or more text fields too long to display or "
-"edit (over %d characters).  The largest entry size found was ~%d %ls."
+"The following entries have one or more text fields too long to display or edit (over "
+"%d characters).  The largest entry size found was ~%d %ls."
 msgstr ""
-"Nasledovné záznamy majú jedno alebo viac textových polí príliš dlhé na "
-"zobrazenie alebo úpravu (viac ako %d znakov). Najväčšia nájdená veľkosť "
-"záznamu bola ~%d %ls."
+"Nasledovné záznamy majú jedno alebo viac textových polí príliš dlhé na zobrazenie "
+"alebo úpravu (viac ako %d znakov). Najväčšia nájdená veľkosť záznamu bola ~%d %ls."
 
 #: ../../../core/core_st.cpp:381
-msgid ""
-"The following WARNINGS were detected - you should review and fix them "
-"manually."
+msgid "The following WARNINGS were detected - you should review and fix them manually."
 msgstr ""
-"Zistili sa nasledovné nezrovnalosti - mali by ste ich ručne skontrolovať a "
-"opraviť."
+"Zistili sa nasledovné nezrovnalosti - mali by ste ich ručne skontrolovať a opraviť."
 
 #: ../../../core/core_st.cpp:384
 msgid "will expire"
@@ -7031,24 +6883,19 @@ msgid "XML %ls: line %d character %d: %ls"
 msgstr "XML %ls: riadok %d znak %d: %ls"
 
 #: ../../../core/core_st.cpp:387
-msgid ""
-"*** Invalid XML characters found - see exported XML file for more details ***"
+msgid "*** Invalid XML characters found - see exported XML file for more details ***"
 msgstr ""
-"*** Nájdené neplatné znaky XML - viac podrobností nájdete v exportovanom "
-"súbore XML ***"
+"*** Nájdené neplatné znaky XML - viac podrobností nájdete v exportovanom súbore XML "
+"***"
 
 #: ../../../core/core_st.cpp:388
 msgid "Internal error: Couldn't initialize config file XML structure"
-msgstr ""
-"Interná chyba: Nepodarilo sa inicializovať štruktúru konfiguračného súboru "
-"XML"
+msgstr "Interná chyba: Nepodarilo sa inicializovať štruktúru konfiguračného súboru XML"
 
 #: ../../../core/core_st.cpp:389
 msgid ""
-"A filter was active. Export of data was restricted to include only those "
-"displayed."
-msgstr ""
-"Filter bol aktívny. Export údajov bol obmedzený iba na zobrazené údaje."
+"A filter was active. Export of data was restricted to include only those displayed."
+msgstr "Filter bol aktívny. Export údajov bol obmedzený iba na zobrazené údaje."
 
 #: ../../../core/core_st.cpp:390
 msgid "Export of data was restricted to certain fields by the user."
@@ -7056,25 +6903,22 @@ msgstr "Export údajov bol používateľom obmedzený na určité polia."
 
 #: ../../../core/core_st.cpp:391
 msgid ""
-"Note: These Password Policies will not replace existing policies with the "
-"same name in the current database."
+"Note: These Password Policies will not replace existing policies with the same name "
+"in the current database."
 msgstr ""
-"Poznámka: Tieto zásady hesiel nenahradia existujúce zásady s rovnakým názvom "
-"v aktuálnej databáze."
+"Poznámka: Tieto zásady hesiel nenahradia existujúce zásady s rovnakým názvom v "
+"aktuálnej databáze."
 
 #: ../../../core/core_st.cpp:392
-msgid ""
-"Note: These preferences are only used when importing into an empty database."
-msgstr ""
-"Poznámka: Tieto predvoľby sa používajú iba pri importe do prázdnej databázy."
+msgid "Note: These preferences are only used when importing into an empty database."
+msgstr "Poznámka: Tieto predvoľby sa používajú iba pri importe do prázdnej databázy."
 
 #: ../../../core/core_st.cpp:393
 msgid "Subset of entries restricted by the following rule:"
 msgstr "Podmnožina záznamov obmedzená nasledovným pravidlom:"
 
 #: ../../../core/core_st.cpp:394
-msgid ""
-"The user specified that the following fields be excluded from the export:"
+msgid "The user specified that the following fields be excluded from the export:"
 msgstr "Používateľ určil, že z exportu budú vylúčené nasledovné polia:"
 
 #: ../../../core/core_st.cpp:395
@@ -7099,12 +6943,9 @@ msgid "Unable to load configuration file"
 msgstr "Nepodarilo sa načítať konfiguračný súbor"
 
 #: ../../../core/core_st.cpp:398
-msgid ""
-"Failed to lock configuration file - opened by another instance of "
-"PasswordSafe?"
+msgid "Failed to lock configuration file - opened by another instance of PasswordSafe?"
 msgstr ""
-"Nepodarilo sa uzamknúť konfiguračný súbor - je otvorený inou inštanciou "
-"Password Safe?"
+"Nepodarilo sa uzamknúť konfiguračný súbor - je otvorený inou inštanciou Password Safe?"
 
 #: ../../../core/core_st.cpp:399
 msgid "Unable to save configuration file"
@@ -7204,11 +7045,11 @@ msgstr "Chýbajúci atribút 'aktívny' v položke filtra %d pre filter '%ls'"
 #: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:201
 #, c-format
 msgid ""
-"Unexpected attribute value \"%ls\" (expected \"yes\" or \"no\") in filter "
-"entry %d of '%ls'"
+"Unexpected attribute value \"%ls\" (expected \"yes\" or \"no\") in filter entry %d of "
+"'%ls'"
 msgstr ""
-"Neočakávaná hodnota atribútu \"%ls\" (očakávaná hodnota \"áno\" alebo "
-"\"nie\") v položke filtra %d vo filtri '%ls'"
+"Neočakávaná hodnota atribútu \"%ls\" (očakávaná hodnota \"áno\" alebo \"nie\") v "
+"položke filtra %d vo filtri '%ls'"
 
 #: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:322
 #, c-format
@@ -7218,8 +7059,7 @@ msgstr "Chýbajúci XML tag pre položku filtra typu pole %d vo filtri '%ls'"
 #: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:598
 #, c-format
 msgid "Unknown XML tag \"%ls\" for field type in filter entry %d of '%ls'"
-msgstr ""
-"Neznámy XML tag \"%ls\" pre položku filtra typu pole %d vo filtri '%ls'"
+msgstr "Neznámy XML tag \"%ls\" pre položku filtra typu pole %d vo filtri '%ls'"
 
 #: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:612
 #, c-format
@@ -7249,8 +7089,7 @@ msgstr "Neznámy tag XML \"%ls\" v položke filtra typu pole %d vo filtri '%ls'"
 #: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:665
 #, c-format
 msgid "Missing logic or rule XML tag in filter entry %d of '%ls'"
-msgstr ""
-"Chýbajúci XML tag logiky alebo pravidla v položke filtra %d vo filtri '%ls'"
+msgstr "Chýbajúci XML tag logiky alebo pravidla v položke filtra %d vo filtri '%ls'"
 
 #: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:758
 #, c-format

@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: pwsafe\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-07-21 21:42+0300\n"
-"PO-Revision-Date: 2020-03-01 22:00+0100\n"
-"Last-Translator: Attila Rajmund Nohl <attila.r.nohl@gmail.com>\n"
+"PO-Revision-Date: 2025-07-23 11:47+0300\n"
+"Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: NAR <attila.r.nohl@gmail.com>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 2.3\n"
+"X-Generator: Poedit 3.6\n"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:113
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1401
@@ -28,8 +28,7 @@ msgstr "Password Safe"
 msgid "Built using "
 msgstr "Ezen alapul:"
 
-#: ../../../ui/wxWidgets/AboutDlg.cpp:119
-#: ../../../ui/wxWidgets/AboutDlg.cpp:158
+#: ../../../ui/wxWidgets/AboutDlg.cpp:119 ../../../ui/wxWidgets/AboutDlg.cpp:158
 msgid "Build date:"
 msgstr "Készítés dátuma:"
 
@@ -64,13 +63,11 @@ msgstr "Nézze meg a LICENSE-t a nyílt forráskód részleteiért."
 msgid "Copyright (c) 2003-2025 Rony Shapiro"
 msgstr ""
 
-#: ../../../ui/wxWidgets/AboutDlg.cpp:153
-#: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:399
+#: ../../../ui/wxWidgets/AboutDlg.cpp:153 ../../../ui/wxWidgets/ManageFiltersDlg.cpp:399
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:362
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:555
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:131
-#: ../../../ui/wxWidgets/SystemTray.cpp:143
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:189
+#: ../../../ui/wxWidgets/SystemTray.cpp:143 ../../../ui/wxWidgets/YubiCfgDlg.cpp:189
 msgid "&Close"
 msgstr "&Bezár"
 
@@ -96,14 +93,12 @@ msgstr "Az 'Write Function' opciót nem sikerült beállítani.\n"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:403
 msgid ""
-"For security, the database must be closed before connecting to the "
-"Internet.\n"
+"For security, the database must be closed before connecting to the Internet.\n"
 "Press OK to close database and continue (Changes will be saved)"
 msgstr ""
-"Biztonsági okokból az adatbázis be kell zárni az Internetre való csatlakozás "
-"előtt.\n"
-"Nyomja meg az OK-t az adatbázis bezárásához és a folytatáshoz (a változások "
-"mentve lesznek)"
+"Biztonsági okokból az adatbázis be kell zárni az Internetre való csatlakozás előtt.\n"
+"Nyomja meg az OK-t az adatbázis bezárásához és a folytatáshoz (a változások mentve "
+"lesznek)"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:408
 msgid "Confirm Close Dialog"
@@ -132,8 +127,7 @@ msgstr "Legutolsó verzió:\t"
 #: ../../../ui/wxWidgets/AboutDlg.cpp:543
 #, fuzzy
 msgid "Visit the Password Safe website to download the latest version."
-msgstr ""
-"Kérem látogassa meg a PasswordSafe weboldalát a legújabb verzió letöltéséhez."
+msgstr "Kérem látogassa meg a PasswordSafe weboldalát a legújabb verzió letöltéséhez."
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:544
 msgid "Newer Version Found!"
@@ -198,25 +192,22 @@ msgstr "Bejegyzés szerkesztése/megtekintése"
 msgid "Execute Run command"
 msgstr "Parancs futtatása"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:256
-#: ../../../ui/wxWidgets/HelpMap.h:52
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:256 ../../../ui/wxWidgets/HelpMap.h:52
 msgid "Basic"
 msgstr "Elemi"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:263
-#: ../../../ui/wxWidgets/HelpMap.h:55
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:263 ../../../ui/wxWidgets/HelpMap.h:55
 msgid "Additional"
 msgstr "További"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:269
-#: ../../../ui/wxWidgets/HelpMap.h:53
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:269 ../../../ui/wxWidgets/HelpMap.h:53
 msgid "Dates and Times"
 msgstr "Dátumok és idők"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:276
-#: ../../../ui/wxWidgets/PWFiltersTable.cpp:317
-#: ../../../ui/wxWidgets/HelpMap.h:46 ../../../ui/wxWidgets/HelpMap.h:54
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.h:70 ../../../core/core_st.cpp:172
+#: ../../../ui/wxWidgets/PWFiltersTable.cpp:317 ../../../ui/wxWidgets/HelpMap.h:46
+#: ../../../ui/wxWidgets/HelpMap.h:54 ../../../ui/wxWidgets/PasswordPolicyDlg.h:70
+#: ../../../core/core_st.cpp:172
 msgid "Password Policy"
 msgstr "Jelszószabály"
 
@@ -233,8 +224,8 @@ msgstr "Dátum/idő beállítása"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:298
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:342
-#: ../../../ui/wxWidgets/DragBarCtrl.cpp:153
-#: ../../../ui/wxWidgets/ToolbarButtons.h:245 ../../../core/core_st.cpp:168
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:153 ../../../ui/wxWidgets/ToolbarButtons.h:245
+#: ../../../core/core_st.cpp:168
 msgid "Password"
 msgstr "Jelszó"
 
@@ -244,14 +235,12 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:319
 #: ../../../ui/wxWidgets/DragBarCtrl.cpp:150
-#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:270
-#: ../../../core/core_st.cpp:158
+#: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:270 ../../../core/core_st.cpp:158
 msgid "Group"
 msgstr "Csoport"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:325
-#: ../../../ui/wxWidgets/DragBarCtrl.cpp:151
-#: ../../../ui/wxWidgets/GridCtrl.cpp:165
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:151 ../../../ui/wxWidgets/GridCtrl.cpp:165
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:271
 #: ../../../ui/wxWidgets/PWFiltersEditor.cpp:111 ../../../core/core_st.cpp:178
 msgid "Title"
@@ -292,8 +281,7 @@ msgstr "%1 nem található."
 msgid "Copy authentication code to clipboard"
 msgstr "Felhasználónév vágólapra másolása"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:410
-#: ../../../core/core_st.cpp:185
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:410 ../../../core/core_st.cpp:185
 msgid "URL"
 msgstr "URL"
 
@@ -312,8 +300,8 @@ msgid "Send"
 msgstr "Küldés"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:428
-#: ../../../ui/wxWidgets/DragBarCtrl.cpp:154
-#: ../../../ui/wxWidgets/ToolbarButtons.h:249 ../../../core/core_st.cpp:161
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:154 ../../../ui/wxWidgets/ToolbarButtons.h:249
+#: ../../../core/core_st.cpp:161
 #, fuzzy
 msgid "Notes"
 msgstr "&Megjegyzések:"
@@ -326,8 +314,8 @@ msgid "Autotype"
 msgstr "Autogépelés"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:463
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:140
-#: ../../../core/core_st.cpp:85 ../../../core/core_st.cpp:175
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:140 ../../../core/core_st.cpp:85
+#: ../../../core/core_st.cpp:175
 msgid "Run Command"
 msgstr "Parancs futtatása"
 
@@ -341,8 +329,7 @@ msgstr "Duplakattintás hatása:"
 msgid "Shift-Double-Click Action"
 msgstr "Shift-duplakattintás hatása:"
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:488
-#: ../../../core/core_st.cpp:184
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:488 ../../../core/core_st.cpp:184
 msgid "Authentication Secret"
 msgstr ""
 
@@ -354,8 +341,7 @@ msgstr "%1 nem található."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:507
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:234
-#: ../../../ui/wxWidgets/PWFiltersTable.cpp:314
-#: ../../../ui/wxWidgets/HelpMap.h:47
+#: ../../../ui/wxWidgets/PWFiltersTable.cpp:314 ../../../ui/wxWidgets/HelpMap.h:47
 msgid "Password History"
 msgstr "Jelszótörténet"
 
@@ -521,14 +507,12 @@ msgid "Use UPPERCASE letters"
 msgstr "NAGYBETŰK használata"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:753
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:237
-#: ../../../core/core_st.cpp:297
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:237 ../../../core/core_st.cpp:297
 msgid "Use digits"
 msgstr "Számjegyek használata"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:777
-#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:261
-#: ../../../core/core_st.cpp:299
+#: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:261 ../../../core/core_st.cpp:299
 msgid "Use symbols"
 msgstr "Szimbólumok használata"
 
@@ -814,8 +798,7 @@ msgstr "[Megjegyzések elrejtve - kattintson ide a megjelenítéshez]"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1730
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1756
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2789
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3698
-#: ../../../core/core_st.cpp:90
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3698 ../../../core/core_st.cpp:90
 msgid "Default Policy"
 msgstr "Alapértelmezett szabály"
 
@@ -857,16 +840,15 @@ msgstr "Hiba"
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1903
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1924
 msgid ""
-"On changing this entry of type Shortcut Base to an Alias all Shortcut to "
-"this entry will be removed!"
+"On changing this entry of type Shortcut Base to an Alias all Shortcut to this entry "
+"will be removed!"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1903
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1924
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1927
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3806
-#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:397
-#: ../../../core/core_st.cpp:326
+#: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:397 ../../../core/core_st.cpp:326
 msgid "Warning"
 msgstr "Figyelmeztetés"
 
@@ -951,8 +933,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2246
 #, fuzzy
-msgid ""
-"An entry or shortcut with the same Group, Title and Username already exists."
+msgid "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr "nincs ilyen bejegyzés: csoport=%s, megnevezés=%s és felhasználónév=%s."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2247
@@ -991,8 +972,8 @@ msgstr ""
 #, fuzzy
 msgid "\"Easy-to-read\" and \"pronounceable\" cannot be both selected."
 msgstr ""
-"A \"könnyen olvasható\" és a \"könnyen kiejthető\" opciókat sajnos nem lehet "
-"egyszerre kiválasztani"
+"A \"könnyen olvasható\" és a \"könnyen kiejthető\" opciókat sajnos nem lehet egyszerre "
+"kiválasztani"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3605
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3632
@@ -1006,8 +987,8 @@ msgstr ""
 #, fuzzy
 msgid "\"Pronounceable\" and \"easy-to-read\" cannot be both selected."
 msgstr ""
-"A \"könnyen kiejthető\" és a \"könnyen olvasható\" opciókat sajnos nem lehet "
-"egyszerre kiválasztani"
+"A \"könnyen kiejthető\" és a \"könnyen olvasható\" opciókat sajnos nem lehet egyszerre "
+"kiválasztani"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:3683
 #, fuzzy
@@ -1084,8 +1065,7 @@ msgstr "Bejegyzések, amelyek csak az aktuális adatbázisban (%s) szerepelnek:"
 #: ../../../ui/wxWidgets/CompareDlg.cpp:152
 #, fuzzy
 msgid "Only in comparison database: "
-msgstr ""
-"Bejegyzések, amelyek csak az összehasonlítási adatbázisban (%s) szerepelnek:"
+msgstr "Bejegyzések, amelyek csak az összehasonlítási adatbázisban (%s) szerepelnek:"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:157
 msgid "Identical items"
@@ -1107,8 +1087,7 @@ msgstr "összehasonlítva"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:220
 msgid "Select a database to compare with current database ("
-msgstr ""
-"Kérem válassza ki az aktuális adatbázissal összehasonlítandó adatbázist ("
+msgstr "Kérem válassza ki az aktuális adatbázissal összehasonlítandó adatbázist ("
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:227
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:155
@@ -1129,13 +1108,12 @@ msgstr "Speciális beállítások..."
 msgid "Synchronize this item..."
 msgstr "&Szinkronizálás..."
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:489
-#: ../../../ui/wxWidgets/CompareDlg.cpp:810 ../../../core/core_st.cpp:322
+#: ../../../ui/wxWidgets/CompareDlg.cpp:489 ../../../ui/wxWidgets/CompareDlg.cpp:810
+#: ../../../core/core_st.cpp:322
 msgid "Synchronize"
 msgstr ""
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:489
-#: ../../../ui/wxWidgets/CompareDlg.cpp:497
+#: ../../../ui/wxWidgets/CompareDlg.cpp:489 ../../../ui/wxWidgets/CompareDlg.cpp:497
 #: ../../../ui/wxWidgets/CompareDlg.cpp:502
 #, fuzzy
 msgid "selected "
@@ -1155,14 +1133,12 @@ msgstr "&Szinkronizálás..."
 msgid "Copy"
 msgstr "&Másolás"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:497
-#: ../../../ui/wxWidgets/CompareDlg.cpp:523
+#: ../../../ui/wxWidgets/CompareDlg.cpp:497 ../../../ui/wxWidgets/CompareDlg.cpp:523
 #, fuzzy
 msgid " to current db"
 msgstr "&Aktuális beállítása"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:502
-#: ../../../ui/wxWidgets/ToolbarButtons.h:259
+#: ../../../ui/wxWidgets/CompareDlg.cpp:502 ../../../ui/wxWidgets/ToolbarButtons.h:259
 msgid "Delete"
 msgstr "Törlés"
 
@@ -1184,8 +1160,7 @@ msgstr "Bejegyzések, amelyek csak az aktuális adatbázisban (%s) szerepelnek:"
 #: ../../../ui/wxWidgets/CompareDlg.cpp:511
 #, fuzzy
 msgid "&View entry in comparison db"
-msgstr ""
-"Bejegyzések, amelyek csak az összehasonlítási adatbázisban (%s) szerepelnek:"
+msgstr "Bejegyzések, amelyek csak az összehasonlítási adatbázisban (%s) szerepelnek:"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:519
 #, fuzzy
@@ -1218,17 +1193,15 @@ msgid ""
 "\n"
 "%ls\n"
 "\n"
-"has duplicate entries with the same group/title/user combination. You can "
-"fix this by validating the database."
+"has duplicate entries with the same group/title/user combination. You can fix this by "
+"validating the database."
 msgstr ""
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:818
-#: ../../../ui/wxWidgets/SyncWizard.cpp:672
+#: ../../../ui/wxWidgets/CompareDlg.cpp:818 ../../../ui/wxWidgets/SyncWizard.cpp:672
 msgid "Synchronization failed"
 msgstr "Sikertelen szinkronizáció"
 
-#: ../../../ui/wxWidgets/CompareDlg.cpp:839
-#: ../../../ui/wxWidgets/CompareDlg.cpp:842
+#: ../../../ui/wxWidgets/CompareDlg.cpp:839 ../../../ui/wxWidgets/CompareDlg.cpp:842
 #, fuzzy
 msgid "Synchronize items"
 msgstr "&Szinkronizálás..."
@@ -1251,8 +1224,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"A kiválaszott vagy alapértelmezők alapján összehasonlítva az adatbázisok "
-"egyformák!"
+"A kiválaszott vagy alapértelmezők alapján összehasonlítva az adatbázisok egyformák!"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:921
 #, fuzzy, c-format
@@ -1262,8 +1234,7 @@ msgstr "Bejegyzések, amelyek csak az aktuális adatbázisban (%s) szerepelnek:"
 #: ../../../ui/wxWidgets/CompareDlg.cpp:934
 #, fuzzy, c-format
 msgid "Entries only in comparison database (%ls):"
-msgstr ""
-"Bejegyzések, amelyek csak az összehasonlítási adatbázisban (%s) szerepelnek:"
+msgstr "Bejegyzések, amelyek csak az összehasonlítási adatbázisban (%s) szerepelnek:"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:947
 msgid "Entries in both databases but with differences:"
@@ -1375,13 +1346,13 @@ msgstr "A kombináció nem lehet üres."
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:70
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:1458
 msgid ""
-"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|"
-"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
-"ibak)|*.ibak|All files (*.*; *)|*.*;*"
+"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|Password "
+"Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|*.ibak|All "
+"files (*.*; *)|*.*;*"
 msgstr ""
-"Password Safe adatbázisok (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*."
-"dat|Password Safe mentések (*.bak)|*.bak|Password Safe köztes mentések (*."
-"ibak)|*.ibak|Minden fájl (*.*; *)|*.*;*"
+"Password Safe adatbázisok (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|Password "
+"Safe mentések (*.bak)|*.bak|Password Safe köztes mentések (*.ibak)|*.ibak|Minden fájl "
+"(*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:80
 #, fuzzy
@@ -1389,8 +1360,7 @@ msgid "Master Password:"
 msgstr "utolsó jelszót"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:100
-#: ../../../ui/wxWidgets/wxUtilities.cpp:255
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
+#: ../../../ui/wxWidgets/wxUtilities.cpp:255 ../../../ui/wxWidgets/YubiCfgDlg.cpp:358
 #: ../../../ui/wxWidgets/YubiMixin.cpp:64
 #, fuzzy
 msgid "Insert YubiKey"
@@ -1415,8 +1385,8 @@ msgid ""
 "Incorrect master password, not a Password Safe database,\n"
 "or a corrupt database."
 msgstr ""
-"Helytelen jelszó, nem PasswordSafe adatbázis, vagy sérült adatbázis. (A "
-"mentett adatbázis neve megegyezik az eredetiével, csak '~'-val végződik)"
+"Helytelen jelszó, nem PasswordSafe adatbázis, vagy sérült adatbázis. (A mentett "
+"adatbázis neve megegyezik az eredetiével, csak '~'-val végződik)"
 
 #: ../../../ui/wxWidgets/DbSelectionPanel.cpp:145
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:429
@@ -1457,19 +1427,15 @@ msgstr "Mégse"
 
 #: ../../../ui/wxWidgets/DragBarCtrl.cpp:143
 #, fuzzy
-msgid ""
-"Drag this image onto another window to paste the selected element or tree."
-msgstr ""
-"Húzza ezt a képet egy másik ablakra a következő mező beillesztéséhez: '"
+msgid "Drag this image onto another window to paste the selected element or tree."
+msgstr "Húzza ezt a képet egy másik ablakra a következő mező beillesztéséhez: '"
 
 #: ../../../ui/wxWidgets/DragBarCtrl.cpp:144
 #, fuzzy, c-format
 msgid "Drag this image onto another window to paste the '%s' field."
-msgstr ""
-"Húzza ezt a képet egy másik ablakra a következő mező beillesztéséhez: '"
+msgstr "Húzza ezt a képet egy másik ablakra a következő mező beillesztéséhez: '"
 
-#: ../../../ui/wxWidgets/DragBarCtrl.cpp:152
-#: ../../../ui/wxWidgets/GridCtrl.cpp:166
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:152 ../../../ui/wxWidgets/GridCtrl.cpp:166
 msgid "User"
 msgstr "Felhasználó"
 
@@ -1523,25 +1489,21 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:61
 msgid ""
-"Warning! This operation will create an unprotected copy of ALL of the "
-"passwords\n"
+"Warning! This operation will create an unprotected copy of ALL of the passwords\n"
 "in the database. Deleting this copy after use is NOT sufficient."
 msgstr ""
-"Figyelem! Ez a művelet titkosítatlanul lemásolja az adatbázis ÖSSZES "
-"jelszavát\n"
+"Figyelem! Ez a művelet titkosítatlanul lemásolja az adatbázis ÖSSZES jelszavát\n"
 "egy új fájlba. A fájl törlése NEM elégséges a jelszavak titkosan tartásához."
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:63
 #, fuzzy
 msgid ""
-"Do not use this option unless you understand and accept the risks. This "
-"option\n"
+"Do not use this option unless you understand and accept the risks. This option\n"
 "bypasses the security provided by this program."
 msgstr ""
-"Kérjük, ne használja ezt a műveletet, ha nincs tisztában és nem fogadja el a "
-"vele járó\n"
-"veszélyeket. Ez a művelet értelmetlenné teszi a program által nyújtott "
-"biztonságot."
+"Kérjük, ne használja ezt a műveletet, ha nincs tisztában és nem fogadja el a vele "
+"járó\n"
+"veszélyeket. Ez a művelet értelmetlenné teszi a program által nyújtott biztonságot."
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:70
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:173
@@ -1559,8 +1521,7 @@ msgstr "Elválasztó jelek"
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:87
 #, fuzzy
 msgid ""
-"The delimiter in the Notes field, also used to replace periods in the Title "
-"field."
+"The delimiter in the Notes field, also used to replace periods in the Title field."
 msgstr "A Cím mezőben is ezzel lesznek a pontok lecserélve"
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:88
@@ -1576,8 +1537,7 @@ msgstr "Speciális.."
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:750
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:203
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:159
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:193
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:192
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:193 ../../../ui/wxWidgets/YubiCfgDlg.cpp:192
 msgid "&Help"
 msgstr "&Súgó"
 
@@ -1592,11 +1552,10 @@ msgid "Virtual Keyboard"
 msgstr "&Virtuális billentyűzet betűtípusa"
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:72
-msgid ""
-"Could not launch xvkbd.  Please make sure it's installed and in your PATH"
+msgid "Could not launch xvkbd.  Please make sure it's installed and in your PATH"
 msgstr ""
-"Nem sikerült elindítani az xvkbd-t. Győződjön meg, hogy telepítve van és "
-"elérhető a PATH elérési útvonalon"
+"Nem sikerült elindítani az xvkbd-t. Győződjön meg, hogy telepítve van és elérhető a "
+"PATH elérési útvonalon"
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:73
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:81
@@ -1610,14 +1569,13 @@ msgid "Could not launch xvkbd.  Please make sure it's in your PATH"
 msgstr ""
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:85
-msgid ""
-"Could not launch a new process for xvkbd.  Simultaneous execution disabled?"
+msgid "Could not launch a new process for xvkbd.  Simultaneous execution disabled?"
 msgstr ""
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:99
 msgid ""
-"Please enable the Accessibility Keyboard in System Settings; the on-screen "
-"keyboard should then appear."
+"Please enable the Accessibility Keyboard in System Settings; the on-screen keyboard "
+"should then appear."
 msgstr ""
 
 #: ../../../ui/wxWidgets/ExternalKeyboardButton.cpp:101
@@ -1656,11 +1614,9 @@ msgstr "Importálási beállítások"
 msgid "Import under group"
 msgstr "Importálás ezen csoport alá"
 
-#: ../../../ui/wxWidgets/ImportTextDlg.cpp:100
-#: ../../../ui/wxWidgets/ImportXmlDlg.cpp:67
+#: ../../../ui/wxWidgets/ImportTextDlg.cpp:100 ../../../ui/wxWidgets/ImportXmlDlg.cpp:67
 msgid "Import to change passwords of existing entries ONLY"
-msgstr ""
-"CSAK a létező bejegyzések jelszavának megváltoztatása az importálás során"
+msgstr "CSAK a létező bejegyzések jelszavának megváltoztatása az importálás során"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:151
 msgid "Delimiters"
@@ -1696,11 +1652,8 @@ msgid "Import text file:"
 msgstr "Szöveg importálása sikertelen"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:188
-msgid ""
-"Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*; *"
-msgstr ""
-"Szövegfájlok (*.txt)|*.txt|CSV fájlok (*.csv)|*.csv|Minden fájl (*.*; *)|*."
-"*; *"
+msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*; *"
+msgstr "Szövegfájlok (*.txt)|*.txt|CSV fájlok (*.csv)|*.csv|Minden fájl (*.*; *)|*.*; *"
 
 #: ../../../ui/wxWidgets/ImportXmlDlg.cpp:31
 msgid "Import XML Settings"
@@ -1790,9 +1743,7 @@ msgstr "%s fájl érvényesítése ezzel az XML sémával sikertelen"
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1062
 #, fuzzy, c-format
 msgid "File %ls was not imported (error during import)"
-msgstr ""
-"%s fájl sikeresen érvényesítve, de az alábbi hibák történtek az importálás "
-"során"
+msgstr "%s fájl sikeresen érvényesítve, de az alábbi hibák történtek az importálás során"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:1065
 #, c-format
@@ -1963,8 +1914,7 @@ msgstr "Bejegyzések, amelyek a kiválasztott szabályt használják:"
 msgid "Not used"
 msgstr "Nem használt"
 
-#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:334
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1774
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:334 ../../../ui/wxWidgets/TreeCtrl.cpp:1774
 #, fuzzy
 msgid " Copy # "
 msgstr "# %d másolása"
@@ -1988,9 +1938,7 @@ msgid "&Don't remind me again"
 msgstr "&Ne emlékeztessen újra"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:629
-msgid ""
-"There is no view available for attachments that are not of image media "
-"type.\n"
+msgid "There is no view available for attachments that are not of image media type.\n"
 msgstr ""
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:630
@@ -2018,8 +1966,8 @@ msgstr "Autogépelés"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:802
 msgid ""
-"Error switching to another application before autotyping. Switch manually "
-"within 5 seconds"
+"Error switching to another application before autotyping. Switch manually within 5 "
+"seconds"
 msgstr ""
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:972
@@ -2046,9 +1994,8 @@ msgid "Error parsing Run Command"
 msgstr "Hiba a futtatási parancs felolvasásakor"
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:1193
-#, fuzzy
 msgid "Password of "
-msgstr "Password Safe"
+msgstr "Jelszó "
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:57
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:343
@@ -2088,9 +2035,8 @@ msgstr "Menti a jelszóadatbázisban történt változásokat? "
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:94
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:579
-#, fuzzy
 msgid "Save changes?"
-msgstr "Menti %1 változásait?"
+msgstr "Változtatások mentése?"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:95
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:581
@@ -2145,20 +2091,19 @@ msgstr "Jelszóadatbázis megnyitása:"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:342
 msgid ""
-"Unable to create intermediate backup.  Save database elsewhere or with "
-"another name?\n"
+"Unable to create intermediate backup.  Save database elsewhere or with another name?\n"
 "\n"
 "Click 'No' to exit without saving."
 msgstr ""
-"Nem sikerült létrehozni a köztes mentést. Mentse az adatbázist máshova vagy "
-"más néven?\n"
+"Nem sikerült létrehozni a köztes mentést. Mentse az adatbázist máshova vagy más "
+"néven?\n"
 "\n"
 "Kattintson a \"Nem\"-re a mentés nélküli kilépéshez."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:349
 msgid ""
-"Unable to create intermediate backup.  Do you wish to save changes to your "
-"database without it?"
+"Unable to create intermediate backup.  Do you wish to save changes to your database "
+"without it?"
 msgstr ""
 "Képtelen közbenső mentést készíteni. El szeretné menteni a változtatásait az "
 "adatbázisba ezek nélkül?"
@@ -2172,9 +2117,9 @@ msgstr "Képtelen közbenső mentést készíteni."
 #, c-format
 msgid ""
 "The original database, \"%ls\", is in pre-3.0 format. It will be unchanged.\n"
-"Your changes will be written as \"%ls\" in the new format, which is unusable "
-"by old versions of PasswordSafe. To save your changes in the old format, use "
-"the \"File->Export To-> Old (1.x or 2) format\" command."
+"Your changes will be written as \"%ls\" in the new format, which is unusable by old "
+"versions of PasswordSafe. To save your changes in the old format, use the \"File-"
+">Export To-> Old (1.x or 2) format\" command."
 msgstr ""
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:377
@@ -2185,10 +2130,9 @@ msgstr "Fájlverzió figyelmeztetés"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:437
 #, c-format
 msgid ""
-"The original database, '%ls', is in pre-3.0 format. The data will now be "
-"written in the new format, which is unusable by old versions of "
-"PasswordSafe. To save the data in the old format, use the 'File->Export To-> "
-"Old (1.x or 2) format' command."
+"The original database, '%ls', is in pre-3.0 format. The data will now be written in "
+"the new format, which is unusable by old versions of PasswordSafe. To save the data in "
+"the old format, use the 'File->Export To-> Old (1.x or 2) format' command."
 msgstr ""
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:450
@@ -2202,12 +2146,9 @@ msgid "Choose a new name for the current database:"
 msgstr "Kérem válasszon egy új nevet az aktuális adatbázisnak:"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:459
-msgid ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|"
-"*.*;*"
+msgid "Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|*.*;*"
 msgstr ""
-"Password Safe adatbázisok (*.psafe3; *.dat)|*.psafe3;*.dat|Minden fájl (*.*; "
-"*)|*.*;*"
+"Password Safe adatbázisok (*.psafe3; *.dat)|*.psafe3;*.dat|Minden fájl (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:471
 #, fuzzy, c-format
@@ -2249,11 +2190,8 @@ msgstr "Kérem adjon nevet a szövegfájlnak"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:617
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1154
-msgid ""
-"Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
-msgstr ""
-"Szövegfájlok (*.txt)|*.txt|CSV fájlok (*.csv)|*.csv|Minden fájl (*.*; *)|*.*;"
-"*"
+msgid "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*; *)|*.*;*"
+msgstr "Szövegfájlok (*.txt)|*.txt|CSV fájlok (*.csv)|*.csv|Minden fájl (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:627
 msgid "Advanced Text Export Options"
@@ -2285,8 +2223,7 @@ msgstr "Password Safe adatbázisok (*.dat)|*.dat|Minden fájl (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:713
 msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*; *)|*.*;*"
-msgstr ""
-"Password Safe adatbázisok (*.psafe4)|*.psafe4|Minden fájl (*.*; *)|*.*;*"
+msgstr "Password Safe adatbázisok (*.psafe4)|*.psafe4|Minden fájl (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:724
 #, fuzzy
@@ -2318,20 +2255,17 @@ msgstr "Lecseréli?"
 #, fuzzy
 msgid "No entries satisfied your selection criteria and so none were exported!"
 msgstr ""
-"Egyetlen bejegyzés sem felel meg az ön által megadott feltételeknek, így "
-"egyik sem lehet %s!"
+"Egyetlen bejegyzés sem felel meg az ön által megadott feltételeknek, így egyik sem "
+"lehet %s!"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:860
 msgid "Passkey incorrect"
 msgstr "Jelszó érvénytelen"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:873
-msgid ""
-"The current database was opened in read-only mode.  You cannot import into "
-"it."
+msgid "The current database was opened in read-only mode.  You cannot import into it."
 msgstr ""
-"A jelenlegi adatbázis csak olvasásra lett megnyitva. Nem lehetséges "
-"importálni bele."
+"A jelenlegi adatbázis csak olvasásra lett megnyitva. Nem lehetséges importálni bele."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:874
 #, fuzzy
@@ -2365,10 +2299,8 @@ msgstr "%s fájl importálása: %s"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:922
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:927
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:241
-#: ../../../ui/wxWidgets/SyncWizard.cpp:627
-#: ../../../ui/wxWidgets/wxUtilities.cpp:72
-#: ../../../ui/wxWidgets/wxUtilities.cpp:77
-#: ../../../ui/wxWidgets/wxUtilities.cpp:84
+#: ../../../ui/wxWidgets/SyncWizard.cpp:627 ../../../ui/wxWidgets/wxUtilities.cpp:72
+#: ../../../ui/wxWidgets/wxUtilities.cpp:77 ../../../ui/wxWidgets/wxUtilities.cpp:84
 msgid "File Read Error"
 msgstr "Fájlolvasási hiba"
 
@@ -2461,8 +2393,8 @@ msgid ""
 "\n"
 "%ls\n"
 "\n"
-"has duplicate entries with the same group/title/user combination. Fix by "
-"validating database."
+"has duplicate entries with the same group/title/user combination. Fix by validating "
+"database."
 msgstr ""
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1003
@@ -2470,16 +2402,14 @@ msgstr ""
 msgid "Import XML failed"
 msgstr "XML importálása sikertelen"
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1013
-#: ../../../core/core_st.cpp:275
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1013 ../../../core/core_st.cpp:275
 #, fuzzy, c-format
 msgid ""
 "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application "
 "Directory.\n"
 "Copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
-"Nem található az XML Sémadefiníciós fájl (%ls) a PasswordSafe "
-"alkalmazáskönyvtárában.\n"
+"Nem található az XML Sémadefiníciós fájl (%ls) a PasswordSafe alkalmazáskönyvtárában.\n"
 " Másolja ide a telepítési fájlból, vagy telepítse újra a PasswordSafe-et."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1014
@@ -2512,8 +2442,7 @@ msgid ""
 "\n"
 "%ls"
 msgstr ""
-"%s fájl sikeresen érvényesítve, de az alábbi hibák történtek az importálás "
-"során:\n"
+"%s fájl sikeresen érvényesítve, de az alábbi hibák történtek az importálás során:\n"
 "\n"
 "%s"
 
@@ -2537,8 +2466,8 @@ msgstr " / %d jelszó előzmények hiba"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1098
 msgid ""
-"The following records were renamed as an entry already exists in your "
-"database or in the Import file:"
+"The following records were renamed as an entry already exists in your database or in "
+"the Import file:"
 msgstr ""
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1100
@@ -2549,17 +2478,16 @@ msgstr " / %d átnevezve"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1105
 #, fuzzy, c-format
 msgid ""
-"File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See "
-"report for details."
+"File: %ls was imported (entries validated %d / imported %d%ls%ls%ls). See report for "
+"details."
 msgstr ""
-"%s fájl importálása megtörtént (%d bejegyzés érvényesítve / importálva "
-"%d%s%s%s). Nézze meg a jelentést a részletekért."
+"%s fájl importálása megtörtént (%d bejegyzés érvényesítve / importálva %d%s%s%s). "
+"Nézze meg a jelentést a részletekért."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1110
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1111
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1223
-#: ../../../ui/wxWidgets/SyncWizard.cpp:642
-#: ../../../ui/wxWidgets/SyncWizard.cpp:787
+#: ../../../ui/wxWidgets/SyncWizard.cpp:642 ../../../ui/wxWidgets/SyncWizard.cpp:787
 #: ../../../ui/wxWidgets/SyncWizard.cpp:804 ../../../core/core_st.cpp:111
 msgid "entry"
 msgstr "bejegyzés"
@@ -2567,8 +2495,7 @@ msgstr "bejegyzés"
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1110
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1111
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1223
-#: ../../../ui/wxWidgets/SyncWizard.cpp:642
-#: ../../../ui/wxWidgets/SyncWizard.cpp:787
+#: ../../../ui/wxWidgets/SyncWizard.cpp:642 ../../../ui/wxWidgets/SyncWizard.cpp:787
 #: ../../../ui/wxWidgets/SyncWizard.cpp:804 ../../../core/core_st.cpp:109
 msgid "entries"
 msgstr "bejegyzések"
@@ -2671,11 +2598,10 @@ msgstr "Mentés neve"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:221
 msgid ""
-"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*."
-"ibak)|*.ibak||"
-msgstr ""
-"Password Safe mentések (*.bak)|*.bak|Password Safe Köztes mentések (*.ibak)|"
+"Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups (*.ibak)|"
 "*.ibak||"
+msgstr ""
+"Password Safe mentések (*.bak)|*.bak|Password Safe Köztes mentések (*.ibak)|*.ibak||"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:248
 msgid "Password Safe - <Untitled Restored Backup>"
@@ -2683,8 +2609,7 @@ msgstr "Password Safe - <Névtelen Visszaállított Mentés>"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:408
 msgid ""
-"You have chosen not to save your changes, which will be lost. Do you wish to "
-"continue?"
+"You have chosen not to save your changes, which will be lost. Do you wish to continue?"
 msgstr ""
 "Ön úgy döntött, hogy nem menti a változásokat, amelyek így el fognak veszni. "
 "Folytatja? "
@@ -2700,13 +2625,13 @@ msgstr "A kért módváltás sikertelen"
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:451
 #, fuzzy
 msgid ""
-"The database has been changed since you opened it in R-O mode, so it is not "
-"possible to switch to R/W mode.\n"
+"The database has been changed since you opened it in R-O mode, so it is not possible "
+"to switch to R/W mode.\n"
 "\n"
 "Close the database and re-open it in R/W mode."
 msgstr ""
-"Az adatbázis megváltozott azóta, hogy meg lett nyitva olvasásra, ezért nem "
-"lehetséges átváltani író-olvasó módra.\n"
+"Az adatbázis megváltozott azóta, hogy meg lett nyitva olvasásra, ezért nem lehetséges "
+"átváltani író-olvasó módra.\n"
 "\n"
 "Kérem zárja be az adatbázist és nyissa újra író-olvasó módban."
 
@@ -2718,32 +2643,31 @@ msgstr " [Folyamatazonosító=%s]"
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:481
 #, fuzzy, c-format
 msgid ""
-"Failed to switch from R-O to R/W because database is already open in R/W "
-"mode by:\n"
+"Failed to switch from R-O to R/W because database is already open in R/W mode by:\n"
 "%ls %ls\n"
 "(Only one R/W access at a time is allowed)"
 msgstr ""
-"Az átállás Csak Olvasható módról Írható módra sikertelen, mert az adatbázis "
-"már meg van nyitva Írható módban ezzel::\n"
+"Az átállás Csak Olvasható módról Írható módra sikertelen, mert az adatbázis már meg "
+"van nyitva Írható módban ezzel::\n"
 "%s %s\n"
 "(Egyidőben csak egy program nyithatja meg írásra)"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:487
 msgid ""
-"Failed to switch from R-O to R/W: Could not open the database. It may have "
-"been deleted or renamed or there may be a problem with its drive."
+"Failed to switch from R-O to R/W: Could not open the database. It may have been "
+"deleted or renamed or there may be a problem with its drive."
 msgstr ""
-"Az átállás Csak Olvasható módról Írható módra sikertelen: az adatbázis "
-"megnyitása sikertelen. Talán letörölték vagy átnevezték, vagy valami "
-"probléma lehet ezzel a lemezzel."
+"Az átállás Csak Olvasható módról Írható módra sikertelen: az adatbázis megnyitása "
+"sikertelen. Talán letörölték vagy átnevezték, vagy valami probléma lehet ezzel a "
+"lemezzel."
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:490
 msgid ""
-"Failed to switch from R-O to R/W: The file appears to be too short to be a "
-"valid database."
+"Failed to switch from R-O to R/W: The file appears to be too short to be a valid "
+"database."
 msgstr ""
-"Az átállás Csak Olvasható módról Írható módra sikertelen: a fájl túl kicsi "
-"ahhoz, hogy érvényes adatbázis lehessen."
+"Az átállás Csak Olvasható módról Írható módra sikertelen: a fájl túl kicsi ahhoz, hogy "
+"érvényes adatbázis lehessen."
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:495
 msgid "Given path is a directory or file is read-only"
@@ -2754,8 +2678,8 @@ msgid ""
 "Failed to switch from R/W to R-O: Could not release database lock.\n"
 "Try exiting and restarting program."
 msgstr ""
-"Az átállás Írható módról Csak Olvasható  módra sikertelen: az adatbázis-"
-"zárolás elengedése sikertelen.\n"
+"Az átállás Írható módról Csak Olvasható  módra sikertelen: az adatbázis-zárolás "
+"elengedése sikertelen.\n"
 "Próbáljon meg kilépni és újraindítani a programot."
 
 #: ../../../ui/wxWidgets/MenuViewHandlers.cpp:229
@@ -2834,8 +2758,7 @@ msgstr "ÉÉHHNN_ÓÓPPMM"
 msgid "Incremented Number [001-999]"
 msgstr "Növekvő szám [001-999]"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:132
-#: ../../../core/core_st.cpp:82
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:132 ../../../core/core_st.cpp:82
 msgid "Copy password to clipboard"
 msgstr "Jelszó másolása a vágólapra"
 
@@ -2848,23 +2771,19 @@ msgstr "A kiválasztott bejegyzés megtekintése/szerkesztése"
 msgid "Browse to URL"
 msgstr "Navigálás az URL-re"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:136
-#: ../../../core/core_st.cpp:81
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:136 ../../../core/core_st.cpp:81
 msgid "Copy notes to clipboard"
 msgstr "Megjegyzés vágólapra másolása"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:137
-#: ../../../core/core_st.cpp:84
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:137 ../../../core/core_st.cpp:84
 msgid "Copy username to clipboard"
 msgstr "Felhasználónév vágólapra másolása"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:138
-#: ../../../core/core_st.cpp:83
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:138 ../../../core/core_st.cpp:83
 msgid "Copy password to clipboard, minimize"
 msgstr "Jelszó vágólapra másolása, kis méretre váltás"
 
-#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:139
-#: ../../../core/core_st.cpp:80
+#: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:139 ../../../core/core_st.cpp:80
 msgid "Browse to URL + Autotype"
 msgstr "Navigálás az URL-re + Autogépelés"
 
@@ -2977,8 +2896,7 @@ msgstr "Megjegyzések mutatása tooltip-ként fa és lista nézetben"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:449
 msgid "Word Wrap Notes in Add && Edit"
-msgstr ""
-"Hosszú sorok törése a Megjegyzések mezőben Hozzáadásnál és Szerkesztésnél "
+msgstr "Hosszú sorok törése a Megjegyzések mezőben Hozzáadásnál és Szerkesztésnél "
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:453
 msgid "Put Groups first in Tree View"
@@ -3220,8 +3138,7 @@ msgstr "Másfajta Autogépelés használata"
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:918
 msgid ""
 "When set, use XTEST for AutoType instead of XSendEvent.\n"
-"XSendEvent can handle more control keys, but may be blocked by some "
-"applications."
+"XSendEvent can handle more control keys, but may be blocked by some applications."
 msgstr ""
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:920
@@ -3240,29 +3157,27 @@ msgstr "Válasszon böngészőt"
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1373
 #, c-format
 msgid ""
-"Number of entries that had their settings changed to not save password "
-"history was: %d"
+"Number of entries that had their settings changed to not save password history was: %d"
 msgstr ""
-"%d tétel esetében a beállítások úgy lettek módosítva, hogy a jelszótörténet "
-"ne legyen mentve"
+"%d tétel esetében a beállítások úgy lettek módosítva, hogy a jelszótörténet ne legyen "
+"mentve"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1378
 #, c-format
 msgid ""
-"Number of entries that had their settings changed to save password history "
-"was: %d"
+"Number of entries that had their settings changed to save password history was: %d"
 msgstr ""
-"%d tétel esetében a beállítások úgy lettek módosítva, hogy a jelszótörténet "
-"mentve legyen"
+"%d tétel esetében a beállítások úgy lettek módosítva, hogy a jelszótörténet mentve "
+"legyen"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1383
 #, c-format
 msgid ""
-"Number of entries that had their 'maximum saved passwords' changed to the "
-"new default was %d"
+"Number of entries that had their 'maximum saved passwords' changed to the new default "
+"was %d"
 msgstr ""
-"%d tétel esetében a 'Mentett jelszavak maximális száma' az új "
-"alapértelmezésre lett változtatva"
+"%d tétel esetében a 'Mentett jelszavak maximális száma' az új alapértelmezésre lett "
+"változtatva"
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1388
 #, c-format
@@ -3278,14 +3193,13 @@ msgid "Hexadecimal is mutually exclusive to all other options."
 msgstr "A Hexadecimális kizárja az összes többi opciót."
 
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:458
-msgid ""
-"Hexadecimal passwords must have even length - each byte is two characters"
+msgid "Hexadecimal passwords must have even length - each byte is two characters"
 msgstr ""
 
 #: ../../../ui/wxWidgets/PasswordPolicyDlg.cpp:463
 msgid ""
-"At least one type of character (lowercase, uppercase, digits, symbols or "
-"hexadecimal) must be chosen"
+"At least one type of character (lowercase, uppercase, digits, symbols or hexadecimal) "
+"must be chosen"
 msgstr ""
 "Legalább az egyik fajta karaktert (kisbetű, nagybetű, számok, szimbólumok, "
 "hexadecimális) engedélyeznie kell."
@@ -4062,16 +3976,16 @@ msgstr "Találat: %d / %d"
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:93
 #, fuzzy
 msgid ""
-"Enter positions of password characters separated by spaces, commas or semi-"
-"colons (or * for full password).\n"
-"Position 1 is the first character, 2 is the second, etc. up to N for the "
-"last character of a password of length N.\n"
-"-1 is the last character, -2 the next to last, etc. up to -N for the first "
-"password character."
+"Enter positions of password characters separated by spaces, commas or semi-colons (or "
+"* for full password).\n"
+"Position 1 is the first character, 2 is the second, etc. up to N for the last "
+"character of a password of length N.\n"
+"-1 is the last character, -2 the next to last, etc. up to -N for the first password "
+"character."
 msgstr ""
-"1-es pozíció az első karakter, 2-es a második, stb. egészen N-ig, amely az N "
-"karakter hosszú jelszó utolsó karaktere. (-1)-es pozíció az utolsó karakter, "
-"(-2)-es az utolsó előtti, egészen (-N)-ig, amely a jelszó első karaktere."
+"1-es pozíció az első karakter, 2-es a második, stb. egészen N-ig, amely az N karakter "
+"hosszú jelszó utolsó karaktere. (-1)-es pozíció az utolsó karakter, (-2)-es az utolsó "
+"előtti, egészen (-N)-ig, amely a jelszó első karaktere."
 
 #: ../../../ui/wxWidgets/PasswordSubsetDlg.cpp:99
 msgid "Positions:"
@@ -4200,15 +4114,13 @@ msgstr "Abszolút"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:284
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:304
-#: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:337
-#: ../../../core/core_st.cpp:45
+#: ../../../ui/wxWidgets/PWFiltersIntegerDlg.cpp:337 ../../../core/core_st.cpp:45
 msgid "and"
 msgstr "és"
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:291
 msgid ""
-"Relative dates are in days relative to today e.g. '-1' is yesterday and '1' "
-"is tomorrow"
+"Relative dates are in days relative to today e.g. '-1' is yesterday and '1' is tomorrow"
 msgstr ""
 
 #: ../../../ui/wxWidgets/PWFiltersDateDlg.cpp:295 ../../../core/core_st.cpp:305
@@ -4505,13 +4417,11 @@ msgstr "Autogépelés"
 msgid "Another instance of Password Safe is already running"
 msgstr "A Password Safe-nek már fut egy másik példánya"
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:489
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:498
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:489 ../../../ui/wxWidgets/PWSafeApp.cpp:498
 msgid "Could not initialize help subsystem. Help will not be available."
 msgstr "Nem sikerült a súgót beindítani. A súgó nem elérhető."
 
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:490
-#: ../../../ui/wxWidgets/PWSafeApp.cpp:499
+#: ../../../ui/wxWidgets/PWSafeApp.cpp:490 ../../../ui/wxWidgets/PWSafeApp.cpp:499
 msgid "Password Safe: Error initializing help"
 msgstr "Password Safe: Hiba a súgó indítása közben"
 
@@ -4568,8 +4478,7 @@ msgstr "Egy vagy több jelszószabály meg lett változtatva. Biztos, hogy elvet
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:90
 #, fuzzy
 msgid "Enter old master password and click on top Yubikey button"
-msgstr ""
-"Adja meg a régi széfkombinációt (ha van) és érintse meg a Yubikey gombját"
+msgstr "Adja meg a régi széfkombinációt (ha van) és érintse meg a Yubikey gombját"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:122
 #, fuzzy
@@ -4632,8 +4541,7 @@ msgstr "Helytelen YubiKey széfkombináció"
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:355
 #, fuzzy
 msgid "Enter new master password and click on bottom Yubikey button"
-msgstr ""
-"Írja be az új széfkombinációt (ha van) és kattintson a lenti Yubikey gombra"
+msgstr "Írja be az új széfkombinációt (ha van) és kattintson a lenti Yubikey gombra"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:379
 #, fuzzy
@@ -4716,19 +4624,17 @@ msgstr "Bejegyzések, amelyek csak az aktuális adatbázisban (%s) szerepelnek:"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:459
 msgid ""
-"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat| "
-"All files (*.*; *)|*.*;*"
+"Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat| All files "
+"(*.*; *)|*.*;*"
 msgstr ""
-"Password Safe adatbázisok (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*."
-"dat| Minden fájl (*.*; *)|*.*;*"
+"Password Safe adatbázisok (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat| Minden "
+"fájl (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:504
 msgid ""
-"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|"
-"*.*;*"
+"Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat| All files (*.*; *)|*.*;*"
 msgstr ""
-"Password Safe adatbázisok (*.psafe3; *.dat)|*.psafe3;*.dat| Minden fájl (*."
-"*; *)|*.*;*"
+"Password Safe adatbázisok (*.psafe3; *.dat)|*.psafe3;*.dat| Minden fájl (*.*; *)|*.*;*"
 
 #: ../../../ui/wxWidgets/SafeCombinationPromptDlg.cpp:126
 msgid "filename"
@@ -4742,8 +4648,7 @@ msgstr "Szé&f nyitása"
 
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:113
 #, fuzzy
-msgid ""
-"The Master Password will be used to protect the new password database file."
+msgid "The Master Password will be used to protect the new password database file."
 msgstr "Kérem adja meg ezen adatbázis jelszókombinációját."
 
 #: ../../../ui/wxWidgets/SafeCombinationSetupDlg.cpp:225
@@ -4899,8 +4804,7 @@ msgstr "&Alkalmaz"
 msgid "OK"
 msgstr "OK"
 
-#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:190
-#: ../../../ui/wxWidgets/wxUtilities.cpp:211
+#: ../../../ui/wxWidgets/SetFiltersDlg.cpp:190 ../../../ui/wxWidgets/wxUtilities.cpp:211
 msgid "Cancel"
 msgstr "Mégse"
 
@@ -4995,8 +4899,7 @@ msgid ""
 "Synchronizing with another database will update the entries in your\n"
 "database with matching entries from the other database."
 msgstr ""
-"A másik adatbázissal való szinkronizáció során az Ön adatbázisában levő "
-"bejegyzések\n"
+"A másik adatbázissal való szinkronizáció során az Ön adatbázisában levő bejegyzések\n"
 "frissülni fognak a másik adatbázisból származó egyező bejegyzésekkel."
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:411
@@ -5042,8 +4945,7 @@ msgstr "Válasszon adatbázist"
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:436
 msgid "Choose Database to Synchronize with \""
-msgstr ""
-"Kérem válassza ki az aktuális adatbázissal szinkronizálandó adatbázist \""
+msgstr "Kérem válassza ki az aktuális adatbázissal szinkronizálandó adatbázist \""
 
 #: ../../../ui/wxWidgets/SyncWizard.cpp:437
 #, fuzzy
@@ -5220,8 +5122,7 @@ msgstr "&Előzmények törlése"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:180
 msgid "Note: Entry format is «Group» «Title» «Username»"
-msgstr ""
-"Megjegyzés: A bejegyzás formátuma: «Csoport «Megnevezés» «Felhasználónév»"
+msgstr "Megjegyzés: A bejegyzás formátuma: «Csoport «Megnevezés» «Felhasználónév»"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:181
 msgid "Note: Empty fields are shown as « »"
@@ -5259,8 +5160,7 @@ msgstr ""
 msgid "&Delete from Recent Entry List"
 msgstr "&Törlés a legutóbbi bejgyegyzések listájáról"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:991
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:993
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:991 ../../../ui/wxWidgets/TreeCtrl.cpp:993
 msgid "New Group"
 msgstr "Új csoport"
 
@@ -5276,8 +5176,7 @@ msgstr ""
 msgid "name exists"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:993
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1054
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:993 ../../../ui/wxWidgets/TreeCtrl.cpp:1054
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1532
 #, fuzzy
 msgid "Duplicate group name"
@@ -5303,15 +5202,12 @@ msgstr "Csoport nevében nem szerepelhet pont"
 msgid "Invalid Character"
 msgstr "Érvénytelen karakter"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1462
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2781
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1462 ../../../ui/wxWidgets/TreeCtrl.cpp:2781
 msgid "Destination cannot be inside source tree"
 msgstr ""
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1462
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2629
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2636
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:2653
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1462 ../../../ui/wxWidgets/TreeCtrl.cpp:2629
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:2636 ../../../ui/wxWidgets/TreeCtrl.cpp:2653
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2781
 msgid "Drag and Drop failed"
 msgstr ""
@@ -5335,11 +5231,9 @@ msgid ""
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Az eldobott bejegyzés: '%s:%s:%s' jelszava egy szintén álnév-bejegyzésre "
-"mutat.\n"
+"Az eldobott bejegyzés: '%s:%s:%s' jelszava egy szintén álnév-bejegyzésre mutat.\n"
 "\n"
-"Az eldobott bejegyzés most már annak a bejegyzésnek az alapbejegyzésére "
-"hivatkozik."
+"Az eldobott bejegyzés most már annak a bejegyzésnek az alapbejegyzésére hivatkozik."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2632
 #, c-format
@@ -5354,10 +5248,9 @@ msgstr ""
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
 #, c-format
 msgid ""
-"The following entries had a policy name that already existed in this "
-"database but with different settings.\n"
-"A new named policy has been created with the current date/time (%ls) "
-"appended:%ls"
+"The following entries had a policy name that already existed in this database but with "
+"different settings.\n"
+"A new named policy has been created with the current date/time (%ls) appended:%ls"
 msgstr ""
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2735
@@ -5367,8 +5260,8 @@ msgstr "A bejegyzés jelszószabály-változásai"
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2742
 #, c-format
 msgid ""
-"The following alias or shortcut entries did not match to a base entry and "
-"had been converted to normal entries:%ls"
+"The following alias or shortcut entries did not match to a base entry and had been "
+"converted to normal entries:%ls"
 msgstr ""
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2744
@@ -5441,8 +5334,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/wxUtilities.cpp:576
 msgid ""
-"An error occurred while trying to load the image data into the preview "
-"area.\n"
+"An error occurred while trying to load the image data into the preview area.\n"
 "Therefore, the image cannot be displayed in the preview."
 msgstr ""
 
@@ -5454,8 +5346,7 @@ msgstr "YubiKey sorozatszám: "
 msgid "YubiKey Secret Key (20 Byte Hex)"
 msgstr "YubiKey titkos kulcs (20 hexadecimális számjegy)"
 
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:177
-#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:312
+#: ../../../ui/wxWidgets/YubiCfgDlg.cpp:177 ../../../ui/wxWidgets/YubiCfgDlg.cpp:312
 msgid "Hide"
 msgstr "Elrejtés"
 
@@ -5533,8 +5424,8 @@ msgstr "Jelszószabályok kezelése"
 msgid "Options"
 msgstr "Beállítások"
 
-#: ../../../ui/wxWidgets/PasswordSafeFrame.h:62
-#: ../../../ui/wxWidgets/wxMessages.h:23 ../../../ui/wxWidgets/wxMessages.h:38
+#: ../../../ui/wxWidgets/PasswordSafeFrame.h:62 ../../../ui/wxWidgets/wxMessages.h:23
+#: ../../../ui/wxWidgets/wxMessages.h:38
 msgid "PasswordSafe"
 msgstr "PasswordSafe"
 
@@ -5761,16 +5652,14 @@ msgstr "nincs bejegyzés ezzel a megnevezéssel: %s."
 #: ../../../core/core_st.cpp:37
 #, c-format
 msgid ""
-"multiple entries exist with title=%s and username=%s or with group=%s and "
-"title=%s."
+"multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
 msgstr ""
-"több ilyen bejegyzés is van: megnevezéssel=%s és felhasználónév=%s vagy "
-"csoport=%s és megnevezés=%s"
+"több ilyen bejegyzés is van: megnevezéssel=%s és felhasználónév=%s vagy csoport=%s és "
+"megnevezés=%s"
 
 #: ../../../core/core_st.cpp:38
 #, c-format
-msgid ""
-"no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
 msgstr ""
 "nincs ilyen bejegyzés: megnevezés=%s és felhasználónév=%s vagy csoport=%s, "
 "megnevezés=%s."
@@ -5778,20 +5667,17 @@ msgstr ""
 #: ../../../core/core_st.cpp:39
 #, fuzzy, c-format
 msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr ""
-"nincs ilyen bejegyzés: csoport=%s, megnevezés=%s és üres felhasználónév."
+msgstr "nincs ilyen bejegyzés: csoport=%s, megnevezés=%s és üres felhasználónév."
 
 #: ../../../core/core_st.cpp:40
 #, c-format
 msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr ""
-"nincs ilyen bejegyzés: csoport=%s, megnevezés=%s és üres felhasználónév."
+msgstr "nincs ilyen bejegyzés: csoport=%s, megnevezés=%s és üres felhasználónév."
 
 #: ../../../core/core_st.cpp:41
 #, c-format
 msgid "no entry exists in the root with title=%s and username=%s."
-msgstr ""
-"nincs ilyen bejegyzés a gyökérmappában: megnevezés=%s és felhasználónév=%s."
+msgstr "nincs ilyen bejegyzés a gyökérmappában: megnevezés=%s és felhasználónév=%s."
 
 #: ../../../core/core_st.cpp:42
 msgid "Password implies this is an alias entry, but "
@@ -5819,19 +5705,17 @@ msgstr "Helytelen jelszó"
 
 #: ../../../core/core_st.cpp:49
 msgid ""
-"Password implies this is an alias entry, but specifies a base entry with no "
-"title.\n"
+"Password implies this is an alias entry, but specifies a base entry with no title.\n"
 "Every entry must have a title."
 msgstr ""
-"A jelszó arra utal, hogy ez egy álnév bejegyzés, de meghatároz egy cím "
-"nélküli alapbejegyzést.\n"
+"A jelszó arra utal, hogy ez egy álnév bejegyzés, de meghatároz egy cím nélküli "
+"alapbejegyzést.\n"
 "Minden bejegyzésnek kell, hogy legyen címe."
 
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not "
-"supported."
+"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
 msgstr ""
 
 #: ../../../core/core_st.cpp:51
@@ -5845,22 +5729,21 @@ msgstr "között"
 #: ../../../core/core_st.cpp:54
 #, fuzzy
 msgid ""
-"Unable to create a new XML configuration file or add your settings to an "
-"existing XML configuration file.\n"
+"Unable to create a new XML configuration file or add your settings to an existing XML "
+"configuration file.\n"
 "\n"
-"All application configuration settings will be saved in your registry entry "
-"on this computer.\n"
+"All application configuration settings will be saved in your registry entry on this "
+"computer.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, "
+"assuming it is not read-only or locked by another user."
 msgstr ""
 "Hiba - a beállítások megállapítása sikertelen\n"
 "\n"
 "Az alkalmazásbeállítások nem lesznek elmentve.\n"
 "\n"
-"Az adatbázisra vonatkozó beállítások el lesznek mentve a megnyitott "
-"adatbázisba, feltéve, hogy az nem csak olvasható és nincs más felhasználó "
-"által zárolva."
+"Az adatbázisra vonatkozó beállítások el lesznek mentve a megnyitott adatbázisba, "
+"feltéve, hogy az nem csak olvasható és nincs más felhasználó által zárolva."
 
 #: ../../../core/core_st.cpp:55
 msgid ""
@@ -5868,20 +5751,18 @@ msgid ""
 "\n"
 "No application settings will be saved.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, "
+"assuming it is not read-only or locked by another user."
 msgstr ""
 "Hiba - a beállítások megállapítása sikertelen\n"
 "\n"
 "Az alkalmazásbeállítások nem lesznek elmentve.\n"
 "\n"
-"Az adatbázisra vonatkozó beállítások el lesznek mentve a megnyitott "
-"adatbázisba, feltéve, hogy az nem csak olvasható és nincs más felhasználó "
-"által zárolva."
+"Az adatbázisra vonatkozó beállítások el lesznek mentve a megnyitott adatbázisba, "
+"feltéve, hogy az nem csak olvasható és nincs más felhasználó által zárolva."
 
 #: ../../../core/core_st.cpp:56
-msgid ""
-"Trouble reading stored filters (version mismatch?). Filters will be unusable."
+msgid "Trouble reading stored filters (version mismatch?). Filters will be unusable."
 msgstr ""
 
 #: ../../../core/core_st.cpp:57
@@ -5894,19 +5775,18 @@ msgstr "Az email elküldése nem lehetséges"
 msgid ""
 "Unable to update your entries in the existing XML configuration file.\n"
 "\n"
-"All application configuration settings will be loaded from this file but no "
-"changes will be saved.\n"
+"All application configuration settings will be loaded from this file but no changes "
+"will be saved.\n"
 "\n"
-"Database related settings will be stored in the open database when it is "
-"closed, assuming it is not read-only or locked by another user."
+"Database related settings will be stored in the open database when it is closed, "
+"assuming it is not read-only or locked by another user."
 msgstr ""
 "Hiba - a beállítások megállapítása sikertelen\n"
 "\n"
 "Az alkalmazásbeállítások nem lesznek elmentve.\n"
 "\n"
-"Az adatbázisra vonatkozó beállítások el lesznek mentve a megnyitott "
-"adatbázisba, feltéve, hogy az nem csak olvasható és nincs más felhasználó "
-"által zárolva."
+"Az adatbázisra vonatkozó beállítások el lesznek mentve a megnyitott adatbázisba, "
+"feltéve, hogy az nem csak olvasható és nincs más felhasználó által zárolva."
 
 #: ../../../core/core_st.cpp:59
 #, c-format
@@ -6018,8 +5898,8 @@ msgstr "alapértelmezett szimbólumkészlet"
 msgid ""
 "This entry has the following %d %ls:\n"
 "%ls\n"
-"Confirm to continue (alias entry's passwords will be replaced by this "
-"entry's password)?"
+"Confirm to continue (alias entry's passwords will be replaced by this entry's "
+"password)?"
 msgstr ""
 
 #: ../../../core/core_st.cpp:92
@@ -6070,8 +5950,8 @@ msgstr "#csoportok"
 #: ../../../core/core_st.cpp:105
 #, c-format
 msgid ""
-"Trouble with a non-textual (e.g., time) field in record '%ls' - please check "
-"data carefully."
+"Trouble with a non-textual (e.g., time) field in record '%ls' - please check data "
+"carefully."
 msgstr ""
 
 #: ../../../core/core_st.cpp:107
@@ -6192,8 +6072,7 @@ msgstr "  A mező túl rövid"
 #: ../../../core/core_st.cpp:138
 msgid "File is truncated or otherwise corrupt. Please use backup database."
 msgstr ""
-"A fájlt csonkolták, vagy más módon lett korrupt. Készítsen mentést az "
-"adatabázisról."
+"A fájlt csonkolták, vagy más módon lett korrupt. Készítsen mentést az adatabázisról."
 
 #: ../../../core/core_st.cpp:139
 msgid "Cannot read file. Please check file permissions."
@@ -6201,9 +6080,7 @@ msgstr "A fájl nem olvasható. Ellenőrizze a jogosultságokat a fájlon."
 
 #: ../../../core/core_st.cpp:140
 #, c-format
-msgid ""
-"Filter %ls already exists in the database, do you wish to replace it with "
-"this?"
+msgid "Filter %ls already exists in the database, do you wish to replace it with this?"
 msgstr "%ls szűrő már létezik az adatbázisban, kívánja lecserélni ezzel?"
 
 #: ../../../core/core_st.cpp:141
@@ -6415,12 +6292,10 @@ msgstr "nagyobb vagy egyenlő mint"
 
 #: ../../../core/core_st.cpp:199
 #, c-format
-msgid ""
-"Invalid input on line %d.  Number of fields separated by '%c' is not as "
-"expected."
+msgid "Invalid input on line %d.  Number of fields separated by '%c' is not as expected."
 msgstr ""
-"Érvénytelen bevitel a(z) %d. sorban. '%c' karakterrel elválasztott mezők "
-"száma nem az elvárt."
+"Érvénytelen bevitel a(z) %d. sorban. '%c' karakterrel elválasztott mezők száma nem az "
+"elvárt."
 
 #: ../../../core/core_st.cpp:200
 #, c-format
@@ -6429,11 +6304,10 @@ msgstr "%d. sor:"
 
 #: ../../../core/core_st.cpp:201
 #, c-format
-msgid ""
-"File ends on line %d before ending double quote of last entry's note field."
+msgid "File ends on line %d before ending double quote of last entry's note field."
 msgstr ""
-"A fájl véget ér a(z) %d. sorban, mielőtt az utolsó bejegyzés megjegyzését "
-"lezáró dupla idézőjel meglett volna."
+"A fájl véget ér a(z) %d. sorban, mielőtt az utolsó bejegyzés megjegyzését lezáró dupla "
+"idézőjel meglett volna."
 
 #: ../../../core/core_st.cpp:202
 #, fuzzy
@@ -6443,24 +6317,24 @@ msgstr "Importálás megszakítva. Kérem tekintse meg a jelentést."
 #: ../../../core/core_st.cpp:203
 #, fuzzy
 msgid ""
-"The TXT or CSV file was not imported as required as entry records span "
-"multiple lines in the CSV file.\n"
+"The TXT or CSV file was not imported as required as entry records span multiple lines "
+"in the CSV file.\n"
 "\n"
 "Import aborted."
 msgstr ""
-"A TXT vagy CSV fájl nem lett beimportálva mert az egyes bejegyzések több "
-"sort is elfoglalnak a fájlban.\n"
+"A TXT vagy CSV fájl nem lett beimportálva mert az egyes bejegyzések több sort is "
+"elfoglalnak a fájlban.\n"
 "\n"
 "Importálás megszakítva."
 
 #: ../../../core/core_st.cpp:204
 #, c-format
 msgid ""
-"%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the "
-"Import file. Added imported entry with title=\"%ls\".\n"
+"%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the Import "
+"file. Added imported entry with title=\"%ls\".\n"
 msgstr ""
-"%ls, Cím=\"%ls\", Felhasználó=\"%ls\" már létezik az adatbázisban vagy az "
-"Import fájlban. A beimportált tételnek ez lett a címe:\"%ls\".\n"
+"%ls, Cím=\"%ls\", Felhasználó=\"%ls\" már létezik az adatbázisban vagy az Import "
+"fájlban. A beimportált tételnek ez lett a címe:\"%ls\".\n"
 
 #: ../../../core/core_st.cpp:205
 #, c-format
@@ -6498,8 +6372,7 @@ msgstr "A %d. számú üres sor kihagyva."
 #: ../../../core/core_st.cpp:212
 #, c-format
 msgid "Entry %ls%d with Group=\"%ls\", Title=\"%ls\", User=\"%ls\""
-msgstr ""
-"Bejegyzés %ls%d ahol Csoport=\"%ls\", Megnevezés=\"%ls\", Felhasználó=\"%ls\""
+msgstr "Bejegyzés %ls%d ahol Csoport=\"%ls\", Megnevezés=\"%ls\", Felhasználó=\"%ls\""
 
 #: ../../../core/core_st.cpp:213
 msgid "Internal error. Import failed. No records imported."
@@ -6517,8 +6390,7 @@ msgstr ""
 #: ../../../core/core_st.cpp:216
 #, c-format
 msgid "Entry of line %d has an invalid \"%ls\" field. It has been ignored."
-msgstr ""
-"Sor: %d  A bejegyzés \"%ls\" mezője érvénytelen. Figyelmen kívül lett hagyva."
+msgstr "Sor: %d  A bejegyzés \"%ls\" mezője érvénytelen. Figyelmen kívül lett hagyva."
 
 #: ../../../core/core_st.cpp:217
 #, fuzzy
@@ -6529,39 +6401,38 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:218
 msgid ""
-"The following columns were recognised but only Group/Title, Username and "
-"Password will be processed:"
+"The following columns were recognised but only Group/Title, Username and Password will "
+"be processed:"
 msgstr ""
 
 #: ../../../core/core_st.cpp:219
 #, c-format
 msgid ""
-"Line %d skipped - Only %d fields found, whereas parsing the Header says "
-"there should be %d."
+"Line %d skipped - Only %d fields found, whereas parsing the Header says there should "
+"be %d."
 msgstr ""
-"%d. sor kihagyva - csak %d mezőt találtam, pedig a fejléc adatai alapján %d "
-"mezőt kellett volna."
+"%d. sor kihagyva - csak %d mezőt találtam, pedig a fejléc adatai alapján %d mezőt "
+"kellett volna."
 
 #: ../../../core/core_st.cpp:220
 msgid ""
-"Either or both of the Group/Title and Password columns are missing. No "
-"records imported."
+"Either or both of the Group/Title and Password columns are missing. No records "
+"imported."
 msgstr ""
-"A Csoport/Megnevezés és Jelszó oszlopok egyike, vagy mindkettő, hiányzik. "
-"Nem történt importálás."
+"A Csoport/Megnevezés és Jelszó oszlopok egyike, vagy mindkettő, hiányzik. Nem történt "
+"importálás."
 
 #: ../../../core/core_st.cpp:221
 msgid ""
-"Could not find the next entry's title field in the KeePass V1 TXT (should be "
-"within square brackets)."
+"Could not find the next entry's title field in the KeePass V1 TXT (should be within "
+"square brackets)."
 msgstr ""
-"A következő bejegyzés megnevezés mezője nem található a KeePass V1 "
-"szövegfájlban (szögletes zárójelben kellene lennie)."
+"A következő bejegyzés megnevezés mezője nem található a KeePass V1 szövegfájlban "
+"(szögletes zárójelben kellene lennie)."
 
 #: ../../../core/core_st.cpp:222
 msgid "Column header row not recognised as first record. No records imported."
-msgstr ""
-"A fejlécsor felismerése sikertelen az első sorban. Importálás nem történt."
+msgstr "A fejlécsor felismerése sikertelen az első sorban. Importálás nem történt."
 
 #: ../../../core/core_st.cpp:223
 msgid "No records in import file!"
@@ -6589,9 +6460,9 @@ msgstr "%ls - %ls másolva"
 
 #: ../../../core/core_st.cpp:228
 msgid ""
-"To replace passwords of existing entries, all the following columns must be "
-"present: Group/Title, Username and Password.  One or more are missing and no "
-"entries have been updated."
+"To replace passwords of existing entries, all the following columns must be present: "
+"Group/Title, Username and Password.  One or more are missing and no entries have been "
+"updated."
 msgstr ""
 
 #: ../../../core/core_st.cpp:229
@@ -6607,11 +6478,11 @@ msgstr "%ls tartalmaz egy üres '%ls'-t.\n"
 #: ../../../core/core_st.cpp:231
 #, c-format
 msgid ""
-"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
-"the base entry is already an alias."
+"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but the base "
+"entry is already an alias."
 msgstr ""
-"A bejegyzés: \"%ls, %ls, %ls\" az álnévnek megfelelő formátumú jelszóval "
-"rendelkezik, de az alapbejegyzés már maga is egy álnév."
+"A bejegyzés: \"%ls, %ls, %ls\" az álnévnek megfelelő formátumú jelszóval rendelkezik, "
+"de az alapbejegyzés már maga is egy álnév."
 
 #: ../../../core/core_st.cpp:232
 msgid "\tThis entry has been made an alias of associated base entry."
@@ -6620,26 +6491,24 @@ msgstr "Egy a bejegyzés a hozzá kapcsolódó alapbejegyzés egy álneve lett."
 #: ../../../core/core_st.cpp:233
 #, c-format
 msgid ""
-"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
-"the base entry does not exist."
+"Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but the base "
+"entry does not exist."
 msgstr ""
-"A bejegyzés: \"%ls, %ls, %ls\" az álnévnek megfelelő formátumú jelszóval "
-"rendelkezik, de az alapbejegyzés nem létezik."
+"A bejegyzés: \"%ls, %ls, %ls\" az álnévnek megfelelő formátumú jelszóval rendelkezik, "
+"de az alapbejegyzés nem létezik."
 
 #: ../../../core/core_st.cpp:234
-msgid ""
-"\tThis entry remains a normal entry and the password has not been changed."
-msgstr ""
-"Egy a bejegyzés megmarad normál típusúnak és a jelszó nem változott meg."
+msgid "\tThis entry remains a normal entry and the password has not been changed."
+msgstr "Egy a bejegyzés megmarad normál típusúnak és a jelszó nem változott meg."
 
 #: ../../../core/core_st.cpp:235
 #, c-format
 msgid ""
-"The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls "
-"base entry. It cannot be imported."
+"The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls base entry. "
+"It cannot be imported."
 msgstr ""
-"%ls bejegyzés \"%ls, %ls, %ls\" nem egy normál vagy létező %ls "
-"alapbejegyzésre mutat. Nem lehet importálni."
+"%ls bejegyzés \"%ls, %ls, %ls\" nem egy normál vagy létező %ls alapbejegyzésre mutat. "
+"Nem lehet importálni."
 
 #: ../../../core/core_st.cpp:236
 msgid "Entry import warnings"
@@ -6698,17 +6567,15 @@ msgid "  Invalid password length found (not a hexadecimal number)."
 msgstr "  Érvénytelen jelszóhossz (nem hexadecimális karakter)."
 
 #: ../../../core/core_st.cpp:249
-msgid ""
-"  Invalid password length found (differs from length of following password)."
+msgid "  Invalid password length found (differs from length of following password)."
 msgstr "  Érvénytelen jelszóhossz (különbözöik a következő jelszó hosszától)."
 
 #: ../../../core/core_st.cpp:250
 msgid ""
-"  Invalid field separator character found - only a single blank is allowed "
-"between fields."
+"  Invalid field separator character found - only a single blank is allowed between "
+"fields."
 msgstr ""
-"Érvénytelen mezőhatároló karakter - a mezők között csak egyetlen üres "
-"megengedett."
+"Érvénytelen mezőhatároló karakter - a mezők között csak egyetlen üres megengedett."
 
 #: ../../../core/core_st.cpp:251
 msgid "Invalid Filter schema."
@@ -6726,8 +6593,8 @@ msgstr ""
 #: ../../../core/core_st.cpp:254
 #, c-format
 msgid ""
-"The filter XML version (%d) is greater than that supported by this instance "
-"of PasswordSafe (%d)."
+"The filter XML version (%d) is greater than that supported by this instance of "
+"PasswordSafe (%d)."
 msgstr ""
 
 #: ../../../core/core_st.cpp:255
@@ -6757,22 +6624,20 @@ msgstr "létezik"
 #: ../../../core/core_st.cpp:261
 #, c-format
 msgid ""
-"Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It "
-"has been removed from the %ls entry."
+"Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been "
+"removed from the %ls entry."
 msgstr ""
-"A bejegyzés billentyűparancsa %ls (bejegyzés: %ls) már hozzá van rendelve "
-"ehhez a bejegyzéshez: %ls. A billentyűparancs el lett távolítva erről a "
-"bejegyzésről: %ls."
+"A bejegyzés billentyűparancsa %ls (bejegyzés: %ls) már hozzá van rendelve ehhez a "
+"bejegyzéshez: %ls. A billentyűparancs el lett távolítva erről a bejegyzésről: %ls."
 
 #: ../../../core/core_st.cpp:262
 #, c-format
 msgid ""
-"Entry keyboard shortcut %ls entry %ls is already allocated to the "
-"PasswordSafe application. It has been removed from the entry."
+"Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe "
+"application. It has been removed from the entry."
 msgstr ""
 "A bejegyzés billentyűparancsa %ls (bejegyzés: %ls) már hozzá van rendelve a "
-"PasswordSafe alkalmazáshoz. A billentyűparancs el lett távolítva a "
-"bejegyzésről."
+"PasswordSafe alkalmazáshoz. A billentyűparancs el lett távolítva a bejegyzésről."
 
 #: ../../../core/core_st.cpp:263
 msgid "less than"
@@ -6833,12 +6698,12 @@ msgstr "\t'%ls' nevű jelszóházirend nem szerepel az adatbázisban."
 
 #: ../../../core/core_st.cpp:273
 msgid ""
-"\tOne or more Password Policy Names were not found in the database. The "
-"affected entries have been changed to use the database's default policy."
+"\tOne or more Password Policy Names were not found in the database. The affected "
+"entries have been changed to use the database's default policy."
 msgstr ""
-"\tEgy vagy több jelszóházirend neve nem található meg az adatbázisban. Az "
-"érintett bejegyzéseknél be lett állítva, hogy az adatbázis alapértelmezett "
-"jelszóházirendjét használják."
+"\tEgy vagy több jelszóházirend neve nem található meg az adatbázisban. Az érintett "
+"bejegyzéseknél be lett állítva, hogy az adatbázis alapértelmezett jelszóházirendjét "
+"használják."
 
 #: ../../../core/core_st.cpp:274
 #, c-format
@@ -6886,8 +6751,8 @@ msgstr "Belső hiba: nincs több szabad fájlkezelő"
 
 #: ../../../core/core_st.cpp:285
 msgid ""
-"Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 "
-"seems available."
+"Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 seems "
+"available."
 msgstr ""
 
 #: ../../../core/core_st.cpp:287
@@ -6934,18 +6799,16 @@ msgstr ""
 "\n"
 "Kiadott gyorsbillentyű figyelmeztetések száma: %d\n"
 "\n"
-"Azon bejegyzések száma, amelyeknél egyes mezők teljes megjelenítése nem "
-"lehetséges: %d\n"
+"Azon bejegyzések száma, amelyeknél egyes mezők teljes megjelenítése nem lehetséges: "
+"%d\n"
 "\n"
 "Javasolt az adabázis mentése most."
 
 #: ../../../core/core_st.cpp:291
-msgid ""
-"Password should be mixed case, with at least one digit or punctuation "
-"character"
+msgid "Password should be mixed case, with at least one digit or punctuation character"
 msgstr ""
-"A jelszó tartalmazzon kis- és nagybetűket, valamint legalább 1 számjegyet "
-"vagy speciális karaktert"
+"A jelszó tartalmazzon kis- és nagybetűket, valamint legalább 1 számjegyet vagy "
+"speciális karaktert"
 
 #: ../../../core/core_st.cpp:292
 #, fuzzy
@@ -6999,17 +6862,17 @@ msgstr "relatív"
 #: ../../../core/core_st.cpp:307
 #, c-format
 msgid ""
-"\tOne or more entry keyboard shortcuts were already assigned to entries in "
-"this database. They have been removed from the %ls entries."
+"\tOne or more entry keyboard shortcuts were already assigned to entries in this "
+"database. They have been removed from the %ls entries."
 msgstr ""
-"\tEgy vagy több bejegyzés billentyűparancsa már hozzá lett rendelve az ebben "
-"az adatbázisban lévő valamely bejegyzéshez. Az alábbi bejegyzésekről el lett "
-"távolítva a billentyűparancs: %ls."
+"\tEgy vagy több bejegyzés billentyűparancsa már hozzá lett rendelve az ebben az "
+"adatbázisban lévő valamely bejegyzéshez. Az alábbi bejegyzésekről el lett távolítva a "
+"billentyűparancs: %ls."
 
 #: ../../../core/core_st.cpp:308
 msgid ""
-"\tOne or more Password Policy Names were already in this database but had "
-"different settings. They have been renamed."
+"\tOne or more Password Policy Names were already in this database but had different "
+"settings. They have been renamed."
 msgstr ""
 "\tEgy vagy több jelszóházirend neve megtalálható az adatbázisban, de más "
 "beállításokkal. Az érintett jelszóházirendek át lettek nevezve."
@@ -7091,14 +6954,12 @@ msgstr ""
 #: ../../../core/core_st.cpp:328
 #, fuzzy, c-format
 msgid "\tNo entries were found containing search string '%ls' %ls"
-msgstr ""
-"\tNem található olyan bejegyzés, amely tartalmazza a keresett szöveget: '%s'"
+msgstr "\tNem található olyan bejegyzés, amely tartalmazza a keresett szöveget: '%s'"
 
 #: ../../../core/core_st.cpp:329
 #, fuzzy, c-format
 msgid "\tThe following entries contain search string '%ls' %ls"
-msgstr ""
-"\tNem található olyan bejegyzés, amely tartalmazza a keresett szöveget: '%s'"
+msgstr "\tNem található olyan bejegyzés, amely tartalmazza a keresett szöveget: '%s'"
 
 #: ../../../core/core_st.cpp:330
 #, fuzzy
@@ -7146,8 +7007,7 @@ msgstr "Kattintson duplán a bejegyzésen az URL-re navigáláshoz"
 
 #: ../../../core/core_st.cpp:340
 msgid "Double-Click on entry to Browse to URL + Autotype"
-msgstr ""
-"Kattintson duplán a bejegyzésen az URL-re navigáláshoz + Autogépeléshez"
+msgstr "Kattintson duplán a bejegyzésen az URL-re navigáláshoz + Autogépeléshez"
 
 #: ../../../core/core_st.cpp:341
 msgid "https://pwsafe.org/"
@@ -7163,9 +7023,7 @@ msgstr "Kattintson duplán a bejegyzésen a jelszó vágólapra másolásához"
 
 #: ../../../core/core_st.cpp:344
 msgid "Double-Click on entry to Copy Password and Minimize"
-msgstr ""
-"Kattintson duplán a bejegyzésen a jelszó vágólapra másolásához és a kis "
-"mérethez"
+msgstr "Kattintson duplán a bejegyzésen a jelszó vágólapra másolásához és a kis mérethez"
 
 #: ../../../core/core_st.cpp:345
 msgid "Double-Click on entry to Copy Username"
@@ -7225,8 +7083,7 @@ msgid "Unknown function"
 msgstr "Ismeretlen függvény"
 
 #: ../../../core/core_st.cpp:362
-msgid ""
-"The following columns are unrecognized by PasswordSafe and will be ignored: "
+msgid "The following columns are unrecognized by PasswordSafe and will be ignored: "
 msgstr ""
 
 #: ../../../core/core_st.cpp:363
@@ -7244,19 +7101,17 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:367
 #, fuzzy
-msgid ""
-"The following entries had an invalid UUID field.  This has been corrected."
-msgstr ""
-"Sor: %d  A bejegyzés \"%ls\" mezője érvénytelen. Figyelmen kívül lett hagyva."
+msgid "The following entries had an invalid UUID field.  This has been corrected."
+msgstr "Sor: %d  A bejegyzés \"%ls\" mezője érvénytelen. Figyelmen kívül lett hagyva."
 
 #: ../../../core/core_st.cpp:368
 #, fuzzy, c-format
 msgid ""
-"The following entries have passwords in the correct form for %ls, but the "
-"base entry does not exist."
+"The following entries have passwords in the correct form for %ls, but the base entry "
+"does not exist."
 msgstr ""
-"A bejegyzés: \"%ls, %ls, %ls\" az álnévnek megfelelő formátumú jelszóval "
-"rendelkezik, de az alapbejegyzés nem létezik."
+"A bejegyzés: \"%ls, %ls, %ls\" az álnévnek megfelelő formátumú jelszóval rendelkezik, "
+"de az alapbejegyzés nem létezik."
 
 #: ../../../core/core_st.cpp:369
 #, fuzzy
@@ -7265,24 +7120,20 @@ msgstr "\tAz alábbi bejegyzések tartalmazzák a keresett szöveget: '%s'"
 
 #: ../../../core/core_st.cpp:370
 #, fuzzy
-msgid ""
-"The following entries had a duplicate UUID field.  This has been corrected."
-msgstr ""
-"Sor: %d  A bejegyzés \"%ls\" mezője érvénytelen. Figyelmen kívül lett hagyva."
+msgid "The following entries had a duplicate UUID field.  This has been corrected."
+msgstr "Sor: %d  A bejegyzés \"%ls\" mezője érvénytelen. Figyelmen kívül lett hagyva."
 
 #: ../../../core/core_st.cpp:371
 #, fuzzy, c-format
 msgid ""
-"The following entries had an empty Password field, which is not permitted. "
-"The password has been set to '%ls'"
-msgstr ""
-"Sor: %d  A bejegyzés \"%ls\" mezője érvénytelen. Figyelmen kívül lett hagyva."
+"The following entries had an empty Password field, which is not permitted. The "
+"password has been set to '%ls'"
+msgstr "Sor: %d  A bejegyzés \"%ls\" mezője érvénytelen. Figyelmen kívül lett hagyva."
 
 #: ../../../core/core_st.cpp:372
 #, fuzzy
 msgid "The following entries had an empty Title field, which is not permitted."
-msgstr ""
-"Sor: %d  A bejegyzés \"%ls\" mezője érvénytelen. Figyelmen kívül lett hagyva."
+msgstr "Sor: %d  A bejegyzés \"%ls\" mezője érvénytelen. Figyelmen kívül lett hagyva."
 
 #: ../../../core/core_st.cpp:373
 #, c-format
@@ -7311,26 +7162,23 @@ msgstr "\tAz alábbi bejegyzések tartalmazzák a keresett szöveget: '%s'"
 #: ../../../core/core_st.cpp:378
 #, fuzzy
 msgid "The following entries contain incomplete passkeys."
-msgstr ""
-"\tNem található olyan bejegyzés, amely tartalmazza a keresett szöveget: '%s'"
+msgstr "\tNem található olyan bejegyzés, amely tartalmazza a keresett szöveget: '%s'"
 
 #: ../../../core/core_st.cpp:379
 msgid ""
-"The following entries had an invalid Password History.  This has been "
-"rebuilt with available data.  There may be some loss of history."
+"The following entries had an invalid Password History.  This has been rebuilt with "
+"available data.  There may be some loss of history."
 msgstr ""
 
 #: ../../../core/core_st.cpp:380
 #, c-format
 msgid ""
-"The following entries have one or more text fields too long to display or "
-"edit (over %d characters).  The largest entry size found was ~%d %ls."
+"The following entries have one or more text fields too long to display or edit (over "
+"%d characters).  The largest entry size found was ~%d %ls."
 msgstr ""
 
 #: ../../../core/core_st.cpp:381
-msgid ""
-"The following WARNINGS were detected - you should review and fix them "
-"manually."
+msgid "The following WARNINGS were detected - you should review and fix them manually."
 msgstr ""
 
 #: ../../../core/core_st.cpp:384
@@ -7352,42 +7200,35 @@ msgid "XML %ls: line %d character %d: %ls"
 msgstr "XML %ls: sor: %d pozíció: %d: %ls"
 
 #: ../../../core/core_st.cpp:387
-msgid ""
-"*** Invalid XML characters found - see exported XML file for more details ***"
-msgstr ""
-"*** Érvénytelen XML karakterek - ld. az exportált XML fájlt a részletekért "
-"***"
+msgid "*** Invalid XML characters found - see exported XML file for more details ***"
+msgstr "*** Érvénytelen XML karakterek - ld. az exportált XML fájlt a részletekért ***"
 
 #: ../../../core/core_st.cpp:388
 msgid "Internal error: Couldn't initialize config file XML structure"
-msgstr ""
-"Belső hiba: a konfigurációs fájl XML struktúrájának inicializálása sikertelen"
+msgstr "Belső hiba: a konfigurációs fájl XML struktúrájának inicializálása sikertelen"
 
 #: ../../../core/core_st.cpp:389
 msgid ""
-"A filter was active. Export of data was restricted to include only those "
-"displayed."
+"A filter was active. Export of data was restricted to include only those displayed."
 msgstr "Egy szűrő aktív volt. Csak a megjelenített tételek lettek exportálva."
 
 #: ../../../core/core_st.cpp:390
 msgid "Export of data was restricted to certain fields by the user."
-msgstr ""
-"Az adatok exportálása néhány mezőre lett korlátozva a felhasználó által."
+msgstr "Az adatok exportálása néhány mezőre lett korlátozva a felhasználó által."
 
 #: ../../../core/core_st.cpp:391
 msgid ""
-"Note: These Password Policies will not replace existing policies with the "
-"same name in the current database."
+"Note: These Password Policies will not replace existing policies with the same name in "
+"the current database."
 msgstr ""
-"Megjegyzés: ezek a jelszószabályok nem fogják lecserélni az aktuális "
-"adatbázisban lévő azonos nevű jelszószabályokat."
+"Megjegyzés: ezek a jelszószabályok nem fogják lecserélni az aktuális adatbázisban lévő "
+"azonos nevű jelszószabályokat."
 
 #: ../../../core/core_st.cpp:392
-msgid ""
-"Note: These preferences are only used when importing into an empty database."
+msgid "Note: These preferences are only used when importing into an empty database."
 msgstr ""
-"Megjegyzés: ezek a beállítások csak üres adatbázisba történő importálás "
-"esetén lesznek használva."
+"Megjegyzés: ezek a beállítások csak üres adatbázisba történő importálás esetén lesznek "
+"használva."
 
 #: ../../../core/core_st.cpp:393
 #, fuzzy
@@ -7395,8 +7236,7 @@ msgid "Subset of entries restricted by the following rule:"
 msgstr "\t%s korlátozva lett az alábbi mezőkre:"
 
 #: ../../../core/core_st.cpp:394
-msgid ""
-"The user specified that the following fields be excluded from the export:"
+msgid "The user specified that the following fields be excluded from the export:"
 msgstr ""
 
 #: ../../../core/core_st.cpp:395
@@ -7422,12 +7262,10 @@ msgid "Unable to load configuration file"
 msgstr "Konfigurációs fájl:"
 
 #: ../../../core/core_st.cpp:398
-msgid ""
-"Failed to lock configuration file - opened by another instance of "
-"PasswordSafe?"
+msgid "Failed to lock configuration file - opened by another instance of PasswordSafe?"
 msgstr ""
-"A konfigurációs fájl zárolása sikertelen - talán a PasswordSafe alkalmazás "
-"egy másik példánya használja?"
+"A konfigurációs fájl zárolása sikertelen - talán a PasswordSafe alkalmazás egy másik "
+"példánya használja?"
 
 #: ../../../core/core_st.cpp:399
 #, fuzzy
@@ -7531,8 +7369,8 @@ msgstr ""
 #: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:201
 #, c-format
 msgid ""
-"Unexpected attribute value \"%ls\" (expected \"yes\" or \"no\") in filter "
-"entry %d of '%ls'"
+"Unexpected attribute value \"%ls\" (expected \"yes\" or \"no\") in filter entry %d of "
+"'%ls'"
 msgstr ""
 
 #: ../../../core/XML/Pugi/PFilterXMLProcessor.cpp:322
@@ -7582,8 +7420,7 @@ msgstr ""
 
 #, fuzzy
 #~ msgid ""
-#~ "To add a new entry, simply fill in the fields below. At least a title "
-#~ "and\n"
+#~ "To add a new entry, simply fill in the fields below. At least a title and\n"
 #~ "a password are required. If you have set a default username, it will\n"
 #~ "appear in the username field."
 #~ msgstr ""
@@ -7628,8 +7465,7 @@ msgstr ""
 #, fuzzy
 #~ msgid ""
 #~ "A new password database will be created.\n"
-#~ "The Master Password you enter will be used to encrypt the password "
-#~ "database file.\n"
+#~ "The Master Password you enter will be used to encrypt the password database file.\n"
 #~ "The Master Password can use any keyboard character and is case-sensitive."
 #~ msgstr ""
 #~ "Egy új jelszóadatbázis lesz létrehozva.\n"
@@ -7991,8 +7827,7 @@ msgstr ""
 #~ "Verify that the correct path and file name are given."
 #~ msgstr ""
 #~ "%1\n"
-#~ "A fájl nem található.Ellenőrizze hogy a helyes elérési utat és fájlnevet "
-#~ "adta-e meg."
+#~ "A fájl nem található.Ellenőrizze hogy a helyes elérési utat és fájlnevet adta-e meg."
 
 #~ msgid "%d"
 #~ msgstr "%d"
@@ -8091,42 +7926,37 @@ msgstr ""
 #~ msgstr "'Alt Gr' (jobboldai Alt) billentyű"
 
 #~ msgid ""
-#~ "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and "
-#~ "Minimize' conflict. Please change one or both."
+#~ "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and Minimize' "
+#~ "conflict. Please change one or both."
 #~ msgstr ""
-#~ "Ütközik egymással a 'Vágólap törlése kicsinyítéskor' funkció és a dupla "
-#~ "kattintás művelete: 'Kicsinyítéskor a jelszó másolása a vágólapra'. Kérem "
-#~ "változtassa meg az egyiket vagy mindkettőt."
+#~ "Ütközik egymással a 'Vágólap törlése kicsinyítéskor' funkció és a dupla kattintás "
+#~ "művelete: 'Kicsinyítéskor a jelszó másolása a vágólapra'. Kérem változtassa meg az "
+#~ "egyiket vagy mindkettőt."
 
 #~ msgid ""
 #~ "'\n"
 #~ "\n"
-#~ "If you would like to report this error, please reply 'Yes' below and "
-#~ "upload this file to your Bug Report. If you reply 'No', the file will be "
-#~ "deleted.\n"
+#~ "If you would like to report this error, please reply 'Yes' below and upload this "
+#~ "file to your Bug Report. If you reply 'No', the file will be deleted.\n"
 #~ "\n"
-#~ "The diagnostic information in this file does not include any of your "
-#~ "personal data nor any information from the database open at the time of "
-#~ "the error.\n"
+#~ "The diagnostic information in this file does not include any of your personal data "
+#~ "nor any information from the database open at the time of the error.\n"
 #~ "\n"
-#~ "However, if you prefer (and the problem is repeatable with a test "
-#~ "database), you may send us that minidump file as well as the test "
-#~ "database.\n"
+#~ "However, if you prefer (and the problem is repeatable with a test database), you "
+#~ "may send us that minidump file as well as the test database.\n"
 #~ "\n"
 #~ "Thank you for your help to improve PasswordSafe."
 #~ msgstr ""
 #~ "'\n"
 #~ "\n"
-#~ "Ha jelenteni kívánja ezt a hibát, válaszoljon 'Igen'-nel alább és töltse "
-#~ "fel ezt a fájlt a Hibajelentésbe (Bug Report). Ha 'Nem'-mel válaszol, a "
-#~ "fájl törölve lesz.\n"
+#~ "Ha jelenteni kívánja ezt a hibát, válaszoljon 'Igen'-nel alább és töltse fel ezt a "
+#~ "fájlt a Hibajelentésbe (Bug Report). Ha 'Nem'-mel válaszol, a fájl törölve lesz.\n"
 #~ "\n"
-#~ "A fájlban található diagnosztikai információk nem tartalmazzák az Ön "
-#~ "személyes adatait, sem pedig a megnyitott adatbázis bármiféle adatát.\n"
+#~ "A fájlban található diagnosztikai információk nem tartalmazzák az Ön személyes "
+#~ "adatait, sem pedig a megnyitott adatbázis bármiféle adatát.\n"
 #~ "\n"
-#~ "Mindazonáltal, ha kívánja (és a probléma előidézhető egy "
-#~ "tesztadatbázissal), elküldheti nekünk azt a minidump fájlt, csakúgy, mint "
-#~ "a tesztadatbázist.\n"
+#~ "Mindazonáltal, ha kívánja (és a probléma előidézhető egy tesztadatbázissal), "
+#~ "elküldheti nekünk azt a minidump fájlt, csakúgy, mint a tesztadatbázist.\n"
 #~ "\n"
 #~ "Köszönjük, hogy segít a PasswordSafe programot még jobbá tenni."
 
@@ -8433,8 +8263,7 @@ msgstr ""
 #~ msgstr "A Jelszószabályokon végrehajtott változások elvesznek"
 
 #~ msgid "Allow multiple instances (requires all instances to be restarted)"
-#~ msgstr ""
-#~ "Több példány engedélyezése (ehhez minden futó példányt újra kell indítani)"
+#~ msgstr "Több példány engedélyezése (ehhez minden futó példányt újra kell indítani)"
 
 #~ msgid "Alt"
 #~ msgstr "Alt"
@@ -8473,13 +8302,12 @@ msgstr ""
 #~ msgstr "Armenian, Nyugati"
 
 #~ msgid ""
-#~ "As the double quote character is used to delimit the whole notes field, "
-#~ "it cannot be used within it to delimit multiple lines. Please enter "
-#~ "another character."
+#~ "As the double quote character is used to delimit the whole notes field, it cannot "
+#~ "be used within it to delimit multiple lines. Please enter another character."
 #~ msgstr ""
 #~ "Mivel a dupla idézőjel határolja a teljes Megjegyzés mezőt, ezért az nem "
-#~ "használható azon belül az egyes sorok elválasztására. Kérem válasszon "
-#~ "másik karaktert."
+#~ "használható azon belül az egyes sorok elválasztására. Kérem válasszon másik "
+#~ "karaktert."
 
 #~ msgid "Attempted an unsupported operation."
 #~ msgstr "Nem támogatott művelet végrehajtásának kísérlete."
@@ -8568,11 +8396,8 @@ msgstr ""
 #~ msgid "Cannot create missing directories in path to the export file."
 #~ msgstr "Az export fájl mappájához a hiányzó mappák létrehozása sikertelen."
 
-#~ msgid ""
-#~ "Cannot process as this entry has been deleted from the open database."
-#~ msgstr ""
-#~ "Nem folytatható mivel ez a bejegyzés törölve lett a megnyitott "
-#~ "adatbázisból."
+#~ msgid "Cannot process as this entry has been deleted from the open database."
+#~ msgstr "Nem folytatható mivel ez a bejegyzés törölve lett a megnyitott adatbázisból."
 
 #~ msgid "Case sensitive search"
 #~ msgstr "Kis- és nagybetűre érzékeny keresés"
@@ -8581,24 +8406,19 @@ msgstr ""
 #~ msgstr "&Nyelv megváltoztatása"
 
 #~ msgid "Change/View Database Default Password Policy"
-#~ msgstr ""
-#~ "Az adatbázis alapértelmezett jelszószabályának megváltoztatása/"
-#~ "megtekintése"
+#~ msgstr "Az adatbázis alapértelmezett jelszószabályának megváltoztatása/megtekintése"
 
 #~ msgid "Change/View a Database Named Password Policy"
-#~ msgstr ""
-#~ "Az adatbázis elnevezett jelszószabályának megváltoztatása/megtekintése"
+#~ msgstr "Az adatbázis elnevezett jelszószabályának megváltoztatása/megtekintése"
 
-#~ msgid ""
-#~ "Change/View selected Named Password Policy or the database default policy"
+#~ msgid "Change/View selected Named Password Policy or the database default policy"
 #~ msgstr ""
 #~ "A kiválaszott elnevezett jelszószabály vagy az alapértelmezett szabály "
 #~ "megváltoztatása/megtekintése"
 
 #~ msgid "Changes to existing entries will be applied on pressing OK."
 #~ msgstr ""
-#~ "Az OK megnyomása után a változtatások érvényre jutnak a már létező "
-#~ "bejegyzéseken."
+#~ "Az OK megnyomása után a változtatások érvényre jutnak a már létező bejegyzéseken."
 
 #~ msgid "Chinese Bopomofo"
 #~ msgstr "Kínai Bopomofo"
@@ -8615,27 +8435,25 @@ msgstr ""
 #~ msgid "Click to change case."
 #~ msgstr "Kattintson a kis- és nagybetű közötti váltáshoz."
 
-#~ msgid ""
-#~ "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
+#~ msgid "Click to copy to clipboard, Ctrl+Click to also set URL field to this value"
 #~ msgstr ""
-#~ "Kattintson a vágólapra másoláshoz, Ctrl+Kattintás az URL mezőbe is beírja "
-#~ "ezt az értéket"
+#~ "Kattintson a vágólapra másoláshoz, Ctrl+Kattintás az URL mezőbe is beírja ezt az "
+#~ "értéket"
 
 #~ msgid "Click to enable/disable this row"
 #~ msgstr "Kattintson ennek a sornak az engedélyezéséhez/tiltásához"
 
 #~ msgid ""
-#~ "Click to enter a character code via virtual numeric keypad. The character "
-#~ "is added when this button is clicked again."
+#~ "Click to enter a character code via virtual numeric keypad. The character is added "
+#~ "when this button is clicked again."
 #~ msgstr ""
-#~ "Kattintson egy karakterkód beírásához a virtuális numerikus "
-#~ "billentyűzeten. A karakter ezen gombra való újbóli kattintáskor lesz "
-#~ "hozzáadva."
+#~ "Kattintson egy karakterkód beírásához a virtuális numerikus billentyűzeten. A "
+#~ "karakter ezen gombra való újbóli kattintáskor lesz hozzáadva."
 
 #~ msgid "Click to expand and copy to clipboard, Ctrl+Click to copy unexpanded"
 #~ msgstr ""
-#~ "Kattintson a kibontáshoz és a vágólapra másoláshoz, Ctrl+kattintás esetén "
-#~ "kibontás nélkül másol a vágólapra"
+#~ "Kattintson a kibontáshoz és a vágólapra másoláshoz, Ctrl+kattintás esetén kibontás "
+#~ "nélkül másol a vágólapra"
 
 #~ msgid "Click to go to link, Ctrl+Click to go and Autotype"
 #~ msgstr ""
@@ -8652,8 +8470,7 @@ msgstr ""
 #~ msgstr "Kattintson a sor eltávolításához"
 
 #~ msgid "Click to set criteria for matching the field"
-#~ msgstr ""
-#~ "Kattintson egy feltétel beállításához a mezővel való egyezőséghez ???"
+#~ msgstr "Kattintson egy feltétel beállításához a mezővel való egyezőséghez ???"
 
 #~ msgid "Click to set the field to filter by"
 #~ msgstr "Kattintson a mező szűrőként való használatához"
@@ -8735,8 +8552,7 @@ msgstr ""
 #~ "\n"
 #~ "Selected fields will be replaced in all entries!"
 #~ msgstr ""
-#~ "Erősítse meg, hogy szinkronizálja ezeket a bejegyzéseket innen: %s ide "
-#~ "%s\n"
+#~ "Erősítse meg, hogy szinkronizálja ezeket a bejegyzéseket innen: %s ide %s\n"
 #~ "\n"
 #~ "A kiválasztott mezők minden bejegyzésben le lesznek cserélve!"
 
@@ -8836,9 +8652,7 @@ msgstr ""
 #~ msgid "Database validated - no problems found."
 #~ msgstr "Adatbázis érvényesítve - nem találtam problémát."
 
-#~ msgid ""
-#~ "Default number of saved password history entries must be between 1 and "
-#~ "255."
+#~ msgid "Default number of saved password history entries must be between 1 and 255."
 #~ msgstr "Mentett korábbi jelszavak alapértelmezett száma 1 és 255 között."
 
 #~ msgid ""
@@ -8870,8 +8684,7 @@ msgstr ""
 #~ msgstr "Dispatch kivétel: %1"
 
 #~ msgid "Do you want to recover these auto-saved documents?"
-#~ msgstr ""
-#~ "Helyre kívánja állítani ezeket az automatikusan mentett dokumentumokat?"
+#~ msgstr "Helyre kívánja állítani ezeket az automatikusan mentett dokumentumokat?"
 
 #~ msgid "Do you want to save changes to the password list?"
 #~ msgstr "Menti a jelszólistában történt változásokat?"
@@ -8897,8 +8710,7 @@ msgstr ""
 #~ "Használja a dokumentumok utolsó mentett verzióját"
 
 #~ msgid "Double-click an entry to Edit/View it"
-#~ msgstr ""
-#~ "Kattintson duplán a bejegyzésen annak szerkesztéséhez/megtekintéséhez"
+#~ msgstr "Kattintson duplán a bejegyzésen annak szerkesztéséhez/megtekintéséhez"
 
 #~ msgid "Doubleclick action for current entry"
 #~ msgstr "Az aktuális bejegyzés duplakattintás eseménye"
@@ -8976,11 +8788,10 @@ msgstr ""
 #~ msgstr "Adjon meg legfeljebb %1 karaktert."
 
 #~ msgid ""
-#~ "Enter positions of password characters separated by spaces, commas or "
-#~ "semi-colons."
+#~ "Enter positions of password characters separated by spaces, commas or semi-colons."
 #~ msgstr ""
-#~ "Adja meg a jelszókarakterek pozícióit szóközökkel, vesszőkkel vagy "
-#~ "pontosvesszőkkel elválasztva."
+#~ "Adja meg a jelszókarakterek pozícióit szóközökkel, vesszőkkel vagy pontosvesszőkkel "
+#~ "elválasztva."
 
 #~ msgid "Enter your Sample Text below"
 #~ msgstr "Adja meg a mintaszöveget alább"
@@ -8995,15 +8806,14 @@ msgstr ""
 #~ msgstr "Bejegyzés egyedi azonosítója:"
 
 #~ msgid ""
-#~ "Entry keyboard shortcuts must have either or both of the Alt and Ctrl "
-#~ "keys and an alphanumeric character (0-9, A-Z)."
+#~ "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys and an "
+#~ "alphanumeric character (0-9, A-Z)."
 #~ msgstr ""
 #~ "A bejegyzés billentyűparancsának tartalmaznia kell az Alt és/vagy a Ctrl "
 #~ "billentyűt, valamint egy alfanumerikus karaktert (0-9, A-Z)."
 
 #~ msgid ""
-#~ "Entry keyboard shortcuts must have either or both of the Alt and Ctrl "
-#~ "keys.\n"
+#~ "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.\n"
 #~ "\n"
 #~ "%s"
 #~ msgstr ""
@@ -9074,11 +8884,11 @@ msgstr ""
 #~ msgstr "Fájlmegnyitási hiba."
 
 #~ msgid ""
-#~ "File: %s was imported (%d warning(s) issued about missing Password Policy "
-#~ "Names). See report for details."
+#~ "File: %s was imported (%d warning(s) issued about missing Password Policy Names). "
+#~ "See report for details."
 #~ msgstr ""
-#~ "%s fájl importálása megtörtént (%d figyelmeztetés hiányzó jelszószabályok "
-#~ "miatt). Nézze meg a jelentést a részletekért."
+#~ "%s fájl importálása megtörtént (%d figyelmeztetés hiányzó jelszószabályok miatt). "
+#~ "Nézze meg a jelentést a részletekért."
 
 #~ msgid "Finnish"
 #~ msgstr "Finn"
@@ -9201,50 +9011,47 @@ msgstr ""
 #~ msgstr "Amennyiben kéri, akkor meg kell adnia egy határoló karaktert."
 
 #~ msgid ""
-#~ "If the passphrase is the same as the currently opened database, "
-#~ "properties of this backup are shown."
+#~ "If the passphrase is the same as the currently opened database, properties of this "
+#~ "backup are shown."
 #~ msgstr ""
-#~ "Ha a jelszó ugyanaz, mint az épp megnyitott adatbázisé, akkor ennek a "
-#~ "mentésnek a beállításai meg lesznek jelenítve."
+#~ "Ha a jelszó ugyanaz, mint az épp megnyitott adatbázisé, akkor ennek a mentésnek a "
+#~ "beállításai meg lesznek jelenítve."
 
 #~ msgid ""
-#~ "If this is the first database opened on the startup of PasswordSafe, "
-#~ "PasswordSafe will exit.  If not, the new open will be cancelled and the "
-#~ "existing opened database, if any, will remain open."
+#~ "If this is the first database opened on the startup of PasswordSafe, PasswordSafe "
+#~ "will exit.  If not, the new open will be cancelled and the existing opened "
+#~ "database, if any, will remain open."
 #~ msgstr ""
-#~ "Ha ez az az első adatbázis, amely a PasswordSafe indulásakor lett "
-#~ "megnyitva, akkor a PasswordSafe kilép. Ha nem, akkor az új megnyitás el "
-#~ "lesz vetve és az éppen megnyitott adatbázis - ha van ilyen - marad "
-#~ "megnyitva."
+#~ "Ha ez az az első adatbázis, amely a PasswordSafe indulásakor lett megnyitva, akkor "
+#~ "a PasswordSafe kilép. Ha nem, akkor az új megnyitás el lesz vetve és az éppen "
+#~ "megnyitott adatbázis - ha van ilyen - marad megnyitva."
 
 #~ msgid ""
-#~ "If this keyboard supports characters via the %s, then this key will be "
-#~ "enabled and can be used to select them.\n"
+#~ "If this keyboard supports characters via the %s, then this key will be enabled and "
+#~ "can be used to select them.\n"
 #~ "\n"
 #~ "You may need to also select the Shift key to see them."
 #~ msgstr ""
 #~ "Ha ez a billentyűzet támogat karaktereket %s által, akkor ez e billentyű "
 #~ "engedélyezve lesz és használható a kiválasztásukhoz.\n"
 #~ "\n"
-#~ "Esetleg a Shift billentyű kiválasztására is szükség lehet a "
-#~ "megtekintéshez."
+#~ "Esetleg a Shift billentyű kiválasztására is szükség lehet a megtekintéshez."
 
 #~ msgid ""
-#~ "If you specify using your own symbol list, you cannot leave it empty. "
-#~ "Unselecting use of symbols."
+#~ "If you specify using your own symbol list, you cannot leave it empty. Unselecting "
+#~ "use of symbols."
 #~ msgstr ""
-#~ "Ha a saját szimbólumlistájával adja meg, akkor nem hagyhatja üresen. "
-#~ "Unselecting use of symbols.!!!"
+#~ "Ha a saját szimbólumlistájával adja meg, akkor nem hagyhatja üresen. Unselecting "
+#~ "use of symbols.!!!"
 
 #~ msgid "Igbo"
 #~ msgstr "Igbo"
 
 #~ msgid ""
-#~ "Ignore all Failsafe Backup files and continue with the currently selected "
-#~ "database."
+#~ "Ignore all Failsafe Backup files and continue with the currently selected database."
 #~ msgstr ""
-#~ "Minde Failsafe mentési fájl figyelmen kívül hagyása és folytatás a "
-#~ "kiválaszott adatbázissal."
+#~ "Minde Failsafe mentési fájl figyelmen kívül hagyása és folytatás a kiválaszott "
+#~ "adatbázissal."
 
 #~ msgid "Inactive"
 #~ msgstr "Inaktív"
@@ -9298,8 +9105,7 @@ msgstr ""
 #~ msgstr "Utolsó vágólapművelet"
 
 #~ msgid "Latest version? Click <a href=\"%s\">here</a> to check."
-#~ msgstr ""
-#~ "Legújabb verzió? Kattintson <a href=\"%s\">ide</a> az ellenőrzéshez."
+#~ msgstr "Legújabb verzió? Kattintson <a href=\"%s\">ide</a> az ellenőrzéshez."
 
 #~ msgid "Latin American"
 #~ msgstr "Latin amerikai"
@@ -9382,13 +9188,12 @@ msgstr ""
 #~ msgstr "Következő >"
 
 #~ msgid "No database open with which to compare against another database!"
-#~ msgstr ""
-#~ "Nincs adatbázis megnyitva, amit össze lehetne hasonlítani egy másikkal!"
+#~ msgstr "Nincs adatbázis megnyitva, amit össze lehetne hasonlítani egy másikkal!"
 
 #~ msgid "No entry exists within this database matching your specifications."
 #~ msgstr ""
-#~ "Ebben az adatbázisban nincs olyan bejegyzés, amely megfelelne az ön által "
-#~ "megadott feltételeknek."
+#~ "Ebben az adatbázisban nincs olyan bejegyzés, amely megfelelne az ön által megadott "
+#~ "feltételeknek."
 
 #~ msgid "No error occurred."
 #~ msgstr "Nem történt hiba."
@@ -9434,18 +9239,16 @@ msgstr ""
 
 #~ msgid "Not all of the system registry entries (or INI file) were removed."
 #~ msgstr ""
-#~ "Nem lett az összes rendszerleíróadatbázis-bejegyzés (vagy INI fájl) "
-#~ "eltávolítva."
+#~ "Nem lett az összes rendszerleíróadatbázis-bejegyzés (vagy INI fájl) eltávolítva."
 
 #~ msgid ""
-#~ "Note that if you choose to recover the auto-saved documents, you must "
-#~ "explicitly save them to overwrite the original documents.  If you choose "
-#~ "to not recover the auto-saved versions, they will be deleted."
+#~ "Note that if you choose to recover the auto-saved documents, you must explicitly "
+#~ "save them to overwrite the original documents.  If you choose to not recover the "
+#~ "auto-saved versions, they will be deleted."
 #~ msgstr ""
-#~ "Amennyiben az automatikusan mentett dokumentumok helyreállítását "
-#~ "választja, önnek kell elvégezni azok mentését az eredeti dokumentum "
-#~ "felülírásával. Ha úgy dönt, hogy nem állítja helyre az automatikusan "
-#~ "mentett verziókat, azok törölve lesznek."
+#~ "Amennyiben az automatikusan mentett dokumentumok helyreállítását választja, önnek "
+#~ "kell elvégezni azok mentését az eredeti dokumentum felülírásával. Ha úgy dönt, hogy "
+#~ "nem állítja helyre az automatikusan mentett verziókat, azok törölve lesznek."
 
 #~ msgid "Number of Entries"
 #~ msgstr "Bejegyzések száma"
@@ -9496,8 +9299,7 @@ msgstr ""
 #~ msgstr "PWS_CPF_TVDD"
 
 #~ msgid "Passkey needed to save. Please unlock database and try again"
-#~ msgstr ""
-#~ "A mentéshez jelszóra van szükség. Oldja fel az adatbázist és próbálja újra"
+#~ msgstr "A mentéshez jelszóra van szükség. Oldja fel az adatbázist és próbálja újra"
 
 #~ msgid "Passphrase"
 #~ msgstr "Jelszó"
@@ -9524,13 +9326,10 @@ msgstr ""
 #~ msgstr "Jelszó [kötelező mező]"
 
 #~ msgid "PasswordSafe V%d.%d.%d (Build %s) has had an error."
-#~ msgstr ""
-#~ "A PasswordSafe alkalmazás (verzió: V%d.%d.%d (Build %s)) hibát "
-#~ "tartalmazott."
+#~ msgstr "A PasswordSafe alkalmazás (verzió: V%d.%d.%d (Build %s)) hibát tartalmazott."
 
 #~ msgid "PasswordSafe: Entries exist with expired or soon-to-expire passwords"
-#~ msgstr ""
-#~ "PasswordSafe: Egyes bejegyzések jelszava lejárt vagy hamarosan lejár"
+#~ msgstr "PasswordSafe: Egyes bejegyzések jelszava lejárt vagy hamarosan lejár"
 
 #~ msgid "Persian"
 #~ msgstr "Perzsa"
@@ -9548,12 +9347,12 @@ msgstr ""
 #~ msgstr "Kérem hagyja jóvá a(z) %s szűrő törlését: %s"
 
 #~ msgid ""
-#~ "Please confirm that you wish to delete current user's PasswordSafe "
-#~ "configuration from the Windows registry.\n"
+#~ "Please confirm that you wish to delete current user's PasswordSafe configuration "
+#~ "from the Windows registry.\n"
 #~ "\n"
 #~ msgstr ""
-#~ "Kérem erősítse meg, hogy törölni kívánja az aktuális felhasználó "
-#~ "PasswordSafe konfigurációját a Windows rendszerleíróadatbázisból.\n"
+#~ "Kérem erősítse meg, hogy törölni kívánja az aktuális felhasználó PasswordSafe "
+#~ "konfigurációját a Windows rendszerleíróadatbázisból.\n"
 #~ "\n"
 
 #~ msgid "Please enter a search string"
@@ -9568,11 +9367,9 @@ msgstr ""
 #~ msgid "Please specify the sub-directory to contain all backups."
 #~ msgstr "Kérem adja meg a mentések helyének alkönyvárát."
 
-#~ msgid ""
-#~ "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
+#~ msgid "Please visit the <a href=\"https://pwsafe.org/\">PasswordSafe website.</a>"
 #~ msgstr ""
-#~ "Kérem látogasson el a <a href=\"https://pwsafe.org/\">PasswordSafe "
-#~ "honlapra.</a>"
+#~ "Kérem látogasson el a <a href=\"https://pwsafe.org/\">PasswordSafe honlapra.</a>"
 
 #~ msgid "Polish (214)"
 #~ msgstr "Lengyel (214)"
@@ -9599,11 +9396,11 @@ msgstr ""
 #~ msgstr "Programok (*.exe)|*.exe|Minden fájl (*.*)|*.*||"
 
 #~ msgid ""
-#~ "Pronounceable passwords must contain either lowercase or uppercase "
-#~ "characters or both"
+#~ "Pronounceable passwords must contain either lowercase or uppercase characters or "
+#~ "both"
 #~ msgstr ""
-#~ "A könnyen kiejthető jelszavaknak tartalmazniuk kell kis- vagy nagybetűt, "
-#~ "vagy mindkettőt"
+#~ "A könnyen kiejthető jelszavaknak tartalmazniuk kell kis- vagy nagybetűt, vagy "
+#~ "mindkettőt"
 
 #~ msgid "Properties of the currently selected database."
 #~ msgstr "A kiválasztott adatbázis tulajdonságai."
@@ -9675,11 +9472,8 @@ msgstr ""
 #~ msgstr "Jobb Ctrl billentyű"
 
 #~ msgid ""
-#~ "Right-click on the 'Y' in either of the first 2 columns for additional "
-#~ "functions"
-#~ msgstr ""
-#~ "További funkciókért kattintson az 'Y'-ra az első két oszlop "
-#~ "valamelyikében."
+#~ "Right-click on the 'Y' in either of the first 2 columns for additional functions"
+#~ msgstr "További funkciókért kattintson az 'Y'-ra az első két oszlop valamelyikében."
 
 #~ msgid "Romanian (Legacy)"
 #~ msgstr "Román (Legacy)"
@@ -9814,12 +9608,12 @@ msgstr ""
 #~ msgstr "Szöveg:"
 
 #~ msgid ""
-#~ "The ALT key is not used on any keyboard to select characters. Use the "
-#~ "'Alt Num' key to enter a character via its decimal value."
+#~ "The ALT key is not used on any keyboard to select characters. Use the 'Alt Num' key "
+#~ "to enter a character via its decimal value."
 #~ msgstr ""
-#~ "Az ALT billentyű egyetlen billentyűzeten sem használható karakterek "
-#~ "kijelölésére. Használja a numerikus billentyűzetet egy karakter "
-#~ "hexadecimális formában való megadásához."
+#~ "Az ALT billentyű egyetlen billentyűzeten sem használható karakterek kijelölésére. "
+#~ "Használja a numerikus billentyűzetet egy karakter hexadecimális formában való "
+#~ "megadásához."
 
 #~ msgid "The Alt and Ctrl keys have been added."
 #~ msgstr "Az Alt és Ctrl billenytűk hozzáadva."
@@ -9841,8 +9635,7 @@ msgstr ""
 
 #~ msgid ""
 #~ "The database %s couldn't be opened.\n"
-#~ "Do you wish to look for it elsewhere (Search), create a new database "
-#~ "(New), or Exit?"
+#~ "Do you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
 #~ msgstr ""
 #~ "%s adatbázis nem nyitható meg.\n"
 #~ "Kívánja megkeresni, létrehoz egy újat vagy kilép?"
@@ -9866,8 +9659,7 @@ msgstr ""
 #~ "\n"
 #~ "Megnyitja az adatbázist csak olvasásra, vagy kilép?\n"
 #~ "\n"
-#~ "Megjegyzés: Egyidőben csak egy felhasználó nyithatja meg az adatbázist "
-#~ "írásra."
+#~ "Megjegyzés: Egyidőben csak egy felhasználó nyithatja meg az adatbázist írásra."
 
 #~ msgid ""
 #~ "The database:\n"
@@ -9878,8 +9670,8 @@ msgstr ""
 #~ "\n"
 #~ "Open the database for Read-Only, Read-Write, or Exit?\n"
 #~ "\n"
-#~ "Note: Choose \"Read-Write\" only if you are certain that the file isn't "
-#~ "being used by anyone else,\n"
+#~ "Note: Choose \"Read-Write\" only if you are certain that the file isn't being used "
+#~ "by anyone else,\n"
 #~ "including another copy of Password Safe running on your machine."
 #~ msgstr ""
 #~ "Az adatbázis:\n"
@@ -9890,10 +9682,10 @@ msgstr ""
 #~ "\n"
 #~ "Megnyitja az adatbázist csak olvasásra, vagy kilép?\n"
 #~ "\n"
-#~ "Megjegyzés: Csak akkor válassza az \"Írható-olvasható\" módot, ha biztos "
-#~ "abban, hogy az adatbázis\n"
-#~ "nincs használatban valaki más által, beleértve az Ön gépén futó "
-#~ "PasswordSafe program egy másik példányát."
+#~ "Megjegyzés: Csak akkor válassza az \"Írható-olvasható\" módot, ha biztos abban, "
+#~ "hogy az adatbázis\n"
+#~ "nincs használatban valaki más által, beleértve az Ön gépén futó PasswordSafe "
+#~ "program egy másik példányát."
 
 #~ msgid "U&RL:"
 #~ msgstr "U&RL:"
@@ -9968,32 +9760,29 @@ msgstr ""
 #~ msgstr "Yoruba"
 
 #~ msgid ""
-#~ "Your currently opened database will be in the first row.  Failsafe Backup "
-#~ "files will be displayed below this.  If the passphrase is the same as the "
-#~ "current database, the properties of these backups will also be shown.  If "
-#~ "you aren't sure, continue with the current database and use the database "
-#~ "Compare function to view the differences between the versions."
+#~ "Your currently opened database will be in the first row.  Failsafe Backup files "
+#~ "will be displayed below this.  If the passphrase is the same as the current "
+#~ "database, the properties of these backups will also be shown.  If you aren't sure, "
+#~ "continue with the current database and use the database Compare function to view "
+#~ "the differences between the versions."
 #~ msgstr ""
-#~ "Az aktuálisan megnyitott adatbázis lesz az első sorban. A Failsafe "
-#~ "mentési fájlok azalatt lesznek megjelenítve. Ha a jelszó ugyanaz, mint az "
-#~ "aktuális adatbázisban, akkor a mentési fájl tulajdonsági is meg lesznek "
-#~ "jelenítve. Ha nem biztos a dolgában, folytassa az aktuális adatbázissal "
-#~ "és használja az adatbázisok összehasonlítása funkciót a verziók közötti "
-#~ "különbségek megjelenítéséhez."
+#~ "Az aktuálisan megnyitott adatbázis lesz az első sorban. A Failsafe mentési fájlok "
+#~ "azalatt lesznek megjelenítve. Ha a jelszó ugyanaz, mint az aktuális adatbázisban, "
+#~ "akkor a mentési fájl tulajdonsági is meg lesznek jelenítve. Ha nem biztos a "
+#~ "dolgában, folytassa az aktuális adatbázissal és használja az adatbázisok "
+#~ "összehasonlítása funkciót a verziók közötti különbségek megjelenítéséhez."
 
 #~ msgid ""
-#~ "Your requested font, '%s', could not be found (not installed?), using "
-#~ "'%s' instead."
+#~ "Your requested font, '%s', could not be found (not installed?), using '%s' instead."
 #~ msgstr ""
 #~ "A kért betűkészlet, '%s', nem található (nincs telepítve?), '%s' kerül "
 #~ "felhasználásra."
 
 #~ msgid ""
-#~ "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/"
-#~ "PasswordSafe"
+#~ "YubiKey for PasswordSafe can be purchased at http://www.yubico.com/PasswordSafe"
 #~ msgstr ""
-#~ "A PasswordSafe-hez a YubiKey megvásárolható ezen a címen: http://www."
-#~ "yubico.com/PasswordSafe"
+#~ "A PasswordSafe-hez a YubiKey megvásárolható ezen a címen: http://www.yubico.com/"
+#~ "PasswordSafe"
 
 #~ msgid "Zoom in\tCtrl + NUM PLUS"
 #~ msgstr "Nagyítás\tCtrl + NUM +"
