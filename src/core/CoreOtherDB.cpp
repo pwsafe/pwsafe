@@ -848,7 +848,7 @@ stringT PWScore::Merge(PWScore *pothercore,
   if (numAliasesAdded > 0 && pRpt != nullptr) {
     std::sort(vs_AliasesAdded.begin(), vs_AliasesAdded.end(), MergeSyncGTUCompare);
     stringT str_singular_plural_type, str_singular_plural_verb;
-    LoadAString(str_singular_plural_type, numAliasesAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
+    LoadAString(str_singular_plural_type, numAliasesAdded == 1 ? IDSC_ALIAS : IDSC_ALIASES);
     LoadAString(str_singular_plural_verb, numAliasesAdded == 1 ? IDSC_WAS : IDSC_WERE);
     Format(str_results, IDSC_MERGEADDED, str_singular_plural_type.c_str(),
                     str_singular_plural_verb.c_str());
@@ -862,7 +862,7 @@ stringT PWScore::Merge(PWScore *pothercore,
   if (numShortcutsAdded > 0 && pRpt != nullptr) {
     std::sort(vs_ShortcutsAdded.begin(), vs_ShortcutsAdded.end(), MergeSyncGTUCompare);
     stringT str_singular_plural_type, str_singular_plural_verb;
-    LoadAString(str_singular_plural_type, numShortcutsAdded == 1 ? IDSC_ENTRY : IDSC_ENTRIES);
+    LoadAString(str_singular_plural_type, numShortcutsAdded == 1 ? IDSC_SHORTCUT : IDSC_SHORTCUTS);
     LoadAString(str_singular_plural_verb, numShortcutsAdded == 1 ? IDSC_WAS : IDSC_WERE);
     Format(str_results, IDSC_MERGEADDED, str_singular_plural_type.c_str(),
                     str_singular_plural_verb.c_str());
