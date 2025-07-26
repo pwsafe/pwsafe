@@ -520,6 +520,7 @@ int PasswordSafeFrame::SaveAs()
   RefreshViews();
 
   wxGetApp().recentDatabases().AddFileToHistory(towxstring(newfile));
+  CreateMenubar();
 
   if (m_core.IsReadOnly()) {
     // reset read-only status (new file can't be read-only!)
