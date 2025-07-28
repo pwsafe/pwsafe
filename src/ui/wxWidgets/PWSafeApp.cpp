@@ -375,7 +375,34 @@ bool PWSafeApp::OnInit()
     return false;
   }
 
-  // Process encryption/decryption command line arguments
+  if (cmd_user) {
+    SysInfo::GetInstance()->SetEffectiveUser(tostdstring(user));
+  }
+  if (cmd_host) {
+    SysInfo::GetInstance()->SetEffectiveHost(tostdstring(host));
+  }
+  if (cmd_cfg) {
+    PWSprefs::SetConfigFile(tostdstring(cfg_file));
+  }
+#ifndef NO_YUBI
+  if (cmd_yubi_polling_interval) {
+    YubiMixin::SetPollingInterval(static_cast<int>(yubi_polling_interval));
+  }
+#endif
+
+  m_core.SetReadOnly(cmd_ro);
+  // OK to load prefs now
+  PWSprefs *prefs = PWSprefs::GetInstance();
+
+  // Initialize language only after parsing cmd_cfg and instantiating prefs,
+  // otherwise GetSelectedLanguage()&Co will instantiate prefs singleton and it
+  // will ignore config file parameter
+  wxLanguage selectedLang = GetSelectedLanguage();
+  m_locale->Init(selectedLang);
+  ActivateLanguage(selectedLang, false);
+
+ // Process encryption/decryption command line arguments
+  // Note that this is done after language is set, addressing GH1572
   if ((cmd_encrypt || cmd_decrypt) && !cmd_filename.IsEmpty()) {
 
     auto processCryption = [&](CryptKeyEntryDlg::Mode mode, std::function<bool(const stringT &fn, const StringX &passwd, stringT &errmess)> func) {
@@ -408,31 +435,7 @@ bool PWSafeApp::OnInit()
     return false;
   }
 
-  if (cmd_user) {
-    SysInfo::GetInstance()->SetEffectiveUser(tostdstring(user));
-  }
-  if (cmd_host) {
-    SysInfo::GetInstance()->SetEffectiveHost(tostdstring(host));
-  }
-  if (cmd_cfg) {
-    PWSprefs::SetConfigFile(tostdstring(cfg_file));
-  }
-#ifndef NO_YUBI
-  if (cmd_yubi_polling_interval) {
-    YubiMixin::SetPollingInterval(static_cast<int>(yubi_polling_interval));
-  }
-#endif
 
-  m_core.SetReadOnly(cmd_ro);
-  // OK to load prefs now
-  PWSprefs *prefs = PWSprefs::GetInstance();
-
-  // Initialize language only after parsing cmd_cfg and instantiating prefs,
-  // otherwise GetSelectedLanguage()&Co will instantiate prefs singleton and it
-  // will ignore config file parameter
-  wxLanguage selectedLang = GetSelectedLanguage();
-  m_locale->Init(selectedLang);
-  ActivateLanguage(selectedLang, false);
 
   // if filename passed in command line, it takes precedence
   // over that in preference:
