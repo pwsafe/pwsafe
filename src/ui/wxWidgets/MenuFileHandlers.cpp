@@ -647,6 +647,10 @@ struct ExportFullText
   static wxString GetTaskWord() {
     return _("export");
   }
+
+  static int GetReportNameId() {
+    return IDSC_RPTEXPORTTEXT;
+  }
 };
 
 struct ExportFullXml {
@@ -689,6 +693,10 @@ struct ExportFullXml {
   }
   static wxString GetTaskWord() {
     return _("export");
+  }
+
+    static int GetReportNameId() {
+    return IDSC_RPTEXPORTXML;
   }
 };
 
@@ -820,7 +828,8 @@ void PasswordSafeFrame::DoExportText()
           newfile = fd.GetPath().c_str();
           CReport rpt;
 
-          rpt.StartReport(IDSC_RPTEXPORTTEXT, sx_temp.c_str());
+          rpt.StartReport(ExportType::GetReportNameId(), sx_temp.c_str());
+          // FIXME - following line is translation-unfriendly. Replace with positional placeholders
           rpt.WriteLine(tostdstring(wxString(_("Exporting database: ")) << towxstring(sx_temp) << _(" to ") << newfile<< wxT("\r\n")));
 
           int rc = ExportType::Write(m_core, newfile, bsExport, subgroup_name, subgroup_object,
