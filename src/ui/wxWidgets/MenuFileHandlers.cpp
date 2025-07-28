@@ -829,6 +829,7 @@ void PasswordSafeFrame::DoExportText()
           CReport rpt;
 
           rpt.StartReport(ExportType::GetReportNameId(), sx_temp.c_str());
+          // FIXME - following line is translation-unfriendly. Replace with positional placeholders
           rpt.WriteLine(tostdstring(wxString(_("Exporting database: ")) << towxstring(sx_temp) << _(" to ") << newfile<< wxT("\r\n")));
 
           int rc = ExportType::Write(m_core, newfile, bsExport, subgroup_name, subgroup_object,
