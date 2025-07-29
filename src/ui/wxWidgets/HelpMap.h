@@ -69,4 +69,6 @@ DLG_HELP(pwFiltersPasswordDlg,             html/filters.html)
 
 DLG_HELP(SelectAliasDlg,                   html/aliases.html)
 
+DLG_HELP(CreateShortcutDlg,                html/edit_menu.html#CreateShortcut)
+
 #endif // _HELPMAP_H_
