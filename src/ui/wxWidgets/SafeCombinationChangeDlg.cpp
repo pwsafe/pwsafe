@@ -208,7 +208,11 @@ void SafeCombinationChangeDlg::CreateControls()
   auto horizontalBoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
   mainSizer->Add(horizontalBoxSizer3, 0, wxEXPAND|wxLEFT|wxBOTTOM|wxRIGHT, 12);
 
-  horizontalBoxSizer3->AddSpacer(90);
+  horizontalBoxSizer3->Add(
+    new wxButton(this, wxID_HELP, _("&Help"), wxDefaultPosition, wxDefaultSize, 0 ),
+    0, wxALIGN_CENTER_VERTICAL|wxALL, 5
+  );
+
   horizontalBoxSizer3->AddStretchSpacer();
 
   horizontalBoxSizer3->Add(
@@ -223,8 +227,7 @@ void SafeCombinationChangeDlg::CreateControls()
   );
   changeButton->SetDefault();
 
-  horizontalBoxSizer3->AddSpacer(60);
-  horizontalBoxSizer3->AddStretchSpacer();
+  horizontalBoxSizer3->AddSpacer(10);
 
   if (wxUtilities::IsVirtualKeyboardSupported()) {
     auto *keyboardButton = new ExternalKeyboardButton(this);
