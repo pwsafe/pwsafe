@@ -109,9 +109,9 @@ public:
     // Convert this object to a string in the canonical DB format
     operator StringX();
 
-    bool isSaving() { return m_saveHistory; };
-    size_t getMax() { return m_maxEntries; };
-    size_t getErr() { return m_numErr; };
+    bool isSaving() const { return m_saveHistory; };
+    size_t getMax() const { return m_maxEntries; };
+    size_t getErr() const { return m_numErr; };
 
     void setMax(size_t x) { m_maxEntries = x; };     // The list will be trimed, if necessary, when a StringX is generated
     void setSaving(bool b) { m_saveHistory = b; };

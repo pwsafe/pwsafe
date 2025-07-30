@@ -376,6 +376,32 @@ public:
   bool HasAttachment() const            { return IsAttMediaTypeSet();            }
   void ClearAttachment();
 
+  // Passkey
+  bool IsPasskeyCredentialIDSet() const    { return IsFieldSet(PASSKEY_CRED_ID);     }
+  bool IsPasskeyRelyingPartyIDSet() const  { return IsFieldSet(PASSKEY_RP_ID);       }
+  bool IsPasskeyUserHandleSet() const      { return IsFieldSet(PASSKEY_USER_HANDLE); }
+  bool IsPasskeyAlgorithmIDSet() const     { return IsFieldSet(PASSKEY_ALGO_ID);     }
+  bool IsPasskeyPrivateKeySet() const      { return IsFieldSet(PASSKEY_PRIVATE_KEY); }
+  bool IsPasskeySignCountSet() const       { return IsFieldSet(PASSKEY_SIGN_COUNT);  }
+
+  StringX GetPasskeyRelyingPartyID() const { return GetField(PASSKEY_RP_ID);         }
+  int32 GetPasskeyAlgorithmID() const;
+  uint32 GetPasskeySignCount() const;
+  VectorX<unsigned char> GetPasskeyCredentialID() const;
+  VectorX<unsigned char> GetPasskeyUserHandle() const;
+  VectorX<unsigned char> GetPasskeyPrivateKey() const;
+
+  void SetPasskeyRelyingPartyID(const StringX &rp_id) { CItem::SetField(PASSKEY_RP_ID, rp_id); }
+  void SetPasskeyAlgorithmID(const int32 algo_id);
+  void SetPasskeySignCount(const uint32 sign_count);
+  void SetPasskeyCredentialID(const VectorX<unsigned char> &v) { CItem::SetField(PASSKEY_CRED_ID, v.data(), v.size());     };
+  void SetPasskeyUserHandle(const VectorX<unsigned char> &v)   { CItem::SetField(PASSKEY_USER_HANDLE, v.data(), v.size()); };
+  void SetPasskeyPrivateKey(const VectorX<unsigned char> &v)   { CItem::SetField(PASSKEY_PRIVATE_KEY, v.data(), v.size()); };
+
+  bool HasPasskey() const                  { return IsPasskeyPrivateKeySet();        }
+  bool HasIncompletePasskey() const;
+  void ClearPasskey();
+
 private:
   EntryType m_entrytype;
   EntryStatus m_entrystatus;
@@ -413,6 +439,8 @@ inline bool CItemData::IsTextField(unsigned char t)
     t == SHORTCUTUUID ||
     t == TOTPCONFIG || t == TOTPLENGTH || t == TOTPSTARTTIME || t == TOTPTIMESTEP ||
     t == DATA_ATT_MTIME || t == DATA_ATT_CONTENT ||
+    t == PASSKEY_CRED_ID || t == PASSKEY_USER_HANDLE || t == PASSKEY_ALGO_ID ||
+    t == PASSKEY_PRIVATE_KEY || t == PASSKEY_SIGN_COUNT ||
     t >= LAST_DATA);
 }
 #endif /* __ITEMDATA_H */

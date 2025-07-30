@@ -67,13 +67,13 @@ XMLS := $(foreach i,\
 					KPV1_to_PWS.xslt KPV2_to_PWS.xslt,\
 				  xml/$i)
 I18N_HELPS := $(foreach i,\
-								DE ES FR RU ZH,\
+								DE ES FR RU SK ZH,\
 								help/pwsafe$(i)/pwsafe$(i).chm)
 I18N_DLLS := $(foreach i,\
-								AR CZ DA DE ES FR HU IT KR LV NL PL PT_BR RU SL SV TR ZH,\
+								AR CZ DA DE ES FR HU IT KR LV NL PL PT_BR RU SK SL SV TR ZH,\
 								$(I18N_DLL_DIR)/pwsafe$(i).dll)
 I18N_DLLS_64 := $(foreach i,\
-								AR CZ DA DE ES FR HU IT KR LV NL PL PT_BR RU SL SV TR ZH,\
+								AR CZ DA DE ES FR HU IT KR LV NL PL PT_BR RU SK SL SV TR ZH,\
 								$(I18N_DLL_DIR_64)/pwsafe$(i).dll)
 
 BIN_MANIFEST = README.md docs/ReleaseNotes.md LICENSE \

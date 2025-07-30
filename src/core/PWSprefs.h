@@ -272,6 +272,9 @@ public:
 
   void ClearUnknownPrefs(); // Clear unknown preferences vectors
 
+  // This is a helper for the SetMRUList/GetMRUList unit tests
+  void PrepForUnitTests(bool testing = true) { m_ConfigOption = testing ? CF_FILE_RW : CF_NONE; }
+
 private:
   PWSprefs();
   ~PWSprefs();

@@ -189,8 +189,8 @@ TEST_F(FileV3Test, AttachmentTest)
   {
     CItemData ci;
     ci.CreateUUID();
-    auto title = _T("future") + std::to_wstring(attSize);
-    ci.SetTitle(title.c_str());
+    auto t = _T("future") + std::to_wstring(attSize);
+    ci.SetTitle(t.c_str());
     ci.SetPassword(_T("possible"));
     ci.SetAttMediaType(_T("image/png"));
     std::vector<unsigned char> buf(attSize, static_cast<unsigned char>(attSize));
@@ -240,4 +240,32 @@ TEST_F(FileV3Test, V4Extension)
   EXPECT_EQ(PWSfile::SUCCESS, core.ReadFile(fname4.c_str(), passphrase, true));
 
   ASSERT_EQ(0, std::rename("V3test.psafe4", "V3test.psafe3"));
+}
+
+TEST_F(FileV3Test, PasskeyTest)
+{
+  CItemData ci;
+  ci.CreateUUID();
+  ci.SetTitle(_T("passkey"));
+  ci.SetPassword(_T("possible"));
+  ci.SetPasskeyCredentialID(VectorX<unsigned char>(64,1));
+  ci.SetPasskeyRelyingPartyID(_T("relying party"));
+  ci.SetPasskeyUserHandle(VectorX<unsigned char>(32,2));
+  ci.SetPasskeyAlgorithmID(123);
+  ci.SetPasskeySignCount(456);
+  ci.SetPasskeyPrivateKey(VectorX<unsigned char>(512,3));
+
+  PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(ci));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+  ASSERT_TRUE(pws_os::FileExists(fname));
+
+
+  PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(item));
+  EXPECT_EQ(ci, item);
+  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
 }

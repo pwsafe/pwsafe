@@ -7,7 +7,7 @@
 # when compiles OK.
 #
 
-HELP_DIRS := default pwsafeDE pwsafeFR pwsafeRU pwsafeES
+HELP_DIRS := default pwsafeDE pwsafeES pwsafeFR pwsafeRU pwsafeSK
 # pwsafePL -- nothing there :-(
 # pwsafeZH -- currently breaks my hhc :-(
 

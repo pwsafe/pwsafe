@@ -12,6 +12,7 @@
 
 #include "PKBaseDlg.h"
 #include "ControlExtns.h"
+#include "StrengthMeterCtrl.h"
 
 class CPasskeyChangeDlg : public CPKBaseDlg
 {
@@ -36,6 +37,7 @@ public:
   //{{AFX_VIRTUAL(CPasskeyChangeDlg)
 protected:
   virtual void DoDataExchange(CDataExchange *pDX);    // DDX/DDV support
+  afx_msg void OnEnChangeNewPasskey();
   //}}AFX_VIRTUAL
 
   // Implementation
@@ -71,6 +73,7 @@ private:
   bool m_Yubi1pressed; // implies old password was Yubi-based
   bool m_Yubi2pressed; // implies new password to be -"-.
   bool m_oldpasskeyConfirmed;
+  CStrengthMeterCtrl m_prgStrengthMeter;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

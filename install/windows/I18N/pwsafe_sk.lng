@@ -1,0 +1,184 @@
+;---------------------------------------------------
+; Password Safe Language Script
+; Name : pwsafe_sk.lng
+; include file for "pwsafe.nsi"
+; first edit : Karlo Van der Gucht
+; second edit: Milan Zabka
+;---------------------------------------------------
+; Copyright 2004, David Lacy Kusters (dkusters@yahoo.com)
+; Copyright 2005-2025 Rony Shapiro <ronys@pwsafe.org>
+; 2009 extended by Karlo Van der Gucht for multiple language use
+; 2010 extended by Karlo Van der Gucht Danish language
+; This script may be redistributed and/or modified under the Artistic
+; License 2.0 terms as available at 
+; http://www.opensource.org/licenses/artistic-license-2.0.php
+;
+; This script is distributed AS IS.  All warranties are explicitly
+; disclaimed, including, but not limited to, the implied warranties of
+; MERCHANTABILITY and FITNESS FOR A PARTICULAR PURPOSE.
+ 
+;=================================================================
+
+; RESERVE_TITLE "Choose Installation Type"
+LangString RESERVE_TITLE ${LANG_SLOVAK} "Vyberte typ inštalácie"
+
+; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
+LangString RESERVE_FIELD1 ${LANG_SLOVAK} "Štandardná (používa registre, vhodná pre domáci počítač alebo počítač s 1 používateľom)"
+
+; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
+LangString RESERVE_FIELD2 ${LANG_SLOVAK} "Prenosná (pre použitie na USB kľúči; nepoužíva Windows registre)"
+
+; PROGRAM_FILES "Program Files"
+LangString PROGRAM_FILES ${LANG_SLOVAK} "Súbory programu"
+
+; START_AUTO "Start automatically"
+LangString START_AUTO ${LANG_SLOVAK} "Spúšťať automaticky"
+
+; START_SHOW "Show in start menu"
+LangString START_SHOW ${LANG_SLOVAK} "Pripnúť ikonu na Štart"
+
+; START_SHORTCUT "Install desktop shortcut"
+LangString START_SHORTCUT ${LANG_SLOVAK} "Pridať odkaz na plochu"
+
+; UNINSTALL_SHORTCUT "Uninstall shortcut"
+LangString UNINSTALL_SHORTCUT ${LANG_SLOVAK} "Odkaz na odinštaláciu"
+
+;--------------------------------
+; Descriptions
+
+; DESC_ProgramFiles "Installs the basic files necessary to run Password Safe."
+LangString DESC_ProgramFiles ${LANG_SLOVAK} "Nainštaluje základné súbory potrebné na spustenie Password Safe."
+
+; DESC_CliTool "Installs pwsafe-cli, a command line utility."
+LangString DESC_CliTool ${LANG_SLOVAK} "Nainštaluje pwsafe-cli, program pre príkazový riadok."
+
+; DESC_LangSupport "Please select the language(s) that PasswordSafe will use."
+LangString DESC_LangSupport ${LANG_SLOVAK} "Vyberte jazyk(y), ktoré bude PasswordSafe môcť používať."
+
+; DESC_StartUp "Starts Password Safe as part of Windows boot/login."
+LangString DESC_StartUp ${LANG_SLOVAK} "Spustí Password Safe po štarte Windows."
+
+; DESC_StartMenu "Creates an entry in the start menu for Password Safe."
+LangString DESC_StartMenu ${LANG_SLOVAK} "Vytvorí odkaz na aplikáciu Password Safe v menu Štart."
+
+; DESC_DesktopShortcut "Places a shortcut to Password Safe on your desktop."
+LangString DESC_DesktopShortcut ${LANG_SLOVAK} "Vytvorí odkaz na aplikáciu Password Safe na pracovnej ploche."
+
+; DESC_UninstallMenu "Places a shortcut in the start menu to Uninstall Password Safe."
+LangString DESC_UninstallMenu ${LANG_SLOVAK} "Vytvorí odkaz na odinštaláciu Password Safe v menu Štart."
+  
+; "LangString" (for "Function GreenOrRegular") are setup here because they cannot be defined in the function body
+; TEXT_GC_TITLE "Installation Type"
+LangString TEXT_GC_TITLE ${LANG_SLOVAK} "Typ inštalácie"
+
+; TEXT_GC_SUBTITLE "Choose Regular for use on a single PC, Green for portable installation. If you're not sure, 'Regular' is fine."
+LangString TEXT_GC_SUBTITLE ${LANG_SLOVAK} "Vyberte Štandardnú pre použitie na tomto PC, alebo Prenosnú inštaláciu na USB. Ak si nie ste istí tak vyberte Štandardnú."
+
+; PSWINI_TITLE "Choose Installation Type"
+LangString PSWINI_TITLE ${LANG_SLOVAK} "Vyberte typ inštalácie"
+
+; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
+LangString PSWINI_TEXT1 ${LANG_SLOVAK} "Štandardná (používa registre, vhodná pre domáci počítač alebo počítač s 1 používateľom)"
+
+; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
+LangString PSWINI_TEXT2 ${LANG_SLOVAK} "Prenosná (pre použitie na USB kľúč; nepoužíva registre Windows)"
+
+;--------------------------------
+; checks and warnings
+
+; RUNNING_INSTALL "The installer is already running."
+LangString RUNNING_INSTALL ${LANG_SLOVAK} "Už prebieha iná inštalácia."
+
+; RUNNING_APPLICATION "Please exit all running instances of PasswordSafe before installing a new version"
+LangString RUNNING_APPLICATION ${LANG_SLOVAK} "Pred inštaláciou novej verzie ukončite všetky spustené inštancie Password Safe."
+
+; LANG_INSTALL "Installation Language"
+LangString LANG_INSTALL ${LANG_SLOVAK} "Jazyk pre inštaláciu"
+
+; LANG_SELECT "Please select the language for the installation"
+LangString LANG_SELECT ${LANG_SLOVAK} "Vyberte prosím jazyk pre inštaláciu"
+
+; CLI_TOOL "Command-line tool"
+LangString CLI_TOOL ${LANG_SLOVAK} "Nástroj na príkazovom riadku"
+
+; LANGUAGE_SUPPORT "Language Support"
+LangString LANGUAGE_SUPPORT ${LANG_SLOVAK} "Pridať jazyky"
+; ENGLISH_SUPPORT "English"
+LangString ENGLISH_SUPPORT ${LANG_SLOVAK} "anglický"
+; CHINESE_CN_SUPPORT "Chinese (Simplified)"
+LangString CHINESE_CN_SUPPORT ${LANG_SLOVAK} "čínsky (zjednodušený)"
+; CHINESE_TW_SUPPORT "Chinese (Traditional)"
+LangString CHINESE_TW_SUPPORT ${LANG_SLOVAK} "čínsky (tradičný)"
+; GERMAN_SUPPORT "German"
+LangString GERMAN_SUPPORT ${LANG_SLOVAK} "nemecký"
+; SPANISH_SUPPORT "Spanish"
+LangString SPANISH_SUPPORT ${LANG_SLOVAK} "španielský"
+; SWEDISH_SUPPORT "Swedish"
+LangString SWEDISH_SUPPORT ${LANG_SLOVAK} "švédsky"
+; DUTCH_SUPPORT "Dutch"
+LangString DUTCH_SUPPORT ${LANG_SLOVAK} "holandský"
+; FRENCH_SUPPORT "French"
+LangString FRENCH_SUPPORT ${LANG_SLOVAK} "francúzsky"
+; RUSSIAN_SUPPORT "Russian"
+LangString RUSSIAN_SUPPORT ${LANG_SLOVAK} "ruský"
+; POLISH_SUPPORT "Polish"
+LangString POLISH_SUPPORT ${LANG_SLOVAK} "poľský"
+; ITALIAN_SUPPORT "Italian"
+LangString ITALIAN_SUPPORT ${LANG_SLOVAK} "talianský"
+; DANISH_SUPPORT "Danish"
+LangString DANISH_SUPPORT ${LANG_SLOVAK} "dánsky"
+; KOREAN_SUPPORT "Korean"
+LangString KOREAN_SUPPORT ${LANG_SLOVAK} "kórejský"
+; CZECH_SUPPORT "Czech"
+LangString CZECH_SUPPORT ${LANG_SLOVAK} "český"
+; TURKISH_SUPPORT "Turkish"
+LangString TURKISH_SUPPORT ${LANG_SLOVAK} "turecký"
+; HUNGARIAN_SUPPORT "Hungarian"
+LangString HUNGARIAN_SUPPORT ${LANG_SLOVAK} "maďarský"
+; SLOVENIAN_SUPPORT "Slovenian"
+LangString SLOVENIAN_SUPPORT ${LANG_SLOVAK} "slovinský"
+; ARABIC_SUPPORT "Arabic"
+LangString ARABIC_SUPPORT ${LANG_SLOVAK} "arabský"
+; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
+LangString PORTUGUESEBR_SUPPORT ${LANG_SLOVAK} "portugalský (Brazília)"
+; LATVIAN_SUPPORT "Latvian"
+LangString LATVIAN_SUPPORT ${LANG_SLOVAK} "lotyšský"
+; SLOVAK_SUPPORT "Slovak"
+LangString SLOVAK_SUPPORT ${LANG_SLOVAK} "slovenský"
+
+; LANG_PROGRAM "Program Language"
+LangString LANG_PROGRAM ${LANG_SLOVAK} "Jazyk programu"
+
+; SORRY_NO_95 "Sorry, Windows 95 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_95 ${LANG_SLOVAK} "Je mi ľúto, systém Windows 95 už nie je podporovaný. Použite PasswordSafe 2.16"
+
+; SORRY_NO_98 "Sorry, Windows 98 is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_98 ${LANG_SLOVAK} "Je mi ľúto, systém Windows 98 už nie je podporovaný. Použite PasswordSafe 2.16"
+
+; SORRY_NO_ME "Sorry, Windows ME is no longer supported. Try PasswordSafe 2.16"
+LangString SORRY_NO_ME ${LANG_SLOVAK} "Je mi ľúto, systém Windows ME už nie je podporovaný. Použite PasswordSafe 2.16"
+
+; SORRY_NO_2K "Sorry, Windows 2000 is no longer supported. Try PasswordSafe 3.18"
+LangString SORRY_NO_2K ${LANG_SLOVAK} "Je mi ľúto, systém Windows 2000 už nie je podporovaný. Použite PasswordSafe 3.18"
+
+; LangString Icon_description_Uninstall "Password Safe Uninstall"
+LangString Icon_description_Uninstall ${LANG_SLOVAK} "Odinštalovať Password Safe"
+
+; LangString Icon_description_Help  "Password Safe Help"
+LangString Icon_description_Help ${LANG_SLOVAK} "Nápoveda pre Password Safe"
+
+; Screen Capture Protection texts:
+; LangString SCRCAP_PROTECTION "Screen capture protection"
+LangString SCRCAP_PROTECTION ${LANG_SLOVAK} "Ochrana proti snímaniu obrazovky"
+
+; LangString SORRY_CANNOT_DISABLE_SCRCAP  "An error occurred disabling screen capture protection. Screen capture protection is not disabled."
+LangString SORRY_CANNOT_DISABLE_SCRCAP ${LANG_SLOVAK} "Vyskytla sa chyba pri vypínaní ochrany snímania obrazovky. Ochrana snímania obrazovky nie je vypnutá."
+
+; LangString SORRY_CANNOT_ENABLE_SCRCAP "An error occurred setting screen capture protection to default (enabled)."
+LangString SORRY_CANNOT_ENABLE_SCRCAP ${LANG_SLOVAK} "Vyskytla sa chyba pri nastavovaní ochrany snímania obrazovky."
+
+; LangString DESC_ScrCapProtection "Enables screen capture protection."
+LangString DESC_ScrCapProtection ${LANG_SLOVAK} "Zapne ochranu proti snímaniu obrazovky."
+
+;=================================================================
+; End of pwsafe_sk.lng

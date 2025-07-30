@@ -2,7 +2,8 @@ set (TEST_SRCS
   AESTest.cpp AliasShortcutTest.cpp FileV3Test.cpp ItemAttTest.cpp OSTest.cpp BlowFishTest.cpp
   FileV4Test.cpp ItemDataTest.cpp SHA256Test.cpp SHA1Test.cpp CommandsTest.cpp ItemFieldTest.cpp
   StringXTest.cpp coretest.cpp HMAC_SHA256Test.cpp HMAC_SHA1Test.cpp KeyWrapTest.cpp TwoFishTest.cpp
-  AuxParseTest.cpp UtilTest.cpp FileEncDecTest.cpp ImportTextTest.cpp TOTPTest.cpp Base32Test.cpp)
+  AuxParseTest.cpp UtilTest.cpp FileEncDecTest.cpp ImportTextTest.cpp TOTPTest.cpp Base32Test.cpp
+  ValidateTest.cpp MRUListTest.cpp)
 
 if (WIN32)
   list (APPEND TEST_SRCS ../core/core.rc2)
@@ -23,7 +24,7 @@ file (COPY "data/import-text-unit-test5.csv" DESTINATION "data")
 add_executable(coretest ${TEST_SRCS})
 if (MSVC)
 set_target_properties(coretest PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1)
-target_link_libraries(coretest gtest core os Rpcrt4 harden_interface)
+target_link_libraries(coretest gtest core os Rpcrt4 bcrypt harden_interface)
 elseif (APPLE)
 target_link_libraries(coretest gtest core os pthread ${wxWidgets_LIBRARIES} "-framework CoreFoundation" "-framework CoreServices")
 else ()

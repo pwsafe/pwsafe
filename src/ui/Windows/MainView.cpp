@@ -3861,7 +3861,7 @@ void DboxMain::OnViewReports()
   gmb.SetStandardIcon(MB_ICONQUESTION);
 
   INT_PTR rc = gmb.DoModal();
-  UINT uistring(0);
+  UINT uistringID(0);
   switch (rc) {
     case IDSC_RPTCOMPARE:
     case IDSC_RPTFIND:
@@ -3874,18 +3874,17 @@ void DboxMain::OnViewReports()
     case IDSC_RPTMERGE:
     case IDSC_RPTSYNCH:
     case IDSC_RPTVALIDATE:
-      uistring = (UINT)rc;
+      uistringID = (UINT)rc;
       break;
     default:
       return;
   }
-  csAction.LoadString(uistring);
+  csAction = CReport::ReportNames.find(uistringID)->second;
   cs_filename.Format(IDSC_REPORTFILENAME, static_cast<LPCWSTR>(cs_drive),
                      static_cast<LPCWSTR>(cs_directory),
                      static_cast<LPCWSTR>(csAction));
 
   ViewReport(cs_filename);
-  return;
 }
 
 static UINT SetupViewReports(const int nID)
@@ -4011,7 +4010,7 @@ int DboxMain::OnUpdateViewReports(const int nID)
   if (!GetDriveAndDirectory(cs_Database, cs_drive, cs_directory))
     return FALSE;
 
-  csAction.LoadString(SetupViewReports(nID));
+  csAction = CReport::ReportNames.find(SetupViewReports(nID))->second;
   cs_filename.Format(IDSC_REPORTFILENAME, static_cast<LPCWSTR>(cs_drive),
                      static_cast<LPCWSTR>(cs_directory),
                      static_cast<LPCWSTR>(csAction));

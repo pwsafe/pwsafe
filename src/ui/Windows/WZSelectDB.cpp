@@ -773,7 +773,7 @@ void CWZSelectDB::OnOpenFileBrowser()
       cs_filter.LoadString(current_version == PWSfile::V30 ? IDS_FDF_V3_ALL : IDS_FDF_V4_ALL);
       dwflags = OFN_PATHMUSTEXIST | OFN_HIDEREADONLY |
         OFN_LONGNAMES | OFN_OVERWRITEPROMPT;
-      uimsgid = IDS_NAMEXMLFILE;
+      uimsgid = IDS_NAMEDBFILE;
       break;
     default:
       ASSERT(0);

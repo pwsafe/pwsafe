@@ -276,6 +276,8 @@ Unicode true
   !include ".\I18N\pwsafe_ar-jo.lng"
   !insertmacro MUI_LANGUAGE "Latvian"
   !include ".\I18N\pwsafe_lv.lng"
+  !insertmacro MUI_LANGUAGE "Slovak"
+  !include ".\I18N\pwsafe_sk.lng"
 
 ; English texts here
 ; Note that if we add a string, it needs to be added in all the
@@ -346,6 +348,7 @@ LangString HUNGARIAN_SUPPORT ${LANG_ENGLISH} "Hungarian"
 LangString SLOVENIAN_SUPPORT ${LANG_ENGLISH} "Slovenian"
 LangString ARABIC_SUPPORT ${LANG_ENGLISH} "Arabic"
 LangString LATVIAN_SUPPORT ${LANG_ENGLISH} "Latvian"
+LangString SLOVAK_SUPPORT ${LANG_ENGLISH} "Slovak"
 
 LangString LANG_PROGRAM ${LANG_ENGLISH} "Program Language"
 LangString SORRY_NO_95 ${LANG_ENGLISH} "Sorry, Windows 95 is no longer supported.$\r$\nTry Password Safe 2.16"
@@ -469,11 +472,11 @@ Section /o "$(CHINESE_CN_SUPPORT)" ChineseSection
   File /nonfatal "${LANG_DLL_DIR}\pwsafeZH.dll"
   File /nonfatal "..\..\help\pwsafeZH\pwsafeZH.chm"
 SectionEnd
-Section /o "$(CHINESE_TW_SUPPORT)" ChineseTWSection
-  SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL_DIR}\pwsafeZH_TW.dll"
-  File /nonfatal "..\..\help\pwsafeZH\pwsafeZH_TW.chm"
-SectionEnd
+;Section /o "$(CHINESE_TW_SUPPORT)" ChineseTWSection
+;  SetOutPath "$INSTDIR"  
+;  File /nonfatal "${LANG_DLL_DIR}\pwsafeZH_TW.dll"
+;  File /nonfatal "..\..\help\pwsafeZH\pwsafeZH_TW.chm"
+;SectionEnd
 Section /o "$(GERMAN_SUPPORT)" GermanSection
   SetOutPath "$INSTDIR"  
   File /nonfatal "${LANG_DLL_DIR}\pwsafeDE.dll"
@@ -558,6 +561,11 @@ Section /o "$(LATVIAN_SUPPORT)" LatvianSection
   SetOutPath "$INSTDIR"  
   File /nonfatal "${LANG_DLL_DIR}\pwsafeLV.dll"
   File /nonfatal "..\..\help\pwsafeLV\pwsafeLV.chm"
+SectionEnd
+Section /o "$(SLOVAK_SUPPORT)" SlovakSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeSK.dll"
+  File /nonfatal "..\..\help\pwsafeSK\pwsafeSK.chm"
 SectionEnd
 SectionGroupEnd
 
@@ -838,6 +846,9 @@ Section "Uninstall"
   Delete "$INSTDIR\pwsafeRU.chm"
   Delete "$INSTDIR\pwsafeRU.chw"
   Delete "$INSTDIR\pwsafeRU.dll"
+  Delete "$INSTDIR\pwsafeSK.chm"
+  Delete "$INSTDIR\pwsafeSK.chw"
+  Delete "$INSTDIR\pwsafeSK.dll"
   Delete "$INSTDIR\pwsafeSL.chm"
   Delete "$INSTDIR\pwsafeSL.chw"
   Delete "$INSTDIR\pwsafeSL.dll"
@@ -977,6 +988,8 @@ Function .onInit
   Push "Arabic"
   Push ${LANG_LATVIAN}
   Push "Latvian"
+  Push ${LANG_SLOVAK}
+  Push "Slovak"
   Push A ; A means auto count languages
          ; for the auto count to work the first empty push (Push "") must remain
   LangDLL::LangDialog $(LANG_INSTALL) $(LANG_SELECT)
@@ -989,8 +1002,8 @@ Function .onInit
   SectionSetFlags ${GermanSection} ${SF_SELECTED}
   StrCmp $LANGUAGE ${LANG_SIMPCHINESE} 0 +2
   SectionSetFlags ${ChineseSection} ${SF_SELECTED}
-  StrCmp $LANGUAGE ${LANG_TRADCHINESE} 0 +2
-  SectionSetFlags ${ChineseTWSection} ${SF_SELECTED}
+  ;StrCmp $LANGUAGE ${LANG_TRADCHINESE} 0 +2
+  ;SectionSetFlags ${ChineseTWSection} ${SF_SELECTED}
   StrCmp $LANGUAGE ${LANG_SPANISH} 0 +2
   SectionSetFlags ${SpanishSection} ${SF_SELECTED}
   StrCmp $LANGUAGE ${LANG_SWEDISH} 0 +2
@@ -1021,6 +1034,8 @@ Function .onInit
   SectionSetFlags ${ArabicSection} ${SF_SELECTED}
   StrCmp $LANGUAGE ${LANG_LATVIAN} 0 +2
   SectionSetFlags ${LatvianSection} ${SF_SELECTED}
+  StrCmp $LANGUAGE ${LANG_SLOVAK} 0 +2
+  SectionSetFlags ${SlovakSection} ${SF_SELECTED}
 
   ;
   ; Check if this is an upgrade or not. If so, default "startup" to

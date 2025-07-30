@@ -77,7 +77,7 @@ LangString TEXT_GC_SUBTITLE ${LANG_SLOVENIAN} "Izberite Redno za uporabo na enem
 LangString PSWINI_TITLE ${LANG_SLOVENIAN} "Izberite vrsto namestitve"
 
 ; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString PSWINI_TEXT1 ${LANG_SLOVENIAN} "Redna (uporablja Register, primerna za domači ali enouporabniški računalnik"
+LangString PSWINI_TEXT1 ${LANG_SLOVENIAN} "Redna (uporablja Register, primerna za domači ali enouporabniški računalnik)"
 
 ; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
 LangString PSWINI_TEXT2 ${LANG_SLOVENIAN} "Zelena (za disk na USB ključku; ne uporablja gostiteljev Registra)"
@@ -140,6 +140,7 @@ LangString ARABIC_SUPPORT ${LANG_SLOVENIAN} "Arabsko"
 ; PORTUGUESEBR_SUPPORT "Portuguese (Brazil)"
 LangString PORTUGUESEBR_SUPPORT ${LANG_SLOVENIAN} "Portugalščina (Brazilija)"
 LangString LATVIAN_SUPPORT ${LANG_SLOVENIAN} "Latvijščina"
+LangString SLOVAK_SUPPORT ${LANG_SLOVENIAN} "Slovaščina"
 
 
 ; LANG_PROGRAM "Program Language"

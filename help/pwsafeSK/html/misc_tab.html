@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Nastavenia - karta Rôzne</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Nastavenia - karta Rôzne</h2>
+
+<img src="images/options/misc_tab.png" alt="Karta Rôzne"><br>
+
+<p>Na karte <b>Rôzne</b> sa zobrazujú rôzne predvolené nastavenia programu.</p>
+
+<h3>Potvrdiť vymazanie záznamov</h3>
+
+<p>Ak je začiarknuté, pri každom pokuse o odstránenie záznamu s heslom sa zobrazí výzva používateľovi s požiadavkou na potvrdenie.<p>
+
+<h3>Zaznamenávať čas posledného prístupu k záznamu</h3>
+
+<p>Ak je začiarknuté, <b>Password Safe</b> zaznamenáva čas prístupu ku každému záznamu 
+(napr. keď bolo heslo kopírované alebo keď boli podrobnosti záznamu zobrazené atď.). 
+Čas sa uloží spolu so záznamom a je možné ho zobraziť v dialógovom okne záznamu.</p>
+
+<b>Poznámky:</b><br>
+
+<small>
+<ul>
+<li>Ak je táto možnosť povolená, databáza sa aktualizuje, aj keď nebol žiadny záznam upravený. 
+To znamená, že pri ukončení aplikácie sa môže zobraziť výzva na uloženie databázy, aj keď ste explicitne nič nezmenili.</li>
+<li>Keď je databáza otvorená v režime iba na čítanie, časy prístupu sa <b>neaktualizujú</b>.</li>
+</ul>
+</small>
+
+<h3>Kláves Esc ukončí aplikáciu</h3>
+
+<p>Ak je začiarknuté, kláves <b>Esc</b> sa dá použiť na zatvorenie aplikácie keď je maximalizovaná. 
+Avšak, ak je zapnutý System Tray (prostredníctvom nastavenia "Pridať ikonu na panel úloh" na karte "Systém"), 
+potom kláves <b>Esc</b> iba zatvorí hlavné okno, a je možné ho znova otvoriť dvojitým kliknutím na ikonu v systémovej lište.</p>
+
+<h3>Akcia na dvojklik</h3>
+
+<p>Toto vám umožňuje určiť, akú predvolenú akciu vykoná <b>Password Safe</b> po dvojitom kliknutí na záznam. 
+Predvolená hodnota je skopírovať heslo záznamu do schránky, čo je zvyčajne najpoužívanejšia funkcia.
+<br>Dostupné akcie sú:</p>
+
+<ul>
+<li>Automatické dopĺňanie</li>
+<li>Prejsť na adresu URL</li>
+<li>Prejsť na adresu URL + automatické dopĺňanie</li>
+<li>Kopírovať poznámky do schránky</li>
+<li>Kopírovať heslo do schránky</li>
+<li>Kopírovať heslo do schránky a minimalizovať</li>
+<li>Kopírovať používateľské meno do schránky</li>
+<li>Spustiť príkaz</li>
+<li>Odoslať email</li>
+<li>Zobraziť/Upraviť vybraný záznam</li>
+</ul>
+<p>Upozorňujeme, že položka "Kopírovať heslo a minimalizovať", nebude fungovať podľa očakávaní, ak je na karte <a href="security_tab.html">Zabezpečenie</a> vybratá možnosť "Vymazať schránku pri minimalizácii aplikácie".</p>
+
+<h3>Automatické dopĺňanie</h3>
+
+<ul>
+<li><b>Minimalizovať po automatickom dopĺňaní</b> Predvolene sa aplikácia minimalizuje pri automatickom dopĺňaní. 
+Ak toto začiarkavacie políčko nie je začiarknuté, funkcia aplikácia sa namiesto toho presunie "za" všetky zobrazené okná.</li>
+<li><b>Predvolený reťazec automatického dopĺňania</b> Tu môžete zadať reťazec ktorý sa má predvolene použiť pre všetky záznamy. 
+Túto možnosť môžete prepísať pre konkrétny záznam. Viac informácií o automatickom dopĺňaní nájdete v téme <a href="autotype.html">Používanie AutoType</a>.</li>
+<li><b>Predvolené oneskorenie AutoType</b> Toto je čas v milisekundách, ktorý Password Safe čaká medzi znakmi pri vykonávaní automatického dopĺňania. 
+Predvolená hodnota 10 ms by mala byť pre väčšinu systémov dostatočná. Možno ju budete chcieť znížiť (zrýchliť), ak máte rýchly počítač. 
+V každom prípade môžete toto nastavenie pre konkrétny záznam zmeniť, ako je popísané v téme <a href="autotype.html">Používanie AutoType</a>.</li>
+</ul>
+
+<h3>Predvolené používateľské meno</h3>
+
+<p>Toto vám umožňuje nastaviť predvolené používateľské meno, ktoré sa bude používať automaticky vždy, 
+keď sa vygeneruje nové heslo. Ak je začiarknuté, zadané meno sa vloží do poľa s používateľským menom 
+nových záznamov ako predvolené. Samozrejme, v prípade potreby ho môžete pre konkrétny záznam upraviť.<br></p>
+
+<h3><a name="AltBrowser"></a>Alternatívny prehliadač</h3>
+
+<p>Prehliadač, ktorý zadáte v tomto poli, sa použije pri použití príkazu "Otvoriť URL v prehliadači" pre vybraný záznam, keď URL adresa položky obsahuje
+"[alt]" pred adresou, napr. "[alt]http://www.foo.net". Toto je užitočné, ak je napríklad vaším predvoleným prehliadačom Firefox a chcete
+otvárať konkrétnu webovú stránku s iným prehliadačom.</p>
+
+<p>Parametre príkazového riadka môžete prehliadaču zadať prostredníctvom daného poľa. <b>Neuzatvárajte</b> túto hodnotu do jednoduchých alebo dvojitých úvodzoviek, pokiaľ to váš zvolený prehliadač nevyžaduje.</p>
+
+<h3><a name="ExtEditor"></a>Alternatívny textový editor</h3>
+
+<p>Externý editor, ktorý zadáte v tomto poli, sa použije pri kliknutí pravým tlačidlom myši na pole Poznámky záznamu 
+a výbere úpravy poľa pomocou externého editora. Viac informácií nájdete v téme
+<a href="entering_pwd.html#notes_external_editor">"Používateľské mená, heslá a skupiny: Poznámky"</a>.</p>
+
+<p>Parametre príkazového riadka môžete editoru zadať prostredníctvom daného poľa. <b>Neuzatvárajte</b> túto hodnotu do jednoduchých alebo dvojitých úvodzoviek, pokiaľ to váš zvolený externý editor nevyžaduje.</p>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Karta Rôzne">
+<param name="Keyword" value="Potvrdiť zmazanie">
+<param name="Keyword" value="Potvrdiť uloženie">
+<param name="Keyword" value="Prehliadač">
+<param name="Keyword" value="Alternatívny prehliadač">
+</object>
+
+</body>
+</html>

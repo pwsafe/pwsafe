@@ -29,6 +29,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <functional>
+#include <array>
 
 using namespace std;
 using pws_os::CUUID;
@@ -275,11 +276,15 @@ int CItemData::WriteCommon(PWSfile *out) const
                                   PWHIST, RUNCMD, EMAIL,
                                   SYMBOLS, POLICYNAME,
                                   DATA_ATT_TITLE, DATA_ATT_MEDIATYPE, DATA_ATT_FILENAME,
+                                  PASSKEY_RP_ID,
                                   END};
   const FieldType TimeFields[] = {ATIME, CTIME, XTIME, PMTIME, RMTIME, TOTPSTARTTIME,
                                   DATA_ATT_MTIME,
                                   END};
-  const FieldType BinaryFields[] = { TOTPCONFIG, TOTPTIMESTEP, TOTPLENGTH, DATA_ATT_CONTENT, END };
+  const FieldType BinaryFields[] = { TOTPCONFIG, TOTPTIMESTEP, TOTPLENGTH, DATA_ATT_CONTENT,
+                                  PASSKEY_CRED_ID, PASSKEY_USER_HANDLE, PASSKEY_ALGO_ID,
+                                  PASSKEY_PRIVATE_KEY, PASSKEY_SIGN_COUNT,
+                                  END };
 
   for (i = 0; TextFields[i] != END; i++)
     WriteIfSet(TextFields[i], out, true);
@@ -525,6 +530,32 @@ StringX CItemData::GetFieldValue(FieldType ft) const
       str = GetTime(DATA_ATT_MTIME, PWSUtil::TMC_LOCALE);
       break;
     case DATA_ATT_CONTENT:
+      break;
+    case PASSKEY_CRED_ID:
+    {
+      std::wostringstream oss;
+      for (unsigned char c : GetPasskeyCredentialID())
+        oss << std::hex << std::setw(2) << std::setfill(L'0') << static_cast<int>(c);
+      str = oss.str().c_str();
+      break;
+    }
+    case PASSKEY_USER_HANDLE:
+    {
+      std::wostringstream oss;
+      for (unsigned char c : GetPasskeyUserHandle())
+        oss << std::hex << std::setw(2) << std::setfill(L'0') << static_cast<int>(c);
+      str = oss.str().c_str();
+      break;
+    }
+    case PASSKEY_ALGO_ID:
+      if (HasPasskey())
+        str = std::to_wstring(GetPasskeyAlgorithmID()).c_str();
+      break;
+    case PASSKEY_PRIVATE_KEY:
+      break; // never ever show to user
+    case PASSKEY_SIGN_COUNT:
+      if (HasPasskey())
+        str = std::to_wstring(GetPasskeySignCount()).c_str();
       break;
     default:
       ASSERT(0);
@@ -1754,6 +1785,11 @@ bool CItemData::ValidatePWHistory()
   if (pwhistlist.getErr() == 0)
     return true;
 
+  if (pwhistlist.getErr() == static_cast<size_t>(-1)) { // unrecoverable error
+    SetPWHistory(_T(""));
+    return false;
+  }
+
   size_t pwh_max = pwhistlist.getMax();
   size_t listnum = pwhistlist.size();
 
@@ -2101,6 +2137,8 @@ bool CItemData::SetField(CItem::FieldType ft, const unsigned char* data, size_t 
       {
         uuid_array_t uuid_array;
         ASSERT(len == sizeof(uuid_array_t));
+        if (data == nullptr || len < sizeof(uuid_array_t))
+          return false;
         for (size_t i = 0; i < sizeof(uuid_array_t); i++)
           uuid_array[i] = data[i];
         SetUUID(uuid_array, ft);
@@ -2123,12 +2161,18 @@ bool CItemData::SetField(CItem::FieldType ft, const unsigned char* data, size_t 
     case DATA_ATT_TITLE:
     case DATA_ATT_MEDIATYPE:
     case DATA_ATT_FILENAME:
+    case PASSKEY_RP_ID:
       if (!SetTextField(ft, data, len)) return false;
       break;
     case TOTPCONFIG:
     case TOTPTIMESTEP:
     case TOTPLENGTH:
     case DATA_ATT_CONTENT:
+    case PASSKEY_CRED_ID:
+    case PASSKEY_USER_HANDLE:
+    case PASSKEY_ALGO_ID:
+    case PASSKEY_PRIVATE_KEY:
+    case PASSKEY_SIGN_COUNT:
       CItem::SetField(ft, data, len);
       break;
     case CTIME:
@@ -2339,6 +2383,12 @@ stringT CItemData::FieldName(FieldType ft)
   case DATA_ATT_FILENAME:  LoadAString(retval, IDSC_FLDNMDATAATTFILENAME); break;
   case DATA_ATT_MTIME:     LoadAString(retval, IDSC_FLDNMDATAATTMTIME); break;
   case DATA_ATT_CONTENT:   LoadAString(retval, IDSC_FLDNMDATAATTCONTENT); break;
+  case PASSKEY_CRED_ID:     LoadAString(retval, IDSC_FLDNMPASSKEYCREDID); break;
+  case PASSKEY_RP_ID:       LoadAString(retval, IDSC_FLDNMPASSKEYRPID); break;
+  case PASSKEY_USER_HANDLE: LoadAString(retval, IDSC_FLDNMPASSKEYUSERHANDLE); break;
+  case PASSKEY_ALGO_ID:     LoadAString(retval, IDSC_FLDNMPASSKEYALGOID); break;
+  case PASSKEY_PRIVATE_KEY: LoadAString(retval, IDSC_FLDNMPASSKEYPRIVATEKEY); break;
+  case PASSKEY_SIGN_COUNT:  LoadAString(retval, IDSC_FLDNMPASSKEYSIGNCOUNT); break;
 
   default:
     ASSERT(0);
@@ -2455,4 +2505,72 @@ void CItemData::ClearAttachment() {
   ClearField(DATA_ATT_FILENAME);
   ClearField(DATA_ATT_MTIME);
   ClearField(DATA_ATT_CONTENT);
+}
+
+int32 CItemData::GetPasskeyAlgorithmID() const {
+    std::vector<unsigned char> v;
+    GetField(PASSKEY_ALGO_ID, v);
+    ASSERT(v.size() == 4 || v.size() == 0);
+    return v.size() == 4 ? getInt32(v.data()) : 0;
+}
+
+uint32 CItemData::GetPasskeySignCount() const {
+    std::vector<unsigned char> v;
+    GetField(PASSKEY_SIGN_COUNT, v);
+    ASSERT(v.size() == 4 || v.size() == 0);
+    return v.size() == 4 ? getInt32(v.data()) : 0;
+}
+
+VectorX<unsigned char> CItemData::GetPasskeyCredentialID() const {
+    VectorX<unsigned char> v;
+    GetField(PASSKEY_CRED_ID, v);
+    return v;
+}
+
+VectorX<unsigned char> CItemData::GetPasskeyUserHandle() const {
+    VectorX<unsigned char> v;
+    GetField(PASSKEY_USER_HANDLE, v);
+    return v;
+}
+
+VectorX<unsigned char> CItemData::GetPasskeyPrivateKey() const {
+    VectorX<unsigned char> v;
+    GetField(PASSKEY_PRIVATE_KEY, v);
+    return v;
+}
+
+void CItemData::SetPasskeyAlgorithmID(const int32 algo_id) {
+    unsigned char buf[4];
+    putInt32(buf, algo_id);
+    CItem::SetField(PASSKEY_ALGO_ID, buf, 4);
+}
+
+void CItemData::SetPasskeySignCount(const uint32 sign_count) {
+    unsigned char buf[4];
+    putInt32(buf, sign_count);
+    CItem::SetField(PASSKEY_SIGN_COUNT, buf, 4);
+}
+
+bool CItemData::HasIncompletePasskey() const {
+    constexpr static std::array<int, 6> fields = {
+        PASSKEY_CRED_ID,
+        PASSKEY_RP_ID,
+        PASSKEY_USER_HANDLE,
+        PASSKEY_ALGO_ID,
+        PASSKEY_PRIVATE_KEY,
+        PASSKEY_SIGN_COUNT
+    };
+    auto numSet = 0;
+    for (int ft : fields)
+        numSet += IsFieldSet(ft) ? 1 : 0;
+    return !(numSet == 0 || numSet == fields.size());
+}
+
+void CItemData::ClearPasskey() {
+    ClearField(PASSKEY_CRED_ID);
+    ClearField(PASSKEY_RP_ID);
+    ClearField(PASSKEY_USER_HANDLE);
+    ClearField(PASSKEY_ALGO_ID);
+    ClearField(PASSKEY_PRIVATE_KEY);
+    ClearField(PASSKEY_SIGN_COUNT);
 }

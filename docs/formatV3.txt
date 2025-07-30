@@ -207,6 +207,7 @@ PasswordSafe V3.29Y introduced Format 0x030C
 PasswordSafe V3.30 introduced Format 0x030D
 PasswordSafe V3.47 introduced Format 0x030E
 PasswordSafe V3.68 introduced Format 0x030F
+PasswordSafe V3.69 introduced Format 0x0310
 
 [2] A universally unique identifier is needed in order to synchronize
 databases across different machine. Representation is described in
@@ -381,6 +382,12 @@ Att MediaType               0x26        Text          Y              [30]
 Att FileName                0x27        Text          Y              [30]
 Att Modification Time       0x28        time_t        Y              [30]
 Att Content                 0x29        Binary        Y              [30]
+Passkey Credential ID       0x2a        Binary        Y              [31]
+Passkey Relying Party ID    0x2b        Text          Y              [31]
+Passkey User Handle         0x2c        Binary        Y              [31]
+Passkey Algorithm ID        0x2d        4 bytes       Y              [31]
+Passkey Private Key         0x2e        Binary        Y              [31]
+Passkey Sign Count          0x2f        4 bytes       Y              [31]
 Unknown (testing)           0xdf        -             N              [26]
 Implementation-specific     0xe0-0xfe   -             N              [27]
 End of Entry                0xff        [empty]       Y              [28]
@@ -627,6 +634,39 @@ Although the Att Content field is theoretically limited to 4GB, attaching large
 files will impact performance and synchronization times, and could make the database
 inaccessible on mobile platforms. It is advised to keep the total database size
 below 100MB.
+
+[31] The passkey parameters fields are listed below. If an entry contains
+a passkey, all fields must be present and non-empty. Below are references
+to the official specification documenting each field, including requirements
+of the contents.
+
+    Passkey Credential ID
+    https://www.w3.org/TR/webauthn-2/#credential-id
+
+    Passkey Relying Party ID
+    https://www.w3.org/TR/webauthn-2/#relying-party-identifier
+
+    Passkey User Handle
+    https://www.w3.org/TR/webauthn-2/#user-handle
+
+    Passkey Algorithm ID = IANA COSE Algorithm Identifier
+    https://www.w3.org/TR/webauthn-2/#sctn-alg-identifier
+    Encode as signed (!) 32 bit little-endian value, example for ES256:
+    0xf9 0xff 0xff 0xff
+    To enhance platform compatability, the application should prefer to
+    create passkeys using ES256 (if supported by the Relying Party).
+
+    Passkey Private Key
+    https://www.w3.org/TR/webauthn-2/#credential-private-key
+    For maximum platform compatability, the private key must be encoded
+    in DER format.
+
+    Passkey Sign Count, encoded as unsigned 32 bit little-endian value
+    https://www.w3.org/TR/webauthn-2/#sctn-sign-counter
+    The value stored in the database is the last-used value, so the next
+    assertion must first increment it and use the incremented value.
+
+These parameters were introduced in version 0x0310 (PasswordSafe V3.69).
 
 4. Extensibility
 

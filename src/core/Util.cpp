@@ -434,7 +434,16 @@ size_t _readcbc(FILE *fp,
   if (length > 0 ||
       (BS == 8 && length == 0)) { // pre-3 pain
     unsigned char *tempcbc = block3;
-    numRead += fread(b, 1, BlockLength, fp);
+    size_t nr = fread(b, 1, BlockLength, fp);
+    if (nr != BlockLength) {
+      pws_os::Trace0(_T("_readcbc: Read error or end of file reached - aborting\n"));
+      trashMemory(buffer, buffer_len);
+      delete[] buffer;
+      buffer = nullptr;
+      buffer_len = 0;
+      return 0;
+    }
+    numRead += nr;
     for (unsigned int x = 0; x < BlockLength; x += BS) {
       memcpy(tempcbc, b + x, BS);
       Algorithm->Decrypt(b + x, b + x);

@@ -6622,6 +6622,14 @@ or a corrupt database.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Medium Password</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T093329Z">
+        <seg>Пароль средней надёжности</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Merge</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -7564,6 +7572,54 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Passkey Algorithm ID</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Ключ доступа: идентификатор алгоритма</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Passkey Credential ID</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Ключ доступа: идентификатор учётных данных</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Passkey Private Key</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Ключ доступа: закрытый ключ</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Passkey Relying Party ID</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Ключ доступа: идентификатор проверяющей стороны</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Passkey Sign Count</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Ключ доступа: количество входов</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Passkey User Handle</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Ключ доступа: дескриптор пользователя</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Passkey incorrect</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -8081,7 +8137,7 @@ to the clipboard.</seg>
       <tuv lang="en-US">
         <seg>Project-Id-Version: 
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2025-03-15 12:16+0300
+POT-Creation-Date: 2025-06-29 12:12+0300
 PO-Revision-Date: 2025-03-15 12:30+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team:
@@ -8090,14 +8146,14 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250315T092055Z" creationid="pm_kan" creationdate="20250315T092055Z">
-        <seg>Project-Id-Version: Password Safe
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T091644Z" creationid="pm_kan" creationdate="20250629T091644Z">
+        <seg>Project-Id-Version: 
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2025-03-15 12:30+0300
+POT-Creation-Date: 2025-06-29 12:12+0300
 PO-Revision-Date: 2025-03-15 12:30+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
-Language-Team: none
-Language: ru_RU
+Language-Team:
+Language: ru
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
@@ -9156,6 +9212,14 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Strong Password</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Надёжный пароль</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Subset of entries restricted by the following rule:</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -9650,6 +9714,14 @@ has duplicate entries with the same group/title/user combination.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Были обработаны следующие столбцы:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>The following entries contain incomplete passkeys.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Указанные элементы содержат неполные данные о ключе доступа.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10457,6 +10529,22 @@ and User fields match.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Unlock</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Разблокировать</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Unlock Database</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T091726Z" creationid="pm_kan" creationdate="20250629T091726Z">
+        <seg>Разблокировать контейнер</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Unlock Difficulty:</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -10856,6 +10944,14 @@ Imported %d %ls</seg>
         <seg>Weak Master Password</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142517Z" creationid="pm_kan" creationdate="20240508T142517Z">
+        <seg>Слабый пароль</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Weak Password</seg>
+      </tuv>
+      <tuv lang="ru-RU">
         <seg>Слабый пароль</seg>
       </tuv>
     </tu>

@@ -12,7 +12,8 @@
 //For both export text and export XML
 DLG_HELP(ExportTextWarningDlgBase,                      html/export.html)
 DLG_HELP(SafeCombinationChangeDlg,                      html/change_combo.html)
-DLG_HELP(MergeDlg,                                      html/file_menu.html)
+DLG_HELP(MergeDlg,                                      html/file_menu.html#Merge)
+DLG_HELP(AdvancedSelectionDlg<AdvancedMergeOptions>,    html/file_menu.html#Merge)
 DLG_HELP(SafeCombinationSetupDlg,                       html/about_combinations.html)
 DLG_HELP(ImportTextDlg,                                 html/import.html)
 DLG_HELP(ImportXmlDlg,                                  html/import.html#XML)
@@ -68,5 +69,7 @@ DLG_HELP(pwFiltersMediaDlg,                html/filters.html)
 DLG_HELP(pwFiltersPasswordDlg,             html/filters.html)
 
 DLG_HELP(SelectAliasDlg,                   html/aliases.html)
+
+DLG_HELP(CreateShortcutDlg,                html/edit_menu.html#CreateShortcut)
 
 #endif // _HELPMAP_H_

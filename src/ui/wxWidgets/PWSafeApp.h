@@ -75,7 +75,10 @@ public:
 
 ////@begin PWSafeApp event handler declarations
 #ifdef __WXMAC__
+  virtual void MacReopenApp() wxOVERRIDE;
   virtual void MacNewFile() wxOVERRIDE;
+  virtual void MacOpenFiles(const wxArrayString& fileNames) wxOVERRIDE;
+  wxMutex m_MacFileEventMutex;
 #endif // __WXMAC__
 ////@end PWSafeApp event handler declarations
 
@@ -120,8 +123,16 @@ private:
   bool isHelpActivated;
   bool ActivateHelp(wxLanguage language);
 
+  bool m_cmd_closed;
+  bool m_cmd_silent;
+  bool m_cmd_minimized;
+  bool m_file_in_cmd = false;
+  bool m_initComplete = false;
+  void FinishInit();
+
 public:
   RecentDbList &recentDatabases();
+  void ResizeRecentDatabases();
   uint32 GetHashIters() const { return m_core.GetHashIters(); }
   bool ActivateLanguage(wxLanguage language, bool tryOnly);
   wxLanguage GetSystemLanguage();

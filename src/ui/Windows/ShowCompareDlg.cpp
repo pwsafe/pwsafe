@@ -145,6 +145,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
     CItemData::RMTIME, CItemData::XTIME_INT, CItemData::PWHIST, CItemData::NOTES,
     CItemData::CCNUM, CItemData::CCEXP, CItemData::CCVV, CItemData::CCPIN,
     CItemData::DATA_ATT_TITLE, CItemData::DATA_ATT_MEDIATYPE, CItemData::DATA_ATT_FILENAME, CItemData::DATA_ATT_MTIME, CItemData::DATA_ATT_CONTENT,
+    CItemData::PASSKEY_CRED_ID, CItemData::PASSKEY_SIGN_COUNT,
   };
 
   // Check we have considered all user fields
@@ -153,9 +154,10 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
 
   // Exclude 6: UUID/GROUP/TITLE/USERNAME, RESERVED & 2FAK (01,02,03,04,0B,1B) but
   // Include 1: ENTRYTYPE
+  // Exclude 4: PASSKEY_RP_ID, PASSKEY_USER_HANDLE, PASSKEY_ALGO_ID, PASSKEY_PRIVATE_KEY (covered by PASSKEY_CRED_ID)
   // The developer will still need to ensure new fields are processed below
   // Put in compilation check as this may not be regression tested every time
-  static_assert((sizeof(iFields) / sizeof(iFields[0]) == (CItem::LAST_USER_FIELD - 11 + 2)),
+  static_assert((sizeof(iFields) / sizeof(iFields[0]) == (CItem::LAST_USER_FIELD - 15 + 2)),
     "Check user comparison items - there are some missing! They must be before LAST_USER_FIELD");
 
   StringX sxDefPolicyStr;
@@ -353,6 +355,18 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
         sxValue2 = pci_other->GetFieldValue(CItemData::TWOFACTORKEY);
     }
 
+    if (i == CItemData::PASSKEY_CRED_ID || i == CItemData::PASSKEY_SIGN_COUNT) {
+      if (m_pci->IsAlias())
+        sxValue1 = pci_base->GetFieldValue((CItemData::FieldType)i);
+      else
+        sxValue1 = pci->GetFieldValue((CItemData::FieldType)i);
+
+      if (m_pci_other->IsAlias())
+        sxValue2 = pci_other_base->GetFieldValue((CItemData::FieldType)i);
+      else
+        sxValue2 = pci_other->GetFieldValue((CItemData::FieldType)i);
+    }
+
     if (i == CItemData::POLICY && m_bDifferentDB) {
       // If different databases and both policies are their respective defaults
       // If these are not the same, force the difference to be shown by making one different
@@ -410,8 +424,8 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
           case CItemData::PROTECTED:  /* 0x15 */
             break;
           case CItemData::ATTREF:     /* 0x1a */
-            sxValue1 = pci->HasAttRef() ? sxNo : sxYes;
-            sxValue2 = pci_other->HasAttRef() ? sxNo : sxYes;
+            sxValue1 = pci->HasAttRef() ? sxYes : sxNo;
+            sxValue2 = pci_other->HasAttRef() ? sxYes : sxNo;
             break;
           case CItemData::DATA_ATT_CONTENT: /* 0x29 */
             sxValue1 = pci->IsAttContentSet() ? sxYes : sxNo;

@@ -122,6 +122,8 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_MENU( wxID_EXIT,                  PasswordSafeFrame::OnExitClick                   )
 
   // Update of menu items
+  EVT_UPDATE_UI( wxID_NEW,              PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( wxID_OPEN,             PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( wxID_CLOSE,            PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_LOCK_SAFE,          PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_UNLOCK_SAFE,        PasswordSafeFrame::OnUpdateUI                    )
@@ -229,11 +231,13 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   // Update menu items
   EVT_UPDATE_UI( ID_LIST_VIEW,          PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_TREE_VIEW,          PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_SORT_TREE_MENU,     PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SORT_TREE_BY_GROUP, PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SORT_TREE_BY_NAME,  PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SORT_TREE_BY_DATE,  PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOWHIDE_TOOLBAR,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOWHIDE_DRAGBAR,   PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_SUBVIEWSMENU,       PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOWHIDE_UNSAVED,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOW_ALL_EXPIRY,    PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOW_LAST_FIND_RESULTS, PasswordSafeFrame::OnUpdateUI                )
@@ -244,6 +248,12 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( ID_APPLYFILTER,        PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_MANAGEFILTERS,      PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SHOW_EMPTY_GROUP_IN_FILTER, PasswordSafeFrame::OnUpdateUI            )
+  EVT_UPDATE_UI( ID_CHANGETREEFONT,     PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_CHANGEADDEDITFONT,  PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_CHANGEPSWDFONT,     PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_CHANGENOTESFONT,    PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_CHANGEVKBFONT,      PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_CHANGEFONTMENU,     PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_CUSTOMIZETOOLBAR,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_REPORTSMENU,        PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_REPORT_COMPARE,     PasswordSafeFrame::OnUpdateUI                    )
@@ -279,7 +289,9 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
   EVT_UPDATE_UI( ID_CHANGECOMBO,        PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_BACKUP,             PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_RESTORE,            PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( wxID_PREFERENCES,      PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_PWDPOLSM,           PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_GENERATEPASSWORD,   PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SETDATABASEID,      PasswordSafeFrame::OnUpdateUI                    )
 #ifndef NO_YUBI
   EVT_UPDATE_UI( ID_YUBIKEY_MNG,        PasswordSafeFrame::OnUpdateUI                    )
@@ -310,6 +322,7 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   // Update menu elements
   EVT_UPDATE_UI( ID_PASSWORDSUBSET,     PasswordSafeFrame::OnUpdateUI                    )
+  EVT_UPDATE_UI( ID_PASSWORDQRCODE,     PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_COPYEMAIL,          PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_BROWSEURLPLUS,      PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SENDEMAIL,          PasswordSafeFrame::OnUpdateUI                    )
@@ -478,6 +491,7 @@ void PasswordSafeFrame::RegisterLanguageMenuItems() {
   AddLanguage( ID_LANGUAGE_KOREAN,    wxLANGUAGE_KOREAN,  L"Korean"   );  /* code: 'ko' */
   AddLanguage( ID_LANGUAGE_POLISH,    wxLANGUAGE_POLISH,  L"Polish"   );  /* code: 'pl' */
   AddLanguage( ID_LANGUAGE_RUSSIAN,   wxLANGUAGE_RUSSIAN, L"Russian"  );  /* code: 'ru' */
+  AddLanguage( ID_LANGUAGE_SLOVAK,    wxLANGUAGE_SLOVAK,  L"Slovak"   );  /* code: 'sk' */
   AddLanguage( ID_LANGUAGE_SLOVENIAN, wxLANGUAGE_SLOVENIAN, L"Slovenian"  );  /* code: 'sl' */
   AddLanguage( ID_LANGUAGE_SPANISH,   wxLANGUAGE_SPANISH, L"Spanish"  );  /* code: 'es' */
   AddLanguage( ID_LANGUAGE_SWEDISH,   wxLANGUAGE_SWEDISH, L"Swedish"  );  /* code: 'sv' */
@@ -515,6 +529,13 @@ void PasswordSafeFrame::CreateMenubar()
 
   menuBar->Freeze();
 
+  // Remove any prior menu references from the recent DB list
+  auto& rdb = wxGetApp().recentDatabases();
+  auto menuVect = rdb.GetMenus().AsVector<wxMenu *>();
+  for (auto item : menuVect) {
+    rdb.RemoveMenu(item);
+  }
+
   // Removing all existing menu items is necessary for language switching
   while (menuBar->GetMenuCount()) {
     delete menuBar->Remove(0);
@@ -541,16 +562,17 @@ void PasswordSafeFrame::CreateMenubar()
     menuFile->Append(ID_LOCK_SAFE, _("&Lock\tCtrl+J"), wxEmptyString, wxITEM_NORMAL);
   }
 
-  if (wxGetApp().recentDatabases().GetCount() > 0) {
-
+  if (rdb.GetCount() > 0) {
     // Most recently used DBs listed directly on File menu
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::MRUOnFileMenu)) {
-      wxGetApp().recentDatabases().AddFilesToMenu(menuFile);
+      rdb.UseMenu(menuFile);
+      rdb.AddFilesToMenu(menuFile);
     }
     // Most recently used DBs listed as submenu of File menu
     else {
       auto recentDatabasesMenu = new wxMenu;
-      wxGetApp().recentDatabases().AddFilesToMenu(recentDatabasesMenu);
+      rdb.UseMenu(recentDatabasesMenu);
+      rdb.AddFilesToMenu(recentDatabasesMenu);
       menuFile->AppendSeparator();
       menuFile->Append(ID_RECENTSAFES, _("&Recent Databases..."), recentDatabasesMenu);
     }
@@ -806,8 +828,10 @@ void PasswordSafeFrame::CreateControls()
   itemBoxSizer83->Layout();
 
   const RecentDbList& rdb = wxGetApp().recentDatabases();
-  Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
+  if (rdb.GetMaxFiles() > 0) {
+    Connect(rdb.GetBaseId(), rdb.GetBaseId() + rdb.GetMaxFiles() - 1, wxEVT_COMMAND_MENU_SELECTED,
             wxCommandEventHandler(PasswordSafeFrame::OnOpenRecentDB));
+  }
 
   m_AuiManager.AddPane(panel, wxAuiPaneInfo().
     Name(wxT("mainview")).Caption(wxT("Main View")).
@@ -925,6 +949,10 @@ void PasswordSafeFrame::RefreshToolbarButtons()
         toolbar->AddSeparator()->SetId(PwsToolbarButton.id);
     }
     else {
+      if ((PwsToolbarButton.id == ID_LOCK_SAFE) && m_sysTray->IsLocked())
+        continue; // When database is locked don't add the lock icon...
+      if ((PwsToolbarButton.id == ID_UNLOCK_SAFE) && !m_sysTray->IsLocked())
+        continue; // accordingly, don't add the unlock icon when database is unlocked
       if(toolbarShowText)
         toolbar->AddTool(
           PwsToolbarButton.id,
@@ -2205,6 +2233,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
   const bool isTreeViewEmpty         = isTreeView && !m_tree->HasItems(); // excludes the invisible root item
   const bool isTreeViewItemSelected  = isTreeView && m_tree->HasSelection();
   const bool isWayland               = (wxUtilities::WhatWindowSystem() == wxUtilities::Wayland);
+  const bool isUnlocked              = !IsLocked();
 
   pci = GetSelectedEntry();
 
@@ -2215,11 +2244,19 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
   }
 
   switch (evt.GetId()) {
+    case wxID_NEW:
+    case wxID_OPEN:
+    case ID_SHOWAUTHCODE:
+    case ID_CHANGEFONTMENU:
+      evt.Enable(isUnlocked);
+      break;
+
     case wxID_SAVE:
-      evt.Enable(m_core.IsDbFileSet() && !isFileReadOnly && (m_core.HasDBChanged() || m_core.HaveDBPrefsChanged()));
+      evt.Enable(isUnlocked && m_core.IsDbFileSet() && !isFileReadOnly && (m_core.HasDBChanged() || m_core.HaveDBPrefsChanged()));
       break;
 
     case wxID_SAVEAS:
+    case wxID_PREFERENCES:
     case wxID_PROPERTIES:
     case ID_CLEARCLIPBOARD:
     case ID_LIST_VIEW:
@@ -2227,207 +2264,208 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_REPORTSMENU:
     case ID_BACKUP:
     case ID_RESTORE:
+    case ID_GENERATEPASSWORD:
 #ifndef NO_YUBI
     case ID_YUBIKEY_MNG:
 #endif
-      evt.Enable(m_core.IsDbFileSet());
+      evt.Enable(isUnlocked && m_core.IsDbFileSet());
       break;
-      
+
     case ID_REPORT_SYNCHRONIZE:
-      evt.Enable(CheckReportPresent(IDSC_RPTSYNCH));
+      evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTSYNCH));
       break;
 
     case ID_REPORT_COMPARE:
-      evt.Enable(CheckReportPresent(IDSC_RPTCOMPARE));
+      evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTCOMPARE));
       break;
-      
+
     case ID_REPORT_MERGE:
-      evt.Enable(CheckReportPresent(IDSC_RPTMERGE));
+      evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTMERGE));
       break;
-      
+
     case ID_REPORT_IMPORTTEXT:
-      evt.Enable(CheckReportPresent(IDSC_RPTIMPORTTEXT));
+      evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTIMPORTTEXT));
       break;
-      
+
     case ID_REPORT_IMPORTXML:
-      evt.Enable(CheckReportPresent(IDSC_RPTIMPORTXML));
+      evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTIMPORTXML));
       break;
-      
+
     case ID_REPORT_IMPORTKEEPASS_TXT:
-      evt.Enable(CheckReportPresent(IDSC_RPTIMPORTKPV1TXT));
+      evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTIMPORTKPV1TXT));
       break;
-      
+
     case ID_REPORT_IMPORTKEEPASS_CSV:
-      evt.Enable(CheckReportPresent(IDSC_RPTIMPORTKPV1CSV));
+      evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTIMPORTKPV1CSV));
       break;
-      
+
     case ID_REPORT_EXPORTTEXT:
-      evt.Enable(CheckReportPresent(IDSC_RPTEXPORTTEXT));
+      evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTEXPORTTEXT));
       break;
-      
+
     case ID_REPORT_EXPORTXML:
-      evt.Enable(CheckReportPresent(IDSC_RPTEXPORTXML));
+      evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTEXPORTXML));
       break;
-      
+
     case ID_REPORT_EXPORT_DB:
-      evt.Enable(CheckReportPresent(IDSC_RPTEXPORTDB));
+      evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTEXPORTDB));
       break;
-      
+
     case ID_REPORT_FIND:
-      evt.Enable(CheckReportPresent(IDSC_RPTFIND));
+      evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTFIND));
       break;
-      
+
     case ID_REPORT_VALIDATE:
-      evt.Enable(CheckReportPresent(IDSC_RPTVALIDATE));
+      evt.Enable(isUnlocked && CheckReportPresent(IDSC_RPTVALIDATE));
       break;
-      
+
     case ID_SORT_TREE_MENU:
     case ID_SORT_TREE_BY_GROUP:
     case ID_SORT_TREE_BY_NAME:
     case ID_SORT_TREE_BY_DATE:
-      evt.Enable(m_core.IsDbFileSet() && isTreeView);
+      evt.Enable(isUnlocked && m_core.IsDbFileSet() && isTreeView);
       break;
-      
+
     case ID_EXPORTMENU:
     case ID_COMPARE:
-      evt.Enable(m_core.IsDbFileSet() && m_core.GetNumEntries() != 0);
+      evt.Enable(isUnlocked && m_core.IsDbFileSet() && m_core.GetNumEntries() != 0);
       break;
 
     case ID_ADDGROUP:
-      evt.Enable((isTreeViewGroupSelected || isTreeViewEmpty || !isTreeViewItemSelected) && !isFileReadOnly && IsTreeSortGroup() && m_core.IsDbFileSet());
+      evt.Enable(isUnlocked && (isTreeViewGroupSelected || isTreeViewEmpty || !isTreeViewItemSelected) && !isFileReadOnly && IsTreeSortGroup() && m_core.IsDbFileSet());
       break;
 
     case ID_EXPANDALL:
     case ID_COLLAPSEALL:
-      evt.Enable(!isTreeViewEmpty && m_core.IsDbFileSet());
+      evt.Enable(isUnlocked && !isTreeViewEmpty && m_core.IsDbFileSet());
       break;
 
     case ID_RENAME:
       // only allowed if a GROUP item is selected in tree view
-      evt.Enable(isTreeViewGroupSelected && !isFileReadOnly && IsTreeSortGroup());
+      evt.Enable(isUnlocked && isTreeViewGroupSelected && !isFileReadOnly && IsTreeSortGroup());
       break;
 
     case ID_BROWSEURL:
     case ID_BROWSEURLPLUS:
     case ID_COPYURL:
-      evt.Enable(!isTreeViewGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::URL, pbci));
+      evt.Enable(isUnlocked && !isTreeViewGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::URL, pbci));
       break;
 
     case ID_SENDEMAIL:
     case ID_COPYEMAIL:
-      evt.Enable(!isTreeViewGroupSelected && pci &&
+      evt.Enable(isUnlocked && !isTreeViewGroupSelected && pci &&
           (!pci->IsFieldValueEmpty(CItemData::EMAIL, pbci) ||
           (!pci->IsFieldValueEmpty(CItemData::URL, pbci) && pci->IsURLEmail(pbci))));
       break;
 
     case ID_COPYUSERNAME:
-      evt.Enable(!isTreeViewGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::USER, pbci));
+      evt.Enable(isUnlocked && !isTreeViewGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::USER, pbci));
       break;
 
     case ID_COPYNOTESFLD:
-      evt.Enable(!isTreeViewGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::NOTES, pbci));
+      evt.Enable(isUnlocked && !isTreeViewGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::NOTES, pbci));
       break;
 
     case ID_RUNCOMMAND:
     case ID_COPYRUNCOMMAND:
-      evt.Enable(!isTreeViewGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci));
+      evt.Enable(isUnlocked && !isTreeViewGroupSelected && pci && !pci->IsFieldValueEmpty(CItemData::RUNCMD, pbci));
       break;
 
     case ID_CREATESHORTCUT:
-      evt.Enable(!isTreeViewGroupSelected && !isFileReadOnly && pci &&
+      evt.Enable(isUnlocked && !isTreeViewGroupSelected && !isFileReadOnly && pci &&
           (pci->IsNormal() || pci->IsShortcutBase()));
       break;
 
     case ID_AUTOTYPE:
-      evt.Enable(!isWayland && !isTreeViewGroupSelected && pci);
+      evt.Enable(isUnlocked && !isWayland && !isTreeViewGroupSelected && pci);
       break;
 
     case ID_EDIT:
     case ID_COPYPASSWORD:
     case ID_PASSWORDSUBSET:
     case ID_PASSWORDQRCODE:
-      evt.Enable(!isTreeViewGroupSelected && pci);
+      evt.Enable(isUnlocked && !isTreeViewGroupSelected && pci);
       break;
 
     case ID_COPYAUTHCODE:
-      evt.Enable(!isTreeViewGroupSelected && ((pci && pci->IsTotpActive()) || (pbci && pbci->IsTotpActive())));
+      evt.Enable(isUnlocked && !isTreeViewGroupSelected && ((pci && pci->IsTotpActive()) || (pbci && pbci->IsTotpActive())));
       break;
 
     case ID_VIEWATTACHMENT:
-      evt.Enable(pci && pci->HasAttRef());
+      evt.Enable(isUnlocked && pci && pci->HasAttRef());
       break;
 
     case ID_GOTOBASEENTRY:
     case ID_EDITBASEENTRY:
-      evt.Enable(!isTreeViewGroupSelected && pci && (pci->IsShortcut() || pci->IsAlias()));
+      evt.Enable(isUnlocked && !isTreeViewGroupSelected && pci && (pci->IsShortcut() || pci->IsAlias()));
       break;
 
     case wxID_UNDO:
-      evt.Enable(m_core.AnyToUndo());
+      evt.Enable(isUnlocked && m_core.AnyToUndo());
       break;
 
     case wxID_REDO:
-      evt.Enable(m_core.AnyToRedo());
+      evt.Enable(isUnlocked && m_core.AnyToRedo());
       break;
 
     case ID_SYNCHRONIZE:
-      evt.Enable(!isFileReadOnly && m_core.IsDbFileSet() && m_core.GetNumEntries() != 0);
+      evt.Enable(isUnlocked && !isFileReadOnly && m_core.IsDbFileSet() && m_core.GetNumEntries() != 0);
       break;
 
     case ID_CHANGECOMBO:
-      evt.Enable(!isFileReadOnly && m_core.IsDbFileSet());
+      evt.Enable(isUnlocked && !isFileReadOnly && m_core.IsDbFileSet());
       break;
 
     case wxID_FIND:
-      evt.Enable(m_core.IsDbFileSet() && m_core.GetNumEntries() != 0);
+      evt.Enable(isUnlocked && m_core.IsDbFileSet() && m_core.GetNumEntries() != 0);
       break;
 
     case wxID_ADD:
-      evt.Enable(!isFileReadOnly && m_core.IsDbFileSet());
+      evt.Enable(isUnlocked && !isFileReadOnly && m_core.IsDbFileSet());
       break;
 
     case wxID_DELETE:
-      evt.Enable(!isFileReadOnly && ((pci && !pci->IsProtected()) || isTreeViewGroupSelected));
+      evt.Enable(isUnlocked && !isFileReadOnly && ((pci && !pci->IsProtected()) || isTreeViewGroupSelected));
       break;
 
     case ID_DUPLICATEENTRY:
-      evt.Enable(!isFileReadOnly && pci);
+      evt.Enable(isUnlocked && !isFileReadOnly && pci);
       break;
 
     case ID_SHOWHIDE_UNSAVED:
-      evt.Enable((m_CurrentPredefinedFilter == UNSAVED) || ((m_CurrentPredefinedFilter == NONE) && m_core.IsDbFileSet() && !isFileReadOnly && m_core.HasDBChanged()));
+      evt.Enable(isUnlocked && ((m_CurrentPredefinedFilter == UNSAVED) || ((m_CurrentPredefinedFilter == NONE) && m_core.IsDbFileSet() && !isFileReadOnly && m_core.HasDBChanged())));
       evt.Check(m_CurrentPredefinedFilter == UNSAVED);
       break;
 
     case ID_SHOW_ALL_EXPIRY:
-      evt.Enable((m_CurrentPredefinedFilter == EXPIRY) || ((m_CurrentPredefinedFilter == NONE) &&
+      evt.Enable(isUnlocked && ((m_CurrentPredefinedFilter == EXPIRY) || ((m_CurrentPredefinedFilter == NONE) &&
        m_core.IsDbFileSet() &&
-       m_core.GetExpirySize() != 0));
+       m_core.GetExpirySize() != 0)));
       evt.Check(m_CurrentPredefinedFilter == EXPIRY);
       break;
 
     case ID_SHOW_LAST_FIND_RESULTS:
-      evt.Enable((m_CurrentPredefinedFilter == LASTFIND) || ((m_CurrentPredefinedFilter == NONE) &&
+      evt.Enable(isUnlocked && ((m_CurrentPredefinedFilter == LASTFIND) || ((m_CurrentPredefinedFilter == NONE) &&
                   m_core.IsDbFileSet() &&
-                  m_FilterManager.GetFindFilterSize() != 0));
+                  m_FilterManager.GetFindFilterSize() != 0)));
       evt.Check(m_CurrentPredefinedFilter == LASTFIND);
       break;
 
     case ID_MERGE:
     case ID_IMPORTMENU:
-      evt.Enable(!isFileReadOnly && m_core.IsDbFileSet());
+      evt.Enable(isUnlocked && !isFileReadOnly && m_core.IsDbFileSet());
       break;
-      
+
     case ID_IMPORT_XML:
 #if (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
       evt.Enable(false);
 #else
-      evt.Enable(!isFileReadOnly && m_core.IsDbFileSet());
+      evt.Enable(isUnlocked && !isFileReadOnly && m_core.IsDbFileSet());
 #endif
       break;
 
     case ID_PROTECT:
-      evt.Enable(!isFileReadOnly && pci && !pci->IsShortcut());
+      evt.Enable(isUnlocked && !isFileReadOnly && pci && !pci->IsShortcut());
       evt.Check(pci && pci->IsProtected());
       break;
 
@@ -2438,23 +2476,23 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_PWDPOLSM:
     case ID_LOCK_SAFE:
     case ID_SETDATABASEID:
-      evt.Enable(m_core.IsDbFileSet() && !m_sysTray->IsLocked());
+      evt.Enable(isUnlocked && m_core.IsDbFileSet());
       break;
 
     case ID_UNLOCK_SAFE:
-      evt.Enable(m_core.IsDbFileSet() && m_sysTray->IsLocked());
+      evt.Enable(!isUnlocked && m_core.IsDbFileSet());
       break;
 
     case ID_FILTERMENU:
-      evt.Enable(m_core.IsDbFileSet());
+      evt.Enable(isUnlocked && m_core.IsDbFileSet());
       break;
-      
+
     case ID_EDITFILTER:
-      evt.Enable(m_core.IsDbFileSet() && m_CurrentPredefinedFilter == NONE); // Mark unimplemented
+      evt.Enable(isUnlocked && m_core.IsDbFileSet() && m_CurrentPredefinedFilter == NONE); // Mark unimplemented
       break;
-      
+
     case ID_APPLYFILTER:
-      evt.Enable(m_core.IsDbFileSet() && (m_bFilterActive || CurrentFilter().IsActive()));
+      evt.Enable(isUnlocked && m_core.IsDbFileSet() && (m_bFilterActive || CurrentFilter().IsActive()));
       if(m_bFilterActive) {
         m_ApplyClearFilter->SetItemLabel(_("&Clear current"));
       }
@@ -2462,17 +2500,17 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
         m_ApplyClearFilter->SetItemLabel(_("&Apply current"));
       }
       break;
-      
+
     case ID_MANAGEFILTERS:
-      evt.Enable(m_core.IsDbFileSet() && m_CurrentPredefinedFilter == NONE); // Mark unimplemented
+      evt.Enable(isUnlocked && m_core.IsDbFileSet() && m_CurrentPredefinedFilter == NONE); // Mark unimplemented
       break;
-      
+
     case ID_SHOW_EMPTY_GROUP_IN_FILTER:
-      evt.Enable(m_core.IsDbFileSet() && isTreeView && m_bFilterActive);
+      evt.Enable(isUnlocked && m_core.IsDbFileSet() && isTreeView && m_bFilterActive);
       break;
 
     case ID_SUBVIEWSMENU:
-      evt.Enable(m_core.IsDbFileSet());
+      evt.Enable(isUnlocked && m_core.IsDbFileSet());
       break;
 
     case ID_CUSTOMIZETOOLBAR:
@@ -2486,14 +2524,14 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_SHOWHIDE_DRAGBAR:
       evt.Check(GetDragBarPane().IsShown());
       break;
-      
+
     case ID_CHANGEMODE:
     {
       bool bFileIsReadOnly = true;
       if(m_core.IsDbFileSet()) {
         pws_os::FileExists(m_core.GetCurFile().c_str(), bFileIsReadOnly);
       }
-      evt.Enable(m_core.IsDbFileSet() && !bFileIsReadOnly);
+      evt.Enable(isUnlocked && m_core.IsDbFileSet() && !bFileIsReadOnly);
       break;
     }
     default:
@@ -2509,7 +2547,7 @@ bool PasswordSafeFrame::IsClosed() const
 
 bool PasswordSafeFrame::IsLocked() const
 {
-  return m_sysTray->IsLocked();
+  return m_sysTray && m_sysTray->IsLocked();
 }
 
 void PasswordSafeFrame::RebuildGUI(const int iView /*= iBothViews*/)
@@ -2631,7 +2669,7 @@ void PasswordSafeFrame::UpdateGUI(UpdateGUICommand::GUI_Action ga, const CUUID &
 
 void PasswordSafeFrame::OnUpdateClearRecentDBHistory(wxUpdateUIEvent& evt)
 {
-  evt.Enable(wxGetApp().recentDatabases().GetCount() > 0);
+  evt.Enable(!IsLocked() && wxGetApp().recentDatabases().GetCount() > 0);
 }
 
 void PasswordSafeFrame::Execute(Command *pcmd, PWScore *pcore /*= nullptr*/)
@@ -2742,6 +2780,9 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
     // Without this, modal dialogs like msgboxes lose focus and we end up in a different message loop than theirs.
     // See https://sourceforge.net/tracker/?func=detail&aid=3537985&group_id=41019&atid=429579
     wxSafeYield();
+    // But then wxSafeYield causes the window to lose focus on Mac and Linux.
+    // See https://github.com/pwsafe/pwsafe/issues/954
+    SetFocus();
     // for some reason, we have to restore main frame's position after Yeild, otherwise it could be restored at wrong position when window was moved before lock
     wxGetApp().RestoreFrameCoords();
   }
@@ -2750,6 +2791,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
   }
 
   CreateMenubar(); // Recreate menubar to replace menu item 'Unlock' by 'Lock'
+  RefreshToolbarButtons();
   UpdateSearchBarVisibility();
   m_AuiManager.Update();
 }
@@ -2848,26 +2890,24 @@ void PasswordSafeFrame::HideUI(bool lock)
 
 void PasswordSafeFrame::IconizeOrHideAndLock()
 {
-  // Close child Dialogs, hide if close failed:
-  auto children = GetChildren();
-  for (auto child : children)
-    if (dynamic_cast<wxDialog *>(child) != nullptr)
-      if (!child->Close(true))
-        child->Hide();
-  
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
-    if (!m_sysTray->IsLocked()) {
-      HideUI(true);
-    }
-  }
-  else {
-    TryIconize();
-  }
+  CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}),
+    static_cast<CloseFlags>(CloseFlags::CLOSE_FORCED|CloseFlags::LEAVE_MAIN),
+    [this](bool success) {
+      if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
+        if (!m_sysTray->IsLocked()) {
+          HideUI(true);
+        }
+      }
+      else {
+        TryIconize();
+      }
 
-  // If not already locked by HideUI or OnIconize due to user preference than do it now
-  if (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED) {
-    LockDb();
-  }
+      // If not already locked by HideUI or OnIconize due to user preference than do it now
+      if (m_sysTray->GetTrayStatus() == SystemTray::TrayStatus::UNLOCKED) {
+        LockDb();
+      }
+    }
+  );
 }
 
 void PasswordSafeFrame::LockDb()
@@ -2884,6 +2924,7 @@ void PasswordSafeFrame::LockDb()
     m_sysTray->SetTrayStatus(SystemTray::TrayStatus::LOCKED);
 
     CreateMenubar(); // Recreate menubar to replace menu item 'Lock' by 'Unlock'
+    RefreshToolbarButtons();
   }
 
   // Hide search bar to not populate any search results (see GitHub issue 375)

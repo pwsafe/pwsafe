@@ -40,40 +40,40 @@
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Demo|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Demo|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>Static</UseOfMfc>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -645,6 +645,9 @@
     <ClCompile Include="WZSelectDB.cpp" />
     <ClCompile Include="YubiCfgDlg.cpp" />
     <ClCompile Include="YubiMixin.cpp" />
+    <ClCompile Include="StateBitmapManager.cpp" />
+    <ClCompile Include="StdAfx.cpp" />
+    <ClCompile Include="StrengthMeterCtrl.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutDlg.h" />
@@ -787,6 +790,8 @@
     <ClInclude Include="WZSelectDB.h" />
     <ClInclude Include="YubiCfgDlg.h" />
     <ClInclude Include="YubiMixin.h" />
+    <ClInclude Include="StateBitmapManager.h" />
+    <ClInclude Include="StrengthMeterCtrl.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="graphics\abase.bmp" />
@@ -1101,13 +1106,31 @@
     <Image Include="graphics\question_mark.bmp" />
     <Image Include="graphics\red.bmp" />
     <Image Include="graphics\red_exclamation.bmp" />
+    <Image Include="graphics\scrcap_allowed.bmp" />
+    <Image Include="graphics\scrcap_allowed_forced1.bmp" />
+    <Image Include="graphics\scrcap_allowed_forced2.bmp" />
+    <Image Include="graphics\scrcap_allowed_implicit.bmp" />
+    <Image Include="graphics\scrcap_base_empty.bmp" />
+    <Image Include="graphics\scrcap_excluded.bmp" />
+    <Image Include="graphics\scrcap_state_error.bmp" />
+    <Image Include="graphics\toolbar\classic\browsealt.bmp" />
+    <Image Include="graphics\toolbar\classic\copyauthcode.bmp" />
+    <Image Include="graphics\toolbar\classic\copyauthcode_disabled.bmp" />
     <Image Include="graphics\toolbar\classic\copypassword_disabled.bmp" />
+    <Image Include="graphics\toolbar\classic\displayauthcode.bmp" />
+    <Image Include="graphics\toolbar\classic\displayauthcode_disabled.bmp" />
     <Image Include="graphics\toolbar\classic\exportDB.bmp" />
     <Image Include="graphics\toolbar\classic\exportV1.bmp" />
     <Image Include="graphics\toolbar\classic\exportV2.bmp" />
     <Image Include="graphics\toolbar\classic\exportV3.bmp" />
     <Image Include="graphics\toolbar\classic\exportV4.bmp" />
     <Image Include="graphics\toolbar\classic\lock_database.bmp" />
+    <Image Include="graphics\toolbar\new\browsealt.bmp" />
+    <Image Include="graphics\toolbar\new\browsealt_disabled.bmp" />
+    <Image Include="graphics\toolbar\new\copyauthcode.bmp" />
+    <Image Include="graphics\toolbar\new\copyauthcode_disabled.bmp" />
+    <Image Include="graphics\toolbar\new\displayauthcode.bmp" />
+    <Image Include="graphics\toolbar\new\displayauthcode_disabled.bmp" />
     <Image Include="graphics\toolbar\new\exportDB.bmp" />
     <Image Include="graphics\toolbar\new\exportDB_disabled.bmp" />
     <Image Include="graphics\toolbar\new\exportV1.bmp" />

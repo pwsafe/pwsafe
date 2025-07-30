@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>System Tray</title><!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control --><script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>System Tray</h2>
+
+<table class="MsoNormalTable" style="border: medium none ; border-collapse: collapse;" border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td align="center">Žiadna databáza otvorená</td>
+<td style="width: 10px;"></td>
+<td align="center">Zamknutá databáza</td>
+<td style="width: 10px;"></td>
+<td align="center">Odomknutá databáza</td>
+</tr>
+<tr>
+<td><img alt="Žiadna databáza - System Tray" src="images/system_tray_nodb.png"></td>
+<td></td>
+<td><img alt="Zamknutá - System Tray" src="images/system_tray_locked.png"></td>
+<td></td>
+<td><img alt="Odomknutá - System Tray" src="images/system_tray_unlocked.png"></td>
+</tr>
+</tbody>
+</table>
+
+<p>Kontextová ponuka aplikácie v <b>System Tray</b> poskytuje rýchly prístup k naposledy použitým databázam (ak je databáza odomknutá) a možnosť odomknutia databázy ak je uzamknutá. 
+Môžete ju tiež použiť na minimalizovanie hlavného okna <b>Password Safe</b> a jeho obnovenie, ak už bolo minimalizované ale nie uzamknuté.</p>
+
+<h3>Nastaviť ID databázy</h3>
+
+<p>Ak pravidelne mávate otvorených niekoľko databáz, môžete nastaviť jedinečné dočasné ID (číslo medzi 1 a 99), 
+ktoré sa zobrazí nad ikonou v System Tray. Nastavením ID na nulu sa toto číslo z obrázka odstráni.</p>
+
+<p>ID je rezervované po priradení k otvorenej databáze, ale bude ho možné znova použiť buď po priradení nového ID, 
+alebo po zatvorení databázy. Okrem toho sa v popise ikony v System Tray zobrazuje ID pred názvom databázy.
+
+<br>
+<br>
+
+Poznámky:
+<ul>
+<li>ID je iba vizuálny indikátor. <b>Password Safe</b> ho nijako neukladá ani nepoužíva.</li>
+<li>ID je možné priradiť iba k otvorenej databáze. Keď je databáza zatvorená, to isté ID sa dá priradiť k inej otvorenej databáze.</li>
+<li>Rovnaké ID nemožno priradiť k dvom otvoreným databázam súčasne.</li>
+<li>ID je možné zmeniť iba vtedy, keď je databáza odomknutá.</li>
+<li>Priradenie ID ku konkrétnej databáze nie je trvalé (zapamätané), to znamená že ho musíte znova priradiť pri každom otvorení databázy.</li>
+<li>Keďže farba panela úloh a oblasti oznámení systému Windows sa líši v závislosti od verzie Windows, môžete nastaviť farbu textu pre dosiahnutie najlepšieho kontrastu vo vašom systéme.</li>
+<li>Ak je databáza uzamknutá, názov databázy sa zobrazí v popise medzi hranatými zátvorkami, ako je znázornené nižšie.</li>
+</ul>
+</p>
+
+<img alt="Database Index" src="images/database_index.jpg">
+
+<h3>Otvoriť inú databázu</h3>
+Toto vám umožňuje vybrať inú databázu, ktorá sa má otvoriť namiesto tej ktorá je momentálne otvorená (alebo uzamknutá) v aktuálnej inštancii programu.
+Toto je užitočné napr. ak chcete prepínať medzi databázami bez spustenia novej inštancie programu.
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+</object>
+
+</body>
+</html>

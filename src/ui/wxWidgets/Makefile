@@ -215,7 +215,7 @@ SOURCES= PasswordSafeFrame.cpp \
 	PWFiltersDateDlg.cpp PWFiltersMediaDlg.cpp PWFiltersPasswordDlg.cpp \
 	ManageFiltersTable.cpp SetDatabaseIdDlg.cpp DnDFile.cpp QueryCancelDlg.cpp \
 	DnDPWSafeObject.cpp DnDSupport.cpp DnDDropTarget.cpp SetFiltersDlg.cpp \
-	ManageFiltersDlg.cpp
+	ManageFiltersDlg.cpp StrengthMeter.cpp
 
 
 OBJECTS=$(SOURCES:%.cpp=$(OBJECTPATH)/%.o)

@@ -4,18 +4,40 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.68.0pre Release March 9 2025
-===========================================
+PasswordSafe 3.69.1pre Release ???
+==========================================
+* [GH1534](https://github.com/pwsafe/pwsafe/issues/1534) No longer offer unsupported traditional Chinese in NSIS installer.
+* [GH1531](https://github.com/pwsafe/pwsafe/issues/1531) Followup on [GH1524](https://github.com/pwsafe/pwsafe/issues/1524) for Toolbar action.
 
-New features in 3.68.0pre
--------------------------
-* [GH1439](https://github.com/pwsafe/pwsafe/issues/1439) PasswordSafe now uses the system text color and background instead of assuming black and white, respectively.
-* In this release, PasswordSafe will significantly increase the standard (default) unlock difficulty of PasswordSafe databases. This will cause a noticeable slowdown when reading and writing databases.
+
+PasswordSafe 3.69.0 Release Jun 29 2025
+=========================================
+Bugs Fixed in 3.69.0
+-----------------------
+* [GH1524](https://github.com/pwsafe/pwsafe/issues/1524) Report selection now works correctly when language isn't English.
+* [GH1525](https://github.com/pwsafe/pwsafe/issues/1525) Title bar for alternate notes editor selection is now correct.
+* [SF1613](https://sourceforge.net/p/passwordsafe/bugs/1613/) Text in file merge/sync/compare dialog is no longer truncated on some displays.
+
+
+New features in 3.69.0
+----------------------
+* [GH1237](https://github.com/pwsafe/pwsafe/issues/1237), [SF823](https://sourceforge.net/p/passwordsafe/feature-requests/823/) A rough password strength meter now displays the strength of the password
+for entries and the master password.
+* Slovak is now fully supported thanks to Milan. 
+
+PasswordSafe 3.68.0 Release Mar 18 2025
+=======================================
+
+New features in 3.68.0
+----------------------
+* In this release, PasswordSafe will significantly increase the standard (default) unlock difficulty of PasswordSafe databases. This may cause a noticeable slowdown when reading and writing databases.
  This is necessary to maintain the same level of security on today's hardware as when PasswordSafe was originally released.
+ * [GH1439](https://github.com/pwsafe/pwsafe/issues/1439) PasswordSafe now uses the system text color and background instead of assuming black and white, respectively.
 
-Bugs Fixed in 3.68.0pre
+Bugs Fixed in 3.68.0
 -----------------------
 * [GH1408](https://github.com/pwsafe/pwsafe/issues/1408) Time fields (such as password modification time) are now copied over correctly in sync operations between databases.
+
 
 PasswordSafe 3.67.0 Release Oct 20 2024
 =======================================

@@ -16,6 +16,7 @@
 #include "ControlExtns.h"
 #include "TBMStatic.h"
 #include "ProgressPieCtrl.h"
+#include "StrengthMeterCtrl.h"
 
 #include "core/ItemData.h"
 #include "core/TotpCore.h"
@@ -51,6 +52,7 @@ public:
   CSecEditExtn m_ex_password, m_ex_password2;
 
   CProgressPieCtrl m_btnTwoFactorCode;
+  CStrengthMeterCtrl m_prgStrengthMeter;
 
   CStaticExtn m_stc_group;
   CStaticExtn m_stc_title;

@@ -141,9 +141,8 @@ static const wxCmdLineEntryDesc cmdLineDesc[] = {
    wxCMD_LINE_VAL_NUMBER, wxCMD_LINE_PARAM_OPTIONAL},
 #endif
   {wxCMD_LINE_PARAM, nullptr, nullptr, STR("database"),
-   wxCMD_LINE_VAL_STRING,
-   (wxCMD_LINE_PARAM_OPTIONAL | wxCMD_LINE_PARAM_MULTIPLE)},
-  {wxCMD_LINE_NONE, nullptr, nullptr, nullptr, wxCMD_LINE_VAL_NONE, 0}
+   wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL},
+  wxCMD_LINE_DESC_END
 };
 
 #undef STR
@@ -344,14 +343,15 @@ bool PWSafeApp::OnInit()
     return false;
 
   // Parse command line options:
-  wxString filename, user, host, cfg_file;
+  wxString cmd_filename, user, host, cfg_file;
   bool cmd_ro = cmdParser.Found(wxT("r"));
 
-  bool cmd_encrypt = cmdParser.Found(wxT("e"), &filename);
-  bool cmd_decrypt = cmdParser.Found(wxT("d"), &filename);
-  bool cmd_closed = cmdParser.Found(wxT("c"));
-  bool cmd_silent = cmdParser.Found(wxT("s"));
-  bool cmd_minimized = cmdParser.Found(wxT("m"));
+  m_cmd_closed = cmdParser.Found(wxT("c"));
+  m_cmd_silent = cmdParser.Found(wxT("s"));
+  m_cmd_minimized = cmdParser.Found(wxT("m"));
+
+  bool cmd_encrypt = cmdParser.Found(wxT("e"), &cmd_filename);
+  bool cmd_decrypt = cmdParser.Found(wxT("d"), &cmd_filename);
   bool cmd_user = cmdParser.Found(wxT("u"), &user);
   bool cmd_host = cmdParser.Found(wxT("h"), &host);
   bool cmd_cfg = cmdParser.Found(wxT("g"), &cfg_file);
@@ -359,52 +359,19 @@ bool PWSafeApp::OnInit()
   long int yubi_polling_interval;
   bool cmd_yubi_polling_interval = cmdParser.Found(wxT("yubi-polling-interval"), &yubi_polling_interval);
 #endif
-  bool file_in_cmd = false;
+  m_file_in_cmd = false;
   size_t count = cmdParser.GetParamCount();
   if (count == 1) {
-    filename = cmdParser.GetParam();
-    file_in_cmd = true;
+    cmd_filename = cmdParser.GetParam();
+    m_file_in_cmd = true;
   }
   else if (count > 1) {
     cmdParser.Usage();
     return false;
   }
   // check for mutually exclusive options
-  if ((cmd_encrypt && cmd_decrypt) || (cmd_closed && cmd_silent && cmd_minimized)) {
+  if ((cmd_encrypt && cmd_decrypt) || (m_cmd_closed && m_cmd_silent && m_cmd_minimized)) {
     cmdParser.Usage();
-    return false;
-  }
-
-  // Process encryption/decryption command line arguments
-  if ((cmd_encrypt || cmd_decrypt) && !filename.IsEmpty()) {
-
-    auto processCryption = [&](CryptKeyEntryDlg::Mode mode, std::function<bool(const stringT &fn, const StringX &passwd, stringT &errmess)> func) {
-      stringT errstr;
-
-      CryptKeyEntryDlg dialog(mode);
-
-      if (dialog.ShowModal() == wxID_OK) {
-        if (!func(tostdstring(filename), dialog.getCryptKey(), errstr)) {
-          wxMessageDialog messageBox(
-            nullptr, errstr, _("Error"), wxOK | wxICON_ERROR
-          );
-          messageBox.ShowModal();
-        }
-      }
-    };
-
-    if (cmd_encrypt) {
-      processCryption(
-        CryptKeyEntryDlg::Mode::ENCRYPT,
-        PWSfile::Encrypt
-      );
-    }
-    else {
-      processCryption(
-        CryptKeyEntryDlg::Mode::DECRYPT,
-        PWSfile::Decrypt
-      );
-    }
     return false;
   }
 
@@ -434,21 +401,57 @@ bool PWSafeApp::OnInit()
   m_locale->Init(selectedLang);
   ActivateLanguage(selectedLang, false);
 
+ // Process encryption/decryption command line arguments
+  // Note that this is done after language is set, addressing GH1572
+  if ((cmd_encrypt || cmd_decrypt) && !cmd_filename.IsEmpty()) {
+
+    auto processCryption = [&](CryptKeyEntryDlg::Mode mode, std::function<bool(const stringT &fn, const StringX &passwd, stringT &errmess)> func) {
+      stringT errstr;
+
+      CryptKeyEntryDlg dialog(mode);
+
+      if (dialog.ShowModal() == wxID_OK) {
+        if (!func(tostdstring(cmd_filename), dialog.getCryptKey(), errstr)) {
+          wxMessageDialog messageBox(
+            nullptr, errstr, _("Error"), wxOK | wxICON_ERROR
+          );
+          messageBox.ShowModal();
+        }
+      }
+    };
+
+    if (cmd_encrypt) {
+      processCryption(
+        CryptKeyEntryDlg::Mode::ENCRYPT,
+        PWSfile::Encrypt
+      );
+    }
+    else {
+      processCryption(
+        CryptKeyEntryDlg::Mode::DECRYPT,
+        PWSfile::Decrypt
+      );
+    }
+    return false;
+  }
+
+
+
   // if filename passed in command line, it takes precedence
   // over that in preference:
-  if (filename.empty()) {
-    filename =  prefs->GetPref(PWSprefs::CurrentFile).c_str();
+  if (cmd_filename.empty()) {
+    cmd_filename =  prefs->GetPref(PWSprefs::CurrentFile).c_str();
   } else {
-    recentDatabases().AddFileToHistory(filename);
+    recentDatabases().AddFileToHistory(cmd_filename);
   }
-  m_core.SetCurFile(tostringx(filename));
+  m_core.SetCurFile(tostringx(cmd_filename));
   m_core.SetApplicationNameAndVersion(tostdstring(progName),
                                       MAKELONG(MINORVERSION, MAJORVERSION));
 
   static wxSingleInstanceChecker appInstance;
   if (!prefs->GetPref(PWSprefs::MultipleInstances) &&
-        (appInstance.Create(wxT("pwsafe.lck"), towxstring(pws_os::getuserprefsdir())) &&
-         appInstance.IsAnotherRunning()))
+      (appInstance.Create(wxT("pwsafe.lck"), towxstring(pws_os::getuserprefsdir())) &&
+       appInstance.IsAnotherRunning()))
   {
     wxMessageBox(_("Another instance of Password Safe is already running"), _("Password Safe"),
                           wxOK|wxICON_INFORMATION);
@@ -462,10 +465,10 @@ bool PWSafeApp::OnInit()
   // here if we're the child
   recentDatabases().Load();
 
-  if (cmd_closed || cmd_minimized) {
+  if (m_cmd_closed || m_cmd_minimized) {
     m_core.SetCurFile(L"");
   }
-  if (cmd_silent) {
+  if (m_cmd_silent) {
     if ( IsTaskBarIconAvailable() ) {
       // start silent implies use system tray.
       // Note that if UseSystemTray is already true, then pwsafe will try to run silently anyway
@@ -483,11 +486,11 @@ bool PWSafeApp::OnInit()
 
   if (!isHelpActivated) { // set on language activation by ActivateHelp
     std::wcerr << L"Could not initialize help subsystem." << std::endl;
-    if (!prefs->GetPref(PWSprefs::IgnoreHelpLoadError) && !cmd_silent) {
+    if (!prefs->GetPref(PWSprefs::IgnoreHelpLoadError) && !m_cmd_silent) {
 #if wxCHECK_VERSION(2,9,2)
       wxRichMessageDialog dlg(nullptr,
-        _("Could not initialize help subsystem. Help will not be available."),
-        _("Password Safe: Error initializing help"), wxCENTRE|wxOK|wxICON_EXCLAMATION);
+                              _("Could not initialize help subsystem. Help will not be available."),
+                              _("Password Safe: Error initializing help"), wxCENTRE|wxOK|wxICON_EXCLAMATION);
       dlg.ShowCheckBox(_("Don't show this warning again"));
       dlg.ShowModal();
       if (dlg.IsCheckBoxChecked()) {
@@ -496,12 +499,28 @@ bool PWSafeApp::OnInit()
       }
 #else
       wxMessageBox(_("Could not initialize help subsystem. Help will not be available."),
-      _("Password Safe: Error initializing help"), wxOK | wxICON_ERROR);
+                   _("Password Safe: Error initializing help"), wxOK | wxICON_ERROR);
 #endif
     }
   }
 
-  if (!cmd_closed && !cmd_silent && !cmd_minimized) {
+/*
+ * On macOS, Finder GUI file actions, such as double-clicking a file to open it, are sent
+ * to the app via calls to MacOpenFiles() and MacNewFile().  However, those messages
+ * are not processed until OnInit() returns.  This hack splits OnInit() into two parts,
+ * FinishInit() is called from those functions so that MacOpenFiles() has a chance
+ * to set the file name before the password entry dialog is displayed.
+ * All other information needed is stored in the PWSafeApp object.
+ * On Linux/Unix, just call the second part direct, so this is still like one big happy function.
+ */
+#ifndef __WXMAC__
+  PWSafeApp::FinishInit();
+#endif
+  return true;
+}
+
+void PWSafeApp::FinishInit() {
+  if (!m_cmd_closed && !m_cmd_silent && !m_cmd_minimized) {
     // Get the file, r/w mode and password from user
     // Note that file may be new
     DestroyWrapper<SafeCombinationEntryDlg> initWindowWrapper(nullptr, m_core);
@@ -509,7 +528,7 @@ bool PWSafeApp::OnInit()
     int returnValue = initWindow->ShowModal();
 
     if (returnValue != wxID_OK) {
-      return false;
+      return;
     }
     wxASSERT_MSG(!m_frame, wxT("Frame window created unexpectedly"));
     m_frame = new PasswordSafeFrame(nullptr, m_core);
@@ -545,17 +564,17 @@ bool PWSafeApp::OnInit()
     }
   }
 
-  if (!cmd_silent)
+  if (!m_cmd_silent)
     m_frame->Show();
-  if (cmd_minimized)
+  if (m_cmd_minimized)
     m_frame->Iconize();
-  else if (cmd_silent) {
+  else if (m_cmd_silent) {
     // Hide UI enumerates top-level windows and its children and hide them,
     // so we need to set top windows first and only then call hideUI
     SetTopWindow(m_frame);
     wxSafeYield();
     m_frame->HideUI(false);
-    if (file_in_cmd) {
+    if (m_file_in_cmd) {
        // set locked status if file was passed from command line
        m_frame->SetTrayStatus(true);
     }
@@ -570,7 +589,8 @@ bool PWSafeApp::OnInit()
     m_frame->ShowTrayIcon();
 
   m_frame->Register(); // register modal dialog hook
-  return true;
+  m_initComplete = true;
+  return;
 }
 
 /*!
@@ -718,11 +738,56 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
 }
 
 #ifdef __WXMAC__
-// On macOS, this enables file unlock and UI restore upon left-click of the dock icon.
+// macOS specific functions for UI interactions...
+
+// This enables file unlock and UI restore upon left-click of the dock icon.
 // Not to be confused with the system tray (menu bar) icon.
-void PWSafeApp::MacNewFile()
+void PWSafeApp::MacReopenApp()
 {
-  GetPasswordSafeFrame()->UnlockSafe(true, false);
+  if (m_initComplete)
+    GetPasswordSafeFrame()->UnlockSafe(true, false);
+}
+
+// This is called when a file, of a type associated with the app, is double-clicked
+// or drag-and-dropped onto the dock icon.  We need to set the current file name before
+// showing the SafeCombinationEntryDlg dialog.  (Which happens in FinishInit().)  If
+// FinishInit() does not create the PasswordSafeFrame, (i.e. the user clicked cancel)
+// the the framework will call OnExit() for us.
+void PWSafeApp::MacOpenFiles(const wxArrayString& fileNames) {
+  StringX filename;
+  if (fileNames.IsEmpty())
+    return;
+
+  // Really, we can only open one file at a time, so just use the first one.
+  filename = fileNames[0];
+
+  // Only allow one pass through FinishInit(). While SafeCombinationEntryDlg is displayed,
+  // clicking another file causes another pass through here, which resulted in a second
+  // SafeCombinationEntryDlg window!  The mutex ignores subsequent events until the first
+  // file is open.  However, in this situation, the mutex is only advisory.
+  wxMutexLocker lock(m_MacFileEventMutex);
+  if (lock.IsOk()) {
+    // After the first open, subsequent file double-clicks are equvalent to the
+    // File->Open menu action.
+    if (m_initComplete) {
+      int rc = m_frame->Open(filename.c_str());
+      if (rc == PWScore::SUCCESS) {
+        m_frame->FinishGoodOpen();
+      }
+    } else {
+      m_core.SetCurFile(filename);
+      FinishInit();
+    }
+  }
+}
+
+// This is called when the app is started by itself (not by clicking a data file)
+// Just finish the init.
+void PWSafeApp::MacNewFile() {
+  wxMutexLocker lock(m_MacFileEventMutex);
+  if (lock.IsOk()) {
+    FinishInit();
+  }
 }
 #endif // __WXMAC__
 
@@ -732,21 +797,25 @@ void PWSafeApp::MacNewFile()
 
 int PWSafeApp::OnExit()
 {
-  m_idleTimer->Stop();
-  recentDatabases().Save();
-  PWSprefs *prefs = PWSprefs::GetInstance();
-  if (m_core.IsDbFileSet()) {
-    prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
-    // Don't leave dangling locks!
-    m_core.SafeUnlockCurFile();
+  // OnExit() is only called after OnInit() returns true.
+  // Now that it's in two parts, we want to make sure the
+  // second part is also complete.
+  if (m_initComplete) {
+    m_idleTimer->Stop();
+    recentDatabases().Save();
+    PWSprefs *prefs = PWSprefs::GetInstance();
+    if (m_core.IsDbFileSet()) {
+      prefs->SetPref(PWSprefs::CurrentFile, m_core.GetCurFile());
+      // Don't leave dangling locks!
+      m_core.SafeUnlockCurFile();
+    }
+    // Save Application related preferences
+    prefs->SaveApplicationPreferences();
+    // Save shortcuts, if changed
+    PWSMenuShortcuts::GetShortcutsManager()->SaveUserShortcuts();
+    PWSMenuShortcuts::DestroyShortcutsManager();
   }
-  // Save Application related preferences
-  prefs->SaveApplicationPreferences();
-  // Save shortcuts, if changed
-  PWSMenuShortcuts::GetShortcutsManager()->SaveUserShortcuts();
 
-  PWSMenuShortcuts::DestroyShortcutsManager();
-  
 ////@begin PWSafeApp cleanup
   return wxApp::OnExit();
 ////@end PWSafeApp cleanup
@@ -798,9 +867,26 @@ RecentDbList &PWSafeApp::recentDatabases()
   // we create an instance of m_recentDatabases
   // as late as possible in order to make
   // sure that prefs' is set correctly (user, machine, etc.)
-  if (m_recentDatabases == nullptr)
+  if (m_recentDatabases == nullptr) {
     m_recentDatabases = new RecentDbList;
+#if wxCHECK_VERSION(3,1,5)
+    m_recentDatabases->SetMenuPathStyle(wxFH_PATH_SHOW_ALWAYS);
+#endif
+  }
   return *m_recentDatabases;
+}
+
+void PWSafeApp::ResizeRecentDatabases()
+{
+  if (m_recentDatabases != nullptr) {
+    m_recentDatabases->Save();
+    delete m_recentDatabases;
+    m_recentDatabases = new RecentDbList;
+#if wxCHECK_VERSION(3,1,5)
+    m_recentDatabases->SetMenuPathStyle(wxFH_PATH_SHOW_ALWAYS);
+#endif
+    m_recentDatabases->Load();
+  }
 }
 
 void PWSafeApp::SaveFrameCoords(void)

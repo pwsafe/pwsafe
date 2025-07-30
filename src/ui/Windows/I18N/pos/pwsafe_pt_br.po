@@ -9,15 +9,41 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2025-03-12 20:26+0200\n"
+"PO-Revision-Date: 2025-07-15 21:34+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.5\n"
+"X-Generator: Poedit 3.6\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -5150,6 +5176,10 @@ msgstr "Tipo de Mídia"
 msgid "Media Type:"
 msgstr "Tipo de Mídia:"
 
+#. Resource IDs: (5124)
+msgid "Medium Password"
+msgstr "Senha média"
+
 #. Resource IDs: (5680)
 msgid "Menu Item"
 msgstr "Item do Menu"
@@ -5725,6 +5755,30 @@ msgstr "PWS_CPF_CDD"
 #. Resource IDs: (5449)
 msgid "PWS_CPF_TVDD"
 msgstr "PWS_CPF_TVDD"
+
+#. Resource IDs: (3093)
+msgid "Passkey Algorithm ID"
+msgstr ""
+
+#. Resource IDs: (3090)
+msgid "Passkey Credential ID"
+msgstr ""
+
+#. Resource IDs: (3094)
+msgid "Passkey Private Key"
+msgstr ""
+
+#. Resource IDs: (3091)
+msgid "Passkey Relying Party ID"
+msgstr ""
+
+#. Resource IDs: (3095)
+msgid "Passkey Sign Count"
+msgstr ""
+
+#. Resource IDs: (3092)
+msgid "Passkey User Handle"
+msgstr ""
 
 #. Resource IDs: (5757)
 msgid "Passphrase"
@@ -6495,10 +6549,6 @@ msgstr "Selecionar"
 msgid "Select &All"
 msgstr "Selecionar Tudo"
 
-#. Resource IDs: (5384)
-msgid "Select Browser:"
-msgstr "Selecione o navegador:"
-
 #. Resource IDs: (497, 537)
 msgid "Select Database"
 msgstr "Selecione o banco de dados"
@@ -6514,6 +6564,10 @@ msgstr "Selecione o local para backups intermediários"
 #. Resource IDs: (65535)
 msgid "Select Locked Text Color:"
 msgstr "Selecione a cor do texto bloqueado:"
+
+#. Resource IDs: (5384)
+msgid "Select Program"
+msgstr "Selecione uma programa"
 
 #. Resource IDs: (162)
 msgid "Select Test Dump Type"
@@ -6989,6 +7043,10 @@ msgstr "Os filtros armazenados serão inutilizáveis ​​até que o arquivo se
 msgid "String value:"
 msgstr "Valor da sequência:"
 
+#. Resource IDs: (5125)
+msgid "Strong Password"
+msgstr "Senha Forte"
+
 #. Resource IDs: (3365)
 msgid "Subset of entries restricted by the following rule:"
 msgstr "Subconjunto de entradas restrito pela seguinte regra:"
@@ -7324,6 +7382,10 @@ msgstr "As seguintes colunas foram reconhecidas, mas apenas Grupo/Título, Nome 
 #. Resource IDs: (3260)
 msgid "The following columns will be processed: "
 msgstr "As seguintes colunas serão processadas: "
+
+#. Resource IDs: (3463)
+msgid "The following entries contain incomplete passkeys."
+msgstr ""
 
 #. Resource IDs: (3439)
 msgid "The following entries had a duplicate UUID field.  This has been corrected."
@@ -8206,6 +8268,10 @@ msgstr "Aviso - Notas sendo editadas externamente"
 #. Resource IDs: (5793)
 msgid "Warning - field too long"
 msgstr "Aviso - campo muito longo"
+
+#. Resource IDs: (5123)
+msgid "Weak Password"
+msgstr "Senha Fraca"
 
 #. Resource IDs: (5281)
 #, c-format
@@ -9405,6 +9471,10 @@ msgstr "começa com"
 #. Resource IDs: (3303)
 msgid "between"
 msgstr "entre"
+
+#. Resource IDs: (5665)
+msgid "bottom"
+msgstr "rodapé"
 
 #. Resource IDs: (3371)
 msgid "changed but not yet saved to database"

@@ -1,0 +1,74 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Nastavenia - karta Zálohy</title>
+<!-- pwsafe version: 3.05--><!-- Modified: 21/11/2006 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Nastavenia - karta Zálohy</h2>
+
+<img alt="Nastavenia - karta Zálohy" src="images/options/backups_tab.png">
+
+<p>Karta <b>Zálohy</b> vám umožňuje konfigurovať spôsob vytvárania a správy automatických záloh.</p>
+
+<h3>Uložiť databázu ihneď po akejkoľvek zmene</h3>
+
+<p>Ak je táto možnosť začiarknutá, databáza sa uloží, ak dôjde k akejkoľvek zmene, 
+napr. pridanie, odstránenie, duplikovanie, úprava alebo premenovanie záznamu alebo skupiny, 
+ako aj ak sa akékoľvek záznamy/skupiny pridajú/presunú prostredníctvom importu alebo operácie Drag & Drop. 
+Pri použití tejto možnosti sa odporúča povoliť možnosť "Vytváriť prechodné zálohy", pretože to pomáha chrániť pred problémami s diskom.<br>
+Upozorňujeme, že zmeny vykonané prostredníctvom dialógového okna Porovnanie výsledkov databázy
+<em>nespôsobia</em> uloženie databázy pre každú akciu, ale až po zatvorení daného dialógového okna.</p>
+
+<h3>Pred uložením vytvárať prechodné zálohy (.ibak)</h3>
+
+<p>Ak je začiarknuté, <b>Password Safe</b> skopíruje databázu pred každým
+uložením. Názvy a umiestnenie záložných kópií sú definované v
+nasledujúcich poliach, ako aj počet predchádzajúcich kópií, ktoré sa budú uchovávať.</p>
+
+<h3>Názov zálohy</h3>
+
+<p>Názvy záložných súborov pozostávajú zo <b>Základu</b> (štandardne je to
+názov databázy bez prípony .psafe3) a <b>Prípony</b>
+(žiadna, prírastkové číslo alebo dátum/čas zálohy). Tu môžete
+nakonfigurovať, ako sa budú zálohy pomenovávať a koľko sa ich bude ukladať.
+<b>Password Safe</b> automaticky vymaže najstaršie databázy
+nad rámec počtu záloh, ktorý ste zadali. Upozorňujeme, 
+že staré databázy sa vymažú iba v prípade, že prípona je nastavená na prírastkové číslo
+(priebežný počet).</p>
+
+<h3>Priečinok pre zálohy</h3>
+
+<p>V predvolenom nastavení <b>Password Safe</b> uloží zálohy do rovnakého
+adresára ako aktuálne otvorená databáza. V tomto poli môžete zadať
+alternatívne umiestnenie, napríklad špeciálny adresár záloh, sieťovú
+jednotku, disk na kľúči atď. Samozrejme, musíte mať povolenie na zápis do
+tohto umiestnenia.</p>
+
+<p>Pri definovaní alternatívneho umiestnenia môžete použiť aj premenné prostredia,
+napríklad: "<code>%homedrive%%homepath%\Documents\PWS Backups\</code>". Ak použijete tieto
+premenné, skutočná cesta sa zobrazí v poli nižšie, keď prejdete na iný
+ovládací prvok na tejto karte.</p>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Karta Zálohy">
+<param name="Keyword" value="Zálohy (prechodné)">
+<param name="Keyword" value="Uložiť ihneď">
+<param name="Keyword" value="Názov zálohy">
+<param name="Keyword" value="Priečinok pre zálohy">
+</object>
+
+</body>
+</html>

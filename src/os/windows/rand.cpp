@@ -9,40 +9,36 @@
 /**
  * \file Windows-specific implementation of rand.h
  */
-#include <time.h>
-#include <stdlib.h>
-#include <process.h>
 
+#include <Winsock2.h>
+#include <windows.h>
+#include <ctime>
+#include <cstdlib>
+#include <process.h>
+#include <bcrypt.h>
 #include "../rand.h"
 #include "../lib.h"
 
-// See the MSDN documentation for RtlGenRandom. We will try to load it
-// and if that fails, use our own random number generator. The function
-// call is indirected through a function pointer
-
-static BOOLEAN (APIENTRY *pfnGetRandomData)(void*, ULONG) = NULL;
 
 bool pws_os::InitRandomDataFunction()
 {
-  HMODULE hLib = HMODULE(pws_os::LoadLibrary(_T("ADVAPI32.DLL"), loadLibraryTypes::SYS));
-
-  BOOLEAN (APIENTRY *pfnGetRandomDataT)(void*, ULONG) = NULL;
-  if (hLib != NULL) {
-    pfnGetRandomDataT =
-      (BOOLEAN (APIENTRY *)(void*,ULONG))pws_os::GetFunction(hLib, "SystemFunction036");
-    if (pfnGetRandomDataT) {
-      pfnGetRandomData = pfnGetRandomDataT;
-    }
+  // Check if BCryptGenRandom is available
+  HMODULE hBcrypt = (HMODULE)pws_os::LoadLibrary(TEXT("bcrypt.dll"), loadLibraryTypes::SYS);
+  if (hBcrypt == nullptr) {
+    return false; // BCryptGenRandom not available
   }
-  return (hLib != NULL && pfnGetRandomDataT != NULL);
+  // Check if BCryptGenRandom function is available
+  FARPROC pFunc = GetProcAddress(hBcrypt, "BCryptGenRandom");
+  FreeLibrary(hBcrypt);
+
+  return pFunc != nullptr;
 }
+
 
 bool pws_os::GetRandomData(void *p, unsigned long len)
 {
-  if (pfnGetRandomData != NULL)
-    return (*pfnGetRandomData)(p, len) == TRUE;
-  else
-    return false;
+  NTSTATUS status = BCryptGenRandom(nullptr, static_cast<PUCHAR>(p), len, BCRYPT_USE_SYSTEM_PREFERRED_RNG);
+  return status == 0;
 }
 
 void pws_os::GetRandomSeed(void *p, unsigned &slen)
@@ -51,14 +47,16 @@ void pws_os::GetRandomSeed(void *p, unsigned &slen)
   int pid;
   DWORD ticks;
 
-  if (p == NULL) {
+  if (p == nullptr) {
     slen = sizeof(t) + sizeof(pid) + sizeof(ticks);
   } else {
     ASSERT(slen == sizeof(t) + sizeof(pid) + sizeof(ticks));
 
     // BR1475 - if we have a good crypto source, use it here too.
-    if ((pfnGetRandomData != nullptr) && (*pfnGetRandomData)(p, slen) == TRUE)
-      return; // adding a time-based "seed" is wrong when using RtlGenRandom
+    // Use BCryptGenRandom for seeding if available
+    if (GetRandomData(p, slen))
+      return; // adding a time-based "seed" is wrong when using BCryptGenRandom
+
 
     SYSTEMTIME st;
     struct tm tms;

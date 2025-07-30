@@ -121,17 +121,15 @@ void CItemField::Get(unsigned char *value, size_t &length, const Fish *bf) const
   } else { // we have data to decrypt
     size_t BlockLength = GetBlockSize(m_Length);
     ASSERT(length >= BlockLength);
-    auto *tempmem = new unsigned char[BlockLength];
 
     size_t x;
     for (x = 0; x < BlockLength; x += 8)
-      bf->Decrypt(m_Data + x, tempmem + x);
+      bf->Decrypt(m_Data + x, value + x);
 
-    for (x = 0; x < BlockLength; x++)
-      value[x] = (x < m_Length) ? tempmem[x] : 0;
+    for (x = m_Length; x < BlockLength; x++)
+      value[x] = 0;
 
     length = m_Length;
-    delete [] tempmem;
   }
 }
 

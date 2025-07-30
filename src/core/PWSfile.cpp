@@ -23,6 +23,7 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
                               Asker *pAsker, Reporter *pReporter)
 {
   PWSfile *retval = nullptr;
+  FILE *fd = nullptr;
 
   if (mode == Read && !pws_os::FileExists(a_filename.c_str())) {
     status = CANT_OPEN_FILE;
@@ -64,6 +65,14 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
         ASSERT(0);
         //[[fallthrough]];
       case UNKNOWN_VERSION:
+        // Return more meaningful status code if read access to the file is denied
+        fd = pws_os::FOpen(a_filename.c_str(), _T("rb"));
+        if (fd == nullptr) {
+          status = CANT_OPEN_FILE;
+          break;
+        }
+        pws_os::FClose(fd, false);
+        //[[fallthrough]];
       default:
         status = FAILURE;
       } // inner switch

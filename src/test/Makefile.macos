@@ -2,26 +2,40 @@
 # Coretest makefile for macOS
 #
 
-# The Xcode configuration: Debug or Release
-CONFIG ?= Release
+TARGET = coretest
 
-# Following sets the location of the wx-config command
-# WX_BUILD_DIR is set by the GitHub workflow
-# Override this to use a local build
-ifdef WX_BUILD_DIR
-WX_CONFIG := $(WX_BUILD_DIR)/bin/wx-config
-else ifdef HOMEBREW_PREFIX
-WX_CONFIG := $(HOMEBREW_PREFIX)/bin/wx-config
+# CONFIGURATION and TARGET_BUILD_DIR are set when executed by Xcode
+# WX_BUILD_DIR is set by the GitHub build workflow
+# HOMEBREW_PREFIX is used to locate googletest
+# When run from the command line, you can provide these variables or use the defaults
+
+# The Xcode configuration: Debug or Release
+ifdef CONFIGURATION
+CONFIG := $(CONFIGURATION)
+else
+CONFIG ?= Release
 endif
 
 # Get the location of the Xcode built libraries (core and os)
+ifdef TARGET_BUILD_DIR
+XRELDIR := $(TARGET_BUILD_DIR)
+else
 XRELDIR := $(shell xcodebuild -project ../../Xcode/pwsafe-xcode6.xcodeproj -showBuildSettings -scheme pwsafe -configuration $(CONFIG) | awk '/TARGET_BUILD_DIR =/{print $$3}')
+endif
 
-BUILD		:= $(CONFIG)
+# Following sets the location of the wx-config command
+# WX_BUILD_DIR is set by the GitHub workflow
+# For command line use, make sure wx-config is in your PATH
+ifdef WX_BUILD_DIR
+WX_CONFIG := $(WX_BUILD_DIR)/bin/wx-config
+else
+WX_CONFIG := $(shell which wx-config)
+endif
 
-TESTSRC         := coretest.cpp $(wildcard *Test.cpp)
 
-OBJPATH         = ../../obj/$(BUILD)
+TESTSRC         := $(TARGET).cpp $(wildcard *Test.cpp)
+
+OBJPATH         = ../../obj/$(CONFIG)
 LIBPATH         = $(XRELDIR)
 BINPATH         = ./bin
 INCPATH         = ..
@@ -30,25 +44,27 @@ INCPATH         = ..
 # brew install googletest
 GTEST_DIR     = $(HOMEBREW_PREFIX)/include/googletest/googletest
 GTEST_HEADERS = $(HOMEBREW_PREFIX)/include/gtest/*.h $(HOMEBREW_PREFIX)/include/gtest/internal/*.h
-GTEST_SRCS_   = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
-GTEST_OBJ = $(OBJPATH)/gtest-all.o
+GTEST_SRCS    = $(GTEST_DIR)/src/*.cc $(GTEST_DIR)/src/*.h $(GTEST_HEADERS)
+GTEST_OBJ     = $(OBJPATH)/gtest-all.o
 
 #destination related macros
 TESTOBJ	 = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(TESTSRC)))
-TEST	 = $(BINPATH)/coretest
-OBJS     = $(TESTOBJ) $(GTEST_OBJ)
+TEST	 = $(BINPATH)/$(TARGET)
+OBJS     = $(TESTOBJ) $(GTEST_OBJ) $(XRELDIR)/libcore.a $(XRELDIR)/libos.a
 
-CXXFLAGS += -DUNICODE -Wall -I$(INCPATH) -I$(INCPATH)/core -std=c++17 -I $(HOMEBREW_PREFIX)/include
+CXXFLAGS += -DUNICODE -Wall -I$(INCPATH) -I$(INCPATH)/core -std=c++17 -I $(HOMEBREW_PREFIX)/include -Wno-overloaded-virtual
 LDFLAGS  += -L$(LIBPATH) -lcore -los 
 
 ifeq ($(CONFIG),Debug)
-LDFLAGS += `$(WX_CONFIG) --debug=yes --unicode=yes --libs`
+CXXFLAGS += $(shell $(WX_CONFIG) --debug=yes --unicode=yes --cxxflags)
+LDFLAGS  += $(shell $(WX_CONFIG) --debug=yes --unicode=yes --libs)
 else ifeq ($(CONFIG),Release)
-LDFLAGS += `$(WX_CONFIG) --debug=no --unicode=yes --libs`
+CXXFLAGS += $(shell $(WX_CONFIG) --debug=no --unicode=yes --cxxflags)
+LDFLAGS  += $(shell $(WX_CONFIG) --debug=no --unicode=yes --libs)
 endif
 
 # rules
-.PHONY: all clean test run setup
+.PHONY: all clean test run setup build
 
 $(OBJPATH)/%.o : %.c
 	$(CC) -g  $(CFLAGS)   -c $< -o $@
@@ -58,23 +74,33 @@ $(OBJPATH)/%.o : %.cpp
 
 all : setup test
 
-$(GTEST_OBJ): $(GTEST_SRCS_) $(GTEST_HEADERS)
+$(GTEST_OBJ): $(GTEST_SRCS) $(GTEST_HEADERS)
 	$(CXX) -g $(CPPFLAGS) -I$(GTEST_DIR) $(CXXFLAGS) -c -o $@ \
 	$(GTEST_DIR)/src/gtest-all.cc
-
 
 run test : $(TEST)
 	$(TEST)
 
-$(TEST): $(LIB) $(OBJS)
+build: setup $(TEST)
+
+xcodebuild: setup $(XRELDIR)/$(TARGET)
+
+$(XRELDIR)/$(TARGET): $(TEST)
+	cp $(TEST) $(XRELDIR)
+
+$(TEST): $(OBJS)
 	$(CXX) -g $(CXXFLAGS) $(filter %.o,$^) $(LDFLAGS) -o $@
 
 clean:
-	rm -f *~ $(OBJPATH)/*.o $(TEST) $(DEPENDFILE)
+	rm -f *~ $(OBJPATH)/*.o $(TEST)
+ifdef TARGET_BUILD_DIR
+	rm -f $(TARGET_BUILD_DIR)/$(TARGETNAME)
+endif
 
 setup:
-	@mkdir -p $(OBJPATH) $(LIBPATH) $(BINPATH)
+	@mkdir -p $(OBJPATH) $(BINPATH)
+	@echo
 	@echo "Xcode build location: $(XRELDIR)"
 	@echo "WX_CONFIG location: $(WX_CONFIG)"
 	@echo
-	@[ -x $(WX_CONFIG) ] || echo "ERROR: wx-config not found: Need to define the path to the wx-config command (WX_CONFIG variable)\n"
+	@[[ -n "$(WX_CONFIG)" && -x "$(WX_CONFIG)" ]] || { echo "ERROR: wx-config not found: Need to define the path to the wx-config command (WX_CONFIG variable)\n"; exit 1; }

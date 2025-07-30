@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Používateľské mená a heslá</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Používateľské mená, heslá a skupiny: Doplňujúce</h2>
+
+<p>Používateľské mená, heslá a skupiny spolu s ďalšími vlastnosťami sa spravujú na 4 kartách:</p>
+
+<ul>
+<li><b><i><a href="entering_pwd.html">Základné</a></i>:</b> všetky prvky potrebné pre správu hesiel</li>
+<li><b><i>Doplňujúce</i>:</b> ďalšie špecifikácie vrátane histórie hesiel</li>
+<li><b><i><a href="entering_pwd_date.html">Dátumy a časy</a></i>:</b> platnosť hesla a štatistiky</li>
+<li><b><i><a href="entering_pwd_pp.html">Zásady hesiel</a></i>:</b> pravidlá generovania náhodných hesiel</li>
+</ul>
+
+<h3><i>Karta Doplňujúce</i></h3>
+
+<img alt="Upraviť/Zobraziť doplňujúce" src="images/edit_view_entry_add.png"><br>
+<ul>
+<li><b>Automatické dopĺňanie:</b> Ak toto pole nie je prázdne, jeho obsah nahradí
+predvolenú hodnotu pre funkciu Automatické dopĺňanie (ktorá je zobrazená vyššie a pochádza
+buď z predvolenej hodnoty <b>Password Safe</b>, alebo z predvolenej hodnoty tejto databázy v nastaveniach na karte
+<a href="misc_tab.html">"Rôzne"</a>). 
+Ďalšie informácie nájdete v téme pomocníka <a href="autotype.html">"Automatické dopĺňanie"</a>.</li>
+<p></p>
+<li><b>Spustiť príkaz:</b> Toto pole možno použiť na zadanie príkazu alebo programu,
+ktorý sa má spustiť z menu Upraviť, kontextovej ponuky kliknutím pravým tlačidlom myši
+alebo Ctrl-R). <b>Password Safe</b> dokáže príkazu odovzdať argumenty,
+ako napríklad používateľské meno, heslo atď. konkrétneho záznamu, ako je popísané v téme <a href="run_command.html">Spustiť príkaz</a>.</li>
+<p></p>
+<li><b>Akcia pri dvojkliku a Akcia na Shift dvojklik:</b> Toto vám umožňuje definovať, aká akcia sa vykoná, keď na zázname urobíte dvojité kliknutie alebo dvojité kliknutie so stlačeným Shift. 
+Predvolená hodnota je skopírovať heslo a používateľské meno záznamu do
+schránky pre dvojité kliknutie a dvojité kliknutie so stlačeným klávesom Shift. Predvolené akcie sú v nastaveniach na karte
+<a href="misc_tab.html">"Rôzne"</a>
+a v rozbaľovacích zoznamoch sú označené ako "(predvolené nastavenie)".</li>
+<p></p>
+<li><b>Tajný kľúč overovateľa: </b>Nastavte pole "Kľúč" na hodnotu vygenerovanú webovou stránkou, ak sa na prihlásenie vyžaduje okrem hesla aj použitie jednorazových overovacích kódov 
+v rámci dvojfaktorovej autentifikácie (známych aj ako "Time-Based One-Time Password/TOTP tokeny"). <b>Poznámka:</b> Ak webová stránka namiesto kľúča zobrazuje QR kód tak ho naskenujte mobilom - aplikáciou na fotenie alebo skenovanie QR kódov, 
+v naskenovanej URL je potom možnosť vidieť tajný kľúč, ktorý opíšte do poľa v Password Safe. Keď je táto možnosť nastavená, <b>Password Safe</b> dokáže generovať 
+jednorazové overovacie kódy potrebné na prihlásenie na stránku a kopírovať ich automaticky každých 30-sekúnd do schránky. Navyše, ak máte tajný kľúč uložený, možete používať zároveň Password Safe 
+aj autentifikačnú aplikáciu v mobile ako je napr. Google Authenticator alebo Microsoft Authenticator, keďže tieto mobilné aplikácie umožňujú ručne zadať tajný kľúč. <b>Pozor:</b> Ak naskenujete QR kód priamo v autentifikačnej aplikácii 
+(ako vás webová stránka zvyčajne vyzve), tak tajný kľúč už zvyčajne dodatočne nezistíte a na generovanie overovacích kódov budete musieť používať iba autentifikačnú aplikáciu v mobile namiesto Password Safe.
+V takomto prípade sa však dá dvojfaktorová autentifikácia na stránke resetovať, bude vám pridelený nový tajný kľúč ktorý treba uložiť v Password Safe (a prípadne aj v autentifikačnej aplikácii v mobile).
+Pre bližšie info ohľadom generovania jednorazových overovacích kódov pozri časť <a href="entering_pwd.html">karta Základné</a>.
+<p>Príklad webovej stránky s nastavením tajného kľúča pre dvojfaktorovú autentifikáciu.</p>
+<p><img alt="Tajný kľúč MFA" src="images/MFA.png"></p></li>
+<li><b>História hesiel:</b> <b>Password Safe</b> je možné nakonfigurovať tak, 
+aby ukladal posledných niekoľko hesiel záznamu. Toto je možné vykonať buď pri vytváraní záznamu,
+alebo pri prezeraní existujúceho záznamu. Zobrazia sa posledné heslá spojené
+s daným záznamom. Počet uchovávaných nedávnych hesiel môžete zmeniť.
+Viac informácií nájdete v téme <a href="password_history.html">História hesiel</a>.</li>
+<p></p>
+<li><b>Klávesová skratka:</b>
+Klávesovú skratku je možné priradiť k záznamu a umožniť jeho okamžitý 
+výber bez ohľadu na aktuálne zobrazenie databázy stlačením príslušných klávesov.<br><br>
+<blockquote>
+<i>Poznámky ku klávesovým skratkám pre záznamy:</i>
+<ul>
+<li>Klávesová skratka pre daný záznam je uložená ako súčasť záznamu v databáze.
+Aplikácia <b>Password Safe</b> má však definované aj klávesové skratky, ktoré zodpovedajú položkám menu. 
+Klávesové skratky v menu sa vzťahujú na všetky databázy otvorené daným používateľom na konkrétnom počítači a tento používateľ si ich môže prispôsobiť
+v Nastaveniach na karte Skratky (Spravovať&nbsp;&gt;&nbsp;Nastavenia, <a href="shortcuts_tab.html">karta Skratky</a>) a tieto sa môžu meniť podľa zvoleného jazyka aplikácie,
+napr. angličtina, nemčina atď.</li>
+
+<li>Preto, hoci sa zobrazí upozornenie ak vyberiete klávesovú skratku pre záznam ktorá je momentálne priradená k položke menu, 
+nemusí dôjsť ku konfliktu, ak neskôr prispôsobíte skratky menu alebo zmeníte jazyk zobrazenia aplikácie. 
+Podobne, klávesová skratka pre záznam nemusí byť používaná, keď je pridaná k položke menu, ale môže nastať konflikt, 
+ak neskôr prispôsobíte skratky pre položky menu alebo zmeníte jazyk.</li>
+
+<li>Keďže klávesové skratky pre záznam nemôžu pri použití zmeniť databázu, na rozdiel od napríklad skratky položky menu,
+ktorá by mohla záznam odstrániť, z bezpečnostných dôvodov majú klávesové skratky pre záznam prednosť pred skratkami položiek menu.</li>
+
+<li>Klávesová skratka pre záznam musí obsahovať kláves Alt alebo Ctrl (s klávesom Shift alebo bez neho).
+Ak jeden z nich nie je zahrnutý pri zadávaní hodnoty, vyskúšajú sa všetky kombinácie klávesov Alt, Ctrl a Shift
+v poradí (Alt; Alt+Shift; Ctrl; Ctrl+Shift, Alt+Ctrl; Alt+Ctrl+Shift), aby sa dosiahla
+jedinečná kombinácia. Napríklad ak používateľ zadá "Shift + 6", skratka sa môže zmeniť na "Alt + Shift + 6". Ak však zadáte napríklad "Ctrl + 6", skratka sa nezmení.</li>
+
+<li>Klávesová skratka sa zo záznamu odstráni ak je už priradená k inému záznamu v databáze, v nasledujúcich prípadoch:
+<ul>
+<li>Ak je záznam importovaný (prostredníctvom textu alebo XML). Toto bude tiež uvedené v správe o importe.</li>
+
+<li>Ak je záznam pridaný počas zlúčenia databázy. Toto bude tiež uvedené v správe o zlúčení.</li>
+
+<li>Ak je záznam presunutý do databázy z inej databázy pomocou Drag & Drop. Toto sa nestane, ak je záznam presunutý v rámci tej istej databázy.</li>
+
+<li>Ak je záznam skopírovaný do databázy prostredníctvom výsledkov dialógového okna Porovnanie databázy.</li>
+
+<li>Akýkoľvek záznam vytvorený pomocou akcií "Duplikovať skupinu" alebo "Duplikovať záznam".</li>
+</li>
+</ul>
+</ul>
+<p>Zoznam aktuálne používaných klávesových skratiek pre záznamy sa zobrazí pod klávesovými skratkami súvisiacimi s programom <b>Password Safe</b>
+v Nastaveniach na karte Skratky (Spravovať&nbsp;&gt;&nbsp;Nastavenia, <a href="shortcuts_tab.html">karta Skratky</a>).
+Dvojitým kliknutím na klávesovú skratku v tomto zozname môžete upraviť/zobraziť príslušný záznam.
+Môžete tiež pridať stĺpec klávesových skratiek pre záznam do zobrazenia "Plochý zoznam" a/alebo vytvoriť
+filter, ktorý zobrazí iba záznamy s klávesovými skratkami alebo iba tie bez skratiek.</p>
+</blockquote>
+</li>
+
+</ul>
+
+<img alt="Klávesové skratky" src="images/options/shortcuts_tab.png"><br>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="História hesiel">
+<param name="Keyword" value="Upraviť záznamy hesiel">
+<param name="Keyword" value="Tajný kód autentifikácie">
+<param name="Keyword" value="OTP">
+<param name="Keyword" value="TOTP">
+
+</object>
+</body>
+</html>

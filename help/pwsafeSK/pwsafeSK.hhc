@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML lang="sk">
+<HEAD>
+<meta http-equiv="content-type" content="text/html; charset=Windows-1250">
+<meta name="GENERATOR" content="Microsoft&reg; HTML Help Workshop 4.1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+	<param name="Window Styles" value="0x800025">
+</OBJECT>
+<UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Vitajte">
+		<param name="Local" value="html/Welcome.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="O programe Password Safe">
+		<param name="Local" value="html/about_pws.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Password Safe a YubiKey">
+		<param name="Local" value="html/about_pws_yubi.html">
+		</OBJECT>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Začíname">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Vytvorenie a otvorenie databázy hesiel">
+			<param name="Local" value="html/create_new_db.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Používanie hesiel">
+			<param name="Local" value="html/retrieve_pwd.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Vyhľadanie textu">
+			<param name="Local" value="html/searching.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Upgrade z predošlých verzií">
+			<param name="Local" value="html/upgrade_from_v1x.html">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Používame Password Safe">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Čo je hlavné heslo">
+			<param name="Local" value="html/about_combinations.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Používateľské mená, heslá a skupiny">
+			</OBJECT>
+		<UL>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Základné vlastnosti">
+				<param name="Local" value="html/entering_pwd.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Doplňujúce">
+				<param name="Local" value="html/entering_pwd_add.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Dátumy a časy">
+				<param name="Local" value="html/entering_pwd_date.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Zásady hesiel">
+				<param name="Local" value="html/entering_pwd_pp.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Príloha">
+				<param name="Local" value="html/attachments.html">
+				</OBJECT>
+		</UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Nastavenie zásad hesiel">
+			<param name="Local" value="html/password_policies.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="História hesiel">
+			<param name="Local" value="html/password_history.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Zmena hlavného hesla">
+			<param name="Local" value="html/change_combo.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Filtrovanie záznamov">
+			<param name="Local" value="html/filters.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Používanie aliasov">
+			<param name="Local" value="html/aliases.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Používanie AutoType">
+			<param name="Local" value="html/autotype.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Funkcia Spustiť príkaz">
+			<param name="Local" value="html/run_command.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Zálohovanie a obnovenie databázy">
+			<param name="Local" value="html/backup_and_restore.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Automatické prechodné zálohy">
+			<param name="Local" value="html/backups_tab.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Automatické Failsafe zálohy">
+			<param name="Local" value="html/failsafebackups.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Importovanie záznamov">
+			<param name="Local" value="html/import.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Exportovanie záznamov">
+			<param name="Local" value="html/export.html">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Hlavné Menu">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Menu Súbor">
+			<param name="Local" value="html/file_menu.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Menu Upraviť">
+			<param name="Local" value="html/edit_menu.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Menu Zobraziť">
+			<param name="Local" value="html/view_menu.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Menu Spravovať">
+			<param name="Local" value="html/manage_menu.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Menu Nápoveda">
+			<param name="Local" value="html/help_menu.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Panel s nástrojmi">
+			<param name="Local" value="html/menu_toolbar.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="System Tray">
+			<param name="Local" value="html/system_tray.html">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Nastavenia">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Karta Zálohy">
+			<param name="Local" value="html/backups_tab.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Karta Zobrazenie">
+			<param name="Local" value="html/display_tab.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Karta Rôzne">
+			<param name="Local" value="html/misc_tab.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Karta História hesiel">
+			<param name="Local" value="html/password_history_tab.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Karta Zabezpečenie">
+			<param name="Local" value="html/security_tab.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Karta Skratky">
+			<param name="Local" value="html/shortcuts_tab.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Karta Systém">
+			<param name="Local" value="html/system_tab.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Nastavenie zásad hesiel">
+			<param name="Local" value="html/password_policies.html">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Prílohy">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Poznámky k sprievodcom">
+			<param name="Local" value="html/wzselectdb.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Pokročilé nastavenia sprievodcov">
+			<param name="Local" value="html/advanced.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Formát textového súboru pre import">
+			<param name="Local" value="html/imp_exp_text_details.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Predvoľby programu">
+			<param name="Local" value="html/preferences.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Klávesové skratky">
+			<param name="Local" value="html/Shortcut_Keys.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Parametre príkazového riadka">
+			<param name="Local" value="html/cli.html">
+			</OBJECT>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Ikony záznamov">
+			<param name="Local" value="html/images.html">
+			</OBJECT>
+	</UL>
+	<LI> <OBJECT type="text/sitemap">
+		<param name="Name" value="Credits">
+		</OBJECT>
+	<UL>
+		<LI> <OBJECT type="text/sitemap">
+			<param name="Name" value="Poďakovanie a stránky projektu">
+			<param name="Local" value="html/credits.html">
+			</OBJECT>
+	</UL>
+</UL>
+</BODY></HTML>

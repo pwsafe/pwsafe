@@ -1,0 +1,237 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html> 
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Používanie AutoType</title>
+<!-- pwsafe version: 3.18.1--><!-- Modified: 4/08/2009 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File --> 
+
+<style>
+li:not(:last-child) {
+    margin-bottom: 5px;
+}
+</style>
+
+<h2>Používanie AutoType</h2> 
+
+<p><b>Automatické dopĺňanie</b> vám umožňuje jednoducho a rýchlo zadať používateľské meno a heslo na internete.
+Táto funkcia sa zvyčajne používa nasledovne:
+<ol>
+<li>Prejdite na webovú stránku, na ktorú sa chcete prihlásiť.</li>
+<li>Kliknite na prvé pole, ktoré je potrebné vyplniť (zvyčajne "používateľské meno" alebo "prihlásenie").</li>
+<li>Prepnite na Password Safe, vyberte záznam zodpovedajúcu webovej stránke</li>
+<li>Vyvolajte automatické dopĺňanie (pomocou Control-T alebo kliknutím pravým tlačidlom myši a výberom možnosti "Vykonať automatické dopĺňanie".</li>
+<li>Týmto sa zadá používateľské meno a taktiež heslo.</li>
+</ol>
+
+Predvolený je nasledovný vzorec, po ktorom nasledujú automatické stlačenia klávesov: <a name="defautotext">používateľské meno, za ktorým nasleduje kláves Tab,
+nasleduje heslo, ďalší Tab a potom kláves Enter</a>
+(<i>používateľské meno</i> <b>TAB</b> <i>heslo</i> <b>TAB ENTER</b>). Toto
+funguje dobre pre väčšinu webových stránok, ktoré vyžadujú prihlásenie používateľským menom/heslom.
+
+<p>Pre webové stránky alebo aplikácie, ktoré vyžadujú odlišné údaje, môžete
+prispôsobiť správanie automatického dopĺňania podľa popisu v časti <a
+href="#autotype_details">Prispôsobenie automatického dopĺňania</a> nižšie. Upozorňujeme,
+že môžete tiež prispôsobiť <i><a
+href="#defautotext">predvolený</a></i> text automatického dopĺňania na karte <i><a
+href="misc_tab.html">Rôzne</a></i> v dialógovom okne Nastavenia. Toto
+môže byť užitočné, ak je napríklad predvolené oneskorenie automatického dopĺňania príliš rýchle
+pre váš počítač.</p>
+
+<p>Okrem toho môžete automatické dopĺňanie vyvolať po spustení ľubovoľného
+príkazu zadaného v poli <a href="run_command.html">Spustiť príkaz</a>
+daného záznamu, a skombinovať tak tieto dve funkcie.</p>
+
+<p><b>Poznámka:</b> <i>Ak bol záznam vybratý v dôsledku akcie Hľadať, potom
+položka ponuky "Vykonať automatické dopĺňanie" (a jej skratka, ak je stále definovaná) použije
+informácie tohto záznamu. Ak sa však potom vyberie iný záznam,
+aj keď je nájdený záznam stále zvýraznený, namiesto neho sa použijú informácie
+novo vybraného záznamu.</i></p>
+
+<h3>Prispôsobenie automatického dopĺňania</h3> 
+
+<ol>
+<li>V prihlasovacom formulári umiestnite kurzor do poľa s používateľským menom</li>
+<li>Otvorte okno <b>Password Safe</b></li>
+<li>Vyberte záznam</li>
+<li><b>Ctrl+T</b> alebo kliknite pravým tlačidlom myši a vyberte <b>Vykonať automatické dopĺňanie</b> alebo
+kliknite na príslušné tlačidlo na paneli nástrojov pre spustenie akcie.</li> </ol>
+
+<h3><a name="autotype_details"></a>Prispôsobenie automatického dopĺňania</h3> 
+
+<p>Pre webové stránky alebo aplikácie, ktoré nemajú pole pre používateľské meno,
+za ktorým nasleduje pole pre heslo a potom tlačidlo pre prihlásenie, môžete
+upraviť správanie vyplnením poľa <a href="#N1">"AutoType"
+záznamu</a> textom, ktorý určuje požadované správanie nasledovne:</p>
+<ul>
+<li><b>\u</b> sa nahradí používateľským menom priradeným k záznamu.</li>
+<li><b>\p</b> sa nahradí heslom priradeným k záznamu.</li>
+<li><b>\q</b> sa nahradí posledným heslom priradeným z
+histórie hesiel, pokiaľ je história hesiel tohto záznamu stále
+aktívna. Ak nie je aktívna alebo ak neexistujú žiadne staré heslá, pole sa
+odstráni, ale ničím sa nenahradí.</li>
+<li><b>\g</b> sa nahradí skupinou priradenou k záznamu.</li>
+<li><b>\i</b> sa nahradí názvom priradeným k záznamu.</li>
+<li><b>\l</b> sa nahradí URL adresou priradenou k záznamu (to je písmeno ell, nie číslica '1').</li>
+<li><b>\m</b> sa nahradí emailom priradeným k záznamu.</li>
+<li><b>\2</b> sa nahradí aktuálnym overovacím kódom priradeným k záznamu, ak bol pre záznam definovaný tajný kľúč overovateľa.</li>
+<li><b>\o</b> sa nahradí obsahom (prípadne viacriadkového) poľa Poznámky.</li>
+<ul>
+<li>Ľubovoľné znaky konca riadku '\n', '\r' alebo '\r\n' sa konvertujú na '\r' (CR).</li>
+<li>V poli Poznámky sa nenahrádzajú žiadne escape sekvencie
+(napr. '\u', '\p' atď.) okrem sekvencie '\t', ktorá sa nahrádza znakom Tab
+a sekvencie '\s', ktorá sa nahrádza klávesmi "Shift+Tab".</li>
+</ul>
+<li><b>\o<i>NNN</i></b> sa nahrádza obsahom n-tého riadku poľa Poznámky</li>
+<ul>
+<li><i>NNN</i> môže mať jednu až tri číslice (napr. \o5 pre
+5. riadok, \o45 pre 45. riadok atď.</li>
+<li>ak je <i>NNN</i> väčšie ako počet riadkov v poli Poznámky, potom
+toto nemá žiadny účinok a žiadne riadky z poľa Poznámky sa neskopírujú.</li>
+<li>ak je <i>NNN</i> nula, potom sa skopírujú všetky riadky, t.j. \o0 je ekvivalentné \o.</li>
+<li>Znaky konca riadku <i>nie sú</i> zahrnuté.</li>
+</ul>
+
+<hr>
+<small><b>Vedzte</b> že ide o pohodlný spôsob prispôsobenia automatického dopĺňania 
+pre aplikácie, ktoré vyžadujú druhé heslo alebo iný ľubovoľný text ako súčasť procesu overovania.</small>
+<hr>
+
+<li><b>\b</b> sa nahrádza klávesom Backspace.</li>
+<li><b>\t</b> sa nahrádza klávesom Tab, čím sa v skutočnosti preskočí pole vo formulári webovej stránky.</li>
+<li><b>\s</b> sa nahrádza klávesom "Shift+Tab", čím sa v skutočnosti vrátite späť na predchádzajúce pole.</li>
+<li><b>\n</b> sa nahrádza klávesom Enter, čím sa stlačí tlačidlo.</li>
+<li><b>\e</b> sa nahrádza klávesom Esc.</li>
+<li><b>\\</b> sa nahrádza klávesom spätného lomítka (\).</li>
+<li><b>\d<i>NNN</i></b> nastavuje oneskorenie medzi znakmi na <i>NNN</i> milisekúnd,
+namiesto 10 (predvolená hodnota). Toto zmení oneskorenie pre aktuálny a všetky nasledujúce znaky. Napríklad, "fast\d500slow" bude mať za následok, 
+že slovo "fast" bude napísané s predvoleným oneskorením a písmená "s", "l", "o" a "w" budú napísané s polsekundovou pauzou pred každým. 
+Ak chcete vložiť jednorazové oneskorenie, ktoré neovplyvní rýchlosť nasledujúcich znakov, použite "\w" alebo
+"\W", ako je popísané nižšie.<br>
+Upozorňujeme, že <em>NNN</em> je obmedzené na maximálne tri číslice.</li>
+<li><b>\w<i>NNN</i> alebo <i>\WNNN</i></b> zavádza oneskorenie <i>NNN</i> milisekúnd
+pre \w alebo sekúnd, ak sa použije \W. Napríklad, "how\w500now" spôsobí, že sa bude písať "how"
+(predvolenou rýchlosťou alebo rýchlosťou určenou posledným \d), po ktorej bude nasledovať polsekundová pauza a potom "now" písaný rovnakou rýchlosťou ako "how").
+Podobne, "how\W2now" zavedie dvojsekundovú pauzu medzi dvoma slovami. Toto je užitočné na doladenie načasovania s určitými webovými stránkami.<br>
+Upozorňujeme, že <em>NNN</em> je obmedzené na maximálne tri číslice, takže napríklad \w5000 vytvorí polsekundové oneskorenie a
+potom vygeneruje písmeno "0", čo pravdepodobne nie je to čo ste zamýšľali (\W5 by však stačilo).</li>
+<a name="z"></a><li><b>\z</b> (iba pre Windows) vyvolá starý mechanizmus automatického dopĺňania.
+Tento mechanizmus môže nesprávne spracovať znaky, ktoré nie sú v latinke, ale môže spôsobiť že automatické dopĺňanie
+bude fungovať na určitých problematických webových stránkach. <i><u>Ak zistíte, že AutoType nefunguje správne na konkrétnej webovej stránke, vyskúšajte tento kód na začiatku poľa
+príkazu AutoType. Ak je však toto pole zadané <b>kdekoľvek</b> v reťazci AutoType, vzťahuje sa na celý reťazec.</u></i></li>
+<li><b>\&#35;</b> (iba pre Windows) je úplne rovnaké ako \z vyššie, okrem toho že zapína/vypína starý mechanizmus AutoType pre časť reťazca AutoType
+medzi týmito kódmi. Použitie \# namiesto \z <i>môže</i> zabrániť problémom
+s odosielaním nelatinských znakov v iných častiach reťazca AutoType, ako sa to môže stávať pri použití poľa \z.
+<i><u>\&#35; sa však ignoruje, ak bolo pole \z zadané <b>kdekoľvek</b> v reťazci AutoType.</u></i>. 
+Napríklad, nasledujúci kód prepne na starý mechanizmus a odošle iba tabulátor a medzeru: <pre>\&#35;\t \&#35;</pre></li>
+<li><b>\c</b> (iba Linux) generuje klávesové udalosti, ktoré spôsobia príkaz Vybrať všetko špecifický pre platformu. 
+Je užitočný, keď je automatické dopĺňanie v konflikte s automatickým vypĺňaním prehliadača,
+kde sa dva texty kombinujú namiesto toho, aby automaticky doplnený text nahradil automaticky vyplnený text.
+Generovanie znaku <b>\c</b> na začiatku automatického dopĺňanie vo vnútri poľa 
+(na úplnom začiatku reťazca automatického dopĺňania alebo hneď za znakom <b>\t</b>) zabezpečí,
+že automaticky vyplnený text bude nahradený automaticky dopĺňaným textom. Pre niektoré
+stránky možno budete musieť automaticky dopĺňať <i>pomaly</i>, na čo na začiatok reťazca automatického dopĺňania umiestnite
+<b>\d100</b>. Takže váš reťazec automatického dopĺňania by mohol vyzerať takto
+<pre>
+\d100\c\u\t\c\p\n
+</pre>
+</li>
+<li><b>\j</b> (iba Linux) začne generovať nezávislé udalosti klávesov pre modifikačné klávesy ako ALT, SHIFT atď.</li>
+<li><b>\k</b> (iba Linux) zastaví generovanie nezávislých stlačení klávesov pre modifikačné
+klávesy a simuluje iba modifikácie (ako napríklad písanie veľkými písmenami) s príznakmi pre hlavné udalosti klávesov.</li>
+<li><b>\j</b> a <b>\k</b> by mohli byť užitočné, keď zistíte, že automatické dopĺňanie nerozlišuje
+veľké a malé písmená automaticky dopĺňaného textu alebo generuje malé písmená klávesov (3 namiesto #).</li>
+<li><u>Všetok ostatný text sa píše tak, ako je.</u></li>
+</ul>
+
+<p>Pre <u>iba Windows</u> sú implementované aj nasledujúce špeciálne ovládacie kódy:</p> <table style="margin-left:20px; border-spacing:5px">
+<tr><td><b>\{Enter}</b></td><td>Kláves Enter</td></tr>
+<tr><td><b>\{Up}</b></td><td>Kláves Šípka hore</td></tr>
+<tr><td><b>\{Down}</b></td><td>Kláves Šípka dole</td></tr>
+<tr><td><b>\{Left}</b></td><td>Kláves Šípka doľava</td></tr>
+<tr><td><b>\{Right}</b></td><td>Kláves Šípka doprava</td></tr>
+<tr><td><b>\{Home}</b></td><td>Kláves Home</td></tr>
+<tr><td><b>\{End}</b></td><td>Kláves End</td></tr>
+<tr><td><b>\{PgUp}</b></td><td>Kláves Page-up</td></tr>
+<tr><td><b>\{PgDn}</b></td><td>Kláves Page-down</td></tr>
+<tr><td><b>\{Tab}</b></td><td>Kláves Tab</td></tr>
+<tr><td><b>\{Space}</b></td><td>Medzerník</td></tr> </table>
+
+<p>Špeciálny ovládací kód medzi zloženými zátvorkami nerozlišuje veľké a malé písmená a nie je ovplyvnený prítomnosťou poľa "\z" automatického dopĺňania.</p>
+
+<p>Okrem toho je možné kombinovať nasledujúce modifikátory s vyššie uvedenými špeciálnymi ovládacími kódmi. 
+Tieto <u>musia</u> predchádzať kódu a možno ich kombinovať v ľubovoľnom poradí. Sú to:</p> <table
+style="margin-left:20px; border-spacing:10px">
+<tr><td><b>!</b></td><td>Kláves Alt</td></tr>
+<tr><td><b>^</b></td><td>Kláves Ctrl</td></tr>
+<tr><td><b>+</b></td><td>Kláves Shift</td></tr> </table>
+
+<p>Napríklad:<br> "\{+Tab}" je ekvivalentom "Shift+Tab"<br> "\{+^Tab}" je ekvivalentom "Ctrl+Shift+Tab"<br> "\{^Home}" je ekvivalentom "Ctrl+Home".</p>
+
+<h3>Odkazy a aliasy</h3>
+
+<h4>Odkazy</h4>
+
+<p>Automatické dopĺňanie v zázname typu odkaz používa reťazec automatického dopĺňania jeho základného záznamu. 
+Hodnoty nahradené v tomto reťazci, napr. \p pre heslo, pochádzajú zo základného záznamu odkazu, <u>okrem</u> polí, 
+ktoré je možné nastaviť pre samotný odkaz, konkrétne jeho skupinu, názov a používateľa.</p>
+
+<h4>Aliasy</h4>
+
+<p>Reťazec automatického dopĺňania a všetky premenné záznamu <u>okrem</u> aktuálneho hesla
+(\p) a predchádzajúceho hesla (\q) pochádzajú z aliasu.
+Spomenuté dve však pochádzajú zo základného záznamu daného aliasu.</p>
+
+<h3>Predvolené automatické dopĺňanie</h3>
+
+<p>Predvolená sekvencia automatického dopĺňania v Password Safe je \u\t\p\n. Túto
+predvolenú hodnotu je možné zmeniť v položke menu Spravovať/Nastavenia (karta Rôzne).</p>
+
+<h3>Príklady</h3>
+
+<p><b>Príklad 1:</b> Nasledujúci kód sa môže použiť tam, kde je potrebné zadať 
+číslo bankového účtu (12345) pred používateľom a heslom:
+<a name="N1"></a>
+<pre>
+<i>12345\t\u\t\p\t\n</i>
+</pre>
+</p>
+
+<p><b>Príklad 2:</b> Nasledujúci kód, odoslaný používateľom, vymaže pole s používateľským menom pred začatím automatického dopĺňania používateľského mena a hesla.
+Neprázdne polia s predvyplnený používateľským menom sú veľmi bežné. Niektoré stránky si pamätajú používateľské meno, 
+aj keď si to používateľ neželá, alebo používateľ zabudne vymazať pole "Nepamätám si používateľské meno" a kvôli
+súborom cookie prehliadača si ho aj tak zapamätá, alebo ak sa prihlásenie z akéhokoľvek dôvodu pri prvom pokuse nepodarí, 
+používateľské meno zostane zachované. Táto sekvencia automatického dopĺňania má zabezpečiť, aby používateľ nemusel najskôr ručne vymazávať pole s používateľským menom.
+<pre>
+<i>\t\s\u\t\p\n</i>
+</pre>
+</p>
+
+<p><b>Príklad 3:</b> Nasledujúca sekvencia, tiež odoslaná používateľom,
+prepína zaškrtávacie políčko (napr. zakazuje uloženie vášho prihlásenia):
+<pre>
+<i>\&#35;\t \&#35;</i>
+</pre> Poznámka: Na dosiahnutie požadovaného zaškrtávacieho políčka na ľubovoľnej webovej stránke možno budete potrebovať viac klávesov Tab ("\t"). 
+Pozrite si tiež <a href="#z">vyššie</a> informácie o možných problémoch pri používaní poľa "\z". </p>
+
+<hr>
+<small><b>Poznámka:</b> Ak máte problémy s automatickým dopĺňaním, možno budete musieť vypnúť blokovanie vyskakovacích okien tretích strán v prehliadači. 
+Používatelia hlásili problémy s funkciou blokovania vyskakovacích okien spolu s funkciou automatického dopĺňania.</small>
+<hr>
+
+<!-- Added some white space at the bottom for natural scrolling --> <br> 
+<br> <br> 
+
+<object type="application/x-oleobject" 
+classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="AutoType"> <param name="Keyword" value="Používanie AutoType">
+</object> 
+
+</body>
+</html> 

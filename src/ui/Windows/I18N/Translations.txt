@@ -23,6 +23,7 @@ pwsafe_nl.po  0x0413 NL_NL NL
 pwsafe_pl.po  0x0415 PL_PL PL
 pwsafe_pt_br.po  0x0416 PT_BR PT_BR
 pwsafe_ru.po  0x0419 RU_RU RU
+pwsafe_sk.po  0x041b SK_SK SK
 pwsafe_sl.po  0x0424 SL_SI SL
 pwsafe_sv.po  0x041d SV_SE SV
 pwsafe_tr.po  0x041f TR_TR TR

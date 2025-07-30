@@ -52,6 +52,9 @@
 #define IDS_PASSWORDHELP2               5120
 #define IDS_TRANSPARENCYHELP            5121
 #define IDS_EXCLUDE_FROM_SCR_CAP_HELP   5122
+#define IDS_PWSTRNGTH_WEAK              5123
+#define IDS_PWSTRNGTH_MEDIUM            5124
+#define IDS_PWSTRNGTH_STRONG            5125
 
 // Program strings
 #define IDS_FILEERROR1                  5210
@@ -215,7 +218,7 @@
 #define IDS_ENTRIESCHANGEDSTOP          5381
 #define IDS_ENTRIESCHANGEDSAVE          5382
 #define IDS_ENTRIESRESETMAX             5383
-#define IDS_SELECTBROWSER               5384
+#define IDS_SELECTPROGRAM               5384
 #define IDS_NOIBACKUP                   5385
 #define IDS_NONE                        5386
 #define IDS_INCREMENTNUM                5387

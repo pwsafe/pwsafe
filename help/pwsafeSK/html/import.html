@@ -1,0 +1,514 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Importovanie záznamov</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Importovanie záznamov</h2>
+
+<p><b>Password Safe</b> vám umožňuje importovať informácie o heslách z iných formátov. 
+Tieto súbory môžu byť generované inými aplikáciami, exportované z tabuľky alebo 
+dokonca napísané ručne pomocou programu Poznámkový blok alebo podobného textového editora.</p>
+
+<p>Formáty, ktoré <b>Password Safe</b> podporuje, sú:</p>
+
+<ul>
+<li><a href="#text">Obyčajný text</a></li>
+<li><a href="#XML">XML</a></li>
+<li><a href="#KeePassV1_TXTCSV">Súbory KeePass V1 TXT a CSV</a></li>
+<li><a href="#KeePassV2_CSV">Súbory KeePass V2 prostredníctvom KeePass V1 CSV</a></li>
+<li><a href="#KeePassXML">Súbory KeePass V1 a V2 XML</a></li>
+</ul>
+
+<p><b>Password Safe</b> vygeneruje na konci importu správu/report, ktorá zhrnie vykonanú operáciu 
+a zaznamená všetky problémy, ktoré sa vyskytli.
+Túto správu je možné skopírovať do schránky alebo uložiť na disk ako textový súbor v rovnakom adresári ako databáza.
+Položka menu "Zobraziť&nbsp;&gt;&nbsp;Reporty" sa potom môže použiť na neskoršie zobrazenie existujúcich reportov. 
+Názov súboru správy je pevne daný a závisí od operácie, ktorá ho vytvorila. 
+Ak sa tá istá operácia zopakuje a jej správu uložíte na disk, existujúca správa pre túto operáciu bude
+prepísaná. <span style="color=red;"><b>Poznámka:</b> Správa môže obsahovať citlivé údaje a
+pri výbere možnosti "Uložiť na disk" je potrebná zvýšená opatrnosť.</span></p>
+
+<p><b>Poznámka:</b> Podmnožinu záznamov môžete tiež "importovať" z inej databázy <b>Password Safe</b>. 
+A to otvorením druhej databázy v inej inštancii programu (za predpokladu že povolíte viacero inštancií v Nastaveniach na karte
+<a href="system_tab.html">"Systém"</a>). 
+Potom môžete jednoducho pomocou myši (Drag & Drop) skopírovať (presunúť podržaním Ctrl) ľubovoľné záznamy alebo celé skupiny do aktuálnej databázy z tejto druhej databázy.</p>
+
+<p><img alt="Kopírovanie záznamov Drag & Drop" src="images/drag_n_drop.png"></p>
+
+<h3><a name="text"></a>Obyčajný text</h3>
+
+<p>Textové súbory používané na importovanie hesiel pozostávajú z jedného alebo viacerých hesiel. 
+Každé pole v rámci jedného záznamu je oddelené oddeľovačom polí a každý záznam môže pozostávať 
+z jedného alebo viacerých riadkov. Podrobnosti o očakávanom formáte importovaného textového súboru
+nájdete v časti "<a href="imp_exp_text_details.html">Formát exportu a importu obyčajného textu</a>".</p>
+
+<h3>Dialógové okno nastavení importu textu</h3>
+
+<p>Oddeľovač polí použitý v importovanom textovom súbore a predvolený názov skupiny,
+do ktorej sa majú nové položky importovať, je možné nakonfigurovať ešte pred spracovaním súboru.</p>
+
+<p><img alt="Nastavenia importu textu" src="images/import.png"></p>
+<ol>
+<li>V menu Súbor vyberte <b>Importovať z...."</b></li>
+<li>Vyberte <b>Obyčajný text...</b></li>
+<li>Nastavte nastavenia a parametre importu pre importovaný textový súbor</li>
+<li>Ak bol v predchádzajúcom exporte alebo pomocou textového editora použitý znak viacriadkového oddeľovača poľa Poznámky,
+buď v predchádzajúcom exporte, alebo pomocou textového editora, zadajte ho sem
+aby sa počas procesu importu pole Poznámky mohlo rozdeliť na
+viaceré riadky nahradením tohto znaku znakom nového riadku.</li>
+<li>Kliknite na <b>OK</b></li>
+<li>Vyberte textový súbor, ktorý chcete importovať.</li>
+<li>Na konci procesu importu sa zobrazí malé dialógové okno, ktoré zobrazuje 
+koľko položiek bolo pridaných a koľko (ak nejaké) nebolo spracovaných.</li>
+</ol>
+
+<hr style="width: 100%; height: 2px;">
+<small><b style="color: rgb(255, 0, 0);">DÔLEŽITÉ</b>: Ak sa importuje záznam, ktorý používa
+Názov zásad hesiel a tento názov sa ešte nenachádza v aktuálnej databáze, 
+výsledný záznam v databáze sa vráti k používaniu predvolených zásad databázy.<br>
+</small>
+
+<hr style="width: 100%; height: 2px;">
+<small><b style="color: rgb(255, 0, 0);">DÔLEŽITÉ</b>: Prvý riadok importovaného súboru musí byť 
+zoznam s názvami polí oddelených tabulátormi, ktoré každý záznam obsahuje, napr.
+"Skupina/Názov&nbsp;Používateľské meno&nbsp;Heslo&nbsp;URL" atď. 
+Tento riadok je automaticky generovaný operáciou "<a href="export.html">Exportovať text</a>",
+ale v prípade súborov vytvorených inými nástrojmi musí byť takýto riadok pridaný manuálne.<br>
+</small>
+
+<hr style="width: 100%; height: 2px;">
+
+<h3><a name="XML"></a>XML</h3>
+
+<p>XML (eXtensible Markup Language) je populárny formát na prenos dát medzi aplikáciami. 
+<b>Password Safe</b> dokáže importovať súbory XML, ktoré boli vygenerované podľa schémy definovanej v
+súbore <i>pwsafe.xsd</i>, ktorý je súčasťou inštalácie aplikácie.</p>
+
+<p>Pri importe XML do prázdnej databázy sa všetky nastavenia databázy na začiatku
+vstupného súboru XML importujú do databázy. Ak aktuálna prijímajúca databáza
+už ale obsahuje záznamy, tieto nastavenia sa ignorujú.</p>
+
+<p>Všetky "názvy zásad hesiel" vo vstupnom súbore XML sa však importujú bez ohľadu na to,
+či sa v aktuálnej prijímajúcej databáze už nachádzajú záznamy. Upozorňujeme však, že ak
+v databáze už existujú zásady hesiel s rovnakým názvom, nebudú <u>prepísané</u> hodnotami vo vstupnom súbore XML.</p>
+
+<p>Ak sa importuje záznam, ktorý používa názov zásady hesiel a tento názov sa nenachádza ani v
+aktuálnej prijímajúcej databáze, ani vo vstupnom súbore XML, výsledný záznam v databáze
+sa vráti k používaniu predvolených zásad hesiel databázy.</p>
+
+<p><u>Zmena kódovania hodnôt dátumu/času XML</u></p>
+
+<p>Pred verziou Password Safe V3.26 sa polia dátumu a času exportovali v našom vlastnom formáte:</p>
+<pre>
+  &lt;name&gt;
+    &lt;date&gt;yyyy-mm-dd&lt;/date&gt;
+    &lt;time&gt;hh:mm:ss&lt;/time&gt;
+  &lt;/name&gt;
+</pre>
+<p>Kde "name" bolo ktorékoľvek z našich polí dátumu/času záznamu, napr. 'ctime', 'atime', 'xtime',
+'pmtime', 'rmtime' a dátum/čas zmeny histórie hesiel.</p>
+
+<p>Avšak, od verzie V3.26, PasswordSafe exportuje polia dátumu/času XML iba pomocou medzinárodného štandardného formátu dátumu/času W3C. 
+Verzie V3.26 a V3.27 dokážu zadávať údaje v oboch formátoch, ale verzie od 3.27 <b><u>akceptujú iba</u></b> štandard W3C.</p>
+
+<p>Štandard W3C pre polia dátumu/času XML je:</p>
+<pre>
+  &lt;namex&gt;yyyy-mm-ddThh:mm:ss&lt;/namex&gt;
+</pre>
+<p>Kde sme zmenili "name", aby sme odlíšili polia od starého formátu pridaním znaku "x"
+a tak "namex" predstavuje akékoľvek nové pole dátumu/času záznamu, napr. "ctimex", "atimex", "xtimex",
+"pmtimex", "rmtimex" a dátum/čas histórie hesiel "changedx".</p>
+
+<p>Ak chcete importovať starší formát súboru XML s poľami dátumu/času, musíte tieto polia manuálne upraviť, aby ste ich
+previedli do starého formátu Password Safe na štandardný formát W3C.</p>
+</div>
+
+<h3><a name="KeePassV1_TXTCSV"></a>Súbory TXT a CSV KeePass V1</h3>
+
+<p><u>Odporúčaný import položiek databázy KeePass V1 je prostredníctvom XML, ako je popísané </u>
+<a href="#KeePassXML"><u>nižšie</u></a>.</p>
+
+<h4>Súbor TXT</h4>
+
+<p>Môžete tiež importovať súbor TXT exportovaný z Keepass V1 (testované na súboroch vytvorených pomocou V1.19b).</p>
+
+<p>Nasledujúce polia sa prevedú na ekvivalenty <b>Password Safe</b>:</p>
+Každý nový záznam začína riadkom začínajúcim znakom '[' a končiacim znakom ']'. Text
+medzi nimi bude importovaný ako pole "Názov" tohto záznamu.<p>
+
+<p>Každá informácia je na jednom riadku a na začiatku každého riadku sú nasledujúce značky:</p>
+<ul>
+<li>"Group: " sa stane Skupinou záznamu</li>
+<li>"Group Tree: " sa stane hierarchiou skupín záznamu až po koreň</li>
+<li>"User Name: " sa stane Používateľským menom záznamu</li>
+<li>"Password: " sa stane Heslom záznamu</li>
+<li>"URL: " sa stane URL adresou záznamu</li>
+<li>"Notes: " sa stanú Poznámkami záznamu</li>
+<li>"UUID: " sa stane interným jedinečným ID záznamu</li>
+<li>"Creation Time: " sa stane časom vytvorenia záznamu</li>
+<li>"Last Access: " sa stane časom posledného prístupu k záznamu</li>
+<li>"Last Modification: " sa stane časom poslednej modifikácie záznamu a hesla záznamu</li>
+<li>"Expires: " sa stane dátumom expirácie záznamu</li>
+</ul>
+
+<p>Nasledujúce polia sú momentálne ignorované:</p>
+
+<ul>
+<li>"Icon"</li>
+<li>"Attachment Description"</li>
+<li>"Attachment" - <b><u>Neexportujte</u></b> toto pole, pretože to môže spôsobiť že exportovaný súbor bude extrémne veľký.</li>
+</ul>
+
+<p>Upozorňujeme, že časy v <b>Password Safe</b> musia byť skoršie ako 19. januára 2038. Akýkoľvek neskorší čas sa momentálne
+považuje za neplatný a príslušné pole nie je nastavené.</p>
+
+<p>Upozorňujeme, že počas exportu z Keepass V1 <b><u>MUSÍTE</u></b> zaškrtnúť políčko <i>"Kódovať/nahradiť znaky nového riadku znakom '\n'"</i>
+inak <u>import môže zlyhať alebo skončiť s neočakávaným výsledkom.</u></p>
+
+<h4>CSV súbor</h4>
+
+<p>Môžete tiež importovať súbor CSV (hodnoty oddelené čiarkou) exportovaný z Keepass V1 (testované na súboroch vytvorených vo verzii V1.19b).</p>
+
+<p>Nasledujúce polia sa prevedú na ekvivalenty <b>Password Safe</b>:</p>
+
+<ul>
+<li>"Password Groups" sa stane Skupinou záznamu</li>
+<li>"Group Tree" sa stane hierarchiou skupín záznamu až po koreň</li>
+<li>"Account" sa stane Názvom záznamu</li>
+<li>"Login Name" sa stane Používateľským menom záznamu</li>
+<li>"Password" sa stane Heslom záznamu</li>
+<li>"Web Site" sa stane URL adresou záznamu</li>
+<li>"Comments " sa stanú Poznámkami záznamu</li>
+<li>"UUID: " sa stane interným jedinečným ID záznamu</li>
+<li>"Creation Time: " sa stane časom vytvorenia záznamu</li>
+<li>"Last Access: " sa stane časom posledného prístupu k záznamu</li>
+<li>"Last Modification: " sa stane časom poslednej modifikácie záznamu a hesla záznamu</li>
+<li>"Expires: " sa stane dátumom expirácie záznamu</li>
+</ul>
+
+<p>Nasledujúce polia sú momentálne ignorované:</p>
+
+<ul>
+<li>"Icon"</li>
+<li>"Attachment Description"</li>
+<li>"Attachment" - <b><u>nexportujte</u></b> toto pole, pretože to môže spôsobiť že exportovaný súbor bude extrémne veľký.</li>
+</ul>
+
+<p>Upozorňujeme, že časy v <b>Password Safe</b> musia byť skoršie ako 19. januára 2038. Akýkoľvek neskorší čas sa momentálne
+považuje za neplatný a príslušné pole nie je nastavené.</p>
+
+<p>Upozorňujeme, že počas exportu z Keepass V1 <b><u>MUSÍTE</u></b> zaškrtnúť políčko <i>"Kódovať/nahradiť znaky nového riadku znakom '\n'"</i>
+inak <u>import môže zlyhať alebo skončiť s neočakávaným výsledkom.</u></p>
+
+<h3><a name="KeePassV2_CSV"></a>Súbory KeePass V2 pomocou KeePass V1 CSV</h3>
+
+<p><u>Odporúčaný import záznamov databázy KeePass V2 je prostredníctvom XML, ako je popísané </u><a href="#KeePassXML"><u>nižšie</u></a>.</p>
+
+<p><b>Password Safe</b> nedokáže importovať žiadny súbor vytvorený programom KeePass V2 - dokonca ani formát CSV KeePass V1 dostupný z tohto programu. 
+Je však možné exportovať databázu KeePass V2 ako databázu KeePass V1. Túto potom môžete exportovať do súboru TXT alebo CSV a importovať podľa popisu <a href="#KeePassV1_TXTCSV">vyššie</a>.</p>
+
+<h3><a name="KeePassXML"></a>Súbory XML KeePass V1 a V2</h3>
+
+<p><b>Password Safe</b> nedokáže priamo importovať súbor XML exportovaný programom KeePass V1 alebo V2, pretože polia sú príliš odlišné. 
+Vytvorili sme však súbory XSL Transform (KPV1_to_PWS.xslt a KPV2_to_PWS.xslt). Nižšie uvedené programy sa dajú použiť na spracovanie exportovaného súboru XML s jedným z týchto súborov XSLT 
+za účelom vytvorenia súboru XML kompatibilného s <b>Password Safe</b>, ktorý je potom možné importovať do <b>Password Safe</b> <u>V3.26 alebo novšej</u>.</p>
+
+<p>Súbory XSLT sú v súlade s V1.0 XSLT, ako je popísané v <a target="blank" href="http://www.w3.org/TR/xslt">
+http://www.w3.org/TR/xslt</a> a boli testované so súbormi XML vytvorenými programami KeePass V1.19b a KeePass V2.15.</p>
+
+<p>Upozorňujeme, že hodnoty času v <b>Password Safe</b> musia byť skoršie ako 19. január 2038. 
+Akýkoľvek neskorší čas sa momentálne považuje za neplatný a príslušné pole nie je nastavené.</p>
+
+<p>Nasledujúce programy - procesory XSLT pre Windows podporujú dodané súbory XSL Transform. 
+Príklad spustenia príkazového riadka týchto procesorov predpokladá:<p>
+<ul>
+<li>XML style sheet na konverziu súboru XML KeePass na súbor XML <b>Password Safe</b> je: KPV1_to_PWS.xslt alebo KPV2_to_PWS.xslt.</li>
+<li>Vstupný súbor KeePass V1 alebo V2 XML je: KeePassV1.xml alebo KeePassV2.xml</li>
+<li>Výstupný súbor <b>Password Safe</b> XML bude: PWS.xml</li>
+<li>Všetky vstupné a výstupné súbory sú v rovnakom priečinku ako program - procesor XSLT. Ak nie, budete musieť zadať úplnú cestu k týmto súborom.</li>
+</ul>
+<ol>
+<li>Program pre príkazový riadok od Microsoft (XSLT Processor verzie 4.0). Vlastnosti súboru msxsl.exe uvádzajú, 
+že je to V1.1.0.1 a datovaný je z roku 2001, hoci webová stránka uvádza, že je to V2.0 a datovaný je 19. septembra 2004. 
+Aktuálne ho možno nájsť na adrese <a target="blank" href="http://www.microsoft.com/downloads/en/details.aspx?familyid=2fb55371-c94e-4373-b0e9-db4816552e41&displaylang=en">http://www.microsoft.com/downloads</a>.
+Vyžaduje si nainštalovanie Microsoft Core XML Services (MSXML) V4.0. Zatiaľ čo najnovšia verzia MSXML je V6, 
+V4 sa zvyčajne inštaluje na všetky verzie systému Windows podporované <b>Password Safe</b>.
+<p>Pre súbor KeePass V1 XML použite príkaz:</p>
+<pre>
+msxsl KeePassV1.xml KPV1_to_PWS.xslt -o PWS.xml
+</pre>
+Pre súbor KeePass V2 XML použite príkaz:
+<pre>
+msxsl KeePassV2.xml KPV2_to_PWS.xslt -o PWS.xml
+</pre>
+</li>
+<li>AltovaXML Community Edition (aktuálna verzia 2011r3).
+Pozri <a target="blank" href="http://www.altova.com/altovaxml.html">http://www.altova.com/altovaxml.html</a>.
+<p>Pre súbor KeePass V1 XML použite príkaz:</p>
+<pre>
+AltovaXML -xslt1 KPV1_to_PWS.xslt -in KeePassV1.xml -out PWS.xml
+</pre>
+Pre súbor KeePass V2 XML použite príkaz:
+<pre>
+AltovaXML -xslt1 KPV2_to_PWS.xslt -in KeePassV2.xml -out PWS.xml
+</pre>
+</li>
+<li>Saxon-HE (Home Edition) (aktuálna verzia 9.3.0.5).
+Pozri <a target="blank" href="http://saxon.sourceforge.net/">http://saxon.sourceforge.net/</a>.
+Pre Saxon existuje aj grafické rozhranie s názvom Kernow.
+Pozrite si stránku <a target="blank" href="http://kernowforsaxon.sourceforge.net/">http://kernowforsaxon.sourceforge.net/</a>.
+Formát príkazu závisí od toho, či používate verziu Java alebo .Net pre Saxon-HE a/alebo Kernow. Ďalšie informácie nájdete v dokumentácii k produktu.</li>
+</ol>
+
+<p>Všetky tieto programy sú bezplatné, hoci Kernow je potrebné zaregistrovať, ak sa použije viac ako 100-krát.</p>
+
+<h4>Špeciálne spracovanie KeePass V1 XML</h4>
+
+<ul>
+<li>Ak skupina v KeePass obsahuje bodku ("."), pri pridaní do <b>Password Safe</b> sa prevedie na lomítko ("/"), pretože <b>Password Safe</b> používa bodky ako oddeľovače skupín.</li>
+
+<li>Všetky znaky 'carriage return' sa odstránia z poľa Poznámky a všetky znaky 'newline' sa prevedú na bežný oddeľovač "&raquo;" v <b>Password Safe</b>; ktorý sa používa na označenie nových riadkov v poli Poznámky.</li>
+
+<li>UUID záznamov v KeePass sa prenesie do záznamu <b>Password Safe</b>, pokiaľ sa už nepoužíva v danej databáze (čo je <em>veľmi</em> nepravdepodobné), v takom prípade sa počas importu vypočíta nová hodnota.</li>
+</ul>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="30%" />
+<col align="center" width="70%" />
+<thead>
+<tr>
+<th>Element v KeePass V1 XML</th>
+<th>XML ekvivalent v Password Safe</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>&lt;group&gt;</td><td>&lt;group&gt;</td></tr>
+<tr><td>&lt;title&gt;</td><td>&lt;title&gt;</td></tr>
+<tr><td>&lt;username&gt;</td><td>&lt;username&gt;</td></tr>
+<tr><td>&lt;password&gt;</td><td>&lt;password&gt;</td></tr>
+<tr><td>&lt;url&gt;</td><td>&lt;url&gt;</td></tr>
+<tr><td>&lt;notes&gt;</td><td>&lt;notes&gt;</td></tr>
+<tr><td>&lt;lastmodtime&gt;</td><td>&lt;pmtimex&gt; <u>and</u> &lt;rmtimex&gt;</td></tr>
+<tr><td>&lt;creationtime&gt;</td><td>&lt;ctimex&gt;</td></tr>
+<tr><td>&lt;lastaccesstime&gt;</td><td>&lt;atimex&gt;</td></tr>
+<tr><td>&lt;expiretime&gt;</td><td>&lt;xtimex&gt;, if the KeePass &lt;expiretime&gt; attribute "expires"
+is 'true'</td></tr>
+<tr><td>&lt;image&gt;<br>&lt;attachdesc&gt;<br>&lt;attachment&gt;</td><td><br>Tieto nemajú ekvivalent v režime Password Safe a sú ignorované.</td></tr>
+</tbody>
+</table>
+
+<h4>Špeciálne spracovanie KeePass V2 XML</h4>
+
+<ul>
+<li>Pole "&lt;HistoryMaxItems&gt;" zo sekcie "&lt;Meta&gt;" súboru KeePass V2 XML sa používa 
+ako maximálny počet hesiel, ktoré sa majú uložiť do histórie hesiel v <b>Password Safe</b>.
+Všetky ostatné polia v tejto sekcii sa ignorujú.</li>
+
+<li>Ak skupina v KeePass obsahuje bodku ("."), pri pridaní do <b>Password Safe</b> sa skonvertuje na lomítko ("/"), pretože bodky sa v <b>Password Safe</b> používajú ako oddeľovače skupín.</li>
+
+<li>Všetky znaky 'carriage return' sa odstránia z poľa Poznámky a všetky znaky 'newline' sa skonvertujú na bežný oddeľovač "&raquo;" v <b>Password Safe</b>; ktorý sa používa na označenie nových riadkov v poli Poznámky.</li>
+
+<li>UUID záznamu v KeePass sa prenesie do záznamu <b>Password Safe</b>, pokiaľ sa už nepoužíva
+v danej databáze (čo je veľmi nepravdepodobné), v takom prípade sa počas importu vypočíta nová hodnota.</li>
+
+<li>Ak sa pole "&lt;DefaultAutoTypeSequence&gt;" nachádza v skupine v KeePass, používa sa
+ako predvolené pole automatického písania <b>Password Safe</b> pre záznamy v danej skupine.</li>
+
+<li>Ak je pole "&lt;AutoType&gt;" záznamu nastavené na "True" a "&lt;DefaultSequence&gt;"
+nie je prázdne, potom sa toto použije ako sekvencia automatického písania záznamu v <b>Password Safe</b>. 
+Ak je "True", ale "&lt;DefaultSequence&gt;" je prázdne, potom sa pole "&lt;DefaultAutoTypeSequence&gt;" z nadradenej skupiny použije ako sekvencia automatického písania záznamu v <b>Password Safe</b>.</li>
+
+<li>Ak pole "&lt;OverrideURL&gt;" nie je prázdne, jeho hodnota sa vloží do poľa Poznámky s predponou "OverrideURL:" a pole URL dostane predponu "[alt]".</li>
+
+<li>Ak reťazec URL začína na "\\" alebo "cmd://" (bez rozlišovania veľkých a malých písmen), pole sa umiestni do poľa Spustiť príkaz záznamu v <b>Password Safe</b> a vykoná sa nahradenie zástupným symbolom (pozri nižšie).
+Ak sa ani jedna z týchto predpôn neobjaví v reťazci URL, umiestni sa do poľa URL záznamu v <b>Password Safe</b> iba s nahradením {S:FieldName}.</li>
+
+<li>Ak pole "&lt;Tags&gt;" nie je prázdne, jeho hodnota sa vloží do poľa Poznámky s predponou "Tags:".</li>
+</ul>
+
+<p>KeePass V2 exportuje všetky reťazce, napr. Title, do sekcie "String" s položkami "Key" a "Value".
+Napríklad:
+<pre>
+&lt;String&gt;
+	&lt;Key&gt;Title&lt;/Key&gt;
+	&lt;Value&gt;Test title&lt;/Value&gt;
+&lt;/String&gt;
+</pre>
+<p>Nasledujúca tabuľka zobrazuje ich konverziu na ekvivalentný element XML pre <b>Password Save</b>.</p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="40%" />
+<col align="center" width="60%" />
+<thead>
+<tr>
+<th>KeePass V2 String kľúč</th>
+<th>Password Safe XML element ekvivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>Title</td><td>&lt;title&gt;</td></tr>
+<tr><td>Username</td><td>&lt;username&gt;</td></tr>
+<tr><td>Password</td><td>&lt;password&gt;</td></tr>
+<tr><td>URL</td><td>&lt;url&gt; or &lt;runcommand&gt;<br>depending on the prefix (see notes above)</td></tr>
+<tr><td>Notes</td><td>&lt;notes&gt;</td></tr>
+<tr><td>All others</td><td>Inserted into the <b>Password Safe</b> Notes field in the form:<br> "Key: Value"</td></tr>
+</tbody>
+</table>
+
+<p>KeePass V2 exportuje všetky polia dátumu/času, napr. čas vytvorenia, do sekcie "Times". Napríklad:</p>
+<pre>
+&lt;Times&gt;
+  &lt;LastModificationTime&gt;2011-05-30T14:20:57Z&lt;/LastModificationTime&gt;
+  &lt;CreationTime&gt;2011-05-27T18:09:29Z&lt;/CreationTime&gt;
+  &lt;LastAccessTime&gt;2011-05-30T14:20:57Z&lt;/LastAccessTime&gt;
+  &lt;ExpiryTime&gt;2999-12-28T23:59:59Z&lt;/ExpiryTime&gt;
+  &lt;Expires&gt;False&lt;/Expires&gt;
+&lt;/Times&gt;
+</pre>
+<p>Nasledujúca tabuľka zobrazuje konverziu týchto prvkov na ekvivalentný element XML pre <b>Password Save</b>.</p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="30%" />
+<col align="center" width="70%" />
+<thead>
+<tr>
+<th>KeePass V2 časová hodnota</th>
+<th>Password Safe XML element ekvivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>&lt;Times&gt;/&lt;LastModificationTime&gt;</td><td>&lt;pmtimex&gt; <u>and</u> &lt;rmtimex&gt;</td></tr>
+<tr><td>&lt;Times&gt;/&lt;CreationTime&gt;</td><td>&lt;ctimex&gt;</td></tr>
+<tr><td>&lt;Times&gt;/&lt;LastAccessTime&gt;</td><td>&lt;atimex&gt;</td></tr>
+<tr><td>&lt;Times&gt;/&lt;ExpiryTime&gt;</td><td>&lt;xtimex&gt; if &lt;Times&gt;/&lt;Expires&gt; is 'True'</td></tr>
+</tbody>
+</table>
+
+<p>KeePass V2 dokáže vytvoriť sekciu histórie, keď sa v zázname niečo zmení. <b>Password Safe</b> ukladá iba zmeny hesla. 
+Všetky ostatné uložené zmenené polia v KeePass elemente XML sa ignorujú.</p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="30%" />
+<col align="center" width="70%" />
+<thead>
+<tr>
+<th>KeePass V2 história</th>
+<th>Password Safe XML element ekvivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>&lt;Times&gt;/&lt;LastModificationTime&gt;</td><td>&lt;history_entry&gt;/&lt;changedx&gt;</td></tr>
+<tr><td>&lt;String[Key='Password']&gt;</td><td>&lt;history_entry&gt;/&lt;oldpassword&gt;</td></tr>
+<tr><td>All other tags from &lt;History&gt;</td><td>Ignored</td></tr>
+</tbody>
+</table>
+
+<p>Nasledujúce špeciálne kódy AutoType KeePass V2 (pozri
+<a target="blank" href="http://keepass.info/help/base/autotype.html">http://keepass.info/help/base/autotype.html</a>)
+sú preložené nasledovne. <i>Všetky kódy, ktoré nie sú uvedené, sú skopírované tak ako sú.</i></p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="75%" />
+<col align="center" width="25%" />
+<thead>
+<tr>
+<th>KeePass V2 Auto-type</th>
+<th>Password Safe ekvivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>\</td><td>\\ (escaping '\')</td></tr>
+<tr><td>Tab {TAB}</td><td>\t</td></tr>
+<tr><td>Enter {ENTER} or ~</td><td>\n</td></tr>
+<tr><td>Backspace {BACKSPACE}, {BS} or {BKSP}</td><td>\b</td></tr>
+<tr><td>Keypad + {ADD}</td><td>+</td></tr>
+<tr><td>Keypad - {SUBTRACT}</td><td>-</td></tr>
+<tr><td>Keypad * {MULTIPLY}</td><td>*</td></tr>
+<tr><td>Keypad / {DIVIDE}</td><td>/</td></tr>
+<tr><td>+ {+}</td><td>+</td></tr>
+<tr><td>^ {^}</td><td>^</td></tr>
+<tr><td>% {%}</td><td>%</td></tr>
+<tr><td>~ {~}</td><td>~</td></tr>
+<tr><td>(, )  {(}, {)}</td><td>(, )</td></tr>
+<tr><td>{DELAY X} Delays X milliseconds.</td><td>\wX (\WX)</td></tr>
+<tr><td>{DELAY=X} Sets the default delay to X milliseconds for all standard keypresses in this sequence.</td><td>\dX</td></tr>
+</tbody>
+</table>
+
+<p>Nasledujúce zástupné symboly KeePass V2 (pozri
+<a target="blank" href="http://keepass.info/help/base/placeholders.html">http://keepass.info/help/base/placeholders.html</a>)
+sú preložené nasledovne. <i>Všetky kódy, ktoré nie sú uvedené, sú skopírované tak ako sú</i>.</p>
+
+<p>Zástupné symboly nerozlišujú veľké a malé písmená. Na vlastné reťazce sa dá odkazovať pomocou {S:Name}. Napríklad,
+ak má databáza vlastný reťazec s názvom "eMail", dá sa naň odkazovať pomocou zástupného symbolu {S:eMail}.</p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="33%" />
+<col align="center" width="33%" />
+<col align="center" width="33%" />
+<thead>
+<tr>
+<th>KeePass V2 Placeholder</th>
+<th>Password Safe AutoType</th>
+<th>Password Safe Run Command</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>{GROUP}</td><td>\g</td><td>${G}</td></tr>
+<tr><td>{TITLE}</td><td>\i</td><td>${t}</td></tr>
+<tr><td>{USERNAME}</td><td>\u</td><td>${u}</td></tr>
+<tr><td>{PASSWORD}</td><td>\p</td><td>${p}</td></tr>
+<tr><td>{NOTES}</td><td>\o</td><td>${n}</td></tr>
+<tbody>
+</table>
+
+<p></p>
+
+<table border="1" cellpadding="2" cellspacing="2 width="80%">
+<col align="left" width="50%" />
+<col align="center" width="50%" />
+<thead>
+<tr>
+<th>KeePass V2 Placeholder</th>
+<th>Password Safe Run Command</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>\{</td><td>\\{ (escaping \)</td></tr>
+<tr><td>$</td><td>\$ (escaping $)</td></tr>
+<tr><td>{GROUPPATH}</td><td>${g}</td></tr>
+<tr><td>{URL}</td><td>${url}</td></tr>
+<tr><td>{URL:RMVSCM}</td><td>${url}</td></tr>
+<tr><td>{APPDIR}</td><td>${appdir}</td></tr>
+<tr><td>{DB_PATH}</td><td>${fulldb}</td></tr>
+<tr><td>{DB_DIR}</td><td>${dbdir}</td></tr>
+<tr><td>{DB_NAME}</td><td>${dbname}.${dbextn}</td></tr>
+<tr><td>{DB_BASENAME}</td><td>${dbname}</td></tr>
+<tr><td>{DB_EXT}</td><td>${dbextn}</td></tr>
+<tr><td>All others</td><td>Copied unchanged</td></tr>
+<tbody>
+</table>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Import záznamov">
+<param name="Keyword" value="Export záznamov">
+<param name="Keyword" value="Import KeePass záznamov">
+<param name="Keyword" value="Konverzia dát hesla">
+</object>
+
+</body>
+</html>

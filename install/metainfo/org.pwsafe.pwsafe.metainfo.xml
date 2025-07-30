@@ -35,12 +35,20 @@
       <image>https://pwsafe.org/images/wxMiscOptions.png</image>
     </screenshot>
     <screenshot>
+      <caption>Password Match</caption>
+      <image>https://pwsafe.org/images/wxPasswordMatch.jpg</image>
+    </screenshot>
+    <screenshot>
+      <caption>Alias Entries</caption>
+      <image>https://pwsafe.org/images/wxAlias.jpg</image>
+    </screenshot>
+    <screenshot>
       <caption>Password Policy</caption>
       <image>https://pwsafe.org/images/wxPasswordPolicy.png</image>
     </screenshot>
   </screenshots>
    <releases>
-    <release version="v1.20.0" date="2024-11-06">
+    <release version="v1.22.0" date="2025-07-11">
       <description>
         <p>The latest non-Windows release.</p>
       </description>

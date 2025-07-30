@@ -47,13 +47,18 @@ PWHistList::PWHistList(const StringX &pwh_str, PWSUtil::TMC time_format)
   iStringXStream ism(StringX(pwh_s, 1, 2)); // max history 1 byte hex
   ism >> hex >> m_maxEntries;
   if (!ism)
+  {
+    m_numErr = static_cast<size_t>(-1);
     return;
+  }
 
   iStringXStream isn(StringX(pwh_s, 3, 2)); // cur # entries 1 byte hex
   isn >> hex >> n;
   if (!isn)
+  {
+    m_numErr = static_cast<size_t>(-1);
     return;
-
+  }
   // Sanity check: Each entry has at least 12 bytes representing
   // time + pw length
   // so if pwh_s isn't long enough check if it contains integral number of history records
