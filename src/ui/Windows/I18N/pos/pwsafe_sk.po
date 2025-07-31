@@ -6,12 +6,12 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2024-06-08 12:15+0300\n"
+"PO-Revision-Date: 2025-07-26 09:11+0200\n"
+"Last-Translator: Milan Zabka <milan@zabka.top>\n"
+"Language-Team: Milan Zabka <milan@zabka.top>\n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -653,7 +653,7 @@ msgstr "&Duplikovať záznam"
 
 #. Resource IDs: (32087 - Menu)
 msgid "&Duplicate Group"
-msgstr "Duplikovať skupinu"
+msgstr "&Duplikovať skupinu"
 
 #. Resource IDs: (1356)
 msgid "&E-mail:"
@@ -1699,7 +1699,7 @@ msgstr "Filter príloh"
 
 #. Resource IDs: (3086)
 msgid "Attachment Media Type"
-msgstr "Typ prílohy"
+msgstr "Formát súboru prílohy"
 
 #. Resource IDs: (3088)
 msgid "Attachment Modification Time"
@@ -2823,7 +2823,7 @@ msgstr "Potvrďte vymazanie"
 
 #. Resource IDs: (32056 - Menu)
 msgid "Delete Entry"
-msgstr "Odstrániť záznam"
+msgstr "Zmazať záznam"
 
 #. Resource IDs: (5882)
 msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
@@ -2935,11 +2935,11 @@ msgstr "Urobte dvojklik na záznam a môžete ho upraviť/zobraziť."
 
 #. Resource IDs: (5738, 65535)
 msgid "Double-Click Action"
-msgstr "Akcia na dvojklik"
+msgstr "Akcia pri dvojkliku"
 
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
-msgstr "Akcia na dvojklik:"
+msgstr "Akcia pri dvojkliku:"
 
 #. Resource IDs: (4021)
 msgid "Double-Click on entry to Autotype"
@@ -2987,7 +2987,7 @@ msgstr "Dvojklik na záznam otvorí okno úpravy/zobrazenie"
 
 #. Resource IDs: (5855)
 msgid "Doubleclick action for current entry"
-msgstr "Akcia na dvojklik pre aktuálny záznam"
+msgstr "Akcia pri dvojkliku pre aktuálny záznam"
 
 #. Resource IDs: (5697)
 #, c-format
@@ -3128,7 +3128,7 @@ msgstr "Koniec reportu"
 
 #. Resource IDs: (65535)
 msgid "Enter Key:"
-msgstr "Zadajte kláves:"
+msgstr "Zadajte kľúč:"
 
 #. Resource IDs: (130)
 msgid "Enter Master Password"
@@ -3211,7 +3211,7 @@ msgstr "Zadajte aktuálne hlavné heslo, a následne nové heslo. \r\nZadajte no
 
 #. Resource IDs: (5255)
 msgid "Enter the key and verify it."
-msgstr "Zadajte kľúč a overte ho."
+msgstr "Zadajte heslo a podvrďte ho."
 
 #. Resource IDs: (149)
 msgid "Enter your Sample Text below"
@@ -4274,7 +4274,7 @@ msgstr "Importované"
 #. Resource IDs: (5338)
 #, c-format
 msgid "Imported %d %s"
-msgstr "Importované %d %s"
+msgstr "Importované: %d %s"
 
 #. Resource IDs: (3383)
 #, c-format
@@ -4707,11 +4707,11 @@ msgstr "Maximálna hodnota pre prvé číslo a 'medzi' pravidlo"
 
 #. Resource IDs: (5984)
 msgid "Media Type"
-msgstr "Typ média"
+msgstr "Formát súboru"
 
 #. Resource IDs: (65535)
 msgid "Media Type:"
-msgstr "Typ média:"
+msgstr "Formát súboru:"
 
 #. Resource IDs: (5124)
 msgid "Medium Password"
@@ -4954,11 +4954,11 @@ msgstr "Nie je vybratá žiadna funkcia, ktorá by slúžila ako základ pre va�
 
 #. Resource IDs: (5600)
 msgid "No items matched your filter"
-msgstr "Vášmu filtru nevyhovujú žiadne položky"
+msgstr "Tomuto filtru nevyhovujú nijaké záznamy"
 
 #. Resource IDs: (5273)
 msgid "No matches found."
-msgstr "Nenašla sa žiadna zhoda."
+msgstr "Nebola nájdená zhoda."
 
 #. Resource IDs: (5270)
 msgid "No object selected for basing your restrictions."
@@ -5551,11 +5551,11 @@ msgstr "Stlačením OK skopírujete heslo vybratého záznamu do schránky. Schr
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
-msgstr "Ukážka nedostupná"
+msgstr "Ukážka nie je dostupná"
 
 #. Resource IDs: (5975)
 msgid "Preview is unavailable"
-msgstr "Ukážka nie je k dispozícii"
+msgstr "Ukážka nie je dostupná"
 
 #. Resource IDs: (5580)
 msgid "Previous Passwords"
@@ -5721,7 +5721,7 @@ msgstr "Odstrániť konfiguráciu Password Safe z registra Windows"
 
 #. Resource IDs: (5111)
 msgid "Remove all saved passwords for entries and stop saving password change history in all entries."
-msgstr "Odstrániť všetky uložené heslá pre záznamy a prestať ukladať históriu zmeny hesla vo všetkých záznamoch."
+msgstr "Odstrániť všetky uložené histórie hesiel v záznamoch a prestať ukladať históriu hesiel vo všetkých záznamoch."
 
 #. Resource IDs: (32291 - Menu)
 msgid "Remove this shortcut"
@@ -6054,7 +6054,7 @@ msgstr "Vybrať záznam na porovnanie"
 
 #. Resource IDs: (5993)
 msgid "Select media type"
-msgstr "Vybrať typ média"
+msgstr "Vyberte formát súboru"
 
 #. Resource IDs: (5430)
 msgid "Select some entries"
@@ -6376,7 +6376,7 @@ msgstr "Je mi ľúto, nemôžem určiť minimálny počet znakov s možnosťou '
 
 #. Resource IDs: (5938)
 msgid "Sorry, couldn't find help file - help unavailable."
-msgstr "Je mi ľúto, nemohol som nájsť súbor nápovedy - nápoveda nedostupná."
+msgstr "Je mi ľúto, nemohol som nájsť súbor nápovedy - nápoveda nie je dostupná."
 
 #. Resource IDs: (6028)
 msgid "Sorry, currently there is a limit of only one attachment per entry"
@@ -6432,7 +6432,7 @@ msgstr "Začiatok reportu"
 
 #. Resource IDs: (5101)
 msgid "Start saving password history for all entries, to the above number of entries."
-msgstr "Začať ukladať históriu hesiel pre všetky záznamy, podľa vyššie uvedeného počtu záznamov."
+msgstr "Začať ukladať históriu hesiel pre všetky záznamy, počet bude nastavený na vyššie uvedenú hodnotu."
 
 #. Resource IDs: (1185)
 msgid "Start saving previous passwords"
@@ -6456,7 +6456,7 @@ msgstr "Stav"
 
 #. Resource IDs: (5100)
 msgid "Stop saving password history for all entries.\n\nSaved histories will not be removed, but changed passwords will no longer be added."
-msgstr "Prestať ukladať históriu hesiel pre všetky záznamy.\n\nUložené histórie nebudú odstránené, ale zmenené heslá už nebudú pridané."
+msgstr "Prestať ukladať históriu hesiel pre všetky záznamy.\n\nUložené histórie nebudú odstránené, ale zmenené heslá už nebudú pridávané."
 
 #. Resource IDs: (1184)
 msgid "Stop saving previous passwords"
@@ -6744,7 +6744,7 @@ msgstr "Boli rozpoznané nasledovné stĺpce, ale spracujú sa iba Skupina/Názo
 
 #. Resource IDs: (3260)
 msgid "The following columns will be processed: "
-msgstr "Spracujú sa nasledovné stĺpce: "
+msgstr "Spracujú sa nasledovné stĺpce: \n"
 
 #. Resource IDs: (3463)
 msgid "The following entries contain incomplete passkeys."
@@ -6868,7 +6868,7 @@ msgstr "Vybratý výstupný formát nepodporuje všetky funkcie aktuálnej datab
 
 #. Resource IDs: (5254)
 msgid "The two entries do not match."
-msgstr "Tieto dve položky sa nezhodujú."
+msgstr "Zadané heslá sa nezhodujú."
 
 #. Resource IDs: (3366)
 msgid "The user specified that the following fields be excluded from the export:"
@@ -7275,7 +7275,7 @@ msgstr "(Bez názvu)"
 
 #. Resource IDs: (5102)
 msgid "Update the maximum number of saved passwords per entry."
-msgstr "Upravte maximálny počet uložených hesiel na záznam."
+msgstr "Upraviť maximálny počet uložených hesiel na záznam."
 
 #. Resource IDs: (5741)
 #, c-format
@@ -7417,7 +7417,7 @@ msgstr "Názov premennej musí byť alfanumerický"
 
 #. Resource IDs: (1018)
 msgid "Verify Key:"
-msgstr "Overte kľúč:"
+msgstr "Potvrďte kľúč:"
 
 #. Resource IDs: (5690)
 msgid "Version mismatch with On Screen Keyboard DLL. Please install the dll that came with this version of Password Safe."
@@ -7996,7 +7996,7 @@ msgstr "\nZopakovať"
 #. Resource IDs: (5780)
 #, c-format
 msgid "\nRenamed %d %s"
-msgstr "\nPremenovaný %d %s"
+msgstr "\nPremenované: %d %s"
 
 #. Resource IDs: (32077)
 msgid "\nRun Command"
@@ -8051,12 +8051,12 @@ msgstr "\nSynchronizácia dokončená: %d %ls boli aktualizované"
 #. Resource IDs: (3412)
 #, c-format
 msgid "\nThe following %ls %ls updated:"
-msgstr "\nNasledovné %ls %ls boli aktualizované:"
+msgstr "\nNasledovné %ls %ls aktualizované:"
 
 #. Resource IDs: (3419)
 #, c-format
 msgid "\nThe following new %ls %ls merged into this database:"
-msgstr "\nNasledovné nové %ls %ls sa zlúčili do tejto databázy:"
+msgstr "\nNasledovné nové %ls %ls zlúčené do tejto databázy:"
 
 #. Resource IDs: (32083)
 msgid "\nUndo"
@@ -8578,19 +8578,19 @@ msgstr "nedávno použitých položiek (história)"
 
 #. Resource IDs: (32011 - MenuEx)
 msgid "v&1.x format..."
-msgstr "Formát v&1.x..."
+msgstr "Formát v1.x..."
 
 #. Resource IDs: (32012 - MenuEx)
 msgid "v&2 format..."
-msgstr "Formát v&2..."
+msgstr "Formát v2..."
 
 #. Resource IDs: (32025 - MenuEx, 5977)
 msgid "v&3 format..."
-msgstr "Formát v&3..."
+msgstr "Formát v3..."
 
 #. Resource IDs: (32026 - MenuEx, 5978)
 msgid "v&4 format (EXPERIMENTAL)..."
-msgstr "Formát v&4 (experimentálne)..."
+msgstr "Formát v4 (experimentálne)..."
 
 #. Resource IDs: (3045)
 msgid "validation"
@@ -8633,4 +8633,3 @@ msgstr ""
 #, c-format
 msgid "«%s» «%s» «%s»"
 msgstr ""
-
