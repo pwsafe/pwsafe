@@ -81,7 +81,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("PWUseSymbols"), true, ptDatabase},                   // database
   {_T("PWUseHexDigits"), false, ptDatabase},                // database
   {_T("PWUseEasyVision"), false, ptDatabase},               // database
-  {_T("dontaskquestion"), false, ptApplication},            // application
+  {_T("dontaskquestion"), true, ptApplication},             // application
   {_T("deletequestion"), false, ptApplication},             // application
   {_T("DCShowsPassword"), false, ptApplication},            // application
   {_T("DontAskMinimizeClearYesNo"), true, ptObsolete},      // obsolete in 3.13 - replaced by 2 separate entries

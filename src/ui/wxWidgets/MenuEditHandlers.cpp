@@ -414,8 +414,8 @@ void PasswordSafeFrame::DoCopyPassword(CItemData &item)
 {
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::DontAskQuestion)) {
     wxRichMessageDialog dialog(this, 
-      _("Pressing OK will copy the password of the selected item\nto the clipboard. The clipboard will be securely cleared\nwhen Password Safe is closed.\n\nPressing Cancel stops the password from being copied."), 
-      _("Clear Clipboard"), 
+      _("Pressing OK will copy the password of the selected item\nto the clipboard. The clipboard will be securely cleared\nwhen Password Safe is closed.\n \nWARNING: Password Safe can only clear the main clipboard.\nClipboard history utilities may still hold any information that\nhas been copied.\n \nPressing Cancel stops the password from being copied."),
+      _("Copy Password"),
       wxOK | wxCANCEL | wxICON_INFORMATION);
 
     dialog.ShowCheckBox(_("&Don't remind me again"));
