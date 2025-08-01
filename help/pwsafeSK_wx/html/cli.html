@@ -1,0 +1,94 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Parametre príkazového riadka</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+
+<h2>Parametre príkazového riadka</h2>
+
+<p>Spustenie <b>Password Safe</b> bez argumentov spôsobí, že vás aplikácia vyzve na zadanie hlavného hesla 
+poslednej otvorenej databázy alebo hlavného hesla novej databázy, ak predtým na vašom počítači nebola žiadna otvorená (napr. pri prvom použití).
+Toto je však možné zmeniť spustením <b>Password Safe</b> takto:</p>
+
+<ul>
+<li><i>pwsafe</i> <b>databáza</b><br>
+Týmto sa otvorí zadaný súbor databázy namiesto posledného otvoreného súboru. Ak je zadaný iba názov súboru bez cesty, 
+bude sa vyhľadávať v adresári, v ktorom bola aplikácia spustená. Upozorňujeme, že ak názov súboru a/alebo cesta obsahuje medzery, mal by byť uzavretý v dvojitých úvodzovkách.</li>
+
+<li><i>pwsafe</i> <b>-r [databáza]</b><br>
+Týmto sa otvorí zadaná databáza v režime iba na čítanie. Ak databáza nie je zadaná, aplikácia vyzve používateľa na zadanie databázy, ktorá sa otvorí v režime iba na čítanie.</li>
+
+<li><i>pwsafe</i> <b>-e názov súboru</b><br>
+Týmto sa používateľ vyzve na zadanie prístupovej frázy a súbor sa zašifruje pomocou kľúča odvodeného z prístupovej frázy. 
+<b>Poznámka:</b> Súbor môže byť <i>ľubovoľný</i> súbor. Zašifrovaný súbor bude mať rovnaký názov ako pôvodný súbor s pripojenou koncovkou ".PSF".<br></li>
+
+<li><i>pwsafe</i> <b>-d názov súboru</b><br>
+Táto funkcia vyzve používateľa na zadanie prístupovej frázy a súbor sa dešifruje pomocou kľúča odvodeného z prístupovej frázy. 
+<b>Poznámka:</b> Toto bude fungovať iba na súboroch, ktoré boli zašifrované spustením funkcie pwsafe s prepínačom "-e" (pozri vyššie).</li>
+
+<li><i>pwsafe</i> <b>-c</b><br>
+Týmto sa aplikácia spustí zatvorená, teda bez databázy a bez úvodného otváracieho dialógového okna 
+(Na prístup k databáze použite menu Súbor).</li>
+
+<li><i>pwsafe</i> <b>-s [databáza]</b><br>
+Týmto sa aplikácia spustí v "tichosti", teda minimalizovaná, bez databázy (pokiaľ nie je zadaná). 
+Po obnovení aplikácie sa používateľovi zobrazí otváracie dialógové okno 
+(táto možnosť je určená na spustenie aplikácie po prihlásení prostredníctvom odkazu v priečinku Po spustení používateľa). 
+<b>Poznámka:</b> Toto správanie implicitne umiestni aplikáciu do systémovej lišty (system tray).</li>
+
+<li><i>pwsafe</i> <b>-m</b><br>
+Toto je rovnaké ako možnosť '<b>-c</b>' s tým rozdielom, že aplikácia sa spustí minimalizovaná.</li>
+</ul>
+
+<p>Okrem toho sú akceptované nasledujúce možnosti, ktoré môžu byť užitočné, ak chcete
+zdieľať rovnaké nastavenia na viacerých počítačoch, napríklad pri spustení aplikácie z disku na kľúči.</p>
+
+<ul>
+<li><b>-u</b> <i>meno_pouzivatela</i><br>
+Toto spôsobí, že aplikácia bude čítať a zapisovať nastavenia pod zadaným
+<i>meno_pouzivatela</i> namiesto aktuálneho prihlasovacieho mena.</li>
+
+<li><b>-h</b> <i>nazov_pocitaca</i><br>
+Toto spôsobí, že aplikácia bude čítať a zapisovať nastavenia pod zadaným
+<i>nazov_pocitaca</i> namiesto aktuálneho názvu počítača.</li>
+
+<li><b>-g</b> <i>konfiguračný_súbor</i><br>
+Toto spôsobí, že na načítanie a ukladanie nastavení sa použije zadaný súbor,
+namiesto predvoleného súboru pwsafe.cfg. Ak je zadaný iba názov súboru bez cesty,
+bude sa vyhľadávať v adresári v ktorom bola aplikácia spustená,
+pokiaľ nie je prepísaná premennou prostredia <b>PWS_PREFSDIR</b> 
+(pozri jej popis v téme <a href="preferences.html">Predvoľby</a>). 
+Upozorňujeme, že ak názov súboru a/alebo cesta obsahuje medzery, mal by byť uzavretý v dvojitých úvodzovkách.</li>
+</ul>
+
+<p>Poznámka: Keďže konfiguračný súbor používa XML, meno_pouzivatela a nazov_pocitaca musia spĺňať štandardy XML:
+<ul>
+<li>Prvý znak musí byť alfanumerický. Ak nie, pred používateľským menom sa pridá "u"
+a pred názvom počítača sa podľa potreby pridá "h".</li>
+<li>Musia obsahovať iba alfanumerické znaky alebo jeden alebo viacero znakov podčiarkovníka, spojovníka,
+dvojbodky alebo bodky ("_-:."). Ak sú prítomné iné znaky, budú nahradené podčiarkovníkom ("_").</li>
+</ul>
+</p>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Iba na čítanie">
+<param name="Keyword" value="CLI">
+<param name="Keyword" value="Parametre príkazového riadka">
+<param name="Keyword" value="Šifrovanie súboru">
+<param name="Keyword" value="Dešifrovanie súboru">
+</object>
+
+</body>
+</html>

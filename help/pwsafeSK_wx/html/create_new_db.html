@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Vytvorenie databázy hesiel</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script><link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Vytvorenie a otvorenie databázy hesiel</h2>
+
+<p><b>Password Safe</b> umožňuje používateľom ukladať všetky heslá v jedinej 
+databáze hesiel alebo vytvárať viacero databáz na
+rôzne účely (napr. jednu pre prácu, inú pre osobné použitie).
+Každá databáza je nezávislá a možno ju presúvať a používať na rôznych počítačoch,
+pokiaľ je nainštalovaná rovnaká verzia aplikácie <b>Password Safe</b>. Databázy sú
+šifrované šifrovacím kľúčom odvodeným z hlavného hesla (hlavné
+heslo sa však <b>neuchováva</b> v databáze v žiadnej forme).</p>
+
+<p>Ak otvoríte aplikáciu <b>Password Safe</b> po prvýkrát, stlačte tlačidlo
+"Nová...". Budete požiadaní o názov a priečinok 
+vašej databázy hesiel (predvolená hodnota je "pwsafe.psafe3").
+Následne budete požiadaní o zadanie hlavného hesla, ktoré
+sa bude používať na šifrovanie a uzamknutie obsahu databázy.</p>
+
+<h3>Predtým než začnete</h3>
+
+<p><b>Password Safe</b> sa snaží zabezpečiť, aby boli informácie o vašich heslách 
+správne uložené. <b>Password Safe</b> však nedokáže
+ochrániť váš pevný disk alebo počítač pred fyzickým poškodením alebo stratou.
+Preto dôrazne odporúčame, aby ste si pravidelne vytvárali kópie svojej databázy hesiel, 
+napr. skopírovaním súboru na iný počítač alebo disk. Prípadne online pomocou cloudových služieb, ako napríklad
+<a target="_blank" href="https://www.dropbox.com/home">DropBox</a>,
+<a target="_blank" href="https://www.sugarsync.com/">SugarSync</a> alebo
+<a target="_blank" href="https://www.jungledisk.com/">JungleDisk</a>, aby sme vymenovali aspoň niektoré.</p>
+
+<p>Ďalšia vec, ktorú by ste mali zvážiť, je zabezpečenie prístupu
+k vašej databáze hesiel pre príbuzných alebo spolupracovníkov. <b>Password Safe</b> nemá
+<b><span style="color: rgb(255, 0, 0);">žiadne</span></b> "zadné dvierka" 
+alebo možnosť "obnovenie hesla" zámerne. To znamená, že ste
+zodpovední za sprístupnenie hlavného hesla iným osobám za
+vhodných okolností. Môže to byť niečo také jednoduché ako zapečatená obálka
+v zásuvke alebo bezpečnostnej schránke v banke, alebo prepracovanejší mechanizmus, ako napríklad
+rozdelenie hlavného hesla a poskytnutie jeho častí rôznym osobám.</p>
+
+<h3>Vytvorenie novej databázy</h3>
+
+<p>Novú databázu je možné vytvoriť dvoma spôsobmi. Kliknutím na tlačidlo
+<b>Nová...</b> v dialógovom okne <b>Zadajte hlavné heslo</b> pri spustení programu
+alebo z položky menu <b>"Súbor > Nová..."</b> po otvorení aplikácie.</p>
+
+<hr>
+<small><b>Poznámka:</b> V predvolenom nastavení <b>Password Safe</b> zobrazí databázu,
+ktorá bola naposledy použitá, a zobrazí pre ňu výzvu na zadanie hlavného hesla. 
+Ak používate viacero databáz, zobrazia sa v rozbaľovacom zozname. 
+Prípadne môžete ručne zadať cestu k databáze, ktorú chcete otvoriť, 
+alebo ju vybrať v dialógovom okne stlačením tlačidla s tromi bodkami. 
+Po otvorení databázy ju môžete zmeniť na inú pomocou príkazu <b>Otvoriť...</b> v menu <b>Súbor</b>.</small>
+
+<hr>
+<center>
+<br>
+<img alt="Initial window" src="images/default_safe_open.png"><br>
+<br>
+<img alt="new master password prompt" src="images/new_safe.png">
+</center>
+
+<p>Ukazovateľ sily hesla pod poľom Hlavné heslo poskytuje približný údaj o sile hesla. Červená farba označuje slabé heslo, žltá stredne silné heslo a zelená silné heslo.
+Vaše hlavné heslo by malo byť silné, to znamená, že lišta by mala byť plná a zelená.</p>
+
+<h3>Použitie YubiKey s Password Safe</h3>
+
+<p><b>Password Safe</b> môže fungovať so zariadením <a href="about_pws_yubi.html">YubiKey</a> 
+a poskytovať "dvojfaktorovú autentifikáciu", teda chrániť vašu databázu
+niečím čo poznáte (vaše hlavné heslo), a niečím čo máte (zariadenie YubiKey). 
+Ak nemáte zariadenie YubiKey, potom <b>Password Safe</b> nezobrazí tlačidlá a texty špecifické pre YubiKey
+a nižšie uvedené pokyny špecifické pre YubiKey sa na vás nevzťahujú.</p>
+
+<p>Ak je váš YubiKey pripojený k počítaču, v oknách Zadajte hlavné heslo a Nastavenie hlavného hesla sa zobrazí 
+tlačidlo "Yubikey" a textové pole, ako je znázornené vyššie. To vám umožní použiť váš YubiKey na prístup 
+k vašej databáze Password Safe, buď spolu s hlavným heslom, alebo namiesto neho.
+Pre maximálnu bezpečnosť odporúčame, aby bola vaša databáza chránená <b>súčasne</b>
+YubiKey aj hlavným heslom</p>
+
+<h4>Nastavenie hlavného hesla spolu s YubiKey</h4>
+
+<p>Ak chcete použiť svoj <a href="about_pws_yubi.html">nakonfigurovaný</a> YubiKey na
+ochranu svojej databázy:</p>
+<ol>
+<li>Ak ste tak ešte neurobili, vložte svoj YubiKey do USB slotu na vašom počítači.
+Tlačidlo Yubikey v okne Hlavné heslo sa teraz stane aktívnym a text
+napravo od neho sa zmení na "Kliknite na tlačidlo a potom aktivujte Yubikey"</li>
+<li>Nastavte hlavné heslo nasledovne:</li>
+<ol type="a">
+<li>Ak chcete chrániť svoju databázu <b>súčasne</b> pomocou vášho YubiKey aj
+hlavného hesla ("dvojfaktorové overenie"), tak <b>najprv</b> zadajte hlavné heslo 
+do polí "Hlavné heslo" a "Potvrdenie" a <b>potom</b> kliknite na tlačidlo Yubikey.</li>
+<li>Ak chcete chrániť svoju databázu iba pomocou vášho YubiKey, potom
+nechajte polia "Hlavné heslo" a "Potvrdenie" <b>prázdne</b> a kliknite na tlačidlo
+Yubikey.</li>
+<li>Samozrejme, môžete si tiež zvoliť ochranu databázy iba hlavným heslom, stačí zadať hlavné heslo do oboch polí a potom kliknúť na OK.</li>
+</ol>
+<li>Kliknite na tlačidlo Yubikey. Nápis "Kliknite na tlačidlo a potom aktivujte Yubikey" bude nahradený indikátorom priebehu zobrazujúcim zostávajúci čas na aktiváciu
+ YubiKey (dotykom blikajúceho zeleného svetla na zariadení). Ak YubiKey neaktivujete v stanovenom čase (približne 15 sekúnd), zobrazí sa chybové hlásenie a môžete to skúsiť znova alebo zrušiť akciu.</li>
+<li>Po aktivácii YubiKey sa vytvorí vaša databáza <b>Password Safe</b></li>.</li>
+</ol>
+
+<h3>Otvorenie databázy s YubiKey</h3>
+
+<p>Ak chcete otvoriť databázu Password Safe chránenú vaším Yubikey:</p>
+<ol>
+<li>Uistite sa, že požadovaná databáza je vybratá v poli "Databáza hesiel". 
+Ak tam nie je, kliknite na ... a vyberte ju.</li>
+<li>Ak ste sa rozhodli chrániť svoju databázu pomocou <b>súčasne</b> vášho YubiKey
+a hlavného hesla, <b>najprv</b> zadajte hlavné heslo a <b>potom</b> kliknite na tlačidlo Yubikey. Ak
+ste sa rozhodli chrániť svoju databázu iba pomocou YubiKey,
+potom nechajte pole "Databáza hesiel" prázdne a kliknite na tlačidlo
+Yubikey.</li>
+<li>Po kliknutí na tlačidlo Yubikey sa nápis "Kliknite na tlačidlo a potom aktivujte Yubikey" 
+nahradí indikátorom priebehu, ktorý zobrazuje zostávajúci čas
+na aktiváciu YubiKey (dotykom blikajúceho zeleného svetla na
+zariadení). Ak svoj YubiKey neaktivujete v stanovenom čase (približne 15
+sekúnd), zobrazí sa chybové hlásenie a môžete to skúsiť znova alebo akciu zrušiť.</li>
+<li>Po aktivácii YubiKey sa otvorí vaša databáza hesiel.</li>
+</ol>
+
+<h3>Virtuálna klávesnica</h3>
+
+<p>Na bezpečné nastavenie hlavného hesla môžete použiť znaky s diakritikou (napr. na slovenskej klávesnici), ako napríklad <b>ô</b>, <b>ň</b>
+alebo podobné. Na zadanie takýchto znakov môžete potrebovať inú fyzickú klávesnicu. 
+Takáto klávesnica je však k dispozícii ako virtuálna klávesnica. Táto klávesnica sa potom 
+používa na simuláciu všetkých dostupných cudzích znakov. Virtuálnu klávesnicu je možné zobraziť
+kliknutím na symbol <span><img alt="Symbol virtuálnej klávesnice" src="images/vk_small.jpg">
+</span>. Cudzie znaky, ktoré nie sú dostupné na fyzickej klávesnici, je možné zadať týmto spôsobom. 
+Môžete si tak vytvoriť ešte bezpečnejšie hlavné heslo prípadne to použiť len na časť hlavného hesla.</p>
+
+<center>
+<br>
+<img alt="Input a password with a virtual keyboard" src="images/default_safe_open_vk.png">
+<img alt="Input a password with a virtual keyboard" src="images/virtual_keyboard.png">
+</center>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Vytvorenie novej databázy hesiel">
+<param name="Keyword" value="Hlavné heslo">
+<param name="Keyword" value="Virtuálna klávesnica">
+<param name="Keyword" value="Otvorenie databázy hesiel">
+<param name="Keyword" value="YubiKey">
+</object>
+</body>
+</html>

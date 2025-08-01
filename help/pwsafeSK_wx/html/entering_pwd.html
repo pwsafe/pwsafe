@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Používateľské mená a heslá</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+
+<h2>Používateľské mená, heslá a skupiny: Základné polia</h2>
+
+<p>Používateľské mená, heslá a skupiny spolu s ďalšími vlastnosťami sa spravujú na 4 kartách:</p>
+
+<ul>
+<li><b><i>Základné</i>:</b> všetky prvky potrebné pre správu hesiel</li>
+<li><b><i><a href="entering_pwd_add.html">Doplňujúce</a></i>:</b> ďalšie špecifikácie vrátane histórie hesiel</li>
+<li><b><i><a href="entering_pwd_date.html">Dátumy a časy</a></i>:</b> platnosť hesla a štatistiky</li>
+<li><b><i><a href="entering_pwd_pp.html">Zásady hesiel</a></i>:</b> pravidlá generovania náhodných hesiel</li>
+</ul>
+
+<h3>Karta <i>Základné</i></h3>
+
+<p>Táto karta obsahuje najdôležitejšie a najčastejšie používané prvky.</p>
+<p><img alt="Upraviť záznam/Zobraziť záznam" src="images/edit_view_entry_base.png"/></p>
+<p>Ku každému záznamu hesla sú priradené nasledujúce informácie:</p>
+<ul>
+<li><b>Skupina</b>: Názov na zoskupenie (organizovanie) niekoľkých súvisiacich záznamov</li>
+<li><b>Názov</b>: Priateľský názov pre záznam hesla</li>
+<li><b>Používateľské meno</b>: Používateľské meno</li>
+<li><b>Heslo</b>: Heslo s ukazovateľom sily hesla pod ním</li>
+<li><b>URL</b>: URL (webová stránka) priradená k tomuto záznamu</li>
+<li><b>Email</b>: Emailová adresa priradená k tomuto záznamu</li>
+<li><b>Poznámky</b>: Všeobecné poznámky vo voľnom formáte</li>
+</ul>
+
+<p><i>Povinné sú iba polia <b>Názov</b> a <b>Heslo</b>; všetky ostatné sú voliteľné.</i></p>
+
+<ul>
+<li>Sivé pole Overovací kód naznačuje, že pre tento záznam nebol nastavený tajný kľúč pre generovanie overovacích kódov/TOTP tokenov v rámci dvojfaktorovej autentifikácie (pozri <a href="entering_pwd_add.html">karta Doplňujúce</a>).<br>
+Keď je nastavený tajný kľúč, pole je aktívne, a aktuálny overovací kód je možné zobraziť kliknutím na "oko", ktoré sa zobrazí napravo od poľa:
+<ul>
+<li><img alt="Overovací kód skrytý" src="images/authcode-hidden.png"/></li>
+<li><img alt="Overovací kód zobrazený" src="images/authcode-shown.png"/></li>
+</ul>
+</li>
+<li>Kliknutím na tlačidlo napravo sa aktuálny overovací kód (6-miestna hodnota TOTP tokenu) skopíruje do schránky.
+Hodnota sa mení každých 30 sekúnd a schránka sa bude podľa toho automaticky aktualizovať, kým sa databáza neuzamkne alebo sa do schránky neumiestni niečo iné.</li>
+</ul>
+
+<p>Pole <b>Poznámky</b> je určené pre <i>krátke texty</i> a je
+obmedzené na 30 000 znakov. Hoci je možné pri pridávaní položky pridať viac znakov,
+pri opätovnom otvorení databázy sa zobrazí upozornenie. Pole Poznámky sa skráti
+na tento limit, ak sa položka upraví. Ak je však položka chránená alebo databáza je otvorená
+v režime iba na čítanie, je možné si ju zobraziť bez akéhokoľvek skrátenia.</p>
+
+<a name="notes_external_editor"></a>
+<p>Obsah poľa <b>Poznámky</b> je možné upravovať pomocou externého editora
+kliknutím pravým tlačidlom myši na pole. Upozorňujeme však, že <i>obsah sa dočasne uloží
+na disk ako čistý text</i>. Okrem toho niektoré externé editory
+použijú existujúcu inštanciu na úpravu dočasného textového súboru, čo spôsobí že
+<b>Password Safe</b> sa okamžite vráti a údaje zostanú nezmenené, aj keď
+je dočasný textový súbor stále dostupný v externom editore. Ak to externý
+editor podporuje, je možné zadať parametre príkazového riadka, aby sa vynútila
+nová inštancia na úpravu poľa Poznámky, čím sa tomu zabráni (napríklad: "-multiInst" pre editor Notepad++).
+Pozrite si príslušné Nastavenie na karte <a href="misc_tab.html">"Rôzne"</a>.
+Ak zadáte parametre príkazového riadka, <b>neuzatvárajte</b> ich do úvodzoviek, pokiaľ to váš zvolený externý editor nevyžaduje. 
+Zadaná hodnota bude použitá <i>tak ako je: </i>bez zmien.</p>
+
+<p>Okrem toho je možné na tejto karte nastaviť nasledujúce polia:</p>
+
+<ul>
+<li><b>URL</b>: URL adresa priradená k záznamu. Ak toto pole nie je prázdne, tlačidlo "Prejsť"
+je povolené. Ak protokol nie je zadaný, predpokladá sa "http://"
+(napr. "www.foo.net" je to isté ako "http://www.foo.net"). Kliknutím na tlačidlo <b>Prejsť</b> napravo
+od poľa <b>URL</b> sa otvorí predvolený prehliadač na zadanej URL adrese. Kliknutím so stlačeným klávesom Ctrl 
+sa navyše spustí funkcia <a href="autotype.html">AutoType</a> na otvorenej stránke prehliadača. 
+Viac informácií nájdete v <a href="#URL_details">nasledujúcich poznámkach</a>.</li>
+<li><b>Email</b>: Emailová adresa priradená k tomuto záznamu. Upozorňujeme,
+že toto slúži len na uchovanie e-mailovej adresy priradenej k stránke, napr. support@myvendor.com. 
+Ak stránka vyžaduje emailovú adresu ako prihlasovacie meno, je treba nastaviť vašu emailovú adresu v poli Používateľské meno. <br/>
+Ak toto pole nie je prázdne, tlačidlo "Odoslať" je aktívne. Kliknutím na toto tlačidlo sa spustí predvolený poštový program s poľom Komu: nastaveným na zadanú adresu.
+Ďalšie možnosti nájdete v <a href="#email_details">nasledujúcich poznámkach</a>.
+</li>
+</ul>
+
+<hr style="width: 100%; height: 2px;">
+<small>
+
+<b><a name="URL_details"></a>Niekoľko podrobností o spracovávaní URL:</b>
+<ul>
+<li>V predvolenom nastavení bude <b>Password Safe</b> používať prehliadač, v ktorom váš
+počítač zvyčajne otvára webové stránky. V prípade potreby môžete určiť
+<i>alternatívny prehliadač</i> tak že pred URL adresu zadáte reťazec "[alt]", napr. "[alt]http://www.foo.net". 
+Toto je užitočné napríklad, ak je vaším predvoleným prehliadačom Firefox a
+chcete pristupovať k webovej stránke, ktorá najlepšie funguje s prehliadačom Chrome. 
+Ak chcete nakonfigurovať alternatívny prehliadač, použite dialógové okno v Nastaveniach na karte 
+<a href="misc_tab.html#AltBrowser">"Rôzne"</a>.
+</li>
+
+<li>Ak sa pred URL adresu vloží reťazec "{alt}", adresa sa odovzdá
+"tak ako je" alternatívnemu prehliadaču, teda bez pridania reťazca "http://", ak
+nie je zadaný žiadny protokol. Toto je užitočné, ak je alternatívny prehliadač
+aplikáciou pre vzdialený prístup, napr. klientom SSH. Podobne, [ssh] dosiahne
+rovnaký efekt.</li>
+
+<li>Ak sa pred URL adresou nájde "[autotype]", potom po zobrazení URL/vykonaní akcie nad adresou <b>Password Safe</b> vykoná akciu AutoType
+pomocou poľa AutoType tejto položky (alebo predvolenej hodnoty ak nie je zadaná pre tento záznam).</li>
+
+</ul>
+<a name="email_details"></a>
+<b>Emailová adresa je v súlade so štandardnými pravidlami (podľa RFC 2368):</b>
+<ul>
+<li>Adresa môže byť jedna alebo viac platných emailových adries oddelených bodkočiarkou, pričom sa použijú znaky "bezpečné pre internet". Ako medzeru použite %20.
+</li>
+<li>Za adresou môže nasledovať jeden alebo viac párov názov-hodnota. Prvý
+pár by mal mať predponu "?" a všetky ďalšie páry by mali mať predponu
+ampersand (&amp;). Názov môže byť jeden z nasledujúcich reťazcov:</li>
+
+<ul>
+<li>subject – nasledované textom, ktorý sa má zobraziť v predmete správy.</li>
+<li>body – nasledované textom, ktorý sa má zobraziť v tele správy.</li>
+<li>CC – nasledované adresami, ktoré sa majú uviesť v časti "kópia" (cc).</li>
+<li>BCC – nasledované adresami, ktoré sa majú uviesť v časti "skrytá kópia" (bcc).</li>
+</ul>
+<p>Príklad: user@example.com?subject=Názov správy&body=Obsah správy"</p>
+</ul>
+
+</small>
+
+<hr style="width: 100%; height: 2px;">
+
+<h3><a>Vytvorenie nového používateľského mena a hesla</a></h3>
+
+<ol>
+<li>Otvorte databázu, do ktorej chcete umiestniť nový záznam</li>
+<li>V menu <b>Upraviť</b> vyberte možnosť <b>Pridať záznam</b></li>
+<li>V prípade potreby zadajte informácie do polí dialógového okna <b>Upraviť záznam</b></li>
+</ol>
+
+<hr>
+<small><b>Poznámka:</b> Ak je vybraný názov skupiny a potom je pridaný nový záznam,
+tento záznam bude mať tento názov skupiny predvyplnený v dialógovom okne <b>Upraviť záznam/Zobraziť záznam</b>.
+Ak je do poľa Skupina pridaný názov novej skupiny, táto skupina bude následne vytvorená.</small><br>
+<hr>
+
+<h3><a>Generovanie a úprava hesiel</a></h3>
+
+<p>Ak chcete, môžete do poľa pre heslo zadať vlastné heslo ručne alebo môžete nechať aplikáciu <b>Password Safe</b> vygenerovať nové heslo
+pomocou aktuálnych <a href="password_policies.html">Zásad hesiel</a>.
+Ak chcete, aby vám aplikácia <b>Password Safe</b> vygenerovala heslo, stačí kliknúť na tlačidlo <b>Generovať</b>
+v dialógovom okne <b>Upraviť záznam</b>. Ak nie ste s výsledkom spokojní,
+môžete znova kliknúť na tlačidlo <b>Generovať</b> alebo heslo upraviť manuálne.
+Ukazovateľ sily pod poľom Heslo poskytuje približnú predstavu o sile hesla. Červená farba označuje slabé heslo, žltá stredne silné heslo a zelená silné heslo.</p>
+
+<hr>
+
+<small><b>Poznámka:</b> Ak používate systém "Single Sign-on" (SSO), ktorý vám umožňuje
+zdieľať rovnaké heslo na rôznych počítačoch/v aplikáciách atď., môžete nastaviť záznamy <b>Password Safe</b> tak, aby zmena
+jedného hesla ovplyvnila všetky ostatné súvisiace záznamy. Toto sa nazýva "aliasovanie"
+záznamov a je podrobne vysvetlené v téme <a href="aliases.html">Vytváranie aliasov</a>.
+</small>
+
+<hr>
+<h3>Úprava existujúcich záznamov</h3>
+
+<ol>
+<li>Vyberte záznam, ktorý chcete upraviť zo zoznamu</li>
+<li>Vyberte možnosť <b>Upraviť záznam...</b> z menu <b>Upraviť</b></li>
+</ol>
+
+<hr>
+<h3>Úprava existujúcich záznamov prostredníctvom stromového zobrazenia</h3>
+
+<ol>
+<li>Vyberte záznam, ktorý chcete upraviť zo zoznamu a potom:</li>
+<li>Vyberte <b>Upraviť záznam...</b> z menu <b>Upraviť</b> <b>ALEBO</b></li>
+<li>Kliknite pravým tlačidlom myši na záznam a v kontextovej ponuke vyberte <b>Upraviť záznam</b>
+</li>
+<li>Polia, ktoré sa zobrazujú v stromovom zobrazení, môžete zmeniť priamo.
+Postup:
+<ul>
+<li>Kliknite pravým tlačidlom myši na skupinu a v kontextovej ponuke vyberte <b>Premenovať skupinu</b> <b>ALEBO</b></li>
+<li>Stlačte klávesovú skratku na premenovanie (predvolene F2) a prepíšte zobrazený text (formát je "názov [používateľské meno] {heslo}").</li>
+</ul>
+</ol>
+
+<hr>
+<small>
+<b>Poznámky:</b>
+<ol>
+<li>Štandardne sa používateľské mená a heslá nezobrazujú v stromovom zobrazení. 
+Zobrazenie používateľského mena a hesla sa riadi nastaveniami (pozri:
+<a href="display_tab.html">karta Zobrazenie</a>). Fungujú v hierarchii, t.j. heslá sa môžu
+zobraziť iba vtedy, ak sú zobrazené aj používateľské mená.</li>
+<li>Heslá sú tiež štandardne pri úprave záznamu skryté. Ak chcete zobraziť
+heslo spojené s položkou, kliknite pri jej úprave na tlačidlo <b>Zobraziť</b>.
+<li>Názov a heslo sú jediné povinné polia pre záznam. Preto, ak
+sa počas premenovania vynechajú, zachovajú si svoje predchádzajúce hodnoty.
+Pole s používateľským menom však môžete vymazať, pokiaľ je zobrazené,
+zadaním "[]" počas premenovania, čo znamená prázdnu hodnotu.</li>
+<li><i>Keďže na oddelenie používateľského mena a hesla sa používajú hranaté a zložené zátvorky,
+<b>NIE</b> je možné premenovať položku na mieste (napr. pomocou klávesu F2), ak názov, používateľské meno
+(ak je zobrazené) alebo heslo (ak je zobrazené) obsahujú niektorý z týchto znakov. Namiesto toho musíte
+položku upraviť buď prostredníctvom menu Upraviť, alebo prostredníctvom kontextovej ponuky kliknutím pravým tlačidlom myši, 
+ako je uvedené vyššie.</i></li>
+</ol>
+</small>
+<hr>
+
+
+<h3>Pridanie novej skupiny cez stromové zobrazenie</h3>
+<ol>
+<li>V menu <b>Upraviť</b> vyberte možnosť <b>Pridať skupinu</b></li>
+<li>Zadajte názov skupiny</li>
+</ol>
+
+<h3>Úprava názvu skupiny</h3>
+<ul>
+<li>Kliknite pravým tlačidlom myši na skupinu a v kontextovej ponuke vyberte možnosť <b>Premenovať skupinu</b>
+alebo</li>
+<li>Vyberte skupinu a stlačte klávesovú skratku na premenovanie (predvolene F2) a prepíšte názov skupiny.</li>
+</ul>
+
+<hr>
+
+<small>
+<b>Poznámky:</b>
+<ol>
+<li>Názvy skupín je možné "vnorovať", t.j. umiestniť názov skupiny do/pod iný názov skupiny.</li>
+<li>Skupinu nemožno premenovať na viacero skupín pomocou položky menu <b>Premenovať skupinu</b> alebo skratky, t.j. skupinu "a" nemožno premenovať na "x.y".</li>
+</ol>
+</small>
+
+<h3>Zamknuté záznamy</h3>
+
+<p>Ak je záznam zamknutý, nebudete môcť zmeniť žiadne polia, kým nezrušíte ochranu záznamu 
+prostredníctvom menu Upraviť alebo kontextovej ponuky kliknutím pravým tlačidlom myši.</p>
+
+<img alt="Upraviť zamknutý záznam" src="images/edit_protected.png">
+
+<hr>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Používateľské mená">
+<param name="Keyword" value="Pridať záznamy hesiel">
+<param name="Keyword" value="Uchovávanie hesiel">
+<param name="Keyword" value="Skupiny">
+<param name="Keyword" value="Generovanie hesiel">
+<param name="Keyword" value="Heslá">
+<param name="Keyword" value="Upraviť záznamy hesiel">
+<param name="Keyword" value="zobraziť záznamy hesiel">
+<param name="Keyword" value="Premenovať záznamy hesiel">
+<param name="Keyword" value="Prejsť na">
+<param name="Keyword" value="Alternatívny prehliadač">
+<param name="Keyword" value="ssh">
+<param name="Keyword" value="URL">
+<param name="Keyword" value="Prehliadač">
+<param name="Keyword" value="Email">
+<param name="Keyword" value="TOTP">
+<param name="Keyword" value="OTP">
+<param name="Keyword" value="Overovací kód">
+</object>
+</body>
+</html>

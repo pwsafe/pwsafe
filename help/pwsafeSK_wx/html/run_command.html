@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Spustiť príkaz</title><!-- pwsafe version: 3.17--><!-- Modified: 11/03/2009 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Spustiť príkaz</h2>
+
+<p>Pole 'Spustiť príkaz' záznamu môže obsahovať príkaz, ktorý sa spustí po výbere akcie Spustiť príkaz. Tu je v podstate možné použiť čokoľvek, čo môžete urobiť v okne 'Spustenie príkazu' v Linuxe.</p>
+
+<p>Navyše, <b>Password Safe</b> je schopný odovzdať príkazu argumenty, ako napríklad používateľské meno, heslo atď., ako je popísané nižšie. 
+To vám umožňuje "naprogramovať/zautomatizovať" pomerne zložité akcie, ako je spustenie programu vzdialeného prístupu cez SSH/RDP/VNC (napríklad Remmina na Linuxe) a odovzdať mu používateľské meno, heslo a cieľovú adresu spojené so záznamom.</p>
+
+<h3>Príklady</h3>
+<ul>
+<li>
+Týmto sa otvorí nová inštancia <b>Password Safe</b> so zadanou databázou na Linuxe:
+<pre> ${autotype}(\p\n)"/usr/bin/pwsafe" /home/ja/Dokumenty/mysafes/test.psafe3</pre>
+</li>
+<ul>
+<li>Aby to fungovalo, tak sa uistite že je nastavená táto možnosť v Nastaveniach na karte Systém: "Povoliť viacero inštancií".</li>
+<li>Taktiež sa uistite že v systéme funguje AutoType; funkčnosť závisí na Linuxe napr. na použitom Display Serveri ako je Wayland alebo X.Org (X11) a desktopovom prostredí ako je Gnome či KDE.</li>
+<br>
+</ul>
+<li>Nasledujúci príkaz spôsobí, že sa program Remmina pomocou RDP pripojí k Windows serveru s použitím používateľského mena a hesla záznamu:
+<pre>remmina -c rdp://${user}:${password}@${url}</pre>
+</li>
+<ul>
+<li>Taktiež môžete nastaviť akciu pre (Shift) dvojklik pre tento záznam na možnosť "Vykonaj 'Spustiť príkaz'".</li>
+</ul>
+</ul>
+<p>
+<img alt="Spustiť príkaz - príklad 1" src="images/run-RDP1.png">
+<img alt="Spustiť príkaz - príklad 2" src="images/run-RDP2.png">
+</p>
+<p>
+<img alt="Spustiť príkaz - príklad 3" src="images/run-RDP3.png">
+</p>
+
+<h3>Použitie premmených</h3>
+
+<p>Vo všeobecnosti sa 'premenné' pred odovzdaním na vykonanie nahrádzajú hodnotami, ktoré sú s nimi spojené. Na označenie premennej sa používa znak dolára ("$").</p>
+
+<ul>
+<li>Premenné sú zadané ako '$name' a <i>rozlišujú veľké a malé písmená</i>. Názvy premenných vždy začínajú abecedným znakom a zvyšné znaky 
+sú alfanumerické. Názov premennej sa ukončí buď výskytom nealfanumerického znaku (napríklad medzera), alebo koncom príkazu.</li>
+<ul>
+
+<li>Ak chcete v príkaze použiť premennú bezprostredne nasledovanú alfanumerickým znakom, uzavrite názov premennej do zložených zátvoriek, napr. "${názovpremennej}reťazec".</li>
+
+<li>Ak chcete použiť znak '$' v reťazci ako bežný text (ktorý nebude znamenať že nasledujúci text je názov premennej),
+ukončite ho pomocou spätného lomítka ('\'), napr. '\$text' sa zmení na '$text' a nebude sa považovať za premennú s názvom 'text'.</li>
+
+<li>Ak chcete použiť lomítko pred znakom '$' ako lomítko, escapujte ho spätným lomítkom, napr. '\/$name'
+sa vo výslednom texte zmení na '/$name' a '$name' sa bude považovať za premennú. Lomítko nemusí byť escapované, 
+pokiaľ nepredchádza znaku '$', čo označuje nasledujúcu premennú.</li>
+
+<li>Za premennou môže nasledovať číselná hodnota v hranatých zátvorkách, ktorá sa nazýva 'indexová hodnota'. 
+Pred indexovou hodnotou 'n' môže byť znak '+' alebo '-', napr. [-2] alebo [2] alebo [+2]. 
+<b>Password Safe</b> považuje index, ktorý sa rovná nule, za celé pole.
+</li>
+</ul>
+
+<li>Aktuálne sa rozpoznávajú nasledujúce premenné:</li>
+
+<ul>
+<li>Súvisiace s aplikáciou:</li>
+
+<table border="0" cellpadding="10" cellspacing="0" width="90%">
+<colgroup><col width="15%"><col width="85%"></colgroup>
+<tbody>
+<tr>
+<td style="font-weight: bold;">appdir</td>
+<td>Priečinok obsahujúci aplikáciu <b>Password Safe</b>. Pozri poznámky <a href="#n1">1</a> a <a href="#n2">2</a> nižšie.</td>
+</tr>
+</tbody>
+</table>
+
+<li>Súvisiace s databázou:</li>
+
+<table border="0" cellpadding="10" cellspacing="0" width="90%">
+<colgroup><col width="15%"><col width="85%"></colgroup>
+<tbody>
+<tr>
+<td style="font-weight: bold;">dbdir</td>
+<td>Priečinok aktuálne otvorenej databázy. Pozri poznámky <a href="#n1">1</a> a <a href="#n2">2</a> nižšie.</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">fulldb</td>
+<td>Úplná cesta, názov súboru a prípona aktuálne otvorenej databázy. Pozri poznámku <a href="#n2">2</a> nižšie.</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">dbname</td>
+<td>Názov aktuálne otvoreného súboru databázy.</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">dbextn</td>
+<td>Prípona aktuálne otvorenej databázy.</td>
+</tr>
+</tbody>
+</table>
+
+<li>Súvisiace s aktuálnym záznamom:</li>
+
+<table border="0" cellpadding="10" cellspacing="0" width="90%">
+<colgroup><col width="15%"><col width="85%"></colgroup>
+<tbody>
+<tr>
+<td style="font-weight: bold;">g <span style="font-weight: normal;">alebo</span> group</td>
+<td>Skupina (úplná stromová štruktúra od koreňa so skupinami oddelenými bodkami)</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">G <span style="font-weight: normal;">alebo</span> GROUP</td>
+<td>Skupina obsahujúca tento záznam</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">t <span style="font-weight: normal;">alebo</span> title</td>
+<td>Názov</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">u <span style="font-weight: normal;">alebo</span> user</td>
+<td>Používateľské meno</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">p <span style="font-weight: normal;">alebo</span> password</td>
+<td>Heslo</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">e <span style="font-weight: normal;">alebo</span> email</td>
+<td>Email</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">a <span style="font-weight: normal;">alebo</span> autotype</td>
+<td>AutoType. Pozri poznámku <a href="#n5">5</a> nižšie.</td>
+</tr>
+<tr>
+<td style="font-weight: bold;">url</td>
+<td>URL adresa</td>
+</tr>
+<tr>
+<td><b>n</b> or <b>n[0]</b></td>
+<td>Úplné pole Poznámky (taktiež: notes alebo notes[0]). Pozri poznámku <a href="#n3">3</a>
+nižšie.</td>
+</tr>
+<tr>
+<td><b>n[i]</b> alebo <b>notes[i]</b></td>
+<td>n<sup>tý</sup> riadok poľa Poznámky počítaný od začiatku, t.j. i=1 je prvý riadok, i=2 znamená druhý riadok atď. 
+Pozri poznámku <a href="#n4">4</a> nižšie.</td>
+</tr>
+<tr>
+<td><b>n[-i]</b> alebo <b>notes[-i]</b></td>
+<td>n<sup>tý</sup> riadok poľa Poznámky počítaný od konca, t.j. i=1 je posledný riadok, i=2 znamená predposledný riadok atď. 
+Pozri poznámku <a href="#n4">4</a> nižšie.</td>
+</tr>
+</tbody>
+</table>
+
+<table border="0" cellpadding="10" cellspacing="0" width="90%">
+<colgroup><col width="5%"><col width="95%"></colgroup>
+<tbody>
+<tr>
+<th align="center">Poznámky</th>
+<th>&nbsp;</th>
+</tr>
+<tr>
+<td align="center">1<a name="n1"></a></td>
+<td>Hodnoty priečinku (appdir alebo dbdir) nemajú koncovku '/'.
+Nezabudnite ju pridať, ak ju potrebujete do príkazu.</td>
+</tr>
+<tr>
+<td align="center">2<a name="n2"></a></td>
+<td>Obsah premenných (vrátane hodnôt priečinka a celej cesty) môže obsahovať prázdne znaky. Pre správne vykonanie príkazu možno budete musieť výsledok uzavrieť do úvodzoviek.
+
+</tr>
+<tr>
+<td align="center">3<a name="n3"></a></td>
+<td>Ak pole Poznámky obsahuje viac ako jeden riadok, bude obsahovať akýkoľvek vložený znak carriage return (CR) alebo line feed (LF). 
+To môže spôsobiť problémy pri vykonávaní keďže CR a/alebo LF bude brané ako 'enter'.</td>
+</tr>
+<tr>
+<td align="center">4<a name="n4"></a></td>
+<td>Akýkoľvek koncový CR a/alebo LF sa odstránia z jednotlivých riadkov vybraných z poľa Poznámky.</td>
+</tr>
+<tr>
+<td align="center">5<a name="n5"></a></td>
+<td>Ak je v príkaze prítomná premenná AutoType, AutoType sa vykoná, keď bude cieľové okno aktívne. 
+Premenná a jej hodnota, ak je prítomná, sa odstránia z vykonaného reťazca. Táto premenná sa môže objaviť 
+kdekoľvek v príkaze, pretože iba určuje čo <b>Password Safe</b> urobí po vykonaní reťazca príkazu. 
+Na rozdiel od iných premenných, táto bude môcť nadobúdať hodnotu ktorá prepíše aktuálnu hodnotu záznamu.
+Formát je nasledujúci ("$autotype" môže nahradiť "$a" v nasledujúcich príkladoch):<br>
+
+<table border="0" cellpadding="10" cellspacing="0">
+<colgroup><col width="20%"><col width="80%"></colgroup>
+<tbody>
+<tr>
+<td>$a</td>
+<td>Použiť aktuálnu hodnotu záznamu.</td>
+</tr>
+<tr>
+<td>${a}<td>Použiť aktuálnu hodnotu záznamu (používa sa, ak text nasleduje bezprostredne za premennou '$a').</td>
+</tr>
+<tr>
+<td>$a(hodnota)</td>
+<td>Použiť reťazec AutoType zadaný medzi okrúhlymi zátvorkami.</td>
+</tr>
+<tr>
+<td>${a}(hodnota)</td>
+<td>Použiť reťazec AutoType zadaný medzi okrúhlymi zátvorkami.</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+
+<p><b>Poznámka:</b> V prípade potreby nezabudnite okolo reťazca pridať úvodzovky, napr. ak priečinok databázy 
+obsahuje medzery, na prístup k textovému súboru v ňom budete potrebovať nasledovné (s úvodzovkami):</p>
+<pre>
+"$dbdir\/$dbname.txt"
+</pre>
+<p>Všimnite si že lomítko medzi priečinkom a súborom je escapované spätným lomítkom, aby sa '$dbname' rozpoznalo ako premenná.</p>
+</ul>
+</ul>
+
+<hr style="width: 100%; height: 2px;">
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Run Command">
+<param name="Keyword" value="Using Run Command">
+</object>
+
+</body>
+</html>
