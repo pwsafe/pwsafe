@@ -48,11 +48,19 @@ else (WIN32 AND NOT WX_WINDOWS)
 
     set(OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/help${LANG}.zip")
 
-    add_custom_command(OUTPUT "${OUTPUT_FILE}"
-      COMMAND "${CMAKE_COMMAND}" -E tar cf "${OUTPUT_FILE}" . --format=zip
-      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${DIR}"
-      VERBATIM
-      )
+    if(IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${DIR}_wx")
+      add_custom_command(OUTPUT "${OUTPUT_FILE}"
+        COMMAND "${CMAKE_COMMAND}" -E tar cf "${OUTPUT_FILE}" . --format=zip
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${DIR}_wx"
+        VERBATIM
+        )
+    else()
+      add_custom_command(OUTPUT "${OUTPUT_FILE}"
+        COMMAND "${CMAKE_COMMAND}" -E tar cf "${OUTPUT_FILE}" . --format=zip
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${DIR}"
+        VERBATIM
+        )
+    endif()
 
     set(${OUTPUT_FILE_VAR} "${OUTPUT_FILE}" PARENT_SCOPE)
   endfunction(make_help)
