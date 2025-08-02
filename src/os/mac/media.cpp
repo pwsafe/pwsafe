@@ -41,7 +41,14 @@ stringT pws_os::GetMediaType(const stringT & sfilename)
         return unknown_type;
 
     // Convert mime_type to stringT
-    stringT retval = pws_os::towc(CFStringGetCStringPtr(mime_type, kCFStringEncodingUTF8));
+    CFIndex maxSize = CFStringGetMaximumSizeForEncoding(CFStringGetLength(mime_type), kCFStringEncodingUTF8) + 1;
+    auto utf8str = new char[maxSize];
+    auto success = CFStringGetCString(mime_type, utf8str, maxSize, kCFStringEncodingUTF8);
+    if (success == false)
+        return unknown_type;
+
+    stringT retval = pws_os::towc(utf8str);
     CFRelease(mime_type);
+    delete[](utf8str);
     return retval;
 }
