@@ -1,0 +1,128 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Filtrovanie záznamov</title>
+<!-- pwsafe version: 3.15--><!-- Modified: 3/1/2009 -->
+<!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+
+<h2>Filtrovanie záznamov</h2>
+
+<p>Filtre sú dostupné prostredníctvom menu Zobraziť.</p>
+
+<p><img alt="Ponuka filtrov" src="images/filter_menu.png"></p>
+
+<p>"Filter" je kritérium (alebo sada kritérií), ktorému záznam buď zodpovedá, alebo nezodpovedá. 
+<b>Password Safe</b> vám umožňuje definovať filtre a zobraziť iba tie záznamy, ktoré zodpovedajú
+danému filtru. Filter môžete definovať jednorázovo alebo môžete definovať niekoľko filtrov, 
+pomenovať ich a trvalo ich uložiť na opakované použitie. 
+Filtre môžu byť uložené buď spolu s databázou, alebo sa dajú exportovať/importovať -
+napr. na zdieľanie rovnakého filtra medzi viacerými databázami.<br></p>
+
+<h3>Definovanie filtra</h3>
+
+<p>Ak chcete definovať nový filter, vyberte položku menu
+<a href="filters.html">"Zobraziť&nbsp;&gt;&nbsp;Filtre&nbsp;&gt;&nbsp;Nový/Upraviť filter"</a>. 
+Zobrazí sa nasledujúce dialógové okno:</p>
+
+<img alt="Okno Zobraziť filtre" src="images/filter.png"><br>
+
+<p>Ako vidíte, každý filter pozostáva z jedného alebo viacerých <b>riadkov</b>,
+kde každý riadok definuje <b>kritériá</b> pre dané <b>pole</b>.
+Podmienky definované v každom riadku môžu byť buď "a", alebo "alebo" ako podmienka definovaná 
+v predchádzajúcom riadku. Toto vám umožňuje definovať nasledujúce druhy filtrov:<br>
+
+<ol>
+<li>Všetky záznamy s používateľským menom obsahujúcim "joe" alebo "Joe" alebo "JOE":<br>
+<img alt="filter example1" src="images/filter-ex1.png"></li>
+<li>Všetky záznamy s používateľským menom "Joe" (presne) vytvorené po 1. januári 2025<br>
+<img alt="filter example2" src="images/filter-ex2.png"></li>
+<li>Všetky záznamy s používateľským menom obsahujúcim "joe" alebo "mary"<br>
+<img alt="filter example3" src="images/filter-ex3.png"></li>
+</ol>
+
+<p>Ako vidíte, filtre môžu byť ľubovoľne zložité.</p>
+
+<p>Stĺpce v tabuľke filtrov sú nasledovné:</p>
+
+<ul>
+<li>'#' – Toto je číslo riadku. Zobrazuje sa pre prehľadnosť a nedá sa zmeniť.</li>
+<li>'?' – Začiarkavacie políčko v tomto stĺpci určuje, či je riadok <b>aktívny</b> alebo nie. 
+Pri použití filtra sa používajú iba aktívne riadky. Kliknutím na začiarkavacie políčko riadok povolíte/zakážete.</li>
+<li>'+' – Kliknite na toto políčko, ak chcete vložiť nový riadok pod daný riadok.</li>
+<li>'-' – Kliknite na toto políčko, ak chcete odstrániť aktuálny riadok. <b>Poznámka:</b> 
+Keďže odstránenie riadku je trvalé, možno ho budete radšej chcieť <b>zakázať</b>.</li>
+<li>'A/Alebo' – Toto vám umožňuje určiť vzťah medzi pravidlom, ktoré pridávate, a predchádzajúcim pravidlom.</li>
+<li>'Pole' – Vyberte vstupné pole, ktoré vás zaujíma, napr. používateľské meno, názov, skupina, poznámky atď.</li>
+<li>'Kritériá' – Definujte hodnotu, ktorá vás zaujíma pre vybrané pole. Po výbere poľa kliknutím na toto pole
+sa zobrazí dialógové okno, ktoré vám umožní zadať kritériá, ktoré sa zobrazia v tabuľke.</li>
+</ul>
+
+<h3>Použitie filtra</h3>
+
+<p>Po definovaní filtra kliknutím na tlačidlo "Použiť" sa filter použije
+na záznamy v databáze, pričom dialógové okno Nastaviť filter zobrazenia zostane otvorené. 
+Toto je užitočné na opravu a spresnenie filtra na základe výsledkov. 
+Kliknutím na tlačidlo "OK" sa filter tiež použije, ale dialógové okno Nastaviť filter zobrazenia sa zavrie.</p>
+
+<p>Keď je filter aktívny, v stavovom riadku sa zobrazuje značka [F].</p>
+
+<img alt="Filtrované záznamy" src="images/filter-ex4.png">
+
+<h3><a name="ManagingFilters"></a>Správa filtrov</h3>
+
+<p>Nový/upraviť filter je dobrý spôsob, ako pracovať s filtrami pre jednorazovú úlohu.
+Ak však zistíte, že máte niekoľko filtrov, ktoré chcete používať opakovane, môžete ich uložiť a efektívne spravovať pomocou dialógového okna
+<a href="filters.html">"Zobraziť&nbsp;&gt;&nbsp;Filtre&nbsp;&gt;&nbsp;Spravovať..."</a>.</p>
+
+<img alt="Spravovať filtre" src="images/filter_mng.png">
+
+<p>Dialógové okno Spravovať filtre má dve tabuľky. Horná tabuľka zobrazuje zoznam filtrov 
+a dolná tabuľka zobrazuje obsah aktuálne vybratého filtra.</p>
+
+<ul>
+<li>Ak chcete pridať nový filter, kliknite na Nový. Toto je ekvivalentné výberu položky z menu 
+<a href="filters.html">"Zobraziť&nbsp;&gt;&nbsp;Filtre&nbsp;&gt;&nbsp;Nový/Upraviť filter"</a>.
+</li>
+<li>Ak chcete upraviť existujúci filter, vyberte ho a potom kliknite na Upraviť.</li>
+<li>Ak chcete použiť existujúci filter, kliknite na začiarkavacie políčko Použiť v riadku požadovaného filtra. 
+Upozorňujeme, že v danom čase je možné použiť iba jeden filter.</li>
+</ul>
+
+<h4>Ukladanie filtrov</h4>
+
+<p>Filtre je možné uložiť buď ako súčasť aktuálnej databázy, alebo externe ako súbory XML. 
+Externé ukladanie filtrov je dobrý spôsob, ako ich zdieľať medzi databázami, zatiaľ čo ich ukladanie 
+ako súčasti databázy zabezpečuje ochranu potenciálne citlivých informácií v definíciách filtrov.</p>
+
+<ul>
+<li>Uloženie filtrov do externého súboru: Začiarknite políčko
+Exportovať, všetkých filtrov ktoré chcete uložiť, a potom kliknite na tlačidlo Exportovať.</li>
+<li>Uloženie filtrov do aktuálnej databázy: Začiarknite políčko Kopírovať do
+databázy a potom kliknite na tlačidlo Kopírovať.</li>
+<li>Načítanie externe uloženého filtra: Kliknite na tlačidlo Importovať a vyberte XML súbor kde sú uložené filtre.</li>
+</ul>
+
+<b>Poznámka:</b><br>
+Po spustení aplikácia <b>Password Safe</b> vyhľadá súbor s názvom autoload_filters.xml v
+rovnakom adresári ako súbor pwsafe.cfg (predvolene /home/<i>username</i>/.config/pwsafe na Linuxe a /Users/<i>username</i>/.pwsafe/ v macOS). 
+Ak takýto súbor existuje, automaticky sa importuje a filtre, ktoré obsahuje, sú pripravené na použitie.
+Toto je užitočné, ak máte sadu filtrov, ktoré chcete zdieľať medzi viacerými databázami bez toho, aby ste ich museli zakaždým ručne importovať.<br>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Filters">
+</object>
+
+</body>
+</html>

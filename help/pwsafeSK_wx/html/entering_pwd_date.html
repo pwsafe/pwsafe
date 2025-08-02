@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Používateľské mená a heslá</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Používateľské mená, heslá a skupiny: Dátumy a časy</h2>
+
+<p>Používateľské mená, heslá a skupiny spolu s ďalšími vlastnosťami sa spravujú na 4 kartách:</p>
+
+<ul>
+<li><b><i><a href="entering_pwd.html">Základné</a></i>:</b> všetky prvky potrebné pre správu hesiel</li>
+<li><b><i><a href="entering_pwd_add.html">Doplňujúce</a></i>:</b> ďalšie špecifikácie vrátane histórie hesiel</li>
+<li><b><i>Dátumy a časy</i>:</b> platnosť hesla a štatistiky</li>
+<li><b><i><a href="entering_pwd_pp.html">Zásady hesiel</a></i>:</b> pravidlá generovania náhodných hesiel</li>
+</ul>
+
+<h3><i>Karta Dátumy a časy</i></h3>
+
+<img alt="Upraviť/Zobraziť dátumy a časy" src="images/edit_view_entry_date.png">
+<ul>
+<li><b>Platnosť hesla:</b> Ak chcete nastaviť dátum vypršania platnosti hesla,
+zadajte požadovaný dátum vypršania platnosti, buď
+ako absolútny dátum (napr. "17. marca 2027") alebo relatívny od dnešného dňa
+(napr. "Za 30 dní"). Keď sa blíži dátum vypršania platnosti,
+<b>Password Safe</b> vás pri spustení upozorní, že heslo
+by sa malo zmeniť, a tiež označí položku odlišnou farbou.<br>
+Ak vyberiete možnosť "Za <i>N</i> dní", môžete zadať "Opakujúce sa"
+vypršanie platnosti. To spôsobí, že sa <b>nový</b> dátum vypršania platnosti vypočíta
+na základe zadaného počtu dní a zmeny hesla
+záznamu. Napríklad, ak vytvoríte položku 1. januára a zadáte 5-dňovú opakujúcu sa platnosť, 
+dostanete oznámenie o platnosti od 6. januára. Ak zmeníte heslo 7. januára,
+nová platnosť bude 12. januára (5 dní po nastavení hesla).</li>
+<li>Ak chcete zrušiť platnosť, vyberte možnosť "Nikdy".</li>
+<li><b>Štatistika</b>: Tieto polia určené len na čítanie pomáhajú sledovať, kedy
+bol vybraný záznam vytvorený, kedy bolo heslo naposledy zmenené atď.</li>
+</ul>
+
+<hr>
+
+<p>Ak chcete zistiť či nejaké záznamy majú nastavenú platnosť hesla, heslo čoskoro vyprší alebo už vypršalo, 
+použite filter v menu Zobraziť (<a href="view_menu.html">"Zobraziť iba&nbsp;&gt;&nbsp;Záznamy s nastaveným dátumom platnosti"</a>).<br>
+Opätovným výberom tejto položky ponuky sa filter odstráni a zobrazia sa všetky záznamy.</p>
+
+<img alt="Filter vypršaných hesiel" src="images/expired_password_filter.png">
+
+<hr style="width: 100%; height: 2px;">
+
+<img alt="zoznam vypršaných hesiel" src="images/expired_passwords.png">
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Vypršanie hesla">
+<param name="Keyword" value="Štatistika">
+<param name="Keyword" value="Upraviť záznamy hesiel">
+</object>
+
+</body>
+</html>

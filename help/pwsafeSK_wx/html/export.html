@@ -1,0 +1,148 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Export záznamov</title>
+    <!-- pwsafe version: 2.11-->
+    <!-- Modified: 15/06/2005 --><!--Popup control -->
+    <script language="javascript" src="html/popups.js">
+</script><link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Export záznamov</h2>
+
+<p><b>Password Safe</b> podporuje export (a import) uložených hesiel do (a z) rôznych formátov. 
+Na export záznamov hesiel použite položku menu "Súbor&nbsp;&gt;&nbsp;Exportovať do".
+
+Podporované formáty sú:</p>
+<ul>
+<li>Formát v1.x (pre verzie 1.x Password Safe)</li>
+<li>Formát v2 (pre verzie 2.x Password Safe)</li>
+<li>Formát v4 (experimentálne)</li>
+<li><a href="#text">Obyčajný text</a></li>
+<li><a href="#xml">Súbor vo formáte XML</a></li>
+<li><a href="#subset">Filtrované záznamy do Password Safe</a></li>
+</ul>
+
+<p>Pre export do predchádzajúcich verzií <b>Password Safe</b> stačí vybrať požadovaný
+formát a zadať názov súboru databázy, ktorý chcete vytvoriť.</p>
+
+<p>Okrem toho, ak chcete "exportovať" podmnožinu záznamov do inej databázy Password
+Safe, stačí spustiť ďalšiu inštanciu <b>Password Safe</b> (ak povolíte viacero inštancií v 
+<a href="system_tab.html">"Nastaveniach"</a>) a vytvorte novú databázu. 
+Potom môžete jednoducho presúvať ľubovoľné záznamy alebo celé skupiny z otvorenej databázy do tejto "novej" databázy.</p>
+
+<p>Export používa sprievodcu, kde môžete tiež vybrať "Pokročilé možnosti výberu polí".
+Týmto môžete obmedziť ktoré záznamy exportujete a aj ktoré
+polia týchto záznamov exportujete z vašej aktuálnej databázy.
+Viac informácií nájdete v téme <a href="wzselectdb.html">Sprievodca výberu databázy alebo súboru</a>.</p>
+
+<p>Po dokončení bude k dispozícii správa/report o vykonaných akciách, ktorú je možné skopírovať
+do schránky alebo uložiť na disk ako textový súbor v rovnakom adresári ako databáza.
+K tejto správe sa môžete vrátiť aj neskôr, výberom položky ponuky Zobraziť <a href="view_menu.html">"Zobraziť reporty"</a>.
+Názov súboru správy je pevne daný a závisí od operácie, ktorá ho vytvorila. Ak sa tá istá funkcia zopakuje
+a jej správa sa uloží na disk, akákoľvek existujúca správa pre túto funkciu bude prepísaná. 
+<span style="color=red;"><b>Poznámka:</b> Správa môže obsahovať citlivé údaje a
+pri výbere možnosti "Uložiť na disk" je potrebná zvýšená opatrnosť.</span></p>
+
+<h3><a name="text"></a>Exportovať do textu</h3>
+
+<hr>
+<small>
+<span style="color: rgb(255, 0, 0);"><b>Poznámka:</b> Exportovaný text je nechránená kópia zadaných hesiel. 
+Odstránenie tejto kópie po použití <b>nestačí</b> na to, aby bola neprístupná
+odhodlanému útočníkovi a v skutočnosti obchádza zabezpečenie programu
+Prosím, túto funkciu <b>POUŽÍVAJTE</b>, LEN pokiaľ jej rozumiete a akceptujete riziká.</span>
+</small>
+<hr>
+
+<p><b>Password Safe</b> vám umožňuje exportovať zadané heslá do textových súborov.
+Tieto súbory potom môžu použiť alebo upraviť iné aplikácie.</p>
+<p>Pred exportom obsahu budete požiadaní o zadanie hlavného hesla,
+aby ste potvrdili že môžete exportovať databázu do nešifrovaného súboru s otvoreným textom. 
+Ak používate overovanie YubiKey, kliknite na tlačidlo Yubikey a potom aktivujte svoj YubiKey. 
+Budete tiež musieť zadať názov nového súboru a potvrdiť jeho prepísanie ak súbor s rovnakým názvom už existuje v priečinku, ktorý ste zadali.</p>
+
+<p><img alt="Exportovať text" src="images/export.png"></p>
+
+<p>Môžete tiež zadať niektoré možnosti:</p>
+<ul>
+<li>Záznamy hesiel sa exportujú s tabulátorom medzi poľami, t.j. medzi poľami Skupina.Názov, Používateľské meno, Heslo a Poznámky. 
+Pole "Skupina.Názov" sa považuje za jedno pole.
+Akékoľvek pole obsahujúce medzeru sa zobrazí v dvojitých úvodzovkách. 
+Iba pole Poznámky môže obsahovať viacero riadkových položiek. Normálnym spôsobom spracovania je umiestniť každý riadok poznámky
+na samostatný riadok v exportovanom textovom poli. 
+To však sťažuje triedenie alebo použitie pri porovnávaní dvoch rôznych exportovaných súborov. 
+Aby ste to prekonali, môžete zadať vlastný oddeľovač na oddelenie viacerých riadkov pri exporte. 
+Ak chcete neskôr importovať textový súbor vytvorený s takýmto oddeľovačom, musíte ho zadať, 
+všetky riadky poznámky sa zobrazia ako jeden riadok vo výslednej databáze.<br>
+Ak je to potrebné, zaškrtnite že chcete umiestniť všetky samostatné riadky
+v poli Poznámky na jeden riadok a zadajte znak, ktorý sa má použiť ako oddeľovač. 
+Keďže celé pole Poznámky je uzavreté v dvojitých úvodzovkách, je zakázané vybrať tento znak ako oddeľovač viacerých riadkov.</li>
+</ul>
+
+<p>Výberom možnosti "Pokročilé.." sa zobrazí táto stránka sprievodcu,
+ktorá vám umožní exportovať iba niektoré záznamy na základe textu v
+špecifikovaných poliach a/alebo určiť, ktoré polia sa majú exportovať.
+Viac informácií nájdete v téme <a href="wzselectdb.html">Sprievodca výberu databázy alebo súboru</a>.</p>
+
+<p><img alt="Rozšírené možnosti exportu textu" src="images/export_text_adv.png"></p>
+
+<hr>
+<small><b>Poznámka:</b> Podrobnosti o formáte exportovaného textového súboru nájdete v časti
+"<a href="imp_exp_text_details.html">Formát exportu a importu obyčajného textu</a>".</small>
+<hr>
+
+<h3><a name="xml"></a>Exportovať do XML</h3>
+
+<p>XML (eXtensible Markup Language) je populárny formát na prenos
+údajov medzi aplikáciami. <b>Password Safe</b> dokáže exportovať (a importovať)
+záznamy databázy do tohto formátu. Štruktúra (alebo <i>schéma</i>),
+na základe ktorej sa údaje exportujú a overujú, je definovaná v súbore <i>pwsafe.xsd</i>, 
+ktorý je súčasťou inštalácie programu. Tento súbor používa <b>Password Safe</b> pri importe 
+údajov XML a mal by byť poskytnutý aplikáciám, ktoré chcete aby použili exportované údaje.</p>
+
+<hr>
+<small>
+<span style="color: rgb(255, 0, 0);">
+<b>Poznámka:</b> Exportovaný text je nechránená kópia zadaných záznamov hesiel.
+Odstránenie tejto kópie po použití <b>nestačí</b> na to, aby sa stala
+neprístupnou pre odhodlaného útočníka a v skutočnosti obchádza zabezpečenie
+programu. Prosím, túto funkciu <b>POUŽÍVAJTE</b>, LEN pokiaľ jej rozumiete a akceptujete riziká. </span>
+</small>
+<hr>
+
+<p>Zobrazenie súborov XML je špecifikované súborom <i>pwsafe.xsl</i>
+- súborom vo formáte eXtensible Stylesheet Language. Vzorový súbor, ktorý si môžete
+upraviť podľa vlastných potrieb, je súčasťou inštalácie programu.
+Tento súbor je iba príklad a môžete ho jednoducho upraviť tak, aby zobrazoval
+ľubovoľné polia, ktoré chcete zobraziť. Keďže sa týmto spôsobom iba zobrazujú údaje
+a nemenia sa, budete ich môcť neskôr importovať do aplikácie <b>Password Safe</b>.</p>
+
+<p>Rovnako ako v prípade možnosti Export textu môžete ovládať, ktoré záznamy a polia sa majú
+exportovať do súboru XML, výberom možnosti "Pokročilé...".
+Zobrazí sa nasledujúca stránka sprievodcu:</p>
+
+<p><img alt="Rozšírené možnosti exportu XML" src="images/export_xml_adv.png"></p>
+
+<p>Výberom možnosti "Pokročilé možnosti výberu polí" sa zobrazí táto stránka sprievodcu,
+aby ste mohli exportovať iba niektoré záznamy na základe textu v
+špecifikovaných poliach a/alebo určiť, ktoré polia sa majú exportovať. <b>Poznámka:</b>
+schéma XML <u>vyžaduje</u> polia Názov a Heslo, preto ich
+nemožno zrušiť. Viac informácií nájdete v téme <a href="wzselectdb.html">Sprievodca výberu databázy alebo súboru</a>.</p>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+  <param name="Keyword" value="Export záznamov">
+  <param name="Keyword" value="Import záznamov">
+  <param name="Keyword" value="Excel Password Data">
+  <param name="Keyword" value="Konverzia existujúcich dát">
+</object>
+</body>
+</html>

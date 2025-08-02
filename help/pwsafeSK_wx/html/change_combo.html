@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Zmena hlavného hesla</title>
+    <!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+    <script language="javascript" src="html/popups.js">
+</script><link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11">
+</object>
+<!-- Popup Source File -->
+
+<h2>Zmena hlavného hesla</h2>
+
+<p>Ak chcete zmeniť hlavné heslo, najprv otvorte databázu, ktorej heslo chcete zmeniť. 
+Po otvorení prejdite do menu <b>Spravovať</b> a vyberte možnosť <b>Zmeniť hlavné heslo</b>. 
+Zobrazí sa nasledujúce okno:</p>
+
+<img alt="Dialógové okno Zmeniť hlavné heslo" src="images/combo_change.png">
+
+<p><b>Poznámka:</b> Ak nemáte zariadenie <a href="about_pws_yubi.html">YubiKey</a>,
+tlačidlá YubiKey sa nezobrazia a popis ich použitia nižšie môžete ignorovať.</p>
+
+<p>Teraz by ste mali zadať aktuálne hlavné heslo
+a potom nové hlavné heslo (dvakrát na potvrdenie). Tieto heslá je možné zadať pomocou fyzickej alebo virtuálnej klávesnice.<br/>
+Ukazovateľ sily pod poľom Nové hlavné heslo poskytuje približnú predstavu o sile hesla. Červená farba označuje slabé heslo, žltá stredne silné heslo a zelená označuje silné heslo.
+Vaše hlavné heslo by malo byť silné, to znamená, že lišta by mala byť plná a zelená.</p>
+
+<p><b>Password Safe</b> má zabudovanú kontrolu toho, čo považuje za slabé
+hlavné heslá. Vo všeobecnosti by hlavné heslo (ako každé heslo) malo pozostávať
+zo zmiešaných malých a veľkých písmen a aspoň jedného čísla alebo
+<a href="javascript:popup.TextPopup(strSpecialChars,popFont,9,9,-1,-1)">špeciálneho znaku</a>
+(napríklad tými, ktoré sa nachádzajú nad číselnými klávesmi na klávesnici). Ak zadáte hlavné heslo,
+ktoré program považuje za slabé, zobrazí sa výzva na potvrdenie.
+Môžete si vybrať, či pôvodne zadané (slabé) heslo prijmete, alebo zadáte nové, silnejšie heslo.</p>
+
+<p>Po začiarknutí políčka "Zobraziť hlavné heslo" sa obsah starého a nového hlavného hesla
+zobrazí jasne a pole na úpravu potvrdenia sa deaktivuje, pretože už nie je potrebné.</p>
+
+<p>Pre používateľov <strong>YubiKey</strong>: Okrem zmeny hlavného
+hesla, ako je popísané vyššie, toto okno umožňuje pridať alebo odstrániť overenie pomocou YubiKey,
+pridať alebo odstrániť ďalšie overenie heslom, ako aj prepnúť YubiKey, 
+ktorý sa používa na prístup k aktuálnej databáze. Nasledujú pokyny pre každú z týchto akcií:</p>
+
+<h3>Pridanie overenia pomocou YubiKey</h3>
+
+<p>Ak chcete previesť databázu hesiel, ku ktorej sa pristupuje pomocou hlavného hesla, na použitie s YubiKey:<br>
+<ol>
+<li>Zadajte aktuálne hlavné heslo do poľa Staré hlavné heslo</li>
+<li>Vložte svoj YubiKey</li>
+<li>Ak chcete, zadajte (a potvrďte) heslo do polí Nové hlavné heslo a Potvrdenie.</li>
+<li>Kliknite na <strong>dolné </strong> tlačidlo Yubikey a potom aktivujte svoj YubiKey.</li>
+</ol>
+
+<h3>Odstránenie overenia pomocou YubiKey</h3>
+
+<p>Ak chcete zmeniť databázu hesiel, aby bola chránená iba hlavným heslom:</p>
+<ol>
+<li>Vložte svoj YubiKey</li>
+<li>Ak máte k tejto databáze aktuálne priradené heslo, zadajte ho do poľa Staré hlavné heslo</li>
+<li>Kliknite na <strong>horné </strong> tlačidlo Yubikey a potom aktivujte svoj YubiKey</li>
+<li>Nastavte nové hlavné heslo (a potvrdzovacie heslo) na požadovanú hodnotu.</li>
+<li>Kliknite na <strong>OK</strong>.</li>
+</ol>
+
+<h3>Pridanie/odstránenie/zmena overovania heslom</h3>
+
+<p>Password Safe môže používať YubiKey ako jediný prístupový mechanizmus alebo spolu s bežným heslom. Ak chcete zmeniť jedno na druhé:</p>
+<ol>
+<li>Vložte svoj YubiKey</li>
+<li>Ak máte momentálne heslo priradené k tejto databáze, 
+zadajte ho do poľa Staré hlavné heslo</li>
+<li>Kliknite na <strong>horné </strong>tlačidlo Yubikey a potom aktivujte svoj YubiKey</li>
+<li>Nastavte Nové hlavné heslo (a Potvrdenie) na požadovanú hodnotu: 
+Prázdne na odstránenie hesla alebo nové heslo na pridanie alebo nahradenie hesla.</li>
+<li>Kliknite na <strong>dolné </strong>tlačidlo Yubikey a potom aktivujte svoj YubiKey.</li>
+</ol>
+
+<h3>Zmena YubiKey kľúčov</h3>
+
+<p>Prepnutie z jedného YubiKey kľúča na druhý:</p>
+<ol>
+<li>Vložte starý YubiKey kľúč</li>
+<li>Ak máte k tejto databáze priradené aj heslo, zadajte ho do poľa Staré hlavné heslo</li>
+<li>Kliknite na <strong>horné </strong>tlačidlo Yubikey a potom aktivujte svoj YubiKey</li>
+<li>Odstráňte starý YubiKey a vložte nový</li>
+<li>Ak chcete, zadajte (a potvrďte) heslo do polí Nové hlavné heslo a Potvrdenie.</li>
+<li>Kliknite na <strong>dolné </strong>tlačidlo Yubikey a potom aktivujte svoj YubiKey.<br>
+</li>
+</ol>
+
+<hr>
+<p><small><b>Poznámky:</b></small></p>
+<ul>
+<li><small><b><span style="color: rgb(255, 0, 0);">Z bezpečnostného hľadiska nie je k dispozícii 
+žiadny mechanizmus na obnovenie stratených alebo zabudnutých hlavných hesiel</span></b>.
+Ide o zámerné rozhodnutie, pretože akýkoľvek mechanizmus na obnovenie
+stratených hesiel predstavuje bezpečnostnú dieru, ktorú je možné zneužiť.</small></li>
+<li><small>Vyberte si ťažko uhádnuteľné hlavné heslo. Triviálne
+heslo, ako napríklad "heslo" alebo vaše meno, sa dá ľahko uhádnuť, a úplne neguje
+bezpečnosť, ktorú poskytuje program <b>Password Safe</b>.<br>
+</small></li>
+</ul>
+
+<hr><!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Zmeniť hlavné heslo">
+<param name="Keyword" value="YubiKey">
+</object>
+</body>
+</html>
