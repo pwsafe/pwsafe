@@ -438,7 +438,7 @@
 		8ED7E1C329D9F24C0012034B /* SetDatabaseIdDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SetDatabaseIdDlg.cpp; sourceTree = "<group>"; };
 		92D844B89F2CE45C245DF902 /* RFC4648_Base32Decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RFC4648_Base32Decoder.h; path = crypto/RFC4648_Base32Decoder.h; sourceTree = "<group>"; };
 		A23A44F1A205CE6DD9992D6A /* TotpCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TotpCore.h; sourceTree = "<group>"; };
-		A2D181451C8FF86C0018AE03 /* media.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = media.cpp; sourceTree = "<group>"; };
+		A2D181451C8FF86C0018AE03 /* media.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = media.cpp; sourceTree = "<group>"; };
 		A2FE25811C5ACF7500210C36 /* Item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Item.cpp; sourceTree = "<group>"; };
 		A2FE25821C5ACF7500210C36 /* Item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Item.h; sourceTree = "<group>"; };
 		A2FE25831C5ACF7500210C36 /* ItemAtt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemAtt.cpp; sourceTree = "<group>"; };
