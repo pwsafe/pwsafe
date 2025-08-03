@@ -1,4 +1,5 @@
 set (LANGS "RU" "DE" "ES" "FR" "ZH" "SK")
+# pwsafePL -- nothing there :-(
 
 macro(set_lang_help_files FILES_VAR DIR)
   file(GLOB_RECURSE ${FILES_VAR}
@@ -10,8 +11,6 @@ macro(set_lang_help_files FILES_VAR DIR)
 endmacro(set_lang_help_files)
 
 if (WIN32 AND NOT WX_WINDOWS)
-  set (LANGS DE ES FR RU SK ZH)
-  # pwsafePL -- nothing there :-(
 
   find_program(HHC_EXECUTABLE hhc.exe DOC "Microsoft's help compiler (hhc.exe)")
   if (NOT HHC_EXECUTABLE)
