@@ -21,8 +21,11 @@ stringT pws_os::GetMediaType(const stringT & sfilename)
 
     // Extract the file extension
     CFRange range = CFStringFind(filename, CFSTR("."), kCFCompareBackwards);
-    if (range.location == kCFNotFound)
+    if (range.location == kCFNotFound) {
+        CFRelease(filename);
         return unknown_type;
+    }
+    
     CFStringRef fileExtension = CFStringCreateWithSubstring(kCFAllocatorDefault, filename, CFRangeMake(range.location + 1, CFStringGetLength(filename) - range.location - 1));
     CFRelease(filename);
     if (fileExtension == NULL)
@@ -41,7 +44,16 @@ stringT pws_os::GetMediaType(const stringT & sfilename)
         return unknown_type;
 
     // Convert mime_type to stringT
-    stringT retval = pws_os::towc(CFStringGetCStringPtr(mime_type, kCFStringEncodingUTF8));
+    CFIndex maxSize = CFStringGetMaximumSizeForEncoding(CFStringGetLength(mime_type), kCFStringEncodingUTF8) + 1;
+    auto utf8str = new char[maxSize];
+    auto success = CFStringGetCString(mime_type, utf8str, maxSize, kCFStringEncodingUTF8);
     CFRelease(mime_type);
+    if (success == false) {
+        delete[] utf8str;
+        return unknown_type;
+    }
+
+    stringT retval = pws_os::towc(utf8str);
+    delete[] utf8str;
     return retval;
 }
