@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Zálohovanie a obnovenie databázy</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Zálohovanie a obnovenie databázy</h2>
+
+<p>Keďže informácie uložené v databáze hesiel sú zvyčajne citlivé aj dôležité, <b>Password Safe</b>
+poskytuje niekoľko mechanizmov na zálohovanie a obnovu databáz hesiel.
+V tejto časti je popísané, ako manuálne vytvoriť zálohy vašej databázy hesiel. <b>Password Safe</b>
+je tiež možné nakonfigurovať na vytváranie <i>automatických</i>
+záloh vašej databázy vždy, keď sa databáza uloží. Takéto zálohy sa nazývajú
+<i>prechodné zálohy</i> a sú popísané v téme <a href="backups_tab.html">Nastavenia - karta Zálohy</a>.</p>
+
+<h3>Vytvorenie zálohy</h3>
+
+<p>Ako bezpečne vytvoriť kópiu aktuálnej databázy hesiel.</p>
+
+<ol>
+<li>Otvorte menu <b>Spravovať</b></li>
+<li>Kliknite na <b>Vytvoriť zálohu...</b></li>
+<li>Vyberte umiestnenie pre záložný súbor a jeho názov</li>
+<li>Kliknite na <b>Uložiť</b></li>
+</ol>
+
+<hr>
+<small>
+<p><b>Poznámka:</b> Dôrazne sa <b><u>odporúča</u></b>, aby ste si pravidelne zálohovali databázy hesiel. 
+To pomôže ochrániť zoznamy hesiel pred zlyhaním systému alebo poškodením súborov. 
+Záloha je šifrovaná pomocou rovnakého hlavného hesla ako aktuálna databáza. 
+Konkrétne, prostredníctvom karty <i><a href="backups_tab.html">Zálohy</a></i> v
+dialógovom okne Nastavenia môžete určiť, koľko záloh sa má uchovávať
+(<i>odporúčame minimálne 3 až 5</i>) a či sa má v názve záložného súboru použiť prírastkové
+číslo alebo hodnota dátumu/času.</p>
+</small>
+
+<hr>
+
+<h3>Obnovenie databázy zo zálohy</h3>
+
+<p>Obnovte databázu zo zálohy.</p>
+
+<ol>
+<li>Otvorte menu <b>Spravovať</b></li>
+<li>Kliknite na <b>Obnoviť zo zálohy</b></li>
+<li>Prejdite do umiestnenia zálohy a vyberte súbor, ktorý chcete obnoviť</li>
+<li>Kliknite na <b>Otvoriť</b> a zobrazí sa výzva na zadanie hesla.</li>
+<li>Zadajte heslo databázy a kliknite na <b>OK</b></li>
+</ol>
+
+<hr>
+<small>
+<b>Poznámky:</b>
+<ul>
+<li>Obnovená databáza sa "neuloží" so štandardnou príponou databázy <b>Password Safe</b>
+(.psafe3), kým v menu Súbor nevyberiete možnosť <b>Uložiť</b> alebo <b>Uložiť ako</b>. 
+Zobrazí sa výzva na "Uloženie" databázy a jej pomenovanie, ak ste ju ešte neuložili pred ukončením aplikácie.
+</li>
+<li>Okrem zálohovania a obnovy opísaných v tomto dokumente aplikácia <b>Password Safe</b>
+automaticky uchováva kópiu databázy pred uložením zmien. Kópia
+sa nachádza v rovnakom adresári ako aktuálna databáza a názov je identický,
+okrem prípony ".ibak", čo znamená "prechodná záloha",
+namiesto ".psafe3". Viac informácií o automatických zálohách nájdete v téme <a href="backups_tab.html">Nastavenia - karta Zálohy</a>.</li>
+</ul>
+</small>
+
+<hr>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Obnovenie zo zálohy">
+<param name="Keyword" value="Vytvorenie zálohy">
+<param name="Keyword" value="Zálohovanie">
+<param name="Keyword" value="Obnovenie">
+</object>
+
+</body>
+</html>

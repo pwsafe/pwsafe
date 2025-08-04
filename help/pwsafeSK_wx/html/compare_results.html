@@ -1,0 +1,72 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Výsledky porovnania databáz</title>
+<!-- pwsafe version: 3.28--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Výsledky porovnania databáz</h2>
+
+<img alt="Výsledky porovnania databáz" src="images/compare_results.png">
+
+<p>Po porovnaní dvoch databáz, ak sa zistia nejaké rozdiely, zobrazí sa vyššie uvedené dialógové okno.<br> 
+<i><b>Poznámka:</b> Porovnávajú sa iba polia vybrané používateľom, takže databáza sa môže zobraziť ako identická, 
+aj keď nie je identická, pretože zodpovedajúce polia sa neporovnávali.</i> Predvolene sa však porovnávajú <u>všetky</u> polia. 
+Ak však v dialógovom okne "Pokročilé možnosti porovnania" počas porovnávania vyberiete inú sadu, tieto polia sa porovnajú iba
+počas tohto spustenia programu, pokiaľ to znova nezmeníte v dialógovom okne. 
+To isté platí pre všetky operácie s databázou, hoci hodnoty sú nezávislé:</p>
+
+<ul>
+<li>Porovnať</li>
+<li>Exportovať do textu (celá databáza alebo jeden záznam)</li>
+<li>Exportovať do XML (celá databáza alebo jeden záznam)</li>
+<li>Zlúčiť</li>
+<li>Synchronizovať</li>
+</ul>
+
+<p>Používateľ má k dispozícii niekoľko možností, ak sa zistia rozdiely:</p>
+
+<ul>
+<li>Kliknúť pravým tlačidlom myši na záznam v tabuľke "Iba v aktuálnej databáze":</li>
+<ul>
+<li>Upraviť záznam, ak je databáza v režime R/W a záznam nie je zamknutý</li>
+<li>Zobraziť záznam, ak je databáza v režime R-O alebo je záznam zamknutý</li>
+</ul>
+<li>Kliknúť pravým tlačidlom myši na záznam v tabuľke "Iba v porovnávanej databáze":</li>
+<ul>
+<li>Zobraziť záznam (porovnávaná databáza je vždy v režime R-O, pretože nedokážeme poskytnúť funkciu Vrátiť späť, ak sa zmení).
+<li>Skopírovať záznam do aktuálnej databázy a prepísať jeho ekvivalentný záznam, ak je aktuálna
+databáza v režime R/W a existujúci záznam nie je zamknutý.</li>
+<li>Synchronizovať záznam s jeho ekvivalentom v aktuálnej databáze, ak je aktuálna
+databáza v režime R/W a existujúci záznam nie je zamknutý.</li>
+<li>Ak sa záznam nachádza v oboch databázach a má rozdiely, môžete tiež použiť možnosť "Porovnať položky",
+ktorá zobrazí všetky polia a ich obsah, a uvedie ktoré sú odlišné.</li>
+</ul>
+</ul>
+
+<p>Okrem toho je možné v porovnávanej databáze vybrať viacero záznamov (kliknite ľavým tlačidlom myši spolu s Ctrl alebo Shift pre druhý a nasledujúci záznam). 
+Po výbere ich môžete buď "Skopírovať všetky" do aktuálnej databázy, alebo ich "Synchronizovať všetky" s ich ekvivalentnými záznamami v aktuálnej databáze. 
+<b>Poznámka:</b> Synchronizácia bude povolená iba vtedy, ak sú všetky vybrané
+záznamy aj v aktuálnej databáze. Zamknutý záznam v aktuálnej databáze nemôže byť zahrnutý do žiadneho viacnásobného výberu, 
+pretože ho nemožno zmeniť. Rovnako ako v hlavnom stromovom zobrazení, aj pole s názvom
+má k svojej hodnote pridaný znak '&#35;', ak je záznam zamknutý.</p>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Výsledky porovnania">
+<param name="Keyword" value="Porovnať">
+</object>
+
+</body>
+</html>

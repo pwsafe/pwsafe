@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Failsafe zálohy</title>
+<!-- pwsafe version: 3.21--><!-- Modified: 1/31/2010 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Failsafe zálohy</h2>
+
+<p>Keď sa <b>Password Safe</b> normálne ukončí, zobrazí sa výzva ak sú v databáze neuložené zmeny. 
+Ak sa však odhlásite zo systému, vypnete alebo reštartujete počítač, potom <b>Password Safe</b> 
+nemusí mať možnosť zobraziť výzvu (presné správanie závisí od typu vypnutia a verzie operačného systému).</p>
+
+<p>V tomto prípade sa <b>Password Safe</b> pokúsi vytvoriť "Failsafe" zálohu (prípona súboru ".fbak").
+Táto záloha sa vytvorí v rovnakom adresári ako aktuálne otvorená databáza. Netýka sa to aktuálnej databázy
+a jej "bežnej" zálohy.</p>
+
+<p>Pri opätovnom otvorení pôvodnej databázy, <b>Password Safe</b> skontroluje existenciu akéhokoľvek súboru
+"Failsafe" zálohy a ak sa nájde, zobrazí sa dialógové okno podobné tomu nižšie.</p>
+
+<p><img alt="Failsafe zálohy pri spustení programu" src="images/failsafebackup.png"></p>
+
+<p>Prvý riadok obsahuje otvorenú databázu, za ktorou nasledujú všeobecné informácie o nej 
+(rovnaké ako tie, ktoré sú zobrazené v dialógovom okne Vlastnosti v menu Súbor). 
+Nasledujú súbory Failsafe záloh. Ak ich možno otvoriť s rovnakým heslom ako aktuálne otvorenú databázu, 
+zobrazia sa aj ich vlastnosti. Ak majú iné heslo alebo nie sú platnou databázou,
+v stĺpci Prístupová fráza sa zobrazí "Nie" a nezobrazia sa žiadne vlastnosti.</p>
+
+<p>Možnosti sú nasledovné:
+<ul>
+<li>Pokračovať
+<p>Kliknutím na toto tlačidlo <b>Password Safe</b> bude ignorovať všetky súbory záloh 
+Failsafe a bude pokračovať s aktuálne vybratou databázou.</p></li>
+<li>Vybrať
+<p>Namiesto aktuálne vybratej databázy sa otvorí vybratý súbor Failsafe zálohy.</p></li>
+<li>Zmazať
+<p>Týmto sa odstráni vybratý súbor Failsafe zálohy. Ak váš operačný systém podporuje Kôš 
+na tomto médiu (zvyčajne iba lokálne disky), bude tam presunutý. Ak nie, bude natrvalo odstránený.</p></li>
+<li>Ukončiť
+<p>Ak je toto prvá databáza otvorená pri spustení aplikácie <b>Password Safe</b>, aplikácia sa ukončí. 
+Ak nie, nové otvorenie sa zruší a existujúca otvorená databáza, ak nejaká existuje, zostane otvorená.</p></li>
+<li>Nápoveda
+<p>
+Zobrazí túto tému Nápovedy.</p></li>
+</ul>
+</p>
+
+<p><i>Návrhy:</i></p>
+<ul>
+<li>Ak si nemôžete vybrať, pokračujte s aktuálnou databázou a použite operáciu Porovnanie databáz
+v menu Súbor na zobrazenie presných rozdielov medzi aktuálnou a Failsafe zálohou.</li>
+<li>Ak otvoríte Failsafe zálohu a rozhodnete sa, že je to verzia, ktorú chcete ponechať,
+mali by ste ju uložiť ako bežnú databázu. Keď tak urobíte, zvážte najprv premenovanie pôvodnej databázy alebo
+Failsafe zálohu uložte s úplne novým názvom.</li>
+<li>Keď ste spokojní s tým, že ste obnovili správnu databázu, buď pôvodnú alebo
+Failsafe zálohu, mali by ste odstrániť všetky staré Failsafe zálohy, aby ste sa neskôr znova nedostali k výzve
+na rozhodnutie. <b>Poznámka:</b> Ak použijete toto dialógové okno na odstránenie týchto súborov, budú presunuté do
+Koša, ak to váš operačný systém podporuje na médiu, ktoré ich obsahuje.</li>
+</ul>
+
+<p><b>Poznámka: Žiadna aplikácia nemôže urobiť mnoho pre uloženie informácií, 
+ak je počítač natvrdo vypnutý, dôjde k výpadku napájania alebo zlyhaniu hardvéru. 
+Rovnako ako všetky údaje, ktoré sú pre vás dôležité, mali by ste si svoje údaje <u>pravidelne</u> 
+zálohovať na iné médium. Môže ísť o USB kľúče, externé pevné disky, sieťové disky, CD atď. 
+Tieto zálohy by mali byť uložené na bezpečnom mieste.</b></p>
+
+<hr>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Odhlásenie">
+<param name="Keyword" value="Vypnutie">
+<param name="Keyword" value="Reštart">
+<param name="Keyword" value="Záloha (failsafe)">
+<param name="Keyword" value="Failsafe">
+<param name="Keyword" value="Zotavenie">
+</object>
+
+</body>
+</html>
