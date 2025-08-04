@@ -17,7 +17,9 @@
 
 <h3>Zmeniť hlavné heslo...</h3>
 
-<p>Výberom tejto možnosti sa zobrazí dialógové okno Zmeniť hlavné heslo.</p>
+<p>Výberom tejto možnosti sa zobrazí dialógové okno Zmeniť hlavné heslo.<br>
+Okrem zmeny hesla tu môžete nastaviť, aby na prístup k databáze <b>Password Safe</b> používal (aj) autentifikačný token <a href="about_pws_yubi.html">YubiKey</a>. 
+Password Safe môže používať YubiKey kľúč ako jediný prístupový mechanizmus k databáze hesiel alebo spolu s hlavným heslom.</p>
 
 <p><small><i>Ďalšie informácie nájdete v časti <a href="change_combo.html">Zmena hlavného hesla</a>.</i></small></p>
 
@@ -79,15 +81,15 @@ Môžete si vybrať predvolené zásady hesiel pre aktuálnu databázu, alebo po
 
 <h3><a name="yubikey"></a>Yubikey</h3>
 
-<p>Toto vám umožňuje prispôsobiť si voliteľné zariadenie <a href="about_pws_yubi.html">YubiKey</a> tak, 
-aby ste ho mohli použiť na prístup k databáze <b>Password Safe</b>, ako aj vytvoriť záložný YubiKey pre prípad, že by sa originál stratil alebo poškodil.</p>
+<p>Toto vám umožňuje nastaviť si voliteľné zariadenie <a href="about_pws_yubi.html">YubiKey</a> tak, 
+aby ste ho mohli použiť na prístup k databáze <b>Password Safe</b>, ako aj vytvoriť záložný YubiKey kľúč pre prípad že by sa originál stratil alebo poškodil.</p>
 <img alt="Konfigurácia YubiKey" src="images/yubi_config.png">
 
-<h4>Prispôsobenie vášho YubiKey</h4>
+<h4>Nastavenie YubiKey kľúča</h4>
 
 <ol>
-<li>Vložte svoj YubiKey do USB slotu počítača.</li>
-<li>Vyberte položku menu Spravovať&nbsp;&gt;&nbsp;Yubikey.... Zobrazí sa dialógové okno Konfigurácia YubiKey.</li>
+<li>Vložte YubiKey kľúč do USB slotu počítača.</li>
+<li>Vyberte položku menu Spravovať&nbsp;&gt;&nbsp;Yubikey... Zobrazí sa dialógové okno Konfigurácia YubiKey.</li>
 <li>Malo by sa zobraziť sériové číslo vášho YubiKey. Ak je toto pole prázdne, uistite sa, že váš YubiKey je správne zapojený.</li>
 <li>Kliknite na tlačidlo Generovať. Týmto sa vytvorí 20-bajtový náhodný tajný kľúč, ktorý sa zapíše do vášho YubiKey a použije sa na prístup k vašej databáze.</li>
 <li>Kliknite na Nastaviť. Týmto sa vygenerovaný kľúč zapíše do vášho YubiKey a dáta sa uložia v zašifrovanej forme do vašej databázy, aby ste ho mohli použiť na konfiguráciu záložného kľúča.</li>
@@ -95,13 +97,13 @@ aby ste ho mohli použiť na prístup k databáze <b>Password Safe</b>, ako aj v
 <li>Kliknite na Zatvoriť pre zatvorenie dialógového okna.</li>
 </ol>
 <b>Poznámka:</b> Po konfigurácii vášho YubiKey musíte zmeniť heslo databázy, aby ste mohli používať YubiKey na autentifikáciu, 
-ako je popísané v časti <a href="change_combo.html">Zmena hlavného hesla</a>
+ako je popísané v časti <a href="change_combo.html">Zmena hlavného hesla</a>.
 
-<h4>Vytvorenie záložného YubiKey</h4>
+<h4>Vytvorenie záložného YubiKey kľúča</h4>
 
 <ol>
-<li>Vložte záložný YubiKey do USB slotu počítača.</li>
-<li>Vyberte položku menu Spravovať&nbsp;&gt;&nbsp;Yubikey.... Zobrazí sa dialógové okno Konfigurácia YubiKey.</li>
+<li>Vložte záložný YubiKey kľúč do USB slotu počítača.</li>
+<li>Vyberte položku menu Spravovať&nbsp;&gt;&nbsp;Yubikey... Zobrazí sa dialógové okno Konfigurácia YubiKey.</li>
 <li>Malo by sa zobraziť sériové číslo vášho záložného YubiKey. Ak je toto pole prázdne, uistite sa, že váš YubiKey je správne zapojený.</li>
 <li><b>Neklikajte</b> na tlačidlo Generovať. Údaje zobrazené v poli "Tajný kľúč YubiKey" sú kľúčom priradeným k tejto databáze. 
 Toto je kľúč, ktorý bude zapísaný do vášho záložného YubiKey.</li>
@@ -114,8 +116,7 @@ Toto je kľúč, ktorý bude zapísaný do vášho záložného YubiKey.</li>
 
 <img alt="Zmeniť jazyk" src="images/change_language.png">
 
-<p>Ak ste pri inštalácii aplikácie <b>Password Safe</b> nainštalovali 
-všetky aktuálne dostupné knižnice DLL pre ďalšie jazyky (čo je predvolená hodnota), budete môcť prepínať medzi týmito jazykmi za chodu prostredníctvom tejto položky menu.</p>
+<p>Ak ste pri inštalácii aplikácie <b>Password Safe</b> nainštalovali knižnice DLL pre ďalšie jazyky, budete môcť prepínať medzi týmito jazykmi za chodu prostredníctvom tejto položky menu.</p>
 
 <p>Po zmene jazyka budú všetky ponuky, dialógové okná a správy vo vami zvolenom jazyku.</p>
 
