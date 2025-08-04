@@ -37,7 +37,29 @@ ViewReportDlg::ViewReportDlg(wxWindow *parent, CReport* pRpt, bool fromFile) :
 
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
 
-  wxTextCtrl* textCtrl = new wxTextCtrl(this, wxID_ANY, towxstring(pRpt->GetString()),
+  StringX reportString = pRpt->GetString();
+  wxString reportText;
+  
+  try {
+    reportText = towxstring(reportString);
+  } catch (...) {
+    reportText.Clear();
+  }
+    
+
+  if (!reportText.IsEmpty()) {
+    wxString filteredText;
+    for (auto ch : reportText) {
+      if (isprint(ch) || isspace(ch)) {
+        filteredText += ch;
+      } else {
+        filteredText += wxT(' ');
+      }
+    }
+    reportText = filteredText;
+  }
+  
+  wxTextCtrl* textCtrl = new wxTextCtrl(this, wxID_ANY, reportText,
                                       wxDefaultPosition, wxSize(640,480), wxTE_MULTILINE|wxTE_READONLY);
   dlgSizer->Add(textCtrl, wxSizerFlags().Border(wxALL).Expand().Proportion(1));
 
