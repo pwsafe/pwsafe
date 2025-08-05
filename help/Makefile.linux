@@ -3,10 +3,10 @@ ZIP = /usr/bin/zip
 all: default $(LANGS)
 
 default:
-	@cd default ; $(ZIP) -Xqr ../helpEN ./*
+	@cd default$(WX) ; $(ZIP) -Xqr ../helpEN ./*
 
 $(LANGS):
-	@cd $(BASEDIRNAME)$@ ; $(ZIP) -Xqr ../help$@ ./*
+	@cd $(BASEDIRNAME)$@$(BWX) ; $(ZIP) -Xqr ../help$@ ./*
 
 clean:
 	$(RM) *.zip
