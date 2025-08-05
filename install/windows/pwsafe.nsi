@@ -797,6 +797,7 @@ Section "Uninstall"
   Delete "$INSTDIR\Uninstall.exe"
   ; Delete all installed files in the directory
   Delete "$INSTDIR\pwsafe.exe"
+  Delete "$INSTDIR\pwsafe-cli.exe"
   Delete "$INSTDIR\pws_at.dll"
   Delete "$INSTDIR\pws_osk.dll"
   Delete "$INSTDIR\pwsafe.chm"
