@@ -21,6 +21,7 @@
 #endif
 
 #include <wx/msgdlg.h>
+#include <algorithm>
 
 #include "core/Report.h"
 
@@ -37,7 +38,23 @@ ViewReportDlg::ViewReportDlg(wxWindow *parent, CReport* pRpt, bool fromFile) :
 
   wxBoxSizer* dlgSizer = new wxBoxSizer(wxVERTICAL);
 
-  wxTextCtrl* textCtrl = new wxTextCtrl(this, wxID_ANY, towxstring(pRpt->GetString()),
+  StringX reportString = pRpt->GetString();
+  wxString reportText;
+  
+  try {
+    reportText = towxstring(reportString);
+  } catch (...) {
+    reportText.Clear();
+  }
+    
+
+  if (!reportText.IsEmpty()) {
+    std::replace_if(reportText.begin(), reportText.end(),
+                   [](wxUniChar ch) { return !isprint(ch) && !isspace(ch); },
+                   wxT(' '));
+  }
+  
+  wxTextCtrl* textCtrl = new wxTextCtrl(this, wxID_ANY, reportText,
                                       wxDefaultPosition, wxSize(640,480), wxTE_MULTILINE|wxTE_READONLY);
   dlgSizer->Add(textCtrl, wxSizerFlags().Border(wxALL).Expand().Proportion(1));
 
