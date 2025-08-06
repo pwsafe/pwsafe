@@ -21,6 +21,7 @@
 #endif
 
 #include <wx/msgdlg.h>
+#include <algorithm>
 
 #include "core/Report.h"
 
@@ -48,15 +49,9 @@ ViewReportDlg::ViewReportDlg(wxWindow *parent, CReport* pRpt, bool fromFile) :
     
 
   if (!reportText.IsEmpty()) {
-    wxString filteredText;
-    for (auto ch : reportText) {
-      if (isprint(ch) || isspace(ch)) {
-        filteredText += ch;
-      } else {
-        filteredText += wxT(' ');
-      }
-    }
-    reportText = filteredText;
+    std::replace_if(reportText.begin(), reportText.end(),
+                   [](wxUniChar ch) { return !isprint(ch) && !isspace(ch); },
+                   wxT(' '));
   }
   
   wxTextCtrl* textCtrl = new wxTextCtrl(this, wxID_ANY, reportText,
