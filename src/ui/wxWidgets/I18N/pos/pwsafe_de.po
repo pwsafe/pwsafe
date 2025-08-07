@@ -2170,7 +2170,7 @@ msgstr "Export beendet. Möchten Sie einen ausführlichen Bericht sehen?"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:847
 msgid "No entries satisfied your selection criteria and so none were exported!"
-msgstr "Kein Eintrag entspricht Ihren Auswahlkriterien, darum wurden keine exportiert!"
+msgstr "Kein Eintrag entspricht Ihren Auswahlkriterien, daher wurden keine exportiert!"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:860
 msgid "Passkey incorrect"
@@ -2374,7 +2374,7 @@ msgid ""
 "The following records were renamed as an entry already exists in your database or in "
 "the Import file:"
 msgstr ""
-"Folgende Datensätze wurden umbenannt, weil schon so ein Eintrag in der Datenbank oder "
+"Die folgenden Datensätze wurden umbenannt, da bereits ein Eintrag in der Datenbank oder "
 "in der Importdatei besteht:"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1100
@@ -2474,7 +2474,7 @@ msgstr "Importiert %d %ls"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1283
 msgid "Merging database: "
-msgstr "Zusammenführung von Datenbank: "
+msgstr "Zusammenführung mit Datenbank: "
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1298
 msgid "Merge Complete"
@@ -4566,7 +4566,7 @@ msgstr " mit entsprechenden Einträgen aus \""
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:121
 #, c-format
 msgid "\tAll fields in matching entries were %ls"
-msgstr "\tAlle Felder in übereinstimmenden Einträgen mit %ls"
+msgstr "\tAlle Felder in übereinstimmenden Einträgen wurden %ls"
 
 #: ../../../ui/wxWidgets/SelectionCriteria.cpp:125
 #, c-format
@@ -4870,7 +4870,7 @@ msgid ""
 "Synchronize completed: %d %ls updated"
 msgstr ""
 "\n"
-"Synchronisieren abgeschlossen: %d %ls aktualisiert"
+"Synchronisierung abgeschlossen: %d %ls aktualisiert"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:125
 msgid "&Lock"
@@ -5742,7 +5742,7 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:107
 msgid "End Report"
-msgstr "Bericht Ende"
+msgstr "Berichtsende"
 
 #: ../../../core/core_st.cpp:108
 msgid "--------------------------------------------------------------------------------"
@@ -6431,7 +6431,7 @@ msgid ""
 "The following new %ls %ls merged into this database:"
 msgstr ""
 "\n"
-"Folgender neue %ls %ls zusammengeführt mit dieser Datenbank:"
+"Folgende neue %ls %ls mit dieser Datenbank zusammengeführt:"
 
 #: ../../../core/core_st.cpp:267
 #, c-format
@@ -6440,7 +6440,7 @@ msgid ""
 "Merge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
 msgstr ""
 "\n"
-"Zusammenführen abgeschlossen: %d %ls hinzugefügt (%d %ls, %d %ls, %d %ls, %d %ls)"
+"Zusammenführung abgeschlossen: %d %ls hinzugefügt (%d %ls, %d %ls, %d %ls, %d %ls)"
 
 #: ../../../core/core_st.cpp:268
 #, c-format
@@ -6645,56 +6645,56 @@ msgstr ""
 #: ../../../core/core_st.cpp:310
 #, c-format
 msgid "Report of %ls function started at %ls"
-msgstr "Bericht von %ls Funktion begonnen am %ls"
+msgstr "Bericht von %ls Funktion, gestartet am %ls,"
 
 #: ../../../core/core_st.cpp:311
 #, c-format
 msgid "on database %ls"
-msgstr "auf Datenbank %ls"
+msgstr "mit Datenbank %ls"
 
 #: ../../../core/core_st.cpp:312
 msgid "Compare"
-msgstr "Vergleichen"
+msgstr "Vergleichs"
 
 #: ../../../core/core_st.cpp:313
 msgid "Export_DB"
-msgstr "Exportiere Datenbank"
+msgstr "Datenbank-Export"
 
 #: ../../../core/core_st.cpp:314
 msgid "Export_Text"
-msgstr "Exportiere Text"
+msgstr "Text-Export"
 
 #: ../../../core/core_st.cpp:315
 msgid "Export_XML"
-msgstr "Exportiere XML"
+msgstr "XML-Export"
 
 #: ../../../core/core_st.cpp:316
 msgid "Find"
-msgstr "gesucht"
+msgstr "Such"
 
 #: ../../../core/core_st.cpp:317
 msgid "Import_KeePassV1_CSV"
-msgstr "Importiere KeePassV1 CSV"
+msgstr "KeePassV1-CSV-Import"
 
 #: ../../../core/core_st.cpp:318
 msgid "Import_KeePassV1_TXT"
-msgstr "Importiere KeePassV1 TXT"
+msgstr "KeePassV1-TXT-Import"
 
 #: ../../../core/core_st.cpp:319
 msgid "Import_Text"
-msgstr "Importiere Text"
+msgstr "Text-Import"
 
 #: ../../../core/core_st.cpp:320
 msgid "Import_XML"
-msgstr "Importiere XML"
+msgstr "XML-Import"
 
 #: ../../../core/core_st.cpp:321
 msgid "Merge"
-msgstr "Zusammenführen"
+msgstr "Zusammenführungs"
 
 #: ../../../core/core_st.cpp:323
 msgid "Validate"
-msgstr "Überprüfen"
+msgstr "Überprüfungs"
 
 #: ../../../core/core_st.cpp:325
 msgid "Fatal Error"
@@ -6749,7 +6749,7 @@ msgstr "Richtlinienspezifischer Zeichensatz"
 
 #: ../../../core/core_st.cpp:337
 msgid "Start Report"
-msgstr "Starte Bericht"
+msgstr "Berichtsbeginn"
 
 #: ../../../core/core_st.cpp:338
 msgid "Double-Click on entry to Autotype"

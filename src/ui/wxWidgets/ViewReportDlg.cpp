@@ -30,7 +30,7 @@
 #include "wxUtilities.h"
 
 ViewReportDlg::ViewReportDlg(wxWindow *parent, CReport* pRpt, bool fromFile) :
-                wxDialog(parent, wxID_ANY, _("View Report"), wxDefaultPosition, wxDefaultSize,
+                wxDialog(parent, wxID_ANY, _("Report Summary"), wxDefaultPosition, wxDefaultSize,
                       wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),  m_pRpt(pRpt)
 {
   wxASSERT(pRpt);
@@ -63,24 +63,30 @@ ViewReportDlg::ViewReportDlg(wxWindow *parent, CReport* pRpt, bool fromFile) :
   wxASSERT_MSG(bs, wxT("Could not create an empty wxStdDlgButtonSizer"));
 
   if(fromFile) {
-    bs->Add(new wxButton(this, wxID_APPLY, _("&Remove from Disk")));
+    auto deleteButton = new wxButton(this, wxID_APPLY, _("&Delete"));
+    deleteButton->SetToolTip(_("Delete report file"));
+    bs->Add(deleteButton);
   }
   else {
-    bs->Add(new wxButton(this, wxID_SAVE, _("&Save to Disk")));
+    auto saveButton = new wxButton(this, wxID_SAVE, _("&Save"));
+    saveButton->SetToolTip(_("Save report as file"));
+    bs->Add(saveButton);
   }
   bs->AddSpacer(ColSeparation);
-  bs->Add(new wxButton(this, wxID_COPY, _("&Copy to Clipboard")));
+  auto copyButton = new wxButton(this, wxID_COPY, _("&Copy"));
+  copyButton->SetToolTip(_("Copy report to clipboard"));
+  bs->Add(copyButton);
   bs->AddSpacer(ColSeparation);
-  wxButton* finishButton = new wxButton(this, wxID_CLOSE);
-  finishButton->SetDefault();
-  bs->Add(finishButton);
+  auto closeButton = new wxButton(this, wxID_CLOSE);
+  closeButton->SetDefault();
+  bs->Add(closeButton);
 
   bs->Realize();
 
-  Connect(wxID_SAVE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ViewReportDlg::OnSave) );
-  Connect(wxID_APPLY, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ViewReportDlg::OnRemove) );
-  Connect(wxID_COPY, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ViewReportDlg::OnCopy) );
-  Connect(wxID_CLOSE, wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler(ViewReportDlg::OnClose) );
+  Bind(wxEVT_BUTTON, &ViewReportDlg::OnSave, this, wxID_SAVE);
+  Bind(wxEVT_BUTTON, &ViewReportDlg::OnDelete, this, wxID_APPLY);
+  Bind(wxEVT_BUTTON, &ViewReportDlg::OnCopy, this, wxID_COPY);
+  Bind(wxEVT_BUTTON, &ViewReportDlg::OnClose, this, wxID_CLOSE);
 
   dlgSizer->Add(bs, wxSizerFlags().Border(wxLEFT|wxRIGHT|wxBOTTOM).Expand());
 
@@ -92,15 +98,13 @@ ViewReportDlg* ViewReportDlg::Create(wxWindow *parent, CReport* pRpt, bool fromF
   return new ViewReportDlg(parent, pRpt, fromFile);
 }
 
-void ViewReportDlg::OnSave(wxCommandEvent& evt)
+void ViewReportDlg::OnSave(wxCommandEvent& WXUNUSED(evt))
 {
-  UNREFERENCED_PARAMETER(evt);
   m_pRpt->SaveToDisk();
 }
 
-void ViewReportDlg::OnRemove(wxCommandEvent& evt)
+void ViewReportDlg::OnDelete(wxCommandEvent& WXUNUSED(evt))
 {
-  UNREFERENCED_PARAMETER(evt);
   wxString fileName(m_pRpt->GetFileName());
   wxMessageDialog dlg(this, fileName, _("Delete Report?"), wxYES_NO);
   if(dlg.ShowModal() == wxID_YES) {
@@ -108,14 +112,12 @@ void ViewReportDlg::OnRemove(wxCommandEvent& evt)
   }
 }
 
-void ViewReportDlg::OnClose(wxCommandEvent& evt)
+void ViewReportDlg::OnClose(wxCommandEvent& WXUNUSED(evt))
 {
-  UNREFERENCED_PARAMETER(evt);
   EndModal(0);
 }
 
-void ViewReportDlg::OnCopy(wxCommandEvent& evt)
+void ViewReportDlg::OnCopy(wxCommandEvent& WXUNUSED(evt))
 {
-  UNREFERENCED_PARAMETER(evt);
   Clipboard::GetInstance()->SetData(m_pRpt->GetString());
 }
