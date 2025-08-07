@@ -3820,7 +3820,7 @@ static bool GetDriveAndDirectory(const StringX &cs_infile, CString &cs_drive,
 
 void DboxMain::OnViewReports()
 {
-  CString cs_filename, cs_path, csAction;
+  CString cs_filename, cs_path, csAction, csButton;
   CString cs_directory, cs_drive;
 
   if (!GetDriveAndDirectory(m_core.GetCurFile(), cs_drive, cs_directory))
@@ -3841,12 +3841,13 @@ void DboxMain::OnViewReports()
   };
 
   for (int i = 0; i < sizeof(Reports) / sizeof(Reports[0]); i++) {
-    csAction.LoadString(Reports[i]);
+    csAction = CReport::ReportNames.find(Reports[i])->second;
+    csButton.LoadString(Reports[i]);
     cs_filename.Format(IDSC_REPORTFILENAME, static_cast<LPCWSTR>(cs_drive),
                        static_cast<LPCWSTR>(cs_directory),
                        static_cast<LPCWSTR>(csAction));
     if (::_tstat(cs_filename, &statbuf) == 0) {
-      gmb.AddButton(Reports[i], csAction);
+      gmb.AddButton(Reports[i], csButton);
       bReportExists = true;
     }
   }
