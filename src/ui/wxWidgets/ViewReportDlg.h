@@ -27,7 +27,7 @@ public:
 protected:
   ViewReportDlg(wxWindow *parent, CReport* pRpt, bool fromFile);
   void OnSave(wxCommandEvent& event);
-  void OnRemove(wxCommandEvent& event);
+  void OnDelete(wxCommandEvent& event);
   void OnClose(wxCommandEvent& event);
   void OnCopy(wxCommandEvent& event);
 };
