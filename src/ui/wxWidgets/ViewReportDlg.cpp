@@ -30,7 +30,7 @@
 #include "wxUtilities.h"
 
 ViewReportDlg::ViewReportDlg(wxWindow *parent, CReport* pRpt, bool fromFile) :
-                wxDialog(parent, wxID_ANY, _("Report Summary"), wxDefaultPosition, wxDefaultSize,
+                wxDialog(parent, wxID_ANY, _("Report"), wxDefaultPosition, wxDefaultSize,
                       wxDEFAULT_DIALOG_STYLE|wxRESIZE_BORDER),  m_pRpt(pRpt)
 {
   wxASSERT(pRpt);
