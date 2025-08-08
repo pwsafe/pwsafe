@@ -1038,12 +1038,13 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     if (!unknownColumns.empty())
     {
+      rpt.WriteLine();
       LoadAString(cs_error, IDSC_UNKNOWNHDRS);
-      rpt.WriteLine(cs_error, false);
+      rpt.WriteLine(cs_error);
     }
     for (const auto &unknownColumn : unknownColumns)
     {
-      rpt.WriteLine(unknownColumn, false);
+      rpt.WriteLine(unknownColumn);
     }
     rpt.WriteLine();
     rpt.WriteLine();
