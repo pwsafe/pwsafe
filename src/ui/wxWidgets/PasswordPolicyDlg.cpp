@@ -32,6 +32,12 @@
 ////@end XPM images
 
 /*!
+ * PasswordPolicyDlg type definition
+ */
+
+IMPLEMENT_CLASS( PasswordPolicyDlg, wxDialog )
+
+/*!
  * PasswordPolicyDlg event table definition
  */
 
