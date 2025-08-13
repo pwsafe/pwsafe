@@ -29,6 +29,7 @@ DLG_HELP(AdvancedSelectionDlg<FindDlgType>,             html/searching.html)
 
 //The help for Manage Password Policies dialog
 DLG_HELP(ManagePasswordPoliciesDlg,                     html/named_password_policies.html)
+DLG_HELP(PasswordPolicyDlg,                             html/password_policies.html)
 
 #ifndef NO_YUBI
 //The Yubikey Configuration dialog
@@ -44,7 +45,6 @@ DLG_HELP(YubiCfgDlg,                                    html/manage_menu.html#yu
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Backups"),          html/backups_tab.html)
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Display"),          html/display_tab.html)
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Miscellaneous"),    html/misc_tab.html)
-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Password Policy"),  html/password_policies.html)
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Password History"), html/password_history_tab.html)
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Security"),         html/security_tab.html)
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("System"),           html/system_tab.html)

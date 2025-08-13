@@ -79,6 +79,7 @@ class wxSpinCtrl;
 
 class PasswordPolicyDlg : public QueryCancelDlg
 {
+  DECLARE_DYNAMIC_CLASS( PasswordPolicyDlg )
   DECLARE_EVENT_TABLE()
 
 public:
