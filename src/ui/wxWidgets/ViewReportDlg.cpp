@@ -63,7 +63,7 @@ ViewReportDlg::ViewReportDlg(wxWindow *parent, CReport* pRpt, bool fromFile) :
   wxASSERT_MSG(bs, wxT("Could not create an empty wxStdDlgButtonSizer"));
 
   if(fromFile) {
-    auto deleteButton = new wxButton(this, wxID_APPLY, _("&Delete"));
+    auto deleteButton = new wxButton(this, wxID_REMOVE, _("&Delete"));
     deleteButton->SetToolTip(_("Delete report file"));
     bs->Add(deleteButton);
   }
@@ -84,7 +84,7 @@ ViewReportDlg::ViewReportDlg(wxWindow *parent, CReport* pRpt, bool fromFile) :
   bs->Realize();
 
   Bind(wxEVT_BUTTON, &ViewReportDlg::OnSave, this, wxID_SAVE);
-  Bind(wxEVT_BUTTON, &ViewReportDlg::OnDelete, this, wxID_APPLY);
+  Bind(wxEVT_BUTTON, &ViewReportDlg::OnDelete, this, wxID_REMOVE);
   Bind(wxEVT_BUTTON, &ViewReportDlg::OnCopy, this, wxID_COPY);
   Bind(wxEVT_BUTTON, &ViewReportDlg::OnClose, this, wxID_CLOSE);
 
