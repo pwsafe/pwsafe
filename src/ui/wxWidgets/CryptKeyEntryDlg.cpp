@@ -96,7 +96,7 @@ void CryptKeyEntryDlg::CreateControls()
 
     auto *showHideButtonKey = new wxBitmapButton(this, wxID_ANY, wxBitmap(eye_xpm), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
     showHideButtonKey->SetToolTip(_("Show key"));
-    showHideButtonKey->Bind(wxEVT_BUTTON, [&, showHideButtonKey](wxCommandEvent& event) {
+    showHideButtonKey->Bind(wxEVT_BUTTON, [&, hBoxSizer1, showHideButtonKey](wxCommandEvent& event) {
       UpdatePasswordTextCtrl(hBoxSizer1, m_TextCtrlKey1, m_TextCtrlKey1->GetValue(), nullptr, isCryptKeyHidden ? 0 : wxTE_PASSWORD);
       showHideButtonKey->SetBitmapLabel(wxBitmap(isCryptKeyHidden ? eye_close_xpm : eye_xpm));
       showHideButtonKey->SetToolTip(isCryptKeyHidden ? _("Hide key") : _("Show key"));
@@ -117,7 +117,7 @@ void CryptKeyEntryDlg::CreateControls()
 
       auto *showHideButtonVerificationKey = new wxBitmapButton(this, wxID_ANY, wxBitmap(eye_xpm), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
       showHideButtonVerificationKey->SetToolTip(_("Show verification key"));
-      showHideButtonVerificationKey->Bind(wxEVT_BUTTON, [&, showHideButtonVerificationKey](wxCommandEvent& event) {
+      showHideButtonVerificationKey->Bind(wxEVT_BUTTON, [&, hBoxSizer2, showHideButtonVerificationKey](wxCommandEvent& event) {
         UpdatePasswordTextCtrl(hBoxSizer2, m_TextCtrlKey2, m_TextCtrlKey2->GetValue(), nullptr, isCryptVerificationKeyHidden ? 0 : wxTE_PASSWORD);
         showHideButtonVerificationKey->SetBitmapLabel(wxBitmap(isCryptVerificationKeyHidden ? eye_close_xpm : eye_xpm));
         showHideButtonVerificationKey->SetToolTip(isCryptVerificationKeyHidden ? _("Hide verification key") : _("Show verification key"));
