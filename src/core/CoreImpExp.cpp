@@ -1027,7 +1027,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     Format(cs_error, IDSC_IMPORTHDR, numCols);
     rpt.WriteLine(cs_error);
     LoadAString(cs_error, bImportPSWDsOnly ? IDSC_IMPORTKNOWNHDRS2 : IDSC_IMPORTKNOWNHDRS);
-    rpt.WriteLine(cs_error, bImportPSWDsOnly);
+    rpt.WriteLine(cs_error);
     for (auto fieldName = foundFields.begin(); fieldName != foundFields.end(); ++fieldName)
     {
       if (*fieldName == CItemData::EngFieldName(CItem::UNKNOWNFIELDS))
@@ -1038,12 +1038,14 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
 
     if (!unknownColumns.empty())
     {
+      rpt.WriteLine();
       LoadAString(cs_error, IDSC_UNKNOWNHDRS);
-      rpt.WriteLine(cs_error, false);
+      rpt.WriteLine(cs_error);
     }
     for (const auto &unknownColumn : unknownColumns)
     {
-      rpt.WriteLine(unknownColumn, false);
+      Format(cs_error, L"\t%ls ", unknownColumn.c_str());
+      rpt.WriteLine(cs_error);
     }
     rpt.WriteLine();
     rpt.WriteLine();
