@@ -3116,8 +3116,8 @@ msgstr ""
 
 #. Resource IDs: (5464)
 #, c-format
-msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."
-msgstr "끊어진 항목 '%s:%s:%s' 의 비밀번호가 이미 보조 항목의 속성을 가진 항목을 가리키고 있습니다.\n\n끊어진 항목은 지금부터 그 항목의 기본 항목을 참조하게 됩니다."
+msgid "Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."
+msgstr "끊어진 항목 '%ls:%ls:%ls' 의 비밀번호가 이미 보조 항목의 속성을 가진 항목을 가리키고 있습니다.\n\n끊어진 항목은 지금부터 그 항목의 기본 항목을 참조하게 됩니다."
 
 #. Resource IDs: (32087 - Menu, 32087 - MenuEx)
 msgid "Duplicate Group"
@@ -6951,12 +6951,12 @@ msgstr ""
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "다음 항목이 %s 데이터베이스로 복사되었습니다: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "다음 항목이 %s 데이터베이스로 복사되었습니다: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
 msgstr ""
 
 #. Resource IDs: (5787)
@@ -7006,7 +7006,7 @@ msgstr ""
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
 
 #. Resource IDs: (5770)
@@ -7047,7 +7047,7 @@ msgstr ""
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 
 #. Resource IDs: (5355)
@@ -7125,7 +7125,7 @@ msgstr ""
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 
 #. Resource IDs: (5110)

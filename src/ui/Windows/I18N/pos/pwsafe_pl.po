@@ -3342,11 +3342,11 @@ msgstr "Przenieś ten obraz do innego okna by uruchomić AutoTyp."
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Opuszczono wpis '%s:%s:%s' hasło wskazuje na wpis, który też jest aliasem.\n"
+"Opuszczono wpis '%ls:%ls:%ls' hasło wskazuje na wpis, który też jest aliasem.\n"
 "\n"
 "Opuszczony wpis odnosi się teraz do wpisu bazowego tego wpisu."
 
@@ -7446,13 +7446,13 @@ msgstr "Następujące wpisy haseł wygasają lub wygasły:"
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "Następujący wpis został skopiowany do bazy danych %s: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "Następujący wpis został skopiowany do bazy danych %s: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "Następujący wpisu został zsynchronizowany z bazą danych %s: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "Następujący wpisu został zsynchronizowany z bazą danych %s: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7523,8 +7523,8 @@ msgstr "Oryginalna baza danych \"%s\" jest w formie pre-3.0. Dane będą teraz z
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "Wpis odniesienia '%s:%s:%s' jest aliasem lub skrótem. Nie jest to obsługiwane."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
+msgstr "Wpis odniesienia '%ls:%ls:%ls' jest aliasem lub skrótem. Nie jest to obsługiwane."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -7564,7 +7564,7 @@ msgstr "Ten Hotkey nie jest dostępny jako że jest już przydzielony do Passwor
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
 msgstr "Alias docelowy [% s% s% s], nie jest to normalnym zapisem."
 
 #. Resource IDs: (5355)
@@ -7654,8 +7654,8 @@ msgstr "Ten program wymaga pliku %Ts, który nie został znaleziony w tym system
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "Skrót docelowy [%s:%s:%s] nie jest to normalnym wpisem."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Skrót docelowy [%ls:%ls:%ls] nie jest to normalnym wpisem."
 
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."

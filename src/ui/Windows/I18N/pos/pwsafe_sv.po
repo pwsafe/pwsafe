@@ -3517,11 +3517,11 @@ msgstr "Drag ikonen till ett fönsterfält för att starta Autoskriv därifrån.
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Ignorerade post '%s:%s:%s' lösenordet pekar på en post som också är en alias.\n"
+"Ignorerade post '%ls:%ls:%ls' lösenordet pekar på en post som också är en alias.\n"
 "\n"
 "Den ignorerade posten refererar nu till postens baspost."
 
@@ -7621,13 +7621,13 @@ msgstr "Följande posters lösenord är på väg att gå ut eller har redan gåt
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "Följande post kopierades till %s databas: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "Följande post kopierades till %s databas: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "Följande post synkroniserades till %s databas: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "Följande post synkroniserades till %s databas: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7698,8 +7698,8 @@ msgstr "Den ursprungliga databasen, \"%s\", har pre-3.0 format. Data kommer nu a
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "Den refererade posten '%s:%s:%s' är själv ett alias eller genväg. Detta stöds inte."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
+msgstr "Den refererade posten '%ls:%ls:%ls' är själv ett alias eller genväg. Detta stöds inte."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -7739,8 +7739,8 @@ msgstr "Detta snabbtangentsvärde är inte tillgängligt då det redan är tilld
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Detta alias mål [%s:%s:%s] är inte en normal post."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Detta alias mål [%ls:%ls:%ls] är inte en normal post."
 
 #. Resource IDs: (5355)
 msgid "This database is the same as the current database!"
@@ -7829,8 +7829,8 @@ msgstr "Detta program kräver filen %Ts, som inte har hittats i det här systeme
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "Denna genvägs mål [%s:%s:%s] är inte en normal post."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Denna genvägs mål [%ls:%ls:%ls] är inte en normal post."
 
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."

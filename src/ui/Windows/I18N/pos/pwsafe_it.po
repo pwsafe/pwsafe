@@ -3224,11 +3224,11 @@ msgstr "Trascina questa immagine sopra un'altra finestra per avviare il completa
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Voce eliminata '%s:%s:%s' la password punta ad una voce che è anche uno pseudonimo.\n"
+"Voce eliminata '%ls:%ls:%ls' la password punta ad una voce che è anche uno pseudonimo.\n"
 "\n"
 "La voce scartata ora fa riferimento alla voce base di quella voce."
 
@@ -7358,13 +7358,13 @@ msgstr "Le password dei seguenti elementi stanno per scadere o sono già scadute
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "L'elemento seguente è stata copiato nel database %s: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "L'elemento seguente è stata copiato nel database %s: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "L'elemento seguente è stata sincronizzato con il database %s: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "L'elemento seguente è stata sincronizzato con il database %s: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7441,7 +7441,7 @@ msgstr ""
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
 "L'elemento '% s:% s:% s' è esso stesso un alias o una scorciatoia.\n"
 "Questo non è supportato."
@@ -7489,7 +7489,7 @@ msgstr "Questo valore per il tasto rapido non è disponibile dato che è già as
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
 msgstr "La destinazione di questo alias [% s:% s:% s] non è un elemento normale."
 
 #. Resource IDs: (5355)
@@ -7589,7 +7589,7 @@ msgstr "Questo programma richiede il file %Ts, che non è stato trovato in quest
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr "La destinazione di questo collegamento [% s:% s:% s] non è un elemento normale."
 
 #. Resource IDs: (5110)

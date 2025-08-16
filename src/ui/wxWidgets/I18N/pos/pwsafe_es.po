@@ -5451,23 +5451,23 @@ msgstr ""
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2625
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Entrada omitida '%s:%s:%s' contraseña apunta a otra entrada que también es un alias.\n"
+"Entrada omitida '%ls:%ls:%ls' contraseña apunta a otra entrada que también es un alias.\n"
 "\n"
 "La entrada omitida ahora referencia a esta entrada base."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2632
 #, fuzzy, c-format
-msgid "This alias's target [%s:%s:%s] is not a normal entry."
-msgstr "El destino del alias [%s:%s:%s] no es una entrada normal o ya es un alias."
+msgid "This alias's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "El destino del alias [%ls:%ls:%ls] no es una entrada normal o ya es un alias."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2649
 #, fuzzy, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "El destino del atajo [%s:%s:%s] no es una entrada normal o ya es un atajo."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "El destino del atajo [%ls:%ls:%ls] no es una entrada normal o ya es un atajo."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
 #, c-format
@@ -5900,8 +5900,8 @@ msgstr "ExcepciónNoHayMemoria"
 
 #: ../../../core/core_st.cpp:30
 #, fuzzy, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "El destino del alias [%s:%s:%s] no es una entrada normal o ya es un alias."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "El destino del alias [%ls:%ls:%ls] no es una entrada normal o ya es un alias."
 
 #: ../../../core/core_st.cpp:31
 msgid "after"
@@ -5996,7 +5996,7 @@ msgstr ""
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
 
 #: ../../../core/core_st.cpp:51
@@ -10327,8 +10327,8 @@ msgstr ""
 #~ msgid "The following entries' passwords are about to expire or expired:"
 #~ msgstr "Las siguientes contraseñas están a punto de caducar o caducadas:"
 
-#~ msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-#~ msgstr "La siguiente entrada fue copiada a la base de datos %s: '%s:%s:%s'"
+#~ msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+#~ msgstr "La siguiente entrada fue copiada a la base de datos %s: '%ls:%ls:%ls'"
 
 #~ msgid ""
 #~ "The notes field of this entry has more text than can be displayed. Changing this "
@@ -10342,12 +10342,12 @@ msgstr ""
 #~ "través del portapapeles o exporta esta entrada a XML antes de cambiarlo."
 
 #~ msgid ""
-#~ "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an "
+#~ "The password is in 'alias' form but the referenced entry '%ls:%ls:%ls' is itself an "
 #~ "alias.\n"
 #~ "\n"
 #~ "Do you wish this entry to point to the 'real' base entry?"
 #~ msgstr ""
-#~ "La contraseña está en forma de 'alias' pero referencia la entrada '%s:%s:%s' que ya "
+#~ "La contraseña está en forma de 'alias' pero referencia la entrada '%ls:%ls:%ls' que ya "
 #~ "es un alias.\n"
 #~ "\n"
 #~ "¿Desea que esta entrada apunte a la entrada 'real'?"

@@ -3354,11 +3354,11 @@ msgstr "拖动这个图像到另一个窗口表示从那里开始自动键入."
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"丢弃条目 “%s:%s:%s” 密码指向一个也是一个别名的条目。\n"
+"丢弃条目 “%ls:%ls:%ls” 密码指向一个也是一个别名的条目。\n"
 "\n"
 "丢弃的条目现在引用该条目的基本条目."
 
@@ -7461,13 +7461,13 @@ msgstr "下列条目的密码将要过期或者已经过期:"
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "下列条目被复制到 %s 数据库: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "下列条目被复制到 %s 数据库: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "下列条目被同步到 %s 数据库: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "下列条目被同步到 %s 数据库: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7538,8 +7538,8 @@ msgstr "原始数据库 \"%s\" 是使用 3.0 前格式的。 数据现在将要�
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "引用条目 '%s:%s:%s' 本身是一个别名或快捷方式。 这不被支持."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
+msgstr "引用条目 '%ls:%ls:%ls' 本身是一个别名或快捷方式。 这不被支持."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -7579,8 +7579,8 @@ msgstr "这个热键值是不可用的，因为它已指派给 PasswordSafe 应�
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "这个别名的目标 [%s:%s:%s] 不是一个普通条目."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "这个别名的目标 [%ls:%ls:%ls] 不是一个普通条目."
 
 #. Resource IDs: (5355)
 msgid "This database is the same as the current database!"
@@ -7663,8 +7663,8 @@ msgstr "这个程序需要文件 %Ts，它在这个系统上找不到."
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "这个快捷方式的目标 [%s:%s:%s] 不是一个普通条目."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "这个快捷方式的目标 [%ls:%ls:%ls] 不是一个普通条目."
 
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."

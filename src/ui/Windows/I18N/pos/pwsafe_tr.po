@@ -3332,11 +3332,11 @@ msgstr "Otomatik Doldurmanın orada başlaması için bu görüntüyü başka bi
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Bırakılan girdinin '%s:%s:%s' şifresi suret olan bir girdiye işaret ediyor.\n"
+"Bırakılan girdinin '%ls:%ls:%ls' şifresi suret olan bir girdiye işaret ediyor.\n"
 "\n"
 "Bırakılan girdi artık bu girdinin temel girdisine referans gösteriyor."
 
@@ -7425,13 +7425,13 @@ msgstr ""
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "Şu girdi %s veritabanına kopyalandı:'%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "Şu girdi %s veritabanına kopyalandı:'%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "Şu girdi %s veritabanıyla eşlendi: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "Şu girdi %s veritabanıyla eşlendi: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7496,7 +7496,7 @@ msgstr ""
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
 
 #. Resource IDs: (5770)
@@ -7537,7 +7537,7 @@ msgstr ""
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 
 #. Resource IDs: (5355)
@@ -7621,7 +7621,7 @@ msgstr ""
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 
 #. Resource IDs: (5110)

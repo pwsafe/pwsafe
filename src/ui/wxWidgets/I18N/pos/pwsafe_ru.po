@@ -5084,24 +5084,24 @@ msgstr "Перетаскивание"
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2625
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Скопированный элемент «%s:%s:%s» ссылается на элемент, который является псевдонимом.\n"
+"Скопированный элемент «%ls:%ls:%ls» ссылается на элемент, который является псевдонимом.\n"
 "\n"
 "Скопированный элемент теперь ссылается на исходный элемент."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2632
 #, c-format
-msgid "This alias's target [%s:%s:%s] is not a normal entry."
+msgid "This alias's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
-"Исходный элемент [%s:%s:%s] для данного псевдонима не является обычным элементом."
+"Исходный элемент [%ls:%ls:%ls] для данного псевдонима не является обычным элементом."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2649
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "Целевой элемент [%s:%s:%s] для данного ярлыка не является обычным элементом."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Целевой элемент [%ls:%ls:%ls] для данного ярлыка не является обычным элементом."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
 #, c-format
@@ -5463,9 +5463,9 @@ msgstr "OutOfMemoryException."
 
 #: ../../../core/core_st.cpp:30
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
-"Исходный элемент [%s:%s:%s] для данного псевдонима не является обычным элементом."
+"Исходный элемент [%ls:%ls:%ls] для данного псевдонима не является обычным элементом."
 
 # For defining filters: after a date, before a date or between two dates.
 #: ../../../core/core_st.cpp:31
@@ -5563,9 +5563,9 @@ msgstr ""
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
-"Элемент «%s:%s:%s», является псевдонимом или ссылкой. Создание псевдонимов для таких "
+"Элемент «%ls:%ls:%ls», является псевдонимом или ссылкой. Создание псевдонимов для таких "
 "элементов не поддерживается."
 
 # For defining filters: after a date, before a date or between two dates.
@@ -11397,12 +11397,12 @@ msgstr ""
 #~ msgstr "Пароли для указанных элементов просрочены или их срок скоро истечёт:"
 
 #, c-format
-#~ msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-#~ msgstr "Указанные элементы были скопированы в контейнер %s: «%s:%s:%s»"
+#~ msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+#~ msgstr "Указанные элементы были скопированы в контейнер %s: «%ls:%ls:%ls»"
 
 #, c-format
-#~ msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-#~ msgstr "Указанные элементы были синхронизированы с контейнером %s: «%s:%s:%s»"
+#~ msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+#~ msgstr "Указанные элементы были синхронизированы с контейнером %s: «%ls:%ls:%ls»"
 
 #, c-format
 #~ msgid ""

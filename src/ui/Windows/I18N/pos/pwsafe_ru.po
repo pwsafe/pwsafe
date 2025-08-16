@@ -3367,11 +3367,11 @@ msgstr "Перетащите изображение на другое окно, 
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Скопированный элемент «%s:%s:%s» ссылается на элемент, который является псевдонимом.\n"
+"Скопированный элемент «%ls:%ls:%ls» ссылается на элемент, который является псевдонимом.\n"
 "\n"
 "Скопированный элемент теперь ссылается на исходный элемент."
 
@@ -7656,13 +7656,13 @@ msgstr "Пароли для указанных элементов просроч
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "Указанные элементы были скопированы в контейнер %s: «%s:%s:%s»"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "Указанные элементы были скопированы в контейнер %s: «%ls:%ls:%ls»"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "Указанные элементы были синхронизированы с контейнером %s: «%s:%s:%s»"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "Указанные элементы были синхронизированы с контейнером %s: «%ls:%ls:%ls»"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7733,8 +7733,8 @@ msgstr "Формат исходного контейнера «%s», имеет 
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "Элемент «%s:%s:%s», является псевдонимом или ссылкой. Создание псевдонимов для таких элементов не поддерживается."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
+msgstr "Элемент «%ls:%ls:%ls», является псевдонимом или ссылкой. Создание псевдонимов для таких элементов не поддерживается."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -7776,8 +7776,8 @@ msgstr "Выбранная комбинация недоступна, т. к. �
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Исходный элемент [%s:%s:%s] для данного псевдонима не является обычным элементом."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Исходный элемент [%ls:%ls:%ls] для данного псевдонима не является обычным элементом."
 
 #. Resource IDs: (5355)
 msgid "This database is the same as the current database!"
@@ -7876,8 +7876,8 @@ msgstr "Программе требуется файл %Ts, который не 
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "Целевой элемент [%s:%s:%s] для данного ярлыка не является обычным элементом."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Целевой элемент [%ls:%ls:%ls] для данного ярлыка не является обычным элементом."
 
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."

@@ -3319,11 +3319,11 @@ msgstr "Velciet šo attēlu uz citu logu, lai veiktu Autoievadi."
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Atmestā ieraksta \"%s:%s:%s\" parole norāda uz ierakstu, kas ir arī pseidonīms.\n"
+"Atmestā ieraksta \"%ls:%ls:%ls\" parole norāda uz ierakstu, kas ir arī pseidonīms.\n"
 "\n"
 "Atmestais ieraksts tagad atsaucas uz šī ieraksta pamata ierakstu."
 
@@ -7423,13 +7423,13 @@ msgstr "Šo ierakstu paroļu derīguma termiņš drīz beigsies vai jau ir beidz
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "%s datubāzē tika kopēts šāds ieraksts: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "%s datubāzē tika kopēts šāds ieraksts: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "Šis ieraksts tika sinhronizēts ar %s datu bāzi: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "Šis ieraksts tika sinhronizēts ar %s datu bāzi: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7500,8 +7500,8 @@ msgstr "Sākotnējā datubāze \"%s\" ir formātā, kas ir vecāka par 3.0. Taga
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "Atsauces ieraksts '%s:%s:%s' pats par sevi ir pseidonīms vai saīsne. Tas netiek atbalstīts."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
+msgstr "Atsauces ieraksts '%ls:%ls:%ls' pats par sevi ir pseidonīms vai saīsne. Tas netiek atbalstīts."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -7541,8 +7541,8 @@ msgstr "Šī karstā taustiņa vērtība nav pieejama, jo tā jau ir piešķirta
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Šī pseidonīma mērķis [%s:%s:%s] nav parasts ieraksts."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Šī pseidonīma mērķis [%ls:%ls:%ls] nav parasts ieraksts."
 
 #. Resource IDs: (5355)
 msgid "This database is the same as the current database!"
@@ -7631,8 +7631,8 @@ msgstr "Šai programmai ir nepieciešams fails %Ts, kas šajā sistēmā netika 
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "Šī īsceļa mērķis [%s:%s:%s] nav parasts ieraksts."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Šī īsceļa mērķis [%ls:%ls:%ls] nav parasts ieraksts."
 
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."

@@ -3000,8 +3000,8 @@ msgstr "Pretiahnite tento obrázok do iného okna aby ste odtiaľ spustili autom
 
 #. Resource IDs: (5464)
 #, c-format
-msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."
-msgstr "Heslo vloženého záznamu '%s:%s:%s' odkazuje na záznam, ktorý je taktiež alias.\n\nVložený záznam teraz odkazuje na základný záznam daného záznamu."
+msgid "Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."
+msgstr "Heslo vloženého záznamu '%ls:%ls:%ls' odkazuje na záznam, ktorý je taktiež alias.\n\nVložený záznam teraz odkazuje na základný záznam daného záznamu."
 
 #. Resource IDs: (32087 - Menu, 32087 - MenuEx)
 msgid "Duplicate Group"
@@ -6800,13 +6800,13 @@ msgstr "Heslá nasledovných záznamov čoskoro vypršia alebo už vypršali:"
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "Nasledovný záznam bol skopírovaný do databázy %s: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "Nasledovný záznam bol skopírovaný do databázy %s: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "Nasledovný záznam bol synchronizovaný s databázou %s: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "Nasledovný záznam bol synchronizovaný s databázou %s: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -6855,8 +6855,8 @@ msgstr "Pôvodná databáza, \"%s\", je vo formáte pred verziou 3.0. Dáta bud�
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "Odkazovaný záznam '%s:%s:%s' je sám alias alebo odkaz. Toto nie je podporované."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
+msgstr "Odkazovaný záznam '%ls:%ls:%ls' je sám alias alebo odkaz. Toto nie je podporované."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -6896,8 +6896,8 @@ msgstr "Táto klávesová skratka nie je k dispozícii, pretože už je priraden
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Cieľ tohto aliasu [%s:%s:%s] nie je normálnym záznamom."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Cieľ tohto aliasu [%ls:%ls:%ls] nie je normálnym záznamom."
 
 #. Resource IDs: (5355)
 msgid "This database is the same as the current database!"
@@ -6974,8 +6974,8 @@ msgstr "Tento program vyžaduje súbor %Ts, ktorý sa v tomto počítači nenaš
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "Cieľ tohto odkazu [%s:%s:%s] nie je normálnym záznamom."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Cieľ tohto odkazu [%ls:%ls:%ls] nie je normálnym záznamom."
 
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."

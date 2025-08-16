@@ -4806,20 +4806,20 @@ msgstr ""
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2625
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
-msgstr "Heslo vloženého záznamu '%s:%s:%s' odkazuje na záznam, ktorý je taktiež alias.\n\nVložený záznam teraz odkazuje na základný záznam daného záznamu."
+msgstr "Heslo vloženého záznamu '%ls:%ls:%ls' odkazuje na záznam, ktorý je taktiež alias.\n\nVložený záznam teraz odkazuje na základný záznam daného záznamu."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2632
 #, c-format
-msgid "This alias's target [%s:%s:%s] is not a normal entry."
-msgstr "Cieľ tohto aliasu [%s:%s:%s] nie je normálnym záznamom."
+msgid "This alias's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Cieľ tohto aliasu [%ls:%ls:%ls] nie je normálnym záznamom."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2649
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "Cieľ tohto odkazu [%s:%s:%s] nie je normálnym záznamom."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Cieľ tohto odkazu [%ls:%ls:%ls] nie je normálnym záznamom."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
 #, c-format
@@ -5162,8 +5162,8 @@ msgstr "výnimka OutOfMemoryException."
 
 #: ../../../core/core_st.cpp:30
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Cieľ tohto aliasu [%s:%s:%s] nie je normálnym záznamom."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Cieľ tohto aliasu [%ls:%ls:%ls] nie je normálnym záznamom."
 
 #: ../../../core/core_st.cpp:31
 msgid "after"
@@ -5249,8 +5249,8 @@ msgstr "Heslo naznačuje, že ide o záznam aliasu, ale špecifikuje základný 
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "Odkazovaný záznam '%s:%s:%s' je sám alias alebo odkaz. Toto nie je podporované."
+"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
+msgstr "Odkazovaný záznam '%ls:%ls:%ls' je sám alias alebo odkaz. Toto nie je podporované."
 
 #: ../../../core/core_st.cpp:51
 msgid "before"

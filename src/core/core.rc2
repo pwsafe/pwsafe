@@ -510,7 +510,7 @@ BEGIN
   IDSC_ALIASNOTFOUNDZ      "\n\nSelect Yes to continue with this password or No to cancel"
   IDSC_ALIASCANTREFERTOITSELF             "An alias cannot refer to itself!"
   IDSC_BASEHASNOTITLE      "Password implies this is an alias entry, but specifies a base entry with no title.\nEvery entry must have a title."
-  IDSC_BASEISALIAS         "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-  IDSC_ABASEINVALID          "This alias' target [%s:%s:%s] is not a normal entry."
+  IDSC_BASEISALIAS         "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
+  IDSC_ABASEINVALID          "This alias' target [%ls:%ls:%ls] is not a normal entry."
 
 END

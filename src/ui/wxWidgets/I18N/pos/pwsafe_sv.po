@@ -5429,23 +5429,23 @@ msgstr ""
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2625
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Inkopierad post '%s:%s:%s' lösenordet pekar på en post som också är en alias.\n"
+"Inkopierad post '%ls:%ls:%ls' lösenordet pekar på en post som också är en alias.\n"
 "\n"
 "Den inkopierade posten refererar nu till postens baspost."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2632
 #, fuzzy, c-format
-msgid "This alias's target [%s:%s:%s] is not a normal entry."
-msgstr "Detta aliasmål  [%s:%s:%s] är inte en vanlig post eller redan ett basalias."
+msgid "This alias's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Detta aliasmål  [%ls:%ls:%ls] är inte en vanlig post eller redan ett basalias."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2649
 #, fuzzy, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "Denna genvägs mål [%s:%s:%s] är inte en vanlig post eller redan en genvägsbas."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Denna genvägs mål [%ls:%ls:%ls] är inte en vanlig post eller redan en genvägsbas."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
 #, c-format
@@ -5878,8 +5878,8 @@ msgstr "Slut-på-minne-undantag."
 
 #: ../../../core/core_st.cpp:30
 #, fuzzy, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Detta aliasmål  [%s:%s:%s] är inte en vanlig post eller redan ett basalias."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Detta aliasmål  [%ls:%ls:%ls] är inte en vanlig post eller redan ett basalias."
 
 #: ../../../core/core_st.cpp:31
 msgid "after"
@@ -5973,7 +5973,7 @@ msgstr ""
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
 
 #: ../../../core/core_st.cpp:51
@@ -10290,8 +10290,8 @@ msgstr ""
 #~ msgid "The following entries' passwords are about to expire or expired:"
 #~ msgstr "Följande posters lösenord håller på att gå ut eller har gått ut:"
 
-#~ msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-#~ msgstr "Följande post kopierades till %s databas: '%s:%s:%s'"
+#~ msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+#~ msgstr "Följande post kopierades till %s databas: '%ls:%ls:%ls'"
 
 #~ msgid ""
 #~ "The notes field of this entry has more text than can be displayed. Changing this "
@@ -10305,12 +10305,12 @@ msgstr ""
 #~ "Urklipp eller exporteras posten till XML innan den ändras."
 
 #~ msgid ""
-#~ "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an "
+#~ "The password is in 'alias' form but the referenced entry '%ls:%ls:%ls' is itself an "
 #~ "alias.\n"
 #~ "\n"
 #~ "Do you wish this entry to point to the 'real' base entry?"
 #~ msgstr ""
-#~ "Lösenordet är i 'alias'-form men posten som avses '%s:%s:%s' är själv en alias.\n"
+#~ "Lösenordet är i 'alias'-form men posten som avses '%ls:%ls:%ls' är själv en alias.\n"
 #~ "\n"
 #~ "Vill du att denna post skal peka på den 'verkliga' basposten?"
 

@@ -5459,27 +5459,27 @@ msgstr ""
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2625
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-" Het wachtwoord van de vervallen vermelding   '%s:%s:%'s verwijst naar een vermelding "
+" Het wachtwoord van de vervallen vermelding   '%ls:%ls:%ls' verwijst naar een vermelding "
 "dat ook een alias is.\n"
 "\n"
 "De vervallen vermelding verwijst nu naar die vermeldings basis vermelding"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2632
 #, fuzzy, c-format
-msgid "This alias's target [%s:%s:%s] is not a normal entry."
+msgid "This alias's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
-"Het doel van deze alias [%s:%s:%s] is geen normale vermelding of is al het doel van "
+"Het doel van deze alias [%ls:%ls:%ls] is geen normale vermelding of is al het doel van "
 "een snelkoppeling"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2649
 #, fuzzy, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
-"Het doel van deze snelkoppeling [%s:%s:%s] is geen normale vermelding of is al het "
+"Het doel van deze snelkoppeling [%ls:%ls:%ls] is geen normale vermelding of is al het "
 "doel van een snelkoppeling"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
@@ -5913,9 +5913,9 @@ msgstr "Onvoldoende geheugen Uitzondering"
 
 #: ../../../core/core_st.cpp:30
 #, fuzzy, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
-"Het doel van deze alias [%s:%s:%s] is geen normale vermelding of is al het doel van "
+"Het doel van deze alias [%ls:%ls:%ls] is geen normale vermelding of is al het doel van "
 "een snelkoppeling"
 
 #: ../../../core/core_st.cpp:31
@@ -6014,7 +6014,7 @@ msgstr ""
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
 
 #: ../../../core/core_st.cpp:51
@@ -10352,8 +10352,8 @@ msgstr ""
 #~ msgid "The following entries' passwords are about to expire or expired:"
 #~ msgstr "De wachtwoorden van de volgende vermeldingen zijn verlopen of bijna verlopen:"
 
-#~ msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-#~ msgstr "De volgende vermelding werd gekopieerd naar de %s database: '%s:%s:%s'"
+#~ msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+#~ msgstr "De volgende vermelding werd gekopieerd naar de %s database: '%ls:%ls:%ls'"
 
 #~ msgid ""
 #~ "The notes field of this entry has more text than can be displayed. Changing this "
@@ -10368,13 +10368,13 @@ msgstr ""
 #~ "wijzigt."
 
 #~ msgid ""
-#~ "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an "
+#~ "The password is in 'alias' form but the referenced entry '%ls:%ls:%ls' is itself an "
 #~ "alias.\n"
 #~ "\n"
 #~ "Do you wish this entry to point to the 'real' base entry?"
 #~ msgstr ""
 #~ "Het wachtwoord is in de vorm van een 'alias'. Maar de vermelding waar naar verwezen "
-#~ "wordt,  '%s:%s:%s', is zelf een alias.\n"
+#~ "wordt,  '%ls:%ls:%ls', is zelf een alias.\n"
 #~ "\n"
 #~ "Wilt u dat deze vermelding verwijst naar de 'werkelijke' basis vermelding?"
 

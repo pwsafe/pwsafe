@@ -5373,23 +5373,23 @@ msgstr ""
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2625
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"撤销项目 “%s:%s:%s” 密码显示一个项目位置同样有一个别名项目。\n"
+"撤销项目 “%ls:%ls:%ls” 密码显示一个项目位置同样有一个别名项目。\n"
 "\n"
 "立刻撤销项目引用那个基本项目！"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2632
 #, fuzzy, c-format
-msgid "This alias's target [%s:%s:%s] is not a normal entry."
-msgstr "该别名目标 [%s:%s:%s] 不是一个正常项目或已有一个基本别名存在！"
+msgid "This alias's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "该别名目标 [%ls:%ls:%ls] 不是一个正常项目或已有一个基本别名存在！"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2649
 #, fuzzy, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "该快捷方式目标 [%s:%s:%s] 不是一个正常项目或已经有一个快捷方式存在！"
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "该快捷方式目标 [%ls:%ls:%ls] 不是一个正常项目或已经有一个快捷方式存在！"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
 #, c-format
@@ -5821,8 +5821,8 @@ msgstr "内存不足故障！"
 
 #: ../../../core/core_st.cpp:30
 #, fuzzy, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "该别名目标 [%s:%s:%s] 不是一个正常项目或已有一个基本别名存在！"
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "该别名目标 [%ls:%ls:%ls] 不是一个正常项目或已有一个基本别名存在！"
 
 #: ../../../core/core_st.cpp:31
 msgid "after"
@@ -5913,7 +5913,7 @@ msgstr ""
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
 
 #: ../../../core/core_st.cpp:51
@@ -9974,8 +9974,8 @@ msgstr ""
 #~ msgid "The following entries' passwords are about to expire or expired:"
 #~ msgstr "下列项目的密码涉及到期或已失效:"
 
-#~ msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-#~ msgstr "下列项目被复制到 %s 数据库: '%s:%s:%s'"
+#~ msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+#~ msgstr "下列项目被复制到 %s 数据库: '%ls:%ls:%ls'"
 
 #~ msgid ""
 #~ "The notes field of this entry has more text than can be displayed. Changing this "
@@ -9988,12 +9988,12 @@ msgstr ""
 #~ "这些内容为 XML 文件。"
 
 #~ msgid ""
-#~ "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an "
+#~ "The password is in 'alias' form but the referenced entry '%ls:%ls:%ls' is itself an "
 #~ "alias.\n"
 #~ "\n"
 #~ "Do you wish this entry to point to the 'real' base entry?"
 #~ msgstr ""
-#~ "密码别名处于良好状态，但已引用项目“%s:%s:%s”是它自己的一个别名。\n"
+#~ "密码别名处于良好状态，但已引用项目“%ls:%ls:%ls”是它自己的一个别名。\n"
 #~ "\n"
 #~ "你是否需要该项目显示“真实”的基本项目位置？"
 

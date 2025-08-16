@@ -5015,23 +5015,23 @@ msgstr "Drag & Drop"
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2625
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Der neue Eintrag '%s:%s:%s' weist auf einen Eintrag der ebenso ein alias ist.\n"
+"Der neue Eintrag '%ls:%ls:%ls' weist auf einen Eintrag der ebenso ein alias ist.\n"
 "\n"
 "Der neue Eintrag verweist neu auf den Basiseintrag."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2632
 #, c-format
-msgid "This alias's target [%s:%s:%s] is not a normal entry."
-msgstr "Das Alias-Ziel [%s:%s:%s] ist kein normaler Eintrag."
+msgid "This alias's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Das Alias-Ziel [%ls:%ls:%ls] ist kein normaler Eintrag."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2649
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "Das Verküpfungsziel [%s:%s:%s] ist kein normaler Eintrag"
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Das Verküpfungsziel [%ls:%ls:%ls] ist kein normaler Eintrag"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
 #, c-format
@@ -5392,8 +5392,8 @@ msgstr "Nicht-Genügend-Speicher-Ausnahme."
 
 #: ../../../core/core_st.cpp:30
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Das Alias-Ziel [%s:%s:%s] ist kein normaler Eintrag."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Das Alias-Ziel [%ls:%ls:%ls] ist kein normaler Eintrag."
 
 #: ../../../core/core_st.cpp:31
 msgid "after"
@@ -5489,9 +5489,9 @@ msgstr ""
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
-"Der referenzierte Eintrag '%s:%s:%s' ist selbst ein Alias oder eine Abkürzung. Dies "
+"Der referenzierte Eintrag '%ls:%ls:%ls' ist selbst ein Alias oder eine Abkürzung. Dies "
 "wird nicht unterstützt."
 
 #: ../../../core/core_st.cpp:51
