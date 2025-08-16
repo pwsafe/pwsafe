@@ -392,8 +392,8 @@ msgstr " 导入 # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [进程 ID=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [进程 ID=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -9693,38 +9693,38 @@ msgstr "分钟后自动锁定"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "存在多个条目使用 标题=%s 和 用户名=%s 或使用 分组=%s 和 标题=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "存在多个条目使用 标题=%ls 和 用户名=%ls 或使用 分组=%ls 和 标题=%ls."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "存在多个条目有 标题=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "存在多个条目有 标题=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "不存在条目在根目录使用 标题=%s 和 用户名=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "不存在条目在根目录使用 标题=%ls 和 用户名=%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "不存在条目使用 分组=%s，标题=%s 和空白用户名."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "不存在条目使用 分组=%ls，标题=%ls 和空白用户名."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "不存在条目使用 分组=%s，标题=%s 和 用户名=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "不存在条目使用 分组=%ls，标题=%ls 和 用户名=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "不存在条目使用 标题=%s 和 用户名=%s 或使用 分组=%s，标题=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "不存在条目使用 标题=%ls 和 用户名=%ls 或使用 分组=%ls，标题=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "没有 标题=%s 的条目存在."
+msgid "no entry exists with title=%ls."
+msgstr "没有 标题=%ls 的条目存在."
 
 #. Resource IDs: (3254)
 #, c-format

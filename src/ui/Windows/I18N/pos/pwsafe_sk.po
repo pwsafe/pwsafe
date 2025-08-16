@@ -238,8 +238,8 @@ msgstr ""
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [ID procesu=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [ID procesu=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -8460,38 +8460,38 @@ msgstr "minútach nečinnosti"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "existuje viac záznamov s názvom=%s a používateľským menom=%s alebo so skupinou=%s a názvom=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "existuje viac záznamov s názvom=%ls a používateľským menom=%ls alebo so skupinou=%ls a názvom=%ls."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "existuje viac záznamov s názvom=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "existuje viac záznamov s názvom=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "na základnej úrovni neexistuje žiadny záznam s názvom=%s a používateľským menom=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "na základnej úrovni neexistuje žiadny záznam s názvom=%ls a používateľským menom=%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "neexistuje žiadny záznam so skupinou=%s, názvom=%s a prázdnym používateľským menom."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "neexistuje žiadny záznam so skupinou=%ls, názvom=%ls a prázdnym používateľským menom."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "neexistuje žiadny záznam so skupinou=%s, názvom=%s a používateľským menom=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "neexistuje žiadny záznam so skupinou=%ls, názvom=%ls a používateľským menom=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "neexistuje žiadny záznam s názvom=%s a používateľským menom=%s alebo so skupinou=%s, názvom =%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "neexistuje žiadny záznam s názvom=%ls a používateľským menom=%ls alebo so skupinou=%ls, názvom =%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "neexistuje žiadny záznam s názvom=%s."
+msgid "no entry exists with title=%ls."
+msgstr "neexistuje žiadny záznam s názvom=%ls."
 
 #. Resource IDs: (3254)
 #, c-format

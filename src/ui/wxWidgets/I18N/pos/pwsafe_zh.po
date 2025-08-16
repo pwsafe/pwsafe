@@ -2720,7 +2720,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:475
 #, fuzzy, c-format
 msgid " [Process ID=%ls]"
-msgstr " [进程 ID=%s]"
+msgstr " [进程 ID=%ls]"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:481
 #, c-format
@@ -5842,39 +5842,39 @@ msgstr "个别名"
 
 #: ../../../core/core_st.cpp:35
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "多项目存在使用 标题=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "多项目存在使用 标题=%ls."
 
 #: ../../../core/core_st.cpp:36
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "没有项目存在使用 标题=%s."
+msgid "no entry exists with title=%ls."
+msgstr "没有项目存在使用 标题=%ls."
 
 #: ../../../core/core_st.cpp:37
 #, c-format
 msgid ""
-"multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "多项目存在使用 标题=%s 和 用户名=%s 或使用 组=%s 和 标题=%s."
+"multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "多项目存在使用 标题=%ls 和 用户名=%ls 或使用 组=%ls 和 标题=%ls."
 
 #: ../../../core/core_st.cpp:38
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "没有项目存在使用 标题=%s 和 用户名=%s 或使用 组=%s，标题=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "没有项目存在使用 标题=%ls 和 用户名=%ls 或使用 组=%ls，标题=%ls."
 
 #: ../../../core/core_st.cpp:39
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "没有项目存在使用 组=%s，标题=%s 和 用户名=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "没有项目存在使用 组=%ls，标题=%ls 和 用户名=%ls."
 
 #: ../../../core/core_st.cpp:40
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "没有项目存在使用 组=%s，标题=%s 和空白用户名."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "没有项目存在使用 组=%ls，标题=%ls 和空白用户名."
 
 #: ../../../core/core_st.cpp:41
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "没有项目存在根目录使用 标题=%s 和 用户名=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "没有项目存在根目录使用 标题=%ls 和 用户名=%ls."
 
 #: ../../../core/core_st.cpp:42
 msgid "Password implies this is an alias entry, but "

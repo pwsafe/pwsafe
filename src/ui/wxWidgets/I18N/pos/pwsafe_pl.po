@@ -2721,7 +2721,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:475
 #, fuzzy, c-format
 msgid " [Process ID=%ls]"
-msgstr " [ID Procesu=%s]"
+msgstr " [ID Procesu=%ls]"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:481
 #, fuzzy, c-format
@@ -5845,40 +5845,40 @@ msgstr "aliasy"
 
 #: ../../../core/core_st.cpp:35
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "istnieje kilka wpisów o nazwie=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "istnieje kilka wpisów o nazwie=%ls."
 
 #: ../../../core/core_st.cpp:36
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "nie ma wpisu o nazwie=%s."
+msgid "no entry exists with title=%ls."
+msgstr "nie ma wpisu o nazwie=%ls."
 
 #: ../../../core/core_st.cpp:37
 #, c-format
 msgid ""
-"multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+"multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr ""
-"istnieje kilka wpisów o nazwie=%s i nazwie użytkownika=%s lub z grupą=%s i nazwą=%s."
+"istnieje kilka wpisów o nazwie=%ls i nazwie użytkownika=%ls lub z grupą=%ls i nazwą=%ls."
 
 #: ../../../core/core_st.cpp:38
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "nie ma wpisu z nazwą=%s i nazwą użytkownika=%s lub z grupą=%s i nazwą=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "nie ma wpisu z nazwą=%ls i nazwą użytkownika=%ls lub z grupą=%ls i nazwą=%ls."
 
 #: ../../../core/core_st.cpp:39
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "nie ma wpisu z grupą=%s, nazwą=%s i nazwą użytkownika=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "nie ma wpisu z grupą=%ls, nazwą=%ls i nazwą użytkownika=%ls."
 
 #: ../../../core/core_st.cpp:40
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "nie ma wpisu z grupą=%s, nazwą=%s i pustą nazwą użytkownika."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "nie ma wpisu z grupą=%ls, nazwą=%ls i pustą nazwą użytkownika."
 
 #: ../../../core/core_st.cpp:41
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "nie ma wpisu w katalogu głównym z nazwą=%s i nazwą użytkownika=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "nie ma wpisu w katalogu głównym z nazwą=%ls i nazwą użytkownika=%ls."
 
 #: ../../../core/core_st.cpp:42
 msgid "Password implies this is an alias entry, but "

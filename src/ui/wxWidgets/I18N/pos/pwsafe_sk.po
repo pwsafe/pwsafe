@@ -5183,39 +5183,39 @@ msgstr "aliasy"
 
 #: ../../../core/core_st.cpp:35
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "existuje viacero záznamov s názvom=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "existuje viacero záznamov s názvom=%ls."
 
 #: ../../../core/core_st.cpp:36
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "neexistuje žiadny záznam s názvom=%s."
+msgid "no entry exists with title=%ls."
+msgstr "neexistuje žiadny záznam s názvom=%ls."
 
 #: ../../../core/core_st.cpp:37
 #, c-format
 msgid ""
-"multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "existuje viacero záznamov s názvom=%s a používateľským menom=%s alebo so skupinou=%s a názvom=%s."
+"multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "existuje viacero záznamov s názvom=%ls a používateľským menom=%ls alebo so skupinou=%ls a názvom=%ls."
 
 #: ../../../core/core_st.cpp:38
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "neexistuje žiadny záznam s názvom=%s a používateľským menom=%s alebo so skupinou=%s, názvom =%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "neexistuje žiadny záznam s názvom=%ls a používateľským menom=%ls alebo so skupinou=%ls, názvom =%ls."
 
 #: ../../../core/core_st.cpp:39
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "neexistuje žiadny záznam so skupinou=%s, názvom=%s a používateľským menom=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "neexistuje žiadny záznam so skupinou=%ls, názvom=%ls a používateľským menom=%ls."
 
 #: ../../../core/core_st.cpp:40
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "neexistuje žiadny záznam so skupinou=%s, názvom=%s a prázdnym používateľským menom."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "neexistuje žiadny záznam so skupinou=%ls, názvom=%ls a prázdnym používateľským menom."
 
 #: ../../../core/core_st.cpp:41
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "na základnej úrovni neexistuje žiadny záznam s názvom=%s a používateľským menom=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "na základnej úrovni neexistuje žiadny záznam s názvom=%ls a používateľským menom=%ls."
 
 #: ../../../core/core_st.cpp:42
 msgid "Password implies this is an alias entry, but "

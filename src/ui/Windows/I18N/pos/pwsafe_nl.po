@@ -301,8 +301,8 @@ msgstr " Importeer # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [Proces ID=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [Proces ID=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -9609,38 +9609,38 @@ msgstr "minuten inactief"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "meerdere invoeren bestaan met titel=%s en gebruikersnaam=%s of met groep=%s en titel=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "meerdere invoeren bestaan met titel=%ls en gebruikersnaam=%ls of met groep=%ls en titel=%ls."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "meerdere invoeren bestaan met titel=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "meerdere invoeren bestaan met titel=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "in de basis bestaat geen invoer met titel=%s en gebruikersnaam=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "in de basis bestaat geen invoer met titel=%ls en gebruikersnaam=%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "er bestaat geen invoer met groep=%s, titel=%s en een lege gebruikersnaam."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "er bestaat geen invoer met groep=%ls, titel=%ls en een lege gebruikersnaam."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "er bestaat geen invoer met groep=%s, titel=%s en gebruikersnaam=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "er bestaat geen invoer met groep=%ls, titel=%ls en gebruikersnaam=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "er bestaat geen invoer met titel=%s en gebruikersnaam=%s of met groep=%s, titel=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "er bestaat geen invoer met titel=%ls en gebruikersnaam=%ls of met groep=%ls, titel=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "er bestaat geen invoer met titel=%s."
+msgid "no entry exists with title=%ls."
+msgstr "er bestaat geen invoer met titel=%ls."
 
 #. Resource IDs: (3254)
 #, c-format

@@ -418,8 +418,8 @@ msgstr " Import # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [Prozess ID=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [Prozess ID=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -9724,38 +9724,38 @@ msgstr "Minuten Leerlauf"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr "Mehrere Einträge mit Titel %s und Benutzername %s oder Gruppe %s und Titel %s existieren."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
+msgid "multiple entries exist with title=%ls."
 msgstr "Mehrere Einträge mit Titel %s existieren."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
 msgstr "Kein Eintrag mit Titel %s und Benutzername %s besteht in der Wurzel."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
 msgstr "Kein Eintrag mit Gruppe %s, Titel %s und leerem Benutzernamen besteht."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
 msgstr "Kein Eintrag mit Gruppe %s, Titel %s und Benutzername %s besteht."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
 msgstr "Kein Eintrag mit Titel %s und Benutzername %s oder mit Gruppe %s und Titel %s besteht."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "Kein Eintrag existiert mit Titel=%s ."
+msgid "no entry exists with title=%ls."
+msgstr "Kein Eintrag existiert mit Titel=%ls ."
 
 #. Resource IDs: (3254)
 #, c-format

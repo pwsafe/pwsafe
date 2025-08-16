@@ -548,8 +548,8 @@ msgstr " Importera # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [Process ID=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [Process ID=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -9862,38 +9862,38 @@ msgstr "minuters inaktivitet"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "flera poster finns med titel=%s och användarnamn=%s eller med grupp=%s och titel=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "flera poster finns med titel=%ls och användarnamn=%ls eller med grupp=%ls och titel=%ls."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "fler poster finns med titel=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "fler poster finns med titel=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "inga poster finns i roten med titel=%s och användarnamn=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "inga poster finns i roten med titel=%ls och användarnamn=%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "ingen post finns med grupp=%s, titel=%s och tomt användarnamn."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "ingen post finns med grupp=%ls, titel=%ls och tomt användarnamn."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "ingen post finns med grupp=%s, titel=%s och användarnamn=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "ingen post finns med grupp=%ls, titel=%ls och användarnamn=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "ingen post finns med titel=%s och användarnamn=%s eller med grupp=%s, titel=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "ingen post finns med titel=%ls och användarnamn=%ls eller med grupp=%ls, titel=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "finns ingen post med titel=%s."
+msgid "no entry exists with title=%ls."
+msgstr "finns ingen post med titel=%ls."
 
 #. Resource IDs: (3254)
 #, c-format

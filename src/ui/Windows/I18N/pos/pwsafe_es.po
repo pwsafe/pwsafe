@@ -405,8 +405,8 @@ msgstr " Importar # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [Proceso ID=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [Proceso ID=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -9664,38 +9664,38 @@ msgstr "minutos inactivo"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "existen múltiples entradas con título=%s y usuario=%s o con grupo=%s y título=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "existen múltiples entradas con título=%ls y usuario=%ls o con grupo=%ls y título=%ls."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "existen múltiples entradas con título=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "existen múltiples entradas con título=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "no existen entradas en la raíz con título=%s y usuario =%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "no existen entradas en la raíz con título=%ls y usuario =%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "no existen entradas con grupo=%s, título=%s y sin usuario."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "no existen entradas con grupo=%ls, título=%ls y sin usuario."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "no existen entradas con grupo=%s, título=%s y usuario=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "no existen entradas con grupo=%ls, título=%ls y usuario=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "no existen entradas con título=%s y usuario=%s o con grupo=%s, título=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "no existen entradas con título=%ls y usuario=%ls o con grupo=%ls, título=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "no existen entradas con título=%s."
+msgid "no entry exists with title=%ls."
+msgstr "no existen entradas con título=%ls."
 
 #. Resource IDs: (3254)
 #, c-format

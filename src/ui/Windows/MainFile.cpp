@@ -485,7 +485,7 @@ void DboxMain::OnClose()
 
 int DboxMain::Close(const bool bTrySave)
 {
-  PWS_LOGIT_ARGS("bTrySave=%s", bTrySave ? L"true" : L"false");
+  PWS_LOGIT_ARGS("bTrySave=%ls", bTrySave ? L"true" : L"false");
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 

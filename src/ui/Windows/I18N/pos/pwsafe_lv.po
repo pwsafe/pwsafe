@@ -353,8 +353,8 @@ msgstr " Importēt # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [Procesa ID=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [Procesa ID=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -9664,38 +9664,38 @@ msgstr "minūtēm dīkstāvē"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "pastāv vairāki ieraksti ar nosaukums=%s un lietotājvārds=%s vai ar grupa=%s un nosaukums=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "pastāv vairāki ieraksti ar nosaukums=%ls un lietotājvārds=%ls vai ar grupa=%ls un nosaukums=%ls."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "pastāv vairāki ieraksti ar nosaukums=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "pastāv vairāki ieraksti ar nosaukums=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "saknē nav ieraksta ar nosaukums=%s un lietotājvārds=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "saknē nav ieraksta ar nosaukums=%ls un lietotājvārds=%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "nav ieraksta ar grupa=%s, nosaukums=%s un tukšu lietotājvārdu."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "nav ieraksta ar grupa=%ls, nosaukums=%ls un tukšu lietotājvārdu."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "nav ieraksta ar grupa=%s, nosaukums=%s un lietotājvārds=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "nav ieraksta ar grupa=%ls, nosaukums=%ls un lietotājvārds=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "nav ieraksta ar nosaukums=%s un lietotājvārds=%s vai ar grupa=%s, nosaukums=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "nav ieraksta ar nosaukums=%ls un lietotājvārds=%ls vai ar grupa=%ls, nosaukums=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "nav ieraksta ar nosaukums=%s."
+msgid "no entry exists with title=%ls."
+msgstr "nav ieraksta ar nosaukums=%ls."
 
 #. Resource IDs: (3254)
 #, c-format

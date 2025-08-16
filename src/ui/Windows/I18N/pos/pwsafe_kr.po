@@ -354,8 +354,8 @@ msgstr "# %d 을(를) 불러오기"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [프로세스 ID=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [프로세스 ID=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -8615,38 +8615,38 @@ msgstr "minutes idle"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "multiple entries exist with title=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "multiple entries exist with title=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "no entry exists in the root with title=%s and username=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "no entry exists in the root with title=%ls and username=%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "no entry exists with group=%s, title=%s and empty username."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "no entry exists with group=%ls, title=%ls and empty username."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "no entry exists with group=%s, title=%s and username=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "no entry exists with group=%ls, title=%ls and username=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "no entry exists with title=%s."
+msgid "no entry exists with title=%ls."
+msgstr "no entry exists with title=%ls."
 
 #. Resource IDs: (3254)
 #, c-format

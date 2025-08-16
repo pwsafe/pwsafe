@@ -2688,7 +2688,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:475
 #, fuzzy, c-format
 msgid " [Process ID=%ls]"
-msgstr "[Proces ID=%s]"
+msgstr "[Proces ID=%ls]"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:481
 #, c-format
@@ -5772,40 +5772,40 @@ msgstr "aliases"
 
 #: ../../../core/core_st.cpp:35
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "flere poster eksisterer med titlen=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "flere poster eksisterer med titlen=%ls."
 
 #: ../../../core/core_st.cpp:36
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "ingen poster eksisterer med titlen=%s."
+msgid "no entry exists with title=%ls."
+msgstr "ingen poster eksisterer med titlen=%ls."
 
 #: ../../../core/core_st.cpp:37
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr ""
-"flere poster eksisterer med titlen=%s og brugernavn=%s eller med gruppe=%s og titel=%s."
+"flere poster eksisterer med titlen=%ls og brugernavn=%ls eller med gruppe=%ls og titel=%ls."
 
 #: ../../../core/core_st.cpp:38
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
 msgstr ""
-"ingen poster eksisterer med titel=%s og brugernavn=%s eller med gruppe=%s, titel=%s."
+"ingen poster eksisterer med titel=%ls og brugernavn=%ls eller med gruppe=%ls, titel=%ls."
 
 #: ../../../core/core_st.cpp:39
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "ingen poster eksisterer med gruppe=%s, titel=%s og brugernavn=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "ingen poster eksisterer med gruppe=%ls, titel=%ls og brugernavn=%ls."
 
 #: ../../../core/core_st.cpp:40
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "ingen poster eksisterer med gruppe=%s, titel=%s og tomt brugernavn."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "ingen poster eksisterer med gruppe=%ls, titel=%ls og tomt brugernavn."
 
 #: ../../../core/core_st.cpp:41
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "ingen poster eksisterer i roden med titel=%s og brugernavn=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "ingen poster eksisterer i roden med titel=%ls og brugernavn=%ls."
 
 #: ../../../core/core_st.cpp:42
 msgid "Password implies this is an alias entry, but "

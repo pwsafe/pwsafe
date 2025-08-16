@@ -5413,43 +5413,43 @@ msgstr "Alias"
 
 #: ../../../core/core_st.cpp:35
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "es existieren mehrere Einträge mit Titel=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "es existieren mehrere Einträge mit Titel=%ls."
 
 #: ../../../core/core_st.cpp:36
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "es existiert kein Eintrag mit Titel=%s."
+msgid "no entry exists with title=%ls."
+msgstr "es existiert kein Eintrag mit Titel=%ls."
 
 #: ../../../core/core_st.cpp:37
 #, c-format
 msgid ""
-"multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+"multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr ""
-"es existieren mehrere Einträge mit Titel=%s und Benutzername=%s oder mit Gruppe=%s und "
-"Titel=%s."
+"es existieren mehrere Einträge mit Titel=%ls und Benutzername=%ls oder mit Gruppe=%ls und "
+"Titel=%ls."
 
 #: ../../../core/core_st.cpp:38
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
 msgstr ""
-"es existiert kein Eintrag mit Titel=%s und Benutzername=%s oder mit Gruppe=%s, "
-"Titel=%s."
+"es existiert kein Eintrag mit Titel=%ls und Benutzername=%ls oder mit Gruppe=%ls, "
+"Titel=%ls."
 
 #: ../../../core/core_st.cpp:39
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "es existiert kein Eintrag mit Gruppe=%s, Titel=%s und Benutzer=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "es existiert kein Eintrag mit Gruppe=%ls, Titel=%ls und Benutzer=%ls."
 
 #: ../../../core/core_st.cpp:40
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "es existiert kein Eintrag mit Gruppe=%s, Titel=%s und leerem Benutzernamen."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "es existiert kein Eintrag mit Gruppe=%ls, Titel=%ls und leerem Benutzernamen."
 
 #: ../../../core/core_st.cpp:41
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "im Stammelement existiert kein Eintrag mit Titel=%s und Benutzername=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "im Stammelement existiert kein Eintrag mit Titel=%ls und Benutzername=%ls."
 
 #: ../../../core/core_st.cpp:42
 msgid "Password implies this is an alias entry, but "

@@ -275,8 +275,8 @@ msgstr " Uvozi # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [ID procesa=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [ID procesa=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -9580,37 +9580,37 @@ msgstr "minut nedejavnosti"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr "obstaja več več vnosov z naslov= %s in uporabniško ime= %s ali s skupina= %s in naslo= %s."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "obstaja več vnosov z naslov=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "obstaja več vnosov z naslov=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
 msgstr "v korenu ne obstaja noben vnos z naslov= %s in uporabniško ime= %s."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
 msgstr "noben vnos ne obstaja s skupina= %s, naslov= %s in praznim uporabniškim imenom."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
 msgstr "noben vnos ne obstaja s skupina= %s, naslov= %s in uporabniško ime= %s."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
 msgstr "noben vnos ne obstaja z naslov= %s in uporabniško ime= %s ali s skupina= %s, naslov= %s."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
+msgid "no entry exists with title=%ls."
 msgstr "noben vnos ne obstaja z naslov= %s."
 
 #. Resource IDs: (3254)

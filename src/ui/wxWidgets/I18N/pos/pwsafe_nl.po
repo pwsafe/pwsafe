@@ -2765,7 +2765,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:475
 #, fuzzy, c-format
 msgid " [Process ID=%ls]"
-msgstr " [Proces ID=%s]"
+msgstr " [Proces ID=%ls]"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:481
 #, fuzzy, c-format
@@ -5936,43 +5936,43 @@ msgstr "aliassen"
 
 #: ../../../core/core_st.cpp:35
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "meerdere vermeldingen bestaan met titel=%s"
+msgid "multiple entries exist with title=%ls."
+msgstr "meerdere vermeldingen bestaan met titel=%ls"
 
 #: ../../../core/core_st.cpp:36
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "er bestaat geen vermelding met titel=%s."
+msgid "no entry exists with title=%ls."
+msgstr "er bestaat geen vermelding met titel=%ls."
 
 #: ../../../core/core_st.cpp:37
 #, c-format
 msgid ""
-"multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+"multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr ""
-"meerdere vermeldingen bestaan met titel=%s en gebruikersnaam=%s of met groep=%s en "
-"titel=%s."
+"meerdere vermeldingen bestaan met titel=%ls en gebruikersnaam=%ls of met groep=%ls en "
+"titel=%ls."
 
 #: ../../../core/core_st.cpp:38
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
 msgstr ""
-"er bestaat geen vermelding met titel=%s en gebruikersnaam=%s of met groep=%s, "
-"titel=%s. "
+"er bestaat geen vermelding met titel=%ls en gebruikersnaam=%ls of met groep=%ls, "
+"titel=%ls. "
 
 #: ../../../core/core_st.cpp:39
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "er bestaat geen vermelding met groep=%s, titel=%s en gebruikersnaam=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "er bestaat geen vermelding met groep=%ls, titel=%ls en gebruikersnaam=%ls."
 
 #: ../../../core/core_st.cpp:40
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "er bestaat geen vermelding met groep=%s, titel=%s en een lege gebruikersnaam."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "er bestaat geen vermelding met groep=%ls, titel=%ls en een lege gebruikersnaam."
 
 #: ../../../core/core_st.cpp:41
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "in de basis bestaat geen vermelding met titel=%s en gebruikersnaam=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "in de basis bestaat geen vermelding met titel=%ls en gebruikersnaam=%ls."
 
 #: ../../../core/core_st.cpp:42
 msgid "Password implies this is an alias entry, but "

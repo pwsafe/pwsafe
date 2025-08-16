@@ -301,8 +301,8 @@ msgstr "# %d importálása"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [Folyamatazonosító=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [Folyamatazonosító=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -9628,37 +9628,37 @@ msgstr "perce inaktív"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "több ilyen bejegyzés is van: megnevezéssel=%s és felhasználónév=%s vagy csoport=%s és megnevezés=%s"
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "több ilyen bejegyzés is van: megnevezéssel=%ls és felhasználónév=%ls vagy csoport=%ls és megnevezés=%ls"
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
+msgid "multiple entries exist with title=%ls."
 msgstr "több bejegyzés is van ezzel a megnevezéssel: %s."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "nincs ilyen bejegyzés a gyökérmappában: megnevezés=%s és felhasználónév=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "nincs ilyen bejegyzés a gyökérmappában: megnevezés=%ls és felhasználónév=%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "nincs ilyen bejegyzés: csoport=%s, megnevezés=%s és üres felhasználónév."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "nincs ilyen bejegyzés: csoport=%ls, megnevezés=%ls és üres felhasználónév."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "nincs ilyen bejegyzés: csoport=%s, megnevezés=%s és felhasználónév=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "nincs ilyen bejegyzés: csoport=%ls, megnevezés=%ls és felhasználónév=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "nincs ilyen bejegyzés: megnevezés=%s és felhasználónév=%s vagy csoport=%s, megnevezés=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "nincs ilyen bejegyzés: megnevezés=%ls és felhasználónév=%ls vagy csoport=%ls, megnevezés=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
+msgid "no entry exists with title=%ls."
 msgstr "nincs bejegyzés ezzel a megnevezéssel: %s."
 
 #. Resource IDs: (3254)

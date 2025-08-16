@@ -379,8 +379,8 @@ msgstr " Importuj # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [ID procesu=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [ID procesu=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -9687,38 +9687,38 @@ msgstr "minut bezczynności"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "istnieje kilka wpisów o nazwie=%s i nazwie użytkownika=%s lub z grupą=%s i nazwą=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "istnieje kilka wpisów o nazwie=%ls i nazwie użytkownika=%ls lub z grupą=%ls i nazwą=%ls."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "istnieje kilka wpisów o nazwie=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "istnieje kilka wpisów o nazwie=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "nie ma wpisu w katalogu głównym z nazwą=%s i nazwą użytkownika=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "nie ma wpisu w katalogu głównym z nazwą=%ls i nazwą użytkownika=%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "nie ma wpisu z grupą=%s, nazwą=%s i pustą nazwą użytkownika."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "nie ma wpisu z grupą=%ls, nazwą=%ls i pustą nazwą użytkownika."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "nie ma wpisu z grupą=%s, nazwą=%s i nazwą użytkownika=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "nie ma wpisu z grupą=%ls, nazwą=%ls i nazwą użytkownika=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "nie ma wpisu z nazwą=%s i nazwą użytkownika=%s lub z grupą=%s i nazwą=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "nie ma wpisu z nazwą=%ls i nazwą użytkownika=%ls lub z grupą=%ls i nazwą=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "nie ma wpisu o nazwie=%s."
+msgid "no entry exists with title=%ls."
+msgstr "nie ma wpisu o nazwie=%ls."
 
 #. Resource IDs: (3254)
 #, c-format
