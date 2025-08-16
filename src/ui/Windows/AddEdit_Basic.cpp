@@ -775,7 +775,7 @@ BOOL CAddEdit_Basic::OnApply()
 
     if (!isAliasValid) {
       UINT uiFlags = yesNoError ? (MB_YESNO | MB_DEFBUTTON2) : MB_OK;
-      if (gmb.AfxMessageBox(errmess.c_str(), nullptr, uiFlags) == IDNO) {
+      if (gmb.AfxMessageBox(errmess.c_str(), nullptr, uiFlags) == IDNO || !yesNoError) {
         UpdateData(FALSE);
         pFocus = &m_ex_password;
         goto error;

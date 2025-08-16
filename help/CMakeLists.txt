@@ -1,4 +1,5 @@
-set (LANGS "RU" "DE" "ES" "FR" "ZH" "PL")
+set (LANGS "RU" "DE" "ES" "FR" "ZH" "SK")
+# pwsafePL -- nothing there :-(
 
 macro(set_lang_help_files FILES_VAR DIR)
   file(GLOB_RECURSE ${FILES_VAR}
@@ -10,8 +11,6 @@ macro(set_lang_help_files FILES_VAR DIR)
 endmacro(set_lang_help_files)
 
 if (WIN32 AND NOT WX_WINDOWS)
-  set (LANGS DE ES FR RU SK ZH)
-  # pwsafePL -- nothing there :-(
 
   find_program(HHC_EXECUTABLE hhc.exe DOC "Microsoft's help compiler (hhc.exe)")
   if (NOT HHC_EXECUTABLE)
@@ -48,11 +47,19 @@ else (WIN32 AND NOT WX_WINDOWS)
 
     set(OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/help${LANG}.zip")
 
-    add_custom_command(OUTPUT "${OUTPUT_FILE}"
-      COMMAND "${CMAKE_COMMAND}" -E tar cf "${OUTPUT_FILE}" . --format=zip
-      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${DIR}"
-      VERBATIM
-      )
+    if(IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${DIR}_wx")
+      add_custom_command(OUTPUT "${OUTPUT_FILE}"
+        COMMAND "${CMAKE_COMMAND}" -E tar cf "${OUTPUT_FILE}" . --format=zip
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${DIR}_wx"
+        VERBATIM
+        )
+    else()
+      add_custom_command(OUTPUT "${OUTPUT_FILE}"
+        COMMAND "${CMAKE_COMMAND}" -E tar cf "${OUTPUT_FILE}" . --format=zip
+        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${DIR}"
+        VERBATIM
+        )
+    endif()
 
     set(${OUTPUT_FILE_VAR} "${OUTPUT_FILE}" PARENT_SCOPE)
   endfunction(make_help)

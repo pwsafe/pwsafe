@@ -23,10 +23,10 @@
 LangString RESERVE_TITLE ${LANG_SLOVAK} "Vyberte typ inštalácie"
 
 ; RESERVE_FIELD1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString RESERVE_FIELD1 ${LANG_SLOVAK} "Štandardná (používa registre, vhodná pre domáci počítač alebo počítač s 1 používateľom)"
+LangString RESERVE_FIELD1 ${LANG_SLOVAK} "Štandardná (používa register, vhodná pre domáci počítač alebo počítač s 1 používateľom)"
 
 ; RESERVE_FIELD2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString RESERVE_FIELD2 ${LANG_SLOVAK} "Prenosná (pre použitie na USB kľúči; nepoužíva Windows registre)"
+LangString RESERVE_FIELD2 ${LANG_SLOVAK} "Prenosná (pre použitie na USB kľúči; nepoužíva register Windows)"
 
 ; PROGRAM_FILES "Program Files"
 LangString PROGRAM_FILES ${LANG_SLOVAK} "Súbory programu"
@@ -78,10 +78,10 @@ LangString TEXT_GC_SUBTITLE ${LANG_SLOVAK} "Vyberte Štandardnú pre použitie n
 LangString PSWINI_TITLE ${LANG_SLOVAK} "Vyberte typ inštalácie"
 
 ; PSWINI_TEXT1 "Regular (uses Registry, suitable for home or single user PC)"
-LangString PSWINI_TEXT1 ${LANG_SLOVAK} "Štandardná (používa registre, vhodná pre domáci počítač alebo počítač s 1 používateľom)"
+LangString PSWINI_TEXT1 ${LANG_SLOVAK} "Štandardná (používa register, vhodná pre domáci počítač alebo počítač s 1 používateľom)"
 
 ; PSWINI_TEXT2 "Green (for Disk-on-Key; does not use host Registry)"
-LangString PSWINI_TEXT2 ${LANG_SLOVAK} "Prenosná (pre použitie na USB kľúč; nepoužíva registre Windows)"
+LangString PSWINI_TEXT2 ${LANG_SLOVAK} "Prenosná (pre použitie na USB kľúč; nepoužíva register Windows)"
 
 ;--------------------------------
 ; checks and warnings
@@ -112,7 +112,7 @@ LangString CHINESE_TW_SUPPORT ${LANG_SLOVAK} "čínsky (tradičný)"
 ; GERMAN_SUPPORT "German"
 LangString GERMAN_SUPPORT ${LANG_SLOVAK} "nemecký"
 ; SPANISH_SUPPORT "Spanish"
-LangString SPANISH_SUPPORT ${LANG_SLOVAK} "španielský"
+LangString SPANISH_SUPPORT ${LANG_SLOVAK} "španielsky"
 ; SWEDISH_SUPPORT "Swedish"
 LangString SWEDISH_SUPPORT ${LANG_SLOVAK} "švédsky"
 ; DUTCH_SUPPORT "Dutch"
@@ -124,7 +124,7 @@ LangString RUSSIAN_SUPPORT ${LANG_SLOVAK} "ruský"
 ; POLISH_SUPPORT "Polish"
 LangString POLISH_SUPPORT ${LANG_SLOVAK} "poľský"
 ; ITALIAN_SUPPORT "Italian"
-LangString ITALIAN_SUPPORT ${LANG_SLOVAK} "talianský"
+LangString ITALIAN_SUPPORT ${LANG_SLOVAK} "taliansky"
 ; DANISH_SUPPORT "Danish"
 LangString DANISH_SUPPORT ${LANG_SLOVAK} "dánsky"
 ; KOREAN_SUPPORT "Korean"

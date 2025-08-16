@@ -1,15 +1,12 @@
-BASEDIRNAME=pwsafe
-LANGS=RU DE ES FR ZH PL
-
 ZIP = /usr/local/bin/zip
 
 all: default $(LANGS)
 
 default:
-	@cd default ; $(ZIP) -Xqr ../helpEN ./* || true
+	@cd default$(WX) ; $(ZIP) -Xqr ../helpEN ./* || true
 
 $(LANGS):
-	@cd $(BASEDIRNAME)$@ ; $(ZIP) -Xqr ../help$@ ./* || true
+	@cd $(BASEDIRNAME)$@$(BWX) ; $(ZIP) -Xqr ../help$@ ./* || true
 
 clean:
 	$(RM) *.zip || true

@@ -491,6 +491,7 @@ void PasswordSafeFrame::RegisterLanguageMenuItems() {
   AddLanguage( ID_LANGUAGE_KOREAN,    wxLANGUAGE_KOREAN,  L"Korean"   );  /* code: 'ko' */
   AddLanguage( ID_LANGUAGE_POLISH,    wxLANGUAGE_POLISH,  L"Polish"   );  /* code: 'pl' */
   AddLanguage( ID_LANGUAGE_RUSSIAN,   wxLANGUAGE_RUSSIAN, L"Russian"  );  /* code: 'ru' */
+  AddLanguage( ID_LANGUAGE_SLOVAK,    wxLANGUAGE_SLOVAK,  L"Slovak"   );  /* code: 'sk' */
   AddLanguage( ID_LANGUAGE_SLOVENIAN, wxLANGUAGE_SLOVENIAN, L"Slovenian"  );  /* code: 'sl' */
   AddLanguage( ID_LANGUAGE_SPANISH,   wxLANGUAGE_SPANISH, L"Spanish"  );  /* code: 'es' */
   AddLanguage( ID_LANGUAGE_SWEDISH,   wxLANGUAGE_SWEDISH, L"Swedish"  );  /* code: 'sv' */
@@ -2779,6 +2780,9 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
     // Without this, modal dialogs like msgboxes lose focus and we end up in a different message loop than theirs.
     // See https://sourceforge.net/tracker/?func=detail&aid=3537985&group_id=41019&atid=429579
     wxSafeYield();
+    // But then wxSafeYield causes the window to lose focus on Mac and Linux.
+    // See https://github.com/pwsafe/pwsafe/issues/954
+    SetFocus();
     // for some reason, we have to restore main frame's position after Yeild, otherwise it could be restored at wrong position when window was moved before lock
     wxGetApp().RestoreFrameCoords();
   }

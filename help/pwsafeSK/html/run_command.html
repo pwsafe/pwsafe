@@ -73,7 +73,7 @@ Pred indexovou hodnotou 'n' môže byť znak '+' alebo '-', napr. [-2] alebo [2]
 </tr>
 <tr>
 <td style="font-weight: bold;">dbextn</td>
-<td>Aktuálna prípona otvorenej databázy.</td>
+<td>Prípona aktuálne otvorenej databázy.</td>
 </tr>
 </tbody>
 </table>
@@ -199,7 +199,7 @@ obsahuje medzery, na prístup k textovému súboru v ňom budete potrebovať nas
 </pre>
 <p>Všimnite si že spätné lomítko je escapované, aby sa '$dbname' rozpoznalo ako premenná.</p>
 
-<p>V systéme Windows sa vykoná bežná substitúcia premenných prostredia
+<p><b>Iba v definícii spúšťaného programu (nie aj v jeho parametroch):</b> V systéme Windows funguje bežná substitúcia premenných prostredia
 (zadaných ako %variable_name%). Napríklad: '%windir%\notepad.exe' sa môže (v závislosti od vašej inštalácie) 
 zmeniť na 'C:\Windows\notepad.exe'. Aktuálne hodnoty nastavené vo vašom prostredí je možné
 určiť spustením 'cmd.exe' a zadaním 'set' bez akýchkoľvek parametrov. 
@@ -218,7 +218,7 @@ sa pripojí k serveru 'myHost' s použitím používateľského mena a hesla zá
 "C:\Program Files\PuTTY\putty.exe" -ssh ${u}@myHost 22 -pw $p
 </pre>
 </li>
-<li>Týmto sa otvorí nová inštancia <b>Password Safe</b> so zadanou databázou (za toto ďakujem Daveovi):
+<li>Týmto sa otvorí nová inštancia <b>Password Safe</b> so zadanou databázou a pomocou AutoType sa vyplní heslo (za toto ďakujem Daveovi):
 <pre> ${autotype}(\p\n)"${appdir}\pwsafe.exe" \UNC\cesta\k\database.psafe3</pre></li>
 <ul>
 <li>Aby to fungovalo, tak sa uistite že je nastavená táto možnosť v Nastaveniach na karte Systém: "Povoliť viacero inštancií".</li>

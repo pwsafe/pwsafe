@@ -91,7 +91,7 @@ int PasswordSafeFrame::New()
     wxString msg(_("Do you want to save changes to the password database:"));
     msg += wxT("\n");
     msg += m_core.GetCurFile().c_str();
-    wxMessageDialog mbox(this, msg, "Save changes?", wxCANCEL | wxYES_NO | wxICON_QUESTION);
+    wxMessageDialog mbox(this, msg, _("Save changes?"), wxCANCEL | wxYES_NO | wxICON_QUESTION);
     mbox.SetYesNoLabels(_("Save"), _("Discard"));
     rc = mbox.ShowModal();
     switch (rc) {
@@ -520,6 +520,7 @@ int PasswordSafeFrame::SaveAs()
   RefreshViews();
 
   wxGetApp().recentDatabases().AddFileToHistory(towxstring(newfile));
+  CreateMenubar();
 
   if (m_core.IsReadOnly()) {
     // reset read-only status (new file can't be read-only!)
@@ -576,7 +577,7 @@ int PasswordSafeFrame::SaveIfChanged()
       prompt += wxT("\n");
       prompt += m_core.GetCurFile().c_str();
     }
-    wxMessageDialog dlg(this, prompt, "Save changes?",
+    wxMessageDialog dlg(this, prompt, _("Save changes?"),
                         (wxICON_QUESTION | wxCANCEL | wxYES_NO));
     dlg.SetYesNoLabels(_("Save"), _("Discard"));
     int rc = dlg.ShowModal();
@@ -646,6 +647,10 @@ struct ExportFullText
   static wxString GetTaskWord() {
     return _("export");
   }
+
+  static int GetReportNameId() {
+    return IDSC_RPTEXPORTTEXT;
+  }
 };
 
 struct ExportFullXml {
@@ -688,6 +693,10 @@ struct ExportFullXml {
   }
   static wxString GetTaskWord() {
     return _("export");
+  }
+
+    static int GetReportNameId() {
+    return IDSC_RPTEXPORTXML;
   }
 };
 
@@ -819,7 +828,8 @@ void PasswordSafeFrame::DoExportText()
           newfile = fd.GetPath().c_str();
           CReport rpt;
 
-          rpt.StartReport(IDSC_RPTEXPORTTEXT, sx_temp.c_str());
+          rpt.StartReport(ExportType::GetReportNameId(), sx_temp.c_str());
+          // FIXME - following line is translation-unfriendly. Replace with positional placeholders
           rpt.WriteLine(tostdstring(wxString(_("Exporting database: ")) << towxstring(sx_temp) << _(" to ") << newfile<< wxT("\r\n")));
 
           int rc = ExportType::Write(m_core, newfile, bsExport, subgroup_name, subgroup_object,

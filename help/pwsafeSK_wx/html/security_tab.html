@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Nastavenia - karta Zabezpečenie</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Nastavenia - karta Zabezpečenie</h2>
+
+<img alt="Karta Zabezpečenie" src="images/options/security_tab.png">
+
+<p>Karta Zabezpečenie poskytuje prístup k nastaveniam zabezpečenia aplikácie.</p>
+
+<h3>Vymazať schránku po minimalizácii aplikácie</h3>
+
+<p>Ak je začiarknuté, program vymaže obsah schránky a všetky uložené údaje (napríklad heslo), 
+keď je aplikácia minimalizovaná. Toto zabráni komukoľvek inému alebo akémukoľvek inému programu v čítaní obsahu schránky. 
+Upozorňujeme, že výber tejto možnosti koliduje s akciou pri dvojkliku "Skopíruj heslo do schránky a minimalizuj"
+na karte Nastavení <a href="misc_tab.html">Rôzne</a>. Toto povedie k neočakávaným výsledkom (heslo sa skopíruje, ale okamžite sa vymaže).</p>
+
+<h3>Vymazať schránku po ukončení aplikácie</h3>
+
+<p>Ak je začiarknuté, aplikácia vymaže obsah schránky a všetky uložené údaje (napríklad heslo), keď je okno minimalizované alebo zatvorené.
+Toto zabráni komukoľvek inému v čítaní obsahu schránky.</p>
+
+<h3>Potvrdiť skopírovanie hesla do schránky</h3>
+
+<p>Ak je začiarknuté, zobrazí sa výzva používateľovi na potvrdenie, a to pri každom kopírovaní hesla do schránky.</p>
+
+<h3>'Otvoriť URL v prehliadači' zároveň skopíruje heslo do schránky</h3>
+<p>Je užitočné mať heslo pripravené na vloženie na prihlasovacej webovej stránke. Môže sa to však považovať za bezpečnostné riziko, pretože ste heslo explicitne neskopírovali.
+Ak toto políčko začiarknete, príslušné heslo sa automaticky skopíruje do schránky pri otvorení URL adresy uvedenej v zázname.</p>
+
+<h3>Uzamknutie databázy</h3>
+
+<p> Keď je databáza uzamknutá z dôvodu jednej z nižšie uvedených udalostí, databáza sa uloží a potom sa všetky jej údaje vymažú z pamäte. 
+Záznam o vrátení/opakovaní akcie sa však zachová, aby bolo možné zmeny po odomknutí vrátiť späť (alebo opätovne vykonať). 
+Poznámka: Všetky vstupné informácie týchto príkazov zostávajú šifrované v pamäti.</p>
+
+<ul>
+<li><b>Zamknúť databázu hesiel pri minimalizácii</b><br>
+
+<p>Ak je začiarknuté, program uzamkne databázu hesiel pri minimalizácii aplikácie. Po opätovnom maximalizovaní okna je na prístup k databáze potrebné heslo.
+</p>
+
+<li><b>Zamknúť databázu hesiel pri uzamknutí počítača</b><br>
+
+<p>Začiarknutie tejto možnosti spôsobí, že sa databáza hesiel uzamkne, keď je počítač uzamknutý, 
+čím sa zabráni neoprávnenému prístupu iných používateľov, ktorí môžu mať prístup k počítaču.</p>
+
+<li><b>Zamknúť databázu hesiel po...</b><br>
+
+<p>Začiarknutie tejto možnosti a nastavenie času spôsobí, že <b>Password Safe</b> 
+uzamkne databázu hesiel po uplynutí nastaveného intervalu, počas ktorého používateľ nevykonal žiadnu akciu v aplikácii.</p>
+</ul>
+
+<h3>Obtiažnosť odomknutia</h3>
+
+<p>Nastavenie posuvníka určuje, koľko výpočtového výkonu CPU je potrebné na otvorenie a uloženie databázy <b>Password Safe</b>. 
+Nastavenie <em>Štandardné</em> by malo poskytnúť dostatočnú bezpečnosť bez výrazného oneskorenia pri otváraní databázy na väčšine platforiem. 
+Pri zvyšovaní tejto hodnoty berte do úvahy výkon svojho počítača.</p>
+
+<p><b>Password Safe</b> používa <!-- [V4Format:] <a target="newWin" href="https://en.wikipedia.org/wiki/PBKDF2">PBKDF2</a> -->
+originálny algoritmus <a target="newWin" href="https://www.schneier.com/wp-content/uploads/2016/02/paper-low-entropy.pdf">Key
+Stretching</a> publikovaný Bruceom Schneierom, ktorý zvyšuje silu 
+hesla (bez zmeny šifrovacieho algoritmu) tak, aby obsahovalo viac entropie, čím sa výrazne sťažuje
+použitie hrubej sily na prelomenie hesla. Posuvník nastavuje počet iterácií rozťahovania medzi 2048 a 2<sup><small>22</small></sup>.</p>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Karta Zabezpečenie">
+<param name="Keyword" value="Zamknúť databázu">
+<param name="Keyword" value="Potvrdiť kopírovanie do schránky">
+<param name="Keyword" value="Vymazanie schránky">
+</object>
+
+</body>
+</html>

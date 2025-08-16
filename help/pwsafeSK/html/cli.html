@@ -26,12 +26,16 @@ bude sa vyhľadávať v adresári, v ktorom bola aplikácia spustená. Upozorňu
 Týmto sa otvorí zadaná databáza v režime iba na čítanie. Ak databáza nie je zadaná, aplikácia vyzve používateľa na zadanie databázy, ktorá sa otvorí v režime iba na čítanie.</li>
 
 <li><i>pwsafe</i> <b>-e názov súboru</b><br>
-Týmto sa používateľ vyzve na zadanie prístupovej frázy a súbor sa zašifruje pomocou kľúča odvodeného z prístupovej frázy. 
-<b>Poznámka:</b> Súbor môže byť <i>ľubovoľný</i> súbor. Zašifrovaný súbor bude mať rovnaký názov ako pôvodný súbor s pripojenou koncovkou ".PSF".<br></li>
+Týmto sa používateľ vyzve na zadanie šifrovacieho kľúča (hesla) a súbor sa zašifruje. 
+<b>Poznámka:</b> Súbor môže byť <i>ľubovoľný</i> súbor. Zašifrovaný súbor bude mať rovnaký názov ako pôvodný súbor s pripojenou príponou ".PSF".
+<p><img alt="Zašifrovať súbor" src="images/encrypt_file.png"></p>
+</li>
 
 <li><i>pwsafe</i> <b>-d názov súboru</b><br>
-Táto funkcia vyzve používateľa na zadanie prístupovej frázy a súbor sa dešifruje pomocou kľúča odvodeného z prístupovej frázy. 
-<b>Poznámka:</b> Toto bude fungovať iba na súboroch, ktoré boli zašifrované spustením funkcie pwsafe s prepínačom "-e" (pozri vyššie).</li>
+Táto funkcia vyzve používateľa na zadanie šifrovacieho kľúča (hesla) a súbor sa dešifruje. 
+<b>Poznámka:</b> Toto bude fungovať iba na súboroch .PSF, ktoré boli zašifrované programom Password Safe s prepínačom "-e" (pozri vyššie).
+<p><img alt="Dešifrovať súbor" src="images/decrypt_file.png"></p>
+</li>
 
 <li><i>pwsafe</i> <b>-c</b><br>
 Týmto sa aplikácia spustí zatvorená, teda bez databázy a bez úvodného otváracieho dialógového okna 
@@ -111,7 +115,7 @@ v zoznamovom zobrazení, ale nie v stromovom zobrazení. Tento príznak umožňu
 aj v stromovom zobrazení prostredníctvom dodatočného dialógového okna na výber "iného" záznamu. 
 Podpora výberu viacerých záznamov v stromovom zobrazení je zatiaľ experimentálna. Po zavedení plnej podpory bude tento príznak ignorovaný.</li>
 
-<br>
+<br><br>
 <img alt="Porovnať záznamy" src="images/compare_entries.png">
 
 </ul>
@@ -127,6 +131,7 @@ Podpora výberu viacerých záznamov v stromovom zobrazení je zatiaľ experimen
 <param name="Keyword" value="Parametre príkazového riadka">
 <param name="Keyword" value="Šifrovanie súboru">
 <param name="Keyword" value="Dešifrovanie súboru">
+<param name="Keyword" value="Šifrovací kľúč">
 </object>
 
 </body>

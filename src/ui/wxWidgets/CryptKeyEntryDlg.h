@@ -40,6 +40,11 @@ public:
 
 protected:
 
+  void CreateControls();
+  bool IsEncryptionMode() const {
+    return m_Mode == Mode::ENCRYPT;
+  }
+
   //(*Handlers(CryptKeyEntryDialog)
   void OnOk(wxCommandEvent& event);
   void OnCancel(wxCommandEvent& event);
@@ -50,9 +55,12 @@ protected:
   //*)
 
   //(*Declarations(CryptKeyEntryDialog)
-  wxTextCtrl* TextCtrlKey1;
-  wxTextCtrl* TextCtrlKey2;
+  wxTextCtrl* m_TextCtrlKey1;
+  wxTextCtrl* m_TextCtrlKey2;
   //*)
+
+  bool isCryptKeyHidden = true;
+  bool isCryptVerificationKeyHidden = true;
 
   Mode m_Mode;
   StringX m_CryptKey;

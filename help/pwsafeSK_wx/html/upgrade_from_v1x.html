@@ -1,0 +1,55 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Upgrade z predošlých verzií Password Safe</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Upgrade z predošlých verzií Password Safe</h2>
+
+<p>Aby sa pridali nové funkcie a zvýšila sa bezpečnosť, formát databázy 
+ktorý sa používa na ukladanie záznamov a nastavení, sa medzi hlavnými verziami zmenil.
+Bolo vynaložené veľké úsilie na zabezpečenie automatickej a transparentnej aktualizácie:</p>
+
+<ul>
+<li>Verzia 1.x aplikácie <b>Password Safe</b> dokáže čítať iba databázy vygenerované verziami 1.x.</li>
+<li>Verzia 2.x aplikácie <b>Password Safe</b> dokáže čítať databázy vytvorené samotnou aplikáciou a verziou 1.x</li>
+<li>Verzia 3.x aplikácie <b>Password Safe</b> dokáže čítať databázy vytvorené všetkými predchádzajúcimi verziami.</li>
+</ul>
+
+<p>Vo všetkých týchto prípadoch, ak chcete čítať databázu vygenerovanú predchádzajúcou verziou aplikácie <b>Password Safe</b>,
+stačí ju otvoriť ako akúkoľvek inú databázu. Záznamy sa zobrazia
+normálne, s možnými "neznámymi" hodnotami v poliach, ktoré neboli
+podporované v predchádzajúcich verziách (napr. dátum vytvorenia záznamu).</p>
+
+<p>Pri ukladaní takejto databázy budete upozornení na to, že nová databáza 
+nebude čitateľná predchádzajúcou verziou aplikácie <b>Password Safe</b>.</p>
+
+<h3>Vytvorenie predchádzajúcich verzií databázy</h3>
+
+<p>Verzie databázy, ktoré sú čitateľné staršími verziami aplikácie
+<b>Password Safe</b>, môžete vytvoriť exportom do požadovaného formátu
+(<b>Súbor&nbsp;&gt;&nbsp;Exportovať do...</b> a vyberte <b>Formát v1.x... </b>alebo <b>Formát v2...</b>).
+Vedzte, že exportované databázy nebudú obsahovať informácie, ktoré boli
+pridané v novších verziách. Napríklad databáza verzie 2 nebude obsahovať informácie týkajúce sa času úpravy záznamu.</p>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Upgrade z predošlých verzií">
+<param name="Keyword" value="Password Safe 1.x">
+<param name="Keyword" value="Password Safe 2.x">
+</object>
+
+</body>
+</html>

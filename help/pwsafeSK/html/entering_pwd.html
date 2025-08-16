@@ -19,7 +19,7 @@
 <li><b><i>Základné</i>:</b> všetky prvky potrebné pre správu hesiel</li>
 <li><b><i><a href="entering_pwd_add.html">Doplňujúce</a></i>:</b> ďalšie špecifikácie vrátane histórie hesiel</li>
 <li><b><i><a href="entering_pwd_date.html">Dátumy a časy</a></i>:</b> platnosť hesla a štatistiky</li>
-<li><b><i><a href="entering_pwd_pp.html">Zásady hesiel</a></i>:</b> špecifické rozdiely pre tento záznam oproti predvolenému nastaveniu</li>
+<li><b><i><a href="entering_pwd_pp.html">Zásady hesiel</a></i>:</b> pravidlá generovania náhodných hesiel</li>
 </ul>
 
 <p>Väčšina polí na kartách Základné a Doplňujúce sú <i>inteligentné polia</i>.
@@ -53,8 +53,8 @@ sa premenné pred skopírovaním do schránky nenahradia v reťazcoch, ale skop�
 <p>Ku každému záznamu hesla sú priradené nasledujúce informácie:</p>
 <ul>
 <li><b>Skupina</b>: Názov na zoskupenie (organizovanie) niekoľkých súvisiacich záznamov</li>
-<li><b>Názov</b>: Priateľský názov pre záznam hesla</li>
-<li><b>Používateľské meno</b>: Používateľské meno</li>
+<li><b>Názov</b>: "Priateľský názov" pre záznam hesla</li>
+<li><b>Meno</b>: Používateľské meno ako súčasť prihlasovacích údajov spolu s heslom</li>
 <li><b>Heslo</b>: Heslo s ukazovateľom sily hesla pod ním</li>
 <li><b>URL</b>: URL (webová stránka) priradená k tomuto záznamu</li>
 <li><b>Email</b>: Emailová adresa priradená k tomuto záznamu</li>
@@ -65,15 +65,15 @@ sa premenné pred skopírovaním do schránky nenahradia v reťazcoch, ale skop�
 
 <ul>
 <li>Kliknutím na tlačidlo <img alt="Skopírovať heslo" src="images/copy_btn.jpg"/> sa heslo skopíruje do schránky.</li>
-<li>Sivé tlačidlo Overovací kód (<img alt="Zakázané tlačidlo Overovací kód" src="images/authenticode_disabled.png"/>) označuje, že pre túto položku nebol nastavený žiadny Overovací kód (pozri <a href="entering_pwd_add.html">karta Doplňujúce</a>).<br>
-Keď je nastavený Overovací kód, tlačidlo je aktívne a animované a aktuálny overovací kód je možné zobraziť kliknutím na okno, ktoré sa zobrazí napravo od tlačidla:
+<li>Sivé tlačidlo Overovací kód (<img alt="Zakázané tlačidlo Overovací kód" src="images/authenticode_disabled.png"/>) naznačuje, že pre tento záznam nebol nastavený tajný kľúč pre generovanie overovacích kódov/TOTP tokenov v rámci dvojfaktorovej autentifikácie (pozri <a href="entering_pwd_add.html">karta Doplňujúce</a>).<br>
+Keď je nastavený tajný kľúč, tlačidlo je aktívne a animované, a aktuálny overovací kód je možné zobraziť kliknutím na okno, ktoré sa zobrazí napravo od tlačidla:
 <ul>
 <li><img alt="Overovací kód skrytý" src="images/authcode-hidden.png"/></li>
 <li><img alt="Overovací kód zobrazený" src="images/authcode-shown.png"/></li>
 </ul>
 </li>
-<li>Kliknutím na animované tlačidlo Overovací kód (<img alt="Skopírovať overovací kód" src="images/authenticode_enabled.png"/>) sa aktuálny overovací kód (6-miestna hodnota) skopíruje do schránky.
-Hodnota sa mení každých 30 sekúnd a schránka sa bude podľa toho aktualizovať, kým sa databáza neuzamkne alebo sa do schránky neumiestni niečo iné.</li>
+<li>Kliknutím na animované tlačidlo Overovací kód (<img alt="Skopírovať overovací kód" src="images/authenticode_enabled.png"/>) sa aktuálny overovací kód (6-miestna hodnota TOTP tokenu) skopíruje do schránky.
+Hodnota sa mení každých 30 sekúnd a schránka sa bude podľa toho automaticky aktualizovať, kým sa databáza neuzamkne alebo sa do schránky neumiestni niečo iné.</li>
 </ul>
 
 <p>Pole <b>Poznámky</b> je určené pre <i>krátke texty</i> a je
@@ -183,10 +183,10 @@ Ukazovateľ sily pod poľom Heslo poskytuje približnú predstavu o sile hesla. 
 
 <hr>
 
-<small><b>Poznámka:</b> Ak používate systém "Single sign-on" (SSO), ktorý vám umožňuje
+<small><b>Poznámka:</b> Ak používate systém "Single Sign-on" (SSO), ktorý vám umožňuje
 zdieľať rovnaké heslo na rôznych počítačoch/v aplikáciách atď., môžete nastaviť záznamy <b>Password Safe</b> tak, aby zmena
 jedného hesla ovplyvnila všetky ostatné súvisiace záznamy. Toto sa nazýva "aliasovanie"
-záznamov a je podrobne vysvetlené <a href="aliases.html">tu</a>.
+záznamov a je podrobne vysvetlené v téme <a href="aliases.html">Vytváranie aliasov</a>.
 </small>
 
 <hr>

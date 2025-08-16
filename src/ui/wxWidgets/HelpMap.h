@@ -12,7 +12,8 @@
 //For both export text and export XML
 DLG_HELP(ExportTextWarningDlgBase,                      html/export.html)
 DLG_HELP(SafeCombinationChangeDlg,                      html/change_combo.html)
-DLG_HELP(MergeDlg,                                      html/file_menu.html)
+DLG_HELP(MergeDlg,                                      html/file_menu.html#Merge)
+DLG_HELP(AdvancedSelectionDlg<AdvancedMergeOptions>,    html/file_menu.html#Merge)
 DLG_HELP(SafeCombinationSetupDlg,                       html/about_combinations.html)
 DLG_HELP(ImportTextDlg,                                 html/import.html)
 DLG_HELP(ImportXmlDlg,                                  html/import.html#XML)
@@ -28,6 +29,7 @@ DLG_HELP(AdvancedSelectionDlg<FindDlgType>,             html/searching.html)
 
 //The help for Manage Password Policies dialog
 DLG_HELP(ManagePasswordPoliciesDlg,                     html/named_password_policies.html)
+DLG_HELP(PasswordPolicyDlg,                             html/password_policies.html)
 
 #ifndef NO_YUBI
 //The Yubikey Configuration dialog
@@ -43,7 +45,6 @@ DLG_HELP(YubiCfgDlg,                                    html/manage_menu.html#yu
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Backups"),          html/backups_tab.html)
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Display"),          html/display_tab.html)
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Miscellaneous"),    html/misc_tab.html)
-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Password Policy"),  html/password_policies.html)
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Password History"), html/password_history_tab.html)
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Security"),         html/security_tab.html)
 PROPSHEET_HELP(OptionsPropertySheetDlg,            _("System"),           html/system_tab.html)
@@ -68,5 +69,7 @@ DLG_HELP(pwFiltersMediaDlg,                html/filters.html)
 DLG_HELP(pwFiltersPasswordDlg,             html/filters.html)
 
 DLG_HELP(SelectAliasDlg,                   html/aliases.html)
+
+DLG_HELP(CreateShortcutDlg,                html/edit_menu.html#CreateShortcut)
 
 #endif // _HELPMAP_H_

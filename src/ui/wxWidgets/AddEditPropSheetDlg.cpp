@@ -2424,7 +2424,7 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
 
 	      wxMessageDialog msg(this, errmess.c_str(), _("Alias Password Error"), style);
 
-        if (msg.ShowModal() == wxID_NO) {
+        if (msg.ShowModal() == wxID_NO || !yesNoError) {
           m_BasicPasswordTextCtrl->SetFocus();
           return nullptr;
         }

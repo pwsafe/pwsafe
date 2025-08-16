@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Menu Súbor</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Menu Súbor</h2>
+
+<img alt="Menu Súbor" src="images/file_menu.png">
+
+<p>Menu <b>Súbor</b> obsahuje možnosti súvisiace so správou a vytváraním nových <b>Password Safe</b> databáz.</p>
+
+<h3>Nová</h3>
+
+<p>Vytvorí novú prázdnu databázu.</p>
+
+<h3>Otvoriť</h3>
+
+<p>Otvorí existujúcu databázu. Keď sa zobrazí dialógové okno Otvoriť, môžete určiť či sa má existujúca databáza otvoriť v režime Čítanie/Zápis alebo
+Iba na čítanie. Po otvorení sa aktuálny stav zobrazí v stavovom riadku v dolnej časti okna <b>Password Safe</b>. 
+Používateľ môže kedykoľvek potom dvakrát kliknúť na túto časť stavového riadka a prepínať medzi týmito dvoma režimami 
+alebo použiť položku ponuky v menu "Súbor". Prepnutie databázy do režimu Čítanie/Zápis nemusí byť možné,
+ak má už iný používateľ tú istú databázu momentálne otvorenú v režime Čítanie/Zápis.
+Namiesto dvojitého kliknutia na stavový riadok môžete použiť aj príslušnú položku v menu "Súbor".</p>
+
+<h3>Zatvoriť</h3>
+
+<p>Zatvorí aktuálne otvorenú databázu bez ukončenia aplikácie.</p>
+
+<h3>Zamknúť</h3>
+
+<p>V závislosti od toho, či používateľ povolil používanie systémovej lišty (System Tray), 
+sa aktuálne otvorená databáza uzamkne buď na paneli úloh (kliknutím ľavým tlačidlom myši zobrazíte dialógové okno na odomknutie), 
+alebo na systémovej lište (kliknutím pravým tlačidlom myši zobrazíte kontextovú ponuku, kde
+môžete obnoviť databázu alebo ju len odomknúť). Na opätovné otvorenie/odomknutie databázy bude potrebné hlavné heslo.
+Tlačidlo Zamknúť je možné umiestniť aj na panel nástrojov pomocou prispôsobenia panela nástrojov 
+(kliknutím pravým tlačidlom myši na panel nástrojov).</p>
+
+<h3>Nedávne</h3>
+
+<p>Táto časť menu Súbor môže obsahovať zoznam nedávno otvorených súborov databázy. 
+Táto sekcia bude prázdna, ak ide o prvé použitie <bPassword Safe</b>.</p>
+
+<hr style="width: 100%; height: 2px;">
+
+<small>
+<p><b>Poznámky:</b></p>
+<ul>
+<li>Zoznam naposledy otvorených súborov je možné vymazať výberom možnosti "<b>Vymaž zoznam nedávno otvorených</b>"</li>
+<li>Počet naposledy otvorených súborov, ktoré bude program uchovávať, je možné nakonfigurovať prostredníctvom karty
+<a href="system_tab.html">"Systém"</a> v Nastaveniach, kde môžete tiež nakonfigurovať či chcete naposledy otvorené súbory zobraziť v ponuke Súbor priamo, alebo ako podmenu.</li>
+</ul>
+</small>
+
+<hr style="width: 100%; height: 2px;">
+
+<h3>Uložiť</h3>
+
+<p>Uloží akékoľvek zmeny v aktuálnej databáze. Ak od predchádzajúceho uloženia neboli vykonané žiadne zmeny alebo ak bola databáza otvorená iba na čítanie, táto možnosť bude sivá.</p>
+
+<h3>Uložiť ako</h3>
+
+<p>Uloží kópiu aktuálnej databázy pod novým názvom alebo do iného umiestnenia.</p>
+
+<h3>Exportovať do</h3>
+
+<p>Exportuje obsah aktuálnej databázy do externého súboru v starom formáte databázy <b>Password Safe</b>,
+do XML súboru alebo ako obyčajný text. Ak je práve aktívny filter, môžete exportovať iba zobrazené záznamy ktoré spĺňajú
+podmienky filtra, do databázy <b>Password Safe</b>.
+V tomto prípade, ak je vo výsledkoch filtra zahrnutý alias alebo odkaz, jej základný
+záznam sa tiež exportuje, aj keď tieto podmienky nespĺňa.<br>
+Procesom exportu vás prevedie sprievodca, môžete napr. vybrať ktoré polia sa budú brať do úvahy, alebo obmedziť ktoré záznamy sa budú exportovať.<br>
+Viac informácií o exporte databázy do iných formátov nájdete v téme <a href="export.html">Export záznamov</a>.<br>
+Viac informácií ohľadom voľby "Pokročilé možnosti" nájdete v téme <a href="advanced.html">Pokročilé možnosti pri spustení sprievodcu</a>.</p>
+
+<h3>Importovať z</h3>
+
+<p>Importuje obsah predtým <a href="export.html">exportovaného</a> alebo správne 
+naformátovaného textového súboru, XML súboru alebo databázy hesiel KeePass V1 do aktuálnej databázy.<br>
+Viac informácií o importovaní textových súborov nájdete v téme <a href="import.html">Importovanie záznamov</a>.</p>
+
+<h3><a name="Merge"></a>Zlúčiť</h3>
+
+<p>Zlúči databázu <b>Password Safe</b> alebo záložný súbor (.bak) do aktuálnej databázy.
+Táto operácia nie je prístupná ak je aktuálna databáza v režime iba na čítanie. Procesom zlúčenia vás prevedie sprievodca,  
+môžete napr. vybrať ktoré polia sa budú brať do úvahy, alebo obmedziť ktoré záznamy zlúčite do aktuálnej databázy.<br>
+Viac informácií ohľadom voľby "Pokročilé možnosti" nájdete v téme <a href="advanced.html">Pokročilé možnosti pri spustení sprievodcu</a>.</p>
+
+<h3>Porovnať</h3>
+
+<p>Porovná aktuálne otvorenú databázu s inou. Procesom porovnania vás prevedie sprievodca, 
+môžete napr. obmedziť ktoré záznamy a ktoré polia týchto záznamov sa budú porovnávať medzi týmito dvoma databázami.<br>
+Viac informácií o zobrazení výsledkov procesu porovnania nájdete v téme <a href="compare_results.html">Výsledky porovnania databáz</a>.<br>
+Viac informácií ohľadom voľby "Pokročilé možnosti" nájdete v téme <a href="advanced.html">Pokročilé možnosti pri spustení sprievodcu</a>.</p>
+
+<h3>Synchronizovať</h3>
+
+<p>Synchronizuje aktuálne otvorenú databázu s inou.</p>
+<p>Hlavný rozdiel medzi zlúčením a synchronizáciou je v tom, že počas zlúčenia
+sa všetky záznamy zlúčenej databázy prenesú do aktuálne otvorenej databázy. 
+Počas synchronizácie sa však aktualizujú iba záznamy v aktuálne otvorenej databáze. 
+Synchronizáciou vás prevedie sprievodca, môžete napr. obmedziť ktoré záznamy a ktoré polia týchto záznamov 
+synchronizujete medzi týmito dvoma databázami.<br>
+Viac informácií o zobrazení výsledkov procesu porovnania nájdete v téme <a href="compare_results.html">Výsledky porovnania databáz</a>.</p>
+
+<h3>Zmeniť režim R/W</h3>
+<p>Databázu, ktorá je otvorená na čítanie a zápis (predvolená hodnota), je možné chrániť pred neúmyselnými 
+zmenami výberom položky <b>Zmeniť na R-O</b>. Podobne je možné databázu iba na čítanie začať upravovať po výbere položky <b>Zmeniť na R/W</b>. 
+Pri zmene na čítanie aj zápis sa zobrazí výzva na zadanie hlavného hesla. Medzi týmito režimami môžete prepínať aj dvojitým kliknutím na text R/W / R-O 
+v stavovom riadku v dolnej časti okna aplikácie.</p>
+
+<hr style="width: 100%; height: 2px;">
+<p style="color=red;"><b>Poznámka:</b> Operácie zlúčenia, porovnania a synchronizácie môžu trvať dlho, najmä pri veľkých databázach.</p>
+
+<hr style="width: 100%; height: 2px;">
+
+<h3>Vlastnosti</h3>
+
+<p>Zobrazuje informácie o aktuálne otvorenej databáze Password Safe, ako napríklad: verziu formátu, 
+počet skupín, počet záznamov a informácie o tom kedy bola naposledy uložená a kým.</p>
+
+<img alt="Vlastnosti databázy" src="images/db_properties.png">
+
+<h3>Ukončiť</h3>
+
+<p>Zatvorí program <b>Password Safe</b>. Ak boli od posledného uloženia vykonané zmeny v databáze, zobrazí sa výzva na jej uloženie.</p>
+
+<hr>
+
+<h4>Reporty</h4>
+
+<p><b>Poznámka:</b> Porovnanie, Export, Import, Zlúčenie a Synchronizácia vytvoria správu,
+ktorá je zobrazená v dialógovom okne sprievodcu a tú možno potom skopírovať do schránky alebo uložiť na disk
+ako textový súbor, v rovnakom priečinku ako databáza. Položka <a href="view_menu.html">"Reporty"</a> v menu "Zobraziť" 
+sa môže neskôr použiť na opätovné zobrazenie správ. Názov súboru správy je pevne daný a závisí od operácie, ktorá ho vytvorila. 
+Ak sa tá istá operácia zopakuje a jej správa sa uloží na disk, akákoľvek existujúca správa pre túto operáciu sa prepíše. 
+<span style="color=red;"><b>Poznámka:</b> Správa môže obsahovať citlivé údaje a
+pri výbere možnosti "Uložiť na disk" je potrebná zvýšená opatrnosť.</span></p>
+
+<img alt="Zobraziť reporty" src="images/view_report.png">
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Menu Súbor">
+<param name="Keyword" value="KeePass">
+<param name="Keyword" value="Export">
+<param name="Keyword" value="Import">
+<param name="Keyword" value="Zlúčiť">
+<param name="Keyword" value="Porovnať">
+<param name="Keyword" value="Synchronizovať">
+</object>
+
+</body>
+</html>
