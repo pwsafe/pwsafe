@@ -418,8 +418,8 @@ msgstr " Importovat # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [Proces ID=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [Proces ID=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -3375,11 +3375,11 @@ msgstr "Přetáhni tento obrázek do jiného okna pro započetí automatického 
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Puštěný záznam '%s:%s:%s' ukazuje na záznam, který je aliasem jiného záznamu.\n"
+"Puštěný záznam '%ls:%ls:%ls' ukazuje na záznam, který je aliasem jiného záznamu.\n"
 "\n"
 "Puštěný záznam nyní odkazuje na základní záznam tohoto záznamu."
 
@@ -7470,13 +7470,13 @@ msgstr ""
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "Následující záznam byl zkopírován do databáze %s: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "Následující záznam byl zkopírován do databáze %s: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "Následující záznam byl synchronizován do databáze %s: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "Následující záznam byl synchronizován do databáze %s: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7544,7 +7544,7 @@ msgstr ""
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
 
 #. Resource IDs: (5770)
@@ -7585,8 +7585,8 @@ msgstr "Tato hodnota zkratky není k dispozici, jelikož je již přiřazena apl
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Cíl tohoto aliasu [%s:%s:%s] není normální položka."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Cíl tohoto aliasu [%ls:%ls:%ls] není normální položka."
 
 #. Resource IDs: (5355)
 msgid "This database is the same as the current database!"
@@ -7669,7 +7669,7 @@ msgstr ""
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 
 #. Resource IDs: (5110)
@@ -9695,37 +9695,37 @@ msgstr "minut nečinnosti"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr "existuje více záznamů s názvem %s a uživatelským jménem %s nebo skupinou %s a názvem %s."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
+msgid "multiple entries exist with title=%ls."
 msgstr "existuje více záznamů s názvem %s."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
 msgstr "neexistuje žádný záznam v kořeni s názvem %s a uživatelským jménem %s."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
 msgstr "neexistuje záznam se skupinou %s, názvem %s a bez užvatelského jména."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "nenalazena skupina=%s, titul=%s nebo jméno=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "nenalazena skupina=%ls, titul=%ls nebo jméno=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "záznam stímto názvem neexistuje=%s ,jménem=%s či skupinou=%s, titul=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "záznam stímto názvem neexistuje=%ls ,jménem=%ls či skupinou=%ls, titul=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
+msgid "no entry exists with title=%ls."
 msgstr "záznam s názvem %s neexistuje."
 
 #. Resource IDs: (3254)

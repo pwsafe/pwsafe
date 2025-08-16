@@ -2622,14 +2622,14 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
         if(pl.TargetType == CItemData::ET_ALIAS) {
           // This base is in fact an alias. ParseBaseEntryPWD already found 'proper base'
           // So dropped entry will point to the 'proper base' and tell the user.
-          wxString cs_msg = wxString::Format(_("Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."),
+          wxString cs_msg = wxString::Format(_("Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."),
                             sxgroup.c_str(),
                             sxtitle.c_str(),
                             sxuser.c_str());
           wxMessageBox(cs_msg, _("Drag and Drop failed"), wxOK);
         } else if(pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_ALIASBASE) {
           // Only normal or alias base allowed as target
-          wxString cs_msg = wxString::Format(_("This alias's target [%s:%s:%s] is not a normal entry."),
+          wxString cs_msg = wxString::Format(_("This alias's target [%ls:%ls:%ls] is not a normal entry."),
                             sxgroup.c_str(),
                             sxtitle.c_str(),
                             sxuser.c_str());
@@ -2646,7 +2646,7 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
       } else if(pl.InputType == CItemData::ET_SHORTCUT) {
         if(pl.TargetType != CItemData::ET_NORMAL && pl.TargetType != CItemData::ET_SHORTCUTBASE) {
           // Only normal or shortcut base allowed as target
-          wxString cs_msg = wxString::Format(_("This shortcut's target [%s:%s:%s] is not a normal entry."),
+          wxString cs_msg = wxString::Format(_("This shortcut's target [%ls:%ls:%ls] is not a normal entry."),
                             sxgroup.c_str(),
                             sxtitle.c_str(),
                             sxuser.c_str());

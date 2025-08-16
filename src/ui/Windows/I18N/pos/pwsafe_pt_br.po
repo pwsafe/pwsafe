@@ -379,8 +379,8 @@ msgstr " Importar # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [ID do Processo=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [ID do Processo=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -3339,11 +3339,11 @@ msgstr "Arrastar esta imagem para outra janela para iniciar o preenchimento auto
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"A senha eliminada da entrada '%s:%s:%s' aponta para uma entrada que também é um alias.\n"
+"A senha eliminada da entrada '%ls:%ls:%ls' aponta para uma entrada que também é um alias.\n"
 "A entrada eliminada agora faz referência à entrada base dessa entrada."
 
 #. Resource IDs: (32087 - Menu, 32087 - MenuEx)
@@ -7441,13 +7441,13 @@ msgstr "As senhas das seguintes entradas estão prestes a expirar ou já expirar
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "A seguinte entrada foi copiada para o banco de dados %s: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "A seguinte entrada foi copiada para o banco de dados %s: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "A entrada a seguir foi sincronizada com o banco de dados %s: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "A entrada a seguir foi sincronizada com o banco de dados %s: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7519,8 +7519,8 @@ msgstr "O banco de dados original, \"%s\", está no formato anterior à 3.0. Os 
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "A entrada referenciada '%s:%s:%s' é em si um alias ou atalho. Isto não é suportado."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
+msgstr "A entrada referenciada '%ls:%ls:%ls' é em si um alias ou atalho. Isto não é suportado."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -7560,8 +7560,8 @@ msgstr "Esse valor de tecla de atalho não está disponível, pois já está atr
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "A meta desse alias [%s:%s:%s] não é uma entrada normal."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "A meta desse alias [%ls:%ls:%ls] não é uma entrada normal."
 
 #. Resource IDs: (5355)
 msgid "This database is the same as the current database!"
@@ -7650,8 +7650,8 @@ msgstr "Este programa requer o arquivo %Ts, que não foi encontrado neste sistem
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "O destino deste atalho [%s:%s:%s] não é uma entrada normal."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "O destino deste atalho [%ls:%ls:%ls] não é uma entrada normal."
 
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."
@@ -9683,38 +9683,38 @@ msgstr "minutos ocioso"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "existem várias entradas com título=%s e nome de usuário=%s ou com grupo =%s e título =%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "existem várias entradas com título=%ls e nome de usuário=%ls ou com grupo =%ls e título =%ls."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "existem várias entradas com o título=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "existem várias entradas com o título=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "nenhuma entrada existe na raiz com título=%s e nome de usuário=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "nenhuma entrada existe na raiz com título=%ls e nome de usuário=%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "nenhuma entrada existe com o grupo =%s, título=%s e nome de usuário vazio."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "nenhuma entrada existe com o grupo =%ls, título=%ls e nome de usuário vazio."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "nenhuma entrada existe com o grupo=%s, título=%s e nome de usuário=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "nenhuma entrada existe com o grupo=%ls, título=%ls e nome de usuário=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "nenhuma entrada existe com título=%s e nome de usuário=%s ou com grupo=%s, título=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "nenhuma entrada existe com título=%ls e nome de usuário=%ls ou com grupo=%ls, título=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "nenhuma entrada existe com o título=%s."
+msgid "no entry exists with title=%ls."
+msgstr "nenhuma entrada existe com o título=%ls."
 
 #. Resource IDs: (3254)
 #, c-format

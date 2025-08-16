@@ -934,7 +934,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2246
 #, fuzzy
 msgid "An entry or shortcut with the same Group, Title and Username already exists."
-msgstr "nincs ilyen bejegyzés: csoport=%s, megnevezés=%s és felhasználónév=%s."
+msgstr "nincs ilyen bejegyzés: csoport=%ls, megnevezés=%ls és felhasználónév=%ls."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2247
 #, fuzzy
@@ -2638,7 +2638,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:475
 #, fuzzy, c-format
 msgid " [Process ID=%ls]"
-msgstr " [Folyamatazonosító=%s]"
+msgstr " [Folyamatazonosító=%ls]"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:481
 #, fuzzy, c-format
@@ -5227,22 +5227,22 @@ msgstr ""
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2625
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Az eldobott bejegyzés: '%s:%s:%s' jelszava egy szintén álnév-bejegyzésre mutat.\n"
+"Az eldobott bejegyzés: '%ls:%ls:%ls' jelszava egy szintén álnév-bejegyzésre mutat.\n"
 "\n"
 "Az eldobott bejegyzés most már annak a bejegyzésnek az alapbejegyzésére hivatkozik."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2632
 #, c-format
-msgid "This alias's target [%s:%s:%s] is not a normal entry."
+msgid "This alias's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2649
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
@@ -5620,7 +5620,7 @@ msgstr "OutOfMemoryException."
 
 #: ../../../core/core_st.cpp:30
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 
 #: ../../../core/core_st.cpp:31
@@ -5641,43 +5641,43 @@ msgstr "álnevek"
 
 #: ../../../core/core_st.cpp:35
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "több bejegyzés is van ezzel a megnevezéssel: %s."
+msgid "multiple entries exist with title=%ls."
+msgstr "több bejegyzés is van ezzel a megnevezéssel: %ls."
 
 #: ../../../core/core_st.cpp:36
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "nincs bejegyzés ezzel a megnevezéssel: %s."
+msgid "no entry exists with title=%ls."
+msgstr "nincs bejegyzés ezzel a megnevezéssel: %ls."
 
 #: ../../../core/core_st.cpp:37
 #, c-format
 msgid ""
-"multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+"multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr ""
-"több ilyen bejegyzés is van: megnevezéssel=%s és felhasználónév=%s vagy csoport=%s és "
-"megnevezés=%s"
+"több ilyen bejegyzés is van: megnevezéssel=%ls és felhasználónév=%ls vagy csoport=%ls és "
+"megnevezés=%ls"
 
 #: ../../../core/core_st.cpp:38
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
 msgstr ""
-"nincs ilyen bejegyzés: megnevezés=%s és felhasználónév=%s vagy csoport=%s, "
-"megnevezés=%s."
+"nincs ilyen bejegyzés: megnevezés=%ls és felhasználónév=%ls vagy csoport=%ls, "
+"megnevezés=%ls."
 
 #: ../../../core/core_st.cpp:39
 #, fuzzy, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "nincs ilyen bejegyzés: csoport=%s, megnevezés=%s és üres felhasználónév."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "nincs ilyen bejegyzés: csoport=%ls, megnevezés=%ls és üres felhasználónév."
 
 #: ../../../core/core_st.cpp:40
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "nincs ilyen bejegyzés: csoport=%s, megnevezés=%s és üres felhasználónév."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "nincs ilyen bejegyzés: csoport=%ls, megnevezés=%ls és üres felhasználónév."
 
 #: ../../../core/core_st.cpp:41
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "nincs ilyen bejegyzés a gyökérmappában: megnevezés=%s és felhasználónév=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "nincs ilyen bejegyzés a gyökérmappában: megnevezés=%ls és felhasználónév=%ls."
 
 #: ../../../core/core_st.cpp:42
 msgid "Password implies this is an alias entry, but "
@@ -5715,7 +5715,7 @@ msgstr ""
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
 
 #: ../../../core/core_st.cpp:51

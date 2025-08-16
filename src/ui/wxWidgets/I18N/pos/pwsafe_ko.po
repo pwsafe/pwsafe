@@ -2747,7 +2747,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:475
 #, fuzzy, c-format
 msgid " [Process ID=%ls]"
-msgstr " [프로세스 ID=%s]"
+msgstr " [프로세스 ID=%ls]"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:481
 #, c-format
@@ -5428,25 +5428,25 @@ msgstr ""
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2625
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"끊어진 항목 '%s:%s:%s' 의 비밀번호가 이미 보조 항목의 속성을 가진 항목을 가리키고 있습"
+"끊어진 항목 '%ls:%ls:%ls' 의 비밀번호가 이미 보조 항목의 속성을 가진 항목을 가리키고 있습"
 "니다.\n"
 "\n"
 "끊어진 항목은 지금부터 그 항목의 기본 항목을 참조하게 됩니다."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2632
 #, fuzzy, c-format
-msgid "This alias's target [%s:%s:%s] is not a normal entry."
-msgstr "이 보조 항목의 대상 [%s:%s:%s] 이 일반 항목이 아니거나 이미 보조 항목입니다."
+msgid "This alias's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "이 보조 항목의 대상 [%ls:%ls:%ls] 이 일반 항목이 아니거나 이미 보조 항목입니다."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2649
 #, fuzzy, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
-"이 바로가기 항목 [%s:%s:%s] 의 상대가 일반 항목이 아니거나 이미 바로가기 항목입니다."
+"이 바로가기 항목 [%ls:%ls:%ls] 의 상대가 일반 항목이 아니거나 이미 바로가기 항목입니다."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
 #, c-format
@@ -5879,8 +5879,8 @@ msgstr "메모리 예외 초과"
 
 #: ../../../core/core_st.cpp:30
 #, fuzzy, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "이 보조 항목의 대상 [%s:%s:%s] 이 일반 항목이 아니거나 이미 보조 항목입니다."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "이 보조 항목의 대상 [%ls:%ls:%ls] 이 일반 항목이 아니거나 이미 보조 항목입니다."
 
 #: ../../../core/core_st.cpp:31
 msgid "after"
@@ -5900,40 +5900,40 @@ msgstr "보조 항목들"
 
 #: ../../../core/core_st.cpp:35
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "multiple entries exist with title=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "multiple entries exist with title=%ls."
 
 #: ../../../core/core_st.cpp:36
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "no entry exists with title=%s."
+msgid "no entry exists with title=%ls."
+msgstr "no entry exists with title=%ls."
 
 #: ../../../core/core_st.cpp:37
 #, c-format
 msgid ""
-"multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+"multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr ""
-"multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+"multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 
 #: ../../../core/core_st.cpp:38
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
 
 #: ../../../core/core_st.cpp:39
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "no entry exists with group=%s, title=%s and username=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "no entry exists with group=%ls, title=%ls and username=%ls."
 
 #: ../../../core/core_st.cpp:40
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "no entry exists with group=%s, title=%s and empty username."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "no entry exists with group=%ls, title=%ls and empty username."
 
 #: ../../../core/core_st.cpp:41
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "no entry exists in the root with title=%s and username=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "no entry exists in the root with title=%ls and username=%ls."
 
 #: ../../../core/core_st.cpp:42
 msgid "Password implies this is an alias entry, but "
@@ -5972,7 +5972,7 @@ msgstr ""
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
 
 #: ../../../core/core_st.cpp:51
@@ -10122,8 +10122,8 @@ msgstr ""
 #~ msgid "The following entries' passwords are about to expire or expired:"
 #~ msgstr "다음 항목들의 비밀번호가 만료될 예정임:"
 
-#~ msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-#~ msgstr "다음 항목이 %s 데이터베이스로 복사되었습니다: '%s:%s:%s'"
+#~ msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+#~ msgstr "다음 항목이 %s 데이터베이스로 복사되었습니다: '%ls:%ls:%ls'"
 
 #~ msgid ""
 #~ "The notes field of this entry has more text than can be displayed. Changing this "
@@ -10137,12 +10137,12 @@ msgstr ""
 #~ "기 기능을 사용해 주십시오."
 
 #~ msgid ""
-#~ "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an "
+#~ "The password is in 'alias' form but the referenced entry '%ls:%ls:%ls' is itself an "
 #~ "alias.\n"
 #~ "\n"
 #~ "Do you wish this entry to point to the 'real' base entry?"
 #~ msgstr ""
-#~ "비밀번호가 보조 항목을 따르고 있지만 참조된 항목 '%s:%s:%s' 또한 보조 항목입니다.\n"
+#~ "비밀번호가 보조 항목을 따르고 있지만 참조된 항목 '%ls:%ls:%ls' 또한 보조 항목입니다.\n"
 #~ "\n"
 #~ "실제 기본 항목을 가리키도록 하시겠습니까?"
 

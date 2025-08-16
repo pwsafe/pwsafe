@@ -548,8 +548,8 @@ msgstr " Importera # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [Process ID=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [Process ID=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -3517,11 +3517,11 @@ msgstr "Drag ikonen till ett fönsterfält för att starta Autoskriv därifrån.
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Ignorerade post '%s:%s:%s' lösenordet pekar på en post som också är en alias.\n"
+"Ignorerade post '%ls:%ls:%ls' lösenordet pekar på en post som också är en alias.\n"
 "\n"
 "Den ignorerade posten refererar nu till postens baspost."
 
@@ -7621,13 +7621,13 @@ msgstr "Följande posters lösenord är på väg att gå ut eller har redan gåt
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "Följande post kopierades till %s databas: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "Följande post kopierades till %s databas: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "Följande post synkroniserades till %s databas: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "Följande post synkroniserades till %s databas: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7698,8 +7698,8 @@ msgstr "Den ursprungliga databasen, \"%s\", har pre-3.0 format. Data kommer nu a
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "Den refererade posten '%s:%s:%s' är själv ett alias eller genväg. Detta stöds inte."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
+msgstr "Den refererade posten '%ls:%ls:%ls' är själv ett alias eller genväg. Detta stöds inte."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -7739,8 +7739,8 @@ msgstr "Detta snabbtangentsvärde är inte tillgängligt då det redan är tilld
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Detta alias mål [%s:%s:%s] är inte en normal post."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Detta alias mål [%ls:%ls:%ls] är inte en normal post."
 
 #. Resource IDs: (5355)
 msgid "This database is the same as the current database!"
@@ -7829,8 +7829,8 @@ msgstr "Detta program kräver filen %Ts, som inte har hittats i det här systeme
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "Denna genvägs mål [%s:%s:%s] är inte en normal post."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Denna genvägs mål [%ls:%ls:%ls] är inte en normal post."
 
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."
@@ -9862,38 +9862,38 @@ msgstr "minuters inaktivitet"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "flera poster finns med titel=%s och användarnamn=%s eller med grupp=%s och titel=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "flera poster finns med titel=%ls och användarnamn=%ls eller med grupp=%ls och titel=%ls."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "fler poster finns med titel=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "fler poster finns med titel=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "inga poster finns i roten med titel=%s och användarnamn=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "inga poster finns i roten med titel=%ls och användarnamn=%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "ingen post finns med grupp=%s, titel=%s och tomt användarnamn."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "ingen post finns med grupp=%ls, titel=%ls och tomt användarnamn."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "ingen post finns med grupp=%s, titel=%s och användarnamn=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "ingen post finns med grupp=%ls, titel=%ls och användarnamn=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "ingen post finns med titel=%s och användarnamn=%s eller med grupp=%s, titel=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "ingen post finns med titel=%ls och användarnamn=%ls eller med grupp=%ls, titel=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "finns ingen post med titel=%s."
+msgid "no entry exists with title=%ls."
+msgstr "finns ingen post med titel=%ls."
 
 #. Resource IDs: (3254)
 #, c-format

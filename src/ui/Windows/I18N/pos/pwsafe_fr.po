@@ -405,8 +405,8 @@ msgstr " Importer # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [Process ID=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [Process ID=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -3368,11 +3368,11 @@ msgstr "Glissez cette image sur une autre fenêtre pour démarrer l'auto-frappe.
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Entrée '%s:%s:%s' ignorée, le mot de passe pointe sur une entrée qui est aussi un alias.\n"
+"Entrée '%ls:%ls:%ls' ignorée, le mot de passe pointe sur une entrée qui est aussi un alias.\n"
 "\n"
 "L'entrée ignorée référence désormais cette entrée de base de l'entrée."
 
@@ -7472,13 +7472,13 @@ msgstr "Le mot de passe des entrées suivants échouera sous peu, ou est déjà 
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "L'entrée suivante a été copiée dans la base %s: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "L'entrée suivante a été copiée dans la base %s: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "L'entrée suivante a été synchonisé au %s fichier: '%s:%s:%s"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "L'entrée suivante a été synchonisé au %s fichier: '%ls:%ls:%ls"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7549,8 +7549,8 @@ msgstr "Le fichier original, \"%s\", est en format pre-3.0. Les données seront 
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "L'entrée '%s:%s:%s' est elle-même un alias ou un raccourci. Ceci n'est pas supporté."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
+msgstr "L'entrée '%ls:%ls:%ls' est elle-même un alias ou un raccourci. Ceci n'est pas supporté."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -7590,8 +7590,8 @@ msgstr "Cette valeur de raccourci n'est pas disponible car elle est déjà attri
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "La cible de cet alias [%s:%s:%s] n'est pas une entrée normale ou est déjà la base d'un alias."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "La cible de cet alias [%ls:%ls:%ls] n'est pas une entrée normale ou est déjà la base d'un alias."
 
 #. Resource IDs: (5355)
 msgid "This database is the same as the current database!"
@@ -7680,8 +7680,8 @@ msgstr "Ce programme requiert le fichier %Ts, qui n'a pas été trouvé sur ce s
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "La cible de ce raccourci [%s:%s:%s] n'est pas une entrée normale ou est déjà une base de raccourci."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "La cible de ce raccourci [%ls:%ls:%ls] n'est pas une entrée normale ou est déjà une base de raccourci."
 
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."
@@ -9713,37 +9713,37 @@ msgstr "minutes d'inactivité"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "plusieurs entrées existent pour titre=%s et nom d'utilisateur=%s ou pour groupe=%s et titre=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "plusieurs entrées existent pour titre=%ls et nom d'utilisateur=%ls ou pour groupe=%ls et titre=%ls."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "de multiples entrées existent avec titre=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "de multiples entrées existent avec titre=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "aucune entrée n'existe pour titre=%s et nom d'utilisateur=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "aucune entrée n'existe pour titre=%ls et nom d'utilisateur=%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "aucune entrée n'existe pour groupe=%s, titre=%s et nom d'utilisateur vide."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "aucune entrée n'existe pour groupe=%ls, titre=%ls et nom d'utilisateur vide."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "aucune entrée n'existe pour groupe=%s, titre=%s et nom d'utilisateur=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "aucune entrée n'existe pour groupe=%ls, titre=%ls et nom d'utilisateur=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "aucune entrée n'existe avec comme titre %s et comme nom d'utilisateur %s ou groupe %s, titre=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "aucune entrée n'existe avec comme titre %s et comme nom d'utilisateur %s ou groupe %s, titre=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
+msgid "no entry exists with title=%ls."
 msgstr "aucune entrée n'existe avec comme titre %s."
 
 #. Resource IDs: (3254)

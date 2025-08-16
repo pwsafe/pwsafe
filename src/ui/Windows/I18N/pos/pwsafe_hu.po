@@ -301,8 +301,8 @@ msgstr "# %d importálása"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [Folyamatazonosító=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [Folyamatazonosító=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -3270,11 +3270,11 @@ msgstr "Húzza ezt a képet egy másik ablakra az Autogépelés megkezdéséhez.
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Az eldobott bejegyzés: '%s:%s:%s' jelszava egy szintén álnév-bejegyzésre mutat.\n"
+"Az eldobott bejegyzés: '%ls:%ls:%ls' jelszava egy szintén álnév-bejegyzésre mutat.\n"
 "\n"
 "Az eldobott bejegyzés most már annak a bejegyzésnek az alapbejegyzésére hivatkozik."
 
@@ -7381,13 +7381,13 @@ msgstr "A következő bejegyzések jelszavai hamarosan lejárnak, vagy már lej�
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "A következő bejegyzést másolták az %s adatbázisba: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "A következő bejegyzést másolták az %s adatbázisba: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "A következő bejegyzés szinkronizálva lett az %s adatbázissal: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "A következő bejegyzés szinkronizálva lett az %s adatbázissal: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7458,8 +7458,8 @@ msgstr "Az eredeti adatbázis, \"%s\", pre-3.0 formátumú. Az adatok mostantól
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "A hivatkozott '%s:%s:%s' bejegyzés maga egy álnév vagy billentyűparancs. Ez nem támogatott."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
+msgstr "A hivatkozott '%ls:%ls:%ls' bejegyzés maga egy álnév vagy billentyűparancs. Ez nem támogatott."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -7499,8 +7499,8 @@ msgstr "Ez a gyorsbillentyű érték nem érhető el, mivel már hozzá van rend
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Ez az alias célpont [%s:%s:%s] nem egy normál bejegyzés."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Ez az alias célpont [%ls:%ls:%ls] nem egy normál bejegyzés."
 
 #. Resource IDs: (5355)
 msgid "This database is the same as the current database!"
@@ -7589,8 +7589,8 @@ msgstr "Ehhez a programhoz a %Ts fájl szükséges, amely nem található ezen a
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "Ennek a gyorsbillentyűnek a célja [%s:%s:%s] nem egy normál bejegyzés."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Ennek a gyorsbillentyűnek a célja [%ls:%ls:%ls] nem egy normál bejegyzés."
 
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."
@@ -9628,37 +9628,37 @@ msgstr "perce inaktív"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "több ilyen bejegyzés is van: megnevezéssel=%s és felhasználónév=%s vagy csoport=%s és megnevezés=%s"
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "több ilyen bejegyzés is van: megnevezéssel=%ls és felhasználónév=%ls vagy csoport=%ls és megnevezés=%ls"
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
+msgid "multiple entries exist with title=%ls."
 msgstr "több bejegyzés is van ezzel a megnevezéssel: %s."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "nincs ilyen bejegyzés a gyökérmappában: megnevezés=%s és felhasználónév=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "nincs ilyen bejegyzés a gyökérmappában: megnevezés=%ls és felhasználónév=%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "nincs ilyen bejegyzés: csoport=%s, megnevezés=%s és üres felhasználónév."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "nincs ilyen bejegyzés: csoport=%ls, megnevezés=%ls és üres felhasználónév."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "nincs ilyen bejegyzés: csoport=%s, megnevezés=%s és felhasználónév=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "nincs ilyen bejegyzés: csoport=%ls, megnevezés=%ls és felhasználónév=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "nincs ilyen bejegyzés: megnevezés=%s és felhasználónév=%s vagy csoport=%s, megnevezés=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "nincs ilyen bejegyzés: megnevezés=%ls és felhasználónév=%ls vagy csoport=%ls, megnevezés=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
+msgid "no entry exists with title=%ls."
 msgstr "nincs bejegyzés ezzel a megnevezéssel: %s."
 
 #. Resource IDs: (3254)

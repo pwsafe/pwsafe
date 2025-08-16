@@ -301,8 +301,8 @@ msgstr " Importeer # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [Proces ID=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [Proces ID=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -3263,11 +3263,11 @@ msgstr "Versleep deze afbeelding naar een ander scherm om Auto invul van daaraf 
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Invoer vervallen '%s:%s:%s' wachtwoord verwijst naar een invoer die tevens een alias is.\n"
+"Invoer vervallen '%ls:%ls:%ls' wachtwoord verwijst naar een invoer die tevens een alias is.\n"
 "\n"
 "De vervallen invoer verwijst nu naar de basis-invoer van die invoer."
 
@@ -7368,13 +7368,13 @@ msgstr "De wachtwoorden van de volgende invoeren gaan verlopen of zijn reeds ver
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "De volgende invoer werd gekopieerd naar de %s database: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "De volgende invoer werd gekopieerd naar de %s database: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "De volgende invoer was gesynchroniseerd naar de %s database: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "De volgende invoer was gesynchroniseerd naar de %s database: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7445,7 +7445,7 @@ msgstr "De oorspronkelijke database, \"%s\", is in de pre-3.0-indeling. De gegev
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr "De invoer waarnaar verwezen wordt '%s: %s: %s' is zelf een alias of snelkoppeling. Dit wordt niet ondersteund."
 
 #. Resource IDs: (5770)
@@ -7486,8 +7486,8 @@ msgstr "De Sneltoets waarde is niet beschikbaar omdat hij reeds is toegekend aan
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Dit alias doel [%s:%s:%s]is niet een gewone invoer."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Dit alias doel [%ls:%ls:%ls]is niet een gewone invoer."
 
 #. Resource IDs: (5355)
 msgid "This database is the same as the current database!"
@@ -7576,7 +7576,7 @@ msgstr "Dit programma vereist het bestand %Ts, welke niet gevonden is op dit sys
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr "Doel van deze snelkoppeling [%s: %s: %s] is niet een normale invoer."
 
 #. Resource IDs: (5110)
@@ -9609,38 +9609,38 @@ msgstr "minuten inactief"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "meerdere invoeren bestaan met titel=%s en gebruikersnaam=%s of met groep=%s en titel=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "meerdere invoeren bestaan met titel=%ls en gebruikersnaam=%ls of met groep=%ls en titel=%ls."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "meerdere invoeren bestaan met titel=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "meerdere invoeren bestaan met titel=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "in de basis bestaat geen invoer met titel=%s en gebruikersnaam=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "in de basis bestaat geen invoer met titel=%ls en gebruikersnaam=%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "er bestaat geen invoer met groep=%s, titel=%s en een lege gebruikersnaam."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "er bestaat geen invoer met groep=%ls, titel=%ls en een lege gebruikersnaam."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "er bestaat geen invoer met groep=%s, titel=%s en gebruikersnaam=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "er bestaat geen invoer met groep=%ls, titel=%ls en gebruikersnaam=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "er bestaat geen invoer met titel=%s en gebruikersnaam=%s of met groep=%s, titel=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "er bestaat geen invoer met titel=%ls en gebruikersnaam=%ls of met groep=%ls, titel=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "er bestaat geen invoer met titel=%s."
+msgid "no entry exists with title=%ls."
+msgstr "er bestaat geen invoer met titel=%ls."
 
 #. Resource IDs: (3254)
 #, c-format

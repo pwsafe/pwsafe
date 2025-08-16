@@ -366,8 +366,8 @@ msgstr "İçe Aktar # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [İşlem ID'si=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [İşlem ID'si=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -3332,11 +3332,11 @@ msgstr "Otomatik Doldurmanın orada başlaması için bu görüntüyü başka bi
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Bırakılan girdinin '%s:%s:%s' şifresi suret olan bir girdiye işaret ediyor.\n"
+"Bırakılan girdinin '%ls:%ls:%ls' şifresi suret olan bir girdiye işaret ediyor.\n"
 "\n"
 "Bırakılan girdi artık bu girdinin temel girdisine referans gösteriyor."
 
@@ -7425,13 +7425,13 @@ msgstr ""
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "Şu girdi %s veritabanına kopyalandı:'%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "Şu girdi %s veritabanına kopyalandı:'%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "Şu girdi %s veritabanıyla eşlendi: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "Şu girdi %s veritabanıyla eşlendi: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7496,7 +7496,7 @@ msgstr ""
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
 
 #. Resource IDs: (5770)
@@ -7537,7 +7537,7 @@ msgstr ""
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 
 #. Resource IDs: (5355)
@@ -7621,7 +7621,7 @@ msgstr ""
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 
 #. Resource IDs: (5110)
@@ -9625,38 +9625,38 @@ msgstr "dk beklemeden sonra"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr "%s başlıklı, %s kullanıcı adlı ya da %s gruplu %s başlıklı birden çok girdi var."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
+msgid "multiple entries exist with title=%ls."
 msgstr "%s başlıklı birden çok girdi var."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
 msgstr "kaynakta %s başlıklı ve %s kullanıcı adlı girdi yok."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
 msgstr "%s gruplu, %s başlıklı ve boş kullanıcı adlı girdi yok."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
 msgstr "%s gruplu, %s başlıklı ve %s kullanıcı adlı girdi yok."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
 msgstr "%s başlıklı ve %s kullanıcı adlı ya da %s gruplu ve %s başlıklı girdi yok."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "şu başlıklı bir girdi yok=%s."
+msgid "no entry exists with title=%ls."
+msgstr "şu başlıklı bir girdi yok=%ls."
 
 #. Resource IDs: (3254)
 #, c-format

@@ -275,8 +275,8 @@ msgstr " Uvozi # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [ID procesa=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [ID procesa=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -3236,11 +3236,11 @@ msgstr "Povlecite to sliko v drugo okno, za začetek samodejnega vtipkanja od ta
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Spuščen vnos '%s:%s:%s'  geslo kaže na vnos, ki je tudi kratko ime.\n"
+"Spuščen vnos '%ls:%ls:%ls'  geslo kaže na vnos, ki je tudi kratko ime.\n"
 "\n"
 "Izpuščen vnos se zdaj sklicuje na Osnovni vnos vnosa."
 
@@ -7338,13 +7338,13 @@ msgstr "Naslednja gesla vnosov gesla bodo kmalu potekla ali so že potekla:"
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "Naslednji vnos je bil kopiran v %s zbirko podatkov: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "Naslednji vnos je bil kopiran v %s zbirko podatkov: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "Naslednji vnos je bil sinhroniziran z %s zbirko podatkov: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "Naslednji vnos je bil sinhroniziran z %s zbirko podatkov: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7415,8 +7415,8 @@ msgstr "Izvirna zbirka podatkov, \"%s\", je v obliki pred formatom 3.0. Podatki 
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "Navedeni vnos '%s:%s:%s' je njegovo kratko ime ali bližnjica. To ni podprto."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
+msgstr "Navedeni vnos '%ls:%ls:%ls' je njegovo kratko ime ali bližnjica. To ni podprto."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -7456,8 +7456,8 @@ msgstr "Ta vrednost vroče tipke ni na voljo, ker je že dodeljena v programu Pa
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Ta cilj kratkega imena [%s:%s:%s] ni normalni vnos."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Ta cilj kratkega imena [%ls:%ls:%ls] ni normalni vnos."
 
 #. Resource IDs: (5355)
 msgid "This database is the same as the current database!"
@@ -7546,8 +7546,8 @@ msgstr "Ta program zahteva datoteko %Ts, ki je ni bilo mogoče najti v tem siste
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "Ta cilj bližnjice [%s:%s:%s] ni normalni vnos."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Ta cilj bližnjice [%ls:%ls:%ls] ni normalni vnos."
 
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."
@@ -9580,37 +9580,37 @@ msgstr "minut nedejavnosti"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr "obstaja več več vnosov z naslov= %s in uporabniško ime= %s ali s skupina= %s in naslo= %s."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "obstaja več vnosov z naslov=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "obstaja več vnosov z naslov=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
 msgstr "v korenu ne obstaja noben vnos z naslov= %s in uporabniško ime= %s."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
 msgstr "noben vnos ne obstaja s skupina= %s, naslov= %s in praznim uporabniškim imenom."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
 msgstr "noben vnos ne obstaja s skupina= %s, naslov= %s in uporabniško ime= %s."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
 msgstr "noben vnos ne obstaja z naslov= %s in uporabniško ime= %s ali s skupina= %s, naslov= %s."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
+msgid "no entry exists with title=%ls."
 msgstr "noben vnos ne obstaja z naslov= %s."
 
 #. Resource IDs: (3254)

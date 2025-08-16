@@ -5015,23 +5015,23 @@ msgstr "Drag & Drop"
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2625
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Der neue Eintrag '%s:%s:%s' weist auf einen Eintrag der ebenso ein alias ist.\n"
+"Der neue Eintrag '%ls:%ls:%ls' weist auf einen Eintrag der ebenso ein alias ist.\n"
 "\n"
 "Der neue Eintrag verweist neu auf den Basiseintrag."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2632
 #, c-format
-msgid "This alias's target [%s:%s:%s] is not a normal entry."
-msgstr "Das Alias-Ziel [%s:%s:%s] ist kein normaler Eintrag."
+msgid "This alias's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Das Alias-Ziel [%ls:%ls:%ls] ist kein normaler Eintrag."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2649
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "Das Verküpfungsziel [%s:%s:%s] ist kein normaler Eintrag"
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Das Verküpfungsziel [%ls:%ls:%ls] ist kein normaler Eintrag"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
 #, c-format
@@ -5392,8 +5392,8 @@ msgstr "Nicht-Genügend-Speicher-Ausnahme."
 
 #: ../../../core/core_st.cpp:30
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Das Alias-Ziel [%s:%s:%s] ist kein normaler Eintrag."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Das Alias-Ziel [%ls:%ls:%ls] ist kein normaler Eintrag."
 
 #: ../../../core/core_st.cpp:31
 msgid "after"
@@ -5413,43 +5413,43 @@ msgstr "Alias"
 
 #: ../../../core/core_st.cpp:35
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "es existieren mehrere Einträge mit Titel=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "es existieren mehrere Einträge mit Titel=%ls."
 
 #: ../../../core/core_st.cpp:36
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "es existiert kein Eintrag mit Titel=%s."
+msgid "no entry exists with title=%ls."
+msgstr "es existiert kein Eintrag mit Titel=%ls."
 
 #: ../../../core/core_st.cpp:37
 #, c-format
 msgid ""
-"multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+"multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr ""
-"es existieren mehrere Einträge mit Titel=%s und Benutzername=%s oder mit Gruppe=%s und "
-"Titel=%s."
+"es existieren mehrere Einträge mit Titel=%ls und Benutzername=%ls oder mit Gruppe=%ls und "
+"Titel=%ls."
 
 #: ../../../core/core_st.cpp:38
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
 msgstr ""
-"es existiert kein Eintrag mit Titel=%s und Benutzername=%s oder mit Gruppe=%s, "
-"Titel=%s."
+"es existiert kein Eintrag mit Titel=%ls und Benutzername=%ls oder mit Gruppe=%ls, "
+"Titel=%ls."
 
 #: ../../../core/core_st.cpp:39
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "es existiert kein Eintrag mit Gruppe=%s, Titel=%s und Benutzer=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "es existiert kein Eintrag mit Gruppe=%ls, Titel=%ls und Benutzer=%ls."
 
 #: ../../../core/core_st.cpp:40
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "es existiert kein Eintrag mit Gruppe=%s, Titel=%s und leerem Benutzernamen."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "es existiert kein Eintrag mit Gruppe=%ls, Titel=%ls und leerem Benutzernamen."
 
 #: ../../../core/core_st.cpp:41
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "im Stammelement existiert kein Eintrag mit Titel=%s und Benutzername=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "im Stammelement existiert kein Eintrag mit Titel=%ls und Benutzername=%ls."
 
 #: ../../../core/core_st.cpp:42
 msgid "Password implies this is an alias entry, but "
@@ -5489,9 +5489,9 @@ msgstr ""
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
-"Der referenzierte Eintrag '%s:%s:%s' ist selbst ein Alias oder eine Abkürzung. Dies "
+"Der referenzierte Eintrag '%ls:%ls:%ls' ist selbst ein Alias oder eine Abkürzung. Dies "
 "wird nicht unterstützt."
 
 #: ../../../core/core_st.cpp:51

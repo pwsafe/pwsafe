@@ -405,8 +405,8 @@ msgstr "Importer # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr "[Proces ID=%s]"
+msgid " [Process ID=%ls]"
+msgstr "[Proces ID=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -3356,11 +3356,11 @@ msgstr "Træk dette billede til et andet vindue for at starte AutoType derfra."
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Mistet post '%s:%s:%s' adgangskode Peger på en post der også er et alias.\n"
+"Mistet post '%ls:%ls:%ls' adgangskode Peger på en post der også er et alias.\n"
 "\n"
 "Den mistede post henviser nu til den posts basis post."
 
@@ -7400,12 +7400,12 @@ msgstr ""
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "Den følgende post blev kopieret til %s databasen: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "Den følgende post blev kopieret til %s databasen: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
 msgstr ""
 
 #. Resource IDs: (5787)
@@ -7471,8 +7471,8 @@ msgstr ""
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "Den post, der henvises til »%s:%s:%s«, er i sig selv et alias eller en genvej. Dette understøttes ikke."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
+msgstr "Den post, der henvises til »%ls:%ls:%ls«, er i sig selv et alias eller en genvej. Dette understøttes ikke."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -7512,8 +7512,8 @@ msgstr "Denne genvejstastværdi er ikke tilgængelig, da den allerede er tildelt
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Dette alias' mål [%s:%s:%s] er ikke en normal post."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Dette alias' mål [%ls:%ls:%ls] er ikke en normal post."
 
 #. Resource IDs: (5355)
 msgid "This database is the same as the current database!"
@@ -7599,8 +7599,8 @@ msgstr "Dette program kræver filen% Ts, som ikke blev fundet på dette system."
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "Denne genvejs mål [%s:%s:%s] er ikke en normal post."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Denne genvejs mål [%ls:%ls:%ls] er ikke en normal post."
 
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."
@@ -9628,38 +9628,38 @@ msgstr "minutter ubeskæftiget"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "flere poster eksisterer med titlen=%s og brugernavn=%s eller med gruppe=%s og titel=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "flere poster eksisterer med titlen=%ls og brugernavn=%ls eller med gruppe=%ls og titel=%ls."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "flere poster eksisterer med titlen=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "flere poster eksisterer med titlen=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "ingen poster eksisterer i roden med titel=%s og brugernavn=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "ingen poster eksisterer i roden med titel=%ls og brugernavn=%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "ingen poster eksisterer med gruppe=%s, titel=%s og tomt brugernavn."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "ingen poster eksisterer med gruppe=%ls, titel=%ls og tomt brugernavn."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "ingen poster eksisterer med gruppe=%s, titel=%s og brugernavn=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "ingen poster eksisterer med gruppe=%ls, titel=%ls og brugernavn=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "ingen poster eksisterer med titel=%s og brugernavn=%s eller med gruppe=%s, titel=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "ingen poster eksisterer med titel=%ls og brugernavn=%ls eller med gruppe=%ls, titel=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "ingen poster eksisterer med titlen=%s."
+msgid "no entry exists with title=%ls."
+msgstr "ingen poster eksisterer med titlen=%ls."
 
 #. Resource IDs: (3254)
 #, c-format

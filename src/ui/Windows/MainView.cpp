@@ -61,7 +61,7 @@ static char THIS_FILE[] = __FILE__;
 
 void DboxMain::DatabaseModified(bool bChanged)
 {
-  PWS_LOGIT_ARGS("bChanged=%s", bChanged ? L"true" : L"false");
+  PWS_LOGIT_ARGS("bChanged=%ls", bChanged ? L"true" : L"false");
 
   // If called from worker thread, invoke on GUI thread.
   if (!IsGuiThread()) {
