@@ -5886,15 +5886,13 @@ msgstr "aucune entrée n'existe avec comme titre %ls."
 msgid ""
 "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr ""
-"Plusieurs entrées existent pour titre=%ls et nom d'utilisateur=%ls ou pour groupe=%ls et "
-"titre=%ls."
+"Plusieurs entrées existent pour titre=%ls et nom d'utilisateur=%ls ou pour groupe=%ls et titre=%ls."
 
 #: ../../../core/core_st.cpp:38
 #, c-format
 msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
 msgstr ""
-"aucune entrée n'existe avec comme titre=%ls et comme nom d'utilisateur=%ls ou groupe=%ls, "
-"titre=%ls."
+"aucune entrée n'existe avec comme titre=%ls et comme nom d'utilisateur=%ls ou groupe=%ls, titre=%ls."
 
 #: ../../../core/core_st.cpp:39
 #, c-format
