@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-15 23:30+0300\n"
-"PO-Revision-Date: 2025-07-15 23:30+0300\n"
+"POT-Creation-Date: 2025-08-16 21:00+0300\n"
+"PO-Revision-Date: 2025-08-16 21:00+0300\n"
 "Last-Translator:\n"
 "Language-Team:\n"
 "Language: ru\n"
@@ -8717,6 +8717,11 @@ msgstr "начинается с"
 msgid "between"
 msgstr "между"
 
+# ... продолжено с конца
+#. Resource IDs: (5665)
+msgid "bottom"
+msgstr "конца"
+
 # в фильтре
 #. Resource IDs: (3371)
 msgid "changed but not yet saved to database"
@@ -9064,7 +9069,7 @@ msgstr "пароли и данные отобранных элементов"
 msgid "this entry's password and data"
 msgstr "данные и пароль этого элемента"
 
-# поиск продолжен с начала
+# ... продолжено с начала
 #. Resource IDs: (5663)
 msgid "top"
 msgstr "начала"
