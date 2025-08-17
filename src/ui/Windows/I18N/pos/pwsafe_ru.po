@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-16 21:00+0300\n"
-"PO-Revision-Date: 2025-08-16 21:00+0300\n"
+"POT-Creation-Date: 2025-08-16 22:30+0300\n"
+"PO-Revision-Date: 2025-08-16 22:30+0300\n"
 "Last-Translator:\n"
 "Language-Team:\n"
 "Language: ru\n"
@@ -137,7 +137,7 @@ msgstr " 'Автонабор'"
 msgid " 'Creation Time'"
 msgstr " 'Время создания'"
 
-# Действие по двойному щелчку (Double click action)
+# Действие по двойному щелчку (Double click action) в отчёте сравнения
 #. Resource IDs: (5704)
 msgid " 'DCA'"
 msgstr " 'По дв. щелчку'"
@@ -208,7 +208,7 @@ msgstr " 'Время изменения элемента'"
 msgid " 'Run Command'"
 msgstr " 'Выполнить команду'"
 
-# Действие по Shift+двойной щелчок (Shift+Double click action)
+# Действие по Shift+двойной щелчок (Shift+Double click action) в отчёте сравнения
 #. Resource IDs: (5874)
 msgid " 'Shift+DCA'"
 msgstr " 'По Shift+дв. щелчок'"
@@ -233,9 +233,10 @@ msgstr " 'Пользователь'"
 msgid " 'protected'"
 msgstr " 'защищён'"
 
+# поле с символами пароля в отчёте сравнения
 #. Resource IDs: (5843)
 msgid " 'symbols'"
-msgstr " 'символов'"
+msgstr " 'Символы'"
 
 #. Resource IDs: (4105)
 msgid " (EasyVision Symbols)"
@@ -308,10 +309,11 @@ msgstr " [ID процесса=%s]"
 msgid "! Edit externally"
 msgstr "! Открыть во внешнем редакторе"
 
+# в диалоге ввода текста с ограничением длины
 #. Resource IDs: (5877)
 #, c-format
 msgid "# characters: %d"
-msgstr " символов: %d"
+msgstr "Символов: %d"
 
 # placeholder in dialog
 #. Resource IDs: (1198)
@@ -424,12 +426,12 @@ msgstr "%d"
 #. Resource IDs: (5816)
 #, c-format
 msgid "%d entries exported"
-msgstr "экспортировано элементов: %d"
+msgstr "Экспортировано элементов: %d"
 
 #. Resource IDs: (5817)
 #, c-format
 msgid "%d entries synchronized"
-msgstr "синхронизировано элементов: %d"
+msgstr "Синхронизировано элементов: %d"
 
 #. Resource IDs: (6061)
 #, c-format
@@ -441,10 +443,11 @@ msgstr "Элементов в группе: %d"
 msgid "%d entry under group"
 msgstr "Элементов в группе: %d"
 
+# в панели статуса количество элементов, урезано для сокращения размера (также конфликты для разных чисел)
 #. Resource IDs: (5240)
 #, c-format
 msgid "%d items"
-msgstr "%d элементов"
+msgstr "%d элем."
 
 #. Resource IDs: (5275)
 #, c-format
@@ -455,7 +458,7 @@ msgstr "%d из %d совпадений."
 #. Resource IDs: (5609)
 #, c-format
 msgid "%d/%d items"
-msgstr "%d/%d элементов"
+msgstr "%d/%d отобрано"
 
 # в автоматически назначаемых именах политик "имя_старой - ... <дата>"
 #. Resource IDs: (3445)
