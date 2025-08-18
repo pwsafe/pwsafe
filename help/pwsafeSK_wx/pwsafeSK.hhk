@@ -31,11 +31,6 @@
             <param name="Local" value="html/aliases.html">
          </OBJECT>
     <LI><OBJECT type="text/sitemap">
-            <param name="Name" value="Failsafe zálohy">
-            <param name="Name" value="Failsafe zálohy">
-            <param name="Local" value="html/failsafebackups.html">
-         </OBJECT>
-    <LI><OBJECT type="text/sitemap">
             <param name="Name" value="Prechodné zálohy">
             <param name="Name" value="Prechodné zálohy">
             <param name="Local" value="html/backups_tab.html">
