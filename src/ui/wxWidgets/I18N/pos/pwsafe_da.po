@@ -2688,7 +2688,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:475
 #, fuzzy, c-format
 msgid " [Process ID=%ls]"
-msgstr "[Proces ID=%s]"
+msgstr "[Proces ID=%ls]"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:481
 #, c-format
@@ -5333,24 +5333,24 @@ msgstr ""
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2625
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Mistet post '%s:%s:%s' adgangskode Peger på en post der også er et alias.\n"
+"Mistet post '%ls:%ls:%ls' adgangskode Peger på en post der også er et alias.\n"
 "\n"
 "Den mistede post henviser nu til den posts basis post."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2632
 #, fuzzy, c-format
-msgid "This alias's target [%s:%s:%s] is not a normal entry."
-msgstr "Dette alias' mål [%s:%s:%s] er ikke en normal post eller allerede en alias basis."
+msgid "This alias's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Dette alias' mål [%ls:%ls:%ls] er ikke en normal post eller allerede en alias basis."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2649
 #, fuzzy, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
-"Denne genvejs mål [%s:%s:%s] er ikke en normal post elller allerede en basis genvej."
+"Denne genvejs mål [%ls:%ls:%ls] er ikke en normal post elller allerede en basis genvej."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
 #, c-format
@@ -5751,8 +5751,8 @@ msgstr "IkkeMereHukommelseUndtagelse."
 
 #: ../../../core/core_st.cpp:30
 #, fuzzy, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Dette alias' mål [%s:%s:%s] er ikke en normal post eller allerede en alias basis."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Dette alias' mål [%ls:%ls:%ls] er ikke en normal post eller allerede en alias basis."
 
 #: ../../../core/core_st.cpp:31
 msgid "after"
@@ -5772,40 +5772,40 @@ msgstr "aliases"
 
 #: ../../../core/core_st.cpp:35
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "flere poster eksisterer med titlen=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "flere poster eksisterer med titlen=%ls."
 
 #: ../../../core/core_st.cpp:36
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "ingen poster eksisterer med titlen=%s."
+msgid "no entry exists with title=%ls."
+msgstr "ingen poster eksisterer med titlen=%ls."
 
 #: ../../../core/core_st.cpp:37
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr ""
-"flere poster eksisterer med titlen=%s og brugernavn=%s eller med gruppe=%s og titel=%s."
+"flere poster eksisterer med titlen=%ls og brugernavn=%ls eller med gruppe=%ls og titel=%ls."
 
 #: ../../../core/core_st.cpp:38
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
 msgstr ""
-"ingen poster eksisterer med titel=%s og brugernavn=%s eller med gruppe=%s, titel=%s."
+"ingen poster eksisterer med titel=%ls og brugernavn=%ls eller med gruppe=%ls, titel=%ls."
 
 #: ../../../core/core_st.cpp:39
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "ingen poster eksisterer med gruppe=%s, titel=%s og brugernavn=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "ingen poster eksisterer med gruppe=%ls, titel=%ls og brugernavn=%ls."
 
 #: ../../../core/core_st.cpp:40
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "ingen poster eksisterer med gruppe=%s, titel=%s og tomt brugernavn."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "ingen poster eksisterer med gruppe=%ls, titel=%ls og tomt brugernavn."
 
 #: ../../../core/core_st.cpp:41
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "ingen poster eksisterer i roden med titel=%s og brugernavn=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "ingen poster eksisterer i roden med titel=%ls og brugernavn=%ls."
 
 #: ../../../core/core_st.cpp:42
 msgid "Password implies this is an alias entry, but "
@@ -5844,7 +5844,7 @@ msgstr ""
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
 
 #: ../../../core/core_st.cpp:51
@@ -9745,8 +9745,8 @@ msgstr ""
 #~ msgid "The file is too large to open."
 #~ msgstr "Filen er for stor til at kunne åbnes."
 
-#~ msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-#~ msgstr "Den følgende post blev kopieret til %s databasen: '%s:%s:%s'"
+#~ msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+#~ msgstr "Den følgende post blev kopieret til %s databasen: '%ls:%ls:%ls'"
 
 #~ msgid ""
 #~ "The notes field of this entry has more text than can be displayed. Changing this field "
@@ -9760,12 +9760,12 @@ msgstr ""
 #~ "eksporter denne adgang til XML før ændring."
 
 #~ msgid ""
-#~ "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an "
+#~ "The password is in 'alias' form but the referenced entry '%ls:%ls:%ls' is itself an "
 #~ "alias.\n"
 #~ "\n"
 #~ "Do you wish this entry to point to the 'real' base entry?"
 #~ msgstr ""
-#~ "Adgangskoden er i 'alias' form men den adgang der refereres til '%s:%s:%s' er selv et "
+#~ "Adgangskoden er i 'alias' form men den adgang der refereres til '%ls:%ls:%ls' er selv et "
 #~ "alias.\n"
 #~ "\n"
 #~ "Vil du have denne post til at pege på den 'rigtige' basis adgang?"

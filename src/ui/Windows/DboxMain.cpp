@@ -2337,7 +2337,7 @@ LRESULT DboxMain::OnTrayNotification(WPARAM wParam, LPARAM lParam)
 
 bool DboxMain::RestoreWindowsData(bool bUpdateWindows, bool bShow, bool bIsAppWindow)
 {
-  PWS_LOGIT_ARGS("bUpdateWindows=%s, bShow=%s",
+  PWS_LOGIT_ARGS("bUpdateWindows=%ls, bShow=%ls",
     bUpdateWindows ? L"true" : L"false", 
     bShow ? L"true" : L"false");
 

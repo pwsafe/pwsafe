@@ -4806,20 +4806,20 @@ msgstr ""
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2625
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
-msgstr "Heslo vloženého záznamu '%s:%s:%s' odkazuje na záznam, ktorý je taktiež alias.\n\nVložený záznam teraz odkazuje na základný záznam daného záznamu."
+msgstr "Heslo vloženého záznamu '%ls:%ls:%ls' odkazuje na záznam, ktorý je taktiež alias.\n\nVložený záznam teraz odkazuje na základný záznam daného záznamu."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2632
 #, c-format
-msgid "This alias's target [%s:%s:%s] is not a normal entry."
-msgstr "Cieľ tohto aliasu [%s:%s:%s] nie je normálnym záznamom."
+msgid "This alias's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Cieľ tohto aliasu [%ls:%ls:%ls] nie je normálnym záznamom."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2649
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "Cieľ tohto odkazu [%s:%s:%s] nie je normálnym záznamom."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Cieľ tohto odkazu [%ls:%ls:%ls] nie je normálnym záznamom."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
 #, c-format
@@ -5162,8 +5162,8 @@ msgstr "výnimka OutOfMemoryException."
 
 #: ../../../core/core_st.cpp:30
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
-msgstr "Cieľ tohto aliasu [%s:%s:%s] nie je normálnym záznamom."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Cieľ tohto aliasu [%ls:%ls:%ls] nie je normálnym záznamom."
 
 #: ../../../core/core_st.cpp:31
 msgid "after"
@@ -5183,39 +5183,39 @@ msgstr "aliasy"
 
 #: ../../../core/core_st.cpp:35
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "existuje viacero záznamov s názvom=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "existuje viacero záznamov s názvom=%ls."
 
 #: ../../../core/core_st.cpp:36
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "neexistuje žiadny záznam s názvom=%s."
+msgid "no entry exists with title=%ls."
+msgstr "neexistuje žiadny záznam s názvom=%ls."
 
 #: ../../../core/core_st.cpp:37
 #, c-format
 msgid ""
-"multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "existuje viacero záznamov s názvom=%s a používateľským menom=%s alebo so skupinou=%s a názvom=%s."
+"multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "existuje viacero záznamov s názvom=%ls a používateľským menom=%ls alebo so skupinou=%ls a názvom=%ls."
 
 #: ../../../core/core_st.cpp:38
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "neexistuje žiadny záznam s názvom=%s a používateľským menom=%s alebo so skupinou=%s, názvom =%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "neexistuje žiadny záznam s názvom=%ls a používateľským menom=%ls alebo so skupinou=%ls, názvom =%ls."
 
 #: ../../../core/core_st.cpp:39
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "neexistuje žiadny záznam so skupinou=%s, názvom=%s a používateľským menom=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "neexistuje žiadny záznam so skupinou=%ls, názvom=%ls a používateľským menom=%ls."
 
 #: ../../../core/core_st.cpp:40
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "neexistuje žiadny záznam so skupinou=%s, názvom=%s a prázdnym používateľským menom."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "neexistuje žiadny záznam so skupinou=%ls, názvom=%ls a prázdnym používateľským menom."
 
 #: ../../../core/core_st.cpp:41
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "na základnej úrovni neexistuje žiadny záznam s názvom=%s a používateľským menom=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "na základnej úrovni neexistuje žiadny záznam s názvom=%ls a používateľským menom=%ls."
 
 #: ../../../core/core_st.cpp:42
 msgid "Password implies this is an alias entry, but "
@@ -5249,8 +5249,8 @@ msgstr "Heslo naznačuje, že ide o záznam aliasu, ale špecifikuje základný 
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-msgstr "Odkazovaný záznam '%s:%s:%s' je sám alias alebo odkaz. Toto nie je podporované."
+"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
+msgstr "Odkazovaný záznam '%ls:%ls:%ls' je sám alias alebo odkaz. Toto nie je podporované."
 
 #: ../../../core/core_st.cpp:51
 msgid "before"

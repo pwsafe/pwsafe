@@ -2721,7 +2721,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:475
 #, fuzzy, c-format
 msgid " [Process ID=%ls]"
-msgstr " [ID Procesu=%s]"
+msgstr " [ID Procesu=%ls]"
 
 #: ../../../ui/wxWidgets/MenuManageHandlers.cpp:481
 #, fuzzy, c-format
@@ -5378,25 +5378,25 @@ msgstr ""
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2625
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Opuszczono wpis '%s:%s:%s' hasło wskazuje na wpis, który też jest aliasem.\n"
+"Opuszczono wpis '%ls:%ls:%ls' hasło wskazuje na wpis, który też jest aliasem.\n"
 "\n"
 "Opuszczony wpis odnosi się teraz do wpisu bazowego tego wpisu."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2632
 #, fuzzy, c-format
-msgid "This alias's target [%s:%s:%s] is not a normal entry."
+msgid "This alias's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
-"Element docelowy aliasu [%s:%s:%s] nie jest normalnym wpisem lub jest już bazą dla "
+"Element docelowy aliasu [%ls:%ls:%ls] nie jest normalnym wpisem lub jest już bazą dla "
 "aliasu."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2649
 #, fuzzy, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
-msgstr "Element docelowy skrótu [%s:%s:%s] jest normalnym wpisem lub bazą skrótu."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
+msgstr "Element docelowy skrótu [%ls:%ls:%ls] jest normalnym wpisem lub bazą skrótu."
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
 #, fuzzy, c-format
@@ -5822,9 +5822,9 @@ msgstr "OutOfMemoryException."
 
 #: ../../../core/core_st.cpp:30
 #, fuzzy, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
-"Element docelowy aliasu [%s:%s:%s] nie jest normalnym wpisem lub jest już bazą dla "
+"Element docelowy aliasu [%ls:%ls:%ls] nie jest normalnym wpisem lub jest już bazą dla "
 "aliasu."
 
 #: ../../../core/core_st.cpp:31
@@ -5845,40 +5845,40 @@ msgstr "aliasy"
 
 #: ../../../core/core_st.cpp:35
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "istnieje kilka wpisów o nazwie=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "istnieje kilka wpisów o nazwie=%ls."
 
 #: ../../../core/core_st.cpp:36
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "nie ma wpisu o nazwie=%s."
+msgid "no entry exists with title=%ls."
+msgstr "nie ma wpisu o nazwie=%ls."
 
 #: ../../../core/core_st.cpp:37
 #, c-format
 msgid ""
-"multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+"multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr ""
-"istnieje kilka wpisów o nazwie=%s i nazwie użytkownika=%s lub z grupą=%s i nazwą=%s."
+"istnieje kilka wpisów o nazwie=%ls i nazwie użytkownika=%ls lub z grupą=%ls i nazwą=%ls."
 
 #: ../../../core/core_st.cpp:38
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "nie ma wpisu z nazwą=%s i nazwą użytkownika=%s lub z grupą=%s i nazwą=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "nie ma wpisu z nazwą=%ls i nazwą użytkownika=%ls lub z grupą=%ls i nazwą=%ls."
 
 #: ../../../core/core_st.cpp:39
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "nie ma wpisu z grupą=%s, nazwą=%s i nazwą użytkownika=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "nie ma wpisu z grupą=%ls, nazwą=%ls i nazwą użytkownika=%ls."
 
 #: ../../../core/core_st.cpp:40
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "nie ma wpisu z grupą=%s, nazwą=%s i pustą nazwą użytkownika."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "nie ma wpisu z grupą=%ls, nazwą=%ls i pustą nazwą użytkownika."
 
 #: ../../../core/core_st.cpp:41
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "nie ma wpisu w katalogu głównym z nazwą=%s i nazwą użytkownika=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "nie ma wpisu w katalogu głównym z nazwą=%ls i nazwą użytkownika=%ls."
 
 #: ../../../core/core_st.cpp:42
 msgid "Password implies this is an alias entry, but "
@@ -5919,7 +5919,7 @@ msgstr ""
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
 
 #: ../../../core/core_st.cpp:51
@@ -10373,8 +10373,8 @@ msgstr ""
 #~ msgid "The following entries' passwords are about to expire or expired:"
 #~ msgstr "Hasła następujące wpisów wygasną lub wygasły:"
 
-#~ msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-#~ msgstr "Następujący wpis został skopiowany do bazy danych %s: '%s:%s:%s'"
+#~ msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+#~ msgstr "Następujący wpis został skopiowany do bazy danych %s: '%ls:%ls:%ls'"
 
 #~ msgid ""
 #~ "The notes field of this entry has more text than can be displayed. Changing this "
@@ -10387,12 +10387,12 @@ msgstr ""
 #~ "skopiuj to poprzez schowek, lub eyeksportuj ten wpis do XML przed zmianą."
 
 #~ msgid ""
-#~ "The password is in 'alias' form but the referenced entry '%s:%s:%s' is itself an "
+#~ "The password is in 'alias' form but the referenced entry '%ls:%ls:%ls' is itself an "
 #~ "alias.\n"
 #~ "\n"
 #~ "Do you wish this entry to point to the 'real' base entry?"
 #~ msgstr ""
-#~ "Hasło ma formę 'aliasu' ale odpowiadający mu wpis '%s:%s:%s' sam jest aliasem.\n"
+#~ "Hasło ma formę 'aliasu' ale odpowiadający mu wpis '%ls:%ls:%ls' sam jest aliasem.\n"
 #~ "\n"
 #~ "Czy ten wpis ma wskazywać do właściwego wpisu bazowego?"
 

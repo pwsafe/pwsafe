@@ -249,8 +249,8 @@ msgstr " Importa # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [ID processo=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [ID processo=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -3224,11 +3224,11 @@ msgstr "Trascina questa immagine sopra un'altra finestra per avviare il completa
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Voce eliminata '%s:%s:%s' la password punta ad una voce che è anche uno pseudonimo.\n"
+"Voce eliminata '%ls:%ls:%ls' la password punta ad una voce che è anche uno pseudonimo.\n"
 "\n"
 "La voce scartata ora fa riferimento alla voce base di quella voce."
 
@@ -7358,13 +7358,13 @@ msgstr "Le password dei seguenti elementi stanno per scadere o sono già scadute
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-msgstr "L'elemento seguente è stata copiato nel database %s: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+msgstr "L'elemento seguente è stata copiato nel database %s: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-msgstr "L'elemento seguente è stata sincronizzato con il database %s: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+msgstr "L'elemento seguente è stata sincronizzato con il database %s: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7441,7 +7441,7 @@ msgstr ""
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
 "L'elemento '% s:% s:% s' è esso stesso un alias o una scorciatoia.\n"
 "Questo non è supportato."
@@ -7489,7 +7489,7 @@ msgstr "Questo valore per il tasto rapido non è disponibile dato che è già as
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
 msgstr "La destinazione di questo alias [% s:% s:% s] non è un elemento normale."
 
 #. Resource IDs: (5355)
@@ -7589,7 +7589,7 @@ msgstr "Questo programma richiede il file %Ts, che non è stato trovato in quest
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr "La destinazione di questo collegamento [% s:% s:% s] non è un elemento normale."
 
 #. Resource IDs: (5110)
@@ -9646,38 +9646,38 @@ msgstr "minuti di inattività"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "esistono voci multiple aventi titolo=%s e nome utente=%s o con gruppo=%s e titolo=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "esistono voci multiple aventi titolo=%ls e nome utente=%ls o con gruppo=%ls e titolo=%ls."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "esistono voci multiple aventi titolo=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "esistono voci multiple aventi titolo=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "non esiste nessuna voce nella radice avente titolo=%s e nome utente=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "non esiste nessuna voce nella radice avente titolo=%ls e nome utente=%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "non esiste nessuna voce avente gruppo=%s, titolo=%s e nome utente vuoto."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "non esiste nessuna voce avente gruppo=%ls, titolo=%ls e nome utente vuoto."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "non esiste nessuna voce avente gruppo=%s, titolo=%s e nome utente=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "non esiste nessuna voce avente gruppo=%ls, titolo=%ls e nome utente=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "non esiste nessuna voce avente titolo=%s e nome utente=%s o con gruppo=%s, titolo=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "non esiste nessuna voce avente titolo=%ls e nome utente=%ls o con gruppo=%ls, titolo=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "non esiste nessuna voce avente titolo=%s."
+msgid "no entry exists with title=%ls."
+msgstr "non esiste nessuna voce avente titolo=%ls."
 
 #. Resource IDs: (3254)
 #, c-format

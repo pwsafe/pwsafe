@@ -237,7 +237,7 @@ msgstr ""
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
+msgid " [Process ID=%ls]"
 msgstr ""
 
 #. Resource IDs: (5651)
@@ -3026,7 +3026,7 @@ msgstr ""
 
 #. Resource IDs: (5464)
 #, c-format
-msgid "Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."
+msgid "Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."
 msgstr ""
 
 #. Resource IDs: (32087 - Menu, 32087 - MenuEx)
@@ -7006,12 +7006,12 @@ msgstr ""
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
 msgstr ""
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
 msgstr ""
 
 #. Resource IDs: (5787)
@@ -7064,7 +7064,7 @@ msgstr ""
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
 
 #. Resource IDs: (5770)
@@ -7108,7 +7108,7 @@ msgstr ""
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 
 #. Resource IDs: (5355)
@@ -7195,7 +7195,7 @@ msgstr ""
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 
 #. Resource IDs: (5110)
@@ -8718,37 +8718,37 @@ msgstr ""
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr ""
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
+msgid "multiple entries exist with title=%ls."
 msgstr ""
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
 msgstr ""
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
 msgstr ""
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
 msgstr ""
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
 msgstr ""
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
+msgid "no entry exists with title=%ls."
 msgstr ""
 
 #. Resource IDs: (3254)
