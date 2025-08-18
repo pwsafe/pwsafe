@@ -811,7 +811,7 @@ msgstr "Chyba"
 msgid ""
 "On changing this entry of type Shortcut Base to an Alias all Shortcut to this entry "
 "will be removed!"
-msgstr "Po zmene tohto záznamu (je typu základný záznam odkazu) na alias ​​budú všetky odkazy k tomuto záznamu odstránené!"
+msgstr "Po zmene tohto záznamu (je typu základný záznam odkazu) na alias budú všetky odkazy k tomuto záznamu odstránené!"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1903
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:1924
@@ -871,7 +871,7 @@ msgstr "heslo"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2181
 msgid "Passwords do not match."
-msgstr "Heslá sa nezhodujú. "
+msgstr "Heslá sa nezhodujú."
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2182
 msgid "Mismatching passwords"
@@ -1007,11 +1007,11 @@ msgstr "Konfliktné položky"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:147
 msgid "Only in current database: "
-msgstr "Iba v aktuálnej databáze:"
+msgstr "Iba v aktuálnej databáze: "
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:152
 msgid "Only in comparison database: "
-msgstr "Iba v porovnávanej databáze:"
+msgstr "Iba v porovnávanej databáze: "
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:157
 msgid "Identical items"
@@ -1168,7 +1168,7 @@ msgstr "Záznamy v obidvoch databázach, ale s rozdielmi:"
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:954
 msgid "\t\thas differences in the following fields: "
-msgstr "\t\tobsahuje odlišnosti v nasledovných poliach:"
+msgstr "\t\tobsahuje odlišnosti v nasledovných poliach: "
 
 #: ../../../ui/wxWidgets/CompareDlg.cpp:990
 msgid "compared"
@@ -1316,7 +1316,7 @@ msgstr "Už sa ma toto nepýtať"
 #: ../../../ui/wxWidgets/ManageFiltersDlg.cpp:387
 #: ../../../ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:160
 msgid "&Delete"
-msgstr "Vymazať"
+msgstr "Zmazať"
 
 #: ../../../ui/wxWidgets/DeleteConfirmationDlg.cpp:110
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:114
@@ -1360,11 +1360,11 @@ msgstr "Nič sa nevykonalo pri presúvaní"
 
 #: ../../../ui/wxWidgets/DragBarCtrl.cpp:306
 msgid "Copied successfully"
-msgstr "Úspešne skopírované."
+msgstr "Úspešne skopírované"
 
 #: ../../../ui/wxWidgets/DragBarCtrl.cpp:309
 msgid "Moved successfully"
-msgstr "Úspešne presunuté."
+msgstr "Úspešne presunuté"
 
 #: ../../../ui/wxWidgets/DragBarCtrl.cpp:312
 msgid "Dragging cancelled"
@@ -1412,7 +1412,7 @@ msgstr "Oddeľovač riadkov"
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:87
 msgid ""
 "The delimiter in the Notes field, also used to replace periods in the Title field."
-msgstr "Oddeľovač v poli Poznámky, tiež sa používa na nahradenie bodiek v poli Názov "
+msgstr "Oddeľovač v poli Poznámky, tiež sa používa na nahradenie bodiek v poli Názov."
 
 #: ../../../ui/wxWidgets/ExportTextWarningDlg.cpp:88
 #: ../../../ui/wxWidgets/MergeDlg.cpp:66
@@ -1497,7 +1497,7 @@ msgstr "Importovať pod novou skupinou"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:100 ../../../ui/wxWidgets/ImportXmlDlg.cpp:67
 msgid "Import to change passwords of existing entries ONLY"
-msgstr "Import zmení heslá IBA existujúcich záznamov"
+msgstr "Import zmení IBA heslá existujúcich záznamov"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:151
 msgid "Delimiters"
@@ -1509,7 +1509,7 @@ msgstr "Čiarka"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:156
 msgid "Space"
-msgstr "Medzerník"
+msgstr "Medzera"
 
 #: ../../../ui/wxWidgets/ImportTextDlg.cpp:157
 msgid "Semicolon"
@@ -2074,7 +2074,7 @@ msgstr "Pred exportom musíte túto databázu uložiť."
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:823
 msgid "Exporting database: "
-msgstr "Exportuje sa databáza:"
+msgstr "Exportuje sa databáza: "
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:823
 msgid " to "
@@ -2167,7 +2167,7 @@ msgstr "Vynechané "
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:958
 msgid "with Password History errors "
-msgstr "s chybami histórie hesiel"
+msgstr "s chybami histórie hesiel "
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:965
 msgid "Renamed "
@@ -2177,7 +2177,7 @@ msgstr "Premenované "
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1069
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1227
 msgid "Completed successfully"
-msgstr "Úspešne dokončené."
+msgstr "Úspešne dokončené"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:970
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1069
@@ -2317,7 +2317,7 @@ msgstr "Import XML: Neočakávaný návratový kód (%d)"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1152
 msgid "Import a KeePass Text File"
-msgstr "Vyberte súbor Keepass na import"
+msgstr "Vyberte súbor KeePass na import"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:1174
 #, c-format
@@ -3233,7 +3233,7 @@ msgstr "Zobraziť iba"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:688
 msgid "&New/Edit Filter..."
-msgstr "Nový/Upraviť filter"
+msgstr "Nový/Upraviť filter..."
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:690
 msgid "&Manage..."
@@ -3273,47 +3273,47 @@ msgstr "Zmeniť &písmo"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:707
 msgid "&Find"
-msgstr "&Hľadať"
+msgstr "Hľadanie"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:708
 msgid "Import &Text"
-msgstr "Importovať text"
+msgstr "Import z TXT"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:709
 msgid "Import &XML"
-msgstr "Importovať XML"
+msgstr "Import z XML"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:710
 msgid "Import &KeePass V1 Text"
-msgstr "Importovať Keepass V1 TXT"
+msgstr "Import z KeePass V1 TXT"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:711
 msgid "Import Kee&Pass V1 CSV"
-msgstr "Importovať Keepass V1 CSV"
+msgstr "Import z KeePass V1 CSV"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:712
 msgid "&Export Text"
-msgstr "Exportovať text"
+msgstr "Export do TXT"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:713
 msgid "Export XM&L"
-msgstr "Exportovať XML"
+msgstr "Export do XML"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:714
 msgid "Export Current &DB"
-msgstr "Exportovať aktuálnu DB"
+msgstr "Export do DB"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:715
 msgid "&Merge"
-msgstr "Zlúčiť"
+msgstr "Zlúčenie"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:716
 msgid "&Synchronize"
-msgstr "Synchronizovať"
+msgstr "Synchronizácia"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:717
 msgid "&Validate"
-msgstr "Overiť"
+msgstr "Overenie"
 
 #: ../../../ui/wxWidgets/PasswordSafeFrame.cpp:718
 msgid "Reports"
@@ -4108,11 +4108,11 @@ msgstr "Nepodarilo sa importovať filtre \"autoload_filters.xml\""
 
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:1028
 msgid "Missing help definition for page \""
-msgstr "Chýbajúca definícia Nápovedy pre stránku \""
+msgstr "Chýbajúca definícia Nápovedy pre kartu \""
 
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:1029
 msgid "\" of \""
-msgstr "\" z \""
+msgstr "\" na \""
 
 #: ../../../ui/wxWidgets/PWSafeApp.cpp:1034
 msgid "Missing help definition for window \""
@@ -4182,7 +4182,7 @@ msgstr "Staré hlavné heslo nie je správne"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:294
 msgid "Cannot verify old master password - file gone?"
-msgstr "Nemôžem overiť staré hlavné heslo - súbor bol vymazaný?"
+msgstr "Nemôžem overiť staré hlavné heslo - súbor bol zmazaný?"
 
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:298
 #: ../../../ui/wxWidgets/SafeCombinationChangeDlg.cpp:402
@@ -4789,7 +4789,7 @@ msgstr "Cieľ nemôže byť vo vnútri zdrojového stromu"
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2636 ../../../ui/wxWidgets/TreeCtrl.cpp:2653
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2781
 msgid "Drag and Drop failed"
-msgstr "Operácia Drag and Drop zlyhala"
+msgstr "Operácia Drag & Drop zlyhala"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1532
 msgid "Duplicate group name (use Shift to overrule)"
@@ -4801,7 +4801,7 @@ msgstr "Prílohy neboli prevzaté z dôvodu inej verzie databázy"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2403
 msgid "Drag and Drop"
-msgstr ""
+msgstr "Drag & Drop"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2625
 #, c-format
@@ -4929,7 +4929,7 @@ msgstr "Aktivovať YubiKey"
 
 #: ../../../ui/wxWidgets/YubiMixin.cpp:33
 msgid "Touch YubiKey's button"
-msgstr "Stlačte tlačidlo na Yubikey"
+msgstr "Dotknite sa tlačidla na Yubikey"
 
 #: ../../../ui/wxWidgets/YubiMixin.cpp:192
 msgid "Timeout - please try again"
@@ -4970,7 +4970,7 @@ msgstr "Ukážka nie je dostupná"
 
 #: ../../../ui/wxWidgets/DeleteConfirmationDlg.h:43
 msgid "Delete Confirmation"
-msgstr "Potvrďte vymazanie"
+msgstr "Potvrďte zmazanie"
 
 #: ../../../ui/wxWidgets/ManageFiltersDlg.h:62
 msgid "Manage Filters"
@@ -5175,7 +5175,7 @@ msgstr "alias"
 
 #: ../../../core/core_st.cpp:33
 msgid "An alias cannot refer to itself!"
-msgstr "Alias ​​sa nemôže odvolávať sám na seba!"
+msgstr "Alias sa nemôže odvolávať sám na seba!"
 
 #: ../../../core/core_st.cpp:34
 msgid "aliases"
@@ -5411,7 +5411,7 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:92
 msgid "Delete Base Entry Confirmation"
-msgstr "Potvrďte vymazanie základného záznamu"
+msgstr "Potvrďte zmazanie základného záznamu"
 
 #: ../../../core/core_st.cpp:93
 #, c-format
@@ -5862,7 +5862,7 @@ msgstr "Počet nájdených rozpoznaných hlavičiek stĺpcov: %d"
 
 #: ../../../core/core_st.cpp:215
 msgid "Invalid field delimiter: must be within ASCII range."
-msgstr "Neplatný oddeľovač poľa: musí byť v rozsahu znakovej sady ASCII."
+msgstr "Neplatný oddeľovač polí: musí byť v rozsahu znakovej sady ASCII."
 
 #: ../../../core/core_st.cpp:216
 #, c-format
@@ -6036,7 +6036,7 @@ msgstr " Nájdená neplatná dĺžka hesla (odlišuje sa od dĺžky nasledovnéh
 msgid ""
 "  Invalid field separator character found - only a single blank is allowed between "
 "fields."
-msgstr " Zistený neplatný znak oddeľovača poľa - medzi poliami je povolený iba jeden prázdny znak."
+msgstr " Zistený neplatný znak oddeľovača polí - medzi poliami je povolený iba jeden prázdny znak."
 
 #: ../../../core/core_st.cpp:251
 msgid "Invalid Filter schema."
@@ -6087,14 +6087,14 @@ msgstr "je prítomný"
 msgid ""
 "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It has been "
 "removed from the %ls entry."
-msgstr "Klávesová skratka %ls záznamu %ls je už pridelená záznamu %ls. Bola odobratá záznamu %ls."
+msgstr "Klávesová skratka pre %ls záznam %ls je už pridelená záznamu %ls. Bola odobratá záznamu typu '%ls'."
 
 #: ../../../core/core_st.cpp:262
 #, c-format
 msgid ""
 "Entry keyboard shortcut %ls entry %ls is already allocated to the PasswordSafe "
 "application. It has been removed from the entry."
-msgstr "Klávesová skratka %ls záznamu %ls je už pridelená aplikácii Password Safe. Bola odobratá záznamu."
+msgstr "Klávesová skratka pre %ls záznam %ls je už pridelená aplikácii Password Safe. Bola odobratá záznamu."
 
 #: ../../../core/core_st.cpp:263
 msgid "less than"
@@ -6293,7 +6293,7 @@ msgstr "relatívny"
 msgid ""
 "\tOne or more entry keyboard shortcuts were already assigned to entries in this "
 "database. They have been removed from the %ls entries."
-msgstr "\tJedna alebo viac klávesových skratiek pre záznam už boli priradené k záznamom v tejto databáze. Boli odobraté záznamom %ls."
+msgstr "\tJedna alebo viac klávesových skratiek pre záznam už boli priradené k záznamom v tejto databáze. Boli odobraté záznamom typu '%ls'."
 
 #: ../../../core/core_st.cpp:308
 msgid ""
@@ -6855,7 +6855,40 @@ msgid "Show about dialog"
 msgstr "Zobraziť dialógové okno 'O programe'"
 
 msgid "Customize Columns"
-msgstr "Prispôsobiť stĺpce..."
+msgstr "Prispôsobiť stĺpce"
 
 msgid "Please select the columns to show and define their order:"
 msgstr "Vyberte stĺpce, ktoré sa majú zobraziť a určite ich poradie:"
+
+msgid "Report"
+msgstr "Report"
+
+msgid "&Save"
+msgstr "Uložiť"
+
+msgid "Delete report file"
+msgstr "Zmazať report z disku"
+
+msgid "Save report as file"
+msgstr "Uložiť report do súboru"
+
+msgid "Copy report to clipboard"
+msgstr "Kopírovať do schránky"
+
+msgid "Key"
+msgstr "Zadajte kľúč"
+
+msgid "Verification Key"
+msgstr "Potvrďte kľúč"
+
+msgid "Hide key"
+msgstr "Skryť kľúč"
+
+msgid "Show key"
+msgstr "Zobraziť kľúč"
+
+msgid "Hide verification key"
+msgstr "Skryť potvrdzovací kľúč"
+
+msgid "Show verification key"
+msgstr "Zobraziť potvrdzovací kľúč"

@@ -55,7 +55,7 @@ msgstr " Neplatná hodnota dátumu/času."
 
 #. Resource IDs: (3041)
 msgid "  Invalid field separator character found - only a single blank is allowed between fields."
-msgstr " Zistený neplatný znak oddeľovača poľa - medzi poliami je povolený iba jeden prázdny znak."
+msgstr " Zistený neplatný znak oddeľovača polí - medzi poliami je povolený iba jeden prázdny znak."
 
 #. Resource IDs: (3034)
 #, c-format
@@ -1560,7 +1560,7 @@ msgstr "Povolené znaky sú a-z, A-Z, 2-7, medzera a pomlčka"
 
 #. Resource IDs: (1434)
 msgid "Also used to replace periods in the Title field."
-msgstr "Používa sa tiež na nahradenie bodiek v poli Názov."
+msgstr "Používa sa aj na nahradenie bodiek v poli Názov."
 
 #. Resource IDs: (8012)
 msgid "Alt"
@@ -2017,7 +2017,7 @@ msgstr "Nemôžem čítať súbor. Skontrolujte oprávnenia k súboru."
 
 #. Resource IDs: (5285)
 msgid "Cannot verify old master password - file gone?"
-msgstr "Nemôžem overiť staré hlavné heslo - súbor bol vymazaný?"
+msgstr "Nemôžem overiť staré hlavné heslo - súbor bol zmazaný?"
 
 #. Resource IDs: (8015)
 msgid "Caps Lock"
@@ -2392,7 +2392,7 @@ msgstr "Dokončené, ale..."
 
 #. Resource IDs: (5779)
 msgid "Completed successfully"
-msgstr "Úspešne dokončené."
+msgstr "Úspešne dokončené"
 
 #. Resource IDs: (1602)
 msgid "Con&firm Password:"
@@ -2430,7 +2430,7 @@ msgstr "Potvrdiť vymazanie záznamov"
 #. Resource IDs: (5635)
 #, c-format
 msgid "Confirm deletion of the %s filter %s?"
-msgstr "(%s): Potvrďte vymazanie filtra %s."
+msgstr "(%s): Potvrďte zmazanie filtra %s."
 
 #. Resource IDs: (5322)
 msgid "Confirm old master password"
@@ -2811,15 +2811,15 @@ msgstr "Predvolené:"
 
 #. Resource IDs: (1, 5622)
 msgid "Delete"
-msgstr "Vymazať"
+msgstr "Zmazať"
 
 #. Resource IDs: (3402)
 msgid "Delete Base Entry Confirmation"
-msgstr "Potvrďte vymazanie základného záznamu"
+msgstr "Potvrďte zmazanie základného záznamu"
 
 #. Resource IDs: (116)
 msgid "Delete Confirmation"
-msgstr "Potvrďte vymazanie"
+msgstr "Potvrďte zmazanie"
 
 #. Resource IDs: (32056 - Menu)
 msgid "Delete Entry"
@@ -3588,7 +3588,7 @@ msgstr "Nepodarilo sa aktualizovať Yubikey"
 
 #. Resource IDs: (5766)
 msgid "Failsafe Backup Deletion"
-msgstr "Vymazanie Failsafe zálohy"
+msgstr "Zmazanie Failsafe zálohy"
 
 #. Resource IDs: (164)
 msgid "Failsafe Backup Files"
@@ -3604,7 +3604,7 @@ msgstr "Pole"
 
 #. Resource IDs: (65535)
 msgid "Field Separator"
-msgstr "Oddeľovač poľa"
+msgstr "Oddeľovač polí"
 
 #. Resource IDs: (5576)
 msgid "Field active"
@@ -4205,11 +4205,11 @@ msgstr "Importovať XML"
 
 #. Resource IDs: (32133 - MenuEx)
 msgid "Import KeePass V1 CSV"
-msgstr "Importovať Keepass V1 CSV"
+msgstr "Importovať KeePass V1 CSV"
 
 #. Resource IDs: (32132 - MenuEx)
 msgid "Import KeePass V1 TXT"
-msgstr "Importovať Keepass V1 TXT"
+msgstr "Importovať KeePass V1 TXT"
 
 #. Resource IDs: (125)
 msgid "Import Text Settings"
@@ -4229,7 +4229,7 @@ msgstr "Import XML zlyhal"
 
 #. Resource IDs: (5340)
 msgid "Import a KeePass Text File"
-msgstr "Vyberte súbor Keepass na import"
+msgstr "Vyberte súbor KeePass na import"
 
 #. Resource IDs: (3425)
 msgid "Import aborted, see report for details."
@@ -4241,7 +4241,7 @@ msgstr "Import zlyhal"
 
 #. Resource IDs: (1398)
 msgid "Import to change passwords of existing entries ONLY"
-msgstr "Import zmení heslá IBA existujúcich záznamov"
+msgstr "Import zmení IBA heslá existujúcich záznamov"
 
 #. Resource IDs: (65535)
 msgid "Import under Group?"
@@ -4253,19 +4253,19 @@ msgstr "Importovať..."
 
 #. Resource IDs: (5869)
 msgid "Import_KeePassV1_CSV"
-msgstr "Import_keepassv1_csv"
+msgstr ""
 
 #. Resource IDs: (5868)
 msgid "Import_KeePassV1_TXT"
-msgstr "Import_keepassv1_txt"
+msgstr ""
 
 #. Resource IDs: (5534)
 msgid "Import_Text"
-msgstr "Import_text"
+msgstr ""
 
 #. Resource IDs: (5535)
 msgid "Import_XML"
-msgstr "Import_xml"
+msgstr ""
 
 #. Resource IDs: (5277, 5638)
 msgid "Imported"
@@ -4390,7 +4390,7 @@ msgstr "Neplatný parameter"
 
 #. Resource IDs: (3462)
 msgid "Invalid field delimiter: must be within ASCII range."
-msgstr "Neplatný oddeľovač poľa: musí byť v rozsahu znakovej sady ASCII."
+msgstr "Neplatný oddeľovač polí: musí byť v rozsahu znakovej sady ASCII."
 
 #. Resource IDs: (3017)
 #, c-format
@@ -6744,7 +6744,7 @@ msgstr "Boli rozpoznané nasledovné stĺpce, ale spracujú sa iba Skupina/Názo
 
 #. Resource IDs: (3260)
 msgid "The following columns will be processed: "
-msgstr "Spracujú sa nasledovné stĺpce: \n"
+msgstr "Spracujú sa nasledovné stĺpce: "
 
 #. Resource IDs: (3463)
 msgid "The following entries contain incomplete passkeys."
@@ -6779,7 +6779,7 @@ msgstr "Nasledovné záznamy mali neplatné pole UUID. Bola vykonaná oprava."
 #. Resource IDs: (3390)
 #, c-format
 msgid "The following entries have one or more text fields too long to display or edit (over %d characters).  The largest entry size found was ~%d %ls."
-msgstr "Nasledovné záznamy majú jedno alebo viac textových polí príliš dlhé na zobrazenie alebo úpravu (viac ako %d znakov). Najväčšia nájdená veľkosť záznamu bola ~%d %ls."
+msgstr "Nasledovné záznamy majú jedno alebo viac textových polí príliš dlhé na zobrazenie alebo úpravu (viac ako %d znakov). Veľkosť najväčšieho záznamu bola ~%d %ls."
 
 #. Resource IDs: (3441)
 #, c-format
@@ -7475,7 +7475,7 @@ msgstr "UPOZORNENIE: Ak budete pokračovať, polia v záznamoch v existujúcej d
 #. Resource IDs: (5804)
 #, c-format
 msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n\nDo not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
-msgstr "UPOZORNENIE: Táto operácia vytvorí nechránenú kópiu %s z databázy. Odstránenie tejto kópie po použití NIE JE postačujúce.\n\nTúto možnosť nepoužívajte, jedine ak jej rozumiete a akceptujete riziká. Táto možnosť obchádza zabezpečenie poskytované týmto programom."
+msgstr "UPOZORNENIE: Táto operácia vytvorí nechránenú kópiu pre %s z databázy. Odstránenie tejto kópie po použití NIE JE postačujúce.\n\nTúto možnosť nepoužívajte, jedine ak jej rozumiete a akceptujete riziká. Táto možnosť obchádza zabezpečenie poskytované týmto programom."
 
 #. Resource IDs: (5447)
 msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"

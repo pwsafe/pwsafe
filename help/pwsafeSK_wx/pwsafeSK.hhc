@@ -112,10 +112,6 @@
 			<param name="Local" value="html/backups_tab.html">
 			</OBJECT>
 		<LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Automatické Failsafe zálohy">
-			<param name="Local" value="html/failsafebackups.html">
-			</OBJECT>
-		<LI> <OBJECT type="text/sitemap">
 			<param name="Name" value="Importovanie záznamov">
 			<param name="Local" value="html/import.html">
 			</OBJECT>
