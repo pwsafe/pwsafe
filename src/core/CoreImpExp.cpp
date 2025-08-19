@@ -2089,6 +2089,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     }
   }
 
+  trimCR(s_header);
   // Parse the header line
   std::vector<StringX> hdr_tokens;
   ProcessKeePassCSVLine(s_header, hdr_tokens);
@@ -2171,6 +2172,8 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     // Check if end of file
     if (iss.eof())
       break;
+
+    trimCR(linebuf);
 
     // skip blank lines
     if (linebuf.empty()) {
