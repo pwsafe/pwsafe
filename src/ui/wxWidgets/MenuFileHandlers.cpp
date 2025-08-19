@@ -1200,7 +1200,7 @@ void PasswordSafeFrame::DoImportKeePass(wxString filename)
     {
       wxMessageBox( wxString::Format(_("%ls\n\nCould not open file for reading!"), KPsFileName.GetData()),
                     _("File open error"), wxOK | wxICON_ERROR, this);
-      delete [] pcmd;
+      delete pcmd;
       break;
     }
     case PWScore::INVALID_FORMAT:
@@ -1218,7 +1218,7 @@ void PasswordSafeFrame::DoImportKeePass(wxString filename)
       msg << wxT("\n\n") << _("Do you wish to see a detailed report?");
       if (wxMessageBox(msg, _("Import failed"), wxYES_NO | wxICON_ERROR, this) == wxYES)
         ViewReport(rpt);
-      delete [] pcmd;
+      delete pcmd;
       break;
     }
     case PWScore::SUCCESS:
