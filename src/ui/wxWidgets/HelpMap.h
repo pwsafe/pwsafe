@@ -20,7 +20,7 @@ DLG_HELP(ImportXmlDlg,                                  html/import.html#XML)
 DLG_HELP(SafeCombinationEntryDlg,                       html/create_new_db.html)
 
 //The Contents page from main toolbar
-DLG_HELP(wxToolBar,                                     html/Welcome.html)
+DLG_HELP(wxAuiToolBar,                                  html/Welcome.html)
 
 //AdvancedSelectionDlg template
 DLG_HELP(AdvancedSelectionDlg<ExportFullXml>,           html/export.html#xml)
