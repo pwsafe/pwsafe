@@ -238,6 +238,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>%td/%zu matches</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T130629Z" creationid="pm_kan" creationdate="20250823T130629Z">
+        <seg>совпадение %td из %zu</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>&amp;About Password Safe...</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -442,14 +450,6 @@ Unknown error</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T110409Z">
         <seg>&amp;Копировать этот</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>&amp;Copy to Clipboard</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T133354Z">
-        <seg>&amp;Копировать в буфер</seg>
       </tuv>
     </tu>
     <tu>
@@ -854,14 +854,6 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>&amp;Remove from Disk</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20210615T164614Z" creationid="pm_kan" creationdate="20210615T164614Z">
-        <seg>&amp;Удалить с диска</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>&amp;Rename Group</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T142712Z">
@@ -918,10 +910,10 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>&amp;Save to Disk</seg>
+        <seg>&amp;Save</seg>
       </tuv>
       <tuv lang="ru-RU">
-        <seg>&amp;Сохранить на диск</seg>
+        <seg>Сох&amp;ранить</seg>
       </tuv>
     </tu>
     <tu>
@@ -3035,6 +3027,14 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Copy report to clipboard</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T123832Z" creationid="pm_kan" creationdate="20250823T123832Z">
+        <seg>Копировать отчёт в буфер обмена</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Copy to database</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -3700,6 +3700,14 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Delete report file</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T123742Z" creationid="pm_kan" creationdate="20250823T123742Z">
+        <seg>Удалить файл с отчётом</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Deleting this copy after use is NOT sufficient.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20150418T083620Z">
@@ -4329,14 +4337,6 @@ offset approximately at %d</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Конец отчёта</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>Enter Key:</seg>
-      </tuv>
-      <tuv lang="ru-RU">
-        <seg>Ключ:</seg>
       </tuv>
     </tu>
     <tu>
@@ -5651,10 +5651,26 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Hide key</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T125121Z" creationid="pm_kan" creationdate="20250823T125121Z">
+        <seg>Скрыть ключ</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Hide password</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142724Z" creationid="pm_kan" creationdate="20240508T142724Z">
         <seg>Скрыть пароль</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Hide verification key</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T125154Z" creationid="pm_kan" creationdate="20250823T125154Z">
+        <seg>Скрыть подтверждение ключа</seg>
       </tuv>
     </tu>
     <tu>
@@ -6297,6 +6313,14 @@ or a corrupt database.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Хранить</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Key</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T125029Z" creationid="pm_kan" creationdate="20250823T125029Z">
+        <seg>Ключ</seg>
       </tuv>
     </tu>
     <tu>
@@ -7883,6 +7907,15 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
       </tuv>
     </tu>
     <tu>
+      <note>заголовок диалога с QR-кодом пароля</note>
+      <tuv lang="en-US">
+        <seg>Password of</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T125512Z" creationid="pm_kan" creationdate="20250823T125512Z">
+        <seg>Пароль для</seg>
+      </tuv>
+    </tu>
+    <tu>
       <tuv lang="en-US">
         <seg>Password policy name '%ls' is not in the database.</seg>
       </tuv>
@@ -8137,20 +8170,20 @@ to the clipboard.</seg>
       <tuv lang="en-US">
         <seg>Project-Id-Version: 
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2025-06-29 12:12+0300
-PO-Revision-Date: 2025-03-15 12:30+0300
-Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+POT-Creation-Date: 2025-08-23 15:09+0300
+PO-Revision-Date: 2025-08-17 22:30+0300
+Last-Translator:
 Language-Team:
 Language: ru
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250629T091644Z" creationid="pm_kan" creationdate="20250629T091644Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T124540Z" creationid="pm_kan" creationdate="20250823T124540Z">
         <seg>Project-Id-Version: 
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2025-06-29 12:12+0300
-PO-Revision-Date: 2025-03-15 12:30+0300
+POT-Creation-Date: 2025-08-23 15:09+0300
+PO-Revision-Date: 2025-08-17 22:30+0300
 Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
 Language-Team:
 Language: ru
@@ -8353,6 +8386,14 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Report</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T123656Z" creationid="pm_kan" creationdate="20250823T123656Z">
+        <seg>Отчёт</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Report of %ls function started at %ls</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -8483,6 +8524,14 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Save changes?</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T125641Z" creationid="pm_kan" creationdate="20250823T125641Z">
+        <seg>Сохранить изменения?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Save database elsewhere or with another name?</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T115730Z">
@@ -8499,6 +8548,14 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Save report as file</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T123802Z" creationid="pm_kan" creationdate="20250823T123802Z">
+        <seg>Сохранить отчёт в файл</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Schema does not have a version number.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20150418T091846Z">
@@ -8507,18 +8564,18 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Search hit bottom, continuing at top</seg>
+        <seg>Search hit bottom, continuing at top.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T150016Z">
-        <seg>Поиск достиг конца, продолжено с начала</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T125923Z" creationid="pm_kan" creationdate="20250823T125923Z">
+        <seg>Поиск достиг конца, продолжено с начала.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Search hit top, continuing at bottom</seg>
+        <seg>Search hit top, continuing at bottom.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20130428T150027Z">
-        <seg>Поиск достиг начала, продолжено с конца</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T125949Z" creationid="pm_kan" creationdate="20250823T125949Z">
+        <seg>Поиск достиг начала, продолжено с конца.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8704,6 +8761,15 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T110034Z">
         <seg>Укажите контейнер для сравнения с текущим (</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>заголовок диалога выбора</note>
+      <tuv lang="en-US">
+        <seg>Select a directory</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T125904Z" creationid="pm_kan" creationdate="20250823T125904Z">
+        <seg>Выберите каталог</seg>
       </tuv>
     </tu>
     <tu>
@@ -9068,10 +9134,26 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Show key</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T125114Z" creationid="pm_kan" creationdate="20250823T125114Z">
+        <seg>Показать ключ</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Show password</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142728Z" creationid="pm_kan" creationdate="20240508T142728Z">
         <seg>Показать пароль</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Show verification key</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T125236Z" creationid="pm_kan" creationdate="20250823T125141Z">
+        <seg>Показать подтверждение ключа</seg>
       </tuv>
     </tu>
     <tu>
@@ -10821,10 +10903,10 @@ Imported %d %ls</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Verify Key:</seg>
+        <seg>Verification Key</seg>
       </tuv>
-      <tuv lang="ru-RU">
-        <seg>Повтор:</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T125128Z" creationid="pm_kan" creationdate="20250823T125128Z">
+        <seg>Подтверждение ключа</seg>
       </tuv>
     </tu>
     <tu>
