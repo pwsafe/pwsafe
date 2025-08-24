@@ -154,7 +154,7 @@ std::vector<DragbarToolInfo> DragbarToolInfos =
     { ID_DRAGBAR_NOTES,     _("Notes"),     PWS_DRAGBAR_BITMAPS(Notes),     CItemData::FieldType::NOTES           },
     { ID_DRAGBAR_URL,       _("Url"),       PWS_DRAGBAR_BITMAPS(URL),       CItemData::FieldType::URL             },
     { ID_DRAGBAR_EMAIL,     _("Email"),     PWS_DRAGBAR_BITMAPS(Email),     CItemData::FieldType::EMAIL           },
-    { ID_DRAGBAR_DND,       _("Dnd"),       PWS_DRAGBAR_BITMAPS(Dnd),       CItemData::FieldType::UNKNOWNFIELDS   }
+    { ID_DRAGBAR_DND,       _T("Dnd"),      PWS_DRAGBAR_BITMAPS(Dnd),       CItemData::FieldType::UNKNOWNFIELDS   }
   };
 
 DragBarCtrl::DragBarCtrl(wxWindow *parent, wxWindowID id, const wxPoint &position, const wxSize &size, long style) : wxAuiToolBar(parent, id, position, size, style)
