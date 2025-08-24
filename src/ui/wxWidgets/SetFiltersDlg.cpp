@@ -112,7 +112,7 @@ SetFiltersDlg::SetFiltersDlg(wxWindow *parent, st_filters *pfilters,
 
 ////@begin SetFiltersDlg creation
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
-  wxDialog::Create( parent, id, caption, pos, size, style );
+  wxDialog::Create( parent, id, heading, pos, size, style );
 
   CreateControls();
   if (GetSizer())
