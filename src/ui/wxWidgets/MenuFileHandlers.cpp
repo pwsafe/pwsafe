@@ -445,18 +445,18 @@ int PasswordSafeFrame::SaveAs()
   if(cf.empty()) {
     cf = wxT("pwsafe"); // reasonable default for first time user
   }
-  wxString v3FileName = towxstring(PWSUtil::GetNewFileName(cf.c_str(), DEFAULT_SUFFIX));
+  wxString NewFileName = towxstring(PWSUtil::GetNewFileName(cf.c_str(), curver == PWSfile::V40 ? V4_SUFFIX : V3_SUFFIX));
 
   wxString title = (!m_core.IsDbFileSet()? _("Choose a name for the current (Untitled) database:") :
                                     _("Choose a new name for the current database:"));
-  wxFileName filename(v3FileName);
+  wxFileName filename(NewFileName);
   wxString dir = filename.GetPath();
   if (dir.empty())
     dir = towxstring(PWSdirs::GetSafeDir());
 
   //filename cannot have the path
   wxFileDialog fd(this, title, dir, filename.GetFullName(),
-                  _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|*.*;*"),
+                  curver == PWSfile::V40 ? _("Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*; *)|*.*;*") : _("Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; *)|*.*;*"),
                    wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
   if (fd.ShowModal() != wxID_OK) {
