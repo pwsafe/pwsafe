@@ -30,7 +30,7 @@ jobs:
       XCODE_CONFIG: Release
       FORCE_REBUILD_WX: 1
       WX_DEBUG_FLAG: "--disable-debug" 
-      XCODE_VER: "15.4"
+      XCODE_VER: "16.4"
 
     steps:
     - name: Checkout repository
