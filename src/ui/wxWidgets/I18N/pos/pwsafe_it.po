@@ -5203,19 +5203,19 @@ msgstr ""
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2625
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2632
 #, c-format
-msgid "This alias's target [%s:%s:%s] is not a normal entry."
+msgid "This alias's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2649
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:2732 ../../../core/core_st.cpp:110
@@ -5591,7 +5591,7 @@ msgstr ""
 
 #: ../../../core/core_st.cpp:30
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 
 #: ../../../core/core_st.cpp:31
@@ -5614,38 +5614,38 @@ msgstr "database"
 
 #: ../../../core/core_st.cpp:35
 #, c-format
-msgid "multiple entries exist with title=%s."
+msgid "multiple entries exist with title=%ls."
 msgstr ""
 
 #: ../../../core/core_st.cpp:36
 #, c-format
-msgid "no entry exists with title=%s."
+msgid "no entry exists with title=%ls."
 msgstr ""
 
 #: ../../../core/core_st.cpp:37
 #, c-format
 msgid ""
-"multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
+"multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
 msgstr ""
 
 #: ../../../core/core_st.cpp:38
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
 msgstr ""
 
 #: ../../../core/core_st.cpp:39
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
 msgstr ""
 
 #: ../../../core/core_st.cpp:40
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
 msgstr ""
 
 #: ../../../core/core_st.cpp:41
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
 msgstr ""
 
 #: ../../../core/core_st.cpp:42
@@ -5684,7 +5684,7 @@ msgstr ""
 #: ../../../core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr ""
 
 #: ../../../core/core_st.cpp:51

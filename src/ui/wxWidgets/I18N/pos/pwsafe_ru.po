@@ -5337,24 +5337,24 @@ msgstr "Перетаскивание"
 #: src/ui/wxWidgets/TreeCtrl.cpp:2625
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"Скопированный элемент «%s:%s:%s» ссылается на элемент, который является псевдонимом.\n"
+"Скопированный элемент «%ls:%ls:%ls» ссылается на элемент, который является псевдонимом.\n"
 "\n"
 "Скопированный элемент теперь ссылается на исходный элемент."
 
 #: src/ui/wxWidgets/TreeCtrl.cpp:2632
 #, c-format
-msgid "This alias's target [%s:%s:%s] is not a normal entry."
+msgid "This alias's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
-"Исходный элемент [%s:%s:%s] для данного псевдонима не является обычным "
+"Исходный элемент [%ls:%ls:%ls] для данного псевдонима не является обычным "
 "элементом."
 
 #: src/ui/wxWidgets/TreeCtrl.cpp:2649
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 "Целевой элемент [%s:%s:%s] для данного ярлыка не является обычным элементом."
 
@@ -5519,9 +5519,9 @@ msgstr "OutOfMemoryException."
 
 #: src/core/core_st.cpp:30
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
-"Исходный элемент [%s:%s:%s] для данного псевдонима не является обычным "
+"Исходный элемент [%ls:%ls:%ls] для данного псевдонима не является обычным "
 "элементом."
 
 # For defining filters: after a date, before a date or between two dates.
@@ -5544,51 +5544,51 @@ msgstr "псевдонимов"
 
 #: src/core/core_st.cpp:35
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "существует несколько элементов с заголовком «%s»."
+msgid "multiple entries exist with title=%ls."
+msgstr "существует несколько элементов с заголовком «%ls»."
 
 #: src/core/core_st.cpp:36
 #, c-format
-msgid "no entry exists with title=%s."
-msgstr "не существует элемента с заголовком «%s»."
+msgid "no entry exists with title=%ls."
+msgstr "не существует элемента с заголовком «%ls»."
 
 #: src/core/core_st.cpp:37
 #, c-format
 msgid ""
-"multiple entries exist with title=%s and username=%s or with group=%s and "
-"title=%s."
+"multiple entries exist with title=%ls and username=%ls or with group=%ls and "
+"title=%ls."
 msgstr ""
-"существует несколько элементов с заголовком «%s» и именем пользователя «%s» "
-"или с группой «%s» и заголовком «%s»."
+"существует несколько элементов с заголовком «%ls» и именем пользователя «%ls» "
+"или с группой «%ls» и заголовком «%ls»."
 
 #: src/core/core_st.cpp:38
 #, c-format
 msgid ""
-"no entry exists with title=%s and username=%s or with group=%s, title=%s."
+"no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
 msgstr ""
-"не существует элемента с заголовком «%s» и именем пользователя «%s» или с "
-"группой «%s» и заголовком «%s»."
+"не существует элемента с заголовком «%ls» и именем пользователя «%ls» или с "
+"группой «%ls» и заголовком «%ls»."
 
 #: src/core/core_st.cpp:39
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
 msgstr ""
-"не существует элемента с группой «%s», заголовком «%s» и именем пользователя"
-" «%s»."
+"не существует элемента с группой «%ls», заголовком «%ls» и именем пользователя"
+" «%ls»."
 
 #: src/core/core_st.cpp:40
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
 msgstr ""
-"не существует элемента без имени пользователя с группой «%s» и заголовком "
-"«%s»."
+"не существует элемента без имени пользователя с группой «%ls» и заголовком "
+"«%ls»."
 
 #: src/core/core_st.cpp:41
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
 msgstr ""
-"не существует корневого элемента с заголовком «%s» и именем пользователя "
-"«%s»."
+"не существует корневого элемента с заголовком «%ls» и именем пользователя "
+"«%ls»."
 
 #: src/core/core_st.cpp:42
 msgid "Password implies this is an alias entry, but "
@@ -5627,10 +5627,10 @@ msgstr ""
 #: src/core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not "
+"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not "
 "supported."
 msgstr ""
-"Элемент «%s:%s:%s», является псевдонимом или ссылкой. Создание псевдонимов "
+"Элемент «%ls:%ls:%ls», является псевдонимом или ссылкой. Создание псевдонимов "
 "для таких элементов не поддерживается."
 
 # For defining filters: after a date, before a date or between two dates.
@@ -11419,12 +11419,12 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgstr "Пароли для указанных элементов просрочены или их срок скоро истечёт:"
 
 #, c-format
-#~ msgid "The following entry was copied to the %s database: '%s:%s:%s'"
-#~ msgstr "Указанные элементы были скопированы в контейнер %s: «%s:%s:%s»"
+#~ msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
+#~ msgstr "Указанные элементы были скопированы в контейнер %s: «%ls:%ls:%ls»"
 
 #, c-format
-#~ msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
-#~ msgstr "Указанные элементы были синхронизированы с контейнером %s: «%s:%s:%s»"
+#~ msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
+#~ msgstr "Указанные элементы были синхронизированы с контейнером %s: «%ls:%ls:%ls»"
 
 #, c-format
 #~ msgid ""

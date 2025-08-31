@@ -500,17 +500,17 @@ END
 STRINGTABLE
 BEGIN
   IDSC_ALIASNOTFOUNDA      "Password implies this is an alias entry, but "
-  IDSC_ALIASNOTFOUND0A     "multiple entries exist with title=%s."
-  IDSC_ALIASNOTFOUND0B     "no entry exists with title=%s."
-  IDSC_ALIASNOTFOUND1A     "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-  IDSC_ALIASNOTFOUND1B     "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-  IDSC_ALIASNOTFOUND2A     "no entry exists with group=%s, title=%s and username=%s."
-  IDSC_ALIASNOTFOUND2B     "no entry exists with group=%s, title=%s and empty username."
-  IDSC_ALIASNOTFOUND2C     "no entry exists in the root with title=%s and username=%s."
+  IDSC_ALIASNOTFOUND0A     "multiple entries exist with title=%ls."
+  IDSC_ALIASNOTFOUND0B     "no entry exists with title=%ls."
+  IDSC_ALIASNOTFOUND1A     "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+  IDSC_ALIASNOTFOUND1B     "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+  IDSC_ALIASNOTFOUND2A     "no entry exists with group=%ls, title=%ls and username=%ls."
+  IDSC_ALIASNOTFOUND2B     "no entry exists with group=%ls, title=%ls and empty username."
+  IDSC_ALIASNOTFOUND2C     "no entry exists in the root with title=%ls and username=%ls."
   IDSC_ALIASNOTFOUNDZ      "\n\nSelect Yes to continue with this password or No to cancel"
   IDSC_ALIASCANTREFERTOITSELF             "An alias cannot refer to itself!"
   IDSC_BASEHASNOTITLE      "Password implies this is an alias entry, but specifies a base entry with no title.\nEvery entry must have a title."
-  IDSC_BASEISALIAS         "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
-  IDSC_ABASEINVALID          "This alias' target [%s:%s:%s] is not a normal entry."
+  IDSC_BASEISALIAS         "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
+  IDSC_ABASEINVALID          "This alias' target [%ls:%ls:%ls] is not a normal entry."
 
 END

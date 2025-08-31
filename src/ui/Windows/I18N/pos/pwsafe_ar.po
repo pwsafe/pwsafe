@@ -444,8 +444,8 @@ msgstr " استيراد # %d"
 
 #. Resource IDs: (5234)
 #, c-format
-msgid " [Process ID=%s]"
-msgstr " [Process ID=%s]"
+msgid " [Process ID=%ls]"
+msgstr " [Process ID=%ls]"
 
 #. Resource IDs: (5651)
 msgid "! Edit externally"
@@ -3403,11 +3403,11 @@ msgstr "اسحب هذه الصورة الى نافذة اخرى لبدء الك�
 #. Resource IDs: (5464)
 #, c-format
 msgid ""
-"Dropped entry '%s:%s:%s' password points to an entry that is also an alias.\n"
+"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
 "\n"
 "The dropped entry now references that entry's base entry."
 msgstr ""
-"يشير إسقاط مدخل '%s:%s:%s' كلمة المرور تشير الى مدخل الذي هو أيضا اسم مستعار.\n"
+"يشير إسقاط مدخل '%ls:%ls:%ls' كلمة المرور تشير الى مدخل الذي هو أيضا اسم مستعار.\n"
 "\n"
 "يشير المدخل الذي تم إسقاطه الآن إلى المدخل الأساسي الخاص بالمدخل."
 
@@ -7502,12 +7502,12 @@ msgstr "كلمات مرور المدخلات التالية على وشك ان �
 
 #. Resource IDs: (5481)
 #, c-format
-msgid "The following entry was copied to the %s database: '%s:%s:%s'"
+msgid "The following entry was copied to the %s database: '%ls:%ls:%ls'"
 msgstr "تم نسخ المدخل التالي إلى قاعدة بيانات% s: '% s:% s:% s'"
 
 #. Resource IDs: (5932)
 #, c-format
-msgid "The following entry was synchronized to the %s database: '%s:%s:%s'"
+msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
 msgstr "تمت مزامنة المدخل التالي مع قاعدة بيانات% s: '% s:% s:% s'"
 
 #. Resource IDs: (5787)
@@ -7579,7 +7579,7 @@ msgstr "قاعدة البيانات الأصلية ، \" %s\" ، في تنسيق
 
 #. Resource IDs: (5465)
 #, c-format
-msgid "The referenced entry '%s:%s:%s' is itself an alias or shortcut. This is not supported."
+msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
 msgstr "المدخل المشار إليه '% s:% s:% s' هو في حد ذاته اسم مستعار أو اختصار. هذا غير مدعوم."
 
 #. Resource IDs: (5770)
@@ -7620,7 +7620,7 @@ msgstr "قيمة Hotkey هذه غير متاحة حيث تم تعيينها با
 
 #. Resource IDs: (5499)
 #, c-format
-msgid "This alias' target [%s:%s:%s] is not a normal entry."
+msgid "This alias' target [%ls:%ls:%ls] is not a normal entry."
 msgstr "هدف هذا الاسم المستعار [ %s:% s:% s] ليس مدخلا عادياً."
 
 #. Resource IDs: (5355)
@@ -7712,7 +7712,7 @@ msgstr "يتطلب هذا البرنامج الملف %Ts ، والذي لم ي�
 
 #. Resource IDs: (5500)
 #, c-format
-msgid "This shortcut's target [%s:%s:%s] is not a normal entry."
+msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr "الذي يشير له هذا الاختصار [% s:% s:% s] ليس مدخلا عادياً."
 
 #. Resource IDs: (5110)
@@ -9745,37 +9745,37 @@ msgstr "دقائق خامل"
 
 #. Resource IDs: (5458)
 #, c-format
-msgid "multiple entries exist with title=%s and username=%s or with group=%s and title=%s."
-msgstr "عدة مدخلات موجودة تمتلك عنوان=%s و اسم مستخدم=%s او مجموعة=%s و عنوان=%s."
+msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
+msgstr "عدة مدخلات موجودة تمتلك عنوان=%ls و اسم مستخدم=%ls او مجموعة=%ls و عنوان=%ls."
 
 #. Resource IDs: (5456)
 #, c-format
-msgid "multiple entries exist with title=%s."
-msgstr "مدخلات عدة موجودة تمتلك عنوان=%s."
+msgid "multiple entries exist with title=%ls."
+msgstr "مدخلات عدة موجودة تمتلك عنوان=%ls."
 
 #. Resource IDs: (5462)
 #, c-format
-msgid "no entry exists in the root with title=%s and username=%s."
-msgstr "لا مدخل موجود في الجذر يملك عنوان=%s و اسم مستخدم=%s."
+msgid "no entry exists in the root with title=%ls and username=%ls."
+msgstr "لا مدخل موجود في الجذر يملك عنوان=%ls و اسم مستخدم=%ls."
 
 #. Resource IDs: (5461)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and empty username."
-msgstr "لا يوجد مدخل يملك مجموعة=%s ,عنوان=%s واسم مستخدم فارغ."
+msgid "no entry exists with group=%ls, title=%ls and empty username."
+msgstr "لا يوجد مدخل يملك مجموعة=%ls ,عنوان=%ls واسم مستخدم فارغ."
 
 #. Resource IDs: (5460)
 #, c-format
-msgid "no entry exists with group=%s, title=%s and username=%s."
-msgstr "لا يوجد مدخل  يملك مجموعة=%s ,عنوان=%s واسم مستخدم=%s."
+msgid "no entry exists with group=%ls, title=%ls and username=%ls."
+msgstr "لا يوجد مدخل  يملك مجموعة=%ls ,عنوان=%ls واسم مستخدم=%ls."
 
 #. Resource IDs: (5459)
 #, c-format
-msgid "no entry exists with title=%s and username=%s or with group=%s, title=%s."
-msgstr "لا يوجد مدخل  يملك عنوان=%s و اسم مستخدم=%s او مجموعة=%s, عنوان=%s."
+msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+msgstr "لا يوجد مدخل  يملك عنوان=%ls و اسم مستخدم=%ls او مجموعة=%ls, عنوان=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
-msgid "no entry exists with title=%s."
+msgid "no entry exists with title=%ls."
 msgstr "لا يوجد مدخل مع عنوان = %s."
 
 #. Resource IDs: (3254)

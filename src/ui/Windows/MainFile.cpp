@@ -485,7 +485,7 @@ void DboxMain::OnClose()
 
 int DboxMain::Close(const bool bTrySave)
 {
-  PWS_LOGIT_ARGS("bTrySave=%s", bTrySave ? L"true" : L"false");
+  PWS_LOGIT_ARGS("bTrySave=%ls", bTrySave ? L"true" : L"false");
 
   PWSprefs *prefs = PWSprefs::GetInstance();
 
@@ -2531,7 +2531,7 @@ void DboxMain::OnImportKeePassV1CSV()
       {
         cs_msg.Format(IDS_CANTOPENREADING, static_cast<LPCWSTR>(KPsFileName.c_str()));
         cs_title.LoadString(IDS_FILEOPENERROR);
-        delete [] pcmd;
+        delete pcmd;
         break;
       }
       case PWScore::INVALID_FORMAT:
@@ -2542,7 +2542,7 @@ void DboxMain::OnImportKeePassV1CSV()
         else
           cs_msg.Format(IDS_INVALIDFORMAT, static_cast<LPCWSTR>(KPsFileName.c_str()));
         cs_title.LoadString(IDS_IMPORTFAILED);
-        delete [] pcmd;
+        delete pcmd;
         break;
       }
       case PWScore::SUCCESS:
@@ -2638,7 +2638,7 @@ void DboxMain::OnImportKeePassV1TXT()
       {
         cs_msg.Format(IDS_CANTOPENREADING, static_cast<LPCWSTR>(KPsFileName.c_str()));
         cs_title.LoadString(IDS_FILEOPENERROR);
-        delete [] pcmd;
+        delete pcmd;
         break;
       }
       case PWScore::INVALID_FORMAT:
@@ -2648,7 +2648,7 @@ void DboxMain::OnImportKeePassV1TXT()
         else
           cs_msg.Format(IDS_INVALIDFORMAT, static_cast<LPCWSTR>(KPsFileName.c_str()));
         cs_title.LoadString(IDS_IMPORTFAILED);
-        delete [] pcmd;
+        delete pcmd;
         break;
       }
       case PWScore::SUCCESS:

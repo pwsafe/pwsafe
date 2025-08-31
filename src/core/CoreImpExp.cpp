@@ -1554,6 +1554,13 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
              SUCCESS : OK_WITH_ERRORS;
 }
 
+    // Remove trailing \r, if any [GH1560]
+static inline void trimCR(std::string &str) {
+  if (!str.empty() && str.back() == '\r') {
+    str.pop_back();
+  }
+}
+
 int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
                                     int &numImported, int &numSkipped, int &numRenamed,
                                     UINT &uiReasonCode, CReport &rpt, Command *&pcommand)
@@ -1562,7 +1569,7 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
   /*
   The format of the source file is from doing an export to TXT file in Keepass.
 
-  The checkbox "Encode/replace newline characters by '\n'" MUST be selected bu the
+  The checkbox "Encode/replace newline characters by '\n'" MUST be selected by the
   user during the export or this import will fail and may give unexpected results.
 
   The line that starts with '[' and ends with ']' is equivalent to the Title field.
@@ -1668,6 +1675,8 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
       bFirst = false;
     }
 
+    trimCR(linebuf);
+
     // this line should always be a title contained in []'s
     if (*(linebuf.begin()) != '[' || *(linebuf.end() - 1) != ']') {
       LoadAString(cs_error, IDSC_IMPORTMISSINGTITLE);
@@ -1684,9 +1693,12 @@ int PWScore::ImportKeePassV1TXTFile(const StringX &filename,
     for (;;) {
       streamoff currentpos = iss.tellg();
       getline(iss, linebuf, '\n');
+      
 
       if (iss.eof())
         break;
+
+      trimCR(linebuf);
 
       // Check if blank line
       if (linebuf.empty())
@@ -2077,6 +2089,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     }
   }
 
+  trimCR(s_header);
   // Parse the header line
   std::vector<StringX> hdr_tokens;
   ProcessKeePassCSVLine(s_header, hdr_tokens);
@@ -2159,6 +2172,8 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     // Check if end of file
     if (iss.eof())
       break;
+
+    trimCR(linebuf);
 
     // skip blank lines
     if (linebuf.empty()) {
