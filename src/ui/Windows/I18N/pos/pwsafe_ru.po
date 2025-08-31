@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-24 17:30+0300\n"
-"PO-Revision-Date: 2025-08-24 17:30+0300\n"
+"POT-Creation-Date: 2025-08-31 17:00+0300\n"
+"PO-Revision-Date: 2025-08-31 17:00+0300\n"
 "Last-Translator:\n"
 "Language-Team:\n"
 "Language: ru\n"
@@ -8962,37 +8962,37 @@ msgstr "минут бездействия"
 #. Resource IDs: (5458)
 #, c-format
 msgid "multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls."
-msgstr "существует несколько элементов с заголовком «%s» и именем пользователя «%s» или с группой «%s» и заголовком «%s»."
+msgstr "существует несколько элементов с заголовком «%ls» и именем пользователя «%ls» или с группой «%ls» и заголовком «%ls»."
 
 #. Resource IDs: (5456)
 #, c-format
 msgid "multiple entries exist with title=%ls."
-msgstr "существует несколько элементов с заголовком «%s»."
+msgstr "существует несколько элементов с заголовком «%ls»."
 
 #. Resource IDs: (5462)
 #, c-format
 msgid "no entry exists in the root with title=%ls and username=%ls."
-msgstr "не существует корневого элемента с заголовком «%s» и именем пользователя «%s»."
+msgstr "не существует корневого элемента с заголовком «%ls» и именем пользователя «%ls»."
 
 #. Resource IDs: (5461)
 #, c-format
 msgid "no entry exists with group=%ls, title=%ls and empty username."
-msgstr "не существует элемента без имени пользователя с группой «%s» и заголовком «%s»."
+msgstr "не существует элемента без имени пользователя с группой «%ls» и заголовком «%ls»."
 
 #. Resource IDs: (5460)
 #, c-format
 msgid "no entry exists with group=%ls, title=%ls and username=%ls."
-msgstr "не существует элемента с группой «%s», заголовком «%s» и именем пользователя «%s»."
+msgstr "не существует элемента с группой «%ls», заголовком «%ls» и именем пользователя «%ls»."
 
 #. Resource IDs: (5459)
 #, c-format
 msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
-msgstr "не существует элемента с заголовком «%s» и именем пользователя «%s» или с группой «%s» и заголовком «%s»."
+msgstr "не существует элемента с заголовком «%ls» и именем пользователя «%ls» или с группой «%ls» и заголовком «%ls»."
 
 #. Resource IDs: (5457)
 #, c-format
 msgid "no entry exists with title=%ls."
-msgstr "не существует элемента с заголовком «%s»."
+msgstr "не существует элемента с заголовком «%ls»."
 
 # в отчёте
 #. Resource IDs: (3254)
