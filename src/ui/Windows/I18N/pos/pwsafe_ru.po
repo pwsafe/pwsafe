@@ -3272,7 +3272,7 @@ msgstr "Редактировать элемент..."
 #. Resource IDs: (5699)
 #, c-format
 msgid "Edit Entry:   «%s» «%s» «%s»"
-msgstr "Редактировать элемент: «%s» «%s» «%s»"
+msgstr "Редактирование элемента: «%s» «%s» «%s»"
 
 #. Resource IDs: (122)
 msgid "Edit Shortcut"
@@ -4917,9 +4917,10 @@ msgstr "Литовская (стандартная)"
 msgid "Lock"
 msgstr "Заблокировать контейнер"
 
+# вкладка "безопасность" в настройках
 #. Resource IDs: (65535)
 msgid "Lock password database "
-msgstr "Заблокировать контейнер "
+msgstr "Блокировка контейнера "
 
 #. Resource IDs: (5113)
 msgid "Locking clears the memory but excludes undo and redo information that can still be used on unlocking of the database."
@@ -6049,7 +6050,7 @@ msgstr "Время изменения элемента"
 
 #. Resource IDs: (1121)
 msgid "Record last access times"
-msgstr "Время последнего доступа"
+msgstr "Сохранять время последнего доступа"
 
 # AFX_IDS_AUTOSAVE_RECOVERY_ASK_5
 #. Resource IDs: (62184)
