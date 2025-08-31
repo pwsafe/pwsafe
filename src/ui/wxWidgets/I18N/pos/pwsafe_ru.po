@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-24 17:45+0300\n"
-"PO-Revision-Date: 2025-08-24 17:45+0300\n"
+"POT-Creation-Date: 2025-08-31 17:40+0300\n"
+"PO-Revision-Date: 2025-08-31 17:40+0300\n"
 "Last-Translator: Andrey Kuznetsov <pm_kan@users.sourceforge.net>\n"
 "Language-Team: \n"
 "Language: ru\n"
@@ -697,12 +697,6 @@ msgstr "Создан:"
 msgid "Password last changed on:"
 msgstr "Пароль изменён:"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:633
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:645
-#: src/ui/wxWidgets/PropertiesDlg.cpp:269
-msgid "Static text"
-msgstr "Заглушка"
-
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:636
 #: src/ui/wxWidgets/EditShortcutDlg.cpp:260
 msgid "Last accessed on:"
@@ -852,11 +846,6 @@ msgstr "Или"
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:317
 msgid "Use hexadecimal digits only"
 msgstr "Только шестнадцатеричные цифры"
-
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:828
-#: src/ui/wxWidgets/PasswordPolicyDlg.cpp:319
-msgid "0-9, a-f"
-msgstr "0-9, a-f"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:845
 msgid "Preview"
@@ -1268,10 +1257,6 @@ msgstr "Неподдерживаемая комбинация"
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:700
 msgid "\"Pronounceable\" and \"easy-to-read\" cannot be both selected."
 msgstr "Параметры «произносимые» и «удобочитаемые» несовместимы"
-
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3683
-msgid "mailto:"
-msgstr "mailto:"
 
 #: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3806
 msgid ""
@@ -1713,10 +1698,6 @@ msgstr "Пользователь"
 #: src/ui/wxWidgets/DragBarCtrl.cpp:155
 msgid "Url"
 msgstr "Ссылка"
-
-#: src/ui/wxWidgets/DragBarCtrl.cpp:157
-msgid "Dnd"
-msgstr "Dnd"
 
 #: src/ui/wxWidgets/DragBarCtrl.cpp:300
 msgid "Error dragging"
@@ -2393,6 +2374,11 @@ msgid "Choose a new name for the current database:"
 msgstr "Укажите имя файла для нового контейнера:"
 
 #: src/ui/wxWidgets/MenuFileHandlers.cpp:459
+#: src/ui/wxWidgets/MenuFileHandlers.cpp:722
+msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*; *)|*.*;*"
+msgstr "Контейнеры Password Safe (*.psafe4)|*.psafe4|Все файлы (*.*; *)|*.*;*"
+
+#: src/ui/wxWidgets/MenuFileHandlers.cpp:459
 msgid ""
 "Password Safe Databases (*.psafe3; *.dat)|*.psafe3;*.dat|All files (*.*; "
 "*)|*.*;*"
@@ -2470,10 +2456,6 @@ msgstr "Расширенные настройки экспорта в XML"
 #: src/ui/wxWidgets/MenuFileHandlers.cpp:718
 msgid "Password Safe Databases (*.dat)|*.dat|All files (*.*; *)|*.*;*"
 msgstr "Контейнеры Password Safe (*.dat)|*.dat|Все файлы (*.*; *)|*.*;*"
-
-#: src/ui/wxWidgets/MenuFileHandlers.cpp:722
-msgid "Password Safe Databases (*.psafe4)|*.psafe4|All files (*.*; *)|*.*;*"
-msgstr "Контейнеры Password Safe (*.psafe4)|*.psafe4|Все файлы (*.*; *)|*.*;*"
 
 #: src/ui/wxWidgets/MenuFileHandlers.cpp:733
 msgid "Name the exported database"
@@ -2872,6 +2854,9 @@ msgstr ""
 "\n"
 "Закройте контейнер и откройте его заново в режиме «чтение/запись»."
 
+# Часть сообщения об ошибке, отображаемого при открытии контейнера,
+# заблокированного другим экземпляром Password Safe. Process ID  -- PID
+# блокирующего экземпляра.
 #: src/ui/wxWidgets/MenuManageHandlers.cpp:475
 #, c-format
 msgid " [Process ID=%ls]"
@@ -5356,7 +5341,8 @@ msgstr ""
 #, c-format
 msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
-"Целевой элемент [%s:%s:%s] для данного ярлыка не является обычным элементом."
+"Целевой элемент [%ls:%ls:%ls] для данного ярлыка не является обычным "
+"элементом."
 
 #: src/ui/wxWidgets/TreeCtrl.cpp:2732 src/core/core_st.cpp:110
 #, c-format
@@ -5555,16 +5541,17 @@ msgstr "не существует элемента с заголовком «%ls
 #: src/core/core_st.cpp:37
 #, c-format
 msgid ""
-"multiple entries exist with title=%ls and username=%ls or with group=%ls and "
-"title=%ls."
+"multiple entries exist with title=%ls and username=%ls or with group=%ls and"
+" title=%ls."
 msgstr ""
-"существует несколько элементов с заголовком «%ls» и именем пользователя «%ls» "
-"или с группой «%ls» и заголовком «%ls»."
+"существует несколько элементов с заголовком «%ls» и именем пользователя "
+"«%ls» или с группой «%ls» и заголовком «%ls»."
 
 #: src/core/core_st.cpp:38
 #, c-format
 msgid ""
-"no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
+"no entry exists with title=%ls and username=%ls or with group=%ls, "
+"title=%ls."
 msgstr ""
 "не существует элемента с заголовком «%ls» и именем пользователя «%ls» или с "
 "группой «%ls» и заголовком «%ls»."
@@ -5573,8 +5560,8 @@ msgstr ""
 #, c-format
 msgid "no entry exists with group=%ls, title=%ls and username=%ls."
 msgstr ""
-"не существует элемента с группой «%ls», заголовком «%ls» и именем пользователя"
-" «%ls»."
+"не существует элемента с группой «%ls», заголовком «%ls» и именем "
+"пользователя «%ls»."
 
 #: src/core/core_st.cpp:40
 #, c-format
@@ -5627,11 +5614,11 @@ msgstr ""
 #: src/core/core_st.cpp:50
 #, c-format
 msgid ""
-"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not "
-"supported."
+"The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is "
+"not supported."
 msgstr ""
-"Элемент «%ls:%ls:%ls», является псевдонимом или ссылкой. Создание псевдонимов "
-"для таких элементов не поддерживается."
+"Элемент «%ls:%ls:%ls», является псевдонимом или ссылкой. Создание "
+"псевдонимов для таких элементов не поддерживается."
 
 # For defining filters: after a date, before a date or between two dates.
 #: src/core/core_st.cpp:51
@@ -5657,6 +5644,7 @@ msgstr ""
 "\n"
 "Настройки контейнера будут сохранены в открытом контейнере, если он доступен для записи и не заблокирован другим пользователем."
 
+# если не можем работать ни с файлом, ни с реестром
 #: src/core/core_st.cpp:55
 msgid ""
 "Error - unable to determine settings configuration!\n"
@@ -7445,13 +7433,6 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgid " Copy # %d"
 #~ msgstr " (копия № %d)"
 
-# Часть сообщения об ошибке, отображаемого при открытии контейнера,
-# заблокированного другим экземпляром Password Safe. Process ID  -- PID
-# блокирующего экземпляра.
-#, c-format
-#~ msgid " [Process ID=%s]"
-#~ msgstr " [ID процесса=%s]"
-
 #~ msgid "! Edit externally"
 #~ msgstr "! Открыть во внешнем редакторе"
 
@@ -9195,7 +9176,7 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 
 #, c-format
 #~ msgid "Edit Entry:   «%s» «%s» «%s»"
-#~ msgstr "Редактировать элемент: «%s» «%s» «%s»"
+#~ msgstr "Редактирование элемента: «%s» «%s» «%s»"
 
 #~ msgid "Edit/&View Entry..."
 #~ msgstr "Редактирование/&просмотр элемента..."
@@ -10080,8 +10061,9 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgid "Lithuanian Standard"
 #~ msgstr "Литовская (стандартная)"
 
+# вкладка "безопасность" в настройках
 #~ msgid "Lock password database "
-#~ msgstr "Заблокировать контейнер "
+#~ msgstr "Блокировка контейнера "
 
 #~ msgid ""
 #~ "Locking clears the memory but excludes undo and redo information that can "
@@ -10516,7 +10498,7 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgstr "Системная:"
 
 #~ msgid "Plain Text (tab separated)..."
-#~ msgstr "Простой текст (разделитель табуляция)..."
+#~ msgstr "Простой текст (разделитель — табуляция)..."
 
 # урезано, вирт. клавиатура
 #~ msgid "Play sound on key press"
@@ -11424,7 +11406,8 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 
 #, c-format
 #~ msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
-#~ msgstr "Указанные элементы были синхронизированы с контейнером %s: «%ls:%ls:%ls»"
+#~ msgstr ""
+#~ "Указанные элементы были синхронизированы с контейнером %s: «%ls:%ls:%ls»"
 
 #, c-format
 #~ msgid ""
@@ -12388,7 +12371,7 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ "Export Entry in XML format..."
 #~ msgstr ""
 #~ "\n"
-#~ "Экспортировать элемент в XML формат..."
+#~ "Экспортировать элемент в XML-формат..."
 
 #~ msgid ""
 #~ "\n"
@@ -12409,7 +12392,7 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ "Export Group in XML format..."
 #~ msgstr ""
 #~ "\n"
-#~ "Экспортировать группу в XML формат..."
+#~ "Экспортировать группу в XML-формат..."
 
 #~ msgid ""
 #~ "\n"

@@ -1289,14 +1289,6 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>0-9, a-f</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20190503T174850Z" creationid="pm_kan" creationdate="20190503T174850Z">
-        <seg>0-9, a-f</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
         <seg>1 match</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20130428T150047Z">
@@ -3901,15 +3893,6 @@ offset approximately at %d</seg>
       </tuv>
     </tu>
     <tu>
-      <note>Не используется</note>
-      <tuv xml:lang="en-US">
-        <seg>Dnd</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20211010T104152Z" creationid="pm_kan" creationdate="20211010T104152Z">
-        <seg>Dnd</seg>
-      </tuv>
-    </tu>
-    <tu>
       <tuv xml:lang="en-US">
         <seg>Do not use this option unless you understand and accept the risks.</seg>
       </tuv>
@@ -4151,10 +4134,10 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>Dropped entry '%s:%s:%s' password points to an entry that is also an alias.</seg>
+        <seg>Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T163900Z" creationid="pm_kan" creationdate="20210615T163900Z">
-        <seg>Скопированный элемент «%s:%s:%s» ссылается на элемент, который является псевдонимом.</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250831T142400Z" creationid="pm_kan" creationdate="20250831T142400Z">
+        <seg>Скопированный элемент «%ls:%ls:%ls» ссылается на элемент, который является псевдонимом.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8176,8 +8159,8 @@ to the clipboard.</seg>
       <tuv xml:lang="en-US">
         <seg>Project-Id-Version: 
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2025-08-23 15:09+0300
-PO-Revision-Date: 2025-08-17 22:30+0300
+POT-Creation-Date: 2025-08-31 17:23+0300
+PO-Revision-Date: 2025-08-31 17:00+0300
 Last-Translator:
 Language-Team:
 Language: ru
@@ -8185,7 +8168,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250823T124540Z" creationid="pm_kan" creationdate="20250823T124540Z">
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250831T142506Z" creationid="pm_kan" creationdate="20250831T142506Z">
         <seg>Project-Id-Version: 
 Report-Msgid-Bugs-To: 
 POT-Creation-Date: 2025-08-23 15:09+0300
@@ -9260,14 +9243,6 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>Static text</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T104346Z">
-        <seg>Заглушка</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
         <seg>Statistics</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
@@ -9990,10 +9965,10 @@ has duplicate entries with the same group/title/user combination.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>The referenced entry '%s:%s:%s' is itself an alias or shortcut.</seg>
+        <seg>The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut.</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250315T091820Z" creationid="pm_kan" creationdate="20250315T091820Z">
-        <seg>Элемент «%s:%s:%s», является псевдонимом или ссылкой.</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250831T142457Z" creationid="pm_kan" creationdate="20250831T142457Z">
+        <seg>Элемент «%ls:%ls:%ls», является псевдонимом или ссылкой.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10102,18 +10077,18 @@ has duplicate entries with the same group/title/user combination.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>This alias' target [%s:%s:%s] is not a normal entry.</seg>
+        <seg>This alias' target [%ls:%ls:%ls] is not a normal entry.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
-        <seg>Исходный элемент [%s:%s:%s] для данного псевдонима не является обычным элементом.</seg>
+        <seg>Исходный элемент [%ls:%ls:%ls] для данного псевдонима не является обычным элементом.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>This alias's target [%s:%s:%s] is not a normal entry.</seg>
+        <seg>This alias's target [%ls:%ls:%ls] is not a normal entry.</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210615T163938Z" creationid="pm_kan" creationdate="20210615T163938Z">
-        <seg>Исходный элемент [%s:%s:%s] для данного псевдонима не является обычным элементом.</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250831T142426Z" creationid="pm_kan" creationdate="20250831T142426Z">
+        <seg>Исходный элемент [%ls:%ls:%ls] для данного псевдонима не является обычным элементом.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10224,10 +10199,10 @@ bypasses the security provided by this program.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>This shortcut's target [%s:%s:%s] is not a normal entry.</seg>
+        <seg>This shortcut's target [%ls:%ls:%ls] is not a normal entry.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
-        <seg>Целевой элемент [%s:%s:%s] для данного ярлыка не является обычным элементом.</seg>
+        <seg>Целевой элемент [%ls:%ls:%ls] для данного ярлыка не является обычным элементом.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12003,14 +11978,6 @@ able to abort it mid-way.</seg>
       </tuv>
     </tu>
     <tu>
-      <tuv xml:lang="en-US">
-        <seg>mailto:</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T105209Z">
-        <seg>mailto:</seg>
-      </tuv>
-    </tu>
-    <tu>
       <note>"You must select some of the fields to " &lt;&lt; GetTaskWord()</note>
       <tuv xml:lang="en-US">
         <seg>merge</seg>
@@ -12037,18 +12004,18 @@ able to abort it mid-way.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>multiple entries exist with title=%s and username=%s or with group=%s and title=%s.</seg>
+        <seg>multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
-        <seg>существует несколько элементов с заголовком «%s» и именем пользователя «%s» или с группой «%s» и заголовком «%s».</seg>
+        <seg>существует несколько элементов с заголовком «%ls» и именем пользователя «%ls» или с группой «%ls» и заголовком «%ls».</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>multiple entries exist with title=%s.</seg>
+        <seg>multiple entries exist with title=%ls.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
-        <seg>существует несколько элементов с заголовком «%s».</seg>
+        <seg>существует несколько элементов с заголовком «%ls».</seg>
       </tuv>
     </tu>
     <tu>
@@ -12062,42 +12029,42 @@ able to abort it mid-way.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>no entry exists in the root with title=%s and username=%s.</seg>
+        <seg>no entry exists in the root with title=%ls and username=%ls.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
-        <seg>не существует корневого элемента с заголовком «%s» и именем пользователя «%s».</seg>
+        <seg>не существует корневого элемента с заголовком «%ls» и именем пользователя «%ls».</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>no entry exists with group=%s, title=%s and empty username.</seg>
+        <seg>no entry exists with group=%ls, title=%ls and empty username.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
-        <seg>не существует элемента без имени пользователя с группой «%s» и заголовком «%s».</seg>
+        <seg>не существует элемента без имени пользователя с группой «%ls» и заголовком «%ls».</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>no entry exists with group=%s, title=%s and username=%s.</seg>
+        <seg>no entry exists with group=%ls, title=%ls and username=%ls.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
-        <seg>не существует элемента с группой «%s», заголовком «%s» и именем пользователя «%s».</seg>
+        <seg>не существует элемента с группой «%ls», заголовком «%ls» и именем пользователя «%ls».</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>no entry exists with title=%s and username=%s or with group=%s, title=%s.</seg>
+        <seg>no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
-        <seg>не существует элемента с заголовком «%s» и именем пользователя «%s» или с группой «%s» и заголовком «%s».</seg>
+        <seg>не существует элемента с заголовком «%ls» и именем пользователя «%ls» или с группой «%ls» и заголовком «%ls».</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>no entry exists with title=%s.</seg>
+        <seg>no entry exists with title=%ls.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
-        <seg>не существует элемента с заголовком «%s».</seg>
+        <seg>не существует элемента с заголовком «%ls».</seg>
       </tuv>
     </tu>
     <tu>

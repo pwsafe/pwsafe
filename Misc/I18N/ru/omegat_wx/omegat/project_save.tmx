@@ -5725,6 +5725,14 @@ Action:</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250831T142400Z" creationid="pm_kan" creationdate="20250831T142400Z">
+        <seg>Скопированный элемент «%ls:%ls:%ls» ссылается на элемент, который является псевдонимом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Dropped entry '%s:%s:%s' password points to an entry that is also an alias.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210615T163900Z" creationid="pm_kan" creationdate="20210615T163900Z">
@@ -11068,6 +11076,32 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Project-Id-Version: 
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2025-08-31 17:23+0300
+PO-Revision-Date: 2025-08-31 17:00+0300
+Last-Translator:
+Language-Team:
+Language: ru
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250831T142506Z" creationid="pm_kan" creationdate="20250831T142506Z">
+        <seg>Project-Id-Version: 
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2025-08-23 15:09+0300
+PO-Revision-Date: 2025-08-17 22:30+0300
+Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
+Language-Team:
+Language: ru
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To:
 POT-Creation-Date: 2015-10-04 18:13+0300
@@ -14835,6 +14869,14 @@ A new named policy has been created with the current date/time (%s) appended:%s<
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250831T142457Z" creationid="pm_kan" creationdate="20250831T142457Z">
+        <seg>Элемент «%ls:%ls:%ls», является псевдонимом или ссылкой.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>The referenced entry '%s:%s:%s' is itself an alias or shortcut.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20250315T091820Z" creationid="pm_kan" creationdate="20250315T091820Z">
@@ -14963,10 +15005,26 @@ A new named policy has been created with the current date/time (%s) appended:%s<
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>This alias' target [%ls:%ls:%ls] is not a normal entry.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Исходный элемент [%ls:%ls:%ls] для данного псевдонима не является обычным элементом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>This alias' target [%s:%s:%s] is not a normal entry.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Исходный элемент [%s:%s:%s] для данного псевдонима не является обычным элементом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>This alias's target [%ls:%ls:%ls] is not a normal entry.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250831T142426Z" creationid="pm_kan" creationdate="20250831T142426Z">
+        <seg>Исходный элемент [%ls:%ls:%ls] для данного псевдонима не является обычным элементом.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15161,6 +15219,14 @@ bypasses the security provided by this program.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20150418T092142Z">
         <seg>Это␣действие позволяет обойти защиту предоставляемую программой.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>This shortcut's target [%ls:%ls:%ls] is not a normal entry.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Целевой элемент [%ls:%ls:%ls] для данного ярлыка не является обычным элементом.</seg>
       </tuv>
     </tu>
     <tu>
@@ -17402,6 +17468,22 @@ The following new %s %s merged into this database:</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>multiple entries exist with title=%ls and username=%ls or with group=%ls and title=%ls.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>существует несколько элементов с заголовком «%ls» и именем пользователя «%ls» или с группой «%ls» и заголовком «%ls».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>multiple entries exist with title=%ls.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>существует несколько элементов с заголовком «%ls».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>multiple entries exist with title=%s and username=%s or with group=%s and title=%s.</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -17427,10 +17509,34 @@ The following new %s %s merged into this database:</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>no entry exists in the root with title=%ls and username=%ls.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>не существует корневого элемента с заголовком «%ls» и именем пользователя «%ls».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>no entry exists in the root with title=%s and username=%s.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>не существует корневого элемента с заголовком «%s» и именем пользователя «%s».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>no entry exists with group=%ls, title=%ls and empty username.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>не существует элемента без имени пользователя с группой «%ls» и заголовком «%ls».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>no entry exists with group=%ls, title=%ls and username=%ls.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>не существует элемента с группой «%ls», заголовком «%ls» и именем пользователя «%ls».</seg>
       </tuv>
     </tu>
     <tu>
@@ -17447,6 +17553,22 @@ The following new %s %s merged into this database:</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>не существует элемента с группой «%s», заголовком «%s» и именем пользователя «%s».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>не существует элемента с заголовком «%ls» и именем пользователя «%ls» или с группой «%ls» и заголовком «%ls».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>no entry exists with title=%ls.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>не существует элемента с заголовком «%ls».</seg>
       </tuv>
     </tu>
     <tu>
