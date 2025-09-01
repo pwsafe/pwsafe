@@ -137,7 +137,7 @@
 			<param name="Local" value="html/manage_menu.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
-			<param name="Name" value="Меню «Помощь»">
+			<param name="Name" value="Меню «Справка»">
 			<param name="Local" value="html/help_menu.html">
 			</OBJECT>
 		</LI><LI> <OBJECT type="text/sitemap">
