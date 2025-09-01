@@ -23,14 +23,14 @@ jobs:
       # "XCODE_CONFIG=Debug"
       # "XCODE_CONFIG=Debug-no-yubi"
       MACOS_VER_MIN: 10.15
-      WX_VERS: 3.2.5
+      WX_VERS: 3.2.8.1
       WX_SRC_DIR: ${{ github.workspace }}/wxWidgets
       WX_BUILD_DIR: ${{ github.workspace }}/wxWidgets/build-wx
       WX_ARCH: "arm64,x86_64"
       XCODE_CONFIG: Release
       FORCE_REBUILD_WX: 1
       WX_DEBUG_FLAG: "--disable-debug" 
-      XCODE_VER: "15.4"
+      XCODE_VER: "16.4"
 
     steps:
     - name: Checkout repository
