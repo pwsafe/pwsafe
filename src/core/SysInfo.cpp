@@ -44,7 +44,7 @@ bool SysInfo::IsUnderPw2go()
 // The wxWidgets UI is used for Linux and macOS
 bool SysInfo::IsWXUI()
 {
-#if defined(__linux__) || defined(__APPLE__)
+#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__)
   return true;
 #else
   return false;
