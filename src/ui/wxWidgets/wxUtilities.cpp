@@ -355,6 +355,15 @@ void wxUtilities::DisableIfUnsupported(enum Feature feature, wxWindow* window)
   }
 }
 
+void wxUtilities::NotifyIfUnsupported(enum Feature feature, wxWindow* window)
+{
+#if defined(__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__)
+  if (feature == SystemTray && !IsTaskBarIconAvailable()) {
+    window->SetToolTip(_("Not supported by the current Windowing System (e.g. Wayland), or you may need to install a Desktop Environment extension to enable System Tray support."));
+  }
+#endif
+}
+
 // Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable()

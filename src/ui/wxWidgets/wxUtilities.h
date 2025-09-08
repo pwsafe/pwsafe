@@ -433,7 +433,7 @@ typedef wxTextDataObject wxTextDataObjectEx;
 
 namespace wxUtilities
 {
-  enum Feature { Autotype };
+  enum Feature { Autotype, SystemTray };
   enum WindowSystem {
     Undefined,    // Only used to identify the first pass through WhatWindowSystem()
     Unknown,
@@ -463,6 +463,13 @@ namespace wxUtilities
    * @param control the control to disable.
    */
   void DisableIfUnsupported(enum Feature feature, wxWindow* window);
+
+  /**
+   * @brief Shows a tooltip for the specified feature(s).
+   *
+   * @param Specify the target control.
+   */
+  void NotifyIfUnsupported(enum Feature feature, wxWindow* window);
 }
 
 // Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash

@@ -839,6 +839,7 @@ wxPanel* OptionsPropertySheetDlg::CreateSystemPanel(const wxString& title)
   itemBoxSizer105->Add(CreateHeaderPanel(itemPanel104, title), 0, wxEXPAND|wxALL, 5);
 
   wxStaticBox* itemStaticBoxSizer106Static = new wxStaticBox(itemPanel104, wxID_ANY, _("System Tray"));
+  wxUtilities::NotifyIfUnsupported(wxUtilities::Feature::SystemTray, itemStaticBoxSizer106Static);
   auto *itemStaticBoxSizer106 = new wxStaticBoxSizer(itemStaticBoxSizer106Static, wxVERTICAL);
   itemBoxSizer105->Add(itemStaticBoxSizer106, 0, wxEXPAND|wxALL, 5);
   m_System_UseSystemTrayCB = new wxCheckBox( itemPanel104, ID_CHECKBOX30, _("Put icon in System Tray"), wxDefaultPosition, wxDefaultSize, 0 );
