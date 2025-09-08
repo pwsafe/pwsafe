@@ -123,8 +123,10 @@ bool PWYubi::WriteSK(const unsigned char *yubi_sk_bin, size_t sklen)
   // if yk isn't init'ed, don't bother
   if (m_isInited) {
     ykey = yk_open_first_key();
-    if (ykey == nullptr)
+    if (ykey == nullptr) {
+      report_error();
       goto done;
+    }
     if (!yk_get_status(ykey, st) ||
         (static_cast<void>(ykp_configure_version(cfg, st)), !ykp_set_tktflag_CHAL_RESP(cfg,true)) ||
         !ykp_set_cfgflag_CHAL_HMAC(cfg, true) ||
