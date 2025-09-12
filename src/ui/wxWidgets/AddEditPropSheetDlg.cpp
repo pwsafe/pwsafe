@@ -630,7 +630,7 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
   auto *itemStaticText81 = new wxStaticText(panel, wxID_STATIC, _("Password last changed on:"), wxDefaultPosition, wxDefaultSize, 0);
   itemFlexGridSizer78->Add(itemStaticText81, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-  auto *itemStaticText82 = new wxStaticText(panel, wxID_STATIC, _("Static text"), wxDefaultPosition, wxDefaultSize, 0);
+  auto *itemStaticText82 = new wxStaticText(panel, wxID_STATIC, _T("Static text"), wxDefaultPosition, wxDefaultSize, 0);
   itemFlexGridSizer78->Add(itemStaticText82, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   auto *itemStaticText83 = new wxStaticText(panel, wxID_STATIC, _("Last accessed on:"), wxDefaultPosition, wxDefaultSize, 0);
@@ -642,7 +642,7 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
   auto *itemStaticText85 = new wxStaticText(panel, wxID_STATIC, _("Any field last changed on:"), wxDefaultPosition, wxDefaultSize, 0);
   itemFlexGridSizer78->Add(itemStaticText85, 0, wxALIGN_RIGHT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-  auto *itemStaticText86 = new wxStaticText(panel, wxID_STATIC, _("Static text"), wxDefaultPosition, wxDefaultSize, 0);
+  auto *itemStaticText86 = new wxStaticText(panel, wxID_STATIC, _T("Static text"), wxDefaultPosition, wxDefaultSize, 0);
   itemFlexGridSizer78->Add(itemStaticText86, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
   m_DatesTimesExpiryTimeCtrl->SetValidator(wxGenericValidator(&m_ExpirationTimeInterval));
@@ -825,7 +825,7 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
 
   m_PasswordPolicyUseHexadecimalOnlyCtrl = new wxCheckBox(panel, ID_CHECKBOX9, _("Use hexadecimal digits only"), wxDefaultPosition, wxDefaultSize, 0);
   m_PasswordPolicyUseHexadecimalOnlyCtrl->SetValue(false);
-  m_PasswordPolicyUseHexadecimalOnlyCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent & WXUNUSED(event)) { m_PasswordPolicyUseHexadecimalOnlyCtrl->SetToolTip(_("0-9, a-f")); });
+  m_PasswordPolicyUseHexadecimalOnlyCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent & WXUNUSED(event)) { m_PasswordPolicyUseHexadecimalOnlyCtrl->SetToolTip(_T("0-9, a-f")); });
   m_PasswordPolicySizer->Add(m_PasswordPolicyUseHexadecimalOnlyCtrl, 0, wxALIGN_LEFT | wxALL, 5);
 
   m_PasswordPolicyOwnSymbolsTextCtrl->SetValidator(wxGenericValidator(&m_Symbols));
@@ -3680,7 +3680,7 @@ void AddEditPropSheetDlg::OnSendButtonClick( wxCommandEvent& event )
    *   user@example.com?subject=Message Title&body=Message Content"
    */
   if (Validate() && TransferDataFromWindow() && !m_Email.IsEmpty()) {
-    StringX mail_cmd= tostringx(_("mailto:"));
+    StringX mail_cmd= tostringx(_T("mailto:"));
     mail_cmd += tostringx(m_Email);
     PWSRun runner;
     runner.issuecmd(mail_cmd, wxEmptyString, false);

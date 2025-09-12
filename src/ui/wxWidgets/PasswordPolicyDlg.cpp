@@ -316,7 +316,7 @@ void PasswordPolicyDlg::CreateControls()
 
   m_pwpHexCtrl = new wxCheckBox( itemDialog1, ID_CHECKBOX9, _("Use hexadecimal digits only"), wxDefaultPosition, wxDefaultSize, 0 );
   m_pwpHexCtrl->SetValue(false);
-  m_pwpHexCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent& WXUNUSED(event)) { m_pwpHexCtrl->SetToolTip(_("0-9, a-f")); });
+  m_pwpHexCtrl->Bind(wxEVT_MOTION, [&](wxMouseEvent& WXUNUSED(event)) { m_pwpHexCtrl->SetToolTip(_T("0-9, a-f")); });
   m_pwMinsGSzr->Add(m_pwpHexCtrl, 0, wxALIGN_LEFT|wxALL, 5);
 
   /////////////////////////////////////////////////////////////////////////////

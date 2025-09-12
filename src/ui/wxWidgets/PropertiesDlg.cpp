@@ -266,7 +266,7 @@ void PropertiesDlg::CreateControls()
   auto mainSizer = new wxBoxSizer(wxVERTICAL);
   this->SetSizer(mainSizer);
 
-  auto dbPathText = new wxStaticText( this, wxID_DATABASE, _("Static text"), wxDefaultPosition, wxDefaultSize, 0 );
+  auto dbPathText = new wxStaticText( this, wxID_DATABASE, _T("Static text"), wxDefaultPosition, wxDefaultSize, 0 );
   mainSizer->Add(dbPathText, 0, wxALIGN_LEFT|wxALL|wxEXPAND, 10);
 
   auto flexGridSizer = new wxFlexGridSizer(3 /*cols*/, 0 /*vgap*/, 0 /*hgap*/);
