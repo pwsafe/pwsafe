@@ -80,6 +80,70 @@ $ flatpak run org.pwsafe.pwsafe
 ```
 See https://flathub.org/setup to get started using flatpak.
 
+## Enabling System Tray support in Password Safe
+Issue: Password Safe is running but not appearing in the System Tray.
+
+System Tray/Task Bar support in Linux is problematic, and the implementations for it are inconsistent or missing in many desktop environments. 
+Usually, this feature is not supported by the windowing system such as Wayland. You may also need to install a desktop environment extension to enable System Tray support.
+If Password Safe detects that the feature is not enabled at the system level, it is disabled in the program's Options. 
+
+Anyway, enabling this feature in many distros can be done by following these steps:
+
+1. GNOME, KDE Plasma, and others: Verify that the org.kde.StatusNotifierWatcher D-Bus interface that provides the System Tray is enabled. 
+   Note: some extensions don't register a D-Bus interface when installed.
+   ```
+   $ busctl --user list | grep StatusNotifierWatcher
+   ```
+   If the item is listed, jump to Step 3; otherwise go to Step 2.
+
+2. Install/Enable a Desktop Environment extension to enable System Tray support. Examples:
+
+   Mint with Cinnamon: Enable the "System Tray" and "XApp Status Applet" applets in System Settings > Applets.
+
+   GNOME: Install a GNOME extension for System Tray - a system package such as "gnome-shell-extension-appindicator". Then restart your GNOME session by logging out and logging back in.
+
+   GNOME: Or, install a GNOME extension via web browser at https://extensions.gnome.org/, such as "AppIndicator and KStatusNotifierItem Support" or "Tray Icons: Reloaded".
+
+   GNOME: Use the Extensions app to verify that the GNOME extension is installed and enabled.
+
+   If a GNOME extension cannot be installed via a web browser: 
+   - Download it as a ZIP file.
+   - Install the extension using this command:
+   ```
+   $ gnome-extensions install <downloaded extension>.zip
+   ```
+   - Restart your GNOME session by logging out and logging back in.
+   - Find the extension's UUID:
+   ```
+   $ gnome-extensions list
+   ```
+   - Enable the extension:
+   ```
+   $ gnome-extensions enable <extension UUID>
+   ```
+
+3. Wayland display server only: Make Password Safe use the X11/Xorg backend through the XWayland compatibility layer.
+
+   a) Package version: Make Password Safe launch with the GDK_BACKEND=x11 environment variable. Edit the application's .desktop file as root.
+   ```
+   # vi /usr/share/applications/pwsafe.desktop
+   ```
+   Replace the line:
+   ```
+   Exec=pwsafe %f
+   ```
+   with "Exec=env GDK_BACKEND=x11 pwsafe %f", or with:
+   ```
+   Exec=sh -c '[ "$XDG_SESSION_TYPE" = "wayland" ] && exec env GDK_BACKEND=x11 pwsafe %f || exec pwsafe %f'
+   ```
+
+   b) Flatpak version: Edit the application's launcher properties and add extra parameters to the command field (default: flatpak run org.pwsafe.pwsafe). This will grant the sandboxed application access to the X11 display server socket, for inter-process communication with the System Tray interface.
+   ```
+   flatpak run --nosocket=wayland --socket=x11 org.pwsafe.pwsafe
+   ```
+
+4. Start Password Safe and enable support for System Tray: in the main menu, go to Manage > Options > System tab, then check Put icon in System Tray.
+
 ## Reporting Bugs
 Please submit bugs via https://sourceforge.net/p/passwordsafe/bugs/.
 Set the Category field to Linux to help ensure timely response.
