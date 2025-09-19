@@ -112,11 +112,11 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
                       [--delete | --update=Field1=Value1,Field2=Value2,.. | --print[=field1,field2...] ] [--yes]
                       [--generate-totp]
 
-       %PROGNAME% safe --diff=<other-safe>  [ --subset=<Field><OP><Value>[/iI] ]
+       %PROGNAME% safe --diff=<other-safe> [ --subset=<Field><OP><Value>[/iI] ]
                       [--fields=f1,f2,..] [--unified | --context | --sidebyside]
                       [--colwidth=column-size]
 
-       %PROGNAME% safe --sync=<other-safe>  [ --subset=<Field><OP><string>[/iI] ] [ --fields=f1,f2,.. ] [--yes]
+       %PROGNAME% safe --synchronize=<other-safe> [ --subset=<Field><OP><string>[/iI] ] [ --fields=f1,f2,.. ] [--yes]
 
        %PROGNAME% safe --merge=<other-safe> [ --subset=<Field><OP><Value>[/iI] ] [--yes]
 
@@ -195,6 +195,12 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
             %PROGNAME% pwsafe.psafe3 --search="John Doe" --delete --yes
 
           This deletes the found entry without asking for confirmation.
+
+       6) Synchronizing databases
+
+            %PROGNAME% pwsafeA.psafe3 --synchronize=pwsafeB.psafe3
+
+          This synchronizes database pwsafeA.psafe3 with database pwsafeB.psafe3.
 )usagestring";
 
   std::wstringstream ss_fieldnames;
@@ -278,8 +284,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
                   {"context",     no_argument,        0, 'j'},
                   {"sidebyside",  no_argument,        0, 'k'},
                   {"dry-run",     no_argument,        0, 'n'},
-                  {"synchronize", no_argument,        0, 'z'},
-                  //  {"synch",       no_argument,        0, 'z'},
+                  {"synchronize", required_argument,  0, 'z'},
                     {"merge",       required_argument,  0, 'm'},
                     {"colwidth",    required_argument,  0, 'w'},
                     {"passphrase",  required_argument,  0, 'P'},
