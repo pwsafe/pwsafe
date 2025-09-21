@@ -585,8 +585,14 @@ void PWSafeApp::FinishInit() {
   } else {
     SetTopWindow(m_frame);
   }
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray))
-    m_frame->ShowTrayIcon();
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
+    if ( IsTaskBarIconAvailable() ) {
+      m_frame->ShowTrayIcon();
+    }
+    else {
+      PWSprefs::GetInstance()->SetPref(PWSprefs::UseSystemTray, false, false);
+    }
+  }
 
   m_frame->Register(); // register modal dialog hook
   m_initComplete = true;
