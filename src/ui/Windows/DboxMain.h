@@ -747,6 +747,7 @@ public:
   afx_msg void OnDestroy();
   afx_msg void OnMove(int x, int y);
   afx_msg void OnSize(UINT nType, int cx, int cy);
+  afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
   afx_msg void OnAbout();
   afx_msg void OnPasswordSafeWebsite();
   afx_msg void OnBrowse();

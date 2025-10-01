@@ -497,6 +497,7 @@ BEGIN_MESSAGE_MAP(DboxMain, CDialog)
   ON_WM_INITMENUPOPUP()
   ON_WM_MEASUREITEM()
   ON_WM_MOVE()
+  ON_WM_SHOWWINDOW()
   ON_WM_SIZE()
   ON_WM_SIZING()
   ON_WM_SYSCOMMAND()
@@ -1555,7 +1556,16 @@ void DboxMain::OnDestroy()
   CDialog::OnDestroy();
 }
 
-
+void DboxMain::OnShowWindow(BOOL bShow, UINT nStatus)
+{
+  CDialog::OnShowWindow(bShow, nStatus);
+  
+  // Call UpdateAlwaysOnTop() when the window is shown to ensure
+  // the always-on-top setting is properly applied after Windows reboot
+  if (bShow && m_bInitDone) {
+    UpdateAlwaysOnTop();
+  }
+}
 
 void DboxMain::Execute(Command *pcmd, PWScore *pcore)
 {
