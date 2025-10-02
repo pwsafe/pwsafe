@@ -296,7 +296,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
           static_assert(no_dup_short_option(long_options), "Short option used twice");
 #endif
 
-          int c = getopt_long(argc - 1, argv + 1, "i::e::txcs:b:f:oa:u:pryd:gjknz:m:P:Q:GV",
+          int c = getopt_long(argc - 1, argv + 1, "i::e::txcs:b:f:o::a:u:p::rl:vyd:gjknz:m:w:P:Q:GV",
               long_options, &option_index);
           if (c == -1)
               break;
