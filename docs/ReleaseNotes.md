@@ -4,8 +4,9 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.69.1pre Release ???
+PasswordSafe 3.70.0pre Release ???
 ==========================================
+* "Always on top" now persists correctly across restarts when "Start Password Safe at Login" is selected.
 * [GH1534](https://github.com/pwsafe/pwsafe/issues/1534) No longer offer unsupported traditional Chinese in NSIS installer.
 * [GH1531](https://github.com/pwsafe/pwsafe/issues/1531) Followup on [GH1524](https://github.com/pwsafe/pwsafe/issues/1524) for Toolbar action.
 
