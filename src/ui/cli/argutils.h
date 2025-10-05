@@ -37,7 +37,7 @@ struct UserArgs {
   StringX safe;
   StringX passphrase[2];
   enum OpType {Unset, Import, Export, CreateNew, Search, Add,
-               Diff, Sync, Merge} Operation{Unset};
+               Diff, Sync, Merge, Help} Operation{Unset};
   enum {Print, Delete, Update, ClearFields, ChangePassword, GenerateTotpCode} SearchAction{Print};
   enum {Unknown, XML, Text} Format{Unknown};
 

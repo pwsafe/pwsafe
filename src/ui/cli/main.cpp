@@ -94,6 +94,93 @@ const map<UserArgs::OpType, pws_op> pws_ops = {
   { UserArgs::Merge,      {OpenCore,        Merge,      SaveCore}},
 };
 
+static std::wstring help_create_string = LR"helpstring(
+ Example: Creating a database
+
+            %PROGNAME% pwsafe.psafe3 --create
+
+          This creates the empty database "pwsafe.psafe3".
+)helpstring";
+
+static std::wstring help_add_string = LR"helpstring(
+ Example: Adding an entry
+
+          To add an entry to a database, the title is mandatory. All other fields are optional.
+          If no password is specified, a password will be generated for the entry.
+
+            %PROGNAME% pwsafe.psafe3 --add=Title="Login"
+
+          The simplest way to add a new entry to a database, specifying the minimum required fields.
+
+            %PROGNAME% pwsafe.psafe3 --add=Title="Bank Account",Username="John Doe",Password=SecretPassword,"Created Time"="2020/01/01 12:00:00"
+
+          This adds an entry with the title "Bank Account" to the database "pwsafe.psafe3" which does not belong to any group.
+
+            %PROGNAME% pwsafe.psafe3 --add=Group=Email,Title=Yahoo,Username="Richard Miles",Password=SecretPassword,"Created Time"=now
+
+          Similar to the previous example, except that the entry is added to the "Email" group. If the group does not exist, it is created.
+)helpstring";
+
+static std::wstring help_update_string = LR"helpstring(
+ Example: Updating an entry
+
+          In this example, an entry containing "Richard Miles" is searched for.
+
+            %PROGNAME% pwsafe.psafe3 --search="Richard Miles" --update=Title=Google
+
+          If such an entry is found, its title is updated after the user has confirmed this.
+)helpstring";
+
+static std::wstring help_search_string = LR"helpstring(
+ Example: Searching for an entry
+
+          The search option is very helpful for referring to specific entries. It can search the entire database for a specific textual occurrence,
+          as well as content in specific fields of entries to further narrow the search. This is particularly helpful when multiple entries have the
+          same text, such as the same title.
+
+            %PROGNAME% pwsafe.psafe3 --search="Login" --print=Title,Username
+
+          This would output the title and username of the entries found that contain "Login".
+
+            %PROGNAME% pwsafe.psafe3 --search="Login" --subset=Username=="John Doe" --print=Title,Username
+
+          This search command would limit the results to all entries containing the occurrence "Login" and the username "John Doe".
+)helpstring";
+
+static std::wstring help_delete_string = LR"helpstring(
+ Example: Deleting an entry
+
+            %PROGNAME% pwsafe.psafe3 --search="Richard Miles" --delete
+
+          This will delete the entry that matches the search criteria after the deletion is confirmed.
+
+            %PROGNAME% pwsafe.psafe3 --search="John Doe" --delete --yes
+
+          This deletes the found entry without asking for confirmation.
+)helpstring";
+
+static std::wstring help_synchronize_string = LR"helpstring(
+ Example: Synchronizing databases
+
+            %PROGNAME% pwsafeA.psafe3 --synchronize=pwsafeB.psafe3
+
+          This synchronizes database pwsafeA.psafe3 with database pwsafeB.psafe3.
+)helpstring";
+
+struct pws_help_example {
+  wstring operation;
+  wstring help_string;
+};
+
+const map<wstring, wstring> pws_help_examples = {
+  { L"create",      help_create_string      },
+  { L"add",         help_add_string         },
+  { L"update",      help_update_string      },
+  { L"search",      help_search_string      },
+  { L"delete",      help_delete_string      },
+  { L"sync",        help_synchronize_string },
+  { L"synchronize", help_synchronize_string },
+};
 
 static void usage(char *pname)
 {
@@ -128,6 +215,8 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
                          ! => negation
                         a trailing /i => case insensitive, /I => case sensitive
 
+       %PROGNAME% --help[=operation]
+
        Note that --passphrase <passphrase> and --passphrase2 <2nd passphrase> may be used to skip the prompt
        for the master passphrase(s). However, this should be avoided if possible for security reasons.
 
@@ -138,69 +227,6 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
         ° Field names and values that contain whitespace characters must be quoted (e.g. "Created Time").
         ° Times are expected in Universal Time Coordinated (UTC) format ("YYYY/MM/DD hh:mm:ss").
         ° The current time can also be referenced using the keyword "now".
-
-       Examples:
-
-       1) Creating a database
-
-            %PROGNAME% pwsafe.psafe3 --create
-
-          This creates the empty database "pwsafe.psafe3".
-
-       2) Adding an entry
-
-          To add an entry to a database, the title is mandatory. All other fields are optional.
-          If no password is specified, a password will be generated for the entry.
-
-            %PROGNAME% pwsafe.psafe3 --add=Title="Login"
-
-          The simplest way to add a new entry to a database, specifying the minimum required fields.
-
-            %PROGNAME% pwsafe.psafe3 --add=Title="Bank Account",Username="John Doe",Password=SecretPassword,"Created Time"="2020/01/01 12:00:00"
-
-          This adds an entry with the title "Bank Account" to the database "pwsafe.psafe3" which does not belong to any group.
-
-            %PROGNAME% pwsafe.psafe3 --add=Group=Email,Title=Yahoo,Username="Richard Miles",Password=SecretPassword,"Created Time"=now
-
-          Similar to the previous example, except that the entry is added to the "Email" group. If the group does not exist, it is created.
-
-       3) Updating an entry
-
-          In this example, an entry containing "Richard Miles" is searched for.
-
-            %PROGNAME% pwsafe.psafe3 --search="Richard Miles" --update=Title=Google
-
-          If such an entry is found, its title is updated after the user has confirmed this.
-
-       4) Searching for an entry
-
-          The search option is very helpful for referring to specific entries. It can search the entire database for a specific textual occurrence,
-          as well as content in specific fields of entries to further narrow the search. This is particularly helpful when multiple entries have the
-          same text, such as the same title.
-
-            %PROGNAME% pwsafe.psafe3 --search="Login" --print=Title,Username
-
-          This would output the title and username of the entries found that contain "Login".
-
-            %PROGNAME% pwsafe.psafe3 --search="Login" --subset=Username=="John Doe" --print=Title,Username
-
-          This search command would limit the results to all entries containing the occurrence "Login" and the username "John Doe".
-
-       5) Deleting an entry
-
-            %PROGNAME% pwsafe.psafe3 --search="Richard Miles" --delete
-
-          This will delete the entry that matches the search criteria after the deletion is confirmed.
-
-            %PROGNAME% pwsafe.psafe3 --search="John Doe" --delete --yes
-
-          This deletes the found entry without asking for confirmation.
-
-       6) Synchronizing databases
-
-            %PROGNAME% pwsafeA.psafe3 --synchronize=pwsafeB.psafe3
-
-          This synchronizes database pwsafeA.psafe3 with database pwsafeB.psafe3.
 )usagestring";
 
   std::wstringstream ss_fieldnames;
@@ -234,6 +260,36 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
   wcerr << '\n';
 }
 
+static wstring replace_progname_placeholder(const wstring &help_string, const wstring &progname)
+{
+  const wstring placeholder{L"%PROGNAME%"};
+  const auto progname_len = progname.length();
+  wstring new_help_string{help_string};
+
+  for(auto itr = new_help_string.find(placeholder); itr != string::npos; itr = new_help_string.find(placeholder, itr + progname_len)) {
+    new_help_string.replace(itr, placeholder.length(), progname);
+  }
+  return new_help_string;
+}
+
+static bool help(char *pname, const wstring &help_arg)
+{
+  auto itr = pws_help_examples.find(help_arg);
+  if (itr != pws_help_examples.end()) {
+    wcout << replace_progname_placeholder(itr->second, Utf82wstring(pname)) << endl;
+  }
+  else {
+    wcerr << L"Unsupported help argument: " << help_arg << endl << endl;
+    wcerr << L"Supported arguments are:" << endl;
+    for (auto const& help : pws_help_examples) {
+      wcerr << L" - " << help.first << endl;
+    }
+    wcerr << endl;
+    return false;
+  }
+  return true;
+}
+
 #if 0
 // Can't get this to work with shift of > 32 bits - compiler bug?
 constexpr bool no_dup_short_option2(uint64_t bits, const option *p)
@@ -250,10 +306,13 @@ constexpr bool no_dup_short_option(const struct option *p)
 
 bool parseArgs(int argc, char *argv[], UserArgs &ua)
 {
-  if (argc < 3) // must give us a safe and an operation
+  if (argc < 2) {       // 0: app name, 1: help option ?
     return false;
-
-  Utf82StringX(argv[1], ua.safe);
+  }
+  else if (argc > 2) {  // 0: app name, 1: db name, 2: operation name
+    Utf82StringX(argv[1], ua.safe);
+    argc--, argv++;     // skip db name for getopt_long
+  }
 
   try {
 
@@ -289,6 +348,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
             {"passphrase2",   required_argument,  0, 'Q'},
             {"generate-totp", no_argument,        0, 'G'},
             {"verbose",       no_argument,        0, 'V'},
+            {"help",          optional_argument,  0, 'h'},
             {0,               0,                  0,  0 }
           };
 
@@ -296,7 +356,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
           static_assert(no_dup_short_option(long_options), "Short option used twice");
 #endif
 
-          int c = getopt_long(argc - 1, argv + 1, "i::e::txcs:b:f:o::a:u:p::rl:vyd:gjknz:m:w:P:Q:GV",
+          int c = getopt_long(argc, argv, "i::e::txcs:b:f:o::a:u:p::rl:vyd:gjknz:m:w:P:Q:GVh::",
               long_options, &option_index);
           if (c == -1)
               break;
@@ -432,12 +492,20 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
               ua.verbosity_level++;
               break;
 
+          case 'h':
+              ua.SetMainOp(UserArgs::Help, optarg);
+              break;
+
+          case '?': // unknown option is alread reported by getopt_long and a
+          case ':': // missing option argument is reported by getopt_long as well
+              return false;
+
           default:
-              wcerr << L"Unknown option: " << static_cast<wchar_t>(c) << endl;
+              wcerr << L"Unexpected getopt_long return value: " << static_cast<wchar_t>(c) << endl;
               return false;
           } // switch
-      } // while 
-  } 
+      } // while
+  }
   catch (const std::invalid_argument &ex) {
       wcerr << L"Error: " << ex.what() << endl << endl;
       return false;
@@ -483,6 +551,13 @@ int main(int argc, char *argv[])
 
   UserArgs ua;
   if (!parseArgs(argc, argv, ua)) {
+    usage(basename(argv[0]));
+    return 1;
+  }
+  if (ua.Operation == UserArgs::Help) {
+    if (help(basename(argv[0]), ua.opArg)) {
+      return 0;
+    }
     usage(basename(argv[0]));
     return 1;
   }
