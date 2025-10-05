@@ -94,6 +94,50 @@ const map<UserArgs::OpType, pws_op> pws_ops = {
   { UserArgs::Merge,      {OpenCore,        Merge,      SaveCore}},
 };
 
+static wstring usage_string = LR"usagestring(
+Usage: %PROGNAME% safe --imp[=file] --text|--xml
+
+       %PROGNAME% safe --exp[=file] --text|--xml
+
+       %PROGNAME% safe --create
+
+       %PROGNAME% safe --add=field1=value1,field2=value2,...
+
+       %PROGNAME% safe --search=<text> [--ignore-case]
+                      [--subset=<Field><OP><string>[/iI] [--fields=f1,f2,..]
+                      [--delete | --update=Field1=Value1,Field2=Value2,.. | --print[=field1,field2...] ] [--yes]
+                      [--generate-totp]
+
+       %PROGNAME% safe --diff=<other-safe> [ --subset=<Field><OP><Value>[/iI] ]
+                      [--fields=f1,f2,..] [--unified | --context | --sidebyside]
+                      [--colwidth=column-size]
+
+       %PROGNAME% safe --synchronize=<other-safe> [ --subset=<Field><OP><string>[/iI] ] [ --fields=f1,f2,.. ] [--yes]
+
+       %PROGNAME% safe --merge=<other-safe> [ --subset=<Field><OP><Value>[/iI] ] [--yes]
+
+                        where OP is one of ==, !==, ^= !^=, $=, !$=, ~=, !~=
+                         = => exactly similar
+                         ^ => begins with
+                         $ => ends with
+                         ~ => contains
+                         ! => negation
+                        a trailing /i => case insensitive, /I => case sensitive
+
+       %PROGNAME% --help[=operation]
+
+       Note that --passphrase <passphrase> and --passphrase2 <2nd passphrase> may be used to skip the prompt
+       for the master passphrase(s). However, this should be avoided if possible for security reasons.
+
+       Valid field names are:
+       %FIELDNAMES%
+
+       Note:
+        ° Field names and values that contain whitespace characters must be quoted (e.g. "Created Time").
+        ° Times are expected in Universal Time Coordinated (UTC) format ("YYYY/MM/DD hh:mm:ss").
+        ° The current time can also be referenced using the keyword "now".
+)usagestring";
+
 static std::wstring help_create_string = LR"helpstring(
  Example: Creating a database
 
@@ -185,50 +229,6 @@ const map<wstring, wstring> pws_help_examples = {
 static void usage(char *pname)
 {
   std::wstring s_pname = Utf82wstring(pname);
-  std::wstring usage_str = LR"usagestring(
-Usage: %PROGNAME% safe --imp[=file] --text|--xml
-
-       %PROGNAME% safe --exp[=file] --text|--xml
-
-       %PROGNAME% safe --create
-
-       %PROGNAME% safe --add=field1=value1,field2=value2,...
-
-       %PROGNAME% safe --search=<text> [--ignore-case]
-                      [--subset=<Field><OP><string>[/iI] [--fields=f1,f2,..]
-                      [--delete | --update=Field1=Value1,Field2=Value2,.. | --print[=field1,field2...] ] [--yes]
-                      [--generate-totp]
-
-       %PROGNAME% safe --diff=<other-safe> [ --subset=<Field><OP><Value>[/iI] ]
-                      [--fields=f1,f2,..] [--unified | --context | --sidebyside]
-                      [--colwidth=column-size]
-
-       %PROGNAME% safe --synchronize=<other-safe> [ --subset=<Field><OP><string>[/iI] ] [ --fields=f1,f2,.. ] [--yes]
-
-       %PROGNAME% safe --merge=<other-safe> [ --subset=<Field><OP><Value>[/iI] ] [--yes]
-
-                        where OP is one of ==, !==, ^= !^=, $=, !$=, ~=, !~=
-                         = => exactly similar
-                         ^ => begins with
-                         $ => ends with
-                         ~ => contains
-                         ! => negation
-                        a trailing /i => case insensitive, /I => case sensitive
-
-       %PROGNAME% --help[=operation]
-
-       Note that --passphrase <passphrase> and --passphrase2 <2nd passphrase> may be used to skip the prompt
-       for the master passphrase(s). However, this should be avoided if possible for security reasons.
-
-       Valid field names are:
-       %FIELDNAMES%
-
-       Note:
-        ° Field names and values that contain whitespace characters must be quoted (e.g. "Created Time").
-        ° Times are expected in Universal Time Coordinated (UTC) format ("YYYY/MM/DD hh:mm:ss").
-        ° The current time can also be referenced using the keyword "now".
-)usagestring";
-
   std::wstringstream ss_fieldnames;
   constexpr auto names_per_line = 5;
   auto nnames = 0;
@@ -243,20 +243,20 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
 
   std::wstring s_fieldnames = ss_fieldnames.str();
   const std::wstring s_fn_placeholder{L"%FIELDNAMES%"};
-  auto pos = usage_str.find(s_fn_placeholder);
+  auto pos = usage_string.find(s_fn_placeholder);
   if (pos != std::string::npos) {
-    usage_str.replace(pos, s_fn_placeholder.length(), s_fieldnames);
+    usage_string.replace(pos, s_fn_placeholder.length(), s_fieldnames);
   }
 
   const std::wstring s_pn_placeholder{L"%PROGNAME%"};
   const auto pname_len = s_pname.length();
 
-  for(auto itr = usage_str.find(s_pn_placeholder); itr != std::string::npos; itr = usage_str.find(s_pn_placeholder, itr + pname_len)) {
-    usage_str.replace(itr, s_pn_placeholder.length(), s_pname);
+  for(auto itr = usage_string.find(s_pn_placeholder); itr != std::string::npos; itr = usage_string.find(s_pn_placeholder, itr + pname_len)) {
+    usage_string.replace(itr, s_pn_placeholder.length(), s_pname);
   }
 
   wcerr << s_pname << L" version " << CLI_MAJOR_VERSION << L"." << CLI_MINOR_VERSION << L"." << CLI_REVISION << endl;
-  wcerr << usage_str;
+  wcerr << usage_string;
   wcerr << '\n';
 }
 
