@@ -315,7 +315,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
   }
 
   try {
-    static const char* short_options = "i::e::txcs:b:f:o::a:u:p::rl:vyd:gjknz:m:w:P:Q:GVh::";
+    static const char* short_options = "i::e::txcs:b:f:oa:u:p::rl:vyd:gjknz:m:w:P:Q:GVh::";
     static constexpr struct option long_options[] = {
       // name,          has_arg,            flag,    val
       {"import",        optional_argument,  nullptr, 'i'},
@@ -326,7 +326,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       {"search",        required_argument,  nullptr, 's'},
       {"subset",        required_argument,  nullptr, 'b'},
       {"fields",        required_argument,  nullptr, 'f'},
-      {"ignore-case",   optional_argument,  nullptr, 'o'},
+      {"ignore-case",   no_argument,        nullptr, 'o'},
       {"add",           required_argument,  nullptr, 'a'},
       {"update",        required_argument,  nullptr, 'u'},
       {"print",         optional_argument,  nullptr, 'p'},
@@ -394,7 +394,8 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       case 's':
         assert(optarg);
         ua.SetMainOp(UserArgs::Search, optarg);
-        break;
+        ua.ignoreCase = true; // Default behavior is case sensitiv search.
+        break;                // See 'fCaseSensitive' in FindMatches (SearchUtils.h), which reverses the logic.
 
       case 'd':
         assert(optarg);
@@ -422,9 +423,8 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
         break;
 
       case 'o':
-        if (optarg && std::regex_match(optarg, std::regex("yes|true", std::regex::icase)))
-          ua.ignoreCase = true;
-        break;
+        ua.ignoreCase = false; // Results in 'not case sensitiv'. See also option 's' and
+        break;                 // 'fCaseSensitive' in FindMatches (SearchUtils.h), which reverses the logic.
 
       case 'a':
         assert(optarg);
