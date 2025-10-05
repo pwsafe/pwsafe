@@ -315,202 +315,207 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
   }
 
   try {
-      static const char* short_options = "i::e::txcs:b:f:o::a:u:p::rl:vyd:gjknz:m:w:P:Q:GVh::";
-      static constexpr struct option long_options[] = {
-        // name,          has_arg,            flag,    val
-        {"import",        optional_argument,  nullptr, 'i'},
-        {"export",        optional_argument,  nullptr, 'e'},
-        {"text",          no_argument,        nullptr, 't'},
-        {"xml",           no_argument,        nullptr, 'x'},
-        {"create",        no_argument,        nullptr, 'c'},
-        {"search",        required_argument,  nullptr, 's'},
-        {"subset",        required_argument,  nullptr, 'b'},
-        {"fields",        required_argument,  nullptr, 'f'},
-        {"ignore-case",   optional_argument,  nullptr, 'o'},
-        {"add",           required_argument,  nullptr, 'a'},
-        {"update",        required_argument,  nullptr, 'u'},
-        {"print",         optional_argument,  nullptr, 'p'},
-        {"delete",        no_argument,        nullptr, 'r'},
-        {"clear",         required_argument,  nullptr, 'l'},
-        {"newpass",       no_argument,        nullptr, 'v'},
-        {"yes",           no_argument,        nullptr, 'y'},
-        {"diff",          required_argument,  nullptr, 'd'},
-        {"unified",       no_argument,        nullptr, 'g'},
-        {"context",       no_argument,        nullptr, 'j'},
-        {"sidebyside",    no_argument,        nullptr, 'k'},
-        {"dry-run",       no_argument,        nullptr, 'n'},
-        {"synchronize",   required_argument,  nullptr, 'z'},
-        {"merge",         required_argument,  nullptr, 'm'},
-        {"colwidth",      required_argument,  nullptr, 'w'},
-        {"passphrase",    required_argument,  nullptr, 'P'},
-        {"passphrase2",   required_argument,  nullptr, 'Q'},
-        {"generate-totp", no_argument,        nullptr, 'G'},
-        {"verbose",       no_argument,        nullptr, 'V'},
-        {"help",          optional_argument,  nullptr, 'h'},
-        {nullptr,         0,                  nullptr,  0 }
-      };
+    static const char* short_options = "i::e::txcs:b:f:o::a:u:p::rl:vyd:gjknz:m:w:P:Q:GVh::";
+    static constexpr struct option long_options[] = {
+      // name,          has_arg,            flag,    val
+      {"import",        optional_argument,  nullptr, 'i'},
+      {"export",        optional_argument,  nullptr, 'e'},
+      {"text",          no_argument,        nullptr, 't'},
+      {"xml",           no_argument,        nullptr, 'x'},
+      {"create",        no_argument,        nullptr, 'c'},
+      {"search",        required_argument,  nullptr, 's'},
+      {"subset",        required_argument,  nullptr, 'b'},
+      {"fields",        required_argument,  nullptr, 'f'},
+      {"ignore-case",   optional_argument,  nullptr, 'o'},
+      {"add",           required_argument,  nullptr, 'a'},
+      {"update",        required_argument,  nullptr, 'u'},
+      {"print",         optional_argument,  nullptr, 'p'},
+      {"delete",        no_argument,        nullptr, 'r'},
+      {"clear",         required_argument,  nullptr, 'l'},
+      {"newpass",       no_argument,        nullptr, 'v'},
+      {"yes",           no_argument,        nullptr, 'y'},
+      {"diff",          required_argument,  nullptr, 'd'},
+      {"unified",       no_argument,        nullptr, 'g'},
+      {"context",       no_argument,        nullptr, 'j'},
+      {"sidebyside",    no_argument,        nullptr, 'k'},
+      {"dry-run",       no_argument,        nullptr, 'n'},
+      {"synchronize",   required_argument,  nullptr, 'z'},
+      {"merge",         required_argument,  nullptr, 'm'},
+      {"colwidth",      required_argument,  nullptr, 'w'},
+      {"passphrase",    required_argument,  nullptr, 'P'},
+      {"passphrase2",   required_argument,  nullptr, 'Q'},
+      {"generate-totp", no_argument,        nullptr, 'G'},
+      {"verbose",       no_argument,        nullptr, 'V'},
+      {"help",          optional_argument,  nullptr, 'h'},
+      {nullptr,         0,                  nullptr,  0 }
+    };
 
-      while (1) {
-          int option_index = 0;
+    while (1) {
+      int option_index = 0;
 
 #if 0 // see comment above no_dup_short_option
-          static_assert(no_dup_short_option(long_options), "Short option used twice");
+      static_assert(no_dup_short_option(long_options), "Short option used twice");
 #endif
 
-          int c = getopt_long(argc, argv,
-              short_options, long_options,
-              &option_index);
-          if (c == -1)
-              break;
+      int c = getopt_long(argc, argv,
+          short_options, long_options,
+          &option_index);
 
-          switch (c) {
-          case 'i':
-              ua.SetMainOp(UserArgs::Import, optarg);
-              break;
-          case 'e':
-              ua.SetMainOp(UserArgs::Export, optarg);
-              break;
-          case 'x':
-              if (ua.Format == UserArgs::Unknown)
-                  ua.Format = UserArgs::XML;
-              else
-                  return false;
-              break;
-          case 't':
-              if (ua.Format == UserArgs::Unknown)
-                  ua.Format = UserArgs::Text;
-              else
-                  return false;
-              break;
-          case 'c':
-              ua.SetMainOp(UserArgs::CreateNew);
-              break;
+      if (c == -1)
+        break;
 
-          case 's':
-              assert(optarg);
-              ua.SetMainOp(UserArgs::Search, optarg);
-              break;
+      switch (c) {
+      case 'i':
+        ua.SetMainOp(UserArgs::Import, optarg);
+        break;
 
-          case 'd':
-              assert(optarg);
-              ua.SetMainOp(UserArgs::Diff, optarg);
-              break;
+      case 'e':
+        ua.SetMainOp(UserArgs::Export, optarg);
+        break;
 
-          case 'z':
-              assert(optarg);
-              ua.SetMainOp(UserArgs::Sync, optarg);
-              break;
+      case 'x':
+        if (ua.Format == UserArgs::Unknown)
+          ua.Format = UserArgs::XML;
+        else
+          return false;
+        break;
 
-          case 'm':
-              assert(optarg);
-              ua.SetMainOp(UserArgs::Merge, optarg);
-              break;
+      case 't':
+        if (ua.Format == UserArgs::Unknown)
+          ua.Format = UserArgs::Text;
+        else
+          return false;
+        break;
 
-          case 'b':
-              assert(optarg);
-              ua.SetSubset(Utf82wstring(optarg));
-              break;
+      case 'c':
+        ua.SetMainOp(UserArgs::CreateNew);
+        break;
 
-          case 'f':
-              assert(optarg);
-              ua.SetFields(Utf82wstring(optarg));
-              break;
+      case 's':
+        assert(optarg);
+        ua.SetMainOp(UserArgs::Search, optarg);
+        break;
 
-          case 'o':
-              if (optarg && std::regex_match(optarg, std::regex("yes|true", std::regex::icase)))
-                  ua.ignoreCase = true;
-              break;
+      case 'd':
+        assert(optarg);
+        ua.SetMainOp(UserArgs::Diff, optarg);
+        break;
 
-          case 'a':
-              assert(optarg);
-              ua.SetMainOp(UserArgs::Add, optarg);
-              break;
+      case 'z':
+        assert(optarg);
+        ua.SetMainOp(UserArgs::Sync, optarg);
+        break;
 
-          case 'y':
-              ua.confirmed = true;
-              break;
+      case 'm':
+        assert(optarg);
+        ua.SetMainOp(UserArgs::Merge, optarg);
+        break;
 
-          case 'r':
-              ua.SearchAction = UserArgs::Delete;
-              break;
+      case 'b':
+        assert(optarg);
+        ua.SetSubset(Utf82wstring(optarg));
+        break;
 
-          case 'p':
-              ua.SearchAction = UserArgs::Print;
-              if (optarg) ua.opArg2 = Utf82wstring(optarg);
-              break;
+      case 'f':
+        assert(optarg);
+        ua.SetFields(Utf82wstring(optarg));
+        break;
 
-          case 'u':
-              ua.SearchAction = UserArgs::Update;
-              assert(optarg);
-              ua.SetFieldValues(Utf82wstring(optarg));
-              break;
+      case 'o':
+        if (optarg && std::regex_match(optarg, std::regex("yes|true", std::regex::icase)))
+          ua.ignoreCase = true;
+        break;
 
-          case 'l':
-              ua.SearchAction = UserArgs::ClearFields;
-              assert(optarg);
-              ua.opArg2 = Utf82wstring(optarg);
-              break;
+      case 'a':
+        assert(optarg);
+        ua.SetMainOp(UserArgs::Add, optarg);
+        break;
 
-          case 'v':
-              ua.SearchAction = UserArgs::ChangePassword;
-              break;
+      case 'y':
+        ua.confirmed = true;
+        break;
 
-          case 'g':
-              ua.dfmt = UserArgs::DiffFmt::Unified;
-              break;
+      case 'r':
+        ua.SearchAction = UserArgs::Delete;
+        break;
 
-          case 'j':
-              ua.dfmt = UserArgs::DiffFmt::Context;
-              break;
+      case 'p':
+        ua.SearchAction = UserArgs::Print;
+        if (optarg) ua.opArg2 = Utf82wstring(optarg);
+        break;
 
-          case 'k':
-              ua.dfmt = UserArgs::DiffFmt::SideBySide;
-              break;
+      case 'u':
+        ua.SearchAction = UserArgs::Update;
+        assert(optarg);
+        ua.SetFieldValues(Utf82wstring(optarg));
+        break;
 
-          case 'n':
-              ua.dry_run = true;
-              break;
+      case 'l':
+        ua.SearchAction = UserArgs::ClearFields;
+        assert(optarg);
+        ua.opArg2 = Utf82wstring(optarg);
+        break;
 
-          case 'w':
-              assert(optarg);
-              ua.colwidth = atoi(optarg);
-              break;
+      case 'v':
+        ua.SearchAction = UserArgs::ChangePassword;
+        break;
 
-          case 'P':
-              assert(optarg);
-              Utf82StringX(optarg, ua.passphrase[0]);
-              break;
+      case 'g':
+        ua.dfmt = UserArgs::DiffFmt::Unified;
+        break;
 
-          case 'Q':
-              assert(optarg);
-              Utf82StringX(optarg, ua.passphrase[1]);
-              break;
+      case 'j':
+        ua.dfmt = UserArgs::DiffFmt::Context;
+        break;
 
-          case 'G':
-              ua.SearchAction = UserArgs::GenerateTotpCode;
-              break;
+      case 'k':
+        ua.dfmt = UserArgs::DiffFmt::SideBySide;
+        break;
 
-          case 'V':
-              ua.verbosity_level++;
-              break;
+      case 'n':
+        ua.dry_run = true;
+        break;
 
-          case 'h':
-              ua.SetMainOp(UserArgs::Help, optarg);
-              break;
+      case 'w':
+        assert(optarg);
+        ua.colwidth = atoi(optarg);
+        break;
 
-          case '?': // unknown option is alread reported by getopt_long and a
-          case ':': // missing option argument is reported by getopt_long as well
-              return false;
+      case 'P':
+        assert(optarg);
+        Utf82StringX(optarg, ua.passphrase[0]);
+        break;
 
-          default:
-              wcerr << L"Unexpected getopt_long return value: " << static_cast<wchar_t>(c) << endl;
-              return false;
-          } // switch
-      } // while
+      case 'Q':
+        assert(optarg);
+        Utf82StringX(optarg, ua.passphrase[1]);
+        break;
+
+      case 'G':
+        ua.SearchAction = UserArgs::GenerateTotpCode;
+        break;
+
+      case 'V':
+        ua.verbosity_level++;
+        break;
+
+      case 'h':
+        ua.SetMainOp(UserArgs::Help, optarg);
+        break;
+
+      case '?': // unknown option is alread reported by getopt_long and a
+      case ':': // missing option argument is reported by getopt_long as well
+        return false;
+
+      default:
+        wcerr << L"Unexpected getopt_long return value: " << static_cast<wchar_t>(c) << endl;
+        return false;
+      } // switch
+    } // while
   }
   catch (const std::invalid_argument &ex) {
-      wcerr << L"Error: " << ex.what() << endl << endl;
-      return false;
+    wcerr << L"Error: " << ex.what() << endl << endl;
+    return false;
   }
   return true;
 }
