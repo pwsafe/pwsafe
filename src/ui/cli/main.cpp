@@ -149,7 +149,7 @@ static std::wstring help_create_string = LR"helpstring(
 static std::wstring help_add_string = LR"helpstring(
  Example: Adding an entry
 
-          To add an entry to a database, the title is mandatory. All other fields are optional.
+          When adding an entry to a database, the title is mandatory. All other fields are optional.
           If no password is specified, a password will be generated for the entry.
 
             %PROGNAME% pwsafe.psafe3 --add=Title="Login"
@@ -394,7 +394,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
       case 's':
         assert(optarg);
         ua.SetMainOp(UserArgs::Search, optarg);
-        ua.ignoreCase = true; // Default behavior is case sensitiv search.
+        ua.ignoreCase = true; // Default behavior is case sensitive search.
         break;                // See 'fCaseSensitive' in FindMatches (SearchUtils.h), which reverses the logic.
 
       case 'd':
@@ -423,7 +423,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
         break;
 
       case 'o':
-        ua.ignoreCase = false; // Results in 'not case sensitiv'. See also option 's' and
+        ua.ignoreCase = false; // Results in 'not case sensitive'. See also option 's' and
         break;                 // 'fCaseSensitive' in FindMatches (SearchUtils.h), which reverses the logic.
 
       case 'a':
