@@ -124,7 +124,7 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
                          ! => negation
                         a trailing /i => case insensitive, /I => case sensitive
 
-       %PROGNAME% --help[=operation]
+       %PROGNAME% --help[=%HELPTOPICS%]
 
        Note that --passphrase <passphrase> and --passphrase2 <2nd passphrase> may be used to skip the prompt
        for the master passphrase(s). However, this should be avoided if possible for security reasons.
@@ -253,6 +253,21 @@ static void usage(char *pname)
 
   for(auto itr = usage_string.find(s_pn_placeholder); itr != std::string::npos; itr = usage_string.find(s_pn_placeholder, itr + pname_len)) {
     usage_string.replace(itr, s_pn_placeholder.length(), s_pname);
+  }
+
+  wstringstream ss_help_topics;
+  for (auto const& help_example : pws_help_examples) {
+    ss_help_topics << help_example.first << L"|";
+  }
+  wstring s_help_topics = ss_help_topics.str();
+  if (!s_help_topics.empty()) {
+    s_help_topics.pop_back();
+  }
+
+  const std::wstring s_ht_placeholder{L"%HELPTOPICS%"};
+  pos = usage_string.find(s_ht_placeholder);
+  if (pos != std::string::npos) {
+    usage_string.replace(pos, s_ht_placeholder.length(), s_help_topics);
   }
 
   wcerr << s_pname << L" version " << CLI_MAJOR_VERSION << L"." << CLI_MINOR_VERSION << L"." << CLI_REVISION << endl;
