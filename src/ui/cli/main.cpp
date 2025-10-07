@@ -211,11 +211,6 @@ static std::wstring help_synchronize_string = LR"helpstring(
           This synchronizes database pwsafeA.psafe3 with database pwsafeB.psafe3.
 )helpstring";
 
-struct pws_help_example {
-  wstring operation;
-  wstring help_string;
-};
-
 const map<wstring, wstring> pws_help_examples = {
   { L"create",      help_create_string      },
   { L"add",         help_add_string         },
