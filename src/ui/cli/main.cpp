@@ -94,11 +94,7 @@ const map<UserArgs::OpType, pws_op> pws_ops = {
   { UserArgs::Merge,      {OpenCore,        Merge,      SaveCore}},
 };
 
-
-static void usage(char *pname)
-{
-  std::wstring s_pname = Utf82wstring(pname);
-  std::wstring usage_str = LR"usagestring(
+static wstring usage_string = LR"usagestring(
 Usage: %PROGNAME% safe --imp[=file] --text|--xml
 
        %PROGNAME% safe --exp[=file] --text|--xml
@@ -128,6 +124,8 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
                          ! => negation
                         a trailing /i => case insensitive, /I => case sensitive
 
+       %PROGNAME% --help[=%HELPTOPICS%]
+
        Note that --passphrase <passphrase> and --passphrase2 <2nd passphrase> may be used to skip the prompt
        for the master passphrase(s). However, this should be avoided if possible for security reasons.
 
@@ -138,18 +136,20 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
         ° Field names and values that contain whitespace characters must be quoted (e.g. "Created Time").
         ° Times are expected in Universal Time Coordinated (UTC) format ("YYYY/MM/DD hh:mm:ss").
         ° The current time can also be referenced using the keyword "now".
+)usagestring";
 
-       Examples:
-
-       1) Creating a database
+static std::wstring help_create_string = LR"helpstring(
+ Example: Creating a database
 
             %PROGNAME% pwsafe.psafe3 --create
 
           This creates the empty database "pwsafe.psafe3".
+)helpstring";
 
-       2) Adding an entry
+static std::wstring help_add_string = LR"helpstring(
+ Example: Adding an entry
 
-          To add an entry to a database, the title is mandatory. All other fields are optional.
+          When adding an entry to a database, the title is mandatory. All other fields are optional.
           If no password is specified, a password will be generated for the entry.
 
             %PROGNAME% pwsafe.psafe3 --add=Title="Login"
@@ -163,16 +163,20 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
             %PROGNAME% pwsafe.psafe3 --add=Group=Email,Title=Yahoo,Username="Richard Miles",Password=SecretPassword,"Created Time"=now
 
           Similar to the previous example, except that the entry is added to the "Email" group. If the group does not exist, it is created.
+)helpstring";
 
-       3) Updating an entry
+static std::wstring help_update_string = LR"helpstring(
+ Example: Updating an entry
 
           In this example, an entry containing "Richard Miles" is searched for.
 
             %PROGNAME% pwsafe.psafe3 --search="Richard Miles" --update=Title=Google
 
           If such an entry is found, its title is updated after the user has confirmed this.
+)helpstring";
 
-       4) Searching for an entry
+static std::wstring help_search_string = LR"helpstring(
+ Example: Searching for an entry
 
           The search option is very helpful for referring to specific entries. It can search the entire database for a specific textual occurrence,
           as well as content in specific fields of entries to further narrow the search. This is particularly helpful when multiple entries have the
@@ -185,8 +189,10 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
             %PROGNAME% pwsafe.psafe3 --search="Login" --subset=Username=="John Doe" --print=Title,Username
 
           This search command would limit the results to all entries containing the occurrence "Login" and the username "John Doe".
+)helpstring";
 
-       5) Deleting an entry
+static std::wstring help_delete_string = LR"helpstring(
+ Example: Deleting an entry
 
             %PROGNAME% pwsafe.psafe3 --search="Richard Miles" --delete
 
@@ -195,14 +201,29 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
             %PROGNAME% pwsafe.psafe3 --search="John Doe" --delete --yes
 
           This deletes the found entry without asking for confirmation.
+)helpstring";
 
-       6) Synchronizing databases
+static std::wstring help_synchronize_string = LR"helpstring(
+ Example: Synchronizing databases
 
             %PROGNAME% pwsafeA.psafe3 --synchronize=pwsafeB.psafe3
 
           This synchronizes database pwsafeA.psafe3 with database pwsafeB.psafe3.
-)usagestring";
+)helpstring";
 
+const map<wstring, wstring> pws_help_examples = {
+  { L"create",      help_create_string      },
+  { L"add",         help_add_string         },
+  { L"update",      help_update_string      },
+  { L"search",      help_search_string      },
+  { L"delete",      help_delete_string      },
+  { L"sync",        help_synchronize_string },
+  { L"synchronize", help_synchronize_string },
+};
+
+static void usage(char *pname)
+{
+  std::wstring s_pname = Utf82wstring(pname);
   std::wstringstream ss_fieldnames;
   constexpr auto names_per_line = 5;
   auto nnames = 0;
@@ -217,21 +238,66 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
 
   std::wstring s_fieldnames = ss_fieldnames.str();
   const std::wstring s_fn_placeholder{L"%FIELDNAMES%"};
-  auto pos = usage_str.find(s_fn_placeholder);
+  auto pos = usage_string.find(s_fn_placeholder);
   if (pos != std::string::npos) {
-    usage_str.replace(pos, s_fn_placeholder.length(), s_fieldnames);
+    usage_string.replace(pos, s_fn_placeholder.length(), s_fieldnames);
   }
 
   const std::wstring s_pn_placeholder{L"%PROGNAME%"};
   const auto pname_len = s_pname.length();
 
-  for(auto itr = usage_str.find(s_pn_placeholder); itr != std::string::npos; itr = usage_str.find(s_pn_placeholder, itr + pname_len)) {
-    usage_str.replace(itr, s_pn_placeholder.length(), s_pname);
+  for(auto itr = usage_string.find(s_pn_placeholder); itr != std::string::npos; itr = usage_string.find(s_pn_placeholder, itr + pname_len)) {
+    usage_string.replace(itr, s_pn_placeholder.length(), s_pname);
+  }
+
+  wstringstream ss_help_topics;
+  for (auto const& help_example : pws_help_examples) {
+    ss_help_topics << help_example.first << L"|";
+  }
+  wstring s_help_topics = ss_help_topics.str();
+  if (!s_help_topics.empty()) {
+    s_help_topics.pop_back();
+  }
+
+  const std::wstring s_ht_placeholder{L"%HELPTOPICS%"};
+  pos = usage_string.find(s_ht_placeholder);
+  if (pos != std::string::npos) {
+    usage_string.replace(pos, s_ht_placeholder.length(), s_help_topics);
   }
 
   wcerr << s_pname << L" version " << CLI_MAJOR_VERSION << L"." << CLI_MINOR_VERSION << L"." << CLI_REVISION << endl;
-  wcerr << usage_str;
+  wcerr << usage_string;
   wcerr << '\n';
+}
+
+static wstring replace_progname_placeholder(const wstring &help_string, const wstring &progname)
+{
+  const wstring placeholder{L"%PROGNAME%"};
+  const auto progname_len = progname.length();
+  wstring new_help_string{help_string};
+
+  for(auto itr = new_help_string.find(placeholder); itr != string::npos; itr = new_help_string.find(placeholder, itr + progname_len)) {
+    new_help_string.replace(itr, placeholder.length(), progname);
+  }
+  return new_help_string;
+}
+
+static bool help(char *pname, const wstring &help_arg)
+{
+  auto itr = pws_help_examples.find(help_arg);
+  if (itr != pws_help_examples.end()) {
+    wcout << replace_progname_placeholder(itr->second, Utf82wstring(pname)) << endl;
+  }
+  else {
+    wcerr << L"Unsupported help argument: " << help_arg << endl << endl;
+    wcerr << L"Supported arguments are:" << endl;
+    for (auto const& help : pws_help_examples) {
+      wcerr << L" - " << help.first << endl;
+    }
+    wcerr << endl;
+    return false;
+  }
+  return true;
 }
 
 #if 0
@@ -250,199 +316,216 @@ constexpr bool no_dup_short_option(const struct option *p)
 
 bool parseArgs(int argc, char *argv[], UserArgs &ua)
 {
-  if (argc < 3) // must give us a safe and an operation
+  if (argc < 2) {       // 0: app name, 1: help option ?
     return false;
-
-  Utf82StringX(argv[1], ua.safe);
+  }
+  else if (argc > 2) {  // 0: app name, 1: db name, 2: operation name
+    Utf82StringX(argv[1], ua.safe);
+    argc--, argv++;     // skip db name for getopt_long
+  }
 
   try {
+    static const char* short_options = "i::e::txcs:b:f:oa:u:p::rl:vyd:gjknz:m:w:P:Q:GVh::";
+    static constexpr struct option long_options[] = {
+      // name,          has_arg,            flag,    val
+      {"import",        optional_argument,  nullptr, 'i'},
+      {"export",        optional_argument,  nullptr, 'e'},
+      {"text",          no_argument,        nullptr, 't'},
+      {"xml",           no_argument,        nullptr, 'x'},
+      {"create",        no_argument,        nullptr, 'c'},
+      {"search",        required_argument,  nullptr, 's'},
+      {"subset",        required_argument,  nullptr, 'b'},
+      {"fields",        required_argument,  nullptr, 'f'},
+      {"ignore-case",   no_argument,        nullptr, 'o'},
+      {"add",           required_argument,  nullptr, 'a'},
+      {"update",        required_argument,  nullptr, 'u'},
+      {"print",         optional_argument,  nullptr, 'p'},
+      {"delete",        no_argument,        nullptr, 'r'},
+      {"clear",         required_argument,  nullptr, 'l'},
+      {"newpass",       no_argument,        nullptr, 'v'},
+      {"yes",           no_argument,        nullptr, 'y'},
+      {"diff",          required_argument,  nullptr, 'd'},
+      {"unified",       no_argument,        nullptr, 'g'},
+      {"context",       no_argument,        nullptr, 'j'},
+      {"sidebyside",    no_argument,        nullptr, 'k'},
+      {"dry-run",       no_argument,        nullptr, 'n'},
+      {"synchronize",   required_argument,  nullptr, 'z'},
+      {"merge",         required_argument,  nullptr, 'm'},
+      {"colwidth",      required_argument,  nullptr, 'w'},
+      {"passphrase",    required_argument,  nullptr, 'P'},
+      {"passphrase2",   required_argument,  nullptr, 'Q'},
+      {"generate-totp", no_argument,        nullptr, 'G'},
+      {"verbose",       no_argument,        nullptr, 'V'},
+      {"help",          optional_argument,  nullptr, 'h'},
+      {nullptr,         0,                  nullptr,  0 }
+    };
 
-      while (1) {
-          int option_index = 0;
-          static constexpr struct option long_options[] = {
-              // name, has_arg, flag, val
-              {"import",      optional_argument,  0, 'i'},
-              {"export",      optional_argument,  0, 'e'},
-              {"text",        no_argument,        0, 't'},
-              {"xml",         no_argument,        0, 'x'},
-              {"create",      no_argument,        0, 'c'},
-              //  {"new",         no_argument,        0, 'c'},
-                {"search",      required_argument,  0, 's'},
-                {"subset",      required_argument,  0, 'b'},
-                {"fields",      required_argument,  0, 'f'},
-                {"ignore-case", optional_argument,  0, 'o'},
-                {"add",         required_argument,  0, 'a'},
-                {"update",      required_argument,  0, 'u'},
-                {"print",       optional_argument,  0, 'p'},
-                //  {"remove",      no_argument,        0, 'r'},
-                  {"delete",      no_argument,        0, 'r'},
-                  {"clear",       required_argument,  0, 'l'},
-                  {"newpass",     no_argument,        0, 'v'},
-                  {"yes",         no_argument,        0, 'y'},
-                  {"diff",        required_argument,  0, 'd'},
-                  {"unified",     no_argument,        0, 'g'},
-                  {"context",     no_argument,        0, 'j'},
-                  {"sidebyside",  no_argument,        0, 'k'},
-                  {"dry-run",     no_argument,        0, 'n'},
-                  {"synchronize", required_argument,  0, 'z'},
-                    {"merge",       required_argument,  0, 'm'},
-                    {"colwidth",    required_argument,  0, 'w'},
-                    {"passphrase",  required_argument,  0, 'P'},
-                    {"passphrase2", required_argument,  0, 'Q'},
-                    {"generate-totp", no_argument,      0, 'G'},
-                    {"verbose",     no_argument,        0, 'V'},
-                    {0, 0, 0, 0}
-          };
+    while (1) {
+      int option_index = 0;
 
 #if 0 // see comment above no_dup_short_option
-          static_assert(no_dup_short_option(long_options), "Short option used twice");
+      static_assert(no_dup_short_option(long_options), "Short option used twice");
 #endif
 
-          int c = getopt_long(argc - 1, argv + 1, "i::e::txcs:b:f:oa:u:pryd:gjknz:m:P:Q:GV",
-              long_options, &option_index);
-          if (c == -1)
-              break;
+      int c = getopt_long(argc, argv,
+          short_options, long_options,
+          &option_index);
 
-          switch (c) {
-          case 'i':
-              ua.SetMainOp(UserArgs::Import, optarg);
-              break;
-          case 'e':
-              ua.SetMainOp(UserArgs::Export, optarg);
-              break;
-          case 'x':
-              if (ua.Format == UserArgs::Unknown)
-                  ua.Format = UserArgs::XML;
-              else
-                  return false;
-              break;
-          case 't':
-              if (ua.Format == UserArgs::Unknown)
-                  ua.Format = UserArgs::Text;
-              else
-                  return false;
-              break;
-          case 'c':
-              ua.SetMainOp(UserArgs::CreateNew);
-              break;
+      if (c == -1)
+        break;
 
-          case 's':
-              assert(optarg);
-              ua.SetMainOp(UserArgs::Search, optarg);
-              break;
+      switch (c) {
+      case 'i':
+        ua.SetMainOp(UserArgs::Import, optarg);
+        break;
 
-          case 'd':
-              assert(optarg);
-              ua.SetMainOp(UserArgs::Diff, optarg);
-              break;
+      case 'e':
+        ua.SetMainOp(UserArgs::Export, optarg);
+        break;
 
-          case 'z':
-              assert(optarg);
-              ua.SetMainOp(UserArgs::Sync, optarg);
-              break;
+      case 'x':
+        if (ua.Format == UserArgs::Unknown)
+          ua.Format = UserArgs::XML;
+        else
+          return false;
+        break;
 
-          case 'm':
-              assert(optarg);
-              ua.SetMainOp(UserArgs::Merge, optarg);
-              break;
+      case 't':
+        if (ua.Format == UserArgs::Unknown)
+          ua.Format = UserArgs::Text;
+        else
+          return false;
+        break;
 
-          case 'b':
-              assert(optarg);
-              ua.SetSubset(Utf82wstring(optarg));
-              break;
+      case 'c':
+        ua.SetMainOp(UserArgs::CreateNew);
+        break;
 
-          case 'f':
-              assert(optarg);
-              ua.SetFields(Utf82wstring(optarg));
-              break;
+      case 's':
+        assert(optarg);
+        ua.SetMainOp(UserArgs::Search, optarg);
+        ua.ignoreCase = true; // Default behavior is case sensitive search.
+        break;                // See 'fCaseSensitive' in FindMatches (SearchUtils.h), which reverses the logic.
 
-          case 'o':
-              if (optarg && std::regex_match(optarg, std::regex("yes|true", std::regex::icase)))
-                  ua.ignoreCase = true;
-              break;
+      case 'd':
+        assert(optarg);
+        ua.SetMainOp(UserArgs::Diff, optarg);
+        break;
 
-          case 'a':
-              assert(optarg);
-              ua.SetMainOp(UserArgs::Add, optarg);
-              break;
+      case 'z':
+        assert(optarg);
+        ua.SetMainOp(UserArgs::Sync, optarg);
+        break;
 
-          case 'y':
-              ua.confirmed = true;
-              break;
+      case 'm':
+        assert(optarg);
+        ua.SetMainOp(UserArgs::Merge, optarg);
+        break;
 
-          case 'r':
-              ua.SearchAction = UserArgs::Delete;
-              break;
+      case 'b':
+        assert(optarg);
+        ua.SetSubset(Utf82wstring(optarg));
+        break;
 
-          case 'p':
-              ua.SearchAction = UserArgs::Print;
-              if (optarg) ua.opArg2 = Utf82wstring(optarg);
-              break;
+      case 'f':
+        assert(optarg);
+        ua.SetFields(Utf82wstring(optarg));
+        break;
 
-          case 'u':
-              ua.SearchAction = UserArgs::Update;
-              assert(optarg);
-              ua.SetFieldValues(Utf82wstring(optarg));
-              break;
+      case 'o':
+        ua.ignoreCase = false; // Results in 'not case sensitive'. See also option 's' and
+        break;                 // 'fCaseSensitive' in FindMatches (SearchUtils.h), which reverses the logic.
 
-          case 'l':
-              ua.SearchAction = UserArgs::ClearFields;
-              assert(optarg);
-              ua.opArg2 = Utf82wstring(optarg);
-              break;
+      case 'a':
+        assert(optarg);
+        ua.SetMainOp(UserArgs::Add, optarg);
+        break;
 
-          case 'v':
-              ua.SearchAction = UserArgs::ChangePassword;
-              break;
+      case 'y':
+        ua.confirmed = true;
+        break;
 
-          case 'g':
-              ua.dfmt = UserArgs::DiffFmt::Unified;
-              break;
+      case 'r':
+        ua.SearchAction = UserArgs::Delete;
+        break;
 
-          case 'j':
-              ua.dfmt = UserArgs::DiffFmt::Context;
-              break;
+      case 'p':
+        ua.SearchAction = UserArgs::Print;
+        if (optarg) ua.opArg2 = Utf82wstring(optarg);
+        break;
 
-          case 'k':
-              ua.dfmt = UserArgs::DiffFmt::SideBySide;
-              break;
+      case 'u':
+        ua.SearchAction = UserArgs::Update;
+        assert(optarg);
+        ua.SetFieldValues(Utf82wstring(optarg));
+        break;
 
-          case 'n':
-              ua.dry_run = true;
-              break;
+      case 'l':
+        ua.SearchAction = UserArgs::ClearFields;
+        assert(optarg);
+        ua.opArg2 = Utf82wstring(optarg);
+        break;
 
-          case 'w':
-              assert(optarg);
-              ua.colwidth = atoi(optarg);
-              break;
+      case 'v':
+        ua.SearchAction = UserArgs::ChangePassword;
+        break;
 
-          case 'P':
-              assert(optarg);
-              Utf82StringX(optarg, ua.passphrase[0]);
-              break;
+      case 'g':
+        ua.dfmt = UserArgs::DiffFmt::Unified;
+        break;
 
-          case 'Q':
-              assert(optarg);
-              Utf82StringX(optarg, ua.passphrase[1]);
-              break;
+      case 'j':
+        ua.dfmt = UserArgs::DiffFmt::Context;
+        break;
 
-          case 'G':
-              ua.SearchAction = UserArgs::GenerateTotpCode;
-              break;
+      case 'k':
+        ua.dfmt = UserArgs::DiffFmt::SideBySide;
+        break;
 
-          case 'V':
-              ua.verbosity_level++;
-              break;
+      case 'n':
+        ua.dry_run = true;
+        break;
 
-          default:
-              wcerr << L"Unknown option: " << static_cast<wchar_t>(c) << endl;
-              return false;
-          } // switch
-      } // while 
-  } 
+      case 'w':
+        assert(optarg);
+        ua.colwidth = atoi(optarg);
+        break;
+
+      case 'P':
+        assert(optarg);
+        Utf82StringX(optarg, ua.passphrase[0]);
+        break;
+
+      case 'Q':
+        assert(optarg);
+        Utf82StringX(optarg, ua.passphrase[1]);
+        break;
+
+      case 'G':
+        ua.SearchAction = UserArgs::GenerateTotpCode;
+        break;
+
+      case 'V':
+        ua.verbosity_level++;
+        break;
+
+      case 'h':
+        ua.SetMainOp(UserArgs::Help, optarg);
+        break;
+
+      case '?': // unknown option is alread reported by getopt_long and a
+      case ':': // missing option argument is reported by getopt_long as well
+        return false;
+
+      default:
+        wcerr << L"Unexpected getopt_long return value: " << static_cast<wchar_t>(c) << endl;
+        return false;
+      } // switch
+    } // while
+  }
   catch (const std::invalid_argument &ex) {
-      wcerr << L"Error: " << ex.what() << endl << endl;
-      return false;
+    wcerr << L"Error: " << ex.what() << endl << endl;
+    return false;
   }
   return true;
 }
@@ -485,6 +568,13 @@ int main(int argc, char *argv[])
 
   UserArgs ua;
   if (!parseArgs(argc, argv, ua)) {
+    usage(basename(argv[0]));
+    return 1;
+  }
+  if (ua.Operation == UserArgs::Help) {
+    if (help(basename(argv[0]), ua.opArg)) {
+      return 0;
+    }
     usage(basename(argv[0]));
     return 1;
   }
