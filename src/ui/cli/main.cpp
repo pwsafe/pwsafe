@@ -321,7 +321,7 @@ bool parseArgs(int argc, char *argv[], UserArgs &ua)
   }
   else if (argc > 2) {  // 0: app name, 1: db name, 2: operation name
     Utf82StringX(argv[1], ua.safe);
-    argc--, argv++;     // skip db name for getopt_long
+    argc--; argv++;     // skip db name for getopt_long
   }
 
   try {
