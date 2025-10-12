@@ -6,6 +6,7 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 #include <limits>
+#include <cstring> // for std::memcpy
 #include "os/rand.h"
 
 #include "PwsPlatform.h"
