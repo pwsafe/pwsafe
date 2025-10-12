@@ -64,14 +64,21 @@ void PWSrand::NextRandBlock()
   SHA256 s;
   s.Update(K, sizeof(K));
   s.Final(R);
-  unsigned int *Kp = reinterpret_cast<unsigned int *>(K);
-  unsigned int *Rp = reinterpret_cast<unsigned int *>(R);
-  const int N = SHA256::HASHLEN / sizeof(uint32);
 
-  Kp[0]++;
+  constexpr int N = SHA256::HASHLEN / sizeof(uint32);
+
+  // Use temporary buffers to avoid alignment issues
+  uint32 Ktemp[N], Rtemp[N];
+
+  std::memcpy(Ktemp, K, sizeof(Ktemp));
+  std::memcpy(Rtemp, R, sizeof(Rtemp));
+
+  Ktemp[0]++;
 
   for (int32 i = 0; i < N; i++)
-    Kp[i] += Rp[i];
+    Ktemp[i] += Rtemp[i];
+
+  std::memcpy(K, Ktemp, sizeof(Ktemp));
 }
 
 void PWSrand::GetRandomData( void * const buffer, unsigned long length )
