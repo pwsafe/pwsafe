@@ -40,6 +40,7 @@ protected:
 
 private:
   PWSfileV1V2& operator=(const PWSfileV1V2&) = delete; // Do not implement
+  using PWSfile::ReadCBC;
   size_t ReadCBC(unsigned char &type, StringX &data);
   // crypto stuff for reading/writing files:
   unsigned char m_salt[SaltLength];

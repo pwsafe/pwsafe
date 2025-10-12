@@ -23,9 +23,9 @@ public:
 virtual unsigned int GetBlockSize() const {return 8;}
   // Following encrypt/decrypt a single block
   // (blocksize dependent on cipher)
-  virtual void Encrypt(const unsigned char *pt, unsigned char *ct)
+  virtual void Encrypt(const unsigned char *pt, unsigned char *ct) const
   {memcpy(ct, pt, GetBlockSize());}
-  virtual void Decrypt(const unsigned char *ct, unsigned char *pt)
+  virtual void Decrypt(const unsigned char *ct, unsigned char *pt) const
   {memcpy(pt, ct, GetBlockSize());}
 };
 

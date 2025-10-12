@@ -77,14 +77,14 @@ case "$DISTRO" in
         elif test \( \( "$DISTRO" = "ubuntu" -o "$DISTRO" = "pop" \) -a "$RELEASE" -ge 20 \) -o \
          \( "$DISTRO" = "debian" -a "$RELEASE" -eq 11 \) ; then
             LIBWXDEV="libwxgtk3.0-gtk3-dev"
-        elif test \( "$DISTRO" = "debian"  -a "$RELEASE" -eq 12 \) ; then
+        elif test \( "$DISTRO" = "debian"  -a "$RELEASE" -ge 12 \) ; then
             LIBWXDEV="libwxgtk3.2-dev"
         elif test \( "$DISTRO" = "debian"  -a "$RELEASE" -eq 0 \) ; then
             LIBWXDEV="libwxgtk3.2-dev"
         elif test \( "$DISTRO" = "linuxmint"  -a "$RELEASE" -eq 22 \) ; then
             LIBWXDEV="libwxgtk3.2-dev"
         else
-            LIBWXDEV="libwxgtk3.0-dev"
+            LIBWXDEV="libwxgtk3.2-dev"
         fi
         apt-get install -qy cmake fakeroot g++ gettext git libgtest-dev \
             libcurl4-openssl-dev libqrencode-dev  libssl-dev libuuid1 \
