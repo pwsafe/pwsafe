@@ -128,8 +128,8 @@ unsigned int PWSrand::RandUInt()
     ibRandomData = 0;
   }
 
-  const unsigned int u =
-    *(reinterpret_cast<uint32 *>(rgbRandomData + ibRandomData));
+  unsigned int u = 0;
+  std::memcpy(&u, rgbRandomData + ibRandomData, sizeof(uint32));
   ibRandomData += sizeof(uint32);
   return u;
 }
