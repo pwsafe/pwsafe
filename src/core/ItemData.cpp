@@ -2053,7 +2053,7 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
 
   while (iter != v.end()) {
     unsigned char type = *iter++;
-    if (static_cast<uint32>(distance(v.end(), iter)) < sizeof(uint32)) {
+    if (static_cast<uint32>(distance(iter, v.end())) < sizeof(uint32)) {
       ASSERT(0); // type must ALWAYS be followed by length
       return false;
     }
