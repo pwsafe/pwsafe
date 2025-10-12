@@ -24,7 +24,7 @@
 #include "os/pws_tchar.h"
 #include "os/utf8conv.h"
 
-#include <ctime>
+#include <cstring>
 #include <sstream>
 #include <iomanip>
 #include <algorithm>
@@ -2068,7 +2068,8 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
       return true; // happy end
     }
 
-    uint32 len = *(reinterpret_cast<const uint32 *>(&(*iter)));
+    uint32 len = 0;
+    std::memcpy(&len, &(*iter), sizeof(len));
     ASSERT(len < v.size()); // sanity check
     iter += sizeof(uint32);
 
