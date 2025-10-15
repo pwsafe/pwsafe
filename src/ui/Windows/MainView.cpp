@@ -5524,7 +5524,8 @@ StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
       // Get "&Yes" and remove & (May not be leading in non-English languages)
       CString csYes(MAKEINTRESOURCE(IDS_YES));
       csYes.Replace(L"&", L"");
-      sx_fielddata = ci.HasAttRef() ? csYes : L"";
+      // Show Yes for both v4 (ATTREF) and v3 (inline data) attachments
+      sx_fielddata = (ci.HasAttRef() || ci.HasAttachment()) ? csYes : L"";
       break;
     }
     default:
