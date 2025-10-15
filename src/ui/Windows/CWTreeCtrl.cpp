@@ -223,7 +223,7 @@ CSecString CCWTreeCtrl::MakeTreeDisplayString(const CItemData &ci,
   if (ci.IsProtected())
     treeDispString += CSecString(csProtect);
 
-  if (ci.HasAttRef())
+  if (ci.HasAttachment())
     treeDispString += CSecString(csAttachment);
 
   return treeDispString;

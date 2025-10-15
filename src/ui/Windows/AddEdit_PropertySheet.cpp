@@ -814,12 +814,12 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   } // IsAlias
 
   // Attachment
-  if (m_AEMD.pci->HasAttRef()) {
+  if (m_AEMD.pci->HasAttachment() && m_AEMD.pci->HasAttRef()) {
     ASSERT(m_AEMD.pcore->HasAtt(m_AEMD.pci->GetAttUUID()));
     m_AEMD.oldattachment = m_AEMD.attachment = 
       m_AEMD.pcore->GetAtt(m_AEMD.pci->GetAttUUID());
   }
-  else if (m_AEMD.pcore->GetReadFileVersion() == PWSfile::V30) {
+  else if (m_AEMD.pcore->GetReadFileVersion() == PWSfile::V30 && m_AEMD.pci->HasAttachment()) {
     // Populate in-memory attachment from V3 fields (if present)
     const bool hasV3Meta = m_AEMD.pci->IsAttFileNameSet() || m_AEMD.pci->IsAttModificationTimeSet();
     const bool hasV3Content = m_AEMD.pci->IsAttContentSet();

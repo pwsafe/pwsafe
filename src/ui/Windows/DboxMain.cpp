@@ -3631,7 +3631,7 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
               }
               break;
             case ID_MENUITEM_VIEWATTACHMENT:
-              if (!pci->HasAttRef()) {
+              if (!pci->HasAttachment()) {
                 iEnable = FALSE;
               }
               break;

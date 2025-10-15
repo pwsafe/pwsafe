@@ -373,7 +373,7 @@ public:
   void SetAttModificationTime(time_t t)          { CItem::SetTime(DATA_ATT_MTIME, t); }
   void SetAttContent(const unsigned char *content, size_t clen) { CItem::SetField(DATA_ATT_CONTENT, content, clen); }
 
-  bool HasAttachment() const            { return IsAttMediaTypeSet();            }
+  bool HasAttachment() const            { return IsAttMediaTypeSet() || HasAttRef(); }
   void ClearAttachment();
 
   // Passkey
