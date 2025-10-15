@@ -102,7 +102,8 @@ BOOL CAddEdit_Attachment::OnInitDialog()
   GetDlgItem(IDC_ATT_FILE)->SetFont(pFont);
 
   // Check initial state
-  if (!M_pci()->HasAttRef()) {
+  if (!M_pci()->HasAttRef() && !M_attachment().HasContent() &&
+      M_attachment().GetTitle().empty() && M_attachment().GetMediaType().empty()) {
     m_attType = NO_ATTACHMENT;
   } else {
     // m_attachment() set in CAddEdit_PropertySheet::SetupInitialValues()

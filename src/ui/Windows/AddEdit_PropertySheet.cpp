@@ -842,6 +842,9 @@ void CAddEdit_PropertySheet::SetupInitialValues()
           m_AEMD.attachment.SetContent(v.data(), v.size());
       }
 
+      // Create UUID for UI compatibility (not stored in V3 DB)
+      m_AEMD.attachment.CreateUUID();
+
       // Keep a snapshot for change detection in Edit mode
       m_AEMD.oldattachment = m_AEMD.attachment;
     }
