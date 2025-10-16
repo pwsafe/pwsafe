@@ -2103,9 +2103,29 @@ void DboxMain::OnExportAttachment()
   */
 
   CItemData *pci = getSelectedItem();
-  ASSERT(pci != NULL && pci->HasAttRef());
+  ASSERT(pci != NULL && pci->HasAttachment());
 
-  CItemAtt &att = m_core.GetAtt(pci->GetAttUUID());
+  // To minimize change to existing code, which was written for V4 attachments,
+  // we create a pseudo V4 attachment from the V3 attachment information
+  CItemAtt pseudoAtt;
+
+  if (m_core.GetReadFileVersion() == PWSfile::V30)
+  {
+    pseudoAtt.SetFileName(pci->GetAttFileName());
+    pseudoAtt.SetMediaType(pci->GetAttMediaType());
+    const std::vector<unsigned char> content = pci->GetAttContent();
+    pseudoAtt.SetContent(content.data(), content.size());
+    time_t mtime(0);
+    pci->GetAttModificationTime(mtime);
+    pseudoAtt.SetFileMTime(mtime);
+    pseudoAtt.SetFileCTime(mtime); // v3 has no creation time
+    pseudoAtt.SetFileATime(mtime); // v3 has no access time
+
+  }
+
+  const CItemAtt& att = (m_core.GetReadFileVersion() == PWSfile::V40) ? m_core.GetAtt(pci->GetAttUUID()) : pseudoAtt;
+
+  // From here on, we don't care whether it's a V3 or V4 attachment
 
   CString filter, csMediaType;
   CSimpleArray<GUID> aguidFileTypes;
