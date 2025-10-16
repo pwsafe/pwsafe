@@ -423,7 +423,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
           }
           else {
             // Removed
-            m_AEMD.pci->ClearAttachment();
+            m_AEMD.pci->ClearV3Attachment();
           }
         }
         else {
@@ -563,7 +563,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
           if (mtime != 0)
             m_AEMD.pci->SetAttModificationTime(mtime);
         } else {
-          m_AEMD.pci->ClearAttachment();
+          m_AEMD.pci->ClearV3Attachment();
         }
       } else if (m_AEMD.attachment.HasUUID()) {
         m_AEMD.pci->SetAttUUID(m_AEMD.attachment.GetUUID());
