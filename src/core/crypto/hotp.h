@@ -13,6 +13,7 @@
 
 #include <vector>
 #include <cmath>
+#include <cstring> // for memcpy
 
 #include "../Util.h"
 #include "hmac.h"
@@ -39,7 +40,8 @@ public:
     Digest digest(HMACGenerator::HASH_LENGTH);
     hmacGenerator.Final(&digest[0]);
     int index = digest[HMACGenerator::HASH_LENGTH - 1] & 0x0F;
-    uint32_t code = *reinterpret_cast<uint32_t*>(&digest[0] + index);
+    uint32_t code = 0;
+    std::memcpy(&code, &digest[0] + index, sizeof(code));
 #ifdef PWS_LITTLE_ENDIAN
     byteswap(code);
 #endif

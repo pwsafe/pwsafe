@@ -6,6 +6,7 @@
 * http://www.opensource.org/licenses/artistic-license-2.0.php
 */
 #include <limits>
+#include <cstring> // for std::memcpy
 #include "os/rand.h"
 
 #include "PwsPlatform.h"
@@ -64,14 +65,21 @@ void PWSrand::NextRandBlock()
   SHA256 s;
   s.Update(K, sizeof(K));
   s.Final(R);
-  unsigned int *Kp = reinterpret_cast<unsigned int *>(K);
-  unsigned int *Rp = reinterpret_cast<unsigned int *>(R);
-  const int N = SHA256::HASHLEN / sizeof(uint32);
 
-  Kp[0]++;
+  constexpr int N = SHA256::HASHLEN / sizeof(uint32);
+
+  // Use temporary buffers to avoid alignment issues
+  uint32 Ktemp[N], Rtemp[N];
+
+  std::memcpy(Ktemp, K, sizeof(Ktemp));
+  std::memcpy(Rtemp, R, sizeof(Rtemp));
+
+  Ktemp[0]++;
 
   for (int32 i = 0; i < N; i++)
-    Kp[i] += Rp[i];
+    Ktemp[i] += Rtemp[i];
+
+  std::memcpy(K, Ktemp, sizeof(Ktemp));
 }
 
 void PWSrand::GetRandomData( void * const buffer, unsigned long length )
@@ -120,8 +128,8 @@ unsigned int PWSrand::RandUInt()
     ibRandomData = 0;
   }
 
-  const unsigned int u =
-    *(reinterpret_cast<uint32 *>(rgbRandomData + ibRandomData));
+  unsigned int u = 0;
+  std::memcpy(&u, rgbRandomData + ibRandomData, sizeof(uint32));
   ibRandomData += sizeof(uint32);
   return u;
 }
