@@ -1,7 +1,7 @@
-## Introduction
+## End-users
 Flatpak is a universal installation package format for Linux. You can install Password Safe as a flatpak from Flathub: https://flathub.org/apps/org.pwsafe.pwsafe
 
-## Short Guide
+## Developers
 This guide was tested on Ubuntu and Fedora, but should also works for other Linux distributions.
 
 If you want to build flatpak by yourself, then do the following:
