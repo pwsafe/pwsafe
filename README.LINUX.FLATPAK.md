@@ -1,7 +1,7 @@
-## Introduction
+## End-users
 Flatpak is a universal installation package format for Linux. You can install Password Safe as a flatpak from Flathub: https://flathub.org/apps/org.pwsafe.pwsafe
 
-## Short Guide
+## Developers
 This guide was tested on Ubuntu and Fedora, but should also works for other Linux distributions.
 
 If you want to build flatpak by yourself, then do the following:
@@ -22,12 +22,6 @@ If you want to build flatpak by yourself, then do the following:
 set -e
 
 
-# ---------------
-# Note start time
-# ---------------
-date +'%Y-%m-%d %H:%M:%S'
-
-
 # -----------------------
 # Install flatpak-builder
 # -----------------------
@@ -37,7 +31,7 @@ flatpak install -y flathub org.flatpak.Builder
 # -----------------------
 # Install flatpak SDK
 # -----------------------
-flatpak install -y flathub org.freedesktop.Platform//23.08 org.freedesktop.Sdk//23.08
+flatpak install -y flathub org.freedesktop.Platform//25.08 org.freedesktop.Sdk//25.08
 
 
 # -------------
@@ -72,12 +66,6 @@ flatpak list | grep pwsafe
 # Run flatpak
 # -----------
 flatpak run org.pwsafe.pwsafe &
-
-
-# -------------
-# Note end time
-# -------------
-date +'%Y-%m-%d %H:%M:%S'
 ```
 
 5. After flatpak builds and installs successfully, the script will start the Password Safe program is for the first time. To run it again, type `flatpak run org.pwsafe.pwsafe &`
