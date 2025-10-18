@@ -373,8 +373,10 @@ public:
   void SetAttModificationTime(time_t t)          { CItem::SetTime(DATA_ATT_MTIME, t); }
   void SetAttContent(const unsigned char *content, size_t clen) { CItem::SetField(DATA_ATT_CONTENT, content, clen); }
 
-  bool HasAttachment() const            { return IsAttMediaTypeSet();            }
-  void ClearAttachment();
+  // Following works for both V3 and V4 attachments
+  bool HasAttachment() const            { return IsAttMediaTypeSet() || HasAttRef(); }
+  // Following is V3-specific, since clearing a V4 attachment also requires removing a CItemAtt object from core.
+  void ClearV3Attachment();
 
   // Passkey
   bool IsPasskeyCredentialIDSet() const    { return IsFieldSet(PASSKEY_CRED_ID);     }

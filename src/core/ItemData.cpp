@@ -2500,7 +2500,7 @@ std::vector<unsigned char> CItemData::GetAttContent() const {
   return v;
 }
 
-void CItemData::ClearAttachment() {
+void CItemData::ClearV3Attachment() {
   ClearField(DATA_ATT_TITLE);
   ClearField(DATA_ATT_MEDIATYPE);
   ClearField(DATA_ATT_FILENAME);

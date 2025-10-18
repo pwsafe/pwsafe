@@ -340,3 +340,60 @@ TEST_F(FileV4Test, PasskeyTest)
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
 }
+
+TEST_F(FileV4Test, V3ToV4AttachmentConversion) {
+  PWScore core;
+
+  // Create a V3 record with attachment
+  CItemData v3Item;
+  v3Item.CreateUUID();
+  v3Item.SetTitle(L"Test att conversion");
+  v3Item.SetPassword(L"mandatory field...");
+  v3Item.SetAttFileName(L"test.txt");
+  v3Item.SetAttMediaType(L"text/plain");
+
+  std::vector<unsigned char> content{ 't','e','s','t' };
+  v3Item.SetAttContent(content.data(), content.size());
+
+  time_t mtime = 1234567890;
+  v3Item.SetAttModificationTime(mtime);
+
+
+  core.SetPassKey(passphrase);
+  core.Execute(AddEntryCommand::Create(&core, v3Item));
+  EXPECT_EQ(PWSfile::SUCCESS, core.WriteFile(fname.c_str(), PWSfile::V40));
+
+  core.ClearDBData();
+  EXPECT_EQ(PWSfile::SUCCESS, core.ReadFile(fname.c_str(), passphrase, true));
+  ASSERT_EQ(1U, core.GetNumEntries());
+  ASSERT_EQ(1U, core.GetNumAtts());
+  ASSERT_TRUE(core.Find(v3Item.GetUUID()) != core.GetEntryEndIter());
+
+  const CItemData readFullItem = core.GetEntry(core.Find(v3Item.GetUUID()));
+
+  // Following SHOULD NOT exist in item read from V4 file
+  EXPECT_FALSE(readFullItem.IsAttTitleSet());
+  EXPECT_FALSE(readFullItem.IsAttMediaTypeSet());
+  EXPECT_FALSE(readFullItem.IsAttFileNameSet());
+  EXPECT_FALSE(readFullItem.IsAttModificationTimeSet());
+  EXPECT_FALSE(readFullItem.IsAttContentSet());
+
+  // ensure that V4 attachment exists and has correct data
+  EXPECT_TRUE(readFullItem.HasAttRef());
+  EXPECT_TRUE(core.HasAtt(readFullItem.GetAttUUID()));
+
+  const CItemAtt& att = core.GetAtt(readFullItem.GetAttUUID());
+  EXPECT_EQ(1U, att.GetRefcount());
+  EXPECT_EQ(att.GetFileName(), L"test.txt");
+  EXPECT_EQ(att.GetMediaType(), L"text/plain");
+  EXPECT_EQ(att.GetContentLength(), content.size());
+
+  std::vector<unsigned char> v4content(att.GetContentSize());
+  att.GetContent(&v4content[0], v4content.size());
+  v4content.resize(att.GetContentLength());
+  EXPECT_EQ(v4content, content);
+
+  time_t v4mtime;
+  att.GetFileMTime(v4mtime);
+  EXPECT_EQ(v4mtime, mtime);
+}

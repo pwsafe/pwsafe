@@ -50,7 +50,7 @@ CExpPWListDlg::CExpPWListDlg(CWnd *pParent,
     elle.sx_title = ci.GetTitle();
     elle.sx_user  = ci.GetUser();
     elle.bIsProtected = ci.IsProtected();
-    elle.bHasAttachment = ci.HasAttRef();
+    elle.bHasAttachment = ci.HasAttachment();
 
     // Get XTime and string versions
     elle.expirytttXTime = m_expPWList[i].expirytttXTime;

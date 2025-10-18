@@ -424,8 +424,8 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
           case CItemData::PROTECTED:  /* 0x15 */
             break;
           case CItemData::ATTREF:     /* 0x1a */
-            sxValue1 = pci->HasAttRef() ? sxYes : sxNo;
-            sxValue2 = pci_other->HasAttRef() ? sxYes : sxNo;
+            sxValue1 = pci->HasAttachment() ? sxYes : sxNo;
+            sxValue2 = pci_other->HasAttachment() ? sxYes : sxNo;
             break;
           case CItemData::DATA_ATT_CONTENT: /* 0x29 */
             sxValue1 = pci->IsAttContentSet() ? sxYes : sxNo;
