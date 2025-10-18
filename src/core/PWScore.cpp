@@ -528,6 +528,38 @@ struct RecordWriter {
       // Pre V30 does not support shortcuts at all - ignore completely
       return;
     }
+
+    if (m_version == PWSfile::V40 && p.second.IsAttMediaTypeSet())
+    {
+      // We're writing a V40 file, and the record has a V3-style attachment.
+      // Here's where we convert it to a V4-style attachment.
+      // *** NOTE: This requires the attachments be written out after the data items! ***
+      const CItemData& ci = p.second;
+      CItemAtt att;
+      att.CreateUUID();
+
+      att.SetTitle(ci.GetAttTitle());
+      att.SetFileName(ci.GetAttFileName());
+      att.SetMediaType(ci.GetAttMediaType());
+
+      // Get V3 content and copy it
+      const std::vector<unsigned char> v3content = ci.GetAttContent();
+      att.SetContent(v3content.data(), v3content.size());
+
+      // Set file times
+      time_t v3mtime(0);
+      ci.GetAttModificationTime(v3mtime);
+      att.SetFileMTime(v3mtime);
+      att.SetFileCTime(v3mtime); // V3 has no creation time
+      att.SetFileATime(v3mtime); // V3 has no access time
+
+
+      p.second.ClearV3Attachment(); // so that the fields won't be written out
+      p.second.SetAttUUID(att.GetUUID());
+      att.IncRefcount();
+      m_pcore->PutAtt(att); // See NOTE above
+    }
+
     m_pout->WriteRecord(p.second);
     p.second.ClearStatus();
   }

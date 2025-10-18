@@ -2111,6 +2111,7 @@ void DboxMain::OnExportAttachment()
 
   if (m_core.GetReadFileVersion() == PWSfile::V30)
   {
+    pseudoAtt.SetTitle(pci->GetAttTitle());
     pseudoAtt.SetFileName(pci->GetAttFileName());
     pseudoAtt.SetMediaType(pci->GetAttMediaType());
     const std::vector<unsigned char> content = pci->GetAttContent();
