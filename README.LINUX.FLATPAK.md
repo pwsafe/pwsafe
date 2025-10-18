@@ -22,12 +22,6 @@ If you want to build flatpak by yourself, then do the following:
 set -e
 
 
-# ---------------
-# Note start time
-# ---------------
-date +'%Y-%m-%d %H:%M:%S'
-
-
 # -----------------------
 # Install flatpak-builder
 # -----------------------
@@ -72,12 +66,6 @@ flatpak list | grep pwsafe
 # Run flatpak
 # -----------
 flatpak run org.pwsafe.pwsafe &
-
-
-# -------------
-# Note end time
-# -------------
-date +'%Y-%m-%d %H:%M:%S'
 ```
 
 5. After flatpak builds and installs successfully, the script will start the Password Safe program is for the first time. To run it again, type `flatpak run org.pwsafe.pwsafe &`
