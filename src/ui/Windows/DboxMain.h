@@ -411,7 +411,7 @@ public:
   void Execute(Command *pcmd, PWScore *pcore = NULL);
   void UpdateToolBarDoUndo();
 
-  void ViewReport(const CString &cs_ReportFileName) const;
+  void ViewReport(LPCWSTR cs_ReportFileName) const;
   void ViewReport(CReport &rpt) const;
   void SetUpdateWizardWindow(CWnd *pWnd)
   {m_pWZWnd = pWnd;}

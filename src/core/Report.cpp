@@ -37,16 +37,16 @@
 const std::map<int, LPCTSTR> CReport::ReportNames = {
   {IDSC_RPTCOMPARE, L"Compare"},
   {IDSC_RPTFIND, L"Find"},
-  {IDSC_RPTIMPORTTEXT, L"Import Text"},
-  {IDSC_RPTIMPORTXML, L"Import XML"},
+  {IDSC_RPTIMPORTTEXT, L"Import_Text"},
+  {IDSC_RPTIMPORTXML, L"Import_XML"},
   {IDSC_RPTMERGE, L"Merge"},
   {IDSC_RPTVALIDATE, L"Validate"},
   {IDSC_RPTSYNCH, L"Synchronize"},
-  {IDSC_RPTEXPORTTEXT, L"Export Text"},
-  {IDSC_RPTEXPORTXML, L"Export XML"},
-  {IDSC_RPTIMPORTKPV1TXT, L"Import KeePassV1 TXT"},
-  {IDSC_RPTIMPORTKPV1CSV, L"Import KeePassV1 CSV"},
-  {IDSC_RPTEXPORTDB, L"Export DB"},
+  {IDSC_RPTEXPORTTEXT, L"Export_Text"},
+  {IDSC_RPTEXPORTXML, L"Export_XML"},
+  {IDSC_RPTIMPORTKPV1TXT, L"Import_KeePassV1_TXT"},
+  {IDSC_RPTIMPORTKPV1CSV, L"Import_KeePassV1_CSV"},
+  {IDSC_RPTEXPORTDB, L"Export_DB"},
 };
 
 
@@ -159,8 +159,7 @@ bool CReport::SaveToDisk()
     return false;
   }
 
-  Format(m_cs_filename, IDSC_REPORTFILENAME,
-    drive.c_str(), dir.c_str(), ReportNames.find(m_iAction)->second);
+  m_cs_filename = BuildPathToReport(drive.c_str(), dir.c_str(), m_iAction);
 
   if ((fd = pws_os::FOpen(m_cs_filename, _T("a+b"))) == nullptr) {
     pws_os::IssueError(_T("SaveToDisk: Opening log file"));
@@ -381,8 +380,7 @@ bool CReport::ReadFromDisk()
     return false;
   }
 
-  Format(m_cs_filename, IDSC_REPORTFILENAME,
-         drive.c_str(), dir.c_str(), ReportNames.find(m_iAction)->second);
+  m_cs_filename = BuildPathToReport(drive.c_str(), dir.c_str(), m_iAction);
 
   if ((fd = pws_os::FOpen(m_cs_filename, _T("rb"))) == nullptr) {
     pws_os::IssueError(_T("ReadFromDisk: Opening log file"));
@@ -464,8 +462,7 @@ bool CReport::PurgeFromDisk()
     return false;
   }
 
-  Format(m_cs_filename, IDSC_REPORTFILENAME,
-         drive.c_str(), dir.c_str(), ReportNames.find(m_iAction)->second);
+  m_cs_filename = BuildPathToReport(drive.c_str(), dir.c_str(), m_iAction);
     
   return pws_os::DeleteAFile(m_cs_filename);
 }
@@ -485,9 +482,7 @@ bool CReport::ReportExistsOnDisk() const
     return false;
   }
 
-  stringT filename;
-  Format(filename, IDSC_REPORTFILENAME,
-         drive.c_str(), dir.c_str(), ReportNames.find(m_iAction)->second);
+  const stringT filename = BuildPathToReport(drive.c_str(), dir.c_str(), m_iAction);
     
   return pws_os::FileExists(filename);
 }
@@ -504,4 +499,18 @@ void CReport::AppendPasskeyValidationResults(const std::vector<st_GroupTitleUser
            gtu.group.c_str(), gtu.title.c_str(), gtu.user.c_str(), _T(""));
     WriteLine(cs_Error);
   } );
+}
+
+stringT CReport::BuildPathToReport(LPCTSTR drive, LPCTSTR dir, int report_id) {
+  stringT result;
+  const auto name_iter = ReportNames.find(report_id);
+
+  if (name_iter == ReportNames.end()) {
+    ASSERT(false);
+    pws_os::IssueError(_T("Uexpected report id"));
+    return result;
+  }
+
+  Format(result, IDSC_REPORTFILENAME, drive, dir, name_iter->second);
+  return result;
 }

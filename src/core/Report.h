@@ -37,9 +37,9 @@ public:
   const stringT GetFileName() const {return m_cs_filename;}
   void AppendPasskeyValidationResults(const std::vector<st_GroupTitleUser> &incomplete);
 
-  static const std::map<int, LPCTSTR> ReportNames;
-
+  static stringT BuildPathToReport(LPCTSTR drive, LPCTSTR dir, int report_id);
 private:
+  static const std::map<int, LPCTSTR> ReportNames;
   oStringXStream m_osxs;
   stringT m_cs_filename;
   int m_iAction;
