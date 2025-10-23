@@ -416,8 +416,8 @@ int CALLBACK DboxMain::CompareFunc(LPARAM lParam1, LPARAM lParam2,
         iResult = (xint1 < xint2) ? -1 : 1;
       break;
     case CItemData::ATTREF:
-      if (pLHS_PCI->HasAttRef() != pRHS_PCI->HasAttRef())
-        iResult = pLHS_PCI->HasAttRef() ? 1 : -1;
+      if (pLHS_PCI->HasAttachment() != pRHS_PCI->HasAttachment())
+        iResult = pLHS_PCI->HasAttachment() ? 1 : -1;
       break;
     default:
       ASSERT(FALSE);
@@ -1012,7 +1012,7 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
 
     // Don't bother getting the attachment if not searching its fields
     if (bsAttFields.count() != 0) {
-      if (curitem.HasAttRef()) {
+      if (curitem.HasAttachment()) {
         pws_os::CUUID attuuid = curitem.GetAttUUID();
         const CItemAtt &att = m_core.GetAtt(attuuid);
         curFN = att.GetFileName();
@@ -5512,7 +5512,8 @@ StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
       // Get "&Yes" and remove & (May not be leading in non-English languages)
       CString csYes(MAKEINTRESOURCE(IDS_YES));
       csYes.Replace(L"&", L"");
-      sx_fielddata = ci.HasAttRef() ? csYes : L"";
+      // Show Yes for both v4 (ATTREF) and v3 (inline data) attachments
+      sx_fielddata = (ci.HasAttRef() || ci.HasAttachment()) ? csYes : L"";
       break;
     }
     default:

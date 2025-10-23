@@ -111,16 +111,17 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
   m_pp_additional = new CAddEdit_Additional(this, &m_AEMD);
   m_pp_datetimes  = new CAddEdit_DateTimes(this, &m_AEMD);
   m_pp_pwpolicy   = new CAddEdit_PasswordPolicy(this, &m_AEMD);
-  if (pcore->GetReadFileVersion() == PWSfile::V40)
+  auto currentVersion = pcore->GetReadFileVersion();
+  if (currentVersion == PWSfile::V30 || currentVersion == PWSfile::V40)
     m_pp_attachment = new CAddEdit_Attachment(this, &m_AEMD);
   else
-    m_pp_attachment = NULL;
+    m_pp_attachment = nullptr;
 
   AddPage(m_pp_basic);
   AddPage(m_pp_additional);
   AddPage(m_pp_datetimes);
   AddPage(m_pp_pwpolicy);
-  if (pcore->GetReadFileVersion() == PWSfile::V40)
+  if (m_pp_attachment != nullptr)
     AddPage(m_pp_attachment);
 }
 
@@ -391,14 +392,51 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
         m_AEMD.oldKBShortcut = m_AEMD.KBShortcut;
         m_AEMD.pci->SetKBShortcut(m_AEMD.KBShortcut);
 
-        // TODO - What if user has removed the old attachment or changed it? (Rony)
-        if (m_AEMD.attachment.HasUUID()) {
-          m_AEMD.pci->SetAttUUID(m_AEMD.attachment.GetUUID());
-          m_AEMD.pcore->PutAtt(m_AEMD.attachment);
-        } else {
-          m_AEMD.pci->ClearAttUUID();
-          if (m_AEMD.oldattachment.HasUUID())
-            m_AEMD.pcore->RemoveAtt(m_AEMD.oldattachment.GetUUID());
+        // Attachment handling
+        if (m_AEMD.pcore->GetReadFileVersion() == PWSfile::V30) {
+          // Write back to V3 entry fields instead of using ATTREF
+          bool hasContent = m_AEMD.attachment.HasContent();
+          bool hasAnyMeta = !m_AEMD.attachment.GetTitle().empty() ||
+            !m_AEMD.attachment.GetMediaType().empty() ||
+            !m_AEMD.attachment.GetFileName().empty();
+
+          if (hasContent || hasAnyMeta) {
+            // Title, media type, filename
+            m_AEMD.pci->SetAttTitle(m_AEMD.attachment.GetTitle());
+            m_AEMD.pci->SetAttMediaType(m_AEMD.attachment.GetMediaType());
+            m_AEMD.pci->SetAttFileName(m_AEMD.attachment.GetFileName());
+
+            // Content
+            size_t contentSize = m_AEMD.attachment.GetContentSize();
+            if (contentSize > 0) {
+              std::vector<unsigned char> buf(contentSize);
+              if (m_AEMD.attachment.GetContent(buf.data(), buf.size())) {
+                m_AEMD.pci->SetAttContent(buf.data(), buf.size());
+              }
+            }
+
+            // File modification time
+            time_t mtime = 0;
+            m_AEMD.attachment.GetFileMTime(mtime);
+            if (mtime != 0)
+              m_AEMD.pci->SetAttModificationTime(mtime);
+          }
+          else {
+            // Removed
+            m_AEMD.pci->ClearV3Attachment();
+          }
+        }
+        else {
+          // V4 behavior with ATTREF & attachment store
+          if (m_AEMD.attachment.HasUUID()) {
+            m_AEMD.pci->SetAttUUID(m_AEMD.attachment.GetUUID());
+            m_AEMD.pcore->PutAtt(m_AEMD.attachment);
+          }
+          else {
+            m_AEMD.pci->ClearAttUUID();
+            if (m_AEMD.oldattachment.HasUUID())
+              m_AEMD.pcore->RemoveAtt(m_AEMD.oldattachment.GetUUID());
+          }
         }
       } // m_bIsModified
 
@@ -503,7 +541,34 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
         }
       }
 
-      // TODO - Add attachment if present (Rony)
+      // AddEntry: save attachment for V3 or V4
+      if (m_AEMD.pcore->GetReadFileVersion() == PWSfile::V30) {
+        bool hasContent = m_AEMD.attachment.HasContent();
+        bool hasAnyMeta = !m_AEMD.attachment.GetTitle().empty() ||
+                          !m_AEMD.attachment.GetMediaType().empty() ||
+                          !m_AEMD.attachment.GetFileName().empty();
+        if (hasContent || hasAnyMeta) {
+          m_AEMD.pci->SetAttTitle(m_AEMD.attachment.GetTitle());
+          m_AEMD.pci->SetAttMediaType(m_AEMD.attachment.GetMediaType());
+          m_AEMD.pci->SetAttFileName(m_AEMD.attachment.GetFileName());
+          size_t contentSize = m_AEMD.attachment.GetContentSize();
+          if (contentSize > 0) {
+            std::vector<unsigned char> buf(contentSize);
+            if (m_AEMD.attachment.GetContent(buf.data(), buf.size())) {
+              m_AEMD.pci->SetAttContent(buf.data(), buf.size());
+            }
+          }
+          time_t mtime = 0;
+          m_AEMD.attachment.GetFileMTime(mtime);
+          if (mtime != 0)
+            m_AEMD.pci->SetAttModificationTime(mtime);
+        } else {
+          m_AEMD.pci->ClearV3Attachment();
+        }
+      } else if (m_AEMD.attachment.HasUUID()) {
+        m_AEMD.pci->SetAttUUID(m_AEMD.attachment.GetUUID());
+        m_AEMD.pcore->PutAtt(m_AEMD.attachment);
+      }
 
       if (m_bIsModified)
         SendMessage(PSM_QUERYSIBLINGS,
@@ -749,9 +814,39 @@ void CAddEdit_PropertySheet::SetupInitialValues()
   } // IsAlias
 
   // Attachment
-  if (m_AEMD.pci->HasAttRef()) {
+  if (m_AEMD.pci->HasAttachment() && m_AEMD.pci->HasAttRef()) {
     ASSERT(m_AEMD.pcore->HasAtt(m_AEMD.pci->GetAttUUID()));
     m_AEMD.oldattachment = m_AEMD.attachment = 
       m_AEMD.pcore->GetAtt(m_AEMD.pci->GetAttUUID());
+  }
+  else if (m_AEMD.pcore->GetReadFileVersion() == PWSfile::V30 && m_AEMD.pci->HasAttachment()) {
+    // Populate in-memory attachment from V3 fields (if present)
+    const bool hasV3Meta = m_AEMD.pci->IsAttFileNameSet() || m_AEMD.pci->IsAttModificationTimeSet();
+    const bool hasV3Content = m_AEMD.pci->IsAttContentSet();
+    const bool hasV3Att = hasV3Meta || hasV3Content || !m_AEMD.pci->GetAttMediaType().empty() || !m_AEMD.pci->GetAttTitle().empty();
+
+    if (hasV3Att) {
+      // Map V3 entry fields to CItemAtt used by the attachment page
+      m_AEMD.attachment.SetTitle(m_AEMD.pci->GetAttTitle());
+      m_AEMD.attachment.SetMediaType(m_AEMD.pci->GetAttMediaType());
+      m_AEMD.attachment.SetFileName(m_AEMD.pci->GetAttFileName());
+
+      time_t mtime = 0;
+      m_AEMD.pci->GetAttModificationTime(mtime);
+      if (mtime != 0)
+        m_AEMD.attachment.SetFileMTime(mtime);
+
+      if (hasV3Content) {
+        const auto v = m_AEMD.pci->GetAttContent();
+        if (!v.empty())
+          m_AEMD.attachment.SetContent(v.data(), v.size());
+      }
+
+      // Create UUID for UI compatibility (not stored in V3 DB)
+      m_AEMD.attachment.CreateUUID();
+
+      // Keep a snapshot for change detection in Edit mode
+      m_AEMD.oldattachment = m_AEMD.attachment;
+    }
   }
 }

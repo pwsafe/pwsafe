@@ -1432,7 +1432,7 @@ bool CCompareResultsDlg::CompareEntries(st_CompareData *pst_data)
       currentItem.GetKBShortcut() != compItem.GetKBShortcut())
     bsConflicts.flip(CItemData::KBSHORTCUT);
   if (m_bsFields.test(CItemData::ATTREF) &&
-    currentItem.HasAttRef() != compItem.HasAttRef())
+    currentItem.HasAttachment() != compItem.HasAttachment())
     bsConflicts.flip(CItemData::ATTREF);
 
   return bsConflicts.none();

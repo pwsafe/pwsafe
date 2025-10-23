@@ -985,7 +985,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
           ASSERT(0);
       }
 
-      if (pci->IsShortcut() ? pbci->HasAttRef() : pci->HasAttRef()) {
+      if (pci->IsShortcut() ? pbci->HasAttachment() : pci->HasAttachment()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_VIEWATTACHMENT, tc_dummy);
       }
@@ -1005,7 +1005,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       EEstr.LoadString(IDS_EXPORTENTMENU);
       pPopupMenu->AppendMenu(MF_POPUP, (UINT_PTR)EEsubMenu.Detach(), EEstr);
 
-      if (pci->IsShortcut() ? pbci->HasAttRef() : pci->HasAttRef()) {
+      if (pci->IsShortcut() ? pbci->HasAttachment() : pci->HasAttachment()) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
           ID_MENUITEM_EXPORT_ATTACHMENT, tc_dummy);
       }
@@ -1609,7 +1609,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
       pPopup->RemoveMenu(ID_MENUITEM_RUNCOMMAND, MF_BYCOMMAND);
     }
 
-    if (!pci->HasAttRef()) {
+    if (!pci->HasAttachment()) {
       pPopup->RemoveMenu(ID_MENUITEM_EXPORT_ATTACHMENT, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_VIEWATTACHMENT, MF_BYCOMMAND);
     }

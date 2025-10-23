@@ -2218,14 +2218,14 @@ CSecString CPWTreeCtrlX::MakeTreeDisplayString(const CItemData &ci) const
     }
   }
 
-  if (ci.IsProtected() || ci.HasAttRef()) {
+  if (ci.IsProtected() || ci.HasAttachment()) {
     treeDispString += L" ";
   }
 
   if (ci.IsProtected())
     treeDispString += Fonts::GetInstance()->GetProtectedSymbol();
 
-   if (ci.HasAttRef())
+   if (ci.HasAttachment())
     treeDispString += Fonts::GetInstance()->GetAttachmentSymbol();
 
   return treeDispString;

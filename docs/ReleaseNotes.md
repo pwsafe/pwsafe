@@ -6,6 +6,12 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 
 PasswordSafe 3.70.0pre Release ???
 ==========================================
+New Features in 3.70.0pre
+-------------------------
+* Password Safe now supports adding a single attachment to an entry. Previously this was only available in the experimental V4 database format. With this release, the ability to add, update, remove and download a single attachment to an entry is now available via a new "attachment" tab in the Add/Edit Entry window.
+
+Bugs Fixed in 3.70.0pre
+-----------------------
 * "Always on top" now persists correctly across restarts when "Start Password Safe at Login" is selected.
 * [GH1534](https://github.com/pwsafe/pwsafe/issues/1534) No longer offer unsupported traditional Chinese in NSIS installer.
 * [GH1531](https://github.com/pwsafe/pwsafe/issues/1531) Followup on [GH1524](https://github.com/pwsafe/pwsafe/issues/1524) for Toolbar action.
