@@ -489,6 +489,8 @@
 		<Unit filename="../../src/ui/wxWidgets/SetFiltersDlg.h" />
 		<Unit filename="../../src/ui/wxWidgets/SizeRestrictedPanel.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/SizeRestrictedPanel.h" />
+		<Unit filename="../../src/ui/wxWidgets/StrengthMeter.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/StrengthMeter.h" />
 		<Unit filename="../../src/ui/wxWidgets/SyncWizard.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/SyncWizard.h" />
 		<Unit filename="../../src/ui/wxWidgets/SystemTray.cpp" />

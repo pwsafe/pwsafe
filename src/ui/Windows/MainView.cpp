@@ -3820,7 +3820,7 @@ static bool GetDriveAndDirectory(const StringX &cs_infile, CString &cs_drive,
 
 void DboxMain::OnViewReports()
 {
-  CString cs_filename, cs_path, csAction;
+  CString cs_path, csAction;
   CString cs_directory, cs_drive;
 
   if (!GetDriveAndDirectory(m_core.GetCurFile(), cs_drive, cs_directory))
@@ -3842,10 +3842,8 @@ void DboxMain::OnViewReports()
 
   for (int i = 0; i < sizeof(Reports) / sizeof(Reports[0]); i++) {
     csAction.LoadString(Reports[i]);
-    cs_filename.Format(IDSC_REPORTFILENAME, static_cast<LPCWSTR>(cs_drive),
-                       static_cast<LPCWSTR>(cs_directory),
-                       static_cast<LPCWSTR>(csAction));
-    if (::_tstat(cs_filename, &statbuf) == 0) {
+    const stringT path = CReport::BuildPathToReport(cs_drive, cs_directory, Reports[i]);
+    if (::_tstat(path.c_str(), &statbuf) == 0) {
       gmb.AddButton(Reports[i], csAction);
       bReportExists = true;
     }
@@ -3879,12 +3877,9 @@ void DboxMain::OnViewReports()
     default:
       return;
   }
-  csAction = CReport::ReportNames.find(uistringID)->second;
-  cs_filename.Format(IDSC_REPORTFILENAME, static_cast<LPCWSTR>(cs_drive),
-                     static_cast<LPCWSTR>(cs_directory),
-                     static_cast<LPCWSTR>(csAction));
+  const stringT path = CReport::BuildPathToReport(cs_drive, cs_directory, uistringID);
 
-  ViewReport(cs_filename);
+  ViewReport(path.c_str());
 }
 
 static UINT SetupViewReports(const int nID)
@@ -3923,18 +3918,15 @@ static UINT SetupViewReports(const int nID)
 
 void DboxMain::OnViewReportsByID(UINT nID)
 {
-  CString cs_filename, cs_path, csAction;
+  CString cs_path, csAction;
   CString cs_drive, cs_directory;
 
   if (!GetDriveAndDirectory(m_core.GetCurFile(), cs_drive, cs_directory))
     return;
 
-  csAction = CReport::ReportNames.find(SetupViewReports(nID))->second;
-  cs_filename.Format(IDSC_REPORTFILENAME, static_cast<LPCWSTR>(cs_drive),
-                     static_cast<LPCWSTR>(cs_directory),
-                     static_cast<LPCWSTR>(csAction));
+  const stringT path = CReport::BuildPathToReport(cs_drive, cs_directory, SetupViewReports(nID));
 
-  ViewReport(cs_filename);
+  ViewReport(path.c_str());
 }
 
 void DboxMain::ViewReport(CReport &rpt) const
@@ -3944,11 +3936,11 @@ void DboxMain::ViewReport(CReport &rpt) const
   vr_dlg.DoModal();
 }
 
-void DboxMain::ViewReport(const CString &cs_ReportFileName) const
+void DboxMain::ViewReport(LPCWSTR cs_ReportFileName) const
 {
   CString cs_drive, cs_directory;
 
-  if (!GetDriveAndDirectory(LPCWSTR(cs_ReportFileName), cs_drive, cs_directory))
+  if (!GetDriveAndDirectory(cs_ReportFileName, cs_drive, cs_directory))
     return;
 
   CString cs_path = cs_drive + cs_directory;
@@ -3981,7 +3973,7 @@ void DboxMain::ViewReport(const CString &cs_ReportFileName) const
 
   // Make the command line = "<program>" "file" 
   cs_CommandLine.Format(L"\"%s\" \"%s\"", static_cast<LPCWSTR>(szExecName), 
-                        static_cast<LPCWSTR>(cs_ReportFileName));
+                        cs_ReportFileName);
   int ilen = cs_CommandLine.GetLength();
   LPWSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
 
@@ -4004,21 +3996,17 @@ int DboxMain::OnUpdateViewReports(const int nID)
     return FALSE;
   }
 
-  CString cs_filename, csAction;
   CString cs_drive, cs_directory;
 
   if (!GetDriveAndDirectory(cs_Database, cs_drive, cs_directory))
     return FALSE;
 
-  csAction = CReport::ReportNames.find(SetupViewReports(nID))->second;
-  cs_filename.Format(IDSC_REPORTFILENAME, static_cast<LPCWSTR>(cs_drive),
-                     static_cast<LPCWSTR>(cs_directory),
-                     static_cast<LPCWSTR>(csAction));
+  const stringT path = CReport::BuildPathToReport(cs_drive, cs_directory, SetupViewReports(nID));
 
   struct _stat statbuf;
 
   // Only allow selection if file exists!
-  int status = ::_tstat(cs_filename, &statbuf);
+  int status = ::_tstat(path.c_str(), &statbuf);
   return (status != 0) ? FALSE : TRUE;
 }
 

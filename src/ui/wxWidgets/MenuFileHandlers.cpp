@@ -607,8 +607,12 @@ int PasswordSafeFrame::SaveIfChanged()
 
 struct ExportFullText
 {
-  static wxString EngGetTitle() {return CReport::ReportNames.find(IDSC_RPTEXPORTTEXT)->second;}
-  static wxString GetTitle() {return _("Export Text");}
+  static stringT GetTitle() {
+    stringT title;
+    LoadAString(title, IDSC_RPTEXPORTTEXT);
+    return title;
+  }
+
   static void MakeOrderedItemList(PasswordSafeFrame* frame, OrderedItemList& olist) {
     frame->FlattenTree(olist);
   }
@@ -654,8 +658,12 @@ struct ExportFullText
 };
 
 struct ExportFullXml {
-  static wxString EngGetTitle() {return CReport::ReportNames.find(IDSC_RPTEXPORTXML)->second;}
-  static wxString GetTitle() {return _("Export XML");}
+  static stringT GetTitle() {
+    stringT title;
+    LoadAString(title, IDSC_RPTEXPORTXML);
+    return title;
+  }
+
   static void MakeOrderedItemList(PasswordSafeFrame* frame, OrderedItemList& olist) {
     frame->FlattenTree(olist);
   }

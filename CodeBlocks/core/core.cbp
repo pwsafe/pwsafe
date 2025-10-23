@@ -387,6 +387,8 @@
 		<Unit filename="../../src/core/UnknownField.h" />
 		<Unit filename="../../src/core/Util.cpp" />
 		<Unit filename="../../src/core/Util.h" />
+		<Unit filename="../../src/core/Validate.cpp" />
+		<Unit filename="../../src/core/Validate.h" />
 		<Unit filename="../../src/core/VerifyFormat.cpp" />
 		<Unit filename="../../src/core/VerifyFormat.h" />
 		<Unit filename="../../src/core/XML/XMLDefs.h" />
