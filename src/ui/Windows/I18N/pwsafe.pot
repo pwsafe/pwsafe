@@ -3478,6 +3478,10 @@ msgstr ""
 msgid "Export Current &DB"
 msgstr ""
 
+#. Resource IDs: (5965)
+msgid "Export DB"
+msgstr ""
+
 #. Resource IDs: (32136 - PopupMenuEx, 5935)
 msgid "Export Entry To"
 msgstr ""
@@ -3486,7 +3490,7 @@ msgstr ""
 msgid "Export Group To"
 msgstr ""
 
-#. Resource IDs: (5833)
+#. Resource IDs: (5805, 5833)
 msgid "Export Text"
 msgstr ""
 
@@ -3494,7 +3498,7 @@ msgstr ""
 msgid "Export Text Extra"
 msgstr ""
 
-#. Resource IDs: (5834)
+#. Resource IDs: (5806, 5834)
 msgid "Export XML"
 msgstr ""
 
@@ -3515,15 +3519,12 @@ msgstr ""
 msgid "Export..."
 msgstr ""
 
-#. Resource IDs: (5965)
 msgid "Export_DB"
 msgstr ""
 
-#. Resource IDs: (5805)
 msgid "Export_Text"
 msgstr ""
 
-#. Resource IDs: (5806)
 msgid "Export_XML"
 msgstr ""
 
@@ -4240,12 +4241,28 @@ msgstr ""
 msgid "Import KeePass V1 TXT"
 msgstr ""
 
+#. Resource IDs: (5869)
+msgid "Import KeePassV1 CSV"
+msgstr ""
+
+#. Resource IDs: (5868)
+msgid "Import KeePassV1 TXT"
+msgstr ""
+
+#. Resource IDs: (5534)
+msgid "Import Text"
+msgstr ""
+
 #. Resource IDs: (125)
 msgid "Import Text Settings"
 msgstr ""
 
 #. Resource IDs: (5479)
 msgid "Import Text failed"
+msgstr ""
+
+#. Resource IDs: (5535)
+msgid "Import XML"
 msgstr ""
 
 #. Resource IDs: (126)
@@ -4283,19 +4300,15 @@ msgstr ""
 msgid "Import..."
 msgstr ""
 
-#. Resource IDs: (5869)
 msgid "Import_KeePassV1_CSV"
 msgstr ""
 
-#. Resource IDs: (5868)
 msgid "Import_KeePassV1_TXT"
 msgstr ""
 
-#. Resource IDs: (5534)
 msgid "Import_Text"
 msgstr ""
 
-#. Resource IDs: (5535)
 msgid "Import_XML"
 msgstr ""
 
