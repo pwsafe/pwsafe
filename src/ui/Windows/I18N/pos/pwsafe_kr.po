@@ -3568,6 +3568,10 @@ msgstr ""
 msgid "Export Current &DB"
 msgstr ""
 
+#. Resource IDs: (5965)
+msgid "Export DB"
+msgstr ""
+
 #. Resource IDs: (32136 - PopupMenuEx, 5935)
 msgid "Export Entry To"
 msgstr ""
@@ -3576,7 +3580,7 @@ msgstr ""
 msgid "Export Group To"
 msgstr ""
 
-#. Resource IDs: (5833)
+#. Resource IDs: (5805, 5833)
 msgid "Export Text"
 msgstr "텍스트 보내기"
 
@@ -3584,7 +3588,7 @@ msgstr "텍스트 보내기"
 msgid "Export Text Extra"
 msgstr "기타 텍스트 보내기"
 
-#. Resource IDs: (5834)
+#. Resource IDs: (5806, 5834)
 msgid "Export XML"
 msgstr "XML 보내기"
 
@@ -3604,18 +3608,6 @@ msgstr "사용자에 의해 특정 필드값의 데이터가 제한되어 내보
 #. Resource IDs: (1515)
 msgid "Export..."
 msgstr ""
-
-#. Resource IDs: (5965)
-msgid "Export_DB"
-msgstr ""
-
-#. Resource IDs: (5805)
-msgid "Export_Text"
-msgstr "텍스트 내보내기"
-
-#. Resource IDs: (5806)
-msgid "Export_XML"
-msgstr "XML로 내보내기"
 
 #. Resource IDs: (5812)
 msgid "Exporting to file:"
@@ -4362,6 +4354,18 @@ msgstr ""
 msgid "Import KeePass V1 TXT"
 msgstr ""
 
+#. Resource IDs: (5869)
+msgid "Import KeePassV1 CSV"
+msgstr ""
+
+#. Resource IDs: (5868)
+msgid "Import KeePassV1 TXT"
+msgstr ""
+
+#. Resource IDs: (5534)
+msgid "Import Text"
+msgstr ""
+
 #. Resource IDs: (125)
 msgid "Import Text Settings"
 msgstr "텍스트 설정 불러오기"
@@ -4369,6 +4373,10 @@ msgstr "텍스트 설정 불러오기"
 #. Resource IDs: (5479)
 msgid "Import Text failed"
 msgstr "텍스트 불러오기 실패"
+
+#. Resource IDs: (5535)
+msgid "Import XML"
+msgstr ""
 
 #. Resource IDs: (126)
 msgid "Import XML Settings"
@@ -4401,22 +4409,6 @@ msgstr "아래 그룹을 불러오시겠습니까?"
 #. Resource IDs: (1516)
 msgid "Import..."
 msgstr ""
-
-#. Resource IDs: (5869)
-msgid "Import_KeePassV1_CSV"
-msgstr ""
-
-#. Resource IDs: (5868)
-msgid "Import_KeePassV1_TXT"
-msgstr ""
-
-#. Resource IDs: (5534)
-msgid "Import_Text"
-msgstr "텍스트 불러오기"
-
-#. Resource IDs: (5535)
-msgid "Import_XML"
-msgstr "XML 불러오기"
 
 #. Resource IDs: (5277, 5638)
 msgid "Imported"

@@ -6,17 +6,31 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2025-07-15 21:33+0300\n"
-"Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
-"Language-Team: \n"
-"Language: lv\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.6\n"
+
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
@@ -436,23 +450,13 @@ msgstr "%1 netika atrasts."
 
 #. Resource IDs: (61744)
 #, c-format
-msgid ""
-"%1: %2\n"
-"Continue running script?"
-msgstr ""
-"%1: %2\n"
-"Vai turpināt skripta izpildi?"
+msgid "%1: %2\nContinue running script?"
+msgstr "%1: %2\nVai turpināt skripta izpildi?"
 
 #. Resource IDs: (61729)
 #, c-format
-msgid ""
-"%1\n"
-"Cannot find this file.\n"
-"Verify that the correct path and file name are given."
-msgstr ""
-"%1\n"
-"Nevar atrast šo failu.\n"
-"Pārbaudiet, vai ir norādīts pareizais ceļš un faila nosaukums."
+msgid "%1\nCannot find this file.\nVerify that the correct path and file name are given."
+msgstr "%1\nNevar atrast šo failu.\nPārbaudiet, vai ir norādīts pareizais ceļš un faila nosaukums."
 
 #. Resource IDs: (62186)
 #, c-format
@@ -551,14 +555,8 @@ msgstr "%ls, Nosaukums=\"%ls\", Lietotājs=\"%ls\" jau pastāv jūsu datu bāzē
 
 #. Resource IDs: (3032)
 #, c-format
-msgid ""
-"%ls\n"
-"\n"
-"The configuration file will not be used."
-msgstr ""
-"%ls\n"
-"\n"
-"Konfigurācijas fails netiks izmantots."
+msgid "%ls\n\nThe configuration file will not be used."
+msgstr "%ls\n\nKonfigurācijas fails netiks izmantots."
 
 #. Resource IDs: (5878)
 #, c-format
@@ -592,14 +590,8 @@ msgstr "%s Mēģiniet saglabāt datu bāzi ar citu nosaukumu vai iziet nesaglab�
 
 #. Resource IDs: (5318)
 #, c-format
-msgid ""
-"%s \n"
-"\n"
-"Can't open file. Please choose another."
-msgstr ""
-"%s \n"
-"\n"
-"Nevar atvērt failu.Lūdzu, izvēlieties citu."
+msgid "%s \n\nCan't open file. Please choose another."
+msgstr "%s \n\nNevar atvērt failu.Lūdzu, izvēlieties citu."
 
 #. Resource IDs: (5865)
 #, c-format
@@ -648,73 +640,33 @@ msgstr "%sŠis ir jaunākais laidiens!%s"
 
 #. Resource IDs: (5320)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"Could not open file for reading!"
-msgstr ""
-"%s\n"
-"\n"
-"Nevar atvērt failu lasīšanai!"
+msgid "%s\n\nCould not open file for reading!"
+msgstr "%s\n\nNevar atvērt failu lasīšanai!"
 
 #. Resource IDs: (5325)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"Could not open file for writing!"
-msgstr ""
-"%s\n"
-"\n"
-"Nevar atvērt failu rakstīšanai!"
+msgid "%s\n\nCould not open file for writing!"
+msgstr "%s\n\nNevar atvērt failu rakstīšanai!"
 
 #. Resource IDs: (5312)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"File corrupt or truncated!\n"
-"Data may have been lost or modified.\n"
-"Continue anyway?"
-msgstr ""
-"%s\n"
-"\n"
-"Fails ir bojāts vai saīsināts!\n"
-"Iespējams, dati ir pazaudēti vai mainīti.\n"
-"Vai tomēr turpināt?"
+msgid "%s\n\nFile corrupt or truncated!\nData may have been lost or modified.\nContinue anyway?"
+msgstr "%s\n\nFails ir bojāts vai saīsināts!\nIespējams, dati ir pazaudēti vai mainīti.\nVai tomēr turpināt?"
 
 #. Resource IDs: (5329)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"File is currently locked by %s"
-msgstr ""
-"%s\n"
-"\n"
-"Failu pašlaik ir bloķējis %s"
+msgid "%s\n\nFile is currently locked by %s"
+msgstr "%s\n\nFailu pašlaik ir bloķējis %s"
 
 #. Resource IDs: (5336)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"Invalid format"
-msgstr ""
-"%s\n"
-"\n"
-"Nederīgs formāts"
+msgid "%s\n\nInvalid format"
+msgstr "%s\n\nNederīgs formāts"
 
 #. Resource IDs: (5321)
 #, c-format
-msgid ""
-"%s\n"
-"\n"
-"Unknown error"
-msgstr ""
-"%s\n"
-"\n"
-"Nezināma kļūda"
+msgid "%s\n\nUnknown error"
+msgstr "%s\n\nNezināma kļūda"
 
 #. Resource IDs: (5728)
 msgid "&Abort"
@@ -817,12 +769,8 @@ msgid "&Double-Click Action:"
 msgstr "&Veiciet dubultklikšķi uz darbības:"
 
 #. Resource IDs: (65535)
-msgid ""
-"&Double-Click\n"
-"Action:"
-msgstr ""
-"&Veiciet dubultklikšķi\n"
-"Darbība:"
+msgid "&Double-Click\nAction:"
+msgstr "&Veiciet dubultklikšķi\nDarbība:"
 
 #. Resource IDs: (32107 - MenuEx)
 msgid "&Dragbar visible"
@@ -1085,12 +1033,8 @@ msgid "&Shift Double-Click Action:"
 msgstr "&Shift veiciet dubultklikšķi uz darbības:"
 
 #. Resource IDs: (65535)
-msgid ""
-"&Shift Double-Click\n"
-"Action:"
-msgstr ""
-"&Shift veiciet dubultklikšķi\n"
-"Darbība:"
+msgid "&Shift Double-Click\nAction:"
+msgstr "&Shift veiciet dubultklikšķi\nDarbība:"
 
 #. Resource IDs: (1014, 5245)
 msgid "&Show"
@@ -1193,26 +1137,8 @@ msgid "'Clear Clipboard on Minimize' and Double Click Action 'Copy Password and 
 msgstr "\"Notīrīt starpliktuvi, lai minimizētu\" un veiciet dubultklikšķi uz konflikta \"Kopēt paroli un minimizēt\". Mainiet vienu vai abus."
 
 #. Resource IDs: (5714)
-msgid ""
-"'\n"
-"\n"
-"If you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n"
-"\n"
-"The diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n"
-"\n"
-"However, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n"
-"\n"
-"Thank you for your help to improve PasswordSafe."
-msgstr ""
-"'\n"
-"\n"
-"Ja vēlaties ziņot par šo kļūdu, lūdzu, zemāk atbildiet ar \"Jā\" un augšupielādējiet šo failu savā kļūdu ziņojumā. Ja atbildēsit “Nē”, fails tiks dzēsts.\n"
-"\n"
-"Šajā failā esošā diagnostikas informācija neietver nekādus jūsu personas datus vai informāciju no kļūdas brīdī atvērtās datu bāzes.\n"
-"\n"
-"Tomēr, ja Jūs vēlaties (un problēma ir atkārtojama ar testa datu bāzi), varat mums nosūtīt minidump failu, kā arī testa datubāzi.\n"
-"\n"
-"Paldies par palīdzību PasswordSafe uzlabošanā."
+msgid "'\n\nIf you would like to report this error, please reply 'Yes' below and upload this file to your Bug Report. If you reply 'No', the file will be deleted.\n\nThe diagnostic information in this file does not include any of your personal data nor any information from the database open at the time of the error.\n\nHowever, if you prefer (and the problem is repeatable with a test database), you may send us that minidump file as well as the test database.\n\nThank you for your help to improve PasswordSafe."
+msgstr "'\n\nJa vēlaties ziņot par šo kļūdu, lūdzu, zemāk atbildiet ar \"Jā\" un augšupielādējiet šo failu savā kļūdu ziņojumā. Ja atbildēsit “Nē”, fails tiks dzēsts.\n\nŠajā failā esošā diagnostikas informācija neietver nekādus jūsu personas datus vai informāciju no kļūdas brīdī atvērtās datu bāzes.\n\nTomēr, ja Jūs vēlaties (un problēma ir atkārtojama ar testa datu bāzi), varat mums nosūtīt minidump failu, kā arī testa datubāzi.\n\nPaldies par palīdzību PasswordSafe uzlabošanā."
 
 #. Resource IDs: (65535)
 msgid "(Also used to replace periods in Title field)"
@@ -1292,18 +1218,8 @@ msgid "......."
 msgstr "......."
 
 #. Resource IDs: (5713)
-msgid ""
-".dmp'\n"
-"\n"
-"in your temporary directory: \n"
-"\n"
-"\t'"
-msgstr ""
-".dmp'\n"
-"\n"
-"jūsu pagaidu direktorijā: \n"
-"\n"
-"\t'"
+msgid ".dmp'\n\nin your temporary directory: \n\n\t'"
+msgstr ".dmp'\n\njūsu pagaidu direktorijā: \n\n\t'"
 
 #. Resource IDs: (8020)
 msgid "0"
@@ -1615,12 +1531,8 @@ msgid "A hidden password needs to be entered in the Confirm Password field too. 
 msgstr "Slēptā parole ir jāievada arī laukā Apstiprināt paroli. Ja tā nav paslēpta, laukā Apstiprināt tiek rādīti skaitļi, kurus var izmantot, lai palīdzētu saskaitīt paroles rakstzīmes."
 
 #. Resource IDs: (5861)
-msgid ""
-"A red and white indicator means that a filter is active\n"
-"(if showing, double click to clear filter)"
-msgstr ""
-"Sarkans un balts indikators nozīmē, ka filtrs ir aktīvs\n"
-"(ja tiek rādīts, veiciet dubultklikšķi, lai notīrītu filtru)"
+msgid "A red and white indicator means that a filter is active\n(if showing, double click to clear filter)"
+msgstr "Sarkans un balts indikators nozīmē, ka filtrs ir aktīvs\n(ja tiek rādīts, veiciet dubultklikšķi, lai notīrītu filtru)"
 
 #. Resource IDs: (61474)
 msgid "A required resource was unavailable."
@@ -1895,12 +1807,8 @@ msgid "As the double quote character is used to delimit the whole notes field, i
 msgstr "Tā kā dubultā citāta rakstzīme tiek izmantota, lai norobežotu visu piezīmju lauku, to nevar izmantot tajā, lai norobežotu vairākas rindiņas. Atlasiet citu rakstzīmi."
 
 #. Resource IDs: (5292)
-msgid ""
-"At least one type of character (lowercase, uppercase, digits,\n"
-"symbols, hexadecimal) must be permitted."
-msgstr ""
-"Jāatļauj vismaz viena veida rakstzīmes (mazie burti, lielie burti, cipari,\n"
-"simboli, heksadecimāls)."
+msgid "At least one type of character (lowercase, uppercase, digits,\nsymbols, hexadecimal) must be permitted."
+msgstr "Jāatļauj vismaz viena veida rakstzīmes (mazie burti, lielie burti, cipari,\nsimboli, heksadecimāls)."
 
 #. Resource IDs: (538, 539, 5986)
 msgid "Attachment"
@@ -2188,12 +2096,8 @@ msgstr "Var brīdināt tikai no %d līdz %d dienām pirms paroļu derīguma term
 
 #. Resource IDs: (3345)
 #, c-format
-msgid ""
-"Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\n"
-"Copy it from your installation file, or re-install PasswordSafe."
-msgstr ""
-"Nevar atrast XML shēmas definīcijas failu (%ls) savā PasswordSafe lietojumprogrammu direktorijā.\n"
-"Kopējiet to no instalācijas faila vai atkārtoti instalējiet PasswordSafe."
+msgid "Can't find XML Schema Definition file (%ls) in your PasswordSafe Application Directory.\nCopy it from your installation file, or re-install PasswordSafe."
+msgstr "Nevar atrast XML shēmas definīcijas failu (%ls) savā PasswordSafe lietojumprogrammu direktorijā.\nKopējiet to no instalācijas faila vai atkārtoti instalējiet PasswordSafe."
 
 #. Resource IDs: (3320)
 msgid "Can't obtain the schema version."
@@ -2298,14 +2202,8 @@ msgid "Change database mode?"
 msgstr "Vai mainīt datu bāzes režīmu?"
 
 #. Resource IDs: (5858)
-msgid ""
-"Change status since last save:\n"
-"* indicates the database has been changed\n"
-"° indicates a database preference has been changed"
-msgstr ""
-"Mainīt statusu kopš pēdējās saglabāšanas:\n"
-"* norāda, ka datu bāze ir mainīta\n"
-"° norāda, ka datu bāzes preference ir mainīta"
+msgid "Change status since last save:\n* indicates the database has been changed\n° indicates a database preference has been changed"
+msgstr "Mainīt statusu kopš pēdējās saglabāšanas:\n* norāda, ka datu bāze ir mainīta\n° norāda, ka datu bāzes preference ir mainīta"
 
 #. Resource IDs: (5913)
 msgid "Change/View Database Default Password Policy"
@@ -2585,16 +2483,8 @@ msgstr "Salīdzināt datu bāzes rezultātus"
 
 #. Resource IDs: (5356)
 #, c-format
-msgid ""
-"Compare complete of current database:\n"
-"\t %ls\n"
-" and:\n"
-"\t %ls\n"
-msgstr ""
-"Salīdziniet esošo datubāzi:\n"
-"\t %ls\n"
-" un:\n"
-"\t %ls\n"
+msgid "Compare complete of current database:\n\t %ls\n and:\n\t %ls\n"
+msgstr "Salīdziniet esošo datubāzi:\n\t %ls\n un:\n\t %ls\n"
 
 #. Resource IDs: (32092 - Menu, 32092 - MenuEx)
 msgid "Compare entries..."
@@ -2647,16 +2537,8 @@ msgstr "Konfigurācijas informācija"
 
 #. Resource IDs: (3049)
 #, c-format
-msgid ""
-"Configuration file error:\n"
-"%ls\n"
-"%ls\n"
-"offset approximately at %d"
-msgstr ""
-"Konfigurācijas faila kļūda:\n"
-"%ls\n"
-"%ls\n"
-"nobīde aptuveni %d"
+msgid "Configuration file error:\n%ls\n%ls\noffset approximately at %d"
+msgstr "Konfigurācijas faila kļūda:\n%ls\n%ls\nnobīde aptuveni %d"
 
 #. Resource IDs: (5857)
 msgid "Configuration file status"
@@ -2689,44 +2571,22 @@ msgstr "Apstipriniet, ka vēlaties notīrīt neseno drošo sarakstu."
 
 #. Resource IDs: (5930)
 #, c-format
-msgid ""
-"Confirm that you wish to copy these entries from %s to %s\n"
-"\n"
-"If already present in the target database, they will be replaced!"
-msgstr ""
-"Apstipriniet, ka vēlaties kopēt šos ierakstus no %s uz %s\n"
-"\n"
-"Ja tie jau atrodas mērķa datu bāzē, tie tiks aizstāti!"
+msgid "Confirm that you wish to copy these entries from %s to %s\n\nIf already present in the target database, they will be replaced!"
+msgstr "Apstipriniet, ka vēlaties kopēt šos ierakstus no %s uz %s\n\nJa tie jau atrodas mērķa datu bāzē, tie tiks aizstāti!"
 
 #. Resource IDs: (5429)
 #, c-format
-msgid ""
-"Confirm that you wish to copy this entry from %s to %s.\n"
-"\n"
-"If already present in the target database, it will be replaced!"
-msgstr ""
-"Apstipriniet, ka vēlaties kopēt šo ierakstu no %s uz %s.\n"
-"\n"
-"Ja tas jau atrodas mērķa datu bāzē, tas tiks aizstāts!"
+msgid "Confirm that you wish to copy this entry from %s to %s.\n\nIf already present in the target database, it will be replaced!"
+msgstr "Apstipriniet, ka vēlaties kopēt šo ierakstu no %s uz %s.\n\nJa tas jau atrodas mērķa datu bāzē, tas tiks aizstāts!"
 
 #. Resource IDs: (5931)
 #, c-format
-msgid ""
-"Confirm that you wish to synchronize these entries from %s to %s?\n"
-"\n"
-"Selected fields will be replaced in all entries!"
-msgstr ""
-"Vai apstiprināt, ka vēlaties sinhronizēt šos ierakstus no %s uz %s?\n"
-"\n"
-"Atlasītie lauki tiks aizstāti visos ierakstos!"
+msgid "Confirm that you wish to synchronize these entries from %s to %s?\n\nSelected fields will be replaced in all entries!"
+msgstr "Vai apstiprināt, ka vēlaties sinhronizēt šos ierakstus no %s uz %s?\n\nAtlasītie lauki tiks aizstāti visos ierakstos!"
 
 #. Resource IDs: (5287)
-msgid ""
-"Confirm to delete the current user's PasswordSafe configuration from the Windows registry.\n"
-"\n"
-msgstr ""
-"Apstipriniet, lai izdzēstu pašreizējā lietotāja PasswordSafe konfigurāciju no Windows reģistra.\n"
-"\n"
+msgid "Confirm to delete the current user's PasswordSafe configuration from the Windows registry.\n\n"
+msgstr "Apstipriniet, lai izdzēstu pašreizējā lietotāja PasswordSafe konfigurāciju no Windows reģistra.\n\n"
 
 #. Resource IDs: (1505, 65535)
 msgid "Confirmation:"
@@ -2734,14 +2594,8 @@ msgstr "Apstiprinājums:"
 
 #. Resource IDs: (3414)
 #, c-format
-msgid ""
-"Conflicting entries for «%ls» «%ls» «%ls».\n"
-"  Adding merged entry as «%ls» «%ls» «%ls».\n"
-"    Differing field(s): %ls"
-msgstr ""
-"Konfliktējoši ieraksti \"%ls\" \"%ls\" \"%ls\".\n"
-" Pievienojot sapludināto ierakstu kā \"%ls\" \"%ls\" \"%ls\".\n"
-" Atšķirīgs(-i) lauks(-i): %ls"
+msgid "Conflicting entries for «%ls» «%ls» «%ls».\n  Adding merged entry as «%ls» «%ls» «%ls».\n    Differing field(s): %ls"
+msgstr "Konfliktējoši ieraksti \"%ls\" \"%ls\" \"%ls\".\n Pievienojot sapludināto ierakstu kā \"%ls\" \"%ls\" \"%ls\".\n Atšķirīgs(-i) lauks(-i): %ls"
 
 #. Resource IDs: (1)
 msgid "Continue"
@@ -2749,18 +2603,8 @@ msgstr "Turpināt"
 
 #. Resource IDs: (5745)
 #, c-format
-msgid ""
-"Copied password\n"
-"\n"
-"\"%s\"\n"
-"\n"
-"to the clipboard."
-msgstr ""
-"Parole \n"
-"\n"
-"\"%s\"\n"
-"\n"
-" ir kopēta starpliktuvē."
+msgid "Copied password\n\n\"%s\"\n\nto the clipboard."
+msgstr "Parole \n\n\"%s\"\n\n ir kopēta starpliktuvē."
 
 #. Resource IDs: (32069 - Menu, 32069 - MenuEx, 5298)
 msgid "Copy &Notes to Clipboard"
@@ -2965,16 +2809,8 @@ msgstr "Esošā datu bāze ir tikai lasāma"
 
 #. Resource IDs: (5477)
 #, c-format
-msgid ""
-"Current version:\t%s\n"
-"Latest version:\t%s\n"
-"\n"
-"Visit the Password Safe website to download the latest version."
-msgstr ""
-"Pašreizējā versija: %s\n"
-"Jaunākā versija: %s\n"
-"\n"
-"Apmeklējiet vietni Parole droša, lai lejupielādētu jaunāko versiju."
+msgid "Current version:\t%s\nLatest version:\t%s\n\nVisit the Password Safe website to download the latest version."
+msgstr "Pašreizējā versija: %s\nJaunākā versija: %s\n\nApmeklējiet vietni Parole droša, lai lejupielādētu jaunāko versiju."
 
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
@@ -3042,12 +2878,8 @@ msgid "Database is read-only. Sorry, cannot save changed database preferences."
 msgstr "Datu bāze ir tikai lasāma. Atvainojiet, nevar saglabāt mainītās datu bāzes preferences."
 
 #. Resource IDs: (5859)
-msgid ""
-"Database mode: read-only (R-O) or read/write (R/W)\n"
-"(Doubleclick to toggle mode)"
-msgstr ""
-"Datu bāzes režīms: tikai lasāms (R-O) vai lasīšanas/rakstīšanas (R/W)\n"
-"(Lai pārslēgtu režīmu, veiciet dubultklikšķi)"
+msgid "Database mode: read-only (R-O) or read/write (R/W)\n(Doubleclick to toggle mode)"
+msgstr "Datu bāzes režīms: tikai lasāms (R-O) vai lasīšanas/rakstīšanas (R/W)\n(Lai pārslēgtu režīmu, veiciet dubultklikšķi)"
 
 #. Resource IDs: (1200)
 msgid "Database name"
@@ -3123,12 +2955,8 @@ msgid "Delete Entry"
 msgstr "Dzēst ierakstu"
 
 #. Resource IDs: (5882)
-msgid ""
-"Delete selected Password Policy\n"
-"(only an unused Named Password Policy may be deleted)"
-msgstr ""
-"Dzēst atlasīto paroles politiku\n"
-"(var dzēst tikai neizmantotu nosauktās paroles politiku)"
+msgid "Delete selected Password Policy\n(only an unused Named Password Policy may be deleted)"
+msgstr "Dzēst atlasīto paroles politiku\n(var dzēst tikai neizmantotu nosauktās paroles politiku)"
 
 #. Resource IDs: (5876)
 msgid "Description"
@@ -3193,12 +3021,8 @@ msgid "Display Filter - "
 msgstr "Displeja filtrs - "
 
 #. Resource IDs: (5883)
-msgid ""
-"Display policy settings or List entries using this named policy\n"
-"(The latter may take a while depending on the number of entries in this database)"
-msgstr ""
-"Parādīt politikas iestatījumus vai saraksta ierakstus, izmantojot šo nosaukto politiku\n"
-"(Pēdējā var aizņemt kādu laiku atkarībā no ierakstu skaita šajā datu bāzē)"
+msgid "Display policy settings or List entries using this named policy\n(The latter may take a while depending on the number of entries in this database)"
+msgstr "Parādīt politikas iestatījumus vai saraksta ierakstus, izmantojot šo nosaukto politiku\n(Pēdējā var aizņemt kādu laiku atkarībā no ierakstu skaita šajā datu bāzē)"
 
 #. Resource IDs: (32067 - Menu, 32067 - MenuEx)
 msgid "Display subset of Password"
@@ -3223,29 +3047,16 @@ msgstr "Vai vēlaties to nomainīt?"
 
 #. Resource IDs: (5239)
 #, c-format
-msgid ""
-"Do you wish to save the changes made to database:\n"
-"\n"
-"%s\n"
-"\n"
-"or Cancel the shutdown\\restart\\logoff?"
-msgstr ""
-"Vai vēlaties saglabāt datubāzē veiktās izmaiņas:\n"
-"\n"
-"%s\n"
-"\vai Atcelt izslēgšanu\\restart\\logoff?"
+msgid "Do you wish to save the changes made to database:\n\n%s\n\nor Cancel the shutdown\\restart\\logoff?"
+msgstr "Vai vēlaties saglabāt datubāzē veiktās izmaiņas:\n\n%s\n\vai Atcelt izslēgšanu\\restart\\logoff?"
 
 #. Resource IDs: (6023)
 msgid "Do you wish to save the changes made to this restored database as new database?"
 msgstr "Vai vēlaties saglabāt šajā atjaunotajā datu bāzē veiktās izmaiņas kā jaunu datu bāzi?"
 
 #. Resource IDs: (62185)
-msgid ""
-"Don't recover the auto-saved documents\n"
-"Use the last explicitly saved versions of the documents"
-msgstr ""
-"Neatkopt automātiski saglabātos dokumentus\n"
-"Izmantojiet pēdējās skaidri saglabātās dokumentu versijas"
+msgid "Don't recover the auto-saved documents\nUse the last explicitly saved versions of the documents"
+msgstr "Neatkopt automātiski saglabātos dokumentus\nIzmantojiet pēdējās skaidri saglabātās dokumentu versijas"
 
 #. Resource IDs: (5953)
 msgid "Double click an entry to Edit/View it."
@@ -3318,14 +3129,8 @@ msgstr "Velciet šo attēlu uz citu logu, lai veiktu Autoievadi."
 
 #. Resource IDs: (5464)
 #, c-format
-msgid ""
-"Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
-"\n"
-"The dropped entry now references that entry's base entry."
-msgstr ""
-"Atmestā ieraksta \"%ls:%ls:%ls\" parole norāda uz ierakstu, kas ir arī pseidonīms.\n"
-"\n"
-"Atmestais ieraksts tagad atsaucas uz šī ieraksta pamata ierakstu."
+msgid "Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n\nThe dropped entry now references that entry's base entry."
+msgstr "Atmestā ieraksta \"%ls:%ls:%ls\" parole norāda uz ierakstu, kas ir arī pseidonīms.\n\nAtmestais ieraksts tagad atsaucas uz šī ieraksta pamata ierakstu."
 
 #. Resource IDs: (32087 - Menu, 32087 - MenuEx)
 msgid "Duplicate Group"
@@ -3530,12 +3335,8 @@ msgid "Enter the authentication secret key. This usually taken from the authenti
 msgstr "Ievadiet autentifikācijas slepeno atslēgu. Tas parasti tiek ņemts no autentifikatora iestatīšanas lapas."
 
 #. Resource IDs: (65535)
-msgid ""
-"Enter the current master password, followed by a new one. \r\n"
-"Type the new one again to confirm it."
-msgstr ""
-"Ievadiet pašreizējo galveno paroli, kam seko jauna parole. \r\n"
-"Ierakstiet jauno vēlreiz, lai to apstiprinātu."
+msgid "Enter the current master password, followed by a new one. \r\nType the new one again to confirm it."
+msgstr "Ievadiet pašreizējo galveno paroli, kam seko jauna parole. \r\nIerakstiet jauno vēlreiz, lai to apstiprinātu."
 
 #. Resource IDs: (5255)
 msgid "Enter the key and verify it."
@@ -3630,14 +3431,8 @@ msgstr "Īsceļā ir jābūt vienam vai abiem taustiņiem Alt un Ctrl un burtcip
 
 #. Resource IDs: (5942)
 #, c-format
-msgid ""
-"Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.\n"
-"\n"
-"%s"
-msgstr ""
-"Īsceļā ir jābūt vienam vai abiem taustiņiem Alt un Ctrl.\n"
-"\n"
-"%s"
+msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys.\n\n%s"
+msgstr "Īsceļā ir jābūt vienam vai abiem taustiņiem Alt un Ctrl.\n\n%s"
 
 #. Resource IDs: (3266)
 #, c-format
@@ -3689,29 +3484,13 @@ msgid "Error (%08X): line %d character %d %ls"
 msgstr "Kļūda (%08X): rinda %d rakstzīme %d %ls"
 
 #. Resource IDs: (3031)
-msgid ""
-"Error - unable to determine settings configuration!\n"
-"\n"
-"No application settings will be saved.\n"
-"\n"
-"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"Kļūda — nevar noteikt iestatījumu konfigurāciju!\n"
-"\n"
-"Neviens lietojumprogrammas iestatījums netiks saglabāts.\n"
-"\n"
-"Ar datu bāzi saistītie iestatījumi tiks saglabāti atvērtajā datu bāzē, kad tā tiks aizvērta, pieņemot, ka tā nav tikai lasāma vai to nav bloķējis cits lietotājs."
+msgid "Error - unable to determine settings configuration!\n\nNo application settings will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr "Kļūda — nevar noteikt iestatījumu konfigurāciju!\n\nNeviens lietojumprogrammas iestatījums netiks saglabāts.\n\nAr datu bāzi saistītie iestatījumi tiks saglabāti atvērtajā datu bāzē, kad tā tiks aizvērta, pieņemot, ka tā nav tikai lasāma vai to nav bloķējis cits lietotājs."
 
 #. Resource IDs: (5661)
 #, c-format
-msgid ""
-"Error at column %d:\n"
-"\n"
-"%s"
-msgstr ""
-"Kļūda kolonnā %d:\n"
-"\n"
-"%s"
+msgid "Error at column %d:\n\n%s"
+msgstr "Kļūda kolonnā %d:\n\n%s"
 
 #. Resource IDs: (3033)
 #, c-format
@@ -3802,6 +3581,10 @@ msgstr "Eksportēt pielikumu..."
 msgid "Export Current &DB"
 msgstr "Eksportēt esošo &DB"
 
+#. Resource IDs: (5965)
+msgid "Export DB"
+msgstr ""
+
 #. Resource IDs: (32136 - PopupMenuEx, 5935)
 msgid "Export Entry To"
 msgstr "Eksportēt ierakstu uz"
@@ -3810,7 +3593,7 @@ msgstr "Eksportēt ierakstu uz"
 msgid "Export Group To"
 msgstr "Eksportēt grupu uz"
 
-#. Resource IDs: (5833)
+#. Resource IDs: (5805, 5833)
 msgid "Export Text"
 msgstr "Eksportēt tekstu"
 
@@ -3818,7 +3601,7 @@ msgstr "Eksportēt tekstu"
 msgid "Export Text Extra"
 msgstr "Eksportēt tekstu Extra"
 
-#. Resource IDs: (5834)
+#. Resource IDs: (5806, 5834)
 msgid "Export XML"
 msgstr "Eksportēt XML"
 
@@ -3828,12 +3611,8 @@ msgstr "Eksportēt failu:"
 
 #. Resource IDs: (5863)
 #, c-format
-msgid ""
-"Export file: '%s' already exists.\n"
-"Do you want to replace it?"
-msgstr ""
-"Eksporta fails: '%s' jau pastāv.\n"
-"Vai vēlaties to aizstāt?"
+msgid "Export file: '%s' already exists.\nDo you want to replace it?"
+msgstr "Eksporta fails: '%s' jau pastāv.\nVai vēlaties to aizstāt?"
 
 #. Resource IDs: (3364)
 msgid "Export of data was restricted to certain fields by the user."
@@ -3842,18 +3621,6 @@ msgstr "Lietotājs ierobežoja datu eksportu uz noteiktiem laukiem."
 #. Resource IDs: (1515)
 msgid "Export..."
 msgstr "Eksportēt..."
-
-#. Resource IDs: (5965)
-msgid "Export_DB"
-msgstr "Eksportēt_DB"
-
-#. Resource IDs: (5805)
-msgid "Export_Text"
-msgstr "Eksportēt_tekstu"
-
-#. Resource IDs: (5806)
-msgid "Export_XML"
-msgstr "Eksportēt_XML"
 
 #. Resource IDs: (5812)
 msgid "Exporting to file:"
@@ -3884,14 +3651,8 @@ msgid "Failed to launch help."
 msgstr "Neizdevās palaist palīdzību."
 
 #. Resource IDs: (5660)
-msgid ""
-"Failed to load AutoType support DLL (wrong version?).\n"
-"\n"
-"AutoType for Launch of a Browser or Running a command is disabled."
-msgstr ""
-"Neizdevās ielādēt Autoievades atbalsta DLL (nepareiza versija?).\n"
-"\n"
-"Autoievade pārlūkprogrammas palaišanai vai komandas palaišanai ir atspējots."
+msgid "Failed to load AutoType support DLL (wrong version?).\n\nAutoType for Launch of a Browser or Running a command is disabled."
+msgstr "Neizdevās ielādēt Autoievades atbalsta DLL (nepareiza versija?).\n\nAutoievade pārlūkprogrammas palaišanai vai komandas palaišanai ir atspējots."
 
 #. Resource IDs: (6027)
 msgid "Failed to load image"
@@ -3927,14 +3688,8 @@ msgstr "Neizdevās saglabāt atslēgu datu bāzē"
 
 #. Resource IDs: (5850)
 #, c-format
-msgid ""
-"Failed to switch from R-O to R/W because database is already open in R/W mode by:\n"
-"%s %s\n"
-"(Only one R/W access at a time is allowed)"
-msgstr ""
-"Neizdevās pārslēgties no R/O uz R/W, jo datu bāze jau ir atvērta R/W režīmā:\n"
-"%s %s\n"
-"(Vienlaikus ir atļauta tikai viena R/W piekļuve)"
+msgid "Failed to switch from R-O to R/W because database is already open in R/W mode by:\n%s %s\n(Only one R/W access at a time is allowed)"
+msgstr "Neizdevās pārslēgties no R/O uz R/W, jo datu bāze jau ir atvērta R/W režīmā:\n%s %s\n(Vienlaikus ir atļauta tikai viena R/W piekļuve)"
 
 #. Resource IDs: (5853)
 msgid "Failed to switch from R-O to R/W: Could not open the database. It may have been deleted or renamed or there may be a problem with its drive."
@@ -3945,12 +3700,8 @@ msgid "Failed to switch from R-O to R/W: The file appears to be too short to be 
 msgstr "Neizdevās pārslēgties no R-O uz R/W: šķiet, ka fails ir pārāk īss, lai tas būtu derīgs kā datu bāze."
 
 #. Resource IDs: (5851)
-msgid ""
-"Failed to switch from R/W to R-O: Could not release database lock.\n"
-"Try exiting and restarting program."
-msgstr ""
-"Neizdevās pārslēgties no R/W uz R-O: nevarēja atbrīvot datu bāzes bloķēšanu.\n"
-"Mēģiniet iziet no programmas un restartēt to."
+msgid "Failed to switch from R/W to R-O: Could not release database lock.\nTry exiting and restarting program."
+msgstr "Neizdevās pārslēgties no R/W uz R-O: nevarēja atbrīvot datu bāzes bloķēšanu.\nMēģiniet iziet no programmas un restartēt to."
 
 #. Resource IDs: (6006)
 msgid "Failed to update YubiKey"
@@ -4067,25 +3818,13 @@ msgstr "Fails:"
 
 #. Resource IDs: (5344)
 #, c-format
-msgid ""
-"File: %s failed validation against XML Schema:\n"
-"\n"
-"%s"
-msgstr ""
-"Fails: %s neizdevās validācija pret XML shēmu:\n"
-"\n"
-"%s"
+msgid "File: %s failed validation against XML Schema:\n\n%s"
+msgstr "Fails: %s neizdevās validācija pret XML shēmu:\n\n%s"
 
 #. Resource IDs: (5345)
 #, c-format
-msgid ""
-"File: %s passed Validation but had the following errors during import:\n"
-"\n"
-"%s"
-msgstr ""
-"Fails: %s ir izturējis validāciju, taču importēšanas laikā radās šādas kļūdas:\n"
-"\n"
-"%s"
+msgid "File: %s passed Validation but had the following errors during import:\n\n%s"
+msgstr "Fails: %s ir izturējis validāciju, taču importēšanas laikā radās šādas kļūdas:\n\n%s"
 
 #. Resource IDs: (5905)
 #, c-format
@@ -4155,12 +3894,8 @@ msgid "Font st&yle:"
 msgstr "Fonta st&ils:"
 
 #. Resource IDs: (5468)
-msgid ""
-"For security, the database must be closed before connecting to the Internet.\n"
-"Press OK to close database and continue (Changes will be saved)"
-msgstr ""
-"Drošības nolūkos datu bāze ir jāaizver pirms savienojuma izveides ar internetu.\n"
-"Nospiediet OK, lai aizvērtu datu bāzi un turpinātu (izmaiņas tiks saglabātas)"
+msgid "For security, the database must be closed before connecting to the Internet.\nPress OK to close database and continue (Changes will be saved)"
+msgstr "Drošības nolūkos datu bāze ir jāaizver pirms savienojuma izveides ar internetu.\nNospiediet OK, lai aizvērtu datu bāzi un turpinātu (izmaiņas tiks saglabātas)"
 
 #. Resource IDs: (3242)
 #, c-format
@@ -4593,14 +4328,8 @@ msgstr "Ja šī ir pirmā datu bāze, kas atvērta, startējot programmu Passwor
 
 #. Resource IDs: (8156)
 #, c-format
-msgid ""
-"If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n"
-"\n"
-"You may need to also select the Shift key to see them."
-msgstr ""
-"Ja šī tastatūra atbalsta rakstzīmes, izmantojot %s, šis taustiņš tiks iespējots un to varēs izmantot, lai to atlasītu.\n"
-"\n"
-"Lai to skatītu, iespējams, būs jāatlasa arī Shift taustiņš."
+msgid "If this keyboard supports characters via the %s, then this key will be enabled and can be used to select them.\n\nYou may need to also select the Shift key to see them."
+msgstr "Ja šī tastatūra atbalsta rakstzīmes, izmantojot %s, šis taustiņš tiks iespējots un to varēs izmantot, lai to atlasītu.\n\nLai to skatītu, iespējams, būs jāatlasa arī Shift taustiņš."
 
 #. Resource IDs: (5112)
 msgid "If unchecked, you will be prompted to save changes upon exiting Password Safe."
@@ -4638,6 +4367,18 @@ msgstr "Importēt KeePass V1 CSV"
 msgid "Import KeePass V1 TXT"
 msgstr "Importēt KeePass V1 TXT"
 
+#. Resource IDs: (5869)
+msgid "Import KeePassV1 CSV"
+msgstr ""
+
+#. Resource IDs: (5868)
+msgid "Import KeePassV1 TXT"
+msgstr ""
+
+#. Resource IDs: (5534)
+msgid "Import Text"
+msgstr ""
+
 #. Resource IDs: (125)
 msgid "Import Text Settings"
 msgstr "Teksta importēšanas  iestatījumi"
@@ -4645,6 +4386,10 @@ msgstr "Teksta importēšanas  iestatījumi"
 #. Resource IDs: (5479)
 msgid "Import Text failed"
 msgstr "Teksta importēšana neizdevās"
+
+#. Resource IDs: (5535)
+msgid "Import XML"
+msgstr ""
 
 #. Resource IDs: (126)
 msgid "Import XML Settings"
@@ -4678,22 +4423,6 @@ msgstr "Vai importēt grupā?"
 msgid "Import..."
 msgstr "Importēt..."
 
-#. Resource IDs: (5869)
-msgid "Import_KeePassV1_CSV"
-msgstr "Importēt_KeePassV1_CSV"
-
-#. Resource IDs: (5868)
-msgid "Import_KeePassV1_TXT"
-msgstr "Importēt_KeePassV1_TXT"
-
-#. Resource IDs: (5534)
-msgid "Import_Text"
-msgstr "Importēt_tekstu"
-
-#. Resource IDs: (5535)
-msgid "Import_XML"
-msgstr "Importēt_XML"
-
 #. Resource IDs: (5277, 5638)
 msgid "Imported"
 msgstr "Importēts"
@@ -4725,12 +4454,8 @@ msgid "Incorrect master password"
 msgstr "Nepareiza galvenā parole"
 
 #. Resource IDs: (5280)
-msgid ""
-"Incorrect master password, not a Password Safe database,\n"
-"or a corrupt database."
-msgstr ""
-"Nepareiza galvenā parole, nevis Paroles droša datu bāze,\n"
-"vai bojāta datu bāze."
+msgid "Incorrect master password, not a Password Safe database,\nor a corrupt database."
+msgstr "Nepareiza galvenā parole, nevis Paroles droša datu bāze,\nvai bojāta datu bāze."
 
 #. Resource IDs: (3251)
 msgid "Incorrect password"
@@ -4966,22 +4691,12 @@ msgid "Left Ctrl key"
 msgstr "Kreisais taustiņš Ctrl"
 
 #. Resource IDs: (5682)
-msgid ""
-"Left click 'Shortcut Key' value to change or right click it to reset or remove it. After selecting the shortcut key combination, press Enter to set it.\n"
-"\n"
-"The 'Menu item' text will be red if the shortcut differs from its default value."
-msgstr ""
-"Ar peles kreiso taustiņu noklikšķiniet uz 'Īsceļa' vērtības, lai mainītu vērtību, vai ar peles labo pogu noklikšķiniet uz tās, lai to atiestatītu vai noņemtu. Pēc īsceļa kombinācijas atlasīšanas nospiediet taustiņu Enter, lai to iestatītu.\n"
-"\n"
-"Teksts \"Izvēlnes vienums\" būs sarkans, ja īsceļš atšķirsies no noklusējuma vērtības."
+msgid "Left click 'Shortcut Key' value to change or right click it to reset or remove it. After selecting the shortcut key combination, press Enter to set it.\n\nThe 'Menu item' text will be red if the shortcut differs from its default value."
+msgstr "Ar peles kreiso taustiņu noklikšķiniet uz 'Īsceļa' vērtības, lai mainītu vērtību, vai ar peles labo pogu noklikšķiniet uz tās, lai to atiestatītu vai noņemtu. Pēc īsceļa kombinācijas atlasīšanas nospiediet taustiņu Enter, lai to iestatītu.\n\nTeksts \"Izvēlnes vienums\" būs sarkans, ja īsceļš atšķirsies no noklusējuma vērtības."
 
 #. Resource IDs: (5291)
-msgid ""
-"Length of passwords generated in hexadecimal format must be even\n"
-"as each byte is two hexadecimal digits."
-msgstr ""
-"Heksadecimālā formātā ģenerēto paroļu garumam jābūt vienādam\n"
-" katrs baits ir divi heksadecimālie cipari."
+msgid "Length of passwords generated in hexadecimal format must be even\nas each byte is two hexadecimal digits."
+msgstr "Heksadecimālā formātā ģenerēto paroļu garumam jābūt vienādam\n katrs baits ir divi heksadecimālie cipari."
 
 #. Resource IDs: (3259)
 #, c-format
@@ -5126,12 +4841,8 @@ msgstr "Maksimums"
 
 #. Resource IDs: (5392)
 #, c-format
-msgid ""
-"Maximum number of backups kept using incremented number suffix\n"
-"must be between %d and %d."
-msgstr ""
-"Maksimālais rezerves kopiju skaits, kas tiek saglabāts, izmantojot pieaugošu skaitļa sufiksu\n"
-"jābūt no %d līdz %d."
+msgid "Maximum number of backups kept using incremented number suffix\nmust be between %d and %d."
+msgstr "Maksimālais rezerves kopiju skaits, kas tiek saglabāts, izmantojot pieaugošu skaitļa sufiksu\njābūt no %d līdz %d."
 
 #. Resource IDs: (5407)
 #, c-format
@@ -5540,42 +5251,8 @@ msgstr "Ierakstu skaits datu bāzē"
 
 #. Resource IDs: (3026)
 #, c-format
-msgid ""
-"Number of entries processed: %d\n"
-"\n"
-"Number of invalid UUIDs fixed: %d\n"
-"\n"
-"Number of duplicate UUIDs fixed: %d\n"
-"\n"
-"Number of non-unique Group/Title/User fixed: %d\n"
-"\n"
-"Number of Password Histories fixed: %d\n"
-"\n"
-"Number of Alias warnings issued: %d\n"
-"\n"
-"Number of Shortcut warnings issued: %d\n"
-"\n"
-"Number of entries with fields that cannot be fully displayed: %d.\n"
-"\n"
-"Recommend that the database is now saved."
-msgstr ""
-"Apstrādāto ierakstu skaits: %d\n"
-"\n"
-"Laboto nederīgo UUID skaits: %d\n"
-"\n"
-"Laboto UUID dublikātu skaits: %d\n"
-"\n"
-"Laboto neunikālo kombināciju Grupa/Nosaukums/Lietotājs skaits: %d\n"
-"\n"
-"Laboto paroļu vēstures ierakstu skaits: %d\n"
-"\n"
-"Pseidonīmu brīdinājumu skaits: %d\n"
-"\n"
-"Īsceļu brīdinājumu skaits: %d\n"
-"\n"
-"Ierakstu skaits ar laukiem, kurus nevar pilnībā parādīt: %d.\n"
-"\n"
-"Ieteicams saglabāt datubāzi tagad."
+msgid "Number of entries processed: %d\n\nNumber of invalid UUIDs fixed: %d\n\nNumber of duplicate UUIDs fixed: %d\n\nNumber of non-unique Group/Title/User fixed: %d\n\nNumber of Password Histories fixed: %d\n\nNumber of Alias warnings issued: %d\n\nNumber of Shortcut warnings issued: %d\n\nNumber of entries with fields that cannot be fully displayed: %d.\n\nRecommend that the database is now saved."
+msgstr "Apstrādāto ierakstu skaits: %d\n\nLaboto nederīgo UUID skaits: %d\n\nLaboto UUID dublikātu skaits: %d\n\nLaboto neunikālo kombināciju Grupa/Nosaukums/Lietotājs skaits: %d\n\nLaboto paroļu vēstures ierakstu skaits: %d\n\nPseidonīmu brīdinājumu skaits: %d\n\nĪsceļu brīdinājumu skaits: %d\n\nIerakstu skaits ar laukiem, kurus nevar pilnībā parādīt: %d.\n\nIeteicams saglabāt datubāzi tagad."
 
 #. Resource IDs: (5383)
 #, c-format
@@ -5899,12 +5576,8 @@ msgid "Password implies this is an alias entry, but "
 msgstr "Parole nozīmē, ka tas ir pseidonīma ieraksts, bet "
 
 #. Resource IDs: (5467)
-msgid ""
-"Password implies this is an alias entry, but specifies a base entry with no title.\n"
-"Every entry must have a title."
-msgstr ""
-"Parole nozīmē, ka šis ir pseidonīma ieraksts, taču norāda pamata ierakstu bez nosaukuma.\n"
-"Katram ierakstam ir jābūt nosaukumam."
+msgid "Password implies this is an alias entry, but specifies a base entry with no title.\nEvery entry must have a title."
+msgstr "Parole nozīmē, ka šis ir pseidonīma ieraksts, taču norāda pamata ierakstu bez nosaukuma.\nKatram ierakstam ir jābūt nosaukumam."
 
 #. Resource IDs: (3000)
 msgid "Password is too short."
@@ -6029,14 +5702,8 @@ msgid "Press to delete all added characters."
 msgstr "Nospiediet, lai izdzēstu visas pievienotās rakstzīmes."
 
 #. Resource IDs: (65535)
-msgid ""
-"Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n"
-"\n"
-"Pressing Cancel stops the password from being copied."
-msgstr ""
-"Nospiežot Labi, atlasītā vienuma parole tiks kopēta starpliktuvē. Starpliktuve tiks droši iztīrīta, kad Password Safe tiks aizvērts.\n"
-"\n"
-"Nospiežot pogu Atcelt, parole netiks kopēta."
+msgid "Pressing OK will copy the password of the selected item to the clipboard. The clipboard will be securely cleared when Password Safe is closed.\n\nPressing Cancel stops the password from being copied."
+msgstr "Nospiežot Labi, atlasītā vienuma parole tiks kopēta starpliktuvē. Starpliktuve tiks droši iztīrīta, kad Password Safe tiks aizvērts.\n\nNospiežot pogu Atcelt, parole netiks kopēta."
 
 #. Resource IDs: (1517)
 msgid "Preview Unavailable"
@@ -6173,12 +5840,8 @@ msgid "Record last access times"
 msgstr "Ieraksta pēdējās piekļuves laiks"
 
 #. Resource IDs: (62184)
-msgid ""
-"Recover the auto-saved documents\n"
-"Open the auto-saved versions instead of the explicitly saved versions"
-msgstr ""
-"Atkopt automātiski saglabātos dokumentus\n"
-"Atveriet automātiski saglabātās versijas, nevis tieši saglabātās versijas"
+msgid "Recover the auto-saved documents\nOpen the auto-saved versions instead of the explicitly saved versions"
+msgstr "Atkopt automātiski saglabātos dokumentus\nAtveriet automātiski saglabātās versijas, nevis tieši saglabātās versijas"
 
 #. Resource IDs: (1487, 32084 - MenuEx)
 msgid "Redo"
@@ -6246,14 +5909,8 @@ msgid "Requested mode change failed"
 msgstr "Pieprasītā režīma maiņa neizdevās"
 
 #. Resource IDs: (5694)
-msgid ""
-"Required Unicode font is not installed on this system.\n"
-"\n"
-"Unable to provide Virtual Keyboard."
-msgstr ""
-"Šajā sistēmā nav instalēts nepieciešamais unikoda fonts.\n"
-"\n"
-"Nevar nodrošināt virtuālo tastatūru."
+msgid "Required Unicode font is not installed on this system.\n\nUnable to provide Virtual Keyboard."
+msgstr "Šajā sistēmā nav instalēts nepieciešamais unikoda fonts.\n\nNevar nodrošināt virtuālo tastatūru."
 
 #. Resource IDs: (5685)
 #, c-format
@@ -6363,12 +6020,8 @@ msgstr "S&inhronizēt..."
 
 #. Resource IDs: (3059)
 #, c-format
-msgid ""
-"SAX Parse Error during %ls\n"
-"%ls."
-msgstr ""
-"SAX parsēšanas kļūda izpildot %ls\n"
-"%ls."
+msgid "SAX Parse Error during %ls\n%ls."
+msgstr "SAX parsēšanas kļūda izpildot %ls\n%ls."
 
 #. Resource IDs: (3043)
 #, c-format
@@ -6441,33 +6094,13 @@ msgid "Screen capture protection disabled by a setup option."
 msgstr "Ekrāna tveršanas aizsardzība ir atspējota, izmantojot iestatīšanas opciju."
 
 #. Resource IDs: (6092)
-msgid ""
-"Screen capture protection disabled by command line.\n"
-"\n"
-"Contact support if this is unexpected.\n"
-"\n"
-"Click OK to continue."
-msgstr ""
-"Ekrāna uztveršanas aizsardzība ir atspējota komandrindā.\n"
-"\n"
-"Ja tas ir negaidīti, sazinieties ar atbalsta dienestu.\n"
-"\n"
-"Noklikšķiniet uz Labi, lai turpinātu."
+msgid "Screen capture protection disabled by command line.\n\nContact support if this is unexpected.\n\nClick OK to continue."
+msgstr "Ekrāna uztveršanas aizsardzība ir atspējota komandrindā.\n\nJa tas ir negaidīti, sazinieties ar atbalsta dienestu.\n\nNoklikšķiniet uz Labi, lai turpinātu."
 
 #. Resource IDs: (6082)
 #, c-format
-msgid ""
-"Screen capture protection disabled by command line.\n"
-"\n"
-"Contact support if this is unexpected.\n"
-"\n"
-"You can click OK to continue in %d seconds."
-msgstr ""
-"Ekrāna uztveršanas aizsardzība ir atspējota komandrindā.\n"
-"\n"
-"Ja tas ir negaidīti, sazinieties ar atbalsta dienestu.\n"
-"\n"
-"Varat noklikšķināt uz Labi, lai turpinātu pēc %d sekundēm."
+msgid "Screen capture protection disabled by command line.\n\nContact support if this is unexpected.\n\nYou can click OK to continue in %d seconds."
+msgstr "Ekrāna uztveršanas aizsardzība ir atspējota komandrindā.\n\nJa tas ir negaidīti, sazinieties ar atbalsta dienestu.\n\nVarat noklikšķināt uz Labi, lai turpinātu pēc %d sekundēm."
 
 #. Resource IDs: (6072)
 msgid "Screen capture protection has been overridden by command line."
@@ -6866,14 +6499,8 @@ msgid "Some characters may be missing or not be displayed correctly, as we were 
 msgstr "Dažas rakstzīmes var trūkt vai nav parādītas pareizi, jo mēs nevarējām atrast Arial Unicode MS fontu."
 
 #. Resource IDs: (5923)
-msgid ""
-"Some consistency issues were found while opening the database.\n"
-"\n"
-"You should save this database before proceeding. More details may be found in the report."
-msgstr ""
-"Atverot datubāzi, tika konstatētas dažas konsekvences problēmas.\n"
-"\n"
-"Pirms turpināt, jums vajadzētu saglabāt šo datu bāzi. Sīkāku informāciju var atrast ziņojumā."
+msgid "Some consistency issues were found while opening the database.\n\nYou should save this database before proceeding. More details may be found in the report."
+msgstr "Atverot datubāzi, tika konstatētas dažas konsekvences problēmas.\n\nPirms turpināt, jums vajadzētu saglabāt šo datu bāzi. Sīkāku informāciju var atrast ziņojumā."
 
 #. Resource IDs: (5821)
 msgid "Some of the entries in this database have passwords that have expired or are about to.  Do you wish to list them and possibly update them?"
@@ -6888,32 +6515,12 @@ msgid "Sorbian Standard (Legacy)"
 msgstr "Sorbian Standard (Legacy)"
 
 #. Resource IDs: (5288)
-msgid ""
-"Sorry - your requested HotKey is already being used.\n"
-"\n"
-"This feature has been temporarily disabled.\n"
-"\n"
-"To re-enable in this session, please select a different key combination."
-msgstr ""
-"Atvainojiet, jūsu pieprasītais īsceļš jau tiek izmantots.\n"
-"\n"
-"Šī funkcija ir īslaicīgi atspējota.\n"
-"\n"
-"Lai to atkārtoti iespējotu šajā sesijā, lūdzu, atlasiet citu taustiņu kombināciju."
+msgid "Sorry - your requested HotKey is already being used.\n\nThis feature has been temporarily disabled.\n\nTo re-enable in this session, please select a different key combination."
+msgstr "Atvainojiet, jūsu pieprasītais īsceļš jau tiek izmantots.\n\nŠī funkcija ir īslaicīgi atspējota.\n\nLai to atkārtoti iespējotu šajā sesijā, lūdzu, atlasiet citu taustiņu kombināciju."
 
 #. Resource IDs: (5712)
-msgid ""
-"Sorry but PasswordSafe has had a problem.\n"
-"\n"
-"Minimal diagnostic information has been written to file: \n"
-"\n"
-"\t'"
-msgstr ""
-"Atvainojiet, bet PasswordSafe ir radusies problēma.\n"
-"\n"
-"Minimālā diagnostikas informācija ir ierakstīta failā: \n"
-"\n"
-"\t'"
+msgid "Sorry but PasswordSafe has had a problem.\n\nMinimal diagnostic information has been written to file: \n\n\t'"
+msgstr "Atvainojiet, bet PasswordSafe ir radusies problēma.\n\nMinimālā diagnostikas informācija ir ierakstīta failā: \n\n\t'"
 
 #. Resource IDs: (5507)
 msgid "Sorry, 'pronounceable' and 'easy-to-read' are not supported together"
@@ -7004,14 +6611,8 @@ msgid "Status"
 msgstr "Statuss"
 
 #. Resource IDs: (5100)
-msgid ""
-"Stop saving password history for all entries.\n"
-"\n"
-"Saved histories will not be removed, but changed passwords will no longer be added."
-msgstr ""
-"Pārtraukt saglabāt paroļu vēsturi visiem ierakstiem.\n"
-"\n"
-"Saglabātās vēstures netiks noņemtas, bet mainītās paroles vairs netiks pievienotas."
+msgid "Stop saving password history for all entries.\n\nSaved histories will not be removed, but changed passwords will no longer be added."
+msgstr "Pārtraukt saglabāt paroļu vēsturi visiem ierakstiem.\n\nSaglabātās vēstures netiks noņemtas, bet mainītās paroles vairs netiks pievienotas."
 
 #. Resource IDs: (1184)
 msgid "Stop saving previous passwords"
@@ -7212,14 +6813,8 @@ msgid "The Master Password will be used to protect the new password database fil
 msgstr "Pamatparole tiks izmantota, lai aizsargātu jauno paroļu datu bāzes failu."
 
 #. Resource IDs: (3424)
-msgid ""
-"The TXT or CSV file was not imported as required as entry records span multiple lines in the CSV file.\n"
-"\n"
-"Import aborted."
-msgstr ""
-"TXT vai CSV fails netika importēts atbilstoši prasībām, jo ​​ierakstu ieraksti aptver vairākas CSV faila rindas.\n"
-"\n"
-"Importēšana pārtraukta."
+msgid "The TXT or CSV file was not imported as required as entry records span multiple lines in the CSV file.\n\nImport aborted."
+msgstr "TXT vai CSV fails netika importēts atbilstoši prasībām, jo ​​ierakstu ieraksti aptver vairākas CSV faila rindas.\n\nImportēšana pārtraukta."
 
 #. Resource IDs: (6003)
 msgid "The YubiKey appears uninitialized. Initialize it?"
@@ -7231,85 +6826,27 @@ msgstr "Autentifikācijas noslēpums netika atrasts"
 
 #. Resource IDs: (5311)
 #, c-format
-msgid ""
-"The database %s couldn't be opened.\n"
-"Do you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
-msgstr ""
-"Datubāzi %s nevarēja atvērt.\n"
-"Vai vēlaties to meklēt citur (Meklēt), izveidot jaunu datu bāzi (Jauna) vai Iziet?"
+msgid "The database %s couldn't be opened.\nDo you wish to look for it elsewhere (Search), create a new database (New), or Exit?"
+msgstr "Datubāzi %s nevarēja atvērt.\nVai vēlaties to meklēt citur (Meklēt), izveidot jaunu datu bāzi (Jauna) vai Iziet?"
 
 #. Resource IDs: (5852)
-msgid ""
-"The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n"
-"\n"
-"Close the database and re-open it in R/W mode."
-msgstr ""
-"Datu bāze ir mainīta kopš tās atvēršanas R-O režīmā, tāpēc nav iespējams pārslēgties uz R / W režīmu.\n"
-"\n"
-"Aizveriet datu bāzi un atkārtoti atveriet to R / W režīmā."
+msgid "The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.\n\nClose the database and re-open it in R/W mode."
+msgstr "Datu bāze ir mainīta kopš tās atvēršanas R-O režīmā, tāpēc nav iespējams pārslēgties uz R / W režīmu.\n\nAizveriet datu bāzi un atkārtoti atveriet to R / W režīmā."
 
 #. Resource IDs: (5412)
 #, c-format
-msgid ""
-"The database:\n"
-"%s\n"
-"\n"
-"is apparently being used by:\n"
-"%s%s.\n"
-"\n"
-"Open the database for Read-Only or Exit?\n"
-"\n"
-"Note: Only one user at a time can open the database for writing."
-msgstr ""
-"Datubāzi:\n"
-"%s\n"
-"\n"
-", šķiet, izmanto:\n"
-"%s%s.\n"
-"\n"
-"Vai atvērt datu bāzi tikai lasīšanai vai iziet?\n"
-"\n"
-"Piezīme. Tikai viens lietotājs vienlaikus var atvērt datubāzi rakstīšanai."
+msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only or Exit?\n\nNote: Only one user at a time can open the database for writing."
+msgstr "Datubāzi:\n%s\n\n, šķiet, izmanto:\n%s%s.\n\nVai atvērt datu bāzi tikai lasīšanai vai iziet?\n\nPiezīme. Tikai viens lietotājs vienlaikus var atvērt datubāzi rakstīšanai."
 
 #. Resource IDs: (5235)
 #, c-format
-msgid ""
-"The database:\n"
-"%s\n"
-"\n"
-"is apparently being used by:\n"
-"%s%s.\n"
-"\n"
-"Open the database for Read-Only, Read-Write, or Exit?\n"
-"\n"
-"Note: Choose \"Read-Write\" only if you are certain that the file isn't being used by anyone else,\n"
-"including another copy of Password Safe running on your machine."
-msgstr ""
-"Datubāzi:\n"
-"%s\n"
-"\n"
-", šķiet, izmanto:\n"
-"%s%s.\n"
-"\n"
-"Vai atvērt datu bāzi tikai lasīšanai, lasīšanai-rakstīšanai vai iziet?\n"
-"\n"
-"Piezīme. Izvēlieties \"Lasīt-Rakstiet\" tikai tad, ja esat pārliecināts, ka failu neizmanto neviens cits,\n"
-"tostarp cita Password Safe kopija, kas darbojas jūsu datorā."
+msgid "The database:\n%s\n\nis apparently being used by:\n%s%s.\n\nOpen the database for Read-Only, Read-Write, or Exit?\n\nNote: Choose \"Read-Write\" only if you are certain that the file isn't being used by anyone else,\nincluding another copy of Password Safe running on your machine."
+msgstr "Datubāzi:\n%s\n\n, šķiet, izmanto:\n%s%s.\n\nVai atvērt datu bāzi tikai lasīšanai, lasīšanai-rakstīšanai vai iziet?\n\nPiezīme. Izvēlieties \"Lasīt-Rakstiet\" tikai tad, ja esat pārliecināts, ka failu neizmanto neviens cits,\ntostarp cita Password Safe kopija, kas darbojas jūsu datorā."
 
 #. Resource IDs: (5775)
 #, c-format
-msgid ""
-"The database:\n"
-"\n"
-"%s\n"
-"\n"
-"has duplicate entries with the same group/title/user combination. You can fix this by validating the database."
-msgstr ""
-"Datu bāze:\n"
-"\n"
-"%s\n"
-"\n"
-"ir ierakstu dublikāti ar vienu un to pašu grupas/nosaukuma/lietotāja kombināciju. To var novērst, validējot datu bāzi."
+msgid "The database:\n\n%s\n\nhas duplicate entries with the same group/title/user combination. You can fix this by validating the database."
+msgstr "Datu bāze:\n\n%s\n\nir ierakstu dublikāti ar vienu un to pašu grupas/nosaukuma/lietotāja kombināciju. To var novērst, validējot datu bāzi."
 
 #. Resource IDs: (5250)
 msgid "The entered passwords do not match.  Please re-enter."
@@ -7375,12 +6912,8 @@ msgstr "Tālāk norādītajiem ierakstiem bija vienādi UUID lauki. Tas ir izlab
 
 #. Resource IDs: (3433)
 #, c-format
-msgid ""
-"The following entries had a policy name that already existed in this database but with different settings.\n"
-"A new named policy has been created with the current date/time (%ls) appended:%ls"
-msgstr ""
-"Šiem ierakstiem bija politikas nosaukums, kas jau pastāvēja šajā datubāzē, bet ar atšķirīgiem iestatījumiem.\n"
-"Tika izveidota jauna nosaukta politika, kurai pievienots esošais datums/laiks (%ls):%ls"
+msgid "The following entries had a policy name that already existed in this database but with different settings.\nA new named policy has been created with the current date/time (%ls) appended:%ls"
+msgstr "Šiem ierakstiem bija politikas nosaukums, kas jau pastāvēja šajā datubāzē, bet ar atšķirīgiem iestatījumiem.\nTika izveidota jauna nosaukta politika, kurai pievienots esošais datums/laiks (%ls):%ls"
 
 #. Resource IDs: (3438)
 #, c-format
@@ -7445,25 +6978,13 @@ msgstr "Tika izlaisti šādi ieraksti:"
 
 #. Resource IDs: (5951)
 #, c-format
-msgid ""
-"The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\n"
-"The %s will override this menu item shortcut.\n"
-"Press OK/Apply to accept or change your selection."
-msgstr ""
-"Tastatūras īsceļš '%s' jau ir piešķirts izvēlnes vienumam:\t'%s'\n"
-"%s ignorēs šo izvēlnes vienuma saīsni.\n"
-"Nospiediet OK/Apply, lai apstiprinātu vai mainītu savu izvēli."
+msgid "The keyboard shortcut '%s' has already been assigned to the menu item:\t'%s'\nThe %s will override this menu item shortcut.\nPress OK/Apply to accept or change your selection."
+msgstr "Tastatūras īsceļš '%s' jau ir piešķirts izvēlnes vienumam:\t'%s'\n%s ignorēs šo izvēlnes vienuma saīsni.\nNospiediet OK/Apply, lai apstiprinātu vai mainītu savu izvēli."
 
 #. Resource IDs: (5950)
 #, c-format
-msgid ""
-"The keyboard shortcut '%s' is already in use by:\n"
-"\t«%s» «%s» «%s»\n"
-"Select another shortcut (it has been reset)."
-msgstr ""
-"Īsinājumtaustiņu \"%s\" jau izmanto:\n"
-"\t«%s» «%s» «%s»\n"
-"Atlasiet citu saīsni (tā ir atiestatīta)."
+msgid "The keyboard shortcut '%s' is already in use by:\n\t«%s» «%s» «%s»\nSelect another shortcut (it has been reset)."
+msgstr "Īsinājumtaustiņu \"%s\" jau izmanto:\n\t«%s» «%s» «%s»\nAtlasiet citu saīsni (tā ir atiestatīta)."
 
 #. Resource IDs: (5279)
 msgid "The master password cannot be blank."
@@ -7471,18 +6992,8 @@ msgstr "Pamatparole nevar būt tukša."
 
 #. Resource IDs: (5958)
 #, c-format
-msgid ""
-"The master password has been entered %d times without success:\n"
-"- Is Caps Lock off?\n"
-"- Is the language correct (if multilingual)?\n"
-"- Is this the correct database?\n"
-"- Perhaps the database was damaged. Try opening a backup copy."
-msgstr ""
-"Pamatparole ir ievadīta %d reizes bez panākumiem:\n"
-"- Vai Caps Lock ir izslēgts?\n"
-"- Vai valoda ir pareiza (ja tā ir daudzvalodu)?\n"
-"- Vai šī ir pareizā datu bāze?\n"
-"- Varbūt datu bāze ir bojāta. Mēģiniet atvērt rezerves kopiju."
+msgid "The master password has been entered %d times without success:\n- Is Caps Lock off?\n- Is the language correct (if multilingual)?\n- Is this the correct database?\n- Perhaps the database was damaged. Try opening a backup copy."
+msgstr "Pamatparole ir ievadīta %d reizes bez panākumiem:\n- Vai Caps Lock ir izslēgts?\n- Vai valoda ir pareiza (ja tā ir daudzvalodu)?\n- Vai šī ir pareizā datu bāze?\n- Varbūt datu bāze ir bojāta. Mēģiniet atvērt rezerves kopiju."
 
 #. Resource IDs: (5792)
 #, c-format
@@ -7550,25 +7061,13 @@ msgstr "Šī datu bāze ir tāda pati kā esošā datu bāze!"
 
 #. Resource IDs: (3404)
 #, c-format
-msgid ""
-"This entry has the following %d %ls:\n"
-"%ls\n"
-"Confirm to continue (All shortcuts to this entry will be deleted)?"
-msgstr ""
-"Šim ierakstam ir šāda %d %ls:\n"
-"%ls\n"
-"Apstipriniet, lai turpinātu (Visi saīsnes uz šo ierakstu tiks izdzēsti)?"
+msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (All shortcuts to this entry will be deleted)?"
+msgstr "Šim ierakstam ir šāda %d %ls:\n%ls\nApstipriniet, lai turpinātu (Visi saīsnes uz šo ierakstu tiks izdzēsti)?"
 
 #. Resource IDs: (3403)
 #, c-format
-msgid ""
-"This entry has the following %d %ls:\n"
-"%ls\n"
-"Confirm to continue (alias entry's passwords will be replaced by this entry's password)?"
-msgstr ""
-"Šim ierakstam ir šāda %d %ls:\n"
-"%ls\n"
-"Vai apstiprināt, ka turpināts (aizstājvārda ieraksta paroles tiks aizstātas ar šī ieraksta paroli)?"
+msgid "This entry has the following %d %ls:\n%ls\nConfirm to continue (alias entry's passwords will be replaced by this entry's password)?"
+msgstr "Šim ierakstam ir šāda %d %ls:\n%ls\nVai apstiprināt, ka turpināts (aizstājvārda ieraksta paroles tiks aizstātas ar šī ieraksta paroli)?"
 
 #. Resource IDs: (5248)
 msgid "This entry must have a password."
@@ -7766,18 +7265,8 @@ msgid "Ukrainian (Enhanced)"
 msgstr "Ukrainian (Enhanced)"
 
 #. Resource IDs: (3029)
-msgid ""
-"Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n"
-"\n"
-"All application configuration settings will be saved in your registry entry on this computer.\n"
-"\n"
-"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"Nevar izveidot jaunu XML konfigurācijas failu vai pievienot iestatījumus esošam XML konfigurācijas failam.\n"
-"\n"
-"Visi lietojumprogrammu konfigurācijas iestatījumi tiks saglabāti jūsu šī datora reģistra ierakstā.\n"
-"\n"
-"Ar datu bāzi saistītie iestatījumi tiks saglabāti atvērtajā datu bāzē, ja tā nav tikai lasāma vai to nav bloķējis cits lietotājs."
+msgid "Unable to create a new XML configuration file or add your settings to an existing XML configuration file.\n\nAll application configuration settings will be saved in your registry entry on this computer.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr "Nevar izveidot jaunu XML konfigurācijas failu vai pievienot iestatījumus esošam XML konfigurācijas failam.\n\nVisi lietojumprogrammu konfigurācijas iestatījumi tiks saglabāti jūsu šī datora reģistra ierakstā.\n\nAr datu bāzi saistītie iestatījumi tiks saglabāti atvērtajā datu bāzē, ja tā nav tikai lasāma vai to nav bloķējis cits lietotājs."
 
 #. Resource IDs: (5385)
 #, c-format
@@ -7789,25 +7278,13 @@ msgid "Unable to display URL"
 msgstr "Nevar parādīt URL"
 
 #. Resource IDs: (3028)
-msgid ""
-"Unable to get configuration file lock.\n"
-"\n"
-"Will use registry."
-msgstr ""
-"Neizdodas bloķēt konfigurācijas failu.\n"
-"\n"
-"Tiks izmantots reģistrs."
+msgid "Unable to get configuration file lock.\n\nWill use registry."
+msgstr "Neizdodas bloķēt konfigurācijas failu.\n\nTiks izmantots reģistrs."
 
 #. Resource IDs: (5630)
 #, c-format
-msgid ""
-"Unable to import \"autoload_filters.xml\" filters.\n"
-"\n"
-"%s"
-msgstr ""
-"Nevar importēt \"autoload_filters.xml\" filtrus.\n"
-"\n"
-"%s"
+msgid "Unable to import \"autoload_filters.xml\" filters.\n\n%s"
+msgstr "Nevar importēt \"autoload_filters.xml\" filtrus.\n\n%s"
 
 #. Resource IDs: (3050)
 msgid "Unable to load configuration file"
@@ -7843,18 +7320,8 @@ msgid "Unable to send Email"
 msgstr "Nevar nosūtīt e-pastu"
 
 #. Resource IDs: (3030)
-msgid ""
-"Unable to update your entries in the existing XML configuration file.\n"
-"\n"
-"All application configuration settings will be loaded from this file but no changes will be saved.\n"
-"\n"
-"Database related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
-msgstr ""
-"Nevar atjaunināt jūsu ierakstus esošajā XML konfigurācijas failā.\n"
-"\n"
-"Visi lietojumprogrammu konfigurācijas iestatījumi tiks ielādēti no šī faila, taču izmaiņas netiks saglabātas.\n"
-"\n"
-"Ar datu bāzi saistītie iestatījumi tiks saglabāti atvērtajā datu bāzē, kad tā tiks aizvērta, ja tā nav tikai lasāma vai to nav bloķējis cits lietotājs."
+msgid "Unable to update your entries in the existing XML configuration file.\n\nAll application configuration settings will be loaded from this file but no changes will be saved.\n\nDatabase related settings will be stored in the open database when it is closed, assuming it is not read-only or locked by another user."
+msgstr "Nevar atjaunināt jūsu ierakstus esošajā XML konfigurācijas failā.\n\nVisi lietojumprogrammu konfigurācijas iestatījumi tiks ielādēti no šī faila, taču izmaiņas netiks saglabātas.\n\nAr datu bāzi saistītie iestatījumi tiks saglabāti atvērtajā datu bāzē, kad tā tiks aizvērta, ja tā nav tikai lasāma vai to nav bloķējis cits lietotājs."
 
 #. Resource IDs: (3047)
 msgid "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 seems available."
@@ -7951,12 +7418,8 @@ msgstr "Nesaglabātas izmaiņas"
 
 #. Resource IDs: (5724)
 #, c-format
-msgid ""
-"Unsaved changes have been made to database:\n"
-" %s."
-msgstr ""
-"Datu bāzē ir veiktas nesaglabātas izmaiņas:\n"
-" %s."
+msgid "Unsaved changes have been made to database:\n %s."
+msgstr "Datu bāzē ir veiktas nesaglabātas izmaiņas:\n %s."
 
 #. Resource IDs: (6024)
 msgid "Unsaved restored database"
@@ -7980,50 +7443,8 @@ msgid "Urdu"
 msgstr "Urdu"
 
 #. Resource IDs: (5000)
-msgid ""
-"Usage:\n"
-"pwsafe [-r|-v] [password database]\n"
-"or pwsafe [-e|-d] filename\n"
-"or pwsafe [-c]\n"
-"or pwsafe [-s] [password database]\n"
-"or pwsafe -m\n"
-"\n"
-" where:\n"
-"  -r = open read-only\n"
-"  -v = validate & repair\n"
-"  -e/d = encrypt/decrypt file\n"
-"  -c = start closed i.e., no open database\n"
-"  -s = start silently (minimized)\n"
-"  -m = start minimized & closed\n"
-"\n"
-"In addition, the following flags may be used:\n"
-" -u user (use user's preferences instead of login name)\n"
-" -h host (use host to look up preferences instead of the machine's name)\n"
-" -g config_file (use config_file instead of pwsafe.cfg)\n"
-" -q (don't complain about missing fonts, dlls, etc.)\n"
-"See online help for more options."
-msgstr ""
-"Lietojums:\n"
-"pwsafe [-r|-v] [paroļu datubāze]\n"
-"vai pwsafe [-e|-d] faila nosaukums\n"
-"vai pwsafe [-c]\n"
-"vai pwsafe [-s] [paroļu datubāze]\n"
-"vai pwsafe -m\n"
-"\n"
-" kur:\n"
-" -r = atvērts tikai lasāms\n"
-" -v = apstiprināt un labot\n"
-" -e/d = šifrēt/atšifrēt failu\n"
-" -c = sākt ar aizvērtu, t.i., nav atvērta datubāze\n"
-" -s =sākt klusi (minimizēts)\n"
-" -m = sākt minimizētu un aizvērtu\n"
-"\n"
-"Turklāt var tikt izmantoti šādi karodziņi:\n"
-" -u lietotājs (pieteikšanās vārda vietā izmantojiet lietotāja preferences)\n"
-" -h resursdators (izmantojiet resursdatoru, meklējiet preferences, nevis ierīces nosaukumu)\n"
-" -g config_file (izmantojiet config_file, nevis pwsafe.cfg)\n"
-" -q (nesūdzēties par trūkstošiem fontiem, dll utt.)\n"
-"Skatiet tiešsaistes palīdzību, lai uzzinātu vairāk par iespējām."
+msgid "Usage:\npwsafe [-r|-v] [password database]\nor pwsafe [-e|-d] filename\nor pwsafe [-c]\nor pwsafe [-s] [password database]\nor pwsafe -m\n\n where:\n  -r = open read-only\n  -v = validate & repair\n  -e/d = encrypt/decrypt file\n  -c = start closed i.e., no open database\n  -s = start silently (minimized)\n  -m = start minimized & closed\n\nIn addition, the following flags may be used:\n -u user (use user's preferences instead of login name)\n -h host (use host to look up preferences instead of the machine's name)\n -g config_file (use config_file instead of pwsafe.cfg)\n -q (don't complain about missing fonts, dlls, etc.)\nSee online help for more options."
+msgstr "Lietojums:\npwsafe [-r|-v] [paroļu datubāze]\nvai pwsafe [-e|-d] faila nosaukums\nvai pwsafe [-c]\nvai pwsafe [-s] [paroļu datubāze]\nvai pwsafe -m\n\n kur:\n -r = atvērts tikai lasāms\n -v = apstiprināt un labot\n -e/d = šifrēt/atšifrēt failu\n -c = sākt ar aizvērtu, t.i., nav atvērta datubāze\n -s =sākt klusi (minimizēts)\n -m = sākt minimizētu un aizvērtu\n\nTurklāt var tikt izmantoti šādi karodziņi:\n -u lietotājs (pieteikšanās vārda vietā izmantojiet lietotāja preferences)\n -h resursdators (izmantojiet resursdatoru, meklējiet preferences, nevis ierīces nosaukumu)\n -g config_file (izmantojiet config_file, nevis pwsafe.cfg)\n -q (nesūdzēties par trūkstošiem fontiem, dll utt.)\nSkatiet tiešsaistes palīdzību, lai uzzinātu vairāk par iespējām."
 
 #. Resource IDs: (1029)
 msgid "Use"
@@ -8127,14 +7548,8 @@ msgstr "Apstiprināt"
 
 #. Resource IDs: (5347)
 #, c-format
-msgid ""
-"Validated %d %s\n"
-"\n"
-"Imported %d %s"
-msgstr ""
-"Validēts %d %s\n"
-"\n"
-"Importēts %d %s"
+msgid "Validated %d %s\n\nImported %d %s"
+msgstr "Validēts %d %s\n\nImportēts %d %s"
 
 #. Resource IDs: (5891)
 msgid "Value"
@@ -8215,24 +7630,12 @@ msgstr "BRĪDINĀJUMS. Ja turpināsiet, jūsu esošās datu bāzes ierakstu lauk
 
 #. Resource IDs: (5804)
 #, c-format
-msgid ""
-"WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n"
-"\n"
-"Do not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
-msgstr ""
-"BRĪDINĀJUMS: Šī darbība izveidos neaizsargātu %s kopiju datu bāzē. Ar šīs kopijas dzēšanu pēc lietošanas NEPIETIEK.\n"
-"\n"
-"Neizmantojiet šo opciju, ja vien neizprotat un nepieņemat riskus. Šī opcija apiet šīs programmas nodrošināto drošību."
+msgid "WARNING: This operation will create an unprotected copy of %s in the database. Deleting this copy after use is NOT sufficient.\n\nDo not use this option unless you understand and accept the risks. This option bypasses the security provided by this program."
+msgstr "BRĪDINĀJUMS: Šī darbība izveidos neaizsargātu %s kopiju datu bāzē. Ar šīs kopijas dzēšanu pēc lietošanas NEPIETIEK.\n\nNeizmantojiet šo opciju, ja vien neizprotat un nepieņemat riskus. Šī opcija apiet šīs programmas nodrošināto drošību."
 
 #. Resource IDs: (5447)
-msgid ""
-"WARNING: Use of an external editor may leave sensitive data on your hard disk.\n"
-"\n"
-"Do you wish to continue?"
-msgstr ""
-"BRĪDINĀJUMS. Izmantojot ārēju redaktoru, cietajā diskā var palikt sensitīvi dati.\n"
-"\n"
-"Vai vēlaties turpināt?"
+msgid "WARNING: Use of an external editor may leave sensitive data on your hard disk.\n\nDo you wish to continue?"
+msgstr "BRĪDINĀJUMS. Izmantojot ārēju redaktoru, cietajā diskā var palikt sensitīvi dati.\n\nVai vēlaties turpināt?"
 
 #. Resource IDs: (1232)
 msgid "Warn"
@@ -8256,14 +7659,8 @@ msgstr "Vāja parole"
 
 #. Resource IDs: (5281)
 #, c-format
-msgid ""
-"Weak master password:\n"
-"\n"
-" %s"
-msgstr ""
-"Vāja pamatparole:\n"
-"\n"
-" %s"
+msgid "Weak master password:\n\n %s"
+msgstr "Vāja pamatparole:\n\n %s"
 
 #. Resource IDs: (5763)
 msgid "What saved"
@@ -8325,28 +7722,16 @@ msgstr "Vārdu aplaušana sadaļās Pievienot un Rediģēt"
 
 #. Resource IDs: (5305)
 #, c-format
-msgid ""
-"Would you like to set \"%s\" as your default username?\n"
-"\n"
-"It would then be used by default for new items."
-msgstr ""
-"Vai vēlaties iestatīt \"%s\" kā noklusējuma lietotājvārdu?\n"
-"\n"
-"Tas pēc noklusējuma tiks izmantots jauniem vienumiem."
+msgid "Would you like to set \"%s\" as your default username?\n\nIt would then be used by default for new items."
+msgstr "Vai vēlaties iestatīt \"%s\" kā noklusējuma lietotājvārdu?\n\nTas pēc noklusējuma tiks izmantots jauniem vienumiem."
 
 #. Resource IDs: (5326)
 msgid "Write Error"
 msgstr "Rakstīšanas kļūda"
 
 #. Resource IDs: (5742)
-msgid ""
-"Write operation failed!\n"
-"File may have been corrupted.\n"
-"Try saving in a different location"
-msgstr ""
-"Rakstīšanas darbība neizdevās!\n"
-"Fails, iespējams, ir bojāts.\n"
-"Mēģiniet saglabāt citā vietā"
+msgid "Write operation failed!\nFile may have been corrupted.\nTry saving in a different location"
+msgstr "Rakstīšanas darbība neizdevās!\nFails, iespējams, ir bojāts.\nMēģiniet saglabāt citā vietā"
 
 #. Resource IDs: (5107)
 msgid "Writes the database when an entry was accessed, unless in read-only mode."
@@ -8483,837 +7868,416 @@ msgid "[Notes hidden - click here to display]"
 msgstr "[Piezīmes paslēptas — noklikšķiniet šeit, lai parādītu]"
 
 #. Resource IDs: (32064)
-msgid ""
-"\n"
-"Add Group"
-msgstr ""
-"\n"
-"Pievienot grupu"
+msgid "\nAdd Group"
+msgstr "\nPievienot grupu"
 
 #. Resource IDs: (32051)
-msgid ""
-"\n"
-"Add New Entry"
-msgstr ""
-"\n"
-"Pievienot jaunu ierakstu"
+msgid "\nAdd New Entry"
+msgstr "\nPievienot jaunu ierakstu"
 
 #. Resource IDs: (32307)
-msgid ""
-"\n"
-"Advanced Find Options"
-msgstr ""
-"\n"
-"Papildu meklēšanas opcijas"
+msgid "\nAdvanced Find Options"
+msgstr "\nPapildu meklēšanas opcijas"
 
 #. Resource IDs: (32072)
-msgid ""
-"\n"
-"Browse to URL"
-msgstr ""
-"\n"
-"URL saiti atvērt pārlūkā"
+msgid "\nBrowse to URL"
+msgstr "\nURL saiti atvērt pārlūkā"
 
 #. Resource IDs: (32073)
-msgid ""
-"\n"
-"Browse to URL + AutoType"
-msgstr ""
-"\n"
-"URL saiti atvērt pārlūkā + AutoIevade"
+msgid "\nBrowse to URL + AutoType"
+msgstr "\nURL saiti atvērt pārlūkā + AutoIevade"
 
 #. Resource IDs: (32074)
-msgid ""
-"\n"
-"Browse to URL with Alternate Browser"
-msgstr ""
-"\n"
-"URL saiti atvērt pārlūkā, izmantojot alternatīvo pārlūkprogrammu"
+msgid "\nBrowse to URL with Alternate Browser"
+msgstr "\nURL saiti atvērt pārlūkā, izmantojot alternatīvo pārlūkprogrammu"
 
 #. Resource IDs: (32305)
-msgid ""
-"\n"
-"Case insensitive search"
-msgstr ""
-"\n"
-"Meklēšana nav reģistrjutīga"
+msgid "\nCase insensitive search"
+msgstr "\nMeklēšana nav reģistrjutīga"
 
 #. Resource IDs: (32306)
-msgid ""
-"\n"
-"Case sensitive search"
-msgstr ""
-"\n"
-"Reģistrjutīga meklēšana"
+msgid "\nCase sensitive search"
+msgstr "\nReģistrjutīga meklēšana"
 
 #. Resource IDs: (32134)
-msgid ""
-"\n"
-"Clear Filters"
-msgstr ""
-"\n"
-"Notīrīt filtrus"
+msgid "\nClear Filters"
+msgstr "\nNotīrīt filtrus"
 
 #. Resource IDs: (32302)
-msgid ""
-"\n"
-"Clear Find"
-msgstr ""
-"\n"
-"Notīrīt atrastos"
+msgid "\nClear Find"
+msgstr "\nNotīrīt atrastos"
 
 #. Resource IDs: (32065)
-msgid ""
-"\n"
-"Clear the clipboard contents"
-msgstr ""
-"\n"
-"Notīrīt starpliktuves saturu"
+msgid "\nClear the clipboard contents"
+msgstr "\nNotīrīt starpliktuves saturu"
 
 #. Resource IDs: (32004)
-msgid ""
-"\n"
-"Close Database"
-msgstr ""
-"\n"
-"Aizvērt datu bāzi"
+msgid "\nClose Database"
+msgstr "\nAizvērt datu bāzi"
 
 #. Resource IDs: (32301)
-msgid ""
-"\n"
-"Close Find Bar"
-msgstr ""
-"\n"
-"Aizvērt meklēšanas joslu"
+msgid "\nClose Find Bar"
+msgstr "\nAizvērt meklēšanas joslu"
 
 #. Resource IDs: (32110)
-msgid ""
-"\n"
-"Collapse All"
-msgstr ""
-"\n"
-"Sakļaut visu"
+msgid "\nCollapse All"
+msgstr "\nSakļaut visu"
 
 #. Resource IDs: (32092)
-msgid ""
-"\n"
-"Compare entries..."
-msgstr ""
-"\n"
-"Salīdzināt ierakstus..."
+msgid "\nCompare entries..."
+msgstr "\nSalīdzināt ierakstus..."
 
 #. Resource IDs: (32019)
-msgid ""
-"\n"
-"Compare two Databases"
-msgstr ""
-"\n"
-"Salīdzināt divas datu bāzes"
+msgid "\nCompare two Databases"
+msgstr "\nSalīdzināt divas datu bāzes"
 
 #. Resource IDs: (32100)
-msgid ""
-"\n"
-"Copy Auth Code to Clipboard"
-msgstr ""
-"\n"
-"Kopēt Auth kodu starpliktuvē"
+msgid "\nCopy Auth Code to Clipboard"
+msgstr "\nKopēt Auth kodu starpliktuvē"
 
 #. Resource IDs: (32069)
-msgid ""
-"\n"
-"Copy Notes to Clipboard"
-msgstr ""
-"\n"
-"Kopēt piezīmes starpliktuvē"
+msgid "\nCopy Notes to Clipboard"
+msgstr "\nKopēt piezīmes starpliktuvē"
 
 #. Resource IDs: (32066)
-msgid ""
-"\n"
-"Copy Password to Clipboard"
-msgstr ""
-"\n"
-"Kopēt paroli starpliktuvē"
+msgid "\nCopy Password to Clipboard"
+msgstr "\nKopēt paroli starpliktuvē"
 
 #. Resource IDs: (32081)
-msgid ""
-"\n"
-"Copy Run Command to Clipboard"
-msgstr ""
-"\n"
-"Kopēt Izpildes komandu starpliktuvē"
+msgid "\nCopy Run Command to Clipboard"
+msgstr "\nKopēt Izpildes komandu starpliktuvē"
 
 #. Resource IDs: (32068)
-msgid ""
-"\n"
-"Copy Username to Clipboard"
-msgstr ""
-"\n"
-"Kopēt lietotājvārdu starpliktuvē"
+msgid "\nCopy Username to Clipboard"
+msgstr "\nKopēt lietotājvārdu starpliktuvē"
 
 #. Resource IDs: (32308)
-msgid ""
-"\n"
-"Create report of previous Find search"
-msgstr ""
-"\n"
-"Izveidot ziņojumu par iepriekšējo meklēšanu"
+msgid "\nCreate report of previous Find search"
+msgstr "\nIzveidot ziņojumu par iepriekšējo meklēšanu"
 
 #. Resource IDs: (32056)
-msgid ""
-"\n"
-"Delete an Entry"
-msgstr ""
-"\n"
-"Dzēst ierakstu"
+msgid "\nDelete an Entry"
+msgstr "\nDzēst ierakstu"
 
 #. Resource IDs: (32099)
-msgid ""
-"\n"
-"Display Auth Code"
-msgstr ""
-"\n"
-"Parādīt Auth kodu"
+msgid "\nDisplay Auth Code"
+msgstr "\nParādīt Auth kodu"
 
 #. Resource IDs: (32067)
-msgid ""
-"\n"
-"Display subset of Password"
-msgstr ""
-"\n"
-"Rādīt paroles apakškopu"
+msgid "\nDisplay subset of Password"
+msgstr "\nRādīt paroles apakškopu"
 
 #. Resource IDs: (32063)
-msgid ""
-"\n"
-"Duplicate Entry"
-msgstr ""
-"\n"
-"Dublēt ierakstu"
+msgid "\nDuplicate Entry"
+msgstr "\nDublēt ierakstu"
 
 #. Resource IDs: (32087)
-msgid ""
-"\n"
-"Duplicate Group"
-msgstr ""
-"\n"
-"Dublēt grupu"
+msgid "\nDuplicate Group"
+msgstr "\nDublēt grupu"
 
 #. Resource IDs: (32082)
-msgid ""
-"\n"
-"Edit Base entry"
-msgstr ""
-"\n"
-"Rediģēt bāzes ierakstu"
+msgid "\nEdit Base entry"
+msgstr "\nRediģēt bāzes ierakstu"
 
 #. Resource IDs: (32052)
-msgid ""
-"\n"
-"Edit Entry"
-msgstr ""
-"\n"
-"Rediģēt ierakstu"
+msgid "\nEdit Entry"
+msgstr "\nRediģēt ierakstu"
 
 #. Resource IDs: (32113)
-msgid ""
-"\n"
-"Edit Filters"
-msgstr ""
-"\n"
-"Rediģēt filtrus"
+msgid "\nEdit Filters"
+msgstr "\nRediģēt filtrus"
 
 #. Resource IDs: (5517)
-msgid ""
-"\n"
-"Email: "
-msgstr ""
-"\n"
-"E-pasts: "
+msgid "\nEmail: "
+msgstr "\nE-pasts: "
 
 #. Resource IDs: (3052)
 #, c-format
-msgid ""
-"\n"
-"Error in Password History for entry: »%ls»%ls»%ls»: "
-msgstr ""
-"\n"
-"Kļūda paroles vēsturē ierakstam: »%ls»%ls»%ls»: "
+msgid "\nError in Password History for entry: »%ls»%ls»%ls»: "
+msgstr "\nKļūda paroles vēsturē ierakstam: »%ls»%ls»%ls»: "
 
 #. Resource IDs: (32109)
-msgid ""
-"\n"
-"Expand All"
-msgstr ""
-"\n"
-"Izvērst visu"
+msgid "\nExpand All"
+msgstr "\nIzvērst visu"
 
 #. Resource IDs: (32097)
-msgid ""
-"\n"
-"Export Attachment..."
-msgstr ""
-"\n"
-"Eksportēt pielikumu..."
+msgid "\nExport Attachment..."
+msgstr "\nEksportēt pielikumu..."
 
 #. Resource IDs: (32086)
-msgid ""
-"\n"
-"Export Entry in XML format..."
-msgstr ""
-"\n"
-"Eksportēt ierakstu XML formātā..."
+msgid "\nExport Entry in XML format..."
+msgstr "\nEksportēt ierakstu XML formātā..."
 
 #. Resource IDs: (32085)
-msgid ""
-"\n"
-"Export Entry to Plain Text..."
-msgstr ""
-"\n"
-"Eksportēt ierakstu uz vienkāršu tekstu..."
+msgid "\nExport Entry to Plain Text..."
+msgstr "\nEksportēt ierakstu uz vienkāršu tekstu..."
 
 #. Resource IDs: (32093)
-msgid ""
-"\n"
-"Export Entry to another Safe..."
-msgstr ""
-"\n"
-"Eksportēt ierakstu citā seifā..."
+msgid "\nExport Entry to another Safe..."
+msgstr "\nEksportēt ierakstu citā seifā..."
 
 #. Resource IDs: (32095)
-msgid ""
-"\n"
-"Export Group in XML format..."
-msgstr ""
-"\n"
-"Eksportēt grupu XML formātā..."
+msgid "\nExport Group in XML format..."
+msgstr "\nEksportēt grupu XML formātā..."
 
 #. Resource IDs: (32094)
-msgid ""
-"\n"
-"Export Group to Plain Text..."
-msgstr ""
-"\n"
-"Eksportēt grupu uz vienkāršu tekstu..."
+msgid "\nExport Group to Plain Text..."
+msgstr "\nEksportēt grupu uz vienkāršu tekstu..."
 
 #. Resource IDs: (32096)
-msgid ""
-"\n"
-"Export Group to another Safe..."
-msgstr ""
-"\n"
-"Eksportēt grupu uz citu seifu..."
+msgid "\nExport Group to another Safe..."
+msgstr "\nEksportēt grupu uz citu seifu..."
 
 #. Resource IDs: (32010)
-msgid ""
-"\n"
-"Export to Text"
-msgstr ""
-"\n"
-"Eksportēt uz tekstu"
+msgid "\nExport to Text"
+msgstr "\nEksportēt uz tekstu"
 
 #. Resource IDs: (32011)
-msgid ""
-"\n"
-"Export to V1 database"
-msgstr ""
-"\n"
-"Eksportēt uz V1 datu bāzi"
+msgid "\nExport to V1 database"
+msgstr "\nEksportēt uz V1 datu bāzi"
 
 #. Resource IDs: (32012)
-msgid ""
-"\n"
-"Export to V2 database"
-msgstr ""
-"\n"
-"Eksportēt uz V2 datu bāzi"
+msgid "\nExport to V2 database"
+msgstr "\nEksportēt uz V2 datu bāzi"
 
 #. Resource IDs: (32025)
-msgid ""
-"\n"
-"Export to V3 database"
-msgstr ""
-"\n"
-"Eksportēt uz V3 datu bāzi"
+msgid "\nExport to V3 database"
+msgstr "\nEksportēt uz V3 datu bāzi"
 
 #. Resource IDs: (32013)
-msgid ""
-"\n"
-"Export to XML"
-msgstr ""
-"\n"
-"Eksportēt uz XML"
+msgid "\nExport to XML"
+msgstr "\nEksportēt uz XML"
 
 #. Resource IDs: (32026)
-msgid ""
-"\n"
-"Export to v4 database (EXPERIMENTAL)"
-msgstr ""
-"\n"
-"Eksportēt uz v4 datu bāzi (EKSPERIMENTĀLS)"
+msgid "\nExport to v4 database (EXPERIMENTAL)"
+msgstr "\nEksportēt uz v4 datu bāzi (EKSPERIMENTĀLS)"
 
 #. Resource IDs: (32028)
-msgid ""
-"\n"
-"Filtered entries to PasswordSafe..."
-msgstr ""
-"\n"
-"Filtrēti PasswordSafe ieraksti..."
+msgid "\nFiltered entries to PasswordSafe..."
+msgstr "\nFiltrēti PasswordSafe ieraksti..."
 
 #. Resource IDs: (32061)
-msgid ""
-"\n"
-"Find Next"
-msgstr ""
-"\n"
-"Atrast nākamo"
+msgid "\nFind Next"
+msgstr "\nAtrast nākamo"
 
 #. Resource IDs: (32062)
-msgid ""
-"\n"
-"Find Previous"
-msgstr ""
-"\n"
-"Atrast iepriekšējo"
+msgid "\nFind Previous"
+msgstr "\nAtrast iepriekšējo"
 
 #. Resource IDs: (32080)
-msgid ""
-"\n"
-"Find..."
-msgstr ""
-"\n"
-"Atrast..."
+msgid "\nFind..."
+msgstr "\nAtrast..."
 
 #. Resource IDs: (32157)
-msgid ""
-"\n"
-"Generate Password"
-msgstr ""
-"\n"
-"Ģenerēt paroli"
+msgid "\nGenerate Password"
+msgstr "\nĢenerēt paroli"
 
 #. Resource IDs: (32079)
-msgid ""
-"\n"
-"Go to Base entry"
-msgstr ""
-"\n"
-"Dodieties uz bāzes ierakstu"
+msgid "\nGo to Base entry"
+msgstr "\nDodieties uz bāzes ierakstu"
 
 #. Resource IDs: (57670)
-msgid ""
-"\n"
-"Help"
-msgstr ""
-"\n"
-"Palīdzība"
+msgid "\nHelp"
+msgstr "\nPalīdzība"
 
 #. Resource IDs: (32016)
-msgid ""
-"\n"
-"Import Text"
-msgstr ""
-"\n"
-"Importēt tekstu"
+msgid "\nImport Text"
+msgstr "\nImportēt tekstu"
 
 #. Resource IDs: (32015)
-msgid ""
-"\n"
-"Import XML"
-msgstr ""
-"\n"
-"Importēt XML"
+msgid "\nImport XML"
+msgstr "\nImportēt XML"
 
 #. Resource IDs: (32260)
-msgid ""
-"\n"
-"List or Tree View"
-msgstr ""
-"\n"
-"Saraksta vai koka skats"
+msgid "\nList or Tree View"
+msgstr "\nSaraksta vai koka skats"
 
 #. Resource IDs: (32027)
-msgid ""
-"\n"
-"Lock Database"
-msgstr ""
-"\n"
-"Noslēgt datu bāzi"
+msgid "\nLock Database"
+msgstr "\nNoslēgt datu bāzi"
 
 #. Resource IDs: (32003)
-msgid ""
-"\n"
-"Make New Database"
-msgstr ""
-"\n"
-"Izveidot jaunu datu bāzi"
+msgid "\nMake New Database"
+msgstr "\nIzveidot jaunu datu bāzi"
 
 #. Resource IDs: (32115)
-msgid ""
-"\n"
-"Manage Filters"
-msgstr ""
-"\n"
-"Pārvaldīt filtrus"
+msgid "\nManage Filters"
+msgstr "\nPārvaldīt filtrus"
 
 #. Resource IDs: (3415)
 #, c-format
-msgid ""
-"\n"
-"Merge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
-msgstr ""
-"\n"
-"Apvienošana pabeigta: pievienots %d %ls (%d %ls, %d %ls, %d %ls, %d %ls)"
+msgid "\nMerge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
+msgstr "\nApvienošana pabeigta: pievienots %d %ls (%d %ls, %d %ls, %d %ls, %d %ls)"
 
 #. Resource IDs: (32018)
-msgid ""
-"\n"
-"Merge into Database"
-msgstr ""
-"\n"
-"Apvienot datu bāzē"
+msgid "\nMerge into Database"
+msgstr "\nApvienot datu bāzē"
 
 #. Resource IDs: (32002)
-msgid ""
-"\n"
-"Open Another Database"
-msgstr ""
-"\n"
-"Atvērt citu datu bāzi"
+msgid "\nOpen Another Database"
+msgstr "\nAtvērt citu datu bāzi"
 
 #. Resource IDs: (32154)
-msgid ""
-"\n"
-"Options"
-msgstr ""
-"\n"
-"Opcijas"
+msgid "\nOptions"
+msgstr "\nOpcijas"
 
 #. Resource IDs: (32159)
-msgid ""
-"\n"
-"Password Policies"
-msgstr ""
-"\n"
-"Paroles politikas"
+msgid "\nPassword Policies"
+msgstr "\nParoles politikas"
 
 #. Resource IDs: (32076)
-msgid ""
-"\n"
-"Perform AutoType"
-msgstr ""
-"\n"
-"Veikt Autoievadi"
+msgid "\nPerform AutoType"
+msgstr "\nVeikt Autoievadi"
 
 #. Resource IDs: (5283)
-msgid ""
-"\n"
-"Please try another"
-msgstr ""
-"\n"
-"Lūdzu, izmēģiniet citu"
+msgid "\nPlease try another"
+msgstr "\nLūdzu, izmēģiniet citu"
 
 #. Resource IDs: (5215)
-msgid ""
-"\n"
-"Program will terminate."
-msgstr ""
-"\n"
-"Programma tiks pārtraukta."
+msgid "\nProgram will terminate."
+msgstr "\nProgramma tiks pārtraukta."
 
 #. Resource IDs: (32090)
-msgid ""
-"\n"
-"Protect All Entries"
-msgstr ""
-"\n"
-"Aizsargāt visus ierakstus"
+msgid "\nProtect All Entries"
+msgstr "\nAizsargāt visus ierakstus"
 
 #. Resource IDs: (32088)
-msgid ""
-"\n"
-"Protect Entry"
-msgstr ""
-"\n"
-"Aizsargāt ierakstu"
+msgid "\nProtect Entry"
+msgstr "\nAizsargāt ierakstu"
 
 #. Resource IDs: (32084)
-msgid ""
-"\n"
-"Redo"
-msgstr ""
-"\n"
-"Atcelt"
+msgid "\nRedo"
+msgstr "\nAtcelt"
 
 #. Resource IDs: (5780)
 #, c-format
-msgid ""
-"\n"
-"Renamed %d %s"
-msgstr ""
-"\n"
-"Pārdēvēts %d %s"
+msgid "\nRenamed %d %s"
+msgstr "\nPārdēvēts %d %s"
 
 #. Resource IDs: (32077)
-msgid ""
-"\n"
-"Run Command"
-msgstr ""
-"\n"
-"Palaišanas komanda"
+msgid "\nRun Command"
+msgstr "\nPalaišanas komanda"
 
 #. Resource IDs: (32005)
-msgid ""
-"\n"
-"Save Database"
-msgstr ""
-"\n"
-"Saglabāt datu bāzi"
+msgid "\nSave Database"
+msgstr "\nSaglabāt datu bāzi"
 
 #. Resource IDs: (32006)
-msgid ""
-"\n"
-"Save Database As..."
-msgstr ""
-"\n"
-"Saglabāt datu bāzi kā..."
+msgid "\nSave Database As..."
+msgstr "\nSaglabāt datu bāzi kā..."
 
 #. Resource IDs: (32255)
-msgid ""
-"\n"
-"Select Entry"
-msgstr ""
-"\n"
-"Atlasīt Ierakstu"
+msgid "\nSelect Entry"
+msgstr "\nAtlasīt Ierakstu"
 
 #. Resource IDs: (32075)
-msgid ""
-"\n"
-"Send Email"
-msgstr ""
-"\n"
-"Nosūtīt e-pastu"
+msgid "\nSend Email"
+msgstr "\nNosūtīt e-pastu"
 
 #. Resource IDs: (32114)
-msgid ""
-"\n"
-"Set/Clear Filters"
-msgstr ""
-"\n"
-"Iestatīt/Notīrīt filtrus"
+msgid "\nSet/Clear Filters"
+msgstr "\nIestatīt/Notīrīt filtrus"
 
 #. Resource IDs: (32127)
-msgid ""
-"\n"
-"Show Unsaved Changes"
-msgstr ""
-"\n"
-"Rādīt nesaglabātās izmaiņas"
+msgid "\nShow Unsaved Changes"
+msgstr "\nRādīt nesaglabātās izmaiņas"
 
 #. Resource IDs: (32131)
-msgid ""
-"\n"
-"Show entries with Password Expiry dates"
-msgstr ""
-"\n"
-"Rādīt ierakstus ar paroles derīguma termiņu"
+msgid "\nShow entries with Password Expiry dates"
+msgstr "\nRādīt ierakstus ar paroles derīguma termiņu"
 
 #. Resource IDs: (32140)
-msgid ""
-"\n"
-"Show only found entries"
-msgstr ""
-"\n"
-"Rādīt tikai atrastos ierakstus"
+msgid "\nShow only found entries"
+msgstr "\nRādīt tikai atrastos ierakstus"
 
 #. Resource IDs: (5339)
 #, c-format
-msgid ""
-"\n"
-"Skipped %d %s"
-msgstr ""
-"\n"
-"Izlaists %d %s"
+msgid "\nSkipped %d %s"
+msgstr "\nIzlaists %d %s"
 
 #. Resource IDs: (32022)
-msgid ""
-"\n"
-"Synchronize Databases"
-msgstr ""
-"\n"
-"Sinhronizēt datu bāzes"
+msgid "\nSynchronize Databases"
+msgstr "\nSinhronizēt datu bāzes"
 
 #. Resource IDs: (3413)
 #, c-format
-msgid ""
-"\n"
-"Synchronize completed: %d %ls updated"
-msgstr ""
-"\n"
-"Sinhronizācija pabeigta: %d %ls atjaunināti"
+msgid "\nSynchronize completed: %d %ls updated"
+msgstr "\nSinhronizācija pabeigta: %d %ls atjaunināti"
 
 #. Resource IDs: (3412)
 #, c-format
-msgid ""
-"\n"
-"The following %ls %ls updated:"
-msgstr ""
-"\n"
-"Atjaunināti %ls %ls:"
+msgid "\nThe following %ls %ls updated:"
+msgstr "\nAtjaunināti %ls %ls:"
 
 #. Resource IDs: (3419)
 #, c-format
-msgid ""
-"\n"
-"The following new %ls %ls merged into this database:"
-msgstr ""
-"\n"
-"Šajā datubāzē ir apvienoti šādi jaunie %ls %ls:"
+msgid "\nThe following new %ls %ls merged into this database:"
+msgstr "\nŠajā datubāzē ir apvienoti šādi jaunie %ls %ls:"
 
 #. Resource IDs: (32083)
-msgid ""
-"\n"
-"Undo"
-msgstr ""
-"\n"
-"Atsaukt"
+msgid "\nUndo"
+msgstr "\nAtsaukt"
 
 #. Resource IDs: (3060)
-msgid ""
-"\n"
-"Unexpected exception during parsing."
-msgstr ""
-"\n"
-"Parsēšanas laikā radās negaidīts izņēmums."
+msgid "\nUnexpected exception during parsing."
+msgstr "\nParsēšanas laikā radās negaidīts izņēmums."
 
 #. Resource IDs: (32091)
-msgid ""
-"\n"
-"Unprotect All Entries"
-msgstr ""
-"\n"
-"Noņemt visu ierakstu aizsardzību"
+msgid "\nUnprotect All Entries"
+msgstr "\nNoņemt visu ierakstu aizsardzību"
 
 #. Resource IDs: (32089)
-msgid ""
-"\n"
-"Unprotect Entry"
-msgstr ""
-"\n"
-"Noņemt ieraksta aizsardzību"
+msgid "\nUnprotect Entry"
+msgstr "\nNoņemt ieraksta aizsardzību"
 
 #. Resource IDs: (5282)
-msgid ""
-"\n"
-"Use it anyway?"
-msgstr ""
-"\n"
-"Vai to tomēr izmantot?"
+msgid "\nUse it anyway?"
+msgstr "\nVai to tomēr izmantot?"
 
 #. Resource IDs: (32098)
-msgid ""
-"\n"
-"View Attachment"
-msgstr ""
-"\n"
-"Skatīt pielikumu"
+msgid "\nView Attachment"
+msgstr "\nSkatīt pielikumu"
 
 #. Resource IDs: (32053)
-msgid ""
-"\n"
-"View Entry"
-msgstr ""
-"\n"
-"Skatīt ierakstu"
+msgid "\nView Entry"
+msgstr "\nSkatīt ierakstu"
 
 #. Resource IDs: (32261)
-msgid ""
-"\n"
-"View Reports"
-msgstr ""
-"\n"
-"Skatīt ziņojumus"
+msgid "\nView Reports"
+msgstr "\nSkatīt ziņojumus"
 
 #. Resource IDs: (5238)
-msgid ""
-"\n"
-"\n"
-"Cannot open database. It probably does not exist.\n"
-"You can Open another database, create a New one or Cancel."
-msgstr ""
-"\n"
-"Nevar atvērt datu bāzi. Tā droši vien neeksistē.\n"
-"Varat atvērt citu datu bāzi, izveidot jaunu vai atcelt."
+msgid "\n\nCannot open database. It probably does not exist.\nYou can Open another database, create a New one or Cancel."
+msgstr "\nNevar atvērt datu bāzi. Tā droši vien neeksistē.\nVarat atvērt citu datu bāzi, izveidot jaunu vai atcelt."
 
 #. Resource IDs: (5662)
-msgid ""
-"\n"
-"\n"
-"Ignore this and save anyway - Yes/no?"
-msgstr ""
-"\n"
-"\n"
-"Ignorēt šo un tik un tā saglabāt — Jā/nē?"
+msgid "\n\nIgnore this and save anyway - Yes/no?"
+msgstr "\n\nIgnorēt šo un tik un tā saglabāt — Jā/nē?"
 
 #. Resource IDs: (5463)
-msgid ""
-"\n"
-"\n"
-"Select Yes to continue with this password or No to cancel"
-msgstr ""
-"\n"
-"\n"
-"Izvēlieties Jā, lai turpinātu lietot šo paroli, vai Nē, lai atceltu"
+msgid "\n\nSelect Yes to continue with this password or No to cancel"
+msgstr "\n\nIzvēlieties Jā, lai turpinātu lietot šo paroli, vai Nē, lai atceltu"
 
 #. Resource IDs: (5357)
-msgid ""
-"\n"
-"\n"
-"The databases are identical when comparing the selected or default fields!"
-msgstr ""
-"\n"
-"\n"
-"Salīdzinot atlasītos vai noklusējuma laukus, datu bāzes ir identiskas!"
+msgid "\n\nThe databases are identical when comparing the selected or default fields!"
+msgstr "\n\nSalīdzinot atlasītos vai noklusējuma laukus, datu bāzes ir identiskas!"
 
 #. Resource IDs: (5441)
-msgid ""
-"\n"
-"\n"
-"Unknown fields will also be copied with the entry."
-msgstr ""
-"\n"
-"\n"
-"Ar ierakstu tiks kopēti arī nezināmi lauki."
+msgid "\n\nUnknown fields will also be copied with the entry."
+msgstr "\n\nAr ierakstu tiks kopēti arī nezināmi lauki."
 
 #. Resource IDs: (5784)
 #, c-format
-msgid ""
-"\n"
-"with Password History errors %d"
-msgstr ""
-"\n"
-"ar paroles vēstures kļūdām %d"
+msgid "\nwith Password History errors %d"
+msgstr "\nar paroles vēstures kļūdām %d"
 
 #. Resource IDs: (5867)
-msgid ""
-"\n"
-"with warnings"
-msgstr ""
-"\n"
-"ar brīdinājumiem"
+msgid "\nwith warnings"
+msgstr "\nar brīdinājumiem"
 
 #. Resource IDs: (5448)
-msgid ""
-"\r\n"
-"This field is being edited in your default text editor.\r\n"
-"Complete this action before continuing.\r\n"
-"\r\n"
-"(You may cancel this edit using the Close [X] button above)"
-msgstr ""
-"\r\n"
-"Šis lauks tiek rediģēts noklusējuma teksta redaktorā.\r\n"
-"Pirms turpināt, veiciet šo darbību.\r\n"
-"\r\n"
-"(Šo rediģēšanu var atcelt, iepriekš izmantojot iepriekš redzamo pogu Aizvērt [X])"
+msgid "\r\nThis field is being edited in your default text editor.\r\nComplete this action before continuing.\r\n\r\n(You may cancel this edit using the Close [X] button above)"
+msgstr "\r\nŠis lauks tiek rediģēts noklusējuma teksta redaktorā.\r\nPirms turpināt, veiciet šo darbību.\r\n\r\n(Šo rediģēšanu var atcelt, iepriekš izmantojot iepriekš redzamo pogu Aizvērt [X])"
 
 #. Resource IDs: (5526)
 #, c-format
@@ -9322,12 +8286,8 @@ msgstr "\t%s tiek ierobežots šādiem laukiem:"
 
 #. Resource IDs: (5363)
 #, c-format
-msgid ""
-"\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\n"
-"\t\thas differences in the following fields:"
-msgstr ""
-"\tIeraksts - Grupa:\"%s\";Nosaukums:\"%s\";Lietotājs:\"%s\"\n"
-"\t\tir atšķirības šādos laukos:"
+msgid "\tEntry - Group:\"%s\"; Title:\"%s\"; User:\"%s\"\n\t\thas differences in the following fields:"
+msgstr "\tIeraksts - Grupa:\"%s\";Nosaukums:\"%s\";Lietotājs:\"%s\"\n\t\tir atšķirības šādos laukos:"
 
 #. Resource IDs: (5359)
 #, c-format
@@ -9374,12 +8334,8 @@ msgstr "\tŠie ieraksti satur meklēšanas virkni '%ls' %ls"
 
 #. Resource IDs: (5522)
 #, c-format
-msgid ""
-"\tThe following restrictions were selected:\n"
-"\t\t %s"
-msgstr ""
-"\tTika atlasīti šādi ierobežojumi:\n"
-"\t\t %s"
+msgid "\tThe following restrictions were selected:\n\t\t %s"
+msgstr "\tTika atlasīti šādi ierobežojumi:\n\t\t %s"
 
 #. Resource IDs: (3274)
 msgid "\tThis entry has been made an alias of associated base entry."
@@ -9833,3 +8789,4 @@ msgstr "xxxxxx"
 #, c-format
 msgid "«%s» «%s» «%s»"
 msgstr "«%s» «%s» «%s»"
+

@@ -6,13 +6,12 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Password Safe\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-08 12:15+0300\n"
-"PO-Revision-Date: 2025-07-26 09:11+0200\n"
-"Last-Translator: Milan Zabka <milan@zabka.top>\n"
-"Language-Team: Milan Zabka <milan@zabka.top>\n"
-"Language: sk\n"
+"POT-Creation-Date: 1900-01-01 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -3452,6 +3451,10 @@ msgstr "Exportovať prílohu..."
 msgid "Export Current &DB"
 msgstr "Exportovať aktuálnu DB"
 
+#. Resource IDs: (5965)
+msgid "Export DB"
+msgstr ""
+
 #. Resource IDs: (32136 - PopupMenuEx, 5935)
 msgid "Export Entry To"
 msgstr "Exportovať záznam do"
@@ -3460,7 +3463,7 @@ msgstr "Exportovať záznam do"
 msgid "Export Group To"
 msgstr "Exportovať skupinu do"
 
-#. Resource IDs: (5833)
+#. Resource IDs: (5805, 5833)
 msgid "Export Text"
 msgstr "Exportovať text"
 
@@ -3468,7 +3471,7 @@ msgstr "Exportovať text"
 msgid "Export Text Extra"
 msgstr "Exportovať Text Extra"
 
-#. Resource IDs: (5834)
+#. Resource IDs: (5806, 5834)
 msgid "Export XML"
 msgstr "Exportovať XML"
 
@@ -3488,18 +3491,6 @@ msgstr "Export údajov bol používateľom obmedzený na určité polia."
 #. Resource IDs: (1515)
 msgid "Export..."
 msgstr "Exportovať..."
-
-#. Resource IDs: (5965)
-msgid "Export_DB"
-msgstr ""
-
-#. Resource IDs: (5805)
-msgid "Export_Text"
-msgstr ""
-
-#. Resource IDs: (5806)
-msgid "Export_XML"
-msgstr ""
 
 #. Resource IDs: (5812)
 msgid "Exporting to file:"
@@ -4007,141 +3998,176 @@ msgid "Hungarian 101-key"
 msgstr "Maďarská 101"
 
 #. Accelerator Entry for Menu ID:32002; '&Open Another'
+#. Accelerator Entry for Menu ID:32002; '&Open Another'
 msgid "ID:32002:V C +O"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32003; '&New...'
 #. Accelerator Entry for Menu ID:32003; '&New...'
 msgid "ID:32003:V C +N"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32005; '&Save'
+#. Accelerator Entry for Menu ID:32005; '&Save'
 msgid "ID:32005:V C +S"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32021; 'E&xit'
 #. Accelerator Entry for Menu ID:32021; 'E&xit'
 msgid "ID:32021:V C +Q"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32027; '&Lock'
+#. Accelerator Entry for Menu ID:32027; '&Lock'
 msgid "ID:32027:V CS+L"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32051; '&Add Entry...'
 #. Accelerator Entry for Menu ID:32051; '&Add Entry...'
 msgid "ID:32051:V C +A"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32063; '&Duplicate Entry'
+#. Accelerator Entry for Menu ID:32063; '&Duplicate Entry'
 msgid "ID:32063:V C +D"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32066; '&Copy Password to Clipboard'
 #. Accelerator Entry for Menu ID:32066; '&Copy Password to Clipboard'
 msgid "ID:32066:V C +C"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32067; 'Display subset of Password'
+#. Accelerator Entry for Menu ID:32067; 'Display subset of Password'
 msgid "ID:32067:V C +B"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32068; 'Copy &Username to Clipboard'
 #. Accelerator Entry for Menu ID:32068; 'Copy &Username to Clipboard'
 msgid "ID:32068:V C +U"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32069; 'Copy &Notes to Clipboard'
+#. Accelerator Entry for Menu ID:32069; 'Copy &Notes to Clipboard'
 msgid "ID:32069:V C +G"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32070; 'Copy UR&L to Clipboard'
 #. Accelerator Entry for Menu ID:32070; 'Copy UR&L to Clipboard'
 msgid "ID:32070:VAC +L"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32072; '&Browse to URL'
+#. Accelerator Entry for Menu ID:32072; '&Browse to URL'
 msgid "ID:32072:V C +L"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32073; 'Browse to URL + &AutoType'
 #. Accelerator Entry for Menu ID:32073; 'Browse to URL + &AutoType'
 msgid "ID:32073:VA  +L"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
+#. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
 msgid "ID:32074:VA S+L"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32075; 'Send &Email'
 #. Accelerator Entry for Menu ID:32075; 'Send &Email'
 msgid "ID:32075:V C +E"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
+#. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
 msgid "ID:32076:V C +T"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32077; '&Run Command'
 #. Accelerator Entry for Menu ID:32077; '&Run Command'
 msgid "ID:32077:V C +R"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32080; '&Find...'
+#. Accelerator Entry for Menu ID:32080; '&Find...'
 msgid "ID:32080:V C +F"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
 #. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
 msgid "ID:32081:VAC +R"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32083; 'Undo'
+#. Accelerator Entry for Menu ID:32083; 'Undo'
 msgid "ID:32083:V C +Z"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32084; 'Redo'
 #. Accelerator Entry for Menu ID:32084; 'Redo'
 msgid "ID:32084:V C +Y"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32099; 'Display Auth Code'
+#. Accelerator Entry for Menu ID:32099; 'Display Auth Code'
 msgid "ID:32099:VAC +2"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32100; 'Copy Aut&h Code to Clipboard'
 #. Accelerator Entry for Menu ID:32100; 'Copy Aut&h Code to Clipboard'
 msgid "ID:32100:VA  +2"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32140; 'Last Find results'
+#. Accelerator Entry for Menu ID:32140; 'Last Find results'
 msgid "ID:32140:V C +K"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32154; '&Options...'
 #. Accelerator Entry for Menu ID:32154; '&Options...'
 msgid "ID:32154:V C +M"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32157; 'Cancel'
+#. Accelerator Entry for Menu ID:32157; 'Cancel'
 msgid "ID:32157:V C +P"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32302; 'Clear Find'
 #. Accelerator Entry for Menu ID:32302; 'Clear Find'
 msgid "ID:32302:VAC +C"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32304; ''
+#. Accelerator Entry for Menu ID:32304; ''
 msgid "ID:32304:VAC +S"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32307; 'Advanced Find Options'
 #. Accelerator Entry for Menu ID:32307; 'Advanced Find Options'
 msgid "ID:32307:VAC +A"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32500; ''
+#. Accelerator Entry for Menu ID:32500; ''
 msgid "ID:32500:V C +C"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32501; ''
 #. Accelerator Entry for Menu ID:32501; ''
 msgid "ID:32501:V C +E"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32502; ''
+#. Accelerator Entry for Menu ID:32502; ''
 msgid "ID:32502:V C +F"
 msgstr ""
 
 #. Accelerator Entry for Menu ID:32503; ''
+#. Accelerator Entry for Menu ID:32503; ''
 msgid "ID:32503:V C +L"
 msgstr ""
 
+#. Accelerator Entry for Menu ID:32504; ''
 #. Accelerator Entry for Menu ID:32504; ''
 msgid "ID:32504:V C +S"
 msgstr ""
@@ -4211,6 +4237,18 @@ msgstr "Importovať KeePass V1 CSV"
 msgid "Import KeePass V1 TXT"
 msgstr "Importovať KeePass V1 TXT"
 
+#. Resource IDs: (5869)
+msgid "Import KeePassV1 CSV"
+msgstr ""
+
+#. Resource IDs: (5868)
+msgid "Import KeePassV1 TXT"
+msgstr ""
+
+#. Resource IDs: (5534)
+msgid "Import Text"
+msgstr ""
+
 #. Resource IDs: (125)
 msgid "Import Text Settings"
 msgstr "Nastavenia importu textu"
@@ -4218,6 +4256,10 @@ msgstr "Nastavenia importu textu"
 #. Resource IDs: (5479)
 msgid "Import Text failed"
 msgstr "Import textu zlyhal"
+
+#. Resource IDs: (5535)
+msgid "Import XML"
+msgstr ""
 
 #. Resource IDs: (126)
 msgid "Import XML Settings"
@@ -4250,22 +4292,6 @@ msgstr "Importovať pod novou skupinou?"
 #. Resource IDs: (1516)
 msgid "Import..."
 msgstr "Importovať..."
-
-#. Resource IDs: (5869)
-msgid "Import_KeePassV1_CSV"
-msgstr ""
-
-#. Resource IDs: (5868)
-msgid "Import_KeePassV1_TXT"
-msgstr ""
-
-#. Resource IDs: (5534)
-msgid "Import_Text"
-msgstr ""
-
-#. Resource IDs: (5535)
-msgid "Import_XML"
-msgstr ""
 
 #. Resource IDs: (5277, 5638)
 msgid "Imported"
@@ -8253,6 +8279,10 @@ msgstr "začína sa na"
 msgid "between"
 msgstr "medzi"
 
+#. Resource IDs: (5665)
+msgid "bottom"
+msgstr "zdola"
+
 #. Resource IDs: (3371)
 msgid "changed but not yet saved to database"
 msgstr "zmenený ale ešte neuložený do databázy"
@@ -8568,10 +8598,6 @@ msgstr "heslo a údaje tohto záznamu"
 msgid "top"
 msgstr "zhora"
 
-#. Resource IDs: (5665)
-msgid "bottom"
-msgstr "zdola"
-
 #. Resource IDs: (1098)
 msgid "used entries in System Tray menu."
 msgstr "nedávno použitých položiek (história)"
@@ -8633,3 +8659,4 @@ msgstr ""
 #, c-format
 msgid "«%s» «%s» «%s»"
 msgstr ""
+
