@@ -59,5 +59,7 @@
   <url type="bugtracker">https://github.com/pwsafe/pwsafe/issues</url>
   <url type="translate">https://explore.transifex.com/passwordsafe/passwordsafe/</url>
   <url type="faq">https://pwsafe.org/faq.shtml</url>
+  <url type="contact">https://pwsafe.org/contact.php</url>
+  <url type="donation">https://sourceforge.net/p/passwordsafe/donate/</url>
   <content_rating type="oars-1.1"/>
 </component>
