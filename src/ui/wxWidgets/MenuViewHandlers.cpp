@@ -392,6 +392,7 @@ void PasswordSafeFrame::ApplyFilters()
 {
   m_FilterManager.CreateGroups();
   // Update and setting of filter state is not needed here, as update is done at the end of RefreshView()
+  m_tree->SetFilterActive(m_bFilterActive);
   RefreshViews();
 }
 

@@ -111,7 +111,6 @@ void PasswordSafeFrame::OnAddClick(wxCommandEvent& WXUNUSED(evt))
   int rc = ShowModalAndGetResult<AddEditPropSheetDlg>(this, m_core, AddEditPropSheetDlg::SheetType::ADD, nullptr, selectedGroup);
   if (rc == wxID_OK) {
     UpdateStatusBar();
-    Show();
   }
 }
 
