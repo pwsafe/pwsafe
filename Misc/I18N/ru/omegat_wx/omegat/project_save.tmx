@@ -6625,6 +6625,14 @@ Action:</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Export DB</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Экспорт в контейнер</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Export Text</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -6897,6 +6905,14 @@ Action:</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210614T173930Z" creationid="pm_kan" creationdate="20210614T173930Z">
         <seg>Файл %ls не был импортирован (не␣соответствует XML-схеме)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>File '%ls' not readable</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20251102T171955Z" creationid="pm_kan" creationdate="20251102T171942Z">
+        <seg>Файл «%ls» не может быть открыт для чтения</seg>
       </tuv>
     </tu>
     <tu>
@@ -7665,6 +7681,30 @@ username field.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Import KeePassV1 CSV</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Импорт из CSV-файла KeePass V1</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Import KeePassV1 TXT</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Импорт из TXT-файла KeePass V1</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Import Text</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Импорт из простого текста</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Import Text Settings</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -7677,6 +7717,14 @@ username field.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Сбой при импорте из простого текста</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Import XML</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Импорт из XML</seg>
       </tuv>
     </tu>
     <tu>
@@ -9338,6 +9386,14 @@ added or existing entries removed during this process.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20250315T095225Z" creationid="pm_kan" creationdate="20250315T091716Z">
         <seg>Не поддерживается в Wayland</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Not supported by the current Windowing System (e.g. Wayland), or you may need to install a Desktop Environment extension to enable System Tray support.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20251102T172600Z" creationid="pm_kan" creationdate="20251102T172600Z">
+        <seg>Не поддерживается текущим оконным менеджером (например, из-за использования протокола Wayland) или требуется установка расширения, реализующего область уведомлений («системный лоток»).</seg>
       </tuv>
     </tu>
     <tu>
@@ -16133,6 +16189,14 @@ Imported %d %s</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Просмотр отчёта</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>View Report: %ls</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20251102T171828Z" creationid="pm_kan" creationdate="20251102T171828Z">
+        <seg>Просмотр отчёта: %ls</seg>
       </tuv>
     </tu>
     <tu>

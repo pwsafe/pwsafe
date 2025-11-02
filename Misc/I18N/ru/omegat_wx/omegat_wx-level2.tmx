@@ -1063,14 +1063,6 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>' not readable</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210614T182135Z" creationid="pm_kan" creationdate="20210614T182135Z">
-        <seg>» не может быть открыт для чтения</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
         <seg>'Browse to URL' copies password to clipboard</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
@@ -4834,6 +4826,14 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Export DB</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Экспорт в контейнер</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Export Text</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
@@ -4902,30 +4902,6 @@ offset approximately at %d</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Экспорт...</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>Export_DB</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU">
-        <seg>Export_DB</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>Export_Text</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU">
-        <seg>Export_Text</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>Export_XML</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU">
-        <seg>Export_XML</seg>
       </tuv>
     </tu>
     <tu>
@@ -5106,6 +5082,14 @@ offset approximately at %d</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210614T173930Z" creationid="pm_kan" creationdate="20210614T173930Z">
         <seg>Файл %ls не был импортирован (не␣соответствует XML-схеме)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>File '%ls' not readable</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20251102T171955Z" creationid="pm_kan" creationdate="20251102T171942Z">
+        <seg>Файл «%ls» не может быть открыт для чтения</seg>
       </tuv>
     </tu>
     <tu>
@@ -5768,6 +5752,30 @@ from your selected input database</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Import KeePassV1 CSV</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Импорт из CSV-файла KeePass V1</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Import KeePassV1 TXT</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Импорт из TXT-файла KeePass V1</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Import Text</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Импорт из простого текста</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Import Text Settings</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
@@ -5780,6 +5788,14 @@ from your selected input database</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Сбой при импорте из простого текста</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Import XML</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Импорт из XML</seg>
       </tuv>
     </tu>
     <tu>
@@ -5900,38 +5916,6 @@ from your selected input database</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Импорт...</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>Import_KeePassV1_CSV</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU">
-        <seg>Import_KeePassV1_CSV</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>Import_KeePassV1_TXT</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU">
-        <seg>Import_KeePassV1_TXT</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>Import_Text</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU">
-        <seg>Import_Text</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>Import_XML</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU">
-        <seg>Import_XML</seg>
       </tuv>
     </tu>
     <tu>
@@ -7189,6 +7173,14 @@ added or existing entries removed during this process.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Not supported by the current Windowing System (e.g. Wayland), or you may need to install a Desktop Environment extension to enable System Tray support.</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20251102T172600Z" creationid="pm_kan" creationdate="20251102T172600Z">
+        <seg>Не поддерживается текущим оконным менеджером (например, из-за использования протокола Wayland) или требуется установка расширения, реализующего область уведомлений («системный лоток»).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Not used</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
@@ -8153,32 +8145,6 @@ to the clipboard.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Предыдущие пароли</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>Project-Id-Version: 
-Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2025-08-31 17:23+0300
-PO-Revision-Date: 2025-08-31 17:00+0300
-Last-Translator:
-Language-Team:
-Language: ru
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20250831T142506Z" creationid="pm_kan" creationdate="20250831T142506Z">
-        <seg>Project-Id-Version: 
-Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2025-08-23 15:09+0300
-PO-Revision-Date: 2025-08-17 22:30+0300
-Last-Translator: Andrey Kuznetsov &lt;pm_kan@users.sourceforge.net&gt;
-Language-Team:
-Language: ru
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit</seg>
       </tuv>
     </tu>
     <tu>
@@ -10924,10 +10890,10 @@ Imported %d %ls</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>View Report</seg>
+        <seg>View Report: %ls</seg>
       </tuv>
-      <tuv xml:lang="ru-RU">
-        <seg>Просмотр отчёта</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20251102T171828Z" creationid="pm_kan" creationdate="20251102T171828Z">
+        <seg>Просмотр отчёта: %ls</seg>
       </tuv>
     </tu>
     <tu>
@@ -11719,14 +11685,6 @@ able to abort it mid-way.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T110332Z">
         <seg>поля в текущий контейнер</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>file '</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210614T182054Z" creationid="pm_kan" creationdate="20210614T182054Z">
-        <seg>файл «</seg>
       </tuv>
     </tu>
     <tu>
