@@ -29721,6 +29721,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>https://www.schneier.com/wp-content/uploads/2016/02/paper-low-entropy.pdf</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20251102T173355Z" creationid="pm_kan" creationdate="20251102T173355Z">
+        <seg>https://www.schneier.com/wp-content/uploads/2016/02/paper-low-entropy.pdf</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>https://www.sugarsync.com/</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20111002T143617Z">

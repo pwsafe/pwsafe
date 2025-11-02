@@ -22280,14 +22280,6 @@
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>http://www.schneier.com/paper-low-entropy.pdf</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20171111T140550Z" creationid="pm_kan" creationdate="20171111T140550Z">
-        <seg>http://www.schneier.com/paper-low-entropy.pdf</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
         <seg>http://www.schneier.com/twofish.html</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20110207T182949Z">
@@ -22412,6 +22404,14 @@
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T130045Z" creationid="pm_kan" creationdate="20200823T130045Z">
         <seg>https://www.pngrepo.com</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>https://www.schneier.com/wp-content/uploads/2016/02/paper-low-entropy.pdf</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20251102T173355Z" creationid="pm_kan" creationdate="20251102T173355Z">
+        <seg>https://www.schneier.com/wp-content/uploads/2016/02/paper-low-entropy.pdf</seg>
       </tuv>
     </tu>
     <tu>
@@ -24541,28 +24541,6 @@
         <seg>Synchronize</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20120808T180616Z">
-        <seg>Синхронизация</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <prop type="file">pwsafe.hhk</prop>
-      <prop type="prev">File Menu</prop>
-      <prop type="next">File Menu</prop>
-      <tuv xml:lang="en-US">
-        <seg>Compare</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T133829Z" creationid="pm_kan" creationdate="20200823T133829Z">
-        <seg>Сравнение</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <prop type="file">pwsafe.hhk</prop>
-      <prop type="prev">Compare Results</prop>
-      <prop type="next">File Menu</prop>
-      <tuv xml:lang="en-US">
-        <seg>Synchronize</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20200823T133847Z" creationid="pm_kan" creationdate="20200823T133847Z">
         <seg>Синхронизация</seg>
       </tuv>
     </tu>
