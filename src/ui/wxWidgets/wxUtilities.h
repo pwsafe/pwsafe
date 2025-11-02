@@ -470,6 +470,12 @@ namespace wxUtilities
    * @param Specify the target control.
    */
   void NotifyIfUnsupported(enum Feature feature, wxWindow* window);
+
+  /**
+   * @brief Checks if the environment variable PWS_ADVANCED_SCROLL
+   *        is set to a value greater than zero.
+   */
+  bool IsAdvancedScrollEnabled();
 }
 
 // Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash

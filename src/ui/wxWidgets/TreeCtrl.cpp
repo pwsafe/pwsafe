@@ -947,9 +947,43 @@ void TreeCtrlBase::SelectItem(const CUUID & uuid)
     if(parent.IsOk() && (parent != GetRootItem()) && ! IsExpanded(parent))
       Expand(parent);
     ::wxSafeYield();
-    EnsureVisible(id);
+
+    /*
+      Searches for a subsequent or sibling element (password element / group element)
+      in the tree view at the same level. If no element is found, the search continues
+      one level higher until the root element is reached.
+      The goal is to find the next visual element below the target element so that it
+      appears visually positioned slightly higher. See also the documentation for
+      wxUtilities::IsAdvancedScrollEnabled().
+      itemId refers either to the found sibling element or to an intermediate result,
+      therefore the original element from which the search begins should be stored.
+    */
+    std::function<bool(wxTreeItemId&)> searchSibling = [&](wxTreeItemId& itemId) -> bool {
+      // If a sibling element of the specified element was found,
+      // then the search was successful and can be stopped.
+      auto nextSibling = wxTreeCtrl::GetNextSibling(itemId);
+      if (nextSibling.IsOk()) {
+        itemId = nextSibling;
+        return true;
+      }
+
+      // If the root element has been reached, then the search
+      // was not successful and can be stopped.
+      auto parentId = GetItemParent(itemId);
+      if (parentId == GetRootItem()) {
+        return false;
+      }
+
+      // The search continues further up the hierarchy.
+      itemId = parentId;
+      return searchSibling(itemId);
+    };
+
+    auto nextSibling = id; // keep the element (id) of the search result for the case that the search for a sibling fails
+    wxUtilities::IsAdvancedScrollEnabled() && searchSibling(nextSibling) ? EnsureVisible(nextSibling) : EnsureVisible(id);
+
     ::wxSafeYield();
-    
+
     wxTreeCtrl::SelectItem(id);
   }
 }
