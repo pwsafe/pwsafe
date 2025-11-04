@@ -354,6 +354,10 @@ void TreeCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &e
       ASSERT(item != nullptr);
       if(!m_bFilterActive) {
         AddItem(*item);
+        auto itemId = Find(*item);
+        if (itemId.IsOk()) {
+          EnsureVisible(itemId);
+        }
       }
       break;
     case UpdateGUICommand::GUI_DELETE_ENTRY:
