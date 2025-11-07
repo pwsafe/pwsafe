@@ -2009,7 +2009,13 @@ int DboxMain::GetAndCheckPassword(const StringX &filename,
 
   ASSERT(m_pPasskeyEntryDlg == NULL); // should have been taken care of above
 
-  m_pPasskeyEntryDlg = new CPasskeyEntry(this,
+  // Following because Windows gets confused when multiple desktops are used
+  CWnd* pParent = this;
+
+  if (!::IsWindow(GetSafeHwnd()))
+    pParent = GetDesktopWindow();
+
+  m_pPasskeyEntryDlg = new CPasskeyEntry(pParent,
                                    filename.c_str(),
                                    index, bReadOnly,
                                    bFileIsReadOnly,
