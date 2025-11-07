@@ -256,15 +256,32 @@ BOOL CPasskeyEntry::OnInitDialog(void)
     // clicking the pwsafe icon on the desktop taskbar.
     ShowWindow(SW_MINIMIZE);
 
-    // When acting as an app window, the password entry dialog is not
+    // When acting as an app window, the password entry dialog is
     // not wndTopMost but simply wndTop.
     pInsertAfter = &CWnd::wndTop;
   }
 
-  // Following brings to top when hotkey pressed.
-  SetWindowPos(pInsertAfter, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+  CRect rect;
+  GetWindowRect(&rect);
+  BOOL bVisible = FALSE;
+  for (int i = 0; i < GetSystemMetrics(SM_CMONITORS); ++i) {
+    MONITORINFO mi = { sizeof(mi) };
+    if (GetMonitorInfo(MonitorFromRect(&rect, MONITOR_DEFAULTTONEAREST), &mi)) {
+      if (::PtInRect(&mi.rcWork, rect.TopLeft())) {
+        bVisible = TRUE;
+        break;
+      }
+    }
+  }
+  if (!bVisible) {
+    SetWindowPos(pInsertAfter, 100, 100, 0, 0, SWP_NOSIZE | SWP_SHOWWINDOW);
+  } else {
+    SetWindowPos(pInsertAfter, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+  }
+
   SetActiveWindow();
   SetForegroundWindow();
+  BringWindowToTop();
 
   if (app.WasHotKeyPressed()) {
     // Reset it
