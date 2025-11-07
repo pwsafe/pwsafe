@@ -364,41 +364,6 @@ void wxUtilities::NotifyIfUnsupported(enum Feature feature, wxWindow* window)
 #endif
 }
 
-/**
- * Checks if the environment variable PWS_ADVANCED_SCROLL
- * is set to a value greater than zero.
- * 
- * Using this variable, the user can activate the option to
- * position the search result higher up in the tree view and,
- * in the case of an individual configuration of the scrollbar
- * size, to prevent it from being obscured by the scrollbars.
- */
-bool wxUtilities::IsAdvancedScrollEnabled()
-{
-  static long advancedScrollEnabled = -1L;
-
-  // Get the env. variable only once
-  if (advancedScrollEnabled == -1L) {
-    wxString PWS_ADVANCED_SCROLL = wxEmptyString;
-    if (wxGetEnv(wxT("PWS_ADVANCED_SCROLL"), &PWS_ADVANCED_SCROLL)) {
-
-      if (!PWS_ADVANCED_SCROLL.IsEmpty() && PWS_ADVANCED_SCROLL.ToLong(&advancedScrollEnabled)) {
-        if (advancedScrollEnabled < 0) { // Don't call wxGetEnv() more than once per process if value negative
-          advancedScrollEnabled = 0L;
-        }
-        // The user has specified a value of zero or greater,
-        // which is taken into account when returning the result.
-      }
-      else { // Don't call wxGetEnv() more than once per process if value bad
-        advancedScrollEnabled = 0L;
-      }
-    } else { // Don't call wxGetEnv() more than once per process if not set
-      advancedScrollEnabled = 0L;
-    }
-  }
-  return advancedScrollEnabled > 0;
-}
-
 // Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable()

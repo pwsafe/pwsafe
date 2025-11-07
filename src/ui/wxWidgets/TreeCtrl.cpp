@@ -948,11 +948,30 @@ void TreeCtrlBase::SelectItem(const CUUID & uuid)
       Expand(parent);
     }
     ::wxSafeYield();
-    if (wxUtilities::IsAdvancedScrollEnabled()) {
-      auto sibling = searchSibling(id);
-      EnsureVisible(sibling.IsOk() ? sibling : id);
+    // Determine an item's height based on its surrounding rectangle.
+    // To obtain a surrounding rectangle, the element must be visible.
+    auto firstVisibleItem = GetFirstVisibleItem();
+    if (firstVisibleItem.IsOk()) {
+      wxRect boundingRect;
+      if (GetBoundingRect(firstVisibleItem, boundingRect)) {
+        auto itemHeight = boundingRect.GetHeight();
+        auto viewHeight = GetClientSize().GetHeight();
+
+        // Scroll the tree view up one more position (to the next sibling element)
+        // if there is sufficient space (at least two items) in the tree view.
+        if (2 /*visible items*/ * itemHeight < viewHeight) {
+          auto sibling = searchSibling(id);
+          EnsureVisible(sibling.IsOk() ? sibling : id);
+        }
+        else {
+          // If there is not enough space in the tree view, then scroll only
+          // to the search result instead of to the next sibling element.
+          EnsureVisible(id);
+        }
+      }
     }
     else {
+      // By default, scroll directly to the search results.
       EnsureVisible(id);
     }
     ::wxSafeYield();
