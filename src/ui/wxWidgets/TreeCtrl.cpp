@@ -948,12 +948,38 @@ void TreeCtrlBase::SelectItem(const CUUID & uuid)
   wxTreeItemId id = Find(uuid_array);
   if (id.IsOk()) {
     wxTreeItemId parent = GetItemParent(id);
-    if(parent.IsOk() && (parent != GetRootItem()) && ! IsExpanded(parent))
+    if(parent.IsOk() && (parent != GetRootItem()) && !IsExpanded(parent)) {
       Expand(parent);
+    }
     ::wxSafeYield();
-    EnsureVisible(id);
+    // Determine an item's height based on its surrounding rectangle.
+    // To obtain a surrounding rectangle, the element must be visible.
+    auto firstVisibleItem = GetFirstVisibleItem();
+    if (firstVisibleItem.IsOk()) {
+      wxRect boundingRect;
+      if (GetBoundingRect(firstVisibleItem, boundingRect)) {
+        auto itemHeight = boundingRect.GetHeight();
+        auto viewHeight = GetClientSize().GetHeight();
+
+        // Scroll the tree view up one more position (to the next sibling element)
+        // if there is sufficient space (at least two items) in the tree view.
+        if (2 /*visible items*/ * itemHeight < viewHeight) {
+          auto sibling = searchSibling(id);
+          EnsureVisible(sibling.IsOk() ? sibling : id);
+        }
+        else {
+          // If there is not enough space in the tree view, then scroll only
+          // to the search result instead of to the next sibling element.
+          EnsureVisible(id);
+        }
+      }
+    }
+    else {
+      // By default, scroll directly to the search results.
+      EnsureVisible(id);
+    }
     ::wxSafeYield();
-    
+
     wxTreeCtrl::SelectItem(id);
   }
 }
@@ -2814,4 +2840,37 @@ void TreeCtrlBase::setNodeAsEmptyIfNeeded(const wxTreeItemId item)
   if(GetRootItem() != item && GetChildrenCount(item) == 0) {
     wxTreeCtrl::SetItemImage(item, EMPTY_NODE_II); // Empty Group shall show the empty node icon
   }
+}
+
+/**
+ * Searches for a subsequent or sibling element (password element / group element)
+ * in the tree view at the same level. If no element is found, the search continues
+ * one level higher until the root element is reached.
+ * 
+ * The goal is to find the next visual element below the target element so that it
+ * appears visually positioned slightly higher. See also the documentation for
+ * wxUtilities::IsAdvancedScrollEnabled().
+ *
+ * @param itemId refers to the element from which the search should start.
+ * @return the found sibling element or an invalid tree element if the search failed.
+ */
+wxTreeItemId TreeCtrlBase::searchSibling(const wxTreeItemId& itemId) const
+{
+  // If a sibling element of the specified element was found,
+  // then the search was successful and can be stopped.
+  auto nextSibling = wxTreeCtrl::GetNextSibling(itemId);
+  if (nextSibling.IsOk()) {
+    return nextSibling;
+  }
+
+  // If the root element has been reached, then the search
+  // was not successful and can be stopped. The returned
+  // tree item id is invalid, which indicates a failed search.
+  auto parentId = GetItemParent(itemId);
+  if (parentId == GetRootItem()) {
+    return wxTreeItemId();
+  }
+
+  // The search continues further up the hierarchy.
+  return searchSibling(parentId);
 }

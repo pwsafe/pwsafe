@@ -153,6 +153,13 @@ private:
   void SetItemImage(const wxTreeItemId &node, const CItemData &item);
   void setNodeAsNotEmpty(const wxTreeItemId item);
   void setNodeAsEmptyIfNeeded(const wxTreeItemId item);
+
+  /**
+   * @brief Searches for a subsequent or sibling element (password element / group element)
+   * in the tree view at the same level. If no element is found, the search continues
+   * one level higher until the root element is reached.
+   */
+  wxTreeItemId searchSibling(const wxTreeItemId& itemId) const;
   
   TreeSortType m_sort;
   bool m_show_group;
