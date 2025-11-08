@@ -32,7 +32,7 @@ static char THIS_FILE[] = __FILE__;
 
 #define EDIT_CLIPBOARD_TEXT_FORMAT  CF_UNICODETEXT
 
-const COLORREF crefInFocus = RGB(222, 255, 222);  // Light green
+const COLORREF crefInFocus = RGB(222, 255, 222);  // Light green - our version of COLOR_HIGHLIGHT
 const COLORREF crefNoFocus = ::GetSysColor(COLOR_WINDOW);
 
 // timer event numbers used to by ControlExtns for ListBox tooltips. See DboxMain.h
@@ -287,7 +287,7 @@ HBRUSH CEditExtnX::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
 
   pDC->SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
   if (m_bIsFocused == TRUE) {
-    pDC->SetBkColor(m_crefInFocus);
+    pDC->SetBkColor(WinUtil::IsHighContrastOn() ? GetSysColor(COLOR_HIGHLIGHT) : m_crefInFocus);
     return m_brInFocus;
   } else {
     pDC->SetBkColor(crefNoFocus);
@@ -485,7 +485,7 @@ void CRichEditExtnX::OnSetFocus(CWnd *pOldWnd)
   m_bIsFocused = TRUE;
   CRichEditCtrl::OnSetFocus(pOldWnd);
 
-  SetBackgroundColor(FALSE, m_crefInFocus);
+  SetBackgroundColor(FALSE, WinUtil::IsHighContrastOn() ? GetSysColor(COLOR_HIGHLIGHT) : m_crefInFocus);
   Invalidate(TRUE);
 }
 
@@ -642,7 +642,7 @@ CListBoxExtn::CListBoxExtn()
   m_nHoverLBTimerID(0), m_nShowLBTimerID(0), m_HoverLBnItem(-1),
   m_bUseToolTips(false), m_bMouseInWindow(false)
 {
-  m_brInFocus.CreateSolidBrush(crefInFocus);
+  m_brInFocus.CreateSolidBrush(WinUtil::IsHighContrastOn() ? GetSysColor(COLOR_HIGHLIGHT) : crefInFocus);
   m_brNoFocus.CreateSolidBrush(crefNoFocus);
 }
 
@@ -688,7 +688,7 @@ HBRUSH CListBoxExtn::CtlColor(CDC* pDC, UINT /* nCtlColor */)
     return NULL;
 
   if (m_bIsFocused == TRUE) {
-    pDC->SetBkColor(crefInFocus);
+    pDC->SetBkColor(WinUtil::IsHighContrastOn() ? GetSysColor(COLOR_HIGHLIGHT) : crefInFocus);
     return m_brInFocus;
   } else {
     pDC->SetBkColor(crefNoFocus);

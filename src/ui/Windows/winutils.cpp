@@ -420,3 +420,9 @@ DWORD WinUtil::SetWindowExcludeFromScreenCapture(HWND hwnd, bool excludeFromScre
   return dwResult;
 }
 
+bool WinUtil::IsHighContrastOn()
+{
+  HIGHCONTRAST hc = { sizeof(hc) };
+  SystemParametersInfo(SPI_GETHIGHCONTRAST, sizeof(hc), &hc, 0);
+  return (hc.dwFlags & HCF_HIGHCONTRASTON);
+}
