@@ -4,14 +4,14 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.70.0pre Release ???
-==========================================
-New Features in 3.70.0pre
--------------------------
+PasswordSafe 3.70.0 Release Nov 8 2025
+======================================
+New Features in 3.70.0
+----------------------
 * Password Safe now supports adding a single attachment to an entry. Previously this was only available in the experimental V4 database format. With this release, the ability to add, update, remove and download a single attachment to an entry is now available via a new "attachment" tab in the Add/Edit Entry window.
 
-Bugs Fixed in 3.70.0pre
------------------------
+Bugs Fixed in 3.70.0
+--------------------
 * Improved support for high contrast mode in Windows.
 * "Always on top" now persists correctly across restarts when "Start Password Safe at Login" is selected.
 * [GH1534](https://github.com/pwsafe/pwsafe/issues/1534) No longer offer unsupported traditional Chinese in NSIS installer.
