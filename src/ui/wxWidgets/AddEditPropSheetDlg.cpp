@@ -189,7 +189,8 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
   // otherwise text is not correctly shown due to Auto Word Wrap. (At least at KDE)
   SetSizeHints(GetSize().GetWidth() + 20, GetSize().GetHeight());
 
-  if (m_Core.GetReadFileVersion() == PWSfile::V40) {
+  auto currentVersion = m_Core.GetReadFileVersion();
+  if (currentVersion == PWSfile::V30 || currentVersion == PWSfile::V40) {
     InitAttachmentTab();
   }
 
@@ -279,7 +280,8 @@ void AddEditPropSheetDlg::CreateControls()
   // Tab: "Attachment"
   /////////////////////////////////////////////////////////////////////////////
 
-  if (m_Core.GetReadFileVersion() == PWSfile::V40) {
+  auto currentVersion = m_Core.GetReadFileVersion();
+  if (currentVersion == PWSfile::V30 || currentVersion == PWSfile::V40) {
     m_AttachmentPanel = CreateAttachmentPanel();
     GetBookCtrl()->AddPage(m_AttachmentPanel, _("Attachment"));
   }
@@ -2489,7 +2491,8 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
   // Tab: "Attachment"
   /////////////////////////////////////////////////////////////////////////////
 
-  if (m_Core.GetReadFileVersion() == PWSfile::V40) {
+  auto currentVersion = m_Core.GetReadFileVersion();
+  if (currentVersion == PWSfile::V30 || currentVersion == PWSfile::V40) {
 
     /*
       Case: New item shall get an attachment.
@@ -2690,7 +2693,8 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
   }
   // attachment
   {
-    if (m_Core.GetReadFileVersion() == PWSfile::V40) {
+    auto currentVersion = m_Core.GetReadFileVersion();
+    if (currentVersion == PWSfile::V30 || currentVersion == PWSfile::V40) {
       if (!m_Item.HasAttRef() && !m_ItemAttachment.HasUUID() && !m_ItemAttachment.HasContent()) {
         // no old & new attachment
       }
