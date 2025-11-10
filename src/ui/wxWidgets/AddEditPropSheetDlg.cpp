@@ -914,8 +914,10 @@ wxPanel* AddEditPropSheetDlg::CreateAttachmentPanel()
 
 void AddEditPropSheetDlg::InitAttachmentTab()
 {
+  auto currentVersion = m_Core.GetReadFileVersion();
+  
   if (m_Item.HasAttRef()) {
-
+    // V4 attachment via ATTREF
     // Get attachment item
     auto uuid = m_Item.GetAttUUID();
     m_ItemAttachment = m_Core.GetAtt(uuid);
@@ -940,6 +942,55 @@ void AddEditPropSheetDlg::InitAttachmentTab()
     }
     else {
       ResetAttachmentData();
+    }
+  }
+  else if (currentVersion == PWSfile::V30) {
+    // V3 attachment stored in entry fields
+    // Populate in-memory attachment from V3 fields (if present)
+    const bool hasV3Meta = m_Item.IsAttFileNameSet() || m_Item.IsAttModificationTimeSet();
+    const bool hasV3Content = m_Item.IsAttContentSet();
+    const bool hasV3Att = hasV3Meta || hasV3Content || !m_Item.GetAttMediaType().empty() || !m_Item.GetAttTitle().empty();
+
+    if (hasV3Att) {
+      // Map V3 entry fields to CItemAtt used by the attachment page
+      m_ItemAttachment.SetTitle(m_Item.GetAttTitle());
+      m_ItemAttachment.SetMediaType(m_Item.GetAttMediaType());
+      m_ItemAttachment.SetFileName(m_Item.GetAttFileName());
+
+      time_t mtime = 0;
+      m_Item.GetAttModificationTime(mtime);
+      if (mtime != 0)
+        m_ItemAttachment.SetFileMTime(mtime);
+
+      if (hasV3Content) {
+        const auto v = m_Item.GetAttContent();
+        if (!v.empty())
+          m_ItemAttachment.SetContent(v.data(), v.size());
+      }
+
+      // Mark as CLEAN for change detection
+      m_ItemAttachment.SetStatus(CItem::EntryStatus::ES_CLEAN);
+
+      // Show attachment data on UI.
+      ShowAttachmentData(m_ItemAttachment);
+
+      if (m_Core.IsReadOnly()) {
+        DisableAttachmentControls();
+      }
+      else {
+        // Attachment must be removed before a new one can be imported again.
+        DisableImport();
+      }
+    }
+    else {
+      ResetAttachmentData();
+      HideImagePreview(_("No Attachment Available"));
+      if (m_Core.IsReadOnly()) {
+        DisableAttachmentControls();
+      }
+      else {
+        EnableImport();
+      }
     }
   }
   else {
@@ -2499,8 +2550,46 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
       Steps:
         1) Update attachment meta data.
     */
-    if (!m_Item.HasAttRef() && m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) {
+    if (currentVersion == PWSfile::V30) {
+      // V3: Write back to V3 entry fields instead of using ATTREF
+      bool hasContent = m_ItemAttachment.HasContent();
+      bool hasAnyMeta = !m_ItemAttachment.GetTitle().empty() ||
+                        !m_ItemAttachment.GetMediaType().empty() ||
+                        !m_ItemAttachment.GetFileName().empty();
 
+      if (hasContent || hasAnyMeta) {
+        // Update title from UI if present
+        if (m_AttachmentTitle->GetValue() != _T("N/A")) {
+          m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
+        }
+        
+        // Title, media type, filename
+        m_Item.SetAttTitle(m_ItemAttachment.GetTitle());
+        m_Item.SetAttMediaType(m_ItemAttachment.GetMediaType());
+        m_Item.SetAttFileName(m_ItemAttachment.GetFileName());
+
+        // Content
+        size_t contentSize = m_ItemAttachment.GetContentSize();
+        if (contentSize > 0) {
+          std::vector<unsigned char> buf(contentSize);
+          if (m_ItemAttachment.GetContent(buf.data(), buf.size())) {
+            m_Item.SetAttContent(buf.data(), buf.size());
+          }
+        }
+
+        // File modification time
+        time_t mtime = 0;
+        m_ItemAttachment.GetFileMTime(mtime);
+        if (mtime != 0)
+          m_Item.SetAttModificationTime(mtime);
+      }
+      else {
+        // Removed
+        m_Item.ClearV3Attachment();
+      }
+    }
+    else if (!m_Item.HasAttRef() && m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) {
+      // V4: Use ATTREF & attachment store
       // Step 1)
       if (m_AttachmentTitle->GetValue() != _T("N/A")) {
         m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
@@ -2904,99 +2993,81 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
   /////////////////////////////////////////////////////////////////////////////
 
   if (changes & Changes::Attachment) {
-    /*
-      Case: Item doesn't have an attachment and doesn't get one.
-      Steps:
-        - none
-    */
-    if (!m_Item.HasAttRef() && !m_ItemAttachment.HasUUID() && !m_ItemAttachment.HasContent()) {
-      ; // Nothing to do. - Phew!
-    }
+    auto currentVersion = m_Core.GetReadFileVersion();
+    
+    if (currentVersion == PWSfile::V30) {
+      // V3: Write back to V3 entry fields instead of using ATTREF
+      bool hasContent = m_ItemAttachment.HasContent();
+      bool hasAnyMeta = !m_ItemAttachment.GetTitle().empty() ||
+                        !m_ItemAttachment.GetMediaType().empty() ||
+                        !m_ItemAttachment.GetFileName().empty();
 
-    /*
-      Case: Item doesn't have an attachment and shall get one.
-      Steps:
-        1) Update attachment meta data.
-        2) Create DeleteEntryCommand to remove the item without attachment reference.
-        3) Create AddEntryCommand for item and attachment.
-           Only AddEntryCommand will associate an attachment item with a password item.
-           The "delete existing - create new" approach also takes into account any changes
-           to the password element that all other commands cannot.
-
-           TODO: Check Undo if password item and attachment item have changed.
-                 A command like EditEntryCommand would handle this proparly,
-                 but unfortunately doesn't support attaching an attachment.
-    */
-    else if (!m_Item.HasAttRef() && m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) {
-
-      // Step 1)
-      if (m_AttachmentTitle->GetValue() != _T("N/A")) {
-        m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
-      }
-
-      time_t timestamp;
-      time(&timestamp);
-      m_ItemAttachment.SetCTime(timestamp);
-
-      // Step 2)
-      if(m_Item.IsAlias()) {
-        commands->Add(RemoveDependentEntryCommand::Create(&m_Core,
-                                                          m_Item.GetBaseUUID(),
-                                                          m_Item.GetUUID(),
-                                                          CItemData::ET_ALIAS));
-      }
-      commands->Add(DeleteEntryCommand::Create(&m_Core, m_Item));
-
-      // Step 3)
-      commands->Add(NewAddEntryCommand(false)); // Do not create a new creation time (C Time), as the old entry is replaced
-
-      // If additional changes were made to the password element,
-      // these are also taken into account by NewAddEntryCommand,
-      // so that we can return with this command.
-      return commands;
-    }
-
-    /*
-      Case: Item has an attachment which shall be removed.
-      Steps:
-        1) Create DeleteAttachmentCommand command.
-        2) Remove reference to attachment item.
-    */
-    else if (m_Item.HasAttRef() && !m_ItemAttachment.HasUUID() && !m_ItemAttachment.HasContent()) {
-
-      // Step 1)
-      commands->Add(DeleteAttachmentCommand::Create(&m_Core, m_Item));
-
-      // Step 2)
-      m_Item.ClearAttUUID();
-    }
-
-    /*
-      Case: Item has an attachment which shall be replaced by a new one.
-      Steps:
-        1) Update attachment meta data.
-        2) Create EditAttachmentCommand command to update attachment
-    */
-    else if (m_Item.HasAttRef()) {
-      auto uuid = m_Item.GetAttUUID();
-      auto itemAttachment = m_Core.GetAtt(uuid);
-
-      auto hasTitleChanges = (towxstring(m_ItemAttachment.GetTitle()) != m_AttachmentTitle->GetValue());
-      auto hasAttachmentChanges = (m_ItemAttachment != itemAttachment);
-      
-      if (hasTitleChanges || hasAttachmentChanges) {
-        // Step 1)
-        if (m_AttachmentTitle->GetValue() != _T("N/A"))
-        {
+      if (hasContent || hasAnyMeta) {
+        // Update title from UI if present
+        if (m_AttachmentTitle->GetValue() != _T("N/A")) {
           m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
         }
+        
+        // Title, media type, filename
+        m_Item.SetAttTitle(m_ItemAttachment.GetTitle());
+        m_Item.SetAttMediaType(m_ItemAttachment.GetMediaType());
+        m_Item.SetAttFileName(m_ItemAttachment.GetFileName());
+
+        // Content
+        size_t contentSize = m_ItemAttachment.GetContentSize();
+        if (contentSize > 0) {
+          std::vector<unsigned char> buf(contentSize);
+          if (m_ItemAttachment.GetContent(buf.data(), buf.size())) {
+            m_Item.SetAttContent(buf.data(), buf.size());
+          }
+        }
+
+        // File modification time
+        time_t mtime = 0;
+        m_ItemAttachment.GetFileMTime(mtime);
+        if (mtime != 0)
+          m_Item.SetAttModificationTime(mtime);
+      }
+      else {
+        // Removed
+        m_Item.ClearV3Attachment();
+      }
+    }
+    else {
+      // V4 behavior with ATTREF & attachment store
+      /*
+        Case: Item doesn't have an attachment and doesn't get one.
+        Steps:
+          - none
+      */
+      if (!m_Item.HasAttRef() && !m_ItemAttachment.HasUUID() && !m_ItemAttachment.HasContent()) {
+        ; // Nothing to do. - Phew!
+      }
+
+      /*
+        Case: Item doesn't have an attachment and shall get one.
+        Steps:
+          1) Update attachment meta data.
+          2) Create DeleteEntryCommand to remove the item without attachment reference.
+          3) Create AddEntryCommand for item and attachment.
+             Only AddEntryCommand will associate an attachment item with a password item.
+             The "delete existing - create new" approach also takes into account any changes
+             to the password element that all other commands cannot.
+
+             TODO: Check Undo if password item and attachment item have changed.
+                   A command like EditEntryCommand would handle this proparly,
+                   but unfortunately doesn't support attaching an attachment.
+      */
+      else if (!m_Item.HasAttRef() && m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) {
+
+        // Step 1)
+        if (m_AttachmentTitle->GetValue() != _T("N/A")) {
+          m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
+        }
+
         time_t timestamp;
         time(&timestamp);
         m_ItemAttachment.SetCTime(timestamp);
-      }
-      
-      if(m_ItemAttachment.GetUUID() != itemAttachment.GetUUID()) {
-        // The content has changed at all, remove and add again with new content
 
         // Step 2)
         if(m_Item.IsAlias()) {
@@ -3015,19 +3086,80 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
         // so that we can return with this command.
         return commands;
       }
-      else if (hasTitleChanges || hasAttachmentChanges) {
-        // Step 2)
-        commands->Add(
-          EditAttachmentCommand::Create(&m_Core, itemAttachment, m_ItemAttachment)
-        );
 
-        // Note:
-        // The item might also have modifications,
-        // so we still do not return with the commands we have so far.
+      /*
+        Case: Item has an attachment which shall be removed.
+        Steps:
+          1) Create DeleteAttachmentCommand command.
+          2) Remove reference to attachment item.
+      */
+      else if (m_Item.HasAttRef() && !m_ItemAttachment.HasUUID() && !m_ItemAttachment.HasContent()) {
+
+        // Step 1)
+        commands->Add(DeleteAttachmentCommand::Create(&m_Core, m_Item));
+
+        // Step 2)
+        m_Item.ClearAttUUID();
       }
-    }
-    else {
-      ;
+
+      /*
+        Case: Item has an attachment which shall be replaced by a new one.
+        Steps:
+          1) Update attachment meta data.
+          2) Create EditAttachmentCommand command to update attachment
+      */
+      else if (m_Item.HasAttRef()) {
+        auto uuid = m_Item.GetAttUUID();
+        auto itemAttachment = m_Core.GetAtt(uuid);
+
+        auto hasTitleChanges = (towxstring(m_ItemAttachment.GetTitle()) != m_AttachmentTitle->GetValue());
+        auto hasAttachmentChanges = (m_ItemAttachment != itemAttachment);
+        
+        if (hasTitleChanges || hasAttachmentChanges) {
+          // Step 1)
+          if (m_AttachmentTitle->GetValue() != _T("N/A"))
+          {
+            m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
+          }
+          time_t timestamp;
+          time(&timestamp);
+          m_ItemAttachment.SetCTime(timestamp);
+        }
+        
+        if(m_ItemAttachment.GetUUID() != itemAttachment.GetUUID()) {
+          // The content has changed at all, remove and add again with new content
+
+          // Step 2)
+          if(m_Item.IsAlias()) {
+            commands->Add(RemoveDependentEntryCommand::Create(&m_Core,
+                                                              m_Item.GetBaseUUID(),
+                                                              m_Item.GetUUID(),
+                                                              CItemData::ET_ALIAS));
+          }
+          commands->Add(DeleteEntryCommand::Create(&m_Core, m_Item));
+
+          // Step 3)
+          commands->Add(NewAddEntryCommand(false)); // Do not create a new creation time (C Time), as the old entry is replaced
+
+          // If additional changes were made to the password element,
+          // these are also taken into account by NewAddEntryCommand,
+          // so that we can return with this command.
+          return commands;
+        }
+        else if (hasTitleChanges || hasAttachmentChanges) {
+          // Step 2)
+          commands->Add(
+            EditAttachmentCommand::Create(&m_Core, itemAttachment, m_ItemAttachment)
+          );
+
+          // Note:
+          // The item might also have modifications,
+          // so we still do not return with the commands we have so far.
+        }
+      }
+      else {
+        ;
+      }
     }
   }
 
