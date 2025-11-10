@@ -1467,7 +1467,7 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
 
     wxTreeItemId itemDst = evt.GetItem();
     auto parentOfDragItem = GetItemParent(m_drag_item);
-    auto sxSrcGroupName = tostringx(GetItemText(parentOfDragItem));
+    auto sxSrcGroupName = tostringx(GetItemGroup(m_drag_item));
     StringX sxDstGroupName;
     bool dragItemLeavesEmptyGroup = (ItemIsGroup(parentOfDragItem) && GetChildrenCount(parentOfDragItem) == 1);
     bool isDestinationEmptyGroup = false;
@@ -1490,7 +1490,7 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
           itemDst = GetItemParent(itemDst);
         }
         else {                                    // On group, the group needs to be removed, if it is an empty group
-          sxDstGroupName = tostringx(GetItemText(itemDst));
+          sxDstGroupName = tostringx(GetItemGroup(itemDst));
           isDestinationEmptyGroup = m_core.IsEmptyGroup(sxDstGroupName);
         }
         if(IsDescendant(itemDst, m_drag_item)) {  // Do not drag and drop into the moved tree
@@ -1506,8 +1506,10 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
       // If the drag'd item leaves an empty group in the tree
       // the group needs to be created as such in the database.
       if (dragItemLeavesEmptyGroup) {
+        auto emptyGroups = m_core.GetEmptyGroups();
+        emptyGroups.push_back(sxSrcGroupName);
         commands->Add(
-          DBEmptyGroupsCommand::Create(&m_core, sxSrcGroupName, DBEmptyGroupsCommand::EG_ADD)
+          DBEmptyGroupsCommand::Create(&m_core, emptyGroups, DBEmptyGroupsCommand::EG_REPLACEALL)
         );
       }
       // If the destination was an empty group in the tree it is not empty now
