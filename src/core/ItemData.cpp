@@ -2561,7 +2561,7 @@ bool CItemData::HasIncompletePasskey() const {
         PASSKEY_PRIVATE_KEY,
         PASSKEY_SIGN_COUNT
     };
-    auto numSet = 0;
+    std::size_t numSet = 0;
     for (int ft : fields)
         numSet += IsFieldSet(ft) ? 1 : 0;
     return !(numSet == 0 || numSet == fields.size());
