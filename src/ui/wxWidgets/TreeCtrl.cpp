@@ -570,13 +570,18 @@ wxString TreeCtrlBase::ItemDisplayString(const CItemData &item) const
   }
 
   if (item.IsProtected()) { 
-    disp += wxT(" #");
-#ifdef NOTYET
-    wxUniChar padlock(0x1f512);
-    disp +=padlock;
-#endif
+    // disp += wxT(" #");
+
+    const wxUniChar padlock(0x1f512);
+    disp += padlock;
   }
 
+  if (item.HasAttRef() || item.HasAttachment())
+  {
+    const wxUniChar paperclip(0x1f4ce);
+    disp += paperclip;
+  }
+  
   return disp;
 }
 
