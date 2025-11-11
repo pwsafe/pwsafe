@@ -968,6 +968,9 @@ void AddEditPropSheetDlg::InitAttachmentTab()
           m_ItemAttachment.SetContent(v.data(), v.size());
       }
 
+      // Create UUID for UI compatibility (not stored in V3 DB)
+      m_ItemAttachment.CreateUUID();
+
       // Mark as CLEAN for change detection
       m_ItemAttachment.SetStatus(CItem::EntryStatus::ES_CLEAN);
 
@@ -1236,8 +1239,44 @@ void AddEditPropSheetDlg::OnImport(wxCommandEvent& WXUNUSED(event))
 
 void AddEditPropSheetDlg::OnExport(wxCommandEvent& WXUNUSED(event))
 {
-  if (!m_ItemAttachment.HasContent()) {
-
+  auto currentVersion = m_Core.GetReadFileVersion();
+  
+  // To minimize change to existing code, which was written for V4 attachments,
+  // we create a pseudo V4 attachment from the V3 attachment information if needed
+  CItemAtt exportAtt;
+  const CItemAtt* pAtt = nullptr;
+  
+  if (currentVersion == PWSfile::V30 && !m_Item.HasAttRef()) {
+    // V3 attachment - create pseudo V4 attachment from V3 fields
+    if (!m_ItemAttachment.HasContent() && 
+        (m_Item.IsAttContentSet() || m_Item.IsAttFileNameSet() || 
+         !m_Item.GetAttMediaType().empty() || !m_Item.GetAttTitle().empty())) {
+      // Populate from entry fields if not already in m_ItemAttachment
+      exportAtt.SetFileName(m_Item.GetAttFileName());
+      exportAtt.SetMediaType(m_Item.GetAttMediaType());
+      exportAtt.SetTitle(m_Item.GetAttTitle());
+      const std::vector<unsigned char> content = m_Item.GetAttContent();
+      if (!content.empty()) {
+        exportAtt.SetContent(content.data(), content.size());
+      }
+      time_t mtime = 0;
+      m_Item.GetAttModificationTime(mtime);
+      if (mtime != 0) {
+        exportAtt.SetFileMTime(mtime);
+        exportAtt.SetFileCTime(mtime); // v3 has no creation time
+        exportAtt.SetFileATime(mtime); // v3 has no access time
+      }
+      pAtt = &exportAtt;
+    } else {
+      // Use m_ItemAttachment if it's already populated
+      pAtt = &m_ItemAttachment;
+    }
+  } else {
+    // V4 attachment or already populated V3 attachment
+    pAtt = &m_ItemAttachment;
+  }
+  
+  if (!pAtt->HasContent()) {
     wxMessageDialog(
       this,
       _("No attachment data to export."), _("Export Attachment"),
@@ -1249,7 +1288,7 @@ void AddEditPropSheetDlg::OnExport(wxCommandEvent& WXUNUSED(event))
 
   wxString fileFilter;
 
-  auto mimeTypeExtension = GetMimeTypeExtension(stringx2std(m_ItemAttachment.GetMediaType()));
+  auto mimeTypeExtension = GetMimeTypeExtension(stringx2std(pAtt->GetMediaType()));
 
   if (!mimeTypeExtension.empty()) {
 
@@ -1277,7 +1316,7 @@ void AddEditPropSheetDlg::OnExport(wxCommandEvent& WXUNUSED(event))
   fileFilter.Append(_("All files (*.*)|*.*"));
 
   wxFileDialog fileDialog(
-    this, _("Export Attachment"), "", m_ItemAttachment.GetFileName().c_str(),
+    this, _("Export Attachment"), "", pAtt->GetFileName().c_str(),
     fileFilter,
     wxFD_SAVE | wxFD_OVERWRITE_PROMPT
   );
@@ -1286,7 +1325,8 @@ void AddEditPropSheetDlg::OnExport(wxCommandEvent& WXUNUSED(event))
     return;
   }
 
-  auto status = m_ItemAttachment.Export(fileDialog.GetPath().ToStdWstring());
+  // From here on, we don't care whether it's a V3 or V4 attachment
+  auto status = pAtt->Export(fileDialog.GetPath().ToStdWstring());
 
   switch (status)
   {
