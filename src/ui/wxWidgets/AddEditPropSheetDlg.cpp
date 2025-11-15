@@ -1055,8 +1055,8 @@ void AddEditPropSheetDlg::ShowAttachmentData(const CItemAtt &itemAttachment)
     m_AttachmentCreationDate->SetLabel(stringx2std(itemAttachment.GetCTime()));
   }
 
-  // Get attachment's size
-  m_AttachmentFileSize->SetLabel(wxString::Format(wxT("%u"), (unsigned int)itemAttachment.GetContentSize()));
+  // Get attachment's size - GetContentLength() returns original size, as opposed to GetContentSize(), which returns BlockSize()
+  m_AttachmentFileSize->SetLabel(wxString::Format(wxT("%u"), (unsigned int)itemAttachment.GetContentLength()));
 
   // Get attachment's file creation date
   if (itemAttachment.GetFileCTime().empty()) {
@@ -3015,7 +3015,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
         if (contentSize > 0) {
           std::vector<unsigned char> buf(contentSize);
           if (m_ItemAttachment.GetContent(buf.data(), buf.size())) {
-            m_Item.SetAttContent(buf.data(), buf.size());
+            m_Item.SetAttContent(buf.data(), m_ItemAttachment.GetContentLength());
           }
         }
 
