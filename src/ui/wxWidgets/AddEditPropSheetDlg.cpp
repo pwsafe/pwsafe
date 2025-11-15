@@ -872,7 +872,7 @@ wxPanel* AddEditPropSheetDlg::CreateAttachmentPanel()
 
   auto *StaticText3 = new wxStaticText(panel, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(StaticText3, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-  m_AttachmentTitle = new wxTextCtrl(panel, wxID_ANY, _("Text"), wxDefaultPosition, wxSize(217,35), 0, wxDefaultValidator);
+  m_AttachmentTitle = new wxTextCtrl(panel, wxID_ANY, _("Text"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator);
   FlexGridSizer1->Add(m_AttachmentTitle, 1, wxALL|wxEXPAND, 5);
 
   auto *StaticText2 = new wxStaticText(panel, wxID_ANY, _("Media Type:"), wxDefaultPosition, wxDefaultSize, 0);
