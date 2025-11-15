@@ -64,7 +64,8 @@ static struct PWSGridCellDataType {
                         { CItemData::PASSWORD,  false,    wxDefaultCoord,     14},
                         { CItemData::PWHIST,    true,     wxDefaultCoord,     15},
                         { CItemData::POLICY,    true,     wxDefaultCoord,     16},
-                        { CItemData::DCA,       true,     wxDefaultCoord,     17},
+                        { CItemData::DATA_ATT_CONTENT,   true,    wxDefaultCoord,     17},
+                        { CItemData::DCA,       true,     wxDefaultCoord,     18},
                       };
 
 /*!

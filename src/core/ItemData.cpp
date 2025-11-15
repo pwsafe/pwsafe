@@ -530,6 +530,12 @@ StringX CItemData::GetFieldValue(FieldType ft) const
       str = GetTime(DATA_ATT_MTIME, PWSUtil::TMC_LOCALE);
       break;
     case DATA_ATT_CONTENT:
+    {
+      StringX sxHasAtt = _T("");
+      if (HasAttachment())
+        LoadAString(sxHasAtt, IDSC_YES);
+      return sxHasAtt;
+    }
       break;
     case PASSKEY_CRED_ID:
     {
