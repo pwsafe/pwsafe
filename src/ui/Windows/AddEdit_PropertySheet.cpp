@@ -411,7 +411,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
             if (contentSize > 0) {
               std::vector<unsigned char> buf(contentSize);
               if (m_AEMD.attachment.GetContent(buf.data(), buf.size())) {
-                m_AEMD.pci->SetAttContent(buf.data(), buf.size());
+                m_AEMD.pci->SetAttContent(buf.data(), m_AEMD.attachment.GetContentLength());
               }
             }
 
@@ -555,7 +555,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
           if (contentSize > 0) {
             std::vector<unsigned char> buf(contentSize);
             if (m_AEMD.attachment.GetContent(buf.data(), buf.size())) {
-              m_AEMD.pci->SetAttContent(buf.data(), buf.size());
+              m_AEMD.pci->SetAttContent(buf.data(), m_AEMD.attachment.GetContentLength());
             }
           }
           time_t mtime = 0;

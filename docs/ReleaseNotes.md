@@ -4,6 +4,13 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
+PasswordSafe 3.70.1 Release Nov ?? 2025
+=======================================
+
+Bugs Fixed in 3.70.1
+--------------------
+* The size of an attachment is now accurately preserved instead of being null-padded to a multiple of 8.
+
 PasswordSafe 3.70.0 Release Nov 8 2025
 ======================================
 New Features in 3.70.0
