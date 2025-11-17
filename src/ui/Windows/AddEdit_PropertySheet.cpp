@@ -120,9 +120,9 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
   AddPage(m_pp_basic);
   AddPage(m_pp_additional);
   AddPage(m_pp_datetimes);
-  AddPage(m_pp_pwpolicy);
   if (m_pp_attachment != nullptr)
     AddPage(m_pp_attachment);
+  AddPage(m_pp_pwpolicy);
 }
 
 CAddEdit_PropertySheet::~CAddEdit_PropertySheet()
