@@ -66,6 +66,10 @@
 				<param name="Local" value="html/entering_pwd_date.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
+				<param name="Name" value="Attachment">
+				<param name="Local" value="html/entering_pwd_att.html">
+				</OBJECT>
+			<LI> <OBJECT type="text/sitemap">
 				<param name="Name" value="Password Policy">
 				<param name="Local" value="html/entering_pwd_pp.html">
 				</OBJECT>
