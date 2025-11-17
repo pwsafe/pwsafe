@@ -278,11 +278,19 @@ void PasswordSafeFrame::OnUnlockSafe(wxCommandEvent&)
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_MENU_CLEAR_MRU
  */
 
-void PasswordSafeFrame::OnClearRecentHistory(wxCommandEvent& evt)
+void PasswordSafeFrame::OnClearRecentHistory(wxCommandEvent& WXUNUSED(evt))
 {
-  UNREFERENCED_PARAMETER(evt);
-  wxGetApp().recentDatabases().Clear();
-  CreateMenubar(); // Recreate the menu with cleared list of most recently used DBs
+  wxMessageDialog dialog(
+    this,
+    _("Do you want to clear the list of recently opened databases?"),
+    _("Clear Recent Database List"),
+    wxICON_EXCLAMATION|wxOK|wxCANCEL|wxCANCEL_DEFAULT
+  );
+  dialog.SetOKLabel(_("Clear"));
+  if (dialog.ShowModal() == wxOK) {
+    wxGetApp().recentDatabases().Clear();
+    CreateMenubar(); // Recreate the menu with cleared list of most recently used DBs
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
