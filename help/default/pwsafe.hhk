@@ -30,6 +30,11 @@
             <param name="Local" value="html/aliases.html">
          </OBJECT>
     <LI><OBJECT type="text/sitemap">
+            <param name="Name" value="Attachment">
+            <param name="Name" value="Attachment">
+            <param name="Local" value="html/entering_pwd_att.html">
+         </OBJECT>
+    <LI><OBJECT type="text/sitemap">
             <param name="Name" value="Automatic Failsafe Backups">
             <param name="Name" value="Automatic Failsafe Backups">
             <param name="Local" value="html/failsafebackups.html">
