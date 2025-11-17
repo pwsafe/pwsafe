@@ -28,13 +28,14 @@ public:
   {WriteLine(cs_line.c_str(), bCRLF);}
   void WriteLine(LPCTSTR tc_line, bool bCRLF = true);
   void WriteLine();
-  bool SaveToDisk();
+  bool SaveToDisk(const stringT &out_dir = L"");
   bool ReadFromDisk();
   bool PurgeFromDisk();
   bool ReportExistsOnDisk() const;
   StringX GetString() {return m_osxs.rdbuf()->str();}
   bool StringEmpty() const {return !m_osxs.rdbuf() || m_osxs.rdbuf()->str().empty();}
   const stringT GetFileName() const {return m_cs_filename;}
+  const stringT GetDatabasePath() const;
   void AppendPasskeyValidationResults(const std::vector<st_GroupTitleUser> &incomplete);
 
   static stringT BuildPathToReport(LPCTSTR drive, LPCTSTR dir, int report_id);

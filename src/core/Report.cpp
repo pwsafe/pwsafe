@@ -142,7 +142,7 @@ static bool isFileUnicode(const stringT &fname, pugi::xml_encoding& encoding)
   SaveToDisk creates a new file of name "<tcAction>_Report.txt" e.g. "Merge_Report.txt"
   in the same directory as the current database or appends to this file if it already exists.
 */
-bool CReport::SaveToDisk()
+bool CReport::SaveToDisk(const stringT &out_dir)
 {
   FILE *fd;
 
@@ -159,6 +159,9 @@ bool CReport::SaveToDisk()
     return false;
   }
 
+  if (!out_dir.empty() && pws_os::FileExists(out_dir)) {
+    dir = (out_dir.back() == pws_os::PathSeparator) ? out_dir : out_dir + pws_os::PathSeparator;
+  }
   m_cs_filename = BuildPathToReport(drive.c_str(), dir.c_str(), m_iAction);
 
   if ((fd = pws_os::FOpen(m_cs_filename, _T("a+b"))) == nullptr) {
@@ -513,4 +516,15 @@ stringT CReport::BuildPathToReport(LPCTSTR drive, LPCTSTR dir, int report_id) {
 
   Format(result, IDSC_REPORTFILENAME, drive, dir, name_iter->second);
   return result;
+}
+
+const stringT CReport::GetDatabasePath() const
+{
+  stringT path(m_csDataBase);
+  stringT drive, dir, file, ext;
+  if (!pws_os::splitpath(path, drive, dir, file, ext)) {
+    pws_os::IssueError(_T("GetDatabasePath: Finding path to database"));
+    return L"";
+  }
+  return dir;
 }

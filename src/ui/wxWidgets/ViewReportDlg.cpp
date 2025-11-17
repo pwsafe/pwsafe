@@ -20,6 +20,7 @@
 #include <wx/msw/msvcrt.h>
 #endif
 
+#include <wx/dirdlg.h>
 #include <wx/msgdlg.h>
 #include <algorithm>
 
@@ -71,6 +72,10 @@ ViewReportDlg::ViewReportDlg(wxWindow *parent, CReport* pRpt, bool fromFile) :
     auto saveButton = new wxButton(this, wxID_SAVE, _("&Save"));
     saveButton->SetToolTip(_("Save report as file"));
     bs->Add(saveButton);
+    bs->AddSpacer(ColSeparation);
+    auto saveAsButton = new wxButton(this, wxID_SAVEAS, _("Save &As..."));
+    saveAsButton->SetToolTip(_("Choose location to save report as file"));
+    bs->Add(saveAsButton);
   }
   bs->AddSpacer(ColSeparation);
   auto copyButton = new wxButton(this, wxID_COPY, _("&Copy"));
@@ -84,6 +89,7 @@ ViewReportDlg::ViewReportDlg(wxWindow *parent, CReport* pRpt, bool fromFile) :
   bs->Realize();
 
   Bind(wxEVT_BUTTON, &ViewReportDlg::OnSave, this, wxID_SAVE);
+  Bind(wxEVT_BUTTON, &ViewReportDlg::OnSaveAs, this, wxID_SAVEAS);
   Bind(wxEVT_BUTTON, &ViewReportDlg::OnDelete, this, wxID_REMOVE);
   Bind(wxEVT_BUTTON, &ViewReportDlg::OnCopy, this, wxID_COPY);
   Bind(wxEVT_BUTTON, &ViewReportDlg::OnClose, this, wxID_CLOSE);
@@ -101,6 +107,18 @@ ViewReportDlg* ViewReportDlg::Create(wxWindow *parent, CReport* pRpt, bool fromF
 void ViewReportDlg::OnSave(wxCommandEvent& WXUNUSED(evt))
 {
   m_pRpt->SaveToDisk();
+}
+
+void ViewReportDlg::OnSaveAs(wxCommandEvent& WXUNUSED(evt))
+{
+  ASSERT(m_pRpt != nullptr);
+  auto dbPath = m_pRpt->GetDatabasePath();
+
+  wxDirDialog dialog(this, _("Choose output directory"), towxstring(dbPath));
+  if (dialog.ShowModal() == wxID_OK) {
+    auto selectedDir = dialog.GetPath();
+    m_pRpt->SaveToDisk(tostdstring(selectedDir));
+  }
 }
 
 void ViewReportDlg::OnDelete(wxCommandEvent& WXUNUSED(evt))
