@@ -120,9 +120,9 @@ CAddEdit_PropertySheet::CAddEdit_PropertySheet(UINT nID, CWnd* pParent,
   AddPage(m_pp_basic);
   AddPage(m_pp_additional);
   AddPage(m_pp_datetimes);
-  AddPage(m_pp_pwpolicy);
   if (m_pp_attachment != nullptr)
     AddPage(m_pp_attachment);
+  AddPage(m_pp_pwpolicy);
 }
 
 CAddEdit_PropertySheet::~CAddEdit_PropertySheet()
@@ -411,7 +411,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
             if (contentSize > 0) {
               std::vector<unsigned char> buf(contentSize);
               if (m_AEMD.attachment.GetContent(buf.data(), buf.size())) {
-                m_AEMD.pci->SetAttContent(buf.data(), buf.size());
+                m_AEMD.pci->SetAttContent(buf.data(), m_AEMD.attachment.GetContentLength());
               }
             }
 
@@ -555,7 +555,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
           if (contentSize > 0) {
             std::vector<unsigned char> buf(contentSize);
             if (m_AEMD.attachment.GetContent(buf.data(), buf.size())) {
-              m_AEMD.pci->SetAttContent(buf.data(), buf.size());
+              m_AEMD.pci->SetAttContent(buf.data(), m_AEMD.attachment.GetContentLength());
             }
           }
           time_t mtime = 0;

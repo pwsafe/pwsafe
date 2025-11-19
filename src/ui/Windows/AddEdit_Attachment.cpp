@@ -117,8 +117,9 @@ BOOL CAddEdit_Attachment::OnInitDialog()
       m_csMediaType.LoadString(IDS_UNKNOWN);
     }
 
+    // Get attachment's size - Note that GetContentLength() returns original size, as opposed to GetContentSize(), which returns BlockSize()
     wchar_t szFileSize[256];
-    StrFormatByteSize(M_attachment().GetContentSize(), szFileSize, 256);
+    StrFormatByteSize(M_attachment().GetContentLength(), szFileSize, 256);
     m_csSize = szFileSize;
 
     m_csFileCTime = M_attachment().GetFileCTime().c_str();
