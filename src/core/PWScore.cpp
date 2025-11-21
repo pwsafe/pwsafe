@@ -3497,6 +3497,26 @@ void PWScore::RemoveAtt(const pws_os::CUUID &attuuid)
   m_attlist.erase(m_attlist.find(attuuid));
 }
 
+AttList::size_type PWScore::GetNumAtts() const
+{
+  switch (GetReadFileVersion()) {
+    case PWSfile::V30:
+    {
+      AttList::size_type retval = static_cast<AttList::size_type>(
+        std::count_if(m_pwlist.begin(), m_pwlist.end(),
+          [](const auto &p) {
+            return p.second.HasAttachment();
+          })
+      );
+      return retval;
+    }
+    case PWSfile::V40:
+      return m_attlist.size();
+    default:
+      return 0;
+    }
+  }
+
 std::set<StringX> PWScore::GetAllMediaTypes() const
 {
   // std::set<> has the properties we need here:
