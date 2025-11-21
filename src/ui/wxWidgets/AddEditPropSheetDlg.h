@@ -545,7 +545,7 @@ private:
   SheetType m_Type;
   CItemData m_Item;
   CItemData m_ItemTotp;
-  CItemAtt  m_ItemAttachment;
+  CItemAtt  m_ItemAttachment, m_OldItemAttachment;
 
   wxBitmap bitmapCheckmarkPlaceholder;
   wxBitmap bitmapCheckmarkGreen;
