@@ -8,12 +8,22 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
 
-PasswordSafe 1.22.1pre Release  ???
-========================================
+PasswordSafe 1.23.0 Release  22 November 2025
+=============================================
 
-Bugs fixed in 1.22.1pre
------------------------
-[GH1543](https://github.com/pwsafe/pwsafe/issues/1543) Tweak Find functionality: selection and translation fixes.
+New features in 1.23.0
+----------------------
+* Password Safe now supports adding a single attachment to an entry. Previously this was only available in the experimental V4 database format. With this release, the ability to add, update, remove and download a single attachment to an entry is now available via a new "attachment" tab in the Add/Edit Entry window.
+
+Bugs fixed in 1.23.0
+--------------------
+* [GH1293](https://github.com/pwsafe/pwsafe/issues/1293) If a group becomes empty after moving an entry, it's no longer automatically deleted.
+* [GH1433](https://github.com/pwsafe/pwsafe/issues/1433) Group subtrees no longer collapse when adding an entry.
+* [GH1443](https://github.com/pwsafe/pwsafe/issues/1443) The destination directory of an Export Report can now be specified by the user.
+* [GH1543](https://github.com/pwsafe/pwsafe/issues/1543) Tweak Find functionality: selection and translation fixes.
+* [GH1584](https://github.com/pwsafe/pwsafe/issues/1584) Entry names are no longer truncated in error message.
+* [GH1619](https://github.com/pwsafe/pwsafe/issues/1619) A Debian package for release 13 (Trixie) will be part of the release.
+* [GH1626](https://github.com/pwsafe/pwsafe/issues/1626) Search result is no longer hidden by horizontal scrollbar.
 
 
 PasswordSafe 1.22.0 Release 11 July 2025
@@ -21,8 +31,8 @@ PasswordSafe 1.22.0 Release 11 July 2025
 
 Bugs fixed in 1.22.0
 --------------------
-[GH1227](https://github.com/pwsafe/pwsafe/issues/1227), [GH1228](https://github.com/pwsafe/pwsafe/issues/1228) Irrelevant functions are now disabled when databased is locked.
-[GH1472](https://github.com/pwsafe/pwsafe/issues/1472) 'Go' button in Add/Edit window now respects "alt" browser specification.
+* [GH1227](https://github.com/pwsafe/pwsafe/issues/1227), [GH1228](https://github.com/pwsafe/pwsafe/issues/1228) Irrelevant functions are now disabled when databased is locked.
+* [GH1472](https://github.com/pwsafe/pwsafe/issues/1472) 'Go' button in Add/Edit window now respects "alt" browser specification.
 
 New features in 1.22.0
 ----------------------
