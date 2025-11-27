@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2025-11-08 12:53+0200\n"
-"Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
+"PO-Revision-Date: 2025-11-26 12:02+0100\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
@@ -1047,7 +1047,9 @@ msgstr "Shift Dubbelklik Actie:"
 msgid ""
 "&Shift Double-Click\n"
 "Action:"
-msgstr "Shift Dubbelklik Actie:"
+msgstr ""
+"Shift Dubbelklik\n"
+"Actie:"
 
 #. Resource IDs: (1014, 5245)
 msgid "&Show"
@@ -3083,7 +3085,7 @@ msgid ""
 "Delete selected Password Policy\n"
 "(only an unused Named Password Policy may be deleted)"
 msgstr ""
-"Verwijder geselecteerd Wachtwoordregels\n"
+"Verwijder geselecteerde Wachtwoordregels\n"
 "(alleen niet gebruikte Benoemd Wachtwoordregels mag verwijderd worden)"
 
 #. Resource IDs: (5876)
@@ -3761,7 +3763,7 @@ msgstr "Exporteer Huidige &DB"
 
 #. Resource IDs: (5965)
 msgid "Export DB"
-msgstr ""
+msgstr "Exporteer DB"
 
 #. Resource IDs: (32136 - PopupMenuEx, 5935)
 msgid "Export Entry To"
@@ -4134,7 +4136,7 @@ msgstr "Helemaal uitgevouwen"
 
 #. Resource IDs: (1379)
 msgid "G&o"
-msgstr ""
+msgstr "G&o"
 
 #. Resource IDs: (8305)
 msgid "Gaelic"
@@ -4158,7 +4160,7 @@ msgstr "Genereer wachtwoord"
 
 #. Resource IDs: (5916)
 msgid "Generate Password using selected Password Policy"
-msgstr "Genereer Wachtwoord met gebruik van geselecteerd Wachtwoordregels"
+msgstr "Genereer Wachtwoord met gebruik van geselecteerde Wachtwoordregels"
 
 #. Resource IDs: (8241)
 msgid "Georgian"
@@ -4234,7 +4236,7 @@ msgstr "Grieks meertonig"
 
 #. Resource IDs: (1350)
 msgid "Gro&up:"
-msgstr ""
+msgstr "Gro&ep:"
 
 #. Resource IDs: (3055, 5221)
 msgid "Group"
@@ -4414,52 +4416,52 @@ msgstr "ID:32073:VA  +L"
 #. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
 #. Accelerator Entry for Menu ID:32074; 'Browse to URL w/Alt Browser'
 msgid "ID:32074:VA S+L"
-msgstr ""
+msgstr "ID:32074:VA S+L"
 
 #. Accelerator Entry for Menu ID:32075; 'Send &Email'
 #. Accelerator Entry for Menu ID:32075; 'Send &Email'
 msgid "ID:32075:V C +E"
-msgstr ""
+msgstr "ID:32075:V C +E"
 
 #. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
 #. Accelerator Entry for Menu ID:32076; 'Perform Auto&Type'
 msgid "ID:32076:V C +T"
-msgstr ""
+msgstr "ID:32076:V C +T"
 
 #. Accelerator Entry for Menu ID:32077; '&Run Command'
 #. Accelerator Entry for Menu ID:32077; '&Run Command'
 msgid "ID:32077:V C +R"
-msgstr ""
+msgstr "ID:32077:V C +R"
 
 #. Accelerator Entry for Menu ID:32080; '&Find...'
 #. Accelerator Entry for Menu ID:32080; '&Find...'
 msgid "ID:32080:V C +F"
-msgstr ""
+msgstr "ID:32080:V C +F"
 
 #. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
 #. Accelerator Entry for Menu ID:32081; 'Copy Run Command to Clipboard'
 msgid "ID:32081:VAC +R"
-msgstr ""
+msgstr "ID:32081:VAC +R"
 
 #. Accelerator Entry for Menu ID:32083; 'Undo'
 #. Accelerator Entry for Menu ID:32083; 'Undo'
 msgid "ID:32083:V C +Z"
-msgstr ""
+msgstr "ID:32083:V C +Z"
 
 #. Accelerator Entry for Menu ID:32084; 'Redo'
 #. Accelerator Entry for Menu ID:32084; 'Redo'
 msgid "ID:32084:V C +Y"
-msgstr ""
+msgstr "ID:32084:V C +Y"
 
 #. Accelerator Entry for Menu ID:32099; 'Display Auth Code'
 #. Accelerator Entry for Menu ID:32099; 'Display Auth Code'
 msgid "ID:32099:VAC +2"
-msgstr ""
+msgstr "ID:32099:VAC +2"
 
 #. Accelerator Entry for Menu ID:32100; 'Copy Aut&h Code to Clipboard'
 #. Accelerator Entry for Menu ID:32100; 'Copy Aut&h Code to Clipboard'
 msgid "ID:32100:VA  +2"
-msgstr ""
+msgstr "ID:32100:VA  +2"
 
 #. Accelerator Entry for Menu ID:32140; 'Last Find results'
 #. Accelerator Entry for Menu ID:32140; 'Last Find results'
@@ -4589,15 +4591,15 @@ msgstr "Importeer KeePass V1 TXT"
 
 #. Resource IDs: (5869)
 msgid "Import KeePassV1 CSV"
-msgstr ""
+msgstr "Importeer KeePassV1 CSV"
 
 #. Resource IDs: (5868)
 msgid "Import KeePassV1 TXT"
-msgstr ""
+msgstr "Importeer KeePassV1 TXT"
 
 #. Resource IDs: (5534)
 msgid "Import Text"
-msgstr ""
+msgstr "Importeer Tekst"
 
 #. Resource IDs: (125)
 msgid "Import Text Settings"
@@ -4609,7 +4611,7 @@ msgstr "Importeren tekst mislukt"
 
 #. Resource IDs: (5535)
 msgid "Import XML"
-msgstr ""
+msgstr "Importeer XML"
 
 #. Resource IDs: (126)
 msgid "Import XML Settings"
@@ -4816,7 +4818,7 @@ msgstr "Kazachstaans"
 
 #. Resource IDs: (65535)
 msgid "Ke&y:"
-msgstr ""
+msgstr "Ke&y:"
 
 #. Resource IDs: (32024 - MenuEx)
 msgid "KeePass V1 CSV File..."
@@ -5622,7 +5624,7 @@ msgstr "Open"
 
 #. Resource IDs: (5315)
 msgid "Open Password Database"
-msgstr "Open Wachtwoord database:"
+msgstr "Open Wachtwoord database"
 
 #. Resource IDs: (1086)
 msgid "Open as read-only"
@@ -5690,27 +5692,27 @@ msgstr "PWS_CPF_TVDD"
 
 #. Resource IDs: (3093)
 msgid "Passkey Algorithm ID"
-msgstr ""
+msgstr "Wachtwoord Algorithme ID"
 
 #. Resource IDs: (3090)
 msgid "Passkey Credential ID"
-msgstr ""
+msgstr "Wachtoord Referentie ID"
 
 #. Resource IDs: (3094)
 msgid "Passkey Private Key"
-msgstr ""
+msgstr "Wachtwoord Private Sleutel"
 
 #. Resource IDs: (3091)
 msgid "Passkey Relying Party ID"
-msgstr ""
+msgstr "Wachtwoord ID doorstuurpartij"
 
 #. Resource IDs: (3095)
 msgid "Passkey Sign Count"
-msgstr ""
+msgstr "Wachtwoord aantal Ondertekeningen"
 
 #. Resource IDs: (3092)
 msgid "Passkey User Handle"
-msgstr ""
+msgstr "Wachtwoord Gebruikersnaam"
 
 #. Resource IDs: (5757)
 msgid "Passphrase"
@@ -6212,7 +6214,7 @@ msgstr "Gereserveerde snelkoppeling '%s' genegeerd."
 
 #. Resource IDs: (1427, 1470)
 msgid "Reset"
-msgstr "Opnieuw instellen"
+msgstr "Herstellen"
 
 #. Resource IDs: (1368)
 msgid "Reset All Program Shortcuts"
@@ -6220,15 +6222,15 @@ msgstr "Herstel alle Programma snelkoppelingen"
 
 #. Resource IDs: (32215 - Menu)
 msgid "Reset Column Width"
-msgstr "Kolom breedte opnieuw instellen"
+msgstr "Kolom breedte herstellen"
 
 #. Resource IDs: (32211 - Menu)
 msgid "Reset Columns"
-msgstr "Kolommen opnieuw instellen"
+msgstr "Kolommen herstellen"
 
 #. Resource IDs: (32290 - Menu)
 msgid "Reset this shortcut"
-msgstr "Deze snelkoppeling opnieuw instellen"
+msgstr "Deze snelkoppeling herstellen"
 
 #. Resource IDs: (32153 - MenuEx)
 msgid "Restore from Backup..."
@@ -7078,7 +7080,7 @@ msgstr "Telugu"
 
 #. Resource IDs: (65535)
 msgid "Test Selected Policy"
-msgstr "Test geselecteerd regels"
+msgstr "Test geselecteerde regels"
 
 #. Resource IDs: (5544)
 msgid "Text"
@@ -7317,7 +7319,7 @@ msgstr "De volgende kolommen worden bewerkt: "
 
 #. Resource IDs: (3463)
 msgid "The following entries contain incomplete passkeys."
-msgstr ""
+msgstr "De volgende vermeldingen bevatten onvolledige wachtwoorden."
 
 #. Resource IDs: (3439)
 msgid "The following entries had a duplicate UUID field.  This has been corrected."
@@ -7451,7 +7453,7 @@ msgstr "De oorspronkelijke database, \"%s\", is in de pre-3.0-indeling. De gegev
 #. Resource IDs: (5465)
 #, c-format
 msgid "The referenced entry '%ls:%ls:%ls' is itself an alias or shortcut. This is not supported."
-msgstr "De invoer waarnaar verwezen wordt '%ls: %ls: %ls' is zelf een alias of snelkoppeling. Dit wordt niet ondersteund."
+msgstr "De invoer waarnaar verwezen wordt '%ls:%ls:%ls' is zelf een alias of snelkoppeling. Dit wordt niet ondersteund."
 
 #. Resource IDs: (5770)
 msgid "The selected Failsafe Backup file will be opened instead of selected database."
@@ -7567,7 +7569,7 @@ msgstr "Dit is de huidige authenticatiecode. Klik op de knop om het naar het kle
 #. Resource IDs: (5121)
 #, c-format
 msgid "This is the percentage of Window transparency. 0% means normal fully opaque and 100% is totally transparent and invisible. Values greater than 50% are not supported. Note: This only applies to the main dialog window."
-msgstr "Dit is het percentage van het Venster transparantie. 0% betekent normaal volledig ondoorzichtig en 100% is volledig transparant en onzichtbaar. Waarden groter dan 50% worden niet ondersteund. Merk op: dit geldt alleen voor het hoofd dialoogvenster."
+msgstr "Dit is het percentage van het Venster transparantie. 0% betekent normaal volledig ondoorzichtig en 100% is volledig transparant en onzichtbaar. Waarden groter dan 50% zijn niet ondersteund. Merk op: dit geldt alleen voor het hoofd dialoogvenster."
 
 #. Resource IDs: (61710)
 #, c-format
@@ -7582,7 +7584,7 @@ msgstr "Dit programma vereist het bestand %Ts, welke niet gevonden is op dit sys
 #. Resource IDs: (5500)
 #, c-format
 msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
-msgstr "Doel van deze snelkoppeling [%ls: %ls: %ls] is niet een normale invoer."
+msgstr "Doel van deze snelkoppeling [%ls:%ls:%ls] is niet een normale invoer."
 
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."
@@ -8005,7 +8007,7 @@ msgstr "Gebruik &HOOFDletters"
 
 #. Resource IDs: (1476, 1481)
 msgid "Use Named Policy"
-msgstr "Gebruik Gelabelde Regels"
+msgstr "Gebruik Benoemde Regels"
 
 #. Resource IDs: (6062)
 msgid "Use anyway"
@@ -8149,7 +8151,7 @@ msgstr "Bekijk Snelkoppeling"
 
 #. Resource IDs: (4006, 5301)
 msgid "View/Edit selected entry"
-msgstr "Bekijk/Bewerk geselecteerd invoer"
+msgstr "Bekijk/Bewerk geselecteerde invoer"
 
 #. Resource IDs: (32201 - MenuEx)
 msgid "Visit Password Safe &website..."
