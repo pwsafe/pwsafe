@@ -474,9 +474,13 @@ wxIcon PropertiesDlg::GetIconResource( const wxString& WXUNUSED(name) )
 void PropertiesDlg::OnCloseClick( wxCommandEvent& WXUNUSED(evt) )
 {
   if (m_Model->HasChanges()) {
-    if (wxMessageBox(
-      _("Do you want to discard the changes?"),
-      _("Unsaved changes"), wxYES_NO|wxICON_EXCLAMATION, this) == wxNO) {
+    wxGenericMessageDialog dialog(this,
+      _("One or more values have been changed.\nDo you want to discard the changes?"), _("Warning"),
+      wxOK | wxCANCEL | wxCANCEL_DEFAULT | wxICON_EXCLAMATION
+    );
+    dialog.SetOKLabel(_("Discard"));
+
+    if (dialog.ShowModal() == wxID_CANCEL) {
       return;
     }
   }
@@ -537,7 +541,7 @@ void PropertiesDlg::OnNameOrDescriptionChanged(wxCommandEvent& evt)
       m_dbDescriptionTextCtrl->GetValue()
     );
   }
-  
+
   m_saveButton->Enable(
     m_Model->HasChanges()
   );
