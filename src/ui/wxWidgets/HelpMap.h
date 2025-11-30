@@ -54,6 +54,7 @@ PROPSHEET_HELP(AddEditPropSheetDlg, _("Basic"),            html/entering_pwd.htm
 PROPSHEET_HELP(AddEditPropSheetDlg, _("Dates and Times"),  html/entering_pwd_date.html)
 PROPSHEET_HELP(AddEditPropSheetDlg, _("Password Policy"),  html/entering_pwd_pp.html)
 PROPSHEET_HELP(AddEditPropSheetDlg, _("Additional"),       html/entering_pwd_add.html)
+PROPSHEET_HELP(AddEditPropSheetDlg, _("Attachment"),       html/entering_pwd_att.html)
 
 DLG_HELP(EditShortcutDlg,                  html/edit_menu.html)
 
