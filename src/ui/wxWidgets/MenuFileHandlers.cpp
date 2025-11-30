@@ -1379,36 +1379,6 @@ void PasswordSafeFrame::DoPropertiesClick()
   DestroyWrapper<PropertiesDlg> dlgWrapper(this, m_core);
   PropertiesDlg* propsDialog = dlgWrapper.Get();
   propsDialog->ShowModal();
-
-  if (propsDialog->HasDbNameChanged() || propsDialog->HasDbDescriptionChanged()) {
-
-    auto multiCommands = MultiCommands::Create(&m_core);
-
-    if (propsDialog->HasDbNameChanged()) {
-
-      multiCommands->Add(
-        ChangeDBHeaderCommand::Create(
-          &m_core, propsDialog->GetNewDbName(), PWSfile::HDR_DBNAME
-        )
-      );
-    }
-
-    if (propsDialog->HasDbDescriptionChanged()) {
-
-      multiCommands->Add(
-        ChangeDBHeaderCommand::Create(
-          &m_core, propsDialog->GetNewDbDescription(), PWSfile::HDR_DBDESC
-        )
-      );
-    }
-
-    if (!multiCommands->IsEmpty()) {
-      Execute(multiCommands);
-    }
-    else {
-      delete multiCommands;
-    }
-  }
 }
 
 /*!

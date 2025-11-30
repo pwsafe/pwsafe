@@ -21,6 +21,7 @@
 #include "wx/valgen.h"
 ////@end includes
 #include "core/PWScore.h"
+#include "wxUtilities.h"
 
 /*!
  * Forward declarations
@@ -55,11 +56,86 @@
 #else
 #define SYMBOL_PROPERTIESDLG_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE
 #endif
-#define SYMBOL_PROPERTIESDLG_TITLE _("Properties")
+#define SYMBOL_PROPERTIESDLG_TITLE _("Database Properties")
 #define SYMBOL_PROPERTIESDLG_IDNAME ID_PROPERTIESDLG
 #define SYMBOL_PROPERTIESDLG_SIZE wxSize(400, 300)
 #define SYMBOL_PROPERTIESDLG_POSITION wxDefaultPosition
 ////@end control identifiers
+
+class PropertiesDlg;
+
+/// The PropertiesModel retrieves the stored database properties
+/// and provides functionality for processing these properties.
+/// It thus contains the application logic for the PropertiesDlg view.
+class PropertiesModel
+{
+public:
+  PropertiesModel(PropertiesDlg &view, PWScore &core);
+  ~PropertiesModel() = default;
+
+  /// Retrieves the stored properties from the database,
+  /// stores them internally, and uses them to initialize the view.
+  void Init();
+
+  /// Instructs the application to save the database properties
+  /// if there are any changes.
+  void Save();
+
+  /// Checks for changes to all properties.
+  bool HasChanges() const { return m_PropertiesDb != m_PropertiesNew; }
+
+  /// Checks for changes to the databse 'name' property, only.
+  bool HasDatabaseNameChanged() const { return m_PropertiesDb.db_name != m_PropertiesNew.db_name; }
+
+  /// Checks for changes to the databse 'description' property, only.
+  bool HasDatabaseDescriptionChanged() const { return m_PropertiesDb.db_description != m_PropertiesNew.db_description; }
+
+  wxString GetDatabase() const { return towxstring(m_PropertiesNew.database); }
+  void SetDatabase(const wxString& value) { m_PropertiesNew.database = tostringx(value); }
+
+  wxString GetDatabaseformat() const { return towxstring(m_PropertiesNew.databaseformat); }
+  void SetDatabaseformat(const wxString& value) { m_PropertiesNew.databaseformat = tostringx(value); }
+
+  wxString GetNumOfGroups() const { return towxstring(m_PropertiesNew.numgroups); }
+  void SetNumOfGroups(const wxString& value) { m_PropertiesNew.numgroups = tostringx(value); }
+
+  wxString GetNumOfEntries() const { return towxstring(m_PropertiesNew.numentries); }
+  void SetNumOfEntries(const wxString& value) { m_PropertiesNew.numentries = tostringx(value); }
+
+  wxString GetWhenLastSaved() const { return towxstring(m_PropertiesNew.whenlastsaved); }
+  void SetWhenLastSaved(const wxString& value) { m_PropertiesNew.whenlastsaved = tostringx(value); }
+
+  wxString GetWhoLastSaved() const { return towxstring(m_PropertiesNew.wholastsaved); }
+  void SetWhoLastSaved(const wxString& value) { m_PropertiesNew.wholastsaved = tostringx(value); }
+
+  wxString GetWhatLastSaved() const { return towxstring(m_PropertiesNew.whatlastsaved); }
+  void SetWhatLastSaved(const wxString& value) { m_PropertiesNew.whatlastsaved = tostringx(value); }
+
+  wxString GetFileUuid() const { return towxstring(m_PropertiesNew.file_uuid); }
+  void SetFileUuid(const wxString& value) { m_PropertiesNew.file_uuid = tostringx(value); }
+
+  wxString GetUnknownFields() const { return towxstring(m_PropertiesNew.unknownfields); }
+  void SetUnknownFields(const wxString& value) { m_PropertiesNew.unknownfields = tostringx(value); }
+
+  StringX GetDatabaseName() const { return m_PropertiesNew.db_name; }
+  void SetDatabaseName(const wxString& value) { m_PropertiesNew.db_name = tostringx(value); }
+
+  StringX GetDatabaseDescription() const { return m_PropertiesNew.db_description; }
+  void SetDatabaseDescription(const wxString& value) { m_PropertiesNew.db_description = tostringx(value); }
+
+private:
+  /// Represents the currently stored database properties.
+  st_DBProperties m_PropertiesDb;
+
+  /// Represents new, resp. modified database properties.
+  st_DBProperties m_PropertiesNew;
+
+  /// The application's user interface.
+  PropertiesDlg &m_View;
+
+  /// The application's core functionality.
+  PWScore &m_Core;
+};
 
 /*!
  * PropertiesDlg class declaration
@@ -72,17 +148,18 @@ class PropertiesDlg : public wxDialog
 
 public:
   
-  static PropertiesDlg* Create(wxWindow *parent, const PWScore &core,
+  static PropertiesDlg* Create(wxWindow *parent, PWScore &core,
               wxWindowID id = SYMBOL_PROPERTIESDLG_IDNAME,
               const wxString& caption = SYMBOL_PROPERTIESDLG_TITLE,
               const wxPoint& pos = SYMBOL_PROPERTIESDLG_POSITION,
               const wxSize& size = SYMBOL_PROPERTIESDLG_SIZE,
               long style = SYMBOL_PROPERTIESDLG_STYLE );
   /// Destructor
-  ~PropertiesDlg() = default;
+  ~PropertiesDlg() { delete m_Model; }
+
 protected:
   /// Constructors
-  PropertiesDlg(wxWindow *parent, const PWScore &core,
+  PropertiesDlg(wxWindow *parent, PWScore &core,
               wxWindowID id, const wxString& caption,
               const wxPoint& pos, const wxSize& size, long style);
 
@@ -97,48 +174,57 @@ protected:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
   void OnCloseClick(wxCommandEvent& evt);
 
-  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CHANGE_NAME
-  void OnEditName(wxCommandEvent& evt);
+  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_SAVE
+  void OnSaveClick(wxCommandEvent& evt);
 
-  /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CHANGE_DESCRIPTION
-  void OnEditDescription(wxCommandEvent& evt);
+  /// wxEVT_LEFT_DCLICK event handler for wxID_DBNAME
+  void OnDoubleClickNameTextCtrl(wxMouseEvent& evt);
+
+  /// wxEVT_LEFT_DCLICK event handler for wxID_DBDESCRIPTION
+  void OnDoubleClickDescriptionTextCtrl(wxMouseEvent& evt);
+
+  /// wxEVT_TEXT event handler for wxID_CHANGE_NAME and wxID_CHANGE_DESCRIPTION
+  void OnNameOrDescriptionChanged(wxCommandEvent& evt);
 
 ////@end PropertiesDlg event handler declarations
 public:
 ////@begin PropertiesDlg member function declarations
 
   wxString GetDatabase() const { return m_database ; }
-  void SetDatabase(wxString value) { m_database = value ; }
+  void SetDatabase(const wxString& value) { m_database = value ; }
 
   wxString GetDatabaseformat() const { return m_databaseformat ; }
-  void SetDatabaseformat(wxString value) { m_databaseformat = value ; }
+  void SetDatabaseformat(const wxString& value) { m_databaseformat = value ; }
 
-  wxString GetNumgroups() const { return m_numgroups ; }
-  void SetNumgroups(wxString value) { m_numgroups = value ; }
+  wxString GetNumOfGroups() const { return m_numgroups ; }
+  void SetNumOfGroups(const wxString& value) { m_numgroups = value ; }
 
-  wxString GetNumentries() const { return m_numentries ; }
-  void SetNumentries(wxString value) { m_numentries = value ; }
+  wxString GetNumOfEntries() const { return m_numentries ; }
+  void SetNumOfEntries(const wxString& value) { m_numentries = value ; }
 
-  wxString GetWhenlastsaved() const { return m_whenlastsaved ; }
-  void SetWhenlastsaved(wxString value) { m_whenlastsaved = value ; }
+  wxString GetNumOfAttachments() const { return m_numattachments ; }
+  void SetNumOfAttachments(const wxString& value) { m_numattachments = value ; }
 
-  wxString GetWholastsaved() const { return m_wholastsaved ; }
-  void SetWholastsaved(wxString value) { m_wholastsaved = value ; }
+  wxString GetWhenLastSaved() const { return m_whenlastsaved ; }
+  void SetWhenLastSaved(const wxString& value) { m_whenlastsaved = value ; }
 
-  wxString GetWhatlastsaved() const { return m_whatlastsaved ; }
-  void SetWhatlastsaved(wxString value) { m_whatlastsaved = value ; }
+  wxString GetWhoLastSaved() const { return m_wholastsaved ; }
+  void SetWhoLastSaved(const wxString& value) { m_wholastsaved = value ; }
+
+  wxString GetWhatLastSaved() const { return m_whatlastsaved ; }
+  void SetWhatLastSaved(const wxString& value) { m_whatlastsaved = value ; }
+
+  wxString GetWhenPwdLastChanged() const { return m_whenpwdlastchanged ; }
+  void SetWhenPwdLastChanged(const wxString& value) { m_whenpwdlastchanged = value ; }
 
   wxString GetFileUuid() const { return m_file_uuid ; }
-  void SetFileUuid(wxString value) { m_file_uuid = value ; }
+  void SetFileUuid(const wxString& value) { m_file_uuid = value ; }
 
-  wxString GetUnknownfields() const { return m_unknownfields ; }
-  void SetUnknownfields(wxString value) { m_unknownfields = value ; }
+  wxString GetUnknownFields() const { return m_unknownfields ; }
+  void SetUnknownFields(const wxString& value) { m_unknownfields = value ; }
 
-  StringX GetNewDbName() const { return m_NewDbName; }
-  StringX GetNewDbDescription() const { return m_NewDbDescription; }
-
-  bool HasDbNameChanged() const { return m_NewDbName != m_core.GetHeader().m_DB_Name; }
-  bool HasDbDescriptionChanged() const { return m_NewDbDescription != m_core.GetHeader().m_DB_Description; }
+  void SetDatabaseName(const wxString& value) { m_DbName = value; }
+  void SetDatabaseDescription(const wxString& value) { m_DbDescription = value; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );
@@ -150,7 +236,6 @@ public:
   /// Should we show tooltips?
   static bool ShowToolTips();
 
-////@begin PropertiesDlg member variables
 private:
   wxString m_database;
   wxString m_databaseformat;
@@ -165,13 +250,17 @@ private:
   wxString m_unknownfields;
   wxString m_DbName;
   wxString m_DbDescription;
-////@end PropertiesDlg member variables
-  StringX m_NewDbName;
-  StringX m_NewDbDescription;
-  const PWScore &m_core;
-  
-  void DoEditName();
-  void DoEditDescription();
+
+  wxButton *m_saveButton = nullptr;
+  wxButton *m_closeButton = nullptr;
+  wxTextCtrl *m_dbNameTextCtrl = nullptr;
+  wxTextCtrl *m_dbDescriptionTextCtrl = nullptr;
+
+  /// The dialog's functionality.
+  PropertiesModel *m_Model = nullptr;
+
+  /// The application's core functionality.
+  PWScore &m_core;
 };
 
 #endif // _PROPERTIESDLG_H_
