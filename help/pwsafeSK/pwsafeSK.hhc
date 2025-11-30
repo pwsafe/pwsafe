@@ -67,12 +67,12 @@
 				<param name="Local" value="html/entering_pwd_date.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Zásady hesiel">
-				<param name="Local" value="html/entering_pwd_pp.html">
+				<param name="Name" value="Príloha">
+				<param name="Local" value="html/entering_pwd_att.html">
 				</OBJECT>
 			<LI> <OBJECT type="text/sitemap">
-				<param name="Name" value="Príloha">
-				<param name="Local" value="html/attachments.html">
+				<param name="Name" value="Zásady hesiel">
+				<param name="Local" value="html/entering_pwd_pp.html">
 				</OBJECT>
 		</UL>
 		<LI> <OBJECT type="text/sitemap">
