@@ -1605,7 +1605,7 @@ bool PWSFilterManager::PassesPWPFiltering(const CItemData *pci) const
 bool PWSFilterManager::PassesAttFiltering(const CItemData *pci, const PWScore &core) const
 {
   bool thistest_rc;
-  const bool bPresent = pci->HasAttRef();
+  const bool bPresent = pci->HasAttachment();
   bool bValue(false);
 
   
