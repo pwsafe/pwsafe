@@ -704,7 +704,7 @@ StringX TreeCtrlBase::GroupNameOfItem(const CItemData &item)
     }
     
     if (gt == 0) {
-      group = L"Undefind Time Value";
+      group = L"Undefined Time Value";
     }
     else {
       TCHAR datetime_str[80];
