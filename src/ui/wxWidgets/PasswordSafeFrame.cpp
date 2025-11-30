@@ -649,7 +649,7 @@ void PasswordSafeFrame::CreateMenubar()
   menuEdit->Append(ID_AUTOTYPE, _("Perform Auto&type\tCtrl+T"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_CREATESHORTCUT, _("Create &Shortcut"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_GOTOBASEENTRY, _("Go to Base entry"), wxEmptyString, wxITEM_NORMAL);
-  if (m_core.GetReadFileVersion() == PWSfile::V40) {
+  if (m_core.GetReadFileVersion() >= PWSfile::V30) {
     menuEdit->Append(ID_VIEWATTACHMENT, _("View Attachment"), wxEmptyString, wxITEM_NORMAL);
   }
   menuBar->Append(menuEdit, _("&Edit"));
@@ -1955,7 +1955,7 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     else {
       itemEditMenu.Append(ID_EDITBASEENTRY,  _("&Edit Base entry"));
     }
-    if (item->HasAttRef()) {
+    if (item->HasAttachment()) {
       itemEditMenu.Append(ID_VIEWATTACHMENT, _("View Attachment"));
     }
     if (!item->IsShortcut()) {
@@ -2392,7 +2392,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_VIEWATTACHMENT:
-      evt.Enable(isUnlocked && pci && pci->HasAttRef());
+      evt.Enable(isUnlocked && pci && pci->HasAttachment());
       break;
 
     case ID_GOTOBASEENTRY:
