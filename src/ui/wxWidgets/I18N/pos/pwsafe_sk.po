@@ -30,7 +30,7 @@ msgstr "Zostavené pomocou "
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:119 ../../../ui/wxWidgets/AboutDlg.cpp:158
 msgid "Build date:"
-msgstr "Zostavené dňa: "
+msgstr "Zostavené dňa:"
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:125
 msgid "Check"
@@ -1938,7 +1938,7 @@ msgstr "Uzamknuté používateľom "
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:243
 #: ../../../ui/wxWidgets/SafeCombinationEntryDlg.cpp:457
 msgid "Open Password Database"
-msgstr "Otvorte databázu hesiel"
+msgstr "Otvoriť databázu hesiel"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:342
 msgid ""
@@ -2896,11 +2896,11 @@ msgstr "Použiť alternatívnu metódu automatického dopĺňania"
 msgid ""
 "When set, use XTEST for AutoType instead of XSendEvent.\n"
 "XSendEvent can handle more control keys, but may be blocked by some applications."
-msgstr "Keď je nastavené, použite pre AutoType XTEST namiesto XSendEvent.\nXSendEvent dokáže spracovať viac ovládacích klávesov, ale niektoré aplikácie ho môžu blokovať."
+msgstr "Keď je nastavené, použije sa pre AutoType XTEST namiesto XSendEvent.\nXSendEvent dokáže spracovať viac ovládacích klávesov, ale niektoré aplikácie ho môžu blokovať."
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:920
 msgid "If AutoType doesn't work, setting this may help."
-msgstr "Ak automatické dopĺňanie nefunguje, toto nastavenie by mohlo pomôcť."
+msgstr "Ak automatické dopĺňanie nefunguje, toto nastavenie môže pomôcť."
 
 #: ../../../ui/wxWidgets/OptionsPropertySheetDlg.cpp:1301
 msgid "Select a directory"
@@ -4446,7 +4446,7 @@ msgstr "Zadajte názov filtra."
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:244
 msgid "Clear"
-msgstr "Zrušiť"
+msgstr "Vymazať"
 
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:374
 #: ../../../ui/wxWidgets/SetFiltersDlg.cpp:382
@@ -6892,3 +6892,18 @@ msgstr "Skryť potvrdzovací kľúč"
 
 msgid "Show verification key"
 msgstr "Zobraziť potvrdzovací kľúč"
+
+msgid "Not supported by the current Windowing System (e.g. Wayland), or you may need to install a Desktop Environment extension to enable System Tray support."
+msgstr "Nie je podporované aktuálnym systémom na správu okien (napr. Wayland), alebo je potrebné nainštalovať rozšírenie pre aktuálne desktopové prostredie aby ste povolili podporu systémovej lišty."
+
+msgid "Clear Recent Database List"
+msgstr "Vymazať zoznam nedávnych súborov"
+
+msgid "Do you want to clear the list of recently opened databases?"
+msgstr "Potvrďte že chcete vymazať zoznam nedávno otvorených súborov."
+
+msgid "Choose location to save report as file"
+msgstr "Vyberte priečinok na uloženie reportu do súboru"
+
+msgid "Choose output directory"
+msgstr "Vyberte priečinok"
