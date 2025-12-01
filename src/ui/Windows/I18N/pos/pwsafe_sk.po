@@ -33,7 +33,7 @@ msgstr ""
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
 #. Resource IDs: (3263)
 msgid "  All Password History ignored."
-msgstr " Celá história hesiel ignorovaná."
+msgstr "  Celá história hesiel ignorovaná."
 
 #. Resource IDs: (3040)
 msgid "  Field is too long."
@@ -58,7 +58,7 @@ msgstr " Zistený neplatný znak oddeľovača polí - medzi poliami je povolený
 #. Resource IDs: (3034)
 #, c-format
 msgid "  Invalid header: '%ls' (must be 5 hexadecimal characters)."
-msgstr "Neplatná hlavička: '%ls' (musí to byť 5 hexadecimálnych znakov)."
+msgstr " Neplatná hlavička: '%ls' (musí to byť 5 hexadecimálnych znakov)."
 
 #. Resource IDs: (3036)
 #, c-format
@@ -164,7 +164,7 @@ msgstr " 'Dvojfaktorový kľúč'"
 
 #. Resource IDs: (5366)
 msgid " 'URL'"
-msgstr "'URL'"
+msgstr " 'URL'"
 
 #. Resource IDs: (5543)
 msgid " 'User'"
@@ -172,7 +172,7 @@ msgstr " 'Používateľ'"
 
 #. Resource IDs: (5864)
 msgid " 'protected'"
-msgstr "'zamknutý'"
+msgstr " 'zamknutý'"
 
 #. Resource IDs: (5843)
 msgid " 'symbols'"
@@ -4452,7 +4452,7 @@ msgstr "Ikona"
 
 #. Resource IDs: (5104)
 msgid "If enabled, a 'snapshot' will be taken before every save, named as specified below."
-msgstr "Ak je povolené, urobí sa \"snímka\" pred každým uložením, bude pomenovaná ako je uvedené nižšie."
+msgstr "Ak je povolené, urobí sa 'snímka' pred každým uložením, bude pomenovaná ako je uvedené nižšie."
 
 #. Resource IDs: (5267)
 msgid "If requested, then a delimiter character must be entered."

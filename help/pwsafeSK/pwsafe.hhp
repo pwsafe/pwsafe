@@ -17,7 +17,6 @@ html\about_pws.html
 html\about_pws_yubi.html
 html\advanced.html
 html\aliases.html
-html\attachments.html
 html\autotype.html
 html\backups_tab.html
 html\backup_and_restore.html
@@ -29,6 +28,7 @@ html\display_tab.html
 html\edit_menu.html
 html\entering_pwd.html
 html\entering_pwd_add.html
+html\entering_pwd_att.html
 html\entering_pwd_date.html
 html\entering_pwd_pp.html
 html\export.html
