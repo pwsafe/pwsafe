@@ -601,7 +601,7 @@ void PasswordSafeFrame::OnViewAttachment(wxCommandEvent& WXUNUSED(evt))
     return;
   }
 
-  if (!item->HasAttRef()) {
+  if (!item->HasAttachment()) {
     return;
   }
 
@@ -610,9 +610,16 @@ void PasswordSafeFrame::OnViewAttachment(wxCommandEvent& WXUNUSED(evt))
 
 void PasswordSafeFrame::DoViewAttachment(CItemData* item)
 {
-  ASSERT(m_core.HasAtt(item->GetAttUUID()));
-
-  CItemAtt itemAttachment = m_core.GetAtt(item->GetAttUUID());
+  CItemAtt itemAttachment;
+  if (item->HasAttRef()) { // PWSfile::V40
+    ASSERT(m_core.HasAtt(item->GetAttUUID()));
+    itemAttachment = m_core.GetAtt(item->GetAttUUID());
+  }
+  else if (m_core.GetReadFileVersion() == PWSfile::V30 && item->HasAttachment()) {
+    itemAttachment.SetMediaType(item->GetAttMediaType());
+    const std::vector<unsigned char> content = item->GetAttContent();
+    itemAttachment.SetContent(content.data(), content.size());
+  }
 
   // Shouldn't be here if no content
   if (!itemAttachment.HasContent()) {
