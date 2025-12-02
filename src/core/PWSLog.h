@@ -12,6 +12,7 @@
 #include "../os/typedefs.h"
 #include "../os/logit.h"
 
+#include <cassert>
 #include <deque>
 
 #define PWS_LOGIT_CONCAT(str) PWS_LOGIT_HEADER L ## str
@@ -30,13 +31,15 @@ public:
   virtual ~PWSLog() {}
 
   static PWSLog *GetLog(); // singleton
+  static void SetInstance(PWSLog *custom) { assert(self == nullptr); self = custom; }
   static void DeleteLog();
   
-  void Add(const stringT &sLogRecord);
+  virtual void Add(const stringT &sLogRecord);
   stringT DumpLog() const;
 
-private:
+protected:
   PWSLog() {}
+private:
   static PWSLog *self;
   std::deque<stringT> m_log;
 };
