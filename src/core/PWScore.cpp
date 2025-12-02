@@ -3079,7 +3079,7 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   if (GetReadFileVersion() >= PWSfile::V40)
     Format(st_dbp.numattachments, L"%d", m_attlist.size());
   else
-    st_dbp.numattachments = L"N/A";
+    Format(st_dbp.numattachments, L"%d", GetNumAtts());
 
   time_t twls = m_hdr.m_whenlastsaved;
   if (twls == 0) {

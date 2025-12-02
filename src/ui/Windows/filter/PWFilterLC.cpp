@@ -1721,7 +1721,7 @@ void CPWFilterLC::SetUpComboBoxData()
         m_vFcbx_data.push_back(stf);
 
         // Only add attachment fields if DB has attachments
-        if (m_bCanHaveAttachments && m_psMediaTypes != NULL && !m_psMediaTypes->empty()) {
+        if (m_bCanHaveAttachments && m_psMediaTypes != NULL) {
           cs_temp.LoadString(IDS_ATTACHMENTS);
           stf.cs_text = cs_temp + L" -->";  // Normal 3 dots hard to see
           stf.ftype = FT_ATTACHMENT;
