@@ -974,9 +974,6 @@ void AddEditPropSheetDlg::InitAttachmentTab()
       // Mark as CLEAN for change detection
       m_ItemAttachment.SetStatus(CItem::EntryStatus::ES_CLEAN);
 
-      // Keep a snapshot for change detection in Edit mode
-      m_OldItemAttachment = m_ItemAttachment;
-
       // Show attachment data on UI.
       ShowAttachmentData(m_ItemAttachment);
 
@@ -1009,6 +1006,8 @@ void AddEditPropSheetDlg::InitAttachmentTab()
       EnableImport();
     }
   }
+  // Keep a snapshot for change detection in Edit mode
+  m_OldItemAttachment = m_ItemAttachment;
 }
 
 /**
@@ -1154,6 +1153,7 @@ void AddEditPropSheetDlg::EnableImport()
   m_AttachmentButtonImport->Enable();
   m_AttachmentButtonExport->Disable();
   m_AttachmentButtonRemove->Disable();
+  m_AttachmentTitle->Disable();
 }
 
 void AddEditPropSheetDlg::DisableImport()
@@ -1161,6 +1161,7 @@ void AddEditPropSheetDlg::DisableImport()
   m_AttachmentButtonImport->Disable();
   m_AttachmentButtonExport->Enable();
   m_AttachmentButtonRemove->Enable();
+  m_AttachmentTitle->Enable();
 }
 
 void AddEditPropSheetDlg::DisableAttachmentControls()
@@ -1168,6 +1169,7 @@ void AddEditPropSheetDlg::DisableAttachmentControls()
   m_AttachmentButtonImport->Disable();
   m_AttachmentButtonExport->Disable();
   m_AttachmentButtonRemove->Disable();
+  m_AttachmentTitle->Enable();
 }
 
 void AddEditPropSheetDlg::OnImport(wxCommandEvent& WXUNUSED(event))
@@ -2800,7 +2802,8 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
   }
   // attachment
   if (m_ItemAttachment != m_OldItemAttachment ||
-      m_ItemAttachment.GetTitle() != tostringx(m_AttachmentTitle->GetValue()))
+      (m_AttachmentTitle->GetValue() != _T("N/A") && 
+       m_ItemAttachment.GetTitle() != tostringx(m_AttachmentTitle->GetValue())))
     changes |= Changes::Attachment;
  
   // two factor key
