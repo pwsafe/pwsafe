@@ -1,4 +1,4 @@
-image: ubuntu/next
+image: ubuntu/plucky
 arch: amd64
 triggers:
     - action: email
