@@ -873,6 +873,7 @@ wxPanel* AddEditPropSheetDlg::CreateAttachmentPanel()
   auto *StaticText3 = new wxStaticText(panel, wxID_ANY, _("Title:"), wxDefaultPosition, wxDefaultSize, 0);
   FlexGridSizer1->Add(StaticText3, 0, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
   m_AttachmentTitle = new wxTextCtrl(panel, wxID_ANY, _("Text"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator);
+  m_AttachmentTitle->SetHint(_("N/A"));
   FlexGridSizer1->Add(m_AttachmentTitle, 1, wxALL|wxEXPAND, 5);
 
   auto *StaticText2 = new wxStaticText(panel, wxID_ANY, _("Media Type:"), wxDefaultPosition, wxDefaultSize, 0);
@@ -1026,12 +1027,7 @@ void AddEditPropSheetDlg::ShowAttachmentData(const CItemAtt &itemAttachment)
   }
 
   // Get attachment's title
-  if (itemAttachment.GetTitle().empty()) {
-    m_AttachmentTitle->SetValue(_("N/A"));
-  }
-  else {
-    m_AttachmentTitle->SetValue(stringx2std(itemAttachment.GetTitle()));
-  }
+  m_AttachmentTitle->SetValue(stringx2std(itemAttachment.GetTitle()));
 
   // Get attachment's media type
   auto mediaTypeDescription = stringx2std(itemAttachment.GetMediaType());
@@ -1091,7 +1087,7 @@ void AddEditPropSheetDlg::ShowAttachmentData(const CItemAtt &itemAttachment)
 void AddEditPropSheetDlg::ResetAttachmentData()
 {
   m_AttachmentFilePath->SetLabel(_("N/A"));
-  m_AttachmentTitle->SetValue(_("N/A"));
+  m_AttachmentTitle->Clear();
   m_AttachmentMediaType->SetLabel(_("N/A"));
   m_AttachmentCreationDate->SetLabel(_("N/A"));
   m_AttachmentFileSize->SetLabel(_("N/A"));
@@ -2579,9 +2575,7 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
 
       if (hasContent || hasAnyMeta) {
         // Update title from UI if present
-        if (m_AttachmentTitle->GetValue() != _T("N/A")) {
-          m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
-        }
+        m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
         
         // Title, media type, filename
         m_Item.SetAttTitle(m_ItemAttachment.GetTitle());
@@ -2611,9 +2605,7 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
     else if (!m_Item.HasAttRef() && m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) {
       // V4: Use ATTREF & attachment store
       // Step 1)
-      if (m_AttachmentTitle->GetValue() != _T("N/A")) {
-        m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
-      }
+      m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
 
       time_t timestamp;
       time(&timestamp);
@@ -2802,8 +2794,7 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
   }
   // attachment
   if (m_ItemAttachment != m_OldItemAttachment ||
-      (m_AttachmentTitle->GetValue() != _T("N/A") && 
-       m_ItemAttachment.GetTitle() != tostringx(m_AttachmentTitle->GetValue())))
+      m_ItemAttachment.GetTitle() != tostringx(m_AttachmentTitle->GetValue()))
     changes |= Changes::Attachment;
  
   // two factor key
@@ -3004,9 +2995,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
 
       if (hasContent || hasAnyMeta) {
         // Update title from UI if present
-        if (m_AttachmentTitle->GetValue() != _T("N/A")) {
-          m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
-        }
+        m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
         
         // Title, media type, filename
         m_Item.SetAttTitle(m_ItemAttachment.GetTitle());
@@ -3061,9 +3050,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
       else if (!m_Item.HasAttRef() && m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) {
 
         // Step 1)
-        if (m_AttachmentTitle->GetValue() != _T("N/A")) {
-          m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
-        }
+        m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
 
         time_t timestamp;
         time(&timestamp);
@@ -3117,10 +3104,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
         
         if (hasTitleChanges || hasAttachmentChanges) {
           // Step 1)
-          if (m_AttachmentTitle->GetValue() != _T("N/A"))
-          {
-            m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
-          }
+          m_ItemAttachment.SetTitle(std2stringx(stringT(m_AttachmentTitle->GetValue())));
           time_t timestamp;
           time(&timestamp);
           m_ItemAttachment.SetCTime(timestamp);
