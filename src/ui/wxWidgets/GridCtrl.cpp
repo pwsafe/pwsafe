@@ -18,6 +18,7 @@
 #endif
 
 ////@begin includes
+#include <wx/regex.h>
 ////@end includes
 
 #include "GridCtrl.h"
@@ -639,25 +640,174 @@ void GridCtrl::SortByColumn(int column, bool ascending)
 
   SetSortingColumn(column, ascending);
 
-  if (ascending) {
-    AscendingSortedMultimap collection;
+  /*
+    Columns with date-time information are:
+    - CItemData::CTIME  =  8 (creation time)
+    - CItemData::PMTIME =  9 (password modification time)
+    - CItemData::ATIME  = 10 (access time)
+    - CItemData::XTIME  = 11 (expiry time)
+    - CItemData::RMTIME = 13 (record modification time)
 
-    RearrangeItems<AscendingSortedMultimap> (collection, column);
+    (It would be better to check against the CItemData::FieldType
+     in PWSGridCellData, which is defined in GridTable.cpp. Well...)
+  */
+  if ((column >= 8 && column <= 10) || (column == 13)) {
+    if (ascending) {
+      AscendingSortedDateTime collection;
+
+      RearrangeItemsDateTimeBased<AscendingSortedDateTime> (collection, column, false /*date and time expected*/);
+    }
+    else {
+      DescendingSortedDateTime collection;
+
+      RearrangeItemsDateTimeBased<DescendingSortedDateTime> (collection, column, false /*date and time expected*/);
+    }
+  }
+  else if (column == 11) {
+    if (ascending) {
+      AscendingSortedDateTime collection;
+
+      RearrangeItemsDateTimeBased<AscendingSortedDateTime> (collection, column, true /*only date expected*/);
+    }
+    else {
+      DescendingSortedDateTime collection;
+
+      RearrangeItemsDateTimeBased<DescendingSortedDateTime> (collection, column, true /*only date expected*/);
+    }
   }
   else {
-    DescendingSortedMultimap collection;
+    if (ascending) {
+      AscendingSortedMultimap collection;
 
-    RearrangeItems<DescendingSortedMultimap> (collection, column);
+      RearrangeItemsStringBased<AscendingSortedMultimap> (collection, column);
+    }
+    else {
+      DescendingSortedMultimap collection;
+
+      RearrangeItemsStringBased<DescendingSortedMultimap> (collection, column);
+    }
   }
 }
 
 template<typename ItemsCollection>
-void GridCtrl::RearrangeItems(ItemsCollection& collection, int column)
+void GridCtrl::RearrangeItemsStringBased(ItemsCollection& collection, int column)
 {
   int row = 0;
 
   for (row = 0; row < GetNumberRows(); row++) {
     collection.insert(std::pair<wxString, const CItemData*>(GetCellValue(row, column), GetItem(row)));
+  }
+
+  m_row_map.clear();
+  m_uuid_map.clear();
+
+  row = 0;
+
+  for (auto& item : collection) {
+    RefreshItem(*item.second, row++);
+  }
+}
+
+template<typename ItemsCollection>
+void GridCtrl::RearrangeItemsDateTimeBased(ItemsCollection& collection, int column, bool dateOnly)
+{
+  int row = 0;
+  wxDateTime dt = wxDateTime::Today(); // initialize with valid date, otherwise the setters will assert
+  wxString datetime;
+  wxString::const_iterator end;
+  wxRegEx dateRegex("(\\d{2})/(\\d{2})/(\\d{2})"); // for date format of type dd/mm/yy (e.g. 01/02/25)
+
+  for (row = 0; row < GetNumberRows(); row++) {
+    /*
+      The items's date-time or date information.
+    */
+    datetime = GetCellValue(row, column);
+    /*
+      If no data-time information are present we use the date timestamp of today as default.
+      Same for all error cases.
+    */
+    if (datetime.IsEmpty()) {
+      collection.insert(std::pair<wxDateTime, const CItemData*>(wxDateTime::Today(), GetItem(row)));
+    }
+    /*
+      The case if a date-time combination is expected.
+    */
+    else if (!dateOnly && dt.ParseDateTime(datetime, &end)) {
+      collection.insert(std::pair<wxDateTime, const CItemData*>(dt, GetItem(row)));
+    }
+    /*
+      The case if a date without a time is expected.
+      wxDateTime::ParseDate interprets 01/02/25 as mm/dd/yy, but it's actually dd/mm/yy,
+      so we explicitly initialize the date time object via it's setter methods, instead
+      of simply making use of wxDateTime::ParseDate.
+    */
+    else if (dateOnly && dateRegex.Matches(datetime)) {
+      auto day   = dateRegex.GetMatch(datetime, 1);
+      auto month = dateRegex.GetMatch(datetime, 2);
+      auto year  = dateRegex.GetMatch(datetime, 3);
+      if (day.IsEmpty() || month.IsEmpty() || year.IsEmpty()) {
+        collection.insert(std::pair<wxDateTime, const CItemData*>(wxDateTime::Today(), GetItem(row)));
+      }
+      else {
+        int d = 0, m = 0, y = 0;
+        if (day.ToInt(&d) && month.ToInt(&m) && year.ToInt(&y)) {
+          dt.SetDay(d);
+          dt.SetYear(y);
+          switch (m) {
+            case 1:
+              dt.SetMonth(wxDateTime::Month::Jan);
+              break;
+            case 2:
+              dt.SetMonth(wxDateTime::Month::Feb);
+              break;
+            case 3:
+              dt.SetMonth(wxDateTime::Month::Mar);
+              break;
+            case 4:
+              dt.SetMonth(wxDateTime::Month::Apr);
+              break;
+            case 5:
+              dt.SetMonth(wxDateTime::Month::May);
+              break;
+            case 6:
+              dt.SetMonth(wxDateTime::Month::Jun);
+              break;
+            case 7:
+              dt.SetMonth(wxDateTime::Month::Jul);
+              break;
+            case 8:
+              dt.SetMonth(wxDateTime::Month::Aug);
+              break;
+            case 9:
+              dt.SetMonth(wxDateTime::Month::Sep);
+              break;
+            case 10:
+              dt.SetMonth(wxDateTime::Month::Oct);
+              break;
+            case 11:
+              dt.SetMonth(wxDateTime::Month::Nov);
+              break;
+            case 12:
+              dt.SetMonth(wxDateTime::Month::Dec);
+              break;
+            default:
+              pws_os::Trace(L"Failed to parse item's date (month) string: %ls ; using: %ls", datetime.wc_str(), wxDateTime::Today().FormatISOCombined().wc_str());
+              collection.insert(std::pair<wxDateTime, const CItemData*>(wxDateTime::Today(), GetItem(row)));
+              continue;
+          }
+        }
+        else {
+          pws_os::Trace(L"Failed to parse item's date (day, month or year) string: %ls ; using: %ls", datetime.wc_str(), wxDateTime::Today().FormatISOCombined().wc_str());
+          collection.insert(std::pair<wxDateTime, const CItemData*>(wxDateTime::Today(), GetItem(row)));
+          continue;
+        }
+        collection.insert(std::pair<wxDateTime, const CItemData*>(dt, GetItem(row)));
+      }
+    }
+    else {
+      pws_os::Trace(L"Failed to parse item's date-time string: %ls ; using: %ls", datetime.wc_str(), wxDateTime::Today().FormatISOCombined().wc_str());
+      collection.insert(std::pair<wxDateTime, const CItemData*>(wxDateTime::Today(), GetItem(row)));
+    }
   }
 
   m_row_map.clear();
