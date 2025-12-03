@@ -402,6 +402,10 @@ void PropertiesDlg::CreateControls()
   flexGridSizer->Add(itemStaticText17       , 0, wxALIGN_RIGHT|wxALL        , 5);
   flexGridSizer->Add(m_dbDescriptionTextCtrl, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
+  auto *itemStaticTextHint = new wxStaticText(this, wxID_STATIC, _("Double click the text entry fields to edit."), wxDefaultPosition, wxDefaultSize, 0);
+  itemStaticTextHint->SetFont((itemStaticTextHint->GetFont()).Italic());
+  flexGridSizer->AddStretchSpacer(); // Item for 1st column of wxFlexGridSizer
+  flexGridSizer->Add(itemStaticTextHint, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
   auto buttonsSizer = new wxStdDialogButtonSizer;
   mainSizer->Add(buttonsSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
