@@ -767,7 +767,7 @@ int DeleteAttachmentCommand::Execute()
   SaveDBInformation();
 
   if (m_bNotifyGUI) {
-    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_DELETE_ENTRY,
+    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_ENTRY,
       m_ci.GetUUID());
   }
 
