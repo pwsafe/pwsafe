@@ -1191,7 +1191,7 @@ CString CManageFiltersDlg::GetFieldTypeName(FieldType ft)
   
     case AT_PRESENT:       nID = IDS_PRESENT; break;
     case AT_TITLE:         nID = IDS_FILETITLE; break;
-    case AT_CTIME:         nID = IDS_FILENAME; break;
+    case AT_CTIME:         nID = IDS_CTIME; break;
     case AT_MEDIATYPE:     nID = IDS_FILEMEDIATYPE; break;
     case AT_FILENAME:      nID = IDS_FILENAME; break;
     case AT_FILEPATH:      nID = IDS_FILEPATH; break;
