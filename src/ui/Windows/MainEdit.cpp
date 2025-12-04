@@ -2370,11 +2370,19 @@ void DboxMain::OnViewAttachment()
   CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
-  if (!pci->HasAttRef())
+  if (!pci->HasAttachment())
     return;
 
-  ASSERT(m_core.HasAtt(pci->GetAttUUID()));
-  CItemAtt att = m_core.GetAtt(pci->GetAttUUID());
+  CItemAtt att;
+  if (pci->HasAttRef()) { // PWSfile::V40
+    ASSERT(m_core.HasAtt(pci->GetAttUUID()));
+    att = m_core.GetAtt(pci->GetAttUUID());
+  }
+  else if (m_core.GetReadFileVersion() == PWSfile::V30 && pci->HasAttachment()) {
+    att.SetMediaType(pci->GetAttMediaType());
+    const std::vector<unsigned char> content = pci->GetAttContent();
+    att.SetContent(content.data(), content.size());
+  }
 
   // Shouldn't be here if no content
   if (!att.HasContent())
