@@ -3520,8 +3520,18 @@ std::set<StringX> PWScore::GetAllMediaTypes() const
   std::set<StringX> sMediaTypes;
 
   // Find media types of all our attachments, put them in a set:
-  for (auto att_iter = m_attlist.begin(); att_iter != m_attlist.end(); att_iter++) {
-    sMediaTypes.insert(att_iter->second.GetMediaType());
+  if (GetReadFileVersion() == PWSfile::V30) {
+    for (auto pw_iter = m_pwlist.begin(); pw_iter != m_pwlist.end(); pw_iter++) {
+      const CItemData &ci = pw_iter->second;
+      if (ci.HasAttachment()) {
+        sMediaTypes.insert(ci.GetAttMediaType());
+      }
+    }
+  }
+  else { // PWSfile::V40
+    for (auto att_iter = m_attlist.begin(); att_iter != m_attlist.end(); att_iter++) {
+      sMediaTypes.insert(att_iter->second.GetMediaType());
+    }
   }
   return sMediaTypes;
 }
