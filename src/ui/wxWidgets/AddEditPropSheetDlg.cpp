@@ -1165,7 +1165,7 @@ void AddEditPropSheetDlg::DisableAttachmentControls()
   m_AttachmentButtonImport->Disable();
   m_AttachmentButtonExport->Disable();
   m_AttachmentButtonRemove->Disable();
-  m_AttachmentTitle->Enable();
+  m_AttachmentTitle->Disable();
 }
 
 void AddEditPropSheetDlg::OnImport(wxCommandEvent& WXUNUSED(event))
