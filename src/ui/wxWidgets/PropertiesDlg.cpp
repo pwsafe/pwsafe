@@ -253,8 +253,10 @@ IMPLEMENT_CLASS( PropertiesDlg, wxDialog )
 BEGIN_EVENT_TABLE( PropertiesDlg, wxDialog )
 
 ////@begin PropertiesDlg event table entries
-  EVT_BUTTON( wxID_CLOSE, PropertiesDlg::OnCloseClick )
-  EVT_BUTTON( wxID_SAVE,  PropertiesDlg::OnSaveClick  )
+  EVT_TEXT(   wxID_DBLABEL,       PropertiesDlg::OnLabelOrDescriptionChanged )
+  EVT_TEXT(   wxID_DBDESCRIPTION, PropertiesDlg::OnLabelOrDescriptionChanged )
+  EVT_BUTTON( wxID_CLOSE,         PropertiesDlg::OnCloseClick                )
+  EVT_BUTTON( wxID_SAVE,          PropertiesDlg::OnSaveClick                 )
 ////@end PropertiesDlg event table entries
 
 END_EVENT_TABLE()
@@ -376,36 +378,21 @@ void PropertiesDlg::CreateControls()
   flexGridSizer->Add(itemStaticText13 , 0, wxALIGN_RIGHT|wxALL        , 5);
   flexGridSizer->Add(unknownFieldsText, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
-  auto itemStaticText16 = new wxStaticText( this, wxID_STATIC, _("Name:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_dbNameTextCtrl = new wxTextCtrl( this, wxID_DBNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_READONLY );
-  m_dbNameTextCtrl->SetBackgroundColour(GetBackgroundColour());
-  if (m_core.IsReadOnly()) {
-    m_dbNameTextCtrl->SetToolTip(_("The database name (not file name)"));
-  }
-  else {
-    m_dbNameTextCtrl->SetToolTip(_("Double click to edit the database name (which is not the file name)"));
-    m_dbNameTextCtrl->Bind(wxEVT_LEFT_DCLICK, &PropertiesDlg::OnDoubleClickNameTextCtrl, this);
-  }
+  auto itemStaticText16 = new wxStaticText( this, wxID_STATIC, _("Label:"), wxDefaultPosition, wxDefaultSize, 0 );
+  m_dbLabelTextCtrl = new wxTextCtrl( this, wxID_DBLABEL,
+    wxEmptyString, wxDefaultPosition, wxDefaultSize,
+    m_core.IsReadOnly() ? wxTE_READONLY : 0 );
+  m_dbLabelTextCtrl->SetToolTip(_("The database label"));
   flexGridSizer->Add(itemStaticText16, 0, wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL|wxALL        , 5);
-  flexGridSizer->Add(m_dbNameTextCtrl, 1, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
+  flexGridSizer->Add(m_dbLabelTextCtrl, 1, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxALL|wxEXPAND, 5);
 
   auto itemStaticText17 = new wxStaticText( this, wxID_STATIC, _("Description:"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_dbDescriptionTextCtrl = new wxTextCtrl( this, wxID_DBDESCRIPTION, wxEmptyString, wxDefaultPosition, wxSize(-1, 100), wxTE_READONLY|wxTE_MULTILINE );
-  m_dbDescriptionTextCtrl->SetBackgroundColour(GetBackgroundColour());
-  if (m_core.IsReadOnly()) {
-    m_dbDescriptionTextCtrl->SetToolTip(_("The database description"));
-  }
-  else {
-    m_dbDescriptionTextCtrl->SetToolTip(_("Double click to edit the database description"));
-    m_dbDescriptionTextCtrl->Bind(wxEVT_LEFT_DCLICK, &PropertiesDlg::OnDoubleClickDescriptionTextCtrl, this);
-  }
+  m_dbDescriptionTextCtrl = new wxTextCtrl( this, wxID_DBDESCRIPTION,
+    wxEmptyString, wxDefaultPosition, wxSize(-1, 100),
+    m_core.IsReadOnly() ? wxTE_READONLY|wxTE_MULTILINE : wxTE_MULTILINE );
+  m_dbDescriptionTextCtrl->SetToolTip(_("The database description"));
   flexGridSizer->Add(itemStaticText17       , 0, wxALIGN_RIGHT|wxALL        , 5);
   flexGridSizer->Add(m_dbDescriptionTextCtrl, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
-
-  auto *itemStaticTextHint = new wxStaticText(this, wxID_STATIC, _("Double click the text entry fields to edit."), wxDefaultPosition, wxDefaultSize, 0);
-  itemStaticTextHint->SetFont((itemStaticTextHint->GetFont()).Italic());
-  flexGridSizer->AddStretchSpacer(); // Item for 1st column of wxFlexGridSizer
-  flexGridSizer->Add(itemStaticTextHint, 1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
   auto buttonsSizer = new wxStdDialogButtonSizer;
   mainSizer->Add(buttonsSizer, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
@@ -433,7 +420,7 @@ void PropertiesDlg::CreateControls()
   lastChangedPwdDateText->SetValidator( wxGenericValidator(& m_whenpwdlastchanged) );
   uuidText->SetValidator( wxGenericValidator(& m_file_uuid) );
   unknownFieldsText->SetValidator( wxGenericValidator(& m_unknownfields) );
-  m_dbNameTextCtrl->SetValidator( wxGenericValidator(& m_DbName) );
+  m_dbLabelTextCtrl->SetValidator( wxGenericValidator(& m_DbLabel) );
   m_dbDescriptionTextCtrl->SetValidator( wxGenericValidator(& m_DbDescription) );
 ////@end PropertiesDlg content construction
 }
@@ -502,42 +489,14 @@ void PropertiesDlg::OnSaveClick( wxCommandEvent& WXUNUSED(evt) )
 }
 
 /*!
- * wxEVT_LEFT_DCLICK event handler for wxID_DBNAME
+ * wxEVT_TEXT event handler for wxID_DBLABEL and wxID_DBDESCRIPTION
  */
 
-void PropertiesDlg::OnDoubleClickNameTextCtrl(wxMouseEvent& WXUNUSED(event))
+void PropertiesDlg::OnLabelOrDescriptionChanged(wxCommandEvent& evt)
 {
-  m_dbNameTextCtrl->SetEditable(true);
-  m_dbNameTextCtrl->SelectNone();
-  m_dbNameTextCtrl->SetToolTip(_("Edit the database name (not file name)"));
-  m_dbNameTextCtrl->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX));
-  m_dbNameTextCtrl->Unbind(wxEVT_LEFT_DCLICK, &PropertiesDlg::OnDoubleClickNameTextCtrl, this);
-  m_dbNameTextCtrl->Bind(wxEVT_TEXT, &PropertiesDlg::OnNameOrDescriptionChanged, this);
-}
-
-/*!
- * wxEVT_LEFT_DCLICK event handler for wxID_DBDESCRIPTION
- */
-
-void PropertiesDlg::OnDoubleClickDescriptionTextCtrl(wxMouseEvent& WXUNUSED(event))
-{
-  m_dbDescriptionTextCtrl->SetEditable(true);
-  m_dbDescriptionTextCtrl->SelectNone();
-  m_dbDescriptionTextCtrl->SetToolTip(_("Edit the database description"));
-  m_dbDescriptionTextCtrl->SetBackgroundColour(wxSystemSettings::GetColour(wxSYS_COLOUR_LISTBOX));
-  m_dbDescriptionTextCtrl->Unbind(wxEVT_LEFT_DCLICK, &PropertiesDlg::OnDoubleClickDescriptionTextCtrl, this);
-  m_dbDescriptionTextCtrl->Bind(wxEVT_TEXT, &PropertiesDlg::OnNameOrDescriptionChanged, this);
-}
-
-/*!
- * wxEVT_TEXT event handler for wxID_CHANGE_NAME and wxID_CHANGE_DESCRIPTION
- */
-
-void PropertiesDlg::OnNameOrDescriptionChanged(wxCommandEvent& evt)
-{
-  if (evt.GetId() == wxID_DBNAME) {
+  if (evt.GetId() == wxID_DBLABEL) {
     m_Model->SetDatabaseName(
-      m_dbNameTextCtrl->GetValue()
+      m_dbLabelTextCtrl->GetValue()
     );
   }
   else if (evt.GetId() == wxID_DBDESCRIPTION) {

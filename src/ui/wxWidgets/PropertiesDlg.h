@@ -47,10 +47,8 @@
 #define wxID_PWDLASTCHANGED 10301
 #define wxID_FILEUUID 10072
 #define wxID_UNKNOWFIELDS 10073
-#define wxID_DBNAME 10302
+#define wxID_DBLABEL 10302
 #define wxID_DBDESCRIPTION 10303
-#define wxID_CHANGE_NAME 10304
-#define wxID_CHANGE_DESCRIPTION 10305
 #if WXWIN_COMPATIBILITY_2_6
 #define SYMBOL_PROPERTIESDLG_STYLE wxCAPTION|wxRESIZE_BORDER|wxSYSTEM_MENU|wxCLOSE_BOX|wxDIALOG_MODAL|wxTAB_TRAVERSAL|wxFULL_REPAINT_ON_RESIZE
 #else
@@ -177,14 +175,8 @@ protected:
   /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_SAVE
   void OnSaveClick(wxCommandEvent& evt);
 
-  /// wxEVT_LEFT_DCLICK event handler for wxID_DBNAME
-  void OnDoubleClickNameTextCtrl(wxMouseEvent& evt);
-
-  /// wxEVT_LEFT_DCLICK event handler for wxID_DBDESCRIPTION
-  void OnDoubleClickDescriptionTextCtrl(wxMouseEvent& evt);
-
-  /// wxEVT_TEXT event handler for wxID_CHANGE_NAME and wxID_CHANGE_DESCRIPTION
-  void OnNameOrDescriptionChanged(wxCommandEvent& evt);
+  /// wxEVT_TEXT event handler for wxID_DBLABEL and wxID_DBDESCRIPTION
+  void OnLabelOrDescriptionChanged(wxCommandEvent& evt);
 
 ////@end PropertiesDlg event handler declarations
 public:
@@ -223,7 +215,7 @@ public:
   wxString GetUnknownFields() const { return m_unknownfields ; }
   void SetUnknownFields(const wxString& value) { m_unknownfields = value ; }
 
-  void SetDatabaseName(const wxString& value) { m_DbName = value; }
+  void SetDatabaseName(const wxString& value) { m_DbLabel = value; }
   void SetDatabaseDescription(const wxString& value) { m_DbDescription = value; }
 
   /// Retrieves bitmap resources
@@ -248,12 +240,12 @@ private:
   wxString m_whenpwdlastchanged;
   wxString m_file_uuid;
   wxString m_unknownfields;
-  wxString m_DbName;
+  wxString m_DbLabel;
   wxString m_DbDescription;
 
   wxButton *m_saveButton = nullptr;
   wxButton *m_closeButton = nullptr;
-  wxTextCtrl *m_dbNameTextCtrl = nullptr;
+  wxTextCtrl *m_dbLabelTextCtrl = nullptr;
   wxTextCtrl *m_dbDescriptionTextCtrl = nullptr;
 
   /// The dialog's functionality.
