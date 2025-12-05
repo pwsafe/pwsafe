@@ -57,6 +57,51 @@ struct st_DBProperties {
   StringX unknownfields;
   StringX db_name;
   StringX db_description;
+
+  st_DBProperties& operator=(const st_DBProperties& other)
+  {
+    if (this != &other) {
+      database = other.database;
+      databaseformat = other.databaseformat;
+      db_description = other.db_description;
+      db_name = other.db_name;
+      file_uuid = other.file_uuid;
+      numattachments = other.numattachments;
+      numemptygroups = other.numemptygroups;
+      numentries = other.numentries;
+      numgroups = other.numgroups;
+      unknownfields = other.unknownfields;
+      whatlastsaved = other.whatlastsaved;
+      whenlastsaved = other.whenlastsaved;
+      whenpwdlastchanged = other.whenpwdlastchanged;
+      wholastsaved = other.wholastsaved;
+    }
+    return *this;
+  }
+
+  bool operator==(const st_DBProperties& other) const
+  {
+    return
+      (database == other.database) &&
+      (databaseformat == other.databaseformat) &&
+      (db_description == other.db_description) &&
+      (db_name == other.db_name) &&
+      (file_uuid == other.file_uuid) &&
+      (numattachments == other.numattachments) &&
+      (numemptygroups == other.numemptygroups) &&
+      (numentries == other.numentries) &&
+      (numgroups == other.numgroups) &&
+      (unknownfields == other.unknownfields) &&
+      (whatlastsaved == other.whatlastsaved) &&
+      (whenlastsaved == other.whenlastsaved) &&
+      (whenpwdlastchanged == other.whenpwdlastchanged) &&
+      (wholastsaved == other.wholastsaved);
+  }
+
+  bool operator!=(const st_DBProperties& other) const
+  {
+    return !(*this == other);
+  }
 };
 
 struct st_ValidateResults;

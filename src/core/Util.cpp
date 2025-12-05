@@ -549,6 +549,9 @@ StringX PWSUtil::ConvertToDateTimeString(const time_t &t, TMC result_format, boo
     case TMC_LOCALE:
       is_error = !_tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]), _T("%c"), st);
       break;
+    case TMC_LOCALE_SIMPLIFIED:
+      is_error = !_tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]), _T("%F %T"), st);
+      break;
     case TMC_LOCALE_DATE_ONLY:
       is_error = !_tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]), _T("%x"), st);
       break;
