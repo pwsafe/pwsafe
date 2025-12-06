@@ -1656,7 +1656,15 @@ bool PWSFilterManager::PassesAttFiltering(const CItemData *pci, const PWScore &c
           break;
         case PWSMatch::MT_STRING:
           if (bPresent) {
-            const CItemAtt &att = core.GetAtt(pci->GetAttUUID());
+            CItemAtt att;
+            if (pci->HasAttRef()) { // PWSfile::V40
+              att = core.GetAtt(pci->GetAttUUID());
+            }
+            else if (core.GetReadFileVersion() == PWSfile::V30 && pci->HasAttachment()) {
+              att.SetTitle(pci->GetAttTitle());
+              att.SetFileName(pci->GetAttFileName());
+              att.SetMediaType(pci->GetAttMediaType());
+            }
 
             thistest_rc = att.Matches(st_fldata.fstring.c_str(), static_cast<int>(ft),
               st_fldata.fcase ? -ifunction : ifunction);
@@ -1667,7 +1675,18 @@ bool PWSFilterManager::PassesAttFiltering(const CItemData *pci, const PWScore &c
           break;
         case PWSMatch::MT_DATE:
           if (bPresent) {
-            const CItemAtt &att = core.GetAtt(pci->GetAttUUID());
+            CItemAtt att;
+            if (pci->HasAttRef()) { // PWSfile::V40
+              att = core.GetAtt(pci->GetAttUUID());
+            }
+            else if (core.GetReadFileVersion() == PWSfile::V30 && pci->HasAttachment()) {
+              time_t mtime = 0;
+              if (pci->GetAttModificationTime(mtime) != 0) {
+                att.SetFileMTime(mtime);
+                att.SetFileCTime(mtime);
+                att.SetFileATime(mtime);
+              }
+            }
 
             time_t t1(st_fldata.fdate1), t2(st_fldata.fdate2);
             if (st_fldata.fdatetype == 1 /* Relative */) {
