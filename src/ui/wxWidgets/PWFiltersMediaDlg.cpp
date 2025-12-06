@@ -292,6 +292,7 @@ void pwFiltersMediaTypesDlg::CreateControls()
   BoxSizer1->Fit(this);
   BoxSizer1->SetSizeHints(this);
   //*)
+  m_controlsReady = true;
 }
 
 /*!
@@ -364,6 +365,9 @@ void pwFiltersMediaTypesDlg::OnSelectionChange(wxCommandEvent& WXUNUSED(event))
 
 void pwFiltersMediaTypesDlg::OnMediaTypeChange(wxCommandEvent& WXUNUSED(event))
 {
+  if (!m_controlsReady) {
+    return;
+  }
   if(m_MediaTypes && ! m_MediaTypes->GetValue().IsEmpty()) {
     FindWindow(wxID_OK)->Enable();
   }

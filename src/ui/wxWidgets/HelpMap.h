@@ -68,6 +68,7 @@ DLG_HELP(pwFiltersTypeDlg,                 html/filters.html)
 DLG_HELP(pwFiltersDateDlg,                 html/filters.html)
 DLG_HELP(pwFiltersMediaDlg,                html/filters.html)
 DLG_HELP(pwFiltersPasswordDlg,             html/filters.html)
+DLG_HELP(pwFiltersMediaTypesDlg,           html/filters.html)
 
 DLG_HELP(SelectAliasDlg,                   html/aliases.html)
 

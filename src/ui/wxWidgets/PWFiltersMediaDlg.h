@@ -105,6 +105,7 @@ private:
   int m_idx_mt;
   wxString m_string;
   bool m_fcase;
+  bool m_controlsReady = false;
 
   const FieldType m_ftype;
   const std::set<StringX> *m_psMediaTypes = nullptr;
