@@ -287,7 +287,7 @@ void PasswordSafeFrame::OnClearRecentHistory(wxCommandEvent& WXUNUSED(evt))
     wxICON_EXCLAMATION|wxOK|wxCANCEL|wxCANCEL_DEFAULT
   );
   dialog.SetOKLabel(_("Clear"));
-  if (dialog.ShowModal() == wxOK) {
+  if (dialog.ShowModal() == wxID_OK) {
     wxGetApp().recentDatabases().Clear();
     CreateMenubar(); // Recreate the menu with cleared list of most recently used DBs
   }
