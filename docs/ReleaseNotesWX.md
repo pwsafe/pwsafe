@@ -13,6 +13,7 @@ PasswordSafe 1.24.0 Release  ???
 Bugs fixed in 1.24.0
 --------------------
 * [GH1646](https://github.com/pwsafe/pwsafe/issues/1646) In the "Flattened List" view, sorting by time columns (e.g., entry creation time) now works correctly.
+* [GH1661](https://github.com/pwsafe/pwsafe/issues/1661) MacOS specific: The app no longer crashes when changing a filter criteria for Attachment - Media Type.
 
 PasswordSafe 1.23.0 Release  22 November 2025
 =============================================
