@@ -279,7 +279,7 @@ namespace PWSUtil {
   size_t strLength(const LPCTSTR str);
   // Time conversion result formats:
   enum TMC {TMC_ASC_UNKNOWN, TMC_ASC_NULL, TMC_EXPORT_IMPORT, TMC_XML,
-            TMC_LOCALE, TMC_LOCALE_DATE_ONLY};
+            TMC_LOCALE, TMC_LOCALE_SIMPLIFIED, TMC_LOCALE_DATE_ONLY};
   StringX ConvertToDateTimeString(const time_t &t, TMC result_format, bool convert_epoch = false, bool utc_time = false);
   stringT GetNewFileName(const stringT &oldfilename, const stringT &newExtn);
   extern const TCHAR *UNKNOWN_ASC_TIME_STR, *UNKNOWN_XML_TIME_STR;
