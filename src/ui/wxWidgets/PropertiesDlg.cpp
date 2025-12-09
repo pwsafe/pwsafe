@@ -64,16 +64,31 @@ void PropertiesModel::Init()
   std::vector<stringT> allGroups;
   m_Core.GetAllGroups(allGroups);
 
+  auto allgroups = allGroups.size();
   auto numgroups = wxString::Format(_("%d"),
-    static_cast<int>(allGroups.size()));
+    static_cast<int>(allgroups));
   m_PropertiesDb.numgroups = tostringx(numgroups);
 
+  auto emptygroups = m_Core.GetEmptyGroups().size();
   auto numemptygroups = wxString::Format(_("%d"),
-    static_cast<int>(m_Core.GetEmptyGroups().size()));
+    static_cast<int>(emptygroups));
   m_PropertiesDb.numemptygroups = tostringx(numemptygroups);
 
-  m_View.SetNumOfGroups(wxString::Format(_("%ls (%ls empty)"),
-    numgroups, numemptygroups));
+  wxString groupsinfo;
+  if (allgroups == 0) {
+    groupsinfo = wxT("0");
+  }
+  else if (emptygroups <= 1) {
+    groupsinfo = wxString::Format(
+      _("%ls (%ls of which is empty)"), numgroups, numemptygroups
+    );
+  }
+  else {
+    groupsinfo = wxString::Format(
+      _("%ls (%ls of which are empty)"), numgroups, numemptygroups
+    );
+  }
+  m_View.SetNumOfGroups(groupsinfo);
 
   /////////////////////////////////////////////////////////////////////////////
   // Property: Number of entries
@@ -323,6 +338,7 @@ void PropertiesDlg::CreateControls()
 
   auto itemStaticText5 = new wxStaticText( this, wxID_STATIC, _("Password Database:"), wxDefaultPosition, wxDefaultSize, 0 );
   auto dbPathText = new wxStaticText( this, wxID_DATABASE, _T("Static text"), wxDefaultPosition, wxDefaultSize, wxST_ELLIPSIZE_MIDDLE );
+  dbPathText->SetToolTip(m_Model->GetDatabase());
   flexGridSizer->Add(itemStaticText5, 0, wxALIGN_RIGHT|wxALL        , 5);
   flexGridSizer->Add(dbPathText,      1, wxALIGN_LEFT|wxALL|wxEXPAND, 5);
 
