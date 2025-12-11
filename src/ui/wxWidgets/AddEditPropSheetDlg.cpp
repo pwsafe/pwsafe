@@ -2644,12 +2644,26 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
     }
   }
 
-  commands->Add(
-    AddEntryCommand::Create(
-      &m_Core, m_Item, m_Item.GetBaseUUID(),
-      (m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) ? &m_ItemAttachment : nullptr
-    )
-  );
+  if (currentVersion == PWSfile::V40) {
+    // The attachment item, if present, must be linked to the password item.
+    commands->Add(
+      AddEntryCommand::Create(
+        &m_Core, m_Item, m_Item.GetBaseUUID(),
+        (!m_Item.HasAttRef() && m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) ?
+        &m_ItemAttachment : nullptr
+      )
+    );
+  }
+  else {
+    // The attachment is part of the password item and is not a separate
+    // attachment item to which the password element refers via ATTREF.
+    commands->Add(
+      AddEntryCommand::Create(
+        &m_Core, m_Item, m_Item.GetBaseUUID(),
+        nullptr // No separate attachment item needs to be considered
+      )
+    );
+  }
   return commands;
 }
 
