@@ -32,7 +32,7 @@
 #define MIN_HASH_ITERATIONS 262144 
 // MAX_USABLE_HASH_ITERS is a guesstimate on what's acceptable to a user
 // with a reasonably powerful CPU. Real limit's 2^32-1.
-#define MAX_USABLE_HASH_ITERS (1 << 24)
+#define MAX_USABLE_HASH_ITERS (1 << 25)
 
 #define V3_SUFFIX      _T("psafe3")
 #define V4_SUFFIX      _T("psafe4")
