@@ -2845,8 +2845,36 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
   const auto changes = GetChanges();
   const PWSprefs *prefs = PWSprefs::GetInstance();
 
+  if (changes != Changes::None && !IsGroupUsernameTitleCombinationUnique()) {
+    return nullptr;
+  }
+
+  auto commands = MultiCommands::Create(&m_Core);
+
   if (changes & Changes::Group) {
-    m_Item.SetGroup(tostringx(m_BasicGroupNamesCtrl->GetValue()));
+    auto oldGroup = m_Item.GetGroup();
+    auto newGroup = tostringx(m_BasicGroupNamesCtrl->GetValue());
+    m_Item.SetGroup(newGroup);
+    // if we're putting an entry into a previously empty group, it's no longer empty...
+    if (m_Core.IsEmptyGroup(newGroup)) {
+      commands->Add(DBEmptyGroupsCommand::Create(&m_Core, newGroup, DBEmptyGroupsCommand::EG_DELETE));
+    }
+    // Conversely, if we're moving an entry that was alone in a group, that group's now empty
+    if (!oldGroup.empty()) {
+      // There has to be a better way to do this...
+      int ngroup = 0;
+      for (auto iter = m_Core.GetEntryIter(); iter != m_Core.GetEntryEndIter(); ++iter) {
+        if (iter->second.GetGroup() == oldGroup) {
+          ngroup++;
+          if (ngroup == 2) // this means the group won't be empty, no need to look further
+            break;
+        } // if
+      } // for
+      ASSERT(ngroup > 0);
+      if (ngroup == 1) {
+        commands->Add(DBEmptyGroupsCommand::Create(&m_Core, oldGroup, DBEmptyGroupsCommand::EG_ADD));
+      }
+    } // !oldGroup.empty()
   }
   if (changes & Changes::Title) {
     m_Item.SetTitle(tostringx(m_Title));
@@ -2916,10 +2944,6 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
   if (changes & Changes::ShiftDCA) {
     m_ShiftDoubleClickAction = GetSelectedDCA(m_AdditionalShiftDoubleClickActionCtrl, short(prefs->GetPref(PWSprefs::ShiftDoubleClickAction)));
     m_Item.SetShiftDCA(m_ShiftDoubleClickAction);
-  }
-  
-  if (changes != Changes::None && !IsGroupUsernameTitleCombinationUnique()) {
-    return nullptr;
   }
 
   time_t t;
@@ -2991,8 +3015,6 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
     ApplyTwoFactorKey(m_Item);
   }
 
-  auto commands = MultiCommands::Create(&m_Core);
-
   /////////////////////////////////////////////////////////////////////////////
   // Tab: "Attachment"
   /////////////////////////////////////////////////////////////////////////////
@@ -3058,7 +3080,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
              to the password element that all other commands cannot.
 
              TODO: Check Undo if password item and attachment item have changed.
-                   A command like EditEntryCommand would handle this proparly,
+                   A command like EditEntryCommand would handle this properly,
                    but unfortunately doesn't support attaching an attachment.
       */
       else if (!m_Item.HasAttRef() && m_ItemAttachment.HasUUID() && m_ItemAttachment.HasContent()) {
