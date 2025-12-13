@@ -937,8 +937,13 @@ void AddEditPropSheetDlg::InitAttachmentTab()
         DisableAttachmentControls();
       }
       else {
-        // Attachment must be removed before a new one can be imported again.
-        DisableImport();
+        if (m_Item.IsProtected()) {
+          EnableExport(); // Disable all controls except the Export button
+        }
+        else {
+          // Attachment must be removed before a new one can be imported again.
+          DisableImport();
+        }
       }
     }
     else {
@@ -982,8 +987,13 @@ void AddEditPropSheetDlg::InitAttachmentTab()
         DisableAttachmentControls();
       }
       else {
-        // Attachment must be removed before a new one can be imported again.
-        DisableImport();
+        if (m_Item.IsProtected()) {
+          EnableExport(); // Disable all controls except the Export button
+        }
+        else {
+          // Attachment must be removed before a new one can be imported again.
+          DisableImport();
+        }
       }
     }
     else {
@@ -1148,6 +1158,14 @@ void AddEditPropSheetDlg::EnableImport()
 {
   m_AttachmentButtonImport->Enable();
   m_AttachmentButtonExport->Disable();
+  m_AttachmentButtonRemove->Disable();
+  m_AttachmentTitle->Disable();
+}
+
+void AddEditPropSheetDlg::EnableExport()
+{
+  m_AttachmentButtonImport->Disable();
+  m_AttachmentButtonExport->Enable();
   m_AttachmentButtonRemove->Disable();
   m_AttachmentTitle->Disable();
 }
