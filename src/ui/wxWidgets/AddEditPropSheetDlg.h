@@ -310,6 +310,7 @@ private:
   void HideImagePreview(const wxString &reason = _("No preview available"));
   wxString GetMimeTypeExtension(const stringT &mimeTypeDescription);
   void EnableImport();
+  void EnableExport();
   void DisableImport();
   void DisableAttachmentControls();
 
