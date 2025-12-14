@@ -575,9 +575,9 @@ std::wstring Fonts::GetProtectedSymbol(const PWSFont font)
 std::wstring Fonts::GetAttachmentSymbol(const PWSFont font)
 {
   if (font == TREELIST) {
-    return m_bProtectSymbolSupportedTreeList ? m_sAttachment : L"+";
+    return m_bAttachmentSymbolSupportedTreeList ? m_sAttachment : L"+";
   } else {
-    return m_bProtectSymbolSupportedAddEdit ? m_sAttachment : L"+";
+    return m_bAttachmentSymbolSupportedAddEdit ? m_sAttachment : L"+";
   }
 }
 
