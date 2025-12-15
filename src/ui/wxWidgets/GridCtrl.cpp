@@ -715,7 +715,6 @@ void GridCtrl::RearrangeItemsDateTimeBased(ItemsCollection& collection, int colu
   wxDateTime dt = wxDateTime::Today(); // initialize with valid date, otherwise the setters will assert
   wxString datetime;
   wxString::const_iterator end;
-  wxRegEx dateRegex("(\\d{2})/(\\d{2})/(\\d{2})"); // for date format of type dd/mm/yy (e.g. 01/02/25)
 
   for (row = 0; row < GetNumberRows(); row++) {
     /*
@@ -736,76 +735,13 @@ void GridCtrl::RearrangeItemsDateTimeBased(ItemsCollection& collection, int colu
       collection.insert(std::pair<wxDateTime, const CItemData*>(dt, GetItem(row)));
     }
     /*
-      The case if a date without a time is expected.
-      wxDateTime::ParseDate interprets 01/02/25 as mm/dd/yy, but it's actually dd/mm/yy,
-      so we explicitly initialize the date time object via it's setter methods, instead
-      of simply making use of wxDateTime::ParseDate.
+      The case if a date without a time is expected as dd/mm/yy.
     */
-    else if (dateOnly && dateRegex.Matches(datetime)) {
-      auto day   = dateRegex.GetMatch(datetime, 1);
-      auto month = dateRegex.GetMatch(datetime, 2);
-      auto year  = dateRegex.GetMatch(datetime, 3);
-      if (day.IsEmpty() || month.IsEmpty() || year.IsEmpty()) {
-        collection.insert(std::pair<wxDateTime, const CItemData*>(wxDateTime::Today(), GetItem(row)));
-      }
-      else {
-        int d = 0, m = 0, y = 0;
-        if (day.ToInt(&d) && month.ToInt(&m) && year.ToInt(&y)) {
-          dt.SetDay(d);
-          dt.SetYear(y);
-          switch (m) {
-            case 1:
-              dt.SetMonth(wxDateTime::Month::Jan);
-              break;
-            case 2:
-              dt.SetMonth(wxDateTime::Month::Feb);
-              break;
-            case 3:
-              dt.SetMonth(wxDateTime::Month::Mar);
-              break;
-            case 4:
-              dt.SetMonth(wxDateTime::Month::Apr);
-              break;
-            case 5:
-              dt.SetMonth(wxDateTime::Month::May);
-              break;
-            case 6:
-              dt.SetMonth(wxDateTime::Month::Jun);
-              break;
-            case 7:
-              dt.SetMonth(wxDateTime::Month::Jul);
-              break;
-            case 8:
-              dt.SetMonth(wxDateTime::Month::Aug);
-              break;
-            case 9:
-              dt.SetMonth(wxDateTime::Month::Sep);
-              break;
-            case 10:
-              dt.SetMonth(wxDateTime::Month::Oct);
-              break;
-            case 11:
-              dt.SetMonth(wxDateTime::Month::Nov);
-              break;
-            case 12:
-              dt.SetMonth(wxDateTime::Month::Dec);
-              break;
-            default:
-              pws_os::Trace(L"Failed to parse item's date (month) string: %ls ; using: %ls", datetime.wc_str(), wxDateTime::Today().FormatISOCombined().wc_str());
-              collection.insert(std::pair<wxDateTime, const CItemData*>(wxDateTime::Today(), GetItem(row)));
-              continue;
-          }
-        }
-        else {
-          pws_os::Trace(L"Failed to parse item's date (day, month or year) string: %ls ; using: %ls", datetime.wc_str(), wxDateTime::Today().FormatISOCombined().wc_str());
-          collection.insert(std::pair<wxDateTime, const CItemData*>(wxDateTime::Today(), GetItem(row)));
-          continue;
-        }
-        collection.insert(std::pair<wxDateTime, const CItemData*>(dt, GetItem(row)));
-      }
+    else if (dateOnly && dt.ParseFormat(datetime, wxT("%d/%m/%y"), &end)) {
+      collection.insert(std::pair<wxDateTime, const CItemData*>(dt, GetItem(row)));
     }
     else {
-      pws_os::Trace(L"Failed to parse item's date-time string: %ls ; using: %ls", datetime.wc_str(), wxDateTime::Today().FormatISOCombined().wc_str());
+      pws_os::Trace(L"Failed to parse item's date string: %ls ; using: %ls", datetime.wc_str(), wxDateTime::Today().FormatISOCombined().wc_str());
       collection.insert(std::pair<wxDateTime, const CItemData*>(wxDateTime::Today(), GetItem(row)));
     }
   }
