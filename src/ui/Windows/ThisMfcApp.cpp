@@ -1273,18 +1273,19 @@ void ThisMfcApp::ClearMRU()
   }
 
   // Recent databases are on the popup menu off the main File menu
-  CMenu *pPopupMenu = pFile_Submenu->GetSubMenu(3);
-  if (pPopupMenu != NULL)  // Look for MRU first entry
-    pos = FindMenuItem(pPopupMenu, ID_FILE_MRU_ENTRY1);
-  else
-    return;
-
-  if (pos > -1) {
-    // Recent databases are on a popup menu - remove them
-    for (int nID = numMRU; nID > 1; nID--)
-      pFile_Submenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
-
-    return;
+  int pos2 = FindMenuItem(pFile_Submenu, ID_MENUITEM_LOCK);
+  ASSERT(pos2 != -1);
+  if (pos2 > -1) {
+    CMenu *pPopupMenu = pFile_Submenu->GetSubMenu(pos2 + 2);
+    if (pPopupMenu != NULL) {
+      pos = FindMenuItem(pPopupMenu, ID_FILE_MRU_ENTRY1); // Look for MRU first entry
+      if (pos > -1) {
+        // Recent databases are on a popup menu - remove them
+        for (int nID = numMRU; nID > 1; nID--)
+          pPopupMenu->RemoveMenu(ID_FILE_MRU_ENTRY1 + nID - 1, MF_BYCOMMAND);
+        return;
+      }
+    }
   }
 }
 
