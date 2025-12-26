@@ -712,8 +712,10 @@ template<typename ItemsCollection>
 void GridCtrl::RearrangeItemsDateTimeBased(ItemsCollection& collection, int column, bool dateOnly)
 {
   int row = 0;
-  wxDateTime dt = wxDateTime::Today(); // initialize with valid date, otherwise the setters will assert
+  struct tm tm;
+  wxDateTime dt = wxDateTime::Today(); // initialize with valid date
   wxString datetime;
+  wxString dateFormat = wxGetApp().GetLocaleShortDateFormat();
   wxString::const_iterator end;
 
   for (row = 0; row < GetNumberRows(); row++) {
@@ -735,10 +737,22 @@ void GridCtrl::RearrangeItemsDateTimeBased(ItemsCollection& collection, int colu
       collection.insert(std::pair<wxDateTime, const CItemData*>(dt, GetItem(row)));
     }
     /*
-      The case if a date without a time is expected as dd/mm/yy.
+      The case if a date without a time is expected.
     */
-    else if (dateOnly && dt.ParseFormat(datetime, wxT("%d/%m/%y"), &end)) {
-      collection.insert(std::pair<wxDateTime, const CItemData*>(dt, GetItem(row)));
+    else if (dateOnly) {
+      memset(&tm, 0, sizeof(tm)); // init / reset
+      if (!dateFormat.IsEmpty() && strptime(datetime.c_str(), dateFormat.c_str(), &tm)) {
+        collection.insert(std::pair<wxDateTime, const CItemData*>(wxDateTime(tm), GetItem(row)));
+      }
+      // Fallback to buggy version where day and month are in some cases swapped,
+      // because localization is not taken into account and day-month detection algorithm is weak.
+      // (e.g. 01.02.2026 -> Day=02 & Month=01; 02.01.2026 -> Day=01, Month=02)
+      // See GitHub: https://github.com/wxWidgets/wxWidgets/issues/3049
+      else if (dt.ParseDate(datetime, &end)) {
+        collection.insert(std::pair<wxDateTime, const CItemData*>(dt, GetItem(row)));
+        pws_os::Trace(L"Warning - Sorting may be incorrect for date string: %ls ; day: %d ; month: %d ; year: %d",
+          datetime.wc_str(), dt.GetDay(), dt.GetMonth(), dt.GetYear());
+      }
     }
     else {
       pws_os::Trace(L"Failed to parse item's date string: %ls ; using: %ls", datetime.wc_str(), wxDateTime::Today().FormatISOCombined().wc_str());

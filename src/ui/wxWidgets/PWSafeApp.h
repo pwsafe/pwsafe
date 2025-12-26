@@ -138,6 +138,7 @@ public:
   wxLanguage GetSystemLanguage();
   wxLanguage GetSelectedLanguage();
   PasswordSafeFrame* GetPasswordSafeFrame() { return m_frame; }
+  wxString GetLocaleShortDateFormat() const { return m_locale ? m_locale->GetInfo(wxLOCALE_SHORT_DATE_FMT) : wxString(); }
 };
 
 /*!
