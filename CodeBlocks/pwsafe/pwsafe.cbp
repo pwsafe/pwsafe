@@ -309,7 +309,7 @@
 			<Add option="-Wswitch-default" />
 			<Add option="-Wextra" />
 			<Add option="-Wall" />
-			<Add option="-std=c++14" />
+			<Add option="-std=c++17" />
 			<Add option="-std=c11" />
 			<Add option="-fPIC" />
 			<Add option="-Wformat=2" />

@@ -10,15 +10,18 @@
  * \file Linux-specific implementation of file.h
  */
 #include <sys/types.h>
-#include <sys/stat.h>
+#include <sys/stat.h>  // stat, chmod
 #include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <errno.h>
+#include <unistd.h> // unlink
+#include <cstdlib>
+#include <cstdio>
+#include <cerrno>
 #include <cassert>
 #include <fstream>
 #include <sstream>
+#include <cerrno>
+#include <filesystem>
+#include <system_error>
 
 #include <dirent.h>
 #include <fnmatch.h>
@@ -66,6 +69,8 @@ bool pws_os::FileExists(const stringT &filename, bool &bReadOnly)
 
 bool pws_os::RenameFile(const stringT &oldname, const stringT &newname)
 {
+  namespace fs = std::filesystem;
+
   int status;
   size_t oldN = wcstombs(nullptr, oldname.c_str(), 0) + 1;
   char *oldfn = new char[oldN];

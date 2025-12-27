@@ -210,7 +210,7 @@
       </Completion>
     </Configuration>
     <Configuration Name="DebugX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-O0;-std=c++11;-Wall" C_Options="-g;-Wall;-O0" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-g;-O0;-std=c++17;-Wall" C_Options="-g;-Wall;-O0" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="../src"/>
         <Preprocessor Value="UNICODE"/>
         <Preprocessor Value="USE_XML_LIBRARY=XERCES"/>
@@ -298,7 +298,7 @@
       </Completion>
     </Configuration>
     <Configuration Name="ReleaseX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O;-std=c++11;-Wall" C_Options="-Wall;-O" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-O;-std=c++17;-Wall" C_Options="-Wall;-O" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="../src"/>
         <Preprocessor Value="UNICODE"/>
         <Preprocessor Value="USE_XML_LIBRARY=XERCES"/>

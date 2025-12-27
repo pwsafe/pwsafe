@@ -67,7 +67,7 @@ CPPFLAGS := $(CXXFLAGS) -fPIC -Wall -I. -I.. -I../.. $(CPPFLAGS)
 
 ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
 	    XERCESCPPFLAGS=
-		CPPFLAGS += -std=c++11
+		CPPFLAGS += -std=c++17
 else
 		CPPFLAGS += -DLINUX
 	    XERCESCPPFLAGS=-DUSE_XML_LIBRARY=XERCES -DWCHAR_INCOMPATIBLE_XMLCH
