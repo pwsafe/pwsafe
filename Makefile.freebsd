@@ -43,7 +43,7 @@ SF_UPLOAD_CMD := /usr/local/bin/rsync -avP -e ssh
 SF_UPLOAD_DST := $(SF_UPLOAD_ROOT)/Linux-BETA/$(RELEASENUM)
 RELTAG = wx$(subst .,_,$(RELEASENAME))
 
-export CPPFLAGS += -std=c++14
+export CPPFLAGS += -std=c++17
 export CXXFLAGS += -I/usr/local/include
 export CFLAGS += -I/usr/local/include
 export PLATFORM = FreeBSD

@@ -43,7 +43,7 @@ SF_UPLOAD_CMD := /usr/bin/rsync -avP -e ssh
 SF_UPLOAD_DST := $(SF_UPLOAD_ROOT)/Linux-BETA/$(RELEASENUM)
 RELTAG = wx$(subst .,_,$(RELEASENAME))
 
-export CPPFLAGS += -std=c++11
+export CPPFLAGS += -std=c++17
 
 all:
 	@echo "Toplevel make is no longer supported for building Linux versions of PasswordSafe. Please use cmake as described in README.LINUX.DEVELOPERS.md"

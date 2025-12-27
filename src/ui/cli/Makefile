@@ -25,7 +25,7 @@ LIBCORE	= $(LIBPATH)/libcore.a
 LIBOS  	= $(LIBPATH)/libos.a
 LIBS    = $(LIBCORE) $(LIBOS)
 
-export CPPFLAGS += -std=c++11
+export CPPFLAGS += -std=c++17
 ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
 	XERCESCPPFLAGS=
 	PLATFORM=mac

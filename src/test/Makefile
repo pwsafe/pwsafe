@@ -39,7 +39,7 @@ TESTOBJ	 = $(addprefix $(OBJPATH)/,$(subst .cpp,.o,$(TESTSRC)))
 TEST	   = $(BINPATH)/coretest
 OBJS     = $(TESTOBJ) $(GTEST_OBJ)
 
-CXXFLAGS += -DUNICODE -Wall -I$(INCPATH) -I$(INCPATH)/core -std=c++11
+CXXFLAGS += -DUNICODE -Wall -I$(INCPATH) -I$(INCPATH)/core -std=c++17
 LDFLAGS  += -L$(LIBPATH) -lcore -los -luuid -lxerces-c -pthread -lX11 -lXtst -lmagic
 
 ifeq ($(CONFIG),debug)

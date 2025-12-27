@@ -105,11 +105,11 @@ void TimedTaskChain::Notify()
 /*
  * Use this to compile from vim
  *
- *      set makeprg=g++\ -std=c++11\ %\ `wx-config\ --cxxflags`\ `wx-config\ --libs`
+ *      set makeprg=g++\ -std=c++17\ %\ `wx-config\ --cxxflags`\ `wx-config\ --libs`
  *
  * And this to run it from command-line
  *
- *      g++ -D__TESTING_TIMEDTASKCHAIN__ TimedTaskChain.cpp -std=c++11 `wx-config --cxxflags --libs`
+ *      g++ -D__TESTING_TIMEDTASKCHAIN__ TimedTaskChain.cpp -std=c++17 `wx-config --cxxflags --libs`
  *
  *
  */

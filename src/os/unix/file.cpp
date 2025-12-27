@@ -10,15 +10,19 @@
  * \file Linux-specific implementation of file.h
  */
 #include <sys/types.h>
-#include <sys/stat.h>
+#include <sys/stat.h>  // stat, chmod
 #include <fcntl.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <errno.h>
+#include <unistd.h> // unlink
+#include <cstdlib>
+#include <cstdio>
+#include <cerrno>
 #include <cassert>
 #include <fstream>
 #include <sstream>
+#include <cerrno>
+#include <filesystem>
+#include <system_error>
+#include <memory>
 
 #include <dirent.h>
 #include <fnmatch.h>
@@ -66,17 +70,45 @@ bool pws_os::FileExists(const stringT &filename, bool &bReadOnly)
 
 bool pws_os::RenameFile(const stringT &oldname, const stringT &newname)
 {
-  int status;
+  namespace fs = std::filesystem;
+
   size_t oldN = wcstombs(nullptr, oldname.c_str(), 0) + 1;
-  char *oldfn = new char[oldN];
-  wcstombs(oldfn, oldname.c_str(), oldN);
+  std::unique_ptr<char[]>oldfn = std::make_unique<char[]>(oldN);
+  wcstombs(oldfn.get(), oldname.c_str(), oldN);
   size_t newN = wcstombs(nullptr, newname.c_str(), 0) + 1;
-  char *newfn = new char[newN];
-  wcstombs(newfn, newname.c_str(), newN);
-  status = ::rename(oldfn, newfn);
-  delete[] oldfn;
-  delete[] newfn;
-  return (status == 0);
+  std::unique_ptr<char[]>newfn = std::make_unique<char[]>(newN);
+
+  wcstombs(newfn.get(), newname.c_str(), newN);
+  std::error_code ec;
+
+  fs::rename(oldfn.get(), newfn.get(), ec);
+  if (!ec) {
+    return true;
+  }
+
+  if (ec.value() != EXDEV) {    // nothing we can do here
+    return false;
+  }
+
+  // rename failed because old and new were on different devices, try copy and unlink
+    struct stat st;
+    if (stat(oldfn.get(), &st) != 0) { // get original permissions
+        return false;
+    }
+
+    // Copy the file (fail if newname already exists)
+    if (!fs::copy_file(oldfn.get(), newfn.get(), fs::copy_options::overwrite_existing, ec) || ec) {
+        return false;
+    }
+
+    // Restore original permissions
+    ::chmod(newfn.get(), st.st_mode);
+
+    if (unlink(oldfn.get()) != 0) {
+        fs::remove(newfn.get());
+        return false;
+    }
+    return true;
 }
 
 bool pws_os::CopyAFile(const stringT &from, const stringT &to)

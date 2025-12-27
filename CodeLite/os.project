@@ -144,7 +144,7 @@
       </Completion>
     </Configuration>
     <Configuration Name="DebugX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-g;-O0;-std=c++11;-Wall;$(shell $(WorkspacePath)/exec-wx3-config --cxxflags --unicode=yes --debug=yes --inplace)" C_Options="-g;-Wall;-O0; $(shell $(WorkspacePath)/exec-wx3-config --cflags --unicode=yes --debug=yes --inplace)" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-g;-O0;-std=c++17;-Wall;$(shell $(WorkspacePath)/exec-wx3-config --cxxflags --unicode=yes --debug=yes --inplace)" C_Options="-g;-Wall;-O0; $(shell $(WorkspacePath)/exec-wx3-config --cflags --unicode=yes --debug=yes --inplace)" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
         <IncludePath Value="../src/core"/>
         <IncludePath Value="../src"/>
@@ -226,7 +226,7 @@
       </Completion>
     </Configuration>
     <Configuration Name="ReleaseX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Static Library" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O;-std=c++11;-Wall;$(shell $(WorkspacePath)/exec-wx3-config --cxxflags --unicode=yes --debug=no --inplace)" C_Options="-Wall;-O; $(shell $(WorkspacePath)/exec-wx3-config --cflags --unicode=yes --debug=no --inplace)" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-O;-std=c++17;-Wall;$(shell $(WorkspacePath)/exec-wx3-config --cxxflags --unicode=yes --debug=no --inplace)" C_Options="-Wall;-O; $(shell $(WorkspacePath)/exec-wx3-config --cflags --unicode=yes --debug=no --inplace)" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="."/>
         <IncludePath Value="../src/core"/>
         <IncludePath Value="../src"/>

@@ -180,7 +180,7 @@ endif
 endif
 
 ifeq ($(findstring Darwin, $(shell uname -s)), Darwin)
-		CPPFLAGS += -std=c++11
+		CPPFLAGS += -std=c++17
 		override LIBS += -framework QuartzCore
 endif
 override LDFLAGS:=$(LIBS) -L$(LIBPATH) $(LINKERFLAGS) $(XERCESLIBFLAGS) $(YBPERS_LIBPATH_FLAGS) $(LDFLAGS)

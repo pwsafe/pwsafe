@@ -223,7 +223,7 @@
       </Completion>
     </Configuration>
     <Configuration Name="DebugX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O0;-std=c++11;-Wall;$(shell $(WorkspacePath)/exec-wx3-config --cxxflags --unicode=yes --debug=yes --inplace);-ggdb" C_Options="-O0;-Wall;$(shell $(WorkspacePath)/exec-wx3-config --cflags --unicode=yes --debug=yes --inplace);-ggdb" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-O0;-std=c++17;-Wall;$(shell $(WorkspacePath)/exec-wx3-config --cxxflags --unicode=yes --debug=yes --inplace);-ggdb" C_Options="-O0;-Wall;$(shell $(WorkspacePath)/exec-wx3-config --cflags --unicode=yes --debug=yes --inplace);-ggdb" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="../src"/>
         <Preprocessor Value="UNICODE"/>
         <Preprocessor Value="USE_XML_LIBRARY=XERCES"/>
@@ -331,7 +331,7 @@ dir /usr/src/gtk+2.0-2.18.3/gdk
       </Completion>
     </Configuration>
     <Configuration Name="ReleaseX" CompilerType="gnu g++" DebuggerType="GNU gdb debugger" Type="Executable" BuildCmpWithGlobalSettings="append" BuildLnkWithGlobalSettings="append" BuildResWithGlobalSettings="append">
-      <Compiler Options="-O;-std=c++11;-Wall;$(shell $(WorkspacePath)/exec-wx3-config --cxxflags --unicode=yes --debug=no --inplace);-ggdb" C_Options="-O;-Wall;$(shell $(WorkspacePath)/exec-wx3-config --cflags --unicode=yes --debug=no --inplace);-ggdb" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
+      <Compiler Options="-O;-std=c++17;-Wall;$(shell $(WorkspacePath)/exec-wx3-config --cxxflags --unicode=yes --debug=no --inplace);-ggdb" C_Options="-O;-Wall;$(shell $(WorkspacePath)/exec-wx3-config --cflags --unicode=yes --debug=no --inplace);-ggdb" Assembler="" Required="yes" PreCompiledHeader="" PCHInCommandLine="no" PCHFlags="" PCHFlagsPolicy="0">
         <IncludePath Value="../src"/>
         <Preprocessor Value="UNICODE"/>
         <Preprocessor Value="USE_XML_LIBRARY=XERCES"/>
