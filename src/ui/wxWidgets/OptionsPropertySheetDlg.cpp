@@ -280,7 +280,7 @@ wxPanel* OptionsPropertySheetDlg::CreateHeaderPanel(wxWindow* parent, const wxSt
 #ifdef __WXMAC__
   auto headerPanel = new wxPanel(parent, wxID_ANY, wxDefaultPosition, wxSize(605, -1));
 #else
-  auto headerPanel = new wxPanel(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize);
+  auto headerPanel = new wxPanel(parent, wxID_ANY, wxDefaultPosition, wxSize(-1, 40));
   auto bgColor = headerPanel->GetBackgroundColour();
 
   auto red   = bgColor.Red();
@@ -297,12 +297,14 @@ wxPanel* OptionsPropertySheetDlg::CreateHeaderPanel(wxWindow* parent, const wxSt
   headerPanel->SetSizer(sizer);
 
   const int FONT_SIZE = 16;
-  auto headerTitle = new wxStaticText(headerPanel, wxID_ANY, title, wxDefaultPosition, wxSize(-1, 2 * FONT_SIZE), wxALIGN_CENTRE_HORIZONTAL);
+  auto headerTitle = new wxStaticText(headerPanel, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE_HORIZONTAL);
   headerTitle->SetOwnFont(
-    wxFont(FONT_SIZE, wxFONTFAMILY_MODERN, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_BOLD)
+    wxFont(FONT_SIZE, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_BOLD)
   );
 
+  sizer->AddStretchSpacer();
   sizer->Add(headerTitle, 0, wxEXPAND|wxALL, 5);
+  sizer->AddStretchSpacer();
 
   return headerPanel;
 }
