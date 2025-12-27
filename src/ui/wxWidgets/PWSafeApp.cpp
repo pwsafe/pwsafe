@@ -308,7 +308,7 @@ bool PWSafeApp::OnInit()
   setlocale(LC_CTYPE, "");
 #endif
   setlocale(LC_TIME, "");
-  
+
   //Used by help subsystem
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
 
