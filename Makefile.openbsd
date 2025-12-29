@@ -48,8 +48,8 @@ RELTAG = wx$(subst .,_,$(RELEASENAME))
 #TODO: integrate with qr-code-generator: https://www.nayuki.io/page/qr-code-generator-library
 export NO_QR = 1
 
-export CPPFLAGS += -std=c++14
-export CXXFLAGS += --stdlib=libc++ -I/usr/local/include -std=c++14
+export CPPFLAGS += -std=c++17
+export CXXFLAGS += --stdlib=libc++ -I/usr/local/include -std=c++17
 export CFLAGS += -I/usr/local/include
 export CC = clang
 export CXX = clang++
