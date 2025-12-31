@@ -299,10 +299,12 @@ wxPanel* OptionsPropertySheetDlg::CreateHeaderPanel(wxWindow* parent, const wxSt
   const int FONT_SIZE = 16;
   auto headerTitle = new wxStaticText(headerPanel, wxID_ANY, title, wxDefaultPosition, wxSize(-1, 2 * FONT_SIZE), wxALIGN_CENTRE_HORIZONTAL);
   headerTitle->SetOwnFont(
-    wxFont(FONT_SIZE, wxFONTFAMILY_MODERN, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_BOLD)
+    wxFont(FONT_SIZE, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_ITALIC, wxFONTWEIGHT_BOLD)
   );
 
+  sizer->AddStretchSpacer();
   sizer->Add(headerTitle, 0, wxEXPAND|wxALL, 5);
+  sizer->AddStretchSpacer();
 
   return headerPanel;
 }
