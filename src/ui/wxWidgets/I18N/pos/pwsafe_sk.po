@@ -4754,7 +4754,7 @@ msgstr ""
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:993
 msgid "name exists"
-msgstr "názov existuje"
+msgstr "názov už existuje"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:993 ../../../ui/wxWidgets/TreeCtrl.cpp:1054
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1532
@@ -6907,3 +6907,27 @@ msgstr "Vyberte priečinok na uloženie reportu do súboru"
 
 msgid "Choose output directory"
 msgstr "Vyberte priečinok"
+
+msgid "Database Properties"
+msgstr "Vlastnosti databázy"
+
+msgid "Password Database:"
+msgstr "Databáza hesiel:"
+
+msgid "Database Format:"
+msgstr "Formát databázy:"
+
+msgid "%ls (%ls of which is empty)"
+msgstr "%ls (%ls je prázdna)"
+
+msgid "%ls (%ls of which are empty)"
+msgstr "%ls (%ls sú prázdne)"
+
+msgid "Label:"
+msgstr "Označenie:"
+
+msgid "The database label"
+msgstr "Označenie databázy"
+
+msgid "The database description"
+msgstr "Popis databázy"
