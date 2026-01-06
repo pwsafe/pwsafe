@@ -9,7 +9,7 @@
 # Usage: python vt-scan.py <FILE_PATH> [API_KEY]
 # Example: python vt-scan.py pwsafe.exe YOUR_API_KEY
 #
-# Copyright (c) 2025 Rony Shapiro <ronys@pwsafe.org>
+# Copyright (c) 2026 Rony Shapiro <ronys@pwsafe.org>
 # Generated with the assistance of Microsoft Copilot
 # All rights reserved. Use of the code is allowed under the
 # Artistic License 2.0 terms, as specified in the LICENSE file
