@@ -61,7 +61,7 @@ msgid "See LICENSE for open source details."
 msgstr "공개 소스에 대해 알고싶으시다면 LICENSE를 읽으십시오."
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:146
-msgid "Copyright (c) 2003-2025 Rony Shapiro"
+msgid "Copyright (c) 2003-2026 Rony Shapiro"
 msgstr ""
 
 #: ../../../ui/wxWidgets/AboutDlg.cpp:153 ../../../ui/wxWidgets/ManageFiltersDlg.cpp:399
