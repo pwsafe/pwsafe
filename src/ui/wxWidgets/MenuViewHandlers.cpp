@@ -228,9 +228,9 @@ void PasswordSafeFrame::RunShowReport(int iAction)
     stringT title;
     stringT reportName;
     LoadAString(reportName, iAction);
-    Format(title, _("View Report: %ls"), reportName.c_str());
+    Format(title, _("View Report: %ls").wc_str(), reportName.c_str());
     stringT message;
-    Format(message, _(L"File \'%ls\' not readable"), rpt.GetFileName().c_str());
+    Format(message, _(L"File \'%ls\' not readable").wc_str(), rpt.GetFileName().c_str());
     wxMessageBox(message, title, wxOK|wxICON_ERROR);
   }
 }
