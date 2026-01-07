@@ -33,12 +33,29 @@
 
 const TCHAR pws_os::PathSeparator = _T('\\');
 
+namespace {
+  template <typename StringT>
+  StringT unquote(const StringT& input) {
+    if (input.size() >= 2) {
+      auto first = input.front();
+      auto last = input.back();
+
+      if ((first == '"' && last == '"') ||
+        (first == '\'' && last == '\''))
+      {
+        return input.substr(1, input.size() - 2);
+      }
+    }
+    return input;
+  }
+}
+
 bool pws_os::FileExists(const stringT &filename)
 {
   struct _stat statbuf;
   int status;
 
-  status = _tstat(filename.c_str(), &statbuf);
+  status = _tstat(unquote(filename).c_str(), &statbuf);
   return (status == 0 && (statbuf.st_mode & _S_IFREG)); // stat() succeeded and we're a regular file (not a directory)
 }
 
@@ -49,7 +66,7 @@ bool pws_os::FileExists(const stringT &filename, bool &bReadOnly)
 
   retval = pws_os::FileExists(filename); // false if not found or if a directory
   if (retval) {
-    bReadOnly = (_taccess(filename.c_str(), W_OK) != 0);
+    bReadOnly = (_taccess(unquote(filename).c_str(), W_OK) != 0);
   }
   return retval;
 }
@@ -57,7 +74,7 @@ bool pws_os::FileExists(const stringT &filename, bool &bReadOnly)
 void pws_os::AddDrive(stringT &path)
 {
   // Adds a drive letter to the path if not there, unless
-  // empty string  or it's a UNC path (\\host\sharename...)
+  // empty string, or it's a UNC path (\\host\sharename...)
   using namespace pws_os;
   if (path.empty())
     return;
@@ -85,7 +102,7 @@ static bool FileOP(const stringT &src, const stringT &dst,
   // SHFileOperation() acts very oddly if files are missing a drive
   // (eg, renames to pwsafeN.psa instead of pwsafe.ibak)
   
-  stringT srcD(src), dstD(dst);
+  stringT srcD(unquote(src)), dstD(unquote(dst));
   pws_os::AddDrive(srcD);
   pws_os::AddDrive(dstD);
 
@@ -116,8 +133,8 @@ static bool FileOP(const stringT &src, const stringT &dst,
 
 bool pws_os::RenameFile(const stringT &oldname, const stringT &newname)
 {
-  DeleteFile(newname.c_str()); // otherwise rename may fail if newname exists
-  return FileOP(oldname, newname, FO_MOVE); // FO_RENAME fails across directories
+  DeleteFile(unquote(newname).c_str()); // otherwise rename may fail if newname exists
+  return FileOP(oldname, unquote(newname), FO_MOVE); // FO_RENAME fails across directories
 }
 
 extern bool pws_os::CopyAFile(const stringT &from, const stringT &to)
@@ -127,7 +144,7 @@ extern bool pws_os::CopyAFile(const stringT &from, const stringT &to)
 
 bool pws_os::DeleteAFile(const stringT &filename)
 {
-  return DeleteFile(filename.c_str()) == TRUE;
+  return DeleteFile(unquote(filename).c_str()) == TRUE;
 }
 
 void pws_os::FindFiles(const stringT &filter, std::vector<stringT> &res)
@@ -214,19 +231,20 @@ static void GetLocker(const stringT &lock_filename, stringT &locker)
 bool pws_os::LockFile(const stringT &filename, stringT &locker, 
                       HANDLE &lockFileHandle)
 {
-  const stringT lock_filename = GetLockFileName(filename);
+  auto fname = unquote(filename);
+  const stringT lock_filename = GetLockFileName(fname);
   stringT s_locker;
   const stringT user = pws_os::getusername();
   const stringT host = pws_os::gethostname();
   const stringT pid = pws_os::getprocessid();
 
   if (lockFileHandle != INVALID_HANDLE_VALUE) {
-    if (FileExists(filename)) { // Can this be false?
-      GetLocker(filename, locker);
+    if (FileExists(fname)) { // Can this be false?
+      GetLocker(fname, locker);
       return false;
     }
     // here if file not found but handle appears valid - unlock and then lock.
-    pws_os::UnlockFile(filename, lockFileHandle);
+    pws_os::UnlockFile(fname, lockFileHandle);
   }
 
   // Since ::CreateFile can't create directories, we need to check it exists
@@ -351,7 +369,7 @@ void pws_os::UnlockFile(const stringT &filename,
 
 bool pws_os::IsLockedFile(const stringT &filename)
 {
-  const stringT lock_filename = GetLockFileName(filename);
+  const stringT lock_filename = GetLockFileName(unquote(filename));
   // under this scheme, we need to actually try to open the file to determine
   // if it's locked.
   HANDLE h = CreateFile(lock_filename.c_str(),
@@ -389,7 +407,7 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
 {
   std::FILE *fd = NULL;
   if (!filename.empty()) {
-	  _tfopen_s(&fd, filename.c_str(), mode);
+	  _tfopen_s(&fd, unquote(filename).c_str(), mode);
   } else { // set to stdin/stdout, depending on mode[0] (r/w/a)
 	  fd = mode[0] == L'r' ? stdin : stdout;
   }
@@ -447,7 +465,7 @@ bool pws_os::GetFileTimes(const stringT &filename,
       time_t &atime, time_t &ctime, time_t &mtime)
 {
   struct _stati64 info;
-  int rc = _wstati64(filename.c_str(), &info);
+  int rc = _wstati64(unquote(filename).c_str(), &info);
   if (rc == 0) {
     atime = info.st_atime;
     ctime = info.st_ctime;
@@ -458,7 +476,7 @@ bool pws_os::GetFileTimes(const stringT &filename,
   }
 }
 
-void TimetToFileTime(time_t t, FILETIME *pft)
+static void TimetToFileTime(time_t t, FILETIME *pft)
 {
   LONGLONG ll = Int32x32To64(t, 10000000) + 116444736000000000;
   pft->dwLowDateTime = (DWORD)ll;
@@ -480,7 +498,7 @@ bool pws_os::SetFileTimes(const stringT &filename,
 
   // Now set file times
   HANDLE hFile;
-  hFile = CreateFile(filename.c_str(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ, NULL,
+  hFile = CreateFile(unquote(filename).c_str(), FILE_WRITE_ATTRIBUTES, FILE_SHARE_READ, NULL,
     OPEN_EXISTING, 0, NULL);
 
   if (hFile != INVALID_HANDLE_VALUE) {
