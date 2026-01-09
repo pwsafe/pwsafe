@@ -1568,6 +1568,7 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
             evt.Veto();
             wxMessageBox(_("Duplicate group name (use Shift to overrule)"), _("Duplicate group name"), wxOK|wxICON_ERROR);
             m_drag_item = nullptr;
+            delete commands;
             return;
           }
         }
