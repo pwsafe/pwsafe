@@ -2098,7 +2098,7 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
       case SHIFTDCA:
       case KBSHORTCUT:
       case XTIME_INT:
-
+      case DATA_ATT_MTIME:
         memcpy(buf, &(*iter), len);
         byteswap(buf, buf + len - 1);
 
@@ -2322,6 +2322,30 @@ void CItemData::SerializePlainText(vector<char> &v,
   push(v, POLICYNAME, GetPolicyName());
   GetKBShortcut(i32); push(v, KBSHORTCUT, i32);
 
+  // V3 attachment fields
+  if (IsFieldSet(DATA_ATT_TITLE))
+    push(v, DATA_ATT_TITLE, GetField(DATA_ATT_TITLE));
+  if (IsFieldSet(DATA_ATT_MEDIATYPE))
+    push(v, DATA_ATT_MEDIATYPE, GetField(DATA_ATT_MEDIATYPE));
+  if (IsFieldSet(DATA_ATT_FILENAME))
+    push(v, DATA_ATT_FILENAME, GetField(DATA_ATT_FILENAME));
+  {
+    time_t att_mtime = 0;
+    CItem::GetTime(DATA_ATT_MTIME, att_mtime);
+    if (att_mtime != 0)
+      push(v, DATA_ATT_MTIME, att_mtime);
+  }
+  {
+    std::vector<unsigned char> content = GetAttContent();
+    if (!content.empty()) {
+      v.push_back(static_cast<char>(DATA_ATT_CONTENT));
+      push_length(v, static_cast<uint32>(content.size()));
+      v.insert(v.end(), reinterpret_cast<char*>(content.data()), reinterpret_cast<char*>(content.data()) + content.size());
+      trashMemory(content.data(), content.size());
+    }
+  }
+
+  // Unknown fields
   for (auto vi_IterURFE = m_URFL.begin();
        vi_IterURFE != m_URFL.end();
        vi_IterURFE++) {
