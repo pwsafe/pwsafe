@@ -2276,10 +2276,8 @@ void CItemData::SerializePlainText(vector<char> &v,
     ASSERT(pcibase != nullptr);
     ASSERT(IsFieldSet(BASEUUID));
     ASSERT(GetBaseUUID() == pcibase->GetUUID());
-    v.push_back(BASEUUID);
     GetUUID(uuid_array, BASEUUID);
-    push_length(v, sizeof(uuid_array_t));
-    v.insert(v.end(), uuid_array, (uuid_array + sizeof(uuid_array_t)));
+    push(v, BASEUUID, uuid_array);
   }
 
   tmp = ResolvePlaceholderEligibleField(this, pcibase, [this] { return GetPassword(); });
@@ -2338,9 +2336,7 @@ void CItemData::SerializePlainText(vector<char> &v,
   {
     std::vector<unsigned char> content = GetAttContent();
     if (!content.empty()) {
-      v.push_back(static_cast<char>(DATA_ATT_CONTENT));
-      push_length(v, static_cast<uint32>(content.size()));
-      v.insert(v.end(), reinterpret_cast<char*>(content.data()), reinterpret_cast<char*>(content.data()) + content.size());
+      push(v, DATA_ATT_CONTENT, static_cast<uint32>(content.size()), reinterpret_cast<char*>(content.data()));
       trashMemory(content.data(), content.size());
     }
   }
@@ -2353,13 +2349,7 @@ void CItemData::SerializePlainText(vector<char> &v,
     size_t length = 0;
     unsigned char *pdata = nullptr;
     GetUnknownField(type, length, pdata, *vi_IterURFE);
-    if (length != 0) {
-      v.push_back(static_cast<char>(type));
-      push_length(v, static_cast<uint32>(length));
-      v.insert(v.end(), reinterpret_cast<char *>(pdata),
-               reinterpret_cast<char *>(pdata) + length);
-      trashMemory(pdata, length);
-    }
+    push(v, static_cast<char>(type), static_cast<uint32>(length), reinterpret_cast<char*>(pdata));
     delete[] pdata;
   }
 
