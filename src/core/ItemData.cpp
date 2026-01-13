@@ -2350,6 +2350,7 @@ void CItemData::SerializePlainText(vector<char> &v,
     unsigned char *pdata = nullptr;
     GetUnknownField(type, length, pdata, *vi_IterURFE);
     push(v, static_cast<char>(type), static_cast<uint32>(length), reinterpret_cast<char*>(pdata));
+    trashMemory(pdata, length);
     delete[] pdata;
   }
 
