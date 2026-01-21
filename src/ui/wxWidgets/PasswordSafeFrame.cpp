@@ -1309,6 +1309,7 @@ void PasswordSafeFrame::ShowGrid(bool show)
         m_grid->AddItem(iter->second, i++);
     }
     
+    m_grid->AutoSizeRows(); // Forces row height recalculation based on font size
     if(PWSprefs::GetInstance()->GetPref(PWSprefs::AutoAdjColWidth)) {
       m_grid->AutoSizeColumns(false);
       m_grid->Layout();
@@ -3128,6 +3129,7 @@ void PasswordSafeFrame::ChangeFontPreference(const PWSprefs::StringPrefs fontPre
       }
       else {
         m_grid->SetDefaultCellFont(newFont);
+        m_grid->AutoSizeRows(); // Forces row height recalculation based on font size
         m_grid->Refresh(); // Updates the grid items font
       }
     }
