@@ -388,7 +388,7 @@ Passkey User Handle         0x2c        Binary        Y              [31]
 Passkey Algorithm ID        0x2d        4 bytes       Y              [31]
 Passkey Private Key         0x2e        Binary        Y              [31]
 Passkey Sign Count          0x2f        4 bytes       Y              [31]
-JSON Object                 0x30        Text          N              [32]
+Custom Text Field           0x30        Text          N              [32]
 Unknown (testing)           0xdf        -             N              [26]
 Implementation-specific     0xe0-0xfe   -             N              [27]
 End of Entry                0xff        [empty]       Y              [28]
@@ -669,9 +669,20 @@ of the contents.
 
 These parameters were introduced in version 0x0310 (PasswordSafe V3.69).
 
-[32] This is the text formatted field containing JSON object. It serves
-as an alternative to implementation-specific way of creating custom
-entries. Value must be a valid, well-formed JSON.
+[32] This is the text formatted field containing JSON object. It allows for
+customized field name. It is stored as a JSON object, e.g.,
+
+    {
+        "name": "<field_name>",
+        "value": "<field_value>",
+        "sensitive": <field_sensitive>
+    }
+
+This field must be a valid JSON object and any key/value not recognized should
+be left as-is. In application <field_name> could be shown as title of the field
+while <field_value> would be its text. If field should not be shown by default
+(e.g., if it contains value resembling password in nature), <field_sensitive> can
+be set to true.
 
 4. Extensibility
 
