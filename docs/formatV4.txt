@@ -662,13 +662,12 @@ These parameters were introduced in version 0x0401 (PasswordSafe V3.69).
     PLVPLV...PLV S PLVPLV...PLV ... S PLVPLV...PLV
 where:
     P = 2 hexadecimal digits indicating property ID
-    L = 4 hexadecimal digits indicating value length in bytes
+    L = L = 4 hexadecimal digits value length in bytes
     V = value of the property whose interpretation depends on the P
     S = 6 hexadecimal digits 000000 that serve as a separator between different
         custom fields
 
-These custom fields repeat as many times as there are properties. All numeric
-values are in little endian format.
+These custom fields repeat as many times as there are properties.
 
 Currently defined property IDs are
     01 = name: property value is interpreted as a UTF-8 string; in application
