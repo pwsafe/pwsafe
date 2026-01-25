@@ -666,9 +666,9 @@ where:
     L = 4 hexadecimal digits indicating value length in bytes
     V = value of the property whose interpretation depends on the P
     S = 6 hexadecimal digits 000000 that serve as a separator between different
-        properties
+        custom fields
 
-These fields repeat as many times as there are properties.
+These custom fields repeat as many times as there are properties.
 
 Currently defined property IDs are
     01 = name: property value is interpreted as a UTF-8 string; in application
@@ -680,12 +680,11 @@ Currently defined property IDs are
          might change how value is displayed (e.g., sensitive value could have
          its characters masked)
 
-At minimum, each property entry must contain property name (01) and property
-value (02). Property names must not repeat.
+At minimum, each custom field entry must contain property name (01) and property
+value (02). Property names must not repeat between custom fields.
 
 Any unknown property ID must be ignored and left unchanged for forward
-compatibility. Duplicate property IDs are not allowed within one property entry.
-Each property entry must have at least name (01) and value (02).
+compatibility. Duplicate property IDs are not allowed within one custom entry.
 
 3.4 Attachments
 
