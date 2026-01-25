@@ -680,7 +680,8 @@ Currently defined property IDs are
          have its characters masked); length of this property must be 1
 
 At minimum, each custom field must contain property name (01) and property value
-(02). For a given custom text field, all property names must be unique.
+(02). For a given custom text field, all property names must be unique and cannot
+be empty.
 
 Any unknown property ID must be ignored and left unchanged for forward
 compatibility. Duplicate property IDs are not allowed within one property entry.
