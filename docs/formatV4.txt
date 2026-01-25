@@ -667,7 +667,8 @@ where:
     S = 6 hexadecimal digits 000000 that serve as a separator between different
         custom fields
 
-These custom fields repeat as many times as there are properties.
+These custom fields repeat as many times as there are properties. All numeric
+values are in little endian format.
 
 Currently defined property IDs are
     01 = name: property value is interpreted as a UTF-8 string; in application
@@ -675,15 +676,15 @@ Currently defined property IDs are
     02 = value: property value is interpreted as a UTF-8 string; in application
          this can be considered to be a value displayed to the user
     03 = sensitivity flag: property value is interpreted as a boolean {0,1} with
-         literal 0 being false and literal 1 being true; in application this
+         0 (0x00) being false and any other value being true; in application this
          might change how value is displayed (e.g., sensitive value could have
-         its characters masked)
+         its characters masked); length of this property must be 1
 
 At minimum, each custom field must contain property name (01) and property value
-(02). Property names must not repeat between custom fields.
+(02). For a given custom text field, all property names must be unique.
 
 Any unknown property ID must be ignored and left unchanged for forward
-compatibility. Duplicate property IDs are not allowed within one custom field.
+compatibility. Duplicate property IDs are not allowed within one property entry.
 
 3.4 Attachments
 
