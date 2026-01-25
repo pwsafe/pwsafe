@@ -676,9 +676,9 @@ Currently defined property IDs are
     02 = value: property value is interpreted as a UTF-8 string; in application
          this can be considered to be a value displayed to the user
     03 = sensitivity flag: property value is interpreted as a boolean {0,1} with
-         0 (0x00) being false and any other value being true; in application this
-         might change how value is displayed (e.g., sensitive value could have
-         its characters masked); length of this property must be 1
+         '0' (0x30) being false and '1' (0x31) being true true; in application
+         this might change how value is displayed (e.g., sensitive value could
+         have its characters masked); length of this property must be 1
 
 At minimum, each custom field must contain property name (01) and property value
 (02). For a given custom text field, all property names must be unique.
