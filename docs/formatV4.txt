@@ -686,6 +686,12 @@ At minimum, each custom field must contain property name (01) and property value
 Any unknown property ID must be ignored and left unchanged for forward
 compatibility. Duplicate property IDs are not allowed within one property entry.
 
+For example, to encode the following custom fields:
+* WiFi SSID: Test
+* WiFi Password: bobsyouruncle (sensitive field)
+One would use
+    010009WiFi SSID020004Test00000001000DWiFi Password02000Cbobsyouruncle0300011
+
 3.4 Attachments
 
 3.4.1 Attachment record fields
