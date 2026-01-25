@@ -669,20 +669,34 @@ of the contents.
 
 These parameters were introduced in version 0x0310 (PasswordSafe V3.69).
 
-[32] This is the text formatted field containing JSON object. It allows for
-customized field name. It is stored as a JSON object, e.g.,
+[32] This is a custom text field that allows for configuring custom properties.
+Key/value pairs are stored in the following format:
+    PLVPLV...PLV S PLVPLV...PLV ... S PLVPLV...PLV
+where:
+    P = 2 hexadecimal digits indicating property ID
+    L = 4 hexadecimal digits indicating value length in bytes
+    V = value of the property whose interpretation depends on the P
+    S = 6 hexadecimal digits 000000 that serve as a separator between different
+        properties
 
-    {
-        "name": "<field_name>",
-        "value": "<field_value>",
-        "sensitive": <field_sensitive>
-    }
+These fields repeat as many times as there are properties.
 
-This field must be a valid JSON object and any key/value not recognized should
-be left as-is. In application <field_name> could be shown as title of the field
-while <field_value> would be its text. If field should not be shown by default
-(e.g., if it contains value resembling password in nature), <field_sensitive> can
-be set to true.
+Currently defined property IDs are
+    01 = name: property value is interpreted as a UTF-8 string; in application
+         this can be considered to be a title of a given value
+    02 = value: property value is interpreted as a UTF-8 string; in application
+         this can be considered to be a value displayed to the user
+    03 = sensitive flag: property value is interpreted as a boolean {0,1} with
+         literal 0 being false and literal 1 being true; in application this
+         might change how value is displayed (e.g., sensitive value could have
+         its characters masked)
+
+At minimum, each property entry must contain property name (01) and property
+value (02). Property names must not repeat.
+
+Any unknown property ID must be ignored and left unchanged for forward
+compatibility. Duplicate property IDs are not allowed within one property entry.
+Each property entry must have at least name (01) and value (02).
 
 4. Extensibility
 
