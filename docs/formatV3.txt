@@ -669,8 +669,7 @@ of the contents.
 
 These parameters were introduced in version 0x0310 (PasswordSafe V3.69).
 
-[32] This is a custom text field that allows for configuring custom properties.
-Key/value pairs are stored in the following format:
+[32] Custom fields consist of property entries stored in the following format:
     PLVPLV...PLV S PLVPLV...PLV ... S PLVPLV...PLV
 where:
     P = 2 hexadecimal digits indicating property ID
@@ -686,16 +685,16 @@ Currently defined property IDs are
          this can be considered to be a title of a given value
     02 = value: property value is interpreted as a UTF-8 string; in application
          this can be considered to be a value displayed to the user
-    03 = sensitive flag: property value is interpreted as a boolean {0,1} with
+    03 = sensitivity flag: property value is interpreted as a boolean {0,1} with
          literal 0 being false and literal 1 being true; in application this
          might change how value is displayed (e.g., sensitive value could have
          its characters masked)
 
-At minimum, each custom field entry must contain property name (01) and property
-value (02). Property names must not repeat between custom fields.
+At minimum, each custom field must contain property name (01) and property value
+(02). Property names must not repeat between custom fields.
 
 Any unknown property ID must be ignored and left unchanged for forward
-compatibility. Duplicate property IDs are not allowed within one custom entry.
+compatibility. Duplicate property IDs are not allowed within one custom field.
 
 4. Extensibility
 
