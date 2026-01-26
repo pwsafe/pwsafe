@@ -1,4 +1,4 @@
-PasswordSafe database format description version 4.01
+PasswordSafe database format description version 4.02
 -----------------------------------------------------
 
 Copyright (c) 2013-2026 Rony Shapiro <ronys@pwsafe.org>.
@@ -261,7 +261,7 @@ password change             0x13        time_t        Y              [5]
 End of Entry                0xff        [empty]       Y              [17]
 
 [1] The version number of the database format. For this version, the value
-is 0x0401 (stored in little-endian format, that is, 0x01, 0x04).
+is 0x0402 (stored in little-endian format, that is, 0x02, 0x04).
 PasswordSafe V3.69 introduced Format 0x0401
 
 [2] A universally unique database identifier is needed in order to
@@ -425,6 +425,7 @@ Passkey User Handle         0x2c        Binary        Y              [31]
 Passkey Algorithm ID        0x2d        4 bytes       Y              [31]
 Passkey Private Key         0x2e        Binary        Y              [31]
 Passkey Sign Count          0x2f        4 bytes       Y              [31]
+Custom Text Field           0x30        Text          N              [32]
 BaseUUID                    0x41        UUID          Y              [25]
 AliasUUID                   0x42        UUID          Y
 ShortcutUUID                0x43        UUID          Y
@@ -656,6 +657,45 @@ of the contents.
     assertion must first increment it and use the incremented value.
 
 These parameters were introduced in version 0x0401 (PasswordSafe V3.69).
+
+[32] Custom fields consist of property entries stored in the following format:
+    PLVPLV...PLV S PLVPLV...PLV ... S PLVPLV...PLV
+where:
+    P = 2 hexadecimal digits indicating property ID; P = 00 is not allowed
+    L = 4 hexadecimal digits value length in bytes
+    V = value of the property whose interpretation depends on the P; content
+        must be a valid UTF-8
+    S = 6 hexadecimal digits 000000 that serve as a separator between different
+        custom fields
+
+These custom fields repeat as many times as there are properties. Separator at
+the end is allowed but not required.
+
+Currently defined property IDs are
+    00 = reserved for separator
+    01 = name: property value is interpreted as a UTF-8 string; in application
+         this can be considered to be a title of a given value
+    02 = value: property value is interpreted as a UTF-8 string; in application
+         this can be considered to be a value displayed to the user
+    03 = sensitivity flag: property value is interpreted as a boolean {0,1} with
+         '0' (0x30) being false and '1' (0x31) being true true; in application
+         this might change how value is displayed (e.g., sensitive value could
+         have its characters masked); length of this property must be 1
+
+At minimum, each custom field must contain property name (01) and property value
+(02). For a given custom text field, all property names must be unique and cannot
+be empty.
+
+Any unknown property ID must be ignored and left unchanged for forward
+compatibility. Duplicate property IDs are not allowed within one property entry.
+
+For example, to encode the following custom fields:
+* WiFi SSID: Test
+* WiFi Password: bobsyouruncle (sensitive field)
+One would use
+    010009WiFi SSID020004Test00000001000DWiFi Password02000Cbobsyouruncle0300011
+
+This field was introduced in format version 0x0402
 
 3.4 Attachments
 
