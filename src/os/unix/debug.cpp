@@ -78,9 +78,9 @@ DWORD pws_os::IssueError(const stringT &csFunction, bool bMsgBox)
 {
   // Stub?
   if (bMsgBox)
-    std::cout << csFunction.c_str();
+    std::wcout << csFunction.c_str();
   else
-    std::cerr << csFunction.c_str();
+    std::wcerr << csFunction.c_str();
 
   return 0;
 }

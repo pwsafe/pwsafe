@@ -26,12 +26,12 @@ std::string tostr(IntType i)
   return os.str();
 }
 
-inline std::ostream& operator<<(std::ostream& os, const StringX& str)
+inline std::wostream& operator<<(std::wostream& os, const StringX& str)
 {
   return os << str.c_str();
 }
 
-inline std::ostream& operator<<(std::ostream& os, const std::wstring& str)
+inline std::wostream& operator<<(std::wostream& os, const std::wstring& str)
 {
   return os << str.c_str();
 }
