@@ -270,6 +270,95 @@ TEST_F(ItemDataTest, PasswordHistory)
   EXPECT_EQ(emptyHeader, PWHistList::MakePWHistoryHeader(false, 0, 0));
 }
 
+TEST_F(ItemDataTest, CustomFields)
+{
+  const StringX raw = _T("010004Name020005Value0300012")
+                      _T("000000")
+                      _T("010004Wifi020004Test040003abc")
+                      _T("000000")
+                      _T("010006000000020006000000");
+  const StringX normalized = _T("010004Name020005Value0300011")
+                             _T("000000")
+                             _T("010004Wifi020004Test040003abc")
+                             _T("000000")
+                             _T("010006000000020006000000");
+
+  CustomFieldList custom_fields(raw);
+  EXPECT_EQ(0U, custom_fields.getErr());
+  EXPECT_EQ(normalized, static_cast<StringX>(custom_fields));
+  ASSERT_EQ(3U, custom_fields.size());
+
+  EXPECT_EQ(_T("Name"), custom_fields[0].GetName());
+  EXPECT_EQ(_T("Value"), custom_fields[0].GetValue());
+  EXPECT_TRUE(custom_fields[0].IsSensitive());
+
+  bool found_unknown = false;
+  StringX unknown_value;
+  for (const auto &prop : custom_fields[1].GetProperties()) {
+    if (prop.first == 0x04) {
+      found_unknown = true;
+      unknown_value = prop.second;
+      break;
+    }
+  }
+  EXPECT_TRUE(found_unknown);
+  EXPECT_EQ(_T("abc"), unknown_value);
+
+  EXPECT_EQ(_T("000000"), custom_fields[2].GetName());
+  EXPECT_EQ(_T("000000"), custom_fields[2].GetValue());
+
+  CItemData di;
+  di.SetCustomFields(custom_fields);
+  EXPECT_TRUE(di.IsCustomFieldsSet());
+  EXPECT_EQ(normalized, di.GetCustomFieldsRaw());
+
+  CustomFieldList parsed = di.GetCustomFields();
+  EXPECT_EQ(0U, parsed.getErr());
+  EXPECT_EQ(normalized, static_cast<StringX>(parsed));
+}
+
+TEST_F(ItemDataTest, CustomFieldsOps)
+{
+  CItemData di;
+
+  CustomField cf1;
+  cf1.SetName(_T("A"));
+  cf1.SetValue(_T("1"));
+  EXPECT_TRUE(di.AddCustomField(cf1));
+
+  CustomField dup;
+  dup.SetName(_T("A"));
+  dup.SetValue(_T("2"));
+  EXPECT_FALSE(di.AddCustomField(dup));
+
+  CustomField cf2;
+  cf2.SetName(_T("B"));
+  cf2.SetValue(_T("2"));
+  EXPECT_TRUE(di.AddCustomField(cf2));
+
+  CustomField edit_b;
+  edit_b.SetName(_T("B"));
+  edit_b.SetValue(_T("3"));
+  EXPECT_TRUE(di.EditCustomField(_T("B"), edit_b));
+
+  CustomField rename_dup;
+  rename_dup.SetName(_T("A"));
+  rename_dup.SetValue(_T("9"));
+  EXPECT_FALSE(di.EditCustomField(_T("B"), rename_dup));
+
+  EXPECT_TRUE(di.SetCustomFieldProperty(_T("B"), CustomField::PROP_NAME, _T("C")));
+  EXPECT_FALSE(di.SetCustomFieldProperty(_T("C"), CustomField::PROP_NAME, _T("A")));
+
+  EXPECT_FALSE(di.SetCustomFieldProperty(_T("A"), CustomField::PROP_SENSITIVE, _T("10")));
+  EXPECT_TRUE(di.SetCustomFieldProperty(_T("A"), CustomField::PROP_SENSITIVE, _T("1")));
+
+  EXPECT_TRUE(di.DeleteCustomField(_T("C")));
+  EXPECT_FALSE(di.DeleteCustomField(_T("C")));
+
+  di.SetFieldValue(CItemData::CUSTOMTEXT, _T("010001A020001B03000210"));
+  EXPECT_FALSE(di.AddCustomField(cf1));
+}
+
 TEST_F(ItemDataTest, UnknownFields)
 {
   unsigned char u1v[] = {10, 11, 33, 57};

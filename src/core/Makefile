@@ -27,7 +27,7 @@ WX_CONFIG?=$(shell if [ -e $(WX3) ]; then echo $(WX3); else echo $(WX2); fi)
 NOTSRC          = PWSclipboard.cpp
 
 LIBSRC          = CheckVersion.cpp \
-                  Item.cpp ItemData.cpp ItemAtt.cpp ItemField.cpp \
+                  CustomFields.cpp Item.cpp ItemData.cpp ItemAtt.cpp ItemField.cpp \
                   Match.cpp PolicyManager.cpp PWCharPool.cpp CoreImpExp.cpp \
                   PWPolicy.cpp PWHistory.cpp PWSAuxParse.cpp \
                   PWScore.cpp PWSdirs.cpp PWSfile.cpp PWSfileHeader.cpp \

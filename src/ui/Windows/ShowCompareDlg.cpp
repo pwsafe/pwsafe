@@ -143,6 +143,7 @@ void CShowCompareDlg::PopulateResults(bool bShowAll)
     CItemData::POLICY, CItemData::POLICYNAME, CItemData::KBSHORTCUT, CItemData::ATTREF,
     CItemData::CTIME, CItemData::PMTIME, CItemData::ATIME, CItemData::XTIME,
     CItemData::RMTIME, CItemData::XTIME_INT, CItemData::PWHIST, CItemData::NOTES,
+    CItemData::CUSTOMTEXT,
     CItemData::CCNUM, CItemData::CCEXP, CItemData::CCVV, CItemData::CCPIN,
     CItemData::DATA_ATT_TITLE, CItemData::DATA_ATT_MEDIATYPE, CItemData::DATA_ATT_FILENAME, CItemData::DATA_ATT_MTIME, CItemData::DATA_ATT_CONTENT,
     CItemData::PASSKEY_CRED_ID, CItemData::PASSKEY_SIGN_COUNT,

@@ -56,9 +56,10 @@ using pws_os::CUUID;
  *         V3.47           0x030E
  *         V3.68           0x030F (new fields and MIN_HASH_ITERATIONS updated)
  *         V3.69           0x0310 (passkey fields)
+ *         V3.71           0x0311 (custom fields)
 */
 
-const short VersionNum = 0x0310;
+const short VersionNum = 0x0311;
 
 static unsigned char TERMINAL_BLOCK[TwoFish::BLOCKSIZE] = {
   'P', 'W', 'S', '3', '-', 'E', 'O', 'F',

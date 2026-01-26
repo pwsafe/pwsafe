@@ -214,6 +214,7 @@
 		E6EE841E11E87E9800B01518 /* CoreImpExp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE839E11E87E9700B01518 /* CoreImpExp.cpp */; };
 		E6EE841F11E87E9800B01518 /* core_st.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A211E87E9700B01518 /* core_st.cpp */; };
 		E6EE842111E87E9800B01518 /* ItemData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A711E87E9700B01518 /* ItemData.cpp */; };
+		57F0A1B32E12345600ABCDEF /* CustomFields.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F0A1B12E12345600ABCDEF /* CustomFields.cpp */; };
 		E6EE842211E87E9800B01518 /* ItemField.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83A911E87E9700B01518 /* ItemField.cpp */; };
 		E6EE842411E87E9800B01518 /* Match.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83AC11E87E9700B01518 /* Match.cpp */; };
 		E6EE842511E87E9800B01518 /* PWCharPool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83B011E87E9700B01518 /* PWCharPool.cpp */; };
@@ -928,6 +929,8 @@
 		E6EE83A311E87E9700B01518 /* core_st.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core_st.h; sourceTree = "<group>"; };
 		E6EE83A711E87E9700B01518 /* ItemData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; indentWidth = 2; lastKnownFileType = sourcecode.cpp.cpp; path = ItemData.cpp; sourceTree = "<group>"; };
 		E6EE83A811E87E9700B01518 /* ItemData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemData.h; sourceTree = "<group>"; };
+		57F0A1B12E12345600ABCDEF /* CustomFields.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CustomFields.cpp; sourceTree = "<group>"; };
+		57F0A1B22E12345600ABCDEF /* CustomFields.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomFields.h; sourceTree = "<group>"; };
 		E6EE83A911E87E9700B01518 /* ItemField.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ItemField.cpp; sourceTree = "<group>"; };
 		E6EE83AA11E87E9700B01518 /* ItemField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ItemField.h; sourceTree = "<group>"; };
 		E6EE83AC11E87E9700B01518 /* Match.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Match.cpp; sourceTree = "<group>"; };
@@ -1821,6 +1824,8 @@
 				A2FE25841C5ACF7500210C36 /* ItemAtt.h */,
 				E6EE83A711E87E9700B01518 /* ItemData.cpp */,
 				E6EE83A811E87E9700B01518 /* ItemData.h */,
+				57F0A1B12E12345600ABCDEF /* CustomFields.cpp */,
+				57F0A1B22E12345600ABCDEF /* CustomFields.h */,
 				E6EE83A911E87E9700B01518 /* ItemField.cpp */,
 				E6EE83AA11E87E9700B01518 /* ItemField.h */,
 				E6EE83AC11E87E9700B01518 /* Match.cpp */,
@@ -2234,6 +2239,7 @@
 				E6EE841F11E87E9800B01518 /* core_st.cpp in Sources */,
 				A2FE25951C5ACFBD00210C36 /* PWStime.cpp in Sources */,
 				E6EE842111E87E9800B01518 /* ItemData.cpp in Sources */,
+				57F0A1B32E12345600ABCDEF /* CustomFields.cpp in Sources */,
 				E6EE842211E87E9800B01518 /* ItemField.cpp in Sources */,
 				E6EE842411E87E9800B01518 /* Match.cpp in Sources */,
 				E6EE842511E87E9800B01518 /* PWCharPool.cpp in Sources */,

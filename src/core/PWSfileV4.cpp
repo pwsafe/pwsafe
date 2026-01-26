@@ -427,9 +427,10 @@ void PWSfileV4::StretchKey(const unsigned char *salt, unsigned long saltLen,
  * PasswordSafe Version   Format Version
  * =====================================
  *         V3.69           0x0401 (passkey fields)
+ *         V3.71           0x0402 (custom fields)
 */
 
-const short VersionNum = 0x0401;
+const short VersionNum = 0x0402;
 
 struct PWSfileV4::CKeyBlocks::KeyBlockFinder {
   KeyBlockFinder(const KeyBlockFinder&) = default;

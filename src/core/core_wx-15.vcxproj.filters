@@ -26,6 +26,9 @@
     <ClCompile Include="ItemData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CustomFields.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="ItemField.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -194,6 +197,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ItemData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomFields.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ItemField.h">

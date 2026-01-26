@@ -7,6 +7,7 @@ set (CORE_SRCS
   CoreAlias.cpp
   CoreImpExp.cpp
   CoreOtherDB.cpp
+  CustomFields.cpp
   ExpiredList.cpp
   ItemAtt.cpp
   Item.cpp
