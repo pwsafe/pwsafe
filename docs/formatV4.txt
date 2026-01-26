@@ -1,4 +1,4 @@
-PasswordSafe database format description version 4.01
+PasswordSafe database format description version 4.02
 -----------------------------------------------------
 
 Copyright (c) 2013-2026 Rony Shapiro <ronys@pwsafe.org>.
@@ -261,7 +261,7 @@ password change             0x13        time_t        Y              [5]
 End of Entry                0xff        [empty]       Y              [17]
 
 [1] The version number of the database format. For this version, the value
-is 0x0401 (stored in little-endian format, that is, 0x01, 0x04).
+is 0x0402 (stored in little-endian format, that is, 0x02, 0x04).
 PasswordSafe V3.69 introduced Format 0x0401
 
 [2] A universally unique database identifier is needed in order to
@@ -694,6 +694,8 @@ For example, to encode the following custom fields:
 * WiFi Password: bobsyouruncle (sensitive field)
 One would use
     010009WiFi SSID020004Test00000001000DWiFi Password02000Cbobsyouruncle0300011
+
+This field was introduced in format version 0x0402
 
 3.4 Attachments
 

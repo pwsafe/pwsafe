@@ -190,7 +190,7 @@ password change             0x13        time_t        Y              [5]
 End of Entry                0xff        [empty]       Y              [17]
 
 [1] The version number of the database format. For example, the value
-0x0310 is stored in little-endian format, that is, 0x10, 0x03.
+0x0311 is stored in little-endian format, that is, 0x11, 0x03.
 PasswordSafe V3.01 introduced Format 0x0300
 PasswordSafe V3.03 introduced Format 0x0301
 PasswordSafe V3.09 introduced Format 0x0302
@@ -705,6 +705,8 @@ For example, to encode the following custom fields:
 * WiFi Password: bobsyouruncle (sensitive field)
 One would use
     010009WiFi SSID020004Test00000001000DWiFi Password02000Cbobsyouruncle0300011
+
+This field was introduced in format version 0x0311
 
 4. Extensibility
 
