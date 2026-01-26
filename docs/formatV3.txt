@@ -672,15 +672,18 @@ These parameters were introduced in version 0x0310 (PasswordSafe V3.69).
 [32] Custom fields consist of property entries stored in the following format:
     PLVPLV...PLV S PLVPLV...PLV ... S PLVPLV...PLV
 where:
-    P = 2 hexadecimal digits indicating property ID
+    P = 2 hexadecimal digits indicating property ID; P = 00 is not allowed
     L = 4 hexadecimal digits value length in bytes
-    V = value of the property whose interpretation depends on the P
+    V = value of the property whose interpretation depends on the P; content
+        must be a valid UTF-8
     S = 6 hexadecimal digits 000000 that serve as a separator between different
         custom fields
 
-These custom fields repeat as many times as there are properties.
+These custom fields repeat as many times as there are properties. Separator at
+the end is allowed but not required.
 
 Currently defined property IDs are
+    00 = reserved for separator
     01 = name: property value is interpreted as a UTF-8 string; in application
          this can be considered to be a title of a given value
     02 = value: property value is interpreted as a UTF-8 string; in application
