@@ -51,6 +51,9 @@ std::ostringstream g_xerrormsg;
 std::ostream &operator<<(std::ostream &os, unsigned char c) {
   return os << std::showbase << std::hex << static_cast<int>(c);
 }
+std::ostream &operator<<(std::ostream &os, wchar_t wc) {
+  return os << static_cast<int>(wc);
+}
 // When something goes wrong, we write our error message to g_xerrormsg
 // above and throw this exception. We also throw this exception if we
 // notice that it has some data (that got there by XErrorHandler below)

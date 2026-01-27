@@ -79,8 +79,8 @@ GridCtrl::GridCtrl(wxWindow* parent, PWScore &core,
     // Handler for double click events on column header separator.
     header->Bind(
       wxEVT_HEADER_SEPARATOR_DCLICK, 
-      [=](wxHeaderCtrlEvent& event) {
-        wxGrid::AutoSizeColumn(event.GetColumn());
+      [this](wxHeaderCtrlEvent& event) {
+        this->AutoSizeColumn(event.GetColumn());
       }
     );
 
