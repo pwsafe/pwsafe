@@ -54,7 +54,7 @@ public:
   void ActivateND(const bool bActivate);
 
   void DeleteWithParents(HTREEITEM hItem); // if a parent node becomes a leaf
-  CString GetGroup(HTREEITEM hItem); // get group path to hItem
+  StringX GetGroup(HTREEITEM hItem); // get group path to hItem
   HTREEITEM AddGroup(const CString &path, bool &bAlreadyExists);
   void SortTree(const HTREEITEM htreeitem);
   bool IsLeaf(HTREEITEM hItem) const;

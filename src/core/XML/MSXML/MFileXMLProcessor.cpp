@@ -64,6 +64,9 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   //  Get ready for XSD schema validation
   IXMLDOMSchemaCollection2 *pSchemaCache = nullptr;
 
+  MFileSAX2ContentHandler* pCH;
+  MFileSAX2ErrorHandler* pEH;
+
   if (m_bValidation) { //XMLValidate
     hr60 = CoCreateInstance(__uuidof(SAXXMLReader60), nullptr, CLSCTX_ALL,
                             __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
@@ -78,7 +81,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   }
 
   //  Create ContentHandlerImpl object
-  MFileSAX2ContentHandler *pCH = new MFileSAX2ContentHandler();
+  pCH = new MFileSAX2ContentHandler();
   pCH->SetVariables(m_bValidation ? nullptr : m_pXMLcore, m_bValidation, 
                     ImportedPrefix, m_delimiter, bImportPSWDsOnly,
                     m_bValidation ? nullptr : m_pPossible_Aliases, 
@@ -86,7 +89,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
                     m_pmulticmds, m_prpt);
 
   //  Create ErrorHandlerImpl object
-  MFileSAX2ErrorHandler *pEH = new MFileSAX2ErrorHandler();
+  pEH = new MFileSAX2ErrorHandler();
 
   //  Set Content Handler
   hr = pSAX2Reader->putContentHandler(pCH);
@@ -100,7 +103,7 @@ bool MFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   if (!FAILED(hr)) {  // Create SchemaCache
     //  Initialize the SchemaCache object with the XSD filename
     CComVariant cvXSDFileName = strXSDFileName.c_str();
-    hr = pSchemaCache->add(L"", cvXSDFileName);
+    hr = pSchemaCache->add(const_cast<BSTR>(L""), cvXSDFileName);
 
     //  Set the SAXReader/Schema Cache features and properties
     {

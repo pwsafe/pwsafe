@@ -225,7 +225,7 @@ BOOL CViewAttachmentDlg::OnInitDialog()
     m_pToolTipCtrl->Activate(true);
   }
 
-  m_feZoomEdit.SetMinMax(MinZoom / 10.0, MaxZoom / 10.0);
+  m_feZoomEdit.SetMinMax(static_cast<float>(MinZoom / 10.0), static_cast<float>(MaxZoom / 10.0));
 
   CString csZoomValue;
   csZoomValue.Format(L"%0.1f", 1.0);
@@ -242,7 +242,8 @@ BOOL CViewAttachmentDlg::OnInitDialog()
   // Allocate attachment buffer
   int rc(0);
   HRESULT hr(S_OK);
-
+  BYTE* pBuffer;
+  IStream* pStream;
   UINT imagesize = (UINT)m_pattachment->GetContentSize();
   HGLOBAL gMemory = GlobalAlloc(GMEM_MOVEABLE, imagesize);
   ASSERT(gMemory);
@@ -253,7 +254,7 @@ BOOL CViewAttachmentDlg::OnInitDialog()
     goto load_error;
   }
 
-  BYTE *pBuffer = (BYTE *)GlobalLock(gMemory);
+  pBuffer = (BYTE *)GlobalLock(gMemory);
   ASSERT(pBuffer);
 
   if (pBuffer == NULL) {
@@ -266,7 +267,7 @@ BOOL CViewAttachmentDlg::OnInitDialog()
   m_pattachment->GetContent(pBuffer, imagesize);
 
   // Put it into a IStream
-  IStream *pStream = NULL;
+  pStream = NULL;
   hr = CreateStreamOnHGlobal(gMemory, FALSE, &pStream);
   if (SUCCEEDED(hr)) {
     // Load it

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites tests="103" failures="0" disabled="0" errors="0" time="33.129" timestamp="2026-01-27T22:18:31.409" name="AllTests">
+  <testsuite name="AESTest" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0.001" timestamp="2026-01-27T22:18:31.410">
+    <testcase name="aes_test" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\AESTest.cpp" line="18" status="run" result="completed" time="0.001" timestamp="2026-01-27T22:18:31.410" classname="AESTest" />
+  </testsuite>
+  <testsuite name="AliasShortcutTest" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0.006" timestamp="2026-01-27T22:18:31.412">
+    <testcase name="Alias" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\AliasShortcutTest.cpp" line="48" status="run" result="completed" time="0.004" timestamp="2026-01-27T22:18:31.412" classname="AliasShortcutTest" />
+    <testcase name="Shortcut" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\AliasShortcutTest.cpp" line="93" status="run" result="completed" time="0.001" timestamp="2026-01-27T22:18:31.417" classname="AliasShortcutTest" />
+  </testsuite>
+  <testsuite name="FileV3Test" tests="7" failures="0" disabled="0" skipped="0" errors="0" time="10.758" timestamp="2026-01-27T22:18:31.418">
+    <testcase name="EmptyFile" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileV3Test.cpp" line="93" status="run" result="completed" time="1.836" timestamp="2026-01-27T22:18:31.418" classname="FileV3Test" />
+    <testcase name="HeaderTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileV3Test.cpp" line="110" status="run" result="completed" time="1.245" timestamp="2026-01-27T22:18:33.255" classname="FileV3Test" />
+    <testcase name="ItemTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileV3Test.cpp" line="141" status="run" result="completed" time="1.24" timestamp="2026-01-27T22:18:34.501" classname="FileV3Test" />
+    <testcase name="UnknownPersistencyTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileV3Test.cpp" line="160" status="run" result="completed" time="1.317" timestamp="2026-01-27T22:18:35.741" classname="FileV3Test" />
+    <testcase name="AttachmentTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileV3Test.cpp" line="183" status="run" result="completed" time="1.283" timestamp="2026-01-27T22:18:37.060" classname="FileV3Test" />
+    <testcase name="V4Extension" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileV3Test.cpp" line="226" status="run" result="completed" time="2.608" timestamp="2026-01-27T22:18:38.343" classname="FileV3Test" />
+    <testcase name="PasskeyTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileV3Test.cpp" line="245" status="run" result="completed" time="1.224" timestamp="2026-01-27T22:18:40.952" classname="FileV3Test" />
+  </testsuite>
+  <testsuite name="ItemAttTest" tests="5" failures="0" disabled="0" skipped="0" errors="0" time="0.031" timestamp="2026-01-27T22:18:42.177">
+    <testcase name="EmptyItems" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ItemAttTest.cpp" line="59" status="run" result="completed" time="0." timestamp="2026-01-27T22:18:42.177" classname="ItemAttTest" />
+    <testcase name="UUIDs" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ItemAttTest.cpp" line="71" status="run" result="completed" time="0." timestamp="2026-01-27T22:18:42.177" classname="ItemAttTest" />
+    <testcase name="ImpExp" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ItemAttTest.cpp" line="84" status="run" result="completed" time="0.023" timestamp="2026-01-27T22:18:42.178" classname="ItemAttTest" />
+    <testcase name="CopyCtor" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ItemAttTest.cpp" line="124" status="run" result="completed" time="0.006" timestamp="2026-01-27T22:18:42.201" classname="ItemAttTest" />
+    <testcase name="Getters_n_Setters" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ItemAttTest.cpp" line="140" status="run" result="completed" time="0." timestamp="2026-01-27T22:18:42.208" classname="ItemAttTest" />
+  </testsuite>
+  <testsuite name="OSTest" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-01-27T22:18:42.208">
+    <testcase name="testMedia" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\OSTest.cpp" line="14" status="run" result="completed" time="0." timestamp="2026-01-27T22:18:42.208" classname="OSTest" />
+    <testcase name="testPath" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\OSTest.cpp" line="21" status="run" result="completed" time="0." timestamp="2026-01-27T22:18:42.209" classname="OSTest" />
+  </testsuite>
+  <testsuite name="BlowFishTest" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0.003" timestamp="2026-01-27T22:18:42.209">
+    <testcase name="Null1Ktest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\BlowFishTest.cpp" line="174" status="run" result="completed" time="0." timestamp="2026-01-27T22:18:42.209" classname="BlowFishTest" />
+    <testcase name="VKtests" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\BlowFishTest.cpp" line="188" status="run" result="completed" time="0.002" timestamp="2026-01-27T22:18:42.209" classname="BlowFishTest" />
+  </testsuite>
+  <testsuite name="FileV4Test" tests="9" failures="0" disabled="0" skipped="0" errors="0" time="21.135" timestamp="2026-01-27T22:18:42.212">
+    <testcase name="EmptyFile" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileV4Test.cpp" line="120" status="run" result="completed" time="1.952" timestamp="2026-01-27T22:18:42.212" classname="FileV4Test" />
+    <testcase name="HeaderTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileV4Test.cpp" line="137" status="run" result="completed" time="1.767" timestamp="2026-01-27T22:18:44.164" classname="FileV4Test" />
+    <testcase name="ItemTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileV4Test.cpp" line="160" status="run" result="completed" time="1.528" timestamp="2026-01-27T22:18:45.932" classname="FileV4Test" />
+    <testcase name="MulitKeysTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileV4Test.cpp" line="179" status="run" result="completed" time="7.797" timestamp="2026-01-27T22:18:47.460" classname="FileV4Test" />
+    <testcase name="AttTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileV4Test.cpp" line="221" status="run" result="completed" time="1.468" timestamp="2026-01-27T22:18:55.258" classname="FileV4Test" />
+    <testcase name="HdrItemAttTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileV4Test.cpp" line="251" status="run" result="completed" time="1.507" timestamp="2026-01-27T22:18:56.726" classname="FileV4Test" />
+    <testcase name="CoreRWTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileV4Test.cpp" line="281" status="run" result="completed" time="2.204" timestamp="2026-01-27T22:18:58.234" classname="FileV4Test" />
+    <testcase name="PasskeyTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileV4Test.cpp" line="317" status="run" result="completed" time="1.452" timestamp="2026-01-27T22:19:00.438" classname="FileV4Test" />
+    <testcase name="V3ToV4AttachmentConversion" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileV4Test.cpp" line="344" status="run" result="completed" time="1.457" timestamp="2026-01-27T22:19:01.890" classname="FileV4Test" />
+  </testsuite>
+  <testsuite name="ItemDataTest" tests="7" failures="0" disabled="0" skipped="0" errors="0" time="0.006" timestamp="2026-01-27T22:19:03.348">
+    <testcase name="EmptyItems" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ItemDataTest.cpp" line="77" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.348" classname="ItemDataTest" />
+    <testcase name="CopyCtor" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ItemDataTest.cpp" line="90" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.348" classname="ItemDataTest" />
+    <testcase name="Assignment" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ItemDataTest.cpp" line="99" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.349" classname="ItemDataTest" />
+    <testcase name="Getters_n_Setters" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ItemDataTest.cpp" line="111" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.349" classname="ItemDataTest" />
+    <testcase name="PlainTextSerialization" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ItemDataTest.cpp" line="143" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.350" classname="ItemDataTest" />
+    <testcase name="PasswordHistory" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ItemDataTest.cpp" line="156" status="run" result="completed" time="0.003" timestamp="2026-01-27T22:19:03.350" classname="ItemDataTest" />
+    <testcase name="UnknownFields" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ItemDataTest.cpp" line="273" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.353" classname="ItemDataTest" />
+  </testsuite>
+  <testsuite name="SHA256Test" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-01-27T22:19:03.354">
+    <testcase name="sha256_test" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\SHA256Test.cpp" line="16" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.354" classname="SHA256Test" />
+  </testsuite>
+  <testsuite name="SHA1Test" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-01-27T22:19:03.354">
+    <testcase name="sha1_test" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\SHA1Test.cpp" line="16" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.354" classname="SHA1Test" />
+  </testsuite>
+  <testsuite name="CommandsTest" tests="9" failures="0" disabled="0" skipped="0" errors="0" time="0.624" timestamp="2026-01-27T22:19:03.354">
+    <testcase name="AddItem" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\CommandsTest.cpp" line="30" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.354" classname="CommandsTest" />
+    <testcase name="DeleteEntry" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\CommandsTest.cpp" line="55" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.355" classname="CommandsTest" />
+    <testcase name="DeleteEntryWithAttachment" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\CommandsTest.cpp" line="74" status="run" result="completed" time="0.001" timestamp="2026-01-27T22:19:03.355" classname="CommandsTest" />
+    <testcase name="CreateShortcutEntry" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\CommandsTest.cpp" line="124" status="run" result="completed" time="0.001" timestamp="2026-01-27T22:19:03.356" classname="CommandsTest" />
+    <testcase name="EditEntry" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\CommandsTest.cpp" line="192" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.359" classname="CommandsTest" />
+    <testcase name="RenameGroup" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\CommandsTest.cpp" line="233" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.360" classname="CommandsTest" />
+    <testcase name="CountGroups" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\CommandsTest.cpp" line="267" status="run" result="completed" time="0.001" timestamp="2026-01-27T22:19:03.360" classname="CommandsTest" />
+    <testcase name="UpdatePassword" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\CommandsTest.cpp" line="314" status="run" result="completed" time="0.616" timestamp="2026-01-27T22:19:03.362" classname="CommandsTest" />
+    <testcase name="UpdateEntry" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\CommandsTest.cpp" line="414" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.978" classname="CommandsTest" />
+  </testsuite>
+  <testsuite name="ItemFieldTest" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-01-27T22:19:03.979">
+    <testcase name="testMe" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ItemFieldTest.cpp" line="64" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.979" classname="ItemFieldTest" />
+  </testsuite>
+  <testsuite name="StringXTest" tests="4" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-01-27T22:19:03.979">
+    <testcase name="testConstructors" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="23" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.979" classname="StringXTest" />
+    <testcase name="testOperators" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="63" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.979" classname="StringXTest" />
+    <testcase name="testAppend" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="140" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.979" classname="StringXTest" />
+    <testcase name="testAssign" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="171" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.979" classname="StringXTest" />
+  </testsuite>
+  <testsuite name="TrimLeft" tests="9" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-01-27T22:19:03.979">
+    <testcase name="SpaceOnLeft" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="183" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.979" classname="TrimLeft" />
+    <testcase name="SpaceOnRight" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="189" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.980" classname="TrimLeft" />
+    <testcase name="SpaceOnBothSides" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="195" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.980" classname="TrimLeft" />
+    <testcase name="SpaceInMiddle" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="201" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.980" classname="TrimLeft" />
+    <testcase name="SpaceInMiddleAndLeft" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="208" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.980" classname="TrimLeft" />
+    <testcase name="SpaceInMiddleAndRight" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="215" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.980" classname="TrimLeft" />
+    <testcase name="SpaceInLeftMiddleAndRight" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="221" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.980" classname="TrimLeft" />
+    <testcase name="AllSpaces" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="227" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.980" classname="TrimLeft" />
+    <testcase name="EmptyString" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="233" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.980" classname="TrimLeft" />
+  </testsuite>
+  <testsuite name="TrimRight" tests="7" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-01-27T22:19:03.980">
+    <testcase name="SpaceOnRight" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="241" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.980" classname="TrimRight" />
+    <testcase name="SpaceOnBothSides" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="247" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.980" classname="TrimRight" />
+    <testcase name="SpaceInMiddle" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="253" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.980" classname="TrimRight" />
+    <testcase name="SpaceInMiddleAndLeft" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="259" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.980" classname="TrimRight" />
+    <testcase name="SpaceInMiddleAndRight" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="265" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.980" classname="TrimRight" />
+    <testcase name="AllSpaces" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="271" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.980" classname="TrimRight" />
+    <testcase name="EmptyString" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="277" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.980" classname="TrimRight" />
+  </testsuite>
+  <testsuite name="trim" tests="6" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-01-27T22:19:03.981">
+    <testcase name="SpaceOnBothSides" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="285" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.981" classname="trim" />
+    <testcase name="SpaceOnLeft" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="291" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.981" classname="trim" />
+    <testcase name="SpaceOnRight" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="297" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.981" classname="trim" />
+    <testcase name="SpaceInMiddle" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="303" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.981" classname="trim" />
+    <testcase name="AllSpaces" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="309" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.981" classname="trim" />
+    <testcase name="EmptyString" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\StringXTest.cpp" line="315" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.981" classname="trim" />
+  </testsuite>
+  <testsuite name="HMAC_SHA256Test" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-01-27T22:19:03.981">
+    <testcase name="hmac_sha256_test" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\HMAC_SHA256Test.cpp" line="19" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.981" classname="HMAC_SHA256Test" />
+  </testsuite>
+  <testsuite name="HMAC_SHA1Test" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-01-27T22:19:03.981">
+    <testcase name="hmac_sha1_test" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\HMAC_SHA1Test.cpp" line="97" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.981" classname="HMAC_SHA1Test" />
+  </testsuite>
+  <testsuite name="KeyWrapTest" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-01-27T22:19:03.981">
+    <testcase name="AES_keywrap" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\KeyWrapTest.cpp" line="23" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.981" classname="KeyWrapTest" />
+  </testsuite>
+  <testsuite name="TwoFishTest" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0.003" timestamp="2026-01-27T22:19:03.982">
+    <testcase name="twofish_test" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\TwoFishTest.cpp" line="17" status="run" result="completed" time="0.003" timestamp="2026-01-27T22:19:03.982" classname="TwoFishTest" />
+    <testcase name="ECB_VK" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\TwoFishTest.cpp" line="77" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.985" classname="TwoFishTest" />
+  </testsuite>
+  <testsuite name="AuxParseTest" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0.001" timestamp="2026-01-27T22:19:03.986">
+    <testcase name="testGetEffectiveValuesNoBase" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\AuxParseTest.cpp" line="21" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.986" classname="AuxParseTest" />
+    <testcase name="testGetExpandedString" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\AuxParseTest.cpp" line="70" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.986" classname="AuxParseTest" />
+  </testsuite>
+  <testsuite name="UtilTest1" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-01-27T22:19:03.987">
+    <testcase name="convert_test_ascii" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\UtilTest.cpp" line="13" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.987" classname="UtilTest1" />
+  </testsuite>
+  <testsuite name="UtilTest2" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-01-27T22:19:03.987">
+    <testcase name="convert_test_nonascii" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\UtilTest.cpp" line="24" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.987" classname="UtilTest2" />
+  </testsuite>
+  <testsuite name="FileEncDecTest" tests="4" failures="0" disabled="0" skipped="0" errors="0" time="0.452" timestamp="2026-01-27T22:19:03.987">
+    <testcase name="NoFile" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileEncDecTest.cpp" line="55" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:03.987" classname="FileEncDecTest" />
+    <testcase name="EmptyFile" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileEncDecTest.cpp" line="66" status="run" result="completed" time="0.026" timestamp="2026-01-27T22:19:03.988" classname="FileEncDecTest" />
+    <testcase name="RegularFile" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileEncDecTest.cpp" line="110" status="run" result="completed" time="0.35" timestamp="2026-01-27T22:19:04.015" classname="FileEncDecTest" />
+    <testcase name="BigFile" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\FileEncDecTest.cpp" line="117" status="run" result="completed" time="0.074" timestamp="2026-01-27T22:19:04.366" classname="FileEncDecTest" />
+  </testsuite>
+  <testsuite name="ImportTextTest" tests="5" failures="0" disabled="0" skipped="0" errors="0" time="0.074" timestamp="2026-01-27T22:19:04.440">
+    <testcase name="test1" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ImportTextTest.cpp" line="117" status="run" result="completed" time="0.015" timestamp="2026-01-27T22:19:04.440" classname="ImportTextTest" />
+    <testcase name="test2" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ImportTextTest.cpp" line="125" status="run" result="completed" time="0.014" timestamp="2026-01-27T22:19:04.456" classname="ImportTextTest" />
+    <testcase name="test3" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ImportTextTest.cpp" line="135" status="run" result="completed" time="0.016" timestamp="2026-01-27T22:19:04.470" classname="ImportTextTest" />
+    <testcase name="test4" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ImportTextTest.cpp" line="145" status="run" result="completed" time="0.013" timestamp="2026-01-27T22:19:04.487" classname="ImportTextTest" />
+    <testcase name="test5" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ImportTextTest.cpp" line="160" status="run" result="completed" time="0.014" timestamp="2026-01-27T22:19:04.501" classname="ImportTextTest" />
+  </testsuite>
+  <testsuite name="TOTPTest" tests="3" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-01-27T22:19:04.515">
+    <testcase name="totp_basic_test" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\TOTPTest.cpp" line="30" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:04.515" classname="TOTPTest" />
+    <testcase name="key_decoder_failure" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\TOTPTest.cpp" line="54" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:04.516" classname="TOTPTest" />
+    <testcase name="key_decoder_copy_move_cleanup" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\TOTPTest.cpp" line="64" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:04.516" classname="TOTPTest" />
+  </testsuite>
+  <testsuite name="Base32Test" tests="2" failures="0" disabled="0" skipped="0" errors="0" time="0.014" timestamp="2026-01-27T22:19:04.516">
+    <testcase name="base32_encode_test" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\Base32Test.cpp" line="411" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:04.516" classname="Base32Test" />
+    <testcase name="base32_decode_test" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\Base32Test.cpp" line="445" status="run" result="completed" time="0.013" timestamp="2026-01-27T22:19:04.517" classname="Base32Test" />
+  </testsuite>
+  <testsuite name="ValidateTest" tests="6" failures="0" disabled="0" skipped="0" errors="0" time="0.007" timestamp="2026-01-27T22:19:04.531">
+    <testcase name="EmptyTitleTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ValidateTest.cpp" line="35" status="run" result="completed" time="0.001" timestamp="2026-01-27T22:19:04.531" classname="ValidateTest" />
+    <testcase name="EmptyPasswordTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ValidateTest.cpp" line="68" status="run" result="completed" time="0.001" timestamp="2026-01-27T22:19:04.532" classname="ValidateTest" />
+    <testcase name="DuplicateGTUTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ValidateTest.cpp" line="101" status="run" result="completed" time="0.001" timestamp="2026-01-27T22:19:04.534" classname="ValidateTest" />
+    <testcase name="TextFieldSizeTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ValidateTest.cpp" line="134" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:04.535" classname="ValidateTest" />
+    <testcase name="AttachmentRefTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ValidateTest.cpp" line="158" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:04.536" classname="ValidateTest" />
+    <testcase name="PasswordHistoryTest" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\ValidateTest.cpp" line="189" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:04.537" classname="ValidateTest" />
+  </testsuite>
+  <testsuite name="MRUListTest" tests="1" failures="0" disabled="0" skipped="0" errors="0" time="0." timestamp="2026-01-27T22:19:04.538">
+    <testcase name="MRUList" file="C:\local\src\PasswordSafe\git\pwsafe\src\test\MRUListTest.cpp" line="41" status="run" result="completed" time="0." timestamp="2026-01-27T22:19:04.538" classname="MRUListTest" />
+  </testsuite>
+</testsuites>

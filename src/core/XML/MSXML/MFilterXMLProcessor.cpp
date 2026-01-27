@@ -57,6 +57,9 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
   //  Get ready for XSD schema validation
   IXMLDOMSchemaCollection2 *pSchemaCache = nullptr;
 
+  MFilterSAX2ContentHandler* pCH;
+  MFilterSAX2ErrorHandler* pEH;
+
   if (m_bValidation) { //XMLValidate
     hr60 = CoCreateInstance(__uuidof(SAXXMLReader60), nullptr, CLSCTX_ALL,
                             __uuidof(ISAXXMLReader), (void **)&pSAX2Reader);
@@ -71,9 +74,9 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
   }
 
   //  Create ContentHandlerImpl object
-  MFilterSAX2ContentHandler *pCH = new MFilterSAX2ContentHandler;
+  pCH = new MFilterSAX2ContentHandler;
   //  Create ErrorHandlerImpl object
-  MFilterSAX2ErrorHandler *pEH = new MFilterSAX2ErrorHandler;
+  pEH = new MFilterSAX2ErrorHandler;
 
   pCH->SetVariables(m_pAsker, &m_MapXMLFilters, m_FPool, m_bValidation);
 
@@ -89,7 +92,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
   if (!FAILED(hr)) {  // Create SchemaCache
     //  Initialize the SchemaCache object with the XSD filename
     CComVariant cvXSDFileName = strXSDFileName.c_str();
-    hr = pSchemaCache->add(L"", cvXSDFileName);
+    hr = pSchemaCache->add(const_cast<BSTR>(L""), cvXSDFileName);
     if (hr != S_OK) {
       LoadAString(m_strXMLErrors, IDSC_INVALID_SCHEMA);
       goto exit;
@@ -102,7 +105,7 @@ bool MFilterXMLProcessor::Process(const bool &bvalidation,
 
     // Check that we can get the Schema version
     BSTR bst_schema, bst_schema_version;
-    bst_schema = L"";
+    bst_schema = const_cast<BSTR>(L"");
     ISchema *pischema;
     hr = pSchemaCache->getSchema(bst_schema, &pischema);
     if (hr != S_OK) {

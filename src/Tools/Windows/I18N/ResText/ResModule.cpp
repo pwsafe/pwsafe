@@ -205,8 +205,9 @@ BOOL CResModule::CreateTranslatedResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR l
 {
     LangWriter writeLang(this);
     if (!CopyFile(lpszSrcLangDllPath, lpszDestLangDllPath, FALSE))
-        MYERROR;
+        MYERROR
 
+    BOOL bRes = FALSE;
     int count = 0;
     do
     {
@@ -233,7 +234,6 @@ BOOL CResModule::CreateTranslatedResources(LPCTSTR lpszSrcLangDllPath, LPCTSTR l
     m_bTranslatedAcceleratorStrings = 0;
     m_bDefaultAcceleratorStrings = 0;
 
-    BOOL bRes = FALSE;
     count = 0;
     do
     {
@@ -304,7 +304,7 @@ BOOL CResModule::ExtractString(LPCTSTR lpszType)
 {
     HRSRC       hrsrc = FindResource(m_hResDll, lpszType, RT_STRING);
     HGLOBAL     hglStringTable;
-    LPWSTR      p;
+    LPWSTR      p, pp;
 
     if (!hrsrc)
         MYERROR;
@@ -312,7 +312,7 @@ BOOL CResModule::ExtractString(LPCTSTR lpszType)
 
     if (!hglStringTable)
         goto DONE_ERROR;
-    p = (LPWSTR)LockResource(hglStringTable);
+    pp = p = (LPWSTR)LockResource(hglStringTable);
 
     if (p == NULL)
         goto DONE_ERROR;
@@ -323,7 +323,6 @@ BOOL CResModule::ExtractString(LPCTSTR lpszType)
     */
 
     //first check how much memory we need
-    LPWSTR pp = p;
     for (int i=0; i<16; ++i)
     {
         int len = GET_WORD(pp);
@@ -352,17 +351,20 @@ BOOL CResModule::ExtractString(LPCTSTR lpszType)
 DONE_ERROR:
     UnlockResource(hglStringTable);
     FreeResource(hglStringTable);
-    MYERROR;
+    MYERROR
 }
 
 BOOL CResModule::ReplaceString(LPCTSTR lpszType, WORD wLanguage)
 {
     HRSRC       hrsrc = FindResourceEx(m_hResDll, RT_STRING, lpszType, wLanguage);
     HGLOBAL     hglStringTable;
-    LPWSTR      p;
+    LPWSTR      p, pp;
+    size_t      nMem, index;
+    WORD*       newTable;
+
 
     if (!hrsrc)
-        MYERROR;
+        MYERROR
     hglStringTable = LoadResource(m_hResDll, hrsrc);
 
     if (!hglStringTable)
@@ -378,8 +380,8 @@ BOOL CResModule::ReplaceString(LPCTSTR lpszType, WORD wLanguage)
 */
 
     //first check how much memory we need
-    size_t nMem = 0;
-    LPWSTR pp = p;
+    nMem = 0;
+    pp = p;
     for (int i=0; i<16; ++i)
     {
         nMem++;
@@ -405,10 +407,10 @@ BOOL CResModule::ReplaceString(LPCTSTR lpszType, WORD wLanguage)
         delete [] pBuf;
     }
 
-    WORD * newTable = new WORD[nMem + (nMem % 2)];
+    newTable = new WORD[nMem + (nMem % 2)];
     SecureZeroMemory(newTable, (nMem + (nMem % 2))*2);
 
-    size_t index = 0;
+    index = 0;
     for (int i=0; i<16; ++i)
     {
         int len = GET_WORD(p);
@@ -1296,30 +1298,32 @@ BOOL CResModule::ReplaceDialog(LPCTSTR lpszType, WORD wLanguage)
     const WORD* lpDlg;
     HRSRC       hrsrc;
     HGLOBAL     hGlblDlgTemplate;
+    WORD*       newDialog;
+    size_t      index;
 
     hrsrc = FindResourceEx(m_hResDll, RT_DIALOG, lpszType, wLanguage);
 
     if (hrsrc == NULL)
-        MYERROR;
+        MYERROR
 
     hGlblDlgTemplate = LoadResource(m_hResDll, hrsrc);
 
     if (hGlblDlgTemplate == NULL)
-        MYERROR;
+        MYERROR
 
     lpDlg = (WORD *) LockResource(hGlblDlgTemplate);
 
     if (lpDlg == NULL)
-        MYERROR;
+        MYERROR
 
     size_t nMem = 0;
     const WORD * p = lpDlg;
     if (!CountMemReplaceDialogResource(p, &nMem, NULL))
         goto DONE_ERROR;
-    WORD * newDialog = new WORD[nMem + (nMem % 2)];
+    newDialog = new WORD[nMem + (nMem % 2)];
     SecureZeroMemory(newDialog, (nMem + (nMem % 2))*2);
 
-    size_t index = 0;
+    index = 0;
     if (!CountMemReplaceDialogResource(lpDlg, &index, newDialog))
     {
         delete [] newDialog;

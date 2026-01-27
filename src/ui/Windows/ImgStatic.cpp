@@ -291,7 +291,8 @@ void CImgStatic::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
     if (m_iZoomFactor == 10) {
       // Draw it
-      grp.DrawImage(&image, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
+      grp.DrawImage(&image, static_cast<INT>(rc.left), static_cast<INT>(rc.top),
+        static_cast<INT>(rc.right - rc.left), static_cast<INT>(rc.bottom - rc.top));
     } else {
       Gdiplus::Rect rcDest(rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
       int srcx, srcy, srcwidth, srcheight;
@@ -323,7 +324,8 @@ BOOL CImgStatic::OnEraseBkgnd(CDC *pDC)
     gdipColor.SetFromCOLORREF(GetSysColor(COLOR_3DFACE));
 
     Gdiplus::SolidBrush brush(gdipColor);
-    grp.FillRectangle(&brush, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
+    grp.FillRectangle(&brush, static_cast<INT>(rc.left), static_cast<INT>(rc.top),
+      static_cast<INT>(rc.right - rc.left), static_cast<INT>(rc.bottom - rc.top));
     grp.Flush();
 
     return TRUE;
@@ -359,7 +361,8 @@ void CImgStatic::ClearImage()
   gdipColor.SetFromCOLORREF(GetSysColor(COLOR_3DFACE));
 
   Gdiplus::SolidBrush brush(gdipColor);
-  grp.FillRectangle(&brush, rc.left, rc.top, rc.right - rc.left, rc.bottom - rc.top);
+  grp.FillRectangle(&brush, static_cast<INT>(rc.left), static_cast<INT>(rc.top),
+    static_cast<INT>(rc.right - rc.left), static_cast<INT>(rc.bottom - rc.top));
   grp.Flush();
 }
 

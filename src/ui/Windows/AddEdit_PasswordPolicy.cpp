@@ -602,7 +602,7 @@ void CAddEdit_PasswordPolicy::OnOwnSymbolsChanged()
   m_symbols.GetWindowText(cs_symbols);
 
   std::wstring oldstr = static_cast<LPCWSTR>(M_symbols());
-  std::wstring newstr = cs_symbols;
+  std::wstring newstr = static_cast<const wchar_t *>(cs_symbols);
 
   // First check lengths the same
   if (newstr.length() != oldstr.length()) {

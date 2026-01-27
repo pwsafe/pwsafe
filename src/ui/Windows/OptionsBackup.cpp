@@ -507,7 +507,7 @@ void COptionsBackup::ExpandBackupPath()
 
   GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->EnableWindow(TRUE);
   GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->ShowWindow(SW_SHOW);
-  GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->SetWindowText(bSetRealPath ? m_csExpandedPath : L"");
+  GetDlgItem(IDC_EXPANDEDUSERBACKUPOTHRLOC)->SetWindowText(bSetRealPath ? m_csExpandedPath : CString(L""));
 
   m_Help3.EnableWindow(TRUE);
   m_Help3.ShowWindow(SW_SHOW);

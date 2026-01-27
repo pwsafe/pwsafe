@@ -22,7 +22,7 @@ int main(int argc, char **argv)
 #ifdef WIN32
   // initialize MFC -- needed for string lookup in error handling
   if (!AfxWinInit(::GetModuleHandle(nullptr), nullptr, ::GetCommandLine(), 0)) {
-    std::cerr << _T("Fatal Error: MFC initialization failed") << std::endl;
+    std::wcerr << _T("Fatal Error: MFC initialization failed") << std::endl;
   }
   AfxGetInstanceHandle();
 #endif
