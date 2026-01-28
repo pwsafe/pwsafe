@@ -80,7 +80,7 @@ struct st_invp {
   unsigned int line;
 };
 
-static wchar_t *szNA = L"N/A";
+static const wchar_t *szNA = L"N/A";
 static st_invp invp;
 
 static terminate_handler          old_terminate_handler(NULL);
@@ -315,6 +315,7 @@ static LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
   wchar_t sz_Drive[_MAX_DRIVE], sz_Dir[_MAX_DIR], sz_FName[_MAX_FNAME];
   wchar_t sz_TempPath[MSGSIZE];
   DWORD dwBufSize(MSGSIZE);
+  HANDLE hFile;
 
   // Get the temp path
   SecureZeroMemory(sz_TempPath, sizeof(sz_TempPath));
@@ -361,7 +362,7 @@ static LONG TakeMiniDump(struct _EXCEPTION_POINTERS *pExInfo, const int itype,
   SecureZeroMemory(sz_Caption, sizeof(sz_Caption));
   swprintf_s(sz_Caption, MAX_PATH, wcCaption, iMajor, iMinor, iBuild, wcRevision);
 
-  HANDLE hFile = CreateFile(sz_TempName, GENERIC_READ | GENERIC_WRITE,
+  hFile = CreateFile(sz_TempName, GENERIC_READ | GENERIC_WRITE,
                             0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 
   if (hFile != NULL && hFile != INVALID_HANDLE_VALUE) {

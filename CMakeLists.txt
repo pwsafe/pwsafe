@@ -7,9 +7,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # wxWidgets 3.2.1 doesn't compile under C++17 on some distros.
 # Trying to update after 2 years...
 if (NOT WIN32 OR WX_WINDOWS)
-    set(CMAKE_CXX_STANDARD 17) # rollback to 14 if needed
+    set(CMAKE_CXX_STANDARD 20) # rollback to 14 if needed
 else (NOT WIN32 OR WX_WINDOWS)
-    set(CMAKE_CXX_STANDARD 17)
+    set(CMAKE_CXX_STANDARD 20)
 endif (NOT WIN32 OR WX_WINDOWS)
 
 # prerequisites

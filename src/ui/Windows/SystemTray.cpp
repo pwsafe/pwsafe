@@ -402,14 +402,17 @@ void CSystemTray::OnTimer(UINT_PTR )
 // Helper function to set up recent entry submenu based on entry's attributes
 static BOOL SetupRecentEntryMenu(DboxMain *pDbx, CMenu *&pMenu, const int i, const CItemData *pci)
 {
-  BOOL brc;
-  CString cs_text, cs_select;
+  CString cs_text;
   pMenu = new CMenu;
-  brc = pMenu->CreatePopupMenu();
+  BOOL brc = pMenu->CreatePopupMenu();
+  int ipos;
+
+  ASSERT(pci != nullptr);
+  const CItemData* pbci = pci->IsDependent() ? pDbx->GetBaseEntry(pci) : nullptr;
+
   if (brc == 0) goto exit;
 
   cs_text.LoadString(ID_MENUITEM_TRAYSELECT);
-  cs_select = cs_text.Mid(1);
   brc = pMenu->InsertMenu(0, MF_BYPOSITION | MF_STRING,
                           ID_MENUITEM_TRAYSELECT1 + i,
                           cs_text);
@@ -419,7 +422,7 @@ static BOOL SetupRecentEntryMenu(DboxMain *pDbx, CMenu *&pMenu, const int i, con
   if (brc == 0) goto exit;
   cs_text.Empty();
 
-  int ipos = 2;
+  ipos = 2;
 
   cs_text.LoadString(IDS_TRAYCOPYPASSWORD);
   brc = pMenu->InsertMenu(ipos, MF_BYPOSITION | MF_STRING,
@@ -428,7 +431,6 @@ static BOOL SetupRecentEntryMenu(DboxMain *pDbx, CMenu *&pMenu, const int i, con
   if (brc == 0) goto exit;
   ipos++;
 
-  const CItemData *pbci = pci->IsDependent() ? pDbx->GetBaseEntry(pci) : NULL;
 
   if (!pci->IsFieldValueEmpty(CItemData::USER, pbci)) {
     cs_text.LoadString(IDS_TRAYCOPYUSERNAME);

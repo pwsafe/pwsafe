@@ -280,7 +280,10 @@ void CDDStatic::OnMouseMove(UINT nFlags, CPoint point)
   }
 
   if (m_TimerID == 0)
-    goto StandardProcessing;
+  {
+    CStatic::OnMouseMove(nFlags, point);
+    return;
+  }
 
   // Check if we really moved enough
   int iX = m_StartPoint.x - point.x;
@@ -337,7 +340,6 @@ void CDDStatic::OnMouseMove(UINT nFlags, CPoint point)
     ::SendMessage(GetActiveWindow()->GetSafeHwnd(), WM_LBUTTONUP, 0, lparam);
   }
 
-StandardProcessing:
   CStatic::OnMouseMove(nFlags, point);
 }
 

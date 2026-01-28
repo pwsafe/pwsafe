@@ -1510,6 +1510,7 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
 {
   std::wstring sNewNotes;
   CSecString sOldNotes = M_notes();
+  ulong64 flength;
 
   if (wParam != 0) {
     // Tidy up and re-enable sheet OK/Cancel buttons
@@ -1525,7 +1526,7 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
 
   M_notes().Empty();
 
-  ulong64 flength = pws_os::fileLength(fd);
+  flength = pws_os::fileLength(fd);
 
   ASSERT(flength % 2 == 0); // guess this is 'cause we assume editor saves wchar_t?
 
@@ -1538,30 +1539,31 @@ LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
     slength = static_cast<size_t>(flength);
   }
 
-  BYTE *pBuffer = new BYTE[slength + sizeof(wchar_t)];
-  memset(pBuffer, 0, slength + sizeof(wchar_t));
+  {
+    BYTE* pBuffer = new BYTE[slength + sizeof(wchar_t)];
+    memset(pBuffer, 0, slength + sizeof(wchar_t));
 
-  if (slength >= 2) {
-    // Read in BOM and check it is
-    const unsigned char BOM[] = {0xff, 0xfe};
-    fread(pBuffer, 1, 2, fd);
+    if (slength >= 2) {
+      // Read in BOM and check it is
+      const unsigned char BOM[] = { 0xff, 0xfe };
+      fread(pBuffer, 1, 2, fd);
 
-    // if not a BOM - backspace and treat as data
-    if (pBuffer[0] != BOM[0] || pBuffer[1] != BOM[1]) {
-      fseek(fd, 0, SEEK_SET);
-      slength += 2;
+      // if not a BOM - backspace and treat as data
+      if (pBuffer[0] != BOM[0] || pBuffer[1] != BOM[1]) {
+        fseek(fd, 0, SEEK_SET);
+        slength += 2;
+      }
     }
+
+    // Clear BOM
+    memset(pBuffer, 0, 2);
+    // Read in text
+    fread(pBuffer, sizeof(BYTE), slength - 2, fd);
+
+    sNewNotes = reinterpret_cast<const LPCWSTR>(pBuffer);
+
+    delete[] pBuffer;
   }
-
-  // Clear BOM
-  memset(pBuffer, 0, 2);
-  // Read in text
-  fread(pBuffer, sizeof(BYTE), slength - 2, fd);
-
-  sNewNotes = reinterpret_cast<const LPCWSTR>(pBuffer);
-
-  delete [] pBuffer;
-
   // Close file before invoking editor
   fclose(fd);
 

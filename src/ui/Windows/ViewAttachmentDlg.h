@@ -80,7 +80,8 @@ public:
 	enum { IDD = IDD_VIEWATTACHMENT };
 #endif
 
-  enum { MinZoom = 10, MaxZoom = 100 };
+  const unsigned int MinZoom = 10;
+  const unsigned int MaxZoom = 100;
   void SetZoomEditValue(int nPos);
 
 protected:

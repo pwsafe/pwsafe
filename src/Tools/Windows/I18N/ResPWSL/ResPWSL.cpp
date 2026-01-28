@@ -32,7 +32,7 @@ int _tmain(int argc, TCHAR* argv[], TCHAR* /*envp[]*/)
   // initialize MFC and print and error on failure
   if (!AfxWinInit(::GetModuleHandle(NULL), NULL, ::GetCommandLine(), 0)) {
     // TODO: change error code to suit your needs
-    cerr << _T("Fatal Error: MFC initialization failed") << endl;
+    wcerr << _T("Fatal Error: MFC initialization failed") << endl;
     return 2;
   }
 

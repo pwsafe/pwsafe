@@ -5513,7 +5513,7 @@ StringX DboxMain::GetListViewItemText(CItemData &ci, const int &icolumn)
       CString csYes(MAKEINTRESOURCE(IDS_YES));
       csYes.Replace(L"&", L"");
       // Show Yes for both v4 (ATTREF) and v3 (inline data) attachments
-      sx_fielddata = (ci.HasAttRef() || ci.HasAttachment()) ? csYes : L"";
+      sx_fielddata = (ci.HasAttRef() || ci.HasAttachment()) ? csYes : CString(L"");
       break;
     }
     default:

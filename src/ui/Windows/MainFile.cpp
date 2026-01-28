@@ -124,6 +124,9 @@ BOOL DboxMain::OpenOnInit()
   MFCReporter r;
   CReport Rpt;
   CRect rect;
+  int rc2;
+  HRGN hrgnWork;
+  bool go_ahead;
 
   if (!bAskerSet)
     m_core.SetAsker(&q);
@@ -143,7 +146,7 @@ BOOL DboxMain::OpenOnInit()
     }
   }
 
-  int rc2 = PWScore::NOT_SUCCESS;
+  rc2 = PWScore::NOT_SUCCESS;
 
   switch (rc) {
     case PWScore::SUCCESS:
@@ -201,7 +204,7 @@ BOOL DboxMain::OpenOnInit()
       break;
   }
 
-  bool go_ahead = false;
+  go_ahead = false;
   /*
    * If file's corrupted or read error
    * we prompt the user, and continue or not per user's input.
@@ -253,7 +256,7 @@ BOOL DboxMain::OpenOnInit()
   // Now get window sizes
   PWSprefs::GetInstance()->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
 
-  HRGN hrgnWork = WinUtil::GetWorkAreaRegion();
+  hrgnWork = WinUtil::GetWorkAreaRegion();
   
   // Check if windows was maximized first, otherwise !RectInRegion() below always wins.
   if (rect.top == 0 && rect.bottom == 0 && rect.left == 0 && rect.right == 0) {
@@ -2377,7 +2380,7 @@ void DboxMain::OnImportText()
   if (rc == IDOK) {
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     std::wstring strError;
-    StringX TxtFileName = fd.GetPathName();
+    StringX TxtFileName = StringX(fd.GetPathName());
     int numImported(0), numSkipped(0), numPWHErrors(0), numRenamed(0), numWarnings(0),
       numNoPolicy(0);
     wchar_t delimiter = dlg.m_defimpdelim[0];
@@ -2531,7 +2534,7 @@ void DboxMain::OnImportKeePassV1CSV()
     CGeneralMsgBox gmb;
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     Command *pcmd = NULL;
-    StringX KPsFileName = fd.GetPathName();
+    StringX KPsFileName = StringX(fd.GetPathName());
     int numImported, numSkipped, numRenamed;
 
     // Create report as we go
@@ -2638,7 +2641,7 @@ void DboxMain::OnImportKeePassV1TXT()
     CGeneralMsgBox gmb;
     bool bWasEmpty = m_core.GetNumEntries() == 0;
     Command *pcmd = NULL;
-    StringX KPsFileName = fd.GetPathName();
+    StringX KPsFileName = StringX(fd.GetPathName());
     int numImported, numSkipped, numRenamed;
 
     // Create report as we go

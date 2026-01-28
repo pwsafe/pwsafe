@@ -114,7 +114,8 @@ void CSHCTListCtrlX::OnRButtonDown(UINT , CPoint point)
   MapMenuShortcutsIter iter;
   CString str;
   CPoint pt;
-  int iSubItem = -1;
+  int nID;
+  CMenu* pContextMenu;
 
   SaveHotKey();
 
@@ -123,7 +124,7 @@ void CSHCTListCtrlX::OnRButtonDown(UINT , CPoint point)
   SubItemHitTest(&lvhti);
 
   m_item = lvhti.iItem;
-  iSubItem = lvhti.iSubItem;
+  int iSubItem = lvhti.iSubItem;
 
   if (m_item < 0 || iSubItem < 0) {
     // CListCtrl::OnRButtonDown(nFlags, point);
@@ -136,7 +137,7 @@ void CSHCTListCtrlX::OnRButtonDown(UINT , CPoint point)
   }
 
   PopupMenu.LoadMenu(IDR_POPRESETSHORTCUT);
-  CMenu* pContextMenu = PopupMenu.GetSubMenu(0);
+  pContextMenu = PopupMenu.GetSubMenu(0);
   if (iter->second.siVirtKey == 0)
     pContextMenu->RemoveMenu(ID_MENUITEM_REMOVESHORTCUT, MF_BYCOMMAND);
 
@@ -150,7 +151,7 @@ void CSHCTListCtrlX::OnRButtonDown(UINT , CPoint point)
   pt = point;
   ClientToScreen(&pt);
 
-  int nID = pContextMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RETURNCMD,
+  nID = pContextMenu->TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON | TPM_RETURNCMD,
                                          pt.x, pt.y, this);
 
   if (nID == ID_MENUITEM_REMOVESHORTCUT) {

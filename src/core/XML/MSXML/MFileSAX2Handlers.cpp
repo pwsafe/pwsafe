@@ -167,7 +167,7 @@ HRESULT STDMETHODCALLTYPE MFileSAX2ContentHandler::putDocumentLocator(
 
 TCHAR * FileProcessAttributes(
   /* [in] */  ISAXAttributes __RPC_FAR *pAttributes,
-  /* [in] */  TCHAR *lpName)
+  /* [in] */  const TCHAR *lpName)
 {
   // Note 1: Caller needs to free the value returned, which is created via '_tcsdup'.
   // Note 2: This ONLY processes the attributes to find ONE value.

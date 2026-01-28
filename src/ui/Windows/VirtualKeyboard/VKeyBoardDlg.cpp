@@ -193,9 +193,9 @@ static int CALLBACK EnumFontFamiliesExProc(ENUMLOGFONTEX *, NEWTEXTMETRICEX *,
 
 int  CVKeyBoardDlg::m_iFont = -1;
 bool CVKeyBoardDlg::m_bUserSpecifiedFont = false;
-wchar_t *CVKeyBoardDlg::ARIALUMS = L"Arial Unicode MS";
-wchar_t *CVKeyBoardDlg::ARIALU   = L"Arial Unicode";
-wchar_t *CVKeyBoardDlg::LUCIDAUS = L"Lucida Sans Unicode";
+const wchar_t *CVKeyBoardDlg::ARIALUMS = L"Arial Unicode MS";
+const wchar_t *CVKeyBoardDlg::ARIALU   = L"Arial Unicode";
+const wchar_t *CVKeyBoardDlg::LUCIDAUS = L"Lucida Sans Unicode";
 
 bool CVKeyBoardDlg::IsOSKAvailable()
 {
@@ -210,9 +210,9 @@ bool CVKeyBoardDlg::IsOSKAvailable()
 
   // Try to load DLL
 #if defined(_DEBUG) || defined(DEBUG)
-  wchar_t *dll_name = L"pws_osk_D.dll";
+  const wchar_t *dll_name = L"pws_osk_D.dll";
 #else
-  wchar_t *dll_name = L"pws_osk.dll";
+  const wchar_t *dll_name = L"pws_osk.dll";
 #endif
   HINSTANCE OSK_module = HINSTANCE(pws_os::LoadLibrary(dll_name, pws_os::loadLibraryTypes::APP));
 
@@ -362,9 +362,9 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
   // dll is guaranteed to be loadable, right version and in general 100% kosher
   // by IsOSKAvailable(). Caller is responsible to call that, though...
 #if defined(_DEBUG) || defined(DEBUG)
-  wchar_t *dll_name = L"pws_osk_D.dll";
+  const wchar_t *dll_name = L"pws_osk_D.dll";
 #else
-  wchar_t *dll_name = L"pws_osk.dll";
+  const wchar_t *dll_name = L"pws_osk.dll";
 #endif
   m_OSK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::loadLibraryTypes::APP));
 
@@ -677,7 +677,7 @@ BOOL CVKeyBoardDlg::OnInitDialog()
                                  GetPref(PWSprefs::VKeyboardFontName);
     GetDlgItem(IDC_INFO)->ShowWindow(SW_SHOW);
     GetDlgItem(IDC_INFO)->EnableWindow(TRUE);
-    wchar_t * pszFont(NULL);
+    const wchar_t * pszFont(NULL);
     switch (m_iFont) {
       case ARIALMS_FONT:
         pszFont = ARIALUMS;
@@ -2088,12 +2088,12 @@ void CVKeyBoardDlg::ApplyUnicodeFont(CWnd* pDlgItem)
   if (m_pPassphraseFont == NULL) {
     m_pPassphraseFont = new CFont;
 
-    wchar_t * pszFont(NULL);
+    const wchar_t * pszFont(NULL);
     StringX cs_VKeyboardFont = PWSprefs::GetInstance()->
                                  GetPref(PWSprefs::VKeyboardFontName);
     switch (m_iFont) {
       case USER_FONT:
-        pszFont = (wchar_t *)cs_VKeyboardFont.c_str();
+        pszFont = cs_VKeyboardFont.c_str();
         break;
       case ARIALMS_FONT:
         pszFont = ARIALUMS;

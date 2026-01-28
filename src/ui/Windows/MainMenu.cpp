@@ -507,6 +507,8 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   const bool bReadOnly = m_core.IsReadOnly();
   const CItemData *pci(NULL), *pbci(NULL);
   const wchar_t *tc_dummy = L" ";
+  CItemData::EntryType etype_original;
+
 
   ASSERT_VALID(pPopupMenu);
 
@@ -636,8 +638,7 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
   }
 
   // Save original entry type before possibly changing pci
-  const CItemData::EntryType etype_original = 
-          pci == NULL ? CItemData::ET_INVALID : pci->GetEntryType();
+  etype_original = pci == NULL ? CItemData::ET_INVALID : pci->GetEntryType();
 
   if (bTreeView) {
     HTREEITEM hi = m_ctlItemTree.GetSelectedItem();

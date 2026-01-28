@@ -741,6 +741,10 @@ bool CPWFilterLC::SetField(const int iItem)
 {
   // User has selected field
   bool retval(false);
+  bool bAddPresent;
+  PWSMatch::MatchType mt;
+
+
 
   // Set focus to main window in case user does page up/down next
   // so that it changes the scroll bar not the value in this
@@ -784,10 +788,10 @@ bool CPWFilterLC::SetField(const int iItem)
   }
 
   // Get related fieldtype
-  PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
+  mt = PWSMatch::MT_INVALID;
 
   // Default - do not add 'is present'/'is not present' to the match dialog
-  bool bAddPresent(false);
+  bAddPresent = false;
 
   // Now get associated match type
   switch (m_iType) {
@@ -1085,34 +1089,33 @@ void CPWFilterLC::SetLogic(const int iItem)
 
   if (iItem == 0) {
     SetItemText(iItem, FLC_LGC_COMBOBOX, cs_text);
-    goto reset_combo;
   }
+  else {
 
-  // Get offset into vector of controls
-  st_FilterRow &st_fldata = m_pvfdata->at(iItem);
+    // Get offset into vector of controls
+    st_FilterRow& st_fldata = m_pvfdata->at(iItem);
+    LogicConnect lt = st_fldata.ltype;
 
-  LogicConnect lt(st_fldata.ltype);
-
-  // Don't get selection from ComboBox during inital setup
-  if (m_bInitDone) {
-    int iSelect = m_ComboBox.GetCurSel();
-    if (iSelect != CB_ERR) {
-      lt = (LogicConnect)m_ComboBox.GetItemData(iSelect);
+    // Don't get selection from ComboBox during initial setup
+    if (m_bInitDone) {
+      int iSelect = m_ComboBox.GetCurSel();
+      if (iSelect != CB_ERR) {
+        lt = (LogicConnect)m_ComboBox.GetItemData(iSelect);
+      }
+      m_pvfdata->at(iItem).ltype = lt;
     }
-    m_pvfdata->at(iItem).ltype = lt;
+
+    cs_text = m_vLcbx_data[0].cs_text;
+    if (lt != LC_INVALID) {
+      std::vector<st_Lcbxdata>::iterator Lcbxdata_iter;
+      Lcbxdata_iter = std::find_if(m_vLcbx_data.begin(), m_vLcbx_data.end(), equal_ltype(lt));
+      if (Lcbxdata_iter != m_vLcbx_data.end())
+        cs_text = (*Lcbxdata_iter).cs_text;
+    }
+
+    SetItemText(iItem, FLC_LGC_COMBOBOX, cs_text);
   }
 
-  cs_text = m_vLcbx_data[0].cs_text;
-  if (lt != LC_INVALID) {
-    std::vector<st_Lcbxdata>::iterator Lcbxdata_iter;
-    Lcbxdata_iter = std::find_if(m_vLcbx_data.begin(), m_vLcbx_data.end(), equal_ltype(lt));
-    if (Lcbxdata_iter != m_vLcbx_data.end())
-      cs_text = (*Lcbxdata_iter).cs_text;
-  }
-
-  SetItemText(iItem, FLC_LGC_COMBOBOX, cs_text);
-
-reset_combo:
   if (m_bInitDone) {
     m_ComboBox.ShowWindow(SW_HIDE);
     m_ComboBox.EnableWindow(FALSE);
@@ -1134,24 +1137,24 @@ void CPWFilterLC::CancelLogic(const int iItem)
   // Get offset into vector of controls
   if (iItem == 0) {
     SetItemText(iItem, FLC_LGC_COMBOBOX, cs_text);
-    goto reset_combo;
+  }
+  else {
+
+    st_FilterRow& st_fldata = m_pvfdata->at(iItem);
+
+    LogicConnect lt(st_fldata.ltype);
+
+    cs_text = m_vLcbx_data[0].cs_text;
+    if (lt != LC_INVALID) {
+      std::vector<st_Lcbxdata>::iterator Lcbxdata_iter;
+      Lcbxdata_iter = std::find_if(m_vLcbx_data.begin(), m_vLcbx_data.end(), equal_ltype(lt));
+      if (Lcbxdata_iter != m_vLcbx_data.end())
+        cs_text = (*Lcbxdata_iter).cs_text;
+    }
+
+    SetItemText(iItem, FLC_LGC_COMBOBOX, cs_text);
   }
 
-  st_FilterRow &st_fldata = m_pvfdata->at(iItem);
-
-  LogicConnect lt(st_fldata.ltype);
-
-  cs_text = m_vLcbx_data[0].cs_text;
-  if (lt != LC_INVALID) {
-    std::vector<st_Lcbxdata>::iterator Lcbxdata_iter;
-    Lcbxdata_iter = std::find_if(m_vLcbx_data.begin(), m_vLcbx_data.end(), equal_ltype(lt));
-    if (Lcbxdata_iter != m_vLcbx_data.end())
-      cs_text = (*Lcbxdata_iter).cs_text;
-  }
-
-  SetItemText(iItem, FLC_LGC_COMBOBOX, cs_text);
-
-reset_combo:
   // Reset ComboBox
   if (m_bInitDone) {
     m_ComboBox.ShowWindow(SW_HIDE);
@@ -2499,7 +2502,7 @@ void CPWFilterLC::OnProcessKey(UINT nID)
       if (m_iItem < 0)
         m_iItem = 0;
       pos = GetFirstSelectedItemPosition();
-      if (pos > 0)
+      if (pos != NULL)
         m_iItem = (int)(INT_PTR)pos - 1;
       EnsureVisible(m_iItem, FALSE);
       SetItemState(m_iItem, 0, LVIS_SELECTED);

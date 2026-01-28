@@ -54,7 +54,7 @@ public:
 
   LONG CalcHeight(const bool bIncludeNotesFont = false) const;
 
-  bool Fonts::CalculateCaptionWidth(CWnd* pWnd, const CString& csCaption, int& cxWidth) const;
+  bool CalculateCaptionWidth(CWnd* pWnd, const CString& csCaption, int& cxWidth) const;
 
   std::wstring GetProtectedSymbol(const PWSFont font = TREELIST);
   std::wstring GetAttachmentSymbol(const PWSFont font = TREELIST);

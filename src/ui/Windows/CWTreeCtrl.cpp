@@ -129,7 +129,7 @@ HTREEITEM CCWTreeCtrl::AddGroup(const CString &group)
   HTREEITEM ti = TVI_ROOT;
   HTREEITEM si;
   if (!group.IsEmpty()) {
-    StringX sxPath = group;
+    StringX sxPath = (const wchar_t*)group;
     StringX sxTemp, sxPath2Root(L"");
     do {
       sxTemp = GetFirstPathElem(sxPath);

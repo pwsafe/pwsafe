@@ -170,7 +170,7 @@ BOOL CPOFile::ParseFile(LPCTSTR szPath, BOOL bUpdateExisting, bool bAdjustEOLs)
     return TRUE;
 }
 
-bool CheckStringInFile(const wchar_t *filename, wchar_t *search)
+bool CheckStringInFile(const wchar_t *filename, const wchar_t *search)
 {
   bool brc(false);
   std::wifstream pofile;

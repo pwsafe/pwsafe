@@ -1026,7 +1026,7 @@ void CPWTreeCtrlX::DeleteWithParents(HTREEITEM hItem)
   // We don't want nodes that have no children to remain
   HTREEITEM parent;
   do {
-    StringX sxPath = (LPCWSTR)GetGroup(hItem);
+    StringX sxPath = GetGroup(hItem);
     parent = GetParentItem(hItem);
     DeleteItem(hItem);
     if (ItemHasChildren(parent))
@@ -1040,11 +1040,11 @@ void CPWTreeCtrlX::DeleteWithParents(HTREEITEM hItem)
 // If passed an entry, return the full path leading up to a given item, but
 // not including the name of the item itself.
 // If passed a Group, return full path including this group.
-CString CPWTreeCtrlX::GetGroup(HTREEITEM hItem)
+StringX  CPWTreeCtrlX::GetGroup(HTREEITEM hItem)
 {
   CString retval(L""), nodeText;
   if (hItem == TVI_ROOT)
-    return retval;
+    return StringX(retval);
 
   HTREEITEM hi(hItem);
 
@@ -1062,7 +1062,7 @@ CString CPWTreeCtrlX::GetGroup(HTREEITEM hItem)
     retval = nodeText + retval;
     hi = GetParentItem(hi);
   }
-  return retval;
+  return StringX(retval);
 }
 
 static StringX GetFirstPathElem(StringX &sxPath)
@@ -1121,7 +1121,7 @@ HTREEITEM CPWTreeCtrlX::AddGroup(const CString &group, bool &bAlreadyExists)
   bAlreadyExists = true;
 
   if (!group.IsEmpty()) {
-    StringX sxPath = group;
+    StringX sxPath = static_cast<const wchar_t*>(group);
     StringX sxTemp, sxPath2Root(L"");
     do {
       sxTemp = GetFirstPathElem(sxPath);
@@ -2712,7 +2712,7 @@ void CPWTreeCtrlX::OnCustomDraw(NMHDR *pNotifyStruct, LRESULT *pLResult)
 HTREEITEM CPWTreeCtrlX::FindItem(const CString &path, HTREEITEM hRoot)
 {
   // check whether the current item is the searched one
-  CString cs_thispath = GetGroup(hRoot);// + GROUP_SEP2 + GetItemText(hRoot);
+  CString cs_thispath = GetGroup(hRoot).c_str();// + GROUP_SEP2 + GetItemText(hRoot);
   if (cs_thispath.Compare(path) == 0)
     return hRoot; 
 

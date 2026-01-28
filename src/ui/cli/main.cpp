@@ -45,7 +45,7 @@ using namespace std;
 #ifdef _WIN32
 // Windows doesn't have POSIX basename, so we roll our own:
 
-static char *basename(const char *path)
+static const char *basename(const char *path)
 {
   static char retval[_MAX_FNAME];
   if (_splitpath_s(path,
@@ -221,7 +221,7 @@ const map<wstring, wstring> pws_help_examples = {
   { L"synchronize", help_synchronize_string },
 };
 
-static void usage(char *pname)
+static void usage(const char *pname)
 {
   std::wstring s_pname = Utf82wstring(pname);
   std::wstringstream ss_fieldnames;
@@ -282,7 +282,7 @@ static wstring replace_progname_placeholder(const wstring &help_string, const ws
   return new_help_string;
 }
 
-static bool help(char *pname, const wstring &help_arg)
+static bool help(const char *pname, const wstring &help_arg)
 {
   auto itr = pws_help_examples.find(help_arg);
   if (itr != pws_help_examples.end()) {

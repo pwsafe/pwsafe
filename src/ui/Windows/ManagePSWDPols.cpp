@@ -457,7 +457,7 @@ void CManagePSWDPols::OnEdit()
 
     // Save changes for Undo/Redo
     st_PSWDPolicyChange st_change;
-    st_change.name = m_iSelectedItem != 0 ? cs_policyname : L"";
+    st_change.name = m_iSelectedItem != 0 ? static_cast<const wchar_t *>(cs_policyname) : L"";
     st_change.mode = st_PSWDPolicyChange::Mode::MODIFIED;
     st_change.st_pp_save = m_iSelectedItem != 0 ?iter->second : m_st_default_pp;
 
@@ -702,7 +702,7 @@ void CManagePSWDPols::OnPolicyRightClick(NMHDR * /*pNotifyStruct*/, LRESULT *pLR
   if (nItem == 0)
     return;
 
-  const StringX sxPolicyName = m_PolicyNames.GetItemText(nItem, 0);
+  const StringX sxPolicyName = static_cast<const wchar_t *>(m_PolicyNames.GetItemText(nItem, 0));
 
   // Ignore if no entries using this policy
   if (m_MapPSWDPLC[sxPolicyName].usecount == 0)
@@ -736,7 +736,7 @@ void CManagePSWDPols::OnListEntries()
 {
   POSITION pos = m_PolicyNames.GetFirstSelectedItemPosition();
   int nItem = m_PolicyNames.GetNextSelectedItem(pos);
-  const StringX sxPolicyName = m_PolicyNames.GetItemText(nItem, 0);
+  const StringX sxPolicyName = static_cast<const wchar_t *>(m_PolicyNames.GetItemText(nItem, 0));
 
   CPWPListEntries dlg(NULL, sxPolicyName, &m_ventries);
 
@@ -762,9 +762,9 @@ void CManagePSWDPols::OnEntryDoubleClicked(NMHDR *, LRESULT *pLResult)
     return;
 
   // Get entry's details
-  StringX sxGroup = m_PolicyEntries.GetItemText(nIndex, 0);
-  StringX sxTitle = m_PolicyEntries.GetItemText(nIndex, 1);
-  StringX sxUser  = m_PolicyEntries.GetItemText(nIndex, 2);
+  StringX sxGroup = static_cast<const wchar_t *>(m_PolicyEntries.GetItemText(nIndex, 0));
+  StringX sxTitle = static_cast<const wchar_t*>(m_PolicyEntries.GetItemText(nIndex, 1));
+  StringX sxUser  = static_cast<const wchar_t*>(m_PolicyEntries.GetItemText(nIndex, 2));
 
   // Go and find it
   ItemListIter iter = GetMainDlg()->Find(sxGroup, sxTitle, sxUser);
