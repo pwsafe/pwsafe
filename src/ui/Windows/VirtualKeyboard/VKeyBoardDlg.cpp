@@ -364,7 +364,7 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
 #if defined(_DEBUG) || defined(DEBUG)
   const wchar_t *dll_name = L"pws_osk_D.dll";
 #else
-  wchar_t *dll_name = L"pws_osk.dll";
+  const wchar_t *dll_name = L"pws_osk.dll";
 #endif
   m_OSK_module = HMODULE(pws_os::LoadLibrary(dll_name, pws_os::loadLibraryTypes::APP));
 
