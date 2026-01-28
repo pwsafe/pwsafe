@@ -95,6 +95,7 @@ public:
     PASSKEY_ALGO_ID = 0x2d,       // Passkey Algorithm ID
     PASSKEY_PRIVATE_KEY = 0x2e,   // Passkey Private Key
     PASSKEY_SIGN_COUNT = 0x2f,    // Passkey Sign Count
+    CUSTOMTEXT = 0x30,            // Custom Text Field
     LAST_USER_FIELD,              // All "user" fields MUST be before this for entry compare
 
     BASEUUID = 0x41,              // Base UUID of Alias or Shortcut (v4)

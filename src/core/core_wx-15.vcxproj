@@ -227,6 +227,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemAtt.cpp" />
     <ClCompile Include="ItemData.cpp" />
+    <ClCompile Include="CustomFields.cpp" />
     <ClCompile Include="ItemField.cpp" />
     <ClCompile Include="KeyWrap.cpp" />
     <ClCompile Include="Match.cpp" />
@@ -285,6 +286,7 @@
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemAtt.h" />
     <ClInclude Include="ItemData.h" />
+    <ClInclude Include="CustomFields.h" />
     <ClInclude Include="ItemField.h" />
     <ClInclude Include="KeyWrap.h" />
     <ClInclude Include="Match.h" />

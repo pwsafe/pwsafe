@@ -176,6 +176,44 @@ TEST_F(FileV4Test, ItemTest)
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
 }
 
+TEST_F(FileV4Test, CustomFieldsTest)
+{
+  CItemData ci;
+  ci.CreateUUID();
+  ci.SetTitle(_T("custom fields"));
+  ci.SetPassword(_T("possible"));
+
+  CustomFieldList fields;
+  CustomField ssid;
+  ssid.SetName(_T("WiFi SSID"));
+  ssid.SetValue(_T("Test"));
+  fields.push_back(ssid);
+
+  CustomField pw;
+  pw.SetName(_T("WiFi Password"));
+  pw.SetValue(_T("bobsyouruncle"));
+  pw.SetSensitive(true);
+  pw.SetProperty(0x04, _T("extra"));
+  fields.push_back(pw);
+
+  ci.SetCustomFields(fields);
+  const StringX raw_fields = ci.GetCustomFieldsRaw();
+
+  PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.WriteRecord(ci));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+  ASSERT_TRUE(pws_os::FileExists(fname));
+
+  PWSfileV4 fr(fname.c_str(), PWSfile::Read, PWSfile::V40);
+  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.ReadRecord(item));
+  EXPECT_EQ(ci, item);
+  EXPECT_EQ(raw_fields, item.GetCustomFieldsRaw());
+  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+}
+
 TEST_F(FileV4Test, MulitKeysTest)
 {
   const StringX pw2(_T("Mellow Yellowerer")), pw3(_T("spr1ngtime~nAplam"));

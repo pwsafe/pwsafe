@@ -276,7 +276,7 @@ int CItemData::WriteCommon(PWSfile *out) const
                                   PWHIST, RUNCMD, EMAIL,
                                   SYMBOLS, POLICYNAME,
                                   DATA_ATT_TITLE, DATA_ATT_MEDIATYPE, DATA_ATT_FILENAME,
-                                  PASSKEY_RP_ID,
+                                  PASSKEY_RP_ID, CUSTOMTEXT,
                                   END};
   const FieldType TimeFields[] = {ATIME, CTIME, XTIME, PMTIME, RMTIME, TOTPSTARTTIME,
                                   DATA_ATT_MTIME,
@@ -850,6 +850,11 @@ StringX CItemData::GetPWHistory() const
 StringX CItemData::GetPreviousPassword() const
 {
   return PWHistList::GetPreviousPassword(GetField(PWHIST));
+}
+
+CustomFieldList CItemData::GetCustomFields() const
+{
+  return CustomFieldList(GetField(CUSTOMTEXT));
 }
 
 StringX CItemData::GetPlaintext(const TCHAR &separator,
@@ -1599,6 +1604,135 @@ void CItemData::SetPWHistory(const StringX &PWHistory)
   CItem::SetField(PWHIST, pwh);
 }
 
+void CItemData::SetCustomFields(const CustomFieldList &fields)
+{
+  const StringX &data = fields;
+  CItem::SetField(CUSTOMTEXT, data);
+}
+
+bool CItemData::AddCustomField(const CustomField &field)
+{
+  CustomFieldList fields = GetCustomFields();
+  if (fields.getErr() != 0)
+    return false;
+
+  if (!field.HasProperty(CustomField::PROP_NAME) ||
+      !field.HasProperty(CustomField::PROP_VALUE))
+    return false;
+
+  const StringX name = field.GetName();
+  if (name.empty())
+    return false;
+
+  auto it = std::find_if(fields.begin(), fields.end(),
+                         [&name](const CustomField &cf) {
+                           return cf.GetName() == name;
+                         });
+  if (it != fields.end())
+    return false;
+
+  fields.push_back(field);
+  SetCustomFields(fields);
+  return true;
+}
+
+bool CItemData::EditCustomField(const StringX &name, const CustomField &field)
+{
+  if (name.empty())
+    return false;
+
+  CustomFieldList fields = GetCustomFields();
+  if (fields.getErr() != 0)
+    return false;
+
+  if (!field.HasProperty(CustomField::PROP_NAME) ||
+      !field.HasProperty(CustomField::PROP_VALUE))
+    return false;
+
+  const StringX new_name = field.GetName();
+  if (new_name.empty())
+    return false;
+
+  auto it = std::find_if(fields.begin(), fields.end(),
+                         [&name](const CustomField &cf) {
+                           return cf.GetName() == name;
+                         });
+  if (it == fields.end())
+    return false;
+
+  if (new_name != name) {
+    auto dup = std::find_if(fields.begin(), fields.end(),
+                            [&new_name](const CustomField &cf) {
+                              return cf.GetName() == new_name;
+                            });
+    if (dup != fields.end())
+      return false;
+  }
+
+  *it = field;
+  SetCustomFields(fields);
+  return true;
+}
+
+bool CItemData::DeleteCustomField(const StringX &name)
+{
+  if (name.empty())
+    return false;
+
+  CustomFieldList fields = GetCustomFields();
+  if (fields.getErr() != 0)
+    return false;
+
+  auto it = std::find_if(fields.begin(), fields.end(),
+                         [&name](const CustomField &cf) {
+                           return cf.GetName() == name;
+                         });
+  if (it == fields.end())
+    return false;
+
+  fields.erase(it);
+  SetCustomFields(fields);
+  return true;
+}
+
+bool CItemData::SetCustomFieldProperty(const StringX &name, unsigned char prop_id,
+                                       const StringX &value)
+{
+  if (name.empty() || prop_id == 0)
+    return false;
+
+  CustomFieldList fields = GetCustomFields();
+  if (fields.getErr() != 0)
+    return false;
+
+  auto it = std::find_if(fields.begin(), fields.end(),
+                         [&name](const CustomField &cf) {
+                           return cf.GetName() == name;
+                         });
+  if (it == fields.end())
+    return false;
+
+  if (prop_id == CustomField::PROP_NAME) {
+    if (value.empty())
+      return false;
+    if (value != name) {
+      auto dup = std::find_if(fields.begin(), fields.end(),
+                              [&value](const CustomField &cf) {
+                                return cf.GetName() == value;
+                              });
+      if (dup != fields.end())
+        return false;
+    }
+  } else if (prop_id == CustomField::PROP_SENSITIVE) {
+    if (value.length() != 1)
+      return false;
+  }
+
+  it->SetProperty(prop_id, value);
+  SetCustomFields(fields);
+  return true;
+}
+
 void CItemData::SetPWPolicy(const PWPolicy &pwp)
 {
   const StringX cs_pwp(pwp);
@@ -1728,6 +1862,7 @@ void CItemData::SetFieldValue(FieldType ft, const StringX &value)
     case RUNCMD:     /* 12 */
     case SYMBOLS:    /* 16 */
     case POLICYNAME: /* 18 */
+    case CUSTOMTEXT: /* 30 */
       CItem::SetField(ft, value);
       break;
     case TOTPCONFIG:
@@ -1815,6 +1950,11 @@ bool CItemData::ValidatePWHistory()
   }
 
   return true;
+}
+
+bool CItemData::ValidateCustomFields()
+{
+  return GetCustomFields().getErr() == 0;
 }
 
 bool CItemData::Matches(const stringT &stValue, int iObject,
@@ -2169,6 +2309,7 @@ bool CItemData::SetField(CItem::FieldType ft, const unsigned char* data, size_t 
     case DATA_ATT_MEDIATYPE:
     case DATA_ATT_FILENAME:
     case PASSKEY_RP_ID:
+    case CUSTOMTEXT:
       if (!SetTextField(ft, data, len)) return false;
       break;
     case TOTPCONFIG:
@@ -2312,6 +2453,7 @@ void CItemData::SerializePlainText(vector<char> &v,
 
   push(v, POLICY, GetPWPolicy());
   push(v, PWHIST, GetPWHistory());
+  push(v, CUSTOMTEXT, GetCustomFieldsRaw());
 
   push(v, RUNCMD, GetRunCommand());
   GetDCA(i16); if (i16 != -1) push(v, DCA, i16);
@@ -2396,6 +2538,7 @@ stringT CItemData::FieldName(FieldType ft)
   case PASSKEY_ALGO_ID:     LoadAString(retval, IDSC_FLDNMPASSKEYALGOID); break;
   case PASSKEY_PRIVATE_KEY: LoadAString(retval, IDSC_FLDNMPASSKEYPRIVATEKEY); break;
   case PASSKEY_SIGN_COUNT:  LoadAString(retval, IDSC_FLDNMPASSKEYSIGNCOUNT); break;
+  case CUSTOMTEXT:          LoadAString(retval, IDSC_FLDNMCUSTOMFIELDS); break;
 
   default:
     ASSERT(0);
@@ -2436,6 +2579,7 @@ stringT CItemData::EngFieldName(FieldType ft)
   case SYMBOLS:       return _T("Symbols");
   case POLICYNAME:    return _T("Password Policy Name");
   case KBSHORTCUT:    return _T("Keyboard Shortcut");
+  case CUSTOMTEXT:    return _T("Custom Fields");
   case ATTREF:        return _T("Attachment Reference");
   case BASEUUID:      return _T("Base UUID");
   case ALIASUUID:     return _T("Alias UUID");
