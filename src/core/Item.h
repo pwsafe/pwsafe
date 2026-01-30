@@ -192,6 +192,14 @@ public:
     }
   }
   void push(std::vector<char> &v, char type, const StringX &str) const;
+  void push(std::vector<char> &v, char type, uint32 length, const char * value) const
+  {
+    if (length != 0 && value != nullptr) {
+      v.push_back(type);
+      push_length(v, length);
+      v.insert(v.end(), value, value + length);
+    }
+  }
 
 protected:
   typedef std::map<int, CItemField> FieldMap;
