@@ -462,7 +462,7 @@ size_t pws_os::fileLength(std::FILE *fp) {
 }
 
 bool pws_os::GetFileTimes(const stringT &filename,
-      time_t &atime, time_t &ctime, time_t &mtime)
+      time_t &ctime, time_t &mtime, time_t &atime)
 {
   struct _stati64 info;
   int rc = _wstati64(unquote(filename).c_str(), &info);
