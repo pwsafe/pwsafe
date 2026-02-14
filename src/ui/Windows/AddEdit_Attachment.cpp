@@ -76,6 +76,8 @@ BEGIN_MESSAGE_MAP(CAddEdit_Attachment, CAddEdit_PropertyPage)
 
   // For dropped files
   ON_MESSAGE(PWS_MSG_DROPPED_FILE, OnDroppedFile)
+
+  ON_EN_CHANGE(IDC_ATT_NAME, OnAttNameChanged)
   //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -264,13 +266,7 @@ void CAddEdit_Attachment::OnAttImport()
     }
   }
 
-  // Get file information
-  struct _stati64 info;
-  VERIFY(_wstati64(m_AttFileName, &info) == 0);
-
-  m_csFileCTime = PWSUtil::ConvertToDateTimeString(info.st_ctime, PWSUtil::TMC_LOCALE).c_str();
-  m_csFileMTime = PWSUtil::ConvertToDateTimeString(info.st_mtime, PWSUtil::TMC_LOCALE).c_str();
-
+  // no need to update file info. here: it will be set in ShowPreview
   ShowPreview();
 
   m_ae_psh->SetChanged(true);
@@ -568,4 +564,14 @@ void CAddEdit_Attachment::ShowPreview()
 load_error:
   // Ooops???
   m_stImgAttachment.IssueError(rc, hr);
+}
+
+void CAddEdit_Attachment::OnAttNameChanged()
+{
+  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0 || !M_attachment().HasContent())
+    return;
+
+  UpdateData(TRUE);
+  M_attachment().SetTitle(m_AttName);
+  m_ae_psh->SetChanged(true);
 }
