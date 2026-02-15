@@ -7,8 +7,6 @@
 */
 
 #include "stdafx.h"
-#include "passwordsafe.h"
-#include "ThisMfcApp.h"
 #include "DboxMain.h"
 
 #include "GeneralMsgBox.h"
@@ -426,8 +424,11 @@ LRESULT CWZFinish::OnExecuteThreadEnded(WPARAM , LPARAM )
 
   m_status = m_thdpms.status;
 
-  // Enable Finish button
-  m_pWZPSH->SetWizardButtons(PSWIZB_FINISH);
+  // Enable Finish button AND Back button
+  m_pWZPSH->SetWizardButtons(PSWIZB_BACK | PSWIZB_FINISH);
+  // Support going back and re-executing:
+  m_bInProgress = m_bComplete = false;
+  m_pWZPSH->GetDlgItem(ID_WIZBACK)->ShowWindow(SW_SHOW); // hidden in Init
 
   // Enable View Report button
   GetDlgItem(IDC_VIEWREPORT)->EnableWindow(TRUE);
