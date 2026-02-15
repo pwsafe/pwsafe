@@ -2168,6 +2168,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>&lt;b0&gt;&lt;i1&gt;&lt;a2&gt;Attachment&lt;/a2&gt;&lt;/i1&gt;:&lt;/b0&gt; an optional attachment</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T134550Z" creationid="pm_kan" creationdate="20260214T134416Z">
+        <seg>&lt;b0&gt;&lt;i1&gt;&lt;a2&gt;Вложение&lt;/a2&gt;&lt;/i1&gt;:&lt;/b0&gt; информация о вложении и операции с ним</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>&lt;b0&gt;&lt;i1&gt;&lt;a2&gt;Basic&lt;/a2&gt;&lt;/i1&gt;:&lt;/b0&gt; all necesarry elements for password management</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T213234Z">
@@ -2220,6 +2228,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T230538Z">
         <seg>&lt;b0&gt;&lt;i1&gt;Дополнительно:&lt;/i1&gt;&lt;/b0&gt; дополнительные характеристики, включая историю паролей</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>&lt;b0&gt;&lt;i1&gt;Attachment&lt;/i1&gt;:&lt;/b0&gt; an optional attachment</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T140357Z" creationid="pm_kan" creationdate="20260214T140357Z">
+        <seg>&lt;b0&gt;&lt;i1&gt;Вложение&lt;/i1&gt;:&lt;/b0&gt; информация о вложении и операции с ним</seg>
       </tuv>
     </tu>
     <tu>
@@ -2364,6 +2380,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T135020Z">
         <seg>&lt;b0&gt;&lt;u1&gt;Примечание.&lt;/u1&gt; &lt;s2&gt;4&lt;/s2&gt;&lt;/b0&gt; Допустимы следующие значения для &lt;i0&gt;&lt;b1&gt;действия по двойному клику&lt;/b1&gt;&lt;/i0&gt;:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>&lt;b0&gt;Authenticator Secret: &lt;/b0&gt;Enter the secret key provided by the website for generating one-time (TOTP) authentication codes.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T134805Z" creationid="pm_kan" creationdate="20260214T134805Z">
+        <seg>&lt;b0&gt;Параметры двухфакторной аутентификации:&lt;/b0&gt; укажите «секретный ключ», предоставленный сайтом, использующим одноразовые TOTP-коды.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4110,6 +4134,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T220128Z">
         <seg>Вкладка &lt;i0&gt;«Дополнительно»&lt;/i0&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>&lt;i0&gt;Attachment&lt;/i0&gt; Tab</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T140414Z" creationid="pm_kan" creationdate="20260214T140414Z">
+        <seg>Вкладка &lt;i0&gt;«Вложение»&lt;/i0&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -6662,6 +6694,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T145846Z">
         <seg>По окончанию процесса импорта будет выведен диалог с информацией о количестве ошибок и успешно импортированных элементов.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Attachment</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T134250Z" creationid="pm_kan" creationdate="20260214T134250Z">
+        <seg>Вложение</seg>
       </tuv>
     </tu>
     <tu>
@@ -9851,6 +9891,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Edit/View Attachment</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T140447Z" creationid="pm_kan" creationdate="20260214T140447Z">
+        <seg>Редактирование/просмотр вложения</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Edit/View Dates and Times</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T215932Z">
@@ -10191,6 +10239,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20101104T215119Z">
         <seg>Пример</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Example of a secret key setup for two-factor authentication.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T140242Z" creationid="pm_kan" creationdate="20260214T140242Z">
+        <seg>Пример «секретного ключа» для двухфакторной аутентификации.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11143,6 +11199,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T204828Z">
         <seg>Подробнее о том, какие клавиши можно (или нельзя) использовать для назначения «горячих клавиш» см. &lt;a2&gt;здесь&lt;/a2&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>For more information about generating one-time authentication codes, see &lt;a1&gt;Basic Tab&lt;/a1&gt;.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T140150Z" creationid="pm_kan" creationdate="20260214T140150Z">
+        <seg>Для получения дополнительной информации см. &lt;a1&gt;Основные&lt;/a1&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12739,6 +12803,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>If only a QR code is shown, scanning it with your phone reveals a URL containing the secret key, which you can enter into this field.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T135803Z" creationid="pm_kan" creationdate="20260214T135803Z">
+        <seg>В случае, когда отображается только  QR-код, отсканируйте его с помощью телефона или другого устройства и введите часть, указанную в поле «secret».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>If other characters are present, they will be replaced by the underscore ("_").</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20170326T181211Z" creationid="pm_kan" creationdate="20170326T181211Z">
@@ -12927,6 +12999,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20161128T165943Z" creationid="pm_kan" creationdate="20161128T165943Z">
         <seg>Если этот элемент будет преобразован в «обычный», история снова станет активной и будет обновляться при последующих сменах пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>If the attachment is an image, you will see a preview of it in this tab.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T141418Z" creationid="pm_kan" creationdate="20260214T141418Z">
+        <seg>Если доступно, для изображений на этой же вкладке отображается миниатюра.</seg>
       </tuv>
     </tu>
     <tu>
@@ -13611,6 +13691,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>If you save the secret key, you may also use it with authenticator apps such as Google or Microsoft Authenticator.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T140013Z" creationid="pm_kan" creationdate="20260214T140013Z">
+        <seg>Данный ключ может быть использован и в других приложениях, например, Google Authenticator или Microsoft Authenticator.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>If you select this checkbox, then recent passwords will be saved with this entry.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20101104T183907Z">
@@ -13731,6 +13819,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>If you wish to replace the attachment, first click on "Remove".</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T143017Z" creationid="pm_kan" creationdate="20260214T143017Z">
+        <seg>Для замены вложения сначала удалите ранее присоединённое с помощью кнопки «Удалить».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>If you wish to reset these values to the default for search, press the Reset button.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T160427Z">
@@ -13743,6 +13839,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T160324Z">
         <seg>Для возврата ограничений на условия по умолчанию нажмите кнопку «Сбросить».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>If you wish to select a file of another type, click on the file filter to the right of the File name field and select "All files (*.*)".&lt;br0&gt;</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T142616Z" creationid="pm_kan" creationdate="20260214T141948Z">
+        <seg>Для присоединения других типов файлов в выпадающем списке справа от поля ввода имени файла выберите фильтр «Все файлы (*.*)».&lt;br0&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -13847,6 +13951,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20231022T144553Z" creationid="pm_kan" creationdate="20231022T144553Z">
         <seg>При регулярном использовании таких приложений может потребоваться отключение данной блокировки.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>If you've already clicked on "OK", ou can still undo the removal by selecting Undo under the Edit menu (or typing Ctrl-Z).</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T144047Z" creationid="pm_kan" creationdate="20260214T144047Z">
+        <seg>Если уже нажали на кнопку «OK, но ещё не сохранили изменения в контейнере, удаление можно откатить, выбрав «Отменить» в меню  «Правка» (или используя комбинацию Ctrl+Z).</seg>
       </tuv>
     </tu>
     <tu>
@@ -14479,6 +14591,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20101105T195609Z">
         <seg>Реестр будет использован лишь в тех редких случаях, когда &lt;s0&gt;Password Safe&lt;/s0&gt; не сможет создать или произвести запись в файл с настройками.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>In the Attachment tab, click on the "Import..." button, and select the file you wish to attach.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T141805Z" creationid="pm_kan" creationdate="20260214T141805Z">
+        <seg>Щёлкните по кнопке «Импорт...» и выберите нужный файл.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15563,6 +15683,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>MFA secret key</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T140326Z" creationid="pm_kan" creationdate="20260214T140326Z">
+        <seg>Ключ для двухфакторной аутентификации</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>MM</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T141730Z">
@@ -16499,6 +16627,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Note that by default you can only select image files (.jpeg, .png, etc.).</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T142023Z" creationid="pm_kan" creationdate="20260214T141940Z">
+        <seg>По умолчанию для выбора доступны только файлы с расширениями, соответствующие некоторым форматам изображений (.jpeg, .png и пр.).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Note that changes made via the Compare database results dialog will &lt;e1&gt;not&lt;/e1&gt; cause a database save for each action but will after the compare results dialog has been closed.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T161701Z" creationid="pm_kan" creationdate="20161105T161701Z">
@@ -16547,6 +16683,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Note that if the entry already has an attachment, the "Import..." button will be disabled, since an entry can only have up to one attachment.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T144842Z" creationid="pm_kan" creationdate="20260214T142804Z">
+        <seg>К элементу может быть привязано не более одного вложения, поэтому кнопка «Импорт...» блокируется, если вложение уже присоединено.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Note that if the filename and/or path has spaces, it should be enclosed in double quotes.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T175059Z">
@@ -16559,6 +16703,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20100919T191629Z">
         <seg>Заметьте, что если заголовок уникален в данном контейнере, то другие поля являются необязательными.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Note that if you didn't intend to remove the attachment, just click on "Cancel" and the "Discard" and the removal will not take effect.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T143600Z" creationid="pm_kan" creationdate="20260214T143600Z">
+        <seg>Если удаление было выполнено случайно, нажмите на кнопку «Отмена» внизу и откажитесь от сохранения изменений.</seg>
       </tuv>
     </tu>
     <tu>
@@ -16647,6 +16799,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110622T152557Z">
         <seg>Этот шрифт должен поддерживать символы Unicode.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Note that this has no relation to the filename, which is what the file was named when you imported it.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T143206Z" creationid="pm_kan" creationdate="20260214T143206Z">
+        <seg>Оно не связано с именем импортированного файла.</seg>
       </tuv>
     </tu>
     <tu>
@@ -17267,6 +17427,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Once configured, Password Safe generates the required six-digit authentication codes and can copy them to the clipboard.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T135909Z" creationid="pm_kan" creationdate="20260214T135852Z">
+        <seg>При заданном ключе Password Safe может генерировать шестизначные коды двухфакторной аутентификации и копировать их в буфер обмена.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Once expired, it will be completely purple.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110216T113036Z">
@@ -17631,6 +17799,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T191259Z">
         <seg>OptShortcutColumnWidth</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Optionally, you can give the attachment a descriptive name.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T143125Z" creationid="pm_kan" creationdate="20260214T143125Z">
+        <seg>Для вложения можно задать имя (описание).</seg>
       </tuv>
     </tu>
     <tu>
@@ -18007,6 +18183,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T190806Z">
         <seg>Эквивалентные XML-элементы Password Safe</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Password Safe allows you to add an attachment, such as an image (jpeg file) or document (text, pdf, etc.) to an entry.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T141123Z" creationid="pm_kan" creationdate="20260214T141123Z">
+        <seg>Password Safe позволяет присоединять к элементу вложение. Это может быть изображение (например, JPEG-файл), документ (текстовый,   PDF, ...), или любой другой файл.</seg>
       </tuv>
     </tu>
     <tu>
@@ -25287,6 +25471,30 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>To Export an Attachment</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T143216Z" creationid="pm_kan" creationdate="20260214T143216Z">
+        <seg>Экспорт вложения</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>To Import an Attachment</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T141625Z" creationid="pm_kan" creationdate="20260214T141625Z">
+        <seg>Импорт вложения</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>To Remove an Attachment</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T143322Z" creationid="pm_kan" creationdate="20260214T143322Z">
+        <seg>Удаление вложения</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>To add a column, drag its name from the Column Picker, and drop it on a column heading to add to its left (except Icon, which always appears at the far left)</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T132506Z" creationid="pm_kan" creationdate="20220814T130632Z">
@@ -25535,6 +25743,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>To export an attachment, click on the "Export..." button and select the location and name of the file.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T143316Z" creationid="pm_kan" creationdate="20260214T143316Z">
+        <seg>Щёлкните по кнопке «Экспорт...» и выберите расположение и имя файла.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>To export data use the "File → Export To" menu.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T152117Z">
@@ -25667,6 +25883,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20220814T132536Z" creationid="pm_kan" creationdate="20220814T132536Z">
         <seg>Чтобы убрать столбец, перетащите его в список доступных.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>To remove an attachment, just click on the "Remove" button.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T143357Z" creationid="pm_kan" creationdate="20260214T143357Z">
+        <seg>Щёлкните по кнопке «Удалить».</seg>
       </tuv>
     </tu>
     <tu>
@@ -26191,6 +26415,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Use a direct link to view or copy the secret key whenever available.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T135829Z" creationid="pm_kan" creationdate="20260214T135518Z">
+        <seg>Если ключ указан явно, скопируйте его сюда.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Use autotype string specified between the round brackets.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20101104T214033Z">
@@ -26355,6 +26587,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T213105Z">
         <seg>Имена пользователей, пароли и группы, а также другие параметры настраиваются на четырёх вкладках:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Username, passwords and groups together with the additional parameters are managed in 5 tabs:</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T134325Z" creationid="pm_kan" creationdate="20260214T134325Z">
+        <seg>Имена пользователей, пароли и группы, а также другие параметры настраиваются на пяти вкладках:</seg>
       </tuv>
     </tu>
     <tu>
@@ -27921,6 +28161,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>You can export the attachment as a file, which will be identical to the file you've imported, or you can remove the attachment.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T142855Z" creationid="pm_kan" creationdate="20260214T141541Z">
+        <seg>При экспорте вложения сохранённый файл будет идентичен тому, что использовался при импорте. Если вложение больше не требуется, его можно удалить.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>You can specify command line options to the browser via the Browser command line parameters field.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T154830Z">
@@ -29345,6 +29593,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>entering_pwd_att.html</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T134349Z" creationid="pm_kan" creationdate="20260214T134349Z">
+        <seg>entering_pwd_att.html</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>entering_pwd_date.html</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T213156Z">
@@ -29865,6 +30121,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>images/MFA.png</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T140329Z" creationid="pm_kan" creationdate="20260214T140329Z">
+        <seg>images/MFA.png</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>images/abase.png</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T120207Z">
@@ -30093,6 +30357,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T100033Z">
         <seg>images/edit_view_entry_add.png</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>images/edit_view_entry_att.jpg</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T140452Z" creationid="pm_kan" creationdate="20260214T140452Z">
+        <seg>images/edit_view_entry_att.png</seg>
       </tuv>
     </tu>
     <tu>

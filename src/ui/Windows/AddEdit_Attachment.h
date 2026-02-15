@@ -55,6 +55,7 @@ protected:
   afx_msg void OnAttImport();
   afx_msg void OnAttExport();
   afx_msg void OnAttRemove();
+  afx_msg void OnAttNameChanged();
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()

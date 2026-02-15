@@ -65,12 +65,12 @@ void PropertiesModel::Init()
   m_Core.GetAllGroups(allGroups);
 
   auto allgroups = allGroups.size();
-  auto numgroups = wxString::Format(_("%d"),
+  auto numgroups = wxString::Format(wxT("%d"),
     static_cast<int>(allgroups));
   m_PropertiesDb.numgroups = tostringx(numgroups);
 
   auto emptygroups = m_Core.GetEmptyGroups().size();
-  auto numemptygroups = wxString::Format(_("%d"),
+  auto numemptygroups = wxString::Format(wxT("%d"),
     static_cast<int>(emptygroups));
   m_PropertiesDb.numemptygroups = tostringx(numemptygroups);
 

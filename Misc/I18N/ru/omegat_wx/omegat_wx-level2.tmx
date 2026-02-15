@@ -125,6 +125,24 @@ Unknown error</seg>
       </tuv>
     </tu>
     <tu>
+      <note>groups: X (Y of which is empty),  Y &gt; 1</note>
+      <tuv xml:lang="en-US">
+        <seg>%ls (%ls of which are empty)</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20260214T132110Z" creationid="pm_kan" creationdate="20260214T132110Z">
+        <seg>%ls (пустых: %ls)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>groups: X (Y of which is empty),  Y = 0, 1</note>
+      <tuv xml:lang="en-US">
+        <seg>%ls (%ls of which is empty)</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20260214T132044Z" creationid="pm_kan" creationdate="20260214T132044Z">
+        <seg>%ls (пустых: %ls)</seg>
+      </tuv>
+    </tu>
+    <tu>
       <tuv xml:lang="en-US">
         <seg>%ls - Copied %ls</seg>
       </tuv>
@@ -2442,6 +2460,24 @@ Unknown error</seg>
       </tuv>
     </tu>
     <tu>
+      <note>всплывающая подсказка для 'Save As'</note>
+      <tuv xml:lang="en-US">
+        <seg>Choose location to save report as file</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20260214T132735Z" creationid="pm_kan" creationdate="20260214T132719Z">
+        <seg>Сохранить отчёт в указанное расположение</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note>заголовок в диалоге выбора каталога</note>
+      <tuv xml:lang="en-US">
+        <seg>Choose output directory</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20260214T132858Z" creationid="pm_kan" creationdate="20260214T132858Z">
+        <seg>Выбор каталога для сохранения</seg>
+      </tuv>
+    </tu>
+    <tu>
       <tuv xml:lang="en-US">
         <seg>Clear</seg>
       </tuv>
@@ -2471,6 +2507,14 @@ Unknown error</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Очистить</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Clear Recent Database List</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20260214T131437Z" creationid="pm_kan" creationdate="20260214T131437Z">
+        <seg>Очистить список недавних контейнеров</seg>
       </tuv>
     </tu>
     <tu>
@@ -3486,6 +3530,14 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Custom Fields</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Настраиваемые поля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Customize &amp;Main Toolbar...</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T115434Z">
@@ -3526,6 +3578,14 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Database Format:</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20260214T132117Z" creationid="pm_kan" creationdate="20260214T132117Z">
+        <seg>Формат контейнера:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Database Id:</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20230520T144536Z" creationid="pm_kan" creationdate="20230520T144536Z">
@@ -3534,18 +3594,18 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>Database Unique ID:</seg>
+        <seg>Database Properties</seg>
       </tuv>
-      <tuv xml:lang="ru-RU">
-        <seg>UID контейнера:</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20260214T131321Z" creationid="pm_kan" creationdate="20260214T131321Z">
+        <seg>Свойства контейнера</seg>
       </tuv>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>Database format:</seg>
+        <seg>Database Unique ID:</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
-        <seg>Формат контейнера:</seg>
+        <seg>UID контейнера:</seg>
       </tuv>
     </tu>
     <tu>
@@ -3706,14 +3766,6 @@ offset approximately at %d</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20130428T142350Z">
         <seg>Разделители</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>Description</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU">
-        <seg>Описание</seg>
       </tuv>
     </tu>
     <tu>
@@ -3890,6 +3942,14 @@ offset approximately at %d</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20240508T155546Z" creationid="pm_kan" creationdate="20240508T155546Z">
         <seg>Продолжайте только в случае, если понимаете и принимаете все возможные риски.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Do you want to clear the list of recently opened databases?</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20260214T131428Z" creationid="pm_kan" creationdate="20260214T131428Z">
+        <seg>Очистить список недавних контейнеров?</seg>
       </tuv>
     </tu>
     <tu>
@@ -4906,10 +4966,10 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
-        <seg>Exporting database:</seg>
+        <seg>Exporting database: %ls to %ls\r</seg>
       </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20130915T180318Z">
-        <seg>Экспорт контейнера:</seg>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20260214T131702Z" creationid="pm_kan" creationdate="20260214T131702Z">
+        <seg>Экспорт контейнера:  %ls в %ls\r</seg>
       </tuv>
     </tu>
     <tu>
@@ -6305,6 +6365,15 @@ or a corrupt database.</seg>
       </tuv>
     </tu>
     <tu>
+      <note>в диалоге со свойствами контейнера, в mfc-версии это поле переведено как "имя"	</note>
+      <tuv xml:lang="en-US">
+        <seg>Label:</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20260214T132312Z" creationid="pm_kan" creationdate="20260214T132312Z">
+        <seg>Имя:</seg>
+      </tuv>
+    </tu>
+    <tu>
       <tuv xml:lang="en-US">
         <seg>Last Access Time</seg>
       </tuv>
@@ -6879,14 +6948,6 @@ or a corrupt database.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20240508T143457Z" creationid="pm_kan" creationdate="20240508T143457Z">
         <seg>Укажите имя для текущего фильтра</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>Name:</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU">
-        <seg>Имя:</seg>
       </tuv>
     </tu>
     <tu>
@@ -7649,6 +7710,14 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>Password Database:</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU">
+        <seg>Контейнер:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>Password Expiry</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T104159Z">
@@ -8145,6 +8214,32 @@ to the clipboard.</seg>
       </tuv>
       <tuv xml:lang="ru-RU">
         <seg>Предыдущие пароли</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>Project-Id-Version: 
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2026-02-14 16:35+0300
+PO-Revision-Date: 2026-02-14 13:00+0300
+Last-Translator:
+Language-Team:
+Language: ru
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20260214T133922Z" creationid="pm_kan" creationdate="20260214T133922Z">
+        <seg>Project-Id-Version: 
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2026-02-14 16:35+0300
+PO-Revision-Date: 2026-02-14 13:00+0300
+Last-Translator:
+Language-Team:
+Language: ru
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
       </tuv>
     </tu>
     <tu>
@@ -9587,10 +9682,26 @@ when Password Safe is closed.</seg>
     </tu>
     <tu>
       <tuv xml:lang="en-US">
+        <seg>The database description</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20260214T132527Z" creationid="pm_kan" creationdate="20260214T132527Z">
+        <seg>Описание контейнера</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
         <seg>The database has been changed since you opened it in R-O mode, so it is not possible to switch to R/W mode.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210614T181716Z" creationid="pm_kan" creationdate="20210614T181716Z">
         <seg>Переключение в режим «чтение/запись» невозможно: со времени открытия в режиме «только чтение» контейнер был изменён.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv xml:lang="en-US">
+        <seg>The database label</seg>
+      </tuv>
+      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20260214T132518Z" creationid="pm_kan" creationdate="20260214T132518Z">
+        <seg>Имя контейнера</seg>
       </tuv>
     </tu>
     <tu>
@@ -11622,15 +11733,6 @@ able to abort it mid-way.</seg>
       </tuv>
     </tu>
     <tu>
-      <note>количество пустых групп</note>
-      <tuv xml:lang="en-US">
-        <seg>empty)</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20161105T142905Z" creationid="pm_kan" creationdate="20161105T141404Z">
-        <seg>пустых)</seg>
-      </tuv>
-    </tu>
-    <tu>
       <tuv xml:lang="en-US">
         <seg>ends with</seg>
       </tuv>
@@ -12178,14 +12280,6 @@ able to abort it mid-way.</seg>
       </tuv>
       <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20121224T104743Z">
         <seg>Заголовок</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv xml:lang="en-US">
-        <seg>to</seg>
-      </tuv>
-      <tuv xml:lang="ru-RU" changeid="pm_kan" changedate="20210614T181559Z" creationid="pm_kan" creationdate="20210614T181559Z">
-        <seg>в</seg>
       </tuv>
     </tu>
     <tu>

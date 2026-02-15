@@ -320,6 +320,8 @@
 		<Unit filename="../../src/core/CoreAlias.cpp" />
 		<Unit filename="../../src/core/CoreImpExp.cpp" />
 		<Unit filename="../../src/core/CoreOtherDB.cpp" />
+		<Unit filename="../../src/core/CustomFields.cpp" />
+		<Unit filename="../../src/core/CustomFields.h" />
 		<Unit filename="../../src/core/DBCompareData.h" />
 		<Unit filename="../../src/core/ExpiredList.cpp" />
 		<Unit filename="../../src/core/ExpiredList.h" />
