@@ -22,7 +22,10 @@
 #include "core/PWSprefs.h"
 #include "core/PWSAuxParse.h"
 #include "core/PWCharPool.h"
+#include "core/CustomFields.h"
 #include "os/file.h"
+
+#include "CustomFieldEditDlg.h"
 
 #include "os/debug.h"
 
@@ -173,6 +176,7 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange *pDX)
   DDX_Control(pDX, IDC_PASSWORDHELP, m_Help2);
   DDX_Control(pDX, IDC_PASSWORDHELP2, m_Help3);
   DDX_Control(pDX, IDC_NOTESHELP, m_Help4);
+  DDX_Control(pDX, IDC_CUSTOMFIELDS_LIST, m_customFieldsList);
   //}}AFX_DATA_MAP
   if (pDX->m_bSaveAndValidate == TRUE) { //normalize for change detection
     M_notes().Replace(L"\r\n", L"\n");
@@ -216,6 +220,13 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_MESSAGE(PWS_MSG_EDIT_WORDWRAP, OnWordWrap)
   ON_MESSAGE(PWS_MSG_CALL_NOTESZOOMIN, OnZoomNotes)
   ON_MESSAGE(PWS_MSG_CALL_NOTESZOOMOUT, OnZoomNotes)
+
+  ON_BN_CLICKED(IDC_CUSTOMFIELDS_ADD, OnCustomFieldsAdd)
+  ON_BN_CLICKED(IDC_CUSTOMFIELDS_EDIT, OnCustomFieldsEdit)
+  ON_BN_CLICKED(IDC_CUSTOMFIELDS_DELETE, OnCustomFieldsDelete)
+  ON_COMMAND(IDC_CUSTOMFIELDS_TOGGLE_SENSITIVE, OnCustomFieldsToggleSensitive)
+  ON_NOTIFY(NM_RCLICK, IDC_CUSTOMFIELDS_LIST, OnNMRClickCustomFieldsList)
+  ON_NOTIFY(NM_DBLCLK, IDC_CUSTOMFIELDS_LIST, OnNMDblclkCustomFieldsList)
 
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
@@ -342,7 +353,22 @@ BOOL CAddEdit_Basic::OnInitDialog()
 
     // Disable Button
     GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
+
+    // Disable Custom Fields edit
+    GetDlgItem(IDC_CUSTOMFIELDS_ADD)->EnableWindow(FALSE);
+    GetDlgItem(IDC_CUSTOMFIELDS_EDIT)->EnableWindow(FALSE);
+    GetDlgItem(IDC_CUSTOMFIELDS_DELETE)->EnableWindow(FALSE);
+    m_customFieldsList.EnableWindow(FALSE);
   }
+
+  // Custom Fields list: columns and data
+  m_customFieldsList.SetExtendedStyle(LVS_EX_FULLROWSELECT);
+  CString cs_col;
+  cs_col.LoadString(IDS_TITLE);  // "Name" column
+  m_customFieldsList.InsertColumn(0, cs_col, LVCFMT_LEFT, 90);
+  cs_col.LoadString(IDS_VALUE);  // "Value" column
+  m_customFieldsList.InsertColumn(1, cs_col, LVCFMT_LEFT, 160);
+  LoadCustomFieldsFromList();
 
   // Populate the combo box
   m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
@@ -579,7 +605,8 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
           (M_ipolicy() != NAMED_POLICY &&
             M_symbols() != M_pci()->GetSymbols()) ||
           M_realpassword() != M_oldRealPassword() ||
-          M_twofactorkey() != M_pci()->GetTwoFactorKey())
+          M_twofactorkey() != M_pci()->GetTwoFactorKey() ||
+          StringX(M_customfields()) != M_pci()->GetCustomFieldsRaw())
           return 1L;
       }
           break;
@@ -599,7 +626,8 @@ LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
             !M_notes().IsEmpty()        ||
             !M_URL().IsEmpty()          ||
             !M_email().IsEmpty()        ||
-            !M_symbols().IsEmpty())
+            !M_symbols().IsEmpty()     ||
+            !M_customfields().empty())
             return 1L;
         }
           break;
@@ -1315,6 +1343,168 @@ void CAddEdit_Basic::OnSendEmail()
 
   GetMainDlg()->SendEmail(M_email());
   GetMainDlg()->UpdateLastClipboardAction(CItemData::EMAIL);
+}
+
+void CAddEdit_Basic::LoadCustomFieldsFromList()
+{
+  m_customFieldsList.SetRedraw(FALSE);
+  m_customFieldsList.DeleteAllItems();
+
+  const CustomFieldList &fields = M_customfields();
+  for (size_t i = 0; i < fields.size(); i++) {
+    const CustomField &cf = fields[i];
+    CString name(cf.GetName().c_str());
+    CString value(cf.IsSensitive() ? L"********" : cf.GetValue().c_str());
+    int idx = m_customFieldsList.InsertItem(static_cast<int>(i), name);
+    m_customFieldsList.SetItemText(idx, 1, value);
+  }
+
+  m_customFieldsList.SetRedraw(TRUE);
+
+  const BOOL bHasSelection = m_customFieldsList.GetItemCount() > 0 ? TRUE : FALSE;
+  GetDlgItem(IDC_CUSTOMFIELDS_EDIT)->EnableWindow(bHasSelection);
+  GetDlgItem(IDC_CUSTOMFIELDS_DELETE)->EnableWindow(bHasSelection);
+}
+
+void CAddEdit_Basic::OnCustomFieldsAdd()
+{
+  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
+    return;
+
+  CCustomFieldEditDlg dlg(this);
+  dlg.m_name = L"";
+  dlg.m_value = L"";
+  dlg.m_sensitive = FALSE;
+  if (dlg.DoModal() != IDOK)
+    return;
+
+  CustomField cf;
+  cf.SetName(StringX(dlg.m_name));
+  cf.SetValue(StringX(dlg.m_value));
+  cf.SetSensitive(dlg.m_sensitive == TRUE);
+
+  if (dlg.m_name.IsEmpty()) {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_MUSTHAVETITLE);
+    return;
+  }
+
+  M_customfields().push_back(cf);
+  LoadCustomFieldsFromList();
+  m_ae_psh->SetChanged(true);
+}
+
+void CAddEdit_Basic::OnCustomFieldsEdit()
+{
+  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
+    return;
+
+  int sel = m_customFieldsList.GetNextItem(-1, LVNI_SELECTED);
+  if (sel < 0)
+    return;
+
+  CustomFieldList &fields = M_customfields();
+  if (sel >= static_cast<int>(fields.size()))
+    return;
+
+  CustomField &cf = fields[sel];
+  CCustomFieldEditDlg dlg(this);
+  dlg.m_name = cf.GetName().c_str();
+  dlg.m_value = cf.GetValue().c_str();
+  dlg.m_sensitive = cf.IsSensitive() ? TRUE : FALSE;
+  if (dlg.DoModal() != IDOK)
+    return;
+
+  if (dlg.m_name.IsEmpty()) {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_MUSTHAVETITLE);
+    return;
+  }
+
+  cf.SetName(StringX(dlg.m_name));
+  cf.SetValue(StringX(dlg.m_value));
+  cf.SetSensitive(dlg.m_sensitive == TRUE);
+  LoadCustomFieldsFromList();
+  m_ae_psh->SetChanged(true);
+}
+
+void CAddEdit_Basic::OnCustomFieldsDelete()
+{
+  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
+    return;
+
+  int sel = m_customFieldsList.GetNextItem(-1, LVNI_SELECTED);
+  if (sel < 0)
+    return;
+
+  CustomFieldList &fields = M_customfields();
+  if (sel >= static_cast<int>(fields.size()))
+    return;
+
+  fields.erase(fields.begin() + sel);
+  LoadCustomFieldsFromList();
+  m_ae_psh->SetChanged(true);
+}
+
+void CAddEdit_Basic::OnCustomFieldsToggleSensitive()
+{
+  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
+    return;
+  if (m_rightClickedCustomFieldIndex < 0)
+    return;
+
+  CustomFieldList &fields = M_customfields();
+  if (m_rightClickedCustomFieldIndex >= static_cast<int>(fields.size()))
+    return;
+
+  CustomField &cf = fields[m_rightClickedCustomFieldIndex];
+  cf.SetSensitive(!cf.IsSensitive());
+  LoadCustomFieldsFromList();
+  m_ae_psh->SetChanged(true);
+  m_rightClickedCustomFieldIndex = -1;
+}
+
+void CAddEdit_Basic::OnNMRClickCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult)
+{
+  CPoint pt;
+  GetCursorPos(&pt);
+  m_customFieldsList.ScreenToClient(&pt);
+
+  LVHITTESTINFO hit = {};
+  hit.pt = pt;
+  int item = m_customFieldsList.SubItemHitTest(&hit);
+  if (item < 0 || hit.iSubItem != 1) {
+    *pResult = 0;
+    return;
+  }
+
+  m_rightClickedCustomFieldIndex = item;
+
+  CString menuText;
+  menuText.LoadString(IDS_CUSTOMFIELD_TOGGLE_SENSITIVE);
+  CMenu menu;
+  menu.CreatePopupMenu();
+  menu.AppendMenu(MF_STRING, IDC_CUSTOMFIELDS_TOGGLE_SENSITIVE, menuText);
+  CPoint ptScreen;
+  GetCursorPos(&ptScreen);
+  menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON, ptScreen.x, ptScreen.y, this);
+  *pResult = 0;
+}
+
+void CAddEdit_Basic::OnNMDblclkCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult)
+{
+  OnCustomFieldsEdit();
+  *pResult = 0;
+}
+
+int CAddEdit_Basic::GetCustomFieldListSelectedSubItem(NMHDR *pNMHDR, CPoint &pt)
+{
+  (void)pNMHDR;
+  m_customFieldsList.ScreenToClient(&pt);
+  LVHITTESTINFO hit = {};
+  hit.pt = pt;
+  m_customFieldsList.SubItemHitTest(&hit);
+  return hit.iSubItem;
 }
 
 LRESULT CAddEdit_Basic::OnCallExternalEditor(WPARAM, LPARAM)

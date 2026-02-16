@@ -19,6 +19,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/CoolMenu.h
             src/ui/Windows/CreateShortcutDlg.h
             src/ui/Windows/CryptKeyEntry.h
+            src/ui/Windows/CustomFieldEditDlg.h
             src/ui/Windows/CWTreeCtrl.h
             src/ui/Windows/DboxMain.h
             src/ui/Windows/DDStatic.h
@@ -171,6 +172,7 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/CoolMenu.cpp
             src/ui/Windows/CreateShortcutDlg.cpp
             src/ui/Windows/CryptKeyEntry.cpp
+            src/ui/Windows/CustomFieldEditDlg.cpp
             src/ui/Windows/CWTreeCtrl.cpp
             src/ui/Windows/DboxMain.cpp
             src/ui/Windows/DboxTray.cpp

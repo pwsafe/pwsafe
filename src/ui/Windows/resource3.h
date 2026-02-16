@@ -497,6 +497,7 @@
 #define IDS_IGNORE                      5730
 #define IDS_TRYAGAIN                    5731
 #define IDS_AREYOUSURE_OPT              5732
+#define IDS_CUSTOMFIELD_TOGGLE_SENSITIVE 5733
 #define IDS_NO_ENTRIES_SELECTED         5736
 #define IDS_NO_ENTRIES_PROCESSED        5737
 #define IDS_DCALONG                     5738

@@ -14,6 +14,7 @@
 
 #include "core/ItemData.h"
 #include "core/ItemAtt.h"
+#include "core/CustomFields.h"
 #include "core/PWSprefs.h"
 #include "core/PWHistory.h"
 
@@ -96,7 +97,10 @@ struct st_AE_master_data {
   // Attachment
   CItemAtt attachment;
   CItemAtt oldattachment;
-  
+
+  // Custom Fields (Basic tab)
+  CustomFieldList customfields;
+
   // Attributes
   unsigned char ucprotected;
 };
@@ -208,7 +212,10 @@ public:
   // Attachment
   CItemAtt &M_attachment() {return m_AEMD.attachment;}
   CItemAtt &M_oldattachment() {return m_AEMD.oldattachment;}
-  
+
+  // Custom Fields (Basic tab)
+  CustomFieldList &M_customfields() {return m_AEMD.customfields;}
+
   // Attributes
   unsigned char &M_protected() {return m_AEMD.ucprotected;}
 

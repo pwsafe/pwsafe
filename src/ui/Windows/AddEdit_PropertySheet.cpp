@@ -339,7 +339,8 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
                        (m_AEMD.ipolicy    == NAMED_POLICY &&
                         m_AEMD.policyname != m_AEMD.oldpolicyname)       ||
                        m_AEMD.KBShortcut  != m_AEMD.oldKBShortcut        ||
-                       m_AEMD.attachment  != m_AEMD.oldattachment);
+                       m_AEMD.attachment  != m_AEMD.oldattachment        ||
+                       StringX(m_AEMD.customfields) != m_AEMD.pci->GetCustomFieldsRaw());
 
       bIsPSWDModified = (m_AEMD.realpassword != m_AEMD.oldRealPassword);
 
@@ -388,6 +389,8 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
         m_AEMD.pci->SetEmail(m_AEMD.email);
         m_AEMD.pci->SetSymbols(m_AEMD.symbols);
         m_AEMD.pci->SetProtected(m_AEMD.ucprotected != 0);
+
+        m_AEMD.pci->SetCustomFields(m_AEMD.customfields);
 
         m_AEMD.oldKBShortcut = m_AEMD.KBShortcut;
         m_AEMD.pci->SetKBShortcut(m_AEMD.KBShortcut);
@@ -493,6 +496,7 @@ BOOL CAddEdit_PropertySheet::OnApply(const int &iCID)
       m_AEMD.pci->SetSymbols(m_AEMD.symbols);
       m_AEMD.pci->SetProtected(m_AEMD.ucprotected != 0);
       m_AEMD.pci->SetKBShortcut(m_AEMD.KBShortcut);
+      m_AEMD.pci->SetCustomFields(m_AEMD.customfields);
 
       time(&t);
       m_AEMD.pci->SetCTime(t);
@@ -812,6 +816,9 @@ void CAddEdit_PropertySheet::SetupInitialValues()
       m_AEMD.realpassword = m_AEMD.oldRealPassword = m_AEMD.base;
     }
   } // IsAlias
+
+  // Custom Fields
+  m_AEMD.customfields = m_AEMD.pci->GetCustomFields();
 
   // Attachment
   if (m_AEMD.pci->HasAttachment() && m_AEMD.pci->HasAttRef()) {
