@@ -2485,10 +2485,7 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
 
   m_Item.SetGroup(tostringx(group));
   m_Item.SetTitle(tostringx(m_Title));
-  m_Item.SetUser(m_User.empty() ?
-                 PWSprefs::GetInstance()->
-                   GetPref(PWSprefs::DefaultUsername).c_str() : m_User.c_str());
-
+  m_Item.SetUser(tostringx(m_User));
   m_Item.SetNotes(tostringx(m_Notes));
   m_Item.SetURL(tostringx(m_Url));
   m_Item.SetEmail(tostringx(m_Email));
@@ -2870,9 +2867,7 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
     m_Item.SetTitle(tostringx(m_Title));
   }
   if (changes & Changes::User) {
-    m_Item.SetUser(m_User.empty() ?
-                   PWSprefs::GetInstance()->
-                     GetPref(PWSprefs::DefaultUsername).c_str() : m_User.c_str());
+    m_Item.SetUser(tostringx(m_User));
   }
   if (changes & Changes::Notes) {
     m_Item.SetNotes(tostringx(m_Notes));
