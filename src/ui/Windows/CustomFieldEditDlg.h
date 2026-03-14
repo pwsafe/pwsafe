@@ -7,6 +7,7 @@
 */
 #pragma once
 
+#include "core/CustomFields.h"
 #include "resource.h"
 #include "PWDialog.h"
 
@@ -14,7 +15,7 @@
 class CCustomFieldEditDlg : public CPWDialog
 {
 public:
-  CCustomFieldEditDlg(CWnd* pParent = nullptr);
+  CCustomFieldEditDlg(CWnd* pParent, const CustomFieldList& fields);
 
   enum { IDD = IDD_CUSTOMFIELD_EDIT };
 
@@ -25,6 +26,10 @@ public:
 protected:
   virtual void DoDataExchange(CDataExchange* pDX);
   virtual BOOL OnInitDialog();
+  virtual void OnOK();
 
   DECLARE_MESSAGE_MAP()
+
+private:
+  CustomFieldList m_fields;
 };

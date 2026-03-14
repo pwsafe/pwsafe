@@ -1371,23 +1371,21 @@ void CAddEdit_Basic::OnCustomFieldsAdd()
   if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
     return;
 
-  CCustomFieldEditDlg dlg(this);
+  CCustomFieldEditDlg dlg(this, M_customfields());
   dlg.m_name = L"";
   dlg.m_value = L"";
   dlg.m_sensitive = FALSE;
   if (dlg.DoModal() != IDOK)
     return;
 
+  ASSERT(dlg.m_name.IsEmpty()); // Enforced in dialog's OnOK()
+
+  const StringX newName(dlg.m_name);
   CustomField cf;
-  cf.SetName(StringX(dlg.m_name));
+
+  cf.SetName(newName);
   cf.SetValue(StringX(dlg.m_value));
   cf.SetSensitive(dlg.m_sensitive == TRUE);
-
-  if (dlg.m_name.IsEmpty()) {
-    CGeneralMsgBox gmb;
-    gmb.AfxMessageBox(IDS_MUSTHAVETITLE);
-    return;
-  }
 
   M_customfields().push_back(cf);
   LoadCustomFieldsFromList();
@@ -1408,20 +1406,17 @@ void CAddEdit_Basic::OnCustomFieldsEdit()
     return;
 
   CustomField &cf = fields[sel];
-  CCustomFieldEditDlg dlg(this);
+  CCustomFieldEditDlg dlg(this, fields);
   dlg.m_name = cf.GetName().c_str();
   dlg.m_value = cf.GetValue().c_str();
   dlg.m_sensitive = cf.IsSensitive() ? TRUE : FALSE;
   if (dlg.DoModal() != IDOK)
     return;
 
-  if (dlg.m_name.IsEmpty()) {
-    CGeneralMsgBox gmb;
-    gmb.AfxMessageBox(IDS_MUSTHAVETITLE);
-    return;
-  }
+  ASSERT(dlg.m_name.IsEmpty()); // Enforced in dialog's OnOK()
 
-  cf.SetName(StringX(dlg.m_name));
+  const StringX newName(dlg.m_name);
+  cf.SetName(newName);
   cf.SetValue(StringX(dlg.m_value));
   cf.SetSensitive(dlg.m_sensitive == TRUE);
   LoadCustomFieldsFromList();

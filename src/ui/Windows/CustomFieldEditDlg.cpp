@@ -9,11 +9,13 @@
 #include "StdAfx.h"
 #include "CustomFieldEditDlg.h"
 
+#include "GeneralMsgBox.h"
+
 //IMPLEMENT_DYNAMIC(CCustomFieldEditDlg, CDialog)
 
-CCustomFieldEditDlg::CCustomFieldEditDlg(CWnd* pParent)
+CCustomFieldEditDlg::CCustomFieldEditDlg(CWnd* pParent, const CustomFieldList& fields)
   : CPWDialog(IDD_CUSTOMFIELD_EDIT, pParent),
-  m_sensitive(FALSE)
+  m_sensitive(FALSE), m_fields(fields)
 {
 }
 
@@ -29,6 +31,28 @@ BOOL CCustomFieldEditDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
   return TRUE;
+}
+
+void CCustomFieldEditDlg::OnOK()
+{
+  if (!UpdateData(TRUE))
+    return;
+
+  if (m_name.IsEmpty()) {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_CUSTOMFIELD_EMPTYNAME);
+    return;
+  }
+
+  // enforce unique name within the entry
+  StringX sxName(static_cast<const wchar_t*>(m_name));
+  if (m_fields.HasName(sxName)) {
+    CGeneralMsgBox gmb;
+    gmb.AfxMessageBox(IDS_CUSTOMFIELD_DUPLICATENAME);
+    return;
+  }
+
+  CPWDialog::OnOK();
 }
 
 BEGIN_MESSAGE_MAP(CCustomFieldEditDlg, CPWDialog)
