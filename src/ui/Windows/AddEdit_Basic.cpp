@@ -1461,6 +1461,7 @@ void CAddEdit_Basic::OnCustomFieldsToggleSensitive()
 
 void CAddEdit_Basic::OnNMRClickCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult)
 {
+  (void)pNMHDR;
   CPoint pt;
   GetCursorPos(&pt);
   m_customFieldsList.ScreenToClient(&pt);
@@ -1488,6 +1489,7 @@ void CAddEdit_Basic::OnNMRClickCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult)
 
 void CAddEdit_Basic::OnNMDblclkCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult)
 {
+  (void)pNMHDR;
   OnCustomFieldsEdit();
   *pResult = 0;
 }
