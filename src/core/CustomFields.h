@@ -15,6 +15,7 @@
 
 #include <utility>
 #include <vector>
+#include <algorithm> // for find_if
 
 //-----------------------------------------------------------------------------
 
