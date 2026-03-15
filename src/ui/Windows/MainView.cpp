@@ -1112,6 +1112,26 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
         bFoundit = true;
         break;
       }
+      if (bsFields.test(CItemData::CUSTOMTEXT)) {
+        auto customFields = curitem.GetCustomFields();
+        for (const auto& cf : customFields) {
+          auto properties = cf.GetProperties();
+          for (const auto& prop : properties) {
+            if (prop.first == CustomField::PROP_SENSITIVE)
+              continue; // Don't search non-textual properties, currently only PROP_SENSITIVE which is a boolean
+            auto value = prop.second;
+            if (!CaseSensitive)
+              ToLower(value);
+            if (::wcsstr(value.c_str(), searchstr)) {
+              bFoundit = true;
+              break;
+            }
+          } // textual custom field properties
+          if (bFoundit)
+            break;
+        } // custom fields
+      }
+
       if (bsAttFields.test(CItemAtt::FILENAME - CItemAtt::START) && ::wcsstr(curFN.c_str(), searchstr)) {
         bFoundit = true;
         break;
