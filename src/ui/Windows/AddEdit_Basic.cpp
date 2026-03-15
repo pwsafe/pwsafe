@@ -1378,7 +1378,7 @@ void CAddEdit_Basic::OnCustomFieldsAdd()
   if (dlg.DoModal() != IDOK)
     return;
 
-  ASSERT(dlg.m_name.IsEmpty()); // Enforced in dialog's OnOK()
+  ASSERT(!dlg.m_name.IsEmpty()); // Enforced in dialog's OnOK()
 
   const StringX newName(dlg.m_name);
   CustomField cf;
