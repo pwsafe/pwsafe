@@ -1372,9 +1372,7 @@ void CAddEdit_Basic::OnCustomFieldsAdd()
     return;
 
   CCustomFieldEditDlg dlg(this, M_customfields());
-  dlg.m_name = L"";
-  dlg.m_value = L"";
-  dlg.m_sensitive = FALSE;
+ 
   if (dlg.DoModal() != IDOK)
     return;
 
@@ -1406,14 +1404,12 @@ void CAddEdit_Basic::OnCustomFieldsEdit()
     return;
 
   CustomField &cf = fields[sel];
-  CCustomFieldEditDlg dlg(this, fields);
-  dlg.m_name = cf.GetName().c_str();
-  dlg.m_value = cf.GetValue().c_str();
-  dlg.m_sensitive = cf.IsSensitive() ? TRUE : FALSE;
+  CCustomFieldEditDlg dlg(this, fields, cf);
+
   if (dlg.DoModal() != IDOK)
     return;
 
-  ASSERT(dlg.m_name.IsEmpty()); // Enforced in dialog's OnOK()
+  ASSERT(!dlg.m_name.IsEmpty()); // Enforced in dialog's OnOK()
 
   const StringX newName(dlg.m_name);
   cf.SetName(newName);

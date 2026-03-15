@@ -15,7 +15,9 @@
 class CCustomFieldEditDlg : public CPWDialog
 {
 public:
-  CCustomFieldEditDlg(CWnd* pParent, const CustomFieldList& fields);
+  CCustomFieldEditDlg(CWnd* pParent, const CustomFieldList& fields); // For adding
+  CCustomFieldEditDlg(CWnd* pParent, const CustomFieldList& fields, const CustomField& cf); // For editing
+
 
   enum { IDD = IDD_CUSTOMFIELD_EDIT };
 
@@ -32,4 +34,5 @@ protected:
 
 private:
   CustomFieldList m_fields;
+  const CString m_orig_name; // for editing, to skip uniqueness check
 };

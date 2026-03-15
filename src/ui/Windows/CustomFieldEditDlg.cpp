@@ -15,7 +15,13 @@
 
 CCustomFieldEditDlg::CCustomFieldEditDlg(CWnd* pParent, const CustomFieldList& fields)
   : CPWDialog(IDD_CUSTOMFIELD_EDIT, pParent),
-  m_sensitive(FALSE), m_fields(fields)
+  m_name(_T("")), m_value(_T("")), m_sensitive(FALSE), m_fields(fields), m_orig_name(_T(""))
+{}
+
+CCustomFieldEditDlg::CCustomFieldEditDlg(CWnd* pParent, const CustomFieldList& fields, const CustomField& cf)
+  : CPWDialog(IDD_CUSTOMFIELD_EDIT, pParent),
+  m_name(cf.GetName().c_str()), m_value(cf.GetValue().c_str()),
+  m_sensitive(cf.IsSensitive()), m_fields(fields), m_orig_name(cf.GetName().c_str())
 {
 }
 
@@ -46,7 +52,7 @@ void CCustomFieldEditDlg::OnOK()
 
   // enforce unique name within the entry
   StringX sxName(static_cast<const wchar_t*>(m_name));
-  if (m_fields.HasName(sxName)) {
+  if (m_name != m_orig_name && m_fields.HasName(sxName)) {
     CGeneralMsgBox gmb;
     gmb.AfxMessageBox(IDS_CUSTOMFIELD_DUPLICATENAME);
     return;
