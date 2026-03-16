@@ -9,15 +9,41 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2025-11-08 12:47+0200\n"
+"PO-Revision-Date: 2026-03-16 19:49+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: cs\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -802,6 +828,10 @@ msgstr "&Přeruš"
 msgid "&About Password Safe..."
 msgstr "&O programu Password Safe..."
 
+#. Resource IDs: (1626)
+msgid "&Add"
+msgstr "&Přidat"
+
 #. Resource IDs: (32051 - Menu, 32051 - MenuEx)
 msgid "&Add Entry..."
 msgstr "&Přidej záznam..."
@@ -866,7 +896,7 @@ msgstr "&Kopírovat"
 msgid "&Copy Password to Clipboard"
 msgstr "&Kopíruj heslo do schránky"
 
-#. Resource IDs: (1344, 1405, 32055 - MenuEx, 34104)
+#. Resource IDs: (1344, 1405, 1628, 32055 - MenuEx, 34104)
 msgid "&Delete"
 msgstr "&Smazat"
 
@@ -916,7 +946,7 @@ msgstr "&Duplikuj skupinu"
 msgid "&E-mail:"
 msgstr "&E-mail:"
 
-#. Resource IDs: (1342, 1472, 32050 - PopupMenuEx)
+#. Resource IDs: (1342, 1472, 1627, 32050 - PopupMenuEx)
 msgid "&Edit"
 msgstr "&Upravit"
 
@@ -1000,6 +1030,10 @@ msgstr "&Organizovat"
 msgid "&Manage..."
 msgstr "&Organizovat..."
 
+#. Resource IDs: (5733)
+msgid "&Mask as password / Show as text"
+msgstr "&Maskovat jako heslo / Zobrazit jako text"
+
 #. Resource IDs: (32124 - MenuEx)
 msgid "&Merge"
 msgstr "&Sloučit"
@@ -1007,6 +1041,10 @@ msgstr "&Sloučit"
 #. Resource IDs: (32253 - Menu)
 msgid "&Minimize"
 msgstr "&Minimalizovat"
+
+#. Resource IDs: (65535)
+msgid "&Name:"
+msgstr "&Název"
 
 #. Resource IDs: (1229)
 msgid "&Never"
@@ -1200,11 +1238,11 @@ msgstr "&Zpět"
 
 #. Resource IDs: (32091 - Menu)
 msgid "&Unprotect All Entries"
-msgstr ""
+msgstr "Odemknout všechny záznamy"
 
 #. Resource IDs: (32127 - MenuEx)
 msgid "&Unsaved Changes"
-msgstr ""
+msgstr "Neuložené změny"
 
 #. Resource IDs: (1352, 65535)
 msgid "&Username:"
@@ -1213,6 +1251,10 @@ msgstr "&Uživatelské jméno:"
 #. Resource IDs: (32125 - MenuEx)
 msgid "&Validate"
 msgstr "&Zkontrolovat"
+
+#. Resource IDs: (65535)
+msgid "&Value:"
+msgstr "&Hodnota:"
 
 #. Resource IDs: (32101 - PopupMenuEx)
 msgid "&View"
@@ -1667,6 +1709,10 @@ msgstr ">"
 #. Resource IDs: (1155)
 msgid ">>"
 msgstr ">>"
+
+#. Resource IDs: (5734)
+msgid "A custom field with this name already exists for this entry."
+msgstr ""
 
 #. Resource IDs: (5249)
 msgid "A dot cannot be used as the first character of the Group field."
@@ -3043,6 +3089,18 @@ msgid ""
 "\n"
 "Visit the Password Safe website to download the latest version."
 msgstr ""
+
+#. Resource IDs: (573)
+msgid "Custom Field"
+msgstr "Vlastní pole"
+
+#. Resource IDs: (3096, 5231)
+msgid "Custom Fields"
+msgstr "Uživatelská pole"
+
+#. Resource IDs: (1624)
+msgid "Custom Fields:"
+msgstr "Uživatelská pole:"
 
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
@@ -4752,7 +4810,7 @@ msgstr "Importuj jako skupinu"
 
 #. Resource IDs: (1516)
 msgid "Import..."
-msgstr ""
+msgstr "Import..."
 
 #. Resource IDs: (5277, 5638)
 msgid "Imported"
@@ -4987,7 +5045,7 @@ msgstr "Poslední úprava"
 
 #. Resource IDs: (65535)
 msgid "Last Modified date:"
-msgstr ""
+msgstr "Datum poslední úpravy:"
 
 #. Resource IDs: (1112)
 msgid "Last accessed on:"
@@ -5152,6 +5210,10 @@ msgstr "Maorština"
 #. Resource IDs: (8256)
 msgid "Marathi"
 msgstr "Maráthština"
+
+#. Resource IDs: (1632)
+msgid "Mask value as &password"
+msgstr "Hodnota masky jako &password"
 
 #. Resource IDs: (131)
 msgid "Master Password Entry"
@@ -6634,7 +6696,7 @@ msgstr "Vybrat záznam k porovnání"
 
 #. Resource IDs: (5993)
 msgid "Select media type"
-msgstr ""
+msgstr "Vybraný typ média"
 
 #. Resource IDs: (5430)
 msgid "Select some entries"
@@ -7286,6 +7348,10 @@ msgstr "Zdá se, že Yubikee není inicializován. Incializovat?"
 msgid "The authentication secret was not found"
 msgstr "Ověřovací tajný klíč nebyl nalezen."
 
+#. Resource IDs: (5735)
+msgid "The custom field's name cannot be empty."
+msgstr ""
+
 #. Resource IDs: (5311)
 #, c-format
 msgid ""
@@ -7570,7 +7636,7 @@ msgstr "Uživatel specifikoval, že následující pole budou vynechána při ex
 
 #. Resource IDs: (5505)
 msgid "There are more than one entry that fits your selection. Be more specific."
-msgstr ""
+msgstr "Existuje více než jeden příspěvek, který odpovídá vašemu výběru. Buďte konkrétnější."
 
 #. Resource IDs: (3358)
 msgid "There are unmatched quotes in the run command"
@@ -7883,7 +7949,7 @@ msgstr "Nelze uložit konfigurační soubor"
 
 #. Resource IDs: (5484)
 msgid "Unable to send Email"
-msgstr ""
+msgstr "Nemohu odeslat e-mail"
 
 #. Resource IDs: (3030)
 msgid ""

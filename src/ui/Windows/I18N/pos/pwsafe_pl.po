@@ -9,15 +9,41 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2025-11-08 12:54+0200\n"
+"PO-Revision-Date: 2026-03-16 19:58+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -763,6 +789,10 @@ msgstr "&Przerwij"
 msgid "&About Password Safe..."
 msgstr "&O Password Safe..."
 
+#. Resource IDs: (1626)
+msgid "&Add"
+msgstr "&Dodaj"
+
 #. Resource IDs: (32051 - Menu, 32051 - MenuEx)
 msgid "&Add Entry..."
 msgstr "&Dodaj Wpis..."
@@ -827,7 +857,7 @@ msgstr "&Kopiuj"
 msgid "&Copy Password to Clipboard"
 msgstr "&Kopiuj Hasło do Schowka"
 
-#. Resource IDs: (1344, 1405, 32055 - MenuEx, 34104)
+#. Resource IDs: (1344, 1405, 1628, 32055 - MenuEx, 34104)
 msgid "&Delete"
 msgstr "&Usuń"
 
@@ -877,7 +907,7 @@ msgstr "&Duplikaty Grup"
 msgid "&E-mail:"
 msgstr "&Email:"
 
-#. Resource IDs: (1342, 1472, 32050 - PopupMenuEx)
+#. Resource IDs: (1342, 1472, 1627, 32050 - PopupMenuEx)
 msgid "&Edit"
 msgstr "&Edycja"
 
@@ -961,6 +991,10 @@ msgstr "&Zarządzaj"
 msgid "&Manage..."
 msgstr "&Zarządzaj..."
 
+#. Resource IDs: (5733)
+msgid "&Mask as password / Show as text"
+msgstr "&Maskuj jako hasło / Pokaż jako tekst"
+
 #. Resource IDs: (32124 - MenuEx)
 msgid "&Merge"
 msgstr "&Scal"
@@ -968,6 +1002,10 @@ msgstr "&Scal"
 #. Resource IDs: (32253 - Menu)
 msgid "&Minimize"
 msgstr "&Minimalizuj"
+
+#. Resource IDs: (65535)
+msgid "&Name:"
+msgstr "&Nazwa:"
 
 #. Resource IDs: (1229)
 msgid "&Never"
@@ -1174,6 +1212,10 @@ msgstr "&Nazwa użytkownika:"
 #. Resource IDs: (32125 - MenuEx)
 msgid "&Validate"
 msgstr "&Zweryfikuj"
+
+#. Resource IDs: (65535)
+msgid "&Value:"
+msgstr "Wartość:"
 
 #. Resource IDs: (32101 - PopupMenuEx)
 msgid "&View"
@@ -1628,6 +1670,10 @@ msgstr ">"
 #. Resource IDs: (1155)
 msgid ">>"
 msgstr ">>"
+
+#. Resource IDs: (5734)
+msgid "A custom field with this name already exists for this entry."
+msgstr "Dla tego wpisu istnieje już niestandardowe pole o tej nazwie."
 
 #. Resource IDs: (5249)
 msgid "A dot cannot be used as the first character of the Group field."
@@ -3010,6 +3056,18 @@ msgstr ""
 "Najnowsza wersja: %s\n"
 "\n"
 "Odwiedź witrynę Sejf haseł, aby pobrać najnowszą wersję."
+
+#. Resource IDs: (573)
+msgid "Custom Field"
+msgstr "Własne pole"
+
+#. Resource IDs: (3096, 5231)
+msgid "Custom Fields"
+msgstr "Dodatkowe pola"
+
+#. Resource IDs: (1624)
+msgid "Custom Fields:"
+msgstr "Pola niestandardowe:"
 
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
@@ -4676,7 +4734,7 @@ msgstr ""
 
 #. Resource IDs: (5534)
 msgid "Import Text"
-msgstr ""
+msgstr "Import tekstu"
 
 #. Resource IDs: (125)
 msgid "Import Text Settings"
@@ -5123,6 +5181,10 @@ msgstr "Maoryski"
 #. Resource IDs: (8256)
 msgid "Marathi"
 msgstr "Maratki"
+
+#. Resource IDs: (1632)
+msgid "Mask value as &password"
+msgstr "Wartość maski jako & hasło"
 
 #. Resource IDs: (131)
 msgid "Master Password Entry"
@@ -7257,6 +7319,10 @@ msgstr "YubiKey wygląda na niezainicjowanego. Zainicjować?"
 msgid "The authentication secret was not found"
 msgstr "Nie znaleziono klucza tajnego uwierzytelniania"
 
+#. Resource IDs: (5735)
+msgid "The custom field's name cannot be empty."
+msgstr "Nazwa pola niestandardowego nie może być pusta."
+
 #. Resource IDs: (5311)
 #, c-format
 msgid ""
@@ -7395,7 +7461,7 @@ msgstr "Następujące kolumny zostaną przetworzone: "
 
 #. Resource IDs: (3463)
 msgid "The following entries contain incomplete passkeys."
-msgstr ""
+msgstr "Poniższe wpisy zawierają niekompletne klucze dostępu."
 
 #. Resource IDs: (3439)
 msgid "The following entries had a duplicate UUID field.  This has been corrected."
