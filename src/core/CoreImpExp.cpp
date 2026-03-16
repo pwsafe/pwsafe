@@ -49,7 +49,7 @@
 #include <type_traits> // for static_assert
 
 // These column names must match the field names defined in core_st.cpp
-static const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tTwo Factor Key\tTOTP Config\tTOTP Start Time\tTOTP Time Step\tTOTP Length\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tPassword Policy Name\tHistory\tRun Command\tDCA\tShift+DCA\te-mail\tProtected\tSymbols\tKeyboard Shortcut\tNotes");
+static const TCHAR *EXPORTHEADER  = _T("Group/Title\tUsername\tPassword\tTwo Factor Key\tTOTP Config\tTOTP Start Time\tTOTP Time Step\tTOTP Length\tURL\tAutoType\tCreated Time\tPassword Modified Time\tLast Access Time\tPassword Expiry Date\tPassword Expiry Interval\tRecord Modified Time\tPassword Policy\tPassword Policy Name\tHistory\tRun Command\tDCA\tShift+DCA\te-mail\tProtected\tSymbols\tKeyboard Shortcut\tCustom Fields\tNotes");
 static const TCHAR *KPEXPORTHEADER  = _T("Password Groups\tGroup Tree\tAccount\tLogin Name\tPassword\tWeb Site\tComments\tUUID\tIcon\tCreation Time\tLast Access\tLast Modification\tExpires\tAttachment Description\tAttachment");
 static const TCHAR *KPIMPORTEDPREFIX = _T("ImportedKeePass");
 
@@ -202,6 +202,9 @@ StringX PWScore::BuildHeader(const CItemData::FieldBits &bsFields, const bool bI
   }
   if (bittest(bsFields, CItemData::KBSHORTCUT, bIncluded)) {
     hdr += CItemData::FieldName(CItemData::KBSHORTCUT) + TAB;
+  }
+  if (bittest(bsFields, CItemData::CUSTOMTEXT, bIncluded)) {
+    hdr += CItemData::FieldName(CItemData::CUSTOMTEXT) + TAB;
   }
   if (bittest(bsFields, CItemData::NOTES, bIncluded)) {
     hdr += CItemData::FieldName(CItemData::NOTES);
@@ -841,6 +844,45 @@ static void ReportInvalidField(CReport &rpt, const stringT &value, int lineNum)
   rpt.WriteLine(cs_error);
 }
 
+static StringX UnescapeCustomFieldsFromTextImport(const stringT &s)
+{
+  StringX unescaped;
+
+  for (stringT::size_type i = 0; i < s.length(); i++) {
+    if (s[i] != TCHAR('\\')) {
+      unescaped += s[i];
+      continue;
+    }
+
+    if (i + 1 >= s.length()) {
+      unescaped += s[i];
+      continue;
+    }
+
+    i++;
+    switch (s[i]) {
+    case TCHAR('\\'):
+      unescaped += TCHAR('\\');
+      break;
+    case TCHAR('t'):
+      unescaped += TCHAR('\t');
+      break;
+    case TCHAR('r'):
+      unescaped += TCHAR('\r');
+      break;
+    case TCHAR('n'):
+      unescaped += TCHAR('\n');
+      break;
+    default:
+      unescaped += TCHAR('\\');
+      unescaped += s[i];
+      break;
+    }
+  }
+
+  return unescaped;
+}
+
 int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
                                  const StringX &filename,
                                  const TCHAR &fieldSeparator, const TCHAR &delimiter,
@@ -947,6 +989,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     defaultPairs(PROTECTED),
     defaultPairs(SYMBOLS),
     defaultPairs(KBSHORTCUT),
+    defaultPairs(CUSTOMTEXT),
     defaultPairs(NOTES),
     altPair(L"comments",NOTES),
     altPair(L"extra",NOTES),
@@ -1359,6 +1402,9 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     set_field_if_in_row(CItem::SHIFTDCA);
     set_field_if_in_row(CItem::EMAIL);
     set_field_if_in_row(CItem::SYMBOLS);
+    if (row_has_column(CItem::CUSTOMTEXT))
+      ci_temp.SetFieldValue(CItem::CUSTOMTEXT,
+                            UnescapeCustomFieldsFromTextImport(tokens[columns[CItem::CUSTOMTEXT]]));
 
     // fields that have specific formats, setting their values may fail if non-compliant:
     if (row_has_column(CItem::CTIME))
