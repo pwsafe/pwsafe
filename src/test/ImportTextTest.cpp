@@ -177,3 +177,96 @@ TEST_F(ImportTextTest, test5)
     L"marked as favorite!");
   EXPECT_EQ(item1.GetURL(), L"http://acme.org");
 }
+
+TEST_F(ImportTextTest, export_import_custom_fields_roundtrip)
+{
+  const stringT exportFile = _T("import-text-unit-test-customfields.txt");
+  const StringX sxExportFile(exportFile.c_str());
+  const StringX rawFields = _T("010004Name020005Value0300012")
+                            _T("000000")
+                            _T("010004Wifi020004Test040003abc");
+
+  pws_os::DeleteAFile(exportFile);
+
+  PWScore exportCore;
+  CItemData ci;
+  ci.CreateUUID();
+  ci.SetGroup(_T("network"));
+  ci.SetTitle(_T("router"));
+  ci.SetUser(_T("admin"));
+  ci.SetPassword(_T("secret"));
+  ci.SetFieldValue(CItemData::CUSTOMTEXT, rawFields);
+
+  Command *pcmd = AddEntryCommand::Create(&exportCore, ci);
+  ASSERT_NE(pcmd, nullptr);
+  ASSERT_EQ(exportCore.Execute(pcmd), 0);
+  delete pcmd;
+
+  CItemData::FieldBits bsFields;
+  bsFields.set();
+  int numExported(0);
+  CReport rpt;
+  ASSERT_EQ(exportCore.WritePlaintextFile(sxExportFile, bsFields, _T(""), 0, 0,
+                                          TCHAR('\xbb'), numExported, nullptr, &rpt),
+            PWScore::SUCCESS);
+  EXPECT_EQ(numExported, 1);
+  ASSERT_TRUE(pws_os::FileExists(exportFile));
+
+  importText(exportFile, TCHAR('\t'), 1);
+
+  auto iter = core.Find(_T("network"), _T("router"), _T("admin"));
+  ASSERT_NE(iter, core.GetEntryEndIter());
+  auto item = core.GetEntry(iter);
+  EXPECT_EQ(item.GetCustomFieldsRaw(), rawFields);
+
+  EXPECT_TRUE(pws_os::DeleteAFile(exportFile));
+}
+
+TEST_F(ImportTextTest, export_import_custom_fields_special_chars_roundtrip)
+{
+  const stringT exportFile = _T("import-text-unit-test-customfields-special.txt");
+  const StringX sxExportFile(exportFile.c_str());
+
+  pws_os::DeleteAFile(exportFile);
+
+  PWScore exportCore;
+  CItemData ci;
+  ci.CreateUUID();
+  ci.SetGroup(_T("network"));
+  ci.SetTitle(_T("router-special"));
+  ci.SetUser(_T("admin"));
+  ci.SetPassword(_T("secret"));
+
+  CustomFieldList fields;
+  CustomField cf;
+  cf.SetName(_T("line\tname"));
+  cf.SetValue(_T("slash\\ quote\" semi; row1\r\nrow2"));
+  fields.push_back(cf);
+  ci.SetCustomFields(fields);
+
+  const StringX rawFields = ci.GetCustomFieldsRaw();
+
+  Command *pcmd = AddEntryCommand::Create(&exportCore, ci);
+  ASSERT_NE(pcmd, nullptr);
+  ASSERT_EQ(exportCore.Execute(pcmd), 0);
+  delete pcmd;
+
+  CItemData::FieldBits bsFields;
+  bsFields.set();
+  int numExported(0);
+  CReport rpt;
+  ASSERT_EQ(exportCore.WritePlaintextFile(sxExportFile, bsFields, _T(""), 0, 0,
+                                          TCHAR('\xbb'), numExported, nullptr, &rpt),
+            PWScore::SUCCESS);
+  EXPECT_EQ(numExported, 1);
+  ASSERT_TRUE(pws_os::FileExists(exportFile));
+
+  importText(exportFile, TCHAR('\t'), 1);
+
+  auto iter = core.Find(_T("network"), _T("router-special"), _T("admin"));
+  ASSERT_NE(iter, core.GetEntryEndIter());
+  auto item = core.GetEntry(iter);
+  EXPECT_EQ(item.GetCustomFieldsRaw(), rawFields);
+
+  EXPECT_TRUE(pws_os::DeleteAFile(exportFile));
+}
