@@ -270,3 +270,52 @@ TEST_F(ImportTextTest, export_import_custom_fields_special_chars_roundtrip)
 
   EXPECT_TRUE(pws_os::DeleteAFile(exportFile));
 }
+
+TEST_F(ImportTextTest, export_import_custom_fields_utf8_roundtrip)
+{
+  const stringT exportFile = _T("import-text-unit-test-customfields-utf8.txt");
+  const StringX sxExportFile(exportFile.c_str());
+
+  pws_os::DeleteAFile(exportFile);
+
+  PWScore exportCore;
+  CItemData ci;
+  ci.CreateUUID();
+  ci.SetGroup(_T("network"));
+  ci.SetTitle(_T("router-utf8"));
+  ci.SetUser(_T("admin"));
+  ci.SetPassword(_T("secret"));
+
+  CustomFieldList fields;
+  CustomField cf;
+  cf.SetName(_T("cafe 名称"));
+  cf.SetValue(_T("paard café Ελληνικά Пример 日本語"));
+  fields.push_back(cf);
+  ci.SetCustomFields(fields);
+
+  const StringX rawFields = ci.GetCustomFieldsRaw();
+
+  Command *pcmd = AddEntryCommand::Create(&exportCore, ci);
+  ASSERT_NE(pcmd, nullptr);
+  ASSERT_EQ(exportCore.Execute(pcmd), 0);
+  delete pcmd;
+
+  CItemData::FieldBits bsFields;
+  bsFields.set();
+  int numExported(0);
+  CReport rpt;
+  ASSERT_EQ(exportCore.WritePlaintextFile(sxExportFile, bsFields, _T(""), 0, 0,
+                                          TCHAR('\xbb'), numExported, nullptr, &rpt),
+            PWScore::SUCCESS);
+  EXPECT_EQ(numExported, 1);
+  ASSERT_TRUE(pws_os::FileExists(exportFile));
+
+  importText(exportFile, TCHAR('\t'), 1);
+
+  auto iter = core.Find(_T("network"), _T("router-utf8"), _T("admin"));
+  ASSERT_NE(iter, core.GetEntryEndIter());
+  auto item = core.GetEntry(iter);
+  EXPECT_EQ(item.GetCustomFieldsRaw(), rawFields);
+
+  EXPECT_TRUE(pws_os::DeleteAFile(exportFile));
+}
