@@ -1,0 +1,111 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Command Line Arguments</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css"></head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"> </object>
+<!-- Popup Source File -->
+
+<h2>Command Line Arguments</h2>
+
+<p>Invoking <b>Password Safe</b> with no arguments will cause the application to prompt you for the
+master password of the last database that was opened, or for the
+master password of a new database if none was previously opened on
+your machine (e.g., the first time you use <b>Password Safe</b>).
+It is, however, possible to modify this by invoking <b>Password Safe</b> as
+follows:</p>
+
+<ul>
+<li><i>pwsafe</i> <b>database</b><br>
+This will open the specified database file, instead of the last one
+opened. If just a filename is
+given, without a path, it will be searched for in the directory in which the
+application was invoked. Note that if the filename and/or path has
+spaces, it should be enclosed in double quotes.</li>
+
+<li><i>pwsafe</i> <b>-r [database]</b><br>
+This will open the specified database in read-only mode. If a database is not
+specified, then the application will prompt the user for a
+database, which will be opened in read-only mode.</li>
+
+<li><i>pwsafe</i> <b>-e filename</b><br>
+This will prompt the user for a passphrase, and encrypt the file with a
+key derived from the passphrase. <b>Note:</b> The file can
+be <i>any</i> file. The encrypted file will have the same
+name as the original file, with ".PSF" appended to it.<br></li>
+
+<li><i>pwsafe</i> <b>-d filename</b><br>
+This will prompt the user for a passphrase, and decrypt the file with a
+key derived from the passphrase. <b>Note:</b> This will
+work only on files that were encrypted by invoking pwsafe with the '-e'
+option (see above).</li>
+
+<li><i>pwsafe</i> <b>-c</b><br>
+This will start the application closed, that is, with no
+database, and without the initial opening dialog (To access a database,
+use the File menu).</li>
+
+<li><i>pwsafe</i> <b>-s [database]</b><br>
+This will start the application "silently", that is,
+minimized and with no database (unless one is specified). When the application
+is restored, the user is presented with the opening dialog box (This option
+is meant for starting the application upon login, via a shortcut in the user's
+Startup folder). <b>Note:</b> This implicitly puts the application in the system tray.</li>
+
+<li><i>pwsafe</i> <b>-m</b><br>
+This is the same as the '<b>-c</b>' option, with the addition that the application
+is started as minimized.</li>
+</ul>
+
+<p>In addition, the following options are accepted and may be useful if you wish to
+share the same preferences across several machines, for example,
+when running <b>Password Safe</b> from a disk-on-key.</p>
+
+<ul>
+<li><b>-u</b> <i>username</i><br>
+This will cause the application to read and write preferences under the specified
+<i>username</i>, instead of under the login name.</li>
+
+<li><b>-h</b> <i>hostname</i><br>
+This will cause the application to read and write preferences under the specified
+<i>hostname</i>, instead of under the machine's name.</li>
+
+<li><b>-g</b> <i>config_file</i><br>
+This will cause the specified file to be used for loading and storing preferences,
+instead of the default pwsafe.cfg. If just a filename is given, without a path,
+it will be searched for in the directory in which the application was invoked
+unless overridden by the <b>PWS_PREFSDIR</b> environment variable (see its description
+in the <a href="preferences.html">Preferences</a> Section). Note that if the filename
+and/or path has spaces, it should be enclosed in double quotes.</li> 
+</ul>
+
+<p>Note: As the configuration file uses XML, the username and hostname must satisfy the
+XML standards:
+<ul>
+<li>The first character must be alphanumeric. If not, a "u" will be prefixed to the username
+and a "h" will be prefixed to the hostname as appropriate.</li>
+<li>They must only contain alphanumeric characters or one or more of the underscore, hyphen,
+colon or full stop characters ("_-:."). If other characters are present, they will be replaced by the
+underscore ("_").</li>
+</ul>
+</p>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Read-only">
+<param name="Keyword" value="CLI">
+<param name="Keyword" value="Command Line Arguments">
+<param name="Keyword" value="File encryption">
+<param name="Keyword" value="File decryption">
+</object>
+
+</body>
+</html>
