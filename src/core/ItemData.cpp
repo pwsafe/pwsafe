@@ -857,6 +857,33 @@ CustomFieldList CItemData::GetCustomFields() const
   return CustomFieldList(GetField(CUSTOMTEXT));
 }
 
+static StringX EscapeCustomFieldsForTextExport(const StringX &s)
+{
+  StringX escaped;
+
+  for (StringX::const_iterator iter = s.begin(); iter != s.end(); ++iter) {
+    switch (*iter) {
+    case TCHAR('\\'):
+      escaped += _T("\\\\");
+      break;
+    case TCHAR('\t'):
+      escaped += _T("\\t");
+      break;
+    case TCHAR('\r'):
+      escaped += _T("\\r");
+      break;
+    case TCHAR('\n'):
+      escaped += _T("\\n");
+      break;
+    default:
+      escaped += *iter;
+      break;
+    }
+  }
+
+  return escaped;
+}
+
 StringX CItemData::GetPlaintext(const TCHAR &separator,
                                 const FieldBits &bsFields,
                                 const TCHAR &delimiter,
@@ -907,6 +934,10 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
       history += pwshe.password;
     }
   }
+
+  StringX customfields(_T(""));
+  if (bsFields.test(CItemData::CUSTOMTEXT))
+    customfields = EscapeCustomFieldsForTextExport(GetCustomFieldsRaw());
 
   StringX csPassword = ResolvePlaceholderEligibleField(this, pcibase, [this] { return GetPassword(); });
 
@@ -960,6 +991,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
            sxProtected + separator +
            GetSymbols() + separator +
            GetKBShortcut() + separator +
+           customfields + separator +
            _T("\"") + notes + _T("\""));
   } else {
     // Not everything
@@ -1038,6 +1070,9 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
     if (bsFields.test(CItemData::KBSHORTCUT)) {
       ret += GetKBShortcut() + separator;
     }
+
+    if (bsFields.test(CItemData::CUSTOMTEXT))
+      ret += customfields + separator;
 
     if (bsFields.test(CItemData::NOTES))
       ret += _T("\"") + notes + _T("\"");
