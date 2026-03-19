@@ -233,6 +233,7 @@ BOOL CAdvancedDlg::OnInitDialog()
     {IDS_RUNCOMMAND, CItemData::RUNCMD},
     {IDS_EMAIL, CItemData::EMAIL},
     {IDS_SYMBOLS, CItemData::SYMBOLS},
+    { IDS_CUSTOMFIELDS, CItemData::CUSTOMTEXT},
   };
 
   for (auto &elem : textInit) {

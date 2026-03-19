@@ -15,6 +15,7 @@
 
 #include <utility>
 #include <vector>
+#include <algorithm> // for find_if
 
 //-----------------------------------------------------------------------------
 
@@ -62,6 +63,16 @@ public:
   // Callers should check getErr() before using parsed data.
   size_t getErr() const { return m_numErr; }
   operator StringX() const;
+
+  // Following to be used when adding/editing to ensure name uniqueness
+  bool HasName(const StringX& name) const
+  {
+    auto it = std::find_if(begin(), end(),
+                           [&name](const CustomField &cf) {
+                             return cf.GetName() == name;
+      });
+    return it != end();
+  }
 
 private:
   size_t m_numErr;

@@ -163,6 +163,21 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
   <!-- End Empty Groups -->
 </xs:complexType>
 
+<!-- custom field types -->
+<xs:complexType name="customFieldType">
+  <xs:all>
+    <xs:element name="name" type="stringType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="value" type="stringType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="sensitive" type="boolType" minOccurs="1" maxOccurs="1" />
+  </xs:all>
+</xs:complexType>
+
+<xs:complexType name="customFieldsType">
+  <xs:sequence>
+    <xs:element name="custom_field" type="customFieldType" minOccurs="0" maxOccurs="unbounded" />
+  </xs:sequence>
+</xs:complexType>
+
 <!-- Start of proper Password Safe validation XSD -->
   <xs:element name="passwordsafe">
   <!-- Start Database -->
@@ -276,6 +291,8 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
               <xs:element name="protected" type="boolType" minOccurs="0" maxOccurs="1" />
               <xs:element name="symbols" type="stringType" minOccurs="0" maxOccurs="1" />
               <xs:element name="kbshortcut" type="kbshortcutType" minOccurs="0" maxOccurs="1" />
+              <!-- Custom fields wrapper -->
+              <xs:element name="custom_fields" type="customFieldsType" minOccurs="0" maxOccurs="1" />
             </xs:all>
             <xs:attribute name="id" type="xs:int" use="optional" />
             <xs:attribute name="normal" type="xs:boolean" use="optional" />

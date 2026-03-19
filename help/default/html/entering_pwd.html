@@ -36,6 +36,7 @@ been copied.  The current smart labels are:
 <li>URL</li>
 <li>Email</li>
 <li>Notes</li>
+<li>Custom Fields</li>
 </ul>
 <li><b>Additional</b></li>
 <ul>
@@ -60,6 +61,7 @@ password entry:</p>
 <li><b>URL</b>: The URL (website) associated with this entry</li>
 <li><b>Email</b>: An email address associated with this entry</li>
 <li><b>Notes</b>: Free-form general notes</li>
+<li><b>Custom Fields</b>: User-defined named values that can be added to the entry as needed.</a></li>
 </ul>
 
 <p><i>Only the <b>Title</b> and <b>Password</b> fields are required; all others are optional.</i></p>
@@ -98,6 +100,10 @@ See <a href="misc_tab.html">"Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;Mi
 If you do specify command line parameters, do <b>not</b> enclose them in quotes unless your
 chosen external editor requires them.  The value you specify will be used <i>as-is</i>
 with no changes.</p>
+
+<p><b>Custom Fields</b> is where you can add your own named fields to each password entry. For each custom field, you can specify a name and a value,
+   as well as specifying if the value will be displayed or displayed as "******" (masked).
+   There's no limit on the number of custom fields you can add, but each field name must be unique for the entry, and cannot be empty.</p>
 
 <p>In addition, the following fields may be set in this tab:</p>
 
@@ -311,6 +317,7 @@ the entry via the Edit menu or right-click context menu.</p>
 <param name="Keyword" value="TOTP">
 <param name="Keyword" value="OTP">
 <param name="Keyword" value="Authentication Code">
+<param name="Keyword" value="Custom Fields">
 </object>
 </body>
 </html>

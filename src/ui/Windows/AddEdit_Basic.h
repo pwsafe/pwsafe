@@ -67,6 +67,8 @@ public:
 
   CComboBox m_cmbDependents;
   CEditExtn m_ex_hidden_notes;
+
+  CListCtrl m_customFieldsList;
   //}}AFX_DATA
 
   CExtThread *m_thread; // worker thread
@@ -127,6 +129,13 @@ protected:
   afx_msg LRESULT OnExternalEditorEnded(WPARAM, LPARAM);
   afx_msg LRESULT OnWordWrap(WPARAM, LPARAM);
   afx_msg LRESULT OnZoomNotes(WPARAM, LPARAM);
+
+  afx_msg void OnCustomFieldsAdd();
+  afx_msg void OnCustomFieldsEdit();
+  afx_msg void OnCustomFieldsDelete();
+  afx_msg void OnCustomFieldsToggleSensitive();
+  afx_msg void OnNMRClickCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnNMDblclkCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
@@ -148,6 +157,9 @@ private:
                         pws_os::CUUID &base_uuid, int &ibasedata, bool &b_msg_issued);
   void SetGroupComboBoxWidth();
   void ShowHideBaseInfo(const CItemData::EntryType &entrytype, const CSecString &csBase);
+  void LoadCustomFieldsFromList();
+  void SaveCustomFieldsToList();
+  int GetCustomFieldListSelectedSubItem(NMHDR *pNMHDR, CPoint &pt);
   void SetupAuthenticationCodeUiElements();
   void StopAuthenticationCodeUi();
   void UpdateAuthCode();
@@ -173,6 +185,8 @@ private:
   bool m_bTwoFactorCodeShowStatic = false;
   CFont m_fontTwoFactorCodeStatic;
   const wchar_t* m_pszNotShowingCode = L"********";
+
+  int m_rightClickedCustomFieldIndex = -1;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

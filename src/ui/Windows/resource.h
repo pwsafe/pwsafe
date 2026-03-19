@@ -933,14 +933,24 @@
 #define IDC_AC_STATIC_TWOFACTORCODE     1616
 #define IDC_STATIC_TWOFACTORCODE        1622
 #define IDC_PASSWORD_STRENGTH           1623
+#define IDC_STATIC_CUSTOMFIELDS         1624
+#define IDC_CUSTOMFIELDS_LIST           1625
+#define IDC_CUSTOMFIELDS_ADD            1626
+#define IDC_CUSTOMFIELDS_EDIT           1627
+#define IDC_CUSTOMFIELDS_DELETE         1628
+#define IDC_CUSTOMFIELDS_TOGGLE_SENSITIVE 1629
+#define IDD_CUSTOMFIELD_EDIT            573
+#define IDC_CF_NAME                     1630
+#define IDC_CF_VALUE                    1631
+#define IDC_CF_SENSITIVE                1632
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        573
+#define _APS_NEXT_RESOURCE_VALUE        574
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1624
+#define _APS_NEXT_CONTROL_VALUE         1633
 #define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif

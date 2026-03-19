@@ -9,15 +9,41 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2025-11-08 12:56+0200\n"
+"PO-Revision-Date: 2026-03-16 20:00+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -607,6 +633,10 @@ msgstr "Prerušiť"
 msgid "&About Password Safe..."
 msgstr "&O aplikácii Password Safe..."
 
+#. Resource IDs: (1626)
+msgid "&Add"
+msgstr "Prid&ať"
+
 #. Resource IDs: (32051 - Menu, 32051 - MenuEx)
 msgid "&Add Entry..."
 msgstr "&Pridať záznam..."
@@ -671,7 +701,7 @@ msgstr "Kopírovať"
 msgid "&Copy Password to Clipboard"
 msgstr "Skopíruj heslo do schránky"
 
-#. Resource IDs: (1344, 1405, 32055 - MenuEx, 34104)
+#. Resource IDs: (1344, 1405, 1628, 32055 - MenuEx, 34104)
 msgid "&Delete"
 msgstr "Zmazať"
 
@@ -723,7 +753,7 @@ msgstr "&Duplikovať skupinu"
 msgid "&E-mail:"
 msgstr "Email:"
 
-#. Resource IDs: (1342, 1472, 32050 - PopupMenuEx)
+#. Resource IDs: (1342, 1472, 1627, 32050 - PopupMenuEx)
 msgid "&Edit"
 msgstr "&Upraviť"
 
@@ -807,6 +837,10 @@ msgstr "S&pravovať"
 msgid "&Manage..."
 msgstr "Spravovať..."
 
+#. Resource IDs: (5733)
+msgid "&Mask as password / Show as text"
+msgstr ""
+
 #. Resource IDs: (32124 - MenuEx)
 msgid "&Merge"
 msgstr "Zlúčiť"
@@ -814,6 +848,10 @@ msgstr "Zlúčiť"
 #. Resource IDs: (32253 - Menu)
 msgid "&Minimize"
 msgstr "Minimalizovať"
+
+#. Resource IDs: (65535)
+msgid "&Name:"
+msgstr ""
 
 #. Resource IDs: (1229)
 msgid "&Never"
@@ -1022,6 +1060,10 @@ msgstr "Meno:"
 #. Resource IDs: (32125 - MenuEx)
 msgid "&Validate"
 msgstr "Overiť"
+
+#. Resource IDs: (65535)
+msgid "&Value:"
+msgstr ""
 
 #. Resource IDs: (32101 - PopupMenuEx)
 msgid "&View"
@@ -1476,6 +1518,10 @@ msgstr ""
 #. Resource IDs: (1155)
 msgid ">>"
 msgstr ""
+
+#. Resource IDs: (5734)
+msgid "A custom field with this name already exists for this entry."
+msgstr "Pre tento záznam už existuje vlastné pole s týmto názvom."
 
 #. Resource IDs: (5249)
 msgid "A dot cannot be used as the first character of the Group field."
@@ -2858,6 +2904,18 @@ msgstr ""
 "Posledná verzia:\t%s\n"
 "\n"
 "Navštívte webovú stránku Password Safe a stiahnite si najnovšiu verziu."
+
+#. Resource IDs: (573)
+msgid "Custom Field"
+msgstr "Vlastné pole"
+
+#. Resource IDs: (3096, 5231)
+msgid "Custom Fields"
+msgstr "Vlastné polia"
+
+#. Resource IDs: (1624)
+msgid "Custom Fields:"
+msgstr "Vlastné polia:"
 
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
@@ -4970,6 +5028,10 @@ msgstr ""
 #. Resource IDs: (8256)
 msgid "Marathi"
 msgstr ""
+
+#. Resource IDs: (1632)
+msgid "Mask value as &password"
+msgstr "Hodnota masky ako & heslo"
 
 #. Resource IDs: (131)
 msgid "Master Password Entry"
@@ -7106,6 +7168,10 @@ msgstr "Yubikey sa javí ako neinicializovaný. Chcete ho inicializovať?"
 #. Resource IDs: (3503)
 msgid "The authentication secret was not found"
 msgstr "Tajný kľúč autentifikácie nebol nájdený"
+
+#. Resource IDs: (5735)
+msgid "The custom field's name cannot be empty."
+msgstr "Názov vlastného poľa nemôže byť prázdny."
 
 #. Resource IDs: (5311)
 #, c-format

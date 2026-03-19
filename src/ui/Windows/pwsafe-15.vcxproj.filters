@@ -72,6 +72,9 @@
     <ClCompile Include="CryptKeyEntry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CustomFieldEditDlg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="CWTreeCtrl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -480,6 +483,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CreateShortcutDlg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomFieldEditDlg.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CryptKeyEntry.h">

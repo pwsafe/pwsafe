@@ -359,6 +359,28 @@ TEST_F(ItemDataTest, CustomFieldsOps)
   EXPECT_FALSE(di.AddCustomField(cf1));
 }
 
+TEST_F(ItemDataTest, CustomFieldListHasName)
+{
+  CustomFieldList list;
+
+  CustomField a;
+  a.SetName(_T("Alpha"));
+  a.SetValue(_T("1"));
+  list.push_back(a);
+
+  CustomField b;
+  b.SetName(_T("Beta"));
+  b.SetValue(_T("2"));
+  list.push_back(b);
+
+  // Existing names should return true
+  EXPECT_TRUE(list.HasName(StringX(_T("Alpha"))));
+  EXPECT_TRUE(list.HasName(StringX(_T("Beta"))));
+
+  // Non-existing name should return false
+  EXPECT_FALSE(list.HasName(StringX(_T("Gamma"))));
+}
+
 TEST_F(ItemDataTest, UnknownFields)
 {
   unsigned char u1v[] = {10, 11, 33, 57};

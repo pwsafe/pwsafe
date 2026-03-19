@@ -9,15 +9,41 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2025-11-08 12:53+0200\n"
+"PO-Revision-Date: 2026-03-16 19:56+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: kr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.8\n"
+"X-Generator: Poedit 3.9\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -724,6 +750,10 @@ msgstr "취소(&A)"
 msgid "&About Password Safe..."
 msgstr "Password Safe에 관하여...(&A)"
 
+#. Resource IDs: (1626)
+msgid "&Add"
+msgstr ""
+
 #. Resource IDs: (32051 - Menu, 32051 - MenuEx)
 msgid "&Add Entry..."
 msgstr "항목 추가(&A)"
@@ -788,7 +818,7 @@ msgstr "복사(&C)"
 msgid "&Copy Password to Clipboard"
 msgstr "비밀번호를 클립보드에 복사(&C)"
 
-#. Resource IDs: (1344, 1405, 32055 - MenuEx, 34104)
+#. Resource IDs: (1344, 1405, 1628, 32055 - MenuEx, 34104)
 msgid "&Delete"
 msgstr "삭제(&D)"
 
@@ -838,7 +868,7 @@ msgstr "그룹 복제(&D)"
 msgid "&E-mail:"
 msgstr ""
 
-#. Resource IDs: (1342, 1472, 32050 - PopupMenuEx)
+#. Resource IDs: (1342, 1472, 1627, 32050 - PopupMenuEx)
 msgid "&Edit"
 msgstr "편집(&E)"
 
@@ -922,6 +952,10 @@ msgstr "관리(&M)"
 msgid "&Manage..."
 msgstr "관리...(&M)"
 
+#. Resource IDs: (5733)
+msgid "&Mask as password / Show as text"
+msgstr ""
+
 #. Resource IDs: (32124 - MenuEx)
 msgid "&Merge"
 msgstr "합치기(&M)"
@@ -929,6 +963,10 @@ msgstr "합치기(&M)"
 #. Resource IDs: (32253 - Menu)
 msgid "&Minimize"
 msgstr "최소화하기(&M)"
+
+#. Resource IDs: (65535)
+msgid "&Name:"
+msgstr "이름"
 
 #. Resource IDs: (1229)
 msgid "&Never"
@@ -1135,6 +1173,10 @@ msgstr "사용자 이름(&U):"
 #. Resource IDs: (32125 - MenuEx)
 msgid "&Validate"
 msgstr "유효화(&V)"
+
+#. Resource IDs: (65535)
+msgid "&Value:"
+msgstr "값:"
 
 #. Resource IDs: (32101 - PopupMenuEx)
 msgid "&View"
@@ -1589,6 +1631,10 @@ msgstr ">"
 #. Resource IDs: (1155)
 msgid ">>"
 msgstr ">>"
+
+#. Resource IDs: (5734)
+msgid "A custom field with this name already exists for this entry."
+msgstr ""
 
 #. Resource IDs: (5249)
 msgid "A dot cannot be used as the first character of the Group field."
@@ -2936,6 +2982,18 @@ msgid ""
 "Latest version:\t%s\n"
 "\n"
 "Visit the Password Safe website to download the latest version."
+msgstr ""
+
+#. Resource IDs: (573)
+msgid "Custom Field"
+msgstr ""
+
+#. Resource IDs: (3096, 5231)
+msgid "Custom Fields"
+msgstr "알 수 없는 필드"
+
+#. Resource IDs: (1624)
+msgid "Custom Fields:"
 msgstr ""
 
 #. Resource IDs: (32155 - MenuEx)
@@ -5022,6 +5080,10 @@ msgstr "Maori"
 #. Resource IDs: (8256)
 msgid "Marathi"
 msgstr "Marathi"
+
+#. Resource IDs: (1632)
+msgid "Mask value as &password"
+msgstr ""
 
 #. Resource IDs: (131)
 msgid "Master Password Entry"
@@ -7113,6 +7175,10 @@ msgstr ""
 
 #. Resource IDs: (3503)
 msgid "The authentication secret was not found"
+msgstr ""
+
+#. Resource IDs: (5735)
+msgid "The custom field's name cannot be empty."
 msgstr ""
 
 #. Resource IDs: (5311)
