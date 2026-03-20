@@ -72,7 +72,7 @@ unset(OUTPUT_FILES)
 if (WIN32 AND NOT WX_WINDOWS)
   make_help(DEFAULT_OUTPUT_FILE default "")
 else()
-  make_help(DEFAULT_OUTPUT_FILE default EN)
+  make_help(DEFAULT_OUTPUT_FILE default_wx EN)
 endif()
 
 set(OUTPUT_FILES "${DEFAULT_OUTPUT_FILE}")
