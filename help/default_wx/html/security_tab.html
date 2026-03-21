@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>Security Tab</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Security Tab</h2>
+
+<img alt="security tab" src="images/options/security_tab.jpg">
+
+<p>The Security Tab provides access to user controlled security
+settings.</p>
+
+<h3>Clear clipboard upon minimize</h3>
+
+<p>When checked, the program clears clipboard contents of any stored
+data (such as a password) when the application is minimized.
+This prevents anyone else or any other program from reading the
+contents of the clipboard. Note that selecting this option with the
+"Copy password to clipboard, and then immediately minimize" double click
+action in the <a href="misc_tab.html">Misc Options tab</a> will lead to
+unexpected results (the password will be copied, but immediately cleared).</p>
+
+<h3>Clear clipboard upon exit</h3>
+
+<p>When checked, the program clears clipboard contents of any stored
+data (such as a password) when the interface is minimized or closed.
+This prevents anyone else or any other program from reading the
+contents of the clipboard.</p>
+
+<h3>Confirm item copy to clipboard</h3>
+
+<p>When checked, a prompt is displayed requesting user confirmation
+every time a password is copied from the database to the clipboard.</p>
+
+<h3>'Browse to URL' copies password to clipboard</h3>
+<p>It's useful to have the password ready for pasting when browsing to a website's login page. However, this can be considered a security risk, since you didn't explicitly copy the password.
+If you check this, the relevant password will be copied to your clipboard when browsing to the URL specified in the entry.</p>
+
+<h3>Database locking</h3>
+
+<p> When the database is locked due to one of the events
+below, the database is saved, and then all its data is cleared from
+memory. However, the undo/redo log is retained so that changes can be
+undone (or redone) after unlocking.  Note: all entry information in these
+commands remain encrypted in memory.</p> 
+
+<ul>
+<li><b>Lock password database on minimized</b><br>
+
+<p>When checked, the program locks the password database when the application is
+minimized. When maximized again for use, a password is required to
+access the database.</p>
+
+<li><b>Lock password database on workstation lock</b><br>
+
+<p><b>Note:</b> Not yet implemented on non-Windows systems.<br>
+Checking this causes the password database to lock when the
+workstation is locked preventing unauthorized access by users that may
+have access to the workstation.</p>
+
+<li><b>Lock password database after...</b><br>
+
+<p>Checking this option and setting a time causes <b>Password Safe</b>
+to lock the password database after the set interval has passed without
+user actions in the application.</p>
+</ul>
+
+<h3>Unlock Difficulty</h3>
+
+<p>The setting of the slider determines how much processing is required to open and save
+a <b>Password Safe</b> database. The <em>Standard</em> setting should provide sufficient security without
+delaying the opening of a database significantly on most platforms. When increasing this value, consider
+the slowest CPU that you will use to access the database.</p>
+
+<p><b>Password Safe</b> uses the <!-- [V4Format:] <a href="https://en.wikipedia.org/wiki/PBKDF2">PBKDF2</a> -->
+original <a href="https://www.schneier.com/wp-content/uploads/2016/02/paper-low-entropy.pdf">Key
+Stretching</a> algorithm published by Bruce Schneier, which expands the 
+password to contain more entropy to make it significantly harder to
+employ brute-force processing. The slider sets the number of iterations
+of the stretching, between 2048 and 2<sup><small>22</small></sup>.</p>
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Security Tab">
+<param name="Keyword" value="Lock Database">
+<param name="Keyword" value="Confirm Copy to Clipboard">
+<param name="Keyword" value="Clearing the Clipboard">
+</object>
+
+</body>
+</html>

@@ -1,0 +1,179 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Creating a New Safe</title>
+<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
+<script language="javascript" src="html/popups.js">
+</script><link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
+<!-- Popup Source File -->
+
+<h2>Creating and Opening a Safe</h2>
+
+<p><b>Password Safe</b> allows users to store all passwords in a single
+"safe" (password database), or to create multiple databases for
+different purposes (e.g., one for work, one for personal use).
+Each database is independent and can be moved and used on different systems,
+as long as the same version of <b>Password Safe</b> is installed. Databases are
+encrypted with an encryption key derived from the master password (the master
+password, however, is <b>not</b> kept in the database in any form).</p>
+
+<p>If you are using <b>Password Safe</b> for the first time, press the
+"New..." button. You will be asked to choose the name and location of
+your password database. By default, the name will be "pwsafe.psafe3" and the location will be in ".config/pwsafe/" 
+under your home directory for Linux, and in ".pwsafe/" under your home directory for macOS.
+You can change the name and location if you wish, but we recommend that you choose a name and location that will be easy to remember and access.
+Afterwards, you will be prompted to enter a master password that is used to encrypt and lock the contents of your new safe.</p>
+
+<h3>Before You Begin</h3>
+
+<p><b>Password Safe</b> works very hard to make sure you password
+information is saved properly. However, <b>Password Safe</b> cannot
+protect against physical damage or loss to your hard disk, laptop or PC.
+Therefore, we strongly recommend that you make regular copies of your password
+database 'off-line', that is, to another PC or disk. This can be done manually,
+or by using a cloud storage service such as
+<a href="https://www.dropbox.com/home">DropBox</a>,
+<a href="https://www.sugarsync.com/">SugarSync</a> or
+<a href="https://www.jungledisk.com/">JungleDisk</a>, to name a few.</p>
+
+<p>Another thing you might want to consider is arranging for access
+to your password database by relatives or co-workers if you are no
+longer able to do so. <b>Password Safe</b> has
+<b><span style="color: rgb(255, 0, 0);">no</span></b> 'back door'
+or 'recovery password' mechanism by design. This means that you are
+responsible for making the master key available to others under the
+appropriate circumstances. This can be as simple as a sealed envelope
+in a drawer or safe-deposit box, or a more elaborate mechanism such as
+splitting the master password and giving different parts to different
+parties.</p>
+
+<h3>Create a New Database</h3>
+
+<p>There are two ways that a new database can be created. By clicking
+<b>New...</b> from the <b>Master Password Entry</b> dialog when the program
+is started, or from the <b>"File&nbsp;>&nbsp;New..."</b> menu once
+<b>Password Safe</b> has been opened. Using either method causes the
+<b>Master Password Set Up</b> dialog to appear.</p>
+
+<hr>
+<small><b>Note:</b> By default, <b>Password Safe</b> will show the database
+last used, and displays a master password prompt for it. If you use several databases,
+they will appear in the drop-down list. Alternately, you can type in the path to the database
+to open, or select it from a File dialog box by pressing on the
+ellipsis ("...") button. Once a database is open, you can change to
+another via the <b>Open...</b> command from the <b>File Menu</b>.</small>
+
+<hr>
+<center>
+<br>
+<img alt="Initial window" src="images/default_safe_open.jpg"><br>
+<br>
+<img alt="new master password prompt" src="images/new_safe.jpg">
+</center>
+
+<p>On clicking the "Show password" symbol, the contents of the password will be visible in clear.</p>
+<p>A strength meter underneath the Master Password field gives a rough indication of the strength of the password. Red indicates a weak password, Yellow a medium-strength one, and Green indicates a strong password.
+    Your master password should be strong, that is, the bar should be full and green.</p>
+
+<h3>Using YubiKey with Password Safe</h3>
+
+<p><b>Password Safe</b> can work with a <a href="about_pws_yubi.html">YubiKey</a>
+device to provide "two factor authentication", that is, protecting your database
+by both something you know (your master passphrase),
+and something you have (the YubiKey device). If you do not have a YubiKey device,
+then the YubiKey-specific buttons and texts will not be displayed by <b>Password Safe</b>,
+and the YubiKey-specific instructions below do not apply.</p>
+
+<p>If your YubiKey is connected to your PC, then a "Yubikey" button and text
+area will appear in the Master Password Entry and Setup windows, as show
+above. This allows you to use your YubiKey to access your Password
+Safe database, either in addition to, or instead of a master password.
+For maximum security, we recommend that your database be protected <b>both</b>
+by your YubiKey and a master password (this is known as two-factor authentication).</p>
+
+<h4>Setting up a Master Password with YubiKey</h4>
+
+<p>To use your <a href="about_pws_yubi.html">configured</a> YubiKey to
+protect your database:</p>
+<ol>
+<li>If you haven't already done so, insert your YubiKey into a USB slot on your PC.
+The Yubikey button on the Master Password window will now become active, and the text
+to the right of will change to "Activate YubiKey"</li>
+<li>Set up the Master Password as follows:</li>
+<ol type="a">
+<li>If you wish to protect your database using <b>both</b> your YubiKey and a
+master password ("two factor authentication"), then <b>first</b> enter the
+master password in the "Master Password" and "Confirmation" fields, <b>then</b> click
+on the Yubikey button.</li>
+<li>If you wish to protect your database using your YubiKey <b>only</b>, then
+leave the "Master Password" and "Confirmation" fields <b>empty</b>, and click on
+the Yubikey button.</li>
+<li>Of course, you can also choose to protect the database by a master password alone, just enter the master password in the "Master Password"
+and "Confirmation" fields and then click on OK.</li>
+</ol>
+<li>Click on the Yubikey button. The "Activate YubiKey" text will
+be replaced by "Touch YubiKey's button" and you will have about 15 seconds to activate
+your YubiKey (by touching the flashing green light on the device). If you do not
+activate your YubiKey in the allotted time, then an
+error message will be displayed, and you can try again or cancel.</li>
+<li>Once the YubiKey has been activated, your <b>Password Safe</b> database
+will be created.</li>
+</ol>
+
+<h3>Opening a database with YubiKey</h3>
+
+<p>To open a Password Safe database protected with your Yubikey:</p>
+<ol>
+<li>Make sure the desired database is selected in the "Password Database"
+field. If it's not there, click on the ellipsis (...) and choose it.</li>
+<li>If you've chosen to protect your database using <b>both</b> your YubiKey
+and a master password, <b>first</b> enter the master password in the
+"Master Password" field, <b>then</b> click on the Yubikey button. If
+you've chosen to protect your database using your YubiKey <b>only</b>,
+then leave the "Master Password" field <b>empty</b>, and click on the
+Yubikey button.</li>
+<li>When you click on the Yubikey button, the "Activate YubiKey" text 
+will be replaced by "Touch YubiKey's button" and you will have about 15 seconds
+to activate your YubiKey (by touching the flashing green light on
+the device). If you do not activate your YubiKey in the allotted time, 
+then an error message will be displayed, and you can
+try again or cancel.</li>
+<li>Once the YubiKey has been activated, your <b>Password Safe</b>
+database will be opened.</li>
+</ol>
+
+<h3>Virtual keyboard</h3>
+
+<p>To setup a master password in a secure way, you could use accented
+characters (e.g. on a German keyboard) such as <b>&uuml;</b>, <b>&szlig;</b>
+or similar. To realize the input of such characters, you would
+need a foreign keyboard. Such a keyboard is available as a virtual
+keyboard. This keyboard is then used to simulate all available foreign characters.
+The virtual keyboard can be shown
+by clicking on the <span><img alt="Symbol virtual keyboard" src="images/vk_small.jpg">
+</span>symbol. Foreign characters, that are not available at the physical
+keyboard, can be put in in this way. So you can build your desired master password.
+Even pieces of the master password can be built this way.</p>
+
+<center>
+<br>
+<img alt="Input a password with a virtual keyboard" src="images/virtual_keyboard.jpg">
+</center>
+
+<!-- Added some white space at the bottom for natural scrolling -->
+<br>
+<br>
+<br>
+<object type="application/x-oleobject" classid="clsid:1e2a7bd0-dab9-11d0-b93a-00c04fc99f9e">
+<param name="Keyword" value="Creating a New Safe">
+<param name="Keyword" value="Master Password">
+<param name="Keyword" value="Virtual Keyboard">
+<param name="Keyword" value="Opening a Safe">
+<param name="Keyword" value="YubiKey">
+</object>
+</body>
+</html>
