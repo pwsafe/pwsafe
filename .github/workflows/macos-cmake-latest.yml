@@ -34,7 +34,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v4.3.1
 
     - name: Set build parameters
 
@@ -79,7 +79,7 @@ jobs:
 
     - name: Cache wxWidgets build
       id: cache-wxWidgets-build
-      uses: actions/cache@v4
+      uses: actions/cache@v5.0.3
       with:
         path: |
           ${{ env.WX_BUILD_DIR }}
