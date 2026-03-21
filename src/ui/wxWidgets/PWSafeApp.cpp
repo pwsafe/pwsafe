@@ -398,8 +398,16 @@ bool PWSafeApp::OnInit()
   // otherwise GetSelectedLanguage()&Co will instantiate prefs singleton and it
   // will ignore config file parameter
   wxLanguage selectedLang = GetSelectedLanguage();
-  m_locale->Init(selectedLang);
-  ActivateLanguage(selectedLang, false);
+
+  // Only initialize wxLocale with a language PasswordSafe can really activate.
+  // Otherwise fall back to English before touching wxLocale.
+  wxLanguage effectiveLang =
+    wxGetApp().ActivateLanguage(selectedLang, true)
+      ? selectedLang
+      : wxLANGUAGE_ENGLISH;
+
+  m_locale->Init(effectiveLang);
+  ActivateLanguage(effectiveLang, false);
 
  // Process encryption/decryption command line arguments
   // Note that this is done after language is set, addressing GH1572
