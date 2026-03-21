@@ -31,32 +31,6 @@ msgstr ""
 # updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
 # ONLY change the msgstr field. Do NOT change any other.
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
-# msgid/msgstr fields for Accelerator keys
-# Format is: "ID:xxxxxx:VACS+X" where:
-#    ID:xxxxx = the menu ID corresponding to the accelerator
-#    V = Virtual key (or blank if not used) - nearly always set!
-#    A = Alt key     (or blank if not used)
-#    C = Ctrl key    (or blank if not used)
-#    S = Shift key   (or blank if not used)
-#    X = upper case character
-# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
-# ONLY Accelerator Keys with corresponding alphanumeric characters can be
-# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
-# ONLY change the msgstr field. Do NOT change any other.
-# If you do not want to change an Accelerator Key, copy msgid to msgstr
-# msgid/msgstr fields for Accelerator keys
-# Format is: "ID:xxxxxx:VACS+X" where:
-#    ID:xxxxx = the menu ID corresponding to the accelerator
-#    V = Virtual key (or blank if not used) - nearly always set!
-#    A = Alt key     (or blank if not used)
-#    C = Ctrl key    (or blank if not used)
-#    S = Shift key   (or blank if not used)
-#    X = upper case character
-# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
-# ONLY Accelerator Keys with corresponding alphanumeric characters can be
-# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
-# ONLY change the msgstr field. Do NOT change any other.
-# If you do not want to change an Accelerator Key, copy msgid to msgstr
 #. Resource IDs: (3263)
 msgid "  All Password History ignored."
 msgstr "  Celá história hesiel ignorovaná."
@@ -635,7 +609,7 @@ msgstr "&O aplikácii Password Safe..."
 
 #. Resource IDs: (1626)
 msgid "&Add"
-msgstr "Prid&ať"
+msgstr "&Pridať"
 
 #. Resource IDs: (32051 - Menu, 32051 - MenuEx)
 msgid "&Add Entry..."
@@ -839,7 +813,7 @@ msgstr "Spravovať..."
 
 #. Resource IDs: (5733)
 msgid "&Mask as password / Show as text"
-msgstr ""
+msgstr "Zamaskovať hodnotu ako heslo / Zobraziť ako text"
 
 #. Resource IDs: (32124 - MenuEx)
 msgid "&Merge"
@@ -851,7 +825,7 @@ msgstr "Minimalizovať"
 
 #. Resource IDs: (65535)
 msgid "&Name:"
-msgstr ""
+msgstr "Názov:"
 
 #. Resource IDs: (1229)
 msgid "&Never"
@@ -1063,7 +1037,7 @@ msgstr "Overiť"
 
 #. Resource IDs: (65535)
 msgid "&Value:"
-msgstr ""
+msgstr "Hodnota:"
 
 #. Resource IDs: (32101 - PopupMenuEx)
 msgid "&View"
@@ -5031,7 +5005,7 @@ msgstr ""
 
 #. Resource IDs: (1632)
 msgid "Mask value as &password"
-msgstr "Hodnota masky ako & heslo"
+msgstr "Zamaskovať hodnotu ako heslo"
 
 #. Resource IDs: (131)
 msgid "Master Password Entry"
@@ -9636,7 +9610,7 @@ msgstr "neexistuje žiadny záznam so skupinou=%ls, názvom=%ls a používateľs
 #. Resource IDs: (5459)
 #, c-format
 msgid "no entry exists with title=%ls and username=%ls or with group=%ls, title=%ls."
-msgstr "neexistuje žiadny záznam s názvom=%ls a používateľským menom=%ls alebo so skupinou=%ls, názvom =%ls."
+msgstr "neexistuje žiadny záznam s názvom=%ls a používateľským menom=%ls alebo so skupinou=%ls, názvom=%ls."
 
 #. Resource IDs: (5457)
 #, c-format
