@@ -36,7 +36,7 @@ share the configuration data in a registry in such a manner.</li>
 
 <p><b>Password Safe</b> has a number of preferences, each with a reasonable
 default value. When a user changes the configuration to a non-default
-value, the new value is store by <b>Password Safe</b>.</p>
+value, the new value is stored by <b>Password Safe</b>.</p>
 
 <p><b>Password Safe</b> defines preferences as security-related or non-security
 related. The former are kept in the database, encrypted with the same
@@ -48,9 +48,8 @@ and per user, so that the file may be shared between different users,
 and across different machines.</p>
 
 <p>By default, pwsafe.cfg is kept in the "local app data" directory, that is, C:\Users\<code>username</code>\AppData\Local\PasswordSafe.
-This may be overridden by setting the <b>PWS_PREFSDIR</b> environment
-variable is set.
-The <b>-g</b> command line option (as described in <a href="cli.html">Command Line Arguments</a> may also be used to either specify a file name (which will be looked for in the above directories), or an absolute file path. and
+This may be overridden by setting the <b>PWS_PREFSDIR</b> environment variable.
+The <b>-g</b> command line option (as described in <a href="cli.html">Command Line Arguments</a> may also be used to either specify a file name (which will be looked for in the above directories), or an absolute file path.
 <br/>
 Historically (before version 3.22 of PasswordSafe), the configuration file was stored in the same directory as the pwsafe.exe file.
 Therefore, PasswordSafe will also search that directory for the configuration file, if not found in the "local app data" directory.
@@ -58,8 +57,8 @@ Therefore, PasswordSafe will also search that directory for the configuration fi
 
 <p>The following tables describes the configuration items. Most of them are
 configurable via the <a href="manage_menu.html">"Manage&nbsp;&rarr;&nbsp;Options"</a>
-dialog box.  As we use XML to save these values, field names are case sensitive.
-Preferences stored in the "pwsafe.cfg" file apply to all open databases.  Those
+dialog box. As we use XML to save these values, field names are case sensitive.
+Preferences stored in the "pwsafe.cfg" file apply to all open databases. Those
 stored in the database apply only to that particular database. In Windows Vista
 and later, the pwsafe.cfg file can be found in:
 "<code>C:\Users\&lt;username&gt;\AppData\Local\PasswordSafe</code>"
