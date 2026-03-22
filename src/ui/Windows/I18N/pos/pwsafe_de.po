@@ -4267,7 +4267,7 @@ msgstr "Erstes Zeichen einer Variablen muss alphabetisch sein"
 
 #. Resource IDs: (32102 - MenuEx)
 msgid "Flattened &List"
-msgstr "&Tabellestruktur"
+msgstr "&Tabellenstruktur"
 
 #. Resource IDs: (148)
 msgid "Font"
