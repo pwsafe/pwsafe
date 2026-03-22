@@ -1504,14 +1504,6 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg> Password Safe News: RSS feeds available for this project.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20100926T191513Z">
-        <seg>Новости Password Safe: RSS-каналы о данном проекте.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Backups Tab</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T150336Z">
@@ -1816,6 +1808,22 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Custom Fields is where you can add your own named fields to each password entry.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T125952Z" creationid="pm_kan" creationdate="20260322T125952Z">
+        <seg>В разделе Настраиваемые поля можно добавить свой набор полей, связанных с данным элементом.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Custom Fields: User-defined named values that can be added to the entry as needed.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T125328Z" creationid="pm_kan" creationdate="20260322T125142Z">
+        <seg>Настраиваемые поля: набор именованных значений, добавленных к этому элементу.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Default AutoType Delay This is the amount of time, in milli-seconds, that PasswordSafe waits between characters when performing the autotype.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20140122T090102Z" creationid="pm_kan" creationdate="20140122T090102Z">
@@ -2104,6 +2112,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Note: The XML schema requires the Title and Password fields, hence these cannot be deselected.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T114533Z" creationid="pm_kan" creationdate="20260322T114533Z">
+        <seg>Примечание. По XML-схеме требуется, чтобы присутствовали поля «Заголовок» и «Пароль», поэтому их нельзя убрать из списка экспортируемых.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Note: The entry is not actually modified until you click on the OK button in the Edit/View Entry dialog box.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20120809T114221Z">
@@ -2176,14 +2192,6 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Note: that the XML schema requires the Title and Password fields, hence these cannot be deselected.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T153829Z">
-        <seg>Примечание. По XML-схеме требуется, чтобы присутствовали поля «Заголовок» и «Пароль», поэтому их нельзя убрать из списка экспортируемых.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Note: these images are always displayed in the Tree view.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T161307Z">
@@ -2218,8 +2226,8 @@
       <tuv lang="en-US">
         <seg>Notes: Free-form general notes</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20240507T200905Z" creationid="pm_kan" creationdate="20240507T200905Z">
-        <seg>Заметки: произвольные заметки для данного элемента.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T125147Z" creationid="pm_kan" creationdate="20240507T200905Z">
+        <seg>Заметки: произвольные заметки для данного элемента;</seg>
       </tuv>
     </tu>
     <tu>
@@ -2425,10 +2433,10 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Password Safe is now an open source project hosted at sourceforge.net.</seg>
+        <seg>Password Safe is now an open source project hosted at GitHub and SourceForge.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110207T182823Z">
-        <seg>Сейчас Password Safe является программным обеспечением с открытым исходным кодом и размещается на sourceforge.net.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T114930Z" creationid="pm_kan" creationdate="20260322T114930Z">
+        <seg>Сейчас Password Safe является программным обеспечением с открытым исходным кодом и размещается на GitHub и  SourceForge.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2933,6 +2941,14 @@
         <seg></seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T205224Z">
+        <seg></seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg></seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T114730Z" creationid="pm_kan" creationdate="20260322T114730Z">
         <seg></seg>
       </tuv>
     </tu>
@@ -3682,9 +3698,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>A toolbar appears above the status bar at the bottom of the application's windows similar to the following:</seg>
+        <seg>A toolbar appears above the status bar at the bottom of the application's window similar to the following:</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T194448Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T114746Z" creationid="pm_kan" creationdate="20260322T114746Z">
         <seg>Над строкой состояния появится панель поиска, похожая на ту, что изображена на рисунке.</seg>
       </tuv>
     </tu>
@@ -5130,18 +5146,10 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>By clicking New... from the Master Password Entry dialog when the program is started, or from the "File ? New..." menu once Password Safe has been opened.</seg>
+        <seg>By clicking New... from the Master Password Entry dialog when the program is started, or from the "File &gt; New..." menu once Password Safe has been opened.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121000Z" creationid="pm_kan" creationdate="20230122T121000Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T122625Z" creationid="pm_kan" creationdate="20260322T122625Z">
         <seg>Щёлкнув по кнопке Новый... в диалоге Пароль для контейнера, выводимом при запуске программы, или через меню Файл → Создать..., если Password Safe уже открыт.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>By default, Password Safe copies the entry's password to the clipboard when the user selects the 'Browse to URL' action so that it is ready to paste into the required field.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T201920Z">
-        <seg>По умолчанию, при переходе по ссылке Password Safe копирует пароль элемента в буфер обмена, чтобы его сразу можно было вставить в нужное поле.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5198,6 +5206,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20171111T152646Z" creationid="pm_kan" creationdate="20171111T152619Z">
         <seg>По умолчанию используется следующая последовательность нажатий клавиш: имя пользователя, затем табуляция, пароль, ещё одна табуляция, и Enter (имя пользователя TAB пароль TAB ENTER).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>By default, the name will be "pwsafe.psafe3", and the location will be in "My Safes" under your Documents folder, for Windows, in .config/pwsafe under your home directory for Linux, and in .pwsafe under your home directory for MacOS.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T122147Z" creationid="pm_kan" creationdate="20260322T122147Z">
+        <seg>Имя файла по умолчанию «pwsafe.psafe3». Расположение по умолчанию зависит от операционной системы. В  Windows это каталог «My Safes» в папке «Мои документы», в Linux — подкаталог «.config/pwsafe» домашнего каталога, в MacOS — подкаталог «.pwsafe» домашнего каталога.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5494,6 +5510,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20101105T172424Z">
         <seg>Очищать буфер обмена при сворачивании</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Clear password history for ALL entries</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T114648Z" creationid="pm_kan" creationdate="20260322T114648Z">
+        <seg>Очистить историю паролей у ВСЕХ элементов</seg>
       </tuv>
     </tu>
     <tu>
@@ -6387,6 +6411,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Custom Fields</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T114838Z" creationid="pm_kan" creationdate="20260322T114838Z">
+        <seg>Настраиваемые поля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Custom strings can be referenced using {S:Name}.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T200934Z">
@@ -6723,10 +6755,10 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Details on the Twofish algorithm, including speed comparisons and an extensive list of products that use Twofish, are available at http://www.schneier.com/twofish.html.</seg>
+        <seg>Details on the Twofish algorithm, including speed comparisons and an extensive list of products that use Twofish, are available at https://www.schneier.com/twofish.html.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110207T183238Z">
-        <seg>Описание алгоритма Twofish, включая сравнение скоростных характеристик и перечень продуктов, его использующих, доступны по адресу http://www.schneier.com/twofish.html.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T115143Z" creationid="pm_kan" creationdate="20260322T115143Z">
+        <seg>Описание алгоритма Twofish, включая сравнение скоростных характеристик и перечень продуктов, его использующих, доступны по адресу https://www.schneier.com/twofish.html.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8107,6 +8139,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>For each custom field, you can specify a name and a value, as well as specifying if the value will be displayed or displayed as "******" (masked).</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T130247Z" creationid="pm_kan" creationdate="20260322T130247Z">
+        <seg>Для каждого такого поля задаётся имя, значение и способ отображения. Если установлен флажок «Скрывать значение в списке», то в списке вместо значения будет отображаться маска из символов «*».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>For entries in the comparison database, the options are View, Copy to the original database and Synchronize.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110208T203512Z">
@@ -8531,10 +8571,10 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Grateful thanks to Bruce Schneier for creating the Twofish and Blowfish algorithms and for releasing Password Safe to the public; and to SourceForge.net for hosting the project and supporting the Open Source community.</seg>
+        <seg>Grateful thanks to Bruce Schneier for creating the Twofish and Blowfish algorithms and for releasing Password Safe to the public; and to GitHub and SourceForge.net for hosting the project and supporting the Open Source community.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20200823T125828Z" creationid="pm_kan" creationdate="20200823T125814Z">
-        <seg>Выражаем благодарность Брюсу Шнайеру (Bruce Schneier) за создание алгоритма шифрования Twofish и публикацию Password Safe, а также SourceForge.net за размещение проекта и поддержку сообщества Open Source.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T124949Z" creationid="pm_kan" creationdate="20260322T124949Z">
+        <seg>Выражаем благодарность Брюсу Шнайеру (Bruce Schneier) за создание алгоритмов шифрования Twofish и Blowfish и публикацию Password Safe, а также GitHub и SourceForge.net за размещение проекта и поддержку сообщества Open Source.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8867,14 +8907,6 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>However, many web sites now require other information or no information (e.g., a search engine).</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T101022Z" creationid="pm_kan" creationdate="20140113T101022Z">
-        <seg>Но некоторым сайтам требуются другие данные (или они не требуются вообще).</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>However, much effort has been put into ensuring automatic and transparent upgrading:</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T213125Z">
@@ -9091,9 +9123,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>If an Authenticor Secret was defined for the currently selected entry, then this action is displayed.</seg>
+        <seg>If an Authenticator Secret was defined for the currently selected entry, then this action is displayed.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250831T121301Z" creationid="pm_kan" creationdate="20240507T195834Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T124957Z" creationid="pm_kan" creationdate="20260322T124957Z">
         <seg>Отображается, если для текущего элемента задан секретный ключ двухфакторной аутентификации.</seg>
       </tuv>
     </tu>
@@ -10147,17 +10179,17 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>If you wish to protect your database using both your YubiKey and a master password ("two factor authentication"), then first enter the master password in the "Master Password" and "Verify" fields, then click on the Yubikey button.</seg>
+        <seg>If you wish to protect your database using both your YubiKey and a master password ("two factor authentication"), then first enter the master password in the "Master Password" and "Confirmation" fields, then click on the Yubikey button.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T122708Z" creationid="pm_kan" creationdate="20230122T121205Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T122706Z" creationid="pm_kan" creationdate="20260322T122706Z">
         <seg>Если для защиты контейнера вы желаете одновременно использовать YubiKey и мастер-пароль («двуxфакторная аутентификация»), тогда сначала введите пароль в поля «Пароль» и «Подтверждение», а затем щёлкните на кнопке с надписью YubiKey.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>If you wish to protect your database using your YubiKey only, then leave the "Master Password" and "Verify" fields empty, and click on the Yubikey button.</seg>
+        <seg>If you wish to protect your database using your YubiKey only, then leave the "Master Password" and "Confirmation" fields empty, and click on the Yubikey button.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121214Z" creationid="pm_kan" creationdate="20230122T121214Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T122716Z" creationid="pm_kan" creationdate="20260322T122716Z">
         <seg>Если для защиты вы желаете использовать только YubiKey, тогда оставьте поля «Пароль» и «Подтверждение» пустыми, и щёлкните на кнопке с надписью YubiKey.</seg>
       </tuv>
     </tu>
@@ -10267,17 +10299,17 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>If you've chosen to protect your database using both your YubiKey and a master password, first enter the master password in the "Open Password Safe" field, then click on the Yubikey button.</seg>
+        <seg>If you've chosen to protect your database using both your YubiKey and a master password, first enter the master password in the "Master Password" field, then click on the Yubikey button.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121233Z" creationid="pm_kan" creationdate="20230122T121233Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T123115Z" creationid="pm_kan" creationdate="20260322T123115Z">
         <seg>Если для защиты контейнера используются YubiKey и мастер-пароль, тогда сначала введите пароль в поле «Пароль», а затем щёлкните на кнопке с надписью YubiKey.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>If you've chosen to protect your database using your YubiKey only, then leave the "Open Password Safe" field empty, and click on the Yubikey button.</seg>
+        <seg>If you've chosen to protect your database using your YubiKey only, then leave the "Master Password" field empty, and click on the Yubikey button.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170814T215232Z" creationid="pm_kan" creationdate="20170814T215232Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T123127Z" creationid="pm_kan" creationdate="20260322T123127Z">
         <seg>Если для защиты вы желаете использовать только YubiKey, тогда оставьте поле «Пароль» пустым, и щёлкните на кнопке с надписью YubiKey.</seg>
       </tuv>
     </tu>
@@ -11443,9 +11475,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Lock password database after....</seg>
+        <seg>Lock password database after...</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250831T115930Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T114756Z" creationid="pm_kan" creationdate="20260322T114756Z">
         <seg>После N минут бездействия</seg>
       </tuv>
     </tu>
@@ -11619,9 +11651,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Make sure the desired database is selected in the "Open Password Safe" field.</seg>
+        <seg>Make sure the desired database is selected in the "Password Database" field.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T130548Z" creationid="pm_kan" creationdate="20140113T130548Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T123043Z" creationid="pm_kan" creationdate="20260322T123043Z">
         <seg>Убедитесь, что в поле «Открыть контейнер» указан требуемый файл.</seg>
       </tuv>
     </tu>
@@ -12723,9 +12755,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Of course, you can also choose to protect the database by a master password alone, just enter the master password in the "Master Password" and "Verify" fields and then click on OK.</seg>
+        <seg>Of course, you can also choose to protect the database by a master password alone, just enter the master password in the "Master Password" and "Confirmation" fields and then click on OK.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121224Z" creationid="pm_kan" creationdate="20230122T121224Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T122728Z" creationid="pm_kan" creationdate="20260322T122728Z">
         <seg>Конечно, вы также можете использовать только мастер-пароль. В этом случае просто введите пароль в поля «Пароль» и «Подтверждение» и нажмите кнопку OK.</seg>
       </tuv>
     </tu>
@@ -12767,14 +12799,6 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T191557Z">
         <seg>В ОС Windows также можно подставлять переменные окружения (как обычно, имя переменной окружается символами «%», например, %variable_name%).</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>On checking the "Show Mast Password" box, the contents of old and new master passwords will be visible in clear and the confirmation edit box is disabled as no longer necessary.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120743Z" creationid="pm_kan" creationdate="20230122T120743Z">
-        <seg>При включенном флажке «Показать пароль» старый и новый пароли будут отображены, а поле подтверждения пароля будет заблокировано за ненадобностью.</seg>
       </tuv>
     </tu>
     <tu>
@@ -14540,9 +14564,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Save database immediately after Edit or Add</seg>
+        <seg>Save database immediately after any change</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250831T103209Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T115213Z" creationid="pm_kan" creationdate="20260322T115213Z">
         <seg>Сохранять контейнер после любых изменений</seg>
       </tuv>
     </tu>
@@ -16517,9 +16541,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>The browser you specify in this field  will be used when using the "Browse To" function for a selected entry, when the entry's URL has "[alt]" before the URL, e.g., "[alt]http://www.foo.net".</seg>
+        <seg>The browser you specify in this field  will be used when using the "Browse To URL" function for a selected entry, when the entry's URL has "[alt]" before the URL, e.g., "[alt]http://www.foo.net".</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T154758Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T114618Z" creationid="pm_kan" creationdate="20260322T114618Z">
         <seg>Указанный здесь браузер будет использован при выполнении команды «Перейти по ссылке», если в настройках элемента ссылка начинается с «[alt]», например, «[alt]http://www.foo.net».</seg>
       </tuv>
     </tu>
@@ -17183,7 +17207,7 @@
       <tuv lang="en-US">
         <seg>The latest program updates, documentation, and news can be located at http://pwsafe.org.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20151004T153837Z" creationid="pm_kan" creationdate="20151004T153837Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T115052Z" creationid="pm_kan" creationdate="20260322T115052Z">
         <seg>Последние обновления, документация и новости расположены на сайте https://pwsafe.org.</seg>
       </tuv>
     </tu>
@@ -17773,6 +17797,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>There is a menu item ( "View → Show Entries with Expiry dates") that will invoke an internal filter to display all the entries with an expiry date set, whether it be not yet expired, soon to expire or already expired.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T114517Z" creationid="pm_kan" creationdate="20260322T114517Z">
+        <seg>Пункт меню Вид→Стандартные фильтры→Показать элементы с заданными датами истечения пароля применяет встроенный фильтр, отображающий только те элементы, у которых задана дата истечения пароля (независимо от того, наступила она или нет).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>There is also a graphical front-end for Saxon called Kernow.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T185519Z">
@@ -17789,10 +17821,10 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>There is now a menu item ( "View → Show Entries with Expiry dates") that will invoke an internal filter to display all those entries with an expiry date set, whether it be not yet expired, soon to expire or already expired.</seg>
+        <seg>There's no limit on the number of custom fields you can add, but each field name must be unique for the entry, and cannot be empty.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250831T111800Z">
-        <seg>Пункт меню Вид→Стандартные фильтры→Показать элементы с заданными датами истечения пароля применяет встроенный фильтр, отображающий только те элементы, у которых задана дата истечения пароля (независимо от того, наступила она или нет).</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T131031Z" creationid="pm_kan" creationdate="20260322T131031Z">
+        <seg>Количество полей не ограничено, но имена полей не должны повторяться или быть пустыми. Одинаковые имена запрещены только в списке для одного элемента: разные элементы могут содержать одноимённые поля.</seg>
       </tuv>
     </tu>
     <tu>
@@ -18542,9 +18574,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>This may be overridden by setting the PWS_PREFSDIR environment variable is set.</seg>
+        <seg>This may be overridden by setting the PWS_PREFSDIR environment variable.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T160000Z" creationid="pm_kan" creationdate="20211212T150817Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T114719Z" creationid="pm_kan" creationdate="20260322T114719Z">
         <seg>Путь сохранения можно переопределить через переменную окружения PWS_PREFSDIR.</seg>
       </tuv>
     </tu>
@@ -19430,9 +19462,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>To use "new" or "classic" toolbar icons, select the "New toolbar" or "Classic toolbar" menu item, respectively.</seg>
+        <seg>To use "new" or "classic" toolbar icons, select the "New Toolbar" or "Classic Toolbar" menu item, respectively.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T204756Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T114832Z" creationid="pm_kan" creationdate="20260322T114832Z">
         <seg>Для использования «современного» или «классического» набора значков, выберите Современная панель инструментов или Классическая панель инструментов соответственно.</seg>
       </tuv>
     </tu>
@@ -19834,6 +19866,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T215709Z">
         <seg>Имена пользователей, пароли и группы: дополнительно</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>User Names, Passwords, and Groups: Attachment</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T131117Z" creationid="pm_kan" creationdate="20260322T131117Z">
+        <seg>Имена пользователей, пароли и группы: вложение</seg>
       </tuv>
     </tu>
     <tu>
@@ -20279,14 +20319,6 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>When Checked, the database will be saved if there is any change e.g. add, delete, duplicate, edit or rename of an entry or group as well as if any entries/groups are added/moved via import or Drag &amp; Drop.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T152054Z" creationid="pm_kan" creationdate="20161105T161204Z">
-        <seg>Если включено, сохранение происходит при любом изменении, будь то вставка, удаление, дублирование, редактирование или переименование элемента или группы, в том числе, если вставка или перемещение произошли с помощью импорта или перетаскивания из другой группы/контейнера.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>When a Group is selected (in Tree view), this will delete all entries under the selected group.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T124140Z">
@@ -20327,9 +20359,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>When a user changes the configuration to a non-default value, the new value is store by Password Safe.</seg>
+        <seg>When a user changes the configuration to a non-default value, the new value is stored by Password Safe.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T152935Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T114704Z" creationid="pm_kan" creationdate="20260322T114704Z">
         <seg>Когда пользователь изменяет ту или иную настройку, её новое значение (отличное от значения по умолчанию) сохраняется.</seg>
       </tuv>
     </tu>
@@ -20468,6 +20500,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T151239Z">
         <seg>Если выбрано, указанная комбинация клавиш будет использована для восстановления Password Safe из скрытого состояния, или помещения его окна на передний план, когда оно перекрыто другими окнами.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>When checked, the database will be saved if there is any change e.g., add, delete, duplicate, edit or rename of an entry or group as well as if any entries/groups are added/moved via import or Drag &amp; Drop.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T115259Z" creationid="pm_kan" creationdate="20260322T115259Z">
+        <seg>Если включено, сохранение происходит при любом изменении, будь то вставка, удаление, дублирование, редактирование или переименование элемента или группы, в том числе, если вставка или перемещение произошли с помощью импорта или перетаскивания из другой группы/контейнера.</seg>
       </tuv>
     </tu>
     <tu>
@@ -21000,6 +21040,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>You can change the name and location if you wish, but we recommend that you choose a name and location that will be easy to remember and access.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T122546Z" creationid="pm_kan" creationdate="20260322T122546Z">
+        <seg>Можно использовать другие имя и расположение. В этом случае рекомендуем выбрать их такими, которые вы легко сможете запомнить и найти.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>You can change the number of recent passwords that are kept.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T215403Z">
@@ -21368,9 +21416,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>You will be asked to choose the name and location of your password database (the default, "pwsafe.psafe3", is fine).</seg>
+        <seg>You will be asked to choose the name and location of your password database.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T181258Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T115327Z" creationid="pm_kan" creationdate="20260322T115327Z">
         <seg>Вам будет предложено указать каталог и имя файла для нового контейнера.</seg>
       </tuv>
     </tu>
@@ -21968,14 +22016,6 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>and </seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T151506Z" creationid="pm_kan" creationdate="20211212T151346Z">
-        <seg></seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>appdir</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T190410Z">
@@ -22020,14 +22060,6 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T225007Z">
         <seg>body — значение, указанное после знака «=», будет помещено в тело письма.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>by deselecting this option, Password Safe will no longer paste anything into the clipboard during this action.</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T202107Z">
-        <seg>После снятия флажка Password Safe перестанет помещать пароль в буфер обмена при переходе по ссылке.</seg>
       </tuv>
     </tu>
     <tu>
@@ -22488,14 +22520,6 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>http://www.opensource.org</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110207T182842Z">
-        <seg>http://www.opensource.org</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>http://www.opensource.org/licenses/mit-license.html</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20120808T184429Z">
@@ -22508,14 +22532,6 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20120808T184251Z">
         <seg>http://www.pugixml.org</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>http://www.schneier.com/twofish.html</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110207T182949Z">
-        <seg>http://www.schneier.com/twofish.html</seg>
       </tuv>
     </tu>
     <tu>
@@ -22552,6 +22568,22 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>https://github.com</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T123131Z" creationid="pm_kan" creationdate="20260322T123131Z">
+        <seg>https://github.com</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>https://github.com/pwsafe/pwsafe</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T114847Z" creationid="pm_kan" creationdate="20260322T114847Z">
+        <seg>https://github.com/pwsafe/pwsafe</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>https://pwsafe.org</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110207T182744Z">
@@ -22572,22 +22604,6 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T181742Z">
         <seg>https://sourceforge.net</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>https://sourceforge.net/</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110207T182744Z">
-        <seg>https://sourceforge.net/</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>https://sourceforge.net/export/rss2_project.php?group_id=41019</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T182418Z">
-        <seg>https://sourceforge.net/export/rss2_project.php?group_id=41019</seg>
       </tuv>
     </tu>
     <tu>
@@ -22616,6 +22632,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>https://sourceforge.net/projects/passwordsafe/</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T114851Z" creationid="pm_kan" creationdate="20260322T114851Z">
+        <seg>https://sourceforge.net/projects/passwordsafe/</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>https://www.dropbox.com/home</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20111002T143615Z">
@@ -22632,10 +22656,26 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>https://www.opensource.org</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T115056Z" creationid="pm_kan" creationdate="20260322T115056Z">
+        <seg>https://www.opensource.org</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>https://www.pngrepo.com</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20200823T130045Z" creationid="pm_kan" creationdate="20200823T130045Z">
         <seg>https://www.pngrepo.com</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>https://www.schneier.com/twofish.html</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260322T115124Z" creationid="pm_kan" creationdate="20260322T115124Z">
+        <seg>https://www.schneier.com/twofish.html</seg>
       </tuv>
     </tu>
     <tu>
@@ -24789,6 +24829,28 @@
         <seg>Synchronize</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20120808T180616Z">
+        <seg>Синхронизация</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <prop type="file">pwsafe.hhk</prop>
+      <prop type="prev">File Menu</prop>
+      <prop type="next">File Menu</prop>
+      <tuv lang="en-US">
+        <seg>Compare</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20200823T133829Z" creationid="pm_kan" creationdate="20200823T133829Z">
+        <seg>Сравнение</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <prop type="file">pwsafe.hhk</prop>
+      <prop type="prev">Compare Results</prop>
+      <prop type="next">File Menu</prop>
+      <tuv lang="en-US">
+        <seg>Synchronize</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20200823T133847Z" creationid="pm_kan" creationdate="20200823T133847Z">
         <seg>Синхронизация</seg>
       </tuv>
     </tu>
