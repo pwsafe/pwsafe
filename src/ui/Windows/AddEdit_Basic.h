@@ -134,6 +134,7 @@ protected:
   afx_msg void OnCustomFieldsEdit();
   afx_msg void OnCustomFieldsDelete();
   afx_msg void OnCustomFieldsToggleSensitive();
+  afx_msg void OnCustomFieldsListClick(NMHDR *pNMHDR, LRESULT *pResult);
   afx_msg void OnNMRClickCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult);
   afx_msg void OnNMDblclkCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult);
   //}}AFX_MSG

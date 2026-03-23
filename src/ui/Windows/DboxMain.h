@@ -145,7 +145,8 @@ struct ClipboardDataSource
     DerivedSourceFirst = 0x4000, // Must be larger than CItemData::LAST_FIELD.
     ClearClipboard,
     PasswordHistoryList,
-    AuthCode
+    AuthCode,
+    CustomFieldValue
   };
 
   ClipboardDataSource() : t(None) {}
