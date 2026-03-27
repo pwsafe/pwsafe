@@ -2714,6 +2714,10 @@ msgstr ""
 msgid "Custom Fields:"
 msgstr ""
 
+#. Resource IDs: (6074)
+msgid "Custom Value copied "
+msgstr ""
+
 #. Resource IDs: (32155 - MenuEx)
 msgid "Customize &Main Toolbar"
 msgstr ""

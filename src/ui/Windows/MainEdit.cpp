@@ -2093,6 +2093,9 @@ void DboxMain::UpdateLastClipboardAction(const ClipboardDataSource& cds)
     case ClipboardDataSource::PasswordHistoryList:
       imsg = IDS_OLDPSWDCOPIED;
       break;
+    case ClipboardDataSource::CustomFieldValue:
+      imsg = IDS_CUSTOMVALUECOPIED;
+      break;
     default:
       ASSERT(0);
       return;

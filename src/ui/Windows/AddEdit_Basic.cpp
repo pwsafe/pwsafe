@@ -225,6 +225,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_BN_CLICKED(IDC_CUSTOMFIELDS_EDIT, OnCustomFieldsEdit)
   ON_BN_CLICKED(IDC_CUSTOMFIELDS_DELETE, OnCustomFieldsDelete)
   ON_COMMAND(IDC_CUSTOMFIELDS_TOGGLE_SENSITIVE, OnCustomFieldsToggleSensitive)
+  ON_NOTIFY(NM_CLICK, IDC_CUSTOMFIELDS_LIST, OnCustomFieldsListClick)
   ON_NOTIFY(NM_RCLICK, IDC_CUSTOMFIELDS_LIST, OnNMRClickCustomFieldsList)
   ON_NOTIFY(NM_DBLCLK, IDC_CUSTOMFIELDS_LIST, OnNMDblclkCustomFieldsList)
 
@@ -1453,6 +1454,19 @@ void CAddEdit_Basic::OnCustomFieldsToggleSensitive()
   LoadCustomFieldsFromList();
   m_ae_psh->SetChanged(true);
   m_rightClickedCustomFieldIndex = -1;
+}
+
+void CAddEdit_Basic::OnCustomFieldsListClick(NMHDR *pNMHDR, LRESULT *pResult)
+{
+  auto pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+  const int selectedRow = pNMItemActivate->iItem;
+  if (selectedRow >= 0) {
+    const CString value = m_customFieldsList.GetItemText(selectedRow, 1);
+    GetMainDlg()->SetClipboardData(StringX(value));
+    GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::CustomFieldValue);
+  }
+
+  *pResult = 0;
 }
 
 void CAddEdit_Basic::OnNMRClickCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult)
