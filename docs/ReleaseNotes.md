@@ -4,22 +4,22 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.71.0pre Release March 20 2026
-============================================
+PasswordSafe 3.71.0 Release March 27 2026
+=========================================
 
-Bugs Fixed in 3.71.0pre
------------------------
+Bugs Fixed in 3.71.0
+--------------------
 * [SF1623](https://sourceforge.net/p/passwordsafe/bugs/1623/) File paths may be enclosed in double-quotes in "Master Password Entry" and File->Compare dialogs.
 * [SF933](https://sourceforge.net/p/passwordsafe/feature-requests/933/) 'Back' button has been added to final 'Export' windows, allowing re-exporting with chnaged parameters.
 
-New Features in 3.71.0pre
--------------------------
+New Features in 3.71.0
+----------------------
 * Custom fields can now be added to each entry. That is, fields with user-defined names and values. Note that the following functions currently do not support custom fields:
   * Filters
   * XML and Text import and export
   * Comparison, Sync and Merge databases
 
-These will support custom fields in a future release.
+Support custom fields will be added to the above in a future release.
 
 PasswordSafe 3.70.1 Release Nov 19 2025
 =======================================
