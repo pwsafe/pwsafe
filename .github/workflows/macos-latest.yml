@@ -70,7 +70,7 @@ jobs:
         git clone --no-checkout https://github.com/Yubico/yubico-c.git
         cd yubico-c
         git checkout e4334554857b0367085cbf845bf87dd92433e020
-        autoreconf --install --froce
+        autoreconf --install --force
         ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
         make -j $HOST_NCPU check
         sudo make install
