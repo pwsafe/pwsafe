@@ -579,7 +579,7 @@ int PasswordSafeFrame::SaveIfChanged()
   // Note: RUE list saved here via time stamp being updated.
   // Otherwise it won't be saved unless something else has changed
   if ((m_bTSUpdated || m_core.HasDBChanged()) &&
-      m_core.GetNumEntries() > 0) {
+      (m_core.GetNumEntries() > 0 || m_core.GetNumberEmptyGroups() > 0)) {
     wxString prompt(_("Do you want to save changes to the password database:"));
     if (m_core.IsDbFileSet()) {
       prompt += wxT("\n");
