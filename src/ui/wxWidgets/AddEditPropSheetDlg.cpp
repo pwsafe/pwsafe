@@ -239,6 +239,7 @@ static void setupDCAStrings(wxArrayString &as)
   as.Add(_("Copy Username"));
   as.Add(_("Edit/View Entry"));
   as.Add(_("Execute Run command"));
+  as.Add(_("Send email"));
 }
 
 /*!
@@ -425,6 +426,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicSizer->Add(m_BasicEmailTextCtrl, wxGBPosition(/*row:*/ 16, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 5), wxEXPAND|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 7);
 
   auto *itemButton34 = new wxButton( panel, ID_SEND_BTN, _("Send"), wxDefaultPosition, wxDefaultSize, 0 );
+  itemButton34->SetToolTip(_("Not Implemented"));
   m_BasicSizer->Add(itemButton34, wxGBPosition(/*row:*/ 16, /*column:*/ 5), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
   auto *itemStaticText36 = new wxStaticText( panel, wxID_STATIC, _("Notes"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1515,6 +1517,7 @@ static struct {short pv; wxString name;}
     {PWSprefs::DoubleClickCopyUsername, _("Copy Username")},
     {PWSprefs::DoubleClickViewEdit, _("Edit/View Entry")},
     {PWSprefs::DoubleClickRun, _("Execute Run command")},
+    {PWSprefs::DoubleClickSendEmail, _("Send email")},
    };
 
   int16 dca;
