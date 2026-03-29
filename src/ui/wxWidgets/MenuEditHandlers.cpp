@@ -1128,10 +1128,12 @@ void PasswordSafeFrame::DoRun(CItemData& item)
 
 void PasswordSafeFrame::DoEmail(CItemData& item )
 {
-  const wxString mailto = item.IsEmailEmpty()?
+  wxString mailto = item.IsEmailEmpty()?
                       (item.IsURLEmail()? towxstring(item.GetURL()): wxString())
                       : towxstring(item.GetEmail());
   if (!mailto.empty()) {
+    if (!mailto.Lower().StartsWith("mailto:"))
+      mailto = "mailto:" + mailto;
     ::wxLaunchDefaultBrowser(mailto, wxBROWSER_NEW_WINDOW);
     UpdateAccessTime(item);
   }
