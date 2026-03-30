@@ -33,7 +33,6 @@
 #include "core/PWSAuxParse.h"
 
 #include "os/media.h"
-#include "os/run.h"
 
 #include "SelectAliasDlg.h"
 ////@begin XPM images
@@ -239,6 +238,7 @@ static void setupDCAStrings(wxArrayString &as)
   as.Add(_("Copy Username"));
   as.Add(_("Edit/View Entry"));
   as.Add(_("Execute Run command"));
+  as.Add(_("Send email"));
 }
 
 /*!
@@ -1515,6 +1515,7 @@ static struct {short pv; wxString name;}
     {PWSprefs::DoubleClickCopyUsername, _("Copy Username")},
     {PWSprefs::DoubleClickViewEdit, _("Edit/View Entry")},
     {PWSprefs::DoubleClickRun, _("Execute Run command")},
+    {PWSprefs::DoubleClickSendEmail, _("Send email")},
    };
 
   int16 dca;
@@ -1739,13 +1740,9 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
   // Enable Go button iff m_url isn't empty
   wxWindow *goBtn = FindWindow(ID_GO_BTN);
   goBtn->Enable(!m_Url.empty());
-  // Enable Send button iff m_email isn't empty
+  // Enable Send button iff m_Email isn't empty
   wxWindow *sendBtn = FindWindow(ID_SEND_BTN);
-#ifdef NOTYET
-  sendBtn->Enable(!m_email.empty());
-#endif
-  // XXX since PWSRun not yet implemented in Linux, Send button's always disabled:
-  sendBtn->Enable(false);
+  sendBtn->Enable(!m_Email.empty());
   m_Notes = (m_Type != SheetType::ADD && m_IsNotesHidden) ?
     wxString(_("[Notes hidden - click here to display]")) : towxstring(m_Item.GetNotes(TCHAR('\n')));
   // Following has no effect under Linux :-(
@@ -3827,10 +3824,10 @@ void AddEditPropSheetDlg::OnSendButtonClick( wxCommandEvent& event )
    *   user@example.com?subject=Message Title&body=Message Content"
    */
   if (Validate() && TransferDataFromWindow() && !m_Email.IsEmpty()) {
-    StringX mail_cmd= tostringx(_T("mailto:"));
-    mail_cmd += tostringx(m_Email);
-    PWSRun runner;
-    runner.issuecmd(mail_cmd, wxEmptyString, false);
+    wxString mail_cmd = m_Email;
+    if (!mail_cmd.Lower().StartsWith("mailto:"))
+      mail_cmd = "mailto:" + mail_cmd;
+    ::wxLaunchDefaultBrowser(mail_cmd, wxBROWSER_NEW_WINDOW);
   }
 }
 
