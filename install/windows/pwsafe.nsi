@@ -467,6 +467,11 @@ Section  "$(ENGLISH_SUPPORT)" EnglishSection
   SetOutPath "$INSTDIR"  
   File "..\..\help\default\pwsafe.chm"
 SectionEnd
+Section /o "$(ARABIC_SUPPORT)" ArabicSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeAR.dll"
+  File /nonfatal "..\..\help\pwsafeAR\pwsafeAR.chm"
+SectionEnd
 Section /o "$(CHINESE_CN_SUPPORT)" ChineseSection
   SetOutPath "$INSTDIR"  
   File /nonfatal "${LANG_DLL_DIR}\pwsafeZH.dll"
@@ -477,20 +482,15 @@ SectionEnd
 ;  File /nonfatal "${LANG_DLL_DIR}\pwsafeZH_TW.dll"
 ;  File /nonfatal "..\..\help\pwsafeZH\pwsafeZH_TW.chm"
 ;SectionEnd
-Section /o "$(GERMAN_SUPPORT)" GermanSection
+Section /o "$(CZECH_SUPPORT)" CzechSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL_DIR}\pwsafeDE.dll"
-  File /nonfatal "..\..\help\pwsafeDE\pwsafeDE.chm"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeCZ.dll"
+  File /nonfatal "..\..\help\pwsafeCZ\pwsafeCZ.chm"
 SectionEnd
-Section /o "$(SPANISH_SUPPORT)" SpanishSection
+Section /o "$(DANISH_SUPPORT)" DanishSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL_DIR}\pwsafeES.dll"
-  File /nonfatal "..\..\help\pwsafeES\pwsafeES.chm"
-SectionEnd
-Section /o "$(SWEDISH_SUPPORT)" SwedishSection
-  SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL_DIR}\pwsafeSV.dll"
-  File /nonfatal "..\..\help\pwsafeSV\pwsafeSV.chm"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeDK.dll"
+  File /nonfatal "..\..\help\pwsafeDA\pwsafeDA.chm"
 SectionEnd
 Section /o "$(DUTCH_SUPPORT)" DutchSection
   SetOutPath "$INSTDIR"  
@@ -502,70 +502,70 @@ Section /o "$(FRENCH_SUPPORT)" FrenchSection
   File /nonfatal "${LANG_DLL_DIR}\pwsafeFR.dll"
   File /nonfatal "..\..\help\pwsafeFR\pwsafeFR.chm"
 SectionEnd
-Section /o "$(RUSSIAN_SUPPORT)" RussianSection
+Section /o "$(GERMAN_SUPPORT)" GermanSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL_DIR}\pwsafeRU.dll"
-  File /nonfatal "..\..\help\pwsafeRU\pwsafeRU.chm"
-SectionEnd
-Section /o "$(POLISH_SUPPORT)" PolishSection
-  SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL_DIR}\pwsafePL.dll"
-  File /nonfatal "..\..\help\pwsafePL\pwsafePL.chm"
-SectionEnd
-Section /o "$(ITALIAN_SUPPORT)" ItalianSection
-  SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL_DIR}\pwsafeIT.dll"
-  File /nonfatal "..\..\help\pwsafeIT\pwsafeIT.chm"
-SectionEnd
-Section /o "$(DANISH_SUPPORT)" DanishSection
-  SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL_DIR}\pwsafeDK.dll"
-  File /nonfatal "..\..\help\pwsafeDA\pwsafeDA.chm"
-SectionEnd
-Section /o "$(KOREAN_SUPPORT)" KoreanSection
-  SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL_DIR}\pwsafeKR.dll"
-  File /nonfatal "..\..\help\pwsafeKR\pwsafeKR.chm"
-SectionEnd
-Section /o "$(PORTUGUESEBR_SUPPORT)" PortugueseBRSection
-  SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL_DIR}\pwsafePT_BR.dll"
-  File /nonfatal "..\..\help\pwsafeKR\pwsafePT_BR.chm"
-SectionEnd
-Section /o "$(CZECH_SUPPORT)" CzechSection
-  SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL_DIR}\pwsafeCZ.dll"
-  File /nonfatal "..\..\help\pwsafeCZ\pwsafeCZ.chm"
-SectionEnd
-Section /o "$(TURKISH_SUPPORT)" TurkishSection
-  SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL_DIR}\pwsafeTR.dll"
-  File /nonfatal "..\..\help\pwsafeTR\pwsafeTR.chm"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeDE.dll"
+  File /nonfatal "..\..\help\pwsafeDE\pwsafeDE.chm"
 SectionEnd
 Section /o "$(HUNGARIAN_SUPPORT)" HungarianSection
   SetOutPath "$INSTDIR"  
   File /nonfatal "${LANG_DLL_DIR}\pwsafeHU.dll"
   File /nonfatal "..\..\help\pwsafeHU\pwsafeHU.chm"
 SectionEnd
-Section /o "$(SLOVENIAN_SUPPORT)" SlovenianSection
+Section /o "$(ITALIAN_SUPPORT)" ItalianSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL_DIR}\pwsafeSL.dll"
-  File /nonfatal "..\..\help\pwsafeSL\pwsafeSL.chm"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeIT.dll"
+  File /nonfatal "..\..\help\pwsafeIT\pwsafeIT.chm"
 SectionEnd
-Section /o "$(ARABIC_SUPPORT)" ArabicSection
+Section /o "$(KOREAN_SUPPORT)" KoreanSection
   SetOutPath "$INSTDIR"  
-  File /nonfatal "${LANG_DLL_DIR}\pwsafeAR.dll"
-  File /nonfatal "..\..\help\pwsafeAR\pwsafeAR.chm"
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeKR.dll"
+  File /nonfatal "..\..\help\pwsafeKR\pwsafeKR.chm"
 SectionEnd
 Section /o "$(LATVIAN_SUPPORT)" LatvianSection
   SetOutPath "$INSTDIR"  
   File /nonfatal "${LANG_DLL_DIR}\pwsafeLV.dll"
   File /nonfatal "..\..\help\pwsafeLV\pwsafeLV.chm"
 SectionEnd
+Section /o "$(POLISH_SUPPORT)" PolishSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "${LANG_DLL_DIR}\pwsafePL.dll"
+  File /nonfatal "..\..\help\pwsafePL\pwsafePL.chm"
+SectionEnd
+Section /o "$(PORTUGUESEBR_SUPPORT)" PortugueseBRSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "${LANG_DLL_DIR}\pwsafePT_BR.dll"
+  File /nonfatal "..\..\help\pwsafeKR\pwsafePT_BR.chm"
+SectionEnd
+Section /o "$(RUSSIAN_SUPPORT)" RussianSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeRU.dll"
+  File /nonfatal "..\..\help\pwsafeRU\pwsafeRU.chm"
+SectionEnd
 Section /o "$(SLOVAK_SUPPORT)" SlovakSection
   SetOutPath "$INSTDIR"  
   File /nonfatal "${LANG_DLL_DIR}\pwsafeSK.dll"
   File /nonfatal "..\..\help\pwsafeSK\pwsafeSK.chm"
+SectionEnd
+Section /o "$(SLOVENIAN_SUPPORT)" SlovenianSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeSL.dll"
+  File /nonfatal "..\..\help\pwsafeSL\pwsafeSL.chm"
+SectionEnd
+Section /o "$(SPANISH_SUPPORT)" SpanishSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeES.dll"
+  File /nonfatal "..\..\help\pwsafeES\pwsafeES.chm"
+SectionEnd
+Section /o "$(SWEDISH_SUPPORT)" SwedishSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeSV.dll"
+  File /nonfatal "..\..\help\pwsafeSV\pwsafeSV.chm"
+SectionEnd
+Section /o "$(TURKISH_SUPPORT)" TurkishSection
+  SetOutPath "$INSTDIR"  
+  File /nonfatal "${LANG_DLL_DIR}\pwsafeTR.dll"
+  File /nonfatal "..\..\help\pwsafeTR\pwsafeTR.chm"
 SectionEnd
 SectionGroupEnd
 
@@ -945,52 +945,52 @@ Function .onInit
  
   Push ""
   Push ${LANG_ENGLISH}
-  Push English
-  Push ${LANG_GERMAN}
-  Push Deutsch
+  Push "English"
+  Push ${LANG_ARABIC}
+  Push "Arabic"
   Push ${LANG_SIMPCHINESE}
   Push "Chinese (Simplified)"
   Push ${LANG_TRADCHINESE}
   Push "Chinese (Traditional)"
-  Push ${LANG_SPANISH}
-;  Push Español - encoding problem - displays as gibberish
-  Push Espanol
-  Push ${LANG_SWEDISH}
-  Push Svenska
-  Push ${LANG_DUTCH}
-  Push Dutch
-  Push ${LANG_FRENCH}
-;  Push Français - encoding problem - displays as gibberish
-  Push Francais
-  Push ${LANG_RUSSIAN}
-  Push Russian
-  Push ${LANG_POLISH}
-  Push Polski
-  Push ${LANG_ITALIAN}
-  Push Italiano
-  Push ${LANG_DANISH}
-  Push Dansk
-  Push ${LANG_KOREAN}
-  Push Korean
-  Push ${LANG_PORTUGUESEBR}
-;  Push "Português (Brasil)" - encoding problem - displays as gibberish
-  Push "Portuguese (Brasil)"
   Push ${LANG_CZECH}
 ;  Push "Čeština" - encoding problem - displays as gibberish
   Push "Czech"
+  Push ${LANG_DANISH}
+  Push "Dansk"
+  Push ${LANG_GERMAN}
+  Push "Deutsch"
+  Push ${LANG_DUTCH}
+  Push "Dutch"
+  Push ${LANG_SPANISH}
+;  Push Español - encoding problem - displays as gibberish
+  Push "Espanol"
+  Push ${LANG_FRENCH}
+;  Push Français - encoding problem - displays as gibberish
+  Push "Francais"
+  Push ${LANG_ITALIAN}
+  Push "Italiano"
+  Push ${LANG_KOREAN}
+  Push "Korean"
+  Push ${LANG_LATVIAN}
+  Push "Latvian"
+  Push ${LANG_HUNGARIAN}
+  Push "Magyar"
+  Push ${LANG_POLISH}
+  Push "Polski"
+  Push ${LANG_PORTUGUESEBR}
+;  Push "Português (Brasil)" - encoding problem - displays as gibberish
+  Push "Portuguese (Brasil)"
+  Push ${LANG_RUSSIAN}
+  Push "Russian"
+  Push ${LANG_SLOVENIAN}
+  Push "Slovenian"
+  Push ${LANG_SLOVAK}
+  Push "Slovak"
+  Push ${LANG_SWEDISH}
+  Push "Svenska"
   Push ${LANG_TURKISH}
 ;  Push "Türkçe" - encoding problem - displays as gibberish
   Push "Turkish"
-  Push ${LANG_HUNGARIAN}
-  Push "Magyar"
-  Push ${LANG_SLOVENIAN}
-  Push "Slovenian"
-  Push ${LANG_ARABIC}
-  Push "Arabic"
-  Push ${LANG_LATVIAN}
-  Push "Latvian"
-  Push ${LANG_SLOVAK}
-  Push "Slovak"
   Push A ; A means auto count languages
          ; for the auto count to work the first empty push (Push "") must remain
   LangDLL::LangDialog $(LANG_INSTALL) $(LANG_SELECT)
