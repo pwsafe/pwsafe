@@ -1535,6 +1535,9 @@ void DboxMain::OnDestroy()
   ::DestroyIcon(m_ClosedIcon);
   ::DestroyIcon(m_IndexIcon);
 
+  // Release any IDataObject references we are holding so OLE can finish cleanly.
+  PWSclipboard::ClearTrackedClipboardObjects();
+
   m_core.SafeUnlockCurFile();
 
   // Get rid of hotkey

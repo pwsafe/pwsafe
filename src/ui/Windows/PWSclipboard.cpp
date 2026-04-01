@@ -15,6 +15,7 @@
 
 #include "core/PWSprefs.h"
 #include "core/Util.h"
+#include <mutex>
 
 static CLIPFORMAT CF_CLIPBOARD_VIEWER_IGNORE; // see below
 // Following hide PasswordSafe clipboard pastes from Cloud Clipboard and Clipboard History
@@ -155,6 +156,37 @@ PWSclipboard::~PWSclipboard()
   // data after application exit. 
 }
 
+// Thread-safe container of AddRef'ed IDataObject pointers that we keep
+// until the app explicitly clears the clipboard.
+static std::vector<IDataObject*> g_clipboardObjects;
+static std::mutex g_clipboardMutex;
+void PWSclipboard::TrackClipboardObject(IDataObject* pDataObject)
+{
+  if (pDataObject == nullptr)
+    return;
+  // AddRef so we own a reference independent of MFC internals
+  pDataObject->AddRef();
+  std::lock_guard<std::mutex> lk(g_clipboardMutex);
+  g_clipboardObjects.push_back(pDataObject);
+}
+
+void PWSclipboard::ClearTrackedClipboardObjects()
+{
+  std::lock_guard<std::mutex> lk(g_clipboardMutex);
+  // Release all held IDataObject references (reverse order not required but fine)
+  for (auto it = g_clipboardObjects.rbegin(); it != g_clipboardObjects.rend(); ++it) {
+    if (*it) {
+      (*it)->Release();
+    }
+  }
+  g_clipboardObjects.clear();
+
+  // Best effort: flush the OLE clipboard.
+  // This may fail in some environments; ignore return but could be logged.
+  ::OleFlushClipboard();
+}
+
+// Existing SetData implementation with an additional tracking step after SetClipboard()
 bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfFormat)
 {
   unsigned char sensitiveDataDigest[SHA256::HASHLEN] = { 0 };
@@ -219,6 +251,15 @@ bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfF
   pods->CacheGlobalData(cfFormat, hGlobalMemory);
   pods->SetClipboard();
   pods = NULL; // As deleted by SetClipboard above
+
+  // NEW: obtain the IDataObject from the clipboard and track it.
+  // OleGetClipboard returns an AddRef'ed IDataObject we can use for tracking.
+  IDataObject* pDataObj = nullptr;
+  if (SUCCEEDED(::OleGetClipboard(&pDataObj)) && pDataObj != nullptr) {
+    // TrackClipboardObject will AddRef; release the OleGetClipboard ref we received.
+    TrackClipboardObject(pDataObj);
+    pDataObj->Release();
+  }
 
   if (isSensitive) {
     m_bSensitiveDataOnClipboard = true;
