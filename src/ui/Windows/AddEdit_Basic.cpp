@@ -1461,9 +1461,11 @@ void CAddEdit_Basic::OnCustomFieldsListClick(NMHDR *pNMHDR, LRESULT *pResult)
   auto pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
   const int selectedRow = pNMItemActivate->iItem;
   if (selectedRow >= 0) {
-    const CString value = m_customFieldsList.GetItemText(selectedRow, 1);
-    GetMainDlg()->SetClipboardData(StringX(value));
-    GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::CustomFieldValue);
+    const CustomFieldList &fields = M_customfields();
+    if (selectedRow < static_cast<int>(fields.size())) {
+      GetMainDlg()->SetClipboardData(fields[selectedRow].GetValue());
+      GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::CustomFieldValue);
+    }
   }
 
   *pResult = 0;
