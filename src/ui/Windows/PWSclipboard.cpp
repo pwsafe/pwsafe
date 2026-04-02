@@ -24,6 +24,9 @@ static CLIPFORMAT CF_EXCLUDE_CLIPBOARD_CONTENT_FROM_MONITOR_PROCESSING;
 static CLIPFORMAT CF_CAN_INCLUDE_IN_CLIPBOARD_HISTORY;
 static CLIPFORMAT CF_CAN_UPLOAD_TO_CLOUD_CLIPBOARD;
 
+static IDataObject* g_clipboardObject = nullptr;
+static std::mutex g_clipboardMutex;
+
 class ClipboardChecker
 {
 public:
@@ -156,37 +159,35 @@ PWSclipboard::~PWSclipboard()
   // data after application exit. 
 }
 
-// Thread-safe container of AddRef'ed IDataObject pointers that we keep
-// until the app explicitly clears the clipboard.
-static std::vector<IDataObject*> g_clipboardObjects;
-static std::mutex g_clipboardMutex;
 void PWSclipboard::TrackClipboardObject(IDataObject* pDataObject)
 {
   if (pDataObject == nullptr)
     return;
-  // AddRef so we own a reference independent of MFC internals
-  pDataObject->AddRef();
+
   std::lock_guard<std::mutex> lk(g_clipboardMutex);
-  g_clipboardObjects.push_back(pDataObject);
+
+  // Release previously held object (must be done on the UI/STA thread).
+  if (g_clipboardObject) {
+    g_clipboardObject->Release();
+    g_clipboardObject = nullptr;
+  }
+
+  // Hold a reference to the new object.
+  pDataObject->AddRef();
+  g_clipboardObject = pDataObject;
 }
 
-void PWSclipboard::ClearTrackedClipboardObjects()
+void PWSclipboard::ClearTrackedClipboardObject()
 {
   std::lock_guard<std::mutex> lk(g_clipboardMutex);
-  // Release all held IDataObject references (reverse order not required but fine)
-  for (auto it = g_clipboardObjects.rbegin(); it != g_clipboardObjects.rend(); ++it) {
-    if (*it) {
-      (*it)->Release();
-    }
+  if (g_clipboardObject) {
+    g_clipboardObject->Release();
+    g_clipboardObject = nullptr;
   }
-  g_clipboardObjects.clear();
-
   // Best effort: flush the OLE clipboard.
-  // This may fail in some environments; ignore return but could be logged.
   ::OleFlushClipboard();
 }
 
-// Existing SetData implementation with an additional tracking step after SetClipboard()
 bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfFormat)
 {
   unsigned char sensitiveDataDigest[SHA256::HASHLEN] = { 0 };
@@ -252,7 +253,7 @@ bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfF
   pods->SetClipboard();
   pods = NULL; // As deleted by SetClipboard above
 
-  // NEW: obtain the IDataObject from the clipboard and track it.
+  // Obtain the IDataObject from the clipboard and track it.
   // OleGetClipboard returns an AddRef'ed IDataObject we can use for tracking.
   IDataObject* pDataObj = nullptr;
   if (SUCCEEDED(::OleGetClipboard(&pDataObj)) && pDataObj != nullptr) {
@@ -272,12 +273,31 @@ bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfF
 ClipboardStatus PWSclipboard::ClearCBData()
 {
   ClipboardStatus result = GetLastSensitiveItemPresent();
-  if (result != SuccessSensitivePresent)
+  if (result != SuccessSensitivePresent) {
+    ClearTrackedClipboardObject();
     return result;
+  }
   StringX blank(L"");
   SetData(blank, false);
   memset(m_digest, 0, SHA256::HASHLEN);
   m_bSensitiveDataOnClipboard = false;
+
+  // Sensitive data is present, perform a proper OLE clipboard clear.
+// Ensure COM/OLE is initialized on this thread (should be, if UI thread).
+// Best-practice: call OleSetClipboard(NULL) to give up ownership, then flush.
+  (void)::OleSetClipboard(nullptr);
+
+  (void)::OleFlushClipboard();
+
+  // Also clear Win32 clipboard as a fallback (open/empty/close)
+  if (::OpenClipboard(NULL)) {
+    ::EmptyClipboard();
+    ::CloseClipboard();
+  }
+
+  // Release any IDataObject references we were holding.
+  ClearTrackedClipboardObject();
+
   // Sensitive data was present, now removed.
   return SuccessSensitivePresent;
 }
