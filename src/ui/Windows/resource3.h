@@ -504,6 +504,8 @@
 #define IDS_NO_ENTRIES_SELECTED         5736
 #define IDS_NO_ENTRIES_PROCESSED        5737
 #define IDS_DCALONG                     5738
+#define IDS_HIDE_VALUE                  6075
+#define IDS_SHOW_VALUE                  6076
 #define IDS_ENTRYSTATUS                 5739
 #define IDS_RECORDSUPDATED              5741
 #define IDS_FILEWRITEFAILURE            5742

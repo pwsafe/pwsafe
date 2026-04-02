@@ -1488,8 +1488,14 @@ void CAddEdit_Basic::OnNMRClickCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult)
 
   m_rightClickedCustomFieldIndex = item;
 
+  const CustomFieldList &fields = M_customfields();
+  if (item >= static_cast<int>(fields.size())) {
+    *pResult = 0;
+    return;
+  }
+
   CString menuText;
-  menuText.LoadString(IDS_CUSTOMFIELD_TOGGLE_SENSITIVE);
+  menuText.LoadString(fields[item].IsSensitive() ? IDS_SHOW_VALUE : IDS_HIDE_VALUE);
   CMenu menu;
   menu.CreatePopupMenu();
   menu.AppendMenu(MF_STRING, IDC_CUSTOMFIELDS_TOGGLE_SENSITIVE, menuText);
