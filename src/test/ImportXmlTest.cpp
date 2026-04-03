@@ -113,7 +113,7 @@ void ImportXmlTest::exportXml(PWScore &exportCore, const stringT &xmlFile, int e
   CReport rpt;
 
   ASSERT_EQ(exportCore.WriteXMLFile(StringX(xmlFile.c_str()), bsFields, _T(""), 0, 0,
-                                    TCHAR('\xbb'), _T(""), numExported, nullptr,
+                                    TCHAR('^'), _T(""), numExported, nullptr,
                                     false, &rpt),
             PWScore::SUCCESS);
   EXPECT_EQ(numExported, expectedExports);

@@ -348,15 +348,13 @@ install (TARGETS pwsafe RUNTIME DESTINATION "bin")
 
 target_link_libraries(pwsafe harden_interface)
 
-if (WIN32)
-  add_custom_command(TARGET pwsafe POST_BUILD
-    COMMAND "${CMAKE_COMMAND}" -E copy_if_different
-            "${PROJECT_SOURCE_DIR}/xml/pwsafe.xsd"
-            "$<TARGET_FILE_DIR:pwsafe>/pwsafe.xsd"
-    COMMAND "${CMAKE_COMMAND}" -E copy_if_different
-            "${PROJECT_SOURCE_DIR}/xml/pwsafe_filter.xsd"
-            "$<TARGET_FILE_DIR:pwsafe>/pwsafe_filter.xsd")
-endif ()
+add_custom_command(TARGET pwsafe POST_BUILD
+  COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+          "${PROJECT_SOURCE_DIR}/xml/pwsafe.xsd"
+          "$<TARGET_FILE_DIR:pwsafe>/pwsafe.xsd"
+  COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+          "${PROJECT_SOURCE_DIR}/xml/pwsafe_filter.xsd"
+          "$<TARGET_FILE_DIR:pwsafe>/pwsafe_filter.xsd")
 
 if (NOT WIN32)
   install (DIRECTORY xml DESTINATION "share/passwordsafe")
