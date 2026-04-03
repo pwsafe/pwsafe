@@ -358,6 +358,7 @@ bool PFileXMLProcessor::CheckElementHierachy(int iroot, int icurrent)
         case XLE_PROTECTED:
         case XLE_SYMBOLS:
         case XLE_KBSHORTCUT:
+        case XLE_CUSTOM_FIELDS:
         case XLE_ENTRY_PASSWORDPOLICY:
         case XLE_ENTRY_PASSWORDPOLICYNAME:
           return true;
@@ -434,6 +435,20 @@ bool PFileXMLProcessor::CheckElementHierachy(int iroot, int icurrent)
           return true;
       }
       break;
+    case XLE_CUSTOM_FIELDS:
+      switch (icurrent) {
+        case XLE_CUSTOM_FIELD:
+          return true;
+      }
+      break;
+    case XLE_CUSTOM_FIELD:
+      switch (icurrent) {
+        case XLE_CUSTOM_FIELD_NAME:
+        case XLE_CUSTOM_FIELD_VALUE:
+        case XLE_CUSTOM_FIELD_SENSITIVE:
+          return true;
+      }
+      break;
   }
   return false;
 }
@@ -469,6 +484,7 @@ bool PFileXMLProcessor::CheckElementValue(const TCHAR *value, int icurrent)
     case XLE_PREF_USEDEFAULTUSER:
     case XLE_PROTECTED:
     case XLE_STATUS:
+    case XLE_CUSTOM_FIELD_SENSITIVE:
       return(SafeCompare(value, _T("1")) || SafeCompare(value, _T("true")) || SafeCompare(value, _T("0")) || SafeCompare(value, _T("false")));
           
     case XLE_PREF_IDLETIMEOUT: // 1 to 600

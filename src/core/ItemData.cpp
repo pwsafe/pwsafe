@@ -1314,6 +1314,27 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   ConditionalWriteXML(CItemData::KBSHORTCUT, bsExport, "kbshortcut", GetKBShortcut(),
                       oss, utf8conv, bXMLErrorsFound);
 
+  if (bsExport.test(CItemData::CUSTOMTEXT)) {
+    const CustomFieldList fields = GetCustomFields();
+    if (!fields.empty()) {
+      oss << "\t\t<custom_fields>" << endl;
+      for (const auto &field : fields) {
+        oss << "\t\t\t<custom_field>" << endl;
+
+        brc = PWSUtil::WriteXMLField(oss, "name", field.GetName(), utf8conv, "\t\t\t\t");
+        if (!brc) bXMLErrorsFound = true;
+
+        brc = PWSUtil::WriteXMLField(oss, "value", field.GetValue(), utf8conv, "\t\t\t\t");
+        if (!brc) bXMLErrorsFound = true;
+
+        if (field.HasProperty(CustomField::PROP_SENSITIVE))
+          oss << "\t\t\t\t<sensitive>" << (field.IsSensitive() ? 1 : 0) << "</sensitive>" << endl;
+        oss << "\t\t\t</custom_field>" << endl;
+      }
+      oss << "\t\t</custom_fields>" << endl;
+    }
+  }
+
   oss << "\t</entry>" << endl << endl;
   return oss.str();
 }

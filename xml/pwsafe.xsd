@@ -168,7 +168,7 @@ xmlns:xs="http://www.w3.org/2001/XMLSchema" version="3.18">
   <xs:all>
     <xs:element name="name" type="stringType" minOccurs="1" maxOccurs="1" />
     <xs:element name="value" type="stringType" minOccurs="1" maxOccurs="1" />
-    <xs:element name="sensitive" type="boolType" minOccurs="1" maxOccurs="1" />
+    <xs:element name="sensitive" type="boolType" minOccurs="0" maxOccurs="1" />
   </xs:all>
 </xs:complexType>
 

@@ -28,10 +28,27 @@
 using namespace std;
 using pws_os::CUUID;
 
+static StringX NormalizeXMLLineEndings(const StringX &value)
+{
+  StringX normalized;
+  normalized.reserve(value.length());
+
+  for (size_t i = 0; i < value.length(); ++i) {
+    const TCHAR ch = value[i];
+    if (ch == _T('\n') && (i == 0 || value[i - 1] != _T('\r')))
+      normalized += _T('\r');
+
+    normalized += ch;
+  }
+
+  return normalized;
+}
+
 XMLFileHandlers::XMLFileHandlers()
 {
   m_cur_entry = nullptr;
   m_cur_pwhistory_entry = nullptr;
+  m_cur_custom_field = nullptr;
   m_sxElemContent = _T("");
 
   m_delimiter = _T('\0');
@@ -57,6 +74,8 @@ XMLFileHandlers::XMLFileHandlers()
 
 XMLFileHandlers::~XMLFileHandlers()
 {
+  delete m_cur_pwhistory_entry;
+  delete m_cur_custom_field;
   m_ukhxl.clear();
 }
 
@@ -127,6 +146,7 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       m_cur_entry->symbols = _T("");
       m_cur_entry->policyname = _T("");
       m_cur_entry->kbshortcut = _T("");
+      m_cur_entry->custom_fields.clear();
       m_cur_entry->ucprotected = 0;
       m_cur_entry->entrytype = NORMAL;
       m_cur_entry->bforce_normal_entry = false;
@@ -139,6 +159,17 @@ bool XMLFileHandlers::ProcessStartElement(const int icurrent_element)
       m_cur_pwhistory_entry = new pwhistory_entry;
       m_cur_pwhistory_entry->changed = _T("");
       m_cur_pwhistory_entry->oldpassword = _T("");
+      break;
+    case XLE_CUSTOM_FIELD:
+      if (m_bValidation)
+        return false;
+
+      ASSERT(m_cur_custom_field == nullptr);
+      m_cur_custom_field = new custom_field_entry;
+      m_cur_custom_field->name = _T("");
+      m_cur_custom_field->value = _T("");
+      m_cur_custom_field->sensitive = false;
+      m_cur_custom_field->has_sensitive = false;
       break;
     case XLE_CTIMEX:
     case XLE_ATIMEX:
@@ -482,6 +513,32 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_KBSHORTCUT:
       m_cur_entry->kbshortcut = m_sxElemContent;
+      break;
+    case XLE_CUSTOM_FIELD:
+      ASSERT(m_cur_custom_field != nullptr);
+      if (!m_cur_custom_field->name.empty()) {
+        CustomField cf;
+        cf.SetName(m_cur_custom_field->name);
+        cf.SetValue(m_cur_custom_field->value);
+        if (m_cur_custom_field->has_sensitive)
+          cf.SetSensitive(m_cur_custom_field->sensitive);
+        m_cur_entry->custom_fields.push_back(cf);
+      }
+      delete m_cur_custom_field;
+      m_cur_custom_field = nullptr;
+      break;
+    case XLE_CUSTOM_FIELD_NAME:
+      ASSERT(m_cur_custom_field != nullptr);
+      m_cur_custom_field->name = NormalizeXMLLineEndings(m_sxElemContent);
+      break;
+    case XLE_CUSTOM_FIELD_VALUE:
+      ASSERT(m_cur_custom_field != nullptr);
+      m_cur_custom_field->value = NormalizeXMLLineEndings(m_sxElemContent);
+      break;
+    case XLE_CUSTOM_FIELD_SENSITIVE:
+      ASSERT(m_cur_custom_field != nullptr);
+      m_cur_custom_field->sensitive = (m_sxElemContent == _T("1") || m_sxElemContent == _T("true"));
+      m_cur_custom_field->has_sensitive = true;
       break;
     case XLE_STATUS:
       i = _ttoi(m_sxElemContent.c_str());
@@ -899,6 +956,10 @@ void XMLFileHandlers::AddXMLEntries()
 
     if (!cur_entry->kbshortcut.empty()) {
       ci_temp.SetKBShortcut(cur_entry->kbshortcut);
+    }
+
+    if (!cur_entry->custom_fields.empty()) {
+      ci_temp.SetCustomFields(cur_entry->custom_fields);
     }
 
     StringX newPWHistory;

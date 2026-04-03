@@ -20,9 +20,17 @@ int main(int argc, char **argv)
 {
   testing::InitGoogleTest(&argc, argv);
 #ifdef WIN32
+  HRESULT hrCOM = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+  if (FAILED(hrCOM)) {
+    std::wcerr << _T("Fatal Error: COM initialization failed") << std::endl;
+    return 1;
+  }
+
   // initialize MFC -- needed for string lookup in error handling
   if (!AfxWinInit(::GetModuleHandle(nullptr), nullptr, ::GetCommandLine(), 0)) {
     std::wcerr << _T("Fatal Error: MFC initialization failed") << std::endl;
+    CoUninitialize();
+    return 1;
   }
   AfxGetInstanceHandle();
 #endif
@@ -33,6 +41,10 @@ int main(int argc, char **argv)
   PWSLog::GetLog()->DeleteLog();
   PWSprefs::GetInstance()->DeleteInstance();
   PWSrand::GetInstance()->DeleteInstance();
+
+#ifdef WIN32
+  CoUninitialize();
+#endif
 
   return rc;
 }

@@ -51,6 +51,7 @@ struct pw_entry {
   StringX symbols;
   StringX policyname;
   StringX kbshortcut;
+  CustomFieldList custom_fields;
   unsigned char ucprotected;
   PWPolicy pwp;
   int entrytype;
@@ -60,6 +61,13 @@ struct pw_entry {
 struct pwhistory_entry {
   StringX changed;
   StringX oldpassword;
+};
+
+struct custom_field_entry {
+  StringX name;
+  StringX value;
+  bool sensitive;
+  bool has_sensitive;
 };
 
 typedef std::vector<pw_entry *> vdb_entries;
@@ -172,6 +180,7 @@ private:
   std::vector<StringX> m_vEmptyGroups;
   StringX m_sxXML_DateTime;
   pwhistory_entry *m_cur_pwhistory_entry;
+  custom_field_entry *m_cur_custom_field;
 };
 
 #endif /* __XMLFILEHANDLERS_H */
