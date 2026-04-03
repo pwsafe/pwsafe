@@ -22,6 +22,7 @@
 #define CLIPBOARD_TEXT_FORMAT CF_UNICODETEXT
 
 #include "core/StringX.h"
+struct IDataObject;
 
 enum ClipboardStatus {
   Error,
@@ -43,7 +44,12 @@ public:
   // returns true if succeeded
   ClipboardStatus ClearCBData(); // return true if cleared or if data wasn't ours
   ClipboardStatus GetLastSensitiveItemPresent();
+
+
+
 private:
+  void TrackClipboardObject(IDataObject* pDataObject);
+  void ClearTrackedClipboardObject();
   bool m_bSensitiveDataOnClipboard;
   unsigned char m_digest[SHA256::HASHLEN];
 };

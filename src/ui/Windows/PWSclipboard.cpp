@@ -15,6 +15,7 @@
 
 #include "core/PWSprefs.h"
 #include "core/Util.h"
+#include <mutex>
 
 static CLIPFORMAT CF_CLIPBOARD_VIEWER_IGNORE; // see below
 // Following hide PasswordSafe clipboard pastes from Cloud Clipboard and Clipboard History
@@ -22,6 +23,9 @@ static CLIPFORMAT CF_CLIPBOARD_VIEWER_IGNORE; // see below
 static CLIPFORMAT CF_EXCLUDE_CLIPBOARD_CONTENT_FROM_MONITOR_PROCESSING;
 static CLIPFORMAT CF_CAN_INCLUDE_IN_CLIPBOARD_HISTORY;
 static CLIPFORMAT CF_CAN_UPLOAD_TO_CLOUD_CLIPBOARD;
+
+static IDataObject* g_clipboardObject = nullptr;
+static std::mutex g_clipboardMutex;
 
 class ClipboardChecker
 {
@@ -155,6 +159,35 @@ PWSclipboard::~PWSclipboard()
   // data after application exit. 
 }
 
+void PWSclipboard::TrackClipboardObject(IDataObject* pDataObject)
+{
+  if (pDataObject == nullptr)
+    return;
+
+  std::lock_guard<std::mutex> lk(g_clipboardMutex);
+
+  // Release previously held object (must be done on the UI/STA thread).
+  if (g_clipboardObject) {
+    g_clipboardObject->Release();
+    g_clipboardObject = nullptr;
+  }
+
+  // Hold a reference to the new object.
+  pDataObject->AddRef();
+  g_clipboardObject = pDataObject;
+}
+
+void PWSclipboard::ClearTrackedClipboardObject()
+{
+  std::lock_guard<std::mutex> lk(g_clipboardMutex);
+  if (g_clipboardObject) {
+    g_clipboardObject->Release();
+    g_clipboardObject = nullptr;
+  }
+  // Best effort: flush the OLE clipboard.
+  ::OleFlushClipboard();
+}
+
 bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfFormat)
 {
   unsigned char sensitiveDataDigest[SHA256::HASHLEN] = { 0 };
@@ -220,6 +253,15 @@ bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfF
   pods->SetClipboard();
   pods = NULL; // As deleted by SetClipboard above
 
+  // Obtain the IDataObject from the clipboard and track it.
+  // OleGetClipboard returns an AddRef'ed IDataObject we can use for tracking.
+  IDataObject* pDataObj = nullptr;
+  if (SUCCEEDED(::OleGetClipboard(&pDataObj)) && pDataObj != nullptr) {
+    // TrackClipboardObject will AddRef; release the OleGetClipboard ref we received.
+    TrackClipboardObject(pDataObj);
+    pDataObj->Release();
+  }
+
   if (isSensitive) {
     m_bSensitiveDataOnClipboard = true;
     memcpy(m_digest, sensitiveDataDigest, sizeof(m_digest));
@@ -231,12 +273,31 @@ bool PWSclipboard::SetData(const StringX &data, bool isSensitive, CLIPFORMAT cfF
 ClipboardStatus PWSclipboard::ClearCBData()
 {
   ClipboardStatus result = GetLastSensitiveItemPresent();
-  if (result != SuccessSensitivePresent)
+  if (result != SuccessSensitivePresent) {
+    ClearTrackedClipboardObject();
     return result;
+  }
   StringX blank(L"");
   SetData(blank, false);
   memset(m_digest, 0, SHA256::HASHLEN);
   m_bSensitiveDataOnClipboard = false;
+
+  // Sensitive data is present, perform a proper OLE clipboard clear.
+// Ensure COM/OLE is initialized on this thread (should be, if UI thread).
+// Best-practice: call OleSetClipboard(NULL) to give up ownership, then flush.
+  (void)::OleSetClipboard(nullptr);
+
+  (void)::OleFlushClipboard();
+
+  // Also clear Win32 clipboard as a fallback (open/empty/close)
+  if (::OpenClipboard(nullptr)) {
+    ::EmptyClipboard();
+    ::CloseClipboard();
+  }
+
+  // Release any IDataObject references we were holding.
+  ClearTrackedClipboardObject();
+
   // Sensitive data was present, now removed.
   return SuccessSensitivePresent;
 }
