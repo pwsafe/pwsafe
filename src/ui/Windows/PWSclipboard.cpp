@@ -290,7 +290,7 @@ ClipboardStatus PWSclipboard::ClearCBData()
   (void)::OleFlushClipboard();
 
   // Also clear Win32 clipboard as a fallback (open/empty/close)
-  if (::OpenClipboard(NULL)) {
+  if (::OpenClipboard(nullptr)) {
     ::EmptyClipboard();
     ::CloseClipboard();
   }
