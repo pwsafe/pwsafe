@@ -54,7 +54,7 @@ jobs:
       run: sudo dpkg -i ./p*.deb
 
     - name: Upload artifacts
-      uses: 'actions/upload-artifact@v6'
+      uses: 'actions/upload-artifact@v7'
       with:
         name: PasswordSafe-ubuntu-latest.${{ github.sha }}
         path: build/p*.deb
