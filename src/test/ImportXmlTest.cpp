@@ -17,28 +17,36 @@
 
 #include "gtest/gtest.h"
 
-#include <filesystem>
-#include <fstream>
-#include <iterator>
+#include <vector>
 
 namespace {
 
 std::string readFileUtf8(const stringT &filename)
 {
-  const std::filesystem::path path(filename.c_str());
-  std::ifstream ifs(path, std::ios::binary);
-  EXPECT_TRUE(ifs.is_open());
-  return std::string(std::istreambuf_iterator<char>(ifs),
-                     std::istreambuf_iterator<char>());
+  std::FILE *fp = pws_os::FOpen(filename, _T("rb"));
+  EXPECT_NE(fp, nullptr);
+  if (fp == nullptr) {
+    return {};
+  }
+
+  const size_t length = pws_os::fileLength(fp);
+  EXPECT_NE(length, static_cast<size_t>(-1));
+  if (length == static_cast<size_t>(-1)) {
+    pws_os::FClose(fp, false);
+    return {};
+  }
+  std::vector<char> buffer(length);
+  EXPECT_EQ(length, fread(buffer.data(), 1, length, fp));
+  pws_os::FClose(fp, false);
+  return std::string(buffer.begin(), buffer.end());
 }
 
 void writeFileUtf8(const stringT &filename, const std::string &content)
 {
-  const std::filesystem::path path(filename.c_str());
-  std::ofstream ofs(path, std::ios::binary | std::ios::trunc);
-  ASSERT_TRUE(ofs.is_open());
-  ofs.write(content.data(), static_cast<std::streamsize>(content.size()));
-  ASSERT_TRUE(static_cast<bool>(ofs));
+  std::FILE *fp = pws_os::FOpen(filename, _T("wb"));
+  ASSERT_NE(fp, nullptr);
+  ASSERT_EQ(content.size(), fwrite(content.data(), 1, content.size(), fp));
+  ASSERT_EQ(0, pws_os::FClose(fp, true));
 }
 
 void removeSensitiveElement(const stringT &filename)
