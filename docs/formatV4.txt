@@ -693,7 +693,7 @@ For example, to encode the following custom fields:
 * WiFi SSID: Test
 * WiFi Password: bobsyouruncle (sensitive field)
 One would use
-    010009WiFi SSID020004Test00000001000DWiFi Password02000Cbobsyouruncle0300011
+    010009WiFi SSID020004Test00000001000DWiFi Password02000Dbobsyouruncle0300011
 
 This field was introduced in format version 0x0402
 
