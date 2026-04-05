@@ -356,16 +356,6 @@ add_custom_command(TARGET pwsafe POST_BUILD
           "${PROJECT_SOURCE_DIR}/xml/pwsafe_filter.xsd"
           "$<TARGET_FILE_DIR:pwsafe>/pwsafe_filter.xsd")
 
-if (APPLE AND TARGET coretest)
-  add_custom_command(TARGET coretest POST_BUILD
-    COMMAND "${CMAKE_COMMAND}" -E copy_if_different
-            "${PROJECT_SOURCE_DIR}/xml/pwsafe.xsd"
-            "$<TARGET_FILE_DIR:coretest>/pwsafe.xsd"
-    COMMAND "${CMAKE_COMMAND}" -E copy_if_different
-            "${PROJECT_SOURCE_DIR}/xml/pwsafe_filter.xsd"
-            "$<TARGET_FILE_DIR:coretest>/pwsafe_filter.xsd")
-endif ()
-
 if (NOT WIN32)
   install (DIRECTORY xml DESTINATION "share/passwordsafe")
   ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/pwsafe.1.gz
