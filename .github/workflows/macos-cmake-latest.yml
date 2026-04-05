@@ -34,7 +34,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v6
+      uses: actions/checkout@v6.0.0
 
     - name: Set build parameters
 
@@ -79,7 +79,7 @@ jobs:
 
     - name: Cache wxWidgets build
       id: cache-wxWidgets-build
-      uses: actions/cache@v5
+      uses: actions/cache@v5.0.0
       with:
         path: |
           ${{ env.WX_BUILD_DIR }}
@@ -150,7 +150,7 @@ jobs:
 
 
     - name: Upload artifacts
-      uses: 'actions/upload-artifact@v6'
+      uses: actions/upload-artifact@v7.0.0
       with:
         name: PasswordSafe-macOS.${{ github.sha }}
         path: ${{ github.workspace }}/build/passwordsafe-*.dmg
