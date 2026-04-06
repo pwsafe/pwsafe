@@ -1087,11 +1087,13 @@ void PasswordSafeFrame::DoRun(CItemData& item)
     expandedAutoType = pci->GetAutoType();
   }
 
+  const CustomFieldList customFields = effci.GetCustomFields();
   expandedAutoType = PWSAuxParse::GetAutoTypeString(expandedAutoType,
                                                     effci.GetGroup(), effci.GetTitle(), effci.GetUser(),
                                                     effci.GetPassword(), lastpassword,
                                                     effci.GetNotes(), effci.GetURL(), effci.GetEmail(),
                                                     totpauthcode,
+                                                    &customFields,
                                                     vactionverboffsets);
 
   // Now honour presence of [alt], {alt} or [ssh] in the url if present

@@ -1319,6 +1319,7 @@ void CAddEdit_Basic::OnLaunch()
                                                        M_URL(),
                                                        M_email(),
                                                        stotpauthcode,
+                                                       &M_customfields(),
                                                        vactionverboffsets);
 
   const bool bDoAutoType = (GetKeyState(VK_CONTROL) & 0x8000) != 0;

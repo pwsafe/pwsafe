@@ -2450,9 +2450,11 @@ void DboxMain::OnRunCommand()
   if (m_sxAutoType.empty())
     m_sxAutoType = pci->GetAutoType();
 
+  const CustomFieldList customFields = effci.GetCustomFields();
   m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType, effci.GetGroup(), effci.GetTitle(), effci.GetUser(),
                                                 effci.GetPassword(), sx_lastpswd,
                                                 effci.GetNotes(), effci.GetURL(), effci.GetEmail(), sx_totpauthcode,
+                                                &customFields,
                                                 m_vactionverboffsets);
   UpdateAccessTime(uuid);
 

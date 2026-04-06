@@ -15,6 +15,7 @@
 #include <algorithm>
 
 #include "PWSAuxParse.h"
+#include "CustomFields.h"
 #include "PWHistory.h"
 #include "PWSprefs.h"
 #include "core.h"
@@ -95,6 +96,8 @@ void PWSAuxParse::GetEffectiveValues(const CItemData* pci, const CItemData* pbci
   effectiveItemData.SetEmail(pci->GetEffectiveFieldValue(CItem::EMAIL, pbci));
   effectiveItemData.SetAutoType(pci->GetEffectiveFieldValue(CItem::AUTOTYPE, pbci));
   effectiveItemData.SetRunCommand(pci->GetEffectiveFieldValue(CItem::RUNCMD, pbci));
+  effectiveItemData.SetFieldValue(CItem::CUSTOMTEXT,
+                                  pci->GetEffectiveFieldValue(CItem::CUSTOMTEXT, pbci));
 
   prevPassword = PWHistList::GetPreviousPassword(pci->GetEffectiveFieldValue(CItem::PWHIST, pbci));
   totpAuthCode = pci->IsDependent() ? pbci->GetTotpAuthCode() : pci->GetTotpAuthCode();
@@ -317,6 +320,37 @@ static bool GetSpecialCommand(const StringX &sx_autotype, size_t &n, WORD &wVK,
   return true;
 }
 
+static bool ExpandCustomFieldValue(const StringX &sx_autotype, size_t &n,
+                                   const CustomFieldList *pcustomfields,
+                                   StringX &sxtmp)
+{
+  if (n + 1 >= sx_autotype.length() || sx_autotype[n + 1] != TCHAR('{'))
+    return false;
+
+  const StringX::size_type iEndBracket = sx_autotype.find(TCHAR('}'), n + 2);
+  if (iEndBracket == StringX::npos)
+    return false;
+
+  const StringX sxName = sx_autotype.substr(n + 2, iEndBracket - n - 2);
+  if (pcustomfields != nullptr) {
+    const auto it = std::find_if(pcustomfields->begin(), pcustomfields->end(),
+                                 [&sxName](const CustomField &cf) {
+                                   return cf.GetName() == sxName;
+                                 });
+    if (it != pcustomfields->end()) {
+      for (TCHAR c : it->GetValue()) {
+        sxtmp += c;
+        if (c == L'\\') {
+          sxtmp += c;
+        }
+      }
+    }
+  }
+
+  n = iEndBracket;
+  return true;
+}
+
 StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
                                        const StringX &sx_group,
                                        const StringX &sx_title,
@@ -327,6 +361,7 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
                                        const StringX &sx_url,
                                        const StringX &sx_email,
                                        const StringX& sx_totpauthcode,
+                                       const CustomFieldList *pcustomfields,
                                        std::vector<size_t> &vactionverboffsets)
 {
   StringX sxtmp(_T(""));
@@ -462,6 +497,12 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
         case TCHAR('2'):
           sxtmp += duplicateCharInString(sx_totpauthcode, L'\\');
           break;
+        case TCHAR('v'):
+          if (!ExpandCustomFieldValue(sx_autotype, n, pcustomfields, sxtmp)) {
+            sxtmp += L'\\';
+            sxtmp += curChar;
+          }
+          break;
 
         case TCHAR('o'):
         {
@@ -565,7 +606,6 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
           sxtmp += L'\x1B';
           break;        // Also copy explicit control characters to output string unchanged.
         case TCHAR('a'): // bell (can't hear it during testing!)
-        case TCHAR('v'): // vertical tab
         case TCHAR('f'): // form feed
         case TCHAR('x'): // hex digits (\xNN)
         // and any others we have forgotten!
@@ -616,9 +656,11 @@ StringX PWSAuxParse::GetAutoTypeString(const CItemData &ci,
       }
     }
   }
+  const CustomFieldList customFields = effci.GetCustomFields();
   return PWSAuxParse::GetAutoTypeString(sx_autotype, effci.GetGroup(),
     effci.GetTitle(), effci.GetUser(), effci.GetPassword(), sx_prevPassword,
     effci.GetNotes(), effci.GetURL(), effci.GetEmail(), sx_totpAuthCode,
+    &customFields,
                                         vactionverboffsets);
 }
 

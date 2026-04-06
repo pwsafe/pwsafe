@@ -849,7 +849,8 @@ void CAddEdit_Additional::OnSTCExClicked(UINT nID)
                                                 M_notes(),
                                                 M_URL(),
                                                 M_email(),
-                                stotpauthcode,
+                                                stotpauthcode,
+                                                &M_customfields(),
                                                 vactionverboffsets);
 
         // Replace any special code that we can - i.e. only \{\t} and \{ }

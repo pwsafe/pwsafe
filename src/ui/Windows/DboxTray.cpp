@@ -199,9 +199,11 @@ void DboxMain::OnTrayBrowse(UINT nID)
  
   if (!sx_url.empty()) {
     std::vector<size_t> vactionverboffsets;
+    const CustomFieldList customFields = effci.GetCustomFields();
     StringX sxAutotype = PWSAuxParse::GetAutoTypeString(effci.GetAutoType(),effci.GetGroup(), effci.GetTitle(), effci.GetUser(),
                                                         effci.GetPassword(), sx_lastpswd, effci.GetNotes(),
                                                         effci.GetURL(), effci.GetEmail(), sx_totpauthcode,
+                                                        &customFields,
                                                      vactionverboffsets);
 
     if (bUseAltBrowser)
@@ -465,9 +467,11 @@ void DboxMain::OnTrayRunCommand(UINT nID)
   if (m_sxAutoType.empty())
     m_sxAutoType = ci.GetAutoType();
 
+  const CustomFieldList customFields = effci.GetCustomFields();
   m_sxAutoType = PWSAuxParse::GetAutoTypeString(m_sxAutoType, effci.GetGroup(), effci.GetTitle(), effci.GetUser(),
                                                 effci.GetPassword(), sx_lastpswd, effci.GetNotes(),
                                                 effci.GetURL(), effci.GetEmail(), sx_totpauthcode,
+                                                &customFields,
                                                 m_vactionverboffsets);
   SetClipboardData(effci.GetPassword());
   UpdateLastClipboardAction(CItemData::PASSWORD);

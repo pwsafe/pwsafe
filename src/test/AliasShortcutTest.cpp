@@ -43,6 +43,10 @@ void AliasShortcutTest::SetUp()
   base.SetAutoType(L"base-autotype");
   base.SetEmail(L"email@base.com");
   base.SetRunCommand(L"Run base, run");
+  CustomField baseCustom;
+  baseCustom.SetName(L"PIN");
+  baseCustom.SetValue(L"base-pin");
+  ASSERT_TRUE(base.AddCustomField(baseCustom));
 }
 
 TEST_F(AliasShortcutTest, Alias)
@@ -59,6 +63,10 @@ TEST_F(AliasShortcutTest, Alias)
   al.SetAutoType(L"alias-autotype");
   al.SetEmail(L"email@alias.com");
   al.SetRunCommand(L"Run alias, run");
+  CustomField aliasCustom;
+  aliasCustom.SetName(L"PIN");
+  aliasCustom.SetValue(L"alias-pin");
+  ASSERT_TRUE(al.AddCustomField(aliasCustom));
   al.SetAlias();
 
   const pws_os::CUUID base_uuid = base.GetUUID();
@@ -87,6 +95,7 @@ TEST_F(AliasShortcutTest, Alias)
   EXPECT_EQ(effci.GetEmail(), al.GetEmail());
   EXPECT_EQ(effci.GetAutoType(), al.GetAutoType());
   EXPECT_EQ(effci.GetRunCommand(), al.GetRunCommand());
+  EXPECT_EQ(effci.GetCustomFieldsRaw(), al.GetCustomFieldsRaw());
   EXPECT_TRUE(sx_totpauthcode.empty());
 }
 
@@ -127,5 +136,6 @@ TEST_F(AliasShortcutTest, Shortcut)
   EXPECT_EQ(effci.GetEmail(), base.GetEmail());
   EXPECT_EQ(effci.GetAutoType(), base.GetAutoType());
   EXPECT_EQ(effci.GetRunCommand(), base.GetRunCommand());
+  EXPECT_EQ(effci.GetCustomFieldsRaw(), base.GetCustomFieldsRaw());
   EXPECT_TRUE(sx_totpauthcode.empty());
 }
