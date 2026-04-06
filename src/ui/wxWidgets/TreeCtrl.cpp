@@ -1469,7 +1469,7 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
     auto parentOfDragItem = GetItemParent(m_drag_item);
     auto sxSrcGroupName = tostringx(GetItemGroup(m_drag_item));
     StringX sxDstGroupName;
-    bool dragItemLeavesEmptyGroup = (ItemIsGroup(parentOfDragItem) && GetChildrenCount(parentOfDragItem) == 1);
+    bool dragItemLeavesEmptyGroup = (ItemIsGroup(parentOfDragItem) && GetChildrenCount(parentOfDragItem, false) == 1); // Only one level of children is counted
     bool isDestinationEmptyGroup = false;
     
     if(! currentItem.IsOk() && (flags & (wxTREE_HITTEST_BELOW|wxTREE_HITTEST_NOWHERE))) {
@@ -1505,9 +1505,9 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
 
       // If the drag'd item leaves an empty group in the tree
       // the group needs to be created as such in the database.
-      if (dragItemLeavesEmptyGroup) {
+      if (dragItemLeavesEmptyGroup && (GetRootItem() != GetItemGroup(parentOfDragItem))) {
         auto emptyGroups = m_core.GetEmptyGroups();
-        emptyGroups.push_back(sxSrcGroupName);
+        emptyGroups.push_back(tostringx(GetItemGroup(parentOfDragItem))); // parent of entry or group
         commands->Add(
           DBEmptyGroupsCommand::Create(&m_core, emptyGroups, DBEmptyGroupsCommand::EG_REPLACEALL)
         );
