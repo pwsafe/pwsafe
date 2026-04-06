@@ -2018,6 +2018,24 @@ bool CItemData::Matches(const stringT &stValue, int iObject,
 {
   ASSERT(iFunction != 0); // must be positive or negative!
 
+  auto matchCustomFields = [this, &stValue, iFunction]() -> bool {
+    const CustomFieldList customFields = GetCustomFields();
+    const bool bValue = !customFields.empty();
+    if (iFunction == PWSMatch::MR_PRESENT || iFunction == PWSMatch::MR_NOTPRESENT) {
+      return PWSMatch::Match(bValue, iFunction);
+    }
+
+    // For custom fields we consider both the Name and the Value texts for matches
+    // Differentiating between the two seems more trouble than it's worth.
+    for (const CustomField &cf : customFields) {
+      if (PWSMatch::Match(stValue.c_str(), cf.GetName(), iFunction) ||
+          PWSMatch::Match(stValue.c_str(), cf.GetValue(), iFunction)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   StringX sx_Object;
   auto ft = static_cast<FieldType>(iObject);
   switch(ft) {
@@ -2035,6 +2053,8 @@ bool CItemData::Matches(const stringT &stValue, int iObject,
     case AUTOTYPE:
       sx_Object = GetField(ft);
       break;
+    case CUSTOMTEXT:
+      return matchCustomFields();
     case GROUPTITLE:
       sx_Object = GetGroup() + TCHAR('.') + GetTitle();
       break;

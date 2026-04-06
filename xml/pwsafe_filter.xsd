@@ -462,6 +462,7 @@
     <xs:element name="title" type="stringfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="user" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="notes" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
+    <xs:element name="custom_fields" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="password" type="passwordfilterentry" minOccurs="1" maxOccurs="1" />
     <xs:element name="twofactorkey" type="stringpresentfilterentry" minOccurs="1" maxOccurs="1" />
 

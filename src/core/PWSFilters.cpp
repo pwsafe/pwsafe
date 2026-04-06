@@ -244,6 +244,9 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
       case FT_NOTES:
         strFieldType = "notes";
         break;
+      case FT_CUSTOMTEXT:
+        strFieldType = "custom_fields";
+        break;
       case FT_PASSWORD:
         strFieldType = "password";
         break;
@@ -1146,6 +1149,7 @@ bool PWSFilterManager::PassesFiltering(const CItemData &ci, const PWScore &core)
         case FT_TITLE:
         case FT_USER:
         case FT_NOTES:
+        case FT_CUSTOMTEXT:
         case FT_URL:
         case FT_AUTOTYPE:
         case FT_RUNCMD:

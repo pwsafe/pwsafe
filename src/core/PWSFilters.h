@@ -44,6 +44,7 @@ enum FieldType {
   FT_TITLE         = CItemData::TITLE,
   FT_USER          = CItemData::USER,
   FT_NOTES         = CItemData::NOTES,
+  FT_CUSTOMTEXT    = CItemData::CUSTOMTEXT,
   FT_PASSWORD      = CItemData::PASSWORD,
   FT_TWOFACTORKEY  = CItemData::TWOFACTORKEY,
   FT_CTIME         = CItemData::CTIME,
