@@ -13,7 +13,7 @@ New Features in 3.71.1
   * Filters
   * XML and Text import and export
   * Comparison, Sync and Merge databases
-  * Autotype: Specifying '\v{name}' in the autotype text will cause the corresponding value to be autotyped
+  * [SF935](https://sourceforge.net/p/passwordsafe/feature-requests/935/) Autotype: Specifying '\v{name}' in the autotype text will cause the corresponding value to be autotyped
 
 PasswordSafe 3.71.0 Release March 27 2026
 =========================================
