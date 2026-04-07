@@ -23,6 +23,7 @@
 
 ////@begin includes
 #include <wx/bookctrl.h>
+#include <wx/choice.h>
 ////@end includes
 
 #include "AddEditPropSheetDlg.h"
@@ -37,6 +38,83 @@
 #include "SelectAliasDlg.h"
 ////@begin XPM images
 ////@end XPM images
+
+namespace {
+
+class CustomFieldEditDialog final : public wxDialog
+{
+public:
+  CustomFieldEditDialog(wxWindow *parent, const CustomFieldList &fields, const CustomField *field = nullptr)
+    : wxDialog(parent, wxID_ANY, field == nullptr ? _("Add Custom Field") : _("Edit Custom Field"),
+               wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
+      m_Fields(fields),
+      m_OriginalName(field != nullptr ? towxstring(field->GetName()) : wxString())
+  {
+    auto *mainSizer = new wxBoxSizer(wxVERTICAL);
+    auto *gridSizer = new wxFlexGridSizer(2, 2, 8, 8);
+    gridSizer->AddGrowableCol(1);
+
+    gridSizer->Add(new wxStaticText(this, wxID_ANY, _("Name")), 0, wxALIGN_CENTER_VERTICAL);
+    m_NameCtrl = new wxTextCtrl(this, wxID_ANY);
+    gridSizer->Add(m_NameCtrl, 1, wxEXPAND);
+
+    gridSizer->Add(new wxStaticText(this, wxID_ANY, _("Value")), 0, wxALIGN_TOP);
+    m_ValueCtrl = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(320, 120), wxTE_MULTILINE);
+    gridSizer->Add(m_ValueCtrl, 1, wxEXPAND);
+
+    mainSizer->Add(gridSizer, 1, wxEXPAND | wxALL, 12);
+
+    m_SensitiveCtrl = new wxCheckBox(this, wxID_ANY, _("Sensitive"));
+    mainSizer->Add(m_SensitiveCtrl, 0, wxLEFT | wxRIGHT | wxBOTTOM, 12);
+
+    mainSizer->Add(CreateSeparatedButtonSizer(wxOK | wxCANCEL), 0, wxEXPAND | wxALL, 12);
+    SetSizerAndFit(mainSizer);
+
+    if (field != nullptr) {
+      m_NameCtrl->SetValue(towxstring(field->GetName()));
+      m_ValueCtrl->SetValue(towxstring(field->GetValue()));
+      m_SensitiveCtrl->SetValue(field->IsSensitive());
+    }
+
+    m_NameCtrl->SetFocus();
+  }
+
+  wxString GetName() const { return m_NameCtrl->GetValue(); }
+  wxString GetValue() const { return m_ValueCtrl->GetValue(); }
+  bool IsSensitive() const { return m_SensitiveCtrl->GetValue(); }
+
+private:
+  void EndModal(int retCode) override
+  {
+    if (retCode == wxID_OK) {
+      const wxString name = m_NameCtrl->GetValue().Trim(true).Trim(false);
+      if (name.empty()) {
+        wxMessageBox(_("The custom field's name cannot be empty."), _("Error"), wxOK | wxICON_ERROR, this);
+        m_NameCtrl->SetFocus();
+        return;
+      }
+
+      if (name != m_OriginalName && m_Fields.HasName(tostringx(name))) {
+        wxMessageBox(_("A custom field with this name already exists for this entry."),
+                     _("Error"), wxOK | wxICON_ERROR, this);
+        m_NameCtrl->SetFocus();
+        return;
+      }
+
+      m_NameCtrl->ChangeValue(name);
+    }
+
+    wxDialog::EndModal(retCode);
+  }
+
+  const CustomFieldList &m_Fields;
+  wxString m_OriginalName;
+  wxTextCtrl *m_NameCtrl = nullptr;
+  wxTextCtrl *m_ValueCtrl = nullptr;
+  wxCheckBox *m_SensitiveCtrl = nullptr;
+};
+
+}
 
 /*!
  * AddEditPropSheetDlg type definition
@@ -64,6 +142,13 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
   EVT_BUTTON(       ID_BUTTON_ALIAS,         AddEditPropSheetDlg::OnAliasButtonClick        )
   EVT_BUTTON(       ID_GO_BTN,               AddEditPropSheetDlg::OnGoButtonClick           )
   EVT_BUTTON(       ID_SEND_BTN,             AddEditPropSheetDlg::OnSendButtonClick         )
+  EVT_CHOICE(       ID_CHOICE_BASIC_DETAILS, AddEditPropSheetDlg::OnBasicDetailsViewChanged )
+  EVT_BUTTON(       ID_BUTTON_CUSTOM_FIELDS_ADD, AddEditPropSheetDlg::OnCustomFieldAdd      )
+  EVT_BUTTON(       ID_BUTTON_CUSTOM_FIELDS_EDIT, AddEditPropSheetDlg::OnCustomFieldEdit    )
+  EVT_BUTTON(       ID_BUTTON_CUSTOM_FIELDS_DELETE, AddEditPropSheetDlg::OnCustomFieldDelete )
+  EVT_BUTTON(       ID_BUTTON_CUSTOM_FIELDS_TOGGLE_SENSITIVE, AddEditPropSheetDlg::OnCustomFieldToggleSensitive )
+  EVT_LIST_ITEM_SELECTED( ID_LISTCTRL_CUSTOM_FIELDS, AddEditPropSheetDlg::OnCustomFieldSelected )
+  EVT_LIST_ITEM_ACTIVATED( ID_LISTCTRL_CUSTOM_FIELDS, AddEditPropSheetDlg::OnCustomFieldActivated )
   EVT_CHECKBOX(     ID_CHECKBOX_KEEP,        AddEditPropSheetDlg::OnKeepHistoryClick        )
   EVT_RADIOBUTTON(  ID_RADIOBUTTON_ON,       AddEditPropSheetDlg::OnExpRadiobuttonSelected  )
   EVT_DATE_CHANGED( ID_DATECTRL_EXP_DATE,    AddEditPropSheetDlg::OnExpDateChanged          )
@@ -101,6 +186,11 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
   EVT_UPDATE_UI(    ID_TEXTCTRL_URL,         AddEditPropSheetDlg::OnUpdateUI                )
   EVT_UPDATE_UI(    ID_TEXTCTRL_EMAIL,       AddEditPropSheetDlg::OnUpdateUI                )
   EVT_UPDATE_UI(    ID_TEXTCTRL_NOTES,       AddEditPropSheetDlg::OnUpdateUI                )
+  EVT_UPDATE_UI(    ID_LISTCTRL_CUSTOM_FIELDS, AddEditPropSheetDlg::OnUpdateUI              )
+  EVT_UPDATE_UI(    ID_BUTTON_CUSTOM_FIELDS_ADD, AddEditPropSheetDlg::OnUpdateUI            )
+  EVT_UPDATE_UI(    ID_BUTTON_CUSTOM_FIELDS_EDIT, AddEditPropSheetDlg::OnUpdateUI           )
+  EVT_UPDATE_UI(    ID_BUTTON_CUSTOM_FIELDS_DELETE, AddEditPropSheetDlg::OnUpdateUI         )
+  EVT_UPDATE_UI(    ID_BUTTON_CUSTOM_FIELDS_TOGGLE_SENSITIVE, AddEditPropSheetDlg::OnUpdateUI )
 
   EVT_UPDATE_UI(    ID_TEXTCTRL_AUTOTYPE,    AddEditPropSheetDlg::OnUpdateUI                )
   EVT_UPDATE_UI(    ID_TEXTCTRL_RUN_CMD,     AddEditPropSheetDlg::OnUpdateUI                )
@@ -292,6 +382,8 @@ void AddEditPropSheetDlg::CreateControls()
 
   // Connect events and objects
   m_BasicNotesTextCtrl->Connect(ID_TEXTCTRL_NOTES, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheetDlg::OnNoteSetFocus), nullptr, this);
+  m_BasicNotesTextCtrl->Bind(wxEVT_LEFT_DOWN, &AddEditPropSheetDlg::OnNoteLeftDown, this);
+  Bind(wxEVT_CHAR_HOOK, &AddEditPropSheetDlg::OnCharHook, this);
   m_PasswordPolicyOwnSymbolsTextCtrl->Connect(IDC_OWNSYMBOLS, wxEVT_SET_FOCUS, wxFocusEventHandler(AddEditPropSheetDlg::OnOwnSymSetFocus), nullptr, this);
 ////@end AddEditPropSheetDlg content construction
 
@@ -427,20 +519,56 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   auto *itemButton34 = new wxButton( panel, ID_SEND_BTN, _("Send"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(itemButton34, wxGBPosition(/*row:*/ 16, /*column:*/ 5), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
-  auto *itemStaticText36 = new wxStaticText( panel, wxID_STATIC, _("Notes"), wxDefaultPosition, wxDefaultSize, 0 );
-  m_BasicSizer->Add(itemStaticText36, wxGBPosition(/*row:*/ 17, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 6), wxEXPAND|wxALIGN_LEFT|wxALIGN_BOTTOM|wxBOTTOM, 0);
+  wxArrayString detailsViewChoices;
+  detailsViewChoices.Add(_("Notes"));
+  detailsViewChoices.Add(_("Custom Fields"));
+  m_BasicDetailsViewCtrl = new wxChoice(panel, ID_CHOICE_BASIC_DETAILS, wxDefaultPosition, wxDefaultSize, detailsViewChoices);
+  m_BasicDetailsViewCtrl->SetSelection(0);
+  m_BasicSizer->Add(m_BasicDetailsViewCtrl, wxGBPosition(/*row:*/ 17, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 6),
+                    wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 0);
 
-  m_BasicNotesTextCtrl = new wxTextCtrl( panel, ID_TEXTCTRL_NOTES, wxEmptyString, wxDefaultPosition, wxSize(-1, 100), wxTE_MULTILINE );
-  m_BasicSizer->Add(m_BasicNotesTextCtrl, wxGBPosition(/*row:*/ 18, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 6), wxEXPAND, 0);
+  m_BasicDetailsBook = new wxSimplebook(panel, wxID_ANY);
+  m_BasicSizer->Add(m_BasicDetailsBook, wxGBPosition(/*row:*/ 18, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 6), wxEXPAND, 0);
+
+  auto *notesPanel = new wxPanel(m_BasicDetailsBook);
+  auto *notesSizer = new wxBoxSizer(wxVERTICAL);
+  notesPanel->SetSizer(notesSizer);
+  m_BasicNotesTextCtrl = new wxTextCtrl(notesPanel, ID_TEXTCTRL_NOTES, wxEmptyString, wxDefaultPosition, wxSize(-1, 100), wxTE_MULTILINE);
+  notesSizer->Add(m_BasicNotesTextCtrl, 1, wxEXPAND);
+  m_BasicDetailsBook->AddPage(notesPanel, _("Notes"));
+
+  auto *customFieldsPanel = new wxPanel(m_BasicDetailsBook);
+  auto *customFieldsSizer = new wxBoxSizer(wxHORIZONTAL);
+  customFieldsPanel->SetSizer(customFieldsSizer);
+
+  m_BasicCustomFieldsListCtrl = new wxListCtrl(customFieldsPanel, ID_LISTCTRL_CUSTOM_FIELDS, wxDefaultPosition, wxSize(-1, 100),
+                                               wxLC_REPORT | wxLC_SINGLE_SEL | wxBORDER_THEME);
+  m_BasicCustomFieldsListCtrl->Bind(wxEVT_LEFT_UP, &AddEditPropSheetDlg::OnCustomFieldClick, this);
+  customFieldsSizer->Add(m_BasicCustomFieldsListCtrl, 1, wxEXPAND | wxRIGHT, 5);
+
+  auto *customFieldsButtonSizer = new wxBoxSizer(wxVERTICAL);
+  m_BasicCustomFieldAddButton = new wxButton(customFieldsPanel, ID_BUTTON_CUSTOM_FIELDS_ADD, _("Add"));
+  m_BasicCustomFieldEditButton = new wxButton(customFieldsPanel, ID_BUTTON_CUSTOM_FIELDS_EDIT, _("Edit"));
+  m_BasicCustomFieldDeleteButton = new wxButton(customFieldsPanel, ID_BUTTON_CUSTOM_FIELDS_DELETE, _("Delete"));
+  m_BasicCustomFieldToggleSensitiveButton = new wxButton(customFieldsPanel, ID_BUTTON_CUSTOM_FIELDS_TOGGLE_SENSITIVE, _("Toggle Sensitive"));
+  customFieldsButtonSizer->Add(m_BasicCustomFieldAddButton, 0, wxEXPAND | wxBOTTOM, 5);
+  customFieldsButtonSizer->Add(m_BasicCustomFieldEditButton, 0, wxEXPAND | wxBOTTOM, 5);
+  customFieldsButtonSizer->Add(m_BasicCustomFieldDeleteButton, 0, wxEXPAND | wxBOTTOM, 5);
+  customFieldsButtonSizer->Add(m_BasicCustomFieldToggleSensitiveButton, 0, wxEXPAND);
+  customFieldsSizer->Add(customFieldsButtonSizer, 0, wxEXPAND);
+
+  m_BasicDetailsBook->AddPage(customFieldsPanel, _("Custom Fields"));
 
   m_BasicSizer->AddGrowableCol(2);  // Growable text entry fields
-  m_BasicSizer->AddGrowableRow(18); // Growable notes field
+  m_BasicSizer->AddGrowableRow(18); // Growable notes/custom fields area
 
   m_BasicTitleTextCtrl->SetValidator(wxGenericValidator(&m_Title));
   m_BasicUsernameTextCtrl->SetValidator(wxGenericValidator(&m_User));
   m_BasicUrlTextCtrl->SetValidator(wxGenericValidator(&m_Url));
   m_BasicEmailTextCtrl->SetValidator(wxGenericValidator(&m_Email));
   m_BasicNotesTextCtrl->SetValidator(wxGenericValidator(&m_Notes));
+  m_BasicCustomFieldsListCtrl->AppendColumn(_("Name"), wxLIST_FORMAT_LEFT, 120);
+  m_BasicCustomFieldsListCtrl->AppendColumn(_("Value"), wxLIST_FORMAT_LEFT, 220);
 
   return panel;
 }
@@ -1745,6 +1873,7 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
   sendBtn->Enable(!m_Email.empty());
   m_Notes = (m_Type != SheetType::ADD && m_IsNotesHidden) ?
     wxString(_("[Notes hidden - click here to display]")) : towxstring(m_Item.GetNotes(TCHAR('\n')));
+  m_CustomFields = m_Item.GetCustomFields();
   // Following has no effect under Linux :-(
   long style = m_BasicNotesTextCtrl->GetExtraStyle();
   if (prefs->GetPref(PWSprefs::NotesWordWrap))
@@ -1752,6 +1881,8 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
   else
     style &= ~wxTE_WORDWRAP;
   m_BasicNotesTextCtrl->SetExtraStyle(style);
+  LoadCustomFieldsList();
+  UpdateBasicDetailsView();
   m_Autotype = m_Item.GetAutoType().c_str();
   m_RunCommand = m_Item.GetRunCommand().c_str();
 
@@ -2484,6 +2615,7 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
   m_Item.SetTitle(tostringx(m_Title));
   m_Item.SetUser(tostringx(m_User));
   m_Item.SetNotes(tostringx(m_Notes));
+  m_Item.SetCustomFields(m_CustomFields);
   m_Item.SetURL(tostringx(m_Url));
   m_Item.SetEmail(tostringx(m_Email));
   m_Item.SetPassword(password);
@@ -2700,6 +2832,9 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
   if ((m_Type == SheetType::ADD || !m_IsNotesHidden) && tostringx(m_Notes) != m_Item.GetNotes(TCHAR('\n'))) {
     changes |= Changes::Notes;
   }
+  if (StringX(m_CustomFields) != m_Item.GetCustomFieldsRaw()) {
+    changes |= Changes::CustomFields;
+  }
   if (tostringx(m_Url) != m_Item.GetURL()) {
     changes |= Changes::Url;
   }
@@ -2868,6 +3003,9 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
   }
   if (changes & Changes::Notes) {
     m_Item.SetNotes(tostringx(m_Notes));
+  }
+  if (changes & Changes::CustomFields) {
+    m_Item.SetCustomFields(m_CustomFields);
   }
   if (changes & Changes::Url) {
     m_Item.SetURL(tostringx(m_Url));
@@ -3453,6 +3591,17 @@ void AddEditPropSheetDlg::OnUpdateUI(wxUpdateUIEvent& event)
       }
       break;
     }
+    case ID_LISTCTRL_CUSTOM_FIELDS:
+      event.Enable(true);
+      break;
+    case ID_BUTTON_CUSTOM_FIELDS_ADD:
+      event.Enable(!dbIsReadOnly);
+      break;
+    case ID_BUTTON_CUSTOM_FIELDS_EDIT:
+    case ID_BUTTON_CUSTOM_FIELDS_DELETE:
+    case ID_BUTTON_CUSTOM_FIELDS_TOGGLE_SENSITIVE:
+      event.Enable(!dbIsReadOnly && GetSelectedCustomFieldIndex() != wxNOT_FOUND);
+      break;
     case ID_TEXTCTRL_PASSWORD:
     case ID_TEXTCTRL_PASSWORD2:
     {
@@ -3542,13 +3691,238 @@ void AddEditPropSheetDlg::OnUpdateUI(wxUpdateUIEvent& event)
  * wxEVT_SET_FOCUS event handler for ID_TEXTCTRL_NOTES
  */
 
-void AddEditPropSheetDlg::OnNoteSetFocus(wxFocusEvent& WXUNUSED(evt))
+void AddEditPropSheetDlg::OnNoteSetFocus(wxFocusEvent& event)
+{
+  if (m_Type != SheetType::ADD && m_IsNotesHidden && m_RevealHiddenNotesOnFocus) {
+    m_IsNotesHidden = false;
+    m_Notes = m_Item.GetNotes(TCHAR('\n')).c_str();
+    m_BasicNotesTextCtrl->ChangeValue(m_Notes);
+  }
+  m_RevealHiddenNotesOnFocus = false;
+  event.Skip();
+}
+
+void AddEditPropSheetDlg::OnNoteLeftDown(wxMouseEvent& event)
 {
   if (m_Type != SheetType::ADD && m_IsNotesHidden) {
     m_IsNotesHidden = false;
     m_Notes = m_Item.GetNotes(TCHAR('\n')).c_str();
     m_BasicNotesTextCtrl->ChangeValue(m_Notes);
   }
+
+  event.Skip();
+}
+
+void AddEditPropSheetDlg::OnCharHook(wxKeyEvent& event)
+{
+  if (event.GetKeyCode() == WXK_TAB) {
+    m_RevealHiddenNotesOnFocus = true;
+    CallAfter([this]() {
+      m_RevealHiddenNotesOnFocus = false;
+    });
+  }
+  else {
+    m_RevealHiddenNotesOnFocus = false;
+  }
+
+  event.Skip();
+}
+
+void AddEditPropSheetDlg::OnBasicDetailsViewChanged(wxCommandEvent& WXUNUSED(event))
+{
+  UpdateBasicDetailsView();
+}
+
+void AddEditPropSheetDlg::UpdateBasicDetailsView()
+{
+  if (m_BasicDetailsBook == nullptr || m_BasicDetailsViewCtrl == nullptr) {
+    return;
+  }
+
+  const int selectedPage = m_BasicDetailsViewCtrl->GetSelection();
+  if (selectedPage != wxNOT_FOUND) {
+    m_BasicDetailsBook->SetSelection(static_cast<size_t>(selectedPage));
+    m_BasicDetailsBook->Layout();
+
+    // Keep the selector focused when returning to hidden Notes so merely
+    // switching views does not reveal the placeholder text.
+    if (selectedPage == 0 && m_Type != SheetType::ADD && m_IsNotesHidden) {
+      m_RevealHiddenNotesOnFocus = false;
+      CallAfter([this]() {
+        if (m_BasicDetailsViewCtrl != nullptr) {
+          m_BasicDetailsViewCtrl->SetFocus();
+        }
+      });
+    }
+  }
+}
+
+void AddEditPropSheetDlg::LoadCustomFieldsList()
+{
+  if (m_BasicCustomFieldsListCtrl == nullptr) {
+    return;
+  }
+
+  m_BasicCustomFieldsListCtrl->Freeze();
+  m_BasicCustomFieldsListCtrl->DeleteAllItems();
+
+  for (size_t i = 0; i < m_CustomFields.size(); ++i) {
+    const CustomField &field = m_CustomFields[i];
+    const long itemIndex = m_BasicCustomFieldsListCtrl->InsertItem(static_cast<long>(i), towxstring(field.GetName()));
+    const wxString value = field.IsSensitive() ? _("********") : towxstring(field.GetValue());
+    m_BasicCustomFieldsListCtrl->SetItem(itemIndex, 1, value);
+  }
+
+  m_BasicCustomFieldsListCtrl->SetColumnWidth(0, wxLIST_AUTOSIZE_USEHEADER);
+  m_BasicCustomFieldsListCtrl->SetColumnWidth(1, wxLIST_AUTOSIZE_USEHEADER);
+  m_BasicCustomFieldsListCtrl->Thaw();
+
+  UpdateCustomFieldButtons();
+}
+
+void AddEditPropSheetDlg::UpdateCustomFieldButtons()
+{
+  if (m_BasicCustomFieldEditButton == nullptr) {
+    return;
+  }
+
+  const bool dbIsReadOnly = m_Core.IsReadOnly() || m_Item.IsProtected();
+  const bool hasSelection = GetSelectedCustomFieldIndex() != wxNOT_FOUND;
+  m_BasicCustomFieldAddButton->Enable(!dbIsReadOnly);
+  m_BasicCustomFieldEditButton->Enable(!dbIsReadOnly && hasSelection);
+  m_BasicCustomFieldDeleteButton->Enable(!dbIsReadOnly && hasSelection);
+  m_BasicCustomFieldToggleSensitiveButton->Enable(!dbIsReadOnly && hasSelection);
+}
+
+int AddEditPropSheetDlg::GetSelectedCustomFieldIndex() const
+{
+  if (m_BasicCustomFieldsListCtrl == nullptr) {
+    return wxNOT_FOUND;
+  }
+
+  return static_cast<int>(m_BasicCustomFieldsListCtrl->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED));
+}
+
+bool AddEditPropSheetDlg::EditCustomField(CustomField *field)
+{
+  CustomFieldEditDialog dlg(this, m_CustomFields, field);
+  if (dlg.ShowModal() != wxID_OK) {
+    return false;
+  }
+
+  CustomField editedField;
+  editedField.SetName(tostringx(dlg.GetName()));
+  editedField.SetValue(tostringx(dlg.GetValue()));
+  editedField.SetSensitive(dlg.IsSensitive());
+
+  if (field == nullptr) {
+    m_CustomFields.push_back(editedField);
+  }
+  else {
+    *field = editedField;
+  }
+
+  LoadCustomFieldsList();
+  return true;
+}
+
+void AddEditPropSheetDlg::OnCustomFieldAdd(wxCommandEvent& WXUNUSED(event))
+{
+  if (m_Core.IsReadOnly() || m_Item.IsProtected()) {
+    return;
+  }
+  EditCustomField();
+}
+
+void AddEditPropSheetDlg::OnCustomFieldEdit(wxCommandEvent& WXUNUSED(event))
+{
+  if (m_Core.IsReadOnly() || m_Item.IsProtected()) {
+    return;
+  }
+  const int selectedIndex = GetSelectedCustomFieldIndex();
+  if (selectedIndex == wxNOT_FOUND || selectedIndex >= static_cast<int>(m_CustomFields.size())) {
+    return;
+  }
+
+  if (EditCustomField(&m_CustomFields[static_cast<size_t>(selectedIndex)])) {
+    m_BasicCustomFieldsListCtrl->SetItemState(selectedIndex, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED,
+                                              wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
+  }
+}
+
+void AddEditPropSheetDlg::OnCustomFieldDelete(wxCommandEvent& WXUNUSED(event))
+{
+  if (m_Core.IsReadOnly() || m_Item.IsProtected()) {
+    return;
+  }
+  const int selectedIndex = GetSelectedCustomFieldIndex();
+  if (selectedIndex == wxNOT_FOUND || selectedIndex >= static_cast<int>(m_CustomFields.size())) {
+    return;
+  }
+
+  m_CustomFields.erase(m_CustomFields.begin() + selectedIndex);
+  LoadCustomFieldsList();
+}
+
+void AddEditPropSheetDlg::OnCustomFieldToggleSensitive(wxCommandEvent& WXUNUSED(event))
+{
+  if (m_Core.IsReadOnly() || m_Item.IsProtected()) {
+    return;
+  }
+  const int selectedIndex = GetSelectedCustomFieldIndex();
+  if (selectedIndex == wxNOT_FOUND || selectedIndex >= static_cast<int>(m_CustomFields.size())) {
+    return;
+  }
+
+  CustomField &field = m_CustomFields[static_cast<size_t>(selectedIndex)];
+  field.SetSensitive(!field.IsSensitive());
+  LoadCustomFieldsList();
+  m_BasicCustomFieldsListCtrl->SetItemState(selectedIndex, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED,
+                                            wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
+}
+
+void AddEditPropSheetDlg::OnCustomFieldSelected(wxListEvent& event)
+{
+  UpdateCustomFieldButtons();
+  event.Skip();
+}
+
+void AddEditPropSheetDlg::CopySelectedCustomFieldToClipboard()
+{
+  const int selectedIndex = GetSelectedCustomFieldIndex();
+  if (selectedIndex == wxNOT_FOUND || selectedIndex >= static_cast<int>(m_CustomFields.size())) {
+    return;
+  }
+
+  const CustomField &field = m_CustomFields[static_cast<size_t>(selectedIndex)];
+  auto *pwSafe = const_cast<PasswordSafeFrame*>(GetPwSafe());
+  if (pwSafe == nullptr) {
+    return;
+  }
+
+  pwSafe->CopyTextToClipboard(field.GetValue(), CItemData::FieldType::CUSTOMTEXT);
+}
+
+void AddEditPropSheetDlg::OnCustomFieldClick(wxMouseEvent& event)
+{
+  int flags = 0;
+  const long itemIndex = m_BasicCustomFieldsListCtrl != nullptr
+    ? m_BasicCustomFieldsListCtrl->HitTest(event.GetPosition(), flags)
+    : wxNOT_FOUND;
+
+  event.Skip();
+
+  if (itemIndex == wxNOT_FOUND || (flags & wxLIST_HITTEST_ONITEM) == 0) {
+    return;
+  }
+
+  CallAfter(&AddEditPropSheetDlg::CopySelectedCustomFieldToClipboard);
+}
+
+void AddEditPropSheetDlg::OnCustomFieldActivated(wxListEvent& WXUNUSED(event))
+{
+  wxCommandEvent dummyEvent;
+  OnCustomFieldEdit(dummyEvent);
 }
 
 PWPolicy AddEditPropSheetDlg::GetPWPolicyFromUI() const

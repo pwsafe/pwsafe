@@ -10,6 +10,10 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Req
 PasswordSafe 1.24.0 Release  ???
 ================================
 
+New features in 1.24.0
+----------------------
+* Custom fields can now be added to each entry. That is, fields with user-defined names and values. 
+
 Bugs fixed in 1.24.0
 --------------------
 * [GH1646](https://github.com/pwsafe/pwsafe/issues/1646) In the "Flattened List" view, sorting by time columns (e.g., entry creation time) now works correctly.
