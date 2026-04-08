@@ -504,8 +504,6 @@
 #define IDS_NO_ENTRIES_SELECTED         5736
 #define IDS_NO_ENTRIES_PROCESSED        5737
 #define IDS_DCALONG                     5738
-#define IDS_HIDE_VALUE                  6075
-#define IDS_SHOW_VALUE                  6076
 #define IDS_ENTRYSTATUS                 5739
 #define IDS_RECORDSUPDATED              5741
 #define IDS_FILEWRITEFAILURE            5742
@@ -801,6 +799,8 @@
 #define IDS_SCRCAP_TT_OVERRIDE_CMDLINE                      6072
 #define IDS_SCRCAP_TT_OVERRIDE_REGISTRY                     6073
 #define IDS_CUSTOMVALUECOPIED                               6074
+#define IDS_HIDE_VALUE                                      6075
+#define IDS_SHOW_VALUE                                      6076
 
 #define IDS_SCRCAP_EXCLUDE_OVERRIDE_WARNING_BEFORE_INVALID  6080
 #define IDS_SCRCAP_EXCLUDE_OVERRIDE_WARNING_BEFORE_NONE     6081
