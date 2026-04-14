@@ -136,7 +136,7 @@ jobs:
       run: make RELDIR=$XCODE_PROD/$XCODE_CONFIG
 
     - name: Upload artifacts
-      uses: actions/upload-artifact@v7.0.0
+      uses: actions/upload-artifact@v7.0.1
       with:
         name: PasswordSafe-macOS.${{ github.sha }}
         path: PasswordSafe-macOS*.dmg
