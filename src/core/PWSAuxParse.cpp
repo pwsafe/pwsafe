@@ -320,6 +320,19 @@ static bool GetSpecialCommand(const StringX &sx_autotype, size_t &n, WORD &wVK,
   return true;
 }
 
+// Following to make sure that a backslash in a password is autotyped as a single backslash.
+static StringX duplicateCharInString(const StringX& input, TCHAR targetChar)
+{
+  StringX retval;
+  for (TCHAR c : input) {
+    retval += c;
+    if (c == targetChar) {
+      retval += c;
+    }
+  }
+  return retval;
+};
+
 static bool ExpandCustomFieldValue(const StringX &sx_autotype, size_t &n,
                                    const CustomFieldList *pcustomfields,
                                    StringX &sxtmp)
@@ -338,15 +351,9 @@ static bool ExpandCustomFieldValue(const StringX &sx_autotype, size_t &n,
                                    return cf.GetName() == sxName;
                                  });
     if (it != pcustomfields->end()) {
-      for (TCHAR c : it->GetValue()) {
-        sxtmp += c;
-        if (c == L'\\') {
-          sxtmp += c;
-        }
-      }
+      sxtmp += duplicateCharInString(it->GetValue(), L'\\');
     }
   }
-
   n = iEndBracket;
   return true;
 }
@@ -440,18 +447,6 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
   const StringX sxZeroes = _T("000");
   unsigned int gNumIts;
 
-  // Following to make sure that a backslash in a password is autotyped as a single backslash.
-  auto duplicateCharInString = [](const StringX& input, TCHAR targetChar) -> StringX {
-    StringX retval;
-    for (TCHAR c : input) {
-      retval += c;
-      if (c == targetChar) {
-        retval += c;
-      }
-    }
-    return retval;
-    };
-
   for (size_t n = 0; n < N; n++){
     curChar = sx_autotype[n];
     if (curChar == TCHAR('\\')) {
@@ -497,13 +492,6 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
         case TCHAR('2'):
           sxtmp += duplicateCharInString(sx_totpauthcode, L'\\');
           break;
-        case TCHAR('v'):
-          if (!ExpandCustomFieldValue(sx_autotype, n, pcustomfields, sxtmp)) {
-            sxtmp += L'\\';
-            sxtmp += curChar;
-          }
-          break;
-
         case TCHAR('o'):
         {
           StringX sxN;
@@ -605,6 +593,13 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
         case TCHAR('e'): // escape
           sxtmp += L'\x1B';
           break;        // Also copy explicit control characters to output string unchanged.
+
+        case TCHAR('v'):
+          if (ExpandCustomFieldValue(sx_autotype, n, pcustomfields, sxtmp)) {
+            break;
+          }
+          // deliberate fall-through
+
         case TCHAR('a'): // bell (can't hear it during testing!)
         case TCHAR('f'): // form feed
         case TCHAR('x'): // hex digits (\xNN)

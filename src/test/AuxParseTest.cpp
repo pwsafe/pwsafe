@@ -137,3 +137,21 @@ TEST(AuxParseTest, testGetAutoTypeStringUsesItemCustomFields)
 
   EXPECT_EQ(L"1234", expanded);
 }
+
+TEST(AuxParseTest, testCustomFieldsEdgeCases)
+{
+  PWScore core;
+  CItemData item;
+  item.SetAutoType(L"\\v{} and/or \\v");
+
+  CustomField pin;
+  pin.SetName(L"PIN");
+  pin.SetValue(L"1234");
+  pin.SetSensitive(true);
+  ASSERT_TRUE(item.AddCustomField(pin));
+
+  std::vector<size_t> vactionverboffsets;
+  const StringX expanded = PWSAuxParse::GetAutoTypeString(item, core, vactionverboffsets);
+
+  EXPECT_EQ(L" and/or \\v", expanded);
+}
