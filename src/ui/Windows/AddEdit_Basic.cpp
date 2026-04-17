@@ -365,7 +365,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
   // Custom Fields list: columns and data
   m_customFieldsList.SetExtendedStyle(LVS_EX_FULLROWSELECT);
   CString cs_col;
-  cs_col.LoadString(IDS_TITLE);  // "Name" column
+  cs_col.LoadString(IDS_NAME);  // "Name" column
   m_customFieldsList.InsertColumn(0, cs_col, LVCFMT_LEFT, 90);
   cs_col.LoadString(IDS_VALUE);  // "Value" column
   m_customFieldsList.InsertColumn(1, cs_col, LVCFMT_LEFT, 160);
