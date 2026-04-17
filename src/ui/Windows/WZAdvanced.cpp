@@ -444,6 +444,12 @@ BOOL CWZAdvanced::OnInitDialog()
   m_bsAllowedFields.set(CItemData::SYMBOLS);
   m_bsDefaultSelectedFields.set(CItemData::SYMBOLS);
 
+  cs_text.LoadString(IDS_CUSTOMFIELDS);
+  iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+  m_pLC_Selected->SetItemData(iItem, CItemData::CUSTOMTEXT | NORMALFIELD);
+  m_bsAllowedFields.set(CItemData::CUSTOMTEXT);
+  m_bsDefaultSelectedFields.set(CItemData::CUSTOMTEXT);
+
   // Deal with standard text fields - selected by default
   switch (m_iIndex) {
     case WZAdvanced::EXPORT_XML:
@@ -1036,28 +1042,49 @@ int CALLBACK CWZAdvanced::AdvCompareFunc(LPARAM lParam1, LPARAM lParam2,
        1 /* TITLE      = 0x03 */,
        2 /* USER       = 0x04 */,
       10 /* NOTES      = 0x05 */,
-      11 /* PASSWORD   = 0x06 */,
+       3 /* PASSWORD   = 0x06 */,
      100 /* CTIME      = 0x07 */,
      101 /* PMTIME     = 0x08 */,
      102 /* ATIME      = 0x09 */,
      103 /* XTIME      = 0x0a */,
       -1 /* RESERVED   = 0x0b */,
      104 /* RMTIME     = 0x0c */,
-      13 /* URL        = 0x0d */,
-      16 /* AUTOTYPE   = 0x0e */,
+      14 /* URL        = 0x0d */,
+      17 /* AUTOTYPE   = 0x0e */,
       50 /* PWHIST     = 0x0f */,
       61 /* POLICY     = 0x10 */,
      505 /* XTIME_INT  = 0x11 */,
-      15 /* RUNCMD     = 0x12 */,
+      16 /* RUNCMD     = 0x12 */,
       81 /* DCA        = 0x13 */,
-      14 /* EMAIL      = 0x14 */,
+      15 /* EMAIL      = 0x14 */,
       80 /* PROTECTED  = 0x15 */,
       60 /* SYMBOLS    = 0x16 */,
       82 /* SHIFTDCA   = 0x17 */,
       62 /* POLICYNAME = 0x18 */,
       63 /* KBSHORTCUT = 0x19 */,
       -1 /* ATTREF     = 0x1a */,
-      12 /* TWOFACTORKEY = 0x1b*/,
+      13 /* TWOFACTORKEY = 0x1b*/,
+      -1 /* CCNUM      = 0x1c */,
+      -1 /* CCEXP      = 0x1d */,
+      -1 /* CCVV       = 0x1e */,
+      -1 /* CCPIN      = 0x1f */,
+      -1 /*            = 0x20 */,
+      -1 /* TOTPCONFIG = 0x21 */,
+      -1 /* TOTPLENGTH = 0x22 */,
+      -1 /* TOTPTIMESTEP = 0x23 */,
+      -1 /* TOTPSTARTTIME = 0x24 */,
+      -1 /* DATA_ATT_TITLE = 0x25 */,
+      -1 /* DATA_ATT_MEDIATYPE = 0x26 */,
+      -1 /* DATA_ATT_FILENAME = 0x27 */,
+      -1 /* DATA_ATT_MTIME = 0x28 */,
+      -1 /* DATA_ATT_CONTENT = 0x29 */,
+      -1 /* PASSKEY_CRED_ID = 0x2a */,
+      -1 /* PASSKEY_RP_ID = 0x2b */,
+      -1 /* PASSKEY_USER_HANDLE = 0x2c */,
+      -1 /* PASSKEY_ALGO_ID = 0x2d */,
+      -1 /* PASSKEY_PRIVATE_KEY = 0x2e */,
+      -1 /* PASSKEY_SIGN_COUNT = 0x2f */,
+      11 /* CUSTOMTEXT = 0x30 */,
   };
 
   const int i1 = iSortOrder[lParam1 & 0xff];

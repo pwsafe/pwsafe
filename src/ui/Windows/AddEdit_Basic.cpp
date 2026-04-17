@@ -365,7 +365,7 @@ BOOL CAddEdit_Basic::OnInitDialog()
   // Custom Fields list: columns and data
   m_customFieldsList.SetExtendedStyle(LVS_EX_FULLROWSELECT);
   CString cs_col;
-  cs_col.LoadString(IDS_TITLE);  // "Name" column
+  cs_col.LoadString(IDS_NAME);  // "Name" column
   m_customFieldsList.InsertColumn(0, cs_col, LVCFMT_LEFT, 90);
   cs_col.LoadString(IDS_VALUE);  // "Value" column
   m_customFieldsList.InsertColumn(1, cs_col, LVCFMT_LEFT, 160);
@@ -1319,6 +1319,7 @@ void CAddEdit_Basic::OnLaunch()
                                                        M_URL(),
                                                        M_email(),
                                                        stotpauthcode,
+                                                       &M_customfields(),
                                                        vactionverboffsets);
 
   const bool bDoAutoType = (GetKeyState(VK_CONTROL) & 0x8000) != 0;
@@ -1461,9 +1462,11 @@ void CAddEdit_Basic::OnCustomFieldsListClick(NMHDR *pNMHDR, LRESULT *pResult)
   auto pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
   const int selectedRow = pNMItemActivate->iItem;
   if (selectedRow >= 0) {
-    const CString value = m_customFieldsList.GetItemText(selectedRow, 1);
-    GetMainDlg()->SetClipboardData(StringX(value));
-    GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::CustomFieldValue);
+    const CustomFieldList &fields = M_customfields();
+    if (selectedRow < static_cast<int>(fields.size())) {
+      GetMainDlg()->SetClipboardData(fields[selectedRow].GetValue());
+      GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::CustomFieldValue);
+    }
   }
 
   *pResult = 0;
@@ -1486,8 +1489,14 @@ void CAddEdit_Basic::OnNMRClickCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult)
 
   m_rightClickedCustomFieldIndex = item;
 
+  const CustomFieldList &fields = M_customfields();
+  if (item >= static_cast<int>(fields.size())) {
+    *pResult = 0;
+    return;
+  }
+
   CString menuText;
-  menuText.LoadString(IDS_CUSTOMFIELD_TOGGLE_SENSITIVE);
+  menuText.LoadString(fields[item].IsSensitive() ? IDS_SHOW_VALUE : IDS_HIDE_VALUE);
   CMenu menu;
   menu.CreatePopupMenu();
   menu.AppendMenu(MF_STRING, IDC_CUSTOMFIELDS_TOGGLE_SENSITIVE, menuText);

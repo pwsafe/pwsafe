@@ -47,6 +47,7 @@ CCompareResultsDlg::OptionalColumns CCompareResultsDlg::OptCols[LAST - PASSWORD]
     {CItemData::PASSWORD,   IDS_PASSWORD},
     {CItemData::TWOFACTORKEY, IDSC_FLDNMTWOFACTORKEY},
     {CItemData::NOTES,      IDS_NOTES},
+    {CItemData::CUSTOMTEXT, IDS_CUSTOMFIELDS},
     {CItemData::URL,        IDS_URL},
     {CItemData::AUTOTYPE,   IDS_AUTOTYPE},
     {CItemData::PWHIST,     IDS_PWHISTORY},
@@ -1226,6 +1227,7 @@ void CCompareResultsDlg::WriteReportData()
 
     const CString csx_password(MAKEINTRESOURCE(IDS_COMPPASSWORD));
     const CString csx_notes(MAKEINTRESOURCE(IDS_COMPNOTES));
+    const CString csx_customfields(MAKEINTRESOURCE(IDS_CUSTOMFIELDS));
     const CString csx_url(MAKEINTRESOURCE(IDS_COMPURL));
     const CString csx_autotype(MAKEINTRESOURCE(IDS_COMPAUTOTYPE));
     const CString csx_ctime(MAKEINTRESOURCE(IDS_COMPCTIME));
@@ -1257,6 +1259,7 @@ void CCompareResultsDlg::WriteReportData()
       // Non-time fields
       if (st_data.bsDiffs.test(CItemData::PASSWORD)) buffer += csx_password;
       if (st_data.bsDiffs.test(CItemData::NOTES)) buffer += csx_notes;
+      if (st_data.bsDiffs.test(CItemData::CUSTOMTEXT)) buffer += csx_customfields;
       if (st_data.bsDiffs.test(CItemData::URL)) buffer += csx_url;
       if (st_data.bsDiffs.test(CItemData::AUTOTYPE)) buffer += csx_autotype;
       if (st_data.bsDiffs.test(CItemData::PWHIST)) buffer += csx_pwhistory;
@@ -1371,6 +1374,9 @@ bool CCompareResultsDlg::CompareEntries(st_CompareData *pst_data)
   if (m_bsFields.test(CItemData::NOTES) &&
       FieldsNotEqual(currentItem.GetNotes(), compItem.GetNotes(), m_bTreatWhiteSpaceasEmpty))
     bsConflicts.flip(CItemData::NOTES);
+  if (m_bsFields.test(CItemData::CUSTOMTEXT) &&
+      currentItem.GetCustomFieldsRaw() != compItem.GetCustomFieldsRaw())
+    bsConflicts.flip(CItemData::CUSTOMTEXT);
   if (m_bsFields.test(CItemData::CTIME) &&
       currentItem.GetCTime() != compItem.GetCTime())
     bsConflicts.flip(CItemData::CTIME);

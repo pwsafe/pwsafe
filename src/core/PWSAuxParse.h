@@ -20,6 +20,7 @@
 #define DEFAULT_AUTOTYPE _T("\\u\\t\\p\\n")
 
 class CItemData;
+class CustomFieldList;
 class PWScore;
 
 namespace PWSAuxParse {
@@ -48,6 +49,7 @@ namespace PWSAuxParse {
                             const StringX &sxpwd, const StringX &sxlastpwd,
                             const StringX &sxnotes, const StringX &sx_url,
                             const StringX &sx_email, const StringX &sx_totpauthcode,
+                            const CustomFieldList *pcustomfields,
                             std::vector<size_t> &vactionverboffsets);
   StringX GetAutoTypeString(const CItemData &ci,
                             const PWScore &core,

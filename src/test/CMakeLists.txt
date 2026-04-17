@@ -2,7 +2,7 @@ set (TEST_SRCS
   AESTest.cpp AliasShortcutTest.cpp FileV3Test.cpp ItemAttTest.cpp OSTest.cpp BlowFishTest.cpp
   FileV4Test.cpp ItemDataTest.cpp SHA256Test.cpp SHA1Test.cpp CommandsTest.cpp ItemFieldTest.cpp
   StringXTest.cpp coretest.cpp HMAC_SHA256Test.cpp HMAC_SHA1Test.cpp KeyWrapTest.cpp TwoFishTest.cpp
-  AuxParseTest.cpp UtilTest.cpp FileEncDecTest.cpp ImportTextTest.cpp TOTPTest.cpp Base32Test.cpp
+  AuxParseTest.cpp UtilTest.cpp FileEncDecTest.cpp ImportTextTest.cpp ImportXmlTest.cpp TOTPTest.cpp Base32Test.cpp
   ValidateTest.cpp MRUListTest.cpp)
 
 if (WIN32)
@@ -20,6 +20,8 @@ file (COPY "data/import-text-unit-test2.csv" DESTINATION "data")
 file (COPY "data/import-text-unit-test3.csv" DESTINATION "data")
 file (COPY "data/import-text-unit-test4.csv" DESTINATION "data")
 file (COPY "data/import-text-unit-test5.csv" DESTINATION "data")
+file (COPY "${PROJECT_SOURCE_DIR}/xml/pwsafe.xsd" DESTINATION "${PROJECT_BINARY_DIR}")
+file (COPY "${PROJECT_SOURCE_DIR}/xml/pwsafe_filter.xsd" DESTINATION "${PROJECT_BINARY_DIR}")
 
 add_executable(coretest ${TEST_SRCS})
 if (MSVC)

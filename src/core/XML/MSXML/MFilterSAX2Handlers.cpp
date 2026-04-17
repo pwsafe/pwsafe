@@ -411,6 +411,12 @@ HRESULT STDMETHODCALLTYPE MFilterSAX2ContentHandler::endElement (
     cur_filterentry->ftype = FT_NOTES;
   }
 
+  else if (_tcscmp(szCurElement, _T("custom_fields")) == 0) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = FT_CUSTOMTEXT;
+  }
+
   else if (_tcscmp(szCurElement, _T("url")) == 0) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;

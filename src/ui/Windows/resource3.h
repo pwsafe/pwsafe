@@ -644,6 +644,7 @@
 #define IDS_PSWDPOLICY                  5889
 #define IDS_POLICYFIELD                 5890
 #define IDS_VALUE                       5891
+#define IDS_NAME                        5892
 #define IDS_AREYOUSURE_PN               5894
 #define IDS_INVALIDPOLICYNAME1          5895
 #define IDS_INVALIDPOLICYNAME2          5896
@@ -799,6 +800,8 @@
 #define IDS_SCRCAP_TT_OVERRIDE_CMDLINE                      6072
 #define IDS_SCRCAP_TT_OVERRIDE_REGISTRY                     6073
 #define IDS_CUSTOMVALUECOPIED                               6074
+#define IDS_HIDE_VALUE                                      6075
+#define IDS_SHOW_VALUE                                      6076
 
 #define IDS_SCRCAP_EXCLUDE_OVERRIDE_WARNING_BEFORE_INVALID  6080
 #define IDS_SCRCAP_EXCLUDE_OVERRIDE_WARNING_BEFORE_NONE     6081

@@ -46,6 +46,7 @@
 		57E951B42DE9377000DE9640 /* libcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB80311956A93004E2BE5 /* libcore.a */; };
 		57E951B52DE9377500DE9640 /* libos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB91C11956DD0004E2BE5 /* libos.a */; };
 		57E951B62DE937D200DE9640 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A7B67C254824C000E780B8 /* AppKit.framework */; };
+		57FAAAA12E13000100DE9640 /* ImportXmlTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FAAAA02E13000100DE9640 /* ImportXmlTest.cpp */; };
 		57E9522F2DE93B7A00DE9640 /* ImportTextTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E952202DE93B7A00DE9640 /* ImportTextTest.cpp */; };
 		57E952302DE93B7A00DE9640 /* KeyWrapTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E952242DE93B7A00DE9640 /* KeyWrapTest.cpp */; };
 		57E952312DE93B7A00DE9640 /* OSTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E952262DE93B7A00DE9640 /* OSTest.cpp */; };
@@ -416,6 +417,7 @@
 		57E9521D2DE93B7A00DE9640 /* FileV4Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = FileV4Test.cpp; path = ../src/test/FileV4Test.cpp; sourceTree = SOURCE_ROOT; };
 		57E9521E2DE93B7A00DE9640 /* HMAC_SHA1Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HMAC_SHA1Test.cpp; path = ../src/test/HMAC_SHA1Test.cpp; sourceTree = SOURCE_ROOT; };
 		57E9521F2DE93B7A00DE9640 /* HMAC_SHA256Test.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = HMAC_SHA256Test.cpp; path = ../src/test/HMAC_SHA256Test.cpp; sourceTree = SOURCE_ROOT; };
+		57FAAAA02E13000100DE9640 /* ImportXmlTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ImportXmlTest.cpp; path = ../src/test/ImportXmlTest.cpp; sourceTree = SOURCE_ROOT; };
 		57E952202DE93B7A00DE9640 /* ImportTextTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ImportTextTest.cpp; path = ../src/test/ImportTextTest.cpp; sourceTree = SOURCE_ROOT; };
 		57E952212DE93B7A00DE9640 /* ItemAttTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ItemAttTest.cpp; path = ../src/test/ItemAttTest.cpp; sourceTree = SOURCE_ROOT; };
 		57E952222DE93B7A00DE9640 /* ItemDataTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = ItemDataTest.cpp; path = ../src/test/ItemDataTest.cpp; sourceTree = SOURCE_ROOT; };
@@ -1082,6 +1084,7 @@
 				57E9521D2DE93B7A00DE9640 /* FileV4Test.cpp */,
 				57E9521E2DE93B7A00DE9640 /* HMAC_SHA1Test.cpp */,
 				57E9521F2DE93B7A00DE9640 /* HMAC_SHA256Test.cpp */,
+				57FAAAA02E13000100DE9640 /* ImportXmlTest.cpp */,
 				57E952202DE93B7A00DE9640 /* ImportTextTest.cpp */,
 				57E952212DE93B7A00DE9640 /* ItemAttTest.cpp */,
 				57E952222DE93B7A00DE9640 /* ItemDataTest.cpp */,
@@ -2183,6 +2186,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57FAAAA12E13000100DE9640 /* ImportXmlTest.cpp in Sources */,
 				57E9522F2DE93B7A00DE9640 /* ImportTextTest.cpp in Sources */,
 				57E952302DE93B7A00DE9640 /* KeyWrapTest.cpp in Sources */,
 				57E952312DE93B7A00DE9640 /* OSTest.cpp in Sources */,

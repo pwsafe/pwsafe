@@ -1314,6 +1314,27 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   ConditionalWriteXML(CItemData::KBSHORTCUT, bsExport, "kbshortcut", GetKBShortcut(),
                       oss, utf8conv, bXMLErrorsFound);
 
+  if (bsExport.test(CItemData::CUSTOMTEXT)) {
+    const CustomFieldList fields = GetCustomFields();
+    if (!fields.empty()) {
+      oss << "\t\t<custom_fields>" << endl;
+      for (const auto &field : fields) {
+        oss << "\t\t\t<custom_field>" << endl;
+
+        brc = PWSUtil::WriteXMLField(oss, "name", field.GetName(), utf8conv, "\t\t\t\t");
+        if (!brc) bXMLErrorsFound = true;
+
+        brc = PWSUtil::WriteXMLField(oss, "value", field.GetValue(), utf8conv, "\t\t\t\t");
+        if (!brc) bXMLErrorsFound = true;
+
+        if (field.HasProperty(CustomField::PROP_SENSITIVE))
+          oss << "\t\t\t\t<sensitive>" << (field.IsSensitive() ? 1 : 0) << "</sensitive>" << endl;
+        oss << "\t\t\t</custom_field>" << endl;
+      }
+      oss << "\t\t</custom_fields>" << endl;
+    }
+  }
+
   oss << "\t</entry>" << endl << endl;
   return oss.str();
 }
@@ -1997,6 +2018,24 @@ bool CItemData::Matches(const stringT &stValue, int iObject,
 {
   ASSERT(iFunction != 0); // must be positive or negative!
 
+  auto matchCustomFields = [this, &stValue, iFunction]() -> bool {
+    const CustomFieldList customFields = GetCustomFields();
+    const bool bValue = !customFields.empty();
+    if (iFunction == PWSMatch::MR_PRESENT || iFunction == PWSMatch::MR_NOTPRESENT) {
+      return PWSMatch::Match(bValue, iFunction);
+    }
+
+    // For custom fields we consider both the Name and the Value texts for matches
+    // Differentiating between the two seems more trouble than it's worth.
+    for (const CustomField &cf : customFields) {
+      if (PWSMatch::Match(stValue.c_str(), cf.GetName(), iFunction) ||
+          PWSMatch::Match(stValue.c_str(), cf.GetValue(), iFunction)) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   StringX sx_Object;
   auto ft = static_cast<FieldType>(iObject);
   switch(ft) {
@@ -2014,6 +2053,8 @@ bool CItemData::Matches(const stringT &stValue, int iObject,
     case AUTOTYPE:
       sx_Object = GetField(ft);
       break;
+    case CUSTOMTEXT:
+      return matchCustomFields();
     case GROUPTITLE:
       sx_Object = GetGroup() + TCHAR('.') + GetTitle();
       break;

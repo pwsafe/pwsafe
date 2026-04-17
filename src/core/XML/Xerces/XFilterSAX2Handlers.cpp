@@ -274,6 +274,12 @@ void XFilterSAX2Handlers::endElement(const XMLCh* const /* uri */,
     cur_filterentry->ftype = FT_NOTES;
   }
 
+  else if (XMLString::equals(qname, _A2X("custom_fields"))) {
+    m_type = DFTYPE_MAIN;
+    cur_filterentry->mtype = PWSMatch::MT_STRING;
+    cur_filterentry->ftype = FT_CUSTOMTEXT;
+  }
+
   else if (XMLString::equals(qname, _A2X("autotype"))) {
     m_type = DFTYPE_MAIN;
     cur_filterentry->mtype = PWSMatch::MT_STRING;
