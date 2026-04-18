@@ -44,6 +44,14 @@ namespace {
 class CustomFieldEditDialog final : public wxDialog
 {
 public:
+  // Create() needed for DestroyWrapper<T>:
+ static CustomFieldEditDialog* Create(wxWindow *parent,
+                                       const CustomFieldList &fields,
+                                       const CustomField *field = nullptr)
+  {
+    return new CustomFieldEditDialog(parent, fields, field);
+  }
+
   CustomFieldEditDialog(wxWindow *parent, const CustomFieldList &fields, const CustomField *field = nullptr)
     : wxDialog(parent, wxID_ANY, field == nullptr ? _("Add Custom Field") : _("Edit Custom Field"),
                wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
@@ -3805,15 +3813,15 @@ int AddEditPropSheetDlg::GetSelectedCustomFieldIndex() const
 
 bool AddEditPropSheetDlg::EditCustomField(CustomField *field)
 {
-  CustomFieldEditDialog dlg(this, m_CustomFields, field);
-  if (dlg.ShowModal() != wxID_OK) {
+  DestroyWrapper<CustomFieldEditDialog> ppdlg(this, m_CustomFields, field);
+  if (ppdlg.Get()->ShowModal() != wxID_OK) {
     return false;
   }
 
   CustomField editedField;
-  editedField.SetName(tostringx(dlg.GetName()));
-  editedField.SetValue(tostringx(dlg.GetValue()));
-  editedField.SetSensitive(dlg.IsSensitive());
+  editedField.SetName(tostringx(ppdlg.Get()->GetName()));
+  editedField.SetValue(tostringx(ppdlg.Get()->GetValue()));
+  editedField.SetSensitive(ppdlg.Get()->IsSensitive());
 
   if (field == nullptr) {
     m_CustomFields.push_back(editedField);
@@ -3895,7 +3903,7 @@ void AddEditPropSheetDlg::CopySelectedCustomFieldToClipboard()
   }
 
   const CustomField &field = m_CustomFields[static_cast<size_t>(selectedIndex)];
-  auto *pwSafe = const_cast<PasswordSafeFrame*>(GetPwSafe());
+  auto *pwSafe = wxGetApp().GetPasswordSafeFrame();
   if (pwSafe == nullptr) {
     return;
   }
