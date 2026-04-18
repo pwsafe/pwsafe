@@ -183,10 +183,13 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
 ////@end AddEditPropSheetDlg creation
   ItemFieldsToPropSheet();
   LayoutDialog();
+  const wxSize initialDialogSize = GetSize();
+  RelaxScrollablePageSizes();
 
   // Additional width is needed by static text (itemStaticText4) at "Basic" tab,
   // otherwise text is not correctly shown due to Auto Word Wrap. (At least at KDE)
-  SetSizeHints(GetSize().GetWidth() + 20, GetSize().GetHeight());
+  SetSize(initialDialogSize.GetWidth() + 20, initialDialogSize.GetHeight());
+  SetSizeHints(initialDialogSize.GetWidth() + 20, -1);
 
   auto currentVersion = m_Core.GetReadFileVersion();
   if (currentVersion == PWSfile::V30 || currentVersion == PWSfile::V40) {
@@ -305,9 +308,52 @@ void AddEditPropSheetDlg::CreateControls()
   m_PasswordPolicyOwnSymbolsTextCtrl->SetValue(m_Symbols);
 }
 
-wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
+wxScrolledWindow *AddEditPropSheetDlg::CreateScrollablePage(wxWindowID id)
 {
-  auto *panel = new wxPanel( GetBookCtrl(), ID_PANEL_BASIC, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+  auto *page = new wxScrolledWindow(GetBookCtrl(), id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxVSCROLL);
+  page->SetScrollRate(0, page->FromDIP(10));
+  return page;
+}
+
+void AddEditPropSheetDlg::FinalizeScrollablePage(wxScrolledWindow *page)
+{
+  auto *sizer = page->GetSizer();
+  if (sizer != nullptr) {
+    const wxSize contentSize = sizer->CalcMin();
+    page->SetInitialSize(contentSize);
+    page->SetVirtualSize(contentSize);
+  }
+
+  page->FitInside();
+}
+
+void AddEditPropSheetDlg::RelaxScrollablePageSizes()
+{
+  auto *bookCtrl = GetBookCtrl();
+  for (size_t pageIndex = 0; pageIndex < bookCtrl->GetPageCount(); ++pageIndex) {
+    auto *page = wxDynamicCast(bookCtrl->GetPage(pageIndex), wxScrolledWindow);
+    if (page == nullptr) {
+      continue;
+    }
+
+    auto *sizer = page->GetSizer();
+    if (sizer != nullptr) {
+      page->SetVirtualSize(sizer->CalcMin());
+      sizer->SetMinSize(wxDefaultSize);
+    }
+
+    page->SetMinSize(wxDefaultSize);
+    page->SetInitialSize(wxDefaultSize);
+    page->InvalidateBestSize();
+  }
+
+  bookCtrl->SetMinSize(wxDefaultSize);
+  bookCtrl->InvalidateBestSize();
+}
+
+wxScrolledWindow* AddEditPropSheetDlg::CreateBasicPanel()
+{
+  auto *panel = CreateScrollablePage(ID_PANEL_BASIC);
   auto *itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
   panel->SetSizer(itemBoxSizer3);
 
@@ -442,12 +488,13 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicEmailTextCtrl->SetValidator(wxGenericValidator(&m_Email));
   m_BasicNotesTextCtrl->SetValidator(wxGenericValidator(&m_Notes));
 
+  FinalizeScrollablePage(panel);
   return panel;
 }
 
-wxPanel* AddEditPropSheetDlg::CreateAdditionalPanel()
+wxScrolledWindow* AddEditPropSheetDlg::CreateAdditionalPanel()
 {
-  auto *panel = new wxPanel(GetBookCtrl(), ID_PANEL_ADDITIONAL, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+  auto *panel = CreateScrollablePage(ID_PANEL_ADDITIONAL);
   auto *mainSizer = new wxBoxSizer(wxVERTICAL);
   panel->SetSizer(mainSizer);
 
@@ -553,12 +600,13 @@ wxPanel* AddEditPropSheetDlg::CreateAdditionalPanel()
 
   m_AdditionalMaxPasswordHistoryCtrl->SetValidator(wxGenericValidator(&m_MaxPasswordHistory));
 
+  FinalizeScrollablePage(panel);
   return panel;
 }
 
-wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
+wxScrolledWindow* AddEditPropSheetDlg::CreateDatesTimesPanel()
 {
-  auto *panel = new wxPanel(GetBookCtrl(), ID_PANEL_DTIME, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+  auto *panel = CreateScrollablePage(ID_PANEL_DTIME);
   auto *itemBoxSizer60 = new wxBoxSizer(wxVERTICAL);
   panel->SetSizer(itemBoxSizer60);
 
@@ -655,12 +703,13 @@ wxPanel* AddEditPropSheetDlg::CreateDatesTimesPanel()
   itemStaticText84->SetValidator(wxGenericValidator(&m_AccessTime));
   itemStaticText86->SetValidator(wxGenericValidator(&m_RMTime));
 
+  FinalizeScrollablePage(panel);
   return panel;
 }
 
-wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
+wxScrolledWindow* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
 {
-  auto *panel = new wxPanel(GetBookCtrl(), ID_PANEL_PPOLICY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+  auto *panel = CreateScrollablePage(ID_PANEL_PPOLICY);
   auto *itemBoxSizer61 = new wxBoxSizer(wxVERTICAL);
   panel->SetSizer(itemBoxSizer61);
 
@@ -832,16 +881,17 @@ wxPanel* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
 
   m_PasswordPolicyOwnSymbolsTextCtrl->SetValidator(wxGenericValidator(&m_Symbols));
 
+  FinalizeScrollablePage(panel);
   return panel;
 }
 
-wxPanel* AddEditPropSheetDlg::CreateAttachmentPanel()
+wxScrolledWindow* AddEditPropSheetDlg::CreateAttachmentPanel()
 {
   ID_BUTTON_IMPORT = wxWindow::NewControlId();
   ID_BUTTON_EXPORT = wxWindow::NewControlId();
   ID_BUTTON_REMOVE = wxWindow::NewControlId();
 
-  auto *panel = new wxPanel(GetBookCtrl(), ID_PANEL_ADDITIONAL, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+  auto *panel = CreateScrollablePage(ID_PANEL_ADDITIONAL);
   auto *BoxSizerMain = new wxBoxSizer(wxVERTICAL);
 
   StaticBoxSizerPreview = new wxStaticBoxSizer(wxHORIZONTAL, panel, _("Preview"));
@@ -910,6 +960,7 @@ wxPanel* AddEditPropSheetDlg::CreateAttachmentPanel()
   Bind(wxEVT_COMMAND_BUTTON_CLICKED, &AddEditPropSheetDlg::OnRemove, this, static_cast<int>(ID_BUTTON_REMOVE));
   //*)
 
+  FinalizeScrollablePage(panel);
   return panel;
 }
 
