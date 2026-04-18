@@ -26,7 +26,7 @@
 #include <wx/gbsizer.h>
 #include <wx/grid.h>
 #include <wx/listctrl.h>
-#include <wx/simplebook.h>
+#include <wx/notebook.h>
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
 #include <wx/radiobut.h>
@@ -53,8 +53,7 @@ class wxGrid;
 class wxDatePickerCtrl;
 class wxGridSizer;
 class wxBoxSizer;
-class wxChoice;
-class wxSimplebook;
+class wxNotebook;
 ////@end forward declarations
 
 #ifndef wxDIALOG_MODAL
@@ -85,7 +84,6 @@ class wxSimplebook;
 #define ID_TEXTCTRL_EMAIL 10100
 #define ID_SEND_BTN 10214
 #define ID_TEXTCTRL_NOTES 10098
-#define ID_CHOICE_BASIC_DETAILS 11220
 #define ID_LISTCTRL_CUSTOM_FIELDS 11221
 #define ID_BUTTON_CUSTOM_FIELDS_ADD 11222
 #define ID_BUTTON_CUSTOM_FIELDS_EDIT 11223
@@ -209,9 +207,6 @@ protected:
   void OnNoteSetFocus(wxFocusEvent &event);
   void OnNoteLeftDown(wxMouseEvent &event);
   void OnCharHook(wxKeyEvent &event);
-
-  /// wxEVT_COMMAND_CHOICE_SELECTED event handler for ID_CHOICE_BASIC_DETAILS
-  void OnBasicDetailsViewChanged(wxCommandEvent &event);
 
   void OnCustomFieldAdd(wxCommandEvent &event);
   void OnCustomFieldEdit(wxCommandEvent &event);
@@ -364,7 +359,6 @@ private:
   void UpdatePasswordConfirmationIcons(bool show = true);
   void UpdatePasswordConfirmationAsterisk(bool show = true);
   void UpdatePasswordStrengthMeter();
-  void UpdateBasicDetailsView();
   void LoadCustomFieldsList();
   void UpdateCustomFieldButtons();
   int GetSelectedCustomFieldIndex() const;
@@ -456,8 +450,7 @@ private:
   wxButton *m_BasicTotpButton = nullptr;
   wxTextCtrl *m_BasicUrlTextCtrl = nullptr;
   wxTextCtrl *m_BasicEmailTextCtrl = nullptr;
-  wxChoice *m_BasicDetailsViewCtrl = nullptr;
-  wxSimplebook *m_BasicDetailsBook = nullptr;
+  wxNotebook *m_BasicDetailsNotebook = nullptr;
   wxTextCtrl *m_BasicNotesTextCtrl = nullptr;
   wxListCtrl *m_BasicCustomFieldsListCtrl = nullptr;
   wxButton *m_BasicCustomFieldAddButton = nullptr;

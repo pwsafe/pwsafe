@@ -150,7 +150,6 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
   EVT_BUTTON(       ID_BUTTON_ALIAS,         AddEditPropSheetDlg::OnAliasButtonClick        )
   EVT_BUTTON(       ID_GO_BTN,               AddEditPropSheetDlg::OnGoButtonClick           )
   EVT_BUTTON(       ID_SEND_BTN,             AddEditPropSheetDlg::OnSendButtonClick         )
-  EVT_CHOICE(       ID_CHOICE_BASIC_DETAILS, AddEditPropSheetDlg::OnBasicDetailsViewChanged )
   EVT_BUTTON(       ID_BUTTON_CUSTOM_FIELDS_ADD, AddEditPropSheetDlg::OnCustomFieldAdd      )
   EVT_BUTTON(       ID_BUTTON_CUSTOM_FIELDS_EDIT, AddEditPropSheetDlg::OnCustomFieldEdit    )
   EVT_BUTTON(       ID_BUTTON_CUSTOM_FIELDS_DELETE, AddEditPropSheetDlg::OnCustomFieldDelete )
@@ -527,25 +526,17 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   auto *itemButton34 = new wxButton( panel, ID_SEND_BTN, _("Send"), wxDefaultPosition, wxDefaultSize, 0 );
   m_BasicSizer->Add(itemButton34, wxGBPosition(/*row:*/ 16, /*column:*/ 5), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
-  wxArrayString detailsViewChoices;
-  detailsViewChoices.Add(_("Notes"));
-  detailsViewChoices.Add(_("Custom Fields"));
-  m_BasicDetailsViewCtrl = new wxChoice(panel, ID_CHOICE_BASIC_DETAILS, wxDefaultPosition, wxDefaultSize, detailsViewChoices);
-  m_BasicDetailsViewCtrl->SetSelection(0);
-  m_BasicSizer->Add(m_BasicDetailsViewCtrl, wxGBPosition(/*row:*/ 17, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 6),
-                    wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL, 0);
+  m_BasicDetailsNotebook = new wxNotebook(panel, wxID_ANY);
+  m_BasicSizer->Add(m_BasicDetailsNotebook, wxGBPosition(/*row:*/ 17, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 2, /*columnspan:*/ 6), wxEXPAND, 0);
 
-  m_BasicDetailsBook = new wxSimplebook(panel, wxID_ANY);
-  m_BasicSizer->Add(m_BasicDetailsBook, wxGBPosition(/*row:*/ 18, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 1, /*columnspan:*/ 6), wxEXPAND, 0);
-
-  auto *notesPanel = new wxPanel(m_BasicDetailsBook);
+  auto *notesPanel = new wxPanel(m_BasicDetailsNotebook);
   auto *notesSizer = new wxBoxSizer(wxVERTICAL);
   notesPanel->SetSizer(notesSizer);
   m_BasicNotesTextCtrl = new wxTextCtrl(notesPanel, ID_TEXTCTRL_NOTES, wxEmptyString, wxDefaultPosition, wxSize(-1, 100), wxTE_MULTILINE);
   notesSizer->Add(m_BasicNotesTextCtrl, 1, wxEXPAND);
-  m_BasicDetailsBook->AddPage(notesPanel, _("Notes"));
+  m_BasicDetailsNotebook->AddPage(notesPanel, _("Notes"));
 
-  auto *customFieldsPanel = new wxPanel(m_BasicDetailsBook);
+  auto *customFieldsPanel = new wxPanel(m_BasicDetailsNotebook);
   auto *customFieldsSizer = new wxBoxSizer(wxHORIZONTAL);
   customFieldsPanel->SetSizer(customFieldsSizer);
 
@@ -565,7 +556,7 @@ wxPanel* AddEditPropSheetDlg::CreateBasicPanel()
   customFieldsButtonSizer->Add(m_BasicCustomFieldToggleSensitiveButton, 0, wxEXPAND);
   customFieldsSizer->Add(customFieldsButtonSizer, 0, wxEXPAND);
 
-  m_BasicDetailsBook->AddPage(customFieldsPanel, _("Custom Fields"));
+  m_BasicDetailsNotebook->AddPage(customFieldsPanel, _("Custom Fields"));
 
   m_BasicSizer->AddGrowableCol(2);  // Growable text entry fields
   m_BasicSizer->AddGrowableRow(18); // Growable notes/custom fields area
@@ -1890,7 +1881,6 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
     style &= ~wxTE_WORDWRAP;
   m_BasicNotesTextCtrl->SetExtraStyle(style);
   LoadCustomFieldsList();
-  UpdateBasicDetailsView();
   m_Autotype = m_Item.GetAutoType().c_str();
   m_RunCommand = m_Item.GetRunCommand().c_str();
 
@@ -3734,35 +3724,6 @@ void AddEditPropSheetDlg::OnCharHook(wxKeyEvent& event)
   }
 
   event.Skip();
-}
-
-void AddEditPropSheetDlg::OnBasicDetailsViewChanged(wxCommandEvent& WXUNUSED(event))
-{
-  UpdateBasicDetailsView();
-}
-
-void AddEditPropSheetDlg::UpdateBasicDetailsView()
-{
-  if (m_BasicDetailsBook == nullptr || m_BasicDetailsViewCtrl == nullptr) {
-    return;
-  }
-
-  const int selectedPage = m_BasicDetailsViewCtrl->GetSelection();
-  if (selectedPage != wxNOT_FOUND) {
-    m_BasicDetailsBook->SetSelection(static_cast<size_t>(selectedPage));
-    m_BasicDetailsBook->Layout();
-
-    // Keep the selector focused when returning to hidden Notes so merely
-    // switching views does not reveal the placeholder text.
-    if (selectedPage == 0 && m_Type != SheetType::ADD && m_IsNotesHidden) {
-      m_RevealHiddenNotesOnFocus = false;
-      CallAfter([this]() {
-        if (m_BasicDetailsViewCtrl != nullptr) {
-          m_BasicDetailsViewCtrl->SetFocus();
-        }
-      });
-    }
-  }
 }
 
 void AddEditPropSheetDlg::LoadCustomFieldsList()
