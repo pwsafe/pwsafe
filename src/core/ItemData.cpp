@@ -2559,6 +2559,35 @@ void CItemData::SerializePlainText(vector<char> &v,
     }
   }
 
+  // Passkey fields
+  {
+    const FieldType passkeyfts[] = {
+      PASSKEY_CRED_ID,
+      PASSKEY_RP_ID,
+      PASSKEY_USER_HANDLE,
+      PASSKEY_ALGO_ID,
+      PASSKEY_PRIVATE_KEY,
+      PASSKEY_SIGN_COUNT
+    };
+    std::vector<unsigned char> field;
+
+    for (auto ft : passkeyfts) {
+      if (ft == PASSKEY_RP_ID) {
+        if (IsFieldSet(ft))
+          push(v, ft, GetField(ft));
+        continue;
+      }
+
+      field.clear();
+      GetField(ft, field);
+      if (!field.empty()) {
+        push(v, ft, static_cast<uint32>(field.size()),
+             reinterpret_cast<char *>(field.data()));
+        trashMemory(field.data(), field.size());
+      }
+    }
+  }
+
   // Unknown fields
   for (auto vi_IterURFE = m_URFL.begin();
        vi_IterURFE != m_URFL.end();
