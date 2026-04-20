@@ -2561,7 +2561,7 @@ void CItemData::SerializePlainText(vector<char> &v,
 
   // Passkey fields
   {
-    const FieldType passkeyfts[] = {
+    constexpr char passkeyfts[] = {
       PASSKEY_CRED_ID,
       PASSKEY_RP_ID,
       PASSKEY_USER_HANDLE,
