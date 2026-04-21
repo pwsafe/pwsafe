@@ -1413,7 +1413,6 @@ void OptionsPropertySheetDlg::OnPWHistApply(wxCommandEvent& WXUNUSED(evt))
 void OptionsPropertySheetDlg::OnUpdateUI(wxUpdateUIEvent& evt)
 {
   bool dbIsReadOnly = m_core.IsReadOnly();
-  const bool isWayland = (wxUtilities::WhatWindowSystem() == wxUtilities::Wayland);
 
   switch (evt.GetId()) {
   /////////////////////////////////////////////////////////////////////////////
@@ -1451,7 +1450,7 @@ void OptionsPropertySheetDlg::OnUpdateUI(wxUpdateUIEvent& evt)
       evt.Enable(!dbIsReadOnly);
       break;
     case ID_TEXTCTRL11:
-      evt.Enable(!dbIsReadOnly && !isWayland);
+      evt.Enable(!dbIsReadOnly);
       break;
     case ID_CHECKBOX24:
       evt.Enable(!dbIsReadOnly);

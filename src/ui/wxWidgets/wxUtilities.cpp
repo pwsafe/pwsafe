@@ -376,8 +376,8 @@ bool wxUtilities::IsVirtualKeyboardSupported()
 void wxUtilities::DisableIfUnsupported(enum Feature feature, wxWindow* window)
 {
   if (feature == Autotype && WhatWindowSystem() == Wayland) {
-    window->Disable();
-    window->SetToolTip(_("Not supported by Wayland"));
+//    window->Disable();
+    window->SetToolTip(_("Running on Wayland - make sure the target application is using Xwayland. For some applications, you may need to enable the 'Use alternate AutoType method' option in Options > System."));
   }
 }
 
