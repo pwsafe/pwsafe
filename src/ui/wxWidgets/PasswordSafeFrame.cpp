@@ -57,7 +57,6 @@
 #include "ToolbarButtons.h"
 #include "TreeCtrl.h"
 #include "ViewReportDlg.h"
-#include "wxUtilities.h"
 #include "DnDFile.h"
 #include "core/Report.h"
 
@@ -2234,7 +2233,6 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
   const bool isTreeViewGroupSelected = isTreeView && m_tree->IsGroupSelected();
   const bool isTreeViewEmpty         = isTreeView && !m_tree->HasItems(); // excludes the invisible root item
   const bool isTreeViewItemSelected  = isTreeView && m_tree->HasSelection();
-  const bool isWayland               = (wxUtilities::WhatWindowSystem() == wxUtilities::Wayland);
   const bool isUnlocked              = !IsLocked();
 
   pci = GetSelectedEntry();
@@ -2379,7 +2377,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_AUTOTYPE:
-      evt.Enable(isUnlocked && !isWayland && !isTreeViewGroupSelected && pci);
+      evt.Enable(isUnlocked && !isTreeViewGroupSelected && pci);
       break;
 
     case ID_EDIT:

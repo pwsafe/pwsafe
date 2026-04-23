@@ -373,16 +373,11 @@ bool wxUtilities::IsVirtualKeyboardSupported()
 #endif
 }
 
-void wxUtilities::DisableIfUnsupported(enum Feature feature, wxWindow* window)
-{
-  if (feature == Autotype && WhatWindowSystem() == Wayland) {
-    window->Disable();
-    window->SetToolTip(_("Not supported by Wayland"));
-  }
-}
-
 void wxUtilities::NotifyIfUnsupported(enum Feature feature, wxWindow* window)
 {
+  if (feature == Autotype && WhatWindowSystem() == Wayland) {
+    window->SetToolTip(_("Running on Wayland - make sure the target application is using Xwayland. For some applications, you may need to enable the 'Use alternate AutoType method' option in Options > System."));
+  }
 #if defined(__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__)
   if (feature == SystemTray && !IsTaskBarIconAvailable()) {
     window->SetToolTip(_("Not supported by the current Windowing System (e.g. Wayland), or you may need to install a Desktop Environment extension to enable System Tray support."));
