@@ -27,6 +27,7 @@
 #include "wxUtilities.h"
 
 #include "graphics/vkbd.xpm"
+#include <wx/display.h>
 
 ExternalKeyboardButton::ExternalKeyboardButton( wxWindow* parent, 
                                                 wxWindowID id, 
@@ -66,9 +67,27 @@ void ExternalKeyboardButton::HandleCommandEvent(wxCommandEvent& evt)
   GdkWindow* window = widget->window;
   int xwinid = GDK_WINDOW_XWINDOW(window);
 #endif
-  wxString command = wxString(wxT("xvkbd"));
+  int screenW = 0;
+  int screenH = 0;
+  int width = 0;
+  int height = 0;
+  double scaleFactor = 1;
+  wxSize screenSize = ::wxGetClientDisplayRect().GetSize();
+  screenW = screenSize.GetWidth();
+  screenH = screenSize.GetHeight();
+  scaleFactor = wxDisplay().GetScaleFactor();
+  if (screenW != 0 && screenH != 0) {
+    width = std::round(screenW * 0.6 * scaleFactor);
+    height = std::round(screenH * 0.3 * scaleFactor);
+  }
+  wxString geometry = wxString::Format("%dx%d", width, height);
+  wxString command;
+  if (width != 0 && height != 0)
+    command = wxString::Format("xvkbd -geometry %s %s", geometry, "-xrm 'xvkbd.Font: variable'");
+  else
+    command = wxT("xvkbd");
 
-  if (!pws_os::ProgramExists(tostdstring(command))) {
+  if (!pws_os::ProgramExists(tostdstring("xvkbd"))) {
     wxMessageBox(_("Could not launch xvkbd.  Please make sure it's installed and in your PATH"), 
                   _("Could not launch external onscreen keyboard"), wxOK | wxICON_ERROR);
     return;
