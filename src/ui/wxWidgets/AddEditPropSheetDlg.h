@@ -26,6 +26,8 @@
 #include <wx/spinctrl.h>
 #include <wx/gbsizer.h>
 #include <wx/grid.h>
+#include <wx/listctrl.h>
+#include <wx/notebook.h>
 #include <wx/datectrl.h>
 #include <wx/dateevt.h>
 #include <wx/radiobut.h>
@@ -52,6 +54,7 @@ class wxGrid;
 class wxDatePickerCtrl;
 class wxGridSizer;
 class wxBoxSizer;
+class wxNotebook;
 ////@end forward declarations
 
 #ifndef wxDIALOG_MODAL
@@ -82,6 +85,11 @@ class wxBoxSizer;
 #define ID_TEXTCTRL_EMAIL 10100
 #define ID_SEND_BTN 10214
 #define ID_TEXTCTRL_NOTES 10098
+#define ID_LISTCTRL_CUSTOM_FIELDS 11221
+#define ID_BUTTON_CUSTOM_FIELDS_ADD 11222
+#define ID_BUTTON_CUSTOM_FIELDS_EDIT 11223
+#define ID_BUTTON_CUSTOM_FIELDS_DELETE 11224
+#define ID_BUTTON_CUSTOM_FIELDS_TOGGLE_SENSITIVE 11225
 #define ID_PANEL_ADDITIONAL 10085
 #define ID_TEXTCTRL_AUTOTYPE 10094
 #define ID_TEXTCTRL_RUN_CMD 10099
@@ -198,6 +206,16 @@ protected:
 
   /// wxEVT_SET_FOCUS event handler for ID_TEXTCTRL_NOTES
   void OnNoteSetFocus(wxFocusEvent &event);
+  void OnNoteLeftDown(wxMouseEvent &event);
+  void OnCharHook(wxKeyEvent &event);
+
+  void OnCustomFieldAdd(wxCommandEvent &event);
+  void OnCustomFieldEdit(wxCommandEvent &event);
+  void OnCustomFieldDelete(wxCommandEvent &event);
+  void OnCustomFieldToggleSensitive(wxCommandEvent &event);
+  void OnCustomFieldSelected(wxListEvent &event);
+  void OnCustomFieldActivated(wxListEvent &event);
+  void OnCustomFieldClick(wxMouseEvent &event);
 
   /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOX_KEEP
   void OnKeepHistoryClick(wxCommandEvent &event);
@@ -346,6 +364,11 @@ private:
   void UpdatePasswordConfirmationIcons(bool show = true);
   void UpdatePasswordConfirmationAsterisk(bool show = true);
   void UpdatePasswordStrengthMeter();
+  void LoadCustomFieldsList();
+  void UpdateCustomFieldButtons();
+  int GetSelectedCustomFieldIndex() const;
+  void CopySelectedCustomFieldToClipboard();
+  bool EditCustomField(CustomField *field = nullptr);
   void ShowAlias();
   void RemoveAlias();
   int GetRequiredPWLength() const;
@@ -393,6 +416,7 @@ private:
     Attachment = 1u << 16,
     XTimeNever = 1u << 17,
     TwoFactorKey = 1u << 18,
+    CustomFields = 1u << 19,
   };
 
   enum AliasChanges {
@@ -431,14 +455,22 @@ private:
   wxButton *m_BasicTotpButton = nullptr;
   wxTextCtrl *m_BasicUrlTextCtrl = nullptr;
   wxTextCtrl *m_BasicEmailTextCtrl = nullptr;
+  wxNotebook *m_BasicDetailsNotebook = nullptr;
   wxTextCtrl *m_BasicNotesTextCtrl = nullptr;
+  wxListCtrl *m_BasicCustomFieldsListCtrl = nullptr;
+  wxButton *m_BasicCustomFieldAddButton = nullptr;
+  wxButton *m_BasicCustomFieldEditButton = nullptr;
+  wxButton *m_BasicCustomFieldDeleteButton = nullptr;
+  wxButton *m_BasicCustomFieldToggleSensitiveButton = nullptr;
 
   wxString m_Title;
   wxString m_User;
   wxString m_Url;
   wxString m_Email;
   wxString m_Notes;
+  CustomFieldList m_CustomFields;
   bool m_IsNotesHidden = true;
+  bool m_RevealHiddenNotesOnFocus = false;
   StringX m_Password;
   bool m_IsPasswordHidden = true;
   bool m_IsTotpHidden = true;

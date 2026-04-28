@@ -638,6 +638,7 @@ public:
   bool HasItemTwoFactorKey(const CItemData *item) const;
   int GetTotpCountdownInterval() const { return s_TotpCountdownInterval; }
   void CopyAuthCodeToClipboard(const CItemData *item) { DoCopyAuthCode(item); }
+  void CopyTextToClipboard(const StringX& text, const CItemData::FieldType field);
   void StartTotpDisplayAuthCode();
   void StopTotpDisplayAuthCode();
   void StartTotpCopyAuthCode();
