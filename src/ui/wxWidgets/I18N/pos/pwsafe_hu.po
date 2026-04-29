@@ -10177,3 +10177,19 @@ msgstr ""
 
 #~ msgid "xxxxxx"
 #~ msgstr "xxxxxx"
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2522
+msgid "Authentication code requires secret key in Additional tab."
+msgstr "A hitelesítési kódhoz titkos kulcs szükséges a További lapon."
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:549
+msgid "Enter the authentication secret key. This is usually taken from the authenticator setup page."
+msgstr "Adja meg a hitelesítési titkos kulcsot. Ez általában a hitelesítő beállítási oldaláról származik."
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:520
+msgid "This field can be used to specify a command or program to be run via the 'Run Command' action (via the Edit menu or right-click popup menu). Password Safe is able to pass arguments to the command such as the entry's username, password, etc."
+msgstr ""
+
+#: ../../../ui/wxWidgets/wxUtilities.cpp:379
+msgid "Running on Wayland - make sure the target application is using Xwayland. For some applications, you may need to enable the 'Use alternate AutoType method' option in Options > System."
+msgstr ""

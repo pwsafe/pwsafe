@@ -501,7 +501,11 @@ wxScrolledWindow* AddEditPropSheetDlg::CreateAdditionalPanel()
   auto *vBoxSizer = new wxBoxSizer(wxVERTICAL);
   mainSizer->Add(vBoxSizer, 1, wxEXPAND|wxALL, 10);
 
-  auto *itemStaticText41 = new wxStaticText(panel, wxID_STATIC, _("Autotype"), wxDefaultPosition, wxDefaultSize, 0);
+  StringX sx_dats = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultAutotypeString);
+  if (sx_dats.empty())
+    sx_dats = DEFAULT_AUTOTYPE;
+  wxString AutoTypeLabel = _("Autotype") + _T(' ') + _T('(') + _("default") + _T(':') + _T(' ') + towxstring(sx_dats) + _T(')');
+  auto *itemStaticText41 = new wxStaticText(panel, wxID_STATIC, AutoTypeLabel, wxDefaultPosition, wxDefaultSize, 0);
   wxUtilities::NotifyIfUnsupported(wxUtilities::Feature::Autotype, itemStaticText41);
   vBoxSizer->Add(itemStaticText41, 0, wxALIGN_LEFT|wxBOTTOM, 5);
 
@@ -513,6 +517,7 @@ wxScrolledWindow* AddEditPropSheetDlg::CreateAdditionalPanel()
   vBoxSizer->Add(itemStaticText43, 0, wxALIGN_LEFT|wxBOTTOM, 5);
 
   auto *itemTextCtrl44 = new wxTextCtrl(panel, ID_TEXTCTRL_RUN_CMD, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0);
+  itemTextCtrl44->SetToolTip(_("This field can be used to specify a command or program to be run via the 'Run Command' action (via the Edit menu or right-click popup menu). Password Safe is able to pass arguments to the command such as the entry's username, password, etc."));
   vBoxSizer->Add(itemTextCtrl44, 0, wxALIGN_LEFT|wxEXPAND|wxBOTTOM, 12);
 
   auto *itemStaticText45 = new wxStaticText(panel, wxID_STATIC, _("Double-Click Action"), wxDefaultPosition, wxDefaultSize, 0);
@@ -541,6 +546,7 @@ wxScrolledWindow* AddEditPropSheetDlg::CreateAdditionalPanel()
   vBoxSizerTwoFactoryKey->Add(m_AdditionalHBoxSizerTwoFactorKey, 1, wxALIGN_LEFT|wxEXPAND|wxBOTTOM, 12);
 
   m_AdditionalTwoFactorKeyCtrl = new wxTextCtrl(panel, ID_TEXTCTRL_2FK, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_PASSWORD);
+  m_AdditionalTwoFactorKeyCtrl->SetToolTip(_("Enter the authentication secret key. This is usually taken from the authenticator setup page."));
   m_AdditionalHBoxSizerTwoFactorKey->Add(m_AdditionalTwoFactorKeyCtrl, 1, wxALIGN_LEFT|wxEXPAND|wxRIGHT, 5);
 
   m_AdditionalShowHideCtrl = new wxBitmapButton(panel, ID_BUTTON_SHOWHIDE_2FK, wxUtilities::GetBitmapResource(wxT("graphics/eye.xpm")), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
@@ -2513,6 +2519,7 @@ void AddEditPropSheetDlg::DisableAuthenticationCodeControls()
   m_BasicTotpTextLabel->Disable();
   m_BasicTotpTextCtrl->Disable();
   m_BasicTotpTextCtrl->ChangeValue(wxEmptyString);
+  m_BasicTotpTextCtrl->SetToolTip(_("Authentication code requires secret key in Additional tab."));
   m_BasicShowHideTotpCtrl->Disable();
   m_BasicTotpButton->Disable();
   m_BasicTotpButton->SetLabel(wxEmptyString);
