@@ -8465,11 +8465,6 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgid "Attempted to write to the reading %1."
 #~ msgstr "Попытка выполнить операцию записи при чтении %1."
 
-#~ msgid "Authentication code requires secret key in Additional tab."
-#~ msgstr ""
-#~ "Для использования кодов двухфакторной аутентификации нужно указать секретный"
-#~ " ключ на вкладке «Дополнительно»."
-
 # на вкладке "«Дополнительно", перед самим ключом есть метка "ключ", поэтому
 # здесь не дублируем
 #~ msgid "Authenticator Secret"
@@ -9347,13 +9342,6 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 
 #~ msgid "Enter the Master Password to unlock the password database:"
 #~ msgstr "Введите пароль для указанного контейнера:"
-
-#~ msgid ""
-#~ "Enter the authentication secret key. This usually taken from the "
-#~ "authenticator setup page."
-#~ msgstr ""
-#~ "Укажите секретный ключ двухфакторной аутентификации. Обычно его можно "
-#~ "получить на странице настройки второго фактора."
 
 #~ msgid ""
 #~ "Enter the current master password, followed by a new one. \r\n"
@@ -12941,6 +12929,22 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgid "v&3 format..."
 #~ msgstr "Формат v&3..."
 
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2522
+msgid "Authentication code requires secret key in Additional tab."
+msgstr "Для использования кодов двухфакторной аутентификации нужно указать секретный ключ на вкладке «Дополнительно»."
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:549
+msgid "Enter the authentication secret key. This is usually taken from the authenticator setup page."
+msgstr "Укажите секретный ключ двухфакторной аутентификации. Обычно его можно получить на странице настройки второго фактора."
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:520
+msgid "This field can be used to specify a command or program to be run via the 'Run Command' action (via the Edit menu or right-click popup menu). Password Safe is able to pass arguments to the command such as the entry's username, password, etc."
+msgstr "Данное поле используется для указания команды/программы, выполняемой при выборе пункта «Выполнить команду» (в меню «Правка» или контекстном меню). Password Safe может передать в качестве аргументов имя пользователя, пароль и содержимое других полей."
+
+#: ../../../ui/wxWidgets/wxUtilities.cpp:379
+msgid "Running on Wayland - make sure the target application is using Xwayland. For some applications, you may need to enable the 'Use alternate AutoType method' option in Options > System."
+msgstr ""
+
 # no need to translate
 #~ msgid "whatever"
 #~ msgstr "whatever"
@@ -12957,3 +12961,4 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #, c-format
 #~ msgid "«%s» «%s» «%s»"
 #~ msgstr "«%s» «%s» «%s»"
+

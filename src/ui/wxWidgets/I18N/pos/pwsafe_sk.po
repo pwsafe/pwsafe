@@ -6931,3 +6931,20 @@ msgstr "Označenie databázy"
 
 msgid "The database description"
 msgstr "Popis databázy"
+
+#: ../../../ui/wxWidgets/wxUtilities.cpp:379
+msgid "Running on Wayland - make sure the target application is using Xwayland. For some applications, you may need to enable the 'Use alternate AutoType method' option in Options > System."
+msgstr "Spustené na Waylande – uistite sa, že cieľová aplikácia používa backend Xwayland. Pre niektoré aplikácie môže byť potrebné zaškrtnúť voľbu 'Použiť alternatívnu metódu automatického dopĺňania' na karte Systém v dialógovom okne Nastavenia."
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2522
+msgid "Authentication code requires secret key in Additional tab."
+msgstr "Na generovanie overovacích kódov (TOTP tokenov) sa vyžaduje tajný kľúč na karte Doplňujúce."
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:549
+msgid "Enter the authentication secret key. This is usually taken from the authenticator setup page."
+msgstr "Zadajte tajný kľúč autentifikácie na generovanie jednorazových overovacích kódov/TOTP tokenov. Dá sa nájsť na webovej stránke v nastaveniach prihlásenia, kde sa zapína dvojfaktorová autentifikácia. Stránka môže ukazovať tajný kľúč priamo alebo treba naskenovať QR kód mobilom a z vygenerovanej URL adresy treba odpísať kľúč sem."
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:520
+msgid "This field can be used to specify a command or program to be run via the 'Run Command' action (via the Edit menu or right-click popup menu). Password Safe is able to pass arguments to the command such as the entry's username, password, etc."
+msgstr "Toto pole možno použiť na zadanie príkazu alebo programu, ktorý sa má spustiť z menu Upraviť alebo kontextovej ponuky po kliknutí pravým tlačidlom myši. Password Safe dokáže príkazu odovzdať argumenty, ako napríklad používateľské meno alebo heslo konkrétneho záznamu."
+
