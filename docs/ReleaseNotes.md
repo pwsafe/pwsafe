@@ -4,6 +4,20 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
+PasswordSafe 3.71.1 Release ??? ?? 2026
+========================================
+Bugs Fixed in 3.71.1
+--------------------
+* [GH1749](https://github.com/pwsafe/pwsafe/issues/1749) In the Master Password Setup window, "Show Master Password" is no longer truncated on some displays.
+
+New Features in 3.71.1
+----------------------
+* Custom Field support has been added to the more advanced features:
+  * Filters
+  * XML and Text import and export
+  * Comparison, Sync and Merge databases
+  * [SF935](https://sourceforge.net/p/passwordsafe/feature-requests/935/) Autotype: Specifying '\v{name}' in the autotype text will cause the corresponding value to be autotyped
+
 PasswordSafe 3.71.0 Release March 27 2026
 =========================================
 

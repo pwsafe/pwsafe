@@ -15,6 +15,7 @@
 
 #include "core/PWSAuxParse.h"
 #include "core/ItemData.h"
+#include "core/PWScore.h"
 #include "gtest/gtest.h"
 
 
@@ -49,6 +50,10 @@ TEST(AuxParseTest, testGetEffectiveValuesNoBase)
   item.SetEmail(L"eel");
   item.SetAutoType(L"aden splitfin");
   item.SetRunCommand(L"red bellied dace");
+  CustomField pin;
+  pin.SetName(L"PIN");
+  pin.SetValue(L"1234");
+  item.AddCustomField(pin);
 
   PWSAuxParse::GetEffectiveValues(&item, nullptr, effitem, lastpswd, totpauthcode);
 
@@ -62,6 +67,7 @@ TEST(AuxParseTest, testGetEffectiveValuesNoBase)
   EXPECT_EQ(effitem.GetEmail(), item.GetEmail());
   EXPECT_EQ(effitem.GetAutoType(), item.GetAutoType());
   EXPECT_EQ(effitem.GetRunCommand(), item.GetRunCommand());
+  EXPECT_EQ(effitem.GetCustomFieldsRaw(), item.GetCustomFieldsRaw());
   EXPECT_TRUE(totpauthcode.empty());
 
   EXPECT_EQ(effitem, item);
@@ -93,4 +99,59 @@ TEST(AuxParseTest, testGetExpandedString)
                                             errmsg, column, urlSpecial);
   EXPECT_TRUE(errmsg.empty());
   EXPECT_EQ(L"runme \\Joe", exString);
+}
+
+TEST(AuxParseTest, testGetAutoTypeStringCustomFieldExpansion)
+{
+  std::vector<size_t> vactionverboffsets;
+  CustomFieldList customFields;
+
+  CustomField pin;
+  pin.SetName(L"PIN");
+  pin.SetValue(L"12\\34");
+  pin.SetSensitive(true);
+  customFields.push_back(pin);
+
+  const StringX expanded = PWSAuxParse::GetAutoTypeString(
+      L"prefix \\v{PIN} suffix \\v{Missing}",
+      L"", L"", L"", L"", L"", L"", L"", L"", L"",
+      &customFields, vactionverboffsets);
+
+  EXPECT_EQ(L"prefix 12\\\\34 suffix ", expanded);
+}
+
+TEST(AuxParseTest, testGetAutoTypeStringUsesItemCustomFields)
+{
+  PWScore core;
+  CItemData item;
+  item.SetAutoType(L"\\v{PIN}");
+
+  CustomField pin;
+  pin.SetName(L"PIN");
+  pin.SetValue(L"1234");
+  pin.SetSensitive(true);
+  ASSERT_TRUE(item.AddCustomField(pin));
+
+  std::vector<size_t> vactionverboffsets;
+  const StringX expanded = PWSAuxParse::GetAutoTypeString(item, core, vactionverboffsets);
+
+  EXPECT_EQ(L"1234", expanded);
+}
+
+TEST(AuxParseTest, testCustomFieldsEdgeCases)
+{
+  PWScore core;
+  CItemData item;
+  item.SetAutoType(L"\\v{} and/or \\v");
+
+  CustomField pin;
+  pin.SetName(L"PIN");
+  pin.SetValue(L"1234");
+  pin.SetSensitive(true);
+  ASSERT_TRUE(item.AddCustomField(pin));
+
+  std::vector<size_t> vactionverboffsets;
+  const StringX expanded = PWSAuxParse::GetAutoTypeString(item, core, vactionverboffsets);
+
+  EXPECT_EQ(L" and/or \\v", expanded);
 }

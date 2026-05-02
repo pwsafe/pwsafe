@@ -70,6 +70,12 @@ void ItemDataTest::SetUp()
   fullItem.SetShiftDCA(iSDCA);
   fullItem.SetXTimeInt(xTimeInt);
   fullItem.SetKBShortcut(kbs);
+  fullItem.SetPasskeyCredentialID(VectorX<unsigned char>(64, 1));
+  fullItem.SetPasskeyRelyingPartyID(_T("example.com"));
+  fullItem.SetPasskeyUserHandle(VectorX<unsigned char>(32, 2));
+  fullItem.SetPasskeyAlgorithmID(-7);
+  fullItem.SetPasskeyPrivateKey(VectorX<unsigned char>(512, 3));
+  fullItem.SetPasskeySignCount(0);
 }
 
 // And now the tests...
@@ -131,6 +137,12 @@ TEST_F(ItemDataTest, Getters_n_Setters)
   EXPECT_EQ(iSDCA, fullItem.GetShiftDCA(iVal16));
   EXPECT_EQ(xTimeInt, fullItem.GetXTimeInt(iVal32));
   EXPECT_EQ(kbs, fullItem.GetKBShortcut(iVal32));
+  EXPECT_EQ(StringX(_T("example.com")), fullItem.GetPasskeyRelyingPartyID());
+  EXPECT_EQ(-7, fullItem.GetPasskeyAlgorithmID());
+  EXPECT_EQ(0U, fullItem.GetPasskeySignCount());
+  EXPECT_EQ(VectorX<unsigned char>(64, 1), fullItem.GetPasskeyCredentialID());
+  EXPECT_EQ(VectorX<unsigned char>(32, 2), fullItem.GetPasskeyUserHandle());
+  EXPECT_EQ(VectorX<unsigned char>(512, 3), fullItem.GetPasskeyPrivateKey());
   EXPECT_FALSE(fullItem.IsProtected()); // default value
 
   fullItem.SetProtected(true); // modify

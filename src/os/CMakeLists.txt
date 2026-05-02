@@ -36,7 +36,7 @@ if (NOT NO_YUBI)
 endif ()
   elseif (APPLE)
   set (OS_SRCS
-    mac/cleanup.cpp
+    unix/cleanup.cpp
     mac/debug.cpp
     mac/dir.cpp
     mac/env.cpp
@@ -49,12 +49,13 @@ endif ()
     mac/pws_time.cpp
     mac/rand.cpp
     mac/registry.cpp
-    mac/run.cpp
+    unix/run.cpp
     mac/sleep.cpp
     mac/utf8conv.cpp
     mac/UUID.cpp
     mac/media.cpp
     )
+  set (OS_YUBI_SRC unix/PWYubi.cpp)
   elseif (${CMAKE_SYSTEM_NAME} MATCHES "(Linux|FreeBSD|OpenBSD)")
   set (OS_SRCS
     unix/KeySend.cpp

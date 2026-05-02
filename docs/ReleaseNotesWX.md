@@ -16,6 +16,7 @@ New features in 1.24.0
 
 Bugs fixed in 1.24.0
 --------------------
+* [GH1751](https://github.com/pwsafe/pwsafe/issues/1751) Changing the height of the Add/Edit dialog will cause a vertical scrollbar to be added.
 * [GH1646](https://github.com/pwsafe/pwsafe/issues/1646) In the "Flattened List" view, sorting by time columns (e.g., entry creation time) now works correctly.
 * [GH1661](https://github.com/pwsafe/pwsafe/issues/1661) MacOS specific: The app no longer crashes when changing a filter criteria for Attachment - Media Type.
 

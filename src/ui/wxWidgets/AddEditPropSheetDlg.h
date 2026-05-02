@@ -21,6 +21,7 @@
 #include <wx/bookctrl.h>
 #include <wx/combobox.h>
 #include <wx/propdlg.h>
+#include <wx/scrolwin.h>
 #include <wx/valgen.h>
 #include <wx/spinctrl.h>
 #include <wx/gbsizer.h>
@@ -305,20 +306,24 @@ private:
   // Creates the controls and sizers
   void CreateControls();
 
+  wxScrolledWindow *CreateScrollablePage(wxWindowID id);
+  void FinalizeScrollablePage(wxScrolledWindow *page);
+  void RelaxScrollablePageSizes();
+
   // Creates the controls of 'Basic' tab
-  wxPanel *CreateBasicPanel();
+  wxScrolledWindow *CreateBasicPanel();
 
   // Creates the controls of 'Additional' tab
-  wxPanel *CreateAdditionalPanel();
+  wxScrolledWindow *CreateAdditionalPanel();
 
   // Creates the controls of 'DatesTimes' tab
-  wxPanel *CreateDatesTimesPanel();
+  wxScrolledWindow *CreateDatesTimesPanel();
 
   // Creates the controls of 'Password Policy' tab
-  wxPanel *CreatePasswordPolicyPanel();
+  wxScrolledWindow *CreatePasswordPolicyPanel();
 
   // Creates the controls of 'Attachment' tab
-  wxPanel *CreateAttachmentPanel();
+  wxScrolledWindow *CreateAttachmentPanel();
 
   void InitAttachmentTab();
   void ShowAttachmentData(const CItemAtt &attachmentItem);
@@ -431,7 +436,7 @@ private:
   StringX PreparePasswordHistory() const;
 
   // Tab: "Basic"
-  wxPanel *m_BasicPanel = nullptr;
+  wxScrolledWindow *m_BasicPanel = nullptr;
   wxGridBagSizer *m_BasicSizer = nullptr;
   wxComboBox *m_BasicGroupNamesCtrl = nullptr;
   wxTextCtrl *m_BasicTitleTextCtrl = nullptr;
@@ -474,7 +479,7 @@ private:
   AliasChanges m_AliasChange = AliasChanges::NoChange;
 
   // Tab: "Additional"
-  wxPanel *m_AdditionalPanel = nullptr;
+  wxScrolledWindow *m_AdditionalPanel = nullptr;
   wxComboBox *m_AdditionalDoubleClickActionCtrl = nullptr;
   wxComboBox *m_AdditionalShiftDoubleClickActionCtrl = nullptr;
   wxBoxSizer *m_AdditionalHBoxSizerTwoFactorKey = nullptr;
@@ -515,7 +520,7 @@ private:
   int m_ExpirationTimeInterval = 0; // Password expiration interval in days
 
   // Tab: "Password Policy"
-  wxPanel *m_PasswordPolicyPanel = nullptr;
+  wxScrolledWindow *m_PasswordPolicyPanel = nullptr;
   wxCheckBox *m_PasswordPolicyUseDatabaseCtrl = nullptr;
   wxComboBox *m_PasswordPolicyNamesCtrl = nullptr;
   wxStaticText *m_PasswordPolicyPasswordLengthText = nullptr;
@@ -556,7 +561,7 @@ private:
 
   //(*Declarations(AttachmentTab)
   wxStaticBoxSizer *StaticBoxSizerPreview = nullptr;
-  wxPanel *m_AttachmentPanel = nullptr;
+  wxScrolledWindow *m_AttachmentPanel = nullptr;
   ImagePanel *m_AttachmentImagePanel = nullptr;
   wxButton *m_AttachmentButtonImport = nullptr;
   wxButton *m_AttachmentButtonExport = nullptr;

@@ -4402,12 +4402,12 @@ void DboxMain::ReportAdvancedOptions(CReport *pRpt, const bool bAdvanced, const 
     int ifields[] = {CItemData::PASSWORD, CItemData::TWOFACTORKEY, CItemData::NOTES, CItemData::URL,
                      CItemData::AUTOTYPE, CItemData::PWHIST, CItemData::POLICY,
                      CItemData::RUNCMD, CItemData::DCA, CItemData::SHIFTDCA, CItemData::EMAIL,
-                     CItemData::PROTECTED, CItemData::SYMBOLS, CItemData::POLICYNAME,
+                     CItemData::PROTECTED, CItemData::SYMBOLS, CItemData::CUSTOMTEXT, CItemData::POLICYNAME,
                      CItemData::KBSHORTCUT, CItemData::ATTREF};
     UINT uimsgids[] = {IDS_COMPPASSWORD, IDS_COMPTWOFACTORKEY, IDS_COMPNOTES, IDS_COMPURL,
                        IDS_COMPAUTOTYPE, IDS_COMPPWHISTORY, IDS_COMPPWPOLICY,
                        IDS_COMPRUNCOMMAND, IDS_COMPDCA, IDS_COMPSHIFTDCA, IDS_COMPEMAIL,
-                       IDS_COMPPROTECTED, IDS_COMPSYMBOLS, IDS_COMPPOLICYNAME,
+                       IDS_COMPPROTECTED, IDS_COMPSYMBOLS, IDS_CUSTOMFIELDS, IDS_COMPPOLICYNAME,
                        IDS_COMPKBSHORTCUT, IDS_ATTREF};
     ASSERT(_countof(ifields) == _countof(uimsgids));
 

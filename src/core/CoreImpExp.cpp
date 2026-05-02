@@ -470,7 +470,7 @@ int PWScore::WriteXMLFile(const StringX &filename,
       (il == nullptr && m_pwlist.empty()))
     return NO_ENTRIES_EXPORTED;
 
-  FILE *xmlfile = pws_os::FOpen(filename.c_str(), _T("wt"));
+  FILE *xmlfile = pws_os::FOpen(filename.c_str(), _T("wb"));
   if (xmlfile == nullptr)
     return CANT_OPEN_FILE;
 

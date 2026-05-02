@@ -250,6 +250,7 @@ void PWScore::Compare(PWScore *pothercore,
 
         CompareField(CItemData::NOTES, bsFields, currentItem, compItem,
                      bsConflicts, bTreatWhiteSpaceasEmpty);
+        CompareField(CItemData::CUSTOMTEXT, bsFields, currentItem, compItem, bsConflicts);
         CompareField(CItemData::CTIME, bsFields, currentItem, compItem, bsConflicts);
         CompareField(CItemData::PMTIME, bsFields, currentItem, compItem, bsConflicts);
         CompareField(CItemData::ATIME, bsFields, currentItem, compItem, bsConflicts);
@@ -440,8 +441,8 @@ bool PWScore::MatchGroupName(const StringX &stValue, const StringX &subgroup_nam
 #define MRG_SYMBOLS    0x0010
 #define MRG_SHIFTDCA   0x0008
 #define MRG_POLICYNAME 0x0004
-#define MRG_TOTP       0x0002 // anything TOTP related (i.e., Two Factor Key, TOTP Parameters, etc.).
-#define MRG_UNUSED     0x0001
+#define MRG_CUSTOMTEXT 0x0002
+#define MRG_TOTP       0x0001 // anything TOTP related (i.e., Two Factor Key, TOTP Parameters, etc.).
 
 stringT PWScore::Merge(PWScore *pothercore,
                        const bool &subgroup_bset,
@@ -587,6 +588,12 @@ stringT PWScore::Merge(PWScore *pothercore,
       if (otherItem.GetNotes() != curItem.GetNotes()) {
         diff_flags |= MRG_NOTES;
         LoadAString(str_temp, IDSC_FLDNMNOTES);
+        str_diffs += str_temp + _T(", ");
+      }
+
+      if (otherItem.GetCustomFieldsRaw() != curItem.GetCustomFieldsRaw()) {
+        diff_flags |= MRG_CUSTOMTEXT;
+        LoadAString(str_temp, IDSC_FLDNMCUSTOMFIELDS);
         str_diffs += str_temp + _T(", ");
       }
 

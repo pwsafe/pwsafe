@@ -354,6 +354,11 @@ bool PFilterXMLProcessor::ReadXMLFilterEntry(pugi::xml_node &eroot, const string
     frow.mtype = PWSMatch::MT_STRING;
     frow.ftype = FT_NOTES;
   }
+  else if (SafeCompare(qname, _T("custom_fields"))) {
+    ftype = DFTYPE_MAIN;
+    frow.mtype = PWSMatch::MT_STRING;
+    frow.ftype = FT_CUSTOMTEXT;
+  }
   else if (SafeCompare(qname, _T("autotype"))) {
     ftype = DFTYPE_MAIN;
     frow.mtype = PWSMatch::MT_STRING;

@@ -136,6 +136,10 @@ Note that <em>NNN</em> is limited to a maximum of three
 digits, so that, for example, \w5000 will create a half-second delay and 
 then emit the letter '0', which is probably not what you intended (\W5 
 would do the trick, though).</li>
+<li><b>\v{<i>value</i>}</b> types the value of the Custom Field whose name matches
+<i>value</i>. For example, if the entry has a Custom Field named "PIN" with the
+value "1234", then "\v{PIN}" will type "1234". If there is no matching Custom
+Field, nothing is typed.</li>
 <a name="z"></a><li><b>\z</b> (Windows only) invokes the old AutoType mechanism. 
 This mechanism may handle non-Latin characters incorrectly, but can make AutoType 
 work on certain problematical web sites. <i><u>If you find that AutoType does not 

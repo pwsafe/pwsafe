@@ -812,6 +812,7 @@ bool CPWFilterLC::SetField(const int iItem)
         case FT_GROUP:
         case FT_USER:
         case FT_NOTES:
+        case FT_CUSTOMTEXT:
         case FT_URL:
         case FT_AUTOTYPE:
         case FT_RUNCMD:
@@ -1605,6 +1606,10 @@ void CPWFilterLC::SetUpComboBoxData()
 
         stf.cs_text = CItemData::FieldName(CItemData::NOTES).c_str();
         stf.ftype = FT_NOTES;
+        m_vFcbx_data.push_back(stf);
+
+        stf.cs_text = CItemData::FieldName(CItemData::CUSTOMTEXT).c_str();
+        stf.ftype = FT_CUSTOMTEXT;
         m_vFcbx_data.push_back(stf);
 
         stf.cs_text = CItemData::FieldName(CItemData::URL).c_str();

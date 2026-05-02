@@ -1147,6 +1147,7 @@ CString CManageFiltersDlg::GetFieldTypeName(FieldType ft)
   case FT_PASSWORD:     return CItemData::FieldName(CItemData::PASSWORD).c_str();
   case FT_TWOFACTORKEY: return CItemData::FieldName(CItemData::TWOFACTORKEY).c_str();
   case FT_NOTES:        return CItemData::FieldName(CItemData::NOTES).c_str();
+  case FT_CUSTOMTEXT:   return CItemData::FieldName(CItemData::CUSTOMTEXT).c_str();
   case FT_AUTOTYPE:     return CItemData::FieldName(CItemData::AUTOTYPE).c_str();
   case FT_URL:          return CItemData::FieldName(CItemData::URL).c_str();
   case FT_RUNCMD:       return CItemData::FieldName(CItemData::RUNCMD).c_str();

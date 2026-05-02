@@ -458,13 +458,6 @@ namespace wxUtilities
   bool IsVirtualKeyboardSupported();
 
   /**
-   * @brief Disables a control for the specified feature(s).
-   * 
-   * @param control the control to disable.
-   */
-  void DisableIfUnsupported(enum Feature feature, wxWindow* window);
-
-  /**
    * @brief Shows a tooltip for the specified feature(s).
    *
    * @param Specify the target control.
