@@ -241,6 +241,11 @@ open ssh://${user}@${url}
 open smb://${user}@${url}/sharename
 </pre>
 </li>
+<li>On macOS, this will open a new instance of <b>Password Safe</b> with the specified database (use "\p\n" AutoType string to unlock it):
+<pre>
+open -n -a pwsafe ${dbdir}/database.psafe3
+</pre>
+</li>
 <li>On Linux, this will open a new instance of <b>Password Safe</b> with the specified database (Thanks to Dave for this one):
 <pre> ${autotype}(\p\n)"/usr/bin/pwsafe" \UNC\path\to\database.psafe3</pre></li>
 <ul>
