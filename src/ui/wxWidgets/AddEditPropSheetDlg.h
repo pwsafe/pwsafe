@@ -367,7 +367,8 @@ private:
   void LoadCustomFieldsList();
   void UpdateCustomFieldButtons();
   int GetSelectedCustomFieldIndex() const;
-  void CopySelectedCustomFieldToClipboard();
+  bool CopySelectedCustomFieldCellToClipboard() const;
+  bool CopySelectedPasswordHistoryCellToClipboard() const;
   bool EditCustomField(CustomField *field = nullptr);
   void ShowAlias();
   void RemoveAlias();
@@ -462,6 +463,7 @@ private:
   wxButton *m_BasicCustomFieldEditButton = nullptr;
   wxButton *m_BasicCustomFieldDeleteButton = nullptr;
   wxButton *m_BasicCustomFieldToggleSensitiveButton = nullptr;
+  int m_SelectedCustomFieldColumn = 1;
 
   wxString m_Title;
   wxString m_User;

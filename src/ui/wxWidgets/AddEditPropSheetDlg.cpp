@@ -3764,7 +3764,28 @@ void AddEditPropSheetDlg::OnNoteLeftDown(wxMouseEvent& event)
 
 void AddEditPropSheetDlg::OnCharHook(wxKeyEvent& event)
 {
-  if (event.GetKeyCode() == WXK_TAB) {
+  int key = event.GetUnicodeKey();
+  if (key == WXK_NONE) {
+    key = event.GetKeyCode();
+  }
+
+  if (event.CmdDown() && !event.AltDown() &&
+      (key == 'C' || key == 'c')) {
+    wxWindow *focus = wxWindow::FindFocus();
+
+    if (m_BasicCustomFieldsListCtrl != nullptr &&
+        (focus == m_BasicCustomFieldsListCtrl || m_BasicCustomFieldsListCtrl->IsDescendant(focus)) &&
+        CopySelectedCustomFieldCellToClipboard()) {
+      return;
+    }
+
+    if (m_AdditionalPasswordHistoryGrid != nullptr &&
+        (focus == m_AdditionalPasswordHistoryGrid || m_AdditionalPasswordHistoryGrid->IsDescendant(focus)) &&
+        CopySelectedPasswordHistoryCellToClipboard()) {
+      return;
+    }
+  }
+  else if (key == WXK_TAB) {
     m_RevealHiddenNotesOnFocus = true;
     CallAfter([this]() {
       m_RevealHiddenNotesOnFocus = false;
@@ -3907,27 +3928,50 @@ void AddEditPropSheetDlg::OnCustomFieldSelected(wxListEvent& event)
   event.Skip();
 }
 
-void AddEditPropSheetDlg::CopySelectedCustomFieldToClipboard()
+bool AddEditPropSheetDlg::CopySelectedCustomFieldCellToClipboard() const
 {
   const int selectedIndex = GetSelectedCustomFieldIndex();
   if (selectedIndex == wxNOT_FOUND || selectedIndex >= static_cast<int>(m_CustomFields.size())) {
-    return;
+    return false;
   }
 
   const CustomField &field = m_CustomFields[static_cast<size_t>(selectedIndex)];
-  auto *pwSafe = wxGetApp().GetPasswordSafeFrame();
-  if (pwSafe == nullptr) {
-    return;
+  StringX textToCopy;
+  if (m_SelectedCustomFieldColumn == 0) {
+    textToCopy = field.GetName();
+  }
+  else {
+    textToCopy = field.GetValue();
   }
 
-  pwSafe->CopyTextToClipboard(field.GetValue(), CItemData::FieldType::CUSTOMTEXT);
+  return Clipboard::GetInstance()->SetData(textToCopy);
+}
+
+bool AddEditPropSheetDlg::CopySelectedPasswordHistoryCellToClipboard() const
+{
+  if (m_AdditionalPasswordHistoryGrid == nullptr) {
+    return false;
+  }
+
+  const int row = m_AdditionalPasswordHistoryGrid->GetGridCursorRow();
+  const int col = m_AdditionalPasswordHistoryGrid->GetGridCursorCol();
+  if (row == wxNOT_FOUND || col == wxNOT_FOUND ||
+      row < 0 || col < 0 ||
+      row >= m_AdditionalPasswordHistoryGrid->GetNumberRows() ||
+      col >= m_AdditionalPasswordHistoryGrid->GetNumberCols()) {
+    return false;
+  }
+
+  return Clipboard::GetInstance()->SetData(
+    tostringx(m_AdditionalPasswordHistoryGrid->GetCellValue(row, col)));
 }
 
 void AddEditPropSheetDlg::OnCustomFieldClick(wxMouseEvent& event)
 {
   int flags = 0;
+  long subItem = m_SelectedCustomFieldColumn;
   const long itemIndex = m_BasicCustomFieldsListCtrl != nullptr
-    ? m_BasicCustomFieldsListCtrl->HitTest(event.GetPosition(), flags)
+    ? m_BasicCustomFieldsListCtrl->HitTest(event.GetPosition(), flags, &subItem)
     : wxNOT_FOUND;
 
   event.Skip();
@@ -3936,7 +3980,7 @@ void AddEditPropSheetDlg::OnCustomFieldClick(wxMouseEvent& event)
     return;
   }
 
-  CallAfter(&AddEditPropSheetDlg::CopySelectedCustomFieldToClipboard);
+  m_SelectedCustomFieldColumn = static_cast<int>(subItem);
 }
 
 void AddEditPropSheetDlg::OnCustomFieldActivated(wxListEvent& WXUNUSED(event))
