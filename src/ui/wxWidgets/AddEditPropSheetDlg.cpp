@@ -153,7 +153,6 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
   EVT_BUTTON(       ID_BUTTON_CUSTOM_FIELDS_ADD, AddEditPropSheetDlg::OnCustomFieldAdd      )
   EVT_BUTTON(       ID_BUTTON_CUSTOM_FIELDS_EDIT, AddEditPropSheetDlg::OnCustomFieldEdit    )
   EVT_BUTTON(       ID_BUTTON_CUSTOM_FIELDS_DELETE, AddEditPropSheetDlg::OnCustomFieldDelete )
-  EVT_BUTTON(       ID_BUTTON_CUSTOM_FIELDS_TOGGLE_SENSITIVE, AddEditPropSheetDlg::OnCustomFieldToggleSensitive )
   EVT_LIST_ITEM_SELECTED( ID_LISTCTRL_CUSTOM_FIELDS, AddEditPropSheetDlg::OnCustomFieldSelected )
   EVT_LIST_ITEM_ACTIVATED( ID_LISTCTRL_CUSTOM_FIELDS, AddEditPropSheetDlg::OnCustomFieldActivated )
   EVT_CHECKBOX(     ID_CHECKBOX_KEEP,        AddEditPropSheetDlg::OnKeepHistoryClick        )
@@ -197,7 +196,6 @@ BEGIN_EVENT_TABLE( AddEditPropSheetDlg, wxPropertySheetDialog )
   EVT_UPDATE_UI(    ID_BUTTON_CUSTOM_FIELDS_ADD, AddEditPropSheetDlg::OnUpdateUI            )
   EVT_UPDATE_UI(    ID_BUTTON_CUSTOM_FIELDS_EDIT, AddEditPropSheetDlg::OnUpdateUI           )
   EVT_UPDATE_UI(    ID_BUTTON_CUSTOM_FIELDS_DELETE, AddEditPropSheetDlg::OnUpdateUI         )
-  EVT_UPDATE_UI(    ID_BUTTON_CUSTOM_FIELDS_TOGGLE_SENSITIVE, AddEditPropSheetDlg::OnUpdateUI )
 
   EVT_UPDATE_UI(    ID_TEXTCTRL_AUTOTYPE,    AddEditPropSheetDlg::OnUpdateUI                )
   EVT_UPDATE_UI(    ID_TEXTCTRL_RUN_CMD,     AddEditPropSheetDlg::OnUpdateUI                )
@@ -595,11 +593,9 @@ wxScrolledWindow* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicCustomFieldAddButton = new wxButton(customFieldsPanel, ID_BUTTON_CUSTOM_FIELDS_ADD, _("Add"));
   m_BasicCustomFieldEditButton = new wxButton(customFieldsPanel, ID_BUTTON_CUSTOM_FIELDS_EDIT, _("Edit"));
   m_BasicCustomFieldDeleteButton = new wxButton(customFieldsPanel, ID_BUTTON_CUSTOM_FIELDS_DELETE, _("Delete"));
-  m_BasicCustomFieldToggleSensitiveButton = new wxButton(customFieldsPanel, ID_BUTTON_CUSTOM_FIELDS_TOGGLE_SENSITIVE, _("Toggle Sensitive"));
   customFieldsButtonSizer->Add(m_BasicCustomFieldAddButton, 0, wxEXPAND | wxBOTTOM, 5);
   customFieldsButtonSizer->Add(m_BasicCustomFieldEditButton, 0, wxEXPAND | wxBOTTOM, 5);
-  customFieldsButtonSizer->Add(m_BasicCustomFieldDeleteButton, 0, wxEXPAND | wxBOTTOM, 5);
-  customFieldsButtonSizer->Add(m_BasicCustomFieldToggleSensitiveButton, 0, wxEXPAND);
+  customFieldsButtonSizer->Add(m_BasicCustomFieldDeleteButton, 0, wxEXPAND);
   customFieldsSizer->Add(customFieldsButtonSizer, 0, wxEXPAND);
 
   m_BasicDetailsNotebook->AddPage(customFieldsPanel, _("Custom Fields"));
@@ -614,6 +610,7 @@ wxScrolledWindow* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicNotesTextCtrl->SetValidator(wxGenericValidator(&m_Notes));
   m_BasicCustomFieldsListCtrl->AppendColumn(_("Name"), wxLIST_FORMAT_LEFT, 120);
   m_BasicCustomFieldsListCtrl->AppendColumn(_("Value"), wxLIST_FORMAT_LEFT, 220);
+  m_BasicCustomFieldsListCtrl->AppendColumn(_("Sensitive"), wxLIST_FORMAT_CENTER, 80);
 
   FinalizeScrollablePage(panel);
   return panel;
@@ -3648,7 +3645,6 @@ void AddEditPropSheetDlg::OnUpdateUI(wxUpdateUIEvent& event)
       break;
     case ID_BUTTON_CUSTOM_FIELDS_EDIT:
     case ID_BUTTON_CUSTOM_FIELDS_DELETE:
-    case ID_BUTTON_CUSTOM_FIELDS_TOGGLE_SENSITIVE:
       event.Enable(!dbIsReadOnly && GetSelectedCustomFieldIndex() != wxNOT_FOUND);
       break;
     case ID_TEXTCTRL_PASSWORD:
@@ -3812,13 +3808,33 @@ void AddEditPropSheetDlg::LoadCustomFieldsList()
     const long itemIndex = m_BasicCustomFieldsListCtrl->InsertItem(static_cast<long>(i), towxstring(field.GetName()));
     const wxString value = field.IsSensitive() ? _("********") : towxstring(field.GetValue());
     m_BasicCustomFieldsListCtrl->SetItem(itemIndex, 1, value);
+    m_BasicCustomFieldsListCtrl->SetItem(itemIndex, 2, field.IsSensitive() ? wxString::FromUTF8("\xE2\x98\x91")
+                                                                            : wxString::FromUTF8("\xE2\x98\x90"));
   }
 
   m_BasicCustomFieldsListCtrl->SetColumnWidth(0, wxLIST_AUTOSIZE_USEHEADER);
   m_BasicCustomFieldsListCtrl->SetColumnWidth(1, wxLIST_AUTOSIZE_USEHEADER);
+  m_BasicCustomFieldsListCtrl->SetColumnWidth(2, wxLIST_AUTOSIZE_USEHEADER);
   m_BasicCustomFieldsListCtrl->Thaw();
 
   UpdateCustomFieldButtons();
+}
+
+void AddEditPropSheetDlg::UpdateCustomFieldRow(int index)
+{
+  if (m_BasicCustomFieldsListCtrl == nullptr ||
+      index == wxNOT_FOUND ||
+      index < 0 ||
+      index >= static_cast<int>(m_CustomFields.size())) {
+    return;
+  }
+
+  const CustomField &field = m_CustomFields[static_cast<size_t>(index)];
+  const wxString value = field.IsSensitive() ? _("********") : towxstring(field.GetValue());
+  m_BasicCustomFieldsListCtrl->SetItem(index, 0, towxstring(field.GetName()));
+  m_BasicCustomFieldsListCtrl->SetItem(index, 1, value);
+  m_BasicCustomFieldsListCtrl->SetItem(index, 2, field.IsSensitive() ? wxString::FromUTF8("\xE2\x98\x91")
+                                                                      : wxString::FromUTF8("\xE2\x98\x90"));
 }
 
 void AddEditPropSheetDlg::UpdateCustomFieldButtons()
@@ -3832,7 +3848,27 @@ void AddEditPropSheetDlg::UpdateCustomFieldButtons()
   m_BasicCustomFieldAddButton->Enable(!dbIsReadOnly);
   m_BasicCustomFieldEditButton->Enable(!dbIsReadOnly && hasSelection);
   m_BasicCustomFieldDeleteButton->Enable(!dbIsReadOnly && hasSelection);
-  m_BasicCustomFieldToggleSensitiveButton->Enable(!dbIsReadOnly && hasSelection);
+}
+
+void AddEditPropSheetDlg::ToggleCustomFieldSensitive(int index)
+{
+  if (m_Core.IsReadOnly() || m_Item.IsProtected()) {
+    return;
+  }
+  if (index == wxNOT_FOUND || index < 0 || index >= static_cast<int>(m_CustomFields.size())) {
+    return;
+  }
+
+  CustomField &field = m_CustomFields[static_cast<size_t>(index)];
+  field.SetSensitive(!field.IsSensitive());
+  if (m_BasicCustomFieldsListCtrl != nullptr) {
+    const wxString value = field.IsSensitive() ? _("********") : towxstring(field.GetValue());
+    m_BasicCustomFieldsListCtrl->SetItem(index, 1, value);
+    m_BasicCustomFieldsListCtrl->SetItem(index, 2, field.IsSensitive() ? wxString::FromUTF8("\xE2\x98\x91")
+                                                                        : wxString::FromUTF8("\xE2\x98\x90"));
+    m_BasicCustomFieldsListCtrl->SetItemState(index, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED,
+                                              wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
+  }
 }
 
 int AddEditPropSheetDlg::GetSelectedCustomFieldIndex() const
@@ -3846,6 +3882,9 @@ int AddEditPropSheetDlg::GetSelectedCustomFieldIndex() const
 
 bool AddEditPropSheetDlg::EditCustomField(CustomField *field)
 {
+  const int editedIndex = field != nullptr
+    ? static_cast<int>(field - m_CustomFields.data())
+    : wxNOT_FOUND;
   DestroyWrapper<CustomFieldEditDialog> ppdlg(this, m_CustomFields, field);
   if (ppdlg.Get()->ShowModal() != wxID_OK) {
     return false;
@@ -3858,12 +3897,24 @@ bool AddEditPropSheetDlg::EditCustomField(CustomField *field)
 
   if (field == nullptr) {
     m_CustomFields.push_back(editedField);
+    if (m_BasicCustomFieldsListCtrl != nullptr) {
+      const int newIndex = static_cast<int>(m_CustomFields.size()) - 1;
+      m_BasicCustomFieldsListCtrl->InsertItem(newIndex, towxstring(editedField.GetName()));
+      UpdateCustomFieldRow(newIndex);
+      m_BasicCustomFieldsListCtrl->SetItemState(newIndex, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED,
+                                                wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
+      m_BasicCustomFieldsListCtrl->EnsureVisible(newIndex);
+      UpdateCustomFieldButtons();
+    }
   }
   else {
     *field = editedField;
+    UpdateCustomFieldRow(editedIndex);
+    if (m_BasicCustomFieldsListCtrl != nullptr) {
+      m_BasicCustomFieldsListCtrl->SetItemState(editedIndex, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED,
+                                                wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
+    }
   }
-
-  LoadCustomFieldsList();
   return true;
 }
 
@@ -3902,24 +3953,15 @@ void AddEditPropSheetDlg::OnCustomFieldDelete(wxCommandEvent& WXUNUSED(event))
   }
 
   m_CustomFields.erase(m_CustomFields.begin() + selectedIndex);
-  LoadCustomFieldsList();
-}
-
-void AddEditPropSheetDlg::OnCustomFieldToggleSensitive(wxCommandEvent& WXUNUSED(event))
-{
-  if (m_Core.IsReadOnly() || m_Item.IsProtected()) {
-    return;
+  if (m_BasicCustomFieldsListCtrl != nullptr) {
+    m_BasicCustomFieldsListCtrl->DeleteItem(selectedIndex);
+    const int nextSelection = std::min(selectedIndex, static_cast<int>(m_CustomFields.size()) - 1);
+    if (nextSelection != wxNOT_FOUND && nextSelection >= 0) {
+      m_BasicCustomFieldsListCtrl->SetItemState(nextSelection, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED,
+                                                wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
+    }
   }
-  const int selectedIndex = GetSelectedCustomFieldIndex();
-  if (selectedIndex == wxNOT_FOUND || selectedIndex >= static_cast<int>(m_CustomFields.size())) {
-    return;
-  }
-
-  CustomField &field = m_CustomFields[static_cast<size_t>(selectedIndex)];
-  field.SetSensitive(!field.IsSensitive());
-  LoadCustomFieldsList();
-  m_BasicCustomFieldsListCtrl->SetItemState(selectedIndex, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED,
-                                            wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
+  UpdateCustomFieldButtons();
 }
 
 void AddEditPropSheetDlg::OnCustomFieldSelected(wxListEvent& event)
@@ -3937,11 +3979,16 @@ bool AddEditPropSheetDlg::CopySelectedCustomFieldCellToClipboard() const
 
   const CustomField &field = m_CustomFields[static_cast<size_t>(selectedIndex)];
   StringX textToCopy;
-  if (m_SelectedCustomFieldColumn == 0) {
-    textToCopy = field.GetName();
-  }
-  else {
-    textToCopy = field.GetValue();
+  switch (m_SelectedCustomFieldColumn) {
+    case 0:
+      textToCopy = field.GetName();
+      break;
+    case 1:
+      textToCopy = field.GetValue();
+      break;
+    case 2: // do nothing if 'Sensitive' column's selected
+    default: // should never happen
+      return false;
   }
 
   return Clipboard::GetInstance()->SetData(textToCopy);
@@ -3981,6 +4028,10 @@ void AddEditPropSheetDlg::OnCustomFieldClick(wxMouseEvent& event)
   }
 
   m_SelectedCustomFieldColumn = static_cast<int>(subItem);
+
+  if (subItem == 2) {
+    CallAfter(&AddEditPropSheetDlg::ToggleCustomFieldSensitive, static_cast<int>(itemIndex));
+  }
 }
 
 void AddEditPropSheetDlg::OnCustomFieldActivated(wxListEvent& WXUNUSED(event))

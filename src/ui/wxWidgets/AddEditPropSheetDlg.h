@@ -89,7 +89,6 @@ class wxNotebook;
 #define ID_BUTTON_CUSTOM_FIELDS_ADD 11222
 #define ID_BUTTON_CUSTOM_FIELDS_EDIT 11223
 #define ID_BUTTON_CUSTOM_FIELDS_DELETE 11224
-#define ID_BUTTON_CUSTOM_FIELDS_TOGGLE_SENSITIVE 11225
 #define ID_PANEL_ADDITIONAL 10085
 #define ID_TEXTCTRL_AUTOTYPE 10094
 #define ID_TEXTCTRL_RUN_CMD 10099
@@ -212,7 +211,6 @@ protected:
   void OnCustomFieldAdd(wxCommandEvent &event);
   void OnCustomFieldEdit(wxCommandEvent &event);
   void OnCustomFieldDelete(wxCommandEvent &event);
-  void OnCustomFieldToggleSensitive(wxCommandEvent &event);
   void OnCustomFieldSelected(wxListEvent &event);
   void OnCustomFieldActivated(wxListEvent &event);
   void OnCustomFieldClick(wxMouseEvent &event);
@@ -365,8 +363,10 @@ private:
   void UpdatePasswordConfirmationAsterisk(bool show = true);
   void UpdatePasswordStrengthMeter();
   void LoadCustomFieldsList();
+  void UpdateCustomFieldRow(int index);
   void UpdateCustomFieldButtons();
   int GetSelectedCustomFieldIndex() const;
+  void ToggleCustomFieldSensitive(int index);
   bool CopySelectedCustomFieldCellToClipboard() const;
   bool CopySelectedPasswordHistoryCellToClipboard() const;
   bool EditCustomField(CustomField *field = nullptr);
@@ -462,7 +462,6 @@ private:
   wxButton *m_BasicCustomFieldAddButton = nullptr;
   wxButton *m_BasicCustomFieldEditButton = nullptr;
   wxButton *m_BasicCustomFieldDeleteButton = nullptr;
-  wxButton *m_BasicCustomFieldToggleSensitiveButton = nullptr;
   int m_SelectedCustomFieldColumn = 1;
 
   wxString m_Title;
