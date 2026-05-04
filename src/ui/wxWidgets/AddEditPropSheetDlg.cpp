@@ -504,8 +504,7 @@ wxScrolledWindow* AddEditPropSheetDlg::CreateAdditionalPanel()
   StringX sx_dats = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultAutotypeString);
   if (sx_dats.empty())
     sx_dats = DEFAULT_AUTOTYPE;
-  wxString AutoTypeLabel = _("Autotype") + _T(' ') + _T('(') + _("default") + _T(':') + _T(' ') + towxstring(sx_dats) + _T(')');
-  auto *itemStaticText41 = new wxStaticText(panel, wxID_STATIC, AutoTypeLabel, wxDefaultPosition, wxDefaultSize, 0);
+  auto *itemStaticText41 = new wxStaticText(panel, wxID_STATIC, wxString::Format(_("Autotype (default string: %s)"), towxstring(sx_dats)), wxDefaultPosition, wxDefaultSize, 0);
   wxUtilities::NotifyIfUnsupported(wxUtilities::Feature::Autotype, itemStaticText41);
   vBoxSizer->Add(itemStaticText41, 0, wxALIGN_LEFT|wxBOTTOM, 5);
 
