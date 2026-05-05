@@ -268,7 +268,7 @@ bool PWScore::ConfirmDelete(const CItemData *pci, StringX sxGroup)
     if (!sxGroup.empty()) {
       UUIDVectorIter iter;
       size_t length = sxGroup.length(); // plus 1 to include trailling 0 byte
-      for (iter = dependentslist.begin(); iter != dependentslist.end(); ++iter) {
+      for (iter = dependentslist.begin(); iter != dependentslist.end(); ) {
         ItemListIter objiter = Find(*iter);
         if (objiter != m_pwlist.end()) {
           StringX iterGroup = objiter->second.GetGroup();
@@ -276,11 +276,12 @@ bool PWScore::ConfirmDelete(const CItemData *pci, StringX sxGroup)
             iterGroup = iterGroup.substr(0, length);
           if (!CompareCase(iterGroup, sxGroup)) {
             // Same group as object to be deleted, so we must not take care on that item
-            dependentslist.erase(iter);
-            --iter; // at the end of the loop ++iter will reallocate to the same position
+            iter = dependentslist.erase(iter);
             --num_dependents;
+            continue;
           }
         }
+        ++iter;
       }
     }
     if (num_dependents > 0) {
