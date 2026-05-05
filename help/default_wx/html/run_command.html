@@ -11,7 +11,7 @@
 <h1>Run Command</h1>
 
 <p>An entry's 'Run Command' field can contain a command that will
-be run when the Run Command action is selected. Anything that you can do on Linux in the "Run" dialog (Alt+F2) can be used here.</p>
+be run when the Run Command action is selected. On Linux, anything that you can do in the "Run" dialog (Alt+F2) can be used here.</p>
 
 <p>In addition, <b>Password Safe</b> is able to pass arguments to the command
 such as the entry's username, password, etc., as described below. This
@@ -226,12 +226,27 @@ variable.</p>
 
 <h3>Examples</h3>
 <ul>
-<li>The following Run Command will cause to connect to remote host via RDP giving the entry's username, password and URL:
+<li>On Linux, the following Run Command will cause to connect to remote host via RDP giving the entry's username, password and URL:
 <pre>
 remmina -c rdp://${user}:${password}@${url}
 </pre>
 </li>
-<li>This will open a new instance of <b>Password Safe</b> with the specified database (Thanks to Dave for this one):
+<li>On macOS, this launches Terminal and opens SSH connection to remote host using the entry's username and hostname (copy and paste the password to authenticate):
+<pre>
+open ssh://${user}@${url}
+</pre>
+</li>
+<li>On macOS, this connects to a remote Shared folder via SMB using the entry's username and URL (copy and paste the password to authenticate):
+<pre>
+open smb://${user}@${url}/sharename
+</pre>
+</li>
+<li>On macOS, this will open a new instance of <b>Password Safe</b> with the specified database (use "\p\n" AutoType string to unlock it):
+<pre>
+open -n -a pwsafe ${dbdir}/database.psafe3
+</pre>
+</li>
+<li>On Linux, this will open a new instance of <b>Password Safe</b> with the specified database (Thanks to Dave for this one):
 <pre> ${autotype}(\p\n)"/usr/bin/pwsafe" \UNC\path\to\database.psafe3</pre></li>
 <ul>
 <li>Make sure Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;System "Allow multiple instances" is checked for this to work</li>

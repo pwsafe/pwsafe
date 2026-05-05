@@ -10747,3 +10747,23 @@ msgstr ""
 
 #~ msgid "xxxxxx"
 #~ msgstr "xxxxxx"
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2521
+msgid "Authentication code requires secret key in Additional tab."
+msgstr "身份验证代码需要“附加”选项卡中的密钥。"
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:548
+msgid "Enter the authentication secret key. This is usually taken from the authenticator setup page."
+msgstr "输入身份验证密钥。这通常取自身份验证器设置页面。"
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:519
+msgid "This field can be used to specify a command or program to be run via the 'Run Command' action (via the Edit menu or right-click popup menu). Password Safe is able to pass arguments to the command such as the entry's username, password, etc."
+msgstr "该字段可被用于指定一个命令或通过操作“运行命令”运行程序（通过编辑菜单，右击弹出菜单或快捷键 Ctrl-R）。 Password Safe 可以传递自变量到命令行，如：项目的用户名，密码等。"
+
+#: ../../../ui/wxWidgets/wxUtilities.cpp:379
+msgid "Running on Wayland - make sure the target application is using Xwayland. For some applications, you may need to enable the 'Use alternate AutoType method' option in Options > System."
+msgstr ""
+
+#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:507
+msgid "Autotype (default string: %s)"
+msgstr "自动输入 (默认自动输入字串: %s)"
