@@ -264,10 +264,10 @@ bool PWScore::ConfirmDelete(const CItemData *pci, StringX sxGroup)
 
     size_t num_dependents = dependentslist.size();
     ASSERT(num_dependents > 0); // otherwise pci shouldn't be a base!
-      // Check if depending entry are located beneath group to be deleted, those must be not taken into account
+      // Check if dependent entry/entries are located beneath group to be deleted, those shouldn't be counted in warning message.
     if (!sxGroup.empty()) {
       UUIDVectorIter iter;
-      size_t length = sxGroup.length(); // plus 1 to include trailling 0 byte
+      size_t length = sxGroup.length();
       for (iter = dependentslist.begin(); iter != dependentslist.end(); ) {
         ItemListIter objiter = Find(*iter);
         if (objiter != m_pwlist.end()) {
