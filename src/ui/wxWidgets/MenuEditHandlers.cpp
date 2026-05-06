@@ -1082,9 +1082,15 @@ void PasswordSafeFrame::DoRun(CItemData& item)
 
   std::vector<size_t> vactionverboffsets;
 
-  // if no autotype value in run command's $a(value), start with item's (bug #1078)
+  // if no autotype value in run command's $a(value), start with item's (bug #1078) or the default AutoType string
+  StringX sx_dats = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultAutotypeString);
+  if (sx_dats.empty())
+   sx_dats = DEFAULT_AUTOTYPE;
   if (expandedAutoType.empty()) {
-    expandedAutoType = pci->GetAutoType();
+    if (!pci->GetAutoType().empty())
+      expandedAutoType = pci->GetAutoType();
+    else
+      expandedAutoType = sx_dats;
   }
 
   const CustomFieldList customFields = effci.GetCustomFields();
@@ -1125,6 +1131,10 @@ void PasswordSafeFrame::DoRun(CItemData& item)
 
   if (runner.runcmd(expandedES, !expandedAutoType.empty())) {
     UpdateAccessTime(item);
+    if (doAutoType && !expandedAutoType.empty()) {
+      effci.SetAutoType(expandedAutoType);
+      DoAutotype(effci);
+    }
   }
 }
 

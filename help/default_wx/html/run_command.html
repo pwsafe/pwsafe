@@ -231,25 +231,31 @@ variable.</p>
 remmina -c rdp://${user}:${password}@${url}
 </pre>
 </li>
-<li>On macOS, this launches Terminal and opens SSH connection to remote host using the entry's username and hostname (copy and paste the password to authenticate):
+<li>On macOS, this launches Terminal and opens SSH connection to remote host using the entry's username and hostname (use AutoType or copy and paste the password to authenticate):
 <pre>
 open ssh://${user}@${url}
 </pre>
 </li>
-<li>On macOS, this connects to a remote Shared folder via SMB using the entry's username and URL (copy and paste the password to authenticate):
+<li>On macOS, this connects to a remote Shared folder via SMB using the entry's username, password (autotyped) and URL:
 <pre>
-open smb://${user}@${url}/sharename
+open smb://${user}@${url}/sharename ${a}(\p\n)
 </pre>
 </li>
-<li>On macOS, this will open a new instance of <b>Password Safe</b> with the specified database (use "\p\n" AutoType string to unlock it):
+<li>On macOS, this opens a login page in Safari and performs AutoType after 5 seconds to allow the page to load. It uses several Tab keystrokes to navigate the form and focus the Username field (without these, the user can manually focus the first field):
 <pre>
-open -n -a pwsafe ${dbdir}/database.psafe3
+open -a safari ${url} ${a}(\W5\t\t\u\t\p\n)
 </pre>
 </li>
-<li>On Linux, this will open a new instance of <b>Password Safe</b> with the specified database (Thanks to Dave for this one):
-<pre> ${autotype}(\p\n)"/usr/bin/pwsafe" \UNC\path\to\database.psafe3</pre></li>
+<li>On macOS, this will open a new instance of <b>Password Safe</b> with the specified database using the entry's AutoType string to unlock it (it should be set to "\p\n"; if it's empty, the global AutoType string is used):
+<pre>
+${a} open -n -a pwsafe ${dbdir}/database.psafe3
+</pre>
+</li>
+<li>On Linux with Wayland, this will open a new instance of <b>Password Safe</b> with the specified database (the password is autotyped):
+<pre> ${autotype}(\p\n) env GDK_BACKEND=x11 /usr/bin/pwsafe \UNC\path\to\database.psafe3</pre></li>
 <ul>
-<li>Make sure Manage&nbsp;&rarr;&nbsp;Options&nbsp;&rarr;&nbsp;System "Allow multiple instances" is checked for this to work</li>
+<li>Make sure Manage > Options > System "Allow multiple instances" is checked for this to work</li>
+<li>Enabling the "Use alternate AutoType method" option in Options > System may also be required</li>
 <li>You might also want to set the Double-Click Action for this entry to "Run Command"</li>
 </ul> 
 </ul> 
