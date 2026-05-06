@@ -502,6 +502,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     ivthing = new unsigned char[BS];
 
     if (fread(ivthing, 1, BS, in) != BS) {
+      delete fish;
       status = false;
       goto exit;
     }

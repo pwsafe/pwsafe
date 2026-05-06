@@ -657,8 +657,8 @@ void CItemAtt::SerializePlainText(vector<char> &v)  const
         push_length(v, static_cast<uint32>(realLen));
         v.insert(v.end(), data, (data + realLen));
         trashMemory(data, length);
-        delete[] data;
       }
+      delete[] data;
     }
   }
     

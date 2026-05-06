@@ -187,7 +187,8 @@ void GridCtrl::UpdateGUI(UpdateGUICommand::GUI_Action ga, const pws_os::CUUID &e
   }
   else if (ga == UpdateGUICommand::GUI_ADD_ENTRY ||
            ga == UpdateGUICommand::GUI_REFRESH_ENTRYFIELD ||
-           ga == UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD) {
+           ga == UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD ||
+           ga == UpdateGUICommand::GUI_REFRESH_ENTRY) {
     pws_os::Trace(wxT("GridCtrl - Couldn't find uuid %ls"), StringX(CUUID(entry_uuid)).c_str());
     return;
   }
