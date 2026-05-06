@@ -75,7 +75,11 @@ void ExternalKeyboardButton::HandleCommandEvent(wxCommandEvent& evt)
   wxSize screenSize = ::wxGetClientDisplayRect().GetSize();
   screenW = screenSize.GetWidth();
   screenH = screenSize.GetHeight();
+#if wxCHECK_VERSION(3,1,5)
   scaleFactor = wxDisplay().GetScaleFactor();
+#else
+  scaleFactor = 1;
+#endif
   if (screenW != 0 && screenH != 0) {
     width = std::round(screenW * 0.6 * scaleFactor);
     height = std::round(screenH * 0.3 * scaleFactor);
