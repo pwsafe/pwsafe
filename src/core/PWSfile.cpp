@@ -430,6 +430,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 
 bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess)
 {
+  Fish *fish = nullptr;
   ulong64 file_len;
   bool status = true;
   unsigned char salt[SaltLength];
@@ -483,7 +484,6 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 
     unsigned char *pwd = nullptr;
     size_t passlen = 0;
-    Fish* fish = nullptr;
 
     ConvertPasskey(passwd, pwd, passlen);
     if (fread(salt, 1, SaltLength, in) != SaltLength) {
