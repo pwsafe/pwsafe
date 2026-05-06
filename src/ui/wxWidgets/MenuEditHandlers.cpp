@@ -804,7 +804,7 @@ void PasswordSafeFrame::DoAutotype(const StringX& sx_autotype,
 
   CKeySend ks;
 #ifdef __WXMAC__
-  if (!ks.SimulateApplicationSwitch()) {
+  if (wxGetApp().IsActive() && !ks.SimulateApplicationSwitch()) {
     wxMessageBox(_("Error switching to another application before autotyping. Switch manually within 5 seconds"),
                   wxTheApp->GetAppName(), wxOK|wxICON_ERROR, this);
     pws_os::sleep_ms(5000);
