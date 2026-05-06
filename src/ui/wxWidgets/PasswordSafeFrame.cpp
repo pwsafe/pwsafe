@@ -3077,6 +3077,9 @@ void PasswordSafeFrame::UpdateLastClipboardAction(const CItemData::FieldType fie
     case CItemData::FieldType::EMAIL:
       m_LastClipboardAction = _("Email copied ") + wxDateTime::Now().FormatTime();
       break;
+    case CItemData::FieldType::CUSTOMTEXT:
+      m_LastClipboardAction = _("Custom field copied ") + wxDateTime::Now().FormatTime();
+      break;
     case CItemData::FieldType::PWHIST:
       m_LastClipboardAction = _("Password History copied " ) + wxDateTime::Now().FormatTime();
       break;
@@ -3093,6 +3096,12 @@ void PasswordSafeFrame::UpdateLastClipboardAction(const CItemData::FieldType fie
 
   m_LastAction = field;
   UpdateStatusBar();
+}
+
+void PasswordSafeFrame::CopyTextToClipboard(const StringX& text, const CItemData::FieldType field)
+{
+  Clipboard::GetInstance()->SetData(text);
+  UpdateLastClipboardAction(field);
 }
 
 void PasswordSafeFrame::UpdateSelChanged(const CItemData *pci)
