@@ -430,6 +430,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 
 bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess)
 {
+  Fish *fish = nullptr;
   ulong64 file_len;
   bool status = true;
   unsigned char salt[SaltLength];
@@ -483,7 +484,6 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 
     unsigned char *pwd = nullptr;
     size_t passlen = 0;
-    Fish* fish;
 
     ConvertPasskey(passwd, pwd, passlen);
     if (fread(salt, 1, SaltLength, in) != SaltLength) {
@@ -509,7 +509,6 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     // read first block, containing plaintext length
     size_t plaintext_length;
     if (readcbc1st(in, plaintext_length, fish, ivthing, isBigFile) != BS) {
-      delete fish;
       status = false;
       goto exit;
     }
@@ -523,7 +522,6 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 
     out = pws_os::FOpen(out_fn, _T("wb"));
     if (out == nullptr) {
-      delete fish;
       status = false;
       goto exit;
     }
@@ -535,7 +533,6 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     do {
       size_t nread = _readcbc(in, buf, BUFSIZ, fish, ivthing);
       if (ferror(in)) {
-        delete fish;
         status = false;
         goto exit;
       }
@@ -545,7 +542,6 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
       // write plaintext
       auto nwrite = nleft > BUFSIZ ? BUFSIZ : nleft;
       if (fwrite(buf,1, nwrite, out) != nwrite) {
-        delete fish;
         status = false;
         goto exit;
       }
@@ -556,9 +552,9 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
       // truncated ciphertext?
       status = false;
     }
-    delete fish;
   } // write decrypted
  exit:
+  delete fish;
   delete[] ivthing;
   if (!status)
     errmess = ErrorMessages();
