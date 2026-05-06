@@ -626,7 +626,7 @@ void CItemAtt::SerializePlainText(vector<char> &v)  const
     
   v.clear();
   
-  // write mandatoty field ATTUUID
+  // write mandatory field ATTUUID
   v.push_back(ATTUUID);
   GetUUID(uuid_array);
   CItem::push_length(v, sizeof(uuid_array_t));
