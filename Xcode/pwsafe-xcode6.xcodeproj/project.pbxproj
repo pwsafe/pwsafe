@@ -2115,7 +2115,7 @@
 			files = (
 			);
 			inputPaths = (
-				"../help/default/*",
+				"../help/default_wx/*",
 			);
 			name = "Default English Help";
 			outputPaths = (
