@@ -408,7 +408,11 @@ void AddEditPropSheetDlg::CreateControls()
 wxScrolledWindow *AddEditPropSheetDlg::CreateScrollablePage(wxWindowID id)
 {
   auto *page = new wxScrolledWindow(GetBookCtrl(), id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxVSCROLL);
-  page->SetScrollRate(0, page->FromDIP(10));
+#if wxCHECK_VERSION(3,1,0)
+  page->SetScrollRate(0, wxWindow::FromDIP(10, page));
+#else
+  page->SetScrollRate(0, 10);
+#endif
   return page;
 }
 
