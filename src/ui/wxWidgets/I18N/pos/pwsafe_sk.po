@@ -6951,3 +6951,24 @@ msgstr "Toto pole možno použiť na zadanie príkazu alebo programu, ktorý sa 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:507
 msgid "Autotype (default string: %s)"
 msgstr "Automatické dopĺňanie (predvolený reťazec: %s)"
+
+msgid "Custom Fields"
+msgstr "Vlastné polia"
+
+msgid "Add Custom Field"
+msgstr "Pridať vlastné pole"
+
+msgid "Edit Custom Field"
+msgstr "Upraviť vlastné pole"
+
+msgid "Sensitive"
+msgstr "Citlivý údaj"
+
+msgid "The custom field's name cannot be empty."
+msgstr "Názov vlastného poľa nemôže byť prázdny."
+
+msgid "A custom field with this name already exists for this entry."
+msgstr "Pre tento záznam už existuje vlastné pole s týmto názvom."
+
+msgid "Custom field copied "
+msgstr "Vlastné pole skopírované "

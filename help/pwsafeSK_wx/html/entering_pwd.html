@@ -36,6 +36,7 @@
 <li><b>URL</b>: URL (webová stránka) priradená k tomuto záznamu</li>
 <li><b>Email</b>: Emailová adresa priradená k tomuto záznamu</li>
 <li><b>Poznámky</b>: Všeobecné poznámky vo voľnom formáte</li>
+<li><b>Vlastné polia</b>: Používateľom definované pomenované hodnoty, ktoré je možné podľa potreby pridať k záznamu.</li>
 </ul>
 
 <p><i>Povinné sú iba polia <b>Názov</b> a <b>Heslo</b>; všetky ostatné sú voliteľné.</i></p>
@@ -57,6 +58,10 @@ obmedzené na 30 000 znakov. Hoci je možné pri pridávaní položky pridať vi
 pri opätovnom otvorení databázy sa zobrazí upozornenie. Pole Poznámky sa skráti
 na tento limit, ak sa položka upraví. Ak je však položka chránená alebo databáza je otvorená
 v režime iba na čítanie, je možné si ju zobraziť bez akéhokoľvek skrátenia.</p>
+
+<p><b>Vlastné polia</b> sú miestom, kde môžete ku každému záznamu pridať vlastné pomenované polia. Pre každé vlastné pole môžete zadať názov a hodnotu, ako aj určiť či sa hodnota zobrazí alebo bude zamaskovaná ako "******".
+Počet vlastných polí ktoré môžete pridať nie je obmedzený, ale každý názov poľa musí byť pre daný záznam jedinečný a nemôže byť prázdny.
+Po kliknutí myšou na riadok v zozname vlastných polí sa skopíruje hodnota daného poľa do schránky.</p>
 
 <p>Okrem toho je možné na tejto karte nastaviť nasledujúce polia:</p>
 
@@ -114,7 +119,7 @@ ampersand (&amp;). Názov môže byť jeden z nasledujúcich reťazcov:</li>
 <li>CC – nasledované adresami, ktoré sa majú uviesť v časti "kópia" (cc).</li>
 <li>BCC – nasledované adresami, ktoré sa majú uviesť v časti "skrytá kópia" (bcc).</li>
 </ul>
-<p>Príklad: user@example.com?subject=Názov správy&body=Obsah správy"</p>
+<p>Príklad: user@example.com?subject=Predmet správy&body=Obsah správy</p>
 </ul>
 
 </small>
@@ -256,6 +261,7 @@ prostredníctvom menu Upraviť alebo kontextovej ponuky kliknutím pravým tlač
 <param name="Keyword" value="TOTP">
 <param name="Keyword" value="OTP">
 <param name="Keyword" value="Overovací kód">
+<param name="Keyword" value="Vlastné polia">
 </object>
 </body>
 </html>
