@@ -87,8 +87,8 @@ public:
     m_NameCtrl->SetFocus();
   }
 
-  wxString GetName() const { return m_NameCtrl->GetValue(); }
-  wxString GetValue() const { return m_ValueCtrl->GetValue(); }
+  wxString GetFieldName() const { return m_NameCtrl->GetValue(); }
+  wxString GetFieldValue() const { return m_ValueCtrl->GetValue(); }
   bool IsSensitive() const { return m_SensitiveCtrl->GetValue(); }
 
 private:
@@ -3901,8 +3901,8 @@ bool AddEditPropSheetDlg::EditCustomField(CustomField *field)
   }
 
   CustomField editedField;
-  editedField.SetName(tostringx(ppdlg.Get()->GetName()));
-  editedField.SetValue(tostringx(ppdlg.Get()->GetValue()));
+  editedField.SetName(tostringx(ppdlg.Get()->GetFieldName()));
+  editedField.SetValue(tostringx(ppdlg.Get()->GetFieldValue()));
   editedField.SetSensitive(ppdlg.Get()->IsSensitive());
 
   if (field == nullptr) {
