@@ -87,7 +87,7 @@ public:
     m_NameCtrl->SetFocus();
   }
 
-  wxString GetName() const { return m_NameCtrl->GetValue(); }
+  wxString GetName() const override { return m_NameCtrl->GetValue(); }
   wxString GetValue() const { return m_ValueCtrl->GetValue(); }
   bool IsSensitive() const { return m_SensitiveCtrl->GetValue(); }
 
