@@ -4,7 +4,7 @@ It is organized in the following sections:
 
 * [Terminology](#terminology)
 * [Requirements](#requirements)
-* [Get Password Safe Sources](#get-passwordsafe-sources)
+* [Get Password Safe Sources](#get-password-safe-sources)
 * [wxWidgets](#wxwidgets)
   * Downloading the Sources
   * Which Version of wxWidgets?
@@ -28,14 +28,14 @@ It is organized in the following sections:
 ## Requirements
 In general you need the following:
 
-* Xcode 9.3 and above (for c++17 support)
+* Xcode 12 and above (for C++20 support)
 * wxWidgets
 * Perl
 * gettext and create-dmg (For building the installation package.  These can be installed via Homebrew.)
 * googletest (To build and run the unit tests. Install via Homebrew.)
 * Yubikey libraries: libyubikey, libykpers-1
 
-If you are building on Apple Silicon or M1, you need the following in addition to the above:
+If you are building on Apple Silicon (M1, M2, etc.), you need the following in addition to the above:
 
 * Apple Silicon equipped Mac
 * macOS 11.0 (Big Sur) or later
@@ -56,7 +56,7 @@ sudo xcode-select --switch /Applications/Xcode.app
 
 The Xcode directory in Password Safe sources contains the Xcode project file for building it.
 
-pwsafe code now uses C++17 features, and therefore requires a modern-enough compiler (Xcode 9.3 or later).
+pwsafe code now uses C++20 features, and therefore requires a modern-enough compiler (Xcode 12.0 or later).
 For the x86\_64 architecture, the minimum target is macOS 10.14. For the arm64 architecture, the minimum target is macOS 11.0. 
 
 ### wxWidgets
@@ -132,15 +132,15 @@ the tarball. My recommendation is to use the tarball. That's what I always do on
 
 
 ### Which Version of wxWidgets?
-Use wxWidgets 3.2.4 or newer. Pwsafe code is no longer compatible with versions of wxWidgets older than 3.2.1.
+Pwsafe code for macOS is no longer compatible with versions of wxWidgets older than 3.2.1.
 There are a number of issues with version 3.0.5. For example, see
-[https://trac.wxwidgets.org/ticket/19005](https://trac.wxwidgets.org/ticket/19005).
-There are also Mac specific bugs in 3.2.1 and 3.2.2.1.
+[https://github.com/wxWidgets/wxWidgets/issues/19005](https://github.com/wxWidgets/wxWidgets/issues/19005).
+There are also Mac specific bugs in 3.2.1, 3.2.2.1 and 3.2.9.
 
-**Therefore, it is best to use wxWidgets 3.2.4 or newer.**
+**wxWidgets 3.2.10 is recommend.  3.2.4 and 3.2.8 are also known to work well.**
 
 ### International users
-When changing the language from English to another language you might encounter problems with onStateImgage (mark indicating the selected menu item) or chevon ">>" extending the tool bar in case space is not sufficient. This is a problem in Apples SVG library, see [https://trac.wxwidgets.org/ticket/19023](https://trac.wxwidgets.org/ticket/19023). setlocale(LC_NUMERIC, ...) must be left as "C" or one of the languages using a dot as decimal point. 
+When changing the language from English to another language you might encounter problems with onStateImgage (mark indicating the selected menu item) or chevon ">>" extending the tool bar in case space is not sufficient. This is a problem in Apples SVG library, see [https://github.com/wxWidgets/wxWidgets/issues/19023](https://github.com/wxWidgets/wxWidgets/issues/19023). setlocale(LC_NUMERIC, ...) must be left as "C" or one of the languages using a dot as decimal point. 
 
 ### Building wxWidgets for pwsafe
 **This procdure works for both x86\_64 and arm64 (Apple Silicon). 
