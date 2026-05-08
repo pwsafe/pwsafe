@@ -36,6 +36,7 @@ password entry:</p>
 <li><b>URL</b>: The URL (website) associated with this entry</li>
 <li><b>Email</b>: An email address associated with this entry</li>
 <li><b>Notes</b>: Free-form general notes</li>
+<li><b>Custom Fields</b>: User-defined named values that can be added to the entry as needed.</li>
 </ul>
 
 <p><i>Only the <b>Title</b> and <b>Password</b> fields are required; all others are optional.</i></p>
@@ -58,6 +59,10 @@ limited to 30,000 characters. Whilst it is possible to add more than this limit 
 warnings will be issued when the database is re-opened. The Notes field will be truncated
 to this limit if the entry is edited. However, if the entry is protected or the database is opened
 in read-only mode, then it can be viewed without any truncation.</p>
+
+<p><b>Custom Fields</b> is where you can add your own named fields to each password entry. For each custom field, you can specify a name and a value,
+   as well as specifying if the value will be displayed or displayed as "******" (masked).
+   There's no limit on the number of custom fields you can add, but each field name must be unique for the entry, and cannot be empty.</p>
 
 <p>In addition, the following fields may be set in this tab:</p>
 
@@ -123,7 +128,7 @@ by an ampersand (&amp;). The name can be one of the following strings:</li>
 <li>CC - followed by addresses to be included in the "cc" (carbon copy) section of the message.</li>
 <li>BCC - followed by addresses to be included in the "bcc" (blind carbon copy) section of the message.</li>
 </ul>
-<p>Example: user@example.com?subject=Message Title&amp;body=Message Content"</p>
+<p>Example: user@example.com?subject=Message Title&amp;body=Message Content</p>
 </ul>
 
 </small>
@@ -271,6 +276,7 @@ the entry via the Edit menu or right-click context menu.</p>
 <param name="Keyword" value="TOTP">
 <param name="Keyword" value="OTP">
 <param name="Keyword" value="Authentication Code">
+<param name="Keyword" value="Custom Fields">
 </object>
 </body>
 </html>
