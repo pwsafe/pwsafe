@@ -109,6 +109,7 @@ class wxNotebook;
 #define ID_CHECKBOX_RECURRING 10112
 #define ID_RADIOBUTTON_NEVER 10001
 #define ID_PANEL_PPOLICY 10087
+#define ID_PANEL_ATTACHMENT 11088
 #define ID_CHECKBOX42 10115
 #define ID_POLICYLIST 10063
 #define ID_SPINCTRL3 10117
@@ -304,7 +305,7 @@ private:
   // Creates the controls and sizers
   void CreateControls();
 
-  wxScrolledWindow *CreateScrollablePage(wxWindowID id);
+  wxScrolledWindow *CreateScrollablePage(wxWindowID id, const wxString &pageName);
   void FinalizeScrollablePage(wxScrolledWindow *page);
   void RelaxScrollablePageSizes();
 

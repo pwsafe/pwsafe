@@ -42,19 +42,19 @@ DLG_HELP(YubiCfgDlg,                                    html/manage_menu.html#yu
 //
 
 //Options dialog
-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Backups"),          html/backups_tab.html)
-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Display"),          html/display_tab.html)
-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Miscellaneous"),    html/misc_tab.html)
-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Password History"), html/password_history_tab.html)
-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Security"),         html/security_tab.html)
-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("System"),           html/system_tab.html)
-PROPSHEET_HELP(OptionsPropertySheetDlg,            _("Shortcuts"),        html/shortcuts_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            "Backups",          html/backups_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            "Display",          html/display_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            "Miscellaneous",    html/misc_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            "Password History", html/password_history_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            "Security",         html/security_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            "System",           html/system_tab.html)
+PROPSHEET_HELP(OptionsPropertySheetDlg,            "Shortcuts",        html/shortcuts_tab.html)
 
-PROPSHEET_HELP(AddEditPropSheetDlg, _("Basic"),            html/entering_pwd.html)
-PROPSHEET_HELP(AddEditPropSheetDlg, _("Dates and Times"),  html/entering_pwd_date.html)
-PROPSHEET_HELP(AddEditPropSheetDlg, _("Password Policy"),  html/entering_pwd_pp.html)
-PROPSHEET_HELP(AddEditPropSheetDlg, _("Additional"),       html/entering_pwd_add.html)
-PROPSHEET_HELP(AddEditPropSheetDlg, _("Attachment"),       html/entering_pwd_att.html)
+PROPSHEET_HELP(AddEditPropSheetDlg, "Basic",            html/entering_pwd.html)
+PROPSHEET_HELP(AddEditPropSheetDlg, "Dates and Times",  html/entering_pwd_date.html)
+PROPSHEET_HELP(AddEditPropSheetDlg, "Password Policy",  html/entering_pwd_pp.html)
+PROPSHEET_HELP(AddEditPropSheetDlg, "Additional",       html/entering_pwd_add.html)
+PROPSHEET_HELP(AddEditPropSheetDlg, "Attachment",       html/entering_pwd_att.html)
 
 DLG_HELP(EditShortcutDlg,                  html/edit_menu.html)
 
