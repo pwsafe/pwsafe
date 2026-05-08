@@ -2,6 +2,7 @@
 
 MAJOR := $(shell grep MAJOR.= ../../version.wx | awk '{print $$3}')
 MINOR := $(shell grep MINOR.= ../../version.wx | awk '{print $$3}')
+PWD   := $(shell pwd)
 VERSION := $(MAJOR).$(MINOR)
 RPMBUILDDIR := $(HOME)/rpmbuild
 
@@ -17,6 +18,6 @@ build: tarball
 
 tarball:
 	mkdir  $(RPMBUILDDIR)/SOURCES || /bin/true
-	[ ! -f ../../version.wx ] && echo "current directory should end with install/rpm" && /bin/false
-	[ ! -d ../../CMakeModules ] && echo "current directory should end with install/rpm" && /bin/false
+	[ ! -f ../../version.wx ] && echo "current directory $(PWD) should end with install/rpm" || /bin/true
+	[ ! -d ../../CMakeModules ] && echo "current directory $(PWD) should end with install/rpm" || /bin/true
 	(cd ../..; rm -rf build; tar cfz $(RPMBUILDDIR)/SOURCES/passwordsafe-$(VERSION).tar.gz *)
