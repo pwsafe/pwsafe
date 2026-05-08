@@ -17,7 +17,7 @@ build: tarball
 	find $(RPMBUILDDIR) -name passwordsafe*rpm | grep $(VERSION)
 
 tarball:
-	mkdir  $(RPMBUILDDIR)/SOURCES || /bin/true
-	[ ! -f ../../version.wx ] && echo "current directory $(PWD) should end with install/rpm" || /bin/true
-	[ ! -d ../../CMakeModules ] && echo "current directory $(PWD) should end with install/rpm" || /bin/true
+	mkdir -p $(RPMBUILDDIR)/SOURCES
+	[ ! -f ../../version.wx ] && echo "Couldn't find version.wx. Make sure current directory $(PWD) ends with install/rpm" || /bin/true
+	[ ! -d ../../CMakeModules ] && echo "Missing CMakeModules. Make sure current directory $(PWD) ends with install/rpm" || /bin/true
 	(cd ../..; rm -rf build; tar cfz $(RPMBUILDDIR)/SOURCES/passwordsafe-$(VERSION).tar.gz *)
