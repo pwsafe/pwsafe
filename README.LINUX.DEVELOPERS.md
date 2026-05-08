@@ -40,9 +40,10 @@ If it encounters errors, check your locale settings. It is known to work with:
 ```
     $ cpack -G DEB ..
 ```
-- To build an RPM package:
+- To build RPM packages:
 ```
-    $ cpack -G RPM ..
+    $ cd .. # to the top level
+    $ cd install/rpm; make
 ```
 
 7. Install
@@ -53,7 +54,7 @@ If it encounters errors, check your locale settings. It is known to work with:
 
 - To install the rpm package you've just built:
 
-    `$ dnf install passwordsafe-fedora-\<version\>.\<arch\>.rpm`
+    `$ dnf install passwordsafe-\<version\>.\<arch\>.rpm`
 
 8. Run a program
 
