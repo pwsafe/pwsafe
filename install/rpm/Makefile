@@ -2,8 +2,9 @@
 
 MAJOR := $(shell grep MAJOR.= ../../version.wx | awk '{print $$3}')
 MINOR := $(shell grep MINOR.= ../../version.wx | awk '{print $$3}')
+REV   := $(shell grep   REV.= ../../version.wx | awk '{print $$3}')
 PWD   := $(shell pwd)
-VERSION := $(MAJOR).$(MINOR)
+VERSION := $(MAJOR).$(MINOR).$(REV)
 RPMBUILDDIR := $(HOME)/rpmbuild
 
 .PHONY: all build tarball
