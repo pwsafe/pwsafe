@@ -3811,19 +3811,10 @@ void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd)
   WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
   HRGN hrgnWork = WinUtil::GetWorkAreaRegion();
 
-  auto curDPI = WinUtil::GetDPI(nullptr); // need system value
-
-  // adjust rect for current scale factor
-  CRect adjRect;
-  adjRect.bottom = MulDiv(pRect->bottom, curDPI, WinUtil::defDPI);
-  adjRect.top =    MulDiv(pRect->top, curDPI, WinUtil::defDPI);
-  adjRect.left =   MulDiv(pRect->left, curDPI, WinUtil::defDPI);
-  adjRect.right =  MulDiv(pRect->right, curDPI, WinUtil::defDPI);
-
   pWnd->GetWindowPlacement(&wp);  // Get min/max positions - then add what we know
   wp.flags = 0;
   wp.showCmd = uiShowCmd;
-  wp.rcNormalPosition = adjRect;
+  wp.rcNormalPosition = *pRect;
 
   if (!RectInRegion(hrgnWork, &wp.rcNormalPosition)) {
     if (GetSystemMetrics(SM_CMONITORS) > 1)
