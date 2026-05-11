@@ -8,6 +8,7 @@ PasswordSafe 3.71.1 Release ??? ?? 2026
 ========================================
 Bugs Fixed in 3.71.1
 --------------------
+* Improved font scale handling -should resolve font size issues on high resolution displays.
 * [GH1749](https://github.com/pwsafe/pwsafe/issues/1749) In the Master Password Setup window, "Show Master Password" is no longer truncated on some displays.
 
 New Features in 3.71.1
