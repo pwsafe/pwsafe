@@ -26,20 +26,12 @@ It is organized in the following sections:
 * universal binary - a binary executable that contains multiple builds. A universal binary for pwsafe would contain x86\_64 and arm64 builds. It could run natively on Intel or Apple Silicon based Macs.
 
 ## Requirements
-In general you need the following:
-
-* Xcode 12 and above (for C++20 support)
+* Xcode 12 and above (for C++20 and Apple Silicon support)
 * wxWidgets
 * Perl
 * gettext and create-dmg (For building the installation package.  These can be installed via Homebrew.)
 * googletest (To build and run the unit tests. Install via Homebrew.)
 * Yubikey libraries: libyubikey, libykpers-1
-
-If you are building on Apple Silicon (M1, M2, etc.), you need the following in addition to the above:
-
-* Apple Silicon equipped Mac
-* macOS 11.0 (Big Sur) or later
-* Xcode 12 and above
 
 ### Xcode
 Xcode is free and originally was included with the OS X installation CD. Today, you can download Xcode from the Apple Store. If you don't want the full Xcode system, you will need to install the "Command-Line Tools for Xcode". The command line tools can be installed from a terminal.
@@ -76,7 +68,7 @@ with macOS 10.14 and, possibly, older but this has not been throughly tested.
 
 
 ## Get Password Safe Sources
-You need to get the Passwordsafe source code (obviously).
+You need to get the Password Safe source code (obviously).
 Either download from the website:
 
 [https://github.com/pwsafe/pwsafe/archive/master.zip](https://github.com/pwsafe/pwsafe/archive/master.zip)
@@ -89,27 +81,27 @@ or clone the git repository:
 ## wxWidgets
 wxWidgets is the UI toolkit used by pwsafe for user-interface. There are two ways to acquire wxWidgets.
 
-### Installing wxWidgets via HomeBrew
+### Installing wxWidgets via Homebrew
 
 ```
 brew install wxwidgets
 ```
 
-The problem with using HomeBrew to install wxWidgets is that the version installed by HomeBrew might
-not be the most up-to-date version. You can find the version that HomeBrew will install by running the command:
+The problem with using Homebrew to install wxWidgets is that the version installed by Homebrew might
+not be the most up-to-date version. You can find the version that Homebrew will install by running the command:
 
 ```
 brew info wxwidgets
 ```
 
 **Important Notes**
-- The version of wxWidgets available through HomeBrew may be different for x86\_64
+- The version of wxWidgets available through Homebrew may be different for x86\_64
 systems and Apple Silicon systems and it will only install the version for your Mac architecture, so you won't be able to produce a universal binary. 
 - Also, because of the addition of the "Hardened Runtime", before you build pwsafe:
  
 ```
-Open Xcode, select the pwsafe target, "Signing & Capabilities" tab, "All" subtab.
-Check the box for "Diable Library Validation".
+Open Xcode, select the pwsafe target, "Signing & Capabilities" tab, "All" sub-tab.
+Check the box for "Disable Library Validation".
 Repeat these steps for the pwsafe-cli target.
 ```
 
@@ -137,14 +129,13 @@ There are a number of issues with version 3.0.5. For example, see
 [https://github.com/wxWidgets/wxWidgets/issues/19005](https://github.com/wxWidgets/wxWidgets/issues/19005).
 There are also Mac specific bugs in 3.2.1, 3.2.2.1 and 3.2.9.
 
-**wxWidgets 3.2.10 is recommend.  3.2.4 and 3.2.8 are also known to work well.**
+**wxWidgets 3.2.10 is recommended.  3.2.4 and 3.2.8 are also known to work well.**
 
 ### International users
-When changing the language from English to another language you might encounter problems with onStateImgage (mark indicating the selected menu item) or chevon ">>" extending the tool bar in case space is not sufficient. This is a problem in Apples SVG library, see [https://github.com/wxWidgets/wxWidgets/issues/19023](https://github.com/wxWidgets/wxWidgets/issues/19023). setlocale(LC_NUMERIC, ...) must be left as "C" or one of the languages using a dot as decimal point. 
+When changing the language from English to another language you might encounter problems with onStateImgage (mark indicating the selected menu item) or chevron ">>" extending the tool bar in case space is not sufficient. This is a problem in Apple's SVG library, see [https://github.com/wxWidgets/wxWidgets/issues/19023](https://github.com/wxWidgets/wxWidgets/issues/19023). setlocale(LC_NUMERIC, ...) must be left as "C" or one of the languages using a dot as decimal point.
 
 ### Building wxWidgets for pwsafe
-**This procdure works for both x86\_64 and arm64 (Apple Silicon). 
-It builds wxWidgets for a Universal Binary**
+**This procedure works for both x86\_64 and arm64 (Apple Silicon). It builds wxWidgets for a Universal Binary**
 
 **If you are trying to build pwsafe for an older I386 or x86\_32 machine, this procedure may work, but 
 it has not been tested.  The current macOS and Xcode no longer support 32-bit executables. You may need to adapt these procedures for your older platform. Or it might be better to start with older versions of wxWidgets and pwsafe that were supported on that platform.**
@@ -172,14 +163,14 @@ wx3/static-debug $ make -j `sysctl -n hw.ncpu`
 ```
 Note that osx-build-wx doesn't actually run make: you need to run it yourself.
 
-The "make -j..." version will use all availble CPUs on the system.  On modern systems this is *much* faster.  
+The "make -j..." version will use all available CPUs on the system.  On modern systems this is *much* faster.
 But on older systems, especially those with a single, spinning hard drive, it might be too much.  At least "-j 2" should help.
 On an older system, these builds would take some time, so take a coffee break or something :-)
 
 This process would build the Debug configuration of wxWidgets in wx3/static-debug.  It builds static libraries and
 puts them in a ./lib sub-directory. To build the Release configuration, rename the directory to "static-release" and omit the -d to osx-build-wx.
 
-**Also, you DON'T need to run "make install".**  In fact, even wxWidgets recommends against that.
+**Also, you DON'T need to run "make install".**  In fact, even wxWidgets recommends against it.
 If you do want to install it, edit the value for WX_PRIFIX in the osx-build-wx script before running it.
 See this:
 
@@ -187,7 +178,7 @@ http://wiki.wxwidgets.org/Compiling_wxWidgets_using_the_command-line_(Terminal)#
 
 ### Building wxWidgets for a single architecture
 If you Need to build wxWidgets for a single architecture, for instance on an older platform that can only build for x86_64, 
-determin your architecture using the following command:
+determine your architecture using the following command:
 ```
 uname -m
 ```
