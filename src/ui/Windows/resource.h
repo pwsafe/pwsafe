@@ -416,6 +416,10 @@
 #define IDB_VIEW2FAAUTHCODE_NEW         584
 #define IDB_VIEW2FAAUTHCODE_NEW_D       585
 #define IDD_DISPLAY_AUTH_CODE           600
+#define IDD_ADDEDIT_BASIC_NOTES         574
+#define IDD_ADDEDIT_BASIC_CUSTOMFIELDS  575
+#define IDD_ADDEDIT_BASIC_NOTES_SHORT   576
+#define IDD_ADDEDIT_BASIC_CUSTOMFIELDS_SHORT 577
 #define IDC_APPVERSION                  1000
 #define IDC_VERSION                     1001
 #define IDC_APPVERSION2                 1002
@@ -943,14 +947,15 @@
 #define IDC_CF_NAME                     1630
 #define IDC_CF_VALUE                    1631
 #define IDC_CF_SENSITIVE                1632
+#define IDC_BASIC_TABHOST               1633
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        574
+#define _APS_NEXT_RESOURCE_VALUE        578
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1633
+#define _APS_NEXT_CONTROL_VALUE         1634
 #define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif
