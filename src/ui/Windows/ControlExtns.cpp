@@ -19,6 +19,10 @@
 #include "core/PWCharPool.h"  // for CSymbolEdit
 #include "resource2.h"        // for CRichEditExtnX context menu
 
+#ifdef PWSAFE_USE_DARKMODE32
+#include "DMSubclass.h"
+#endif
+
 #include "vsstyle.h"
 
 #include <algorithm>
@@ -34,6 +38,23 @@ static char THIS_FILE[] = __FILE__;
 
 const COLORREF crefInFocus = RGB(222, 255, 222);  // Light green - our version of COLOR_HIGHLIGHT
 const COLORREF crefNoFocus = ::GetSysColor(COLOR_WINDOW);
+
+#ifdef PWSAFE_USE_DARKMODE32
+static bool IsDarkModeEnabled()
+{
+  return DarkMode::isEnabled();
+}
+
+static COLORREF GetDarkEditBackgroundColor()
+{
+  return DarkMode::getCtrlBackgroundColor();
+}
+
+static HBRUSH GetDarkEditBackgroundBrush()
+{
+  return DarkMode::getCtrlBackgroundBrush();
+}
+#endif
 
 // timer event numbers used to by ControlExtns for ListBox tooltips. See DboxMain.h
 #define TIMER_LB_HOVER     0x0A
@@ -285,6 +306,14 @@ HBRUSH CEditExtnX::CtlColor(CDC* pDC, UINT /*nCtlColor*/)
   if (!this->IsWindowEnabled())
     return NULL;
 
+#ifdef PWSAFE_USE_DARKMODE32
+  if (IsDarkModeEnabled()) {
+    pDC->SetTextColor(DarkMode::getTextColor());
+    pDC->SetBkColor(GetDarkEditBackgroundColor());
+    return GetDarkEditBackgroundBrush();
+  }
+#endif
+
   pDC->SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
   if (m_bIsFocused == TRUE) {
     pDC->SetBkColor(WinUtil::IsHighContrastOn() ? GetSysColor(COLOR_HIGHLIGHT) : m_crefInFocus);
@@ -485,7 +514,12 @@ void CRichEditExtnX::OnSetFocus(CWnd *pOldWnd)
   m_bIsFocused = TRUE;
   CRichEditCtrl::OnSetFocus(pOldWnd);
 
-  SetBackgroundColor(FALSE, WinUtil::IsHighContrastOn() ? GetSysColor(COLOR_HIGHLIGHT) : m_crefInFocus);
+  COLORREF backgroundColor = WinUtil::IsHighContrastOn() ? GetSysColor(COLOR_HIGHLIGHT) : m_crefInFocus;
+#ifdef PWSAFE_USE_DARKMODE32
+  if (IsDarkModeEnabled())
+    backgroundColor = GetDarkEditBackgroundColor();
+#endif
+  SetBackgroundColor(FALSE, backgroundColor);
   Invalidate(TRUE);
 }
 
@@ -495,7 +529,12 @@ void CRichEditExtnX::OnKillFocus(CWnd *pNewWnd)
 
   CRichEditCtrl::OnKillFocus(pNewWnd);
 
-  SetBackgroundColor(FALSE, crefNoFocus);
+  COLORREF backgroundColor = crefNoFocus;
+#ifdef PWSAFE_USE_DARKMODE32
+  if (IsDarkModeEnabled())
+    backgroundColor = GetDarkEditBackgroundColor();
+#endif
+  SetBackgroundColor(FALSE, backgroundColor);
   Invalidate(TRUE);
 }
 
@@ -686,6 +725,14 @@ HBRUSH CListBoxExtn::CtlColor(CDC* pDC, UINT /* nCtlColor */)
 {
   if (!this->IsWindowEnabled())
     return NULL;
+
+#ifdef PWSAFE_USE_DARKMODE32
+  if (IsDarkModeEnabled()) {
+    pDC->SetTextColor(DarkMode::getTextColor());
+    pDC->SetBkColor(GetDarkEditBackgroundColor());
+    return GetDarkEditBackgroundBrush();
+  }
+#endif
 
   if (m_bIsFocused == TRUE) {
     pDC->SetBkColor(WinUtil::IsHighContrastOn() ? GetSysColor(COLOR_HIGHLIGHT) : crefInFocus);

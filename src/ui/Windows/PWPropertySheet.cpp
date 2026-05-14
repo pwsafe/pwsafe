@@ -11,6 +11,10 @@
 #include "PWPropertySheet.h"
 #include "winutils.h"
 
+#ifdef PWSAFE_USE_DARKMODE32
+#include "DMSubclass.h"
+#endif
+
 IMPLEMENT_DYNAMIC(CPWPropertySheet, CMFCPropertySheet)
 
 CPWPropertySheet::CPWPropertySheet(UINT nID, CWnd *pParent, const bool bLongPPs)
@@ -72,9 +76,19 @@ BOOL CPWPropertySheet::OnInitDialog()
     return retval;
   }
 
+#ifdef PWSAFE_USE_DARKMODE32
+  DarkMode::setWindowEraseBgSubclass(m_hWnd);
+  DarkMode::setDarkWndNotifySafe(m_hWnd, true);
+#endif
+
   // It's OK - show it
   m_bKeepHidden = false;
   ShowWindow(SW_SHOW);
+
+#ifdef PWSAFE_USE_DARKMODE32
+  RedrawWindow(nullptr, nullptr,
+               RDW_INVALIDATE | RDW_ERASE | RDW_FRAME | RDW_ALLCHILDREN);
+#endif
 
   CScreenCaptureStateControl::SetLastDisplayAffinityError(
     WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd, app.IsExcludeFromScreenCapture())

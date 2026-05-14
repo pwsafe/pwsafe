@@ -29,6 +29,10 @@
 #include "Fonts.h"
 #include "PWSversion.h"
 
+#ifdef PWSAFE_USE_DARKMODE32
+#include "DMSubclass.h"
+#endif
+
 #include "core/Util.h"
 #include "core/PWSprefs.h"
 #include "core/PWSrand.h"
@@ -1065,6 +1069,10 @@ BOOL ThisMfcApp::InitInstance()
   /*
   * It's always best to start at the beginning.  [Glinda, Witch of the North]
   */
+
+#ifdef PWSAFE_USE_DARKMODE32
+  DarkMode::initDarkMode();
+#endif
 
   /*
   "SetRegistryKey" MUST be called before there is any reference to 'PWSprefs'

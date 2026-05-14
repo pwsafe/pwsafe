@@ -286,6 +286,25 @@ if (NOT NO_GTEST)
 endif(NOT NO_GTEST)
 add_subdirectory (help) # online help
 if (WIN32 AND NOT WX_WINDOWS)
+  if (MSVC AND CMAKE_GENERATOR MATCHES "Visual Studio")
+    set(PWSAFE_DARKMODE32_DIR "${CMAKE_SOURCE_DIR}/src/ui/win32-darkmode32")
+    set(PWSAFE_DARKMODE32_PROJECT "${PWSAFE_DARKMODE32_DIR}/darkmode32.vcxproj")
+    set(PWSAFE_DARKMODE32_LIB "${CMAKE_BINARY_DIR}/src/ui/win32-darkmode32/$<CONFIG>/darkmode32plus$<$<CONFIG:Debug>:_D>.lib")
+    if (EXISTS "${PWSAFE_DARKMODE32_PROJECT}")
+      if(CMAKE_VS_PLATFORM_NAME)
+        include_external_msproject(darkmode32plus
+          "${PWSAFE_DARKMODE32_PROJECT}"
+          TYPE "{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}"
+          GUID "{B12C26AA-BAEC-4EB9-BF09-A878FE489D02}"
+          PLATFORM "${CMAKE_VS_PLATFORM_NAME}")
+      else()
+        include_external_msproject(darkmode32plus
+          "${PWSAFE_DARKMODE32_PROJECT}"
+          TYPE "{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}"
+          GUID "{B12C26AA-BAEC-4EB9-BF09-A878FE489D02}")
+      endif()
+    endif()
+  endif()
   add_subdirectory (src/Tools/Windows/I18N/ResText)
   add_subdirectory (src/Tools/Windows/I18N/ResPWSL)
   add_subdirectory (src/ui/Windows)
@@ -313,6 +332,12 @@ else (NOT WIN32)
       set_target_properties(pwsafe PROPERTIES COMPILE_DEFINITIONS
                             "_BIND_TO_CURRENT_CRT_VERSION;_BIND_TO_CURRENT_MFC_VERSION"
                             LINK_FLAGS "/ENTRY:\"wWinMainCRTStartup\" /MAP /DEBUG")
+      if (TARGET darkmode32plus)
+        add_dependencies(pwsafe darkmode32plus)
+        target_compile_definitions(pwsafe PRIVATE PWSAFE_USE_DARKMODE32)
+        target_include_directories(pwsafe PRIVATE "${PWSAFE_DARKMODE32_DIR}")
+        target_link_libraries(pwsafe "${PWSAFE_DARKMODE32_LIB}")
+      endif()
    else (NOT WX_WINDOWS)
 #      set_target_properties(pwsafe PROPERTIES COMPILE_DEFINITIONS
 #                            _BIND_TO_CURRENT_CRT_VERSION

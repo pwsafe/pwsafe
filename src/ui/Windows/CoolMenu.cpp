@@ -25,6 +25,48 @@
 #include "resource2.h"
 #include "resource3.h"
 
+#ifdef PWSAFE_USE_DARKMODE32
+#include "DMSubclass.h"
+#endif
+
+#ifdef PWSAFE_USE_DARKMODE32
+namespace {
+COLORREF GetCoolMenuColor(int nIndex)
+{
+  if (DarkMode::isEnabled()) {
+    switch (nIndex) {
+      case COLOR_MENU:
+        return DarkMode::getDlgBackgroundColor();
+      case COLOR_MENUTEXT:
+      case COLOR_HIGHLIGHTTEXT:
+        return DarkMode::getTextColor();
+      case COLOR_HIGHLIGHT:
+        return DarkMode::getHotBackgroundColor();
+      case COLOR_GRAYTEXT:
+        return DarkMode::getDisabledTextColor();
+      case COLOR_3DLIGHT:
+      case COLOR_3DHILIGHT:
+#if COLOR_3DHIGHLIGHT != COLOR_3DHILIGHT
+      case COLOR_3DHIGHLIGHT:
+#endif
+        return DarkMode::getCtrlBackgroundColor();
+      case COLOR_3DSHADOW:
+        return DarkMode::getEdgeColor();
+    }
+  }
+
+  return GetSysColor(nIndex);
+}
+}
+#else
+namespace {
+COLORREF GetCoolMenuColor(int nIndex)
+{
+  return GetSysColor(nIndex);
+}
+}
+#endif
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -195,12 +237,31 @@ BOOL CCoolMenuManager::CMOnDrawItem(LPDRAWITEMSTRUCT lpdis)
     // draw separator
     CRect rc = rcItem;                // copy rect
     rc.top += rc.Height() >> 1;        // vertical center
+#ifdef PWSAFE_USE_DARKMODE32
+    if (DarkMode::isEnabled()) {
+      FillRect(dc, rcItem, GetCoolMenuColor(COLOR_MENU));
+      CPen pen(PS_SOLID, 1, DarkMode::getEdgeColor());
+      CPen *pOldPen = dc.SelectObject(&pen);
+      dc.MoveTo(rc.left, rc.top);
+      dc.LineTo(rc.right, rc.top);
+      dc.SelectObject(pOldPen);
+    } else {
+      dc.DrawEdge(&rc, EDGE_ETCHED, BF_TOP);    // draw separator line
+    }
+#else
     dc.DrawEdge(&rc, EDGE_ETCHED, BF_TOP);    // draw separator line
+#endif
   } else {                          // not a separator
     BOOL bDisabled = lpdis->itemState & ODS_GRAYED;
     BOOL bSelected = lpdis->itemState & ODS_SELECTED;
     BOOL bChecked  = lpdis->itemState & ODS_CHECKED;
     BOOL bHaveButn = FALSE;
+    COLORREF colorBG = GetCoolMenuColor(bSelected ? COLOR_HIGHLIGHT : COLOR_MENU);
+
+#ifdef PWSAFE_USE_DARKMODE32
+    if (DarkMode::isEnabled())
+      FillRect(dc, rcItem, colorBG);
+#endif
 
     // Paint button, or blank if none
     CRect rcButn(rcItem.TopLeft(), m_szButton);  // button rect
@@ -221,7 +282,7 @@ BOOL CCoolMenuManager::CMOnDrawItem(LPDRAWITEMSTRUCT lpdis)
       // draw disabled or normal
       if (!bDisabled) {
         // normal: fill BG depending on state
-        FillRect(dc, rcButn, GetSysColor(
+        FillRect(dc, rcButn, GetCoolMenuColor(
           (bChecked && !bSelected) ? COLOR_3DLIGHT : COLOR_MENU));
 
         // draw pushed-in or popped-out edge
@@ -254,7 +315,6 @@ BOOL CCoolMenuManager::CMOnDrawItem(LPDRAWITEMSTRUCT lpdis)
 
     // Done with button, now paint text. First do background if needed.
     int cxButn = m_szButton.cx;        // width of button
-    COLORREF colorBG = GetSysColor(bSelected ? COLOR_HIGHLIGHT : COLOR_MENU);
     if (bSelected || lpdis->itemAction == ODA_SELECT) {
       // selected or selection state changed: paint text background
       CRect rcBG = rcItem;              // whole rectangle
@@ -268,7 +328,7 @@ BOOL CCoolMenuManager::CMOnDrawItem(LPDRAWITEMSTRUCT lpdis)
     rcText.left += cxButn + CXGAP + CXTEXTMARGIN; // left margin
     rcText.right -= cxButn;        // right margin
     dc.SetBkMode(TRANSPARENT);     // paint transparent text
-    COLORREF colorText = GetSysColor(bDisabled ?  COLOR_GRAYTEXT :
+    COLORREF colorText = GetCoolMenuColor(bDisabled ?  COLOR_GRAYTEXT :
       bSelected ? COLOR_HIGHLIGHTTEXT : COLOR_MENUTEXT);
 
     // Now paint menu item text.  No need to select font,
@@ -280,7 +340,7 @@ BOOL CCoolMenuManager::CMOnDrawItem(LPDRAWITEMSTRUCT lpdis)
       // as menu highlight color. Got it?
       //
       DrawMenuText(dc, rcText + CPoint(1,1), pmd->text,
-        GetSysColor(COLOR_3DHILIGHT));
+        GetCoolMenuColor(COLOR_3DHILIGHT));
     }
     DrawMenuText(dc, rcText, pmd->text, colorText); // finally!
   }
@@ -353,7 +413,7 @@ BOOL CCoolMenuManager::Draw3DCheckmark(CDC& dc, const CRect& rc, BOOL bSelected,
 
   // set BG color based on selected state
   COLORREF colorOld =
-    dc.SetBkColor(GetSysColor(bSelected ? COLOR_MENU : COLOR_3DLIGHT));
+    dc.SetBkColor(GetCoolMenuColor(bSelected ? COLOR_MENU : COLOR_3DLIGHT));
   dc.BitBlt(rcDest.left, rcDest.top, rcDest.Width(), rcDest.Height(),
             &memdc, p.x, p.y, SRCCOPY);
   dc.SetBkColor(colorOld);
@@ -376,6 +436,16 @@ BOOL CCoolMenuManager::Draw3DCheckmark(CDC& dc, const CRect& rc, BOOL bSelected,
 //
 void CCoolMenuManager::CMOnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu)
 {
+#ifdef PWSAFE_USE_DARKMODE32
+  if (DarkMode::isEnabled()) {
+    MENUINFO menuInfo{};
+    menuInfo.cbSize = sizeof(menuInfo);
+    menuInfo.fMask = MIM_BACKGROUND;
+    menuInfo.hbrBack = DarkMode::getDlgBackgroundBrush();
+    pMenu->SetMenuInfo(&menuInfo);
+  }
+#endif
+
   ConvertMenu(pMenu, nIndex, bSysMenu, m_bShowButtons);
 }
 
@@ -754,8 +824,8 @@ void CCoolMenuManager::DrawEmbossed(CDC& dc, CImageList &il, int iBtn, CPoint p)
   COLORREF colorOldBG = dc.SetBkColor(CWHITE);
 
   // Draw using highlight offset by (1,1), then shadow
-  CBrush brShadow(GetSysColor(COLOR_3DSHADOW));
-  CBrush brHilite(GetSysColor(COLOR_3DHIGHLIGHT));
+  CBrush brShadow(GetCoolMenuColor(COLOR_3DSHADOW));
+  CBrush brHilite(GetCoolMenuColor(COLOR_3DHIGHLIGHT));
   CBrush* pOldBrush = dc.SelectObject(&brHilite);
   dc.BitBlt(p.x + 1, p.y + 1, cx, cy, &memdc, 0, 0, MAGICROP);
   dc.SelectObject(&brShadow);
