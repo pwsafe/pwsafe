@@ -2,19 +2,14 @@ Summary:        Password Safe is a password management utility.
 Name:           passwordsafe
 Version:        @VERSION@
 Release:        1%{?dist}
-Source:         passwordsafe-%{version}.tar.gz
+Source:         https://github.com/pwsafe/pwsafe/archive/refs/tags/%{version}.tar.gz
 Url:            https://pwsafe.org/
-License:        Artistic2.0
-Group:          Applications/Utils
-Vendor:         Rony Shapiro
-Packager:       Carl Byington <carl@five-ten-sg.com>
+License:        Artistic-2.0
 BuildRequires:  cmake file-devel gcc-c++ libXt-devel libXtst-devel
 BuildRequires:  libcurl-devel libuuid-devel libyubikey-devel ninja-build
-BuildRequires:  make openssl-devel rpmdevtools rpm-sign xerces-c-devel
+BuildRequires:  openssl-devel rpmdevtools rpm-sign xerces-c-devel
 BuildRequires:  ykpers-devel qrencode-devel wxBase-devel wxGTK-devel
 BuildRequires:  libreoffice-core
-Requires:       file-libs glibc libX11 libXtst libcurl libgcc libuuid
-Requires:       openssl-libs qrencode-libs wxBase wxGTK xerces-c ykpers
 Obsoletes:      pwsafe
 
 %description
@@ -29,16 +24,17 @@ Password Safe runs on Windows, Linux, macOS and FreeBSD.
 
 
 %prep
-%setup -c -n passwordsafe
+%autosetup -n pwsafe-%{version}
+
+
+%conf
+%cmake -DNO_GTEST=ON
 
 
 %build
-mkdir build
-cd build
-cmake -D NO_GTEST=ON -G Ninja ..
-ninja
+%cmake_build
 #
-cd ../docs
+cd docs
 grep -E -v 'gitpod|badge.svg' ../README.md >README.md
 # gitpod image corrupted when converted to pdf by ooffice
 # missing image for badge
@@ -46,46 +42,34 @@ ooffice --headless --convert-to pdf pwsafe-state-machine.rtf
 ooffice --headless --convert-to pdf ReleaseNotesWX.md
 ooffice --headless --convert-to pdf ReleaseNotes.md
 ooffice --headless --convert-to pdf README.md
-rm *.rtf *.md
-rm pwsafe.1         # .gz version installed in man1
-rm nojs.html        # don't need this
 
 
 %install
-install -m 755 -D build/pwsafe                        %{buildroot}%{_bindir}/pwsafe
-install -m 755 -D build/cli/pwsafe-cli                %{buildroot}%{_bindir}/pwsafe-cli
-install -m 644 -D build/pwsafe.1.gz                   %{buildroot}%{_mandir}/man1/pwsafe.1.gz
-install -m 644 -D install/desktop/pwsafe.desktop      %{buildroot}%{_datadir}/applications/pwsafe.desktop
-install -m 755 -d                                     %{buildroot}%{_datadir}/%{name}/xml
-install -m 644    xml/*                               %{buildroot}%{_datadir}/%{name}/xml
-install -m 755 -d                                     %{buildroot}%{_datadir}/%{name}/help
-install -m 644    build/help/*.zip                    %{buildroot}%{_datadir}/%{name}/help
-install -m 755 -d                                     %{buildroot}%{_datadir}/metainfo
-install -m 644    install/metainfo/*.xml              %{buildroot}%{_datadir}/metainfo
-install -m 755 -d                                     %{buildroot}%{_datadir}/doc/%{name}-%{version}/Yubico
-install -m 644    docs/Yubico/*                       %{buildroot}%{_datadir}/doc/%{name}-%{version}/Yubico
-install -m 644    LICENSE                             %{buildroot}%{_datadir}/doc/%{name}-%{version}/LICENSE
-for x in docs/*; do
-    [ -f "$x" ] && install -m 644 $x                  %{buildroot}%{_datadir}/doc/%{name}-%{version}/$(basename $x)
-done
-install -m 644 -D install/graphics/128x128/pwsafe.png %{buildroot}%{_datadir}/icons/hicolor/128x128/apps/pwsafe.png
-install -m 644 -D install/graphics/48x48/pwsafe.png   %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/pwsafe.png
-for x in {da,de,es,fr,hu,it,ko,nl,pl,ru,sk,sl,sv,zh}; do
-    install -m 644 -D build/src/ui/wxWidgets/I18N/mos/$x/LC_MESSAGES/pwsafe.mo %{buildroot}/%{_datadir}/locale/$x/LC_MESSAGES/pwsafe.mo
+%cmake_install
+for x in ChangeLog.txt \
+         config.txt \
+         formatV1.txt \
+         formatV2.txt \
+         formatV3.txt \
+         formatV4.txt \
+         help.txt \
+         pwsafe-state-machine.pdf \
+         ReleaseNotes.pdf \
+         ReleaseNotesWX.pdf \
+         README.pdf; do
+    install -m 644 -D docs/$x    %{buildroot}%{_datadir}/doc/%{name}-%{version}/$x
 done
 
 
-%clean
-rm -rf %{buildroot}
+%check
+%ctest
 
 
 %files
-%defattr(-,root,root)
 %{_bindir}/pwsafe*
 %{_mandir}/man1/*
 %docdir %{_datadir}/doc/%{name}-%{version}
-%license %{_datadir}/doc/%{name}-%{version}/LICENSE
-%license %{_datadir}/doc/%{name}-%{version}/Yubico/*
+%license LICENSE
 %{_datadir}/%{name}/xml
 %{_datadir}/%{name}/help
 %{_datadir}/applications/pwsafe.desktop
@@ -94,9 +78,16 @@ rm -rf %{buildroot}
 %{_datadir}/locale/*/*/pwsafe.mo
 %{_datadir}/metainfo/*.xml
 
+
 %changelog
-* Thu May 08 2026 Carl Byington <carl@five-ten-sg.com> - 1.24.0-1
-- add changelog entries from upstream
+* Fri May 15 2026 Carl Byington <carl@five-ten-sg.com> - 1.24.0-1
+- Add changelog entries from upstream.
+- Custom fields can now be added to each entry. That is, fields with
+  user-defined names and values.
+- Changing the height of the Add/Edit dialog will cause a vertical
+  scrollbar to be added.
+- In the "Flattened List" view, sorting by time columns (e.g., entry
+  creation time) now works correctly.
 * Tue May 05 2026 Carl Byington <carl@five-ten-sg.com> - 1.23-2
 - Use native spec file so the source rpm actually includes the
   source code.

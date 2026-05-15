@@ -3,7 +3,6 @@
 MAJOR := $(shell grep MAJOR.= ../../version.wx | awk '{print $$3}')
 MINOR := $(shell grep MINOR.= ../../version.wx | awk '{print $$3}')
 REV   := $(shell grep   REV.= ../../version.wx | awk '{print $$3}')
-PWD   := $(shell pwd)
 VERSION := $(MAJOR).$(MINOR).$(REV)
 RPMBUILDDIR := $(HOME)/rpmbuild
 
@@ -19,6 +18,8 @@ build: tarball
 
 tarball:
 	mkdir -p $(RPMBUILDDIR)/SOURCES
-	[ ! -f ../../version.wx ] && echo "Couldn't find version.wx. Make sure current directory $(PWD) ends with install/rpm" || /bin/true
-	[ ! -d ../../CMakeModules ] && echo "Missing CMakeModules. Make sure current directory $(PWD) ends with install/rpm" || /bin/true
-	(cd ../..; rm -rf build; tar cfz $(RPMBUILDDIR)/SOURCES/passwordsafe-$(VERSION).tar.gz *)
+	cd ../.. && \
+	git archive --format=tar.gz \
+				--prefix=pwsafe-$(VERSION)/ \
+				--output=$(RPMBUILDDIR)/SOURCES/$(VERSION).tar.gz \
+				HEAD
