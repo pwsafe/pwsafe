@@ -260,6 +260,10 @@ BOOL CAddEdit_Basic::OnInitDialog()
   m_ex_email.SetFont(pFont);
   m_ex_base.SetFont(pFont);
 
+  // Set text in graphic-only buttons for accessibility
+  GetDlgItem(IDC_COPYPASSWORD)->SetWindowText(L"Copy Password");
+  GetDlgItem(IDC_TWOFACTORCODE)->SetWindowText(L"Copy Authentication Code");
+
   // Need to get change notifications
   m_ex_notes.SetEventMask(ENM_CHANGE | m_ex_notes.GetEventMask());
 

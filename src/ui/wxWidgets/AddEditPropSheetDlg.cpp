@@ -262,15 +262,8 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
   wxPropertySheetDialog::Create( parent, id, caption, pos, size, style );
 
-  int flags = (m_Type == SheetType::VIEW) ? 
-  // Use Cancel instead of wxCLOSE on view to allow Command-C as copy operation in macOS,
-  // otherwise the Command-C is connected to the Close-Button.
-#ifdef __WXOSX__
-  (wxCANCEL|wxHELP)
-#else
-  (wxCLOSE|wxHELP)
-#endif
-  : (wxOK|wxCANCEL|wxHELP);
+  int flags = (m_Type == SheetType::VIEW) ? (wxCLOSE|wxHELP) : (wxOK|wxCANCEL|wxHELP);
+
   CreateButtons(flags);
   CreateControls();
   ApplyFontPreferences();
@@ -405,9 +398,9 @@ void AddEditPropSheetDlg::CreateControls()
   m_PasswordPolicyOwnSymbolsTextCtrl->SetValue(m_Symbols);
 }
 
-wxScrolledWindow *AddEditPropSheetDlg::CreateScrollablePage(wxWindowID id)
+wxScrolledWindow *AddEditPropSheetDlg::CreateScrollablePage(wxWindowID id, const wxString &pageName)
 {
-  auto *page = new wxScrolledWindow(GetBookCtrl(), id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxVSCROLL);
+  auto *page = new wxScrolledWindow(GetBookCtrl(), id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL | wxVSCROLL, pageName);
 #if wxCHECK_VERSION(3,1,0)
   page->SetScrollRate(0, wxWindow::FromDIP(10, page));
 #else
@@ -454,7 +447,7 @@ void AddEditPropSheetDlg::RelaxScrollablePageSizes()
 
 wxScrolledWindow* AddEditPropSheetDlg::CreateBasicPanel()
 {
-  auto *panel = CreateScrollablePage(ID_PANEL_BASIC);
+  auto *panel = CreateScrollablePage(ID_PANEL_BASIC, "Basic");
   auto *itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
   panel->SetSizer(itemBoxSizer3);
 
@@ -622,7 +615,7 @@ wxScrolledWindow* AddEditPropSheetDlg::CreateBasicPanel()
 
 wxScrolledWindow* AddEditPropSheetDlg::CreateAdditionalPanel()
 {
-  auto *panel = CreateScrollablePage(ID_PANEL_ADDITIONAL);
+  auto *panel = CreateScrollablePage(ID_PANEL_ADDITIONAL, "Additional");
   auto *mainSizer = new wxBoxSizer(wxVERTICAL);
   panel->SetSizer(mainSizer);
 
@@ -739,7 +732,7 @@ wxScrolledWindow* AddEditPropSheetDlg::CreateAdditionalPanel()
 
 wxScrolledWindow* AddEditPropSheetDlg::CreateDatesTimesPanel()
 {
-  auto *panel = CreateScrollablePage(ID_PANEL_DTIME);
+  auto *panel = CreateScrollablePage(ID_PANEL_DTIME, "Dates and Times");
   auto *itemBoxSizer60 = new wxBoxSizer(wxVERTICAL);
   panel->SetSizer(itemBoxSizer60);
 
@@ -842,7 +835,7 @@ wxScrolledWindow* AddEditPropSheetDlg::CreateDatesTimesPanel()
 
 wxScrolledWindow* AddEditPropSheetDlg::CreatePasswordPolicyPanel()
 {
-  auto *panel = CreateScrollablePage(ID_PANEL_PPOLICY);
+  auto *panel = CreateScrollablePage(ID_PANEL_PPOLICY, "Password Policy");
   auto *itemBoxSizer61 = new wxBoxSizer(wxVERTICAL);
   panel->SetSizer(itemBoxSizer61);
 
@@ -1024,7 +1017,7 @@ wxScrolledWindow* AddEditPropSheetDlg::CreateAttachmentPanel()
   ID_BUTTON_EXPORT = wxWindow::NewControlId();
   ID_BUTTON_REMOVE = wxWindow::NewControlId();
 
-  auto *panel = CreateScrollablePage(ID_PANEL_ADDITIONAL);
+  auto *panel = CreateScrollablePage(ID_PANEL_ATTACHMENT, "Attachment");
   auto *BoxSizerMain = new wxBoxSizer(wxVERTICAL);
 
   StaticBoxSizerPreview = new wxStaticBoxSizer(wxHORIZONTAL, panel, _("Preview"));

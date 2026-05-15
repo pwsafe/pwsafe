@@ -241,9 +241,19 @@ open ssh://${user}@${url}
 open smb://${user}@${url}/sharename ${a}(\p\n)
 </pre>
 </li>
+<li>On Linux, this connects to a remote Shared folder via SMB using the entry's username, password and URL:
+<pre>
+sh -c 'echo "${p}" | gio mount smb://WORKGROUP\\;${user}@${url}; gio open smb://WORKGROUP\\;${user}@${url}'
+</pre>
+</li>
 <li>On macOS, this opens a login page in Safari and performs AutoType after 5 seconds to allow the page to load. It uses several Tab keystrokes to navigate the form and focus the Username field (without these, the user can manually focus the first field):
 <pre>
 open -a safari ${url} ${a}(\W5\t\t\u\t\p\n)
+</pre>
+</li>
+<li>On Linux with Wayland, this opens a login page in Firefox (the Snap version) and performs AutoType after 5 seconds:
+<pre>
+env MOZ_ENABLE_WAYLAND=0 DISABLE_WAYLAND=1 firefox ${url} ${a}(\W5\u\t\p\n)
 </pre>
 </li>
 <li>On macOS, this will open a new instance of <b>Password Safe</b> with the specified database using the entry's AutoType string to unlock it (it should be set to "\p\n"; if it's empty, the global AutoType string is used):
@@ -252,7 +262,7 @@ ${a} open -n -a pwsafe ${dbdir}/database.psafe3
 </pre>
 </li>
 <li>On Linux with Wayland, this will open a new instance of <b>Password Safe</b> with the specified database (the password is autotyped):
-<pre> ${autotype}(\p\n) env GDK_BACKEND=x11 /usr/bin/pwsafe \UNC\path\to\database.psafe3</pre></li>
+<pre>${autotype}(\p\n) env GDK_BACKEND=x11 /usr/bin/pwsafe \UNC\path\to\database.psafe3</pre></li>
 <ul>
 <li>Make sure Manage > Options > System "Allow multiple instances" is checked for this to work</li>
 <li>Enabling the "Use alternate AutoType method" option in Options > System may also be required</li>

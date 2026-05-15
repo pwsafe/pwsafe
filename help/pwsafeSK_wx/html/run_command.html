@@ -11,23 +11,55 @@
 
 <h2>Spustiť príkaz</h2>
 
-<p>Pole 'Spustiť príkaz' záznamu môže obsahovať príkaz, ktorý sa spustí po výbere akcie Spustiť príkaz. Tu je v podstate možné použiť čokoľvek, čo môžete urobiť v okne 'Spustenie príkazu' v Linuxe.</p>
+<p>Pole 'Spustiť príkaz' záznamu môže obsahovať príkaz, ktorý sa spustí po výbere akcie Spustiť príkaz. Napr. na Linuxe je tu v podstate možné použiť čokoľvek, čo môžete urobiť v systémovom okne 'Spustenie príkazu' (Alt+F2).</p>
 
-<p>Navyše, <b>Password Safe</b> je schopný odovzdať príkazu argumenty, ako napríklad používateľské meno, heslo atď., ako je popísané nižšie. 
+<p>Navyše je <b>Password Safe</b> schopný odovzdať príkazu argumenty, ako napríklad používateľské meno, heslo atď., ako je popísané nižšie. 
 To vám umožňuje "naprogramovať/zautomatizovať" pomerne zložité akcie, ako je spustenie programu vzdialeného prístupu cez SSH/RDP/VNC (napríklad Remmina na Linuxe) a odovzdať mu používateľské meno, heslo a cieľovú adresu spojené so záznamom.</p>
 
 <h3>Príklady</h3>
 <ul>
+<li>V systéme macOS sa týmto spustí Terminál a otvorí sa SSH pripojenie k vzdialenému počítaču pomocou používateľského mena a URL záznamu (následne použite AutoType alebo skopírujte a vložte heslo na overenie):
+<pre>
+open ssh://${user}@${url}
+</pre>
+</li>
+<li>V systéme macOS sa takto pripojíte k zdieľanému priečinku cez SMB pomocou používateľského mena, hesla (doplní sa automaticky) a URL záznamu:
+<pre>
+open smb://${user}@${url}/sharename ${a}(\p\n)
+</pre>
+</li>
+<li>V systéme Linux sa takto pripojíte k zdieľanému priečinku cez SMB pomocou používateľského mena, hesla a URL záznamu:
+<pre>
+sh -c 'echo "${p}" | gio mount smb://WORKGROUP\\;${user}@${url}; gio open smb://WORKGROUP\\;${user}@${url}'
+</pre>
+</li>
+<li>V systéme macOS sa týmto otvorí prihlasovacia stránka v prehliadači Safari a po 5 sekundách sa vykoná automatické dopĺňanie, aby sa stránka stihla načítať. Na navigáciu vo formulári a presun na pole Používateľské meno sa použije niekoľko stlačení klávesu Tab (bez ich použitia môže používateľ sám kliknúť na dané pole):
+<pre>
+open -a safari ${url} ${a}(\W5\t\t\u\t\p\n)
+</pre>
+</li>
 <li>
-Týmto sa otvorí nová inštancia <b>Password Safe</b> so zadanou databázou na Linuxe:
-<pre> ${autotype}(\p\n)"/usr/bin/pwsafe" /home/ja/Dokumenty/mysafes/test.psafe3</pre>
+V systéme Linux na Waylande sa týmto otvorí prihlasovacia stránka v prehliadači Firefox (Snap verzia) a po 5 sekundách sa vykoná automatické dopĺňanie:
+<pre>
+env MOZ_ENABLE_WAYLAND=0 DISABLE_WAYLAND=1 firefox ${url} ${a}(\W5\u\t\p\n)
+</pre>
+</li>
+<li>V systéme macOS sa týmto otvorí nová inštancia <b>Password Safe</b> so zadanou databázou a na odomknutie sa použije reťazec AutoType daného záznamu (mal by tak byť nastavený na "\p\n"; ak je prázdny, použije sa predvolený reťazec AutoType):
+<pre>
+${a} open -n -a pwsafe ${dbdir}/database.psafe3
+</pre>
+</li>
+<li>
+V systéme Linux na Waylande sa týmto otvorí nová inštancia <b>Password Safe</b> so zadanou databázou (heslo na odomknutie sa doplní automaticky):
+<pre>${autotype}(\p\n) env GDK_BACKEND=x11 /usr/bin/pwsafe /home/ja/Dokumenty/mysafes/test.psafe3</pre>
 </li>
 <ul>
-<li>Aby to fungovalo, tak sa uistite že je nastavená táto možnosť v Nastaveniach na karte Systém: "Povoliť viacero inštancií".</li>
-<li>Taktiež sa uistite že v systéme funguje AutoType; funkčnosť závisí na Linuxe napr. na použitom Display Serveri ako je Wayland alebo X.Org (X11) a desktopovom prostredí ako je Gnome či KDE.</li>
+<li>Aby to fungovalo, tak sa uistite že je zapnutá táto voľba v Nastaveniach na karte Systém: "Povoliť viacero inštancií".</li>
+<li>Taktiež sa uistite že v systéme funguje AutoType; funkčnosť závisí na Linuxe napr. na použitom Display Serveri ako je Wayland alebo X.Org (X11).</li>
+<li>Niekedy je potrebné zaškrtnúť voľbu "Použiť alternatívnu metódu automatického dopĺňania" na karte Systém v dialógovom okne Nastavenia.</li>
 <br>
 </ul>
-<li>Nasledujúci príkaz spôsobí, že sa program Remmina pomocou RDP pripojí k Windows serveru s použitím používateľského mena a hesla záznamu:
+<li>V systéme Linux nasledujúci príkaz spôsobí že sa program Remmina pomocou RDP pripojí k Windows serveru s použitím používateľského mena a hesla záznamu:
 <pre>remmina -c rdp://${user}:${password}@${url}</pre>
 </li>
 <ul>

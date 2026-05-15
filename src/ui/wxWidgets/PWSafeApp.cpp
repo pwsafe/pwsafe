@@ -1040,9 +1040,10 @@ void PWSafeApp::OnHelp(wxCommandEvent& evt)
     wxPropertySheetDialog* propSheet = wxDynamicCast(window, wxPropertySheetDialog);
     if (propSheet) {
       const wxString dlgName = window->GetClassInfo()->GetClassName();
-      const wxString pageName = propSheet->GetBookCtrl()->GetPageText(propSheet->GetBookCtrl()->GetSelection());
+      const wxString pageName = propSheet->GetBookCtrl()->GetPage(propSheet->GetBookCtrl()->GetSelection())->GetName();
+      const wxString pageNameTranslated = propSheet->GetBookCtrl()->GetPageText(propSheet->GetBookCtrl()->GetSelection());
       keyName = dlgName + wxT('#') + pageName;
-      msg << _("Missing help definition for page \"") << pageName
+      msg << _("Missing help definition for page \"") << pageNameTranslated
           << _("\" of \"") << dlgName
           << wxT("\".\n");
     }

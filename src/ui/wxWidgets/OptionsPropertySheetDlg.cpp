@@ -311,7 +311,7 @@ wxPanel* OptionsPropertySheetDlg::CreateHeaderPanel(wxWindow* parent, const wxSt
 
 wxPanel* OptionsPropertySheetDlg::CreateBackupsPanel(const wxString& title)
 {
-  wxPanel* itemPanel2 = new wxPanel( GetBookCtrl(), ID_PANEL, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+  wxPanel* itemPanel2 = new wxPanel( GetBookCtrl(), ID_PANEL, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, "Backups" );
   auto *itemBoxSizer3 = new wxBoxSizer(wxVERTICAL);
   itemPanel2->SetSizer(itemBoxSizer3);
 
@@ -418,7 +418,7 @@ wxPanel* OptionsPropertySheetDlg::CreateBackupsPanel(const wxString& title)
 
 wxPanel* OptionsPropertySheetDlg::CreateDisplayPanel(const wxString& title)
 {
-  wxPanel* itemPanel29 = new wxPanel( GetBookCtrl(), ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+  wxPanel* itemPanel29 = new wxPanel( GetBookCtrl(), ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, "Display" );
   auto *itemBoxSizer30 = new wxBoxSizer(wxVERTICAL);
   itemPanel29->SetSizer(itemBoxSizer30);
 
@@ -520,7 +520,7 @@ wxPanel* OptionsPropertySheetDlg::CreateDisplayPanel(const wxString& title)
 
 wxPanel* OptionsPropertySheetDlg::CreateMiscellaneousPanel(const wxString& title)
 {
-  wxPanel* itemPanel44 = new wxPanel( GetBookCtrl(), ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+  wxPanel* itemPanel44 = new wxPanel( GetBookCtrl(), ID_PANEL2, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, "Miscellaneous" );
   auto *itemBoxSizer45 = new wxBoxSizer(wxVERTICAL);
   itemPanel44->SetSizer(itemBoxSizer45);
 
@@ -643,7 +643,7 @@ wxPanel* OptionsPropertySheetDlg::CreateMiscellaneousPanel(const wxString& title
 
 wxPanel* OptionsPropertySheetDlg::CreatePasswordHistoryPanel(const wxString& title)
 {
-  wxPanel* itemPanel74 = new wxPanel( GetBookCtrl(), ID_PANEL4, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+  wxPanel* itemPanel74 = new wxPanel( GetBookCtrl(), ID_PANEL4, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, "Password History" );
   auto *itemBoxSizer75 = new wxBoxSizer(wxVERTICAL);
   itemPanel74->SetSizer(itemBoxSizer75);
 
@@ -728,7 +728,7 @@ wxPanel* OptionsPropertySheetDlg::CreatePasswordHistoryPanel(const wxString& tit
 
 wxPanel* OptionsPropertySheetDlg::CreateSecurityPanel(const wxString& title)
 {
-  wxPanel* itemPanel86 = new wxPanel( GetBookCtrl(), ID_PANEL5, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+  wxPanel* itemPanel86 = new wxPanel( GetBookCtrl(), ID_PANEL5, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, "Security" );
   auto *itemBoxSizer87 = new wxBoxSizer(wxVERTICAL);
   itemPanel86->SetSizer(itemBoxSizer87);
 
@@ -814,7 +814,7 @@ wxPanel* OptionsPropertySheetDlg::CreateSecurityPanel(const wxString& title)
 
 wxPanel* OptionsPropertySheetDlg::CreateShortcutsPanel(const wxString& title)
 {
-  wxPanel* itemPanel123 = new wxPanel(GetBookCtrl(), ID_PANEL7, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+  wxPanel* itemPanel123 = new wxPanel(GetBookCtrl(), ID_PANEL7, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, "Shortcuts");
   auto *itemBoxSizer155 = new wxBoxSizer(wxVERTICAL);
   itemPanel123->SetSizer(itemBoxSizer155);
 
@@ -834,7 +834,7 @@ wxPanel* OptionsPropertySheetDlg::CreateShortcutsPanel(const wxString& title)
 
 wxPanel* OptionsPropertySheetDlg::CreateSystemPanel(const wxString& title)
 {
-  wxPanel* itemPanel104 = new wxPanel( GetBookCtrl(), ID_PANEL6, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+  wxPanel* itemPanel104 = new wxPanel( GetBookCtrl(), ID_PANEL6, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, "System" );
   auto *itemBoxSizer105 = new wxBoxSizer(wxVERTICAL);
   itemPanel104->SetSizer(itemBoxSizer105);
 

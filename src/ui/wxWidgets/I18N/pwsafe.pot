@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-11 20:24+0200\n"
+"POT-Creation-Date: 2026-05-07 20:32+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -287,7 +287,6 @@ msgid " Current default (%ls)"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:78
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:457
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:134
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:570
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:252
@@ -326,8 +325,8 @@ msgid "Copy username to clipboard"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:85
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:175
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:465
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:176
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:643
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:140
 msgid "Run Command"
 msgstr ""
@@ -350,10 +349,10 @@ msgid "default symbol set"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:90
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1817
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1843
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2905
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3850
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2000
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2026
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3091
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4341
 msgid "Default Policy"
 msgstr ""
 
@@ -642,126 +641,131 @@ msgid "Created Time"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:151
-msgid "Attachment Content"
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:605
+msgid "Custom Fields"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:152
-msgid "Attachment File Name"
+msgid "Attachment Content"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:153
-msgid "Attachment Media Type"
+msgid "Attachment File Name"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:154
-msgid "Attachment Modification Time"
+msgid "Attachment Media Type"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:155
-msgid "Attachment Title"
+msgid "Attachment Modification Time"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:156
+msgid "Attachment Title"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:157
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersDCADlg.cpp:284
 msgid "DCA"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:157
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:158
 msgid "e-mail"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:158
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:321
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:159
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:468
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/DragBarCtrl.cpp:150
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:270
 msgid "Group"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:159
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:160
 msgid "Group/Title"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:160
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:161
 msgid "Keyboard Shortcut"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:161
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:430
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:162
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:585
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/DragBarCtrl.cpp:154
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:249
 msgid "Notes"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:162
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:163
 msgid "Passkey Algorithm ID"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:163
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:164
 msgid "Passkey Credential ID"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:164
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:165
 msgid "Passkey Private Key"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:165
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:166
 msgid "Passkey Relying Party ID"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:166
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:167
 msgid "Passkey Sign Count"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:167
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:168
 msgid "Passkey User Handle"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:168
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:300
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:344
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:169
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:400
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:491
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/DragBarCtrl.cpp:153
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:245
 msgid "Password"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:169
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:170
 msgid "Password Modified Time"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:170
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:171
 msgid "Protected"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:171
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:172
 msgid "History"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:172
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:287
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:173
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:385
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/HelpMap.h:55
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersTable.cpp:317
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.h:70
 msgid "Password Policy"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:173
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:174
 msgid "Password Policy Name"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:174
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:175
 msgid "Record Modified Time"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:176
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:177
 msgid "Shift+DCA"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:177
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:178
 msgid "Symbols"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:178
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:327
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:179
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:474
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/DragBarCtrl.cpp:151
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/GridCtrl.cpp:166
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:271
@@ -769,113 +773,113 @@ msgstr ""
 msgid "Title"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:179
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:180
 msgid "Authentication Code Config"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:180
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:181
 msgid "Authentication Code Length"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:181
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:182
 msgid "Authentication Code Start Time"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:182
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:183
 msgid "Authentication Code Time Step"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:183
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:184
 msgid "Two Factor Key"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:184
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:490
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:185
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:669
 msgid "Authentication Secret"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:185
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:412
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:186
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:559
 msgid "URL"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:186
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:338
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:187
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:485
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:246
 msgid "Username"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:187
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:188
 msgid "UUID"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:188
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:189
 msgid "Password Expiry Date"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:189
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:190
 msgid "Password Expiry Interval"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:190
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:191
 msgid "a normal entry"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:191
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:192
 msgid "Last found entries"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:192
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:193
 msgid "added but not yet saved to database"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:193
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:194
 msgid "in the database"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:194
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:195
 msgid "a shortcut entry"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:195
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:196
 msgid "a base entry of a shortcut"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:196
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:197
 msgid "changed but not yet saved to database"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:197
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:198
 msgid "greater than"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:198
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:199
 msgid "greater than or equal to"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:199
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:200
 #, c-format
 msgid ""
 "Invalid input on line %d.  Number of fields separated by '%c' is not as "
 "expected."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:200
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:201
 #, c-format
 msgid "Line %d: "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:201
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:202
 #, c-format
 msgid ""
 "File ends on line %d before ending double quote of last entry's note field."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:202
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:203
 msgid "Import aborted, see report for details."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:203
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:204
 msgid ""
 "The TXT or CSV file was not imported as required as entry records span "
 "multiple lines in the CSV file.\n"
@@ -883,325 +887,325 @@ msgid ""
 "Import aborted."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:204
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:205
 #, c-format
 msgid ""
 "%ls, Title=\"%ls\", User=\"%ls\" already exists in your database or in the "
 "Import file. Added imported entry with title=\"%ls\".\n"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:205
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:206
 #, c-format
 msgid "Entry on line %d with Group=\"%ls\""
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:206
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:207
 #, c-format
 msgid "Entry on line %d with no group"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:207
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:208
 #, c-format
 msgid "Entry with Group=\"%ls\""
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:208
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:209
 msgid "Entry with no group"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:209
-msgid "imported"
-msgstr ""
-
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:210
-#, c-format
-msgid "including %d empty group(s)."
+msgid "imported"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:211
 #, c-format
-msgid "Empty line %d skipped"
+msgid "including %d empty group(s)."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:212
 #, c-format
-msgid "Entry %ls%d with Group=\"%ls\", Title=\"%ls\", User=\"%ls\""
+msgid "Empty line %d skipped"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:213
-msgid "Internal error. Import failed. No records imported."
+#, c-format
+msgid "Entry %ls%d with Group=\"%ls\", Title=\"%ls\", User=\"%ls\""
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:214
+msgid "Internal error. Import failed. No records imported."
+msgstr ""
+
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:215
 #, c-format
 msgid "Found %d known column headers:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:215
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:216
 msgid "Invalid field delimiter: must be within ASCII range."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:216
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:217
 #, c-format
 msgid "Entry of line %d has an invalid \"%ls\" field. It has been ignored."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:217
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:218
 msgid "The following columns will be processed: "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:218
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:219
 msgid ""
 "The following columns were recognised but only Group/Title, Username and "
 "Password will be processed:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:219
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:220
 #, c-format
 msgid ""
 "Line %d skipped - Only %d fields found, whereas parsing the Header says "
 "there should be %d."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:220
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:221
 msgid ""
 "Either or both of the Group/Title and Password columns are missing. No "
 "records imported."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:221
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:222
 msgid ""
 "Could not find the next entry's title field in the KeePass V1 TXT (should be "
 "within square brackets)."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:222
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:223
 msgid "Column header row not recognised as first record. No records imported."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:223
-msgid "No records in import file!"
-msgstr ""
-
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:224
-#, c-format
-msgid "Line %d skipped: Empty mandatory Password field."
+msgid "No records in import file!"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:225
 #, c-format
-msgid "Line %d skipped: Empty mandatory Title field."
+msgid "Line %d skipped: Empty mandatory Password field."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:226
 #, c-format
-msgid " Import # %d"
+msgid "Line %d skipped: Empty mandatory Title field."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:227
 #, c-format
-msgid "%ls - Imported %ls"
+msgid " Import # %d"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:228
+#, c-format
+msgid "%ls - Imported %ls"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:229
 msgid ""
 "To replace passwords of existing entries, all the following columns must be "
 "present: Group/Title, Username and Password.  One or more are missing and no "
 "entries have been updated."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:229
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:230
 #, c-format
 msgid "%ls not found. Cannot update entry's password.\n"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:230
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:231
 #, c-format
 msgid "%ls has an empty %ls.\n"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:231
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:232
 #, c-format
 msgid ""
 "Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
 "the base entry is already an alias."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:232
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:233
 msgid "\tThis entry has been made an alias of associated base entry."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:233
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:234
 #, c-format
 msgid ""
 "Entry \"%ls, %ls, %ls\" has a password in the correct form for an alias, but "
 "the base entry does not exist."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:234
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:235
 msgid ""
 "\tThis entry remains a normal entry and the password has not been changed."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:235
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:236
 #, c-format
 msgid ""
 "The %ls entry \"%ls, %ls, %ls\" doesn't point to a normal or existing %ls "
 "base entry. It cannot be imported."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:236
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:237
 msgid "Entry import warnings"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:237
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:238
 msgid "id="
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:238
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:239
 msgid "on line "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:239
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:240
 msgid "Internal error: Invalid oflag or pmode argument"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:240
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:241
 msgid "invalid!"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:241
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:242
 msgid "  Invalid date/time value."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:242
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:243
 msgid "  Field length is incorrect."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:243
-msgid "Internal error: An invalid flag was specified"
-msgstr ""
-
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:244
-#, c-format
-msgid "  Invalid header: '%ls' (must be 5 hexadecimal characters)."
+msgid "Internal error: An invalid flag was specified"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:245
 #, c-format
-msgid "Invalid lock file \"%ls\"."
+msgid "  Invalid header: '%ls' (must be 5 hexadecimal characters)."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:246
 #, c-format
-msgid "  Invalid number of saved old passwords %d."
+msgid "Invalid lock file \"%ls\"."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:247
 #, c-format
-msgid "  Invalid status value: %d (must be either 0 or 1)."
+msgid "  Invalid number of saved old passwords %d."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:248
-msgid "  Invalid password length found (not a hexadecimal number)."
+#, c-format
+msgid "  Invalid status value: %d (must be either 0 or 1)."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:249
+msgid "  Invalid password length found (not a hexadecimal number)."
+msgstr ""
+
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:250
 msgid ""
 "  Invalid password length found (differs from length of following password)."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:250
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:251
 msgid ""
 "  Invalid field separator character found - only a single blank is allowed "
 "between fields."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:251
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:252
 msgid "Invalid Filter schema."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:252
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:253
 msgid "Schema does not have a version number."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:253
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:254
 #, c-format
 msgid "The filter XML version (%d) is greater than the current schema (%d)."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:254
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:255
 #, c-format
 msgid ""
 "The filter XML version (%d) is greater than that supported by this instance "
 "of PasswordSafe (%d)."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:255
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:256
 msgid "is"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:256
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:257
 msgid "is active"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:257
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:258
 msgid "is inactive"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:258
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:259
 msgid "is not"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:259
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:260
 msgid "is not present"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:260
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:261
 msgid "is present"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:261
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:262
 #, c-format
 msgid ""
 "Entry keyboard shortcut %ls entry %ls is already allocated to entry %ls. It "
 "has been removed from the %ls entry."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:262
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:263
 #, c-format
 msgid ""
 "Entry keyboard shortcut %ls entry %ls is already allocated to the "
 "PasswordSafe application. It has been removed from the entry."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:263
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:264
 msgid "less than"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:264
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:265
 msgid "less than or equal to"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:265
-msgid "File or path not found"
-msgstr ""
-
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:266
-#, c-format
-msgid ""
-"\n"
-"The following new %ls %ls merged into this database:"
+msgid "File or path not found"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:267
 #, c-format
 msgid ""
 "\n"
-"Merge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
+"The following new %ls %ls merged into this database:"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:268
+#, c-format
+msgid ""
+"\n"
+"Merge completed: %d %ls added (%d %ls, %d %ls, %d %ls, %d %ls)"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:269
 #, c-format
 msgid ""
 "Conflicting entries for «%ls» «%ls» «%ls».\n"
@@ -1209,36 +1213,36 @@ msgid ""
 "    Differing field(s): %ls"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:269
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:270
 msgid "merged"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:270
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:271
 #, c-format
 msgid "%ls - Merged %ls"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:271
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:272
 msgid "MISSING PASSWORD"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:272
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:273
 #, c-format
 msgid "\tPassword policy name '%ls' is not in the database."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:273
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:274
 msgid ""
 "\tOne or more Password Policy Names were not found in the database. The "
 "affected entries have been changed to use the database's default policy."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:274
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:275
 #, c-format
 msgid "MISSING TITLE # %d"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:275
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:276
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:1043
 #, c-format
 msgid ""
@@ -1247,70 +1251,70 @@ msgid ""
 "Copy it from your installation file, or re-install PasswordSafe."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:276
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:277
 msgid "Can't obtain the schema version."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:277
-msgid "The filter XML version is missing."
-msgstr ""
-
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:278
-#, c-format
-msgid "Create SchemaCache60 Error 0x%08X during %ls."
+msgid "The filter XML version is missing."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:279
 #, c-format
-msgid "SAX Parse60 Error 0x%08X during %ls."
+msgid "Create SchemaCache60 Error 0x%08X during %ls."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:280
 #, c-format
-msgid "Error (%08X): line %d character %d %ls"
+msgid "SAX Parse60 Error 0x%08X during %ls."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:281
+#, c-format
+msgid "Error (%08X): line %d character %d %ls"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:282
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:186
 msgid "No"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:282
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:283
 msgid ""
 "Unable to get configuration file lock.\n"
 "\n"
 "Will use registry."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:283
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:284
 msgid "Cannot create lock file - no permission in directory?"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:284
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:285
 msgid "Internal error: Out of file handles"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:285
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:286
 msgid ""
 "Unable to use a MS XML reader on your system.  Neither MS XML V3, V4 or V6 "
 "seems available."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:286
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:287
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:123
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:201
 msgid "None"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:287
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:288
 msgid "Unsaved changes"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:288
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:289
 msgid "is not set"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:289
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:290
 #, c-format
 msgid ""
 "Number of entries processed: %d\n"
@@ -1332,8 +1336,8 @@ msgid ""
 "Recommend that the database is now saved."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:290
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:823
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:291
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1005
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersEditor.cpp:907
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersTable.cpp:284
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersTable.cpp:296
@@ -1342,168 +1346,170 @@ msgstr ""
 msgid "Or"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:291
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:292
 msgid ""
 "Password should be mixed case, with at least one digit or punctuation "
 "character"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:292
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:293
 msgid "Password is too short."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:293
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:294
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersEditor.cpp:106
 msgid "Easyvision characters"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:294
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:295
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersEditor.cpp:108
 msgid "Hexadecimal characters"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:295
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:296
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersEditor.cpp:101
 msgid "Password length"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:296
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:297
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersEditor.cpp:107
 msgid "Pronounceable passwords"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:297
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:755
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:298
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:937
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:243
 msgid "Use digits"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:298
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:299
 msgid "Use lowercase characters"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:299
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:779
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:300
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:961
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:267
 msgid "Use symbols"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:300
-msgid "Use uppercase characters"
-msgstr ""
-
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:301
-#, c-format
-msgid "Error in a Password History %ls:"
+msgid "Use uppercase characters"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:302
 #, c-format
-msgid "sub-field starting at position %d (within the History field): "
+msgid "Error in a Password History %ls:"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:303
-msgid "  All Password History ignored."
+#, c-format
+msgid "sub-field starting at position %d (within the History field): "
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:304
-msgid "Read Error"
+msgid "  All Password History ignored."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:305
+msgid "Read Error"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:306
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersDateDlg.cpp:295
 msgid "Relative"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:306
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:307
 msgid "relative"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:307
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:308
 #, c-format
 msgid ""
 "\tOne or more entry keyboard shortcuts were already assigned to entries in "
 "this database. They have been removed from the %ls entries."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:308
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:309
 msgid ""
 "\tOne or more Password Policy Names were already in this database but had "
 "different settings. They have been renamed."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:309
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:310
 #, c-format
 msgid "%ls%ls%ls_Report.txt"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:310
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:311
 #, c-format
 msgid "Report of %ls function started at %ls"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:311
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:312
 #, c-format
 msgid "on database %ls"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:312
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:313
 msgid "Compare"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:313
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:314
 msgid "Export DB"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:314
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:315
 msgid "Export Text"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:315
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:316
 msgid "Export XML"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:316
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:317
 msgid "Find"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:317
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:318
 msgid "Import KeePassV1 CSV"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:318
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:319
 msgid "Import KeePassV1 TXT"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:319
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:320
 msgid "Import Text"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:320
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:321
 msgid "Import XML"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:321
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:322
 msgid "Merge"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:322
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:323
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CompareDlg.cpp:489
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CompareDlg.cpp:810
 msgid "Synchronize"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:323
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:324
 msgid "Validate"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:324
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1876
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2256
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2311
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3651
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3664
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3675
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:325
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:100
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:107
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2059
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2439
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2494
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4142
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4155
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4166
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CryptKeyEntryDlg.cpp:148
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CryptKeyEntryDlg.cpp:157
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CryptKeyEntryDlg.cpp:173
@@ -1511,8 +1517,8 @@ msgstr ""
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/DbSelectionPanel.cpp:137
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManageFiltersDlg.cpp:1055
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:207
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:416
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1818
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:424
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1820
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:294
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:298
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:302
@@ -1529,114 +1535,114 @@ msgstr ""
 msgid "Error"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:325
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:326
 msgid "Fatal Error"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:326
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1990
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2011
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2014
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3958
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:327
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2173
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2194
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2197
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4449
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:485
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:397
 msgid "Warning"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:327
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:328
 #, c-format
 msgid ""
 "\n"
 "Error in Password History for entry: »%ls»%ls»%ls»: "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:328
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:329
 #, c-format
 msgid "\tNo entries were found containing search string '%ls' %ls"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:329
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:330
 #, c-format
 msgid "\tThe following entries contain search string '%ls' %ls"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:330
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:331
 msgid "See Attachment filters"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:331
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:332
 msgid "See Password History filters"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:332
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:333
 msgid "See Password Policy filters"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:333
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:334
 msgid "is set"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:334
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:335
 msgid "shortcut"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:335
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:336
 msgid "shortcuts"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:336
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:337
 msgid "policy specific symbols"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:337
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:338
 msgid "Start Report"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:338
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:339
 msgid "Double-Click on entry to Autotype"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:339
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:340
 msgid "Double-Click on entry to Browse to URL"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:340
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:341
 msgid "Double-Click on entry to Browse to URL + Autotype"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:341
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:342
 msgid "https://pwsafe.org/"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:342
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:343
 msgid "Double-Click on entry to Copy Notes"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:343
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:344
 msgid "Double-Click on entry to Copy Password"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:344
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:345
 msgid "Double-Click on entry to Copy Password and Minimize"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:345
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:346
 msgid "Double-Click on entry to Copy Username"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:346
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:347
 msgid "Double-Click on entry to Run Command"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:347
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:348
 msgid "Double-Click on entry to Send Email"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:348
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:349
 msgid "Double-Click on entry to View/Edit it"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:349
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:350
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SyncWizard.cpp:805
 #, c-format
 msgid ""
@@ -1644,7 +1650,7 @@ msgid ""
 "Synchronize completed: %d %ls updated"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:350
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:351
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SyncWizard.cpp:789
 #, c-format
 msgid ""
@@ -1652,41 +1658,41 @@ msgid ""
 "The following %ls %ls updated:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:351
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:352
 #, c-format
 msgid "%ls - Sync'd %ls"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:352
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:353
 msgid "System error: No more file handles available"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:353
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:354
 msgid "Bad length"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:354
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:355
 msgid "The Authentication Code configuration is invalid"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:355
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:356
 msgid "Allowed characters are a-z, 2-7, space and dash"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:356
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:357
 msgid "The authentication secret was not found"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:357
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:358
 msgid "The Authentication Code operation was successful"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:358
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:359
 msgid "An unknown Authentication Code error occurred"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:359
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1049
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:360
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1233
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:116
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:128
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:148
@@ -1694,183 +1700,183 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:360
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:361
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:188
 #, c-format
 msgid "In Headers(%ls)/In Entries("
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:361
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:362
 msgid "Unknown function"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:362
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:363
 msgid ""
 "The following columns are unrecognized by PasswordSafe and will be ignored: "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:363
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:364
 msgid "Unknown object"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:364
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:365
 msgid "Internal error: Unexpected error number"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:365
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:366
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:138
 #, c-format
 msgid "%ls on %ls"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:366
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:367
 #, c-format
 msgid "\tName: %ls; Filename: %ls"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:367
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:368
 msgid ""
 "The following entries had an invalid UUID field.  This has been corrected."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:368
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:369
 #, c-format
 msgid ""
 "The following entries have passwords in the correct form for %ls, but the "
 "base entry does not exist."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:369
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:370
 msgid "The following entries were duplicates of an existing entry."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:370
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:371
 msgid ""
 "The following entries had a duplicate UUID field.  This has been corrected."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:371
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:372
 #, c-format
 msgid ""
 "The following entries had an empty Password field, which is not permitted. "
 "The password has been set to '%ls'"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:372
-msgid "The following entries had an empty Title field, which is not permitted."
-msgstr ""
-
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:373
-#, c-format
-msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
+msgid "The following entries had an empty Title field, which is not permitted."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:374
 #, c-format
-msgid "- Its title has been changed to:'%ls'"
+msgid "\tGroup='%ls', Title='%ls', User='%ls' %ls"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:375
-msgid "The following ERRORS were detected and were FIXED."
+#, c-format
+msgid "- Its title has been changed to:'%ls'"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:376
-msgid "The following entries refer to missing attachments."
+msgid "The following ERRORS were detected and were FIXED."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:377
-msgid "The following attachments are not referred to by any entry."
+msgid "The following entries refer to missing attachments."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:378
-msgid "The following entries contain incomplete passkeys."
+msgid "The following attachments are not referred to by any entry."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:379
+msgid "The following entries contain incomplete passkeys."
+msgstr ""
+
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:380
 msgid ""
 "The following entries had an invalid Password History.  This has been "
 "rebuilt with available data.  There may be some loss of history."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:380
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:381
 #, c-format
 msgid ""
 "The following entries have one or more text fields too long to display or "
 "edit (over %d characters).  The largest entry size found was ~%d %ls."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:381
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:382
 msgid ""
 "The following WARNINGS were detected - you should review and fix them "
 "manually."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:382
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:383
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SyncWizard.cpp:788
 msgid "was"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:383
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:384
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SyncWizard.cpp:788
 msgid "were"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:384
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:385
 msgid "will expire"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:385
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:386
 #, c-format
 msgid ""
 "SAX Parse Error during %ls\n"
 "%ls."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:386
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:387
 #, c-format
 msgid "XML %ls: line %d character %d: %ls"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:387
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:388
 msgid ""
 "*** Invalid XML characters found - see exported XML file for more details ***"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:388
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:389
 msgid "Internal error: Couldn't initialize config file XML structure"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:389
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:390
 msgid ""
 "A filter was active. Export of data was restricted to include only those "
 "displayed."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:390
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:391
 msgid "Export of data was restricted to certain fields by the user."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:391
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:392
 msgid ""
 "Note: These Password Policies will not replace existing policies with the "
 "same name in the current database."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:392
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:393
 msgid ""
 "Note: These preferences are only used when importing into an empty database."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:393
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:394
 msgid "Subset of entries restricted by the following rule:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:394
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:395
 msgid ""
 "The user specified that the following fields be excluded from the export:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:395
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:396
 #, c-format
 msgid ""
 "Configuration file error:\n"
@@ -1879,47 +1885,47 @@ msgid ""
 "offset approximately at %d"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:396
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:397
 msgid "import"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:397
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:398
 msgid "Unable to load configuration file"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:398
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:399
 msgid ""
 "Failed to lock configuration file - opened by another instance of "
 "PasswordSafe?"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:399
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:400
 msgid "Unable to save configuration file"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:400
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:401
 msgid "validation"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:401
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:402
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:186
 msgid "Yes"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:402
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:403
 msgid " (EasyVision Symbols)"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:403
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:404
 #, c-format
 msgid "Yes (at least %d)"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:404
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:405
 msgid " (Pronounceable Symbols)"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:405
+#: /home/ronys/git/pwsafe/build-dbg/src/core/core_st.cpp:406
 #, c-format
 msgid "Yes - At least %d from %ls: %ls%ls"
 msgstr ""
@@ -2001,49 +2007,49 @@ msgstr ""
 msgid "Missing XML tag for field type in filter entry %d of '%ls'"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:598
+#: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:603
 #, c-format
 msgid "Unknown XML tag \"%ls\" for field type in filter entry %d of '%ls'"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:612
+#: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:617
 #, c-format
 msgid "Missing rule in filter entry %d of filter '%ls'"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:617
+#: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:622
 #, c-format
 msgid "Unknown rule \"%ls\" in filter entry %d of filter '%ls'"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:628
+#: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:633
 #, c-format
 msgid "Missing logic in filter entry %d of filter '%ls'"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:638
+#: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:643
 #, c-format
 msgid "Unknown logic \"%ls\" in filter entry %d of filter '%ls'"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:656
+#: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:661
 #, c-format
 msgid "Unknown XML tag \"%ls\" in field type in filter entry %d of '%ls'"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:665
+#: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:670
 #, c-format
 msgid "Missing logic or rule XML tag in filter entry %d of '%ls'"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:758
+#: /home/ronys/git/pwsafe/src/core/XML/Pugi/PFilterXMLProcessor.cpp:763
 #, c-format
 msgid "Unknown XML tag \"%ls\" in test in filter entry %d of '%ls'"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/AboutDlg.cpp:113
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:1404
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:456
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:464
 msgid "Password Safe"
 msgstr ""
 
@@ -2087,7 +2093,7 @@ msgstr ""
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/AboutDlg.cpp:153
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManageFiltersDlg.cpp:399
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:368
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:555
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:554
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSubsetDlg.cpp:131
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SystemTray.cpp:143
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/YubiCfgDlg.cpp:189
@@ -2169,69 +2175,109 @@ msgstr ""
 msgid "About Password Safe"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:233
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1509
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:56
+msgid "Add Custom Field"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:56
+msgid "Edit Custom Field"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:65
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:615
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManageFiltersTable.cpp:346
+msgid "Name"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:69
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:616
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:266
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersIntegerDlg.cpp:326
+msgid "Value"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:75
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:617
+msgid "Sensitive"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:100
+msgid "The custom field's name cannot be empty."
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:106
+msgid "A custom field with this name already exists for this entry."
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:330
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1693
 msgid "Auto Type"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:234
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1510
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:331
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1694
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:406
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:618
 msgid "Browse"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:235
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1511
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:332
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1695
 msgid "Browse + Auto Type"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:236
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1512
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:333
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1696
 msgid "Copy Notes"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:237
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1513
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:334
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1697
 msgid "Copy Password"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:238
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1514
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:335
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1698
 msgid "Copy Password + Minimize"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:239
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1515
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:336
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1699
 msgid "Copy Username"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:240
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1516
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:337
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1700
 msgid "Edit/View Entry"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:241
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1517
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:338
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1701
 msgid "Execute Run command"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:257
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:339
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1702
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:141
+msgid "Send email"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:355
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/HelpMap.h:53
 msgid "Basic"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:264
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:362
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/HelpMap.h:56
 msgid "Additional"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:270
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:368
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/HelpMap.h:54
 msgid "Dates and Times"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:279
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:377
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/HelpMap.h:57
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersEditor.cpp:110
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersEditor.cpp:120
@@ -2239,148 +2285,184 @@ msgstr ""
 msgid "Attachment"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:299
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:399
 msgid "Set Date/Time"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:314
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:461
 msgid "All fields marked with an asterisk (*) are required."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:361
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:508
 msgid "&Generate"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:370
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:517
 msgid "Confirm"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:384
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:531
 msgid "&Alias To..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:391
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:538
 msgid "Authentication Code"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:401
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2091
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:548
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2274
 msgid "Show authentication code"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:405
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:552
 msgid "Copy authentication code to clipboard"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:418
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:565
 msgid "Go"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:421
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:568
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/DragBarCtrl.cpp:156
 msgid "Email"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:427
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:574
 msgid "Send"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:471
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:597
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:256
+msgid "Add"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:598
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:157
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:257
+msgid "Edit"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:599
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/CompareDlg.cpp:502
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:259
+msgid "Delete"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:635
+#, c-format
+msgid "Autotype (default string: %s)"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:647
+msgid ""
+"This field can be used to specify a command or program to be run via the "
+"'Run Command' action (via the Edit menu or right-click popup menu). Password "
+"Safe is able to pass arguments to the command such as the entry's username, "
+"password, etc."
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:650
 msgid "Double-Click Action"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:479
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:658
 msgid "Shift-Double-Click Action"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:500
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2069
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:676
+msgid ""
+"Enter the authentication secret key. This is usually taken from the "
+"authenticator setup page."
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:680
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2252
 msgid "Show authentication secret"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:509
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:689
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/HelpMap.h:48
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:234
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersTable.cpp:314
 msgid "Password History"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:514
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:694
 msgid "Keep"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:529
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:709
 msgid "last passwords"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:542
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:722
 msgid "Clear History"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:547
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:727
 msgid "Copy All"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:565
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:746
 msgid "Password Expiry"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:572
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:753
 msgid "On"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:585
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:766
 msgid "In"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:602
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:783
 msgid "days"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:605
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:786
 msgid "Recurring"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:610
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:791
 msgid "Never"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:615
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:796
 msgid "Current Setting:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:621
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:802
 msgid "Statistics"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:626
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:807
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/EditShortcutDlg.cpp:250
 msgid "Created on:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:632
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:813
 msgid "Password last changed on:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:638
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:819
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/EditShortcutDlg.cpp:260
 msgid "Last accessed on:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:641
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:856
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:876
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1033
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1046
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1057
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1068
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1076
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1099
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1101
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1102
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1103
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1104
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1105
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:822
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1039
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1059
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1217
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1230
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1241
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1252
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1260
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1283
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1285
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1286
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1287
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1288
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1289
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CreateShortcutDlg.cpp:207
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CreateShortcutDlg.cpp:212
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CreateShortcutDlg.cpp:217
@@ -2406,35 +2488,35 @@ msgstr ""
 msgid "N/A"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:644
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:825
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/EditShortcutDlg.cpp:265
 msgid "Any field last changed on:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:667
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:849
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:171
 msgid "Random password generation rules"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:674
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:856
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:158
 msgid "Use Named Policy"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:689
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:871
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:178
 msgid "Password length:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:707
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:889
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:195
 msgid "Use lowercase letters"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:713
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:737
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:761
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:786
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:895
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:919
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:943
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:968
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:202
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:226
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:250
@@ -2442,73 +2524,73 @@ msgstr ""
 msgid "(At least "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:727
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:751
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:775
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:800
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:909
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:933
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:957
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:982
 msgid ")"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:731
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:913
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:219
 msgid "Use UPPERCASE letters"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:781
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:963
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:269
 msgid "i.e., ., %, $, etc."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:807
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:989
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:296
 msgid "Reset"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:810
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:992
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:299
 msgid "Use only easy-to-read characters"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:812
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:994
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:301
 msgid "i.e., no 'l', '1', etc."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:817
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:999
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:306
 msgid "Generate pronounceable passwords"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:828
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1010
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:317
 msgid "Use hexadecimal digits only"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:847
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1030
 msgid "Preview"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:855
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1038
 msgid "File"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:860
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1043
 msgid "Import..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:862
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1045
 msgid "Export..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:864
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1047
 msgid "Remove"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:869
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1052
 msgid "Properties"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:873
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1056
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CreateShortcutDlg.cpp:188
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CreateShortcutDlg.cpp:210
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/EditShortcutDlg.cpp:240
@@ -2516,7 +2598,7 @@ msgstr ""
 msgid "Title:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:875
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1058
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CreateShortcutDlg.cpp:190
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CreateShortcutDlg.cpp:195
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/EditShortcutDlg.cpp:242
@@ -2527,313 +2609,323 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:879
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1062
 msgid "Media Type:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:884
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1067
 msgid "Creation Date:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:889
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1072
 msgid "File Size:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:894
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1077
 msgid "File Creation Date:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:899
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1082
 msgid "File Last Modified Date:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1001
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1012
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1185
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1196
 msgid "No Attachment Available"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1089
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1273
 msgid "No preview available due to an error"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1093
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1277
 msgid "No preview available - unsupported media type"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1115
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1299
 msgid "Image Preview"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1192
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1376
 msgid "Image files "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1194
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1299
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1378
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1483
 msgid "All files (*.*)|*.*"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1197
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1224
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1231
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1238
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1245
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1252
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1381
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1408
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1415
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1422
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1429
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1436
 msgid "Import Attachment"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1224
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1408
 msgid "Failed to allocate required memory to import attachment data."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1231
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1327
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1415
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1511
 msgid "Failed to open file."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1238
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1422
 msgid "File exceeds the allowed maximum size of 4.3GB (2^32GB)."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1245
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1429
 msgid "An error occurred while reading the file."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1252
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1436
 msgid "Unexpected error occurred during attachment import."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1265
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1449
 msgid "No attachment data to export."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1265
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1302
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1320
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1327
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1334
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1341
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1449
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1486
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1504
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1511
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1518
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1525
 msgid "Export Attachment"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1281
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1465
 #, c-format
 msgid "%s files (*.%s;*.jpg)|*.%s;*.jpg|"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1286
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1470
 #, c-format
 msgid "%s files (*.%s;*.gz)|*.%s;*.gz|"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1291
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1475
 #, c-format
 msgid "%s files (*.%s)|*.%s|"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1320
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1504
 msgid "Failed to allocate required memory to export attachment data."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1334
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1518
 msgid "An error occurred while writing the file."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1341
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1525
 msgid "Unexpected error occurred during attachment export."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1538
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1723
 msgid "default"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1560
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1745
 #, c-format
 msgid "Expires in %d day (%s)"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1560
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1745
 #, c-format
 msgid "Expires in %d days (%s)"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1563
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1748
 #, c-format
 msgid "Expired on %s"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1570
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1755
 #, c-format
 msgid "Every %d day from last change"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1571
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1756
 #, c-format
 msgid "Every %d days from last change"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1575
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1760
 #, c-format
 msgid ""
 "\n"
 "(Next expiration on %s)"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1577
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1762
 #, c-format
 msgid ""
 "\n"
 "(Expired on %s)"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1585
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1770
 msgid "Never Expires"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1750
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1931
 msgid "[Notes hidden - click here to display]"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1875
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2058
 msgid "Couldn't generate password - invalid policy"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1990
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2011
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2173
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2194
 msgid ""
 "On changing this entry of type Shortcut Base to an Alias all Shortcut to "
 "this entry will be removed!"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2014
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2197
 msgid "Shortcut or Alias selected, use Base entry instead"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2060
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2243
 msgid "Hide authentication secret"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2080
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2263
 msgid "Hide authentication code"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2103
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2286
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationCtrl.cpp:130
 msgid "Hide password"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2115
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2298
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationCtrl.cpp:130
 msgid "Show password"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2178
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2361
 msgid "Alias:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2181
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2206
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2364
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2389
 msgid "Password:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2207
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2390
 msgid "Confirm:"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2254
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2437
 #, c-format
 msgid "This entry must have a %ls"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2255
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2438
 msgid "title"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2255
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2438
 msgid "password"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2268
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2451
 msgid "Passwords do not match."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2269
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2452
 msgid "Mismatching passwords"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2294
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2477
 msgid ""
 "The authentication key is invalid.\n"
 "Allowed characters are a-z, A-Z, 2-7, space and dash."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2295
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2478
 msgid "Authentication Key Error"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2310
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2493
 msgid "Database name must not be empty if a database policy shall be used."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2333
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2516
 msgid ""
 "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2334
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2517
 msgid "Duplicate entry"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2512
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2961
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2651
+msgid "Authentication code requires secret key in Additional tab."
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2694
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3147
 msgid "Alias Password Error"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3444
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3630
 msgid "&Show"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3444
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3630
 msgid "&Hide"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3650
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3819
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3843
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3875
+msgid "********"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4141
 msgid "Total Length of policy too small"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3663
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4154
 msgid "With password length at least one of the flags has to be set"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3674
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4165
 msgid "HexDigits implies no easyvision or pronounceable to be set"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3756
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4247
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:719
 msgid "\"Easy-to-read\" and \"pronounceable\" cannot be both selected."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3757
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3784
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4248
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4275
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:701
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:720
 msgid "Unsupported selection"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3783
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4274
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:700
 msgid "\"Pronounceable\" and \"easy-to-read\" cannot be both selected."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3958
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4449
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:485
 msgid ""
 "One or more values have been changed.\n"
 "Do you want to discard the changes?"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3961
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4452
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:95
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:590
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:488
@@ -2841,24 +2933,24 @@ msgstr ""
 msgid "Discard"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.h:123
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.h:129
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.h:131
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.h:137
 msgid "Edit Entry"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.h:128
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.h:136
 msgid "Add Entry"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.h:130
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.h:138
 msgid "View Entry"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.h:131
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.h:139
 msgid "Add, Edit or View Entry"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.h:310
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/AddEditPropSheetDlg.h:331
 msgid "No preview available"
 msgstr ""
 
@@ -2926,7 +3018,7 @@ msgid "&View Report"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CompareDlg.cpp:173
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:706
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:707
 msgid "&Compare"
 msgstr ""
 
@@ -2977,11 +3069,6 @@ msgstr ""
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CompareDlg.cpp:497
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CompareDlg.cpp:523
 msgid " to current db"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/CompareDlg.cpp:502
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:259
-msgid "Delete"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/CompareDlg.cpp:502
@@ -3178,7 +3265,7 @@ msgid "The entry cannot be blank."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/DbSelectionPanel.cpp:70
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1458
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1460
 msgid ""
 "Password Safe Databases (*.psafe4; *.psafe3; *.dat)|*.psafe4;*.psafe3;*.dat|"
 "Password Safe Backups (*.bak)|*.bak|Password Safe Intermediate Backups "
@@ -3205,7 +3292,7 @@ msgid "File or path not found."
 msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/DbSelectionPanel.cpp:137
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1478
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1480
 msgid "That file is already open."
 msgstr ""
 
@@ -3350,7 +3437,7 @@ msgstr ""
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManageFiltersDlg.cpp:396
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:226
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordPolicyDlg.cpp:356
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:750
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:751
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:212
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:203
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:159
@@ -3363,38 +3450,38 @@ msgstr ""
 msgid "&Export"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:50
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:51
 msgid "Virtual Keyboard"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:72
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:95
 msgid ""
 "Could not launch xvkbd.  Please make sure it's installed and in your PATH"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:73
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:81
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:86
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:102
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:96
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:104
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:109
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:125
 msgid "Could not launch external onscreen keyboard"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:80
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:103
 msgid "Could not launch xvkbd.  Please make sure it's in your PATH"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:85
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:108
 msgid ""
 "Could not launch a new process for xvkbd.  Simultaneous execution disabled?"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:99
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:122
 msgid ""
 "Please enable the Accessibility Keyboard in System Settings; the on-screen "
 "keyboard should then appear."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:101
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ExternalKeyboardButton.cpp:124
 msgid "Could not launch the MacOS Settings App"
 msgstr ""
 
@@ -3534,7 +3621,7 @@ msgid "&New"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManageFiltersDlg.cpp:381
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:655
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:656
 msgid "&Edit"
 msgstr ""
 
@@ -3617,10 +3704,6 @@ msgstr ""
 msgid "Manage Filters"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManageFiltersTable.cpp:346
-msgid "Name"
-msgstr ""
-
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManageFiltersTable.cpp:348
 msgid "Source"
 msgstr ""
@@ -3656,11 +3739,6 @@ msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:133
 msgid "Available Password Policies:"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:157
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:257
-msgid "Edit"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:163
@@ -3726,11 +3804,6 @@ msgstr ""
 msgid "Policy Field"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:266
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWFiltersIntegerDlg.cpp:326
-msgid "Value"
-msgstr ""
-
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:272
 msgid "User Name"
 msgstr ""
@@ -3781,8 +3854,8 @@ msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuEditHandlers.cpp:636
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuEditHandlers.cpp:653
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:653
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1959
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:654
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1961
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ViewAttachmentDlg.cpp:38
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ViewAttachmentDlg.cpp:71
 msgid "View Attachment"
@@ -3826,7 +3899,7 @@ msgstr ""
 msgid "Error parsing Run Command"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuEditHandlers.cpp:1199
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuEditHandlers.cpp:1213
 msgid "Password of "
 msgstr ""
 
@@ -4323,7 +4396,7 @@ msgid "Merge Complete"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuFileHandlers.cpp:1393
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3361
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3372
 msgid "Can't close database. There are unsaved changes in opened dialogs."
 msgstr ""
 
@@ -4423,13 +4496,13 @@ msgid "File '%ls' not readable"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuViewHandlers.cpp:499
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:689
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2500
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:690
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2501
 msgid "&Apply current"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/MenuViewHandlers.cpp:503
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2497
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2498
 msgid "&Clear current"
 msgstr ""
 
@@ -4479,10 +4552,6 @@ msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:133
 msgid "Edit/View selected entry"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:141
-msgid "Send email"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:320
@@ -5106,45 +5175,45 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:456
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:464
 msgid "Another instance of Password Safe is already running"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:492
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:501
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:500
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:509
 msgid "Could not initialize help subsystem. Help will not be available."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:493
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:502
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:501
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:510
 msgid "Password Safe: Error initializing help"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:494
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:502
 msgid "Don't show this warning again"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:563
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:571
 msgid "Unable to import \"autoload_filters.xml\""
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:1037
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:1045
 msgid "Missing help definition for page \""
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:1038
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:1046
 msgid "\" of \""
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:1043
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:1051
 msgid "Missing help definition for window \""
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:1054
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:1062
 msgid "Please inform the developers."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:1055
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PWSafeApp.cpp:1063
 msgid "Help Undefined"
 msgstr ""
 
@@ -5191,637 +5260,643 @@ msgstr ""
 msgid "Policy Error"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:553
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:552
 msgid "&New..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:554
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:553
 msgid "&Open..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:559
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:558
 msgid "&Unlock\tCtrl+I"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:562
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:561
 msgid "&Lock\tCtrl+J"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:577
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:576
 msgid "&Recent Databases..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:584
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:583
 msgid "Clear Recently Opened List"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:586
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:585
 msgid "&Save..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:587
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:586
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ViewReportDlg.cpp:76
 msgid "Save &As..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:591
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:590
 msgid "v&1.x format..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:592
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:591
 msgid "v&2 format..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:593
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:592
 msgid "v&4 format (EXPERIMENTAL)..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:594
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:593
 msgid "&Plain Text (tab separated)..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:595
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:600
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:594
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:599
 msgid "&XML format..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:596
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:595
 msgid "Export &To"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:599
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:598
 msgid "&Plain Text..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:601
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:600
 msgid "&KeePass..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:602
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:601
 msgid "Import &From"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:604
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:603
 msgid "&Merge..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:605
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:604
 msgid "&Compare..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:606
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:605
 msgid "S&ynchronize..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:607
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3032
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:606
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3033
 msgid "Change R/W Mode"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:609
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:608
 msgid "&Properties"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:611
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:610
 msgid "E&xit"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:612
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:611
 msgid "&File"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:619
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:618
 msgid "&Add Entry...\tCtrl+A"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:621
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:620
 msgid "&View Entry...\tCtrl+Enter"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:624
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:623
 msgid "Edit Entry...\tCtrl+Enter"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:626
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:625
 msgid "&Delete Entry\tDel"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:627
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:626
 msgid "Rename Entry\tF2"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:628
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:627
 msgid "&Find Entry...\tCtrl+F"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:629
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:628
 msgid "&Duplicate Entry\tCtrl+D"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:630
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1962
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:629
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1964
 msgid "Protect Entry"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:632
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:631
 msgid "Add Group"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:636
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:635
 msgid "C&lear Clipboard\tCtrl+Del"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:638
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:637
 msgid "&Copy Password to Clipboard\tCtrl+C"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:639
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:638
 msgid "Copy &Username to Clipboard\tCtrl+U"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:640
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:639
 msgid "Display subset of Password\tCtrl+B"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:642
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1884
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:641
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1886
 msgid "Display Password as &QR code"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:644
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:643
 msgid "Copy Aut&h Code to Clipboard\tAlt+2"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:645
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:644
 msgid "Display Auth Code\tAlt+Ctrl+2"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:646
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:645
 msgid "Copy &Notes to Clipboard\tCtrl+G"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:647
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:646
 msgid "Copy URL to Clipboard\tCtrl+Alt+L"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:648
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:647
 msgid "&Browse to URL\tCtrl+L"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:649
-msgid "Perform Auto&type\tCtrl+T"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:650
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1907
-msgid "Create &Shortcut"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:651
-msgid "Go to Base entry"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:662
-msgid "Flattened &List"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:663
-msgid "Nested &Tree"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:667
-msgid "Sort by Group"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:668
-msgid "Sort by Name"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:669
-msgid "Sort by Date"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:670
-msgid "Tree Sort"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:673
-msgid "Toolbar &visible"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:674
-msgid "&New Toolbar"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:675
-msgid "&Classic Toolbar"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:676
-msgid "&Dragbar visible"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:678
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:261
-msgid "Expand All"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:679
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:262
-msgid "Collapse All"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:682
-msgid "&Unsaved Changes"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:683
-msgid "Entries with E&xpiry Dates"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:684
-msgid "Last Find results"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:685
-msgid "Subviews"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:688
-msgid "&New/Edit Filter..."
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:690
-msgid "&Manage..."
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:691
-msgid "Empty Group visible in Filter"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:692
-msgid "&Filters"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:694
-msgid "Customize &Main Toolbar..."
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:697
-msgid "&Tree/List Font"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:698
-msgid "&Add/Edit Font"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:699
-msgid "&Password Font"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:700
-msgid "&Notes Font"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:703
-msgid "Change &Font"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:707
-msgid "&Find"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:708
-msgid "Import &Text"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:709
-msgid "Import &XML"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:710
-msgid "Import &KeePass V1 Text"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:711
-msgid "Import Kee&Pass V1 CSV"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:712
-msgid "&Export Text"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:713
-msgid "Export XM&L"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:714
-msgid "Export Current &DB"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:715
-msgid "&Merge"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:716
-msgid "&Synchronize"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:717
-msgid "&Validate"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:718
-msgid "Reports"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:719
-msgid "&View"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:726
-msgid "&Change Master Password..."
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:728
-msgid "Make &Backup...\tCtrl+B"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:729
-msgid "&Restore from Backup...\tCtrl+R"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:731
-msgid "&Options...\tCtrl+M"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:732
-msgid "Password Policies..."
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:734
-msgid "Generate &Password...\tCtrl+P"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:734
-msgid "Generate Password"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:736
-msgid "YubiKey..."
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:736
-msgid "Configure and backup YubiKeys"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:740
-msgid "&Manage"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:747
-msgid "Get &Help"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:748
-msgid "Visit Password Safe &website..."
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:749
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/SystemTray.cpp:155
-msgid "&About Password Safe..."
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:881
-msgid "Select Language"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1478
-msgid "Open database"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1816
-#, c-format
-msgid "Unknown code: %d"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1857
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1873
-msgid "Add &Entry"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1860
-msgid "Add &Group"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1863
-msgid "&Rename Group"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1864
-msgid "&Delete Group"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1880
-msgid "Copy &Username to Clipboard"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1881
-msgid "&Copy Password to Clipboard"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1882
-msgid "Display subset of Password"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1886
-msgid "Copy Aut&h Code to Clipboard"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1887
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:248
-msgid "Display Auth Code"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1888
-msgid "Copy &Notes to Clipboard"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1889
-msgid "Copy UR&L to Clipboard"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1890
-msgid "Copy email to Clipboard"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1891
-msgid "Copy Run Command to Clipboard"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1893
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/SystemTray.cpp:222
-msgid "&Browse to URL"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1894
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/SystemTray.cpp:223
-msgid "Browse to URL + &Autotype"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1895
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:648
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1897
 msgid "Send &email"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1896
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:649
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1898
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SystemTray.cpp:230
 msgid "&Run Command"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1897
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:650
+msgid "Perform Auto&type\tCtrl+T"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:651
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1909
+msgid "Create &Shortcut"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:652
+msgid "Go to Base entry"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:663
+msgid "Flattened &List"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:664
+msgid "Nested &Tree"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:668
+msgid "Sort by Group"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:669
+msgid "Sort by Name"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:670
+msgid "Sort by Date"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:671
+msgid "Tree Sort"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:674
+msgid "Toolbar &visible"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:675
+msgid "&New Toolbar"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:676
+msgid "&Classic Toolbar"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:677
+msgid "&Dragbar visible"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:679
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:261
+msgid "Expand All"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:680
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:262
+msgid "Collapse All"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:683
+msgid "&Unsaved Changes"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:684
+msgid "Entries with E&xpiry Dates"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:685
+msgid "Last Find results"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:686
+msgid "Subviews"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:689
+msgid "&New/Edit Filter..."
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:691
+msgid "&Manage..."
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:692
+msgid "Empty Group visible in Filter"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:693
+msgid "&Filters"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:695
+msgid "Customize &Main Toolbar..."
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:698
+msgid "&Tree/List Font"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:699
+msgid "&Add/Edit Font"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:700
+msgid "&Password Font"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:701
+msgid "&Notes Font"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:704
+msgid "Change &Font"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:708
+msgid "&Find"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:709
+msgid "Import &Text"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:710
+msgid "Import &XML"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:711
+msgid "Import &KeePass V1 Text"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:712
+msgid "Import Kee&Pass V1 CSV"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:713
+msgid "&Export Text"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:714
+msgid "Export XM&L"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:715
+msgid "Export Current &DB"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:716
+msgid "&Merge"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:717
+msgid "&Synchronize"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:718
+msgid "&Validate"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:719
+msgid "Reports"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:720
+msgid "&View"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:727
+msgid "&Change Master Password..."
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:729
+msgid "Make &Backup...\tCtrl+B"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:730
+msgid "&Restore from Backup...\tCtrl+R"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:732
+msgid "&Options...\tCtrl+M"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:733
+msgid "Password Policies..."
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:735
+msgid "Generate &Password...\tCtrl+P"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:735
+msgid "Generate Password"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:737
+msgid "YubiKey..."
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:737
+msgid "Configure and backup YubiKeys"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:741
+msgid "&Manage"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:748
+msgid "Get &Help"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:749
+msgid "Visit Password Safe &website..."
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:750
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/SystemTray.cpp:155
+msgid "&About Password Safe..."
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:882
+msgid "Select Language"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1480
+msgid "Open database"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1818
+#, c-format
+msgid "Unknown code: %d"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1859
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1875
+msgid "Add &Entry"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1862
+msgid "Add &Group"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1865
+msgid "&Rename Group"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1866
+msgid "&Delete Group"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1882
+msgid "Copy &Username to Clipboard"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1883
+msgid "&Copy Password to Clipboard"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1884
+msgid "Display subset of Password"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1888
+msgid "Copy Aut&h Code to Clipboard"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1889
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:248
+msgid "Display Auth Code"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1890
+msgid "Copy &Notes to Clipboard"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1891
+msgid "Copy UR&L to Clipboard"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1892
+msgid "Copy email to Clipboard"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1893
+msgid "Copy Run Command to Clipboard"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1895
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/SystemTray.cpp:222
+msgid "&Browse to URL"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1896
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/SystemTray.cpp:223
+msgid "Browse to URL + &Autotype"
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1899
 msgid "Perform Auto &Type"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1900
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1902
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/SelectAliasDlg.cpp:499
 msgid "&View Entry..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1903
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1905
 msgid "Edit Entry..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1905
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1907
 msgid "&Duplicate Entry"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1906
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1908
 msgid "Delete Entry"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1948
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1950
 msgid "Goto &Shortcuts..."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1951
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1953
 msgid "&Go to Base entry"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1953
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1955
 msgid "View &Base entry"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1956
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:1958
 msgid "&Edit Base entry"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2084
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2086
 msgid "Missing authentication secret key."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2085
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2095
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2087
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2097
 msgid "Authentication Code Error"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2094
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2096
 msgid "An error occurred obtaining the authentication code."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2193
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2195
 #, c-format
 msgid "\tAuthentication code %ls is valid for %ls seconds"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2713
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2714
 msgid "Could not re-load database: "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2714
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2715
 msgid "Error re-loading last database"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2975
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2976
 msgid "There was an error loading the database: "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2976
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:2977
 msgid "Could not load database"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3021
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3022
 msgid "Change to R/W"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3021
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3022
 msgid "Change to R-O"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3050
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3051
 msgid "Group copied "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3053
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3054
 msgid "Title copied "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3056
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3057
 msgid "User copied "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3059
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3060
 msgid "Pswd copied "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3062
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3063
 msgid "Auth Code copied "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3065
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3066
 msgid "Notes copied "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3068
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3069
 msgid "URL copied "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3071
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3072
 msgid "Autotype copied "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3074
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3075
 msgid "RunCmd copied "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3077
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3078
 msgid "Email copied "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3080
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3081
+msgid "Custom field copied "
+msgstr ""
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3084
 msgid "Password History copied "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3083
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3087
 msgid "Old Pswd copied "
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3122
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3132
 msgid "Select Tree/List display font"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3138
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3149
 msgid "Select Add/Edit display font"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3142
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3153
 msgid "Select Password display font"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3146
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3157
 msgid "Select Notes display font"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3150
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeFrame.cpp:3161
 msgid "Select Virtual Keyboard font"
 msgstr ""
 
@@ -5933,12 +6008,6 @@ msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSubsetDlg.h:45
 msgid "Show a subset of the Password"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:68
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:73
-#, c-format
-msgid "%d"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PropertiesDlg.cpp:83
@@ -6699,10 +6768,6 @@ msgid "Browse URL"
 msgstr ""
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:256
-msgid "Add"
-msgstr ""
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/ToolbarButtons.h:256
 msgid "Add New Entry"
 msgstr ""
 
@@ -6924,24 +6989,27 @@ msgstr ""
 msgid "YubiKey"
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/wxUtilities.cpp:354
-msgid "Not supported by Wayland"
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/wxUtilities.cpp:379
+msgid ""
+"Running on Wayland - make sure the target application is using Xwayland. For "
+"some applications, you may need to enable the 'Use alternate AutoType "
+"method' option in Options > System."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/wxUtilities.cpp:362
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/wxUtilities.cpp:383
 msgid ""
 "Not supported by the current Windowing System (e.g. Wayland), or you may "
 "need to install a Desktop Environment extension to enable System Tray "
 "support."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/wxUtilities.cpp:572
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/wxUtilities.cpp:593
 msgid ""
 "An error occurred while trying to get the image data from database item.\n"
 "Therefore, the image cannot be displayed in the preview."
 msgstr ""
 
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/wxUtilities.cpp:585
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/wxUtilities.cpp:606
 msgid ""
 "An error occurred while trying to load the image data into the preview "
 "area.\n"
