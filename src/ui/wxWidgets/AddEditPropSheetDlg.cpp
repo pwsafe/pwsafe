@@ -2030,11 +2030,7 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
 void AddEditPropSheetDlg::OnGoButtonClick(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow() && !m_Url.IsEmpty()) {
-    std::vector<size_t> vactionverboffsets;
-    const StringX sxAutotype = PWSAuxParse::GetAutoTypeString(m_Item, m_Core, vactionverboffsets);
-    bool bDoAutotype = !sxAutotype.empty();
-
-    GetPwSafe()->LaunchBrowser(m_Url, sxAutotype, vactionverboffsets, bDoAutotype);
+    GetPwSafe()->LaunchBrowser(m_Url);
   }
 }
   
