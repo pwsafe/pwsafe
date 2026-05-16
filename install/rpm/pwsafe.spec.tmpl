@@ -1,92 +1,106 @@
-Summary: Password Safe is a password database utility.
-Name: passwordsafe
-Version: @VERSION@
-Release: 3
-License: Artistic2.0
-Group: Applications/Utils
-Vendor: Rony Shapiro
-URL: https://pwsafe.org/
-Packager: David Dreggors <dadreggors@gmail.com>
-Source:	passwordsafe-@VERSION@-src.tgz
-BuildRequires: gcc-c++, libXt-devel, libXtst-devel, libuuid-devel, libyubikey-devel, xerces-c-devel, ykpers-devel, wxGTK3-devel, file-devel make
-BuildRequires: zip
-BuildRequires: gettext
-%{?el7:Requires: epel-release, wxBase3, wxGTK3, xerces-c, ykpers}
+Summary:        Password Safe is a password management utility.
+Name:           passwordsafe
+Version:        @VERSION@
+Release:        1%{?dist}
+Source:         https://github.com/pwsafe/pwsafe/archive/refs/tags/%{version}.tar.gz
+Url:            https://pwsafe.org/
+License:        Artistic-2.0
+BuildRequires:  cmake file-devel gcc-c++ libXt-devel libXtst-devel
+BuildRequires:  libcurl-devel libuuid-devel libyubikey-devel ninja-build
+BuildRequires:  openssl-devel rpmdevtools rpm-sign xerces-c-devel
+BuildRequires:  ykpers-devel qrencode-devel wxBase-devel wxGTK-devel
+BuildRequires:  libreoffice-core
+Obsoletes:      pwsafe
 
 %description
-Password Safe is a password database utility. Like many other such
-products, commercial and otherwise, it stores your passwords in an
-encrypted file, allowing you to remember only one password (the "safe
-combination"), instead of all the username/password combinations that
-you use.
 
-%global debug_package %{nil}
+Password Safe is a password manager.  It stores your passwords in an
+encrypted file, allowing you to remember only one password (the
+"master password"), instead of all the username/password combinations
+that you use.  For extra security, you can use a Yubikey device to
+provide two-factor authentication.
+
+Password Safe runs on Windows, Linux, macOS and FreeBSD.
+
 
 %prep
-%setup -q
+%autosetup -n pwsafe-%{version}
+
+
+%conf
+%cmake -DNO_GTEST=ON
+
 
 %build
-make rpmbuild
+%cmake_build
+#
+cd docs
+grep -E -v 'gitpod|badge.svg' ../README.md >README.md
+# gitpod image corrupted when converted to pdf by ooffice
+# missing image for badge
+ooffice --headless --convert-to pdf pwsafe-state-machine.rtf
+ooffice --headless --convert-to pdf ReleaseNotesWX.md
+ooffice --headless --convert-to pdf ReleaseNotes.md
+ooffice --headless --convert-to pdf README.md
+
 
 %install
-rm -rf ${RPM_BUILD_ROOT}
-install -d -m 755 ${RPM_BUILD_ROOT}
-install -d -m 755 ${RPM_BUILD_ROOT}/usr/bin
-install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/applications
-install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/doc/passwordsafe
-install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/icons/hicolor/48x48/apps
-install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/passwordsafe/xml
-install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/passwordsafe/help
-install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/man/man1
-install -d -m 755 ${RPM_BUILD_ROOT}/usr/share/locale
-install -d -m 755 ${RPM_BUILD_ROOT}/tmp
-install -m 755 -s ${RPM_BUILD_DIR}/%{name}-%{version}/src/ui/wxWidgets/GCCUnicodeRelease/pwsafe ${RPM_BUILD_ROOT}/usr/bin
-install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/install/desktop/fedora-pwsafe.desktop ${RPM_BUILD_ROOT}/usr/share/applications
-install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/install/graphics/48x48/pwsafe.png ${RPM_BUILD_ROOT}/usr/share/icons/hicolor/48x48/apps
-install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/install/graphics/128x128/pwsafe.png ${RPM_BUILD_ROOT}/usr/share/icons/hicolor/128x128/apps
-install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/README.md ${RPM_BUILD_DIR}/%{name}-%{version}/docs/ReleaseNotes.md ${RPM_BUILD_DIR}/%{name}-%{version}/docs/ChangeLog.txt ${RPM_BUILD_DIR}/%{name}-%{version}/LICENSE ${RPM_BUILD_DIR}/%{name}-%{version}/install/copyright ${RPM_BUILD_ROOT}/usr/share/doc/passwordsafe
-install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/docs/pwsafe.1 ${RPM_BUILD_ROOT}/usr/share/man/man1
-gzip -9 ${RPM_BUILD_ROOT}/usr/share/man/man1/pwsafe.1
-install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/xml/* ${RPM_BUILD_ROOT}/usr/share/passwordsafe/xml
-install -m 644 ${RPM_BUILD_DIR}/%{name}-%{version}/help/helpEN.zip ${RPM_BUILD_ROOT}/usr/share/passwordsafe/help
-cp -a ${RPM_BUILD_DIR}/%{name}-%{version}/src/ui/wxWidgets/I18N/mos/* ${RPM_BUILD_ROOT}/usr/share/locale
+%cmake_install
+for x in ChangeLog.txt \
+         config.txt \
+         formatV1.txt \
+         formatV2.txt \
+         formatV3.txt \
+         formatV4.txt \
+         help.txt \
+         pwsafe-state-machine.pdf \
+         ReleaseNotes.pdf \
+         ReleaseNotesWX.pdf \
+         README.pdf; do
+    install -m 644 -D docs/$x    %{buildroot}%{_datadir}/doc/%{name}-%{version}/$x
+done
 
-%clean
-rm -rf ${RPM_BUILD_ROOT}
 
-%post 
+%check
+%ctest
 
-%postun
-
-%docdir /usr/share/doc/passwordsafe
-%ghost docs/*
 
 %files
-%attr(755,root,root) /usr/share/passwordsafe
-%attr(755,root,root) /usr/share/doc/passwordsafe
-%attr(644,root,root) /usr/share/locale/de/LC_MESSAGES/pwsafe.mo
-%attr(644,root,root) /usr/share/locale/da/LC_MESSAGES/pwsafe.mo
-%attr(644,root,root) /usr/share/locale/es/LC_MESSAGES/pwsafe.mo
-%attr(644,root,root) /usr/share/locale/fr/LC_MESSAGES/pwsafe.mo
-%attr(644,root,root) /usr/share/locale/hu/LC_MESSAGES/pwsafe.mo
-%attr(644,root,root) /usr/share/locale/it/LC_MESSAGES/pwsafe.mo
-%attr(644,root,root) /usr/share/locale/ko/LC_MESSAGES/pwsafe.mo
-%attr(644,root,root) /usr/share/locale/nl/LC_MESSAGES/pwsafe.mo
-%attr(644,root,root) /usr/share/locale/pl/LC_MESSAGES/pwsafe.mo
-%attr(644,root,root) /usr/share/locale/ru/LC_MESSAGES/pwsafe.mo
-%attr(644,root,root) /usr/share/locale/sv/LC_MESSAGES/pwsafe.mo
-%attr(644,root,root) /usr/share/locale/zh/LC_MESSAGES/pwsafe.mo
-%attr(644,root,root) /usr/share/man/man1/pwsafe.1.gz
-%attr(644,root,root) /usr/share/icons/hicolor/48x48/apps/pwsafe.png
-%attr(644,root,root) /usr/share/applications/fedora-pwsafe.desktop
-%attr(755, root, root) /usr/bin/pwsafe
+%{_bindir}/pwsafe*
+%{_mandir}/man1/*
+%docdir %{_datadir}/doc/%{name}-%{version}
+%license LICENSE
+%{_datadir}/%{name}/xml
+%{_datadir}/%{name}/help
+%{_datadir}/applications/pwsafe.desktop
+%{_datadir}/doc/%{name}-%{version}
+%{_datadir}/icons/*/*/*/pwsafe.png
+%{_datadir}/locale/*/*/pwsafe.mo
+%{_datadir}/metainfo/*.xml
+
 
 %changelog
+* Fri May 15 2026 Carl Byington <carl@five-ten-sg.com> - 1.24.0-1
+- Add changelog entries from upstream.
+- Custom fields can now be added to each entry. That is, fields with
+  user-defined names and values.
+- Changing the height of the Add/Edit dialog will cause a vertical
+  scrollbar to be added.
+- In the "Flattened List" view, sorting by time columns (e.g., entry
+  creation time) now works correctly.
+* Tue May 05 2026 Carl Byington <carl@five-ten-sg.com> - 1.23-2
+- Use native spec file so the source rpm actually includes the
+  source code.
+- This includes source fixes thru 2026-05-05 which are not in
+  the official 1.23-1 rpm.
+- Convert docs to pdf format.
+- Properly tag doc and license files.
+- Enable debug packages.
 * Tue Sep 29 2015 Rony Shapiro <ronys@pwsafe.org> - 0.97BETA-4
 - Rename package to passwordsafe to avoid conflict with command-line pwsafe
 * Thu Oct 24 2013 Johan Vromans <jvromans@squirrel.nl> - 0.92BETA-3
 - Additional buildrequires for some platforms.
-* Sun Sep 22 2013-2026 Rony Shapiro <ronys@pwsafe.org> - 0.92BETA-2
+* Sun Sep 22 2013 Rony Shapiro <ronys@pwsafe.org> - 0.92BETA-2
 - Changes for YubiKey build
 * Sun Dec 02 2012 Rony Shapiro <ronys@pwsafe.org> - 0.8BETA-2
 - Streamline rpm build process under PasswordSafe source tree

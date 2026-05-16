@@ -40,9 +40,9 @@ If it encounters errors, check your locale settings. It is known to work with:
 ```
     $ cpack -G DEB ..
 ```
-- To build an RPM package:
+- To build RPM packages:
 ```
-    $ cpack -G RPM ..
+    $ cpack -G RPM .. 
 ```
 
 7. Install
