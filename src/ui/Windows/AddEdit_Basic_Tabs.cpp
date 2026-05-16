@@ -29,16 +29,16 @@ void CAddEdit_Basic_Tabs::CancelThreadWait()
   m_pp_notes.CancelThreadWait();
 }
 
-bool CAddEdit_Basic_Tabs::Create(CWnd *pParentWnd, const CRect &rect)
+BOOL CAddEdit_Basic_Tabs::Create(CWnd *pParentWnd, const CRect &rect)
 {
   m_psh.dwFlags |= PSH_MODELESS | PSH_NOAPPLYNOW;
 
   if (CPropertySheet::Create(pParentWnd, WS_CHILD | WS_VISIBLE | WS_TABSTOP, 0) == FALSE)
-    return false;
+    return FALSE;
 
   MoveWindow(rect);
   LayoutPages();
-  return true;
+  return TRUE;
 }
 
 BOOL CAddEdit_Basic_Tabs::OnInitDialog()

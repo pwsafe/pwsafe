@@ -17,7 +17,7 @@ public:
   CAddEdit_Basic_Tabs(CWnd *pPropertySheetParent, st_AE_master_data *pAEMD);
 
   void CancelThreadWait();
-  bool Create(CWnd *pParentWnd, const CRect &rect);
+  BOOL Create(CWnd *pParentWnd, const CRect &rect);
   bool IsExternalEditorActive() const;
 
 protected:
