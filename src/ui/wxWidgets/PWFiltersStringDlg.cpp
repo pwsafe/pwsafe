@@ -320,7 +320,7 @@ void pwFiltersStringDlg::OnSelectionChange(wxCommandEvent& WXUNUSED(event))
       m_CheckBoxFCase->Disable();
     }
     else {
-      if(m_TextCtrlValueString && m_TextCtrlValueString->GetLineLength(0)) {
+      if(m_TextCtrlValueString->GetLineLength(0)) {
         FindWindow(wxID_OK)->Enable();
       }
       else {
@@ -331,7 +331,7 @@ void pwFiltersStringDlg::OnSelectionChange(wxCommandEvent& WXUNUSED(event))
     }
   }
   else {
-    if(m_TextCtrlValueString && m_TextCtrlValueString->GetLineLength(0)) {
+    if(m_TextCtrlValueString->GetLineLength(0)) {
       FindWindow(wxID_OK)->Enable();
     }
     else {
@@ -349,7 +349,7 @@ void pwFiltersStringDlg::OnTextChange(wxCommandEvent& WXUNUSED(event))
   if (!m_controlsReady) {
     return;
   }
-  if(m_TextCtrlValueString && m_TextCtrlValueString->GetLineLength(0)) {
+  if(m_TextCtrlValueString->GetLineLength(0)) {
     FindWindow(wxID_OK)->Enable();
   }
   else {
