@@ -123,8 +123,8 @@ https://pwsafe.org
 Release Notes
 =============
 For information on the latest features, bugfixes and known problems,
-see [ReleaseNotes.md](docs/ReleaseNotes.md) for the Windows version and 
-[ReleaseNotesWX.md](docs/ReleaseNotesWX.md) for the Linux and Mac versions.
+see [**ReleaseNotes.md**](docs/ReleaseNotes.md) for the Windows version and
+[**ReleaseNotesWX.md**](docs/ReleaseNotesWX.md) for the Linux and Mac versions.
 
 Credits
 =======
