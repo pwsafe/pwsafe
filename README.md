@@ -1,5 +1,7 @@
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/pwsafe/pwsafe) 
-[![mac-pwsafe](https://github.com/pwsafe/pwsafe/actions/workflows/main.yml/badge.svg)](https://github.com/pwsafe/pwsafe/actions/workflows/main.yml)
+[![codeql analysis](https://github.com/pwsafe/pwsafe/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/pwsafe/pwsafe/actions/workflows/codeql-analysis.yml)
+[![mac-pwsafe](https://github.com/pwsafe/pwsafe/actions/workflows/macos-latest.yml/badge.svg)](https://github.com/pwsafe/pwsafe/actions/workflows/macos-latest.yml)
+[![cmake builds](https://github.com/pwsafe/pwsafe/actions/workflows/cmake-build.yml/badge.svg)](https://github.com/pwsafe/pwsafe/actions/workflows/cmake-build.yml)
 
 Introduction
 ============
