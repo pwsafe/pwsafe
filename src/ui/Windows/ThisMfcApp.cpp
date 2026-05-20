@@ -103,7 +103,7 @@ ThisMfcApp::ThisMfcApp() :
 
   CString csFileVersionString, csRevision(L"");
   csFileVersionString = GetFileVersionString();
-  int revIndex = csFileVersionString.ReverseFind(L',');
+  int revIndex = csFileVersionString.ReverseFind(L'/');
   if (revIndex >= 0) {
     int len = csFileVersionString.GetLength();
     csRevision = csFileVersionString.Right(len - revIndex - 1);
