@@ -14,6 +14,7 @@
 #include "DboxMain.h"
 
 #include "AddEdit_Basic.h"
+#include "AddEdit_Basic_Tabs.h"
 #include "AddEdit_PropertySheet.h"
 
 #include "GeneralMsgBox.h"
@@ -22,18 +23,10 @@
 #include "core/PWSprefs.h"
 #include "core/PWSAuxParse.h"
 #include "core/PWCharPool.h"
-#include "core/CustomFields.h"
 #include "os/file.h"
-
-#include "CustomFieldEditDlg.h"
 
 #include "os/debug.h"
 
-#include <Shlwapi.h>
-#include <fstream>
-#include <limits>
-
-#include "Richedit.h"
 #include "winutils.h"
 
 using pws_os::CUUID;
@@ -45,13 +38,8 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 static wchar_t PSSWDCHAR = L'*';
-
-HANDLE CAddEdit_Basic::ghEvents[2];
-
 CString CAddEdit_Basic::CS_SHOW;
 CString CAddEdit_Basic::CS_HIDE;
-CString CAddEdit_Basic::CS_EXTERNAL_EDITOR;
-CString CAddEdit_Basic::CS_HIDDEN_NOTES;
 
 /////////////////////////////////////////////////////////////////////////////
 // CAddEdit_Basic property page
@@ -62,24 +50,13 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent,
     CAddEdit_Basic::IDD, CAddEdit_Basic::IDD_SHORT,
     pAEMD),
-  m_thread(nullptr), m_isNotesHidden(false),
-  m_bInitdone(false),
-  m_bUsingNotesExternalEditor(false)
+  m_tabs(pParent, pAEMD),
+  m_bInitdone(false)
 {
   if (CS_SHOW.IsEmpty()) { // one-time initializations
     CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT);
     CS_HIDE.LoadString(IDS_HIDEPASSWORDTXT);
-    CS_HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);
-    CS_EXTERNAL_EDITOR.LoadString(IDS_NOTES_IN_EXTERNAL_EDITOR);
   }
-
-  // Clear external editor events
-  ghEvents[0] = ghEvents[1] = nullptr;
-
-  PWSprefs *prefs = PWSprefs::GetInstance();
-
-  // Setup
-  m_bWordWrap = prefs->GetPref(PWSprefs::NotesWordWrap);
 
   m_password = m_password2 = M_realpassword();
 
@@ -94,42 +71,6 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
     gmb.MessageBox(cs_text, cs_title, MB_OK | MB_ICONEXCLAMATION);
   }
 
-  // Set up right-click Notes context menu additions
-  std::vector<st_context_menu> vmenu_items;
-
-  st_context_menu st_cm;
-  std::wstring cs_menu_string;
-
-  LoadAString(cs_menu_string, IDS_WORD_WRAP);
-  st_cm.menu_string = cs_menu_string;
-  st_cm.message_number = PWS_MSG_EDIT_WORDWRAP;
-  st_cm.flags = m_bWordWrap ? MF_CHECKED : MF_UNCHECKED;
-  vmenu_items.push_back(st_cm);
-
-  st_cm.Empty();
-  LoadAString(cs_menu_string, IDS_NOTESZOOMIN);
-  st_cm.menu_string = cs_menu_string;
-  st_cm.message_number = PWS_MSG_CALL_NOTESZOOMIN;
-  st_cm.flags = 0;
-  st_cm.lParam = 1;
-  vmenu_items.push_back(st_cm);
-
-  st_cm.Empty();
-  LoadAString(cs_menu_string, IDS_NOTESZOOMOUT);
-  st_cm.menu_string = cs_menu_string;
-  st_cm.message_number = PWS_MSG_CALL_NOTESZOOMOUT;
-  st_cm.flags = 0;
-  st_cm.lParam = -1;
-  vmenu_items.push_back(st_cm);
-
-  st_cm.Empty();
-  LoadAString(cs_menu_string, IDS_EDITEXTERNALLY);
-  st_cm.menu_string = cs_menu_string;
-  st_cm.message_number = PWS_MSG_CALL_EXTERNAL_EDITOR;
-  st_cm.flags = 0;
-  vmenu_items.push_back(st_cm);
-
-  m_ex_notes.SetContextMenu(vmenu_items);
 }
 
 void CAddEdit_Basic::DoDataExchange(CDataExchange *pDX)
@@ -145,7 +86,6 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange *pDX)
   DDX_Text(pDX, IDC_USERNAME, static_cast<CString&>(M_username()));
   DDX_Text(pDX, IDC_URL, static_cast<CString&>(M_URL()));
   DDX_Text(pDX, IDC_EMAIL, static_cast<CString&>(M_email()));
-  DDX_Text(pDX, IDC_NOTES, static_cast<CString&>(M_notes()));
 
   DDX_Control(pDX, IDC_GROUP, m_ex_group);
   DDX_Control(pDX, IDC_TITLE, m_ex_title);
@@ -155,8 +95,6 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange *pDX)
   DDX_Control(pDX, IDC_TWOFACTORCODE, m_btnTwoFactorCode);
   DDX_Control(pDX, IDC_STATIC_TWOFACTORCODE, m_stcTwoFactorCode);
   DDX_Control(pDX, IDC_PASSWORD_STRENGTH, m_prgStrengthMeter);
-  DDX_Control(pDX, IDC_NOTES, m_ex_notes);
-  DDX_Control(pDX, IDC_HIDDEN_NOTES, m_ex_hidden_notes);
   DDX_Control(pDX, IDC_URL, m_ex_URL);
   DDX_Control(pDX, IDC_EMAIL, m_ex_email);
   DDX_Control(pDX, IDC_MYBASE, m_ex_base);
@@ -166,7 +104,6 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange *pDX)
   DDX_Control(pDX, IDC_STATIC_TITLE, m_stc_title);
   DDX_Control(pDX, IDC_STATIC_USERNAME, m_stc_username);
   DDX_Control(pDX, IDC_STATIC_PASSWORD, m_stc_password);
-  DDX_Control(pDX, IDC_STATIC_NOTES, m_stc_notes);
   DDX_Control(pDX, IDC_STATIC_URL, m_stc_URL);
   DDX_Control(pDX, IDC_STATIC_EMAIL, m_stc_email);
   DDX_Control(pDX, IDC_STATIC_ISANALIAS, m_stc_isdependent);
@@ -175,13 +112,7 @@ void CAddEdit_Basic::DoDataExchange(CDataExchange *pDX)
   DDX_Control(pDX, IDC_SMARTLABELHELP, m_Help1);
   DDX_Control(pDX, IDC_PASSWORDHELP, m_Help2);
   DDX_Control(pDX, IDC_PASSWORDHELP2, m_Help3);
-  DDX_Control(pDX, IDC_NOTESHELP, m_Help4);
-  DDX_Control(pDX, IDC_CUSTOMFIELDS_LIST, m_customFieldsList);
   //}}AFX_DATA_MAP
-  if (pDX->m_bSaveAndValidate == TRUE) { //normalize for change detection
-    M_notes().Replace(L"\r\n", L"\n");
-    M_notes().Remove(L'\r');
-  }
 }
 
 BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
@@ -203,31 +134,14 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic, CAddEdit_PropertyPage)
   ON_EN_CHANGE(IDC_TITLE, OnChanged)
   ON_EN_CHANGE(IDC_USERNAME, OnChanged)
   ON_EN_CHANGE(IDC_PASSWORD2, OnChanged)
-  ON_EN_CHANGE(IDC_NOTES, OnENChangeNotes)
-
   ON_EN_CHANGE(IDC_URL, OnENChangeURL)
   ON_EN_CHANGE(IDC_EMAIL, OnENChangeEmail)
   ON_EN_CHANGE(IDC_PASSWORD, OnENChangePassword)
 
   ON_EN_SETFOCUS(IDC_PASSWORD, OnENSetFocusPassword)
   ON_EN_SETFOCUS(IDC_PASSWORD2, OnENSetFocusPassword2)
-  ON_EN_KILLFOCUS(IDC_NOTES, OnENKillFocusNotes)
 
   ON_CONTROL_RANGE(STN_CLICKED, IDC_STATIC_GROUP, IDC_STATIC_EMAIL, OnSTCExClicked)
-
-  ON_MESSAGE(PWS_MSG_CALL_EXTERNAL_EDITOR, OnCallExternalEditor)
-  ON_MESSAGE(PWS_MSG_EXTERNAL_EDITOR_ENDED, OnExternalEditorEnded)
-  ON_MESSAGE(PWS_MSG_EDIT_WORDWRAP, OnWordWrap)
-  ON_MESSAGE(PWS_MSG_CALL_NOTESZOOMIN, OnZoomNotes)
-  ON_MESSAGE(PWS_MSG_CALL_NOTESZOOMOUT, OnZoomNotes)
-
-  ON_BN_CLICKED(IDC_CUSTOMFIELDS_ADD, OnCustomFieldsAdd)
-  ON_BN_CLICKED(IDC_CUSTOMFIELDS_EDIT, OnCustomFieldsEdit)
-  ON_BN_CLICKED(IDC_CUSTOMFIELDS_DELETE, OnCustomFieldsDelete)
-  ON_COMMAND(IDC_CUSTOMFIELDS_TOGGLE_SENSITIVE, OnCustomFieldsToggleSensitive)
-  ON_NOTIFY(NM_CLICK, IDC_CUSTOMFIELDS_LIST, OnCustomFieldsListClick)
-  ON_NOTIFY(NM_RCLICK, IDC_CUSTOMFIELDS_LIST, OnNMRClickCustomFieldsList)
-  ON_NOTIFY(NM_DBLCLK, IDC_CUSTOMFIELDS_LIST, OnNMDblclkCustomFieldsList)
 
   // Common
   ON_MESSAGE(PSM_QUERYSIBLINGS, OnQuerySiblings)
@@ -264,33 +178,15 @@ BOOL CAddEdit_Basic::OnInitDialog()
   GetDlgItem(IDC_COPYPASSWORD)->SetWindowText(L"Copy Password");
   GetDlgItem(IDC_TWOFACTORCODE)->SetWindowText(L"Copy Authentication Code");
 
-  // Need to get change notifications
-  m_ex_notes.SetEventMask(ENM_CHANGE | m_ex_notes.GetEventMask());
-
-  // Set plain text - not that it seems to do much!
-  m_ex_notes.SetTextMode(TM_PLAINTEXT);
-
   m_bTwoFactorCodeShowStatic = false;
   m_stcTwoFactorCode.SetWindowText(m_pszNotShowingCode);
   pFonts->CreateFontMatchingWindowHeight(m_stcTwoFactorCode, m_fontTwoFactorCodeStatic, 8);
   m_stcTwoFactorCode.SetFont(&m_fontTwoFactorCodeStatic);
 
-  PWSprefs *prefs = PWSprefs::GetInstance();
-
-  // Set Notes font!
-  if (prefs->GetPref(PWSprefs::NotesFont).empty()) {
-    m_ex_notes.SetFont(pFonts->GetAddEditFont());
-    m_ex_hidden_notes.SetFont(pFonts->GetAddEditFont());
-  } else {
-    m_ex_notes.SetFont(pFonts->GetNotesFont());
-    m_ex_hidden_notes.SetFont(pFonts->GetNotesFont());
-  }
-
   if (InitToolTip(TTS_BALLOON | TTS_NOPREFIX, 0)) {
     m_Help1.Init(IDB_QUESTIONMARK);
     m_Help2.Init(IDB_QUESTIONMARK);
     m_Help3.Init(IDB_REDEXCLAMATION);
-    m_Help4.Init(IDB_QUESTIONMARK);
 
     // Disable help for alias password for the moment
     m_Help3.EnableWindow(FALSE);
@@ -300,7 +196,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
     AddTool(IDC_SMARTLABELHELP, IDS_SMARTLABELHELP);
     AddTool(IDC_PASSWORDHELP, IDS_PASSWORDHELP);
     AddTool(IDC_PASSWORDHELP2, IDS_PASSWORDHELP2);
-    AddTool(IDC_NOTESHELP, IDS_NOTESHELP);
 
     // Old style tooltips
     AddTool(IDC_STATIC_EMAIL, IDS_CLICKTOCOPYPLUS1);
@@ -320,15 +215,12 @@ BOOL CAddEdit_Basic::OnInitDialog()
     m_Help2.ShowWindow(SW_HIDE);
     m_Help3.EnableWindow(FALSE);
     m_Help3.ShowWindow(SW_HIDE);
-    m_Help4.EnableWindow(FALSE);
-    m_Help4.ShowWindow(SW_HIDE);
   }
 
   m_stc_group.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
   m_stc_title.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
   m_stc_username.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
   m_stc_password.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
-  m_stc_notes.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
   m_stc_URL.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
   m_stc_email.SetHighlight(true, CAddEdit_PropertyPage::crefWhite);
 
@@ -351,29 +243,19 @@ BOOL CAddEdit_Basic::OnInitDialog()
     m_ex_username.SendMessage(EM_SETREADONLY, TRUE, 0);
     m_ex_password.SendMessage(EM_SETREADONLY, TRUE, 0);
     m_ex_password2.SendMessage(EM_SETREADONLY, TRUE, 0);
-    m_ex_notes.SendMessage(EM_SETREADONLY, TRUE, 0);
-    m_ex_hidden_notes.SendMessage(EM_SETREADONLY, TRUE, 0);
     m_ex_URL.SendMessage(EM_SETREADONLY, TRUE, 0);
     m_ex_email.SendMessage(EM_SETREADONLY, TRUE, 0);
 
     // Disable Button
     GetDlgItem(IDC_GENERATEPASSWORD)->EnableWindow(FALSE);
-
-    // Disable Custom Fields edit
-    GetDlgItem(IDC_CUSTOMFIELDS_ADD)->EnableWindow(FALSE);
-    GetDlgItem(IDC_CUSTOMFIELDS_EDIT)->EnableWindow(FALSE);
-    GetDlgItem(IDC_CUSTOMFIELDS_DELETE)->EnableWindow(FALSE);
-    m_customFieldsList.EnableWindow(FALSE);
   }
 
-  // Custom Fields list: columns and data
-  m_customFieldsList.SetExtendedStyle(LVS_EX_FULLROWSELECT);
-  CString cs_col;
-  cs_col.LoadString(IDS_NAME);  // "Name" column
-  m_customFieldsList.InsertColumn(0, cs_col, LVCFMT_LEFT, 90);
-  cs_col.LoadString(IDS_VALUE);  // "Value" column
-  m_customFieldsList.InsertColumn(1, cs_col, LVCFMT_LEFT, 160);
-  LoadCustomFieldsFromList();
+  CRect rcTabs;
+  GetDlgItem(IDC_BASIC_TABHOST)->GetWindowRect(&rcTabs);
+  ScreenToClient(&rcTabs);
+  if (!m_tabs.Create(this, rcTabs))
+    return FALSE;
+  GetDlgItem(IDC_BASIC_TABHOST)->ShowWindow(SW_HIDE);
 
   // Populate the combo box
   m_ex_group.ResetContent(); // groups might be from a previous DB (BR 3062758)
@@ -447,30 +329,11 @@ BOOL CAddEdit_Basic::OnInitDialog()
     m_stc_dependent.ShowWindow(SW_HIDE);
   }
 
-  if (prefs->GetPref(PWSprefs::ShowPWDefault)) {
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowPWDefault)) {
     ShowPassword();
   } else {
     HidePassword();
   }
-
-  // Set "Hidden Notes" text
-  m_ex_hidden_notes.SetWindowText(CS_HIDDEN_NOTES);
-  // Make read only
-  m_ex_hidden_notes.SendMessage(EM_SETREADONLY, TRUE, 0);
-
-  if (prefs->GetPref(PWSprefs::ShowNotesDefault)) {
-    ShowNotes(true);
-  } else {
-    HideNotes(true);
-  }
-
-  // Get current font size
-  CHARFORMAT2 cf;
-  memset(&cf, 0, sizeof(cf));
-  cf.cbSize = sizeof(cf);
-  m_ex_notes.GetDefaultCharFormat(cf);
-  ASSERT((cf.dwMask & CFM_SIZE) == CFM_SIZE);
-  m_iPointSize = cf.yHeight / 20;
 
   // Load copy password bitmap
   UINT nImageID = PWSprefs::GetInstance()->GetPref(PWSprefs::UseNewToolbar) ?
@@ -488,10 +351,6 @@ BOOL CAddEdit_Basic::OnInitDialog()
   }
 
   SetupAuthenticationCodeUiElements();
-
-  // Set initial Word Wrap
-  m_ex_notes.SetTargetDevice(nullptr, m_bWordWrap ? 0 : 1);
-  m_ex_notes.UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
 
   UpdateData(FALSE);
   m_bInitdone = true;
@@ -528,9 +387,6 @@ HBRUSH CAddEdit_Basic::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
         break;
       case IDC_STATIC_PASSWORD:
         pcfOld = &m_pswd_cfOldColour;
-        break;
-      case IDC_STATIC_NOTES:
-        pcfOld = &m_notes_cfOldColour;
         break;
       case IDC_STATIC_URL:
         pcfOld = &m_URL_cfOldColour;
@@ -583,9 +439,7 @@ void CAddEdit_Basic::OnPageSetActive(NMHDR*, LRESULT* pLResult)
 void CAddEdit_Basic::OnPageKillActive(NMHDR *, LRESULT *pLResult)
 {
   StopAuthenticationCodeUi();
-  // Don't allow page switching if Notes being edited in the user's
-  // external editor
-  *pLResult = m_bUsingNotesExternalEditor ? 1 : 0;
+  *pLResult = m_tabs.IsExternalEditorActive() ? 1 : 0;
 }
 
 LRESULT CAddEdit_Basic::OnQuerySiblings(WPARAM wParam, LPARAM )
@@ -665,44 +519,6 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG *pMsg)
   }
 
   RelayToolTipEvent(pMsg);
-
-  // Handle if user clicks on Hidden Notes
-  if (m_ex_hidden_notes.m_hWnd == pMsg->hwnd) {
-    switch (pMsg->message) {
-    case WM_LBUTTONDOWN:
-    case WM_RBUTTONDOWN:
-      if (!m_bUsingNotesExternalEditor)
-        ShowNotes();
-    case WM_LBUTTONUP:
-    case WM_RBUTTONUP:
-      return TRUE;
-    default:
-      break;
-    }
-  }
-
-  // Ctrl + 'key' in Notes
-  if (pMsg->message == WM_KEYDOWN &&
-      (GetKeyState(VK_CONTROL) & 0x8000) == 0x8000 &&
-      m_ex_notes.m_hWnd == ::GetFocus()) {
-    switch (pMsg->wParam) {
-    case 'A':
-      // Ctrl+A (Select All), then SelectAllNotes
-      SelectAllNotes();
-      return TRUE;
-    case 'V':
-      // Ctrl+V (Paste), then do PasteSpecial
-      m_ex_notes.PasteSpecial(CF_UNICODETEXT);
-      return TRUE;
-    case VK_ADD:
-    case VK_SUBTRACT:
-      // Zoom in/out
-      OnZoomNotes(0, pMsg->wParam == VK_ADD ? 1 : -1);
-      return TRUE;
-    default:
-      break;
-    }
-  }
 
   if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_CONTROL &&
       GetDlgItem(IDC_LAUNCH)->IsWindowEnabled()) {
@@ -1051,72 +867,6 @@ void CAddEdit_Basic::HidePassword()
   m_ex_password2.Invalidate();
 }
 
-void CAddEdit_Basic::SetZoomMenu()
-{
-  // If at the limit - don't allow to be called again in that direction
-  m_ex_notes.EnableMenuItem(PWS_MSG_CALL_NOTESZOOMIN, m_iPointSize < 72);
-  m_ex_notes.EnableMenuItem(PWS_MSG_CALL_NOTESZOOMOUT, m_iPointSize > 6);
-}
-
-LRESULT CAddEdit_Basic::OnZoomNotes(WPARAM, LPARAM lParam)
-{
-  // Zoom into and out of notes (by menu and also by keyboard)
-  UpdateData(TRUE);
-
-  ASSERT(lParam != 0);
-
-  if ((lParam < 0 && m_iPointSize <= 6) || (lParam > 0 && m_iPointSize >= 72))
-    return 0L;
-
-  UINT wp_increment = (lParam > 0 ? 1 : -1) * 2;
-
-  CHARFORMAT2 cf;
-  memset(&cf, 0, sizeof(cf));
-  cf.cbSize = sizeof(cf);
-  cf.dwMask = CFM_SIZE;
-  cf.yHeight = (m_iPointSize + wp_increment) * 20;
-  m_ex_notes.SetDefaultCharFormat(cf);
-
-  memset(&cf, 0, sizeof(cf));
-  cf.cbSize = sizeof(cf);
-  m_ex_notes.GetDefaultCharFormat(cf);
-  ASSERT((cf.dwMask & CFM_SIZE) == CFM_SIZE);
-  m_iPointSize = cf.yHeight / 20;
-
-  SetZoomMenu();
-  return 0L;
-}
-
-void CAddEdit_Basic::ShowNotes(const bool bForceShow)
-{
-  if (bForceShow || m_isNotesHidden) {
-    m_isNotesHidden = false;
-
-    // Swap windows
-    m_ex_notes.ShowWindow(SW_SHOW);
-    m_ex_notes.EnableWindow(TRUE);
-    m_ex_hidden_notes.ShowWindow(SW_HIDE);
-    m_ex_hidden_notes.EnableWindow(FALSE);
-
-    m_ex_notes.SetFocus();
-
-    SetZoomMenu();
-  }
-}
-
-void CAddEdit_Basic::HideNotes(const bool bForceHide)
-{
-  if (bForceHide || !m_isNotesHidden) {
-    m_isNotesHidden = true;
-
-    // Swap windows
-    m_ex_notes.ShowWindow(SW_HIDE);
-    m_ex_notes.EnableWindow(FALSE);
-    m_ex_hidden_notes.ShowWindow(SW_SHOW);
-    m_ex_hidden_notes.EnableWindow(TRUE);
-  }
-}
-
 void CAddEdit_Basic::OnGeneratePassword()
 {
   UpdateData(TRUE);
@@ -1169,26 +919,6 @@ void CAddEdit_Basic::OnChanged()
   m_ae_psh->SetChanged(true);
 }
 
-void CAddEdit_Basic::OnENChangeNotes()
-{
-  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
-    return;
-
-  // Called for any change - even just clicking on it - so check really changed
-  if (m_ex_hidden_notes.IsWindowVisible()) {
-    return;
-  } else {
-    CSecString current_notes;
-    m_ex_notes.GetWindowText(current_notes);
-    if (current_notes == M_notes())
-      return;
-  }
-
-  m_ae_psh->SetChanged(true);
-  m_ae_psh->SetNotesChanged(true); // Needed if Notes field is long and will be truncated
-  UpdateData(TRUE);
-}
-
 void CAddEdit_Basic::OnENChangeURL()
 {
   UpdateData(TRUE);
@@ -1237,11 +967,6 @@ void CAddEdit_Basic::OnSTCExClicked(UINT nID)
       }
       cds = CItemData::PASSWORD;
       break;
-    case IDC_STATIC_NOTES:
-      m_stc_notes.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
-      cs_data = M_notes();
-      cds = CItemData::NOTES;
-      break;
     case IDC_STATIC_URL:
       cs_data = M_URL();
       m_stc_URL.FlashBkgnd(CAddEdit_PropertyPage::crefGreen);
@@ -1262,40 +987,6 @@ void CAddEdit_Basic::OnSTCExClicked(UINT nID)
   }
   GetMainDlg()->SetClipboardData(cs_data);
   GetMainDlg()->UpdateLastClipboardAction(cds);
-}
-
-void CAddEdit_Basic::SelectAllNotes()
-{
-  // Here from PreTranslateMessage iff User pressed Ctrl+A
-  // in Notes control
-  static_cast<CEdit*>(GetDlgItem(IDC_NOTES))->SetSel(0, -1, TRUE);
-}
-
-LRESULT CAddEdit_Basic::OnWordWrap(WPARAM, LPARAM)
-{
-  m_bWordWrap = !m_bWordWrap;
-  m_ex_notes.SetTargetDevice(nullptr, m_bWordWrap ? 0 : 1);
-
-  m_ex_notes.UpdateState(PWS_MSG_EDIT_WORDWRAP, m_bWordWrap);
-
-  // No idea why this is necessary but fixes the issue of no horizontal
-  // scroll bar active after turning off Word Wrap if the preferences
-  // are Word Wrap and Hidden Notes. Without this "fix", user would have to
-  // ensure that the Notes field looses focus by clicking on another field.
-  m_ex_notes.EnableWindow(FALSE);
-  m_ex_notes.EnableWindow(TRUE);
-
-  if (m_isNotesHidden)
-    ShowNotes();
-
-  return 0L;
-}
-
-void CAddEdit_Basic::OnENKillFocusNotes()
-{
-  if (!PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault)) {
-    HideNotes();
-  }
 }
 
 void CAddEdit_Basic::OnLaunch()
@@ -1349,474 +1040,6 @@ void CAddEdit_Basic::OnSendEmail()
 
   GetMainDlg()->SendEmail(M_email());
   GetMainDlg()->UpdateLastClipboardAction(CItemData::EMAIL);
-}
-
-void CAddEdit_Basic::LoadCustomFieldsFromList()
-{
-  m_customFieldsList.SetRedraw(FALSE);
-  m_customFieldsList.DeleteAllItems();
-
-  const CustomFieldList &fields = M_customfields();
-  for (size_t i = 0; i < fields.size(); i++) {
-    const CustomField &cf = fields[i];
-    CString name(cf.GetName().c_str());
-    CString value(cf.IsSensitive() ? L"********" : cf.GetValue().c_str());
-    int idx = m_customFieldsList.InsertItem(static_cast<int>(i), name);
-    m_customFieldsList.SetItemText(idx, 1, value);
-  }
-
-  m_customFieldsList.SetRedraw(TRUE);
-
-  const BOOL bHasSelection = m_customFieldsList.GetItemCount() > 0 ? TRUE : FALSE;
-  GetDlgItem(IDC_CUSTOMFIELDS_EDIT)->EnableWindow(bHasSelection);
-  GetDlgItem(IDC_CUSTOMFIELDS_DELETE)->EnableWindow(bHasSelection);
-}
-
-void CAddEdit_Basic::OnCustomFieldsAdd()
-{
-  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
-    return;
-
-  CCustomFieldEditDlg dlg(this, M_customfields());
- 
-  if (dlg.DoModal() != IDOK)
-    return;
-
-  ASSERT(!dlg.m_name.IsEmpty()); // Enforced in dialog's OnOK()
-
-  const StringX newName(dlg.m_name);
-  CustomField cf;
-
-  cf.SetName(newName);
-  cf.SetValue(StringX(dlg.m_value));
-  cf.SetSensitive(dlg.m_sensitive == TRUE);
-
-  M_customfields().push_back(cf);
-  LoadCustomFieldsFromList();
-  m_ae_psh->SetChanged(true);
-}
-
-void CAddEdit_Basic::OnCustomFieldsEdit()
-{
-  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
-    return;
-
-  int sel = m_customFieldsList.GetNextItem(-1, LVNI_SELECTED);
-  if (sel < 0)
-    return;
-
-  CustomFieldList &fields = M_customfields();
-  if (sel >= static_cast<int>(fields.size()))
-    return;
-
-  CustomField &cf = fields[sel];
-  CCustomFieldEditDlg dlg(this, fields, cf);
-
-  if (dlg.DoModal() != IDOK)
-    return;
-
-  ASSERT(!dlg.m_name.IsEmpty()); // Enforced in dialog's OnOK()
-
-  const StringX newName(dlg.m_name);
-  cf.SetName(newName);
-  cf.SetValue(StringX(dlg.m_value));
-  cf.SetSensitive(dlg.m_sensitive == TRUE);
-  LoadCustomFieldsFromList();
-  m_ae_psh->SetChanged(true);
-}
-
-void CAddEdit_Basic::OnCustomFieldsDelete()
-{
-  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
-    return;
-
-  int sel = m_customFieldsList.GetNextItem(-1, LVNI_SELECTED);
-  if (sel < 0)
-    return;
-
-  CustomFieldList &fields = M_customfields();
-  if (sel >= static_cast<int>(fields.size()))
-    return;
-
-  fields.erase(fields.begin() + sel);
-  LoadCustomFieldsFromList();
-  m_ae_psh->SetChanged(true);
-}
-
-void CAddEdit_Basic::OnCustomFieldsToggleSensitive()
-{
-  if (M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
-    return;
-  if (m_rightClickedCustomFieldIndex < 0)
-    return;
-
-  CustomFieldList &fields = M_customfields();
-  if (m_rightClickedCustomFieldIndex >= static_cast<int>(fields.size()))
-    return;
-
-  CustomField &cf = fields[m_rightClickedCustomFieldIndex];
-  cf.SetSensitive(!cf.IsSensitive());
-  LoadCustomFieldsFromList();
-  m_ae_psh->SetChanged(true);
-  m_rightClickedCustomFieldIndex = -1;
-}
-
-void CAddEdit_Basic::OnCustomFieldsListClick(NMHDR *pNMHDR, LRESULT *pResult)
-{
-  auto pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
-  const int selectedRow = pNMItemActivate->iItem;
-  if (selectedRow >= 0) {
-    const CustomFieldList &fields = M_customfields();
-    if (selectedRow < static_cast<int>(fields.size())) {
-      GetMainDlg()->SetClipboardData(fields[selectedRow].GetValue());
-      GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::CustomFieldValue);
-    }
-  }
-
-  *pResult = 0;
-}
-
-void CAddEdit_Basic::OnNMRClickCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult)
-{
-  (void)pNMHDR;
-  CPoint pt;
-  GetCursorPos(&pt);
-  m_customFieldsList.ScreenToClient(&pt);
-
-  LVHITTESTINFO hit = {};
-  hit.pt = pt;
-  int item = m_customFieldsList.SubItemHitTest(&hit);
-  if (item < 0 || hit.iSubItem != 1) {
-    *pResult = 0;
-    return;
-  }
-
-  m_rightClickedCustomFieldIndex = item;
-
-  const CustomFieldList &fields = M_customfields();
-  if (item >= static_cast<int>(fields.size())) {
-    *pResult = 0;
-    return;
-  }
-
-  CString menuText;
-  menuText.LoadString(fields[item].IsSensitive() ? IDS_SHOW_VALUE : IDS_HIDE_VALUE);
-  CMenu menu;
-  menu.CreatePopupMenu();
-  menu.AppendMenu(MF_STRING, IDC_CUSTOMFIELDS_TOGGLE_SENSITIVE, menuText);
-  CPoint ptScreen;
-  GetCursorPos(&ptScreen);
-  menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON, ptScreen.x, ptScreen.y, this);
-  *pResult = 0;
-}
-
-void CAddEdit_Basic::OnNMDblclkCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult)
-{
-  (void)pNMHDR;
-  OnCustomFieldsEdit();
-  *pResult = 0;
-}
-
-int CAddEdit_Basic::GetCustomFieldListSelectedSubItem(NMHDR *pNMHDR, CPoint &pt)
-{
-  (void)pNMHDR;
-  m_customFieldsList.ScreenToClient(&pt);
-  LVHITTESTINFO hit = {};
-  hit.pt = pt;
-  m_customFieldsList.SubItemHitTest(&hit);
-  return hit.iSubItem;
-}
-
-LRESULT CAddEdit_Basic::OnCallExternalEditor(WPARAM, LPARAM)
-{
-  // Warn the user about sensitive data lying around
-  CGeneralMsgBox gmb;
-  INT_PTR rc = gmb.AfxMessageBox(IDS_EXTERNAL_EDITOR_WARNING,
-                         MB_YESNO | MB_ICONEXCLAMATION | MB_DEFBUTTON2);
-  if (rc != IDYES)
-    return 0L;
-
-  m_bOKSave = GetParent()->GetDlgItem(IDOK)->EnableWindow(FALSE);
-  m_bOKCancel = GetParent()->GetDlgItem(IDCANCEL)->EnableWindow(FALSE);
-
-  m_ex_hidden_notes.SetWindowText(CS_EXTERNAL_EDITOR);
-  HideNotes(true);
-  m_bUsingNotesExternalEditor = true;
-
-  // Clear events
-  ghEvents[0] = ghEvents[1] = nullptr;
-
-  m_thread = CExtThread::BeginThread(ExternalEditorThread, this);
-  return 0L;
-}
-
-UINT CAddEdit_Basic::ExternalEditorThread(LPVOID me) // static method!
-{
-  auto*self = static_cast<CAddEdit_Basic*>(me);
-
-  wchar_t szExecName[MAX_PATH + 1];
-  wchar_t lpPathBuffer[4096];
-  DWORD dwBufSize(4096);
-
-  StringX sxEditorCmdLineParms = PWSprefs::GetInstance()->GetPref(PWSprefs::AltNotesEditorCmdLineParms);
-
-  StringX sxEditor = PWSprefs::GetInstance()->GetPref(PWSprefs::AltNotesEditor);
-  if (sxEditor.empty()) {
-    // Find out the users default editor for "txt" files
-    DWORD dwSize(MAX_PATH);
-    HRESULT stat = ::AssocQueryString(0, ASSOCSTR_EXECUTABLE, L".txt", L"Open",
-                                      szExecName, &dwSize);
-    if (static_cast<int>(stat) != S_OK) {
-#ifdef _DEBUG
-      CGeneralMsgBox gmb;
-      gmb.AfxMessageBox(L"oops");
-#endif
-      self->SendMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 8, 0);
-      self->ResetHiddenNotes();
-      return 8;
-    }
-    sxEditor = szExecName;
-  }
-
-  DWORD dwResult = ExpandEnvironmentStrings(sxEditor.c_str(), szExecName, MAX_PATH + 1);
-  if (dwResult == 0 || dwResult > (MAX_PATH + 1)) {
-    CGeneralMsgBox gmb;
-    CString cs_msg, cs_title(MAKEINTRESOURCE(IDS_EDITEXTERNALLY));
-    cs_msg.Format(IDS_CANT_FIND_EXT_EDITOR, sxEditor.c_str());
-    gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONEXCLAMATION);
-
-    self->SendMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 12, 0);
-    self->ResetHiddenNotes();
-    return 12;
-  }
-
-  sxEditor = szExecName;
-
-  if (!pws_os::FileExists(sxEditor.c_str())) {
-    CGeneralMsgBox gmb;
-    CString cs_msg, cs_title(MAKEINTRESOURCE(IDS_EDITEXTERNALLY));
-    cs_msg.Format(IDS_CANT_FIND_EXT_EDITOR, sxEditor.c_str());
-    gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONEXCLAMATION);
-
-    self->SendMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 16, 0);
-    self->ResetHiddenNotes();
-    return 16;
-  }
-
-  // Now we know the editor exists - go copy the data for it!
-  // Get the temp path
-  GetTempPath(dwBufSize,          // length of the buffer
-              lpPathBuffer);      // buffer for path
-
-  // Create a temporary file.
-  GetTempFileName(lpPathBuffer,          // directory for temp files
-                  L"NTE",                // temp file name prefix
-                  0,                     // create unique name
-                  self->m_szTempName);   // buffer for name
-
-  FILE *fd;
-
-  if ((fd = pws_os::FOpen(self->m_szTempName, L"w+b")) == nullptr) {
-    self->SendMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 20, 0);
-    self->ResetHiddenNotes();
-    return 20;
-  }
-
-  // Write BOM
-  const unsigned int iBOM = 0xFEFF;
-  putwc(iBOM, fd);
-
-  // Write out text
-  fwrite(reinterpret_cast<const void *>(static_cast<LPCWSTR>(self->M_notes())), sizeof(BYTE),
-             self->M_notes().GetLength() * sizeof(wchar_t), fd);
-
-  // Close file before invoking editor
-  fclose(fd);
-
-  // Create an Edit process
-  STARTUPINFO si;
-  PROCESS_INFORMATION pi;
-
-  ZeroMemory(&si, sizeof(STARTUPINFO));
-  si.cb = sizeof(si);
-  ZeroMemory(&pi, sizeof(PROCESS_INFORMATION));
-
-  DWORD dwCreationFlags;
-  dwCreationFlags = CREATE_UNICODE_ENVIRONMENT | CREATE_SUSPENDED;
-
-  CString cs_CommandLine;
-
-  // Make the command line = "<program>" <parameters> "filename"
-  // Note: the parameters reproduce the user's input as-is - it is up to them
-  // to add quotes or not as required by their chosen external editor.
-  // We add double quotes around the full path to the program and its name and
-  // similarly for the temporary file name e.g.
-  // "C:\somewhere\editor.exe" paramters "C:\somewhere_else\temp.txt"
-  cs_CommandLine.Format(L"\"%s\" %s \"%s\"", sxEditor.c_str(),
-                               sxEditorCmdLineParms.c_str(), self->m_szTempName);
-
-  int ilen = cs_CommandLine.GetLength();
-  LPWSTR pszCommandLine = cs_CommandLine.GetBuffer(ilen);
-
-  if (!CreateProcess(NULL, pszCommandLine, NULL, NULL, FALSE, dwCreationFlags,
-                     NULL, lpPathBuffer, &si, &pi)) {
-    pws_os::IssueError(L"External Editor CreateProcess", false);
-    CGeneralMsgBox gmb;
-    gmb.AfxMessageBox(IDS_CANT_FIND_EXT_EDITOR, MB_OK | MB_ICONEXCLAMATION);
-
-    // Delete temporary file
-    _wremove(self->m_szTempName);
-    SecureZeroMemory(self->m_szTempName, sizeof(self->m_szTempName));
-
-    self->SendMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, 24, 0);
-    self->ResetHiddenNotes();
-    return 24;
-  }
-
-  // All set up now set process going
-  ResumeThread(pi.hThread);
-
-  WaitForInputIdle(pi.hProcess, INFINITE);
-
-  // Disable me to stop other changes until editor ends or user cancels it
-  self->EnableWindow(FALSE);
-
-  // Wait until child process exits or we cancel it
-  ghEvents[0] = pi.hProcess;                            // Thread ended
-  ghEvents[1] = CreateEvent(nullptr, FALSE, FALSE, nullptr);  // We cancelled
-
-  // Now wait for editor to end or user to cancel
-  DWORD dwEvent = WaitForMultipleObjects(2, ghEvents, FALSE, INFINITE);
-
-  // Close process and thread handles.
-  CloseHandle(pi.hProcess);
-  CloseHandle(pi.hThread);
-  cs_CommandLine.ReleaseBuffer();
-
-  // If edit ended normally (i.e. not cancelled by user) - go process
-  // Otherwise indicate cancelled
-  self->SendMessage(PWS_MSG_EXTERNAL_EDITOR_ENDED, dwEvent == (WAIT_OBJECT_0 + 0) ? 0 : 28, 0);
-
-  self->ResetHiddenNotes();
-  return 0;
-}
-
-void CAddEdit_Basic::ResetHiddenNotes()
-{
-  // Put back hidden notes message
-  m_ex_hidden_notes.SetWindowText(CS_HIDDEN_NOTES);
-  
-  // Show notes again
-  ShowNotes(true);
-
-  // No longer in the external editor
-  m_bUsingNotesExternalEditor = false;
-
-  // Re-enable the property page
-  EnableWindow(TRUE);
-}
-
-LRESULT CAddEdit_Basic::OnExternalEditorEnded(WPARAM wParam, LPARAM)
-{
-  std::wstring sNewNotes;
-  CSecString sOldNotes = M_notes();
-  ulong64 flength;
-
-  if (wParam != 0) {
-    // Tidy up and re-enable sheet OK/Cancel buttons
-    goto error_exit;
-  }
-
-  // Now get what the user saved in this file and put it back into Notes field
-  FILE *fd;
-
-  if ((fd = pws_os::FOpen(m_szTempName, L"r+b")) == nullptr) {
-    goto error_exit;
-  }
-
-  M_notes().Empty();
-
-  flength = pws_os::fileLength(fd);
-
-  ASSERT(flength % 2 == 0); // guess this is 'cause we assume editor saves wchar_t?
-
-  size_t slength;
-  if (flength > ((std::numeric_limits<size_t>::max)() - 2)) {
-    // we're gonna truncate later in any case, due to the check
-    // on MAXTEXTCHARS. This is just to keep memory in check
-    slength = (std::numeric_limits<size_t>::max)() - 2;
-  } else {
-    slength = static_cast<size_t>(flength);
-  }
-
-  {
-    BYTE* pBuffer = new BYTE[slength + sizeof(wchar_t)];
-    memset(pBuffer, 0, slength + sizeof(wchar_t));
-
-    if (slength >= 2) {
-      // Read in BOM and check it is
-      const unsigned char BOM[] = { 0xff, 0xfe };
-      fread(pBuffer, 1, 2, fd);
-
-      // if not a BOM - backspace and treat as data
-      if (pBuffer[0] != BOM[0] || pBuffer[1] != BOM[1]) {
-        fseek(fd, 0, SEEK_SET);
-        slength += 2;
-      }
-    }
-
-    // Clear BOM
-    memset(pBuffer, 0, 2);
-    // Read in text
-    fread(pBuffer, sizeof(BYTE), slength - 2, fd);
-
-    sNewNotes = reinterpret_cast<const LPCWSTR>(pBuffer);
-
-    delete[] pBuffer;
-  }
-  // Close file before invoking editor
-  fclose(fd);
-
-  if ((!M_pcore()->IsReadOnly() && M_protected() == 0) &&
-      sNewNotes.length() > MAXTEXTCHARS) {
-    sNewNotes = sNewNotes.substr(0, MAXTEXTCHARS);
-
-    CGeneralMsgBox gmb;
-    CString cs_text, cs_title(MAKEINTRESOURCE(IDS_WARNINGTEXTLENGTH));
-    cs_text.Format(IDS_TRUNCATETEXT, MAXTEXTCHARS);
-    gmb.MessageBox(cs_text, cs_title, MB_OK | MB_ICONEXCLAMATION);
-  }
-
-  // Set real notes field, and
-  // we are still displaying the old text, so replace that too
-  M_notes() = sNewNotes.c_str();
-
-  UpdateData(FALSE);
-  m_ex_notes.Invalidate();
-
-  // Delete temporary file
-  _wremove(m_szTempName);
-  SecureZeroMemory(m_szTempName, sizeof(m_szTempName));
-
-  // Restore Sheet buttons
-  GetParent()->GetDlgItem(IDOK)->EnableWindow(m_bOKSave == 0 ? TRUE : FALSE);
-  GetParent()->GetDlgItem(IDCANCEL)->EnableWindow(m_bOKCancel == 0 ? TRUE : FALSE);
-
-  if (sOldNotes != M_notes()) {
-    m_ae_psh->SetChanged(true);
-    m_ae_psh->SetNotesChanged(true); // Needed if Notes field is long and will be truncated
-  }
-  return 0L;
-
-error_exit:
-  // Get out
-  UpdateData(FALSE);
-  m_ex_notes.Invalidate();
-
-  // Restore Sheet buttons
-  GetParent()->GetDlgItem(IDOK)->EnableWindow(m_bOKSave == 0 ? TRUE : FALSE);
-  GetParent()->GetDlgItem(IDCANCEL)->EnableWindow(m_bOKCancel == 0 ? TRUE : FALSE);
-  return 0L;
 }
 
 #include "core.h" // XXX temporary until refactor finished

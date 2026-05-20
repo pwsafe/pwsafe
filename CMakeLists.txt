@@ -190,6 +190,7 @@ include_directories ("${PROJECT_SOURCE_DIR}/src"
 add_compile_definitions(
   __STDC_WANT_LIB_EXT1__=1
   UNICODE
+  _UNICODE
   $<$<CONFIG:DEBUG>:_DEBUG>
   $<$<NOT:$<CONFIG:DEBUG>>:NDEBUG>
 )

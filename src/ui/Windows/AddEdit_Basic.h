@@ -12,7 +12,7 @@
 
 #include "resource.h"
 #include "AddEdit_PropertyPage.h"
-#include "ExtThread.h"
+#include "AddEdit_Basic_Tabs.h"
 #include "ControlExtns.h"
 #include "TBMStatic.h"
 #include "ProgressPieCtrl.h"
@@ -31,7 +31,7 @@ public:
 
   CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD);
 
-  static CString CS_SHOW, CS_HIDE, CS_EXTERNAL_EDITOR, CS_HIDDEN_NOTES;
+  static CString CS_SHOW, CS_HIDE;
   static HANDLE ghEvents[2];
 
   // Dialog Data
@@ -44,7 +44,6 @@ public:
 
   CEditExtn m_ex_title;
   CEditExtn m_ex_username;
-  CRichEditExtn m_ex_notes;
   CEditExtn m_ex_URL;
   CEditExtn m_ex_email;
   CEditExtn m_ex_base;
@@ -59,30 +58,19 @@ public:
   CStaticExtn m_stc_username;
   CStaticExtn m_stc_password;
   CStaticExtn m_stcTwoFactorCode;
-  CStaticExtn m_stc_notes;
   CStaticExtn m_stc_URL;
   CStaticExtn m_stc_email;
   CStaticExtn m_stc_isdependent;
   CStaticExtn m_stc_dependent;
 
   CComboBox m_cmbDependents;
-  CEditExtn m_ex_hidden_notes;
-
-  CListCtrl m_customFieldsList;
   //}}AFX_DATA
 
-  CExtThread *m_thread; // worker thread
-  static UINT ExternalEditorThread(LPVOID me);
-  wchar_t m_szTempName[MAX_PATH + 1];
+  bool m_isPWHidden;
+  bool m_bLaunchPlus;
 
-  bool m_isPWHidden, m_isNotesHidden;
-  bool m_bWordWrap, m_bLaunchPlus;
-
-  void CancelThreadWait()
-  { SetEvent(ghEvents[1]); }
-
-  bool IsNotesExternalEditorActive()
-  { return m_bUsingNotesExternalEditor; }
+  void CancelThreadWait() { m_tabs.CancelThreadWait(); }
+  bool IsNotesExternalEditorActive() const { return m_tabs.IsExternalEditorActive(); }
 
   // Overrides
   // ClassWizard generate virtual function overrides
@@ -109,9 +97,7 @@ protected:
   afx_msg void OnENSetFocusPassword();
   afx_msg void OnENSetFocusPassword2();
   afx_msg void OnENChangePassword();
-  afx_msg void OnENKillFocusNotes();
   afx_msg void OnChanged();
-  afx_msg void OnENChangeNotes();
   afx_msg void OnENChangeURL();
   afx_msg void OnENChangeEmail();
   afx_msg void OnGroupComboChanged();
@@ -125,30 +111,13 @@ protected:
   afx_msg void OnLaunch();
   afx_msg void OnSendEmail();
 
-  afx_msg LRESULT OnCallExternalEditor(WPARAM, LPARAM);
-  afx_msg LRESULT OnExternalEditorEnded(WPARAM, LPARAM);
-  afx_msg LRESULT OnWordWrap(WPARAM, LPARAM);
-  afx_msg LRESULT OnZoomNotes(WPARAM, LPARAM);
-
-  afx_msg void OnCustomFieldsAdd();
-  afx_msg void OnCustomFieldsEdit();
-  afx_msg void OnCustomFieldsDelete();
-  afx_msg void OnCustomFieldsToggleSensitive();
-  afx_msg void OnCustomFieldsListClick(NMHDR *pNMHDR, LRESULT *pResult);
-  afx_msg void OnNMRClickCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult);
-  afx_msg void OnNMDblclkCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult);
   //}}AFX_MSG
 
   DECLARE_MESSAGE_MAP()
 
 private:
-  void SetZoomMenu();
-  void SelectAllNotes();
   void ShowPassword();
   void HidePassword();
-  void ShowNotes(const bool bForceShow = false);
-  void HideNotes(const bool bForceHide = false);
-  void ResetHiddenNotes();
   void SetUpDependentsCombo();
   void SetComboBoxWidth();
 
@@ -158,9 +127,6 @@ private:
                         pws_os::CUUID &base_uuid, int &ibasedata, bool &b_msg_issued);
   void SetGroupComboBoxWidth();
   void ShowHideBaseInfo(const CItemData::EntryType &entrytype, const CSecString &csBase);
-  void LoadCustomFieldsFromList();
-  void SaveCustomFieldsToList();
-  int GetCustomFieldListSelectedSubItem(NMHDR *pNMHDR, CPoint &pt);
   void SetupAuthenticationCodeUiElements();
   void StopAuthenticationCodeUi();
   void UpdateAuthCode();
@@ -168,16 +134,14 @@ private:
 
   CSecString GetTwoFactorKey();
 
-  CTBMStatic m_Help1, m_Help2, m_Help3, m_Help4;
+  CTBMStatic m_Help1, m_Help2, m_Help3;
+  CAddEdit_Basic_Tabs m_tabs;
 
   COLORREF m_group_cfOldColour, m_title_cfOldColour, m_user_cfOldColour;
-  COLORREF m_pswd_cfOldColour, m_notes_cfOldColour, m_URL_cfOldColour;
+  COLORREF m_pswd_cfOldColour, m_URL_cfOldColour;
   COLORREF m_email_cfOldColour, m_protected_cfOldColour;
-  BOOL m_bOKSave, m_bOKCancel;
 
   bool m_bInitdone;
-  bool m_bUsingNotesExternalEditor;
-  int m_iPointSize;
 
   CBitmap m_CopyPswdBitmap;
   StringX m_sxLastAuthCode;
@@ -186,8 +150,6 @@ private:
   bool m_bTwoFactorCodeShowStatic = false;
   CFont m_fontTwoFactorCodeStatic;
   const wchar_t* m_pszNotShowingCode = L"********";
-
-  int m_rightClickedCustomFieldIndex = -1;
 };
 //-----------------------------------------------------------------------------
 // Local variables:
