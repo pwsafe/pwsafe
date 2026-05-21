@@ -667,8 +667,7 @@ public:
   wxTopLevelWindow* GetTopWindow() const;
   static void DisplayFileWriteError(int rc, const StringX &fname);
   
-  bool LaunchBrowser(const wxString &csURL, const StringX &sxAutotype,
-    const std::vector<size_t> &vactionverboffsets, bool bDoAutotype) const;
+  bool LaunchBrowser(const wxString &csURL) const;
 
 
 ////@begin PasswordSafeFrame member variables
