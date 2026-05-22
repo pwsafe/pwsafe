@@ -3,6 +3,10 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/AddEdit_Additional.h
             src/ui/Windows/AddEdit_Attachment.h
             src/ui/Windows/AddEdit_Basic.h
+            src/ui/Windows/AddEdit_Basic_CustomFieldsPage.h
+            src/ui/Windows/AddEdit_Basic_NotesPage.h
+            src/ui/Windows/AddEdit_Basic_SubPage.h
+            src/ui/Windows/AddEdit_Basic_Tabs.h
             src/ui/Windows/AddEdit_DateTimes.h
             src/ui/Windows/AddEdit_PasswordPolicy.h
             src/ui/Windows/AddEdit_PropertyPage.h
@@ -157,6 +161,10 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/AddEdit_Additional.cpp
             src/ui/Windows/AddEdit_Attachment.cpp
             src/ui/Windows/AddEdit_Basic.cpp
+            src/ui/Windows/AddEdit_Basic_CustomFieldsPage.cpp
+            src/ui/Windows/AddEdit_Basic_NotesPage.cpp
+            src/ui/Windows/AddEdit_Basic_SubPage.cpp
+            src/ui/Windows/AddEdit_Basic_Tabs.cpp
             src/ui/Windows/AddEdit_DateTimes.cpp
             src/ui/Windows/AddEdit_PasswordPolicy.cpp
             src/ui/Windows/AddEdit_PropertyPage.cpp
