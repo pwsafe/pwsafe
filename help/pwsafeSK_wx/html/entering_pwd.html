@@ -26,7 +26,10 @@
 <h3>Karta <i>Základné</i></h3>
 
 <p>Táto karta obsahuje najdôležitejšie a najčastejšie používané prvky.</p>
-<p><img alt="Upraviť záznam/Zobraziť záznam" src="images/edit_view_entry_base.png"/></p>
+<div style="display:flex; gap:10px;">
+  <img alt="Upraviť/Zobraziť záznam - Poznámky" src="images/edit_view_entry_base.png"/>
+  <img alt="Upraviť/Zobraziť záznam - Vlastné polia" src="images/edit_view_entry_base2.png"/>
+</div>
 <p>Ku každému záznamu hesla sú priradené nasledujúce informácie:</p>
 <ul>
 <li><b>Skupina</b>: Názov na zoskupenie (organizovanie) niekoľkých súvisiacich záznamov</li>
@@ -69,8 +72,7 @@ Po kliknutí myšou na riadok v zozname vlastných polí sa skopíruje hodnota d
 <li><b>URL</b>: URL adresa priradená k záznamu. Ak toto pole nie je prázdne, tlačidlo "Prejsť"
 je povolené. Ak protokol nie je zadaný, predpokladá sa "http://"
 (napr. "www.foo.net" je to isté ako "http://www.foo.net"). Kliknutím na tlačidlo <b>Prejsť</b> napravo
-od poľa <b>URL</b> sa otvorí predvolený prehliadač na zadanej URL adrese. Kliknutím so stlačeným klávesom Ctrl 
-sa navyše spustí funkcia <a href="autotype.html">AutoType</a> na otvorenej stránke prehliadača. 
+od poľa <b>URL</b> sa otvorí predvolený prehliadač na zadanej URL adrese.
 Viac informácií nájdete v <a href="#URL_details">nasledujúcich poznámkach</a>.</li>
 <li><b>Email</b>: Emailová adresa priradená k tomuto záznamu. Upozorňujeme,
 že toto slúži len na uchovanie e-mailovej adresy priradenej k stránke, napr. support@myvendor.com. 
@@ -99,11 +101,8 @@ Ak chcete nakonfigurovať alternatívny prehliadač, použite dialógové okno v
 nie je zadaný žiadny protokol. Toto je užitočné, ak je alternatívny prehliadač
 aplikáciou pre vzdialený prístup, napr. klientom SSH. Podobne, [ssh] dosiahne
 rovnaký efekt.</li>
-
-<li>Ak sa pred URL adresou nájde "[autotype]", potom po zobrazení URL/vykonaní akcie nad adresou <b>Password Safe</b> vykoná akciu AutoType
-pomocou poľa AutoType tejto položky (alebo predvolenej hodnoty ak nie je zadaná pre tento záznam).</li>
-
 </ul>
+
 <a name="email_details"></a>
 <b>Emailová adresa je v súlade so štandardnými pravidlami (podľa RFC 2368):</b>
 <ul>
