@@ -12,6 +12,10 @@
 #include "GeneralMsgBox.h"
 #include "winutils.h"
 
+#ifdef PWSAFE_USE_DARKMODE32
+#include "DMSubclass.h"
+#endif
+
 #include <algorithm>
 #include <functional>
 
@@ -28,6 +32,12 @@ DboxMain *CPWDialog::GetMainDlg() const
 BOOL CPWDialog::OnInitDialog()
 {
   BOOL bResult = CDialog::OnInitDialog();
+
+#ifdef PWSAFE_USE_DARKMODE32
+  DarkMode::setWindowEraseBgSubclass(m_hWnd);
+  DarkMode::setDarkWndNotifySafe(m_hWnd, true);
+#endif
+
   CScreenCaptureStateControl::SetLastDisplayAffinityError(
     WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd, app.IsExcludeFromScreenCapture())
   );

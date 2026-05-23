@@ -28,6 +28,10 @@
 #include "winutils.h"
 #include <RichEdit.h>
 
+#ifdef PWSAFE_USE_DARKMODE32
+#include "DMSubclass.h"
+#endif
+
 #include "resource3.h"
 
 #ifdef _DEBUG
@@ -442,6 +446,12 @@ BOOL CGeneralMsgBox::OnInitDialog()
   CreateIcon();
   CreateBtns();
 
+#ifdef PWSAFE_USE_DARKMODE32
+  DarkMode::setWindowEraseBgSubclass(m_hWnd);
+  DarkMode::setDarkWndNotifySafe(m_hWnd, true);
+  DarkMode::enableThemeDialogTexture(m_hWnd, false);
+#endif
+
   // Updating the layout - preparing to show
   UpdateLayout();
 
@@ -563,7 +573,16 @@ void CGeneralMsgBox::CreateRtfCtrl()
   if (m_bDelayAcceptAnswer)
     dwStyles |= ES_SAVESEL;
   m_edCtrl.Create(dwStyles, rcDummy, this, (UINT)IDC_STATIC);
+
+#ifdef PWSAFE_USE_DARKMODE32
+  if (DarkMode::isEnabled())
+    DarkMode::setDarkRichEdit(m_edCtrl.GetSafeHwnd());
+  else
+    m_edCtrl.SetBackgroundColor(FALSE, ::GetSysColor(COLOR_3DFACE));
+#else
   m_edCtrl.SetBackgroundColor(FALSE, ::GetSysColor(COLOR_3DFACE));
+#endif
+
   m_edCtrl.SetFont(GetFont());
 
   m_strMsg.Trim();

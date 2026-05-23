@@ -106,7 +106,7 @@ void CSetDBID::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_UNLOCKEDIMAGE, m_stUnlockedImage);
 }
 
-BEGIN_MESSAGE_MAP(CSetDBID, CDialog)
+BEGIN_MESSAGE_MAP(CSetDBID, CPWDialog)
   ON_WM_DESTROY()
   ON_WM_CTLCOLOR()
 
