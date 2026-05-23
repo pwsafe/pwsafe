@@ -181,7 +181,7 @@ bool CReport::SaveToDisk(const stringT &out_dir)
   if (conv.ToUTF8(sx, utf8, utf8Len)) {
     const unsigned char BOM[] = {0xef, 0xbb, 0xbf}; // Store UTF-8 as default
     if (pws_os::fileLength(fd) == 0) {
-      // File is empty - write BOM for UTF-8
+      // If file is new/empty, write BOM, as some text editors insist!
       fwrite(BOM, 1, 3, fd);
     }
     fwrite(utf8, utf8Len, 1, fd);
