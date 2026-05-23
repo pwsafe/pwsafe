@@ -63,9 +63,9 @@ password to the clipboard. &nbsp;The available actions are:</p>
 <li>Copy password to clipboard</li>
 <li>Copy password to clipboard, minimize</li>
 <li>Copy username to clipboard</li>
+<li>Edit/View selected entry</li>
 <li>Run Command</li>
 <li>Send email</li>
-<li>Edit/View selected entry</li>
 </ul>
 <p>Note that last item, copy password and then minimize, won't work as
 expected if the "Clear clipboard on minimize" option is selected in the
@@ -93,13 +93,12 @@ default. Of course, you can edit it if needed.<br></p>
 
 <h3><a name="AltBrowser"></a>Alternate Browser</h3>
 
-<p>The browser you specify in this field &nbsp;will be used when using the
-"Browse To URL" function for a selected entry, when the entry's URL has
-"[alt]" before the URL, e.g., "[alt]http://www.foo.net". This is
-useful, for example, if your default browser is Firefox, and you wish
-to access a website that works best with Google Chrome, in which case you
-should specify the Google Chrome as your alternate browser (typically
-"/usr/bin/google-chrome" on Linux).</p>
+<p>The browser you specify in this field will be used when using the
+"Browse To URL" and "Browse To URL + Autotype" functions for a selected entry, when the entry's URL has
+"[alt]" before the URL, e.g., "[alt]http://www.foo.net". This is useful, for example, 
+if your default browser is Firefox, and you wish to access a website that works best with Google Chrome. 
+Or, on Linux with Wayland, you may specify a startup sequence that enables the Xwayland backend for the default browser, 
+allowing Autotype to work (such as "env MOZ_ENABLE_WAYLAND=0 firefox" for Firefox).</p>
 
 
 <p>You can specify command line options to the browser via the Browser

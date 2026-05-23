@@ -645,6 +645,7 @@ void PasswordSafeFrame::CreateMenubar()
   menuEdit->Append(ID_COPYNOTESFLD, _("Copy &Notes to Clipboard\tCtrl+G"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_COPYURL, _("Copy URL to Clipboard\tCtrl+Alt+L"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_BROWSEURL, _("&Browse to URL\tCtrl+L"), wxEmptyString, wxITEM_NORMAL);
+  menuEdit->Append(ID_BROWSEURLPLUS, _("Browse to URL + &Autotype"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_SENDEMAIL, _("Send &email"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_RUNCOMMAND, _("&Run Command"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_AUTOTYPE, _("Perform Auto&type\tCtrl+T"), wxEmptyString, wxITEM_NORMAL);

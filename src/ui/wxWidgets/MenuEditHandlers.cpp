@@ -948,24 +948,21 @@ void PasswordSafeFrame::DoBrowse(CItemData &item, bool bAutotype)
 
   if (!cs_command.IsEmpty()) {
     std::vector<size_t> vactionverboffsets;
-    StringX sxautotype = PWSAuxParse::GetAutoTypeString(*pci, m_core,
-                                                        vactionverboffsets);
-    LaunchBrowser(cs_command, sxautotype, vactionverboffsets, bAutotype);
-
+    StringX sxautotype = PWSAuxParse::GetAutoTypeString(*pci, m_core, vactionverboffsets);
+    if (LaunchBrowser(cs_command)) {
+      if (bAutotype && !sxautotype.empty()) {
+        DoAutotype(*pci);
+      }
+    }
     if (PWSprefs::GetInstance()->GetPref(PWSprefs::CopyPasswordWhenBrowseToURL)) {
       Clipboard::GetInstance()->SetData(sx_pswd);
       UpdateLastClipboardAction(CItemData::FieldType::PASSWORD);
     }
-
-    // TODO: Minimize depending on PWSprefs::MinimizeOnAutotype
-
     UpdateAccessTime(item);
   }
 }
 
-bool PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX & WXUNUSED(sxAutotype),
-                             const std::vector<size_t> & WXUNUSED(vactionverboffsets),
-                             bool WXUNUSED(bDoAutotype)) const
+bool PasswordSafeFrame::LaunchBrowser(const wxString &csURL) const
 {
   /*
    * This is a straight port of DBoxMain::LaunchBrowser.  See the comments in that function
@@ -980,10 +977,6 @@ bool PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX & WXU
   const size_t altReplacements = theURL.Replace(wxT("[alt]"), wxEmptyString);
   const size_t alt2Replacements = (theURL.Replace(wxT("[ssh]"), wxEmptyString) +
                           theURL.Replace(wxT("{alt}"), wxEmptyString));
-#ifdef NOT_YET
-  const size_t autotypeReplacements = theURL.Replace(wxT("[autotype]"), wxEmptyString);
-  const size_t no_autotype = theURL.Replace(wxT("[xa]"), wxEmptyString);
-#endif
 
   if (alt2Replacements == 0 && !isMailto && theURL.Find(wxT("://")) == wxNOT_FOUND)
     theURL = wxT("http://") + theURL;
@@ -1008,26 +1001,6 @@ bool PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX & WXU
 
   sxFile.Trim(false); //false => from left
 
-#ifdef NOT_YET
-  // Obey user's No Autotype flag [xa]
-  if (no_autotype > 0) {
-    m_bDoAutoType = false;
-    m_AutoType.clear();
-    m_vactionverboffsets.clear();
-  }
-  else {
-    // Either do it because they pressed the right menu/shortcut
-    // or they had specified Do Autotype flag [autotype]
-    m_bDoAutoType = bDoAutotype || autotypeReplacements > 0;
-    m_AutoType = m_bDoAutoType ? sxAutotype : wxEmptyString;
-    if (m_bDoAutoType)
-      m_vactionverboffsets = vactionverboffsets;
-  }
-#endif
-
-#ifdef NOT_YET
-  bool rc = m_runner.issuecmd(sxFile, sxParameters, !m_AutoType.empty());
-#else
   bool rc;
   if (useAltBrowser) {
     const wxString cmdLine(sxFile + wxT(" ") + sxParameters);
@@ -1036,7 +1009,6 @@ bool PasswordSafeFrame::LaunchBrowser(const wxString &csURL, const StringX & WXU
   else {
     rc= ::wxLaunchDefaultBrowser(sxFile);
   }
-#endif
 
   if (!rc) {
     wxMessageBox(errMsg, wxTheApp->GetAppName(), wxOK|wxICON_STOP, const_cast<PasswordSafeFrame*>(this));
@@ -1085,7 +1057,7 @@ void PasswordSafeFrame::DoRun(CItemData& item)
   // if no autotype value in run command's $a(value), start with item's (bug #1078) or the default AutoType string
   StringX sx_dats = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultAutotypeString);
   if (sx_dats.empty())
-   sx_dats = DEFAULT_AUTOTYPE;
+    sx_dats = DEFAULT_AUTOTYPE;
   if (expandedAutoType.empty()) {
     if (!pci->GetAutoType().empty())
       expandedAutoType = pci->GetAutoType();
