@@ -176,7 +176,7 @@ bool CReport::SaveToDisk(const stringT &out_dir)
   Replace(sx, sxLF, sxCRLF);
     
   CUTF8Conv conv;
-  const unsigned char *utf8;
+  const unsigned char *utf8 = nullptr;
   size_t utf8Len;
   if (conv.ToUTF8(sx, utf8, utf8Len)) {
     fwrite(utf8, utf8Len, 1, fd);
