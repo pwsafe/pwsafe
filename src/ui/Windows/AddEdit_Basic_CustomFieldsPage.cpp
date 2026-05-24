@@ -47,6 +47,7 @@ BEGIN_MESSAGE_MAP(CAddEdit_Basic_CustomFieldsPage, CAddEdit_Basic_SubPage)
   ON_NOTIFY(NM_RCLICK, IDC_CUSTOMFIELDS_LIST, OnNMRClickCustomFieldsList)
   ON_NOTIFY(NM_DBLCLK, IDC_CUSTOMFIELDS_LIST, OnNMDblclkCustomFieldsList)
   ON_NOTIFY(LVN_KEYDOWN, IDC_CUSTOMFIELDS_LIST, OnCustomFieldsKeyDown)
+  ON_COMMAND(IDC_CUSTOMFIELDS_COPY, OnCustomFieldsCopy)
 END_MESSAGE_MAP()
 
 BOOL CAddEdit_Basic_CustomFieldsPage::OnInitDialog()
@@ -242,16 +243,42 @@ void CAddEdit_Basic_CustomFieldsPage::OnNMRClickCustomFieldsList(NMHDR *pNMHDR, 
     return;
   }
 
-  CString menuText;
-  menuText.LoadString(fields[item].IsSensitive() ? IDS_SHOW_VALUE : IDS_HIDE_VALUE);
+  const bool bReadOnly = (M_uicaller() == IDS_VIEWENTRY ||
+                          (M_uicaller() == IDS_EDITENTRY && M_protected() != 0));
+
   CMenu menu;
   menu.CreatePopupMenu();
-  menu.AppendMenu(MF_STRING, IDC_CUSTOMFIELDS_TOGGLE_SENSITIVE, menuText);
+
+  // In r/w mode show Toggle Sensitive (Show/Hide) and Copy Value.
+  // In r-o mode only show Copy Value.
+  if (!bReadOnly) {
+    CString menuText;
+    menuText.LoadString(fields[item].IsSensitive() ? IDS_SHOW_VALUE : IDS_HIDE_VALUE);
+    menu.AppendMenu(MF_STRING, IDC_CUSTOMFIELDS_TOGGLE_SENSITIVE, menuText);
+  }
+
+  CString copyText;
+  copyText.LoadString(IDS_COPY_VALUE);
+  menu.AppendMenu(MF_STRING, IDC_CUSTOMFIELDS_COPY, copyText);
 
   CPoint ptScreen;
   GetCursorPos(&ptScreen);
   menu.TrackPopupMenu(TPM_LEFTALIGN | TPM_LEFTBUTTON, ptScreen.x, ptScreen.y, this);
   *pResult = 0;
+}
+
+void CAddEdit_Basic_CustomFieldsPage::OnCustomFieldsCopy()
+{
+  if (m_rightClickedCustomFieldIndex < 0)
+    return;
+
+  const CustomFieldList &fields = M_customfields();
+  if (m_rightClickedCustomFieldIndex >= static_cast<int>(fields.size()))
+    return;
+
+  GetMainDlg()->SetClipboardData(fields[m_rightClickedCustomFieldIndex].GetValue());
+  GetMainDlg()->UpdateLastClipboardAction(ClipboardDataSource::CustomFieldValue);
+  m_rightClickedCustomFieldIndex = -1;
 }
 
 void CAddEdit_Basic_CustomFieldsPage::OnNMDblclkCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult)

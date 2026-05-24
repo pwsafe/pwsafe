@@ -36,6 +36,7 @@ protected:
   afx_msg void OnNMDblclkCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult);
   afx_msg void OnNMRClickCustomFieldsList(NMHDR *pNMHDR, LRESULT *pResult);
   afx_msg void OnCustomFieldsKeyDown(NMHDR *pNMHDR, LRESULT *pResult);
+  afx_msg void OnCustomFieldsCopy();
 
   DECLARE_MESSAGE_MAP()
 
