@@ -44,10 +44,6 @@ if (NOT APPLE)
   target_link_libraries(pwsafe-cli uuid)
 endif (NOT APPLE)
 
-if (NOT APPLE AND NOT WIN32)
-  target_link_libraries(pwsafe-cli magic)
-endif (NOT APPLE AND NOT WIN32)
-
 
 if (NOT WIN32)
 	target_link_libraries(pwsafe-cli pthread)
@@ -69,10 +65,6 @@ endif (XercesC_LIBRARY)
 if (NOT APPLE)
   target_link_libraries(pwsafe-cli-test uuid)
 endif (NOT APPLE)
-
-if (NOT APPLE AND NOT WIN32)
-  target_link_libraries(pwsafe-cli-test magic)
-endif (NOT APPLE AND NOT WIN32)
 
 if (NOT WIN32)
   target_link_libraries(pwsafe-cli-test pthread)
