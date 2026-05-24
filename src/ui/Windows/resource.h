@@ -943,6 +943,7 @@
 #define IDC_CUSTOMFIELDS_EDIT           1627
 #define IDC_CUSTOMFIELDS_DELETE         1628
 #define IDC_CUSTOMFIELDS_TOGGLE_SENSITIVE 1629
+#define IDC_CUSTOMFIELDS_COPY            1634
 #define IDD_CUSTOMFIELD_EDIT            573
 #define IDC_CF_NAME                     1630
 #define IDC_CF_VALUE                    1631
