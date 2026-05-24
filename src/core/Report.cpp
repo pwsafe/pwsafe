@@ -169,155 +169,6 @@ bool CReport::SaveToDisk(const stringT &out_dir)
     return false;
   }
 
-  // **** MOST LIKELY ACTION ****
-  // If file is new/empty, write BOM, as some text editors insist!
-
-  // **** LEAST LIKELY ACTIONS as it requires the user to use both U & NU versions ****
-  // Text editors really don't like files with both UNICODE and ASCII characters, so -
-  // If we are UNICODE and file is not, convert file to UNICODE before appending
-
-  pugi::xml_encoding encoding;
-  bool bFileIsUnicode = isFileUnicode(m_cs_filename, encoding);
-
-  const unsigned char BOM[] = {0xef, 0xbb, 0xbf}; // Store UTF-8 as default
-  if (pws_os::fileLength(fd) == 0) {
-    // File is empty - write BOM for UTF-8
-    fwrite(BOM, 1, 3, fd);
-  } else {
-    if (!bFileIsUnicode) {
-      // Convert ASCII contents to UTF-8 (only adding inital BOM)
-      // Close original first
-      fclose(fd);
-
-      // Open again to read
-      FILE *f_in = pws_os::FOpen(m_cs_filename, _T("rb"));
-
-      // Open new file
-      stringT cs_out = m_cs_filename + _T(".tmp");
-      FILE *f_out = pws_os::FOpen(cs_out, _T("wb"));
-        
-      if(f_out == nullptr) {
-        fclose(f_in);
-        pws_os::IssueError(_T("SaveToDisk: Opening tmp log file"));
-        return false;
-      }
-
-      // Write BOM for UTF8
-      fwrite(BOM, 1, 3, f_out);
-
-      size_t nBytesRead;
-      unsigned char inbuffer[4096];
-
-      // Now copy
-      do {
-        nBytesRead = fread(inbuffer, 1, sizeof(inbuffer), f_in);
-
-        if (nBytesRead > 0) {
-          fwrite(inbuffer, nBytesRead, 1, f_out);
-        } else
-          break;
-
-      } while(nBytesRead > 0);
-
-      // Close files
-      fclose(f_in);
-      fclose(f_out);
-
-      // Swap them
-      pws_os::RenameFile(cs_out, m_cs_filename);
-
-      // Re-open file
-      if ((fd = pws_os::FOpen(m_cs_filename, _T("ab"))) == nullptr) {
-        pws_os::IssueError(_T("SaveToDisk: Opening log file"));
-        return false;
-      }
-    }
-    else if(encoding != pugi::encoding_utf8) {
-      // Convert different coded contents to UTF-8
-      // Close original first
-      fclose(fd);
-
-      // Open again to read
-      FILE *f_in = pws_os::FOpen(m_cs_filename, _T("rb"));
-
-      // Open new file
-      stringT cs_out = m_cs_filename + _T(".tmp");
-      FILE *f_out = pws_os::FOpen(cs_out, _T("wb"));
-        
-      if(f_out == nullptr) {
-        fclose(f_in);
-        pws_os::IssueError(_T("SaveToDisk: Opening tmp log file"));
-        return false;
-      }
-        
-      // Write BOM for UTF8
-      fwrite(BOM, 1, 3, f_out);
-
-      size_t nBytesRead;
-      unsigned char inbuffer[4096];
-      size_t skip = 0;
-        
-      if((encoding == pugi::encoding_utf16_le) || (encoding == pugi::encoding_utf16_be) || (encoding == pugi::encoding_utf16)) {
-        // Skip 2 byte header
-        skip = 2;
-      }
-      else if((encoding == pugi::encoding_utf32_le) || (encoding == pugi::encoding_utf32_be) || (encoding == pugi::encoding_utf32)) {
-        // Skip 4 byte header
-        skip = 4;
-      }
-
-      if (skip > 0) {
-           if (fread(inbuffer, 1, skip, f_in) != skip) {
-            fclose(f_in);
-            pws_os::IssueError(_T("SaveToDisk: Reading re-opening file"));
-            return false;
-          }
-      }
-
-      // Now copy and convert
-      do {
-        // Read from UTF-16 or UTF-32 coded file
-        nBytesRead = fread(inbuffer, 1, sizeof(inbuffer), f_in);
-
-        if (nBytesRead > 0) {
-          // get private buffer
-          wchar_t* buffer = 0;
-          size_t length = 0;
-          // Convert first from UTF-16 or UTF-32 to machine wchar_t
-          if(pugi::convertBuffer(buffer, length, encoding, inbuffer, nBytesRead, true)) {
-            // Convert back to UTF-8
-            size_t dstlen = pws_os::wcstombs(nullptr, 0, buffer, length);
-            ASSERT(dstlen > 0);
-            char *dst = new char[dstlen+1];
-            dstlen = pws_os::wcstombs(dst, dstlen, buffer, length);
-            ASSERT(dstlen != size_t(-1));
-            if (dstlen && !dst[dstlen-1])
-              dstlen--;
-            // Write UTF-8 content
-            fwrite(dst, dstlen, 1, f_out);
-            delete[] dst;
-            if(static_cast<void *>(buffer) != static_cast<void *>(inbuffer))
-              (*pugi::get_memory_deallocation_function())(buffer);
-          }
-        } else
-          break;
-
-      } while(nBytesRead > 0);
-
-      // Close files
-      fclose(f_in);
-      fclose(f_out);
-
-      // Swap them
-      pws_os::RenameFile(cs_out, m_cs_filename);
-
-      // Re-open file
-      if ((fd = pws_os::FOpen(m_cs_filename, _T("ab"))) == nullptr) {
-        pws_os::IssueError(_T("SaveToDisk: Opening log file"));
-        return false;
-      }
-    }
-  }
   // Convert LF to CRLF
   StringX sxCRLF(L"\r\n"), sxLF(L"\n");
   StringX sx = m_osxs.rdbuf()->str();
@@ -327,7 +178,12 @@ bool CReport::SaveToDisk(const stringT &out_dir)
   CUTF8Conv conv; // can't make a member, as no copy c'tor!
   const unsigned char *utf8;
   size_t utf8Len;
-  if (conv.ToUTF8(sx.c_str(), utf8, utf8Len)) {
+  if (conv.ToUTF8(sx, utf8, utf8Len)) {
+    const unsigned char BOM[] = {0xef, 0xbb, 0xbf}; // Store UTF-8 as default
+    if (pws_os::fileLength(fd) == 0) {
+      // If file is new/empty, write BOM, as some text editors insist!
+      fwrite(BOM, 1, 3, fd);
+    }
     fwrite(utf8, utf8Len, 1, fd);
   }
   else {
@@ -393,19 +249,11 @@ bool CReport::ReadFromDisk()
   pugi::xml_encoding encoding;
   bool bFileIsUnicode = isFileUnicode(m_cs_filename, encoding);
   size_t nBytesRead;
-  wchar_t inbuffer[4096 / sizeof(wchar_t)];
+  char inbuffer[4096];
 
   if (bFileIsUnicode) {
     size_t skip = 0;
-    if((encoding == pugi::encoding_utf16_le) || (encoding == pugi::encoding_utf16_be) || (encoding == pugi::encoding_utf16)) {
-      // Skip 2 byte header
-      skip = 2;
-    }
-    else if((encoding == pugi::encoding_utf32_le) || (encoding == pugi::encoding_utf32_be) || (encoding == pugi::encoding_utf32)) {
-      // Skip 4 byte header
-      skip = 4;
-    }
-    else if(encoding == pugi::encoding_utf8) {
+    if(encoding == pugi::encoding_utf8) {
       // Skip 3 byte header
       skip = 3;
     }
@@ -417,38 +265,29 @@ bool CReport::ReadFromDisk()
     }
   }
   
-  // Reset buffer
-  m_osxs.str(_T(""));
-
-  // Now copy
+  // read the utf-8 file contents into a string stream
+  std::ostringstream ss;
   do {
     nBytesRead = fread(inbuffer, 1, sizeof(inbuffer), fd);
-
     if (nBytesRead > 0) {
-      // get private buffer
-      wchar_t* buffer = 0;
-      size_t length = 0;
-      // Convert first from UTF-8, UTF-16 or UTF-32 to machine wchar_t
-      if(pugi::convertBuffer(buffer, length, encoding, inbuffer, nBytesRead, true)) {
-        // Write into report buffer
-        m_osxs.write(buffer, length);
-        if(static_cast<void *>(buffer) != static_cast<void *>(inbuffer))
-          (*pugi::get_memory_deallocation_function())(buffer);
-      }
-    } else
-      break;
-
+      ss.write(inbuffer, nBytesRead);
+    }
   } while(nBytesRead > 0);
-
   fclose(fd);
     
+  // convert utf-8 to StringX
+  StringX sx;
+  CUTF8Conv conv;
+  std::streampos size = ss.tellp();
+  conv.FromUTF8(reinterpret_cast<const unsigned char*>(ss.str().c_str()), size, sx);
+
   StringX sxCRLF(L"\r\n"), sxLF(L"\n");
-  StringX sx = m_osxs.rdbuf()->str();
   Replace(sx, sxCRLF, sxLF);
   m_osxs.str(sx);
     
   return true;
 }
+
 
 bool CReport::PurgeFromDisk()
 {
