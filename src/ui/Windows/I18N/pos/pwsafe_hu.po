@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-03-23 20:07+0200\n"
+"PO-Revision-Date: 2026-05-25 21:29+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: hu\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -2820,6 +2833,10 @@ msgstr "UR&L vágólapra másolása"
 msgid "Copy URL to Clipboard"
 msgstr "URL vágólapra másolása"
 
+#. Resource IDs: (6077)
+msgid "Copy Value"
+msgstr "Másolat értéke"
+
 #. Resource IDs: (32223 - Menu)
 msgid "Copy all entries to Original"
 msgstr "Minden bejegyzés másolása az Eredetibe"
@@ -3002,7 +3019,7 @@ msgstr ""
 msgid "Custom Field"
 msgstr "Egyedi mező"
 
-#. Resource IDs: (3096, 5231)
+#. Resource IDs: (3096, 5231, 575, 577)
 msgid "Custom Fields"
 msgstr "Egyedi mezők"
 
@@ -3843,7 +3860,7 @@ msgstr "Aktuális &DB exportálása"
 
 #. Resource IDs: (5965)
 msgid "Export DB"
-msgstr ""
+msgstr "Export DB"
 
 #. Resource IDs: (32136 - PopupMenuEx, 5935)
 msgid "Export Entry To"
@@ -4389,6 +4406,10 @@ msgstr "A Password Safe elrejtése a képernyőrögzítés és a kapcsolódó al
 msgid "Hide System Tray icon (Hot Key MUST be active)"
 msgstr "Tálcaikon elrejtése (A Gyorsbillentyűknek aktívnak KELL lenniük)"
 
+#. Resource IDs: (6075)
+msgid "Hide Value"
+msgstr "Rejtőérték"
+
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
 msgstr "Megváltozott bejegyzések kiemelése"
@@ -4682,7 +4703,7 @@ msgstr ""
 
 #. Resource IDs: (5534)
 msgid "Import Text"
-msgstr ""
+msgstr "Szöveg Importálása"
 
 #. Resource IDs: (125)
 msgid "Import Text Settings"
@@ -4694,7 +4715,7 @@ msgstr "Szöveg importálása sikertelen"
 
 #. Resource IDs: (5535)
 msgid "Import XML"
-msgstr ""
+msgstr "XML Importálása"
 
 #. Resource IDs: (126)
 msgid "Import XML Settings"
@@ -5292,7 +5313,7 @@ msgstr "Legalább ennyinek kell lennie: %d"
 msgid "N/A"
 msgstr "N/A"
 
-#. Resource IDs: (5640, 5875)
+#. Resource IDs: (5640, 5875, 5892)
 msgid "Name"
 msgstr "Név"
 
@@ -5522,7 +5543,7 @@ msgstr "Megjegyzés: ezek a jelszószabályok nem fogják lecserélni az aktuál
 msgid "Note: These preferences are only used when importing into an empty database."
 msgstr "Megjegyzés: ezek a beállítások csak üres adatbázisba történő importálás esetén lesznek használva."
 
-#. Resource IDs: (3014, 5225)
+#. Resource IDs: (3014, 5225, 574, 576)
 msgid "Notes"
 msgstr "Jegyzetek"
 
@@ -6854,6 +6875,10 @@ msgstr "Jelszó megjelenítése fanézetben"
 #. Resource IDs: (1254)
 msgid "Show Username in Tree View"
 msgstr "Felhasználónév megjelenítése fanézetben"
+
+#. Resource IDs: (6076)
+msgid "Show Value"
+msgstr "Bemutató érték"
 
 #. Resource IDs: (34106)
 msgid "Show Virtual Keyboard"

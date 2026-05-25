@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-03-23 20:09+0200\n"
+"PO-Revision-Date: 2026-05-25 21:35+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: pt_BR\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -2890,6 +2903,10 @@ msgstr "Copiar UR&L para a Área de Transferência"
 msgid "Copy URL to Clipboard"
 msgstr "Copiar URL para a Área de Transferência"
 
+#. Resource IDs: (6077)
+msgid "Copy Value"
+msgstr ""
+
 #. Resource IDs: (32223 - Menu)
 msgid "Copy all entries to Original"
 msgstr "Copiar todas entradas para Original"
@@ -3072,7 +3089,7 @@ msgstr ""
 msgid "Custom Field"
 msgstr "Campo Personalizado"
 
-#. Resource IDs: (3096, 5231)
+#. Resource IDs: (3096, 5231, 575, 577)
 msgid "Custom Fields"
 msgstr "Campos Personalizados"
 
@@ -3910,7 +3927,7 @@ msgstr "Exportar &BD Atual"
 
 #. Resource IDs: (5965)
 msgid "Export DB"
-msgstr ""
+msgstr "Exportar_BD"
 
 #. Resource IDs: (32136 - PopupMenuEx, 5935)
 msgid "Export Entry To"
@@ -4452,6 +4469,10 @@ msgstr "Ocultar o Password Safe da captura de tela e aplicativos relacionados."
 #. Resource IDs: (1426)
 msgid "Hide System Tray icon (Hot Key MUST be active)"
 msgstr "Ocultar ícone da bandeja do sistema (a tecla de atalho DEVE estar ativa)"
+
+#. Resource IDs: (6075)
+msgid "Hide Value"
+msgstr "Ocultar Valor"
 
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
@@ -5358,7 +5379,7 @@ msgstr "Deve ter ao menos %d"
 msgid "N/A"
 msgstr "N/A"
 
-#. Resource IDs: (5640, 5875)
+#. Resource IDs: (5640, 5875, 5892)
 msgid "Name"
 msgstr "Nome"
 
@@ -5588,7 +5609,7 @@ msgstr "Nota: Essas políticas de senha não substituirão as políticas existen
 msgid "Note: These preferences are only used when importing into an empty database."
 msgstr "Nota: Essas preferências são usadas apenas ao importar para um banco de dados vazio."
 
-#. Resource IDs: (3014, 5225)
+#. Resource IDs: (3014, 5225, 574, 576)
 msgid "Notes"
 msgstr "Notas"
 
@@ -6914,6 +6935,10 @@ msgstr "Mostrar senha na exibição em árvore"
 #. Resource IDs: (1254)
 msgid "Show Username in Tree View"
 msgstr "Mostrar nome de usuário na exibição em árvore"
+
+#. Resource IDs: (6076)
+msgid "Show Value"
+msgstr "Valor de Exibição"
 
 #. Resource IDs: (34106)
 msgid "Show Virtual Keyboard"

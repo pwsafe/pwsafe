@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-03-23 20:11+0200\n"
+"PO-Revision-Date: 2026-05-25 21:36+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: sk\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -2162,7 +2175,7 @@ msgstr "Nemôžem overiť staré hlavné heslo - súbor bol zmazaný?"
 
 #. Resource IDs: (8015)
 msgid "Caps Lock"
-msgstr ""
+msgstr "Caps Lock"
 
 #. Resource IDs: (1503)
 msgid "Caps Lock is ON"
@@ -2714,6 +2727,10 @@ msgstr "Skopíruj URL do schránky"
 msgid "Copy URL to Clipboard"
 msgstr "Skopíruj URL do schránky"
 
+#. Resource IDs: (6077)
+msgid "Copy Value"
+msgstr "Kopírovacia hodnota"
+
 #. Resource IDs: (32223 - Menu)
 msgid "Copy all entries to Original"
 msgstr "Skopíruj všetky záznamy do pôvodnej"
@@ -2896,7 +2913,7 @@ msgstr ""
 msgid "Custom Field"
 msgstr "Vlastné pole"
 
-#. Resource IDs: (3096, 5231)
+#. Resource IDs: (3096, 5231, 575, 577)
 msgid "Custom Fields"
 msgstr "Vlastné polia"
 
@@ -3096,7 +3113,7 @@ msgstr ""
 
 #. Resource IDs: (498, 511)
 msgid "Dialog"
-msgstr ""
+msgstr "Dialóg"
 
 #. Resource IDs: (6063)
 msgid "Discard"
@@ -3736,7 +3753,7 @@ msgstr "Exportovať aktuálnu DB"
 
 #. Resource IDs: (5965)
 msgid "Export DB"
-msgstr ""
+msgstr "Export DB"
 
 #. Resource IDs: (32136 - PopupMenuEx, 5935)
 msgid "Export Entry To"
@@ -4279,6 +4296,10 @@ msgstr "Skry Password Safe pred snímaním obrazovky a podobnými aplikáciami."
 msgid "Hide System Tray icon (Hot Key MUST be active)"
 msgstr "Skryť ikonu (klávesová skratka aplikácie musí byť nastavená)"
 
+#. Resource IDs: (6075)
+msgid "Hide Value"
+msgstr "Skryť hodnotu"
+
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
 msgstr "Zvýrazniť zmenené záznamy"
@@ -4572,7 +4593,7 @@ msgstr ""
 
 #. Resource IDs: (5534)
 msgid "Import Text"
-msgstr ""
+msgstr "Importovať text"
 
 #. Resource IDs: (125)
 msgid "Import Text Settings"
@@ -4584,7 +4605,7 @@ msgstr "Import textu zlyhal"
 
 #. Resource IDs: (5535)
 msgid "Import XML"
-msgstr ""
+msgstr "Importovať XML"
 
 #. Resource IDs: (126)
 msgid "Import XML Settings"
@@ -5050,7 +5071,7 @@ msgstr ""
 
 #. Resource IDs: (1498)
 msgid "Maximum"
-msgstr ""
+msgstr "Maximum"
 
 #. Resource IDs: (5392)
 #, c-format
@@ -5184,7 +5205,7 @@ msgstr "Musí byť najmenej %d"
 msgid "N/A"
 msgstr ""
 
-#. Resource IDs: (5640, 5875)
+#. Resource IDs: (5640, 5875, 5892)
 msgid "Name"
 msgstr "Názov"
 
@@ -5414,7 +5435,7 @@ msgstr "Poznámka: Tieto zásady hesiel nenahradia existujúce zásady s rovnak�
 msgid "Note: These preferences are only used when importing into an empty database."
 msgstr "Poznámka: Tieto predvoľby sa používajú iba pri importe do prázdnej databázy."
 
-#. Resource IDs: (3014, 5225)
+#. Resource IDs: (3014, 5225, 574, 576)
 msgid "Notes"
 msgstr "Poznámky"
 
@@ -6740,6 +6761,10 @@ msgstr "Zobraziť heslo v stromovom zobrazení"
 #. Resource IDs: (1254)
 msgid "Show Username in Tree View"
 msgstr "Zobraziť používateľské meno v stromovom zobrazení"
+
+#. Resource IDs: (6076)
+msgid "Show Value"
+msgstr "Ukázať hodnotu"
 
 #. Resource IDs: (34106)
 msgid "Show Virtual Keyboard"
