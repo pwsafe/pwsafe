@@ -3996,6 +3996,10 @@ msgstr ""
 msgid "Hide System Tray icon (Hot Key MUST be active)"
 msgstr ""
 
+#. Resource IDs: (6075)
+msgid "Hide Value"
+msgstr ""
+
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
 msgstr ""
@@ -6319,6 +6323,10 @@ msgstr ""
 
 #. Resource IDs: (1254)
 msgid "Show Username in Tree View"
+msgstr ""
+
+#. Resource IDs: (6076)
+msgid "Show Value"
 msgstr ""
 
 #. Resource IDs: (34106)
