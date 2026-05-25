@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-03-23 20:08+0200\n"
+"PO-Revision-Date: 2026-05-25 21:33+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: kr\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -1770,7 +1783,7 @@ msgstr "고급 XML 보내기 옵션"
 
 #. Resource IDs: (5963, 5964)
 msgid "Advanced XML Group Export Options"
-msgstr ""
+msgstr "고급 XML 보내기 옵션"
 
 #. Resource IDs: (1071)
 msgid "Advanced field selection criteria"
@@ -1981,7 +1994,7 @@ msgstr ""
 
 #. Resource IDs: (65535)
 msgid "Attachment Properties"
-msgstr ""
+msgstr "속성(&P)"
 
 #. Resource IDs: (3074)
 msgid "Attachment Reference"
@@ -1989,7 +2002,7 @@ msgstr ""
 
 #. Resource IDs: (3085)
 msgid "Attachment Title"
-msgstr ""
+msgstr "주제 복사됨"
 
 #. Resource IDs: (5976)
 msgid "Attachment not found"
@@ -2329,7 +2342,7 @@ msgstr "폰트 바꾸기(&F)"
 
 #. Resource IDs: (32158 - PopupMenuEx)
 msgid "Change &Language"
-msgstr ""
+msgstr "폰트 바꾸기(&F)"
 
 #. Resource IDs: (5579)
 msgid "Change Date"
@@ -2805,7 +2818,7 @@ msgstr ""
 
 #. Resource IDs: (32071 - Menu, 32071 - MenuEx, 5723)
 msgid "Copy Email to Clipboard"
-msgstr ""
+msgstr "클립보드에 복사"
 
 #. Resource IDs: (32270 - Menu)
 msgid "Copy Here"
@@ -2822,6 +2835,10 @@ msgstr "&URL을 클립보드에 복사"
 #. Resource IDs: (32070 - MenuEx, 5260, 5304)
 msgid "Copy URL to Clipboard"
 msgstr "URL을 클립보드에 복사"
+
+#. Resource IDs: (6077)
+msgid "Copy Value"
+msgstr "스트링 값:"
 
 #. Resource IDs: (32223 - Menu)
 msgid "Copy all entries to Original"
@@ -2845,7 +2862,7 @@ msgstr "클립보드에 복사"
 
 #. Resource IDs: (32221 - Menu)
 msgid "Copy to Original"
-msgstr ""
+msgstr "원본 데이터베이스:"
 
 #. Resource IDs: (5642)
 msgid "Copy to database"
@@ -2974,7 +2991,7 @@ msgstr "자르기(&T)"
 
 #. Resource IDs: (5924)
 msgid "Current Entry"
-msgstr ""
+msgstr "현재 적용(&A)"
 
 #. Resource IDs: (65535)
 msgid "Current Master Password:"
@@ -2986,7 +3003,7 @@ msgstr ""
 
 #. Resource IDs: (6021)
 msgid "Current database is read-only"
-msgstr ""
+msgstr "데이터베이스를 읽기전용으로 여는 것을 기본값으로 설정"
 
 #. Resource IDs: (5477)
 #, c-format
@@ -3001,7 +3018,7 @@ msgstr ""
 msgid "Custom Field"
 msgstr "필드 활성화"
 
-#. Resource IDs: (3096, 5231)
+#. Resource IDs: (3096, 5231, 575, 577)
 msgid "Custom Fields"
 msgstr "알 수 없는 필드"
 
@@ -3094,7 +3111,7 @@ msgstr "데이터베이스 검사됨 - 문제가 발견되지 않았습니다."
 
 #. Resource IDs: (5987)
 msgid "Date added"
-msgstr ""
+msgstr "날짜 바꾸기"
 
 #. Resource IDs: (1122)
 msgid "Date/Time Information"
@@ -3577,7 +3594,7 @@ msgstr "아래에 임시 텍스트를 입력하세요"
 
 #. Resource IDs: (5388)
 msgid "Enter your backup database prefix."
-msgstr ""
+msgstr "아래에 임시 텍스트를 입력하세요"
 
 #. Resource IDs: (5362)
 msgid "Entries in both databases but with differences:"
@@ -3595,7 +3612,7 @@ msgstr "현재 데이터베이스에만 존재하는 항목들(%s):"
 
 #. Resource IDs: (546)
 msgid "Entries using Named Password Policy: "
-msgstr ""
+msgstr "표시된 규칙대로 비밀번호가 생성됨"
 
 #. Resource IDs: (1480)
 msgid "Entries using selected policy:"
@@ -3937,7 +3954,7 @@ msgstr ""
 
 #. Resource IDs: (6008)
 msgid "Failed to save key in database"
-msgstr ""
+msgstr "변경된 환경설정을 저장하는 데 실패했습니다."
 
 #. Resource IDs: (5850)
 #, c-format
@@ -3999,7 +4016,7 @@ msgstr ""
 
 #. Resource IDs: (5988)
 msgid "File Creation Date"
-msgstr ""
+msgstr "'생성 시간'"
 
 #. Resource IDs: (5236)
 msgid "File In Use"
@@ -4007,11 +4024,11 @@ msgstr "파일 사용중"
 
 #. Resource IDs: (5990)
 msgid "File Last Accessed date"
-msgstr ""
+msgstr "최종 접근 시간:"
 
 #. Resource IDs: (5989)
 msgid "File Last Modified Date"
-msgstr ""
+msgstr "최종 수정"
 
 #. Resource IDs: (5982)
 msgid "File Name"
@@ -4218,7 +4235,7 @@ msgstr "비밀번호 생성"
 
 #. Resource IDs: (5916)
 msgid "Generate Password using selected Password Policy"
-msgstr ""
+msgstr "표시된 규칙대로 비밀번호가 생성됨"
 
 #. Resource IDs: (8241)
 msgid "Georgian"
@@ -4364,6 +4381,10 @@ msgstr ""
 msgid "Hide System Tray icon (Hot Key MUST be active)"
 msgstr "시스템 트레이 아이콘 감추기 (반드시 단축키를 설정해야함)"
 
+#. Resource IDs: (6075)
+msgid "Hide Value"
+msgstr ""
+
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
 msgstr "변경된 항목 저장"
@@ -4378,7 +4399,7 @@ msgstr "내역"
 
 #. Resource IDs: (5929)
 msgid "History entry"
-msgstr ""
+msgstr "내역 비우기"
 
 #. Resource IDs: (6043)
 #, c-format
@@ -4685,11 +4706,11 @@ msgstr ""
 
 #. Resource IDs: (3425)
 msgid "Import aborted, see report for details."
-msgstr ""
+msgstr "공개 소스에 대해 알고싶으시다면 LICENSE를 읽으십시오."
 
 #. Resource IDs: (5870)
 msgid "Import failed"
-msgstr ""
+msgstr "XML 설정 불러오기 실패"
 
 #. Resource IDs: (1398)
 msgid "Import to change passwords of existing entries ONLY"
@@ -5262,7 +5283,7 @@ msgstr "최소 %d 이상이어야 합니다"
 msgid "N/A"
 msgstr "N/A"
 
-#. Resource IDs: (5640, 5875)
+#. Resource IDs: (5640, 5875, 5892)
 msgid "Name"
 msgstr "이름"
 
@@ -5492,7 +5513,7 @@ msgstr ""
 msgid "Note: These preferences are only used when importing into an empty database."
 msgstr "주의: 이 설정들은 다른 빈 데이터베이스를 불러올 때에만 사용됩니다."
 
-#. Resource IDs: (3014, 5225)
+#. Resource IDs: (3014, 5225, 574, 576)
 msgid "Notes"
 msgstr "노트"
 
@@ -6551,7 +6572,7 @@ msgstr ""
 
 #. Resource IDs: (5993)
 msgid "Select media type"
-msgstr ""
+msgstr "테스트 덤프 종류 설정"
 
 #. Resource IDs: (5430)
 msgid "Select some entries"
@@ -6753,11 +6774,11 @@ msgstr "바로가기"
 
 #. Resource IDs: (1471)
 msgid "Show"
-msgstr ""
+msgstr "보이기(&S)"
 
 #. Resource IDs: (1590)
 msgid "Show Master Password"
-msgstr ""
+msgstr "'비밀번호 내역'"
 
 #. Resource IDs: (5653)
 msgid "Show Notes"
@@ -6786,6 +6807,10 @@ msgstr "트리 보기 형식에서 비밀번호 보이기"
 #. Resource IDs: (1254)
 msgid "Show Username in Tree View"
 msgstr "트리 보기 형식에서 사용자 이름 보이기"
+
+#. Resource IDs: (6076)
+msgid "Show Value"
+msgstr "노트 보이기"
 
 #. Resource IDs: (34106)
 msgid "Show Virtual Keyboard"
@@ -6924,7 +6949,7 @@ msgstr ""
 
 #. Resource IDs: (5566)
 msgid "Specify text"
-msgstr ""
+msgstr "텍스트를 명시해 주십시오"
 
 #. Resource IDs: (5108)
 msgid "Specify the browser to use when an entry's URL field starts with [alt], e.g., '[alt]http://foo.com'. You can specify command line options to the browser via the Browser command line parameters field. Do not enclose this value in single or double quotes unless your chosen browser requires them."
