@@ -11,6 +11,7 @@ Bugs Fixed in 3.71.1
 * Improved font scale handling -should resolve font size issues on high resolution displays.
 * [GH1749](https://github.com/pwsafe/pwsafe/issues/1749) In the Master Password Setup window, "Show Master Password" is no longer truncated on some displays.
 * [GH1092](https://github.com/pwsafe/pwsafe/issues/1092)[SF1595](https://sourceforge.net/p/passwordsafe/bugs/1595/) Size and position of main window is now correctly restored on scaled displays.
+* [SF1628](https://sourceforge.net/p/passwordsafe/bugs/1628/) Custom values can now be copied to the clipboard in read-only mode via Ctrl-C and right-click->Copy Value.
 
 New Features in 3.71.1
 ----------------------
