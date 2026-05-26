@@ -61,6 +61,7 @@ public:
     auto *mainSizer = new wxBoxSizer(wxVERTICAL);
     auto *gridSizer = new wxFlexGridSizer(5, 1, 5, 5);
     gridSizer->AddGrowableCol(0);
+    gridSizer->AddGrowableRow(3); // multi-line text input field for the value
 
     gridSizer->Add(new wxStaticText(this, wxID_ANY, _("Name")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 0);
     m_NameCtrl = new wxTextCtrl(this, wxID_ANY);
