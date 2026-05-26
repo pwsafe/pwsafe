@@ -342,13 +342,16 @@ bool IsXWaylandEnabled()
   wxOperatingSystemId osid = wxGetOsVersion();
 
   if (osid & wxOS_UNIX) { // Includes Linux
-    wxString GDK_BACKEND_VAR = wxEmptyString;
+    wxString GDK_BACKEND_VAR = wxEmptyString; // set by the native version on Linux with Wayland to fall back to using x11 backend
     if (wxGetEnv(wxT("GDK_BACKEND"), &GDK_BACKEND_VAR)) { // provides 'x11' or 'wayland'
       if (!GDK_BACKEND_VAR.IsEmpty()) {
         if (GDK_BACKEND_VAR == wxT("x11")) {
           XWayland = true;
         }
       }
+    }
+    else if (!wxGetEnv(wxT("WAYLAND_DISPLAY"), nullptr)) { // unset by the Flatpak version on Wayland when started with the "--nosocket=wayland --socket=x11" options
+      XWayland = true;
     }
   }
   return XWayland;
@@ -382,6 +385,24 @@ void wxUtilities::NotifyIfUnsupported(enum Feature feature, wxWindow* window)
   if (feature == SystemTray && !IsTaskBarIconAvailable()) {
     window->SetToolTip(_("Not supported by the current Windowing System (e.g. Wayland), or you may need to install a Desktop Environment extension to enable System Tray support."));
   }
+#endif
+}
+
+bool IsRunningInFlatpak()
+{
+#ifdef __WXGTK__
+  wxString appID;
+  wxString homeFolder;
+  wxGetEnv("FLATPAK_ID", &appID);
+  wxGetEnv("HOME", &homeFolder);
+  if (!appID.IsEmpty() && !homeFolder.IsEmpty()) {
+    return (wxDirExists(homeFolder + "/.var/app/" + appID)) ? true : false;
+  }
+  else {
+    return false;
+  }
+#else
+  return false;
 #endif
 }
 

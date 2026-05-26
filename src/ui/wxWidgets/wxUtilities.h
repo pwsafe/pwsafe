@@ -469,6 +469,9 @@ namespace wxUtilities
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable();
 
+// Returns true if it's Flatpak version on Linux, false if native build
+bool IsRunningInFlatpak();
+
 /**
  * @brief Creates a taskbar icon with text overlay.
  *
