@@ -456,6 +456,17 @@ void PasswordSafeFrame::DoCopyRunCmd(CItemData &item)
   UpdateAccessTime(item);
 }
 
+void PasswordSafeFrame::DoCopyCustomFieldValue(const StringX &fieldValue)
+{
+  auto *item = GetSelectedEntry();
+  if (item == nullptr) {
+    return;
+  }
+  Clipboard::GetInstance()->SetData(fieldValue);
+  UpdateLastClipboardAction(CItemData::FieldType::CUSTOMTEXT);
+  UpdateAccessTime(*item);
+}
+
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_COPYUSERNAME
  */
