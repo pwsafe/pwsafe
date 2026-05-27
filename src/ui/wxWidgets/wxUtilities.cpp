@@ -396,7 +396,7 @@ bool IsRunningInFlatpak()
   wxGetEnv("FLATPAK_ID", &appID);
   wxGetEnv("HOME", &homeFolder);
   if (!appID.IsEmpty() && !homeFolder.IsEmpty()) {
-    return (wxDirExists(homeFolder + "/.var/app/" + appID)) ? true : false;
+    return wxDirExists(homeFolder + "/.var/app/" + appID);
   }
   else {
     return false;
