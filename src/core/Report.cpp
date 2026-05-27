@@ -175,11 +175,11 @@ bool CReport::SaveToDisk(const stringT &out_dir)
   Replace(sx, sxCRLF, sxLF);
   Replace(sx, sxLF, sxCRLF);
     
-  CUTF8Conv conv; // can't make a member, as no copy c'tor!
-  const unsigned char *utf8;
+  CUTF8Conv conv;
+  const unsigned char *utf8 = nullptr;
   size_t utf8Len;
   if (conv.ToUTF8(sx, utf8, utf8Len)) {
-    const unsigned char BOM[] = {0xef, 0xbb, 0xbf}; // Store UTF-8 as default
+    const unsigned char BOM[] = {0xef, 0xbb, 0xbf}; // utf-8 bom
     if (pws_os::fileLength(fd) == 0) {
       // If file is new/empty, write BOM, as some text editors insist!
       fwrite(BOM, 1, 3, fd);
@@ -187,7 +187,9 @@ bool CReport::SaveToDisk(const stringT &out_dir)
     fwrite(utf8, utf8Len, 1, fd);
   }
   else {
+    fclose(fd);
     pws_os::IssueError(_T("SaveToDisk: Conversion error"));
+    return false;
   }
   fclose(fd);
 
@@ -246,27 +248,20 @@ bool CReport::ReadFromDisk()
     return false;
   }
 
-  pugi::xml_encoding encoding;
-  bool bFileIsUnicode = isFileUnicode(m_cs_filename, encoding);
-  size_t nBytesRead;
-  char inbuffer[4096];
-
-  if (bFileIsUnicode) {
-    size_t skip = 0;
-    if(encoding == pugi::encoding_utf8) {
-      // Skip 3 byte header
-      skip = 3;
-    }
-    if (skip > 0) {
-      if (fread(inbuffer, 1, skip, fd) != skip) {
-        fclose(fd);
-        return false;
-      }
-    }
-  }
-  
   // read the utf-8 file contents into a string stream
   std::ostringstream ss;
+  const unsigned char BOM[] = {0xef, 0xbb, 0xbf}; // utf-8 BOM
+  const size_t bom = sizeof(BOM);
+  char inbuffer[4096];
+  size_t nBytesRead = fread(inbuffer, 1, bom, fd);
+  if ((nBytesRead == bom) && (memcmp(BOM, inbuffer, bom) == 0)) {
+    // ignore the utf-8 bom
+  }
+  else {
+    // those bytes are part of the utf-8 input file
+    ss.write(inbuffer, nBytesRead);
+  }
+  
   do {
     nBytesRead = fread(inbuffer, 1, sizeof(inbuffer), fd);
     if (nBytesRead > 0) {
@@ -279,7 +274,10 @@ bool CReport::ReadFromDisk()
   StringX sx;
   CUTF8Conv conv;
   std::streampos size = ss.tellp();
-  conv.FromUTF8(reinterpret_cast<const unsigned char*>(ss.str().c_str()), size, sx);
+  if (!conv.FromUTF8(reinterpret_cast<const unsigned char*>(ss.str().c_str()), size, sx)) {
+    pws_os::IssueError(_T("ReadFromDisk: Conversion error"));
+    return false;
+  }
 
   StringX sxCRLF(L"\r\n"), sxLF(L"\n");
   Replace(sx, sxCRLF, sxLF);
