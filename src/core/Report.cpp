@@ -92,51 +92,6 @@ void CReport::StartReport(int iAction, const stringT &csDataBase, bool writeHead
   }
 }
 
-static pugi::xml_encoding guessBufferEncoding(uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3)
-{
-  if (d0 == 0 && d1 == 0 && d2 == 0xfe && d3 == 0xff) return pugi::encoding_utf32_be;
-  if (d0 == 0xff && d1 == 0xfe && d2 == 0 && d3 == 0) return pugi::encoding_utf32_le;
-  if (d0 == 0xfe && d1 == 0xff) return pugi::encoding_utf16_be;
-  if (d0 == 0xff && d1 == 0xfe) return pugi::encoding_utf16_le;
-  if (d0 == 0xef && d1 == 0xbb && d2 == 0xbf) return pugi::encoding_utf8;
-  // no known BOM detected, return auto
-  return pugi::encoding_auto;
-}
-
-static bool isFileUnicode(const stringT &fname, pugi::xml_encoding& encoding)
-{
-  // Check if the first 2 characters are the BOM
-  // (Need file to exist and length at least 2 for BOM)
-  // Need to use FOpen as cannot pass wchar_t filename to a std::istream
-  // and cannot convert a wchar_t filename/path to char if non-Latin characters
-  // present
-  unsigned char buffer[4] = {0x00, 0x00, 0x00, 0x00};
-  bool retval = false;
-
-  FILE *fn = pws_os::FOpen(fname, _T("rb"));
-  if (fn == nullptr)
-    return false;
-  if (pws_os::fileLength(fn) < 4) {
-    retval = false;
-  }
-  else {
-    if (fread(buffer, 1, 4, fn) != 4) {
-      fclose(fn);
-      return false;
-    }
-      
-    encoding = guessBufferEncoding(buffer[0], buffer[1], buffer[2], buffer[3]);
-    if(encoding == pugi::encoding_auto) {
-      encoding = pugi::encoding_utf8; // Take UTF-8 as default
-      retval = false;
-    }
-    else {
-      retval = true;
-    }
-  }
-  fclose(fn);
-  return retval;
-}
 
 /*
   SaveToDisk creates a new file of name "<tcAction>_Report.txt" e.g. "Merge_Report.txt"
