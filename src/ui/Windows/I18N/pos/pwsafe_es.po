@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-03-23 20:07+0200\n"
+"PO-Revision-Date: 2026-05-25 21:28+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: es\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -2918,6 +2931,10 @@ msgstr "Copiar UR&L al portapapeles"
 msgid "Copy URL to Clipboard"
 msgstr "Copiar URL al portapapeles"
 
+#. Resource IDs: (6077)
+msgid "Copy Value"
+msgstr "Valor de copia"
+
 #. Resource IDs: (32223 - Menu)
 msgid "Copy all entries to Original"
 msgstr "Copiar todas las entradas a la original"
@@ -3100,7 +3117,7 @@ msgstr ""
 msgid "Custom Field"
 msgstr "Campo personalizado"
 
-#. Resource IDs: (3096, 5231)
+#. Resource IDs: (3096, 5231, 575, 577)
 msgid "Custom Fields"
 msgstr "Campos personalizados"
 
@@ -3155,7 +3172,7 @@ msgstr "Base de datos"
 
 #. Resource IDs: (65535)
 msgid "Database Entry Shortcuts"
-msgstr ""
+msgstr "Atajos de entrada de base de datos"
 
 #. Resource IDs: (5758)
 msgid "Database Format"
@@ -3388,7 +3405,7 @@ msgstr ""
 
 #. Resource IDs: (5738, 65535)
 msgid "Double-Click Action"
-msgstr ""
+msgstr "Acción de doble clic"
 
 #. Resource IDs: (65535)
 msgid "Double-Click Action:"
@@ -3428,7 +3445,7 @@ msgstr "Doble clic en la entrada para ejecutar comando"
 
 #. Resource IDs: (4032)
 msgid "Double-Click on entry to Send Email"
-msgstr ""
+msgstr "Haz doble clic en la entrada para enviar un correo electrónico"
 
 #. Resource IDs: (4026)
 msgid "Double-Click on entry to View/Edit it"
@@ -4480,6 +4497,10 @@ msgstr "Ocultar contraseña segura de la captura de pantalla y aplicaciones rela
 msgid "Hide System Tray icon (Hot Key MUST be active)"
 msgstr "Ocultar icono (la tecla de acceso DEBE estar activada)"
 
+#. Resource IDs: (6075)
+msgid "Hide Value"
+msgstr "Ocultar valor"
+
 #. Resource IDs: (1397)
 msgid "Highlight changed entries"
 msgstr "Resaltar entradas modificadas"
@@ -4773,7 +4794,7 @@ msgstr ""
 
 #. Resource IDs: (5534)
 msgid "Import Text"
-msgstr ""
+msgstr "Importar Texto"
 
 #. Resource IDs: (125)
 msgid "Import Text Settings"
@@ -4785,7 +4806,7 @@ msgstr "Falló la importación de texto"
 
 #. Resource IDs: (5535)
 msgid "Import XML"
-msgstr ""
+msgstr "Importar XML"
 
 #. Resource IDs: (126)
 msgid "Import XML Settings"
@@ -4896,7 +4917,7 @@ msgstr "Insertar"
 
 #. Resource IDs: (6001)
 msgid "Insert your YubiKey"
-msgstr ""
+msgstr "Inserta tu YubiKey"
 
 #. Resource IDs: (61706)
 msgid "Insufficient memory to perform operation."
@@ -5380,7 +5401,7 @@ msgstr "Al menos debe ser %d"
 msgid "N/A"
 msgstr "N/D"
 
-#. Resource IDs: (5640, 5875)
+#. Resource IDs: (5640, 5875, 5892)
 msgid "Name"
 msgstr "Nombre"
 
@@ -5610,7 +5631,7 @@ msgstr "Nota: estas políticas de contraseña no van a reemplazar las políticas
 msgid "Note: These preferences are only used when importing into an empty database."
 msgstr "Nota: Estas preferencias sólo se usan para la importación en una base de datos vacía."
 
-#. Resource IDs: (3014, 5225)
+#. Resource IDs: (3014, 5225, 574, 576)
 msgid "Notes"
 msgstr "Notas"
 
@@ -5788,7 +5809,7 @@ msgstr ""
 
 #. Resource IDs: (1595)
 msgid "Opaque"
-msgstr ""
+msgstr "Opaco"
 
 #. Resource IDs: (61440)
 msgid "Open"
@@ -6937,6 +6958,10 @@ msgstr "Mostrar contraseñas en vista de árbol"
 msgid "Show Username in Tree View"
 msgstr "Mostrar usuario en vista de árbol"
 
+#. Resource IDs: (6076)
+msgid "Show Value"
+msgstr "Mostrar el valor"
+
 #. Resource IDs: (34106)
 msgid "Show Virtual Keyboard"
 msgstr "Mostrar teclado virtual"
@@ -7298,19 +7323,19 @@ msgstr "La tecla ALT no se utiliza en cualquier teclado para seleccionar caracte
 
 #. Resource IDs: (5947)
 msgid "The Alt and Ctrl keys have been added."
-msgstr ""
+msgstr "Se han añadido las teclas Alt y Ctrl."
 
 #. Resource IDs: (5944)
 msgid "The Alt and Shift keys have been added."
-msgstr ""
+msgstr "Se han añadido las teclas Alt y Mays."
 
 #. Resource IDs: (5943)
 msgid "The Alt key has been added."
-msgstr ""
+msgstr "Se ha añadido la tecla Alt."
 
 #. Resource IDs: (5948)
 msgid "The Alt, Ctrl and Shift keys have been added."
-msgstr ""
+msgstr "Se han añadido las teclas Alt, Ctrl y Shift."
 
 #. Resource IDs: (3502)
 msgid "The Authentication Code configuration is invalid"
@@ -7322,11 +7347,11 @@ msgstr "La operación del código de autenticación se ha realizado correctament
 
 #. Resource IDs: (5946)
 msgid "The Ctrl and Shift keys have been added."
-msgstr ""
+msgstr "Se han añadido las teclas Ctrl y Shift."
 
 #. Resource IDs: (5945)
 msgid "The Ctrl key has been added."
-msgstr ""
+msgstr "Se ha añadido la tecla Ctrl."
 
 #. Resource IDs: (65535)
 msgid "The Master Password will be used to protect the new password database file."
@@ -7349,7 +7374,7 @@ msgstr "No se encontró el secreto de autenticación"
 
 #. Resource IDs: (5735)
 msgid "The custom field's name cannot be empty."
-msgstr ""
+msgstr "El nombre del campo personalizado no puede estar vacío."
 
 #. Resource IDs: (5311)
 #, c-format
@@ -7464,7 +7489,7 @@ msgstr "Las siguientes ADVERTENCIAS fueron detectadas - debería revisarlas y ar
 
 #. Resource IDs: (3454)
 msgid "The following attachments are not referred to by any entry."
-msgstr ""
+msgstr "Los siguientes anexos no se mencionan en ninguna entrada."
 
 #. Resource IDs: (6055)
 msgid "The following base entries have been exported because one or more of their dependents have been included."
@@ -8057,7 +8082,7 @@ msgstr "Desproteger entrada"
 
 #. Resource IDs: (5001)
 msgid "Unrecognised command line argument found"
-msgstr ""
+msgstr "Se ha encontrado un argumento no reconocido en la línea de comandos"
 
 #. Resource IDs: (3349)
 msgid "Unsaved changes"
@@ -8402,7 +8427,7 @@ msgstr "Windows no puede expandir '%s'. Asegúrese de haberlo configurado correc
 #. Resource IDs: (5972)
 #, c-format
 msgid "Windows can't find '%s'. Make sure that you have set the external editor correctly and that it is installed. External Edit cancelled."
-msgstr ""
+msgstr "Windows no encuentra '%s'. Asegúrate de que tienes correctamente configurado el editor externo y que está instalado. Edición externa cancelada."
 
 #. Resource IDs: (8264)
 msgid "Wolof"

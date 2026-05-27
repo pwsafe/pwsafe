@@ -802,6 +802,7 @@
 #define IDS_CUSTOMVALUECOPIED                               6074
 #define IDS_HIDE_VALUE                                      6075
 #define IDS_SHOW_VALUE                                      6076
+#define IDS_COPY_VALUE                                      6077
 
 #define IDS_SCRCAP_EXCLUDE_OVERRIDE_WARNING_BEFORE_INVALID  6080
 #define IDS_SCRCAP_EXCLUDE_OVERRIDE_WARNING_BEFORE_NONE     6081
