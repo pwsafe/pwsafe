@@ -504,14 +504,13 @@ void ManageFiltersDlg::UpdateFilterList(bool bRefreshGrid /* = true */)
   m_MapFilterData.clear();
 
   PWSFilters::iterator mf_iter;
-  int i = 0;
   m_num_to_copy = 0;
   m_num_to_export = 0;
   
   // Insert all known filters into sorted filter list
   for (mf_iter = m_pMapAllFilters->begin();
          mf_iter != m_pMapAllFilters->end();
-         mf_iter++, i++) {
+         mf_iter++) {
     struct st_FilterItemData data;
     bool bSelected = false;
     
