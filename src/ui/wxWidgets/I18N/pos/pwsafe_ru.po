@@ -8,7 +8,7 @@
 # Dmitr Y, 2025
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: Password Safe\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-14 16:35+0300\n"
 "PO-Revision-Date: 2026-02-14 13:00+0300\n"
