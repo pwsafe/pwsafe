@@ -24,12 +24,8 @@
 #include "winutils.h"
 #include "resource2.h"
 #include "resource3.h"
+#include "PWSDarkMode.h"
 
-#ifdef PWSAFE_USE_DARKMODE32
-#include "DMSubclass.h"
-#endif
-
-#ifdef PWSAFE_USE_DARKMODE32
 namespace {
 COLORREF GetCoolMenuColor(int nIndex)
 {
@@ -58,14 +54,6 @@ COLORREF GetCoolMenuColor(int nIndex)
   return GetSysColor(nIndex);
 }
 }
-#else
-namespace {
-COLORREF GetCoolMenuColor(int nIndex)
-{
-  return GetSysColor(nIndex);
-}
-}
-#endif
 
 
 #ifdef _DEBUG
@@ -237,7 +225,6 @@ BOOL CCoolMenuManager::CMOnDrawItem(LPDRAWITEMSTRUCT lpdis)
     // draw separator
     CRect rc = rcItem;                // copy rect
     rc.top += rc.Height() >> 1;        // vertical center
-#ifdef PWSAFE_USE_DARKMODE32
     if (DarkMode::isEnabled()) {
       FillRect(dc, rcItem, GetCoolMenuColor(COLOR_MENU));
       CPen pen(PS_SOLID, 1, DarkMode::getEdgeColor());
@@ -248,9 +235,6 @@ BOOL CCoolMenuManager::CMOnDrawItem(LPDRAWITEMSTRUCT lpdis)
     } else {
       dc.DrawEdge(&rc, EDGE_ETCHED, BF_TOP);    // draw separator line
     }
-#else
-    dc.DrawEdge(&rc, EDGE_ETCHED, BF_TOP);    // draw separator line
-#endif
   } else {                          // not a separator
     BOOL bDisabled = lpdis->itemState & ODS_GRAYED;
     BOOL bSelected = lpdis->itemState & ODS_SELECTED;
@@ -258,10 +242,8 @@ BOOL CCoolMenuManager::CMOnDrawItem(LPDRAWITEMSTRUCT lpdis)
     BOOL bHaveButn = FALSE;
     COLORREF colorBG = GetCoolMenuColor(bSelected ? COLOR_HIGHLIGHT : COLOR_MENU);
 
-#ifdef PWSAFE_USE_DARKMODE32
     if (DarkMode::isEnabled())
       FillRect(dc, rcItem, colorBG);
-#endif
 
     // Paint button, or blank if none
     CRect rcButn(rcItem.TopLeft(), m_szButton);  // button rect
@@ -436,7 +418,6 @@ BOOL CCoolMenuManager::Draw3DCheckmark(CDC& dc, const CRect& rc, BOOL bSelected,
 //
 void CCoolMenuManager::CMOnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu)
 {
-#ifdef PWSAFE_USE_DARKMODE32
   if (DarkMode::isEnabled()) {
     MENUINFO menuInfo{};
     menuInfo.cbSize = sizeof(menuInfo);
@@ -444,7 +425,6 @@ void CCoolMenuManager::CMOnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMen
     menuInfo.hbrBack = DarkMode::getDlgBackgroundBrush();
     pMenu->SetMenuInfo(&menuInfo);
   }
-#endif
 
   ConvertMenu(pMenu, nIndex, bSysMenu, m_bShowButtons);
 }

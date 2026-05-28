@@ -14,10 +14,7 @@
 #include "core/report.h"
 #include "core/util.h"
 #include "DboxMain.h"
-
-#ifdef PWSAFE_USE_DARKMODE32
-#include "DMSubclass.h"
-#endif
+#include "PWSDarkMode.h"
 
 // CViewReport dialog
 
@@ -36,17 +33,12 @@ CViewReport::CViewReport(CWnd* pParent /*=NULL*/,
 
   m_dwDatasize = (DWORD)(m_pString.length() * sizeof(wchar_t));
 
-#ifdef PWSAFE_USE_DARKMODE32
   m_backgroundcolour = DarkMode::isEnabled() ?
                        DarkMode::getCtrlBackgroundColor() :
                        ::GetSysColor(COLOR_WINDOW);
   m_textcolor = DarkMode::isEnabled() ?
                 DarkMode::getTextColor() :
                 ::GetSysColor(COLOR_WINDOWTEXT);
-#else
-  m_backgroundcolour = ::GetSysColor(COLOR_WINDOW);
-  m_textcolor = ::GetSysColor(COLOR_WINDOWTEXT);
-#endif
   m_backgroundbrush.CreateSolidBrush(m_backgroundcolour);
 }
 

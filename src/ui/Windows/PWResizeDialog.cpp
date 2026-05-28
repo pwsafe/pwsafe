@@ -12,9 +12,7 @@
 #include "stdafx.h"
 #include "PWResizeDialog.h"
 
-#ifdef PWSAFE_USE_DARKMODE32
-#include "DMSubclass.h"
-#endif
+#include "PWSDarkMode.h"
 
 // CPWResizeDialog dialog
 
@@ -96,9 +94,7 @@ BOOL CPWResizeDialog::OnInitDialog()
 
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
 
-#ifdef PWSAFE_USE_DARKMODE32
     DarkMode::setStatusBarCtrlSubclass(m_RSDStatusBar.GetSafeHwnd());
-#endif
 
     m_bStatusBarOK = true;
   }

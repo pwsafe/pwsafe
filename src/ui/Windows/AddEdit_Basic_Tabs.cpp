@@ -11,9 +11,7 @@
 
 #include "AddEdit_Basic_Tabs.h"
 
-#ifdef PWSAFE_USE_DARKMODE32
-#include "DMSubclass.h"
-#endif
+#include "PWSDarkMode.h"
 
 BEGIN_MESSAGE_MAP(CAddEdit_Basic_Tabs, CPropertySheet)
   ON_WM_SIZE()
@@ -49,10 +47,8 @@ BOOL CAddEdit_Basic_Tabs::OnInitDialog()
 {
   CPropertySheet::OnInitDialog();
 
-#ifdef PWSAFE_USE_DARKMODE32
   DarkMode::setWindowEraseBgSubclass(m_hWnd);
   DarkMode::setDarkWndNotifySafe(m_hWnd, true);
-#endif
 
   ModifyStyleEx(0, WS_EX_CONTROLPARENT);
 

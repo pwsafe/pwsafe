@@ -62,6 +62,8 @@ public:
                                           m_OPTMD.EnableTransparency;}
   bool WindowTransparencyChanged() const {return m_save_iPercentTransparency !=
                                           m_OPTMD.PercentTransparency;}
+  bool DisplayModeChanged() const {return m_save_DisplayPreference !=
+                                          m_OPTMD.DisplayMode;}
   bool UpdateTransparency(const int value)
   { return app.GetMainDlg()->SetLayered((CWnd *)this, value); }
 

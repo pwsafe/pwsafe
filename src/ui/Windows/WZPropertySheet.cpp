@@ -20,9 +20,7 @@
 #include "WZSelectDB.h"
 #include "WZFinish.h"
 
-#ifdef PWSAFE_USE_DARKMODE32
-#include "DMSubclass.h"
-#endif
+#include "PWSDarkMode.h"
 
 IMPLEMENT_DYNAMIC(CWZPropertySheet, CPropertySheet)
 
@@ -122,12 +120,10 @@ BOOL CWZPropertySheet::OnInitDialog()
 {
   BOOL bResult = CPropertySheet::OnInitDialog();
 
-#ifdef PWSAFE_USE_DARKMODE32
   DarkMode::setWindowEraseBgSubclass(m_hWnd);
   DarkMode::setDarkWndNotifySafe(m_hWnd, true);
   RedrawWindow(nullptr, nullptr,
                RDW_INVALIDATE | RDW_ERASE | RDW_FRAME | RDW_ALLCHILDREN);
-#endif
 
   CScreenCaptureStateControl::SetLastDisplayAffinityError(
     WinUtil::SetWindowExcludeFromScreenCapture(m_hWnd, app.IsExcludeFromScreenCapture())

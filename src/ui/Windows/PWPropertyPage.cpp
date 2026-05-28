@@ -11,9 +11,7 @@
 #include "PWPropertyPage.h"
 #include "GeneralMsgBox.h"
 
-#ifdef PWSAFE_USE_DARKMODE32
-#include "DMSubclass.h"
-#endif
+#include "PWSDarkMode.h"
 
 IMPLEMENT_DYNAMIC(CPWPropertyPage, CPropertyPage)
 
@@ -32,10 +30,8 @@ BOOL CPWPropertyPage::OnInitDialog()
 {
   BOOL retval = CPropertyPage::OnInitDialog();
 
-#ifdef PWSAFE_USE_DARKMODE32
   DarkMode::setWindowEraseBgSubclass(m_hWnd);
   DarkMode::setDarkWndNotifySafe(m_hWnd, true);
-#endif
 
   CWnd* pTitleWnd = GetDlgItem(IDC_PS_TITLE);
 

@@ -149,6 +149,7 @@ public:
     AutotypeSelectAllKeyCode, AutotypeSelectAllModMask, //X only
     TreeFontPtSz, PasswordFontPtSz, NotesFontPtSz, AddEditFontPtSz, VKFontPtSz,
     WindowTransparency, DefaultExpiryDays, DNDMaxMemSize,
+    DisplayMode,
     NumIntPrefs};
 
   enum StringPrefs {CurrentBackup, CurrentFile, LastView, DefaultUsername,
@@ -186,6 +187,10 @@ public:
 
   // Dialog orientation: Determine automatically or let the system decide
   enum  {AUTO = 0, TALL = 1, WIDE = 2};
+
+  // Display mode
+  enum {minDisplayMode = 0, DisplayModeSystem = 0, DisplayModeLight = 1,
+    DisplayModeDark = 2, maxDisplayMode = 2};
 
   // Preference types - values are powers of 2, except ptAll = sum of previous values
   enum PrefType {ptObsolete = 0, ptDatabase = 1, ptApplication = 2, ptAll = 3};

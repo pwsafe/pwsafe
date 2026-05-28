@@ -93,6 +93,7 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/ProgressPieCommon.h
             src/ui/Windows/ProgressPieCtrl.h
             src/ui/Windows/ProgressPieStaticCtrl.h
+            src/ui/Windows/PWSDarkMode.h
             src/ui/Windows/Properties.h
             src/ui/Windows/PupText.h
             src/ui/Windows/PWDialog.h
@@ -309,6 +310,10 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/res/PasswordSafe2.rc2
             src/ui/Windows/res/PasswordSafe3.rc2
     )
+
+if(PWSAFE_USE_DARKMODE32 AND MSVC)
+  add_subdirectory(darkmode32)
+endif()
   
 if(NOT NO_YUBI)
   list(APPEND PWSAFE_SRC_LIST src/ui/Windows/YubiCfgDlg.cpp src/ui/Windows/YubiMixin.cpp)

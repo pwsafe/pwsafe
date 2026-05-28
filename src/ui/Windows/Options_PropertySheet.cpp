@@ -11,6 +11,7 @@
 #include "Options_PropertyPage.h"
 #include "Shortcut.h"
 #include "winutils.h"
+#include "PWSDarkMode.h"
 
 #include "core/PWSAuxParse.h"
 
@@ -20,6 +21,7 @@ COptions_PropertySheet::COptions_PropertySheet(UINT nID, CWnd* pParent,
   const bool bLongPPs)
   : CPWPropertySheet(nID, pParent, bLongPPs),
   m_save_bSymbols(L""), m_save_iPreExpiryWarnDays(0), m_save_iUseOwnSymbols(DEFAULT_SYMBOLS),
+  m_save_DisplayPreference(0),
   m_bIsModified(false), m_bChanged(false),
   m_bRefreshViews(false), m_bSaveGroupDisplayState(false), m_bUpdateShortcuts(false),
   m_bCheckExpired(false),
@@ -183,6 +185,9 @@ void COptions_PropertySheet::SetupInitialValues()
     prefs->GetPref(PWSprefs::EnableWindowTransparency) ? TRUE : FALSE;
   m_OPTMD.PercentTransparency =
       prefs->GetPref(PWSprefs::WindowTransparency);
+  m_OPTMD.DisplayMode =
+      prefs->GetPref(PWSprefs::DisplayMode);
+  m_save_DisplayPreference = m_OPTMD.DisplayMode;
   // Preferences min/max
   m_OPTMD.prefminExpiryDays = (short)prefs->GetPrefMinVal(PWSprefs::PreExpiryWarnDays);
   m_OPTMD.prefmaxExpiryDays = (short)prefs->GetPrefMaxVal(PWSprefs::PreExpiryWarnDays);
@@ -349,6 +354,8 @@ void COptions_PropertySheet::UpdateCopyPreferences()
                   m_OPTMD.EnableTransparency == TRUE, true);
   prefs->SetPref(PWSprefs::WindowTransparency,
                   m_OPTMD.PercentTransparency, true);
+  prefs->SetPref(PWSprefs::DisplayMode,
+                  m_OPTMD.DisplayMode, true);
   
   // Changes are highlighted only if "highlight changes" is true and 
   // "save immediately" is false.
@@ -488,7 +495,10 @@ void COptions_PropertySheet::UpdateCopyPreferences()
 
   // Now copy across application preferences
   // Any changes via Database preferences done via call to UpdateGUI from Command
+  const bool bDisplayModeChanged = DisplayModeChanged();
   prefs->UpdateFromCopyPrefs(PWSprefs::ptApplication);
+  if (bDisplayModeChanged)
+    PwsDarkMode::ApplyDisplayModePreference(m_OPTMD.DisplayMode);
 
   // Keep prefs file updated
   prefs->SaveApplicationPreferences();

@@ -45,9 +45,7 @@
 #include "commctrl.h"
 #include "winutils.h"
 
-#ifdef PWSAFE_USE_DARKMODE32
-#include "DMSubclass.h"
-#endif
+#include "PWSDarkMode.h"
 
 #include <shlwapi.h>
 #include <vector>
@@ -698,9 +696,7 @@ void DboxMain::setupBars()
     m_StatusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK, 
                             m_StatusBar.GetItemID(CPWStatusBar::SB_DBLCLICK), 
                             SBPS_STRETCH, NULL);
-#ifdef PWSAFE_USE_DARKMODE32
     DarkMode::setStatusBarCtrlSubclass(m_StatusBar.GetSafeHwnd());
-#endif
   }
 
   CDC *pDC = this->GetDC();
@@ -721,10 +717,8 @@ void DboxMain::setupBars()
   dwStyle = dwStyle | CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP   |
                       CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
                       CBRS_TOOLTIPS      | CBRS_FLYBY;
-#ifdef PWSAFE_USE_DARKMODE32
   if (DarkMode::isEnabled())
     dwStyle &= ~(CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP | CBRS_BORDER_LEFT | CBRS_BORDER_RIGHT);
-#endif
   m_MainToolBar.SetBarStyle(dwStyle);
   m_MainToolBar.SetWindowText(L"Standard");
 
@@ -751,9 +745,7 @@ void DboxMain::setupBars()
     SetToolbar(ID_MENUITEM_NEW_TOOLBAR, true);
   }
 
-#ifdef PWSAFE_USE_DARKMODE32
   DarkMode::setChildCtrlsSubclassAndTheme(m_hWnd);
-#endif
 
   m_FindToolBar.ShowFindToolBar(false);
 

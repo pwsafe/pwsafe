@@ -47,10 +47,12 @@ protected:
   int m_TreeDisplayStatusAtOpen;
   int m_PreExpiryWarnDays;
   int m_PercentTransparency;
+  int m_DisplayMode;
   //}}AFX_DATA
 
   CButtonExtn m_chkbox[4];
   CButtonExtn m_radiobtn[3];
+  CComboBox m_displayModeCtrl;
 
   CTBMStatic m_Help1;
 

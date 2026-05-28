@@ -1,4 +1,4 @@
-# Password Safe provenance for win32-darkmode32
+# Password Safe provenance for darkmode32
 
 This directory contains a Password Safe copy of `darkmode32plus`, a Win32
 dark-mode helper library originally published at:
@@ -39,7 +39,7 @@ files.
 | `IatHook.h` | Anthony Lee Stark, 2025. Includes modified code from PolyHook 2.0 by Stephen Eckels / `stevemk14ebr`. | BSD-3-Clause for `darkmode32plus` portions; MIT for incorporated PolyHook 2.0 portions. |
 | `UAHMenuBar.h` | Anthony Lee Stark, 2025. Source comments identify original UAH menu-bar code by Adam D. Walling (`adzm`), 2021. | BSD-3-Clause for `darkmode32plus` portions; MIT for incorporated UAHMenuBar portions. |
 | `DarkMessageBox.cpp` | Marton Anka, 2026. | MIT License, as stated in the file header. |
-| `darkmode32.vcxproj`, `darkmode32.vcxproj.filters` | Derived from upstream `darkmode32plus` Visual Studio project metadata and adapted for Password Safe by Marton Anka. | BSD-3-Clause for upstream-derived project metadata; Password Safe integration changes follow the same license as the upstream project metadata unless otherwise noted. |
+| `CMakeLists.txt` | Password Safe integration metadata. | Password Safe project licensing. |
 
 ## Third-party projects named by this directory
 
@@ -57,5 +57,5 @@ files.
 - `DMSubclass.h` was updated to declare `DarkMessageBox`.
 - `DarkMode.cpp` was updated so the detected Windows build number is stored
   before checking the minimum supported version.
-- `darkmode32.vcxproj` and `darkmode32.vcxproj.filters` were adapted to build
-  the library inside the Password Safe MSVC/CMake layout.
+- `CMakeLists.txt` was added to build the library inside the Password Safe
+  CMake layout.

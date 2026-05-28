@@ -824,3 +824,6 @@
 #define IDS_TWOFACTORCODE_ERROR_KEYEMPTY                    6108
 #define IDS_AC_STATIC_TWOFACTORCODE                         6115
 #define IDS_DISPLAYAUTHCODE_TITLEFMT                        6116
+#define IDS_DISPLAYMODE_SYSTEM                              6117
+#define IDS_DISPLAYMODE_LIGHT                               6118
+#define IDS_DISPLAYMODE_DARK                                6119

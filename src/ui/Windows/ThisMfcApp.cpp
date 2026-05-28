@@ -29,9 +29,7 @@
 #include "Fonts.h"
 #include "PWSversion.h"
 
-#ifdef PWSAFE_USE_DARKMODE32
-#include "DMSubclass.h"
-#endif
+#include "PWSDarkMode.h"
 
 #include "core/Util.h"
 #include "core/PWSprefs.h"
@@ -1070,10 +1068,6 @@ BOOL ThisMfcApp::InitInstance()
   * It's always best to start at the beginning.  [Glinda, Witch of the North]
   */
 
-#ifdef PWSAFE_USE_DARKMODE32
-  DarkMode::initDarkMode();
-#endif
-
   /*
   "SetRegistryKey" MUST be called before there is any reference to 'PWSprefs'
   in this application.
@@ -1121,6 +1115,7 @@ BOOL ThisMfcApp::InitInstance()
   // Whilst the language may be changed by the user via a menu, there is no user
   // facility to change the config file, host or user later.
   PWSprefs *prefs = PWSprefs::GetInstance();
+  PwsDarkMode::Initialize(prefs->GetPref(PWSprefs::DisplayMode));
 
   // Now load translations (localized messages used in Usage and encrypt/decrypt dialogs)
   LoadLocalizedStuff();

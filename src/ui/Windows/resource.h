@@ -948,6 +948,7 @@
 #define IDC_CF_VALUE                    1631
 #define IDC_CF_SENSITIVE                1632
 #define IDC_BASIC_TABHOST               1633
+#define IDC_DISPLAYMODE                 1634
 
 // Next default values for new objects
 // 
@@ -955,7 +956,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        578
 #define _APS_NEXT_COMMAND_VALUE         30001
-#define _APS_NEXT_CONTROL_VALUE         1634
+#define _APS_NEXT_CONTROL_VALUE         1635
 #define _APS_NEXT_SYMED_VALUE           557
 #endif
 #endif

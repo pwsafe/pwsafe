@@ -14,9 +14,7 @@
 #include "WZPropertyPage.h"
 #include "WZPropertySheet.h"
 
-#ifdef PWSAFE_USE_DARKMODE32
-#include "DMSubclass.h"
-#endif
+#include "PWSDarkMode.h"
 
 IMPLEMENT_DYNAMIC(CWZPropertyPage, CPropertyPage)
 
@@ -42,10 +40,8 @@ BOOL CWZPropertyPage::OnInitDialog()
 {
   BOOL retval = CPropertyPage::OnInitDialog();
 
-#ifdef PWSAFE_USE_DARKMODE32
   DarkMode::setWindowEraseBgSubclass(m_hWnd);
   DarkMode::setDarkWndNotifySafe(m_hWnd, true);
-#endif
 
   return retval;
 }
@@ -126,12 +122,10 @@ HBRUSH CWZPropertyPage::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
     if (nID == IDC_CAPSLOCK) {
       pDC->SetTextColor(RGB(255, 0, 0));
       pDC->SetBkMode(TRANSPARENT);
-#ifdef PWSAFE_USE_DARKMODE32
       if (DarkMode::isEnabled()) {
         pDC->SetBkColor(DarkMode::getDlgBackgroundColor());
         return DarkMode::getDlgBackgroundBrush();
       }
-#endif
     }
   }
   return hbr;

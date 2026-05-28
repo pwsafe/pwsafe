@@ -12,10 +12,7 @@
 #include "../stdafx.h"
 #include "VKBButton.h"
 #include "../winutils.h"
-
-#ifdef PWSAFE_USE_DARKMODE32
-#include "DMSubclass.h"
-#endif
+#include "../PWSDarkMode.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -31,7 +28,6 @@ const COLORREF crefYellow = (RGB(255, 255, 228));  // Very light yellow
 const COLORREF crefOrange = (RGB(255, 208, 192));  // Light Orange
 const COLORREF crefPink   = (RGB(255, 222, 222));  // Light Pink
 
-#ifdef PWSAFE_USE_DARKMODE32
 namespace
 {
   COLORREF GetDarkButtonFill(bool bDeadKey, bool bPushed, bool bMouseInWindow,
@@ -48,7 +44,6 @@ namespace
     return DarkMode::getCtrlBackgroundColor();
   }
 }
-#endif
 
 CVKBButton::CVKBButton()
   : m_bMouseInWindow(false), m_bDeadKey(false),
@@ -79,7 +74,6 @@ void CVKBButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
   CString strText;
   GetWindowText(strText);
 
-#ifdef PWSAFE_USE_DARKMODE32
   if (DarkMode::isEnabled()) {
     const COLORREF edgeColour = (state & ODS_SELECTED) ?
                                 DarkMode::getHotEdgeColor() :
@@ -96,7 +90,6 @@ void CVKBButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
     rect.DeflateRect(CSize(WinUtil::GetSystemMetrics(SM_CXEDGE, m_hWnd),
                            WinUtil::GetSystemMetrics(SM_CYEDGE, m_hWnd)));
   } else {
-#endif
   // draw the control edges (DrawFrameControl is handy!)
   if (state & ODS_SELECTED)
     pDC->DrawFrameControl(rect, DFC_BUTTON, DFCS_BUTTONPUSH | DFCS_PUSHED |
@@ -118,9 +111,7 @@ void CVKBButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
     pDC->FillSolidRect(rect, crefColour);
   }
-#ifdef PWSAFE_USE_DARKMODE32
   }
-#endif
 
   // Draw the text
   if (!strText.IsEmpty()) {
@@ -132,30 +123,24 @@ void CVKBButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
     int nMode = pDC->SetBkMode(TRANSPARENT);
 
-#ifdef PWSAFE_USE_DARKMODE32
     COLORREF oldTextColour = CLR_INVALID;
     if (DarkMode::isEnabled())
       oldTextColour = pDC->SetTextColor((state & ODS_DISABLED) ?
                                         DarkMode::getDisabledTextColor() :
                                         DarkMode::getTextColor());
-#endif
 
     if (state & ODS_DISABLED)
     {
-#ifdef PWSAFE_USE_DARKMODE32
       if (DarkMode::isEnabled())
         pDC->TextOut(pt.x, pt.y, strText);
       else
-#endif
         pDC->DrawState(pt, Extent, strText, DSS_DISABLED, TRUE, 0, (HBRUSH)NULL);
     }
     else
       pDC->TextOut(pt.x, pt.y, strText);
 
-#ifdef PWSAFE_USE_DARKMODE32
     if (oldTextColour != CLR_INVALID)
       pDC->SetTextColor(oldTextColour);
-#endif
 
     pDC->SetBkMode(nMode);
   }
