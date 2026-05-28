@@ -59,23 +59,35 @@ public:
       m_OriginalName(field != nullptr ? towxstring(field->GetName()) : wxString())
   {
     auto *mainSizer = new wxBoxSizer(wxVERTICAL);
-    auto *gridSizer = new wxFlexGridSizer(2, 2, 8, 8);
-    gridSizer->AddGrowableCol(1);
+    auto *gridSizer = new wxFlexGridSizer(5, 1, 5, 5);
+    gridSizer->AddGrowableCol(0);
+    gridSizer->AddGrowableRow(3); // multi-line text input field for the value
 
-    gridSizer->Add(new wxStaticText(this, wxID_ANY, _("Name")), 0, wxALIGN_CENTER_VERTICAL);
+    gridSizer->Add(new wxStaticText(this, wxID_ANY, _("Name")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 0);
     m_NameCtrl = new wxTextCtrl(this, wxID_ANY);
-    gridSizer->Add(m_NameCtrl, 1, wxEXPAND);
+    gridSizer->Add(m_NameCtrl, 1, wxALIGN_LEFT|wxBOTTOM|wxEXPAND, 7);
 
-    gridSizer->Add(new wxStaticText(this, wxID_ANY, _("Value")), 0, wxALIGN_TOP);
+    gridSizer->Add(new wxStaticText(this, wxID_ANY, _("Value")), 0, wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL|wxBOTTOM, 0);
     m_ValueCtrl = new wxTextCtrl(this, wxID_ANY, wxEmptyString, wxDefaultPosition, wxSize(320, 120), wxTE_MULTILINE);
-    gridSizer->Add(m_ValueCtrl, 1, wxEXPAND);
-
-    mainSizer->Add(gridSizer, 1, wxEXPAND | wxALL, 12);
+    gridSizer->Add(m_ValueCtrl, 1, wxALIGN_LEFT|wxBOTTOM|wxEXPAND, 7);
 
     m_SensitiveCtrl = new wxCheckBox(this, wxID_ANY, _("Sensitive"));
-    mainSizer->Add(m_SensitiveCtrl, 0, wxLEFT | wxRIGHT | wxBOTTOM, 12);
+    gridSizer->Add(m_SensitiveCtrl, 0, wxALIGN_LEFT|wxBOTTOM, 7);
 
-    mainSizer->Add(CreateSeparatedButtonSizer(wxOK | wxCANCEL), 0, wxEXPAND | wxALL, 12);
+    mainSizer->Add(gridSizer, 1, wxEXPAND|wxALL, 12);
+
+    auto *stdDialogButtonSizer = new wxStdDialogButtonSizer;
+
+    mainSizer->Add(stdDialogButtonSizer, 0, wxEXPAND|wxBOTTOM, 12);
+    auto *confirmationButton = new wxButton(this, wxID_OK, field == nullptr ? _("&Add") : _("&Ok"));
+    confirmationButton->SetDefault();
+    stdDialogButtonSizer->AddButton(confirmationButton);
+
+    auto *cancelButton = new wxButton(this, wxID_CANCEL);
+    stdDialogButtonSizer->AddButton(cancelButton);
+
+    stdDialogButtonSizer->Realize();
+
     SetSizerAndFit(mainSizer);
 
     if (field != nullptr) {
