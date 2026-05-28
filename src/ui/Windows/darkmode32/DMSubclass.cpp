@@ -7548,7 +7548,12 @@ namespace DarkMode
 		else
 		{
 			::SendMessage(hWnd, EM_SETBKGNDCOLOR, TRUE, 0);
-			::SendMessage(hWnd, EM_SETCHARFORMAT, 0, 0);
+
+			CHARFORMATW cf{};
+			cf.cbSize = sizeof(CHARFORMATW);
+			cf.dwMask = CFM_COLOR;
+			cf.dwEffects = CFE_AUTOCOLOR;
+			::SendMessage(hWnd, EM_SETCHARFORMAT, SCF_DEFAULT, reinterpret_cast<LPARAM>(&cf));
 
 			::SetWindowTheme(hWnd, nullptr, nullptr);
 		}

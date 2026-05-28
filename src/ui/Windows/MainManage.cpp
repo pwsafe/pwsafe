@@ -325,6 +325,8 @@ void DboxMain::OnOptions()
         uiMessage = IDSC_STATCOMPANY;
     }
     statustext[CPWStatusBar::SB_DBLCLICK] = uiMessage;
+    statustext[CPWStatusBar::SB_SCR_CAP] =
+      CScreenCaptureStateControl::GetCurrentCaptureStateBitmapId();
     m_StatusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
     UpdateStatusBar();
 

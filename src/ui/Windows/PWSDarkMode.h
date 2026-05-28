@@ -62,7 +62,9 @@ namespace DarkMode
 
 namespace PwsDarkMode
 {
-  constexpr UINT kFollowSystemConfig = 2;
+  constexpr UINT kForceClassicConfig = static_cast<UINT>(DarkMode::DarkModeType::classic);
+  // Mode 4 follows Windows, using classic/native styling for light mode.
+  constexpr UINT kFollowSystemClassicOrDarkConfig = 4;
 
   namespace detail
   {
@@ -83,11 +85,11 @@ namespace PwsDarkMode
   {
     switch (displayModePreference) {
       case 1:
-        return static_cast<UINT>(DarkMode::DarkModeType::light);
+        return kForceClassicConfig;
       case 2:
         return static_cast<UINT>(DarkMode::DarkModeType::dark);
       default:
-        return kFollowSystemConfig;
+        return kFollowSystemClassicOrDarkConfig;
     }
   }
 
