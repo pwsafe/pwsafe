@@ -68,6 +68,7 @@ public:
   { return app.GetMainDlg()->SetLayered((CWnd *)this, value); }
 
 protected:
+  virtual BOOL OnInitDialog() override;
   virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
   virtual BOOL PreTranslateMessage(MSG *pMsg);
 

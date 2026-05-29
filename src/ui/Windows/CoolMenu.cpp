@@ -418,13 +418,13 @@ BOOL CCoolMenuManager::Draw3DCheckmark(CDC& dc, const CRect& rc, BOOL bSelected,
 //
 void CCoolMenuManager::CMOnInitMenuPopup(CMenu* pMenu, UINT nIndex, BOOL bSysMenu)
 {
-  if (DarkMode::isEnabled()) {
-    MENUINFO menuInfo{};
-    menuInfo.cbSize = sizeof(menuInfo);
-    menuInfo.fMask = MIM_BACKGROUND;
-    menuInfo.hbrBack = DarkMode::getDlgBackgroundBrush();
-    pMenu->SetMenuInfo(&menuInfo);
-  }
+  // Set the popup's background brush in dark mode and -- just as importantly --
+  // clear it again when not in dark mode. 
+  MENUINFO menuInfo{};
+  menuInfo.cbSize = sizeof(menuInfo);
+  menuInfo.fMask = MIM_BACKGROUND;
+  menuInfo.hbrBack = DarkMode::isEnabled() ? DarkMode::getDlgBackgroundBrush() : nullptr;
+  pMenu->SetMenuInfo(&menuInfo);
 
   ConvertMenu(pMenu, nIndex, bSysMenu, m_bShowButtons);
 }

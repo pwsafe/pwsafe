@@ -88,6 +88,33 @@ COptions_PropertySheet::~COptions_PropertySheet()
   m_psh.pszCaption = NULL;
 }
 
+BOOL COptions_PropertySheet::OnInitDialog()
+{
+  BOOL retval = CPWPropertySheet::OnInitDialog();
+
+  if (DarkMode::isEnabled()) {
+    // Dark mode installs a WM_ERASEBKGND subclass on the sheet that fills the whole
+    // client with the dark brush and returns TRUE. Child controls render into this
+    // top-level window's shared surface, so without WS_CLIPCHILDREN that erase paints
+    // over them; most repaint afterwards and survive, but the Outlook-bar navigation
+    // pane is already validated by the time the erase fires and is left wiped -- its
+    // icons and text labels gone -- until some unrelated repaint restores it. Clipping
+    // children keeps the sheet's background erase out of their rectangles entirely.
+    ModifyStyle(0, WS_CLIPCHILDREN);
+
+    // The navigation pane is an MFC feature-pack control painted from afxGlobalData
+    // colours via MFC's own GetSysColor calls; the dark-mode GetSysColor hook is scoped
+    // to comctl32 only, so it never reaches MFC and the pane keeps light colours unless
+    // we set them explicitly.
+    if (GetLook() == PropSheetLook_OutlookBar && ::IsWindow(m_wndPane1.GetSafeHwnd())) {
+      m_wndPane1.SetTextColor(DarkMode::getTextColor());
+      m_wndPane1.SetBackColor(DarkMode::getDlgBackgroundColor());
+    }
+  }
+
+  return retval;
+}
+
 BOOL COptions_PropertySheet::OnCommand(WPARAM wParam, LPARAM lParam)
 {
   // There is no OnOK for classes derived from CPropertySheet,
