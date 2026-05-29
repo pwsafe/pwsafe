@@ -1896,19 +1896,14 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
       auto customFieldsMenu = new wxMenu;
       auto customFields = item->GetCustomFields();
       for (auto &customField : customFields) {
-        if (customField.HasProperty(CustomField::PropertyId::PROP_NAME)) {
-          auto customFieldName = customField.GetName();
-          auto customFieldValue = customField.GetValue();
-          auto menuID = wxNewId();
-          customFieldsMenu->Append(
-            menuID,
-            wxT("<") + towxstring(customFieldName) + wxT(">")
-          );
+        auto customFieldName = customField.GetName();
+        auto customFieldValue = customField.GetValue();
+        auto menuID = wxNewId();
+        customFieldsMenu->Append(menuID, towxstring(customFieldName));
 
-          Bind(wxEVT_MENU, [&, customFieldValue](wxCommandEvent& WXUNUSED(event)) {
-            DoCopyCustomFieldValue(customFieldValue);
-          }, menuID);
-        }
+        Bind(wxEVT_MENU, [&, customFieldValue](wxCommandEvent& WXUNUSED(event)) {
+          DoCopyCustomFieldValue(customFieldValue);
+        }, menuID);
       }
       itemEditMenu.AppendSubMenu(customFieldsMenu, _("Copy Custom &Field Value..."));
     }
