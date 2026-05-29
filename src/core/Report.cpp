@@ -143,7 +143,7 @@ bool CReport::SaveToDisk(const stringT &out_dir)
   }
   else {
     fclose(fd);
-    pws_os::IssueError(_T("SaveToDisk: Conversion error"));
+    pws_os::IssueError(_T("Encoding error while writing report file"));
     return false;
   }
   fclose(fd);
@@ -230,7 +230,7 @@ bool CReport::ReadFromDisk()
   CUTF8Conv conv;
   std::streampos size = ss.tellp();
   if (!conv.FromUTF8(reinterpret_cast<const unsigned char*>(ss.str().c_str()), size, sx)) {
-    pws_os::IssueError(_T("ReadFromDisk: Conversion error"));
+    pws_os::IssueError(_T("Encoding error while reading report file"));
     return false;
   }
 
