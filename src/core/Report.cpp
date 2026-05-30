@@ -302,7 +302,7 @@ stringT CReport::BuildPathToReport(LPCTSTR drive, LPCTSTR dir, int report_id) {
 
   if (name_iter == ReportNames.end()) {
     ASSERT(false);
-    pws_os::IssueError(_T("Uexpected report id"));
+    pws_os::IssueError(_T("Unexpected report id"));
     return result;
   }
 
