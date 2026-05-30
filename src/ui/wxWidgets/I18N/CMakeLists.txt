@@ -9,7 +9,7 @@
 #
 # Parent CMakeLists.txt already called find_package(Gettext)
 
-set (LANGS "da" "de" "es" "fr" "hu" "it" "ko" "nl" "pl" "ru" "sk" "sl" "sv" "zh")
+set (LANGS "da" "de" "es" "fr" "hu" "it" "ko_KR" "nl" "pl" "ru" "sk" "sl" "sv" "zh_CN")
 
 
 # In general, globbing the source file's not recommended for cmake,
@@ -18,10 +18,13 @@ set (LANGS "da" "de" "es" "fr" "hu" "it" "ko" "nl" "pl" "ru" "sk" "sl" "sv" "zh"
 
 set (SRC_BASE_DIR "${PROJECT_SOURCE_DIR}/src")
 set (SRC_I18N_DIR "${SRC_BASE_DIR}/ui/wxWidgets/I18N")
-  
-string (REGEX REPLACE "(..)" "pwsafe_\\1.po;" POS ${LANGS})
-string (REGEX REPLACE "(..)" "mos/\\1/LC_MESSAGES/pwsafe.mo;" MOS ${LANGS})
 
+set  (POS "")
+set  (MOS "")
+foreach (LANG ${LANGS})
+  string (APPEND POS "pwsafe_${LANG}.po;")
+  string (APPEND MOS "mos/${LANG}/LC_MESSAGES/pwsafe.mo;")
+endforeach(LANG)
 
 file (GLOB I18N_SRCS
   "${SRC_BASE_DIR}/ui/wxWidgets/*.cpp"
