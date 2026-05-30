@@ -92,51 +92,6 @@ void CReport::StartReport(int iAction, const stringT &csDataBase, bool writeHead
   }
 }
 
-static pugi::xml_encoding guessBufferEncoding(uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3)
-{
-  if (d0 == 0 && d1 == 0 && d2 == 0xfe && d3 == 0xff) return pugi::encoding_utf32_be;
-  if (d0 == 0xff && d1 == 0xfe && d2 == 0 && d3 == 0) return pugi::encoding_utf32_le;
-  if (d0 == 0xfe && d1 == 0xff) return pugi::encoding_utf16_be;
-  if (d0 == 0xff && d1 == 0xfe) return pugi::encoding_utf16_le;
-  if (d0 == 0xef && d1 == 0xbb && d2 == 0xbf) return pugi::encoding_utf8;
-  // no known BOM detected, return auto
-  return pugi::encoding_auto;
-}
-
-static bool isFileUnicode(const stringT &fname, pugi::xml_encoding& encoding)
-{
-  // Check if the first 2 characters are the BOM
-  // (Need file to exist and length at least 2 for BOM)
-  // Need to use FOpen as cannot pass wchar_t filename to a std::istream
-  // and cannot convert a wchar_t filename/path to char if non-Latin characters
-  // present
-  unsigned char buffer[4] = {0x00, 0x00, 0x00, 0x00};
-  bool retval = false;
-
-  FILE *fn = pws_os::FOpen(fname, _T("rb"));
-  if (fn == nullptr)
-    return false;
-  if (pws_os::fileLength(fn) < 4) {
-    retval = false;
-  }
-  else {
-    if (fread(buffer, 1, 4, fn) != 4) {
-      fclose(fn);
-      return false;
-    }
-      
-    encoding = guessBufferEncoding(buffer[0], buffer[1], buffer[2], buffer[3]);
-    if(encoding == pugi::encoding_auto) {
-      encoding = pugi::encoding_utf8; // Take UTF-8 as default
-      retval = false;
-    }
-    else {
-      retval = true;
-    }
-  }
-  fclose(fn);
-  return retval;
-}
 
 /*
   SaveToDisk creates a new file of name "<tcAction>_Report.txt" e.g. "Merge_Report.txt"
@@ -175,11 +130,11 @@ bool CReport::SaveToDisk(const stringT &out_dir)
   Replace(sx, sxCRLF, sxLF);
   Replace(sx, sxLF, sxCRLF);
     
-  CUTF8Conv conv; // can't make a member, as no copy c'tor!
-  const unsigned char *utf8;
+  CUTF8Conv conv;
+  const unsigned char *utf8 = nullptr;
   size_t utf8Len;
   if (conv.ToUTF8(sx, utf8, utf8Len)) {
-    const unsigned char BOM[] = {0xef, 0xbb, 0xbf}; // Store UTF-8 as default
+    const unsigned char BOM[] = {0xef, 0xbb, 0xbf}; // utf-8 bom
     if (pws_os::fileLength(fd) == 0) {
       // If file is new/empty, write BOM, as some text editors insist!
       fwrite(BOM, 1, 3, fd);
@@ -187,7 +142,9 @@ bool CReport::SaveToDisk(const stringT &out_dir)
     fwrite(utf8, utf8Len, 1, fd);
   }
   else {
-    pws_os::IssueError(_T("SaveToDisk: Conversion error"));
+    fclose(fd);
+    pws_os::IssueError(_T("Encoding error while writing report file"));
+    return false;
   }
   fclose(fd);
 
@@ -246,27 +203,20 @@ bool CReport::ReadFromDisk()
     return false;
   }
 
-  pugi::xml_encoding encoding;
-  bool bFileIsUnicode = isFileUnicode(m_cs_filename, encoding);
-  size_t nBytesRead;
-  char inbuffer[4096];
-
-  if (bFileIsUnicode) {
-    size_t skip = 0;
-    if(encoding == pugi::encoding_utf8) {
-      // Skip 3 byte header
-      skip = 3;
-    }
-    if (skip > 0) {
-      if (fread(inbuffer, 1, skip, fd) != skip) {
-        fclose(fd);
-        return false;
-      }
-    }
-  }
-  
   // read the utf-8 file contents into a string stream
   std::ostringstream ss;
+  const unsigned char BOM[] = {0xef, 0xbb, 0xbf}; // utf-8 BOM
+  const size_t bom = sizeof(BOM);
+  char inbuffer[4096];
+  size_t nBytesRead = fread(inbuffer, 1, bom, fd);
+  if ((nBytesRead == bom) && (memcmp(BOM, inbuffer, bom) == 0)) {
+    // ignore the utf-8 bom
+  }
+  else {
+    // those bytes are part of the utf-8 input file
+    ss.write(inbuffer, nBytesRead);
+  }
+  
   do {
     nBytesRead = fread(inbuffer, 1, sizeof(inbuffer), fd);
     if (nBytesRead > 0) {
@@ -279,7 +229,10 @@ bool CReport::ReadFromDisk()
   StringX sx;
   CUTF8Conv conv;
   std::streampos size = ss.tellp();
-  conv.FromUTF8(reinterpret_cast<const unsigned char*>(ss.str().c_str()), size, sx);
+  if (!conv.FromUTF8(reinterpret_cast<const unsigned char*>(ss.str().c_str()), size, sx)) {
+    pws_os::IssueError(_T("Encoding error while reading report file"));
+    return false;
+  }
 
   StringX sxCRLF(L"\r\n"), sxLF(L"\n");
   Replace(sx, sxCRLF, sxLF);
@@ -349,7 +302,7 @@ stringT CReport::BuildPathToReport(LPCTSTR drive, LPCTSTR dir, int report_id) {
 
   if (name_iter == ReportNames.end()) {
     ASSERT(false);
-    pws_os::IssueError(_T("Uexpected report id"));
+    pws_os::IssueError(_T("Unexpected report id"));
     return result;
   }
 
