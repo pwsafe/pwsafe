@@ -6,7 +6,7 @@
 TARGET=pwsafe
 PACKAGE=PasswordSafe-macOS
 MACHINEARCH=universal
-LANGS=da de es fr hu it ko nl pl ru sk sl sv zh
+LANGS=da de es fr hu it ko_KR nl pl ru sk sl sv zh_CN
 
 # XCODE_CONFIG and WX_SRC_DIR are defined in the macos-latest.yaml Github build workflow
 XCODE_CONFIG ?= Release
@@ -67,16 +67,13 @@ wxlocale:
 	cd $(WXDIR); make allmo
 
 lang: pwsI18N wxlocale
-	@for l in $(LANGS); do			\
-		case $$l in			\
-		ko)	LL=ko_KR;;		\
-		zh)	LL=zh_CN;;		\
-		 *)	LL=$$l;;		\
-		esac;				\
-		echo "Copying files for $$LL ...";	\
+	@set -e;					\
+	rm -rf $(RESOURCES)/*.lproj;			\
+	for l in $(LANGS); do				\
+		echo "Copying files for $$l ...";	\
 		$(MDBIN) $(RESOURCES)/$$l.lproj ;	\
-		$(CPBIN) $(MOS)/$$l/LC_MESSAGES/pwsafe.mo $(RESOURCES)/$$l.lproj ;	\
-		$(CPBIN) $(WXDIR)/$$LL.mo $(RESOURCES)/$$l.lproj/wxstd.mo ;		\
+		$(CPBIN) $(MOS)/$$l/LC_MESSAGES/pwsafe.mo $(RESOURCES)/$$l.lproj;	\
+		$(CPBIN) $(WXDIR)/$$l.mo $(RESOURCES)/$$l.lproj/wxstd.mo;		\
 	done
 
 dist: clean
