@@ -1892,7 +1892,7 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     itemEditMenu.Append(ID_COPYURL,        _("Copy UR&L to Clipboard"));
     itemEditMenu.Append(ID_COPYEMAIL,      _("Copy email to Clipboard"));
     itemEditMenu.Append(ID_COPYRUNCOMMAND, _("Copy Run Command to Clipboard"));
-    const auto *item_data = item->IsShortcut() || item->IsAlias() ? m_core.GetBaseEntry(item) : item;
+    const auto *item_data = item->IsShortcut() ? m_core.GetBaseEntry(item) : item;
     if (item_data->IsCustomFieldsSet()) {
       auto customFieldsMenu = new wxMenu;
       auto customFields = item_data->GetCustomFields();
