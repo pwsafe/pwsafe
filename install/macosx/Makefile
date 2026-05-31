@@ -6,7 +6,6 @@
 TARGET=pwsafe
 PACKAGE=PasswordSafe-macOS
 MACHINEARCH=universal
-LANGS=da de es fr hu it ko_KR nl pl ru sk sl sv zh_CN
 
 # XCODE_CONFIG and WX_SRC_DIR are defined in the macos-latest.yaml Github build workflow
 XCODE_CONFIG ?= Release
@@ -43,7 +42,7 @@ DMGNAME := "../../$(PACKAGE)-$(RELEASENAME)-$(MACHINEARCH).dmg"
 PWSAFE-APP := $(TARGET).app
 RESOURCES := $(RELDIR)/pwsafe.app/Contents/Resources
 DOCS := ../../README.md ../../docs/LICENSE.rtf ../../docs/ReleaseNotesWX.md ../../docs/Yubico
-HELP := ../../help/helpEN.zip ../../help/helpRU.zip ../../help/helpDE.zip ../../help/helpES.zip ../../help/helpFR.zip ../../help/helpZH.zip ../../help/helpSK.zip
+HELPDIR := ../../help
 I18N := ../../src/ui/wxWidgets/I18N
 MOS := $(I18N)/mos
 
@@ -57,8 +56,8 @@ loc:
 	@echo "WX location: $(WXDIR)"
 
 help:
-	cd ../../help; make
-	$(CPBIN) $(HELP) $(RESOURCES)
+	cd $(HELPDIR); make
+	$(CPBIN) $(HELPDIR)/help*.zip $(RESOURCES)
 
 pwsI18N:
 	cd $(I18N); make mos
@@ -69,10 +68,12 @@ wxlocale:
 lang: pwsI18N wxlocale
 	@set -e;					\
 	rm -rf $(RESOURCES)/*.lproj;			\
-	for l in $(LANGS); do				\
+	langList=`find $(MOS) -depth 1`;		\
+	for langPath in $$langList; do			\
+		l=`basename $$langPath`;		\
 		echo "Copying files for $$l ...";	\
 		$(MDBIN) $(RESOURCES)/$$l.lproj ;	\
-		$(CPBIN) $(MOS)/$$l/LC_MESSAGES/pwsafe.mo $(RESOURCES)/$$l.lproj;	\
+		$(CPBIN) $$langPath/LC_MESSAGES/pwsafe.mo $(RESOURCES)/$$l.lproj;	\
 		$(CPBIN) $(WXDIR)/$$l.mo $(RESOURCES)/$$l.lproj/wxstd.mo;		\
 	done
 
