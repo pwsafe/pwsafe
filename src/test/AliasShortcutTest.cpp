@@ -15,12 +15,22 @@
 #include "core/PWSAuxParse.h"
 #include "gtest/gtest.h"
 
+#include <vector>
+
 class AliasShortcutTest : public ::testing::Test
 {
 protected:
   AliasShortcutTest() {}
   PWScore core;
   CItemData base;
+  const std::vector<CItemData::FieldType> passkey_fields = {
+    CItemData::PASSKEY_CRED_ID,
+    CItemData::PASSKEY_RP_ID,
+    CItemData::PASSKEY_USER_HANDLE,
+    CItemData::PASSKEY_ALGO_ID,
+    CItemData::PASSKEY_PRIVATE_KEY,
+    CItemData::PASSKEY_SIGN_COUNT
+  };
   void SetUp();
   void TearDown();
 };
@@ -110,18 +120,10 @@ TEST_F(AliasShortcutTest, Alias)
   EXPECT_EQ(effci.GetCustomFieldsRaw(), al.GetCustomFieldsRaw());
   EXPECT_TRUE(sx_totpauthcode.empty());
 
-  EXPECT_EQ(base.GetEffectiveFieldValue(CItemData::PASSKEY_CRED_ID, nullptr),
-            al2.GetEffectiveFieldValue(CItemData::PASSKEY_CRED_ID, &base));
-  EXPECT_EQ(base.GetEffectiveFieldValue(CItemData::PASSKEY_RP_ID, nullptr),
-            al2.GetEffectiveFieldValue(CItemData::PASSKEY_RP_ID, &base));
-  EXPECT_EQ(base.GetEffectiveFieldValue(CItemData::PASSKEY_USER_HANDLE, nullptr),
-            al2.GetEffectiveFieldValue(CItemData::PASSKEY_USER_HANDLE, &base));
-  EXPECT_EQ(base.GetEffectiveFieldValue(CItemData::PASSKEY_ALGO_ID, nullptr),
-            al2.GetEffectiveFieldValue(CItemData::PASSKEY_ALGO_ID, &base));
-  EXPECT_EQ(base.GetEffectiveFieldValue(CItemData::PASSKEY_PRIVATE_KEY, nullptr),
-            al2.GetEffectiveFieldValue(CItemData::PASSKEY_PRIVATE_KEY, &base));
-  EXPECT_EQ(base.GetEffectiveFieldValue(CItemData::PASSKEY_SIGN_COUNT, nullptr),
-            al2.GetEffectiveFieldValue(CItemData::PASSKEY_SIGN_COUNT, &base));
+  for (const CItemData::FieldType ft : passkey_fields) {
+    EXPECT_EQ(base.GetEffectiveFieldValue(ft, nullptr),
+              al2.GetEffectiveFieldValue(ft, &base));
+  }
 }
 
 TEST_F(AliasShortcutTest, Shortcut)
@@ -164,16 +166,8 @@ TEST_F(AliasShortcutTest, Shortcut)
   EXPECT_EQ(effci.GetCustomFieldsRaw(), base.GetCustomFieldsRaw());
   EXPECT_TRUE(sx_totpauthcode.empty());
 
-  EXPECT_EQ(base.GetEffectiveFieldValue(CItemData::PASSKEY_CRED_ID, nullptr),
-            sc2.GetEffectiveFieldValue(CItemData::PASSKEY_CRED_ID, &base));
-  EXPECT_EQ(base.GetEffectiveFieldValue(CItemData::PASSKEY_RP_ID, nullptr),
-            sc2.GetEffectiveFieldValue(CItemData::PASSKEY_RP_ID, &base));
-  EXPECT_EQ(base.GetEffectiveFieldValue(CItemData::PASSKEY_USER_HANDLE, nullptr),
-            sc2.GetEffectiveFieldValue(CItemData::PASSKEY_USER_HANDLE, &base));
-  EXPECT_EQ(base.GetEffectiveFieldValue(CItemData::PASSKEY_ALGO_ID, nullptr),
-            sc2.GetEffectiveFieldValue(CItemData::PASSKEY_ALGO_ID, &base));
-  EXPECT_EQ(base.GetEffectiveFieldValue(CItemData::PASSKEY_PRIVATE_KEY, nullptr),
-            sc2.GetEffectiveFieldValue(CItemData::PASSKEY_PRIVATE_KEY, &base));
-  EXPECT_EQ(base.GetEffectiveFieldValue(CItemData::PASSKEY_SIGN_COUNT, nullptr),
-            sc2.GetEffectiveFieldValue(CItemData::PASSKEY_SIGN_COUNT, &base));
+  for (const CItemData::FieldType ft : passkey_fields) {
+    EXPECT_EQ(base.GetEffectiveFieldValue(ft, nullptr),
+              sc2.GetEffectiveFieldValue(ft, &base));
+  }
 }
