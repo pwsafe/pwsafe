@@ -587,10 +587,17 @@ StringX CItemData::GetEffectiveFieldValue(FieldType ft, const CItemData *pbci) c
       TOTPCONFIG,
       TOTPSTARTTIME,
       TOTPTIMESTEP,
-      TOTPLENGTH
+      TOTPLENGTH,
+      PASSKEY_CRED_ID,
+      PASSKEY_RP_ID,
+      PASSKEY_USER_HANDLE,
+      PASSKEY_ALGO_ID,
+      PASSKEY_PRIVATE_KEY,
+      PASSKEY_SIGN_COUNT
     };
-    // Only base_fields fields (i.e., current password and history, TOTP parameters)
-    // are taken from base entry. Everything else is from the actual entry.
+    // Only base_fields fields (i.e., current password and history,
+    // TOTP parameters, and passkey parameters) are taken from base entry.
+    // Everything else is from the actual entry.
     if (std::find(base_fields.begin(), base_fields.end(), ft) != base_fields.end())
       return pbci->GetField(ft);
     else
