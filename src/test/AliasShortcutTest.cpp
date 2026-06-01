@@ -15,12 +15,22 @@
 #include "core/PWSAuxParse.h"
 #include "gtest/gtest.h"
 
+#include <vector>
+
 class AliasShortcutTest : public ::testing::Test
 {
 protected:
   AliasShortcutTest() {}
   PWScore core;
   CItemData base;
+  const std::vector<CItemData::FieldType> passkey_fields = {
+    CItemData::PASSKEY_CRED_ID,
+    CItemData::PASSKEY_RP_ID,
+    CItemData::PASSKEY_USER_HANDLE,
+    CItemData::PASSKEY_ALGO_ID,
+    CItemData::PASSKEY_PRIVATE_KEY,
+    CItemData::PASSKEY_SIGN_COUNT
+  };
   void SetUp();
   void TearDown();
 };
@@ -43,6 +53,12 @@ void AliasShortcutTest::SetUp()
   base.SetAutoType(L"base-autotype");
   base.SetEmail(L"email@base.com");
   base.SetRunCommand(L"Run base, run");
+  base.SetPasskeyCredentialID(VectorX<unsigned char>(64, 1));
+  base.SetPasskeyRelyingPartyID(L"base-relying-party");
+  base.SetPasskeyUserHandle(VectorX<unsigned char>(32, 2));
+  base.SetPasskeyAlgorithmID(1);
+  base.SetPasskeyPrivateKey(VectorX<unsigned char>(512, 3));
+  base.SetPasskeySignCount(4);
   CustomField baseCustom;
   baseCustom.SetName(L"PIN");
   baseCustom.SetValue(L"base-pin");
@@ -63,6 +79,12 @@ TEST_F(AliasShortcutTest, Alias)
   al.SetAutoType(L"alias-autotype");
   al.SetEmail(L"email@alias.com");
   al.SetRunCommand(L"Run alias, run");
+  al.SetPasskeyCredentialID(VectorX<unsigned char>(64, 10));
+  al.SetPasskeyRelyingPartyID(L"alias-relying-party");
+  al.SetPasskeyUserHandle(VectorX<unsigned char>(32, 11));
+  al.SetPasskeyAlgorithmID(10);
+  al.SetPasskeyPrivateKey(VectorX<unsigned char>(512, 12));
+  al.SetPasskeySignCount(13);
   CustomField aliasCustom;
   aliasCustom.SetName(L"PIN");
   aliasCustom.SetValue(L"alias-pin");
@@ -97,6 +119,11 @@ TEST_F(AliasShortcutTest, Alias)
   EXPECT_EQ(effci.GetRunCommand(), al.GetRunCommand());
   EXPECT_EQ(effci.GetCustomFieldsRaw(), al.GetCustomFieldsRaw());
   EXPECT_TRUE(sx_totpauthcode.empty());
+
+  for (const CItemData::FieldType ft : passkey_fields) {
+    EXPECT_EQ(base.GetEffectiveFieldValue(ft, nullptr),
+              al2.GetEffectiveFieldValue(ft, &base));
+  }
 }
 
 TEST_F(AliasShortcutTest, Shortcut)
@@ -138,4 +165,9 @@ TEST_F(AliasShortcutTest, Shortcut)
   EXPECT_EQ(effci.GetRunCommand(), base.GetRunCommand());
   EXPECT_EQ(effci.GetCustomFieldsRaw(), base.GetCustomFieldsRaw());
   EXPECT_TRUE(sx_totpauthcode.empty());
+
+  for (const CItemData::FieldType ft : passkey_fields) {
+    EXPECT_EQ(base.GetEffectiveFieldValue(ft, nullptr),
+              sc2.GetEffectiveFieldValue(ft, &base));
+  }
 }
