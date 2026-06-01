@@ -393,12 +393,18 @@ BOOL CCoolMenuManager::Draw3DCheckmark(CDC& dc, const CRect& rc, BOOL bSelected,
   memdc.CreateCompatibleDC(&dc);
   auto hOldBM = static_cast<HBITMAP>(::SelectObject(memdc, hbmCheck));
 
-  // set BG color based on selected state
+  // set BG and glyph colors based on selected state. OBM_CHECK is a monochrome
+  // bitmap; a SRCCOPY blit maps its 1-bits to the DC background colour and its
+  // 0-bits (the check glyph itself) to the DC text colour. Without setting the
+  // text colour the glyph stays black and is invisible on a dark menu.
   COLORREF colorOld =
     dc.SetBkColor(GetCoolMenuColor(bSelected ? COLOR_MENU : COLOR_3DLIGHT));
+  COLORREF colorTextOld =
+    dc.SetTextColor(GetCoolMenuColor(bSelected ? COLOR_HIGHLIGHTTEXT : COLOR_MENUTEXT));
   dc.BitBlt(rcDest.left, rcDest.top, rcDest.Width(), rcDest.Height(),
             &memdc, p.x, p.y, SRCCOPY);
   dc.SetBkColor(colorOld);
+  dc.SetTextColor(colorTextOld);
 
   ::SelectObject(memdc, hOldBM); // restore
 

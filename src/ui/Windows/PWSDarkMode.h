@@ -34,6 +34,7 @@ namespace DarkMode
   inline void setDarkModeConfig() {}
   inline void setDefaultColors(bool) {}
   inline void setSysColor(int, COLORREF) noexcept {}
+  inline COLORREF setDisabledTextColor(COLORREF clr) noexcept { return clr; }
 
   [[nodiscard]] inline COLORREF getBackgroundColor() noexcept { return ::GetSysColor(COLOR_WINDOW); }
   [[nodiscard]] inline COLORREF getCtrlBackgroundColor() noexcept { return ::GetSysColor(COLOR_WINDOW); }
@@ -45,6 +46,8 @@ namespace DarkMode
   [[nodiscard]] inline COLORREF getEdgeColor() noexcept { return ::GetSysColor(COLOR_WINDOWFRAME); }
   [[nodiscard]] inline COLORREF getHotEdgeColor() noexcept { return ::GetSysColor(COLOR_HIGHLIGHT); }
   [[nodiscard]] inline COLORREF getViewGridlinesColor() noexcept { return ::GetSysColor(COLOR_BTNFACE); }
+  [[nodiscard]] inline COLORREF getViewBackgroundColor() noexcept { return ::GetSysColor(COLOR_WINDOW); }
+  [[nodiscard]] inline COLORREF getViewTextColor() noexcept { return ::GetSysColor(COLOR_WINDOWTEXT); }
 
   [[nodiscard]] inline HBRUSH getBackgroundBrush() noexcept { return ::GetSysColorBrush(COLOR_WINDOW); }
   [[nodiscard]] inline HBRUSH getCtrlBackgroundBrush() noexcept { return ::GetSysColorBrush(COLOR_WINDOW); }
@@ -57,6 +60,8 @@ namespace DarkMode
   inline void setDarkRichEdit(HWND) {}
   inline void setStatusBarCtrlSubclass(HWND) {}
   inline void setChildCtrlsSubclassAndTheme(HWND, bool = true, bool = true) {}
+  inline void setListViewCtrlSubclass(HWND) {}
+  inline void setDarkListView(HWND) {}
 } // namespace DarkMode
 #endif
 
@@ -93,10 +98,34 @@ namespace PwsDarkMode
     }
   }
 
+  // Windows High Contrast is an accessibility mode with its own enforced palette;
+  // applications must defer to it rather than impose their own colours.
+  inline bool IsHighContrastActive()
+  {
+    HIGHCONTRAST hc{};
+    hc.cbSize = sizeof(hc);
+    if (::SystemParametersInfo(SPI_GETHIGHCONTRAST, sizeof(hc), &hc, 0) == FALSE)
+      return false;
+    return (hc.dwFlags & HCF_HIGHCONTRASTON) != 0;
+  }
+
   inline void ApplyDisplayModePreference(int displayModePreference)
   {
+    if (IsHighContrastActive()) {
+      // Defer entirely to the OS: force classic config so DarkMode::isEnabled() is
+      // false everywhere (which disables all of the custom dark painting, since it
+      // all keys off that flag), and skip the GetSysColor overrides below so comctl32
+      // sees the real High Contrast colours.
+      DarkMode::setDarkModeConfig(kForceClassicConfig);
+      return;
+    }
+
     DarkMode::setDarkModeConfig(ToDarkModeConfig(displayModePreference));
     DarkMode::setDefaultColors(true);
+    // setDefaultColors seeds disabledText from the OS COLOR_GRAYTEXT -- a light-mode
+    // grey that's too dim to read on the dark background. Lift it to a legible mid-grey
+    // that still reads as disabled (clearly dimmer than getTextColor()).
+    DarkMode::setDisabledTextColor(RGB(150, 150, 150));
     DarkMode::setSysColor(COLOR_WINDOW, DarkMode::getBackgroundColor());
     DarkMode::setSysColor(COLOR_WINDOWTEXT, DarkMode::getTextColor());
     DarkMode::setSysColor(COLOR_BTNFACE, DarkMode::getViewGridlinesColor());

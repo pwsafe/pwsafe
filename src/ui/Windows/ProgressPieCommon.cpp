@@ -18,6 +18,7 @@
 #include <Afxcmn.h>
 #include <algorithm>
 #include "ProgressPieCommon.h"
+#include "PWSDarkMode.h"
 
 CProgressPieCommon::CProgressPieCommon(CWnd* pwndCtl)
   :
@@ -70,10 +71,14 @@ void CProgressPieCommon::PaintToDC(CDC& dcCompat)
   const int radius = rcProgress.Width() / 2;
   const int cx = rcProgress.left + radius;
   const int cy = rcProgress.top + radius;
-  CPen penProgressOutline(PS_SOLID, iPenWidth, m_clrOutline);
+  // In dark mode the default black outline and the COLOR_3DFACE background are both
+  // invisible against the dark dialog; route them through the dark palette.
+  const COLORREF clrOutline = DarkMode::isEnabled() ? DarkMode::getTextColor() : m_clrOutline;
+  CPen penProgressOutline(PS_SOLID, iPenWidth, clrOutline);
 
   CBrush brushBackground;
-  brushBackground.CreateSolidBrush(::GetSysColor(COLOR_3DFACE));
+  brushBackground.CreateSolidBrush(DarkMode::isEnabled() ? DarkMode::getDlgBackgroundColor()
+                                                         : ::GetSysColor(COLOR_3DFACE));
   CRect rcClient;
   m_pwndCtl->GetClientRect(&rcClient);
   dcCompat.FillRect(rcClient, &brushBackground);

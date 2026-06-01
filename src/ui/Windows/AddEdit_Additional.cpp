@@ -26,6 +26,8 @@
 #include "core/core.h"
 #include "resource3.h"
 
+#include "PWSDarkMode.h"
+
 using pws_os::CUUID;
 
 static wchar_t PSSWDCHAR = L'*';
@@ -1033,6 +1035,21 @@ void CAddEdit_Additional::UpdatePasswordHistoryLC()
   m_PWHistListCtrl.SetExtendedStyle(LVS_EX_FULLROWSELECT);
   m_PWHistListCtrl.UpdateRowHeight(false);
 
+  if (DarkMode::isEnabled()) {
+    // The Add/Edit pages don't run the library's child-theming pass, so apply by hand
+    // the same recipe the main entry list gets (per setListViewCtrlSubclassAndTheme):
+    // dark text/background colours, double-buffered painting, the dark visual theme,
+    // and the gridline/edit subclass.
+    HWND hList = m_PWHistListCtrl.GetSafeHwnd();
+    ListView_SetTextColor(hList, DarkMode::getViewTextColor());
+    ListView_SetTextBkColor(hList, DarkMode::getViewBackgroundColor());
+    ListView_SetBkColor(hList, DarkMode::getViewBackgroundColor());
+    ListView_SetExtendedListViewStyle(hList,
+        ListView_GetExtendedListViewStyle(hList) | LVS_EX_DOUBLEBUFFER);
+    DarkMode::setDarkListView(hList);
+    DarkMode::setListViewCtrlSubclass(hList);
+  }
+
   cs_text.LoadString(IDS_SETDATETIME);
   m_PWHistListCtrl.InsertColumn(0, cs_text);
   cs_text.LoadString(IDS_PASSWORD);
@@ -1086,7 +1103,11 @@ void CAddEdit_Additional::UpdatePasswordHistoryLC()
     GetDlgItem(IDC_CLEAR_PWHIST)->EnableWindow(bEntriesPresent);
   }
 
-  m_PWHistListCtrl.EnableWindow(bEntriesPresent);
+  // An empty SysListView32 that's been disabled paints its client white in dark mode
+  // instead of its dark background. pwsafe disables this list when it has no entries
+  // purely as a cosmetic grey-out cue; keep it enabled in dark mode so it stays dark
+  // (an empty list has nothing to interact with regardless).
+  m_PWHistListCtrl.EnableWindow(bEntriesPresent || DarkMode::isEnabled());
   GetDlgItem(IDC_PWH_COPY_ALL)->EnableWindow(bEntriesPresent);
   GetDlgItem(IDC_STATIC_PWH_ADD)->ShowWindow(SW_HIDE);
 
