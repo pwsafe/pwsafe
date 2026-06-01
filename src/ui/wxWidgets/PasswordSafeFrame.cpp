@@ -1892,6 +1892,22 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     itemEditMenu.Append(ID_COPYURL,        _("Copy UR&L to Clipboard"));
     itemEditMenu.Append(ID_COPYEMAIL,      _("Copy email to Clipboard"));
     itemEditMenu.Append(ID_COPYRUNCOMMAND, _("Copy Run Command to Clipboard"));
+    const auto *item_data = item->IsShortcut() ? m_core.GetBaseEntry(item) : item;
+    if (item_data->IsCustomFieldsSet()) {
+      auto customFieldsMenu = new wxMenu;
+      auto customFields = item_data->GetCustomFields();
+      for (auto &customField : customFields) {
+        auto customFieldName = customField.GetName();
+        auto customFieldValue = customField.GetValue();
+        auto menuID = wxNewId();
+        customFieldsMenu->Append(menuID, towxstring(customFieldName));
+
+        Bind(wxEVT_MENU, [&, customFieldValue](wxCommandEvent& WXUNUSED(event)) {
+          DoCopyCustomFieldValue(customFieldValue);
+        }, menuID);
+      }
+      itemEditMenu.AppendSubMenu(customFieldsMenu, _("Copy Custom &Field Value..."));
+    }
     itemEditMenu.AppendSeparator();
     itemEditMenu.Append(ID_BROWSEURL,      _("&Browse to URL"));
     itemEditMenu.Append(ID_BROWSEURLPLUS,  _("Browse to URL + &Autotype"));

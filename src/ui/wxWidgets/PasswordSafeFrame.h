@@ -750,6 +750,7 @@ private:
   void DoCopyURL(CItemData &item);
   void DoCopyEmail(CItemData &item);
   void DoCopyRunCmd(CItemData &item);
+  void DoCopyCustomFieldValue(const StringX &fieldValue);
   void DoEdit(CItemData item);
   void DoAutotype(CItemData &item);
   void DoAutotype(const StringX& sx_autotype, const std::vector<size_t>& vactionverboffsets);
