@@ -1,8 +1,8 @@
 /**
- * pugixml parser - version 1.7
+ * pugixml parser - version 1.15
  * --------------------------------------------------------
- * Copyright (C) 2006-2015, by Arseny Kapoulkine (arseny.kapoulkine@gmail.com)
- * Report bugs and download new versions at http://pugixml.org/
+ * Copyright (C) 2006-2025, by Arseny Kapoulkine (arseny.kapoulkine@gmail.com)
+ * Report bugs and download new versions at https://pugixml.org/
  *
  * This library is distributed under the MIT License. See notice at the end
  * of this file.
@@ -11,28 +11,17 @@
  * Copyright (C) 2003, by Kristen Wegner (kristen@tima.net)
  */
 
- /*
- *
- * Modified by DK for PasswordSafe
- * The ONLY changes for this configuration:
- *  Ensable wchar_t mode
- *  Disable XPath as we do not need it.
- *
- * NO changes made to the package's source files pugixml.cpp and pugixml.hpp
- *
- */
-
 #ifndef HEADER_PUGICONFIG_HPP
 #define HEADER_PUGICONFIG_HPP
 
 // Uncomment this to enable wchar_t mode
-#define PUGIXML_WCHAR_MODE
+// #define PUGIXML_WCHAR_MODE
 
 // Uncomment this to enable compact mode
 // #define PUGIXML_COMPACT
 
 // Uncomment this to disable XPath
-#define PUGIXML_NO_XPATH
+// #define PUGIXML_NO_XPATH
 
 // Uncomment this to disable STL
 // #define PUGIXML_NO_STL
@@ -51,16 +40,22 @@
 // #define PUGIXML_MEMORY_OUTPUT_STACK 10240
 // #define PUGIXML_MEMORY_XPATH_PAGE_SIZE 4096
 
+// Tune this constant to adjust max nesting for XPath queries
+// #define PUGIXML_XPATH_DEPTH_LIMIT 1024
+
 // Uncomment this to switch to header-only version
 // #define PUGIXML_HEADER_ONLY
 
-// Uncomment this to enable long long support
+// Uncomment this to enable long long support (usually enabled automatically)
 // #define PUGIXML_HAS_LONG_LONG
+
+// Uncomment this to enable support for std::string_view (usually enabled automatically)
+// #define PUGIXML_HAS_STRING_VIEW
 
 #endif
 
 /**
- * Copyright (c) 2006-2015 Arseny Kapoulkine
+ * Copyright (c) 2006-2025 Arseny Kapoulkine
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -73,7 +68,7 @@
  *
  * The above copyright notice and this permission notice shall be
  * included in all copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
  * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
  * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
