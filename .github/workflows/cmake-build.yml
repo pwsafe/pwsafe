@@ -45,6 +45,24 @@ jobs:
     - name: Test
       run: cmake --build build --target test
 
+    - name: Package (Linux)
+      if: ${{ runner.os == 'Linux' }}
+      working-directory: build
+      run: cpack -G DEB ..
+
+    - name: Test Package (Linux)
+      if: ${{ runner.os == 'Linux' }}
+      working-directory: build
+      run: sudo dpkg -i ./p*.deb
+
+    - name: Upload Linux Artifacts
+      if: ${{ runner.os == 'Linux' }}
+      uses: actions/upload-artifact@v7.0.1
+      with:
+        name: PasswordSafe-${{ matrix.os }}.${{ github.sha }}
+        path: build/p*.deb
+        if-no-files-found: error
+
     - name: Build Windows Artifact
       if: ${{ runner.os == 'Windows' }}
       run: cpack -G 7Z -B build --config build\CPackConfig.cmake
