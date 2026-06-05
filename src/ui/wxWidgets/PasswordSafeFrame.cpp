@@ -487,7 +487,11 @@ void PasswordSafeFrame::RegisterLanguageMenuItems() {
   AddLanguage( ID_LANGUAGE_GERMAN,    wxLANGUAGE_GERMAN,             L"German"   );  /* code: 'de' */
   AddLanguage( ID_LANGUAGE_HUNGARIAN, wxLANGUAGE_HUNGARIAN,          L"Hungarian");  /* code: 'hu' */
   AddLanguage( ID_LANGUAGE_ITALIAN,   wxLANGUAGE_ITALIAN,            L"Italian"  );  /* code: 'it' */
+#if wxCHECK_VERSION(3,1,0)
   AddLanguage( ID_LANGUAGE_KOREAN,    wxLANGUAGE_KOREAN_KOREA,       L"Korean"   );  /* code: 'ko_KR' */
+#else
+  AddLanguage( ID_LANGUAGE_KOREAN,    wxLANGUAGE_KOREAN,             L"Korean"   );  /* code: 'ko' */
+#endif
   AddLanguage( ID_LANGUAGE_POLISH,    wxLANGUAGE_POLISH,             L"Polish"   );  /* code: 'pl' */
   AddLanguage( ID_LANGUAGE_RUSSIAN,   wxLANGUAGE_RUSSIAN,            L"Russian"  );  /* code: 'ru' */
   AddLanguage( ID_LANGUAGE_SLOVAK,    wxLANGUAGE_SLOVAK,             L"Slovak"   );  /* code: 'sk' */
