@@ -123,6 +123,9 @@ void AboutDlg::CreateControls()
   rightSizer->Add(verCheckSizer, 0, wxALIGN_LEFT|wxALL, 0);
 
   wxGenericHyperlinkCtrl* latestCheckButton = new wxGenericHyperlinkCtrl(aboutDialog, ID_CHECKNEW, _("Check"), wxEmptyString, wxDefaultPosition, wxDefaultSize, wxHL_DEFAULT_STYLE);
+  if (IsRunningInFlatpak()) {
+    latestCheckButton->SetToolTip(_("Internet access required: Make sure to grant network access to the Flatpak application.\nThe '--share=network' permission is required for this check."));
+  }
   verCheckSizer->Add(latestCheckButton, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxLEFT, 5);
 
   wxStaticText* latestStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _(" for the latest version."), wxDefaultPosition, wxDefaultSize, 0);
@@ -540,7 +543,10 @@ void AboutDlg::CompareVersionData()
       wxString newer(_("Current version: "));
       newer << pwsafeVersionString << L"\n";
       newer << _("Latest version:\t") << latest.c_str() << L"\n\n";
-      newer << _("Visit the Password Safe website to download the latest version.");
+      if (IsRunningInFlatpak())
+        newer << _("Use the 'flatpak update' command or your system's software store application to update to the latest version.");
+      else
+        newer << _("Visit the Password Safe website to download the latest version.");
       const wxString cs_title(_("Newer Version Found!"));
       *m_VersionStatus << cs_title;
       wxMessageDialog dlg(this, newer, cs_title, wxOK);
