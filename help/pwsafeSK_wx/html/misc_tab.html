@@ -44,7 +44,7 @@ To znamená, že pri ukončení aplikácie sa môže zobraziť výzva na uložen
 Avšak, ak je zapnutý System Tray (prostredníctvom nastavenia "Pridať ikonu na panel úloh" na karte "Systém"), 
 potom kláves <b>Esc</b> iba zatvorí hlavné okno, a je možné ho znova otvoriť dvojitým kliknutím na ikonu v systémovej lište.</p>
 
-<h3>Akcia pro dvojkliku</h3>
+<h3>Akcia pri dvojkliku</h3>
 
 <p>Toto vám umožňuje určiť, akú predvolenú akciu vykoná <b>Password Safe</b> po dvojitom kliknutí na záznam. 
 Predvolená hodnota je skopírovať heslo záznamu do schránky, čo je zvyčajne najpoužívanejšia funkcia.
@@ -81,9 +81,10 @@ nových záznamov ako predvolené. Samozrejme, v prípade potreby ho môžete pr
 
 <h3><a name="AltBrowser"></a>Alternatívny prehliadač</h3>
 
-<p>Prehliadač, ktorý zadáte v tomto poli, sa použije pri použití príkazu "Otvoriť URL v prehliadači" pre vybraný záznam, keď URL adresa položky obsahuje
-"[alt]" pred adresou, napr. "[alt]http://www.foo.net". Toto je užitočné, ak je napríklad vaším predvoleným prehliadačom Firefox a chcete
-otvárať konkrétnu webovú stránku s iným prehliadačom.</p>
+<p>Prehliadač, ktorý zadáte v tomto poli, sa použije pri použití príkazov "Otvoriť URL v prehliadači" a "Prejsť na adresu URL + automatické dopĺňanie"
+pre vybraný záznam, keď URL adresa obsahuje "[alt]" pred adresou, napr. "[alt]http://www.foo.net". Toto je užitočné, ak je napríklad vaším predvoleným prehliadačom Firefox a chcete
+otvárať konkrétnu webovú stránku s iným prehliadačom. Ďalšou možnosťou je keď v systéme Linux s Waylandom špecifikujete štartovaciu sekvenciu pre prehliadač,
+ktorá zapne backend Xwayland a umožní tak fungovanie funkcie Autotype (napr. "env MOZ_ENABLE_WAYLAND=0 DISABLE_WAYLAND=1 firefox" pre Firefox).</p>
 
 <p>Parametre príkazového riadka môžete prehliadaču zadať prostredníctvom daného poľa. <b>Neuzatvárajte</b> túto hodnotu do jednoduchých alebo dvojitých úvodzoviek, pokiaľ to váš zvolený prehliadač nevyžaduje.</p>
 

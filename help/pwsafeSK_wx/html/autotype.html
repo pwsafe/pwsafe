@@ -129,6 +129,9 @@ pre \w alebo sekúnd, ak sa použije \W. Napríklad, "how\w500now" spôsobí, ž
 Podobne, "how\W2now" zavedie dvojsekundovú pauzu medzi dvoma slovami. Toto je užitočné na doladenie načasovania s určitými webovými stránkami.<br>
 Upozorňujeme, že <em>NNN</em> je obmedzené na maximálne tri číslice, takže napríklad \w5000 vytvorí polsekundové oneskorenie a
 potom vygeneruje písmeno "0", čo pravdepodobne nie je to čo ste zamýšľali (\W5 by však stačilo).</li>
+<li><b>\v{<i>Názov</i>}</b> zadá hodnotu vlastného poľa, ktorého názov sa zhoduje s <i>Názov</i>. 
+Napríklad, ak má záznam vlastné pole s názvom "PIN" a hodnotou "1234", potom "\v{PIN}" zadá "1234". 
+Ak neexistuje žiadne zodpovedajúce vlastné pole, nič sa nezadá.</li>
 <a name="z"></a><li><b>\z</b> (iba pre Windows) vyvolá starý mechanizmus automatického dopĺňania.
 Tento mechanizmus môže nesprávne spracovať znaky, ktoré nie sú v latinke, ale môže spôsobiť že automatické dopĺňanie
 bude fungovať na určitých problematických webových stránkach. <i><u>Ak zistíte, že AutoType nefunguje správne na konkrétnej webovej stránke, vyskúšajte tento kód na začiatku poľa
