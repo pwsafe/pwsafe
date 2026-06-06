@@ -491,6 +491,9 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
             case CItemData::RMTIME:
             case CItemData::POLICY:
             case CItemData::XTIME_INT:
+              break;
+            case CItemData::URL:
+              item.SetURL(tempdata); break;
             default:
               break;
           } // switch
