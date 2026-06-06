@@ -343,12 +343,8 @@ bool IsXWaylandEnabled()
 
   if (osid & wxOS_UNIX) { // Includes Linux
     wxString GDK_BACKEND_VAR = wxEmptyString; // set by the native version on Linux with Wayland to fall back to using x11 backend
-    if (wxGetEnv(wxT("GDK_BACKEND"), &GDK_BACKEND_VAR)) { // provides 'x11' or 'wayland'
-      if (!GDK_BACKEND_VAR.IsEmpty()) {
-        if (GDK_BACKEND_VAR == wxT("x11")) {
-          XWayland = true;
-        }
-      }
+    if (wxGetEnv(wxT("GDK_BACKEND"), &GDK_BACKEND_VAR) && GDK_BACKEND_VAR == wxT("x11")) { // provides 'x11' or 'wayland'
+      XWayland = true;
     }
     else if (!wxGetEnv(wxT("WAYLAND_DISPLAY"), nullptr)) { // unset by the Flatpak version on Wayland when started with the "--nosocket=wayland --socket=x11" options
       XWayland = true;
