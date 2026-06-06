@@ -22,6 +22,7 @@
 #include "../PasswordSafe.h" // for app extern declaration
 #include "../ThisMfcApp.h" // for NoSysEnvWarnings()
 #include "../GeneralMsgBox.h"
+#include "../PWSDarkMode.h"
 
 #include "../../../os/dir.h"
 #include "../../../os/lib.h"
@@ -356,8 +357,10 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
   for (int i = 0; i < NUM_DIGITS; i++)
     m_pnumbers[i] = NULL;
 
-  // Set background colour for for dialog as white
-  m_pBkBrush.CreateSolidBrush(RGB(255, 255, 255));
+  // Set background colour for dialog.
+  m_pBkBrush.CreateSolidBrush(DarkMode::isEnabled() ?
+                              DarkMode::getDlgBackgroundColor() :
+                              RGB(255, 255, 255));
 
   // dll is guaranteed to be loadable, right version and in general 100% kosher
   // by IsOSKAvailable(). Caller is responsible to call that, though...
@@ -2155,9 +2158,13 @@ HBRUSH CVKeyBoardDlg::OnCtlColor(CDC* pDC, CWnd *pWnd, UINT nCtlColor)
       {
         pDC->SetTextColor(RGB(255, 0, 0));
       } else {
-        pDC->SetTextColor(::GetSysColor(COLOR_WINDOWTEXT));
+        pDC->SetTextColor(DarkMode::isEnabled() ?
+                          DarkMode::getTextColor() :
+                          ::GetSysColor(COLOR_WINDOWTEXT));
       }
-      pDC->SetBkColor(::GetSysColor(COLOR_WINDOW));
+      pDC->SetBkColor(DarkMode::isEnabled() ?
+                      DarkMode::getDlgBackgroundColor() :
+                      ::GetSysColor(COLOR_WINDOW));
       return (HBRUSH)(m_pBkBrush.GetSafeHandle());
     default:
       return hbr;

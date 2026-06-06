@@ -14,6 +14,7 @@
 #include "PWStatusBar.h"
 #include "winutils.h"
 #include "ScreenCaptureStateControl.h"
+#include "PWSDarkMode.h"
 
 #include "os/debug.h"
 
@@ -104,6 +105,8 @@ void CPWStatusBar::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
       // Get the pane rectangle and calculate text coordinates
       CRect rect(&lpDrawItemStruct->rcItem);
+      if (DarkMode::isEnabled())
+        dc.FillSolidRect(&rect, DarkMode::getBackgroundColor());
       if (m_bSTBFilterStatus) {
         // Centre bitmap in pane.
         int ileft = rect.left + rect.Width() / 2 - m_bmWidth / 2;
@@ -118,7 +121,9 @@ void CPWStatusBar::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
         srcDC.SelectObject(pOldBitmap);
       }
       else {
-        dc.FillSolidRect(&rect, ::GetSysColor(COLOR_BTNFACE));
+        dc.FillSolidRect(&rect, DarkMode::isEnabled() ?
+                                DarkMode::getBackgroundColor() :
+                                ::GetSysColor(COLOR_BTNFACE));
       }
       // Detach from the CDC object, otherwise the hDC will be
       // destroyed when the CDC object goes out of scope
@@ -138,6 +143,8 @@ void CPWStatusBar::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
       m_ExcludeCaptureBitmaps.GetBitmapInfo(nIdStateBitmap, nullptr, &bmWidthDpi, &bmHeightDpi);
 
       CRect rect(&lpDrawItemStruct->rcItem);
+      if (DarkMode::isEnabled())
+        ::FillRect(lpDrawItemStruct->hDC, &rect, DarkMode::getBackgroundBrush());
       // Center bitmap.
       int ileft = rect.left + rect.Width() / 2 - m_bmWidth / 2;
       int itop = rect.top + rect.Height() / 2 - m_bmHeight / 2;

@@ -29,6 +29,7 @@ protected:
   CToolTipCtrl *m_pToolTipCtrl;
 
   virtual void DoDataExchange(CDataExchange *pDX);
+  virtual BOOL OnInitDialog();
   virtual BOOL OnSetActive();
   void ShowHelp(const CString &topicFile);
 

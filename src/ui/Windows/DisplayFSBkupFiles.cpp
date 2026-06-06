@@ -38,7 +38,7 @@ void CDisplayFSBkupFiles::DoDataExchange(CDataExchange* pDX)
   DDX_Control(pDX, IDC_RECFILELIST, m_RFListCtrl);
 }
 
-BEGIN_MESSAGE_MAP(CDisplayFSBkupFiles, CDialog)
+BEGIN_MESSAGE_MAP(CDisplayFSBkupFiles, CPWDialog)
   ON_BN_CLICKED(ID_HELP, OnHelp)
   ON_BN_CLICKED(IDC_CONTINUE, OnContinue)
   ON_BN_CLICKED(IDC_DELETE, OnDelete)

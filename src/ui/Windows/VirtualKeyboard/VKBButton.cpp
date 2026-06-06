@@ -12,6 +12,7 @@
 #include "../stdafx.h"
 #include "VKBButton.h"
 #include "../winutils.h"
+#include "../PWSDarkMode.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -26,6 +27,23 @@ const COLORREF crefGreen  = (RGB(222, 255, 222));  // Light green
 const COLORREF crefYellow = (RGB(255, 255, 228));  // Very light yellow
 const COLORREF crefOrange = (RGB(255, 208, 192));  // Light Orange
 const COLORREF crefPink   = (RGB(255, 222, 222));  // Light Pink
+
+namespace
+{
+  COLORREF GetDarkButtonFill(bool bDeadKey, bool bPushed, bool bMouseInWindow,
+                             bool bChangePushColour)
+  {
+    if (bDeadKey)
+      return DarkMode::getErrorBackgroundColor();
+    if (bMouseInWindow)
+      return DarkMode::getHotBackgroundColor();
+    if (bPushed)
+      return bChangePushColour ?
+             DarkMode::getBackgroundColor() :
+             DarkMode::getCtrlBackgroundColor();
+    return DarkMode::getCtrlBackgroundColor();
+  }
+}
 
 CVKBButton::CVKBButton()
   : m_bMouseInWindow(false), m_bDeadKey(false),
@@ -56,6 +74,22 @@ void CVKBButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
   CString strText;
   GetWindowText(strText);
 
+  if (DarkMode::isEnabled()) {
+    const COLORREF edgeColour = (state & ODS_SELECTED) ?
+                                DarkMode::getHotEdgeColor() :
+                                DarkMode::getEdgeColor();
+    CPen pen(PS_SOLID, 1, edgeColour);
+    CBrush brush(GetDarkButtonFill(m_bDeadKey, m_bPushed, m_bMouseInWindow,
+                                   m_bChangePushColour));
+    CPen *pOldPen = pDC->SelectObject(&pen);
+    CBrush *pOldBrush = pDC->SelectObject(&brush);
+    pDC->Rectangle(rect);
+    pDC->SelectObject(pOldBrush);
+    pDC->SelectObject(pOldPen);
+
+    rect.DeflateRect(CSize(WinUtil::GetSystemMetrics(SM_CXEDGE, m_hWnd),
+                           WinUtil::GetSystemMetrics(SM_CYEDGE, m_hWnd)));
+  } else {
   // draw the control edges (DrawFrameControl is handy!)
   if (state & ODS_SELECTED)
     pDC->DrawFrameControl(rect, DFC_BUTTON, DFCS_BUTTONPUSH | DFCS_PUSHED |
@@ -77,6 +111,7 @@ void CVKBButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
     pDC->FillSolidRect(rect, crefColour);
   }
+  }
 
   // Draw the text
   if (!strText.IsEmpty()) {
@@ -88,10 +123,24 @@ void CVKBButton::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
     int nMode = pDC->SetBkMode(TRANSPARENT);
 
+    COLORREF oldTextColour = CLR_INVALID;
+    if (DarkMode::isEnabled())
+      oldTextColour = pDC->SetTextColor((state & ODS_DISABLED) ?
+                                        DarkMode::getDisabledTextColor() :
+                                        DarkMode::getTextColor());
+
     if (state & ODS_DISABLED)
-      pDC->DrawState(pt, Extent, strText, DSS_DISABLED, TRUE, 0, (HBRUSH)NULL);
+    {
+      if (DarkMode::isEnabled())
+        pDC->TextOut(pt.x, pt.y, strText);
+      else
+        pDC->DrawState(pt, Extent, strText, DSS_DISABLED, TRUE, 0, (HBRUSH)NULL);
+    }
     else
       pDC->TextOut(pt.x, pt.y, strText);
+
+    if (oldTextColour != CLR_INVALID)
+      pDC->SetTextColor(oldTextColour);
 
     pDC->SetBkMode(nMode);
   }

@@ -29,6 +29,8 @@
 #include "Fonts.h"
 #include "PWSversion.h"
 
+#include "PWSDarkMode.h"
+
 #include "core/Util.h"
 #include "core/PWSprefs.h"
 #include "core/PWSrand.h"
@@ -1113,6 +1115,7 @@ BOOL ThisMfcApp::InitInstance()
   // Whilst the language may be changed by the user via a menu, there is no user
   // facility to change the config file, host or user later.
   PWSprefs *prefs = PWSprefs::GetInstance();
+  PwsDarkMode::Initialize(prefs->GetPref(PWSprefs::DisplayMode));
 
   // Now load translations (localized messages used in Usage and encrypt/decrypt dialogs)
   LoadLocalizedStuff();

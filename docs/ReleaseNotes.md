@@ -15,6 +15,9 @@ Bugs Fixed in 3.71.1
 
 New Features in 3.71.1
 ----------------------
+* [GH1196](https://github.com/pwsafe/pwsafe/issues/1196) Dark display mode support: Password Safe now supports the system display mode, as well as setting the mode directly via Manage->Options->Display->Dsiplay Mode. This change also updates the general "look & feel" of the app to the current Windows theme. Known limitations:
+  * The Date picker and keyboard shortcut controls do not switch to dark theme
+  * The Customize Toolbar dialog does not switch to dark theme
 * Custom Field support has been added to the more advanced features:
   * Filters
   * XML and Text import and export

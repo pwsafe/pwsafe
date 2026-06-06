@@ -16,15 +16,16 @@
 
 #include <Afxcmn.h>
 #include "ProgressPieCtrl.h"
+#include "PWSDarkMode.h"
 
 IMPLEMENT_DYNAMIC(CProgressPieCtrl, CButton)
 
 CProgressPieCtrl::CProgressPieCtrl()
   :
   m_common(this),
-  m_clrBackground(::GetSysColor(COLOR_3DFACE)),
+  m_clrBackground(DarkMode::isEnabled() ? DarkMode::getDlgBackgroundColor() : ::GetSysColor(COLOR_3DFACE)),
   m_backgroundBrush(m_clrBackground),
-  m_clrText(::GetSysColor(COLOR_WINDOWTEXT))
+  m_clrText(DarkMode::isEnabled() ? DarkMode::getTextColor() : ::GetSysColor(COLOR_WINDOWTEXT))
 {
 }
 

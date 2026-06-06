@@ -50,6 +50,7 @@ struct st_Opt_master_data {
   int PreExpiryWarnDays;
   int TreeDisplayStatusAtOpen;
   int PercentTransparency;
+  int DisplayMode;
   // Preferences min/max values
   short prefminExpiryDays;
   short prefmaxExpiryDays;
@@ -169,6 +170,7 @@ public:
   inline int &M_PreExpiryWarnDays() {return m_OPTMD.PreExpiryWarnDays;}
   inline int &M_TreeDisplayStatusAtOpen() {return m_OPTMD.TreeDisplayStatusAtOpen;}
   inline int &M_PercentTransparency() { return m_OPTMD.PercentTransparency; }
+  inline int &M_DisplayMode() { return m_OPTMD.DisplayMode; }
   // Preferences min/max values
   inline short &M_prefminExpiryDays() { return m_OPTMD.prefminExpiryDays; }
   inline short &M_prefmaxExpiryDays() { return m_OPTMD.prefmaxExpiryDays; }

@@ -45,6 +45,8 @@
 #include "commctrl.h"
 #include "winutils.h"
 
+#include "PWSDarkMode.h"
+
 #include <shlwapi.h>
 #include <vector>
 #include <algorithm>
@@ -676,6 +678,8 @@ void DboxMain::setupBars()
     // Set up the rest - all but one empty as pane now re-sized according to contents
     statustext[CPWStatusBar::SB_MODIFIED] = IDS_BLANK;
     statustext[CPWStatusBar::SB_NUM_ENT] = IDS_BLANK;
+    statustext[CPWStatusBar::SB_SCR_CAP] =
+      CScreenCaptureStateControl::GetCurrentCaptureStateBitmapId();
     statustext[CPWStatusBar::SB_FILTER] = IDS_BLANK;
     statustext[CPWStatusBar::SB_READONLY] = IDS_READ_ONLY;
 
@@ -694,6 +698,7 @@ void DboxMain::setupBars()
     m_StatusBar.SetPaneInfo(CPWStatusBar::SB_DBLCLICK, 
                             m_StatusBar.GetItemID(CPWStatusBar::SB_DBLCLICK), 
                             SBPS_STRETCH, NULL);
+    DarkMode::setStatusBarCtrlSubclass(m_StatusBar.GetSafeHwnd());
   }
 
   CDC *pDC = this->GetDC();
@@ -714,6 +719,8 @@ void DboxMain::setupBars()
   dwStyle = dwStyle | CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP   |
                       CBRS_BORDER_LEFT   | CBRS_BORDER_RIGHT |
                       CBRS_TOOLTIPS      | CBRS_FLYBY;
+  if (DarkMode::isEnabled())
+    dwStyle &= ~(CBRS_BORDER_BOTTOM | CBRS_BORDER_TOP | CBRS_BORDER_LEFT | CBRS_BORDER_RIGHT);
   m_MainToolBar.SetBarStyle(dwStyle);
   m_MainToolBar.SetWindowText(L"Standard");
 
@@ -739,6 +746,8 @@ void DboxMain::setupBars()
   } else {
     SetToolbar(ID_MENUITEM_NEW_TOOLBAR, true);
   }
+
+  DarkMode::setChildCtrlsSubclassAndTheme(m_hWnd);
 
   m_FindToolBar.ShowFindToolBar(false);
 

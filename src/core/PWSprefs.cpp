@@ -190,6 +190,8 @@ const PWSprefs::intPref PWSprefs::m_int_prefs[NumIntPrefs] = {
   {_T("WindowTransparency"), 0, ptApplication, 0, 50},              // application
   {_T("DefaultExpiryDays"), 90, ptApplication, 1, 3650},            // application
   {_T("DNDMaximumMemorySize"), 14000, ptApplication, -1, INT_MAX},   // application
+  {_T("DisplayMode"), DisplayModeSystem, ptApplication,
+                           minDisplayMode, maxDisplayMode},         // application
 };
 
 const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {

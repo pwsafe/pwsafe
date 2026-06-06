@@ -61,6 +61,7 @@ if (WIN32)
   else (WX_WINDOWS)
     option (XML_MSXML "Set ON for XML import support with MSXML" ON)
     option (XML_XERCESC "Set ON for XML import support with XercesC" OFF)    
+    option (PWSAFE_USE_DARKMODE32 "Set OFF to disable Win32 dark mode support" ON)
   endif (WX_WINDOWS)
   if (XML_MSXML AND XML_XERCESC)
     message (FATAL_ERROR "MSXML and XERCESC are mutually exclusive")
@@ -313,6 +314,10 @@ else (NOT WIN32)
       set_target_properties(pwsafe PROPERTIES COMPILE_DEFINITIONS
                             "_BIND_TO_CURRENT_CRT_VERSION;_BIND_TO_CURRENT_MFC_VERSION"
                             LINK_FLAGS "/ENTRY:\"wWinMainCRTStartup\" /MAP /DEBUG")
+      if (TARGET darkmode32plus)
+        target_compile_definitions(pwsafe PRIVATE PWSAFE_USE_DARKMODE32)
+        target_link_libraries(pwsafe darkmode32plus)
+      endif()
    else (NOT WX_WINDOWS)
 #      set_target_properties(pwsafe PROPERTIES COMPILE_DEFINITIONS
 #                            _BIND_TO_CURRENT_CRT_VERSION

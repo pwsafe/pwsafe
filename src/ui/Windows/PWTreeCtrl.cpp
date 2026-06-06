@@ -15,6 +15,7 @@
 #include "SecString.h"
 #include "SMemFile.h"
 #include "GeneralMsgBox.h"
+#include "PWSDarkMode.h"
 
 #include "core/core.h"
 #include "core/ItemData.h"
@@ -2296,8 +2297,13 @@ void CPWTreeCtrlX::SetFilterState(bool bState)
 {
   m_bTreeFilterActive = bState;
 
-  // Red if filter active, default if not
-  SetTextColor(m_bTreeFilterActive ? RGB(168, 0, 0) : ::GetSysColor(COLOR_WINDOWTEXT));
+  // Red if filter active, default if not. The inactive colour must be the themed
+  // view text colour in dark mode: GetSysColor(COLOR_WINDOWTEXT) is an un-hooked
+  // classic black here (the comctl32 syscolor hook only covers comctl32's own
+  // calls, not this direct one), so it would paint the tree text black-on-dark.
+  SetTextColor(m_bTreeFilterActive ? RGB(168, 0, 0)
+               : (DarkMode::isEnabled() ? DarkMode::getViewTextColor()
+                                        : ::GetSysColor(COLOR_WINDOWTEXT)));
 }
 
 BOOL CPWTreeCtrlX::OnEraseBkgnd(CDC* pDC)
@@ -2307,7 +2313,11 @@ BOOL CPWTreeCtrlX::OnEraseBkgnd(CDC* pDC)
 
     // Set up variables
     COLORREF clrText = RGB(168, 0, 0);
-    COLORREF clrBack = ::GetSysColor(COLOR_WINDOW);    //system background color
+    // Un-hooked GetSysColor(COLOR_WINDOW) is a classic white here; use the themed
+    // view background in dark mode so the "no items passed filtering" state isn't a
+    // white box on the dark tree.
+    COLORREF clrBack = DarkMode::isEnabled() ? DarkMode::getViewBackgroundColor()
+                                             : ::GetSysColor(COLOR_WINDOW);
     CBrush cbBack(clrBack);
 
     CRect rc;

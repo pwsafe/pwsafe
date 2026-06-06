@@ -31,6 +31,8 @@
 #include "SetDBID.h"
 #include "winutils.h"
 
+#include "PWSDarkMode.h"
+
 // Set Ctrl/Alt/Shift strings for menus
 #include "MenuShortcuts.h"
 
@@ -1148,6 +1150,10 @@ BOOL DboxMain::OnInitDialog()
   SetGuiThreadId();
 
   CDialog::OnInitDialog();
+
+  DarkMode::setWindowEraseBgSubclass(m_hWnd);
+  DarkMode::setDarkWndNotifySafe(m_hWnd, true);
+  DarkMode::setWindowMenuBarSubclass(m_hWnd);
 
   if (m_pfcnSetLayeredWindowAttributes) {
     m_bOnStartupTransparancyEnabled =

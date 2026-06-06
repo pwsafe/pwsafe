@@ -43,6 +43,8 @@ down the streetsky.  [Groucho Marx]
 #include "SysColStatic.h"
 #include "winutils.h"
 
+#include "PWSDarkMode.h"
+
 #include <iomanip>  // For setbase and setw
 
 
@@ -154,6 +156,9 @@ static CString NarrowPathText(const CString &text)
 BOOL CPasskeyEntry::OnInitDialog(void)
 {
   CPKBaseDlg::OnInitDialog();
+
+  DarkMode::setWindowEraseBgSubclass(m_hWnd);
+  DarkMode::setDarkWndNotifySafe(m_hWnd, true);
 
   Fonts::GetInstance()->ApplyPasswordFont(GetDlgItem(IDC_PASSKEY));
   m_pctlPasskey->SetPasswordChar(PSSWDCHAR);

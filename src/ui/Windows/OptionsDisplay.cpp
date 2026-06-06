@@ -52,6 +52,7 @@ COptionsDisplay::COptionsDisplay(CWnd *pParent, st_Opt_master_data *pOPTMD)
   m_PreExpiryWarnDays = M_PreExpiryWarnDays();
   m_TreeDisplayStatusAtOpen = M_TreeDisplayStatusAtOpen();
   m_PercentTransparency = M_PercentTransparency();
+  m_DisplayMode = M_DisplayMode();
 }
 
 COptionsDisplay::~COptionsDisplay()
@@ -79,6 +80,7 @@ void COptionsDisplay::DoDataExchange(CDataExchange *pDX)
   DDX_Check(pDX, IDC_ENABLETRANSPARENCY, m_EnableTransparency);
 
   DDX_Radio(pDX, IDC_TREE_DISPLAY_COLLAPSED, m_TreeDisplayStatusAtOpen); // only first!
+  DDX_CBIndex(pDX, IDC_DISPLAYMODE, m_DisplayMode);
 
   DDX_Control(pDX, IDC_DEFUNSHOWINTREE, m_chkbox[0]);
   DDX_Control(pDX, IDC_DEFPWSHOWINTREE, m_chkbox[1]);
@@ -87,6 +89,7 @@ void COptionsDisplay::DoDataExchange(CDataExchange *pDX)
   DDX_Control(pDX, IDC_TREE_DISPLAY_COLLAPSED, m_radiobtn[0]);
   DDX_Control(pDX, IDC_TREE_DISPLAY_EXPANDED, m_radiobtn[1]);
   DDX_Control(pDX, IDC_TREE_DISPLAY_LASTSAVE, m_radiobtn[2]);
+  DDX_Control(pDX, IDC_DISPLAYMODE, m_displayModeCtrl);
 
   DDX_Slider(pDX, IDC_TRANSPARENCY, m_PercentTransparency);
 
@@ -125,6 +128,15 @@ BOOL COptionsDisplay::OnInitDialog()
     m_radiobtn[i].ResetBkgColour(); // Use current window's background
   }
 
+  CString csText;
+  csText.LoadString(IDS_DISPLAYMODE_SYSTEM);
+  m_displayModeCtrl.AddString(csText);
+  csText.LoadString(IDS_DISPLAYMODE_LIGHT);
+  m_displayModeCtrl.AddString(csText);
+  csText.LoadString(IDS_DISPLAYMODE_DARK);
+  m_displayModeCtrl.AddString(csText);
+  m_displayModeCtrl.SetCurSel(m_DisplayMode);
+
   // Database preferences - can't change in R/O mode of if no DB is open
   if (!GetMainDlg()->IsDBOpen() || GetMainDlg()->IsDBReadOnly()) {
     GetDlgItem(IDC_DEFUNSHOWINTREE)->EnableWindow(FALSE);
@@ -156,7 +168,6 @@ BOOL COptionsDisplay::OnInitDialog()
   pslider->SetPos(m_PercentTransparency);
   pslider->SetTipSide(TBTS_TOP);
 
-  CString csText;
   csText.Format(L"%d%%", M_prefmaxPercentTransparency());
   GetDlgItem(IDC_STATIC_MAXTRANSPARENCY)->SetWindowText(csText);
 
@@ -202,6 +213,7 @@ LRESULT COptionsDisplay::OnQuerySiblings(WPARAM wParam, LPARAM )
           M_TreeDisplayStatusAtOpen() != m_TreeDisplayStatusAtOpen ||
           M_HighlightChanges()        != m_HighlightChanges        ||
           M_EnableTransparency()      != m_EnableTransparency      ||
+          M_DisplayMode()             != m_DisplayMode             ||
           M_PercentTransparency()     != m_PercentTransparency)
         return 1L;
       break;
@@ -233,6 +245,7 @@ BOOL COptionsDisplay::OnApply()
   M_PreExpiryWarnDays() = m_PreExpiryWarnDays;
   M_TreeDisplayStatusAtOpen() = m_TreeDisplayStatusAtOpen;
   M_PercentTransparency() = m_PercentTransparency;
+  M_DisplayMode() = m_DisplayMode;
 
   return COptions_PropertyPage::OnApply();
 }

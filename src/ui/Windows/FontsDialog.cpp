@@ -20,6 +20,8 @@
 
 #include "dlgs.h"
 
+#include "PWSDarkMode.h"
+
 // CFontsDialog
 
 IMPLEMENT_DYNAMIC(CFontsDialog, CFontDialog)
@@ -86,6 +88,10 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
   if (uiMsg == WM_INITDIALOG) {
     ASSERT(pwfd_self);
 
+    DarkMode::setWindowEraseBgSubclass(hdlg);
+    DarkMode::setDarkWndNotifySafe(hdlg, true);
+    DarkMode::enableThemeDialogTexture(hdlg, false);
+
     ::SetWindowText(hdlg, pwfd_self->m_title);
 
     if (pwfd_self->m_iType == CFontsDialog::VKEYBOARDFONT) {
@@ -104,6 +110,9 @@ static UINT_PTR CALLBACK CFHookProc(HWND hdlg, UINT uiMsg,
       ShowWindow(GetDlgItem(hdlg, cmb5), SW_HIDE); // script
       ShowWindow(GetDlgItem(hdlg, stc7), SW_HIDE); // script
     }
+
+    ::RedrawWindow(hdlg, nullptr, nullptr,
+                   RDW_INVALIDATE | RDW_ERASE | RDW_FRAME | RDW_ALLCHILDREN);
 
     return TRUE;
   }

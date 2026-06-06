@@ -22,6 +22,7 @@
 #include "PasskeyEntry.h"
 #include "Options_PropertySheet.h"
 #include "OptionsShortcuts.h"
+#include "PWSDarkMode.h"
 #include "AddEdit_DateTimes.h"
 #include "PasswordPolicyDlg.h"
 #include "ManagePSWDPols.h"
@@ -288,6 +289,8 @@ void DboxMain::OnOptions()
   }
 
   if (rc == IDOK) {
+    const bool bDisplayModeChanged = pOptionsPS->DisplayModeChanged();
+
     // Now update the application look and feel as appropriate
 
     // Get updated Hotkey information as we will either re-instate the original or
@@ -322,6 +325,8 @@ void DboxMain::OnOptions()
         uiMessage = IDSC_STATCOMPANY;
     }
     statustext[CPWStatusBar::SB_DBLCLICK] = uiMessage;
+    statustext[CPWStatusBar::SB_SCR_CAP] =
+      CScreenCaptureStateControl::GetCurrentCaptureStateBitmapId();
     m_StatusBar.SetIndicators(statustext, CPWStatusBar::SB_TOTAL);
     UpdateStatusBar();
 
@@ -583,6 +588,9 @@ void DboxMain::OnOptions()
     } else { // multicmds was created but no commands added
       delete pmulticmds;
     }
+
+    if (bDisplayModeChanged)
+      PwsDarkMode::RepaintWindow(m_hWnd);
   } // rc == IDOK
   
   if (m_bOnStartupTransparancyEnabled) {

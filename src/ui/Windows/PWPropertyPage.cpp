@@ -11,6 +11,8 @@
 #include "PWPropertyPage.h"
 #include "GeneralMsgBox.h"
 
+#include "PWSDarkMode.h"
+
 IMPLEMENT_DYNAMIC(CPWPropertyPage, CPropertyPage)
 
 CPWPropertyPage::CPWPropertyPage(UINT nID)
@@ -26,6 +28,11 @@ DboxMain *CPWPropertyPage::GetMainDlg() const
 
 BOOL CPWPropertyPage::OnInitDialog()
 {
+  BOOL retval = CPropertyPage::OnInitDialog();
+
+  DarkMode::setWindowEraseBgSubclass(m_hWnd);
+  DarkMode::setDarkWndNotifySafe(m_hWnd, true);
+
   CWnd* pTitleWnd = GetDlgItem(IDC_PS_TITLE);
 
   if (pTitleWnd != nullptr) {
@@ -40,7 +47,7 @@ BOOL CPWPropertyPage::OnInitDialog()
     CFont* pBoldFont = CFont::FromHandle(hfont);
     pTitleWnd->SetFont(pBoldFont);
   }
-  return CPropertyPage::OnInitDialog();
+  return retval;
 }
 
 

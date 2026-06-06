@@ -18,6 +18,8 @@
 #include "resource.h"
 #include "resource3.h"  // String resources
 
+#include "PWSDarkMode.h"
+
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #undef THIS_FILE
@@ -34,6 +36,9 @@ CCryptKeyEntry::CCryptKeyEntry(bool isEncrypt, CWnd* pParent)
 BOOL CCryptKeyEntry::OnInitDialog()
 {
   CDialog::OnInitDialog();
+
+  DarkMode::setWindowEraseBgSubclass(m_hWnd);
+  DarkMode::setDarkWndNotifySafe(m_hWnd, true);
   
   GetDlgItem(IDC_VERIFY)->ShowWindow(m_encrypt);
   GetDlgItem(IDC_CRYPTKEY2)->ShowWindow(m_encrypt);

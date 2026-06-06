@@ -34,7 +34,7 @@ void CDumpSelect::DoDataExchange(CDataExchange* pDX)
   DDX_Radio(pDX, IDC_DUMP_WIN32, m_dumptype);
 }
 
-BEGIN_MESSAGE_MAP(CDumpSelect, CDialog)
+BEGIN_MESSAGE_MAP(CDumpSelect, CPWDialog)
   ON_BN_CLICKED(IDOK, OnBnClickedOK)
   ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
 END_MESSAGE_MAP()

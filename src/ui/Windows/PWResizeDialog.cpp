@@ -12,6 +12,8 @@
 #include "stdafx.h"
 #include "PWResizeDialog.h"
 
+#include "PWSDarkMode.h"
+
 // CPWResizeDialog dialog
 
 IMPLEMENT_DYNAMIC(CPWResizeDialog, CPWDialog)
@@ -91,6 +93,9 @@ BOOL CPWResizeDialog::OnInitDialog()
     m_RSDStatusBar.UpdateWindow();
 
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
+
+    DarkMode::setStatusBarCtrlSubclass(m_RSDStatusBar.GetSafeHwnd());
+
     m_bStatusBarOK = true;
   }
 
