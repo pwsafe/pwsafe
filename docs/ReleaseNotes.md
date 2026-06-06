@@ -22,6 +22,7 @@ New Features in 3.71.1
   * Filters
   * XML and Text import and export
   * Comparison, Sync and Merge databases
+  * [SF938](https://sourceforge.net/p/passwordsafe/feature-requests/938/) Custom field values may now be selected by name and copied via a "Copy Custom Field Value..." submenu in the entry context popup menu.
   * [SF936](https://sourceforge.net/p/passwordsafe/feature-requests/936/) Notes and Custom fields layout now overlap, selectable by tabs, resulting in a more compact and less cluttered layout.
 
   * [SF935](https://sourceforge.net/p/passwordsafe/feature-requests/935/) Autotype: Specifying '\v{name}' in the autotype text will cause the corresponding value to be autotyped

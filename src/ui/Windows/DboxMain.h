@@ -736,6 +736,7 @@ public:
   afx_msg void OnUpdateTraySelect(CCmdUI *pCmdUI);
   afx_msg void OnGotoDependant(UINT nID);
   afx_msg void OnUpdateGotoDependant(CCmdUI *pCmdUI);
+  afx_msg void OnCopyCustomFieldValue(UINT nID);
 
   afx_msg LRESULT OnAreYouMe(WPARAM, LPARAM);
   afx_msg LRESULT OnWH_SHELL_CallBack(WPARAM wParam, LPARAM lParam);
@@ -949,6 +950,9 @@ private:
 
   // Mapping between visible dependants and their base (might not be visible if filter active)
   std::vector<int> m_vGotoDependants;
+
+  // Custom field values for the context menu copy submenu (indexed by menu ID offset)
+  std::vector<StringX> m_vCustomFieldValues;
   
   // Set link between entry and GUI
   void SetEntryGUIInfo(const CItemData &ci, const DisplayInfo &di)
