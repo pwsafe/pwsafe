@@ -493,6 +493,7 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
             case CItemData::XTIME_INT:
               break;
             case CItemData::URL:
+              // not part of V2, but used by gorilla passwordsafe
               item.SetURL(tempdata); break;
             default:
               break;
