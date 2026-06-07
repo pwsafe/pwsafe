@@ -382,7 +382,6 @@
 		572D9E212DC4920900AF81D4 /* StrengthMeter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrengthMeter.h; sourceTree = "<group>"; };
 		572D9E222DC4920900AF81D4 /* StrengthMeter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StrengthMeter.cpp; sourceTree = "<group>"; };
 		574370962A3CE21800B46A7D /* pwsafe-template.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "pwsafe-template.plist"; sourceTree = "<group>"; };
-		575412A92B14265800507BC5 /* ubuntu-latest.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "ubuntu-latest.yml"; path = "../.github/workflows/ubuntu-latest.yml"; sourceTree = "<group>"; };
 		575412AA2B14265800507BC5 /* macos-latest.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "macos-latest.yml"; path = "../.github/workflows/macos-latest.yml"; sourceTree = "<group>"; };
 		575412AB2B14265800507BC5 /* codeql-analysis.yml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.yaml; name = "codeql-analysis.yml"; path = "../.github/workflows/codeql-analysis.yml"; sourceTree = "<group>"; };
 		5762BC232DE7E26800322CA5 /* pwsafe-cli-test */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "pwsafe-cli-test"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1063,7 +1062,6 @@
 			children = (
 				575412AA2B14265800507BC5 /* macos-latest.yml */,
 				575412AB2B14265800507BC5 /* codeql-analysis.yml */,
-				575412A92B14265800507BC5 /* ubuntu-latest.yml */,
 			);
 			name = Workflows;
 			sourceTree = "<group>";
@@ -2507,6 +2505,8 @@
 					__WXMAC__,
 					__WXDEBUG__,
 					__WXOSX_COCOA__,
+					PUGIXML_WCHAR_MODE,
+					PUGIXML_NO_XPATH,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -2891,6 +2891,8 @@
 					__WXMAC__,
 					__WXDEBUG__,
 					__WXOSX_COCOA__,
+					PUGIXML_WCHAR_MODE,
+					PUGIXML_NO_XPATH,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -2948,6 +2950,8 @@
 					__WXMAC__,
 					__WXOSX_COCOA__,
 					"wxDEBUG_LEVEL=0",
+					PUGIXML_WCHAR_MODE,
+					PUGIXML_NO_XPATH,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
