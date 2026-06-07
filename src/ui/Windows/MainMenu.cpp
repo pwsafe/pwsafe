@@ -1574,6 +1574,31 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
       pPopup->RemoveMenu(pci->IsProtected() ? ID_MENUITEM_PROTECT : ID_MENUITEM_UNPROTECT, MF_BYCOMMAND);
     }
 
+    // Build "Copy Custom Field Value..." submenu. Must run before field-based
+    // removals so ID_MENUITEM_COPYRUNCOMMAND is still present as a position anchor.
+    // For shortcuts, inherit custom fields from their base; aliases use theirs.
+    {
+      const CItemData *pcf = pci->IsShortcut() ? pbci : pci;
+      const int icustom_pos = app.FindMenuItem(pPopup, ID_MENUITEM_COPYRUNCOMMAND) + 1;
+      ASSERT(icustom_pos >= 0);
+      CMenu *pCustomFieldsPopup = pPopup->GetSubMenu(icustom_pos);
+      const CustomFieldList customFields = pcf->IsCustomFieldsSet()
+                                           ? pcf->GetCustomFields() : CustomFieldList();
+      if (!customFields.empty() && pCustomFieldsPopup != nullptr) {
+        pCustomFieldsPopup->RemoveMenu(0, MF_BYPOSITION);
+        UINT nCFID = ID_MENUITEM_COPYCUSTOMFIELD1;
+        for (const auto &cf : customFields) {
+          if (nCFID > ID_MENUITEM_COPYCUSTOMFIELDMAX)
+            break;
+          pCustomFieldsPopup->InsertMenu((UINT)-1, MF_BYPOSITION | MF_STRING,
+                                         nCFID, cf.GetName().c_str());
+          nCFID++;
+        }
+      } else { // no custom fields to select from
+        pPopup->RemoveMenu(icustom_pos, MF_BYPOSITION);
+      }
+    }
+
     bool bCopyEmail = !pci->IsFieldValueEmpty(CItemData::EMAIL, pbci);
     bool bSendEmail = bCopyEmail ||
                (!pci->IsFieldValueEmpty(CItemData::URL, pbci) && pci->IsURLEmail(pbci));
