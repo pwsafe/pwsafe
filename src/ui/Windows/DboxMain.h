@@ -951,9 +951,6 @@ private:
   // Mapping between visible dependants and their base (might not be visible if filter active)
   std::vector<int> m_vGotoDependants;
 
-  // Custom field values for the context menu copy submenu (indexed by menu ID offset)
-  std::vector<StringX> m_vCustomFieldValues;
-  
   // Set link between entry and GUI
   void SetEntryGUIInfo(const CItemData &ci, const DisplayInfo &di)
   { m_MapEntryToGUI[ci.GetUUID()] = di; } // often used to update, so map::insert() is inappropriate

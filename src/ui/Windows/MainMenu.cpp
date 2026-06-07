@@ -1576,8 +1576,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
 
     // Build "Copy Custom Field Value..." submenu. Must run before field-based
     // removals so ID_MENUITEM_COPYRUNCOMMAND is still present as a position anchor.
-    // For shortcuts, inherit custom fields from their base; For aliases, use theirs.
-    m_vCustomFieldValues.clear();
+    // For shortcuts, inherit custom fields from their base; aliases use theirs.
     {
       const CItemData *pcf = pci->IsShortcut() ? pbci : pci;
       const int icustom_pos = app.FindMenuItem(pPopup, ID_MENUITEM_COPYRUNCOMMAND) + 1;
@@ -1591,7 +1590,6 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
         for (const auto &cf : customFields) {
           if (nCFID > ID_MENUITEM_COPYCUSTOMFIELDMAX)
             break;
-          m_vCustomFieldValues.push_back(cf.GetValue());
           pCustomFieldsPopup->InsertMenu((UINT)-1, MF_BYPOSITION | MF_STRING,
                                          nCFID, cf.GetName().c_str());
           nCFID++;

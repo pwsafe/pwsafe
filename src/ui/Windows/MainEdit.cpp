@@ -1882,17 +1882,23 @@ void DboxMain::OnCopyCustomFieldValue(UINT nID)
 {
   ASSERT(nID >= ID_MENUITEM_COPYCUSTOMFIELD1 && nID <= ID_MENUITEM_COPYCUSTOMFIELDMAX);
 
-  const size_t idx = nID - ID_MENUITEM_COPYCUSTOMFIELD1;
-  if (idx >= m_vCustomFieldValues.size())
-    return;
-
   if (!SelItemOk())
     return;
 
   CItemData *pci = getSelectedItem();
   ASSERT(pci != NULL);
 
-  SetClipboardData(m_vCustomFieldValues[idx]);
+  const CItemData *pcf = pci->IsShortcut() ? m_core.GetBaseEntry(pci) : pci;
+  if (pcf == nullptr)
+    return;
+
+  const CustomFieldList customFields = pcf->IsCustomFieldsSet()
+                                       ? pcf->GetCustomFields() : CustomFieldList();
+  const size_t idx = nID - ID_MENUITEM_COPYCUSTOMFIELD1;
+  if (idx >= customFields.size())
+    return;
+
+  SetClipboardData(customFields[idx].GetValue());
   UpdateLastClipboardAction(ClipboardDataSource::CustomFieldValue);
   UpdateAccessTime(pci->GetUUID());
 }
