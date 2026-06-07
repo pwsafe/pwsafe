@@ -28,11 +28,10 @@
 #include "../env.h"
 
 #include "../../core/core.h"
+#include "../../core/util.h"
 #include "../../core/StringXStream.h"
 #include "../../core/PwsPlatform.h"
 
-
-#include "../../core/pugixml/pugixml.hpp"
 
 #if defined(PWS_LITTLE_ENDIAN)
 #define wcharEncoding kCFStringEncodingUTF32LE
@@ -229,10 +228,8 @@ static stringT GetLockFileName(const stringT &filename)
 bool pws_os::LockFile(const stringT &filename, stringT &locker, HANDLE &)
 {
   const stringT lock_filename = GetLockFileName(filename);
-  stringT s_locker;
   char *lfn = createFileSystemRepresentation(lock_filename);
-  int fh = open(lfn, (O_CREAT | O_EXCL | O_WRONLY),
-                 (S_IREAD | S_IWRITE));
+  int fh = open(lfn, (O_CREAT | O_EXCL | O_WRONLY), (S_IREAD | S_IWRITE));
 
   if (fh == -1) { // failed to open exclusively. Already locked, or ???
     switch (errno) {
@@ -243,60 +240,18 @@ bool pws_os::LockFile(const stringT &filename, stringT &locker, HANDLE &)
       break;
     case EEXIST: // filename already exists
       {
-        locker = _T("Unable to determine locker");
         // read locker data ("user@machine:nnnnnnnn") from file
-        fh = open(lfn, (O_RDONLY));
-        if(fh != -1) {
-          struct stat sbuf;
-          if((fstat(fh, &sbuf) != -1) && sbuf.st_size) {
-            char *lb = new char [sbuf.st_size + sizeof(TCHAR)];
-            ssize_t num;
-            ASSERT(lb);
-            num = read(fh, lb, sbuf.st_size);
-            if(num == sbuf.st_size) {
-              char *lp;
-              for(lp = &lb[num-1]; lp >= lb && *lp != ':'; --lp) ; // Search for ':'
-              if(lp >= lb) {
-                unsigned long offset = &lb[num] - lp;
-                pugi::xml_encoding encoding = pugi::encoding_auto;
-                if(offset == 9) { // ':' '1' '2' '3' '4' '5' '6' '7' '8' ('\0')
-                  // UTF-8 coding
-                  encoding = pugi::encoding_utf8;
-                }
-                else if(offset == 18) { // ':' '\0' '1' '\0' '2' '\0' '3' '\0' '4' '\0' '5' '\0' '6' '\0' '7' '\0' '8' '\0' ('\0' '\0')
-                  // UTF-16 coding little endian
-                  encoding = pugi::encoding_utf16_le;
-                }
-                else if(offset == 17) { // '\0' ':' '\0' '1' '\0' '2' '\0' '3' '\0' '4' '\0' '5' '\0' '6' '\0' '7' '\0' '8' ('\0' '\0')
-                  // UTF-16 coding big endian);
-                  encoding = pugi::encoding_utf16_be;
-                }
-                else if(offset == 36) { // ':' '\0' '\0' '\0' '1' '\0' '\0' '\0' '2' '\0' '\0' '\0' '3' '\0' '\0' '\0' '4' '\0' '\0' '\0' '5' '\0' '\0' '\0' '6' '\0' '\0' '\0' '7' '\0' '\0' '\0' '8' '\0' '\0' '\0' ('\0' '\0' '\0' '\0')
-                  // UTF-32 coding little endian
-                  encoding = pugi::encoding_utf32_le;
-                }
-                else if(offset == 34) { // '\0' '\0' '\0' ':' '\0' '\0' '\0' '1' '\0' '\0' '\0' '2' '\0' '\0' '\0' '3' '\0' '\0' '\0' '4' '\0' '\0' '\0' '5' '\0' '\0' '\0' '6' '\0' '\0' '\0' '7' '\0' '\0' '\0' '8' ('\0' '\0' '\0' '\0')
-                  // UTF-32 coding big endian
-                  encoding = pugi::encoding_utf32_be;
-                }
-                if(encoding != pugi::encoding_auto) {
-                  // get private buffer
-                  wchar_t* buffer = 0;
-                  size_t length = 0;
-                  // Convert from UTF-8, UTF-16 or UTF-32 to machine wchar_t
-                  if(pugi::convertBuffer(buffer, length, encoding, lb, num, true)) {
-                    ASSERT(buffer);
-                    locker = _T("");
-                    locker.append(buffer, length);
-                    if(static_cast<void *>(buffer) != static_cast<void *>(lb))
-                      (*pugi::get_memory_deallocation_function())(buffer);
-                  }
-                }
-              }
-            }
-            delete [] lb;
+        StringXStream lockerStream;
+        if (PWSUtil::loadFile(lock_filename.c_str(), lockerStream)) {
+          locker = stringx2std(lockerStream.str());
+
+          if (!PWSUtil::HasValidLockerData(locker)) {
+            locker = _T("");
+            Format(locker, IDSC_INVALIDLOCKER, lock_filename.c_str());
           }
-          close(fh);
+        }
+        else {
+          LoadAString(locker, IDSC_CANTREADLOCKER);
         }
       } // EEXIST block
       break;
