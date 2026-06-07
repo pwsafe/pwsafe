@@ -1581,6 +1581,7 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
     {
       const CItemData *pcf = pci->IsShortcut() ? pbci : pci;
       const int icustom_pos = app.FindMenuItem(pPopup, ID_MENUITEM_COPYRUNCOMMAND) + 1;
+      ASSERT(icustom_pos >= 0);
       CMenu *pCustomFieldsPopup = pPopup->GetSubMenu(icustom_pos);
       const CustomFieldList customFields = pcf->IsCustomFieldsSet()
                                            ? pcf->GetCustomFields() : CustomFieldList();
