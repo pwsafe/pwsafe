@@ -28,7 +28,7 @@
 #include "../env.h"
 
 #include "../../core/core.h"
-#include "../../core/util.h"
+#include "../../core/Util.h"
 #include "../../core/StringXStream.h"
 #include "../../core/PwsPlatform.h"
 

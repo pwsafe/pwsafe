@@ -237,12 +237,6 @@
 		E6EE843D11E87E9800B01518 /* UTF8Conv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E211E87E9700B01518 /* UTF8Conv.cpp */; };
 		E6EE843E11E87E9800B01518 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E411E87E9800B01518 /* Util.cpp */; };
 		E6EE844011E87E9800B01518 /* VerifyFormat.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83E811E87E9800B01518 /* VerifyFormat.cpp */; };
-		E6EE844D11E87E9800B01518 /* XFileSAX2Handlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE840811E87E9800B01518 /* XFileSAX2Handlers.cpp */; };
-		E6EE844E11E87E9800B01518 /* XFileValidator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE840A11E87E9800B01518 /* XFileValidator.cpp */; };
-		E6EE844F11E87E9800B01518 /* XFileXMLProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE840C11E87E9800B01518 /* XFileXMLProcessor.cpp */; };
-		E6EE845011E87E9800B01518 /* XFilterSAX2Handlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE840E11E87E9800B01518 /* XFilterSAX2Handlers.cpp */; };
-		E6EE845111E87E9800B01518 /* XFilterXMLProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841011E87E9800B01518 /* XFilterXMLProcessor.cpp */; };
-		E6EE845211E87E9800B01518 /* XSecMemMgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841211E87E9800B01518 /* XSecMemMgr.cpp */; };
 		E6EE845311E87E9800B01518 /* XMLFileHandlers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841511E87E9800B01518 /* XMLFileHandlers.cpp */; };
 		E6EE845411E87E9800B01518 /* XMLFileValidation.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841711E87E9800B01518 /* XMLFileValidation.cpp */; };
 		E6EE845511E87E9800B01518 /* XMLprefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE841911E87E9800B01518 /* XMLprefs.cpp */; };
@@ -2274,16 +2268,10 @@
 				E6EE843D11E87E9800B01518 /* UTF8Conv.cpp in Sources */,
 				E6EE843E11E87E9800B01518 /* Util.cpp in Sources */,
 				E6EE844011E87E9800B01518 /* VerifyFormat.cpp in Sources */,
-				E6EE844D11E87E9800B01518 /* XFileSAX2Handlers.cpp in Sources */,
-				E6EE844E11E87E9800B01518 /* XFileValidator.cpp in Sources */,
 				A2FE258E1C5ACF7500210C36 /* ItemAtt.cpp in Sources */,
-				E6EE844F11E87E9800B01518 /* XFileXMLProcessor.cpp in Sources */,
 				E0C3C4452379B2C200715124 /* pbkdf2.cpp in Sources */,
 				A2FE25921C5ACF7500210C36 /* PWSfileV4.cpp in Sources */,
 				A2FE25911C5ACF7500210C36 /* PWSfileHeader.cpp in Sources */,
-				E6EE845011E87E9800B01518 /* XFilterSAX2Handlers.cpp in Sources */,
-				E6EE845111E87E9800B01518 /* XFilterXMLProcessor.cpp in Sources */,
-				E6EE845211E87E9800B01518 /* XSecMemMgr.cpp in Sources */,
 				E0A70B9821C8FF8900A2FEA8 /* PolicyManager.cpp in Sources */,
 				E6EE845311E87E9800B01518 /* XMLFileHandlers.cpp in Sources */,
 				E6EE845411E87E9800B01518 /* XMLFileValidation.cpp in Sources */,
