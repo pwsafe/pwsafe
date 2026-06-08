@@ -40,7 +40,7 @@ CheckVersion::CheckLatestVersion(const stringT &xml, stringT &latest) const
 {
   // Parse the file we just retrieved
   pugi::xml_document doc; 
-  pugi::xml_parse_result result = doc.load(xml.c_str());
+  pugi::xml_parse_result result = doc.load_string(xml.c_str());
   if (!result)
     return CheckStatus::CANT_READ;
 

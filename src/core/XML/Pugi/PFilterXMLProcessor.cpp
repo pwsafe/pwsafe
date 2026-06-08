@@ -84,7 +84,7 @@ bool PFilterXMLProcessor::ReadXML(const StringX &strXMLData,
   pugi::xml_parse_result result;
     
   if(strXMLFileName.empty())
-    result = m_doc.load(strXMLData.c_str());
+    result = m_doc.load_string(strXMLData.c_str());
   else
     result = m_doc.load_file(strXMLFileName.c_str());
     

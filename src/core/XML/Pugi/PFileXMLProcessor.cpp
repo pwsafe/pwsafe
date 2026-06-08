@@ -101,7 +101,7 @@ bool PFileXMLProcessor::ReadXML(const StringX &strXMLData,
   m_numEntriesValidated = 0;
 
   if(strXMLFileName.empty())
-    result = m_doc.load(strXMLData.c_str());
+    result = m_doc.load_string(strXMLData.c_str());
   else
     result = m_doc.load_file(strXMLFileName.c_str());
     
