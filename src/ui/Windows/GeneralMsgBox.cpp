@@ -447,6 +447,13 @@ BOOL CGeneralMsgBox::OnInitDialog()
   DarkMode::setDarkWndNotifySafe(m_hWnd, true);
   DarkMode::enableThemeDialogTexture(m_hWnd, false);
 
+  // setDarkWndNotifySafe's child pass runs in every mode; for a rich edit in
+  // non-dark modes it "restores defaults" -- EM_SETBKGNDCOLOR with fUseSysColor,
+  // i.e. COLOR_WINDOW white -- clobbering the dialog-face background CreateRtfCtrl
+  // chose to make the message text blend with the dialog. Re-assert it.
+  if (!DarkMode::isEnabled())
+    m_edCtrl.SetBackgroundColor(FALSE, ::GetSysColor(COLOR_3DFACE));
+
   // Updating the layout - preparing to show
   UpdateLayout();
 
@@ -568,12 +575,7 @@ void CGeneralMsgBox::CreateRtfCtrl()
   if (m_bDelayAcceptAnswer)
     dwStyles |= ES_SAVESEL;
   m_edCtrl.Create(dwStyles, rcDummy, this, (UINT)IDC_STATIC);
-
-  if (DarkMode::isEnabled())
-    DarkMode::setDarkRichEdit(m_edCtrl.GetSafeHwnd());
-  else
-    m_edCtrl.SetBackgroundColor(FALSE, ::GetSysColor(COLOR_3DFACE));
-
+  m_edCtrl.SetBackgroundColor(FALSE, ::GetSysColor(COLOR_3DFACE));
   m_edCtrl.SetFont(GetFont());
 
   m_strMsg.Trim();
