@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-05-25 21:22+0300\n"
+"PO-Revision-Date: 2026-06-11 21:05+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: cs\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -1104,10 +1117,6 @@ msgstr "&Ne"
 msgid "&Notes Font"
 msgstr "&Notes Písmo"
 
-#. Resource IDs: (1354)
-msgid "&Notes:"
-msgstr "&Poznámky:"
-
 #. Resource IDs: (1227)
 msgid "&On"
 msgstr "&Na"
@@ -1738,7 +1747,7 @@ msgstr ">>"
 
 #. Resource IDs: (5734)
 msgid "A custom field with this name already exists for this entry."
-msgstr ""
+msgstr "Pro tento záznam již existuje vlastní pole s tímto názvem."
 
 #. Resource IDs: (5249)
 msgid "A dot cannot be used as the first character of the Group field."
@@ -2922,6 +2931,10 @@ msgstr "Kopíruj vše"
 msgid "Copy Aut&h Code to Clipboard"
 msgstr "Kopírování kódu Aut&h do schránky"
 
+#. Resource IDs: (65535 - PopupMenu)
+msgid "Copy Custom &Field Value..."
+msgstr "Zkopírovat vlastní a hodnotu pole..."
+
 #. Resource IDs: (32071 - Menu, 32071 - MenuEx, 5723)
 msgid "Copy Email to Clipboard"
 msgstr "Kopírovat e-mail do schránky"
@@ -3128,10 +3141,6 @@ msgstr "Vlastní pole"
 msgid "Custom Fields"
 msgstr "Uživatelská pole"
 
-#. Resource IDs: (1624)
-msgid "Custom Fields:"
-msgstr "Uživatelská pole:"
-
 #. Resource IDs: (6074)
 msgid "Custom Value copied "
 msgstr "Vlastní hodnota zkopírovaná "
@@ -3172,6 +3181,10 @@ msgstr "DCA"
 #. Resource IDs: (8204)
 msgid "Danish"
 msgstr "Dánština"
+
+#. Resource IDs: (6119)
+msgid "Dark"
+msgstr "Tmavý"
 
 #. Resource IDs: (5636, 5756)
 msgid "Database"
@@ -3351,6 +3364,10 @@ msgstr "Zobrazit ověřovací kód"
 #. Resource IDs: (151, 152, 153, 154, 155, 156, 161, 163, 165, 166)
 msgid "Display Filter - "
 msgstr "Filtr zobrazení - "
+
+#. Resource IDs: (65535)
+msgid "Display Mode:"
+msgstr "Zobrazovací mód:"
 
 #. Resource IDs: (5883)
 msgid ""
@@ -3650,7 +3667,7 @@ msgstr "Zadjete kladné celé číslo."
 
 #. Resource IDs: (5272)
 msgid "Enter a search string"
-msgstr ""
+msgstr "Zadejte vyhledávací řetězec"
 
 #. Resource IDs: (61723)
 msgid "Enter a time."
@@ -3972,7 +3989,7 @@ msgstr "Export záznamu do"
 
 #. Resource IDs: (32137 - PopupMenuEx, 5960)
 msgid "Export Group To"
-msgstr ""
+msgstr "Exportní skupina Do"
 
 #. Resource IDs: (5805, 5833)
 msgid "Export Text"
@@ -5136,6 +5153,10 @@ msgstr ""
 "Délka hesel vygenerovaných v hexadecimálním formátu musí být sudá\n"
 ",jelikož každý byte představuje dvě hexadecimální čísla."
 
+#. Resource IDs: (6118)
+msgid "Light"
+msgstr "Světlý"
+
 #. Resource IDs: (3259)
 #, c-format
 msgid "Line %d skipped - Only %d fields found, whereas parsing the Header says there should be %d."
@@ -5194,7 +5215,7 @@ msgstr "Litevština (standardní)"
 
 #. Resource IDs: (5257)
 msgid "Lock"
-msgstr ""
+msgstr "Zamknout"
 
 #. Resource IDs: (65535)
 msgid "Lock password database "
@@ -7246,6 +7267,10 @@ msgstr "Synchronizuji z databáze: %s\n"
 #. Resource IDs: (143, 1599, 510)
 msgid "System"
 msgstr "Systém"
+
+#. Resource IDs: (6117)
+msgid "System (default)"
+msgstr "Systém (výchozí)"
 
 #. Resource IDs: (3023)
 msgid "System error: No more file handles available"
@@ -9491,7 +9516,7 @@ msgstr ""
 #. Resource IDs: (5538)
 #, c-format
 msgid "\tNo entries were found containing search string '%ls' %ls"
-msgstr ""
+msgstr "\tNebyly nalezeny žádné záznamy obsahující vyhledávací řetězec '%ls' %ls"
 
 #. Resource IDs: (3434)
 msgid "\tOne or more Password Policy Names were already in this database but had different settings. They have been renamed."
