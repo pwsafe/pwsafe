@@ -794,7 +794,6 @@ msgstr ""
 msgid "&Notes Font"
 msgstr ""
 
-#. Resource IDs: (1354)
 msgid "&Notes:"
 msgstr ""
 
@@ -2512,6 +2511,10 @@ msgstr ""
 msgid "Copy Aut&h Code to Clipboard"
 msgstr ""
 
+#. Resource IDs: (65535 - PopupMenu)
+msgid "Copy Custom &Field Value..."
+msgstr ""
+
 #. Resource IDs: (32071 - Menu, 32071 - MenuEx, 5723)
 msgid "Copy Email to Clipboard"
 msgstr ""
@@ -2530,6 +2533,10 @@ msgstr ""
 
 #. Resource IDs: (32070 - MenuEx, 5260, 5304)
 msgid "Copy URL to Clipboard"
+msgstr ""
+
+#. Resource IDs: (6077)
+msgid "Copy Value"
 msgstr ""
 
 #. Resource IDs: (32223 - Menu)
@@ -2706,11 +2713,10 @@ msgstr ""
 msgid "Custom Field"
 msgstr ""
 
-#. Resource IDs: (3096, 5231)
+#. Resource IDs: (3096, 5231, 575, 577)
 msgid "Custom Fields"
 msgstr ""
 
-#. Resource IDs: (1624)
 msgid "Custom Fields:"
 msgstr ""
 
@@ -2753,6 +2759,10 @@ msgstr ""
 
 #. Resource IDs: (8204)
 msgid "Danish"
+msgstr ""
+
+#. Resource IDs: (6119)
+msgid "Dark"
 msgstr ""
 
 #. Resource IDs: (5636, 5756)
@@ -2924,6 +2934,10 @@ msgstr ""
 
 #. Resource IDs: (151, 152, 153, 154, 155, 156, 161, 163, 165, 166)
 msgid "Display Filter - "
+msgstr ""
+
+#. Resource IDs: (65535)
+msgid "Display Mode:"
 msgstr ""
 
 #. Resource IDs: (5883)
@@ -4573,6 +4587,10 @@ msgstr ""
 msgid "Length of passwords generated in hexadecimal format must be even\nas each byte is two hexadecimal digits."
 msgstr ""
 
+#. Resource IDs: (6118)
+msgid "Light"
+msgstr ""
+
 #. Resource IDs: (3259)
 #, c-format
 msgid "Line %d skipped - Only %d fields found, whereas parsing the Header says there should be %d."
@@ -4846,7 +4864,7 @@ msgstr ""
 msgid "N/A"
 msgstr ""
 
-#. Resource IDs: (5640, 5875)
+#. Resource IDs: (5640, 5875, 5892)
 msgid "Name"
 msgstr ""
 
@@ -5076,7 +5094,7 @@ msgstr ""
 msgid "Note: These preferences are only used when importing into an empty database."
 msgstr ""
 
-#. Resource IDs: (3014, 5225)
+#. Resource IDs: (3014, 5225, 574, 576)
 msgid "Notes"
 msgstr ""
 
@@ -6568,6 +6586,10 @@ msgstr ""
 
 #. Resource IDs: (143, 1599, 510)
 msgid "System"
+msgstr ""
+
+#. Resource IDs: (6117)
+msgid "System (default)"
 msgstr ""
 
 #. Resource IDs: (3023)
