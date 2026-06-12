@@ -4,17 +4,17 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Service Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.71.1 Release ??? ?? 2026
-========================================
-Bugs Fixed in 3.71.1
---------------------
+PasswordSafe 3.72.0pre Release June 12 2026
+===========================================
+Bugs Fixed in 3.72.0pre
+-----------------------
 * Improved font scale handling -should resolve font size issues on high resolution displays.
 * [GH1749](https://github.com/pwsafe/pwsafe/issues/1749) In the Master Password Setup window, "Show Master Password" is no longer truncated on some displays.
 * [GH1092](https://github.com/pwsafe/pwsafe/issues/1092)[SF1595](https://sourceforge.net/p/passwordsafe/bugs/1595/) Size and position of main window is now correctly restored on scaled displays.
 * [SF1628](https://sourceforge.net/p/passwordsafe/bugs/1628/) Custom values can now be copied to the clipboard in read-only mode via Ctrl-C and right-click->Copy Value.
 
-New Features in 3.71.1
-----------------------
+New Features in 3.72.0pre
+-------------------------
 * [GH1196](https://github.com/pwsafe/pwsafe/issues/1196) Dark display mode support: Password Safe now supports the system display mode, as well as setting the mode directly via Manage->Options->Display->Dsiplay Mode. This change also updates the general "look & feel" of the app to the current Windows theme. Known limitations:
   * The Date picker and keyboard shortcut controls do not switch to dark theme
   * The Customize Toolbar dialog does not switch to dark theme
