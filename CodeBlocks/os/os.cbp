@@ -230,7 +230,6 @@
 					<Add option="-Winvalid-pch" />
 					<Add option="-Wno-shadow-field-in-constructor" />
 					<Add option="-DNDEBUG" />
-					<Add option="-DUNICODE" />
 					<Add directory="../../src" />
 					<Add directory="../../src/core" />
 				</Compiler>
