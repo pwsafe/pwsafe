@@ -3817,7 +3817,7 @@ void AddEditPropSheetDlg::LoadCustomFieldsList()
   for (size_t i = 0; i < m_CustomFields.size(); ++i) {
     const CustomField &field = m_CustomFields[i];
     const long itemIndex = m_BasicCustomFieldsListCtrl->InsertItem(static_cast<long>(i), towxstring(field.GetName()));
-    const wxString value = field.IsSensitive() ? _("********") : towxstring(field.GetValue());
+    const wxString value = field.IsSensitive() ? _T("********") : towxstring(field.GetValue());
     m_BasicCustomFieldsListCtrl->SetItem(itemIndex, 1, value);
     m_BasicCustomFieldsListCtrl->SetItem(itemIndex, 2, field.IsSensitive() ? wxString::FromUTF8("\xE2\x98\x91")
                                                                             : wxString::FromUTF8("\xE2\x98\x90"));
@@ -3841,7 +3841,7 @@ void AddEditPropSheetDlg::UpdateCustomFieldRow(int index)
   }
 
   const CustomField &field = m_CustomFields[static_cast<size_t>(index)];
-  const wxString value = field.IsSensitive() ? _("********") : towxstring(field.GetValue());
+  const wxString value = field.IsSensitive() ? _T("********") : towxstring(field.GetValue());
   m_BasicCustomFieldsListCtrl->SetItem(index, 0, towxstring(field.GetName()));
   m_BasicCustomFieldsListCtrl->SetItem(index, 1, value);
   m_BasicCustomFieldsListCtrl->SetItem(index, 2, field.IsSensitive() ? wxString::FromUTF8("\xE2\x98\x91")
@@ -3873,7 +3873,7 @@ void AddEditPropSheetDlg::ToggleCustomFieldSensitive(int index)
   CustomField &field = m_CustomFields[static_cast<size_t>(index)];
   field.SetSensitive(!field.IsSensitive());
   if (m_BasicCustomFieldsListCtrl != nullptr) {
-    const wxString value = field.IsSensitive() ? _("********") : towxstring(field.GetValue());
+    const wxString value = field.IsSensitive() ? _T("********") : towxstring(field.GetValue());
     m_BasicCustomFieldsListCtrl->SetItem(index, 1, value);
     m_BasicCustomFieldsListCtrl->SetItem(index, 2, field.IsSensitive() ? wxString::FromUTF8("\xE2\x98\x91")
                                                                         : wxString::FromUTF8("\xE2\x98\x90"));
