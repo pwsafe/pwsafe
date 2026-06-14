@@ -8,7 +8,7 @@
 # Dmitr Y, 2025
 msgid ""
 msgstr ""
-"Project-Id-Version: Password Safe\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-02-14 16:35+0300\n"
 "PO-Revision-Date: 2026-02-14 13:00+0300\n"
@@ -23,24 +23,24 @@ msgstr ""
 msgid "About Password Safe"
 msgstr "О Password Safe"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.h:123
-#: src/ui/wxWidgets/AddEditPropSheetDlg.h:129
+#: src/ui/wxWidgets/AddEditPropSheetDlg.h:132
+#: src/ui/wxWidgets/AddEditPropSheetDlg.h:138
 msgid "Edit Entry"
 msgstr "Редактировать элемент"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.h:128
+#: src/ui/wxWidgets/AddEditPropSheetDlg.h:137
 msgid "Add Entry"
 msgstr "Добавить элемент"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.h:130
+#: src/ui/wxWidgets/AddEditPropSheetDlg.h:139
 msgid "View Entry"
 msgstr "Просмотр элемента"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.h:131
+#: src/ui/wxWidgets/AddEditPropSheetDlg.h:140
 msgid "Add, Edit or View Entry"
 msgstr "Добавление, редактирование или просмотр элемента"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.h:310
+#: src/ui/wxWidgets/AddEditPropSheetDlg.h:332
 msgid "No preview available"
 msgstr "Предпросмотр недоступен"
 
@@ -48,70 +48,6 @@ msgstr "Предпросмотр недоступен"
 #: src/ui/wxWidgets/DeleteConfirmationDlg.h:43
 msgid "Delete Confirmation"
 msgstr "Подтверждение удаления"
-
-#: src/ui/wxWidgets/HelpMap.h:45
-#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:204
-msgid "Backups"
-msgstr "Резервные копии"
-
-# Вкладка настроек
-#: src/ui/wxWidgets/HelpMap.h:46
-#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:214
-msgid "Display"
-msgstr "Вид"
-
-#: src/ui/wxWidgets/HelpMap.h:47
-#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:224
-msgid "Miscellaneous"
-msgstr "Разное"
-
-#: src/ui/wxWidgets/HelpMap.h:48 src/ui/wxWidgets/AddEditPropSheetDlg.cpp:509
-#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:234
-#: src/ui/wxWidgets/PWFiltersTable.cpp:314
-msgid "Password History"
-msgstr "История паролей"
-
-#: src/ui/wxWidgets/HelpMap.h:49
-#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:244
-msgid "Security"
-msgstr "Безопасность"
-
-#: src/ui/wxWidgets/HelpMap.h:50
-#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:267
-msgid "System"
-msgstr "Система"
-
-#: src/ui/wxWidgets/HelpMap.h:51
-#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:254
-msgid "Shortcuts"
-msgstr "Комбинации клавиш"
-
-#: src/ui/wxWidgets/HelpMap.h:53 src/ui/wxWidgets/AddEditPropSheetDlg.cpp:257
-msgid "Basic"
-msgstr "Основные"
-
-# закладка в диалоге создания/редактирования элемента
-#: src/ui/wxWidgets/HelpMap.h:54 src/ui/wxWidgets/AddEditPropSheetDlg.cpp:270
-msgid "Dates and Times"
-msgstr "Дата и время"
-
-#: src/ui/wxWidgets/HelpMap.h:55 src/ui/wxWidgets/PasswordPolicyDlg.h:70
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:287
-#: src/ui/wxWidgets/PWFiltersTable.cpp:317 src/core/core_st.cpp:173
-msgid "Password Policy"
-msgstr "Политика создания паролей"
-
-# закладка в диалоге создания/редактирования элемента
-#: src/ui/wxWidgets/HelpMap.h:56 src/ui/wxWidgets/AddEditPropSheetDlg.cpp:264
-msgid "Additional"
-msgstr "Дополнительно"
-
-#: src/ui/wxWidgets/HelpMap.h:57 src/ui/wxWidgets/AddEditPropSheetDlg.cpp:279
-#: src/ui/wxWidgets/PWFiltersEditor.cpp:110
-#: src/ui/wxWidgets/PWFiltersEditor.cpp:120
-#: src/ui/wxWidgets/PWFiltersTable.cpp:320
-msgid "Attachment"
-msgstr "Вложение"
 
 #: src/ui/wxWidgets/ManageFiltersDlg.h:62
 msgid "Manage Filters"
@@ -125,6 +61,12 @@ msgstr "Управление политиками создания пароле�
 #: src/ui/wxWidgets/ToolbarButtons.h:264
 msgid "Options"
 msgstr "Настройки"
+
+#: src/ui/wxWidgets/PasswordPolicyDlg.h:70
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:390
+#: src/ui/wxWidgets/PWFiltersTable.cpp:317 src/core/core_st.cpp:173
+msgid "Password Policy"
+msgstr "Политика создания паролей"
 
 #: src/ui/wxWidgets/PasswordSafeFrame.h:62 src/ui/wxWidgets/wxMessages.h:23
 #: src/ui/wxWidgets/wxMessages.h:38
@@ -239,8 +181,8 @@ msgid "Save Database"
 msgstr "Сохранить контейнер"
 
 #: src/ui/wxWidgets/ToolbarButtons.h:245
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:300
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:344
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:405
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:496
 #: src/ui/wxWidgets/DragBarCtrl.cpp:153 src/core/core_st.cpp:169
 msgid "Password"
 msgstr "Пароль"
@@ -250,7 +192,7 @@ msgid "Copy Password to Clipboard"
 msgstr "Копировать пароль в буфер обмена"
 
 #: src/ui/wxWidgets/ToolbarButtons.h:246
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:338 src/core/core_st.cpp:187
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:490 src/core/core_st.cpp:187
 msgid "Username"
 msgstr "Имя пользователя"
 
@@ -272,12 +214,12 @@ msgstr "Показать код аутентификации"
 
 # урезано
 #: src/ui/wxWidgets/ToolbarButtons.h:248
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1888
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1894
 msgid "Display Auth Code"
 msgstr "Показать код аутентификации"
 
 #: src/ui/wxWidgets/ToolbarButtons.h:249
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:430
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:590
 #: src/ui/wxWidgets/DragBarCtrl.cpp:154 src/core/core_st.cpp:162
 msgid "Notes"
 msgstr "Заметки"
@@ -295,7 +237,6 @@ msgid "Clear the clipboard contents"
 msgstr "Очистить содержимое буфера обмена"
 
 #: src/ui/wxWidgets/ToolbarButtons.h:252
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:457
 #: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:134
 #: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:570 src/core/core_st.cpp:78
 msgid "Autotype"
@@ -319,6 +260,7 @@ msgid "Send Email"
 msgstr "Отправить письмо"
 
 #: src/ui/wxWidgets/ToolbarButtons.h:256
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:602
 msgid "Add"
 msgstr "Добавить"
 
@@ -328,6 +270,7 @@ msgstr "Добавить новый элемент"
 
 # 32050 - id пункта меню
 #: src/ui/wxWidgets/ToolbarButtons.h:257
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:603
 #: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:157
 msgid "Edit"
 msgstr "Правка"
@@ -336,7 +279,9 @@ msgstr "Правка"
 msgid "Edit an Entry"
 msgstr "Редактировать элемент"
 
-#: src/ui/wxWidgets/ToolbarButtons.h:259 src/ui/wxWidgets/CompareDlg.cpp:502
+#: src/ui/wxWidgets/ToolbarButtons.h:259
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:604
+#: src/ui/wxWidgets/CompareDlg.cpp:502
 msgid "Delete"
 msgstr "Удалить"
 
@@ -350,7 +295,7 @@ msgid "Expand"
 msgstr "Развернуть"
 
 #: src/ui/wxWidgets/ToolbarButtons.h:261
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:678
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:684
 msgid "Expand All"
 msgstr "Развернуть все"
 
@@ -360,7 +305,7 @@ msgid "Collapse"
 msgstr "Свернуть"
 
 #: src/ui/wxWidgets/ToolbarButtons.h:262
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:679
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:685
 msgid "Collapse All"
 msgstr "Свернуть все"
 
@@ -374,7 +319,7 @@ msgstr "Настройки YubiKey"
 
 #: src/ui/wxWidgets/AboutDlg.cpp:113
 #: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:1404
-#: src/ui/wxWidgets/PWSafeApp.cpp:456
+#: src/ui/wxWidgets/PWSafeApp.cpp:464
 msgid "Password Safe"
 msgstr "Password Safe"
 
@@ -382,7 +327,7 @@ msgstr "Password Safe"
 msgid "Built using "
 msgstr "Информация о сборке: "
 
-#: src/ui/wxWidgets/AboutDlg.cpp:119 src/ui/wxWidgets/AboutDlg.cpp:158
+#: src/ui/wxWidgets/AboutDlg.cpp:119 src/ui/wxWidgets/AboutDlg.cpp:161
 msgid "Build date:"
 msgstr "Дата сборки:"
 
@@ -391,61 +336,69 @@ msgstr "Дата сборки:"
 msgid "Check"
 msgstr "Проверить"
 
-#: src/ui/wxWidgets/AboutDlg.cpp:128
+#: src/ui/wxWidgets/AboutDlg.cpp:127
+msgid ""
+"Internet access required: Make sure to grant network access to the Flatpak application.\n"
+"The '--share=network' permission is required for this check."
+msgstr ""
+"Требуется доступ к Интернету. Проверьте, что Flatpak-приложению предоставлен сетевой доступ.\n"
+"Для данной проверки требуется разрешение '--share=network'."
+
+#: src/ui/wxWidgets/AboutDlg.cpp:131
 msgid " for the latest version."
 msgstr " наличие обновлений."
 
-#: src/ui/wxWidgets/AboutDlg.cpp:134
+#: src/ui/wxWidgets/AboutDlg.cpp:137
 msgid "Visit the "
 msgstr "Посетить "
 
-#: src/ui/wxWidgets/AboutDlg.cpp:137
+#: src/ui/wxWidgets/AboutDlg.cpp:140
 msgid "Password Safe website"
 msgstr "сайт Password Safe"
 
-#: src/ui/wxWidgets/AboutDlg.cpp:140
+#: src/ui/wxWidgets/AboutDlg.cpp:143
 msgid "."
 msgstr "."
 
-#: src/ui/wxWidgets/AboutDlg.cpp:143
+#: src/ui/wxWidgets/AboutDlg.cpp:146
 msgid "See LICENSE for open source details."
 msgstr ""
 "См. LICENSE, чтобы узнать подробности\n"
 "о распространении исходного кода."
 
-#: src/ui/wxWidgets/AboutDlg.cpp:146
+#: src/ui/wxWidgets/AboutDlg.cpp:149
 msgid "Copyright (c) 2003-2026 Rony Shapiro"
 msgstr "Copyright (c) 2003-2026 Rony Shapiro"
 
-#: src/ui/wxWidgets/AboutDlg.cpp:153 src/ui/wxWidgets/ManageFiltersDlg.cpp:399
+#: src/ui/wxWidgets/AboutDlg.cpp:156 src/ui/wxWidgets/ManageFiltersDlg.cpp:399
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:368
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:555
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:558
 #: src/ui/wxWidgets/PasswordSubsetDlg.cpp:131
 #: src/ui/wxWidgets/SystemTray.cpp:143 src/ui/wxWidgets/YubiCfgDlg.cpp:189
 msgid "&Close"
 msgstr "&Закрыть"
 
-#: src/ui/wxWidgets/AboutDlg.cpp:268
+#: src/ui/wxWidgets/AboutDlg.cpp:271
 msgid "Could not initialize the Curl library.\n"
 msgstr "Не удалось инициализировать библиотеку Curl.\n"
 
-#: src/ui/wxWidgets/AboutDlg.cpp:281
+#: src/ui/wxWidgets/AboutDlg.cpp:284
 msgid "Could not create a connection session.\n"
 msgstr "Не удалось установить подключение.\n"
 
-#: src/ui/wxWidgets/AboutDlg.cpp:294
+#: src/ui/wxWidgets/AboutDlg.cpp:297
 msgid "Could not set 'URL' option.\n"
 msgstr "Не удалось задать URL.\n"
 
-#: src/ui/wxWidgets/AboutDlg.cpp:304
+#: src/ui/wxWidgets/AboutDlg.cpp:307
 msgid "Could not set 'Timeout' option.\n"
 msgstr "Не удалось задать параметр 'Timeout'.\n"
 
-#: src/ui/wxWidgets/AboutDlg.cpp:317
+#: src/ui/wxWidgets/AboutDlg.cpp:320
 msgid "Could not set 'Write Function' option.\n"
 msgstr "Не удалось задать параметр 'Write Function'.\n"
 
-#: src/ui/wxWidgets/AboutDlg.cpp:403
+#: src/ui/wxWidgets/AboutDlg.cpp:406
 msgid ""
 "For security, the database must be closed before connecting to the Internet.\n"
 "Press OK to close database and continue (Changes will be saved)"
@@ -453,268 +406,412 @@ msgstr ""
 "Из соображений безопасности перед подключением к Интернет необходимо закрыть контейнер.\n"
 "Нажмите OK для закрытия контейнера и продолжения (изменения будут сохранены)."
 
-#: src/ui/wxWidgets/AboutDlg.cpp:408
+#: src/ui/wxWidgets/AboutDlg.cpp:411
 msgid "Confirm Close Dialog"
 msgstr "Диалог подтверждения закрытия"
 
-#: src/ui/wxWidgets/AboutDlg.cpp:477
+#: src/ui/wxWidgets/AboutDlg.cpp:480
 msgid "Trying to contact server..."
 msgstr "Соединение с сервером..."
 
-#: src/ui/wxWidgets/AboutDlg.cpp:530
+#: src/ui/wxWidgets/AboutDlg.cpp:533
 msgid "Couldn't contact server."
 msgstr "Невозможно соединиться с сервером."
 
-#: src/ui/wxWidgets/AboutDlg.cpp:535
+#: src/ui/wxWidgets/AboutDlg.cpp:538
 msgid "This is the latest release!"
 msgstr "У вас самая новая версия!"
 
-#: src/ui/wxWidgets/AboutDlg.cpp:540
+#: src/ui/wxWidgets/AboutDlg.cpp:543
 msgid "Current version: "
 msgstr "Текущая версия: "
 
-#: src/ui/wxWidgets/AboutDlg.cpp:542
+#: src/ui/wxWidgets/AboutDlg.cpp:545
 msgid "Latest version:\t"
 msgstr "Новая версия:\t"
 
-#: src/ui/wxWidgets/AboutDlg.cpp:543
+#: src/ui/wxWidgets/AboutDlg.cpp:547
+msgid ""
+"Use the 'flatpak update' command or your system's software store application"
+" to update to the latest version."
+msgstr ""
+"Для обновления используйте команду 'flatpak update' или соответствующую "
+"команду системного «магазина приложений»."
+
+#: src/ui/wxWidgets/AboutDlg.cpp:549
 msgid "Visit the Password Safe website to download the latest version."
 msgstr "Посетите сайт Password Safe для загрузки новой версии."
 
-#: src/ui/wxWidgets/AboutDlg.cpp:544
+#: src/ui/wxWidgets/AboutDlg.cpp:550
 msgid "Newer Version Found!"
 msgstr "Обнаружена новая версия!"
 
-#: src/ui/wxWidgets/AboutDlg.cpp:551
+#: src/ui/wxWidgets/AboutDlg.cpp:557
 msgid "Could not read server version data."
 msgstr "Невозможно получить с сервера данные о версии."
 
-#: src/ui/wxWidgets/AboutDlg.cpp:600
+#: src/ui/wxWidgets/AboutDlg.cpp:606
 msgid "No Curl handle to perform download."
 msgstr "Ошибка загрузки: не задан CurlHandle."
 
-#: src/ui/wxWidgets/AboutDlg.cpp:658
+#: src/ui/wxWidgets/AboutDlg.cpp:664
 msgid "Could not download version data.\n"
 msgstr "Невозможно загрузить данные о версии.\n"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:233
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1509
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:56
+msgid "Add Custom Field"
+msgstr "Добавить настраиваемое поле"
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:56
+msgid "Edit Custom Field"
+msgstr "Редактировать настраиваемое поле"
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:66
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:620
+#: src/ui/wxWidgets/ManageFiltersTable.cpp:346
+msgid "Name"
+msgstr "Имя"
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:70
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:621
+#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:266
+#: src/ui/wxWidgets/PWFiltersIntegerDlg.cpp:326
+msgid "Value"
+msgstr "Значение"
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:74
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:622
+msgid "Sensitive"
+msgstr "Скрывать значение в списке"
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:82
+msgid "&Add"
+msgstr "&Добавить"
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:82
+msgid "&Ok"
+msgstr "&OK"
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:112
+msgid "The custom field's name cannot be empty."
+msgstr "Имя настраиваемого поля не может быть пустым"
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:112
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:119
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2060
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2440
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2495
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4143
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4156
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4167
+#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:148
+#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:157
+#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:173
+#: src/ui/wxWidgets/DbSelectionPanel.cpp:130
+#: src/ui/wxWidgets/DbSelectionPanel.cpp:137
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1054
+#: src/ui/wxWidgets/MenuFileHandlers.cpp:207
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1825
+#: src/ui/wxWidgets/PWSafeApp.cpp:424
+#: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:294
+#: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:298
+#: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:302
+#: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:406
+#: src/ui/wxWidgets/SafeCombinationCtrl.cpp:77
+#: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:346
+#: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:352
+#: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:554
+#: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:585
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:271
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:276
+#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:309
+#: src/ui/wxWidgets/wxUtilities.cpp:217 src/core/core_st.cpp:325
+msgid "Error"
+msgstr "Ошибка"
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:118
+msgid "A custom field with this name already exists for this entry."
+msgstr "В данном элементе уже есть настраиваемое поле с таким именем"
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:335
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1698
 msgid "Auto Type"
 msgstr "Автонабор"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:234
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1510
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:336
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1699
 #: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:406
 #: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:618
 msgid "Browse"
 msgstr "Обзор"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:235
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1511
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:337
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1700
 msgid "Browse + Auto Type"
 msgstr "Перейти по ссылке и выполнить автонабор"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:236
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1512
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:338
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1701
 msgid "Copy Notes"
 msgstr "Копировать заметки"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:237
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1513
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:339
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1702
 msgid "Copy Password"
 msgstr "Копировать пароль"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:238
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1514
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:340
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1703
 msgid "Copy Password + Minimize"
 msgstr "Копировать пароль и свернуть"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:239
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1515
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:341
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1704
 msgid "Copy Username"
 msgstr "Копировать имя пользователя"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:240
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1516
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:342
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1705
 msgid "Edit/View Entry"
 msgstr "Редактирование/просмотр элемента"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:241
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1517
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:343
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1706
 msgid "Execute Run command"
 msgstr "Выполнить команду"
 
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:344
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1707
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:141
+msgid "Send email"
+msgstr "Отправить письмо"
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:360
+msgid "Basic"
+msgstr "Основные"
+
+# закладка в диалоге создания/редактирования элемента
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:367
+msgid "Additional"
+msgstr "Дополнительно"
+
+# закладка в диалоге создания/редактирования элемента
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:373
+msgid "Dates and Times"
+msgstr "Дата и время"
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:382
+#: src/ui/wxWidgets/PWFiltersEditor.cpp:110
+#: src/ui/wxWidgets/PWFiltersEditor.cpp:120
+#: src/ui/wxWidgets/PWFiltersTable.cpp:320
+msgid "Attachment"
+msgstr "Вложение"
+
 # Столбец в истории
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:299
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:404
 msgid "Set Date/Time"
 msgstr "Дата/время создания"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:314
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:466
 msgid "All fields marked with an asterisk (*) are required."
 msgstr "Помеченные звёздочкой (*) поля являются обязательными."
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:321
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:473
 #: src/ui/wxWidgets/DragBarCtrl.cpp:150
 #: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:270 src/core/core_st.cpp:159
 msgid "Group"
 msgstr "Группа"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:327
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:479
 #: src/ui/wxWidgets/DragBarCtrl.cpp:151 src/ui/wxWidgets/GridCtrl.cpp:166
 #: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:271
 #: src/ui/wxWidgets/PWFiltersEditor.cpp:111 src/core/core_st.cpp:179
 msgid "Title"
 msgstr "Заголовок"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:361
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:513
 msgid "&Generate"
 msgstr "&Создать"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:370
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:522
 msgid "Confirm"
 msgstr "Подтверждение:"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:384
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:536
 msgid "&Alias To..."
 msgstr "Псевдоним &для..."
 
 # заголовок диалога, урезано, д.б. Код двухфакторной аутентификации
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:391
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:543
 msgid "Authentication Code"
 msgstr "Код аутентификации"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:401
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2091
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:553
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2275
 msgid "Show authentication code"
 msgstr "Показать код двухфакторной аутентификации"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:405
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:557
 msgid "Copy authentication code to clipboard"
 msgstr "Копировать код двухфакторной аутентификации в буфер обмена"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:412 src/core/core_st.cpp:186
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:564 src/core/core_st.cpp:186
 msgid "URL"
 msgstr "Ссылка"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:418
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:570
 msgid "Go"
 msgstr "Перейти"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:421
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:573
 #: src/ui/wxWidgets/DragBarCtrl.cpp:156
 msgid "Email"
 msgstr "E-mail"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:427
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:579
 msgid "Send"
 msgstr "Отправ."
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:465
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:610 src/core/core_st.cpp:151
+msgid "Custom Fields"
+msgstr "Настраиваемые поля"
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:640
+#, c-format
+msgid "Autotype (default string: %s)"
+msgstr "Автонабор (по умолчанию: %s)"
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:648
 #: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:140 src/core/core_st.cpp:85
 #: src/core/core_st.cpp:176
 msgid "Run Command"
 msgstr "Выполнить команду"
 
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:652
+msgid ""
+"This field can be used to specify a command or program to be run via the "
+"'Run Command' action (via the Edit menu or right-click popup menu). Password"
+" Safe is able to pass arguments to the command such as the entry's username,"
+" password, etc."
+msgstr ""
+"Здесь можно указать команду, выполняемую при выборе действия «Выполнить "
+"команду» в меню «Правка» или контекстном меню. Password Safe может передать "
+"в параметры команды имя пользователя, пароль и некоторые другие данные."
+
 # Вкладка прочее, широкий режим и в полях фильтра, урезано
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:471
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:655
 msgid "Double-Click Action"
 msgstr "По двойному щелчку"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:479
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:663
 msgid "Shift-Double-Click Action"
 msgstr "Действие по Shift + двойной щелчок:"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:490 src/core/core_st.cpp:185
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:674 src/core/core_st.cpp:185
 msgid "Authentication Secret"
 msgstr "Ключ двухфакторной аутентификации"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:500
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2069
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:681
+msgid ""
+"Enter the authentication secret key. This is usually taken from the "
+"authenticator setup page."
+msgstr ""
+"Укажите секретный ключ двухфакторной аутентификации. Обычно его можно "
+"получить на странице настройки второго фактора."
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:685
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2253
 msgid "Show authentication secret"
 msgstr "Показать секретный ключ для двухфакторной аутентификации"
 
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:694
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:234
+#: src/ui/wxWidgets/PWFiltersTable.cpp:314
+msgid "Password History"
+msgstr "История паролей"
+
 # В истории паролей
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:514
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:699
 msgid "Keep"
 msgstr "Хранить"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:529
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:714
 msgid "last passwords"
 msgstr "предыдущих паролей"
 
 # урезано
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:542
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:727
 msgid "Clear History"
 msgstr "Очистить"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:547
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:732
 msgid "Copy All"
 msgstr "Копировать все"
 
 # Заголовок группы на вкладке срока действия
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:565
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:751
 msgid "Password Expiry"
 msgstr "Пароль истекает"
 
 # Пароль истекает ...
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:572
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:758
 msgid "On"
 msgstr " "
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:585
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:771
 msgid "In"
 msgstr "через"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:602
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:788
 msgid "days"
 msgstr "дней"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:605
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:791
 msgid "Recurring"
 msgstr "Повторять"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:610
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:796
 msgid "Never"
 msgstr "Никогда"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:615
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:801
 msgid "Current Setting:"
 msgstr "Текущие настройки:"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:621
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:807
 msgid "Statistics"
 msgstr "Статистика"
 
 # "Создан" т.к. относится к элементу
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:626
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:812
 #: src/ui/wxWidgets/EditShortcutDlg.cpp:250
 msgid "Created on:"
 msgstr "Создан:"
 
 # урезано из-за ограничения размеров
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:632
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:818
 msgid "Password last changed on:"
 msgstr "Пароль изменён:"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:638
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:824
 #: src/ui/wxWidgets/EditShortcutDlg.cpp:260
 msgid "Last accessed on:"
 msgstr "Последнее обращение:"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:641
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:856
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:876
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1033
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1046
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1057
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1068
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1076
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1099
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1101
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1102
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1103
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1104
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1105
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:827
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1044
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1064
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1222
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1235
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1246
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1257
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1265
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1288
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1290
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1291
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1292
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1293
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1294
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:207
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:212
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:217
@@ -740,36 +837,36 @@ msgstr "Последнее обращение:"
 msgid "N/A"
 msgstr "Н/Д"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:644
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:830
 #: src/ui/wxWidgets/EditShortcutDlg.cpp:265
 msgid "Any field last changed on:"
 msgstr "Изменено хотя бы одно поле:"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:667
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:854
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:171
 msgid "Random password generation rules"
 msgstr "Правила создания случайного пароля"
 
 # урезано (в диалоге редактирования элемента и создания пароля)
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:674
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:861
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:158
 msgid "Use Named Policy"
 msgstr "Использовать политику"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:689
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:876
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:178
 msgid "Password length:"
 msgstr "Длина пароля:"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:707
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:894
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:195
 msgid "Use lowercase letters"
 msgstr "Строчные буквы"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:713
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:737
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:761
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:786
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:900
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:924
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:948
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:973
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:202
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:226
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:250
@@ -777,57 +874,57 @@ msgstr "Строчные буквы"
 msgid "(At least "
 msgstr "(не менее "
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:727
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:751
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:775
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:800
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:914
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:938
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:962
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:987
 msgid ")"
 msgstr ")"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:731
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:918
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:219
 msgid "Use UPPERCASE letters"
 msgstr "ПРОПИСНЫЕ буквы"
 
 # урезано, в информации о политике
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:755
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:942
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:243 src/core/core_st.cpp:298
 msgid "Use digits"
 msgstr "Использовать цифры"
 
 # урезано, в информации о политике
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:779
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:966
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:267 src/core/core_st.cpp:300
 msgid "Use symbols"
 msgstr "Символы"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:781
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:968
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:269
 msgid "i.e., ., %, $, etc."
 msgstr "напр. &, %, $ и т. п."
 
 # Урезано (кнопка в диалогах мастера и политиках паролей)
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:807
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:994
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:296
 msgid "Reset"
 msgstr "Сброс"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:810
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:997
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:299
 msgid "Use only easy-to-read characters"
 msgstr "Только удобочитаемые символы"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:812
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:999
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:301
 msgid "i.e., no 'l', '1', etc."
 msgstr "не исп. «l», «1» и т. п."
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:817
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1004
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:306
 msgid "Generate pronounceable passwords"
 msgstr "Создавать произносимые пароли"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:823
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1010
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:312
 #: src/ui/wxWidgets/PWFiltersEditor.cpp:907
 #: src/ui/wxWidgets/PWFiltersTable.cpp:284
@@ -836,40 +933,40 @@ msgstr "Создавать произносимые пароли"
 msgid "Or"
 msgstr "Или"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:828
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1015
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:317
 msgid "Use hexadecimal digits only"
 msgstr "Только шестнадцатеричные цифры"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:847
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1035
 msgid "Preview"
 msgstr "Предпросмотр"
 
 # Имя пункта меню
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:855
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1043
 msgid "File"
 msgstr "Файл"
 
 # кнопка на вкладке вложения
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:860
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1048
 msgid "Import..."
 msgstr "Импорт..."
 
 # кнопка на вкладке вложения
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:862
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1050
 msgid "Export..."
 msgstr "Экспорт..."
 
 # кнопка на вкладке вложения
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:864
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1052
 msgid "Remove"
 msgstr "Удалить"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:869
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1057
 msgid "Properties"
 msgstr "Свойства"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:873
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1061
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:188
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:210
 #: src/ui/wxWidgets/EditShortcutDlg.cpp:240
@@ -878,7 +975,7 @@ msgid "Title:"
 msgstr "Заголовок:"
 
 # Первая подстановка в "%s file being imported/exported: %s"
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:875
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1063
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:190
 #: src/ui/wxWidgets/CreateShortcutDlg.cpp:195
 #: src/ui/wxWidgets/EditShortcutDlg.cpp:242
@@ -889,34 +986,34 @@ msgstr "Заголовок:"
 msgid "Text"
 msgstr "Текстовый"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:879
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1067
 msgid "Media Type:"
 msgstr "Тип файла:"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:884
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1072
 msgid "Creation Date:"
 msgstr "Дата создания:"
 
 # Свойства вложения
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:889
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1077
 msgid "File Size:"
 msgstr "Размер файла:"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:894
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1082
 msgid "File Creation Date:"
 msgstr "Дата создания файла:"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:899
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1087
 msgid "File Last Modified Date:"
 msgstr "Дата изменения файла:"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1001
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1012
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1190
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1201
 msgid "No Attachment Available"
 msgstr "Вложение отсутствует"
 
 # дата в истории паролей
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1049
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1238
 #: src/ui/wxWidgets/PropertiesDlg.cpp:116
 #: src/ui/wxWidgets/PropertiesDlg.cpp:128
 #: src/ui/wxWidgets/PropertiesDlg.cpp:148
@@ -924,127 +1021,127 @@ msgstr "Вложение отсутствует"
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1089
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1278
 msgid "No preview available due to an error"
 msgstr "Предпросмотр недоступен из-за ошибки"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1093
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1282
 msgid "No preview available - unsupported media type"
 msgstr "Предпросмотр недоступен — неподдерживаемый тип."
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1115
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1304
 msgid "Image Preview"
 msgstr "Предпросмотр изображения"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1192
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1381
 msgid "Image files "
 msgstr "Файлы изображений "
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1194
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1299
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1383
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1488
 msgid "All files (*.*)|*.*"
 msgstr "Все файлы (*.*)|*.*"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1197
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1224
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1231
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1238
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1245
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1252
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1386
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1413
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1420
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1427
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1434
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1441
 msgid "Import Attachment"
 msgstr "Импортировать вложение"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1224
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1413
 msgid "Failed to allocate required memory to import attachment data."
 msgstr "Не удалось выделить память для импорта вложения."
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1231
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1327
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1420
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1516
 msgid "Failed to open file."
 msgstr "Не удалось открыть файл."
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1238
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1427
 msgid "File exceeds the allowed maximum size of 4.3GB (2^32GB)."
 msgstr "Размер файла больше максимально разрешённых 4 ГиБ (2^32 Б)"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1245
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1434
 msgid "An error occurred while reading the file."
 msgstr "Ошибка при чтении файла."
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1252
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1441
 msgid "Unexpected error occurred during attachment import."
 msgstr "Ошибка при импорте вложения."
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1265
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1454
 msgid "No attachment data to export."
 msgstr "Отсутствует вложение для экспорта."
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1265
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1302
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1320
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1327
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1334
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1341
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1454
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1491
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1509
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1516
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1523
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1530
 msgid "Export Attachment"
 msgstr "Экспортировать вложение"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1281
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1470
 #, c-format
 msgid "%s files (*.%s;*.jpg)|*.%s;*.jpg|"
 msgstr "%s файлы (*.%s;*.jpg)|*.%s;*.jpg|"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1286
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1475
 #, c-format
 msgid "%s files (*.%s;*.gz)|*.%s;*.gz|"
 msgstr "%s файлы (*.%s;*.gz)|*.%s;*.gz|"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1291
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1480
 #, c-format
 msgid "%s files (*.%s)|*.%s|"
 msgstr "%s файлы (*.%s)|*.%s|"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1320
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1509
 msgid "Failed to allocate required memory to export attachment data."
 msgstr "Не удалось выделить память для экспорта вложения."
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1334
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1523
 msgid "An error occurred while writing the file."
 msgstr "Ошибка при записи файла."
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1341
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1530
 msgid "Unexpected error occurred during attachment export."
 msgstr "Ошибка при экспорте вложения."
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1538
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1728
 msgid "default"
 msgstr "по умолчанию"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1560
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1750
 #, c-format
 msgid "Expires in %d day (%s)"
 msgstr "Истекает через %d день (%s) "
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1560
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1750
 #, c-format
 msgid "Expires in %d days (%s)"
 msgstr "Истекает через %d дней (%s)"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1563
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1753
 #, c-format
 msgid "Expired on %s"
 msgstr "Истёк %s"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1570
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1760
 #, c-format
 msgid "Every %d day from last change"
 msgstr "Через %d день после изменения"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1571
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1761
 #, c-format
 msgid "Every %d days from last change"
 msgstr "Через %d дней после изменения"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1575
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1765
 #, c-format
 msgid ""
 "\n"
@@ -1053,7 +1150,7 @@ msgstr ""
 "\n"
 "(Истечёт %s)"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1577
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1767
 #, c-format
 msgid ""
 "\n"
@@ -1062,58 +1159,27 @@ msgstr ""
 "\n"
 "(Истёк %s)"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1585
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1775
 msgid "Never Expires"
 msgstr "Действует бессрочно"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1750
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1936
 msgid "[Notes hidden - click here to display]"
 msgstr "[Заметки скрыты. Щёлкните здесь, чтобы показать.]"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1817
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1843
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2905
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3850 src/core/core_st.cpp:90
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2005
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2031
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3092
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4342 src/core/core_st.cpp:90
 msgid "Default Policy"
 msgstr "Политика по умолчанию"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1875
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2059
 msgid "Couldn't generate password - invalid policy"
 msgstr "Ошибка при создании пароля: некорректная политика создания паролей"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1876
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2256
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2311
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3651
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3664
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3675
-#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:148
-#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:157
-#: src/ui/wxWidgets/CryptKeyEntryDlg.cpp:173
-#: src/ui/wxWidgets/DbSelectionPanel.cpp:130
-#: src/ui/wxWidgets/DbSelectionPanel.cpp:137
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1055
-#: src/ui/wxWidgets/MenuFileHandlers.cpp:207
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1819
-#: src/ui/wxWidgets/PWSafeApp.cpp:416
-#: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:294
-#: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:298
-#: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:302
-#: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:406
-#: src/ui/wxWidgets/SafeCombinationCtrl.cpp:77
-#: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:346
-#: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:352
-#: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:554
-#: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:585
-#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:271
-#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:276
-#: src/ui/wxWidgets/SafeCombinationPromptDlg.cpp:309
-#: src/ui/wxWidgets/wxUtilities.cpp:217 src/core/core_st.cpp:325
-msgid "Error"
-msgstr "Ошибка"
-
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1990
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2011
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2174
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2195
 msgid ""
 "On changing this entry of type Shortcut Base to an Alias all Shortcut to "
 "this entry will be removed!"
@@ -1121,72 +1187,72 @@ msgstr ""
 "При изменении типа выбранного с исходного элемента на псевдоним все ярлыки, "
 "указывающие на этот элемент, будут удалены!"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:1990
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2011
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2014
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3958
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2174
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2195
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2198
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4450
 #: src/ui/wxWidgets/PropertiesDlg.cpp:485
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:397 src/core/core_st.cpp:327
 msgid "Warning"
 msgstr "Предупреждение"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2014
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2198
 msgid "Shortcut or Alias selected, use Base entry instead"
 msgstr "Указан ярлык или псевдоним. Выберите исходный элемент."
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2060
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2244
 msgid "Hide authentication secret"
 msgstr "Скрыть секретный ключ для двухфакторной аутентификации"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2080
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2264
 msgid "Hide authentication code"
 msgstr "Скрыть код двухфакторной аутентификации"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2103
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2287
 #: src/ui/wxWidgets/SafeCombinationCtrl.cpp:130
 msgid "Hide password"
 msgstr "Скрыть пароль"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2115
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2299
 #: src/ui/wxWidgets/SafeCombinationCtrl.cpp:130
 msgid "Show password"
 msgstr "Показать пароль"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2178
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2362
 msgid "Alias:"
 msgstr "Псевдоним:"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2181
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2206
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2365
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2390
 msgid "Password:"
 msgstr "Пароль:"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2207
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2391
 msgid "Confirm:"
 msgstr "Подтверждение:"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2254
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2438
 #, c-format
 msgid "This entry must have a %ls"
 msgstr "Элемент должен содержать %ls"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2255
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2439
 msgid "title"
 msgstr "Заголовок"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2255
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2439
 msgid "password"
 msgstr "Пароль"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2268
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2452
 msgid "Passwords do not match."
 msgstr "Пароли не совпадают"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2269
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2453
 msgid "Mismatching passwords"
 msgstr "Неверный пароль"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2294
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2478
 msgid ""
 "The authentication key is invalid.\n"
 "Allowed characters are a-z, A-Z, 2-7, space and dash."
@@ -1194,71 +1260,83 @@ msgstr ""
 "Некорректный ключ двухфакторной аутентификации.\n"
 "Разрешённые символы a-z, A-Z, 2-7, пробел, дефис."
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2295
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2479
 msgid "Authentication Key Error"
 msgstr "Ошибка в ключе двухфакторной аутентификации"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2310
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2494
 msgid "Database name must not be empty if a database policy shall be used."
 msgstr "Имя политики создания паролей не должно быть пустым."
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2333
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2517
 msgid ""
 "An entry or shortcut with the same Group, Title and Username already exists."
 msgstr ""
 "Элемент или ярлык с такими же значениями Группы, Заголовка и Имени "
 "пользователя уже существует."
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2334
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2518
 msgid "Duplicate entry"
 msgstr "Дубликат элемента"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2512
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2961
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2652
+msgid "Authentication code requires secret key in Additional tab."
+msgstr ""
+"Для использования кодов двухфакторной аутентификации нужно указать секретный"
+" ключ на вкладке «Дополнительно»."
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:2695
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3148
 msgid "Alias Password Error"
 msgstr "Ошибка в параметрах псевдонима"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3444
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3631
 msgid "&Show"
 msgstr "&Показать"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3444
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3631
 msgid "&Hide"
 msgstr "&Скрыть"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3650
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3820
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3844
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3876
+msgid "********"
+msgstr "********"
+
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4142
 msgid "Total Length of policy too small"
 msgstr "Общая длина меньше суммы количеств разных классов символов"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3663
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4155
 msgid "With password length at least one of the flags has to be set"
 msgstr ""
 "При указанной длине пароля должен быть выбран хотя бы один класс символов"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3674
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4166
 msgid "HexDigits implies no easyvision or pronounceable to be set"
 msgstr ""
 "Параметр «шестнадцатеричные цифры» несовместим с «удобочитаемые» и "
 "«произносимые»"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3756
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4248
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:719
 msgid "\"Easy-to-read\" and \"pronounceable\" cannot be both selected."
 msgstr "Параметры «удобочитаемые» и «произносимые» несовместимы"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3757
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3784
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4249
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4276
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:701
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:720
 msgid "Unsupported selection"
 msgstr "Неподдерживаемая комбинация"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3783
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4275
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:700
 msgid "\"Pronounceable\" and \"easy-to-read\" cannot be both selected."
 msgstr "Параметры «произносимые» и «удобочитаемые» несовместимы"
 
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3958
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4450
 #: src/ui/wxWidgets/PropertiesDlg.cpp:485
 msgid ""
 "One or more values have been changed.\n"
@@ -1268,7 +1346,7 @@ msgstr ""
 "Отклонить изменения?"
 
 # Кнопка в диалоге discard + cancel
-#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:3961
+#: src/ui/wxWidgets/AddEditPropSheetDlg.cpp:4453
 #: src/ui/wxWidgets/MenuFileHandlers.cpp:95
 #: src/ui/wxWidgets/MenuFileHandlers.cpp:590
 #: src/ui/wxWidgets/PropertiesDlg.cpp:488
@@ -1341,7 +1419,7 @@ msgstr "&Просмотр отчёта"
 
 # Элемент меню отчётов
 #: src/ui/wxWidgets/CompareDlg.cpp:173
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:706
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:712
 msgid "&Compare"
 msgstr "&Сравнение"
 
@@ -1602,7 +1680,7 @@ msgid "The entry cannot be blank."
 msgstr "Значение не может быть пустым"
 
 #: src/ui/wxWidgets/DbSelectionPanel.cpp:70
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1459
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1465
 msgid ""
 "Password Safe Databases (*.psafe4; *.psafe3; "
 "*.dat)|*.psafe4;*.psafe3;*.dat|Password Safe Backups (*.bak)|*.bak|Password "
@@ -1633,7 +1711,7 @@ msgid "File or path not found."
 msgstr "Файл или путь к файлу не найден."
 
 #: src/ui/wxWidgets/DbSelectionPanel.cpp:137
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1479
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1485
 msgid "That file is already open."
 msgstr "Указанный файл уже открыт."
 
@@ -1783,7 +1861,7 @@ msgstr "&Расширенные..."
 #: src/ui/wxWidgets/ManageFiltersDlg.cpp:396
 #: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:226
 #: src/ui/wxWidgets/PasswordPolicyDlg.cpp:356
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:750
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:756
 #: src/ui/wxWidgets/SafeCombinationChangeDlg.cpp:212
 #: src/ui/wxWidgets/SafeCombinationEntryDlg.cpp:203
 #: src/ui/wxWidgets/SafeCombinationSetupDlg.cpp:159
@@ -1795,37 +1873,37 @@ msgstr "&Справка"
 msgid "&Export"
 msgstr "&Экспорт"
 
-#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:50
+#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:51
 msgid "Virtual Keyboard"
 msgstr "Экранная клавиатура"
 
-#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:72
+#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:95
 msgid ""
 "Could not launch xvkbd.  Please make sure it's installed and in your PATH"
 msgstr ""
 "Не удалось запустить xvkbd.  Проверьте, что файл доступен по путям, "
 "указанным в PATH"
 
-#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:73
-#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:81
-#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:86
-#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:102
+#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:96
+#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:104
+#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:109
+#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:125
 msgid "Could not launch external onscreen keyboard"
 msgstr "Не удалось запустить внешнюю экранную клавиатуру"
 
-#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:80
+#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:103
 msgid "Could not launch xvkbd.  Please make sure it's in your PATH"
 msgstr ""
 "Не удалось запустить xvkbd.  Проверьте, что файл доступен по путям, "
 "указанным в PATH"
 
-#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:85
+#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:108
 msgid ""
 "Could not launch a new process for xvkbd.  Simultaneous execution disabled?"
 msgstr ""
 "Не удалось запустить процесс для xvkbd.  Запрещено одновременное исполнение?"
 
-#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:99
+#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:122
 msgid ""
 "Please enable the Accessibility Keyboard in System Settings; the on-screen "
 "keyboard should then appear."
@@ -1833,7 +1911,7 @@ msgstr ""
 "Для включения внешней экранной клавиатуры включите параметр «Ассистивная "
 "клавиатура» в настройках операционной системы."
 
-#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:101
+#: src/ui/wxWidgets/ExternalKeyboardButton.cpp:124
 msgid "Could not launch the MacOS Settings App"
 msgstr "Не удалось запустить приложение «Системные настройки»"
 
@@ -1918,12 +1996,12 @@ msgid "Import XML file:"
 msgstr "Импортировать из XML-файла:"
 
 #: src/ui/wxWidgets/ImportXmlDlg.cpp:50
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1044
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1043
 msgid "Choose an XML File to Import"
 msgstr "Выберите XML-файл для импорта"
 
 #: src/ui/wxWidgets/ImportXmlDlg.cpp:51
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1045
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1044
 msgid "XML files (*.xml)|*.xml"
 msgstr "XML-файлы (*.xml)|*.xml"
 
@@ -1946,7 +2024,7 @@ msgstr "&Создать"
 
 # главное меню, диалог управления фильтрами/политиками
 #: src/ui/wxWidgets/ManageFiltersDlg.cpp:381
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:655
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:661
 msgid "&Edit"
 msgstr "&Правка"
 
@@ -1964,70 +2042,66 @@ msgid "E&xport"
 msgstr "&Экспорт"
 
 #: src/ui/wxWidgets/ManageFiltersDlg.cpp:402
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:609
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:622
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:608
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:621
 msgid "Selected Filter Details:"
 msgstr "Параметры фильтра:"
 
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:780
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:883
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:986
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:779
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:882
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:985
 #: src/ui/wxWidgets/MenuViewHandlers.cpp:458
 msgid "This filter already exists"
 msgstr "Фильтр уже существует"
 
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:780
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:883
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:986
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:779
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:882
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:985
 #: src/ui/wxWidgets/MenuViewHandlers.cpp:458
 msgid "Do you wish to replace it?"
 msgstr "Заменить?"
 
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1059
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1058
 #, c-format
 msgid "File %ls was not imported (failed validation against XML Schema)"
 msgstr "Файл %ls не был импортирован (не соответствует XML-схеме)"
 
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1062
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1061
 #, c-format
 msgid "File %ls was not imported (error during import)"
 msgstr "Файл %ls не был импортирован (ошибка при импорте)"
 
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1065
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1064
 #, c-format
 msgid "File %ls was not imported"
 msgstr "Файл %ls не был импортирован"
 
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1073
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1072
 #, c-format
 msgid "File %ls was imported with error"
 msgstr "Файл %ls был импортирован с ошибкой"
 
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1077
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1076
 msgid "Filters successfully imported"
 msgstr "Фильтры успешно импортированы"
 
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1116
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1115
 msgid "filter"
 msgstr "фильтр"
 
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1118
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1117
 #: src/ui/wxWidgets/MenuFileHandlers.cpp:680
 msgid "Name the XML file"
 msgstr "Укажите имя XML-файла"
 
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1119
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1118
 #: src/ui/wxWidgets/MenuFileHandlers.cpp:681
 msgid "XML files (*.xml)|*.xml|All files (*.*; *)|*.*;*"
 msgstr "XML-файлы (*.xml)|*.xml|Все файлы (*.*; *)|*.*;*"
 
-#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1133
+#: src/ui/wxWidgets/ManageFiltersDlg.cpp:1132
 msgid "Filters successfully exported"
 msgstr "Фильтры успешно экспортированы"
-
-#: src/ui/wxWidgets/ManageFiltersTable.cpp:346
-msgid "Name"
-msgstr "Имя"
 
 #: src/ui/wxWidgets/ManageFiltersTable.cpp:348
 msgid "Source"
@@ -2129,11 +2203,6 @@ msgstr "Используется в"
 msgid "Policy Field"
 msgstr "Политика"
 
-#: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:266
-#: src/ui/wxWidgets/PWFiltersIntegerDlg.cpp:326
-msgid "Value"
-msgstr "Значение"
-
 #: src/ui/wxWidgets/ManagePasswordPoliciesDlg.cpp:272
 msgid "User Name"
 msgstr "Имя пользователя"
@@ -2152,7 +2221,7 @@ msgid "Not used"
 msgstr "Не используется"
 
 #: src/ui/wxWidgets/MenuEditHandlers.cpp:333
-#: src/ui/wxWidgets/TreeCtrl.cpp:1812
+#: src/ui/wxWidgets/TreeCtrl.cpp:1813
 msgid " Copy # "
 msgstr " Копия № "
 
@@ -2176,34 +2245,34 @@ msgstr "Очистить буфер обмена"
 msgid "&Don't remind me again"
 msgstr "Больше &не напоминать"
 
-#: src/ui/wxWidgets/MenuEditHandlers.cpp:635
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:646
 msgid ""
 "There is no view available for attachments that are not of image media "
 "type.\n"
 msgstr "Просмотр недоступен для вложений не являющихся картинками.\n"
 
-#: src/ui/wxWidgets/MenuEditHandlers.cpp:636
-#: src/ui/wxWidgets/MenuEditHandlers.cpp:653
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:653
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1960
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:647
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:664
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:659
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1982
 #: src/ui/wxWidgets/ViewAttachmentDlg.cpp:38
 #: src/ui/wxWidgets/ViewAttachmentDlg.cpp:71
 msgid "View Attachment"
 msgstr "Просмотр вложения"
 
-#: src/ui/wxWidgets/MenuEditHandlers.cpp:652
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:663
 msgid "No preview available due to an error."
 msgstr "Предпросмотр недоступен из-за ошибки."
 
-#: src/ui/wxWidgets/MenuEditHandlers.cpp:788
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:799
 msgid "There was an error autotyping.  "
 msgstr "Ошибка при выполнении автонабора  "
 
-#: src/ui/wxWidgets/MenuEditHandlers.cpp:788
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:799
 msgid "Autotype error"
 msgstr "Ошибка автонабора"
 
-#: src/ui/wxWidgets/MenuEditHandlers.cpp:808
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:819
 msgid ""
 "Error switching to another application before autotyping. Switch manually "
 "within 5 seconds"
@@ -2211,15 +2280,15 @@ msgstr ""
 "Ошибка при переключении в другое приложение для автонабора. Переключите "
 "вручную в течение пяти секунд"
 
-#: src/ui/wxWidgets/MenuEditHandlers.cpp:978
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:986
 msgid "Unable to send email"
 msgstr "Невозможно отправить письмо"
 
-#: src/ui/wxWidgets/MenuEditHandlers.cpp:978
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:986
 msgid "Unable to display URL"
 msgstr "Невозможно перейти по ссылке"
 
-#: src/ui/wxWidgets/MenuEditHandlers.cpp:1074
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:1057
 #, c-format
 msgid ""
 "Error at column %d:\n"
@@ -2230,11 +2299,11 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/ui/wxWidgets/MenuEditHandlers.cpp:1075
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:1058
 msgid "Error parsing Run Command"
 msgstr "Ошибка разбора команды для запуска"
 
-#: src/ui/wxWidgets/MenuEditHandlers.cpp:1199
+#: src/ui/wxWidgets/MenuEditHandlers.cpp:1196
 msgid "Password of "
 msgstr "Пароль для "
 
@@ -2477,7 +2546,7 @@ msgstr "Перед экспортом контейнер должен быть �
 #: src/ui/wxWidgets/MenuFileHandlers.cpp:850
 #, c-format
 msgid "Exporting database: %ls to %ls\r\n"
-msgstr "Экспорт контейнера:  %ls в %ls\r\n"
+msgstr "Экспорт контейнера:  %ls в %ls\n"
 
 #: src/ui/wxWidgets/MenuFileHandlers.cpp:866
 msgid "Export complete.  Do you wish to see a detailed report?"
@@ -2794,7 +2863,7 @@ msgid "Merge Complete"
 msgstr "Слияние завершено"
 
 #: src/ui/wxWidgets/MenuFileHandlers.cpp:1393
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3363
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3393
 msgid "Can't close database. There are unsaved changes in opened dialogs."
 msgstr ""
 "Невозможно закрыть контейнер. В открытых диалогах есть несохранённые "
@@ -2914,13 +2983,13 @@ msgid "File '%ls' not readable"
 msgstr "Файл «%ls» не может быть открыт для чтения"
 
 #: src/ui/wxWidgets/MenuViewHandlers.cpp:499
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:689
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2501
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:695
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2522
 msgid "&Apply current"
 msgstr "&Применить текущий"
 
 #: src/ui/wxWidgets/MenuViewHandlers.cpp:503
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2498
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2519
 msgid "&Clear current"
 msgstr "&Очистить текущий"
 
@@ -3000,9 +3069,30 @@ msgstr "Копировать пароль в буфер и свернуть"
 msgid "Browse to URL + Autotype"
 msgstr "Перейти по ссылке и выполнить автонабор"
 
-#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:141
-msgid "Send email"
-msgstr "Отправить письмо"
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:204
+msgid "Backups"
+msgstr "Резервные копии"
+
+# Вкладка настроек
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:214
+msgid "Display"
+msgstr "Вид"
+
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:224
+msgid "Miscellaneous"
+msgstr "Разное"
+
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:244
+msgid "Security"
+msgstr "Безопасность"
+
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:254
+msgid "Shortcuts"
+msgstr "Комбинации клавиш"
+
+#: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:267
+msgid "System"
+msgstr "Система"
 
 #: src/ui/wxWidgets/OptionsPropertySheetDlg.cpp:320
 msgid "Save database immediately after any change"
@@ -3425,631 +3515,642 @@ msgstr "Нельзя использовать имя политики по ум�
 msgid "Policy Error"
 msgstr "Ошибка в политике"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:553
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:556
 msgid "&New..."
 msgstr "&Создать..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:554
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:557
 msgid "&Open..."
 msgstr "&Открыть..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:559
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:562
 msgid "&Unlock\tCtrl+I"
 msgstr "&Разблокировать\tCtrl+I"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:562
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:565
 msgid "&Lock\tCtrl+J"
 msgstr "За&блокировать\tCtrl+J"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:577
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:580
 msgid "&Recent Databases..."
 msgstr "&Недавние контейнеры..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:584
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:587
 msgid "Clear Recently Opened List"
 msgstr "Очистить список недавних контейнеров"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:586
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:589
 msgid "&Save..."
 msgstr "Сох&ранить..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:587
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:590
 #: src/ui/wxWidgets/ViewReportDlg.cpp:76
 msgid "Save &As..."
 msgstr "Сохранить &как..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:591
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:594
 msgid "v&1.x format..."
 msgstr "Формат v&1.x..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:592
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:595
 msgid "v&2 format..."
 msgstr "Формат v&2..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:593
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:596
 msgid "v&4 format (EXPERIMENTAL)..."
 msgstr "Формат v&4 (ЭКСПЕРИМЕНТАЛЬНЫЙ)..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:594
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:597
 msgid "&Plain Text (tab separated)..."
 msgstr "&Простой текст (разделитель — табуляция)..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:595
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:600
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:598
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:603
 msgid "&XML format..."
 msgstr "&XML-формат..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:596
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:599
 msgid "Export &To"
 msgstr "Экспортировать &в"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:599
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:602
 msgid "&Plain Text..."
 msgstr "&Простой текст..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:601
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:604
 msgid "&KeePass..."
 msgstr "&KeePass..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:602
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:605
 msgid "Import &From"
 msgstr "Импортировать &из"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:604
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:607
 msgid "&Merge..."
 msgstr "С&лияние..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:605
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:608
 msgid "&Compare..."
 msgstr "&Сравнить..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:606
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:609
 msgid "S&ynchronize..."
 msgstr "Синх&ронизировать..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:607
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3033
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:610
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3054
 msgid "Change R/W Mode"
 msgstr "Переключить в режим «чтение/запись» (R-W)"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:609
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:612
 msgid "&Properties"
 msgstr "Сво&йства"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:611
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:614
 msgid "E&xit"
 msgstr "Вы&ход"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:612
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:615
 msgid "&File"
 msgstr "&Файл"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:619
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:622
 msgid "&Add Entry...\tCtrl+A"
 msgstr "&Добавить элемент...\tCtrl+A"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:621
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:624
 msgid "&View Entry...\tCtrl+Enter"
 msgstr "&Просмотр элемента...\tCtrl+Enter"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:624
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:627
 msgid "Edit Entry...\tCtrl+Enter"
 msgstr "Редактировать элемент...\tCtrl+Enter"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:626
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:629
 msgid "&Delete Entry\tDel"
 msgstr "&Удалить элемент\tDel"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:627
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:630
 msgid "Rename Entry\tF2"
 msgstr "Переименовать элемент\tF2"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:628
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:631
 msgid "&Find Entry...\tCtrl+F"
 msgstr "&Поиск элемента...\tCtrl+F"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:629
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:632
 msgid "&Duplicate Entry\tCtrl+D"
 msgstr "Ду&блировать элемент\tCtrl+D"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:630
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1963
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:633
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1985
 msgid "Protect Entry"
 msgstr "Защитить элемент"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:632
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:635
 msgid "Add Group"
 msgstr "Добавить группу"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:636
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:639
 msgid "C&lear Clipboard\tCtrl+Del"
 msgstr "&Очистить буфер обмена\tCtrl+Del"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:638
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:641
 msgid "&Copy Password to Clipboard\tCtrl+C"
 msgstr "&Копировать пароль в буфер обмена\tCtrl+C"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:639
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:642
 msgid "Copy &Username to Clipboard\tCtrl+U"
 msgstr "Копировать &имя пользователя в буфер обмена\tCtrl+U"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:640
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:643
 msgid "Display subset of Password\tCtrl+B"
 msgstr "Показать часть пароля\tCtrl+B"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:642
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1885
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:645
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1891
 msgid "Display Password as &QR code"
 msgstr "Показать &QR-код пароля"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:644
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:647
 msgid "Copy Aut&h Code to Clipboard\tAlt+2"
 msgstr "Копировать код &аутентификации в буфер обмена\tAlt+2"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:645
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:648
 msgid "Display Auth Code\tAlt+Ctrl+2"
 msgstr "Показать код аутентификации\tAlt+Ctrl+2"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:646
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:649
 msgid "Copy &Notes to Clipboard\tCtrl+G"
 msgstr "Копировать &заметки в буфер обмена\tCtrl+G"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:647
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:650
 msgid "Copy URL to Clipboard\tCtrl+Alt+L"
 msgstr "Копировать &ссылку в буфер обмена\tCtrl+Alt+L"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:648
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:651
 msgid "&Browse to URL\tCtrl+L"
 msgstr "Пе&рейти по ссылке\tCtrl+L"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:649
-msgid "Perform Auto&type\tCtrl+T"
-msgstr "&Автонабор\tCtrl+T"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:650
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1908
-msgid "Create &Shortcut"
-msgstr "Создать &ярлык"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:651
-msgid "Go to Base entry"
-msgstr "Перейти к исходному элементу"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:662
-msgid "Flattened &List"
-msgstr "&Простой список"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:663
-msgid "Nested &Tree"
-msgstr "&Древовидный список"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:667
-msgid "Sort by Group"
-msgstr "Сортировать по группе"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:668
-msgid "Sort by Name"
-msgstr "Сортировать по имени"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:669
-msgid "Sort by Date"
-msgstr "Сортировать по дате"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:670
-msgid "Tree Sort"
-msgstr "Сортировка в дереве"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:673
-msgid "Toolbar &visible"
-msgstr "Панель инстру&ментов"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:674
-msgid "&New Toolbar"
-msgstr "&Современная панель инструментов"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:675
-msgid "&Classic Toolbar"
-msgstr "&Классическая панель инструментов"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:676
-msgid "&Dragbar visible"
-msgstr "Пане&ль значков для перетаскивания"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:682
-msgid "&Unsaved Changes"
-msgstr "&Несохранённые изменения"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:683
-msgid "Entries with E&xpiry Dates"
-msgstr "Элементы с заданными &датами истечения пароля"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:684
-msgid "Last Find results"
-msgstr "Результаты последнего поиска"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:685
-msgid "Subviews"
-msgstr "Стандартные фильтры"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:688
-msgid "&New/Edit Filter..."
-msgstr "&Создать/Редактировать фильтр..."
-
-# В подменю фильтров
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:690
-msgid "&Manage..."
-msgstr "&Управление..."
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:691
-msgid "Empty Group visible in Filter"
-msgstr "Отображать пустые группы при активном фильтре"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:692
-msgid "&Filters"
-msgstr "&Фильтры пользователя"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:694
-msgid "Customize &Main Toolbar..."
-msgstr "Настроить &основную панель инструментов..."
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:697
-msgid "&Tree/List Font"
-msgstr "&Шрифт для элементов дерева/списка"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:698
-msgid "&Add/Edit Font"
-msgstr "Шрифт в окне &Вставки/Редактирования"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:699
-msgid "&Password Font"
-msgstr "&Шрифт для отображения пароля"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:700
-msgid "&Notes Font"
-msgstr "Шрифт для &заметок"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:703
-msgid "Change &Font"
-msgstr "Изменить &шрифт"
-
-# Элемент меню отчётов
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:707
-msgid "&Find"
-msgstr "&Поиск"
-
-# Элемент меню отчётов
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:708
-msgid "Import &Text"
-msgstr "Импорт из простого &текста"
-
-# Элемент меню отчётов
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:709
-msgid "Import &XML"
-msgstr "Импорт из &XML"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:710
-msgid "Import &KeePass V1 Text"
-msgstr "Импорт &KeePass V1 TXT"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:711
-msgid "Import Kee&Pass V1 CSV"
-msgstr "Импорт Kee&Pass V1 CSV"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:712
-msgid "&Export Text"
-msgstr "Экспорт в простой &текст"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:713
-msgid "Export XM&L"
-msgstr "Экспорт в &XML"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:714
-msgid "Export Current &DB"
-msgstr "Экспорт текущего &контейнера"
-
-# Элемент меню отчётов
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:715
-msgid "&Merge"
-msgstr "&Слияние"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:716
-msgid "&Synchronize"
-msgstr "Синх&ронизация"
-
-# Элемент меню отчётов
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:717
-msgid "&Validate"
-msgstr "Про&верка"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:718
-msgid "Reports"
-msgstr "Отчёты"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:719
-msgid "&View"
-msgstr "&Вид"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:726
-msgid "&Change Master Password..."
-msgstr "&Изменить мастер-пароль..."
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:728
-msgid "Make &Backup...\tCtrl+B"
-msgstr "Создать &резервную копию...\tCtrl+B"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:729
-msgid "&Restore from Backup...\tCtrl+R"
-msgstr "&Восстановить из резервной копии...\tCtrl+R"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:731
-msgid "&Options...\tCtrl+M"
-msgstr "&Настройки...\tCtrl+M"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:732
-msgid "Password Policies..."
-msgstr "Политики создания паролей..."
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:734
-msgid "Generate &Password...\tCtrl+P"
-msgstr "Создать &пароль...\tCtrl+P"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:734
-msgid "Generate Password"
-msgstr "Создать пароль"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:736
-msgid "YubiKey..."
-msgstr "YubiKey..."
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:736
-msgid "Configure and backup YubiKeys"
-msgstr "Настройка и резервные копии YubiKey"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:740
-msgid "&Manage"
-msgstr "&Сервис"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:747
-msgid "Get &Help"
-msgstr "&Справка"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:748
-msgid "Visit Password Safe &website..."
-msgstr "Посетить &сайт Password Safe..."
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:749
-#: src/ui/wxWidgets/SystemTray.cpp:155
-msgid "&About Password Safe..."
-msgstr "&О Password Safe..."
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:881
-msgid "Select Language"
-msgstr "Выбрать язык"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1479
-msgid "Open database"
-msgstr "Открыть контейнер"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1817
-#, c-format
-msgid "Unknown code: %d"
-msgstr "Неизвестный код: %d"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1858
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1874
-msgid "Add &Entry"
-msgstr "Добавить &элемент"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1861
-msgid "Add &Group"
-msgstr "Добавить &группу"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1864
-msgid "&Rename Group"
-msgstr "&Переименовать группу"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1865
-msgid "&Delete Group"
-msgstr "&Удалить группу"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1881
-msgid "Copy &Username to Clipboard"
-msgstr "Копировать &имя пользователя в буфер обмена"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1882
-msgid "&Copy Password to Clipboard"
-msgstr "&Копировать пароль в буфер обмена"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1883
-msgid "Display subset of Password"
-msgstr "Показать часть пароля"
-
-# урезано, д.б. двухфакторной аутентификации
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1887
-msgid "Copy Aut&h Code to Clipboard"
-msgstr "Копировать код &аутентификации в буфер обмена"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1889
-msgid "Copy &Notes to Clipboard"
-msgstr "Копировать &заметки в буфер обмена"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1890
-msgid "Copy UR&L to Clipboard"
-msgstr "Копировать &ссылку в буфер обмена"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1891
-msgid "Copy email to Clipboard"
-msgstr "Копировать E-mail в буфер обмена"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1892
-msgid "Copy Run Command to Clipboard"
-msgstr "Копировать команду в буфер обмена"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1894
-#: src/ui/wxWidgets/SystemTray.cpp:222
-msgid "&Browse to URL"
-msgstr "Пе&рейти по ссылке"
-
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1895
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:652
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1917
 #: src/ui/wxWidgets/SystemTray.cpp:223
 msgid "Browse to URL + &Autotype"
 msgstr "Перейти по ссылке и выполнить &автонабор"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1896
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:653
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1918
 msgid "Send &email"
 msgstr "Отправить &письмо"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1897
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:654
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1919
 #: src/ui/wxWidgets/SystemTray.cpp:230
 msgid "&Run Command"
 msgstr "&Выполнить команду"
 
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:655
+msgid "Perform Auto&type\tCtrl+T"
+msgstr "&Автонабор\tCtrl+T"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:656
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1930
+msgid "Create &Shortcut"
+msgstr "Создать &ярлык"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:657
+msgid "Go to Base entry"
+msgstr "Перейти к исходному элементу"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:668
+msgid "Flattened &List"
+msgstr "&Простой список"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:669
+msgid "Nested &Tree"
+msgstr "&Древовидный список"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:673
+msgid "Sort by Group"
+msgstr "Сортировать по группе"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:674
+msgid "Sort by Name"
+msgstr "Сортировать по имени"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:675
+msgid "Sort by Date"
+msgstr "Сортировать по дате"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:676
+msgid "Tree Sort"
+msgstr "Сортировка в дереве"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:679
+msgid "Toolbar &visible"
+msgstr "Панель инстру&ментов"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:680
+msgid "&New Toolbar"
+msgstr "&Современная панель инструментов"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:681
+msgid "&Classic Toolbar"
+msgstr "&Классическая панель инструментов"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:682
+msgid "&Dragbar visible"
+msgstr "Пане&ль значков для перетаскивания"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:688
+msgid "&Unsaved Changes"
+msgstr "&Несохранённые изменения"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:689
+msgid "Entries with E&xpiry Dates"
+msgstr "Элементы с заданными &датами истечения пароля"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:690
+msgid "Last Find results"
+msgstr "Результаты последнего поиска"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:691
+msgid "Subviews"
+msgstr "Стандартные фильтры"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:694
+msgid "&New/Edit Filter..."
+msgstr "&Создать/Редактировать фильтр..."
+
+# В подменю фильтров
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:696
+msgid "&Manage..."
+msgstr "&Управление..."
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:697
+msgid "Empty Group visible in Filter"
+msgstr "Отображать пустые группы при активном фильтре"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:698
+msgid "&Filters"
+msgstr "&Фильтры пользователя"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:700
+msgid "Customize &Main Toolbar..."
+msgstr "Настроить &основную панель инструментов..."
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:703
+msgid "&Tree/List Font"
+msgstr "&Шрифт для элементов дерева/списка"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:704
+msgid "&Add/Edit Font"
+msgstr "Шрифт в окне &Вставки/Редактирования"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:705
+msgid "&Password Font"
+msgstr "&Шрифт для отображения пароля"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:706
+msgid "&Notes Font"
+msgstr "Шрифт для &заметок"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:709
+msgid "Change &Font"
+msgstr "Изменить &шрифт"
+
+# Элемент меню отчётов
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:713
+msgid "&Find"
+msgstr "&Поиск"
+
+# Элемент меню отчётов
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:714
+msgid "Import &Text"
+msgstr "Импорт из простого &текста"
+
+# Элемент меню отчётов
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:715
+msgid "Import &XML"
+msgstr "Импорт из &XML"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:716
+msgid "Import &KeePass V1 Text"
+msgstr "Импорт &KeePass V1 TXT"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:717
+msgid "Import Kee&Pass V1 CSV"
+msgstr "Импорт Kee&Pass V1 CSV"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:718
+msgid "&Export Text"
+msgstr "Экспорт в простой &текст"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:719
+msgid "Export XM&L"
+msgstr "Экспорт в &XML"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:720
+msgid "Export Current &DB"
+msgstr "Экспорт текущего &контейнера"
+
+# Элемент меню отчётов
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:721
+msgid "&Merge"
+msgstr "&Слияние"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:722
+msgid "&Synchronize"
+msgstr "Синх&ронизация"
+
+# Элемент меню отчётов
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:723
+msgid "&Validate"
+msgstr "Про&верка"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:724
+msgid "Reports"
+msgstr "Отчёты"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:725
+msgid "&View"
+msgstr "&Вид"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:732
+msgid "&Change Master Password..."
+msgstr "&Изменить мастер-пароль..."
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:734
+msgid "Make &Backup...\tCtrl+B"
+msgstr "Создать &резервную копию...\tCtrl+B"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:735
+msgid "&Restore from Backup...\tCtrl+R"
+msgstr "&Восстановить из резервной копии...\tCtrl+R"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:737
+msgid "&Options...\tCtrl+M"
+msgstr "&Настройки...\tCtrl+M"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:738
+msgid "Password Policies..."
+msgstr "Политики создания паролей..."
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:740
+msgid "Generate &Password...\tCtrl+P"
+msgstr "Создать &пароль...\tCtrl+P"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:740
+msgid "Generate Password"
+msgstr "Создать пароль"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:742
+msgid "YubiKey..."
+msgstr "YubiKey..."
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:742
+msgid "Configure and backup YubiKeys"
+msgstr "Настройка и резервные копии YubiKey"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:746
+msgid "&Manage"
+msgstr "&Сервис"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:753
+msgid "Get &Help"
+msgstr "&Справка"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:754
+msgid "Visit Password Safe &website..."
+msgstr "Посетить &сайт Password Safe..."
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:755
+#: src/ui/wxWidgets/SystemTray.cpp:155
+msgid "&About Password Safe..."
+msgstr "&О Password Safe..."
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:887
+msgid "Select Language"
+msgstr "Выбрать язык"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1485
+msgid "Open database"
+msgstr "Открыть контейнер"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1823
+#, c-format
+msgid "Unknown code: %d"
+msgstr "Неизвестный код: %d"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1864
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1880
+msgid "Add &Entry"
+msgstr "Добавить &элемент"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1867
+msgid "Add &Group"
+msgstr "Добавить &группу"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1870
+msgid "&Rename Group"
+msgstr "&Переименовать группу"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1871
+msgid "&Delete Group"
+msgstr "&Удалить группу"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1887
+msgid "Copy &Username to Clipboard"
+msgstr "Копировать &имя пользователя в буфер обмена"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1888
+msgid "&Copy Password to Clipboard"
+msgstr "&Копировать пароль в буфер обмена"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1889
+msgid "Display subset of Password"
+msgstr "Показать часть пароля"
+
+# урезано, д.б. двухфакторной аутентификации
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1893
+msgid "Copy Aut&h Code to Clipboard"
+msgstr "Копировать код &аутентификации в буфер обмена"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1895
+msgid "Copy &Notes to Clipboard"
+msgstr "Копировать &заметки в буфер обмена"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1896
+msgid "Copy UR&L to Clipboard"
+msgstr "Копировать &ссылку в буфер обмена"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1897
+msgid "Copy email to Clipboard"
+msgstr "Копировать E-mail в буфер обмена"
+
 #: src/ui/wxWidgets/PasswordSafeFrame.cpp:1898
+msgid "Copy Run Command to Clipboard"
+msgstr "Копировать команду в буфер обмена"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1913
+msgid "Copy Custom &Field Value..."
+msgstr "Копировать значение &настраиваемого поля..."
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1916
+#: src/ui/wxWidgets/SystemTray.cpp:222
+msgid "&Browse to URL"
+msgstr "Пе&рейти по ссылке"
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1920
 msgid "Perform Auto &Type"
 msgstr "&Автонабор"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1901
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1923
 #: src/ui/wxWidgets/SelectAliasDlg.cpp:499
 msgid "&View Entry..."
 msgstr "&Просмотр элемента..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1904
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1926
 msgid "Edit Entry..."
 msgstr "Редактировать элемент..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1906
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1928
 msgid "&Duplicate Entry"
 msgstr "Ду&блировать элемент"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1907
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1929
 msgid "Delete Entry"
 msgstr "Удалить элемент"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1949
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1971
 msgid "Goto &Shortcuts..."
 msgstr "Перейти к ярлыку..."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1952
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1974
 msgid "&Go to Base entry"
 msgstr "Перейти &к исходному элементу"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1954
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1976
 msgid "View &Base entry"
 msgstr "Просмотр &исходного элемента"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1957
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:1979
 msgid "&Edit Base entry"
 msgstr "&Редактировать исходный элемент"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2085
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2107
 msgid "Missing authentication secret key."
 msgstr "Не указан секретный ключ для двухфакторной аутентификации."
 
 # заголовок диалога
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2086
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2096
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2108
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2118
 msgid "Authentication Code Error"
 msgstr "Ошибка при получении кода двухфакторной аутентификации"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2095
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2117
 msgid "An error occurred obtaining the authentication code."
 msgstr "Ошибка при получении кода двухфакторной аутентификации."
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2194
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2216
 #, c-format
 msgid "\tAuthentication code %ls is valid for %ls seconds"
 msgstr "\tКод аутентификации %ls действителен %ls с"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2714
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2735
 msgid "Could not re-load database: "
 msgstr "Невозможно перезагрузить контейнер: "
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2715
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2736
 msgid "Error re-loading last database"
 msgstr "Ошибка при загрузке последнего контейнера"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2976
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2997
 msgid "There was an error loading the database: "
 msgstr "Ошибка при загрузке контейнера: "
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2977
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:2998
 msgid "Could not load database"
 msgstr "Невозможно загрузить контейнер"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3022
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3043
 msgid "Change to R/W"
 msgstr "Переключить в режим «чтение/запись» (R-W)"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3022
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3043
 msgid "Change to R-O"
 msgstr "Переключить в режим «только чтение» (R-O)"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3051
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3072
 msgid "Group copied "
 msgstr "Группа скопирована "
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3054
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3075
 msgid "Title copied "
 msgstr "Заголовок скопирован "
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3057
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3078
 msgid "User copied "
 msgstr "Имя пользователя скопировано "
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3060
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3081
 msgid "Pswd copied "
 msgstr "Пароль скопирован "
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3063
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3084
 msgid "Auth Code copied "
 msgstr "Код аутентификации скопирован "
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3066
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3087
 msgid "Notes copied "
 msgstr "Заметки скопированы "
 
 # не 'ссылка', т. к. коллизия со ссылками на пароли
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3069
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3090
 msgid "URL copied "
 msgstr "URL скопирован "
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3072
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3093
 msgid "Autotype copied "
 msgstr "«Автонабор» скопирован "
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3075
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3096
 msgid "RunCmd copied "
 msgstr "Команда скопирована "
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3078
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3099
 msgid "Email copied "
 msgstr "E-mail скопирован "
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3081
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3102
+msgid "Custom field copied "
+msgstr "Значение настраиваемого поля скопировано  "
+
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3105
 msgid "Password History copied "
 msgstr "Скопирована история паролей "
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3084
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3108
 msgid "Old Pswd copied "
 msgstr "Старый пароль скопирован "
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3123
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3153
 msgid "Select Tree/List display font"
 msgstr "Выбор шрифта для дерева/списка"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3140
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3170
 msgid "Select Add/Edit display font"
 msgstr "Выбор шрифта для диалога Вставки/Редактирования"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3144
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3174
 msgid "Select Password display font"
 msgstr "Выбор шрифта для отображения паролей"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3148
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3178
 msgid "Select Notes display font"
 msgstr "Выбор шрифта для заметок"
 
-#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3152
+#: src/ui/wxWidgets/PasswordSafeFrame.cpp:3182
 msgid "Select Virtual Keyboard font"
 msgstr "Выбор шрифта для экранной клавиатуры"
 
@@ -4566,44 +4667,44 @@ msgstr "Фильтр отображения — тип элемента"
 msgid "Type"
 msgstr "Тип"
 
-#: src/ui/wxWidgets/PWSafeApp.cpp:456
+#: src/ui/wxWidgets/PWSafeApp.cpp:464
 msgid "Another instance of Password Safe is already running"
 msgstr "Запущен другой экземпляр Password Safe"
 
-#: src/ui/wxWidgets/PWSafeApp.cpp:492 src/ui/wxWidgets/PWSafeApp.cpp:501
+#: src/ui/wxWidgets/PWSafeApp.cpp:500 src/ui/wxWidgets/PWSafeApp.cpp:509
 msgid "Could not initialize help subsystem. Help will not be available."
 msgstr ""
 "Не удалось инициализировать справочную подсистему. Справка будет недоступна."
 
-#: src/ui/wxWidgets/PWSafeApp.cpp:493 src/ui/wxWidgets/PWSafeApp.cpp:502
+#: src/ui/wxWidgets/PWSafeApp.cpp:501 src/ui/wxWidgets/PWSafeApp.cpp:510
 msgid "Password Safe: Error initializing help"
 msgstr "Password Safe: Ошибка при инициализации справочной подсистемы"
 
-#: src/ui/wxWidgets/PWSafeApp.cpp:494
+#: src/ui/wxWidgets/PWSafeApp.cpp:502
 msgid "Don't show this warning again"
 msgstr "Больше не показывать это предупреждение"
 
-#: src/ui/wxWidgets/PWSafeApp.cpp:563
+#: src/ui/wxWidgets/PWSafeApp.cpp:571
 msgid "Unable to import \"autoload_filters.xml\""
 msgstr "Невозможно импортировать фильтры из «autoload_filters.xml»"
 
-#: src/ui/wxWidgets/PWSafeApp.cpp:1037
+#: src/ui/wxWidgets/PWSafeApp.cpp:1046
 msgid "Missing help definition for page \""
 msgstr "Не найдена справка для вкладки \""
 
-#: src/ui/wxWidgets/PWSafeApp.cpp:1038
+#: src/ui/wxWidgets/PWSafeApp.cpp:1047
 msgid "\" of \""
 msgstr "\" из \""
 
-#: src/ui/wxWidgets/PWSafeApp.cpp:1043
+#: src/ui/wxWidgets/PWSafeApp.cpp:1052
 msgid "Missing help definition for window \""
 msgstr "Не найдена справка для окна \""
 
-#: src/ui/wxWidgets/PWSafeApp.cpp:1054
+#: src/ui/wxWidgets/PWSafeApp.cpp:1063
 msgid "Please inform the developers."
 msgstr "Пожалуйста, сообщите об этом разработчикам."
 
-#: src/ui/wxWidgets/PWSafeApp.cpp:1055
+#: src/ui/wxWidgets/PWSafeApp.cpp:1064
 msgid "Help Undefined"
 msgstr "Справка отсутствует"
 
@@ -5263,72 +5364,72 @@ msgstr "&Отправить письмо"
 msgid "&Delete from Recent Entry List"
 msgstr "&Удалить из списка недавних"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:1026 src/ui/wxWidgets/TreeCtrl.cpp:1028
+#: src/ui/wxWidgets/TreeCtrl.cpp:1027 src/ui/wxWidgets/TreeCtrl.cpp:1029
 msgid "New Group"
 msgstr "Новая группа"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:1028
+#: src/ui/wxWidgets/TreeCtrl.cpp:1029
 msgid "\""
 msgstr "\""
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:1028
+#: src/ui/wxWidgets/TreeCtrl.cpp:1029
 msgid "\" "
 msgstr "\" "
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:1028
+#: src/ui/wxWidgets/TreeCtrl.cpp:1029
 msgid "name exists"
 msgstr "уже существует"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:1028 src/ui/wxWidgets/TreeCtrl.cpp:1089
-#: src/ui/wxWidgets/TreeCtrl.cpp:1569
+#: src/ui/wxWidgets/TreeCtrl.cpp:1029 src/ui/wxWidgets/TreeCtrl.cpp:1090
+#: src/ui/wxWidgets/TreeCtrl.cpp:1570
 msgid "Duplicate group name"
 msgstr "Дубликат группы"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:1032
+#: src/ui/wxWidgets/TreeCtrl.cpp:1033
 msgid "Could not add empty group item to tree"
 msgstr "Невозможно добавить пустую группу"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:1045
+#: src/ui/wxWidgets/TreeCtrl.cpp:1046
 msgid "Renaming of non-Group items is not implemented"
 msgstr "Переименование реализовано только для групп"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:1089
+#: src/ui/wxWidgets/TreeCtrl.cpp:1090
 msgid "Group names on the same level must be unique."
 msgstr "На одном уровне имена групп должны быть уникальны"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:1110
+#: src/ui/wxWidgets/TreeCtrl.cpp:1111
 msgid "Dots are not allowed in group names"
 msgstr "Использование точек в имени группы запрещено"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:1110
+#: src/ui/wxWidgets/TreeCtrl.cpp:1111
 msgid "Invalid Character"
 msgstr "Недопустимый символ"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:1497 src/ui/wxWidgets/TreeCtrl.cpp:2819
+#: src/ui/wxWidgets/TreeCtrl.cpp:1498 src/ui/wxWidgets/TreeCtrl.cpp:2820
 msgid "Destination cannot be inside source tree"
 msgstr "Новое расположение не может быть внутри исходного поддерева"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:1497 src/ui/wxWidgets/TreeCtrl.cpp:2667
-#: src/ui/wxWidgets/TreeCtrl.cpp:2674 src/ui/wxWidgets/TreeCtrl.cpp:2691
-#: src/ui/wxWidgets/TreeCtrl.cpp:2819
+#: src/ui/wxWidgets/TreeCtrl.cpp:1498 src/ui/wxWidgets/TreeCtrl.cpp:2668
+#: src/ui/wxWidgets/TreeCtrl.cpp:2675 src/ui/wxWidgets/TreeCtrl.cpp:2692
+#: src/ui/wxWidgets/TreeCtrl.cpp:2820
 msgid "Drag and Drop failed"
 msgstr "Ошибка при перетаскивании"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:1569
+#: src/ui/wxWidgets/TreeCtrl.cpp:1570
 msgid "Duplicate group name (use Shift to overrule)"
 msgstr ""
 "Группа с таким именем уже существует (чтобы игнорировать, нажмите Shift при "
 "перетаскивании)"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:2441
+#: src/ui/wxWidgets/TreeCtrl.cpp:2442
 msgid "Attachments not overtaken due to data base version"
 msgstr "Вложение не было перенесено из-за несоответствия версии контейнера"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:2441
+#: src/ui/wxWidgets/TreeCtrl.cpp:2442
 msgid "Drag and Drop"
 msgstr "Перетаскивание"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:2663
+#: src/ui/wxWidgets/TreeCtrl.cpp:2664
 #, c-format
 msgid ""
 "Dropped entry '%ls:%ls:%ls' password points to an entry that is also an alias.\n"
@@ -5339,21 +5440,21 @@ msgstr ""
 "\n"
 "Скопированный элемент теперь ссылается на исходный элемент."
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:2670
+#: src/ui/wxWidgets/TreeCtrl.cpp:2671
 #, c-format
 msgid "This alias's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 "Исходный элемент [%ls:%ls:%ls] для данного псевдонима не является обычным "
 "элементом."
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:2687
+#: src/ui/wxWidgets/TreeCtrl.cpp:2688
 #, c-format
 msgid "This shortcut's target [%ls:%ls:%ls] is not a normal entry."
 msgstr ""
 "Целевой элемент [%ls:%ls:%ls] для данного ярлыка не является обычным "
 "элементом."
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:2770 src/core/core_st.cpp:110
+#: src/ui/wxWidgets/TreeCtrl.cpp:2771 src/core/core_st.cpp:110
 #, c-format
 msgid ""
 "The following entries had a policy name that already existed in this database but with different settings.\n"
@@ -5362,11 +5463,11 @@ msgstr ""
 "Указанные элементы были связаны с политиками, которые уже есть в данном контейнере, но имеют другие настройки.\n"
 "Для них были созданы новые политики, к имени которых добавлены текущие дата и время (%ls): %ls"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:2773
+#: src/ui/wxWidgets/TreeCtrl.cpp:2774
 msgid "Entry Password Policy Changes"
 msgstr "Изменения в политике создания паролей"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:2780
+#: src/ui/wxWidgets/TreeCtrl.cpp:2781
 #, c-format
 msgid ""
 "The following alias or shortcut entries did not match to a base entry and "
@@ -5375,7 +5476,7 @@ msgstr ""
 "Указанные псевдонимы или ярлыки указывают на отсутствующий исходный элемент "
 "и были преобразованы в обычные элементы:%ls"
 
-#: src/ui/wxWidgets/TreeCtrl.cpp:2782
+#: src/ui/wxWidgets/TreeCtrl.cpp:2783
 msgid "Entry Type Changed"
 msgstr "Изменён тип элемента"
 
@@ -5442,11 +5543,17 @@ msgstr "Попробуйте другой"
 msgid "YubiKey"
 msgstr "YubiKey"
 
-#: src/ui/wxWidgets/wxUtilities.cpp:354
-msgid "Not supported by Wayland"
-msgstr "Не поддерживается в Wayland"
+#: src/ui/wxWidgets/wxUtilities.cpp:378
+msgid ""
+"Running on Wayland - make sure the target application is using Xwayland. For"
+" some applications, you may need to enable the 'Use alternate AutoType "
+"method' option in Options > System."
+msgstr ""
+"Password Safe запущен в Wayland. Убедитесь, что целевое приложение "
+"использует XWayland. Для некоторых приложений может потребоваться включение "
+"«альтернативного способа автонабора» в «Сервис->Настройки...->Система»."
 
-#: src/ui/wxWidgets/wxUtilities.cpp:362
+#: src/ui/wxWidgets/wxUtilities.cpp:382
 msgid ""
 "Not supported by the current Windowing System (e.g. Wayland), or you may "
 "need to install a Desktop Environment extension to enable System Tray "
@@ -5456,7 +5563,7 @@ msgstr ""
 "протокола Wayland) или требуется установка расширения, реализующего область "
 "уведомлений («системный лоток»)."
 
-#: src/ui/wxWidgets/wxUtilities.cpp:572
+#: src/ui/wxWidgets/wxUtilities.cpp:610
 msgid ""
 "An error occurred while trying to get the image data from database item.\n"
 "Therefore, the image cannot be displayed in the preview."
@@ -5464,7 +5571,7 @@ msgstr ""
 "Ошибка при получении данных об изображении из элемента контейнера.\n"
 "Поэтому, картинка не может быть отображена."
 
-#: src/ui/wxWidgets/wxUtilities.cpp:585
+#: src/ui/wxWidgets/wxUtilities.cpp:623
 msgid ""
 "An error occurred while trying to load the image data into the preview area.\n"
 "Therefore, the image cannot be displayed in the preview."
@@ -6080,10 +6187,6 @@ msgstr "CVV код карты"
 #: src/core/core_st.cpp:150
 msgid "Created Time"
 msgstr "Время создания"
-
-#: src/core/core_st.cpp:151
-msgid "Custom Fields"
-msgstr "Настраиваемые поля"
 
 #: src/core/core_st.cpp:152
 msgid "Attachment Content"
@@ -7814,6 +7917,13 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgid "&List"
 #~ msgstr "С&писок"
 
+# Пункт контекстного меню для настраиваемых полей
+#~ msgid "&Mask as password / Show as text"
+#~ msgstr "&Изменить режим отображения"
+
+#~ msgid "&Name:"
+#~ msgstr "&Имя:"
+
 #~ msgid "&Never"
 #~ msgstr "&Никогда"
 
@@ -7825,9 +7935,6 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 
 #~ msgid "&No"
 #~ msgstr "&Нет"
-
-#~ msgid "&Notes:"
-#~ msgstr "За&метки:"
 
 # Пароль истекает ...
 #~ msgid "&On"
@@ -7921,6 +8028,9 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 
 #~ msgid "&Username:"
 #~ msgstr "&Имя пользователя:"
+
+#~ msgid "&Value:"
+#~ msgstr "&Значение:"
 
 #~ msgid "&View Attachment"
 #~ msgstr "Просмотр в&ложения"
@@ -8919,6 +9029,9 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgid "Copy URL to Clipboard"
 #~ msgstr "Копировать &ссылку в буфер обмена"
 
+#~ msgid "Copy Value"
+#~ msgstr "Копировать значение"
+
 #~ msgid "Copy all entries to Original"
 #~ msgstr "Копировать все элементы в исходный"
 
@@ -9008,6 +9121,12 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ "\n"
 #~ "Для загрузки новой версии, посетите сайт Password Safe."
 
+#~ msgid "Custom Field"
+#~ msgstr "Настраиваемое поле"
+
+#~ msgid "Custom Value copied "
+#~ msgstr "Значение настраиваемого поля скопировано"
+
 #~ msgid "Customize &Main Toolbar"
 #~ msgstr "Настроить &основную панель инструментов"
 
@@ -9029,6 +9148,10 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 
 #~ msgid "Danish"
 #~ msgstr "Датская"
+
+# display mode
+#~ msgid "Dark"
+#~ msgstr "Тёмная"
 
 # Options->shortcuts
 #~ msgid "Database Entry Shortcuts"
@@ -9131,6 +9254,9 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 
 #~ msgid "Display Filter - "
 #~ msgstr "Фильтр отображения — "
+
+#~ msgid "Display Mode:"
+#~ msgstr "Цветовая схема:"
 
 #~ msgid ""
 #~ "Display policy settings or List entries using this named policy\n"
@@ -9342,6 +9468,13 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 
 #~ msgid "Enter the Master Password to unlock the password database:"
 #~ msgstr "Введите пароль для указанного контейнера:"
+
+#~ msgid ""
+#~ "Enter the authentication secret key. This usually taken from the "
+#~ "authenticator setup page."
+#~ msgstr ""
+#~ "Укажите секретный ключ двухфакторной аутентификации. Обычно его можно "
+#~ "получить на странице настройки второго фактора."
 
 #~ msgid ""
 #~ "Enter the current master password, followed by a new one. \r\n"
@@ -9725,6 +9858,10 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgid "Hide System Tray icon (Hot Key MUST be active)"
 #~ msgstr "Скрывать значок (должна быть задана горячая клавиша)"
 
+# в контекстном меню настраиваемых полей
+#~ msgid "Hide Value"
+#~ msgstr "Скрыть значение"
+
 #~ msgid "Highlight changed entries"
 #~ msgstr "Выделять изменённые элементы"
 
@@ -10071,6 +10208,10 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ "Длина генерируемого шестнадцатеричного пароля должна быть чётной,\n"
 #~ "так как каждый байт представим двумя шестнадцатеричными цифрами."
 
+# display mode
+#~ msgid "Light"
+#~ msgstr "Светлая"
+
 # пункт контекстного меню
 #~ msgid "List entries using this policy"
 #~ msgstr "Показать элементы, использующие эту политику"
@@ -10121,6 +10262,9 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 
 #~ msgid "Marathi"
 #~ msgstr "Маратхская"
+
+#~ msgid "Mask value as &password"
+#~ msgstr "&Скрывать значение в списке"
 
 #~ msgid "Master Password Setup"
 #~ msgstr "Установка пароля для контейнера"
@@ -11065,6 +11209,10 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgid "Show Passphrase"
 #~ msgstr "Показать пароль"
 
+# в контекстном меню настраиваемых полей
+#~ msgid "Show Value"
+#~ msgstr "Показать значение"
+
 #~ msgid "Show Virtual Keyboard"
 #~ msgstr "Показать экранную клавиатуру"
 
@@ -11268,6 +11416,10 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #, c-format
 #~ msgid "Synchronizing from database: %s\n"
 #~ msgstr "Синхронизация с контейнером: %s\n"
+
+# display mode
+#~ msgid "System (default)"
+#~ msgstr "Как в системе (по умолчанию)"
 
 # AFX_IDP_UNREG_DONE
 #~ msgid ""
@@ -12929,26 +13081,6 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgid "v&3 format..."
 #~ msgstr "Формат v&3..."
 
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:2521
-msgid "Authentication code requires secret key in Additional tab."
-msgstr "Для использования кодов двухфакторной аутентификации нужно указать секретный ключ на вкладке «Дополнительно»."
-
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:548
-msgid "Enter the authentication secret key. This is usually taken from the authenticator setup page."
-msgstr "Укажите секретный ключ двухфакторной аутентификации. Обычно его можно получить на странице настройки второго фактора."
-
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:519
-msgid "This field can be used to specify a command or program to be run via the 'Run Command' action (via the Edit menu or right-click popup menu). Password Safe is able to pass arguments to the command such as the entry's username, password, etc."
-msgstr "Данное поле используется для указания команды/программы, выполняемой при выборе пункта «Выполнить команду» (в меню «Правка» или контекстном меню). Password Safe может передать в качестве аргументов имя пользователя, пароль и содержимое других полей."
-
-#: ../../../ui/wxWidgets/wxUtilities.cpp:379
-msgid "Running on Wayland - make sure the target application is using Xwayland. For some applications, you may need to enable the 'Use alternate AutoType method' option in Options > System."
-msgstr ""
-
-#: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:507
-msgid "Autotype (default string: %s)"
-msgstr "Автонабор (строка по умолчанию: %s)"
-
 # no need to translate
 #~ msgid "whatever"
 #~ msgstr "whatever"
@@ -12965,4 +13097,3 @@ msgstr "Автонабор (строка по умолчанию: %s)"
 #, c-format
 #~ msgid "«%s» «%s» «%s»"
 #~ msgstr "«%s» «%s» «%s»"
-
