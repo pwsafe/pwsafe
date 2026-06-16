@@ -39,7 +39,7 @@ For Windows, when installing "Git for Windows" (required by TortoiseGit and most
 - If you skip Desktop development with C++ or MFC, you'll be prompted to install them later when you open the generated solution
 
 # Build under cmake
-Assuming you have already cloned the Password Safe repository to your machine, after starting Visual Studio, you can select "Open a local folder", then select the toplevel folder of the cloned repository. Visual Studio should detect the toplevel CMakeLists.txt file and allow you to configure it. After that, you should be able to select a build configuration, e.g., Windows x64 Debug, build and run the project. For more details, see [README.CMAKE.md](https://github.com/pwsafe/pwsafe/blob/master/README.CMAKE.md).
+Assuming you have already cloned the Password Safe repository to your machine, after starting Visual Studio, you can select "Open a local folder", then select the toplevel folder of the cloned repository. Visual Studio should detect the toplevel CMakeLists.txt file and allow you to configure it. After that, you should be able to select a build configuration, e.g., Windows x64 Debug, build and run the project. For more details, see [README.CMAKE.md](https://github.com/pwsafe/pwsafe/blob/master/docs/README.CMAKE.md).
 
 Alternately, you can generate a solution file as follows:
 

@@ -18,7 +18,7 @@
 # fallen out of maintenance.  If an older version is needed, it might be best
 # to pull it from an older GitHub release tag.
 #
-# For more information on using this script, see: README.MAC.DEVELOPERS.md
+# For more information on using this script, see: docs/README.MAC.DEVELOPERS.md
 #
 
 # Build release configuration by default

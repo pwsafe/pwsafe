@@ -10,8 +10,8 @@ https://sourceforge.net/projects/passwordsafe/files/Linux/,
 respectively.
 If you don't find the package for the distribution of your choice, you
 can contact the developers via https://pwsafe.org/contact.php or build
-it yourself according to the instuctions listed in
-README.LINUX.DEVELOPERS.md.
+it yourself according to the instructions listed in
+docs/README.LINUX.DEVELOPERS.md.
 Slackware is independently supported, see below.
 
 ## Installation on Debian or Ubuntu

@@ -1103,6 +1103,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>0% means fully opaque (normal),and 100% is totally transparent and invisible.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T162244Z" creationid="pm_kan" creationdate="20260614T162244Z">
+        <seg>0 % — нормальный вид (полностью непрозрачно), 100 % — невидимо (полностью прозрачно).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>0% means normal fully opaque and 100% is totally transparent and invisible.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20170930T170614Z" creationid="pm_kan" creationdate="20170930T170614Z">
@@ -3834,6 +3842,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>&lt;b0&gt;\v{&lt;i1&gt;Name&lt;/i1&gt;}&lt;/b0&gt; types the value of the Custom Field whose name matches &lt;i2&gt;Name&lt;/i2&gt;.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T170005Z" creationid="pm_kan" creationdate="20260614T170005Z">
+        <seg>&lt;b0&gt;\v{&lt;i1&gt;ИмяПоля&lt;/i1&gt;}&lt;/b0&gt; заменяется значением настраиваемого поля с именем &lt;i2&gt;ИмяПоля&lt;/i2&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>&lt;b0&gt;\w&lt;i1&gt;NNN&lt;/i1&gt; or &lt;i2&gt;\WNNN&lt;/i2&gt;&lt;/b0&gt; introduces a delay of &lt;i3&gt;NNN&lt;/i3&gt; milliseconds for \w, or seconds if \W is used.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T114547Z">
@@ -4357,6 +4373,14 @@
         <seg>&lt;i1&gt;However, this option is &lt;b2&gt;strongly&lt;/b2&gt; discouraged in environments where passers-by can view the monitor.&lt;/i1&gt;</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T123727Z">
+        <seg>&lt;i1&gt;&lt;b2&gt;Строго не рекомендуется&lt;/b2&gt; использовать данный параметр, если во время работы возможен просмотр экрана посторонними людьми.&lt;/i1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>&lt;i1&gt;This option is &lt;b2&gt;strongly&lt;/b2&gt; discouraged in environments where passers-by can view the monitor.&lt;/i1&gt;</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T172252Z" creationid="pm_kan" creationdate="20260614T161706Z">
         <seg>&lt;i1&gt;&lt;b2&gt;Строго не рекомендуется&lt;/b2&gt; использовать данный параметр, если во время работы возможен просмотр экрана посторонними людьми.&lt;/i1&gt;</seg>
       </tuv>
     </tu>
@@ -5354,6 +5378,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>A list of currently in use entry keyboard shortcuts will be displayed below the &lt;b0&gt;Password Safe&lt;/b0&gt; program related menu shortcuts on the Shortcuts tab via &lt;a1&gt;"Manage → Options → Shortcuts"&lt;/a1&gt;.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T165141Z" creationid="pm_kan" creationdate="20260614T165141Z">
+        <seg>Список используемых в &lt;b0&gt;Password Safe&lt;/b0&gt; комбинаций клавиш для элементов отображается под списком горячих клавиш для пунктов меню на вкладке &lt;a1&gt;Сервис→Настройки→Комбинации клавиш&lt;/a1&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>A list of the Toolbar buttons and their order as customised by the user.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T193321Z">
@@ -6230,6 +6262,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T180557Z">
         <seg>Также можно ввести путь к файлу контейнера или выбрать его, нажав на кнопку «...».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Alternatively, right-click the entry, select Copy Custom Field Value from the context menu, and then select a custom field.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T165030Z" creationid="pm_kan" creationdate="20260614T163237Z">
+        <seg>Также можно выбрать нужное поле в подменю «Копировать значение настраиваемого поля...» контекстного меню элемента.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8371,6 +8411,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Configuration File</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T165728Z" creationid="pm_kan" creationdate="20260614T165728Z">
+        <seg>Файл настроек</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Configure options</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20240507T204700Z" creationid="pm_kan" creationdate="20240507T204700Z">
@@ -9475,6 +9523,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Display Mode</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T161810Z" creationid="pm_kan" creationdate="20260614T161810Z">
+        <seg>Цветовая схема</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Display Options</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20101106T191041Z">
@@ -9639,6 +9695,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20250831T095815Z">
         <seg>По двойному щелчку</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Double click and Shift double click action</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T165411Z" creationid="pm_kan" creationdate="20260614T165411Z">
+        <seg>Действия по двойному щелчку и Shift+двойной щелчок</seg>
       </tuv>
     </tu>
     <tu>
@@ -10003,6 +10067,22 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Edit/View Entry - Custom Values displayed</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T162332Z" creationid="pm_kan" creationdate="20260614T162332Z">
+        <seg>Редактирование/просмотр элемента с отображением настраиваемых значений</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Edit/View Entry - Notes displayed</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T162316Z" creationid="pm_kan" creationdate="20260614T162316Z">
+        <seg>Редактирование/просмотр элемента с отображением заметок</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Edit/View Password Policy</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110209T221605Z">
@@ -10335,6 +10415,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T140242Z" creationid="pm_kan" creationdate="20260214T140242Z">
         <seg>Пример «секретного ключа» для двухфакторной аутентификации.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Example: user@example.com?subject=Message Title&amp;body=Message Content</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T165108Z" creationid="pm_kan" creationdate="20260614T165108Z">
+        <seg>Пример: user@example.com?subject=Заголовок&amp;body=Привет</seg>
       </tuv>
     </tu>
     <tu>
@@ -11127,6 +11215,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T201110Z">
         <seg>Например, если у элемента задана пользовательская строка «eMail», на неё можно сослаться используя подстановку {S:eMail}.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>For example, if the entry has a Custom Field named "PIN" with the value "1234", then "\v{PIN}" will type "1234".</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T170220Z" creationid="pm_kan" creationdate="20260614T170135Z">
+        <seg>Например, если у элемента есть настраиваемое поле с именем «PIN» и значением «1234», то «\v{PIN}» будет заменено на 1234.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12483,6 +12579,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>If checked, &lt;b0&gt;Password Safe&lt;/b0&gt; will always be the topmost window displayed in the monitor, regardless of what other window may have focus.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T161630Z" creationid="pm_kan" creationdate="20260614T161630Z">
+        <seg>Если помечено, &lt;b0&gt;Password Safe&lt;/b0&gt; будет находиться поверх всех окон, независимо от того, какое окно имеет фокус ввода.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>If checked, &lt;b0&gt;Password Safe&lt;/b0&gt; will minimize to the System Tray area.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20161128T174318Z" creationid="pm_kan" creationdate="20161128T174318Z">
@@ -12575,6 +12679,22 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20100926T193321Z">
         <seg>Если помечено, пароль будет отображаться в фигурных скобках после имени пользователя (в режиме &lt;s0&gt;древовидного списка&lt;/s0&gt;).&lt;br1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>If checked, the notes of an hovered item will be shown.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T161738Z" creationid="pm_kan" creationdate="20260614T161738Z">
+        <seg>Если помечено, заметки будут отображаться при наведении курсора мыши на элемент.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>If checked, the words will automatically be wrapped in the window, without a horizontal scroll bar.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T161751Z" creationid="pm_kan" creationdate="20260614T161751Z">
+        <seg>Если помечено, в поле заметок будет использоваться перенос по словам.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12839,6 +12959,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T153628Z" creationid="pm_kan" creationdate="20161105T153628Z">
         <seg>Если история паролей отключена, или отсутствуют сохранённые старые пароли, происходит подстановка пустой строки.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>If not checked, a horizontal scroll bar will appear, if necessary.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T161800Z" creationid="pm_kan" creationdate="20260614T161800Z">
+        <seg>Иначе, при недостатке ширины, будет отображаться горизонтальная полоса прокрутки.</seg>
       </tuv>
     </tu>
     <tu>
@@ -13303,6 +13431,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110307T102505Z">
         <seg>Пункт меню неактивен, если отсутствуют элементы с заданными датами истечения пароля.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>If there is no matching Custom Field, nothing is typed.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T170323Z" creationid="pm_kan" creationdate="20260614T170323Z">
+        <seg>Если настраиваемого поле с указанным именем нет, то подстановка игнорируется.</seg>
       </tuv>
     </tu>
     <tu>
@@ -16355,6 +16491,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Multiple Instances</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T165716Z" creationid="pm_kan" creationdate="20260614T165716Z">
+        <seg>Одновременный запуск нескольких копий</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>MultipleInstances</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T182505Z">
@@ -19140,6 +19284,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Recent Databases</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T165654Z" creationid="pm_kan" creationdate="20260614T165654Z">
+        <seg>Недавно использованные контейнеры</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Recent Databases on File Menu rather than as a sub-menu</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20190819T163837Z">
@@ -21814,6 +21966,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>The &lt;b2&gt;-g&lt;/b2&gt; command line option (as described in &lt;a3&gt;Command Line Arguments&lt;/a3&gt;) may also be used to either specify a file name (which will be looked for in the above directories), or an absolute file path.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T165624Z" creationid="pm_kan" creationdate="20260614T165624Z">
+        <seg>Для изменения имени файла или указания абсолютного пути можно использовать параметр командной строки &lt;b2&gt;-g&lt;/b2&gt; (см.␣&lt;a3&gt;Параметры командной строки&lt;/a3&gt;) .</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>The &lt;e1&gt;Standard&lt;/e1&gt; setting should provide sufficient security without delaying the opening of a database significantly on most platforms.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T102203Z" creationid="pm_kan" creationdate="20140113T101924Z">
@@ -22113,6 +22273,14 @@
         <seg>The Yubikey button on the Master Password window will now become active, and the text to the right of will change to "Click, then activate your YubiKey"</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T121151Z" creationid="pm_kan" creationdate="20230122T121151Z">
+        <seg>В окне «Установка пароля для контейнера» станет активной кнопка YubiKey и в поле справа появится текст «Нажмите на кнопку и коснитесь YubiKey».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>The Yubikey button on the Master Password window will now become active, and the text to the right of will change to "Click, then activate your YubiKey".</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T161547Z" creationid="pm_kan" creationdate="20260614T161547Z">
         <seg>В окне «Установка пароля для контейнера» станет активной кнопка YubiKey и в поле справа появится текст «Нажмите на кнопку и коснитесь YubiKey».</seg>
       </tuv>
     </tu>
@@ -23886,6 +24054,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Therefore, Password Safe will also search that directory for the configuration file, if not found in the "local app data" directory.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T165640Z" creationid="pm_kan" creationdate="20260614T165640Z">
+        <seg>Поэтому, Password Safe будет искать файл и в этом каталоге, если он не найдётся в каталоге локальных данных приложений пользователей.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Therefore, PasswordSafe will also search that directory for the configuration file, if not found in the "local app data" directory.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20211212T151646Z" creationid="pm_kan" creationdate="20211212T151544Z">
@@ -24254,6 +24430,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>This allows you to define what action &lt;b0&gt;Password Safe&lt;/b0&gt; will take when you double-click (shift+double-click) on an entry.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T165515Z" creationid="pm_kan" creationdate="20260614T165515Z">
+        <seg>Позволяет установить действие, которое &lt;b0&gt;Password Safe&lt;/b0&gt; будет выполнять при двойном щелчке (Shift+двойной щелчок) на элементе.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>This allows you to define what action &lt;b0&gt;Password Safe&lt;/b0&gt; will take when you double-click on an entry.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110620T202849Z">
@@ -24490,6 +24674,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20100926T195607Z">
         <seg>Определяет, как отображать элементы при открытии контейнера в режиме древовидного списка.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>This determines if &lt;b0&gt;Password Safe&lt;/b0&gt; will use the system's light/dark theme (default), or if it will be overridden to the dark or light theme regardless of the system setting.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T162225Z" creationid="pm_kan" creationdate="20260614T162225Z">
+        <seg>Определяет, какую цветовую схему будет использовать &lt;b0&gt;Password Safe&lt;/b0&gt;: такую же, как в системе, или явно заданную тёмную или светлую.</seg>
       </tuv>
     </tu>
     <tu>
@@ -25851,6 +26043,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20230122T120755Z" creationid="pm_kan" creationdate="20230122T120755Z">
         <seg>Чтобы изменить способ аутентификации при доступе к контейнеру Password Safe с мастер-пароля на YubiKey:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>To copy a value to the clipboard, press Ctrl+C or right-click the Custom Field value and select Copy Value from the context menu.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T162756Z" creationid="pm_kan" creationdate="20260614T162756Z">
+        <seg>Для копирования значения в буфер обмена нажмите Ctrl+C или выберите «Копировать значение» в контекстном меню ячейки со значением.</seg>
       </tuv>
     </tu>
     <tu>
@@ -27853,6 +28053,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T155100Z">
         <seg>Если контейнер открыт в режиме «только для чтения», время последнего доступа &lt;s0&gt;не&lt;/s0&gt; обновляется.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>When the database is opened in read-only mode, this setting is ignored, and access times are &lt;b0&gt;not&lt;/b0&gt; updated.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T165247Z" creationid="pm_kan" creationdate="20260614T165247Z">
+        <seg>Если контейнер открыт в режиме «только чтение», параметр игнорируется, и время последнего доступа &lt;b0&gt;не обновляется&lt;/b0&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -30677,6 +30885,14 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T100102Z">
         <seg>images/edit_view_entry_base.png</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>images/edit_view_entry_base2.jpg</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T162350Z" creationid="pm_kan" creationdate="20260614T162350Z">
+        <seg>images/edit_view_entry_base2.png</seg>
       </tuv>
     </tu>
     <tu>

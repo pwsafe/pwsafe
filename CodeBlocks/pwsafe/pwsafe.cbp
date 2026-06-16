@@ -22,8 +22,6 @@
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
 					<Add option="-DNO_QR" />
 					<Add directory="../../src" />
@@ -54,8 +52,6 @@
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
 					<Add option="-DwxSIZE_T_IS_UINT" />
 					<Add option="-DNO_QR" />
@@ -85,8 +81,6 @@
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-Wno-type-limits" />
 					<Add option="-DNDEBUG" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
 					<Add option="-DNO_QR" />
 					<Add directory="../../src" />
@@ -114,8 +108,6 @@
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-Wno-type-limits" />
 					<Add option="-DNDEBUG" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
 					<Add option="-DwxSIZE_T_IS_UINT" />
 					<Add option="-DNO_QR" />
@@ -147,8 +139,6 @@
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
@@ -180,8 +170,6 @@
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-D__WXDEBUG__" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DwxSIZE_T_IS_UINT" />
 					<Add directory="../../src" />
 				</Compiler>
@@ -212,8 +200,6 @@
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-Wno-type-limits" />
 					<Add option="-DNDEBUG" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
@@ -242,8 +228,6 @@
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-Wno-type-limits" />
 					<Add option="-DNDEBUG" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DwxSIZE_T_IS_UINT" />
 					<Add directory="../../src" />
 				</Compiler>
@@ -279,9 +263,6 @@
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="`pkg-config --cflags ykpers-1`" />
 					<Add option="-DNDEBUG" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
-					<Add option="-DUNICODE" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
@@ -321,6 +302,8 @@
 			<Add option="-Winvalid-pch" />
 			<Add option="-Wlogical-op" />
 			<Add option="-DUNICODE" />
+			<Add option="-DUSE_XML_LIBRARY=XERCES" />
+			<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 		</Compiler>
 		<Linker>
 			<Add option="`pkg-config --libs libcurl`" />

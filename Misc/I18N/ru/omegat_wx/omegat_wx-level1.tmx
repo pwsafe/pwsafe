@@ -272,6 +272,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>&amp;Add</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>&amp;Добавить</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>&amp;Add Entry...</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T114701Z">
@@ -801,6 +809,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>&amp;Ok</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T153501Z" creationid="pm_kan" creationdate="20260614T153501Z">
+        <seg>&amp;OK</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>&amp;Open...</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -1211,6 +1227,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>********</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T155358Z" creationid="pm_kan" creationdate="20260614T155358Z">
+        <seg>********</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>- Is Caps Lock off?</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142927Z" creationid="pm_kan" creationdate="20240508T142927Z">
@@ -1347,6 +1371,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>A custom field with this name already exists for this entry.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>В данном элементе уже есть настраиваемое поле с таким именем</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>A filter was active.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T140432Z">
@@ -1423,6 +1455,14 @@ Unknown error</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Добавить &amp;группу</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Add Custom Field</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T152705Z" creationid="pm_kan" creationdate="20260614T152705Z">
+        <seg>Добавить настраиваемое поле</seg>
       </tuv>
     </tu>
     <tu>
@@ -1957,6 +1997,14 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Authentication code requires secret key in Additional tab.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Для использования кодов двухфакторной аутентификации нужно указать секретный ключ на вкладке «Дополнительно».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Auto Type</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T103753Z">
@@ -1993,6 +2041,14 @@ Unknown error</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Автонабор</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Autotype (default string: %s)</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T153646Z" creationid="pm_kan" creationdate="20260614T153646Z">
+        <seg>Автонабор (по умолчанию: %s)</seg>
       </tuv>
     </tu>
     <tu>
@@ -2905,6 +2961,14 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Copy Custom &amp;Field Value...</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Копировать значение &amp;настраиваемого поля...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Copy Notes</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T103848Z">
@@ -3534,6 +3598,14 @@ offset approximately at %d</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Настраиваемые поля</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Custom field copied</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T154637Z" creationid="pm_kan" creationdate="20260614T154637Z">
+        <seg>Значение настраиваемого поля скопировано </seg>
       </tuv>
     </tu>
     <tu>
@@ -4258,6 +4330,14 @@ offset approximately at %d</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Edit Custom Field</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T152716Z" creationid="pm_kan" creationdate="20260614T152716Z">
+        <seg>Редактировать настраиваемое поле</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Edit Entry</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -4422,6 +4502,14 @@ offset approximately at %d</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20210708T171255Z" creationid="pm_kan" creationdate="20210708T171255Z">
         <seg>Введите номера символов пароля через пробел, запятую или точку с запятой (* покажет весь пароль).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Enter the authentication secret key.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T154353Z" creationid="pm_kan" creationdate="20260614T154338Z">
+        <seg>Укажите секретный ключ двухфакторной аутентификации.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4968,8 +5056,8 @@ offset approximately at %d</seg>
       <tuv lang="en-US">
         <seg>Exporting database: %ls to %ls\r</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T131702Z" creationid="pm_kan" creationdate="20260214T131702Z">
-        <seg>Экспорт контейнера:  %ls в %ls\r</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T160050Z" creationid="pm_kan" creationdate="20260214T131702Z">
+        <seg>Экспорт контейнера:  %ls в %ls</seg>
       </tuv>
     </tu>
     <tu>
@@ -5462,6 +5550,14 @@ offset approximately at %d</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T092818Z">
         <seg>Из соображений безопасности перед подключением к Интернет необходимо закрыть контейнер.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>For some applications, you may need to enable the 'Use alternate AutoType method' option in Options &gt; System.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T155325Z" creationid="pm_kan" creationdate="20260614T155325Z">
+        <seg>Для некоторых приложений может потребоваться включение «альтернативного способа автонабора» в «Сервис-&gt;Настройки...-&gt;Система».</seg>
       </tuv>
     </tu>
     <tu>
@@ -6146,6 +6242,14 @@ or a corrupt database.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Внутренняя ошибка: неизвестный номер ошибки</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Internet access required: Make sure to grant network access to the Flatpak application.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T152150Z" creationid="pm_kan" creationdate="20260614T152150Z">
+        <seg>Требуется доступ к Интернету. Проверьте, что Flatpak-приложению предоставлен сетевой доступ.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7226,14 +7330,6 @@ added or existing entries removed during this process.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>Not supported by Wayland</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250315T095225Z" creationid="pm_kan" creationdate="20250315T091716Z">
-        <seg>Не поддерживается в Wayland</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>Not supported by the current Windowing System (e.g. Wayland), or you may need to install a Desktop Environment extension to enable System Tray support.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20251102T172600Z" creationid="pm_kan" creationdate="20251102T172600Z">
@@ -7878,6 +7974,14 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Password Safe is able to pass arguments to the command such as the entry's username, password, etc.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T154243Z" creationid="pm_kan" creationdate="20260614T154243Z">
+        <seg>Password Safe может передать в параметры команды имя пользователя, пароль и некоторые другие данные.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Password Safe website</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T154932Z" creationid="pm_kan" creationdate="20240508T154932Z">
@@ -8220,8 +8324,8 @@ to the clipboard.</seg>
       <tuv lang="en-US">
         <seg>Project-Id-Version: 
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2026-02-14 16:35+0300
-PO-Revision-Date: 2026-02-14 13:00+0300
+POT-Creation-Date: 2026-06-14 18:15+0300
+PO-Revision-Date: 2026-06-14 16:00+0300
 Last-Translator:
 Language-Team:
 Language: ru
@@ -8229,7 +8333,7 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260214T133922Z" creationid="pm_kan" creationdate="20260214T133922Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T151800Z" creationid="pm_kan" creationdate="20260614T151800Z">
         <seg>Project-Id-Version: 
 Report-Msgid-Bugs-To: 
 POT-Creation-Date: 2026-02-14 16:35+0300
@@ -8504,6 +8608,14 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Команда скопирована</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Running on Wayland - make sure the target application is using Xwayland.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T155026Z" creationid="pm_kan" creationdate="20260614T155026Z">
+        <seg>Password Safe запущен в Wayland. Убедитесь, что целевое приложение использует XWayland.</seg>
       </tuv>
     </tu>
     <tu>
@@ -8900,6 +9012,15 @@ Content-Transfer-Encoding: 8bit</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Отправить письмо</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <note> аналогично MFC (Mask value as password)</note>
+      <tuv lang="en-US">
+        <seg>Sensitive</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T153452Z" creationid="pm_kan" creationdate="20260614T153452Z">
+        <seg>Скрывать значение в списке</seg>
       </tuv>
     </tu>
     <tu>
@@ -9593,6 +9714,14 @@ database with matching entries from the other database.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>The '--share=network' permission is required for this check.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T152233Z" creationid="pm_kan" creationdate="20260614T152233Z">
+        <seg>Для данной проверки требуется разрешение '--share=network'.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>The Authentication Code configuration is invalid</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -9670,6 +9799,14 @@ when Password Safe is closed.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T193925Z">
         <seg>Контейнер открыт «только для чтения».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>The custom field's name cannot be empty.</seg>
+      </tuv>
+      <tuv lang="ru-RU">
+        <seg>Имя настраиваемого поля не может быть пустым</seg>
       </tuv>
     </tu>
     <tu>
@@ -10218,6 +10355,14 @@ Confirm to continue (alias entry's passwords will be replaced by this entry's pa
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>This field can be used to specify a command or program to be run via the 'Run Command' action (via the Edit menu or right-click popup menu).</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T154215Z" creationid="pm_kan" creationdate="20260614T154215Z">
+        <seg>Здесь можно указать команду, выполняемую при выборе действия «Выполнить команду» в меню «Правка» или контекстном меню.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>This filter already exists</seg>
       </tuv>
       <tuv lang="ru-RU">
@@ -10254,6 +10399,14 @@ Confirm to continue (alias entry's passwords will be replaced by this entry's pa
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20121224T092856Z">
         <seg>У вас самая новая версия!</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>This is usually taken from the authenticator setup page.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T154409Z" creationid="pm_kan" creationdate="20260614T154351Z">
+        <seg>Обычно его можно получить на странице настройки второго фактора.</seg>
       </tuv>
     </tu>
     <tu>
@@ -10849,6 +11002,14 @@ and User fields match.</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Символы</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Use the 'flatpak update' command or your system's software store application to update to the latest version.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T152651Z" creationid="pm_kan" creationdate="20260614T152651Z">
+        <seg>Для обновления используйте команду 'flatpak update' или соответствующую команду системного «магазина приложений».</seg>
       </tuv>
     </tu>
     <tu>

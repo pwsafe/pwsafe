@@ -25,8 +25,6 @@
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-DDEBUG_XMLPREFS" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
 					<Add option="-D__WXDEBUG__" />
 					<Add directory="../../src" />
@@ -57,8 +55,6 @@
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-DDEBUG_XMLPREFS" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
 					<Add option="-D__WXDEBUG__" />
 					<Add directory="../../src" />
@@ -86,8 +82,6 @@
 					<Add option="-m64" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
 					<Add directory="../../src" />
 				</Compiler>
@@ -113,8 +107,6 @@
 					<Add option="-m32" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-DNO_YUBI" />
 					<Add directory="../../src" />
 				</Compiler>
@@ -143,8 +135,6 @@
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-DDEBUG_XMLPREFS" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-D__WXDEBUG__" />
 					<Add directory="../../src" />
 				</Compiler>
@@ -174,8 +164,6 @@
 					<Add option="-D_DEBUG" />
 					<Add option="-DDEBUG" />
 					<Add option="-DDEBUG_XMLPREFS" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add option="-D__WXDEBUG__" />
 					<Add directory="../../src" />
 				</Compiler>
@@ -202,8 +190,6 @@
 					<Add option="-m64" />
 					<Add option="`../wx-config-filter --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
@@ -228,8 +214,6 @@
 					<Add option="-m32" />
 					<Add option="`../wx-config-filter32 --cxxflags --unicode=yes --debug=no --inplace`" />
 					<Add option="-DNDEBUG" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
@@ -268,9 +252,6 @@
 					<Add option="-Winvalid-pch" />
 					<Add option="-Wno-shadow-field-in-constructor" />
 					<Add option="-DNDEBUG" />
-					<Add option="-DUSE_XML_LIBRARY=XERCES" />
-					<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
-					<Add option="-DUNICODE" />
 					<Add directory="../../src" />
 				</Compiler>
 				<Linker>
@@ -311,6 +292,10 @@
 			<Add option="-Wlogical-op" />
 			<Add option="-Wno-shadow-field-in-constructor" />
 			<Add option="-DUNICODE" />
+			<Add option="-DPUGIXML_WCHAR_MODE" />
+			<Add option="-DPUGIXML_NO_XPATH" />
+			<Add option="-DUSE_XML_LIBRARY=XERCES" />
+			<Add option="-DWCHAR_INCOMPATIBLE_XMLCH" />
 		</Compiler>
 		<Unit filename="../../src/core/CheckVersion.cpp" />
 		<Unit filename="../../src/core/CheckVersion.h" />
