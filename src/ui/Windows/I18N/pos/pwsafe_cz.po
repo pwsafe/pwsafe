@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-06-11 21:05+0300\n"
+"PO-Revision-Date: 2026-06-16 19:33+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: cs\n"
@@ -1735,7 +1735,7 @@ msgstr ""
 #. Resource IDs: (5470)
 #, c-format
 msgid "<a href=\"%s\">Check</a> for the latest version."
-msgstr ""
+msgstr "<a href=\"%s\">Zkontrolujte</a> nejnovější verzi."
 
 #. Resource IDs: (1154)
 msgid ">"
@@ -2015,7 +2015,7 @@ msgstr "Zkratka aplikace"
 #. Resource IDs: (5973)
 #, c-format
 msgid "Application default (%s)"
-msgstr ""
+msgstr "Výchozí nastavení aplikace (%s)"
 
 #. Resource IDs: (1216, 5644)
 msgid "Apply"
@@ -5646,7 +5646,7 @@ msgstr "Pokud obnovíte automaticky uložené dokumenty, musíte je explicitně 
 #. Resource IDs: (5114)
 #, c-format
 msgid "Note that you can use an environment variable too, e.g., %TEMP%"
-msgstr ""
+msgstr "Všimněte si, že můžete použít i proměnnou prostředí, například %TEMP%"
 
 #. Resource IDs: (33150 - Menu)
 msgid "Note: Empty fields are shown as « »"
@@ -6723,7 +6723,7 @@ msgstr "Vybrat umístění přechodných záloh"
 
 #. Resource IDs: (65535)
 msgid "Select Locked Text Color:"
-msgstr ""
+msgstr "Vyberte uzamčenou barvu textu:"
 
 #. Resource IDs: (5384)
 msgid "Select Program"
@@ -6735,7 +6735,7 @@ msgstr "Vybrar typ testovacího výpisu"
 
 #. Resource IDs: (65535)
 msgid "Select Unlocked Text Color:"
-msgstr ""
+msgstr "Vyberte odemčenou barvu textu:"
 
 #. Resource IDs: (61717)
 msgid "Select a button."
@@ -7604,7 +7604,7 @@ msgstr "Následující záznamy byly duplikáty již existujícího záznamu."
 
 #. Resource IDs: (65535)
 msgid "The following entries' passwords are about to expire or have already expired:"
-msgstr ""
+msgstr "Hesla k následujícím záznamům brzy vyprší nebo již vypršela:"
 
 #. Resource IDs: (5481)
 #, c-format
@@ -7812,7 +7812,7 @@ msgstr ""
 
 #. Resource IDs: (5110)
 msgid "This will allow you to migrate your settings from the configuration file in the Password Safe installation directory into a file in your own local Application Data directory at the next invocation of PasswordSafe."
-msgstr ""
+msgstr "To vám umožní migrovat nastavení z konfiguračního souboru v instalačním adresáři Password Safe do souboru ve vašem vlastním místním adresáři Application Data při dalším spuštění PasswordSafe."
 
 #. Resource IDs: (1071)
 msgid "This will be a shortcut to base entry:"
