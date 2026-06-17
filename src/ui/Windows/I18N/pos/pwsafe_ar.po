@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-06-11 21:00+0300\n"
+"PO-Revision-Date: 2026-06-16 19:32+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: ar\n"
@@ -7297,7 +7297,7 @@ msgstr "نظام"
 
 #. Resource IDs: (6117)
 msgid "System (default)"
-msgstr ""
+msgstr "النظام (الافتراضي)"
 
 #. Resource IDs: (3023)
 msgid "System error: No more file handles available"
