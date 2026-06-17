@@ -773,6 +773,8 @@ private:
   /// Adds a language to internal list of supported languages by this application
   void AddLanguage(int menu_id, wxLanguage lang_id, const wxString& lang_name);
 
+  /// Clears some text and calls UpdateStatusBar() to apply
+  void ResetStatusBar();
   /// Update status bar - call when stuff changes:
   /// File open, double-click, modify, r-o r/w, filter...
   void UpdateStatusBar();
