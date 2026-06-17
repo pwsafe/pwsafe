@@ -1281,7 +1281,7 @@ int PasswordSafeFrame::Load(const StringX &passwd)
     SetTitle(wxEmptyString);
     m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
   }
-  UpdateStatusBar();
+  ResetStatusBar();
   UpdateMenuBar();
   return status;
 }
@@ -3010,6 +3010,13 @@ void PasswordSafeFrame::ViewReport(CReport& rpt)
 void PasswordSafeFrame::OnVisitWebsite(wxCommandEvent&)
 {
   wxLaunchDefaultBrowser(L"https://pwsafe.org");
+}
+
+void PasswordSafeFrame::ResetStatusBar()
+{
+  m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::DOUBLECLICK);
+  m_LastClipboardAction = wxEmptyString;
+  UpdateStatusBar();
 }
 
 void PasswordSafeFrame::UpdateStatusBar()
