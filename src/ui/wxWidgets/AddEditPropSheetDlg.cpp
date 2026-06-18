@@ -3175,6 +3175,14 @@ Command* AddEditPropSheetDlg::NewEditEntryCommand()
     m_Item.SetXTimeInt(0);
   }
 
+  // If only the password changed, UpdatePassword() may have cleared a
+  // non-recurring expiry date - restore what the user still sees in the UI.
+  if ((changes & Changes::Password) &&
+      !(changes & (Changes::XTime | Changes::XTimeInt | Changes::XTimeNever)) &&
+    m_DatesTimesExpireOnCtrl->GetValue()) {
+    m_Item.SetXTime(NormalizeExpDate(m_DatesTimesExpiryDateCtrl->GetValue()).GetTicks());
+  }
+
   // Setting by interval
   // The date control should already be correct.  Only save the interval value if recurring is set
   if (changes & Changes::XTimeInt) {
