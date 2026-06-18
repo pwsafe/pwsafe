@@ -351,6 +351,9 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
     // Recreate search bar
     wxCHECK_RET(m_search, wxT("Search object not created so far"));
     m_search->ReCreateSearchBar();
+
+    // Recreate status bar
+    ResetStatusBar();
   } else {
     GetMenuBar()->Check( m_selectedLanguage, true );
   }

@@ -141,6 +141,7 @@ int PasswordSafeFrame::New()
   CreateMenubar(); // Recreate the menu with updated list of most recently used DBs
   ResetFilters();
   GetSearchBarPane().Hide(); // There is nothing to search for in an empty database
+  ResetStatusBar();
   m_AuiManager.Update();
   // XXX TODO: Reset IdleLockTimer, as preference has reverted to default
   return PWScore::SUCCESS;
@@ -252,6 +253,7 @@ void PasswordSafeFrame::FinishGoodOpen()
   m_core.ResumeOnDBNotification();
   CreateMenubar(); // Recreate the menu with updated list of most recently used DBs
   UpdateSearchBarVisibility();
+  ResetStatusBar();
   m_AuiManager.Update();
 }
 
