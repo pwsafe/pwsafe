@@ -142,6 +142,11 @@ int PasswordSafeFrame::New()
   ResetFilters();
   GetSearchBarPane().Hide(); // There is nothing to search for in an empty database
   ResetStatusBar();
+  if (IsTreeView()) {
+    m_tree->SetToolTip(nullptr); // Clear stale tooltip that may have been set in a previously opened database
+    m_tree->Refresh();
+    m_tree->Update();
+  }
   m_AuiManager.Update();
   // XXX TODO: Reset IdleLockTimer, as preference has reverted to default
   return PWScore::SUCCESS;

@@ -7686,13 +7686,13 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgid "%d entries synchronized"
 #~ msgstr "Синхронизировано элементов: %d"
 
-#, c-format
-#~ msgid "%d entries under group"
-#~ msgstr "Элементов в группе: %d"
+#: src/ui/wxWidgets/TreeCtrl.cpp:1022
+msgid "%d entries under group"
+msgstr "Элементов в группе: %d"
 
-#, c-format
-#~ msgid "%d entry under group"
-#~ msgstr "Элементов в группе: %d"
+#: src/ui/wxWidgets/TreeCtrl.cpp:1022
+msgid "%d entry under group"
+msgstr "Элементов в группе: %d"
 
 # в панели статуса количество элементов, урезано для сокращения размера (также
 # конфликты для разных чисел)

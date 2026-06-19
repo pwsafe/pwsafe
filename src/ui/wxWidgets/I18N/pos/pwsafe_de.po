@@ -7545,3 +7545,11 @@ msgstr ""
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:507
 msgid "Autotype (default string: %s)"
 msgstr "Autom. Eingabe (Standardsteuerzeichen: %s)"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
+msgid "%d entries under group"
+msgstr "%d Einträge unter Gruppe"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
+msgid "%d entry under group"
+msgstr "%d Eintrag unter Gruppe"

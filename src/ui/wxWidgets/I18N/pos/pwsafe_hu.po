@@ -10197,3 +10197,11 @@ msgstr ""
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:507
 msgid "Autotype (default string: %s)"
 msgstr "Autogépelés (alapértelmezett szöveg: %s)"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
+msgid "%d entries under group"
+msgstr "%d csoport alatti bejegyzések"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
+msgid "%d entry under group"
+msgstr "%d csoport alatti bejegyzés"

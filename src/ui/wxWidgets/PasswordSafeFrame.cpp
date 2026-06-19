@@ -1414,6 +1414,7 @@ void PasswordSafeFrame::ShowTree(bool show)
     m_guiInfo->SaveTreeViewInfo(m_tree);
   }
 
+  m_tree->SetToolTip(nullptr); // Clear stale entry (Notes) or group (number of entries) tooltip that may remain, for example, after deletion
   m_tree->Show(show);
   GetSizer()->Layout();
 }

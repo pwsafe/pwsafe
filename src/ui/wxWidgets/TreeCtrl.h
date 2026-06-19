@@ -223,6 +223,8 @@ public:
   /// wxEVT_MOTION event handler for mouse events
   void OnMouseMove(wxMouseEvent& event);
 
+  size_t GetEntriesCount(const wxTreeItemId& item); // Get count of entries in a group, including subgroups
+
   void OnGetToolTip( wxTreeEvent& evt); // Added manually
 
   /// wxEVT_COMMAND_MENU_SELECTED event handler for ID_ADDGROUP

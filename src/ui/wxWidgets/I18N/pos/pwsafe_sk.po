@@ -2072,13 +2072,9 @@ msgstr ""
 msgid "You must save this database before it can be exported."
 msgstr "Pred exportom musíte túto databázu uložiť."
 
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:823
-msgid "Exporting database: "
-msgstr "Exportuje sa databáza: "
-
-#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:823
-msgid " to "
-msgstr " do "
+#: ../../../ui/wxWidgets/MenuFileHandlers.cpp:855
+msgid "Exporting database: %ls to %ls\r\n"
+msgstr "Exportuje sa databáza: %ls do %ls\n"
 
 #: ../../../ui/wxWidgets/MenuFileHandlers.cpp:836
 msgid "Export complete.  Do you wish to see a detailed report?"
@@ -6972,3 +6968,23 @@ msgstr "Pre tento záznam už existuje vlastné pole s týmto názvom."
 
 msgid "Custom field copied "
 msgstr "Vlastné pole skopírované "
+
+msgid "&Add"
+msgstr "Pridať"
+
+msgid "Copy Custom &Field Value..."
+msgstr "Skopíruj vlastné pole..."
+
+msgid "Internet access required: Make sure to grant network access to the Flatpak application.\nThe '--share=network' permission is required for this check."
+msgstr "Vyžaduje sa prístup na internet: Uistite sa, že ste aplikácii Flatpak povolili prístup k sieti.\nNa toto overenie je potrebné povolenie '--share=network'."
+
+msgid "Use the 'flatpak update' command or your system's software store application to update to the latest version."
+msgstr "Na aktualizáciu na najnovšiu verziu použite príkaz 'flatpak update' alebo aplikáciu typu 'softvérový obchod' vo vašom systéme."
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
+msgid "%d entry under group"
+msgstr "%d záznam v skupine"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
+msgid "%d entries under group"
+msgstr "Počet záznamov v skupine: %d"

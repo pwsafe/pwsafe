@@ -11228,3 +11228,11 @@ msgstr ""
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:507
 msgid "Autotype (default string: %s)"
 msgstr "Autouzupełnianie (domyślna fraza: %s)"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
+msgid "%d entries under group"
+msgstr "%d wpisy w grupie"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
+msgid "%d entry under group"
+msgstr "%d wpis w grupie"

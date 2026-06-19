@@ -11187,3 +11187,11 @@ msgstr ""
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:507
 msgid "Autotype (default string: %s)"
 msgstr "Autoescritura (formato por defecto: %s)"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
+msgid "%d entries under group"
+msgstr "%d entradas en el grupo"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
+msgid "%d entry under group"
+msgstr "%d entrada en el grupo"
