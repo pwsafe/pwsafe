@@ -1436,25 +1436,26 @@ void CItemData::SetTitle(const StringX &title, TCHAR delimiter)
   }
 }
 
-void CItemData::UpdatePassword(const StringX &password)
+void CItemData::UpdatePassword(const StringX& password)
 {
-  // use when password changed - manages history, modification times
+  // use when password changed - manages modification history and expiration time
   UpdatePasswordHistory();
   SetPassword(password);
 
   time_t t;
-  time(&t);
+  (void)time(&t);
   SetPMTime(t);
 
   int32 xint;
   GetXTimeInt(xint);
   if (xint != 0) {
-    // convert days to seconds for time_t
+    // Recurring expiry interval: the expiry date is relative to the password
+    // change, so recompute it (convert days to seconds for time_t).
     t += (xint * 86400);
     SetXTime(t);
-  } else {
-    SetXTime(time_t(0));
   }
+  // Note: a non-recurring (absolute) expiry date is independent of the
+  // password change time, so it's deliberately left unchanged here.
 }
 
 void CItemData::UpdatePasswordHistory()

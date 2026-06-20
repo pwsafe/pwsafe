@@ -282,6 +282,77 @@ TEST_F(ItemDataTest, PasswordHistory)
   EXPECT_EQ(emptyHeader, PWHistList::MakePWHistoryHeader(false, 0, 0));
 }
 
+TEST_F(ItemDataTest, UpdatePasswordExpiry)
+{
+  PWSprefs* prefs = PWSprefs::GetInstance();
+  prefs->SetPref(PWSprefs::SavePasswordHistory, false);
+
+  // A non-recurring (absolute) expiry date is independent of the password
+  // and must survive a password change.
+  {
+    CItemData di;
+    di.SetCTime();
+    di.SetPassword(L"first");
+
+    const time_t absXTime = time(nullptr) + 30 * 86400;
+    di.SetXTime(absXTime);
+    di.SetXTimeInt(0); // non-recurring
+
+    di.UpdatePassword(L"second");
+
+    time_t xt;
+    di.GetXTime(xt);
+    EXPECT_EQ(absXTime, xt); // unchanged
+
+    int32 xint;
+    di.GetXTimeInt(xint);
+    EXPECT_EQ(0, xint);
+  }
+
+  // An entry that never expires must continue to never expire.
+  {
+    CItemData di;
+    di.SetCTime();
+    di.SetPassword(L"first");
+    di.SetXTime(time_t(0));
+    di.SetXTimeInt(0);
+
+    di.UpdatePassword(L"second");
+
+    time_t xt;
+    di.GetXTime(xt);
+    EXPECT_EQ(time_t(0), xt);
+
+    int32 xint;
+    di.GetXTimeInt(xint);
+    EXPECT_EQ(0, xint);
+  }
+
+  // A recurring interval is relative to the password change, so the expiry
+  // date must be rolled forward to 'now + interval' when the password changes.
+  {
+    CItemData di;
+    di.SetCTime();
+    di.SetPassword(L"first");
+    const int32 days = 7;
+    di.SetXTime(time_t(0));
+    di.SetXTimeInt(days);
+
+    const time_t before = time(nullptr);
+    di.UpdatePassword(L"second");
+    const time_t after = time(nullptr);
+
+    time_t xt;
+    di.GetXTime(xt);
+    EXPECT_GE(xt, before + days * 86400);
+    EXPECT_LE(xt, after + days * 86400);
+
+    int32 xint;
+    di.GetXTimeInt(xint);
+    EXPECT_EQ(days, xint);
+  }
+}
+
 TEST_F(ItemDataTest, CustomFields)
 {
   const StringX raw = _T("010004Name020005Value0300012")
