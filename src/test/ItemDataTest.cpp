@@ -322,6 +322,10 @@ TEST_F(ItemDataTest, UpdatePasswordExpiry)
     time_t xt;
     di.GetXTime(xt);
     EXPECT_EQ(time_t(0), xt);
+
+    int32 xint;
+    di.GetXTimeInt(xint);
+    EXPECT_EQ(0, xint);
   }
 
   // A recurring interval is relative to the password change, so the expiry
