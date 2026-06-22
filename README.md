@@ -5,7 +5,7 @@
 
 Introduction
 ============
-Password Safe is a password database utility. Like many other such
+Password Safe is a password manager. Like many other such
 products, commercial and otherwise, it stores your passwords in an
 encrypted file, allowing you to remember only one password (the "master
 password"), instead of all the username/password combinations that
@@ -19,17 +19,17 @@ the entry and the password is now on your clipboard, ready for pasting.
 3. Open Source: The source code for the project is available for
 inspection. For more information, see https://pwsafe.org.
 
-The current version of Password Safe currently runs on Windows 7 and
+The current version of Password Safe currently runs on Windows 10 and
 later. Older versions are still available supporting Windows 95, 98,
-ME, NT, 2000, XP, Vista as well as PocketPC.
+ME, NT, 2000, XP, Vista and 7.
 
 The Mac version of Password Safe runs on macOS version 10.14 Mojave
 and later, and runs native on Intel and Apple Silicon. (Universal binary.)
 
 Linux packages are available for popular distributions. See
-README.LINUX.md for more details.
+[README.LINUX.md](README.LINUX.md) for more details.
 
-FreeBSD is also supported. See README.FREEBSD.
+FreeBSD is also supported. See [README.FREEBSD.md](docs/README.FREEBSD.md).
 
 Downloading
 ===========
@@ -37,6 +37,18 @@ The latest & greatest version of Password Safe may be downloaded from
 [SourceForge](https://sourceforge.net/projects/passwordsafe/files/latest/download)
 or
 [GitHub](https://github.com/pwsafe/pwsafe/releases/latest).
+
+Installation
+============
+For convenience, Password Safe is packaged into an executable
+installer program. This installs the program, sets up shortcuts and
+allows you to uninstall the program from the Windows Control
+Panel. However, if you prefer, the -bin.zip file contains all the
+files you need. Just extract the files to
+any directory, double-click on the Pwsafe.exe icon, and that's
+it. You may want to create a shortcut to your desktop and/or Start
+menu. Finally, a Microsoft installer (.msi) package is also
+available
 
 Internationalization (Non-English Support)
 ==========================================
@@ -64,29 +76,19 @@ has built-in support for the following languages:
 You can update the translations or add another language via [transifex](https://explore.transifex.com/passwordsafe/passwordsafe/),
 or by dropping [me](https://pwsafe.org/contact.php) a note.
 
-Installation
-============
-For convenience, Password Safe is packaged into an executable
-installer program. This installs the program, sets up shortcuts and
-allows you to uninstall the program from the Windows Control
-Panel. However, if you prefer, the -bin.zip file contains all the
-files you need. Just extract the files (using WinZip, for example) to
-any directory, double-click on the Pwsafe.exe icon,and that's
-it. You may want to create a shortcut to your desktop and/or Start
-menu. Finally, a Microsoft installer (.msi) package is also
-available.
+
 
 License
 =======
-Password Safe is available under the restrictions set forth in the
-standard [Artistic License 2.0](https://opensource.org/license/artistic-2-0)". For more details, see the LICENSE
+Password Safe is available under the conditions set forth in the
+standard [Artistic License 2.0](https://opensource.org/license/artistic-2-0). For more details, see the LICENSE
 file that comes with the package.
 
 Password Safe 3.29 and later makes use of the
 [pugixml project](http://www.pugixml.org), which is available under
 the [MIT license](http://www.opensource.org/licenses/mit-license.html).
 
-Non-Windows versions of Password Safe make use of wxWidgets, under the
+Non-Windows versions of Password Safe make use of [wxWidgets](https://wxwidgets.org/), under the
 license terms defined in [https://wxwidgets.org/about/licence](https://wxwidgets.org/about/licence),
 which is basically LGPL, with an exception stating that derived works in
 binary form may be distributed on the user’s own terms.
@@ -95,7 +97,7 @@ Helping Out
 ===========
 Please report bugs via the project's bug tracking form, on SourceForge at
 https://sourceforge.net/p/passwordsafe/bugs/ or on Github at
-https://github.com/pwsafe/pwsafe/issues. It's worth first
+https://github.com/pwsafe/pwsafe/issues. It's worth first reviewing
 the bug list, to see if the issue hasn't already been reported.
 
 Requests for features and enhancements should be submitted to the
@@ -117,8 +119,7 @@ http://lists.sourceforge.net/lists/listinfo/passwordsafe-announce
 Last but not least: Password Safe is and will always remain an open
 source project, free for use and redistribution. However, donations to the
 project will help me justify the time and effort I spend in
-maintaining and improving this utility. In addition, donations to the
-project help maintain SourceForge, the hosting site. If you wish to
+maintaining and improving this utility. If you wish to
 donate, please click on the Donate button at the top of
 https://pwsafe.org
 
@@ -132,13 +133,13 @@ Credits
 =======
 - The original version of Password Safe was designed by Bruce
 Schneier, written by Mark Rosen, and was freely downloadable from
-Conterpane Lab's website. Thanks to Mark for writing a great little
+Counterpane Lab's website. Thanks to Mark for writing a great little
 application! Following Mark, it was maintained by "AYB", at
 Counterpane. Thanks to Counterpane for deciding to open source the
 project.
 - Jim Russell first brought the code to SourceForge, did some major
 cleaning up of the code, set up a nice project and added some minor
-features in release 1.9.0
+features in release 1.9.0.
 - Releases 2.x have been brought to you by: Andrew Mullican,
 Edward Quackenbush, Gregg Conklin, Graham Ullrich, and Rony
 Shapiro. Karel (Karlo) Van der Gucht also contributed some of the
