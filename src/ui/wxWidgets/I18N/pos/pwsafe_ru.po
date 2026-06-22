@@ -7687,12 +7687,8 @@ msgstr "Да: не менее %d из %ls: %ls%ls"
 #~ msgstr "Синхронизировано элементов: %d"
 
 #: src/ui/wxWidgets/TreeCtrl.cpp:1022
-msgid "%d entries under group"
-msgstr "Элементов в группе: %d"
-
-#: src/ui/wxWidgets/TreeCtrl.cpp:1022
-msgid "%d entry under group"
-msgstr "Элементов в группе: %d"
+msgid "Number of entries: %d"
+msgstr "Количество элементов: %d"
 
 # в панели статуса количество элементов, урезано для сокращения размера (также
 # конфликты для разных чисел)

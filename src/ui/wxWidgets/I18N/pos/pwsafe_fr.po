@@ -7329,9 +7329,5 @@ msgid "Autotype (default string: %s)"
 msgstr "Autofrappe (expression par défaut: %s)"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
-msgid "%d entries under group"
-msgstr "%d entrées dans le groupe"
-
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
-msgid "%d entry under group"
-msgstr "%d entrée dans le groupe"
+msgid "Number of entries: %d"
+msgstr "Nombre d'entrées: %d"

@@ -10937,9 +10937,5 @@ msgid "Autotype (default string: %s)"
 msgstr "자동 입력 (기본 자동입력 문자열: %s)"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
-msgid "%d entries under group"
-msgstr ""
-
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
-msgid "%d entry under group"
-msgstr ""
+msgid "Number of entries: %d"
+msgstr "총 항목 개수: %d"

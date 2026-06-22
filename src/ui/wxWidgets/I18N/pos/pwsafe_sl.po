@@ -7387,9 +7387,5 @@ msgstr ""
 "slike ni mogoče prikazati v predogledu."
 
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/TreeCtrl.cpp:1022
-msgid "%d entries under group"
-msgstr "%d vnosi pod skupino"
-
-#: /home/ronys/git/pwsafe/src/ui/wxWidgets/TreeCtrl.cpp:1022
-msgid "%d entry under group"
-msgstr "%d pod skupino"
+msgid "Number of entries: %d"
+msgstr "Število vnosov: %d"

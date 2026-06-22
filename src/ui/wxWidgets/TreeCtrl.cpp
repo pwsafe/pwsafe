@@ -990,7 +990,7 @@ void TreeCtrlBase::SelectItem(const CUUID & uuid)
   }
 }
 
-size_t TreeCtrl::GetEntriesCount(const wxTreeItemId& item)
+size_t TreeCtrl::GetEntriesCount(const wxTreeItemId& item) const
 {
   size_t count = 0;
   auto *itemData = dynamic_cast<PWTreeItemData *>(GetItemData(item));
@@ -1017,9 +1017,9 @@ void TreeCtrl::OnGetToolTip( wxTreeEvent& evt )
     }
   }
   else if (ItemIsGroup(id)) { // we're on a group other than root, show number of entries including subgroups
-    int count = GetEntriesCount(id);
+    const size_t count = GetEntriesCount(id);
     if (count > 0) {
-      const wxString entries = (count > 1) ? wxString::Format(_("%d entries under group"), count) : wxString::Format(_("%d entry under group"), count);
+      const wxString entries = wxString::Format(_("Number of entries: %d"), count);
       evt.SetToolTip(entries);
     }
   }

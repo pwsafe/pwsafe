@@ -7547,9 +7547,6 @@ msgid "Autotype (default string: %s)"
 msgstr "Autom. Eingabe (Standardsteuerzeichen: %s)"
 
 #: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
-msgid "%d entries under group"
-msgstr "%d Einträge unter Gruppe"
+msgid "Number of entries: %d"
+msgstr "Anzahl der Einträge: %d"
 
-#: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
-msgid "%d entry under group"
-msgstr "%d Eintrag unter Gruppe"
