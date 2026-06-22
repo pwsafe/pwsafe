@@ -11,7 +11,7 @@ respectively.
 If you don't find the package for the distribution of your choice, you
 can contact the developers via https://pwsafe.org/contact.php or build
 it yourself according to the instructions listed in
-docs/README.LINUX.DEVELOPERS.md.
+[README.LINUX.DEVELOPERS.md](docs/README.LINUX.DEVELOPERS.md).
 Slackware is independently supported, see below.
 
 ## Installation on Debian or Ubuntu
@@ -145,5 +145,6 @@ Anyway, enabling this feature in many distros can be done by following these ste
 4. Start Password Safe and enable support for System Tray: in the main menu, go to Manage > Options > System tab, then check Put icon in System Tray.
 
 ## Reporting Bugs
-Please submit bugs via https://sourceforge.net/p/passwordsafe/bugs/.
+Please submit bugs via https://sourceforge.net/p/passwordsafe/bugs/ or on Github at
+https://github.com/pwsafe/pwsafe/issues.
 Set the Category field to Linux to help ensure timely response.
