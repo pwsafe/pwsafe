@@ -2952,6 +2952,8 @@ void PasswordSafeFrame::LockDb()
 
   // Hide search bar to not populate any search results (see GitHub issue 375)
   GetSearchBarPane().Hide();
+  if (IsTreeView())
+    m_tree->SetToolTip(nullptr); // Clear stale entry (Notes) or group (number of entries) tooltip
   m_AuiManager.Update();
 }
 
