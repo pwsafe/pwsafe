@@ -990,14 +990,37 @@ void TreeCtrlBase::SelectItem(const CUUID & uuid)
   }
 }
 
+size_t TreeCtrl::GetEntriesCount(const wxTreeItemId& item) const
+{
+  size_t count = 0;
+  auto *itemData = dynamic_cast<PWTreeItemData *>(GetItemData(item));
+  if (itemData && GetChildrenCount(item, false) == 0)
+    ++count;
+  wxTreeItemIdValue cookie;
+  wxTreeItemId child = GetFirstChild(item, cookie);
+  while (child.IsOk()) {
+    count += GetEntriesCount(child);
+    child = GetNextChild(item, cookie);
+  }
+  return count;
+}
+
 void TreeCtrl::OnGetToolTip( wxTreeEvent& evt )
 { // Added manually
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesAsTooltipsInViews)) {
-    wxTreeItemId id = evt.GetItem();
-    const CItemData *ci = GetItem(id);
-    if (ci != nullptr) {
-      const wxString note = ci->GetNotes().c_str();
+  wxTreeItemId id = evt.GetItem();
+  const CItemData *ci = GetItem(id);
+  if (ci != nullptr) {
+    if (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesAsTooltipsInViews)) {
+      const CItemData *pci = ci->IsShortcut() ? m_core.GetBaseEntry(ci) : ci;
+      const wxString note = pci->GetNotes().c_str();
       evt.SetToolTip(note);
+    }
+  }
+  else if (ItemIsGroup(id)) { // we're on a group other than root, show number of entries including subgroups
+    const size_t count = GetEntriesCount(id);
+    if (count > 0) {
+      const wxString entries = wxString::Format(_("Number of entries: %d"), count);
+      evt.SetToolTip(entries);
     }
   }
 }

@@ -11187,3 +11187,8 @@ msgstr ""
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:507
 msgid "Autotype (default string: %s)"
 msgstr "Autoescritura (formato por defecto: %s)"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
+msgid "Number of entries: %d"
+msgstr "Número de entradas: %d"
+

@@ -1414,6 +1414,7 @@ void PasswordSafeFrame::ShowTree(bool show)
     m_guiInfo->SaveTreeViewInfo(m_tree);
   }
 
+  m_tree->SetToolTip(nullptr); // Clear stale entry (Notes) or group (number of entries) tooltip that may remain, for example, after deletion
   m_tree->Show(show);
   GetSizer()->Layout();
 }
@@ -2951,6 +2952,8 @@ void PasswordSafeFrame::LockDb()
 
   // Hide search bar to not populate any search results (see GitHub issue 375)
   GetSearchBarPane().Hide();
+  if (IsTreeView())
+    m_tree->SetToolTip(nullptr); // Clear stale entry (Notes) or group (number of entries) tooltip
   m_AuiManager.Update();
 }
 

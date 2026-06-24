@@ -7385,3 +7385,7 @@ msgid ""
 msgstr ""
 "Pri poskusu nalaganja slik v območje predogleda je prišlo do napake. Zato "
 "slike ni mogoče prikazati v predogledu."
+
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/TreeCtrl.cpp:1022
+msgid "Number of entries: %d"
+msgstr "Število vnosov: %d"

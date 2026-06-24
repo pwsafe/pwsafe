@@ -11228,3 +11228,7 @@ msgstr ""
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:507
 msgid "Autotype (default string: %s)"
 msgstr "Autouzupełnianie (domyślna fraza: %s)"
+
+#: ../../../ui/wxWidgets/TreeCtrl.cpp:1022
+msgid "Number of entries: %d"
+msgstr "Liczba wpisów: %d"
