@@ -88,7 +88,7 @@ jobs:
 
     - name: Cache wxWidgets build
       id: cache-wxWidgets-build
-      uses: actions/cache@v5.0.5
+      uses: actions/cache@v6.0.0
       with:
         path: |
           ${{ env.WX_BUILD_DIR }}
