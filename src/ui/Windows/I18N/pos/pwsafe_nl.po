@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-06-16 19:46+0300\n"
-"Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
+"PO-Revision-Date: 2026-06-24 12:22+0200\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
@@ -176,7 +176,7 @@ msgstr ""
 # If you do not want to change an Accelerator Key, copy msgid to msgstr
 #. Resource IDs: (3263)
 msgid "  All Password History ignored."
-msgstr "  Alle Wachtwoordgeschiedenis genegeerd."
+msgstr "  Alle Wachtwoord Geschiedenis genegeerd."
 
 #. Resource IDs: (3040)
 msgid "  Field is too long."
@@ -2819,7 +2819,7 @@ msgstr "Kopieer aut&h-code naar klembord"
 
 #. Resource IDs: (65535 - PopupMenu)
 msgid "Copy Custom &Field Value..."
-msgstr "Kopieer Custom & Field Value..."
+msgstr "Kopiëren Aangepaste &Veldwaarde..."
 
 #. Resource IDs: (32071 - Menu, 32071 - MenuEx, 5723)
 msgid "Copy Email to Clipboard"
@@ -5049,7 +5049,7 @@ msgstr ""
 
 #. Resource IDs: (6118)
 msgid "Light"
-msgstr "Light"
+msgstr "Licht"
 
 #. Resource IDs: (3259)
 #, c-format
