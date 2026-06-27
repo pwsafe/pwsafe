@@ -3397,6 +3397,8 @@ void PasswordSafeFrame::CloseDB(std::function<void(bool)> callback)
           m_core.SetReadOnly(false);
           UpdateStatusBar();
           UpdateMenuBar();
+          if (IsTreeView())
+            m_tree->SetToolTip(nullptr); // Clear stale entry (Notes) or group (number of entries) tooltip
           PWSprefs::GetInstance()->SetPref(PWSprefs::FindToolBarActive, showSearchBar);
         }
         else {
