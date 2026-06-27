@@ -77,6 +77,38 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  find_program(IMAGEMAGICK_CMD NAMES magick convert)
+  if(IMAGEMAGICK_CMD)
+    set(TRAY_ICON_APPS_DIR "${CMAKE_BINARY_DIR}/tray-icons/hicolor/32x32/apps")
+    file(MAKE_DIRECTORY ${TRAY_ICON_APPS_DIR})
+    file(WRITE "${CMAKE_BINARY_DIR}/tray-icons/hicolor/index.theme"
+         "[Icon Theme]\nName=hicolor\nDirectories=32x32/apps\n\n[32x32/apps]\nSize=32\nType=Fixed\n")
+    set(TRAY_XPM_DIR "${CMAKE_SOURCE_DIR}/src/ui/wxWidgets/graphics")
+    set(TRAY_XPM_NAMES  tray.xpm         locked_tray.xpm  unlocked_tray.xpm)
+    set(TRAY_PNG_NAMES  pwsafe-tray      pwsafe-locked    pwsafe-unlocked)
+    set(TRAY_ICON_PNGS "")
+    list(LENGTH TRAY_XPM_NAMES _TRAY_COUNT)
+    math(EXPR _TRAY_LAST "${_TRAY_COUNT} - 1")
+    foreach(_I RANGE ${_TRAY_LAST})
+      list(GET TRAY_XPM_NAMES ${_I} _XPM)
+      list(GET TRAY_PNG_NAMES ${_I} _PNG)
+      set(_PNG_OUT "${TRAY_ICON_APPS_DIR}/${_PNG}.png")
+      add_custom_command(
+        OUTPUT "${_PNG_OUT}"
+        COMMAND ${IMAGEMAGICK_CMD} "${TRAY_XPM_DIR}/${_XPM}" "${_PNG_OUT}"
+        DEPENDS "${TRAY_XPM_DIR}/${_XPM}"
+        COMMENT "Generating ${_PNG}.png from ${_XPM}")
+      list(APPEND TRAY_ICON_PNGS "${_PNG_OUT}")
+      install(FILES "${_PNG_OUT}" DESTINATION "share/icons/hicolor/32x32/apps")
+    endforeach()
+    add_custom_target(pwsafe-tray-icons ALL DEPENDS ${TRAY_ICON_PNGS})
+    message(STATUS "Tray icon PNGs will be generated via ${IMAGEMAGICK_CMD}")
+  else()
+    message(WARNING "ImageMagick not found; SNI tray icon PNGs will not be generated")
+  endif()
+endif()
+
+if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   option (NO_QR "Set ON to disable QR support" OFF)
   if (NOT NO_QR)
     CHECK_INCLUDE_FILE("qrencode.h" HAVE_LIBQRENCODE_DEV)

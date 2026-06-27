@@ -480,6 +480,10 @@ namespace wxUtilities
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable();
 
+// True if a Wayland session is actually falling back to the X11 GDK backend
+// (forced via GDK_BACKEND=x11, or the Flatpak "--socket=x11" case)
+bool IsXWaylandEnabled();
+
 // Returns true if it's Flatpak version on Linux, false if native build
 bool IsRunningInFlatpak();
 

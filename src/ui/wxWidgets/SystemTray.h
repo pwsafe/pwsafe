@@ -41,9 +41,18 @@ class SystemTray : public wxTaskBarIcon
   protected:
     //overridden from wxTaskBarIcon, called by framework on r-click
     virtual wxMenu* CreatePopupMenu();
+#if wxUSE_APPINDICATOR
+    //overridden from wxTaskBarIcon: supplies the persistent menu the
+    //AppIndicator/SNI backend keeps attached to the indicator; unlike
+    //CreatePopupMenu() this must not pop up a menu as a side effect,
+    //since it's invoked on every SetTrayStatus() call, not just clicks
+    virtual wxMenu* GetPopupMenu();
+#endif
     void ProcessSysTrayMenuItem(int itemId);
 
   private:
+    wxMenu* BuildMenu();
+    void PopulateMenu(wxMenu* menu);
     wxMenu* GetRecentHistory();
     wxMenu* SetupRecentEntryMenu(const CItemData* pci, size_t idx);
     void ShowSetDatabaseIdDialog();
@@ -56,6 +65,14 @@ class SystemTray : public wxTaskBarIcon
     wxIcon m_IconUnlockedWithID, m_IconLockedWithID;
     PasswordSafeFrame* m_frame;
     TrayStatus m_status;
+#if wxUSE_APPINDICATOR
+    // Kept alive for wx's AppIndicator backend (GetPopupMenu()'s contract:
+    // the returned menu is never destroyed by wx). Deliberately not deleted
+    // in a destructor: wxTaskBarIcon's own dtor drops the AppIndicator's
+    // GtkMenu ref first, and this instance must outlive that; freed by the
+    // OS at process exit instead.
+    wxMenu* m_sniMenu = nullptr;
+#endif
 
     DECLARE_EVENT_TABLE()
 };

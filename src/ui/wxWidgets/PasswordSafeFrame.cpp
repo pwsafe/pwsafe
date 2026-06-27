@@ -60,6 +60,7 @@
 #include "TreeCtrl.h"
 #include "ViewReportDlg.h"
 #include "DnDFile.h"
+#include "wxUtilities.h"
 #include "core/Report.h"
 
 #include <algorithm>
@@ -2804,9 +2805,21 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
   if (restoreUI) {
     ShowHiddenWindows(true);
 
-    if (IsIconized()) {
-      Iconize(false);
+    // xdg-shell gives clients no way to detect minimization at all: it's
+    // not one of the states reported in a toplevel's configure event, and
+    // there's no client request to un-minimize either. So IsIconized() and
+    // wxEVT_ICONIZE never reflect an externally-triggered minimize here,
+    // and there's nothing reliable to gate on. Unconditionally force a
+    // hide/show cycle on native Wayland instead: GTK tears down and
+    // recreates the toplevel surface, which clears any minimized state as
+    // a side effect (the same thing that already makes restoring a fully
+    // hidden-to-tray window work). Skipped on X11 (including XWayland) and
+    // other platforms, where Iconize(false) below already works and this
+    // would just be a needless flicker.
+    if (wxUtilities::WhatWindowSystem() == wxUtilities::Wayland && !IsXWaylandEnabled()) {
+      Show(false);
     }
+    Iconize(false);
     Show(true); //show the grid/tree
     Raise();
     // Without this, modal dialogs like msgboxes lose focus and we end up in a different message loop than theirs.
