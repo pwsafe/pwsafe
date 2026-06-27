@@ -24,6 +24,7 @@ namespace WinUtil {
   bool PerformConfigMigration();
   const UINT defDPI = 96;
   UINT GetDPI(HWND hwnd = nullptr); // wrapper for debugging and hiding Win10 compatibility breakage
+  UINT GetMonitorDPI(HWND hwnd = nullptr); // Gets DPI as affected by Scaling
   int  GetSystemMetrics(int nIndex, HWND hwnd = nullptr); // Hide Win10 compatibility breakage
   void ResizeBitmap(CBitmap& bmp_src, CBitmap& bmp_dst, int dstW, int dstH);
   void FixBitmapBackground(CBitmap& bm);
