@@ -33,6 +33,7 @@ public:
 
 protected:
   virtual BOOL OnInitDialog();
+  virtual BOOL OnSetActive();
   virtual void DoDataExchange(CDataExchange *pDX);
   virtual BOOL PreTranslateMessage(MSG *pMsg);
 

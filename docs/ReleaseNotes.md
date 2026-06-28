@@ -9,6 +9,7 @@ PasswordSafe 3.72.1 Release ?? ??? 2026
 Bugs Fixed in 3.72.1
 -----------------------
 
+* [GH1841](https://github.com/pwsafe/pwsafe/issues/1841) Notes text is no longer selected when switching from Custom Fields to Notes tab.
 * [GH1836](https://github.com/pwsafe/pwsafe/issues/1836) Restore main window correctly on displays with scaling other than 100%.
 
 

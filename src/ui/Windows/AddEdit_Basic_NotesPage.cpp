@@ -158,6 +158,13 @@ BOOL CAddEdit_Basic_NotesPage::OnInitDialog()
   return TRUE;
 }
 
+BOOL CAddEdit_Basic_NotesPage::OnSetActive()
+{
+  BOOL result = CAddEdit_Basic_SubPage::OnSetActive();
+  m_ex_notes.PostMessage(EM_SETSEL, 0, 0);
+  return result;
+}
+
 BOOL CAddEdit_Basic_NotesPage::PreTranslateMessage(MSG *pMsg)
 {
   RelayToolTipEvent(pMsg);
