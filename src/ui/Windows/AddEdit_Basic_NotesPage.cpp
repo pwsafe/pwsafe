@@ -154,6 +154,8 @@ BOOL CAddEdit_Basic_NotesPage::OnInitDialog()
   m_iPointSize = cf.yHeight / 20;
   SetZoomMenu();
 
+  m_ex_notes.SetTargetDevice(nullptr, m_bWordWrap ? 0 : 1);
+
   m_bInitdone = true;
   return TRUE;
 }
