@@ -1227,14 +1227,6 @@ Unknown error</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>********</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T155358Z" creationid="pm_kan" creationdate="20260614T155358Z">
-        <seg>********</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
         <seg>- Is Caps Lock off?</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20240508T142927Z" creationid="pm_kan" creationdate="20240508T142927Z">
@@ -5180,8 +5172,8 @@ offset approximately at %d</seg>
       <tuv lang="en-US">
         <seg>Field length is incorrect.</seg>
       </tuv>
-      <tuv lang="ru-RU">
-        <seg>Некорректная длина файла.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260628T083902Z">
+        <seg>Некорректная длина поля.</seg>
       </tuv>
     </tu>
     <tu>
@@ -7510,6 +7502,14 @@ Number of entries with fields that cannot be fully displayed: %d.</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Number of entries: %d</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260628T083559Z" creationid="pm_kan" creationdate="20260628T083559Z">
+        <seg>Количество элементов: %d</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Number of fields separated by '%c' is not as expected.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20150418T091733Z">
@@ -8324,7 +8324,7 @@ to the clipboard.</seg>
       <tuv lang="en-US">
         <seg>Project-Id-Version: 
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2026-06-14 18:15+0300
+POT-Creation-Date: 2026-06-24 15:08+0300
 PO-Revision-Date: 2026-06-14 16:00+0300
 Last-Translator:
 Language-Team:
@@ -8333,11 +8333,11 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T151800Z" creationid="pm_kan" creationdate="20260614T151800Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260628T083629Z" creationid="pm_kan" creationdate="20260628T083629Z">
         <seg>Project-Id-Version: 
 Report-Msgid-Bugs-To: 
-POT-Creation-Date: 2026-02-14 16:35+0300
-PO-Revision-Date: 2026-02-14 13:00+0300
+POT-Creation-Date: 2026-06-24 15:08+0300
+PO-Revision-Date: 2026-06-14 16:00+0300
 Last-Translator:
 Language-Team:
 Language: ru
