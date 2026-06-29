@@ -3394,10 +3394,12 @@ void PasswordSafeFrame::CloseDB(std::function<void(bool)> callback)
           const auto showSearchBar = PWSprefs::GetInstance()->GetPref(PWSprefs::FindToolBarActive);
           wxCommandEvent dummyEv;
           m_search->OnSearchClose(dummyEv); // fix github issue 375
+          PWSprefs::GetInstance()->SetPref(PWSprefs::FindToolBarActive, showSearchBar);
           m_core.SetReadOnly(false);
           UpdateStatusBar();
           UpdateMenuBar();
-          PWSprefs::GetInstance()->SetPref(PWSprefs::FindToolBarActive, showSearchBar);
+          if (IsTreeView())
+            m_tree->SetToolTip(nullptr); // Clear stale entry (Notes) or group (number of entries) tooltip
         }
         else {
           wxMessageBox(_("Can't close database. There are unsaved changes in opened dialogs."), wxTheApp->GetAppName(), wxOK | wxICON_WARNING, this);
