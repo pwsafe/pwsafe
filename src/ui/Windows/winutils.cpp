@@ -37,6 +37,8 @@
 typedef int (WINAPI* FP_GETDPI4SYSTEM) ();
 typedef int (WINAPI* FP_GETDPI4WINDOW) (HWND);
 typedef int (WINAPI* FP_GETSYSMETRICS4DPI) (int, UINT);
+typedef HRESULT(WINAPI* FP_GETDPI4MONITOR)(HMONITOR, int, UINT*, UINT*);
+typedef DPI_AWARENESS_CONTEXT (WINAPI* FP_SETTHREADDPIAWARENESSCONTEXT)(DPI_AWARENESS_CONTEXT);
 
 
 void WinUtil::RelativizePath(std::wstring &curfile)
@@ -263,7 +265,7 @@ exit:
 /**
  * Following started out as a way to test hi-resolution support without access to a hires monitor.
  * Now it's a wrapper to support pre-Windows 10 systems as well.
- *
+ * Since we're currently DPI unaware, this will always return 96. GetMonitorDPI() will return the scaled DPI in any case.
  */
 UINT WinUtil::GetDPI(HWND hwnd)
 {
@@ -291,6 +293,41 @@ UINT WinUtil::GetDPI(HWND hwnd)
     iss >> retval;
   }
   return retval;
+}
+
+UINT WinUtil::GetMonitorDPI(HWND hwnd)
+{
+  static FP_GETDPI4MONITOR fp = nullptr;
+  static bool inited = false;
+  if (!inited) {
+    auto hShcore = static_cast<HMODULE>(pws_os::LoadLibrary(L"Shcore.dll", pws_os::loadLibraryTypes::SYS));
+    if (hShcore != nullptr)
+      fp = (FP_GETDPI4MONITOR)pws_os::GetFunction(hShcore, "GetDpiForMonitor");
+    inited = true;
+  }
+  UINT dpiX = defDPI, dpiY = defDPI;
+  if (fp != nullptr) {
+    HMONITOR hMon = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
+    fp(hMon, 0 /*MDT_EFFECTIVE_DPI*/, &dpiX, &dpiY);
+  }
+  return dpiX;
+}
+
+void WinUtil::SetThreadDpiAwarenessContext()
+{
+  if (!pws_os::IsWindows10OrGreater())
+    return;
+
+  static FP_SETTHREADDPIAWARENESSCONTEXT fp = nullptr;
+  static bool inited = false;
+  if (!inited) {
+    auto hUser32 = static_cast<HMODULE>(pws_os::LoadLibrary(L"User32.dll", pws_os::loadLibraryTypes::SYS));
+    if (hUser32 != nullptr)
+      fp = FP_SETTHREADDPIAWARENESSCONTEXT(pws_os::GetFunction(hUser32, "SetThreadDpiAwarenessContext"));
+    inited = true;
+  }
+  if (fp != nullptr)
+    fp(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 }
 
 void WinUtil::ResizeBitmap(CBitmap& bmp_src, CBitmap& bmp_dst, int dstW, int dstH)
