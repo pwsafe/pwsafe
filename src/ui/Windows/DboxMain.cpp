@@ -225,7 +225,7 @@ DboxMain::~DboxMain()
 
 INT_PTR DboxMain::DoModal()
 {
-	SetThreadDpiAwarenessContext();
+	WinUtil::SetThreadDpiAwarenessContext();
 	return CDialog::DoModal();
 }
 

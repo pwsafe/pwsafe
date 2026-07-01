@@ -38,6 +38,7 @@ typedef int (WINAPI* FP_GETDPI4SYSTEM) ();
 typedef int (WINAPI* FP_GETDPI4WINDOW) (HWND);
 typedef int (WINAPI* FP_GETSYSMETRICS4DPI) (int, UINT);
 typedef HRESULT(WINAPI* FP_GETDPI4MONITOR)(HMONITOR, int, UINT*, UINT*);
+typedef DPI_AWARENESS_CONTEXT (WINAPI* FP_SETTHREADDPIAWARENESSCONTEXT)(DPI_AWARENESS_CONTEXT);
 
 
 void WinUtil::RelativizePath(std::wstring &curfile)
@@ -310,6 +311,23 @@ UINT WinUtil::GetMonitorDPI(HWND hwnd)
     fp(hMon, 0 /*MDT_EFFECTIVE_DPI*/, &dpiX, &dpiY);
   }
   return dpiX;
+}
+
+void WinUtil::SetThreadDpiAwarenessContext()
+{
+  if (!pws_os::IsWindows10OrGreater())
+    return;
+
+  static FP_SETTHREADDPIAWARENESSCONTEXT fp = nullptr;
+  static bool inited = false;
+  if (!inited) {
+    auto hUser32 = static_cast<HMODULE>(pws_os::LoadLibrary(L"User32.dll", pws_os::loadLibraryTypes::SYS));
+    if (hUser32 != nullptr)
+      fp = FP_SETTHREADDPIAWARENESSCONTEXT(pws_os::GetFunction(hUser32, "SetThreadDpiAwarenessContext"));
+    inited = true;
+  }
+  if (fp != nullptr)
+    fp(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
 }
 
 void WinUtil::ResizeBitmap(CBitmap& bmp_src, CBitmap& bmp_dst, int dstW, int dstH)
