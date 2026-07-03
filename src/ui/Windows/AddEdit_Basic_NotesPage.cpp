@@ -154,8 +154,17 @@ BOOL CAddEdit_Basic_NotesPage::OnInitDialog()
   m_iPointSize = cf.yHeight / 20;
   SetZoomMenu();
 
+  m_ex_notes.SetTargetDevice(nullptr, m_bWordWrap ? 0 : 1);
+
   m_bInitdone = true;
   return TRUE;
+}
+
+BOOL CAddEdit_Basic_NotesPage::OnSetActive()
+{
+  BOOL result = CAddEdit_Basic_SubPage::OnSetActive();
+  m_ex_notes.PostMessage(EM_SETSEL, 0, 0);
+  return result;
 }
 
 BOOL CAddEdit_Basic_NotesPage::PreTranslateMessage(MSG *pMsg)

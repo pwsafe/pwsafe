@@ -225,7 +225,7 @@ DboxMain::~DboxMain()
 
 INT_PTR DboxMain::DoModal()
 {
-	SetThreadDpiAwarenessContext();
+	WinUtil::SetThreadDpiAwarenessContext();
 	return CDialog::DoModal();
 }
 
@@ -3822,6 +3822,12 @@ void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd)
   wp.flags = 0;
   wp.showCmd = uiShowCmd;
   wp.rcNormalPosition = *pRect;
+
+  UINT dpi = WinUtil::GetMonitorDPI(pWnd->GetSafeHwnd());
+  wp.rcNormalPosition.left = MulDiv(pRect->left, dpi, WinUtil::defDPI);
+  wp.rcNormalPosition.top = MulDiv(pRect->top, dpi, WinUtil::defDPI);
+  wp.rcNormalPosition.right = MulDiv(pRect->right, dpi, WinUtil::defDPI);
+  wp.rcNormalPosition.bottom = MulDiv(pRect->bottom, dpi, WinUtil::defDPI);
 
   if (!RectInRegion(hrgnWork, &wp.rcNormalPosition)) {
     if (GetSystemMetrics(SM_CMONITORS) > 1)

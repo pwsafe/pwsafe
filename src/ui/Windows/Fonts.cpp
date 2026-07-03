@@ -59,6 +59,13 @@ static void tweakFontSizes()
     return;
   tweaked = true;
 
+  // Elevate this (UI) thread to per-monitor DPI awareness before querying
+  // the DPI below - otherwise GetDpiForSystem() (used by WinUtil::GetDPI())
+  // reports 96 regardless of the display's actual scaling, and these fonts
+  // end up permanently under-scaled for the rest of the run, since this
+  // function only ever runs once.
+  WinUtil::SetThreadDpiAwarenessContext();
+
   const UINT defDPI = WinUtil::defDPI;
   const UINT curDPI = WinUtil::GetDPI();
 
