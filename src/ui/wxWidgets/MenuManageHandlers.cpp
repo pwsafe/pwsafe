@@ -120,6 +120,7 @@ void PasswordSafeFrame::DoPreferencesClick()
     }
 
     StringX sxNewDBPrefsString(prefs->Store(true));
+    m_RUEList.SetMax(prefs->GetPref(PWSprefs::MaxREItems)); // Remember last X used entries in System Tray menu
     // Update system tray icon if visible so changes show up immediately
     if (m_sysTray && prefs->GetPref(PWSprefs::UseSystemTray))
         m_sysTray->ShowIcon();
