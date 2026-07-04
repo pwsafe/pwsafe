@@ -72,6 +72,17 @@ inline wxString& operator<<(wxString& w, const stringT& s) {
   return w << towxstring(s);
 }
 
+#if wxVERSION_NUMBER < 3106
+// these are needed to prevent compiler errors about "bitwise operation between different enumeration types" with old
+// versions of wxWidgets
+constexpr int operator|(wxAlignment a, wxDirection d) { return static_cast<int>(a) | static_cast<int>(d); }
+constexpr int operator|(wxDirection d, wxAlignment a) { return static_cast<int>(a) | static_cast<int>(d); }
+constexpr int operator|(wxStretch s, wxDirection d) { return static_cast<int>(s) | static_cast<int>(d); }
+constexpr int operator|(wxDirection d, wxStretch s) { return static_cast<int>(s) | static_cast<int>(d); }
+constexpr int operator|(wxStretch s, wxAlignment a) { return static_cast<int>(s) | static_cast<int>(a); }
+constexpr int operator|(wxAlignment a, wxStretch s) { return static_cast<int>(s) | static_cast<int>(a); }
+#endif
+
 inline void ApplyFontPreference(wxWindow* window, const PWSprefs::StringPrefs fontPreference)
 {
   switch (fontPreference)

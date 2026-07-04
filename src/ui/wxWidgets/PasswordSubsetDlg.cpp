@@ -25,6 +25,7 @@
 #include <wx/tokenzr.h>
 #include "PasswordSubsetDlg.h"
 #include "Clipboard.h"
+#include "wxUtilities.h"
 
 ////@begin XPM images
 #include "graphics/toolbar/new/copypassword.xpm"

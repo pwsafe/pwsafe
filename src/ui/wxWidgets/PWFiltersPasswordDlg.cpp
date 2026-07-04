@@ -31,6 +31,7 @@
 #include "PWFiltersEditor.h"
 #include "PWFiltersTable.h"
 #include "PWFiltersGrid.h"
+#include "wxUtilities.h"
 
 //(*IdInit(pwFiltersPasswordDlg)
 const PWSMatch::MatchRule pwFiltersPasswordDlg::m_mrcrit[PW_NUM_PASSWORD_CRITERIA_ENUM] = {

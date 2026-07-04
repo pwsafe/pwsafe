@@ -28,6 +28,7 @@
 #include "PWFiltersEditor.h"
 #include "PWFiltersTable.h"
 #include "PWFiltersGrid.h"
+#include "wxUtilities.h"
 
 //(*IdInit(pwFiltersMediaTypesDlg)
 const PWSMatch::MatchRule pwFiltersMediaTypesDlg::m_mrpres[PW_NUM_PRESENT_ENUM] = {
