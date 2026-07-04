@@ -1526,9 +1526,9 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
 
       auto *commands = MultiCommands::Create(&m_core);
 
-      // If the drag'd item leaves an empty group in the tree
+      // If the dragged item leaves an empty group in the tree
       // the group needs to be created as such in the database.
-      if (dragItemLeavesEmptyGroup && (GetRootItem() != GetItemGroup(parentOfDragItem))) {
+      if (dragItemLeavesEmptyGroup && GetItemGroup(parentOfDragItem) != wxEmptyString) {
         auto emptyGroups = m_core.GetEmptyGroups();
         emptyGroups.push_back(tostringx(GetItemGroup(parentOfDragItem))); // parent of entry or group
         commands->Add(
