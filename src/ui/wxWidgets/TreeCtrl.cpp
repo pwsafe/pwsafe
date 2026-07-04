@@ -891,8 +891,7 @@ void TreeCtrlBase::SetItemImage(const wxTreeItemId &node,
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
         int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
         struct tm st;
-        errno_t err;
-        err = localtime_s(&st, &now);  // secure version
+        [[maybe_unused]] errno_t err = localtime_s(&st, &now);  // secure version
         ASSERT(err == 0);
         st.tm_mday += idays;
         warnexptime = mktime(&st);

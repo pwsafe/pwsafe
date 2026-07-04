@@ -226,13 +226,13 @@ int SearchInternal(PWScore &core, const UserArgs &ua, wostream &os)
     case UserArgs::ClearFields:
     {
       CItemData::FieldBits ftp = ParseFields(ua.opArg2);
-      return DoSearch<UserArgs::ClearFields>(core, ua, [&core, &ua, &ftp](const ItemPtrVec &matches) {
+      return DoSearch<UserArgs::ClearFields>(core, ua, [&core, &ftp](const ItemPtrVec &matches) {
         return ClearFieldsOfSearchResults(matches, core, ftp);
       });
     }
 
     case UserArgs::ChangePassword:
-      return DoSearch<UserArgs::ChangePassword>(core, ua, [&core, &ua](const ItemPtrVec &matches) {
+      return DoSearch<UserArgs::ChangePassword>(core, ua, [&core](const ItemPtrVec &matches) {
         return ChangePasswordOfSearchResults(matches, core);
       });
 
