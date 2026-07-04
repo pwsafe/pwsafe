@@ -141,7 +141,7 @@ wxString pwFiltersFTChoiceRenderer::getFieldTypeString(int ft)
 {
   std::map<int, wxString>::const_iterator iter = FieldTypeString.find(ft);
   ASSERT(iter != FieldTypeString.end());
-  return _(iter->second);
+  return iter->second;
 }
 
 /*!
@@ -369,11 +369,11 @@ wxSize pwFiltersFTChoiceRenderer::GetBestSize(wxGrid& WXUNUSED(grid), wxGridCell
   
     /* C++17 like
     for(const auto& [key, value] : FieldTypeString) {
-      m_bestSize.IncTo(DoGetBestSize(attr, dc, _(value)));
+      m_bestSize.IncTo(DoGetBestSize(attr, dc, value));
     }
      */
     for(const auto& kv : FieldTypeString) {
-      m_bestSize.IncTo(DoGetBestSize(attr, dc, _(kv.second)));
+      m_bestSize.IncTo(DoGetBestSize(attr, dc, kv.second));
     }
   }
   return m_bestSize;

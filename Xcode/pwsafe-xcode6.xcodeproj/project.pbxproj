@@ -2536,6 +2536,7 @@
 					"$(inherited)",
 					"/usr/local/include/ykpers-1",
 				);
+				LIBRARY_SEARCH_PATHS = /opt/homebrew/Cellar/ykpers/1.20.0_2/lib/;
 				PRODUCT_NAME = os;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				WARNING_CFLAGS = (
@@ -2950,7 +2951,7 @@
 				GTEST_INC = /opt/homebrew/include;
 				GTEST_LIB = /opt/homebrew/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Release;
 		};
@@ -2994,8 +2995,10 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
+					"/opt/homebrew/Cellar/ykpers/1.20.0_2/include/ykpers-1/",
 					"/usr/local/include/ykpers-1",
 				);
+				LIBRARY_SEARCH_PATHS = /opt/homebrew/Cellar/ykpers/1.20.0_2/lib/;
 				PRODUCT_NAME = os;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				WARNING_CFLAGS = (
@@ -3014,7 +3017,9 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"/usr/local/include/ykpers-1",
+					"/opt/homebrew/Cellar/ykpers/1.20.0_2/include/ykpers-1/",
 				);
+				LIBRARY_SEARCH_PATHS = /opt/homebrew/Cellar/ykpers/1.20.0_2/lib/;
 				PRODUCT_NAME = os;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				WARNING_CFLAGS = (
