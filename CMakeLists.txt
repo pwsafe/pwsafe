@@ -218,7 +218,13 @@ endif (WX_WINDOWS)
 include(set-options-msvc)
 else ()
 set(CMAKE_CXX_FLAGS
-  "${CMAKE_CXX_FLAGS} -Wall -DUNICODE -DWCHAR_INCOMPATIBLE_XMLCH ${CMAKE_WXWINDOWS_CXX_FLAGS}")
+    "${CMAKE_CXX_FLAGS} -Wall -DUNICODE -DWCHAR_INCOMPATIBLE_XMLCH ${CMAKE_WXWINDOWS_CXX_FLAGS}")
+  if (NOT APPLE)
+    # TODO: with the below flag the Mac cmake-based build fails with an error:
+    #   clang: error: argument unused during compilation: '-fstack-clash-protection'
+    # it's possible check_cxx_compiler_flag is using the wrong compiler for the check?
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+  endif (NOT APPLE)
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DDEBUG")
 if (USE_ASAN)
   set(CMAKE_CXX_FLAGS_DEBUG
