@@ -461,7 +461,7 @@ void PasswordSafeFrame::Init()
     SetTreeSortType(TreeSortType::GROUP);
   }
 
-  m_RUEList.SetMax(PWSprefs::GetInstance()->PWSprefs::MaxREItems);
+  m_RUEList.SetMax(PWSprefs::GetInstance()->GetPref(PWSprefs::MaxREItems));
 ////@begin PasswordSafeFrame member initialisation
   m_Toolbar = nullptr;
   m_Dragbar = nullptr;
@@ -1277,6 +1277,7 @@ int PasswordSafeFrame::Load(const StringX &passwd)
     SetTitle(m_core.GetCurFile().c_str());
     m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
     m_core.ResumeOnDBNotification();
+    m_RUEList.SetRUEList(m_core.GetRUEList());
   } else {
     SetTitle(wxEmptyString);
     m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
