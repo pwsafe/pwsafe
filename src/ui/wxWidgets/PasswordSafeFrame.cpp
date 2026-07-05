@@ -1277,7 +1277,7 @@ int PasswordSafeFrame::Load(const StringX &passwd)
     SetTitle(m_core.GetCurFile().c_str());
     m_sysTray->SetTrayStatus(SystemTray::TrayStatus::UNLOCKED);
     m_core.ResumeOnDBNotification();
-    m_RUEList.SetRUEList(m_core.GetRUEList()); // It is populated in PWScore::ReadFile() from the file header
+    m_RUEList.SetRUEList(m_core.GetRUEList());
   } else {
     SetTitle(wxEmptyString);
     m_sysTray->SetTrayStatus(SystemTray::TrayStatus::CLOSED);
