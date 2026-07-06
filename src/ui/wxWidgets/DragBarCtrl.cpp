@@ -141,7 +141,7 @@ struct DragbarToolInfo {
   {
     return (id == ID_DRAGBAR_DND) ?
       _("Drag this image onto another window to paste the selected element or tree.") :
-      wxString::Format(_("Drag this image onto another window to paste the '%s' field."), name);
+      wxString::Format(_("Drag this image onto another window to paste the '%s' field."), _(name));
   }
 };
 
