@@ -78,10 +78,13 @@ foreach(split /\s+/, `$wxconfig --cxxflags --unicode=yes --debug=$dbgflag`) {
 
 # Get YubiKey personalization library prefix if --homebrew flag is set
 my $ykpers_prefix;
+my $googletest_prefix;
 if ($homebrew) {
 	$ykpers_prefix = `brew --prefix ykpers`;
+	$googletest_prefix = `brew --prefix googletest`;
 	chomp $ykpers_prefix;  # Remove trailing newline
-	$cxxflags .= "$ykpers_prefix/include/ykpers-1 ";
+	chomp $googletest_prefix;
+	$cxxflags .= "$ykpers_prefix/include/ykpers-1 $googletest_prefix/include";
 }
 
 print "HEADER_SEARCH_PATHS = ", $cxxflags, "\n";
