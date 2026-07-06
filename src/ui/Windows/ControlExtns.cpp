@@ -1325,11 +1325,12 @@ void CButtonExtn::DrawButton(HWND hWnd, HDC hDC, RECT *pRect, BOOL fChecked, BOO
 
   HDC hMemDC = CreateCompatibleDC(hDC);
   HBITMAP hBitmap = CreateCompatibleBitmap(hDC, nWidth, nHeight);
-  SelectObject(hMemDC, hBitmap);
+  HBITMAP hOldBitmap = (HBITMAP)SelectObject(hMemDC, hBitmap);
 
   RECT rFillRect = {0, 0, nWidth, nHeight};
 
   HTHEME hTheme = OpenThemeData(hWnd, L"BUTTON");
+  int nPartID = (m_type == BS_AUTOCHECKBOX) ? BP_CHECKBOX : BP_RADIOBUTTON;
   int nStateID(0);
 
   if (m_type == BS_AUTOCHECKBOX) {
@@ -1344,24 +1345,38 @@ void CButtonExtn::DrawButton(HWND hWnd, HDC hDC, RECT *pRect, BOOL fChecked, BOO
 
   //If bg color isn't set, try get backgroung color from current theme
   if (m_bUseBkgColour) {
-    FillRect(hMemDC, &rFillRect, CreateSolidBrush(GetSysColor(m_icolour)));
+    HBRUSH hFillBrush = CreateSolidBrush(GetSysColor(m_icolour));
+    FillRect(hMemDC, &rFillRect, hFillBrush);
+    DeleteObject(hFillBrush);
   }
-  else { 
+  else {
     // Don't check IsThemeBackgroundPartiallyTransparent because it return false for BP_CHECKBOX
     DrawThemeParentBackground(hWnd, hMemDC, &rFillRect);
   }
 
-  RECT rIconRect = {0, 0, 13, nHeight};
-  DrawThemeBackground(hTheme, hMemDC, m_type == BS_AUTOCHECKBOX ? BP_CHECKBOX : BP_RADIOBUTTON,
-                      nStateID, &rIconRect, NULL);
+  // The check/radio glyph must be drawn at the size the theme renders it for
+  // this window's DPI (13px only at 96dpi), and the label offset has to track
+  // that size, or both come out undersized at display scales > 100%.
+  const UINT nDPI = WinUtil::GetDPI(hWnd);
+  SIZE szBox = {MulDiv(13, nDPI, 96), MulDiv(13, nDPI, 96)};
+  GetThemePartSize(hTheme, hMemDC, nPartID, nStateID, NULL, TS_DRAW, &szBox);
+
+  int nBoxTop = (nHeight - szBox.cy) / 2;
+  RECT rIconRect = {0, nBoxTop, szBox.cx, nBoxTop + szBox.cy};
+  DrawThemeBackground(hTheme, hMemDC, nPartID, nStateID, &rIconRect, NULL);
   CloseThemeData(hTheme);
 
-  RECT rTextRect = {16, 0, nWidth - 16, nHeight};
+  RECT rTextRect = {szBox.cx + MulDiv(3, nDPI, 96), 0, nWidth, nHeight};
   SetBkMode(hMemDC, TRANSPARENT);
   if (m_bUseTextColour)
     SetTextColor(hMemDC, m_crfText);
 
-  SelectObject(hMemDC, (HFONT)GetStockObject(DEFAULT_GUI_FONT));
+  // Use the control's font: DEFAULT_GUI_FONT is a fixed 96dpi font and does
+  // not scale with the dialog.
+  HFONT hFont = (HFONT)::SendMessage(hWnd, WM_GETFONT, 0, 0);
+  if (hFont == NULL)
+    hFont = (HFONT)GetStockObject(DEFAULT_GUI_FONT);
+  HFONT hOldFont = (HFONT)SelectObject(hMemDC, hFont);
 
   if (m_caption.IsEmpty()) {
     GetWindowText(m_caption);
@@ -1379,6 +1394,8 @@ void CButtonExtn::DrawButton(HWND hWnd, HDC hDC, RECT *pRect, BOOL fChecked, BOO
 
   BitBlt(hDC, 0, 0, nWidth, nHeight, hMemDC, 0, 0, SRCCOPY);
 
+  SelectObject(hMemDC, hOldFont);
+  SelectObject(hMemDC, hOldBitmap);
   DeleteObject(hBitmap);
   DeleteDC(hMemDC);
 }

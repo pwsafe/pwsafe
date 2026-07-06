@@ -4,11 +4,21 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Support Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
+PasswordSafe 3.72.1 Release July 3 2026
+=======================================
+Bugs Fixed in 3.72.1
+-----------------------
+
+* Password text wasn't centered correctly on displays with scaling other than 100%.
+* [GH1842](https://github.com/pwsafe/pwsafe/issues/1842), [SF1632](https://sourceforge.net/p/passwordsafe/bugs/1632/) Notes Word Wrap is handled correctly again (regression).
+* [GH1841](https://github.com/pwsafe/pwsafe/issues/1841) Notes text is no longer selected when switching from Custom Fields to Notes tab.
+* [GH1836](https://github.com/pwsafe/pwsafe/issues/1836) Restore main window correctly on displays with scaling other than 100%.
+
 PasswordSafe 3.72.0 Release June 20 2026
 ========================================
-
 Bugs Fixed in 3.72.0
 -----------------------
+* [GH1845](https://github.com/pwsafe/pwsafe/issues/1845), [SF1629](https://sourceforge.net/p/passwordsafe/bugs/1629/) All check boxes and radio buttons displayed corrrectly on scaled displays (regression).
 * Improved font scale handling - should resolve font size issues on high resolution displays.
 * [GH1749](https://github.com/pwsafe/pwsafe/issues/1749) In the Master Password Setup window, "Show Master Password" is no longer truncated on some displays.
 * [GH1092](https://github.com/pwsafe/pwsafe/issues/1092), [SF1595](https://sourceforge.net/p/passwordsafe/bugs/1595/) Size and position of main window is now correctly restored on scaled displays.
