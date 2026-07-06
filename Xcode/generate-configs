@@ -6,26 +6,61 @@
 #
 # Usage:
 #
-# It takes two parameters, and you must pass in both.
-# The first is either "-d" or "-r", to tell this script if you want to generate the
-# xcconfig for a Debug or Release build.  The second parameter is the full path to
+# It takes two or three parameters.
+# The first (optional) is "--homebrew", which tells the script to add YubiKey
+# personalization library paths from Homebrew to the configuration.
+# The next is either "-d" or "-r", to tell this script if you want to generate the
+# xcconfig for a Debug or Release build.  The last parameter is the full path to
 # the 'wx-config' script of the wxWidgets build you want to use.
-# 
+#
 
 sub usage {
-	die "usage: generate-configs -d|-r <path to wx-config>\n\twhere -d & -r stand for Debug/Release";
+	die qq{
+    usage: generate-configs [--homebrew]
+	  or
+    generate-configs [-d|-r <path to wx-config>]
+
+	  where -d & -r stand for Debug/Release.
+
+	  "--homebrew" assumes you want to build with homebew and have installed the dependencies as in docs/README.MAC.DEVELOPERS.md
+
+	  You should redirect the output when using "--homebrew" to Xcode/pwsafe-release-homebrew.xcconfig
+	};
 }
 
-if (scalar @ARGV != 2){
-	&usage;
+# Check for --homebrew flag
+my $homebrew = 0;
+if (scalar @ARGV > 0 && $ARGV[0] eq "--homebrew") {
+	$homebrew = 1;
+	shift @ARGV;
 }
 
-my $wxconfig = pop @ARGV;
-my $flag = pop @ARGV;
+# If --homebrew is set and no other arguments, use defaults
+my $wxconfig;
+my $flag;
+if ($homebrew && scalar @ARGV == 0) {
+	$flag = "-r";  # Default to Release build
+	$wxconfig = "wx-config";  # Use wx-config from PATH
+} else {
+	if (scalar @ARGV != 2){
+		&usage;
+	}
+	$wxconfig = pop @ARGV;
+	$flag = pop @ARGV;
+}
 
 die "unexpected flag: $flag" unless $flag eq "-d" || $flag eq "-r";
-die "wx-config \"$wxconfig\" does not exist" unless -e $wxconfig;
-die "wx-config \"$wxconfig\" is not executable" unless -x $wxconfig;
+
+# Validate wx-config exists and is executable
+if ($wxconfig =~ /\//) {
+	# If it's a path (contains /), check file directly
+	die "wx-config \"$wxconfig\" does not exist" unless -e $wxconfig;
+	die "wx-config \"$wxconfig\" is not executable" unless -x $wxconfig;
+} else {
+	# If it's just a command name, check if it's in PATH
+	my $which_result = `which $wxconfig 2>/dev/null`;
+	die "wx-config \"$wxconfig\" not found in PATH" unless $which_result;
+}
 
 my $dbgflag = $flag eq "-d" ? "yes" : "no";
 my $libflags;
@@ -40,5 +75,20 @@ my $cxxflags;
 foreach(split /\s+/, `$wxconfig --cxxflags --unicode=yes --debug=$dbgflag`) {
 	$cxxflags .= $1." " if /\A-I(.+)/;
 }
+
+# Get YubiKey personalization library prefix if --homebrew flag is set
+my $ykpers_prefix;
+if ($homebrew) {
+	$ykpers_prefix = `brew --prefix ykpers`;
+	chomp $ykpers_prefix;  # Remove trailing newline
+	$cxxflags .= "$ykpers_prefix/include/ykpers-1 ";
+}
+
 print "HEADER_SEARCH_PATHS = ", $cxxflags, "\n";
+
+# Add LIBRARY_SEARCH_PATHS if --homebrew flag is set
+if ($homebrew) {
+	print "LIBRARY_SEARCH_PATHS = $ykpers_prefix/lib\n";
+}
+
 print "LD_RUNPATH_SEARCH_PATHS = ", $rpath, "\n" if defined($rpath);

@@ -29,9 +29,13 @@ It is organized in the following sections:
 brew install wxwidgets yubikey-personalization googletest
 ```
 
-2. load Xcode/pwsafe.xcode6.xcodeproj in Xcode
+2. Configure the project
 
-3. Select the "homebrew" scheme & build it.
+```
+Xcode/generate-configs --homebrew > Xcode/pwsafe-release-homebrew.xcconfig
+```
+
+3. load Xcode/pwsafe.xcode6.xcodeproj in Xcode, select the "homebrew" scheme & build it.
 
 If/when the build is successful, expand the "Products" folder in Xcode's Project Navigator, right click on "pwsafe.app" and select "Show in Finder". You can then copy the app bundle to your /Applications folder.
 
