@@ -2,6 +2,7 @@
 This document explains how to build Password Safe on macOS.
 It is organized in the following sections:
 
+* [Quickstart](#quickstart)
 * [Terminology](#terminology)
 * [Requirements](#requirements)
 * [Get Password Safe Sources](#get-password-safe-sources)
@@ -16,6 +17,23 @@ It is organized in the following sections:
   * Where is pwsafe.app?
 * [Build installation package](#build-installation-package)
 * [Known Issues](#known-issues-with-macos-install)
+
+
+## Quick start
+
+* To quickly generate a build for use on the same machine, you can do this
+
+1. Install the dependencies via homebrew:
+
+```
+brew install wxwidgets yubikey-personalization googletest
+```
+
+2. load Xcode/pwsafe.xcode6.xcodeproj in Xcode
+
+3. Select the "homebrew" scheme & build it.
+
+If/when the build is successful, expand the "Products" folder in Xcode's Project Navigator, right click on "pwsafe.app" and select "Show in Finder". You can then copy the app bundle to your /Applications folder.
 
 
 ## Terminology
