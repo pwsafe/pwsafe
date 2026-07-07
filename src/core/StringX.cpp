@@ -16,7 +16,6 @@
 #include "os/pws_tchar.h"
 
 #if !defined(_WIN32) || defined(__WX__)
-#include <wx/intl.h>
 #include "core_st.h"
 #endif
 
