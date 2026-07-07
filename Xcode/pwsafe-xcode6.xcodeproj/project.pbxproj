@@ -2870,7 +2870,6 @@
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"/usr/local/include/ykpers-1",
-					"/opt/homebrew/Cellar/ykpers/1.20.0_2/include/ykpers-1/",
 				);
 				PRODUCT_NAME = os;
 				USER_HEADER_SEARCH_PATHS = ../src;
