@@ -53,7 +53,7 @@ If/when the build is successful, expand the "Products" folder in Xcode's Project
 * Perl
 * gettext and create-dmg (For building the installation package.  These can be installed via Homebrew.)
 * googletest (To build and run the unit tests. Install via Homebrew.)
-* Yubikey libraries: libyubikey, libykpers-1
+* Yubikey libraries: yubico-c and yubikey-personalization
 
 ### Xcode
 Xcode is free and originally was included with the OS X installation CD. Today, you can download Xcode from the Apple Store. If you don't want the full Xcode system, you will need to install the "Command-Line Tools for Xcode". The command line tools can be installed from a terminal.
@@ -71,7 +71,7 @@ sudo xcode-select --switch /Applications/Xcode.app
 The Xcode directory in Password Safe sources contains the Xcode project file for building it.
 
 pwsafe code now uses C++20 features, and therefore requires a modern-enough compiler (Xcode 12.0 or later).
-For the x86\_64 architecture, the minimum target is macOS 10.14. For the arm64 architecture, the minimum target is macOS 11.0. 
+For the x86\_64 architecture, the minimum target is macOS 10.14. For the arm64 architecture, the minimum target is macOS 11.0.
 
 ### wxWidgets
 wxWidgets is the cross-platform UI toolkit that pwsafe uses for user-interface. To get the latest version of wxWidgets, you may need to download the latest sources from wxWidgets.org and build it (instructions below).  This is the most time-consuming part of building pwsafe.
@@ -80,7 +80,7 @@ wxWidgets is the cross-platform UI toolkit that pwsafe uses for user-interface. 
 pwsafe uses Perl for some small build tasks. macOS already ships with Perl, which should suffice.
 
 ### Yubikey
-The last official packages published by Yubico, on their web site and via Homebrew, are known not to work on current macOS systems.  (As of this writing, macOS 14.1.)  The source must be retrieved from Github and compiled locally.  The process used by the Password Safe release build is in the pwsafe source tree in the file pwsafe/.github/workflows/macos-latest.yml.  If you don't want Yubikey support, the Xcode project file for Password Safe has a *Debug-no-yubi* configuration that is the same as Debug, but without reference to the Yubikey libraries.  Note, however, that the .dmg release package can only be made from a *Release* configuration build that does include Yubikey support.
+The last official packages published by Yubico, on their web site, are known not to work on current macOS systems.  Working binaries can be installed via Homebrew or the source can be retrieved from Github and compiled locally.  The process used by the Password Safe release build is in the pwsafe source tree in the file pwsafe/.github/workflows/macos-latest.yml.  If you don't want Yubikey support, the Xcode project file for Password Safe has a *Debug-no-yubi* configuration that is the same as Debug, but without reference to the Yubikey libraries.  Note, however, that the .dmg release package can only be made from a *Release* configuration build that does include Yubikey support.
 
 ## Universal Binaries
 
@@ -118,9 +118,9 @@ brew info wxwidgets
 
 **Important Notes**
 - The version of wxWidgets available through Homebrew may be different for x86\_64
-systems and Apple Silicon systems and it will only install the version for your Mac architecture, so you won't be able to produce a universal binary. 
+systems and Apple Silicon systems and it will only install the version for your Mac architecture, so you won't be able to produce a universal binary.
 - Also, because of the addition of the "Hardened Runtime", before you build pwsafe:
- 
+
 ```
 Open Xcode, select the pwsafe target, "Signing & Capabilities" tab, "All" sub-tab.
 Check the box for "Disable Library Validation".
@@ -129,7 +129,7 @@ Repeat these steps for the pwsafe-cli target.
 
 (This is not necessary if you are building wxWidgets from source.)
 
-- For more information, see: 
+- For more information, see:
 [https://developer.apple.com/documentation/security/hardened_runtime](https://developer.apple.com/documentation/security/hardened_runtime)
 
 ### Downloading the wxWidgets Sources
@@ -139,7 +139,7 @@ I recommend you download the tarball from wxWidgets download site
 [https://www.wxwidgets.org/downloads/](https://www.wxwidgets.org/downloads/)
 
 Click the link named "Source for Linux, OS X, etc".  It should get you a .tar.bz2
-or a .tar.gz file. DO NOT get the .7z version. That has sources with DOS CRLF 
+or a .tar.gz file. DO NOT get the .7z version. That has sources with DOS CRLF
 and won't build on OS X. Also, I have found some (maybe irrelevant) inconsistencies
 between the sources checked out from their repository at a particular branch/tag, and
 the tarball. My recommendation is to use the tarball. That's what I always do on macOS.
@@ -159,20 +159,20 @@ When changing the language from English to another language you might encounter 
 ### Building wxWidgets for pwsafe
 **This procedure works for both x86\_64 and arm64 (Apple Silicon). It builds wxWidgets for a Universal Binary**
 
-**If you are trying to build pwsafe for an older I386 or x86\_32 machine, this procedure may work, but 
+**If you are trying to build pwsafe for an older I386 or x86\_32 machine, this procedure may work, but
 it has not been tested.  The current macOS and Xcode no longer support 32-bit executables. You may need to adapt these procedures for your older platform. Or it might be better to start with older versions of wxWidgets and pwsafe that were supported on that platform.**
 
-To build pwsafe, you 
+To build pwsafe, you
 need to build wxWidgets first, in a way that is compatible with pwsafe's project settings.
-The Misc directory in pwsafe sources has a script called "osx-build-wx" which does exactly 
-that.  It basically runs the wxWidgets "configure" script such that wxWidgets will be built 
-with settings that are compatible with pwsafe's project settings, while retaining 
-the ability to run on older versions of OS X as far back as possible.  It is possible that 
+The Misc directory in pwsafe sources has a script called "osx-build-wx" which does exactly
+that.  It basically runs the wxWidgets "configure" script such that wxWidgets will be built
+with settings that are compatible with pwsafe's project settings, while retaining
+the ability to run on older versions of OS X as far back as possible.  It is possible that
 pwsafe built with such a build of wxWidgets will run on OS X 10.7, but this has not been verified.
 
 You can pass it the "-n" option to show what parameters it will pass to the configure script.
 
-osx-build-wx has to be run from your wxWidgets build directory.  
+osx-build-wx has to be run from your wxWidgets build directory.
 **NOTE: Do not copy osx-build-wx to a different directory, just use the full path to the pwsafe/Misc/osx-build-wx location.**  The osx-build-wx script retrieves some build parameters from the GitHub workflow script (in pwsafe/.github/workflows/macos-latest.yml) to ensure this build will be done the same way as the release build.  For example, if you have wxWidgets sources in "wx3", then do the following:
 
 ```
@@ -199,7 +199,7 @@ See this:
 http://wiki.wxwidgets.org/Compiling_wxWidgets_using_the_command-line_(Terminal)#Why_shouldn.27t_I_run_it.3F
 
 ### Building wxWidgets for a single architecture
-If you Need to build wxWidgets for a single architecture, for instance on an older platform that can only build for x86_64, 
+If you Need to build wxWidgets for a single architecture, for instance on an older platform that can only build for x86_64,
 determine your architecture using the following command:
 ```
 uname -m
@@ -264,7 +264,7 @@ pwsafe. Apple has changed the way we (or at least I) used to view Debug and
 Release configurations. Select "pwsafe" or "pwsafe-debug" from Product
 Menu => Scheme to select the Release or Debug configuration respectively. And, if you are
 building pwsafe for just yourself, see that the architecture in Product Menu => Destination
-matches your Mac's architecture. By default, the Project file is set-up so that "pwsafe-debug" will build for 
+matches your Mac's architecture. By default, the Project file is set-up so that "pwsafe-debug" will build for
 your Mac's architecture and "pwsafe" will build a universal binary. (Provided wxWidgets was built that way. See above.)
 To build a single architecture release, go to the project level build settings and change "**Build active architecture only**"
 to "yes".
@@ -293,7 +293,7 @@ make -f Makefile.macos [WX_CONFIG=<path to the wx-config command>]
 ```
 
 ## Build installation package
-This procedure will build a .dmg file for the Universal Binary or the current machine's architecture, 
+This procedure will build a .dmg file for the Universal Binary or the current machine's architecture,
 depending on how pwsafe was built, above.
 
 Build pwsafe for release. The installation package tools only create a release .dmg file.
@@ -339,6 +339,6 @@ The file name includes arm64 or x86\_64 to indicate a single architecture build.
 ### Known Issues with macOS Install
 
 On a clean, initial install, the first time pwsafe is run the language may default to German. This
-appears to be an issue in wxWidgets on Apple M1 machines. If you encounter this problem, open a 
+appears to be an issue in wxWidgets on Apple M1 machines. If you encounter this problem, open a
 pwsafe file. The third menu item from the right is the "manage" submenu. Click on it and select
 the last/bottom menu item. This will give you a list of languages. Pick the desired language (e.g. English).

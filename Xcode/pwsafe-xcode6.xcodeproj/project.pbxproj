@@ -1174,6 +1174,7 @@
 				57D3F0072B782AF600E4A662 /* version.in */,
 				E69541311A01150D00BC85E1 /* pwsafe-debug.xcconfig */,
 				E69541321A01150D00BC85E1 /* pwsafe-release.xcconfig */,
+				E64239E32FFBAA8200A5DE78 /* pwsafe-release-homebrew.xcconfig */,
 				574370962A3CE21800B46A7D /* pwsafe-template.plist */,
 			);
 			name = Configs;
@@ -1545,7 +1546,6 @@
 				57E952092DE93B3600DE9640 /* coretest */,
 				E6ADB80411956A93004E2BE5 /* Products */,
 				E0A70B9921C905A500A2FEA8 /* Frameworks */,
-				E64239E32FFBAA8200A5DE78 /* pwsafe-release-homebrew.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -2507,6 +2507,7 @@
 				GTEST_INC = /opt/homebrew/include;
 				GTEST_LIB = /opt/homebrew/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = "Debug-no-yubi";
 		};
@@ -2967,7 +2968,6 @@
 					../src,
 					"$(GTEST_INC)",
 				);
-				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-L$(GTEST_LIB)",
 					"-lgtest",
@@ -2995,7 +2995,6 @@
 					../src,
 					"$(GTEST_INC)",
 				);
-				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-L$(GTEST_LIB)",
 					"-lgtest",
@@ -3150,6 +3149,7 @@
 				GTEST_INC = /opt/homebrew/include;
 				GTEST_LIB = /opt/homebrew/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
 		};
@@ -3208,6 +3208,7 @@
 				GTEST_INC = /opt/homebrew/include;
 				GTEST_LIB = /opt/homebrew/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				ONLY_ACTIVE_ARCH = NO;
 			};
 			name = Release;
 		};
