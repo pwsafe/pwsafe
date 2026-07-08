@@ -552,13 +552,13 @@ wxPen ComparisonGrid::GetRowGridLinePen(int row)
 void ComparisonGrid::OnGridRangeSelect(wxGridRangeSelectEvent& evt)
 {
   //select grids asynchronously, or else we get in an infinite loop of selections & their notifications
-  if (evt.GetTopRow()%2 != 0) {
+  if (evt.GetTopRow()%2 != 0 && !IsInSelection(evt.GetTopRow()-1, 0)) {
     wxCommandEvent cmdEvent(EVT_SELECT_GRID_ROW);
     cmdEvent.SetEventObject(evt.GetEventObject());
     cmdEvent.SetInt(evt.GetTopRow()-1);
     GetEventHandler()->AddPendingEvent(cmdEvent);
   }
-  if (evt.GetBottomRow()%2 == 0) {
+  if (evt.GetBottomRow()%2 == 0 && !IsInSelection(evt.GetTopRow()+1, 0)) {
     wxCommandEvent cmdEvent(EVT_SELECT_GRID_ROW);
     cmdEvent.SetEventObject(evt.GetEventObject());
     cmdEvent.SetInt(evt.GetBottomRow()+1);
