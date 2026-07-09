@@ -104,7 +104,7 @@ private:
   CItemData::EntryType m_etype;
   // Result parameter
   PWSMatch::MatchRule *m_prule = nullptr;
-  CItemData::EntryType *m_petype = nullptr;;
+  CItemData::EntryType *m_petype = nullptr;
 
   typedef struct etypeMapItem {
     int msgText;
