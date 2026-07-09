@@ -28,7 +28,7 @@
 #include "PWFiltersEditor.h"
 #include "PWFiltersTable.h"
 #include "PWFiltersGrid.h"
-
+#include "wxUtilities.h"
 
 //(*IdInit(pwFiltersBoolDlg)
 const PWSMatch::MatchRule pwFiltersBoolDlg::m_mrxp[PW_NUM_BOOL_ENUM] = {PWSMatch::MR_PRESENT, PWSMatch::MR_NOTPRESENT};

@@ -2913,7 +2913,7 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
   // symbols
   {
     const auto oldSymbols = m_Item.GetSymbols();
-    if (tostringx(m_Symbols) != oldSymbols && (!oldSymbols.empty() || m_Symbols != CPasswordCharPool::GetDefaultSymbols())) {
+    if (tostringx(m_Symbols) != oldSymbols && (!oldSymbols.empty() || m_Symbols != towxstring(CPasswordCharPool::GetDefaultSymbols()))) {
       changes |= Changes::Symbols;
     }
   }

@@ -31,6 +31,7 @@
 #include "PWFiltersEditor.h"
 #include "PWFiltersTable.h"
 #include "PWFiltersGrid.h"
+#include "wxUtilities.h"
 
 //(*IdInit(pwFiltersIntegerDlg)
 const PWSMatch::MatchRule pwFiltersIntegerDlg::m_mrpres[PW_NUM_PRESENT_ENUM] = {

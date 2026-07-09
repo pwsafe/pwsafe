@@ -33,18 +33,21 @@ public:
       // Couldn't get environment-specified locale, warn user
       // and punt to default "C"
       char wrnmess[] = "Couldn't load locale, falling back to default\n";
-      (void) write(STDERR_FILENO, wrnmess, sizeof(wrnmess)/sizeof(*wrnmess)-1);
+      [[maybe_unused]] const auto nbytes = write(STDERR_FILENO, wrnmess, sizeof(wrnmess)/sizeof(*wrnmess)-1);
+      ASSERT(nbytes > 0);
       sl = setlocale(LC_ALL, gl);
     }
     if (sl == nullptr) {
       // If we can't get the default, we're really FUBARed
       char errmess[] = "Couldn't initialize locale - bailing out\n";
-      (void) write(STDERR_FILENO, errmess, sizeof(errmess)/sizeof(*errmess)-1);
+      [[maybe_unused]] const auto nbytes = write(STDERR_FILENO, errmess, sizeof(errmess)/sizeof(*errmess)-1);
+      ASSERT(nbytes > 0);
       _exit(2);
     }
     if (strcmp(nl_langinfo(CODESET), "UTF-8")){
       char errmess[] = "Current locale doesn't support UTF-8\n";
-      (void) write(STDERR_FILENO, errmess, sizeof(errmess)/sizeof(*errmess)-1);
+      [[maybe_unused]] const auto nbytes = write(STDERR_FILENO, errmess, sizeof(errmess)/sizeof(*errmess)-1);
+      ASSERT(nbytes > 0);
     }
   }
 };

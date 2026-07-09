@@ -891,8 +891,7 @@ void TreeCtrlBase::SetItemImage(const wxTreeItemId &node,
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarn)) {
         int idays = PWSprefs::GetInstance()->GetPref(PWSprefs::PreExpiryWarnDays);
         struct tm st;
-        errno_t err;
-        err = localtime_s(&st, &now);  // secure version
+        [[maybe_unused]] errno_t err = localtime_s(&st, &now);  // secure version
         ASSERT(err == 0);
         st.tm_mday += idays;
         warnexptime = mktime(&st);
@@ -1527,9 +1526,9 @@ void TreeCtrl::OnEndDrag(wxTreeEvent& evt)
 
       auto *commands = MultiCommands::Create(&m_core);
 
-      // If the drag'd item leaves an empty group in the tree
+      // If the dragged item leaves an empty group in the tree
       // the group needs to be created as such in the database.
-      if (dragItemLeavesEmptyGroup && (GetRootItem() != GetItemGroup(parentOfDragItem))) {
+      if (dragItemLeavesEmptyGroup && GetItemGroup(parentOfDragItem) != wxEmptyString) {
         auto emptyGroups = m_core.GetEmptyGroups();
         emptyGroups.push_back(tostringx(GetItemGroup(parentOfDragItem))); // parent of entry or group
         commands->Add(

@@ -22,6 +22,7 @@
 
 #include "DeleteConfirmationDlg.h"
 #include "core/PWSprefs.h"
+#include "wxUtilities.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>

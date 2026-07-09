@@ -401,7 +401,7 @@ bool SetFiltersDlg::VerifyFilters()
 }
 
 bool SetFiltersDlg::IsChanged() const {
-  return *m_pfilters != m_origFilters || m_filterName != m_origFilters.fname;
+  return *m_pfilters != m_origFilters || m_filterName != towxstring(m_origFilters.fname);
 }
 
 bool SetFiltersDlg::SyncAndQueryCancel(bool showDialog) {

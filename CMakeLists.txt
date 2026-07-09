@@ -41,7 +41,7 @@ if (UNIX)
 endif ()
 
 if (NOT WIN32)
-include(FindUnixCommands)
+  include(FindUnixCommands)
 endif (NOT WIN32)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules")
@@ -80,9 +80,9 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   option (NO_QR "Set ON to disable QR support" OFF)
   if (NOT NO_QR)
     CHECK_INCLUDE_FILE("qrencode.h" HAVE_LIBQRENCODE_DEV)
-    if(NOT HAVE_LIBQRENCODE_DEV)
+    if (NOT HAVE_LIBQRENCODE_DEV)
       unset(HAVE_LIBQRENCODE_DEV CACHE)
-      message( FATAL_ERROR "libqrencode-dev(el) not installed: install or select NO_QR")
+      message(FATAL_ERROR "libqrencode-dev(el) not installed: install or select NO_QR")
     endif(NOT HAVE_LIBQRENCODE_DEV)
   else (NOT NO_QR)
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_QR")
@@ -93,7 +93,7 @@ endif(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 if (NOT WIN32 OR WX_WINDOWS)
   if (NOT WIN32)
      # help people with wxWidgets on non-standard installation
-     # quick-and-dirty since wxWdigets cmake's support is not yet loaded.
+     # quick-and-dirty since wxWidgets cmake's support is not yet loaded.
      find_program(PWSHINT_wxconfig wx-config)
      if (NOT PWSHINT_wxconfig)
        message(STATUS
@@ -117,7 +117,7 @@ endif (NOT WIN32 OR WX_WINDOWS)
 
 if (NOT WIN32)
     if (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-      set( CMAKE_REQUIRED_INCLUDES "/usr/local/include" )
+      set(CMAKE_REQUIRED_INCLUDES "/usr/local/include")
     endif (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
     if (${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD")
 	  CHECK_INCLUDE_FILE("uuid.h" UUID_H)
@@ -128,7 +128,7 @@ if (NOT WIN32)
     message(FATAL_ERROR
       "uuid.h not found - uuid-dev / libuuid-devel not installed?")
   endif(NOT UUID_H)
-  if(NOT NO_YUBI)
+  if (NOT NO_YUBI)
     if (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD" OR ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD")
       CHECK_LIBRARY_EXISTS(ykpers-1 yk_init "/usr/local/lib/" HAVE_YKPERS_H)
     else ()
@@ -136,7 +136,7 @@ if (NOT WIN32)
     endif (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD" OR ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD")
   endif(NOT NO_YUBI)
 
-  if(NOT HAVE_YKPERS_H)
+  if (NOT HAVE_YKPERS_H)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
     message(STATUS "Yubikey support disabled")
   endif(NOT HAVE_YKPERS_H)
@@ -200,30 +200,36 @@ add_compile_definitions(
 
 # Assume that we're either MSVC or a Unix-like
 if (MSVC)
-# Debug build looks for dlls with _D postfix, this provides it:
-set (CMAKE_DEBUG_POSTFIX "_D")
-# This copies dlls to same directory as exec upon 'install' build
-set (CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
+  # Debug build looks for dlls with _D postfix, this provides it:
+  set (CMAKE_DEBUG_POSTFIX "_D")
+  # This copies dlls to same directory as exec upon 'install' build
+  set (CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR})
 
-set_property (GLOBAL PROPERTY USE_FOLDERS ON)
+  set_property (GLOBAL PROPERTY USE_FOLDERS ON)
 
-if (NO_YUBI)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
-endif (NO_YUBI)
+  if (NO_YUBI)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_YUBI")
+  endif (NO_YUBI)
 
-if (WX_WINDOWS)
-   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D __WX__")
-endif (WX_WINDOWS)
+  if (WX_WINDOWS)
+     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /D __WX__")
+  endif (WX_WINDOWS)
 
-include(set-options-msvc)
+  include(set-options-msvc)
 else ()
-set(CMAKE_CXX_FLAGS
-  "${CMAKE_CXX_FLAGS} -Wall -DUNICODE -DWCHAR_INCOMPATIBLE_XMLCH ${CMAKE_WXWINDOWS_CXX_FLAGS}")
-set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DDEBUG")
-if (USE_ASAN)
-  set(CMAKE_CXX_FLAGS_DEBUG
-    "${CMAKE_CXX_FLAGS_DEBUG} -gdwarf-4 -O0 -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize=address")
-endif (USE_ASAN)
+  set(CMAKE_CXX_FLAGS
+    "${CMAKE_CXX_FLAGS} -Wall -DUNICODE -DWCHAR_INCOMPATIBLE_XMLCH ${CMAKE_WXWINDOWS_CXX_FLAGS}")
+  if (NOT APPLE)
+    # TODO: with the below flag the Mac cmake-based build fails with an error:
+    #   clang: error: argument unused during compilation: '-fstack-clash-protection'
+    # it's possible check_cxx_compiler_flag is using the wrong compiler for the check?
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Werror")
+  endif (NOT APPLE)
+  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_DEBUG -DDEBUG")
+  if (USE_ASAN)
+    set(CMAKE_CXX_FLAGS_DEBUG
+      "${CMAKE_CXX_FLAGS_DEBUG} -gdwarf-4 -O0 -fno-omit-frame-pointer -fno-optimize-sibling-calls -fsanitize=address")
+  endif (USE_ASAN)
 endif (MSVC)
 
 if (NOT NO_GTEST AND GTEST_BUILD)
@@ -254,11 +260,11 @@ if (NOT NO_GTEST AND GTEST_BUILD)
                        )
 endif(NOT NO_GTEST AND GTEST_BUILD)
 
-if( NOT CMAKE_BUILD_TYPE )
-  set( CMAKE_BUILD_TYPE Release )
-endif( NOT CMAKE_BUILD_TYPE )
+if (NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE Release)
+endif(NOT CMAKE_BUILD_TYPE)
 
-if(HAVE_YKPERS_H)
+if (HAVE_YKPERS_H)
   if (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD" OR ${CMAKE_SYSTEM_NAME} MATCHES "OpenBSD")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I/usr/local/include/ykpers-1")
   else ()
@@ -310,7 +316,7 @@ if (NOT WIN32)
   add_executable(pwsafe ${PWSAFE_SRCS})
 else (NOT WIN32)
    add_executable(pwsafe WIN32 ${PWSAFE_SRCS})
-   add_dependencies( pwsafe language-dlls) # i18n dlls
+   add_dependencies(pwsafe language-dlls) # i18n dlls
    if (NOT WX_WINDOWS)
       set (PWS_DLL_LIBS "pws_at" "pws_osk")
       set_target_properties(pwsafe PROPERTIES COMPILE_DEFINITIONS
@@ -389,7 +395,7 @@ else ()
 endif (NOT WIN32)
 
 # uninstall target
-if(NOT TARGET uninstall)
+if (NOT TARGET uninstall)
   configure_file(
       "${CMAKE_CURRENT_SOURCE_DIR}/install/cmake_uninstall.cmake.in"
       "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
@@ -696,7 +702,6 @@ set (CPACK_RPM_EXCLUDE_FROM_AUTO_FILELIST_ADDITION
      "/usr/share/locale/sv" "/usr/share/locale/sv/LC_MESSAGES"
      "/usr/share/locale/zh_CN" "/usr/share/locale/zh_CN/LC_MESSAGES"
      "/usr/share/applications" "/usr/share/pixmaps"
-     "/usr/share/icons/hicolor" "/usr/share/icons/hicolor/48x48" "/usr/share/icons/hicolor/48x48/apps"
      "/usr/share/icons" "/usr/share/icons/hicolor"
      "/usr/share/icons/hicolor/48x48" "/usr/share/icons/hicolor/48x48/apps"
     )
