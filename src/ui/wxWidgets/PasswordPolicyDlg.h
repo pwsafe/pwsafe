@@ -261,7 +261,7 @@ private:
   wxComboBox* m_PoliciesSelectionCtrl = nullptr;
   wxTextCtrl* m_passwordCtrl = nullptr;
   wxArrayString m_Policynames;
-  wxStaticBoxSizer* m_itemStaticBoxSizer6  = nullptr;;
+  wxStaticBoxSizer* m_itemStaticBoxSizer6  = nullptr;
 
   wxString m_Symbols;
   wxString m_polname;
