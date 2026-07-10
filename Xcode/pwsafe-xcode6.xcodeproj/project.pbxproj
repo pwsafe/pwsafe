@@ -2512,6 +2512,7 @@
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_PEDANTIC = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
@@ -2520,6 +2521,7 @@
 				GTEST_LIB = /opt/homebrew/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				ONLY_ACTIVE_ARCH = YES;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = "Debug-no-yubi";
 		};
@@ -2533,7 +2535,7 @@
 				PRODUCT_NAME = core;
 				USER_HEADER_SEARCH_PATHS = ../src/;
 				WARNING_CFLAGS = (
-					"-Wall",
+					"$(inherited)",
 					"-Wextra",
 				);
 			};
@@ -2553,7 +2555,7 @@
 				PRODUCT_NAME = os;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				WARNING_CFLAGS = (
-					"-Wall",
+					"$(inherited)",
 					"-Wextra",
 				);
 			};
@@ -2614,7 +2616,6 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../src/core,
 					../src,
 				);
@@ -2642,7 +2643,6 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../src/core,
 					../src,
 					"$(GTEST_INC)",
@@ -2671,7 +2671,6 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../src/core,
 					../src,
 					"$(GTEST_INC)",
@@ -2698,7 +2697,6 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../src/core,
 					../src,
 					"$(GTEST_INC)",
@@ -2728,7 +2726,6 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../src/core,
 					../src,
 					"$(GTEST_INC)",
@@ -2757,7 +2754,6 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../src/core,
 					../src,
 					"$(GTEST_INC)",
@@ -2784,7 +2780,6 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../src/core,
 					../src,
 					"$(GTEST_INC)",
@@ -2848,6 +2843,7 @@
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_PEDANTIC = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
@@ -2856,6 +2852,7 @@
 				GTEST_LIB = /opt/homebrew/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				ONLY_ACTIVE_ARCH = YES;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = "Homebrew-Release";
 		};
@@ -2868,7 +2865,7 @@
 				PRODUCT_NAME = core;
 				USER_HEADER_SEARCH_PATHS = ../src/;
 				WARNING_CFLAGS = (
-					"-Wall",
+					"$(inherited)",
 					"-Wextra",
 				);
 			};
@@ -2887,7 +2884,7 @@
 				PRODUCT_NAME = os;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				WARNING_CFLAGS = (
-					"-Wall",
+					"$(inherited)",
 					"-Wextra",
 				);
 			};
@@ -2949,7 +2946,6 @@
 				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../src/core,
 					../src,
 				);
@@ -2975,7 +2971,6 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../src/core,
 					../src,
 					"$(GTEST_INC)",
@@ -3002,7 +2997,6 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../src/core,
 					../src,
 					"$(GTEST_INC)",
@@ -3038,7 +3032,6 @@
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../src/core,
 					../src,
 				);
@@ -3071,7 +3064,6 @@
 				ENABLE_RESOURCE_ACCESS_PHOTO_LIBRARY = NO;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					../src/core,
 					../src,
 				);
@@ -3154,6 +3146,7 @@
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_PEDANTIC = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
@@ -3162,6 +3155,7 @@
 				GTEST_LIB = /opt/homebrew/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				ONLY_ACTIVE_ARCH = YES;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Debug;
 		};
@@ -3211,8 +3205,10 @@
 					PUGIXML_WCHAR_MODE,
 					PUGIXML_NO_XPATH,
 				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_PEDANTIC = YES;
 				GCC_WARN_UNDECLARED_SELECTOR = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
@@ -3221,6 +3217,7 @@
 				GTEST_LIB = /opt/homebrew/lib;
 				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				ONLY_ACTIVE_ARCH = NO;
+				WARNING_CFLAGS = "-Wall";
 			};
 			name = Release;
 		};
@@ -3234,7 +3231,7 @@
 				PRODUCT_NAME = core;
 				USER_HEADER_SEARCH_PATHS = ../src/;
 				WARNING_CFLAGS = (
-					"-Wall",
+					"$(inherited)",
 					"-Wextra",
 				);
 			};
@@ -3249,7 +3246,7 @@
 				PRODUCT_NAME = core;
 				USER_HEADER_SEARCH_PATHS = ../src/;
 				WARNING_CFLAGS = (
-					"-Wall",
+					"$(inherited)",
 					"-Wextra",
 				);
 			};
@@ -3269,7 +3266,7 @@
 				PRODUCT_NAME = os;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				WARNING_CFLAGS = (
-					"-Wall",
+					"$(inherited)",
 					"-Wextra",
 				);
 			};
@@ -3288,7 +3285,7 @@
 				PRODUCT_NAME = os;
 				USER_HEADER_SEARCH_PATHS = ../src;
 				WARNING_CFLAGS = (
-					"-Wall",
+					"$(inherited)",
 					"-Wextra",
 				);
 			};
@@ -3344,6 +3341,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
 				USER_HEADER_SEARCH_PATHS = ../src;
+				WARNING_CFLAGS = (
+					"$(inherited)",
+					"-Wno-overloaded-virtual",
+				);
 			};
 			name = Release;
 		};
