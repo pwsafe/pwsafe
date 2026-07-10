@@ -44,6 +44,7 @@ public:
         sa.Add(GetHistoryFile(idx));
     }
 
+    using wxFileHistory::Save;
     void Save() const {
       std::vector<stringT> mruList;
       for (size_t idx = 0, max = GetCount(); idx < max; ++idx) {
@@ -52,6 +53,7 @@ public:
       PWSprefs::GetInstance()->SetMRUList(mruList, PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems));
     }
 
+    using wxFileHistory::Load;
     void Load() {
       PWSprefs* prefs = PWSprefs::GetInstance();
       [[maybe_unused]] const auto nExpected = prefs->GetPref(PWSprefs::MaxMRUItems);
