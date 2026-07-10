@@ -311,80 +311,68 @@ void PasswordSafeFrame::OnDuplicateEntry(wxCommandEvent& WXUNUSED(event))
 {
   if (m_core.IsReadOnly()) // disable in read-only mode
     return;
-//  if (SelItemOk() == TRUE) {
-    CItemData *pci = GetSelectedEntry();
-    ASSERT(pci != nullptr);
-//    DisplayInfo *pdi = (DisplayInfo *)pci->GetDisplayInfo();
-//    ASSERT(pdi != nullptr);
 
-    // Get information from current selected entry
-    const StringX ci2_group = pci->GetGroup();
-    const StringX ci2_user = pci->GetUser();
-    const StringX ci2_title0 = pci->GetTitle();
-    StringX ci2_title;
+  CItemData *pci = GetSelectedEntry();
+  ASSERT(pci != nullptr);
 
-    // Find a unique "Title"
-    ItemListConstIter listpos;
-    int i = 0;
-    wxString s_copy;
-    do {
-      s_copy.clear();
-      i++;
-      s_copy << _(" Copy # ") << i;
-      ci2_title = ci2_title0 + tostringx(s_copy);
-      listpos = m_core.Find(ci2_group, ci2_title, ci2_user);
-    } while (listpos != m_core.GetEntryEndIter());
+  // Get information from current selected entry
+  const StringX ci2_group = pci->GetGroup();
+  const StringX ci2_user = pci->GetUser();
+  const StringX ci2_title0 = pci->GetTitle();
+  StringX ci2_title;
 
-    // Set up new entry
-    CItemData ci2(*pci);
-    ci2.CreateUUID();
-    ci2.SetGroup(ci2_group);
-    ci2.SetTitle(ci2_title);
-    ci2.SetUser(ci2_user);
-    ci2.SetStatus(CItemData::ES_ADDED);
+  // Find a unique "Title"
+  ItemListConstIter listpos;
+  int i = 0;
+  wxString s_copy;
+  do {
+    s_copy.clear();
+    i++;
+    s_copy << _(" Copy # ") << i;
+    ci2_title = ci2_title0 + tostringx(s_copy);
+    listpos = m_core.Find(ci2_group, ci2_title, ci2_user);
+  } while (listpos != m_core.GetEntryEndIter());
 
-    Command *pcmd = nullptr;
-    if (pci->IsDependent()) {
-      if (pci->IsAlias()) {
-        ci2.SetAlias();
-      } else {
-        ci2.SetShortcut();
-      }
+  // Set up new entry
+  CItemData ci2(*pci);
+  ci2.CreateUUID();
+  ci2.SetGroup(ci2_group);
+  ci2.SetTitle(ci2_title);
+  ci2.SetUser(ci2_user);
+  ci2.SetStatus(CItemData::ES_ADDED);
 
-      const CItemData *pbci = m_core.GetBaseEntry(pci);
-      if (pbci != nullptr) {
-        StringX cs_tmp;
-        cs_tmp = wxT("[") +
-          pbci->GetGroup() + wxT(":") +
-          pbci->GetTitle() + wxT(":") +
-          pbci->GetUser()  + wxT("]");
-        ci2.SetPassword(cs_tmp);
-        pcmd = AddEntryCommand::Create(&m_core, ci2, pbci->GetUUID());
-      }
-    } else { // not alias or shortcut
-      ci2.SetNormal();
-      pcmd = AddEntryCommand::Create(&m_core, ci2);
+  Command *pcmd = nullptr;
+  if (pci->IsDependent()) {
+    if (pci->IsAlias()) {
+      ci2.SetAlias();
+    } else {
+      ci2.SetShortcut();
     }
 
-    Execute(pcmd);
+    const CItemData *pbci = m_core.GetBaseEntry(pci);
+    if (pbci != nullptr) {
+      StringX cs_tmp;
+      cs_tmp = wxT("[") +
+        pbci->GetGroup() + wxT(":") +
+        pbci->GetTitle() + wxT(":") +
+        pbci->GetUser()  + wxT("]");
+      ci2.SetPassword(cs_tmp);
+      pcmd = AddEntryCommand::Create(&m_core, ci2, pbci->GetUUID());
+    }
+  } else { // not alias or shortcut
+    ci2.SetNormal();
+    pcmd = AddEntryCommand::Create(&m_core, ci2);
+  }
 
-//    pdi->list_index = -1; // so that InsertItemIntoGUITreeList will set new values
+  Execute(pcmd);
 
-    CUUID uuid = ci2.GetUUID();
-    auto iter = m_core.Find(uuid);
-    ASSERT(iter != m_core.GetEntryEndIter());
-    wxUnusedVar(iter); // used in assert only
-//    InsertItemIntoGUITreeList(m_core.GetEntry(iter));
-//    FixListIndexes();
-    UpdateStatusBar();
+  CUUID uuid = ci2.GetUUID();
+  auto iter = m_core.Find(uuid);
+  ASSERT(iter != m_core.GetEntryEndIter());
+  wxUnusedVar(iter); // used in assert only
+  UpdateStatusBar();
 
-//    int rc = SelectEntry(pdi->list_index);
-//    if (rc == 0) {
-//      SelectEntry(m_ctlItemList.GetItemCount() - 1);
-//    }
-//    ChangeOkUpdate();
-    m_RUEList.AddRUEntry(uuid);
-//  }
+  m_RUEList.AddRUEntry(uuid);
 }
 
 /*!
