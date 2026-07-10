@@ -138,7 +138,7 @@ sub WriteHFile {
 #if !defined(_WIN32) || defined(__WX__)
 #include <map>
 #include "../os/typedefs.h" // for definition of TCHAR
-extern std::map<int, const TCHAR *> ${b}_st;
+extern std::map<int, const char *> ${b}_st;
 #endif
 
 #endif /* __${B}_ST_H */
@@ -168,23 +168,24 @@ sub WriteCPPFile {
 #define _(x) L ## x
 #include "./${BASE}_st.h"
 #include <utility>
+#include <wx/intl.h>
 ${include}
 
 using namespace std;
 
 namespace {
-  pair<int, const TCHAR *> Pairs[] = {
+  pair<int, const char *> Pairs[] = {
 PREAMBLE
 # print %MAP, sorted by constant name, just to be consistent
     my $key;
     foreach $key (sort keys %MAP) {
-        print CPP "    make_pair($key, _($MAP{$key})),\n";
+        print CPP "    make_pair($key, wxTRANSLATE($MAP{$key})),\n";
 }
     print CPP <<"POSTAMBLE";
   }; // Pairs array
 } // anonymous namespace
 
-map<int, const TCHAR *> ${b}_st(Pairs, Pairs + sizeof(Pairs)/sizeof(Pairs[0]));
+map<int, const char*> ${b}_st(Pairs, Pairs + sizeof(Pairs)/sizeof(Pairs[0]));
 
 #endif
 POSTAMBLE
