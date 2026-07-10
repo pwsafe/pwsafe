@@ -62,6 +62,8 @@ class TreeCtrl;
 
 typedef void (TreeCtrl:: *TreeCtrlMemberFncPtr)(void);
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Woverloaded-virtual"
 class TreeCtrlTimer: public wxTimer
 {
 public:
@@ -166,6 +168,7 @@ private:
   PWScore &m_core;
   UUIDTIMapT m_item_map; // given a uuid, find the tree item pronto!
 };
+#pragma GCC diagnostic pop
 
 /*!
  * TreeCtrl class declaration
