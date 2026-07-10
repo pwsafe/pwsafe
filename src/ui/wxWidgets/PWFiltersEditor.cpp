@@ -85,40 +85,40 @@ const std::map<int, wxString> FieldTypeString = {
   {FT_POLICYNAME, towxstring(CItemData::EngFieldName(CItemData::POLICYNAME))},
   {FT_KBSHORTCUT, towxstring(CItemData::EngFieldName(CItemData::KBSHORTCUT))},
   {FT_END, _T("------")}, // Separator
-  {FT_ENTRYSIZE, _("Entry size")},
-  {FT_ENTRYTYPE, _("Entry type")},
-  {FT_ENTRYSTATUS, _("Entry status")},
-  {FT_UNKNOWNFIELDS, _("Unknown fields")},
-  {FT_PASSWORDLEN, _("Password Length")},
-  {HT_PRESENT, _("Field present")},
-  {HT_ACTIVE, _("Field active")},
-  {HT_NUM, _("Number stored")},
-  {HT_MAX, _("Maximal Number stored")},
-  {HT_CHANGEDATE, _("Change Date")},
-  {HT_PASSWORDS, _("Previous Passwords")},
+  {FT_ENTRYSIZE, wxTRANSLATE("Entry size")},
+  {FT_ENTRYTYPE, wxTRANSLATE("Entry type")},
+  {FT_ENTRYSTATUS, wxTRANSLATE("Entry status")},
+  {FT_UNKNOWNFIELDS, wxTRANSLATE("Unknown fields")},
+  {FT_PASSWORDLEN, wxTRANSLATE("Password Length")},
+  {HT_PRESENT, wxTRANSLATE("Field present")},
+  {HT_ACTIVE, wxTRANSLATE("Field active")},
+  {HT_NUM, wxTRANSLATE("Number stored")},
+  {HT_MAX, wxTRANSLATE("Maximal Number stored")},
+  {HT_CHANGEDATE, wxTRANSLATE("Change Date")},
+  {HT_PASSWORDS, wxTRANSLATE("Previous Passwords")},
   {HT_END, _T("------")}, // Separator
-  {PT_PRESENT, _("Field present")},
-  {PT_LENGTH, _("Password length")},
-  {PT_LOWERCASE, _("Minimum lowercase characters")},
-  {PT_UPPERCASE, _("Minimum uppercase characters")},
-  {PT_DIGITS, _("Minimum digits")},
-  {PT_SYMBOLS, _("Minimum symbols")},
-  {PT_EASYVISION, _("Easyvision characters")},
-  {PT_PRONOUNCEABLE, _("Pronounceable passwords")},
-  {PT_HEXADECIMAL, _("Hexadecimal characters")},
+  {PT_PRESENT, wxTRANSLATE("Field present")},
+  {PT_LENGTH, wxTRANSLATE("Password length")},
+  {PT_LOWERCASE, wxTRANSLATE("Minimum lowercase characters")},
+  {PT_UPPERCASE, wxTRANSLATE("Minimum uppercase characters")},
+  {PT_DIGITS, wxTRANSLATE("Minimum digits")},
+  {PT_SYMBOLS, wxTRANSLATE("Minimum symbols")},
+  {PT_EASYVISION, wxTRANSLATE("Easyvision characters")},
+  {PT_PRONOUNCEABLE, wxTRANSLATE("Pronounceable passwords")},
+  {PT_HEXADECIMAL, wxTRANSLATE("Hexadecimal characters")},
   {PT_END, _T("------")}, // Separator
-  {AT_PRESENT, _("Attachment")},
-  {AT_TITLE, _("Title")},
-  {AT_CTIME, _("Date added")},
-  {AT_MEDIATYPE, _("Media Type")},
-  {AT_FILENAME, _("File Name")},
-  {AT_FILEPATH, _("File Path")},
-  {AT_FILECTIME, _("File Creation Date")},
-  {AT_FILEMTIME, _("File Last Modified Date")},
-  {AT_FILEATIME, _("File Last Accessed date")},
+  {AT_PRESENT, wxTRANSLATE("Attachment")},
+  {AT_TITLE, wxTRANSLATE("Title")},
+  {AT_CTIME, wxTRANSLATE("Date added")},
+  {AT_MEDIATYPE, wxTRANSLATE("Media Type")},
+  {AT_FILENAME, wxTRANSLATE("File Name")},
+  {AT_FILEPATH, wxTRANSLATE("File Path")},
+  {AT_FILECTIME, wxTRANSLATE("File Creation Date")},
+  {AT_FILEMTIME, wxTRANSLATE("File Last Modified Date")},
+  {AT_FILEATIME, wxTRANSLATE("File Last Accessed date")},
   {AT_END, _T("------")}, // Separator
-  {FT_ATTACHMENT, _("Attachment")},
-  {FT_INVALID, _("Click here to pick a field")},
+  {FT_ATTACHMENT, wxTRANSLATE("Attachment")},
+  {FT_INVALID, wxTRANSLATE("Click here to pick a field")},
 };
 
 
@@ -141,7 +141,7 @@ wxString pwFiltersFTChoiceRenderer::getFieldTypeString(int ft)
 {
   std::map<int, wxString>::const_iterator iter = FieldTypeString.find(ft);
   ASSERT(iter != FieldTypeString.end());
-  return iter->second;
+  return wxGetTranslation(iter->second);
 }
 
 /*!
@@ -373,7 +373,7 @@ wxSize pwFiltersFTChoiceRenderer::GetBestSize(wxGrid& WXUNUSED(grid), wxGridCell
     }
      */
     for(const auto& kv : FieldTypeString) {
-      m_bestSize.IncTo(DoGetBestSize(attr, dc, kv.second));
+      m_bestSize.IncTo(DoGetBestSize(attr, dc, wxGetTranslation(kv.second)));
     }
   }
   return m_bestSize;

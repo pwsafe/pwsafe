@@ -859,7 +859,7 @@ void PasswordSafeFrame::AddLanguageMenu(wxMenu* parent)
   wxLanguage system_language = wxGetApp().GetSystemLanguage();
 
   for (auto &item : m_languages) {
-    wxString lang_name = get<1>(item.second);
+    wxString lang_name = wxGetTranslation(get<1>(item.second));
     if (get<0>(item.second) == system_language) {
       lang_name = L"[ " + lang_name + L" ]";
     }
