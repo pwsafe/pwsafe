@@ -12,6 +12,7 @@ PasswordSafe 1.25.0 Release ?? ??? 2026
 
 Bugs fixed in 1.25.0
 --------------------
+* [GH1856](https://github.com/pwsafe/pwsafe/issues/1856) (regression) Clicking on a row in the "conflicting items" grid in the comparison dialog no longer hangs the app.
 * [SF1630](https://sourceforge.net/p/passwordsafe/bugs/1630/) Don't clear a non-recurring expiry when the password's changed.
 
 
