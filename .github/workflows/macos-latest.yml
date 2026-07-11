@@ -82,7 +82,7 @@ jobs:
         cd yubikey-personalization
         git checkout db0c0d641d47ee52e43af94dcee603d76186b6d3
         autoreconf --install --force
-        ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
+        ./configure --disable-shared --disable-documentation --without-json CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
         make -j $HOST_NCPU check
         sudo make install
 
