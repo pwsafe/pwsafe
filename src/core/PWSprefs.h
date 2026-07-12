@@ -227,11 +227,10 @@ public:
   StringX GetAllStringPrefs(const bool bUseCopy = false);
 
   // Special cases
-  void GetPrefRect(long &top, long &bottom, long &left, long &right) const;
-  // dpi: display scale the rect was captured under, for rescaling the window
-  // at restore if it changed since; 0 = unknown (legacy config, non-MFC UI)
+  // dpi (optional out): display scale the rect was captured under, for rescaling
+  // the window at restore if it changed since; 0 = unknown (legacy config, non-MFC UI)
+  void GetPrefRect(long &top, long &bottom, long &left, long &right, unsigned *dpi = nullptr) const;
   void SetPrefRect(long top, long bottom, long left, long right, unsigned dpi = 0);
-  unsigned GetPrefRectDPI() const {return m_rect.dpi;}
   void GetPrefPSSRect(long &top, long &bottom, long &left, long &right) const;
   void SetPrefPSSRect(long top, long bottom, long left, long right);
   unsigned int GetMRUList(std::vector<stringT> &MRUFiles) const;
