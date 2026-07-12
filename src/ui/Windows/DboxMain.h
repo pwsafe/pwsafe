@@ -375,7 +375,7 @@ public:
   void DoAutoType(const StringX &sx_autotype, 
                   const std::vector<size_t> &vactionverboffsets);
   void UpdateLastClipboardAction(const ClipboardDataSource& cds);
-  void PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd);
+  void PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd, UINT nSavedDPI = 0);
   void SetDCAText(CItemData *pci = NULL);
   void OnItemSelected(NMHDR *pNotifyStruct, LRESULT *pLResult, const bool bTreeView);
   bool IsNodeModified(StringX &path) const

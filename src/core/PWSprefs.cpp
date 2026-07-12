@@ -260,8 +260,10 @@ PWSprefs::PWSprefs() : m_pXML_Config(nullptr)
   for (i = 0; i < NumStringPrefs; i++) m_stringChanged[i] = false;
 
   m_rect.top = m_rect.bottom = m_rect.left = m_rect.right = -1;
+  m_rect.dpi = 0;
   m_rect.changed = false;
   m_PSSrect.top = m_PSSrect.bottom = m_PSSrect.left = m_PSSrect.right = -1;
+  m_PSSrect.dpi = 0;
   m_PSSrect.changed = false;
 
   InitializePreferences();
@@ -749,7 +751,7 @@ bool PWSprefs::DeletePref(const StringX &name)
 }
 
 void PWSprefs::SetPrefRect(long top, long bottom,
-                           long left, long right)
+                           long left, long right, unsigned dpi)
 {
   if (m_rect.top != top) {
     m_rect.top = top; m_rect.changed = true;
@@ -762,6 +764,9 @@ void PWSprefs::SetPrefRect(long top, long bottom,
   }
   if (m_rect.right != right) {
     m_rect.right = right; m_rect.changed = true;
+  }
+  if (m_rect.dpi != dpi) {
+    m_rect.dpi = dpi; m_rect.changed = true;
   }
   if (m_rect.changed)
     m_prefs_changed[APP_PREF] = true;
@@ -1364,6 +1369,7 @@ void PWSprefs::LoadProfileFromRegistry()
   m_rect.bottom = pws_os::RegReadValue(PWS_REG_POSITION, _T("bottom"), -1);
   m_rect.left = pws_os::RegReadValue(PWS_REG_POSITION, _T("left"), -1);
   m_rect.right = pws_os::RegReadValue(PWS_REG_POSITION, _T("right"), -1);
+  m_rect.dpi = pws_os::RegReadValue(PWS_REG_POSITION, _T("dpi"), 0);
 
   // Load last Password subset window size & pos:
   m_PSSrect.top = pws_os::RegReadValue(PWS_REG_POSITION, _T("PSS_top"), -1);
@@ -1478,6 +1484,7 @@ bool PWSprefs::LoadProfileFromFile()
   m_rect.bottom = m_pXML_Config->Get(m_csHKCU_POS, _T("bottom"), -1);
   m_rect.left = m_pXML_Config->Get(m_csHKCU_POS, _T("left"), -1);
   m_rect.right = m_pXML_Config->Get(m_csHKCU_POS, _T("right"), -1);
+  m_rect.dpi = m_pXML_Config->Get(m_csHKCU_POS, _T("dpi"), 0); // 0: saved by a version without dpi support
 
   m_PSSrect.top = m_pXML_Config->Get(m_csHKCU_POS, _T("PSS_top"), -1);
   m_PSSrect.bottom = m_pXML_Config->Get(m_csHKCU_POS, _T("PSS_bottom"), -1);
@@ -1589,6 +1596,8 @@ void PWSprefs::SaveApplicationPreferences()
                               int(m_rect.left));
         pws_os::RegWriteValue(PWS_REG_POSITION, _T("right"),
                               int(m_rect.right));
+        pws_os::RegWriteValue(PWS_REG_POSITION, _T("dpi"),
+                              int(m_rect.dpi));
         break;
       case CF_FILE_RW:
       case CF_FILE_RW_NEW:
@@ -1596,6 +1605,7 @@ void PWSprefs::SaveApplicationPreferences()
         VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"bottom", static_cast<int>(m_rect.bottom)) == 0);
         VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"left", static_cast<int>(m_rect.left)) == 0);
         VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"right", static_cast<int>(m_rect.right)) == 0);
+        VERIFY(m_pXML_Config->Set(m_csHKCU_POS, L"dpi", static_cast<int>(m_rect.dpi)) == 0);
         break;
       case CF_FILE_RO:
       case CF_NONE:

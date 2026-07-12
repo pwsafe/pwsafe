@@ -37,6 +37,7 @@
 typedef int (WINAPI* FP_GETDPI4SYSTEM) ();
 typedef int (WINAPI* FP_GETDPI4WINDOW) (HWND);
 typedef int (WINAPI* FP_GETSYSMETRICS4DPI) (int, UINT);
+typedef HRESULT (WINAPI* FP_GETDPI4MONITOR)(HMONITOR, int, UINT*, UINT*);
 typedef DPI_AWARENESS_CONTEXT (WINAPI* FP_SETTHREADDPIAWARENESSCONTEXT)(DPI_AWARENESS_CONTEXT);
 
 
@@ -293,6 +294,22 @@ UINT WinUtil::GetDPI(HWND hwnd)
     iss >> retval;
   }
   return retval;
+}
+
+UINT WinUtil::GetMonitorDPI(const RECT *prc)
+{
+  static FP_GETDPI4MONITOR fp = nullptr;
+  static bool inited = false;
+  if (!inited) {
+    auto hShcore = static_cast<HMODULE>(pws_os::LoadLibrary(L"Shcore.dll", pws_os::loadLibraryTypes::SYS));
+    if (hShcore != nullptr)
+      fp = FP_GETDPI4MONITOR(pws_os::GetFunction(hShcore, "GetDpiForMonitor"));
+    inited = true;
+  }
+  UINT dpiX = defDPI, dpiY = defDPI;
+  if (fp != nullptr)
+    fp(MonitorFromRect(prc, MONITOR_DEFAULTTONEAREST), 0 /*MDT_EFFECTIVE_DPI*/, &dpiX, &dpiY);
+  return dpiX;
 }
 
 void WinUtil::SetThreadDpiAwarenessContext()
