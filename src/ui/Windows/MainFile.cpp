@@ -266,7 +266,7 @@ BOOL DboxMain::OpenOnInit()
     GetWindowRect(&rect);
     SendMessage(WM_SIZE, SIZE_RESTORED, MAKEWPARAM(rect.Width(), rect.Height()));
   } else {
-    PlaceWindow(this, &rect, SW_HIDE);
+    PlaceWindow(this, &rect, SW_HIDE, PWSprefs::GetInstance()->GetPrefRectDPI());
   }
   ::DeleteObject(hrgnWork);
 

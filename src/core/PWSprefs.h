@@ -228,7 +228,10 @@ public:
 
   // Special cases
   void GetPrefRect(long &top, long &bottom, long &left, long &right) const;
-  void SetPrefRect(long top, long bottom, long left, long right);
+  // dpi: display scale the rect was captured under, for rescaling the window
+  // at restore if it changed since; 0 = unknown (legacy config, non-MFC UI)
+  void SetPrefRect(long top, long bottom, long left, long right, unsigned dpi = 0);
+  unsigned GetPrefRectDPI() const {return m_rect.dpi;}
   void GetPrefPSSRect(long &top, long &bottom, long &left, long &right) const;
   void SetPrefPSSRect(long top, long bottom, long left, long right);
   unsigned int GetMRUList(std::vector<stringT> &MRUFiles) const;
@@ -324,7 +327,7 @@ private:
   bool m_boolValues[NumBoolPrefs];
   unsigned int m_intValues[NumIntPrefs];
   StringX m_stringValues[NumStringPrefs];
-  struct {long top, bottom, left, right; bool changed;} m_rect, m_PSSrect;
+  struct {long top, bottom, left, right; unsigned dpi; bool changed;} m_rect, m_PSSrect;
   bool m_boolChanged[NumBoolPrefs];
   bool m_intChanged[NumIntPrefs];
   bool m_stringChanged[NumStringPrefs];

@@ -1532,7 +1532,8 @@ void DboxMain::OnMove(int x, int y)
   if (m_bInitDone && IsWindowVisible() == TRUE && x >= 0 && y >= 0) {
     CRect rc;
     GetWindowRect(&rc);
-    PWSprefs::GetInstance()->SetPrefRect(rc.top, rc.bottom, rc.left, rc.right);
+    PWSprefs::GetInstance()->SetPrefRect(rc.top, rc.bottom, rc.left, rc.right,
+                                         WinUtil::GetDPI(m_hWnd));
   }
 }
 
@@ -1696,7 +1697,8 @@ void DboxMain::OnSize(UINT nType, int cx, int cy)
 
       if (nType == SIZE_RESTORED) {
         GetWindowRect(&rc);
-        prefs->SetPrefRect(rc.top, rc.bottom, rc.left, rc.right);
+        prefs->SetPrefRect(rc.top, rc.bottom, rc.left, rc.right,
+                           WinUtil::GetDPI(m_hWnd));
       } else { // maximized - mark as such for restore
         prefs->SetPrefRect(0, 0, 0, 0);
       }
