@@ -401,12 +401,14 @@ unsigned int PWSprefs::GetPref(IntPrefs pref_enum, unsigned int defVal,
 }
 
 void PWSprefs::GetPrefRect(long &top, long &bottom,
-                           long &left, long &right) const
+                           long &left, long &right, unsigned *dpi) const
 {
   top = m_rect.top;
   bottom = m_rect.bottom;
   left = m_rect.left;
   right = m_rect.right;
+  if (dpi != nullptr)
+    *dpi = m_rect.dpi;
 }
 
 void PWSprefs::GetPrefPSSRect(long &top, long &bottom,
