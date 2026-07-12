@@ -3815,6 +3815,13 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
 
 void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd)
 {
+  // Do NOT scale pRect here. It is stored verbatim from GetWindowRect()
+  // (see OnMove/OnSize) and round-trips through SetWindowPlacement() 1:1:
+  // save and restore both run on the main thread, which DoModal() has already
+  // elevated to per-monitor-V2, so the coordinates are physical on both ends.
+  // Applying a MulDiv by monitor DPI double-scales the window on displays
+  // > 100% - the regression in commit e6491bef3 that this reverts, which had
+  // itself re-broken PR #1774.
   WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
   HRGN hrgnWork = WinUtil::GetWorkAreaRegion();
 
@@ -3822,12 +3829,6 @@ void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd)
   wp.flags = 0;
   wp.showCmd = uiShowCmd;
   wp.rcNormalPosition = *pRect;
-
-  UINT dpi = WinUtil::GetMonitorDPI(pWnd->GetSafeHwnd());
-  wp.rcNormalPosition.left = MulDiv(pRect->left, dpi, WinUtil::defDPI);
-  wp.rcNormalPosition.top = MulDiv(pRect->top, dpi, WinUtil::defDPI);
-  wp.rcNormalPosition.right = MulDiv(pRect->right, dpi, WinUtil::defDPI);
-  wp.rcNormalPosition.bottom = MulDiv(pRect->bottom, dpi, WinUtil::defDPI);
 
   if (!RectInRegion(hrgnWork, &wp.rcNormalPosition)) {
     if (GetSystemMetrics(SM_CMONITORS) > 1)
