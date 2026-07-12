@@ -1051,7 +1051,6 @@ void ManageFiltersDlg::OnImportClick( wxCommandEvent& event )
     int rc = m_pMapAllFilters->ImportFilterXMLFile(FPOOL_IMPORTED, L"", tostdstring(filename), L"", strErrors, &asker, nullptr);
     
     if (rc != PWScore::SUCCESS) {
-      wxString reason = _("Error");
       stringT cs_error;
       
       if(rc == PWScore::XML_FAILED_VALIDATION) {
