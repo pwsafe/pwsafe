@@ -149,6 +149,9 @@ password policy code and some GUI improvements for 1.92.
 - Thanks to the Password Safe developer's mailing list for help in
 nailing down the 3.x file format.
 - Many, many new features in 3.x have been implemented by DK.
-- Finally, thanks to the folks at SourceForge and GitHub for hosting
-this project.
+
+Thanks
+======
+- To [JetBrains](https://jb.gg/OpenSource) for providing their fine tools to this project.
+- To [SourceForge](https://sourceforge.net/projects/passwordsafe/) and [GitHub](https://github.com/pwsafe) for hosting this project.
 
