@@ -73,7 +73,7 @@ jobs:
         git checkout e4334554857b0367085cbf845bf87dd92433e020
         autoreconf --install --force
         ./configure --disable-shared --disable-documentation CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
-        make -j $HOST_NCPU check
+        make --quiet -j $HOST_NCPU check
         sudo make install
 
     - name: Build ykpers from upstream
@@ -83,7 +83,7 @@ jobs:
         git checkout db0c0d641d47ee52e43af94dcee603d76186b6d3
         autoreconf --install --force
         ./configure --disable-shared --disable-documentation --without-json CFLAGS="-O2 -arch arm64 -arch x86_64 -mmacosx-version-min=$MACOS_VER_MIN"
-        make -j $HOST_NCPU check
+        make --quiet -j $HOST_NCPU check
         sudo make install
 
     - name: Cache wxWidgets build
@@ -109,7 +109,7 @@ jobs:
         cd $WX_SRC_DIR
         # use built-in versions of jpeg, tiff, png, and regex (pcre2) libs to avoid linking with those in /usr/local/opt
         ./configure --enable-universal_binary=$WX_ARCH --prefix=$WX_BUILD_DIR --disable-shared --enable-unicode --with-macosx-version-min=$MACOS_VER_MIN --with-libpng=builtin --with-libjpeg=builtin --with-libtiff=builtin --with-regex=builtin --without-liblzma $WX_DEBUG_FLAG
-        make -j $HOST_NCPU
+        make --quiet -j $HOST_NCPU
         cd locale; make allmo; cd ..
         sudo make install
         du -sh $WX_BUILD_DIR
@@ -122,7 +122,7 @@ jobs:
     
     - name: Build pwsafe and test programs
       working-directory: ${{ github.workspace }}
-      run: xcodebuild -derivedDataPath $XCODE_DIR -project Xcode/pwsafe-xcode6.xcodeproj -scheme All -configuration $XCODE_CONFIG
+      run: xcodebuild -quiet -derivedDataPath $XCODE_DIR -project Xcode/pwsafe-xcode6.xcodeproj -scheme All -configuration $XCODE_CONFIG
 
     - name: Run coretest
       working-directory: src/test
