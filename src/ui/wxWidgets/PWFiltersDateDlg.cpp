@@ -684,7 +684,7 @@ bool pwFiltersDateDlg::IsChanged() const {
   }
 
   if (m_add_present) {
-    if (idx >= 0 && idx < PW_NUM_PRESENT_ENUM) {
+    if (idx < PW_NUM_PRESENT_ENUM) {
       if (*m_prule != m_mrpres[idx]) {
         return true;
       }

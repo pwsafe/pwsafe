@@ -1151,55 +1151,54 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
       startpos < slinebuf.size();
       /* startpos advanced in body */) {
       size_t nextchar = slinebuf.find_first_of(fieldSeparator, startpos);
-      if (nextchar == StringX::npos)
+      if (nextchar == StringX::npos) {
         nextchar = slinebuf.size();
-      if (nextchar >= 0) {
-        if (itoken != columns[CItem::NOTES]) {
-          const StringX tsx(slinebuf.substr(startpos, nextchar - startpos));
-          tokens.push_back(tsx.c_str());
-        }
-        else {
-          // Notes field which may be double-quoted, and
-          // if they are, they may span more than one line.
-          stringT note(slinebuf.substr(startpos).c_str(), nextchar - startpos);
-          size_t first_quote = note.find_first_of('\"');
-          size_t last_quote = note.find_last_of('\"');
-          if (first_quote == last_quote && first_quote != stringT::npos) {
-            //there was exactly one quote, meaning that we've a multi-line Note
-            bool noteClosed = false;
-            do {
-              if (!getline(iss, linebuf, '\n')) {
-                Format(cs_error, IDSC_IMPMISSINGQUOTE, numlines);
-                rpt.WriteLine(cs_error);
-                return (numImported > 0) ? SUCCESS : INVALID_FORMAT;
-              }
-              numlines++;
-              // remove MS-DOS linebreaks, if needed.
-              if (!linebuf.empty() && *(linebuf.end() - 1) == TCHAR('\r')) {
-                linebuf.resize(linebuf.size() - 1);
-              }
-              note += _T("\r\n");
-              if (!conv.FromUTF8(reinterpret_cast<const unsigned char*>(linebuf.c_str()),
-                linebuf.length(), slinebuf)) {
-                // XXX add an appropriate error message
-                numSkipped++;
-                continue;
-              }
-              size_t fq = linebuf.find_first_of('\"');
-              size_t lq = linebuf.find_last_of('\"');
-              noteClosed = (fq == lq && fq != string::npos);
-              if (noteClosed) {
-                note += slinebuf.substr(0, lq+1).c_str();
-                // Adjust nextchar to continue parsing:
-                nextchar = lq + 1;
-              } else {
-                note += slinebuf.c_str();
-              }
-            } while (!noteClosed);
-          } // multiline note processed
-          tokens.push_back(note);
-        } // Notes handling
-      } // nextchar > 0
+      }
+      if (itoken != columns[CItem::NOTES]) {
+        const StringX tsx(slinebuf.substr(startpos, nextchar - startpos));
+        tokens.push_back(tsx.c_str());
+      }
+      else {
+        // Notes field which may be double-quoted, and
+        // if they are, they may span more than one line.
+        stringT note(slinebuf.substr(startpos).c_str(), nextchar - startpos);
+        size_t first_quote = note.find_first_of('\"');
+        size_t last_quote = note.find_last_of('\"');
+        if (first_quote == last_quote && first_quote != stringT::npos) {
+          //there was exactly one quote, meaning that we've a multi-line Note
+          bool noteClosed = false;
+          do {
+            if (!getline(iss, linebuf, '\n')) {
+              Format(cs_error, IDSC_IMPMISSINGQUOTE, numlines);
+              rpt.WriteLine(cs_error);
+              return (numImported > 0) ? SUCCESS : INVALID_FORMAT;
+            }
+            numlines++;
+            // remove MS-DOS linebreaks, if needed.
+            if (!linebuf.empty() && *(linebuf.end() - 1) == TCHAR('\r')) {
+              linebuf.resize(linebuf.size() - 1);
+            }
+            note += _T("\r\n");
+            if (!conv.FromUTF8(reinterpret_cast<const unsigned char*>(linebuf.c_str()),
+              linebuf.length(), slinebuf)) {
+              // XXX add an appropriate error message
+              numSkipped++;
+              continue;
+            }
+            size_t fq = linebuf.find_first_of('\"');
+            size_t lq = linebuf.find_last_of('\"');
+            noteClosed = (fq == lq && fq != string::npos);
+            if (noteClosed) {
+              note += slinebuf.substr(0, lq+1).c_str();
+              // Adjust nextchar to continue parsing:
+              nextchar = lq + 1;
+            } else {
+              note += slinebuf.c_str();
+            }
+          } while (!noteClosed);
+        } // multiline note processed
+        tokens.push_back(note);
+      } // Notes handling
       startpos = nextchar + 1; // too complex for the 'for statement'
       itoken++;
     } // tokenization for loop

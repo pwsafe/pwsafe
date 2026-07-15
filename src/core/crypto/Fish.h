@@ -47,7 +47,7 @@ template<typename FishT, typename HashT>
 FishT *makeFish(const unsigned char* pass, unsigned int passlen,
   const unsigned char* salt, unsigned int saltlen)
 {
-  unsigned char passkey[HashT::HASHLEN];
+  unsigned char passkey[HashT::HASHLEN] = {};
   pws_os::mlock(passkey, sizeof(passkey));
 
   HashT context;

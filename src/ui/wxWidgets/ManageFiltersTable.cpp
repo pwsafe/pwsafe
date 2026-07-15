@@ -597,7 +597,7 @@ stringT pwSortedManageFilters::GetSelectedFilterName()
 
 void pwSortedManageFilters::ClearFlagAt(size_t idx, UINT mask)
 {
-  if(idx >= 0 && idx < m_SortFilterData.size()) {
+  if (idx < m_SortFilterData.size()) {
     m_SortFilterData.at(idx).flt_flags &= ~mask;
   }
 }
@@ -608,7 +608,7 @@ void pwSortedManageFilters::ClearFlagAt(size_t idx, UINT mask)
 
 void pwSortedManageFilters::SetFlagAt(size_t idx, UINT mask)
 {
-  if(idx >= 0 && idx < m_SortFilterData.size()) {
+  if (idx < m_SortFilterData.size()) {
     m_SortFilterData.at(idx).flt_flags |= mask;
   }
 }
@@ -619,7 +619,7 @@ void pwSortedManageFilters::SetFlagAt(size_t idx, UINT mask)
 
 bool pwSortedManageFilters::IsFlagSetAt(size_t idx, UINT mask)
 {
-  if(idx >= 0 && idx < m_SortFilterData.size()) {
+  if (idx < m_SortFilterData.size()) {
     return (m_SortFilterData.at(idx).flt_flags & mask) ? true : false;
   }
   return false;
@@ -631,7 +631,7 @@ bool pwSortedManageFilters::IsFlagSetAt(size_t idx, UINT mask)
 
 FilterPool pwSortedManageFilters::GetPoolAt(size_t idx)
 {
-  if(idx >= 0 && idx < m_SortFilterData.size()) {
+  if (idx < m_SortFilterData.size()) {
     return m_SortFilterData.at(idx).flt_key.fpool;
   }
   return FPOOL_LAST;
@@ -661,7 +661,7 @@ int pwSortedManageFilters::FindEntryByKey(const st_Filterkey &fk)
 
 st_Filterkey pwSortedManageFilters::GetKeyAt(size_t idx)
 {
-  if(idx >= 0 && idx < m_SortFilterData.size()) {
+  if (idx < m_SortFilterData.size()) {
     return m_SortFilterData.at(idx).flt_key;
   }
   st_Filterkey fk;
@@ -676,7 +676,7 @@ st_Filterkey pwSortedManageFilters::GetKeyAt(size_t idx)
 
 struct st_FilterItemData& pwSortedManageFilters::GetFilterItemAt(size_t idx)
 {
-  if(idx >= 0 && idx < m_SortFilterData.size()) {
+  if (idx < m_SortFilterData.size()) {
     return m_SortFilterData.at(idx);
   }
   static struct st_FilterItemData fi;
