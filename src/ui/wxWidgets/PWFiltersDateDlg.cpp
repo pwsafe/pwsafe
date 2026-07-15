@@ -491,7 +491,7 @@ void pwFiltersDateDlg::OnFNum2Change(wxSpinEvent& WXUNUSED(event))
   // (void) CheckBetween(true);
 }
 
-void pwFiltersDateDlg::OnExpDate1Changed(wxDateEvent& event)
+void pwFiltersDateDlg::OnExpDate1Changed(wxDateEvent& WXUNUSED(event))
 {
   m_fdate1 = m_ExpDate1Ctrl->GetValue();
   
@@ -499,7 +499,7 @@ void pwFiltersDateDlg::OnExpDate1Changed(wxDateEvent& event)
   // (void) CheckBetween(true);
 }
 
-void pwFiltersDateDlg::OnExpDate2Changed(wxDateEvent& event)
+void pwFiltersDateDlg::OnExpDate2Changed(wxDateEvent& WXUNUSED(event))
 {
   m_fdate2 = m_ExpDate2Ctrl->GetValue();
   

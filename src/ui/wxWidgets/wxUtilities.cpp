@@ -156,7 +156,7 @@ bool MultiCheckboxValidator::Validate(wxWindow* parent)
   }
 }
 
-void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString text, wxControl* before, const int style)
+void UpdatePasswordTextCtrl([[maybe_unused]] wxSizer *sizer, wxTextCtrl* &textCtrl, const wxString &text, [[maybe_unused]] wxControl* before, const int style)
 {
   ASSERT(textCtrl);
 #if defined(__WXGTK__)
@@ -694,7 +694,7 @@ void ImagePanel::DetermineImageProperties(const wxImage &image)
  * to be redrawn. You can also trigger this call by
  * calling Refresh()/Update().
  */
-void ImagePanel::OnPaint(wxPaintEvent &event)
+void ImagePanel::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
   // depending on your system you may need to look at double-buffered dcs
   wxPaintDC dc(this);

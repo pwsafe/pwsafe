@@ -373,8 +373,7 @@ void SelectAliasDlg::InitDialog()
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_REMOVE
  */
-
-void SelectAliasDlg::OnRemoveClick( wxCommandEvent& event )
+void SelectAliasDlg::OnRemoveClick(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     *m_BaseItem = nullptr; // Mark base entry as NULL and return from dialog
@@ -386,8 +385,7 @@ void SelectAliasDlg::OnRemoveClick( wxCommandEvent& event )
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
-
-void SelectAliasDlg::OnOkClick( wxCommandEvent& event )
+void SelectAliasDlg::OnOkClick(wxCommandEvent& WXUNUSED(evt))
 {
   if (Validate() && TransferDataFromWindow()) {
     if(m_AliasName.IsEmpty()) {
@@ -402,8 +400,7 @@ void SelectAliasDlg::OnOkClick( wxCommandEvent& event )
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CANCEL
  */
-
-void SelectAliasDlg::OnCancelClick( wxCommandEvent& event )
+void SelectAliasDlg::OnCancelClick(wxCommandEvent& WXUNUSED(evt))
 {
   EndModal(wxID_CANCEL);
 }
@@ -505,14 +502,14 @@ void SelectAliasDlg::OnContextMenu(const CItemData* item)
   m_Tree->PopupMenu(&selectMenu);
 }
 
-void SelectTreeCtrl::OnExpandAll(wxCommandEvent& evt)
+void SelectTreeCtrl::OnExpandAll(wxCommandEvent& WXUNUSED(evt))
 {
   if (!IsEmpty()) {
     ExpandAll();
   }
 }
 
-void SelectTreeCtrl::OnCollapseAll(wxCommandEvent& evt)
+void SelectTreeCtrl::OnCollapseAll(wxCommandEvent& WXUNUSED(evt))
 {
   if (IsEmpty()) {
     return;

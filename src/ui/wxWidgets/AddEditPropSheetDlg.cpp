@@ -2074,8 +2074,7 @@ void AddEditPropSheetDlg::OnGenerateButtonClick(wxCommandEvent& WXUNUSED(evt))
 /*!
  * wxEVT_TEXT event handler for ID_TEXTCTRL_PASSWORD and ID_TEXTCTRL_PASSWORD2
  */
-
-void AddEditPropSheetDlg::OnPasswordChanged(wxCommandEvent& event)
+void AddEditPropSheetDlg::OnPasswordChanged(wxCommandEvent& WXUNUSED(evt))
 {
   UpdatePasswordConfirmationIcons();
   UpdatePasswordStrengthMeter();
@@ -2150,8 +2149,7 @@ void AddEditPropSheetDlg::OnShowHideTotpClick(wxCommandEvent& WXUNUSED(evt))
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTON_COPY_TOTP
  */
-
-void AddEditPropSheetDlg::OnCopyAuthCodeClick(wxCommandEvent &event)
+void AddEditPropSheetDlg::OnCopyAuthCodeClick(wxCommandEvent &WXUNUSED(evt))
 {
   const_cast<PasswordSafeFrame*>(GetPwSafe())->CopyAuthCodeToClipboard(&m_ItemTotp);
   m_UpdateTotpInClipboard = true;

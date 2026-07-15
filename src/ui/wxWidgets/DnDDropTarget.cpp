@@ -32,20 +32,12 @@
 ////@end includes
 
 
-/*!
- * OnDrop implementation
- */
-
-bool DndPWSafeDropTarget::OnDrop(wxCoord x, wxCoord y)
+bool DndPWSafeDropTarget::OnDrop(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y))
 {
   return m_tree->IsShown() && !m_tree->IsReadOnly() && (m_tree->IsSortingGroup() || ::wxGetKeyState(WXK_SHIFT));
 }
 
-/*!
- * OnData implementation
- */
-
-wxDragResult DndPWSafeDropTarget::OnData(wxCoord x, wxCoord y, wxDragResult def)
+wxDragResult DndPWSafeDropTarget::OnData(wxCoord x, wxCoord y, wxDragResult WXUNUSED(def))
 {
   if (!GetData())
   {

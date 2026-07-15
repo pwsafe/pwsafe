@@ -249,8 +249,7 @@ void SetFiltersDlg::OnApplyClick( wxCommandEvent& /*event*/ )
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_OK
  */
-
-void SetFiltersDlg::OnOkClick( wxCommandEvent& event )
+void SetFiltersDlg::OnOkClick(wxCommandEvent& WXUNUSED(event))
 {
   if (Validate() && TransferDataFromWindow()) {
     if((m_filtertype == DFTYPE_MAIN) && m_filterName.IsEmpty()) {

@@ -106,7 +106,7 @@ static bool IsDarkTheme()
 #endif
 }
 
-void StrengthMeter::OnPaint(wxPaintEvent& event)
+void StrengthMeter::OnPaint(wxPaintEvent& WXUNUSED(event))
 {
   wxPaintDC dc(this);
   auto size = GetSize();

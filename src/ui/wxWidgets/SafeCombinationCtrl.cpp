@@ -124,7 +124,7 @@ void SafeCombinationCtrl::Init(wxWindow* parent,
   Add(m_textCtrl, wxSizerFlags().Proportion(1).Expand());
 
   auto *showHideButton = new wxBitmapButton(parent, wxID_ANY, wxBitmap(eye_xpm), wxDefaultPosition, wxDefaultSize, wxBORDER_NONE);
-  showHideButton->Bind(wxEVT_BUTTON, [&, showHideButton](wxCommandEvent& event) {
+  showHideButton->Bind(wxEVT_BUTTON, [&, showHideButton](wxCommandEvent& WXUNUSED(event)) {
     UpdatePasswordTextCtrl(this, m_textCtrl, m_textCtrl->GetValue(), nullptr, m_IsPasswordHidden ? 0 : wxTE_PASSWORD);
     showHideButton->SetBitmapLabel(wxBitmap(m_IsPasswordHidden ? eye_close_xpm : eye_xpm));
     showHideButton->SetToolTip(m_IsPasswordHidden ? _("Hide password") : _("Show password"));

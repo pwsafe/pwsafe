@@ -271,10 +271,9 @@ void pwFiltersActiveRenderer::Draw(wxGrid& grid,
 /*!
  * GetBestSize: return the icon extent
  */
-
-wxSize pwFiltersActiveRenderer::GetBestSize(wxGrid& grid,
-                           wxGridCellAttr& attr,
-                           wxDC& dc,
+wxSize pwFiltersActiveRenderer::GetBestSize(wxGrid& WXUNUSED(grid),
+                           wxGridCellAttr& WXUNUSED(attr),
+                           wxDC& WXUNUSED(dc),
                            int WXUNUSED(row), int WXUNUSED(col))
 {
   if(m_bestSize.GetWidth() <= 0 ||  m_bestSize.GetHeight() <= 0) {
@@ -742,8 +741,8 @@ void pwFiltersFTChoiceEditor::BeginEdit(int row, int col, wxGrid* grid)
 /*!
  * EndEdit: End editing
  */
-
-bool pwFiltersFTChoiceEditor::EndEdit(int row, int col, const wxGrid* grid, const wxString& oldval, wxString *newval)
+bool pwFiltersFTChoiceEditor::EndEdit(int WXUNUSED(row), int WXUNUSED(col), const wxGrid* WXUNUSED(grid),
+                                      const wxString& WXUNUSED(oldval), wxString *newval)
 {
   int idx = Combo()->GetSelection();
   long value;
@@ -1022,8 +1021,8 @@ void pwFiltersLCChoiceEditor::BeginEdit(int row, int col, wxGrid* grid)
 /*!
  * EndEdit: End editing
  */
-
-bool pwFiltersLCChoiceEditor::EndEdit(int row, int col, const wxGrid* grid, const wxString& oldval, wxString *newval)
+bool pwFiltersLCChoiceEditor::EndEdit(int WXUNUSED(row), int WXUNUSED(col), const wxGrid* WXUNUSED(grid),
+                                      const wxString& WXUNUSED(oldval), wxString *newval)
 {
   int idx = Combo()->GetSelection();
   
