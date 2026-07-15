@@ -156,7 +156,7 @@ template<class T> void LoadAString(T &s, int id)
   cs.LoadString(id);
   s = cs;
 #else
-  s = _(core_st[id]).c_str();
+  s = wxGetTranslation(core_st[id]);
 #endif
 }
 

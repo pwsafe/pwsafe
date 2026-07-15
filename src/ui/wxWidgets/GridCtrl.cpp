@@ -752,11 +752,11 @@ void GridCtrl::RearrangeItemsDateTimeBased(ItemsCollection& collection, int colu
       else if (dt.ParseDate(datetime, &end)) {
         collection.insert(std::pair<wxDateTime, const CItemData*>(dt, GetItem(row)));
         pws_os::Trace(L"Warning - Sorting may be incorrect for date string: %ls ; day: %d ; month: %d ; year: %d",
-          datetime.wc_str(), dt.GetDay(), dt.GetMonth(), dt.GetYear());
+          static_cast<const wchar_t*>(datetime.wc_str()), dt.GetDay(), dt.GetMonth(), dt.GetYear());
       }
     }
     else {
-      pws_os::Trace(L"Failed to parse item's date string: %ls ; using: %ls", datetime.wc_str(), wxDateTime::Today().FormatISOCombined().wc_str());
+      pws_os::Trace(L"Failed to parse item's date string: %ls ; using: %ls", static_cast<const wchar_t*>(datetime.wc_str()), static_cast<const wchar_t*>(wxDateTime::Today().FormatISOCombined().wc_str()));
       collection.insert(std::pair<wxDateTime, const CItemData*>(wxDateTime::Today(), GetItem(row)));
     }
   }

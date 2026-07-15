@@ -1018,7 +1018,7 @@ void TreeCtrl::OnGetToolTip( wxTreeEvent& evt )
   else if (ItemIsGroup(id)) { // we're on a group other than root, show number of entries including subgroups
     const size_t count = GetEntriesCount(id);
     if (count > 0) {
-      const wxString entries = wxString::Format(_("Number of entries: %d"), count);
+      const wxString entries = wxString::Format(_("Number of entries: %zu"), count);
       evt.SetToolTip(entries);
     }
   }
