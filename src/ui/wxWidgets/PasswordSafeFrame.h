@@ -710,7 +710,12 @@ private:
   void UpdateMainToolbarSeparators(bool insert);
   void DeleteMainToolbarSeparators();
   wxAuiPaneInfo& GetMainToolbarPane();
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Woverloaded-virtual"
   wxAuiToolBar* GetToolBar() { return m_Toolbar; }
+  void CreateStatusBar();
+#pragma GCC diagnostic pop
 
   void CreateDragBar();
   void UpdateDragbarTooltips();
@@ -724,8 +729,6 @@ private:
   wxAuiPaneInfo& GetSearchBarPane();
   PasswordSafeSearch* GetSearchBar() { return m_search; };
   void UpdateSearchBarVisibility();
-
-  void CreateStatusBar();
 
   long GetEventRUEIndex(const wxCommandEvent& evt) const;
   bool IsRUEEvent(const wxCommandEvent& evt) const;

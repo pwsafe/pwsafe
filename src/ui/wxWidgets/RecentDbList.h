@@ -21,55 +21,57 @@
 class RecentDbList : public wxFileHistory
 {
 public:
-    RecentDbList() : wxFileHistory(PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems))
-    {}
+  RecentDbList() : wxFileHistory(PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems))
+  {}
 
-    // Calling wxFileHistory::AddFileToHistory() crashes if maxFiles is initialized to 0.
-    void AddFileToHistory(const wxString& file) {
-      if (GetMaxFiles() > 0)
-        wxFileHistory::AddFileToHistory(file);
-    }
+  // Calling wxFileHistory::AddFileToHistory() crashes if maxFiles is initialized to 0.
+  void AddFileToHistory(const wxString& file) {
+    if (GetMaxFiles() > 0)
+      wxFileHistory::AddFileToHistory(file);
+  }
 
-    void RemoveFile(const wxString& file) {
-      for (size_t idx = 0, max = GetCount(); idx < max; ++idx) {
-        if (GetHistoryFile(idx) == file) {
-          RemoveFileFromHistory(idx);
-          return;
-        }
+  void RemoveFile(const wxString& file) {
+    for (size_t idx = 0, max = GetCount(); idx < max; ++idx) {
+      if (GetHistoryFile(idx) == file) {
+        RemoveFileFromHistory(idx);
+        return;
       }
     }
+  }
 
-    void GetAll(wxArrayString& sa) const {
-      for (size_t idx = 0, max = GetCount(); idx < max; ++idx)
-        sa.Add(GetHistoryFile(idx));
+  void GetAll(wxArrayString& sa) const {
+    for (size_t idx = 0, max = GetCount(); idx < max; ++idx)
+      sa.Add(GetHistoryFile(idx));
+  }
+
+  using wxFileHistory::Save;
+  void Save() const {
+    std::vector<stringT> mruList;
+    for (size_t idx = 0, max = GetCount(); idx < max; ++idx) {
+      mruList.push_back(stringT(GetHistoryFile(idx)));
     }
+    PWSprefs::GetInstance()->SetMRUList(mruList, PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems));
+  }
 
-    void Save() const {
-      std::vector<stringT> mruList;
-      for (size_t idx = 0, max = GetCount(); idx < max; ++idx) {
-        mruList.push_back(stringT(GetHistoryFile(idx)));
-      }
-      PWSprefs::GetInstance()->SetMRUList(mruList, PWSprefs::GetInstance()->GetPref(PWSprefs::MaxMRUItems));
+  using wxFileHistory::Load;
+  void Load() {
+    PWSprefs* prefs = PWSprefs::GetInstance();
+    [[maybe_unused]] const auto nExpected = prefs->GetPref(PWSprefs::MaxMRUItems);
+    std::vector<stringT> mruList;
+    [[maybe_unused]] const auto nFound = prefs->GetMRUList(mruList);
+    wxASSERT(nExpected >= nFound);
+
+    // wxFileHistory::AddFileToHistory() appears to add to the begining of the list,
+    // so we iterate backward to keep the order the same.
+    for (auto iter = mruList.rbegin(); iter != mruList.rend(); iter++) {
+      wxFileHistory::AddFileToHistory(towxstring(*iter));
     }
+  }
 
-    void Load() {
-      PWSprefs* prefs = PWSprefs::GetInstance();
-      [[maybe_unused]] const auto nExpected = prefs->GetPref(PWSprefs::MaxMRUItems);
-      std::vector<stringT> mruList;
-      [[maybe_unused]] const auto nFound = prefs->GetMRUList(mruList);
-      wxASSERT(nExpected >= nFound);
-
-      // wxFileHistory::AddFileToHistory() appears to add to the begining of the list,
-      // so we iterate backward to keep the order the same.
-      for (auto iter = mruList.rbegin(); iter != mruList.rend(); iter++) {
-        wxFileHistory::AddFileToHistory(towxstring(*iter));
-      }
-    }
-
-    void Clear() {
-      while(GetCount() > 0)
-        RemoveFileFromHistory(0);
-    }
+  void Clear() {
+    while(GetCount() > 0)
+      RemoveFileFromHistory(0);
+  }
 };
 
 #endif // _RECENTDBLIST_H_

@@ -25,8 +25,10 @@ It is organized in the following sections:
 
 1. Install the dependencies via homebrew:
 
+Note: The default wxWidgets in Homebrew is v3.3.x. Password Safe does not yet build with that version.  wxwidgets@3.2 should work better.
+
 ```
-brew install wxwidgets yubikey-personalization googletest
+brew install wxwidgets@3.2 yubikey-personalization googletest
 ```
 
 2. Configure the project
