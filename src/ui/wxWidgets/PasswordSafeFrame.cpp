@@ -2996,7 +2996,7 @@ void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
       if (pws_os::FileExists(stringT(dbfile)))
         break;          // An existing file doesn't need to be removed from history
 
-      //[[fallthrough]];
+      [[fallthrough]];
     default:
       wxMessageBox(wxString(_("There was an error loading the database: ")) << dbfile,
                      _("Could not load database"), wxOK|wxICON_ERROR, this);
