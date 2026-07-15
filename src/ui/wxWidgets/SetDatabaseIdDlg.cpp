@@ -102,9 +102,9 @@ void SetDatabaseIdDlg::CreateControls()
   BoxSizer1->Fit(this);
   BoxSizer1->SetSizeHints(this);
 
-  Connect(ID_SPINCTRL_DATABASEID,wxEVT_COMMAND_SPINCTRL_UPDATED,(wxObjectEventFunction)&SetDatabaseIdDlg::OnDatabaseIdChange);
-  Connect(ID_COLORPICKERCTRL_LOCKEDTEXTCOLOR,wxEVT_COMMAND_COLOURPICKER_CHANGED,(wxObjectEventFunction)&SetDatabaseIdDlg::OnLockedTextColorChanged);
-  Connect(ID_COLORPICKERCTRL_UNLOCKEDTEXTCOLOR,wxEVT_COMMAND_COLOURPICKER_CHANGED,(wxObjectEventFunction)&SetDatabaseIdDlg::OnUnlockedTextColorChanged);
+  Connect(ID_SPINCTRL_DATABASEID,wxEVT_COMMAND_SPINCTRL_UPDATED, wxSpinEventHandler(SetDatabaseIdDlg::OnDatabaseIdChange));
+  Connect(ID_COLORPICKERCTRL_LOCKEDTEXTCOLOR,wxEVT_COMMAND_COLOURPICKER_CHANGED, wxColourPickerEventHandler(SetDatabaseIdDlg::OnLockedTextColorChanged));
+  Connect(ID_COLORPICKERCTRL_UNLOCKEDTEXTCOLOR,wxEVT_COMMAND_COLOURPICKER_CHANGED, wxColourPickerEventHandler(SetDatabaseIdDlg::OnUnlockedTextColorChanged));
   //*)
 }
 
