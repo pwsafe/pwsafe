@@ -124,6 +124,7 @@ BOOL DboxMain::OpenOnInit()
   MFCReporter r;
   CReport Rpt;
   CRect rect;
+  unsigned savedDPI = 0;
   int rc2;
   HRGN hrgnWork;
   bool go_ahead;
@@ -254,7 +255,7 @@ BOOL DboxMain::OpenOnInit()
  
 
   // Now get window sizes
-  PWSprefs::GetInstance()->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right);
+  PWSprefs::GetInstance()->GetPrefRect(rect.top, rect.bottom, rect.left, rect.right, &savedDPI);
 
   hrgnWork = WinUtil::GetWorkAreaRegion();
   
@@ -266,7 +267,7 @@ BOOL DboxMain::OpenOnInit()
     GetWindowRect(&rect);
     SendMessage(WM_SIZE, SIZE_RESTORED, MAKEWPARAM(rect.Width(), rect.Height()));
   } else {
-    PlaceWindow(this, &rect, SW_HIDE);
+    PlaceWindow(this, &rect, SW_HIDE, savedDPI);
   }
   ::DeleteObject(hrgnWork);
 

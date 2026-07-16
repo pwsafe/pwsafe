@@ -3813,8 +3813,19 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
   return iEnable;
 }
 
-void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd)
+void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd, UINT nSavedDPI)
 {
+  // pRect is stored verbatim from GetWindowRect() (see OnMove/OnSize) and
+  // round-trips through SetWindowPlacement() 1:1: save and restore both run
+  // on the main thread, which is elevated to per-monitor-V2 before the window
+  // exists, so the coordinates are physical pixels on both ends. Blanket
+  // MulDivs here double-scale the window on displays > 100% (the e6491bef3
+  // regression of PR #1774). The only valid transform is the one below: if
+  // the display scale CHANGED since the rect was saved, rescale the size -
+  // top-left stays anchored - so the window reopens at the same logical size.
+  // Its ratio is current/saved, i.e. a no-op when the scale is unchanged, and
+  // nSavedDPI == 0 (config predating the dpi attribute, or non-MFC UI) skips
+  // it entirely, restoring verbatim.
   WINDOWPLACEMENT wp = {sizeof(WINDOWPLACEMENT)};
   HRGN hrgnWork = WinUtil::GetWorkAreaRegion();
 
@@ -3823,11 +3834,15 @@ void DboxMain::PlaceWindow(CWnd *pWnd, CRect *pRect, UINT uiShowCmd)
   wp.showCmd = uiShowCmd;
   wp.rcNormalPosition = *pRect;
 
-  UINT dpi = WinUtil::GetMonitorDPI(pWnd->GetSafeHwnd());
-  wp.rcNormalPosition.left = MulDiv(pRect->left, dpi, WinUtil::defDPI);
-  wp.rcNormalPosition.top = MulDiv(pRect->top, dpi, WinUtil::defDPI);
-  wp.rcNormalPosition.right = MulDiv(pRect->right, dpi, WinUtil::defDPI);
-  wp.rcNormalPosition.bottom = MulDiv(pRect->bottom, dpi, WinUtil::defDPI);
+  const UINT nCurDPI = WinUtil::GetMonitorDPI(pRect);
+  if (nSavedDPI != 0 && nCurDPI != nSavedDPI) {
+    wp.rcNormalPosition.right = pRect->left + MulDiv(pRect->Width(), nCurDPI, nSavedDPI);
+    wp.rcNormalPosition.bottom = pRect->top + MulDiv(pRect->Height(), nCurDPI, nSavedDPI);
+    // If the resize grew the window past a monitor edge, slide it back into
+    // view. Deliberately not done for unscaled restores: a window saved partly
+    // off-screen is otherwise restored exactly where the user left it.
+    ClipRectToMonitor(NULL, &wp.rcNormalPosition, TRUE);
+  }
 
   if (!RectInRegion(hrgnWork, &wp.rcNormalPosition)) {
     if (GetSystemMetrics(SM_CMONITORS) > 1)

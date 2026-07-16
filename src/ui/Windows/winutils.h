@@ -24,7 +24,7 @@ namespace WinUtil {
   bool PerformConfigMigration();
   const UINT defDPI = 96;
   UINT GetDPI(HWND hwnd = nullptr); // wrapper for debugging and hiding Win10 compatibility breakage
-  UINT GetMonitorDPI(HWND hwnd = nullptr); // Gets DPI as affected by Scaling
+  UINT GetMonitorDPI(const RECT *prc); // effective DPI of the monitor nearest the rect (defDPI if unavailable)
   // Elevates the calling thread to per-monitor-V2 DPI awareness (Win10+ only; no-op
   // otherwise/if already elevated). Must be called before any DPI-dependent value
   // (e.g. Fonts::GetInstance()'s one-time DPI-scaled fonts) is computed, or that
