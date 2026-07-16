@@ -4,6 +4,13 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Support Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
+PasswordSafe 3.72.2 Release ??? ?? 2026
+=======================================
+Bugs Fixed in 3.72.2
+--------------------
+
+* [1092](https://github.com/pwsafe/pwsafe/issues/1092) Regression: Last size and position maintained correctly across scaling other than 100%.
+
 PasswordSafe 3.72.1 Release July 3 2026
 =======================================
 Bugs Fixed in 3.72.1
