@@ -228,8 +228,8 @@ bool CReport::ReadFromDisk()
   // convert utf-8 to StringX
   StringX sx;
   CUTF8Conv conv;
-  std::streampos size = ss.tellp();
-  if (!conv.FromUTF8(reinterpret_cast<const unsigned char*>(ss.str().c_str()), size, sx)) {
+  const std::string& s = ss.str(); // trusting the compiler to use move semantics here
+  if (!conv.FromUTF8(reinterpret_cast<const unsigned char*>(s.c_str()), s.size(), sx)) {
     pws_os::IssueError(_T("Encoding error while reading report file"));
     return false;
   }
