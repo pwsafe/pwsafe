@@ -599,7 +599,7 @@ StringX PWSAuxParse::GetAutoTypeString(const StringX &sx_in_autotype,
             break;
           }
           // deliberate fall-through
-
+          [[fallthrough]];
         case TCHAR('a'): // bell (can't hear it during testing!)
         case TCHAR('f'): // form feed
         case TCHAR('x'): // hex digits (\xNN)

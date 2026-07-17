@@ -1966,7 +1966,7 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
             wxT("<") + group + wxT("> / <") + title + wxT("> / <") + username + wxT(">")
           );
 
-          Bind(wxEVT_MENU, [&](wxCommandEvent& event) { SelectItem(shortcutUUID); }, menuID);
+          Bind(wxEVT_MENU, [&](wxCommandEvent& WXUNUSED(event)) { SelectItem(shortcutUUID); }, menuID);
         }
       }
 
@@ -2915,8 +2915,8 @@ void PasswordSafeFrame::HideUI(bool lock)
 void PasswordSafeFrame::IconizeOrHideAndLock()
 {
   CloseAllWindows(&TimedTaskChain::CreateTaskChain([](){}),
-    static_cast<CloseFlags>(CloseFlags::CLOSE_FORCED|CloseFlags::LEAVE_MAIN),
-    [this](bool success) {
+    static_cast<CloseFlags>(CLOSE_FORCED|LEAVE_MAIN),
+    [this](bool WXUNUSED(success)) {
       if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
         if (!m_sysTray->IsLocked()) {
           HideUI(true);
@@ -2996,7 +2996,7 @@ void PasswordSafeFrame::OnOpenRecentDB(wxCommandEvent& evt)
       if (pws_os::FileExists(stringT(dbfile)))
         break;          // An existing file doesn't need to be removed from history
 
-      //[[fallthrough]];
+      [[fallthrough]];
     default:
       wxMessageBox(wxString(_("There was an error loading the database: ")) << dbfile,
                      _("Could not load database"), wxOK|wxICON_ERROR, this);

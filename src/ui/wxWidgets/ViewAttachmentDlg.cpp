@@ -71,7 +71,7 @@ bool ViewAttachmentDlg::LoadImage(const CItemAtt &itemAttachment)
   return m_AttachmentImagePanel->LoadFromAttachment(itemAttachment, this, _("View Attachment"));
 }
 
-void ViewAttachmentDlg::OnClose(wxCommandEvent& event)
+void ViewAttachmentDlg::OnClose(wxCommandEvent& WXUNUSED(event))
 {
   EndModal(wxID_CLOSE);
 }

@@ -397,7 +397,7 @@ void sbs_print(const PWScore &core,
           wssr << right_line(ft) << flush;
           lines_vec left_lines{resize_lines(stream2vec(wssl), cols)},
                   right_lines{resize_lines(stream2vec(wssr), cols)};
-          const long ndiff = static_cast<const long>(left_lines.size()) - static_cast<const long>(right_lines.size());
+          const long ndiff = static_cast<long>(left_lines.size() - right_lines.size());
           if (ndiff < 0)
               left_lines.insert(left_lines.end(), -ndiff, StringX(cols, L' '));
           else if (ndiff > 0)
@@ -410,7 +410,7 @@ void sbs_print(const PWScore &core,
     wcout << resize(wstring(cols/5, left_line.sep_char), cols) << L'|'
           << resize(wstring(cols/5, right_line.sep_char), cols) << endl;
   }
-};
+}
 
 struct field_to_line
 {

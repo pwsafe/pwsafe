@@ -948,8 +948,7 @@ void ManageFiltersDlg::DoEditClick()
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_COPY
  */
-
-void ManageFiltersDlg::OnCopyClick( wxCommandEvent& event )
+void ManageFiltersDlg::OnCopyClick(wxCommandEvent& WXUNUSED(event))
 {
   size_t i, numFilters = m_MapFilterData.size();
   bool bCopied = false;
@@ -1032,8 +1031,7 @@ void ManageFiltersDlg::OnDeleteClick( wxCommandEvent& WXUNUSED(event) )
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_IMPORT
  */
-
-void ManageFiltersDlg::OnImportClick( wxCommandEvent& event )
+void ManageFiltersDlg::OnImportClick(wxCommandEvent& WXUNUSED(event))
 {
   wxAsker asker;
   
@@ -1084,8 +1082,7 @@ void ManageFiltersDlg::OnImportClick( wxCommandEvent& event )
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_EXPORT
  */
-
-void ManageFiltersDlg::OnExportClick( wxCommandEvent& event )
+void ManageFiltersDlg::OnExportClick(wxCommandEvent& WXUNUSED(event))
 {
   PWSFilters Filters;
   size_t i, numFilters = m_MapFilterData.size();
@@ -1154,8 +1151,7 @@ void ManageFiltersDlg::OnHelpClick( wxCommandEvent& event )
 /*!
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_CLOSE
  */
-
-void ManageFiltersDlg::OnCloseClick( wxCommandEvent& event )
+void ManageFiltersDlg::OnCloseClick(wxCommandEvent& WXUNUSED(event))
 {
   // Save DB filter when flag is set and imediate storage configured -> return ID_OK or ID_CANCEL
   EndModal(m_bDBFiltersChanged ? wxID_OK : wxID_CANCEL);

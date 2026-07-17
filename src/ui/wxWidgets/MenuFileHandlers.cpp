@@ -161,8 +161,7 @@ int PasswordSafeFrame::NewFile(StringX &fname)
   wxString dir = towxstring(PWSdirs::GetSafeDir());
   int rc;
 
-  while (1) { // Lock cannot be fetched or Cancel pressed
-    
+  while (true) { // Lock cannot be fetched or Cancel pressed
     wxFileDialog fd(static_cast<wxWindow *>(this), cs_text, dir, v3FileName,
                     _("psafe3 files (*.psafe3)|*.psafe3|All files(*.*; *)|*.*;*"),
                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT | wxFD_CHANGE_DIR);
@@ -1062,7 +1061,7 @@ void PasswordSafeFrame::DoImportXML(wxString filename)
   std::wstring ImportedPrefix(tostdstring(dlg->groupName));
   std::wstring strXMLErrors, strSkippedList, strPWHErrorList, strRenameList;
   wxString XMLFilename = dlg->filepath;
-  int numValidated, numImported, numSkipped, numRenamed, numPWHErrors;
+  int numValidated = {}, numImported = {}, numSkipped = {}, numRenamed = {}, numPWHErrors = {};
   int numRenamedPolicies, numNoPolicy;
   int numShortcutsRemoved, numEmptyGroupsImported;
   bool bImportPSWDsOnly = dlg->importPasswordsOnly;

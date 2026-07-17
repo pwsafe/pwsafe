@@ -810,9 +810,8 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
         break;
       }
       // Note: purpose drop through to standard 'string' processing
-      //[[fallthrough]];
+      [[fallthrough]];
     case PWSMatch::MT_STRING:
-      //[[fallthrough]];
     case PWSMatch::MT_MEDIATYPE:
       if (st_fldata.rule == PWSMatch::MR_PRESENT ||
           st_fldata.rule == PWSMatch::MR_NOTPRESENT)
@@ -1253,7 +1252,7 @@ bool PWSFilterManager::PassesFiltering(const CItemData &ci, const PWScore &core)
             break;
           }
           // Note: purpose drop through to standard 'string' processing
-          //[[fallthrough]];
+          [[fallthrough]];
         case PWSMatch::MT_STRING:
           thistest_rc = pci->Matches(st_fldata.fstring.c_str(), static_cast<int>(ft),
                                  st_fldata.fcase ? -ifunction : ifunction);

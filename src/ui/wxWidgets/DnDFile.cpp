@@ -33,7 +33,7 @@
  * OnDropFiles implementation
  */
 
-bool DnDFile::OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)
+bool DnDFile::OnDropFiles(wxCoord WXUNUSED(x), wxCoord WXUNUSED(y), const wxArrayString& filenames)
 {
   size_t nFiles = filenames.GetCount();
   if(nFiles > 1) // We can handle one file only

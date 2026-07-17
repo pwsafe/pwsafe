@@ -72,7 +72,7 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
           break;
         }
         pws_os::FClose(fd, false);
-        //[[fallthrough]];
+        [[fallthrough]];
       default:
         status = FAILURE;
       } // inner switch

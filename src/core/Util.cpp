@@ -657,10 +657,10 @@ stringT PWSUtil::Base64Encode(const BYTE *strIn, size_t len)
   switch (len % 3) {
     case 1:
       cs_Out += TCHAR('=');
-      //[[fallthrough]];
+      [[fallthrough]];
     case 2:
       cs_Out += TCHAR('=');
-      //[[fallthrough]];
+      [[fallthrough]];
     default:
       break;
   }
