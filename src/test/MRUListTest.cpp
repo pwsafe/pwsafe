@@ -47,24 +47,24 @@ TEST_F(MRUListTest, MRUList)
   prefs->PrepForUnitTests(false);
   is = prefs->SetMRUList(MRUFiles, 10);
   ig = prefs->GetMRUList(MRURet);
-  EXPECT_EQ(is, 0);
-  EXPECT_EQ(ig, 0);
-  EXPECT_EQ(MRURet.size(), 0);
+  EXPECT_EQ(is, 0u);
+  EXPECT_EQ(ig, 0u);
+  EXPECT_EQ(MRURet.size(), 0u);
   prefs->PrepForUnitTests(true);
 
   // Basic Set/Get
   prefs->SetPref(PWSprefs::MaxMRUItems, 10);
   is = prefs->SetMRUList(MRUFiles, 10);
   ig = prefs->GetMRUList(MRURet);
-  EXPECT_EQ(is, 5);
-  EXPECT_EQ(ig, 5);
+  EXPECT_EQ(is, 5u);
+  EXPECT_EQ(ig, 5u);
   EXPECT_EQ(MRUFiles, MRURet);
 
   // Test max_MRU parameter of SetMRUList
   is = prefs->SetMRUList(MRUFiles, 6);
   ig = prefs->GetMRUList(MRURet);
-  EXPECT_EQ(is, 5);
-  EXPECT_EQ(ig, 5);
+  EXPECT_EQ(is, 5u);
+  EXPECT_EQ(ig, 5u);
   EXPECT_EQ(MRUFiles, MRURet);
 
   v4 = MRUFiles;
@@ -72,30 +72,30 @@ TEST_F(MRUListTest, MRUList)
   v4.pop_back();
   is = prefs->SetMRUList(MRUFiles, 3);
   ig = prefs->GetMRUList(MRURet);
-  EXPECT_EQ(is, 3);
-  EXPECT_EQ(ig, 3);
+  EXPECT_EQ(is, 3u);
+  EXPECT_EQ(ig, 3u);
   EXPECT_EQ(v4, MRURet);
 
   v0.clear();
   is = prefs->SetMRUList(MRUFiles, 0);
   ig = prefs->GetMRUList(MRURet);
-  EXPECT_EQ(is, 0);
-  EXPECT_EQ(ig, 0);
+  EXPECT_EQ(is, 0u);
+  EXPECT_EQ(ig, 0u);
   EXPECT_EQ(v0, MRURet);
 
   // Test MaxMRUItems limit in GetMRUList
   prefs->SetPref(PWSprefs::MaxMRUItems, 3);
   is = prefs->SetMRUList(MRUFiles, 10);
   ig = prefs->GetMRUList(MRURet);
-  EXPECT_EQ(is, 5);
-  EXPECT_EQ(ig, 3);
+  EXPECT_EQ(is, 5u);
+  EXPECT_EQ(ig, 3u);
   EXPECT_EQ(v4, MRURet);
 
   prefs->SetPref(PWSprefs::MaxMRUItems, 0);
   is = prefs->SetMRUList(MRUFiles, 10);
   ig = prefs->GetMRUList(MRURet);
-  EXPECT_EQ(is, 5);
-  EXPECT_EQ(ig, 0);
+  EXPECT_EQ(is, 5u);
+  EXPECT_EQ(ig, 0u);
   EXPECT_EQ(v0, MRURet);
 
   // Test removing *.ibak from the list
@@ -107,8 +107,8 @@ TEST_F(MRUListTest, MRUList)
   MRUFiles.push_back(L"Filename.ibak~");
   is = prefs->SetMRUList(MRUFiles, 10);
   ig = prefs->GetMRUList(MRURet);
-  EXPECT_EQ(is, 5);
-  EXPECT_EQ(ig, 5);
+  EXPECT_EQ(is, 5u);
+  EXPECT_EQ(ig, 5u);
   EXPECT_EQ(v4, MRURet);
 }
 
@@ -160,13 +160,13 @@ TEST_F(RecentDBTest, RecentList)
   RecentDbList rdb;
   is = rdb.GetMaxFiles();
   EXPECT_EQ(is, 10);
-  EXPECT_EQ(rdb.GetCount(), 0);
+  EXPECT_EQ(rdb.GetCount(), 0u);
 
   // Load the list from PWSprefs and get the list of strings
   rdb.Load();
   rdb.GetAll(GotStrings);
-  EXPECT_EQ(rdb.GetCount(), 5);
-  EXPECT_EQ(GotStrings.size(), 5);
+  EXPECT_EQ(rdb.GetCount(), 5u);
+  EXPECT_EQ(GotStrings.size(), 5u);
   EXPECT_EQ(StrList, GotStrings);
 
   // Add a new name to the top of the list
@@ -175,8 +175,8 @@ TEST_F(RecentDBTest, RecentList)
 
   rdb.AddFileToHistory("NewFilename1");
   rdb.GetAll(GotStrings);
-  EXPECT_EQ(rdb.GetCount(), 6);
-  EXPECT_EQ(GotStrings.size(), 6);
+  EXPECT_EQ(rdb.GetCount(), 6u);
+  EXPECT_EQ(GotStrings.size(), 6u);
   EXPECT_EQ(StrList, GotStrings);
 
   // Remove a name from the list
@@ -185,8 +185,8 @@ TEST_F(RecentDBTest, RecentList)
 
   rdb.RemoveFile("filename1");
   rdb.GetAll(GotStrings);
-  EXPECT_EQ(rdb.GetCount(), 5);
-  EXPECT_EQ(GotStrings.size(), 5);
+  EXPECT_EQ(rdb.GetCount(), 5u);
+  EXPECT_EQ(GotStrings.size(), 5u);
   EXPECT_EQ(StrList, GotStrings);
 
   // Save the modified list to PWSprefs and check that it got there
@@ -203,13 +203,13 @@ TEST_F(RecentDBTest, RecentList)
   GotStrings.clear();
   rdb.Clear();
   rdb.GetAll(GotStrings);
-  EXPECT_EQ(rdb.GetCount(), 0);
-  EXPECT_EQ(GotStrings.size(), 0);
+  EXPECT_EQ(rdb.GetCount(), 0u);
+  EXPECT_EQ(GotStrings.size(), 0u);
 
   rdb.Save();
   ig = prefs->GetMRUList(MRURet);
   EXPECT_EQ(ig, 0);
-  EXPECT_EQ(MRURet.size(), 0);
+  EXPECT_EQ(MRURet.size(), 0u);
 }
 
 TEST_F(RecentDBTest, RecentListLimit)
@@ -231,8 +231,8 @@ TEST_F(RecentDBTest, RecentListLimit)
   GotStrings.clear();
   rdb.Load();
   rdb.GetAll(GotStrings);
-  EXPECT_EQ(rdb.GetCount(), 4);
-  EXPECT_EQ(GotStrings.size(), 4);
+  EXPECT_EQ(rdb.GetCount(), 4u);
+  EXPECT_EQ(GotStrings.size(), 4u);
   EXPECT_EQ(StrList, GotStrings);
 
   // Add to the top, remove from the bottom
@@ -242,8 +242,8 @@ TEST_F(RecentDBTest, RecentListLimit)
 
   rdb.AddFileToHistory("NewName1");
   rdb.GetAll(GotStrings);
-  EXPECT_EQ(rdb.GetCount(), 4);
-  EXPECT_EQ(GotStrings.size(), 4);
+  EXPECT_EQ(rdb.GetCount(), 4u);
+  EXPECT_EQ(GotStrings.size(), 4u);
   EXPECT_EQ(StrList, GotStrings);
 }
 
@@ -268,19 +268,19 @@ TEST_F(RecentDBTest, RecentListLimit0)
   GotStrings.clear();
   rdb.Load();
   rdb.GetAll(GotStrings);
-  EXPECT_EQ(rdb.GetCount(), 0);
-  EXPECT_EQ(GotStrings.size(), 0);
+  EXPECT_EQ(rdb.GetCount(), 0u);
+  EXPECT_EQ(GotStrings.size(), 0u);
 
   // Add should be sliently ignored
   GotStrings.clear();
   rdb.AddFileToHistory("NewName1");
   rdb.GetAll(GotStrings);
-  EXPECT_EQ(rdb.GetCount(), 0);
-  EXPECT_EQ(GotStrings.size(), 0);
+  EXPECT_EQ(rdb.GetCount(), 0u);
+  EXPECT_EQ(GotStrings.size(), 0u);
 
   rdb.Save();
   ig = prefs->GetMRUList(MRURet);
   EXPECT_EQ(ig, 0);
-  EXPECT_EQ(MRURet.size(), 0);
+  EXPECT_EQ(MRURet.size(), 0u);
 }
 #endif //WIN32
