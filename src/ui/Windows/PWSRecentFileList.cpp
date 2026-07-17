@@ -38,7 +38,7 @@ void CPWSRecentFileList::ReadList()
     std::vector<stringT> arrNames;
     arrNames.reserve(nMRUItems);
     pref->GetMRUList(arrNames);
-    if (nMRUItems > arrNames.size()) // can happen, e.g., if cfg file is missing
+    if (nMRUItems > static_cast<int>(arrNames.size())) // can happen, e.g., if cfg file is missing
       nMRUItems = static_cast<int>(arrNames.size());
     for (int i = 0; i < nMRUItems; i++) {
       std::wstring path = arrNames[i].c_str();

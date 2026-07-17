@@ -209,8 +209,10 @@ INT_PTR CGeneralMsgBox::AfxMessageBox(LPCWSTR lpszText, LPCWSTR lpCaption, const
     uiIcon = MB_ICONEXCLAMATION;
   SetStandardIcon(uiIcon);
 
-  if (defBtn >= tuples.size())
+  if (defBtn < 0 || static_cast<size_t>(defBtn) >= tuples.size()) {
+    ASSERT(0);
     defBtn = 0;
+  }
 
   CString cs_text;
   int i = 0;
