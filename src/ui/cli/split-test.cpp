@@ -54,7 +54,7 @@ TEST_F(SplitTest, SplitsWithSingleCharSeparator) {
   Split( L"Hello, world!", L",", [&tokens](const wstring &s) {
     tokens.push_back(s);
   });
-  EXPECT_EQ(2, tokens.size());
+  EXPECT_EQ(2u, tokens.size());
   EXPECT_EQ(L"Hello", tokens[0]);
   EXPECT_EQ(L" world!", tokens[1]);
 }
@@ -64,7 +64,7 @@ TEST_F(SplitTest, ReturnEntireStringIfNoSeparatorMatch) {
   Split( L"Hello, world!", L";", [&tokens](const wstring &s) {
     tokens.push_back(s);
   });
-  EXPECT_EQ(1, tokens.size());
+  EXPECT_EQ(1u, tokens.size());
   EXPECT_EQ(L"Hello, world!", tokens[0]);
 }
 
@@ -73,7 +73,7 @@ TEST_F(SplitTest, IgnoreEmptyTokensBetweenSeparator) {
   Split( L"Hello,, world!", L",", [&tokens](const wstring &s) {
     tokens.push_back(s);
   });
-  EXPECT_EQ(2, tokens.size());
+  EXPECT_EQ(2u, tokens.size());
   EXPECT_EQ(L"Hello", tokens[0]);
   EXPECT_EQ(L" world!", tokens[1]);
 }
@@ -83,7 +83,7 @@ TEST_F(SplitTest, IgnoresEmptyTokensBeforeAndAfterSeparator) {
   Split( L",Hello, world!,", L",", [&tokens](const wstring &s) {
     tokens.push_back(s);
   });
-  EXPECT_EQ(2, tokens.size());
+  EXPECT_EQ(2u, tokens.size());
   EXPECT_EQ(L"Hello", tokens[0]);
   EXPECT_EQ(L" world!", tokens[1]);
 }

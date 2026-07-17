@@ -80,7 +80,7 @@ TEST_F(SearchTest, SearchAndDelete) {
 
   SearchInternal(core, ua, os);
 
-  EXPECT_EQ( core.GetNumEntries(), 0 );
+  EXPECT_EQ( core.GetNumEntries(), 0u );
 }
 
 TEST_F(SearchTest, SearchAndUpdate) {
@@ -96,7 +96,7 @@ TEST_F(SearchTest, SearchAndUpdate) {
 
   SearchInternal(core, ua, os);
 
-  EXPECT_EQ( core.GetNumEntries(), 1 );
+  EXPECT_EQ( core.GetNumEntries(), 1u );
   const CItemData &entry = core.GetEntryIter()->second;
   EXPECT_EQ( entry.GetEmail(), L"e-mail=somerandomenewemail@nosuchdomain.com" );
   EXPECT_EQ( entry.GetURL(), L"nowaysuchadomainexists.pwsafe" );
@@ -113,7 +113,7 @@ TEST_F(SearchTest, SearchAndClearFields) {
 
   SearchInternal(core, ua, os);
 
-  EXPECT_EQ( core.GetNumEntries(), 1 );
+  EXPECT_EQ( core.GetNumEntries(), 1u );
   const CItemData &entry = core.GetEntryIter()->second;
   EXPECT_TRUE( entry.IsNotesEmpty() );
 }
@@ -129,7 +129,7 @@ TEST_F(SearchTest, SearchAndChangePasswords) {
   const StringX before = core.GetEntryIter()->second.GetPassword();
   SearchInternal(core, ua, os);
 
-  EXPECT_EQ( core.GetNumEntries(), 1 );
+  EXPECT_EQ( core.GetNumEntries(), 1u );
   const StringX after = core.GetEntryIter()->second.GetPassword();
 
   EXPECT_NE( before, after );

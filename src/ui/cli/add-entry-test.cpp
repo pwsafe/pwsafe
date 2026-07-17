@@ -17,7 +17,7 @@ TEST(AddEntryTest, AddEntryWithTitleOnly) {
   std::wostringstream os;
   int ret = AddEntryWithFields(core, {std::make_tuple(CItemData::TITLE, L"TitleOnlyItem")}, os);
   EXPECT_EQ(ret, PWScore::SUCCESS);
-  EXPECT_EQ(core.GetNumEntries(), 1);
+  EXPECT_EQ(core.GetNumEntries(), 1u);
   const CItemData &entry = core.GetEntryIter()->second;
   EXPECT_FALSE(entry.GetPassword().empty()) << "Password should be auto-generated";
 }
@@ -27,7 +27,7 @@ TEST(AddEntryTest, AddEntryWithoutTitle) {
   std::wostringstream os;
   int ret = AddEntryWithFields(core, {}, os);
   EXPECT_NE(ret, PWScore::SUCCESS);
-  EXPECT_EQ(core.GetNumEntries(), 0);
+  EXPECT_EQ(core.GetNumEntries(), 0u);
 }
 
 TEST(AddEntryTest, AddEntryWithPassword) {
@@ -36,7 +36,7 @@ TEST(AddEntryTest, AddEntryWithPassword) {
   int ret = AddEntryWithFields(core, {std::make_tuple(CItemData::TITLE, L"SomeTitle"),
                                       std::make_tuple(CItemData::PASSWORD, L"randompass")}, os);
   EXPECT_EQ(ret, PWScore::SUCCESS);
-  EXPECT_EQ(core.GetNumEntries(), 1);
+  EXPECT_EQ(core.GetNumEntries(), 1u);
   const CItemData &entry = core.GetEntryIter()->second;
   EXPECT_EQ(entry.GetPassword(), L"randompass") << "Password should NOT be auto-generated if specified";
 }
@@ -52,7 +52,7 @@ TEST(AddEntryTest, AddEntryWithFields) {
                                       std::make_tuple(CItemData::NOTES, L"Line1\nLine2\nLine3"),
                                       }, os);
   EXPECT_EQ(ret, PWScore::SUCCESS);
-  EXPECT_EQ(core.GetNumEntries(), 1);
+  EXPECT_EQ(core.GetNumEntries(), 1u);
   const CItemData &entry = core.GetEntryIter()->second;
   EXPECT_FALSE(entry.GetPassword().empty()) << "Password should be auto-generated even if other fields are specified";
   EXPECT_EQ(entry.GetGroup(), L"Example.Group");

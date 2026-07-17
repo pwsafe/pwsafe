@@ -97,7 +97,7 @@ TEST_F(FileEncDecTest, EmptyFile)
   // check decrypted file
   fp = pws_os::FOpen(emptyFile, L"r");
   ASSERT_TRUE(fp != nullptr);
-  EXPECT_EQ(pws_os::fileLength(fp), 0);
+  EXPECT_EQ(pws_os::fileLength(fp), 0u);
   res = pws_os::FClose(fp, true);
   ASSERT_TRUE(res == 0);
 

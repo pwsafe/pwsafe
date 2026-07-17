@@ -22,13 +22,13 @@ namespace {
 
 TEST(ParseFieldArgsTest, ParsesSingleField) {
   const CItemData::FieldBits fields = ParseFields( L"Group");
-  EXPECT_EQ(1, fields.count());
+  EXPECT_EQ(1u, fields.count());
   EXPECT_TRUE(fields.test(CItemData::GROUP));
 }
 
 TEST(ParseFieldArgsTest, ParsesAllFields) {
   const CItemData::FieldBits fields = ParseFields( L"Title,Username");
-  EXPECT_EQ(2, fields.count());
+  EXPECT_EQ(2u, fields.count());
   EXPECT_TRUE(fields.test(CItemData::TITLE));
   EXPECT_TRUE(fields.test(CItemData::USER));
 }
@@ -46,14 +46,14 @@ TEST(ParseFieldArgsTest, ThrowsOnInvalidField) {
 
 TEST(ParsesFieldValue, ParsesSingleFieldValue) {
   UserArgs::FieldUpdates upd = ParseFieldValues(L"Username=example");
-  EXPECT_EQ(upd.size(), 1);
+  EXPECT_EQ(upd.size(), 1u);
   EXPECT_EQ(std::get<0>(upd[0]), CItemData::USER);
   EXPECT_EQ(std::get<1>(upd[0]), L"example");
 }
 
 TEST(ParsesFieldValue, ParsesMultipleFieldValue) {
   UserArgs::FieldUpdates upd = ParseFieldValues(L"Group=NewGroup,URL=example.com,Username=example");
-  EXPECT_EQ(upd.size(), 3);
+  EXPECT_EQ(upd.size(), 3u);
   EXPECT_EQ(std::get<0>(upd[0]), CItemData::GROUP);
   EXPECT_EQ(std::get<1>(upd[0]), L"NewGroup");
   EXPECT_EQ(std::get<0>(upd[1]), CItemData::URL);
@@ -65,7 +65,7 @@ TEST(ParsesFieldValue, ParsesMultipleFieldValue) {
 TEST(ParsesFieldValue, ParsesSingleFieldValueWithSpacesAfterSeparator) {
   UserArgs::FieldUpdates upd;
   ASSERT_NO_THROW(upd = ParseFieldValues(L"Group= NewGroup"));
-  EXPECT_EQ(upd.size(), 1);
+  EXPECT_EQ(upd.size(), 1u);
   EXPECT_EQ(std::get<0>(upd[0]), CItemData::GROUP);
   EXPECT_EQ(std::get<1>(upd[0]), L" NewGroup");
 }
@@ -73,7 +73,7 @@ TEST(ParsesFieldValue, ParsesSingleFieldValueWithSpacesAfterSeparator) {
 TEST(ParsesFieldValue, ParsesSingleFieldValueWithSpacesBeforeSeparator) {
   UserArgs::FieldUpdates upd;
   ASSERT_NO_THROW(upd = ParseFieldValues(L"Group =NewGroup"));
-  EXPECT_EQ(upd.size(), 1);
+  EXPECT_EQ(upd.size(), 1u);
   EXPECT_EQ(std::get<0>(upd[0]), CItemData::GROUP);
   EXPECT_EQ(std::get<1>(upd[0]), L"NewGroup");
 }
