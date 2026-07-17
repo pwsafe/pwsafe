@@ -38,7 +38,7 @@ if (HARDEN_USE_VISIBILITY)
   endfunction()
 endif ()
 
-harden_add_compile_definition(_FORTIFY_SOURCE=2 TRUE)
+harden_add_compile_definition(_FORTIFY_SOURCE 2 TRUE)
 
 harden_add_compile_option(-Wformat HARDEN_COMPILE_WFORMAT FALSE)
 harden_add_compile_option(-Wformat-security HARDEN_COMPILE_WFORMAT_SECURITY FALSE)
