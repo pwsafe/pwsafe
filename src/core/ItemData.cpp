@@ -2309,9 +2309,6 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
     }
 
 #ifdef PWS_BIG_ENDIAN
-    unsigned char buf[len];
-    memset(buf, 0, len*sizeof(buf[0]));
-	  
     switch(type) {
       case CTIME:
       case PMTIME:
@@ -2323,11 +2320,14 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
       case KBSHORTCUT:
       case XTIME_INT:
       case DATA_ATT_MTIME:
-        memcpy(buf, &(*iter), len);
-        byteswap(buf, buf + len - 1);
-
-        if (!SetField(type, buf, len))
-          return false;
+        {
+          std::vector<char> buf(iter, iter+len);
+          unsigned char *begin = reinterpret_cast<unsigned char *>(buf.data());
+          unsigned char *end   = begin + len - 1;
+          byteswap(begin, end);
+          if (!SetField(type, begin, len))
+            return false;
+        }
         break;
 
       default:
