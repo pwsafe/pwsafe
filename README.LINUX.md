@@ -16,7 +16,8 @@ Slackware is independently supported, see below.
 
 ## Installation on Debian or Ubuntu
 
-Password Safe is available as package (https://packages.debian.org/stable/passwordsafe). To install it just use the following command.
+Password Safe is available as a package (https://packages.debian.org/stable/passwordsafe).
+To install it just use the following command.
 
 ```
 $ sudo apt install passwordsafe
@@ -36,10 +37,12 @@ or
    ```
 
 ## Installation on Fedora
-1. Download the .rpm file that corresponds to your distribution.
-2. Install it using dnf:
+
+Password Safe is available as a package in the Fedora repositories.
+To install it just use the following command.
+
    ```
-   $ sudo dnf install passwordsafe-*.rpm
+   $ sudo dnf install passwordsafe
    ```
 
 ## Installation on Gentoo
