@@ -3341,10 +3341,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
 				USER_HEADER_SEARCH_PATHS = ../src;
-				WARNING_CFLAGS = (
-					"$(inherited)",
-					"-Wno-overloaded-virtual",
-				);
 			};
 			name = Release;
 		};
