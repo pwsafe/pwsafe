@@ -52,8 +52,10 @@ wxBitmap QRCodeBitmap( const StringX &data )
                                                           0,  // bytes per row. 0 => calculate automatically
                                                           csref,
                                                           (CGBitmapInfo)kCGImageAlphaNone);
-        if (bmpCtxt) {
 
+        CGColorSpaceRelease(csref);
+
+        if (bmpCtxt) {
           CGContextSetInterpolationQuality(bmpCtxt, kCGInterpolationNone);
           CGContextScaleCTM(bmpCtxt, 8.0f, 8.0f);
 
@@ -63,12 +65,12 @@ wxBitmap QRCodeBitmap( const StringX &data )
           CGContextDrawImage(bmpCtxt, qrImage.extent, bitmap);
           CGImageRef scaledBitmap = CGBitmapContextCreateImage(bmpCtxt);
 
+          CFRelease(bitmap);
           CGContextRelease(bmpCtxt);
 
+          CFAutorelease(scaledBitmap);
           return wxBitmap(scaledBitmap);
         }
-
-        CGColorSpaceRelease(csref);
       }
 		}
 	}
