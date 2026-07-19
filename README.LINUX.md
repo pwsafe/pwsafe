@@ -23,7 +23,7 @@ To install it just use the following command.
 $ sudo apt install passwordsafe
 ```
 
-or 
+or
 
 1. Download the .deb file that corresponds to your distribution.
 2. Install it using dpkg:
@@ -45,8 +45,17 @@ To install it just use the following command.
    $ sudo dnf install passwordsafe
    ```
 
+or
+
+1. Download the .rpm file that corresponds to your distribution.
+2. Install it using dnf:
+
+   ```
+   $ sudo dnf install passwordsafe-*.rpm
+   ```
+
 ## Installation on Gentoo
-As usual there are USE flags to control the features of the package. 
+As usual there are USE flags to control the features of the package.
 On Gentoo, suport for Yubi keys and QR is disabled by default.
 
 ```
@@ -71,7 +80,7 @@ Finally, run
 ```
 $ sudo pacman -U passwordsafe-*.zst
 ```
-to install the package on your machine. 
+to install the package on your machine.
 
 For more details on building and installing packages on Arch, see https://wiki.archlinux.org/title/Arch_User_Repository
 
@@ -86,13 +95,13 @@ See https://flathub.org/setup to get started using flatpak.
 ## Enabling System Tray support in Password Safe
 Issue: Password Safe is running but not appearing in the System Tray.
 
-System Tray/Task Bar support in Linux is problematic, and the implementations for it are inconsistent or missing in many desktop environments. 
+System Tray/Task Bar support in Linux is problematic, and the implementations for it are inconsistent or missing in many desktop environments.
 Usually, this feature is not supported by the windowing system such as Wayland. You may also need to install a desktop environment extension to enable System Tray support.
-If Password Safe detects that the feature is not enabled at the system level, it is disabled in the program's Options. 
+If Password Safe detects that the feature is not enabled at the system level, it is disabled in the program's Options.
 
 Anyway, enabling this feature in many distros can be done by following these steps:
 
-1. GNOME, KDE Plasma, and others: Verify that the org.kde.StatusNotifierWatcher D-Bus interface that provides the System Tray is enabled. 
+1. GNOME, KDE Plasma, and others: Verify that the org.kde.StatusNotifierWatcher D-Bus interface that provides the System Tray is enabled.
    Note: some extensions don't register a D-Bus interface when installed.
    ```
    $ busctl --user list | grep StatusNotifierWatcher
@@ -109,7 +118,7 @@ Anyway, enabling this feature in many distros can be done by following these ste
 
    GNOME: Use the Extensions app to verify that the GNOME extension is installed and enabled.
 
-   If a GNOME extension cannot be installed via a web browser: 
+   If a GNOME extension cannot be installed via a web browser:
    - Download it as a ZIP file.
    - Install the extension using this command:
    ```
