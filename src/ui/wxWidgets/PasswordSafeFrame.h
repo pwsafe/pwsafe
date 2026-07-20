@@ -176,7 +176,9 @@ enum {
   ID_EDITMENU_FIND_NEXT,
   ID_EDITMENU_FIND_PREVIOUS,
   ID_PASSWORDSUBSET,
+#ifndef NO_QR
   ID_PASSWORDQRCODE,
+#endif
   ID_COPYEMAIL,
   ID_RUNCOMMAND,
   ID_COPYRUNCOMMAND,
@@ -548,7 +550,9 @@ public:
   void OnVisitWebsite(wxCommandEvent&);
 
   void OnPasswordSubset(wxCommandEvent& evt);
+#ifndef NO_QR
   void OnPasswordQRCode(wxCommandEvent& evt);
+#endif
 
 ////@begin PasswordSafeFrame member function declarations
 
@@ -803,7 +807,9 @@ private:
   void DoEditFilter();
   void DoGeneratePassword();
   void DoChangePassword();
+#ifndef NO_QR
   void DoPasswordQRCode(CItemData* item);
+#endif
   void DoPropertiesClick();
   void DoMergeAnotherSafe(wxString filename);
   void DoRestoreSafe();

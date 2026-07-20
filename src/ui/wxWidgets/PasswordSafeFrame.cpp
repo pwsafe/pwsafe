@@ -48,7 +48,9 @@
 #include "PasswordSafeFrame.h"
 #include "PasswordSafeSearch.h"
 #include "PWSafeApp.h"
+#ifndef NO_QR
 #include "QRCodeDlg.h"
+#endif
 #include "SafeCombinationPromptDlg.h"
 #include "SetDatabaseIdDlg.h"
 #include "StatusBar.h"
@@ -310,7 +312,9 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   // Connect event handlers
   EVT_MENU( ID_PASSWORDSUBSET,          PasswordSafeFrame::OnPasswordSubset              )
+#ifndef NO_QR
   EVT_MENU( ID_PASSWORDQRCODE,          PasswordSafeFrame::OnPasswordQRCode              )
+#endif
   EVT_MENU( ID_COPYEMAIL,               PasswordSafeFrame::OnCopyEmailClick              )
   EVT_MENU( ID_COPYRUNCOMMAND,          PasswordSafeFrame::OnCopyRunCmd                  )
   EVT_MENU( ID_BROWSEURLPLUS,           PasswordSafeFrame::OnBrowseUrlAndAutotype        )
@@ -321,7 +325,9 @@ BEGIN_EVENT_TABLE( PasswordSafeFrame, wxFrame )
 
   // Update menu elements
   EVT_UPDATE_UI( ID_PASSWORDSUBSET,     PasswordSafeFrame::OnUpdateUI                    )
+#ifndef NO_QR
   EVT_UPDATE_UI( ID_PASSWORDQRCODE,     PasswordSafeFrame::OnUpdateUI                    )
+#endif
   EVT_UPDATE_UI( ID_COPYEMAIL,          PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_BROWSEURLPLUS,      PasswordSafeFrame::OnUpdateUI                    )
   EVT_UPDATE_UI( ID_SENDEMAIL,          PasswordSafeFrame::OnUpdateUI                    )
@@ -641,9 +647,9 @@ void PasswordSafeFrame::CreateMenubar()
   menuEdit->Append(ID_COPYPASSWORD, _("&Copy Password to Clipboard\tCtrl+C"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_COPYUSERNAME, _("Copy &Username to Clipboard\tCtrl+U"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_PASSWORDSUBSET, _("Display subset of Password\tCtrl+B"), wxEmptyString, wxITEM_NORMAL);
-  if (HasQRCode()) {
-    menuEdit->Append(ID_PASSWORDQRCODE, _("Display Password as &QR code"), wxEmptyString, wxITEM_NORMAL);
-  }
+#ifndef NO_QR
+  menuEdit->Append(ID_PASSWORDQRCODE, _("Display Password as &QR code"), wxEmptyString, wxITEM_NORMAL);
+#endif
   menuEdit->Append(ID_COPYAUTHCODE, _("Copy Aut&h Code to Clipboard\tAlt+2"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_SHOWAUTHCODE, _("Display Auth Code\tAlt+Ctrl+2"), wxEmptyString, wxITEM_NORMAL);
   menuEdit->Append(ID_COPYNOTESFLD, _("Copy &Notes to Clipboard\tCtrl+G"), wxEmptyString, wxITEM_NORMAL);
@@ -1889,9 +1895,9 @@ void PasswordSafeFrame::OnContextMenu(const CItemData* item)
     itemEditMenu.Append(ID_COPYUSERNAME,   _("Copy &Username to Clipboard"));
     itemEditMenu.Append(ID_COPYPASSWORD,   _("&Copy Password to Clipboard"));
     itemEditMenu.Append(ID_PASSWORDSUBSET, _("Display subset of Password"));
-    if (HasQRCode()) {
-      itemEditMenu.Append(ID_PASSWORDQRCODE, _("Display Password as &QR code"));
-    }
+#ifndef NO_QR
+    itemEditMenu.Append(ID_PASSWORDQRCODE, _("Display Password as &QR code"));
+#endif
     itemEditMenu.Append(ID_COPYAUTHCODE,   _("Copy Aut&h Code to Clipboard"));
     itemEditMenu.Append(ID_SHOWAUTHCODE,   _("Display Auth Code"));
     itemEditMenu.Append(ID_COPYNOTESFLD,   _("Copy &Notes to Clipboard"));
@@ -2407,7 +2413,9 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
     case ID_EDIT:
     case ID_COPYPASSWORD:
     case ID_PASSWORDSUBSET:
+#ifndef NO_QR
     case ID_PASSWORDQRCODE:
+#endif
       evt.Enable(isUnlocked && !isTreeViewGroupSelected && pci);
       break;
 
