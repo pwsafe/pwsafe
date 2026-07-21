@@ -25,6 +25,7 @@
 
 #include "QREncode.h"
 #include "QRCodeDlg.h"
+
 #include "wxUtilities.h"
 
 #include <algorithm>

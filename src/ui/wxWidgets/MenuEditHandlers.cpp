@@ -44,7 +44,9 @@
 #include "PasswordSafeFrame.h"
 #include "PasswordSafeSearch.h"
 #include "PasswordSubsetDlg.h"
+#ifndef NO_QR
 #include "QRCodeDlg.h"
+#endif
 #include "TimedTaskChain.h"
 #include "TreeCtrl.h"
 #include "ViewAttachmentDlg.h"
@@ -1153,20 +1155,18 @@ void PasswordSafeFrame::OnPasswordSubset(wxCommandEvent &evt)
   }
 }
 
+#ifndef NO_QR
 void PasswordSafeFrame::OnPasswordQRCode(wxCommandEvent &evt)
 {
-  if ( /* constexpr */ HasQRCode() ) {
-    CItemData rueItem;
-    CItemData* item = GetSelectedEntry(evt, rueItem);
-    if (item != nullptr) {
-      CallAfter(&PasswordSafeFrame::DoPasswordQRCode, item);
-    }
+  CItemData rueItem;
+  CItemData* item = GetSelectedEntry(evt, rueItem);
+  if (item != nullptr) {
+    CallAfter(&PasswordSafeFrame::DoPasswordQRCode, item);
   }
 }
 
 void PasswordSafeFrame::DoPasswordQRCode(CItemData* item)
 {
-#ifndef NO_QR
   if (item) {
     auto gtu = item->GetTitle();
     if (!item->GetGroup().empty()) {
@@ -1183,8 +1183,8 @@ void PasswordSafeFrame::DoPasswordQRCode(CItemData* item)
     ShowModalAndGetResult<QRCodeDlg>(this, item->GetPassword(),
             _("Password of ") + towxstring(gtu));
   }
-#endif
 }
+#endif
 
 /*!
  * wxEVT_COMMAND_MENU_SELECTED event handler for ID_PROTECT

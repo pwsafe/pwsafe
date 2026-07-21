@@ -58,12 +58,4 @@ protected:
   void OnInitDialog(wxInitDialogEvent &evt);
 };
 
-constexpr bool HasQRCode() {
-#ifndef NO_QR
-  return true;
-#else
-  return false;
-#endif
-}
-
 #endif // _QRCODEDLG_H_
