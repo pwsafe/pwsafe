@@ -43,23 +43,22 @@ if (WIN32 AND NOT WX_WINDOWS)
 
 else (WIN32 AND NOT WX_WINDOWS)
   function(make_help OUTPUT_FILE_VAR DIR LANG)
-    set_lang_help_files(INPUT_FILES "${DIR}")
-
     set(OUTPUT_FILE "${CMAKE_CURRENT_BINARY_DIR}/help${LANG}.zip")
 
+    set(INPUT_DIR "${DIR}")
+    # If a helpfile directory exists for wxWidgets (ending with _wx), use it for
+    # generating the zip file, otherwise use the same one that's used for Windows.
     if(IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${DIR}_wx")
-      add_custom_command(OUTPUT "${OUTPUT_FILE}"
-        COMMAND "${CMAKE_COMMAND}" -E tar cf "${OUTPUT_FILE}" . --format=zip
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${DIR}_wx"
-        VERBATIM
-        )
-    else()
-      add_custom_command(OUTPUT "${OUTPUT_FILE}"
-        COMMAND "${CMAKE_COMMAND}" -E tar cf "${OUTPUT_FILE}" . --format=zip
-        WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${DIR}"
-        VERBATIM
-        )
+      set(INPUT_DIR "${DIR}_wx")
     endif()
+
+    set_lang_help_files(INPUT_FILES "${INPUT_DIR}")
+    add_custom_command(OUTPUT "${OUTPUT_FILE}"
+      DEPENDS ${INPUT_FILES}
+      COMMAND "${CMAKE_COMMAND}" -E tar cf "${OUTPUT_FILE}" . --format=zip
+      WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${INPUT_DIR}"
+      VERBATIM
+      )
 
     set(${OUTPUT_FILE_VAR} "${OUTPUT_FILE}" PARENT_SCOPE)
   endfunction(make_help)
