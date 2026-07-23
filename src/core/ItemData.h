@@ -162,6 +162,7 @@ public:
   StringX GetXTimeXML() const {return GetTime(XTIME, PWSUtil::TMC_XML);}  // V30
   StringX GetPMTimeXML() const {return GetTime(PMTIME, PWSUtil::TMC_XML);}  // V30
   StringX GetRMTimeXML() const {return GetTime(RMTIME, PWSUtil::TMC_XML);}  // V30
+  StringX GetTime(int whichtime, PWSUtil::TMC result_format, bool convert_epoch = false, bool utc_time = false) const; // V30
   //  These populate (and return) time_t instead of giving a character string
   time_t GetATime(time_t &t) const {CItem::GetTime(ATIME, t); return t;}  // V30
   time_t GetCTime(time_t &t) const {CItem::GetTime(CTIME, t); return t;}  // V30
@@ -422,9 +423,7 @@ private:
   EntryStatus m_entrystatus;
 
   // move from pre-2.0 name to post-2.0 title+user
-  void SplitName(const StringX &name,
-                 StringX &title, StringX &username);
-  StringX GetTime(int whichtime, PWSUtil::TMC result_format, bool convert_epoch = false, bool utc_time = false) const; // V30
+  void SplitName(const StringX &name, StringX &title, StringX &username);
   void SetTime(const int whichtime); // V30
   bool SetTime(const int whichtime, const stringT &time_str, bool utc_time = false); // V30
 

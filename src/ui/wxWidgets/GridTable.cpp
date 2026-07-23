@@ -122,20 +122,35 @@ wxString GridTable::GetColLabelValue(int col)
 
 wxString GridTable::GetValue(int row, int col)
 {
+  wxString ret = wxEmptyString;
+
   if (size_t(row) < m_pwsgrid->GetNumItems() &&
       size_t(col) < NumberOf(PWSGridCellData)) {
     const CItemData *pItem = m_pwsgrid->GetItem(row);
     if (pItem != nullptr) {
-      if (PWSGridCellData[col].ft != CItemData::POLICY) {
-        return towxstring(pItem->GetFieldValue(PWSGridCellData[col].ft));
-      } else {
-        PWPolicy pwp;
-        pItem->GetPWPolicy(pwp);
-        return towxstring(pwp.GetDisplayString());
+      switch (PWSGridCellData[col].ft) {
+      case CItemData::ATIME:
+      case CItemData::CTIME:
+      case CItemData::PMTIME:
+      case CItemData::RMTIME:
+        ret = towxstring(pItem->GetTime(PWSGridCellData[col].ft, PWSUtil::TMC_LOCALE_SIMPLIFIED));
+        break;
+
+      case CItemData::POLICY:
+        {
+          PWPolicy pwp;
+          pItem->GetPWPolicy(pwp);
+          ret = towxstring(pwp.GetDisplayString());
+        }
+        break;
+
+      default:
+        ret = towxstring(pItem->GetFieldValue(PWSGridCellData[col].ft));
+        break;
       }
     }
   }
-  return wxEmptyString;
+  return ret;
 }
 
 void GridTable::SetValue(int WXUNUSED(row), int WXUNUSED(col), const wxString& WXUNUSED(value))

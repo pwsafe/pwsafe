@@ -547,11 +547,7 @@ StringX PWSUtil::ConvertToDateTimeString(const time_t &t, TMC result_format, boo
       is_error = !_tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]), _T("%Y-%m-%dT%H:%M:%S"), st);
       break;
     case TMC_LOCALE:
-#ifdef __APPLE__
-      is_error = !_tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]), _T("%a %d %b %Y %T %Z"), st);
-#else
       is_error = !_tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]), _T("%c"), st);
-#endif
       break;
     case TMC_LOCALE_SIMPLIFIED:
       is_error = !_tcsftime(datetime_str, sizeof(datetime_str) / sizeof(datetime_str[0]), _T("%F %T"), st);
