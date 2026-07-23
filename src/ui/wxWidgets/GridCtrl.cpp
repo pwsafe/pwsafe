@@ -752,9 +752,6 @@ void GridCtrl::RearrangeItemsDateTimeBased(ItemsCollection& collection, int colu
       // 2026-07-23 update: Now using YYYY-MM-DD format, so ParseDate() should be good.
       else if (dt.ParseDate(datetime, &end)) {
         collection.insert(std::pair<wxDateTime, const CItemData*>(dt, GetItem(row)));
-        // Note: GetMonth() return value range is 0..11
-        // pws_os::Trace(L"Warning - Sorting may be incorrect for date string: %ls ; day: %d ; month: %d ; year: %d",
-        //   datetime.wc_str(), dt.GetDay(), dt.GetMonth()+1, dt.GetYear());
       }
     }
     else {
