@@ -128,12 +128,23 @@ wxString GridTable::GetValue(int row, int col)
       size_t(col) < NumberOf(PWSGridCellData)) {
     const CItemData *pItem = m_pwsgrid->GetItem(row);
     if (pItem != nullptr) {
-      switch (PWSGridCellData[col].ft) {
+      const auto field = PWSGridCellData[col].ft;
+      switch (field) {
       case CItemData::ATIME:
       case CItemData::CTIME:
       case CItemData::PMTIME:
       case CItemData::RMTIME:
-        ret = towxstring(pItem->GetTime(PWSGridCellData[col].ft, PWSUtil::TMC_LOCALE_SIMPLIFIED));
+        ret = towxstring(pItem->GetTime(field, PWSUtil::TMC_LOCALE_SIMPLIFIED));
+        break;
+
+      case CItemData::XTIME:
+        if (pItem->IsExpiryDateSet()) {
+          time_t expTime;
+          ret = wxDateTime(pItem->GetXTime(expTime)).FormatISODate();
+          if (pItem->IsPasswordExpiryIntervalSet()) {
+            ret << L" *";
+          }
+        }
         break;
 
       case CItemData::POLICY:
@@ -145,7 +156,7 @@ wxString GridTable::GetValue(int row, int col)
         break;
 
       default:
-        ret = towxstring(pItem->GetFieldValue(PWSGridCellData[col].ft));
+        ret = towxstring(pItem->GetFieldValue(field));
         break;
       }
     }
