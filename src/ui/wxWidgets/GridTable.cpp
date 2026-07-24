@@ -122,20 +122,46 @@ wxString GridTable::GetColLabelValue(int col)
 
 wxString GridTable::GetValue(int row, int col)
 {
+  wxString ret = wxEmptyString;
+
   if (size_t(row) < m_pwsgrid->GetNumItems() &&
       size_t(col) < NumberOf(PWSGridCellData)) {
     const CItemData *pItem = m_pwsgrid->GetItem(row);
     if (pItem != nullptr) {
-      if (PWSGridCellData[col].ft != CItemData::POLICY) {
-        return towxstring(pItem->GetFieldValue(PWSGridCellData[col].ft));
-      } else {
-        PWPolicy pwp;
-        pItem->GetPWPolicy(pwp);
-        return towxstring(pwp.GetDisplayString());
+      const auto field = PWSGridCellData[col].ft;
+      switch (field) {
+      case CItemData::ATIME:
+      case CItemData::CTIME:
+      case CItemData::PMTIME:
+      case CItemData::RMTIME:
+        ret = towxstring(pItem->GetTime(field, PWSUtil::TMC_LOCALE_SIMPLIFIED));
+        break;
+
+      case CItemData::XTIME:
+        if (pItem->IsExpiryDateSet()) {
+          time_t expTime;
+          ret = wxDateTime(pItem->GetXTime(expTime)).FormatISODate();
+          if (pItem->IsPasswordExpiryIntervalSet()) {
+            ret << L" *";
+          }
+        }
+        break;
+
+      case CItemData::POLICY:
+        {
+          PWPolicy pwp;
+          pItem->GetPWPolicy(pwp);
+          ret = towxstring(pwp.GetDisplayString());
+        }
+        break;
+
+      default:
+        ret = towxstring(pItem->GetFieldValue(field));
+        break;
       }
     }
   }
-  return wxEmptyString;
+  return ret;
 }
 
 void GridTable::SetValue(int WXUNUSED(row), int WXUNUSED(col), const wxString& WXUNUSED(value))
