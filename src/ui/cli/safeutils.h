@@ -19,4 +19,4 @@ int OpenCore(PWScore &core, const StringX &safe, const StringX &passphrase, bool
 StringX GetNewPassphrase();
 
 int AddEntry(PWScore &core, const UserArgs &ua);
-int InitPWPolicy(PWPolicy &pwp, PWScore &core);
+int InitPWPolicy(PWPolicy &pwp, const PWScore &core);

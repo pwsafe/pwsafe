@@ -155,7 +155,7 @@ public:
 class EventSkipper: public wxEventFilter {
   std::set<wxEventType> m_events;
 public:
-  EventSkipper(std::set<wxEventType> events): m_events(events) {
+  EventSkipper(const std::set<wxEventType> &events): m_events(events) {
     wxEvtHandler::AddFilter(this);
   }
 
@@ -219,7 +219,7 @@ void UpdatePasswordTextCtrl(wxSizer *sizer, wxTextCtrl* &textCtrl, const wxStrin
  * @param password the proposed password
  * @returns true if okay to use password, false if not
  */
-bool CheckPasswordStrengthAndWarn(wxWindow *win, StringX &password);
+bool CheckPasswordStrengthAndWarn(wxWindow *win, const StringX &password);
 
 namespace wxUtilities
 {
@@ -253,7 +253,7 @@ namespace wxUtilities
    * @param controls tuple with pointer to a wxBitmapButton and a wxStaticText.
    * @returns the pointer to the wxBitmapButton (the YubiKey button control).
    */
-  wxBitmapButton* GetYubiKeyButtonControl(std::tuple<wxBitmapButton*, wxStaticText*>& controls);
+  wxBitmapButton* GetYubiKeyButtonControl(const std::tuple<wxBitmapButton*, wxStaticText*>& controls);
 
   /**
    * A helper function for easier access to the result of 'CreateYubiKeyControls'.
@@ -261,7 +261,7 @@ namespace wxUtilities
    * @param controls a tuple with pointer to a wxBitmapButton and a wxStaticText.
    * @returns the pointer to the wxStaticText (the YubiKey status text control).
    */
-  wxStaticText* GetYubiKeyStatusControl(std::tuple<wxBitmapButton*, wxStaticText*>& controls);
+  wxStaticText* GetYubiKeyStatusControl(const std::tuple<wxBitmapButton*, wxStaticText*>& controls);
 
   /**
    * Provides a bitmap resource

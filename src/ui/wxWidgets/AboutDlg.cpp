@@ -625,7 +625,7 @@ wxThread::ExitCode AboutDlg::Entry()
  * @see method <code>AboutDlg::Entry()</code>
  * @see https://curl.haxx.se/libcurl/c/CURLOPT_WRITEFUNCTION.html
  */
-size_t AboutDlg::WriteCallback(char *receivedData, size_t size, size_t bytes, void* WXUNUSED(userData))
+size_t AboutDlg::WriteCallback(const char *receivedData, size_t size, size_t bytes, void* WXUNUSED(userData))
 {
   size_t receivedDataSize = size * bytes;
 

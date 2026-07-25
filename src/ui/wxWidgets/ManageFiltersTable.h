@@ -69,7 +69,7 @@ public:
 
   void clear();
   size_t size() { return m_SortFilterData.size(); };
-  int insert(struct st_FilterItemData &data);
+  int insert(const st_FilterItemData &data);
   void remove(int idx);
   void remove(); // Will remove current selected
   void SortByColumn(int column, bool ascending);
@@ -102,7 +102,7 @@ public:
   st_Filterkey GetKeyAt(size_t idx);
   struct st_FilterItemData& GetFilterItemAt(size_t idx);
   
-  bool LessThan(struct st_FilterItemData &fd1, struct st_FilterItemData &fd2);
+  bool LessThan(const st_FilterItemData &fd1, const st_FilterItemData &fd2);
   
   std::vector<struct st_FilterItemData> &Data() { return m_SortFilterData; };
   

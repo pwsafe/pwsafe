@@ -136,7 +136,7 @@ public:
   void SetShowGroup(bool v) { m_show_group = v; }
   bool IsShowGroup() const { return m_show_group; }
   
-  void SetSorting(TreeSortType &v) { m_sort = v; }
+  void SetSorting(TreeSortType v) { m_sort = v; }
   void SetSortingGroup() { m_sort = TreeSortType::GROUP; }
   void SetSortingName() { m_sort = TreeSortType::NAME; }
   void SetSortingDate() { m_sort = TreeSortType::DATE; }
@@ -288,10 +288,10 @@ private:
   virtual int OnCompareItems(const wxTreeItemId& item1, const wxTreeItemId& item2) override;
   void FinishAddingGroup(wxTreeEvent& evt, wxTreeItemId groupItem);
   void FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, const wxString& oldPath);
-  CItemData CreateNewItemAsCopy(const CItemData *dataSrc, StringX sxNewPath, bool checkName, bool newEntry = false);
-  void ExtendCommandCopyGroup(MultiCommands* pmCmd, wxTreeItemId itemSrc, StringX sxNewPath, bool checkName);
-  MultiCommands* CreateCommandRenamingGroup(StringX sxNewPath, StringX sxOldPath);
-  MultiCommands* CreateCommandCopyGroup(wxTreeItemId itemSrc, StringX sxNewPath, StringX sxOldPath, bool checkName);
+  CItemData CreateNewItemAsCopy(const CItemData *dataSrc, const StringX &sxNewPath, bool checkName, bool newEntry = false);
+  void ExtendCommandCopyGroup(MultiCommands* pmCmd, wxTreeItemId itemSrc, const StringX &sxNewPath, bool checkName);
+  MultiCommands* CreateCommandRenamingGroup(const StringX &sxNewPath, const StringX &sxOldPath);
+  MultiCommands* CreateCommandCopyGroup(wxTreeItemId itemSrc, const StringX &sxNewPath, const StringX &sxOldPath, bool checkName);
   void ExecuteMultiCommands(MultiCommands* commands);
   bool IsDescendant(const wxTreeItemId itemDst, const wxTreeItemId itemSrc);
   void markDragItem(const wxTreeItemId itemSrc, bool markIt = true);
@@ -306,7 +306,7 @@ private:
   
   void CollectDnDData(wxMemoryBuffer &outDDmem, wxString &fileName);
   void GetGroupEntriesData(DnDObList &dnd_oblist, wxTreeItemId item);
-  void GetEntryData(DnDObList &dnd_oblist, CItemData *pci);
+  void GetEntryData(DnDObList &dnd_oblist, const CItemData *pci);
   bool ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem);
   void AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, StringX &sxDropPath);
 

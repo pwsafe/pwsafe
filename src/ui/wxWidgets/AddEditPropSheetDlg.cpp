@@ -1691,7 +1691,7 @@ struct newer {
   }
 };
 
-void AddEditPropSheetDlg::SetupDCAComboBoxes(wxComboBox *pcbox, short &iDCA, bool isShift)
+void AddEditPropSheetDlg::SetupDCAComboBoxes(wxComboBox *pcbox, short iDCA, bool isShift) const
 {
 static struct {short pv; wxString name;}
  dcaMapping[] =
@@ -3527,7 +3527,7 @@ void AddEditPropSheetDlg::OnKeepHistoryClick(wxCommandEvent &)
    }
 }
 
-void AddEditPropSheetDlg::SetXTime(wxObject *src)
+void AddEditPropSheetDlg::SetXTime(const wxObject *src)
 {
   if (Validate() && TransferDataFromWindow()) {
     wxDateTime xdt;

@@ -19,7 +19,7 @@ public:
   static PWSrand *GetInstance();
   static void DeleteInstance();
 
-  void AddEntropy(unsigned char *bytes, unsigned int numBytes);
+  void AddEntropy(const unsigned char *bytes, unsigned int numBytes);
   //  fill this buffer with random data
   void GetRandomData( void * const buffer, unsigned long length );
 

@@ -42,7 +42,7 @@ static wxString DnDPWSafeFormatId()
  * DnDPWSafeObject implementation
  */
 
-DnDPWSafeObject::DnDPWSafeObject(wxMemoryBuffer *object):wxDataObjectSimple(wxDataFormat(DnDPWSafeFormatId()))
+DnDPWSafeObject::DnDPWSafeObject(const wxMemoryBuffer *object): wxDataObjectSimple(wxDataFormat(DnDPWSafeFormatId()))
 {
   if(object)
   {

@@ -239,7 +239,7 @@ void PWSfile::GetUnknownHeaderFields(UnknownFieldList &UHFL)
     UHFL.clear();
 }
 
-void PWSfile::SetUnknownHeaderFields(UnknownFieldList &UHFL)
+void PWSfile::SetUnknownHeaderFields(const UnknownFieldList &UHFL)
 {
   if (!UHFL.empty())
     m_UHFL = UHFL;

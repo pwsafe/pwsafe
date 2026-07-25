@@ -273,7 +273,7 @@ int PWSfileV4::WriteRecord(const CItemAtt &att)
   // Following writes AttIV, AttEK, AttAK, AttContent
   // and AttContentHMAC per format spec.
   // All except the content are generated internally.
-size_t PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
+size_t PWSfileV4::WriteContentFields(const unsigned char *content, size_t len)
 {
   if (len == 0)
     return SUCCESS;
@@ -320,7 +320,7 @@ size_t PWSfileV4::WriteContentFields(unsigned char *content, size_t len)
   return len;
 }
 
-size_t PWSfileV4::ReadContent(Fish *fish,  unsigned char *cbcbuffer,
+size_t PWSfileV4::ReadContent(const Fish *fish,  unsigned char *cbcbuffer,
                               unsigned char *&content, size_t clen)
 {
   ASSERT(clen > 0 && fish != nullptr && cbcbuffer != nullptr);

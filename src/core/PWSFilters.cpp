@@ -1098,7 +1098,7 @@ void PWSFilterManager::CreateGroups()
     m_vAflgroups.clear();
 }
 
-void PWSFilterManager::SetFilterFindEntries(UUIDVector *pvFoundUUIDs)
+void PWSFilterManager::SetFilterFindEntries(const UUIDVector *pvFoundUUIDs)
 {
   if (pvFoundUUIDs == nullptr)
     m_vFltrFoundUUIDs.clear();

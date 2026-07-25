@@ -36,7 +36,7 @@ class SyncWizard : public wxWizard
   void OnClose(wxCloseEvent &event);
   void ResetSyncData();
 public:
-  SyncWizard(wxWindow* parent, PWScore* core, const wxString filename = "");
+  SyncWizard(wxWindow* parent, PWScore* core, const wxString &filename = "");
   ~SyncWizard();
 
   //users must pass the return value of this function to RunWizard

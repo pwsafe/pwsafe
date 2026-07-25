@@ -111,7 +111,7 @@ class DbSelectionPage : public SyncWizardPage
   DbSelectionPanel* m_panel;
 
 public:
-  DbSelectionPage(wxWizard* parent, SyncData* data, const wxString filename = "");
+  DbSelectionPage(wxWizard* parent, SyncData* data, const wxString &filename = "");
 
   virtual bool OnPageLeave(PageDirection dir);
   virtual void SaveData(SyncData* data);
@@ -219,7 +219,7 @@ BEGIN_EVENT_TABLE(SyncWizard, wxWizard)
   EVT_WIZARD_CANCEL(wxID_ANY, SyncWizard::OnWizardCancel)
 END_EVENT_TABLE()
 
-SyncWizard::SyncWizard(wxWindow* parent, PWScore* core, const wxString filename):
+SyncWizard::SyncWizard(wxWindow* parent, PWScore* core, const wxString &filename):
                 wxWizard(parent, wxID_ANY, _("Synchronize another database with currently open database")),
                 m_page1(nullptr), m_syncData(new SyncData)
 {
@@ -430,7 +430,7 @@ SyncStartPage::SyncStartPage(wxWizard* parent, SyncData* data) : SyncWizardPage(
 /////////////////////////////////////////
 // DbSelectionPage implementation
 //
-DbSelectionPage::DbSelectionPage(wxWizard* parent, SyncData* data, const wxString filename):
+DbSelectionPage::DbSelectionPage(wxWizard* parent, SyncData* data, const wxString &filename):
                              SyncWizardPage(parent, data, _("Select another database"))
 {
   const wxString filePrompt(wxString(_("Choose Database to Synchronize with \"")) << towxstring(data->core->GetCurFile()) << wxT("\""));

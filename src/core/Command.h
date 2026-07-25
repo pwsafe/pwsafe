@@ -153,13 +153,13 @@ class DBPrefsCommand : public Command
 public:
   // Call Create without newHashIters when this hasn't changed.
   static DBPrefsCommand *Create(CommandInterface *pcomInt,
-                                StringX &sxNewDBPrefs, uint32 newHashIters = 0)
+                                const StringX &sxNewDBPrefs, uint32 newHashIters = 0)
   { return new DBPrefsCommand(pcomInt, sxNewDBPrefs, newHashIters); }
   int Execute();
   void Undo();
 
 private:
-  DBPrefsCommand(CommandInterface *pcomInt, StringX &sxNewDBPrefs, uint32 newHashIters);
+  DBPrefsCommand(CommandInterface *pcomInt, const StringX &sxNewDBPrefs, uint32 newHashIters);
   const StringX m_sxOldDBPrefs, m_sxNewDBPrefs;
   const uint32 m_oldHashIters, m_newHashIters;
 };
@@ -358,8 +358,8 @@ class UpdatePasswordCommand : public Command
 {
 public:
   static UpdatePasswordCommand *Create(CommandInterface *pcomInt,
-                                       CItemData &ci,
-                                       const StringX sxNewPassword)
+                                       const CItemData &ci,
+                                       const StringX &sxNewPassword)
   { return new UpdatePasswordCommand(pcomInt, ci, sxNewPassword); }
   int Execute();
   void Undo();
@@ -396,7 +396,7 @@ class AddDependentEntriesCommand : public Command
 {
 public:
   static AddDependentEntriesCommand *Create(CommandInterface *pcomInt,
-                                            UUIDVector &dependentslist,
+                                            const UUIDVector &dependentslist,
                                             CReport *pRpt,
                                             CItemData::EntryType type,
                                             int iVia)
@@ -408,7 +408,7 @@ public:
 
 private:
   AddDependentEntriesCommand(CommandInterface *pcomInt,
-                             UUIDVector &dependentslist, CReport *pRpt,
+                             const UUIDVector &dependentslist, CReport *pRpt,
                              CItemData::EntryType type, int iVia);
   UUIDVector m_dependentslist;
   ItemList m_mapDeletedItems;
@@ -494,7 +494,7 @@ class RenameGroupCommand : public Command
 {
 public:
   static RenameGroupCommand *Create(CommandInterface *pcomInt,
-                                    const StringX sxOldPath, const StringX sxNewPath)
+                                    const StringX &sxOldPath, const StringX &sxNewPath)
   { return new RenameGroupCommand(pcomInt, sxOldPath, sxNewPath); }
   ~RenameGroupCommand();
   int Execute();
@@ -505,7 +505,7 @@ public:
 
 private:
   RenameGroupCommand(CommandInterface *pcomInt,
-                     StringX sxOldPath, StringX sxNewPath);
+                     const StringX &sxOldPath, const StringX &sxNewPath);
 
    StringX m_sxOldPath, m_sxNewPath;
    MultiCommands *m_pmulticmds;
@@ -514,14 +514,14 @@ private:
 class ChangeDBHeaderCommand : public Command {
 public:
   static ChangeDBHeaderCommand *Create(CommandInterface *pcomInt,
-    const StringX sxNewValue, const PWSfile::HeaderType ht)
+    const StringX &sxNewValue, const PWSfile::HeaderType ht)
   { return new ChangeDBHeaderCommand(pcomInt, sxNewValue, ht); }
   int Execute();
   void Undo();
 
 private:
   ChangeDBHeaderCommand(CommandInterface *pcomInt,
-    StringX sxOldValue, const PWSfile::HeaderType ht);
+    const StringX &sxOldValue, const PWSfile::HeaderType ht);
 
   StringX m_sxOldValue, m_sxNewValue;
   PWSfile::HeaderType m_ht;
@@ -530,14 +530,14 @@ private:
 class DBFiltersCommand : public Command {
 public:
   static DBFiltersCommand *Create(CommandInterface *pcomInt,
-    PWSFilters &MapFilters)
+    const PWSFilters &MapFilters)
   { return new DBFiltersCommand(pcomInt, MapFilters); }
 
   int Execute();
   void Undo();
 
 private:
-  DBFiltersCommand(CommandInterface *pcomInt, PWSFilters &MapFilters);
+  DBFiltersCommand(CommandInterface *pcomInt, const PWSFilters &MapFilters);
 
   PWSFilters m_NewMapFilters;
   PWSFilters m_OldMapFilters;
@@ -555,7 +555,7 @@ public:
 
   void Add(Command *pcmd);
   void Insert(Command *pcmd, size_t ioffset = 0); // VERY INEFFICIENT - use sparingly
-  bool GetRC(Command *pcmd, int &rc);
+  bool GetRC(const Command *pcmd, int &rc);
   bool GetRC(const size_t ncmd, int &rc);
   std::size_t GetSize() const {return m_vpcmds.size();}
   bool IsEmpty() const { return m_vpcmds.empty(); }

@@ -103,13 +103,13 @@ protected:
 ////@begin SafeCombinationChangeDlg member function declarations
 public:
   StringX GetConfirm() const { return m_confirm ; }
-  void SetConfirm(StringX value) { m_confirm = value ; }
+  void SetConfirm(const StringX &value) { m_confirm = value; }
 
   StringX GetNewpasswd() const { return m_newpasswd ; }
-  void SetNewpasswd(StringX value) { m_newpasswd = value ; }
+  void SetNewpasswd(const StringX &value) { m_newpasswd = value; }
 
   StringX GetOldpasswd() const { return m_oldpasswd ; }
-  void SetOldpasswd(StringX value) { m_oldpasswd = value ; }
+  void SetOldpasswd(const StringX &value) { m_oldpasswd = value; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );

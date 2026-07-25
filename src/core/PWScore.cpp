@@ -247,7 +247,7 @@ void PWScore::DoAddEntry(const CItemData &item, const CItemAtt *att)
     VERIFY(AddKBShortcut(iKBShortcut, item.GetUUID()));
 }
 
-bool PWScore::ConfirmDelete(const CItemData *pci, StringX sxGroup)
+bool PWScore::ConfirmDelete(const CItemData *pci, const StringX &sxGroup)
 {
   ASSERT(pci != nullptr);
   if (pci->IsBase() && m_pAsker != nullptr) {
@@ -627,7 +627,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
     // Write attachments (only from V4)
     if (version >= PWSfile::V40)
       for_each(m_attlist.begin(), m_attlist.end(),
-               [&](std::pair<CUUID const, CItemAtt> &p)
+               [&](const std::pair<CUUID const, CItemAtt> &p)
                {
                  p.second.Write(out);
                } );
@@ -708,7 +708,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
 // Writes out subset of records to a PasswordSafe database at the current version
 // Used by Export entry or Export Group
 struct ExportRecordWriter {
-  ExportRecordWriter(PWSfile *pout, PWScore * /*pcore*/, std::vector<pws_os::CUUID> &vuuidAddedBases,
+  ExportRecordWriter(PWSfile *pout, PWScore * /*pcore*/, const std::vector<CUUID> &vuuidAddedBases,
     CReport *pRpt) :
     m_pout(pout), /*m_pcore(pcore),*/ m_pRpt(pRpt), m_vuuidAddedBases(vuuidAddedBases) {}
 
@@ -757,10 +757,10 @@ private:
 };
 
 int PWScore::WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
-                             PWScore *pINcore, PWSfile::VERSION version, 
-                             std::vector<StringX> &vEmptyGroups,
+                             PWScore *pINcore, PWSfile::VERSION version,
+                             const std::vector<StringX> &vEmptyGroups,
                              bool bExportDBFilters,
-                             std::vector<pws_os::CUUID> &vuuidAddedBases,
+                             const std::vector<CUUID> &vuuidAddedBases,
                              CReport *pRpt)
 {
   // Writes out subset of database records (as supplied in OrderedItemList)
@@ -1894,7 +1894,7 @@ bool PWScore::GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp) co
 class PolicyNameMatch
 {
 public:
-  PolicyNameMatch(StringX &policyname) : m_policyname(policyname) {}
+  PolicyNameMatch(const StringX &policyname) : m_policyname(policyname) {}
 
   bool operator()(const std::pair<StringX, StringX> &pr)
   {
@@ -1945,10 +1945,10 @@ void PWScore::MakePolicyUnique(std::map<StringX, StringX> &mapRenamedPolicies,
 // Updates vector with entries using named password policy
 struct AddEntry {
   AddEntry(const AddEntry&) = default;
-  AddEntry(const StringX sxPolicyName, std::vector<st_GroupTitleUser> &ventries)
+  AddEntry(const StringX &sxPolicyName, std::vector<st_GroupTitleUser> &ventries)
     : m_sxPolicyName(sxPolicyName), m_pventries(&ventries) {}
 
-  void operator()(std::pair<CUUID const, CItemData> &p)
+  void operator()(const std::pair<CUUID const, CItemData> &p)
   {
     if (p.second.GetPolicyName() == m_sxPolicyName) {
       st_GroupTitleUser st;
@@ -1966,7 +1966,7 @@ private:
   std::vector<st_GroupTitleUser> *m_pventries;
 };
 
-bool PWScore::GetEntriesUsingNamedPasswordPolicy(const StringX sxPolicyName,
+bool PWScore::GetEntriesUsingNamedPasswordPolicy(const StringX &sxPolicyName,
               std::vector<st_GroupTitleUser> &ventries)
 {
   AddEntry add_entry(sxPolicyName, ventries);
@@ -2759,7 +2759,7 @@ void PWScore::UnlockFile2(const stringT &filename)
   return pws_os::UnlockFile(filename, m_lockFileHandle2);
 }
 
-bool PWScore::IsNodeModified(StringX &path) const
+bool PWScore::IsNodeModified(const StringX &path) const
 {
   if (!IsEmptyGroup(path)) {
     return std::find(m_vModifiedNodes.begin(),
@@ -3180,10 +3180,8 @@ int PWScore::SetHeaderItem(const StringX &sxNewValue, PWSfile::HeaderType ht)
 void PWScore::UpdateExpiryEntry(const CUUID &uuid, const CItemData::FieldType ft,
                                 const StringX &value)
 {
-  ExpiredList::iterator iter;
-
-  iter = std::find_if(m_ExpireCandidates.begin(), m_ExpireCandidates.end(),
-                      [uuid](pws_os::CUUID v){return v == uuid;});
+  const auto iter = std::find_if(m_ExpireCandidates.begin(), m_ExpireCandidates.end(),
+                                            [uuid](const CUUID &v) { return v == uuid; });
   if (iter == m_ExpireCandidates.end())
     return;
 

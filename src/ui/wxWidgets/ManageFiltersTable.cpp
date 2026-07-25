@@ -395,8 +395,7 @@ wxString pwManageFiltersTable::getSourcePoolLabel(FilterPool pool)
 /*!
  * LessThan Sorting function for filter
  */
-
-bool pwSortedManageFilters::LessThan(struct st_FilterItemData &fd1, struct st_FilterItemData &fd2)
+bool pwSortedManageFilters::LessThan(const st_FilterItemData &fd1, const st_FilterItemData &fd2)
 {
   bool result;
   
@@ -466,8 +465,7 @@ void pwSortedManageFilters::clear()
  * insert new filter into sorted filter list
  * Actualize selected and active filter index, when needed.
  */
-
-int pwSortedManageFilters::insert(struct st_FilterItemData &data)
+int pwSortedManageFilters::insert(const st_FilterItemData &data)
 {
   size_t i;
 

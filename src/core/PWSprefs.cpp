@@ -800,7 +800,7 @@ struct shortcut_less {
   }
 };
 
-bool equal_shortcuts(st_prefShortcut a, st_prefShortcut b)
+bool equal_shortcuts(const st_prefShortcut &a, const st_prefShortcut &b)
 {
   return (a.id == b.id &&
           a.siVirtKey == b.siVirtKey &&

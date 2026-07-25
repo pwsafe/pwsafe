@@ -185,7 +185,7 @@ void GenRandhash(const StringX &a_passkey,
 
 
 size_t _writecbc(FILE* fp, const unsigned char* buffer, size_t length, unsigned char type,
-  Fish* Algorithm, unsigned char* cbcbuffer)
+  const Fish* Algorithm, unsigned char* cbcbuffer)
 {
   size_t numWritten = 0;
 
@@ -201,7 +201,7 @@ size_t _writecbc(FILE* fp, const unsigned char* buffer, size_t length, unsigned 
 
 
 size_t _writecbc1st(FILE* fp, const unsigned char** buffer, size_t *length, unsigned char type,
-  Fish* Algorithm, unsigned char* cbcbuffer, bool isAboveThreshold)
+  const Fish* Algorithm, unsigned char* cbcbuffer, bool isAboveThreshold)
 {
   /**
    * Write the length, type and perhaps a few bytes of data.
@@ -261,7 +261,7 @@ size_t _writecbc1st(FILE* fp, const unsigned char** buffer, size_t *length, unsi
 
 
 size_t _writecbcRest(FILE *fp, const unsigned char *buffer, size_t length,
-                 Fish *Algorithm, unsigned char *cbcbuffer)
+                 const Fish *Algorithm, unsigned char *cbcbuffer)
 {
   // Doesn't write out length, just CBC's the data, padding with randomness
   // as required.
@@ -311,7 +311,7 @@ size_t _writecbcRest(FILE *fp, const unsigned char *buffer, size_t length,
 }
 
 
-size_t readcbc1st(FILE *fp, size_t &record_size, Fish *Algorithm, unsigned char *cbcbuffer, bool isAboveThreshold)
+size_t readcbc1st(FILE *fp, size_t &record_size, const Fish *Algorithm, unsigned char *cbcbuffer, bool isAboveThreshold)
 {
   const unsigned int BS = Algorithm->GetBlockSize();
   unsigned char* ctblock = new unsigned char[2 * BS];
@@ -354,7 +354,7 @@ size_t readcbc1st(FILE *fp, size_t &record_size, Fish *Algorithm, unsigned char 
 */
 size_t _readcbc(FILE *fp,
          unsigned char* &buffer, size_t &buffer_len, unsigned char &type,
-         Fish *Algorithm, unsigned char *cbcbuffer,
+         const Fish *Algorithm, unsigned char *cbcbuffer,
          const unsigned char *TERMINAL_BLOCK, ulong64 file_len)
 {
   const unsigned int BS = Algorithm->GetBlockSize();
@@ -461,7 +461,7 @@ size_t _readcbc(FILE *fp,
 
 // typeless version for V4 content (caller pre-allocates buffer)
 size_t _readcbc(FILE *fp, unsigned char *buffer,
-                const size_t buffer_len, Fish *Algorithm,
+                const size_t buffer_len, const Fish *Algorithm,
                 unsigned char *cbcbuffer)
 {
   const unsigned int BS = Algorithm->GetBlockSize();
@@ -841,7 +841,7 @@ string PWSUtil::GetXMLTime(int indent, const char *name,
   return oss.str();
 }
 
-StringX PWSUtil::DeDupString(StringX &in_string)
+StringX PWSUtil::DeDupString(const StringX &in_string)
 {
   // Size of input string
   const size_t len = in_string.length();

@@ -403,8 +403,7 @@ static void SetupDeadKeyMaps()
 
 // Functor for for_each
 struct Clear_Map {
-  void operator()(std::pair<unsigned int, Map_IDK2SCSSCC *> p)
-  {
+  void operator()(const std::pair<unsigned int, Map_IDK2SCSSCC *> &p) const {
     p.second->clear();
   }
 };

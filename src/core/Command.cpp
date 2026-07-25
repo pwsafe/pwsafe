@@ -198,7 +198,7 @@ void MultiCommands::Insert(Command *pcmd, size_t ioffset)
   m_vpcmds.insert(m_vpcmds.begin() + ioffset, pcmd);
 }
 
-bool MultiCommands::GetRC(Command *pcmd, int &rc)
+bool MultiCommands::GetRC(const Command *pcmd, int &rc)
 {
   std::vector<Command *>::iterator cmd_Iter;
 
@@ -254,7 +254,7 @@ void UpdateGUICommand::Undo()
 // DBPrefsCommand
 // ------------------------------------------------
 
-DBPrefsCommand::DBPrefsCommand(CommandInterface *pcomInt, StringX &sxDBPrefs, uint32 newHashIters)
+DBPrefsCommand::DBPrefsCommand(CommandInterface *pcomInt, const StringX &sxDBPrefs, uint32 newHashIters)
   : Command(pcomInt),
     m_sxOldDBPrefs(PWSprefs::GetInstance()->Store()),
     m_sxNewDBPrefs(sxDBPrefs),
@@ -1074,7 +1074,7 @@ void AddDependentEntryCommand::Undo()
 // ------------------------------------------------
 
 AddDependentEntriesCommand::AddDependentEntriesCommand(CommandInterface *pcomInt,
-                                                       UUIDVector &dependentslist,
+                                                       const UUIDVector &dependentslist,
                                                        CReport *pRpt,
                                                        CItemData::EntryType type,
                                                        int iVia)
@@ -1245,7 +1245,7 @@ void UpdatePasswordHistoryCommand::Undo()
 // ------------------------------------------------
 
 RenameGroupCommand::RenameGroupCommand(CommandInterface *pcomInt,
-                                       const StringX sxOldPath, const StringX sxNewPath)
+                                       const StringX &sxOldPath, const StringX &sxNewPath)
  : Command(pcomInt), m_sxOldPath(sxOldPath), m_sxNewPath(sxNewPath), m_pmulticmds(nullptr)
 {
   m_CommandChangeType = DB;
@@ -1297,7 +1297,7 @@ void RenameGroupCommand::Undo()
 // ------------------------------------------------
 
 ChangeDBHeaderCommand::ChangeDBHeaderCommand(CommandInterface *pcomInt,
-  const StringX sxNewValue, const PWSfile::HeaderType ht)
+  const StringX &sxNewValue, const PWSfile::HeaderType ht)
   : Command(pcomInt), m_sxNewValue(sxNewValue), m_ht(ht)
 {
   m_sxOldValue = m_pcomInt->GetHeaderItem(m_ht);
@@ -1326,7 +1326,7 @@ void ChangeDBHeaderCommand::Undo()
 // ------------------------------------------------
 
 DBFiltersCommand::DBFiltersCommand(CommandInterface *pcomInt,
-  PWSFilters &MapFilters)
+  const PWSFilters &MapFilters)
   : Command(pcomInt), m_NewMapFilters(MapFilters)
 {
   m_OldMapFilters = pcomInt->GetDBFilters();

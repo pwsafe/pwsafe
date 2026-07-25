@@ -167,7 +167,7 @@ inline StringX rmtime(wchar_t tag, const CItemData &i)
 using unique_hdr_func_t = function<void(const st_CompareData &cd, wchar_t tag)>;
 
 void print_unique_items(wchar_t tag, const CompareData &cd, const PWScore &core,
-                            unique_hdr_func_t hdr_fn)
+                        const unique_hdr_func_t &hdr_fn)
 {
   for(const auto &d: cd) {
     hdr_fn(d, tag);
@@ -197,7 +197,7 @@ inline bool have_empty_policies(const CItemData &item, const CItemData &otherIte
 }
 
 void print_conflicting_item(const CItemData &item, const CItemData &otherItem,
-                            const CItemData::FieldBits &fields, item_diff_func_t diff_fn)
+                            const CItemData::FieldBits &fields, const item_diff_func_t &diff_fn)
 {
   for( auto ft: diff_fields ) {
     switch(ft) {
@@ -232,8 +232,8 @@ using conflict_hdr_func_t = function<void(const st_CompareData &cd,
                                           const CItemData &otherItem)>;
 
 void print_conflicts(const CompareData &conflicts, const PWScore &core,
-                            const PWScore &otherCore, conflict_hdr_func_t hdr_fn,
-                            item_diff_func_t diff_fn)
+                            const PWScore &otherCore, const conflict_hdr_func_t &hdr_fn,
+                            const item_diff_func_t &diff_fn)
 {
   for( const auto &cd: conflicts ) {
     const CItemData &item = core.Find(cd.uuid0)->second;

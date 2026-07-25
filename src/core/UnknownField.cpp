@@ -10,7 +10,7 @@
 #include "Util.h"
 
 UnknownFieldEntry::UnknownFieldEntry(unsigned char t, size_t s,
-                                     unsigned char *d)
+                                     const unsigned char *d)
 {
   uc_Type = t;
   st_length =s;

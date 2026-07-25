@@ -73,7 +73,7 @@ class AboutDlg : public wxDialog, public wxThreadHelper
   wxString GetLibCurlVersion();
   wxString GetLibWxVersion();
   static wxCriticalSection& CriticalSection();
-  static size_t WriteCallback(char *receivedData, size_t size, size_t bytes, void *userData);
+  static size_t WriteCallback(const char *receivedData, size_t size, size_t bytes, void *userData);
 
 public:
   /// Creation

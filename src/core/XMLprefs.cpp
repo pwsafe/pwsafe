@@ -643,8 +643,8 @@ std::vector<st_prefShortcut> CXMLprefs::GetShortcuts(const stringT &csBaseKeyNam
   return v_Shortcuts;
 }
 
-int CXMLprefs::SetShortcuts(const stringT &csBaseKeyName, 
-                            std::vector<st_prefShortcut> v_shortcuts)
+int CXMLprefs::SetShortcuts(const stringT &csBaseKeyName,
+                            const std::vector<st_prefShortcut> &v_shortcuts)
 {
   // m_pXMLDoc may be nullptr if Load() not called before Set,
   // or if called & failed

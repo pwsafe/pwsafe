@@ -17,7 +17,7 @@
 
 #include <time.h>
 
-bool PWSMatch::Match(const StringX &stValue, StringX sx_Object,
+bool PWSMatch::Match(const StringX &stValue, const StringX &sx_Object,
                      const int &iFunction)
 {
   // Note: sx_Object may be changed within this routine.

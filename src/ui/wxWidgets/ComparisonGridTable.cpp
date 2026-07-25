@@ -249,8 +249,8 @@ wxGridCellAttr* UniSafeCompareGridTable::GetAttr(int WXUNUSED(row), int WXUNUSED
 
 int UniSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid) const
 {
-  CompareData::iterator itr = std::find_if(m_compData->begin(),
-                                           m_compData->end(), [uuid](st_CompareData& arg){return arg.uuid0 == uuid || arg.uuid1 == uuid;});
+  const auto itr = std::find_if(m_compData->begin(), m_compData->end(),
+    [uuid](const st_CompareData& arg){return arg.uuid0 == uuid || arg.uuid1 == uuid;});
   if (itr != m_compData->end())
     return (int) std::distance(m_compData->begin(), itr);
   else
@@ -443,9 +443,8 @@ wxString MultiSafeCompareGridTable::GetRowLabelValue(int row)
 
 int MultiSafeCompareGridTable::GetItemRow(const pws_os::CUUID& uuid) const
 {
-  CompareData::iterator itr = std::find_if(m_compData->begin(),
-                                           m_compData->end(),
-                                           [uuid](st_CompareData& arg){return arg.uuid0 == uuid || arg.uuid1 == uuid;});
+  const auto itr = std::find_if(m_compData->begin(), m_compData->end(),
+    [uuid](const st_CompareData& arg){return arg.uuid0 == uuid || arg.uuid1 == uuid;});
   if (itr != m_compData->end())
     return (int) std::distance(m_compData->begin(), itr)*2 + (itr->uuid0 == uuid? 0: 1);
   else

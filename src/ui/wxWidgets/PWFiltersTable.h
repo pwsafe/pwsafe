@@ -72,7 +72,7 @@ public:
   
   /// Supporting functions to handle label values
   static wxString GetColLabelString(int col);
-  static wxSize GetCriteriaMinSize(wxClientDC &dc); // Minimum size of default criteria strings
+  static wxSize GetCriteriaMinSize(const wxClientDC &dc); // Minimum size of default criteria strings
   
   ///optional overrides
   virtual void Clear();

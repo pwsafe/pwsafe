@@ -413,7 +413,7 @@ bool PWSafeApp::OnInit()
   // Note that this is done after language is set, addressing GH1572
   if ((cmd_encrypt || cmd_decrypt) && !cmd_filename.IsEmpty()) {
 
-    auto processCryption = [&](CryptKeyEntryDlg::Mode mode, std::function<bool(const stringT &fn, const StringX &passwd, stringT &errmess)> func) {
+    auto processCryption = [&](CryptKeyEntryDlg::Mode mode, const std::function<bool(const stringT &fn, const StringX &passwd, stringT &errmess)> &func) {
       stringT errstr;
 
       CryptKeyEntryDlg dialog(mode);

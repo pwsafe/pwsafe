@@ -125,7 +125,7 @@ protected:
 ////@begin SafeCombinationEntryDlg member function declarations
 public:
   StringX GetPassword() const { return m_password ; }
-  void SetPassword(StringX value) { m_password = value ; }
+  void SetPassword(const StringX &value) { m_password = value; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );

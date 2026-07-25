@@ -95,7 +95,7 @@ public:
 
   /// A local copy of the filter name is stored as shown in the dialog
   wxString GetFilterName() const { return m_filterName ; }
-  void SetFilterName(wxString value) { m_filterName = value ; }
+  void SetFilterName(const wxString &value) { m_filterName = value; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );

@@ -352,8 +352,8 @@ bool SetFiltersDlg::VerifyFilters()
   int iPolicy = -1;
   int iAttachment = -1;
   // Check on complete filter. History, Policy and Attachment need related group filled
-  for_each(currentFilter->begin(), currentFilter->end(), [&i, &iError, &iHistory, &iPolicy, &iAttachment] (st_FilterRow st_fldata) {
-    ++i; // User is starting it's count by 1 for users view
+  for_each(currentFilter->begin(), currentFilter->end(), [&i, &iError, &iHistory, &iPolicy, &iAttachment] (const st_FilterRow &st_fldata) {
+    ++i; // User is starting its count by 1 for users view
     if((st_fldata.mtype != PWSMatch::MT_PWHIST && st_fldata.mtype != PWSMatch::MT_POLICY && st_fldata.mtype != PWSMatch::MT_ATTACHMENT) &&
        (st_fldata.mtype == PWSMatch::MT_INVALID || st_fldata.rule  == PWSMatch::MR_INVALID)) {
       iError = i;

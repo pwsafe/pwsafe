@@ -210,7 +210,7 @@ void PasswordSafeFrame::DoDeleteItems(bool askConfirmation, bool isGroup)
   } // dodelete
 }
 
-Command *PasswordSafeFrame::DeleteItem(CItemData *pci, wxTreeItemId root)
+Command *PasswordSafeFrame::DeleteItem(const CItemData *pci, wxTreeItemId root)
 {
   ASSERT(pci != nullptr);
   // Alias in same group, which will be deleted, are not given warning for
@@ -609,7 +609,7 @@ void PasswordSafeFrame::OnViewAttachment(wxCommandEvent& WXUNUSED(evt))
   CallAfter(&PasswordSafeFrame::DoViewAttachment, item);
 }
 
-void PasswordSafeFrame::DoViewAttachment(CItemData* item)
+void PasswordSafeFrame::DoViewAttachment(const CItemData* item)
 {
   CItemAtt itemAttachment;
   if (item->HasAttRef()) { // PWSfile::V40
@@ -769,7 +769,7 @@ void PasswordSafeFrame::MinimizeOrHideBeforeAutotyping()
   }
 }
 
-void PasswordSafeFrame::MaybeRestoreUI(bool autotype_err, wxString autotype_err_msg)
+void PasswordSafeFrame::MaybeRestoreUI(bool autotype_err, const wxString &autotype_err_msg)
 {
   // Restore the UI if
   //   1. there was an error autotyping
@@ -1165,7 +1165,7 @@ void PasswordSafeFrame::OnPasswordQRCode(wxCommandEvent &evt)
   }
 }
 
-void PasswordSafeFrame::DoPasswordQRCode(CItemData* item)
+void PasswordSafeFrame::DoPasswordQRCode(const CItemData* item)
 {
   if (item) {
     auto gtu = item->GetTitle();

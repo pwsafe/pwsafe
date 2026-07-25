@@ -933,8 +933,8 @@ stringT PWScore::Merge(PWScore *pothercore,
 }
 
 int PWScore::MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
-                             uuid_array_t &base_uuid, uuid_array_t &new_base_uuid,
-                             const bool bTitleRenamed, stringT &str_timestring,
+                             const uuid_array_t &base_uuid, const uuid_array_t &new_base_uuid,
+                             const bool bTitleRenamed, const stringT &str_timestring,
                              const CItemData::EntryType et,
                              std::vector<StringX> &vs_added)
 {
@@ -1229,7 +1229,7 @@ void PWScore::Synchronize(PWScore *pothercore,
 Command *PWScore::ProcessPolicyName(const PWScore *pothercore, CItemData &updtEntry,
                                     std::map<StringX, StringX> &mapRenamedPolicies,
                                     std::vector<StringX> &vs_PoliciesAdded,
-                                    StringX &sxOtherPolicyName, bool &bUpdated,
+                                    const StringX &sxOtherPolicyName, bool &bUpdated,
                                     const StringX &sxDateTime, const UINT &ids_message)
 {
   Command *pcmd(nullptr);

@@ -340,9 +340,9 @@ private:
   void ApplyFontPreferences();
 
   void ItemFieldsToPropSheet();
-  void SetupDCAComboBoxes(wxComboBox *pcbox, short &iDCA, bool isShift);
+  void SetupDCAComboBoxes(wxComboBox *pcbox, short iDCA, bool isShift) const;
   void InitializeExpTimes();        // entry -> controls
-  void SetXTime(wxObject *src); // sync controls + controls -> entry
+  void SetXTime(const wxObject *src); // sync controls + controls -> entry
 
   // Today returns time part == 0
   wxDateTime TodayPlusInterval(const int interval) const { return wxDateTime::Today().Add(wxDateSpan(0, 0, 0, interval)); };

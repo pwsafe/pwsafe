@@ -361,8 +361,7 @@ wxString pwFiltersTable::GetValue(int row, int col)
 /*!
  * GetCriteriaMinSize Get minimum size of pre-defined criteria strings, using the drawing context for formatting.
  */
-
-wxSize pwFiltersTable::GetCriteriaMinSize(wxClientDC &dc)
+wxSize pwFiltersTable::GetCriteriaMinSize(const wxClientDC &dc)
 {
   wxSize size;
   
