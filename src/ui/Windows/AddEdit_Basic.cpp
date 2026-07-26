@@ -800,6 +800,9 @@ void CAddEdit_Basic::OnENSetFocusPassword2()
 
 void CAddEdit_Basic::OnENChangePassword()
 {
+  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
+    return;
+
   UpdateData(TRUE);
   m_ae_psh->SetChanged(true);
   M_realpassword() = m_password;
@@ -906,6 +909,9 @@ void CAddEdit_Basic::OnGeneratePassword()
 
 void CAddEdit_Basic::OnGroupComboChanged()
 {
+  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
+    return;
+
   UpdateData(TRUE);
   m_ae_psh->SetChanged(true);
 }
@@ -922,14 +928,16 @@ void CAddEdit_Basic::OnChanged()
 void CAddEdit_Basic::OnENChangeURL()
 {
   UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
+  if (m_bInitdone && M_uicaller() != IDS_VIEWENTRY && M_protected() == 0)
+    m_ae_psh->SetChanged(true);
   GetDlgItem(IDC_LAUNCH)->EnableWindow(M_URL().IsEmpty() ? FALSE : TRUE);
 }
 
 void CAddEdit_Basic::OnENChangeEmail()
 {
   UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
+  if (m_bInitdone && M_uicaller() != IDS_VIEWENTRY && M_protected() == 0)
+    m_ae_psh->SetChanged(true);
   GetDlgItem(IDC_SENDEMAIL)->EnableWindow(M_email().IsEmpty() ? FALSE : TRUE);
 }
 

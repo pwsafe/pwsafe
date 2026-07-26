@@ -1119,7 +1119,8 @@ void CAddEdit_Additional::UpdatePasswordHistoryLC()
 void CAddEdit_Additional::OnTwoFactorKeyChanged()
 {
   UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
+  if (m_bInitdone && M_uicaller() != IDS_VIEWENTRY && M_protected() == 0)
+    m_ae_psh->SetChanged(true);
   M_twofactorkey() = m_twofactorkey;
 }
 
