@@ -238,21 +238,21 @@ struct ModifierKey {
         unset_events(std::move(unset_ev)) {}
 
 public:
-  ModifierKey(Display *disp, XModPos pos, klist set_events = { KeyEventType::PRESS },
-              klist unset_events = { KeyEventType::RELEASE });
-  ModifierKey(Display *disp, KeySym ks, klist set_events = { KeyEventType::PRESS },
-              klist unset_events = { KeyEventType::RELEASE });
+  ModifierKey(Display *disp, XModPos pos, const klist &set_events = { KeyEventType::PRESS },
+              const klist &unset_events = { KeyEventType::RELEASE });
+  ModifierKey(Display *disp, KeySym ks, const klist &set_events = { KeyEventType::PRESS },
+              const klist &unset_events = { KeyEventType::RELEASE });
   ModifierKey(KeyCode code, int mask,
-              klist set_events = { KeyEventType::PRESS },
-              klist unset_events = { KeyEventType::RELEASE });
+              const klist &set_events = { KeyEventType::PRESS },
+              const klist &unset_events = { KeyEventType::RELEASE });
 
   bool IsValid() const {
     return code != 0 && (mask != 0 && (mask == 1 || mask % 2 == 0));
   }
 };
 
-ModifierKey::ModifierKey(Display *disp, XModPos pos, klist set_events,
-                         klist unset_events)
+ModifierKey::ModifierKey(Display *disp, XModPos pos, const klist &set_events,
+                         const klist &unset_events)
     : ModifierKey(set_events, unset_events) {
   XModMap modmap(disp);
   // we can cheat safely now that index is known to be one of 1 - 8
@@ -265,8 +265,8 @@ ModifierKey::ModifierKey(Display *disp, XModPos pos, klist set_events,
   }
 }
 
-ModifierKey::ModifierKey(Display *disp, KeySym ks, klist set_events,
-                         klist unset_events)
+ModifierKey::ModifierKey(Display *disp, KeySym ks, const klist &set_events,
+                         const klist &unset_events)
     : ModifierKey(set_events, unset_events) {
   XModMap modmap(disp);
   code = KeySymToKeyCode(disp, ks);
@@ -275,7 +275,7 @@ ModifierKey::ModifierKey(Display *disp, KeySym ks, klist set_events,
 }
 
 ModifierKey::ModifierKey(KeyCode kcode, int kmask,
-                         klist set_events, klist unset_events)
+                         const klist &set_events, const klist &unset_events)
     : ModifierKey(set_events, unset_events) {
   code = kcode;
   mask = kmask;

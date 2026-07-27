@@ -93,7 +93,7 @@ void DnDObject::DnDUnSerializeEntry(wxInputStream &inStream)
   trashMemory(&(*v.begin()), v.size());
 }
 
-void DnDObList::InsertAttUuid(const pws_os::CUUID attUuid, const pws_os::CUUID baseUuid)
+void DnDObList::InsertAttUuid(const pws_os::CUUID &attUuid, const pws_os::CUUID &baseUuid)
 {
   auto search = m_attrefs.find(attUuid);
   if(search == m_attrefs.end()) {
@@ -147,7 +147,7 @@ void DnDObList::DnDUnSerialize(wxInputStream &inStream)
   }
 }
 
-bool DnDObList::CanFind(pws_os::CUUID &uuid)
+bool DnDObList::CanFind(const pws_os::CUUID &uuid)
 {
   DnDIterator pos;
   
@@ -249,7 +249,7 @@ void DnDObList::DnDUnSerializeAttachments(wxInputStream &inStream)
   }
 }
 
-void DnDObList::UpdateBaseUUIDinDnDEntries(pws_os::CUUID &old_uuid, pws_os::CUUID &new_uuid)
+void DnDObList::UpdateBaseUUIDinDnDEntries(const pws_os::CUUID &old_uuid, pws_os::CUUID &new_uuid)
 {
   wxASSERT((old_uuid != pws_os::CUUID::NullUUID()) && (new_uuid != pws_os::CUUID::NullUUID()));
   for(DnDIterator pos = m_objects.begin(); pos != m_objects.end(); ++pos) {
@@ -267,7 +267,7 @@ void DnDObList::UpdateBaseUUIDinDnDEntries(pws_os::CUUID &old_uuid, pws_os::CUUI
   }
 }
 
-const CItemAtt *DnDObList::AttachmentOfBase(pws_os::CUUID &uuid)
+const CItemAtt *DnDObList::AttachmentOfBase(const pws_os::CUUID &uuid)
 {
   auto search = m_uuid2atta.find(uuid);
   if(search != m_uuid2atta.end()) {

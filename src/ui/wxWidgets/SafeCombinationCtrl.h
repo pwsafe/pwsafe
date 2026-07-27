@@ -50,7 +50,7 @@ public:
   void SecureTextfield(bool secured);
   void SetFocus() const;
   void DisableAndClear(bool disableClear = true);
-  void SetTextChangedHandler(std::function<void(const StringX&)> handler) { m_onTextChanged = handler; }
+  void SetTextChangedHandler(const std::function<void(const StringX&)> &handler) { m_onTextChanged = handler; }
 
 private:
   std::function<void(const StringX&)> m_onTextChanged;

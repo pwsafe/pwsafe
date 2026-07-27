@@ -49,7 +49,7 @@ PWSrand::~PWSrand()
 {
 }
 
-void PWSrand::AddEntropy(unsigned char *bytes, unsigned int numBytes)
+void PWSrand::AddEntropy(const unsigned char *bytes, unsigned int numBytes)
 {
   ASSERT(bytes != nullptr);
 

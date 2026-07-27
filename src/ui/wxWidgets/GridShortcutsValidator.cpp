@@ -320,7 +320,7 @@ void SetFont(wxGrid *grid, int row)
 /////////////////////////////////////////////////////////////////////////////////
 // PWSMenuShortcuts
 ///////////////////
-PWSMenuShortcuts::PWSMenuShortcuts(wxMenuBar* menuBar): m_shortcutsGrid(nullptr)
+PWSMenuShortcuts::PWSMenuShortcuts(const wxMenuBar* menuBar): m_shortcutsGrid(nullptr)
 {
   std::back_insert_iterator<MenuItemDataArray> inserter = std::back_inserter(m_midata);
   for( unsigned menuIndex = 0; menuIndex < menuBar->GetMenuCount(); ++menuIndex) {
@@ -334,7 +334,7 @@ PWSMenuShortcuts::~PWSMenuShortcuts()
 
 PWSMenuShortcuts* g_pShortcutsManager = nullptr;
 
-PWSMenuShortcuts* PWSMenuShortcuts::CreateShortcutsManager(wxMenuBar* menubar)
+PWSMenuShortcuts* PWSMenuShortcuts::CreateShortcutsManager(const wxMenuBar* menubar)
 {
   wxCHECK_MSG(g_pShortcutsManager == nullptr, g_pShortcutsManager, wxT("Shortcuts manager being created multiple times"));
   g_pShortcutsManager = new PWSMenuShortcuts(menubar);
@@ -426,7 +426,7 @@ void PWSMenuShortcuts::ReadApplyUserShortcuts()
   const std::vector<st_prefShortcut>& userShortcuts = PWSprefs::GetInstance()->GetPrefShortcuts();
   for (userShortcut_t::const_iterator usrItr = userShortcuts.begin(); usrItr != userShortcuts.end(); ++usrItr) {
     auto itr = std::find_if(m_midata.begin(), m_midata.end(),
-                            [usrItr](MenuItemData& b){return usrItr->id == unsigned(b.GetMenuItem()->GetId());});
+      [usrItr](const MenuItemData& b){return usrItr->id == static_cast<unsigned>(b.GetMenuItem()->GetId());});
     if (itr != m_midata.end()) {
       itr->SetUserShortcut(*usrItr);
       itr->ApplyEffectiveShortcut();
@@ -537,7 +537,8 @@ void PWSMenuShortcuts::RemoveShortcutAt(size_t idx)
 void PWSMenuShortcuts::SetShorcutsGridEventHandlers(wxGrid* grid, wxButton* resetAllButton)
 {
   m_shortcutGridStatus.resize(m_midata.size());
-  std::transform(m_midata.begin(), m_midata.end(), m_shortcutGridStatus.begin(), [](MenuItemData& a){return a.GetStatus();} );
+  std::transform(m_midata.begin(), m_midata.end(), m_shortcutGridStatus.begin(),
+    [](const MenuItemData& a){return a.GetStatus();});
 
   grid->Connect(wxEVT_GRID_CELL_CHANGED, wxGridEventHandler(PWSMenuShortcuts::OnShortcutChange), nullptr, this);
   grid->Connect(wxEVT_GRID_CELL_RIGHT_CLICK, wxGridEventHandler(PWSMenuShortcuts::OnShortcutRightClick), nullptr, this);

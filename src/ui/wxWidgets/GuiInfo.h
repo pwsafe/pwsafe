@@ -69,11 +69,11 @@ class GuiInfo
     //GuiInfo(const GuiInfo& other);
     //GuiInfo& operator=(const GuiInfo& other);
 
-    void Save(PasswordSafeFrame* frame);
-    void Restore(PasswordSafeFrame* frame);
+    void Save(const PasswordSafeFrame* frame);
+    void Restore(const PasswordSafeFrame* frame);
 
     void SaveTreeViewInfo(TreeCtrl* tree);
-    void SaveGridViewInfo(GridCtrl* grid);
+    void SaveGridViewInfo(const GridCtrl* grid);
 
     void RestoreTreeViewInfo(TreeCtrl* tree);
     void RestoreGridViewInfo(GridCtrl* grid);

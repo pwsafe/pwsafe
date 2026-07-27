@@ -51,7 +51,7 @@ ViewReportDlg::ViewReportDlg(wxWindow *parent, CReport* pRpt, bool fromFile) :
 
   if (!reportText.IsEmpty()) {
     std::replace_if(reportText.begin(), reportText.end(),
-                   [](wxUniChar ch) { return !wxIsprint(ch) && !wxIsspace(ch); },
+                   [](const wxUniChar &ch) { return !wxIsprint(ch) && !wxIsspace(ch); },
                    wxT(' '));
   }
   

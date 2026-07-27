@@ -193,7 +193,7 @@ void UpdatePasswordTextCtrl([[maybe_unused]] wxSizer *sizer, wxTextCtrl* &textCt
 #endif
 }
 
-bool CheckPasswordStrengthAndWarn(wxWindow *win, StringX &password)
+bool CheckPasswordStrengthAndWarn(wxWindow *win, const StringX &password)
 {
   // Vox populi vox dei - folks want the ability to use a weak
   // passphrase, best we can do is warn them...
@@ -258,12 +258,12 @@ std::tuple<wxBitmapButton*, wxStaticText*> wxUtilities::CreateYubiKeyControls(wx
   return std::make_tuple(button, statusText);
 }
 
-wxBitmapButton* wxUtilities::GetYubiKeyButtonControl(std::tuple<wxBitmapButton*, wxStaticText*>& controls)
+wxBitmapButton* wxUtilities::GetYubiKeyButtonControl(const std::tuple<wxBitmapButton*, wxStaticText*>& controls)
 {
   return std::get<wxBitmapButton*>(controls);
 }
 
-wxStaticText* wxUtilities::GetYubiKeyStatusControl(std::tuple<wxBitmapButton*, wxStaticText*>& controls)
+wxStaticText* wxUtilities::GetYubiKeyStatusControl(const std::tuple<wxBitmapButton*, wxStaticText*>& controls)
 {
   return std::get<wxStaticText*>(controls);
 }

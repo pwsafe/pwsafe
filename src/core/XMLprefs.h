@@ -63,8 +63,8 @@ public:
                         const int &iValue);
   
   std::vector<st_prefShortcut> GetShortcuts(const stringT &csBaseKeyName);
-  int SetShortcuts(const stringT &csBaseKeyName, 
-                   std::vector<st_prefShortcut> v_shortcuts);
+  int SetShortcuts(const stringT &csBaseKeyName,
+                   const std::vector<st_prefShortcut> &v_shortcuts);
 
   bool DeleteSetting(const stringT &csBaseKeyName, const stringT &csValueName);
   stringT getReason() const {return m_Reason;} // why something went wrong

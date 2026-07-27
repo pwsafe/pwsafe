@@ -26,13 +26,13 @@
 #include "TreeCtrl.h"
 #include "PasswordSafeFrame.h"
 
-void GuiInfo::Save(PasswordSafeFrame* frame)
+void GuiInfo::Save(const PasswordSafeFrame* frame)
 {
   SaveTreeViewInfo(frame->m_tree);
   SaveGridViewInfo(frame->m_grid);
 }
 
-void GuiInfo::Restore(PasswordSafeFrame* frame)
+void GuiInfo::Restore(const PasswordSafeFrame* frame)
 {
   RestoreTreeViewInfo(frame->m_tree);
   RestoreGridViewInfo(frame->m_grid);
@@ -113,7 +113,7 @@ void GuiInfo::SaveTreeViewInfo(TreeCtrl* tree)
   }
 }
 
-void GuiInfo::SaveGridViewInfo(GridCtrl* grid)
+void GuiInfo::SaveGridViewInfo(const GridCtrl* grid)
 {
   //has the grid been initialized?
   if (grid->GetNumItems() == 0)

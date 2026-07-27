@@ -1773,7 +1773,7 @@ void TreeCtrl::FinishRenamingGroup(wxTreeEvent& evt, wxTreeItemId groupItem, con
     wxTreeCtrl::SelectItem(newItem);
 }
 
-MultiCommands* TreeCtrl::CreateCommandRenamingGroup(StringX sxNewPath, StringX sxOldPath)
+MultiCommands* TreeCtrl::CreateCommandRenamingGroup(const StringX &sxNewPath, const StringX &sxOldPath)
 {
   // We DON'T need to handle these two as they can only occur while moving items
   //    not removing groups as they become empty
@@ -1802,7 +1802,7 @@ MultiCommands* TreeCtrl::CreateCommandRenamingGroup(StringX sxNewPath, StringX s
   return pmcmd;
 }
 
-CItemData TreeCtrl::CreateNewItemAsCopy(const CItemData *dataSrc, StringX sxNewPath, bool checkName, bool newEntry)
+CItemData TreeCtrl::CreateNewItemAsCopy(const CItemData *dataSrc, const StringX &sxNewPath, bool checkName, bool newEntry)
 {
   wxASSERT(dataSrc);
   CItemData modifiedItem(*dataSrc);
@@ -1855,7 +1855,7 @@ CItemData TreeCtrl::CreateNewItemAsCopy(const CItemData *dataSrc, StringX sxNewP
   return modifiedItem;
 }
 
-void TreeCtrl::ExtendCommandCopyGroup(MultiCommands* pmCmd, wxTreeItemId itemSrc, StringX sxNewPath, bool checkName)
+void TreeCtrl::ExtendCommandCopyGroup(MultiCommands* pmCmd, wxTreeItemId itemSrc, const StringX &sxNewPath, bool checkName)
 {
   if (!pmCmd)
     return;
@@ -1890,7 +1890,7 @@ void TreeCtrl::ExtendCommandCopyGroup(MultiCommands* pmCmd, wxTreeItemId itemSrc
   }
 }
 
-MultiCommands* TreeCtrl::CreateCommandCopyGroup(wxTreeItemId itemSrc, StringX sxNewPath, StringX sxOldPath, bool checkName)
+MultiCommands* TreeCtrl::CreateCommandCopyGroup(wxTreeItemId itemSrc, const StringX &sxNewPath, const StringX &sxOldPath, bool checkName)
 {
   MultiCommands* pmcmd = MultiCommands::Create(&m_core);
   if (!pmcmd)
@@ -2321,7 +2321,7 @@ void TreeCtrl::GetGroupEntriesData(DnDObList &dnd_oblist, wxTreeItemId item)
   }
 }
 
-void TreeCtrl::GetEntryData(DnDObList &dnd_oblist, CItemData *pci)
+void TreeCtrl::GetEntryData(DnDObList &dnd_oblist, const CItemData *pci)
 {
   wxASSERT(pci != NULL);
   DnDObject *pDnDObject = new DnDObject;

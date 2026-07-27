@@ -193,9 +193,9 @@ public:
                 bool bUpdateSig = true);
   int WriteExportFile(const StringX &filename, OrderedItemList *pOIL,
                       PWScore *pINcore, PWSfile::VERSION version,
-                      std::vector<StringX> &vEmptyGroups, 
+                      const std::vector<StringX> &vEmptyGroups, 
                       bool bExportDBFilters,
-                      std::vector<pws_os::CUUID> &vuuidAddedBases, CReport *pRpt = nullptr);
+                      const std::vector<pws_os::CUUID> &vuuidAddedBases, CReport *pRpt = nullptr);
   int WriteV17File(const StringX &filename)
   {return WriteFile(filename, PWSfile::V17, false);}
   int WriteV2File(const StringX &filename)
@@ -326,7 +326,7 @@ public:
   Command *ProcessPolicyName(const PWScore *pothercore, CItemData &updtEntry,
                              std::map<StringX, StringX> &mapRenamedPolicies,
                              std::vector<StringX> &vs_PoliciesAdded,
-                             StringX &sxOtherPolicyName, bool &bUpdated,
+                             const StringX &sxOtherPolicyName, bool &bUpdated,
                              const StringX &sxDateTime, const UINT &ids_message);
 
   // This routine should only be directly called from XML import
@@ -334,7 +334,7 @@ public:
                         StringX &sxPolicyName, const StringX &sxDateTime,
                         const UINT ids_message);
 
-  bool GetEntriesUsingNamedPasswordPolicy(const StringX sxPolicyName,
+  bool GetEntriesUsingNamedPasswordPolicy(const StringX &sxPolicyName,
                                           std::vector<st_GroupTitleUser> &ventries);
 
   // Populate setGTU & setUUID from m_pwlist. Returns false & empty set if
@@ -382,7 +382,7 @@ public:
   ItemListConstIter Find(const pws_os::CUUID &entry_uuid) const
   {return m_pwlist.find(entry_uuid);}
 
-  bool ConfirmDelete(const CItemData *pci, StringX sxGroup = L""); // ask user when about to delete a base,
+  bool ConfirmDelete(const CItemData *pci, const StringX &sxGroup = L""); // ask user when about to delete a base,
   //                                           otherwise just return true
 
   // General routines for aliases and shortcuts
@@ -462,7 +462,7 @@ public:
   { return m_MapDBFilters; }
 
   // Changed nodes
-  bool IsNodeModified(StringX &path) const;
+  bool IsNodeModified(const StringX &path) const;
 
   const UUIDList &GetRUEList()
   {return m_RUEList;}
@@ -603,8 +603,8 @@ private:
                        unsigned char *ciphertext) const;
 
   int MergeDependents(PWScore *pothercore, MultiCommands *pmulticmds,
-                      uuid_array_t &base_uuid, uuid_array_t &new_base_uuid, 
-                      const bool bTitleRenamed, stringT &timeStr, 
+                      const uuid_array_t &base_uuid, const uuid_array_t &new_base_uuid, 
+                      const bool bTitleRenamed, const stringT &timeStr, 
                       const CItemData::EntryType et, std::vector<StringX> &vs_added);
 
   StringX m_currfile; // current pw db filespec

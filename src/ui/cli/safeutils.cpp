@@ -39,7 +39,7 @@ static HANDLE hInput = GetStdHandle(STD_INPUT_HANDLE);
 static DWORD cmode;
 #endif /* _WIN32 */
 
-static void InitPWPolicy(PWPolicy &pwp, PWScore &core, const UserArgs::FieldUpdates &updates);
+static void InitPWPolicy(PWPolicy &pwp, const PWScore &core, const UserArgs::FieldUpdates &updates);
 
 int OpenCore(PWScore &core, const StringX &safe, const StringX &passphrase, bool openReadOnly)
 {
@@ -192,7 +192,7 @@ int AddEntry(PWScore &core, const UserArgs &ua)
   return AddEntryWithFields(core, ua.fieldValues, wcerr);
 }
 
-void InitPWPolicy(PWPolicy &pwp, PWScore &core, const UserArgs::FieldUpdates &updates)
+void InitPWPolicy(PWPolicy &pwp, const PWScore &core, const UserArgs::FieldUpdates &updates)
 {
   auto pnitr = find_if(updates.begin(),
                        updates.end(),
@@ -211,7 +211,7 @@ void InitPWPolicy(PWPolicy &pwp, PWScore &core, const UserArgs::FieldUpdates &up
   }
 }
 
-int InitPWPolicy(PWPolicy &pwp, PWScore &core)
+int InitPWPolicy(PWPolicy &pwp, const PWScore &core)
 {
   StringX polname;
   LoadAString(polname, IDSC_DEFAULT_POLICY);

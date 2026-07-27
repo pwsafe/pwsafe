@@ -40,7 +40,7 @@ using pws_os::CUUID;
 // ResolvePlaceholderEligibleField: For eligible fields, if an entry is an
 // alias or shortcut, resolve to a placeholder value, otherwise resolve to
 // the actual value from the actual entry.
-StringX ResolvePlaceholderEligibleField(const CItemData* pcientry, const CItemData* pcibase, std::function<StringX()> getter_func)
+StringX ResolvePlaceholderEligibleField(const CItemData* pcientry, const CItemData* pcibase, const std::function<StringX()> &getter_func)
 {
   ASSERT(pcientry);
   const CItemData::EntryType et = pcientry->GetEntryType();
@@ -1094,7 +1094,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
 }
 
 static void ConditionalWriteXML(int field, const CItemData::FieldBits &fieldbits,
-                                const char *name, const StringX value,
+                                const char *name, const StringX &value,
                                 ostringstream &oss, CUTF8Conv &utf8conv, bool &errors)
 {
   if (fieldbits.test(field) && !value.empty()) {
@@ -2309,9 +2309,6 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
     }
 
 #ifdef PWS_BIG_ENDIAN
-    unsigned char buf[len];
-    memset(buf, 0, len*sizeof(buf[0]));
-	  
     switch(type) {
       case CTIME:
       case PMTIME:
@@ -2323,11 +2320,14 @@ bool CItemData::DeSerializePlainText(const std::vector<char> &v)
       case KBSHORTCUT:
       case XTIME_INT:
       case DATA_ATT_MTIME:
-        memcpy(buf, &(*iter), len);
-        byteswap(buf, buf + len - 1);
-
-        if (!SetField(type, buf, len))
-          return false;
+        {
+          std::vector<char> buf(iter, iter+len);
+          unsigned char *begin = reinterpret_cast<unsigned char *>(buf.data());
+          unsigned char *end   = begin + len - 1;
+          byteswap(begin, end);
+          if (!SetField(type, begin, len))
+            return false;
+        }
         break;
 
       default:

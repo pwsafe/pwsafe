@@ -158,10 +158,10 @@ public:
 ////@begin PasswordPolicyDlg member function declarations
 
   wxString GetSymbols() const { return m_Symbols ; }
-  void SetSymbols(wxString value) { m_Symbols = value ; }
+  void SetSymbols(const wxString &value) { m_Symbols = value ; }
 
   wxString GetPolname() const { return m_polname ; }
-  void SetPolname(wxString value) { m_polname = value ; }
+  void SetPolname(const wxString &value) { m_polname = value ; }
 
   int GetPwDigitMinLength() const { return m_pwDigitMinLength ; }
   void SetPwDigitMinLength(int value) { m_pwDigitMinLength = value ; }
@@ -279,7 +279,7 @@ private:
   int m_pwdefaultlength;
 ////@end PasswordPolicyDlg member variables
   void SetDefaultSymbolDisplay(bool restore_defaults);
-  void CBox2Spin(wxCheckBox *cb, wxSpinCtrl *sp);
+  void CBox2Spin(const wxCheckBox *cb, wxSpinCtrl *sp);
   bool UpdatePolicy();
   bool Verify();
   PWPolicy ReadPolicy() const;

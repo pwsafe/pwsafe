@@ -75,9 +75,9 @@ private:
 
   void DoCompare(wxCommandEvent& evt);
   void DoShowReport();
-  void DoEditInCurrentDB(ContextMenuData menuContext);
-  void DoViewInComparisonDB(ContextMenuData menuContext);
-  void DoSyncItemsWithCurrentDB(int menuId, ContextMenuData menuContext);
+  void DoEditInCurrentDB(const ContextMenuData &menuContext);
+  void DoViewInComparisonDB(const ContextMenuData &menuContext);
+  void DoSyncItemsWithCurrentDB(int menuId, const ContextMenuData &menuContext);
   
   bool ViewEditEntry(PWScore* core, const pws_os::CUUID& uuid, bool readOnly);
   

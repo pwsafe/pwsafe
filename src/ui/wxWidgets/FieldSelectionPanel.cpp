@@ -139,7 +139,7 @@ void FieldSelectionPanel::AddField(CItemData::FieldType ft, bool selected, bool 
   lb->Append(title, data);
 }
 
-int FieldSelectionPanel::FindField(CItemData::FieldType ft, wxListBox* lb) const
+int FieldSelectionPanel::FindField(CItemData::FieldType ft, const wxListBox* lb) const
 {
   unsigned int count = lb->GetCount();
   for (unsigned int idx = 0; idx < count; ++idx) {

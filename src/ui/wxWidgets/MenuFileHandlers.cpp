@@ -1351,7 +1351,7 @@ void PasswordSafeFrame::OnSynchronize(wxCommandEvent& evt)
   CallAfter(&PasswordSafeFrame::DoSynchronize, evt.GetString());
 }
 
-void PasswordSafeFrame::DoSynchronize(wxString filename)
+void PasswordSafeFrame::DoSynchronize(const wxString &filename)
 {
   // disable in read-only mode or empty
   wxCHECK_RET(!m_core.IsReadOnly() && m_core.IsDbFileSet() && m_core.GetNumEntries() != 0,

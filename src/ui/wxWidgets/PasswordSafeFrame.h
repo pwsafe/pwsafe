@@ -578,7 +578,7 @@ public:
   // Highlights the item.  Used for search
   void SelectItem(const pws_os::CUUID& uuid);
   // For predefined "last search" filter:
-  void SetFilterFindEntries(UUIDVector *pvFoundUUIDs);
+  void SetFilterFindEntries(const UUIDVector *pvFoundUUIDs);
   
   int ImportFilterXMLFile(const FilterPool fpool,
                           const StringX &strXMLData,
@@ -704,7 +704,7 @@ private:
   bool ReloadDatabase(const StringX& password);
   bool SaveAndClearDatabaseOnLock();
   void CleanupAfterReloadFailure(bool tellUser);
-  Command *DeleteItem(CItemData *pci, wxTreeItemId root = 0);
+  Command *DeleteItem(const CItemData *pci, wxTreeItemId root = 0);
   Command *Delete(wxTreeItemId tid, wxTreeItemId root = 0); // for group delete
   void UpdateAccessTime(CItemData &ci);
 
@@ -769,7 +769,7 @@ private:
 
   // These 3 fns are called via wxEvtHandler::CallAfter in sequence for autotyping
   void MinimizeOrHideBeforeAutotyping();
-  void MaybeRestoreUI(bool autotype_err, wxString autotype_err_msg);
+  void MaybeRestoreUI(bool autotype_err, const wxString &autotype_err_msg);
 
   template <class ExportType>
   void DoExportText();
@@ -808,16 +808,16 @@ private:
   void DoGeneratePassword();
   void DoChangePassword();
 #ifndef NO_QR
-  void DoPasswordQRCode(CItemData* item);
+  void DoPasswordQRCode(const CItemData* item);
 #endif
   void DoPropertiesClick();
   void DoMergeAnotherSafe(wxString filename);
   void DoRestoreSafe();
   void DoChangeMode();
   void DoPreferencesClick();
-  void DoSynchronize(wxString filename);
+  void DoSynchronize(const wxString &filename);
   void DoCompare();
-  void DoViewAttachment(CItemData* item);
+  void DoViewAttachment(const CItemData* item);
 
 #ifndef NO_YUBI
   void DoYubikeyMngClick();

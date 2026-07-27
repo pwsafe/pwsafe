@@ -628,7 +628,7 @@ void PasswordPolicyDlg::InitDialog()
   }
 }
 
-void PasswordPolicyDlg::CBox2Spin(wxCheckBox *checkbox, wxSpinCtrl *spinner)
+void PasswordPolicyDlg::CBox2Spin(const wxCheckBox *checkbox, wxSpinCtrl *spinner)
 {
   Validate();
   TransferDataFromWindow();

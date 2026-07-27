@@ -95,10 +95,10 @@ protected:
 ////@begin YubiCfgDlg member function declarations
 
   wxString GetYksernum() const { return m_yksernum ; }
-  void SetYksernum(wxString value) { m_yksernum = value ; }
+  void SetYksernum(const wxString &value) { m_yksernum = value; }
 
   wxString GetYksk() const { return m_yksk ; }
-  void SetYksk(wxString value) { m_yksk = value ; }
+  void SetYksk(const wxString &value) { m_yksk = value; }
 
   /// Retrieves bitmap resources
   wxBitmap GetBitmapResource( const wxString& name );

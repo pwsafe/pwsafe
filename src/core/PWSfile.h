@@ -123,7 +123,7 @@ public:
   void SetDefUsername(const StringX &du) {m_defusername = du;} // for V17 conversion (read) only
   void SetCurVersion(VERSION v) {m_curversion = v;}
   void GetUnknownHeaderFields(UnknownFieldList &UHFL);
-  void SetUnknownHeaderFields(UnknownFieldList &UHFL);
+  void SetUnknownHeaderFields(const UnknownFieldList &UHFL);
   int GetNumRecordsWithUnknownFields() const
   {return m_nRecordsWithUnknownFields;}
 

@@ -47,9 +47,9 @@ public:
   // Following writes AttIV, AttEK, AttAK, AttContent
   // and AttContentHMAC per format spec.
   // All except the content are generated internally.
-  size_t WriteContentFields(unsigned char *content, size_t len);
+  size_t WriteContentFields(const unsigned char *content, size_t len);
   // Following allocates content, caller responsible for deallocating
-  size_t ReadContent(Fish *fish, unsigned char *cbcbuffer,
+  size_t ReadContent(const Fish *fish, unsigned char *cbcbuffer,
                      unsigned char *&content, size_t clen);
 
   uint32 GetNHashIters() const {return m_nHashIters * HASH_FACTOR;} // we're fine with rounding errors

@@ -102,10 +102,10 @@ public:
   CItemAttIterator AttachmentsBegin() { return m_attachments.begin(); }
   CItemAttIterator AttachmentsEnd() { return m_attachments.end(); }
   
-  void UpdateBaseUUIDinDnDEntries(pws_os::CUUID &old_uuid, pws_os::CUUID &new_uuid);
+  void UpdateBaseUUIDinDnDEntries(const pws_os::CUUID &old_uuid, pws_os::CUUID &new_uuid);
   
-  const CItemAtt *AttachmentOfBase(pws_os::CUUID &uuid);
-  const CItemAtt *AttachmentOfItem(CItemData *item) { pws_os::CUUID uuid = item->GetUUID(); return AttachmentOfBase(uuid); }
+  const CItemAtt *AttachmentOfBase(const pws_os::CUUID &uuid);
+  const CItemAtt *AttachmentOfItem(const CItemData *item) { pws_os::CUUID uuid = item->GetUUID(); return AttachmentOfBase(uuid); }
   
 public:
   void DnDSerialize(wxMemoryBuffer &outDDmem);
@@ -114,7 +114,7 @@ public:
   bool DnDSerializeAttachments(PWScore &core, wxFile *outFile);
   void DnDUnSerializeAttachments(wxInputStream &inStream);
   
-  bool CanFind(pws_os::CUUID &uuid);
+  bool CanFind(const pws_os::CUUID &uuid);
   
 private:
   bool m_bDragNode;
@@ -126,7 +126,7 @@ private:
   std::vector<CItemAtt *> m_attachments;
   std::map<pws_os::CUUID, CItemAtt *> m_uuid2atta; // List of attachments UUID for each base entry in m_objects
   
-  void InsertAttUuid(const pws_os::CUUID attUuid, const pws_os::CUUID baseUuid);
+  void InsertAttUuid(const pws_os::CUUID &attUuid, const pws_os::CUUID &baseUuid);
 };
 
 #endif // _DNDSUPPORT_H_

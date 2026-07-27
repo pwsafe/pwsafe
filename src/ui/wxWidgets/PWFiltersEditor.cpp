@@ -479,7 +479,7 @@ void pwFiltersFTChoiceEditor::CheckFilterOnSpecialValues(bool &pwhist, bool &pol
   policy = false;
   attachment = false;
   
-  for_each(m_currentFilter->begin(), m_currentFilter->end(), [&pwhist, &policy, &attachment] (st_FilterRow filter) {
+  for_each(m_currentFilter->begin(), m_currentFilter->end(), [&pwhist, &policy, &attachment] (const st_FilterRow &filter) {
     if(filter.ftype == FT_PWHIST) pwhist = true;
     else if(filter.ftype == FT_POLICY) policy = true;
     else if(filter.ftype == FT_ATTACHMENT) attachment = true;

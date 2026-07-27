@@ -59,7 +59,7 @@ public:
     // we need to copy the Object because the one we're handled may be
     // deleted while it's still on the clipboard (for example) - and we
     // reuse the serialisation methods here to copy it
-  DnDPWSafeObject(wxMemoryBuffer *object = (wxMemoryBuffer *) nullptr);
+  DnDPWSafeObject(const wxMemoryBuffer *object = nullptr);
 
   virtual ~DnDPWSafeObject() { delete m_object; }
 
@@ -73,7 +73,7 @@ public:
   {
     wxMemoryBuffer *object = m_object;
 
-    m_object = (wxMemoryBuffer *)nullptr;
+    m_object = nullptr;
     return object;
   }
 

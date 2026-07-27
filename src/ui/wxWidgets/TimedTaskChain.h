@@ -83,7 +83,7 @@ public:
 
   TimedTaskChain& then(const TaskType& task, int delay = DefaultTaskDelay() ) { m_tasks.push_back({task, delay}); return *this; }
 
-  void OnError(ErrorHandlerType errHandler) { m_errorHandler = errHandler; }
+  void OnError(const ErrorHandlerType &errHandler) { m_errorHandler = errHandler; }
 
   // overridden from wxTimer
   void Notify();

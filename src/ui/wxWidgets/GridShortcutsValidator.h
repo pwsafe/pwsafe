@@ -113,7 +113,7 @@ class PWSMenuShortcuts : public wxEvtHandler
   ShortcutStatusArray m_shortcutGridStatus;
 
   // Walks the menubar and collect all shortcuts
-  PWSMenuShortcuts(wxMenuBar* menubar);
+  PWSMenuShortcuts(const wxMenuBar* menubar);
 
   // Note: the dtor doesn't save all shortcuts automatically to prefs. You have to do it
   // yourself using SaveUserShortcuts()
@@ -162,7 +162,7 @@ public:
   void OnResetRemoveShortcut( wxCommandEvent& evt );
   void OnResetAll(wxCommandEvent& evt);
 
-  static PWSMenuShortcuts* CreateShortcutsManager(wxMenuBar* menubar);
+  static PWSMenuShortcuts* CreateShortcutsManager(const wxMenuBar* menubar);
   static PWSMenuShortcuts* GetShortcutsManager();
   static void DestroyShortcutsManager();
 

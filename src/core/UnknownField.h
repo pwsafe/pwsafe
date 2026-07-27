@@ -26,7 +26,7 @@ struct UnknownFieldEntry {
   unsigned char * uc_pUField;
 
   UnknownFieldEntry() :uc_Type(0), st_length(0), uc_pUField(nullptr) {}
-  UnknownFieldEntry(unsigned char t, size_t s, unsigned char *d);
+  UnknownFieldEntry(unsigned char t, size_t s, const unsigned char *d);
   ~UnknownFieldEntry();
   // copy c'tor and assignment operator, standard idioms
   UnknownFieldEntry(const UnknownFieldEntry &that);

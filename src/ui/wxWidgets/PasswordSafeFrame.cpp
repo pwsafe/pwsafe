@@ -3255,7 +3255,7 @@ bool PasswordSafeFrame::LoadLayoutPreferences()
   return m_AuiManager.LoadPerspective(auiLayoutPreferences);
 }
 
-void PasswordSafeFrame::SetFilterFindEntries(UUIDVector *pvFoundUUIDs)
+void PasswordSafeFrame::SetFilterFindEntries(const UUIDVector *pvFoundUUIDs)
 {
   // If the "Show entries from last Find" is active, we should not change this
   // as it will override the results - say if the user maximizes the PWS window

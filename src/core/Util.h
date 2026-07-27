@@ -52,31 +52,31 @@ extern void GenRandhash(const StringX &passkey,
                         const unsigned char *m_randstuff,
                         unsigned char *m_randhash);
 
-extern size_t readcbc1st(FILE* fp, size_t& record_size, Fish* Algorithm, unsigned char* cbcbuffer, bool isAboveThreshold = false);
+extern size_t readcbc1st(FILE* fp, size_t& record_size, const Fish* Algorithm, unsigned char* cbcbuffer, bool isAboveThreshold = false);
 
 // buffer is allocated by _readcbc, *** delete[] is responsibility of caller ***
 extern size_t _readcbc(FILE *fp, unsigned char * &buffer,
                        size_t &buffer_len,
-                       unsigned char &type, Fish *Algorithm,
+                       unsigned char &type, const Fish *Algorithm,
                        unsigned char *cbcbuffer,
                        const unsigned char *TERMINAL_BLOCK = nullptr,
                        ulong64 file_len = 0);
 
 // typeless version for V4 content (caller pre-allocates buffer)
 extern size_t _readcbc(FILE *fp, unsigned char *buffer,
-                       const size_t buffer_len, Fish *Algorithm,
+                       const size_t buffer_len, const Fish *Algorithm,
                        unsigned char *cbcbuffer);
 
 // _writecbc* will throw(EIO) iff a write fail occurs!
 // version used to write records:
 extern size_t _writecbc(FILE* fp, const unsigned char* buffer, size_t length,
-  unsigned char type, Fish* Algorithm, unsigned char* cbcbuffer);
+  unsigned char type, const Fish* Algorithm, unsigned char* cbcbuffer);
 
 // externalized implementation of above for whole-file encryption:
 extern size_t _writecbc1st(FILE* fp, const unsigned char** buffer, size_t* length, unsigned char type,
-  Fish* Algorithm, unsigned char* cbcbuffer, bool isAboveThreshold = false);
+  const Fish* Algorithm, unsigned char* cbcbuffer, bool isAboveThreshold = false);
 extern size_t _writecbcRest(FILE* fp, const unsigned char* buffer, size_t length,
-  Fish* Algorithm, unsigned char* cbcbuffer);
+  const Fish* Algorithm, unsigned char* cbcbuffer);
 
 
 // typeless version for V4 content:
@@ -295,7 +295,7 @@ namespace PWSUtil {
                          time_t t, CUTF8Conv &utf8conv,
                          bool convert_epoch = false, bool utc_time = false);
 
-  StringX DeDupString(StringX &in_string);
+  StringX DeDupString(const StringX &in_string);
   stringT GetSafeXMLString(const StringX &sxInString);
 
   bool pull_time(time_t &t, const unsigned char *data, size_t len);

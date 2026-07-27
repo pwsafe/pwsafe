@@ -396,7 +396,7 @@ class PWSFilterManager {
   bool PassesFiltering(const CItemData &ci, const PWScore &core);
   bool PassesEmptyGroupFiltering(const StringX &sxGroup);
   void SetFindFilter(const bool &bFilter) { m_bFindFilterActive = bFilter; }
-  void SetFilterFindEntries(UUIDVector *pvFoundUUIDs);
+  void SetFilterFindEntries(const UUIDVector *pvFoundUUIDs);
 
   // predefined filters accessors, use by assigning to m_currentfilter
   const st_filters &GetExpireFilter() const {return m_expirefilter;}

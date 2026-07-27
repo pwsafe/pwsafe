@@ -54,7 +54,7 @@ namespace PWSMatch {
   };
 
   // Generalised checking
-  bool Match(const StringX &stValue, StringX sx_Object, const int &iFunction);
+  bool Match(const StringX &stValue, const StringX &sx_Object, const int &iFunction);
 
   template<typename T> bool Match(T v1, T v2, T value, int iFunction)
   {

@@ -568,7 +568,7 @@ void CompareDlg::OnEditInCurrentDB(wxCommandEvent& evt)
   CallAfter(&CompareDlg::DoEditInCurrentDB, *menuContext);
 }
 
-void CompareDlg::DoEditInCurrentDB(ContextMenuData menuContext) {
+void CompareDlg::DoEditInCurrentDB(const ContextMenuData &menuContext) {
   const ComparisonGridTable& table = *wxDynamicCast(menuContext.cdata->grid->GetTable(), ComparisonGridTable);
   const pws_os::CUUID& uuid = table[menuContext.selectedRows[0]].uuid0;
   
@@ -608,7 +608,7 @@ void CompareDlg::OnViewInComparisonDB(wxCommandEvent& evt)
   CallAfter(&CompareDlg::DoViewInComparisonDB, *menuContext);
 }
 
-void CompareDlg::DoViewInComparisonDB(ContextMenuData menuContext)
+void CompareDlg::DoViewInComparisonDB(const ContextMenuData &menuContext)
 {
   const ComparisonGridTable& table = *wxDynamicCast(menuContext.cdata->grid->GetTable(), ComparisonGridTable);
   const pws_os::CUUID& uuid = table[menuContext.selectedRows[0]].uuid1;
@@ -804,7 +804,7 @@ void CompareDlg::OnSyncItemsWithCurrentDB(wxCommandEvent& evt)
   CallAfter(&CompareDlg::DoSyncItemsWithCurrentDB, evt.GetId(), *menuContext);
 }
 
-void CompareDlg::DoSyncItemsWithCurrentDB(int menuId, ContextMenuData menuContext)
+void CompareDlg::DoSyncItemsWithCurrentDB(int menuId, const ContextMenuData &menuContext)
 {
   if (m_currentCore->IsReadOnly()) {
     wxMessageBox(_("Current safe was opened read-only"), _("Synchronize"), wxOK|wxICON_INFORMATION, this);

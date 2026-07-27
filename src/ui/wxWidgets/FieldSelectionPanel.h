@@ -32,7 +32,7 @@ class FieldSelectionPanel : public wxPanel
   DECLARE_EVENT_TABLE()
 
   //returns wxNOT_FOUND if the field is not found in the listbox
-  int FindField(CItemData::FieldType ft, wxListBox* lb) const;
+  int FindField(CItemData::FieldType ft, const wxListBox* lb) const;
   void MoveItem(int index, wxListBox* from, wxListBox* to);
   bool ItemIsMandatory(size_t index) const;
 

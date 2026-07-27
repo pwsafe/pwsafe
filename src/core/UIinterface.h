@@ -69,7 +69,7 @@ public:
   {
     m_Observers.erase(std::remove_if(
       m_Observers.begin(), m_Observers.end(), 
-      [observer](Observer* registeredObserver){ return registeredObserver == observer; }), 
+      [observer](const Observer* registeredObserver){ return registeredObserver == observer; }),
       m_Observers.end());
   }
 
