@@ -117,6 +117,15 @@ public:
   virtual BOOL OnQueryCancel();
   virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
+  // Mark the entry as changed (enabling Apply/OK), but only once this page has
+  // finished its initial data population, and never for a view-only or protected
+  // entry. Controls get their initial values pushed via DoDataExchange during
+  // OnInitDialog, which triggers the same EN_CHANGE/CBN_EDITCHANGE notifications
+  // as real user edits - call this instead of m_ae_psh->SetChanged(true) directly
+  // from any change handler, so that initial population is never mistaken for a
+  // user edit.
+  void NotifyChanged();
+
 
   static COLORREF crefGreen, crefWhite;
 
@@ -222,6 +231,10 @@ public:
 protected:
   st_AE_master_data &m_AEMD;
   CAddEdit_PropertySheet *m_ae_psh;
+
+  // Set true by each derived page at the end of its OnInitDialog override,
+  // once its controls hold their real initial values. See NotifyChanged().
+  bool m_bInitdone = false;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

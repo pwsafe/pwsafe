@@ -22,6 +22,11 @@ public:
 
   DECLARE_DYNAMIC(CAddEdit_Basic_SubPage)
 
+  // See CAddEdit_PropertyPage::NotifyChanged() for why this indirection exists:
+  // it only marks the entry changed once this page's own initial data population
+  // has finished, and never for a view-only or protected entry.
+  void NotifyChanged();
+
 protected:
   UINT &M_uicaller() { return m_AEMD.uicaller; }
   PWScore *&M_pcore() { return m_AEMD.pcore; }
@@ -31,4 +36,8 @@ protected:
 
   st_AE_master_data &m_AEMD;
   CAddEdit_PropertySheet *m_ae_psh;
+
+  // Set true by each derived page at the end of its OnInitDialog override,
+  // once its controls hold their real initial values. See NotifyChanged().
+  bool m_bInitdone = false;
 };

@@ -105,7 +105,6 @@ private:
   // 2nd idex: 0 = pronounceable; 1 = hex
   BOOL m_save_enabled[N_HEX_LENGTHS][2];   // Save when disabling hex/pronounceable
   BOOL m_save_visible[N_HEX_LENGTHS];   // Save when disabling hex/pronounceable
-  bool m_bInitdone;
 
   int m_policy_radibtn;  // Can't use M_policy() anymore
 

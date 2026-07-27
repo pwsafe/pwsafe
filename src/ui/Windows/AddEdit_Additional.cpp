@@ -42,7 +42,6 @@ CAddEdit_Additional::CAddEdit_Additional(CWnd * pParent, st_AE_master_data *pAEM
                           CAddEdit_Additional::IDD, CAddEdit_Additional::IDD_SHORT,
                           pAEMD),
   m_iSortedColumn(-1), m_bSortAscending(true), m_bClearPWHistory(false),
-  m_bInitdone(false),
   m_bWarnUserKBShortcut(false), m_iOldHotKey(0),
   m_isTwoFactorKeyHidden(true)
 {
@@ -335,29 +334,23 @@ void CAddEdit_Additional::SetupDCAComboBoxes(CComboBox *pcbox, bool isShift)
 }
 void CAddEdit_Additional::OnChanged()
 {
-  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
-    return;
-
   UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 }
 
 void CAddEdit_Additional::OnHotKeyChanged()
 {
-  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
-    return;
-
   UpdateData(TRUE);
 
   WORD wVirtualKeyCode, wHKModifiers, wPWSModifiers;
   m_KBShortcutCtrl.GetHotKey(wVirtualKeyCode, wHKModifiers);
-  
+
   // Translate from PWS to CHotKeyCtrl modifiers
   wPWSModifiers = ConvertModifersMFC2PWS(wHKModifiers);
   int32 iKBShortcut = (wPWSModifiers << 16) + wVirtualKeyCode;
 
   if (M_KBShortcut() != iKBShortcut)
-    m_ae_psh->SetChanged(true);
+    NotifyChanged();
 }
 
 void CAddEdit_Additional::OnHelp()
@@ -796,7 +789,7 @@ error:
 
 void CAddEdit_Additional::OnDCAComboChanged()
 {
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 
   int nIndex = m_dblclk_cbox.GetCurSel();
   M_DCA() = static_cast<short>(m_dblclk_cbox.GetItemData(nIndex));
@@ -804,7 +797,7 @@ void CAddEdit_Additional::OnDCAComboChanged()
 
 void CAddEdit_Additional::OnShiftDCAComboChanged()
 {
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 
   int nIndex = m_shiftdblclk_cbox.GetCurSel();
   M_ShiftDCA() = static_cast<short>(m_shiftdblclk_cbox.GetItemData(nIndex));
@@ -912,7 +905,7 @@ void CAddEdit_Additional::OnCheckedSavePasswordHistory()
   GetDlgItem(IDC_STATIC_OLDPW1)->EnableWindow(M_SavePWHistory());
 
   Invalidate();
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 }
 
 void CAddEdit_Additional::OnClearPWHist()
@@ -920,7 +913,7 @@ void CAddEdit_Additional::OnClearPWHist()
   m_bClearPWHistory = true;
   m_PWHistListCtrl.DeleteAllItems();
   M_pwhistlist().clear();
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 
   // Update control states
   m_PWHistListCtrl.EnableWindow(FALSE);
@@ -1119,8 +1112,7 @@ void CAddEdit_Additional::UpdatePasswordHistoryLC()
 void CAddEdit_Additional::OnTwoFactorKeyChanged()
 {
   UpdateData(TRUE);
-  if (m_bInitdone && M_uicaller() != IDS_VIEWENTRY && M_protected() == 0)
-    m_ae_psh->SetChanged(true);
+  NotifyChanged();
   M_twofactorkey() = m_twofactorkey;
 }
 

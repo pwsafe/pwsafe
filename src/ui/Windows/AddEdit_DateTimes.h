@@ -74,7 +74,6 @@ protected:
 private:
   void SetXTime();
   void UpdateTimes();
-  bool m_bInitdone;
 };
 //-----------------------------------------------------------------------------
 // Local variables:

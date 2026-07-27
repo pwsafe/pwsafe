@@ -36,7 +36,7 @@ CAddEdit_Attachment::CAddEdit_Attachment(CWnd *pParent, st_AE_master_data *pAEMD
   : CAddEdit_PropertyPage(pParent, 
                           CAddEdit_Attachment::IDD, CAddEdit_Attachment::IDD_SHORT,
                           pAEMD),
-   m_bInitdone(false), m_attType(NO_ATTACHMENT), m_AttName(L""), m_AttFileName(L"")
+   m_attType(NO_ATTACHMENT), m_AttName(L""), m_AttFileName(L"")
 {
 }
 
@@ -269,7 +269,7 @@ void CAddEdit_Attachment::OnAttImport()
   // no need to update file info. here: it will be set in ShowPreview
   ShowPreview();
 
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
   Invalidate();
   UpdateControls();
   UpdateData(FALSE);
@@ -407,7 +407,7 @@ void CAddEdit_Attachment::OnAttRemove()
   m_csSize = m_csFileCTime = m_csFileMTime = m_csMediaType = L"";
   M_attachment().Clear();
 
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
   m_stImgAttachment.SetWindowText(L"");
 
   m_attType = NO_ATTACHMENT;
@@ -568,10 +568,10 @@ load_error:
 
 void CAddEdit_Attachment::OnAttNameChanged()
 {
-  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0 || !M_attachment().HasContent())
+  if (!M_attachment().HasContent())
     return;
 
   UpdateData(TRUE);
   M_attachment().SetTitle(m_AttName);
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 }

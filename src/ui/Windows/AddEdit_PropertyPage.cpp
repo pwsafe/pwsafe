@@ -11,6 +11,7 @@
 #include "GeneralMsgBox.h"
 #include "DboxMain.h"
 #include "AddEdit_PropertyPage.h"
+#include "AddEdit_PropertySheet.h"
 
 using pws_os::CUUID;
 
@@ -33,6 +34,14 @@ CAddEdit_PropertyPage::CAddEdit_PropertyPage(CWnd *pParent,
   : CPWPropertyPage(pAEMD->bLongPPs ? nID : nID_Short), m_AEMD(*pAEMD),
     m_ae_psh((CAddEdit_PropertySheet *)pParent)
 {
+}
+
+void CAddEdit_PropertyPage::NotifyChanged()
+{
+  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
+    return;
+
+  m_ae_psh->SetChanged(true);
 }
 
 BOOL CAddEdit_PropertyPage::OnQueryCancel()
