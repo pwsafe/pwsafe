@@ -10,6 +10,7 @@
 #include "AddEdit_Basic_SubPage.h"
 #include "AddEdit_PropertySheet.h"
 #include "resource3.h"
+#include "winutils.h"
 
 #include <cwctype>
 
@@ -25,17 +26,8 @@ namespace {
          pChild = pChild->GetWindow(GW_HWNDNEXT)) {
       CString text;
       pChild->GetWindowText(text);
-
-      for (int i = 0; i < text.GetLength() - 1; ++i) {
-        if (text[i] != L'&')
-          continue;
-        if (text[i + 1] == L'&') {
-          ++i; // literal "&&", not a mnemonic
-          continue;
-        }
-        if (static_cast<wchar_t>(std::towupper(text[i + 1])) == ch)
-          return true;
-      }
+      if (WinUtil::GetMnemonicChar(text) == ch)
+        return true;
     }
     return false;
   }

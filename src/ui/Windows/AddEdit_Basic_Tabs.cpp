@@ -12,6 +12,9 @@
 #include "AddEdit_Basic_Tabs.h"
 
 #include "PWSDarkMode.h"
+#include "winutils.h"
+
+#include <cwctype>
 
 BEGIN_MESSAGE_MAP(CAddEdit_Basic_Tabs, CPropertySheet)
   ON_WM_SIZE()
@@ -107,13 +110,33 @@ void CAddEdit_Basic_Tabs::ActivateNotesTab()
 
 BOOL CAddEdit_Basic_Tabs::PreTranslateMessage(MSG *pMsg)
 {
-  // The single home for the Alt+N -> Notes accelerator: both CAddEdit_Basic
-  // (when one of its own fields has focus) and our subtabs (via
+  // The single home for the Notes tab's accelerator: both CAddEdit_Basic (when
+  // one of its own fields has focus) and our subtabs (via
   // CAddEdit_Basic_SubPage, when they don't own the accelerator themselves)
-  // funnel Alt+N here rather than each re-implementing this check.
-  if (pMsg->message == WM_SYSCHAR && (pMsg->wParam == L'n' || pMsg->wParam == L'N')) {
-    ActivateNotesTab();
-    return TRUE;
+  // route WM_SYSCHAR here.
+  //
+  // The accelerator letter itself is marked with a leading '&', as read
+  // directly from the tab control for proper I18N support.
+  if (pMsg->message == WM_SYSCHAR) {
+    const int iNotes = GetPageIndex(&m_pp_notes);
+    CTabCtrl *pTabCtrl = GetTabControl();
+
+    if (iNotes >= 0 && pTabCtrl != nullptr) {
+      wchar_t szTabText[256];
+      TCITEM tci = {};
+      tci.mask = TCIF_TEXT;
+      tci.pszText = szTabText;
+      tci.cchTextMax = _countof(szTabText);
+
+      if (pTabCtrl->GetItem(iNotes, &tci)) {
+        const wchar_t mnemonic = WinUtil::GetMnemonicChar(szTabText);
+        if (mnemonic != 0 &&
+            mnemonic == static_cast<wchar_t>(std::towupper(static_cast<wchar_t>(pMsg->wParam)))) {
+          ActivateNotesTab();
+          return TRUE;
+        }
+      }
+    }
   }
 
   return CPropertySheet::PreTranslateMessage(pMsg);
