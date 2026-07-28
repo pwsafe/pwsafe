@@ -31,6 +31,10 @@ public:
   void CancelThreadWait() { SetEvent(ghEvents[1]); }
   bool IsExternalEditorActive() const { return m_bUsingNotesExternalEditor; }
 
+  // Reveal the notes control (if currently hidden) and give it focus, re-implementing 
+  // the Alt+N accelerator functionality
+  void FocusNotes();
+
 protected:
   virtual BOOL OnInitDialog();
   virtual BOOL OnSetActive();

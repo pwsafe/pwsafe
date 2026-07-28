@@ -20,6 +20,9 @@ public:
   BOOL Create(CWnd *pParentWnd, const CRect &rect);
   bool IsExternalEditorActive() const;
 
+  // Switch to the Notes subtab and put keyboard focus in the notes control.
+  void ActivateNotesTab();
+
 protected:
   virtual BOOL OnInitDialog();
 

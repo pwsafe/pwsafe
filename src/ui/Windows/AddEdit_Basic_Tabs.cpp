@@ -96,3 +96,11 @@ bool CAddEdit_Basic_Tabs::IsExternalEditorActive() const
 {
   return m_pp_notes.IsExternalEditorActive();
 }
+
+void CAddEdit_Basic_Tabs::ActivateNotesTab()
+{
+  if (GetActivePage() != &m_pp_notes)
+    SetActivePage(&m_pp_notes);
+
+  m_pp_notes.FocusNotes();
+}
