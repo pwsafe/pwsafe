@@ -517,11 +517,10 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG *pMsg)
     return TRUE;
   }
 
-  // Re-implement Alt+N accelerator functionality, which "broke" when Notes moved to a separate sub-tab
-  if (pMsg->message == WM_SYSCHAR && (pMsg->wParam == L'n' || pMsg->wParam == L'N')) {
-    m_tabs.ActivateNotesTab();
+  // Forward Accelerator (Alt) keys to sub-tabs so they can handle them as well.
+  // This was added to restore Alt-N -> Notes, which "broke" when Notes moved to a sub-tab.
+  if (pMsg->message == WM_SYSCHAR && m_tabs.PreTranslateMessage(pMsg))
     return TRUE;
-  }
 
   RelayToolTipEvent(pMsg);
 

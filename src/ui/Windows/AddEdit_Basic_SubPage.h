@@ -28,6 +28,13 @@ public:
   void NotifyChanged();
 
 protected:
+  // Some hosted controls (e.g. the custom fields list) cause the default dialog
+  // handling to absorb an Alt+<letter> that none of this page's own controls
+  // are mnemonics for, instead of leaving it for an ancestor (e.g. CAddEdit_Basic)
+  // to interpret. Only let the default handling run when it would actually mean
+  // something here; otherwise leave the message untouched so it keeps bubbling up.
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
+
   UINT &M_uicaller() { return m_AEMD.uicaller; }
   PWScore *&M_pcore() { return m_AEMD.pcore; }
   CSecString &M_notes() { return m_AEMD.notes; }

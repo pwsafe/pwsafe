@@ -11,6 +11,36 @@
 #include "AddEdit_PropertySheet.h"
 #include "resource3.h"
 
+#include <cwctype>
+
+namespace {
+  // True if a direct child of pWnd displays an (unescaped) "&x" mnemonic that
+  // case-insensitively matches ch - i.e. pWnd's own dialog-message handling
+  // has a real reason to claim a WM_SYSCHAR for ch.
+  bool HasLocalMnemonic(CWnd *pWnd, wchar_t ch)
+  {
+    ch = static_cast<wchar_t>(std::towupper(ch));
+
+    for (CWnd *pChild = pWnd->GetWindow(GW_CHILD); pChild != nullptr;
+         pChild = pChild->GetWindow(GW_HWNDNEXT)) {
+      CString text;
+      pChild->GetWindowText(text);
+
+      for (int i = 0; i < text.GetLength() - 1; ++i) {
+        if (text[i] != L'&')
+          continue;
+        if (text[i + 1] == L'&') {
+          ++i; // literal "&&", not a mnemonic
+          continue;
+        }
+        if (static_cast<wchar_t>(std::towupper(text[i + 1])) == ch)
+          return true;
+      }
+    }
+    return false;
+  }
+}
+
 IMPLEMENT_DYNAMIC(CAddEdit_Basic_SubPage, CPWPropertyPage)
 
 CAddEdit_Basic_SubPage::CAddEdit_Basic_SubPage(CWnd *pParent, UINT nID,
@@ -28,4 +58,21 @@ void CAddEdit_Basic_SubPage::NotifyChanged()
     return;
 
   m_ae_psh->SetChanged(true);
+}
+
+BOOL CAddEdit_Basic_SubPage::PreTranslateMessage(MSG *pMsg)
+{
+  if (pMsg->message == WM_SYSCHAR &&
+      !HasLocalMnemonic(this, static_cast<wchar_t>(pMsg->wParam))) {
+    // None of this page's own controls are a mnemonic for this key, so this
+    // page has nothing useful to do with it. Offer it to our parent directly
+    // instead of just leaving it alone for the framework's own
+    // PreTranslateMessage tree-walk to (maybe) carry further up: that walk
+    // does not reliably reach past this page for every kind of hosted control.
+    CWnd *pParent = GetParent();
+    if (pParent != nullptr && pParent->PreTranslateMessage(pMsg))
+      return TRUE;
+  }
+
+  return CPWPropertyPage::PreTranslateMessage(pMsg);
 }

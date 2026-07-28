@@ -23,6 +23,11 @@ public:
   // Switch to the Notes subtab and put keyboard focus in the notes control.
   void ActivateNotesTab();
 
+  // Public so CAddEdit_Basic can funnel Alt+N here directly when one of its
+  // own fields (rather than a subtab) has focus; see CAddEdit_Basic_SubPage
+  // for the subtab side of the same delegation.
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
+
 protected:
   virtual BOOL OnInitDialog();
 

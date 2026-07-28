@@ -104,3 +104,17 @@ void CAddEdit_Basic_Tabs::ActivateNotesTab()
 
   m_pp_notes.FocusNotes();
 }
+
+BOOL CAddEdit_Basic_Tabs::PreTranslateMessage(MSG *pMsg)
+{
+  // The single home for the Alt+N -> Notes accelerator: both CAddEdit_Basic
+  // (when one of its own fields has focus) and our subtabs (via
+  // CAddEdit_Basic_SubPage, when they don't own the accelerator themselves)
+  // funnel Alt+N here rather than each re-implementing this check.
+  if (pMsg->message == WM_SYSCHAR && (pMsg->wParam == L'n' || pMsg->wParam == L'N')) {
+    ActivateNotesTab();
+    return TRUE;
+  }
+
+  return CPropertySheet::PreTranslateMessage(pMsg);
+}
