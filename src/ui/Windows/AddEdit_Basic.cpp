@@ -50,8 +50,7 @@ CAddEdit_Basic::CAddEdit_Basic(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent,
     CAddEdit_Basic::IDD, CAddEdit_Basic::IDD_SHORT,
     pAEMD),
-  m_tabs(pParent, pAEMD),
-  m_bInitdone(false)
+  m_tabs(pParent, pAEMD)
 {
   if (CS_SHOW.IsEmpty()) { // one-time initializations
     CS_SHOW.LoadString(IDS_SHOWPASSWORDTXT);
@@ -801,7 +800,7 @@ void CAddEdit_Basic::OnENSetFocusPassword2()
 void CAddEdit_Basic::OnENChangePassword()
 {
   UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
   M_realpassword() = m_password;
   auto strength =  CPasswordCharPool::CalculatePasswordStrength(m_password);
   m_prgStrengthMeter.SetStrength(strength);
@@ -897,7 +896,7 @@ void CAddEdit_Basic::OnGeneratePassword()
   if (m_isPWHidden) {
     m_password2 = m_password;
   }
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
   UpdateData(FALSE);
   m_prgStrengthMeter.SetStrength(CPasswordCharPool::CalculatePasswordStrength(m_password));
 
@@ -907,29 +906,26 @@ void CAddEdit_Basic::OnGeneratePassword()
 void CAddEdit_Basic::OnGroupComboChanged()
 {
   UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 }
 
 void CAddEdit_Basic::OnChanged()
 {
-  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
-    return;
-
   UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 }
 
 void CAddEdit_Basic::OnENChangeURL()
 {
   UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
   GetDlgItem(IDC_LAUNCH)->EnableWindow(M_URL().IsEmpty() ? FALSE : TRUE);
 }
 
 void CAddEdit_Basic::OnENChangeEmail()
 {
   UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
   GetDlgItem(IDC_SENDEMAIL)->EnableWindow(M_email().IsEmpty() ? FALSE : TRUE);
 }
 

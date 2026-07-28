@@ -8,6 +8,8 @@
 
 #include "StdAfx.h"
 #include "AddEdit_Basic_SubPage.h"
+#include "AddEdit_PropertySheet.h"
+#include "resource3.h"
 
 IMPLEMENT_DYNAMIC(CAddEdit_Basic_SubPage, CPWPropertyPage)
 
@@ -18,4 +20,12 @@ CAddEdit_Basic_SubPage::CAddEdit_Basic_SubPage(CWnd *pParent, UINT nID,
     m_AEMD(*pAEMD),
     m_ae_psh((CAddEdit_PropertySheet *)pParent)
 {
+}
+
+void CAddEdit_Basic_SubPage::NotifyChanged()
+{
+  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
+    return;
+
+  m_ae_psh->SetChanged(true);
 }

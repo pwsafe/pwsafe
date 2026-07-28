@@ -64,7 +64,6 @@ private:
   void UpdateControls();
   void ShowPreview();
 
-  bool m_bInitdone;
   ATT_TYPE m_attType;
 
   CSecString m_AttName;

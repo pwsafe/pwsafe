@@ -37,9 +37,8 @@ CAddEdit_DateTimes::CAddEdit_DateTimes(CWnd *pParent, st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent, 
                           CAddEdit_DateTimes::IDD, CAddEdit_DateTimes::IDD_SHORT,
                           pAEMD),
-  m_bRecurringPswdExpiry(TRUE), m_how(NONE_EXP), m_numDays(PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays)), 
-  m_inSetX(false),
-  m_bInitdone(false)
+  m_bRecurringPswdExpiry(TRUE), m_how(NONE_EXP), m_numDays(PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultExpiryDays)),
+  m_inSetX(false)
 {
 #ifdef _DEBUG
   m_bShowUUID = true;
@@ -387,7 +386,7 @@ void CAddEdit_DateTimes::OnHowChanged()
   case NONE_EXP:
     M_locXTime().LoadString(IDS_NEVER);
     if (M_tttXTime() != static_cast<time_t>(0) || M_XTimeInt() != 0)
-      m_ae_psh->SetChanged(true);
+      NotifyChanged();
 
     M_tttXTime() = static_cast<time_t>(0);
     M_XTimeInt() = 0;
@@ -399,7 +398,6 @@ void CAddEdit_DateTimes::OnHowChanged()
     GetDlgItem(IDC_EXPDAYSSPIN)->EnableWindow(FALSE);
     break;
   case ABSOLUTE_EXP:
-    m_ae_psh->SetChanged(true);
     SetXTime();
     GetDlgItem(IDC_EXPDAYS)->EnableWindow(FALSE);
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(FALSE);
@@ -408,7 +406,6 @@ void CAddEdit_DateTimes::OnHowChanged()
     GetDlgItem(IDC_EXPDAYSSPIN)->EnableWindow(FALSE);
     break;
   case RELATIVE_EXP:
-    m_ae_psh->SetChanged(true);
     SetXTime();
     GetDlgItem(IDC_EXPDAYS)->EnableWindow(TRUE);
     GetDlgItem(IDC_STATIC_LTINTERVAL_NOW)->EnableWindow(TRUE);
@@ -448,7 +445,7 @@ void CAddEdit_DateTimes::SetXTime()
   M_tttXTime() = static_cast<time_t>(LDateTime.GetTime());
   M_locXTime() = PWSUtil::ConvertToDateTimeString(M_tttXTime(), PWSUtil::TMC_LOCALE_DATE_ONLY);
 
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
   m_inSetX = false;
 }
 
@@ -457,7 +454,7 @@ void CAddEdit_DateTimes::OnRecurringPswdExpiry()
   ASSERT(m_how == RELATIVE_EXP); // meaningless when absolute date given
   UpdateData(TRUE);
 
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 
   // If user chose "recurring", then set the max interval to pref max (~10 years)
   // (should suffice for most purposes). For non-recurring, limit is

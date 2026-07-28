@@ -115,7 +115,6 @@ private:
   CTBMStatic m_Help1, m_Help2;
 
   COLORREF m_autotype_cfOldColour, m_runcmd_cfOldColour;
-  bool m_bInitdone;
   bool m_bWarnUserKBShortcut;
 
   int32 m_iAppHotKey, m_iOldHotKey;

@@ -66,6 +66,5 @@ private:
   bool m_bUsingNotesExternalEditor;
   bool m_bOKSave;
   bool m_bOKCancel;
-  bool m_bInitdone;
   int m_iPointSize;
 };

@@ -39,7 +39,7 @@ CAddEdit_Basic_NotesPage::CAddEdit_Basic_NotesPage(CWnd *pParent, st_AE_master_d
     m_thread(nullptr), m_isNotesHidden(false),
     m_bWordWrap(PWSprefs::GetInstance()->GetPref(PWSprefs::NotesWordWrap)),
     m_bUsingNotesExternalEditor(false), m_bOKSave(FALSE), m_bOKCancel(FALSE),
-    m_bInitdone(false), m_iPointSize(0)
+    m_iPointSize(0)
 {
   if (CS_HIDDEN_NOTES.IsEmpty()) {
     CS_HIDDEN_NOTES.LoadString(IDS_HIDDENNOTES);
@@ -221,7 +221,7 @@ void CAddEdit_Basic_NotesPage::OnENChangeNotes()
       return;
   }
 
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
   m_ae_psh->SetNotesChanged(true);
   UpdateData(TRUE);
 }
@@ -485,7 +485,7 @@ LRESULT CAddEdit_Basic_NotesPage::OnExternalEditorEnded(WPARAM wParam, LPARAM)
   m_ae_psh->GetDlgItem(IDCANCEL)->EnableWindow(m_bOKCancel == 0 ? TRUE : FALSE);
 
   if (sOldNotes != M_notes()) {
-    m_ae_psh->SetChanged(true);
+    NotifyChanged();
     m_ae_psh->SetNotesChanged(true);
   }
 

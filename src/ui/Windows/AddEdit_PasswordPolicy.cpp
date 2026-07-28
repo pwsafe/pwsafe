@@ -58,7 +58,7 @@ CAddEdit_PasswordPolicy::CAddEdit_PasswordPolicy(CWnd *pParent,
                                                  st_AE_master_data *pAEMD)
   : CAddEdit_PropertyPage(pParent,
                           CAddEdit_PasswordPolicy::IDD, CAddEdit_PasswordPolicy::IDD_SHORT,
-                          pAEMD), m_bInitdone(false)
+                          pAEMD)
 {
   m_policy_radibtn = M_ipolicy() != SPECIFIC_POLICY ? 0 : 1 ;
 
@@ -276,11 +276,8 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 
 void CAddEdit_PasswordPolicy::OnChanged()
 {
-  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
-    return;
-
   UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 }
 
 void CAddEdit_PasswordPolicy::OnHelp()
@@ -511,7 +508,7 @@ void CAddEdit_PasswordPolicy::do_useX(UseX x)
 
   UpdateData(TRUE);
 
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 
   auto bEnable = (IsDlgButtonChecked(controls[x].cb) == BST_CHECKED &&
                    m_pwmakepronounceable == FALSE) ? TRUE : FALSE;
@@ -551,7 +548,7 @@ void CAddEdit_PasswordPolicy::OnUseSymbols()
 void CAddEdit_PasswordPolicy::OnUseHexdigits()
 {
   UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 
   do_hex(IsDlgButtonChecked(IDC_USEHEXDIGITS) == BST_CHECKED);
   UpdateData(FALSE);
@@ -561,7 +558,7 @@ void CAddEdit_PasswordPolicy::OnEasyVision()
 {
   CGeneralMsgBox gmb;
   UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 
   if (m_pweasyvision && m_pwmakepronounceable) {
     static_cast<CButton*>(GetDlgItem(IDC_EASYVISION))->SetCheck(FALSE);
@@ -577,7 +574,7 @@ void CAddEdit_PasswordPolicy::OnMakePronounceable()
 {
   CGeneralMsgBox gmb;
   UpdateData(TRUE);
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 
   if (m_pweasyvision && m_pwmakepronounceable) {
     static_cast<CButton*>(GetDlgItem(IDC_PRONOUNCEABLE))->SetCheck(FALSE);
@@ -623,7 +620,7 @@ void CAddEdit_PasswordPolicy::OnOwnSymbolsChanged()
 
 void CAddEdit_PasswordPolicy::OnSelectNamedPolicy()
 {
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 
   m_cbxPolicyNames.EnableWindow(TRUE);
   m_policy_radibtn = 0;
@@ -653,7 +650,7 @@ void CAddEdit_PasswordPolicy::OnSelectNamedPolicy()
 
 void CAddEdit_PasswordPolicy::OnSetSpecificPWPolicy()
 {
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 
   m_cbxPolicyNames.EnableWindow(FALSE);
   m_policy_radibtn = 1;
@@ -857,7 +854,7 @@ void CAddEdit_PasswordPolicy::OnNamesComboChanged()
 
   if (M_policyname() != cs_policyname) {
     M_policyname() = cs_policyname;
-    m_ae_psh->SetChanged(true);
+    NotifyChanged();
   }
 
   if (index != 0) {

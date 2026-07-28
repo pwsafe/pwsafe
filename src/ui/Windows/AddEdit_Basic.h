@@ -141,8 +141,6 @@ private:
   COLORREF m_pswd_cfOldColour, m_URL_cfOldColour;
   COLORREF m_email_cfOldColour, m_protected_cfOldColour;
 
-  bool m_bInitdone;
-
   CBitmap m_CopyPswdBitmap;
   StringX m_sxLastAuthCode;
   bool m_bTwoFactorCodeClipboard = false;

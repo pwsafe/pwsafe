@@ -73,6 +73,7 @@ BOOL CAddEdit_Basic_CustomFieldsPage::OnInitDialog()
   m_btnEdit.EnableWindow(FALSE);
   m_btnDelete.EnableWindow(FALSE);
 
+  m_bInitdone = true;
   return TRUE;
 }
 
@@ -131,7 +132,7 @@ void CAddEdit_Basic_CustomFieldsPage::OnCustomFieldsAdd()
 
   M_customfields().push_back(cf);
   LoadCustomFieldsFromList();
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 }
 
 void CAddEdit_Basic_CustomFieldsPage::OnCustomFieldsEdit()
@@ -156,7 +157,7 @@ void CAddEdit_Basic_CustomFieldsPage::OnCustomFieldsEdit()
   cf.SetValue(StringX(dlg.m_value));
   cf.SetSensitive(dlg.m_sensitive == TRUE);
   LoadCustomFieldsFromList();
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 }
 
 void CAddEdit_Basic_CustomFieldsPage::OnCustomFieldsDelete()
@@ -174,7 +175,7 @@ void CAddEdit_Basic_CustomFieldsPage::OnCustomFieldsDelete()
 
   fields.erase(fields.begin() + sel);
   LoadCustomFieldsFromList();
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
 }
 
 void CAddEdit_Basic_CustomFieldsPage::OnCustomFieldsToggleSensitive()
@@ -191,7 +192,7 @@ void CAddEdit_Basic_CustomFieldsPage::OnCustomFieldsToggleSensitive()
   CustomField &cf = fields[m_rightClickedCustomFieldIndex];
   cf.SetSensitive(!cf.IsSensitive());
   LoadCustomFieldsFromList();
-  m_ae_psh->SetChanged(true);
+  NotifyChanged();
   m_rightClickedCustomFieldIndex = -1;
 }
 
