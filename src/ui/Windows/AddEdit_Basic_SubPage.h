@@ -27,6 +27,12 @@ public:
   // has finished, and never for a view-only or protected entry.
   void NotifyChanged();
 
+  // Called by CAddEdit_Basic_Tabs right after this page becomes the active tab
+  // via its mnemonic accelerator, so the page can put keyboard focus wherever
+  // makes sense for it (e.g. an edit control, or a list vs. a button depending
+  // on whether the list has any rows).
+  virtual void FocusDefaultControl() = 0;
+
 protected:
   // Some hosted controls (e.g. the custom fields list) cause the default dialog
   // handling to absorb an Alt+<letter> that none of this page's own controls

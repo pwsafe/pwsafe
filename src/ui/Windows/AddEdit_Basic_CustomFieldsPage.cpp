@@ -77,7 +77,7 @@ BOOL CAddEdit_Basic_CustomFieldsPage::OnInitDialog()
   return TRUE;
 }
 
-void CAddEdit_Basic_CustomFieldsPage::LoadCustomFieldsFromList()
+void CAddEdit_Basic_CustomFieldsPage::LoadCustomFieldsFromList(int selectIndex)
 {
   m_customFieldsList.SetRedraw(FALSE);
   m_customFieldsList.DeleteAllItems();
@@ -91,8 +91,34 @@ void CAddEdit_Basic_CustomFieldsPage::LoadCustomFieldsFromList()
     m_customFieldsList.SetItemText(idx, 1, value);
   }
 
+  if (selectIndex >= 0 && selectIndex < static_cast<int>(fields.size())) {
+    m_customFieldsList.SetItemState(selectIndex, LVIS_SELECTED | LVIS_FOCUSED,
+                                    LVIS_SELECTED | LVIS_FOCUSED);
+    m_customFieldsList.EnsureVisible(selectIndex, FALSE);
+  }
+
   m_customFieldsList.SetRedraw(TRUE);
   UpdateCustomFieldButtons();
+}
+
+void CAddEdit_Basic_CustomFieldsPage::FocusDefaultControl()
+{
+  if (m_customFieldsList.GetItemCount() > 0) {
+    // Leave an existing selection alone; only seed one if the list has none yet.
+    if (m_customFieldsList.GetNextItem(-1, LVNI_FOCUSED) < 0) {
+      m_customFieldsList.SetItemState(0, LVIS_SELECTED | LVIS_FOCUSED,
+                                      LVIS_SELECTED | LVIS_FOCUSED);
+      m_customFieldsList.EnsureVisible(0, FALSE);
+      UpdateCustomFieldButtons();
+    }
+    m_customFieldsList.SetFocus();
+  } else if (m_btnAdd.IsWindowEnabled()) {
+    m_btnAdd.SetFocus();
+  } else {
+    // Read-only entry with no custom fields: nothing to add or select, but
+    // still land keyboard focus somewhere within the tab.
+    m_customFieldsList.SetFocus();
+  }
 }
 
 void CAddEdit_Basic_CustomFieldsPage::UpdateCustomFieldButtons()
@@ -131,7 +157,11 @@ void CAddEdit_Basic_CustomFieldsPage::OnCustomFieldsAdd()
   cf.SetSensitive(dlg.m_sensitive == TRUE);
 
   M_customfields().push_back(cf);
-  LoadCustomFieldsFromList();
+  // Land on the newly-added row so a keyboard-only user (e.g. a screen reader
+  // user) gets immediate confirmation of what was just added, and can go
+  // straight into Edit/Delete without first having to find it in the list.
+  LoadCustomFieldsFromList(static_cast<int>(M_customfields().size()) - 1);
+  m_customFieldsList.SetFocus();
   NotifyChanged();
 }
 
@@ -156,7 +186,10 @@ void CAddEdit_Basic_CustomFieldsPage::OnCustomFieldsEdit()
   cf.SetName(StringX(dlg.m_name));
   cf.SetValue(StringX(dlg.m_value));
   cf.SetSensitive(dlg.m_sensitive == TRUE);
-  LoadCustomFieldsFromList();
+  // Keep the edited row selected so its new contents get re-announced/re-shown
+  // in place, rather than losing the user's position in the list.
+  LoadCustomFieldsFromList(sel);
+  m_customFieldsList.SetFocus();
   NotifyChanged();
 }
 
@@ -174,7 +207,21 @@ void CAddEdit_Basic_CustomFieldsPage::OnCustomFieldsDelete()
     return;
 
   fields.erase(fields.begin() + sel);
-  LoadCustomFieldsFromList();
+
+  // Select whatever now occupies the deleted row's position (the next item,
+  // or the new last item if the deleted row was last), so a keyboard-only
+  // user can keep deleting in place without re-navigating the list. If the
+  // list is now empty, move on to Add instead - there's nothing left to
+  // select.
+  const int newCount = static_cast<int>(fields.size());
+  const int nextSel = (newCount == 0) ? -1 : (sel < newCount ? sel : newCount - 1);
+  LoadCustomFieldsFromList(nextSel);
+
+  if (nextSel >= 0)
+    m_customFieldsList.SetFocus();
+  else if (m_btnAdd.IsWindowEnabled())
+    m_btnAdd.SetFocus();
+
   NotifyChanged();
 }
 

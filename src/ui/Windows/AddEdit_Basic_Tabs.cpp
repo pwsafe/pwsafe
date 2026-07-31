@@ -100,39 +100,42 @@ bool CAddEdit_Basic_Tabs::IsExternalEditorActive() const
   return m_pp_notes.IsExternalEditorActive();
 }
 
-void CAddEdit_Basic_Tabs::ActivateNotesTab()
+void CAddEdit_Basic_Tabs::ActivatePage(CAddEdit_Basic_SubPage *pPage)
 {
-  if (GetActivePage() != &m_pp_notes)
-    SetActivePage(&m_pp_notes);
+  if (GetActivePage() != pPage)
+    SetActivePage(pPage);
 
-  m_pp_notes.FocusNotes();
+  pPage->FocusDefaultControl();
 }
 
 BOOL CAddEdit_Basic_Tabs::PreTranslateMessage(MSG *pMsg)
 {
-  // The single home for the Notes tab's accelerator: both CAddEdit_Basic (when
-  // one of its own fields has focus) and our subtabs (via
+  // The single home for every subtab's accelerator: both CAddEdit_Basic (when
+  // one of its fields has focus) and our subtabs (via
   // CAddEdit_Basic_SubPage, when they don't own the accelerator themselves)
   // route WM_SYSCHAR here.
   //
-  // The accelerator letter itself is marked with a leading '&', as read
-  // directly from the tab control for proper I18N support.
+  // Each accelerator letter is marked with a leading '&' in the corresponding
+  // subtab's caption, as read from the tab control for proper I18N support.
   if (pMsg->message == WM_SYSCHAR) {
-    const int iNotes = GetPageIndex(&m_pp_notes);
+    CAddEdit_Basic_SubPage *const pages[] = { &m_pp_notes, &m_pp_customFields };
     CTabCtrl *pTabCtrl = GetTabControl();
+    const wchar_t ch = static_cast<wchar_t>(std::towupper(static_cast<wchar_t>(pMsg->wParam)));
 
-    if (iNotes >= 0 && pTabCtrl != nullptr) {
-      wchar_t szTabText[256];
-      TCITEM tci = {};
-      tci.mask = TCIF_TEXT;
-      tci.pszText = szTabText;
-      tci.cchTextMax = _countof(szTabText);
+    if (pTabCtrl != nullptr) {
+      for (CAddEdit_Basic_SubPage *pPage : pages) {
+        const int iPage = GetPageIndex(pPage);
+        if (iPage < 0)
+          continue;
 
-      if (pTabCtrl->GetItem(iNotes, &tci)) {
-        const wchar_t mnemonic = WinUtil::GetMnemonicChar(szTabText);
-        if (mnemonic != 0 &&
-            mnemonic == static_cast<wchar_t>(std::towupper(static_cast<wchar_t>(pMsg->wParam)))) {
-          ActivateNotesTab();
+        wchar_t szTabText[256];
+        TCITEM tci = {};
+        tci.mask = TCIF_TEXT;
+        tci.pszText = szTabText;
+        tci.cchTextMax = _countof(szTabText);
+
+        if (pTabCtrl->GetItem(iPage, &tci) && WinUtil::GetMnemonicChar(szTabText) == ch) {
+          ActivatePage(pPage);
           return TRUE;
         }
       }

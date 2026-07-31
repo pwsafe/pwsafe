@@ -28,6 +28,12 @@ protected:
   virtual BOOL OnInitDialog();
   virtual void DoDataExchange(CDataExchange *pDX);
 
+  // Alt+C (the tab's mnemonic) lands here: focus the list on its current/first
+  // row when there's data to act on, or the Add button when the list is empty
+  // (Edit/Delete would have nothing to do), so keyboard-only users always land
+  // somewhere useful.
+  virtual void FocusDefaultControl() override;
+
   afx_msg void OnCustomFieldsAdd();
   afx_msg void OnCustomFieldsDelete();
   afx_msg void OnCustomFieldsEdit();
@@ -41,7 +47,11 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  void LoadCustomFieldsFromList();
+  // selectIndex, when >= 0, is selected and focused (visually and for the
+  // list's own keyboard-focus rect) after the list is repopulated, so an
+  // Add/Edit/Delete doesn't strand a keyboard-only user without feedback
+  // about which row they just acted on.
+  void LoadCustomFieldsFromList(int selectIndex = -1);
   void UpdateCustomFieldButtons();
 
   CButton m_btnAdd;

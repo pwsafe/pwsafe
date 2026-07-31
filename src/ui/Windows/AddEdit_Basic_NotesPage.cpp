@@ -297,7 +297,7 @@ void CAddEdit_Basic_NotesPage::ShowNotes(const bool bForceShow)
   }
 }
 
-void CAddEdit_Basic_NotesPage::FocusNotes()
+void CAddEdit_Basic_NotesPage::FocusDefaultControl()
 {
   if (m_isNotesHidden)
     ShowNotes();
