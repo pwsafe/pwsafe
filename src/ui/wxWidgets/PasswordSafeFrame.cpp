@@ -2816,6 +2816,17 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
     // hidden-to-tray window work). Skipped on X11 (including XWayland) and
     // other platforms, where Iconize(false) below already works and this
     // would just be a needless flicker.
+    //
+    // Tried gating this on !IsActive() to skip the cycle (and its visible
+    // blink) when the window is already shown and focused, e.g. double-
+    // clicking the tray icon while the main window is already restored.
+    // Doesn't work: with focus-follows-mouse, moving the pointer toward the
+    // tray icon already defocuses this window before the click even
+    // happens, so IsActive() is false here regardless of whether the
+    // window was genuinely minimized or fully visible a moment ago —
+    // confirmed via tracing, IsActive/IsIconized/IsShown read identically
+    // in both cases. No wx/GTK-visible property distinguishes them on
+    // native Wayland; this is a platform constraint, not fixable here.
     if (wxUtilities::WhatWindowSystem() == wxUtilities::Wayland && !IsXWaylandEnabled()) {
       Show(false);
     }
