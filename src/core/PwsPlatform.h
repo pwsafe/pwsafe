@@ -113,10 +113,10 @@
 #define PWS_BIG_ENDIAN
 #endif
 // **********************************************
-// * FreeBSD on Intel                           *
+// * FreeBSD on Intel and ARM64                 *
 // **********************************************
 #elif defined(__FreeBSD) || defined(__FreeBSD__)
-#if defined(__i386__) || defined(__amd64__)
+#if defined(__i386__) || defined(__amd64__) || defined(__aarch64__)
 #define PWS_LITTLE_ENDIAN
 #endif
 // **********************************************
