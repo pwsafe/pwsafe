@@ -55,20 +55,6 @@ class GridCtrl;
 typedef std::map<int, pws_os::CUUID> RowUUIDMapT;
 typedef std::map<pws_os::CUUID, int, std::less<pws_os::CUUID> > UUIDRowMapT;
 
-struct DateTimeIsEarlierThan {
-  bool operator() (const wxDateTime& lhs, const wxDateTime& rhs) const
-  {
-    return lhs.IsEarlierThan(rhs);
-  }
-};
-
-struct DateTimeIsLaterThan {
-  bool operator() (const wxDateTime& lhs, const wxDateTime& rhs) const
-  {
-    return lhs.IsLaterThan(rhs);
-  }
-};
-
 /*!
  * GridCtrl class declaration
  */
@@ -77,8 +63,8 @@ class GridCtrl : public wxGrid, public Observer
 {
   typedef std::multimap<wxString, const CItemData*, std::greater<wxString> > DescendingSortedMultimap;
   typedef std::multimap<wxString, const CItemData*, std::less<wxString> >    AscendingSortedMultimap;
-  typedef std::multimap<wxDateTime, const CItemData*, DateTimeIsEarlierThan > DescendingSortedDateTime;
-  typedef std::multimap<wxDateTime, const CItemData*, DateTimeIsLaterThan > AscendingSortedDateTime;
+  typedef std::multimap<time_t, const CItemData*, std::greater<time_t> > DescendingSortedDateTime;
+  typedef std::multimap<time_t, const CItemData*, std::less<time_t> >    AscendingSortedDateTime;
 
   DECLARE_CLASS( GridCtrl )
   DECLARE_EVENT_TABLE()
@@ -186,7 +172,7 @@ public:
   void RearrangeItemsStringBased(ItemsCollection& collection, int column);
 
   template<typename ItemsCollection>
-  void RearrangeItemsDateTimeBased(ItemsCollection& collection, int column, bool dateOnly = false);
+  void RearrangeItemsDateTimeBased(ItemsCollection& collection, CItemData::FieldType field);
 
   std::tuple<int, int> HitTest(const wxPoint& point) const;
   bool HasGridCell(const std::tuple<int, int>& cellGridCoordinates) const;
