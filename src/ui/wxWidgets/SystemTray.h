@@ -51,8 +51,9 @@ class SystemTray : public wxTaskBarIcon
     void ProcessSysTrayMenuItem(int itemId);
 
   private:
-    wxMenu* BuildMenu();
-    void PopulateMenu(wxMenu* menu);
+    // Repopulates menu in place if non-null, otherwise creates a fresh one
+    // first; either way returns a fully populated menu reflecting m_status.
+    wxMenu* RepopulateMenu(wxMenu* menu);
     wxMenu* GetRecentHistory();
     wxMenu* SetupRecentEntryMenu(const CItemData* pci, size_t idx);
     void ShowSetDatabaseIdDialog();

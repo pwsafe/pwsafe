@@ -110,14 +110,19 @@ void SystemTray::SetTrayStatus(TrayStatus status)
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
     const char* sniName = nullptr;
     switch (status) {
-      case TrayStatus::LOCKED:
-        if (!m_TrayIconWithOverlay) sniName = "pwsafe-locked";
+      case TrayStatus::CLOSED:
+        sniName = "pwsafe-tray";
         break;
+
       case TrayStatus::UNLOCKED:
         if (!m_TrayIconWithOverlay) sniName = "pwsafe-unlocked";
         break;
+
+      case TrayStatus::LOCKED:
+        if (!m_TrayIconWithOverlay) sniName = "pwsafe-locked";
+        break;
+
       default:
-        sniName = "pwsafe-tray";
         break;
     }
     if (sniName)
@@ -145,17 +150,14 @@ void SystemTray::SetTrayStatus(TrayStatus status)
   }
 }
 
-wxMenu* SystemTray::BuildMenu()
+wxMenu* SystemTray::RepopulateMenu(wxMenu* menu)
 {
-  wxMenu* menu = new wxMenu;
-  PopulateMenu(menu);
-  return menu;
-}
-
-void SystemTray::PopulateMenu(wxMenu* menu)
-{
-  while (menu->GetMenuItemCount() > 0)
-    menu->Destroy(menu->FindItemByPosition(0));
+  if (!menu) {
+    menu = new wxMenu;
+  } else {
+    while (menu->GetMenuItemCount() > 0)
+      menu->Destroy(menu->FindItemByPosition(0));
+  }
 
   switch (m_status) {
     case TrayStatus::UNLOCKED:
@@ -195,12 +197,14 @@ void SystemTray::PopulateMenu(wxMenu* menu)
   menu->Enable(wxID_EXIT, m_frame->CanCloseDialogs());
   if (!m_frame->IsShown())
     menu->Enable(wxID_ICONIZE_FRAME, false);
+
+  return menu;
 }
 
 //virtual
 wxMenu* SystemTray::CreatePopupMenu()
 {
-  wxMenu* menu = BuildMenu();
+  wxMenu* menu = RepopulateMenu(nullptr);
 
   // whe there are active modal dialogs, we need to reparent menu, so it could process context menu events
   // "fix" for https://github.com/wxWidgets/wxWidgets/blob/v3.0.5/src/gtk/menu.cpp#L49
@@ -223,9 +227,7 @@ wxMenu* SystemTray::GetPopupMenu()
   // the same instance reused/repopulated rather than a fresh one each
   // time. Deliberately does not go through CreatePopupMenu(), whose
   // reparent-and-display-now logic exists only for actual click handling.
-  if (!m_sniMenu)
-    m_sniMenu = new wxMenu;
-  PopulateMenu(m_sniMenu);
+  m_sniMenu = RepopulateMenu(m_sniMenu);
   return m_sniMenu;
 }
 #endif
