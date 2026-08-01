@@ -12,6 +12,17 @@
 
 #include "AddEdit_Basic_SubPage.h"
 
+// A plain CListCtrl doesn't claim WM_GETDLGCODE's DLGC_WANTARROWS, so a dialog
+// manager hosting it (IsDialogMessage) treats Up/Down as dialog-navigation keys
+// instead of passing them through for the list's own row navigation.
+class CCustomFieldsListCtrl : public CListCtrl
+{
+protected:
+  afx_msg UINT OnGetDlgCode();
+
+  DECLARE_MESSAGE_MAP()
+};
+
 class CAddEdit_Basic_CustomFieldsPage : public CAddEdit_Basic_SubPage
 {
 public:
@@ -57,6 +68,6 @@ private:
   CButton m_btnAdd;
   CButton m_btnEdit;
   CButton m_btnDelete;
-  CListCtrl m_customFieldsList;
+  CCustomFieldsListCtrl m_customFieldsList;
   int m_rightClickedCustomFieldIndex;
 };

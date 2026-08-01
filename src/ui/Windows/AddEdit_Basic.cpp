@@ -517,9 +517,15 @@ BOOL CAddEdit_Basic::PreTranslateMessage(MSG *pMsg)
     return TRUE;
   }
 
-  // Forward Accelerator (Alt) keys to sub-tabs so they can handle them as well.
-  // This was added to restore Alt-N -> Notes, which "broke" when Notes moved to a sub-tab.
-  if (pMsg->message == WM_SYSCHAR && m_tabs.PreTranslateMessage(pMsg))
+  // Forward keyboard messages to m_tabs first, since it is an embedded child property sheet.
+  // Without this, arrow keys typed into the Custom Fields list, for instance,
+  // would never reach the list's own built-in row-navigation
+  // (see CAddEdit_Basic_SubPage::PreTranslateMessage for the analogous
+  // problem in the other direction). CPropertySheet::PreTranslateMessage
+  // ultimately re-anchors that dialog-navigation handling to m_tabs' own
+  // window, which *does* correctly see the list as a real descendant.
+  if ((pMsg->message == WM_SYSCHAR || pMsg->message == WM_KEYDOWN) &&
+      m_tabs.PreTranslateMessage(pMsg))
     return TRUE;
 
   RelayToolTipEvent(pMsg);

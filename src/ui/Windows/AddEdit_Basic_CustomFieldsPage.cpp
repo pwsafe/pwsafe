@@ -19,6 +19,15 @@
 
 #include "core/CustomFields.h"
 
+BEGIN_MESSAGE_MAP(CCustomFieldsListCtrl, CListCtrl)
+  ON_WM_GETDLGCODE()
+END_MESSAGE_MAP()
+
+UINT CCustomFieldsListCtrl::OnGetDlgCode()
+{
+  return CListCtrl::OnGetDlgCode() | DLGC_WANTARROWS | DLGC_WANTCHARS;
+}
+
 IMPLEMENT_DYNAMIC(CAddEdit_Basic_CustomFieldsPage, CAddEdit_Basic_SubPage)
 
 CAddEdit_Basic_CustomFieldsPage::CAddEdit_Basic_CustomFieldsPage(CWnd *pParent,
@@ -94,6 +103,10 @@ void CAddEdit_Basic_CustomFieldsPage::LoadCustomFieldsFromList(int selectIndex)
   if (selectIndex >= 0 && selectIndex < static_cast<int>(fields.size())) {
     m_customFieldsList.SetItemState(selectIndex, LVIS_SELECTED | LVIS_FOCUSED,
                                     LVIS_SELECTED | LVIS_FOCUSED);
+    // A mouse click sets this as a side effect; programmatic SetItemState doesn't.
+    // Keyboard navigation may use this anchor rather than (or in addition to) the
+    // per-item LVIS_FOCUSED bit to determine "the current item".
+    m_customFieldsList.SetSelectionMark(selectIndex);
     m_customFieldsList.EnsureVisible(selectIndex, FALSE);
   }
 
@@ -108,6 +121,7 @@ void CAddEdit_Basic_CustomFieldsPage::FocusDefaultControl()
     if (m_customFieldsList.GetNextItem(-1, LVNI_FOCUSED) < 0) {
       m_customFieldsList.SetItemState(0, LVIS_SELECTED | LVIS_FOCUSED,
                                       LVIS_SELECTED | LVIS_FOCUSED);
+      m_customFieldsList.SetSelectionMark(0);
       m_customFieldsList.EnsureVisible(0, FALSE);
       UpdateCustomFieldButtons();
     }
@@ -262,6 +276,46 @@ void CAddEdit_Basic_CustomFieldsPage::OnCustomFieldsKeyDown(NMHDR *pNMHDR, LRESU
 
     *pResult = 0; // handled
     return;
+  }
+
+  // Row navigation: comctl32's own default handling for these keys does not
+  // move the current item in this control, so drive it directly here.
+  const int count = m_customFieldsList.GetItemCount();
+  if (count > 0) {
+    const int current = m_customFieldsList.GetNextItem(-1, LVNI_FOCUSED);
+    const int page = m_customFieldsList.GetCountPerPage() > 0 ? m_customFieldsList.GetCountPerPage() : 1;
+    int next = -1;
+
+    switch (pLVKeyDown->wVKey) {
+      case VK_UP:
+        next = (current < 0) ? 0 : (current > 0 ? current - 1 : 0);
+        break;
+      case VK_DOWN:
+        next = (current < 0) ? 0 : (current + 1 < count ? current + 1 : count - 1);
+        break;
+      case VK_HOME:
+        next = 0;
+        break;
+      case VK_END:
+        next = count - 1;
+        break;
+      case VK_PRIOR:
+        next = (current < 0) ? 0 : (current - page > 0 ? current - page : 0);
+        break;
+      case VK_NEXT:
+        next = (current < 0) ? 0 : (current + page < count ? current + page : count - 1);
+        break;
+      default:
+        break;
+    }
+
+    if (next >= 0) {
+      m_customFieldsList.SetItemState(-1, 0, LVIS_SELECTED | LVIS_FOCUSED);
+      m_customFieldsList.SetItemState(next, LVIS_SELECTED | LVIS_FOCUSED,
+                                      LVIS_SELECTED | LVIS_FOCUSED);
+      m_customFieldsList.SetSelectionMark(next);
+      m_customFieldsList.EnsureVisible(next, FALSE);
+    }
   }
 
   *pResult = 1; // not handled, allow default processing
