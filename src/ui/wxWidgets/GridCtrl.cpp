@@ -594,7 +594,7 @@ void GridCtrl::UpdateSorting()
 {
   SortByColumn(
     PWSprefs::GetInstance()->GetPref(PWSprefs::SortedColumn),
-    PWSprefs::GetInstance()->GetPref(PWSprefs::SortAscending)
+    PWSprefs::GetInstance()->GetPref(PWSprefs::ListSortAscending)
   );
 }
 
@@ -604,7 +604,7 @@ void GridCtrl::OnHeaderClick(wxHeaderCtrlEvent& event)
 
   if (GetSortingColumn() != wxNOT_FOUND) {
     PWSprefs::GetInstance()->SetPref(PWSprefs::SortedColumn , GetSortingColumn());
-    PWSprefs::GetInstance()->SetPref(PWSprefs::SortAscending, IsSortOrderAscending());
+    PWSprefs::GetInstance()->SetPref(PWSprefs::ListSortAscending, IsSortOrderAscending());
   }
 }
 
