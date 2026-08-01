@@ -136,8 +136,8 @@ collect_local_build() {
     for pkg in $packages; do
         rpm_path=$(local_rpm_path "$pkg" "$wantver" "$verglob") || exit 1
         if [ -z "$rpm_path" ]; then
-            echo "no $verglob rpm found for $pkg, leaving as installed" >&2
-            continue
+            echo "ERROR: no $verglob rpm found for $pkg" >&2
+            exit 1
         fi
         OVERRIDE_RPMS="$OVERRIDE_RPMS $rpm_path"
         OVERRIDE_TMP_RPMS="$OVERRIDE_TMP_RPMS /tmp/$(basename "$rpm_path")"
