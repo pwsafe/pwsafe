@@ -151,7 +151,7 @@ collect_local_build "$WANT_APPINDICATOR_VERSION" 'libayatana-appindicator*' '^li
 
 if [ -n "$OVERRIDE_RPMS" ]; then
     mock "$@" --copyin $OVERRIDE_RPMS /tmp/
-    mock "$@" --chroot "rpm -Uvh --force$OVERRIDE_TMP_RPMS"
+    mock "$@" --chroot "rpm -Uvh --force ${OVERRIDE_TMP_RPMS# }"
 fi
 
 mock "$@" --enable-network --unpriv --chroot "cd /builddir && git clone $CLONE_OPTS $CLONE_URL && mkdir -p pwsafe/build && cd pwsafe/build && cmake .. -DNO_GTEST=ON && cmake --build . -j\$(nproc) && cpack -G RPM"
