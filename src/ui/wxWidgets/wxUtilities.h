@@ -450,12 +450,15 @@ namespace wxUtilities
     Unknown,
     X11,
     Wayland,
+    XWayland,     // Wayland session, but this process's own GDK backend fell
+                  // back to X11 (GDK_BACKEND=x11, or Flatpak's "--socket=x11"
+                  // without "--socket=wayland")
     macOS,
     Windows
   };
 
   /**
-   * @brief Identifies the type of window manager (X11, Wayland, etc.).
+   * @brief Identifies the type of window manager (X11, Wayland, XWayland, etc.).
    *
    * @return Window system type or Unknown
    */
@@ -479,10 +482,6 @@ namespace wxUtilities
 // Wrapper for wxTaskBarIcon::IsAvailable() that doesn't crash
 // on Fedora or Ubuntu
 bool IsTaskBarIconAvailable();
-
-// True if a Wayland session is actually falling back to the X11 GDK backend
-// (forced via GDK_BACKEND=x11, or the Flatpak "--socket=x11" case)
-bool IsXWaylandEnabled();
 
 // Returns true if it's Flatpak version on Linux, false if native build
 bool IsRunningInFlatpak();

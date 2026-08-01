@@ -2827,7 +2827,7 @@ void PasswordSafeFrame::UnlockSafe(bool restoreUI, bool iconizeOnCancel)
     // confirmed via tracing, IsActive/IsIconized/IsShown read identically
     // in both cases. No wx/GTK-visible property distinguishes them on
     // native Wayland; this is a platform constraint, not fixable here.
-    if (wxUtilities::WhatWindowSystem() == wxUtilities::Wayland && !IsXWaylandEnabled()) {
+    if (wxUtilities::WhatWindowSystem() == wxUtilities::Wayland) {
       Show(false);
     }
     Iconize(false);

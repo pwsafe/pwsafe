@@ -328,29 +328,25 @@ enum wxUtilities::WindowSystem wxUtilities::WhatWindowSystem()
             wsType = X11;
           } else if (XDG_SESSION_TYPE == wxT("wayland")) {
             wsType = Wayland;
+
+            // Detect this process's own GDK backend actually falling back to
+            // X11 despite the Wayland session (GDK_BACKEND=x11, or Flatpak's
+            // "--socket=x11" without "--socket=wayland") - autotype/virtual
+            // keyboard/tray-icon behavior differ in this case from either
+            // plain X11 or plain native-Wayland.
+            wxString GDK_BACKEND_VAR = wxEmptyString;
+            if (wxGetEnv(wxT("GDK_BACKEND"), &GDK_BACKEND_VAR) && GDK_BACKEND_VAR == wxT("x11")) {
+              wsType = XWayland;
+            }
+            else if (!wxGetEnv(wxT("WAYLAND_DISPLAY"), nullptr)) { // unset by the Flatpak version on Wayland when started with the "--nosocket=wayland --socket=x11" options
+              wsType = XWayland;
+            }
           }
         }
       }
     }
   }
   return wsType;
-}
-
-bool IsXWaylandEnabled()
-{
-  bool XWayland = false;
-  wxOperatingSystemId osid = wxGetOsVersion();
-
-  if (osid & wxOS_UNIX) { // Includes Linux
-    wxString GDK_BACKEND_VAR = wxEmptyString; // set by the native version on Linux with Wayland to fall back to using x11 backend
-    if (wxGetEnv(wxT("GDK_BACKEND"), &GDK_BACKEND_VAR) && GDK_BACKEND_VAR == wxT("x11")) { // provides 'x11' or 'wayland'
-      XWayland = true;
-    }
-    else if (!wxGetEnv(wxT("WAYLAND_DISPLAY"), nullptr)) { // unset by the Flatpak version on Wayland when started with the "--nosocket=wayland --socket=x11" options
-      XWayland = true;
-    }
-  }
-  return XWayland;
 }
 
 bool wxUtilities::IsVirtualKeyboardSupported()
@@ -360,21 +356,14 @@ bool wxUtilities::IsVirtualKeyboardSupported()
 #elif defined __WXOSX__
   return true;
 #else
-  if (wxUtilities::WhatWindowSystem() == wxUtilities::X11) {
-    return true;
-  }
-  else if (wxUtilities::WhatWindowSystem() == wxUtilities::Wayland && IsXWaylandEnabled()) {
-    return true;
-  }
-  else {
-    return false;
-  }
+  enum wxUtilities::WindowSystem ws = wxUtilities::WhatWindowSystem();
+  return ws == wxUtilities::X11 || ws == wxUtilities::XWayland;
 #endif
 }
 
 void wxUtilities::NotifyIfUnsupported(enum Feature feature, wxWindow* window)
 {
-  if (feature == Autotype && WhatWindowSystem() == Wayland) {
+  if (feature == Autotype && (WhatWindowSystem() == Wayland || WhatWindowSystem() == XWayland)) {
     window->SetToolTip(_("Running on Wayland - make sure the target application is using Xwayland. For some applications, you may need to enable the 'Use alternate AutoType method' option in Options > System."));
   }
 #if defined(__linux__) || defined(__FreeBSD__) || defined(__OpenBSD__)
