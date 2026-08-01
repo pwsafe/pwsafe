@@ -76,37 +76,10 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   option (USE_ASAN "Set ON to add -fsanitize=address to Debug builds" OFF)
 endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
-if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-  find_program(IMAGEMAGICK_CMD NAMES magick convert)
-  if(IMAGEMAGICK_CMD)
-    set(TRAY_ICON_APPS_DIR "${CMAKE_BINARY_DIR}/tray-icons/hicolor/32x32/apps")
-    file(MAKE_DIRECTORY ${TRAY_ICON_APPS_DIR})
-    file(WRITE "${CMAKE_BINARY_DIR}/tray-icons/hicolor/index.theme"
-         "[Icon Theme]\nName=hicolor\nDirectories=32x32/apps\n\n[32x32/apps]\nSize=32\nType=Fixed\n")
-    set(TRAY_XPM_DIR "${CMAKE_SOURCE_DIR}/src/ui/wxWidgets/graphics")
-    set(TRAY_XPM_NAMES  tray.xpm         locked_tray.xpm  unlocked_tray.xpm)
-    set(TRAY_PNG_NAMES  pwsafe-tray      pwsafe-locked    pwsafe-unlocked)
-    set(TRAY_ICON_PNGS "")
-    list(LENGTH TRAY_XPM_NAMES _TRAY_COUNT)
-    math(EXPR _TRAY_LAST "${_TRAY_COUNT} - 1")
-    foreach(_I RANGE ${_TRAY_LAST})
-      list(GET TRAY_XPM_NAMES ${_I} _XPM)
-      list(GET TRAY_PNG_NAMES ${_I} _PNG)
-      set(_PNG_OUT "${TRAY_ICON_APPS_DIR}/${_PNG}.png")
-      add_custom_command(
-        OUTPUT "${_PNG_OUT}"
-        COMMAND ${IMAGEMAGICK_CMD} "${TRAY_XPM_DIR}/${_XPM}" "${_PNG_OUT}"
-        DEPENDS "${TRAY_XPM_DIR}/${_XPM}"
-        COMMENT "Generating ${_PNG}.png from ${_XPM}")
-      list(APPEND TRAY_ICON_PNGS "${_PNG_OUT}")
-      install(FILES "${_PNG_OUT}" DESTINATION "share/icons/hicolor/32x32/apps")
-    endforeach()
-    add_custom_target(pwsafe-tray-icons ALL DEPENDS ${TRAY_ICON_PNGS})
-    message(STATUS "Tray icon PNGs will be generated via ${IMAGEMAGICK_CMD}")
-  else()
-    message(WARNING "ImageMagick not found; SNI tray icon PNGs will not be generated")
-  endif()
-endif()
+# SNI/AppIndicator tray icons: pre-generated PNGs checked into install/graphics/32x32/
+# (same convention as the 48x48/128x128 app icon below). Regenerate them with e.g.
+# `magick src/ui/wxWidgets/graphics/tray.xpm install/graphics/32x32/pwsafe-tray.png`
+# if the source XPMs ever change.
 
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   option (NO_QR "Set ON to disable QR support" OFF)
@@ -402,6 +375,23 @@ add_custom_command(TARGET pwsafe POST_BUILD
           "${PROJECT_SOURCE_DIR}/xml/pwsafe_filter.xsd"
           "$<TARGET_FILE_DIR:pwsafe>/pwsafe_filter.xsd")
 
+if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  # SNI/AppIndicator icon lookup (SystemTray::SystemTray) checks for a
+  # tray-icons/ directory next to the running binary, so an uninstalled
+  # build (e.g. running ./build/pwsafe directly) can still find its icons.
+  add_custom_command(TARGET pwsafe POST_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E make_directory
+            "$<TARGET_FILE_DIR:pwsafe>/tray-icons/hicolor/32x32/apps"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+            "${PROJECT_SOURCE_DIR}/install/graphics/32x32/pwsafe-tray.png"
+            "${PROJECT_SOURCE_DIR}/install/graphics/32x32/pwsafe-locked.png"
+            "${PROJECT_SOURCE_DIR}/install/graphics/32x32/pwsafe-unlocked.png"
+            "$<TARGET_FILE_DIR:pwsafe>/tray-icons/hicolor/32x32/apps"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+            "${PROJECT_SOURCE_DIR}/install/graphics/32x32/index.theme"
+            "$<TARGET_FILE_DIR:pwsafe>/tray-icons/hicolor/index.theme")
+endif()
+
 if (NOT WIN32)
   install (DIRECTORY xml DESTINATION "share/passwordsafe")
   ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/pwsafe.1.gz
@@ -413,6 +403,10 @@ if (NOT WIN32)
   install (FILES "install/metainfo/org.pwsafe.pwsafe.metainfo.xml" DESTINATION "share/metainfo")
   install (FILES "install/graphics/48x48/pwsafe.png" DESTINATION "share/icons/hicolor/48x48/apps/")
   install (FILES "install/graphics/128x128/pwsafe.png" DESTINATION "share/icons/hicolor/128x128/apps/")
+  install (FILES "install/graphics/32x32/pwsafe-tray.png"
+                 "install/graphics/32x32/pwsafe-locked.png"
+                 "install/graphics/32x32/pwsafe-unlocked.png"
+           DESTINATION "share/icons/hicolor/32x32/apps/")
   install (DIRECTORY "${CMAKE_BINARY_DIR}/src/ui/wxWidgets/I18N/mos/"
            DESTINATION "share/locale")
 
