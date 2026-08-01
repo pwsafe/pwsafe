@@ -118,14 +118,13 @@ BOOL CAddEdit_Basic_Tabs::PreTranslateMessage(MSG *pMsg)
   // Each accelerator letter is marked with a leading '&' in the corresponding
   // subtab's caption, as read from the tab control for proper I18N support.
   if (pMsg->message == WM_SYSCHAR) {
-    CAddEdit_Basic_SubPage *const pages[] = { &m_pp_notes, &m_pp_customFields };
     CTabCtrl *pTabCtrl = GetTabControl();
     const wchar_t ch = static_cast<wchar_t>(std::towupper(static_cast<wchar_t>(pMsg->wParam)));
 
     if (pTabCtrl != nullptr) {
-      for (CAddEdit_Basic_SubPage *pPage : pages) {
-        const int iPage = GetPageIndex(pPage);
-        if (iPage < 0)
+      for (int iPage = 0; iPage < GetPageCount(); ++iPage) {
+        CAddEdit_Basic_SubPage *pPage = dynamic_cast<CAddEdit_Basic_SubPage *>(GetPage(iPage));
+        if (pPage == nullptr)
           continue;
 
         wchar_t szTabText[256];
