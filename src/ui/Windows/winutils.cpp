@@ -17,6 +17,7 @@
 #include "WtsApi32.h"
 #pragma comment (lib, "Wtsapi32")
 
+#include <cwctype>
 #include <sstream>
 
 #include "core/StringX.h"
@@ -461,4 +462,18 @@ bool WinUtil::IsHighContrastOn()
   HIGHCONTRAST hc = { sizeof(hc) };
   SystemParametersInfo(SPI_GETHIGHCONTRAST, sizeof(hc), &hc, 0);
   return (hc.dwFlags & HCF_HIGHCONTRASTON);
+}
+
+wchar_t WinUtil::GetMnemonicChar(const CString &text)
+{
+  for (int i = 0; i < text.GetLength() - 1; ++i) {
+    if (text[i] != L'&')
+      continue;
+    if (text[i + 1] == L'&') {
+      ++i; // literal "&&", not a mnemonic
+      continue;
+    }
+    return static_cast<wchar_t>(std::towupper(text[i + 1]));
+  }
+  return 0;
 }

@@ -20,6 +20,14 @@ public:
   BOOL Create(CWnd *pParentWnd, const CRect &rect);
   bool IsExternalEditorActive() const;
 
+  // Public so CAddEdit_Basic can funnel Alt+<letter> here directly when one of
+  // its own fields (rather than a subtab) has focus; see CAddEdit_Basic_SubPage
+  // for the subtab side of the same delegation. Matches WM_SYSCHAR against each
+  // subtab's own caption mnemonic (read directly off the tab control, so this
+  // works for any I18N translation), switches to the matching subtab, and lets
+  // it focus whatever control makes sense for it.
+  virtual BOOL PreTranslateMessage(MSG *pMsg);
+
 protected:
   virtual BOOL OnInitDialog();
 
@@ -29,6 +37,10 @@ protected:
 
 private:
   void LayoutPages();
+
+  // Switch to pPage (if not already active) and let it focus its own default
+  // control; the single home for every subtab's mnemonic accelerator.
+  void ActivatePage(CAddEdit_Basic_SubPage *pPage);
 
   CAddEdit_Basic_NotesPage m_pp_notes;
   CAddEdit_Basic_CustomFieldsPage m_pp_customFields;

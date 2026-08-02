@@ -12,6 +12,17 @@
 
 #include "AddEdit_Basic_SubPage.h"
 
+// A plain CListCtrl doesn't claim WM_GETDLGCODE's DLGC_WANTARROWS, so a dialog
+// manager hosting it (IsDialogMessage) treats Up/Down as dialog-navigation keys
+// instead of passing them through for the list's own row navigation.
+class CCustomFieldsListCtrl : public CListCtrl
+{
+protected:
+  afx_msg UINT OnGetDlgCode();
+
+  DECLARE_MESSAGE_MAP()
+};
+
 class CAddEdit_Basic_CustomFieldsPage : public CAddEdit_Basic_SubPage
 {
 public:
@@ -28,6 +39,12 @@ protected:
   virtual BOOL OnInitDialog();
   virtual void DoDataExchange(CDataExchange *pDX);
 
+  // Alt+C (the tab's mnemonic) lands here: focus the list on its current/first
+  // row when there's data to act on, or the Add button when the list is empty
+  // (Edit/Delete would have nothing to do), so keyboard-only users always land
+  // somewhere useful.
+  virtual void FocusDefaultControl() override;
+
   afx_msg void OnCustomFieldsAdd();
   afx_msg void OnCustomFieldsDelete();
   afx_msg void OnCustomFieldsEdit();
@@ -41,12 +58,17 @@ protected:
   DECLARE_MESSAGE_MAP()
 
 private:
-  void LoadCustomFieldsFromList();
+  // selectIndex, when >= 0, is selected and focused (visually and for the
+  // list's own keyboard-focus rect) after the list is repopulated, so an
+  // Add/Edit/Delete doesn't strand a keyboard-only user without feedback
+  // about which row they just acted on.
+  void LoadCustomFieldsFromList(int selectIndex = -1);
   void UpdateCustomFieldButtons();
+  void SelectCustomFieldsListItem(int index);
 
   CButton m_btnAdd;
   CButton m_btnEdit;
   CButton m_btnDelete;
-  CListCtrl m_customFieldsList;
+  CCustomFieldsListCtrl m_customFieldsList;
   int m_rightClickedCustomFieldIndex;
 };

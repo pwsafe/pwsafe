@@ -32,6 +32,10 @@ public:
   bool IsExternalEditorActive() const { return m_bUsingNotesExternalEditor; }
 
 protected:
+  // Reveal the notes control (if currently hidden) and give it focus; this is
+  // how the Notes tab's mnemonic accelerator ends up focusing something useful.
+  virtual void FocusDefaultControl() override;
+
   virtual BOOL OnInitDialog();
   virtual BOOL OnSetActive();
   virtual void DoDataExchange(CDataExchange *pDX);

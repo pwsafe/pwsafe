@@ -37,6 +37,11 @@ namespace WinUtil {
   bool HasTouchscreen(); // for BR1539 workaround
   DWORD SetWindowExcludeFromScreenCapture(HWND hwnd, bool excludeFromScreenCapture);
   bool IsHighContrastOn();
+
+  // The upper-cased accelerator character marked by an (unescaped) '&' in text
+  // (e.g. L'N' for "&Notes"), or 0 if text has no such mnemonic. "&&" is a
+  // literal, escaped '&', not a mnemonic marker.
+  wchar_t GetMnemonicChar(const CString &text);
 }
 #endif // __WINUTILS_H__
 

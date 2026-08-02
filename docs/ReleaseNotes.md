@@ -7,8 +7,8 @@ In the following, SFxxxx refers to Bug Reports, Feature Requests and Support Req
 PasswordSafe 3.72.2 Release ??? ?? 2026
 =======================================
 Bugs Fixed in 3.72.2
------------------------ 
-
+--------------------
+* [GH1892](https://github.com/pwsafe/pwsafe/issues/1892) Regression: In the Add/Edit dialog's Basic tab, Alt-N (or the equivalent for non-English langauges) set the keyboard focus to the Notes field.
 * [SF1635](https://sourceforge.net/p/passwordsafe/bugs/1635/) Values in password subset dialog are no longer truncated.
 * [GH1889](https://github.com/pwsafe/pwsafe/issues/1889) Regression: 'Apply' button now enabled only when a change is made to the entry.
 * [GH1092](https://github.com/pwsafe/pwsafe/issues/1092) Regression: Last size and position maintained correctly across scaling other than 100%.

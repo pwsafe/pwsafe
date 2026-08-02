@@ -12,6 +12,9 @@
 #include "AddEdit_Basic_Tabs.h"
 
 #include "PWSDarkMode.h"
+#include "winutils.h"
+
+#include <cwctype>
 
 BEGIN_MESSAGE_MAP(CAddEdit_Basic_Tabs, CPropertySheet)
   ON_WM_SIZE()
@@ -95,4 +98,48 @@ void CAddEdit_Basic_Tabs::LayoutPages()
 bool CAddEdit_Basic_Tabs::IsExternalEditorActive() const
 {
   return m_pp_notes.IsExternalEditorActive();
+}
+
+void CAddEdit_Basic_Tabs::ActivatePage(CAddEdit_Basic_SubPage *pPage)
+{
+  if (GetActivePage() != pPage)
+    SetActivePage(pPage);
+
+  pPage->FocusDefaultControl();
+}
+
+BOOL CAddEdit_Basic_Tabs::PreTranslateMessage(MSG *pMsg)
+{
+  // The single home for every subtab's accelerator: both CAddEdit_Basic (when
+  // one of its fields has focus) and our subtabs (via
+  // CAddEdit_Basic_SubPage, when they don't own the accelerator themselves)
+  // route WM_SYSCHAR here.
+  //
+  // Each accelerator letter is marked with a leading '&' in the corresponding
+  // subtab's caption, as read from the tab control for proper I18N support.
+  if (pMsg->message == WM_SYSCHAR) {
+    CTabCtrl *pTabCtrl = GetTabControl();
+    const wchar_t ch = static_cast<wchar_t>(std::towupper(static_cast<wchar_t>(pMsg->wParam)));
+
+    if (pTabCtrl != nullptr) {
+      for (int iPage = 0; iPage < GetPageCount(); ++iPage) {
+        CAddEdit_Basic_SubPage *pPage = dynamic_cast<CAddEdit_Basic_SubPage *>(GetPage(iPage));
+        if (pPage == nullptr)
+          continue;
+
+        wchar_t szTabText[256];
+        TCITEM tci = {};
+        tci.mask = TCIF_TEXT;
+        tci.pszText = szTabText;
+        tci.cchTextMax = _countof(szTabText);
+
+        if (pTabCtrl->GetItem(iPage, &tci) && WinUtil::GetMnemonicChar(szTabText) == ch) {
+          ActivatePage(pPage);
+          return TRUE;
+        }
+      }
+    }
+  }
+
+  return CPropertySheet::PreTranslateMessage(pMsg);
 }
