@@ -64,6 +64,7 @@ private:
   // about which row they just acted on.
   void LoadCustomFieldsFromList(int selectIndex = -1);
   void UpdateCustomFieldButtons();
+  void SelectCustomFieldsListItem(int index);
 
   CButton m_btnAdd;
   CButton m_btnEdit;

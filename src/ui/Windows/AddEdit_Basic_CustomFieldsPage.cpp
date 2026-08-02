@@ -100,18 +100,22 @@ void CAddEdit_Basic_CustomFieldsPage::LoadCustomFieldsFromList(int selectIndex)
     m_customFieldsList.SetItemText(idx, 1, value);
   }
 
-  if (selectIndex >= 0 && selectIndex < static_cast<int>(fields.size())) {
-    m_customFieldsList.SetItemState(selectIndex, LVIS_SELECTED | LVIS_FOCUSED,
-                                    LVIS_SELECTED | LVIS_FOCUSED);
-    // A mouse click sets this as a side effect; programmatic SetItemState doesn't.
-    // Keyboard navigation may use this anchor rather than (or in addition to) the
-    // per-item LVIS_FOCUSED bit to determine "the current item".
-    m_customFieldsList.SetSelectionMark(selectIndex);
-    m_customFieldsList.EnsureVisible(selectIndex, FALSE);
-  }
+  if (selectIndex >= 0 && selectIndex < static_cast<int>(fields.size()))
+    SelectCustomFieldsListItem(selectIndex);
 
   m_customFieldsList.SetRedraw(TRUE);
   UpdateCustomFieldButtons();
+}
+
+void CAddEdit_Basic_CustomFieldsPage::SelectCustomFieldsListItem(int index)
+{
+  m_customFieldsList.SetItemState(index, LVIS_SELECTED | LVIS_FOCUSED,
+                                  LVIS_SELECTED | LVIS_FOCUSED);
+  // A mouse click sets this as a side effect; programmatic SetItemState doesn't.
+  // Keyboard navigation may use this anchor rather than (or in addition to) the
+  // per-item LVIS_FOCUSED bit to determine "the current item".
+  m_customFieldsList.SetSelectionMark(index);
+  m_customFieldsList.EnsureVisible(index, FALSE);
 }
 
 void CAddEdit_Basic_CustomFieldsPage::FocusDefaultControl()
@@ -119,10 +123,7 @@ void CAddEdit_Basic_CustomFieldsPage::FocusDefaultControl()
   if (m_customFieldsList.GetItemCount() > 0) {
     // Leave an existing selection alone; only seed one if the list has none yet.
     if (m_customFieldsList.GetNextItem(-1, LVNI_FOCUSED) < 0) {
-      m_customFieldsList.SetItemState(0, LVIS_SELECTED | LVIS_FOCUSED,
-                                      LVIS_SELECTED | LVIS_FOCUSED);
-      m_customFieldsList.SetSelectionMark(0);
-      m_customFieldsList.EnsureVisible(0, FALSE);
+      SelectCustomFieldsListItem(0);
       UpdateCustomFieldButtons();
     }
     m_customFieldsList.SetFocus();
@@ -311,10 +312,7 @@ void CAddEdit_Basic_CustomFieldsPage::OnCustomFieldsKeyDown(NMHDR *pNMHDR, LRESU
 
     if (next >= 0) {
       m_customFieldsList.SetItemState(-1, 0, LVIS_SELECTED | LVIS_FOCUSED);
-      m_customFieldsList.SetItemState(next, LVIS_SELECTED | LVIS_FOCUSED,
-                                      LVIS_SELECTED | LVIS_FOCUSED);
-      m_customFieldsList.SetSelectionMark(next);
-      m_customFieldsList.EnsureVisible(next, FALSE);
+      SelectCustomFieldsListItem(next);
     }
   }
 
