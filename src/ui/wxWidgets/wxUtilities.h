@@ -450,12 +450,15 @@ namespace wxUtilities
     Unknown,
     X11,
     Wayland,
+    XWayland,     // Wayland session, but this process's own GDK backend fell
+                  // back to X11 (GDK_BACKEND=x11, or Flatpak's "--socket=x11"
+                  // without "--socket=wayland")
     macOS,
     Windows
   };
 
   /**
-   * @brief Identifies the type of window manager (X11, Wayland, etc.).
+   * @brief Identifies the type of window manager (X11, Wayland, XWayland, etc.).
    *
    * @return Window system type or Unknown
    */

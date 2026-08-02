@@ -76,6 +76,11 @@ if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   option (USE_ASAN "Set ON to add -fsanitize=address to Debug builds" OFF)
 endif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
 
+# SNI/AppIndicator tray icons: pre-generated PNGs checked into install/graphics/32x32/
+# (same convention as the 48x48/128x128 app icon below). Regenerate them with e.g.
+# `magick src/ui/wxWidgets/graphics/tray.xpm install/graphics/32x32/pwsafe-tray.png`
+# if the source XPMs ever change.
+
 if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
   option (NO_QR "Set ON to disable QR support" OFF)
   if (NOT NO_QR)
@@ -370,6 +375,23 @@ add_custom_command(TARGET pwsafe POST_BUILD
           "${PROJECT_SOURCE_DIR}/xml/pwsafe_filter.xsd"
           "$<TARGET_FILE_DIR:pwsafe>/pwsafe_filter.xsd")
 
+if (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+  # SNI/AppIndicator icon lookup (SystemTray::SystemTray) checks for a
+  # tray-icons/ directory next to the running binary, so an uninstalled
+  # build (e.g. running ./build/pwsafe directly) can still find its icons.
+  add_custom_command(TARGET pwsafe POST_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E make_directory
+            "$<TARGET_FILE_DIR:pwsafe>/tray-icons/hicolor/32x32/apps"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+            "${PROJECT_SOURCE_DIR}/install/graphics/32x32/pwsafe-tray.png"
+            "${PROJECT_SOURCE_DIR}/install/graphics/32x32/pwsafe-locked.png"
+            "${PROJECT_SOURCE_DIR}/install/graphics/32x32/pwsafe-unlocked.png"
+            "$<TARGET_FILE_DIR:pwsafe>/tray-icons/hicolor/32x32/apps"
+    COMMAND "${CMAKE_COMMAND}" -E copy_if_different
+            "${PROJECT_SOURCE_DIR}/install/graphics/32x32/index.theme"
+            "$<TARGET_FILE_DIR:pwsafe>/tray-icons/hicolor/index.theme")
+endif()
+
 if (NOT WIN32)
   install (DIRECTORY xml DESTINATION "share/passwordsafe")
   ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/pwsafe.1.gz
@@ -381,6 +403,10 @@ if (NOT WIN32)
   install (FILES "install/metainfo/org.pwsafe.pwsafe.metainfo.xml" DESTINATION "share/metainfo")
   install (FILES "install/graphics/48x48/pwsafe.png" DESTINATION "share/icons/hicolor/48x48/apps/")
   install (FILES "install/graphics/128x128/pwsafe.png" DESTINATION "share/icons/hicolor/128x128/apps/")
+  install (FILES "install/graphics/32x32/pwsafe-tray.png"
+                 "install/graphics/32x32/pwsafe-locked.png"
+                 "install/graphics/32x32/pwsafe-unlocked.png"
+           DESTINATION "share/icons/hicolor/32x32/apps/")
   install (DIRECTORY "${CMAKE_BINARY_DIR}/src/ui/wxWidgets/I18N/mos/"
            DESTINATION "share/locale")
 

@@ -16,6 +16,11 @@
 #include <wx/wx.h>
 #endif
 
+#if wxUSE_APPINDICATOR
+#include <wx/stdpaths.h>
+#include <wx/filename.h>
+#endif
+
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
@@ -86,6 +91,12 @@ SystemTray::SystemTray(PasswordSafeFrame* frame) : m_TrayIconWithOverlay(false),
                                                    m_frame(frame),
                                                    m_status(TrayStatus::CLOSED)
 {
+#if wxUSE_APPINDICATOR
+  wxFileName exePath(wxStandardPaths::Get().GetExecutablePath());
+  wxString trayIconsDir = exePath.GetPath() + wxT("/tray-icons");
+  if (wxDirExists(trayIconsDir))
+    SetSNIIconThemePath(trayIconsDir);
+#endif
 }
 
 void SystemTray::SetTrayStatus(TrayStatus status)
@@ -94,6 +105,30 @@ void SystemTray::SetTrayStatus(TrayStatus status)
 
   if (!IsTaskBarIconAvailable())
     return;
+
+#if wxUSE_APPINDICATOR
+  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
+    const char* sniName = nullptr;
+    switch (status) {
+      case TrayStatus::CLOSED:
+        sniName = "pwsafe-tray";
+        break;
+
+      case TrayStatus::UNLOCKED:
+        if (!m_TrayIconWithOverlay) sniName = "pwsafe-unlocked";
+        break;
+
+      case TrayStatus::LOCKED:
+        if (!m_TrayIconWithOverlay) sniName = "pwsafe-locked";
+        break;
+
+      default:
+        break;
+    }
+    if (sniName)
+      SetSNIIconName(wxString::FromAscii(sniName));
+  }
+#endif
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
      switch(status) {
@@ -115,10 +150,14 @@ void SystemTray::SetTrayStatus(TrayStatus status)
   }
 }
 
-//virtual
-wxMenu* SystemTray::CreatePopupMenu()
+wxMenu* SystemTray::RepopulateMenu(wxMenu* menu)
 {
-  wxMenu* menu = new wxMenu;
+  if (!menu) {
+    menu = new wxMenu;
+  } else {
+    while (menu->GetMenuItemCount() > 0)
+      menu->Destroy(menu->FindItemByPosition(0));
+  }
 
   switch (m_status) {
     case TrayStatus::UNLOCKED:
@@ -156,9 +195,16 @@ wxMenu* SystemTray::CreatePopupMenu()
   menu->AppendSeparator();
   menu->Append(wxID_EXIT, _("&Exit"))->SetBitmap(wxBitmap(exit_xpm));
   menu->Enable(wxID_EXIT, m_frame->CanCloseDialogs());
-  //let the user iconize even if its already iconized
   if (!m_frame->IsShown())
     menu->Enable(wxID_ICONIZE_FRAME, false);
+
+  return menu;
+}
+
+//virtual
+wxMenu* SystemTray::CreatePopupMenu()
+{
+  wxMenu* menu = RepopulateMenu(nullptr);
 
   // whe there are active modal dialogs, we need to reparent menu, so it could process context menu events
   // "fix" for https://github.com/wxWidgets/wxWidgets/blob/v3.0.5/src/gtk/menu.cpp#L49
@@ -170,6 +216,21 @@ wxMenu* SystemTray::CreatePopupMenu()
   }
   return menu;
 }
+
+#if wxUSE_APPINDICATOR
+//virtual
+wxMenu* SystemTray::GetPopupMenu()
+{
+  // Called by wx's AppIndicator/SNI backend on every SetTrayStatus() call
+  // (not just clicks) to obtain the persistent menu kept attached to the
+  // indicator; the returned menu is never destroyed by wx, so it must be
+  // the same instance reused/repopulated rather than a fresh one each
+  // time. Deliberately does not go through CreatePopupMenu(), whose
+  // reparent-and-display-now logic exists only for actual click handling.
+  m_sniMenu = RepopulateMenu(m_sniMenu);
+  return m_sniMenu;
+}
+#endif
 
 wxMenu* SystemTray::GetRecentHistory()
 {
