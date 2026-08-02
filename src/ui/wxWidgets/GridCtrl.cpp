@@ -594,7 +594,7 @@ void GridCtrl::UpdateSorting()
 {
   SortByColumn(
     PWSprefs::GetInstance()->GetPref(PWSprefs::SortedColumn),
-    PWSprefs::GetInstance()->GetPref(PWSprefs::SortAscending)
+    PWSprefs::GetInstance()->GetPref(PWSprefs::ListSortAscending)
   );
 }
 
@@ -604,7 +604,7 @@ void GridCtrl::OnHeaderClick(wxHeaderCtrlEvent& event)
 
   if (GetSortingColumn() != wxNOT_FOUND) {
     PWSprefs::GetInstance()->SetPref(PWSprefs::SortedColumn , GetSortingColumn());
-    PWSprefs::GetInstance()->SetPref(PWSprefs::SortAscending, IsSortOrderAscending());
+    PWSprefs::GetInstance()->SetPref(PWSprefs::ListSortAscending, IsSortOrderAscending());
   }
 }
 
@@ -642,49 +642,27 @@ void GridCtrl::SortByColumn(int column, bool ascending)
   SetSortingColumn(column, ascending);
 
   /*
-    Columns with date-time information are:
-    - CItemData::CTIME  =  8 (creation time)
-    - CItemData::PMTIME =  9 (password modification time)
-    - CItemData::ATIME  = 10 (access time)
-    - CItemData::XTIME  = 11 (expiry time)
-    - CItemData::RMTIME = 13 (record modification time)
-
-    (It would be better to check against the CItemData::FieldType
-     in PWSGridCellData, which is defined in GridTable.cpp. Well...)
+   Column to field mapping is defined in GridTable.cpp PWSGridCellData[]
   */
-  if ((column >= 8 && column <= 10) || (column == 13)) {
+  CItemData::FieldType field = static_cast<CItemData::FieldType>(GridTable::GetColumnFieldType(column));
+
+  if (CItemData::IsTimeField(field)) {
     if (ascending) {
       AscendingSortedDateTime collection;
-
-      RearrangeItemsDateTimeBased<AscendingSortedDateTime> (collection, column, false /*date and time expected*/);
+      RearrangeItemsDateTimeBased<AscendingSortedDateTime> (collection, field);
     }
     else {
       DescendingSortedDateTime collection;
-
-      RearrangeItemsDateTimeBased<DescendingSortedDateTime> (collection, column, false /*date and time expected*/);
-    }
-  }
-  else if (column == 11) {
-    if (ascending) {
-      AscendingSortedDateTime collection;
-
-      RearrangeItemsDateTimeBased<AscendingSortedDateTime> (collection, column, true /*only date expected*/);
-    }
-    else {
-      DescendingSortedDateTime collection;
-
-      RearrangeItemsDateTimeBased<DescendingSortedDateTime> (collection, column, true /*only date expected*/);
+      RearrangeItemsDateTimeBased<DescendingSortedDateTime> (collection, field);
     }
   }
   else {
     if (ascending) {
       AscendingSortedMultimap collection;
-
       RearrangeItemsStringBased<AscendingSortedMultimap> (collection, column);
     }
     else {
       DescendingSortedMultimap collection;
-
       RearrangeItemsStringBased<DescendingSortedMultimap> (collection, column);
     }
   }
@@ -710,55 +688,20 @@ void GridCtrl::RearrangeItemsStringBased(ItemsCollection& collection, int column
 }
 
 template<typename ItemsCollection>
-void GridCtrl::RearrangeItemsDateTimeBased(ItemsCollection& collection, int column, bool dateOnly)
+void GridCtrl::RearrangeItemsDateTimeBased(ItemsCollection& collection, CItemData::FieldType field)
 {
   int row = 0;
-  struct tm tm;
-  wxDateTime dt = wxDateTime::Today(); // initialize with valid date
-  wxString datetime;
-  wxString dateFormat = wxGetApp().GetLocaleShortDateFormat();
-  wxString::const_iterator end;
+  time_t itTime = 0;
 
   for (row = 0; row < GetNumberRows(); row++) {
-    /*
-      The items's date-time or date information.
-    */
-    datetime = GetCellValue(row, column);
-    /*
-      If no data-time information are present we use the date timestamp of today as default.
-      Same for all error cases.
-    */
-    if (datetime.IsEmpty()) {
-      collection.insert(std::pair<wxDateTime, const CItemData*>(wxDateTime::Today(), GetItem(row)));
-    }
-    /*
-      The case if a date-time combination is expected.
-    */
-    else if (!dateOnly && dt.ParseDateTime(datetime, &end)) {
-      collection.insert(std::pair<wxDateTime, const CItemData*>(dt, GetItem(row)));
-    }
-    /*
-      The case if a date without a time is expected.
-    */
-    else if (dateOnly) {
-      memset(&tm, 0, sizeof(tm)); // init / reset
-      if (!dateFormat.IsEmpty() && strptime(datetime.c_str(), dateFormat.c_str(), &tm)) {
-        collection.insert(std::pair<wxDateTime, const CItemData*>(wxDateTime(tm), GetItem(row)));
-      }
-      // Fallback to buggy version where day and month are in some cases swapped,
-      // because localization is not taken into account and day-month detection algorithm is weak.
-      // (e.g. 01.02.2026 -> Day=02 & Month=01; 02.01.2026 -> Day=01, Month=02)
-      // See GitHub: https://github.com/wxWidgets/wxWidgets/issues/3049
-      else if (dt.ParseDate(datetime, &end)) {
-        collection.insert(std::pair<wxDateTime, const CItemData*>(dt, GetItem(row)));
-        pws_os::Trace(L"Warning - Sorting may be incorrect for date string: %ls ; day: %d ; month: %d ; year: %d",
-          datetime.wc_str(), dt.GetDay(), dt.GetMonth(), dt.GetYear());
-      }
-    }
-    else {
-      pws_os::Trace(L"Failed to parse item's date string: %ls ; using: %ls", datetime.wc_str(), wxDateTime::Today().FormatISOCombined().wc_str());
-      collection.insert(std::pair<wxDateTime, const CItemData*>(wxDateTime::Today(), GetItem(row)));
-    }
+    CItemData* it = GetItem(row);
+
+    // If no date/time information is present we use the current time as the default.
+    it->GetAnyTimeField(field, itTime);
+    if (itTime == 0)
+      itTime = std::time(nullptr);
+
+    collection.insert(std::pair<time_t, const CItemData*>(itTime, it));
   }
 
   m_row_map.clear();
