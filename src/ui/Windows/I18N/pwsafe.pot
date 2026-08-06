@@ -614,6 +614,10 @@ msgstr ""
 msgid "&Copy Password to Clipboard"
 msgstr ""
 
+#. Resource IDs: (575, 577)
+msgid "&Custom Fields"
+msgstr ""
+
 #. Resource IDs: (1344, 1405, 1628, 32055 - MenuEx, 34104)
 msgid "&Delete"
 msgstr ""
@@ -788,6 +792,10 @@ msgstr ""
 
 #. Resource IDs: (2, 5438)
 msgid "&No"
+msgstr ""
+
+#. Resource IDs: (574, 576)
+msgid "&Notes"
 msgstr ""
 
 #. Resource IDs: (32138 - MenuEx)
@@ -2713,7 +2721,7 @@ msgstr ""
 msgid "Custom Field"
 msgstr ""
 
-#. Resource IDs: (3096, 5231, 575, 577)
+#. Resource IDs: (3096, 5231)
 msgid "Custom Fields"
 msgstr ""
 
@@ -5094,7 +5102,7 @@ msgstr ""
 msgid "Note: These preferences are only used when importing into an empty database."
 msgstr ""
 
-#. Resource IDs: (3014, 5225, 574, 576)
+#. Resource IDs: (3014, 5225)
 msgid "Notes"
 msgstr ""
 
