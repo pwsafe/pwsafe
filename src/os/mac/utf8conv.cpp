@@ -31,6 +31,13 @@ using namespace std;
 class Startup {
 public:
   Startup() {
+    /*
+      All programs start in the "C" locale.
+      On macOS, a GUI app is typically started without any LANG/LC_* environment variables.
+      Therefore, the "" argumant treats the "system locale" as "C" and this doesn't actually change anything.
+      However, there are ways a power user can change that, so, maybe, this is worth doing.
+      It will be overridden very soon in PWSafeApp::OnInit(), anyway.
+    */
     char *sl = setlocale(LC_ALL, "");
     if (sl == NULL)
       throw "Couldn't initialize locale - bailing out";
