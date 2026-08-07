@@ -75,6 +75,7 @@ lang: pwsI18N wxlocale
 		$(MDBIN) $(RESOURCES)/$$l.lproj ;	\
 		$(CPBIN) $$langPath/LC_MESSAGES/pwsafe.mo $(RESOURCES)/$$l.lproj;	\
 		$(CPBIN) $(WXDIR)/$$l.mo $(RESOURCES)/$$l.lproj/wxstd.mo;		\
+		plutil -insert CFBundleLocalizations -string $${l:0:2} -append $(RESOURCES)/../Info.plist; \
 	done
 
 dist: clean
