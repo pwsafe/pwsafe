@@ -36,7 +36,6 @@
 ////@end forward declarations
 class wxTimer;
 class PasswordSafeFrame;
-class wxLocale;
 
 /*!
  * Control identifiers
@@ -75,6 +74,7 @@ public:
 
 ////@begin PWSafeApp event handler declarations
 #ifdef __WXMAC__
+  void setMacLocale(const char *loc);
   virtual void MacReopenApp() wxOVERRIDE;
   virtual void MacNewFile() wxOVERRIDE;
   virtual void MacOpenFiles(const wxArrayString& fileNames) wxOVERRIDE;
@@ -118,7 +118,6 @@ private:
   WX_DECLARE_STRING_HASH_MAP(wxString, StringToStringMap);
   StringToStringMap &GetHelpMap();
   wxIconBundle m_appIcons;
-  wxLocale *m_locale; // set in Init(), deleted in d'tor, unused elsewhere
   wxString helpFileNamePath;
   bool isHelpActivated;
   bool ActivateHelp(wxLanguage language);
@@ -128,6 +127,7 @@ private:
   bool m_cmd_minimized;
   bool m_file_in_cmd = false;
   bool m_initComplete = false;
+  bool m_wxUILocaleIsSet = false;
   void FinishInit();
 
 public:
@@ -138,7 +138,6 @@ public:
   wxLanguage GetSystemLanguage();
   wxLanguage GetSelectedLanguage();
   PasswordSafeFrame* GetPasswordSafeFrame() { return m_frame; }
-  wxString GetLocaleShortDateFormat() const { return m_locale ? m_locale->GetInfo(wxLOCALE_SHORT_DATE_FMT) : wxString(); }
 };
 
 /*!

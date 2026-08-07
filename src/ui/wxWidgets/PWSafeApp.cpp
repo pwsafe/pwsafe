@@ -190,8 +190,7 @@ IMPLEMENT_CLASS( PWSafeApp, wxApp )
  */
 
 PWSafeApp::PWSafeApp() : m_idleTimer(new wxTimer(this, IDLE_TIMER_ID)),
-                         m_frame(nullptr), m_recentDatabases(nullptr),
-                         m_locale(nullptr)
+                         m_frame(nullptr), m_recentDatabases(nullptr)
 {
   Init();
 }
@@ -208,8 +207,6 @@ PWSafeApp::~PWSafeApp()
   PWSrand::DeleteInstance();
   PWSLog::DeleteLog();
   Clipboard::DeleteInstance();
-
-  delete m_locale;
 }
 
 /*!
@@ -219,7 +216,6 @@ PWSafeApp::~PWSafeApp()
 void PWSafeApp::Init()
 {
   pws_os::install_cleanup_handler(cleanup_handler, &m_core);
-  m_locale = new wxLocale;
   wxLocale::AddCatalogLookupPathPrefix(L"/usr/share/locale");
   wxLocale::AddCatalogLookupPathPrefix(L"/usr");
   wxLocale::AddCatalogLookupPathPrefix(L"/usr/local");
@@ -236,7 +232,7 @@ void PWSafeApp::Init()
 void PWSafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func,
                 const wxChar *cond, const wxChar *msg)
 {
-  if (m_locale)
+  if (m_wxUILocaleIsSet)
     wxApp::OnAssertFailure(file, line, func, cond, msg);
   else
       std::wcerr << file << L'(' << line << L"):"
@@ -282,32 +278,17 @@ bool PWSafeApp::ActivateHelp(wxLanguage language) {
 
 bool PWSafeApp::OnInit()
 {
-  // Get the locale environment variable 'LC_CTYPE' specified by the environment
-  // For instance, the behavior of function 'wcstombs' depends on the LC_CTYPE 
-  // category of the selected C locale.
-#if defined(__WXMAC__)
-  const char *lcCType = setlocale(LC_CTYPE, NULL);
+  // Initialize the WX UI locale to the desktop configured default.
+  // According to the wx documentation, this also calls setlocale() on
+  // Unix/Linux wxGTK platforms...
+  wxUILocale::UseDefault();
+  m_wxUILocaleIsSet = true;
 
-  if (lcCType && strcmp(lcCType, "UTF-8")) { // MAC OS only have UTF-8 as default, but conversion with this string is not running well
-    setlocale(LC_CTYPE, "");
-  }
-  else {
-    const char *env_lc_cType = std::getenv("LC_CTYPE");
-    
-    if(env_lc_cType) {
-      setlocale(LC_CTYPE, env_lc_cType);
-    }
-    else {
-      setlocale(LC_CTYPE, "en_US.UTF-8");
-    }
-  }
-  // This value must be set for mac OS starting with version 11, but is no problem for earlier versions, see
-  // https://trac.wxwidgets.org/ticket/19023
-  setlocale(LC_NUMERIC, "C");
-#else
-  setlocale(LC_CTYPE, "");
+  // ...but not on macOS.  This should be good enough until we set the
+  // users' preferred language a bit later....
+#if defined(__WXMAC__)
+  setMacLocale("");
 #endif
-  setlocale(LC_TIME, "");
 
   //Used by help subsystem
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
@@ -399,17 +380,13 @@ bool PWSafeApp::OnInit()
   // will ignore config file parameter
   wxLanguage selectedLang = GetSelectedLanguage();
 
-  // Only initialize wxLocale with a language PasswordSafe can really activate.
-  // Otherwise fall back to English before touching wxLocale.
-  wxLanguage effectiveLang =
-    wxGetApp().ActivateLanguage(selectedLang, true)
-      ? selectedLang
-      : wxLANGUAGE_ENGLISH;
+  // Only initialize the locale with a language PasswordSafe can really activate.
+  // Otherwise fall back to English before touching the locale.
+  wxLanguage effectiveLang = ActivateLanguage(selectedLang, true) ? selectedLang : wxLANGUAGE_ENGLISH;
 
-  m_locale->Init(effectiveLang);
   ActivateLanguage(effectiveLang, false);
 
- // Process encryption/decryption command line arguments
+  // Process encryption/decryption command line arguments
   // Note that this is done after language is set, addressing GH1572
   if ((cmd_encrypt || cmd_decrypt) && !cmd_filename.IsEmpty()) {
 
@@ -614,31 +591,7 @@ void PWSafeApp::FinishInit() {
  */
 wxLanguage PWSafeApp::GetSystemLanguage()
 {
-  int language = wxLocale::GetSystemLanguage();
-
-#if defined(__UNIX__) && !defined(__WXMAC__) && wxCHECK_VERSION( 2, 8, 0 )
-  // Workaround for wx bug 15006 that has been fixed in wxWidgets 2.8
-  if (language == wxLANGUAGE_UNKNOWN) {
-    std::wcerr << L"Couldn't detect locale. Trying to skip empty env. variables." << std::endl;
-    // Undefine empty environment variables and try again
-    wxString langFull;
-    if (wxGetEnv(wxT("LC_ALL"), &langFull) && !langFull) {
-      wxUnsetEnv(wxT("LC_ALL"));
-      std::wcerr << L"Empty LC_ALL variable was dropped" << std::endl;
-    }
-    if (wxGetEnv(wxT("LC_MESSAGES"), &langFull) && !langFull) {
-      wxUnsetEnv(wxT("LC_MESSAGES"));
-      std::wcerr << L"Empty LC_MESSAGES variable was dropped" << std::endl;
-    }
-    if (wxGetEnv(wxT("LANG"), &langFull) && !langFull) {
-      wxUnsetEnv(wxT("LANG"));
-      std::wcerr << L"Empty LANG variable was dropped" << std::endl;
-    }
-    language = wxLocale::GetSystemLanguage();
-  }
-#endif
-
-  return static_cast<wxLanguage>(language);
+  return static_cast<wxLanguage>(wxUILocale::GetSystemLanguage());
 }
 
 /* Get selected language (user preference or system) */
@@ -664,6 +617,8 @@ wxLanguage PWSafeApp::GetSelectedLanguage()
 #ifdef DEBUG
     if (langInfo) {
       pws_os::Trace(L"User-preferred language can't be activated: id= %d, name= %ls\n", langInfo->Language, sxUserLang.c_str());
+    } else {
+      pws_os::Trace(L"Unknown language in config file: name= %ls\n", sxUserLang.c_str());
     }
 #endif
     return GetSystemLanguage();
@@ -715,13 +670,14 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
     langInfo = wxLocale::GetLanguageInfo(language);
     if(langInfo) {
 
-#if defined(__WXMAC__)
 #if wxCHECK_VERSION(3, 2, 2)
       // Some languages have multiple locale variations.  (e.g. en_US, en_GB, etc.)
-      // Just using the two letter languane identifier (e.g. en.UTF-8) does not work
-      // on macOS, there needs to be a region as well (e.g. en_US.UTF-8), not doing
+      // Just using the two letter language identifier (e.g. en.UTF-8) does not work
+      // in some cases; there needs to be a region as well (e.g. en_US.UTF-8), not doing
       // so causes some inconsistent results. Specifically, the date format seems to
       // default to en_GB in WX but not in native macOS controls, such as the date picker.
+      // This checks the user environment setting, if the language matches, use the env locale.
+      // If not, use whatever WX guessed.
       wxString envString;
       wxLocaleIdent sysLocaleId = wxUILocale::GetSystemLocaleId();
       if (langInfo->CanonicalName == sysLocaleId.GetLanguage() && !sysLocaleId.GetRegion().empty()) {
@@ -729,23 +685,22 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
 
       } else if (!langInfo->CanonicalRef.empty()) {
         envString = langInfo->CanonicalRef;
-      }
-      if (!envString.empty()) {
-        envString += ".UTF-8";
-        setlocale(LC_CTYPE, envString.c_str());
-        setlocale(LC_TIME, envString.c_str());
-      }
-#endif // wxCHECK_VERSION
-      // This value must be set for mac OS starting with version 11, but is no problem for earlier versions, see
-      // https://github.com/wxWidgets/wxWidgets/issues/19023
-      // https://docs.wxwidgets.org/3.2/classwx_locale.html
-      setlocale(LC_NUMERIC, "C");
-#else // __WXMAC__
-      wxString envString = langInfo->CanonicalName + ".UTF-8";
-      setlocale(LC_CTYPE, envString.c_str());
-      setlocale(LC_TIME, envString.c_str());
-#endif // __WXMAC__
 
+      } else {
+        envString = langInfo->CanonicalName;
+      }
+      envString += ".UTF-8";
+      wxUILocale::UseLocaleName(envString);
+#ifdef __WXMAC__
+      setMacLocale(envString);
+#endif // __WXMAC__
+#else // wxCHECK_VERSION
+      wxString envString = langInfo->CanonicalRef;
+      if (envString.empty()) {
+        envString = langInfo->CanonicalName;
+      }
+      wxUILocale::UseLocaleName(envString + ".UTF-8");
+#endif // wxCHECK_VERSION
     }
   }
   return bRes;
@@ -753,6 +708,23 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
 
 #ifdef __WXMAC__
 // macOS specific functions for UI interactions...
+
+void PWSafeApp::setMacLocale(const char *loc)
+{
+  if (loc && !setlocale(LC_ALL, loc)) {
+    pws_os::Trace(L"Failed to set locale to: %s", loc);
+  }
+
+  // This value must be set for mac OS starting with version 11, but is no problem for earlier versions, see:
+  // https://trac.wxwidgets.org/ticket/19023
+  // https://docs.wxwidgets.org/3.2/classwx_locale.html
+  int major, minor;
+  wxGetOsVersion(&major, &minor);
+  if (major == 11 || (major == 12 && minor < 3)) {
+    setlocale(LC_NUMERIC, "C");
+  }
+  pws_os::Trace(L"Current locale is: %s", setlocale(LC_ALL, NULL));
+}
 
 // This enables file unlock and UI restore upon left-click of the dock icon.
 // Not to be confused with the system tray (menu bar) icon.
