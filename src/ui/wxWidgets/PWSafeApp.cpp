@@ -246,7 +246,7 @@ void PWSafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func
 */
 bool PWSafeApp::ActivateHelp(wxLanguage language) {
   wxString fileNameBase = L"help", fileExt=L".zip", defaultSuffix=L"EN"+fileExt;
-  wxString langSuffix = wxLocale::GetLanguageCanonicalName(language);
+  wxString langSuffix = wxUILocale::GetLanguageCanonicalName(language);
   // Get only two letters
   if (langSuffix.length() >= 2) {
     langSuffix = langSuffix.substr(0, 2).Upper() + fileExt;
@@ -602,10 +602,10 @@ wxLanguage PWSafeApp::GetSelectedLanguage()
   const wxLanguageInfo *langInfo = nullptr;
 
   if (sxUserLang.empty()) {
-    langInfo = wxLocale::GetLanguageInfo(wxLANGUAGE_DEFAULT);
+    langInfo = wxUILocale::GetLanguageInfo(wxLANGUAGE_DEFAULT);
   }
   else {
-    langInfo = wxLocale::FindLanguageInfo(towxstring(sxUserLang));
+    langInfo = wxUILocale::FindLanguageInfo(towxstring(sxUserLang));
   }
 
   if (langInfo && ActivateLanguage(static_cast<wxLanguage>(langInfo->Language), true)) {
@@ -647,11 +647,11 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
 
   if (language != wxLANGUAGE_ENGLISH) {
     if ( !translations->AddStdCatalog() ) {
-      pws_os::Trace(L"Couldn't load default language catalog for %ls\n", ToStr(wxLocale::GetLanguageName(language)));
+      pws_os::Trace(L"Couldn't load default language catalog for %ls\n", ToStr(wxUILocale::GetLanguageName(language)));
     }
 
     if ( !translations->AddCatalog(DOMAIN_) ) {
-      pws_os::Trace(L"Couldn't load %ls language catalog for %ls\n", ToStr(DOMAIN_), ToStr(wxLocale::GetLanguageName(language)));
+      pws_os::Trace(L"Couldn't load %ls language catalog for %ls\n", ToStr(DOMAIN_), ToStr(wxUILocale::GetLanguageName(language)));
       translations->SetLanguage(wxLANGUAGE_ENGLISH);
       language = wxLANGUAGE_ENGLISH; // Back to default language english
     }
@@ -667,7 +667,7 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
     isHelpActivated = ActivateHelp(language);
 
     const wxLanguageInfo *langInfo = nullptr;
-    langInfo = wxLocale::GetLanguageInfo(language);
+    langInfo = wxUILocale::GetLanguageInfo(language);
     if(langInfo) {
 
 #if wxCHECK_VERSION(3, 2, 2)
