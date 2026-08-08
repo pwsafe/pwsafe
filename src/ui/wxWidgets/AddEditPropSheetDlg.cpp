@@ -252,24 +252,6 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
   m_ItemTotp = m_Item; // The copy is used to show the TOTP on the 'Basic' tab
   m_IsNotesHidden = !PWSprefs::GetInstance()->GetPref(PWSprefs::ShowNotesDefault);
 
-  wxString dlgTitle;
-  if (caption == SYMBOL_AUTOPROPSHEETDLG_TITLE) {
-    switch(m_Type) {
-      case SheetType::ADD:
-        dlgTitle = SYMBOL_ADDPROPSHEETDLG_TITLE;
-        break;
-      case SheetType::EDIT:
-        dlgTitle = SYMBOL_EDITPROPSHEETDLG_TITLE;
-        break;
-      case SheetType::VIEW:
-        dlgTitle = SYMBOL_VIEWPROPSHEETDLG_TITLE;
-        break;
-      default:
-        dlgTitle = caption;
-        break;
-    }
-  }
-
 ////@begin AddEditPropSheetDlg creation
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
   wxPropertySheetDialog::Create( parent, id, caption, pos, size, style );
