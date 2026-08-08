@@ -1,4 +1,14 @@
 #! /bin/sh
+# Builds a pwsafe RPM, via mock, for an arbitrary Fedora or RHEL-clone
+# target - from master, or from whatever branch is checked out locally -
+# without needing a full pwsafe dev environment installed on this system,
+# only mock itself. Useful as a clean-room sanity build of a local dev
+# branch before pushing it.
+#
+# Can also optionally overlay newer wx*/libayatana-appindicator* packages
+# from a local rpmbuild tree into the mock chroot only (see -v/-a below);
+# this system's own installed packages are never touched either way.
+#
 # Following from https://github.com/pwsafe/pwsafe/issues/543 by ykne.
 # Mock can be installed via dnf or yum.
 # With no argument compiles for current system.
@@ -71,14 +81,12 @@ mock "$@" install \
     libcurl-devel \
     libuuid-devel \
     libyubikey-devel \
-    make \
     openssl-devel \
     wxGTK-devel \
     xerces-c-devel \
     ykpers-devel \
     qrencode-devel \
     file-devel \
-    ImageMagick \
     libayatana-appindicator-gtk3-devel
 
 # version -> glob against local RPM filenames, e.g. "3.2.12" -> "3.2.12-*",
@@ -114,24 +122,19 @@ local_rpm_path() {
     printf '%s\n' "$candidates" | tail -n1
 }
 
-# Collects RPM paths for packages matching $2 (an `rpm -qa` glob, e.g. 'wx*')
-# that are actually installed in the chroot, at local %_rpmdir build $1, into
-# the shared $OVERRIDE_RPMS/$OVERRIDE_TMP_RPMS accumulators below. Does
-# nothing at all if $1 is empty - no query, no accumulation.
-#
-# wxGTK's package Requires libayatana-appindicator-gtk3 >= 0.6.0, so if both
-# -v and -a are given, both families' RPMs must land in a single `rpm -Uvh`
-# transaction (see the combined install below) - installing wx by itself
-# first would fail that dependency against whatever stock appindicator is
-# still installed at that point.
+# Collects local-build RPM paths for installed packages whose name starts
+# with $2 into the shared OVERRIDE_RPMS/OVERRIDE_TMP_RPMS accumulators, later
+# installed together in one rpm -Uvh transaction (wxGTK depends on
+# libayatana-appindicator-gtk3, so mixing -v and -a needs both present at
+# once). No-op if $1 (the requested version) is empty.
 collect_local_build() {
-    wantver="$1" name_glob="$2" grep_anchor="$3"
-    shift 3
+    wantver="$1" name_base="$2"
+    shift 2
     # "$@" is now just the trailing mock options, for the mock call below.
     [ -n "$wantver" ] || return 0
 
     verglob=$(ver_glob_for "$wantver")
-    packages=$(mock "$@" --quiet --chroot "rpm -qa --qf '%{NAME}\n' '$name_glob'" 2>/dev/null | grep -E "$grep_anchor" | sort)
+    packages=$(mock "$@" --quiet --chroot "rpm -qa --qf '%{NAME}\n' '${name_base}*'" 2>/dev/null | grep -E "^${name_base}" | sort)
 
     for pkg in $packages; do
         rpm_path=$(local_rpm_path "$pkg" "$wantver" "$verglob") || exit 1
@@ -146,8 +149,8 @@ collect_local_build() {
 
 OVERRIDE_RPMS=""
 OVERRIDE_TMP_RPMS=""
-collect_local_build "$WANT_WX_VERSION" 'wx*' '^wx' "$@"
-collect_local_build "$WANT_APPINDICATOR_VERSION" 'libayatana-appindicator*' '^libayatana-appindicator' "$@"
+collect_local_build "$WANT_WX_VERSION" 'wx' "$@"
+collect_local_build "$WANT_APPINDICATOR_VERSION" 'libayatana-appindicator' "$@"
 
 if [ -n "$OVERRIDE_RPMS" ]; then
     mock "$@" --copyin $OVERRIDE_RPMS /tmp/
