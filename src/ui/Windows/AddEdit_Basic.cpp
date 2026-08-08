@@ -810,6 +810,9 @@ void CAddEdit_Basic::OnENSetFocusPassword2()
 
 void CAddEdit_Basic::OnENChangePassword()
 {
+  if (IsChangeIgnored())
+    return;
+
   UpdateData(TRUE);
   NotifyChanged();
   M_realpassword() = m_password;
@@ -916,12 +919,18 @@ void CAddEdit_Basic::OnGeneratePassword()
 
 void CAddEdit_Basic::OnGroupComboChanged()
 {
+  if (IsChangeIgnored())
+    return;
+
   UpdateData(TRUE);
   NotifyChanged();
 }
 
 void CAddEdit_Basic::OnChanged()
 {
+  if (IsChangeIgnored())
+    return;
+
   UpdateData(TRUE);
   NotifyChanged();
 }

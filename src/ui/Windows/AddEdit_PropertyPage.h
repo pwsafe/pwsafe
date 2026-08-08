@@ -126,6 +126,11 @@ public:
   // user edit.
   void NotifyChanged();
 
+  // Check before UpdateData(TRUE) in change handlers, not just before
+  // marking the entry changed - control notifications can fire during
+  // OnInitDialog's own DoDataExchange, before real data is loaded.
+  bool IsChangeIgnored() const;
+
 
   static COLORREF crefGreen, crefWhite;
 

@@ -334,12 +334,18 @@ void CAddEdit_Additional::SetupDCAComboBoxes(CComboBox *pcbox, bool isShift)
 }
 void CAddEdit_Additional::OnChanged()
 {
+  if (IsChangeIgnored())
+    return;
+
   UpdateData(TRUE);
   NotifyChanged();
 }
 
 void CAddEdit_Additional::OnHotKeyChanged()
 {
+  if (IsChangeIgnored())
+    return;
+
   UpdateData(TRUE);
 
   WORD wVirtualKeyCode, wHKModifiers, wPWSModifiers;
