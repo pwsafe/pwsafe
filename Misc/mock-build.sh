@@ -36,7 +36,11 @@ while getopts ":v:a:" opt; do
         v) WANT_WX_VERSION="$OPTARG" ;;
         a) WANT_APPINDICATOR_VERSION="$OPTARG" ;;
         :) echo "ERROR: -$OPTARG requires an argument" >&2; usage ;;
-        \?) break ;;
+        # An unrecognized flag (e.g. a mock option like -r) means option
+        # parsing is done; getopts has already advanced OPTIND past it, so
+        # back it up one or the shift below would swallow the flag itself
+        # and leave its value as a stray positional argument.
+        \?) OPTIND=$((OPTIND - 1)); break ;;
     esac
 done
 shift $((OPTIND - 1))
@@ -57,8 +61,6 @@ unset _v
 CLONE_URL="https://github.com/pwsafe/pwsafe.git"
 CLONE_OPTS=""
 RPMDIR=$(rpm --eval '%_rpmdir')
-RPMARCH=$(rpm --eval '%_arch')
-DIST=$(rpm --eval '%{dist}' | sed 's/^\.//')
 
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
@@ -71,6 +73,20 @@ if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
 fi
 
 mock --init "$@"
+
+# Query the dist tag and arch from the mock chroot itself, not the host -
+# with -r targeting a different release or architecture (or a RHEL clone)
+# than this host runs, the host's own %{dist}/%_arch (e.g. "fc42"/"x86_64")
+# wouldn't match the local %_rpmdir build filenames for that target (e.g.
+# "...fc44.aarch64.rpm").
+DIST_ARCH=$(mock "$@" --quiet --chroot "rpm --eval '%{dist} %{_arch}'" 2>/dev/null)
+DIST=$(echo "$DIST_ARCH" | cut -d' ' -f1 | sed 's/^\.//')
+RPMARCH=$(echo "$DIST_ARCH" | cut -d' ' -f2)
+if [ -z "$DIST" ] || [ -z "$RPMARCH" ]; then
+    echo "ERROR: could not determine the dist tag/arch from the mock chroot" >&2
+    exit 1
+fi
+
 mock "$@" install \
     cmake \
     dpkg \
