@@ -36,9 +36,14 @@ CAddEdit_PropertyPage::CAddEdit_PropertyPage(CWnd *pParent,
 {
 }
 
+bool CAddEdit_PropertyPage::IsChangeIgnored() const
+{
+  return !m_bInitdone || m_AEMD.uicaller == IDS_VIEWENTRY || m_AEMD.ucprotected != 0;
+}
+
 void CAddEdit_PropertyPage::NotifyChanged()
 {
-  if (!m_bInitdone || M_uicaller() == IDS_VIEWENTRY || M_protected() != 0)
+  if (IsChangeIgnored())
     return;
 
   m_ae_psh->SetChanged(true);
