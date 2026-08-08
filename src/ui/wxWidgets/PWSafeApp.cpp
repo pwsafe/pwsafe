@@ -35,6 +35,8 @@
 
 #if wxCHECK_VERSION(3, 1, 6)
 #include <wx/uilocale.h>
+#else
+#  error "This build requires wxWidgets 3.1.6 or above for wxUILocale"
 #endif
 
 #if wxCHECK_VERSION(2,9,2)
@@ -695,6 +697,7 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
       setMacLocale(envString);
 #endif // __WXMAC__
 #else // wxCHECK_VERSION
+#warning "Improved locale logic requires wxWidgets 3.2.2 or above"
       wxString envString = langInfo->CanonicalRef;
       if (envString.empty()) {
         envString = langInfo->CanonicalName;
