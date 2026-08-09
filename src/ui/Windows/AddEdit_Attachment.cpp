@@ -568,10 +568,9 @@ load_error:
 
 void CAddEdit_Attachment::OnAttNameChanged()
 {
-  if (IsChangeIgnored() || !M_attachment().HasContent())
+  if (!M_attachment().HasContent() || !TryUpdateData())
     return;
 
-  UpdateData(TRUE);
   M_attachment().SetTitle(m_AttName);
   NotifyChanged();
 }

@@ -126,12 +126,16 @@ public:
   // user edit.
   void NotifyChanged();
 
-  // Check before UpdateData(TRUE) in change handlers, not just before
-  // marking the entry changed - control notifications can fire during
-  // OnInitDialog's own DoDataExchange, before real data is loaded.
+  // Guarded UpdateData(TRUE): a no-op returning false during initial data
+  // population, or for a view-only/protected entry. Call this instead of a
+  // bare UpdateData(TRUE) from any change handler.
+  bool TryUpdateData();
+
+protected:
+  // Shared by NotifyChanged() and TryUpdateData() - see NotifyChanged().
   bool IsChangeIgnored() const;
 
-
+public:
   static COLORREF crefGreen, crefWhite;
 
   DECLARE_DYNAMIC(CAddEdit_PropertyPage)

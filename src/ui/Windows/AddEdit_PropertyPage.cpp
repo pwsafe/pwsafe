@@ -49,6 +49,15 @@ void CAddEdit_PropertyPage::NotifyChanged()
   m_ae_psh->SetChanged(true);
 }
 
+bool CAddEdit_PropertyPage::TryUpdateData()
+{
+  if (IsChangeIgnored())
+    return false;
+
+  UpdateData(TRUE);
+  return true;
+}
+
 BOOL CAddEdit_PropertyPage::OnQueryCancel()
 {
   // Check whether there have been any changes in order to ask the user

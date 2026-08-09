@@ -276,11 +276,8 @@ BOOL CAddEdit_PasswordPolicy::OnInitDialog()
 
 void CAddEdit_PasswordPolicy::OnChanged()
 {
-  if (IsChangeIgnored())
-    return;
-
-  UpdateData(TRUE);
-  NotifyChanged();
+  if (TryUpdateData())
+    NotifyChanged();
 }
 
 void CAddEdit_PasswordPolicy::OnHelp()
