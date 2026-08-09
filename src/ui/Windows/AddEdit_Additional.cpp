@@ -334,13 +334,14 @@ void CAddEdit_Additional::SetupDCAComboBoxes(CComboBox *pcbox, bool isShift)
 }
 void CAddEdit_Additional::OnChanged()
 {
-  UpdateData(TRUE);
-  NotifyChanged();
+  if (TryUpdateData())
+    NotifyChanged();
 }
 
 void CAddEdit_Additional::OnHotKeyChanged()
 {
-  UpdateData(TRUE);
+  if (!TryUpdateData())
+    return;
 
   WORD wVirtualKeyCode, wHKModifiers, wPWSModifiers;
   m_KBShortcutCtrl.GetHotKey(wVirtualKeyCode, wHKModifiers);

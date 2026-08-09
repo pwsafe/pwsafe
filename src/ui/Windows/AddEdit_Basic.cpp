@@ -810,7 +810,9 @@ void CAddEdit_Basic::OnENSetFocusPassword2()
 
 void CAddEdit_Basic::OnENChangePassword()
 {
-  UpdateData(TRUE);
+  if (!TryUpdateData())
+    return;
+
   NotifyChanged();
   M_realpassword() = m_password;
   auto strength =  CPasswordCharPool::CalculatePasswordStrength(m_password);
@@ -916,14 +918,14 @@ void CAddEdit_Basic::OnGeneratePassword()
 
 void CAddEdit_Basic::OnGroupComboChanged()
 {
-  UpdateData(TRUE);
-  NotifyChanged();
+  if (TryUpdateData())
+    NotifyChanged();
 }
 
 void CAddEdit_Basic::OnChanged()
 {
-  UpdateData(TRUE);
-  NotifyChanged();
+  if (TryUpdateData())
+    NotifyChanged();
 }
 
 void CAddEdit_Basic::OnENChangeURL()
