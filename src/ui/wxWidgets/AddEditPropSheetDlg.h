@@ -134,6 +134,9 @@ class wxNotebook;
 #define SYMBOL_ADDEDITPROPSHEETDLG_SIZE wxSize(400, 300)
 #define SYMBOL_ADDEDITPROPSHEETDLG_POSITION wxDefaultPosition
 ////@end control identifiers
+#define SYMBOL_ADDPROPSHEETDLG_TITLE _("Add Entry")
+#define SYMBOL_EDITPROPSHEETDLG_TITLE _("Edit Entry")
+#define SYMBOL_VIEWPROPSHEETDLG_TITLE _("View Entry")
 #define SYMBOL_AUTOPROPSHEETDLG_TITLE _("Add, Edit or View Entry")
 
 /*!
