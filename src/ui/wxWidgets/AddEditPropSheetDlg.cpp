@@ -272,7 +272,7 @@ AddEditPropSheetDlg::AddEditPropSheetDlg(wxWindow *parent, PWScore &core,
 
 ////@begin AddEditPropSheetDlg creation
   SetExtraStyle(wxWS_EX_VALIDATE_RECURSIVELY|wxWS_EX_BLOCK_EVENTS);
-  wxPropertySheetDialog::Create( parent, id, caption, pos, size, style );
+  wxPropertySheetDialog::Create( parent, id, dlgTitle, pos, size, style );
 
   int flags = (m_Type == SheetType::VIEW) ? (wxCLOSE|wxHELP) : (wxOK|wxCANCEL|wxHELP);
 

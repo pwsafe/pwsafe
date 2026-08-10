@@ -95,8 +95,7 @@ void GuiInfo::SaveTreeViewInfo(TreeCtrl* tree)
   if (selection.IsOk() && selection != tree->GetRootItem()) {
     if(tree->ItemIsGroup(selection)) {
       m_treeSelection = tree->GetItemGroup(selection);
-      const wxString selectionStr = m_treeSelection;
-      wxASSERT(!selectionStr.IsEmpty());
+      wxASSERT(!(static_cast<const wxString>(m_treeSelection)).IsEmpty());
     }
     else {
       CItemData* item = tree->GetItem(selection);
