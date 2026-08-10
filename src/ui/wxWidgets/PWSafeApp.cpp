@@ -218,12 +218,17 @@ PWSafeApp::~PWSafeApp()
 void PWSafeApp::Init()
 {
   pws_os::install_cleanup_handler(cleanup_handler, &m_core);
-  wxLocale::AddCatalogLookupPathPrefix(L"/usr/share/locale");
-  wxLocale::AddCatalogLookupPathPrefix(L"/usr");
-  wxLocale::AddCatalogLookupPathPrefix(L"/usr/local");
+
+#if defined(__UNIX__) && !defined(__WXMAC__)
+  wxFileTranslationsLoader::AddCatalogLookupPathPrefix(L"/usr/share/locale");
+  wxFileTranslationsLoader::AddCatalogLookupPathPrefix(L"/usr/local/share/locale");
+#endif
 #if defined(_DEBUG) || defined(DEBUG)
-  wxLocale::AddCatalogLookupPathPrefix(L"../I18N/mos");
-  wxLocale::AddCatalogLookupPathPrefix(L"src/ui/wxWidgets/I18N/mos"); // located in cmake's build directory
+  wxFileTranslationsLoader::AddCatalogLookupPathPrefix(L"../I18N/mos");
+  wxFileTranslationsLoader::AddCatalogLookupPathPrefix(L"src/ui/wxWidgets/I18N/mos"); // located in cmake's build directory
+#else
+  // Don't allow this in release builds
+  unsetenv("LC_PATH");
 #endif
 
 ////@begin PWSafeApp member initialisation
@@ -282,15 +287,10 @@ bool PWSafeApp::OnInit()
 {
   // Initialize the WX UI locale to the desktop configured default.
   // According to the wx documentation, this also calls setlocale() on
-  // Unix/Linux wxGTK platforms...
+  // Unix/Linux wxGTK platforms, but not on macOS.
+  // This should suffice until we set the users' preferred language a bit later....
   wxUILocale::UseDefault();
   m_wxUILocaleIsSet = true;
-
-  // ...but not on macOS.  This should be good enough until we set the
-  // users' preferred language a bit later....
-#if defined(__WXMAC__)
-  setMacLocale("");
-#endif
 
   //Used by help subsystem
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
@@ -693,17 +693,19 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
       }
       envString += ".UTF-8";
       wxUILocale::UseLocaleName(envString);
+      
 #ifdef __WXMAC__
       setMacLocale(envString);
 #endif // __WXMAC__
+
 #else // wxCHECK_VERSION
-#warning "Improved locale logic requires wxWidgets 3.2.2 or above"
       wxString envString = langInfo->CanonicalRef;
       if (envString.empty()) {
         envString = langInfo->CanonicalName;
       }
       wxUILocale::UseLocaleName(envString + ".UTF-8");
 #endif // wxCHECK_VERSION
+      pws_os::Trace(L"Current libc locale is: %s", setlocale(LC_ALL, NULL));
     }
   }
   return bRes;
@@ -726,7 +728,6 @@ void PWSafeApp::setMacLocale(const char *loc)
   if (major == 11 || (major == 12 && minor < 3)) {
     setlocale(LC_NUMERIC, "C");
   }
-  pws_os::Trace(L"Current locale is: %s", setlocale(LC_ALL, NULL));
 }
 
 // This enables file unlock and UI restore upon left-click of the dock icon.
