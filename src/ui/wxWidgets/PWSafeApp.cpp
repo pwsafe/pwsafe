@@ -1059,10 +1059,8 @@ void PWSafeApp::OnHelp(wxCommandEvent& evt)
       wxHtmlModalHelp help(window, helpFileNamePath, itr->second, wxHF_DEFAULT_STYLE);
     }
     else {
-#if defined(_DEBUG) || defined(DEBUG)
       msg << _("Please inform the developers.");
       wxMessageBox(msg, _("Help Undefined"), wxOK | wxICON_EXCLAMATION);
-#endif
     } // keyName not found in map
   }
   else {
