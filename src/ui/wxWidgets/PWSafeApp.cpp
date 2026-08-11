@@ -223,7 +223,7 @@ void PWSafeApp::Init()
   wxLocale::AddCatalogLookupPathPrefix(L"/usr/share/locale");
   wxLocale::AddCatalogLookupPathPrefix(L"/usr");
   wxLocale::AddCatalogLookupPathPrefix(L"/usr/local");
-#if defined(__WXDEBUG__) || defined(_DEBUG) || defined(DEBUG)
+#if defined(_DEBUG) || defined(DEBUG)
   wxLocale::AddCatalogLookupPathPrefix(L"../I18N/mos");
   wxLocale::AddCatalogLookupPathPrefix(L"src/ui/wxWidgets/I18N/mos"); // located in cmake's build directory
 #endif
@@ -232,7 +232,7 @@ void PWSafeApp::Init()
 ////@end PWSafeApp member initialisation
 }
 
-#ifdef __WXDEBUG__
+#if defined(_DEBUG) || defined(DEBUG)
 void PWSafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func,
                 const wxChar *cond, const wxChar *msg)
 {
@@ -1059,10 +1059,8 @@ void PWSafeApp::OnHelp(wxCommandEvent& evt)
       wxHtmlModalHelp help(window, helpFileNamePath, itr->second, wxHF_DEFAULT_STYLE);
     }
     else {
-#ifdef __WXDEBUG__
       msg << _("Please inform the developers.");
       wxMessageBox(msg, _("Help Undefined"), wxOK | wxICON_EXCLAMATION);
-#endif
     } // keyName not found in map
   }
   else {

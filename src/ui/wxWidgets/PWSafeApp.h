@@ -67,7 +67,7 @@ public:
   virtual bool OnInit() wxOVERRIDE;
 
   /// Handle asserts without showing the assert dialog until locale is initialized.
-#ifdef __WXDEBUG__
+#if defined(_DEBUG) || defined(DEBUG)
   virtual void OnAssertFailure(const wxChar *file, int line, const wxChar *func, const wxChar *cond, const wxChar *msg) wxOVERRIDE;
 #endif
   /// Called on exit
