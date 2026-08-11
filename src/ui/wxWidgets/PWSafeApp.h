@@ -44,6 +44,42 @@ class PasswordSafeFrame;
 ////@begin control identifiers
 ////@end control identifiers
 
+// wx3.2.2 and later can use wxUILocale and some improved logic
+#if wxCHECK_VERSION(3, 2, 2)
+#define LOCALE_WX322
+#endif
+
+class PWSMacLocale
+{
+public:
+#ifdef __WXMAC__
+  static void setMacLocale(const char *loc);
+#else
+  static void setMacLocale([[maybe_unused]] const char *loc) {}; // no-op if not macOS
+#endif
+};
+
+#ifdef LOCALE_WX322
+#include <wx/uilocale.h>
+
+  class PWSLocale : public wxUILocale, public PWSMacLocale
+  {
+  public:
+    static wxString PWSGetCurrentName() { return wxUILocale::GetCurrent().GetName(); };
+  };
+
+#else // wxCHECK_VERSION
+
+  // Pre-wx3.2.2 compatible version
+  class PWSLocale : public wxLocale, public PWSMacLocale
+  {
+  public:
+    PWSLocale() {};
+    static bool UseDefault() { return false; }; //no-op for compatibility
+    wxString PWSGetCurrentName() { return wxLocale::GetCanonicalName(); };
+  };
+#endif // wxCHECK_VERSION
+
 /*!
  * PWSafeApp class declaration
  */
@@ -74,7 +110,6 @@ public:
 
 ////@begin PWSafeApp event handler declarations
 #ifdef __WXMAC__
-  void setMacLocale(const char *loc);
   virtual void MacReopenApp() wxOVERRIDE;
   virtual void MacNewFile() wxOVERRIDE;
   virtual void MacOpenFiles(const wxArrayString& fileNames) wxOVERRIDE;
@@ -127,7 +162,8 @@ private:
   bool m_cmd_minimized;
   bool m_file_in_cmd = false;
   bool m_initComplete = false;
-  bool m_wxUILocaleIsSet = false;
+  bool m_PWSLocaleIsSet = false;
+  PWSLocale *m_locale = nullptr;
   void FinishInit();
 
 public:
