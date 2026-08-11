@@ -506,9 +506,9 @@ if (NOT CPACK_DEBIAN_PACKAGE_ARCHITECTURE)
           set (PACKAGE_ARCHITECTURE "")
         else ()
           execute_process(COMMAND "${UNAME_EXECUTABLE}" -m
-                         OUTPUT_VARIABLE PACKAGE_ARCHITECTURE)
+                          OUTPUT_VARIABLE PACKAGE_ARCHITECTURE
+                          OUTPUT_STRIP_TRAILING_WHITESPACE)
           string(PREPEND PACKAGE_ARCHITECTURE "-")
-          set (PACKAGE_ARCHITECTURE "")
         endif ()
       else ()
         execute_process(COMMAND "${DPKG_EXECUTABLE}" --print-architecture
