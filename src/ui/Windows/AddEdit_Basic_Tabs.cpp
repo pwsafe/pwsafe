@@ -141,5 +141,12 @@ BOOL CAddEdit_Basic_Tabs::PreTranslateMessage(MSG *pMsg)
     }
   }
 
+  // Ctrl+Tab/Ctrl+Shift+Tab must switch the outer property sheet's own main
+  // tabs (Basic/Additional/Date&Times/...), not these two subtabs
+  // (Notes/Custom Fields), so we ignore them here.
+  if (pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_TAB &&
+      (GetKeyState(VK_CONTROL) & 0x8000) != 0)
+    return FALSE;
+
   return CPropertySheet::PreTranslateMessage(pMsg);
 }
