@@ -495,28 +495,28 @@ endif ()
 # Determine the architecture (amd64, i386, etc.) with command 'dpkg --print-architecture
 #
 if (NOT WIN32)
-if (NOT CPACK_DEBIAN_PACKAGE_ARCHITECTURE)
-      find_program(DPKG_EXECUTABLE dpkg)
-      mark_as_advanced(DPKG_EXECUTABLE)
+  if (NOT CPACK_DEBIAN_PACKAGE_ARCHITECTURE)
+    find_program(DPKG_EXECUTABLE dpkg)
+    mark_as_advanced(DPKG_EXECUTABLE)
 
-      if (NOT DPKG_EXECUTABLE)
-        find_program(UNAME_EXECUTABLE uname)
-        mark_as_advanced(UNAME_EXECUTABLE)
-        if (NOT UNAME_EXECUTABLE)
-          set (PACKAGE_ARCHITECTURE "")
-        else ()
-          execute_process(COMMAND "${UNAME_EXECUTABLE}" -m
-                         OUTPUT_VARIABLE PACKAGE_ARCHITECTURE)
-          string(PREPEND PACKAGE_ARCHITECTURE "-")
-          set (PACKAGE_ARCHITECTURE "")
-        endif ()
+    if (NOT DPKG_EXECUTABLE)
+      find_program(UNAME_EXECUTABLE uname)
+      mark_as_advanced(UNAME_EXECUTABLE)
+      if (NOT UNAME_EXECUTABLE)
+        set (PACKAGE_ARCHITECTURE "")
       else ()
-        execute_process(COMMAND "${DPKG_EXECUTABLE}" --print-architecture
-                        OUTPUT_VARIABLE CPACK_DEBIAN_PACKAGE_ARCHITECTURE
+        execute_process(COMMAND "${UNAME_EXECUTABLE}" -m
+                        OUTPUT_VARIABLE PACKAGE_ARCHITECTURE
                         OUTPUT_STRIP_TRAILING_WHITESPACE)
-        set (PACKAGE_ARCHITECTURE "-${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
+        set (PACKAGE_ARCHITECTURE "-${PACKAGE_ARCHITECTURE}")
       endif ()
+    else ()
+      execute_process(COMMAND "${DPKG_EXECUTABLE}" --print-architecture
+                      OUTPUT_VARIABLE CPACK_DEBIAN_PACKAGE_ARCHITECTURE
+                      OUTPUT_STRIP_TRAILING_WHITESPACE)
+      set (PACKAGE_ARCHITECTURE "-${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
     endif ()
+  endif ()
 endif (NOT WIN32)
 
 #
