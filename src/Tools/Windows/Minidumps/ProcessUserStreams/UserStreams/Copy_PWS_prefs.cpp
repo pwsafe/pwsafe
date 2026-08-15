@@ -25,7 +25,8 @@
 #include "Copy_PWS_prefs.h"
 
 const TCHAR* PWSprefs::stringTypes[] = {
-   _T("ptObsolete"), _T("ptDatabase"), _T("ptApplication"), _T("ptAll")
+   _T("ptObsolete"), _T("ptDatabase"), _T("ptApplication"), _T("ptAll"),
+   _T("ptDeprecatedDB"), _T("ptDeprecatedApp")
 };
 
 const TCHAR* PWSprefs::stringDisplay[] = {
@@ -88,7 +89,7 @@ const PWSprefs::boolPref PWSprefs::bool_prefs[NumBoolPrefs] = {
   {_T("ShowDragbar"), true, ptApplication},                 // application
   {_T("ClearClipboardOnMinimize"), true, ptApplication},    // application
   {_T("ClearClipboardOnExit"), true, ptApplication},        // application
-  {_T("ShowFindToolBarOnOpen"), false, ptApplication},      // application
+  {_T("ShowFindToolBarOnOpen"), false, ptDeprecatedApp},    // deprecated - superseded by FindToolBarActive
   {_T("NotesWordWrap"), false, ptApplication},              // application
   {_T("LockDBOnIdleTimeout"), true, ptDatabase},            // database
   {_T("HighlightChanges"), true, ptApplication},            // application

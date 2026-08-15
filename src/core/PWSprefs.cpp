@@ -121,7 +121,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ShowDragbar"), true, ptApplication},                 // application
   {_T("ClearClipboardOnMinimize"), true, ptApplication},    // application
   {_T("ClearClipboardOnExit"), true, ptApplication},        // application
-  {_T("ShowFindToolBarOnOpen"), false, ptApplication},      // application
+  {_T("ShowFindToolBarOnOpen"), false, ptDeprecatedApp},    // deprecated - superseded by FindToolBarActive
   {_T("NotesWordWrap"), false, ptApplication},              // application
   {_T("LockDBOnIdleTimeout"), true, ptDatabase},            // database
   {_T("HighlightChanges"), true, ptApplication},            // application
@@ -226,6 +226,13 @@ const PWSprefs::stringPref PWSprefs::m_string_prefs[NumStringPrefs] = {
   {_T("TreeSort"), _T("group"), ptApplication},                     // application
   {_T("ActiveFilterName"), _T(""), ptDatabase},                     // database
 };
+
+namespace {
+  // A deprecated pref is read for backward compatibility but never written.
+  inline bool IsDBPrefType(PWSprefs::PrefType pt) {
+    return pt == PWSprefs::ptDatabase || pt == PWSprefs::ptDeprecatedDB;
+  }
+} // namespace
 
 PWSprefs *PWSprefs::GetInstance()
 {
@@ -545,7 +552,7 @@ void PWSprefs::UpdateFromCopyPrefs(const PWSprefs::PrefType ptype)
   for (int i = 0; i < NumBoolPrefs; i++) {
     if (ptype == ptAll || m_bool_prefs[i].ptype == ptype) {
       // ONLY save in memory - written out at database save (to database and config destination)
-      m_prefs_changed[m_bool_prefs[i].ptype == ptDatabase ? DB_PREF : APP_PREF] |=
+      m_prefs_changed[IsDBPrefType(m_bool_prefs[i].ptype) ? DB_PREF : APP_PREF] |=
                                (m_boolValues[i] != m_boolCopyValues[i]);
 
       if (m_boolValues[i] != m_boolCopyValues[i]) { // Only if changed
@@ -558,7 +565,7 @@ void PWSprefs::UpdateFromCopyPrefs(const PWSprefs::PrefType ptype)
   for (int i = 0; i < NumIntPrefs; i++) {
     if (ptype == ptAll || m_int_prefs[i].ptype == ptype) {
       // ONLY save in memory - written out at database save (to database and config destination)
-      m_prefs_changed[m_int_prefs[i].ptype == ptDatabase ? DB_PREF : APP_PREF] |=
+      m_prefs_changed[IsDBPrefType(m_int_prefs[i].ptype) ? DB_PREF : APP_PREF] |=
                                (m_intValues[i] != m_intCopyValues[i]);
 
       if (m_intValues[i] != m_intCopyValues[i]) { // Only if changed
@@ -571,7 +578,7 @@ void PWSprefs::UpdateFromCopyPrefs(const PWSprefs::PrefType ptype)
   for (int i = 0; i < NumStringPrefs; i++) {
     if (ptype == ptAll || m_string_prefs[i].ptype == ptype) {
       // ONLY save in memory - written out at database save (to database and config destination)
-      m_prefs_changed[m_string_prefs[i].ptype == ptDatabase ? DB_PREF : APP_PREF] |=
+      m_prefs_changed[IsDBPrefType(m_string_prefs[i].ptype) ? DB_PREF : APP_PREF] |=
                                (m_stringValues[i] != m_stringCopyValues[i]);
 
       if (m_stringValues[i] != m_stringCopyValues[i]) { // Only if changed
@@ -591,7 +598,7 @@ void PWSprefs::SetPref(BoolPrefs pref_enum, bool value, const bool bUseCopy)
   }
 
   // ONLY save in memory - written out at database save (to database and config destination)
-  m_prefs_changed[m_bool_prefs[pref_enum].ptype == ptDatabase ? DB_PREF : APP_PREF] |=
+  m_prefs_changed[IsDBPrefType(m_bool_prefs[pref_enum].ptype) ? DB_PREF : APP_PREF] |=
     (m_boolValues[pref_enum] != value);
 
   if (m_boolValues[pref_enum] != value) { // Only if changed
@@ -609,7 +616,7 @@ void PWSprefs::SetPref(IntPrefs pref_enum, unsigned int value, const bool bUseCo
   }
 
   // ONLY save in memory - written out at database save (to database and config destination)
-  m_prefs_changed[m_int_prefs[pref_enum].ptype == ptDatabase ? DB_PREF : APP_PREF] |=
+  m_prefs_changed[IsDBPrefType(m_int_prefs[pref_enum].ptype) ? DB_PREF : APP_PREF] |=
     (m_intValues[pref_enum] != value);
 
   if (m_intValues[pref_enum] != value) { // Only if changed
@@ -627,7 +634,7 @@ void PWSprefs::SetPref(StringPrefs pref_enum, const StringX &value, const bool b
   }
 
   // ONLY save in memory - written out at database save (to database and config destination)
-  m_prefs_changed[m_string_prefs[pref_enum].ptype == ptDatabase ? DB_PREF : APP_PREF] |=
+  m_prefs_changed[IsDBPrefType(m_string_prefs[pref_enum].ptype) ? DB_PREF : APP_PREF] |=
     (m_stringValues[pref_enum] != value);
 
   if (m_stringValues[pref_enum] != value) { // Only if changed
@@ -642,7 +649,7 @@ void PWSprefs::ResetPref(BoolPrefs pref_enum)
 
   m_boolValues[pref_enum] = m_bool_prefs[pref_enum].defVal;
   m_boolChanged[pref_enum] = true;
-  m_prefs_changed[m_bool_prefs[pref_enum].ptype == ptDatabase ? DB_PREF : APP_PREF] = true;
+  m_prefs_changed[IsDBPrefType(m_bool_prefs[pref_enum].ptype) ? DB_PREF : APP_PREF] = true;
 }
 
 void PWSprefs::ResetPref(IntPrefs pref_enum)
@@ -651,7 +658,7 @@ void PWSprefs::ResetPref(IntPrefs pref_enum)
 
   m_intValues[pref_enum] = m_int_prefs[pref_enum].defVal;
   m_intChanged[pref_enum] = true;
-  m_prefs_changed[m_int_prefs[pref_enum].ptype == ptDatabase ? DB_PREF : APP_PREF] = true;
+  m_prefs_changed[IsDBPrefType(m_int_prefs[pref_enum].ptype) ? DB_PREF : APP_PREF] = true;
 }
 
 void PWSprefs::ResetPref(StringPrefs pref_enum)
@@ -660,7 +667,7 @@ void PWSprefs::ResetPref(StringPrefs pref_enum)
 
   m_stringValues[pref_enum] = m_string_prefs[pref_enum].defVal;
   m_stringChanged[pref_enum] = true;
-  m_prefs_changed[m_string_prefs[pref_enum].ptype == ptDatabase ? DB_PREF : APP_PREF] = true;
+  m_prefs_changed[IsDBPrefType(m_string_prefs[pref_enum].ptype) ? DB_PREF : APP_PREF] = true;
 }
 
 bool PWSprefs::WritePref(const StringX &name, bool val)
@@ -932,19 +939,19 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
   int i; bool *pbool; unsigned int *pint; StringX *pstr;
 
   for (i = 0, pbool = p_boolValues; i < NumBoolPrefs; i++, pbool++) {
-    if (m_bool_prefs[i].ptype == ptDatabase) {
+    if (IsDBPrefType(m_bool_prefs[i].ptype)) {
       *pbool = m_bool_prefs[i].defVal != 0;
     }
   }
 
   for (i = 0, pint = p_intValues; i < NumIntPrefs; i++, pint++) {
-    if (m_int_prefs[i].ptype == ptDatabase) {
+    if (IsDBPrefType(m_int_prefs[i].ptype)) {
       *pint = m_int_prefs[i].defVal;
     }
   }
 
   for (i = 0, pstr = p_stringValues; i < NumStringPrefs; i++, pstr++) {
-    if (m_string_prefs[i].ptype == ptDatabase) {
+    if (IsDBPrefType(m_string_prefs[i].ptype)) {
       *pstr = m_string_prefs[i].defVal;
     }
   }
@@ -975,7 +982,7 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
         is >> ival;
         // forward compatibility and check whether still in DB
         if (index < NumBoolPrefs) {
-          if (m_bool_prefs[index].ptype == ptDatabase) {
+          if (IsDBPrefType(m_bool_prefs[index].ptype)) {
             ASSERT(ival == 0 || ival == 1);
             p_boolValues[index] = (ival != 0);
           }
@@ -992,7 +999,7 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
         is >> iuval;
         // forward compatibility and check whether still in DB
         if (index < NumIntPrefs) {
-          if (m_int_prefs[index].ptype == ptDatabase) {
+          if (IsDBPrefType(m_int_prefs[index].ptype)) {
             p_intValues[index] = iuval;
           }
         } else {
@@ -1010,7 +1017,7 @@ void PWSprefs::Load(const StringX &prefString, bool bUseCopy)
         is.ignore(1, TCHAR(' ')); // skip over trailing delimiter
         // forward compatibility and check whether still in DB
         if (index < NumStringPrefs) {
-          if (m_string_prefs[index].ptype == ptDatabase) {
+          if (IsDBPrefType(m_string_prefs[index].ptype)) {
             p_stringValues[index] = buf;
           }
         } else {
@@ -1231,21 +1238,21 @@ void PWSprefs::SetDatabasePrefsToDefaults(const bool bUseCopy)
   int i;
   // Default values only
   for (i = 0; i < NumBoolPrefs; i++)
-    if (m_bool_prefs[i].ptype == ptDatabase) {
+    if (IsDBPrefType(m_bool_prefs[i].ptype)) {
       if (bUseCopy)
         m_boolCopyValues[i] = m_bool_prefs[i].defVal != 0;
       else
         m_boolValues[i] = m_bool_prefs[i].defVal != 0;
     }
   for (i = 0; i < NumIntPrefs; i++)
-    if (m_int_prefs[i].ptype == ptDatabase) {
+    if (IsDBPrefType(m_int_prefs[i].ptype)) {
       if (bUseCopy)
         m_intCopyValues[i] = m_int_prefs[i].defVal;
       else
         m_intValues[i] = m_int_prefs[i].defVal;
     }
   for (i = 0; i < NumStringPrefs; i++)
-    if (m_string_prefs[i].ptype == ptDatabase) {
+    if (IsDBPrefType(m_string_prefs[i].ptype)) {
       if (bUseCopy)
         m_stringCopyValues[i] = m_string_prefs[i].defVal;
       else
@@ -1554,7 +1561,7 @@ void PWSprefs::SaveApplicationPreferences()
       }
       m_boolChanged[i] = false;
     }
-    if (m_bool_prefs[i].ptype == ptObsolete) {
+    if (m_bool_prefs[i].ptype == ptObsolete || m_bool_prefs[i].ptype == ptDeprecatedApp) {
       DeletePref(m_bool_prefs[i].name);
     }
   }
@@ -1568,7 +1575,7 @@ void PWSprefs::SaveApplicationPreferences()
       }
       m_intChanged[i] = false;
     }
-    if (m_int_prefs[i].ptype == ptObsolete) {
+    if (m_int_prefs[i].ptype == ptObsolete || m_int_prefs[i].ptype == ptDeprecatedApp) {
       DeletePref(m_int_prefs[i].name);
     }
   }
@@ -1582,7 +1589,7 @@ void PWSprefs::SaveApplicationPreferences()
       }
       m_stringChanged[i] = false;
     }
-    if (m_string_prefs[i].ptype == ptObsolete) {
+    if (m_string_prefs[i].ptype == ptObsolete || m_string_prefs[i].ptype == ptDeprecatedApp) {
       DeletePref(m_string_prefs[i].name);
     }
   }
