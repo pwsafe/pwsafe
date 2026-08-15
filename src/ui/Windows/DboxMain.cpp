@@ -1286,7 +1286,8 @@ BOOL DboxMain::OnInitDialog()
     ShowWindow(SW_SHOW);
 
   SetInitialDatabaseDisplay();
-  if (m_bOpen && PWSprefs::GetInstance()->GetPref(PWSprefs::ShowFindToolBarOnOpen))
+  if (m_bOpen && (PWSprefs::GetInstance()->GetPref(PWSprefs::ShowFindToolBarOnOpen) ||
+                  PWSprefs::GetInstance()->GetPref(PWSprefs::FindToolBarActive)))
     OnShowFindToolbar();
   else
     OnHideFindToolbar();
