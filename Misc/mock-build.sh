@@ -25,14 +25,15 @@ usage() {
     echo "Usage: $0 [-v WXVERSION] [-a APPINDICATORVERSION] [mock options]" >&2
     echo "  -v WXVERSION            Override wx* packages with this local %_rpmdir build" >&2
     echo "  -a APPINDICATORVERSION  Override libayatana-appindicator* packages with this local %_rpmdir build" >&2
-    exit 1
+    exit "${1:-1}"
 }
 
 WANT_WX_VERSION=""
 WANT_APPINDICATOR_VERSION=""
 
-while getopts ":v:a:" opt; do
+while getopts ":hv:a:" opt; do
     case $opt in
+        h) usage 0 ;;
         v) WANT_WX_VERSION="$OPTARG" ;;
         a) WANT_APPINDICATOR_VERSION="$OPTARG" ;;
         :) echo "ERROR: -$OPTARG requires an argument" >&2; usage ;;
@@ -66,13 +67,23 @@ if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
     UPSTREAM=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)
     if [ -n "$UPSTREAM" ]; then
+        # $BRANCH is interpolated unquoted into the chroot command string
+        # below. Git branch names may legally contain shell metacharacters
+        # (";", "$(...)", etc.), so restrict it to characters that can't
+        # break out of that string before using it.
+        case "$BRANCH" in
+            *[!A-Za-z0-9._/-]*)
+                echo "ERROR: current branch name '$BRANCH' contains characters unsafe to pass into the mock chroot (allowed: A-Z a-z 0-9 . _ / -)" >&2
+                exit 1
+                ;;
+        esac
         REMOTE=$(echo "$UPSTREAM" | cut -d/ -f1)
         CLONE_URL=$(git remote get-url "$REMOTE")
         CLONE_OPTS="--branch $BRANCH --single-branch"
     fi
 fi
 
-mock --init "$@"
+mock --init "$@" || { echo "ERROR: mock --init failed" >&2; exit 1; }
 
 # Query the dist tag and arch from the mock chroot itself, not the host -
 # with -r targeting a different release or architecture (or a RHEL clone)
@@ -103,7 +114,8 @@ mock "$@" install \
     ykpers-devel \
     qrencode-devel \
     file-devel \
-    libayatana-appindicator-gtk3-devel
+    libayatana-appindicator-gtk3-devel \
+    || { echo "ERROR: mock install failed" >&2; exit 1; }
 
 # version -> glob against local RPM filenames, e.g. "3.2.12" -> "3.2.12-*",
 # "3.2.12-2.sni" (already version-release) -> unchanged.
@@ -169,9 +181,10 @@ collect_local_build "$WANT_WX_VERSION" 'wx' "$@"
 collect_local_build "$WANT_APPINDICATOR_VERSION" 'libayatana-appindicator' "$@"
 
 if [ -n "$OVERRIDE_RPMS" ]; then
-    mock "$@" --copyin $OVERRIDE_RPMS /tmp/
-    mock "$@" --chroot "rpm -Uvh --force ${OVERRIDE_TMP_RPMS# }"
+    mock "$@" --copyin $OVERRIDE_RPMS /tmp/ || { echo "ERROR: mock --copyin failed" >&2; exit 1; }
+    mock "$@" --chroot "rpm -Uvh --force ${OVERRIDE_TMP_RPMS# }" || { echo "ERROR: local package override install failed" >&2; exit 1; }
 fi
 
-mock "$@" --enable-network --unpriv --chroot "cd /builddir && git clone $CLONE_OPTS $CLONE_URL && mkdir -p pwsafe/build && cd pwsafe/build && cmake .. -DNO_GTEST=ON && cmake --build . -j\$(nproc) && cpack -G RPM"
-mock "$@" --copyout '/builddir/pwsafe/build/passwordsafe*.rpm' .
+mock "$@" --enable-network --unpriv --chroot "cd /builddir && git clone $CLONE_OPTS $CLONE_URL && mkdir -p pwsafe/build && cd pwsafe/build && cmake .. -DNO_GTEST=ON && cmake --build . -j\$(nproc) && cpack -G RPM" \
+    || { echo "ERROR: build failed" >&2; exit 1; }
+mock "$@" --copyout '/builddir/pwsafe/build/passwordsafe*.rpm' . || { echo "ERROR: copyout failed - was the RPM actually built?" >&2; exit 1; }
