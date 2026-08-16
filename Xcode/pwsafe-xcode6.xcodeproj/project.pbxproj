@@ -396,6 +396,7 @@
 		579BDA4E2C55F0A1004C727B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		57C329E72A070EFD00454292 /* ReleaseNotesWX.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotesWX.md; path = ../docs/ReleaseNotesWX.md; sourceTree = "<group>"; };
 		57C329E82A0715F500454292 /* ReleaseNotes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotes.md; path = ../docs/ReleaseNotes.md; sourceTree = "<group>"; };
+		57CC07053033D4FC005C4A29 /* PWSLocale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PWSLocale.h; sourceTree = "<group>"; };
 		57D3F0072B782AF600E4A662 /* version.in */ = {isa = PBXFileReference; lastKnownFileType = text; name = version.in; path = ../src/ui/wxWidgets/version.in; sourceTree = "<group>"; };
 		57E9520A2DE93B7A00DE9640 /* AESTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AESTest.cpp; path = ../src/test/AESTest.cpp; sourceTree = SOURCE_ROOT; };
 		57E9520B2DE93B7A00DE9640 /* AliasShortcutTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AliasShortcutTest.cpp; path = ../src/test/AliasShortcutTest.cpp; sourceTree = SOURCE_ROOT; };
@@ -1709,6 +1710,7 @@
 				D3A1DCDD261B4AFC0014A300 /* PWFiltersTable.h */,
 				D364EC392632D0D800ECA59F /* PWFiltersTypeDlg.h */,
 				E6ADBA1C1195709A004E2BE5 /* PWSafeApp.h */,
+				57CC07053033D4FC005C4A29 /* PWSLocale.h */,
 				E6C94E921FA20593008F0072 /* QRCodeDlg.h */,
 				E6C94E941FA205E9008F0072 /* QREncode.h */,
 				A6F2B3352832B0380096A7E4 /* QueryCancelDlg.h */,
