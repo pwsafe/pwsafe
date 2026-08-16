@@ -73,6 +73,7 @@ list(APPEND PWSAFE_HDR_LIST
     src/ui/wxWidgets/PWFiltersPasswordDlg.h
     src/ui/wxWidgets/ManageFiltersTable.h
     src/ui/wxWidgets/StrengthMeter.h
+    src/ui/wxWidgets/PWSLocale.h
     )
 
 
