@@ -97,8 +97,10 @@ public:
   // for System Tray icon color
   enum {stiBlack = 0, stiBlue = 1, stiWhite = 2, stiYellow = 3};
 
-  // Preference types - values are powers of 2, except ptAll = sum of previous values
-  enum PrefType {ptObsolete = 0, ptDatabase = 1, ptApplication = 2, ptAll = 3};
+  // Preference types - must stay in sync with core's PWSprefs.h PrefType enum.
+  // ptAll is a wildcard, not the highest value - use ptLast for range checks.
+  enum PrefType {ptObsolete = 0, ptDatabase = 1, ptApplication = 2, ptAll = 3,
+                 ptDeprecatedDB = 4, ptDeprecatedApp = 5, ptLast = ptDeprecatedApp};
 
   static const struct boolPref {
     const TCHAR *name; bool defVal; PrefType ptype;} bool_prefs[NumBoolPrefs];

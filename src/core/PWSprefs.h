@@ -119,7 +119,8 @@ public:
     ShowToolbar, ShowNotesAsTooltipsInViews, DefaultOpenRO,
     MultipleInstances, ShowDragbar,
     ClearClipboardOnMinimize, ClearClipboardOnExit,
-    ShowFindToolBarOnOpen, NotesWordWrap, LockDBOnIdleTimeout,
+    ShowFindToolBarOnOpen, // Deprecated - superseded by FindToolBarActive; kept for read-only backward compat
+    NotesWordWrap, LockDBOnIdleTimeout,
     HighlightChanges, HideSystemTray,
     UsePrimarySelectionForClipboard,  // Only under X-Windows
     CopyPasswordWhenBrowseToURL,
@@ -192,8 +193,13 @@ public:
   enum {minDisplayMode = 0, DisplayModeSystem = 0, DisplayModeLight = 1,
     DisplayModeDark = 2, maxDisplayMode = 2};
 
-  // Preference types - values are powers of 2, except ptAll = sum of previous values
-  enum PrefType {ptObsolete = 0, ptDatabase = 1, ptApplication = 2, ptAll = 3};
+  // Preference types.
+  // Values must stay in sync with the mirrored enum + stringTypes[] in Tools/Windows/Minidumps/.../Copy_PWS_prefs.h/.cpp.
+  // ptDeprecatedDB/ptDeprecatedApp preferences are read but cleaned up on the next save
+  // Deprecated preferences should be obsoleted within a release or two of being deprecated.
+  // ptLast must always alias to the last value, for use as a range-check bound.
+  enum PrefType {ptObsolete = 0, ptDatabase = 1, ptApplication = 2, ptAll = 3,
+                 ptDeprecatedDB = 4, ptDeprecatedApp = 5, ptLast = ptDeprecatedApp};
 
   bool IsDBprefsChanged() const {return m_prefs_changed[DB_PREF];}
   bool IsAPPprefsChanged() const {return m_prefs_changed[APP_PREF];}

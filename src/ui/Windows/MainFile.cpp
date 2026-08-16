@@ -4067,8 +4067,6 @@ void DboxMain::SavePreferencesOnExit()
       WinUtil::RelativizePath(curFile);
       prefs->SetPref(PWSprefs::CurrentFile, curFile.c_str());
     }
-  // Now save the Find Toolbar display status
-  prefs->SetPref(PWSprefs::ShowFindToolBarOnOpen, m_FindToolBar.IsVisible() == TRUE);
 
   prefs->SaveApplicationPreferences();
   prefs->SaveShortcuts();

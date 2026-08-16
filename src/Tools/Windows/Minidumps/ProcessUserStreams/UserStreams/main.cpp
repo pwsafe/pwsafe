@@ -438,7 +438,7 @@ void PrintBoolPreferences(PVOID pStream)
     if (!iss.good())
       break;
 
-    _ASSERT(type >= PWSprefs::ptObsolete && type <= PWSprefs::ptAll);
+    _ASSERT(type >= PWSprefs::ptObsolete && type <= PWSprefs::ptLast);
 
     if (n < PWSprefs::NumBoolPrefs) {
       sName = PWSprefs::bool_prefs[n].name;
@@ -488,7 +488,7 @@ void PrintIntPreferences(PVOID pStream)
     if (!iss.good())
       break;
 
-    _ASSERT(type >= PWSprefs::ptObsolete && type <= PWSprefs::ptAll);
+    _ASSERT(type >= PWSprefs::ptObsolete && type <= PWSprefs::ptLast);
 
     if (n < PWSprefs::NumIntPrefs) {
       sName = PWSprefs::int_prefs[n].name;
@@ -565,7 +565,7 @@ void PrintStringPreferences(PVOID pStream, ULONG StreamSize)
     if (!iss.good())
       break;
 
-    _ASSERT(type >= PWSprefs::ptObsolete && type <= PWSprefs::ptAll);
+    _ASSERT(type >= PWSprefs::ptObsolete && type <= PWSprefs::ptLast);
 
     if (n < PWSprefs::NumStringPrefs) {
       sName = PWSprefs::string_prefs[n].name;
