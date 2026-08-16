@@ -16,11 +16,6 @@
 #include <wx/wx.h>
 #endif
 
-#if wxUSE_APPINDICATOR
-#include <wx/stdpaths.h>
-#include <wx/filename.h>
-#endif
-
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
@@ -91,12 +86,6 @@ SystemTray::SystemTray(PasswordSafeFrame* frame) : m_TrayIconWithOverlay(false),
                                                    m_frame(frame),
                                                    m_status(TrayStatus::CLOSED)
 {
-#if wxUSE_APPINDICATOR
-  wxFileName exePath(wxStandardPaths::Get().GetExecutablePath());
-  wxString trayIconsDir = exePath.GetPath() + wxT("/tray-icons");
-  if (wxDirExists(trayIconsDir))
-    SetSNIIconThemePath(trayIconsDir);
-#endif
 }
 
 void SystemTray::SetTrayStatus(TrayStatus status)
@@ -105,30 +94,6 @@ void SystemTray::SetTrayStatus(TrayStatus status)
 
   if (!IsTaskBarIconAvailable())
     return;
-
-#if wxUSE_APPINDICATOR
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
-    const char* sniName = nullptr;
-    switch (status) {
-      case TrayStatus::CLOSED:
-        sniName = "pwsafe-tray";
-        break;
-
-      case TrayStatus::UNLOCKED:
-        if (!m_TrayIconWithOverlay) sniName = "pwsafe-unlocked";
-        break;
-
-      case TrayStatus::LOCKED:
-        if (!m_TrayIconWithOverlay) sniName = "pwsafe-locked";
-        break;
-
-      default:
-        break;
-    }
-    if (sniName)
-      SetSNIIconName(wxString::FromAscii(sniName));
-  }
-#endif
 
   if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
      switch(status) {
