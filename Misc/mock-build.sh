@@ -21,6 +21,8 @@
 # packages for both and nothing under %_rpmdir is even looked at.
 # Tested on Fedora
 
+set -e
+
 usage() {
     echo "Usage: $0 [-v WXVERSION] [-a APPINDICATORVERSION] [mock options]" >&2
     echo "  -v WXVERSION            Override wx* packages with this local %_rpmdir build" >&2
@@ -65,7 +67,9 @@ RPMDIR=$(rpm --eval '%_rpmdir')
 
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-    UPSTREAM=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)
+    # No upstream configured is a normal, expected outcome here (not a
+    # failure to propagate) - falls through to the default CLONE_URL/OPTS.
+    UPSTREAM=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null || true)
     if [ -n "$UPSTREAM" ]; then
         # $BRANCH is interpolated unquoted into the chroot command string
         # below. Git branch names may legally contain shell metacharacters
@@ -83,14 +87,15 @@ if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     fi
 fi
 
-mock --init "$@" || { echo "ERROR: mock --init failed" >&2; exit 1; }
+mock --init "$@"
 
 # Query the dist tag and arch from the mock chroot itself, not the host -
 # with -r targeting a different release or architecture (or a RHEL clone)
 # than this host runs, the host's own %{dist}/%_arch (e.g. "fc42"/"x86_64")
 # wouldn't match the local %_rpmdir build filenames for that target (e.g.
-# "...fc44.aarch64.rpm").
-DIST_ARCH=$(mock "$@" --quiet --chroot "rpm --eval '%{dist} %{_arch}'" 2>/dev/null)
+# "...fc44.aarch64.rpm"). A failure here is reported by the empty-DIST/
+# RPMARCH check below, not by set -e, so it gets the more specific message.
+DIST_ARCH=$(mock "$@" --quiet --chroot "rpm --eval '%{dist} %{_arch}'" 2>/dev/null || true)
 DIST=$(echo "$DIST_ARCH" | cut -d' ' -f1 | sed 's/^\.//')
 RPMARCH=$(echo "$DIST_ARCH" | cut -d' ' -f2)
 if [ -z "$DIST" ] || [ -z "$RPMARCH" ]; then
@@ -114,8 +119,7 @@ mock "$@" install \
     ykpers-devel \
     qrencode-devel \
     file-devel \
-    libayatana-appindicator-gtk3-devel \
-    || { echo "ERROR: mock install failed" >&2; exit 1; }
+    libayatana-appindicator-gtk3-devel
 
 # version -> glob against local RPM filenames, e.g. "3.2.12" -> "3.2.12-*",
 # "3.2.12-2.sni" (already version-release) -> unchanged.
@@ -141,7 +145,9 @@ local_rpm_candidates() {
 local_rpm_path() {
     pkg="$1" wantver="$2" verglob="$3"
     candidates=$(local_rpm_candidates "$pkg" "$verglob")
-    count=$(printf '%s\n' "$candidates" | grep -c .)
+    # grep -c exits 1 on zero matches, which is a legitimate outcome here
+    # (handled by the caller's own "no rpm found" check), not a failure.
+    count=$(printf '%s\n' "$candidates" | grep -c . || true)
     if [ "$count" -gt 1 ]; then
         echo "ERROR: -v/-a $wantver is ambiguous for $pkg, matches:" >&2
         printf '%s\n' "$candidates" >&2
@@ -181,10 +187,9 @@ collect_local_build "$WANT_WX_VERSION" 'wx' "$@"
 collect_local_build "$WANT_APPINDICATOR_VERSION" 'libayatana-appindicator' "$@"
 
 if [ -n "$OVERRIDE_RPMS" ]; then
-    mock "$@" --copyin $OVERRIDE_RPMS /tmp/ || { echo "ERROR: mock --copyin failed" >&2; exit 1; }
-    mock "$@" --chroot "rpm -Uvh --force ${OVERRIDE_TMP_RPMS# }" || { echo "ERROR: local package override install failed" >&2; exit 1; }
+    mock "$@" --copyin $OVERRIDE_RPMS /tmp/
+    mock "$@" --chroot "rpm -Uvh --force ${OVERRIDE_TMP_RPMS# }"
 fi
 
-mock "$@" --enable-network --unpriv --chroot "cd /builddir && git clone $CLONE_OPTS $CLONE_URL && mkdir -p pwsafe/build && cd pwsafe/build && cmake .. -DNO_GTEST=ON && cmake --build . -j\$(nproc) && cpack -G RPM" \
-    || { echo "ERROR: build failed" >&2; exit 1; }
-mock "$@" --copyout '/builddir/pwsafe/build/passwordsafe*.rpm' . || { echo "ERROR: copyout failed - was the RPM actually built?" >&2; exit 1; }
+mock "$@" --enable-network --unpriv --chroot "cd /builddir && git clone $CLONE_OPTS $CLONE_URL && mkdir -p pwsafe/build && cd pwsafe/build && cmake .. -DNO_GTEST=ON && cmake --build . -j\$(nproc) && cpack -G RPM"
+mock "$@" --copyout '/builddir/pwsafe/build/passwordsafe*.rpm' .
