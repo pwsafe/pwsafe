@@ -21,18 +21,21 @@
 # packages for both and nothing under %_rpmdir is even looked at.
 # Tested on Fedora
 
+set -e
+
 usage() {
     echo "Usage: $0 [-v WXVERSION] [-a APPINDICATORVERSION] [mock options]" >&2
     echo "  -v WXVERSION            Override wx* packages with this local %_rpmdir build" >&2
     echo "  -a APPINDICATORVERSION  Override libayatana-appindicator* packages with this local %_rpmdir build" >&2
-    exit 1
+    exit "${1:-1}"
 }
 
 WANT_WX_VERSION=""
 WANT_APPINDICATOR_VERSION=""
 
-while getopts ":v:a:" opt; do
+while getopts ":hv:a:" opt; do
     case $opt in
+        h) usage 0 ;;
         v) WANT_WX_VERSION="$OPTARG" ;;
         a) WANT_APPINDICATOR_VERSION="$OPTARG" ;;
         :) echo "ERROR: -$OPTARG requires an argument" >&2; usage ;;
@@ -64,8 +67,20 @@ RPMDIR=$(rpm --eval '%_rpmdir')
 
 if git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     BRANCH=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
-    UPSTREAM=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null)
+    # No upstream configured is a normal, expected outcome here (not a
+    # failure to propagate) - falls through to the default CLONE_URL/OPTS.
+    UPSTREAM=$(git rev-parse --abbrev-ref --symbolic-full-name @{u} 2>/dev/null || true)
     if [ -n "$UPSTREAM" ]; then
+        # $BRANCH is interpolated unquoted into the chroot command string
+        # below. Git branch names may legally contain shell metacharacters
+        # (";", "$(...)", etc.), so restrict it to characters that can't
+        # break out of that string before using it.
+        case "$BRANCH" in
+            *[!A-Za-z0-9._/-]*)
+                echo "ERROR: current branch name '$BRANCH' contains characters unsafe to pass into the mock chroot (allowed: A-Z a-z 0-9 . _ / -)" >&2
+                exit 1
+                ;;
+        esac
         REMOTE=$(echo "$UPSTREAM" | cut -d/ -f1)
         CLONE_URL=$(git remote get-url "$REMOTE")
         CLONE_OPTS="--branch $BRANCH --single-branch"
@@ -78,8 +93,9 @@ mock --init "$@"
 # with -r targeting a different release or architecture (or a RHEL clone)
 # than this host runs, the host's own %{dist}/%_arch (e.g. "fc42"/"x86_64")
 # wouldn't match the local %_rpmdir build filenames for that target (e.g.
-# "...fc44.aarch64.rpm").
-DIST_ARCH=$(mock "$@" --quiet --chroot "rpm --eval '%{dist} %{_arch}'" 2>/dev/null)
+# "...fc44.aarch64.rpm"). A failure here is reported by the empty-DIST/
+# RPMARCH check below, not by set -e, so it gets the more specific message.
+DIST_ARCH=$(mock "$@" --quiet --chroot "rpm --eval '%{dist} %{_arch}'" 2>/dev/null || true)
 DIST=$(echo "$DIST_ARCH" | cut -d' ' -f1 | sed 's/^\.//')
 RPMARCH=$(echo "$DIST_ARCH" | cut -d' ' -f2)
 if [ -z "$DIST" ] || [ -z "$RPMARCH" ]; then
@@ -129,7 +145,9 @@ local_rpm_candidates() {
 local_rpm_path() {
     pkg="$1" wantver="$2" verglob="$3"
     candidates=$(local_rpm_candidates "$pkg" "$verglob")
-    count=$(printf '%s\n' "$candidates" | grep -c .)
+    # grep -c exits 1 on zero matches, which is a legitimate outcome here
+    # (handled by the caller's own "no rpm found" check), not a failure.
+    count=$(printf '%s\n' "$candidates" | grep -c . || true)
     if [ "$count" -gt 1 ]; then
         echo "ERROR: -v/-a $wantver is ambiguous for $pkg, matches:" >&2
         printf '%s\n' "$candidates" >&2
