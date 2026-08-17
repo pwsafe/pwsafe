@@ -329,14 +329,9 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
   return retval;
 }
 
-int pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
+int pws_os::FClose(std::FILE *fd, const bool &)
 {
   if (fd != NULL) {
-    if (bIsWrite) {
-      // Flush the data buffers
-      fflush(fd);
-    }
-    // Now close file
     return fclose(fd);
   }
   return 0;
