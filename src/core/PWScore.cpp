@@ -648,8 +648,17 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
     return FAILURE;
   }
 
-  out->Close();
+  status = out->Close();
   delete out;
+
+  if (status != PWSfile::SUCCESS) {
+    PWS_LOGIT_ARGS("out->Close() failed, status: %d", status);
+
+    if (version < m_ReadFileVersion) // Exporting - restore saved header
+      m_hdr = saved_hdr;
+
+    return FAILURE;
+  }
 
   // Update info if we're saving or upgrading.
   if (version >= m_ReadFileVersion) {
