@@ -3086,7 +3086,7 @@ void PasswordSafeFrame::UpdateStatusBar()
       menu->SetItemLabel(m_core.IsReadOnly() ? _("Change to R/W") : _("Change to R-O"));
   }
   else { // no open file
-    m_statusBar->SetStatusText(wxGetTranslation(PWSprefs::GetDCAdescription(-1)), StatusBar::Field::DOUBLECLICK);
+    m_statusBar->SetStatusText(PWSprefs::GetDCAdescription(-1), StatusBar::Field::DOUBLECLICK);
     m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::CLIPBOARDACTION);
     m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::MODIFIED);
     m_statusBar->SetStatusText(wxEmptyString, StatusBar::Field::READONLY);
@@ -3177,7 +3177,7 @@ void PasswordSafeFrame::UpdateSelChanged(const CItemData *pci)
     if (dca == -1)
       dca = PWSprefs::GetInstance()->GetPref(PWSprefs::DoubleClickAction);
   }
-  m_statusBar->SetStatusText(wxGetTranslation(PWSprefs::GetDCAdescription(dca)), StatusBar::Field::DOUBLECLICK);
+  m_statusBar->SetStatusText(PWSprefs::GetDCAdescription(dca), StatusBar::Field::DOUBLECLICK);
 }
 
 void PasswordSafeFrame::ChangeFontPreference(const PWSprefs::StringPrefs fontPreference)
