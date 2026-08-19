@@ -32,6 +32,11 @@ public:
   class PWSLocale : public wxUILocale, public PWSMacLocale
   {
   public:
+    static bool UseDefault() {
+      auto ret = wxUILocale::UseDefault();
+      setMacLocale(PWSGetCurrentName());
+      return ret;
+    }
     static wxString PWSGetCurrentName() { return wxUILocale::GetCurrent().GetName(); };
   };
 
@@ -42,7 +47,12 @@ public:
   {
   public:
     PWSLocale() {};
-    static bool UseDefault() { return false; }; //no-op for compatibility
+    static bool UseDefault() {
+      // Because the old version did this, possibily as problem work arounds.
+      setlocale(LC_CTYPE, "");
+      setlocale(LC_TIME, "");
+      return false;
+    };
     wxString PWSGetCurrentName() { return wxLocale::GetCanonicalName(); };
   };
 #endif // LOCALE_WX322

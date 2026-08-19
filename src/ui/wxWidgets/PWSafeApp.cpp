@@ -288,7 +288,7 @@ bool PWSafeApp::OnInit()
    * In LOCALE_WX322, this initializes the WX UI locale to the desktop
    * configured default. According to the wx documentation, this also calls
    * setlocale() on Unix/Linux wxGTK platforms, but not on macOS.
-   * In old locale it just returns false, wxLocale::Init happens later.
+   * In old locale mode it always returns false; wxLocale::Init happens later.
    * This should suffice until we set the user's preferred language a bit later....
    */
   m_PWSLocaleIsSet = PWSLocale::UseDefault();
