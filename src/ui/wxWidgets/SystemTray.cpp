@@ -264,6 +264,13 @@ void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
 {
   EventHandlerDisabler ehd(this);
 
+  // IsTaskBarIconAvailable() can transiently report false (e.g. while the
+  // screen is DPMS-blanked), which makes SetTrayStatus() skip SetIcon()
+  // and leave the icon/menu stale once availability returns, since nothing
+  // else re-triggers a repaint. Re-run it here so the icon self-heals the
+  // next time the user actually interacts with it, without polling.
+  SetTrayStatus(m_status);
+
   const int id = evt.GetId();
   if (IsRUECommand(id)) {
     RUEOperation opn = GetRUEOperation(id);
@@ -363,5 +370,8 @@ void SystemTray::ProcessSysTrayMenuItem(int itemId)
 
 void SystemTray::OnTaskBarLeftDoubleClick(wxTaskBarIconEvent& WXUNUSED(evt))
 {
+  // See the comment in OnSysTrayMenuItem() re: self-healing a stale icon.
+  SetTrayStatus(m_status);
+
   wxTheApp->CallAfter([this](){ ProcessSysTrayMenuItem(ID_SYSTRAY_RESTORE); });
 }
