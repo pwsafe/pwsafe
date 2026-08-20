@@ -698,16 +698,12 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
       } else {
         envString = langInfo->CanonicalName;
       }
-      envString += ".UTF-8";
       PWSLocale::UseLocaleName(envString);
-      PWSLocale::setMacLocale(envString);
       pws_os::Trace(L"Current wx   locale is: %ls", static_cast<const wchar_t *>(PWSLocale::PWSGetCurrentName()));
 
 #else // LOCALE_WX322
-      wxString envString = langInfo->CanonicalName + ".UTF-8";
-      setlocale(LC_CTYPE, envString.c_str());
-      setlocale(LC_TIME, envString.c_str());
-      PWSLocale::setMacLocale(envString);
+      wxString envString = langInfo->CanonicalName;
+      PWSLocale::UseLocaleName(envString);
       pws_os::Trace(L"Current wx   locale is: %ls", static_cast<const wchar_t *>(m_locale->PWSGetCurrentName()));
 #endif // LOCALE_WX322
       pws_os::Trace(L"Current libc locale is: %s", setlocale(LC_ALL, NULL));
@@ -718,24 +714,6 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
 
 #ifdef __WXMAC__
 // macOS specific functions for UI interactions...
-
-void PWSMacLocale::setMacLocale([[maybe_unused]] const char *loc)
-{
-#ifdef LOCALE_WX322
-  if (loc && !setlocale(LC_ALL, loc)) {
-    pws_os::Trace(L"Failed to set locale to: %s", loc);
-  }
-#endif // LOCALE_WX322
-
-  // This value must be set for mac OS starting with version 11, but is no problem for earlier versions, see:
-  // https://trac.wxwidgets.org/ticket/19023
-  // https://docs.wxwidgets.org/3.2/classwx_locale.html
-  int major, minor;
-  wxGetOsVersion(&major, &minor);
-  if (major == 11 || (major == 12 && minor < 3)) {
-    setlocale(LC_NUMERIC, "C");
-  }
-}
 
 // This enables file unlock and UI restore upon left-click of the dock icon.
 // Not to be confused with the system tray (menu bar) icon.
