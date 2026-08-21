@@ -66,6 +66,11 @@ class SystemTray : public wxTaskBarIcon
     wxIcon m_IconUnlockedWithID, m_IconLockedWithID;
     PasswordSafeFrame* m_frame;
     TrayStatus m_status;
+    // Guards against SetTrayStatus() recursing into itself - e.g. if it
+    // were ever called from within GetPopupMenu(), which SetTrayStatus()
+    // can itself trigger via SetIcon(). Not currently reachable, but cheap
+    // insurance against a future change accidentally introducing it.
+    bool m_inSetTrayStatus = false;
 #if wxUSE_APPINDICATOR
     // Kept alive for wx's AppIndicator backend (GetPopupMenu()'s contract:
     // the returned menu is never destroyed by wx). Deliberately not deleted

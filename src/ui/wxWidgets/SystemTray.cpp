@@ -90,12 +90,13 @@ SystemTray::SystemTray(PasswordSafeFrame* frame) : m_TrayIconWithOverlay(false),
 
 void SystemTray::SetTrayStatus(TrayStatus status)
 {
+  if (m_inSetTrayStatus)
+    return;
+  m_inSetTrayStatus = true;
+
   m_status = status;
 
-  if (!IsTaskBarIconAvailable())
-    return;
-
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
+  if (IsTaskBarIconAvailable() && PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
      switch(status) {
        case TrayStatus::CLOSED:
          SetIcon(m_IconClosed, wxTheApp->GetAppName());
@@ -113,6 +114,8 @@ void SystemTray::SetTrayStatus(TrayStatus status)
          break;
      }
   }
+
+  m_inSetTrayStatus = false;
 }
 
 wxMenu* SystemTray::RepopulateMenu(wxMenu* menu)
@@ -169,6 +172,13 @@ wxMenu* SystemTray::RepopulateMenu(wxMenu* menu)
 //virtual
 wxMenu* SystemTray::CreatePopupMenu()
 {
+  // Reached on right-click when there's no AppIndicator/SNI backend (e.g.
+  // wxUSE_APPINDICATOR isn't even compiled in, as on stock Fedora 42's
+  // wx 3.2). See the comment in OnSysTrayMenuItem() re: self-healing a
+  // stale icon; safe here since, unlike GetPopupMenu(), this isn't also
+  // called internally by SetIcon() on every SetTrayStatus().
+  SetTrayStatus(m_status);
+
   wxMenu* menu = RepopulateMenu(nullptr);
 
   // whe there are active modal dialogs, we need to reparent menu, so it could process context menu events
@@ -192,6 +202,16 @@ wxMenu* SystemTray::GetPopupMenu()
   // the same instance reused/repopulated rather than a fresh one each
   // time. Deliberately does not go through CreatePopupMenu(), whose
   // reparent-and-display-now logic exists only for actual click handling.
+  //
+  // Also deliberately does not re-run SetTrayStatus() the way the other
+  // handlers do to self-heal a stale icon: this is called *from inside*
+  // SetIcon() itself (via SetTrayStatus() -> SetIcon() -> here), so doing
+  // so would recurse (m_inSetTrayStatus guards against that actually
+  // happening, but it's not a reason to add the call - see below). It's
+  // also moot here either way - opening the menu under this backend never
+  // reaches this method in the first place (the shell renders it from a
+  // one-time D-Bus export, with no callback into the app), so there's no
+  // interaction to catch.
   m_sniMenu = RepopulateMenu(m_sniMenu);
   return m_sniMenu;
 }
@@ -263,6 +283,13 @@ wxMenu* SystemTray::SetupRecentEntryMenu(const CItemData* pci, size_t idx)
 void SystemTray::OnSysTrayMenuItem(wxCommandEvent& evt)
 {
   EventHandlerDisabler ehd(this);
+
+  // IsTaskBarIconAvailable() can transiently report false (e.g. while the
+  // screen is DPMS-blanked), which makes SetTrayStatus() skip SetIcon()
+  // and leave the icon/menu stale once availability returns, since nothing
+  // else re-triggers a repaint. Re-run it here so the icon self-heals the
+  // next time the user actually interacts with it, without polling.
+  SetTrayStatus(m_status);
 
   const int id = evt.GetId();
   if (IsRUECommand(id)) {
@@ -363,5 +390,8 @@ void SystemTray::ProcessSysTrayMenuItem(int itemId)
 
 void SystemTray::OnTaskBarLeftDoubleClick(wxTaskBarIconEvent& WXUNUSED(evt))
 {
+  // See the comment in OnSysTrayMenuItem() re: self-healing a stale icon.
+  SetTrayStatus(m_status);
+
   wxTheApp->CallAfter([this](){ ProcessSysTrayMenuItem(ID_SYSTRAY_RESTORE); });
 }
