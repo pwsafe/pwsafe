@@ -38,7 +38,7 @@ static Ret GetPref(PrefEnum pref) {
   return PWSprefs::GetInstance()->GetPref(pref);
 }
 
-static pws_os::AutotypeMethod DefaultAutytypeMethod() {
+static pws_os::AutotypeMethod DefaultAutotypeMethod() {
   return GetPref(PWSprefs::UseAltAutoType)? pws_os::ATMETHOD_XTEST: pws_os::ATMETHOD_XSENDKEYS;
 }
 
@@ -46,7 +46,7 @@ static pws_os::AutotypeMethod DefaultAutytypeMethod() {
 // CKeySend - The generic implementation
 CKeySend::CKeySend(bool, unsigned defaultDelay)
   : m_delayMS(defaultDelay),
-    m_impl(new CKeySendImpl(DefaultAutytypeMethod()))
+    m_impl(new CKeySendImpl(DefaultAutotypeMethod()))
 {
 }
 
