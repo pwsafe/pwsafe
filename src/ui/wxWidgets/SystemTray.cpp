@@ -90,12 +90,13 @@ SystemTray::SystemTray(PasswordSafeFrame* frame) : m_TrayIconWithOverlay(false),
 
 void SystemTray::SetTrayStatus(TrayStatus status)
 {
+  if (m_inSetTrayStatus)
+    return;
+  m_inSetTrayStatus = true;
+
   m_status = status;
 
-  if (!IsTaskBarIconAvailable())
-    return;
-
-  if (PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
+  if (IsTaskBarIconAvailable() && PWSprefs::GetInstance()->GetPref(PWSprefs::UseSystemTray)) {
      switch(status) {
        case TrayStatus::CLOSED:
          SetIcon(m_IconClosed, wxTheApp->GetAppName());
@@ -113,6 +114,8 @@ void SystemTray::SetTrayStatus(TrayStatus status)
          break;
      }
   }
+
+  m_inSetTrayStatus = false;
 }
 
 wxMenu* SystemTray::RepopulateMenu(wxMenu* menu)
@@ -203,10 +206,12 @@ wxMenu* SystemTray::GetPopupMenu()
   // Also deliberately does not re-run SetTrayStatus() the way the other
   // handlers do to self-heal a stale icon: this is called *from inside*
   // SetIcon() itself (via SetTrayStatus() -> SetIcon() -> here), so doing
-  // so would recurse. It's also moot here either way - opening the menu
-  // under this backend never reaches this method in the first place (the
-  // shell renders it from a one-time D-Bus export, with no callback into
-  // the app), so there's no interaction to catch.
+  // so would recurse (m_inSetTrayStatus guards against that actually
+  // happening, but it's not a reason to add the call - see below). It's
+  // also moot here either way - opening the menu under this backend never
+  // reaches this method in the first place (the shell renders it from a
+  // one-time D-Bus export, with no callback into the app), so there's no
+  // interaction to catch.
   m_sniMenu = RepopulateMenu(m_sniMenu);
   return m_sniMenu;
 }
