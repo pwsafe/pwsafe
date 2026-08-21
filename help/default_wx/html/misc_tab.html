@@ -36,7 +36,7 @@ viewed, etc.). The time is stored with the entry, and may be viewed in the entry
 when no entry was edited. This means you may be prompted to save the
 database upon exit, even though you didn't explicitly change anything.</li>
 
-<li>When the database is opened in read-only mode, access times are
+<li>When the database is opened in read-only mode, this setting is ignored, and access times are
 <b>not</b> updated.</li>
 </ul>
 </small>
@@ -45,15 +45,15 @@ database upon exit, even though you didn't explicitly change anything.</li>
 
 <p>When checked, <b>Esc</b> can be used to close <b>Password Safe</b>
 when the program is maximized. Note that if the System Tray is enabled
-(via the Put Icon in System Tray option), then <b>Esc</b> just closes
+(via the Put Icon in System Tray option on the System tab), then <b>Esc</b> just closes
 the main window, which can be re-opened by double-clicking on the icon
 in the System Tray.</p>
 
-<h3>Double click action</h3>
+<h3>Double click and Shift double click action</h3>
 
 <p>This allows you to define what action <b>Password Safe</b> will take when
-you double-click on an entry. The default is to copy the entry's
-password to the clipboard. &nbsp;The available actions are:</p>
+you double-click (shift+double-click) on an entry. The default is to copy the entry's
+password to the clipboard. The available actions are:</p>
 
 <ul>
 <li>AutoType</li>
@@ -99,7 +99,6 @@ default. Of course, you can edit it if needed.<br></p>
 if your default browser is Firefox, and you wish to access a website that works best with Google Chrome. 
 Or, on Linux with Wayland, you may specify a startup sequence that enables the Xwayland backend for the default browser, 
 allowing Autotype to work (such as "env MOZ_ENABLE_WAYLAND=0 firefox" for Firefox).</p>
-
 
 <p>You can specify command line options to the browser via the Browser
 command line parameters field. Do <b>not</b> enclose this value in single or
