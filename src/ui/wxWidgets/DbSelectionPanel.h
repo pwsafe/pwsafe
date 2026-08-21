@@ -79,7 +79,7 @@ private:
   SafeCombinationCtrl* m_sc;
   bool m_bAutoValidate;
   PWScore* m_core;
-  int m_confirmationButtonId;
+  [[maybe_unused]] int m_confirmationButtonId;
   StringX m_yubiCombination; // needed to adjust TransferDataFromWindow()
 };
 
