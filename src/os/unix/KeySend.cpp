@@ -16,7 +16,7 @@
 #include "../../core/PWSprefs.h"
 
 template <typename EnumType>
-class PrefT;
+struct PrefT;
 
 template <>
 struct PrefT<PWSprefs::BoolPrefs> {
