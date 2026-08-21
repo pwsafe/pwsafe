@@ -169,6 +169,13 @@ wxMenu* SystemTray::RepopulateMenu(wxMenu* menu)
 //virtual
 wxMenu* SystemTray::CreatePopupMenu()
 {
+  // Reached on right-click when there's no AppIndicator/SNI backend (e.g.
+  // wxUSE_APPINDICATOR isn't even compiled in, as on stock Fedora 42's
+  // wx 3.2). See the comment in OnSysTrayMenuItem() re: self-healing a
+  // stale icon; safe here since, unlike GetPopupMenu(), this isn't also
+  // called internally by SetIcon() on every SetTrayStatus().
+  SetTrayStatus(m_status);
+
   wxMenu* menu = RepopulateMenu(nullptr);
 
   // whe there are active modal dialogs, we need to reparent menu, so it could process context menu events
@@ -192,6 +199,14 @@ wxMenu* SystemTray::GetPopupMenu()
   // the same instance reused/repopulated rather than a fresh one each
   // time. Deliberately does not go through CreatePopupMenu(), whose
   // reparent-and-display-now logic exists only for actual click handling.
+  //
+  // Also deliberately does not re-run SetTrayStatus() the way the other
+  // handlers do to self-heal a stale icon: this is called *from inside*
+  // SetIcon() itself (via SetTrayStatus() -> SetIcon() -> here), so doing
+  // so would recurse. It's also moot here either way - opening the menu
+  // under this backend never reaches this method in the first place (the
+  // shell renders it from a one-time D-Bus export, with no callback into
+  // the app), so there's no interaction to catch.
   m_sniMenu = RepopulateMenu(m_sniMenu);
   return m_sniMenu;
 }
