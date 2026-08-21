@@ -65,7 +65,7 @@ wxBitmap QRCodeBitmap( const StringX &data )
 
 	// This converts a line of QR data to a line of scaled-up pixels
 	// The last bit of QR byte, if 0 => white, else black
-	auto qr2xbmp = [&qc, scale](int line) {
+	auto qr2xbmp = [&qc](int line) {
 		vector<char> pixels(qc->width*scale/8);
 		auto fill_index = pixels.begin();
 		auto from = qc->data + line*qc->width;
