@@ -71,7 +71,7 @@ TEST_F(FileEncDecTest, EmptyFile)
   // create an empty file
   auto fp = pws_os::FOpen(emptyFile, L"w");
   ASSERT_TRUE(fp != nullptr);
-  auto res = pws_os::FClose(fp, true);
+  auto res = pws_os::FClose(fp);
   ASSERT_TRUE(res == 0);
 
   // decrypting an empty file should fail (too small)
@@ -98,7 +98,7 @@ TEST_F(FileEncDecTest, EmptyFile)
   fp = pws_os::FOpen(emptyFile, L"r");
   ASSERT_TRUE(fp != nullptr);
   EXPECT_EQ(pws_os::fileLength(fp), 0u);
-  res = pws_os::FClose(fp, true);
+  res = pws_os::FClose(fp);
   ASSERT_TRUE(res == 0);
 
 
@@ -157,7 +157,7 @@ void FileEncDecTest::TestFile(const stringT& testfile)
   auto len1 = pws_os::fileLength(fp);
   auto origBuf = new char[len1];
   ASSERT_EQ(len1, fread(origBuf, 1, len1, fp));
-  auto res = pws_os::FClose(fp, true);
+  auto res = pws_os::FClose(fp);
   ASSERT_TRUE(res == 0);
 
   fp = pws_os::FOpen(workTestFile, L"rb");
@@ -166,7 +166,7 @@ void FileEncDecTest::TestFile(const stringT& testfile)
   EXPECT_EQ(len1, len2);
   auto workBuf = new char[len2];
   ASSERT_EQ(len2, fread(workBuf, 1, len2, fp));
-  res = pws_os::FClose(fp, true);
+  res = pws_os::FClose(fp);
   ASSERT_TRUE(res == 0);
   ASSERT_EQ(memcmp(origBuf, workBuf, len1), 0);
 
