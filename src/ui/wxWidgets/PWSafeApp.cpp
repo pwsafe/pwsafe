@@ -234,7 +234,7 @@ void PWSafeApp::Init()
 ////@end PWSafeApp member initialisation
 }
 
-#if defined(_DEBUG) || defined(DEBUG)
+#if defined(__WXDEBUG__)
 void PWSafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func,
                 const wxChar *cond, const wxChar *msg)
 {
