@@ -72,6 +72,8 @@ TEST(OSTest, testFlushAndCloseAfterFlushFailure)
   ASSERT_NE(-1, fileDescriptor);
 
   ASSERT_EQ(1U, fwrite("x", 1, 1, fd));
+  // The stdio flush succeeds, but the OS-level sync fails because a pipe
+  // has no backing storage to synchronize.
   EXPECT_EQ(EOF, pws_os::FFlushAndClose(fd));
   EXPECT_EQ(-1, fcntl(fileDescriptor, F_GETFD));
 
