@@ -414,40 +414,28 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
   return fd;
 }
 
-int pws_os::FClose(std::FILE *fd, const bool &bIsWrite)
+int pws_os::FFlush(std::FILE *fd)
 {
-  if (fd != NULL) {
-    if (bIsWrite) {
-      // Flush the data buffers
-      // fflush returns 0 if the buffer was successfully flushed.
-      // A return value of EOF indicates an error.
-      int rc = fflush(fd);
-
-      // Don't bother trying FlushFileBuffers if fflush failed
-      if (rc == 0) {
-        // Windows FlushFileBuffers == Linux fsync
-        int ifileno = _fileno(fd);
-
-        if (ifileno != INVALID_FILE_DESCRIPTOR) {
-          intptr_t iosfhandle = _get_osfhandle(ifileno);
-
-          if ((HANDLE)iosfhandle != INVALID_HANDLE_VALUE) {
-            BOOL brc = FlushFileBuffers((HANDLE)iosfhandle);
-
-            if (brc == FALSE) {
-              pws_os::IssueError(_T("FlushFileBuffers on close of file on removable device"), false);
-            }
-          } // iosfhandle
-        } // ifileno
-      }  // fflush rc
-    }
-
-    // Now close file
-    // fclose returns 0 if the stream is successfully closed or EOF to indicate an error.
-    return fclose(fd);
-  } else {
+  if (fd == nullptr)
     return 0;
+
+  if (std::fflush(fd) != 0)
+    return EOF;
+
+  const int fileDescriptor = _fileno(fd);
+  if (fileDescriptor == INVALID_FILE_DESCRIPTOR)
+    return EOF;
+
+  const intptr_t osFileHandle = _get_osfhandle(fileDescriptor);
+  if ((HANDLE)osFileHandle == INVALID_HANDLE_VALUE)
+    return EOF;
+
+  if (FlushFileBuffers((HANDLE)osFileHandle) == FALSE) {
+    pws_os::IssueError(_T("FlushFileBuffers"), false);
+    return EOF;
   }
+
+  return 0;
 }
 
 size_t pws_os::fileLength(std::FILE *fp) {

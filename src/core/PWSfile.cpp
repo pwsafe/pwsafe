@@ -71,7 +71,7 @@ PWSfile *PWSfile::MakePWSfile(const StringX &a_filename, const StringX &passkey,
           status = CANT_OPEN_FILE;
           break;
         }
-        pws_os::FClose(fd, false);
+        pws_os::FClose(fd);
         [[fallthrough]];
       default:
         status = FAILURE;
@@ -158,7 +158,10 @@ int PWSfile::Close()
   int rc(SUCCESS);
 
   if (m_fd != nullptr) {
-    rc = pws_os::FClose(m_fd, m_rw == Write);
+    if (m_rw == Write)
+      rc = pws_os::FFlushAndClose(m_fd);
+    else
+      rc = pws_os::FClose(m_fd);
     m_fd = nullptr;
   }
 
@@ -415,7 +418,7 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
     goto exit;
   } // catch
 
-  status = (pws_os::FClose(out, true) == 0); out = nullptr;
+  status = (pws_os::FClose(out) == 0); out = nullptr;
 
  exit:
   if (!status)
@@ -423,8 +426,8 @@ bool PWSfile::Encrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   delete fish;
   trashMemory(buf, BUFSIZ);
   delete[] ivthing;
-  pws_os::FClose(in, false);
-  pws_os::FClose(out, true);
+  pws_os::FClose(in);
+  pws_os::FClose(out);
   return status;
 }
 
@@ -451,7 +454,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   file_len = pws_os::fileLength(in);
 
   if (file_len < (8 + sizeof(randhash) + 8 + SaltLength)) {
-    pws_os::FClose(in, false);
+    pws_os::FClose(in);
     LoadAString(errmess, IDSC_FILE_TOO_SHORT);
     return false;
   }
@@ -474,7 +477,7 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
 
   GenRandhash(passwd, randstuff, temphash);
   if (memcmp(reinterpret_cast<char *>(randhash), reinterpret_cast<char *>(temphash), SHA1::HASHLEN) != 0) {
-    pws_os::FClose(in, false);
+    pws_os::FClose(in);
     LoadAString(errmess, IDSC_BADPASSWORD);
     return false;
   }
@@ -558,8 +561,8 @@ bool PWSfile::Decrypt(const stringT &fn, const StringX &passwd, stringT &errmess
   delete[] ivthing;
   if (!status)
     errmess = ErrorMessages();
-  pws_os::FClose(in, false);
-  pws_os::FClose(out, true);
+  pws_os::FClose(in);
+  pws_os::FClose(out);
 
   return status;
 }
