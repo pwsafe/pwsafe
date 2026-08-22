@@ -329,12 +329,19 @@ std::FILE *pws_os::FOpen(const stringT &filename, const TCHAR *mode)
   return retval;
 }
 
-int pws_os::FClose(std::FILE *fd, const bool &)
+int pws_os::FFlush(std::FILE *fd)
 {
-  if (fd != NULL) {
-    return fclose(fd);
-  }
-  return 0;
+  if (fd == nullptr)
+    return 0;
+
+  if (std::fflush(fd) != 0)
+    return EOF;
+
+  const int fileDescriptor = fileno(fd);
+  if (fileDescriptor == -1)
+    return EOF;
+
+  return fcntl(fileDescriptor, F_FULLFSYNC) == -1 ? EOF : 0;
 }
 
 size_t pws_os::fileLength(std::FILE *fp)

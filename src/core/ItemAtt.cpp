@@ -185,7 +185,7 @@ int CItemAtt::Import(const stringT &fname)
 
   auto flen = static_cast<size_t>(pws_os::fileLength(fhandle));
   if (flen > CItemAtt::MAX_SIZE) {
-    pws_os::FClose(fhandle, false);
+    pws_os::FClose(fhandle);
     return PWScore::MAX_SIZE_EXCEEDED;
   }
 
@@ -195,12 +195,12 @@ int CItemAtt::Import(const stringT &fname)
 
   size_t nread = fread(data, flen, 1, fhandle);
   if (nread != 1) {
-    pws_os::FClose(fhandle, false);
+    pws_os::FClose(fhandle);
     status = PWScore::READ_FAIL;
     goto done;
   }
 
-  if (pws_os::FClose(fhandle, true) != 0) {
+  if (pws_os::FClose(fhandle) != 0) {
     status = PWScore::READ_FAIL;
     goto done;
   }
