@@ -228,7 +228,9 @@ namespace wxUtilities
    * 
    * @param parent the parent widget of both controls.
    * @param id the id for the password entry field (SafeCombinationCtrl).
-   * @param label the label for the pasword entry field.
+   * @param label the label for the pasword entry field. Must already be
+   *              translated (e.g. via _()) by the caller - this function
+   *              displays it as-is, it does not translate it itself.
    * @param password the password provided by the password entry control.
    * @param hasFocus indicates whether the password entry should get the focus.
    *                 Usefull if more than one password entry field is created for a dialog.

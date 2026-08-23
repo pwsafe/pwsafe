@@ -9,6 +9,13 @@
 
 #include "os/media.h"
 #include "os/dir.h"
+#include "os/file.h"
+
+#ifndef WIN32
+#include <fcntl.h>
+#include <unistd.h>
+#endif
+
 #include "gtest/gtest.h"
 
 TEST(OSTest, testMedia)
@@ -45,3 +52,32 @@ TEST(OSTest, testPath)
   out_path = pws_os::makepath(in_drive, in_dir, in_file, in_ext);
   EXPECT_EQ(in_path, out_path);
 }
+
+TEST(OSTest, testNullFileOperations)
+{
+  EXPECT_EQ(0, pws_os::FFlush(nullptr));
+  EXPECT_EQ(0, pws_os::FClose(nullptr));
+  EXPECT_EQ(0, pws_os::FFlushAndClose(nullptr));
+}
+
+#ifndef WIN32
+// sadly, couldn't find a way to write an equivalent test on Windows.
+TEST(OSTest, testFlushAndCloseAfterFlushFailure)
+{
+  int pipeDescriptors[2];
+  ASSERT_EQ(0, pipe(pipeDescriptors));
+
+  std::FILE *fd = fdopen(pipeDescriptors[1], "w");
+  ASSERT_NE(nullptr, fd);
+  const int fileDescriptor = fileno(fd);
+  ASSERT_NE(-1, fileDescriptor);
+
+  ASSERT_EQ(1U, fwrite("x", 1, 1, fd));
+  // The stdio flush succeeds, but the OS-level sync fails because a pipe
+  // has no backing storage to synchronize.
+  EXPECT_EQ(EOF, pws_os::FFlushAndClose(fd));
+  EXPECT_EQ(-1, fcntl(fileDescriptor, F_GETFD));
+
+  close(pipeDescriptors[0]);
+}
+#endif

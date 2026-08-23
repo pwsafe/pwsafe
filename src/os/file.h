@@ -32,7 +32,26 @@ namespace pws_os {
   extern void TryUnlockFile(const stringT &filename, HANDLE &lockFileHandle);
 
   extern std::FILE *FOpen(const stringT &filename, const TCHAR *mode);
-  extern int FClose(std::FILE *fd, const bool &bIsWrite);
+  // Flush stdio and OS buffers to storage. A null stream is a no-op.
+  // Returns zero on success and EOF on error.
+  extern int FFlush(std::FILE *fd);
+
+  inline int FClose(std::FILE *fd)
+  {
+    return fd != nullptr ? std::fclose(fd) : 0;
+  }
+
+  // FFlushAndClose is a convenience function that does as the name implies.
+  // It's meant to be used when we want to make an extra effort to physically write data to storage,
+  // e.g., when saving a database file.
+  inline int FFlushAndClose(std::FILE *fd)
+  {
+    // Closing is unconditional, including when flushing fails.
+    const int flushResult = FFlush(fd);
+    const int closeResult = FClose(fd);
+    return flushResult == 0 && closeResult == 0 ? 0 : EOF;
+  }
+
   extern size_t fileLength(std::FILE *fp);
   extern bool GetFileTimes(const stringT &filename,
       time_t &ctime, time_t &mtime, time_t &atime);

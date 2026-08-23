@@ -32,12 +32,12 @@ std::string readFileUtf8(const stringT &filename)
   const size_t length = pws_os::fileLength(fp);
   EXPECT_NE(length, static_cast<size_t>(-1));
   if (length == static_cast<size_t>(-1)) {
-    pws_os::FClose(fp, false);
+    pws_os::FClose(fp);
     return {};
   }
   std::vector<char> buffer(length);
   EXPECT_EQ(length, fread(buffer.data(), 1, length, fp));
-  pws_os::FClose(fp, false);
+  pws_os::FClose(fp);
   return std::string(buffer.begin(), buffer.end());
 }
 
@@ -46,7 +46,7 @@ void writeFileUtf8(const stringT &filename, const std::string &content)
   std::FILE *fp = pws_os::FOpen(filename, _T("wb"));
   ASSERT_NE(fp, nullptr);
   ASSERT_EQ(content.size(), fwrite(content.data(), 1, content.size(), fp));
-  ASSERT_EQ(0, pws_os::FClose(fp, true));
+  ASSERT_EQ(0, pws_os::FClose(fp));
 }
 
 void removeSensitiveElement(const stringT &filename)
