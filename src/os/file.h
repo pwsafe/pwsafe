@@ -41,6 +41,9 @@ namespace pws_os {
     return fd != nullptr ? std::fclose(fd) : 0;
   }
 
+  // FFlushAndClose is a convenience function that does as the name implies.
+  // It's meant to be used when we want to make an extra effort to physically write data to storage,
+  // e.g., when saving a database file.
   inline int FFlushAndClose(std::FILE *fd)
   {
     // Closing is unconditional, including when flushing fails.
