@@ -61,6 +61,7 @@ TEST(OSTest, testNullFileOperations)
 }
 
 #ifndef WIN32
+// sadly, couldn't find a way to write an equivalent test on Windows.
 TEST(OSTest, testFlushAndCloseAfterFlushFailure)
 {
   int pipeDescriptors[2];
