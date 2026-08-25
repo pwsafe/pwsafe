@@ -41,13 +41,18 @@
   public:
     PWSLocale() {};
     ~PWSLocale() { m_pwslocale = nullptr; }
-    static PWSLocale *m_pwslocale;
 
     static bool UseDefault();
     static void ChooseLocale(wxLanguage language);
     wxString PWSGetCurrentName() { return wxLocale::GetCanonicalName(); };
+    bool Init(wxLanguage lang)
+    {
+      if (m_pwslocale == nullptr) m_pwslocale = this;
+      return wxLocale::Init(lang);
+    }
 
   private:
+    static PWSLocale *m_pwslocale;
     static wxString appendUTF8(const wxString& ev);
   };
 #endif // LOCALE_WX322

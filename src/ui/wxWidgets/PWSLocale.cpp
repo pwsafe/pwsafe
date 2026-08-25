@@ -49,7 +49,7 @@ void PWSLocale::ChooseLocale(wxLanguage language)
   const wxLanguageInfo *langInfo = GetLanguageInfo(language);
   if (langInfo != nullptr) {
     wxString envString;
-    wxLocaleIdent sysLocaleId = PWSLocale::GetSystemLocaleId();
+    wxLocaleIdent sysLocaleId = GetSystemLocaleId();
     if (langInfo->CanonicalName == sysLocaleId.GetLanguage() && !sysLocaleId.GetRegion().empty()) {
       envString = sysLocaleId.GetName();
 
@@ -101,6 +101,10 @@ bool PWSLocale::UseDefault()
 
 void PWSLocale::ChooseLocale(wxLanguage language)
 {
+  // Don't do anything here until Init() has been called
+  if (m_pwslocale == nullptr)
+    return;
+
   const wxLanguageInfo *langInfo = GetLanguageInfo(language);
   if (langInfo != nullptr) {
     wxString ev8 = appendUTF8(langInfo->CanonicalName);
@@ -109,9 +113,7 @@ void PWSLocale::ChooseLocale(wxLanguage language)
       setlocale(LC_TIME, ev8.c_str());
     }
   }
-  if (m_pwslocale)
-    pws_os::Trace(L"Current wx   locale is: %ls", static_cast<const wchar_t *>(m_pwslocale->PWSGetCurrentName()));
-
+  pws_os::Trace(L"Current wx   locale is: %ls", static_cast<const wchar_t *>(m_pwslocale->PWSGetCurrentName()));
   pws_os::Trace(L"Current libc locale is: %s", setlocale(LC_ALL, NULL));
 }
 

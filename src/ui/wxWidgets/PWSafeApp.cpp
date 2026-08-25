@@ -216,7 +216,7 @@ void PWSafeApp::Init()
   pws_os::install_cleanup_handler(cleanup_handler, &m_core);
 
 #ifndef LOCALE_WX322
-  m_locale = PWSLocale::m_pwslocale = new PWSLocale;
+  m_locale = new PWSLocale;
 #endif
 #if defined(__UNIX__) && !defined(__WXMAC__)
   wxFileTranslationsLoader::AddCatalogLookupPathPrefix(L"/usr/share/locale");
@@ -592,9 +592,9 @@ void PWSafeApp::FinishInit() {
 }
 
 /*!
- * Initializing the language support means currently
- * to determine the system default language and
- * activate this one for the application.
+ * Initializing the language support means
+ * to activate the user's selected language
+ * or the system default.
  */
 wxLanguage PWSafeApp::GetSystemLanguage()
 {
