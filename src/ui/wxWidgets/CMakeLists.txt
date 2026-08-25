@@ -152,6 +152,7 @@ list(APPEND PWSAFE_SRC_LIST
     src/ui/wxWidgets/ManageFiltersTable.cpp
     src/ui/wxWidgets/QueryCancelDlg.cpp
     src/ui/wxWidgets/StrengthMeter.cpp
+    src/ui/wxWidgets/PWSLocale.cpp
     )
 
 if(HAVE_YKPERS_H)

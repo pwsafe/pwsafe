@@ -108,7 +108,7 @@ wxWidgets is the UI toolkit used by pwsafe for user-interface. There are two way
 ### Installing wxWidgets via Homebrew
 
 ```
-brew install wxwidgets
+brew install wxwidgets@3.2
 ```
 
 The problem with using Homebrew to install wxWidgets is that the version installed by Homebrew might
@@ -148,10 +148,10 @@ the tarball. My recommendation is to use the tarball. That's what I always do on
 
 
 ### Which Version of wxWidgets?
-Pwsafe code for macOS is no longer compatible with versions of wxWidgets older than 3.2.1.
+Pwsafe code for macOS is no longer compatible with versions of wxWidgets older than 3.2.2.
 There are a number of issues with version 3.0.5. For example, see
 [https://github.com/wxWidgets/wxWidgets/issues/19005](https://github.com/wxWidgets/wxWidgets/issues/19005).
-There are also Mac specific bugs in 3.2.1, 3.2.2.1 and 3.2.9.
+There are also Mac specific bugs in 3.2.2.1 and 3.2.9.
 
 **wxWidgets 3.2.10 is recommended.  3.2.4 and 3.2.8 are also known to work well.**
 

@@ -216,7 +216,7 @@ void PWSafeApp::Init()
   pws_os::install_cleanup_handler(cleanup_handler, &m_core);
 
 #ifndef LOCALE_WX322
-  m_locale = new PWSLocale;
+  m_locale = PWSLocale::m_pwslocale = new PWSLocale;
 #endif
 #if defined(__UNIX__) && !defined(__WXMAC__)
   wxFileTranslationsLoader::AddCatalogLookupPathPrefix(L"/usr/share/locale");
@@ -673,41 +673,7 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
     wxTranslations::Set(translations);
     isHelpActivated = ActivateHelp(language);
 
-    const wxLanguageInfo *langInfo = nullptr;
-    langInfo = PWSLocale::GetLanguageInfo(language);
-    if(langInfo) {
-
-#ifdef LOCALE_WX322
-      /*
-       * Some languages have multiple locale variations.  (e.g. en_US, en_GB, etc.)
-       * Just using the two letter language identifier (e.g. en.UTF-8) does not work
-       * in some cases; there needs to be a region as well (e.g. en_US.UTF-8), not doing
-       * so causes some inconsistent results. Specifically, the date format seems to
-       * default to en_GB in WX but not in native macOS controls, such as the date picker.
-       * This checks the user environment setting, if the language matches, use the env locale.
-       * If not, use whatever WX guessed.
-       */
-      wxString envString;
-      wxLocaleIdent sysLocaleId = PWSLocale::GetSystemLocaleId();
-      if (langInfo->CanonicalName == sysLocaleId.GetLanguage() && !sysLocaleId.GetRegion().empty()) {
-        envString = sysLocaleId.GetName();
-
-      } else if (!langInfo->CanonicalRef.empty()) {
-        envString = langInfo->CanonicalRef;
-
-      } else {
-        envString = langInfo->CanonicalName;
-      }
-      PWSLocale::UseLocaleName(envString);
-      pws_os::Trace(L"Current wx   locale is: %ls", static_cast<const wchar_t *>(PWSLocale::PWSGetCurrentName()));
-
-#else // LOCALE_WX322
-      wxString envString = langInfo->CanonicalName;
-      PWSLocale::UseLocaleName(envString);
-      pws_os::Trace(L"Current wx   locale is: %ls", static_cast<const wchar_t *>(m_locale->PWSGetCurrentName()));
-#endif // LOCALE_WX322
-      pws_os::Trace(L"Current libc locale is: %s", setlocale(LC_ALL, NULL));
-    }
+    PWSLocale::ChooseLocale(language);
   }
   return bRes;
 }

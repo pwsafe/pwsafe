@@ -24,44 +24,13 @@
   class PWSLocale : public wxUILocale
   {
   public:
-    static bool UseDefault() {
-      auto ret = wxUILocale::UseDefault();
-      setMacLocale(PWSGetCurrentName());
-      return ret;
-    }
-    static void UseLocaleName(const wxString& envString) {
-      wxString ev8 = setUTF8(envString);
-      if ( !ev8.empty() ) {
-        wxUILocale::UseLocaleName(ev8);
-        setMacLocale(ev8);
-      }
-    }
+    static bool UseDefault();
+    static void ChooseLocale(wxLanguage language);
     static wxString PWSGetCurrentName() { return wxUILocale::GetCurrent().GetName(); };
 
   private:
-    static wxString setUTF8(const wxString& ev) {
-      if (ev.empty() || ev.EndsWith(".UTF-8")) return ev;
-      return ev + ".UTF-8";
-    }
-
-  #ifdef __WXMAC__
-    static void setMacLocale(const char *loc) {
-      if (loc && !setlocale(LC_ALL, loc)) {
-        pws_os::Trace(L"Failed to set locale to: %s", loc);
-      }
-
-      // This value must be set for mac OS starting with version 11, but is no problem for earlier versions, see:
-      // https://trac.wxwidgets.org/ticket/19023
-      // https://docs.wxwidgets.org/3.2/classwx_locale.html
-      int major, minor;
-      wxGetOsVersion(&major, &minor);
-      if (major == 11 || (major == 12 && minor < 3)) {
-        setlocale(LC_NUMERIC, "C");
-      }
-    }
-  #else // __WXMAC__
-    static void setMacLocale(const char *) {}; // no-op if not macOS
-  #endif // __WXMAC__
+    static wxString appendUTF8(const wxString& ev);
+    static void setMacLocale(const char *loc);
   };
 
 #else // LOCALE_WX322
@@ -71,26 +40,15 @@
   {
   public:
     PWSLocale() {};
-    static bool UseDefault() {
-      // Because the old version did this, possibily as a problem work around.
-      setlocale(LC_CTYPE, "");
-      setlocale(LC_TIME, "");
-      return false;
-    }
-    static void UseLocaleName(const wxString& envString) {
-      wxString ev8 = setUTF8(envString);
-      if ( !ev8.empty() ) {
-        setlocale(LC_CTYPE, ev8.c_str());
-        setlocale(LC_TIME, ev8.c_str());
-      }
-    }
+    ~PWSLocale() { m_pwslocale = nullptr; }
+    static PWSLocale *m_pwslocale;
+
+    static bool UseDefault();
+    static void ChooseLocale(wxLanguage language);
     wxString PWSGetCurrentName() { return wxLocale::GetCanonicalName(); };
 
   private:
-    static wxString setUTF8(const wxString& ev) {
-      if (ev.empty() || ev.EndsWith(".UTF-8")) return ev;
-      return ev + ".UTF-8";
-    }
+    static wxString appendUTF8(const wxString& ev);
   };
 #endif // LOCALE_WX322
 

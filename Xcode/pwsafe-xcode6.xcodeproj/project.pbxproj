@@ -44,6 +44,7 @@
 		578DF902302813A20045582C /* media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D181451C8FF86C0018AE03 /* media.cpp */; };
 		579BDA4F2C55F0A1004C727B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 579BDA4E2C55F0A1004C727B /* Assets.xcassets */; };
 		57BD7D042B19BEC2005C0123 /* helpEN.zip in Resources */ = {isa = PBXBuildFile; fileRef = E690B95612984B1D007EA508 /* helpEN.zip */; };
+		57D4306F303D3B1300867684 /* PWSLocale.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57D4306E303D3B1300867684 /* PWSLocale.cpp */; };
 		57E951B42DE9377000DE9640 /* libcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB80311956A93004E2BE5 /* libcore.a */; };
 		57E951B52DE9377500DE9640 /* libos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB91C11956DD0004E2BE5 /* libos.a */; };
 		57E951B62DE937D200DE9640 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D3A7B67C254824C000E780B8 /* AppKit.framework */; };
@@ -398,6 +399,7 @@
 		57C329E82A0715F500454292 /* ReleaseNotes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotes.md; path = ../docs/ReleaseNotes.md; sourceTree = "<group>"; };
 		57CC07053033D4FC005C4A29 /* PWSLocale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PWSLocale.h; sourceTree = "<group>"; };
 		57D3F0072B782AF600E4A662 /* version.in */ = {isa = PBXFileReference; lastKnownFileType = text; name = version.in; path = ../src/ui/wxWidgets/version.in; sourceTree = "<group>"; };
+		57D4306E303D3B1300867684 /* PWSLocale.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PWSLocale.cpp; sourceTree = "<group>"; };
 		57E9520A2DE93B7A00DE9640 /* AESTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AESTest.cpp; path = ../src/test/AESTest.cpp; sourceTree = SOURCE_ROOT; };
 		57E9520B2DE93B7A00DE9640 /* AliasShortcutTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AliasShortcutTest.cpp; path = ../src/test/AliasShortcutTest.cpp; sourceTree = SOURCE_ROOT; };
 		57E9520C2DE93B7A00DE9640 /* AuxParseTest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = AuxParseTest.cpp; path = ../src/test/AuxParseTest.cpp; sourceTree = SOURCE_ROOT; };
@@ -1635,6 +1637,7 @@
 				D3A1DCDC261B4AFC0014A300 /* PWFiltersTable.cpp */,
 				D364EC382632D0D800ECA59F /* PWFiltersTypeDlg.cpp */,
 				E6ADBA1B1195709A004E2BE5 /* PWSafeApp.cpp */,
+				57D4306E303D3B1300867684 /* PWSLocale.cpp */,
 				E6C94E911FA20593008F0072 /* QRCodeDlg.cpp */,
 				E6C94E951FA2075B008F0072 /* QREncode.mm */,
 				A6F2B3342832B0380096A7E4 /* QueryCancelDlg.cpp */,
@@ -2392,6 +2395,7 @@
 				D364EC3A2632D0D800ECA59F /* PWFiltersTypeDlg.cpp in Sources */,
 				E6DDC714138914B700F0C0D1 /* wxUtilities.cpp in Sources */,
 				E0C3C4502379CD8300715124 /* CryptKeyEntryDlg.cpp in Sources */,
+				57D4306F303D3B1300867684 /* PWSLocale.cpp in Sources */,
 				E66EE0B313921B30005C10C5 /* ComparisonGridTable.cpp in Sources */,
 				D31B027926384D29000EAA61 /* PWFiltersMediaDlg.cpp in Sources */,
 				E66FB84D13ACA5C3004DBB97 /* SizeRestrictedPanel.cpp in Sources */,
