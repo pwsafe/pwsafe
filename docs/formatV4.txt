@@ -716,7 +716,7 @@ FileModificationTime        0x67        time_t        N              [7]
 FileAccessTime              0x68        time_t        N              [7]
 AttEK                       0x70        32 bytes      Y              [8]
 AttAK                       0x71        32 bytes      Y              [9]
-ATTIV                       0x71        binary        Y              [10]
+ATTIV                       0x72        binary        Y              [10]
 Content                     0x73        4 byte+binary Y              [11]
 ContentHMAC                 0x74        32 bytes      Y              [12]
 End of Entry                0xff        [empty]       Y              
