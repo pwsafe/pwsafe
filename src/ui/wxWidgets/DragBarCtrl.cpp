@@ -278,6 +278,8 @@ void DragBarCtrl::OnDrag(wxAuiToolBarEvent& event)
 {
   auto toolId = event.GetToolId();
 
+  ReleaseMouse();
+  
   if (toolId == ID_DRAGBAR_DND) {
 #if wxUSE_DRAG_AND_DROP && (wxVERSION_NUMBER != 3104) // 3.1.4 is crashing in Drop, use 3.1.5 instead
     auto mainFrame = wxGetApp().GetPasswordSafeFrame();
