@@ -276,7 +276,7 @@ endif(HAVE_YKPERS_H)
 if (NOT MSVC)
    # Following is because (a) -O3 breaks the test and application, and
    # (b) -O3 is the default for cmake
-   set (CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG -DwxDEBUG_LEVEL=0")
+   set (CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 endif (NOT MSVC)
 
 include(pws-version)
