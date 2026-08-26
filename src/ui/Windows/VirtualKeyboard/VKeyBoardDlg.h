@@ -84,6 +84,7 @@ public:
   const UINT &GetKLID() const {return m_uiKLID;}
   const bool SaveKLID() const {return m_bSaveKLID == BST_CHECKED;}
   const bool PlaySound() const { return m_bPlaySound == BST_CHECKED; }
+  const bool ShowTooltips() const { return m_bShowTooltips == BST_CHECKED; }
 
   void ResetKeyboard();
 
@@ -121,6 +122,7 @@ protected:
   afx_msg void OnChangeKeyboardType();
   afx_msg void OnSaveKLID();
   afx_msg void OnKeyPressPlaySound();
+  afx_msg void OnShowTooltips();
   afx_msg void OnShowPassphrase();
   //}}AFX_MSG
 
@@ -188,7 +190,7 @@ private:
   static bool m_bUserSpecifiedFont;
 
   UINT m_uiKLID, m_uiPhysKLID;
-  BOOL m_bSaveKLID, m_bPlaySound, m_bShowPassphrase;
+  BOOL m_bSaveKLID, m_bPlaySound, m_bShowTooltips, m_bShowPassphrase;
   vKeyboard_Layouts m_KBL;
   BYTE m_State, m_SaveState;
   CBrush m_pBkBrush;

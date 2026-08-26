@@ -127,6 +127,7 @@ public:
     UseAltAutoType,  // Only under X-Windows
     IgnoreHelpLoadError, // Only under WX
     VKPlaySound, // Windows only
+    VKShowTooltips, // Windows only
     ListSortAscending,
     EnableWindowTransparency,
     ShowMenuSeparator,

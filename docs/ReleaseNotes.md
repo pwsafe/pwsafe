@@ -15,6 +15,10 @@ Bugs Fixed in 3.72.2
 * [GH1889](https://github.com/pwsafe/pwsafe/issues/1889) Regression: 'Apply' button now enabled only when a change is made to the entry.
 * [GH1092](https://github.com/pwsafe/pwsafe/issues/1092) Regression: Last size and position maintained correctly across scaling other than 100%.
 
+New Features in 3.72.2
+-------------------------
+* Users can now turn of the tooltips displayed in the Virtual Keyboard by clearing the new "Display Tooltips" checkbox. This is useful when the tooltips hide some of the buttons.
+
 PasswordSafe 3.72.1 Release July 3 2026
 =======================================
 Bugs Fixed in 3.72.1
