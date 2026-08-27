@@ -349,7 +349,7 @@ void YubiCfgDlg::yubiInserted(void)
   } else
     m_yksk = wxEmptyString;
   ReadYubiSN();
-  dynamic_cast<wxTextCtrl*>(FindWindow(ID_YK_SERNUM))->SetValue(m_yksernum);
+  dynamic_cast<wxTextCtrl*>(FindWindow(ID_YK_SERNUM))->ChangeValue(m_yksernum);
   Validate(); TransferDataToWindow();
 }
 
