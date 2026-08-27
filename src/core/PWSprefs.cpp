@@ -131,7 +131,6 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("UseAltAutoType"), false, ptApplication},             // application
   {_T("IgnoreHelpLoadError"), false, ptApplication},        // application
   {_T("VKPlaySound"), false, ptApplication},                // application
-  {_T("VKShowTooltips"), true, ptApplication},             // application
   {_T("ListSortAscending"), true, ptApplication},           // application
   {_T("EnableWindowTransparency"), false, ptApplication},   // application
   {_T("ShowMenuSeparator"), true, ptApplication},           // application
@@ -142,6 +141,7 @@ const PWSprefs::boolPref PWSprefs::m_bool_prefs[NumBoolPrefs] = {
   {_T("ExcludeFromClipboardHistory"), true, ptDatabase},    // database
   {_T("FindToolBarActive"), false, ptApplication},          // application
   {_T("ExcludeFromScreenCapture"), true, ptDatabase},       // database
+  {_T("VKShowTooltips"), true, ptApplication},             // application
 
 };
 

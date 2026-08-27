@@ -127,7 +127,6 @@ public:
     UseAltAutoType,  // Only under X-Windows
     IgnoreHelpLoadError, // Only under WX
     VKPlaySound, // Windows only
-    VKShowTooltips, // Windows only
     ListSortAscending,
     EnableWindowTransparency,
     ShowMenuSeparator,
@@ -138,6 +137,7 @@ public:
     ExcludeFromClipboardHistory, // Windows only
     FindToolBarActive, // To persist Find toolbar's visibility
     ExcludeFromScreenCapture,
+    VKShowTooltips, // Windows only
     NumBoolPrefs};
 
   enum IntPrefs {Column1Width, Column2Width, Column3Width, Column4Width,
