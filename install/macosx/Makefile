@@ -75,6 +75,7 @@ lang: pwsI18N wxlocale
 		$(MDBIN) $(RESOURCES)/$$l.lproj ;	\
 		$(CPBIN) $$langPath/LC_MESSAGES/pwsafe.mo $(RESOURCES)/$$l.lproj;	\
 		$(CPBIN) $(WXDIR)/$$l.mo $(RESOURCES)/$$l.lproj/wxstd.mo;		\
+		plutil -insert CFBundleLocalizations -string $${l:0:2} -append $(RESOURCES)/../Info.plist; \
 	done
 
 dist: clean
@@ -82,7 +83,7 @@ dist: clean
 	$(CPBIN) -R $(DOCS) $(SRCDIR)
 	$(CPBIN) -R $(RELDIR)/$(PWSAFE-APP) $(SRCDIR)
 	/usr/bin/codesign -v --force --sign - -o runtime --entitlements \
-		$(RELDIR)/../../Intermediates.noindex/pwsafe-xcode6.build/Release/pwsafe.build/pwsafe.app.xcent \
+		$(RELDIR)/../../Intermediates.noindex/pwsafe-xcode6.build/$(XCODE_CONFIG)/pwsafe.build/pwsafe.app.xcent \
 		--timestamp=none --generate-entitlement-der $(SRCDIR)/pwsafe.app
 	create-dmg \
 			--window-size 420 560 \

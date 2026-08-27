@@ -333,7 +333,7 @@ void PasswordSafeFrame::OnLanguageClick(wxCommandEvent& evt)
   wxLanguage userLang=std::get<0>(m_languages[id]);
   if (wxGetApp().ActivateLanguage(userLang, false)) {
     m_selectedLanguage = id;
-    wxString userLangName=wxLocale::GetLanguageCanonicalName(userLang);
+    wxString userLangName = PWSLocale::GetLanguageCanonicalName(userLang);
     if (!userLangName.IsEmpty()){
       PWSprefs::GetInstance()->SetPref(PWSprefs::LanguageFile, tostringx(userLangName));
       pws_os::Trace(L"Saved user-preferred language: name= %ls\n", ToStr(userLangName));

@@ -33,10 +33,6 @@
 #include <wx/tokenzr.h>
 #include <wx/spinctrl.h>
 
-#if wxCHECK_VERSION(3, 1, 6)
-#include <wx/uilocale.h>
-#endif
-
 #if wxCHECK_VERSION(2,9,2)
 #include <wx/richmsgdlg.h>
 #endif
@@ -190,8 +186,7 @@ IMPLEMENT_CLASS( PWSafeApp, wxApp )
  */
 
 PWSafeApp::PWSafeApp() : m_idleTimer(new wxTimer(this, IDLE_TIMER_ID)),
-                         m_frame(nullptr), m_recentDatabases(nullptr),
-                         m_locale(nullptr)
+                         m_frame(nullptr), m_recentDatabases(nullptr)
 {
   Init();
 }
@@ -219,24 +214,31 @@ PWSafeApp::~PWSafeApp()
 void PWSafeApp::Init()
 {
   pws_os::install_cleanup_handler(cleanup_handler, &m_core);
-  m_locale = new wxLocale;
-  wxLocale::AddCatalogLookupPathPrefix(L"/usr/share/locale");
-  wxLocale::AddCatalogLookupPathPrefix(L"/usr");
-  wxLocale::AddCatalogLookupPathPrefix(L"/usr/local");
+
+#ifndef LOCALE_WX322
+  m_locale = new PWSLocale;
+#endif
+#if defined(__UNIX__) && !defined(__WXMAC__)
+  wxFileTranslationsLoader::AddCatalogLookupPathPrefix(L"/usr/share/locale");
+  wxFileTranslationsLoader::AddCatalogLookupPathPrefix(L"/usr/local/share/locale");
+#endif
 #if defined(_DEBUG) || defined(DEBUG)
-  wxLocale::AddCatalogLookupPathPrefix(L"../I18N/mos");
-  wxLocale::AddCatalogLookupPathPrefix(L"src/ui/wxWidgets/I18N/mos"); // located in cmake's build directory
+  wxFileTranslationsLoader::AddCatalogLookupPathPrefix(L"../I18N/mos");
+  wxFileTranslationsLoader::AddCatalogLookupPathPrefix(L"src/ui/wxWidgets/I18N/mos"); // located in cmake's build directory
+#else
+  // Don't allow this in release builds
+  unsetenv("LC_PATH");
 #endif
 
 ////@begin PWSafeApp member initialisation
 ////@end PWSafeApp member initialisation
 }
 
-#if defined(_DEBUG) || defined(DEBUG)
+#if defined(__WXDEBUG__)
 void PWSafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func,
                 const wxChar *cond, const wxChar *msg)
 {
-  if (m_locale)
+  if (m_PWSLocaleIsSet)
     wxApp::OnAssertFailure(file, line, func, cond, msg);
   else
       std::wcerr << file << L'(' << line << L"):"
@@ -250,7 +252,7 @@ void PWSafeApp::OnAssertFailure(const wxChar *file, int line, const wxChar *func
 */
 bool PWSafeApp::ActivateHelp(wxLanguage language) {
   wxString fileNameBase = L"help", fileExt=L".zip", defaultSuffix=L"EN"+fileExt;
-  wxString langSuffix = wxLocale::GetLanguageCanonicalName(language);
+  wxString langSuffix = PWSLocale::GetLanguageCanonicalName(language);
   // Get only two letters
   if (langSuffix.length() >= 2) {
     langSuffix = langSuffix.substr(0, 2).Upper() + fileExt;
@@ -282,32 +284,14 @@ bool PWSafeApp::ActivateHelp(wxLanguage language) {
 
 bool PWSafeApp::OnInit()
 {
-  // Get the locale environment variable 'LC_CTYPE' specified by the environment
-  // For instance, the behavior of function 'wcstombs' depends on the LC_CTYPE 
-  // category of the selected C locale.
-#if defined(__WXMAC__)
-  const char *lcCType = setlocale(LC_CTYPE, NULL);
-
-  if (lcCType && strcmp(lcCType, "UTF-8")) { // MAC OS only have UTF-8 as default, but conversion with this string is not running well
-    setlocale(LC_CTYPE, "");
-  }
-  else {
-    const char *env_lc_cType = std::getenv("LC_CTYPE");
-    
-    if(env_lc_cType) {
-      setlocale(LC_CTYPE, env_lc_cType);
-    }
-    else {
-      setlocale(LC_CTYPE, "en_US.UTF-8");
-    }
-  }
-  // This value must be set for mac OS starting with version 11, but is no problem for earlier versions, see
-  // https://trac.wxwidgets.org/ticket/19023
-  setlocale(LC_NUMERIC, "C");
-#else
-  setlocale(LC_CTYPE, "");
-#endif
-  setlocale(LC_TIME, "");
+  /*
+   * In LOCALE_WX322, this initializes the WX UI locale to the desktop
+   * configured default. According to the wx documentation, this also calls
+   * setlocale() on Unix/Linux wxGTK platforms, but not on macOS.
+   * In old locale mode it always returns false; wxLocale::Init happens later.
+   * This should suffice until we set the user's preferred language a bit later....
+   */
+  m_PWSLocaleIsSet = PWSLocale::UseDefault();
 
   //Used by help subsystem
   wxFileSystem::AddHandler(new wxArchiveFSHandler);
@@ -399,17 +383,17 @@ bool PWSafeApp::OnInit()
   // will ignore config file parameter
   wxLanguage selectedLang = GetSelectedLanguage();
 
-  // Only initialize wxLocale with a language PasswordSafe can really activate.
-  // Otherwise fall back to English before touching wxLocale.
-  wxLanguage effectiveLang =
-    wxGetApp().ActivateLanguage(selectedLang, true)
-      ? selectedLang
-      : wxLANGUAGE_ENGLISH;
+  // Only initialize the locale with a language PasswordSafe can really activate.
+  // Otherwise fall back to English before touching the locale.
+  wxLanguage effectiveLang = ActivateLanguage(selectedLang, true) ? selectedLang : wxLANGUAGE_ENGLISH;
 
-  m_locale->Init(effectiveLang);
+#ifndef LOCALE_WX322
+  m_PWSLocaleIsSet = m_locale->Init(effectiveLang);
+#endif
+
   ActivateLanguage(effectiveLang, false);
 
- // Process encryption/decryption command line arguments
+  // Process encryption/decryption command line arguments
   // Note that this is done after language is set, addressing GH1572
   if ((cmd_encrypt || cmd_decrypt) && !cmd_filename.IsEmpty()) {
 
@@ -608,37 +592,13 @@ void PWSafeApp::FinishInit() {
 }
 
 /*!
- * Initializing the language support means currently
- * to determine the system default language and
- * activate this one for the application.
+ * Initializing the language support means
+ * to activate the user's selected language
+ * or the system default.
  */
 wxLanguage PWSafeApp::GetSystemLanguage()
 {
-  int language = wxLocale::GetSystemLanguage();
-
-#if defined(__UNIX__) && !defined(__WXMAC__) && wxCHECK_VERSION( 2, 8, 0 )
-  // Workaround for wx bug 15006 that has been fixed in wxWidgets 2.8
-  if (language == wxLANGUAGE_UNKNOWN) {
-    std::wcerr << L"Couldn't detect locale. Trying to skip empty env. variables." << std::endl;
-    // Undefine empty environment variables and try again
-    wxString langFull;
-    if (wxGetEnv(wxT("LC_ALL"), &langFull) && !langFull) {
-      wxUnsetEnv(wxT("LC_ALL"));
-      std::wcerr << L"Empty LC_ALL variable was dropped" << std::endl;
-    }
-    if (wxGetEnv(wxT("LC_MESSAGES"), &langFull) && !langFull) {
-      wxUnsetEnv(wxT("LC_MESSAGES"));
-      std::wcerr << L"Empty LC_MESSAGES variable was dropped" << std::endl;
-    }
-    if (wxGetEnv(wxT("LANG"), &langFull) && !langFull) {
-      wxUnsetEnv(wxT("LANG"));
-      std::wcerr << L"Empty LANG variable was dropped" << std::endl;
-    }
-    language = wxLocale::GetSystemLanguage();
-  }
-#endif
-
-  return static_cast<wxLanguage>(language);
+  return static_cast<wxLanguage>(PWSLocale::GetSystemLanguage());
 }
 
 /* Get selected language (user preference or system) */
@@ -649,10 +609,10 @@ wxLanguage PWSafeApp::GetSelectedLanguage()
   const wxLanguageInfo *langInfo = nullptr;
 
   if (sxUserLang.empty()) {
-    langInfo = wxLocale::GetLanguageInfo(wxLANGUAGE_DEFAULT);
+    langInfo = PWSLocale::GetLanguageInfo(wxLANGUAGE_DEFAULT);
   }
   else {
-    langInfo = wxLocale::FindLanguageInfo(towxstring(sxUserLang));
+    langInfo = PWSLocale::FindLanguageInfo(towxstring(sxUserLang));
   }
 
   if (langInfo && ActivateLanguage(static_cast<wxLanguage>(langInfo->Language), true)) {
@@ -664,6 +624,8 @@ wxLanguage PWSafeApp::GetSelectedLanguage()
 #ifdef DEBUG
     if (langInfo) {
       pws_os::Trace(L"User-preferred language can't be activated: id= %d, name= %ls\n", langInfo->Language, sxUserLang.c_str());
+    } else {
+      pws_os::Trace(L"Unknown language in config file: name= %ls\n", sxUserLang.c_str());
     }
 #endif
     return GetSystemLanguage();
@@ -692,11 +654,11 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
 
   if (language != wxLANGUAGE_ENGLISH) {
     if ( !translations->AddStdCatalog() ) {
-      pws_os::Trace(L"Couldn't load default language catalog for %ls\n", ToStr(wxLocale::GetLanguageName(language)));
+      pws_os::Trace(L"Couldn't load default language catalog for %ls\n", ToStr(PWSLocale::GetLanguageName(language)));
     }
 
     if ( !translations->AddCatalog(DOMAIN_) ) {
-      pws_os::Trace(L"Couldn't load %ls language catalog for %ls\n", ToStr(DOMAIN_), ToStr(wxLocale::GetLanguageName(language)));
+      pws_os::Trace(L"Couldn't load %ls language catalog for %ls\n", ToStr(DOMAIN_), ToStr(PWSLocale::GetLanguageName(language)));
       translations->SetLanguage(wxLANGUAGE_ENGLISH);
       language = wxLANGUAGE_ENGLISH; // Back to default language english
     }
@@ -711,42 +673,7 @@ bool PWSafeApp::ActivateLanguage(wxLanguage language, bool tryOnly)
     wxTranslations::Set(translations);
     isHelpActivated = ActivateHelp(language);
 
-    const wxLanguageInfo *langInfo = nullptr;
-    langInfo = wxLocale::GetLanguageInfo(language);
-    if(langInfo) {
-
-#if defined(__WXMAC__)
-#if wxCHECK_VERSION(3, 2, 2)
-      // Some languages have multiple locale variations.  (e.g. en_US, en_GB, etc.)
-      // Just using the two letter languane identifier (e.g. en.UTF-8) does not work
-      // on macOS, there needs to be a region as well (e.g. en_US.UTF-8), not doing
-      // so causes some inconsistent results. Specifically, the date format seems to
-      // default to en_GB in WX but not in native macOS controls, such as the date picker.
-      wxString envString;
-      wxLocaleIdent sysLocaleId = wxUILocale::GetSystemLocaleId();
-      if (langInfo->CanonicalName == sysLocaleId.GetLanguage() && !sysLocaleId.GetRegion().empty()) {
-        envString = sysLocaleId.GetName();
-
-      } else if (!langInfo->CanonicalRef.empty()) {
-        envString = langInfo->CanonicalRef;
-      }
-      if (!envString.empty()) {
-        envString += ".UTF-8";
-        setlocale(LC_CTYPE, envString.c_str());
-        setlocale(LC_TIME, envString.c_str());
-      }
-#endif // wxCHECK_VERSION
-      // This value must be set for mac OS starting with version 11, but is no problem for earlier versions, see
-      // https://github.com/wxWidgets/wxWidgets/issues/19023
-      // https://docs.wxwidgets.org/3.2/classwx_locale.html
-      setlocale(LC_NUMERIC, "C");
-#else // __WXMAC__
-      wxString envString = langInfo->CanonicalName + ".UTF-8";
-      setlocale(LC_CTYPE, envString.c_str());
-      setlocale(LC_TIME, envString.c_str());
-#endif // __WXMAC__
-
-    }
+    PWSLocale::ChooseLocale(language);
   }
   return bRes;
 }

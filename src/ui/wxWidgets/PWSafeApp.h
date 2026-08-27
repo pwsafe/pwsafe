@@ -26,7 +26,8 @@
 #include "SafeCombinationEntryDlg.h"
 ////@end includes
 #include "core/PWScore.h"
-#include "./RecentDbList.h"
+#include "RecentDbList.h"
+#include "PWSLocale.h"
 
 /*!
  * Forward declarations
@@ -36,7 +37,6 @@
 ////@end forward declarations
 class wxTimer;
 class PasswordSafeFrame;
-class wxLocale;
 
 /*!
  * Control identifiers
@@ -67,7 +67,7 @@ public:
   virtual bool OnInit() wxOVERRIDE;
 
   /// Handle asserts without showing the assert dialog until locale is initialized.
-#if defined(_DEBUG) || defined(DEBUG)
+#if defined(__WXDEBUG__)
   virtual void OnAssertFailure(const wxChar *file, int line, const wxChar *func, const wxChar *cond, const wxChar *msg) wxOVERRIDE;
 #endif
   /// Called on exit
@@ -118,7 +118,6 @@ private:
   WX_DECLARE_STRING_HASH_MAP(wxString, StringToStringMap);
   StringToStringMap &GetHelpMap();
   wxIconBundle m_appIcons;
-  wxLocale *m_locale; // set in Init(), deleted in d'tor, unused elsewhere
   wxString helpFileNamePath;
   bool isHelpActivated;
   bool ActivateHelp(wxLanguage language);
@@ -128,6 +127,8 @@ private:
   bool m_cmd_minimized;
   bool m_file_in_cmd = false;
   bool m_initComplete = false;
+  bool m_PWSLocaleIsSet = false;
+  PWSLocale *m_locale = nullptr;
   void FinishInit();
 
 public:
@@ -138,7 +139,6 @@ public:
   wxLanguage GetSystemLanguage();
   wxLanguage GetSelectedLanguage();
   PasswordSafeFrame* GetPasswordSafeFrame() { return m_frame; }
-  wxString GetLocaleShortDateFormat() const { return m_locale ? m_locale->GetInfo(wxLOCALE_SHORT_DATE_FMT) : wxString(); }
 };
 
 /*!
