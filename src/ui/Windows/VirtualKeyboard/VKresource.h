@@ -101,6 +101,6 @@
 
 #define IDC_SAVEKLID                   8100
 #define IDC_KEYPRESS_PLAYSOUND         8101
-#define IDC_SHOWTOOLTIPS               8104
 #define IDC_SHOWBUFFER                 8102
 #define IDC_STATIC_VKPASSPHRASE        8103
+#define IDC_SHOWTOOLTIPS               8104
