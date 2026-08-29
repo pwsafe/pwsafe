@@ -57,6 +57,7 @@ CPKBaseDlg::~CPKBaseDlg()
     }
 
     PWSprefs::GetInstance()->SetPref(PWSprefs::VKPlaySound, m_pVKeyBoardDlg->PlaySound());
+    PWSprefs::GetInstance()->SetPref(PWSprefs::VKShowTooltips, m_pVKeyBoardDlg->ShowTooltips());
 
     m_pVKeyBoardDlg->DestroyWindow();
     delete m_pVKeyBoardDlg;

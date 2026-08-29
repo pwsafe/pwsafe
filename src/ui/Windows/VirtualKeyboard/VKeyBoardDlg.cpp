@@ -343,7 +343,7 @@ CVKeyBoardDlg::CVKeyBoardDlg(CWnd* pParent, LPCWSTR wcKLID)
     m_bLCtrlChars(false), m_bAltGrChars(false), m_bRCtrlChars(false),
     m_bDeadKeyActive(false), m_bDeadKeySaved(false),
     m_bSaveKLID(BST_CHECKED), m_bPlaySound(BST_UNCHECKED),
-    m_bShowPassphrase(BST_UNCHECKED),
+    m_bShowTooltips(BST_CHECKED), m_bShowPassphrase(BST_UNCHECKED),
     m_State(0), m_SaveState(0),
     m_pParent(pParent), m_uiMouseDblClkTime(0)
 {
@@ -465,6 +465,9 @@ void CVKeyBoardDlg::DoDataExchange(CDataExchange* pDX)
   // Play sound on key press
   DDX_Check(pDX, IDC_KEYPRESS_PLAYSOUND, m_bPlaySound);
 
+  // Show tooltips
+  DDX_Check(pDX, IDC_SHOWTOOLTIPS, m_bShowTooltips);
+
 #ifdef _DEBUG
   // Show passphrase IDC_SHOWBUFFER - Used for testing only!
   DDX_Check(pDX, IDC_SHOWBUFFER, m_bShowPassphrase);
@@ -502,6 +505,7 @@ BEGIN_MESSAGE_MAP(CVKeyBoardDlg, CPWDialog)
   ON_CONTROL_RANGE(BN_CLICKED, IDC_VKBBTN_KBD01, IDC_VKBBTN_KBD51, OnKeys)
   ON_BN_CLICKED(IDC_SAVEKLID, OnSaveKLID)
   ON_BN_CLICKED(IDC_KEYPRESS_PLAYSOUND, OnKeyPressPlaySound)
+  ON_BN_CLICKED(IDC_SHOWTOOLTIPS, OnShowTooltips)
 #ifdef _DEBUG
   ON_BN_CLICKED(IDC_SHOWBUFFER, OnShowPassphrase)  // Used for testing only!
 #endif
@@ -523,6 +527,7 @@ BOOL CVKeyBoardDlg::OnInitDialog()
 
   // Set user's preference re\: sound
   m_bPlaySound = PWSprefs::GetInstance()->GetPref(PWSprefs::VKPlaySound) ? BST_CHECKED : BST_UNCHECKED;
+  m_bShowTooltips = PWSprefs::GetInstance()->GetPref(PWSprefs::VKShowTooltips) ? BST_CHECKED : BST_UNCHECKED;
 
 #ifdef _DEBUG
   // allow developer to view passphrase
@@ -642,7 +647,7 @@ BOOL CVKeyBoardDlg::OnInitDialog()
   EnableToolTips();
 
   // Activate the tooltip control.
-  m_pToolTipCtrl->Activate(TRUE);
+  m_pToolTipCtrl->Activate(m_bShowTooltips == BST_CHECKED);
   m_pToolTipCtrl->SetMaxTipWidth(300);
   // Quadruple the time to allow reading by user
   int iTime = m_pToolTipCtrl->GetDelayTime(TTDT_AUTOPOP);
@@ -2187,6 +2192,13 @@ void CVKeyBoardDlg::OnSaveKLID()
 void CVKeyBoardDlg::OnKeyPressPlaySound()
 {
   m_bPlaySound = ((CButton *)GetDlgItem(IDC_KEYPRESS_PLAYSOUND))->GetCheck();
+}
+
+void CVKeyBoardDlg::OnShowTooltips()
+{
+  m_bShowTooltips = ((CButton *)GetDlgItem(IDC_SHOWTOOLTIPS))->GetCheck();
+  if (m_pToolTipCtrl != NULL)
+    m_pToolTipCtrl->Activate(m_bShowTooltips == BST_CHECKED);
 }
 
 void CVKeyBoardDlg::OnShowPassphrase()

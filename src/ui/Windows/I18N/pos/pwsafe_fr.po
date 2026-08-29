@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-06-16 19:40+0300\n"
+"PO-Revision-Date: 2026-08-29 13:20+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -701,6 +714,10 @@ msgstr "&Copier"
 msgid "&Copy Password to Clipboard"
 msgstr "&Copier le mot de passe au presse-papier"
 
+#. Resource IDs: (575, 577)
+msgid "&Custom Fields"
+msgstr ""
+
 #. Resource IDs: (1344, 1405, 1628, 32055 - MenuEx, 34104)
 msgid "&Delete"
 msgstr "&Supprimer"
@@ -878,6 +895,10 @@ msgstr "&Nouveau/Modifier Filtre"
 #. Resource IDs: (2, 5438)
 msgid "&No"
 msgstr "&Non"
+
+#. Resource IDs: (574, 576)
+msgid "&Notes"
+msgstr ""
 
 #. Resource IDs: (32138 - MenuEx)
 msgid "&Notes Font"
@@ -2909,7 +2930,7 @@ msgstr ""
 msgid "Custom Field"
 msgstr "Champ personnalisé"
 
-#. Resource IDs: (3096, 5231, 575, 577)
+#. Resource IDs: (3096, 5231)
 msgid "Custom Fields"
 msgstr "Champs personnalisés"
 
@@ -5440,7 +5461,7 @@ msgstr "Note: Ces stratégies de mot de passe ne remplaceront pas les stratégie
 msgid "Note: These preferences are only used when importing into an empty database."
 msgstr "Note : Ces préférences sont utilisées seulement lors de l'importation dans un fichier de mots de passe vide."
 
-#. Resource IDs: (3014, 5225, 574, 576)
+#. Resource IDs: (3014, 5225)
 msgid "Notes"
 msgstr "Notes"
 
@@ -6790,6 +6811,10 @@ msgstr "Afficher la grille dans la vue sous forme de liste"
 #. Resource IDs: (1490)
 msgid "Show identical compared fields (Note: Unknown fields were not compared.)"
 msgstr "Afficher les champs uniques comparés (Note: Les champs inconnus n'ont pas été comparés.)"
+
+#. Resource IDs: (8104)
+msgid "Show tooltips"
+msgstr "Afficher les infobulles"
 
 #. Resource IDs: (5755)
 msgid "Shutdown, Restart or Logoff in progress"

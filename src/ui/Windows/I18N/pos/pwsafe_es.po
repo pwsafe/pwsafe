@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-06-16 19:40+0300\n"
+"PO-Revision-Date: 2026-08-29 10:13+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: es\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -922,6 +935,10 @@ msgstr "&Copiar"
 msgid "&Copy Password to Clipboard"
 msgstr "&Copiar contraseña al portapapeles"
 
+#. Resource IDs: (575, 577)
+msgid "&Custom Fields"
+msgstr ""
+
 #. Resource IDs: (1344, 1405, 1628, 32055 - MenuEx, 34104)
 msgid "&Delete"
 msgstr "E&liminar"
@@ -1099,6 +1116,10 @@ msgstr "&Nuevo/editar filtro"
 #. Resource IDs: (2, 5438)
 msgid "&No"
 msgstr "&No"
+
+#. Resource IDs: (574, 576)
+msgid "&Notes"
+msgstr ""
 
 #. Resource IDs: (32138 - MenuEx)
 msgid "&Notes Font"
@@ -3130,7 +3151,7 @@ msgstr ""
 msgid "Custom Field"
 msgstr "Campo personalizado"
 
-#. Resource IDs: (3096, 5231, 575, 577)
+#. Resource IDs: (3096, 5231)
 msgid "Custom Fields"
 msgstr "Campos personalizados"
 
@@ -5656,7 +5677,7 @@ msgstr "Nota: estas políticas de contraseña no van a reemplazar las políticas
 msgid "Note: These preferences are only used when importing into an empty database."
 msgstr "Nota: Estas preferencias sólo se usan para la importación en una base de datos vacía."
 
-#. Resource IDs: (3014, 5225, 574, 576)
+#. Resource IDs: (3014, 5225)
 msgid "Notes"
 msgstr "Notas"
 
@@ -7006,6 +7027,10 @@ msgstr "Mostrar líneas de cuadrícula en la vista de lista"
 #. Resource IDs: (1490)
 msgid "Show identical compared fields (Note: Unknown fields were not compared.)"
 msgstr "Mostrar campos idénticos comparados (Nota: no se compararon los campos desconocidos.)"
+
+#. Resource IDs: (8104)
+msgid "Show tooltips"
+msgstr "Mostrar descripciones emergentes"
 
 #. Resource IDs: (5755)
 msgid "Shutdown, Restart or Logoff in progress"
