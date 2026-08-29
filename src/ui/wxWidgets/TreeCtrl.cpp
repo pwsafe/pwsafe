@@ -1407,7 +1407,7 @@ void TreeCtrl::OnBeginDrag(wxTreeEvent& evt)
       wxPoint mousePt = ScreenToClient(wxGetMousePosition());
       wxRect rect;
       GetBoundingRect(item, rect, true);
-      if(! m_drag_image->BeginDrag(mousePt - rect.GetLeftTop(), this, true)) {
+      if(! m_drag_image->BeginDrag(mousePt - rect.GetLeftTop(), this, false)) {
         pws_os::Trace(L"BeginDrag failed");
         wxDELETE(m_drag_image);
       }
