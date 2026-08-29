@@ -6,13 +6,12 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Password Safe\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-08 12:15+0300\n"
-"PO-Revision-Date: 2026-06-12 09:11+0200\n"
-"Last-Translator: Milan Zabka <milan@zabka.top>\n"
-"Language-Team: Milan Zabka <milan@zabka.top>\n"
-"Language: sk\n"
+"POT-Creation-Date: 1900-01-01 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -654,6 +653,10 @@ msgstr "Kopírovať"
 msgid "&Copy Password to Clipboard"
 msgstr "Skopíruj heslo do schránky"
 
+#. Resource IDs: (575, 577)
+msgid "&Custom Fields"
+msgstr ""
+
 #. Resource IDs: (1344, 1405, 1628, 32055 - MenuEx, 34104)
 msgid "&Delete"
 msgstr "Zmazať"
@@ -829,6 +832,10 @@ msgstr "Nový/upraviť filter"
 #. Resource IDs: (2, 5438)
 msgid "&No"
 msgstr "&Nie"
+
+#. Resource IDs: (574, 576)
+msgid "&Notes"
+msgstr ""
 
 #. Resource IDs: (32138 - MenuEx)
 msgid "&Notes Font"
@@ -2750,7 +2757,7 @@ msgstr "Aktuálna verzia:\t%s\nPosledná verzia:\t%s\n\nNavštívte webovú str�
 msgid "Custom Field"
 msgstr "Vlastné pole"
 
-#. Resource IDs: (3096, 5231, 575, 577)
+#. Resource IDs: (3096, 5231)
 msgid "Custom Fields"
 msgstr "Vlastné polia"
 
@@ -5163,7 +5170,7 @@ msgstr "Poznámka: Tieto zásady hesiel nenahradia existujúce zásady s rovnak�
 msgid "Note: These preferences are only used when importing into an empty database."
 msgstr "Poznámka: Tieto predvoľby sa používajú iba pri importe do prázdnej databázy."
 
-#. Resource IDs: (3014, 5225, 574, 576)
+#. Resource IDs: (3014, 5225)
 msgid "Notes"
 msgstr "Poznámky"
 
@@ -6435,6 +6442,10 @@ msgstr "Zobraziť mriežku v zobrazení zoznamu"
 #. Resource IDs: (1490)
 msgid "Show identical compared fields (Note: Unknown fields were not compared.)"
 msgstr "Zobraziť identické porovnávané polia (Poznámka: Neznáme polia sa neporovnávali.)"
+
+#. Resource IDs: (8104)
+msgid "Show tooltips"
+msgstr ""
 
 #. Resource IDs: (5755)
 msgid "Shutdown, Restart or Logoff in progress"

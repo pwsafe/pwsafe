@@ -6375,6 +6375,10 @@ msgstr ""
 msgid "Show identical compared fields (Note: Unknown fields were not compared.)"
 msgstr ""
 
+#. Resource IDs: (8104)
+msgid "Show tooltips"
+msgstr ""
+
 #. Resource IDs: (5755)
 msgid "Shutdown, Restart or Logoff in progress"
 msgstr ""
