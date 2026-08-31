@@ -68,11 +68,15 @@ BOOL CAddEdit_Basic_CustomFieldsPage::OnInitDialog()
   m_customFieldsList.SetFont(Fonts::GetInstance()->GetAddEditFont());
   m_customFieldsList.SetExtendedStyle(LVS_EX_FULLROWSELECT);
 
+  CRect rcList;
+  m_customFieldsList.GetClientRect(&rcList);
+  const int nameWidth = rcList.Width() / 4;
+
   CString cs_col;
   cs_col.LoadString(IDS_NAME);
-  m_customFieldsList.InsertColumn(0, cs_col, LVCFMT_LEFT, 90);
+  m_customFieldsList.InsertColumn(0, cs_col, LVCFMT_LEFT, nameWidth);
   cs_col.LoadString(IDS_VALUE);
-  m_customFieldsList.InsertColumn(1, cs_col, LVCFMT_LEFT, 160);
+  m_customFieldsList.InsertColumn(1, cs_col, LVCFMT_LEFT, rcList.Width() - nameWidth);
   LoadCustomFieldsFromList();
 
   const bool bReadOnly = (M_uicaller() == IDS_VIEWENTRY ||

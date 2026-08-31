@@ -9,6 +9,7 @@
 #include "StdAfx.h"
 #include "CustomFieldEditDlg.h"
 
+#include "Fonts.h"
 #include "GeneralMsgBox.h"
 
 //IMPLEMENT_DYNAMIC(CCustomFieldEditDlg, CDialog)
@@ -36,6 +37,11 @@ void CCustomFieldEditDlg::DoDataExchange(CDataExchange* pDX)
 BOOL CCustomFieldEditDlg::OnInitDialog()
 {
   CPWDialog::OnInitDialog();
+
+  auto pFont = Fonts::GetInstance()->GetAddEditFont();
+  GetDlgItem(IDC_CF_NAME)->SetFont(pFont);
+  GetDlgItem(IDC_CF_VALUE)->SetFont(pFont);
+
   return TRUE;
 }
 
