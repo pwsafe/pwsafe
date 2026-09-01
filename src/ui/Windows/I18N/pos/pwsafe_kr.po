@@ -8731,7 +8731,9 @@ msgstr ""
 msgid ""
 "\n"
 "Export Attachment..."
-msgstr "기타 텍스트 보내기"
+msgstr ""
+"\n"
+"기타 텍스트 보내기..."
 
 #. Resource IDs: (32086)
 msgid ""

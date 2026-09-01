@@ -885,7 +885,7 @@ msgstr "&Kopēt paroli starpliktuvē"
 
 #. Resource IDs: (575, 577)
 msgid "&Custom Fields"
-msgstr "&pielāgotie lauki"
+msgstr "&Pielāgotie lauki"
 
 #. Resource IDs: (1344, 1405, 1628, 32055 - MenuEx, 34104)
 msgid "&Delete"

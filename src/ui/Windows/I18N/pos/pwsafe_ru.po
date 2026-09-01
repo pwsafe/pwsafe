@@ -737,7 +737,7 @@ msgstr "&Копировать пароль в буфер обмена"
 
 #. Resource IDs: (575, 577)
 msgid "&Custom Fields"
-msgstr "и пользовательские поля"
+msgstr "&Пользовательские поля"
 
 #. Resource IDs: (1344, 1405, 1628, 32055 - MenuEx, 34104)
 msgid "&Delete"
@@ -933,7 +933,7 @@ msgstr "&Нет"
 
 #. Resource IDs: (574, 576)
 msgid "&Notes"
-msgstr "Примечания"
+msgstr "&Примечания"
 
 #. Resource IDs: (32138 - MenuEx)
 msgid "&Notes Font"
