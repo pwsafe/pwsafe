@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-08-29 13:15+0300\n"
+"PO-Revision-Date: 2026-09-01 19:37+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: kr\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -8718,7 +8731,7 @@ msgstr ""
 msgid ""
 "\n"
 "Export Attachment..."
-msgstr ""
+msgstr "기타 텍스트 보내기"
 
 #. Resource IDs: (32086)
 msgid ""
@@ -8741,18 +8754,24 @@ msgid ""
 "\n"
 "Export Entry to another Safe..."
 msgstr ""
+"\n"
+"항목을 XML 형식으로 내보내기..."
 
 #. Resource IDs: (32095)
 msgid ""
 "\n"
 "Export Group in XML format..."
 msgstr ""
+"\n"
+"항목을 XML 형식으로 내보내기..."
 
 #. Resource IDs: (32094)
 msgid ""
 "\n"
 "Export Group to Plain Text..."
 msgstr ""
+"\n"
+"항목을 텍스트 파일로 내보내기..."
 
 #. Resource IDs: (32096)
 msgid ""
@@ -8932,6 +8951,8 @@ msgid ""
 "\n"
 "Password Policies"
 msgstr ""
+"\n"
+"'비밀번호 내역'"
 
 #. Resource IDs: (32076)
 msgid ""

@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-08-29 10:11+0300\n"
+"PO-Revision-Date: 2026-09-01 19:33+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: da\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -7399,6 +7412,9 @@ msgid ""
 "\n"
 "Close the database and re-open it in R/W mode."
 msgstr ""
+"Databasen er blevet ændret, siden du åbnede den i R-O-tilstand, så det er ikke muligt at skifte til R/W-tilstand. \n"
+"\n"
+"Luk databasen og genåben den i R/W-tilstand."
 
 #. Resource IDs: (5412)
 #, c-format
@@ -7437,6 +7453,16 @@ msgid ""
 "Note: Choose \"Read-Write\" only if you are certain that the file isn't being used by anyone else,\n"
 "including another copy of Password Safe running on your machine."
 msgstr ""
+"Databasen: \n"
+"%s\n"
+"\n"
+"tilsyneladende bruges af: \n"
+"%s%s. \n"
+"\n"
+"Skal du åbne databasen for Skrivebeskyttet, Læse-Skriv eller Afslutte? \n"
+"\n"
+"Bemærk: Vælg kun \"Read-Write\", hvis du er sikker på, at filen ikke bliver brugt af andre, \n"
+"inklusive en anden kopi af Password Safe, der kører på din maskine."
 
 #. Resource IDs: (5775)
 #, c-format
@@ -7447,6 +7473,11 @@ msgid ""
 "\n"
 "has duplicate entries with the same group/title/user combination. You can fix this by validating the database."
 msgstr ""
+"Databasen: \n"
+"\n"
+"%s\n"
+"\n"
+"har duplikerede poster med samme gruppe/titel/bruger-kombination. Du kan løse dette ved at validere databasen."
 
 #. Resource IDs: (5250)
 msgid "The entered passwords do not match.  Please re-enter."
@@ -7476,7 +7507,7 @@ msgstr "Filteret XML version mangler."
 
 #. Resource IDs: (3442)
 msgid "The following ERRORS were detected and were FIXED."
-msgstr ""
+msgstr "Følgende FEJL blev opdaget og blev RETTET."
 
 #. Resource IDs: (3443)
 msgid "The following WARNINGS were detected - you should review and fix them manually."
@@ -7484,11 +7515,11 @@ msgstr "Følgende ADVARSLER blev opdaget - du bør gennemgå og rette dem manuel
 
 #. Resource IDs: (3454)
 msgid "The following attachments are not referred to by any entry."
-msgstr ""
+msgstr "Følgende vedhæftede materialer nævnes ikke i nogen post."
 
 #. Resource IDs: (6055)
 msgid "The following base entries have been exported because one or more of their dependents have been included."
-msgstr ""
+msgstr "Følgende basisposter er blevet eksporteret, fordi en eller flere af deres afhængige er inkluderet."
 
 #. Resource IDs: (3262)
 msgid "The following columns are unrecognized by PasswordSafe and will be ignored: "
@@ -7508,7 +7539,7 @@ msgstr ""
 
 #. Resource IDs: (3439)
 msgid "The following entries had a duplicate UUID field.  This has been corrected."
-msgstr ""
+msgstr "Følgende poster havde et duplikeret UUID-felt. Dette er blevet rettet."
 
 #. Resource IDs: (3433)
 #, c-format
@@ -7516,15 +7547,17 @@ msgid ""
 "The following entries had a policy name that already existed in this database but with different settings.\n"
 "A new named policy has been created with the current date/time (%ls) appended:%ls"
 msgstr ""
+"Følgende poster havde et politiknavn, der allerede eksisterede i denne database, men med andre indstillinger. \n"
+"En ny navngiven politik er blevet oprettet med den aktuelle dato/tid (%ls) tilføjet:%ls"
 
 #. Resource IDs: (3438)
 #, c-format
 msgid "The following entries had an empty Password field, which is not permitted. The password has been set to '%ls'"
-msgstr ""
+msgstr "De følgende poster havde et tomt Adgangskodefelt, hvilket ikke er tilladt. Adgangskoden er sat til '%ls'"
 
 #. Resource IDs: (3437)
 msgid "The following entries had an empty Title field, which is not permitted."
-msgstr ""
+msgstr "De følgende poster havde et tomt Title-felt, hvilket ikke er tilladt."
 
 #. Resource IDs: (3271)
 msgid "The following entries had an invalid Password History.  This has been rebuilt with available data.  There may be some loss of history."
@@ -7537,16 +7570,16 @@ msgstr "De følgende poster havde et ugyldigt UUID felt. Disse er blevet rettet"
 #. Resource IDs: (3390)
 #, c-format
 msgid "The following entries have one or more text fields too long to display or edit (over %d characters).  The largest entry size found was ~%d %ls."
-msgstr ""
+msgstr "Følgende poster har et eller flere tekstfelter, der er for lange til at vises eller redigere (over %d tegn). Den største indtastningsstørrelse, der blev fundet, var ~%d %ls."
 
 #. Resource IDs: (3441)
 #, c-format
 msgid "The following entries have passwords in the correct form for %ls, but the base entry does not exist."
-msgstr ""
+msgstr "De følgende poster har adgangskoder i korrekt form for %ls, men basisposten findes ikke."
 
 #. Resource IDs: (3453)
 msgid "The following entries refer to missing attachments."
-msgstr ""
+msgstr "Følgende indlæg omhandler manglende vedhæftede filer."
 
 #. Resource IDs: (3388)
 msgid "The following entries were duplicates of an existing entry."
@@ -7554,7 +7587,7 @@ msgstr "De følgende poster var dupletter af en eksisterende post."
 
 #. Resource IDs: (65535)
 msgid "The following entries' passwords are about to expire or have already expired:"
-msgstr ""
+msgstr "Følgende posters adgangskoder er ved at udløbe eller er allerede udløbet:"
 
 #. Resource IDs: (5481)
 #, c-format
@@ -7564,7 +7597,7 @@ msgstr "Den følgende post blev kopieret til %s databasen: '%ls:%ls:%ls'"
 #. Resource IDs: (5932)
 #, c-format
 msgid "The following entry was synchronized to the %s database: '%ls:%ls:%ls'"
-msgstr ""
+msgstr "Følgende post blev synkroniseret til %s-databasen: '%ls:%ls:%ls'"
 
 #. Resource IDs: (5787)
 msgid "The following records had errors in their Password History:"
@@ -7585,6 +7618,9 @@ msgid ""
 "The %s will override this menu item shortcut.\n"
 "Press OK/Apply to accept or change your selection."
 msgstr ""
+"Tastaturgenvejen '%s' er allerede tildelt menupunktet: '%s' \n"
+"Den %s vil tilsidesætte denne genvej i menuen. \n"
+"Tryk OK/Ansøg for at acceptere eller ændre dit valg."
 
 #. Resource IDs: (5950)
 #, c-format
@@ -7593,6 +7629,9 @@ msgid ""
 "\t«%s» «%s» «%s»\n"
 "Select another shortcut (it has been reset)."
 msgstr ""
+"Tastaturgenvejen '%s' bruges allerede af: \n"
+"\t«%s» «%s» «%s» \n"
+"Vælg en anden genvej (den er blevet nulstillet)."
 
 #. Resource IDs: (5279)
 msgid "The master password cannot be blank."
@@ -7616,7 +7655,7 @@ msgstr ""
 #. Resource IDs: (5792)
 #, c-format
 msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either export this entry to XML before changing it or open the database in read-only mode and copy it to an editor via the clipboard."
-msgstr ""
+msgstr "Notefeltet i denne post har mere tekst, end der kan vises. Hvis du ændrer dette felt og gemmer posten, vil feltet blive afkortet efter %d tegn. For at se det fulde indhold, eksporter enten denne post til XML før ændringen eller åbn databasen i skrivebeskyttet tilstand og kopier den til en editor via udklipsholderen."
 
 #. Resource IDs: (5284)
 msgid "The old master password is not correct"
@@ -7625,7 +7664,7 @@ msgstr "Den gamle hovedadgangskode er ikke korrekt"
 #. Resource IDs: (5323)
 #, c-format
 msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use \"File->Export To->Old (1.x or 2) format\"."
-msgstr ""
+msgstr "Den oprindelige database, \"%s\", er i pre-3.0 format. Dataene vil nu blive skrevet i det nye format, som ikke kan bruges af gamle versioner af PasswordSafe. For at gemme dataene i det gamle format, brug \"File->Export To->Old (1.x eller 2) format\"."
 
 #. Resource IDs: (5465)
 #, c-format
@@ -7684,6 +7723,9 @@ msgid ""
 "%ls\n"
 "Confirm to continue (All shortcuts to this entry will be deleted)?"
 msgstr ""
+"Denne artikel indeholder følgende %d %ls: \n"
+"%ls\n"
+"Bekræft at fortsætte (Alle genveje til denne post vil blive slettet)?"
 
 #. Resource IDs: (3403)
 #, c-format
@@ -8185,7 +8227,7 @@ msgstr "Brug navngivet politik"
 
 #. Resource IDs: (6062)
 msgid "Use anyway"
-msgstr ""
+msgstr "Brug det alligevel"
 
 #. Resource IDs: (5888)
 msgid "Use count"
@@ -9883,7 +9925,7 @@ msgstr "den følgende tekst:"
 
 #. Resource IDs: (5966)
 msgid "the passwords and data of all entries in this group"
-msgstr ""
+msgstr "adgangskoder og data for alle poster i denne gruppe"
 
 #. Resource IDs: (6051)
 msgid "the passwords and data of these filtered entries"
