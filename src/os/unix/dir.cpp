@@ -207,8 +207,8 @@ stringT pws_os::getxmldir(void)
 {
    stringT xmldir = pws_os::getenv("PWS_XMLDIR", true);
   if (xmldir.empty()) {
-#ifdef __FreeBSD__
-  xmldir = _T("/usr/local/share/pwsafe/xml/");
+#if defined(__FreeBSD__) || defined(__OpenBSD__)
+  xmldir = _T("/usr/local/share/passwordsafe/xml/");
 #else
   xmldir = _T("/usr/share/passwordsafe/xml/");
 #endif
@@ -220,8 +220,8 @@ stringT pws_os::gethelpdir(void)
 {
   stringT helpdir = pws_os::getenv("PWS_HELPDIR", true);
   if (helpdir.empty()) {
-#if defined( __FreeBSD__) || defined(__OpenBSD)
-    helpdir = _T("/usr/local/share/doc/passwordsafe/help/");
+#if defined(__FreeBSD__) || defined(__OpenBSD__)
+    helpdir = _T("/usr/local/share/passwordsafe/help/");
 #else
     helpdir = _T("/usr/share/passwordsafe/help/");
 #endif
