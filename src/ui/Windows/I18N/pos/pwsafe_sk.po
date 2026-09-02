@@ -3613,7 +3613,7 @@ msgstr "Klávesová skratka %ls záznamu %ls je už pridelená aplikácii Passwo
 
 #. Resource IDs: (5952)
 msgid "Entry keyboard shortcuts must have either or both of the Alt and Ctrl keys and an alphanumeric character (0-9, A-Z)."
-msgstr "Klávesové skratky záznamov musia mať pridelený buď jeden alebo obidve klávesy Alt a Ctrl a nejaký alfanumerický znak (0-9, A-Z)."
+msgstr "Klávesové skratky záznamov musia mať pridelený buď jeden alebo obidva klávesy Alt a Ctrl a nejaký alfanumerický znak (0-9, A-Z)."
 
 #. Resource IDs: (5942)
 #, c-format
@@ -3622,7 +3622,7 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Klávesové skratky záznamov musia mať pridelený buď jeden alebo obidve klávesy Alt a Ctrl.\n"
+"Klávesové skratky záznamov musia mať pridelený buď jeden alebo obidva klávesy Alt a Ctrl.\n"
 "\n"
 "%s"
 
@@ -6009,7 +6009,7 @@ msgstr "Portugalská (brazílska ABNT)"
 
 #. Resource IDs: (6049)
 msgid "Position 1 is the first character, 2 is the second etc. up to N for the last character of a password of length N. -1 is the last character, -2 the next to last etc. up to -N for the first password character. Positions must be separated by either spaces, commas or semi-colons to be recognised. There must also be a space, comma or semi-colon at the end of the list."
-msgstr "Pozícia 1 je prvý znak, 2 je druhý atď. Až do N pre posledný znak hesla dĺžky N. -1 je posledný znak, -2 ďalší až posledný atď. Až do -N pre prvý znak hesla. Pozície musia byť oddelené medzerami, čiarkami alebo bodkočiarkami, aby boli rozpoznateľné. Medzera, čiarka alebo bodkočiarka musí byť aj na konci zoznamu."
+msgstr "Pozícia 1 je prvý znak, 2 je druhý atď., až do N pre posledný znak hesla dĺžky N. -1 je posledný znak, -2 predposledný atď., až do -N pre prvý znak hesla. Pozície musia byť oddelené medzerami, čiarkami alebo bodkočiarkami, aby boli rozpoznateľné. Medzera, čiarka alebo bodkočiarka musí byť aj na konci zoznamu."
 
 #. Resource IDs: (65535)
 msgid "Positions:"
@@ -6189,7 +6189,7 @@ msgstr "Relatívne dátumy sú voči dnešku, napr. '-1' je včera a '1' je zajt
 
 #. Resource IDs: (1295, 65535)
 msgid "Remember last"
-msgstr "Zapamätať posledný"
+msgstr "Pamätať si"
 
 #. Resource IDs: (8100)
 msgid "Remember this keyboard"
@@ -6257,7 +6257,7 @@ msgstr "Obnoviť"
 
 #. Resource IDs: (1368)
 msgid "Reset All Program Shortcuts"
-msgstr "Obnoviť všetky skratky na pôvodné"
+msgstr "Obnoviť všetky na pôvodné"
 
 #. Resource IDs: (32215 - Menu)
 msgid "Reset Column Width"
@@ -6830,7 +6830,7 @@ msgstr "Zobraziť identické porovnávané polia (Poznámka: Neznáme polia sa n
 
 #. Resource IDs: (8104)
 msgid "Show tooltips"
-msgstr "Zobraziť tooltipy"
+msgstr "Zobraziť popisy"
 
 #. Resource IDs: (5755)
 msgid "Shutdown, Restart or Logoff in progress"
@@ -7603,7 +7603,7 @@ msgstr "Tento index sa v súčasnosti používa. Vyberte iný."
 
 #. Resource IDs: (8170)
 msgid "This is a DeadKey. Press it and then one of the combined keys then shown to add that new character to the Passphrase."
-msgstr "Toto je DeadKey. Stlačte ho a potom jedno zo zobrazených kombinovaných klávesov, čím pridáte nový znak do prístupovej frázy."
+msgstr "Toto je DeadKey. Stlačte ho a potom jeden zo zobrazených kombinovaných klávesov, čím pridáte nový znak do prístupovej frázy."
 
 #. Resource IDs: (5703)
 msgid "This is a shortcut base entry."
@@ -9786,7 +9786,7 @@ msgstr "zhora"
 
 #. Resource IDs: (1098)
 msgid "used entries in System Tray menu."
-msgstr "nedávno použitých položiek (história)"
+msgstr "nedávno použité položky (história)"
 
 #. Resource IDs: (32011 - MenuEx)
 msgid "v&1.x format..."
