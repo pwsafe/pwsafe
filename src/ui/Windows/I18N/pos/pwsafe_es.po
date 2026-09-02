@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-08-29 10:13+0300\n"
+"PO-Revision-Date: 2026-09-01 19:35+0300\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: es\n"
@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 3.9\n"
 
+# msgid/msgstr fields for Accelerator keys
+# Format is: "ID:xxxxxx:VACS+X" where:
+#    ID:xxxxx = the menu ID corresponding to the accelerator
+#    V = Virtual key (or blank if not used) - nearly always set!
+#    A = Alt key     (or blank if not used)
+#    C = Ctrl key    (or blank if not used)
+#    S = Shift key   (or blank if not used)
+#    X = upper case character
+# e.g. "V CS+Q" == Ctrl + Shift + 'Q'
+# ONLY Accelerator Keys with corresponding alphanumeric characters can be
+# updated i.e. function keys (F2), special keys (Delete, HoMe) etc. will not.
+# ONLY change the msgstr field. Do NOT change any other.
+# If you do not want to change an Accelerator Key, copy msgid to msgstr
 # msgid/msgstr fields for Accelerator keys
 # Format is: "ID:xxxxxx:VACS+X" where:
 #    ID:xxxxx = the menu ID corresponding to the accelerator
@@ -937,7 +950,7 @@ msgstr "&Copiar contraseña al portapapeles"
 
 #. Resource IDs: (575, 577)
 msgid "&Custom Fields"
-msgstr ""
+msgstr "&Campos personalizados"
 
 #. Resource IDs: (1344, 1405, 1628, 32055 - MenuEx, 34104)
 msgid "&Delete"
@@ -1119,7 +1132,7 @@ msgstr "&No"
 
 #. Resource IDs: (574, 576)
 msgid "&Notes"
-msgstr ""
+msgstr "&Notas"
 
 #. Resource IDs: (32138 - MenuEx)
 msgid "&Notes Font"
@@ -7506,6 +7519,11 @@ msgid ""
 "\n"
 "has duplicate entries with the same group/title/user combination. You can fix this by validating the database."
 msgstr ""
+"La base de datos: \n"
+"\n"
+"%s\n"
+"\n"
+"tiene entradas duplicadas con la misma combinación de grupo/título/usuario. Puedes solucionarlo validando la base de datos."
 
 #. Resource IDs: (5250)
 msgid "The entered passwords do not match.  Please re-enter."
@@ -7547,11 +7565,11 @@ msgstr "Los siguientes anexos no se mencionan en ninguna entrada."
 
 #. Resource IDs: (6055)
 msgid "The following base entries have been exported because one or more of their dependents have been included."
-msgstr ""
+msgstr "Las siguientes entradas base se han exportado porque uno o más de sus dependientes han sido incluidos."
 
 #. Resource IDs: (3262)
 msgid "The following columns are unrecognized by PasswordSafe and will be ignored: "
-msgstr ""
+msgstr "Las siguientes columnas no son reconocidas por PasswordSafe y serán ignoradas:"
 
 #. Resource IDs: (3375)
 msgid "The following columns were recognised but only Group/Title, Username and Password will be processed:"
@@ -7683,7 +7701,7 @@ msgstr ""
 #. Resource IDs: (5792)
 #, c-format
 msgid "The notes field of this entry has more text than can be displayed. Changing this field and saving the entry will result in this field being truncated after %d characters.  To view the full contents, either export this entry to XML before changing it or open the database in read-only mode and copy it to an editor via the clipboard."
-msgstr ""
+msgstr "El campo notas de esta entrada tiene más texto del que puede mostrarse. Cambiar este campo y guardar la entrada hará que este campo se trunque tras %d caracteres. Para ver el contenido completo, exporta esta entrada a XML antes de modificarla o abre la base de datos en modo solo lectura y cópiala a un editor a través del portapapeles."
 
 #. Resource IDs: (5284)
 msgid "The old master password is not correct"
@@ -7692,7 +7710,7 @@ msgstr "La contraseña maestra antigua no es correcta"
 #. Resource IDs: (5323)
 #, c-format
 msgid "The original database, \"%s\", is in pre-3.0 format. The data will now be written in the new format, which is unusable by old versions of PasswordSafe. To save the data in the old format, use \"File->Export To->Old (1.x or 2) format\"."
-msgstr ""
+msgstr "La base de datos original, \"%s\", está en formato anterior a la 3.0. Los datos ahora se escribirán en el nuevo formato, que es inutilizable por versiones antiguas de PasswordSafe. Para guardar los datos en el formato antiguo, utilice el formato \"File->Export To->Old (1.x o 2)\"."
 
 #. Resource IDs: (5465)
 #, c-format
@@ -7810,7 +7828,7 @@ msgstr "Este es el código de autenticación actual. Haga clic en el botón para
 #. Resource IDs: (5121)
 #, c-format
 msgid "This is the percentage of Window transparency. 0% means normal fully opaque and 100% is totally transparent and invisible. Values greater than 50% are not supported. Note: This only applies to the main dialog window."
-msgstr ""
+msgstr "Este es el porcentaje de transparencia de la ventana. 0% significa normal totalmente opaco y 100 % i totalmente transparente e invisible. No se admiten valores superiores a 50% a. Nota: Esto solo se aplica a la ventana principal de diálogo."
 
 #. Resource IDs: (61710)
 #, c-format
@@ -8161,7 +8179,7 @@ msgstr "Sin título"
 
 #. Resource IDs: (5102)
 msgid "Update the maximum number of saved passwords per entry."
-msgstr ""
+msgstr "Actualiza el número máximo de contraseñas guardadas por entrada."
 
 #. Resource IDs: (5741)
 #, c-format
