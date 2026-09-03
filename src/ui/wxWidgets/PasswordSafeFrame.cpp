@@ -1457,6 +1457,19 @@ CItemData *PasswordSafeFrame::GetSelectedEntry() const
   return nullptr;
 }
 
+/**
+ * If the selected item is an 'Alias' or a 'Shortcut' the item's base
+ * is returned. If the selected item is a 'Normal' item (not of type
+ * 'Alias' or 'Shortcut') the item itself is returned.
+ * The return value is 'nullptr' if no selection has been made in the
+ * view.
+ */
+CItemData *PasswordSafeFrame::GetSelectedEntryOrBase() const
+{
+  auto item = GetSelectedEntry();
+  return (item && item->IsDependent()) ? m_core.GetBaseEntry(item) : item;
+}
+
 // Following is "generalized" GetSelectedEntry to support section via RUE
 CItemData *PasswordSafeFrame::GetSelectedEntry(const wxCommandEvent& evt, CItemData &rueItem) const
 {
