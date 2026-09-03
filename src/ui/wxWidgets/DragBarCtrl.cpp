@@ -44,6 +44,8 @@
 #include "graphics/dragbar/new/URLX.xpm"
 #include "graphics/dragbar/new/User.xpm"
 #include "graphics/dragbar/new/UserX.xpm"
+#include "graphics/dragbar/new/AuthCode.xpm"
+#include "graphics/dragbar/new/AuthCodeX.xpm"
 #include "graphics/dragbar/new/Dnd.xpm"
 #include "graphics/dragbar/new/DndX.xpm"
 //-- classic bitmaps...
@@ -61,6 +63,8 @@
 #include "graphics/dragbar/classic/URLX.xpm"
 #include "graphics/dragbar/classic/User.xpm"
 #include "graphics/dragbar/classic/UserX.xpm"
+#include "graphics/dragbar/classic/AuthCode.xpm"
+#include "graphics/dragbar/classic/AuthCodeX.xpm"
 #include "graphics/dragbar/classic/Dnd.xpm"
 #include "graphics/dragbar/classic/DndX.xpm"
 
@@ -75,6 +79,7 @@ enum
   ID_DRAGBAR_NOTES,
   ID_DRAGBAR_URL,
   ID_DRAGBAR_EMAIL,
+  ID_DRAGBAR_AUTHCODE,
   ID_DRAGBAR_DND
 };
 
@@ -139,9 +144,19 @@ struct DragbarToolInfo {
    */
   wxString GetTooltipForButton() const
   {
-    return (id == ID_DRAGBAR_DND) ?
-      _("Drag this image onto another window to paste the selected element or tree.") :
-      wxString::Format(_("Drag this image onto another window to paste the '%s' field."), wxGetTranslation(name));
+    wxString tooltip;
+
+    switch (id) {
+      case ID_DRAGBAR_AUTHCODE:
+        tooltip = _("Drag this image onto another window to paste the authentication code.");
+        break;
+      case ID_DRAGBAR_DND:
+        tooltip = _("Drag this image onto another window to paste the selected element or tree.");
+        break;
+      default:
+        tooltip = wxString::Format(_("Drag this image onto another window to paste the '%s' field."), wxGetTranslation(name));
+    }
+    return tooltip;
   }
 };
 
@@ -154,6 +169,7 @@ std::vector<DragbarToolInfo> DragbarToolInfos =
     { ID_DRAGBAR_NOTES,     _("Notes"),     PWS_DRAGBAR_BITMAPS(Notes),     CItemData::FieldType::NOTES           },
     { ID_DRAGBAR_URL,       _("Url"),       PWS_DRAGBAR_BITMAPS(URL),       CItemData::FieldType::URL             },
     { ID_DRAGBAR_EMAIL,     _("Email"),     PWS_DRAGBAR_BITMAPS(Email),     CItemData::FieldType::EMAIL           },
+    { ID_DRAGBAR_AUTHCODE,  _("Auth-Code"), PWS_DRAGBAR_BITMAPS(AuthCode),  CItemData::FieldType::UNKNOWNFIELDS   },
     { ID_DRAGBAR_DND,       _T("Dnd"),      PWS_DRAGBAR_BITMAPS(Dnd),       CItemData::FieldType::UNKNOWNFIELDS   }
   };
 
@@ -261,12 +277,19 @@ wxString DragBarCtrl::GetText(int toolId) const
     return wxEmptyString;
   }
 
-  for (const auto & toolInfo : DragbarToolInfos) {
-    if (toolId == toolInfo.id) {
-      return towxstring(pci->GetEffectiveFieldValue(toolInfo.field_type, pbci));
+  if (toolId == ID_DRAGBAR_AUTHCODE) {
+    auto item = mainFrame->GetSelectedEntryOrBase();
+    if (item && item->IsTotpActive()) {
+      return towxstring((mainFrame->GetTotpData(item)).first);
     }
   }
-
+  else {
+    for (const auto & toolInfo : DragbarToolInfos) {
+      if (toolId == toolInfo.id) {
+        return towxstring(pci->GetEffectiveFieldValue(toolInfo.field_type, pbci));
+      }
+    }
+  }
   return wxEmptyString;
 }
 
@@ -330,6 +353,7 @@ void DragBarCtrl::OnUpdateUI(wxUpdateUIEvent& event)
   wxASSERT(mainFrame && mainFrame->m_tree);
 
   const auto selection         = mainFrame->GetSelectedEntry();
+  const auto selectionOrBase   = mainFrame->GetSelectedEntryOrBase();
   const auto isTreeView        = mainFrame->IsTreeView();
   const auto hasGroupSelection = mainFrame->m_tree->IsGroupSelected();
   const auto hasItemSelection  = selection != nullptr;
@@ -341,6 +365,7 @@ void DragBarCtrl::OnUpdateUI(wxUpdateUIEvent& event)
   const auto hasNotes          = hasItemSelection && (selection->IsNotesSet());
   const auto hasURL            = hasItemSelection && (selection->IsURLSet());
   const auto hasEmail          = hasItemSelection && (selection->IsEmailSet());
+  const auto hasTotp           = selectionOrBase && selectionOrBase->IsTotpActive();
 
   switch (event.GetId()) {
     case ID_DRAGBAR_GROUP:
@@ -363,6 +388,9 @@ void DragBarCtrl::OnUpdateUI(wxUpdateUIEvent& event)
       break;
     case ID_DRAGBAR_EMAIL:
       event.Enable(hasEmail);
+      break;
+    case ID_DRAGBAR_AUTHCODE:
+      event.Enable(hasTotp);
       break;
     case ID_DRAGBAR_DND:
       event.Enable(isTreeView && hasAnySelection);
