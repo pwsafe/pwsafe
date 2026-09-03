@@ -1,7 +1,7 @@
 /* XPM */
 static const char * const copyauthcode_disabled_xpm[] = {
 "16 16 54 1",
-" 	c #C0C0C0",
+" 	c None",
 ".	c #949494",
 "+	c #EDEDED",
 "@	c #6B6B6B",
