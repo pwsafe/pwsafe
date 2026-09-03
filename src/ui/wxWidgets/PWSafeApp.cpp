@@ -549,8 +549,9 @@ void PWSafeApp::FinishInit() {
   
   if (pws_os::FileExists(wsAutoLoad)) {
     stringT strErrors = L"";
+    stringT XSDFilename = PWSdirs::GetXMLDir() + PWSFilters::schema_filename;
     int rc = m_frame->ImportFilterXMLFile(FPOOL_AUTOLOAD, L"", wsAutoLoad,
-                                          L"", strErrors, &anAsker, nullptr); // Only summary will be reported
+                                          XSDFilename, strErrors, &anAsker, nullptr); // Only summary will be reported
     if (rc != PWScore::SUCCESS) {
       wxMessageBox(towxstring(strErrors), _("Unable to import \"autoload_filters.xml\""), wxOK | wxICON_ERROR);
     }

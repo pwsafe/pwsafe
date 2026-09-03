@@ -371,6 +371,8 @@ class PWScore;
 
 class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
  public:
+  static const stringT schema_filename;
+
   typedef std::pair<st_Filterkey, st_filters> Pair;
   
   int WriteFilterXMLFile(const StringX &filename, const PWSfileHeader &hdr,
