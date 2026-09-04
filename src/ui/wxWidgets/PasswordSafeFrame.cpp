@@ -1458,16 +1458,19 @@ CItemData *PasswordSafeFrame::GetSelectedEntry() const
 }
 
 /**
- * If the selected item is an 'Alias' or a 'Shortcut' the item's base
- * is returned. If the selected item is a 'Normal' item (not of type
- * 'Alias' or 'Shortcut') the item itself is returned.
+ * The selected item is returned if it is a 'Normal' item or a
+ * 'Base' item.
+ * If the selected item is a 'Shortcut' or 'Alias' without TOTP
+ * configuration the item's base is returned.
+ * If the selected item is an 'Alias' with TOTP configuration the
+ * 'Alias' is returned.
  * The return value is 'nullptr' if no selection has been made in the
  * view.
  */
-CItemData *PasswordSafeFrame::GetSelectedEntryOrBase() const
+const CItemData *PasswordSafeFrame::GetSelectedEntryOrBase() const
 {
   auto item = GetSelectedEntry();
-  return (item && item->IsDependent()) ? m_core.GetBaseEntry(item) : item;
+  return GetTotpItem(item);
 }
 
 // Following is "generalized" GetSelectedEntry to support section via RUE
@@ -2083,15 +2086,19 @@ const CItemData* PasswordSafeFrame::GetTotpItem(const CItemData *item) const
     // GetBaseEntry doesn't like nullptr
     return nullptr;
   }
-  if (item->IsNormal() || item->IsBase()) {
+  // Item is 'Shortcut' or 'Alias' without TOTP configuration
+  if (item->IsShortcut() || (item->IsAlias() && !item->IsTotpActive())) {
+    return m_core.GetBaseEntry(item);
+  }
+  // Item is 'Normal', 'Base' or 'Alias' with TOTP configuration
+  else {
     return item;
   }
-  return m_core.GetBaseEntry(item);
 }
 
-bool PasswordSafeFrame::IsItemNormalOrBase(const CItemData *item) const
+bool PasswordSafeFrame::IsItemShortcut(const CItemData *item) const
 {
-  return item == nullptr ? false : item->IsNormal() || item->IsBase();
+  return item == nullptr ? false : item->IsShortcut();
 }
 
 bool PasswordSafeFrame::HasItemTwoFactorKey(const CItemData *item) const

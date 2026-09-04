@@ -685,7 +685,7 @@ wxScrolledWindow* AddEditPropSheetDlg::CreateAdditionalPanel()
   m_AdditionalShowHideCtrl->SetToolTip(_("Show authentication secret"));
   m_AdditionalHBoxSizerTwoFactorKey->Add(m_AdditionalShowHideCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER|wxRIGHT, 5);
 
-  if (m_Core.IsReadOnly() || !IsItemNormalOrBase()) {
+  if (m_Core.IsReadOnly() || IsItemShortcut()) {
     staticTextTwoFactorKey->Disable();
     m_AdditionalTwoFactorKeyCtrl->Disable();
     m_AdditionalShowHideCtrl->Disable();
@@ -1908,7 +1908,7 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
   m_Email = m_Item.GetEmail().c_str();
   m_Password = m_Item.GetPassword();
 
-  if (IsItemNormalOrBase() && HasItemTwoFactorKey()) {
+  if (!IsItemShortcut() && HasItemTwoFactorKey()) {
     auto twoFactorKey = m_Item.GetTwoFactorKey();
     m_AdditionalTwoFactorKeyCtrl->ChangeValue(twoFactorKey.c_str());
   }
@@ -2720,7 +2720,7 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
     m_Item.SetPWHistory(PWHistList::MakePWHistoryHeader(true, m_MaxPasswordHistory));
   }
 
-  if (IsItemNormalOrBase()) {
+  if (!IsItemShortcut()) {
     ApplyTwoFactorKey(m_Item);
   }
 
@@ -3015,7 +3015,7 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
  
   // two factor key
   {
-    if (IsItemNormalOrBase()) {
+    if (!IsItemShortcut()) {
       const StringX twofactorkey = tostringx(m_AdditionalTwoFactorKeyCtrl->GetValue());
       if (twofactorkey != m_Item.GetTwoFactorKey()) {
         changes |= Changes::TwoFactorKey;
