@@ -363,16 +363,11 @@ void ManageFiltersDlg::CreateControls()
   
   m_MapFiltersGrid->EnableEditing(false);
   
-  // Determine minimal size of the Grid
-  int width = m_MapFiltersGrid->GetRowLabelSize();
-  for(int i = 0; i < MFLC_NUM_COLUMNS; i++) {
-    width += m_MapFiltersGrid->GetColSize(i);
-  }
-  wxSize minSize(width, (m_FontHeight + 10) * FLT_DEFAULT_NUM_ROWS);
+  const wxSize minSize(-1, (m_FontHeight + 10) * FLT_DEFAULT_NUM_ROWS);
   m_MapFiltersGrid->SetMinClientSize(minSize);
-  // At the end bind dynmic events
   m_MapFiltersGrid->BindEvents();
   
+  basicGridSizer->AddGrowableCol(0);
   basicGridSizer->Add(m_MapFiltersGrid, wxGBPosition(/*row:*/ 0, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 5, /*columnspan:*/ 1), wxALIGN_LEFT|wxALIGN_TOP|wxALL|wxEXPAND, 5);
 
   wxButton* itemButton6 = new wxButton( itemDialog1, wxID_NEW, _("&New"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -1177,14 +1172,13 @@ void ManageFiltersDlg::OnSize(wxSizeEvent &event)
     wxSize gridFilterSize = m_filterGrid->GetSize();
     
     // Use half the size for the filter map the the filter grid
-    int widthDiff = event.GetSize().GetWidth() - windowSize.GetWidth();
     int heightDiff = event.GetSize().GetHeight() - windowSize.GetHeight();
     int mapHeightDiff = heightDiff / 2;
     int filterHeightDiff = heightDiff - mapHeightDiff;
     
-    mapFiltersSize.SetWidth(mapFiltersSize.GetWidth() + widthDiff);
+    mapFiltersSize.SetWidth(-1);
     mapFiltersSize.SetHeight(mapFiltersSize.GetHeight() + mapHeightDiff);
-    gridFilterSize.SetWidth(gridFilterSize.GetWidth() + widthDiff);
+    gridFilterSize.SetWidth(-1);
     gridFilterSize.SetHeight(gridFilterSize.GetHeight() + filterHeightDiff);
     
     m_MapFiltersGrid->SetMinSize(mapFiltersSize);
