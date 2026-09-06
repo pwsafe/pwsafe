@@ -2186,8 +2186,8 @@
       <tuv lang="en-US">
         <seg>Note: each entry may override this value.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T195655Z">
-        <seg>Примечание. Данное значение может быть переопределено в свойствах элемента.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T132341Z">
+        <seg>Примечание. Данное значение может быть переопределено в свойствах элемента</seg>
       </tuv>
     </tu>
     <tu>
@@ -4044,8 +4044,8 @@
       <tuv lang="en-US">
         <seg>After version 3.42.1, the preference element is augmented with XML attributes that are used to set the virtual key code and modifier flags (e.g., Ctrl="1" Key="30") to the internal Password Safe format that can be used across other platforms.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170814T205049Z" creationid="pm_kan" creationdate="20170814T205049Z">
-        <seg>После версии 3.42.1 в элемент были добавлены атрибуты для указания кода клавиши и флагов модификаторов (например, Ctrl="1" Key="30") во внутреннем формате Password Safe, который может использоваться на разных платформах.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T132510Z" creationid="pm_kan" creationdate="20170814T205049Z">
+        <seg>После версии 3.42.1 в элемент были добавлены атрибуты для указания кода клавиши и флагов модификаторов (например, Ctrl="1" Key="30") во внутреннем формате Password Safe, который может использоваться на разных платформах</seg>
       </tuv>
     </tu>
     <tu>
@@ -4252,8 +4252,8 @@
       <tuv lang="en-US">
         <seg>Allow multiple instances of password Safe to be started.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T182541Z">
-        <seg>Разрешить одновременный запуск нескольких копий Password Safe</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T131325Z">
+        <seg>Разрешить одновременный запуск нескольких копий Password Safe.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6965,16 +6965,16 @@
       <tuv lang="en-US">
         <seg>Do NOT enclose this value in single or double quotes unless your chosen browser requires them.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170814T205402Z" creationid="pm_kan" creationdate="20170814T205402Z">
-        <seg>Не заключайте значение в кавычки, если это не требуется для выбранного браузера.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T132512Z" creationid="pm_kan" creationdate="20170814T205402Z">
+        <seg>Не заключайте значение в кавычки, если это не требуется для выбранного браузера</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-US">
         <seg>Do NOT enclose this value in single or double quotes unless your chosen external editor requires them.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170814T205434Z" creationid="pm_kan" creationdate="20170814T205434Z">
-        <seg>Не заключайте значение в кавычки, если это не требуется для выбранного редактора.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T132544Z" creationid="pm_kan" creationdate="20170814T205434Z">
+        <seg>Не заключайте значение в кавычки, если это не требуется для выбранного редактора</seg>
       </tuv>
     </tu>
     <tu>
@@ -8091,6 +8091,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>FindToolBarActive</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T130653Z" creationid="pm_kan" creationdate="20260906T130653Z">
+        <seg>FindToolBarActive</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Finding Password Entries</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20180114T114755Z" creationid="pm_kan" creationdate="20180114T114755Z">
@@ -8493,8 +8501,8 @@
       <tuv lang="en-US">
         <seg>Full path to a text editor to be used to edit an entry's Notes field rather than the Windows default application.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T194844Z">
-        <seg>Полный путь к внешнему редактору для изменения заметок.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T132517Z">
+        <seg>Полный путь к внешнему редактору для изменения заметок</seg>
       </tuv>
     </tu>
     <tu>
@@ -8717,8 +8725,8 @@
       <tuv lang="en-US">
         <seg>Hide Password Safe from Windows' screen capture function</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20231022T142728Z" creationid="pm_kan" creationdate="20231022T142728Z">
-        <seg>Скрывать окна Password Safe при захвате экрана (скриншоты, запись видео, RDP, ...) в ОС Windows.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T131745Z" creationid="pm_kan" creationdate="20231022T142728Z">
+        <seg>Скрывать окна Password Safe при захвате экрана (скриншоты, запись видео, RDP, ...) в ОС Windows</seg>
       </tuv>
     </tu>
     <tu>
@@ -8837,8 +8845,8 @@
       <tuv lang="en-US">
         <seg>How to choose wide or tall dialog screens: 0 - automatically (default), 1 - force tall, 2 - force wide.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20151004T165210Z" creationid="pm_kan" creationdate="20151004T163813Z">
-        <seg>Выбор между «широкими» и «высокими» диалогами: 0 — автоматически (значение по умолчанию), 1 — всегда использовать «высокие», 2 — всегда использовать «широкие».</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T132436Z" creationid="pm_kan" creationdate="20151004T163813Z">
+        <seg>Выбор между «широкими» и «высокими» диалогами: 0 — автоматически (значение по умолчанию), 1 — всегда использовать «высокие», 2 — всегда использовать «широкие»</seg>
       </tuv>
     </tu>
     <tu>
@@ -9331,9 +9339,9 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>If checked, the notes of an hovered item will be shown.</seg>
+        <seg>If checked, the notes of a hovered item will be shown.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260614T161738Z" creationid="pm_kan" creationdate="20260614T161738Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T130642Z" creationid="pm_kan" creationdate="20260906T130642Z">
         <seg>Если помечено, заметки будут отображаться при наведении курсора мыши на элемент.</seg>
       </tuv>
     </tu>
@@ -11277,8 +11285,8 @@
       <tuv lang="en-US">
         <seg>Keeps data sent to clipboard from going to the clipobard history (Windows 10 and later).</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20231022T142736Z" creationid="pm_kan" creationdate="20221029T163150Z">
-        <seg>Не сохранять помещаемые в буфер обмена данные в его журнале (поддерживается в ОС Windows 10 и более поздних версиях).</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T131741Z" creationid="pm_kan" creationdate="20221029T163150Z">
+        <seg>Не сохранять помещаемые в буфер обмена данные в его журнале (поддерживается в ОС Windows 10 и более поздних версиях)</seg>
       </tuv>
     </tu>
     <tu>
@@ -11925,8 +11933,8 @@
       <tuv lang="en-US">
         <seg>Minimize Password Safe during AutoType.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20120809T115007Z">
-        <seg>Сворачивать окно Password Safe при выполнении автонабора</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T131246Z">
+        <seg>Сворачивать окно Password Safe при выполнении автонабора.</seg>
       </tuv>
     </tu>
     <tu>
@@ -12141,8 +12149,8 @@
       <tuv lang="en-US">
         <seg>Non-default column widths in List View</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20161128T174246Z" creationid="pm_kan" creationdate="20161128T174246Z">
-        <seg>Ширина столбцов при отображении в виде списка.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T132603Z" creationid="pm_kan" creationdate="20161128T174246Z">
+        <seg>Ширина столбцов при отображении в виде списка</seg>
       </tuv>
     </tu>
     <tu>
@@ -12373,8 +12381,8 @@
       <tuv lang="en-US">
         <seg>Note that each entry may override this value</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T193132Z">
-        <seg>Данное значение может быть переопределено в свойствах элемента.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T132334Z">
+        <seg>Данное значение может быть переопределено в свойствах элемента</seg>
       </tuv>
     </tu>
     <tu>
@@ -12565,8 +12573,8 @@
       <tuv lang="en-US">
         <seg>Note the list of comma separated column numbers reflect internal numbering of the fields and should not be edited manually</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T193001Z">
-        <seg>Через запятую перечислены используемые внутри программы номера столбцов.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T132618Z">
+        <seg>Через запятую перечислены используемые внутри программы номера столбцов</seg>
       </tuv>
     </tu>
     <tu>
@@ -15559,8 +15567,8 @@
       <tuv lang="en-US">
         <seg>Show the Find toolbar when Password Safe starts.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T182217Z">
-        <seg>При запуске Password Safe отображать панель поиска</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T131350Z">
+        <seg>При запуске Password Safe отображать панель поиска.</seg>
       </tuv>
     </tu>
     <tu>
@@ -15569,14 +15577,6 @@
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T182027Z">
         <seg>ShowDragbar</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-US">
-        <seg>ShowFindToolBarOnOpen</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T182126Z">
-        <seg>ShowFindToolBarOnOpen</seg>
       </tuv>
     </tu>
     <tu>
@@ -15823,16 +15823,16 @@
       <tuv lang="en-US">
         <seg>Special command line parameters for the alternate browser, if specified.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170814T205353Z" creationid="pm_kan" creationdate="20170814T205353Z">
-        <seg>Параметры командной строки для альтернативного браузера</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T132539Z" creationid="pm_kan" creationdate="20170814T205353Z">
+        <seg>Параметры командной строки для альтернативного браузера.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-US">
         <seg>Special command line parameters for the alternate text editor, if specified.</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20170814T205443Z" creationid="pm_kan" creationdate="20170814T205427Z">
-        <seg>Параметры командной строки для альтернативного текстового редактора</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T132542Z" creationid="pm_kan" creationdate="20170814T205427Z">
+        <seg>Параметры командной строки для альтернативного текстового редактора.</seg>
       </tuv>
     </tu>
     <tu>
@@ -18231,8 +18231,8 @@
       <tuv lang="en-US">
         <seg>This can be overridden using this preference</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20140113T122406Z" creationid="pm_kan" creationdate="20140113T122406Z">
-        <seg>Здесь можно переопределить её значение.</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T132551Z" creationid="pm_kan" creationdate="20140113T122406Z">
+        <seg>Здесь можно переопределить её значение</seg>
       </tuv>
     </tu>
     <tu>
@@ -18445,10 +18445,10 @@
     </tu>
     <tu>
       <tuv lang="en-US">
-        <seg>This is determined by the state of this toolbar when Password Safe was last ended</seg>
+        <seg>This is determined by the last state of the toolbar</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20110621T182257Z">
-        <seg>Определяется состоянием панели поиска при последнем закрытии Password Safe</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T130948Z" creationid="pm_kan" creationdate="20260906T130948Z">
+        <seg>Определяется состоянием панели поиска при последнем закрытии</seg>
       </tuv>
     </tu>
     <tu>
@@ -22248,6 +22248,14 @@
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>current state of Find toolbar</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T130855Z" creationid="pm_kan" creationdate="20260906T130855Z">
+        <seg>текущее состояние панели поиска</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>currentbackup</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20110215T182748Z">
@@ -24933,28 +24941,6 @@
         <seg>Synchronize</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20120808T180616Z">
-        <seg>Синхронизация</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <prop type="file">pwsafe.hhk</prop>
-      <prop type="prev">File Menu</prop>
-      <prop type="next">File Menu</prop>
-      <tuv lang="en-US">
-        <seg>Compare</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20200823T133829Z" creationid="pm_kan" creationdate="20200823T133829Z">
-        <seg>Сравнение</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <prop type="file">pwsafe.hhk</prop>
-      <prop type="prev">Compare Results</prop>
-      <prop type="next">File Menu</prop>
-      <tuv lang="en-US">
-        <seg>Synchronize</seg>
-      </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20200823T133847Z" creationid="pm_kan" creationdate="20200823T133847Z">
         <seg>Синхронизация</seg>
       </tuv>
     </tu>
