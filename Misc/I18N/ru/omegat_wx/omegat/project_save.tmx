@@ -771,8 +771,8 @@ Unknown error</seg>
       <tuv lang="en-US">
         <seg>&amp;Edit</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T144215Z">
-        <seg>&amp;Правка</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T124621Z">
+        <seg>П&amp;равка</seg>
       </tuv>
     </tu>
     <tu>
@@ -915,8 +915,8 @@ Unknown error</seg>
       <tuv lang="en-US">
         <seg>&amp;Hide</seg>
       </tuv>
-      <tuv lang="ru-RU">
-        <seg>&amp;Скрыть</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T124648Z">
+        <seg>С&amp;крыть</seg>
       </tuv>
     </tu>
     <tu>
@@ -971,8 +971,8 @@ Unknown error</seg>
       <tuv lang="en-US">
         <seg>&amp;Manage</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20250823T161253Z">
-        <seg>&amp;Сервис</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T124703Z">
+        <seg>С&amp;ервис</seg>
       </tuv>
     </tu>
     <tu>
@@ -1275,8 +1275,8 @@ Unknown error</seg>
       <tuv lang="en-US">
         <seg>&amp;Show</seg>
       </tuv>
-      <tuv lang="ru-RU">
-        <seg>&amp;Показать</seg>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T124820Z">
+        <seg>По&amp;казать</seg>
       </tuv>
     </tu>
     <tu>
@@ -3121,6 +3121,14 @@ symbols, hexadecimal) must be permitted.</seg>
       </tuv>
       <tuv lang="ru-RU" changeid="pm_kan" changedate="20250315T093757Z" creationid="pm_kan" creationdate="20250315T093753Z">
         <seg>Код аутентификации скопирован</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Auth-Code</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T123931Z" creationid="pm_kan" creationdate="20260906T123931Z">
+        <seg>Код аутентификации</seg>
       </tuv>
     </tu>
     <tu>
@@ -5845,6 +5853,14 @@ Action:</seg>
       </tuv>
       <tuv lang="ru-RU">
         <seg>Перетащите изображение на другое окно, чтобы вставить значение поля «%s».</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Drag this image onto another window to paste the authentication code.</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T123947Z" creationid="pm_kan" creationdate="20260906T123906Z">
+        <seg>Перетащите изображение на другое окно, чтобы вставить код аутентификации.</seg>
       </tuv>
     </tu>
     <tu>
@@ -11483,6 +11499,58 @@ Content-Transfer-Encoding: 8bit</seg>
     </tu>
     <tu>
       <tuv lang="en-US">
+        <seg>Project-Id-Version: 
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2026-09-06 15:34+0300
+PO-Revision-Date: 2026-09-06 16:00+0300
+Last-Translator:
+Language-Team:
+Language: ru
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T123748Z" creationid="pm_kan" creationdate="20260906T123748Z">
+        <seg>Project-Id-Version: 
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2026-09-06 15:34+0300
+PO-Revision-Date: 2026-09-06 16:00+0300
+Last-Translator:
+Language-Team:
+Language: ru
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
+        <seg>Project-Id-Version: 
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2026-09-06 15:53+0300
+PO-Revision-Date: 2026-09-06 16:00+0300
+Last-Translator:
+Language-Team:
+Language: ru
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T130050Z" creationid="pm_kan" creationdate="20260906T130025Z">
+        <seg>Project-Id-Version: 
+Report-Msgid-Bugs-To: 
+POT-Creation-Date: 2026-09-06 15:53+0300
+PO-Revision-Date: 2026-09-06 16:00+0300
+Last-Translator:
+Language-Team:
+Language: ru
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-US">
         <seg>Project-Id-Version: PACKAGE VERSION
 Report-Msgid-Bugs-To:
 POT-Creation-Date: 2015-10-04 18:13+0300
@@ -13271,7 +13339,7 @@ Content-Transfer-Encoding: 8bit</seg>
       <tuv lang="en-US">
         <seg>S&amp;ynchronize...</seg>
       </tuv>
-      <tuv lang="ru-RU" changeid="pm_kan" changedate="20161105T144421Z">
+      <tuv lang="ru-RU" changeid="pm_kan" changedate="20260906T125117Z">
         <seg>Синх&amp;ронизировать...</seg>
       </tuv>
     </tu>
