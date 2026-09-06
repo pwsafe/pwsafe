@@ -409,6 +409,8 @@
 		<Unit filename="../../src/ui/wxWidgets/PWFiltersTable.h" />
 		<Unit filename="../../src/ui/wxWidgets/PWFiltersTypeDlg.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/PWFiltersTypeDlg.h" />
+		<Unit filename="../../src/ui/wxWidgets/PWSLocale.cpp" />
+		<Unit filename="../../src/ui/wxWidgets/PWSLocale.h" />
 		<Unit filename="../../src/ui/wxWidgets/PWSafeApp.cpp" />
 		<Unit filename="../../src/ui/wxWidgets/PWSafeApp.h" />
 		<Unit filename="../../src/ui/wxWidgets/PasswordPolicyDlg.cpp" />
