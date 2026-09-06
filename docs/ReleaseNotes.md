@@ -4,8 +4,8 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Support Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.72.2 Release ??? ?? 2026
-=======================================
+PasswordSafe 3.72.2 Release September 6 2026
+============================================
 Bugs Fixed in 3.72.2
 --------------------
 * [GH1898](https://github.com/pwsafe/pwsafe/issues/1898) Arrow keys can now be used to navigate between Custom Value rows.
