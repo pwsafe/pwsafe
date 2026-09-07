@@ -1319,7 +1319,7 @@ int PWScore::ImportPlaintextFile(const StringX &ImportedPrefix,
     bool is_two_factor_key_present = row_has_column(CItem::TWOFACTORKEY) && !tokens[columns[CItem::TWOFACTORKEY]].empty();
     if (is_two_factor_key_present) {
       set_field_if_in_row(CItem::TWOFACTORKEY);
-      ASSERT(ci_temp.IsTotpActive());
+      ASSERT(ci_temp.HasTwoFactorKey());
       set_field_if_in_row(CItem::TOTPCONFIG, false);
       set_field_if_in_row(CItem::TOTPSTARTTIME, false);
       set_field_if_in_row(CItem::TOTPTIMESTEP, false);

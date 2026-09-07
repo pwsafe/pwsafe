@@ -557,7 +557,7 @@ wxScrolledWindow* AddEditPropSheetDlg::CreateBasicPanel()
   m_BasicTotpButton->SetToolTip(_("Copy authentication code to clipboard"));
   m_BasicSizer->Add(m_BasicTotpButton, wxGBPosition(/*row:*/ 12, /*column:*/ 5), wxDefaultSpan, wxALIGN_CENTER_VERTICAL|wxLEFT|wxBOTTOM, 7);
 
-  if (!HasItemTwoFactorKey()) {
+  if (!m_ItemTotp.HasTwoFactorKey()) {
     DisableAuthenticationCodeControls();
   }
 
@@ -685,7 +685,7 @@ wxScrolledWindow* AddEditPropSheetDlg::CreateAdditionalPanel()
   m_AdditionalShowHideCtrl->SetToolTip(_("Show authentication secret"));
   m_AdditionalHBoxSizerTwoFactorKey->Add(m_AdditionalShowHideCtrl, 0, wxALIGN_LEFT|wxALIGN_CENTER|wxRIGHT, 5);
 
-  if (m_Core.IsReadOnly() || IsItemShortcut()) {
+  if (m_Core.IsReadOnly() || m_ItemTotp.IsShortcut()) {
     staticTextTwoFactorKey->Disable();
     m_AdditionalTwoFactorKeyCtrl->Disable();
     m_AdditionalShowHideCtrl->Disable();
@@ -1908,7 +1908,7 @@ void AddEditPropSheetDlg::ItemFieldsToPropSheet()
   m_Email = m_Item.GetEmail().c_str();
   m_Password = m_Item.GetPassword();
 
-  if (!IsItemShortcut() && HasItemTwoFactorKey()) {
+  if (!m_ItemTotp.IsShortcut() && m_ItemTotp.HasTwoFactorKey()) {
     auto twoFactorKey = m_Item.GetTwoFactorKey();
     m_AdditionalTwoFactorKeyCtrl->ChangeValue(twoFactorKey.c_str());
   }
@@ -2531,9 +2531,8 @@ bool AddEditPropSheetDlg::IsGroupUsernameTitleCombinationUnique()
 /// wxEVT_TIMER_EVENT event handler for ID_TIMER_TOTP_COUNTDOWN
 void AddEditPropSheetDlg::OnTotpCountdownTimer(wxTimerEvent& WXUNUSED(event))
 {
-  if (GetTotpItem() == nullptr) {
-    if (m_TotpTimer)
-      m_TotpTimer->Stop();
+  if (m_TotpTimer && !m_ItemTotp.HasTwoFactorKey()) {
+    m_TotpTimer->Stop();
     return;
   }
 
@@ -2556,7 +2555,7 @@ void AddEditPropSheetDlg::OnTabChanging(wxBookCtrlEvent& event)
     return;
   }
   ApplyTwoFactorKey(m_ItemTotp);
-  if (HasItemTwoFactorKey()) {
+  if (m_ItemTotp.HasTwoFactorKey()) {
     EnableAuthenticationCodeControls();
     StartTotp();
   }
@@ -2574,7 +2573,7 @@ void AddEditPropSheetDlg::StartTotp()
   // Show and update the TOTP only when an existing item 
   // with an existing TOTP configuration is edited or viewed.
   m_TotpTimer = new wxTimer(this, ID_TIMER_TOTP_COUNTDOWN);
-  if (HasItemTwoFactorKey()) {
+  if (m_ItemTotp.HasTwoFactorKey()) {
     m_TotpTimer->Start(GetTotpCountdownInterval());
   }
 }
@@ -2628,7 +2627,7 @@ void AddEditPropSheetDlg::ApplyTwoFactorKey(CItemData& item)
   if (!twofactorkey.empty()) {
     item.SetTwoFactorKey(twofactorkey);
   }
-  else if (GetPwSafe()->HasItemTwoFactorKey(&item)) {
+  else if (twofactorkey.empty() && item.HasTwoFactorKey()) {
     // Remove existing two factor key if text input field is empty in Edit mode
     item.ClearTwoFactorKey();
   }
@@ -2720,7 +2719,7 @@ Command* AddEditPropSheetDlg::NewAddEntryCommand(bool bNewCTime)
     m_Item.SetPWHistory(PWHistList::MakePWHistoryHeader(true, m_MaxPasswordHistory));
   }
 
-  if (!IsItemShortcut()) {
+  if (!m_ItemTotp.IsShortcut()) {
     ApplyTwoFactorKey(m_Item);
   }
 
@@ -3015,7 +3014,7 @@ uint32_t AddEditPropSheetDlg::GetChanges() const
  
   // two factor key
   {
-    if (!IsItemShortcut()) {
+    if (!m_ItemTotp.IsShortcut()) {
       const StringX twofactorkey = tostringx(m_AdditionalTwoFactorKeyCtrl->GetValue());
       if (twofactorkey != m_Item.GetTwoFactorKey()) {
         changes |= Changes::TwoFactorKey;

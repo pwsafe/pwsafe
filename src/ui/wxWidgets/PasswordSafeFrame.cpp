@@ -1458,14 +1458,9 @@ CItemData *PasswordSafeFrame::GetSelectedEntry() const
 }
 
 /**
- * The selected item is returned if it is a 'Normal' item or a
- * 'Base' item.
- * If the selected item is a 'Shortcut' or 'Alias' without TOTP
- * configuration the item's base is returned.
- * If the selected item is an 'Alias' with TOTP configuration the
- * 'Alias' is returned.
- * The return value is 'nullptr' if no selection has been made in the
- * view.
+ * If the selected item is a 'Shortcut' or 'Alias' that overrides some
+ * fields from the base entry, then the item (rather than its base) is
+ * returned.
  */
 const CItemData *PasswordSafeFrame::GetSelectedEntryOrBase() const
 {
@@ -2087,24 +2082,13 @@ const CItemData* PasswordSafeFrame::GetTotpItem(const CItemData *item) const
     return nullptr;
   }
   // Item is 'Shortcut' or 'Alias' without TOTP configuration
-  if (item->IsShortcut() || (item->IsAlias() && !item->IsTotpActive())) {
+  if (item->IsShortcut() || (item->IsAlias() && !item->HasTwoFactorKey())) {
     return m_core.GetBaseEntry(item);
   }
   // Item is 'Normal', 'Base' or 'Alias' with TOTP configuration
   else {
     return item;
   }
-}
-
-bool PasswordSafeFrame::IsItemShortcut(const CItemData *item) const
-{
-  return item == nullptr ? false : item->IsShortcut();
-}
-
-bool PasswordSafeFrame::HasItemTwoFactorKey(const CItemData *item) const
-{
-  auto totpItem = GetTotpItem(item);
-  return (totpItem == nullptr) ? false : totpItem->IsTotpActive();
 }
 
 std::pair<StringX, StringX> PasswordSafeFrame::GetTotpData(const CItemData *item)
@@ -2158,7 +2142,7 @@ void PasswordSafeFrame::OnTotpCountdownTimer(wxTimerEvent& WXUNUSED(event))
   auto item = GetSelectedEntry();
   // No item selected or item with
   // no TOTP configuration selected
-  if (item == nullptr || !HasItemTwoFactorKey(item)) {
+  if (item == nullptr || !item->HasTwoFactorKey()) {
     m_TotpStaticText->SetLabel(wxEmptyString);
     return;
   }
@@ -2181,7 +2165,7 @@ void PasswordSafeFrame::OnTotpCopyAuthCodeTimer(wxTimerEvent& WXUNUSED(event))
   // if this data is no longer present in
   // the clipboard.
   if (
-    (item == nullptr || !HasItemTwoFactorKey(item) || (m_TotpLastSelectedItem != item))
+    (item == nullptr || !item->HasTwoFactorKey() || (m_TotpLastSelectedItem != item))
     ||
     (!isAuthCodeInClipboard && !s_LatestAuthCode.empty())) {
     m_TotpLastSelectedItem = nullptr;
@@ -2441,7 +2425,7 @@ void PasswordSafeFrame::OnUpdateUI(wxUpdateUIEvent& evt)
       break;
 
     case ID_COPYAUTHCODE:
-      evt.Enable(isUnlocked && !isTreeViewGroupSelected && ((pci && pci->IsTotpActive()) || (pbci && pbci->IsTotpActive())));
+      evt.Enable(isUnlocked && !isTreeViewGroupSelected && ((pci && pci->HasTwoFactorKey()) || (pbci && pbci->HasTwoFactorKey())));
       break;
 
     case ID_VIEWATTACHMENT:
