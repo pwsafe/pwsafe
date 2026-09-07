@@ -392,9 +392,6 @@ private:
   void EnableAuthenticationCodeControls();
   void DisableAuthenticationCodeControls();
   const PasswordSafeFrame* GetPwSafe() const { return wxGetApp().GetPasswordSafeFrame(); }
-  bool HasItemTwoFactorKey() const { return GetPwSafe()->HasItemTwoFactorKey(&m_ItemTotp); };
-  bool IsItemNormalOrBase() const { return GetPwSafe()->IsItemNormalOrBase(&m_ItemTotp); }
-  const CItemData *GetTotpItem() const { return GetPwSafe()->GetTotpItem(&m_ItemTotp); };
   int GetTotpCountdownInterval() const { return GetPwSafe()->GetTotpCountdownInterval(); }
 
   enum Changes : uint32_t {
