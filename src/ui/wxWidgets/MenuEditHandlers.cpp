@@ -785,8 +785,14 @@ void PasswordSafeFrame::MaybeRestoreUI(bool autotype_err, const wxString &autoty
       m_guiInfo->Restore(this);
     }
   }
-  if (autotype_err)
-    wxMessageBox(_("There was an error autotyping.  ") + autotype_err_msg, _("Autotype error"), wxOK|wxICON_ERROR, this);
+  if (autotype_err) {
+    if (IsRunningInFlatpak() && wxUtilities::WhatWindowSystem() == wxUtilities::Wayland) {
+      wxMessageBox(_("There was an error autotyping. Full X11 access may be required for this action to work properly. Make sure the '--nosocket=fallback-x11 --socket=x11' permissions are granted to the Flatpak application (the order matters).\nError: ") + autotype_err_msg, _("Autotype error"), wxOK|wxICON_ERROR, this);
+    }
+    else {
+      wxMessageBox(_("There was an error autotyping.  ") + autotype_err_msg, _("Autotype error"), wxOK|wxICON_ERROR, this);
+    }
+  }
 }
 
 /*
