@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 1900-01-01 00:00+0000\n"
-"PO-Revision-Date: 2026-09-01 19:38+0300\n"
+"PO-Revision-Date: 2026-09-09 10:24+0200\n"
 "Last-Translator: Rony Shapiro <ronys@pwsafe.org>\n"
 "Language-Team: \n"
 "Language: nl\n"
@@ -1015,7 +1015,7 @@ msgstr "&Nee"
 
 #. Resource IDs: (574, 576)
 msgid "&Notes"
-msgstr "&Noten"
+msgstr "&Notities"
 
 #. Resource IDs: (32138 - MenuEx)
 msgid "&Notes Font"
@@ -1952,7 +1952,7 @@ msgstr "West Armeens"
 
 #. Resource IDs: (5268)
 msgid "As the double quote character is used to delimit the whole notes field, it cannot be used within it to delimit multiple lines. Select another character."
-msgstr "Aangezien het dubbele aanhalingsteken wordt gebruikt om het hele notitieveld af te bakenen, kan het niet worden gebruikt om meerdere regels af te bakenen. Selecteer een ander teken."
+msgstr "Dubbele aanhalingsteken wordt gebruikt om het hele notitieveld af te bakenen, kan daarom niet gebruikt worden om meerdere regels af te bakenen. Selecteer een ander teken."
 
 #. Resource IDs: (5292)
 msgid ""
@@ -6933,7 +6933,7 @@ msgstr "Toon vergeleken velden die identiek zijn (opm: onbekende velden zijn nie
 
 #. Resource IDs: (8104)
 msgid "Show tooltips"
-msgstr ""
+msgstr "Toon tooltips"
 
 #. Resource IDs: (5755)
 msgid "Shutdown, Restart or Logoff in progress"
