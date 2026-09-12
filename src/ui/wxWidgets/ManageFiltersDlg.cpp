@@ -84,7 +84,7 @@ void ManageFiltersGrid::BindEvents()
 {
 #ifdef PW_FILTERS_GIRD_USE_NATIVE_HEADER
 #if wxCHECK_VERSION(2, 9, 1)
-  wxHeaderCtrl *header = wxGrid::GetGridColHeader();
+  wxHeaderCtrl *header = GetGridColHeader();
   if (header) {
     // Handler for double click events on column header separator.
     header->Bind(wxEVT_HEADER_SEPARATOR_DCLICK,
@@ -356,23 +356,18 @@ void ManageFiltersDlg::CreateControls()
   
   size = ExtendColSize(MFLC_FILTER_SOURCE, 6);
   for(int fp = FPOOL_DATABASE; fp < FPOOL_LAST; ++fp) {
-    size.IncTo(dc.GetTextExtent(pwManageFiltersTable::GetColLabelString(static_cast<FilterPool>(fp))));
+    size.IncTo(dc.GetTextExtent(pwManageFiltersTable::GetColLabelString(fp)));
   }
   if(size.GetWidth() > m_MapFiltersGrid->GetColSize(MFLC_FILTER_SOURCE))
     m_MapFiltersGrid->SetColSize(MFLC_FILTER_SOURCE, size.GetWidth() + 6);
   
   m_MapFiltersGrid->EnableEditing(false);
   
-  // Determine minimal size of the Grid
-  int width = m_MapFiltersGrid->GetRowLabelSize();
-  for(int i = 0; i < MFLC_NUM_COLUMNS; i++) {
-    width += m_MapFiltersGrid->GetColSize(i);
-  }
-  wxSize minSize(width, (m_FontHeight + 10) * FLT_DEFAULT_NUM_ROWS);
+  const wxSize minSize(-1, (m_FontHeight + 10) * FLT_DEFAULT_NUM_ROWS);
   m_MapFiltersGrid->SetMinClientSize(minSize);
-  // At the end bind dynmic events
   m_MapFiltersGrid->BindEvents();
   
+  basicGridSizer->AddGrowableCol(0);
   basicGridSizer->Add(m_MapFiltersGrid, wxGBPosition(/*row:*/ 0, /*column:*/ 0), wxGBSpan(/*rowspan:*/ 5, /*columnspan:*/ 1), wxALIGN_LEFT|wxALIGN_TOP|wxALL|wxEXPAND, 5);
 
   wxButton* itemButton6 = new wxButton( itemDialog1, wxID_NEW, _("&New"), wxDefaultPosition, wxDefaultSize, 0 );
@@ -436,10 +431,9 @@ wxSize ManageFiltersDlg::ExtendColSize(int col, int extend)
 /*!
  * Init the dialog after creation ManageFiltersDlg
  */
-
 void ManageFiltersDlg::InitDialog()
 {
-  // Fill data from filter liste
+  // Fill data from filter list
   UpdateFilterList(false);
 }
 
@@ -447,7 +441,6 @@ void ManageFiltersDlg::InitDialog()
 /*!
  * SetManageGridColFormat is setting column renderer and attribute. At the end set the minimum column width
  */
-
 void ManageFiltersDlg::SetManageGridColFormat(int col, wxGridCellRenderer *renderer)
 {
   ASSERT(renderer);
@@ -494,10 +487,9 @@ void ManageFiltersDlg::SetGridColLeftAligned(int col)
 
 
 /*!
- * UpdateFilterList is filling the filter list with coontent of actual filter map.
- * Maintaine active and selected filter. Number of export and copy marked entries is reset.
+ * UpdateFilterList is filling the filter list with content of actual filter map.
+ * Maintains active and selected filter. Number of export and copy marked entries is reset.
  */
-
 void ManageFiltersDlg::UpdateFilterList(bool bRefreshGrid /* = true */)
 {
   m_MapFiltersGrid->GetTable()->Clear();
@@ -511,7 +503,7 @@ void ManageFiltersDlg::UpdateFilterList(bool bRefreshGrid /* = true */)
   for (mf_iter = m_pMapAllFilters->begin();
          mf_iter != m_pMapAllFilters->end();
          mf_iter++) {
-    struct st_FilterItemData data;
+    st_FilterItemData data;
     bool bSelected = false;
     
     data.flt_key = mf_iter->first;
@@ -563,8 +555,8 @@ void ManageFiltersDlg::UpdateFilterList(bool bRefreshGrid /* = true */)
     }
   }
   
-  // On single entry, select this one as defauzlt
-  if(m_pMapAllFilters->size() == 1 && m_MapFilterData.IsNoFilterSelected()) {
+  // On single entry, select this one as default
+  if (m_pMapAllFilters->size() == 1 && m_MapFilterData.IsNoFilterSelected()) {
     m_MapFilterData.SetSelectedFilterIdx(0);
     m_SelectedFilterPool = m_MapFilterData.GetSelectedPool();
     m_SelectedFilterName = m_MapFilterData.GetSelectedFilterName();
@@ -592,17 +584,16 @@ void ManageFiltersDlg::UpdateFilterList(bool bRefreshGrid /* = true */)
 
 
 /*!
- * ShowSelectedFilter is upating lower grid with content of the selected filter and update label with label name
+ * ShowSelectedFilter is updating lower grid with content of the selected filter and update label with label name
  */
-
 void ManageFiltersDlg::ShowSelectedFilter()
 {
   m_filterGrid->ClearFilter();
   if(m_MapFilterData.IsFilterSelected()) {
     st_Filterkey fk = m_MapFilterData.GetSelectedKey();
-    
-    PWSFilters::iterator mf_iter = m_pMapAllFilters->find(fk);
-    if(mf_iter != m_pMapAllFilters->end()) {
+
+    auto mf_iter = m_pMapAllFilters->find(fk);
+    if (mf_iter != m_pMapAllFilters->end()) {
       m_SelectedFilter = mf_iter->second;
     }
     wxString label = _("Selected Filter Details:") + _T(" ") + fk.cs_filtername + _T(" ");    
@@ -773,9 +764,9 @@ void ManageFiltersDlg::DoNewClick()
       fk.fpool = FPOOL_SESSION;
       fk.cs_filtername = filters.fname;
       int idx = -1;
-    
-      PWSFilters::iterator mf_iter = m_pMapAllFilters->find(fk);
-      if(mf_iter != m_pMapAllFilters->end()) {
+
+      auto mf_iter = m_pMapAllFilters->find(fk);
+      if (mf_iter != m_pMapAllFilters->end()) {
         wxMessageDialog dialog(this, _("This filter already exists"), _("Do you wish to replace it?"), wxYES_NO | wxICON_EXCLAMATION);
         if(dialog.ShowModal() == wxID_NO) {
           bDoEdit = true; // Repeat editing to allow name change
@@ -829,13 +820,11 @@ void ManageFiltersDlg::OnEditClick(wxCommandEvent&)
 
 void ManageFiltersDlg::DoEditClick()
 {
-  st_Filterkey fk;
   st_filters filters; // New filter is empty
-  PWSFilters::iterator mf_iter_entry;
-  
-  fk = m_MapFilterData.GetSelectedKey();
-  mf_iter_entry = m_pMapAllFilters->find(fk);
-  if(mf_iter_entry != m_pMapAllFilters->end()) {
+
+  st_Filterkey fk = m_MapFilterData.GetSelectedKey();
+  auto mf_iter_entry = m_pMapAllFilters->find(fk);
+  if (mf_iter_entry != m_pMapAllFilters->end()) {
     filters = mf_iter_entry->second;
   }
   else {
@@ -876,9 +865,9 @@ void ManageFiltersDlg::DoEditClick()
       // To avoid idea of user that an imported filter will be (automatically) updated, the type is changed to session
       if(fk_new.fpool == FPOOL_AUTOLOAD ||  fk_new.fpool == FPOOL_IMPORTED)
         fk_new.fpool = FPOOL_SESSION;
-    
-      PWSFilters::iterator mf_iter_new = m_pMapAllFilters->find(fk_new);
-      if(mf_iter_new != m_pMapAllFilters->end() && mf_iter_new != mf_iter_entry) {
+
+      auto mf_iter_new = m_pMapAllFilters->find(fk_new);
+      if (mf_iter_new != m_pMapAllFilters->end() && mf_iter_new != mf_iter_entry) {
         wxMessageDialog dialog(this, _("This filter already exists"), _("Do you wish to replace it?"), wxYES_NO | wxICON_EXCLAMATION);
         if(dialog.ShowModal() == wxID_NO) {
           bDoEdit = true; // Repeat editing to allow name change
@@ -950,10 +939,10 @@ void ManageFiltersDlg::DoEditClick()
  */
 void ManageFiltersDlg::OnCopyClick(wxCommandEvent& WXUNUSED(event))
 {
-  size_t i, numFilters = m_MapFilterData.size();
+  size_t numFilters = m_MapFilterData.size();
   bool bCopied = false;
   
-  for(i = 0; i < numFilters; ++i) {
+  for (size_t i = 0; i < numFilters; ++i) {
     // Copy all marked entries
     if(m_MapFilterData.IsFlagSetAt(i, MFLT_REQUEST_COPY_TO_DB)) {
       st_Filterkey fk = m_MapFilterData.GetKeyAt(i);
@@ -979,7 +968,7 @@ void ManageFiltersDlg::OnCopyClick(wxCommandEvent& WXUNUSED(event))
       flt_keydb.fpool = FPOOL_DATABASE;
       flt_keydb.cs_filtername = fk.cs_filtername;
       mf_citer = m_pMapAllFilters->find(flt_keydb);
-      // Check on entry alread exists
+      // Check on entry already exists
       if (mf_citer != m_pMapAllFilters->end()) {
         wxMessageDialog dialog(this, _("This filter already exists"), _("Do you wish to replace it?"), wxYES_NO | wxICON_EXCLAMATION);
         if(dialog.ShowModal() == wxID_NO) {
@@ -1085,15 +1074,13 @@ void ManageFiltersDlg::OnImportClick(wxCommandEvent& WXUNUSED(event))
 void ManageFiltersDlg::OnExportClick(wxCommandEvent& WXUNUSED(event))
 {
   PWSFilters Filters;
-  size_t i, numFilters = m_MapFilterData.size();
+  size_t numFilters = m_MapFilterData.size();
   
-  for(i = 0; i < numFilters; ++i) {
+  for (size_t i = 0; i < numFilters; ++i) {
     // Export all marked filters
     if(m_MapFilterData.IsFlagSetAt(i, MFLT_REQUEST_EXPORT)) {
       st_Filterkey fk = m_MapFilterData.GetKeyAt(i);
-      PWSFilters::iterator mf_iter;
-      
-      mf_iter = m_pMapAllFilters->find(fk);
+      auto mf_iter = m_pMapAllFilters->find(fk);
       if (mf_iter == m_pMapAllFilters->end()) {
         // Skip not found entry
         wxASSERT(false);
@@ -1153,7 +1140,7 @@ void ManageFiltersDlg::OnHelpClick( wxCommandEvent& event )
  */
 void ManageFiltersDlg::OnCloseClick(wxCommandEvent& WXUNUSED(event))
 {
-  // Save DB filter when flag is set and imediate storage configured -> return ID_OK or ID_CANCEL
+  // Save DB filter when flag is set and immediate storage configured -> return ID_OK or ID_CANCEL
   EndModal(m_bDBFiltersChanged ? wxID_OK : wxID_CANCEL);
 }
 
@@ -1177,14 +1164,13 @@ void ManageFiltersDlg::OnSize(wxSizeEvent &event)
     wxSize gridFilterSize = m_filterGrid->GetSize();
     
     // Use half the size for the filter map the the filter grid
-    int widthDiff = event.GetSize().GetWidth() - windowSize.GetWidth();
     int heightDiff = event.GetSize().GetHeight() - windowSize.GetHeight();
     int mapHeightDiff = heightDiff / 2;
     int filterHeightDiff = heightDiff - mapHeightDiff;
     
-    mapFiltersSize.SetWidth(mapFiltersSize.GetWidth() + widthDiff);
+    mapFiltersSize.SetWidth(-1);
     mapFiltersSize.SetHeight(mapFiltersSize.GetHeight() + mapHeightDiff);
-    gridFilterSize.SetWidth(gridFilterSize.GetWidth() + widthDiff);
+    gridFilterSize.SetWidth(-1);
     gridFilterSize.SetHeight(gridFilterSize.GetHeight() + filterHeightDiff);
     
     m_MapFiltersGrid->SetMinSize(mapFiltersSize);
@@ -1205,8 +1191,8 @@ void ManageFiltersDlg::OnSize(wxSizeEvent &event)
 int ManageFiltersDlg::InsertEntry(const st_Filterkey &fk, const st_filters &filters)
 {
   m_pMapAllFilters->insert(PWSFilters::Pair(fk, filters));
-  
-  struct st_FilterItemData entry;
+
+  st_FilterItemData entry;
   entry.flt_key = fk;
   entry.flt_flags = 0;
   int idx = m_MapFilterData.insert(entry);
@@ -1221,18 +1207,14 @@ int ManageFiltersDlg::InsertEntry(const st_Filterkey &fk, const st_filters &filt
 /*!
  * DeleteSelectedFilter: Remove the currently selected filter
  */
-
 void ManageFiltersDlg::DeleteSelectedFilter()
 {
-  st_Filterkey fk;
-  PWSFilters::iterator mf_iter_entry;
-  
   if(m_MapFilterData.IsFilterSelected()) {
-    fk = m_MapFilterData.GetSelectedKey();
+    st_Filterkey fk = m_MapFilterData.GetSelectedKey();
     wxASSERT(fk.fpool == m_SelectedFilterPool && fk.cs_filtername == m_SelectedFilterName);
     size_t idx = m_MapFilterData.GetSelectedFilterIdx();
     
-    mf_iter_entry = m_pMapAllFilters->find(fk);
+    auto mf_iter_entry = m_pMapAllFilters->find(fk);
     if(mf_iter_entry != m_pMapAllFilters->end()) {
       // Correct flags count for copy and export
       if(m_MapFilterData.IsFlagSetAt(idx, MFLT_REQUEST_COPY_TO_DB)) {
@@ -1277,11 +1259,9 @@ void ManageFiltersDlg::DeleteSelectedFilter()
 /*!
  * SetSelectedActiveFilter: Set the actual selected filter as applied filter
  */
-
 void ManageFiltersDlg::SetSelectedActiveFilter()
 {
   st_Filterkey fk;
-  PWSFilters::iterator mf_iter;
 
   MarkAppliedFilter(); // Mark filter as in use
   *m_pActiveFilterPool = m_SelectedFilterPool;
@@ -1290,8 +1270,8 @@ void ManageFiltersDlg::SetSelectedActiveFilter()
   fk.fpool = m_SelectedFilterPool;
   fk.cs_filtername = m_SelectedFilterName;
   // Search for the filters content
-  mf_iter = m_pMapAllFilters->find(fk);
-  if(mf_iter != m_pMapAllFilters->end()) {
+  auto mf_iter = m_pMapAllFilters->find(fk);
+  if (mf_iter != m_pMapAllFilters->end()) {
     m_pCurrentFilters->Empty();
     *m_pCurrentFilters = mf_iter->second;
     
