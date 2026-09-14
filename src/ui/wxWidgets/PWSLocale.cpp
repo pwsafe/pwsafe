@@ -79,11 +79,10 @@ void PWSLocale::ChooseLocale(wxLanguage language)
     // This value must be set for mac OS starting with version 11, but is no problem for earlier versions, see:
     // https://trac.wxwidgets.org/ticket/19023
     // https://docs.wxwidgets.org/3.2/classwx_locale.html
-    int major, minor;
-    wxGetOsVersion(&major, &minor);
-    if (major == 11 || (major == 12 && minor < 3)) {
-      setlocale(LC_NUMERIC, "C");
-    }
+    // The issue was supposedly fixed in 12.3, but it, or something similar, has surfaced in 27.0.
+    // It affects locales that use a comma as the decimal seperator.
+    // https://github.com/wxWidgets/wxWidgets/issues/26977
+    setlocale(LC_NUMERIC, "C");
   }
   #else // __WXMAC__
   void PWSLocale::setMacLocale(const char *) {}; // no-op if not macOS
