@@ -53,6 +53,8 @@ static const char * szentry[] = {"normal",
 static const char * szstatus[] = {"clean", "added", "modified", 
                                   "deleted"};
 
+const stringT PWSFilters::schema_filename = L"pwsafe_filter.xsd";
+
 static void GetFilterTestXML(const st_FilterRow &st_fldata,
                              ostringstream &oss, bool bFile)
 {
@@ -677,7 +679,8 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
     oss << "Database_uuid=\"" << huuid << "\"" << endl;
   }
   oss << "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"" << endl;
-  oss << "xsi:noNamespaceSchemaLocation=\"pwsafe_filter.xsd\">" << endl;
+  utf8conv.ToUTF8(schema_filename.c_str(), utf8, utf8Len);
+  oss << "xsi:noNamespaceSchemaLocation=\"" << utf8 << "\">" << endl;
   oss << endl;
 
   return oss.str().c_str();

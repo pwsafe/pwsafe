@@ -10,6 +10,7 @@
 * 
 */
 // For compilers that support precompilation, includes "wx/wx.h".
+#include "PWSdirs.h"
 #include "wx/wxprec.h"
 
 #ifdef __BORLANDC__
@@ -1045,8 +1046,10 @@ void ManageFiltersDlg::OnImportClick(wxCommandEvent& WXUNUSED(event))
   if (fd.ShowModal() == wxID_OK) {
     wxString filename = fd.GetPath();
     stringT strErrors = L"";
-    
-    int rc = m_pMapAllFilters->ImportFilterXMLFile(FPOOL_IMPORTED, L"", tostdstring(filename), L"", strErrors, &asker, nullptr);
+    stringT XSDFilename = PWSdirs::GetXMLDir() + PWSFilters::schema_filename;
+    int rc = m_pMapAllFilters->ImportFilterXMLFile(FPOOL_IMPORTED, L"",
+                                                   tostdstring(filename), XSDFilename,
+                                                   strErrors, &asker, nullptr);
     
     if (rc != PWScore::SUCCESS) {
       stringT cs_error;

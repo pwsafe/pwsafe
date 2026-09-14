@@ -797,15 +797,15 @@ int PWSfileV3::ReadHeader()
         if (utf8Len > 0) {
           stringT strErrors;
 #if !defined(USE_XML_LIBRARY) || (!defined(_WIN32) && USE_XML_LIBRARY == MSXML)
-          // Using PUGI XML we do not need XDS File
+          // Using PUGI XML we do not need XSD File
           stringT XSDFilename = _T("");
 #else
-          stringT XSDFilename = PWSdirs::GetXMLDir() + _T("pwsafe_filter.xsd");
+          stringT XSDFilename = PWSdirs::GetXMLDir() + PWSFilters::schema_filename;
           if (!pws_os::FileExists(XSDFilename)) {
             // No filter schema => user won't be able to access stored filters
             // Inform her of the fact (probably an installation problem).
             stringT message, message2;
-            Format(message, IDSC_MISSINGXSD, L"pwsafe_filter.xsd");
+            Format(message, IDSC_MISSINGXSD, PWSFilters::schema_filename.c_str());
             LoadAString(message2, IDSC_FILTERSKEPT);
             message += stringT(_T("\n\n")) + message2;
             if (m_pReporter != nullptr)

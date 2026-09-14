@@ -943,12 +943,12 @@ void DboxMain::InitPasswordSafe()
 
       if (pws_os::FileExists(wsAutoLoad)) {
           std::wstring strErrors;
-          std::wstring XSDFilename = PWSdirs::GetXMLDir() + L"pwsafe_filter.xsd";
+          std::wstring XSDFilename = PWSdirs::GetXMLDir() + PWSFilters::schema_filename;
 
           if (!pws_os::FileExists(XSDFilename)) {
               CGeneralMsgBox gmb;
               CString cs_title, cs_msg, cs_temp;
-              cs_temp.Format(IDSC_MISSINGXSD, L"pwsafe_filter.xsd");
+              cs_temp.Format(IDSC_MISSINGXSD, PWSFilters::schema_filename.c_str());
               cs_msg.Format(IDS_CANTAUTOIMPORTFILTERS, static_cast<LPCWSTR>(cs_temp));
               cs_title.LoadString(IDSC_CANTVALIDATEXML);
               gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONSTOP);

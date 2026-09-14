@@ -384,12 +384,11 @@ void DboxMain::ImportFilters()
 {
   CString cs_title, cs_temp, cs_text;
   cs_text.LoadString(IDS_PICKXMLFILE);
-  const std::wstring XSDfn(L"pwsafe_filter.xsd");
-  std::wstring XSDFilename = PWSdirs::GetXMLDir() + XSDfn;
+  std::wstring XSDFilename = PWSdirs::GetXMLDir() + PWSFilters::schema_filename;
 
   if (!pws_os::FileExists(XSDFilename)) {
     CGeneralMsgBox gmb;
-    cs_temp.Format(IDSC_MISSINGXSD, static_cast<LPCWSTR>(XSDfn.c_str()));
+    cs_temp.Format(IDSC_MISSINGXSD, static_cast<LPCWSTR>(PWSFilters::schema_filename.c_str()));
     cs_title.LoadString(IDSC_CANTVALIDATEXML);
     gmb.MessageBox(cs_temp, cs_title, MB_OK | MB_ICONSTOP);
     return;

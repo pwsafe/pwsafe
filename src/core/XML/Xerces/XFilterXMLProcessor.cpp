@@ -121,11 +121,6 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   pSAX2Parser->setContentHandler(pSAX2Handler);
   pSAX2Parser->setErrorHandler(pSAX2Handler);
 
-  // Workaround/bypass until Xerces supports retrieving version from the
-  // <xs:schema ...> statement!
-  // Set 'dummy' schema version to arbitrary value > 1
-  pSAX2Handler->SetSchemaVersion(99);
-
   pSAX2Handler->SetVariables(m_pAsker, &m_MapXMLFilters, m_FPool, m_bValidation);
 
   // instantiate converter out of if/else to be sure that string will be valid
