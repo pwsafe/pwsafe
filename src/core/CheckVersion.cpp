@@ -74,10 +74,10 @@ CheckVersion::CheckLatestVersion(const stringT &xml, stringT &latest) const
                 (xmajor == m_nMajor && xminor == m_nMinor &&
                  xbuild > m_nBuild)) {
                 if (xbuild == 0) { // hide build # if zero (formal release)
-                  Format(latest, L"PasswordSafe V%d.%02d (%s)",
+                  Format(latest, L"PasswordSafe V%d.%d (%s)",
                          xmajor, xminor, xrevision);
                 } else {
-                  Format(latest, L"PasswordSafe V%d.%02d.%02d (%s)",
+                  Format(latest, L"PasswordSafe V%d.%d.%d (%s)",
                          xmajor, xminor, xbuild, xrevision);
                 }
                 return CheckStatus::NEWER_AVAILABLE;

@@ -83,9 +83,9 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   CString csSpecialBuild = pPWSver->GetSpecialBuild();
 
   if (nBuild == 0)
-    m_appversion.Format(L"V%d.%02d%s", nMajor, nMinor, static_cast<LPCWSTR>(csSpecialBuild));
+    m_appversion.Format(L"V%d.%d%s", nMajor, nMinor, static_cast<LPCWSTR>(csSpecialBuild));
   else
-    m_appversion.Format(L"V%d.%02d.%02d%s", nMajor, nMinor, nBuild,
+    m_appversion.Format(L"V%d.%d.%d%s", nMajor, nMinor, nBuild,
                         static_cast<LPCWSTR>(csSpecialBuild));
 }
 

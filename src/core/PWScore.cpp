@@ -145,10 +145,10 @@ void PWScore::SetApplicationNameAndVersion(const stringT &appName,
   int nMinor = LOWORD(dwMajorMinor);
   int nRevison = HIWORD(dwBuildRevision);
   if (nRevison == 0)
-    Format(m_AppNameAndVersion, L"%ls V%d.%02d", appName.c_str(),
+    Format(m_AppNameAndVersion, L"%ls V%d.%d", appName.c_str(),
            nMajor, nMinor);
   else
-    Format(m_AppNameAndVersion, L"%ls V%d.%02d.%d", appName.c_str(),
+    Format(m_AppNameAndVersion, L"%ls V%d.%d.%d", appName.c_str(),
            nMajor, nMinor, nRevison);
 
 }
