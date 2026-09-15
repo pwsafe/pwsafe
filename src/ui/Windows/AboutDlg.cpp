@@ -23,6 +23,7 @@
 
 #include "core/UTF8Conv.h"
 #include "core/SysInfo.h"
+#include "core/Util.h"
 
 #include "resource.h"
 #include "resource3.h"
@@ -73,19 +74,12 @@ BOOL CAboutDlg::OnInitDialog()
   m_appversion = pPWSver->GetAppVersion();
 
   const CString cs2go = SysInfo::IsUnderPw2go() ? L"2go " : L" ";
-  if (m_nBuild == 0) { // hide build # if zero (formal release)
-    m_appversion.Format(L"%s%sV%d.%d%s (%s)", AfxGetAppName(),
-                        static_cast<LPCWSTR>(cs2go),
-                        m_nMajor, m_nMinor,
-                        static_cast<LPCWSTR>(SpecialBuild),
-                        static_cast<LPCWSTR>(Revision));
-  } else {
-    m_appversion.Format(L"%s%sV%d.%d.%d%s (%s)", AfxGetAppName(),
-                        static_cast<LPCWSTR>(cs2go),
-                        m_nMajor, m_nMinor, m_nBuild,
-                        static_cast<LPCWSTR>(SpecialBuild),
-                        static_cast<LPCWSTR>(Revision));
-  }
+  const CString version(PWSUtil::FormatVersionString(m_nMajor, m_nMinor, m_nBuild).c_str());
+  m_appversion.Format(L"%s%sV%s%s (%s)", AfxGetAppName(),
+                      static_cast<LPCWSTR>(cs2go),
+                      static_cast<LPCWSTR>(version),
+                      static_cast<LPCWSTR>(SpecialBuild),
+                      static_cast<LPCWSTR>(Revision));
 
 #if _WIN64
   // Only add platform information for 64-bit build

@@ -1035,3 +1035,13 @@ bool PWSUtil::HasValidLockerData(const stringT& locker)
 
   return PWSUtil::GetLockerData(locker, plkUser, plkHost, plkPid);
 }
+
+stringT PWSUtil::FormatVersionString(int major, int minor, int build)
+{
+  stringT version;
+  if (build == 0) // hide build # if zero
+    Format(version, L"%d.%d", major, minor);
+  else
+    Format(version, L"%d.%d.%d", major, minor, build);
+  return version;
+}

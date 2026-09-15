@@ -25,6 +25,7 @@
 #include "CheckVersion.h"
 #include "SysInfo.h"
 #include "StringX.h" // for Format()
+#include "Util.h" // for FormatVersionString()
 
 #include "pugixml/pugixml.hpp"
 
@@ -73,13 +74,8 @@ CheckVersion::CheckLatestVersion(const stringT &xml, stringT &latest) const
                 (xmajor == m_nMajor && xminor > m_nMinor) ||
                 (xmajor == m_nMajor && xminor == m_nMinor &&
                  xbuild > m_nBuild)) {
-                if (xbuild == 0) { // hide build # if zero (formal release)
-                  Format(latest, L"PasswordSafe V%d.%d (%s)",
-                         xmajor, xminor, xrevision);
-                } else {
-                  Format(latest, L"PasswordSafe V%d.%d.%d (%s)",
-                         xmajor, xminor, xbuild, xrevision);
-                }
+                Format(latest, L"PasswordSafe V%ls (%s)",
+                       PWSUtil::FormatVersionString(xmajor, xminor, xbuild).c_str(), xrevision);
                 return CheckStatus::NEWER_AVAILABLE;
             }
             return CheckStatus::UP2DATE;
