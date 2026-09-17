@@ -43,7 +43,7 @@ flatpak run org.flatpak.Builder --user --install --force-clean build-dir org.pws
 # ----------------------
 # List installed flatpak
 # ----------------------
-flatpak list | grep pwsafe
+flatpak list | grep "org.pwsafe.pwsafe"
 
 
 # -----------
