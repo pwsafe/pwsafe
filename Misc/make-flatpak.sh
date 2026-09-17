@@ -1,4 +1,5 @@
 #!/bin/bash
+FREEDESKTOP_VERSION=25.08
 
 # --------------------------
 # Exit script on first error
@@ -15,7 +16,7 @@ flatpak install -y flathub org.flatpak.Builder
 # -----------------------
 # Install flatpak SDK
 # -----------------------
-flatpak install -y flathub org.freedesktop.Platform//25.08 org.freedesktop.Sdk//25.08
+flatpak install -y flathub org.freedesktop.Platform//${FREEDESKTOP_VERSION} org.freedesktop.Sdk//${FREEDESKTOP_VERSION}
 
 
 # -------------

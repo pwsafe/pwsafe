@@ -19,8 +19,8 @@ If you want to build flatpak by yourself, then do the following:
    
    Create the standalone file, type `flatpak build-bundle pwsaferepo pwsafe.flatpak org.pwsafe.pwsafe master`.
    
-   Copy pwsafe.flatpak to another machine and install the Freedesktop runtime from Flathub: `flatpak install flathub org.freedesktop.Platform/x86_64/25.08`.
+   Copy pwsafe.flatpak to another machine and install the bundle using: `flatpak install -y pwsafe.flatpak`.
    
-   Finally, install the bundle: `flatpak install pwsafe.flatpak`.
+   If the Freedesktop runtime is not installed automatically with the bundle, install it from Flathub first (the current required version is 25.08): `flatpak install -y flathub org.freedesktop.Platform/x86_64/25.08`.
 
 6. You can now safely remove directory created in step 1.
