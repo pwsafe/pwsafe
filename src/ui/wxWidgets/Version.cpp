@@ -25,8 +25,8 @@ const wchar_t *debstr = L"[debug] ";
 const wchar_t *debstr = L"";
 #endif
 
-const wxString pwsafeVersionString = wxString::Format(wxString(_T("v%ls (%ls) %ls%ls")),
+const wxString pwsafeVersionString = wxString::Format(wxString(_T("v%ls%ls (%ls) %ls")),
                                                       PWSversion::GetInstance()->FormatVersionString().c_str(),
+                                                      PWSversion::GetInstance()->GetSpecialBuild().c_str(),
                                                       PWSversion::GetInstance()->GetRevision().c_str(),
-                                                      debstr,
-                                                      PWSversion::GetInstance()->GetSpecialBuild().c_str());
+                                                      debstr);
