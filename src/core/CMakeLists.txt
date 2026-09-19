@@ -31,6 +31,7 @@ set (CORE_SRCS
   PWSprefs.cpp
   PWSrand.cpp
   PWStime.cpp
+  PWSversion.cpp
   Report.cpp
   RUEList.cpp
   StringX.cpp
@@ -112,4 +113,4 @@ else (NOT WIN32 OR WX_WINDOWS)
 endif(NOT WIN32 OR WX_WINDOWS)
 
 add_library(core STATIC ${CORE_SRCS})
-target_link_libraries(core PRIVATE harden_interface)
+target_link_libraries(core PRIVATE harden_interface pws_version)

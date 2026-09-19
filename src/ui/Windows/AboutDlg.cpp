@@ -17,13 +17,12 @@
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 #include "RichEditCtrlExtn.h"
-#include "PWSversion.h"
 #include "DumpSelect.h"
 #include "DboxMain.h"
 
 #include "core/UTF8Conv.h"
 #include "core/SysInfo.h"
-#include "core/Util.h"
+#include "core/PWSversion.h"
 
 #include "resource.h"
 #include "resource3.h"
@@ -68,13 +67,11 @@ BOOL CAboutDlg::OnInitDialog()
   m_nMajor = pPWSver->GetMajor();
   m_nMinor = pPWSver->GetMinor();
   m_nBuild = pPWSver->GetBuild();
-  CString Revision = pPWSver->GetRevision();
-  CString SpecialBuild = pPWSver->GetSpecialBuild();
-  
-  m_appversion = pPWSver->GetAppVersion();
+  const CString Revision(pPWSver->GetRevision().c_str());
+  const CString SpecialBuild(pPWSver->GetSpecialBuild().c_str());
 
   const CString cs2go = SysInfo::IsUnderPw2go() ? L"2go " : L" ";
-  const CString version(PWSUtil::FormatVersionString(m_nMajor, m_nMinor, m_nBuild).c_str());
+  const CString version(pPWSver->FormatVersionString().c_str());
   m_appversion.Format(L"%s%sV%s%s (%s)", AfxGetAppName(),
                       static_cast<LPCWSTR>(cs2go),
                       static_cast<LPCWSTR>(version),
@@ -92,7 +89,7 @@ BOOL CAboutDlg::OnInitDialog()
 
   CString builtOnPrefix;
   GetDlgItem(IDC_APPBUILTON)->GetWindowText(builtOnPrefix);
-  const CString builtOn =  builtOnPrefix + pPWSver->GetBuiltOn();
+  const CString builtOn =  builtOnPrefix + pPWSver->GetBuiltOn().c_str();
 
   GetDlgItem(IDC_APPVERSION)->SetWindowText(m_appversion);
   GetDlgItem(IDC_APPBUILTON)->SetWindowText(builtOn);

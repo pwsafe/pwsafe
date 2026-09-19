@@ -304,9 +304,6 @@ namespace PWSUtil {
 
   bool GetLockerData(const stringT& locker, stringT& username, stringT& hostname, int& pid);
   bool HasValidLockerData(const stringT& locker);
-
-  // Formats "major.minor" or, if build != 0, "major.minor.build" - per https://semver.org/#semantic-versioning-200.
-  stringT FormatVersionString(int major, int minor, int build);
 }
 
 ///////////////////////////////////////////////////////

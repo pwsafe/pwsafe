@@ -12,7 +12,7 @@
 
 #include "version.h"
 
-#include "core/Util.h"
+#include "core/PWSversion.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -26,5 +26,7 @@ const wchar_t *debstr = L"";
 #endif
 
 const wxString pwsafeVersionString = wxString::Format(wxString(_T("v%ls (%ls) %ls%ls")),
-                                                      PWSUtil::FormatVersionString(MAJORVERSION, MINORVERSION, REVISION).c_str(),
-                                                      _T(VCS_VERSION), debstr, SPECIALBUILD);
+                                                      PWSversion::GetInstance()->FormatVersionString().c_str(),
+                                                      PWSversion::GetInstance()->GetRevision().c_str(),
+                                                      debstr,
+                                                      PWSversion::GetInstance()->GetSpecialBuild().c_str());

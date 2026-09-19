@@ -15,6 +15,7 @@
 #include "PWHistory.h"
 #include "PWSLog.h"
 #include "PWSrand.h"
+#include "PWSversion.h"
 #include "Util.h"
 #include "SysInfo.h"
 #include "UTF8Conv.h"
@@ -145,7 +146,7 @@ void PWScore::SetApplicationNameAndVersion(const stringT &appName,
   int nMinor = LOWORD(dwMajorMinor);
   int nRevison = HIWORD(dwBuildRevision);
   Format(m_AppNameAndVersion, L"%ls V%ls", appName.c_str(),
-         PWSUtil::FormatVersionString(nMajor, nMinor, nRevison).c_str());
+         PWSversion::FormatVersionString(nMajor, nMinor, nRevison).c_str());
 
 }
 

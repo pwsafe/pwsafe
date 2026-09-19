@@ -318,9 +318,6 @@
     <ClCompile Include="PWStatusBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PWSversion.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PWToolBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -709,9 +706,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWStatusBar.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="PWSversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWToolBar.h">

@@ -25,7 +25,7 @@
 #include "version.h"
 #include "wxUtilities.h"
 
-#include "core/Util.h"
+#include "core/PWSversion.h"
 
 #include "graphics/cpane.xpm"
 #include "graphics/eye.xpm"
@@ -46,11 +46,12 @@ CryptKeyEntryDlg::CryptKeyEntryDlg(Mode mode) : m_Mode(mode)
 {
   //(*Initialize(CryptKeyEntryDlg)
   wxString modeVariant = IsEncryptionMode() ? _("Encryption") : _("Decryption");
+  const PWSversion *pPWSver = PWSversion::GetInstance();
   wxString title =
     wxString::Format(wxT("%ls by %ls v%ls %ls"),
                           modeVariant, pwsafeAppName,
-                          PWSUtil::FormatVersionString(MAJORVERSION, MINORVERSION, REVISION).c_str(),
-                          SPECIALBUILD);
+                          pPWSver->FormatVersionString().c_str(),
+                          pPWSver->GetSpecialBuild().c_str());
   Create(nullptr, -1, title, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE|wxTAB_TRAVERSAL, _T("id"));
   //*)
   CreateControls();

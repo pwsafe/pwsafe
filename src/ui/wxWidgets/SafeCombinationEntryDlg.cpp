@@ -29,6 +29,7 @@
 #include "core/core.h"
 #include "core/PWSdirs.h"
 #include "core/PWSprefs.h"
+#include "core/PWSversion.h"
 #include "core/Util.h"
 #include "os/file.h"
 #include "os/env.h"
@@ -257,9 +258,10 @@ void SafeCombinationEntryDlg::CreateControls()
     }
   });
 
+  const PWSversion *pPWSver = PWSversion::GetInstance();
   m_version->SetLabel(wxString::Format(wxT("V%ls %ls"),
-                                       PWSUtil::FormatVersionString(MAJORVERSION, MINORVERSION, REVISION).c_str(),
-                                       SPECIALBUILD));
+                                       pPWSver->FormatVersionString().c_str(),
+                                       pPWSver->GetSpecialBuild().c_str()));
   wxArrayString recentFiles;
   wxGetApp().recentDatabases().GetAll(recentFiles);
   m_filenameCB->Append(recentFiles);

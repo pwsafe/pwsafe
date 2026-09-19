@@ -20,13 +20,13 @@ down the streetsky.  [Groucho Marx]
 #include "PasskeySetup.h"
 #include "Fonts.h"
 #include "DboxMain.h" // for CheckPasskey()
-#include "PWSversion.h"
 #include "GeneralMsgBox.h"
 
 #include "core/Pwsdirs.h"
 #include "core/pwsprefs.h"
 #include "core/PWScore.h"
 #include "core/PWSfileHeader.h"
+#include "core/PWSversion.h"
 #include "core/Util.h"
 #include "core/core.h"
 
@@ -77,12 +77,9 @@ CPasskeyEntry::CPasskeyEntry(CWnd* pParent, const CString& a_filespec, int index
   m_SelectedDatabase = a_filespec;
 
   PWSversion *pPWSver = PWSversion::GetInstance();
-  int nMajor = pPWSver->GetMajor();
-  int nMinor = pPWSver->GetMinor();
-  int nBuild = pPWSver->GetBuild();
-  CString csSpecialBuild = pPWSver->GetSpecialBuild();
+  const CString csSpecialBuild(pPWSver->GetSpecialBuild().c_str());
 
-  const CString version(PWSUtil::FormatVersionString(nMajor, nMinor, nBuild).c_str());
+  const CString version(pPWSver->FormatVersionString().c_str());
   m_appversion.Format(L"V%s%s", static_cast<LPCWSTR>(version),
                       static_cast<LPCWSTR>(csSpecialBuild));
 }
