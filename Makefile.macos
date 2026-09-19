@@ -36,11 +36,19 @@ ifndef VER_SPECIAL
 VER_SPECIAL = macOS
 endif
 
-src/ui/wxWidgets/version.h: version.wx Misc/mkversion.pl src/ui/wxWidgets/version.in
+# VERSION_H can be overridden on the command line (e.g. by the Xcode build,
+# which wants it generated into its own build directory rather than here).
+VERSION_H ?= src/ui/wxWidgets/version.h
+
+.PHONY: version-h
+version-h: $(VERSION_H)
+
+$(VERSION_H): version.wx Misc/mkversion.pl src/ui/wxWidgets/version.in
+	@mkdir -p "$(dir $@)"
 ifdef VER_REV
-	@Misc/mkversion.pl MAJOR=$(VER_MAJOR) MINOR=$(VER_MINOR) REV=$(VER_REV) SPECIAL=$(VER_SPECIAL) src/ui/wxWidgets/version.in $@
+	@Misc/mkversion.pl MAJOR=$(VER_MAJOR) MINOR=$(VER_MINOR) REV=$(VER_REV) SPECIAL=$(VER_SPECIAL) src/ui/wxWidgets/version.in "$@"
 else
-	@Misc/mkversion.pl MAJOR=$(VER_MAJOR) MINOR=$(VER_MINOR) SPECIAL=$(VER_SPECIAL) src/ui/wxWidgets/version.in $@
+	@Misc/mkversion.pl MAJOR=$(VER_MAJOR) MINOR=$(VER_MINOR) SPECIAL=$(VER_SPECIAL) src/ui/wxWidgets/version.in "$@"
 endif
 
 Xcode/pwsafe.plist: version.wx Xcode/pwsafe-template.plist

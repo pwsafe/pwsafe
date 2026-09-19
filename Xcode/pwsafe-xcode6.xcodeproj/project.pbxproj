@@ -847,7 +847,6 @@
 		E6ADBA301195709A004E2BE5 /* SystemTray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemTray.h; sourceTree = "<group>"; };
 		E6ADBA311195709A004E2BE5 /* SystemTrayMenuId.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SystemTrayMenuId.h; sourceTree = "<group>"; };
 		E6ADBA321195709A004E2BE5 /* Version.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Version.cpp; sourceTree = "<group>"; };
-		E6ADBA331195709A004E2BE5 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		E6ADBA351195709A004E2BE5 /* wxMessages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxMessages.h; sourceTree = "<group>"; };
 		E6ADBA361195709A004E2BE5 /* wxUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = wxUtilities.h; sourceTree = "<group>"; };
 		E6AF167C11F1FD77002C253B /* ImportTextDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ImportTextDlg.cpp; sourceTree = "<group>"; };
@@ -1739,7 +1738,6 @@
 				E6E895991BD8C5E1009F3A8E /* TimedTaskChain.h */,
 				E6A7ECAD12CDEAA40021D898 /* ToolbarButtons.h */,
 				E6ADBA241195709A004E2BE5 /* TreeCtrl.h */,
-				E6ADBA331195709A004E2BE5 /* version.h */,
 				E090D35724D742E90083BA2B /* ViewAttachmentDlg.h */,
 				E6BA47861216DB9C00193879 /* ViewReportDlg.h */,
 				E6ADBA351195709A004E2BE5 /* wxMessages.h */,
@@ -2017,6 +2015,7 @@
 			buildConfigurationList = E6ADB80711956A94004E2BE5 /* Build configuration list for PBXNativeTarget "core" */;
 			buildPhases = (
 				E6CFEF1811EA41FB001402D8 /* Generate core_st */,
+				A2FE25FE1C5ACFBD00210C37 /* Generate version.h */,
 				E6ADB80011956A93004E2BE5 /* Sources */,
 			);
 			buildRules = (
@@ -2154,12 +2153,12 @@
 			);
 			name = "Generate version.h and pwsafe.plist";
 			outputPaths = (
-				../src/ui/wxWidgets/version.h,
+				"$(DERIVED_FILE_DIR)/version.h",
 				pwsafe.plist,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "make -C .. -f Makefile.macos src/ui/wxWidgets/version.h Xcode/pwsafe.plist\n";
+			shellScript = "make -C .. -f Makefile.macos \"VERSION_H=${DERIVED_FILE_DIR}/version.h\" version-h Xcode/pwsafe.plist\n";
 			showEnvVarsInLog = 0;
 		};
 		E6CFEF1811EA41FB001402D8 /* Generate core_st */ = {
@@ -2178,6 +2177,25 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "echo \"Generating core_st.cpp and core_st.h ...\"\n\"${PROJECT_DIR}\"/../Misc/rc2cpp.pl \"${PROJECT_DIR}\"/../src/core/core.rc2\n";
+		};
+		A2FE25FE1C5ACFBD00210C37 /* Generate version.h */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				../src/ui/wxWidgets/version.in,
+				../Misc/mkversion.pl,
+				../version.wx,
+			);
+			name = "Generate version.h";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/version.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C .. -f Makefile.macos \"VERSION_H=${DERIVED_FILE_DIR}/version.h\" version-h\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2545,7 +2563,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				PRODUCT_NAME = core;
-				USER_HEADER_SEARCH_PATHS = ../src/;
+				USER_HEADER_SEARCH_PATHS = "../src/ $(DERIVED_FILE_DIR)";
 				WARNING_CFLAGS = (
 					"$(inherited)",
 					"-Wextra",
@@ -2591,7 +2609,7 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
-				USER_HEADER_SEARCH_PATHS = ../src;
+				USER_HEADER_SEARCH_PATHS = "../src $(DERIVED_FILE_DIR)";
 			};
 			name = "Debug-no-yubi";
 		};
@@ -2875,7 +2893,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				PRODUCT_NAME = core;
-				USER_HEADER_SEARCH_PATHS = ../src/;
+				USER_HEADER_SEARCH_PATHS = "../src/ $(DERIVED_FILE_DIR)";
 				WARNING_CFLAGS = (
 					"$(inherited)",
 					"-Wextra",
@@ -2924,7 +2942,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
-				USER_HEADER_SEARCH_PATHS = ../src;
+				USER_HEADER_SEARCH_PATHS = "../src $(DERIVED_FILE_DIR)";
 			};
 			name = "Homebrew-Release";
 		};
@@ -3241,7 +3259,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				PRODUCT_NAME = core;
-				USER_HEADER_SEARCH_PATHS = ../src/;
+				USER_HEADER_SEARCH_PATHS = "../src/ $(DERIVED_FILE_DIR)";
 				WARNING_CFLAGS = (
 					"$(inherited)",
 					"-Wextra",
@@ -3256,7 +3274,7 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				PRODUCT_NAME = core;
-				USER_HEADER_SEARCH_PATHS = ../src/;
+				USER_HEADER_SEARCH_PATHS = "../src/ $(DERIVED_FILE_DIR)";
 				WARNING_CFLAGS = (
 					"$(inherited)",
 					"-Wextra",
@@ -3326,7 +3344,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
-				USER_HEADER_SEARCH_PATHS = ../src;
+				USER_HEADER_SEARCH_PATHS = "../src $(DERIVED_FILE_DIR)";
 			};
 			name = Debug;
 		};
@@ -3352,7 +3370,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
-				USER_HEADER_SEARCH_PATHS = ../src;
+				USER_HEADER_SEARCH_PATHS = "../src $(DERIVED_FILE_DIR)";
 			};
 			name = Release;
 		};
