@@ -440,7 +440,8 @@ bool PWSafeApp::OnInit()
   m_core.SetCurFile(tostringx(cmd_filename));
   const PWSversion *pPWSver = PWSversion::GetInstance();
   m_core.SetApplicationNameAndVersion(tostdstring(progName),
-                                      MAKELONG(pPWSver->GetMinor(), pPWSver->GetMajor()));
+                                      MAKELONG(pPWSver->GetMinor(), pPWSver->GetMajor()),
+                                      MAKELONG(0, pPWSver->GetBuild()));
 
   static wxSingleInstanceChecker appInstance;
   if (!prefs->GetPref(PWSprefs::MultipleInstances) &&
