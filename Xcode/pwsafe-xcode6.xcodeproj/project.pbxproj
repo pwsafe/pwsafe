@@ -237,6 +237,7 @@
 		E6EE842E11E87E9800B01518 /* PWSFilters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83C211E87E9700B01518 /* PWSFilters.cpp */; };
 		E6EE842F11E87E9800B01518 /* PWSprefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83C511E87E9700B01518 /* PWSprefs.cpp */; };
 		E6EE843011E87E9800B01518 /* PWSrand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83C711E87E9700B01518 /* PWSrand.cpp */; };
+		A2FE25FC1C5ACFBD00210C37 /* PWSversion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25FA1C5ACFBD00210C37 /* PWSversion.cpp */; };
 		E6EE843111E87E9800B01518 /* Report.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83C911E87E9700B01518 /* Report.cpp */; };
 		E6EE843411E87E9800B01518 /* StringX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CF11E87E9700B01518 /* StringX.cpp */; };
 		E6EE843511E87E9800B01518 /* SysInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D211E87E9700B01518 /* SysInfo.cpp */; };
@@ -966,6 +967,8 @@
 		E6EE83C611E87E9700B01518 /* PWSprefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSprefs.h; sourceTree = "<group>"; };
 		E6EE83C711E87E9700B01518 /* PWSrand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWSrand.cpp; sourceTree = "<group>"; };
 		E6EE83C811E87E9700B01518 /* PWSrand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSrand.h; sourceTree = "<group>"; };
+		A2FE25FA1C5ACFBD00210C37 /* PWSversion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWSversion.cpp; sourceTree = "<group>"; };
+		A2FE25FB1C5ACFBD00210C37 /* PWSversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSversion.h; sourceTree = "<group>"; };
 		E6EE83C911E87E9700B01518 /* Report.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Report.cpp; sourceTree = "<group>"; };
 		E6EE83CA11E87E9700B01518 /* Report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Report.h; sourceTree = "<group>"; };
 		E6EE83CF11E87E9700B01518 /* StringX.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringX.cpp; sourceTree = "<group>"; };
@@ -1878,6 +1881,8 @@
 				E6EE83C611E87E9700B01518 /* PWSprefs.h */,
 				E6EE83C711E87E9700B01518 /* PWSrand.cpp */,
 				E6EE83C811E87E9700B01518 /* PWSrand.h */,
+				A2FE25FA1C5ACFBD00210C37 /* PWSversion.cpp */,
+				A2FE25FB1C5ACFBD00210C37 /* PWSversion.h */,
 				A2FE25931C5ACFBD00210C36 /* PWStime.cpp */,
 				A2FE25941C5ACFBD00210C36 /* PWStime.h */,
 				E6EE83C911E87E9700B01518 /* Report.cpp */,
@@ -2273,6 +2278,7 @@
 				E0C3C4422379B2C200715124 /* AES.cpp in Sources */,
 				B84A41C2A9CBBC9791F9B2DF /* base32.cpp in Sources */,
 				E6EE843011E87E9800B01518 /* PWSrand.cpp in Sources */,
+				A2FE25FC1C5ACFBD00210C37 /* PWSversion.cpp in Sources */,
 				E0C3C4442379B2C200715124 /* KeyWrap.cpp in Sources */,
 				E0C3C4462379B2C200715124 /* sha1.cpp in Sources */,
 				E0C3C4472379B2C200715124 /* sha256.cpp in Sources */,
