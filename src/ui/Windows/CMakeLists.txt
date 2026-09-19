@@ -110,7 +110,6 @@ list(APPEND PWSAFE_HDR_LIST
             src/ui/Windows/PWSFaultHandler.h
             src/ui/Windows/PWSRecentFileList.h
             src/ui/Windows/PWStatusBar.h
-            src/ui/Windows/PWSversion.h
             src/ui/Windows/PWToolBar.h
             src/ui/Windows/PWTouch.h
             src/ui/Windows/PWTreeCtrl.h
@@ -271,7 +270,6 @@ list(APPEND PWSAFE_SRC_LIST
             src/ui/Windows/PWSFaultHandler.cpp
             src/ui/Windows/PWSRecentFileList.cpp
             src/ui/Windows/PWStatusBar.cpp
-            src/ui/Windows/PWSversion.cpp
             src/ui/Windows/PWToolBar.cpp
             src/ui/Windows/PWTreeCtrl.cpp
             src/ui/Windows/QuerySetDef.cpp

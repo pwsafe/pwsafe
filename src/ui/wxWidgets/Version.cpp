@@ -12,6 +12,8 @@
 
 #include "version.h"
 
+#include "core/PWSversion.h"
+
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
 #endif
@@ -23,12 +25,8 @@ const wchar_t *debstr = L"[debug] ";
 const wchar_t *debstr = L"";
 #endif
 
-#if defined(REVISION) && (REVISION != 0)
-const wxString pwsafeVersionString = wxString::Format(wxString(_T("v%d.%.2d.%d (%ls) %ls%ls")),
-                                                      MAJORVERSION, MINORVERSION, REVISION,
-                                                      _T(VCS_VERSION), debstr, SPECIALBUILD);
-#else
-const wxString pwsafeVersionString = wxString::Format(wxString(_T("v%d.%.2d (%ls) %ls%ls")),
-                                                      MAJORVERSION, MINORVERSION,
-                                                      _T(VCS_VERSION), debstr, SPECIALBUILD);
-#endif
+const wxString pwsafeVersionString = wxString::Format(wxString(_T("v%ls%ls (%ls) %ls")),
+                                                      PWSversion::GetInstance()->FormatVersionString().c_str(),
+                                                      PWSversion::GetInstance()->GetSpecialBuild().c_str(),
+                                                      PWSversion::GetInstance()->GetRevision().c_str(),
+                                                      debstr);

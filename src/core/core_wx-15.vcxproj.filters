@@ -71,6 +71,9 @@
     <ClCompile Include="PWSrand.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="PWSversion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Report.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -248,6 +251,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PWSrand.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PWSversion.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Report.h">

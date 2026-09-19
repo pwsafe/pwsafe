@@ -1,3 +1,4 @@
 *.vcxproj.user
 TAGS
 .vscode
+version.h

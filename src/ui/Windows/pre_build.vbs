@@ -81,7 +81,12 @@ End If
 strGitPGM = strGit + "bin\git.exe"
 strVersionIn = strProjectDir + "version.in"
 strVersionMFC = strSolutionDir + "version.mfc"
-strVersionHeader = strProjectDir + strLanguage + "version.h"
+If strDLL <> "DLLs" Then
+  ' version.h is generated directly under src/
+  strVersionHeader = strSolutionDir + "src\version.h"
+Else
+  strVersionHeader = strProjectDir + strLanguage + "version.h"
+End If
 
 stdout.WriteLine " "
 If Not objFSO.FileExists(strVersionIn) Then

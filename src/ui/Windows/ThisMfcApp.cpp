@@ -27,7 +27,6 @@
 #include "GeneralMsgBox.h"
 #include "PWSFaultHandler.h"
 #include "Fonts.h"
-#include "PWSversion.h"
 
 #include "PWSDarkMode.h"
 
@@ -35,6 +34,7 @@
 #include "core/PWSprefs.h"
 #include "core/PWSrand.h"
 #include "core/PWSdirs.h"
+#include "core/PWSversion.h"
 #include "core/SysInfo.h"
 #include "core/PWSLog.h"
 

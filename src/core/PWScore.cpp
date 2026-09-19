@@ -15,6 +15,7 @@
 #include "PWHistory.h"
 #include "PWSLog.h"
 #include "PWSrand.h"
+#include "PWSversion.h"
 #include "Util.h"
 #include "SysInfo.h"
 #include "UTF8Conv.h"
@@ -144,13 +145,9 @@ void PWScore::SetApplicationNameAndVersion(const stringT &appName,
   int nMajor = HIWORD(dwMajorMinor);
   int nMinor = LOWORD(dwMajorMinor);
   int nRevison = HIWORD(dwBuildRevision);
-  if (nRevison == 0)
-    Format(m_AppNameAndVersion, L"%ls V%d.%02d", appName.c_str(),
-           nMajor, nMinor);
-  else
-    Format(m_AppNameAndVersion, L"%ls V%d.%02d.%d", appName.c_str(),
-           nMajor, nMinor, nRevison);
-
+  Format(m_AppNameAndVersion, L"%ls v%ls%ls", appName.c_str(),
+         PWSversion::FormatVersionString(nMajor, nMinor, nRevison).c_str(),
+         PWSversion::GetInstance()->GetSpecialBuild().c_str());
 }
 
 // Return whether first [g:t:u] is greater than the second [g:t:u]

@@ -9,16 +9,9 @@
 #ifndef _VERSION_H_
 #define _VERSION_H_
 
-// version.h is created in the source tree from version.in via
-// pre_build.vbs (deprecated - build via cmake is the main build path)
-//
-// version.h is also created in the specified build directory
-// by cmake using version.in as the template
-//
-// In both cases, the version information is retrieved from the toplevel version.mfc file.
-//
-// When building via cmake in the build directory, make sure version.h
-// is *not* in the source tree.
+// version.h is generated from this template: into the build directory by
+// cmake, or directly under src/ by the legacy pre_build.vbs script.
+// The version information is retrieved from the toplevel version.mfc file.
 
 // Format: Major, Minor, Revision
 //   Revision  = 0 for all Formally Released versions

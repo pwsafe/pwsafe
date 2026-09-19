@@ -1,4 +1,2 @@
 *.aps
 UserVariables*.props
-version.h
-!win32-darkmode32/Version.h

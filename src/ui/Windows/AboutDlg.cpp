@@ -17,12 +17,12 @@
 #include "ThisMfcApp.h"
 #include "GeneralMsgBox.h"
 #include "RichEditCtrlExtn.h"
-#include "PWSversion.h"
 #include "DumpSelect.h"
 #include "DboxMain.h"
 
 #include "core/UTF8Conv.h"
 #include "core/SysInfo.h"
+#include "core/PWSversion.h"
 
 #include "resource.h"
 #include "resource3.h"
@@ -67,25 +67,16 @@ BOOL CAboutDlg::OnInitDialog()
   m_nMajor = pPWSver->GetMajor();
   m_nMinor = pPWSver->GetMinor();
   m_nBuild = pPWSver->GetBuild();
-  CString Revision = pPWSver->GetRevision();
-  CString SpecialBuild = pPWSver->GetSpecialBuild();
-  
-  m_appversion = pPWSver->GetAppVersion();
+  const CString Revision(pPWSver->GetRevision().c_str());
+  const CString SpecialBuild(pPWSver->GetSpecialBuild().c_str());
 
   const CString cs2go = SysInfo::IsUnderPw2go() ? L"2go " : L" ";
-  if (m_nBuild == 0) { // hide build # if zero (formal release)
-    m_appversion.Format(L"%s%sV%d.%02d%s (%s)", AfxGetAppName(),
-                        static_cast<LPCWSTR>(cs2go),
-                        m_nMajor, m_nMinor,
-                        static_cast<LPCWSTR>(SpecialBuild),
-                        static_cast<LPCWSTR>(Revision));
-  } else {
-    m_appversion.Format(L"%s%sV%d.%02d.%02d%s (%s)", AfxGetAppName(),
-                        static_cast<LPCWSTR>(cs2go),
-                        m_nMajor, m_nMinor, m_nBuild,
-                        static_cast<LPCWSTR>(SpecialBuild),
-                        static_cast<LPCWSTR>(Revision));
-  }
+  const CString version(pPWSver->FormatVersionString().c_str());
+  m_appversion.Format(L"%s%sV%s%s (%s)", AfxGetAppName(),
+                      static_cast<LPCWSTR>(cs2go),
+                      static_cast<LPCWSTR>(version),
+                      static_cast<LPCWSTR>(SpecialBuild),
+                      static_cast<LPCWSTR>(Revision));
 
 #if _WIN64
   // Only add platform information for 64-bit build
@@ -98,7 +89,7 @@ BOOL CAboutDlg::OnInitDialog()
 
   CString builtOnPrefix;
   GetDlgItem(IDC_APPBUILTON)->GetWindowText(builtOnPrefix);
-  const CString builtOn =  builtOnPrefix + pPWSver->GetBuiltOn();
+  const CString builtOn =  builtOnPrefix + pPWSver->GetBuiltOn().c_str();
 
   GetDlgItem(IDC_APPVERSION)->SetWindowText(m_appversion);
   GetDlgItem(IDC_APPBUILTON)->SetWindowText(builtOn);

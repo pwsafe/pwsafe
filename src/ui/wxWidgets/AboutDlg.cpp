@@ -25,6 +25,7 @@
 #include "PasswordSafeFrame.h"
 #include "PWSafeApp.h"
 #include "core/CheckVersion.h"
+#include "core/PWSversion.h"
 
 #ifdef __WXMSW__
 #include <wx/msw/msvcrt.h>
@@ -520,7 +521,8 @@ void AboutDlg::CompareVersionData()
   //
   stringT latest;
   if (status == CheckVersion::CheckStatus::UP2DATE) {
-    CheckVersion cv(MAJORVERSION, MINORVERSION, REVISION);
+    const PWSversion *pPWSver = PWSversion::GetInstance();
+    CheckVersion cv(pPWSver->GetMajor(), pPWSver->GetMinor(), pPWSver->GetBuild());
     status = cv.CheckLatestVersion(latest_xml, latest);
   }
 

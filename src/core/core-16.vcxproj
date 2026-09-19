@@ -351,6 +351,7 @@
     <ClCompile Include="PWSFilters.cpp" />
     <ClCompile Include="PWSprefs.cpp" />
     <ClCompile Include="PWSrand.cpp" />
+    <ClCompile Include="PWSversion.cpp" />
     <ClCompile Include="Report.cpp" />
     <ClCompile Include="sha1.cpp" />
     <ClCompile Include="sha256.cpp" />
@@ -413,6 +414,7 @@
     <ClInclude Include="PwsPlatform.h" />
     <ClInclude Include="PWSprefs.h" />
     <ClInclude Include="PWSrand.h" />
+    <ClInclude Include="PWSversion.h" />
     <ClInclude Include="Report.h" />
     <ClInclude Include="sha1.h" />
     <ClInclude Include="sha256.h" />

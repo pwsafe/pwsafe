@@ -45,6 +45,7 @@
 #include "core/PWSLog.h"
 #include "core/PWSprefs.h"
 #include "core/PWSrand.h"
+#include "core/PWSversion.h"
 #include "core/SysInfo.h"
 #include "core/PWSdirs.h"
 #include "wxUtilities.h"
@@ -437,8 +438,10 @@ bool PWSafeApp::OnInit()
     recentDatabases().AddFileToHistory(cmd_filename);
   }
   m_core.SetCurFile(tostringx(cmd_filename));
+  const PWSversion *pPWSver = PWSversion::GetInstance();
   m_core.SetApplicationNameAndVersion(tostdstring(progName),
-                                      MAKELONG(MINORVERSION, MAJORVERSION));
+                                      MAKELONG(pPWSver->GetMinor(), pPWSver->GetMajor()),
+                                      MAKELONG(0, pPWSver->GetBuild()));
 
   static wxSingleInstanceChecker appInstance;
   if (!prefs->GetPref(PWSprefs::MultipleInstances) &&

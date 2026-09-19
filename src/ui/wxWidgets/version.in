@@ -15,16 +15,10 @@
 
 #include <wx/string.h>
 
-// When building under Windows using Visual Studio, version.h is created in
-// the source tree from version.in via the pre_build.vbs script
-//
-// When building using cmake under Windows or Linux, version.h is also created in
-// the specified build directory by cmake using version.in as the template.
-//
-// In both cases, the version information retrieved from the toplevel version.wx file.
-//
-// When building via cmake in the build directory, make sure version.h
-// is removed from the source tree.
+// version.h is generated from this template: into the build directory by
+// cmake or the Xcode/macOS build, or directly under src/ by the legacy
+// pre_build.vbs script.
+// The version information is retrieved from the toplevel version.wx file.
 
 // Format: Major, Minor, Revision
 //   Revision  = 0 for all Formally Released versions
