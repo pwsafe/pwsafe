@@ -2150,10 +2150,11 @@ void PasswordSafeFrame::OnTotpCopyAuthCodeTimer(wxTimerEvent& WXUNUSED(event))
   // if this data is no longer present in
   // the clipboard.
   if (
-    (totpItem == nullptr || !totpItem->HasTwoFactorKey() || (m_TotpLastSelectedItem != item))
+    (totpItem == nullptr || !totpItem->HasTwoFactorKey() || (m_TotpLastSelectedItem != totpItem->GetUUID()))
     ||
     (!isAuthCodeInClipboard && !s_LatestAuthCode.empty())) {
-    m_TotpLastSelectedItem = nullptr;
+
+    m_TotpLastSelectedItem = pws_os::CUUID::NullUUID();
     s_LatestAuthCode.clear();
     StopTotpCopyAuthCode();
     return;

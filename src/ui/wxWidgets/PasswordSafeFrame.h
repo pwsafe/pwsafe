@@ -671,6 +671,7 @@ public:
   
   bool LaunchBrowser(const wxString &csURL) const;
 
+  PWScore &GetCore() { return m_core; }
 
 ////@begin PasswordSafeFrame member variables
   GridCtrl* m_grid;
@@ -886,7 +887,7 @@ private:
   wxAuiToolBar* m_Toolbar;
   DragBarCtrl* m_Dragbar;
 
-  CItemData *m_TotpLastSelectedItem = nullptr;
+  pws_os::CUUID m_TotpLastSelectedItem = pws_os::CUUID::NullUUID();
   wxTimer *m_TotpCountdownTimer = nullptr;
   wxTimer *m_TotpCopyAuthCodeTimer = nullptr;
   wxStaticText* m_TotpStaticText = nullptr;

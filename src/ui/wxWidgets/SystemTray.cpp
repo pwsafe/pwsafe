@@ -41,6 +41,7 @@
 #include "graphics/toolbar/new/copypassword.xpm"
 #include "graphics/toolbar/new/copyuser.xpm"
 #include "graphics/toolbar/new/copynotes.xpm"
+#include "graphics/toolbar/new/copyauthcode.xpm"
 #include "graphics/toolbar/new/clearclipboard.xpm"
 #include "graphics/toolbar/new/autotype.xpm"
 #include "graphics/toolbar/new/browseurl.xpm"
@@ -255,6 +256,12 @@ wxMenu* SystemTray::SetupRecentEntryMenu(const CItemData* pci, size_t idx)
 
   if (!pci->IsNotesEmpty())
     menu->Append(MakeCommandId(RUE_COPYNOTES, idx), _("Copy &Notes to clipboard"))->SetBitmap(wxBitmap(copynotes_xpm));
+
+  {
+    auto totpItem = m_frame->GetCore().GetCredentialEntry(pci);
+    if (totpItem != nullptr && totpItem->HasTwoFactorKey())
+      menu->Append(MakeCommandId(RUE_COPYAUTHCODE, idx), _("Copy Aut&h Code to clipboard"))->SetBitmap(wxBitmap(copyauthcode_xpm));
+  }
 
   menu->Append(MakeCommandId(RUE_AUTOTYPE, idx), _("Perform Auto&Type"))->SetBitmap(wxBitmap(autotype_xpm));
 
