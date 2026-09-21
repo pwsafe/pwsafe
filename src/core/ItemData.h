@@ -106,7 +106,7 @@ public:
   //
   // TOTP-related fields:
   //
-  bool IsTotpActive() const { return GetTwoFactorKeyLength() != 0; }
+  bool HasTwoFactorKey() const { return GetTwoFactorKeyLength() != 0; }
   StringX GetTwoFactorKey() const { return GetField(TWOFACTORKEY); }
   size_t GetTwoFactorKeyLength() const { return GetField(TWOFACTORKEY).length(); }
 

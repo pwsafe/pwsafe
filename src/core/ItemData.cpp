@@ -953,7 +953,7 @@ StringX CItemData::GetPlaintext(const TCHAR &separator,
   StringX csTotpStartTime;
   StringX csTotpTimeStep;
   StringX csTotpLength;
-  if (IsTotpActive()) {
+  if (HasTwoFactorKey()) {
     csTwoFactorKey = GetTwoFactorKey();
     if (!IsTotpConfigDefault())
       csTotpConfig = GetTotpConfig();
@@ -1135,7 +1135,7 @@ string CItemData::GetXML(unsigned id, const FieldBits &bsExport,
   brc = PWSUtil::WriteXMLField(oss, "password", tmp, utf8conv);
   if (!brc) bXMLErrorsFound = true;
 
-  if (IsTotpActive()) {
+  if (HasTwoFactorKey()) {
     ConditionalWriteXML(CItemData::TWOFACTORKEY, bsExport, GetXmlFieldName(TWOFACTORKEY).c_str(), GetTwoFactorKey(),
                         oss, utf8conv, bXMLErrorsFound);
 
@@ -2508,7 +2508,7 @@ void CItemData::SerializePlainText(vector<char> &v,
   tmp = ResolvePlaceholderEligibleField(this, pcibase, [this] { return GetPassword(); });
   push(v, PASSWORD, tmp);
 
-  if (IsTotpActive()) {
+  if (HasTwoFactorKey()) {
     ASSERT(!GetTwoFactorKey().empty());
     push(v, TWOFACTORKEY, GetTwoFactorKey());
     if (!IsTotpConfigDefault())

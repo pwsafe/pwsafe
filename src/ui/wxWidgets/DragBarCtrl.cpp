@@ -279,7 +279,7 @@ wxString DragBarCtrl::GetText(int toolId) const
 
   if (toolId == ID_DRAGBAR_AUTHCODE) {
     auto item = mainFrame->GetSelectedEntryOrBase();
-    if (item && item->IsTotpActive()) {
+    if (item && item->HasTwoFactorKey()) {
       return towxstring((mainFrame->GetTotpData(item)).first);
     }
   }
@@ -365,7 +365,7 @@ void DragBarCtrl::OnUpdateUI(wxUpdateUIEvent& event)
   const auto hasNotes          = hasItemSelection && (selection->IsNotesSet());
   const auto hasURL            = hasItemSelection && (selection->IsURLSet());
   const auto hasEmail          = hasItemSelection && (selection->IsEmailSet());
-  const auto hasTotp           = selectionOrBase && selectionOrBase->IsTotpActive();
+  const auto hasTotp           = selectionOrBase && selectionOrBase->HasTwoFactorKey();
 
   switch (event.GetId()) {
     case ID_DRAGBAR_GROUP:
