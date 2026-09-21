@@ -1978,7 +1978,6 @@ void DboxMain::CopyDataToClipBoard(ClipboardDataSource cds, const bool bSpecial)
     return;
 
   CItemData *pci = getSelectedItem();
-  CItemData *pci_credential = pci;
   ASSERT(pci != NULL);
 
   CItemData *pbci(NULL);
@@ -1986,7 +1985,6 @@ void DboxMain::CopyDataToClipBoard(ClipboardDataSource cds, const bool bSpecial)
 
   if (pci->IsDependent()) {
     pbci = GetBaseEntry(pci);
-    pci_credential = pbci;
     ASSERT(pbci != NULL);
   }
 
@@ -2057,7 +2055,7 @@ void DboxMain::CopyDataToClipBoard(ClipboardDataSource cds, const bool bSpecial)
       ASSERT(0);
     }
   } else if (cds.IsDerived() && cds.GetDerivedType() == ClipboardDataSource::AuthCode) {
-    GetTwoFactoryAuthenticationCode(*pci_credential, sxData);
+    GetTwoFactoryAuthenticationCode(*m_core.GetCredentialEntry(pci), sxData);
     if (sxData.empty())
       return;
     StartAuthCodeUpdateClipboardTimer(uuid);
@@ -2174,14 +2172,11 @@ void DboxMain::OnTwoFactorAuthCodeUpdateClipboardTimer()
   }
 
   CItemData& item = iter->second;
-  CItemData* pci_credential = &item;
-  if (item.IsDependent()) {
-    pci_credential = GetBaseEntry(&item);
-    ASSERT(pci_credential != NULL);
-    if (!pci_credential) {
-      StopAuthCodeUpdateClipboardTimer();
-      return;
-    }
+  CItemData* pci_credential = m_core.GetCredentialEntry(&item);
+  ASSERT(pci_credential != NULL);
+  if (!pci_credential) {
+    StopAuthCodeUpdateClipboardTimer();
+    return;
   }
 
   StringX sxAuthCode;

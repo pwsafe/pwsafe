@@ -3576,8 +3576,11 @@ int DboxMain::OnUpdateMenuToolbar(const UINT nID)
       break;
     case ID_MENUITEM_COPY2FAAUTHCODE:
     case ID_MENUITEM_VIEW2FAAUTHCODE:
-      iEnable = bGroupSelected || !pci || pci->IsFieldValueEmpty(CItemData::TWOFACTORKEY, pbci) ? FALSE : TRUE;
+    {
+      const CItemData *pTotpItem = pci ? m_core.GetCredentialEntry(pci) : nullptr;
+      iEnable = (bGroupSelected || !pTotpItem || pTotpItem->GetTwoFactorKeyLength() == 0) ? FALSE : TRUE;
       break;
+    }
     // Not available if group selected or entry is not an alias/shortcut
     case ID_MENUITEM_GOTOBASEENTRY:
     case ID_MENUITEM_EDITBASEENTRY:

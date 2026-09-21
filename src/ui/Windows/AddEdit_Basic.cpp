@@ -1298,15 +1298,16 @@ void CAddEdit_Basic::OnTwoFactorCodeStaticClicked()
 
 CSecString CAddEdit_Basic::GetTwoFactorKey()
 {
-  CSecString twoFactorKey;
-  if (!M_pci() || !M_pci()->IsAlias())
-    twoFactorKey = M_twofactorkey();
-  else {
-    const CItemData* pcbi = M_pcore()->GetBaseEntry(M_pci());
-    if (pcbi != nullptr)
-      twoFactorKey = M_pci()->GetEffectiveFieldValue(CItem::TWOFACTORKEY, pcbi);
-  }
-  return twoFactorKey;
+  if (!M_pci() || M_pci()->IsNormal() || M_pci()->IsBase())
+    return M_twofactorkey();
+
+  if (M_pci()->IsAlias() && !M_twofactorkey().IsEmpty())
+    return M_twofactorkey(); // alias with its own two-factor key
+
+  // Shortcut, or alias with an empty key field: inherit the base entry's.
+  const CItemData* pcbi = M_pcore()->GetBaseEntry(M_pci());
+  ASSERT(pcbi != nullptr);
+  return pcbi->GetTwoFactorKey();
 }
 
 void CAddEdit_Basic::UpdateAuthCode()

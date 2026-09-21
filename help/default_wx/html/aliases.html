@@ -76,10 +76,15 @@ to some other value not in this format, it will change from an alias to a "norma
 no relation to the previous base entry. Of course, 
 you can restore the connection by Undo, or manually editing the password.</p>
 
-<p>Unlike shortcuts, which refer to the base entry for <u>all</u> fields, aliases 
+<p>Unlike shortcuts, which refer to the base entry for <u>all</u> fields, aliases
 have their own values for all fields <u>except</u> for its password, which is its
-base's.  For example: copying the aliases URL will use the alias's value but 
+base's.  For example: copying the aliases URL will use the alias's value but
 copying the alias's password will copy its base's.</p>
+
+<p>The Two Factor Authentication (TOTP) key is a special case: if an alias has
+its own key configured, it is used instead of the base's, allowing the same
+credentials to be used with different authenticators on different systems. If
+the alias has no key of its own, it continues to use its base's.</p>
 
 <p>Finally, if a normal entry was saving its password history before it was made an alias by
 changing its password as described above, then it will retain this history.  If the
