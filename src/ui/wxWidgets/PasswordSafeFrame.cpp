@@ -2129,9 +2129,10 @@ PWSTotp::TOTP_Result PasswordSafeFrame::GetTwoFactorAuthenticationCode(const CIt
 void PasswordSafeFrame::OnTotpCountdownTimer(wxTimerEvent& WXUNUSED(event))
 {
   auto item = GetSelectedEntry();
-  // No item selected or item with
-  // no TOTP configuration selected
-  if (item == nullptr || !item->HasTwoFactorKey()) {
+  auto totpItem = GetTotpItem(item);
+  // No item selected, or selected item (or its base, if applicable)
+  // has no TOTP configuration
+  if (totpItem == nullptr || !totpItem->HasTwoFactorKey()) {
     m_TotpStaticText->SetLabel(wxEmptyString);
     return;
   }
@@ -2144,17 +2145,17 @@ void PasswordSafeFrame::OnTotpCopyAuthCodeTimer(wxTimerEvent& WXUNUSED(event))
   static StringX s_LatestAuthCode(L"");
   auto isAuthCodeInClipboard = Clipboard::GetInstance()->HasData(s_LatestAuthCode);
   auto item = GetSelectedEntry();
-  // No item selected or item with
-  // no TOTP configuration selected
-  // or new item selected then stop
-  // updating the auth code in clipboard.
+  auto totpItem = GetTotpItem(item);
+  // No item selected, or selected item (or its base, if applicable) has
+  // no TOTP configuration, or new item selected then stop updating the
+  // auth code in clipboard.
   // Stop also updating the auth code in
   // clipboard if a code was ever copied
   // (s_LatestAuthCode is not empty) and
   // if this data is no longer present in
   // the clipboard.
   if (
-    (item == nullptr || !item->HasTwoFactorKey() || (m_TotpLastSelectedItem != item))
+    (totpItem == nullptr || !totpItem->HasTwoFactorKey() || (m_TotpLastSelectedItem != item))
     ||
     (!isAuthCodeInClipboard && !s_LatestAuthCode.empty())) {
     m_TotpLastSelectedItem = nullptr;
