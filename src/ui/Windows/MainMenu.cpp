@@ -886,7 +886,8 @@ void DboxMain::CustomiseMenu(CMenu *pPopupMenu, const UINT uiMenuID,
       pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                              ID_MENUITEM_PASSWORDSUBSET, tc_dummy);
 
-      if (!pci->IsFieldValueEmpty(CItemData::TWOFACTORKEY, pbci)) {
+      const CItemData *pTotpItem = m_core.GetCredentialEntry(pci);
+      if (pTotpItem && pTotpItem->GetTwoFactorKeyLength() > 0) {
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
                                ID_MENUITEM_COPY2FAAUTHCODE, tc_dummy);
         pPopupMenu->AppendMenu(MF_ENABLED | MF_STRING,
@@ -1607,7 +1608,8 @@ void DboxMain::OnContextMenu(CWnd * /* pWnd */, CPoint screen)
     if (pci->IsFieldValueEmpty(CItemData::USER, pbci))
       pPopup->RemoveMenu(ID_MENUITEM_COPYUSERNAME, MF_BYCOMMAND);
 
-    if (pci->IsFieldValueEmpty(CItemData::TWOFACTORKEY, pbci)) {
+    const CItemData *pTotpItem = m_core.GetCredentialEntry(pci);
+    if (!pTotpItem || pTotpItem->GetTwoFactorKeyLength() == 0) {
       pPopup->RemoveMenu(ID_MENUITEM_COPY2FAAUTHCODE, MF_BYCOMMAND);
       pPopup->RemoveMenu(ID_MENUITEM_VIEW2FAAUTHCODE, MF_BYCOMMAND);
     }

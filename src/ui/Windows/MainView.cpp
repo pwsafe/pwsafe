@@ -548,7 +548,8 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
       mainTBCtrl.EnableButton(ID_MENUITEM_COPYUSERNAME, TRUE);
     }
 
-    if (pci_entry == NULL || pci_entry->IsFieldValueEmpty(CItemData::TWOFACTORKEY, pbci)) {
+    const CItemData *pTotpItem = pci_entry ? m_core.GetCredentialEntry(pci_entry) : nullptr;
+    if (!pTotpItem || pTotpItem->GetTwoFactorKeyLength() == 0) {
       mainTBCtrl.EnableButton(ID_MENUITEM_COPY2FAAUTHCODE, FALSE);
       mainTBCtrl.EnableButton(ID_MENUITEM_VIEW2FAAUTHCODE, FALSE);
     } else {

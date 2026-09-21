@@ -2077,18 +2077,7 @@ CItemData* PasswordSafeFrame::GetBaseEntry(const CItemData *item) const
 
 const CItemData* PasswordSafeFrame::GetTotpItem(const CItemData *item) const
 {
-  if (item == nullptr) {
-    // GetBaseEntry doesn't like nullptr
-    return nullptr;
-  }
-  // Item is 'Shortcut' or 'Alias' without TOTP configuration
-  if (item->IsShortcut() || (item->IsAlias() && !item->HasTwoFactorKey())) {
-    return m_core.GetBaseEntry(item);
-  }
-  // Item is 'Normal', 'Base' or 'Alias' with TOTP configuration
-  else {
-    return item;
-  }
+  return item ? m_core.GetCredentialEntry(item) : nullptr;
 }
 
 std::pair<StringX, StringX> PasswordSafeFrame::GetTotpData(const CItemData *item)
