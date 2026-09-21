@@ -259,7 +259,7 @@ void SafeCombinationEntryDlg::CreateControls()
   });
 
   const PWSversion *pPWSver = PWSversion::GetInstance();
-  m_version->SetLabel(wxString::Format(wxT("V%ls %ls"),
+  m_version->SetLabel(wxString::Format(wxT("V%ls%ls"),
                                        pPWSver->FormatVersionString().c_str(),
                                        pPWSver->GetSpecialBuild().c_str()));
   wxArrayString recentFiles;
