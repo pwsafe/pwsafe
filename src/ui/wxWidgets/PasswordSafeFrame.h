@@ -638,7 +638,6 @@ public:
   CItemData *GetSelectedEntry() const;
   const CItemData *GetSelectedEntryOrBase() const;
   CItemData* GetBaseEntry(const CItemData *item) const;
-  const CItemData* GetTotpItem(const CItemData *item) const;
   int GetTotpCountdownInterval() const { return s_TotpCountdownInterval; }
   void CopyAuthCodeToClipboard(const CItemData *item) { DoCopyAuthCode(item); }
   void CopyTextToClipboard(const StringX& text, const CItemData::FieldType field);

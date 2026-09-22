@@ -1465,7 +1465,7 @@ CItemData *PasswordSafeFrame::GetSelectedEntry() const
 const CItemData *PasswordSafeFrame::GetSelectedEntryOrBase() const
 {
   auto item = GetSelectedEntry();
-  return GetTotpItem(item);
+  return item ? m_core.GetCredentialEntry(item) : nullptr;
 }
 
 // Following is "generalized" GetSelectedEntry to support section via RUE
@@ -2075,11 +2075,6 @@ CItemData* PasswordSafeFrame::GetBaseEntry(const CItemData *item) const
 ///////////////////////////////////////////////////////////////////////////////
 // TOTP Begin
 
-const CItemData* PasswordSafeFrame::GetTotpItem(const CItemData *item) const
-{
-  return item ? m_core.GetCredentialEntry(item) : nullptr;
-}
-
 std::pair<StringX, StringX> PasswordSafeFrame::GetTotpData(const CItemData *item)
 {
   if (item == nullptr) {
@@ -2087,7 +2082,7 @@ std::pair<StringX, StringX> PasswordSafeFrame::GetTotpData(const CItemData *item
   }
   StringX totp;
   double ratio;
-  CItemData ciTemp(*GetTotpItem(item));
+  CItemData ciTemp(*m_core.GetCredentialEntry(item));
   auto r = GetTwoFactorAuthenticationCode(ciTemp, totp, &ratio);
   if (r != PWSTotp::Success) {
     return std::make_pair(tostringx(wxT("n/a")), tostringx(wxT("n/a")));
@@ -2129,7 +2124,7 @@ PWSTotp::TOTP_Result PasswordSafeFrame::GetTwoFactorAuthenticationCode(const CIt
 void PasswordSafeFrame::OnTotpCountdownTimer(wxTimerEvent& WXUNUSED(event))
 {
   auto item = GetSelectedEntry();
-  auto totpItem = GetTotpItem(item);
+  auto totpItem = item ? m_core.GetCredentialEntry(item) : nullptr;
   // No item selected, or selected item (or its base, if applicable)
   // has no TOTP configuration
   if (totpItem == nullptr || !totpItem->HasTwoFactorKey()) {
@@ -2145,7 +2140,7 @@ void PasswordSafeFrame::OnTotpCopyAuthCodeTimer(wxTimerEvent& WXUNUSED(event))
   static StringX s_LatestAuthCode(L"");
   auto isAuthCodeInClipboard = Clipboard::GetInstance()->HasData(s_LatestAuthCode);
   auto item = GetSelectedEntry();
-  auto totpItem = GetTotpItem(item);
+  auto totpItem = item ? m_core.GetCredentialEntry(item) : nullptr;
   // No item selected, or selected item (or its base, if applicable) has
   // no TOTP configuration, or new item selected then stop updating the
   // auth code in clipboard.
