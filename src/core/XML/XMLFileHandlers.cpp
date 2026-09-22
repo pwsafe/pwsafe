@@ -663,7 +663,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
 
   // If we have processed a DB preference - add it to our copy
   if (bpref != PWSprefs::NumBoolPrefs)    // boolean
-    PWSprefs::GetInstance()->SetPref(bpref, _ttoi(m_sxElemContent.c_str()) == 0 ? false : true, true);
+    PWSprefs::GetInstance()->SetPref(bpref, _ttoi(m_sxElemContent.c_str()) != 0, true);
   if (ipref != PWSprefs::NumIntPrefs)     // integer
     PWSprefs::GetInstance()->SetPref(ipref, _ttoi(m_sxElemContent.c_str()), true);
   if (spref != PWSprefs::NumStringPrefs)  // string
@@ -740,7 +740,7 @@ void XMLFileHandlers::AddXMLEntries()
     }
 
     if (m_bImportPSWDsOnly) {
-      ItemListIter iter = m_pXMLcore->Find(cur_entry->group, cur_entry->title, cur_entry->username);
+      auto iter = m_pXMLcore->Find(cur_entry->group, cur_entry->title, cur_entry->username);
       if (iter == m_pXMLcore->GetEntryEndIter()) {
         stringT cs_error, cs_id, cs_temp;
         LoadAString(cs_id, IDSC_IMPORT_ENTRY_ID);
@@ -765,13 +765,13 @@ void XMLFileHandlers::AddXMLEntries()
       continue;
     }
 
-    uuid_array_t ua;
     ci_temp.Clear();
     bool bNewUUID(true);
     if (!cur_entry->uuid.empty()) {
       stringT temp = cur_entry->uuid.c_str();
       // Verify it is the correct length (should be or the schema is wrong!)
       if (temp.length() == sizeof(uuid_array_t) * 2) {
+        uuid_array_t ua;
         unsigned int x(0);
         for (size_t i = 0; i < sizeof(uuid_array_t); i++) {
           stringstreamT ss;
@@ -1031,7 +1031,7 @@ void XMLFileHandlers::AddXMLEntries()
       if (existingUUID != CUUID::NullUUID()) {
         // Remove it
         ci_temp.SetKBShortcut(0);
-        ItemListIter iter = m_pXMLcore->Find(existingUUID);
+        auto iter = m_pXMLcore->Find(existingUUID);
         if (iter == m_pXMLcore->GetEntryEndIter())
           break;
 

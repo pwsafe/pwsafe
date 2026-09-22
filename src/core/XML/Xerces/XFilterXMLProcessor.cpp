@@ -111,14 +111,14 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   // we need const_cast here, because _W2X return const wchar_t* when
   // WCHAR_INCOMPATIBLE_XMLCH isn't set
   pSAX2Parser->setProperty(XMLUni::fgXercesSchemaExternalNoNameSpaceSchemaLocation,
-                      const_cast<XMLCh*>(_W2X(strXSDFileName.c_str())));
+                           _W2X(strXSDFileName.c_str()));
   pSAX2Parser->setProperty(XMLUni::fgXercesScannerName,
                       const_cast<XMLCh*>(XMLUni::fgSGXMLScanner));
   pSAX2Parser->setInputBufferSize(4096);
 
   // Create SAX handler object and install it on the pSAX2Parser, as the
   // document and error pSAX2Handler.
-  XFilterSAX2Handlers * pSAX2Handler = new XFilterSAX2Handlers;
+  const auto pSAX2Handler = new XFilterSAX2Handlers;
   pSAX2Parser->setContentHandler(pSAX2Handler);
   pSAX2Parser->setErrorHandler(pSAX2Handler);
 
@@ -142,7 +142,7 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
         throw std::runtime_error("Can't convert data to UTF-8");
       }
       //2nd parameter must be number of bytes, so we use a length for char* representation
-      MemBufInputSource* memBufIS = new MemBufInputSource(
+      const auto memBufIS = new MemBufInputSource(
                     reinterpret_cast<const XMLByte *>(buffer),
                     strlen(reinterpret_cast<const char*>(buffer)),
                     szID, false);

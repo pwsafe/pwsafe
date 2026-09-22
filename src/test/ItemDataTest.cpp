@@ -22,7 +22,7 @@ class ItemDataTest : public ::testing::Test
 protected:
   ItemDataTest(); // to init members
   CItemData emptyItem, fullItem;
-  void SetUp();
+  void SetUp() override;
 
   // members used to populate and test fullItem:
   const StringX title, password, user, notes, group;

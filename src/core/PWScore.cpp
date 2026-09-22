@@ -3092,16 +3092,15 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
   if (twls == 0) {
     LoadAString(st_dbp.whenlastsaved, IDSC_UNKNOWN);
   } else {
-    st_dbp.whenlastsaved = PWSUtil::ConvertToDateTimeString(twls, PWSUtil::TMC_EXPORT_IMPORT);
+    st_dbp.whenlastsaved = ConvertToDateTimeString(twls, PWSUtil::TMC_EXPORT_IMPORT);
   }
 
   time_t tpwdlc = m_hdr.m_whenpwdlastchanged;
   if (tpwdlc == 0) {
     LoadAString(st_dbp.whenpwdlastchanged, IDSC_UNKNOWN);
   } else {
-    st_dbp.whenpwdlastchanged = PWSUtil::ConvertToDateTimeString(tpwdlc, PWSUtil::TMC_EXPORT_IMPORT);
+    st_dbp.whenpwdlastchanged = ConvertToDateTimeString(tpwdlc, PWSUtil::TMC_EXPORT_IMPORT);
   }
-  
 
   if (m_hdr.m_lastsavedby.empty() && m_hdr.m_lastsavedon.empty()) {
     LoadAString(st_dbp.wholastsaved, IDSC_UNKNOWN);
