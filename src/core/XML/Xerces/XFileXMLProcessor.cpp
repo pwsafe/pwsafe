@@ -116,6 +116,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   pSAX2Parser->setFeature(XMLUni::fgXercesSchemaFullChecking, true);
   pSAX2Parser->setFeature(XMLUni::fgXercesLoadExternalDTD, false);
   pSAX2Parser->setFeature(XMLUni::fgXercesSkipDTDValidation, true);
+  pSAX2Parser->setFeature(XMLUni::fgXercesDisableDefaultEntityResolution, true);
 
   // Set properties
   pSAX2Parser->setProperty(XMLUni::fgXercesScannerName,

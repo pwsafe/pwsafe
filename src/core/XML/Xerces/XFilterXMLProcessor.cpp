@@ -105,6 +105,7 @@ bool XFilterXMLProcessor::Process(const bool &bvalidation,
   pSAX2Parser->setFeature(XMLUni::fgXercesSchemaFullChecking, true);
   pSAX2Parser->setFeature(XMLUni::fgXercesLoadExternalDTD, false);
   pSAX2Parser->setFeature(XMLUni::fgXercesSkipDTDValidation, true);
+  pSAX2Parser->setFeature(XMLUni::fgXercesDisableDefaultEntityResolution, true);
 
   // Set properties
   // we need const_cast here, because _W2X return const wchar_t* when
