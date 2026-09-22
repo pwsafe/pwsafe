@@ -2653,8 +2653,7 @@ CItemData* PWScore::GetCredentialEntry(const CItemData* pAny)
   ASSERT(pAny != nullptr);
   if (!pAny)
     return nullptr;
-  const bool bUseBase = pAny->IsShortcut() || (pAny->IsAlias() && !pAny->HasTwoFactorKey());
-  const CUUID uuidCredential = bUseBase ? pAny->GetBaseUUID() : pAny->GetUUID();
+  const CUUID uuidCredential = pAny->UseBaseTotp() ? pAny->GetBaseUUID() : pAny->GetUUID();
   auto iter = Find(uuidCredential);
   if (iter != GetEntryEndIter())
     return &iter->second;

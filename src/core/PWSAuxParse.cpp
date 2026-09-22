@@ -101,9 +101,7 @@ void PWSAuxParse::GetEffectiveValues(const CItemData* pci, const CItemData* pbci
 
   prevPassword = PWHistList::GetPreviousPassword(pci->GetEffectiveFieldValue(CItem::PWHIST, pbci));
 
-  const CItemData* pTotpSource = pci;
-  if (pci->IsShortcut() || (pci->IsAlias() && !pci->HasTwoFactorKey()))
-    pTotpSource = pbci;
+  const CItemData* pTotpSource = pci->UseBaseTotp() ? pbci : pci;
   totpAuthCode = pTotpSource->GetTotpAuthCode();
 }
 

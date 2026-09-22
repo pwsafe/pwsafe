@@ -549,7 +549,7 @@ void DboxMain::UpdateToolBarForSelectedItem(const CItemData *pci)
     }
 
     const CItemData *pTotpItem = pci_entry ? m_core.GetCredentialEntry(pci_entry) : nullptr;
-    if (!pTotpItem || pTotpItem->GetTwoFactorKeyLength() == 0) {
+    if (!pTotpItem || !pTotpItem->HasTwoFactorKey()) {
       mainTBCtrl.EnableButton(ID_MENUITEM_COPY2FAAUTHCODE, FALSE);
       mainTBCtrl.EnableButton(ID_MENUITEM_VIEW2FAAUTHCODE, FALSE);
     } else {
