@@ -1468,13 +1468,13 @@ static void ManageIncBackupFiles(const stringT &cs_filenamebase,
     return;
   }
 
-  Format(cs_newname, L"%ls_%03d", cs_filenamebase.c_str(), nnn);
+  Format(cs_newname, L"%ls_%03lu", cs_filenamebase.c_str(), nnn);
 
   int i = 0;
   stringT excess_file;
   while (num_found >= maxnumincbackups) {
     nnn = file_nums[i];
-    Format(excess_file, L"%ls_%03d.ibak", cs_filenamebase.c_str(), nnn);
+    Format(excess_file, L"%ls_%03lu.ibak", cs_filenamebase.c_str(), nnn);
     i++;
     num_found--;
     if (!pws_os::DeleteAFile(excess_file)) {
@@ -3080,13 +3080,13 @@ void PWScore::GetDBProperties(st_DBProperties &st_dbp)
 
   std::vector<std::wstring> vAllGroups;
   GetAllGroups(vAllGroups);
-  Format(st_dbp.numgroups, L"%d", vAllGroups.size());
-  Format(st_dbp.numemptygroups, L"%d", m_vEmptyGroups.size());
-  Format(st_dbp.numentries, L"%d", m_pwlist.size());
+  Format(st_dbp.numgroups, L"%lu", vAllGroups.size());
+  Format(st_dbp.numemptygroups, L"%lu", m_vEmptyGroups.size());
+  Format(st_dbp.numentries, L"%lu", m_pwlist.size());
   if (GetReadFileVersion() >= PWSfile::V40)
-    Format(st_dbp.numattachments, L"%d", m_attlist.size());
+    Format(st_dbp.numattachments, L"%lu", m_attlist.size());
   else
-    Format(st_dbp.numattachments, L"%d", GetNumAtts());
+    Format(st_dbp.numattachments, L"%lu", GetNumAtts());
 
   time_t twls = m_hdr.m_whenlastsaved;
   if (twls == 0) {

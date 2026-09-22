@@ -557,7 +557,7 @@ void XMLFileHandlers::ProcessEndElement(const int icurrent_element)
       break;
     case XLE_HISTORY_ENTRY:
       ASSERT(m_cur_pwhistory_entry != nullptr);
-      Format(buffer, _T("\xff%ls\xff%04x\xff%ls"),
+      Format(buffer, _T("\xff%ls\xff%04lx\xff%ls"),
              m_cur_pwhistory_entry->changed.c_str(),
              m_cur_pwhistory_entry->oldpassword.length(),
              m_cur_pwhistory_entry->oldpassword.c_str());

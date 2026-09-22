@@ -482,7 +482,7 @@ int VerifyTextImportPWHistoryString(const StringX &PWHistory,
     }
 
     tmp = StringX(lpszPWHistory, ipwlen);
-    Format(sxBuffer, L"%08x%04x%ls", static_cast<long>(t), ipwlen, tmp.c_str());
+    Format(sxBuffer, L"%08lx%04lx%ls", static_cast<unsigned long>(t), ipwlen, tmp.c_str());
     newPWHistory += sxBuffer;
     sxBuffer = L"";
     lpszPWHistory += ipwlen;
@@ -680,7 +680,7 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
       break;
     }
 
-    Format(sxBuffer, L"%08lx%04x%ls", static_cast<long>(t), ipwlen,
+    Format(sxBuffer, L"%08lx%04x%ls", static_cast<unsigned long>(t), ipwlen,
                  sxPassword.c_str());
     out_entries.push_back(sxBuffer);
     sxBuffer = _T("");
@@ -702,7 +702,7 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
   if (nerror != size_t(-1)) {
     // Need to add information about which PWH entry is in error
     LoadAString(buffer, IDSC_ENTRY);
-    Format(temp, L"%ls %d", buffer.c_str(), nerror);
+    Format(temp, L"%ls %lu", buffer.c_str(), nerror);
   }
   Format(buffer, IDSC_PWHERROR, temp.c_str());
   switch (rc) {
