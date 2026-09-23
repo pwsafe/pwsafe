@@ -1323,7 +1323,7 @@ void CAddEdit_Basic::UpdateAuthCode()
 
   StringX sxAuthCode;
   double ratio;
-  auto r = GetMainDlg()->GetTwoFactoryAuthenticationCode(ciTemp, sxAuthCode, &ratio);
+  auto r = GetMainDlg()->GetTwoFactorAuthenticationCode(ciTemp, sxAuthCode, &ratio);
   if (r != PWSTotp::Success) {
     StopAuthenticationCodeUi();
     return;
