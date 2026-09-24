@@ -95,7 +95,9 @@ CItemData* CAddEdit_PropertyPage::M_pci_credential()
 {
   if (!M_pci())
     return nullptr;
-  if (!M_pci()->IsAlias())
+  if (M_pci()->IsNormal() || M_pci()->IsBase())
     return M_pci();
-  return M_pcore()->GetBaseEntry(M_pci());
+  if (M_pci()->IsAlias() && !M_twofactorkey().IsEmpty())
+    return M_pci(); // alias defines/keeps its own two-factor key
+  return M_pcore()->GetBaseEntry(M_pci()); // Shortcut, or alias w/o own key
 }

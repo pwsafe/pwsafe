@@ -10,6 +10,10 @@ Bugs fixed in 3.73.0
 --------------------
 * [GH1946](https://github.com/pwsafe/pwsafe/issues/1946) Version numbers are now consistent with standard in that no leading zeroes are displayed (e.g., 3.72.2 instead of 3.72.02).
 
+New Features in 3.73.0
+----------------------
+* [GH1938](https://github.com/pwsafe/pwsafe/issues/1938) Alias entries may now have their own 2-factor (TOTP) authentiation key. If present, this will be used instead of the base entry's.
+
 PasswordSafe 3.72.2 Release September 6 2026
 ============================================
 Bugs Fixed in 3.72.2

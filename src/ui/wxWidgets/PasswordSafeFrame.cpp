@@ -1465,7 +1465,7 @@ CItemData *PasswordSafeFrame::GetSelectedEntry() const
 const CItemData *PasswordSafeFrame::GetSelectedEntryOrBase() const
 {
   auto item = GetSelectedEntry();
-  return GetTotpItem(item);
+  return item ? m_core.GetCredentialEntry(item) : nullptr;
 }
 
 // Following is "generalized" GetSelectedEntry to support section via RUE
@@ -2075,22 +2075,6 @@ CItemData* PasswordSafeFrame::GetBaseEntry(const CItemData *item) const
 ///////////////////////////////////////////////////////////////////////////////
 // TOTP Begin
 
-const CItemData* PasswordSafeFrame::GetTotpItem(const CItemData *item) const
-{
-  if (item == nullptr) {
-    // GetBaseEntry doesn't like nullptr
-    return nullptr;
-  }
-  // Item is 'Shortcut' or 'Alias' without TOTP configuration
-  if (item->IsShortcut() || (item->IsAlias() && !item->HasTwoFactorKey())) {
-    return m_core.GetBaseEntry(item);
-  }
-  // Item is 'Normal', 'Base' or 'Alias' with TOTP configuration
-  else {
-    return item;
-  }
-}
-
 std::pair<StringX, StringX> PasswordSafeFrame::GetTotpData(const CItemData *item)
 {
   if (item == nullptr) {
@@ -2098,7 +2082,7 @@ std::pair<StringX, StringX> PasswordSafeFrame::GetTotpData(const CItemData *item
   }
   StringX totp;
   double ratio;
-  CItemData ciTemp(*GetTotpItem(item));
+  CItemData ciTemp(*m_core.GetCredentialEntry(item));
   auto r = GetTwoFactorAuthenticationCode(ciTemp, totp, &ratio);
   if (r != PWSTotp::Success) {
     return std::make_pair(tostringx(wxT("n/a")), tostringx(wxT("n/a")));
@@ -2140,9 +2124,10 @@ PWSTotp::TOTP_Result PasswordSafeFrame::GetTwoFactorAuthenticationCode(const CIt
 void PasswordSafeFrame::OnTotpCountdownTimer(wxTimerEvent& WXUNUSED(event))
 {
   auto item = GetSelectedEntry();
-  // No item selected or item with
-  // no TOTP configuration selected
-  if (item == nullptr || !item->HasTwoFactorKey()) {
+  auto totpItem = item ? m_core.GetCredentialEntry(item) : nullptr;
+  // No item selected, or selected item (or its base, if applicable)
+  // has no TOTP configuration
+  if (totpItem == nullptr || !totpItem->HasTwoFactorKey()) {
     m_TotpStaticText->SetLabel(wxEmptyString);
     return;
   }
@@ -2155,17 +2140,17 @@ void PasswordSafeFrame::OnTotpCopyAuthCodeTimer(wxTimerEvent& WXUNUSED(event))
   static StringX s_LatestAuthCode(L"");
   auto isAuthCodeInClipboard = Clipboard::GetInstance()->HasData(s_LatestAuthCode);
   auto item = GetSelectedEntry();
-  // No item selected or item with
-  // no TOTP configuration selected
-  // or new item selected then stop
-  // updating the auth code in clipboard.
+  auto totpItem = item ? m_core.GetCredentialEntry(item) : nullptr;
+  // No item selected, or selected item (or its base, if applicable) has
+  // no TOTP configuration, or new item selected then stop updating the
+  // auth code in clipboard.
   // Stop also updating the auth code in
   // clipboard if a code was ever copied
   // (s_LatestAuthCode is not empty) and
   // if this data is no longer present in
   // the clipboard.
   if (
-    (item == nullptr || !item->HasTwoFactorKey() || (m_TotpLastSelectedItem != item))
+    (totpItem == nullptr || !totpItem->HasTwoFactorKey() || (m_TotpLastSelectedItem != item))
     ||
     (!isAuthCodeInClipboard && !s_LatestAuthCode.empty())) {
     m_TotpLastSelectedItem = nullptr;

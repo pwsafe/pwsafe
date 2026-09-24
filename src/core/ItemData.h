@@ -110,6 +110,10 @@ public:
   StringX GetTwoFactorKey() const { return GetField(TWOFACTORKEY); }
   size_t GetTwoFactorKeyLength() const { return GetField(TWOFACTORKEY).length(); }
 
+  // A shortcut, or an alias without its own key, uses its base entry's
+  // TOTP configuration instead of its own.
+  bool UseBaseTotp() const { return IsShortcut() || (IsAlias() && !HasTwoFactorKey()); }
+
   uint8_t GetTotpConfigAsByte() const { return GetFieldAsByte(TOTPCONFIG, PWSTotp::TOTP_CONFIG_ALGORITHM_DEFAULT); }
   StringX GetTotpConfig() const { return IntegralToStringX(GetTotpConfigAsByte()); }
   bool IsTotpConfigDefault() const { return GetTotpConfigAsByte() == PWSTotp::TOTP_CONFIG_ALGORITHM_DEFAULT; }

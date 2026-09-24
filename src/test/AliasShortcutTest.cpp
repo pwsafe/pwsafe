@@ -63,6 +63,12 @@ void AliasShortcutTest::SetUp()
   baseCustom.SetName(L"PIN");
   baseCustom.SetValue(L"base-pin");
   ASSERT_TRUE(base.AddCustomField(baseCustom));
+
+  base.SetTwoFactorKey(L"YRUTW6JLVKRXEC7ZA7QMPXCGBSOO6HHT"); // valid secret
+  base.SetTotpConfig(L"0");
+  base.SetTotpStartTime(time_t(1000000));
+  base.SetTotpTimeStep(L"30");
+  base.SetTotpLength(L"6");
 }
 
 TEST_F(AliasShortcutTest, Alias)
@@ -90,6 +96,11 @@ TEST_F(AliasShortcutTest, Alias)
   aliasCustom.SetValue(L"alias-pin");
   ASSERT_TRUE(al.AddCustomField(aliasCustom));
   al.SetAlias();
+  al.SetTwoFactorKey(L"ODAVH3CHB2ZBAVON"); // different from base
+  al.SetTotpConfig(L"0"); // must stay a valid (HMAC-SHA1) algorithm id
+  al.SetTotpStartTime(time_t(2000000));
+  al.SetTotpTimeStep(L"60");
+  al.SetTotpLength(L"8");
 
   const pws_os::CUUID base_uuid = base.GetUUID();
   MultiCommands *pmulticmds = MultiCommands::Create(&core);
@@ -118,12 +129,53 @@ TEST_F(AliasShortcutTest, Alias)
   EXPECT_EQ(effci.GetAutoType(), al.GetAutoType());
   EXPECT_EQ(effci.GetRunCommand(), al.GetRunCommand());
   EXPECT_EQ(effci.GetCustomFieldsRaw(), al.GetCustomFieldsRaw());
-  EXPECT_TRUE(sx_totpauthcode.empty());
+  // Alias has its own TOTP configuration, so it (not base's) is used:
+  EXPECT_FALSE(sx_totpauthcode.empty());
 
   for (const CItemData::FieldType ft : passkey_fields) {
     EXPECT_EQ(base.GetEffectiveFieldValue(ft, nullptr),
               al2.GetEffectiveFieldValue(ft, &base));
   }
+
+  // Alias has its own TOTP secret, so the credential entry used to
+  // generate its auth code must be that, not the base's.
+  const CItemData *totpItem = core.GetCredentialEntry(&al2);
+  ASSERT_TRUE(totpItem != nullptr);
+  EXPECT_EQ(totpItem->GetUUID(), al2.GetUUID());
+  EXPECT_EQ(totpItem->GetTwoFactorKey(), al.GetTwoFactorKey());
+}
+
+TEST_F(AliasShortcutTest, AliasInheritsBaseTotpByDefault)
+{
+  CItemData al;
+
+  al.CreateUUID();
+  al.SetTitle(L"alias-no-own-totp");
+  al.SetPassword(L"alias-password-not-used");
+  al.SetAlias();
+
+  const pws_os::CUUID base_uuid = base.GetUUID();
+  MultiCommands *pmulticmds = MultiCommands::Create(&core);
+  pmulticmds->Add(AddEntryCommand::Create(&core, base));
+  pmulticmds->Add(AddEntryCommand::Create(&core, al, base_uuid));
+  core.Execute(pmulticmds);
+  EXPECT_EQ(2U, core.GetNumEntries());
+
+  const CItemData al2 = core.GetEntry(core.Find(al.GetUUID()));
+  ASSERT_FALSE(al2.HasTwoFactorKey());
+
+  CItemData effci;
+  StringX sx_lastpswd, sx_totpauthcode;
+
+  PWSAuxParse::GetEffectiveValues(&al2, &base, effci, sx_lastpswd, sx_totpauthcode);
+
+  // Alias has no TOTP configuration of its own, so base's is used:
+  EXPECT_FALSE(sx_totpauthcode.empty());
+
+  const CItemData *totpItem = core.GetCredentialEntry(&al2);
+  ASSERT_TRUE(totpItem != nullptr);
+  EXPECT_EQ(totpItem->GetUUID(), base.GetUUID());
+  EXPECT_EQ(totpItem->GetTwoFactorKey(), base.GetTwoFactorKey());
 }
 
 TEST_F(AliasShortcutTest, Shortcut)
@@ -164,10 +216,16 @@ TEST_F(AliasShortcutTest, Shortcut)
   EXPECT_EQ(effci.GetAutoType(), base.GetAutoType());
   EXPECT_EQ(effci.GetRunCommand(), base.GetRunCommand());
   EXPECT_EQ(effci.GetCustomFieldsRaw(), base.GetCustomFieldsRaw());
-  EXPECT_TRUE(sx_totpauthcode.empty());
 
   for (const CItemData::FieldType ft : passkey_fields) {
     EXPECT_EQ(base.GetEffectiveFieldValue(ft, nullptr),
               sc2.GetEffectiveFieldValue(ft, &base));
   }
+
+  // A shortcut always uses base's TOTP configuration:
+  EXPECT_FALSE(sx_totpauthcode.empty());
+  const CItemData *totpItem = core.GetCredentialEntry(&sc2);
+  ASSERT_TRUE(totpItem != nullptr);
+  EXPECT_EQ(totpItem->GetUUID(), base.GetUUID());
+  EXPECT_EQ(totpItem->GetTwoFactorKey(), base.GetTwoFactorKey());
 }
