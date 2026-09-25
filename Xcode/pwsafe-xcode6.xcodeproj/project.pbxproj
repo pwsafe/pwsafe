@@ -380,6 +380,10 @@
 		57218E8329C983FA000B1907 /* version.wx */ = {isa = PBXFileReference; lastKnownFileType = text; name = version.wx; path = ../version.wx; sourceTree = "<group>"; };
 		57218E8429C98475000B1907 /* pwsafe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = pwsafe.entitlements; sourceTree = "<group>"; };
 		57218E8529C98481000B1907 /* pwsafe-cli.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "pwsafe-cli.entitlements"; sourceTree = SOURCE_ROOT; };
+		5723D575305E709100708B7B /* copyauthcode.xpm */ = {isa = PBXFileReference; lastKnownFileType = text; path = copyauthcode.xpm; sourceTree = "<group>"; };
+		5723D576305E70E000708B7B /* copyauthcode.xpm */ = {isa = PBXFileReference; lastKnownFileType = text; path = copyauthcode.xpm; sourceTree = "<group>"; };
+		5723D577305E710000708B7B /* copyauthcode_disabled.xpm */ = {isa = PBXFileReference; lastKnownFileType = text; path = copyauthcode_disabled.xpm; sourceTree = "<group>"; };
+		5723D578305E711C00708B7B /* copyauthcode_disabled.xpm */ = {isa = PBXFileReference; lastKnownFileType = text; path = copyauthcode_disabled.xpm; sourceTree = "<group>"; };
 		572D9E202DC4920900AF81D4 /* StatusBar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StatusBar.h; sourceTree = "<group>"; };
 		572D9E212DC4920900AF81D4 /* StrengthMeter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StrengthMeter.h; sourceTree = "<group>"; };
 		572D9E222DC4920900AF81D4 /* StrengthMeter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = StrengthMeter.cpp; sourceTree = "<group>"; };
@@ -1407,6 +1411,8 @@
 				E6A11A861293D20E0060FB35 /* collapseall_disabled.xpm */,
 				E6A11A871293D20E0060FB35 /* compare.xpm */,
 				E6A11A881293D20E0060FB35 /* compare_disabled.xpm */,
+				5723D576305E70E000708B7B /* copyauthcode.xpm */,
+				5723D577305E710000708B7B /* copyauthcode_disabled.xpm */,
 				E6A11A891293D20E0060FB35 /* copynotes.xpm */,
 				E6A11A8A1293D20E0060FB35 /* copynotes_disabled.xpm */,
 				E6A11A8B1293D20E0060FB35 /* copypassword.xpm */,
@@ -1488,6 +1494,8 @@
 				E6A11AD11293D20E0060FB35 /* collapseall_disabled.xpm */,
 				E6A11AD21293D20F0060FB35 /* compare.xpm */,
 				E6A11AD31293D20F0060FB35 /* compare_disabled.xpm */,
+				5723D575305E709100708B7B /* copyauthcode.xpm */,
+				5723D578305E711C00708B7B /* copyauthcode_disabled.xpm */,
 				E6A11AD41293D20F0060FB35 /* copynotes.xpm */,
 				E6A11AD51293D20F0060FB35 /* copynotes_disabled.xpm */,
 				E6A11AD61293D20F0060FB35 /* copypassword.xpm */,
