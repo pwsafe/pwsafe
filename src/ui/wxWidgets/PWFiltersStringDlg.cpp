@@ -197,6 +197,8 @@ void pwFiltersStringDlg::Init()
     case FT_EMAIL:
     case FT_SYMBOLS:
     case FT_POLICYNAME:
+    case FT_TWOFACTORKEY:
+    case FT_CUSTOMTEXT:
       m_add_present = true;
       break;
     case AT_FILENAME:
