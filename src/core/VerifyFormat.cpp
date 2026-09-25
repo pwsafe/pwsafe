@@ -113,7 +113,7 @@ bool VerifyImportDateTimeString(const stringT &time_str, time_t &t, bool utc_tim
     return true;
   }
   if (utc_time) {
-    struct tm ts;
+    tm ts;
     set_tm(&ts, yyyy, mon, dd, hh, min, ss, -1);
 #ifdef WIN32
     t = _mkgmtime(&ts);
@@ -482,7 +482,7 @@ int VerifyTextImportPWHistoryString(const StringX &PWHistory,
     }
 
     tmp = StringX(lpszPWHistory, ipwlen);
-    Format(sxBuffer, L"%08x%04x%ls", static_cast<long>(t), ipwlen, tmp.c_str());
+    Format(sxBuffer, L"%08lx%04lx%ls", static_cast<unsigned long>(t), ipwlen, tmp.c_str());
     newPWHistory += sxBuffer;
     sxBuffer = L"";
     lpszPWHistory += ipwlen;
@@ -675,12 +675,12 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
 
     // Verify datetime field
     if (!VerifyXMLDateTimeString(sxDatetime.c_str(), t) ||
-        (t == time_t(-1))) {
+        t == static_cast<time_t>(-1)) {
        rc = PWH_INVALID_DATETIME;
       break;
     }
 
-    Format(sxBuffer, L"%08lx%04x%ls", static_cast<long>(t), ipwlen,
+    Format(sxBuffer, L"%08lx%04x%ls", static_cast<unsigned long>(t), ipwlen,
                  sxPassword.c_str());
     out_entries.push_back(sxBuffer);
     sxBuffer = _T("");
@@ -699,10 +699,10 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
 
  exit:
   stringT buffer, temp(_T(""));
-  if (nerror != size_t(-1)) {
+  if (nerror != static_cast<size_t>(-1)) {
     // Need to add information about which PWH entry is in error
     LoadAString(buffer, IDSC_ENTRY);
-    Format(temp, L"%ls %d", buffer.c_str(), nerror);
+    Format(temp, L"%ls %lu", buffer.c_str(), nerror);
   }
   Format(buffer, IDSC_PWHERROR, temp.c_str());
   switch (rc) {
@@ -737,7 +737,7 @@ int VerifyXMLImportPWHistoryString(const StringX &PWHistory,
   }
 
   if (rc != PWH_OK) {
-    strErrors = buffer.c_str();
+    strErrors = buffer;
     strErrors += temp;
     newPWHistory = _T("");
   }

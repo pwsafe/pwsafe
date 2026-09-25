@@ -116,6 +116,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
   pSAX2Parser->setFeature(XMLUni::fgXercesSchemaFullChecking, true);
   pSAX2Parser->setFeature(XMLUni::fgXercesLoadExternalDTD, false);
   pSAX2Parser->setFeature(XMLUni::fgXercesSkipDTDValidation, true);
+  pSAX2Parser->setFeature(XMLUni::fgXercesDisableDefaultEntityResolution, true);
 
   // Set properties
   pSAX2Parser->setProperty(XMLUni::fgXercesScannerName,
@@ -128,7 +129,7 @@ bool XFileXMLProcessor::Process(const bool &bvalidation, const stringT &Imported
 
   // Create SAX handler object and install it on the pSAX2Parser, as the
   // document and error pSAX2Handler.
-  XFileSAX2Handlers * pSAX2Handler = new XFileSAX2Handlers;
+  const auto pSAX2Handler = new XFileSAX2Handlers;
   pSAX2Parser->setContentHandler(pSAX2Handler);
   pSAX2Parser->setErrorHandler(pSAX2Handler);
 

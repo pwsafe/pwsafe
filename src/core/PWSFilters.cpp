@@ -59,8 +59,6 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
                              ostringstream &oss, bool bFile)
 {
   CUTF8Conv utf8conv;
-  const unsigned char *utf8 = nullptr;
-  size_t utf8Len = 0;
 
   const char *sztab4, *sztab5, *szendl;
   if (bFile) {
@@ -107,11 +105,13 @@ static void GetFilterTestXML(const st_FilterRow &st_fldata,
     case PWSMatch::MT_DATE:
     {
       if (st_fldata.fdatetype == 0 /* DTYPE_ABS */) {
-        const StringX tmp1 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate1, PWSUtil::TMC_XML);
+        size_t utf8Len = 0;
+        const unsigned char *utf8 = nullptr;
+        const StringX tmp1 = ConvertToDateTimeString(st_fldata.fdate1, PWSUtil::TMC_XML);
         utf8conv.ToUTF8(tmp1.substr(0, 10), utf8, utf8Len);
         oss << sztab5 << "<date1>" << utf8
                                                 << "</date1>" << szendl;
-        const StringX tmp2 = PWSUtil::ConvertToDateTimeString(st_fldata.fdate2, PWSUtil::TMC_XML);
+        const StringX tmp2 = ConvertToDateTimeString(st_fldata.fdate2, PWSUtil::TMC_XML);
         utf8conv.ToUTF8(tmp2.substr(0, 10), utf8, utf8Len);
         oss << sztab5 << "<date2>" << utf8
                                                 << "</date2>" << szendl;
@@ -345,8 +345,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
     const LogicConnect lgc = st_fldata.ltype;
 
     if (ft != FT_PWHIST && ft != FT_POLICY && ft != FT_ATTACHMENT) {
-      oss << sztab4 << "<rule>" << PWSMatch::GetRuleString(mr)
-                                     << "</rule>" << szendl;
+      oss << sztab4 << "<rule>" << GetRuleString(mr) << "</rule>" << szendl;
 
       oss << sztab4 << "<logic>" << (lgc != LC_AND ? "or" : "and")
                                      << "</logic>" << szendl;
@@ -405,8 +404,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
     if (mr >= PWSMatch::MR_LAST)
       mr = PWSMatch::MR_INVALID;
 
-    oss << sztab4 << "<rule>" << PWSMatch::GetRuleString(mr)
-                                   << "</rule>" << szendl;
+    oss << sztab4 << "<rule>" << GetRuleString(mr) << "</rule>" << szendl;
 
     const LogicConnect lgc = st_fldata.ltype;
     oss << sztab4 << "<logic>" << (lgc != LC_AND ? "or" : "and")
@@ -472,8 +470,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
     if (mr >= PWSMatch::MR_LAST)
       mr = PWSMatch::MR_INVALID;
 
-    oss << sztab4 << "<rule>" << PWSMatch::GetRuleString(mr)
-                                   << "</rule>" << szendl;
+    oss << sztab4 << "<rule>" << GetRuleString(mr) << "</rule>" << szendl;
 
     const LogicConnect lgc = st_fldata.ltype;
     oss << sztab4 << "<logic>" << (lgc != LC_AND ? "or" : "and")
@@ -539,8 +536,7 @@ static string GetFilterXML(const st_filters &filters, bool bWithFormatting)
     if (mr >= PWSMatch::MR_LAST)
       mr = PWSMatch::MR_INVALID;
 
-    oss << sztab4 << "<rule>" << PWSMatch::GetRuleString(mr)
-      << "</rule>" << szendl;
+    oss << sztab4 << "<rule>" << GetRuleString(mr) << "</rule>" << szendl;
 
     const LogicConnect lgc = st_fldata.ltype;
     oss << sztab4 << "<logic>" << (lgc != LC_AND ? "or" : "and")
@@ -564,8 +560,7 @@ struct XMLFilterWriterToString {
                           m_os(os), m_bWithFormatting(bWithFormatting) {}
 
   // operator
-  void operator()(const pair<const st_Filterkey, st_filters> &p)
-  {
+  void operator()(const pair<const st_Filterkey, st_filters> &p) const {
     string xml = GetFilterXML(p.second, m_bWithFormatting);
     m_os << xml.c_str();
   }
@@ -623,7 +618,7 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
   time_t time_now;
 
   time(&time_now);
-  const StringX now = PWSUtil::ConvertToDateTimeString(time_now, PWSUtil::TMC_XML);
+  const StringX now = ConvertToDateTimeString(time_now, PWSUtil::TMC_XML);
 
   oss << "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" << endl;
   oss << endl;
@@ -666,8 +661,7 @@ std::string PWSFilters::GetFilterXMLHeader(const StringX &currentfile,
       oss << "\"" << endl;
     }
     if (hdr.m_whenlastsaved != 0) {
-      StringX wls = PWSUtil::ConvertToDateTimeString(hdr.m_whenlastsaved,
-                                                     PWSUtil::TMC_XML);
+      StringX wls = ConvertToDateTimeString(hdr.m_whenlastsaved, PWSUtil::TMC_XML);
       utf8conv.ToUTF8(wls.c_str(), utf8, utf8Len);
       oss << "WhenLastSaved=\"";
       oss << reinterpret_cast<const char *>(utf8);
@@ -746,11 +740,11 @@ int PWSFilters::ImportFilterXMLFile(const FilterPool fpool,
 #elif USE_XML_LIBRARY == XERCES
   XFilterXMLProcessor fXML(*this, fpool, pAsker);
 #endif
-  bool status, validation;
+  bool status;
 
   strErrors = _T("");
 
-  validation = true;
+  bool validation = true;
   if (strXMLFileName.empty())
     status = fXML.Process(validation, strXMLData, _T(""), strXSDFileName);
   else
@@ -793,9 +787,9 @@ stringT PWSFilters::GetFilterDescription(const st_FilterRow &st_fldata)
 {
   // Get the description of the current criterion to display on the static text
   stringT cs_rule, cs1, cs2, cs_and, cs_criteria, cs_unit(_T(" B"));
-  LoadAString(cs_rule, PWSMatch::GetRule(st_fldata.rule));
+  LoadAString(cs_rule, GetRule(st_fldata.rule));
   TrimRight(cs_rule, _T("\t"));
-  PWSMatch::GetMatchType(st_fldata.mtype,
+  GetMatchType(st_fldata.mtype,
                          st_fldata.fnum1, st_fldata.fnum2,
                          st_fldata.fdate1, st_fldata.fdate2, st_fldata.fdatetype,
                          st_fldata.fstring.c_str(), st_fldata.fcase,
@@ -1396,13 +1390,13 @@ bool PWSFilterManager::PassesEmptyGroupFiltering(const StringX &sxGroup)
 
 bool PWSFilterManager::PassesPWHFiltering(const CItemData *pci) const
 {
-  bool thistest_rc, bPresent;
+  bool thistest_rc;
   bool bValue(false);
   int iValue(0);
 
   PWHistList pwhistlist(pci->GetPWHistory(), PWSUtil::TMC_EXPORT_IMPORT);
 
-  bPresent = pwhistlist.getMax() > 0 || !pwhistlist.empty();
+  bool bPresent = pwhistlist.getMax() > 0 || !pwhistlist.empty();
 
   for (auto group_iter = m_vHflgroups.begin();
        group_iter != m_vHflgroups.end(); group_iter++) {
@@ -1420,9 +1414,8 @@ bool PWSFilterManager::PassesPWHFiltering(const CItemData *pci) const
       thistest_rc = false;
 
       PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
-      const FieldType ft = st_fldata.ftype;
 
-      switch (ft) {
+      switch (st_fldata.ftype) {
         case HT_PRESENT:
           bValue = bPresent;
           mt = PWSMatch::MT_BOOL;
@@ -1505,14 +1498,14 @@ bool PWSFilterManager::PassesPWHFiltering(const CItemData *pci) const
 
 bool PWSFilterManager::PassesPWPFiltering(const CItemData *pci) const
 {
-  bool thistest_rc, bPresent;
+  bool thistest_rc;
   bool bValue(false);
   int iValue(0);
 
   PWPolicy pwp;
-
   pci->GetPWPolicy(pwp);
-  bPresent = pwp.flags != 0;
+
+  bool bPresent = pwp.flags != 0;
 
   for (auto group_iter = m_vPflgroups.begin();
        group_iter != m_vPflgroups.end(); group_iter++) {
@@ -1530,9 +1523,8 @@ bool PWSFilterManager::PassesPWPFiltering(const CItemData *pci) const
       thistest_rc = false;
 
       PWSMatch::MatchType mt(PWSMatch::MT_INVALID);
-      const FieldType ft = st_fldata.ftype;
 
-      switch (ft) {
+      switch (st_fldata.ftype) {
         case PT_PRESENT:
           bValue = bPresent;
           mt = PWSMatch::MT_BOOL;

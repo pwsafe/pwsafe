@@ -378,8 +378,8 @@ class PWSFilters : public std::map<st_Filterkey, st_filters, ltfk> {
   int WriteFilterXMLFile(const StringX &filename, const PWSfileHeader &hdr,
                          const StringX &currentfile);
   int WriteFilterXMLFile(coStringXStream &os, const PWSfileHeader &hdr,
-                         const StringX &currentfile, const bool bWithFormatting = false);
-  int ImportFilterXMLFile(const FilterPool fpool,
+                         const StringX &currentfile, bool bWithFormatting = false);
+  int ImportFilterXMLFile(FilterPool fpool,
                           const StringX &strXMLData,
                           const stringT &strXMLFileName,
                           const stringT &strXSDFileName, stringT &strErrors,
@@ -406,7 +406,7 @@ class PWSFilterManager {
   const st_filters &GetFoundFilter() const { return m_lastfoundfilter; }
 
   st_filters m_currentfilter;
-  size_t GetFindFilterSize() { return m_vFltrFoundUUIDs.size(); }
+  size_t GetFindFilterSize() const { return m_vFltrFoundUUIDs.size(); }
   
  private:
    bool PassesPWHFiltering(const CItemData *pci) const;
