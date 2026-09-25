@@ -257,11 +257,9 @@ wxMenu* SystemTray::SetupRecentEntryMenu(const CItemData* pci, size_t idx)
   if (!pci->IsNotesEmpty())
     menu->Append(MakeCommandId(RUE_COPYNOTES, idx), _("Copy &Notes to clipboard"))->SetBitmap(wxBitmap(copynotes_xpm));
 
-  {
-    auto totpItem = m_frame->GetCore().GetCredentialEntry(pci);
-    if (totpItem != nullptr && totpItem->HasTwoFactorKey())
-      menu->Append(MakeCommandId(RUE_COPYAUTHCODE, idx), _("Copy Aut&h Code to clipboard"))->SetBitmap(wxBitmap(copyauthcode_xpm));
-  }
+  auto totpItem = m_frame->GetCore().GetCredentialEntry(pci);
+  if (totpItem != nullptr && totpItem->HasTwoFactorKey())
+    menu->Append(MakeCommandId(RUE_COPYAUTHCODE, idx), _("Copy Aut&h Code to clipboard"))->SetBitmap(wxBitmap(copyauthcode_xpm));
 
   menu->Append(MakeCommandId(RUE_AUTOTYPE, idx), _("Perform Auto&Type"))->SetBitmap(wxBitmap(autotype_xpm));
 
