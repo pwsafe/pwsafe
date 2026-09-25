@@ -64,8 +64,10 @@ const std::map<int, wxString> FieldTypeString = {
   {FT_GROUP, towxstring(CItemData::EngFieldName(CItemData::GROUP))},
   {FT_TITLE, towxstring(CItemData::EngFieldName(CItemData::TITLE))},
   {FT_USER, towxstring(CItemData::EngFieldName(CItemData::USER))},
-  {FT_NOTES, towxstring(CItemData::EngFieldName(CItemData::NOTES))},
   {FT_PASSWORD, towxstring(CItemData::EngFieldName(CItemData::PASSWORD))},
+  {FT_TWOFACTORKEY, towxstring(CItemData::EngFieldName(CItemData::TWOFACTORKEY))},
+  {FT_NOTES, towxstring(CItemData::EngFieldName(CItemData::NOTES))},
+  {FT_CUSTOMTEXT, towxstring(CItemData::EngFieldName(CItemData::CUSTOMTEXT))},
   {FT_CTIME, towxstring(CItemData::EngFieldName(CItemData::CTIME))},
   {FT_PMTIME, towxstring(CItemData::EngFieldName(CItemData::PMTIME))},
   {FT_ATIME, towxstring(CItemData::EngFieldName(CItemData::ATIME))},
@@ -561,8 +563,10 @@ void pwFiltersFTChoiceEditor::CreateControls()
     AppendToChoicesString(choices, FT_GROUP);
     AppendToChoicesString(choices, FT_TITLE);
     AppendToChoicesString(choices, FT_USER);
-    AppendToChoicesString(choices, FT_NOTES);
     AppendToChoicesString(choices, FT_PASSWORD);
+    AppendToChoicesString(choices, FT_TWOFACTORKEY);
+    AppendToChoicesString(choices, FT_NOTES);
+    AppendToChoicesString(choices, FT_CUSTOMTEXT);
     AppendToChoicesString(choices, FT_CTIME);
     AppendToChoicesString(choices, FT_PMTIME);
     AppendToChoicesString(choices, FT_ATIME);
@@ -570,8 +574,8 @@ void pwFiltersFTChoiceEditor::CreateControls()
     AppendToChoicesString(choices, FT_RMTIME);
     AppendToChoicesString(choices, FT_URL);
     AppendToChoicesString(choices, FT_AUTOTYPE);
-    AppendToChoicesString(choices, FT_PWHIST); // 13
-    AppendToChoicesString(choices, FT_POLICY); // 14
+    AppendToChoicesString(choices, FT_PWHIST);
+    AppendToChoicesString(choices, FT_POLICY);
     AppendToChoicesString(choices, FT_XTIME_INT);
     AppendToChoicesString(choices, FT_RUNCMD);
     AppendToChoicesString(choices, FT_DCA);
@@ -588,10 +592,10 @@ void pwFiltersFTChoiceEditor::CreateControls()
     AppendToChoicesString(choices, FT_UNKNOWNFIELDS);
     AppendToChoicesString(choices, FT_PASSWORDLEN);
     AppendToChoicesString(choices, FT_END);
-    AppendToChoicesString(choices, static_cast<FieldType>(FT_HISTORY_MENU)); // 31
-    AppendToChoicesString(choices, static_cast<FieldType>(FT_POLICY_MENU)); // 32
+    AppendToChoicesString(choices, static_cast<FieldType>(FT_HISTORY_MENU));
+    AppendToChoicesString(choices, static_cast<FieldType>(FT_POLICY_MENU));
     if(m_bCanHaveAttachments) {
-      AppendToChoicesString(choices, static_cast<FieldType>(FT_ATTACHMENT_MENU)); // 33
+      AppendToChoicesString(choices, static_cast<FieldType>(FT_ATTACHMENT_MENU));
     }
   }
   else if(m_filtertype == DFTYPE_PWHISTORY) {
