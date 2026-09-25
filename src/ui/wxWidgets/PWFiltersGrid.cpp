@@ -684,6 +684,8 @@ void pwFiltersGrid::UpdateMatchType(int row)
         case FT_EMAIL:
         case FT_SYMBOLS:
         case FT_POLICYNAME:
+        case FT_TWOFACTORKEY:
+        case FT_CUSTOMTEXT: 
           mt = PWSMatch::MT_STRING;
           break;
         case FT_DCA:
