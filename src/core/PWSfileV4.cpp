@@ -328,6 +328,20 @@ size_t PWSfileV4::ReadContent(const Fish *fish,  unsigned char *cbcbuffer,
   const unsigned int BS = fish->GetBlockSize();
   size_t blen = roundUp(clen, BS);
 
+  // Reject a length that cannot describe real data: roundUp() must not have wrapped
+  // (blen == 0 or blen < clen), and the block(s) must fit in the bytes left in the file.
+  // Returning 0 without allocating leaves `content` untouched (nullptr); the single
+  // caller (CItemAtt::Read) compares the returned count against roundUp(clen,BS) and
+  // treats a mismatch as a read failure.
+  if (blen == 0 || blen < clen)
+    return 0;
+  if (m_effectiveFileLength != 0) {
+    const ulong64 filePos = static_cast<ulong64>(GetOffset());
+    if (filePos > m_effectiveFileLength ||
+        blen > (m_effectiveFileLength - filePos))
+      return 0;
+  }
+
   content = new unsigned char[blen]; // caller's responsible for delete[]
   return _readcbc(m_fd, content, blen, fish, cbcbuffer);
 }

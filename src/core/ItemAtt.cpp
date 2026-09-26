@@ -392,7 +392,11 @@ int CItemAtt::Read(PWSfile *in)
         ASSERT(utf8Len == sizeof(uint32));
         if (!gotIV || !gotEK || gotContent || utf8Len != sizeof(uint32))
           goto exit;
-        content_len = static_cast<size_t>(getInt32(utf8));
+        // Reject non-positive lengths *before* conversion to size_t
+        const int32 clen32 = getInt32(utf8);
+        if (clen32 <= 0)
+          goto exit;
+        content_len = static_cast<size_t>(clen32);
 
         TwoFish fish(EK, sizeof(EK));
         trashMemory(EK, sizeof(EK));
