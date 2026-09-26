@@ -156,6 +156,46 @@ Anyway, enabling this feature in many distros can be done by following these ste
 
 4. Start Password Safe and enable support for System Tray: in the main menu, go to Manage > Options > System tab, then check Put icon in System Tray.
 
+## Enabling Autotype support on Wayland
+
+**Issue:** On Wayland systems, Autotype doesn't work regardless of the "Use alternate Autotype method" option, selected in Preferences.
+
+In order for Autotype to work the target application (e.g. Firefox) must be running with the X11 backend.
+Also, for some apps (e.g. Filezilla or another instance of Password Safe), you have to enable the alternate Autotype method in the source instance of Password Safe.
+
+1. Only if you want to Autotype **into** Password Safe: the previous section on System Tray has instructions for how to switch Password Safe to the X11 backend.
+2. For other applications the methods may vary, but e.g. for Firefox do the following:
+
+   a) Native package version:
+   ```
+   vi /usr/share/applications/firefox.desktop
+   ```
+   Replace the line
+   ```
+   Exec=firefox %u
+   ```
+   with
+   ```
+   Exec=env MOZ_ENABLE_WAYLAND=0 DISABLE_WAYLAND=1 firefox %u
+   ```
+   
+   b) Snap version:
+   ```
+   vi /var/lib/snapd/desktop/applications/firefox_firefox.desktop
+   ```
+   Find the line (or lines - there may be multiple) that looks like
+   ```
+   Exec=/snap/bin/firefox
+   ```
+   and change it to
+   ```
+   Exec=env MOZ_ENABLE_WAYLAND=0 DISABLE_WAYLAND=1 /snap/bin/firefox
+   ```
+   If the line already sets some variables with `env` simply add two new ones, e.g.
+   ```
+   Exec=env MOZ_ENABLE_WAYLAND=0 DISABLE_WAYLAND=1 BAMF_DESKTOP_FILE_HINT=... /snap/bin/firefox
+   ```
+
 ## Reporting Bugs
 Please submit bugs via https://sourceforge.net/p/passwordsafe/bugs/ or on Github at
 https://github.com/pwsafe/pwsafe/issues.
