@@ -13,6 +13,11 @@
 
 #include "core/ItemAtt.h"
 #include "core/PWScore.h"
+#include "core/PWSfile.h"
+#include "core/PWSfileV4.h"
+#include "core/PWSrand.h"
+#include "core/Util.h"
+#include "core/crypto/TwoFish.h"
 #include "os/file.h"
 #include "os/dir.h"
 #include "os/debug.h"
@@ -53,6 +58,68 @@ void ItemAttTest::SetUp()
         FAIL();
     }
 }
+
+namespace {
+// Support for LengthRegression_* tests below: craft a V4 attachment record
+// on disk with an arbitrary (possibly malformed) CONTENT length field, so
+// that we can verify CItemAtt::Read() rejects bad lengths instead of
+// misbehaving on them (e.g. by mis-sizing an allocation for the content).
+const StringX kAttRegPass(_T("regression-pass"));
+
+// Exposes PWSfileV4's protected m_fd so the test can write a raw content
+// block whose length doesn't match the CONTENT field it wrote earlier.
+class CraftV4 : public PWSfileV4
+{
+public:
+  CraftV4(const StringX &f, PWSfile::RWmode m, PWSfile::VERSION v) : PWSfileV4(f, m, v) {}
+  FILE *fd() { return m_fd; }
+};
+
+void WriteMalformedAttachment(const StringX &file, uint32_t len32)
+{
+  CraftV4 fw(file, PWSfile::Write, PWSfile::V40);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(kAttRegPass));
+
+  unsigned char IV[TwoFish::BLOCKSIZE], EK[PWSfileV4::KLEN], AK[PWSfileV4::KLEN];
+  PWSrand::GetInstance()->GetRandomData(IV, sizeof(IV));
+  PWSrand::GetInstance()->GetRandomData(EK, sizeof(EK));
+  PWSrand::GetInstance()->GetRandomData(AK, sizeof(AK));
+
+  uuid_array_t uuid;
+  pws_os::CUUID cu;
+  cu.GetARep(uuid);
+
+  fw.WriteField(CItemAtt::ATTUUID, uuid, sizeof(uuid_array_t));
+  fw.WriteField(CItemAtt::ATTIV, IV, sizeof(IV));
+  fw.WriteField(CItemAtt::ATTEK, EK, sizeof(EK));
+  fw.WriteField(CItemAtt::ATTAK, AK, sizeof(AK));
+
+  const unsigned char lb[4] = {(unsigned char)(len32 & 0xff), (unsigned char)((len32 >> 8) & 0xff),
+                               (unsigned char)((len32 >> 16) & 0xff), (unsigned char)((len32 >> 24) & 0xff)};
+  fw.WriteField(CItemAtt::CONTENT, lb, sizeof(lb));          // <-- malformed length
+
+  TwoFish fish(EK, sizeof(EK));
+  unsigned char payload[16];
+  for (int i = 0; i < 16; ++i) payload[i] = 0x41;
+  _writecbcRest(fw.fd(), payload, sizeof(payload), &fish, IV);
+
+  fw.WriteField(static_cast<unsigned char>(0xff), _T(""));
+  fw.Close();
+}
+
+// A malformed length must be rejected, not written past a zero-length allocation.
+void ExpectSafeReject(const StringX &file)
+{
+  PWSfileV4 fr(file, PWSfile::Read, PWSfile::V40);
+  int st = fr.Open(kAttRegPass);
+  if (st != PWSfile::SUCCESS)
+    return;      // an open failure is an acceptable safe outcome
+
+  CItemAtt att;
+  EXPECT_NE(PWSfile::SUCCESS, fr.ReadRecord(att));   // must be rejected, and must not crash
+  fr.Close();
+}
+} // namespace
 
 // And now the tests...
 
@@ -179,4 +246,33 @@ TEST_F(ItemAttTest, Getters_n_Setters)
   EXPECT_EQ(0, memcmp(content, contentVal, sizeof(content)));
 
   delete[] contentVal;
+}
+
+TEST_F(ItemAttTest, LengthRegression_VulnerableBoundaryValuesAreRejected)
+{
+  const uint32_t bad[] = {0x00000000u, 0xffffffffu, 0xfffffffeu, 0xfffffffdu, 0xfffffffcu,
+                          0xfffffffbu, 0xfffffffau, 0xfffffff9u, 0xfffffff8u, 0xfffffff7u,
+                          0xfffffff6u, 0xfffffff5u, 0xfffffff4u, 0xfffffff3u, 0xfffffff2u,
+                          0xfffffff1u, 0xfffffff0u, 0x80000000u, 0x7fffffffu};
+  const stringT f(_T("ItemAttLengthRegression.psafe4"));
+  for (uint32_t v : bad) {
+    WriteMalformedAttachment(f.c_str(), v);
+    ExpectSafeReject(f.c_str());
+    pws_os::DeleteAFile(f);
+  }
+}
+
+TEST_F(ItemAttTest, LengthRegression_ValidPositiveLengthsStillParse)
+{
+  const uint32_t good[] = {1u, 15u, 16u, 17u, 100u, 4096u};
+  const stringT f(_T("ItemAttLengthRegression.psafe4"));
+  for (uint32_t v : good) {
+    WriteMalformedAttachment(f.c_str(), v);
+    PWSfileV4 fr(f.c_str(), PWSfile::Read, PWSfile::V40);
+    ASSERT_EQ(PWSfile::SUCCESS, fr.Open(kAttRegPass));
+    CItemAtt att;
+    EXPECT_EQ(PWSfile::READ_FAIL, fr.ReadRecord(att));  // truncated content -> read failure, not a crash
+    fr.Close();
+    pws_os::DeleteAFile(f);
+  }
 }
