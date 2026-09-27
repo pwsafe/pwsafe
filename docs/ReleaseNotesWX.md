@@ -12,6 +12,7 @@ PasswordSafe 1.26.0 Release ?? ??? 2026
 
 New features in 1.26.0
 ----------------------
+* Copy Auth Code has been added to the System tray icon's Recently Used Entries menu.
 * [GH1938](https://github.com/pwsafe/pwsafe/issues/1938) Alias entries may now have their own 2-factor (TOTP) authentiation key. If present, this will be used instead of the base entry's.
 * [GH1873](https://github.com/pwsafe/pwsafe/issues/1873) Added "Auth code" to the draggable items in the dragbar.
 
