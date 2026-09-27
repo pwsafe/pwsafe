@@ -281,8 +281,10 @@ bool CItemAtt::SetField(unsigned char type, const unsigned char *data,
   switch (ft) {
   case ATTUUID:
     {
+      // Reject a field of the wrong length
+      if (data == nullptr || len != sizeof(uuid_array_t))
+        return false;
       uuid_array_t uuid_array;
-      ASSERT(len == sizeof(uuid_array_t));
       for (size_t i = 0; i < sizeof(uuid_array_t); i++)
         uuid_array[i] = data[i];
       SetUUID(uuid_array);
