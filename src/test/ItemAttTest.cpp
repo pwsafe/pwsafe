@@ -15,8 +15,6 @@
 #include "core/PWScore.h"
 #include "core/PWSfile.h"
 #include "core/PWSfileV4.h"
-#include "core/PWSrand.h"
-#include "core/Util.h"
 #include "core/crypto/TwoFish.h"
 #include "os/file.h"
 #include "os/dir.h"
@@ -60,66 +58,6 @@ void ItemAttTest::SetUp()
 }
 
 namespace {
-// Support for LengthRegression_* tests below: craft a V4 attachment record
-// on disk with an arbitrary (possibly malformed) CONTENT length field, so
-// that we can verify CItemAtt::Read() rejects bad lengths instead of
-// misbehaving on them (e.g. by mis-sizing an allocation for the content).
-const StringX kAttRegPass(_T("regression-pass"));
-
-// Exposes PWSfileV4's protected m_fd so the test can write a raw content
-// block whose length doesn't match the CONTENT field it wrote earlier.
-class CraftV4 : public PWSfileV4
-{
-public:
-  CraftV4(const StringX &f, PWSfile::RWmode m, PWSfile::VERSION v) : PWSfileV4(f, m, v) {}
-  FILE *fd() { return m_fd; }
-};
-
-void WriteMalformedAttachment(const StringX &file, uint32_t len32)
-{
-  CraftV4 fw(file, PWSfile::Write, PWSfile::V40);
-  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(kAttRegPass));
-
-  unsigned char IV[TwoFish::BLOCKSIZE], EK[PWSfileV4::KLEN], AK[PWSfileV4::KLEN];
-  PWSrand::GetInstance()->GetRandomData(IV, sizeof(IV));
-  PWSrand::GetInstance()->GetRandomData(EK, sizeof(EK));
-  PWSrand::GetInstance()->GetRandomData(AK, sizeof(AK));
-
-  uuid_array_t uuid;
-  pws_os::CUUID cu;
-  cu.GetARep(uuid);
-
-  fw.WriteField(CItemAtt::ATTUUID, uuid, sizeof(uuid_array_t));
-  fw.WriteField(CItemAtt::ATTIV, IV, sizeof(IV));
-  fw.WriteField(CItemAtt::ATTEK, EK, sizeof(EK));
-  fw.WriteField(CItemAtt::ATTAK, AK, sizeof(AK));
-
-  const unsigned char lb[4] = {(unsigned char)(len32 & 0xff), (unsigned char)((len32 >> 8) & 0xff),
-                               (unsigned char)((len32 >> 16) & 0xff), (unsigned char)((len32 >> 24) & 0xff)};
-  fw.WriteField(CItemAtt::CONTENT, lb, sizeof(lb));          // <-- malformed length
-
-  TwoFish fish(EK, sizeof(EK));
-  unsigned char payload[16];
-  for (int i = 0; i < 16; ++i) payload[i] = 0x41;
-  _writecbcRest(fw.fd(), payload, sizeof(payload), &fish, IV);
-
-  fw.WriteField(static_cast<unsigned char>(0xff), _T(""));
-  fw.Close();
-}
-
-// A malformed length must be rejected, not written past a zero-length allocation.
-void ExpectSafeReject(const StringX &file)
-{
-  PWSfileV4 fr(file, PWSfile::Read, PWSfile::V40);
-  int st = fr.Open(kAttRegPass);
-  if (st != PWSfile::SUCCESS)
-    return;      // an open failure is an acceptable safe outcome
-
-  CItemAtt att;
-  EXPECT_NE(PWSfile::SUCCESS, fr.ReadRecord(att));   // must be rejected, and must not crash
-  fr.Close();
-}
-
 // A minimal PWSfile stand-in that serves one canned field (followed by an
 // END marker) straight from memory, with no encryption or file I/O
 // involved. CItem::Read() only ever calls PWSfile::ReadField(), which
@@ -179,6 +117,79 @@ private:
   unsigned char m_type;
   std::vector<unsigned char> m_data;
   bool m_done;
+};
+
+// Support for LengthRegression_* below. A PWSfileV4 stand-in that serves
+// ATTIV/ATTEK/CONTENT straight from memory, same idea as FakeFieldSource -
+// except CItemAtt::Read()'s CONTENT case calls PWSfileV4::ReadContent(),
+// which is not virtual and does its own fread()/decrypt directly against
+// m_fd. So this still needs a real (anonymous, tmpfile()-backed) FILE*
+// holding some actual bytes; what it doesn't need is a real V40 file,
+// a real password, or PWSfileV4::Open()'s key-stretching. Since none of
+// the tests using this ever supply ATTAK/CONTENTHMAC, CItemAtt::Read()
+// is guaranteed to end up in its "missing prerequisites" READ_FAIL branch
+// regardless of what ReadContent() makes of the length - it exists purely
+// to observe that a bad length is handled safely, not accepted.
+class FakeV4ContentSource : public PWSfileV4
+{
+public:
+  explicit FakeV4ContentSource(uint32_t contentLen32)
+    : PWSfileV4(_T(""), PWSfile::Read, PWSfile::V40), m_step(0)
+  {
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4996) // tmpfile() flagged as "unsafe"; tmpfile_s() isn't portable
+#endif
+    m_fd = std::tmpfile();
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+    // What's actually on "disk": 16 arbitrary bytes - plausible content
+    // for a real single-block attachment, but deliberately unrelated to
+    // whatever length the CONTENT field below claims.
+    const unsigned char payload[16] = {0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41,
+                                       0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41, 0x41};
+    std::fwrite(payload, 1, sizeof(payload), m_fd);
+    std::fseek(m_fd, 0, SEEK_SET);
+
+    m_lenBytes[0] = static_cast<unsigned char>(contentLen32 & 0xff);
+    m_lenBytes[1] = static_cast<unsigned char>((contentLen32 >> 8) & 0xff);
+    m_lenBytes[2] = static_cast<unsigned char>((contentLen32 >> 16) & 0xff);
+    m_lenBytes[3] = static_cast<unsigned char>((contentLen32 >> 24) & 0xff);
+  }
+
+protected:
+  size_t ReadCBC(unsigned char &type, unsigned char *&data, size_t &length) override
+  {
+    switch (m_step++) {
+    case 0: // ATTIV
+      type = CItemAtt::ATTIV;
+      length = TwoFish::BLOCKSIZE;
+      data = new unsigned char[length]();
+      return 1;
+    case 1: // ATTEK
+      type = CItemAtt::ATTEK;
+      length = PWSfileV4::KLEN;
+      data = new unsigned char[length]();
+      return 1;
+    case 2: // CONTENT - the (possibly malformed) length under test
+      type = CItemAtt::CONTENT;
+      length = sizeof(m_lenBytes);
+      data = new unsigned char[length];
+      for (size_t i = 0; i < length; i++)
+        data[i] = m_lenBytes[i];
+      return 1;
+    default:
+      type = CItemAtt::END;
+      data = nullptr;
+      length = 0;
+      return 1;
+    }
+  }
+
+private:
+  int m_step;
+  unsigned char m_lenBytes[4];
 };
 } // namespace
 
@@ -315,26 +326,20 @@ TEST_F(ItemAttTest, LengthRegression_VulnerableBoundaryValuesAreRejected)
                           0xfffffffbu, 0xfffffffau, 0xfffffff9u, 0xfffffff8u, 0xfffffff7u,
                           0xfffffff6u, 0xfffffff5u, 0xfffffff4u, 0xfffffff3u, 0xfffffff2u,
                           0xfffffff1u, 0xfffffff0u, 0x80000000u, 0x7fffffffu};
-  const stringT f(_T("ItemAttLengthRegression.psafe4"));
   for (uint32_t v : bad) {
-    WriteMalformedAttachment(f.c_str(), v);
-    ExpectSafeReject(f.c_str());
-    pws_os::DeleteAFile(f);
+    FakeV4ContentSource src(v);
+    CItemAtt att;
+    EXPECT_NE(PWSfile::SUCCESS, att.Read(&src));  // must be rejected, and must not crash
   }
 }
 
 TEST_F(ItemAttTest, LengthRegression_ValidPositiveLengthsStillParse)
 {
   const uint32_t good[] = {1u, 15u, 16u, 17u, 100u, 4096u};
-  const stringT f(_T("ItemAttLengthRegression.psafe4"));
   for (uint32_t v : good) {
-    WriteMalformedAttachment(f.c_str(), v);
-    PWSfileV4 fr(f.c_str(), PWSfile::Read, PWSfile::V40);
-    ASSERT_EQ(PWSfile::SUCCESS, fr.Open(kAttRegPass));
+    FakeV4ContentSource src(v);
     CItemAtt att;
-    EXPECT_EQ(PWSfile::READ_FAIL, fr.ReadRecord(att));  // truncated content -> read failure, not a crash
-    fr.Close();
-    pws_os::DeleteAFile(f);
+    EXPECT_EQ(PWSfile::READ_FAIL, att.Read(&src));  // truncated content -> read failure, not a crash
   }
 }
 
