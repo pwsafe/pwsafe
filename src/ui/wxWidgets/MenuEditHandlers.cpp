@@ -485,8 +485,9 @@ void PasswordSafeFrame::OnCopyAuthCodeClick(wxCommandEvent& evt)
   CItemData rueItem;
   CItemData* item = GetSelectedEntry(evt, rueItem);
   if (item != nullptr) {
-    m_TotpLastSelectedItem = item;
+    m_TotpLastSelectedItem = m_core.GetCredentialEntry(item)->GetUUID();
     DoCopyAuthCode(item);
+    UpdateAccessTime(*item);
     StartTotpCopyAuthCode();
   }
   else {

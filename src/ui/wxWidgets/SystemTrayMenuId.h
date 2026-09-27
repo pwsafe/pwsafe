@@ -83,6 +83,7 @@ inline bool IsRUECommand(int id) {
 typedef enum { RUE_COPYPASSWORD = 1, /* must start with 1, see above comments */
                RUE_COPYUSERNAME,
                RUE_COPYNOTES,
+               RUE_COPYAUTHCODE,
                RUE_AUTOTYPE,
                RUE_COPYURL,
                RUE_COPYEMAIL,
@@ -110,6 +111,7 @@ inline RUEOperation GetRUEOperation(int id) {
   const RUEOperation operations[] = { RUE_COPYPASSWORD,
                                       RUE_COPYUSERNAME,
                                       RUE_COPYNOTES,
+                                      RUE_COPYAUTHCODE,
                                       RUE_AUTOTYPE,
                                       RUE_COPYURL,
                                       RUE_COPYEMAIL,
@@ -126,6 +128,7 @@ inline int GetFrameCommandId(RUEOperation opn) {
   const int frameCommands[] =  { ID_COPYPASSWORD,
                                  ID_COPYUSERNAME,
                                  ID_COPYNOTESFLD,
+                                 ID_COPYAUTHCODE,
                                  ID_AUTOTYPE,
                                  ID_COPYURL,
                                  ID_COPYEMAIL,
