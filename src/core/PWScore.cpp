@@ -1345,7 +1345,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
         if (status == PWSfile::SUCCESS) {
           m_attlist.insert(std::make_pair(att.GetUUID(), att));
         } else {
-          // XXX report problem!
+          go = false;
         }
       }
         break;
@@ -1353,6 +1353,7 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
         go = false;
         break;
       default:
+        go = false;
         break;
     } // switch
   } while (go);
@@ -1390,7 +1391,8 @@ int PWScore::ReadFile(const StringX &a_filename, const StringX &a_passkey,
   if (closeStatus == SUCCESS && bValidateRC)
     closeStatus = OK_WITH_VALIDATION_ERRORS;
 
-  return closeStatus;
+  // Preserve read errors over any secondary error from closing early.
+  return status == PWSfile::END_OF_FILE ? closeStatus : status;
 }
 
 static const StringX MakeDateTimeString()

@@ -423,33 +423,33 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
   ASSERT(m_curversion != UNKNOWN_VERSION);
 
   StringX tempdata;
-  signed long numread = 0;
+  bool readAnyField = false;
   unsigned char type;
 
   switch (m_curversion) {
     case V17:
     {
       // type is meaningless, but why write two versions of ReadCBC?
-      numread += static_cast<signed long>(ReadCBC(type, tempdata));
+      readAnyField |= ReadCBC(type, tempdata) > 0;
       item.SetName(tempdata, m_defusername);
-      numread += static_cast<signed long>(ReadCBC(type, tempdata));
+      readAnyField |= ReadCBC(type, tempdata) > 0;
       item.SetPassword(tempdata);
-      numread += static_cast<signed long>(ReadCBC(type, tempdata));
+      readAnyField |= ReadCBC(type, tempdata) > 0;
       item.SetNotes(tempdata);
       // No UUID, so we create one here
       item.CreateUUID();
       // No Group - currently leave empty
-      return (numread > 0) ? SUCCESS : END_OF_FILE;
+      return readAnyField ? SUCCESS : END_OF_FILE;
     }
     case V20:
     {
       int emergencyExit = 255; // to avoid endless loop.
-      signed long fieldLen; // zero means end of file reached
+      size_t fieldLen; // zero means end of file reached
       bool endFound = false; // set to true when record end detected - happy end
       do {
-        fieldLen = static_cast<signed long>(ReadCBC(type, tempdata));
-        if (signed(fieldLen) > 0) {
-          numread += fieldLen;
+        fieldLen = ReadCBC(type, tempdata);
+        if (fieldLen > 0) {
+          readAnyField = true;
           switch (type) {
             case CItemData::TITLE:
               item.SetTitle(tempdata); break;
@@ -500,7 +500,7 @@ int PWSfileV1V2::ReadRecord(CItemData &item)
           } // switch
         } // if (fieldLen > 0)
       } while (!endFound && fieldLen > 0 && --emergencyExit > 0);
-      return (numread > 0 && endFound) ? SUCCESS : END_OF_FILE;
+      return (readAnyField && endFound) ? SUCCESS : END_OF_FILE;
     }
     default:
       ASSERT(0);

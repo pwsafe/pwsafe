@@ -175,7 +175,7 @@ int CItemData::Read(PWSfile *in)
 {
   int status = PWSfile::SUCCESS;
 
-  signed long numread = 0;
+  bool readAnyField = false;
   unsigned char type = END;
 
   int emergencyExit = 255; // to avoid endless loop.
@@ -189,7 +189,7 @@ int CItemData::Read(PWSfile *in)
                                                       utf8Len));
 
     if (fieldLen > 0) {
-      numread += fieldLen;
+      readAnyField = true;
       if (IsItemDataField(type)) {
         if (!SetField(type, utf8, utf8Len)) {
           status = PWSfile::FAILURE;
@@ -201,7 +201,7 @@ int CItemData::Read(PWSfile *in)
           trashMemory(utf8, utf8Len * sizeof(utf8[0]));
           delete[] utf8;
         }
-        return static_cast<int>(-numread);
+        return -1;
       } else if (type != END) { // unknown field
         SetUnknownField(type, utf8Len, utf8);
       }
@@ -213,7 +213,7 @@ int CItemData::Read(PWSfile *in)
     }
   } while (type != END && fieldLen > 0 && --emergencyExit > 0);
 
-  if (numread > 0) {
+  if (readAnyField) {
     // Determine entry type:
     // ET_NORMAL (which may later change to ET_ALIASBASE or ET_SHORTCUTBASE)
     // ET_ALIAS or ET_SHORTCUT

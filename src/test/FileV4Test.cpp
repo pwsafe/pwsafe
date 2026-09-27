@@ -16,6 +16,9 @@
 
 #include "os/file.h"
 
+#include <cstdio>
+#include <vector>
+
 #include "gtest/gtest.h"
 
 // A fixture for factoring common code across tests
@@ -314,6 +317,53 @@ TEST_F(FileV4Test, HdrItemAttTest)
   attItem.SetOffset(readAtt.GetOffset());
   EXPECT_EQ(attItem, readAtt);
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+}
+
+TEST_F(FileV4Test, CoreReadRecordFailure)
+{
+  PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.WriteRecord(smallItem));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+
+  // Remove one HMAC byte so the record ends beyond the effective file length.
+  FILE *fp = pws_os::FOpen(fname, _T("rb"));
+  ASSERT_NE(nullptr, fp);
+  const size_t fileLength = pws_os::fileLength(fp);
+  ASSERT_GT(fileLength, size_t(SHA256::HASHLEN));
+  std::vector<unsigned char> bytes(fileLength - 1);
+  ASSERT_EQ(bytes.size(), fread(bytes.data(), 1, bytes.size(), fp));
+  ASSERT_EQ(0, pws_os::FClose(fp));
+  fp = pws_os::FOpen(fname, _T("wb"));
+  ASSERT_NE(nullptr, fp);
+  ASSERT_EQ(bytes.size(), fwrite(bytes.data(), 1, bytes.size(), fp));
+  ASSERT_EQ(0, pws_os::FClose(fp));
+
+  PWScore core;
+  EXPECT_EQ(PWSfile::READ_FAIL, core.ReadFile(fname.c_str(), passphrase));
+  EXPECT_EQ(1U, core.GetNumEntries());
+}
+
+TEST_F(FileV4Test, CoreReadAttachmentFailure)
+{
+  for (bool trailingEntry : {false, true}) {
+    SCOPED_TRACE(trailingEntry);
+    CItemAtt missingContent;
+    missingContent.CreateUUID();
+    PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
+    ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+    ASSERT_EQ(PWSfile::SUCCESS, fw.WriteRecord(missingContent));
+    if (trailingEntry) {
+      ASSERT_EQ(PWSfile::SUCCESS, fw.WriteRecord(smallItem));
+    }
+    ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+
+    // A valid database HMAC must not hide a malformed attachment.
+    PWScore core;
+    EXPECT_EQ(PWSfile::READ_FAIL, core.ReadFile(fname.c_str(), passphrase));
+    EXPECT_EQ(0U, core.GetNumAtts());
+    EXPECT_EQ(0U, core.GetNumEntries());
+  }
 }
 
 TEST_F(FileV4Test, CoreRWTest)

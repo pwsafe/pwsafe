@@ -15,6 +15,7 @@
 #include "os/file.h"
 #include "core/PWScore.h"
 #include <cstdio>
+#include <vector>
 
 #include "gtest/gtest.h"
 
@@ -136,6 +137,38 @@ TEST_F(FileV3Test, HeaderTest)
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
   ASSERT_EQ(hdr1, hdr2);
+}
+
+TEST_F(FileV3Test, HeaderReadFailure)
+{
+  PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+
+  FILE *fp = pws_os::FOpen(fname, _T("rb"));
+  ASSERT_NE(nullptr, fp);
+  // Remove the encrypted HDR_END, terminal marker, and HMAC.
+  const size_t suffixSize = 2 * TwoFish::BLOCKSIZE + SHA256::HASHLEN;
+  const size_t fileLength = pws_os::fileLength(fp);
+  ASSERT_GE(fileLength, suffixSize + 232); // Keep the V3 minimum file size.
+  std::vector<unsigned char> header(fileLength - suffixSize);
+  ASSERT_EQ(header.size(), fread(header.data(), 1, header.size(), fp));
+  ASSERT_EQ(0, pws_os::FClose(fp));
+
+  const char terminal[] = "PWS3-EOFPWS3-EOF";
+  // EOF, a partial block, or a terminal marker before HDR_END must fail.
+  for (size_t tailLength : {size_t(0), size_t(8), size_t(16)}) {
+    SCOPED_TRACE(tailLength);
+    fp = pws_os::FOpen(fname, _T("wb"));
+    ASSERT_NE(nullptr, fp);
+    ASSERT_EQ(header.size(), fwrite(header.data(), 1, header.size(), fp));
+    ASSERT_EQ(tailLength, fwrite(terminal, 1, tailLength, fp));
+    ASSERT_EQ(0, pws_os::FClose(fp));
+
+    PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
+    EXPECT_EQ(PWSfile::READ_FAIL, fr.Open(passphrase));
+    EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+  }
 }
 
 TEST_F(FileV3Test, ItemTest)
