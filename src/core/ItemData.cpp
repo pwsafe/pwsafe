@@ -2245,10 +2245,10 @@ bool CItemData::WillExpire(const int numdays) const
 
 static bool pull(int32 &i, const unsigned char *data, size_t len)
 {
+  // Reject a field of the wrong length
   if (len == sizeof(int32)) {
     i = getInt32(data);
   } else {
-    ASSERT(0);
     return false;
   }
   return true;
@@ -2433,7 +2433,7 @@ bool CItemData::SetField(CItem::FieldType ft, const unsigned char* data, size_t 
       SetProtected(uc != 0);
       break;
     case KBSHORTCUT:
-      if (!pull(i32, data, sizeof(int32))) return false;
+      if (!pull(i32, data, len)) return false;
       SetKBShortcut(i32);
       break;
     case END:
