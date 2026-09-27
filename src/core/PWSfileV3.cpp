@@ -646,8 +646,9 @@ int PWSfileV3::ReadHeader()
   bool found0302UserHost = false; // to resolve potential conflicts
 
   do {
-    if (ReadCBC(fieldType, utf8, utf8Len) == 0)
-      continue;
+    const size_t numRead = ReadCBC(fieldType, utf8, utf8Len);
+    if (numRead == 0 || numRead == static_cast<size_t>(-1))
+      return READ_FAIL;
 
     switch (fieldType) {
     case HDR_VERSION: /* version */

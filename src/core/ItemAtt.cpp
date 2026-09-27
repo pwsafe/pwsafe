@@ -324,7 +324,7 @@ bool CItemAtt::SetField(unsigned char type, const unsigned char *data,
 int CItemAtt::Read(PWSfile *in)
 {
   int status = PWSfile::FAILURE; // generic failure
-  signed long numread = 0;
+  bool readAnyField = false;
   unsigned char type;
 
   int emergencyExit = 255; // to avoid endless loop.
@@ -350,7 +350,7 @@ int CItemAtt::Read(PWSfile *in)
                                                       utf8Len));
 
     if (fieldLen > 0) {
-      numread += fieldLen;
+      readAnyField = true;
       switch (type) {
       case ATTIV: {
         ASSERT(utf8Len == sizeof(IV));
@@ -468,7 +468,7 @@ int CItemAtt::Read(PWSfile *in)
   delete[] content;
   delete[] utf8; // if here via goto exit
 
-  if (numread > 0) {
+  if (readAnyField) {
     m_offset = in->GetOffset();
     return status;
   } else

@@ -392,12 +392,16 @@ size_t _readcbc(FILE *fp,
   xormem(lengthblock, cbcbuffer, BS);
   memcpy(cbcbuffer, lcpy, BS);
 
-  size_t length = getInt32(lengthblock);
+  size_t length = static_cast<size_t>(static_cast<uint32_t>(getInt32(lengthblock)));
+  // Conservative cap for downstream signed counts and conversion APIs.
+  // Raising it requires auditing size arithmetic, text expansion, and
+  // storage/serialization limits on both 32- and 64-bit builds.
+  const size_t maxFieldSize = size_t(INT32_MAX) - 2 * BS;
 
   // new for 2.0 -- lengthblock[4..7] previously set to zero
   type = lengthblock[sizeof(int32)]; // type is first byte after the length
 
-  if ((file_len != 0 && length >= file_len)) {
+  if (length > maxFieldSize || (file_len != 0 && length >= file_len)) {
     pws_os::Trace0(_T("_readcbc: Read size larger than file length - aborting\n"));
     buffer = nullptr;
     buffer_len = 0;
