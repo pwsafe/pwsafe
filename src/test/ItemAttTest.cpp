@@ -119,6 +119,67 @@ void ExpectSafeReject(const StringX &file)
   EXPECT_NE(PWSfile::SUCCESS, fr.ReadRecord(att));   // must be rejected, and must not crash
   fr.Close();
 }
+
+// A minimal PWSfile stand-in that serves one canned field (followed by an
+// END marker) straight from memory, with no encryption or file I/O
+// involved. CItem::Read() only ever calls PWSfile::ReadField(), which
+// dispatches to the virtual ReadCBC() below - everything else about
+// PWSfile is irrelevant to it, so this is enough to drive
+// CItemAtt::Read()/CItemData::Read() directly.
+class FakeFieldSource : public PWSfile
+{
+public:
+  FakeFieldSource(unsigned char type, const unsigned char *data, size_t len)
+    : PWSfile(_T(""), PWSfile::Read, PWSfile::V40),
+      m_type(type), m_data(data, data + len), m_done(false)
+  {
+    // PWSfile::GetOffset() is not virtual and unconditionally calls
+    // ftell(m_fd) at the end of CItem::Read() - it needs a real, open
+    // FILE*, even though none of our canned field data ever goes through
+    // it. std::tmpfile() is anonymous and deleted in std::exit().
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4996) // tmpfile() flagged as "unsafe"; tmpfile_s() isn't portable
+#endif
+    m_fd = std::tmpfile();
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+  }
+
+  int Open(const StringX &) override { return SUCCESS; }
+  int WriteRecord(const CItemData &) override { return FAILURE; }
+  int ReadRecord(CItemData &) override { return FAILURE; }
+
+protected:
+  size_t WriteCBC(unsigned char, const StringX &) override { return 0; }
+
+  size_t ReadCBC(unsigned char &type, unsigned char *&data, size_t &length) override
+  {
+    if (m_done) {
+      type = CItemAtt::END;
+      data = nullptr;
+      length = 0;
+      return 1;
+    }
+    m_done = true;
+    type = m_type;
+    length = m_data.size();
+    if (length > 0) {
+      data = new unsigned char[length];
+      for (size_t i = 0; i < length; i++)
+        data[i] = m_data[i];
+    } else {
+      data = nullptr;
+    }
+    return 1;
+  }
+
+private:
+  unsigned char m_type;
+  std::vector<unsigned char> m_data;
+  bool m_done;
+};
 } // namespace
 
 // And now the tests...
@@ -275,4 +336,17 @@ TEST_F(ItemAttTest, LengthRegression_ValidPositiveLengthsStillParse)
     fr.Close();
     pws_os::DeleteAFile(f);
   }
+}
+
+// A 1-byte ATTUUID field must be rejected, not read past.
+TEST_F(ItemAttTest, ATTUUID_ShortLengthMustNotBeAccepted)
+{
+  const unsigned char shortUuid[1] = {0xAA};
+  FakeFieldSource src(CItemAtt::ATTUUID, shortUuid, sizeof(shortUuid));
+
+  CItemAtt att;
+  att.Read(&src);
+
+  // A 1-byte field must never be accepted as a 16-byte UUID.
+  EXPECT_FALSE(att.HasUUID());
 }

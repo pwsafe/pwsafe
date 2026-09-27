@@ -14,6 +14,7 @@
 #include "core/ItemData.h"
 #include "core/PWSprefs.h"
 #include "core/PWHistory.h"
+#include "core/PWSfile.h"
 #include "gtest/gtest.h"
 
 // A fixture for factoring common code across tests
@@ -488,4 +489,88 @@ TEST_F(ItemDataTest, UnknownFields)
   // member functions, which make sense considering
   // how they're processed. Worth exposing an API
   // just for testing, TBD.
+}
+
+namespace {
+// A minimal PWSfile stand-in that serves canned fields (followed by an
+// END marker) straight from memory, with no encryption or file I/O
+// involved. CItem::Read() only ever calls PWSfile::ReadField(), which
+// dispatches to the virtual ReadCBC() below - everything else about
+// PWSfile is irrelevant to it, so this is enough to drive
+// CItemData::Read() directly.
+class FakeFieldSource : public PWSfile
+{
+public:
+  struct Field {
+    unsigned char type;
+    std::vector<unsigned char> data;
+  };
+
+  explicit FakeFieldSource(std::vector<Field> fields)
+    : PWSfile(_T(""), PWSfile::Read, PWSfile::V30),
+      m_fields(std::move(fields)), m_next(0)
+  {
+    // PWSfile::GetOffset() is not virtual and unconditionally calls
+    // ftell(m_fd) at the end of CItem::Read() - it needs a real, open
+    // FILE*, even though none of our canned field data ever goes through
+    // it. std::tmpfile() is anonymous and deleted in std::exit().
+#ifdef _MSC_VER
+#pragma warning(push)
+#pragma warning(disable : 4996) // tmpfile() flagged as "unsafe"; tmpfile_s() isn't portable
+#endif
+    m_fd = std::tmpfile();
+#ifdef _MSC_VER
+#pragma warning(pop)
+#endif
+  }
+
+  int Open(const StringX &) override { return SUCCESS; }
+  int WriteRecord(const CItemData &) override { return FAILURE; }
+  int ReadRecord(CItemData &) override { return FAILURE; }
+
+protected:
+  size_t WriteCBC(unsigned char, const StringX &) override { return 0; }
+
+  size_t ReadCBC(unsigned char &type, unsigned char *&data, size_t &length) override
+  {
+    if (m_next >= m_fields.size()) {
+      type = CItemData::END;
+      data = nullptr;
+      length = 0;
+      return 1;
+    }
+    const Field &f = m_fields[m_next++];
+    type = f.type;
+    length = f.data.size();
+    if (length > 0) {
+      data = new unsigned char[length];
+      for (size_t i = 0; i < length; i++)
+        data[i] = f.data[i];
+    } else {
+      data = nullptr;
+    }
+    return 1;
+  }
+
+private:
+  std::vector<Field> m_fields;
+  size_t m_next;
+};
+} // namespace
+
+// A 1-byte KBSHORTCUT field must be rejected, not read past.
+TEST_F(ItemDataTest, KBSHORTCUT_ShortLengthMustNotBeAccepted)
+{
+  // A UUID field is included solely so Read() doesn't trip its own,
+  // unrelated ASSERT(0) for entries with no recognized UUID field type.
+  FakeFieldSource src({
+    {CItemData::UUID, std::vector<unsigned char>(16, 0)},
+    {CItemData::KBSHORTCUT, {0x7f}},
+  });
+
+  CItemData item;
+  item.Read(&src);
+
+  // A 1-byte field must never be accepted as a 4-byte KB shortcut.
+  EXPECT_FALSE(item.IsKBShortcutSet());
 }
