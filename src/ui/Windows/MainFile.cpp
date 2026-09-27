@@ -95,7 +95,8 @@ BOOL DboxMain::OpenOnInit()
   BOOL retval(FALSE);
   // bReadOnly can only be from -r command line parameter unless user
   // has set the System Option to open read-only by default
-  bool bReadOnly = m_core.IsReadOnly();
+  const bool bCoreWasReadOnly = m_core.IsReadOnly(); // restored on retry
+  bool bReadOnly = bCoreWasReadOnly;
   if (!bReadOnly) {
     bReadOnly = PWSprefs::GetInstance()->GetPref(PWSprefs::DefaultOpenRO);
   }
@@ -218,11 +219,29 @@ BOOL DboxMain::OpenOnInit()
     cs_title.LoadString(IDS_FILEREADERROR);
     cs_msg.Format(IDS_FILECORRUPT, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
     if (gmb.MessageBox(cs_msg, cs_title, MB_YESNO | MB_ICONERROR) == IDNO) {
-      CDialog::OnCancel();
-      goto exit;
+      // User declined to use the damaged file - back to the initial dialog
+      goto retry;
     }
     go_ahead = true;
   } // read error
+  else if (rc == PWScore::SUCCESS &&
+           rc2 != PWScore::SUCCESS &&
+           rc2 != PWScore::OK_WITH_VALIDATION_ERRORS) {
+    /*
+     * Passkey (and hence header) was OK, but reading the file failed for
+     * a reason not handled above.
+     * Report the error the same way DboxMain::Open() does, then return
+     * to the initial passkey dialog.
+     */
+    CGeneralMsgBox gmb;
+    cs_title.LoadString(IDS_FILEREADERROR);
+    if (rc2 == PWScore::CANT_OPEN_FILE)
+      cs_msg.Format(IDS_CANTOPENREADING, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
+    else
+      cs_msg.Format(IDS_UNKNOWNERROR, static_cast<LPCWSTR>(m_core.GetCurFile().c_str()));
+    gmb.MessageBox(cs_msg, cs_title, MB_OK | MB_ICONERROR);
+    goto retry;
+  }
 
   if (rc2 == PWScore::OK_WITH_VALIDATION_ERRORS) {
     rc2 = PWScore::SUCCESS;
@@ -286,6 +305,20 @@ exit:
     m_core.SetReporter(NULL);
 
   return retval;
+
+retry:
+  // Discard whatever was partially read, release the lock taken by
+  // GetAndCheckPassword(), and redisplay the initial passkey dialog.
+  // Keep the current file name so the user sees what failed.
+  m_core.SafeUnlockCurFile();
+  m_core.ReInit();
+  m_core.SetReadOnly(bCoreWasReadOnly); // preserve -r command line flag
+  if (!bAskerSet)
+    m_core.SetAsker(NULL);
+  if (!bReporterSet)
+    m_core.SetReporter(NULL);
+
+  return OpenOnInit();  // Recursive, as with IDS_RETRY above
 }
 
 void DboxMain::OnNew()
