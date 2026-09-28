@@ -1,10 +1,10 @@
 ## Introduction
-The Linux port of Password Safe is currently stable, although lacking some of the more advanced features of the Windows version.
+The Linux port of Password Safe is currently stable.
 
 ## Supported Distributions
 Packages for the versions of Debian, Ubuntu and Fedora that were
-current at the time of release may be found on the Github (primary)
-and SourceForge (secondary) sites under
+current at the time of release may be found on GitHub (primary)
+and SourceForge (secondary) under
 https://github.com/pwsafe/pwsafe/releases and
 https://sourceforge.net/projects/passwordsafe/files/Linux/,
 respectively.
@@ -14,7 +14,9 @@ it yourself according to the instructions listed in
 [README.LINUX.DEVELOPERS.md](docs/README.LINUX.DEVELOPERS.md).
 Slackware is independently supported, see below.
 
-## Installation on Debian or Ubuntu
+## Installation
+
+### Debian or Ubuntu
 
 Password Safe is available as a package (https://packages.debian.org/stable/passwordsafe).
 To install it just use the following command.
@@ -36,7 +38,7 @@ or
    $ sudo apt -f install
    ```
 
-## Installation on Fedora
+### Fedora
 
 Password Safe is available as a package in the Fedora repositories.
 To install it just use the following command.
@@ -54,20 +56,20 @@ or
    $ sudo dnf install passwordsafe-*.rpm
    ```
 
-## Installation on Gentoo
+### Gentoo
 As usual there are USE flags to control the features of the package.
-On Gentoo, suport for Yubi keys and QR is disabled by default.
+On Gentoo, support for Yubi keys and QR is disabled by default.
 
 ```
 $ sudo emerge app-admin/passwordsafe
 ```
 
-## Slackware
+### Slackware
 Slackware users can download SlackBuild for Password Safe from
-https://slackbuilds.org, courtesy of rfmae (search for passwordsafe).
+https://slackbuilds.org, courtesy of rfmae (search for `passwordsafe`).
 
-## Installation on Arch
-The package description file (PKGBUILD) can be dowloaded via
+### Arch
+The package description file (PKGBUILD) can be downloaded via
 ```
 $ git clone https://aur.archlinux.org/passwordsafe.git
 ```
@@ -84,7 +86,7 @@ to install the package on your machine.
 
 For more details on building and installing packages on Arch, see https://wiki.archlinux.org/title/Arch_User_Repository
 
-## Flatpak
+### Flatpak
 Finally, Password Safe may be installed as a flatpak from Flathub:
 ```
 $ flatpak install flathub org.pwsafe.pwsafe
@@ -92,8 +94,10 @@ $ flatpak run org.pwsafe.pwsafe
 ```
 See https://flathub.org/setup to get started using flatpak.
 
-## Enabling System Tray support in Password Safe
-Issue: Password Safe is running but not appearing in the System Tray.
+## Common issues
+
+### Enabling System Tray support in Password Safe
+**Issue:** Password Safe is running but not appearing in the System Tray.
 
 System Tray/Task Bar support in Linux is problematic, and the implementations for it are inconsistent or missing in many desktop environments.
 Usually, this feature is not supported by the windowing system such as Wayland. You may also need to install a desktop environment extension to enable System Tray support.
@@ -149,14 +153,54 @@ Anyway, enabling this feature in many distros can be done by following these ste
    Exec=sh -c '[ "$XDG_SESSION_TYPE" = "wayland" ] && exec env GDK_BACKEND=x11 pwsafe %f || exec pwsafe %f'
    ```
 
-   b) Flatpak version: Edit the application's launcher properties and add extra parameters to the command field (default: flatpak run org.pwsafe.pwsafe). This will grant the sandboxed application access to the X11 display server socket, for inter-process communication with the System Tray interface.
+   b) Flatpak version: Edit the application's launcher properties and add extra parameters to the command field (default: `flatpak run org.pwsafe.pwsafe`). This will grant the sandboxed application access to the X11 display server socket, for inter-process communication with the System Tray interface.
    ```
    flatpak run --nosocket=wayland --socket=x11 org.pwsafe.pwsafe
    ```
 
 4. Start Password Safe and enable support for System Tray: in the main menu, go to Manage > Options > System tab, then check Put icon in System Tray.
 
+### Enabling Autotype support on Wayland
+
+**Issue:** On Wayland systems, Autotype doesn't work regardless of the "Use alternate Autotype method" option, selected in Preferences.
+
+In order for Autotype to work the target application (e.g. Firefox) must be running with the X11 backend.
+Also, for some apps (e.g. Filezilla or another instance of Password Safe), you have to enable the alternate Autotype method in the source instance of Password Safe.
+
+1. Only if you want to Autotype **into** Password Safe: the previous section on System Tray has instructions for how to switch Password Safe to the X11 backend.
+2. For other applications the methods may vary, but e.g. for Firefox do the following:
+
+   a) Native package version:
+   ```
+   vi /usr/share/applications/firefox.desktop
+   ```
+   Replace the line
+   ```
+   Exec=firefox %u
+   ```
+   with
+   ```
+   Exec=env MOZ_ENABLE_WAYLAND=0 DISABLE_WAYLAND=1 firefox %u
+   ```
+   
+   b) Snap version:
+   ```
+   vi /var/lib/snapd/desktop/applications/firefox_firefox.desktop
+   ```
+   Find the line (or lines - there may be multiple) that looks like
+   ```
+   Exec=/snap/bin/firefox
+   ```
+   and change it to
+   ```
+   Exec=env MOZ_ENABLE_WAYLAND=0 DISABLE_WAYLAND=1 /snap/bin/firefox
+   ```
+   If the line already sets some variables with `env` simply add two new ones, e.g.
+   ```
+   Exec=env MOZ_ENABLE_WAYLAND=0 DISABLE_WAYLAND=1 BAMF_DESKTOP_FILE_HINT=... /snap/bin/firefox
+   ```
+
 ## Reporting Bugs
-Please submit bugs via https://sourceforge.net/p/passwordsafe/bugs/ or on Github at
+Please submit bugs via https://sourceforge.net/p/passwordsafe/bugs/ or on GitHub at
 https://github.com/pwsafe/pwsafe/issues.
-Set the Category field to Linux to help ensure timely response.
+Set the Category field to `Linux` to help ensure timely response.
