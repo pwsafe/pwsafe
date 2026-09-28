@@ -21,6 +21,25 @@
 
 #include "gtest/gtest.h"
 
+// Positioning helpers for exercising file boundaries without large allocations.
+class SeekableFileV4 : public PWSfileV4
+{
+public:
+  SeekableFileV4(const StringX &filename, PWSfile::RWmode mode = PWSfile::Read)
+    : PWSfileV4(filename, mode, PWSfile::V40) {}
+
+  ~SeekableFileV4() { PWSfile::Close(); }
+
+  bool Seek(int64 offset)
+  {
+#ifdef _WIN32
+    return _fseeki64(m_fd, offset, SEEK_SET) == 0;
+#else
+    return fseeko(m_fd, static_cast<off_t>(offset), SEEK_SET) == 0;
+#endif
+  }
+};
+
 // A fixture for factoring common code across tests
 class FileV4Test : public ::testing::Test
 {
@@ -135,6 +154,64 @@ TEST_F(FileV4Test, EmptyFile)
   ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+}
+
+TEST(FileOffsetTest, AttachmentOffsetSurvivesCopies)
+{
+  const int64 offset = (int64(1) << 32) + 7;
+  CItemAtt original;
+  original.SetOffset(offset);
+  EXPECT_EQ(offset, original.GetOffset());
+  CItemAtt copy(original), assigned;
+  assigned = original;
+  EXPECT_EQ(offset, copy.GetOffset());
+  EXPECT_EQ(offset, assigned.GetOffset());
+}
+
+TEST_F(FileV4Test, LargeFileOffsets)
+{
+  SeekableFileV4 fw(fname.c_str(), PWSfile::Write);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  const int64 savedOffset = fw.GetOffset();
+
+  // Exercise the wide position query without violating the read-mode invariant.
+  // Seeking alone does not allocate disk space or write a multi-gigabyte file.
+  const int64 offsets[] = {(int64(1) << 31) + 3, (int64(1) << 32) + 7};
+  for (const int64 offset : offsets) {
+    ASSERT_TRUE(fw.Seek(offset));
+    EXPECT_EQ(offset, fw.GetOffset());
+  }
+  ASSERT_TRUE(fw.Seek(savedOffset));
+  EXPECT_EQ(PWSfile::SUCCESS, fw.Close());
+}
+
+TEST_F(FileV4Test, RecordReadBeyondEffectiveEnd)
+{
+  PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+
+  SeekableFileV4 fr(fname.c_str());
+  EXPECT_EQ(-1, fr.GetOffset());
+  ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
+  const int64 effectiveEnd = fr.GetOffset(); // Empty database: only HMAC remains.
+  CItemAtt att;
+  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
+  EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(att));
+
+  // Positions past the record data remain within the physical file.
+  const int64 offsets[] = {
+    effectiveEnd + 1, effectiveEnd + SHA256::HASHLEN
+  };
+  for (const int64 offset : offsets) {
+    ASSERT_TRUE(fr.Seek(offset));
+    EXPECT_EQ(PWSfile::READ_FAIL, fr.ReadRecord(item));
+    EXPECT_EQ(PWSfile::READ_FAIL, fr.ReadRecord(att));
+    EXPECT_EQ(offset, fr.GetOffset());
+  }
+  ASSERT_TRUE(fr.Seek(effectiveEnd));
+  EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+  EXPECT_EQ(-1, fr.GetOffset());
 }
 
 TEST_F(FileV4Test, HeaderTest)
