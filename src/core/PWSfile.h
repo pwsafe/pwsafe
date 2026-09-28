@@ -127,7 +127,8 @@ public:
   int GetNumRecordsWithUnknownFields() const
   {return m_nRecordsWithUnknownFields;}
 
-  long GetOffset() const;
+  // Returns the current file position, or -1 if it cannot be obtained.
+  int64 GetOffset() const;
   
   // Following implemented in V3 and later
   virtual uint32 GetNHashIters() const {return 0;}

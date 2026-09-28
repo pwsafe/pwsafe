@@ -250,11 +250,18 @@ void PWSfile::SetUnknownHeaderFields(const UnknownFieldList &UHFL)
     m_UHFL.clear();
 }
 
-long PWSfile::GetOffset() const
+int64 PWSfile::GetOffset() const
 {
-  long retval = ftell(m_fd);
-  ASSERT(ulong64(retval) <= pws_os::fileLength(m_fd));
-  return retval;
+  if (m_fd == nullptr)
+    return -1;
+#ifdef _WIN32
+  const int64 offset = _ftelli64(m_fd);
+#else
+  const int64 offset = ftello(m_fd);
+#endif
+  ASSERT(offset < 0 || m_rw != Read ||
+         static_cast<ulong64>(offset) <= pws_os::fileLength(m_fd));
+  return offset;
 }
 
 // Following for 'legacy' use of pwsafe as file encryptor/decryptor

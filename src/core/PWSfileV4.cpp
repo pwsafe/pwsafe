@@ -364,20 +364,22 @@ size_t PWSfileV4::ReadCBC(unsigned char &type, unsigned char* &data,
   return numRead;
 }
 
-void PWSfileV4::SaveState()
+bool PWSfileV4::SaveState()
 {
-  m_savepos = ftell(m_fd);
+  if (fgetpos(m_fd, &m_savepos) != 0)
+    return false;
   memcpy(m_saveIV, m_IV, m_fish->GetBlockSize());
   m_savehmac = m_hmac;
+  return true;
 }
 
-void PWSfileV4::RestoreState()
+bool PWSfileV4::RestoreState()
 {
-  int seekstat = fseek(m_fd, m_savepos, SEEK_SET);
-  if (seekstat != 0)
-    ASSERT(0);
+  if (fsetpos(m_fd, &m_savepos) != 0)
+    return false;
   memcpy(m_IV, m_saveIV, m_fish->GetBlockSize());
   m_hmac = m_savehmac;
+  return true;
 }
 
 int PWSfileV4::ReadRecord(CItemData &item)
@@ -385,13 +387,16 @@ int PWSfileV4::ReadRecord(CItemData &item)
   int status;
   ASSERT(m_fd != nullptr);
   ASSERT(m_curversion == V40);
-  SaveState();
-  unsigned fpos = unsigned(ftell(m_fd));
+  const int64 offset = GetOffset();
+  if (offset < 0)
+    return READ_FAIL;
+  const auto fpos = static_cast<ulong64>(offset);
   if (fpos < m_effectiveFileLength) {
+    if (!SaveState())
+      return READ_FAIL;
     status = item.Read(this);
     if (status < 0) { // detected an inappropriate field
-      RestoreState();
-      status = WRONG_RECORD;
+      status = RestoreState() ? WRONG_RECORD : READ_FAIL;
     }
   } else if (fpos == m_effectiveFileLength)
     status = END_OF_FILE;
@@ -404,10 +409,16 @@ int PWSfileV4::ReadRecord(CItemAtt &att)
 {
   ASSERT(m_fd != nullptr);
   ASSERT(m_curversion == V40);
-  if (unsigned(GetOffset()) < m_effectiveFileLength)
+  const int64 offset = GetOffset();
+  if (offset < 0)
+    return READ_FAIL;
+  const auto fpos = static_cast<ulong64>(offset);
+  if (fpos < m_effectiveFileLength)
     return att.Read(this);
-  else
+  else if (fpos == m_effectiveFileLength)
     return END_OF_FILE;
+  else
+    return READ_FAIL;
 }
 
 void PWSfileV4::StretchKey(const unsigned char *salt, unsigned long saltLen,

@@ -116,8 +116,8 @@ public:
   void ClearStatus() {m_entrystatus = ES_CLEAN;}
   void SetStatus(const EntryStatus es) {m_entrystatus = es;}
 
-  long GetOffset() const {return m_offset;}
-  void SetOffset(long offset) {m_offset = offset;}
+  int64 GetOffset() const {return m_offset;}
+  void SetOffset(int64 offset) {m_offset = offset;}
   unsigned GetRefcount() const {return m_refcount;}
   void IncRefcount() {m_refcount++;}
   void DecRefcount() {ASSERT(m_refcount > 0); m_refcount--;}
@@ -145,7 +145,7 @@ private:
   size_t WriteIfSet(FieldType ft, PWSfile *out, bool isUTF8) const;
 
   EntryStatus m_entrystatus;
-  long m_offset; // location on file, for lazy evaluation
+  int64 m_offset; // location on file, for lazy evaluation
   unsigned m_refcount; // how many CItemData objects refer to this?
 };
 #endif /* __ITEMATT_H */
