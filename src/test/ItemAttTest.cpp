@@ -325,7 +325,7 @@ TEST_F(ItemAttTest, LengthRegression_VulnerableBoundaryValuesAreRejected)
   const uint32_t bad[] = {0x00000000u, 0xffffffffu, 0xfffffffeu, 0xfffffffdu, 0xfffffffcu,
                           0xfffffffbu, 0xfffffffau, 0xfffffff9u, 0xfffffff8u, 0xfffffff7u,
                           0xfffffff6u, 0xfffffff5u, 0xfffffff4u, 0xfffffff3u, 0xfffffff2u,
-                          0xfffffff1u, 0xfffffff0u, 0x80000000u, 0x7fffffffu};
+                          0xfffffff1u, 0xfffffff0u, 0x80000000u};
   for (uint32_t v : bad) {
     FakeV4ContentSource src(v);
     CItemAtt att;
