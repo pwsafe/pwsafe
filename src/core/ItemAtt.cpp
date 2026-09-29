@@ -471,6 +471,8 @@ int CItemAtt::Read(PWSfile *in)
 
   if (readAnyField) {
     m_offset = in->GetOffset();
+    if (m_offset < 0 && status == PWSfile::SUCCESS)
+      status = PWSfile::READ_FAIL;
     return status;
   } else
     return PWSfile::READ_FAIL;
