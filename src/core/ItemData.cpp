@@ -2259,7 +2259,6 @@ static bool pull(int16 &i16, const unsigned char *data, size_t len)
   if (len == sizeof(int16)) {
     i16 = getInt16(data);
   } else {
-    ASSERT(0);
     return false;
   }
   return true;
@@ -2270,7 +2269,6 @@ static bool pull(unsigned char &value, const unsigned char *data, size_t len)
   if (len == sizeof(char)) {
     value = *data;
   } else {
-    ASSERT(0);
     return false;
   }
   return true;
