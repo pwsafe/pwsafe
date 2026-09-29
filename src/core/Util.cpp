@@ -392,6 +392,9 @@ size_t _readcbc(FILE *fp,
   xormem(lengthblock, cbcbuffer, BS);
   memcpy(cbcbuffer, lcpy, BS);
 
+  // The format stores an unsigned 32-bit length; getInt32() returns it as signed.
+  // Recover the unsigned value before widening to size_t to avoid sign extension.
+  // This also fits 32-bit size_t; the supported size limit is checked below.
   size_t length = static_cast<size_t>(static_cast<uint32_t>(getInt32(lengthblock)));
   // Conservative cap for downstream signed counts and conversion APIs.
   // Raising it requires auditing size arithmetic, text expansion, and
