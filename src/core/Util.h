@@ -100,6 +100,12 @@ inline int16 getInt16(const unsigned char buf[2])
 #endif
 }
 
+// A same-width unsigned conversion preserves all bits, including the sign bit.
+inline uint16 getUint16(const unsigned char buf[2])
+{
+  return static_cast<uint16>(getInt16(buf));
+}
+
 inline int32 getInt32(const unsigned char buf[4])
 {
 #if defined(PWS_LITTLE_ENDIAN)
@@ -127,16 +133,29 @@ inline int32 getInt32(const unsigned char buf[4])
 #endif
 }
 
+inline uint32 getUint32(const unsigned char buf[4])
+{
+  return static_cast<uint32>(getInt32(buf));
+}
+
 inline int64 getInt64(const unsigned char buf[8])
 {
 #if defined(PWS_LITTLE_ENDIAN)
   return *reinterpret_cast<const int64 *>(buf);
 #elif defined(PWS_BIG_ENDIAN)
-  return (buf[0] | (buf[1] << 8) | (buf[2] << 16) | (buf[3] << 24) |
-          ((int64)buf[4] << 32) | ((int64)buf[5] << 40) | ((int64)buf[6] << 48) | ((int64)buf[7] << 56));
+  // Read bytes individually to allow unaligned input; unsigned shifts avoid sign extension.
+  uint64 value = 0;
+  for (size_t i = 0; i < sizeof(value); ++i)
+    value |= static_cast<uint64>(buf[i]) << (8 * i);
+  return static_cast<int64>(value);
 #else
 #error Is the target CPU big or little endian?
 #endif
+}
+
+inline uint64 getUint64(const unsigned char buf[8])
+{
+  return static_cast<uint64>(getInt64(buf));
 }
 
 /*
