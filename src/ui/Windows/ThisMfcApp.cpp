@@ -1218,7 +1218,7 @@ BOOL ThisMfcApp::InitInstance()
 
   m_pMainWnd = m_pDbx;
 
-  // Run dialog - note that we don't particularly care what the response was
+  // Create and run the main dialog
   if (!m_pDbx->Create(IDD_PASSWORDSAFE_DIALOG) || m_pDbx->GetSafeHwnd() == NULL) {
     // Creation aborted from within DboxMain::OnInitDialog (e.g., user
     // cancelled the initial passkey dialog). Exit cleanly.
