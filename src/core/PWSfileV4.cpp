@@ -336,7 +336,11 @@ size_t PWSfileV4::ReadContent(const Fish *fish,  unsigned char *cbcbuffer,
   if (blen == 0 || blen < clen)
     return 0;
   if (m_effectiveFileLength != 0) {
-    const ulong64 filePos = static_cast<ulong64>(GetOffset());
+    const int64 offset = GetOffset();
+    if (offset < 0)
+      return 0;
+
+    const ulong64 filePos = static_cast<ulong64>(offset);
     if (filePos > m_effectiveFileLength ||
         blen > (m_effectiveFileLength - filePos))
       return 0;
