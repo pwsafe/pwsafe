@@ -37,6 +37,7 @@
 #include <iomanip>
 
 #include <cerrno>
+#include <new> // for std::nothrow
 
 using namespace std;
 
@@ -412,7 +413,12 @@ size_t _readcbc(FILE *fp,
   }
 
   buffer_len = length;
-  buffer = new unsigned char[(length / BS) * BS + 2 * BS]; // round upwards
+  buffer = new(std::nothrow) unsigned char[(length / BS) * BS + 2 * BS]; // round upwards
+  if (buffer == nullptr) { // out of memory - try to fail gracefully (more likely on 32-bit build with large field)
+    buffer_len = 0;
+    trashMemory(lengthblock, BS);
+    return 0;
+  }
   unsigned char *b = buffer;
 
   // Initialize memory.  (Lockheed Martin) Secure Coding  11-14-2007

@@ -394,9 +394,9 @@ int CItemAtt::Read(PWSfile *in)
         ASSERT(utf8Len == sizeof(uint32));
         if (!gotIV || !gotEK || gotContent || utf8Len != sizeof(uint32))
           goto exit;
-        // Reject non-positive lengths *before* conversion to size_t
-        const int32 clen32 = getInt32(utf8);
-        if (clen32 <= 0)
+
+        const uint32 clen32 = getUint32(utf8);
+        if (clen32 == 0)
           goto exit;
         content_len = static_cast<size_t>(clen32);
 
@@ -404,11 +404,18 @@ int CItemAtt::Read(PWSfile *in)
         trashMemory(EK, sizeof(EK));
         const unsigned int BS = fish.GetBlockSize();
 
+        // On a 32 bit build, roundUp() can overflow, causing a crash.
+        // Even though ReadContent() also checks this, checking it here protects against a crash in hmac.Update().
+
+        const size_t roundedLen = roundUp(content_len, BS);
+        if (roundedLen < content_len)
+          goto exit;
+
         auto *in4 = dynamic_cast<PWSfileV4 *>(in);
         ASSERT(in4 != nullptr);
         size_t nread = in4->ReadContent(&fish, IV, content, content_len);
         // nread should be content_len rounded up to nearest BS:
-        if (nread != roundUp(content_len, BS)) {
+        if (nread != roundedLen) {
           status = PWSfile::READ_FAIL;
           goto exit;
         }
