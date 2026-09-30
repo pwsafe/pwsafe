@@ -38,6 +38,7 @@
 #include <iomanip>
 #include <algorithm>
 #include <type_traits> // for static_assert
+#include <new> // for std::nothrow
 
 using namespace std;
 using pws_os::CUUID;
@@ -346,7 +347,9 @@ size_t PWSfileV4::ReadContent(const Fish *fish,  unsigned char *cbcbuffer,
       return 0;
   }
 
-  content = new unsigned char[blen]; // caller's responsible for delete[]
+  content = new(std::nothrow) unsigned char[blen]; // caller's responsible for delete[]
+  if (content == nullptr) // most likely on a 32-bit system with a large file.
+    return 0;
   return _readcbc(m_fd, content, blen, fish, cbcbuffer);
 }
 
