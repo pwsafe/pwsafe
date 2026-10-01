@@ -289,7 +289,7 @@ size_t _writecbcRest(FILE *fp, const unsigned char *buffer, size_t length,
       BlockLength = BS;
 
     // Now, encrypt and write the (rest of the) buffer
-    for (unsigned int x = 0; x < BlockLength; x += BS) {
+    for (size_t x = 0; x < BlockLength; x += BS) {
       if ((length == 0) || ((length % BS != 0) && (length - x < BS))) {
         //This is for an uneven last block
         PWSrand::GetInstance()->GetRandomData(curblock, BS);

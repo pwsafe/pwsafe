@@ -13,9 +13,7 @@
 #include "Util.h"
 #include "crypto/Fish.h"
 #include "PWSrand.h"
-#include "os/funcwrap.h"
 
-#include <new> // for std::nothrow
 
 //Returns the number of bytes of 8 byte blocks needed to store 'size' bytes
 size_t CItemField::GetBlockSize(size_t size) const
@@ -64,6 +62,8 @@ void CItemField::Empty()
 void CItemField::Set(const unsigned char* value, size_t length,
                      const Fish *bf, unsigned char type)
 {
+  // We don't handle memory allocation failure, since it's really unlikely that allocations of BlockLength bytes will fail.
+  // Perhaps a TODO for a future release?
   size_t BlockLength;
 
   m_Length = length;
@@ -74,20 +74,9 @@ void CItemField::Set(const unsigned char* value, size_t length,
   if (m_Length == 0) {
     m_Data = nullptr;
   } else {
-    // Use nothrow to fail gracefully rather than let an uncaught bad_alloc escape.
-    m_Data = new(std::nothrow) unsigned char[BlockLength];
-    if (m_Data == nullptr) { // out of memory - try to fail gracefully (more likely on 32-bit build with large field)
-      m_Length = 0; // at least keep structure consistent
-      return;
-    }
+    m_Data = new unsigned char[BlockLength]; // TODO : catch std::bad_alloc
 
-    auto *tempmem = new(std::nothrow) unsigned char[BlockLength];
-    if (tempmem == nullptr) { // out of memory - try to fail gracefully
-      delete[] m_Data;
-      m_Data = nullptr;
-      m_Length = 0; // at least keep structure consistent
-      return;
-    }
+    auto *tempmem = new unsigned char[BlockLength]; // TODO : catch std::bad_alloc
     // invariant: BlockLength >= plainlength
     memcpy_s(tempmem, BlockLength, value, m_Length);
 
@@ -152,11 +141,7 @@ void CItemField::Get(StringX &value, const Fish *bf) const
     value = _T("");
   } else { // we have data to decrypt
     size_t BlockLength = GetBlockSize(m_Length);
-    auto* tempmem = new(std::nothrow) unsigned char[BlockLength]; // Fail gracefully rather than throw std::bad_alloc
-    if (tempmem == nullptr) {
-      value = _T("");
-      return;
-    }
+    auto* tempmem = new unsigned char[BlockLength]; // See comment in CItemField::Set() about memory allocation failure handling
     TCHAR *pt = reinterpret_cast<TCHAR *>(tempmem);
     size_t x;
 
