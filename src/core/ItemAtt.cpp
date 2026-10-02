@@ -416,6 +416,7 @@ int CItemAtt::Read(PWSfile *in)
         size_t nread = in4->ReadContent(&fish, IV, content, content_len);
         // nread should be content_len rounded up to nearest BS:
         if (nread != roundedLen) {
+          content_len = nread; // optimization for trashMemory() - only clear what's actually been read
           status = PWSfile::READ_FAIL;
           goto exit;
         }
