@@ -1,47 +1,39 @@
 ## Introduction
-The FreeBSD port of Password Safe is currently in BETA.
-This means that (1) you should take care to keep copies of the
-database to protect against possible loss of data due to bugs, and (2)
-there are several unimplemented features. Nonetheless, we feel that
-this is good enough to release as an early beta to gather feedback
-from a wider audience.
+The FreeBSD port of Password Safe is currently stable and supports the same features as the Linux version.
 
 
 ### Supported
 This has only been tested:
-* FreeBSD 10.2 amd64 with wx 3.0
-* FreeBSD 10.3 amd64 with wx 3.0
-* FreeBSD 11.0 i386 with wx 3.0
-* FreeBSD 11.0 amd64 with wx 3.0
-
-
-### Known not working
-* The help system
-* Debug builds
-* -d / -e command line switches
+* FreeBSD 14.x amd64 with wx 3.2
+* FreeBSD 15.x amd64 with wx 3.2
 
 
 ## Requirements
 Here are the packages/tools required for building "pwsafe".
-- archivers/zip
-- devel/gmake
 - devel/cmake
+- devel/gettext-tools
+- devel/git
+- devel/gmake
 - devel/googletest
-- misc/e2fsprogs-libuuid
-- lang/clang38
+- graphics/libqrencode
+- misc/libuuid
+- lang/llvm19
+- x11-toolkits/wx32-gtk3
 - textproc/xerces-c3
-- x11-toolkits/wxgtk30
+- security/ykpers
+- archivers/zip
 
 
 ## Build
 1. Create the build directory
     ```
-    mkdir build; cd build;
+    mkdir build; cd build
     ```
  
-2. Create the makefiles
+2. Create the makefiles. For details on customizing the build or using a static build of wxWidgets, see [README.LINUX.DEVELOPERS.md](README.LINUX.DEVELOPERS.md).
+
     ```
-    cmake -D wxWidgets_CONFIG_EXECUTABLE=/usr/local/bin/wxgtk2u-3.0-config -D CMAKE_C_COMPILER=clang38 -DCMAKE_CXX_COMPILER=clang++38 ..
+    cmake -D wxWidgets_CONFIG_EXECUTABLE=/usr/local/bin/wxgtk3u-3.2-config -D CMAKE_C_COMPILER=clang19 -DCMAKE_CXX_COMPILER=clang++19 ..
     ```
     
 3. Start the build process
@@ -51,7 +43,15 @@ Here are the packages/tools required for building "pwsafe".
 
 4. Your `pwsafe` binary is in `build` (your current directory)
 
-5. At start you get a warning about the help system
+5. Create an installation package that includes the Help and translation files
+    ```
+    cpack -G FREEBSD ..
+    ```
+
+6. As root, install the `passwordsafe` package on your system
+    ```
+    pkg add passwordsafe-freebsd-<VERSION>-<ARCH>.pkg
+    ```
 
 
 ## Reporting Bugs
