@@ -1,9 +1,5 @@
 ## Introduction
-The FreeBSD port of Password Safe is currently in BETA.
-This means that you should take care to keep copies of the
-database to protect against possible loss of data due to bugs. 
-Nonetheless, we feel that this is good enough to release 
-as an early beta to gather feedback from a wider audience.
+The FreeBSD port of Password Safe is currently stable and supports the same features as the Linux version.
 
 
 ### Supported
@@ -14,18 +10,18 @@ This has only been tested:
 
 ## Requirements
 Here are the packages/tools required for building "pwsafe".
-- archivers/zip
+- devel/cmake
+- devel/gettext-tools
 - devel/git
 - devel/gmake
-- devel/cmake
 - devel/googletest
-- devel/gettext-tools
+- graphics/libqrencode
 - misc/libuuid
 - lang/llvm19
-- textproc/xerces-c3
 - x11-toolkits/wx32-gtk3
-- graphics/libqrencode
+- textproc/xerces-c3
 - security/ykpers
+- archivers/zip
 
 
 ## Build
@@ -34,7 +30,8 @@ Here are the packages/tools required for building "pwsafe".
     mkdir build; cd build
     ```
  
-2. Create the makefiles
+2. Create the makefiles. For details on customizing the build or using a static build of wxWidgets, see [README.LINUX.DEVELOPERS.md](README.LINUX.DEVELOPERS.md).
+
     ```
     cmake -D wxWidgets_CONFIG_EXECUTABLE=/usr/local/bin/wxgtk3u-3.2-config -D CMAKE_C_COMPILER=clang19 -DCMAKE_CXX_COMPILER=clang++19 ..
     ```
