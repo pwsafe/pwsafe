@@ -3054,7 +3054,7 @@ msgstr "Dátumy a časy"
 
 #. Resource IDs: (65535)
 msgid "Default"
-msgstr "Predvolená hodnota"
+msgstr "Predvolené"
 
 #. Resource IDs: (65535)
 msgid "Default Autotype delay (mS):"
@@ -6999,7 +6999,7 @@ msgstr ""
 
 #. Resource IDs: (1364)
 msgid "Statistics"
-msgstr "Štatistika"
+msgstr "Štatistiky"
 
 #. Resource IDs: (5337)
 msgid "Status"
@@ -7335,7 +7335,7 @@ msgstr "Súbor nebol nájdený."
 #. Resource IDs: (3323)
 #, c-format
 msgid "The filter XML version (%d) is greater than that supported by this instance of PasswordSafe (%d)."
-msgstr "Verzia filtra XML (%d) je väčšia ako verzia podporovaná v tejto inštancii PasswordSafe (%d)."
+msgstr "Verzia filtra XML (%d) je vyššia ako verzia podporovaná v tejto inštancii PasswordSafe (%d)."
 
 #. Resource IDs: (3322)
 #, c-format
@@ -9583,7 +9583,7 @@ msgstr "väčšie ako"
 
 #. Resource IDs: (3307)
 msgid "greater than or equal to"
-msgstr "väčšie alebo rovné"
+msgstr "väčšie alebo rovné ako"
 
 #. Resource IDs: (3312)
 msgid "has expired"
@@ -9660,11 +9660,11 @@ msgstr "posledné heslá"
 
 #. Resource IDs: (3304)
 msgid "less than"
-msgstr "menej ako"
+msgstr "menšie ako"
 
 #. Resource IDs: (3305)
 msgid "less than or equal to"
-msgstr "menej alebo rovné"
+msgstr "menšie alebo rovné ako"
 
 #. Resource IDs: (3418)
 msgid "merged"

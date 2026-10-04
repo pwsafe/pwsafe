@@ -374,7 +374,7 @@ msgstr "Aktuálna hodnota:"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:619
 msgid "Statistics"
-msgstr "Štatistika"
+msgstr "Štatistiky"
 
 #: ../../../ui/wxWidgets/AddEditPropSheetDlg.cpp:624
 #: ../../../ui/wxWidgets/EditShortcutDlg.cpp:250
@@ -1338,6 +1338,10 @@ msgstr "Pretiahnite tento obrázok do iného okna aby ste vložili vybratý prvo
 msgid "Drag this image onto another window to paste the '%s' field."
 msgstr "Pretiahnite tento obrázok do iného okna aby ste vložili pole '%s'."
 
+#: ../../../ui/wxWidgets/DragBarCtrl.cpp:151
+msgid "Drag this image onto another window to paste the authentication code."
+msgstr "Pretiahnite tento obrázok do iného okna aby ste vložili pole 'Overovací kód'."
+
 #: ../../../ui/wxWidgets/DragBarCtrl.cpp:152 ../../../ui/wxWidgets/GridCtrl.cpp:166
 msgid "User"
 msgstr "Používateľské meno"
@@ -1818,6 +1822,10 @@ msgstr "Zobraziť prílohu"
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:646
 msgid "No preview available due to an error."
 msgstr "Ukážka nie je dostupná z dôvodu chyby."
+
+#: ../../../ui/wxWidgets/MenuEditHandlers.cpp:782
+msgid "There was an error autotyping. Full X11 access may be required for this action to work properly. Make sure the '--nosocket=fallback-x11 --socket=x11' permissions are granted to the Flatpak application (the order matters).\nError: "
+msgstr "Pri automatickom dopĺňaní sa vyskytla chyba. Táto akcia vyžaduje plný prístup na X11, Flatpak aplikácii je potrebné nastaviť tieto povolenia: '--nosocket=fallback-x11 --socket=x11' (na poradí záleží).\nChyba: "
 
 #: ../../../ui/wxWidgets/MenuEditHandlers.cpp:782
 msgid "There was an error autotyping.  "
@@ -5772,7 +5780,7 @@ msgstr "väčšie ako"
 
 #: ../../../core/core_st.cpp:198
 msgid "greater than or equal to"
-msgstr "väčšie alebo rovné"
+msgstr "väčšie alebo rovné ako"
 
 #: ../../../core/core_st.cpp:199
 #, c-format
@@ -6052,7 +6060,7 @@ msgstr "Verzia filtra XML (%d) je vyššia ako súčasná schéma (%d)."
 msgid ""
 "The filter XML version (%d) is greater than that supported by this instance of "
 "PasswordSafe (%d)."
-msgstr "Verzia filtra XML (%d) je väčšia ako verzia podporovaná v tejto inštancii PasswordSafe (%d)."
+msgstr "Verzia filtra XML (%d) je vyššia ako verzia podporovaná v tejto inštancii PasswordSafe (%d)."
 
 #: ../../../core/core_st.cpp:255
 msgid "is"
@@ -6094,11 +6102,11 @@ msgstr "Klávesová skratka pre %ls záznam %ls je už pridelená aplikácii Pas
 
 #: ../../../core/core_st.cpp:263
 msgid "less than"
-msgstr "menej ako"
+msgstr "menšie ako"
 
 #: ../../../core/core_st.cpp:264
 msgid "less than or equal to"
-msgstr "menej alebo rovné"
+msgstr "menšie alebo rovné ako"
 
 #: ../../../core/core_st.cpp:265
 msgid "File or path not found"
