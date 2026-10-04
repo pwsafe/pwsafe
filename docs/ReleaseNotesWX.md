@@ -12,7 +12,7 @@ PasswordSafe 1.26.0 Release October 8  2026
 
 Bugs fixed in 1.26.0
 --------------------
-* A security vulnerability related to V4 attachments has been fixed. A maliciously crafted PasswordSafe V4 database could cause out of bounds writes to memory, leading to application crash. No exploits of this have been reported in the wild. This affects Windows, Linux and iOS versions of the program. The android version doesn't support V4 attachments, and is therefore unaffected. Thanks to Fahad Awwad Alotaibi for reoprting and helping resolve this issue in a prompt and professional manner.
+* A security vulnerability related to V4 attachments has been fixed. A maliciously crafted PasswordSafe V4 database could cause out of bounds writes to memory, leading to application crash. No exploits of this have been reported in the wild. This affects Windows, Linux and iOS versions of the program. The android version doesn't support V4 attachments, and is therefore unaffected. Thanks to Fahad Awwad Alotaibi for reporting and helping resolve this issue in a prompt and professional manner.
 
 New features in 1.26.0
 ----------------------
