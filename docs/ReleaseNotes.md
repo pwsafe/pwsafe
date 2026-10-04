@@ -4,10 +4,11 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Support Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.73.0 Release ??? ?? 2026
-=======================================
+PasswordSafe 3.73.0 Release Otober 8 2026
+=========================================
 Bugs fixed in 3.73.0
 --------------------
+* A security vulnerability related to V4 attachments has been fixed. A maliciously crafted PasswordSafe V4 database could cause out of bounds writes to memory, leading to application crash. No exploits of this have been reported in the wild. This affects Windows, Linux and iOS versions of the program. The android version doesn't support V4 attachments, and is therefore unaffected. Thanks to Fahad Awwad Alotaibi for reoprting and helping resolve this issue in a prompt and professional manner.
 * [GH1946](https://github.com/pwsafe/pwsafe/issues/1946) Version numbers are now consistent with standard in that no leading zeroes are displayed (e.g., 3.72.2 instead of 3.72.02).
 
 New Features in 3.73.0
