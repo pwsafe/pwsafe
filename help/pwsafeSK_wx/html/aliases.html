@@ -61,6 +61,11 @@ majú svoje vlastné hodnoty pre všetky polia <u>okrem</u> svojho hesla, ktoré
 základného záznamu. Napríklad: kopírovanie adresy URL aliasu použije hodnotu aliasu, ale kopírovanie hesla 
 aliasu skopíruje heslo jeho základného záznamu.</p>
 
+<p>Kľúč pre dvojfaktorové overovanie (TOTP) predstavuje osobitný prípad: ak má alias nakonfigurovaný 
+vlastný tajný kľúč 2FA, použije sa namiesto kľúča základného záznamu.
+To umožňuje používať rovnaké prihlasovacie údaje (meno a heslo) ale s rôznymi kľúčmi v rôznych systémoch. 
+Ak alias nemá vlastný kľúč, naďalej používa kľúč základného záznamu.</p>
+
 <p>Nakoniec, ak si normálny záznam ukladal históriu hesiel predtým, ako sa z neho stal alias
 zmenou hesla ako je popísané vyššie, potom si túto históriu zachová. Ak sa alias neskôr vráti späť 
 k normálnemu záznamu, táto história hesiel sa opäť stane aktívnou a aktualizuje sa, ak sa zmení jeho vlastné heslo.</p>
