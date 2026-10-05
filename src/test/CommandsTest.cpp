@@ -67,7 +67,106 @@ TEST_F(CommandsTest, DeleteEntry)
   EXPECT_EQ(0U, core.GetNumEntries());
   core.Undo();
   EXPECT_EQ(1U, core.GetNumEntries());
-    // Get core to delete any existing commands
+
+  // Verify Undo does nothing when core is in read-only mode
+  auto delcmd2 = DeleteEntryCommand::Create(&core, ci);
+  core.Execute(delcmd2);
+  EXPECT_EQ(0U, core.GetNumEntries());
+  core.SetReadOnly(true);
+  delcmd2->Undo();
+  EXPECT_EQ(0U, core.GetNumEntries());
+  core.SetReadOnly(false);
+  core.ClearCommands();
+
+  // Test undoing deletion of alias base and dependent alias entries
+  CItemData abase, al;
+  abase.CreateUUID();
+  abase.SetTitle(L"alias base");
+  abase.SetPassword(L"base password");
+
+  al.SetTitle(L"alias entry");
+  al.SetPassword(L"[Alias]");
+  al.SetAlias();
+  al.CreateUUID();
+
+  MultiCommands *pmulticmds = MultiCommands::Create(&core);
+  pmulticmds->Add(AddEntryCommand::Create(&core, abase));
+  pmulticmds->Add(AddEntryCommand::Create(&core, al, abase.GetUUID()));
+  core.Execute(pmulticmds);
+  EXPECT_EQ(2U, core.GetNumEntries());
+
+  // Delete the alias base (converts alias dependent to normal entry)
+  const CItemData abaseCore = core.GetEntry(core.Find(abase.GetUUID()));
+  auto delBaseCmd = DeleteEntryCommand::Create(&core, abaseCore);
+  core.Execute(delBaseCmd);
+  EXPECT_EQ(1U, core.GetNumEntries());
+  EXPECT_TRUE(core.GetEntry(core.Find(al.GetUUID())).IsNormal());
+
+  // Undoing deletion of alias base restores the base and reverts dependent back to an alias
+  delBaseCmd->Undo();
+  EXPECT_EQ(2U, core.GetNumEntries());
+  EXPECT_TRUE(core.GetEntry(core.Find(abase.GetUUID())).IsAliasBase());
+  EXPECT_TRUE(core.GetEntry(core.Find(al.GetUUID())).IsAlias());
+
+  // Re-delete alias base
+  delBaseCmd = DeleteEntryCommand::Create(&core, core.GetEntry(core.Find(abase.GetUUID())));
+  core.Execute(delBaseCmd);
+  EXPECT_EQ(1U, core.GetNumEntries());
+
+  // Also delete the alias dependent entry
+  const CItemData alCore = core.GetEntry(core.Find(al.GetUUID()));
+  auto delAlCmd = DeleteEntryCommand::Create(&core, alCore);
+  core.Execute(delAlCmd);
+  EXPECT_EQ(0U, core.GetNumEntries());
+
+  // Undoing deletion of alias base when dependent alias is no longer present in core
+  delBaseCmd->Undo();
+  EXPECT_EQ(1U, core.GetNumEntries());
+  EXPECT_NE(core.GetEntryEndIter(), core.Find(abase.GetUUID()));
+
+  // Clean up before next test section
+  const CItemData abaseRestored = core.GetEntry(core.Find(abase.GetUUID()));
+  core.Execute(DeleteEntryCommand::Create(&core, abaseRestored));
+  EXPECT_EQ(0U, core.GetNumEntries());
+  core.ClearCommands();
+
+  // Test undoing deletion of dependent entry when the entry is already present in core
+  CItemData sbase, sdep;
+  sbase.CreateUUID();
+  sbase.SetTitle(L"shortcut base");
+  sbase.SetPassword(L"base password");
+
+  sdep.SetTitle(L"shortcut entry");
+  sdep.SetPassword(L"[Shortcut]");
+  sdep.SetShortcut();
+  sdep.CreateUUID();
+
+  MultiCommands *pmulticmds2 = MultiCommands::Create(&core);
+  pmulticmds2->Add(AddEntryCommand::Create(&core, sbase));
+  pmulticmds2->Add(AddEntryCommand::Create(&core, sdep, sbase.GetUUID()));
+  core.Execute(pmulticmds2);
+  EXPECT_EQ(2U, core.GetNumEntries());
+
+  const CItemData sdepCore = core.GetEntry(core.Find(sdep.GetUUID()));
+  auto delDepCmd = DeleteEntryCommand::Create(&core, sdepCore);
+  core.Execute(delDepCmd);
+  EXPECT_EQ(1U, core.GetNumEntries());
+
+  delDepCmd->Undo();
+  EXPECT_EQ(2U, core.GetNumEntries());
+
+  delDepCmd->Redo();
+  EXPECT_EQ(1U, core.GetNumEntries());
+
+  // Add sdep back manually into core before calling Undo on delDepCmd
+  auto readdDepCmd = AddEntryCommand::Create(&core, sdepCore, sbase.GetUUID());
+  core.Execute(readdDepCmd);
+  EXPECT_EQ(2U, core.GetNumEntries());
+
+  // Undoing dependent deletion when the dependent entry already exists in core - does nothing
+  delDepCmd->Undo();
+  EXPECT_EQ(2U, core.GetNumEntries());
+
   core.ClearCommands();
 }
 
