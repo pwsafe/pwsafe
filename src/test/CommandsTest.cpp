@@ -1003,6 +1003,87 @@ TEST_F(CommandsTest, AddAndMoveDependentEntries)
   core.ClearCommands();
 }
 
+TEST_F(CommandsTest, PolicyCommands)
+{
+  PWScore core;
+  PSWDPolicyMap policies;
+
+  PWPolicy initialPolicy;
+  initialPolicy.flags = PWPolicy::UseDigits | PWPolicy::UseUppercase;
+  initialPolicy.length = 12;
+
+  stringT policyName1 = L"WebPolicy";
+  StringX s_policyName1(policyName1);
+  auto addCmd = new PolicyCommandAdd(core, policies, policyName1, initialPolicy);
+  core.Execute(addCmd);
+
+  EXPECT_EQ(1U, policies.size());
+  EXPECT_TRUE(policies.contains(s_policyName1));
+  EXPECT_EQ(12, policies[s_policyName1].length);
+
+  core.Undo();
+  EXPECT_EQ(0U, policies.size());
+
+  core.Redo();
+  EXPECT_EQ(1U, policies.size());
+
+  PWPolicy modifiedPolicy = initialPolicy;
+  modifiedPolicy.length = 16;
+  modifiedPolicy.flags |= PWPolicy::UseSymbols;
+
+  auto modifyCmd = new PolicyCommandModify<MultiPolicyCollector, PSWDPolicyMap>(core, policies, policyName1, initialPolicy, modifiedPolicy);
+  core.Execute(modifyCmd);
+
+  EXPECT_EQ(16, policies[s_policyName1].length);
+
+  core.Undo();
+  EXPECT_EQ(12, policies[s_policyName1].length);
+
+  core.Redo();
+  EXPECT_EQ(16, policies[s_policyName1].length);
+
+  stringT policyName2 = L"SecureWebPolicy";
+  StringX s_policyName2(policyName2);
+  PWPolicy renamedPolicy = modifiedPolicy;
+  renamedPolicy.length = 20;
+
+  auto renameCmd = new PolicyCommandRename(core, policies, policyName1, policyName2, modifiedPolicy, renamedPolicy);
+  core.Execute(renameCmd);
+
+  EXPECT_EQ(1U, policies.size());
+  EXPECT_FALSE(policies.contains(s_policyName1));
+  EXPECT_TRUE(policies.contains(s_policyName2));
+  EXPECT_EQ(20, policies[s_policyName2].length);
+
+  core.Undo();
+  EXPECT_EQ(1U, policies.size());
+  EXPECT_TRUE(policies.contains(s_policyName1));
+  EXPECT_FALSE(policies.contains(s_policyName2));
+  EXPECT_EQ(16, policies[s_policyName1].length);
+
+  core.Redo();
+  EXPECT_EQ(1U, policies.size());
+  EXPECT_FALSE(policies.contains(s_policyName1));
+  EXPECT_TRUE(policies.contains(s_policyName2));
+  EXPECT_EQ(20, policies[s_policyName2].length);
+
+  // Remove password policy
+  auto removeCmd = new PolicyCommandRemove(core, policies, policyName2, renamedPolicy);
+  core.Execute(removeCmd);
+
+  EXPECT_EQ(0U, policies.size());
+
+  core.Undo();
+  EXPECT_EQ(1U, policies.size());
+  EXPECT_TRUE(policies.contains(s_policyName2));
+
+  core.Redo();
+  EXPECT_EQ(0U, policies.size());
+
+  core.ClearCommands();
+}
+
+
 
 
 
