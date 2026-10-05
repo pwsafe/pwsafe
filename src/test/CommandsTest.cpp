@@ -462,7 +462,7 @@ TEST_F(CommandsTest, UpdatePassword)
   EXPECT_TRUE(core.HasDBChanged());
   EXPECT_TRUE(it.IsExpired());
 
-  ItemListConstIter iter = core.Find(it.GetUUID());
+  auto iter = core.Find(it.GetUUID());
   ASSERT_NE(core.GetEntryEndIter(), iter);
   CItemData it2(core.GetEntry(iter));
   EXPECT_EQ(it, it2);
@@ -529,6 +529,52 @@ TEST_F(CommandsTest, UpdatePassword)
 
   // Delete file
   pws_os::DeleteAFile(fname);
+}
+
+TEST_F(CommandsTest, UpdatePasswordHistory)
+{
+  PWScore core;
+  CItemData item, protectedItem;
+  item.CreateUUID();
+  item.SetPWHistory(L"");
+  protectedItem.CreateUUID();
+  protectedItem.SetPWHistory(L"10300");
+  protectedItem.SetProtected(true);
+
+  auto addCmd = MultiCommands::Create(&core);
+  addCmd->Add(AddEntryCommand::Create(&core, item));
+  addCmd->Add(AddEntryCommand::Create(&core, protectedItem));
+  core.Execute(addCmd);
+
+  auto getHistory = [&core](const pws_os::CUUID &uuid) {
+    return core.GetEntry(core.Find(uuid)).GetPWHistory();
+  };
+
+  core.Execute(UpdatePasswordHistoryCommand::Create(&core, PWHist::START_EXCL_PROT, 5));
+  EXPECT_EQ(L"10500", getHistory(item.GetUUID()));
+  EXPECT_EQ(L"10300", getHistory(protectedItem.GetUUID()));
+  core.Undo();
+  EXPECT_TRUE(getHistory(item.GetUUID()).empty());
+  core.Redo();
+  EXPECT_EQ(L"10500", getHistory(item.GetUUID()));
+
+  core.Execute(UpdatePasswordHistoryCommand::Create(&core, PWHist::SETMAX_INCL_PROT, 2));
+  EXPECT_EQ(L"10200", getHistory(item.GetUUID()));
+  EXPECT_EQ(L"10200", getHistory(protectedItem.GetUUID()));
+
+  core.Execute(UpdatePasswordHistoryCommand::Create(&core, PWHist::STOP_EXCL_PROT, 0));
+  EXPECT_EQ(L"00200", getHistory(item.GetUUID()));
+  EXPECT_EQ(L"10200", getHistory(protectedItem.GetUUID()));
+
+  core.Execute(UpdatePasswordHistoryCommand::Create(&core, PWHist::CLEAR_INCL_PROT, 0));
+  EXPECT_TRUE(getHistory(item.GetUUID()).empty());
+  EXPECT_TRUE(getHistory(protectedItem.GetUUID()).empty());
+
+  core.Undo();
+  EXPECT_EQ(L"00200", getHistory(item.GetUUID()));
+  EXPECT_EQ(L"10200", getHistory(protectedItem.GetUUID()));
+
+  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, UpdateEntry)
