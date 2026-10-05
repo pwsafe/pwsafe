@@ -25,6 +25,27 @@ protected:
   CommandsTest() {}
 };
 
+namespace {
+  // A reusable observer that records every UpdateGUI call so individual
+  // tests can assert on which GUI actions were fired and how many times.
+  class TestGUIObserver : public Observer {
+  public:
+    struct CallRecord {
+      UpdateGUICommand::GUI_Action ga;
+      pws_os::CUUID uuid;
+    };
+
+    std::vector<CallRecord> calls;
+
+    void UpdateGUI(const UpdateGUICommand::GUI_Action ga,
+                   const pws_os::CUUID &entry_uuid,
+                   CItemData::FieldType /* ft */) override {
+      calls.push_back({ga, entry_uuid});
+    }
+  };
+}
+
+
 // And now the tests...
 
 TEST_F(CommandsTest, AddItem)
@@ -677,5 +698,58 @@ TEST_F(CommandsTest, MultiCommandsGetRC)
   EXPECT_FALSE(pmulticmds->GetRC(size_t{3}, rc));
   EXPECT_EQ(0, rc);
 
+  core.ClearCommands();
+}
+
+TEST_F(CommandsTest, UpdateGUICommand)
+{
+  PWScore core;
+  TestGUIObserver observer;
+  core.RegisterObserver(&observer);
+
+  const pws_os::CUUID testUuid;
+
+  // 1. WN_UNDO: Execute does not notify, Undo does notify
+  UpdateGUICommand *cmdUndoOnly = UpdateGUICommand::Create(&core, UpdateGUICommand::WN_UNDO,
+                                                           UpdateGUICommand::GUI_REFRESH_ENTRY, testUuid);
+  // Unlike other tests, we don't use core's Execute/Undo/Redo here because those also trigger a `GUI_UPDATE_STATUSBAR`,
+  // and filtering those out would complicate the test. We want to focus just on the command's own functionality,
+  // not that of PWScore.
+  cmdUndoOnly->Execute();
+  EXPECT_TRUE(observer.calls.empty());
+
+  cmdUndoOnly->Undo();
+  ASSERT_EQ(1U, observer.calls.size());
+  EXPECT_EQ(UpdateGUICommand::GUI_REFRESH_ENTRY, observer.calls[0].ga);
+  observer.calls.clear();
+  delete cmdUndoOnly; // can't use core.ClearCommands() for the cleanup since we didn't use core.Execute()
+
+  // 2. WN_ALL: Both Execute and Undo notify
+  UpdateGUICommand *cmdAll = UpdateGUICommand::Create(&core, UpdateGUICommand::WN_ALL,
+                                                      UpdateGUICommand::GUI_REFRESH_TREE,
+                                                      pws_os::CUUID::NullUUID());
+  cmdAll->Execute();
+  ASSERT_EQ(1U, observer.calls.size());
+  EXPECT_EQ(UpdateGUICommand::GUI_REFRESH_TREE, observer.calls[0].ga);
+  observer.calls.clear();
+
+  cmdAll->Undo();
+  ASSERT_EQ(1U, observer.calls.size());
+  EXPECT_EQ(UpdateGUICommand::GUI_REFRESH_TREE, observer.calls[0].ga);
+  observer.calls.clear();
+  delete cmdAll;
+
+  // 3. WN_EXECUTE: Execute notifies, Undo does not notify
+  UpdateGUICommand *cmdExecOnly = UpdateGUICommand::Create(&core, UpdateGUICommand::WN_EXECUTE,
+                                                           UpdateGUICommand::GUI_ADD_ENTRY, testUuid);
+  cmdExecOnly->Execute();
+  ASSERT_EQ(1U, observer.calls.size());
+  observer.calls.clear();
+
+  cmdExecOnly->Undo();
+  EXPECT_TRUE(observer.calls.empty());
+
+  delete cmdExecOnly;
+  core.UnregisterObserver(&observer);
   core.ClearCommands();
 }
