@@ -546,3 +546,136 @@ TEST_F(CommandsTest, UpdateEntry)
   // Get core to delete any existing commands
   core.ClearCommands();
 }
+
+TEST_F(CommandsTest, MultiCommandsFindCommand)
+{
+  PWScore core;
+  MultiCommands *pmulticmds = MultiCommands::Create(&core);
+
+  EXPECT_EQ(nullptr, pmulticmds->FindCommand(typeid(AddEntryCommand)));
+
+  CItemData ci1;
+  ci1.CreateUUID();
+  ci1.SetTitle(L"Entry 1");
+  AddEntryCommand *addCmd = AddEntryCommand::Create(&core, ci1);
+  pmulticmds->Add(addCmd);
+
+  RenameGroupCommand *renameCmd = RenameGroupCommand::Create(&core, L"GroupA", L"GroupB");
+  pmulticmds->Add(renameCmd);
+
+  EXPECT_EQ(addCmd, pmulticmds->FindCommand(typeid(AddEntryCommand)));
+  EXPECT_EQ(renameCmd, pmulticmds->FindCommand(typeid(RenameGroupCommand)));
+
+  EXPECT_EQ(nullptr, pmulticmds->FindCommand(typeid(DeleteEntryCommand)));
+
+  core.ClearCommands();
+}
+
+TEST_F(CommandsTest, MultiCommandsInsert)
+{
+  PWScore core;
+  MultiCommands *pmulticmds = MultiCommands::Create(&core);
+
+  CItemData ci1;
+  ci1.CreateUUID();
+  ci1.SetTitle(L"First Entry");
+  AddEntryCommand *cmd1 = AddEntryCommand::Create(&core, ci1);
+  pmulticmds->Insert(cmd1, 0);
+  EXPECT_EQ(1U, pmulticmds->GetSize());
+
+  CItemData ci2;
+  ci2.CreateUUID();
+  ci2.SetTitle(L"Prepended Entry");
+  AddEntryCommand *cmd0 = AddEntryCommand::Create(&core, ci2);
+  pmulticmds->Insert(cmd0, 0);
+  EXPECT_EQ(2U, pmulticmds->GetSize());
+
+  RenameGroupCommand *cmdMid = RenameGroupCommand::Create(&core, L"Group0.Alpha", L"Group0.Beta");
+  pmulticmds->Insert(cmdMid, 1);
+  EXPECT_EQ(3U, pmulticmds->GetSize());
+
+  CItemData ci3;
+  ci3.CreateUUID();
+  ci3.SetTitle(L"Appended Entry");
+  AddEntryCommand *cmdEnd = AddEntryCommand::Create(&core, ci3);
+  pmulticmds->Insert(cmdEnd, pmulticmds->GetSize());
+  EXPECT_EQ(4U, pmulticmds->GetSize());
+
+  core.Execute(pmulticmds);
+  EXPECT_EQ(3U, core.GetNumEntries());
+  EXPECT_NE(core.GetEntryEndIter(), core.Find(ci1.GetUUID()));
+  EXPECT_NE(core.GetEntryEndIter(), core.Find(ci2.GetUUID()));
+  EXPECT_NE(core.GetEntryEndIter(), core.Find(ci3.GetUUID()));
+
+  core.Undo();
+  EXPECT_EQ(0U, core.GetNumEntries());
+
+  core.ClearCommands();
+}
+
+TEST_F(CommandsTest, MultiCommandsGetRC)
+{
+  PWScore core;
+  MultiCommands *pmulticmds = MultiCommands::Create(&core);
+
+  CItemData ci1;
+  ci1.CreateUUID();
+  ci1.SetTitle(L"Entry 1");
+  Command *cmd1 = AddEntryCommand::Create(&core, ci1);
+
+  CItemData ci2;
+  ci2.CreateUUID();
+  ci2.SetTitle(L"Entry 2");
+  Command *cmd2 = AddEntryCommand::Create(&core, ci2);
+
+  pmulticmds->Add(cmd1);
+  pmulticmds->Add(cmd2);
+
+  // Before Execute, GetRC for non-existent command and invalid indices
+  CItemData ci3;
+  ci3.CreateUUID();
+  Command *cmdUnexecuted = AddEntryCommand::Create(&core, ci3);
+  int rc = -999;
+  EXPECT_FALSE(pmulticmds->GetRC(cmdUnexecuted, rc));
+  EXPECT_EQ(0, rc);
+  // have to delete manually since it was never executed, so is not tracked by core
+  delete cmdUnexecuted;
+
+  rc = -999;
+  EXPECT_FALSE(pmulticmds->GetRC(size_t{0}, rc));
+  EXPECT_EQ(0, rc);
+  rc = -999;
+  EXPECT_FALSE(pmulticmds->GetRC(size_t{1}, rc));
+  EXPECT_EQ(0, rc);
+
+  core.Execute(pmulticmds);
+
+  // After Execute, GetRC by command pointer
+  rc = -999;
+  EXPECT_TRUE(pmulticmds->GetRC(cmd1, rc));
+  EXPECT_EQ(0, rc);
+
+  rc = -999;
+  EXPECT_TRUE(pmulticmds->GetRC(cmd2, rc));
+  EXPECT_EQ(0, rc);
+
+  // GetRC by index
+  rc = -999;
+  EXPECT_TRUE(pmulticmds->GetRC(size_t{1}, rc));
+  EXPECT_EQ(0, rc);
+
+  rc = -999;
+  EXPECT_TRUE(pmulticmds->GetRC(size_t{2}, rc));
+  EXPECT_EQ(0, rc);
+
+  // Out-of-bounds indices
+  rc = -999;
+  EXPECT_FALSE(pmulticmds->GetRC(size_t{0}, rc));
+  EXPECT_EQ(0, rc);
+
+  rc = -999;
+  EXPECT_FALSE(pmulticmds->GetRC(size_t{3}, rc));
+  EXPECT_EQ(0, rc);
+
+  core.ClearCommands();
+}
