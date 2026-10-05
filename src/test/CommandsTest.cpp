@@ -899,5 +899,110 @@ TEST_F(CommandsTest, AddAndRemoveDependentEntry)
   core.ClearCommands();
 }
 
+TEST_F(CommandsTest, AddAndMoveDependentEntries)
+{
+  PWScore core;
+
+  CItemData base1, base2, base3, dep1, dep2, dep3;
+  base1.CreateUUID();
+  base1.SetTitle(L"shortcut base 1");
+  base1.SetPassword(L"password123");
+  base1.SetNormal();
+
+  base2.CreateUUID();
+  base2.SetTitle(L"shortcut base 2");
+  base2.SetPassword(L"password456");
+  base2.SetNormal();
+
+  base3.CreateUUID();
+  base3.SetTitle(L"alias base 1");
+  base3.SetPassword(L"password456");
+  base3.SetNormal();
+
+  dep1.CreateUUID();
+  dep1.SetTitle(L"shortcut 1");
+  dep1.SetPassword(L"temp password 1");
+  dep1.SetNormal();
+  dep1.SetBaseUUID(base1.GetUUID());
+
+  dep2.CreateUUID();
+  dep2.SetTitle(L"shortcut 2");
+  dep2.SetPassword(L"temp password 2");
+  dep2.SetNormal();
+  dep2.SetBaseUUID(base1.GetUUID());
+
+  dep3.SetTitle(L"alias entry");
+  dep3.SetPassword(L"[Alias]");
+  dep3.SetNormal();
+  dep3.CreateUUID();
+  dep3.SetBaseUUID(base3.GetUUID());
+
+  MultiCommands *pmulticmds = MultiCommands::Create(&core);
+  pmulticmds->Add(AddEntryCommand::Create(&core, base1));
+  pmulticmds->Add(AddEntryCommand::Create(&core, base2));
+  pmulticmds->Add(AddEntryCommand::Create(&core, base3));
+  pmulticmds->Add(AddEntryCommand::Create(&core, dep1));
+  pmulticmds->Add(AddEntryCommand::Create(&core, dep2));
+  pmulticmds->Add(AddEntryCommand::Create(&core, dep3));
+  core.Execute(pmulticmds);
+
+  EXPECT_EQ(6U, core.GetNumEntries());
+  EXPECT_EQ(0U, core.NumShortcuts(base1.GetUUID()));
+  EXPECT_EQ(0U, core.NumShortcuts(base2.GetUUID()));
+
+  UUIDVector shortcuts{dep1.GetUUID(), dep2.GetUUID()};
+
+  auto addCmdShortcut = AddDependentEntriesCommand::Create(&core, shortcuts, /* pRpt */ nullptr, CItemData::ET_SHORTCUT, CItemData::UUID);
+  core.Execute(addCmdShortcut);
+  EXPECT_EQ(2U, core.NumShortcuts(base1.GetUUID()));
+
+  core.Undo();
+  EXPECT_EQ(0U, core.NumShortcuts(base1.GetUUID()));
+
+  core.Redo();
+  EXPECT_EQ(2U, core.NumShortcuts(base1.GetUUID()));
+
+  UUIDVector aliases{dep3.GetUUID()};
+
+  auto addCmdAlias = AddDependentEntriesCommand::Create(&core, aliases, /* pRpt */ nullptr, CItemData::ET_ALIAS, CItemData::UUID);
+  core.Execute(addCmdAlias);
+  EXPECT_EQ(1U, core.NumAliases(base3.GetUUID()));
+
+  core.Undo();
+  EXPECT_EQ(0U, core.NumAliases(base3.GetUUID()));
+
+  core.Redo();
+  EXPECT_EQ(1U, core.NumAliases(base3.GetUUID()));
+
+  auto moveCmdShortcut = MoveDependentEntriesCommand::Create(&core, base1.GetUUID(), base2.GetUUID(), CItemData::ET_SHORTCUT);
+  core.Execute(moveCmdShortcut);
+  EXPECT_EQ(0U, core.NumShortcuts(base1.GetUUID()));
+  EXPECT_EQ(2U, core.NumShortcuts(base2.GetUUID()));
+
+  core.Undo();
+  EXPECT_EQ(2U, core.NumShortcuts(base1.GetUUID()));
+  EXPECT_EQ(0U, core.NumShortcuts(base2.GetUUID()));
+
+  core.Redo();
+  EXPECT_EQ(0U, core.NumShortcuts(base1.GetUUID()));
+  EXPECT_EQ(2U, core.NumShortcuts(base2.GetUUID()));
+
+  auto moveCmdAlias = MoveDependentEntriesCommand::Create(&core, base3.GetUUID(), base2.GetUUID(), CItemData::ET_ALIAS);
+  core.Execute(moveCmdAlias);
+  EXPECT_EQ(0U, core.NumAliases(base3.GetUUID()));
+  EXPECT_EQ(1U, core.NumAliases(base2.GetUUID()));
+
+  core.Undo();
+  EXPECT_EQ(1U, core.NumAliases(base3.GetUUID()));
+  EXPECT_EQ(0U, core.NumAliases(base2.GetUUID()));
+
+  core.Redo();
+  EXPECT_EQ(0U, core.NumAliases(base3.GetUUID()));
+  EXPECT_EQ(1U, core.NumAliases(base2.GetUUID()));
+
+  core.ClearCommands();
+}
+
+
 
 
