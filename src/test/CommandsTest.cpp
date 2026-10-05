@@ -753,3 +753,61 @@ TEST_F(CommandsTest, UpdateGUICommand)
   core.UnregisterObserver(&observer);
   core.ClearCommands();
 }
+
+TEST_F(CommandsTest, EditAndDeleteAttachment)
+{
+  PWScore core;
+  CItemAtt ai;
+  pws_os::CUUID attUuid;
+  time_t cTime = 1665220859L;
+  unsigned char content[16] = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+                                0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10 };
+  ai.SetUUID(attUuid);
+  ai.SetTitle(L"original attachment title");
+  ai.SetCTime(cTime);
+  ai.SetContent(content, sizeof(content));
+
+  CItemData ci;
+  ci.CreateUUID();
+  ci.SetTitle(L"entry with attachment");
+  ci.SetPassword(L"password123");
+  ci.SetAttUUID(attUuid);
+  ci.SetNormal();
+
+  auto addcmd = AddEntryCommand::Create(&core, ci, pws_os::CUUID::NullUUID(), &ai);
+  core.Execute(addcmd);
+  EXPECT_EQ(1U, core.GetNumEntries());
+  EXPECT_TRUE(core.HasAtt(attUuid));
+
+  // Edit attachment title operations
+  CItemAtt oldAtt = core.GetAtt(attUuid);
+  CItemAtt newAtt(oldAtt);
+  newAtt.SetTitle(L"updated attachment title");
+
+  auto editAttCmd = EditAttachmentCommand::Create(&core, oldAtt, newAtt);
+  core.Execute(editAttCmd);
+  EXPECT_EQ(L"updated attachment title", core.GetAtt(attUuid).GetTitle());
+
+  core.Undo();
+  EXPECT_EQ(L"original attachment title", core.GetAtt(attUuid).GetTitle());
+
+  core.Redo();
+  EXPECT_EQ(L"updated attachment title", core.GetAtt(attUuid).GetTitle());
+
+  // Delete attachment from entry operations
+  const CItemData ciInCore = core.GetEntry(core.Find(ci.GetUUID()));
+  auto delAttCmd = DeleteAttachmentCommand::Create(&core, ciInCore);
+  core.Execute(delAttCmd);
+  EXPECT_FALSE(core.HasAtt(attUuid));
+
+  core.Undo();
+  EXPECT_TRUE(core.HasAtt(attUuid));
+  EXPECT_EQ(L"updated attachment title", core.GetAtt(attUuid).GetTitle());
+
+  core.Redo();
+  EXPECT_FALSE(core.HasAtt(attUuid));
+
+  core.ClearCommands();
+}
+
+
