@@ -810,4 +810,94 @@ TEST_F(CommandsTest, EditAndDeleteAttachment)
   core.ClearCommands();
 }
 
+TEST_F(CommandsTest, AddAndRemoveDependentEntry)
+{
+  PWScore core;
+
+  // Test shortcut entry
+  CItemData sbase, sdep;
+  sbase.CreateUUID();
+  sbase.SetTitle(L"shortcut base entry");
+  sbase.SetPassword(L"shortcut base password");
+  sbase.SetNormal();
+
+  sdep.CreateUUID();
+  sdep.SetTitle(L"shortcut entry");
+  sdep.SetPassword(L"[Shortcut]");
+  sdep.SetShortcut();
+
+  MultiCommands *pmulticmds1 = MultiCommands::Create(&core);
+  pmulticmds1->Add(AddEntryCommand::Create(&core, sbase));
+  pmulticmds1->Add(AddEntryCommand::Create(&core, sdep, sbase.GetUUID()));
+  core.Execute(pmulticmds1);
+
+  EXPECT_EQ(2U, core.GetNumEntries());
+  EXPECT_EQ(1U, core.NumShortcuts(sbase.GetUUID()));
+
+  auto rmShortcutCmd = RemoveDependentEntryCommand::Create(&core, sbase.GetUUID(), sdep.GetUUID(), CItemData::ET_SHORTCUT);
+  core.Execute(rmShortcutCmd);
+  EXPECT_EQ(0U, core.NumShortcuts(sbase.GetUUID()));
+
+  core.Undo();
+  EXPECT_EQ(1U, core.NumShortcuts(sbase.GetUUID()));
+
+  core.Redo();
+  EXPECT_EQ(0U, core.NumShortcuts(sbase.GetUUID()));
+
+  // Test adding shortcut dependent association back
+  auto addShortcutCmd = AddDependentEntryCommand::Create(&core, sbase.GetUUID(), sdep.GetUUID(), CItemData::ET_SHORTCUT);
+  core.Execute(addShortcutCmd);
+  EXPECT_EQ(1U, core.NumShortcuts(sbase.GetUUID()));
+
+  core.Undo();
+  EXPECT_EQ(0U, core.NumShortcuts(sbase.GetUUID()));
+
+  core.Redo();
+  EXPECT_EQ(1U, core.NumShortcuts(sbase.GetUUID()));
+
+  // Test alias entry
+  CItemData abase, adep;
+  abase.CreateUUID();
+  abase.SetTitle(L"alias base entry");
+  abase.SetPassword(L"alias base password");
+  abase.SetNormal();
+
+  adep.CreateUUID();
+  adep.SetTitle(L"alias entry");
+  adep.SetPassword(L"[Alias]");
+  adep.SetAlias();
+
+  MultiCommands *pmulticmds2 = MultiCommands::Create(&core);
+  pmulticmds2->Add(AddEntryCommand::Create(&core, abase));
+  pmulticmds2->Add(AddEntryCommand::Create(&core, adep, abase.GetUUID()));
+  core.Execute(pmulticmds2);
+
+  EXPECT_EQ(4U, core.GetNumEntries());
+  EXPECT_EQ(1U, core.NumAliases(abase.GetUUID()));
+
+  auto rmAliasCmd = RemoveDependentEntryCommand::Create(&core, abase.GetUUID(), adep.GetUUID(), CItemData::ET_ALIAS);
+  core.Execute(rmAliasCmd);
+  EXPECT_EQ(0U, core.NumAliases(abase.GetUUID()));
+
+  core.Undo();
+  EXPECT_EQ(1U, core.NumAliases(abase.GetUUID()));
+
+  core.Redo();
+  EXPECT_EQ(0U, core.NumAliases(abase.GetUUID()));
+
+  // Test adding alias dependent association back
+  auto addAliasCmd = AddDependentEntryCommand::Create(&core, abase.GetUUID(), adep.GetUUID(), CItemData::ET_ALIAS);
+  core.Execute(addAliasCmd);
+  EXPECT_EQ(1U, core.NumAliases(abase.GetUUID()));
+
+  core.Undo();
+  EXPECT_EQ(0U, core.NumAliases(abase.GetUUID()));
+
+  core.Redo();
+  EXPECT_EQ(1U, core.NumAliases(abase.GetUUID()));
+
+  core.ClearCommands();
+}
+
+
 
