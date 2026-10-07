@@ -577,6 +577,60 @@ TEST_F(CommandsTest, UpdatePasswordHistory)
   core.ClearCommands();
 }
 
+TEST_F(CommandsTest, ChangeDBHeaderCommand)
+{
+  PWScore core;
+
+  // Initially header fields are empty
+  EXPECT_TRUE(core.GetHeaderItem(PWSfile::HDR_DBNAME).empty());
+  EXPECT_TRUE(core.GetHeaderItem(PWSfile::HDR_DBDESC).empty());
+
+  // --- HDR_DBNAME ---
+
+  core.Execute(ChangeDBHeaderCommand::Create(&core, L"MyDatabase", PWSfile::HDR_DBNAME));
+  EXPECT_EQ(StringX(L"MyDatabase"), core.GetHeaderItem(PWSfile::HDR_DBNAME));
+  EXPECT_TRUE(core.HasDBChanged());
+
+  core.Undo();
+  EXPECT_TRUE(core.GetHeaderItem(PWSfile::HDR_DBNAME).empty());
+
+  core.Redo();
+  EXPECT_EQ(StringX(L"MyDatabase"), core.GetHeaderItem(PWSfile::HDR_DBNAME));
+
+  // --- HDR_DBDESC ---
+
+  core.Execute(ChangeDBHeaderCommand::Create(&core, L"A description", PWSfile::HDR_DBDESC));
+  EXPECT_EQ(StringX(L"A description"), core.GetHeaderItem(PWSfile::HDR_DBDESC));
+
+  core.Undo();
+  EXPECT_TRUE(core.GetHeaderItem(PWSfile::HDR_DBDESC).empty());
+
+  core.ClearCommands();
+
+  // --- No-op when new value equals the current value ---
+
+  const StringX sxSameName(L"SameName");
+  core.Execute(ChangeDBHeaderCommand::Create(&core, sxSameName, PWSfile::HDR_DBNAME));
+  EXPECT_EQ(sxSameName, core.GetHeaderItem(PWSfile::HDR_DBNAME));
+
+  core.Execute(ChangeDBHeaderCommand::Create(&core, sxSameName, PWSfile::HDR_DBNAME));
+  EXPECT_EQ(sxSameName, core.GetHeaderItem(PWSfile::HDR_DBNAME));
+
+  core.Undo();
+  EXPECT_EQ(sxSameName, core.GetHeaderItem(PWSfile::HDR_DBNAME));
+
+  core.ClearCommands();
+
+  // --- No-op when core is read-only ---
+
+  core.SetReadOnly(true);
+  core.Execute(ChangeDBHeaderCommand::Create(&core, L"ReadOnlyAttempt", PWSfile::HDR_DBNAME));
+  EXPECT_EQ(sxSameName, core.GetHeaderItem(PWSfile::HDR_DBNAME));
+  core.SetReadOnly(false);
+
+  core.ClearCommands();
+}
+
 TEST_F(CommandsTest, UpdateEntry)
 {
   PWScore core;
