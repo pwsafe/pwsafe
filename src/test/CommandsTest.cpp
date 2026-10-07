@@ -660,6 +660,20 @@ TEST_F(CommandsTest, UpdateEntry)
   iter = core.Find(it.GetUUID());
   EXPECT_EQ(core.GetEntry(iter).GetTitle(), it.GetTitle());
 
+  const StringX newPassword(L"F1nallyUpdated");
+  pcmd = UpdateEntryCommand::Create(&core, it, CItem::PASSWORD, newPassword);
+  core.Execute(pcmd);
+  iter = core.Find(it.GetUUID());
+  EXPECT_EQ(core.GetEntry(iter).GetPassword(), newPassword);
+
+  core.Undo();
+  iter = core.Find(it.GetUUID());
+  EXPECT_EQ(core.GetEntry(iter).GetPassword(), it.GetPassword());
+
+  core.Redo();
+  iter = core.Find(it.GetUUID());
+  EXPECT_EQ(core.GetEntry(iter).GetPassword(), newPassword);
+
   // Get core to delete any existing commands
   core.ClearCommands();
 }
