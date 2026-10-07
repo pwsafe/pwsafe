@@ -349,6 +349,11 @@ bool PFilterXMLProcessor::ReadXMLFilterEntry(pugi::xml_node &eroot, const string
     frow.mtype = PWSMatch::MT_PASSWORD;
     frow.ftype = FT_PASSWORD;
   }
+  else if (SafeCompare(qname, _T("twofactorkey"))) {
+    ftype = DFTYPE_MAIN;
+    frow.mtype = PWSMatch::MT_STRING;
+    frow.ftype = FT_TWOFACTORKEY;
+  }
   else if (SafeCompare(qname, _T("notes"))) {
     ftype = DFTYPE_MAIN;
     frow.mtype = PWSMatch::MT_STRING;
