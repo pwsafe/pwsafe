@@ -1,7 +1,7 @@
 .\" Process this file with
 .\" groff -man -Tascii pwsafe.1
 .\"
-.TH PWSAFE 1 "JULY 2010" Linux "User Manuals"
+.TH PWSAFE 1 "OCT 2026" Linux "User Manuals"
 .SH NAME
 pwsafe \- Secure Password Manager
 .SH SYNOPSIS
@@ -54,11 +54,16 @@ the specified
 This will open the specified database in read-only mode. If a database
 is not specified, then the application will prompt the user for a
 database, which will be opened in read-only mode.
-.IP -v
-.I database
-This will validate the database after the correct passphrase is
-entered, correcting internal inconsistencies as necessary. Mostly
-useful when working with databases written by other applications.
+.IP -e
+.I file
+This will encrypt the file with a key derived from a passphrase.
+The encrypted file will have the same name as the original file, with ".PSF" appended to it.
+.IP -d
+.I file
+This will decrypt the file with a key derived from a passphrase.
+This will work only on files that were encrypted by invoking pwsafe with the
+.B -e
+option.
 .IP -c
 This will start the application closed, that is, with
 no database, and without the initial opening dialog (To access a
@@ -75,14 +80,14 @@ This is the same as the
 .B -c
 option, with the addition that the application is started as minimized.
 .SH FILES
-.I ~/.pwsafe/pwsafe.cfg
+.I ~/.config/pwsafe/pwsafe.cfg
 .RS
 The application's preference file. Note that all security-related
 preferences are stored as part of the password database. This file
 only stores preferences pertaining to appearance, such as last size &
 location of the application's window, last files opened, etc.
 .RE
-.I ~/.pwsafe/pwsafe.psafe3
+.I ~/.config/pwsafe/pwsafe.psafe3
 .RS
 The user's default password database. A different database may be
 specified via command line, the initial dialog box or the File->Open menu.
@@ -92,15 +97,13 @@ specified via command line, the initial dialog box or the File->Open menu.
 If set,
 .B pwsafe
 will look for the preference file in this directory rather than in
-.I ~/.pwsafe.
+.I ~/.config/pwsafe.
 .SH DIAGNOSTICS
 .B pwsafe
 Will issue error messages if the database is damaged. If this occurs,
-invoking
-.B pwsafe
-with the 
-.B -v
-option may help.
+opening an
+.B Intermediate Backup
+file (.ibak) instead may help.
 .SH AUTHOR
 Rony Shapiro <ronys at pwsafe dot org>
 
