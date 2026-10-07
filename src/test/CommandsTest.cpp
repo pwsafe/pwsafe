@@ -60,7 +60,7 @@ TEST_F(CommandsTest, AddItem)
   AddEntryCommand *pcmd = AddEntryCommand::Create(&core, di);
   
   core.Execute(pcmd);
-  ItemListConstIter iter = core.Find(uuid);
+  const auto iter = core.Find(uuid);
   ASSERT_NE(core.GetEntryEndIter(), iter);
   EXPECT_EQ(di, core.GetEntry(iter));
   EXPECT_TRUE(core.HasDBChanged());
@@ -225,13 +225,11 @@ TEST_F(CommandsTest,DeleteEntryWithAttachment)
   ci.SetAttUUID(attUuid);
 
 
-  auto addcmd = AddEntryCommand::Create(&core, ci, pws_os::CUUID::NullUUID(), &ai);
-  core.Execute(addcmd);
+  core.Execute(AddEntryCommand::Create(&core, ci, pws_os::CUUID::NullUUID(), &ai));
   EXPECT_EQ(1U, core.GetNumEntries());
   EXPECT_EQ(1U, core.GetNumAtts());
 
-  auto delcmd = DeleteEntryCommand::Create(&core, ci);
-  core.Execute(delcmd);
+  core.Execute(DeleteEntryCommand::Create(&core, ci));
   EXPECT_EQ(0U, core.GetNumEntries());
   EXPECT_EQ(0U, core.GetNumAtts());
   core.Undo();
@@ -258,7 +256,7 @@ TEST_F(CommandsTest, CreateShortcutEntry)
   time_t t;
   time(&t);
   si.SetCTime(t);
-  si.SetXTime((time_t)0);
+  si.SetXTime(0L);
   si.SetStatus(CItemData::ES_ADDED);
 
   MultiCommands *pmulticmds = MultiCommands::Create(&core);
@@ -269,7 +267,7 @@ TEST_F(CommandsTest, CreateShortcutEntry)
   EXPECT_TRUE(core.HasDBChanged());
 
   // Check that the base entry is correctly marked
-  ItemListConstIter iter = core.Find(base_uuid);
+  auto iter = core.Find(base_uuid);
   ASSERT_NE(core.GetEntryEndIter(), iter);
   EXPECT_TRUE(core.GetEntry(iter).IsShortcutBase());
 
@@ -321,7 +319,7 @@ TEST_F(CommandsTest, EditEntry)
   core.Execute(pcmd);
   EXPECT_TRUE(core.HasDBChanged());
 
-  ItemListConstIter iter = core.Find(it.GetUUID());
+  auto iter = core.Find(it.GetUUID());
   ASSERT_NE(core.GetEntryEndIter(), iter);
   CItemData it2(core.GetEntry(iter));
   EXPECT_EQ(it, it2);
@@ -363,7 +361,7 @@ TEST_F(CommandsTest, RenameGroup)
   Command *pcmd = AddEntryCommand::Create(&core, di);
   
   core.Execute(pcmd);
-  ItemListConstIter iter = core.Find(uuid);
+  auto iter = core.Find(uuid);
   ASSERT_NE(core.GetEntryEndIter(), iter);
   EXPECT_EQ(di, core.GetEntry(iter));
   EXPECT_TRUE(core.HasDBChanged());
@@ -419,8 +417,7 @@ TEST_F(CommandsTest, CountGroups)
   core.GetAllGroups(vGroups);
   EXPECT_EQ(2U, vGroups.size());
 
-  std::vector<StringX> eg;
-  eg.push_back(L"e1");
+  const std::vector<StringX> eg{L"e1"};
   pcmd = DBEmptyGroupsCommand::Create(&core, eg, DBEmptyGroupsCommand::EG_ADDALL);
   core.Execute(pcmd);
 
@@ -646,10 +643,9 @@ TEST_F(CommandsTest, UpdateEntry)
   core.Execute(pcmd);
   EXPECT_TRUE(core.HasDBChanged());
 
-  ItemListConstIter iter = core.Find(it.GetUUID());
+  auto iter = core.Find(it.GetUUID());
   ASSERT_NE(core.GetEntryEndIter(), iter);
-  CItemData it2(core.GetEntry(iter));
-  EXPECT_EQ(it, it2);
+  EXPECT_EQ(it, CItemData(core.GetEntry(iter)));
 
   const StringX newTitle(L"PastaFar1an");
   pcmd = UpdateEntryCommand::Create(&core, it, CItem::TITLE, newTitle);
