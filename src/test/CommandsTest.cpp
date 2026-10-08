@@ -1491,3 +1491,74 @@ TEST_F(CommandsTest, DBFiltersCommand)
   core.ClearCommands();
 }
 
+TEST_F(CommandsTest, DBPrefsCommand)
+{
+  PWScore core;
+  PWSprefs *prefs = PWSprefs::GetInstance();
+  TestGUIObserver observer;
+  core.RegisterObserver(&observer);
+
+  const StringX oldPrefs = prefs->Store();
+  const uint32 oldHashIters = core.GetHashIters();
+  const bool oldSaveHistory = prefs->GetPref(PWSprefs::SavePasswordHistory);
+  const bool newSaveHistory = !oldSaveHistory;
+  prefs->SetPref(PWSprefs::SavePasswordHistory, newSaveHistory);
+  const StringX newPrefs = prefs->Store();
+  prefs->SetPref(PWSprefs::SavePasswordHistory, oldSaveHistory);
+
+  auto cmd = DBPrefsCommand::Create(&core, newPrefs, oldHashIters + 1);
+  cmd->Execute();
+  EXPECT_EQ(newSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+  EXPECT_EQ(oldHashIters + 1, core.GetHashIters());
+  ASSERT_EQ(1U, observer.calls.size());
+  EXPECT_EQ(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED, observer.calls[0].ga);
+  observer.calls.clear();
+
+  cmd->Undo();
+  EXPECT_EQ(oldSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+  EXPECT_EQ(oldHashIters, core.GetHashIters());
+  ASSERT_EQ(1U, observer.calls.size());
+  EXPECT_EQ(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED, observer.calls[0].ga);
+  observer.calls.clear();
+  delete cmd;
+
+  // Omitting hash iterations leaves them unchanged.
+  cmd = DBPrefsCommand::Create(&core, newPrefs);
+  cmd->Execute();
+  EXPECT_EQ(newSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+  EXPECT_EQ(oldHashIters, core.GetHashIters());
+  cmd->Undo();
+  EXPECT_EQ(oldSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+  observer.calls.clear();
+  delete cmd;
+
+  // Read-only execution and undo do not change preferences or notify observers.
+  core.SetReadOnly(true);
+  cmd = DBPrefsCommand::Create(&core, newPrefs, oldHashIters + 1);
+  cmd->Execute();
+  EXPECT_EQ(oldSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+  EXPECT_EQ(oldHashIters, core.GetHashIters());
+  EXPECT_TRUE(observer.calls.empty());
+
+  cmd->Undo();
+  EXPECT_TRUE(observer.calls.empty());
+  delete cmd;
+  core.SetReadOnly(false);
+
+  // SetNoGUINotify suppresses notifications for both operations.
+  cmd = DBPrefsCommand::Create(&core, newPrefs, oldHashIters + 1);
+  cmd->SetNoGUINotify();
+  cmd->Execute();
+  EXPECT_EQ(newSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+  EXPECT_TRUE(observer.calls.empty());
+
+  cmd->Undo();
+  EXPECT_EQ(oldSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+  EXPECT_EQ(oldHashIters, core.GetHashIters());
+  EXPECT_TRUE(observer.calls.empty());
+  delete cmd;
+
+  core.UnregisterObserver(&observer);
+  core.ClearCommands();
+}
+
