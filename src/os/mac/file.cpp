@@ -341,7 +341,13 @@ int pws_os::FFlush(std::FILE *fd)
   if (fileDescriptor == -1)
     return EOF;
 
-  return fcntl(fileDescriptor, F_FULLFSYNC) == -1 ? EOF : 0;
+  if (fcntl(fileDescriptor, F_FULLFSYNC) != -1)
+    return 0;
+
+  if (errno != ENOTSUP)
+    return EOF;
+
+  return fsync(fileDescriptor) == -1 ? EOF : 0;
 }
 
 size_t pws_os::fileLength(std::FILE *fp)
