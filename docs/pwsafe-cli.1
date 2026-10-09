@@ -1,0 +1,246 @@
+.\" Process this file with
+.\" groff -man -Tascii pwsafe-cli.1
+.\"
+.TH PWSAFE-CLI 1 "OCT 2026" Linux "User Manuals"
+.SH NAME
+pwsafe-cli \- Command-line interface for Password Safe
+.SH SYNOPSIS
+.B pwsafe-cli safe --imp[=file] --text|--xml
+.br
+.B pwsafe-cli safe --exp[=file] --text|--xml
+.br
+.B pwsafe-cli safe --create
+.br
+.B pwsafe-cli safe --add=field1=value1,field2=value2,...
+.br
+.B pwsafe-cli safe --search=<text>
+.RI [ --ignore-case ]
+.RI [ --subset=<Field><OP><string>[/iI] ]
+.RI [ --fields=f1,f2,... ]
+.RI [ --delete | --update=Field1=Value1,Field2=Value2,... | --print[=field1,field2,...] ]
+.RI [ --yes ]
+.RI [ --generate-totp ]
+.br
+.B pwsafe-cli safe --diff=<other-safe>
+.RI [ --subset=<Field><OP><Value>[/iI] ]
+.RI [ --fields=f1,f2,... ]
+.RI [ --unified | --context | --sidebyside ]
+.RI [ --colwidth=column-size ]
+.br
+.B pwsafe-cli safe --synchronize=<other-safe>
+.RI [ --subset=<Field><OP><string>[/iI] ]
+.RI [ --fields=f1,f2,... ]
+.RI [ --yes ]
+.br
+.B pwsafe-cli safe --merge=<other-safe>
+.RI [ --subset=<Field><OP><Value>[/iI] ]
+.RI [ --yes ]
+.br
+.B pwsafe-cli --help[=add|create|delete|search|sync|synchronize|update]
+.SH DESCRIPTION
+.B pwsafe-cli
+is the command-line interface for Password Safe (pwsafe). It can create and modify
+.B pwsafe 
+safes (password databases), import and export entries, search and filter entries,
+compare, synchronize, and merge two safes.
+.PP
+The program prompts for master passphrases as required. The
+.B --passphrase
+.I passphrase
+and
+.B --passphrase2
+.I passphrase
+options may be used to skip the corresponding prompt, but using them should
+be avoided if possible for security reasons.
+.SH OPTIONS
+.IP "--imp[=file]"
+Import a safe from
+.I file
+and represent the imported data as text or XML, as selected by
+.B --text
+or
+.B --xml
+\&.
+.IP "--exp[=file]"
+Export a safe to
+.I file
+in text or XML format, as selected by
+.B --text
+or
+.B --xml
+\&.
+.IP "--text"
+Select text format for import or export.
+.IP "--xml"
+Select XML format for import or export.
+.IP "--create"
+Create a new safe.
+.IP "--add=field1=value1,field2=value2,..."
+Add an entry containing the specified field/value pairs.
+.IP "--search=<text>"
+Search for entries containing
+.I text
+\&. Additional options can restrict the search, select fields, print matching
+entries, update them, delete them, or generate a TOTP code.
+.IP "--ignore-case"
+Ignore case when performing a search.
+.IP "--subset=<Field><OP><string>[/iI]"
+Restrict the operation to entries matching the specified field expression.
+The comparison operator
+.I OP
+is described in the
+.B SUBSET EXPRESSIONS
+section.
+A trailing
+.B /i
+requests case-insensitive comparison; a trailing
+.B /I
+requests case-sensitive comparison.
+.IP "--fields=f1,f2,..."
+Select the fields to be considered or displayed by the operation, as applicable.
+.IP "--delete"
+Delete entries selected by the search or subset expression.
+.IP "--update=Field1=Value1,Field2=Value2,..."
+Update the selected entries with the specified field/value pairs.
+.IP "--print[=field1,field2,...]"
+Print matching entries. If fields are supplied, print the specified fields only.
+.IP "--yes"
+Confirm an operation without prompting.
+.IP "--generate-totp"
+Generate the TOTP value for the selected entry.
+.IP "--diff=<other-safe>"
+Compare the current safe with
+.I other-safe
+\&. The output format may be selected with
+.B --unified
+,
+.B --context
+, or
+.B --sidebyside
+\&.
+.IP "--unified"
+Display differences in unified format.
+.IP "--context"
+Display differences in context format.
+.IP "--sidebyside"
+Display differences side by side.
+.IP "--colwidth=column-size"
+Set the column width used by side-by-side diff output.
+.IP "--synchronize=<other-safe>"
+Synchronize the current safe with
+.I other-safe
+\&. The operation may be restricted with
+.B --subset
+and
+.B --fields
+and confirmed with
+.B --yes
+\&.
+.IP "--merge=<other-safe>"
+Merge entries from
+.I other-safe
+into the current safe. The operation may be restricted with
+.B --subset
+and confirmed with
+.B --yes
+\&.
+.IP "--passphrase=<passphrase>"
+Supply the master passphrase without prompting.
+For security reasons, this should be avoided if possible.
+.IP "--passphrase2=<2nd passphrase>"
+Supply the second master passphrase without prompting.
+For security reasons, this should be avoided if possible.
+.IP "--help[=add|create|delete|search|sync|synchronize|update]"
+Display general help or help for the specified operation.
+.SH SUBSET EXPRESSIONS
+Subset expressions have the form
+.B <Field><OP><Value>
+with an optional trailing
+.B /i
+or
+.B /I
+modifier.
+.PP
+The supported operators are:
+.IP "=="
+Match exactly.
+.IP "!=="
+Negated exact match.
+.IP "^="
+Match values beginning with the specified value.
+.IP "!^="
+Negated beginning-with match.
+.IP "$="
+Match values ending with the specified value.
+.IP "!$="
+Negated ending-with match.
+.IP "~="
+Match values containing the specified value.
+.IP "!~="
+Negated contains match.
+.PP
+The
+.B !
+character is the negation operator.
+A trailing
+.B /i
+requests case-insensitive comparison, while
+.B /I
+requests case-sensitive comparison.
+.SH FIELD NAMES
+The following field names are valid:
+.PP
+.nf
+Group/Title
+Username
+Password
+URL
+AutoType
+Created Time
+Password Modified Time
+Last Access Time
+Password Expiry Date
+Record Modified Time
+History
+Notes
+Group
+Title
+Password Policy
+Password Expiry Interval
+Run Command
+DCA
+e-mail
+Protected
+UUID
+Symbols
+Shift+DCA
+Password Policy Name
+Keyboard Shortcut
+Two Factor Key
+Authentication Code Config
+Authentication Code Length
+Authentication Code Time Step
+Authentication Code Start Time
+.fi
+.PP
+Field names and values that contain whitespace characters must be quoted.
+For example:
+.PP
+.nf
+--subset="Run Command"=="remmina -c rdp://${user}:${password}@${url}"
+.fi
+.SH TIME VALUES
+Times are expected in Universal Time Coordinated (UTC) format: YYYY/MM/DD hh:mm:ss.
+The current time may also be referenced using the keyword
+.B now
+\&.
+.SH SECURITY
+Passing
+.B --passphrase
+or
+.B --passphrase2
+on the command line can expose passphrases through shell history or process
+inspection. The application notes that these options should be avoided when
+possible; use the interactive passphrase prompt instead.
+.SH AUTHOR
+Rony Shapiro <ronys at pwsafe dot org>
