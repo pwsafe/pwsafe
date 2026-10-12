@@ -84,6 +84,7 @@
 		A2FE25911C5ACF7500210C36 /* PWSfileHeader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25891C5ACF7500210C36 /* PWSfileHeader.cpp */; };
 		A2FE25921C5ACF7500210C36 /* PWSfileV4.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE258B1C5ACF7500210C36 /* PWSfileV4.cpp */; };
 		A2FE25951C5ACFBD00210C36 /* PWStime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25931C5ACFBD00210C36 /* PWStime.cpp */; };
+		A2FE25FC1C5ACFBD00210C37 /* PWSversion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25FA1C5ACFBD00210C37 /* PWSversion.cpp */; };
 		A6F2B3362832B0380096A7E4 /* QueryCancelDlg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A6F2B3342832B0380096A7E4 /* QueryCancelDlg.cpp */; };
 		AC5EDDE42FFED65D0073460C /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E6B1449312B26D7E00415AAE /* IOKit.framework */; };
 		AC5EDDE52FFED6650073460C /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E69B800911F61CF20084F6C4 /* Carbon.framework */; };
@@ -237,7 +238,6 @@
 		E6EE842E11E87E9800B01518 /* PWSFilters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83C211E87E9700B01518 /* PWSFilters.cpp */; };
 		E6EE842F11E87E9800B01518 /* PWSprefs.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83C511E87E9700B01518 /* PWSprefs.cpp */; };
 		E6EE843011E87E9800B01518 /* PWSrand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83C711E87E9700B01518 /* PWSrand.cpp */; };
-		A2FE25FC1C5ACFBD00210C37 /* PWSversion.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2FE25FA1C5ACFBD00210C37 /* PWSversion.cpp */; };
 		E6EE843111E87E9800B01518 /* Report.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83C911E87E9700B01518 /* Report.cpp */; };
 		E6EE843411E87E9800B01518 /* StringX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83CF11E87E9700B01518 /* StringX.cpp */; };
 		E6EE843511E87E9800B01518 /* SysInfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E6EE83D211E87E9700B01518 /* SysInfo.cpp */; };
@@ -462,6 +462,8 @@
 		A2FE258C1C5ACF7500210C36 /* PWSfileV4.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSfileV4.h; sourceTree = "<group>"; };
 		A2FE25931C5ACFBD00210C36 /* PWStime.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWStime.cpp; sourceTree = "<group>"; };
 		A2FE25941C5ACFBD00210C36 /* PWStime.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWStime.h; sourceTree = "<group>"; };
+		A2FE25FA1C5ACFBD00210C37 /* PWSversion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWSversion.cpp; sourceTree = "<group>"; };
+		A2FE25FB1C5ACFBD00210C37 /* PWSversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSversion.h; sourceTree = "<group>"; };
 		A6F2B3342832B0380096A7E4 /* QueryCancelDlg.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = QueryCancelDlg.cpp; sourceTree = "<group>"; };
 		A6F2B3352832B0380096A7E4 /* QueryCancelDlg.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QueryCancelDlg.h; sourceTree = "<group>"; };
 		CFCF44E69E4F10C70F501F84 /* base32.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = base32.h; path = crypto/external/Chromium/base32.h; sourceTree = "<group>"; };
@@ -970,8 +972,6 @@
 		E6EE83C611E87E9700B01518 /* PWSprefs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSprefs.h; sourceTree = "<group>"; };
 		E6EE83C711E87E9700B01518 /* PWSrand.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWSrand.cpp; sourceTree = "<group>"; };
 		E6EE83C811E87E9700B01518 /* PWSrand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSrand.h; sourceTree = "<group>"; };
-		A2FE25FA1C5ACFBD00210C37 /* PWSversion.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PWSversion.cpp; sourceTree = "<group>"; };
-		A2FE25FB1C5ACFBD00210C37 /* PWSversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PWSversion.h; sourceTree = "<group>"; };
 		E6EE83C911E87E9700B01518 /* Report.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Report.cpp; sourceTree = "<group>"; };
 		E6EE83CA11E87E9700B01518 /* Report.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Report.h; sourceTree = "<group>"; };
 		E6EE83CF11E87E9700B01518 /* StringX.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StringX.cpp; sourceTree = "<group>"; };
@@ -2080,7 +2080,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1640;
+				LastUpgradeCheck = 2710;
 				ORGANIZATIONNAME = "Open Source Software";
 				TargetAttributes = {
 					E66D292E1D02B49B00C9BCBF = {
@@ -2132,6 +2132,25 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		A2FE25FE1C5ACFBD00210C37 /* Generate version.h */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				../src/ui/wxWidgets/version.in,
+				../Misc/mkversion.pl,
+				../version.wx,
+			);
+			name = "Generate version.h";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/version.h",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "make -C .. -f Makefile.macos \"VERSION_H=${DERIVED_FILE_DIR}/version.h\" version-h\n";
+			showEnvVarsInLog = 0;
+		};
 		E690B54212980CFC007EA508 /* Default English Help */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2185,25 +2204,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "echo \"Generating core_st.cpp and core_st.h ...\"\n\"${PROJECT_DIR}\"/../Misc/rc2cpp.pl \"${PROJECT_DIR}\"/../src/core/core.rc2\n";
-		};
-		A2FE25FE1C5ACFBD00210C37 /* Generate version.h */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				../src/ui/wxWidgets/version.in,
-				../Misc/mkversion.pl,
-				../version.wx,
-			);
-			name = "Generate version.h";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/version.h",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "make -C .. -f Makefile.macos \"VERSION_H=${DERIVED_FILE_DIR}/version.h\" version-h\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -2571,7 +2571,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				PRODUCT_NAME = core;
-				USER_HEADER_SEARCH_PATHS = "../src/ $(DERIVED_FILE_DIR)";
+				USER_HEADER_SEARCH_PATHS = (
+					../src/,
+					"$(DERIVED_FILE_DIR)",
+				);
 				WARNING_CFLAGS = (
 					"$(inherited)",
 					"-Wextra",
@@ -2617,7 +2620,10 @@
 				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
-				USER_HEADER_SEARCH_PATHS = "../src $(DERIVED_FILE_DIR)";
+				USER_HEADER_SEARCH_PATHS = (
+					../src,
+					"$(DERIVED_FILE_DIR)",
+				);
 			};
 			name = "Debug-no-yubi";
 		};
@@ -2901,7 +2907,10 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				PRODUCT_NAME = core;
-				USER_HEADER_SEARCH_PATHS = "../src/ $(DERIVED_FILE_DIR)";
+				USER_HEADER_SEARCH_PATHS = (
+					../src/,
+					"$(DERIVED_FILE_DIR)",
+				);
 				WARNING_CFLAGS = (
 					"$(inherited)",
 					"-Wextra",
@@ -2950,7 +2959,10 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
-				USER_HEADER_SEARCH_PATHS = "../src $(DERIVED_FILE_DIR)";
+				USER_HEADER_SEARCH_PATHS = (
+					../src,
+					"$(DERIVED_FILE_DIR)",
+				);
 			};
 			name = "Homebrew-Release";
 		};
@@ -3267,7 +3279,10 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				PRODUCT_NAME = core;
-				USER_HEADER_SEARCH_PATHS = "../src/ $(DERIVED_FILE_DIR)";
+				USER_HEADER_SEARCH_PATHS = (
+					../src/,
+					"$(DERIVED_FILE_DIR)",
+				);
 				WARNING_CFLAGS = (
 					"$(inherited)",
 					"-Wextra",
@@ -3282,7 +3297,10 @@
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				PRODUCT_NAME = core;
-				USER_HEADER_SEARCH_PATHS = "../src/ $(DERIVED_FILE_DIR)";
+				USER_HEADER_SEARCH_PATHS = (
+					../src/,
+					"$(DERIVED_FILE_DIR)",
+				);
 				WARNING_CFLAGS = (
 					"$(inherited)",
 					"-Wextra",
@@ -3352,7 +3370,10 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
-				USER_HEADER_SEARCH_PATHS = "../src $(DERIVED_FILE_DIR)";
+				USER_HEADER_SEARCH_PATHS = (
+					../src,
+					"$(DERIVED_FILE_DIR)",
+				);
 			};
 			name = Debug;
 		};
@@ -3378,7 +3399,10 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.pwsafe.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = pwsafe;
-				USER_HEADER_SEARCH_PATHS = "../src $(DERIVED_FILE_DIR)";
+				USER_HEADER_SEARCH_PATHS = (
+					../src,
+					"$(DERIVED_FILE_DIR)",
+				);
 			};
 			name = Release;
 		};
