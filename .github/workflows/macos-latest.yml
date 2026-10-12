@@ -30,7 +30,7 @@ jobs:
       # "XCODE_CONFIG:  Debug"
       # "XCODE_CONFIG:  Debug-no-yubi"
       # WX_VERS can be a tag or branch name
-      WX_VERS:          v3.2.10
+      WX_VERS:          v3.2.12
       WX_SRC_DIR:       ${{ github.workspace }}/wxWidgets
       WX_BUILD_DIR:     ${{ github.workspace }}/wxWidgets/static-release
       WX_ARCH:          "arm64,x86_64"
