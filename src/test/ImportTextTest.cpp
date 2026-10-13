@@ -178,6 +178,82 @@ TEST_F(ImportTextTest, test5)
   EXPECT_EQ(item1.GetURL(), L"http://acme.org");
 }
 
+class SelectedTotpFieldsTest : public ImportTextTest,
+                             public ::testing::WithParamInterface<unsigned int>
+{
+};
+
+TEST_P(SelectedTotpFieldsTest, export_import_roundtrip)
+{
+  const stringT exportFile = _T("import-text-unit-test-selected-totp.txt");
+  pws_os::DeleteAFile(exportFile);
+
+  PWScore exportCore;
+  CItemData ci;
+  ci.CreateUUID();
+  ci.SetGroup(_T("accounts"));
+  ci.SetTitle(_T("totp"));
+  ci.SetUser(_T("user"));
+  ci.SetPassword(_T("password"));
+  ci.SetTwoFactorKey(_T("JBSWY3DPEHPK3PXP"));
+  ASSERT_TRUE(ci.SetTotpConfig(_T("1")));
+  ci.SetTotpStartTime(time_t(946684800));
+  ASSERT_TRUE(ci.SetTotpTimeStep(_T("60")));
+  ASSERT_TRUE(ci.SetTotpLength(_T("8")));
+  ci.SetURL(_T("https://example.com"));
+  ci.SetNotes(_T("Notes after the TOTP fields"));
+
+  Command *pcmd = AddEntryCommand::Create(&exportCore, ci);
+  ASSERT_NE(pcmd, nullptr);
+  ASSERT_EQ(exportCore.Execute(pcmd), 0);
+  exportCore.ClearCommands();
+
+  const CItemData::FieldType totpFields[] = {
+    CItemData::TOTPCONFIG, CItemData::TOTPSTARTTIME,
+    CItemData::TOTPTIMESTEP, CItemData::TOTPLENGTH
+  };
+  const CItemData defaults;
+
+  CItemData::FieldBits bsFields;
+  bsFields.set(CItemData::GROUP);
+  bsFields.set(CItemData::TITLE);
+  bsFields.set(CItemData::USER);
+  bsFields.set(CItemData::PASSWORD);
+  bsFields.set(CItemData::TWOFACTORKEY);
+  bsFields.set(CItemData::URL);
+  bsFields.set(CItemData::NOTES);
+  for (size_t i = 0; i < NumberOf(totpFields); ++i)
+    bsFields.set(totpFields[i], (GetParam() & (1U << i)) != 0);
+
+  int numExported(0);
+  CReport rpt;
+  ASSERT_EQ(exportCore.WritePlaintextFile(StringX(exportFile.c_str()), bsFields,
+                                        _T(""), 0, 0, TCHAR('\xbb'),
+                                        numExported, nullptr, &rpt),
+            PWScore::SUCCESS);
+  EXPECT_EQ(numExported, 1);
+
+  importText(exportFile, TCHAR('\t'), 1);
+  auto iter = core.Find(ci.GetGroup(), ci.GetTitle(), ci.GetUser());
+  ASSERT_NE(iter, core.GetEntryEndIter());
+  const auto item = core.GetEntry(iter);
+  EXPECT_EQ(item.GetPassword(), ci.GetPassword());
+  EXPECT_EQ(item.GetTwoFactorKey(), ci.GetTwoFactorKey());
+  for (size_t i = 0; i < NumberOf(totpFields); ++i) {
+    const auto field = totpFields[i];
+    EXPECT_EQ(item.GetFieldValue(field),
+              bsFields.test(field) ? ci.GetFieldValue(field) : defaults.GetFieldValue(field));
+  }
+  EXPECT_EQ(item.GetURL(), ci.GetURL());
+  EXPECT_EQ(item.GetNotes(), ci.GetNotes());
+
+  EXPECT_TRUE(pws_os::DeleteAFile(exportFile));
+}
+
+// Exercise each parameter independently, together, and omitted.
+INSTANTIATE_TEST_SUITE_P(SelectedFields, SelectedTotpFieldsTest,
+                        ::testing::Range(0U, 16U));
+
 TEST_F(ImportTextTest, export_import_custom_fields_roundtrip)
 {
   const stringT exportFile = _T("import-text-unit-test-customfields.txt");
