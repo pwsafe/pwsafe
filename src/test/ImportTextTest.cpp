@@ -214,14 +214,14 @@ TEST_P(SelectedTotpFieldsTest, export_import_roundtrip)
   };
   const CItemData defaults;
 
+  const CItemData::FieldType selectedFields[] = {
+    CItemData::GROUP, CItemData::TITLE, CItemData::USER,
+    CItemData::PASSWORD, CItemData::TWOFACTORKEY,
+    CItemData::URL, CItemData::NOTES
+  };
   CItemData::FieldBits bsFields;
-  bsFields.set(CItemData::GROUP);
-  bsFields.set(CItemData::TITLE);
-  bsFields.set(CItemData::USER);
-  bsFields.set(CItemData::PASSWORD);
-  bsFields.set(CItemData::TWOFACTORKEY);
-  bsFields.set(CItemData::URL);
-  bsFields.set(CItemData::NOTES);
+  for (const auto field : selectedFields)
+    bsFields.set(field);
   for (size_t i = 0; i < NumberOf(totpFields); ++i)
     bsFields.set(totpFields[i], (GetParam() & (1U << i)) != 0);
 
