@@ -201,6 +201,7 @@ TEST_P(SelectedTotpFieldsTest, export_import_roundtrip)
   ASSERT_TRUE(ci.SetTotpTimeStep(_T("60")));
   ASSERT_TRUE(ci.SetTotpLength(_T("8")));
   ci.SetURL(_T("https://example.com"));
+  ci.SetAutoType(_T("\\u\\t\\p\\n"));
   ci.SetNotes(_T("Notes after the TOTP fields"));
 
   Command *pcmd = AddEntryCommand::Create(&exportCore, ci);
@@ -208,22 +209,22 @@ TEST_P(SelectedTotpFieldsTest, export_import_roundtrip)
   ASSERT_EQ(exportCore.Execute(pcmd), 0);
   exportCore.ClearCommands();
 
-  const CItemData::FieldType totpFields[] = {
+  const CItemData::FieldType optionalFields[] = {
     CItemData::TOTPCONFIG, CItemData::TOTPSTARTTIME,
-    CItemData::TOTPTIMESTEP, CItemData::TOTPLENGTH
+    CItemData::TOTPTIMESTEP, CItemData::TOTPLENGTH,
+    CItemData::URL, CItemData::AUTOTYPE
   };
   const CItemData defaults;
 
   const CItemData::FieldType selectedFields[] = {
     CItemData::GROUP, CItemData::TITLE, CItemData::USER,
-    CItemData::PASSWORD, CItemData::TWOFACTORKEY,
-    CItemData::URL, CItemData::NOTES
+    CItemData::PASSWORD, CItemData::TWOFACTORKEY, CItemData::NOTES
   };
   CItemData::FieldBits bsFields;
   for (const auto field : selectedFields)
     bsFields.set(field);
-  for (size_t i = 0; i < NumberOf(totpFields); ++i)
-    bsFields.set(totpFields[i], (GetParam() & (1U << i)) != 0);
+  for (size_t i = 0; i < NumberOf(optionalFields); ++i)
+    bsFields.set(optionalFields[i], (GetParam() & (1U << i)) != 0);
 
   int numExported(0);
   CReport rpt;
@@ -239,20 +240,18 @@ TEST_P(SelectedTotpFieldsTest, export_import_roundtrip)
   const auto item = core.GetEntry(iter);
   EXPECT_EQ(item.GetPassword(), ci.GetPassword());
   EXPECT_EQ(item.GetTwoFactorKey(), ci.GetTwoFactorKey());
-  for (size_t i = 0; i < NumberOf(totpFields); ++i) {
-    const auto field = totpFields[i];
+  for (const auto field : optionalFields) {
     EXPECT_EQ(item.GetFieldValue(field),
               bsFields.test(field) ? ci.GetFieldValue(field) : defaults.GetFieldValue(field));
   }
-  EXPECT_EQ(item.GetURL(), ci.GetURL());
   EXPECT_EQ(item.GetNotes(), ci.GetNotes());
 
   EXPECT_TRUE(pws_os::DeleteAFile(exportFile));
 }
 
-// Exercise each parameter independently, together, and omitted.
+// Exercise every selection of the TOTP parameters, URL, and AutoType.
 INSTANTIATE_TEST_SUITE_P(SelectedFields, SelectedTotpFieldsTest,
-                        ::testing::Range(0U, 16U));
+                        ::testing::Range(0U, 64U));
 
 TEST_F(ImportTextTest, export_import_custom_fields_roundtrip)
 {
