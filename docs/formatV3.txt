@@ -88,7 +88,7 @@ and END fields are mandatory. Aside from these two fields, no order is
 assumed on the field types.
 
 2.9.2 R1..Rn: The actual database records. Each record consists of one or
-more typed fields (as defined in Section 3.2), terminated by the 'END' type
+more typed fields (as defined in Section 3.3), terminated by the 'END' type
 field. The UUID, Title, and Password fields are mandatory. All non-
 mandatory fields may either be absent or have zero length. When a field is
 absent or zero-length, its default value shall be used. Aside from the
