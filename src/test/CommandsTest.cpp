@@ -16,13 +16,6 @@
 
 #include "gtest/gtest.h"
 
-// A fixture for factoring common code across tests
-class CommandsTest : public ::testing::Test
-{
-protected:
-  CommandsTest() {}
-};
-
 namespace {
   // A reusable observer that records every UpdateGUI call so individual
   // tests can assert on which GUI actions were fired and how many times.
@@ -43,12 +36,28 @@ namespace {
   };
 }
 
+// A fixture for factoring common code across tests
+class CommandsTest : public ::testing::Test
+{
+protected:
+  PWScore core;
+  TestGUIObserver observer;
+
+  void SetUp() override {
+    core.RegisterObserver(&observer);
+  }
+
+  void TearDown() override {
+    core.UnregisterObserver(&observer);
+    core.ClearCommands();
+  }
+};
+
 
 // And now the tests...
 
 TEST_F(CommandsTest, AddItem)
 {
-  PWScore core;
   CItemData di;
   di.CreateUUID();
   di.SetTitle(L"a title");
@@ -66,14 +75,10 @@ TEST_F(CommandsTest, AddItem)
   core.Undo();
   EXPECT_FALSE(core.HasDBChanged());
   EXPECT_EQ(0U, core.GetNumEntries());
-
-  // Get core to delete any existing commands
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, DeleteEntry)
 {
-  PWScore core;
   CItemData ci;
   ci.CreateUUID();
   ci.SetTitle(L"blue rabbit");
@@ -185,13 +190,10 @@ TEST_F(CommandsTest, DeleteEntry)
   // Undoing dependent deletion when the dependent entry already exists in core - does nothing
   delDepCmd->Undo();
   EXPECT_EQ(2U, core.GetNumEntries());
-
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest,DeleteEntryWithAttachment)
 {
-  PWScore core;
   CItemAtt ai;
   pws_os::CUUID attUuid;
   time_t cTime = 1665220859;
@@ -222,7 +224,6 @@ TEST_F(CommandsTest,DeleteEntryWithAttachment)
   ci.SetPassword(L"sundown jelly");
   ci.SetAttUUID(attUuid);
 
-
   core.Execute(AddEntryCommand::Create(&core, ci, pws_os::CUUID::NullUUID(), &ai));
   EXPECT_EQ(1U, core.GetNumEntries());
   EXPECT_EQ(1U, core.GetNumAtts());
@@ -233,13 +234,10 @@ TEST_F(CommandsTest,DeleteEntryWithAttachment)
   core.Undo();
   EXPECT_EQ(1U, core.GetNumEntries());
   EXPECT_EQ(1U, core.GetNumAtts());
-    // Get core to delete any existing commands
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, CreateShortcutEntry)
 {
-  PWScore core;
   CItemData bi, si;
   bi.CreateUUID();
   bi.SetTitle(L"base entry");
@@ -254,7 +252,7 @@ TEST_F(CommandsTest, CreateShortcutEntry)
   time_t t;
   time(&t);
   si.SetCTime(t);
-  si.SetXTime(0L);
+  si.SetXTime(time_t{0});
   si.SetStatus(CItemData::ES_ADDED);
 
   MultiCommands *pmulticmds = MultiCommands::Create(&core);
@@ -307,7 +305,6 @@ TEST_F(CommandsTest, CreateShortcutEntry)
 
 TEST_F(CommandsTest, EditEntry)
 {
-  PWScore core;
   CItemData it;
   it.CreateUUID();
   it.SetTitle(L"NoDrama");
@@ -341,14 +338,10 @@ TEST_F(CommandsTest, EditEntry)
   core.Redo();
   EXPECT_TRUE(core.HasDBChanged());
   EXPECT_EQ(1U, core.GetNumEntries());
-
-  // Get core to delete any existing commands
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, RenameGroup)
 {
-  PWScore core;
   CItemData di;
   di.CreateUUID();
   di.SetTitle(L"b title");
@@ -375,14 +368,10 @@ TEST_F(CommandsTest, RenameGroup)
   iter = core.Find(uuid);
   ASSERT_NE(core.GetEntryEndIter(), iter);
   EXPECT_EQ(core.GetEntry(iter).GetGroup(), L"Group0.Alpha");
-
-  // Get core to delete any existing commands
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, CountGroups)
 {
-  PWScore core;
   CItemData di;
   std::vector<stringT> vGroups;
 
@@ -421,15 +410,10 @@ TEST_F(CommandsTest, CountGroups)
 
   core.GetAllGroups(vGroups);
   EXPECT_EQ(3U, vGroups.size());
-
-  // Get core to delete any existing commands
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, UpdatePassword)
 {
-  PWScore core;
-
   const int32 i1day = 86400; // 24 * 60 * 60 seconds
   const StringX sxOldPassword(L"MoreWideF1ns");
   const StringX sxNewPassword(L"ManifestQuin1ne");
@@ -510,14 +494,10 @@ TEST_F(CommandsTest, UpdatePassword)
     EXPECT_EQ(sxOldPassword, pwhl[0].password);
     EXPECT_EQ(tPMtime, pwhl[0].changetttdate);
   }
-
-  // Get core to delete any existing commands
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, UpdatePasswordHistory)
 {
-  PWScore core;
   CItemData item, protectedItem;
   item.CreateUUID();
   item.SetPWHistory(L"");
@@ -530,7 +510,7 @@ TEST_F(CommandsTest, UpdatePasswordHistory)
   addCmd->Add(AddEntryCommand::Create(&core, protectedItem));
   core.Execute(addCmd);
 
-  auto getHistory = [&core](const pws_os::CUUID &uuid) {
+  auto getHistory = [this](const pws_os::CUUID &uuid) {
     return core.GetEntry(core.Find(uuid)).GetPWHistory();
   };
 
@@ -557,14 +537,10 @@ TEST_F(CommandsTest, UpdatePasswordHistory)
   core.Undo();
   EXPECT_EQ(L"00200", getHistory(item.GetUUID()));
   EXPECT_EQ(L"10200", getHistory(protectedItem.GetUUID()));
-
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, ChangeDBHeaderCommand)
 {
-  PWScore core;
-
   // Initially header fields are empty
   EXPECT_TRUE(core.GetHeaderItem(PWSfile::HDR_DBNAME).empty());
   EXPECT_TRUE(core.GetHeaderItem(PWSfile::HDR_DBDESC).empty());
@@ -611,13 +587,10 @@ TEST_F(CommandsTest, ChangeDBHeaderCommand)
   core.Execute(ChangeDBHeaderCommand::Create(&core, L"ReadOnlyAttempt", PWSfile::HDR_DBNAME));
   EXPECT_EQ(sxSameName, core.GetHeaderItem(PWSfile::HDR_DBNAME));
   core.SetReadOnly(false);
-
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, UpdateEntry)
 {
-  PWScore core;
   CItemData it;
   it.CreateUUID();
   time_t t;
@@ -660,14 +633,10 @@ TEST_F(CommandsTest, UpdateEntry)
   core.Redo();
   iter = core.Find(it.GetUUID());
   EXPECT_EQ(core.GetEntry(iter).GetPassword(), newPassword);
-
-  // Get core to delete any existing commands
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, MultiCommandsFindCommand)
 {
-  PWScore core;
   MultiCommands *pmulticmds = MultiCommands::Create(&core);
 
   EXPECT_EQ(nullptr, pmulticmds->FindCommand(typeid(AddEntryCommand)));
@@ -685,13 +654,10 @@ TEST_F(CommandsTest, MultiCommandsFindCommand)
   EXPECT_EQ(renameCmd, pmulticmds->FindCommand(typeid(RenameGroupCommand)));
 
   EXPECT_EQ(nullptr, pmulticmds->FindCommand(typeid(DeleteEntryCommand)));
-
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, MultiCommandsInsert)
 {
-  PWScore core;
   MultiCommands *pmulticmds = MultiCommands::Create(&core);
 
   CItemData ci1;
@@ -727,13 +693,10 @@ TEST_F(CommandsTest, MultiCommandsInsert)
 
   core.Undo();
   EXPECT_EQ(0U, core.GetNumEntries());
-
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, MultiCommandsGetRC)
 {
-  PWScore core;
   MultiCommands *pmulticmds = MultiCommands::Create(&core);
 
   CItemData ci1;
@@ -794,16 +757,10 @@ TEST_F(CommandsTest, MultiCommandsGetRC)
   rc = -999;
   EXPECT_FALSE(pmulticmds->GetRC(size_t{3}, rc));
   EXPECT_EQ(0, rc);
-
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, UpdateGUICommand)
 {
-  PWScore core;
-  TestGUIObserver observer;
-  core.RegisterObserver(&observer);
-
   const pws_os::CUUID testUuid;
 
   // 1. WN_UNDO: Execute does not notify, Undo does notify
@@ -847,13 +804,10 @@ TEST_F(CommandsTest, UpdateGUICommand)
   EXPECT_TRUE(observer.calls.empty());
 
   delete cmdExecOnly;
-  core.UnregisterObserver(&observer);
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, EditAndDeleteAttachment)
 {
-  PWScore core;
   CItemAtt ai;
   pws_os::CUUID attUuid;
   time_t cTime = 1665220859L;
@@ -903,14 +857,10 @@ TEST_F(CommandsTest, EditAndDeleteAttachment)
 
   core.Redo();
   EXPECT_FALSE(core.HasAtt(attUuid));
-
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, AddAndRemoveDependentEntry)
 {
-  PWScore core;
-
   // Test shortcut entry
   CItemData sbase, sdep;
   sbase.CreateUUID();
@@ -992,14 +942,10 @@ TEST_F(CommandsTest, AddAndRemoveDependentEntry)
 
   core.Redo();
   EXPECT_EQ(1U, core.NumAliases(abase.GetUUID()));
-
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, AddAndMoveDependentEntries)
 {
-  PWScore core;
-
   CItemData base1, base2, base3, dep1, dep2, dep3;
   base1.CreateUUID();
   base1.SetTitle(L"shortcut base 1");
@@ -1096,13 +1042,10 @@ TEST_F(CommandsTest, AddAndMoveDependentEntries)
   core.Redo();
   EXPECT_EQ(0U, core.NumAliases(base3.GetUUID()));
   EXPECT_EQ(1U, core.NumAliases(base2.GetUUID()));
-
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, PolicyCommands)
 {
-  PWScore core;
   PSWDPolicyMap policies;
 
   PWPolicy initialPolicy;
@@ -1176,14 +1119,10 @@ TEST_F(CommandsTest, PolicyCommands)
 
   core.Redo();
   EXPECT_EQ(0U, policies.size());
-
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, DBPolicyNamesCommand)
 {
-  PWScore core;
-
   PWPolicy pol1, pol2, pol3;
   pol1.flags  = PWPolicy::UseDigits | PWPolicy::UseLowercase;
   pol1.length = 12;
@@ -1263,9 +1202,7 @@ TEST_F(CommandsTest, DBPolicyNamesCommand)
 
   // --- GUI notification: observer is called on Execute and on Undo ---
 
-  TestGUIObserver observer;
-  core.RegisterObserver(&observer);
-
+  observer.calls.clear();
   auto pcmd = DBPolicyNamesCommand::Create(&core, name3, pol3);
   // same as in the UpdateGUICommand command test, execute the command directly to avoid the UI notifications
   // generated by core - these are out of scope for this test
@@ -1290,17 +1227,10 @@ TEST_F(CommandsTest, DBPolicyNamesCommand)
   silentCmd->Undo();
   EXPECT_TRUE(observer.calls.empty());
   delete silentCmd;
-
-  core.UnregisterObserver(&observer);
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, DBEmptyGroupsCommand)
 {
-  PWScore core;
-  TestGUIObserver observer;
-  core.RegisterObserver(&observer);
-
   // initial setup
   const StringX group1(L"Group1");
   const StringX group2(L"Group2");
@@ -1409,17 +1339,10 @@ TEST_F(CommandsTest, DBEmptyGroupsCommand)
   EXPECT_EQ((std::vector{group1, group1a, group3}), core.GetEmptyGroups());
   EXPECT_TRUE(observer.calls.empty());
   delete cmd;
-
-  core.UnregisterObserver(&observer);
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, DBFiltersCommand)
 {
-  PWScore core;
-  TestGUIObserver observer;
-  core.RegisterObserver(&observer);
-
   st_Filterkey key{FPOOL_DATABASE, L"Database filter"};
   st_filters filter;
   filter.fname = L"Database filter";
@@ -1473,17 +1396,11 @@ TEST_F(CommandsTest, DBFiltersCommand)
   EXPECT_TRUE(core.GetDBFilters().empty());
   EXPECT_TRUE(observer.calls.empty());
   delete cmd;
-
-  core.UnregisterObserver(&observer);
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, DBPrefsCommand)
 {
-  PWScore core;
   PWSprefs *prefs = PWSprefs::GetInstance();
-  TestGUIObserver observer;
-  core.RegisterObserver(&observer);
 
   const StringX oldPrefs = prefs->Store();
   const uint32 oldHashIters = core.GetHashIters();
@@ -1544,8 +1461,5 @@ TEST_F(CommandsTest, DBPrefsCommand)
   EXPECT_EQ(oldHashIters, core.GetHashIters());
   EXPECT_TRUE(observer.calls.empty());
   delete cmd;
-
-  core.UnregisterObserver(&observer);
-  core.ClearCommands();
 }
 
