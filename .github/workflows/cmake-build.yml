@@ -57,7 +57,7 @@ jobs:
 
     - name: Upload Linux Artifacts
       if: ${{ runner.os == 'Linux' }}
-      uses: actions/upload-artifact@v7.0.1
+      uses: actions/upload-artifact@v7.0.2
       with:
         name: PasswordSafe-${{ matrix.os }}.${{ github.sha }}
         path: build/p*.deb
@@ -69,7 +69,7 @@ jobs:
 
     - name: Upload Windows Artifact
       if: ${{ runner.os == 'Windows' }}
-      uses: actions/upload-artifact@v7.0.1
+      uses: actions/upload-artifact@v7.0.2
       with:
         name: PasswordSafe-Windows-7Z.${{ github.sha }}
         path: build/passwordsafe-*.7z
