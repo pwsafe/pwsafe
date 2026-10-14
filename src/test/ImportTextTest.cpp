@@ -178,6 +178,16 @@ TEST_F(ImportTextTest, test5)
   EXPECT_EQ(item1.GetURL(), L"http://acme.org");
 }
 
+namespace {
+
+const CItemData::FieldType optionalFields[] = {
+  CItemData::TOTPCONFIG, CItemData::TOTPSTARTTIME,
+  CItemData::TOTPTIMESTEP, CItemData::TOTPLENGTH,
+  CItemData::URL, CItemData::AUTOTYPE
+};
+
+} // namespace
+
 class SelectedTotpFieldsTest : public ImportTextTest,
                              public ::testing::WithParamInterface<unsigned int>
 {
@@ -209,11 +219,6 @@ TEST_P(SelectedTotpFieldsTest, export_import_roundtrip)
   ASSERT_EQ(exportCore.Execute(pcmd), 0);
   exportCore.ClearCommands();
 
-  const CItemData::FieldType optionalFields[] = {
-    CItemData::TOTPCONFIG, CItemData::TOTPSTARTTIME,
-    CItemData::TOTPTIMESTEP, CItemData::TOTPLENGTH,
-    CItemData::URL, CItemData::AUTOTYPE
-  };
   const CItemData defaults;
 
   const CItemData::FieldType selectedFields[] = {
@@ -251,7 +256,7 @@ TEST_P(SelectedTotpFieldsTest, export_import_roundtrip)
 
 // Exercise every selection of the TOTP parameters, URL, and AutoType.
 INSTANTIATE_TEST_SUITE_P(SelectedFields, SelectedTotpFieldsTest,
-                        ::testing::Range(0U, 64U));
+                        ::testing::Range(0U, 1U << NumberOf(optionalFields)));
 
 TEST_F(ImportTextTest, export_import_custom_fields_roundtrip)
 {
