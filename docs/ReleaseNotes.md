@@ -13,7 +13,7 @@ Bugs fixed in 3.73.0
 
 New Features in 3.73.0
 ----------------------
-* [GH1938](https://github.com/pwsafe/pwsafe/issues/1938) Alias entries may now have their own 2-factor (TOTP) authentiation key. If present, this will be used instead of the base entry's.
+* [GH1938](https://github.com/pwsafe/pwsafe/issues/1938) Alias entries may now have their own 2-factor (TOTP) authentication key. If present, this will be used instead of the base entry's.
 
 PasswordSafe 3.72.2 Release September 6 2026
 ============================================
