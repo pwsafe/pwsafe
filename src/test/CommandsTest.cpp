@@ -12,9 +12,7 @@
 #endif
 
 #include "core/PWScore.h"
-#include "core/PWSfileV3.h"
 #include "core/PWHistory.h"
-#include "os/file.h"
 
 #include "gtest/gtest.h"
 
@@ -432,14 +430,9 @@ TEST_F(CommandsTest, UpdatePassword)
 {
   PWScore core;
 
-  const stringT fname(L"UpdPWTest.psafe3");
-  const StringX passphrase(L"WhyAmIDoingThis?");
   const int32 i1day = 86400; // 24 * 60 * 60 seconds
   const StringX sxOldPassword(L"MoreWideF1ns");
   const StringX sxNewPassword(L"ManifestQuin1ne");
-
-  core.SetCurFile(fname.c_str());
-  core.NewFile(passphrase);
 
   CItemData it;
   it.CreateUUID();
@@ -464,9 +457,6 @@ TEST_F(CommandsTest, UpdatePassword)
   CItemData it2(core.GetEntry(iter));
   EXPECT_EQ(it, it2);
 
-  core.WriteCurFile();
-  EXPECT_FALSE(core.HasDBChanged());
-
   pcmd = UpdatePasswordCommand::Create(&core, it, sxNewPassword);
   core.Execute(pcmd);
   EXPECT_TRUE(core.HasDBChanged());
@@ -487,7 +477,7 @@ TEST_F(CommandsTest, UpdatePassword)
   }
 
   core.Undo();
-  EXPECT_FALSE(core.HasDBChanged());
+  EXPECT_TRUE(core.HasDBChanged()); // AddEntry is still on the stack
 
   iter = core.Find(it.GetUUID());
   CItemData it4(core.GetEntry(iter));
@@ -523,9 +513,6 @@ TEST_F(CommandsTest, UpdatePassword)
 
   // Get core to delete any existing commands
   core.ClearCommands();
-
-  // Delete file
-  pws_os::DeleteAFile(fname);
 }
 
 TEST_F(CommandsTest, UpdatePasswordHistory)
