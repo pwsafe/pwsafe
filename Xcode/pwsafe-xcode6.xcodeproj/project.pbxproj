@@ -44,6 +44,8 @@
 		578DF902302813A20045582C /* media.cpp in Sources */ = {isa = PBXBuildFile; fileRef = A2D181451C8FF86C0018AE03 /* media.cpp */; };
 		579BDA4F2C55F0A1004C727B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 579BDA4E2C55F0A1004C727B /* Assets.xcassets */; };
 		57BD7D042B19BEC2005C0123 /* helpEN.zip in Resources */ = {isa = PBXBuildFile; fileRef = E690B95612984B1D007EA508 /* helpEN.zip */; };
+		57C4BD5F3080A8F7002239F7 /* pwsafe.1 in Resources */ = {isa = PBXBuildFile; fileRef = 57C4BD5E3080A8F7002239F7 /* pwsafe.1 */; };
+		57C4BD613080A909002239F7 /* pwsafe-cli.1 in Resources */ = {isa = PBXBuildFile; fileRef = 57C4BD603080A909002239F7 /* pwsafe-cli.1 */; };
 		57D4306F303D3B1300867684 /* PWSLocale.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57D4306E303D3B1300867684 /* PWSLocale.cpp */; };
 		57E951B42DE9377000DE9640 /* libcore.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB80311956A93004E2BE5 /* libcore.a */; };
 		57E951B52DE9377500DE9640 /* libos.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E6ADB91C11956DD0004E2BE5 /* libos.a */; };
@@ -402,6 +404,8 @@
 		579BDA4E2C55F0A1004C727B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		57C329E72A070EFD00454292 /* ReleaseNotesWX.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotesWX.md; path = ../docs/ReleaseNotesWX.md; sourceTree = "<group>"; };
 		57C329E82A0715F500454292 /* ReleaseNotes.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = ReleaseNotes.md; path = ../docs/ReleaseNotes.md; sourceTree = "<group>"; };
+		57C4BD5E3080A8F7002239F7 /* pwsafe.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; name = pwsafe.1; path = ../docs/pwsafe.1; sourceTree = SOURCE_ROOT; };
+		57C4BD603080A909002239F7 /* pwsafe-cli.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; name = "pwsafe-cli.1"; path = "../docs/pwsafe-cli.1"; sourceTree = SOURCE_ROOT; };
 		57CC07053033D4FC005C4A29 /* PWSLocale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PWSLocale.h; sourceTree = "<group>"; };
 		57D3F0072B782AF600E4A662 /* version.in */ = {isa = PBXFileReference; lastKnownFileType = text; name = version.in; path = ../src/ui/wxWidgets/version.in; sourceTree = "<group>"; };
 		57D4306E303D3B1300867684 /* PWSLocale.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PWSLocale.cpp; sourceTree = "<group>"; };
@@ -1249,6 +1253,8 @@
 				E690B55C12984A1A007EA508 /* pwsafe_filter.xsd */,
 				E690B55D12984A1A007EA508 /* pwsafe.xsd */,
 				E690B55E12984A1A007EA508 /* pwsafe.xsl */,
+				57C4BD5E3080A8F7002239F7 /* pwsafe.1 */,
+				57C4BD603080A909002239F7 /* pwsafe-cli.1 */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -2126,6 +2132,8 @@
 				E690B56012984A1B007EA508 /* pwsafe.xsd in Resources */,
 				E690B56112984A1B007EA508 /* pwsafe.xsl in Resources */,
 				579BDA4F2C55F0A1004C727B /* Assets.xcassets in Resources */,
+				57C4BD5F3080A8F7002239F7 /* pwsafe.1 in Resources */,
+				57C4BD613080A909002239F7 /* pwsafe-cli.1 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
