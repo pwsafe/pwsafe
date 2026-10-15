@@ -340,3 +340,38 @@ TEST_F(FileV3Test, PasskeyTest)
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
 }
+
+TEST_F(FileV3Test, SaveMarksDBClean)
+{
+  PWScore core;
+  core.SetCurFile(fname.c_str());
+  core.NewFile(passphrase);
+
+  core.Execute(AddEntryCommand::Create(&core, smallItem));
+  EXPECT_TRUE(core.HasDBChanged());
+
+  ASSERT_EQ(PWSfile::SUCCESS, core.WriteCurFile());
+  EXPECT_FALSE(core.HasDBChanged());
+
+  // A change after the save makes the DB dirty again...
+  CItemData edited(smallItem);
+  edited.SetTitle(_T("piccolo"));
+  core.Execute(EditEntryCommand::Create(&core, smallItem, edited));
+  EXPECT_TRUE(core.HasDBChanged());
+
+  // ...undoing back to the save point makes it clean...
+  core.Undo();
+  EXPECT_FALSE(core.HasDBChanged());
+
+  // ...and undoing past the save point makes it dirty
+  core.Undo();
+  EXPECT_TRUE(core.HasDBChanged());
+
+  core.Redo();
+  EXPECT_FALSE(core.HasDBChanged());
+  core.Redo();
+  EXPECT_TRUE(core.HasDBChanged());
+
+  // Get core to delete any existing commands
+  core.ClearCommands();
+}

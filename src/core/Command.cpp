@@ -136,9 +136,7 @@ Command *MultiCommands::FindCommand(const std::type_info &ti)
 
 int MultiCommands::Execute()
 {
-  std::vector<Command *>::iterator cmd_Iter;
-
-  for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
+  for (auto cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
     if (*cmd_Iter != nullptr && (*cmd_Iter)->IsEntryChangeType()) {
       // We could change an entry and so here is where we save DB information
       // just in case.  Currently only modified nodes.
@@ -147,7 +145,7 @@ int MultiCommands::Execute()
     }
   }
 
-  for (cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
+  for (auto cmd_Iter = m_vpcmds.begin(); cmd_Iter != m_vpcmds.end(); cmd_Iter++) {
     int rc(-1);
     if (*cmd_Iter != nullptr) {
       rc = (*cmd_Iter)->Execute();
@@ -163,14 +161,12 @@ int MultiCommands::Execute()
 
 void MultiCommands::Undo()
 {
-  std::vector<Command *>::reverse_iterator cmd_rIter;
-
-  for (cmd_rIter = m_vpcmds.rbegin(); cmd_rIter != m_vpcmds.rend(); cmd_rIter++) {
+  for (auto cmd_rIter = m_vpcmds.rbegin(); cmd_rIter != m_vpcmds.rend(); cmd_rIter++) {
     if (*cmd_rIter != nullptr)
       (*cmd_rIter)->Undo();
   }
 
-  for (cmd_rIter = m_vpcmds.rbegin(); cmd_rIter != m_vpcmds.rend(); cmd_rIter++) {
+  for (auto cmd_rIter = m_vpcmds.rbegin(); cmd_rIter != m_vpcmds.rend(); cmd_rIter++) {
     if (*cmd_rIter != nullptr && (*cmd_rIter)->IsEntryChangeType()) {
       // We could change an entry and so here is where we save DB information
       // just in case.  Currently only modified nodes.
@@ -200,9 +196,7 @@ void MultiCommands::Insert(Command *pcmd, size_t ioffset)
 
 bool MultiCommands::GetRC(const Command *pcmd, int &rc)
 {
-  std::vector<Command *>::iterator cmd_Iter;
-
-  cmd_Iter = find(m_vpcmds.begin(), m_vpcmds.end(), pcmd);
+  auto cmd_Iter = find(m_vpcmds.begin(), m_vpcmds.end(), pcmd);
   if (cmd_Iter != m_vpcmds.end()) {
     rc = m_vRCs[cmd_Iter - m_vpcmds.begin()];
     return true;
@@ -325,9 +319,8 @@ int DBPolicyNamesCommand::Execute()
       switch (m_function) {
         case NP_ADDNEW:
         {
-          PSWDPolicyMapIter iter;
           int count(0);
-          for (iter = m_NewMapPSWDPLC.begin(); iter != m_NewMapPSWDPLC.end(); iter++) {
+          for (auto iter = m_NewMapPSWDPLC.begin(); iter != m_NewMapPSWDPLC.end(); iter++) {
             if (m_pcomInt->AddPolicy(iter->first, iter->second))
               count++;
           }
@@ -619,11 +612,10 @@ DeleteEntryCommand::DeleteEntryCommand(CommandInterface *pcomInt,
       */
       const ItemMMap &immap =
         ci.IsShortcutBase() ? pcomInt->GetBase2ShortcutsMmap() : pcomInt->GetBase2AliasesMmap();
-      ItemMMapConstIter iter;
-      for (iter = immap.lower_bound(uuid);
+      for (auto iter = immap.lower_bound(uuid);
            iter != immap.upper_bound(uuid); iter++) {
         const CUUID dep_uuid(iter->second);
-        ItemListIter itemIter = pcomInt->Find(dep_uuid);
+        auto itemIter = pcomInt->Find(dep_uuid);
         ASSERT(itemIter != pcomInt->GetEntryEndIter());
         if (itemIter != pcomInt->GetEntryEndIter())
           m_vdependents.push_back(itemIter->second);
@@ -705,16 +697,14 @@ void DeleteEntryCommand::Undo()
       );
 
       if (m_ci.IsShortcutBase()) { // restore dependents
-        for (std::vector<CItemData>::iterator iter = m_vdependents.begin();
-             iter != m_vdependents.end(); iter++) {
+        for (auto iter = m_vdependents.begin(); iter != m_vdependents.end(); iter++) {
           pmulticmds->Add(AddEntryCommand::Create(m_pcomInt, *iter, iter->GetBaseUUID(), nullptr));
         }
       } else if (m_ci.IsAliasBase()) {
         // Undeleting an alias base means making all the dependents refer to the alias
         // again. Perhaps the easiest approach is to delete the existing entries
         // and create new aliases.
-        for (std::vector<CItemData>::iterator iter = m_vdependents.begin();
-             iter != m_vdependents.end(); iter++) {
+        for (auto iter = m_vdependents.begin(); iter != m_vdependents.end(); iter++) {
           // Need to check that alias still exists - could have been deleted in group along with item
           // being undone, in which case it will be added separately
           if (m_pcomInt->Find(iter->GetUUID()) == m_pcomInt->GetEntryEndIter())
@@ -908,7 +898,7 @@ void UpdateEntryCommand::Doit(const CUUID &entry_uuid,
                               CItemData::EntryStatus es,
                               UpdateGUICommand::ExecuteFn efn)
 {
-  ItemListIter pos = m_pcomInt->Find(entry_uuid);
+  auto pos = m_pcomInt->Find(entry_uuid);
   if (pos != m_pcomInt->GetEntryEndIter()) {
     if (ftype != CItemData::PASSWORD)
       pos->second.SetFieldValue(ftype, value);
@@ -991,7 +981,7 @@ int UpdatePasswordCommand::Execute()
   if (!m_pcomInt->IsReadOnly() &&m_old_ci.GetPassword() != m_new_ci.GetPassword()) {
     SaveDBInformation();
 
-    ItemListIter pos = m_pcomInt->Find(m_old_ci.GetUUID());
+    auto pos = m_pcomInt->Find(m_old_ci.GetUUID());
     if (pos != m_pcomInt->GetEntryEndIter()) {
       pos->second.UpdatePassword(m_new_ci.GetPassword());
       time_t tttNewXTime, tttOldXTime;
@@ -1016,7 +1006,7 @@ int UpdatePasswordCommand::Execute()
 void UpdatePasswordCommand::Undo()
 {
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
-    ItemListIter pos = m_pcomInt->Find(m_old_ci.GetUUID());
+    auto pos = m_pcomInt->Find(m_old_ci.GetUUID());
     if (pos != m_pcomInt->GetEntryEndIter()) {
       time_t tttOldXTime;
       m_old_ci.GetXTime(tttOldXTime);
