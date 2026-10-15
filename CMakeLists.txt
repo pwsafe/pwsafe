@@ -375,8 +375,11 @@ if (NOT WIN32)
   ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/pwsafe.1.gz
                      COMMAND ${GZIP} ARGS -9 -n -c ${PROJECT_SOURCE_DIR}/docs/pwsafe.1 > pwsafe.1.gz
                      WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
-  ADD_CUSTOM_TARGET(manpage ALL DEPENDS ${CMAKE_BINARY_DIR}/pwsafe.1.gz)
-  install (FILES ${CMAKE_BINARY_DIR}/pwsafe.1.gz DESTINATION "share/man/man1")
+  ADD_CUSTOM_COMMAND(OUTPUT ${CMAKE_BINARY_DIR}/pwsafe-cli.1.gz
+                     COMMAND ${GZIP} ARGS -9 -n -c ${PROJECT_SOURCE_DIR}/docs/pwsafe-cli.1 > pwsafe-cli.1.gz
+                     WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+  ADD_CUSTOM_TARGET(manpage ALL DEPENDS ${CMAKE_BINARY_DIR}/pwsafe.1.gz ${CMAKE_BINARY_DIR}/pwsafe-cli.1.gz)
+  install (FILES ${CMAKE_BINARY_DIR}/pwsafe.1.gz ${CMAKE_BINARY_DIR}/pwsafe-cli.1.gz DESTINATION "share/man/man1")
   install (FILES "install/desktop/pwsafe.desktop" DESTINATION "share/applications")
   install (FILES "install/metainfo/org.pwsafe.pwsafe.metainfo.xml" DESTINATION "share/metainfo")
   install (FILES "install/graphics/48x48/pwsafe.png" DESTINATION "share/icons/hicolor/48x48/apps/")
