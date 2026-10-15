@@ -16,6 +16,8 @@
 
 #include "gtest/gtest.h"
 
+#include <vector>
+
 namespace {
   // A reusable observer that records every UpdateGUI call so individual
   // tests can assert on which GUI actions were fired and how many times.
@@ -34,25 +36,121 @@ namespace {
       calls.push_back({ga, entry_uuid});
     }
   };
+
+  // A fixture for factoring common code across tests
+  class CommandsTest : public testing::Test
+  {
+  protected:
+    PWScore core;
+    TestGUIObserver observer;
+
+    void SetUp() override {
+      core.RegisterObserver(&observer);
+    }
+
+    void TearDown() override {
+      core.UnregisterObserver(&observer);
+      core.ClearCommands();
+    }
+
+    // Tests the full Execute/Undo/Redo cycle of a command.
+    // Expects no command-specific GUI actions to be emitted.
+    // Will dispose of `cmd` at the end.
+    void TestExecute(Command *cmd,
+                     const std::function<void()> &assertInitial,
+                     const std::function<void()> &assertOnChange) {
+      DoTest("Execute", cmd, assertInitial, assertOnChange);
+    }
+
+    // Tests the full Execute/Undo/Redo cycle of a command. This version expects a command-specific GUI action
+    // to be emitted after each step.
+    // Will dispose of `cmd` at the end.
+    void TestExecute(Command *cmd,
+                     const std::function<void()> &assertInitial,
+                     const std::function<void()> &assertOnChange,
+                     const UpdateGUICommand::GUI_Action emittedAction) {
+      DoTest("Execute", cmd, assertInitial, assertOnChange, {emittedAction}, {emittedAction});
+    }
+
+    // Tests the full Execute/Undo/Redo cycle of a command. The version supports a separate set of GUI actions
+    // emitted after Execute and Undo.
+    // Will dispose of `cmd` at the end.
+    void TestExecute(Command *cmd,
+                     const std::function<void()> &assertInitial,
+                     const std::function<void()> &assertOnChange,
+                     const std::vector<UpdateGUICommand::GUI_Action> &actionsOnExecute,
+                     const std::vector<UpdateGUICommand::GUI_Action> &actionsOnUndo = {}) {
+      DoTest("Execute", cmd, assertInitial, assertOnChange, actionsOnExecute, actionsOnUndo);
+    }
+
+    // Tests the full Execute/Undo/Redo cycle of a command when core is set to read-only.
+    // There's only one `assertion` which is expected to hold after each operation.
+    // Will dispose of `cmd` at the end.
+    void TestReadonly(Command *cmd, const std::function<void()> &assertion) {
+      core.SetReadOnly(true);
+      DoTest("Readonly", cmd, assertion, assertion);
+      core.SetReadOnly(false);
+    }
+
+    // Tests the full Execute/Undo/Redo cycle of a command with GUI notifications disabled.
+    // Will dispose of `cmd` at the end.
+    void TestNoGuiNotify(Command *cmd,
+                         const std::function<void()> &assertInitial,
+                         const std::function<void()> &assertOnChange) {
+      cmd->SetNoGUINotify();
+      DoTest("No GUI notify", cmd, assertInitial, assertOnChange);
+    }
+
+  private:
+    // Asserts that the expected command-specific GUI actions and core's default
+    // `GUI_UPDATE_STATUSBAR` update (always last) were emitted.
+    void AssertGuiCalls(const std::vector<UpdateGUICommand::GUI_Action> &emittedActions) {
+      const size_t actionCount = observer.calls.size() - 1;
+      EXPECT_EQ(emittedActions.size(), actionCount);
+      for (size_t i = 0; i < emittedActions.size() && i < actionCount; ++i) {
+        EXPECT_EQ(emittedActions[i], observer.calls[i].ga);
+      }
+      EXPECT_EQ(UpdateGUICommand::GUI_UPDATE_STATUSBAR, observer.calls.back().ga);
+      observer.calls.clear();
+    }
+
+    void DoTest(const std::string &phase,
+                Command *cmd,
+                const std::function<void()> &assertInitial,
+                const std::function<void()> &assertOnChange,
+                const std::vector<UpdateGUICommand::GUI_Action> &actionsOnExecute = {},
+                const std::vector<UpdateGUICommand::GUI_Action> &actionsOnUndo = {}) {
+      observer.calls.clear();
+      {
+        SCOPED_TRACE(phase + " - precondition");
+        assertInitial();
+      }
+
+      {
+        SCOPED_TRACE(phase + " - on change");
+        core.Execute(cmd);
+        assertOnChange();
+        AssertGuiCalls(actionsOnExecute);
+      }
+
+      {
+        SCOPED_TRACE(phase + " - undo");
+        core.Undo();
+        assertInitial();
+        AssertGuiCalls(actionsOnUndo);
+      }
+
+      {
+        SCOPED_TRACE(phase + " - redo");
+        core.Redo();
+        assertOnChange();
+        AssertGuiCalls(actionsOnExecute);
+      }
+
+      core.ClearCommands();
+    }
+  };
 }
-
-// A fixture for factoring common code across tests
-class CommandsTest : public ::testing::Test
-{
-protected:
-  PWScore core;
-  TestGUIObserver observer;
-
-  void SetUp() override {
-    core.RegisterObserver(&observer);
-  }
-
-  void TearDown() override {
-    core.UnregisterObserver(&observer);
-    core.ClearCommands();
-  }
-};
-
 
 // And now the tests...
 
