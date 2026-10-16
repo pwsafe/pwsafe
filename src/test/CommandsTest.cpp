@@ -1473,64 +1473,84 @@ TEST_F(CommandsTest, DBPrefsCommand)
 {
   PWSprefs *prefs = PWSprefs::GetInstance();
 
-  const StringX oldPrefs = prefs->Store();
-  const uint32 oldHashIters = core.GetHashIters();
-  const bool oldSaveHistory = prefs->GetPref(PWSprefs::SavePasswordHistory);
-  const bool newSaveHistory = !oldSaveHistory;
-  prefs->SetPref(PWSprefs::SavePasswordHistory, newSaveHistory);
-  const StringX newPrefs = prefs->Store();
-  prefs->SetPref(PWSprefs::SavePasswordHistory, oldSaveHistory);
+  {
+    SCOPED_TRACE("change database preferences and hash iterations");
+    const uint32 oldHashIters = core.GetHashIters();
+    const bool oldSaveHistory = prefs->GetPref(PWSprefs::SavePasswordHistory);
+    const bool newSaveHistory = !oldSaveHistory;
+    prefs->SetPref(PWSprefs::SavePasswordHistory, newSaveHistory);
+    const StringX newPrefs = prefs->Store();
+    prefs->SetPref(PWSprefs::SavePasswordHistory, oldSaveHistory);
 
-  auto cmd = DBPrefsCommand::Create(&core, newPrefs, oldHashIters + 1);
-  cmd->Execute();
-  EXPECT_EQ(newSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
-  EXPECT_EQ(oldHashIters + 1, core.GetHashIters());
-  ASSERT_EQ(1U, observer.calls.size());
-  EXPECT_EQ(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED, observer.calls[0].ga);
-  observer.calls.clear();
+    auto assertInitial = [this, prefs, oldSaveHistory, oldHashIters] {
+      EXPECT_EQ(oldSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+      EXPECT_EQ(oldHashIters, core.GetHashIters());
+    };
+    auto assertOnChange = [this, prefs, newSaveHistory, oldHashIters] {
+      EXPECT_EQ(newSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+      EXPECT_EQ(oldHashIters + 1, core.GetHashIters());
+    };
+    TestExecute(DBPrefsCommand::Create(&core, newPrefs, oldHashIters + 1),
+                assertInitial, assertOnChange,
+                UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED);
+  }
 
-  cmd->Undo();
-  EXPECT_EQ(oldSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
-  EXPECT_EQ(oldHashIters, core.GetHashIters());
-  ASSERT_EQ(1U, observer.calls.size());
-  EXPECT_EQ(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED, observer.calls[0].ga);
-  observer.calls.clear();
-  delete cmd;
+  {
+    SCOPED_TRACE("omitting hash iterations leaves them unchanged");
+    const bool currentSaveHistory = prefs->GetPref(PWSprefs::SavePasswordHistory);
+    const bool newSaveHistory = !currentSaveHistory;
+    const uint32 currentHashIters = core.GetHashIters();
+    prefs->SetPref(PWSprefs::SavePasswordHistory, newSaveHistory);
+    const StringX newPrefs = prefs->Store();
+    prefs->SetPref(PWSprefs::SavePasswordHistory, currentSaveHistory);
 
-  // Omitting hash iterations leaves them unchanged.
-  cmd = DBPrefsCommand::Create(&core, newPrefs);
-  cmd->Execute();
-  EXPECT_EQ(newSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
-  EXPECT_EQ(oldHashIters, core.GetHashIters());
-  cmd->Undo();
-  EXPECT_EQ(oldSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
-  observer.calls.clear();
-  delete cmd;
+    auto assertInitial = [this, prefs, currentSaveHistory, currentHashIters] {
+      EXPECT_EQ(currentSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+      EXPECT_EQ(currentHashIters, core.GetHashIters());
+    };
+    auto assertOnChange = [this, prefs, newSaveHistory, currentHashIters] {
+      EXPECT_EQ(newSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+      EXPECT_EQ(currentHashIters, core.GetHashIters());
+    };
+    TestExecute(DBPrefsCommand::Create(&core, newPrefs), assertInitial, assertOnChange,
+                UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED);
+  }
 
-  // Read-only execution and undo do not change preferences or notify observers.
-  core.SetReadOnly(true);
-  cmd = DBPrefsCommand::Create(&core, newPrefs, oldHashIters + 1);
-  cmd->Execute();
-  EXPECT_EQ(oldSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
-  EXPECT_EQ(oldHashIters, core.GetHashIters());
-  EXPECT_TRUE(observer.calls.empty());
+  {
+    SCOPED_TRACE("read-only core ignores preference changes");
+    const bool currentSaveHistory = prefs->GetPref(PWSprefs::SavePasswordHistory);
+    const uint32 currentHashIters = core.GetHashIters();
+    const bool newSaveHistory = !currentSaveHistory;
+    prefs->SetPref(PWSprefs::SavePasswordHistory, newSaveHistory);
+    const StringX newPrefs = prefs->Store();
+    prefs->SetPref(PWSprefs::SavePasswordHistory, currentSaveHistory);
 
-  cmd->Undo();
-  EXPECT_TRUE(observer.calls.empty());
-  delete cmd;
-  core.SetReadOnly(false);
+    auto assertion = [this, prefs, currentSaveHistory, currentHashIters] {
+      EXPECT_EQ(currentSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+      EXPECT_EQ(currentHashIters, core.GetHashIters());
+    };
+    TestReadonly(DBPrefsCommand::Create(&core, newPrefs, currentHashIters + 1), assertion);
+  }
 
-  // SetNoGUINotify suppresses notifications for both operations.
-  cmd = DBPrefsCommand::Create(&core, newPrefs, oldHashIters + 1);
-  cmd->SetNoGUINotify();
-  cmd->Execute();
-  EXPECT_EQ(newSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
-  EXPECT_TRUE(observer.calls.empty());
+  {
+    SCOPED_TRACE("SetNoGUINotify suppresses command notification");
+    const bool currentSaveHistory = prefs->GetPref(PWSprefs::SavePasswordHistory);
+    const uint32 currentHashIters = core.GetHashIters();
+    const bool newSaveHistory = !currentSaveHistory;
+    prefs->SetPref(PWSprefs::SavePasswordHistory, newSaveHistory);
+    const StringX newPrefs = prefs->Store();
+    prefs->SetPref(PWSprefs::SavePasswordHistory, currentSaveHistory);
 
-  cmd->Undo();
-  EXPECT_EQ(oldSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
-  EXPECT_EQ(oldHashIters, core.GetHashIters());
-  EXPECT_TRUE(observer.calls.empty());
-  delete cmd;
+    auto assertInitial = [this, prefs, currentSaveHistory, currentHashIters] {
+      EXPECT_EQ(currentSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+      EXPECT_EQ(currentHashIters, core.GetHashIters());
+    };
+    auto assertOnChange = [this, prefs, newSaveHistory, currentHashIters] {
+      EXPECT_EQ(newSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+      EXPECT_EQ(currentHashIters + 1, core.GetHashIters());
+    };
+    TestNoGuiNotify(DBPrefsCommand::Create(&core, newPrefs, currentHashIters + 1),
+                    assertInitial, assertOnChange);
+  }
 }
 
