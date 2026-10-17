@@ -181,6 +181,12 @@
 		  <RegistryValue Type="integer" Name="ScreenCaptureProtection" Value="[RESOLVEDSCREENCAPTUREPROTECTIONVALUE]"/>
 		</RegistryKey>
 	  </Component>
+	  <Component Id='CliTool' Win64='$(var.Win64)'
+	  Guid='63305306-d0ea-4529-b4fc-0b352a1e820c'>
+	    <File Id='file39' Name='pwsafe-cli.exe' DiskId='1' KeyPath='yes'
+	      Source='$(var.BinDir)\pwsafe-cli.exe' Vital='yes'>
+	    </File>
+	  </Component>
 	  <Component Id='SupportingFiles'
 	    Guid='2cb36029-a029-4f15-9838-4acacb823ce7'> 
 	    <File Id='file34' Name='pwsafe.xsd' DiskId='1'
@@ -205,6 +211,10 @@
       <ComponentRef Id='Documentation' />
       <ComponentRef Id='MainProgram' />
       <ComponentRef Id='SupportingFiles' />
+      <!-- Separate feature so that admins can opt out, e.g., msiexec ... REMOVE=CliTool -->
+      <Feature Id='CliTool' Title='Command-line tool' Level='1'>
+        <ComponentRef Id='CliTool' />
+      </Feature>
     </Feature>
 
     <CustomAction Id='AssignAllusersProperty' Property='ALLUSERS'
