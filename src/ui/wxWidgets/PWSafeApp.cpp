@@ -36,6 +36,11 @@
 #if wxCHECK_VERSION(2,9,2)
 #include <wx/richmsgdlg.h>
 #endif
+// Used by DarkModeHtmlProcessor for Help
+#if wxCHECK_VERSION(3,1,3)
+#include <wx/html/htmlproc.h>
+#include <wx/regex.h>
+#endif
 ////@end includes
 
 #include "os/cleanup.h"
@@ -95,6 +100,29 @@ public:
     wxLog::SetComponentLevel(wxT("wx"), level);
   }
 };
+
+// Make Help use a dark background in dark mode without modifying the HTML files
+#if wxVERSION_NUMBER >= 3103
+class DarkModeHtmlProcessor : public wxHtmlProcessor
+{
+public:
+  wxString Process(const wxString& HtmlPage) const override
+  {
+    if (!wxSystemSettings::GetAppearance().IsDark())
+      return HtmlPage; // do nothing
+    wxColour bgColor = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW);
+    wxColour fgColor = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
+    // Convert to HTML-compatible #RRGGBB strings
+    wxString bgHtml = bgColor.GetAsString(wxC2S_HTML_SYNTAX);
+    wxString fgHtml = fgColor.GetAsString(wxC2S_HTML_SYNTAX);
+    wxString result = HtmlPage;
+    // Apply dark colors to the BODY opening tag
+    wxRegEx bodyTag("<body", wxRE_ICASE);
+    bodyTag.ReplaceAll(&result, wxString::Format("<body bgcolor=\"%s\" text=\"%s\"", bgHtml, fgHtml));
+    return result;
+  }
+};
+#endif
 
 static RestrainLog restLog(wxLOG_Info);
 
@@ -495,6 +523,12 @@ bool PWSafeApp::OnInit()
 #endif
     }
   }
+
+// Register an HTML processor that injects dark colors into each Help page when dark mode is detected
+#if wxVERSION_NUMBER >= 3103
+  if (wxSystemSettings::GetAppearance().IsDark())
+    wxHtmlWindow::AddGlobalProcessor(new DarkModeHtmlProcessor());
+#endif
 
 /*
  * On macOS, Finder GUI file actions, such as double-clicking a file to open it, are sent
