@@ -4,7 +4,13 @@ https://pwsafe.org/. Details about changes to older releases may be found in the
 
 In the following, SFxxxx refers to Bug Reports, Feature Requests and Support Requests in PasswordSafe SourceForge Project tickets, and GHxxxx refers to issues in the PasswordSafe GitHub project.
 
-PasswordSafe 3.73.0 Release Otober 8 2026
+PasswordSafe 3.73.1 Release ??? ?? 2026
+=======================================
+Bugs fixed in 3.73.1
+--------------------
+* [GH1953](https://github.com/pwsafe/pwsafe/issues/1953) When dragging an entry with a named password policy between instances (drag & drop), the named policy is now added correctly to the receiver.
+
+PasswordSafe 3.73.0 Release October 8 2026
 =========================================
 Bugs fixed in 3.73.0
 --------------------
