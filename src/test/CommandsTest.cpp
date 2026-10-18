@@ -1295,6 +1295,61 @@ TEST_F(CommandsTest, DBPolicyNamesCommand)
   core.ClearCommands();
 }
 
+TEST_F(CommandsTest, EmbedNamedPolicy)
+{
+  // GH1953: D&D of an entry with a named policy must carry the policy's
+  // details, since the drop target recreates the named policy from them
+  PWScore core;
+
+  PWPolicy pol;
+  pol.flags      = PWPolicy::UseDigits | PWPolicy::UseLowercase | PWPolicy::UseSymbols;
+  pol.length     = 14;
+  pol.digitminlength = 2;
+  pol.symbols    = L"#$%";
+  const StringX name(L"NamedPolicy");
+  core.Execute(DBPolicyNamesCommand::Create(&core, name, pol));
+
+  CItemData ci;
+  ci.CreateUUID();
+  ci.SetTitle(L"title");
+  ci.SetPassword(L"password");
+  ci.SetPolicyName(name);
+
+  // Entry has only the name until embedded
+  PWPolicy entry_pol;
+  ci.GetPWPolicy(entry_pol);
+  EXPECT_EQ(PWPolicy(), entry_pol);
+
+  EXPECT_TRUE(core.EmbedNamedPolicy(ci));
+
+  // Round trip through D&D serialization
+  std::vector<char> v;
+  ci.SerializePlainText(v);
+  CItemData dropped;
+  ASSERT_TRUE(dropped.DeSerializePlainText(v));
+
+  EXPECT_EQ(name, dropped.GetPolicyName());
+  dropped.GetPWPolicy(entry_pol);
+  entry_pol.symbols = dropped.GetSymbols();
+  EXPECT_EQ(pol, entry_pol);
+  EXPECT_EQ(14, entry_pol.length);
+  EXPECT_EQ(pol.flags, entry_pol.flags);
+
+  // No policy name, or name unknown to this core: entry is untouched
+  CItemData noname;
+  noname.CreateUUID();
+  EXPECT_FALSE(core.EmbedNamedPolicy(noname));
+  EXPECT_TRUE(noname.GetPWPolicy().empty());
+
+  CItemData unknown;
+  unknown.CreateUUID();
+  unknown.SetPolicyName(L"NoSuchPolicy");
+  EXPECT_FALSE(core.EmbedNamedPolicy(unknown));
+  EXPECT_TRUE(unknown.GetPWPolicy().empty());
+
+  core.ClearCommands();
+}
+
 TEST_F(CommandsTest, DBEmptyGroupsCommand)
 {
   PWScore core;

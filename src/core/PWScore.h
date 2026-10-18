@@ -323,6 +323,9 @@ public:
   // Get all password policy names
   void GetPolicyNames(std::vector<stringT> &vNames) const;
   bool GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp) const;
+  // Copy the details of ci's named policy (if any) into ci's POLICY & SYMBOLS
+  // fields, so that they travel with it (e.g., D&D to another database)
+  bool EmbedNamedPolicy(CItemData &ci) const;
   Command *ProcessPolicyName(const PWScore *pothercore, CItemData &updtEntry,
                              std::map<StringX, StringX> &mapRenamedPolicies,
                              std::vector<StringX> &vs_PoliciesAdded,

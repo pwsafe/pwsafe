@@ -1899,6 +1899,24 @@ bool PWScore::GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp) co
   }
 }
 
+bool PWScore::EmbedNamedPolicy(CItemData &ci) const
+{
+  // The receiving end of a D&D expects an entry with a policy name to also
+  // carry the policy's details, from which it recreates the named policy.
+  // (See GH1953)
+  const StringX sxPolicyName = ci.GetPolicyName();
+  if (sxPolicyName.empty())
+    return false;
+
+  PWPolicy st_pp;
+  if (!GetPolicyFromName(sxPolicyName, st_pp))
+    return false;
+
+  ci.SetPWPolicy(st_pp);
+  ci.SetSymbols(st_pp.symbols);
+  return true;
+}
+
 class PolicyNameMatch
 {
 public:

@@ -2165,14 +2165,21 @@ void CPWTreeCtrlX::GetEntryData(CDDObList &out_oblist, CItemData *pci)
   ASSERT(pci != NULL);
   CDDObject *pDDObject = new CDDObject;
 
+  CItemData ci2(*pci); // we need a copy since we may modify the group & policy
   if (out_oblist.m_bDragNode && m_nDragPathLen > 0) {
-    CItemData ci2(*pci); // we need a copy since to modify the group
     const CSecString cs_Group = pci->GetGroup();
     ci2.SetGroup(cs_Group.Right(cs_Group.GetLength() - m_nDragPathLen - 1));
-    pDDObject->FromItem(ci2);
-  } else {
-    pDDObject->FromItem(*pci);
   }
+
+  // Named policy details are held by the database, not the entry -
+  // send them along so the drop target can recreate the policy
+  if (!ci2.GetPolicyName().empty() && !app.GetCore()->EmbedNamedPolicy(ci2)) {
+    // Entry refers to a named policy that isn't in this database
+    pws_os::Trace(L"CPWTreeCtrlX::GetEntryData() Named policy \"%ls\" not found\n",
+                  ci2.GetPolicyName().c_str());
+    ASSERT(0);
+  }
+  pDDObject->FromItem(ci2);
 
   if (pci->IsDependent()) {
     // I'm an alias or shortcut; pass on ptr to my base item

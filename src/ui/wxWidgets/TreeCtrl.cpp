@@ -2327,14 +2327,20 @@ void TreeCtrl::GetEntryData(DnDObList &dnd_oblist, const CItemData *pci)
   DnDObject *pDnDObject = new DnDObject;
   wxASSERT(pDnDObject);
 
+  CItemData ci2(*pci); // we need a copy since we may modify the group & policy
   if(dnd_oblist.CutGroupPath() && (dnd_oblist.DragPathParentLen() > 0)) {
-    CItemData ci2(*pci); // we need a copy since to modify the group
     const StringX cs_Group = pci->GetGroup();
     ci2.SetGroup(cs_Group.length() > dnd_oblist.DragPathParentLen() ? cs_Group.substr(dnd_oblist.DragPathParentLen() + 1) : L"");
-    pDnDObject->FromItem(ci2);
-  } else {
-    pDnDObject->FromItem(*pci);
   }
+
+  // Named policy details are held by the database, not the entry -
+  // send them along so the drop target can recreate the policy
+  if (!ci2.GetPolicyName().empty() && !m_core.EmbedNamedPolicy(ci2)) {
+    // Entry refers to a named policy that isn't in this database
+    wxFAIL_MSG(wxString::Format(wxT("TreeCtrl::GetEntryData - named policy \"%ls\" not found"),
+                                ci2.GetPolicyName().c_str()));
+  }
+  pDnDObject->FromItem(ci2);
 
   if(pci->IsDependent()) {
     // I'm an alias or shortcut; pass on ptr to my base item
@@ -2602,10 +2608,10 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
           pmCmd->Add(DBPolicyNamesCommand::Create(&m_core, sxPolicyName, st_pp));
           vAddedPolicyNames.push_back(sxPolicyName);
         }
-        // No longer need these values
-        ci_temp.SetPWPolicy(L"");
-        ci_temp.SetSymbols(L"");
       }
+      // No longer need these values - the named policy holds them
+      ci_temp.SetPWPolicy(L"");
+      ci_temp.SetSymbols(L"");
     }
 
     // Using shift will force to the root, but the path is left as it is

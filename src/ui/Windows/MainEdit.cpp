@@ -2599,10 +2599,10 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
           pmulticmds->Add(pcmd);
           vAddedPolicyNames.push_back(sxPolicyName);
         }
-        // No longer need these values
-        ci.SetPWPolicy(L"");
-        ci.SetSymbols(L"");
       }
+      // No longer need these values - the named policy holds them
+      ci.SetPWPolicy(L"");
+      ci.SetSymbols(L"");
     }
 
     if (in_oblist.m_bDragNode) {
