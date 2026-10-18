@@ -2571,48 +2571,19 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
     DnDObject *pDnDObject = *pos;
     wxASSERT(pDnDObject);
 
-    bool bChangedPolicy(false);
     ci_temp.Clear();
     // Only set to false if adding a shortcut where the base isn't there (yet)
     bool bAddToViews = true;
     pDnDObject->ToItem(ci_temp);
 
-    StringX sxPolicyName = ci_temp.GetPolicyName();
-    if (!sxPolicyName.empty()) {
-      // D&D put the entry's name here and the details in the entry
-      // which we now have to add to this core and remove from the entry
-
-      // Get the source database PWPolicy & symbols for this name
-      PWPolicy st_pp;
-      ci_temp.GetPWPolicy(st_pp);
-      st_pp.symbols = ci_temp.GetSymbols();
-
-      // Get the same info if the policy is in the target database
-      PWPolicy currentDB_st_pp;
-      bool bNPWInCurrentDB = m_core.GetPolicyFromName(sxPolicyName, currentDB_st_pp);
-      if (bNPWInCurrentDB) {
-        // It exists in target database
-        if (st_pp != currentDB_st_pp) {
-          // They are not the same - make this policy unique
-          m_core.MakePolicyUnique(mapRenamedPolicies, sxPolicyName, sxDD_DateTime, IDSC_DRAGPOLICY);
-          ci_temp.SetPolicyName(sxPolicyName);
-          bChangedPolicy = true;
-        }
-      }
-      
-      if (!bNPWInCurrentDB || bChangedPolicy) {
-        // Not in target database or has different settings -
-        // Add it if we haven't already
-        if (std::find(vAddedPolicyNames.begin(), vAddedPolicyNames.end(), sxPolicyName) == vAddedPolicyNames.end()) {
-          // Doesn't already exist and we haven't already added it - add
-          pmCmd->Add(DBPolicyNamesCommand::Create(&m_core, sxPolicyName, st_pp));
-          vAddedPolicyNames.push_back(sxPolicyName);
-        }
-      }
-      // No longer need these values - the named policy holds them
-      ci_temp.SetPWPolicy(L"");
-      ci_temp.SetSymbols(L"");
-    }
+    // D&D put the entry's policy name and its details in the entry -
+    // add the named policy to this core if needed and remove details from the entry
+    Command *pcmdPolicy(nullptr);
+    const bool bChangedPolicy =
+      m_core.ProcessDroppedPolicy(ci_temp, mapRenamedPolicies, vAddedPolicyNames,
+                                  sxDD_DateTime, pcmdPolicy) == PWScore::DroppedPolicy::RENAMED;
+    if (pcmdPolicy != nullptr)
+      pmCmd->Add(pcmdPolicy);
 
     // Using shift will force to the root, but the path is left as it is
     StringX oldSXgroup = ci_temp.GetGroup();

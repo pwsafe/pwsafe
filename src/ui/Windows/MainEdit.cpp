@@ -2560,50 +2560,18 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
 
   // Second pass: process entries in sorted order
   for (auto & ci : sorted_entries) {
-    bool bChangedPolicy(false);
     // Only set to false if adding a shortcut where the base isn't there (yet)
     bool bAddToViews = true;
     ASSERT(!ci.IsDependent() || ci.GetBaseUUID() != CUUID::NullUUID()); // an alias or shortcut must refer to a base entry
 
-    StringX sxPolicyName = ci.GetPolicyName();
-    if (!sxPolicyName.empty()) {
-      // D&D put the entry's name here and the details in the entry
-      // which we now have to add to this core and remove from the entry
-
-      // Get the source database PWPolicy & symbols for this name
-      PWPolicy st_pp;
-      ci.GetPWPolicy(st_pp);
-      st_pp.symbols = ci.GetSymbols();
-
-      // Get the same info if the policy is in the target database
-      PWPolicy currentDB_st_pp;
-      bool bNPWInCurrentDB = GetPolicyFromName(sxPolicyName, currentDB_st_pp);
-      if (bNPWInCurrentDB) {
-        // It exists in target database
-        if (st_pp != currentDB_st_pp) {
-          // They are not the same - make this policy unique
-          m_core.MakePolicyUnique(mapRenamedPolicies, sxPolicyName, sxDD_DateTime,
-                                  IDSC_DRAGPOLICY);
-          ci.SetPolicyName(sxPolicyName);
-          bChangedPolicy = true;
-        }
-      }
-
-      if (!bNPWInCurrentDB || bChangedPolicy) {
-        // Not in target database or has different settings -
-        // Add it if we haven't already
-        if (std::find(vAddedPolicyNames.begin(), vAddedPolicyNames.end(), sxPolicyName) ==
-                      vAddedPolicyNames.end()) {
-          // Doesn't already exist and we haven't already added it - add
-          Command *pcmd = DBPolicyNamesCommand::Create(&m_core, sxPolicyName, st_pp);
-          pmulticmds->Add(pcmd);
-          vAddedPolicyNames.push_back(sxPolicyName);
-        }
-      }
-      // No longer need these values - the named policy holds them
-      ci.SetPWPolicy(L"");
-      ci.SetSymbols(L"");
-    }
+    // D&D put the entry's policy name and its details in the entry -
+    // add the named policy to this core if needed and remove details from the entry
+    Command *pcmdPolicy(nullptr);
+    const bool bChangedPolicy =
+      m_core.ProcessDroppedPolicy(ci, mapRenamedPolicies, vAddedPolicyNames,
+                                  sxDD_DateTime, pcmdPolicy) == PWScore::DroppedPolicy::RENAMED;
+    if (pcmdPolicy != nullptr)
+      pmulticmds->Add(pcmdPolicy);
 
     if (in_oblist.m_bDragNode) {
       const wchar_t *dot = (!DropGroup.empty() && !ci.GetGroup().empty()) ? L"." : L"";

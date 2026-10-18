@@ -323,9 +323,28 @@ public:
   // Get all password policy names
   void GetPolicyNames(std::vector<stringT> &vNames) const;
   bool GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp) const;
-  // Copy the details of ci's named policy (if any) into ci's POLICY & SYMBOLS
-  // fields, so that they travel with it (e.g., D&D to another database)
-  bool EmbedNamedPolicy(CItemData &ci) const;
+
+  // The following pair of member functions deal with an entry that uses a named password policy
+  // being dragged & dropped across instances.
+
+  bool EmbedNamedPolicy(CItemData &ci) const; // used by sender
+
+  // Receiving end of the above: reconcile a dropped entry's named policy with
+  // this database, and remove the embedded details from the entry.
+  // 'mapRenamedPolicies' & 'vAddedPolicyNames' carry state across all entries
+  // of one drop. pcmd is set to a command adding a new named policy, or nullptr.
+  enum class DroppedPolicy {
+    NONE,      // entry has no named policy
+    EXISTING,  // matches a policy already in this database
+    ADDED,     // new to this database - pcmd adds it
+    RENAMED,   // same name but different settings here - added under a new name
+    CLEARED    // sender didn't embed details and name unknown here - name removed
+  };
+  DroppedPolicy ProcessDroppedPolicy(CItemData &ci,
+                                     std::map<StringX, StringX> &mapRenamedPolicies,
+                                     std::vector<StringX> &vAddedPolicyNames,
+                                     const StringX &sxDateTime, Command *&pcmd);
+
   Command *ProcessPolicyName(const PWScore *pothercore, CItemData &updtEntry,
                              std::map<StringX, StringX> &mapRenamedPolicies,
                              std::vector<StringX> &vs_PoliciesAdded,
