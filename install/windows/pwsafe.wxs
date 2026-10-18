@@ -42,7 +42,15 @@
 	     Manufacturer='Rony Shapiro'
 	     InstallerVersion='200'
 	     Compressed='yes'
+	     InstallScope='perMachine'
 	     />
+
+    <!-- Remove any previously installed version (32 or 64 bit, as both share
+         the same UpgradeCode) before installing this one. Rebuilds of the same
+         version replace each other, and downgrades are refused. -->
+    <MajorUpgrade
+	AllowSameVersionUpgrades='yes'
+	DowngradeErrorMessage='A newer version of Password Safe is already installed. Please uninstall it first if you want to install this version.' />
 
   	<Icon Id="CpaneIcon" SourceFile="src\ui\Windows\graphics\cpane.ico" />
 	<Property Id="ARPPRODUCTICON" Value="CpaneIcon" />
@@ -216,13 +224,5 @@
         <ComponentRef Id='CliTool' />
       </Feature>
     </Feature>
-
-    <CustomAction Id='AssignAllusersProperty' Property='ALLUSERS'
-    Value='1' />
-
-    <InstallExecuteSequence>
-      <Custom Action='AssignAllusersProperty'
-      After='LaunchConditions'>Privileged</Custom>
-    </InstallExecuteSequence>
   </Product>
 </Wix>
