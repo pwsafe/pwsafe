@@ -40,7 +40,7 @@ When opening a bug report, include:
 
 ## Reporting Security Vulnerabilities
 
-See [Security.md](../SECURITY.md).
+See [Security.md](SECURITY.md).
 
 ---
 
@@ -62,7 +62,7 @@ that has not been discussed may not align with the project's direction and may b
 See the relevant README files under the docs directory.
 
 For specific platforms:
-- [README.WIDOWS.DEVELOPERS.md](docs/README.WIDOWS.DEVELOPERS.md)
+- [README.WINDOWS.DEVELOPERS.md](docs/README.WINDOWS.DEVELOPERS.md)
 - [README.LINUX.DEVELOPERS.md](docs/README.LINUX.DEVELOPERS.md)
 - [README.MAC.DEVELOPERS.md](docs/README.MAC.DEVELOPERS.md)
 - [README.FREEBSD.md](docs/README.FREEBSD.md)
@@ -119,8 +119,9 @@ PasswordSafe is a C++ project. Follow the conventions you observe in the existin
 - Use the same indentation style and brace placement as the surrounding code.
 - Prefer RAII and standard library facilities over manual resource management.
 - Avoid raw `new`/`delete` in new code; prefer smart pointers.
-- Use the `StringX` class for handling passwords, keys, or other sensitive data. This is like std::string in all respects,
- except that memory is scrubbed before being returned to system.
+- Use the `StringX` class for handling passwords, keys, or other sensitive textual data.
+ This is like `std::string` in all respects, except that memory is scrubbed before being returned to system.
+- Likewise, use the `VectorX` class instead of `std::vector` for sensitive binary data, e.g., passkey credentials.
 - Keep all platform-specific APIs under src/os, defining a common header file and platform-specific implementations.
 - New files must include the project's standard copyright and license header.
 
@@ -182,8 +183,10 @@ care. When in doubt, open a discussion before submitting.
 
 **License and provenance.** AI models may reproduce portions of copyrighted code without
 attribution, and some AI tool EULAs affect ownership of generated output. Check your tool's
-terms. If generated code closely resembles a known third-party implementation, rewrite it. Your
-`Signed-off-by:` certifies that you have the right to submit the code under this project's
+terms. If generated code closely resembles a known third-party implementation with an incompatible license,
+then it needs to be rewritten.
+If the license is compatible, then add a reference to the original code and its license in a comment.
+In any case, your`Signed-off-by:` certifies that you have the right to submit the code under this project's
 license — AI cannot sign off on your behalf.
 
 **Codebase consistency.** AI tools generate code against the broad open-source corpus, not this
@@ -206,5 +209,7 @@ tests you cannot explain and defend.
 ---
 
 Finally, consider the following:
-- AI tends to be overly verbose in its comments and documentation, focusing on the context of the requested fix rather than how the added/modified code works with the rest of the system.
-In the long run, this makes the code less maintainable. Comments in the code shouldn't reflect the prompt used to generate the code. This belongs in the commit message.
+- AI tends to be overly verbose in its comments and documentation, focusing on the context of the requested
+  fix rather than how the added/modified code works with the rest of the system.
+  In the long run, this makes the code less maintainable. Comments in the code shouldn't reflect the prompt
+  used to generate the code. This belongs in the commit message.
