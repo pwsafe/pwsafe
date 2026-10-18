@@ -118,8 +118,9 @@ public:
     wxString result = htmlPage;
     // Apply dark colors to the BODY opening tag
     wxRegEx bodyTag("<body\\b([^>]*)>",wxRE_ICASE);
+    // Use DeepSkyBlue for links; specifying the color by name does not work on macOS
     if (bodyTag.Matches(result))
-      bodyTag.ReplaceAll(&result, wxString::Format("<body bgcolor=\"%s\" text=\"%s\" link=\"lightskyblue\"", bgHtml, fgHtml));
+      bodyTag.ReplaceAll(&result, wxString::Format("<body bgcolor=\"%s\" text=\"%s\" link=\"#00BFFF\"", bgHtml, fgHtml));
     return result;
   }
 };
