@@ -115,12 +115,12 @@ public:
     // Convert to HTML-compatible #RRGGBB strings
     wxString bgHtml = bgColor.GetAsString(wxC2S_HTML_SYNTAX);
     wxString fgHtml = fgColor.GetAsString(wxC2S_HTML_SYNTAX);
+    const wxString linkColor = "#00BFFF"; // Use DeepSkyBlue for links; specifying the color by name does not work on macOS
     wxString result = htmlPage;
     // Apply dark colors to the BODY opening tag
-    wxRegEx bodyTag("<body\\b([^>]*)>",wxRE_ICASE);
-    // Use DeepSkyBlue for links; specifying the color by name does not work on macOS
+    wxRegEx bodyTag("<body\\b([^>]*)>", wxRE_ICASE);
     if (bodyTag.Matches(result))
-      bodyTag.ReplaceAll(&result, wxString::Format("<body bgcolor=\"%s\" text=\"%s\" link=\"#00BFFF\"", bgHtml, fgHtml));
+      bodyTag.ReplaceAll(&result, wxString::Format("<body bgcolor=\"%s\" text=\"%s\" link=\"%s\">", bgHtml, fgHtml, linkColor));
     return result;
   }
 };
@@ -528,8 +528,7 @@ bool PWSafeApp::OnInit()
 
 // Register an HTML processor that injects dark colors into each Help page when dark mode is detected
 #if wxCHECK_VERSION(3,1,3)
-  if (wxSystemSettings::GetAppearance().IsDark())
-    wxHtmlWindow::AddGlobalProcessor(new DarkModeHtmlProcessor());
+  wxHtmlWindow::AddGlobalProcessor(new DarkModeHtmlProcessor());
 #endif
 
 /*
