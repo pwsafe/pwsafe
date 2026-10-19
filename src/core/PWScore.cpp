@@ -1901,9 +1901,15 @@ bool PWScore::GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp) co
 
 bool PWScore::EmbedNamedPolicy(CItemData &ci) const
 {
-  // The receiving end of a D&D expects an entry with a policy name to also
-  // carry the policy's details, from which it recreates the named policy.
-  // (See GH1953)
+// Called by D&D sender to copy the details of ci's named policy into its POLICY & SYMBOLS fields.
+//
+// NOTE: Per format specification, POLICY (an entry-specific policy) and POLICYNAME are
+// mutually exclusive. This deliberately sets both, so that the receiver can recreate the named policy.
+// Therefore, call this *only* with a temporary ci that's used as the D&D payload, and *never*
+// stored persistently.
+// The receiver expects an entry with a POLICYNAME to also have POLICY & SYMBOLS,
+// from which it recreates the named policy, and will remove the latter 2 in ProcessDroppedPolicy().
+
   const StringX sxPolicyName = ci.GetPolicyName();
   if (sxPolicyName.empty())
     return false;
@@ -1913,7 +1919,7 @@ bool PWScore::EmbedNamedPolicy(CItemData &ci) const
     return false;
 
   ci.SetPWPolicy(st_pp);
-  ci.SetSymbols(st_pp.symbols);
+  ci.SetSymbols(st_pp.symbols); // Needed since SetPWPolicy() doesn't set SYMBOLS if policy's symbols are empty (edge case)
   return true;
 }
 

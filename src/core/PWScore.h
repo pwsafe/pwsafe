@@ -327,7 +327,7 @@ public:
   // The following pair of member functions deal with an entry that uses a named password policy
   // being dragged & dropped across instances.
 
-  bool EmbedNamedPolicy(CItemData &ci) const; // used by sender
+  bool EmbedNamedPolicy(CItemData& ci) const; // Called by sender to embed the named policy's details into the entry being dropped.
 
   // Receiving end of the above: reconcile a dropped entry's named policy with
   // this database, and remove the embedded details from the entry.
