@@ -13,6 +13,7 @@
 
 #include "core/PWScore.h"
 #include "core/PWHistory.h"
+#include "core/core.h"
 
 #include "gtest/gtest.h"
 
@@ -1392,7 +1393,7 @@ TEST_F(CommandsTest, ProcessDroppedPolicy)
   {
     CItemData ci;
     ci.CreateUUID();
-    EXPECT_EQ(PWScore::DroppedPolicy::NONE,
+    EXPECT_EQ(PWScore::NamedPolicyOutcome::NONE,
               core.ProcessDroppedPolicy(ci, mapRenamedPolicies, vAddedPolicyNames, sxDateTime, pcmd));
     EXPECT_EQ(nullptr, pcmd);
   }
@@ -1400,7 +1401,7 @@ TEST_F(CommandsTest, ProcessDroppedPolicy)
   // --- Same name & settings as target: use it, strip details from entry ---
   {
     CItemData ci = DroppedEntry(sxShared, &polTarget);
-    EXPECT_EQ(PWScore::DroppedPolicy::EXISTING,
+    EXPECT_EQ(PWScore::NamedPolicyOutcome::EXISTING,
               core.ProcessDroppedPolicy(ci, mapRenamedPolicies, vAddedPolicyNames, sxDateTime, pcmd));
     EXPECT_EQ(nullptr, pcmd);
     EXPECT_EQ(sxShared, ci.GetPolicyName());
@@ -1412,7 +1413,7 @@ TEST_F(CommandsTest, ProcessDroppedPolicy)
   {
     const StringX sxNew(L"New");
     CItemData ci1 = DroppedEntry(sxNew, &polOther);
-    EXPECT_EQ(PWScore::DroppedPolicy::ADDED,
+    EXPECT_EQ(PWScore::NamedPolicyOutcome::ADDED,
               core.ProcessDroppedPolicy(ci1, mapRenamedPolicies, vAddedPolicyNames, sxDateTime, pcmd));
     ASSERT_NE(nullptr, pcmd);
     EXPECT_EQ(sxNew, ci1.GetPolicyName());
@@ -1425,7 +1426,7 @@ TEST_F(CommandsTest, ProcessDroppedPolicy)
     EXPECT_EQ(20, added.length);
 
     CItemData ci2 = DroppedEntry(sxNew, &polOther);
-    EXPECT_EQ(PWScore::DroppedPolicy::EXISTING,
+    EXPECT_EQ(PWScore::NamedPolicyOutcome::EXISTING,
               core.ProcessDroppedPolicy(ci2, mapRenamedPolicies, vAddedPolicyNames, sxDateTime, pcmd));
     EXPECT_EQ(nullptr, pcmd);
     core.ClearCommands();
@@ -1434,7 +1435,7 @@ TEST_F(CommandsTest, ProcessDroppedPolicy)
   // --- Same name, different settings: added under a new name, once ---
   {
     CItemData ci1 = DroppedEntry(sxShared, &polOther);
-    EXPECT_EQ(PWScore::DroppedPolicy::RENAMED,
+    EXPECT_EQ(PWScore::NamedPolicyOutcome::RENAMED,
               core.ProcessDroppedPolicy(ci1, mapRenamedPolicies, vAddedPolicyNames, sxDateTime, pcmd));
     ASSERT_NE(nullptr, pcmd);
     const StringX sxRenamed = ci1.GetPolicyName();
@@ -1444,7 +1445,7 @@ TEST_F(CommandsTest, ProcessDroppedPolicy)
     // Second entry with the same policy maps to the same new name, no new command
     CItemData ci2 = DroppedEntry(sxShared, &polOther);
     Command *pcmd2(nullptr);
-    EXPECT_EQ(PWScore::DroppedPolicy::RENAMED,
+    EXPECT_EQ(PWScore::NamedPolicyOutcome::RENAMED,
               core.ProcessDroppedPolicy(ci2, mapRenamedPolicies, vAddedPolicyNames, sxDateTime, pcmd2));
     EXPECT_EQ(nullptr, pcmd2);
     EXPECT_EQ(sxRenamed, ci2.GetPolicyName());
@@ -1462,7 +1463,7 @@ TEST_F(CommandsTest, ProcessDroppedPolicy)
   {
     // Name known to target: use target's policy
     CItemData ci1 = DroppedEntry(sxShared, nullptr);
-    EXPECT_EQ(PWScore::DroppedPolicy::EXISTING,
+    EXPECT_EQ(PWScore::NamedPolicyOutcome::EXISTING,
               core.ProcessDroppedPolicy(ci1, mapRenamedPolicies, vAddedPolicyNames, sxDateTime, pcmd));
     EXPECT_EQ(nullptr, pcmd);
     EXPECT_EQ(sxShared, ci1.GetPolicyName());
@@ -1470,11 +1471,98 @@ TEST_F(CommandsTest, ProcessDroppedPolicy)
     // Name unknown to target: don't create an empty policy - clear the name
     const size_t nPolicies = core.GetPasswordPolicies().size();
     CItemData ci2 = DroppedEntry(L"Unknown", nullptr);
-    EXPECT_EQ(PWScore::DroppedPolicy::CLEARED,
+    EXPECT_EQ(PWScore::NamedPolicyOutcome::CLEARED,
               core.ProcessDroppedPolicy(ci2, mapRenamedPolicies, vAddedPolicyNames, sxDateTime, pcmd));
     EXPECT_EQ(nullptr, pcmd);
     EXPECT_FALSE(ci2.IsPolicyNameSet());
     EXPECT_EQ(nPolicies, core.GetPasswordPolicies().size());
+  }
+
+  core.ClearCommands();
+}
+
+TEST_F(CommandsTest, ProcessPolicyName)
+{
+  // Merge/Sync/Copy: named policies come from another database
+  PWScore core, othercore;
+
+  PWPolicy polSame, polOurs, polTheirs;
+  polSame.flags   = PWPolicy::UseDigits | PWPolicy::UseLowercase;
+  polSame.length  = 12;
+  polOurs.flags   = PWPolicy::UseUppercase;
+  polOurs.length  = 10;
+  polTheirs.flags = PWPolicy::UseUppercase | PWPolicy::UseSymbols;
+  polTheirs.length = 20;
+
+  const StringX sxSame(L"Same"), sxClash(L"Clash"), sxNew(L"New");
+  core.Execute(DBPolicyNamesCommand::Create(&core, sxSame, polSame));
+  core.Execute(DBPolicyNamesCommand::Create(&core, sxClash, polOurs));
+  core.ClearCommands();
+  othercore.Execute(DBPolicyNamesCommand::Create(&othercore, sxSame, polSame));
+  othercore.Execute(DBPolicyNamesCommand::Create(&othercore, sxClash, polTheirs));
+  othercore.Execute(DBPolicyNamesCommand::Create(&othercore, sxNew, polTheirs));
+  othercore.ClearCommands();
+
+  std::map<StringX, StringX> mapRenamedPolicies;
+  std::vector<StringX> vs_PoliciesAdded;
+  const StringX sxDateTime(L"2026/10/19 12:00:00");
+
+  auto Process = [&](CItemData &ci, const StringX &sxOtherPolicyName, bool &bUpdated) {
+    return core.ProcessPolicyName(&othercore, ci, mapRenamedPolicies, vs_PoliciesAdded,
+                                  sxOtherPolicyName, bUpdated, sxDateTime, IDSC_MERGEPOLICY);
+  };
+
+  // --- Same name & settings in both: nothing to do ---
+  {
+    CItemData ci;
+    ci.SetPolicyName(sxSame);
+    bool bUpdated(false);
+    EXPECT_EQ(nullptr, Process(ci, sxSame, bUpdated));
+    EXPECT_FALSE(bUpdated);
+    EXPECT_EQ(sxSame, ci.GetPolicyName());
+  }
+
+  // --- Not in this database: added once ---
+  {
+    CItemData ci1, ci2;
+    bool bUpdated(false);
+    Command *pcmd = Process(ci1, sxNew, bUpdated);
+    ASSERT_NE(nullptr, pcmd);
+    EXPECT_TRUE(bUpdated);
+    EXPECT_EQ(sxNew, ci1.GetPolicyName());
+
+    bUpdated = false;
+    EXPECT_EQ(nullptr, Process(ci2, sxNew, bUpdated));
+    EXPECT_TRUE(bUpdated);
+    EXPECT_EQ(sxNew, ci2.GetPolicyName());
+
+    core.Execute(pcmd);
+    PWPolicy added;
+    ASSERT_TRUE(core.GetPolicyFromName(sxNew, added));
+    EXPECT_EQ(polTheirs, added);
+  }
+
+  // --- Same name, different settings: renamed & added once ---
+  {
+    CItemData ci1, ci2;
+    bool bUpdated(false);
+    Command *pcmd = Process(ci1, sxClash, bUpdated);
+    ASSERT_NE(nullptr, pcmd);
+    EXPECT_TRUE(bUpdated);
+    const StringX sxRenamed = ci1.GetPolicyName();
+    EXPECT_NE(sxClash, sxRenamed);
+
+    bUpdated = false;
+    EXPECT_EQ(nullptr, Process(ci2, sxClash, bUpdated)); // no duplicate add
+    EXPECT_TRUE(bUpdated);
+    EXPECT_EQ(sxRenamed, ci2.GetPolicyName());
+
+    core.Execute(pcmd);
+    PWPolicy renamed, ours;
+    ASSERT_TRUE(core.GetPolicyFromName(sxRenamed, renamed));
+    EXPECT_EQ(polTheirs, renamed);
+    ASSERT_TRUE(core.GetPolicyFromName(sxClash, ours));
+    EXPECT_EQ(polOurs, ours);
   }
 
   core.ClearCommands();

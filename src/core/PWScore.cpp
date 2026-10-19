@@ -1923,58 +1923,72 @@ bool PWScore::EmbedNamedPolicy(CItemData &ci) const
   return true;
 }
 
-PWScore::DroppedPolicy PWScore::ProcessDroppedPolicy(CItemData &ci,
-                                                     std::map<StringX, StringX> &mapRenamedPolicies,
-                                                     std::vector<StringX> &vAddedPolicyNames,
-                                                     const StringX &sxDateTime, Command *&pcmd)
+PWScore::NamedPolicyOutcome PWScore::ReconcileNamedPolicy(StringX &sxPolicyName,
+                                                          const PWPolicy &st_from_pp,
+                                                          std::map<StringX, StringX> &mapRenamedPolicies,
+                                                          std::vector<StringX> &vAddedPolicyNames,
+                                                          const StringX &sxDateTime,
+                                                          const UINT ids_message,
+                                                          Command *&pcmd)
+{
+  pcmd = nullptr;
+
+  PWPolicy st_to_pp;
+  const bool bInThisDB = GetPolicyFromName(sxPolicyName, st_to_pp);
+  if (bInThisDB && st_to_pp == st_from_pp)
+    return NamedPolicyOutcome::EXISTING;
+
+  NamedPolicyOutcome result = NamedPolicyOutcome::ADDED;
+  if (bInThisDB) {
+    // Same name, different settings - make this policy unique
+    MakePolicyUnique(mapRenamedPolicies, sxPolicyName, sxDateTime, ids_message);
+    result = NamedPolicyOutcome::RENAMED;
+  }
+
+  // Add it - but only once per operation, as policies added earlier aren't
+  // in this database until the operation's commands are executed
+  if (std::find(vAddedPolicyNames.begin(), vAddedPolicyNames.end(),
+                sxPolicyName) == vAddedPolicyNames.end()) {
+    pcmd = DBPolicyNamesCommand::Create(this, sxPolicyName, st_from_pp);
+    vAddedPolicyNames.push_back(sxPolicyName);
+  }
+  return result;
+}
+
+PWScore::NamedPolicyOutcome PWScore::ProcessDroppedPolicy(CItemData &ci,
+                                                          std::map<StringX, StringX> &mapRenamedPolicies,
+                                                          std::vector<StringX> &vAddedPolicyNames,
+                                                          const StringX &sxDateTime, Command *&pcmd)
 {
   pcmd = nullptr;
 
   StringX sxPolicyName = ci.GetPolicyName();
   if (sxPolicyName.empty())
-    return DroppedPolicy::NONE;
+    return NamedPolicyOutcome::NONE;
 
-  // Policies added earlier in this drop aren't in the map until the
-  // drop's commands are executed
-  auto AlreadyAdded = [&vAddedPolicyNames](const StringX &sxName) {
-    return std::find(vAddedPolicyNames.begin(), vAddedPolicyNames.end(),
-                     sxName) != vAddedPolicyNames.end();
-  };
-
-  PWPolicy currentDB_st_pp;
-  const bool bInCurrentDB = GetPolicyFromName(sxPolicyName, currentDB_st_pp);
-
-  DroppedPolicy result = DroppedPolicy::EXISTING;
+  NamedPolicyOutcome result = NamedPolicyOutcome::EXISTING;
 
   if (!ci.IsPasswordPolicySet()) {
     // Sender didn't embed the policy's details (versions before GH1953 fix).
     // A valid named policy is never empty, so there's nothing to recreate.
     // Use ours if we have one by that name, else fall back to the default
     // policy, rather than creating an empty named policy.
-    if (!bInCurrentDB && !AlreadyAdded(sxPolicyName)) {
+    PWPolicy st_to_pp;
+    if (!GetPolicyFromName(sxPolicyName, st_to_pp) &&
+        std::find(vAddedPolicyNames.begin(), vAddedPolicyNames.end(),
+                  sxPolicyName) == vAddedPolicyNames.end()) {
       ci.ClearField(CItemData::POLICYNAME);
-      result = DroppedPolicy::CLEARED;
+      result = NamedPolicyOutcome::CLEARED;
     }
   } else {
     PWPolicy st_pp;
     ci.GetPWPolicy(st_pp);
     st_pp.symbols = ci.GetSymbols();
 
-    if (bInCurrentDB) {
-      if (st_pp != currentDB_st_pp) {
-        // Same name, different settings - make this policy unique
-        MakePolicyUnique(mapRenamedPolicies, sxPolicyName, sxDateTime, IDSC_DRAGPOLICY);
-        ci.SetPolicyName(sxPolicyName);
-        result = DroppedPolicy::RENAMED;
-      }
-    } else {
-      result = DroppedPolicy::ADDED;
-    }
-
-    if (result != DroppedPolicy::EXISTING && !AlreadyAdded(sxPolicyName)) {
-      pcmd = DBPolicyNamesCommand::Create(this, sxPolicyName, st_pp);
-      vAddedPolicyNames.push_back(sxPolicyName);
-    }
+    result = ReconcileNamedPolicy(sxPolicyName, st_pp, mapRenamedPolicies,
+                                  vAddedPolicyNames, sxDateTime, IDSC_DRAGPOLICY, pcmd);
+    if (result == NamedPolicyOutcome::RENAMED)
+      ci.SetPolicyName(sxPolicyName);
   }
 
   // The named policy holds these values, not the entry

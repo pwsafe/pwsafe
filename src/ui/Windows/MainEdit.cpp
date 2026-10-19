@@ -2569,7 +2569,7 @@ void DboxMain::AddDDEntries(CDDObList &in_oblist, const StringX &DropGroup,
     Command *pcmdPolicy(nullptr);
     const bool bChangedPolicy =
       m_core.ProcessDroppedPolicy(ci, mapRenamedPolicies, vAddedPolicyNames,
-                                  sxDD_DateTime, pcmdPolicy) == PWScore::DroppedPolicy::RENAMED;
+                                  sxDD_DateTime, pcmdPolicy) == PWScore::NamedPolicyOutcome::RENAMED;
     if (pcmdPolicy != nullptr)
       pmulticmds->Add(pcmdPolicy);
 

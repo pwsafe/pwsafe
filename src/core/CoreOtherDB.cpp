@@ -1249,34 +1249,19 @@ Command *PWScore::ProcessPolicyName(const PWScore *pothercore, CItemData &updtEn
   } else {
     // Policy name not blank, check if that policy is in current DB and, if so,
     // has the same values!
-    PWPolicy st_to_pp, st_from_pp;
-    bool bInTo = this->GetPolicyFromName(sxOtherPolicyName, st_to_pp);
-    bool bInFrom = pothercore->GetPolicyFromName(sxOtherPolicyName, st_from_pp);
-
-    if (!bInFrom) {
-      ASSERT(bInFrom); // Problem if set but not there!
+    PWPolicy st_from_pp;
+    if (!pothercore->GetPolicyFromName(sxOtherPolicyName, st_from_pp)) {
+      ASSERT(0); // Problem if set but not there!
       return nullptr;
     }
 
-    if (bInTo) {
-      // Same named policy in both databases
-      if (st_to_pp != st_from_pp) {
-        // But with different values - make new one unique and add
-        StringX sxNewPolicyName(sxOtherPolicyName);
-        MakePolicyUnique(mapRenamedPolicies, sxNewPolicyName, sxDateTime, ids_message);
-        pcmd = DBPolicyNamesCommand::Create(this, sxNewPolicyName, st_from_pp);
-        bUpdated = true;
-        updtEntry.SetPolicyName(sxNewPolicyName);
-      }
-    } else {
-      // Not in current database - add it - but only once!
-      if (find(vs_PoliciesAdded.begin(), vs_PoliciesAdded.end(), sxOtherPolicyName) ==
-               vs_PoliciesAdded.end()) {
-        vs_PoliciesAdded.push_back(sxOtherPolicyName);
-        pcmd = DBPolicyNamesCommand::Create(this, sxOtherPolicyName, st_from_pp);
-      }
+    StringX sxNewPolicyName(sxOtherPolicyName);
+    if (ReconcileNamedPolicy(sxNewPolicyName, st_from_pp, mapRenamedPolicies,
+                             vs_PoliciesAdded, sxDateTime, ids_message,
+                             pcmd) != NamedPolicyOutcome::EXISTING) {
+      // Added as is, or renamed as different values here
       bUpdated = true;
-      updtEntry.SetPolicyName(sxOtherPolicyName);
+      updtEntry.SetPolicyName(sxNewPolicyName);
     }
   }
   return pcmd;

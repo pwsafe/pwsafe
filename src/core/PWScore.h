@@ -329,21 +329,23 @@ public:
 
   bool EmbedNamedPolicy(CItemData& ci) const; // Called by sender to embed the named policy's details into the entry being dropped.
 
+  // What happened to a named policy brought in from elsewhere (D&D, merge, sync, copy)
+  enum class NamedPolicyOutcome {
+    NONE,      // entry has no named policy
+    EXISTING,  // matches a policy already in this database
+    ADDED,     // new to this database - added (once per operation)
+    RENAMED,   // same name but different settings here - added under a new name
+    CLEARED    // D&D only: sender didn't embed details and name unknown here - name removed
+  };
+
   // Receiving end of the above: reconcile a dropped entry's named policy with
   // this database, and remove the embedded details from the entry.
   // 'mapRenamedPolicies' & 'vAddedPolicyNames' carry state across all entries
   // of one drop. pcmd is set to a command adding a new named policy, or nullptr.
-  enum class DroppedPolicy {
-    NONE,      // entry has no named policy
-    EXISTING,  // matches a policy already in this database
-    ADDED,     // new to this database - pcmd adds it
-    RENAMED,   // same name but different settings here - added under a new name
-    CLEARED    // sender didn't embed details and name unknown here - name removed
-  };
-  DroppedPolicy ProcessDroppedPolicy(CItemData &ci,
-                                     std::map<StringX, StringX> &mapRenamedPolicies,
-                                     std::vector<StringX> &vAddedPolicyNames,
-                                     const StringX &sxDateTime, Command *&pcmd);
+  NamedPolicyOutcome ProcessDroppedPolicy(CItemData &ci,
+                                          std::map<StringX, StringX> &mapRenamedPolicies,
+                                          std::vector<StringX> &vAddedPolicyNames,
+                                          const StringX &sxDateTime, Command *&pcmd);
 
   Command *ProcessPolicyName(const PWScore *pothercore, CItemData &updtEntry,
                              std::map<StringX, StringX> &mapRenamedPolicies,
@@ -599,6 +601,18 @@ private:
   bool SetPasswordPolicies(const PSWDPolicyMap &MapPSWDPLC);
   bool AddPolicy(const StringX &sxPolicyName, const PWPolicy &st_pp,
                 const bool bAllowReplace = false);
+
+  // Common to ProcessDroppedPolicy & ProcessPolicyName: reconcile named policy
+  // 'sxPolicyName' with settings 'st_from_pp' from elsewhere with this database.
+  // On RENAMED, sxPolicyName is updated to the new name. pcmd is set to a
+  // command adding the policy, or nullptr if no add needed or already done
+  // in this operation (tracked by 'mapRenamedPolicies' & 'vAddedPolicyNames').
+  // Returns EXISTING, ADDED or RENAMED.
+  NamedPolicyOutcome ReconcileNamedPolicy(StringX &sxPolicyName, const PWPolicy &st_from_pp,
+                                          std::map<StringX, StringX> &mapRenamedPolicies,
+                                          std::vector<StringX> &vAddedPolicyNames,
+                                          const StringX &sxDateTime, const UINT ids_message,
+                                          Command *&pcmd);
 
   // Set DB filters
   bool SetDBFilters(const PWSFilters &MapDBFilters);

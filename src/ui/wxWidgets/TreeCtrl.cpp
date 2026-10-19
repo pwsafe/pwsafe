@@ -2581,7 +2581,7 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
     ::Command *pcmdPolicy(nullptr);
     const bool bChangedPolicy =
       m_core.ProcessDroppedPolicy(ci_temp, mapRenamedPolicies, vAddedPolicyNames,
-                                  sxDD_DateTime, pcmdPolicy) == PWScore::DroppedPolicy::RENAMED;
+                                  sxDD_DateTime, pcmdPolicy) == PWScore::NamedPolicyOutcome::RENAMED;
     if (pcmdPolicy != nullptr)
       pmCmd->Add(pcmdPolicy);
 
