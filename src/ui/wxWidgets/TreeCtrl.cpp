@@ -2578,7 +2578,7 @@ void TreeCtrl::AddDnDEntries(MultiCommands *pmCmd, DnDObList &dnd_oblist, String
 
     // D&D put the entry's policy name and its details in the entry -
     // add the named policy to this core if needed and remove details from the entry
-    Command *pcmdPolicy(nullptr);
+    ::Command *pcmdPolicy(nullptr);
     const bool bChangedPolicy =
       m_core.ProcessDroppedPolicy(ci_temp, mapRenamedPolicies, vAddedPolicyNames,
                                   sxDD_DateTime, pcmdPolicy) == PWScore::DroppedPolicy::RENAMED;
