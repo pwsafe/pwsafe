@@ -1233,98 +1233,73 @@ TEST_F(CommandsTest, DBPolicyNamesCommand)
   const StringX name2(L"Policy2");
   const StringX name3(L"Policy3");
 
-  // --- Single-policy add ---
-
-  core.Execute(DBPolicyNamesCommand::Create(&core, name1, pol1));
-  EXPECT_EQ(1U, core.GetPasswordPolicies().size());
-  EXPECT_EQ(12, core.GetPasswordPolicies().at(name1).length);
-  EXPECT_TRUE(core.HasDBChanged());
-
-  core.Undo();
-  EXPECT_EQ(0U, core.GetPasswordPolicies().size());
-
-  core.Redo();
-  EXPECT_EQ(1U, core.GetPasswordPolicies().size());
-
-  core.ClearCommands();
-
-  // --- NP_ADDNEW: adds only policies whose names are not already present ---
+  {
+    SCOPED_TRACE("add a single password policy");
+    auto assertInitial = [this] { EXPECT_TRUE(core.GetPasswordPolicies().empty()); };
+    auto assertChanged = [this, &name1] {
+      ASSERT_EQ(1U, core.GetPasswordPolicies().size());
+      EXPECT_EQ(12, core.GetPasswordPolicies().at(name1).length);
+      EXPECT_TRUE(core.HasDBChanged());
+    };
+    TestExecute(DBPolicyNamesCommand::Create(&core, name1, pol1), assertInitial, assertChanged,
+                UpdateGUICommand::GUI_UPDATE_STATUSBAR);
+  }
 
   PSWDPolicyMap newPolicies;
   newPolicies[name1] = pol1;  // duplicate – should be skipped
   newPolicies[name2] = pol2;  // new – should be added
 
-  core.Execute(DBPolicyNamesCommand::Create(&core, newPolicies, DBPolicyNamesCommand::NP_ADDNEW));
-  EXPECT_EQ(2U, core.GetPasswordPolicies().size());
-  EXPECT_TRUE(core.GetPasswordPolicies().contains(name1));
-  EXPECT_TRUE(core.GetPasswordPolicies().contains(name2));
-
-  core.Undo();
-  EXPECT_EQ(1U, core.GetPasswordPolicies().size());
-  EXPECT_TRUE(core.GetPasswordPolicies().contains(name1));
-  EXPECT_FALSE(core.GetPasswordPolicies().contains(name2));
-
-  core.Redo();
-  EXPECT_EQ(2U, core.GetPasswordPolicies().size());
-
-  core.ClearCommands();
-
-  // --- NP_REPLACEALL: replaces the entire policy map ---
+  {
+    SCOPED_TRACE("add only policies with new names");
+    auto assertInitial = [this, &name1] {
+      ASSERT_EQ(1U, core.GetPasswordPolicies().size());
+      EXPECT_TRUE(core.GetPasswordPolicies().contains(name1));
+    };
+    auto assertChanged = [this, &name1, &name2] {
+      ASSERT_EQ(2U, core.GetPasswordPolicies().size());
+      EXPECT_TRUE(core.GetPasswordPolicies().contains(name1));
+      EXPECT_TRUE(core.GetPasswordPolicies().contains(name2));
+    };
+    TestExecute(DBPolicyNamesCommand::Create(&core, newPolicies, DBPolicyNamesCommand::NP_ADDNEW),
+                assertInitial, assertChanged, UpdateGUICommand::GUI_UPDATE_STATUSBAR);
+  }
 
   PSWDPolicyMap replacementPolicies;
   replacementPolicies[name3] = pol3;
 
-  core.Execute(DBPolicyNamesCommand::Create(&core, replacementPolicies, DBPolicyNamesCommand::NP_REPLACEALL));
-  EXPECT_EQ(1U, core.GetPasswordPolicies().size());
-  EXPECT_FALSE(core.GetPasswordPolicies().contains(name1));
-  EXPECT_FALSE(core.GetPasswordPolicies().contains(name2));
-  EXPECT_TRUE(core.GetPasswordPolicies().contains(name3));
-  EXPECT_EQ(20, core.GetPasswordPolicies().at(name3).length);
+  {
+    SCOPED_TRACE("replace all password policies");
+    auto assertInitial = [this, &name1, &name2] {
+      ASSERT_EQ(2U, core.GetPasswordPolicies().size());
+      EXPECT_TRUE(core.GetPasswordPolicies().contains(name1));
+      EXPECT_TRUE(core.GetPasswordPolicies().contains(name2));
+    };
+    auto assertChanged = [this, &name1, &name2, &name3] {
+      ASSERT_EQ(1U, core.GetPasswordPolicies().size());
+      EXPECT_FALSE(core.GetPasswordPolicies().contains(name1));
+      EXPECT_FALSE(core.GetPasswordPolicies().contains(name2));
+      EXPECT_TRUE(core.GetPasswordPolicies().contains(name3));
+      EXPECT_EQ(20, core.GetPasswordPolicies().at(name3).length);
+    };
+    TestExecute(DBPolicyNamesCommand::Create(&core, replacementPolicies, DBPolicyNamesCommand::NP_REPLACEALL),
+                assertInitial, assertChanged, UpdateGUICommand::GUI_UPDATE_STATUSBAR);
+  }
 
-  core.Undo();
-  EXPECT_EQ(2U, core.GetPasswordPolicies().size());
-  EXPECT_TRUE(core.GetPasswordPolicies().contains(name1));
-  EXPECT_TRUE(core.GetPasswordPolicies().contains(name2));
+  {
+    SCOPED_TRACE("read-only core ignores password policy changes");
+    auto assertion = [this, &name1, &name3] {
+      EXPECT_FALSE(core.GetPasswordPolicies().contains(name1));
+      EXPECT_TRUE(core.GetPasswordPolicies().contains(name3));
+    };
+    TestReadonly(DBPolicyNamesCommand::Create(&core, name1, pol1), assertion);
+  }
 
-  core.ClearCommands();
-
-  // --- No-op when core is read-only ---
-
-  const size_t sizeBefore = core.GetPasswordPolicies().size();
-  core.SetReadOnly(true);
-  core.Execute(DBPolicyNamesCommand::Create(&core, name3, pol3));
-  EXPECT_EQ(sizeBefore, core.GetPasswordPolicies().size());
-  core.SetReadOnly(false);
-
-  core.ClearCommands();
-
-  // --- GUI notification: observer is called on Execute and on Undo ---
-
-  observer.calls.clear();
-  auto pcmd = DBPolicyNamesCommand::Create(&core, name3, pol3);
-  // same as in the UpdateGUICommand command test, execute the command directly to avoid the UI notifications
-  // generated by core - these are out of scope for this test
-  pcmd->Execute();
-  ASSERT_EQ(1U, observer.calls.size());
-  EXPECT_EQ(UpdateGUICommand::GUI_UPDATE_STATUSBAR, observer.calls[0].ga);
-  observer.calls.clear();
-
-  pcmd->Undo();
-  ASSERT_EQ(1U, observer.calls.size());
-  EXPECT_EQ(UpdateGUICommand::GUI_UPDATE_STATUSBAR, observer.calls[0].ga);
-  observer.calls.clear();
-  delete pcmd; // delete manually since we didn't use core.Execute, so core isn't tracking this command
-
-  // --- GUI notification suppressed when SetNoGUINotify() is called ---
-
-  auto silentCmd = DBPolicyNamesCommand::Create(&core, name3, pol3);
-  silentCmd->SetNoGUINotify();
-  silentCmd->Execute();
-  EXPECT_TRUE(observer.calls.empty());
-
-  silentCmd->Undo();
-  EXPECT_TRUE(observer.calls.empty());
-  delete silentCmd;
+  {
+    SCOPED_TRACE("no-GUI-notify policy command still changes policies");
+    auto assertInitial = [this, &name1] { EXPECT_FALSE(core.GetPasswordPolicies().contains(name1)); };
+    auto assertChanged = [this, &name1] { EXPECT_TRUE(core.GetPasswordPolicies().contains(name1)); };
+    TestNoGuiNotify(DBPolicyNamesCommand::Create(&core, name1, pol1), assertInitial, assertChanged);
+  }
 }
 
 TEST_F(CommandsTest, DBEmptyGroupsCommand)
