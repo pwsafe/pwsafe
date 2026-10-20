@@ -338,12 +338,13 @@ int DBPolicyNamesCommand::Execute()
       }
     }
 
-    if (m_bNotifyGUI) {
-      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
-                                        CUUID::NullUUID());
-    }
-    if (bChanged)
+    if (bChanged) {
       m_CommandDBChange = DBPOLICYNAMES;
+      if (m_bNotifyGUI) {
+        m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
+                                          CUUID::NullUUID());
+      }
+    }
   }
   return 0;
 }
