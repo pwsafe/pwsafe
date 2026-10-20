@@ -454,11 +454,10 @@ int DBEmptyGroupsCommand::Execute()
       }
     }
     if (bChanged) {
+      m_CommandDBChange = DBEMPTYGROUP;
       if (m_bNotifyGUI) {
         m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE,
                                           CUUID::NullUUID());
-
-        m_CommandDBChange = DBEMPTYGROUP;
       }
     }
   }
