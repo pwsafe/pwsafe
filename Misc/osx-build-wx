@@ -75,6 +75,9 @@ Usage (all flags are optional):
 	-d
 	    Create Debug configuration.  Absence of this flag creates the Release configuration
 
+        -h
+            This usage message
+
 	-k <SDK directory path>
 	    You can get the path to any installed SDK that Xcode is aware of like this
 	    xcodebuild -version -sdk macosx10.9 Path
@@ -99,12 +102,12 @@ error() {
 
 
 
-while getopts "a:c:Cdk:m:nw:" opt; do
+while getopts "a:c:Cdhk:m:nw:" opt; do
     case $opt in
         a)
             case "$OPTARG" in
                 arm64|x86_64) WX_ARCH=$OPTARG;;
-                *) error "Unexpected architecture: \"$OPTARG\". Its either \"arm64\" or \"x86_64\" (Or both, comma separated.)"
+                *) error "Unexpected architecture: \"$OPTARG\". is unrecognized. Supported architectures are \"arm64\", \"x86_64\" or \"arm64,x86_64\" for both.)"
                 ;;
             esac
             ;;
@@ -139,7 +142,7 @@ while getopts "a:c:Cdk:m:nw:" opt; do
         w)
             WORKFLOW=$OPTARG
             ;;
-        ?)
+        ?|h)
             usage
             exit 1
             ;;
