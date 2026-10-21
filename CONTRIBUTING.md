@@ -46,8 +46,11 @@ See [Security.md](SECURITY.md).
 
 ## Requesting Features
 
-Feature requests are welcome. Open an issue at https://github.com/pwsafe/pwsafe/issues and describe:
+Feature requests are welcome. However, before proposing a feature, please search the existing issues to avoid duplicates.
+New requests should be submitted on GitHub at https://github.com/pwsafe/pwsafe/issues,
+although SourceForge is also supported: https://sourceforge.net/p/passwordsafe/feature-requests/
 
+When submitting a feature request, please describe:
 - The problem you are trying to solve (not just the solution you have in mind)
 - How the feature would benefit users
 - Any alternatives you have considered
@@ -80,7 +83,7 @@ General information:
    not be mixed.
 3. **Write or update tests** for any core behavior you add or change.
 4. **Verify your build** compiles cleanly with no new warnings on at least one supported
-   platform before opening the PR.
+   platform before opening the PR. Once it is opened on GitHub, make sure its build workflows succeed on all platforms and try to fix any build issues that arise (if you don't have access to a platform, you can still update your PR and wait for the build results to see if the fix worked).
 5. **Run the test suite** and confirm all existing tests pass.
 
 ---
@@ -95,8 +98,6 @@ General information:
   close automatically on merge.
 - Be responsive to review feedback. PRs with no activity for 30 days may be closed; they can
   be reopened when you are ready to continue.
-- Do not force-push to a PR branch after review has started unless asked to do so by a
-  maintainer.
 
 ### Signed-off-by
 
@@ -119,9 +120,12 @@ PasswordSafe is a C++ project. Follow the conventions you observe in the existin
 - Use the same indentation style and brace placement as the surrounding code.
 - Prefer RAII and standard library facilities over manual resource management.
 - Avoid raw `new`/`delete` in new code; prefer smart pointers.
+- `stringT` is the typedef for `std::wstring`. It should be used for non-sensitive strings.
 - Use the `StringX` class for handling passwords, keys, or other sensitive textual data.
- This is like `std::string` in all respects, except that memory is scrubbed before being returned to system.
+ This is like `std::wstring` in all respects, except that memory is scrubbed before being returned to system.
 - Likewise, use the `VectorX` class instead of `std::vector` for sensitive binary data, e.g., passkey credentials.
+- Keep the UI-related functionality in a folder specific to the platform, i.e., src/ui/Windows or src/ui/wxWidgets,
+  but try to extract any common functionality and/or business logic into src/core so it can be reused across platforms.
 - Keep all platform-specific APIs under src/os, defining a common header file and platform-specific implementations.
 - New files must include the project's standard copyright and license header.
 
@@ -209,7 +213,9 @@ tests you cannot explain and defend.
 ---
 
 Finally, consider the following:
+- Is AI solving the correct problem?
+- Are alternative approaches?
 - AI tends to be overly verbose in its comments and documentation, focusing on the context of the requested
-  fix rather than how the added/modified code works with the rest of the system.
+  fix rather than how the added/modified code works with the rest of the system. 
   In the long run, this makes the code less maintainable. Comments in the code shouldn't reflect the prompt
-  used to generate the code. This belongs in the commit message.
+  used to generate the code. This information belongs in the commit message.
