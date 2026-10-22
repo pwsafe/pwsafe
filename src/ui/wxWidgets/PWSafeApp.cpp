@@ -36,6 +36,11 @@
 #if wxCHECK_VERSION(2,9,2)
 #include <wx/richmsgdlg.h>
 #endif
+// Used by DarkModeHtmlProcessor for Help
+#if wxCHECK_VERSION(3,1,3)
+#include <wx/html/htmlproc.h>
+#include <wx/regex.h>
+#endif
 ////@end includes
 
 #include "os/cleanup.h"
@@ -95,6 +100,31 @@ public:
     wxLog::SetComponentLevel(wxT("wx"), level);
   }
 };
+
+// Make Help use a dark background in dark mode without modifying the HTML files
+#if wxCHECK_VERSION(3,1,3)
+class DarkModeHtmlProcessor : public wxHtmlProcessor
+{
+public:
+  wxString Process(const wxString& htmlPage) const override
+  {
+    if (!wxSystemSettings::GetAppearance().IsDark())
+      return htmlPage; // do nothing
+    wxColour bgColor = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOW);
+    wxColour fgColor = wxSystemSettings::GetColour(wxSYS_COLOUR_WINDOWTEXT);
+    // Convert to HTML-compatible #RRGGBB strings
+    wxString bgHtml = bgColor.GetAsString(wxC2S_HTML_SYNTAX);
+    wxString fgHtml = fgColor.GetAsString(wxC2S_HTML_SYNTAX);
+    const wxString linkColor = "#00BFFF"; // Use DeepSkyBlue for links; specifying the color by name does not work on macOS
+    wxString result = htmlPage;
+    // Apply dark colors to the BODY opening tag
+    wxRegEx bodyTag("<body\\b([^>]*)>", wxRE_ICASE);
+    if (bodyTag.Matches(result))
+      bodyTag.ReplaceAll(&result, wxString::Format("<body bgcolor=\"%s\" text=\"%s\" link=\"%s\">", bgHtml, fgHtml, linkColor));
+    return result;
+  }
+};
+#endif
 
 static RestrainLog restLog(wxLOG_Info);
 
@@ -495,6 +525,11 @@ bool PWSafeApp::OnInit()
 #endif
     }
   }
+
+// Register an HTML processor that injects dark colors into each Help page when dark mode is detected
+#if wxCHECK_VERSION(3,1,3)
+  wxHtmlWindow::AddGlobalProcessor(new DarkModeHtmlProcessor());
+#endif
 
 /*
  * On macOS, Finder GUI file actions, such as double-clicking a file to open it, are sent
