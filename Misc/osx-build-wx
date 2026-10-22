@@ -107,7 +107,7 @@ while getopts "a:c:Cdhk:m:nw:" opt; do
         a)
             case "$OPTARG" in
                 arm64|x86_64) WX_ARCH=$OPTARG;;
-                *) error "Unexpected architecture: \"$OPTARG\". is unrecognized. Supported architectures are \"arm64\", \"x86_64\" or \"arm64,x86_64\" for both.)"
+                *) error "Unexpected architecture: \"$OPTARG\" is unrecognized. Supported architectures are \"arm64\", \"x86_64\" or \"arm64,x86_64\" for both.)"
                 ;;
             esac
             ;;
