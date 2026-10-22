@@ -181,11 +181,15 @@ osx-build-wx has to be run from your wxWidgets build directory.
 wx3 $ mkdir static-debug
 wx3 $ cd static-debug
 wx3/static-debug $ <path-to-pwsafe's osx-build-wx> -d
+```
+
+The **osx-build-wx** script runs the configure script followed by make.  To run them seperately add the "-C" option:
+```
+wx3/static-debug $ <path-to-pwsafe's osx-build-wx> -d -C
 wx3/static-debug $ make
 OR
 wx3/static-debug $ make -j `sysctl -n hw.ncpu`
 ```
-Note that osx-build-wx doesn't actually run make: you need to run it yourself.
 
 The "make -j..." version will use all available CPUs on the system.  On modern systems this is *much* faster.
 But on older systems, especially those with a single, spinning hard drive, it might be too much.  At least "-j 2" should help.
