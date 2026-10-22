@@ -1899,6 +1899,104 @@ bool PWScore::GetPolicyFromName(const StringX &sxPolicyName, PWPolicy &st_pp) co
   }
 }
 
+bool PWScore::EmbedNamedPolicy(CItemData &ci) const
+{
+// Called by D&D sender to copy the details of ci's named policy into its POLICY & SYMBOLS fields.
+//
+// NOTE: Per format specification, POLICY (an entry-specific policy) and POLICYNAME are
+// mutually exclusive. This deliberately sets both, so that the receiver can recreate the named policy.
+// Therefore, call this *only* with a temporary ci that's used as the D&D payload, and *never*
+// stored persistently.
+// The receiver expects an entry with a POLICYNAME to also have POLICY & SYMBOLS,
+// from which it recreates the named policy, and will remove the latter 2 in ProcessDroppedPolicy().
+
+  const StringX sxPolicyName = ci.GetPolicyName();
+  if (sxPolicyName.empty())
+    return false;
+
+  PWPolicy st_pp;
+  if (!GetPolicyFromName(sxPolicyName, st_pp))
+    return false;
+
+  ci.SetPWPolicy(st_pp);
+  ci.SetSymbols(st_pp.symbols); // Needed since SetPWPolicy() doesn't set SYMBOLS if policy's symbols are empty (edge case)
+  return true;
+}
+
+PWScore::NamedPolicyOutcome PWScore::ReconcileNamedPolicy(StringX &sxPolicyName,
+                                                          const PWPolicy &st_from_pp,
+                                                          std::map<StringX, StringX> &mapRenamedPolicies,
+                                                          std::vector<StringX> &vAddedPolicyNames,
+                                                          const StringX &sxDateTime,
+                                                          const UINT ids_message,
+                                                          Command *&pcmd)
+{
+  pcmd = nullptr;
+
+  PWPolicy st_to_pp;
+  const bool bInThisDB = GetPolicyFromName(sxPolicyName, st_to_pp);
+  if (bInThisDB && st_to_pp == st_from_pp)
+    return NamedPolicyOutcome::EXISTING;
+
+  NamedPolicyOutcome result = NamedPolicyOutcome::ADDED;
+  if (bInThisDB) {
+    // Same name, different settings - make this policy unique
+    MakePolicyUnique(mapRenamedPolicies, sxPolicyName, sxDateTime, ids_message);
+    result = NamedPolicyOutcome::RENAMED;
+  }
+
+  // Add it - but only once per operation, as policies added earlier aren't
+  // in this database until the operation's commands are executed
+  if (std::find(vAddedPolicyNames.begin(), vAddedPolicyNames.end(),
+                sxPolicyName) == vAddedPolicyNames.end()) {
+    pcmd = DBPolicyNamesCommand::Create(this, sxPolicyName, st_from_pp);
+    vAddedPolicyNames.push_back(sxPolicyName);
+  }
+  return result;
+}
+
+PWScore::NamedPolicyOutcome PWScore::ProcessDroppedPolicy(CItemData &ci,
+                                                          std::map<StringX, StringX> &mapRenamedPolicies,
+                                                          std::vector<StringX> &vAddedPolicyNames,
+                                                          const StringX &sxDateTime, Command *&pcmd)
+{
+  pcmd = nullptr;
+
+  StringX sxPolicyName = ci.GetPolicyName();
+  if (sxPolicyName.empty())
+    return NamedPolicyOutcome::NONE;
+
+  NamedPolicyOutcome result = NamedPolicyOutcome::EXISTING;
+
+  if (!ci.IsPasswordPolicySet()) {
+    // Sender didn't embed the policy's details (versions before GH1953 fix).
+    // A valid named policy is never empty, so there's nothing to recreate.
+    // Use ours if we have one by that name, else fall back to the default
+    // policy, rather than creating an empty named policy.
+    PWPolicy st_to_pp;
+    if (!GetPolicyFromName(sxPolicyName, st_to_pp) &&
+        std::find(vAddedPolicyNames.begin(), vAddedPolicyNames.end(),
+                  sxPolicyName) == vAddedPolicyNames.end()) {
+      ci.ClearField(CItemData::POLICYNAME);
+      result = NamedPolicyOutcome::CLEARED;
+    }
+  } else {
+    PWPolicy st_pp;
+    ci.GetPWPolicy(st_pp);
+    st_pp.symbols = ci.GetSymbols();
+
+    result = ReconcileNamedPolicy(sxPolicyName, st_pp, mapRenamedPolicies,
+                                  vAddedPolicyNames, sxDateTime, IDSC_DRAGPOLICY, pcmd);
+    if (result == NamedPolicyOutcome::RENAMED)
+      ci.SetPolicyName(sxPolicyName);
+  }
+
+  // The named policy holds these values, not the entry
+  ci.ClearField(CItemData::POLICY);
+  ci.ClearField(CItemData::SYMBOLS);
+  return result;
+}
+
 class PolicyNameMatch
 {
 public:
