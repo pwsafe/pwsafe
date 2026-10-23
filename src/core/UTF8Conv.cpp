@@ -15,6 +15,8 @@
 #include "os/debug.h"
 #include "os/utf8conv.h"
 
+#include <cstring>
+
 CUTF8Conv::~CUTF8Conv()
 {
   if (m_utf8 != nullptr) {
@@ -87,6 +89,15 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
   }
 
   ASSERT(utf8 != nullptr);
+
+  // pws_os::mbstowcs() is called with srclen = -1, i.e., it reads up to a
+  // null terminator, which may lie beyond utf8Len.
+  VectorX<unsigned char> terminated;
+  if (std::memchr(utf8, '\0', utf8Len) == nullptr) {
+    terminated.assign(utf8, utf8 + utf8Len);
+    terminated.push_back('\0');
+    utf8 = terminated.data();
+  }
 
   // first get needed wide char buffer size
   size_t wcLen = pws_os::mbstowcs(nullptr, 0,
