@@ -134,8 +134,10 @@ public:
   {
     if (event.GetEventType() == wxEVT_HTML_LINK_CLICKED) {
       wxHtmlLinkEvent& htmlEvent = static_cast<wxHtmlLinkEvent&>(event);
-      const wxString href = htmlEvent.GetLinkInfo().GetHref();
-      if (href.StartsWith("http://") || href.StartsWith("https://")) {
+      wxString href = htmlEvent.GetLinkInfo().GetHref();
+      if (href.StartsWith("http://"))
+        href = "https://" + href.Mid(7);
+      if (href.StartsWith("https://")) {
         wxLaunchDefaultBrowser(href);
         return Event_Processed;
       }
