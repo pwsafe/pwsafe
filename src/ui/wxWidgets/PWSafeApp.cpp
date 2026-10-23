@@ -126,6 +126,26 @@ public:
 };
 #endif
 
+// Implement event filter that opens the system browser for external links in Help
+class HtmlLinkFilter : public wxEventFilter
+{
+public:
+  int FilterEvent(wxEvent& event) override
+  {
+    if (event.GetEventType() == wxEVT_HTML_LINK_CLICKED) {
+      wxHtmlLinkEvent& htmlEvent = static_cast<wxHtmlLinkEvent&>(event);
+      wxString href = htmlEvent.GetLinkInfo().GetHref();
+      if (href.StartsWith("http://"))
+        href = "https://" + href.Mid(7);
+      if (href.StartsWith("https://")) {
+        wxLaunchDefaultBrowser(href);
+        return Event_Processed;
+      }
+    }
+    return Event_Skip; // All other events pass through normally
+  }
+};
+
 static RestrainLog restLog(wxLOG_Info);
 
 static const wxCmdLineEntryDesc cmdLineDesc[] = {
@@ -991,12 +1011,17 @@ void PWSafeApp::OnHelp(wxCommandEvent& evt)
     return;
   
   wxWindow* window = wxDynamicCast(evt.GetEventObject(), wxWindow);
+  // Register custom event filter for opening external links in the system browser
+  HtmlLinkFilter linkFilter;
+  wxEvtHandler::AddFilter(&linkFilter);
   
   if (window) {
     //The window associated with the event is typically the Help button.  Fail if
     //we can't get to its parent
-    if (window->GetId() == wxID_HELP && ((window = window->GetParent()) == nullptr))
+    if (window->GetId() == wxID_HELP && ((window = window->GetParent()) == nullptr)) {
+      wxEvtHandler::RemoveFilter(&linkFilter);
       return;
+    }
 
     wxString keyName, msg;
     //Is this a property sheet?
@@ -1031,6 +1056,7 @@ void PWSafeApp::OnHelp(wxCommandEvent& evt)
     //a button, like for the top-level frame
     wxHtmlModalHelp help(wxGetApp().GetTopWindow(), helpFileNamePath, wxT(""), wxHF_DEFAULT_STYLE);
   }
+  wxEvtHandler::RemoveFilter(&linkFilter);
 }
 
 PWSafeApp::StringToStringMap& PWSafeApp::GetHelpMap()
