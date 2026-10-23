@@ -15,6 +15,7 @@
 
 #include "core/StringX.h"
 #include "core/StringXStream.h"
+#include "core/UTF8Conv.h"
 #include "os/typedefs.h"
 #include "gtest/gtest.h"
 
@@ -316,4 +317,19 @@ TEST(trim, EmptyString) {
   wstring s{L""};
   EXPECT_EQ(Trim(s), L"");
   EXPECT_EQ(s, L"");
+}
+
+TEST(StringXTest, testFromUTF8Length)
+{
+  // FromUTF8 must not read past utf8Len, even without a null terminator
+  const unsigned char valid[] = {'a', 'b', 'c', 'd', 'e'};
+  const unsigned char invalid[] = {'a', 'b', 'c', 0xff, 0xfe};
+  CUTF8Conv conv;
+  StringX sx;
+
+  EXPECT_TRUE(conv.FromUTF8(valid, 3, sx));
+  EXPECT_EQ(sx, L"abc");
+
+  EXPECT_TRUE(conv.FromUTF8(invalid, 3, sx));
+  EXPECT_EQ(sx, L"abc");
 }
