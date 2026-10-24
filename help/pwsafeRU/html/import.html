@@ -175,7 +175,7 @@
 
 <p><b>Password Safe</b> не может напрямую импортировать XML-файлы, созданные KeePass V1 и KeePass V2, т. к. их формат сильно отличается от используемого в <b>Password Safe</b>. Но мы предоставляем XSL-файлы для преобразования их в совместимый формат (KPV1_to_PWS.xslt и KPV2_to_PWS.xslt). Указанны ниже программы могут быть использованы для обработки экспортированных XML-файлов с помощью XSLT-шаблонов. Полученные в результате преобразования файлы совместимы с импортируемыми <b>Password Safe</b> XML-файлами (для <b>Password Safe</b> <u>V3.26 или новее</u>).</p>
 
-<p>XSLT-файлы соответствуют стандарту XSLT V1.0, описанному на <a target="blank" href="http://www.w3.org/TR/xslt"> http://www.w3.org/TR/xslt</a>, и были проверены на файлах, созданных с помощью KeePass V1.19b и KeePass V2.15.</p>
+<p>XSLT-файлы соответствуют стандарту XSLT V1.0, описанному на <a target="blank" href="https://www.w3.org/TR/xslt"> https://www.w3.org/TR/xslt</a>, и были проверены на файлах, созданных с помощью KeePass V1.19b и KeePass V2.15.</p>
 
 <p>Обратите внимание, что в <b>Password Safe</b> значение даты и времени должны быть не позднее 19 января 2038 г. Более поздние даты считаются некорректными, и соответствующие поля не заполняются.</p>
 
@@ -187,7 +187,7 @@
 <li>Все входные или выходные файлы находятся в том же каталоге, что и XSLT-процессор. В противном случае необходимо указать полные пути к файлам.</li>
 </ul>
 <ol>
-<li>Утилита командной строки от Microsoft (XSLT Processor Version 4.0). В свойствах файла msxsl.exe указана версия V1.1.0.1 и дата 2001 г., хотя на web-сайте указана версия V2.0 с датой 19 сентября 2004 г. Утилиту можно загрузить с <a target="blank" href="http://www.microsoft.com/downloads/en/details.aspx?familyid=2fb55371-c94e-4373-b0e9-db4816552e41&amp;displaylang=en">http://www.microsoft.com/downloads</a>. Для работы утилиты требуется Microsoft Core XML Services (MSXML) V4.0. Текущая версия MSXML V6, но V4 обычно присутствует на всех версиях Windows, поддерживаемых <b>Password Safe</b>.
+<li>Утилита командной строки от Microsoft (XSLT Processor Version 4.0). В свойствах файла msxsl.exe указана версия V1.1.0.1 и дата 2001 г., хотя на web-сайте указана версия V2.0 с датой 19 сентября 2004 г. Утилиту можно загрузить с <a target="blank" href="https://www.microsoft.com/downloads/en/details.aspx?familyid=2fb55371-c94e-4373-b0e9-db4816552e41&amp;displaylang=en">https://www.microsoft.com/downloads</a>. Для работы утилиты требуется Microsoft Core XML Services (MSXML) V4.0. Текущая версия MSXML V6, но V4 обычно присутствует на всех версиях Windows, поддерживаемых <b>Password Safe</b>.
 <p>Для XML-файлов KeePass V1 используется команда:</p>
 <pre>
 msxsl KeePassV1.xml KPV1_to_PWS.xslt -o PWS.xml
@@ -197,7 +197,7 @@ msxsl KeePassV1.xml KPV1_to_PWS.xslt -o PWS.xml
 msxsl KeePassV2.xml KPV2_to_PWS.xslt -o PWS.xml
 </pre>
 </li>
-<li>AltovaXML Community Edition (текущая версия 2011r3). См. <a target="blank" href="http://www.altova.com/altovaxml.html"> http://www.altova.com/altovaxml.html</a>.
+<li>AltovaXML Community Edition (текущая версия 2011r3). См. <a target="blank" href="https://www.altova.com/altovaxml.html"> https://www.altova.com/altovaxml.html</a>.
 <p>Для XML-файлов KeePass V1 используется команда:</p>
 <pre>
 AltovaXML -xslt1 KPV1_to_PWS.xslt -in KeePassV1.xml -out PWS.xml
@@ -207,7 +207,7 @@ AltovaXML -xslt1 KPV1_to_PWS.xslt -in KeePassV1.xml -out PWS.xml
 AltovaXML -xslt1 KPV2_to_PWS.xslt -in KeePassV2.xml -out PWS.xml
 </pre>
 </li>
-<li>Saxon-HE (Home Edition) (текущая версия 9.3.0.5). См. <a target="blank" href="http://saxon.sourceforge.net/">http://saxon.sourceforge.net/</a>. Для Saxon также существует графическая оболочка Kernow. См. <a target="blank" href="http://kernowforsaxon.sourceforge.net/">http://kernowforsaxon.sourceforge.net/</a>. Формат команды зависит от того, какая используется версия Saxon-HE и/или Kernow (Java или .Net). Для получения дополнительной информации см. документацию к программам.</li>
+<li>Saxon-HE (Home Edition) (текущая версия 9.3.0.5). См. <a target="blank" href="https://saxon.sourceforge.net/">https://saxon.sourceforge.net/</a>. Для Saxon также существует графическая оболочка Kernow. См. <a target="blank" href="https://kernowforsaxon.sourceforge.net/">https://kernowforsaxon.sourceforge.net/</a>. Формат команды зависит от того, какая используется версия Saxon-HE и/или Kernow (Java или .Net). Для получения дополнительной информации см. документацию к программам.</li>
 </ol>
 
 <p>Все перечисленные программы бесплатны для использования, но Kernow требует регистрации после стократного использования.</p>
@@ -343,7 +343,7 @@ AltovaXML -xslt1 KPV2_to_PWS.xslt -in KeePassV2.xml -out PWS.xml
 </tbody>
 </table>
 
-<p>Ниже описаны преобразования кодов автонабора KeePass V2 (см. <a target="blank" href="http://keepass.info/help/base/autotype.html">http://keepass.info/help/base/autotype.html</a>) в коды Password Safe. <i>Все неуказанные коды копируются без изменений.</i></p>
+<p>Ниже описаны преобразования кодов автонабора KeePass V2 (см. <a target="blank" href="https://keepass.info/help/base/autotype.html">https://keepass.info/help/base/autotype.html</a>) в коды Password Safe. <i>Все неуказанные коды копируются без изменений.</i></p>
 
 <table border="1" cellpadding="2" cellspacing="2 width="80%">
 <col align="left" width="75%" />
@@ -373,7 +373,7 @@ AltovaXML -xslt1 KPV2_to_PWS.xslt -in KeePassV2.xml -out PWS.xml
 </tbody>
 </table>
 
-<p>Ниже описаны ключевые последовательности подстановок KeePass V2 (см. <a target="blank" href="http://keepass.info/help/base/placeholders.html">http://keepass.info/help/base/placeholders.html</a>) в коды Password Safe. <i>Все неуказанные коды копируются без изменений.</i></p>
+<p>Ниже описаны ключевые последовательности подстановок KeePass V2 (см. <a target="blank" href="https://keepass.info/help/base/placeholders.html">https://keepass.info/help/base/placeholders.html</a>) в коды Password Safe. <i>Все неуказанные коды копируются без изменений.</i></p>
 
 <p>Ключевые подстановки регистронезависимы. Ссылки на пользовательские строки имеют вид  {S:FieldName}. Например, если у элемента задана пользовательская строка «eMail», на неё можно сослаться используя подстановку {S:eMail}.</p>
 
