@@ -18,48 +18,53 @@
 # See: https://hub.docker.com/_/debian and
 # https://hub.docker.com/_/ubuntu
 
-FROM ubuntu:22.04
+FROM ubuntu:26.04
 
 # Build with: sudo docker build -t passwordsafe .
-# --or--      sudo docker build -t passwordsafe:1.18.2 .
+# --or--      sudo docker build -t passwordsafe:1.26.0 .
 # Run with: sudo docker run --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" --volume="$HOME/.pwsafe:/root/.pwsafe:rw" passwordsafe
 
 LABEL "maintainer"="The Passwordsafe Project <Passwordsafe-linux@lists.sourceforge.net>"
 
-# Install deps for PWSafe (LOTS and LOTS!)
 # See https://docs.docker.com/develop/develop-images/dockerfile_best-practices#apt-get
 
 # Prevent prompting for info during package install, e.g., timezone
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update \
-     && apt-get install -qy libwxgtk3.0-gtk3-0v5 libxtst6 libxerces-c3.2 libykpers-1-1 \
-     libqrencode4 libcurl4 libmagic1 locales xdg-utils \
+     && apt-get install -qy locales xdg-utils \
      && rm -rf /var/lib/apt/lists/*
 
 # Set the locale, per http://jaredmarkell.com/docker-and-locales/
 RUN locale-gen en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LANGUAGE en_US:en
-ENV LC_ALL en_US.UTF-8
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
 
 # Avoid: (pwsafe:8): Gtk-WARNING **: *: Attempting to set the permissions of `/root/.local/share', but failed: No such file or directory
 RUN mkdir -p /root/.local/share
 
 # This is here to leave everything above UNCHANGED as much as possible
 # to allow layer caching to work at build time!
-ARG deb_file=passwordsafe-ubuntu22-1.18.2-amd64.deb
+# Note that the release tag is X.Y.Z, but the deb file name has only X.Y
+ARG pwsafe_release=1.26.0
+ARG deb_file=passwordsafe-ubuntu26-1.26-amd64.deb
 
 LABEL "pwsafe"="$deb_file"
 
-ADD https://github.com/pwsafe/pwsafe/releases/download/1.18.2/$deb_file \
+ADD https://github.com/pwsafe/pwsafe/releases/download/$pwsafe_release/$deb_file \
      /tmp/$deb_file
 
-RUN dpkg -i /tmp/$deb_file && rm /tmp/$deb_file
+# Installing the .deb via apt pulls in its dependencies (LOTS and LOTS!)
+RUN apt-get update \
+     && apt-get install -qy /tmp/$deb_file \
+     && rm -rf /var/lib/apt/lists/* /tmp/$deb_file
 
-CMD /usr/bin/pwsafe
+CMD ["/usr/bin/pwsafe"]
 # ----
-# 
+#
+# The sample output below is from an earlier build (Ubuntu 22.04, pwsafe 1.18.2).
+#
 # A non-cached build that actually has to do the APT installs takes about 
 # 5 minutes, most of which is `apt-get` "Setting up...".
 # 
