@@ -3,14 +3,9 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <title>Importovanie záznamov</title>
-<!-- pwsafe version: 2.11--><!-- Modified: 15/06/2005 --><!--Popup control -->
-<script language="javascript" src="html/popups.js">
-</script>
 <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<object id="popup" type="application/x-oleobject" classid="clsid:adb880a6-d8ff-11cf-9377-00aa003b7a11"></object>
-<!-- Popup Source File -->
 
 <h2>Importovanie záznamov</h2>
 
@@ -223,8 +218,8 @@ Je však možné exportovať databázu KeePass V2 ako databázu KeePass V1. Tút
 Vytvorili sme však súbory XSL Transform (KPV1_to_PWS.xslt a KPV2_to_PWS.xslt). Nižšie uvedené programy sa dajú použiť na spracovanie exportovaného súboru XML s jedným z týchto súborov XSLT 
 za účelom vytvorenia súboru XML kompatibilného s <b>Password Safe</b>, ktorý je potom možné importovať do <b>Password Safe</b> <u>V3.26 alebo novšej</u>.</p>
 
-<p>Súbory XSLT sú v súlade s V1.0 XSLT, ako je popísané v <a target="blank" href="http://www.w3.org/TR/xslt">
-http://www.w3.org/TR/xslt</a> a boli testované so súbormi XML vytvorenými programami KeePass V1.19b a KeePass V2.15.</p>
+<p>Súbory XSLT sú v súlade s V1.0 XSLT, ako je popísané v <a target="blank" href="https://www.w3.org/TR/xslt">
+https://www.w3.org/TR/xslt</a> a boli testované so súbormi XML vytvorenými programami KeePass V1.19b a KeePass V2.15.</p>
 
 <p>Upozorňujeme, že hodnoty času v <b>Password Safe</b> musia byť skoršie ako 19. január 2038. 
 Akýkoľvek neskorší čas sa momentálne považuje za neplatný a príslušné pole nie je nastavené.</p>
@@ -240,7 +235,7 @@ Príklad spustenia príkazového riadka týchto procesorov predpokladá:<p>
 <ol>
 <li>Program pre príkazový riadok od Microsoft (XSLT Processor verzie 4.0). Vlastnosti súboru msxsl.exe uvádzajú, 
 že je to V1.1.0.1 a datovaný je z roku 2001, hoci webová stránka uvádza, že je to V2.0 a datovaný je 19. septembra 2004. 
-Aktuálne ho možno nájsť na adrese <a target="blank" href="http://www.microsoft.com/downloads/en/details.aspx?familyid=2fb55371-c94e-4373-b0e9-db4816552e41&displaylang=en">http://www.microsoft.com/downloads</a>.
+Aktuálne ho možno nájsť na adrese <a target="blank" href="https://www.microsoft.com/downloads/en/details.aspx?familyid=2fb55371-c94e-4373-b0e9-db4816552e41&displaylang=en">https://www.microsoft.com/downloads</a>.
 Vyžaduje si nainštalovanie Microsoft Core XML Services (MSXML) V4.0. Zatiaľ čo najnovšia verzia MSXML je V6, 
 V4 sa zvyčajne inštaluje na všetky verzie systému Windows podporované <b>Password Safe</b>.
 <p>Pre súbor KeePass V1 XML použite príkaz:</p>
@@ -253,7 +248,7 @@ msxsl KeePassV2.xml KPV2_to_PWS.xslt -o PWS.xml
 </pre>
 </li>
 <li>AltovaXML Community Edition (aktuálna verzia 2011r3).
-Pozri <a target="blank" href="http://www.altova.com/altovaxml.html">http://www.altova.com/altovaxml.html</a>.
+Pozri <a target="blank" href="https://www.altova.com/altovaxml.html">https://www.altova.com/altovaxml.html</a>.
 <p>Pre súbor KeePass V1 XML použite príkaz:</p>
 <pre>
 AltovaXML -xslt1 KPV1_to_PWS.xslt -in KeePassV1.xml -out PWS.xml
@@ -264,9 +259,9 @@ AltovaXML -xslt1 KPV2_to_PWS.xslt -in KeePassV2.xml -out PWS.xml
 </pre>
 </li>
 <li>Saxon-HE (Home Edition) (aktuálna verzia 9.3.0.5).
-Pozri <a target="blank" href="http://saxon.sourceforge.net/">http://saxon.sourceforge.net/</a>.
+Pozri <a target="blank" href="https://saxon.sourceforge.net/">https://saxon.sourceforge.net/</a>.
 Pre Saxon existuje aj grafické rozhranie s názvom Kernow.
-Pozrite si stránku <a target="blank" href="http://kernowforsaxon.sourceforge.net/">http://kernowforsaxon.sourceforge.net/</a>.
+Pozrite si stránku <a target="blank" href="https://kernowforsaxon.sourceforge.net/">https://kernowforsaxon.sourceforge.net/</a>.
 Formát príkazu závisí od toho, či používate verziu Java alebo .Net pre Saxon-HE a/alebo Kernow. Ďalšie informácie nájdete v dokumentácii k produktu.</li>
 </ol>
 
@@ -414,7 +409,7 @@ Všetky ostatné uložené zmenené polia v KeePass elemente XML sa ignorujú.</
 </table>
 
 <p>Nasledujúce špeciálne kódy AutoType KeePass V2 (pozri
-<a target="blank" href="http://keepass.info/help/base/autotype.html">http://keepass.info/help/base/autotype.html</a>)
+<a target="blank" href="https://keepass.info/help/base/autotype.html">https://keepass.info/help/base/autotype.html</a>)
 sú preložené nasledovne. <i>Všetky kódy, ktoré nie sú uvedené, sú skopírované tak ako sú.</i></p>
 
 <table border="1" cellpadding="2" cellspacing="2 width="80%">
@@ -446,7 +441,7 @@ sú preložené nasledovne. <i>Všetky kódy, ktoré nie sú uvedené, sú skop�
 </table>
 
 <p>Nasledujúce zástupné symboly KeePass V2 (pozri
-<a target="blank" href="http://keepass.info/help/base/placeholders.html">http://keepass.info/help/base/placeholders.html</a>)
+<a target="blank" href="https://keepass.info/help/base/placeholders.html">https://keepass.info/help/base/placeholders.html</a>)
 sú preložené nasledovne. <i>Všetky kódy, ktoré nie sú uvedené, sú skopírované tak ako sú</i>.</p>
 
 <p>Zástupné symboly nerozlišujú veľké a malé písmená. Na vlastné reťazce sa dá odkazovať pomocou {S:Name}. Napríklad,
