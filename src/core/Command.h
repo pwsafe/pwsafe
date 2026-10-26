@@ -294,6 +294,7 @@ private:
 class DeleteAttachmentCommand : public Command
 {
 public:
+  // TODO: delete the pcmd parameter - never used
   static DeleteAttachmentCommand *Create(CommandInterface *pcomInt,
     const CItemData &ci,
     const Command *pcmd = nullptr)
