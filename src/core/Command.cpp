@@ -1260,14 +1260,14 @@ int RenameGroupCommand::Execute()
         m_pmulticmds->SetNoGUINotify();
     }
 
-    // Do it
-    if (!m_pmulticmds->IsEmpty())
+    if (!m_pmulticmds->IsEmpty()) {
       m_pmulticmds->Execute();
 
-    m_CommandDBChange = DB;
-      
-    if (m_bNotifyGUI) // To update the filter view
-      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE, pws_os::CUUID::NullUUID());
+      m_CommandDBChange = DB;
+
+      if (m_bNotifyGUI) // To update the filter view
+        m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE, CUUID::NullUUID());
+    }
   }
   return rc;
 }
