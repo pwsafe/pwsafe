@@ -1256,6 +1256,8 @@ int RenameGroupCommand::Execute()
     if (m_pmulticmds == nullptr) {
       // Execute (will not be nullptr if performing a Redo)
       rc = m_pcomInt->DoRenameGroup(m_sxOldPath, m_sxNewPath, m_pmulticmds);
+      if (!m_bNotifyGUI)
+        m_pmulticmds->SetNoGUINotify();
     }
 
     // Do it
@@ -1279,7 +1281,7 @@ void RenameGroupCommand::Undo()
     RestoreDBInformation();
       
     if (m_bNotifyGUI) // To update the filter view
-      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE, pws_os::CUUID::NullUUID());
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE, CUUID::NullUUID());
   }
 }
 
