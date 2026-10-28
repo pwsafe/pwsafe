@@ -60,30 +60,6 @@ typedef std::wifstream ifstreamT;
 typedef std::wofstream ofstreamT;
 typedef std::vector<stringT>::iterator viter;
 
-struct ExportTester {
-  ExportTester(const stringT &subgroup_name,
-               const int &subgroup_object, const int &subgroup_function)
-  :  m_subgroup_name(subgroup_name), m_subgroup_object(subgroup_object),
-  m_subgroup_function(subgroup_function)
-  {}
-
-  // operator for ItemList
-  bool operator()(const pair<CUUID , CItemData > &p)
-  {return operator()(p.second);}
-
-  // operator for OrderedItemList
-  bool operator()(const CItemData &item) {
-    return item.Matches(m_subgroup_name,
-                        m_subgroup_object, m_subgroup_function);
-  }
-
-private:
-  ExportTester& operator=(const ExportTester&) = delete;
-  const stringT &m_subgroup_name;
-  const int &m_subgroup_object;
-  const int &m_subgroup_function;
-};
-
 int PWScore::TestSelection(const bool bAdvanced,
                            const stringT &subgroup_name,
                            const int &subgroup_object,
@@ -95,15 +71,15 @@ int PWScore::TestSelection(const bool bAdvanced,
     bool bAnyMatch(false);
     if (pOIL != nullptr) {
       if (find_if(pOIL->begin(), pOIL->end(),
-                  ExportTester(subgroup_name,
-                               subgroup_object,
-                               subgroup_function)) != pOIL->end())
+                  [&](const CItemData &item) {
+                    return item.Matches(subgroup_name, subgroup_object, subgroup_function);
+                  }) != pOIL->end())
         bAnyMatch = true;
     } else {
       if (find_if(m_pwlist.begin(), m_pwlist.end(),
-                  ExportTester(subgroup_name,
-                               subgroup_object,
-                               subgroup_function)) != m_pwlist.end())
+                  [&](const pair<CUUID, CItemData> &p) {
+                    return p.second.Matches(subgroup_name, subgroup_object, subgroup_function);
+                  }) != m_pwlist.end())
         bAnyMatch = true;
     }
 
