@@ -643,7 +643,7 @@ PWSFileSig &PWSFileSig::operator=(const PWSFileSig &that)
   return *this;
 }
 
-bool PWSFileSig::operator==(const PWSFileSig &that)
+bool PWSFileSig::operator==(const PWSFileSig &that) const
 {
   // Check this first as digest may otherwise be invalid
   if (m_iErrorCode != 0 || that.m_iErrorCode != 0)

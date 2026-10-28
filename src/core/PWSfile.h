@@ -203,11 +203,11 @@ public:
   PWSFileSig(const PWSFileSig &pfs);
   PWSFileSig &operator=(const PWSFileSig &that);
 
-  bool IsValid() {return m_iErrorCode == PWSfile::SUCCESS;}
-  int GetErrorCode() {return m_iErrorCode;}
+  bool IsValid() const {return m_iErrorCode == PWSfile::SUCCESS;}
+  int GetErrorCode() const {return m_iErrorCode;}
 
-  bool operator==(const PWSFileSig &that);
-  bool operator!=(const PWSFileSig &that) {return !(*this == that);}
+  bool operator==(const PWSFileSig &that) const;
+  bool operator!=(const PWSFileSig &that) const {return !(*this == that);}
 
 private:
   ulong64 m_length; // -1 if file doesn't exist or zero length
