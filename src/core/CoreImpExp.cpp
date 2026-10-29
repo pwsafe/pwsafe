@@ -2183,7 +2183,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   UUIDSet setUUID;
   InitialiseUUID(setUUID);
 
-  StringX sx_group, sx_title, sx_user, sx_parent_groups, sx_notes, sx_uuid;
+  StringX sx_group, sx_title, sx_user, sx_parent_groups, sx_notes, sx_uuid, sx_url;
   time_t ctime, atime, mtime, xtime;
   uuid_array_t ua;
 
@@ -2195,7 +2195,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
 
   for (;;) {
     // Clear out old stuff!
-    sx_group = sx_title = sx_user = sx_parent_groups = sx_notes = sx_uuid = _T("");
+    sx_group = sx_title = sx_user = sx_parent_groups = sx_notes = sx_uuid = sx_url = _T("");
     ctime = atime = mtime = xtime = time_t(0);
     memset(ua, 0, sizeof(ua));
 
@@ -2249,7 +2249,14 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       continue;
     }
 
-    if (i_Offset[GROUP] >= 0 && !tokens[i_Offset[GROUP]].empty()) {
+    // Optional columns may be absent (offset -1) or, if the header has columns
+    // we don't import, beyond the end of a short line
+    auto has_value = [&](int field) {
+      return static_cast<size_t>(i_Offset[field]) < tokens.size() &&
+             !tokens[i_Offset[field]].empty();
+    };
+
+    if (has_value(GROUP)) {
       sx_group = tokens[i_Offset[GROUP]];
       // Replace any '.' by a '/'
       size_t pos = 0;
@@ -2264,7 +2271,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       }
     }
 
-    if (i_Offset[TITLE] >= 0 && !tokens[i_Offset[TITLE]].empty()) {
+    if (has_value(TITLE)) {
       sx_title = tokens[i_Offset[TITLE]];
       // Replace any '.' by a '/'
       size_t pos = 0;
@@ -2274,11 +2281,11 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       }
     }
 
-    if (i_Offset[USER] >= 0 && !tokens[i_Offset[USER]].empty()) {
+    if (has_value(USER)) {
       sx_user = tokens[i_Offset[USER]];
     }
 
-    if (i_Offset[PARENTGROUPS] >= 0 && !tokens[i_Offset[PARENTGROUPS]].empty()) {
+    if (has_value(PARENTGROUPS)) {
       // set the parent groups sx_parent_groups
       // Groups are in order separated by '\'
       // Groups with a '/' are unchanged
@@ -2307,7 +2314,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       }
     }
 
-    if (i_Offset[UUID_E] >= 0 && !tokens[i_Offset[UUID_E]].empty()) {
+    if (has_value(UUID_E)) {
       sx_uuid = tokens[i_Offset[UUID_E]];
       if (sx_uuid.length() == sizeof(uuid_array_t) * 2) {
         unsigned int x(0);
@@ -2321,7 +2328,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
         sx_uuid = _T("");
     }
 
-    if (i_Offset[CTIME] >= 0 && !tokens[i_Offset[CTIME]].empty()) {
+    if (has_value(CTIME)) {
       StringX sx_ctime = tokens[i_Offset[CTIME]];
       if (sx_ctime.length() != 19)
         continue;
@@ -2331,7 +2338,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       VerifyXMLDateTimeString(time_temp, ctime);
     }
 
-    if (i_Offset[ATIME] >= 0 && !tokens[i_Offset[ATIME]].empty()) {
+    if (has_value(ATIME)) {
       StringX sx_atime = tokens[i_Offset[ATIME]];
       if (sx_atime.length() != 19)
         continue;
@@ -2341,7 +2348,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       VerifyXMLDateTimeString(time_temp, atime);
     }
 
-    if (i_Offset[PMTIME] >= 0 && !tokens[i_Offset[PMTIME]].empty()) {
+    if (has_value(PMTIME)) {
       StringX sx_mtime = tokens[i_Offset[PMTIME]];
       if (sx_mtime.length() != 19)
         continue;
@@ -2351,7 +2358,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       VerifyXMLDateTimeString(time_temp, mtime);
     }
 
-    if (i_Offset[XTIME] >= 0 && !tokens[i_Offset[XTIME]].empty()) {
+    if (has_value(XTIME)) {
       StringX sx_xtime = tokens[i_Offset[XTIME]];
       if (sx_xtime.length() != 19)
         continue;
@@ -2361,7 +2368,7 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
       VerifyXMLDateTimeString(time_temp, xtime);
     }
 
-    if (i_Offset[NOTES] >= 0 && !tokens[i_Offset[NOTES]].empty()) {
+    if (has_value(NOTES)) {
       sx_notes = tokens[i_Offset[NOTES]];
       size_t pos = 0;
       while((pos = sx_notes.find(txtCRLF, pos)) != StringX::npos) {
@@ -2369,6 +2376,9 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
         pos += CRLF.length();
       }
     }
+
+    if (has_value(URL))
+      sx_url = tokens[i_Offset[URL]];
 
     // set up the group tree
     if (!sx_parent_groups.empty())
@@ -2403,9 +2413,8 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     ci_temp.SetPassword(tokens[i_Offset[PASSWORD]].empty() ? _T("Unknown") : tokens[i_Offset[PASSWORD]]);
     if (!sx_notes.empty())
       ci_temp.SetNotes(sx_notes.c_str());
-    if (static_cast<size_t>(i_Offset[URL]) < tokens.size() &&
-        !tokens[i_Offset[URL]].empty())
-      ci_temp.SetURL(tokens[i_Offset[URL]]);
+    if (!sx_url.empty())
+      ci_temp.SetURL(sx_url);
     if (ctime > 0)
       ci_temp.SetCTime(ctime);
     if (atime > 0)

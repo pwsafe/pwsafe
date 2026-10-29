@@ -182,6 +182,7 @@ TEST_F(ImportTextTest, keepass_v1_csv_without_web_site)
 {
   // "Web Site" is optional, like all columns except "Account" and "Password"
   const stringT csvFile = L"import-keepass-v1-no-url.csv";
+  pws_os::DeleteAFile(csvFile);
   FILE *f = pws_os::FOpen(csvFile, L"wt");
   ASSERT_NE(f, nullptr);
   fputs("\"Account\",\"Login Name\",\"Password\"\n"
@@ -208,6 +209,42 @@ TEST_F(ImportTextTest, keepass_v1_csv_without_web_site)
   ASSERT_NE(iter, core.GetEntryEndIter());
   EXPECT_EQ(core.GetEntry(iter).GetPassword(), L"secret1");
   EXPECT_TRUE(core.GetEntry(iter).GetURL().empty());
+}
+
+TEST_F(ImportTextTest, keepass_v1_csv_short_line)
+{
+  // A column we don't import doesn't count towards the number of fields a
+  // line must have, so a line can end before the last imported column
+  const stringT csvFile = L"import-keepass-v1-short-line.csv";
+  pws_os::DeleteAFile(csvFile);
+  FILE *f = pws_os::FOpen(csvFile, L"wt");
+  ASSERT_NE(f, nullptr);
+  fputs("\"Account\",\"Unknown\",\"Password\",\"Login Name\"\n"
+        "\"Mail\",\"x\",\"secret1\"\n"
+        "\"Wiki\",\"y\",\"secret2\",\"carol\"\n", f);
+  fclose(f);
+
+  core.ReInit();
+  int numImported(0), numSkipped(0), numRenamed(0);
+  UINT uiReasonCode(0);
+  CReport rpt;
+  Command *cmd(nullptr);
+  const int status = core.ImportKeePassV1CSVFile(StringX(csvFile.c_str()),
+                                                 numImported, numSkipped, numRenamed,
+                                                 uiReasonCode, rpt, cmd);
+  EXPECT_TRUE(pws_os::DeleteAFile(csvFile));
+  ASSERT_EQ(status, PWScore::SUCCESS);
+  EXPECT_EQ(numImported, 2);
+  EXPECT_EQ(numSkipped, 0);
+  ASSERT_NE(cmd, nullptr);
+  EXPECT_EQ(core.Execute(cmd), 0);
+
+  auto iter = core.Find(L"ImportedKeePass", L"Mail", L"");
+  ASSERT_NE(iter, core.GetEntryEndIter());
+  EXPECT_EQ(core.GetEntry(iter).GetPassword(), L"secret1");
+  iter = core.Find(L"ImportedKeePass", L"Wiki", L"carol");
+  ASSERT_NE(iter, core.GetEntryEndIter());
+  EXPECT_EQ(core.GetEntry(iter).GetPassword(), L"secret2");
 }
 
 namespace {
