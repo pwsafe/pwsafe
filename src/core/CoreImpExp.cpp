@@ -2403,7 +2403,8 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
     ci_temp.SetPassword(tokens[i_Offset[PASSWORD]].empty() ? _T("Unknown") : tokens[i_Offset[PASSWORD]]);
     if (!sx_notes.empty())
       ci_temp.SetNotes(sx_notes.c_str());
-    if (!tokens[i_Offset[URL]].empty())
+    if (static_cast<size_t>(i_Offset[URL]) < tokens.size() &&
+        !tokens[i_Offset[URL]].empty())
       ci_temp.SetURL(tokens[i_Offset[URL]]);
     if (ctime > 0)
       ci_temp.SetCTime(ctime);
