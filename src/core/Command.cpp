@@ -155,7 +155,7 @@ int MultiCommands::Execute()
     }
     m_vRCs.push_back(rc);
   }
-
+  // TODO: should we also notify the GUI like in undo?
   return 0;
 }
 
@@ -174,8 +174,9 @@ void MultiCommands::Undo()
       break;
     }
   }
-    
-  m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE, pws_os::CUUID::NullUUID());
+
+  if (m_bNotifyGUI)
+    m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE, CUUID::NullUUID());
 }
 
 void MultiCommands::Add(Command *pcmd)
@@ -338,12 +339,13 @@ int DBPolicyNamesCommand::Execute()
       }
     }
 
-    if (m_bNotifyGUI) {
-      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
-                                        CUUID::NullUUID());
-    }
-    if (bChanged)
+    if (bChanged) {
       m_CommandDBChange = DBPOLICYNAMES;
+      if (m_bNotifyGUI) {
+        m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_UPDATE_STATUSBAR,
+                                          CUUID::NullUUID());
+      }
+    }
   }
   return 0;
 }
@@ -364,6 +366,8 @@ void DBPolicyNamesCommand::Undo()
 // DBEmptyGroupsCommand
 // ------------------------------------------------
 
+// TODO: the next two ctors don't check the function before setting m_bSingleGroup,
+// so e.g. if a single group is passed along with a multi-group command, an assertion will be triggered
 DBEmptyGroupsCommand::DBEmptyGroupsCommand(CommandInterface *pcomInt,
                                            const std::vector<StringX> &vEmptyGroups,
                                            Function function)
@@ -453,11 +457,10 @@ int DBEmptyGroupsCommand::Execute()
       }
     }
     if (bChanged) {
+      m_CommandDBChange = DBEMPTYGROUP;
       if (m_bNotifyGUI) {
         m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE,
                                           CUUID::NullUUID());
-
-        m_CommandDBChange = DBEMPTYGROUP;
       }
     }
   }
@@ -775,6 +778,7 @@ void DeleteAttachmentCommand::Undo()
   if (!m_pcomInt->IsReadOnly() && m_CommandDBChange == DB) {
     m_pcomInt->DoAddAttachment(m_att);
     RestoreDBInformation();
+    // TODO: shouldn't we also notify the GUI?
   } // R/W & change to undo
 }
 
@@ -940,7 +944,7 @@ int UpdateEntryCommand::Execute()
     if (m_ftype == CItemData::XTIME)
       m_pcomInt->UpdateExpiryEntry(m_old_ci.GetUUID(), m_ftype,
                                    m_new_ci.GetFieldValue(m_ftype));
-
+    // TODO: shouldn't we also emit GUI_REFRESH_ENTRY like in undo?
     m_CommandDBChange = DB;
   }
   return 0;
@@ -978,7 +982,7 @@ UpdatePasswordCommand::UpdatePasswordCommand(CommandInterface *pcomInt,
 
 int UpdatePasswordCommand::Execute()
 {
-  if (!m_pcomInt->IsReadOnly() &&m_old_ci.GetPassword() != m_new_ci.GetPassword()) {
+  if (!m_pcomInt->IsReadOnly() && m_old_ci.GetPassword() != m_new_ci.GetPassword()) {
     SaveDBInformation();
 
     auto pos = m_pcomInt->Find(m_old_ci.GetUUID());
@@ -1255,16 +1259,18 @@ int RenameGroupCommand::Execute()
     if (m_pmulticmds == nullptr) {
       // Execute (will not be nullptr if performing a Redo)
       rc = m_pcomInt->DoRenameGroup(m_sxOldPath, m_sxNewPath, m_pmulticmds);
+      if (!m_bNotifyGUI)
+        m_pmulticmds->SetNoGUINotify();
     }
 
-    // Do it
-    if (!m_pmulticmds->IsEmpty())
+    if (!m_pmulticmds->IsEmpty()) {
       m_pmulticmds->Execute();
 
-    m_CommandDBChange = DB;
-      
-    if (m_bNotifyGUI) // To update the filter view
-      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE, pws_os::CUUID::NullUUID());
+      m_CommandDBChange = DB;
+
+      if (m_bNotifyGUI) // To update the filter view
+        m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE, CUUID::NullUUID());
+    }
   }
   return rc;
 }
@@ -1278,7 +1284,7 @@ void RenameGroupCommand::Undo()
     RestoreDBInformation();
       
     if (m_bNotifyGUI) // To update the filter view
-      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE, pws_os::CUUID::NullUUID());
+      m_pcomInt->NotifyGUINeedsUpdating(UpdateGUICommand::GUI_REFRESH_TREE, CUUID::NullUUID());
   }
 }
 

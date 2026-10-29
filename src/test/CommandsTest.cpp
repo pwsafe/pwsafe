@@ -17,12 +17,7 @@
 
 #include "gtest/gtest.h"
 
-// A fixture for factoring common code across tests
-class CommandsTest : public ::testing::Test
-{
-protected:
-  CommandsTest() {}
-};
+#include <vector>
 
 namespace {
   // A reusable observer that records every UpdateGUI call so individual
@@ -42,63 +37,191 @@ namespace {
       calls.push_back({ga, entry_uuid});
     }
   };
-}
 
+  // A fixture for factoring common code across tests
+  class CommandsTest : public testing::Test
+  {
+  protected:
+    PWScore core;
+    TestGUIObserver observer;
+
+    void SetUp() override {
+      core.RegisterObserver(&observer);
+    }
+
+    void TearDown() override {
+      core.UnregisterObserver(&observer);
+      core.ClearCommands();
+    }
+
+    // Tests the full Execute/Undo/Redo cycle of a command.
+    // Expects no command-specific GUI actions to be emitted.
+    // Will dispose of `cmd` at the end.
+    void TestExecute(Command *cmd,
+                     const std::function<void()> &assertInitial,
+                     const std::function<void()> &assertOnChange) {
+      DoTest("Execute", cmd, assertInitial, assertOnChange);
+    }
+
+    // Tests the full Execute/Undo/Redo cycle of a command. This version expects a command-specific GUI action
+    // to be emitted after each step.
+    // Will dispose of `cmd` at the end.
+    void TestExecute(Command *cmd,
+                     const std::function<void()> &assertInitial,
+                     const std::function<void()> &assertOnChange,
+                     const UpdateGUICommand::GUI_Action emittedAction) {
+      DoTest("Execute", cmd, assertInitial, assertOnChange, {emittedAction}, {emittedAction});
+    }
+
+    // Tests the full Execute/Undo/Redo cycle of a command. The version supports a separate set of GUI actions
+    // emitted after Execute and Undo.
+    // Will dispose of `cmd` at the end.
+    void TestExecute(Command *cmd,
+                     const std::function<void()> &assertInitial,
+                     const std::function<void()> &assertOnChange,
+                     const std::vector<UpdateGUICommand::GUI_Action> &actionsOnExecute,
+                     const std::vector<UpdateGUICommand::GUI_Action> &actionsOnUndo = {}) {
+      DoTest("Execute", cmd, assertInitial, assertOnChange, actionsOnExecute, actionsOnUndo);
+    }
+
+    // Tests the full Execute/Undo/Redo cycle of a command when core is set to read-only.
+    // There's only one `assertion` which is expected to hold after each operation.
+    // Will dispose of `cmd` at the end.
+    void TestReadonly(Command *cmd, const std::function<void()> &assertion) {
+      core.SetReadOnly(true);
+      DoTest("Readonly", cmd, assertion, assertion);
+      core.SetReadOnly(false);
+    }
+
+    // Tests the full Execute/Undo/Redo cycle of a command with GUI notifications disabled.
+    // Will dispose of `cmd` at the end.
+    void TestNoGuiNotify(Command *cmd,
+                         const std::function<void()> &assertInitial,
+                         const std::function<void()> &assertOnChange) {
+      cmd->SetNoGUINotify();
+      DoTest("No GUI notify", cmd, assertInitial, assertOnChange);
+    }
+
+  private:
+    // Asserts that the expected command-specific GUI actions and core's default
+    // `GUI_UPDATE_STATUSBAR` update (always last) were emitted.
+    void AssertGuiCalls(const std::vector<UpdateGUICommand::GUI_Action> &emittedActions) {
+      const size_t actionCount = observer.calls.size() - 1;
+      EXPECT_EQ(emittedActions.size(), actionCount);
+      for (size_t i = 0; i < emittedActions.size() && i < actionCount; ++i) {
+        EXPECT_EQ(emittedActions[i], observer.calls[i].ga);
+      }
+      EXPECT_EQ(UpdateGUICommand::GUI_UPDATE_STATUSBAR, observer.calls.back().ga);
+      observer.calls.clear();
+    }
+
+    void DoTest(const std::string &phase,
+                Command *cmd,
+                const std::function<void()> &assertInitial,
+                const std::function<void()> &assertOnChange,
+                const std::vector<UpdateGUICommand::GUI_Action> &actionsOnExecute = {},
+                const std::vector<UpdateGUICommand::GUI_Action> &actionsOnUndo = {}) {
+      observer.calls.clear();
+      {
+        SCOPED_TRACE(phase + " - precondition");
+        assertInitial();
+      }
+
+      {
+        SCOPED_TRACE(phase + " - on change");
+        core.Execute(cmd);
+        assertOnChange();
+        AssertGuiCalls(actionsOnExecute);
+      }
+
+      {
+        SCOPED_TRACE(phase + " - undo");
+        core.Undo();
+        assertInitial();
+        AssertGuiCalls(actionsOnUndo);
+      }
+
+      {
+        SCOPED_TRACE(phase + " - redo");
+        core.Redo();
+        assertOnChange();
+        AssertGuiCalls(actionsOnExecute);
+      }
+
+      core.ClearCommands();
+    }
+  };
+}
 
 // And now the tests...
 
 TEST_F(CommandsTest, AddItem)
 {
-  PWScore core;
   CItemData di;
   di.CreateUUID();
   di.SetTitle(L"a title");
   di.SetPassword(L"a password");
   const pws_os::CUUID uuid = di.GetUUID();
 
-  AddEntryCommand *pcmd = AddEntryCommand::Create(&core, di);
-  
-  core.Execute(pcmd);
-  const auto iter = core.Find(uuid);
-  ASSERT_NE(core.GetEntryEndIter(), iter);
-  EXPECT_EQ(di, core.GetEntry(iter));
-  EXPECT_TRUE(core.HasDBChanged());
+  {
+    SCOPED_TRACE("add an entry and undo/redo it");
+    auto assertInitial = [this] {
+      EXPECT_EQ(0U, core.GetNumEntries());
+      EXPECT_FALSE(core.HasDBChanged());
+    };
+    auto assertOnChange = [this, &di, &uuid] {
+      const auto iter = core.Find(uuid);
+      ASSERT_NE(core.GetEntryEndIter(), iter);
+      EXPECT_EQ(di, core.GetEntry(iter));
+      EXPECT_TRUE(core.HasDBChanged());
+    };
+    TestExecute(AddEntryCommand::Create(&core, di), assertInitial, assertOnChange,
+                {UpdateGUICommand::GUI_ADD_ENTRY}, {UpdateGUICommand::GUI_DELETE_ENTRY});
+  }
 
-  core.Undo();
-  EXPECT_FALSE(core.HasDBChanged());
-  EXPECT_EQ(0U, core.GetNumEntries());
+  CItemData readOnlyItem;
+  readOnlyItem.CreateUUID();
+  readOnlyItem.SetTitle(L"read-only entry");
+  {
+    SCOPED_TRACE("read-only core ignores entry additions");
+    auto assertion = [this] { EXPECT_EQ(1U, core.GetNumEntries()); };
+    TestReadonly(AddEntryCommand::Create(&core, readOnlyItem), assertion);
+  }
 
-  // Get core to delete any existing commands
-  core.ClearCommands();
+  CItemData noNotifyItem;
+  noNotifyItem.CreateUUID();
+  noNotifyItem.SetTitle(L"no-notify entry");
+  {
+    SCOPED_TRACE("entry addition with GUI notifications disabled");
+    auto assertInitial = [this] { EXPECT_EQ(1U, core.GetNumEntries()); };
+    auto assertOnChange = [this] { EXPECT_EQ(2U, core.GetNumEntries()); };
+    TestNoGuiNotify(AddEntryCommand::Create(&core, noNotifyItem), assertInitial, assertOnChange);
+  }
 }
 
 TEST_F(CommandsTest, DeleteEntry)
 {
-  PWScore core;
   CItemData ci;
   ci.CreateUUID();
   ci.SetTitle(L"blue rabbit");
   ci.SetPassword(L"notagain");
-  auto addcmd = AddEntryCommand::Create(&core, ci);
-  core.Execute(addcmd);
+  core.Execute(AddEntryCommand::Create(&core, ci));
 
-  auto delcmd = DeleteEntryCommand::Create(&core, ci);
-  core.Execute(delcmd);
-  EXPECT_EQ(0U, core.GetNumEntries());
-  core.Undo();
-  EXPECT_EQ(1U, core.GetNumEntries());
+  {
+    SCOPED_TRACE("delete an entry and undo/redo the deletion");
+    auto assertInitial = [this] { EXPECT_EQ(1U, core.GetNumEntries()); };
+    auto assertOnChange = [this] { EXPECT_EQ(0U, core.GetNumEntries()); };
+    TestExecute(DeleteEntryCommand::Create(&core, ci), assertInitial, assertOnChange,
+                {UpdateGUICommand::GUI_DELETE_ENTRY}, {UpdateGUICommand::GUI_ADD_ENTRY});
+  }
 
-  // Verify Undo does nothing when core is in read-only mode
-  auto delcmd2 = DeleteEntryCommand::Create(&core, ci);
-  core.Execute(delcmd2);
-  EXPECT_EQ(0U, core.GetNumEntries());
-  core.SetReadOnly(true);
-  delcmd2->Undo();
-  EXPECT_EQ(0U, core.GetNumEntries());
-  core.SetReadOnly(false);
-  core.ClearCommands();
+  core.Execute(AddEntryCommand::Create(&core, ci));
+  {
+    SCOPED_TRACE("read-only core ignores entry deletion");
+    auto assertion = [this] { EXPECT_EQ(1U, core.GetNumEntries()); };
+    TestReadonly(DeleteEntryCommand::Create(&core, ci), assertion);
+  }
 
-  // Test undoing deletion of alias base and dependent alias entries
   CItemData abase, al;
   abase.CreateUUID();
   abase.SetTitle(L"alias base");
@@ -113,44 +236,25 @@ TEST_F(CommandsTest, DeleteEntry)
   pmulticmds->Add(AddEntryCommand::Create(&core, abase));
   pmulticmds->Add(AddEntryCommand::Create(&core, al, abase.GetUUID()));
   core.Execute(pmulticmds);
-  EXPECT_EQ(2U, core.GetNumEntries());
+  {
+    SCOPED_TRACE("deleting an alias base converts its dependent to a normal entry");
+    auto assertInitial = [this, &abase, &al] {
+      EXPECT_EQ(3U, core.GetNumEntries());
+      EXPECT_TRUE(core.GetEntry(core.Find(abase.GetUUID())).IsAliasBase());
+      EXPECT_TRUE(core.GetEntry(core.Find(al.GetUUID())).IsAlias());
+    };
+    auto assertOnChange = [this, &al] {
+      EXPECT_EQ(2U, core.GetNumEntries());
+      EXPECT_TRUE(core.GetEntry(core.Find(al.GetUUID())).IsNormal());
+    };
+    TestExecute(DeleteEntryCommand::Create(&core, core.GetEntry(core.Find(abase.GetUUID()))),
+                assertInitial, assertOnChange,
+                {UpdateGUICommand::GUI_DELETE_ENTRY},
+                {UpdateGUICommand::GUI_ADD_ENTRY,
+                 UpdateGUICommand::GUI_DELETE_ENTRY,
+                 UpdateGUICommand::GUI_ADD_ENTRY});
+ }
 
-  // Delete the alias base (converts alias dependent to normal entry)
-  const CItemData abaseCore = core.GetEntry(core.Find(abase.GetUUID()));
-  auto delBaseCmd = DeleteEntryCommand::Create(&core, abaseCore);
-  core.Execute(delBaseCmd);
-  EXPECT_EQ(1U, core.GetNumEntries());
-  EXPECT_TRUE(core.GetEntry(core.Find(al.GetUUID())).IsNormal());
-
-  // Undoing deletion of alias base restores the base and reverts dependent back to an alias
-  delBaseCmd->Undo();
-  EXPECT_EQ(2U, core.GetNumEntries());
-  EXPECT_TRUE(core.GetEntry(core.Find(abase.GetUUID())).IsAliasBase());
-  EXPECT_TRUE(core.GetEntry(core.Find(al.GetUUID())).IsAlias());
-
-  // Re-delete alias base
-  delBaseCmd = DeleteEntryCommand::Create(&core, core.GetEntry(core.Find(abase.GetUUID())));
-  core.Execute(delBaseCmd);
-  EXPECT_EQ(1U, core.GetNumEntries());
-
-  // Also delete the alias dependent entry
-  const CItemData alCore = core.GetEntry(core.Find(al.GetUUID()));
-  auto delAlCmd = DeleteEntryCommand::Create(&core, alCore);
-  core.Execute(delAlCmd);
-  EXPECT_EQ(0U, core.GetNumEntries());
-
-  // Undoing deletion of alias base when dependent alias is no longer present in core
-  delBaseCmd->Undo();
-  EXPECT_EQ(1U, core.GetNumEntries());
-  EXPECT_NE(core.GetEntryEndIter(), core.Find(abase.GetUUID()));
-
-  // Clean up before next test section
-  const CItemData abaseRestored = core.GetEntry(core.Find(abase.GetUUID()));
-  core.Execute(DeleteEntryCommand::Create(&core, abaseRestored));
-  EXPECT_EQ(0U, core.GetNumEntries());
-  core.ClearCommands();
-
-  // Test undoing deletion of dependent entry when the entry is already present in core
   CItemData sbase, sdep;
   sbase.CreateUUID();
   sbase.SetTitle(L"shortcut base");
@@ -165,34 +269,62 @@ TEST_F(CommandsTest, DeleteEntry)
   pmulticmds2->Add(AddEntryCommand::Create(&core, sbase));
   pmulticmds2->Add(AddEntryCommand::Create(&core, sdep, sbase.GetUUID()));
   core.Execute(pmulticmds2);
-  EXPECT_EQ(2U, core.GetNumEntries());
+  {
+    SCOPED_TRACE("undoing dependent deletion does not duplicate an existing entry");
+    const CItemData sdepCore = core.GetEntry(core.Find(sdep.GetUUID()));
+    auto deleteCommand = DeleteEntryCommand::Create(&core, sdepCore);
+    core.Execute(deleteCommand);
+    core.Execute(AddEntryCommand::Create(&core, sdepCore, sbase.GetUUID()));
+    EXPECT_EQ(4U, core.GetNumEntries());
+    deleteCommand->Undo();
+    EXPECT_EQ(4U, core.GetNumEntries());
+    EXPECT_NE(core.GetEntryEndIter(), core.Find(sdep.GetUUID()));
+    core.ClearCommands();
+  }
 
-  const CItemData sdepCore = core.GetEntry(core.Find(sdep.GetUUID()));
-  auto delDepCmd = DeleteEntryCommand::Create(&core, sdepCore);
-  core.Execute(delDepCmd);
-  EXPECT_EQ(1U, core.GetNumEntries());
+  {
+    SCOPED_TRACE("undoing deletion of base when dependent alias is no longer present only restores the base");
+    CItemData missingDependentBase, missingDependentAlias;
+    missingDependentBase.CreateUUID();
+    missingDependentBase.SetTitle(L"base entry with deleted dependent");
+    missingDependentBase.SetPassword(L"base password");
+    missingDependentAlias.CreateUUID();
+    missingDependentAlias.SetTitle(L"alias deleted before base undo");
+    missingDependentAlias.SetPassword(L"[Alias]");
+    missingDependentAlias.SetAlias();
 
-  delDepCmd->Undo();
-  EXPECT_EQ(2U, core.GetNumEntries());
+    MultiCommands *aliasCommands = MultiCommands::Create(&core);
+    aliasCommands->Add(AddEntryCommand::Create(&core, missingDependentBase));
+    aliasCommands->Add(AddEntryCommand::Create(&core, missingDependentAlias, missingDependentBase.GetUUID()));
+    core.Execute(aliasCommands);
 
-  delDepCmd->Redo();
-  EXPECT_EQ(1U, core.GetNumEntries());
+    auto deleteBaseCommand = DeleteEntryCommand::Create(
+      &core, core.GetEntry(core.Find(missingDependentBase.GetUUID())));
+    core.Execute(deleteBaseCommand);
+    ASSERT_NE(core.GetEntryEndIter(), core.Find(missingDependentAlias.GetUUID()));
+    EXPECT_TRUE(core.GetEntry(core.Find(missingDependentAlias.GetUUID())).IsNormal());
 
-  // Add sdep back manually into core before calling Undo on delDepCmd
-  auto readdDepCmd = AddEntryCommand::Create(&core, sdepCore, sbase.GetUUID());
-  core.Execute(readdDepCmd);
-  EXPECT_EQ(2U, core.GetNumEntries());
+    core.Execute(DeleteEntryCommand::Create(
+      &core, core.GetEntry(core.Find(missingDependentAlias.GetUUID()))));
+    EXPECT_EQ(core.GetEntryEndIter(), core.Find(missingDependentAlias.GetUUID()));
 
-  // Undoing dependent deletion when the dependent entry already exists in core - does nothing
-  delDepCmd->Undo();
-  EXPECT_EQ(2U, core.GetNumEntries());
+    deleteBaseCommand->Undo();
+    EXPECT_NE(core.GetEntryEndIter(), core.Find(missingDependentBase.GetUUID()));
+    EXPECT_EQ(core.GetEntryEndIter(), core.Find(missingDependentAlias.GetUUID()));
+    core.ClearCommands();
+  }
 
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("delete an entry with GUI notifications disabled");
+    auto assertInitial = [this, &ci] { EXPECT_NE(core.GetEntryEndIter(), core.Find(ci.GetUUID())); };
+    auto assertOnChange = [this, &ci] { EXPECT_EQ(core.GetEntryEndIter(), core.Find(ci.GetUUID())); };
+    TestNoGuiNotify(DeleteEntryCommand::Create(&core, core.GetEntry(core.Find(ci.GetUUID()))),
+                    assertInitial, assertOnChange);
+  }
 }
 
-TEST_F(CommandsTest,DeleteEntryWithAttachment)
+TEST_F(CommandsTest, DeleteEntryWithAttachment)
 {
-  PWScore core;
   CItemAtt ai;
   pws_os::CUUID attUuid;
   time_t cTime = 1665220859;
@@ -223,24 +355,24 @@ TEST_F(CommandsTest,DeleteEntryWithAttachment)
   ci.SetPassword(L"sundown jelly");
   ci.SetAttUUID(attUuid);
 
-
   core.Execute(AddEntryCommand::Create(&core, ci, pws_os::CUUID::NullUUID(), &ai));
-  EXPECT_EQ(1U, core.GetNumEntries());
-  EXPECT_EQ(1U, core.GetNumAtts());
-
-  core.Execute(DeleteEntryCommand::Create(&core, ci));
-  EXPECT_EQ(0U, core.GetNumEntries());
-  EXPECT_EQ(0U, core.GetNumAtts());
-  core.Undo();
-  EXPECT_EQ(1U, core.GetNumEntries());
-  EXPECT_EQ(1U, core.GetNumAtts());
-    // Get core to delete any existing commands
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("delete an entry and its attachment");
+    auto assertInitial = [this] {
+      EXPECT_EQ(1U, core.GetNumEntries());
+      EXPECT_EQ(1U, core.GetNumAtts());
+    };
+    auto assertOnChange = [this] {
+      EXPECT_EQ(0U, core.GetNumEntries());
+      EXPECT_EQ(0U, core.GetNumAtts());
+    };
+    TestExecute(DeleteEntryCommand::Create(&core, ci), assertInitial, assertOnChange,
+                {UpdateGUICommand::GUI_DELETE_ENTRY}, {UpdateGUICommand::GUI_ADD_ENTRY});
+  }
 }
 
 TEST_F(CommandsTest, CreateShortcutEntry)
 {
-  PWScore core;
   CItemData bi, si;
   bi.CreateUUID();
   bi.SetTitle(L"base entry");
@@ -251,139 +383,178 @@ TEST_F(CommandsTest, CreateShortcutEntry)
   si.SetPassword(L"[Shortcut]");
   si.SetShortcut();
   si.CreateUUID(); // call after setting to shortcut!
+  const pws_os::CUUID shortcut_uuid = si.GetUUID();
 
   time_t t;
   time(&t);
   si.SetCTime(t);
-  si.SetXTime(0L);
+  si.SetXTime(time_t{0});
   si.SetStatus(CItemData::ES_ADDED);
 
-  MultiCommands *pmulticmds = MultiCommands::Create(&core);
-  pmulticmds->Add(AddEntryCommand::Create(&core, bi));
-  pmulticmds->Add(AddEntryCommand::Create(&core, si, base_uuid));
-  core.Execute(pmulticmds);
-  EXPECT_EQ(2U, core.GetNumEntries());
-  EXPECT_TRUE(core.HasDBChanged());
+  const auto addShortcut = [this, &bi, &si, &base_uuid] {
+    const auto commands = MultiCommands::Create(&core);
+    commands->Add(AddEntryCommand::Create(&core, bi));
+    commands->Add(AddEntryCommand::Create(&core, si, base_uuid));
+    return commands;
+  };
+  {
+    SCOPED_TRACE("create a shortcut and mark its base entry");
+    auto assertInitial = [this] { EXPECT_EQ(0U, core.GetNumEntries()); };
+    auto assertOnChange = [this, &base_uuid, &shortcut_uuid] {
+      EXPECT_EQ(2U, core.GetNumEntries());
+      EXPECT_TRUE(core.GetEntry(core.Find(base_uuid)).IsShortcutBase());
+      EXPECT_TRUE(core.GetEntry(core.Find(shortcut_uuid)).IsShortcut());
+      EXPECT_TRUE(core.HasDBChanged());
+    };
+    TestExecute(addShortcut(), assertInitial, assertOnChange,
+                {UpdateGUICommand::GUI_ADD_ENTRY, UpdateGUICommand::GUI_ADD_ENTRY},
+                {UpdateGUICommand::GUI_DELETE_ENTRY, UpdateGUICommand::GUI_DELETE_ENTRY,
+                 UpdateGUICommand::GUI_REFRESH_TREE});
+  }
 
-  // Check that the base entry is correctly marked
-  auto iter = core.Find(base_uuid);
-  ASSERT_NE(core.GetEntryEndIter(), iter);
-  EXPECT_TRUE(core.GetEntry(iter).IsShortcutBase());
+  {
+    SCOPED_TRACE("deleting a shortcut base also deletes its dependent shortcut");
+    auto assertInitial = [this] { EXPECT_EQ(2U, core.GetNumEntries()); };
+    auto assertOnChange = [this] {
+      EXPECT_EQ(0U, core.GetNumEntries());
+      EXPECT_TRUE(core.HasDBChanged());
+    };
+    TestExecute(DeleteEntryCommand::Create(&core, core.GetEntry(core.Find(base_uuid))),
+                assertInitial, assertOnChange,
+                {UpdateGUICommand::GUI_DELETE_ENTRY},
+                {UpdateGUICommand::GUI_ADD_ENTRY, UpdateGUICommand::GUI_ADD_ENTRY});
+  }
 
-  core.Undo();
-  EXPECT_EQ(0U, core.GetNumEntries());
-  EXPECT_FALSE(core.HasDBChanged());
-
-  core.Redo();
-  EXPECT_EQ(2U, core.GetNumEntries());
-  EXPECT_TRUE(core.HasDBChanged());
-
-  // Delete base, expect both to be gone
-  // Get base from core for correct type
-  const CItemData bi2 = core.GetEntry(core.Find(base_uuid));
-  DeleteEntryCommand *pcmd1 = DeleteEntryCommand::Create(&core, bi2);
-
-  core.Execute(pcmd1);
-  EXPECT_EQ(0U, core.GetNumEntries());
-  EXPECT_TRUE(core.HasDBChanged());
-
-  core.Undo();
-  EXPECT_EQ(2U, core.GetNumEntries());
-  EXPECT_TRUE(core.HasDBChanged());
-
-  // Now just delete the shortcut, check that
-  // base is left, and that it reverts to a normal entry
-  const CItemData si2 = core.GetEntry(core.Find(si.GetUUID())); // si2 has baseUUID set
-  DeleteEntryCommand *pcmd2 = DeleteEntryCommand::Create(&core, si2);
-
-  core.Execute(pcmd2);
-  ASSERT_EQ(1U, core.GetNumEntries());
-  EXPECT_TRUE(core.GetEntry(core.Find(base_uuid)).IsNormal());
-  EXPECT_TRUE(core.HasDBChanged());
-
-  // Get core to delete any existing commands
-  core.ClearCommands();
-  EXPECT_TRUE(core.HasDBChanged());
+  {
+    SCOPED_TRACE("deleting only a shortcut restores a normal base entry");
+    auto assertInitial = [this, &base_uuid, &shortcut_uuid] {
+      EXPECT_EQ(2U, core.GetNumEntries());
+      EXPECT_TRUE(core.GetEntry(core.Find(base_uuid)).IsShortcutBase());
+      EXPECT_NE(core.GetEntryEndIter(), core.Find(shortcut_uuid));
+    };
+    auto assertOnChange = [this, &base_uuid, &shortcut_uuid] {
+      ASSERT_EQ(1U, core.GetNumEntries());
+      EXPECT_TRUE(core.GetEntry(core.Find(base_uuid)).IsNormal());
+      EXPECT_EQ(core.GetEntryEndIter(), core.Find(shortcut_uuid));
+      EXPECT_TRUE(core.HasDBChanged());
+    };
+    core.Execute(addShortcut());
+    TestExecute(DeleteEntryCommand::Create(&core, core.GetEntry(core.Find(shortcut_uuid))),
+                assertInitial, assertOnChange,
+                {UpdateGUICommand::GUI_DELETE_ENTRY}, {UpdateGUICommand::GUI_ADD_ENTRY});
+  }
 }
 
 TEST_F(CommandsTest, EditEntry)
 {
-  PWScore core;
   CItemData it;
   it.CreateUUID();
   it.SetTitle(L"NoDrama");
   it.SetPassword(L"PolishTrumpetsSq4are");
 
-  Command *pcmd = AddEntryCommand::Create(&core, it);
-  core.Execute(pcmd);
-  EXPECT_TRUE(core.HasDBChanged());
+  core.Execute(AddEntryCommand::Create(&core, it));
 
-  auto iter = core.Find(it.GetUUID());
-  ASSERT_NE(core.GetEntryEndIter(), iter);
-  CItemData it2(core.GetEntry(iter));
-  EXPECT_EQ(it, it2);
+  CItemData editedItem(it);
+  StringX editedTitle(L"NoDramamine");
+  editedItem.SetTitle(editedTitle);
+  {
+    SCOPED_TRACE("edit an entry and undo/redo the edit");
+    auto assertInitial = [this, &it] {
+      const auto iter = core.Find(it.GetUUID());
+      ASSERT_NE(core.GetEntryEndIter(), iter);
+      EXPECT_EQ(it.GetTitle(), core.GetEntry(iter).GetTitle());
+    };
+    auto assertOnChange = [this, &it, &editedItem] {
+      const auto iter = core.Find(it.GetUUID());
+      ASSERT_NE(core.GetEntryEndIter(), iter);
+      EXPECT_EQ(editedItem.GetTitle(), core.GetEntry(iter).GetTitle());
+      EXPECT_TRUE(core.HasDBChanged());
+    };
+    TestExecute(EditEntryCommand::Create(&core, it, editedItem), assertInitial, assertOnChange,
+                UpdateGUICommand::GUI_REFRESH_ENTRY);
+  }
 
-  it2.SetTitle(L"NoDramamine");
-  pcmd = EditEntryCommand::Create(&core, it, it2);
-  core.Execute(pcmd);
-  EXPECT_TRUE(core.HasDBChanged());
+  {
+    SCOPED_TRACE("read-only core ignores entry edits");
+    const CItemData currentItem = core.GetEntry(core.Find(it.GetUUID()));
+    CItemData attemptedEdit(currentItem);
+    attemptedEdit.SetTitle(L"ReadOnlyEdit");
+    auto assertion = [this, &it, &editedTitle] {
+      EXPECT_EQ(editedTitle, core.GetEntry(core.Find(it.GetUUID())).GetTitle());
+    };
+    TestReadonly(EditEntryCommand::Create(&core, currentItem, attemptedEdit), assertion);
+  }
 
-  iter = core.Find(it.GetUUID());
-  EXPECT_EQ(core.GetEntry(iter).GetTitle(), it2.GetTitle());
-  core.Undo();
-  EXPECT_TRUE(core.HasDBChanged());
-
-  iter = core.Find(it.GetUUID());
-  EXPECT_EQ(core.GetEntry(iter).GetTitle(), it.GetTitle());
-  core.Undo();
-  EXPECT_EQ(0U, core.GetNumEntries());
-  EXPECT_FALSE(core.HasDBChanged());
-
-  core.Redo();
-  EXPECT_TRUE(core.HasDBChanged());
-  EXPECT_EQ(1U, core.GetNumEntries());
-
-  // Get core to delete any existing commands
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("entry edit with GUI notifications disabled");
+    const CItemData currentItem = core.GetEntry(core.Find(it.GetUUID()));
+    CItemData noNotifyEdit(currentItem);
+    noNotifyEdit.SetTitle(L"NoNotifyEdit");
+    auto assertInitial = [this, &it, &editedTitle] {
+      EXPECT_EQ(editedTitle, core.GetEntry(core.Find(it.GetUUID())).GetTitle());
+    };
+    auto assertOnChange = [this, &it] {
+      EXPECT_EQ(L"NoNotifyEdit", core.GetEntry(core.Find(it.GetUUID())).GetTitle());
+    };
+    TestNoGuiNotify(EditEntryCommand::Create(&core, currentItem, noNotifyEdit),
+                    assertInitial, assertOnChange);
+  }
 }
 
 TEST_F(CommandsTest, RenameGroup)
 {
-  PWScore core;
+  const StringX groupAlpha(L"Group0.Alpha");
+  const StringX groupBeta(L"Group0.Beta");
+  const StringX groupGamma(L"Group0.Gamma");
   CItemData di;
   di.CreateUUID();
   di.SetTitle(L"b title");
   di.SetPassword(L"b password");
-  di.SetGroup(L"Group0.Alpha");
+  di.SetGroup(groupAlpha);
   const pws_os::CUUID uuid = di.GetUUID();
 
-  Command *pcmd = AddEntryCommand::Create(&core, di);
-  
-  core.Execute(pcmd);
-  auto iter = core.Find(uuid);
-  ASSERT_NE(core.GetEntryEndIter(), iter);
-  EXPECT_EQ(di, core.GetEntry(iter));
-  EXPECT_TRUE(core.HasDBChanged());
-  
-  pcmd = RenameGroupCommand::Create(&core, L"Group0.Alpha", L"Group0.Beta");
-  core.Execute(pcmd);
+  core.Execute(AddEntryCommand::Create(&core, di));
+  {
+    SCOPED_TRACE("rename a group and undo/redo the rename");
+    auto assertInitial = [this, &uuid, &groupAlpha] {
+      const auto iter = core.Find(uuid);
+      ASSERT_NE(core.GetEntryEndIter(), iter);
+      EXPECT_EQ(groupAlpha, core.GetEntry(iter).GetGroup());
+    };
+    auto assertOnChange = [this, &uuid, &groupBeta] {
+      const auto iter = core.Find(uuid);
+      ASSERT_NE(core.GetEntryEndIter(), iter);
+      EXPECT_EQ(groupBeta, core.GetEntry(iter).GetGroup());
+    };
+    TestExecute(RenameGroupCommand::Create(&core, groupAlpha, groupBeta),
+                assertInitial, assertOnChange,
+                {UpdateGUICommand::GUI_REFRESH_TREE},
+                {UpdateGUICommand::GUI_REFRESH_TREE, UpdateGUICommand::GUI_REFRESH_TREE});
+  }
 
-  iter = core.Find(uuid);
-  ASSERT_NE(core.GetEntryEndIter(), iter);
-  EXPECT_EQ(core.GetEntry(iter).GetGroup(), L"Group0.Beta");
-  core.Undo();
+  {
+    SCOPED_TRACE("read-only core ignores group renames");
+    auto assertion = [this, &uuid, &groupBeta] {
+      EXPECT_EQ(groupBeta, core.GetEntry(core.Find(uuid)).GetGroup());
+    };
+    TestReadonly(RenameGroupCommand::Create(&core, groupBeta, groupGamma), assertion);
+  }
 
-  iter = core.Find(uuid);
-  ASSERT_NE(core.GetEntryEndIter(), iter);
-  EXPECT_EQ(core.GetEntry(iter).GetGroup(), L"Group0.Alpha");
-
-  // Get core to delete any existing commands
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("group rename with GUI notifications disabled");
+    auto assertInitial = [this, &uuid, &groupBeta] {
+      EXPECT_EQ(groupBeta, core.GetEntry(core.Find(uuid)).GetGroup());
+    };
+    auto assertOnChange = [this, &uuid, &groupGamma] {
+      EXPECT_EQ(groupGamma, core.GetEntry(core.Find(uuid)).GetGroup());
+    };
+    TestNoGuiNotify(RenameGroupCommand::Create(&core, groupBeta, groupGamma),
+                    assertInitial, assertOnChange);
+  }
 }
 
 TEST_F(CommandsTest, CountGroups)
 {
-  PWScore core;
   CItemData di;
   std::vector<stringT> vGroups;
 
@@ -392,45 +563,58 @@ TEST_F(CommandsTest, CountGroups)
   di.SetPassword(L"b password");
   const pws_os::CUUID uuid = di.GetUUID();
 
-  Command *pcmd = AddEntryCommand::Create(&core, di);  
-  core.Execute(pcmd);
+  core.Execute(AddEntryCommand::Create(&core, di));
+  CItemData groupedItem = di;
+  groupedItem.SetGroup(L"g1");
+  UpdateGUICommand::GUI_Action guiAction = UpdateGUICommand::GUI_REFRESH_TREE;
+  {
+    SCOPED_TRACE("add a group to an entry");
+    auto assertInitial = [this, &vGroups] {
+      core.GetAllGroups(vGroups);
+      EXPECT_TRUE(vGroups.empty());
+    };
+    auto assertOnChange = [this, &vGroups] {
+      core.GetAllGroups(vGroups);
+      EXPECT_EQ(1U, vGroups.size());
+    };
+    TestExecute(EditEntryCommand::Create(&core, di, groupedItem), assertInitial, assertOnChange,
+                guiAction);
+  }
 
-  core.GetAllGroups(vGroups);
-  EXPECT_TRUE(vGroups.empty());
+  CItemData subgroupItem = groupedItem;
+  subgroupItem.SetGroup(L"g1.g1-1");
+  {
+    SCOPED_TRACE("add a subgroup to an entry");
+    auto assertInitial = [this, &vGroups] {
+      core.GetAllGroups(vGroups);
+      EXPECT_EQ(1U, vGroups.size());
+    };
+    auto assertOnChange = [this, &vGroups] {
+      core.GetAllGroups(vGroups);
+      EXPECT_EQ(2U, vGroups.size());
+    };
+    TestExecute(EditEntryCommand::Create(&core, groupedItem, subgroupItem), assertInitial, assertOnChange,
+                guiAction);
+  }
 
-  auto iter = core.Find(di.GetUUID());
-  CItemData di2 = core.GetEntry(iter);
-  di2.SetGroup(L"g1");
-  pcmd = EditEntryCommand::Create(&core, di, di2);
-  core.Execute(pcmd);
-
-  core.GetAllGroups(vGroups);
-  EXPECT_EQ(1U, vGroups.size());
-
-  iter = core.Find(di.GetUUID());
-  di = core.GetEntry(iter);
-  di.SetGroup(L"g1.g1-1");
-  pcmd = EditEntryCommand::Create(&core, di2, di);
-  core.Execute(pcmd);
-
-  core.GetAllGroups(vGroups);
-  EXPECT_EQ(2U, vGroups.size());
-
-  const std::vector<StringX> eg{L"e1"};
-  pcmd = DBEmptyGroupsCommand::Create(&core, eg, DBEmptyGroupsCommand::EG_ADDALL);
-  core.Execute(pcmd);
-
-  core.GetAllGroups(vGroups);
-  EXPECT_EQ(3U, vGroups.size());
-
-  // Get core to delete any existing commands
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("add an empty group");
+    const std::vector<StringX> emptyGroups{L"e1"};
+    auto assertInitial = [this, &vGroups] {
+      core.GetAllGroups(vGroups);
+      EXPECT_EQ(2U, vGroups.size());
+    };
+    auto assertOnChange = [this, &vGroups] {
+      core.GetAllGroups(vGroups);
+      EXPECT_EQ(3U, vGroups.size());
+    };
+    TestExecute(DBEmptyGroupsCommand::Create(&core, emptyGroups, DBEmptyGroupsCommand::EG_ADDALL),
+                assertInitial, assertOnChange, guiAction);
+  }
 }
 
 TEST_F(CommandsTest, UpdatePassword)
 {
-  PWScore core;
-
   const int32 i1day = 86400; // 24 * 60 * 60 seconds
   const StringX sxOldPassword(L"MoreWideF1ns");
   const StringX sxNewPassword(L"ManifestQuin1ne");
@@ -448,82 +632,81 @@ TEST_F(CommandsTest, UpdatePassword)
   it.SetXTimeInt(10);
   it.SetXTime(t - i1day * 2); // Say expired 2 days ago
 
-  Command *pcmd = AddEntryCommand::Create(&core, it);
-  core.Execute(pcmd);
-  EXPECT_TRUE(core.HasDBChanged());
-  EXPECT_TRUE(it.IsExpired());
-
-  auto iter = core.Find(it.GetUUID());
-  ASSERT_NE(core.GetEntryEndIter(), iter);
-  CItemData it2(core.GetEntry(iter));
-  EXPECT_EQ(it, it2);
-
-  pcmd = UpdatePasswordCommand::Create(&core, it, sxNewPassword);
-  core.Execute(pcmd);
-  EXPECT_TRUE(core.HasDBChanged());
-
-  iter = core.Find(it.GetUUID());
-  CItemData it3(core.GetEntry(iter));
-  EXPECT_EQ(it3.GetPassword(), sxNewPassword);
-  ASSERT_FALSE(it3.IsExpired());
-
+  core.Execute(AddEntryCommand::Create(&core, it));
   {
-    PWHistList pwhl(it3.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
-    EXPECT_TRUE(pwhl.isSaving());
-    EXPECT_EQ(0U, pwhl.getErr());
-    EXPECT_EQ(3U, pwhl.getMax());
-    EXPECT_EQ(1U, pwhl.size());
-    EXPECT_EQ(sxOldPassword, pwhl[0].password);
-    EXPECT_EQ(tPMtime, pwhl[0].changetttdate);
+    SCOPED_TRACE("update password, expiration state, and password history");
+    auto assertInitial = [this, &sxOldPassword, &it] {
+      const CItemData entry = core.GetEntry(core.Find(it.GetUUID()));
+      EXPECT_EQ(sxOldPassword, entry.GetPassword());
+      EXPECT_TRUE(entry.IsExpired());
+      const PWHistList history(entry.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
+      EXPECT_EQ(0U, history.size());
+      EXPECT_TRUE(history.isSaving());
+      EXPECT_EQ(0U, history.getErr());
+      EXPECT_EQ(3U, history.getMax());
+    };
+    auto assertOnChange = [this, &sxOldPassword, &sxNewPassword, tPMtime, &it] {
+      const CItemData entry = core.GetEntry(core.Find(it.GetUUID()));
+      EXPECT_EQ(sxNewPassword, entry.GetPassword());
+      EXPECT_FALSE(entry.IsExpired());
+      time_t modificationTime;
+      entry.GetPMTime(modificationTime);
+      const PWHistList history(entry.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
+      EXPECT_TRUE(history.isSaving());
+      ASSERT_EQ(1U, history.size());
+      EXPECT_EQ(0U, history.getErr());
+      EXPECT_EQ(3U, history.getMax());
+      EXPECT_EQ(sxOldPassword, history[0].password);
+      // The last entry's modification time is either the previous password modification time (after Execute)
+      // or the time when Redo was performed.
+      EXPECT_TRUE(tPMtime == history[0].changetttdate || modificationTime == history[0].changetttdate);
+    };
+    TestExecute(UpdatePasswordCommand::Create(&core, it, sxNewPassword),
+                assertInitial, assertOnChange, UpdateGUICommand::GUI_REFRESH_ENTRYPASSWORD);
+    const CItemData &entry = core.GetEntry(core.Find(it.GetUUID()));
+    time_t modificationTime;
+    entry.GetPMTime(modificationTime);
+    PWHistList history(entry.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
+    // New password change time is that of when Redo is performed & not original time
+    EXPECT_EQ(modificationTime, history[0].changetttdate);
   }
 
-  core.Undo();
-  EXPECT_TRUE(core.HasDBChanged()); // AddEntry is still on the stack
-
-  iter = core.Find(it.GetUUID());
-  CItemData it4(core.GetEntry(iter));
-  EXPECT_EQ(it4.GetPassword(), sxOldPassword);
-
   {
-    PWHistList pwhl(it4.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
-    EXPECT_TRUE(pwhl.isSaving());
-    EXPECT_EQ(0U, pwhl.getErr());
-    EXPECT_EQ(3U, pwhl.getMax());
-    EXPECT_EQ(0U, pwhl.size());
+    SCOPED_TRACE("read-only core ignores password updates");
+    const CItemData currentItem = core.GetEntry(core.Find(it.GetUUID()));
+    auto assertion = [this, &it, &sxNewPassword] {
+      EXPECT_EQ(sxNewPassword, core.GetEntry(core.Find(it.GetUUID())).GetPassword());
+    };
+    TestReadonly(UpdatePasswordCommand::Create(&core, currentItem, sxOldPassword), assertion);
   }
 
-  core.Redo();
-  EXPECT_TRUE(core.HasDBChanged());
-
-  iter = core.Find(it.GetUUID());
-  CItemData it5(core.GetEntry(iter));
-  EXPECT_EQ(it5.GetPassword(), sxNewPassword);
-
-  // New password change time is that of when Redo is performed & not original time
-  it5.GetPMTime(tPMtime);
-
   {
-    PWHistList pwhl(it5.GetPWHistory(), PWSUtil::TMC_ASC_UNKNOWN);
-    EXPECT_TRUE(pwhl.isSaving());
-    EXPECT_EQ(0U, pwhl.getErr());
-    EXPECT_EQ(3U, pwhl.getMax());
-    EXPECT_EQ(1U, pwhl.size());
-    EXPECT_EQ(sxOldPassword, pwhl[0].password);
-    EXPECT_EQ(tPMtime, pwhl[0].changetttdate);
+    SCOPED_TRACE("password update with GUI notifications disabled");
+    const CItemData currentItem = core.GetEntry(core.Find(it.GetUUID()));
+    const StringX nextPassword(L"NextPassword");
+    auto assertInitial = [this, &it, &sxNewPassword] {
+      EXPECT_EQ(sxNewPassword, core.GetEntry(core.Find(it.GetUUID())).GetPassword());
+    };
+    auto assertOnChange = [this, &it, &nextPassword] {
+      EXPECT_EQ(nextPassword, core.GetEntry(core.Find(it.GetUUID())).GetPassword());
+    };
+    TestNoGuiNotify(UpdatePasswordCommand::Create(&core, currentItem, nextPassword),
+                    assertInitial, assertOnChange);
   }
-
-  // Get core to delete any existing commands
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, UpdatePasswordHistory)
 {
-  PWScore core;
+  const StringX historyOnMaxThree(L"10300");
+  const StringX historyOnMaxTwo(L"10200");
+  const StringX historyOff(L"00200");
   CItemData item, protectedItem;
   item.CreateUUID();
+  const pws_os::CUUID itemUuid = item.GetUUID();
   item.SetPWHistory(L"");
   protectedItem.CreateUUID();
-  protectedItem.SetPWHistory(L"10300");
+  const pws_os::CUUID protectedItemUuid = protectedItem.GetUUID();
+  protectedItem.SetPWHistory(historyOnMaxThree);
   protectedItem.SetProtected(true);
 
   auto addCmd = MultiCommands::Create(&core);
@@ -531,94 +714,109 @@ TEST_F(CommandsTest, UpdatePasswordHistory)
   addCmd->Add(AddEntryCommand::Create(&core, protectedItem));
   core.Execute(addCmd);
 
-  auto getHistory = [&core](const pws_os::CUUID &uuid) {
-    return core.GetEntry(core.Find(uuid)).GetPWHistory();
-  };
+  {
+    SCOPED_TRACE("reset history for unprotected entries only");
+    auto assertInitial = [this, &itemUuid, &protectedItemUuid, &historyOnMaxThree] {
+      EXPECT_TRUE(core.GetEntry(core.Find(itemUuid)).GetPWHistory().empty());
+      EXPECT_EQ(historyOnMaxThree, core.GetEntry(core.Find(protectedItemUuid)).GetPWHistory());
+    };
+    auto assertOnChange = [this, &itemUuid, &protectedItemUuid, &historyOnMaxThree] {
+      EXPECT_EQ(L"10500", core.GetEntry(core.Find(itemUuid)).GetPWHistory());
+      EXPECT_EQ(historyOnMaxThree, core.GetEntry(core.Find(protectedItemUuid)).GetPWHistory());
+    };
+    TestExecute(UpdatePasswordHistoryCommand::Create(&core, PWHist::START_EXCL_PROT, 5),
+                assertInitial, assertOnChange);
+  }
 
-  core.Execute(UpdatePasswordHistoryCommand::Create(&core, PWHist::START_EXCL_PROT, 5));
-  EXPECT_EQ(L"10500", getHistory(item.GetUUID()));
-  EXPECT_EQ(L"10300", getHistory(protectedItem.GetUUID()));
-  core.Undo();
-  EXPECT_TRUE(getHistory(item.GetUUID()).empty());
-  core.Redo();
-  EXPECT_EQ(L"10500", getHistory(item.GetUUID()));
+  {
+    SCOPED_TRACE("set the maximum history size including protected entries");
+    auto assertInitial = [this, &itemUuid, &protectedItemUuid, &historyOnMaxThree] {
+      EXPECT_EQ(L"10500", core.GetEntry(core.Find(itemUuid)).GetPWHistory());
+      EXPECT_EQ(historyOnMaxThree, core.GetEntry(core.Find(protectedItemUuid)).GetPWHistory());
+    };
+    auto assertOnChange = [this, &itemUuid, &protectedItemUuid, &historyOnMaxTwo] {
+      EXPECT_EQ(historyOnMaxTwo, core.GetEntry(core.Find(itemUuid)).GetPWHistory());
+      EXPECT_EQ(historyOnMaxTwo, core.GetEntry(core.Find(protectedItemUuid)).GetPWHistory());
+    };
+    TestExecute(UpdatePasswordHistoryCommand::Create(&core, PWHist::SETMAX_INCL_PROT, 2),
+                assertInitial, assertOnChange);
+  }
 
-  core.Execute(UpdatePasswordHistoryCommand::Create(&core, PWHist::SETMAX_INCL_PROT, 2));
-  EXPECT_EQ(L"10200", getHistory(item.GetUUID()));
-  EXPECT_EQ(L"10200", getHistory(protectedItem.GetUUID()));
+  {
+    SCOPED_TRACE("stop saving history for unprotected entries only");
+    auto assertInitial = [this, &itemUuid, &protectedItemUuid, &historyOnMaxTwo] {
+      EXPECT_EQ(historyOnMaxTwo, core.GetEntry(core.Find(itemUuid)).GetPWHistory());
+      EXPECT_EQ(historyOnMaxTwo, core.GetEntry(core.Find(protectedItemUuid)).GetPWHistory());
+    };
+    auto assertOnChange = [this, &itemUuid, &protectedItemUuid, &historyOff, &historyOnMaxTwo] {
+      EXPECT_EQ(historyOff, core.GetEntry(core.Find(itemUuid)).GetPWHistory());
+      EXPECT_EQ(historyOnMaxTwo, core.GetEntry(core.Find(protectedItemUuid)).GetPWHistory());
+    };
+    TestExecute(UpdatePasswordHistoryCommand::Create(&core, PWHist::STOP_EXCL_PROT, 0),
+                assertInitial, assertOnChange);
+  }
 
-  core.Execute(UpdatePasswordHistoryCommand::Create(&core, PWHist::STOP_EXCL_PROT, 0));
-  EXPECT_EQ(L"00200", getHistory(item.GetUUID()));
-  EXPECT_EQ(L"10200", getHistory(protectedItem.GetUUID()));
+  {
+    SCOPED_TRACE("clear history including protected entries");
+    auto assertInitial = [this, &itemUuid, &protectedItemUuid, &historyOff, &historyOnMaxTwo] {
+      EXPECT_EQ(historyOff, core.GetEntry(core.Find(itemUuid)).GetPWHistory());
+      EXPECT_EQ(historyOnMaxTwo, core.GetEntry(core.Find(protectedItemUuid)).GetPWHistory());
+    };
+    auto assertOnChange = [this, &itemUuid, &protectedItemUuid] {
+      EXPECT_TRUE(core.GetEntry(core.Find(itemUuid)).GetPWHistory().empty());
+      EXPECT_TRUE(core.GetEntry(core.Find(protectedItemUuid)).GetPWHistory().empty());
+    };
+    TestExecute(UpdatePasswordHistoryCommand::Create(&core, PWHist::CLEAR_INCL_PROT, 0),
+                assertInitial, assertOnChange);
+  }
 
-  core.Execute(UpdatePasswordHistoryCommand::Create(&core, PWHist::CLEAR_INCL_PROT, 0));
-  EXPECT_TRUE(getHistory(item.GetUUID()).empty());
-  EXPECT_TRUE(getHistory(protectedItem.GetUUID()).empty());
-
-  core.Undo();
-  EXPECT_EQ(L"00200", getHistory(item.GetUUID()));
-  EXPECT_EQ(L"10200", getHistory(protectedItem.GetUUID()));
-
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("read-only core ignores password history updates");
+    auto assertion = [this, &itemUuid, &protectedItemUuid] {
+      EXPECT_TRUE(core.GetEntry(core.Find(itemUuid)).GetPWHistory().empty());
+      EXPECT_TRUE(core.GetEntry(core.Find(protectedItemUuid)).GetPWHistory().empty());
+    };
+    TestReadonly(UpdatePasswordHistoryCommand::Create(&core, PWHist::SETMAX_INCL_PROT, 2), assertion);
+  }
 }
 
 TEST_F(CommandsTest, ChangeDBHeaderCommand)
 {
-  PWScore core;
+  const StringX sxNewName(L"MyDatabase");
+  {
+    SCOPED_TRACE("change the database name and undo/redo the change");
+    auto assertInitial = [this] { EXPECT_TRUE(core.GetHeaderItem(PWSfile::HDR_DBNAME).empty()); };
+    auto assertOnChange = [this, &sxNewName] {
+      EXPECT_EQ(sxNewName, core.GetHeaderItem(PWSfile::HDR_DBNAME));
+      EXPECT_TRUE(core.HasDBChanged());
+    };
+    TestExecute(ChangeDBHeaderCommand::Create(&core, sxNewName, PWSfile::HDR_DBNAME),
+                assertInitial, assertOnChange);
+  }
 
-  // Initially header fields are empty
-  EXPECT_TRUE(core.GetHeaderItem(PWSfile::HDR_DBNAME).empty());
-  EXPECT_TRUE(core.GetHeaderItem(PWSfile::HDR_DBDESC).empty());
+  {
+    SCOPED_TRACE("change the database description and undo/redo the change");
+    auto assertInitial = [this] { EXPECT_TRUE(core.GetHeaderItem(PWSfile::HDR_DBDESC).empty()); };
+    auto assertOnChange = [this] { EXPECT_EQ(StringX(L"A description"), core.GetHeaderItem(PWSfile::HDR_DBDESC)); };
+    TestExecute(ChangeDBHeaderCommand::Create(&core, L"A description", PWSfile::HDR_DBDESC),
+                assertInitial, assertOnChange);
+  }
 
-  // --- HDR_DBNAME ---
+  {
+    SCOPED_TRACE("repeating the same header value is a no-op");
+    auto assertion = [this, &sxNewName] { EXPECT_EQ(sxNewName, core.GetHeaderItem(PWSfile::HDR_DBNAME)); };
+    TestExecute(ChangeDBHeaderCommand::Create(&core, sxNewName, PWSfile::HDR_DBNAME), assertion, assertion);
+  }
 
-  core.Execute(ChangeDBHeaderCommand::Create(&core, L"MyDatabase", PWSfile::HDR_DBNAME));
-  EXPECT_EQ(StringX(L"MyDatabase"), core.GetHeaderItem(PWSfile::HDR_DBNAME));
-  EXPECT_TRUE(core.HasDBChanged());
-
-  core.Undo();
-  EXPECT_TRUE(core.GetHeaderItem(PWSfile::HDR_DBNAME).empty());
-
-  core.Redo();
-  EXPECT_EQ(StringX(L"MyDatabase"), core.GetHeaderItem(PWSfile::HDR_DBNAME));
-
-  // --- HDR_DBDESC ---
-
-  core.Execute(ChangeDBHeaderCommand::Create(&core, L"A description", PWSfile::HDR_DBDESC));
-  EXPECT_EQ(StringX(L"A description"), core.GetHeaderItem(PWSfile::HDR_DBDESC));
-
-  core.Undo();
-  EXPECT_TRUE(core.GetHeaderItem(PWSfile::HDR_DBDESC).empty());
-
-  core.ClearCommands();
-
-  // --- No-op when new value equals the current value ---
-
-  const StringX sxSameName(L"SameName");
-  core.Execute(ChangeDBHeaderCommand::Create(&core, sxSameName, PWSfile::HDR_DBNAME));
-  EXPECT_EQ(sxSameName, core.GetHeaderItem(PWSfile::HDR_DBNAME));
-
-  core.Execute(ChangeDBHeaderCommand::Create(&core, sxSameName, PWSfile::HDR_DBNAME));
-  EXPECT_EQ(sxSameName, core.GetHeaderItem(PWSfile::HDR_DBNAME));
-
-  core.Undo();
-  EXPECT_EQ(sxSameName, core.GetHeaderItem(PWSfile::HDR_DBNAME));
-
-  core.ClearCommands();
-
-  // --- No-op when core is read-only ---
-
-  core.SetReadOnly(true);
-  core.Execute(ChangeDBHeaderCommand::Create(&core, L"ReadOnlyAttempt", PWSfile::HDR_DBNAME));
-  EXPECT_EQ(sxSameName, core.GetHeaderItem(PWSfile::HDR_DBNAME));
-  core.SetReadOnly(false);
-
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("read-only core ignores database-header changes");
+    auto assertion = [this, &sxNewName] { EXPECT_EQ(sxNewName, core.GetHeaderItem(PWSfile::HDR_DBNAME)); };
+    TestReadonly(ChangeDBHeaderCommand::Create(&core, L"ReadOnlyAttempt", PWSfile::HDR_DBNAME), assertion);
+  }
 }
 
 TEST_F(CommandsTest, UpdateEntry)
 {
-  PWScore core;
   CItemData it;
   it.CreateUUID();
   time_t t;
@@ -627,48 +825,67 @@ TEST_F(CommandsTest, UpdateEntry)
   it.SetTitle(L"RedC1gar");
   it.SetPassword(L"EarlyR1zer");
 
-  Command *pcmd = AddEntryCommand::Create(&core, it);
-  core.Execute(pcmd);
-  EXPECT_TRUE(core.HasDBChanged());
-
-  auto iter = core.Find(it.GetUUID());
-  ASSERT_NE(core.GetEntryEndIter(), iter);
-  EXPECT_EQ(it, CItemData(core.GetEntry(iter)));
-
+  core.Execute(AddEntryCommand::Create(&core, it));
   const StringX newTitle(L"PastaFar1an");
-  pcmd = UpdateEntryCommand::Create(&core, it, CItem::TITLE, newTitle);
-  core.Execute(pcmd);
-  EXPECT_TRUE(core.HasDBChanged());
-
-  iter = core.Find(it.GetUUID());
-  EXPECT_EQ(core.GetEntry(iter).GetTitle(), newTitle);
-  core.Undo();
-  EXPECT_TRUE(core.HasDBChanged());
-
-  iter = core.Find(it.GetUUID());
-  EXPECT_EQ(core.GetEntry(iter).GetTitle(), it.GetTitle());
+  {
+    SCOPED_TRACE("update the entry title");
+    auto assertTitle = [this, &it](const StringX &title) {
+      const auto iter = core.Find(it.GetUUID());
+      ASSERT_NE(core.GetEntryEndIter(), iter);
+      EXPECT_EQ(title, core.GetEntry(iter).GetTitle());
+    };
+    auto assertInitial = [assertTitle, &it] { assertTitle(it.GetTitle()); };
+    auto assertOnChange = [assertTitle, &newTitle] { assertTitle(newTitle); };
+    TestExecute(UpdateEntryCommand::Create(&core, it, CItem::TITLE, newTitle),
+                assertInitial, assertOnChange,
+                {UpdateGUICommand::GUI_REFRESH_ENTRYFIELD},
+                {UpdateGUICommand::GUI_REFRESH_ENTRYFIELD, UpdateGUICommand::GUI_REFRESH_ENTRY});
+  }
 
   const StringX newPassword(L"F1nallyUpdated");
-  pcmd = UpdateEntryCommand::Create(&core, it, CItem::PASSWORD, newPassword);
-  core.Execute(pcmd);
-  iter = core.Find(it.GetUUID());
-  EXPECT_EQ(core.GetEntry(iter).GetPassword(), newPassword);
+  it.SetTitle(newTitle);
+  {
+    SCOPED_TRACE("update the entry password");
+    auto assertPassword = [this, &it](const StringX &password) {
+      const auto iter = core.Find(it.GetUUID());
+      ASSERT_NE(core.GetEntryEndIter(), iter);
+      EXPECT_EQ(password, core.GetEntry(iter).GetPassword());
+    };
+    auto assertInitial = [assertPassword, &it] { assertPassword(it.GetPassword()); };
+    auto assertOnChange = [assertPassword, &newPassword] { assertPassword(newPassword); };
+    TestExecute(UpdateEntryCommand::Create(&core, it, CItem::PASSWORD, newPassword),
+                assertInitial, assertOnChange,
+                {UpdateGUICommand::GUI_REFRESH_ENTRYFIELD},
+                {UpdateGUICommand::GUI_REFRESH_ENTRYFIELD, UpdateGUICommand::GUI_REFRESH_ENTRY});
+  }
 
-  core.Undo();
-  iter = core.Find(it.GetUUID());
-  EXPECT_EQ(core.GetEntry(iter).GetPassword(), it.GetPassword());
+  {
+    SCOPED_TRACE("read-only core ignores entry-field updates");
+    const auto iter = core.Find(it.GetUUID());
+    const CItemData currentItem = core.GetEntry(iter);
+    auto assertion = [this, &it, &newPassword] {
+      EXPECT_EQ(newPassword, core.GetEntry(core.Find(it.GetUUID())).GetPassword());
+    };
+    TestReadonly(UpdateEntryCommand::Create(&core, currentItem, CItem::PASSWORD, it.GetPassword()), assertion);
+  }
 
-  core.Redo();
-  iter = core.Find(it.GetUUID());
-  EXPECT_EQ(core.GetEntry(iter).GetPassword(), newPassword);
-
-  // Get core to delete any existing commands
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("entry-field update with GUI notifications disabled");
+    const CItemData currentItem = core.GetEntry(core.Find(it.GetUUID()));
+    const StringX noNotifyTitle(L"NoNotifyTitle");
+    auto assertInitial = [this, &it] {
+      EXPECT_EQ(L"PastaFar1an", core.GetEntry(core.Find(it.GetUUID())).GetTitle());
+    };
+    auto assertOnChange = [this, &it, &noNotifyTitle] {
+      EXPECT_EQ(noNotifyTitle, core.GetEntry(core.Find(it.GetUUID())).GetTitle());
+    };
+    TestNoGuiNotify(UpdateEntryCommand::Create(&core, currentItem, CItem::TITLE, noNotifyTitle),
+                    assertInitial, assertOnChange);
+  }
 }
 
 TEST_F(CommandsTest, MultiCommandsFindCommand)
 {
-  PWScore core;
   MultiCommands *pmulticmds = MultiCommands::Create(&core);
 
   EXPECT_EQ(nullptr, pmulticmds->FindCommand(typeid(AddEntryCommand)));
@@ -686,13 +903,10 @@ TEST_F(CommandsTest, MultiCommandsFindCommand)
   EXPECT_EQ(renameCmd, pmulticmds->FindCommand(typeid(RenameGroupCommand)));
 
   EXPECT_EQ(nullptr, pmulticmds->FindCommand(typeid(DeleteEntryCommand)));
-
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, MultiCommandsInsert)
 {
-  PWScore core;
   MultiCommands *pmulticmds = MultiCommands::Create(&core);
 
   CItemData ci1;
@@ -720,21 +934,26 @@ TEST_F(CommandsTest, MultiCommandsInsert)
   pmulticmds->Insert(cmdEnd, pmulticmds->GetSize());
   EXPECT_EQ(4U, pmulticmds->GetSize());
 
-  core.Execute(pmulticmds);
-  EXPECT_EQ(3U, core.GetNumEntries());
-  EXPECT_NE(core.GetEntryEndIter(), core.Find(ci1.GetUUID()));
-  EXPECT_NE(core.GetEntryEndIter(), core.Find(ci2.GetUUID()));
-  EXPECT_NE(core.GetEntryEndIter(), core.Find(ci3.GetUUID()));
-
-  core.Undo();
-  EXPECT_EQ(0U, core.GetNumEntries());
-
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("MultiCommands execute, undo, redo");
+    auto assertInitial = [this] { EXPECT_EQ(0U, core.GetNumEntries()); };
+    auto assertOnChange = [this, &ci1, &ci2, &ci3] {
+      EXPECT_EQ(3U, core.GetNumEntries());
+      EXPECT_NE(core.GetEntryEndIter(), core.Find(ci1.GetUUID()));
+      EXPECT_NE(core.GetEntryEndIter(), core.Find(ci2.GetUUID()));
+      EXPECT_NE(core.GetEntryEndIter(), core.Find(ci3.GetUUID()));
+    };
+    TestExecute(pmulticmds, assertInitial, assertOnChange,
+                {UpdateGUICommand::GUI_ADD_ENTRY, UpdateGUICommand::GUI_ADD_ENTRY, UpdateGUICommand::GUI_ADD_ENTRY},
+                // The extra GUI_REFRESH_TREE at the end is emitted by MultiCommands::Undo
+                // even though there's no corresponding GUI_ADD_ENTRY emitted in MultiCommands::Execute
+                {UpdateGUICommand::GUI_DELETE_ENTRY, UpdateGUICommand::GUI_DELETE_ENTRY,
+                 UpdateGUICommand::GUI_DELETE_ENTRY, UpdateGUICommand::GUI_REFRESH_TREE});
+  }
 }
 
 TEST_F(CommandsTest, MultiCommandsGetRC)
 {
-  PWScore core;
   MultiCommands *pmulticmds = MultiCommands::Create(&core);
 
   CItemData ci1;
@@ -795,66 +1014,36 @@ TEST_F(CommandsTest, MultiCommandsGetRC)
   rc = -999;
   EXPECT_FALSE(pmulticmds->GetRC(size_t{3}, rc));
   EXPECT_EQ(0, rc);
-
-  core.ClearCommands();
 }
 
 TEST_F(CommandsTest, UpdateGUICommand)
 {
-  PWScore core;
-  TestGUIObserver observer;
-  core.RegisterObserver(&observer);
-
   const pws_os::CUUID testUuid;
 
-  // 1. WN_UNDO: Execute does not notify, Undo does notify
-  UpdateGUICommand *cmdUndoOnly = UpdateGUICommand::Create(&core, UpdateGUICommand::WN_UNDO,
-                                                           UpdateGUICommand::GUI_REFRESH_ENTRY, testUuid);
-  // Unlike other tests, we don't use core's Execute/Undo/Redo here because those also trigger a `GUI_UPDATE_STATUSBAR`,
-  // and filtering those out would complicate the test. We want to focus just on the command's own functionality,
-  // not that of PWScore.
-  cmdUndoOnly->Execute();
-  EXPECT_TRUE(observer.calls.empty());
+  {
+    SCOPED_TRACE("WN_UNDO: execute does not notify, undo does");
+    UpdateGUICommand::GUI_Action action = UpdateGUICommand::GUI_REFRESH_ENTRY;
+    TestExecute(UpdateGUICommand::Create(&core, UpdateGUICommand::WN_UNDO, action, testUuid),
+                [] {}, [] {}, {}, {action});
+  }
 
-  cmdUndoOnly->Undo();
-  ASSERT_EQ(1U, observer.calls.size());
-  EXPECT_EQ(UpdateGUICommand::GUI_REFRESH_ENTRY, observer.calls[0].ga);
-  observer.calls.clear();
-  delete cmdUndoOnly; // can't use core.ClearCommands() for the cleanup since we didn't use core.Execute()
+  {
+    SCOPED_TRACE("WN_ALL: execute and undo notify");
+    UpdateGUICommand::GUI_Action action = UpdateGUICommand::GUI_REFRESH_TREE;
+    TestExecute(UpdateGUICommand::Create(&core, UpdateGUICommand::WN_ALL, action, testUuid),
+                [] {}, [] {}, {action}, {action});
+  }
 
-  // 2. WN_ALL: Both Execute and Undo notify
-  UpdateGUICommand *cmdAll = UpdateGUICommand::Create(&core, UpdateGUICommand::WN_ALL,
-                                                      UpdateGUICommand::GUI_REFRESH_TREE,
-                                                      pws_os::CUUID::NullUUID());
-  cmdAll->Execute();
-  ASSERT_EQ(1U, observer.calls.size());
-  EXPECT_EQ(UpdateGUICommand::GUI_REFRESH_TREE, observer.calls[0].ga);
-  observer.calls.clear();
-
-  cmdAll->Undo();
-  ASSERT_EQ(1U, observer.calls.size());
-  EXPECT_EQ(UpdateGUICommand::GUI_REFRESH_TREE, observer.calls[0].ga);
-  observer.calls.clear();
-  delete cmdAll;
-
-  // 3. WN_EXECUTE: Execute notifies, Undo does not notify
-  UpdateGUICommand *cmdExecOnly = UpdateGUICommand::Create(&core, UpdateGUICommand::WN_EXECUTE,
-                                                           UpdateGUICommand::GUI_ADD_ENTRY, testUuid);
-  cmdExecOnly->Execute();
-  ASSERT_EQ(1U, observer.calls.size());
-  observer.calls.clear();
-
-  cmdExecOnly->Undo();
-  EXPECT_TRUE(observer.calls.empty());
-
-  delete cmdExecOnly;
-  core.UnregisterObserver(&observer);
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("WN_EXECUTE: execute notifies, undo does not");
+    UpdateGUICommand::GUI_Action action = UpdateGUICommand::GUI_ADD_ENTRY;
+    TestExecute(UpdateGUICommand::Create(&core, UpdateGUICommand::WN_EXECUTE, action, testUuid),
+                [] {}, [] {}, {action}, {});
+  }
 }
 
-TEST_F(CommandsTest, EditAndDeleteAttachment)
+TEST_F(CommandsTest, EditAttachment)
 {
-  PWScore core;
   CItemAtt ai;
   pws_os::CUUID attUuid;
   time_t cTime = 1665220859L;
@@ -872,47 +1061,100 @@ TEST_F(CommandsTest, EditAndDeleteAttachment)
   ci.SetAttUUID(attUuid);
   ci.SetNormal();
 
-  auto addcmd = AddEntryCommand::Create(&core, ci, pws_os::CUUID::NullUUID(), &ai);
-  core.Execute(addcmd);
-  EXPECT_EQ(1U, core.GetNumEntries());
-  EXPECT_TRUE(core.HasAtt(attUuid));
-
-  // Edit attachment title operations
+  core.Execute(AddEntryCommand::Create(&core, ci, pws_os::CUUID::NullUUID(), &ai));
   CItemAtt oldAtt = core.GetAtt(attUuid);
   CItemAtt newAtt(oldAtt);
-  newAtt.SetTitle(L"updated attachment title");
+  const StringX updatedAttachmentTitle(L"updated attachment title");
+  newAtt.SetTitle(updatedAttachmentTitle);
+  {
+    SCOPED_TRACE("edit an attachment title");
+    auto assertInitial = [this, &attUuid] {
+      EXPECT_EQ(L"original attachment title", core.GetAtt(attUuid).GetTitle());
+    };
+    auto assertOnChange = [this, &attUuid, &updatedAttachmentTitle] {
+      EXPECT_EQ(updatedAttachmentTitle, core.GetAtt(attUuid).GetTitle());
+    };
+    TestExecute(EditAttachmentCommand::Create(&core, oldAtt, newAtt), assertInitial, assertOnChange);
+  }
 
-  auto editAttCmd = EditAttachmentCommand::Create(&core, oldAtt, newAtt);
-  core.Execute(editAttCmd);
-  EXPECT_EQ(L"updated attachment title", core.GetAtt(attUuid).GetTitle());
+  {
+    SCOPED_TRACE("read-only core ignores attachment edits");
+    auto assertion = [this, &attUuid, &updatedAttachmentTitle] {
+      EXPECT_EQ(updatedAttachmentTitle, core.GetAtt(attUuid).GetTitle());
+    };
+    TestReadonly(EditAttachmentCommand::Create(&core, oldAtt, oldAtt), assertion);
+  }
 
-  core.Undo();
-  EXPECT_EQ(L"original attachment title", core.GetAtt(attUuid).GetTitle());
+  {
+    SCOPED_TRACE("attachment edit with GUI notifications disabled");
+    CItemAtt noNotifyAtt(core.GetAtt(attUuid));
+    noNotifyAtt.SetTitle(L"no-notify attachment title");
+    auto assertInitial = [this, &attUuid, &updatedAttachmentTitle] {
+      EXPECT_EQ(updatedAttachmentTitle, core.GetAtt(attUuid).GetTitle());
+    };
+    auto assertOnChange = [this, &attUuid] {
+      EXPECT_EQ(L"no-notify attachment title", core.GetAtt(attUuid).GetTitle());
+    };
+    TestNoGuiNotify(EditAttachmentCommand::Create(&core, core.GetAtt(attUuid), noNotifyAtt),
+                    assertInitial, assertOnChange);
+  }
+}
 
-  core.Redo();
-  EXPECT_EQ(L"updated attachment title", core.GetAtt(attUuid).GetTitle());
+TEST_F(CommandsTest, DeleteAttachment)
+{
+  time_t cTime = 1665220859L;
+  const unsigned char content[16] = { 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+                                      0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10 };
+  CItemAtt attachments[3];
+  CItemData entries[3];
+  for (size_t i = 0; i < 3; ++i) {
+    const pws_os::CUUID attUuid;
+    attachments[i].SetUUID(attUuid);
+    attachments[i].SetTitle(L"attachment title");
+    attachments[i].SetCTime(cTime);
+    attachments[i].SetContent(content, sizeof(content));
 
-  // Delete attachment from entry operations
-  const CItemData ciInCore = core.GetEntry(core.Find(ci.GetUUID()));
-  auto delAttCmd = DeleteAttachmentCommand::Create(&core, ciInCore);
-  core.Execute(delAttCmd);
-  EXPECT_FALSE(core.HasAtt(attUuid));
+    entries[i].CreateUUID();
+    entries[i].SetTitle(L"entry with attachment");
+    entries[i].SetPassword(L"password123");
+    entries[i].SetAttUUID(attUuid);
+    entries[i].SetNormal();
+    core.Execute(AddEntryCommand::Create(&core, entries[i], pws_os::CUUID::NullUUID(), &attachments[i]));
+  }
 
-  core.Undo();
-  EXPECT_TRUE(core.HasAtt(attUuid));
-  EXPECT_EQ(L"updated attachment title", core.GetAtt(attUuid).GetTitle());
+  {
+    SCOPED_TRACE("delete an entry attachment");
+    const pws_os::CUUID attUuid = entries[0].GetAttUUID();
+    const CItemData ciInCore = core.GetEntry(core.Find(entries[0].GetUUID()));
+    auto assertInitial = [this, &attUuid] {
+      EXPECT_TRUE(core.HasAtt(attUuid));
+      EXPECT_EQ(L"attachment title", core.GetAtt(attUuid).GetTitle());
+    };
+    auto assertOnChange = [this, &attUuid] { EXPECT_FALSE(core.HasAtt(attUuid)); };
+    TestExecute(DeleteAttachmentCommand::Create(&core, ciInCore), assertInitial, assertOnChange,
+                {UpdateGUICommand::GUI_REFRESH_ENTRY}, {});
+  }
 
-  core.Redo();
-  EXPECT_FALSE(core.HasAtt(attUuid));
+  {
+    SCOPED_TRACE("read-only core ignores attachment deletion");
+    const pws_os::CUUID attUuid = entries[1].GetAttUUID();
+    const CItemData ciInCore = core.GetEntry(core.Find(entries[1].GetUUID()));
+    auto assertion = [this, &attUuid] { EXPECT_TRUE(core.HasAtt(attUuid)); };
+    TestReadonly(DeleteAttachmentCommand::Create(&core, ciInCore), assertion);
+  }
 
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("attachment deletion with GUI notifications disabled");
+    const pws_os::CUUID attUuid = entries[2].GetAttUUID();
+    const CItemData ciInCore = core.GetEntry(core.Find(entries[2].GetUUID()));
+    auto assertInitial = [this, &attUuid] { EXPECT_TRUE(core.HasAtt(attUuid)); };
+    auto assertOnChange = [this, &attUuid] { EXPECT_FALSE(core.HasAtt(attUuid)); };
+    TestNoGuiNotify(DeleteAttachmentCommand::Create(&core, ciInCore), assertInitial, assertOnChange);
+  }
 }
 
 TEST_F(CommandsTest, AddAndRemoveDependentEntry)
 {
-  PWScore core;
-
-  // Test shortcut entry
   CItemData sbase, sdep;
   sbase.CreateUUID();
   sbase.SetTitle(L"shortcut base entry");
@@ -929,31 +1171,36 @@ TEST_F(CommandsTest, AddAndRemoveDependentEntry)
   pmulticmds1->Add(AddEntryCommand::Create(&core, sdep, sbase.GetUUID()));
   core.Execute(pmulticmds1);
 
-  EXPECT_EQ(2U, core.GetNumEntries());
-  EXPECT_EQ(1U, core.NumShortcuts(sbase.GetUUID()));
+  {
+    SCOPED_TRACE("remove a shortcut dependent association");
+    auto assertInitial = [this, &sbase] { EXPECT_EQ(1U, core.NumShortcuts(sbase.GetUUID())); };
+    auto assertOnChange = [this, &sbase] { EXPECT_EQ(0U, core.NumShortcuts(sbase.GetUUID())); };
+    TestExecute(RemoveDependentEntryCommand::Create(&core, sbase.GetUUID(), sdep.GetUUID(), CItemData::ET_SHORTCUT),
+                assertInitial, assertOnChange);
+  }
 
-  auto rmShortcutCmd = RemoveDependentEntryCommand::Create(&core, sbase.GetUUID(), sdep.GetUUID(), CItemData::ET_SHORTCUT);
-  core.Execute(rmShortcutCmd);
-  EXPECT_EQ(0U, core.NumShortcuts(sbase.GetUUID()));
+  {
+    SCOPED_TRACE("read-only core ignores shortcut dependent additions");
+    auto assertion = [this, &sbase] { EXPECT_EQ(0U, core.NumShortcuts(sbase.GetUUID())); };
+    TestReadonly(AddDependentEntryCommand::Create(&core, sbase.GetUUID(), sdep.GetUUID(), CItemData::ET_SHORTCUT),
+                 assertion);
+  }
 
-  core.Undo();
-  EXPECT_EQ(1U, core.NumShortcuts(sbase.GetUUID()));
+  {
+    SCOPED_TRACE("add a shortcut dependent association");
+    auto assertInitial = [this, &sbase] { EXPECT_EQ(0U, core.NumShortcuts(sbase.GetUUID())); };
+    auto assertOnChange = [this, &sbase] { EXPECT_EQ(1U, core.NumShortcuts(sbase.GetUUID())); };
+    TestExecute(AddDependentEntryCommand::Create(&core, sbase.GetUUID(), sdep.GetUUID(), CItemData::ET_SHORTCUT),
+                assertInitial, assertOnChange);
+  }
 
-  core.Redo();
-  EXPECT_EQ(0U, core.NumShortcuts(sbase.GetUUID()));
+  {
+    SCOPED_TRACE("read-only core ignores shortcut dependent removals");
+    auto assertion = [this, &sbase] { EXPECT_EQ(1U, core.NumShortcuts(sbase.GetUUID())); };
+    TestReadonly(RemoveDependentEntryCommand::Create(&core, sbase.GetUUID(), sdep.GetUUID(), CItemData::ET_SHORTCUT),
+                 assertion);
+  }
 
-  // Test adding shortcut dependent association back
-  auto addShortcutCmd = AddDependentEntryCommand::Create(&core, sbase.GetUUID(), sdep.GetUUID(), CItemData::ET_SHORTCUT);
-  core.Execute(addShortcutCmd);
-  EXPECT_EQ(1U, core.NumShortcuts(sbase.GetUUID()));
-
-  core.Undo();
-  EXPECT_EQ(0U, core.NumShortcuts(sbase.GetUUID()));
-
-  core.Redo();
-  EXPECT_EQ(1U, core.NumShortcuts(sbase.GetUUID()));
-
-  // Test alias entry
   CItemData abase, adep;
   abase.CreateUUID();
   abase.SetTitle(L"alias base entry");
@@ -970,37 +1217,25 @@ TEST_F(CommandsTest, AddAndRemoveDependentEntry)
   pmulticmds2->Add(AddEntryCommand::Create(&core, adep, abase.GetUUID()));
   core.Execute(pmulticmds2);
 
-  EXPECT_EQ(4U, core.GetNumEntries());
-  EXPECT_EQ(1U, core.NumAliases(abase.GetUUID()));
+  {
+    SCOPED_TRACE("remove an alias dependent association");
+    auto assertInitial = [this, &abase] { EXPECT_EQ(1U, core.NumAliases(abase.GetUUID())); };
+    auto assertOnChange = [this, &abase] { EXPECT_EQ(0U, core.NumAliases(abase.GetUUID())); };
+    TestExecute(RemoveDependentEntryCommand::Create(&core, abase.GetUUID(), adep.GetUUID(), CItemData::ET_ALIAS),
+                assertInitial, assertOnChange);
+  }
 
-  auto rmAliasCmd = RemoveDependentEntryCommand::Create(&core, abase.GetUUID(), adep.GetUUID(), CItemData::ET_ALIAS);
-  core.Execute(rmAliasCmd);
-  EXPECT_EQ(0U, core.NumAliases(abase.GetUUID()));
-
-  core.Undo();
-  EXPECT_EQ(1U, core.NumAliases(abase.GetUUID()));
-
-  core.Redo();
-  EXPECT_EQ(0U, core.NumAliases(abase.GetUUID()));
-
-  // Test adding alias dependent association back
-  auto addAliasCmd = AddDependentEntryCommand::Create(&core, abase.GetUUID(), adep.GetUUID(), CItemData::ET_ALIAS);
-  core.Execute(addAliasCmd);
-  EXPECT_EQ(1U, core.NumAliases(abase.GetUUID()));
-
-  core.Undo();
-  EXPECT_EQ(0U, core.NumAliases(abase.GetUUID()));
-
-  core.Redo();
-  EXPECT_EQ(1U, core.NumAliases(abase.GetUUID()));
-
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("add an alias dependent association");
+    auto assertInitial = [this, &abase] { EXPECT_EQ(0U, core.NumAliases(abase.GetUUID())); };
+    auto assertOnChange = [this, &abase] { EXPECT_EQ(1U, core.NumAliases(abase.GetUUID())); };
+    TestExecute(AddDependentEntryCommand::Create(&core, abase.GetUUID(), adep.GetUUID(), CItemData::ET_ALIAS),
+                assertInitial, assertOnChange);
+  }
 }
 
 TEST_F(CommandsTest, AddAndMoveDependentEntries)
 {
-  PWScore core;
-
   CItemData base1, base2, base3, dep1, dep2, dep3;
   base1.CreateUUID();
   base1.SetTitle(L"shortcut base 1");
@@ -1044,147 +1279,206 @@ TEST_F(CommandsTest, AddAndMoveDependentEntries)
   pmulticmds->Add(AddEntryCommand::Create(&core, dep3));
   core.Execute(pmulticmds);
 
-  EXPECT_EQ(6U, core.GetNumEntries());
-  EXPECT_EQ(0U, core.NumShortcuts(base1.GetUUID()));
-  EXPECT_EQ(0U, core.NumShortcuts(base2.GetUUID()));
-
   UUIDVector shortcuts{dep1.GetUUID(), dep2.GetUUID()};
+  {
+    SCOPED_TRACE("read-only core ignores shortcut association additions");
+    auto assertion = [this, &base1, &base2] {
+      EXPECT_EQ(0U, core.NumShortcuts(base1.GetUUID()));
+      EXPECT_EQ(0U, core.NumShortcuts(base2.GetUUID()));
+    };
+    TestReadonly(AddDependentEntriesCommand::Create(&core, shortcuts, nullptr,
+                                                   CItemData::ET_SHORTCUT, CItemData::UUID), assertion);
+  }
 
-  auto addCmdShortcut = AddDependentEntriesCommand::Create(&core, shortcuts, /* pRpt */ nullptr, CItemData::ET_SHORTCUT, CItemData::UUID);
-  core.Execute(addCmdShortcut);
-  EXPECT_EQ(2U, core.NumShortcuts(base1.GetUUID()));
-
-  core.Undo();
-  EXPECT_EQ(0U, core.NumShortcuts(base1.GetUUID()));
-
-  core.Redo();
-  EXPECT_EQ(2U, core.NumShortcuts(base1.GetUUID()));
+  {
+    SCOPED_TRACE("add shortcut associations");
+    auto assertInitial = [this, &base1, &base2] {
+      EXPECT_EQ(6U, core.GetNumEntries());
+      EXPECT_EQ(0U, core.NumShortcuts(base1.GetUUID()));
+      EXPECT_EQ(0U, core.NumShortcuts(base2.GetUUID()));
+    };
+    auto assertOnChange = [this, &base1] { EXPECT_EQ(2U, core.NumShortcuts(base1.GetUUID())); };
+    TestExecute(AddDependentEntriesCommand::Create(&core, shortcuts, nullptr,
+                                                   CItemData::ET_SHORTCUT, CItemData::UUID),
+                assertInitial, assertOnChange);
+  }
 
   UUIDVector aliases{dep3.GetUUID()};
+  {
+    SCOPED_TRACE("read-only core ignores alias association additions");
+    auto assertion = [this, &base3] { EXPECT_EQ(0U, core.NumAliases(base3.GetUUID())); };
+    TestReadonly(AddDependentEntriesCommand::Create(&core, aliases, nullptr,
+                                                   CItemData::ET_ALIAS, CItemData::UUID), assertion);
+  }
 
-  auto addCmdAlias = AddDependentEntriesCommand::Create(&core, aliases, /* pRpt */ nullptr, CItemData::ET_ALIAS, CItemData::UUID);
-  core.Execute(addCmdAlias);
-  EXPECT_EQ(1U, core.NumAliases(base3.GetUUID()));
+  {
+    SCOPED_TRACE("add alias associations");
+    auto assertInitial = [this, &base3] { EXPECT_EQ(0U, core.NumAliases(base3.GetUUID())); };
+    auto assertOnChange = [this, &base3] { EXPECT_EQ(1U, core.NumAliases(base3.GetUUID())); };
+    TestExecute(AddDependentEntriesCommand::Create(&core, aliases, nullptr,
+                                                   CItemData::ET_ALIAS, CItemData::UUID),
+                assertInitial, assertOnChange);
+  }
 
-  core.Undo();
-  EXPECT_EQ(0U, core.NumAliases(base3.GetUUID()));
+  {
+    SCOPED_TRACE("move shortcut associations between bases");
+    auto assertInitial = [this, &base1, &base2] {
+      EXPECT_EQ(2U, core.NumShortcuts(base1.GetUUID()));
+      EXPECT_EQ(0U, core.NumShortcuts(base2.GetUUID()));
+    };
+    auto assertOnChange = [this, &base1, &base2] {
+      EXPECT_EQ(0U, core.NumShortcuts(base1.GetUUID()));
+      EXPECT_EQ(2U, core.NumShortcuts(base2.GetUUID()));
+    };
+    TestExecute(MoveDependentEntriesCommand::Create(&core, base1.GetUUID(), base2.GetUUID(), CItemData::ET_SHORTCUT),
+                assertInitial, assertOnChange);
+  }
 
-  core.Redo();
-  EXPECT_EQ(1U, core.NumAliases(base3.GetUUID()));
+  {
+    SCOPED_TRACE("read-only core ignores shortcut association moves");
+    auto assertion = [this, &base1, &base2] {
+      EXPECT_EQ(0U, core.NumShortcuts(base1.GetUUID()));
+      EXPECT_EQ(2U, core.NumShortcuts(base2.GetUUID()));
+    };
+    TestReadonly(MoveDependentEntriesCommand::Create(&core, base2.GetUUID(), base1.GetUUID(), CItemData::ET_SHORTCUT),
+                 assertion);
+  }
 
-  auto moveCmdShortcut = MoveDependentEntriesCommand::Create(&core, base1.GetUUID(), base2.GetUUID(), CItemData::ET_SHORTCUT);
-  core.Execute(moveCmdShortcut);
-  EXPECT_EQ(0U, core.NumShortcuts(base1.GetUUID()));
-  EXPECT_EQ(2U, core.NumShortcuts(base2.GetUUID()));
+  {
+    SCOPED_TRACE("move alias associations between bases");
+    auto assertInitial = [this, &base2, &base3] {
+      EXPECT_EQ(1U, core.NumAliases(base3.GetUUID()));
+      EXPECT_EQ(0U, core.NumAliases(base2.GetUUID()));
+    };
+    auto assertOnChange = [this, &base2, &base3] {
+      EXPECT_EQ(0U, core.NumAliases(base3.GetUUID()));
+      EXPECT_EQ(1U, core.NumAliases(base2.GetUUID()));
+    };
+    TestExecute(MoveDependentEntriesCommand::Create(&core, base3.GetUUID(), base2.GetUUID(), CItemData::ET_ALIAS),
+                assertInitial, assertOnChange);
+  }
 
-  core.Undo();
-  EXPECT_EQ(2U, core.NumShortcuts(base1.GetUUID()));
-  EXPECT_EQ(0U, core.NumShortcuts(base2.GetUUID()));
-
-  core.Redo();
-  EXPECT_EQ(0U, core.NumShortcuts(base1.GetUUID()));
-  EXPECT_EQ(2U, core.NumShortcuts(base2.GetUUID()));
-
-  auto moveCmdAlias = MoveDependentEntriesCommand::Create(&core, base3.GetUUID(), base2.GetUUID(), CItemData::ET_ALIAS);
-  core.Execute(moveCmdAlias);
-  EXPECT_EQ(0U, core.NumAliases(base3.GetUUID()));
-  EXPECT_EQ(1U, core.NumAliases(base2.GetUUID()));
-
-  core.Undo();
-  EXPECT_EQ(1U, core.NumAliases(base3.GetUUID()));
-  EXPECT_EQ(0U, core.NumAliases(base2.GetUUID()));
-
-  core.Redo();
-  EXPECT_EQ(0U, core.NumAliases(base3.GetUUID()));
-  EXPECT_EQ(1U, core.NumAliases(base2.GetUUID()));
-
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("read-only core ignores alias association moves");
+    auto assertion = [this, &base2, &base3] {
+      EXPECT_EQ(0U, core.NumAliases(base3.GetUUID()));
+      EXPECT_EQ(1U, core.NumAliases(base2.GetUUID()));
+    };
+    TestReadonly(MoveDependentEntriesCommand::Create(&core, base2.GetUUID(), base3.GetUUID(), CItemData::ET_ALIAS),
+                 assertion);
+  }
 }
 
 TEST_F(CommandsTest, PolicyCommands)
 {
-  PWScore core;
+  constexpr int initialLength = 12;
+  constexpr int modifiedLength = 16;
   PSWDPolicyMap policies;
 
   PWPolicy initialPolicy;
   initialPolicy.flags = PWPolicy::UseDigits | PWPolicy::UseUppercase;
-  initialPolicy.length = 12;
+  initialPolicy.length = initialLength;
 
   stringT policyName1 = L"WebPolicy";
   StringX s_policyName1(policyName1);
-  auto addCmd = new PolicyCommandAdd(core, policies, policyName1, initialPolicy);
-  core.Execute(addCmd);
+  {
+    SCOPED_TRACE("read-only core ignores password policy additions");
+    auto assertion = [&policies] { EXPECT_TRUE(policies.empty()); };
+    TestReadonly(new PolicyCommandAdd(core, policies, policyName1, initialPolicy), assertion);
+  }
 
-  EXPECT_EQ(1U, policies.size());
-  EXPECT_TRUE(policies.contains(s_policyName1));
-  EXPECT_EQ(12, policies[s_policyName1].length);
-
-  core.Undo();
-  EXPECT_EQ(0U, policies.size());
-
-  core.Redo();
-  EXPECT_EQ(1U, policies.size());
+  {
+    SCOPED_TRACE("add a password policy");
+    auto assertInitial = [&policies] { EXPECT_TRUE(policies.empty()); };
+    auto assertOnChange = [&policies, &s_policyName1, initialLength] {
+      ASSERT_EQ(1U, policies.size());
+      EXPECT_TRUE(policies.contains(s_policyName1));
+      EXPECT_EQ(initialLength, policies[s_policyName1].length);
+    };
+    TestExecute(new PolicyCommandAdd(core, policies, policyName1, initialPolicy),
+                assertInitial, assertOnChange);
+  }
 
   PWPolicy modifiedPolicy = initialPolicy;
-  modifiedPolicy.length = 16;
+  modifiedPolicy.length = modifiedLength;
   modifiedPolicy.flags |= PWPolicy::UseSymbols;
 
-  auto modifyCmd = new PolicyCommandModify<MultiPolicyCollector, PSWDPolicyMap>(core, policies, policyName1, initialPolicy, modifiedPolicy);
-  core.Execute(modifyCmd);
+  {
+    SCOPED_TRACE("read-only core ignores password policy modifications");
+    auto assertion = [&policies, &s_policyName1, initialLength] {
+      ASSERT_EQ(1U, policies.size());
+      EXPECT_EQ(initialLength, policies[s_policyName1].length);
+    };
+    TestReadonly(new PolicyCommandModify<MultiPolicyCollector, PSWDPolicyMap>(
+                   core, policies, policyName1, initialPolicy, modifiedPolicy), assertion);
+  }
 
-  EXPECT_EQ(16, policies[s_policyName1].length);
-
-  core.Undo();
-  EXPECT_EQ(12, policies[s_policyName1].length);
-
-  core.Redo();
-  EXPECT_EQ(16, policies[s_policyName1].length);
+  {
+    SCOPED_TRACE("modify a password policy");
+    auto assertInitial = [&policies, &s_policyName1, initialLength] { EXPECT_EQ(initialLength, policies[s_policyName1].length); };
+    auto assertOnChange = [&policies, &s_policyName1, modifiedLength] { EXPECT_EQ(modifiedLength, policies[s_policyName1].length); };
+    TestExecute(new PolicyCommandModify<MultiPolicyCollector, PSWDPolicyMap>(
+                  core, policies, policyName1, initialPolicy, modifiedPolicy),
+                assertInitial, assertOnChange);
+  }
 
   stringT policyName2 = L"SecureWebPolicy";
   StringX s_policyName2(policyName2);
   PWPolicy renamedPolicy = modifiedPolicy;
   renamedPolicy.length = 20;
 
-  auto renameCmd = new PolicyCommandRename(core, policies, policyName1, policyName2, modifiedPolicy, renamedPolicy);
-  core.Execute(renameCmd);
+  {
+    SCOPED_TRACE("read-only core ignores password policy renames");
+    auto assertion = [&policies, &s_policyName1, &s_policyName2, modifiedLength] {
+      ASSERT_EQ(1U, policies.size());
+      EXPECT_TRUE(policies.contains(s_policyName1));
+      EXPECT_FALSE(policies.contains(s_policyName2));
+      EXPECT_EQ(modifiedLength, policies[s_policyName1].length);
+    };
+    TestReadonly(new PolicyCommandRename(core, policies, policyName1, policyName2,
+                                         modifiedPolicy, renamedPolicy), assertion);
+  }
 
-  EXPECT_EQ(1U, policies.size());
-  EXPECT_FALSE(policies.contains(s_policyName1));
-  EXPECT_TRUE(policies.contains(s_policyName2));
-  EXPECT_EQ(20, policies[s_policyName2].length);
+  {
+    SCOPED_TRACE("rename a password policy");
+    auto assertInitial = [&policies, &s_policyName1, &s_policyName2, modifiedLength] {
+      ASSERT_EQ(1U, policies.size());
+      EXPECT_TRUE(policies.contains(s_policyName1));
+      EXPECT_FALSE(policies.contains(s_policyName2));
+      EXPECT_EQ(modifiedLength, policies[s_policyName1].length);
+    };
+    auto assertOnChange = [&policies, &s_policyName1, &s_policyName2] {
+      ASSERT_EQ(1U, policies.size());
+      EXPECT_FALSE(policies.contains(s_policyName1));
+      EXPECT_TRUE(policies.contains(s_policyName2));
+      EXPECT_EQ(20, policies[s_policyName2].length);
+    };
+    TestExecute(new PolicyCommandRename(core, policies, policyName1, policyName2,
+                                        modifiedPolicy, renamedPolicy),
+                assertInitial, assertOnChange);
+  }
 
-  core.Undo();
-  EXPECT_EQ(1U, policies.size());
-  EXPECT_TRUE(policies.contains(s_policyName1));
-  EXPECT_FALSE(policies.contains(s_policyName2));
-  EXPECT_EQ(16, policies[s_policyName1].length);
+  {
+    SCOPED_TRACE("read-only core ignores password policy removals");
+    auto assertion = [&policies, &s_policyName2] {
+      ASSERT_EQ(1U, policies.size());
+      EXPECT_TRUE(policies.contains(s_policyName2));
+      EXPECT_EQ(20, policies[s_policyName2].length);
+    };
+    TestReadonly(new PolicyCommandRemove(core, policies, policyName2, renamedPolicy), assertion);
+  }
 
-  core.Redo();
-  EXPECT_EQ(1U, policies.size());
-  EXPECT_FALSE(policies.contains(s_policyName1));
-  EXPECT_TRUE(policies.contains(s_policyName2));
-  EXPECT_EQ(20, policies[s_policyName2].length);
-
-  // Remove password policy
-  auto removeCmd = new PolicyCommandRemove(core, policies, policyName2, renamedPolicy);
-  core.Execute(removeCmd);
-
-  EXPECT_EQ(0U, policies.size());
-
-  core.Undo();
-  EXPECT_EQ(1U, policies.size());
-  EXPECT_TRUE(policies.contains(s_policyName2));
-
-  core.Redo();
-  EXPECT_EQ(0U, policies.size());
-
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("remove a password policy");
+    auto assertInitial = [&policies, &s_policyName2] { EXPECT_TRUE(policies.contains(s_policyName2)); };
+    auto assertOnChange = [&policies] { EXPECT_TRUE(policies.empty()); };
+    TestExecute(new PolicyCommandRemove(core, policies, policyName2, renamedPolicy),
+                assertInitial, assertOnChange);
+  }
 }
 
 TEST_F(CommandsTest, DBPolicyNamesCommand)
 {
-  PWScore core;
-
   PWPolicy pol1, pol2, pol3;
   pol1.flags  = PWPolicy::UseDigits | PWPolicy::UseLowercase;
   pol1.length = 12;
@@ -1197,103 +1491,73 @@ TEST_F(CommandsTest, DBPolicyNamesCommand)
   const StringX name2(L"Policy2");
   const StringX name3(L"Policy3");
 
-  // --- Single-policy add ---
-
-  core.Execute(DBPolicyNamesCommand::Create(&core, name1, pol1));
-  EXPECT_EQ(1U, core.GetPasswordPolicies().size());
-  EXPECT_EQ(12, core.GetPasswordPolicies().at(name1).length);
-  EXPECT_TRUE(core.HasDBChanged());
-
-  core.Undo();
-  EXPECT_EQ(0U, core.GetPasswordPolicies().size());
-
-  core.Redo();
-  EXPECT_EQ(1U, core.GetPasswordPolicies().size());
-
-  core.ClearCommands();
-
-  // --- NP_ADDNEW: adds only policies whose names are not already present ---
+  {
+    SCOPED_TRACE("add a single password policy");
+    auto assertInitial = [this] { EXPECT_TRUE(core.GetPasswordPolicies().empty()); };
+    auto assertChanged = [this, &name1] {
+      ASSERT_EQ(1U, core.GetPasswordPolicies().size());
+      EXPECT_EQ(12, core.GetPasswordPolicies().at(name1).length);
+      EXPECT_TRUE(core.HasDBChanged());
+    };
+    TestExecute(DBPolicyNamesCommand::Create(&core, name1, pol1), assertInitial, assertChanged,
+                UpdateGUICommand::GUI_UPDATE_STATUSBAR);
+  }
 
   PSWDPolicyMap newPolicies;
   newPolicies[name1] = pol1;  // duplicate – should be skipped
   newPolicies[name2] = pol2;  // new – should be added
 
-  core.Execute(DBPolicyNamesCommand::Create(&core, newPolicies, DBPolicyNamesCommand::NP_ADDNEW));
-  EXPECT_EQ(2U, core.GetPasswordPolicies().size());
-  EXPECT_TRUE(core.GetPasswordPolicies().contains(name1));
-  EXPECT_TRUE(core.GetPasswordPolicies().contains(name2));
-
-  core.Undo();
-  EXPECT_EQ(1U, core.GetPasswordPolicies().size());
-  EXPECT_TRUE(core.GetPasswordPolicies().contains(name1));
-  EXPECT_FALSE(core.GetPasswordPolicies().contains(name2));
-
-  core.Redo();
-  EXPECT_EQ(2U, core.GetPasswordPolicies().size());
-
-  core.ClearCommands();
-
-  // --- NP_REPLACEALL: replaces the entire policy map ---
+  {
+    SCOPED_TRACE("add only policies with new names");
+    auto assertInitial = [this, &name1] {
+      ASSERT_EQ(1U, core.GetPasswordPolicies().size());
+      EXPECT_TRUE(core.GetPasswordPolicies().contains(name1));
+    };
+    auto assertChanged = [this, &name1, &name2] {
+      ASSERT_EQ(2U, core.GetPasswordPolicies().size());
+      EXPECT_TRUE(core.GetPasswordPolicies().contains(name1));
+      EXPECT_TRUE(core.GetPasswordPolicies().contains(name2));
+    };
+    TestExecute(DBPolicyNamesCommand::Create(&core, newPolicies, DBPolicyNamesCommand::NP_ADDNEW),
+                assertInitial, assertChanged, UpdateGUICommand::GUI_UPDATE_STATUSBAR);
+  }
 
   PSWDPolicyMap replacementPolicies;
   replacementPolicies[name3] = pol3;
 
-  core.Execute(DBPolicyNamesCommand::Create(&core, replacementPolicies, DBPolicyNamesCommand::NP_REPLACEALL));
-  EXPECT_EQ(1U, core.GetPasswordPolicies().size());
-  EXPECT_FALSE(core.GetPasswordPolicies().contains(name1));
-  EXPECT_FALSE(core.GetPasswordPolicies().contains(name2));
-  EXPECT_TRUE(core.GetPasswordPolicies().contains(name3));
-  EXPECT_EQ(20, core.GetPasswordPolicies().at(name3).length);
+  {
+    SCOPED_TRACE("replace all password policies");
+    auto assertInitial = [this, &name1, &name2] {
+      ASSERT_EQ(2U, core.GetPasswordPolicies().size());
+      EXPECT_TRUE(core.GetPasswordPolicies().contains(name1));
+      EXPECT_TRUE(core.GetPasswordPolicies().contains(name2));
+    };
+    auto assertChanged = [this, &name1, &name2, &name3] {
+      ASSERT_EQ(1U, core.GetPasswordPolicies().size());
+      EXPECT_FALSE(core.GetPasswordPolicies().contains(name1));
+      EXPECT_FALSE(core.GetPasswordPolicies().contains(name2));
+      EXPECT_TRUE(core.GetPasswordPolicies().contains(name3));
+      EXPECT_EQ(20, core.GetPasswordPolicies().at(name3).length);
+    };
+    TestExecute(DBPolicyNamesCommand::Create(&core, replacementPolicies, DBPolicyNamesCommand::NP_REPLACEALL),
+                assertInitial, assertChanged, UpdateGUICommand::GUI_UPDATE_STATUSBAR);
+  }
 
-  core.Undo();
-  EXPECT_EQ(2U, core.GetPasswordPolicies().size());
-  EXPECT_TRUE(core.GetPasswordPolicies().contains(name1));
-  EXPECT_TRUE(core.GetPasswordPolicies().contains(name2));
+  {
+    SCOPED_TRACE("read-only core ignores password policy changes");
+    auto assertion = [this, &name1, &name3] {
+      EXPECT_FALSE(core.GetPasswordPolicies().contains(name1));
+      EXPECT_TRUE(core.GetPasswordPolicies().contains(name3));
+    };
+    TestReadonly(DBPolicyNamesCommand::Create(&core, name1, pol1), assertion);
+  }
 
-  core.ClearCommands();
-
-  // --- No-op when core is read-only ---
-
-  const size_t sizeBefore = core.GetPasswordPolicies().size();
-  core.SetReadOnly(true);
-  core.Execute(DBPolicyNamesCommand::Create(&core, name3, pol3));
-  EXPECT_EQ(sizeBefore, core.GetPasswordPolicies().size());
-  core.SetReadOnly(false);
-
-  core.ClearCommands();
-
-  // --- GUI notification: observer is called on Execute and on Undo ---
-
-  TestGUIObserver observer;
-  core.RegisterObserver(&observer);
-
-  auto pcmd = DBPolicyNamesCommand::Create(&core, name3, pol3);
-  // same as in the UpdateGUICommand command test, execute the command directly to avoid the UI notifications
-  // generated by core - these are out of scope for this test
-  pcmd->Execute();
-  ASSERT_EQ(1U, observer.calls.size());
-  EXPECT_EQ(UpdateGUICommand::GUI_UPDATE_STATUSBAR, observer.calls[0].ga);
-  observer.calls.clear();
-
-  pcmd->Undo();
-  ASSERT_EQ(1U, observer.calls.size());
-  EXPECT_EQ(UpdateGUICommand::GUI_UPDATE_STATUSBAR, observer.calls[0].ga);
-  observer.calls.clear();
-  delete pcmd; // delete manually since we didn't use core.Execute, so core isn't tracking this command
-
-  // --- GUI notification suppressed when SetNoGUINotify() is called ---
-
-  auto silentCmd = DBPolicyNamesCommand::Create(&core, name3, pol3);
-  silentCmd->SetNoGUINotify();
-  silentCmd->Execute();
-  EXPECT_TRUE(observer.calls.empty());
-
-  silentCmd->Undo();
-  EXPECT_TRUE(observer.calls.empty());
-  delete silentCmd;
-
-  core.UnregisterObserver(&observer);
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("no-GUI-notify policy command still changes policies");
+    auto assertInitial = [this, &name1] { EXPECT_FALSE(core.GetPasswordPolicies().contains(name1)); };
+    auto assertChanged = [this, &name1] { EXPECT_TRUE(core.GetPasswordPolicies().contains(name1)); };
+    TestNoGuiNotify(DBPolicyNamesCommand::Create(&core, name1, pol1), assertInitial, assertChanged);
+  }
 }
 
 TEST_F(CommandsTest, EmbedNamedPolicy)
@@ -1570,255 +1834,231 @@ TEST_F(CommandsTest, ProcessPolicyName)
 
 TEST_F(CommandsTest, DBEmptyGroupsCommand)
 {
-  PWScore core;
-  TestGUIObserver observer;
-  core.RegisterObserver(&observer);
-
-  // initial setup
   const StringX group1(L"Group1");
   const StringX group2(L"Group2");
   const StringX group1a(L"Group1.Subgroup");
   const std::vector initialGroups{group1, group1a};
-  core.Execute(DBEmptyGroupsCommand::Create(&core, initialGroups,
-                                            DBEmptyGroupsCommand::EG_REPLACEALL));
-  core.ClearCommands();
-  observer.calls.clear();
+  const std::vector withGroup2{group1, group1a, group2};
+  const auto assertGroups = [this](const std::vector<StringX> &groups) {
+    EXPECT_EQ(groups, core.GetEmptyGroups());
+  };
 
-  // Single-group add, delete, and rename, including undo.
-  auto cmd = DBEmptyGroupsCommand::Create(&core, group2, DBEmptyGroupsCommand::EG_ADD);
-  // same as in the UpdateGUICommand command test, execute the command directly to avoid the UI notifications
-  // generated by core - these are out of scope for this test
-  cmd->Execute();
-  EXPECT_EQ((std::vector{group1, group1a, group2}), core.GetEmptyGroups());
-  ASSERT_EQ(1U, observer.calls.size());
-  EXPECT_EQ(UpdateGUICommand::GUI_REFRESH_TREE, observer.calls[0].ga);
-  observer.calls.clear();
+  {
+    SCOPED_TRACE("create initial empty groups");
+    auto assertInitial = [assertGroups] { assertGroups({}); };
+    auto assertOnChange = [assertGroups, &initialGroups] { assertGroups(initialGroups); };
+    TestExecute(DBEmptyGroupsCommand::Create(&core, initialGroups,
+                                             DBEmptyGroupsCommand::EG_REPLACEALL),
+                assertInitial, assertOnChange, UpdateGUICommand::GUI_REFRESH_TREE);
+  }
 
-  cmd->Undo();
-  EXPECT_EQ(initialGroups, core.GetEmptyGroups());
-  ASSERT_EQ(1U, observer.calls.size());
-  EXPECT_EQ(UpdateGUICommand::GUI_REFRESH_TREE, observer.calls[0].ga);
-  observer.calls.clear();
-  delete cmd; // delete manually since we didn't use core.Execute, so core isn't tracking this command
+  {
+    SCOPED_TRACE("add a single empty group");
+    auto assertInitial = [assertGroups, &initialGroups] { assertGroups(initialGroups); };
+    auto assertOnChange = [assertGroups, &withGroup2] { assertGroups(withGroup2); };
+    TestExecute(DBEmptyGroupsCommand::Create(&core, group2, DBEmptyGroupsCommand::EG_ADD),
+                assertInitial, assertOnChange, UpdateGUICommand::GUI_REFRESH_TREE);
+  }
 
-  cmd = DBEmptyGroupsCommand::Create(&core, group1, DBEmptyGroupsCommand::EG_DELETE);
-  cmd->Execute();
-  EXPECT_EQ(std::vector{group1a}, core.GetEmptyGroups());
-
-  cmd->Undo();
-  EXPECT_EQ(initialGroups, core.GetEmptyGroups());
-  delete cmd;
+  {
+    SCOPED_TRACE("delete a single empty group");
+    auto assertInitial = [assertGroups, &withGroup2] { assertGroups(withGroup2); };
+    auto assertOnChange = [assertGroups, &group1a, &group2] { assertGroups({group1a, group2}); };
+    TestExecute(DBEmptyGroupsCommand::Create(&core, group1, DBEmptyGroupsCommand::EG_DELETE),
+                assertInitial, assertOnChange, UpdateGUICommand::GUI_REFRESH_TREE);
+  }
 
   const StringX renamedGroup1a(L"Renamed.Subgroup");
-  cmd = DBEmptyGroupsCommand::Create(&core, group1a, renamedGroup1a,
-                                     DBEmptyGroupsCommand::EG_RENAME);
-  cmd->Execute();
-  EXPECT_EQ((std::vector{group1, renamedGroup1a}), core.GetEmptyGroups());
+  {
+    SCOPED_TRACE("rename an empty group");
+    auto assertInitial = [assertGroups, &group1a, &group2] { assertGroups({group1a, group2}); };
+    auto assertOnChange = [assertGroups, &group2, &renamedGroup1a] { assertGroups({group2, renamedGroup1a}); };
+    TestExecute(DBEmptyGroupsCommand::Create(&core, group1a, renamedGroup1a,
+                                             DBEmptyGroupsCommand::EG_RENAME),
+                assertInitial, assertOnChange, UpdateGUICommand::GUI_REFRESH_TREE);
+  }
 
-  cmd->Undo();
-  EXPECT_EQ(initialGroups, core.GetEmptyGroups());
-  delete cmd;
-
-  // Add all preserves existing groups; replace all and rename path replace them.
   const StringX group3(L"Group3");
   const std::vector addGroups{group2, group3};
-  cmd = DBEmptyGroupsCommand::Create(&core, addGroups, DBEmptyGroupsCommand::EG_ADDALL);
-  cmd->Execute();
-  EXPECT_EQ((std::vector{group1, group1a, group2, group3}), core.GetEmptyGroups());
+  const std::vector renamedGroups{group2, renamedGroup1a};
+  const std::vector addedGroups{group2, group3, renamedGroup1a};
+  {
+    SCOPED_TRACE("add all groups while preserving existing groups");
+    auto assertInitial = [assertGroups, &renamedGroups] { assertGroups(renamedGroups); };
+    auto assertOnChange = [assertGroups, &addedGroups] { assertGroups(addedGroups); };
+    TestExecute(DBEmptyGroupsCommand::Create(&core, addGroups, DBEmptyGroupsCommand::EG_ADDALL),
+                assertInitial, assertOnChange, UpdateGUICommand::GUI_REFRESH_TREE);
+  }
 
-  cmd->Undo();
-  EXPECT_EQ(initialGroups, core.GetEmptyGroups());
-  delete cmd;
+  {
+    SCOPED_TRACE("replace all empty groups");
+    auto assertInitial = [assertGroups, &addedGroups] { assertGroups(addedGroups); };
+    auto assertOnChange = [assertGroups, &initialGroups] { assertGroups(initialGroups); };
+    TestExecute(DBEmptyGroupsCommand::Create(&core, initialGroups,
+                                             DBEmptyGroupsCommand::EG_REPLACEALL),
+                assertInitial, assertOnChange, UpdateGUICommand::GUI_REFRESH_TREE);
+  }
 
-  const std::vector replacementGroups{group2};
-  cmd = DBEmptyGroupsCommand::Create(&core, replacementGroups,
-                                     DBEmptyGroupsCommand::EG_REPLACEALL);
-  cmd->Execute();
-  EXPECT_EQ(replacementGroups, core.GetEmptyGroups());
+  const std::vector renamedGroups1{group1, renamedGroup1a};
+  {
+    SCOPED_TRACE("rename an empty-group path");
+    auto assertInitial = [assertGroups, &initialGroups] { assertGroups(initialGroups); };
+    auto assertOnChange = [assertGroups, &renamedGroups1] { assertGroups(renamedGroups1); };
+    TestExecute(DBEmptyGroupsCommand::Create(&core, group1, StringX(L"Renamed"),
+                                             DBEmptyGroupsCommand::EG_RENAMEPATH),
+                assertInitial, assertOnChange, UpdateGUICommand::GUI_REFRESH_TREE);
+  }
 
-  cmd->Undo();
-  EXPECT_EQ(initialGroups, core.GetEmptyGroups());
-  delete cmd;
+  {
+    SCOPED_TRACE("duplicate add is a no-op and doesn't notify");
+    auto assertion = [assertGroups, &renamedGroups1] { assertGroups(renamedGroups1); };
+    TestExecute(DBEmptyGroupsCommand::Create(&core, renamedGroup1a, DBEmptyGroupsCommand::EG_ADD),
+                assertion, assertion);
+  }
 
-  cmd = DBEmptyGroupsCommand::Create(&core, StringX(L"Group1"), StringX(L"NewGroup"),
-                                     DBEmptyGroupsCommand::EG_RENAMEPATH);
-  cmd->Execute();
-  EXPECT_EQ((std::vector{group1, StringX(L"NewGroup.Subgroup")}),
-            core.GetEmptyGroups());
+  {
+    SCOPED_TRACE("identical replacement is a no-op");
+    auto assertion = [assertGroups, &renamedGroups1] { assertGroups(renamedGroups1); };
+    TestExecute(DBEmptyGroupsCommand::Create(&core, renamedGroups1, DBEmptyGroupsCommand::EG_REPLACEALL),
+                assertion, assertion);
+  }
 
-  cmd->Undo();
-  EXPECT_EQ(initialGroups, core.GetEmptyGroups());
-  delete cmd;
+  {
+    SCOPED_TRACE("read-only core ignores empty-group changes");
+    auto assertion = [assertGroups, &renamedGroups1] { assertGroups(renamedGroups1); };
+    TestReadonly(DBEmptyGroupsCommand::Create(&core, group3, DBEmptyGroupsCommand::EG_ADD), assertion);
+  }
 
-  // Duplicate add and identical replacement are no-ops and do not notify.
-  observer.calls.clear();
-  cmd = DBEmptyGroupsCommand::Create(&core, group1, DBEmptyGroupsCommand::EG_ADD);
-  cmd->Execute();
-  EXPECT_TRUE(observer.calls.empty());
-  delete cmd;
-
-  cmd = DBEmptyGroupsCommand::Create(&core, initialGroups,
-                                     DBEmptyGroupsCommand::EG_REPLACEALL);
-  cmd->Execute();
-  EXPECT_TRUE(observer.calls.empty());
-  delete cmd;
-
-  observer.calls.clear();
-  core.SetReadOnly(true);
-  cmd = DBEmptyGroupsCommand::Create(&core, group3, DBEmptyGroupsCommand::EG_ADD);
-  cmd->Execute();
-  EXPECT_EQ(initialGroups, core.GetEmptyGroups());
-  EXPECT_TRUE(observer.calls.empty());
-
-  cmd->Undo();
-  EXPECT_EQ(initialGroups, core.GetEmptyGroups());
-  EXPECT_TRUE(observer.calls.empty());
-  delete cmd;
-
-  core.SetReadOnly(false);
-  cmd = DBEmptyGroupsCommand::Create(&core, group3, DBEmptyGroupsCommand::EG_ADD);
-  cmd->SetNoGUINotify();
-  cmd->Execute();
-  EXPECT_EQ((std::vector{group1, group1a, group3}), core.GetEmptyGroups());
-  EXPECT_TRUE(observer.calls.empty());
-  delete cmd;
-
-  core.UnregisterObserver(&observer);
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("no-GUI-notify still modifies empty groups");
+    auto assertInitial = [assertGroups, &renamedGroups1] {
+      assertGroups(renamedGroups1);
+    };
+    auto assertOnChange = [assertGroups, &group1, &renamedGroup1a, &group2] {
+      assertGroups({group1, group2, renamedGroup1a});
+    };
+    TestNoGuiNotify(DBEmptyGroupsCommand::Create(&core, group2, DBEmptyGroupsCommand::EG_ADD),
+                    assertInitial, assertOnChange);
+  }
 }
 
 TEST_F(CommandsTest, DBFiltersCommand)
 {
-  PWScore core;
-  TestGUIObserver observer;
-  core.RegisterObserver(&observer);
-
-  st_Filterkey key{FPOOL_DATABASE, L"Database filter"};
+  const PWSFilters originalFilters = core.GetDBFilters();
+  const st_Filterkey key{FPOOL_DATABASE, L"Database filter"};
   st_filters filter;
   filter.fname = L"Database filter";
   PWSFilters newFilters;
   newFilters[key] = filter;
 
-  auto cmd = DBFiltersCommand::Create(&core, newFilters);
-  // same as in the UpdateGUICommand command test, execute the command directly to avoid the UI notifications
-  // generated by core - these are out of scope for this test
-  cmd->Execute();
-  EXPECT_EQ(newFilters, core.GetDBFilters());
-  ASSERT_EQ(1U, observer.calls.size());
-  EXPECT_EQ(UpdateGUICommand::GUI_UPDATE_STATUSBAR, observer.calls[0].ga);
-  observer.calls.clear();
+  {
+    SCOPED_TRACE("execute, undo, and redo filters");
+    auto assertInitial = [this, &originalFilters] { EXPECT_EQ(originalFilters, core.GetDBFilters()); };
+    auto assertOnChange = [this, &newFilters] { EXPECT_EQ(newFilters, core.GetDBFilters()); };
+    TestExecute(DBFiltersCommand::Create(&core, newFilters), assertInitial, assertOnChange, UpdateGUICommand::GUI_UPDATE_STATUSBAR);
+  }
 
-  cmd->Undo();
-  EXPECT_TRUE(core.GetDBFilters().empty());
-  ASSERT_EQ(1U, observer.calls.size());
-  EXPECT_EQ(UpdateGUICommand::GUI_UPDATE_STATUSBAR, observer.calls[0].ga);
-  observer.calls.clear();
-  delete cmd; // delete manually since we didn't use core.Execute, so core isn't tracking this command
+  {
+    SCOPED_TRACE("unchanged filters are a no-op");
+    auto assertion = [this, &newFilters] { EXPECT_EQ(newFilters, core.GetDBFilters()); };
+    TestExecute(DBFiltersCommand::Create(&core, core.GetDBFilters()), assertion, assertion);
+  }
 
-  // An unchanged map is a no-op
-  cmd = DBFiltersCommand::Create(&core, core.GetDBFilters());
-  cmd->Execute();
-  EXPECT_TRUE(observer.calls.empty());
+  {
+    SCOPED_TRACE("read-only core ignores filter changes");
+    auto assertion = [this, &newFilters] { EXPECT_EQ(newFilters, core.GetDBFilters()); };
+    TestReadonly(DBFiltersCommand::Create(&core, originalFilters), assertion);
+  }
 
-  cmd->Undo();
-  EXPECT_TRUE(observer.calls.empty());
-  delete cmd;
-
-  core.SetReadOnly(true);
-  cmd = DBFiltersCommand::Create(&core, newFilters);
-  cmd->Execute();
-  EXPECT_TRUE(core.GetDBFilters().empty());
-  EXPECT_TRUE(observer.calls.empty());
-
-  cmd->Undo();
-  EXPECT_TRUE(core.GetDBFilters().empty());
-  EXPECT_TRUE(observer.calls.empty());
-  delete cmd;
-
-  core.SetReadOnly(false);
-  cmd = DBFiltersCommand::Create(&core, newFilters);
-  cmd->SetNoGUINotify();
-  cmd->Execute();
-  EXPECT_EQ(newFilters, core.GetDBFilters());
-  EXPECT_TRUE(observer.calls.empty());
-
-  cmd->Undo();
-  EXPECT_TRUE(core.GetDBFilters().empty());
-  EXPECT_TRUE(observer.calls.empty());
-  delete cmd;
-
-  core.UnregisterObserver(&observer);
-  core.ClearCommands();
+  {
+    SCOPED_TRACE("SetNoGUINotify suppresses command notification");
+    auto assertInitial = [this, &newFilters] { EXPECT_EQ(newFilters, core.GetDBFilters()); };
+    auto assertOnChange = [this, &originalFilters] { EXPECT_EQ(originalFilters, core.GetDBFilters()); };
+    TestNoGuiNotify(DBFiltersCommand::Create(&core, originalFilters), assertInitial, assertOnChange);
+  }
 }
 
 TEST_F(CommandsTest, DBPrefsCommand)
 {
-  PWScore core;
   PWSprefs *prefs = PWSprefs::GetInstance();
-  TestGUIObserver observer;
-  core.RegisterObserver(&observer);
 
-  const StringX oldPrefs = prefs->Store();
-  const uint32 oldHashIters = core.GetHashIters();
-  const bool oldSaveHistory = prefs->GetPref(PWSprefs::SavePasswordHistory);
-  const bool newSaveHistory = !oldSaveHistory;
-  prefs->SetPref(PWSprefs::SavePasswordHistory, newSaveHistory);
-  const StringX newPrefs = prefs->Store();
-  prefs->SetPref(PWSprefs::SavePasswordHistory, oldSaveHistory);
+  {
+    SCOPED_TRACE("change database preferences and hash iterations");
+    const uint32 oldHashIters = core.GetHashIters();
+    const bool oldSaveHistory = prefs->GetPref(PWSprefs::SavePasswordHistory);
+    const bool newSaveHistory = !oldSaveHistory;
+    prefs->SetPref(PWSprefs::SavePasswordHistory, newSaveHistory);
+    const StringX newPrefs = prefs->Store();
+    prefs->SetPref(PWSprefs::SavePasswordHistory, oldSaveHistory);
 
-  auto cmd = DBPrefsCommand::Create(&core, newPrefs, oldHashIters + 1);
-  cmd->Execute();
-  EXPECT_EQ(newSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
-  EXPECT_EQ(oldHashIters + 1, core.GetHashIters());
-  ASSERT_EQ(1U, observer.calls.size());
-  EXPECT_EQ(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED, observer.calls[0].ga);
-  observer.calls.clear();
+    auto assertInitial = [this, prefs, oldSaveHistory, oldHashIters] {
+      EXPECT_EQ(oldSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+      EXPECT_EQ(oldHashIters, core.GetHashIters());
+    };
+    auto assertOnChange = [this, prefs, newSaveHistory, oldHashIters] {
+      EXPECT_EQ(newSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+      EXPECT_EQ(oldHashIters + 1, core.GetHashIters());
+    };
+    TestExecute(DBPrefsCommand::Create(&core, newPrefs, oldHashIters + 1),
+                assertInitial, assertOnChange,
+                UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED);
+  }
 
-  cmd->Undo();
-  EXPECT_EQ(oldSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
-  EXPECT_EQ(oldHashIters, core.GetHashIters());
-  ASSERT_EQ(1U, observer.calls.size());
-  EXPECT_EQ(UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED, observer.calls[0].ga);
-  observer.calls.clear();
-  delete cmd;
+  {
+    SCOPED_TRACE("omitting hash iterations leaves them unchanged");
+    const bool currentSaveHistory = prefs->GetPref(PWSprefs::SavePasswordHistory);
+    const bool newSaveHistory = !currentSaveHistory;
+    const uint32 currentHashIters = core.GetHashIters();
+    prefs->SetPref(PWSprefs::SavePasswordHistory, newSaveHistory);
+    const StringX newPrefs = prefs->Store();
+    prefs->SetPref(PWSprefs::SavePasswordHistory, currentSaveHistory);
 
-  // Omitting hash iterations leaves them unchanged.
-  cmd = DBPrefsCommand::Create(&core, newPrefs);
-  cmd->Execute();
-  EXPECT_EQ(newSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
-  EXPECT_EQ(oldHashIters, core.GetHashIters());
-  cmd->Undo();
-  EXPECT_EQ(oldSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
-  observer.calls.clear();
-  delete cmd;
+    auto assertInitial = [this, prefs, currentSaveHistory, currentHashIters] {
+      EXPECT_EQ(currentSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+      EXPECT_EQ(currentHashIters, core.GetHashIters());
+    };
+    auto assertOnChange = [this, prefs, newSaveHistory, currentHashIters] {
+      EXPECT_EQ(newSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+      EXPECT_EQ(currentHashIters, core.GetHashIters());
+    };
+    TestExecute(DBPrefsCommand::Create(&core, newPrefs), assertInitial, assertOnChange,
+                UpdateGUICommand::GUI_DB_PREFERENCES_CHANGED);
+  }
 
-  // Read-only execution and undo do not change preferences or notify observers.
-  core.SetReadOnly(true);
-  cmd = DBPrefsCommand::Create(&core, newPrefs, oldHashIters + 1);
-  cmd->Execute();
-  EXPECT_EQ(oldSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
-  EXPECT_EQ(oldHashIters, core.GetHashIters());
-  EXPECT_TRUE(observer.calls.empty());
+  {
+    SCOPED_TRACE("read-only core ignores preference changes");
+    const bool currentSaveHistory = prefs->GetPref(PWSprefs::SavePasswordHistory);
+    const uint32 currentHashIters = core.GetHashIters();
+    const bool newSaveHistory = !currentSaveHistory;
+    prefs->SetPref(PWSprefs::SavePasswordHistory, newSaveHistory);
+    const StringX newPrefs = prefs->Store();
+    prefs->SetPref(PWSprefs::SavePasswordHistory, currentSaveHistory);
 
-  cmd->Undo();
-  EXPECT_TRUE(observer.calls.empty());
-  delete cmd;
-  core.SetReadOnly(false);
+    auto assertion = [this, prefs, currentSaveHistory, currentHashIters] {
+      EXPECT_EQ(currentSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+      EXPECT_EQ(currentHashIters, core.GetHashIters());
+    };
+    TestReadonly(DBPrefsCommand::Create(&core, newPrefs, currentHashIters + 1), assertion);
+  }
 
-  // SetNoGUINotify suppresses notifications for both operations.
-  cmd = DBPrefsCommand::Create(&core, newPrefs, oldHashIters + 1);
-  cmd->SetNoGUINotify();
-  cmd->Execute();
-  EXPECT_EQ(newSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
-  EXPECT_TRUE(observer.calls.empty());
+  {
+    SCOPED_TRACE("SetNoGUINotify suppresses command notification");
+    const bool currentSaveHistory = prefs->GetPref(PWSprefs::SavePasswordHistory);
+    const uint32 currentHashIters = core.GetHashIters();
+    const bool newSaveHistory = !currentSaveHistory;
+    prefs->SetPref(PWSprefs::SavePasswordHistory, newSaveHistory);
+    const StringX newPrefs = prefs->Store();
+    prefs->SetPref(PWSprefs::SavePasswordHistory, currentSaveHistory);
 
-  cmd->Undo();
-  EXPECT_EQ(oldSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
-  EXPECT_EQ(oldHashIters, core.GetHashIters());
-  EXPECT_TRUE(observer.calls.empty());
-  delete cmd;
-
-  core.UnregisterObserver(&observer);
-  core.ClearCommands();
+    auto assertInitial = [this, prefs, currentSaveHistory, currentHashIters] {
+      EXPECT_EQ(currentSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+      EXPECT_EQ(currentHashIters, core.GetHashIters());
+    };
+    auto assertOnChange = [this, prefs, newSaveHistory, currentHashIters] {
+      EXPECT_EQ(newSaveHistory, prefs->GetPref(PWSprefs::SavePasswordHistory));
+      EXPECT_EQ(currentHashIters + 1, core.GetHashIters());
+    };
+    TestNoGuiNotify(DBPrefsCommand::Create(&core, newPrefs, currentHashIters + 1),
+                    assertInitial, assertOnChange);
+  }
 }
-
