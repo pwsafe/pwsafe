@@ -2183,10 +2183,6 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   UUIDSet setUUID;
   InitialiseUUID(setUUID);
 
-  StringX sx_group, sx_title, sx_user, sx_parent_groups, sx_notes, sx_uuid, sx_url;
-  time_t ctime, atime, mtime, xtime;
-  uuid_array_t ua;
-
   const StringX fwdslash = _T("/");
   const StringX bwdslash = _T("\\");
   const StringX dot = _T(".");
@@ -2194,10 +2190,10 @@ int PWScore::ImportKeePassV1CSVFile(const StringX &filename,
   const StringX CRLF = _T("\r\n");
 
   for (;;) {
-    // Clear out old stuff!
-    sx_group = sx_title = sx_user = sx_parent_groups = sx_notes = sx_uuid = sx_url = _T("");
-    ctime = atime = mtime = xtime = time_t(0);
-    memset(ua, 0, sizeof(ua));
+    // Declared here so that nothing carries over from the previous line
+    StringX sx_group, sx_title, sx_user, sx_parent_groups, sx_notes, sx_uuid, sx_url;
+    time_t ctime(0), atime(0), mtime(0), xtime(0);
+    uuid_array_t ua = {};
 
     // read a single line.
     if (!getline(iss, linebuf, '\n')) break;
