@@ -2104,7 +2104,7 @@ bool CPWTreeCtrlX::ProcessData(BYTE *in_buffer, const long &inLen,
   if (num_chars == 4 && strcmp(chdr, "egrp") == 0) {
     // It is ours - now process the empty groups being dropped
     size_t nemptygroups, utf8Len, buffer_size = 512;
-    unsigned char *utf8 = new unsigned char[buffer_size];
+    unsigned char *utf8 = new unsigned char[buffer_size + 1];
     inDDmemfile.Read((void *)&nemptygroups, sizeof(nemptygroups));
     for (size_t i = 0; i < nemptygroups; i++) {
       StringX sxEmptyGroup;
@@ -2115,12 +2115,12 @@ bool CPWTreeCtrlX::ProcessData(BYTE *in_buffer, const long &inLen,
       ASSERT(num_read == sizeof(utf8Len));
       if (utf8Len > buffer_size) {
         delete[] utf8;
-        utf8 = new unsigned char[utf8Len * 2];
+        utf8 = new unsigned char[utf8Len * 2 + 1];
         buffer_size = utf8Len * 2;
       }
 
-      // Clear buffer
-      memset(utf8, 0, buffer_size);
+      // Clear buffer, including the null terminator for FromUTF8
+      memset(utf8, 0, buffer_size + 1);
       num_read = inDDmemfile.Read(utf8, (UINT)utf8Len);
       ASSERT(num_read == utf8Len);        
         

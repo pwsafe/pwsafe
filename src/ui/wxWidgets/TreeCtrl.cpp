@@ -2433,15 +2433,15 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
           delete[] utf8;
           return false;
         }
-        if(utf8Len > buffer_size) {
+        if(utf8 == nullptr || utf8Len > buffer_size) {
           delete[] utf8;
           buffer_size = utf8Len * 2;
           utf8 = new unsigned char[buffer_size+1];
           wxASSERT(utf8);
         }
 
-        // Clear buffer
-        memset(utf8, 0, buffer_size);
+        // Clear buffer, including the null terminator for FromUTF8
+        memset(utf8, 0, buffer_size+1);
         stream->Read(utf8, utf8Len);
         if(stream->LastRead() != utf8Len) {
           delete[] utf8;

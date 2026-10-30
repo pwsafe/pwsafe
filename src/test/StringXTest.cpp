@@ -321,15 +321,24 @@ TEST(trim, EmptyString) {
 
 TEST(StringXTest, testFromUTF8Length)
 {
-  // FromUTF8 must not read past utf8Len, even without a null terminator
-  const unsigned char valid[] = {'a', 'b', 'c', 'd', 'e'};
-  const unsigned char invalid[] = {'a', 'b', 'c', 0xff, 0xfe};
+  // The caller places the null terminator at utf8[utf8Len]
+  const unsigned char terminated[] = {'a', 'b', 'c', '\0', 'd', 'e'};
   CUTF8Conv conv;
   StringX sx;
+
+  EXPECT_TRUE(conv.FromUTF8(terminated, 3, sx));
+  EXPECT_EQ(sx, L"abc");
+
+#ifdef NDEBUG
+  // Without it (which ASSERTs in debug builds), FromUTF8 must still not
+  // read past utf8Len
+  const unsigned char valid[] = {'a', 'b', 'c', 'd', 'e'};
+  const unsigned char invalid[] = {'a', 'b', 'c', 0xff, 0xfe};
 
   EXPECT_TRUE(conv.FromUTF8(valid, 3, sx));
   EXPECT_EQ(sx, L"abc");
 
   EXPECT_TRUE(conv.FromUTF8(invalid, 3, sx));
   EXPECT_EQ(sx, L"abc");
+#endif
 }

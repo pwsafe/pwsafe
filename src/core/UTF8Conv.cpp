@@ -15,8 +15,6 @@
 #include "os/debug.h"
 #include "os/utf8conv.h"
 
-#include <cstring>
-
 CUTF8Conv::~CUTF8Conv()
 {
   if (m_utf8 != nullptr) {
@@ -83,17 +81,19 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
   // Due to a bug in pre-3.08 versions, data may be in ACP
   // instead of UTF-8. We try to detect and workaround this.
 
+  ASSERT(utf8Len == 0 || utf8 != nullptr);
+
   if (utf8Len == 0 || (utf8Len == 1 && utf8[0] == '\0')) {
     data = _T("");
     return true;
   }
 
-  ASSERT(utf8 != nullptr);
-
-  // pws_os::mbstowcs() is called with srclen = -1, i.e., it reads up to a
-  // null terminator, which may lie beyond utf8Len.
+  // pws_os::mbstowcs() is called with srclen = -1, i.e., it reads up to the
+  // null terminator, which the caller must place at utf8[utf8Len]. If it's
+  // missing, convert a terminated copy rather than read beyond utf8Len.
   VectorX<unsigned char> terminated;
-  if (std::memchr(utf8, '\0', utf8Len) == nullptr) {
+  ASSERT(utf8[utf8Len] == '\0');
+  if (utf8[utf8Len] != '\0') {
     terminated.assign(utf8, utf8 + utf8Len);
     terminated.push_back('\0');
     utf8 = terminated.data();
