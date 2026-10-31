@@ -191,7 +191,6 @@ TEST_F(ImportTextTest, keepass_v1_csv_without_web_site)
   fclose(f);
 
   core.ReInit();
-  int numImported(0), numSkipped(0), numRenamed(0);
   UINT uiReasonCode(0);
   CReport rpt;
   Command *cmd(nullptr);
@@ -225,7 +224,6 @@ TEST_F(ImportTextTest, keepass_v1_csv_short_line)
   fclose(f);
 
   core.ReInit();
-  int numImported(0), numSkipped(0), numRenamed(0);
   UINT uiReasonCode(0);
   CReport rpt;
   Command *cmd(nullptr);
