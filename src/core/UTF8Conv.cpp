@@ -91,12 +91,11 @@ bool CUTF8Conv::FromUTF8(const unsigned char *utf8, size_t utf8Len,
   // pws_os::mbstowcs() is called with srclen = -1, i.e., it reads up to the
   // null terminator, which the caller must place at utf8[utf8Len]. If it's
   // missing, convert a terminated copy rather than read beyond utf8Len.
-  VectorX<unsigned char> terminated;
   ASSERT(utf8[utf8Len] == '\0');
   if (utf8[utf8Len] != '\0') {
-    terminated.assign(utf8, utf8 + utf8Len);
+    VectorX<unsigned char> terminated(utf8, utf8 + utf8Len);
     terminated.push_back('\0');
-    utf8 = terminated.data();
+    return FromUTF8(terminated.data(), utf8Len, data);
   }
 
   // first get needed wide char buffer size

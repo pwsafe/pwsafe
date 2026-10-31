@@ -2433,6 +2433,8 @@ bool TreeCtrl::ProcessDnDData(StringX &sxDropPath, wxMemoryBuffer *inDDmem)
           delete[] utf8;
           return false;
         }
+        // Allocate on the first pass even if utf8Len is 0, as the
+        // memset below always writes the null terminator byte
         if(utf8 == nullptr || utf8Len > buffer_size) {
           delete[] utf8;
           buffer_size = utf8Len * 2;
