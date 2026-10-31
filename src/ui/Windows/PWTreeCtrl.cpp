@@ -2109,9 +2109,8 @@ bool CPWTreeCtrlX::ProcessData(BYTE *in_buffer, const long &inLen,
     for (size_t i = 0; i < nemptygroups; i++) {
       StringX sxEmptyGroup;
       CUTF8Conv conv;
-      UINT num_read;
 
-      num_read = inDDmemfile.Read((void *)&utf8Len, sizeof(utf8Len));
+      UINT num_read = inDDmemfile.Read((void *)&utf8Len, sizeof(utf8Len));
       ASSERT(num_read == sizeof(utf8Len));
       if (utf8Len > buffer_size) {
         delete[] utf8;
