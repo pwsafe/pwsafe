@@ -42,4 +42,21 @@ inline byte_vector byte_vector_from_string(const std::string& str) {
   return byte_vector(str.begin(), str.end());
 }
 
+// In Windows debug builds, MFC's ASSERT reports via _CrtDbgReport(), which
+// gtest redirects to stderr, so the assertion doesn't terminate the process.
+// Use DEATH_GUARD inside EXPECT_DEATH statements to make it abort, e.g.:
+//   EXPECT_DEATH({ DEATH_GUARD; foo(); }, "Assertion");
+// Note that MFC's message doesn't include the asserted expression, so match
+// "Assertion", which is common to MSVC, glibc and macOS messages.
+#if defined(_WIN32) && defined(_DEBUG)
+class AbortOnCrtAssert { // implemented in coretest.cpp
+public:
+  AbortOnCrtAssert();
+  ~AbortOnCrtAssert();
+};
+#define DEATH_GUARD AbortOnCrtAssert death_guard
+#else
+#define DEATH_GUARD
+#endif
+
 #endif

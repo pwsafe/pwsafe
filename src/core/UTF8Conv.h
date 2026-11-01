@@ -28,7 +28,9 @@ public:
   // In following, char * is managed internally. Caller must NOT
   // allocate or deallocate it!
   bool ToUTF8(const StringX &data, const unsigned char *&utf8, size_t &utf8Len);
-  // In following, char * is managed by caller.
+  // In following, char * is managed by caller. It must point to at least
+  // utf8Len + 1 bytes, with utf8[utf8Len] == '\0' (as from std::string's
+  // c_str() and length()). Conversion stops at the first null byte.
   bool FromUTF8(const unsigned char *utf8, size_t utf8Len, StringX &data);
 
 private:

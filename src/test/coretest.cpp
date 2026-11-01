@@ -15,6 +15,34 @@
 #include "core/PWSrand.h"
 
 #include "gtest/gtest.h"
+#include "TestCommon.h"
+
+#if defined(_WIN32) && defined(_DEBUG)
+#include <crtdbg.h>
+#include <cstdio>
+#include <cstdlib>
+
+static int __cdecl AbortOnCrtAssertHook(int reportType, char *message, int *)
+{
+  if (reportType != _CRT_ASSERT)
+    return FALSE;
+  fputs(message, stderr);
+  fflush(stderr);
+  // Not abort(): the debug CRT's abort() may pop up a "Debug Error!" dialog,
+  // e.g., when running under Visual Studio
+  _exit(3);
+}
+
+AbortOnCrtAssert::AbortOnCrtAssert()
+{
+  _CrtSetReportHook2(_CRT_RPTHOOK_INSTALL, AbortOnCrtAssertHook);
+}
+
+AbortOnCrtAssert::~AbortOnCrtAssert()
+{
+  _CrtSetReportHook2(_CRT_RPTHOOK_REMOVE, AbortOnCrtAssertHook);
+}
+#endif
 
 int main(int argc, char **argv)
 {
