@@ -54,6 +54,39 @@ Here are the packages/tools required for building "pwsafe".
     ```
 
 
+## Enabling YubiKey
+1. As root, verify your YubiKey is detected
+    ```
+    ykinfo -a
+    ```
+
+2. As root, install the `u2f-devd` package on your system
+    ```
+    pkg install u2f-devd
+    ```
+
+3. As root, add the desired user to the `u2f` group
+    ```
+    pw group mod u2f -m <username>
+    ```
+
+4. As root, restart the `devd` daemon
+    ```
+    service devd restart
+    ```
+
+5. Restart your (desktop environment) session by logging out and logging back in
+
+6. Unplug and reconnect your YubiKey
+
+7. Verify your YubiKey is detected
+    ```
+    ykinfo -a
+    ```
+
+8. Start Password Safe and verify your YubiKey is detected
+
+
 ## Reporting Bugs
 Please submit bugs via https://github.com/pwsafe/pwsafe. 
 Make sure you include output of `uname -a`.
