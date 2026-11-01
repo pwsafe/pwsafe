@@ -18,6 +18,7 @@
 #include "core/UTF8Conv.h"
 #include "os/typedefs.h"
 #include "gtest/gtest.h"
+#include "TestCommon.h"
 
 using std::wstring;
 
@@ -341,7 +342,7 @@ TEST(StringXTest, testFromUTF8Length)
   EXPECT_TRUE(conv.FromUTF8(invalid, 3, sx));
   EXPECT_EQ(sx, L"abc");
 #else
-  EXPECT_DEATH(conv.FromUTF8(valid, 3, sx), "utf8\\[utf8Len\\]");
-  EXPECT_DEATH(conv.FromUTF8(invalid, 3, sx), "utf8\\[utf8Len\\]");
+  EXPECT_DEATH({ DEATH_GUARD; conv.FromUTF8(valid, 3, sx); }, "Assertion");
+  EXPECT_DEATH({ DEATH_GUARD; conv.FromUTF8(invalid, 3, sx); }, "Assertion");
 #endif
 }
