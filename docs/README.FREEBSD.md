@@ -54,8 +54,8 @@ Here are the packages/tools required for building "pwsafe".
     ```
 
 
-## Enabling YubiKey
-1. As root, verify your YubiKey is detected
+## Enabling YubiKey in Password Safe
+1. As root, verify that your YubiKey is detected at the system level
     ```
     ykinfo -a
     ```
@@ -79,12 +79,12 @@ Here are the packages/tools required for building "pwsafe".
 
 6. Unplug and reconnect your YubiKey
 
-7. Verify your YubiKey is detected
+7. Verify that your YubiKey is detected
     ```
     ykinfo -a
     ```
 
-8. Start Password Safe and verify your YubiKey is detected
+8. Start Password Safe and verify that you can use your YubiKey
 
 
 ## Reporting Bugs
