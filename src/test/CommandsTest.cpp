@@ -1564,7 +1564,6 @@ TEST_F(CommandsTest, EmbedNamedPolicy)
 {
   // GH1953: D&D of an entry with a named policy must carry the policy's
   // details, since the drop target recreates the named policy from them
-  PWScore core;
 
   PWPolicy pol;
   pol.flags      = PWPolicy::UseDigits | PWPolicy::UseLowercase | PWPolicy::UseSymbols;
@@ -1635,8 +1634,6 @@ namespace {
 
 TEST_F(CommandsTest, ProcessDroppedPolicy)
 {
-  PWScore core;
-
   PWPolicy polTarget, polOther;
   polTarget.flags  = PWPolicy::UseDigits | PWPolicy::UseLowercase;
   polTarget.length = 12;
@@ -1748,7 +1745,7 @@ TEST_F(CommandsTest, ProcessDroppedPolicy)
 TEST_F(CommandsTest, ProcessPolicyName)
 {
   // Merge/Sync/Copy: named policies come from another database
-  PWScore core, othercore;
+  PWScore othercore;
 
   PWPolicy polSame, polOurs, polTheirs;
   polSame.flags   = PWPolicy::UseDigits | PWPolicy::UseLowercase;
