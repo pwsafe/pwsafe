@@ -44,9 +44,27 @@ AbortOnCrtAssert::~AbortOnCrtAssert()
 }
 #endif
 
+#ifndef WIN32
+#include <langinfo.h>
+#include <cstring>
+#endif
+
 int main(int argc, char **argv)
 {
   testing::InitGoogleTest(&argc, argv);
+
+#ifndef WIN32
+  // utf8conv.cpp's Startup object called setlocale(LC_ALL,"") before main().
+  // Without a UTF-8 locale some tests will fail because the C library's wide-char to multi-byte string
+  // conversions silently corrupt multi-byte characters.
+  if (strcmp(nl_langinfo(CODESET), "UTF-8") != 0) {
+    std::cerr << "FATAL: locale does not support UTF-8"
+                 " (CODESET=" << nl_langinfo(CODESET) << ").\n"
+                 "       Set LANG=C.UTF-8 (or any UTF-8 locale)"
+                 " before running coretest.\n";
+    return 1;
+  }
+#endif
 #ifdef WIN32
   HRESULT hrCOM = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
   if (FAILED(hrCOM)) {
