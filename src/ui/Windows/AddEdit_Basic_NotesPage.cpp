@@ -164,6 +164,8 @@ BOOL CAddEdit_Basic_NotesPage::OnSetActive()
 {
   BOOL result = CAddEdit_Basic_SubPage::OnSetActive();
   m_ex_notes.PostMessage(EM_SETSEL, 0, 0);
+  m_ex_notes.PostMessage(WM_VSCROLL, SB_TOP, 0);
+  m_ex_notes.PostMessage(WM_HSCROLL, SB_LEFT, 0);
   return result;
 }
 
