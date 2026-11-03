@@ -9,6 +9,7 @@ PasswordSafe 3.73.1 Release ??? ?? 2026
 Bugs fixed in 3.73.1
 --------------------
 * [GH1953](https://github.com/pwsafe/pwsafe/issues/1953) When dragging an entry with a named password policy between instances (drag & drop), the named policy is now added correctly to the receiver.
+* [SF1637](https://sourceforge.net/p/passwordsafe/bugs/1637/) Notes no longer scroll to the bottom when an entry is opened with "Show Notes in Edit" enabled.
 
 PasswordSafe 3.73.0 Release October 8 2026
 =========================================
