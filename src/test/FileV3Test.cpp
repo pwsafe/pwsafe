@@ -14,7 +14,10 @@
 #include "core/PWSfileV3.h"
 #include "os/file.h"
 #include "core/PWScore.h"
+#include "core/PWSdirs.h"
+#include "core/PWSFilters.h"
 #include <cstdio>
+#include <memory>
 #include <vector>
 
 #include "gtest/gtest.h"
@@ -85,8 +88,9 @@ void FileV3Test::SetUp()
 
 void FileV3Test::TearDown()
 {
-  ASSERT_TRUE(pws_os::DeleteAFile(fname));
-  ASSERT_FALSE(pws_os::FileExists(fname));
+  // test file may or may not have been created
+  if (pws_os::FileExists(fname))
+    EXPECT_TRUE(pws_os::DeleteAFile(fname));
 }
 
 // And now the tests...
@@ -249,6 +253,56 @@ TEST_F(FileV3Test, UnknownPersistencyTest)
   EXPECT_EQ(d1, item);
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
+}
+
+namespace {
+  class TestAsker : public Asker {
+  public:
+    explicit TestAsker(bool answer) : m_answer(answer) {}
+    bool operator()(const stringT &) override { m_asked++; return m_answer; }
+    bool operator()(const stringT &, const stringT &) override { m_asked++; return m_answer; }
+    int m_asked = 0;
+  private:
+    bool m_answer;
+  };
+}
+
+TEST_F(FileV3Test, BadFilterKeepOrDiscard)
+{
+#if defined(USE_XML_LIBRARY) && (defined(_WIN32) || USE_XML_LIBRARY != MSXML)
+  // Without the schema the filters are always kept, without asking
+  if (!pws_os::FileExists(PWSdirs::GetXMLDir() + PWSFilters::schema_filename))
+    GTEST_SKIP() << "Filter schema not found";
+#endif
+  // Simulate a stored filter that the current version can't parse
+  const char badXML[] = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><filters version=\"1\"><bogus/>";
+  UnknownFieldList uhfl;
+  uhfl.push_back(UnknownFieldEntry(PWSfileV3::HDR_FILTERS, sizeof(badXML) - 1,
+                                   reinterpret_cast<const unsigned char *>(badXML)));
+
+  PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
+  fw.SetUnknownHeaderFields(uhfl);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+
+  // User says keep: carried over to the next save as an unknown header field.
+  // User says don't keep: dropped.
+  for (bool keep : {true, false}) {
+    SCOPED_TRACE(keep);
+    TestAsker asker(keep);
+    PWSfile::VERSION version = PWSfile::V30;
+    int status;
+    std::unique_ptr<PWSfile> fr(PWSfile::MakePWSfile(fname.c_str(), passphrase, version,
+                                                     PWSfile::Read, status, &asker));
+    ASSERT_NE(nullptr, fr);
+    ASSERT_EQ(PWSfile::SUCCESS, fr->Open(passphrase));
+    EXPECT_EQ(PWSfile::END_OF_FILE, fr->ReadRecord(item));
+    EXPECT_EQ(PWSfile::SUCCESS, fr->Close());
+
+    EXPECT_EQ(1, asker.m_asked);
+    fr->GetUnknownHeaderFields(uhfl);
+    EXPECT_EQ(keep ? 1u : 0u, uhfl.size());
+  }
 }
 
 TEST_F(FileV3Test, AttachmentTest)
