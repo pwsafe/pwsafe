@@ -12,8 +12,8 @@
 #include "../rand.h"
 #include <fstream>
 #include <cassert>
-#include <cstring>
-#include <sys/time.h>
+#include <cstdlib>
+#include <unistd.h> // getentropy()
 
 using namespace std;
 
@@ -38,62 +38,36 @@ bool pws_os::GetRandomData(void *p, unsigned long len)
   return is.read(static_cast<char *>(p), len).good();
 }
 
-static void get_failsafe_rnd(char * &p, unsigned &slen)
-{
-  // This function will be called
-  // iff we couldn't get a minimal amount of entropy
-  // from the kernel's entropy pool.
-  slen = sizeof(suseconds_t);
-  p = new char[slen];
-  struct timeval tv;
-  gettimeofday(&tv, nullptr);
-  memcpy(p, &tv.tv_usec, slen);
-}
-
 void pws_os::GetRandomSeed(void *p, unsigned &slen)
 {
   /**
-   * Return a cryptographically strong seed
-   * from /dev/random, if possible.
+   * Return a cryptographically strong seed from the kernel's CSPRNG.
    *
-   * When called with p == nullptr, return number of bytes currently
-   * in entropy pool.
-   * To minimize TOCTTOU, we also read the data at this time,
-   * and deliver it when called with non-nullptr p.
+   * When called with p == nullptr, return the number of seed bytes
+   * we'll provide. When called with non-nullptr p, fill p with
+   * that many bytes.
    *
-   * This implies a strict calling pattern, but hey, it's
-   * our application...
+   * getentropy() only blocks until the kernel's pool has been
+   * initialized at boot, so unlike reading /dev/random there's no
+   * need to consult /proc/sys/kernel/random/entropy_avail first
+   * (which doesn't exist outside Linux anyway).
+   *
+   * There is deliberately NO fallback to the clock or similar: the seed
+   * is the only thing that makes the salts and keys we generate
+   * unpredictable, so a guessable seed is worse than no seed at all.
    */
-  const unsigned MAX_ENT_BITS = 256;
-  static char *data = nullptr;
+  const unsigned SEED_LEN = 256/8;
   if (p == nullptr) {
-    delete[] data;
-    data = nullptr;
-
-    ifstream ent_avail("/proc/sys/kernel/random/entropy_avail");
-    if (ent_avail) {
-      unsigned ent_bits;
-      if (ent_avail >> ent_bits && ent_bits >= 32) {
-        slen = ent_bits >= MAX_ENT_BITS ? MAX_ENT_BITS/8 : ent_bits/8;
-        data = new char[slen];
-        ifstream rnd;
-        rnd.rdbuf()->pubsetbuf(nullptr, 0);
-        rnd.open("/dev/random");
-        if (rnd.read(data, slen))
-          return;
-        else { // trouble reading
-          delete[] data;
-          data = nullptr;
-          // will get randomness from failsafe.
-        }
-      }
-    }
-    // here if we had any trouble getting data from /dev/random
-    get_failsafe_rnd(data, slen);
-  } else { // called with non-nullptr p, just return our hard-earned entropy
-    assert(data != nullptr); // MUST call with p == nullptr first!
-    memcpy(p, data, slen);
-    delete[] data;
-    data = nullptr;
+    slen = SEED_LEN;
+  } else {
+    assert(slen == SEED_LEN); // MUST call with p == nullptr first!
+    if (getentropy(p, slen) == 0)
+      return;
+    // Linux /dev/urandom can return bytes before the kernel RNG is seeded.
+#if defined(__FreeBSD__) || defined(__OpenBSD__)
+    if (GetRandomData(p, slen))
+      return;
+#endif
+    abort(); // no usable entropy source - refuse to run with a guessable seed
   }
-}    
+}
