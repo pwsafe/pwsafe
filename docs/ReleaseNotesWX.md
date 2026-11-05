@@ -12,6 +12,7 @@ PasswordSafe 1.26.1 Release ??? ?? 2026
 
 Bugs fixed in 1.26.1
 --------------------
+* Security: Random seed generation for Mac and BSD-derived system (e.g., FreeBSD, OpenBSD, NetBSD) is improved. If you're using a database created one one of these operating systems, you should open and then save it with this version (or later), and delete all backups.
 * [GH1953](https://github.com/pwsafe/pwsafe/issues/1953) When dragging an entry with a named password policy between instances (drag & drop), the named policy is now added correctly to the receiver.
 
 PasswordSafe 1.26.0 Release October 8  2026
