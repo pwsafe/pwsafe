@@ -89,8 +89,9 @@ void FileV3Test::SetUp()
 void FileV3Test::TearDown()
 {
   // test file may or may not have been created
-  if (pws_os::FileExists(fname))
+  if (pws_os::FileExists(fname)) {
     EXPECT_TRUE(pws_os::DeleteAFile(fname));
+  }
 }
 
 // And now the tests...
