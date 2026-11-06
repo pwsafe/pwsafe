@@ -312,6 +312,8 @@ public:
   // Set application data
   void SetApplicationNameAndVersion(const stringT &appName, DWORD dwMajorMinor,
                                     DWORD dwBuildRevision = 0);
+  // Support more flexible app name and version string (e.g. third-party code)
+  void SetApplicationNameAndVersion(const stringT &appNameAndVersion) {m_AppNameAndVersion = appNameAndVersion;}
 
   // GetAllGroups - returns an array of all unique group prefix names in m_pwlist
   // e.g., "A", "A.B", "A.B.C"
