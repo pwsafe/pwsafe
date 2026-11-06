@@ -63,11 +63,6 @@ void pws_os::GetRandomSeed(void *p, unsigned &slen)
     assert(slen == SEED_LEN); // MUST call with p == nullptr first!
     if (getentropy(p, slen) == 0)
       return;
-    // Linux /dev/urandom can return bytes before the kernel RNG is seeded.
-#if defined(__FreeBSD__) || defined(__OpenBSD__)
-    if (GetRandomData(p, slen))
-      return;
-#endif
     abort(); // no usable entropy source - refuse to run with a guessable seed
   }
 }
