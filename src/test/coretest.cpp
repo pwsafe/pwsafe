@@ -47,6 +47,11 @@ AbortOnCrtAssert::~AbortOnCrtAssert()
 #ifndef WIN32
 #include <langinfo.h>
 #include <cstring>
+#include "core/PWSFilters.h"
+#include "os/dir.h"
+#include "os/env.h"
+#include "os/file.h"
+#include "os/utf8conv.h"
 #endif
 
 int main(int argc, char **argv)
@@ -63,6 +68,20 @@ int main(int argc, char **argv)
                  "       Set LANG=C.UTF-8 (or any UTF-8 locale)"
                  " before running coretest.\n";
     return 1;
+  }
+
+  // PWSdirs::GetXMLDir() looks in PWS_XMLDIR, defaulting to the installed location.
+  // Use the filter schema copied next to the executable unless told otherwise.
+  const stringT xmlDir = pws_os::getenv("PWS_XMLDIR", true);
+  const stringT execDir = pws_os::getexecdir();
+  if (!xmlDir.empty()) {
+    std::cerr << "WARNING: PWS_XMLDIR already set to " << pws_os::tomb(xmlDir)
+              << ", using it for XML schema files.\n";
+  } else if (!pws_os::FileExists(execDir + PWSFilters::schema_filename)) {
+    std::cerr << "WARNING: " << pws_os::tomb(PWSFilters::schema_filename) << " not found in "
+              << pws_os::tomb(execDir) << ", PWS_XMLDIR not set.\n";
+  } else {
+    pws_os::setenv("PWS_XMLDIR", pws_os::tomb(execDir).c_str());
   }
 #endif
 #ifdef WIN32
