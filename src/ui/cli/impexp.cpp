@@ -15,6 +15,7 @@
 
 #include "core/core.h"
 #include "core/PWSdirs.h"
+#include "core/XML/XMLDefs.h"
 
 #include <string>
 
