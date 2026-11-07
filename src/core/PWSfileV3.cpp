@@ -824,16 +824,18 @@ int PWSfileV3::ReadHeader()
                                                       XSDFilename.c_str(),
                                                       strErrors, m_pAsker);
           if (rc != PWScore::SUCCESS) {
-            // Can't parse it - treat as an unknown field,
-            // Notify user that filter won't be available
-            stringT message;
-            LoadAString(message, IDSC_CANTPROCESSDBFILTERS);
-            if (m_pReporter != nullptr)
-              (*m_pReporter)(message);
+            // Can't parse it - maybe written by a later version of PWS,
+            // maybe just bad. Let the user decide whether to keep it as an
+            // unknown field (written back as-is) or drop it on next save.
+            // Without an asker, keep it so that nothing is lost.
             pws_os::Trace(L"Error while parsing header filters.\n\tData: %ls\n\tErrors: %ls\n",
                           text.c_str(), strErrors.c_str());
-            UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
-            m_UHFL.push_back(unkhfe);
+            stringT question;
+            LoadAString(question, IDSC_CANTPROCESSDBFILTERS);
+            if (m_pAsker == nullptr || (*m_pAsker)(question)) {
+              UnknownFieldEntry unkhfe(fieldType, utf8Len, utf8);
+              m_UHFL.push_back(unkhfe);
+            }
           }
         }
         break;

@@ -24,6 +24,10 @@ file (COPY "${PROJECT_SOURCE_DIR}/xml/pwsafe.xsd" DESTINATION "${PROJECT_BINARY_
 file (COPY "${PROJECT_SOURCE_DIR}/xml/pwsafe_filter.xsd" DESTINATION "${PROJECT_BINARY_DIR}")
 
 add_executable(coretest ${TEST_SRCS})
+# PWSdirs::GetXMLDir() looks for the filter schema next to the executable
+add_custom_command(TARGET coretest POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_if_different
+          "${PROJECT_SOURCE_DIR}/xml/pwsafe_filter.xsd" "$<TARGET_FILE_DIR:coretest>")
 if (MSVC)
 set_target_properties(coretest PROPERTIES EXCLUDE_FROM_DEFAULT_BUILD_RELEASE 1)
 target_link_libraries(coretest gtest core os Rpcrt4 bcrypt harden_interface)
