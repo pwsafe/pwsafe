@@ -24,7 +24,7 @@ bool pws_os::GetRandomData(void *p, unsigned long len)
 {
     CCRNGStatus err = CCRandomGenerateBytes(p, len);
     if (err != kCCSuccess)
-        std::abort();  // PWSrand::GetRandomData does not handle failure
+      std::abort();  // PWSrand::GetRandomData does not handle failure
     return true;
 }
 
@@ -46,6 +46,6 @@ void pws_os::GetRandomSeed(void *p, unsigned &slen)
   } else {
     assert(slen == SEED_LEN); // MUST call with p == NULL first!
     if (!GetRandomData(p, slen))
-        std::abort(); // no usable entropy source - refuse to run with a guessable seed
+      std::abort(); // no usable entropy source - refuse to run with a guessable seed
   }
 }

@@ -61,8 +61,7 @@ void pws_os::GetRandomSeed(void *p, unsigned &slen)
     slen = SEED_LEN;
   } else {
     assert(slen == SEED_LEN); // MUST call with p == nullptr first!
-    if (getentropy(p, slen) == 0)
-      return;
-    abort(); // no usable entropy source - refuse to run with a guessable seed
+    if (getentropy(p, slen) != 0)
+      abort(); // no usable entropy source - refuse to run with a guessable seed
   }
 }
