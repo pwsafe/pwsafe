@@ -30,13 +30,13 @@ pwsafe-cli \- Command-line interface for Password Safe
 .B pwsafe-cli safe --synchronize=<other-safe>
 .RI [ --subset=<Field><OP><string>[/iI] ]
 .RI [ --fields=f1,f2,... ]
-.RI [ --yes ]
+.RI [ --dry-run ]
 .br
 .B pwsafe-cli safe --merge=<other-safe>
 .RI [ --subset=<Field><OP><Value>[/iI] ]
-.RI [ --yes ]
+.RI [ --dry-run ]
 .br
-.B pwsafe-cli --help[=add|create|delete|search|sync|synchronize|update]
+.B pwsafe-cli --help[=add|create|delete|diff|merge|search|sync|synchronize|update]
 .SH DESCRIPTION
 .B pwsafe-cli
 is the command-line interface for Password Safe (pwsafe). It can create and modify
@@ -96,6 +96,8 @@ A trailing
 requests case-insensitive comparison; a trailing
 .B /I
 requests case-sensitive comparison.
+For diff, merge and synchronize, subset matching is currently case-insensitive:
+these operations do not apply the parsed case modifier.
 .IP "--fields=f1,f2,..."
 Select the fields to be considered or displayed by the operation, as applicable.
 .IP "--delete"
@@ -105,52 +107,85 @@ Update the selected entries with the specified field/value pairs.
 .IP "--print[=field1,field2,...]"
 Print matching entries. If fields are supplied, print the specified fields only.
 .IP "--yes"
-Confirm an operation without prompting.
+Confirm search-based modifications without prompting. Merge and synchronize
+already save without a confirmation prompt; this option has no effect on them.
 .IP "--generate-totp"
 Generate the TOTP value for the selected entry.
 .IP "--diff=<other-safe>"
-Compare the current safe with
+Compare the current safe (left) with
 .I other-safe
-\&. The output format may be selected with
+(right) without saving either safe. Entries match by group, title and username,
+not UUID. Reports unique entries and differences in matching entries.
+The output format may be selected with
 .B --unified
 ,
 .B --context
 , or
 .B --sidebyside
-\&.
+\&. Select comparison fields with
+.B --fields
+(default: all supported fields); Record Modified Time is excluded.
+Output can contain plaintext passwords, password history and other secrets.
+Successful comparison returns 0 even when differences are found, unlike the
+system diff command.
 .IP "--unified"
-Display differences in unified format.
+Display differences in unified format (the default). Minus identifies the first
+safe and plus identifies the other safe.
 .IP "--context"
 Display differences in context format.
 .IP "--sidebyside"
 Display differences side by side.
 .IP "--colwidth=column-size"
-Set the column width used by side-by-side diff output.
+Set the width of each side-by-side diff column (default: 60).
 .IP "--synchronize=<other-safe>"
-Synchronize the current safe with
+Copy selected fields one-way from
 .I other-safe
-\&. The operation may be restricted with
+(source) into matching entries in the first safe (destination).
+Entries match by group, title and username, not UUID.
+Source-only entries are not added; destination-only entries are not removed.
+The source is unchanged. Source values overwrite destination values even if
+older or empty; no newest-version selection or conflict copies are provided.
+Protected destination entries and source aliases/shortcuts are skipped.
+Restrict source entries with
 .B --subset
-and
+and copied fields with
 .B --fields
-and confirmed with
-.B --yes
+(default: all eligible fields). UUID and attachment-reference identity fields
+are excluded. Back up the destination first: changes are saved without asking.
+.B --help=sync
+and
+.B --help=synchronize
+show the same help; the operation flag is
+.B --synchronize
 \&.
 .IP "--merge=<other-safe>"
 Merge entries from
 .I other-safe
-into the current safe. The operation may be restricted with
+into the first safe, leaving the source unchanged.
+Entries match by group, title and username, not UUID.
+Source-only entries are added and destination-only entries are kept.
+If a matching entry differs in merge's predefined comparison fields, the source
+entry is added with a title suffixed with -merged-<timestamp>; the destination
+entry is not overwritten. Matching entries without such differences are skipped.
+Not every stored field is compared; creation/modification timestamps alone do
+not create conflict copies. Aliases and shortcuts are handled with base entries.
+Merge neither chooses the newest version nor propagates deletions.
+Restrict source entries with
 .B --subset
-and confirmed with
-.B --yes
-\&.
+\&;
+.B --fields
+does not affect merge. Back up the destination first: changes are saved without
+asking.
+.IP "--dry-run"
+For merge and synchronize, perform the operation in memory but do not save the
+destination. This does not print a preview or change/conflict report.
 .IP "--passphrase=<passphrase>"
 Supply the master passphrase without prompting.
 For security reasons, this should be avoided if possible.
 .IP "--passphrase2=<2nd passphrase>"
 Supply the second master passphrase without prompting.
 For security reasons, this should be avoided if possible.
-.IP "--help[=add|create|delete|search|sync|synchronize|update]"
+.IP "--help[=add|create|delete|diff|merge|search|sync|synchronize|update]"
 Display general help or help for the specified operation.
 .SH SUBSET EXPRESSIONS
 Subset expressions have the form
