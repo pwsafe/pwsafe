@@ -15,6 +15,7 @@
 #include "core/PWScore.h"
 #include "core/PWSdirs.h"
 #include "core/PWSFilters.h"
+#include "core/XML/XMLDefs.h"
 
 #include "os/file.h"
 
