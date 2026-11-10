@@ -19,10 +19,8 @@ using namespace std;
 
 bool pws_os::InitRandomDataFunction()
 {
-  // For starters, we won't rely on /dev/urandom, only on /dev/random for
-  // the seed. Returning false indicates this decision.
-  // Perhaps we can check for a hardware rng in future versions, and change
-  // the returned value accordingly?
+  // Return false so PWSrand relies on its internal PRNG.
+  // GetRandomSeed() supplies its seed using getentropy().
   return false;
 }
 
