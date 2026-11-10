@@ -28,9 +28,9 @@ bool pws_os::InitRandomDataFunction()
 
 bool pws_os::GetRandomData(void *p, unsigned long len)
 {
-  // Return data from /dev/urandom
-  // Will not be used by PasswordSafe when InitRandomDataFunction()
-  // returns false!
+  // Return data from /dev/urandom.
+  // PWSrand skips this when InitRandomDataFunction() returns false, but
+  // the YubiKey configuration dialog still calls it directly.
 
   ifstream is("/dev/urandom");
   if (!is)
