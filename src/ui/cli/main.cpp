@@ -112,9 +112,15 @@ Usage: %PROGNAME% safe --imp[=file] --text|--xml
                       [--fields=f1,f2,..] [--unified | --context | --sidebyside]
                       [--colwidth=column-size]
 
-       %PROGNAME% safe --synchronize=<other-safe> [ --subset=<Field><OP><string>[/iI] ] [ --fields=f1,f2,.. ] [--yes]
+       %PROGNAME% safe --synchronize=<other-safe> [ --subset=<Field><OP><string>[/iI] ] [ --fields=f1,f2,.. ] [--dry-run]
 
-       %PROGNAME% safe --merge=<other-safe> [ --subset=<Field><OP><Value>[/iI] ] [--yes]
+       %PROGNAME% safe --merge=<other-safe> [ --subset=<Field><OP><Value>[/iI] ] [--dry-run]
+
+       diff compares without saving either safe. merge and synchronize copy from other-safe into safe,
+       leaving other-safe unchanged. Entries match by group, title and username, not UUID.
+       merge adds missing entries and renamed conflict copies; synchronize overwrites matching entries.
+       Neither chooses the newest version. Back up the destination before modifying it.
+       Use --help=diff, --help=merge or --help=synchronize for behavior and options.
 
                         where OP is one of ==, !==, ^= !^=, $=, !$=, ~=, !~=
                          = => exactly similar
@@ -203,12 +209,104 @@ static std::wstring help_delete_string = LR"helpstring(
           This deletes the found entry without asking for confirmation.
 )helpstring";
 
+static std::wstring help_diff_string = LR"helpstring(
+ Compare databases without saving changes to either safe:
+
+   %PROGNAME% left.psafe3 --diff=right.psafe3 [--fields=field1,field2,...]
+              [--subset=expression] [--unified | --context | --sidebyside]
+              [--colwidth=number]
+
+ Entries match by group, title and username, not UUID. Reports entries unique to
+ either safe and differences in matching entries. A renamed or moved entry may
+ therefore appear as two unrelated entries.
+
+ Options:
+   --fields=...     Select comparison fields (default: all supported fields).
+                    Record Modified Time is excluded from comparison.
+   --unified        Unified diff (default); '-' is left, '+' is right.
+   --context        Context diff format.
+   --sidebyside     Left and right safes in adjacent columns.
+   --colwidth=N     Width of each side-by-side column (default: 60).
+
+ WARNING: Output can include plaintext passwords, password history and other
+ secrets. Treat output and redirected files as sensitive.
+ Exit status is 0 on successful comparison, even when differences are found;
+ it does not follow the exit-status convention of the system diff command.
+
+ Example:
+   %PROGNAME% left.psafe3 --diff=right.psafe3 --fields=Password,Notes --sidebyside --colwidth=80
+)helpstring";
+
+static std::wstring help_merge_string = LR"helpstring(
+ Merge entries one-way from source into destination:
+
+   %PROGNAME% destination.psafe3 --merge=source.psafe3 [--subset=expression] [--dry-run]
+
+ Entries match by group, title and username, not UUID.
+   - Source-only entries are added; destination-only entries are kept.
+   - If a matching entry differs in merge's predefined comparison fields,
+     the source entry is added with a title suffixed with -merged-<timestamp>.
+     The existing destination entry is not overwritten.
+   - Matching entries without such differences are skipped. Not every stored
+     field is compared; differences only in timestamps such as creation or
+     modification time do not create conflict copies.
+
+ Merge does not choose the newest version, propagate deletions or change the
+ source safe. --fields does not restrict merge's comparison or copied fields.
+ Aliases and shortcuts are handled with their source base entries.
+
+   --dry-run        Perform the operation in memory without saving destination.
+                    This does not print a preview or conflict report.
+
+ Back up destination first. Changes are saved without a confirmation prompt;
+ --yes has no effect on merge.
+
+ Example (work on a copy of the destination):
+   %PROGNAME% combined.psafe3 --merge=conflict.psafe3 '--subset=Group==Work'
+)helpstring";
+
 static std::wstring help_synchronize_string = LR"helpstring(
- Example: Synchronizing databases
+ Update existing entries one-way from source into destination:
 
-            %PROGNAME% pwsafeA.psafe3 --synchronize=pwsafeB.psafe3
+   %PROGNAME% destination.psafe3 --synchronize=source.psafe3
+              [--fields=field1,field2,...] [--subset=expression] [--dry-run]
 
-          This synchronizes database pwsafeA.psafe3 with database pwsafeB.psafe3.
+ Entries match by group, title and username, not UUID. Only matching entries
+ are updated: source-only entries are not added and destination-only entries
+ are not removed. The source safe is unchanged. This is not two-way sync.
+
+ Source values overwrite selected destination fields even if older or empty;
+ synchronize does not choose the newest version or keep conflict copies.
+ Protected destination entries and source aliases/shortcuts are skipped.
+
+   --fields=...     Fields to copy (default: all eligible fields). Identity and
+                    attachment-reference fields such as UUID are not copied.
+   --dry-run        Perform the operation in memory without saving destination.
+                    This does not print a preview or change report.
+
+ Back up destination first. Changes are saved without a confirmation prompt;
+ --yes has no effect on synchronize.
+
+ Example (copy only passwords and notes for matching entries):
+   %PROGNAME% destination.psafe3 --synchronize=source.psafe3 --fields=Password,Notes
+)helpstring";
+
+static std::wstring help_database_options_string = LR"helpstring(
+ Common database-operation options:
+   --subset=expression
+     Limit entries using Field<OP>Value, e.g. '--subset=Group==Work'.
+     Operators: == (equals), !== (not equal), ^= (begins with), !^= (does not
+     begin with), $= (ends with), !$= (does not end with), ~= (contains),
+     !~= (does not contain). Quote expressions to protect shell characters.
+     Matching is case-insensitive for these operations; the parsed /i and /I
+     suffixes currently do not change their matching behavior.
+     For merge/synchronize this filters source entries; diff filters each side.
+   --passphrase=...   Master passphrase for the first safe.
+   --passphrase2=...  Master passphrase for the other/source safe.
+     Omit these to enter passphrases at the prompts; command-line values can
+     be exposed in shell history and process listings.
+   Field lists use comma-separated names; quote names containing spaces.
+   See general usage for the list of valid field names.
 )helpstring";
 
 const map<wstring, wstring> pws_help_examples = {
@@ -217,6 +315,8 @@ const map<wstring, wstring> pws_help_examples = {
   { L"update",      help_update_string      },
   { L"search",      help_search_string      },
   { L"delete",      help_delete_string      },
+  { L"diff",        help_diff_string        },
+  { L"merge",       help_merge_string       },
   { L"sync",        help_synchronize_string },
   { L"synchronize", help_synchronize_string },
 };
@@ -287,6 +387,10 @@ static bool help(const char *pname, const wstring &help_arg)
   auto itr = pws_help_examples.find(help_arg);
   if (itr != pws_help_examples.end()) {
     wcout << replace_progname_placeholder(itr->second, Utf82wstring(pname)) << endl;
+    if (help_arg == L"diff" || help_arg == L"merge" ||
+        help_arg == L"sync" || help_arg == L"synchronize") {
+      wcout << help_database_options_string << endl;
+    }
   }
   else {
     wcerr << L"Unsupported help argument: " << help_arg << endl << endl;
