@@ -591,7 +591,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
     m_pFileSig = nullptr;
   }
 
-  // If writing in a prior version format (ie. exporting) - save the header
+  // Save the header for rollback on failure or export to an older format.
   const PWSfileHeader saved_hdr = m_hdr;
 
   m_hdr.m_prefString = PWSprefs::GetInstance()->Store();
@@ -612,8 +612,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
     if (status != PWSfile::SUCCESS) {
       delete out;
 
-      if (version < m_ReadFileVersion) // Exporting - restore saved header
-        m_hdr = saved_hdr;
+      m_hdr = saved_hdr;
 
       return status;
     }
@@ -639,8 +638,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
     out->Close();
     delete out;
 
-    if (version < m_ReadFileVersion) // Exporting - restore saved header
-      m_hdr = saved_hdr;
+    m_hdr = saved_hdr;
 
     return FAILURE;
   }
@@ -651,8 +649,7 @@ int PWScore::WriteFile(const StringX &filename, PWSfile::VERSION version,
   if (status != PWSfile::SUCCESS) {
     PWS_LOGIT_ARGS("out->Close() failed, status: %d", status);
 
-    if (version < m_ReadFileVersion) // Exporting - restore saved header
-      m_hdr = saved_hdr;
+    m_hdr = saved_hdr;
 
     return FAILURE;
   }
