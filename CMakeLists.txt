@@ -53,6 +53,7 @@ include(create-harden-interface)
 option (NO_YUBI "Set ON to disable YubiKey support" OFF)
 option (NO_GTEST "Set ON to disable gtest unit testing" OFF)
 option (GTEST_BUILD "Set OFF to disable gtest download and build on-fly" ON)
+option (NO_VERCHECK "Set ON to disable online version check" OFF)
 
 if (WIN32)
   option (WX_WINDOWS "Build wxWidget under Windows" OFF)
@@ -103,11 +104,13 @@ if (NOT WIN32 OR WX_WINDOWS)
                )
      endif (NOT PWSHINT_wxconfig)
   endif (NOT WIN32)
-  find_package(wxWidgets COMPONENTS adv aui base core html net REQUIRED)
+  find_package(wxWidgets COMPONENTS adv aui base core html REQUIRED)
   include(${wxWidgets_USE_FILE})
 
-  find_package(OpenSSL REQUIRED)
-  include_directories(${OPENSSL_INCLUDE_DIR})
+  if (NOT NO_VERCHECK)
+    find_package(OpenSSL REQUIRED)
+    include_directories(${OPENSSL_INCLUDE_DIR})
+  endif()
 
   if (NOT APPLE)
     find_package(Magic REQUIRED)
@@ -197,6 +200,11 @@ add_compile_definitions(
   $<$<CONFIG:DEBUG>:_DEBUG>
   $<$<NOT:$<CONFIG:DEBUG>>:NDEBUG>
 )
+
+if (NO_VERCHECK)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNO_VERCHECK")
+  message(STATUS "Online version check disabled")
+endif (NO_VERCHECK)
 
 # Assume that we're either MSVC or a Unix-like
 if (MSVC)
@@ -339,9 +347,13 @@ endif (XML_XERCESC)
 
 target_link_libraries(pwsafe pws_version)
 
+if (NOT NO_VERCHECK)
+ set (CURL_LIBS "curl ${OPENSSL_SSL_LIBRARY}")
+endif ()
+
 if (APPLE)
   FIND_LIBRARY(QUARTZCORE_LIBS QuartzCore)
-  target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} ${CMAKE_REQUIRED_LIBRARIES} ${QUARTZCORE_LIBS} curl ${OPENSSL_SSL_LIBRARY})
+  target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} ${CMAKE_REQUIRED_LIBRARIES} ${QUARTZCORE_LIBS} ${CURL_LIBS})
 elseif (WIN32)
   if (NOT NO_YUBI)
     set (YUBILIB "YkLib22")
@@ -353,8 +365,7 @@ else ()
   if (NOT NO_QR)
     target_link_libraries(pwsafe qrencode  ${CMAKE_REQUIRED_LIBRARIES})
   endif (NOT NO_QR)
-  target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11 curl ${OPENSSL_SSL_LIBRARY} ${MAGIC_LIBRARIES}
-  ${CMAKE_REQUIRED_LIBRARIES})
+  target_link_libraries(pwsafe ${wxWidgets_LIBRARIES} uuid Xtst X11 ${CURL_LIBS} ${MAGIC_LIBRARIES} ${CMAKE_REQUIRED_LIBRARIES})
 endif()
 
 # Installation stuff (for 'make install', but mainly for 'make package')

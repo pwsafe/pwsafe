@@ -20,7 +20,6 @@
 ////@begin includes
 #include <wx/hyperlink.h>
 #include <wx/event.h>
-#include <wx/thread.h>
 ////@end includes
 
 #include "os/typedefs.h"
@@ -30,7 +29,10 @@
 #endif // !__WINDOWS__
 
 #ifdef HAS_CURL
+#ifndef NO_VERCHECK
+#include <wx/thread.h>
 #include <curl/curl.h>
+#endif // NO_VERCHECK
 #endif // HAS_CURL
 
 /*!
@@ -61,19 +63,29 @@
  * AboutDlg class declaration
  */
 
-class AboutDlg : public wxDialog, public wxThreadHelper
+class AboutDlg : public wxDialog
+#ifndef NO_VERCHECK
+, public wxThreadHelper
+#endif // NO_VERCHECK
 {
   DECLARE_CLASS( AboutDlg )
   DECLARE_EVENT_TABLE()
 
+#if defined(_DEBUG) || defined(DEBUG)
+  wxString GetLibWxVersion();
+#ifndef NO_VERCHECK
+  wxString GetLibCurlVersion();
+#endif // NO_VERCHECK
+#endif // debug
+
+#ifndef NO_VERCHECK
   void CompareVersionData();
   bool CheckDatabaseStatus();
   bool SetupConnection();
   void Cleanup();
-  wxString GetLibCurlVersion();
-  wxString GetLibWxVersion();
   static wxCriticalSection& CriticalSection();
   static size_t WriteCallback(const char *receivedData, size_t size, size_t bytes, void *userData);
+#endif // NO_VERCHECK
 
 public:
   /// Creation
@@ -84,20 +96,21 @@ public:
 
   int ShowAndCheckForUpdate();
 protected:
+#ifndef NO_VERCHECK
   virtual wxThread::ExitCode Entry();
+#endif // NO_VERCHECK
 
   /// Constructors
   AboutDlg(wxWindow *parent, wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style );
 
   /// Creates the controls and sizers
   void CreateControls();
-
+#ifndef NO_VERCHECK
   void CheckNewVersion();
-
+#endif // NO_VERCHECK
 ////@begin AboutDlg event handler declarations
-
   /// event handler for ID_CHECKNEW
-  void OnCheckNewClicked(wxHyperlinkEvent& WXUNUSED(event)) { CheckNewVersion(); }
+  void OnCheckNewClicked(wxHyperlinkEvent& event);
 
   /// event handler for ID_SITEHYPERLINK
   void OnVisitSiteClicked(wxHyperlinkEvent& event);
@@ -108,8 +121,11 @@ protected:
   /// wxEVT_CLOSE_WINDOW event handler
   void OnCloseWindow( wxCloseEvent& event );
 
+#ifndef NO_VERCHECK
   /// wxEVT_THREAD event handler for wxID_ANY
   void OnDownloadCompleted(wxThreadEvent& event);
+#endif // NO_VERCHECK
+
 ////@end AboutDlg event handler declarations
 
 ////@begin AboutDlg member function declarations
@@ -125,6 +141,7 @@ protected:
   static bool ShowToolTips();
 
 private:
+#ifndef NO_VERCHECK
 ////@begin AboutDlg member variables
   wxTextCtrl* m_VersionStatus = nullptr;
 ////@end AboutDlg member variables
@@ -138,9 +155,10 @@ private:
 
   /// Set to downloaded data by worker thread, resp. WriteCallback, and read by main thread for final version check
   static wxString s_VersionData;
+  static const cstringT s_URL_VERSION;
+#endif // NO_VERCHECK
 
   static const wstringT s_URL_HOME;
-  static const cstringT s_URL_VERSION;
 };
 
 #endif /* _ABOUTDLG_H_ */
