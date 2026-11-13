@@ -3625,6 +3625,10 @@ msgstr "Nájdi ďalšie"
 msgid "Case Insensitive Search"
 msgstr "Vyhľadávanie bez rozlišovania malých a veľkých písmen"
 
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:457
+msgid "Case Sensitive Search"
+msgstr "Vyhľadávanie rozlišuje malé a veľké písmená"
+
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:132
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:394
 msgid "Advanced Find Options"
@@ -4723,6 +4727,10 @@ msgstr "Skopíruj používateľské meno do schránky"
 #: ../../../ui/wxWidgets/SystemTray.cpp:211
 msgid "Copy &Notes to clipboard"
 msgstr "Skopíruj poznámky do schránky"
+
+#: ../../../ui/wxWidgets/SystemTray.cpp:262
+msgid "Copy Aut&h Code to clipboard"
+msgstr "Skopíruj overovací kód do schránky"
 
 #: ../../../ui/wxWidgets/SystemTray.cpp:213
 msgid "Perform Auto&Type"

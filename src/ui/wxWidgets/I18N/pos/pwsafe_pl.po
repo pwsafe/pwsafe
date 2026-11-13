@@ -4053,9 +4053,12 @@ msgid "Find Next"
 msgstr "Znajdź następny"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:131
-#, fuzzy
 msgid "Case Insensitive Search"
 msgstr "Nie uwzględniaj wielkości liter"
+
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:457
+msgid "Case Sensitive Search"
+msgstr "Uwzględniaj wielkość liter"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:132
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:394

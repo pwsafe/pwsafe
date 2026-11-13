@@ -4101,9 +4101,12 @@ msgid "Find Next"
 msgstr "Hitta nästa"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:131
-#, fuzzy
 msgid "Case Insensitive Search"
 msgstr "Icke lägeskänslig sökning"
+
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:457
+msgid "Case Sensitive Search"
+msgstr "Lägeskänslig sökning"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:132
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:394

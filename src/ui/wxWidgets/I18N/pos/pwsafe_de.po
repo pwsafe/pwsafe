@@ -3774,6 +3774,10 @@ msgstr "Nächste suchen"
 msgid "Case Insensitive Search"
 msgstr "Suchen ohne Groß-/Kleinschreibung"
 
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:457
+msgid "Case Sensitive Search"
+msgstr "Suchen mit Groß-/Kleinschreibung"
+
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:132
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:394
 msgid "Advanced Find Options"

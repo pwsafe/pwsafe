@@ -110,6 +110,7 @@ private:
 
   // wxEVT_COMMAND_TEXT_ENTER event handler for ENTER key press in search text box
   void OnDoSearch( wxCommandEvent& event );
+  void OnIgnoreCaseToggle(wxCommandEvent& event);
   void OnAdvancedSearchOptions(wxCommandEvent& event);
   void OnChar(wxKeyEvent& event);
   void OnSearchClear(wxCommandEvent& event);

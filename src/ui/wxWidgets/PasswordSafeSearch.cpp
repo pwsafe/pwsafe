@@ -60,7 +60,7 @@
 enum { FIND_MENU_POSITION = 4 } ;
 
 ////////////////////////////////////////////////////////////////////////////
-// PasswordSafeSerach implementation
+// PasswordSafeSearch implementation
 
 enum {
   ID_FIND_CLOSE = 10061,
@@ -145,6 +145,7 @@ PasswordSafeSearch::PasswordSafeSearch(wxWindow *parent, wxWindowID id, const wx
 
 PasswordSafeSearch::~PasswordSafeSearch()
 {
+  Unbind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnIgnoreCaseToggle,      this, ID_FIND_IGNORE_CASE);
   Unbind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnAdvancedSearchOptions, this, ID_FIND_ADVANCED_OPTIONS);
   Unbind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnSearchClose,           this, ID_FIND_CLOSE);
   Unbind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnDoSearch,              this, ID_FIND_NEXT);
@@ -430,6 +431,29 @@ struct FindDlgType {
   }
 };
 
+/**
+ * wxEVT_COMMAND_TOOL_CLICKED event handler for ID_FIND_IGNORE_CASE
+ *
+ * Preserves the correct icon and tooltip when this tool is enabled or disabled.
+ *
+ */
+void PasswordSafeSearch::OnIgnoreCaseToggle(wxCommandEvent& event)
+{
+  auto tool = FindTool(ID_FIND_IGNORE_CASE);
+  wxCHECK_RET(tool, wxT("Could not get Case Sensitive toggle from search bar"));
+  const bool caseSensitive = event.IsChecked();
+  tool->SetShortHelp(caseSensitive ? _("Case Sensitive Search") : _("Case Insensitive Search"));
+  for (const auto & toolInfo : SearchBarToolInfos) {
+    if (toolInfo.id == ID_FIND_IGNORE_CASE) {
+      if (!caseSensitive)
+        tool->SetBitmap(toolInfo.GetBitmapForEnabledButton());
+      else
+        tool->SetBitmap(toolInfo.GetBitmapForDisabledButton());
+    }
+  }
+  SetModified(true);
+}
+
 IMPLEMENT_CLASS_TEMPLATE( AdvancedSelectionDlg, wxDialog, FindDlgType )
 
 /*!
@@ -531,8 +555,16 @@ void PasswordSafeSearch::UpdateBitmaps()
     {
       auto tool = FindTool(toolInfo.id);
       if (tool) {
-        tool->SetBitmap(toolInfo.GetBitmapForEnabledButton());
-        tool->SetDisabledBitmap(toolInfo.GetBitmapForDisabledButton());
+        if (toolInfo.id == ID_FIND_IGNORE_CASE) {
+          if (!GetToolToggled(ID_FIND_IGNORE_CASE))
+            tool->SetBitmap(toolInfo.GetBitmapForEnabledButton());
+          else
+            tool->SetBitmap(toolInfo.GetBitmapForDisabledButton());
+        }
+        else {
+          tool->SetBitmap(toolInfo.GetBitmapForEnabledButton());
+          tool->SetDisabledBitmap(toolInfo.GetBitmapForDisabledButton());
+        }
       }
     }
 
@@ -567,6 +599,7 @@ bool PasswordSafeSearch::CreateSearchBar()
   ClearTools();
 
   auto searchCtrl = new wxSearchCtrl(this, ID_FIND_EDITBOX, wxEmptyString, wxDefaultPosition, CalculateSearchWidth(), wxTE_PROCESS_ENTER);
+  searchCtrl->SetMinSize(wxSize(150, -1)); // Helps maintain the correct size of this and neighboring controls when switching languages
   searchCtrl->ShowCancelButton(true);
   searchCtrl->ShowSearchButton(true);
 
@@ -586,7 +619,7 @@ bool PasswordSafeSearch::CreateSearchBar()
         toolInfo.id,
         toolInfo.GetBitmapForEnabledButton(),
         toolInfo.GetBitmapForDisabledButton(),
-        (toolInfo.id == ID_FIND_IGNORE_CASE) || (toolInfo.id == ID_FIND_ADVANCED_OPTIONS) /* toogle element? */,
+        (toolInfo.id == ID_FIND_IGNORE_CASE) || (toolInfo.id == ID_FIND_ADVANCED_OPTIONS) /* toggle element? */,
         nullptr,
         wxGetTranslation(toolInfo.tooltip)
       );
@@ -596,6 +629,7 @@ bool PasswordSafeSearch::CreateSearchBar()
   searchCtrl->Bind(wxEVT_COMMAND_TEXT_UPDATED,          &PasswordSafeSearch::OnSearchTextChanged,     this);
   searchCtrl->Bind(wxEVT_COMMAND_SEARCHCTRL_SEARCH_BTN, &PasswordSafeSearch::OnDoSearch,              this);
   searchCtrl->Bind(wxEVT_COMMAND_TEXT_ENTER,            &PasswordSafeSearch::OnDoSearch,              this);
+  Bind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnIgnoreCaseToggle,      this, ID_FIND_IGNORE_CASE);
   Bind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnAdvancedSearchOptions, this, ID_FIND_ADVANCED_OPTIONS);
   Bind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnSearchClose,           this, ID_FIND_CLOSE);
   Bind(wxEVT_COMMAND_TOOL_CLICKED,                      &PasswordSafeSearch::OnDoSearch,              this, ID_FIND_NEXT);
