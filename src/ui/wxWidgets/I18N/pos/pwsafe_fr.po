@@ -3851,6 +3851,10 @@ msgstr "Chercher le suivant"
 msgid "Case Insensitive Search"
 msgstr "Recherche insensible aux majuscules/minuscules"
 
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:457
+msgid "Case Sensitive Search"
+msgstr "Recherche sensible à majuscule/minuscule"
+
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:132
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:394
 msgid "Advanced Find Options"

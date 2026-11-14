@@ -6237,6 +6237,10 @@ msgstr "Najdi naprej"
 msgid "Case Insensitive Search"
 msgstr "Iskanje ne glede velikosti črk"
 
+#: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeSearch.cpp:457
+msgid "Case Sensitive Search"
+msgstr "Iskanje, občutljivo na m/V črke"
+
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeSearch.cpp:132
 #: /home/ronys/git/pwsafe/src/ui/wxWidgets/PasswordSafeSearch.cpp:394
 msgid "Advanced Find Options"
