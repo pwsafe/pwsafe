@@ -445,10 +445,7 @@ void PasswordSafeSearch::OnIgnoreCaseToggle(wxCommandEvent& event)
   tool->SetShortHelp(caseSensitive ? _("Case Sensitive Search") : _("Case Insensitive Search"));
   for (const auto & toolInfo : SearchBarToolInfos) {
     if (toolInfo.id == ID_FIND_IGNORE_CASE) {
-      if (!caseSensitive)
-        tool->SetBitmap(toolInfo.GetBitmapForEnabledButton());
-      else
-        tool->SetBitmap(toolInfo.GetBitmapForDisabledButton());
+      tool->SetBitmap(caseSensitive ? toolInfo.GetBitmapForDisabledButton() : toolInfo.GetBitmapForEnabledButton());
     }
   }
   SetModified(true);
@@ -554,17 +551,14 @@ void PasswordSafeSearch::UpdateBitmaps()
     for (const auto & toolInfo : SearchBarToolInfos)
     {
       auto tool = FindTool(toolInfo.id);
-      if (tool) {
-        if (toolInfo.id == ID_FIND_IGNORE_CASE) {
-          if (!GetToolToggled(ID_FIND_IGNORE_CASE))
-            tool->SetBitmap(toolInfo.GetBitmapForEnabledButton());
-          else
-            tool->SetBitmap(toolInfo.GetBitmapForDisabledButton());
-        }
-        else {
-          tool->SetBitmap(toolInfo.GetBitmapForEnabledButton());
-          tool->SetDisabledBitmap(toolInfo.GetBitmapForDisabledButton());
-        }
+      if (!tool)
+        continue;
+      if (toolInfo.id == ID_FIND_IGNORE_CASE) {
+        tool->SetBitmap(GetToolToggled(ID_FIND_IGNORE_CASE) ? toolInfo.GetBitmapForDisabledButton() : toolInfo.GetBitmapForEnabledButton());
+      }
+      else {
+        tool->SetBitmap(toolInfo.GetBitmapForEnabledButton());
+        tool->SetDisabledBitmap(toolInfo.GetBitmapForDisabledButton());
       }
     }
 
