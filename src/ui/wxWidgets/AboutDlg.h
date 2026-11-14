@@ -154,11 +154,11 @@ private:
 #endif // HAS_CURL
 
   /// Set to downloaded data by worker thread, resp. WriteCallback, and read by main thread for final version check
-  static wxString s_VersionData;
-  static const cstringT s_URL_VERSION;
+  static wxString s_VersionData       = wxEmptyString;
+  static const cstringT s_URL_VERSION = "https://pwsafe.org/latest.xml";
 #endif // NO_VERCHECK
 
-  static const wstringT s_URL_HOME;
+  static const wstringT s_URL_HOME    = L"https://pwsafe.org";
 };
 
 #endif /* _ABOUTDLG_H_ */

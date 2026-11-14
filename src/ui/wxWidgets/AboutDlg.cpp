@@ -56,12 +56,6 @@ BEGIN_EVENT_TABLE( AboutDlg, wxDialog )
 #endif // NO_VERCHECK
 END_EVENT_TABLE()
 
-#ifndef NO_VERCHECK
-wxString AboutDlg::s_VersionData = wxEmptyString;
-const cstringT AboutDlg::s_URL_VERSION   =  "https://pwsafe.org/latest.xml";
-#endif // NO_VERCHECK
-
-const wstringT AboutDlg::s_URL_HOME      = L"https://pwsafe.org";
 
 /*!
  * AboutDlg constructors
