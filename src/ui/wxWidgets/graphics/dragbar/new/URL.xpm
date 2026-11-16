@@ -1,7 +1,7 @@
 /* XPM */
 static const char * const URL_xpm[] = {
 /* columns rows colors chars-per-pixel */
-"16 16 191 2",
+"16 16 190 2",
 /* colors */
 "   c None",
 ".  c #34347D7D3131",
@@ -51,7 +51,6 @@ static const char * const URL_xpm[] = {
 "k  c #6D6DDBDB7777",
 "l  c #7D7DD1D17373",
 "z  c #7171DCDC7A7A",
-"x  c #FBFBF9F92828",
 "c  c #8686B7B77070",
 "v  c #9090BFBF7979",
 "b  c #8D8DC0C07676",
@@ -195,9 +194,9 @@ static const char * const URL_xpm[] = {
 "+X c #E2E2F3F3C0C0",
 "@X c #E8E8F5F5CDCD",
 /* pixels */
-"    x x h h h h h h h f         ",
-"  x h h h z.Z._.!.j.a.6 5 4     ",
-"x h h 6.@XOX{.Q.(.~.E.R.,.< ,   ",
+"        h h h h h h h f         ",
+"    h h h z.Z._.!.j.a.6 5 4     ",
+"  h h 6.@XOX{.Q.(.~.E.R.,.< ,   ",
 "  h 5.|.}.oXXX^./.I.K.J.g.m :   ",
 "h h +Xc.v.`.'.Y.U.#.X.r.3.m.* & ",
 "h 0.C.x.)..XL.P.@.K U P z 7.4.$ ",
@@ -207,8 +206,8 @@ static const char * const URL_xpm[] = {
 "h A.m H.H.( } } ! Z C D V q f.[.",
 "6 6.9.L e.^ ` =.' Q A S N v ;.[.",
 "4 4 S.r t o._ } [ W B y = n.[.[.",
-"h., v 9.u %. .*.*.F 2 - :.w . x ",
+"  , v 9.u %. .*.*.F 2 - :.w .   ",
 "  : * c M.T.G.%.%.H >.b.w [.[.  ",
-"    $ $ $ ;.t.y.J.h.v . [.[.x   ",
-"        $ X X [.[.[.[.[.x x     "
+"    $ $ $ ;.t.y.J.h.v . [.[.    ",
+"        $ X X [.[.[.[.[.        "
 };

@@ -1,7 +1,7 @@
 /* XPM */
 static const char * const Title_xpm[] = {
 /* columns rows colors chars-per-pixel */
-"16 16 87 1",
+"16 16 86 1",
 /* colors */
 "  c None",
 ". c #AAAAAAAAAAAA",
@@ -43,7 +43,6 @@ static const char * const Title_xpm[] = {
 "p c #BABAE1E1FDFD",
 "a c #BCBCE2E2FDFD",
 "s c #BDBDE3E3FDFD",
-"d c #FBFBF9F92828",
 "f c #C1C1C1C1C1C1",
 "g c #C3C3C3C3C3C3",
 "h c gray77",
@@ -91,20 +90,20 @@ static const char * const Title_xpm[] = {
 "` c gray99",
 "' c #FDFDFDFDFDFD",
 /* pixels */
-"BBMMnvv k       ",
+"BBMMnvvv        ",
 "B'''''Pvx       ",
-"M'LvK''Lv       ",
-"M'vdx!)'Lk      ",
+"M'LvK''Lvv      ",
+"M'vLx!)'Lkv     ",
 "v'Fxx~Es'Fg,    ",
-"v'')~Q91a'F :   ",
+"v'')~Q91a'Fg:   ",
 "xR')E3we3s'A,&  ",
 "xkR)G1eii3a'A:$ ",
 " kjU'J6eie3a'C&+",
-"    U'J1ei9<_A&+",
-"   >>I'J190^A=+d",
-"    --P'Je/Z=.d ",
-"     &&L''A&Xd  ",
-"      $$KA&Xd   ",
-"       @+&.d    ",
-"        X.d     "
+"  j>U'J1ei9<_A&+",
+"   >>I'J190^A=+ ",
+"    --P'Je/Z=.  ",
+"     &&L''A&X   ",
+"      $$KA&X    ",
+"       @+&.     ",
+"        X.      "
 };
