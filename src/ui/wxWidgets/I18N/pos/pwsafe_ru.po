@@ -4169,6 +4169,10 @@ msgstr "Найти следующий"
 msgid "Case Insensitive Search"
 msgstr "Поиск без учёта регистра"
 
+#: src/ui/wxWidgets/PasswordSafeSearch.cpp:457
+msgid "Case Sensitive Search"
+msgstr "Поиск с учётом регистра"
+
 #: src/ui/wxWidgets/PasswordSafeSearch.cpp:132
 #: src/ui/wxWidgets/PasswordSafeSearch.cpp:394
 msgid "Advanced Find Options"

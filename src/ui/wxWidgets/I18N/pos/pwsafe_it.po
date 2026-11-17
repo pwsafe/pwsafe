@@ -3905,6 +3905,10 @@ msgstr "Trova Successivo"
 msgid "Case Insensitive Search"
 msgstr "Ignora lettere maiuscole/minuscole"
 
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:457
+msgid "Case Sensitive Search"
+msgstr "Ricerca sensibile maiuscole/minuscole"
+
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:132
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:394
 msgid "Advanced Find Options"

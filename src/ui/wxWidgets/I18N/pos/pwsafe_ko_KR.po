@@ -4078,9 +4078,12 @@ msgid "Find Next"
 msgstr "다음 찾기"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:131
-#, fuzzy
 msgid "Case Insensitive Search"
 msgstr "대소문자 무시하고 검색"
+
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:457
+msgid "Case Sensitive Search"
+msgstr "대소문자 구별하고 검색"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:132
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:394

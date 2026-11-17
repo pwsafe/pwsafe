@@ -4004,9 +4004,12 @@ msgid "Find Next"
 msgstr "Find Næste"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:131
-#, fuzzy
 msgid "Case Insensitive Search"
 msgstr "Ikke følsom overfor små/store bogst. søgning"
+
+#: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:457
+msgid "Case Sensitive Search"
+msgstr "Følsom over for små/store bogst. søgning"
 
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:132
 #: ../../../ui/wxWidgets/PasswordSafeSearch.cpp:394
