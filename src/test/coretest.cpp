@@ -100,6 +100,7 @@ int main(int argc, char **argv)
   AfxGetInstanceHandle();
 #endif
 
+  GTEST_FLAG_SET(death_test_style, "threadsafe");
   int rc = RUN_ALL_TESTS();
 
   // Delete singletons

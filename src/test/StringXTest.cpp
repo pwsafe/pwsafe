@@ -320,7 +320,7 @@ TEST(trim, EmptyString) {
   EXPECT_EQ(s, L"");
 }
 
-TEST(StringXTest, testFromUTF8Length)
+TEST(StringXTestDeathTest, testFromUTF8Length)
 {
   // The caller places the null terminator at utf8[utf8Len]
   const unsigned char terminated[] = {'a', 'b', 'c', '\0', 'd', 'e'};
@@ -342,7 +342,6 @@ TEST(StringXTest, testFromUTF8Length)
   EXPECT_TRUE(conv.FromUTF8(invalid, 3, sx));
   EXPECT_EQ(sx, L"abc");
 #else
-  GTEST_FLAG_SET(death_test_style, "threadsafe");
   EXPECT_DEATH({ DEATH_GUARD; conv.FromUTF8(valid, 3, sx); }, "Assertion");
   EXPECT_DEATH({ DEATH_GUARD; conv.FromUTF8(invalid, 3, sx); }, "Assertion");
 #endif
