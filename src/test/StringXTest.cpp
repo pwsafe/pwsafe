@@ -342,6 +342,7 @@ TEST(StringXTest, testFromUTF8Length)
   EXPECT_TRUE(conv.FromUTF8(invalid, 3, sx));
   EXPECT_EQ(sx, L"abc");
 #else
+  GTEST_FLAG_SET(death_test_style, "threadsafe");
   EXPECT_DEATH({ DEATH_GUARD; conv.FromUTF8(valid, 3, sx); }, "Assertion");
   EXPECT_DEATH({ DEATH_GUARD; conv.FromUTF8(invalid, 3, sx); }, "Assertion");
 #endif
