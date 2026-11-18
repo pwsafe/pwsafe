@@ -590,10 +590,18 @@ void PasswordSafeSearch::ReCreateSearchBar()
  */
 bool PasswordSafeSearch::CreateSearchBar()
 {
+#if wxCHECK_VERSION(3,1,4)
+  while (HasTools()) {
+    DestroyToolByIndex(0);
+  }
+#else
   ClearTools();
+  for (auto child : GetChildren()) { // Delete any leftover searchCtrl and statusText controls when the language is changed
+    child->Destroy();
+  }
+#endif
 
   auto searchCtrl = new wxSearchCtrl(this, ID_FIND_EDITBOX, wxEmptyString, wxDefaultPosition, CalculateSearchWidth(), wxTE_PROCESS_ENTER);
-  searchCtrl->SetMinSize(wxSize(150, -1)); // Helps maintain the correct size of this and neighboring controls when switching languages
   searchCtrl->ShowCancelButton(true);
   searchCtrl->ShowSearchButton(true);
 
