@@ -25,6 +25,7 @@ protected:
 
   virtual void TearDown() {
     // Clean up test environment
+    ClearCommands();
   }
 
   CReport m_report;

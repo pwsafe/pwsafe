@@ -903,6 +903,7 @@ TEST_F(CommandsTest, MultiCommandsFindCommand)
   EXPECT_EQ(renameCmd, pmulticmds->FindCommand(typeid(RenameGroupCommand)));
 
   EXPECT_EQ(nullptr, pmulticmds->FindCommand(typeid(DeleteEntryCommand)));
+  delete pmulticmds;
 }
 
 TEST_F(CommandsTest, MultiCommandsInsert)

@@ -30,7 +30,7 @@ protected:
     const stringT testFile5 = L"import-text-unit-test5.csv";
 
 
-  
+
   void SetUp();
   void TearDown();
 
@@ -58,6 +58,7 @@ void ImportTextTest::SetUp()
 
 void ImportTextTest::TearDown()
 {
+  core.ClearCommands();
   ASSERT_TRUE(pws_os::chdir(L".."));
 }
 
@@ -65,7 +66,7 @@ void ImportTextTest::importText(const stringT& fname, const TCHAR fieldSeparator
 {
   stringT errorStr;
   CReport rpt;
-  Command* cmd(nullptr);
+  Command* cmd = nullptr;
 
   numImported = numSkipped = numPWHErrors = numRenamed = numWarnings = numNoPolicy = 0;
   core.ReInit();
@@ -89,9 +90,6 @@ void ImportTextTest::importText(const stringT& fname, const TCHAR fieldSeparator
 
   status = core.Execute(cmd);
   EXPECT_EQ(status, 0);
-  delete cmd;
-
-  //std::cout << rpt.GetString().c_str();
 }
 
 void ImportTextTest::testImport()
