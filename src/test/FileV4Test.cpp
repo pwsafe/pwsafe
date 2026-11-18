@@ -15,6 +15,7 @@
 #include "core/PWScore.h"
 #include "core/PWSdirs.h"
 #include "core/PWSFilters.h"
+#include "core/PWSLog.h"
 #include "core/XML/XMLDefs.h"
 
 #include "os/file.h"
@@ -642,6 +643,12 @@ TEST_F(FileV4Test, V3ToV4EmptyAttachmentConversion) {
   core.Execute(AddEntryCommand::Create(&core, otherItem));
   EXPECT_EQ(PWSfile::SUCCESS, core.WriteFile(fname.c_str(), PWSfile::V40));
   EXPECT_EQ(0U, core.GetNumAtts());
+
+  // The discarded attachment is logged, with the entry's UUID
+  const StringX sxUUID = v3Item.GetUUID();
+  const stringT log = PWSLog::GetLog()->DumpLog();
+  EXPECT_NE(stringT::npos, log.find(_T("discarding empty attachment")));
+  EXPECT_NE(stringT::npos, log.find(sxUUID.c_str()));
 
   // The file must be readable, with both entries
   core.ClearDBData();

@@ -534,6 +534,9 @@ struct RecordWriter {
       // attachment record must have content: CItemAtt::Read rejects one
       // without it, and with it the whole file. There is no content to keep,
       // so drop the attachment instead of converting it.
+      const StringX sxUUID = p.second.GetUUID();
+      PWS_LOGIT_ARGS("Warning: discarding empty attachment of entry %ls",
+                     sxUUID.c_str());
       p.second.ClearV3Attachment();
     }
     else if (m_version == PWSfile::V40 && p.second.IsAttMediaTypeSet())
