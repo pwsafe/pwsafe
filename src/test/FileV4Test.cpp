@@ -15,6 +15,7 @@
 #include "core/PWScore.h"
 #include "core/PWSdirs.h"
 #include "core/PWSFilters.h"
+#include "core/PWSLog.h"
 #include "core/XML/XMLDefs.h"
 
 #include "os/file.h"
@@ -617,4 +618,52 @@ TEST_F(FileV4Test, V3ToV4AttachmentConversion) {
   time_t v4mtime;
   att.GetFileMTime(v4mtime);
   EXPECT_EQ(v4mtime, mtime);
+}
+
+TEST_F(FileV4Test, V3ToV4EmptyAttachmentConversion) {
+  PWScore core;
+
+  // A V3 record with the attachment of a zero-byte file: no content field
+  CItemData v3Item;
+  v3Item.CreateUUID();
+  v3Item.SetTitle(L"Empty attachment");
+  v3Item.SetPassword(L"mandatory field...");
+  v3Item.SetAttFileName(L"empty.txt");
+  v3Item.SetAttMediaType(L"text/plain");
+  v3Item.SetAttModificationTime(1234567890);
+  ASSERT_FALSE(v3Item.IsAttContentSet());
+
+  CItemData otherItem;
+  otherItem.CreateUUID();
+  otherItem.SetTitle(L"Other entry");
+  otherItem.SetPassword(L"another password");
+
+  core.SetPassKey(passphrase);
+  core.Execute(AddEntryCommand::Create(&core, v3Item));
+  core.Execute(AddEntryCommand::Create(&core, otherItem));
+  EXPECT_EQ(PWSfile::SUCCESS, core.WriteFile(fname.c_str(), PWSfile::V40));
+  EXPECT_EQ(0U, core.GetNumAtts());
+
+  // The discarded attachment is logged, with the entry's UUID
+  const StringX sxUUID = v3Item.GetUUID();
+  const stringT log = PWSLog::GetLog()->DumpLog();
+  EXPECT_NE(stringT::npos, log.find(_T("discarding empty attachment")));
+  EXPECT_NE(stringT::npos, log.find(sxUUID.c_str()));
+
+  // The file must be readable, with both entries
+  core.ClearDBData();
+  EXPECT_EQ(PWSfile::SUCCESS, core.ReadFile(fname.c_str(), passphrase, true));
+  ASSERT_EQ(2U, core.GetNumEntries());
+  EXPECT_EQ(0U, core.GetNumAtts());
+  ASSERT_TRUE(core.Find(otherItem.GetUUID()) != core.GetEntryEndIter());
+  ASSERT_TRUE(core.Find(v3Item.GetUUID()) != core.GetEntryEndIter());
+
+  const CItemData readItem = core.GetEntry(core.Find(v3Item.GetUUID()));
+  EXPECT_EQ(L"mandatory field...", readItem.GetPassword());
+  EXPECT_FALSE(readItem.HasAttRef());
+  EXPECT_FALSE(readItem.IsAttTitleSet());
+  EXPECT_FALSE(readItem.IsAttMediaTypeSet());
+  EXPECT_FALSE(readItem.IsAttFileNameSet());
+  EXPECT_FALSE(readItem.IsAttModificationTimeSet());
+  EXPECT_FALSE(readItem.IsAttContentSet());
 }

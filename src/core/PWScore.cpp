@@ -527,7 +527,19 @@ struct RecordWriter {
       return;
     }
 
-    if (m_version == PWSfile::V40 && p.second.IsAttMediaTypeSet())
+    if (m_version == PWSfile::V40 && p.second.IsAttMediaTypeSet() &&
+        p.second.GetAttContentLength() == 0)
+    {
+      // A V3-style attachment of a zero-byte file has no content, but a V4
+      // attachment record must have content: CItemAtt::Read rejects one
+      // without it, and with it the whole file. There is no content to keep,
+      // so drop the attachment instead of converting it.
+      const StringX sxUUID = p.second.GetUUID();
+      PWS_LOGIT_ARGS("Warning: discarding empty attachment of entry %ls",
+                     sxUUID.c_str());
+      p.second.ClearV3Attachment();
+    }
+    else if (m_version == PWSfile::V40 && p.second.IsAttMediaTypeSet())
     {
       // We're writing a V40 file, and the record has a V3-style attachment.
       // Here's where we convert it to a V4-style attachment.
