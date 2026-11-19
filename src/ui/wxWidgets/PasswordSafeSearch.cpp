@@ -596,7 +596,7 @@ bool PasswordSafeSearch::CreateSearchBar()
   }
 #else
   ClearTools();
-  for (auto child : GetChildren()) { // Delete any leftover searchCtrl and statusText controls when the language is changed
+  for (auto child : GetChildren()) { // Delete any controls added by AddControl() that are not destroyed by ClearTools()
     child->Destroy();
   }
 #endif
