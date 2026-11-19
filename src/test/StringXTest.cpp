@@ -320,7 +320,7 @@ TEST(trim, EmptyString) {
   EXPECT_EQ(s, L"");
 }
 
-TEST(StringXTest, testFromUTF8Length)
+TEST(StringXTestDeathTest, testFromUTF8Length)
 {
   // The caller places the null terminator at utf8[utf8Len]
   const unsigned char terminated[] = {'a', 'b', 'c', '\0', 'd', 'e'};
