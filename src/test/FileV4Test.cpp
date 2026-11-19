@@ -618,6 +618,9 @@ TEST_F(FileV4Test, V3ToV4AttachmentConversion) {
   time_t v4mtime;
   att.GetFileMTime(v4mtime);
   EXPECT_EQ(v4mtime, mtime);
+
+  // Get core to delete any existing commands
+  core.ClearCommands();
 }
 
 TEST_F(FileV4Test, V3ToV4EmptyAttachmentConversion) {

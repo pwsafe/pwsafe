@@ -18,7 +18,7 @@
 #include "gtest/gtest.h"
 
 // A fixture for factoring common code across tests
-class ImportTextTest : public ::testing::Test
+class ImportTextTest : public testing::Test
 {
 protected:
   ImportTextTest(); // to init members
@@ -29,14 +29,12 @@ protected:
     const stringT testFile4 = L"import-text-unit-test4.csv";
     const stringT testFile5 = L"import-text-unit-test5.csv";
 
-
-  
-  void SetUp();
-  void TearDown();
+  void SetUp() override;
+  void TearDown() override;
 
   int numImported, numSkipped, numPWHErrors, numRenamed, numWarnings, numNoPolicy;
 
-  void importText(const stringT& fname, const TCHAR fieldSeparator, int expectedImports);
+  void importText(const stringT& fname, TCHAR fieldSeparator, int expectedImports);
   void testImport(); // for testFiles 1, 2, and 3
 };
 
@@ -58,6 +56,7 @@ void ImportTextTest::SetUp()
 
 void ImportTextTest::TearDown()
 {
+  core.ClearCommands();
   ASSERT_TRUE(pws_os::chdir(L".."));
 }
 
@@ -65,7 +64,7 @@ void ImportTextTest::importText(const stringT& fname, const TCHAR fieldSeparator
 {
   stringT errorStr;
   CReport rpt;
-  Command* cmd(nullptr);
+  Command* cmd = nullptr;
 
   numImported = numSkipped = numPWHErrors = numRenamed = numWarnings = numNoPolicy = 0;
   core.ReInit();
@@ -89,9 +88,6 @@ void ImportTextTest::importText(const stringT& fname, const TCHAR fieldSeparator
 
   status = core.Execute(cmd);
   EXPECT_EQ(status, 0);
-  delete cmd;
-
-  //std::cout << rpt.GetString().c_str();
 }
 
 void ImportTextTest::testImport()
@@ -193,7 +189,7 @@ TEST_F(ImportTextTest, keepass_v1_csv_without_web_site)
   core.ReInit();
   UINT uiReasonCode(0);
   CReport rpt;
-  Command *cmd(nullptr);
+  Command *cmd = nullptr;
   const int status = core.ImportKeePassV1CSVFile(StringX(csvFile.c_str()),
                                                  numImported, numSkipped, numRenamed,
                                                  uiReasonCode, rpt, cmd);
@@ -226,7 +222,7 @@ TEST_F(ImportTextTest, keepass_v1_csv_short_line)
   core.ReInit();
   UINT uiReasonCode(0);
   CReport rpt;
-  Command *cmd(nullptr);
+  Command *cmd = nullptr;
   const int status = core.ImportKeePassV1CSVFile(StringX(csvFile.c_str()),
                                                  numImported, numSkipped, numRenamed,
                                                  uiReasonCode, rpt, cmd);
@@ -256,7 +252,7 @@ const CItemData::FieldType optionalFields[] = {
 } // namespace
 
 class SelectedTotpFieldsTest : public ImportTextTest,
-                             public ::testing::WithParamInterface<unsigned int>
+                             public testing::WithParamInterface<unsigned int>
 {
 };
 
@@ -274,7 +270,7 @@ TEST_P(SelectedTotpFieldsTest, export_import_roundtrip)
   ci.SetPassword(_T("password"));
   ci.SetTwoFactorKey(_T("JBSWY3DPEHPK3PXP"));
   ASSERT_TRUE(ci.SetTotpConfig(_T("1")));
-  ci.SetTotpStartTime(time_t(946684800));
+  ci.SetTotpStartTime(time_t{946684800});
   ASSERT_TRUE(ci.SetTotpTimeStep(_T("60")));
   ASSERT_TRUE(ci.SetTotpLength(_T("8")));
   ci.SetURL(_T("https://example.com"));

@@ -14,17 +14,18 @@
 #include "../core/Command.h"
 
 // Test fixture class
-class ValidateTest : public ::testing::Test, public PWScore {
+class ValidateTest : public testing::Test, public PWScore {
 protected:
-  ValidateTest() {}
+  ValidateTest() = default;
 
-  virtual void SetUp() {
+  void SetUp() override {
     // Set up test environment
     SetCurFile(L""); // Empty database
   }
 
-  virtual void TearDown() {
+  void TearDown() override {
     // Clean up test environment
+    ClearCommands();
   }
 
   CReport m_report;

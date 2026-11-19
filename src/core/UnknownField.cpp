@@ -25,7 +25,7 @@ UnknownFieldEntry::UnknownFieldEntry(unsigned char t, size_t s,
 UnknownFieldEntry::~UnknownFieldEntry()
 {
   if (st_length > 0 && uc_pUField != nullptr) {
-    trashMemory(reinterpret_cast<void *>(uc_pUField), st_length);
+    trashMemory(uc_pUField, st_length);
     delete[] uc_pUField;
     st_length = 0;
     uc_pUField = nullptr;
@@ -46,14 +46,18 @@ UnknownFieldEntry::UnknownFieldEntry(const UnknownFieldEntry &that)
 UnknownFieldEntry &UnknownFieldEntry::operator=(const UnknownFieldEntry &that)
 {
   if (this != &that) {
+    ASSERT(that.uc_pUField == nullptr || that.st_length != 0);
+    if (uc_pUField != nullptr) {
+      trashMemory(uc_pUField, st_length);
+      delete[] uc_pUField;
+      uc_pUField = nullptr;
+    }
     uc_Type = that.uc_Type;
     st_length = that.st_length;
-    if (uc_pUField != nullptr) {
-      ASSERT(st_length != 0);
-      trashMemory(uc_pUField, st_length);
+    if (that.uc_pUField != nullptr) {
+      uc_pUField = new unsigned char[st_length];
+      memcpy(uc_pUField, that.uc_pUField, st_length);
     }
-    uc_pUField = new unsigned char[st_length];
-    memcpy(uc_pUField, that.uc_pUField, st_length);
   }
   return *this;
 }

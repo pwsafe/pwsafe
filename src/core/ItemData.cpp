@@ -193,7 +193,6 @@ int CItemData::Read(PWSfile *in)
       if (IsItemDataField(type)) {
         if (!SetField(type, utf8, utf8Len)) {
           status = PWSfile::FAILURE;
-          break;
         }
       } else if (IsItemAttField(type)) {
         // Allow rewind and retry
@@ -211,7 +210,7 @@ int CItemData::Read(PWSfile *in)
       trashMemory(utf8, utf8Len * sizeof(utf8[0]));
       delete[] utf8; utf8 = nullptr; utf8Len = 0;
     }
-  } while (type != END && fieldLen > 0 && --emergencyExit > 0);
+  } while (status != PWSfile::FAILURE && type != END && fieldLen > 0 && --emergencyExit > 0);
 
   if (readAnyField) {
     // Determine entry type:
