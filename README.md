@@ -88,6 +88,10 @@ Password Safe 3.29 and later makes use of the
 [pugixml project](http://www.pugixml.org), which is available under
 the [MIT license](http://www.opensource.org/licenses/mit-license.html).
 
+Grahics for the "new" toollbar and dragbar icons are from Mark James'
+(famfamfam Silk icons)[https://github.com/markjames/famfamfam-silk-icons], licensed under the
+(Creative Commons Attribution 2.5 License)[http://creativecommons.org/licenses/by/2.5/].
+
 Non-Windows versions of Password Safe make use of [wxWidgets](https://wxwidgets.org/), under the
 license terms defined in [https://wxwidgets.org/about/licence](https://wxwidgets.org/about/licence),
 which is basically LGPL, with an exception stating that derived works in
