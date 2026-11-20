@@ -60,10 +60,10 @@ PWSfileHeader &PWSfileHeader::operator=(const PWSfileHeader &h)
     m_DB_Name = h.m_DB_Name;
     m_DB_Description = h.m_DB_Description;
     m_RUEList = h.m_RUEList;
+    if (m_yubi_sk)
+      trashMemory(m_yubi_sk, YUBI_SK_LEN);
+    delete[] m_yubi_sk;
     if (h.m_yubi_sk != nullptr) {
-      if (m_yubi_sk)
-        trashMemory(m_yubi_sk, YUBI_SK_LEN);
-      delete[] m_yubi_sk;
       m_yubi_sk = new unsigned char[YUBI_SK_LEN];
       memcpy(m_yubi_sk, h.m_yubi_sk, YUBI_SK_LEN);
     } else {

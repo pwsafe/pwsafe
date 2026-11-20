@@ -21,6 +21,7 @@
 #include "os/file.h"
 
 #include <cstdio>
+#include <cstring>
 #include <memory>
 #include <vector>
 
@@ -228,7 +229,9 @@ TEST_F(FileV4Test, RecordReadBeyondEffectiveEnd)
 TEST_F(FileV4Test, HeaderTest)
 {
   // header is written when file's opened for write.
-  PWSfileHeader hdr1, hdr2;
+  hdr.m_yubi_sk = new unsigned char[PWSfileHeader::YUBI_SK_LEN]{
+    0xf0, 0xe1, 0xd2, 0xc3, 0xb4, 0xa5, 0x96, 0x87, 0x78, 0x69,
+    0x5a, 0x4b, 0x3c, 0x2d, 0x1e, 0x0f, 0xa0, 0xb1, 0xc2, 0xd3};
 
   PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
   fw.SetHeader(hdr);
@@ -246,6 +249,9 @@ TEST_F(FileV4Test, HeaderTest)
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
   ASSERT_EQ(hdr1, hdr2);
+  // YubiKey SK survives the round trip, each header holding its own copy
+  ASSERT_NE(nullptr, hdr2.m_yubi_sk);
+  EXPECT_NE(hdr1.m_yubi_sk, hdr2.m_yubi_sk);
 }
 
 TEST_F(FileV4Test, ItemTest)
@@ -451,6 +457,36 @@ TEST_F(FileV4Test, CoreReadAttachmentFailure)
     EXPECT_EQ(0U, core.GetNumAtts());
     EXPECT_EQ(0U, core.GetNumEntries());
   }
+}
+
+TEST_F(FileV4Test, CoreReadFileReplacesYubiSK)
+{
+  // Opening a DB without a YubiKey SK after one with a SK must drop the
+  // old SK (regression: PWSfileHeader::operator= leaked it - run with ASan).
+  const unsigned char sk[PWSfileHeader::YUBI_SK_LEN] = {
+    0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a,
+    0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14};
+
+  core.SetPassKey(passphrase);
+  core.SetYubiSK(sk);
+  ASSERT_EQ(PWSfile::SUCCESS, core.WriteFile(fname.c_str(), PWSfile::V40));
+
+  core.ClearDBData();
+  ASSERT_EQ(PWSfile::SUCCESS, core.ReadFile(fname.c_str(), passphrase, true));
+  ASSERT_NE(nullptr, core.GetYubiSK());
+  EXPECT_EQ(0, memcmp(sk, core.GetYubiSK(), sizeof(sk)));
+
+  // Replace it with a DB that has no YubiKey SK
+  PWSfileV4 fw(fname.c_str(), PWSfile::Write, PWSfile::V40);
+  fw.SetHeader(hdr);
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.WriteRecord(smallItem));
+  ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
+
+  core.ClearDBData();
+  ASSERT_EQ(PWSfile::SUCCESS, core.ReadFile(fname.c_str(), passphrase, true));
+  EXPECT_EQ(nullptr, core.GetYubiSK());
+  EXPECT_EQ(1U, core.GetNumEntries());
 }
 
 TEST_F(FileV4Test, CoreRWTest)

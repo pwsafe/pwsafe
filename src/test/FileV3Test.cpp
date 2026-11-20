@@ -29,6 +29,7 @@ class FileV3Test : public ::testing::Test
 protected:
   FileV3Test(); // to init members
   CItemData smallItem, fullItem, item;
+  PWScore core;
   void SetUp();
   void TearDown();
 
@@ -89,6 +90,9 @@ void FileV3Test::SetUp()
 
 void FileV3Test::TearDown()
 {
+  // Get core to delete any existing commands
+  core.ClearCommands();
+
   // test file may or may not have been created
   if (pws_os::FileExists(fname)) {
     EXPECT_TRUE(pws_os::DeleteAFile(fname));
@@ -126,6 +130,9 @@ TEST_F(FileV3Test, HeaderTest)
   hdr1.m_whatlastsaved = _T("PasswordSafe test framework");
   hdr1.m_DB_Name = fname.c_str();
   hdr1.m_DB_Description = _T("Test the header's persistency");
+  hdr1.m_yubi_sk = new unsigned char[PWSfileHeader::YUBI_SK_LEN]{
+    0xf0, 0xe1, 0xd2, 0xc3, 0xb4, 0xa5, 0x96, 0x87, 0x78, 0x69,
+    0x5a, 0x4b, 0x3c, 0x2d, 0x1e, 0x0f, 0xa0, 0xb1, 0xc2, 0xd3};
 
   PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
   fw.SetHeader(hdr1);
@@ -143,6 +150,9 @@ TEST_F(FileV3Test, HeaderTest)
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());
   ASSERT_EQ(hdr1, hdr2);
+  // YubiKey SK survives the round trip, each header holding its own copy
+  ASSERT_NE(nullptr, hdr2.m_yubi_sk);
+  EXPECT_NE(hdr1.m_yubi_sk, hdr2.m_yubi_sk);
 }
 
 TEST_F(FileV3Test, HeaderReadFailure)
@@ -352,7 +362,6 @@ TEST_F(FileV3Test, AttachmentTest)
 
 TEST_F(FileV3Test, V4Extension)
 {
-  PWScore core;
   stringT fname4(_T("V3test.psafe4"));
 
   PWSfileV3 fw(fname.c_str(), PWSfile::Write, PWSfile::V30);
@@ -399,7 +408,6 @@ TEST_F(FileV3Test, PasskeyTest)
 
 TEST_F(FileV3Test, SaveMarksDBClean)
 {
-  PWScore core;
   core.SetCurFile(fname.c_str());
   core.NewFile(passphrase);
 
@@ -427,7 +435,4 @@ TEST_F(FileV3Test, SaveMarksDBClean)
   EXPECT_FALSE(core.HasDBChanged());
   core.Redo();
   EXPECT_TRUE(core.HasDBChanged());
-
-  // Get core to delete any existing commands
-  core.ClearCommands();
 }
