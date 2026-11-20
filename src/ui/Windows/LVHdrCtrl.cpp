@@ -189,7 +189,8 @@ void CLVHdrCtrl::OnLButtonDown(UINT nFlags, CPoint point)
   // End dragging image
   m_pDragImage->DragLeave(GetDesktopWindow());
   m_pDragImage->EndDrag();
-  //delete m_pDragImage;
+  delete m_pDragImage;
+  m_pDragImage = nullptr;
 }
 
 void CLVHdrCtrl::CompleteMove()
