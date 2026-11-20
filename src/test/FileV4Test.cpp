@@ -53,8 +53,9 @@ protected:
   PWSfileHeader hdr;
   CItemData smallItem, fullItem, item;
   CItemAtt attItem, attItem15, attItem16, attItem17;
-  void SetUp();
-  void TearDown();
+  PWScore core;
+  void SetUp() override;
+  void TearDown() override;
 
   const StringX passphrase;
   stringT fname;
@@ -138,6 +139,9 @@ void FileV4Test::SetUp()
 
 void FileV4Test::TearDown()
 {
+  // Get core to delete any existing commands
+  core.ClearCommands();
+
   // test file may or may not have been created
   if (pws_os::FileExists(fname)) {
     EXPECT_TRUE(pws_os::DeleteAFile(fname));
@@ -423,7 +427,6 @@ TEST_F(FileV4Test, CoreReadRecordFailure)
   ASSERT_EQ(bytes.size(), fwrite(bytes.data(), 1, bytes.size(), fp));
   ASSERT_EQ(0, pws_os::FClose(fp));
 
-  PWScore core;
   EXPECT_EQ(PWSfile::READ_FAIL, core.ReadFile(fname.c_str(), passphrase));
   EXPECT_EQ(1U, core.GetNumEntries());
 }
@@ -443,7 +446,7 @@ TEST_F(FileV4Test, CoreReadAttachmentFailure)
     ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
 
     // A valid database HMAC must not hide a malformed attachment.
-    PWScore core;
+    core.ClearDBData();
     EXPECT_EQ(PWSfile::READ_FAIL, core.ReadFile(fname.c_str(), passphrase));
     EXPECT_EQ(0U, core.GetNumAtts());
     EXPECT_EQ(0U, core.GetNumEntries());
@@ -452,7 +455,6 @@ TEST_F(FileV4Test, CoreReadAttachmentFailure)
 
 TEST_F(FileV4Test, CoreRWTest)
 {
-  PWScore core;
   const StringX passkey(L"3rdMambo");
 
   fullItem.SetAttUUID(attItem.GetUUID());
@@ -481,9 +483,6 @@ TEST_F(FileV4Test, CoreRWTest)
   core.Execute(DeleteEntryCommand::Create(&core, readFullItem));
   ASSERT_EQ(0U, core.GetNumEntries());
   ASSERT_EQ(0U, core.GetNumAtts());
-
-  // Get core to delete any existing commands
-  core.ClearCommands();
 }
 
 TEST_F(FileV4Test, PasskeyTest)
@@ -564,8 +563,6 @@ TEST_F(FileV4Test, BadFilterKeepOrDiscard)
 }
 
 TEST_F(FileV4Test, V3ToV4AttachmentConversion) {
-  PWScore core;
-
   // Create a V3 record with attachment
   CItemData v3Item;
   v3Item.CreateUUID();
@@ -618,14 +615,9 @@ TEST_F(FileV4Test, V3ToV4AttachmentConversion) {
   time_t v4mtime;
   att.GetFileMTime(v4mtime);
   EXPECT_EQ(v4mtime, mtime);
-
-  // Get core to delete any existing commands
-  core.ClearCommands();
 }
 
 TEST_F(FileV4Test, V3ToV4EmptyAttachmentConversion) {
-  PWScore core;
-
   // A V3 record with the attachment of a zero-byte file: no content field
   CItemData v3Item;
   v3Item.CreateUUID();
