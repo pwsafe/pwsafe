@@ -31,10 +31,10 @@
 class SeekableFileV4 : public PWSfileV4
 {
 public:
-  SeekableFileV4(const StringX &filename, PWSfile::RWmode mode = PWSfile::Read)
-    : PWSfileV4(filename, mode, PWSfile::V40) {}
+  SeekableFileV4(const StringX &filename, RWmode mode = Read)
+    : PWSfileV4(filename, mode, V40) {}
 
-  ~SeekableFileV4() { PWSfile::Close(); }
+  ~SeekableFileV4() override { PWSfileV4::Close(); }
 
   bool Seek(int64 offset)
   {
@@ -47,7 +47,7 @@ public:
 };
 
 // A fixture for factoring common code across tests
-class FileV4Test : public ::testing::Test
+class FileV4Test : public testing::Test
 {
 protected:
   FileV4Test(); // to init members
@@ -174,8 +174,8 @@ TEST(FileOffsetTest, AttachmentOffsetSurvivesCopies)
   CItemAtt original;
   original.SetOffset(offset);
   EXPECT_EQ(offset, original.GetOffset());
-  CItemAtt copy(original), assigned;
-  assigned = original;
+  CItemAtt copy(original);
+  CItemAtt assigned = original;
   EXPECT_EQ(offset, copy.GetOffset());
   EXPECT_EQ(offset, assigned.GetOffset());
 }
@@ -237,14 +237,14 @@ TEST_F(FileV4Test, HeaderTest)
   fw.SetHeader(hdr);
   ASSERT_EQ(PWSfile::SUCCESS, fw.Open(passphrase));
 
-  hdr1 = fw.GetHeader(); // Some fields set by Open()
+  PWSfileHeader hdr1 = fw.GetHeader(); // Some fields set by Open()
   ASSERT_EQ(PWSfile::SUCCESS, fw.Close());
   ASSERT_TRUE(pws_os::FileExists(fname));
 
   PWSfileV4 fr(fname.c_str(), PWSfile::Read, PWSfile::V40);
   ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
 
-  hdr2 = fr.GetHeader();
+  PWSfileHeader hdr2 = fr.GetHeader();
   // We need the following to read past the termination block!
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());

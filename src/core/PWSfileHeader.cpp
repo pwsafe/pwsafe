@@ -75,7 +75,7 @@ PWSfileHeader &PWSfileHeader::operator=(const PWSfileHeader &h)
 
 bool PWSfileHeader::operator==(const PWSfileHeader &h) const
 {
-  bool retval = (m_nCurrentMajorVersion == h.m_nCurrentMajorVersion &&
+  if (!(m_nCurrentMajorVersion == h.m_nCurrentMajorVersion &&
                  m_nCurrentMinorVersion == h.m_nCurrentMinorVersion &&
                  m_file_uuid == h.m_file_uuid &&
                  m_displaystatus == h.m_displaystatus &&
@@ -87,8 +87,7 @@ bool PWSfileHeader::operator==(const PWSfileHeader &h) const
                  m_whatlastsaved == h.m_whatlastsaved &&
                  m_DB_Name == h.m_DB_Name &&
                  m_DB_Description == h.m_DB_Description &&
-                 m_RUEList == h.m_RUEList);
-  if (!retval)
+                 m_RUEList == h.m_RUEList))
     return false;
   if (m_yubi_sk == nullptr && h.m_yubi_sk == nullptr)
     return true;
@@ -96,5 +95,5 @@ bool PWSfileHeader::operator==(const PWSfileHeader &h) const
       (m_yubi_sk != nullptr && h.m_yubi_sk == nullptr))
     return false;
   // here iff both m_yubi_sk's != nullptr
-  return (memcmp(m_yubi_sk, h.m_yubi_sk, YUBI_SK_LEN) == 0);
+  return memcmp(m_yubi_sk, h.m_yubi_sk, YUBI_SK_LEN) == 0;
 }
