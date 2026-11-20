@@ -92,6 +92,9 @@ Grahics for the "new" toollbar and dragbar icons are from Mark James'
 (famfamfam Silk icons)[https://github.com/markjames/famfamfam-silk-icons], licensed under the
 (Creative Commons Attribution 2.5 License)[http://creativecommons.org/licenses/by/2.5/].
 
+Graphics for the Manage->Options icons are from (pngrepo.com)[https://www.pngrepo.com] and are in the
+public domain ((CC0)[https://creativecommons.org/publicdomain/zero/1.0/]).
+
 Non-Windows versions of Password Safe make use of [wxWidgets](https://wxwidgets.org/), under the
 license terms defined in [https://wxwidgets.org/about/licence](https://wxwidgets.org/about/licence),
 which is basically LGPL, with an exception stating that derived works in
