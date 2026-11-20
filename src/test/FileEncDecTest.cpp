@@ -18,12 +18,12 @@
 #include "gtest/gtest.h"
 
 // A fixture for factoring common code across tests
-class FileEncDecTest : public ::testing::Test
+class FileEncDecTest : public testing::Test
 {
 protected:
   FileEncDecTest(); // to init members
-  void SetUp();
-  void TearDown();
+  void SetUp() override;
+  void TearDown() override;
 
   const StringX passphrase;
   stringT fname;

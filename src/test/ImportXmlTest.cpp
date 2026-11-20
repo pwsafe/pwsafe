@@ -70,7 +70,7 @@ void removeSensitiveElement(const stringT &filename)
 
 } // namespace
 
-class ImportXmlTest : public ::testing::Test
+class ImportXmlTest : public testing::Test
 {
 protected:
   ImportXmlTest();

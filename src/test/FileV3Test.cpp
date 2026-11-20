@@ -24,14 +24,14 @@
 #include "gtest/gtest.h"
 
 // A fixture for factoring common code across tests
-class FileV3Test : public ::testing::Test
+class FileV3Test : public testing::Test
 {
 protected:
   FileV3Test(); // to init members
   CItemData smallItem, fullItem, item;
   PWScore core;
-  void SetUp();
-  void TearDown();
+  void SetUp() override;
+  void TearDown() override;
 
   const StringX passphrase;
   stringT fname;
@@ -121,7 +121,7 @@ TEST_F(FileV3Test, EmptyFile)
 TEST_F(FileV3Test, HeaderTest)
 {
   // header is written when file's opened for write.
-  PWSfileHeader hdr1, hdr2;
+  PWSfileHeader hdr1;
   hdr1.m_prefString = _T("aPrefString");
   hdr1.m_whenlastsaved = 1413129351; // overwritten in Open()
   hdr1.m_whenpwdlastchanged = 1529684734;
@@ -145,7 +145,7 @@ TEST_F(FileV3Test, HeaderTest)
   PWSfileV3 fr(fname.c_str(), PWSfile::Read, PWSfile::V30);
   ASSERT_EQ(PWSfile::SUCCESS, fr.Open(passphrase));
 
-  hdr2 = fr.GetHeader();
+  PWSfileHeader hdr2 = fr.GetHeader();
   // We need the following to read past the termination block!
   EXPECT_EQ(PWSfile::END_OF_FILE, fr.ReadRecord(item));
   EXPECT_EQ(PWSfile::SUCCESS, fr.Close());

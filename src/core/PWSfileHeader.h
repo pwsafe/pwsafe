@@ -21,9 +21,9 @@
 
 struct PWSfileHeader {
   PWSfileHeader();
-  PWSfileHeader(const PWSfileHeader &hdr);
-  PWSfileHeader &operator =(const PWSfileHeader &hdr);
-  bool operator==(const PWSfileHeader &hdr) const; // for unit tests
+  PWSfileHeader(const PWSfileHeader &h);
+  PWSfileHeader &operator =(const PWSfileHeader &h);
+  bool operator==(const PWSfileHeader &h) const; // for unit tests
   ~PWSfileHeader();
 
   enum { YUBI_SK_LEN = 20 };
