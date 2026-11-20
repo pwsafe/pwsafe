@@ -2572,7 +2572,9 @@ void AddEditPropSheetDlg::StartTotp()
   }
   // Show and update the TOTP only when an existing item 
   // with an existing TOTP configuration is edited or viewed.
-  m_TotpTimer = new wxTimer(this, ID_TIMER_TOTP_COUNTDOWN);
+  if (m_TotpTimer == nullptr) {
+    m_TotpTimer = new wxTimer(this, ID_TIMER_TOTP_COUNTDOWN);
+  }
   if (m_ItemTotp.HasTwoFactorKey()) {
     m_TotpTimer->Start(GetTotpCountdownInterval());
   }
