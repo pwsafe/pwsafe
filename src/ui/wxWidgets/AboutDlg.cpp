@@ -48,17 +48,14 @@ IMPLEMENT_CLASS( AboutDlg, wxDialog )
 BEGIN_EVENT_TABLE( AboutDlg, wxDialog )
 
   EVT_CLOSE(                       AboutDlg::OnCloseWindow       )
-  EVT_HYPERLINK( ID_CHECKNEW     , AboutDlg::OnCheckNewClicked   )
   EVT_HYPERLINK( ID_SITEHYPERLINK, AboutDlg::OnVisitSiteClicked  )
   EVT_BUTTON(    wxID_CLOSE      , AboutDlg::OnCloseClick        )
+#ifndef NO_VERCHECK
+  EVT_HYPERLINK( ID_CHECKNEW     , AboutDlg::OnCheckNewClicked   )
   EVT_THREAD(    wxID_ANY        , AboutDlg::OnDownloadCompleted )
-
+#endif // NO_VERCHECK
 END_EVENT_TABLE()
 
-wxString AboutDlg::s_VersionData = wxEmptyString;
-
-const wstringT AboutDlg::s_URL_HOME      = L"https://pwsafe.org";
-const cstringT AboutDlg::s_URL_VERSION   =  "https://pwsafe.org/latest.xml";
 
 /*!
  * AboutDlg constructors
@@ -69,8 +66,12 @@ AboutDlg::AboutDlg(wxWindow *parent, wxWindowID id, const wxString& caption, con
   wxASSERT(!parent || parent->IsTopLevel());
 
   // Print version information on standard output which might be useful for error reports.
+#if defined(_DEBUG) || defined(DEBUG)
   pws_os::Trace(GetLibWxVersion().wc_str());
+#ifndef NO_VERCHECK
   pws_os::Trace(GetLibCurlVersion().wc_str());
+#endif // NO_VERCHECK
+#endif // debug
 
   SetExtraStyle(wxWS_EX_BLOCK_EVENTS);
   wxDialog::Create( parent, id, caption, pos, size, style );
@@ -120,6 +121,7 @@ void AboutDlg::CreateControls()
   wxStaticText* buildStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Build date:")+wxT(" Mon dd yyyy hh:mm:ss"), wxDefaultPosition, wxDefaultSize, 0);
   rightSizer->Add(buildStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
+#ifndef NO_VERCHECK
   wxBoxSizer* verCheckSizer = new wxBoxSizer(wxHORIZONTAL);
   rightSizer->Add(verCheckSizer, 0, wxALIGN_LEFT|wxALL, 0);
 
@@ -131,6 +133,7 @@ void AboutDlg::CreateControls()
 
   wxStaticText* latestStaticTextEnd = new wxStaticText(aboutDialog, wxID_STATIC, _(" for the latest version."), wxDefaultPosition, wxDefaultSize, 0);
   verCheckSizer->Add(latestStaticTextEnd, 0, wxALIGN_CENTER_VERTICAL|wxTOP|wxBOTTOM|wxRIGHT, 5);
+#endif // NO_VERCHECK
 
   wxBoxSizer* visitSiteSizer = new wxBoxSizer(wxHORIZONTAL);
   rightSizer->Add(visitSiteSizer, 0, wxALIGN_LEFT|wxALL, 0);
@@ -150,9 +153,11 @@ void AboutDlg::CreateControls()
   wxStaticText* copyrightStaticText = new wxStaticText(aboutDialog, wxID_STATIC, _("Copyright (c) 2003-2026 Rony Shapiro"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);
   rightSizer->Add(copyrightStaticText, 0, wxALIGN_LEFT|wxALL, 5);
 
+#ifndef NO_VERCHECK
   m_VersionStatus = new wxTextCtrl(aboutDialog, ID_TEXTCTRL, wxT("\n\n"), wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_READONLY|wxNO_BORDER);
   rightSizer->Add(m_VersionStatus, 0, wxALIGN_LEFT|wxALL|wxEXPAND|wxRESERVE_SPACE_EVEN_IF_HIDDEN, 5);
   m_VersionStatus->Hide();
+#endif // NO_VERCHECK
 
   wxButton* closeButton = new wxButton(aboutDialog, wxID_CLOSE, _("&Close"), wxDefaultPosition, wxDefaultSize, 0);
   rightSizer->Add(closeButton, 0, wxALIGN_CENTER_HORIZONTAL|wxALL, 5);
@@ -205,7 +210,9 @@ wxIcon AboutDlg::GetIconResource( const wxString& WXUNUSED(name) )
 
 void AboutDlg::OnCloseWindow( wxCloseEvent& WXUNUSED(event) )
 {
+#ifndef NO_VERCHECK
   Cleanup();
+#endif // NO_VERCHECK
   EndModal(wxID_CLOSE);
 }
 
@@ -215,10 +222,13 @@ void AboutDlg::OnCloseWindow( wxCloseEvent& WXUNUSED(event) )
 
 void AboutDlg::OnCloseClick( wxCommandEvent& WXUNUSED(event) )
 {
+#ifndef NO_VERCHECK
   Cleanup();
+#endif // NO_VERCHECK
   EndModal(wxID_CLOSE);
 }
 
+#ifndef NO_VERCHECK
 /**
  * Returns a <code>wxCriticalSection</code> object that is used to protect
  * the shared data <code>s_VersionData</code>, which is accessed by worker
@@ -236,9 +246,9 @@ wxCriticalSection& AboutDlg::CriticalSection()
 /**
  * Prepare resources that are needed to request version data from server.
  *
- * The download of the version information (latest.xml) is performed by the external 
- * library Curl (libcurl). For the purpose of only downloading a single file the Easy 
- * API of libcurl is used, which already provides everything needed for this 
+ * The download of the version information (latest.xml) is performed by the external
+ * library Curl (libcurl). For the purpose of only downloading a single file the Easy
+ * API of libcurl is used, which already provides everything needed for this
  * task and which keeps the implementation simple.
  *
  * The following settings are used.
@@ -247,8 +257,8 @@ wxCriticalSection& AboutDlg::CriticalSection()
  * - Timeout  (CURLOPT_TIMEOUT):       120 seconds
  * - Callback (CURLOPT_WRITEFUNCTION): WriteCallback
  *
- * Once libcurl was successfully initialized and all needed options set a handle 
- * represents the connection and can be used for further activities during the 
+ * Once libcurl was successfully initialized and all needed options set a handle
+ * represents the connection and can be used for further activities during the
  * lifetime of the <code>AboutDlg</code> instance.
  *
  * @see https://curl.haxx.se/libcurl/c/curl_easy_setopt.html
@@ -351,6 +361,7 @@ void AboutDlg::Cleanup()
 #endif // HAS_CURL
 }
 
+#if defined(_DEBUG) || defined(DEBUG)
 /**
  * Provides version information about Curl library.
  */
@@ -381,14 +392,7 @@ wxString AboutDlg::GetLibCurlVersion()
 #endif // HAS_CURL
   return versionInfo;
 }
-
-/**
- * Provides version information about wxWidgets framework.
- */
-wxString AboutDlg::GetLibWxVersion()
-{
-  return wxString::Format("[wx] Wx Version:\n%s\n", wxGetLibraryVersionInfo().ToString());
-}
+#endif // debug
 
 /**
  * Checks whether database is closed.
@@ -419,7 +423,7 @@ bool AboutDlg::CheckDatabaseStatus()
     }
 
     // Notify PasswordSafeFrame to close database.
-    // If there are any unsaved changes PasswordSafeFrame 
+    // If there are any unsaved changes PasswordSafeFrame
     // will prompt the user to save them.
     pwsafe->CloseDB([this](bool closed) {
       if (closed) {
@@ -495,7 +499,7 @@ void AboutDlg::CheckNewVersion()
 /**
  * Compares the downloaded version data against the one of the application.
  *
- * @see core routine <code>CheckVersion::CheckLatestVersion</code> for version 
+ * @see core routine <code>CheckVersion::CheckLatestVersion</code> for version
  *      check algorithm and details about format of the downloaded xml file.
  */
 void AboutDlg::CompareVersionData()
@@ -674,6 +678,17 @@ void AboutDlg::OnDownloadCompleted(wxThreadEvent& event)
     s_VersionData.Empty();
   }
 }
+#endif // NO_VERCHECK
+
+#if defined(_DEBUG) || defined(DEBUG)
+/**
+ * Provides version information about wxWidgets framework.
+ */
+wxString AboutDlg::GetLibWxVersion()
+{
+  return wxString::Format("[wx] Wx Version:\n%s\n", wxGetLibraryVersionInfo().ToString());
+}
+#endif // debug
 
 /**
  * wxEVT_HYPERLINK event handler for ID_SITEHYPERLINK
@@ -682,8 +697,17 @@ void AboutDlg::OnVisitSiteClicked(wxHyperlinkEvent& WXUNUSED(event)) {
   wxLaunchDefaultBrowser(s_URL_HOME);
 }
 
+#ifndef NO_VERCHECK
+/**
+ * wxEVT_HYPERLINK event handler for ID_CHECKNEW
+ */
+void AboutDlg::OnCheckNewClicked(wxHyperlinkEvent& WXUNUSED(event)) {
+  CheckNewVersion();
+}
+
 
 int AboutDlg::ShowAndCheckForUpdate() {
   CallAfter(&AboutDlg::CheckNewVersion);
   return ShowModal();
 }
+#endif // NO_VERCHECK
