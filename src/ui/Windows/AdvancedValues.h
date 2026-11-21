@@ -36,8 +36,7 @@ struct st_SaveAdvValues {
     subgroup_bset(false), subgroup_bcase(false),
     btreatwhitespaceasempty(true)
   {
-    bsFields.set();
-    bsAttFields.reset();
+    SetDefaultFields();
   }
 
   st_SaveAdvValues(const st_SaveAdvValues &adv)
@@ -65,12 +64,20 @@ struct st_SaveAdvValues {
   }
 
   void Clear() {
-    bsFields.set();
-    bsAttFields.reset();
+    SetDefaultFields();
     subgroup_bset = subgroup_bcase = BST_UNCHECKED;
     btreatwhitespaceasempty = BST_CHECKED;
     subgroup_object = subgroup_function = 0;
     subgroup_name = L"";
+  }
+
+  void SetDefaultFields() {
+    bsFields.set();
+    bsAttFields.reset();
+    // For V4 attachments, search only title and filename by default
+    bsAttFields.set(CItemAtt::ATTTITLE - CItemAtt::START);
+    bsAttFields.set(CItemAtt::FILENAME - CItemAtt::START);
+    bsAttFields.set(CItemAtt::FILEPATH - CItemAtt::START);
   }
 
   CItemData::FieldBits bsFields;

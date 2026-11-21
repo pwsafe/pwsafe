@@ -54,8 +54,9 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=INVALID*/,
     m_subgroup_case = m_pst_SADV->subgroup_bcase ? BST_CHECKED : BST_UNCHECKED;
     m_treatwhitespaceasempty = m_pst_SADV->btreatwhitespaceasempty ? BST_CHECKED : BST_UNCHECKED;
   } else {
-    m_bsFields.set();
-    m_bsAttFields.reset();
+    const st_SaveAdvValues defaults;
+    m_bsFields = defaults.bsFields;
+    m_bsAttFields = defaults.bsAttFields;
     m_subgroup_name = L"";
     m_subgroup_set = BST_UNCHECKED;
     m_treatwhitespaceasempty = BST_CHECKED;
@@ -73,8 +74,9 @@ CAdvancedDlg::CAdvancedDlg(CWnd* pParent /*=NULL*/, Type iIndex /*=INVALID*/,
     m_subgroup_name = L"*";
 
   if (m_bsFields.count() == 0 && m_bsAttFields.count() == 0) {
-    m_bsFields.set();
-    m_bsAttFields.reset();
+    st_SaveAdvValues defaults;
+    m_bsFields = defaults.bsFields;
+    m_bsAttFields = defaults.bsAttFields;
   }
 
   m_current_version = app.GetCore()->GetReadFileVersion();
@@ -275,14 +277,17 @@ BOOL CAdvancedDlg::OnInitDialog()
     GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->EnableWindow(FALSE);
     GetDlgItem(IDC_TREATWHITESPACEASEMPTY)->ShowWindow(SW_HIDE);
 
-    // Only add attachment fields for V4 and later
+    const CString cs_att = L" (" + CString(MAKEINTRESOURCE(IDS_ATTACHMENTS)) + L")";
+
     if (m_current_version >= PWSfile::V40) {
-      const CString cs_att = L" (" + CString(MAKEINTRESOURCE(IDS_ATTACHMENTS)) + L")";
+      // V4: attachments are separate records (CItemAtt), selected via m_bsAttFields.
+      // Initially all go into the "available" list; SetAtt() below moves
+      // the selected ones across.
       const struct {int si; int ii;} attInit[] = {
-        {IDS_FILETITLE, CItemAtt::TITLE},
+        {IDS_FILETITLE, CItemAtt::ATTTITLE}, // NOT CItemAtt::TITLE, which is the entry's title!
         {IDS_FILENAME, CItemAtt::FILENAME},
         {IDS_FILEPATH, CItemAtt::FILEPATH},
-        {IDS_FILEMEDIATYPE, CItemAtt::MEDIATYPE},
+        // Media type deliberately not offered: search the file name suffix instead
       };
 
       for (auto &elem : attInit) {
@@ -292,20 +297,43 @@ BOOL CAdvancedDlg::OnInitDialog()
         m_pLC_List->SetItemData(iItem, elem.ii | NORMALFIELD);
         m_bsAttAllowedFields.set(elem.ii - CItemAtt::START);
       }
+      m_bsAttDefaultSelectedFields = st_SaveAdvValues().bsAttFields;
     } else {
-      // Don't allow any
+      // V3: the (single) attachment is stored in the entry itself,
+      // so its fields are ordinary CItemData fields, selected via m_bsFields.
+      // Title and file name are searched by default, as in the basic Find (bug #1638).
+      // Media type deliberately not offered, as for V4.
+      const struct {int si; int ii;} v3attInit[] = {
+        {IDS_FILETITLE, CItemData::DATA_ATT_TITLE},
+        {IDS_FILENAME, CItemData::DATA_ATT_FILENAME},
+      };
+
+      for (auto &elem : v3attInit) {
+        cs_text.LoadString(elem.si);
+        cs_text += cs_att;
+        iItem = m_pLC_Selected->InsertItem(++iItem, cs_text);
+        m_pLC_Selected->SetItemData(iItem, elem.ii | NORMALFIELD);
+        m_bsAllowedFields.set(elem.ii);
+        m_bsDefaultSelectedFields.set(elem.ii);
+      }
       m_bsAttAllowedFields.reset();
     }
   }
 
-  if (m_bsFields.count() != 0 && m_bsFields.count() != m_bsFields.size() &&
-      m_bsAttFields.count() != 0) {
+  // Restore the previous selection. Previously Set() was only called when some
+  // attachment fields were also selected, so a partial field selection was not
+  // shown when the dialog was reopened.
+  if (m_bsFields.count() != 0 && m_bsFields.count() != m_bsFields.size()) {
     Set(m_bsFields);
   }
 
-  if (m_bsAttFields.count() != 0 && m_bsAttFields.count() != m_bsAttFields.size()) {
-    SetAtt(m_bsAttFields);
-  }
+  // Unconditional: an empty set is a valid user choice (no attachment fields),
+  // and SetAtt() ignores fields that aren't allowed (e.g. for V3 files or Compare).
+  SetAtt(m_bsAttFields);
+
+  // Attachment fields were added after the initial sort
+  m_pLC_List->SortItems(AdvCompareFunc, NULL);
+  m_pLC_Selected->SortItems(AdvCompareFunc, NULL);
 
   m_pToolTipCtrl = new CToolTipCtrl;
   if (!m_pToolTipCtrl->Create(this, TTS_ALWAYSTIP | TTS_BALLOON | TTS_NOPREFIX)) {

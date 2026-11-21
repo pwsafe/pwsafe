@@ -947,8 +947,13 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   CItemData::FieldBits bsFields;
   bsFields.set();  // Default search is all text fields!
 
+  // Default search includes the attachment title and file name, as shown
+  // on the Attachment tab (bug #1638), but not its path.
   CItemAtt::AttFieldBits bsAttFields;
-  bsAttFields.reset();  // Default DON'T search attachment filename
+  bsAttFields.reset();
+  bsAttFields.set(CItemAtt::ATTTITLE - CItemAtt::START);
+  bsAttFields.set(CItemAtt::FILENAME - CItemAtt::START);
+  bsAttFields.set(CItemAtt::FILEPATH - CItemAtt::START);
 
   return FindAll(str, CaseSensitive, vIndices, vFoundUUIDs, bsFields, bsAttFields,
                  false, L"", 0, 0);
@@ -969,7 +974,8 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
   StringX curGroup, curTitle, curUser, curNotes, curPassword, curURL, curAT, curXInt;
   StringX curEmail, curSymbols, curPolicyName, curRunCommand, listTitle, saveTitle;
   StringX curKBS;
-  StringX curFN, curFP, curMT; // Attachment fields: FileName, FilePath, MediaType
+  StringX curAttTitle, curFN, curFP; // V4 attachment fields: Title, FileName, FilePath
+  StringX curV3AttTitle, curV3AttFN;       // V3 (in-entry) attachment fields: Title, FileName
   bool bFoundit;
   CString searchstr(str); // Since str is const, and we might need to MakeLower
   size_t retval = 0;
@@ -1019,17 +1025,18 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
     curKBS = curitem.GetKBShortcut();
     curAT = curitem.GetAutoType();
     curXInt = curitem.GetXTimeInt();
+    curV3AttTitle = curitem.GetAttTitle();
+    curV3AttFN = curitem.GetAttFileName();
 
-    // Don't bother getting the attachment if not searching its fields
-    if (bsAttFields.count() != 0) {
-      if (curitem.HasAttachment()) {
-        pws_os::CUUID attuuid = curitem.GetAttUUID();
+    // Don't bother getting the V4 attachment if not searching its fields
+    curAttTitle = curFN = curFP = L"";
+    if (bsAttFields.count() != 0 && curitem.HasAttRef()) {
+      pws_os::CUUID attuuid = curitem.GetAttUUID();
+      if (m_core.HasAtt(attuuid)) {
         const CItemAtt &att = m_core.GetAtt(attuuid);
+        curAttTitle = att.GetTitle();
         curFN = att.GetFileName();
         curFP = att.GetFilePath();
-        curMT = att.GetMediaType();
-      } else {
-        curFN = curFP = curMT = L"";
       }
     }
 
@@ -1045,9 +1052,11 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
       ToLower(curPolicyName);
       ToLower(curRunCommand);
       ToLower(curAT);
+      ToLower(curV3AttTitle);
+      ToLower(curV3AttFN);
+      ToLower(curAttTitle);
       ToLower(curFN);
       ToLower(curFP);
-      ToLower(curMT);
     }
 
     // do loop to easily break out as soon as a match is found
@@ -1142,15 +1151,23 @@ size_t DboxMain::FindAll(const CString &str, BOOL CaseSensitive,
         } // custom fields
       }
 
+      if (bsFields.test(CItemData::DATA_ATT_TITLE) && ::wcsstr(curV3AttTitle.c_str(), searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsFields.test(CItemData::DATA_ATT_FILENAME) && ::wcsstr(curV3AttFN.c_str(), searchstr)) {
+        bFoundit = true;
+        break;
+      }
+      if (bsAttFields.test(CItemAtt::ATTTITLE - CItemAtt::START) && ::wcsstr(curAttTitle.c_str(), searchstr)) {
+        bFoundit = true;
+        break;
+      }
       if (bsAttFields.test(CItemAtt::FILENAME - CItemAtt::START) && ::wcsstr(curFN.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }
       if (bsAttFields.test(CItemAtt::FILEPATH - CItemAtt::START) && ::wcsstr(curFP.c_str(), searchstr)) {
-        bFoundit = true;
-        break;
-      }
-      if (bsAttFields.test(CItemAtt::MEDIATYPE - CItemAtt::START) && ::wcsstr(curMT.c_str(), searchstr)) {
         bFoundit = true;
         break;
       }

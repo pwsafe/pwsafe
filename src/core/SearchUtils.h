@@ -44,6 +44,8 @@ void FindMatches(const StringX& searchText, bool fCaseSensitive,
     {CItemData::RUNCMD,    &CItemData::GetRunCommand},
     {CItemData::AUTOTYPE,  &CItemData::GetAutoType},
     {CItemData::XTIME_INT, &CItemData::GetXTimeInt},
+    {CItemData::DATA_ATT_TITLE,    &CItemData::GetAttTitle},
+    {CItemData::DATA_ATT_FILENAME, &CItemData::GetAttFileName},
   };
 
   bool keep_going = true;
